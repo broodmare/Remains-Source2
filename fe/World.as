@@ -55,7 +55,7 @@
 		public var vconsol:MovieClip;	//Консоль
 	
 		//Все главные компоненты
-		public var mm:MainMenu;
+		public var mainMenuClass:MainMenu;
 		public var cam:Camera;			//камера
 		public var ctr:Ctr;				//управление
 		public var consol:Consol;		//консоль
@@ -507,10 +507,6 @@
 			//
 			load_log+='Stage 2 Ok\n';
 			Snd.loadMusic();
-			
-			//for (var i=0; i<100; i++) trace(Res.repText('raider', 'neutral'));
-			//weaponWrite();
-			//mm.main.stage.quality='low';
 		}
 
 		public function roomsLoadOk() {
@@ -1150,7 +1146,7 @@
 			data.date=now.time;
 			data.n=autoSaveN;
 			data.hardInv=hardInv;
-			data.ver=mm.version;
+			data.ver = mainMenuClass.version;
 			data.est=1;
 		}
 		

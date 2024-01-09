@@ -21,7 +21,7 @@ package fe
 	public class MainMenu 
 	{
 		public var version:String='1.0.2';
-		private var mm:MovieClip;
+		private var mainMenuMovieClip:MovieClip;
 		public var main:Sprite;
 		private var world:World;
 		public var active:Boolean=true;
@@ -58,27 +58,30 @@ package fe
 			
 		public function MainMenu(nmain:Sprite) 
 		{
-			main=nmain;
-			mm=new visMainMenu();
-			mm.dialLoad.visible=false;
-			mm.dialNew.visible=false;
-			mm.dialAbout.visible=false;
+			main = nmain;
+			mainMenuMovieClip = new visMainMenu();
+			mainMenuMovieClip.dialLoad.visible=false;
+			mainMenuMovieClip.dialNew.visible=false;
+			mainMenuMovieClip.dialAbout.visible=false;
+
 			main.stage.addEventListener(Event.RESIZE, resizeDisplay); 
 			main.stage.addEventListener(Event.ENTER_FRAME, mainStep);
 			
 			showButtons(false);
+
 			mainMenuOn();
 			
 			var paramObj:Object = LoaderInfo(main.root.loaderInfo).parameters;
-			world=new World(main, paramObj);
-			world.mm=this;
+
+			world = new World(main, paramObj);
+			world.mainMenuClass = this;
 			
-			mm.testtest.visible=world.testMode;
-			mm.info.visible=false;
+			mainMenuMovieClip.testtest.visible=world.testMode;
+			mainMenuMovieClip.info.visible=false;
 			Snd.initSnd();
 			setMenuSize();
-			displ=new Displ(mm.pipka, mm.groza);
-			mm.groza.visible=false;
+			displ=new Displ(mainMenuMovieClip.pipka, mainMenuMovieClip.groza);
+			mainMenuMovieClip.groza.visible=false;
 			format.font = "_sans";
             format.color = 0xFFFFFF;
             format.size = 28;
@@ -99,32 +102,32 @@ package fe
 			styleObj.textDecoration= "underline";
 			style.setStyle("a:hover", styleObj);
 			
-			mm.info.txt.styleSheet=style;
-			mm.link.l1.styleSheet=style;
-			mm.link.l2.styleSheet=style;
+			mainMenuMovieClip.info.txt.styleSheet=style;
+			mainMenuMovieClip.link.l1.styleSheet=style;
+			mainMenuMovieClip.link.l2.styleSheet=style;
 		}
 
 		private function mainMenuOn():void
 		{
-			active=true;
-			mm.butNewGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butNewGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butLoadGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butLoadGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butContGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butContGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butOpt.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butOpt.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butAbout.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butAbout.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butOpt.addEventListener(MouseEvent.CLICK, funOpt);
-			mm.butNewGame.addEventListener(MouseEvent.CLICK, funNewGame);
-			mm.butLoadGame.addEventListener(MouseEvent.CLICK, funLoadGame);
-			mm.butContGame.addEventListener(MouseEvent.CLICK, funContGame);
-			mm.butAbout.addEventListener(MouseEvent.CLICK, funAbout);
-			mm.adv.addEventListener(MouseEvent.CLICK, funAdv);
-			mm.adv.addEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
-			if (!main.contains(mm)) main.addChild(mm);
+			active = true;
+			mainMenuMovieClip.butNewGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butNewGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butLoadGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butLoadGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butContGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butContGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butOpt.addEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butOpt.addEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butAbout.addEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butAbout.addEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butOpt.addEventListener(MouseEvent.CLICK, funOpt);
+			mainMenuMovieClip.butNewGame.addEventListener(MouseEvent.CLICK, funNewGame);
+			mainMenuMovieClip.butLoadGame.addEventListener(MouseEvent.CLICK, funLoadGame);
+			mainMenuMovieClip.butContGame.addEventListener(MouseEvent.CLICK, funContGame);
+			mainMenuMovieClip.butAbout.addEventListener(MouseEvent.CLICK, funAbout);
+			mainMenuMovieClip.adv.addEventListener(MouseEvent.CLICK, funAdv);
+			mainMenuMovieClip.adv.addEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
+			if (!main.contains(mainMenuMovieClip)) main.addChild(mainMenuMovieClip);
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
 		}
@@ -132,30 +135,30 @@ package fe
 		private function mainMenuOff():void
 		{
 			active=false;
-			mm.butNewGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butNewGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butLoadGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butLoadGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butContGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butContGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butOpt.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butOpt.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butAbout.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mm.butAbout.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mm.butOpt.removeEventListener(MouseEvent.CLICK, funOpt);
-			mm.butNewGame.removeEventListener(MouseEvent.CLICK, funNewGame);
-			mm.butLoadGame.removeEventListener(MouseEvent.CLICK, funLoadGame);
-			mm.butContGame.removeEventListener(MouseEvent.CLICK, funContGame);
-			mm.butAbout.removeEventListener(MouseEvent.CLICK, funAbout);
-			mm.adv.removeEventListener(MouseEvent.CLICK, funAdv);
-			mm.adv.removeEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
+			mainMenuMovieClip.butNewGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butNewGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butLoadGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butLoadGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butContGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butContGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butOpt.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butOpt.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butAbout.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
+			mainMenuMovieClip.butAbout.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
+			mainMenuMovieClip.butOpt.removeEventListener(MouseEvent.CLICK, funOpt);
+			mainMenuMovieClip.butNewGame.removeEventListener(MouseEvent.CLICK, funNewGame);
+			mainMenuMovieClip.butLoadGame.removeEventListener(MouseEvent.CLICK, funLoadGame);
+			mainMenuMovieClip.butContGame.removeEventListener(MouseEvent.CLICK, funContGame);
+			mainMenuMovieClip.butAbout.removeEventListener(MouseEvent.CLICK, funAbout);
+			mainMenuMovieClip.adv.removeEventListener(MouseEvent.CLICK, funAdv);
+			mainMenuMovieClip.adv.removeEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
 			file.removeEventListener(Event.SELECT, selectHandler);
 			file.removeEventListener(Event.COMPLETE, completeHandler);
 			for each(var m:MovieClip in butsLang) 
 			{
 				if (m) m.removeEventListener(MouseEvent.CLICK, funLang);
 			}
-			if (main.contains(mm)) main.removeChild(mm);
+			if (main.contains(mainMenuMovieClip)) main.removeChild(mainMenuMovieClip);
 			world.vwait.visible=true;
 			world.vwait.progres.text=Res.guiText('loading');
 		}
@@ -233,7 +236,7 @@ package fe
 					m.n.text=l.@id;
 					m.n.visible=false;
 					m.addEventListener(MouseEvent.CLICK, funLang);
-					mm.lang.addChild(m);
+					mainMenuMovieClip.lang.addChild(m);
 				}
 			}
 		}
@@ -241,38 +244,38 @@ package fe
 		//надписи
 		private function setMainLang():void
 		{
-			setMainButton(mm.butContGame,Res.guiText('contgame'));
-			setMainButton(mm.butNewGame,Res.guiText('newgame'));
-			setMainButton(mm.butLoadGame,Res.guiText('loadgame'));
-			setMainButton(mm.butOpt,Res.guiText('options'));
-			setMainButton(mm.butAbout,Res.guiText('about'));
-			mm.dialNew.title.text=Res.guiText('newgame');
-			mm.dialLoad.title.text=Res.guiText('loadgame');
-			mm.dialLoad.title2.text=Res.guiText('select_slot');
-			mm.version.htmlText='<b>'+Res.guiText('version')+' '+version+'</b>';
-			mm.dialLoad.butCancel.text.text=mm.dialNew.butCancel.text.text=Res.guiText('cancel');
-			mm.dialLoad.butFile.text.text=Res.pipText('loadfile');
-			mm.dialLoad.warn.text=mm.dialNew.warn.text=Res.guiText('loadwarn');
-			mm.dialNew.infoName.text=Res.guiText('inputname');
-			mm.dialNew.hardOpt.text=Res.guiText('hardopt');
-			mm.dialNew.butOk.text.text='OK';
-			mm.dialNew.inputName.text=Res.txt('u','littlepip');
-			mm.dialNew.maxChars=32;
+			setMainButton(mainMenuMovieClip.butContGame,Res.guiText('contgame'));
+			setMainButton(mainMenuMovieClip.butNewGame,Res.guiText('newgame'));
+			setMainButton(mainMenuMovieClip.butLoadGame,Res.guiText('loadgame'));
+			setMainButton(mainMenuMovieClip.butOpt,Res.guiText('options'));
+			setMainButton(mainMenuMovieClip.butAbout,Res.guiText('about'));
+			mainMenuMovieClip.dialNew.title.text=Res.guiText('newgame');
+			mainMenuMovieClip.dialLoad.title.text=Res.guiText('loadgame');
+			mainMenuMovieClip.dialLoad.title2.text=Res.guiText('select_slot');
+			mainMenuMovieClip.version.htmlText='<b>'+Res.guiText('version')+' '+version+'</b>';
+			mainMenuMovieClip.dialLoad.butCancel.text.text=mainMenuMovieClip.dialNew.butCancel.text.text=Res.guiText('cancel');
+			mainMenuMovieClip.dialLoad.butFile.text.text=Res.pipText('loadfile');
+			mainMenuMovieClip.dialLoad.warn.text=mainMenuMovieClip.dialNew.warn.text=Res.guiText('loadwarn');
+			mainMenuMovieClip.dialNew.infoName.text=Res.guiText('inputname');
+			mainMenuMovieClip.dialNew.hardOpt.text=Res.guiText('hardopt');
+			mainMenuMovieClip.dialNew.butOk.text.text='OK';
+			mainMenuMovieClip.dialNew.inputName.text=Res.txt('u','littlepip');
+			mainMenuMovieClip.dialNew.maxChars=32;
 			for (var i:int = 0; i<kolDifs; i++) 
 			{
-				mm.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
-				mm.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
+				mainMenuMovieClip.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
+				mainMenuMovieClip.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
 			}
 			for (var j:int = 1; i<=kolOpts; i++) //Changed i to j
 			{
-				mm.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
+				mainMenuMovieClip.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
 			}
-			mm.dialNew.butVid.mode.text=Res.guiText('butvid');
+			mainMenuMovieClip.dialNew.butVid.mode.text=Res.guiText('butvid');
 			if (world.app) world.app.setLang();
-			mm.adv.text=Res.advText(world.nadv);
-			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
-			mm.info.txt.htmlText=Res.txt('g','inform')+'<br>'+Res.txt('g','inform',1);
-			mm.info.visible=(mm.info.txt.text.length>0);
+			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
+			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
+			mainMenuMovieClip.info.txt.htmlText=Res.txt('g','inform')+'<br>'+Res.txt('g','inform',1);
+			mainMenuMovieClip.info.visible=(mainMenuMovieClip.info.txt.text.length>0);
 			setScrollInfo();
 		}
 		
@@ -285,27 +288,27 @@ package fe
 		
 		private function setMenuSize():void
 		{
-			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
-			mm.version.y=main.stage.stageHeight-58;
-			mm.link.y=main.stage.stageHeight-125;
+			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
+			mainMenuMovieClip.version.y=main.stage.stageHeight-58;
+			mainMenuMovieClip.link.y=main.stage.stageHeight-125;
 			var ny:int = main.stage.stageHeight-400;
 			if (ny<280) ny=280;
-			mm.dialLoad.x=mm.dialNew.x=world.app.vis.x=main.stage.stageWidth/2;
-			mm.dialLoad.y=mm.dialNew.y=world.app.vis.y=ny;
-			mm.lang.x=main.stage.stageWidth-30;
-			mm.lang.y=main.stage.stageHeight-50;
-			mm.info.txt.height=mm.info.scroll.height=mm.link.y-mm.info.y-20;
+			mainMenuMovieClip.dialLoad.x=mainMenuMovieClip.dialNew.x=world.app.vis.x=main.stage.stageWidth/2;
+			mainMenuMovieClip.dialLoad.y=mainMenuMovieClip.dialNew.y=world.app.vis.y=ny;
+			mainMenuMovieClip.lang.x=main.stage.stageWidth-30;
+			mainMenuMovieClip.lang.y=main.stage.stageHeight-50;
+			mainMenuMovieClip.info.txt.height=mainMenuMovieClip.info.scroll.height=mainMenuMovieClip.link.y-mainMenuMovieClip.info.y-20;
 			setScrollInfo();
 		}
 		
 		private function setScrollInfo():void
 		{
-			if (mm.info.txt.height<mm.info.txt.textHeight) 
+			if (mainMenuMovieClip.info.txt.height<mainMenuMovieClip.info.txt.textHeight) 
 			{
-				mm.info.scroll.maxScrollPosition=mm.info.txt.maxScrollV;
-				mm.info.scroll.visible=true;
+				mainMenuMovieClip.info.scroll.maxScrollPosition=mainMenuMovieClip.info.txt.maxScrollV;
+				mainMenuMovieClip.info.scroll.visible=true;
 			} 
-			else mm.info.scroll.visible=false;
+			else mainMenuMovieClip.info.scroll.visible=false;
 		}
 		
 		private function resizeDisplay(event:Event):void
@@ -317,17 +320,17 @@ package fe
 		//загрузка игры
 		private function mainLoadOn():void
 		{
-			mm.dialLoad.visible=true;
-			mm.dialLoad.title2.visible=(loadReg==1);
-			mm.dialLoad.title.visible=(loadReg==0);
-			mm.dialLoad.slot0.visible=(loadReg==0);
-			mm.dialLoad.info.text='';
-			mm.dialLoad.nazv.text='';
-			mm.dialLoad.pers.visible=false;
+			mainMenuMovieClip.dialLoad.visible=true;
+			mainMenuMovieClip.dialLoad.title2.visible=(loadReg==1);
+			mainMenuMovieClip.dialLoad.title.visible=(loadReg==0);
+			mainMenuMovieClip.dialLoad.slot0.visible=(loadReg==0);
+			mainMenuMovieClip.dialLoad.info.text='';
+			mainMenuMovieClip.dialLoad.nazv.text='';
+			mainMenuMovieClip.dialLoad.pers.visible=false;
 			arr=new Array();
 			for (var i:int = 0; i<=world.saveKol; i++) 
 			{
-				var slot:MovieClip=mm.dialLoad['slot'+i];
+				var slot:MovieClip=mainMenuMovieClip.dialLoad['slot'+i];
 				var save:Object=World.w.getSave(i);
 				var obj:Object=fe.inter.PipPageOpt.saveObj(save,i);
 				arr.push(obj);
@@ -350,22 +353,22 @@ package fe
 				slot.addEventListener(MouseEvent.CLICK, funLoadSlot);
 				slot.addEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
 			}
-			mm.dialLoad.butCancel.addEventListener(MouseEvent.CLICK, funLoadCancel);
-			mm.dialLoad.butFile.addEventListener(MouseEvent.CLICK, funLoadFile);
+			mainMenuMovieClip.dialLoad.butCancel.addEventListener(MouseEvent.CLICK, funLoadCancel);
+			mainMenuMovieClip.dialLoad.butFile.addEventListener(MouseEvent.CLICK, funLoadFile);
 			animOn=false;
 		}
 		
 		private function mainLoadOff():void
 		{
-			mm.dialLoad.visible=false;
-			if (mm.dialLoad.butCancel.hasEventListener(MouseEvent.CLICK)) 
+			mainMenuMovieClip.dialLoad.visible=false;
+			if (mainMenuMovieClip.dialLoad.butCancel.hasEventListener(MouseEvent.CLICK)) 
 			{
-				mm.dialLoad.butCancel.removeEventListener(MouseEvent.CLICK, funLoadCancel);
-				mm.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
+				mainMenuMovieClip.dialLoad.butCancel.removeEventListener(MouseEvent.CLICK, funLoadCancel);
+				mainMenuMovieClip.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
 			}
 			for (var i:int = 0; i<=world.saveKol; i++)
 			{
-				var slot:MovieClip=mm.dialLoad['slot'+i];
+				var slot:MovieClip=mainMenuMovieClip.dialLoad['slot'+i];
 				if (slot.hasEventListener(MouseEvent.CLICK)) 
 				{
 					slot.removeEventListener(MouseEvent.CLICK, funLoadSlot);
@@ -395,7 +398,7 @@ package fe
 
 		private function funOverSlot(event:MouseEvent):void
 		{
-			fe.inter.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mm.dialLoad);
+			fe.inter.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mainMenuMovieClip.dialLoad);
 		}
 		
 		private function funLoadFile(event:MouseEvent):void
@@ -431,38 +434,38 @@ package fe
 		//новая игры
 		private function mainNewOn():void
 		{
-			mm.dialNew.visible=true;
-			mm.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
-			mm.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
-			mm.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
+			mainMenuMovieClip.dialNew.visible=true;
+			mainMenuMovieClip.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
+			mainMenuMovieClip.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
+			mainMenuMovieClip.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
 			for (var i:int = 0; i<kolDifs; i++) 
 			{
-				mm.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
-				mm.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
+				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
+				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
 			for (var j:int = 1; i<=kolOpts; i++) //Changed i to j
 			{
-				mm.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
-				mm.dialNew['checkOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
+				mainMenuMovieClip.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
+				mainMenuMovieClip.dialNew['checkOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 			}
 			updNewMode();
-			mm.dialNew.pers.gotoAndStop(2);
-			mm.dialNew.pers.gotoAndStop(1);
+			mainMenuMovieClip.dialNew.pers.gotoAndStop(2);
+			mainMenuMovieClip.dialNew.pers.gotoAndStop(1);
 			animOn=false;
 		}
 
 		private function mainNewOff():void
 		{
-			mm.dialNew.visible=false;
-			if (mm.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mm.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
-			if (mm.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) mm.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
-			if (mm.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) 
+			mainMenuMovieClip.dialNew.visible=false;
+			if (mainMenuMovieClip.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
+			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
+			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) 
 			{
-				mm.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
+				mainMenuMovieClip.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
 				for (var i:int = 0; i<kolDifs; i++) 
 				{
-					mm.dialNew['dif'+i].removeEventListener(MouseEvent.CLICK, funNewDif);
-					mm.dialNew['dif'+i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
+					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.CLICK, funNewDif);
+					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
 				}
 			}
 			animOn=true;
@@ -472,16 +475,16 @@ package fe
 		{
 			world.nadv++;
 			if (world.nadv>=world.koladv) world.nadv=0;
-			mm.adv.text=Res.advText(world.nadv);
-			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
+			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
+			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
 		}
 
 		private function funAdvR(event:MouseEvent):void
 		{
 			world.nadv--;
 			if (world.nadv<0) world.nadv=world.koladv-1;
-			mm.adv.text=Res.advText(world.nadv);
-			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
+			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
+			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
 		}
 
 		private function funNewCancel(event:MouseEvent):void
@@ -492,7 +495,7 @@ package fe
 		private function funNewOk(event:MouseEvent):void
 		{
 			mainNewOff();
-			if (mm.dialNew.checkOpt2.selected) //показать окно выбора слота
+			if (mainMenuMovieClip.dialNew.checkOpt2.selected) //показать окно выбора слота
 			{
 				loadReg=1;
 				mainLoadOn();
@@ -510,52 +513,52 @@ package fe
 		private function funNewVid(event:MouseEvent):void
 		{
 			setMenuSize();
-			mm.dialNew.visible=false;
-			world.app.attach(mm,funVidOk,funVidOk);
+			mainMenuMovieClip.dialNew.visible=false;
+			world.app.attach(mainMenuMovieClip,funVidOk,funVidOk);
 		}
 
 		//принять настройки внешности
 		private function funVidOk():void
 		{
-			mm.dialNew.visible=true;
+			mainMenuMovieClip.dialNew.visible=true;
 			world.app.detach();
-			mm.dialNew.pers.gotoAndStop(2);
-			mm.dialNew.pers.gotoAndStop(1);
+			mainMenuMovieClip.dialNew.pers.gotoAndStop(2);
+			mainMenuMovieClip.dialNew.pers.gotoAndStop(1);
 		}
 
 		private function funNewDif(event:MouseEvent):void
 		{
-			if (event.currentTarget==mm.dialNew.dif0) newGameDif=0;
-			if (event.currentTarget==mm.dialNew.dif1) newGameDif=1;
-			if (event.currentTarget==mm.dialNew.dif2) newGameDif=2;
-			if (event.currentTarget==mm.dialNew.dif3) newGameDif=3;
-			if (event.currentTarget==mm.dialNew.dif4) newGameDif=4;
+			if (event.currentTarget==mainMenuMovieClip.dialNew.dif0) newGameDif=0;
+			if (event.currentTarget==mainMenuMovieClip.dialNew.dif1) newGameDif=1;
+			if (event.currentTarget==mainMenuMovieClip.dialNew.dif2) newGameDif=2;
+			if (event.currentTarget==mainMenuMovieClip.dialNew.dif3) newGameDif=3;
+			if (event.currentTarget==mainMenuMovieClip.dialNew.dif4) newGameDif=4;
 			updNewMode();
 		}
 
 		private function updNewMode():void
 		{
-			mm.dialNew.dif0.fon.gotoAndStop(1);
-			mm.dialNew.dif1.fon.gotoAndStop(1);
-			mm.dialNew.dif2.fon.gotoAndStop(1);
-			mm.dialNew.dif3.fon.gotoAndStop(1);
-			mm.dialNew.dif4.fon.gotoAndStop(1);
-			if (newGameDif==0) mm.dialNew.dif0.fon.gotoAndStop(2);
-			if (newGameDif==1) mm.dialNew.dif1.fon.gotoAndStop(2);
-			if (newGameDif==2) mm.dialNew.dif2.fon.gotoAndStop(2);
-			if (newGameDif==3) mm.dialNew.dif3.fon.gotoAndStop(2);
-			if (newGameDif==4) mm.dialNew.dif4.fon.gotoAndStop(2);
+			mainMenuMovieClip.dialNew.dif0.fon.gotoAndStop(1);
+			mainMenuMovieClip.dialNew.dif1.fon.gotoAndStop(1);
+			mainMenuMovieClip.dialNew.dif2.fon.gotoAndStop(1);
+			mainMenuMovieClip.dialNew.dif3.fon.gotoAndStop(1);
+			mainMenuMovieClip.dialNew.dif4.fon.gotoAndStop(1);
+			if (newGameDif==0) mainMenuMovieClip.dialNew.dif0.fon.gotoAndStop(2);
+			if (newGameDif==1) mainMenuMovieClip.dialNew.dif1.fon.gotoAndStop(2);
+			if (newGameDif==2) mainMenuMovieClip.dialNew.dif2.fon.gotoAndStop(2);
+			if (newGameDif==3) mainMenuMovieClip.dialNew.dif3.fon.gotoAndStop(2);
+			if (newGameDif==4) mainMenuMovieClip.dialNew.dif4.fon.gotoAndStop(2);
 		}
 
 		private function infoMode(event:MouseEvent):void
 		{
-			mm.dialNew.modeinfo.htmlText=event.currentTarget.modeinfo.text;
+			mainMenuMovieClip.dialNew.modeinfo.htmlText=event.currentTarget.modeinfo.text;
 		}
 
 		private function infoOpt(event:MouseEvent):void
 		{
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
-			mm.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
+			mainMenuMovieClip.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
 		}
 		
 		private function funOpt(event:MouseEvent):void
@@ -567,7 +570,7 @@ package fe
 
 		private function funLang(event:MouseEvent):void
 		{
-			mm.loading.text='';
+			mainMenuMovieClip.loading.text='';
 			var nid:String = event.currentTarget.n.text;
 			if (nid==world.lang) return;
 			world.defuxLang(nid);
@@ -579,34 +582,34 @@ package fe
 			{
 				langReload=true;
 				showButtons(false);
-				mm.loading.text='Loading';
+				mainMenuMovieClip.loading.text='Loading';
 			}
 		}
 		
 		private function showButtons(n:Boolean):void
 		{
-			mm.lang.visible=mm.butNewGame.visible=mm.butLoadGame.visible=mm.butContGame.visible=mm.butOpt.visible=mm.butAbout.visible=n;
+			mainMenuMovieClip.lang.visible=mainMenuMovieClip.butNewGame.visible=mainMenuMovieClip.butLoadGame.visible=mainMenuMovieClip.butContGame.visible=mainMenuMovieClip.butOpt.visible=mainMenuMovieClip.butAbout.visible=n;
 		}
 		
 		//создатели
 		private function funAbout(event:MouseEvent):void
 		{
-			mm.dialAbout.title.text=Res.guiText('about');
+			mainMenuMovieClip.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
 			s+='<br><br>'+Res.guiText('usedmusic')+'<br>';
 			s+="<br><span class='music'>"+Res.formatText(Res.d.gui.(@id=='usedmusic').info[0])+"</span>"
 			s+="<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
-			mm.dialAbout.txt.styleSheet=style;
-			mm.dialAbout.txt.htmlText=s;
-			mm.dialAbout.visible=true;
-			mm.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
-			mm.dialAbout.scroll.maxScrollPosition=mm.dialAbout.txt.maxScrollV;
+			mainMenuMovieClip.dialAbout.txt.styleSheet=style;
+			mainMenuMovieClip.dialAbout.txt.htmlText=s;
+			mainMenuMovieClip.dialAbout.visible=true;
+			mainMenuMovieClip.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
+			mainMenuMovieClip.dialAbout.scroll.maxScrollPosition=mainMenuMovieClip.dialAbout.txt.maxScrollV;
 		}
 
 		private function funAboutOk(event:MouseEvent):void
 		{
-			mm.dialAbout.visible=false;
-			mm.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
+			mainMenuMovieClip.dialAbout.visible=false;
+			mainMenuMovieClip.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
 		private function step():void
@@ -617,8 +620,8 @@ package fe
 				{
 					langReload=false;
 					showButtons(true);
-					if (world.textLoadErr) mm.loading.text='Language loading error';
-					else mm.loading.text='';
+					if (world.textLoadErr) mainMenuMovieClip.loading.text='Language loading error';
+					else mainMenuMovieClip.loading.text='';
 					world.pip.updateLang();
 					setMainLang();
 				}
@@ -629,15 +632,15 @@ package fe
 				if (animOn && !world.pip.active) displ.anim();
 				if (world.allLandsLoaded && world.textLoaded) 
 				{
-					if (world.musicKol>world.musicLoaded) mm.loading.text='Music loading '+world.musicLoaded+'/'+world.musicKol;
-					else mm.loading.text='';
+					if (world.musicKol>world.musicLoaded) mainMenuMovieClip.loading.text='Music loading '+world.musicLoaded+'/'+world.musicKol;
+					else mainMenuMovieClip.loading.text='';
 				}
 				return;
 			}
 			if (world.grafon.resIsLoad) 
 			{
 				stn++;
-				mm.loading.text='Loading '+(Math.floor(stn/30))+'\n';
+				mainMenuMovieClip.loading.text='Loading '+(Math.floor(stn/30))+'\n';
 				if (world.textLoaded) world.init2();
 				if (world.allLandsLoaded && world.textLoaded) 
 				{
@@ -647,17 +650,17 @@ package fe
 					showButtons(true);
 					return;
 				}
-				mm.loading.text+=world.load_log;
+				mainMenuMovieClip.loading.text+=world.load_log;
 			} 
 			else 
 			{
-				mm.loading.text='Loading '+Math.round(world.grafon.progressLoad*100)+'%';
+				mainMenuMovieClip.loading.text='Loading '+Math.round(world.grafon.progressLoad*100)+'%';
 			}
 		}
 		
 		public function log(s:String):void
 		{
-			mm.loading.text+=s+'; ';
+			mainMenuMovieClip.loading.text+=s+'; ';
 		}
 
 		private function mainStep(event:Event):void 
@@ -666,7 +669,7 @@ package fe
 			else if (command>0)
 			{
 				command--;
-				if (command==1 && !mm.dialNew.checkOpt1.selected && com=='new') 
+				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=='new') 
 				{
 					world.setLoadScreen(0);
 				}
@@ -683,16 +686,16 @@ package fe
 						//hardskills - давать по 3 sp за уровень
 						//autoSaveN - ячейка автосейва
 						opt={dif:newGameDif,
-							propusk:mm.dialNew.checkOpt1.selected,
-							hardcore:mm.dialNew.checkOpt2.selected,
-							fastxp:mm.dialNew.checkOpt3.selected,
-							rndpump:mm.dialNew.checkOpt4.selected,
-							hardskills:mm.dialNew.checkOpt5.selected,
-							hardinv:mm.dialNew.checkOpt6.selected};
+							propusk:mainMenuMovieClip.dialNew.checkOpt1.selected,
+							hardcore:mainMenuMovieClip.dialNew.checkOpt2.selected,
+							fastxp:mainMenuMovieClip.dialNew.checkOpt3.selected,
+							rndpump:mainMenuMovieClip.dialNew.checkOpt4.selected,
+							hardskills:mainMenuMovieClip.dialNew.checkOpt5.selected,
+							hardinv:mainMenuMovieClip.dialNew.checkOpt6.selected};
 						if (opt.hardcore) opt.autoSaveN=loadCell;
 						loadCell=-1;
 					}
-					world.newGame(loadCell,mm.dialNew.inputName.text,opt);
+					world.newGame(loadCell,mainMenuMovieClip.dialNew.inputName.text,opt);
 				}
 			} 
 			else world.step();
