@@ -410,7 +410,8 @@
 		}
 		
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent):void
+		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;

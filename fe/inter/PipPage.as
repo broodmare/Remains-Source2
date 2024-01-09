@@ -242,7 +242,7 @@
 
 		}
 		
-		function itemClick(event:MouseEvent)
+		function itemClick(event:MouseEvent):void
 		{
 
 		}

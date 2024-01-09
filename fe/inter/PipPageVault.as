@@ -155,7 +155,8 @@
 			chKol(event.currentTarget.parent, event.currentTarget.value);
 		}
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent):void
+		{
 			if (event.ctrlKey) chKol(event.currentTarget, 0);
 			else chKol(event.currentTarget, int.MAX_VALUE);
 			pip.snd(1);

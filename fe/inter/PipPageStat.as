@@ -370,7 +370,8 @@
 			}
 		}
 		
-		function showBottext() {
+		function showBottext():void
+		{
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.w.game.gameTime();
 			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+numberAsColor('pink', skillPoint);
@@ -379,85 +380,123 @@
 				if (selectedPerk=='') vis.bottext.htmlText=Res.pipText('chooseperk');
 				else vis.bottext.htmlText=textAsColor('pink', Res.txt('e',selectedPerk));
 			}
-			if (page2==5 && infoItemId!='') {
-				var ci:String='';
-				if (infoItemId=='hp') {
-					vis.bottext.htmlText=Res.pipText('healpotions')+': '+textAsColor('yellow', inv.items['pot1'].kol+inv.items['pot2'].kol+inv.items['pot3'].kol);
-				} else if (infoItemId=='rad') {
-					ci='antiradin';
-				} else if (infoItemId=='cut') {
-					ci='pot0';
-				} else if (infoItemId=='poison') {
-					ci='antidote';
-				} else if (infoItemId.substr(0,9)=='statBlood') {
-					ci='bloodpak';
-				} else if (infoItemId.substr(0,8)=='statMana') {
-					vis.bottext.htmlText=Res.txt('i','potm1')+': '+textAsColor('yellow', inv.items['potm1'].kol+inv.items['potm2'].kol+inv.items['potm3'].kol);
-				} else if (infoItemId=='phoenix') {
-					ci='radcookie';
-				} else if (infoItemId.substr(0,8)=='statHead') {
-					ci=gg.invent.getMed(1);
-					if (ci=='') vis.bottext.text='';
-				} else if (infoItemId.substr(0,8)=='statTors') {
-					ci=gg.invent.getMed(2);
-					if (ci=='') vis.bottext.text='';
-				} else if (infoItemId.substr(0,8)=='statLegs') {
-					ci=gg.invent.getMed(3);
-					if (ci=='') vis.bottext.text='';
-				} else if (infoItemId.substr(0,5)=='post_') {
-					ci='detoxin'
+			if (page2==5 && infoItemId!='') 
+			{
+				var ci:String = '';
+				var simplifiedID:String = getSimplifiedItemId(infoItemId)
+
+				switch (simplifiedID)
+				{
+					case 'hp':
+						vis.bottext.htmlText = Res.txt('pip', 'healpotions') + ': ' + textAsColor('yellow', inv.items['pot1'].kol + inv.items['pot2'].kol + inv.items['pot3'].kol);
+					break;
+					case 'rad':
+						ci = 'antiradin';
+					break;
+					case 'cut':
+						ci = 'pot0';
+					break;
+					case 'poison':
+						ci = 'antidote';
+					break;
+					case 'statBlood':
+						ci = 'bloodpak';
+					break;
+					case 'statMana':
+						vis.bottext.htmlText = Res.txt('i','potm1') + ': ' + textAsColor('yellow', inv.items['potm1'].kol + inv.items['potm2'].kol + inv.items['potm3'].kol);
+					break;
+					case 'phoenix':
+						ci = 'radcookie';
+					break;
+					case 'post_':
+						ci = 'detoxin';
+					break;
+					case 'statHead':
+						ci = gg.invent.getMed(1);
+						if (ci == '') vis.bottext.text = '';
+					break;
+					case 'statTors':
+						ci = gg.invent.getMed(2);
+						if (ci == '') vis.bottext.text = '';
+					break;
+					case 'statLegs':
+						ci = gg.invent.getMed(3);
+						if (ci == '') vis.bottext.text = '';
+					break;
 				}
-				if (ci!='') vis.bottext.htmlText=Res.txt('i',ci)+': '+textAsColor('yellow', inv.items[ci].kol);
+
+				if (ci != '') vis.bottext.htmlText = Res.txt('i', ci) + ': ' + textAsColor('yellow', inv.items[ci].kol);
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
+		override function itemClick(event:MouseEvent):void
+		{
+			if (pip.noAct)
+			{
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==2) {
+			if (page2==2)
+			{
 				var id=event.currentTarget.id.text;
 				if (event.ctrlKey) unselSkill(id);
 				else selSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
 			}
-			if (page2==6) {
-				if (event.currentTarget.alpha>=1) {
+			if (page2==6)
+			{
+				if (event.currentTarget.alpha>=1)
+				{
 					vis.butOk.visible=true;
 					selectedPerk=event.currentTarget.id.text;
 				}
 				pip.snd(1);
 			}
-			if (page2==5 && infoItemId!='') {
+			if (page2==5 && infoItemId!='')
+			{
 				infoItemId=event.currentTarget.id.text;
 				var need:String;
-				if (infoItemId=='hp') {
-					inv.usePotion();
-				} else if (infoItemId=='rad') {
-					inv.usePotion('antiradin');
-				} else if (infoItemId=='cut') {
-					inv.usePotion('pot0');
-				} else if (infoItemId=='poison') {
-					inv.usePotion('antidote');
-				} else if (infoItemId.substr(0,9)=='statBlood') {
-					inv.usePotion('bloodpak');
-				} else if (infoItemId=='phoenix') {
-					inv.usePotion('radcookie');
-				} else if (infoItemId.substr(0,8)=='statHead') {
-					need=gg.invent.getMed(1);
-					if (need!='') inv.usePotion(need,1);
-				} else if (infoItemId.substr(0,8)=='statTors') {
-					need=gg.invent.getMed(2);
-					if (need!='') inv.usePotion(need,2);
-				} else if (infoItemId.substr(0,8)=='statLegs') {
-					need=gg.invent.getMed(3);
-					if (need!='') inv.usePotion(need,3);
-				} else if (infoItemId.substr(0,8)=='statMana') {
-					inv.usePotion('mana');
-				} else if (infoItemId.substr(0,5)=='post_') {
-					inv.usePotion('detoxin');
+				var simplifiedID:String = getSimplifiedItemId(infoItemId)
+
+				switch (simplifiedID)
+				{
+					case 'hp':
+						inv.usePotion();
+					break;
+					case 'rad':
+						inv.usePotion('antiradin');
+					break;
+					case 'cut':
+						inv.usePotion('pot0');
+					break;
+					case 'poison':
+						inv.usePotion('antidote');
+					break;
+					case 'statBlood':
+						inv.usePotion('bloodpak');
+					break;
+					case 'statMana':
+						inv.usePotion('mana');
+					break;
+					case 'phoenix':
+						inv.usePotion('radcookie');
+					break;
+					case 'post_':
+						inv.usePotion('detoxin');
+					break;
+					case 'statHead':
+						need = gg.invent.getMed(1);
+						if (need != '') inv.usePotion(need, 1);
+					break;
+					case 'statTors':
+						need = gg.invent.getMed(2);
+						if (need != '') inv.usePotion(need, 2);
+					break;
+					case 'statLegs':
+						need = gg.invent.getMed(3);
+						if (need != '') inv.usePotion(need, 3);
+					break;
 				}
 				setStatus();
 				pip.snd(1);
@@ -465,7 +504,23 @@
 			}
 			showBottext();
 		}
-		override function itemRightClick(event:MouseEvent) {
+
+		// Helper function for switch-cases. These strings have nubmers at the end, eg. 'statBlood2' to represent intensity levels.
+		// This removes the trailing number if applicable so the switch-case can do an instant comparison to check for matches.
+		private function getSimplifiedItemId(infoItemId:String):String  
+		{
+			if (infoItemId.indexOf('statBlood') == 0) return 'statBlood';
+			if (infoItemId.indexOf('statMana')  == 0) return 'statMana';
+			if (infoItemId.indexOf('statHead')  == 0) return 'statHead';
+			if (infoItemId.indexOf('statTors')  == 0) return 'statTors';
+			if (infoItemId.indexOf('statLegs')  == 0) return 'statLegs';
+			if (infoItemId.indexOf('detoxin')   == 0) return 'detoxin';
+
+			return infoItemId;
+		}
+
+		override function itemRightClick(event:MouseEvent)
+		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;

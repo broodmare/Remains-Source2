@@ -318,7 +318,8 @@
 		}
 		
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent):void
+		{
 			if (World.w.ctr.setkeyOn) return;
 			if (page2==3) {
 				if (event.currentTarget.id.text=='fullscreen') {

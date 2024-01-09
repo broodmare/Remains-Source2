@@ -480,7 +480,7 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent)
+		override function itemClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];

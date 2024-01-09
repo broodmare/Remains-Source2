@@ -290,70 +290,88 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
+		override function itemClick(event:MouseEvent):void
+		{
+			if (pip.noAct) 
+			{
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (event.ctrlKey) {
+			if (event.ctrlKey) 
+			{
 				itemRightClick(event);
 				return;
 			}
 			var ci:String=event.currentTarget.id.text;
-			if (page2==1) {
+			if (page2==1) 
+			{
 				World.w.gg.changeWeapon(ci);
 				selItem=event.currentTarget as MovieClip;
 				setStatus(false);
 				pip.snd(1);
-			} else if (page2==2) {
-				if (World.w.gg.changeArmor(ci)) {
+			} 
+			else if (page2==2)
+			{
+				if (World.w.gg.changeArmor(ci))
+				{
 					setStatus(false);
-					/*if (selItem) selItem.ramka.visible=false;
-					if (World.w.gg.currentArmor) {
-						selItem=event.currentTarget as MovieClip;
-						selItem.ramka.visible=true;
-					}*/
 				}
 				pip.snd(1);
-			} else if (page2==3) {
-				if (ci=='retr') {
-					if (World.w.alicorn) {
+			} 
+			else if (page2==3)
+			{
+				if (ci=='retr')
+				{
+					if (World.w.alicorn)
+					{
 						World.w.gui.infoText('alicornNot',null,null,false);
-						return false;
+						return; // Set as return instead of return false.
 					}
 					if (World.w.game.curLandId==World.w.game.baseId) return;
 					else if (World.w.possiblyOut()>=2) World.w.gui.infoText('noUseCombat'); 
 					else buttonOk('retr');
-				} else if (ci=='mworkbench' || ci=='mworkexpl' || ci=='mworklab') {
+				} 
+				else if (ci=='mworkbench' || ci=='mworkexpl' || ci=='mworklab') {
 					if (World.w.t_battle>0) {
 						World.w.gui.infoText('noUseCombat',null,null,false);
-					} else {
+					} 
+					else
+					{
 						pip.workTip=ci;
 						pip.onoff(7);
 					}
-				} else {
+				} 
+				else
+				{
 					World.w.invent.useItem(ci);
 					setStatus(false);
 					World.w.gui.setHp();
 				}
 				pip.snd(1);
 				over_t=2;
-			} else if (page2==5) {
-				if (gg.invent.weapons[ci]) {
+			}
+			else if (page2==5)
+			{
+				if (gg.invent.weapons[ci])
+				{
 					gg.invent.weapons[ci].respect=2;
 					World.w.gg.changeWeapon(ci);
-				} else if (gg.currentWeapon && gg.currentWeapon.tip<=3 && gg.currentWeapon.holder>0) gg.currentWeapon.initReload(ci);
+				} 
+				else if (gg.currentWeapon && gg.currentWeapon.tip<=3 && gg.currentWeapon.holder>0) gg.currentWeapon.initReload(ci);
 			}
 			pip.setRPanel();
 			showBottext();
 		}
 		
-		override function itemRightClick(event:MouseEvent) {
-			if (pip.noAct) {
+		override function itemRightClick(event:MouseEvent)
+		{
+			if (pip.noAct)
+			{
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==1) {
+			if (page2==1)
+			{
 				var obj=assArr[event.currentTarget.id.text];
 				obj.respect=World.w.invent.respectWeapon(event.currentTarget.id.text);
 				setStatItem(event.currentTarget as MovieClip, obj);
@@ -361,7 +379,8 @@
 				showBottext();
 				pip.snd(1);
 			}
-			if (page2>=3) {
+			if (page2>=3)
+			{
 				if (World.w.loc.base) {
 					World.w.gui.infoText('noDrop1',null,null,false);
 					return;

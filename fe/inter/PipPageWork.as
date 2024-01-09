@@ -58,7 +58,7 @@
 					if (s=='' || inv.items[s]==null || inv.items[s].kol<=0) continue;
 					var node=inv.items[s].xml;
 					if (node==null) continue;
-					if (node.@tip=='scheme' && (node.@work.length()==0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
+					if (node.@tip=='scheme' && (node.@work.length()==0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {
 						var ok:int=1;
 						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
 						var wid:String=s.substr(2);
@@ -79,7 +79,6 @@
 							if (node1.length()==0) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
 							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
-							//if (node1.@one>0) n.tip=Item.L_IMPL;
 							arr.push(n);
 							assArr[n.id]=n;
 						}
@@ -96,7 +95,7 @@
 					
 			} else if (page2==2) {	//улучшение
 				statHead.fav.text='';
-				statHead.nazv.text='';//Res.pipText('ii2');
+				statHead.nazv.text='';
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -247,7 +246,8 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent):void
+		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
@@ -304,7 +304,6 @@
 					World.w.gui.infoText('created2',cnazv,inv.items[cid].kol);
 					infoItem(ccat,cid,cnazv, 1);
 					if (inv.items[cid].xml && inv.items[cid].xml.@one=='1') setStatus();
-					//setStatus(false);
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
 				World.w.game.checkQuests(cid);
