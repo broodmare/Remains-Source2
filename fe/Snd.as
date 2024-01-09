@@ -9,10 +9,10 @@
 	import flash.events.IOErrorEvent;
 	
 	public class Snd {
-		public static var snd:Array=new Array();
-		public static var globalVol=0.4;
-		public static var stepVol=0.5;
-		public static var musicVol=0.2;
+		public static var snd:Array = new Array();
+		public static var globalVol = 0.4;		// Used by pipbuckOpt as a string.
+		public static var stepVol = 0.5;		// Used by pipbuckOpt as a string.
+		public static var musicVol = 0.2;		// Used by pipbuckOpt as a string.
 		public static var music:Sound;
 		public static var musics:Array=new Array();
 		public static var sndNames:Array = ['mp5'];
@@ -22,26 +22,22 @@
 			
 		public static var resSnd:Loader;
 		public static var resSounds:*;
-		//public static var resIsLoad:Boolean=false;
 		
 		public static var musicCh:SoundChannel;
 		public static var musicPrevCh:SoundChannel;
 		public static var actionCh:SoundChannel;
 		public static var currentMusicPrior:int=0;
 		
-		public static var t_hit:int=0;
-		public static var t_combat:int=0;
-		public static var centrX:Number=1000, centrY:Number=500, widthX=2000;
-		public static var t_music:int=0;
-		public static var t_shum:int=0;
-		static var inited:Boolean=false;
-		public static var off:Boolean=true;
+		public static var t_hit:int = 0;
+		public static var t_combat:int = 0;
+		public static var centrX:Number = 1000, centrY:Number = 500, widthX:Number = 2000; 
+		public static var t_music:int = 0;
+		public static var t_shum:int = 0;
+		private static var inited:Boolean = false;
+		public static var off:Boolean = true;
 		
 		public static var shumArr:Array;
-		
-		function Snd() {
-		}
-		
+
 		public static var d:XML=
 		<all>
 			<music>
@@ -384,24 +380,28 @@
 		
 		</all>
 		
-		public static function save():* {
+		public static function save():*
+		{
 			var obj:Object=new Object();
 			obj.globalVol=globalVol;
 			obj.stepVol=stepVol;
 			obj.musicVol=musicVol;
 			return obj;
 		}
-		public static function load(obj) {
-			if (obj.globalVol!=null && !isNaN(obj.globalVol)) globalVol=obj.globalVol;
-			if (obj.stepVol!=null && !isNaN(obj.stepVol)) stepVol=obj.stepVol;
-			if (obj.musicVol!=null && !isNaN(obj.musicVol)) musicVol=obj.musicVol;
+		public static function load(obj:Object):void
+		{
+			if (obj.globalVol != null && !isNaN(obj.globalVol)) globalVol = obj.globalVol;
+			if (obj.stepVol != null && !isNaN(obj.stepVol)) stepVol = obj.stepVol;
+			if (obj.musicVol != null && !isNaN(obj.musicVol)) musicVol = obj.musicVol;
 			if (musicCh) updateMusicVol();
 		}
 		
-		public static function pan(x:Number):Number {
+		public static function pan(x:Number):Number
+		{
 			return (x-250)/500;
 		}
-		public static function initSnd() {
+		public static function initSnd():void
+		{
 			if (inited || !onSnd) return;
 			var req:URLRequest;
 			var s:Sound;
@@ -410,14 +410,10 @@
 			s.addEventListener(IOErrorEvent.IO_ERROR, onIOError); 
 			snd['mainmenu']=s;
 			s.addEventListener(Event.COMPLETE, mmLoaded);  
-			for each (var i in d.res) {
+			for each (var i:XML in d.res)
+			{
 				resSnd = new Loader();
-				var fileSound:String=World.w.soundPath+i.@id;
-				if (World.w.playerMode=='PlugIn') {
-					//fileSound+='?u='+World.w.fileVersion;
-					//fileSound+='?u='+ Math.random().toFixed(5);
-				}
-				//trace(fileSound+'?u='+World.w.fileVersion);
+				var fileSound:String = World.w.soundPath+i.@id;
 				var urlReq:URLRequest = new URLRequest(fileSound);
 				resSnd.load(urlReq);
 				resSnd.contentLoaderInfo.addEventListener(Event.COMPLETE, resLoaded);  
@@ -426,78 +422,93 @@
 			inited=true;
 		}
 		
-		public static function loadMusic() {
+		public static function loadMusic():void
+		{
 			var req:URLRequest;
 			var s:Sound;
-			for each (var j in d.music.s) {
-				var id:String=j.@id;
-				try {
+			for each (var j:XML in d.music.s)
+			{
+				var id:String = j.@id;
+				try
+				{
 					req = new URLRequest(World.w.musicPath+id+".mp3");
 					s = new Sound(req);
 					s.addEventListener(IOErrorEvent.IO_ERROR, onIOError); 
 					s.addEventListener(Event.COMPLETE, musicLoaded);  
 					snd[id]=s;
 					World.w.musicKol++;
-				} catch (err) {
-					trace('music load err', req.url);
-				}
+				} 
+				catch (err) { trace('music load err', req.url); }
 			}
 		}
 		
-		static function onIOError(event:IOErrorEvent) { }
+		static private function onIOError(event:IOErrorEvent):void 
+		{
+
+		}
 		
-		static function mmLoaded(event:Event):void {
+		static private function mmLoaded(event:Event):void
+		{
 			if (musicVol>0) playMusic('mainmenu');
 		}
-		static function musicLoaded(event:Event):void {
+		static private function musicLoaded(event:Event):void
+		{
 			World.w.musicLoaded++;
 			event.currentTarget.removeEventListener(Event.COMPLETE, musicLoaded);  
 			event.currentTarget.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 		}
 		
-		static function resLoaded(event:Event):void 
+		static private function resLoaded(event:Event):void 
 		{
 			var str:String=event.target.url;
-			str=str.substr(str.lastIndexOf('/')+1);
+			str = str.substr(str.lastIndexOf('/')+1);
 			resSounds = event.target.content;
 			var s:Sound;
-			var xml=d.res.(@id==str);
-			if (xml.length()) {
-				for each (var j in xml.s) {
-					var id=j.@id;
-					if (j.s.length()) {
-						snd[id]=new Array();
-						for each (var e in j.s) {
-							s=resSounds.getSnd(e.@id);
-							if (s!=null) snd[id].push(s);
+			var xml:XMLList = d.res.(@id==str);
+			if (xml.length())
+			{
+				for each (var j:XML in xml.s)
+				{
+					var id:String = j.@id;
+					if (j.s.length())
+					{
+						snd[id] = new Array();
+						for each (var e:XML in j.s)
+						{
+							s = resSounds.getSnd(e.@id);
+							if (s != null) snd[id].push(s);
 							else trace('res sound err '+id+'.'+e.@id);
 						}
-					} else {
-						s=resSounds.getSnd(id);
-						if (s!=null) snd[id]=s;
-						else trace('res sound err '+id);
+					} 
+					else
+					{
+						s = resSounds.getSnd(id);
+						if (s != null) snd[id] = s;
+						else trace('res sound err ' + id);
 					}
 				}
 			}
-    		//resIsLoad=true;
 		}
 		
-		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150) {
-			t_combat=n;
-			if (sndMusicPrior>currentMusicPrior) {
-				currentMusicPrior=sndMusicPrior;
+		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150):void
+		{
+			t_combat = n;
+			if (sndMusicPrior>currentMusicPrior)
+			{
+				currentMusicPrior = sndMusicPrior;
 				playMusic(sndMusic);
 			}
 		}
 		
 		
-		public static function playMusic(sndMusic:String=null, rep:int=10000) {
-			//trace('musvol',musicVol);
+		public static function playMusic(sndMusic:String=null, rep:int=10000):void
+		{
 			if (!inited) return;
 			if (sndMusic!=null && musicCh && sndMusic==musicName) return;
 			if (sndMusic!=null) musicName=sndMusic;
 			var trans:SoundTransform = new SoundTransform(musicVol, 0);
-			if (musicCh) {
+			if (musicCh)
+			{
 				if (musicPrevCh || t_music>0) musicPrevCh.stop();
 				musicPrevCh=musicCh;
 				musicCh=null;
@@ -506,28 +517,33 @@
 			currentMusicPrior=0;
 			if (onMusic && snd[musicName] && snd[musicName].bytesTotal && snd[musicName].bytesLoaded==snd[musicName].bytesTotal) musicCh=snd[musicName].play(0,rep,trans);
 		}
-		public static function stopMusic() {
+
+		public static function stopMusic():void
+		{
 			if (!inited || !musicCh) return;
 			musicCh.stop();
 		}
-		public static function updateMusicVol() {
-			//if (!onMusic) musicName='';
-			if (musicCh) {
+
+		public static function updateMusicVol():void
+		{
+			if (musicCh)
+			{
 				var trans:SoundTransform = new SoundTransform(musicVol, 0);
 				musicCh.soundTransform=trans;
-			} else {
-				playMusic();
-			}
+			} 
+			else playMusic();
 		}
 		
-		public static function ps(txt:String,nx:Number=-1000,ny:Number=-1000,msec:Number=0,vol:Number=1):SoundChannel {
-			//trace(txt);
+		public static function ps(txt:String,nx:Number=-1000,ny:Number=-1000,msec:Number=0,vol:Number=1):SoundChannel
+		{
 			if (!inited || !onSnd || off) return null;
-			if (snd[txt]) {
+			if (snd[txt])
+			{
 				var s:Sound;
 				if (snd[txt] is Array) s = snd[txt][Math.floor(Math.random()*snd[txt].length)];
 				else s = snd[txt] as Sound;
-				if (s.bytesTotal>0 && s.bytesLoaded>=s.bytesTotal) {
+				if (s.bytesTotal>0 && s.bytesLoaded>=s.bytesTotal)
+				{
 					var pan:Number=(nx-centrX)/widthX;
 					if (nx==-1000) pan=0;
 					var trans:SoundTransform = new SoundTransform(vol*globalVol*(Math.random()*0.1+0.9),pan); 
@@ -537,13 +553,17 @@
 			return null;
 		}
 		
-		public static function pshum(txt:String,vol:Number=1) {
-			if (!inited || !onSnd || off) return null;
+		public static function pshum(txt:String,vol:Number=1):void
+		{
+			if (!inited || !onSnd || off) return;
 			var shum:Object;
-			if (shumArr[txt]) {
+			if (shumArr[txt])
+			{
 				shum=shumArr[txt];
 				if (shum.maxVol<vol) shum.maxVol=vol;
-			} else if (snd[txt]) {
+			}
+			else if (snd[txt])
+			{
 				shum=new Object();
 				shum.txt=txt;
 				shum.curVol=vol;
@@ -553,18 +573,24 @@
 			}
 		}
 		
-		public static function resetShum() {
+		public static function resetShum():void
+		{
+
 		}
 		
-		public static function step() {
-			//if (World.w.currentMusic!='' && World.w.currentMusic!=currentMusic
+		public static function step():void
+		{
 			if (t_hit>0) t_hit--;
-			if (t_music>0 && musicPrevCh) {
-				if (t_music%10==1) {
-					var trans:SoundTransform = new SoundTransform(musicVol*t_music/100, 0);
+			if (t_music>0 && musicPrevCh)
+			{
+				var trans:SoundTransform;
+				if (t_music%10==1)
+				{
+					trans = new SoundTransform(musicVol*t_music/100, 0);
 					musicPrevCh.soundTransform=trans;
 				}
-				if (t_music<=5) {
+				if (t_music<=5)
+				{
 					musicPrevCh.stop();
 					musicPrevCh=null;
 					t_music=0;
@@ -572,41 +598,46 @@
 				if (t_combat>0) t_music-=5;
 				else t_music--;
 			}
-			if (t_combat>0) {
-				if (t_combat==1) {
+			if (t_combat>0)
+			{
+				if (t_combat==1)
+				{
 					currentMusicPrior=0;
 					playMusic(World.w.currentMusic);
 				}
 				if (World.w.pip==null || !World.w.pip.active && !World.w.sats.active) t_combat--;
 			}
-			//if (shumArr.length) {
-				t_shum--;
-				if (t_shum<=0) {
-					t_shum=5;
-					for each (var obj in shumArr) {
-						if (obj.curVol!=obj.maxVol) {
-							if (!obj.pl && obj.maxVol>0) {
-								var s:Sound = snd[obj.txt] as Sound;
-								var trans:SoundTransform = new SoundTransform(obj.maxVol*globalVol,0); 
-								obj.ch=s.play(0,10000,trans);
-								obj.pl=true;
-								//trace(obj.txt,'play')
-							} else if (obj.pl && obj.maxVol<=0 && obj.ch) {
-								obj.ch.stop();
-								obj.pl=false;
-								//trace(obj.txt,'stop')
-							} else if (obj.pl && obj.maxVol>0 && obj.ch) {
-								var trans:SoundTransform = new SoundTransform(obj.maxVol*globalVol,0);
-								obj.ch.soundTransform=trans;
-								obj.curVol=obj.maxVol;
-							}
+			t_shum--;
+			if (t_shum <= 0)
+			{
+				t_shum = 5;
+				for each (var obj:Object in shumArr)
+				{
+					if (obj.curVol!=obj.maxVol)
+					{
+						if (!obj.pl && obj.maxVol>0)
+						{
+							var s:Sound = snd[obj.txt] as Sound;
+							trans = new SoundTransform(obj.maxVol*globalVol,0); 
+							obj.ch=s.play(0,10000,trans);
+							obj.pl=true;
+						} 
+						else if (obj.pl && obj.maxVol<=0 && obj.ch)
+						{
+							obj.ch.stop();
+							obj.pl=false;
+						} 
+						else if (obj.pl && obj.maxVol>0 && obj.ch)
+						{
+							trans = new SoundTransform(obj.maxVol*globalVol,0);
+							obj.ch.soundTransform=trans;
+							obj.curVol=obj.maxVol;
 						}
-						obj.maxVol-=0.2;
-						if (obj.maxVol<0) obj.maxVol=0;
 					}
+					obj.maxVol-=0.2;
+					if (obj.maxVol<0) obj.maxVol=0;
 				}
-			//}
+			}
 		}
-		
 	}
 }
