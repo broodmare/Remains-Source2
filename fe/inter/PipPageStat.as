@@ -1,23 +1,24 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	import fe.*;
 	import fe.unit.Unit;
-	import fe.unit.Effect;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import fe.unit.Pers;
+
+	import fe.stubs.visPipStatItem;
 	
-	public class PipPageStat extends PipPage{
-		
-		var pers:Pers;
-		var skills:Array;
-		var maxSkLvl:int=20;
-		var skillPoint:int=0;
-		var perkPoint:int=0;
-		var selectedPerk:String='';
-		var infoItemId:String='';
-		var n_food:String;
-		var drunk:int=0;
+	public class PipPageStat extends PipPage
+	{
+		private var pers:Pers;
+		private var skills:Array;
+		private var maxSkLvl:int=20;
+		private var skillPoint:int=0;
+		private var perkPoint:int=0;
+		private var selectedPerk:String='';
+		private var infoItemId:String='';
+		private var n_food:String;
+		private var drunk:int=0;
 
 		public function PipPageStat(npip:PipBuck, npp:String)
 		{
@@ -31,7 +32,7 @@
 		}
 		
 		//подготовка страниц
-		override function setSubPages()
+		override protected function setSubPages():void
 		{
 			setIco();
 			pers=World.w.pers;
@@ -213,7 +214,8 @@
 			showBottext();
 		}
 		
-		override function setSigns() {
+		override protected function setSigns():void
+		{
 			super.setSigns();
 			if (pers.skillPoint>0) signs[2]=1;
 			if (pers.perkPoint>0) signs[3]=1;
@@ -222,7 +224,8 @@
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
 			if (obj.cat!=null) item.cat.text=obj.cat; else item.cat.text='';
 			item.id.visible=false;
@@ -263,7 +266,8 @@
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			var id:String=event.currentTarget.id.text;
 			var nazv:String=event.currentTarget.nazv.text;
 			if (page2==2 || page2==3 || page2==6) setIco(5,id);
@@ -352,8 +356,9 @@
 			}
 		}
 		
-		function selSkill(id:String) {
-			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl) {
+		private function selSkill(id:String):void
+		{
+			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl){
 				if (skillPoint>0) {
 					skills[id].lvl++;
 					skillPoint--;
@@ -363,14 +368,17 @@
 				}
 			}
 		}
-		function unselSkill(id:String) {
-			if (skills[id].lvl>skills[id].minlvl) {
+
+		private function unselSkill(id:String):void
+		{
+			if (skills[id].lvl>skills[id].minlvl)
+			{
 				skills[id].lvl--;
 				skillPoint++;
 			}
 		}
 		
-		function showBottext():void
+		private function showBottext():void
 		{
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.w.game.gameTime();
@@ -429,7 +437,7 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (pip.noAct)
 			{
@@ -519,7 +527,7 @@
 			return infoItemId;
 		}
 
-		override function itemRightClick(event:MouseEvent)
+		override protected function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
@@ -533,7 +541,9 @@
 			}
 			showBottext();
 		}
-		function transOk(event:MouseEvent) {
+
+		private function transOk(event:MouseEvent):void
+		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
@@ -565,8 +575,11 @@
 			}
 			setStatus();
 		}
-		function gotoDef(event:MouseEvent) {
-			if (page2==6) {
+
+		private function gotoDef(event:MouseEvent):void
+		{
+			if (page2==6)
+			{
 				page2=3;
 				setStatus();
 				pip.snd(2);

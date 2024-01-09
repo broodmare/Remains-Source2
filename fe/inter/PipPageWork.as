@@ -1,32 +1,34 @@
-﻿package fe.inter {
-	
+package fe.inter
+{	
 	import fe.*;
-	import fe.unit.Unit;
 	import fe.unit.Armor;
-	import fe.unit.UnitPlayer;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import fe.unit.UnitPet;
-	
-	public class PipPageWork extends PipPage{
-		
-		var assId:String=null;
-		var assArr:Array;
-		
-		var owlRep:int=100;
 
-		public function PipPageWork(npip:PipBuck, npp:String) {
+	import fe.stubs.visPipInvItem;
+	
+	public class PipPageWork extends PipPage
+	{
+		
+		private var assId:String=null;
+		private var assArr:Array;
+		
+		private var owlRep:int=100;
+
+		public function PipPageWork(npip:PipBuck, npp:String)
+		{
 			isLC=true;
 			itemClass=visPipInvItem;
 			super(npip,npp);
 			vis.but4.visible=vis.but5.visible=false;
-			//vis.butOk.addEventListener(MouseEvent.CLICK,showH);
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override protected function setSubPages():void
+		{
 			if (pip.workTip=='mworklab') pip.workTip='lab';
 			if (pip.workTip=='mworkexpl') pip.workTip='expl';
 			vis.but1.visible=vis.but2.visible=vis.but3.visible=true;
@@ -166,7 +168,8 @@
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			item.rid.visible=false;
 			item.id.text=obj.id;
 			item.cat.text=obj.tip;
@@ -190,7 +193,8 @@
 		
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			assId=null;
 			if (page2==1) {
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text, 1);
@@ -216,7 +220,8 @@
 			}
 		}
 		
-		function showBottext(cid) {
+		private function showBottext(cid):void
+		{
 			if (inv.items[cid]) {
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+textAsColor('yellow', inv.items[cid].kol);
 				if (World.w.loc.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+textAsColor('yellow', inv.items[cid].vault)+' '+Res.pipText('invault')+')';
@@ -225,7 +230,8 @@
 			}
 		}
 		
-		function checkScheme(sch:XML):Boolean {
+		private function checkScheme(sch:XML):Boolean
+		{
 			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
 				World.w.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
@@ -240,15 +246,18 @@
 		}
 		
 		//вычесть нужное для крафта количество компонентов
-		function minusCraftComp(sch) {
-			for each(var c in sch.craft) {
+		private function minusCraftComp(sch):void
+		{
+			for each(var c in sch.craft)
+			{
 				inv.minusItem(c.@id,c.@kol,false);
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
-			if (pip.noAct) {
+			if (pip.noAct)
+			{
 				World.w.gui.infoText('noAct');
 				return;
 			}
@@ -383,10 +392,6 @@
 			pip.snd(1);
 			inv.calcMass();
 			pip.setRPanel();
-		}
-		
-		
-		
-	}
-	
+		}	
+	}	
 }

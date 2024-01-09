@@ -1,15 +1,16 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	import fe.*;
-	import fe.unit.Unit;
 	import fe.unit.Armor;
-	import fe.unit.UnitPlayer;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+
+	import fe.stubs.visPipInvItem;
 	
-	public class PipPageInv extends PipPage{
+	public class PipPageInv extends PipPage
+	{
 		
 		var assId:String=null;
 		var assArr:Array;
@@ -21,7 +22,8 @@
 		var dat:Number=0;
 		
 
-		public function PipPageInv(npip:PipBuck, npp:String) {
+		public function PipPageInv(npip:PipBuck, npp:String)
+		{
 			isLC=isRC=true;
 			itemClass=visPipInvItem;
 			super(npip,npp);
@@ -36,7 +38,8 @@
 		}
 		
 		//подготовка страниц
-		override function setSubPages() {
+		override protected function setSubPages():void
+		{
 			vis.butOk.visible=false;
 			statHead.cat.visible=false;
 			statHead.rid.visible=false;
@@ -103,10 +106,8 @@
 				vis.butOk.text.text=Res.pipText('showhidden');
 				actCurrent='showhidden';
 				if (arr.length) arr.sortOn(['sort1','sort2','sort3','nazv'],[0,0,Array.NUMERIC,0]);
-				//if (arr.length) arr.sortOn('fav');
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
 			} else if (page2==2) {	//броня
-				//if (World.w.alicorn) return;
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
@@ -125,7 +126,6 @@
 				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv2',0,true);
 			} else if (page2==3 || page2==4 || page2==5) {	//снаряжение
-				//if (page2!=5 && World.w.alicorn) return;
 				assArr=new Array();
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
@@ -140,10 +140,6 @@
 					
 					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) inv.items[s].nov=0;
 					if (inv.items[s].nov==2 && (dat-inv.items[s].dat)>1000*60*5) inv.items[s].nov=0;
-						
-					/*if (curTip is Array) {
-						if (node.@tip!=curTip[0] && node.@tip!=curTip[1] && node.@tip!=curTip[2] && node.@tip!=curTip[3] && node.@tip!=curTip[4]) continue;
-					} else if (curTip!='' && curTip!=null && curTip!=node.@tip) continue;*/	//категория
 					if (!checkCat(node.@tip)) continue;
 					var itemTip=0;
 					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
@@ -181,7 +177,8 @@
 			showBottext();
 		}
 		
-		function showBottext() {
+		private function showBottext():void
+		{
 			vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money);
 			if (World.w.hardInv) {
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
@@ -193,7 +190,8 @@
 		
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			item.id.text=obj.id;
 			item.id.visible=item.rid.visible=item.cat.visible=false;
 			item.alpha=1;
@@ -217,7 +215,6 @@
 				item.ramka.visible=(World.w.gg.newWeapon && World.w.gg.newWeapon.id==obj.id) || (World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
 				item.nazv.htmlText=obj.nazv;
-				//if (obj.respect==0) item.nazv.text='('+Res.pipText('new')+') '+item.nazv.text;
 				if (obj.respect==0 && item.fav.text=='') item.fav.text='☩';
 				item.hp.text=(obj.hp==null)?'':obj.hp;
 				if (obj.ammo!=null) {
@@ -264,7 +261,8 @@
 		
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			assId=null;
 			if (page2==1) {
 				assId=event.currentTarget.id.text;
@@ -290,7 +288,7 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (pip.noAct) 
 			{
@@ -363,7 +361,7 @@
 			showBottext();
 		}
 		
-		override function itemRightClick(event:MouseEvent)
+		override protected function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.noAct)
 			{
@@ -397,7 +395,7 @@
 			}
 		}
 		
-		public function assignKey(num:int)
+		public function assignKey(num:int):void
 		{
 			trace('назначение клавиши',num,assId);
 			pip.snd(1);
@@ -410,7 +408,8 @@
 			assId=temp;
 		}
 		
-		function showH(event:MouseEvent) {
+		private function showH(event:MouseEvent):void
+		{
 			if (actCurrent=='showhidden') {			//показать скрытое оружие
 				pip.showHidden=!pip.showHidden;
 				setStatus();
@@ -431,7 +430,7 @@
 			}
 		}
 		
-		function buttonOk(act:String)
+		private function buttonOk(act:String):void
 		{
 			vis.butOk.visible=true;
 			vis.butOk.text.text=Res.pipText(act);
@@ -439,7 +438,7 @@
 		}
 		
 		
-		public override function step()
+		public override function step():void
 		{
 			if (over_t>0) over_t--;
 			if (over_t==1 && overItem)

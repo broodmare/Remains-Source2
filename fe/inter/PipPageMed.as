@@ -1,15 +1,15 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	import fe.*;
-	import fe.unit.Unit;
-	import fe.unit.Effect;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import fe.unit.Pers;
 	import fe.serv.Item;
+
+	import fe.stubs.visPipMedItem;
 	
-	public class PipPageMed extends PipPage{
-		
+	public class PipPageMed extends PipPage
+	{
 		var pers:Pers;
 		var infoItemId:String='';
 		var priceHP:Number=0.5;
@@ -33,7 +33,8 @@
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override protected function setSubPages():void
+		{
 			setIco();
 			if (pip.npcInter=='adoc') {
 				vis.but2.visible=false;
@@ -96,7 +97,8 @@
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			if (obj.id!=null) item.id.text=obj.id;
 			else item.id.text='';
 			item.id.visible=false;
@@ -112,7 +114,8 @@
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 				if (event.currentTarget.id.text!='') {
 					vis.nazv.text=Res.pipText(event.currentTarget.id.text);
 					var s:String=Res.txt('p',event.currentTarget.id.text,1);
@@ -122,7 +125,7 @@
 				}
 		}
 		
-		public override function page2Click(event:MouseEvent)
+		override protected function page2Click(event:MouseEvent):void
 		{
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
@@ -137,13 +140,14 @@
 			}
 		}
 
-		function showBottext() {
+		private function showBottext():void
+		{
 			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+numberAsColor('yellow', plata.kol);
 			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+numberAsColor('yellow', plata.kol);
 			else vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', plata.kol);
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (pip.noAct) 
 			{

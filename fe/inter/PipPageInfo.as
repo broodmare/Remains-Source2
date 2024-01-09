@@ -1,5 +1,5 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	import fe.*;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
@@ -9,9 +9,14 @@
 	import fe.loc.Quest;
 	import fe.loc.LandAct;
 	import fe.unit.Unit;
-	import flash.text.TextField;
+
+	import fe.stubs.visPipQuestItem;
+	import fe.stubs.visPipInfo;
+	import fe.stubs.visPipMap;
+	import fe.stubs.visPipWMap;
 	
-	public class PipPageInfo extends PipPage{
+	public class PipPageInfo extends PipPage
+	{
 		
 		var visMap:MovieClip;
 		var visWMap:MovieClip;
@@ -23,7 +28,8 @@
 		var targetLand:String='';
 		var game:Game;
 
-		public function PipPageInfo(npip:PipBuck, npp:String) {
+		public function PipPageInfo(npip:PipBuck, npp:String)
+		{
 			itemClass=visPipQuestItem;
 			pageClass=visPipInfo;
 			isLC=true;
@@ -52,7 +58,8 @@
 		}
 		
 
-		override function setSubPages() {
+		override protected function setSubPages():void
+		{
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
 			statHead.visible=false;
@@ -137,13 +144,8 @@
 				pip.helpText=Res.txt('p','helpWorld',0,true);
 			} else if (page2==4) {	//записи
 				var doparr:Array=new Array();
-				for each (var note:String in game.notes) {
-					/*var s:String=Res.messText(note,0,false);
-					if (s=='') continue;
-					s=s.replace(/&lp/g,World.w.pers.persName);
-					s=s.replace(/\[/g,"<span class='yel'>");
-					s=s.replace(/\]/g,"</span>");*/
-
+				for each (var note:String in game.notes) 
+				{
 					//TODO: Stop searching Res on your own.
 					var xml=Res.currentLanguageData.txt.(@id==note);
 					
@@ -190,16 +192,14 @@
 			}
 		}
 		
-		/*override function setSigns() {
-			super.setSigns();
-			signs[5]=2;
-		}*/
-		
-		private function isKol(element:*, index:int, arr:Array):Boolean {
+		private function isKol(element:*, index:int, arr:Array):Boolean 
+		{
             return (element.kol>=0 || element.cat=='1');
-        }		
+        }
+
 		//один эемент списка
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.nazv.text=obj.nazv;
@@ -218,11 +218,6 @@
 				} else {
 					item.nazv.alpha=item.mq.alpha=1;
 				}
-			} else if (page2==3) {
-				/*item.nazv.x=5;
-				if (obj.id==targetLand) item.ramka.visible=true;
-				if (obj.kol>0) item.kol.text=obj.kol;
-				item.kol.visible=true;*/
 			} else if (page2==4) {
 				item.nazv.x=32;
 				item.nazv.htmlText=obj.nazv.substr((obj.nazv.charAt(0)==' ')?3:0, 60);
@@ -240,9 +235,9 @@
 			}
 		}
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			vis.info.y=vis.ico.y;
-			//vis.info.condenseWhite=false;
 			if (page2==2) {
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
 			} else if (page2==3) {
@@ -270,8 +265,6 @@
 				vis.info.htmlText=s;
 			} else if (page2==4) {
 				vis.info.y=vis.nazv.y;
-				//vis.info.condenseWhite=true;
-				//vis.info.htmlText=event.currentTarget.kol.text;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");
@@ -284,19 +277,18 @@
 				vis.nazv.text=event.currentTarget.nazv.text;
 				vis.info.htmlText=Res.txt('u',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
 				vis.info.y=vis.ico.y+vis.ico.height+20;
-				vis.ico.x=685-vis.ico.width/2; //460 910
+				vis.ico.x=685-vis.ico.width/2;
 			}
 			if (vis.scText) vis.scText.visible=false;
 			if (vis.info.height<vis.info.textHeight && vis.scText) {
 				vis.scText.scrollPosition=0;
 				vis.scText.maxScrollPosition=vis.info.maxScrollV;
 				vis.scText.visible=true;
-				//vis.info.scaleX=vis.info.scaleY=0.8;
-				//vis.info.height=vis.info.textHeight+5;
 			}
 		}
 		
-		function getParam(un, pun, cat:String, param:String):* {
+		private function getParam(un, pun, cat:String, param:String):*
+		{
 			if (un.length()==0) return null;
 			if (un[cat].length() && un[cat].attribute(param).length()) return un[cat].attribute(param);
 			if (pun==null || pun.length()==0) return null;
@@ -304,7 +296,8 @@
 			return null;
 		}
 		
-		function infoUnit(id:String, kol):String {
+		private function infoUnit(id:String, kol):String
+		{
 			var n:int=0, delta;
 			//юнит
 			var un=AllData.d.unit.(@id==id);
@@ -361,7 +354,7 @@
 					if (un.w.length()) {
 						var wk:Boolean=false;
 						for each (var weap in un.w) {
-							if (!(weap.@no>0)) {// && Res.istxt('w', weap.@id)) {
+							if (!(weap.@no>0)) {
 								if (wk) s+=', ';
 								else s+=Res.pipText('enemy_weap')+': ';
 								s+=textAsColor('blue', Res.txt('w', weap.@id));
@@ -405,12 +398,13 @@
 			return s;
 		}
 		
-		function vulner(n:int, val:Number):String {
+		private function vulner(n:int, val:Number):String
+		{
 			return textAsColor('blue', Res.pipText('tipdam'+n))+': '+textAsColor('yellow', Math.round((1-val)*100)+'%   ');
 		}
 		
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
@@ -436,7 +430,8 @@
 			}
 		}
 		
-		function transOk(event:MouseEvent) {
+		private function transOk(event:MouseEvent):void
+		{
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
@@ -461,35 +456,37 @@
 			}
 		}
 		
-		public function onMouseDown(event:MouseEvent):void {
+		public function onMouseDown(event:MouseEvent):void
+		{
 			visMap.vmap.startDrag();
 		}
-		public function onMouseUp(event:MouseEvent):void {
+
+		public function onMouseUp(event:MouseEvent):void
+		{
 			visMap.vmap.stopDrag();
 			setMapSize();
 		}
-		public function funZoomP(event:MouseEvent):void {
+
+		public function funZoomP(event:MouseEvent):void
+		{
 			mapScale++;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
-		public function funZoomM(event:MouseEvent):void {
+
+		public function funZoomM(event:MouseEvent):void
+		{
 			mapScale--;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
-		public function funCenter(event:MouseEvent):void {
+
+		public function funCenter(event:MouseEvent):void
+		{
 			visMap.vmap.x=visMap.fon.width/2-plTag.x;
 			visMap.vmap.y=visMap.fon.height/2-plTag.y;
 		}
 		
-		function setMapSize(cx:Number=350, cy:Number=285) {
-			/*if (isset) {
-				var s=Math.min(visPageX/map.bitmapData.width,visPageY/map.bitmapData.height);
-				if (s>=1) {
-					mapScale=Math.floor(s)
-				} else {
-					mapScale=1;
-				}
-			}*/
+		private function setMapSize(cx:Number=350, cy:Number=285):void
+		{
 			if (mapScale>6) mapScale=6;
 			if (mapScale<1) mapScale=1;
 			map.scaleX=map.scaleY=mapScale;
@@ -502,21 +499,23 @@
 			ms=mapScale;
 		}
 		
-		public override function scroll(dn:int=0) {
-			if (page2==1) {
+		public override function scroll(dn:int=0):void
+		{
+			if (page2==1)
+			{
 				if (dn>0) mapScale++;
 				if (dn<0) mapScale--;
 				setMapSize(visMap.mouseX, visMap.mouseY);
 			}
 		}
 
-		function funWMapClick(event:MouseEvent) {
+		private function funWMapClick(event:MouseEvent):void
+		{
 			trace(event.currentTarget.name);
 		}
-		function funWMapOver(event:MouseEvent) {
+		private function funWMapOver(event:MouseEvent):void
+		{
 			//trace(event.currentTarget.name);
 		}
-		
 	}
-	
 }

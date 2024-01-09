@@ -1,47 +1,47 @@
-﻿package fe.inter {
+package fe.inter 
+{
 	import flash.display.MovieClip;
-	import flash.display.SimpleButton;
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
 	import flash.events.MouseEvent;
-	import flash.text.TextField;
 	
 	import fe.*;
 	import fe.unit.Invent;
 	import fe.unit.Unit;
-	import fe.unit.Effect;
 	import fe.unit.Armor;
 	import fe.unit.UnitPlayer;
 	import fe.weapon.Weapon;
-	import fe.serv.Item;
 	import fe.serv.Vendor;
 	import fe.unit.Pers;
+
+	import fe.stubs.visPipHelp;
+	import fe.stubs.visSetKey;
+	import fe.stubs.visPipRItem;
 	
-	public class PipBuck {
-		public var light:Boolean=false;	//простая версия
-		var vis:MovieClip;
-		var vissetkey:MovieClip;
-		var vishelp:MovieClip;
+	public class PipBuck
+	{
+		public var light:Boolean=false;		//простая версия
+		public var vis:MovieClip; 		//property to store the page's GUI (MovieClip).
+		public var vissetkey:MovieClip;
+		public var vishelp:MovieClip;
 		public var active:Boolean=false;
 		public var noAct:Boolean=false;
-		var noAct2:Boolean=false;
+		private var noAct2:Boolean=false;
 		public var ArmorId:String;
 		public var hideMane:int=0;
-		var visX=1200, visY=800;
-		var page:int=1;
-		var kolPages:int=5;
+		private var visX=1200, visY=800;
+		private var page:int=1;
+		private var kolPages:int=5;
 		
-		var pages:Array;
+		private var pages:Array;
 		public var currentPage:PipPage;
 		
-		var inv:Invent;
-		var gg:UnitPlayer;
-		var money:int=0;
+		public var inv:Invent;
+		public var gg:UnitPlayer;
+		public var money:int=0;
 		
 		public var helpText:String='';
 		public var massText:String='';
 		
-		var showHidden:Boolean=false;
+		public  var showHidden:Boolean=false;
 		public var reqKey:Boolean=false;		//запрос на назначение клавиши
 		
 		public var arrWeapon:Array;
@@ -58,20 +58,23 @@
 		
 		public var pipVol:Number=0.25;
 		
-		var kolRItems:int=15;
+		private var kolRItems:int=15;
 		public var ritems:Array;
-		var ritemsNazv=['hp','head','tors','legs','blood','mana','pet','inv1','inv1','caps']
+		private var ritemsNazv:Array = ['hp','head','tors','legs','blood','mana','pet','inv1','inv1','caps']
 
-		public function PipBuck(vpip:MovieClip) {
+		public function PipBuck(vpip:MovieClip)
+		{
 			light=true;
 			vis=vpip;
 			vis.visible=false;
-			if (light) {
+			if (light)
+			{
 				vis.skin.visible=false;
 				vis.fon.visible=false;
 			}
 			//кнопки
-			for (var i=0; i<=kolPages; i++) {
+			for (var i:int = 0; i <= kolPages; i++)
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				item.id.visible=false;
 				item.visible=false;
@@ -80,7 +83,9 @@
 			vis.but0.visible=true;
 			vis.but0.addEventListener(MouseEvent.CLICK,pipClose);
 			vis.but0.text.text=Res.pipText('mainclose');
-			pages=[null,
+			pages = 
+			[
+				null,
 				new PipPageStat(this,'stat'),
 				new PipPageInv(this,'inv'),
 				new PipPageInfo(this,'info'),
@@ -89,7 +94,8 @@
 				new PipPageMed(this,'med'),
 				new PipPageWork(this,'work'),
 				new PipPageApp(this,'app'),
-				new PipPageVault(this,'vault')];
+				new PipPageVault(this,'vault')
+			];
 			page=kolPages;
 			currentPage=pages[page];
 			vishelp=new visPipHelp();
@@ -111,30 +117,33 @@
 			
 			vis.pr.visible=false;
 			ritems=new Array();
-			for (var i=0; i<kolRItems; i++) {
+			for (var j:int = 0; j < kolRItems; j++)
+			{
 				item=new visPipRItem();
-				ritems[i]=item;
+				ritems[j]=item;
 				vis.pr.addChild(item);
 				item.x=5;
-				item.y=40+i*30;
+				item.y=40+j*30;
 				PipPage.setStyle(item.txt);
-				item.trol.gotoAndStop(i+1);
+				item.trol.gotoAndStop(j+1);
 				item.nazv.visible=false;
-				//item.nazv.text=Res.pipText(ritemsNazv[i]);
 			}
 		}
 		
-		public function updateLang() {
-			vis.but0.text.text=Res.pipText('mainclose');
+		public function updateLang():void
+		{
+			vis.but0.text.text = Res.pipText('mainclose');
 			for each(var p in pages) if (p is PipPage) p.updateLang();
 			currentPage.setStatus();
 		}
 		
-		public function toNormalMode() {
+		public function toNormalMode():void
+		{
 			light=false;
 			vis.skin.visible=true;
 			vis.fon.visible=true;
-			for (var i=1; i<=kolPages; i++) {
+			for (var i:int = 1; i <= kolPages; i++)
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK,pageClick);
 				item.text.text=Res.pipText('main'+i);
@@ -146,7 +155,8 @@
 			allItems();
 		}
 		
-		public function pageClick(event:MouseEvent) {
+		public function pageClick(event:MouseEvent):void
+		{
 			if (World.w.ctr.setkeyOn) return;
 			if (World.w.gg && World.w.gg.pipOff) return;
 			page=int(event.currentTarget.id.text);
@@ -154,12 +164,17 @@
 			setButtons();
 			snd(2);
 		}
-		public function pipClose(event:MouseEvent) {
+
+		public function pipClose(event:MouseEvent):void
+		{
 			if (World.w.ctr.setkeyOn) return;
 			onoff(-1);
 		}
-		function setButtons() {
-			for (var i=0; i<=kolPages; i++) {
+
+		private function setButtons():void
+		{
+			for (var i:int = 0; i <= kolPages; i++)
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page==i) item.gotoAndStop(2);
 				else item.gotoAndStop(1);
@@ -167,14 +182,16 @@
 			}
 		}
 		
-		public function snd(n:int) {
+		public function snd(n:int):void
+		{
 			Snd.ps('pip'+n,-1000,-1000,0,pipVol);
 		}
 		
 		//0 - сменить вкл на выкл
 		//11 - принудительно включить
 		//Показать/скрыть
-		public function onoff(turn:int=0, p2:int=0) {
+		public function onoff(turn:int=0, p2:int=0):void
+		{
 			reqKey=false;
 			if (active && turn==11) {
 				return;
@@ -208,7 +225,6 @@
 				if (!light) {
 					World.w.gui.offCelObj();
 					if (World.w.gui.t_mess>30) World.w.gui.t_mess=30;
-					//World.w.gui.infoAlpha=World.w.gui.vis.info.alpha=1;
 				}
 				if (World.w.gui) {
 					World.w.gui.dial.alpha=World.w.gui.inform.alpha=0;
@@ -246,7 +262,8 @@
 		}
 		
 		//коррекция размеров
-		public function resizeScreen(nx:int, ny:int) {
+		public function resizeScreen(nx:int, ny:int):void
+		{
 			if (nx>=1200 && ny>=800) {
 				if (nx>1320) {
 					vis.x=(nx-visX)/2-60;
@@ -266,7 +283,8 @@
 		}
 		
 		//питание
-		public function supply(turn:int=-1) {
+		public function supply(turn:int=-1):void
+		{
 			if (turn<0) {
 				currentPage.vis.visible=false;
 				vis.toptext.visible=false;
@@ -280,7 +298,8 @@
 		}
 		
 		//режим показа
-		public function setPage(p2:int=0) {
+		public function setPage(p2:int=0):void
+		{
 			if (!light) {
 				gg=World.w.gg;
 				inv=World.w.invent;
@@ -289,11 +308,13 @@
 					vendor.multPrice=World.w.pers.barterMult;
 				}
 			}
-			for (var i in pages) {
-				if (pages[i] is PipPage) pages[i].vis.visible=false;
+			for (var p in pages)
+			{
+				if (pages[p] is PipPage) pages[p].vis.visible=false;
 			}
 			currentPage=pages[page];
-			if (currentPage is PipPage) {
+			if (currentPage is PipPage)
+			{
 				if (p2>0) currentPage.page2=p2;
 				currentPage.setStatus();
 			}
@@ -301,46 +322,59 @@
 			vishelp.visible=false;
 		}
 		
-		public function assignKey(num:int) {
+		public function assignKey(num:int):void
+		{
 			if (!active) return;
 			if (currentPage is PipPageInv) (currentPage as PipPageInv).assignKey(num);
 		}
 		
-		public function helpShow(event:MouseEvent) {
+		public function helpShow(event:MouseEvent):void
+		{
 			vishelp.txt.htmlText=helpText;
 			vishelp.visible=true;
 		}
-		public function helpUnshow(event:MouseEvent) {
+
+		public function helpUnshow(event:MouseEvent):void
+		{
 			vishelp.visible=false;
 		}
-		public function massShow(event:MouseEvent) {
+
+		public function massShow(event:MouseEvent):void
+		{
 			vishelp.txt.htmlText=massText;
 			vishelp.visible=true;
 		}
-		public function massUnshow(event:MouseEvent) {
+
+		public function massUnshow(event:MouseEvent):void
+		{
 			vishelp.visible=false;
 		}
 		
-		public function allItems() {
+		public function allItems():void
+		{
 			arrWeapon=new Array();
 			arrArmor=new Array();
 			var owner:Unit=new Unit();
 			var w:Weapon, a:Armor;
-			for each (var weap in AllData.d.weapon.(@tip>0)) {
-				w=Weapon.create(owner,weap.@id,0);
-				arrWeapon[weap.@id]=w;
-				if (weap.char.length()>1) {
-					w=Weapon.create(owner,weap.@id,1);
+			for each (var weap:XML in AllData.d.weapon.(@tip>0))
+			{
+				w = Weapon.create(owner, weap.@id, 0);
+				arrWeapon[weap.@id] = w;
+				if (weap.char.length() > 1)
+				{
+					w = Weapon.create(owner, weap.@id, 1);
 					arrWeapon[weap.@id+'^'+1]=w;
 				}
 			}
-			for each (var armor in AllData.d.armor) {
-				a=new Armor(armor.@id);
-				arrArmor[armor.@id]=a;
+			for each (var armor:XML in AllData.d.armor)
+			{
+				a = new Armor(armor.@id);
+				arrArmor[armor.@id] = a;
 			}
 		}
 		
-		public function setRPanel() {
+		public function setRPanel():void
+		{
 			if (light || !active) return;
 			var gg:UnitPlayer=World.w.gg;
 			var pers:Pers=World.w.pers;
@@ -361,7 +395,8 @@
 			ritem3(14,inv.mass[3],pers.maxm3,World.w.hardInv);
 		}
 		
-		function ritem1(n:int, hp:Number, maxhp:Number, usl=true) {
+		private function ritem1(n:int, hp:Number, maxhp:Number, usl=true):void
+		{
 			ritems[n].visible=usl;
 			if (usl) {
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp);
@@ -369,7 +404,9 @@
 				ritems[n].txt.htmlText='';
 			}
 		}
-		function ritem2(n:int, hp:Number, maxhp:Number, usl=true) {
+
+		private function ritem2(n:int, hp:Number, maxhp:Number, usl=true):void
+		{
 			ritems[n].visible=usl;
 			if (usl) {
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp/maxhp*100)+"%</span>";
@@ -377,88 +414,32 @@
 				ritems[n].txt.htmlText='';
 			}
 		}
-		function ritem3(n:int, hp:Number, maxhp:Number, usl=true) {
-			ritems[n].visible=usl;
-			if (usl) {
-				ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
-			} else {
-				ritems[n].txt.htmlText='';
-			}
+
+		private function ritem3(n:int, hp:Number, maxhp:Number, usl=true):void
+		{
+			ritems[n].visible = usl;
+
+			if (usl) ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
+			else ritems[n].txt.htmlText='';
 		}
 		
-		function med(hp:Number, maxhp:Number):String {
+		private function med(hp:Number, maxhp:Number):String
+		{
 			if (hp<maxhp*0.25) return 'red';
 			else if (hp<maxhp*0.5) return 'or';
 			return '';
 		}
 		
-		public function setArmor(aid:String) {
-			ArmorId=aid;
-			try {
-				hideMane=AllData.d.armor.(@id==aid).@hide;
-			} catch (err) {
-				hideMane=0;
-			}
+		public function setArmor(aid:String):void
+		{
+			ArmorId = aid;
+			try { hideMane = AllData.d.armor.(@id==aid).@hide; } 
+			catch (err) { hideMane = 0; }
 		}
 		
-		/*public function trade(arr:Array) {
-			if (vendor.kolBou>inv.money.kol) return;
-			for each(var buy:Item in vendor.buys) {
-				var rid:String=buy.id;
-				if (buy.variant>0) rid+='^'+buy.variant;
-				if (arr[rid] && arr[rid].bou>0) {
-					buy.bou=arr[rid].bou;
-					inv.take(buy,1);
-				}
-			}
-			inv.money.kol-=Math.ceil(vendor.kolBou);
-			money=inv.money.kol;
-			vendor.kolBou=0;
-		}
-		
-		public function sell(arr:Array) {
-			for (var s in inv.items) {
-				if (s=='' || inv.items[s].kol<=0) continue;
-				var node=inv.items[s].xml;
-				if (node==null) continue;
-				if (arr[s] && arr[s].bou>0) {
-					//if (inv.items[s]<arr[s].bou) arr[s].bou=inv.items[s];
-					var buy:Item=vendor.buys2[s];
-					if (buy==null) {
-						buy=new Item(null,s,0);
-						buy.kol=0;
-						vendor.buys.push(buy);
-						vendor.buys2[s]=buy;
-					}
-					buy.kol+=arr[s].bou;
-					inv.items[s].kol-=arr[s].bou;
-					//inv.items['money']+=arr[s].bou*arr[s].price;
-				}
-			}
-			inv.money.kol+=Math.floor(vendor.kolSell);
-			money=inv.money.kol;
-			vendor.kolSell=0;
-		}
-		
-		public function sellAll() {
-			for (var s in inv.items) {
-				if (s=='' || inv.items[s].kol<=0) continue;
-				var node=inv.items[s].xml;
-				if (node==null) continue;
-				if (node.@tip=='valuables') {
-					var sto:int=inv.items[s].kol*node.@price;
-					inv.money.kol+=sto;
-					inv.items[s].kol=0;
-				}
-			}
-			money=inv.money.kol;
-			vendor.kolSell=0;
-		}*/
-		
-		public function step() {
+		public function step():void
+		{
 			if (currentPage) currentPage.step();
 		}
-
-	}
-	
+	}	
 }

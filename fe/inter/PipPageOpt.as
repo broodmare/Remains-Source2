@@ -1,5 +1,5 @@
-﻿package fe.inter {
-	
+package fe.inter
+{	
 	import fe.*;
 	import flash.display.MovieClip;
 	import flash.text.TextField;
@@ -11,23 +11,26 @@
 	import fl.controls.CheckBox;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
-	import flash.net.URLLoader; 
-	import flash.net.URLRequest; 
 	import flash.utils.ByteArray;
+
+	import fe.stubs.visPipOptItem;
+	import fe.stubs.logText;
 	
-	public class PipPageOpt extends PipPage{
+	public class PipPageOpt extends PipPage
+	{
 		
-		var setkeyAction:String;
-		var setkeyCell:int=1;
-		var setkeyKey;
-		var nSave:int=-1;
-		var info:TextField;
-		var hit1:Boolean, hit2:Boolean;
+		private var setkeyAction:String;
+		private var setkeyCell:int=1;
+		private var setkeyKey;
+		private var nSave:int=-1;
+		private var info:TextField;
+		private var hit1:Boolean, hit2:Boolean;
 		
-		var file:FileReference = new FileReference();
-		var ffil:Array;
+		private var file:FileReference = new FileReference();
+		private var ffil:Array;
 		
-		public function PipPageOpt(npip:PipBuck, npp:String) {
+		public function PipPageOpt(npip:PipBuck, npp:String)
+		{
 			isLC=true;
 			itemClass=visPipOptItem;
 			super(npip,npp);
@@ -36,16 +39,16 @@
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
 			pip.vis.butHelp.visible=false;
-			var log=new logText();
+			var log:MovieClip = new logText();
 			info=log.text;
 			log.x=20;
 			log.y=85;
 			vis.addChild(log);
-			// constructor code
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override protected  function setSubPages():void
+		{
 			info.visible=false;
 			statHead.visible=false;
 			vis.butOk.visible=vis.butDef.visible=false;
@@ -136,13 +139,17 @@
 			}
 		}
 		
-		public static function saveObj(save:Object, n):Object {
+		public static function saveObj(save:Object, n):Object
+		{
 			var obj:Object={id:n};
-			if (save==null || save.est==null) {
+			if (save==null || save.est==null)
+			{
 				obj.nazv=Res.pipText('freeslot');
 				obj.gg='';
 				obj.date='';
-			} else {
+			} 
+			else
+			{
 				obj.nazv=(n==0)?Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+n);
 				obj.gg=(save.pers.persName==null)?'-------':save.pers.persName;
 				obj.land=Res.txt('m',save.game.land);
@@ -162,7 +169,8 @@
 		}		
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			if (obj.id!=null) item.id.text=obj.id;
 			else item.id.text='';
 			item.id.visible=false;
@@ -212,26 +220,25 @@
 		}
 		
 		//установить визуальное отображение клавиши
-		function setVisKey(n,vis) {
+		private function setVisKey(n,vis):void
+		{
 			vis.txt.text='';
 			vis.gotoAndStop(1);
 			if (n==null) return;
-			try {
-				vis.txt.text=World.w.ctr.keyNames[n];
-			} catch(err) {
-				vis.gotoAndStop(n);
-			}
-
+			try { vis.txt.text=World.w.ctr.keyNames[n]; } 
+			catch(err) { vis.gotoAndStop(n); }
 		}
 		
 		//показать окно назначения клавиши
-		function showSetKey() {
+		private function showSetKey():void
+		{
 			pip.vissetkey.visible=true;
 			pip.vissetkey.txt.htmlText=Res.guiText('setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
 			World.w.ctr.requestKey(unshowSetKey);
 		}
 		
-		function unshowSetKey() {
+		private function unshowSetKey():void
+		{
 			var newkey=World.w.ctr.setkeyRequest;
 			pip.vissetkey.visible=false;
 			if (newkey!=-1) {
@@ -250,7 +257,8 @@
 			}
 		}
 		
-		public override function setStatus(flop:Boolean=true) {
+		override public function setStatus(flop:Boolean=true):void
+		{
 			if (pip.light) {
 				vis.but5.visible=vis.but1.visible=vis.but2.visible=false;
 				if (page2==1 || page2==2) page2=3;
@@ -259,32 +267,39 @@
 			}
 			super.setStatus(flop);
 		}
-		public override function updateLang() {
+
+		override protected function updateLang():void
+		{
 			vis.butOk.text.text=Res.pipText('accept');
 			vis.butDef.text.text=Res.pipText('default');
 			super.updateLang();
 		}
 		
-		public function optScroll(event:ScrollEvent) {
+		public function optScroll(event:ScrollEvent):void
+		{
 			event.currentTarget.parent.numb.text=Math.round(event.position);
 			var id=event.currentTarget.parent.id.text;
-			if (id=='opt1_1') {
+			if (id=='opt1_1')
+			{
 				Snd.globalVol=(event.position/100).toFixed(2);
 				Snd.onSnd=Snd.globalVol>0;
 				Snd.ps('mine_bip',1000,0);
 			}
-			if (id=='opt1_2') {
+			if (id=='opt1_2')
+			{
 				Snd.musicVol=(event.position/100).toFixed(2);
 				Snd.onMusic=Snd.musicVol>0;
 				Snd.updateMusicVol();
 			}
-			if (id=='opt1_3') {
+			if (id=='opt1_3')
+			{
 				Snd.stepVol=(event.position/100).toFixed(2);
 			}
 			pip.isSaveConf=true;
 		}
 
-		public function optCheck(event:Event) {
+		public function optCheck(event:Event):void
+		{
 			var id=event.currentTarget.parent.id.text;
 			var sel:Boolean=(event.target as CheckBox).selected;
 			if (id=='dial_on') World.w.dialOn=sel;
@@ -317,8 +332,7 @@
 			pip.isSaveConf=true;
 		}
 		
-		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (World.w.ctr.setkeyOn) return;
 			if (page2==3) {
@@ -352,7 +366,8 @@
 		}
 		
 		//применить настройки
-		function transOk(event:MouseEvent) {
+		private function transOk(event:MouseEvent):void
+		{
 			if (page2==4) {
 				for (var i in arr) {
 					var obj=World.w.ctr.keyIds[arr[i].id];
@@ -381,10 +396,13 @@
 			}
 		}
 		
-		private function selectHandler(event:Event):void {
+		private function selectHandler(event:Event):void
+		{
             file.load();
-        }		
-		private function completeHandler(event:Event):void {
+        }
+
+		private function completeHandler(event:Event):void
+		{
 			try {
 				var obj:Object=file.data.readObject();
 				if (obj && obj.est==1) {
@@ -392,12 +410,14 @@
 					World.w.loaddata=obj;
 					return;
 				}
-			} catch(err) {}
+			}
+			catch(err) {}
 			World.w.gui.infoText('noLoadGame');
 			trace('Error load');
        }		
 		
-		function gotoDef(event:MouseEvent) {
+		private function gotoDef(event:MouseEvent):void
+		{
 			if (page2==4) {
 				World.w.ctr.gotoDef();
 				World.w.ctr.updateKeys();
@@ -426,10 +446,11 @@
 			}
 		}
 		
-		
-		public static function showSaveInfo(obj:Object, vis:MovieClip) {
+		public static function showSaveInfo(obj:Object, vis:MovieClip):void
+		{
 			vis.info.htmlText='';
-			if (obj && obj.gg!='') {
+			if (obj && obj.gg!='')
+			{
 				vis.nazv.text=obj.gg;
 				World.w.app.load(obj.app);
 				World.w.pip.setArmor(obj.armor);
@@ -449,14 +470,17 @@
 				if (obj.ver) vis.info.htmlText+=Res.guiText('version')+': '+textAsColor('yellow', obj.ver)+'\n';
 				vis.info.htmlText+=Res.pipText('tgame')+': '+textAsColor('yellow', obj.time)+'\n';
 				vis.info.htmlText+=Res.pipText('saved')+': '+textAsColor('yellow', obj.date)+'\n';
-			} else {
+			} 
+			else
+			{
 				vis.nazv.text='';
 				vis.pers.visible=false;
 			}
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			if (page2==3 || page2==6) {
 				vis.info.htmlText=Res.txt('p',event.currentTarget.id.text,1);
 			} else if (page2==1 || page2==2) {
@@ -464,5 +488,4 @@
 			} else 	vis.info.text='';
 		}
 	}
-	
 }

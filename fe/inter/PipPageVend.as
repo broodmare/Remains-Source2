@@ -1,30 +1,30 @@
-﻿package fe.inter 
+package fe.inter 
 {	
 	import fe.*;
-	import fe.unit.Unit;
 	import fe.unit.Armor;
-	import fe.unit.UnitPlayer;
 	import fe.unit.UnitPet;
 	import fe.serv.Item;
 	import fe.serv.Vendor;
 	import fe.weapon.Weapon;
 	import fe.loc.Quest;
-	import fe.loc.LandAct;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import fl.controls.NumericStepper;
 	import flash.text.TextFormat;
-	
-	public class PipPageVend extends PipPage{
+
+	import fe.stubs.visPipBuyItem;
+
+	public class PipPageVend extends PipPage
+	{
 		
-		var vend:Vendor;
-		var npcId:String='';
-		var assArr:Array;
-		var npcInter:String='';
-		var repOwl:int=2;	//цена ремонта совы
-		var inbase:Boolean=false;
-		var selall:Boolean=true;
+		private var vend:Vendor;
+		private var npcId:String='';
+		private var assArr:Array;
+		private var npcInter:String='';
+		private var repOwl:int=2;	//цена ремонта совы
+		private var inbase:Boolean=false;
+		private var selall:Boolean=true;
 
 		public function PipPageVend(npip:PipBuck, npp:String)
 		{
@@ -69,7 +69,8 @@
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override protected function setSubPages():void
+		{
 			vend=pip.vendor;
 			npcId=pip.npcId;
 			if (vend) {
@@ -273,9 +274,8 @@
 			setIco();
 			showBottext();
 		}
-		//
 		
-		override function setSigns()
+		override protected function setSigns():void
 		{
 			if (vend==null) return;
 			super.setSigns();
@@ -297,7 +297,7 @@
 			}
 		}
 		
-		public override function page2Click(event:MouseEvent)
+		override protected function page2Click(event:MouseEvent):void
 		{
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
@@ -314,7 +314,7 @@
 		}
 		
 	
-		function showBottext()
+		private function showBottext():void
 		{
 			if (page2==1 && vend) {
 				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (';
@@ -329,7 +329,7 @@
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object)
+		override protected function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=false;
@@ -409,7 +409,8 @@
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			if (page2==1 || page2==2 || page2==3) {
 				infoItem(event.currentTarget.cat.text,event.currentTarget.rid.text,event.currentTarget.nazv.text);
 			}
@@ -426,7 +427,8 @@
 			event.stopPropagation();
 		}
 		
-		function selBuy(buy:Object, n:int=1) {
+		private function selBuy(buy:Object, n:int=1):void
+		{
 			if (selall) vis.butOk.text.text=Res.pipText('transaction');
 			selall=false;
 			if (buy==null || buy.kol-buy.bou<=0) return;
@@ -452,7 +454,8 @@
 			if (page2==2) vend.kolSell+=buy.price*n;
 		}
 		
-		function unselBuy(buy:Object, n:int=1) {
+		private function unselBuy(buy:Object, n:int=1):void
+		{
 			if (buy==null || buy.bou<=0) return;
 			if (buy.bou<n) n=buy.bou;
 			buy.bou-=n;
@@ -460,12 +463,12 @@
 			if (page2==2) vend.kolSell-=buy.price*n;
 		}
 		
-		function nsClick(event:MouseEvent) 
+		private function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		function nsCh(event:Event)
+		private function nsCh(event:Event):void
 		{
 			if (page2==1 || page2==2)
 			{
@@ -480,7 +483,7 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
@@ -507,9 +510,9 @@
 					owl.repair(hl);
 					obj=assArr[event.currentTarget.id.text];
 					obj.hp=owl.hp;
-					//trace(owl.maxhp, hl, price, vend.multPrice);
 				}
-				if (event.currentTarget.cat.text==Item.L_WEAPON) {
+				if (event.currentTarget.cat.text==Item.L_WEAPON)
+				{
 					var w:Weapon=inv.weapons[event.currentTarget.id.text];
 					var hp:int=Math.ceil(price/w.price*w.maxhp/vend.multPrice);
 					w.repair(hp);
@@ -543,7 +546,9 @@
 			showBottext();
 			event.stopPropagation();
 		}
-		override function itemRightClick(event:MouseEvent) {
+
+		override protected function itemRightClick(event:MouseEvent):void
+		{
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n=1;
@@ -556,7 +561,8 @@
 			event.stopPropagation();
 		}
 		
-		function transOk(event:MouseEvent) {
+		private function transOk(event:MouseEvent):void
+		{
 			if (page2==1) {
 				trade(assArr);
 			}
@@ -566,10 +572,10 @@
 			}
 			pip.setRPanel();
 			pip.snd(3);
-				//pip.sellAll();
 		}
 		
-		public function trade(arr:Array) {
+		public function trade(arr:Array):void
+		{
 			if (vend.kolBou>inv.money.kol) return;
 			for each(var buy:Item in vend.buys) {
 				var rid:String=buy.id;
@@ -588,17 +594,19 @@
 			setStatus();
 		}
 		
-		public function sell(arr:Array) {
-			if (!inbase && Math.ceil(vend.kolSell)>vend.money) {
+		public function sell(arr:Array):void
+		{
+			if (!inbase && Math.ceil(vend.kolSell)>vend.money)
+			{
 				World.w.gui.infoText('noSell');
 				return;
 			}
-			for (var s in inv.items) {
+			for (var s in inv.items)
+			{
 				if (s=='' || inv.items[s].kol<=0) continue;
 				var node=inv.items[s].xml;
 				if (node==null) continue;
 				if (arr[s] && arr[s].bou>0) {
-					//if (inv.items[s]<arr[s].bou) arr[s].bou=inv.items[s];
 					var buy:Item=vend.buys2[s];
 					if (buy==null) {
 						buy=new Item(null,s,0);
@@ -608,7 +616,6 @@
 					}
 					buy.kol+=arr[s].bou;
 					inv.items[s].kol-=arr[s].bou;
-					//inv.items['money']+=arr[s].bou*arr[s].price;
 				}
 			}
 			inv.money.kol+=Math.floor(vend.kolSell);
@@ -618,8 +625,10 @@
 			setStatus();
 		}
 		
-		public function sellAll() {
-			for (var s in arr) {
+		public function sellAll():void
+		{
+			for (var s in arr)
+			{
 				if (arr[s].tip=='valuables') {
 					selBuy(arr[s],arr[s].kol-arr[s].bou);
 				}
@@ -629,6 +638,5 @@
 			showBottext();
 			setStatItems();
 		}
-	}
-	
+	}	
 }

@@ -1,10 +1,6 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	import fe.*;
-	import fe.unit.Unit;
-	import fe.unit.Armor;
-	import fe.unit.UnitPlayer;
-	import fe.unit.UnitPet;
 	import fe.serv.Item;
 	import fe.weapon.Weapon;
 	import flash.display.MovieClip;
@@ -12,14 +8,15 @@
 	import flash.events.MouseEvent;
 	import fl.controls.NumericStepper;
 	import flash.text.TextFormat;
-	import fe.loc.Quest;
-	import fe.loc.LandAct;
+
+	import fe.stubs.visPipVaultItem;
 	
-	public class PipPageVault extends PipPage{
-		
+	public class PipPageVault extends PipPage
+	{
 		var assArr:Array;
 
-		public function PipPageVault(npip:PipBuck, npp:String) {
+		public function PipPageVault(npip:PipBuck, npp:String)
+		{
 			isLC=isRC=true;
 			itemClass=visPipVaultItem;
 			super(npip,npp);
@@ -40,7 +37,8 @@
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override protected function setSubPages():void
+		{
 			assArr=new Array();
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
 			statHead.nazv.text=Res.pipText('ii2');
@@ -56,12 +54,6 @@
 					var node:XML=inv.items[s].xml;
 					if (node==null) continue;
 					if (node.@tip=='money' || node.@tip=='paint' || node.@tip=='spell' || node.@tip=='spec' || node.@tip=='key' || node.@tip=='instr' || node.@tip=='impl' || node.@tip=='art' || node.@tip=='scheme') continue;
-					/*var itemTip=3;
-					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
-					else if (node.@us>0) itemTip=1;
-					if (node.@tip=='food') itemTip=3;*/
-					
-					//if (node.@v.length() && node.@v!=page2) return;
 					if (inv.items[s].invCat==page2) {
 						var tcat:String;
 						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
@@ -90,13 +82,15 @@
 			showBottext();
 		}
 		
-		function showBottext() {
+		private function showBottext():void
+		{
 			if (World.w.hardInv) vis.bottext.text=inv.retMass(page2);
 			else vis.bottext.text='';
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override protected function setStatItem(item:MovieClip, obj:Object):void
+		{
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.cat.visible=false;
@@ -119,11 +113,13 @@
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override protected function statInfo(event:MouseEvent):void
+		{
 			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text);
 		}
 		
-		function chKol(mc, n:int=0) {
+		private function chKol(mc, n:int=0):void
+		{
 			var obj=assArr[mc.id.text]
 			var item:Item=inv.items[mc.id.text];
 			if (item==null || obj==null) return;
@@ -148,14 +144,17 @@
 		}
 		
 		
-		function nsClick(event:MouseEvent) {
+		private function nsClick(event:MouseEvent):void
+		{
 			event.stopPropagation();
 		}
-		function nsCh(event:Event) {
+
+		private function nsCh(event:Event):void
+		{
 			chKol(event.currentTarget.parent, event.currentTarget.value);
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		override protected function itemClick(event:MouseEvent):void
 		{
 			if (event.ctrlKey) chKol(event.currentTarget, 0);
 			else chKol(event.currentTarget, int.MAX_VALUE);
@@ -164,7 +163,9 @@
 			pip.setRPanel();
 			event.stopPropagation();
 		}
-		override function itemRightClick(event:MouseEvent) {
+		
+		override protected function itemRightClick(event:MouseEvent):void
+		{
 			chKol(event.currentTarget, 0);
 			pip.snd(1);
 			showBottext();
@@ -172,7 +173,8 @@
 			event.stopPropagation();
 		}
 		
-		function checkAmmo(item:Item):Boolean {
+		private function checkAmmo(item:Item):Boolean
+		{
 			var ab:String=item.id;
 			if (item.tip=='a' && item.xml && item.xml.@base.length()) ab=item.xml.@base;
 			for each(var weap:Weapon in inv.weapons) {
@@ -184,7 +186,9 @@
 			}
 			return false;
 		}
-		function sbrosHlam() {
+
+		private function sbrosHlam():void
+		{
 			for (var s in arr) {
 				if (arr[s].tip!='food' && arr[s].tip!='book' && arr[s].tip!='sphera' && arr[s].tip!='valuables' && !arr[s].keep) {
 					var item:Item=inv.items[arr[s].id];
@@ -203,11 +207,12 @@
 			pip.setRPanel();
 		}
 		
-		function transOk(event:MouseEvent) {
-			if (page2==2 || page2==3) {
+		private function transOk(event:MouseEvent):void
+		{
+			if (page2==2 || page2==3)
+			{
 				sbrosHlam();
 			}
 		}
-	}
-	
+	}	
 }

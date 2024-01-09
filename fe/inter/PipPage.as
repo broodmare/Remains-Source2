@@ -1,7 +1,6 @@
-﻿package fe.inter {
+package fe.inter
+{
 	import flash.display.MovieClip;
-	import flash.display.DisplayObject;
-	import flash.display.SimpleButton;
 	import fl.controls.ScrollBar;
 	import fl.events.ScrollEvent;
 	import flash.events.MouseEvent;
@@ -17,13 +16,15 @@
 	import fe.loc.Quest;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
-	import fe.serv.LootGen;
 	import fe.loc.LandAct;
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import fe.unit.UnitPet;
+
+	import fe.stubs.visPipInv;
 	
-	public class PipPage {
+	public class PipPage
+	{
 
 		var vis:MovieClip;
 
@@ -49,7 +50,6 @@
 		
 		var infIco:MovieClip;
 		var itemFilter:GlowFilter=new GlowFilter(0x00FF88,1,3,3,3,1);
-		//var itemTrans:ColorTransform=new ColorTransform(0,1,0.5);
 		var itemTrans:ColorTransform=new ColorTransform(1,1,1);
 		
 		var pp:String;
@@ -62,7 +62,8 @@
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
 
-		public function PipPage(npip:PipBuck, npp:String) {
+		public function PipPage(npip:PipBuck, npp:String)
+		{
 			
 			pip=npip;
 			
@@ -81,14 +82,14 @@
 			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
 			statArr=new Array();
 			var item:MovieClip;
-			for (var i=-1; i<maxrows; i++) {
+			for (var i:int = -1; i < maxrows; i++)
+			{
 				item=new itemClass(); 
 				item.x=30;
 				item.y=100+i*30;
 				if (item.nazv) setStyle(item.nazv);
 				vis.addChild(item);
 				if (item.ramka) item.ramka.visible=false;
-				//item.hitArea=item.back;
 				if (i<0) {
 					item.back.visible=false;
 					statHead=item;
@@ -103,7 +104,6 @@
 				item=vis.getChildByName('but'+i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK,page2Click);
 				item.text.text=Res.pipText(pp+i);
-				//if (ons[i]==0) item.visible=false;
 				item.id.text=i;
 				item.id.visible=false;
 			}
@@ -155,7 +155,7 @@
 			return "<span class = " + "'" + color + "'" + ">" + number.toString() + "</span>";
 		}
 
-		public function updateLang()
+		protected function updateLang():void
 		{
 			for (var i:int = 1; i <= 5; i++) 
 			{
@@ -164,7 +164,7 @@
 			}
 		}
 
-		public function page2Click(event:MouseEvent) 
+		protected function page2Click(event:MouseEvent):void
 		{
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
@@ -172,9 +172,10 @@
 			pip.snd(2);
 		}
 		
-		function setButtons() 
+		private function setButtons():void
 		{
-			for (var i=1; i<=5; i++) {
+			for (var i:int = 1; i <= 5; i++)
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page2==i) item.gotoAndStop(2);
 				else if (signs[i]>0) item.gotoAndStop(signs[i]+2);
@@ -182,7 +183,7 @@
 			}
 		}
 		
-		public function setStatus(flop:Boolean=true) 
+		public function setStatus(flop:Boolean=true):void
 		{
 			pip.reqKey=false;
 			statHead.id.text='';
@@ -219,43 +220,44 @@
 		}
 		
 		//подготовка страниц
-		function setSubPages() 
+		protected function setSubPages():void
 		{
 
 		}
 
 		//определение подсвеченности кнопок
-		function setSigns() 
+		protected function setSigns():void
 		{
-			signs=[0,0,0,0,0,0];
+			signs = [0,0,0,0,0,0];
 		}
 		
 		//показ одного элемента
-		function setStatItem(item:MovieClip, obj:Object)
+		protected function setStatItem(item:MovieClip, obj:Object):void
 		{
 
 		}
 		
 		//информация об элементе
-		function statInfo(event:MouseEvent)
+		protected function statInfo(event:MouseEvent):void
 		{
 
 		}
 		
-		function itemClick(event:MouseEvent):void
+		protected function itemClick(event:MouseEvent):void
 		{
 
 		}
-		function itemRightClick(event:MouseEvent)
+
+		protected function itemRightClick(event:MouseEvent):void
 		{
 
 		}
 		
 		//показ всех элементов
-		public function setStatItems(n:int=-1)
+		protected function setStatItems(n:int=-1):void
 		{
 			if (n>=0) scrl=n;
-			for (var i=0; i<statArr.length; i++)
+			for (var i:int = 0; i < statArr.length; i++)
 			{
 				if (i+scrl>=arr.length)
 				{
@@ -269,7 +271,8 @@
 			}
 		}
 		
-		public function setIco(tip:int=0, id:String='') {
+		protected function setIco(tip:int=0, id:String=''):void
+		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible=vis.skill.visible=false;
 			vis.item.gotoAndStop(1);
@@ -340,15 +343,18 @@
 		}
 
 		//добавить в текстовую строку значения
-		public static function addVar(s:String, xml):String {
-			for (var i=1; i<=5; i++) {
+		public static function addVar(s:String, xml):String
+		{
+			for (var i:int = 1; i <= 5; i++)
+			{
 				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yel'>"+xml.attribute('s'+i)+"</span>");
 			}
 			return s;
 		}
 		
 		//dlvl=1 если перк не текущий, а выбираемый
-		public static function effStr(tip:String, id:String, dlvl:int=0):String {
+		public static function effStr(tip:String, id:String, dlvl:int=0):String
+		{
 			var s:String;
 			if (tip=='item') s=Res.txt('i',id,1)
 			else s=Res.txt('e',id,1);
@@ -359,20 +365,20 @@
 			if (dp.length()==0) return s;
 			dp=dp[0];
 			//определение текущего уровня
-			var lvl=1;
-			var pers=World.w.pers;
+			var lvl = 1;
+			var pers:Pers = World.w.pers;
+
 			if (tip=='perk') {
 				lvl=pers.perks[id];
 				if (lvl==null) lvl=0;
 			} else if (tip=='skill') {
 				lvl=pers.getSkLevel(pers.skills[id]);
 			} else if (dp.@him=='2') {
-				var ad=pers.addictions[id];
+				var ad = pers.addictions[id];
 				if (ad>=pers.ad2) lvl=2;
 				if (ad>=pers.ad3) lvl=3;
 			} else if (dp.@him=='1') lvl=pers.himLevel;
 			lvl+=dlvl;
-							//trace(id, lvl);
 			//вставка в текст числовых значений
 			if (lvl>1 && dp.textvar[lvl-1]) s=addVar(s,dp.textvar[lvl-1]);
 			else if (dp.textvar.length()) s=addVar(s,dp.textvar[0]);
@@ -424,7 +430,8 @@
 		}
 		
 		
-		public static function infoStr(tip:String, id:String):String {
+		public static function infoStr(tip:String, id:String):String
+		{
 			var s:String='';
 			var pip=World.w.pip;
 			var gg=World.w.gg;
@@ -490,7 +497,6 @@
 					if (w.holder) s+=' ('+textAsColor('yellow', Number((wdam+wdamexpl)*w.kol*World.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
 				}
 				s+='\n'+Res.pipText('critch')+': '+textAsColor('yellow', Math.round((w.critCh+w.critchAdd+gg.critCh)*100)+'%');
-				//s+='\n'+Res.pipText('critmult')+': '+textAsColor('yellow', Math.round((w.critDamPlus+gg.critDamMult)*100)+'%');
 				s+='\n'+Res.pipText('tipdam')+': '+textAsColor('blue', Res.pipText('tipdam'+w.tipDamage));
 				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('inv5')+': '+textAsColor('yellow', Res.txt('i',w.ammo));
 				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('holder')+': '+numberAsColor('yellow', w.holder);
@@ -585,11 +591,7 @@
 					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+numberAsColor('yellow', Math.round(pot.@hmana*World.w.pers.healManaMult));
 					if (pot.@alc.length()) s+='\n'+Res.pipText('alcohol')+': '+numberAsColor('yellow', Math.round(pot.@alc));
 					if (pot.@rad.length()) s+='\n'+Res.pipText('rad')+': '+numberAsColor('yellow', Math.round(pot.@rad));
-					if (pot.@effect.length()) {
-						s+='\n'+Res.pipText('refeff')+': '+effStr('eff',pot.@effect);
-						//if (tip=='him' && gg.pers.himLevel>1) s+=effStr('eff',pot.@effect,gg.pers.himLevel-1);
-						//else s+=;
-					}
+					if (pot.@effect.length()) s+='\n'+Res.pipText('refeff')+': '+effStr('eff',pot.@effect);
 					if (pot.@perk.length()) s+='\n'+textAsColor('pink', Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
@@ -621,7 +623,8 @@
 			return s;
 		}
 		
-		function infoItem(tip:String, id:String, nazv:String, craft:int=0) {
+		protected function infoItem(tip:String, id:String, nazv:String, craft:int=0):void
+		{
 			vis.nazv.text=nazv;
 			var s:String='';
 			if (id.substr(0,2)=='s_') {
@@ -631,7 +634,6 @@
 				else if (AllData.d.armor.(@id==id).length()) tip=Item.L_ARMOR;
 				else tip=Item.L_ITEM;
 			}
-			//trace(tip);
 			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
 				if (craft>0) setIco();
 				else setIco(1,id);
@@ -674,18 +676,17 @@
 				if (craft==1) s+=craftInfo(id);
 			}
 			vis.info.htmlText=s;
-			vis.info.height=680-vis.info.y; //475;
+			vis.info.height=680-vis.info.y;
 			vis.info.scaleX=vis.info.scaleY=1;
 			if (vis.scText) vis.scText.visible=false;
 			if (vis.info.height<vis.info.textHeight && vis.scText) {
 				vis.scText.maxScrollPosition=vis.info.maxScrollV;
 				vis.scText.visible=true;
-				//vis.info.scaleX=vis.info.scaleY=0.8;
-				//vis.info.height=vis.info.textHeight+5;
 			}
 		}
 		
-		public function craftInfo(id:String):String {
+		public function craftInfo(id:String):String
+		{
 			var s:String='\n';
 			var sch=AllData.d.item.(@id=='s_'+id);
 			if (sch.length()) sch=sch[0];
@@ -711,7 +712,8 @@
 			return s;
 		}
 		
-		function infoQuest(id:String):String {
+		protected function infoQuest(id:String):String
+		{
 				var q:Quest=World.w.game.quests[id];
 				if (q==null) return '';
 				vis.nazv.text=q.nazv;
@@ -739,7 +741,8 @@
 				return s;
 		}
 		
-		public function factor(id:String):String {
+		protected function factor(id:String):String
+		{
 			var s:String='', s1:String;
 			var ok=false;
 			if (World.w.pers.factor[id] is Array) {
@@ -805,7 +808,8 @@
 			return s;
 		}
 		
-		public function setTopText(s:String='') {
+		protected function setTopText(s:String=''):void
+		{
 			if (s=='') {
 				pip.vis.toptext.visible=false;
 			} else {
@@ -817,7 +821,8 @@
 		}
 		
 		//проверка квеста на доступность
-		public function checkQuest(task):Boolean {
+		protected function checkQuest(task):Boolean
+		{
 			//проверка на доступ к местности
 			if (task.@land.length()) {
 				var land:LandAct=World.w.game.lands[task.@land];
@@ -835,15 +840,18 @@
 			return true;
 		}
 		
-		function initCats() {
-			for (var i=0; i<=kolCats; i++) {
+		protected function initCats():void
+		{
+			for (var i=0; i<=kolCats; i++)
+			{
 				vis.cats['cat'+i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
 			selCat();
 		}
 		
 		//установить кнопки категорий
-		function setCats() {
+		protected function setCats():void
+		{
 			var arr=tips[page2];
 			if (arr==null) {
 				vis.cats.visible=false;
@@ -869,14 +877,14 @@
 
 		
 		//выбор подкатегории инвентаря
-		function selCatEvent(event:MouseEvent) 
+		protected function selCatEvent(event:MouseEvent):void
 		{
 			var n:int=int(event.currentTarget.name.substr(3));
 			cat[page2]=n;
 			setStatus();
 		}
 		
-		function selCat(n:int=0)
+		protected function selCat(n:int=0):void
 		{
 			for (var i=0; i<=kolCats; i++) {
 				vis.cats['cat'+i].fon.gotoAndStop(1);
@@ -892,7 +900,7 @@
 		}
 		
 		//проверить соответствии категории
-		function checkCat(tip:String):Boolean 
+		protected function checkCat(tip:String):Boolean 
 		{
 			if (curTip=='' || curTip==null || curTip==tip) return true;
 			if (curTip is Array) {
@@ -901,7 +909,7 @@
 			return false;
 		}
 		
-		public function statScroll(event:ScrollEvent) 
+		public function statScroll(event:ScrollEvent):void
 		{
 			setStatItems(event.position);
 		}
@@ -919,12 +927,12 @@
 			event.stopPropagation();
 		}
 
-		public function scroll(dn:int=0) 
+		public function scroll(dn:int=0):void
 		{
 
 		}
 
-		public function step() 
+		public function step():void
 		{
 
 		}
