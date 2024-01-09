@@ -1,64 +1,60 @@
-﻿package fe 
+package fe 
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.display.Stage;
-	import flash.display.StageScaleMode;
-	import flash.display.StageDisplayState;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import fe.inter.PipBuck;
-	import fe.inter.Appear;
-	import fe.graph.Displ;
-	import flash.display.SimpleButton;
 	import flash.text.TextFormat;
 	import flash.text.StyleSheet;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
-	import flash.utils.ByteArray;
 	import flash.utils.Timer;
-	import flash.events.TimerEvent;
+
+	import fe.inter.PipBuck;
 	import fe.inter.PipPageOpt;
-	
+	import fe.graph.Displ;
+
+	import fe.stubs.visMainMenu;
+	import fe.stubs.butLang;
+
 	public class MainMenu 
 	{
-
-		var version:String='1.0.2';
-		var mm:MovieClip;
+		public var version:String='1.0.2';
+		private var mm:MovieClip;
 		public var main:Sprite;
-		var world:World;
+		private var world:World;
 		public var active:Boolean=true;
 		public var loaded:Boolean=false;
-		var newGameMode:int=2;
-		var newGameDif:int=2;
-		var loadCell:int=-1;
-		var loadReg:int=0;	//режим окна загрузки, 0 - загрузка, 1 - выбор слота для автосейва
-		var command:int=0;
-		var com:String='';
-		var mmp:MovieClip;//для пипбака
-		var pip:PipBuck;
-		var displ:Displ;
-		var animOn:Boolean=true;
-		var langReload:Boolean=false;
+		private var newGameMode:int=2;
+		private var newGameDif:int=2;
+		private var loadCell:int=-1;
+		private var loadReg:int=0;	//режим окна загрузки, 0 - загрузка, 1 - выбор слота для автосейва
+		private var command:int=0;
+		private var com:String='';
+		private var mmp:MovieClip;//для пипбака
+		private var pip:PipBuck;
+		private var displ:Displ;
+		private var animOn:Boolean=true;
+		private var langReload:Boolean=false;
 		
-		var kolDifs:int=5;
-		var kolOpts:int=6;
+		private var kolDifs:int=5;
+		private var kolOpts:int=6;
 		
-		var butsLang:Array;
+		private var butsLang:Array;
 		
-		var stn:int=0;
+		private var stn:int=0;
 		
 		public var style:StyleSheet = new StyleSheet(); 
-		var styleObj:Object = new Object(); 
+		private var styleObj:Object = new Object(); 
 		
-		var format:TextFormat = new TextFormat();
+		private var format:TextFormat = new TextFormat();
 		
-		var file:FileReference = new FileReference();
-		var ffil:Array;
-		var arr:Array=new Array();
+		private var file:FileReference = new FileReference();
+		private var ffil:Array;
+		private var arr:Array=new Array();
 		
-		var mainTimer:Timer;
+		private var mainTimer:Timer;
 			
 		public function MainMenu(nmain:Sprite) 
 		{
@@ -108,7 +104,7 @@
 			mm.link.l2.styleSheet=style;
 		}
 
-		public function mainMenuOn() 
+		private function mainMenuOn():void
 		{
 			active=true;
 			mm.butNewGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
@@ -133,7 +129,7 @@
 			file.addEventListener(Event.COMPLETE, completeHandler);
 		}
 
-		public function mainMenuOff() 
+		private function mainMenuOff():void
 		{
 			active=false;
 			mm.butNewGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
@@ -155,7 +151,7 @@
 			mm.adv.removeEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
 			file.removeEventListener(Event.SELECT, selectHandler);
 			file.removeEventListener(Event.COMPLETE, completeHandler);
-			for each(var m in butsLang) 
+			for each(var m:MovieClip in butsLang) 
 			{
 				if (m) m.removeEventListener(MouseEvent.CLICK, funLang);
 			}
@@ -164,14 +160,14 @@
 			world.vwait.progres.text=Res.guiText('loading');
 		}
 
-		public function funNewGame(event:MouseEvent) 
+		private function funNewGame(event:MouseEvent):void
 		{
 			world.mmArmor=false;
 			mainLoadOff();
 			mainNewOn();
 		}
 
-		public function funLoadGame(event:MouseEvent) 
+		private function funLoadGame(event:MouseEvent):void
 		{
 			world.mmArmor=true;
 			mainNewOff();
@@ -180,11 +176,11 @@
 		}
 
 		//продолжить игру
-		public function funContGame(event:MouseEvent) 
+		private function funContGame(event:MouseEvent):void
 		{
 			var n:int=0;
 			var maxDate:Number=0;
-			for (var i=0; i<=world.saveKol; i++) 
+			for (var i:int = 0; i<=world.saveKol; i++) 
 			{
 				var save:Object=World.w.getSave(i);
 				if (save && save.est && save.date>maxDate) 
@@ -209,25 +205,25 @@
 			}
 		}
 
-		public function funOver(event:MouseEvent) 
+		private function funOver(event:MouseEvent):void
 		{
 			(event.currentTarget as MovieClip).fon.scaleX=1;
 			(event.currentTarget as MovieClip).fon.alpha=1.5;
 		}
 
-		public function funOut(event:MouseEvent)
+		private function funOut(event:MouseEvent):void
 		{
 			(event.currentTarget as MovieClip).fon.scaleX=0.7;
 			(event.currentTarget as MovieClip).fon.alpha=1;
 		}
 		
-		public function setLangButtons() 
+		private function setLangButtons():void
 		{
 			butsLang=new Array();
 			if (world.kolLangs>1) 
 			{
-				var i=world.kolLangs;
-				for each(var l in world.langsXML.lang) 
+				var i:int = world.kolLangs;
+				for each(var l:XML in world.langsXML.lang) 
 				{
 					i--;
 					var m:MovieClip=new butLang();
@@ -243,7 +239,7 @@
 		}
 		
 		//надписи
-		public function setMainLang() 
+		private function setMainLang():void
 		{
 			setMainButton(mm.butContGame,Res.guiText('contgame'));
 			setMainButton(mm.butNewGame,Res.guiText('newgame'));
@@ -262,12 +258,12 @@
 			mm.dialNew.butOk.text.text='OK';
 			mm.dialNew.inputName.text=Res.txt('u','littlepip');
 			mm.dialNew.maxChars=32;
-			for (var i=0; i<kolDifs; i++) 
+			for (var i:int = 0; i<kolDifs; i++) 
 			{
 				mm.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
 				mm.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
 			}
-			for (var i=1; i<=kolOpts; i++) 
+			for (var j:int = 1; i<=kolOpts; i++) //Changed i to j
 			{
 				mm.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
 			}
@@ -280,19 +276,19 @@
 			setScrollInfo();
 		}
 		
-		function setMainButton(but:MovieClip, txt:String) 
+		private function setMainButton(but:MovieClip, txt:String):void
 		{
 			but.txt.text=txt;
 			but.glow.text=txt;
 			but.txt.visible=(but.glow.textWidth<1)
 		}
 		
-		public function setMenuSize() 
+		private function setMenuSize():void
 		{
 			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
 			mm.version.y=main.stage.stageHeight-58;
 			mm.link.y=main.stage.stageHeight-125;
-			var ny=main.stage.stageHeight-400;
+			var ny:int = main.stage.stageHeight-400;
 			if (ny<280) ny=280;
 			mm.dialLoad.x=mm.dialNew.x=world.app.vis.x=main.stage.stageWidth/2;
 			mm.dialLoad.y=mm.dialNew.y=world.app.vis.y=ny;
@@ -302,7 +298,7 @@
 			setScrollInfo();
 		}
 		
-		function setScrollInfo() 
+		private function setScrollInfo():void
 		{
 			if (mm.info.txt.height<mm.info.txt.textHeight) 
 			{
@@ -312,14 +308,14 @@
 			else mm.info.scroll.visible=false;
 		}
 		
-		public function resizeDisplay(event:Event) 
+		private function resizeDisplay(event:Event):void
 		{
 			world.resizeScreen();
 			if (active) setMenuSize();
 		}
 
 		//загрузка игры
-		public function mainLoadOn() 
+		private function mainLoadOn():void
 		{
 			mm.dialLoad.visible=true;
 			mm.dialLoad.title2.visible=(loadReg==1);
@@ -329,7 +325,7 @@
 			mm.dialLoad.nazv.text='';
 			mm.dialLoad.pers.visible=false;
 			arr=new Array();
-			for (var i=0; i<=world.saveKol; i++) 
+			for (var i:int = 0; i<=world.saveKol; i++) 
 			{
 				var slot:MovieClip=mm.dialLoad['slot'+i];
 				var save:Object=World.w.getSave(i);
@@ -359,7 +355,7 @@
 			animOn=false;
 		}
 		
-		public function mainLoadOff() 
+		private function mainLoadOff():void
 		{
 			mm.dialLoad.visible=false;
 			if (mm.dialLoad.butCancel.hasEventListener(MouseEvent.CLICK)) 
@@ -367,7 +363,7 @@
 				mm.dialLoad.butCancel.removeEventListener(MouseEvent.CLICK, funLoadCancel);
 				mm.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
 			}
-			for (var i=0; i<=world.saveKol; i++)
+			for (var i:int = 0; i<=world.saveKol; i++)
 			{
 				var slot:MovieClip=mm.dialLoad['slot'+i];
 				if (slot.hasEventListener(MouseEvent.CLICK)) 
@@ -379,13 +375,13 @@
 			animOn=true;
 		}
 		
-		public function funLoadCancel(event:MouseEvent) 
+		private function funLoadCancel(event:MouseEvent):void
 		{
 			mainLoadOff();
 		}
 
 		//выбрать слот
-		public function funLoadSlot(event:MouseEvent) 
+		private function funLoadSlot(event:MouseEvent):void
 		{
 			loadCell=event.currentTarget.id.text;
 			if (loadReg==1 && loadCell==0) return;
@@ -397,12 +393,12 @@
 			else com='load';
 		}
 
-		public function funOverSlot(event:MouseEvent) 
+		private function funOverSlot(event:MouseEvent):void
 		{
 			fe.inter.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mm.dialLoad);
 		}
 		
-		public function funLoadFile(event:MouseEvent) 
+		private function funLoadFile(event:MouseEvent):void
 		{
 			ffil=[new FileFilter(Res.pipText('gamesaves')+" (*.sav)", "*.sav")];
 			file.browse(ffil);
@@ -433,18 +429,18 @@
        }		
 		
 		//новая игры
-		public function mainNewOn() 
+		private function mainNewOn():void
 		{
 			mm.dialNew.visible=true;
 			mm.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
 			mm.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
 			mm.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
-			for (var i=0; i<kolDifs; i++) 
+			for (var i:int = 0; i<kolDifs; i++) 
 			{
 				mm.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
 				mm.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
-			for (var i=1; i<=kolOpts; i++) 
+			for (var j:int = 1; i<=kolOpts; i++) //Changed i to j
 			{
 				mm.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 				mm.dialNew['checkOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
@@ -455,7 +451,7 @@
 			animOn=false;
 		}
 
-		public function mainNewOff() 
+		private function mainNewOff():void
 		{
 			mm.dialNew.visible=false;
 			if (mm.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mm.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
@@ -463,7 +459,7 @@
 			if (mm.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) 
 			{
 				mm.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
-				for (var i=0; i<kolDifs; i++) 
+				for (var i:int = 0; i<kolDifs; i++) 
 				{
 					mm.dialNew['dif'+i].removeEventListener(MouseEvent.CLICK, funNewDif);
 					mm.dialNew['dif'+i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
@@ -471,7 +467,8 @@
 			}
 			animOn=true;
 		}
-		public function funAdv(event:MouseEvent) 
+
+		private function funAdv(event:MouseEvent):void
 		{
 			world.nadv++;
 			if (world.nadv>=world.koladv) world.nadv=0;
@@ -479,7 +476,7 @@
 			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
 		}
 
-		public function funAdvR(event:MouseEvent) 
+		private function funAdvR(event:MouseEvent):void
 		{
 			world.nadv--;
 			if (world.nadv<0) world.nadv=world.koladv-1;
@@ -487,12 +484,12 @@
 			mm.adv.y=main.stage.stageHeight-mm.adv.textHeight-40;
 		}
 
-		public function funNewCancel(event:MouseEvent) 
+		private function funNewCancel(event:MouseEvent):void
 		{
 			mainNewOff();
 		}
 		//нажать ОК в окне новой игры
-		public function funNewOk(event:MouseEvent) 
+		private function funNewOk(event:MouseEvent):void
 		{
 			mainNewOff();
 			if (mm.dialNew.checkOpt2.selected) //показать окно выбора слота
@@ -510,7 +507,7 @@
 		}
 
 		//включить настройки внешности
-		public function funNewVid(event:MouseEvent) 
+		private function funNewVid(event:MouseEvent):void
 		{
 			setMenuSize();
 			mm.dialNew.visible=false;
@@ -518,14 +515,15 @@
 		}
 
 		//принять настройки внешности
-		public function funVidOk() 
+		private function funVidOk():void
 		{
 			mm.dialNew.visible=true;
 			world.app.detach();
 			mm.dialNew.pers.gotoAndStop(2);
 			mm.dialNew.pers.gotoAndStop(1);
 		}
-		public function funNewDif(event:MouseEvent) 
+
+		private function funNewDif(event:MouseEvent):void
 		{
 			if (event.currentTarget==mm.dialNew.dif0) newGameDif=0;
 			if (event.currentTarget==mm.dialNew.dif1) newGameDif=1;
@@ -535,7 +533,7 @@
 			updNewMode();
 		}
 
-		function updNewMode() 
+		private function updNewMode():void
 		{
 			mm.dialNew.dif0.fon.gotoAndStop(1);
 			mm.dialNew.dif1.fon.gotoAndStop(1);
@@ -549,28 +547,28 @@
 			if (newGameDif==4) mm.dialNew.dif4.fon.gotoAndStop(2);
 		}
 
-		function infoMode(event:MouseEvent) 
+		private function infoMode(event:MouseEvent):void
 		{
 			mm.dialNew.modeinfo.htmlText=event.currentTarget.modeinfo.text;
 		}
 
-		function infoOpt(event:MouseEvent) 
+		private function infoOpt(event:MouseEvent):void
 		{
-			var n=int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
+			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
 			mm.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
 		}
 		
-		public function funOpt(event:MouseEvent) 
+		private function funOpt(event:MouseEvent):void
 		{
 			mainNewOff();
 			mainLoadOff();
 			world.pip.onoff();
 		}
 
-		public function funLang(event:MouseEvent) 
+		private function funLang(event:MouseEvent):void
 		{
 			mm.loading.text='';
-			var nid=event.currentTarget.n.text;
+			var nid:String = event.currentTarget.n.text;
 			if (nid==world.lang) return;
 			world.defuxLang(nid);
 			if (nid==world.langDef) 
@@ -585,13 +583,13 @@
 			}
 		}
 		
-		function showButtons(n:Boolean) 
+		private function showButtons(n:Boolean):void
 		{
 			mm.lang.visible=mm.butNewGame.visible=mm.butLoadGame.visible=mm.butContGame.visible=mm.butOpt.visible=mm.butAbout.visible=n;
 		}
 		
 		//создатели
-		public function funAbout(event:MouseEvent) 
+		private function funAbout(event:MouseEvent):void
 		{
 			mm.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
@@ -605,13 +603,13 @@
 			mm.dialAbout.scroll.maxScrollPosition=mm.dialAbout.txt.maxScrollV;
 		}
 
-		public function funAboutOk(event:MouseEvent) 
+		private function funAboutOk(event:MouseEvent):void
 		{
 			mm.dialAbout.visible=false;
 			mm.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
-		function step() 
+		private function step():void
 		{
 			if (langReload) 
 			{
@@ -657,12 +655,12 @@
 			}
 		}
 		
-		public function log(s:String) 
+		public function log(s:String):void
 		{
 			mm.loading.text+=s+'; ';
 		}
 
-		public function mainStep(event:Event):void 
+		private function mainStep(event:Event):void 
 		{
 			if (active) step();
 			else if (command>0)
