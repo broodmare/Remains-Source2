@@ -100,10 +100,10 @@
 			var s:String = '';
 			try
 			{
-				var xml:XMLList = currentLanguageData.txt.(@id==id);
+				var xml:XMLList = currentLanguageData.txt.(@id == id);
 				if (xml.length()==0) 
 				{
-					xml = fallbackLanguageData.txt.(@id==id);
+					xml = fallbackLanguageData.txt.(@id == id);
 				}
 				if (xml.length()==0) return '';
 
@@ -126,7 +126,7 @@
 								if (sar) 
 								{
 									if (World.w.matFilter && sar.length>1) s1=sar[1];
-									else s1=sar[0];
+									else s1 = sar[0];
 								}
 							}
 							if (node.@s1.length())
@@ -142,17 +142,18 @@
 								if (node.@p.length()==0) s+="<span class='dark'>"+s1+"</span>"+'<br>';
 								else
 								{
-									var pers:XML = node.@p;
-									if (pers.indexOf("lp") == 0) s+="<span class='light'>"+' - '+s1+"</span>"+'<br>';
-									else s+=' - '+s1+'<br>';
+									//TODO: Figure out how to declare this without breaking notes.
+									var pers = node.@p;
+									if (pers.indexOf("lp") == 0) s += "<span class='light'>" + ' - ' + s1 + "</span>" + '<br>';
+									else s += ' - ' + s1 + '<br>';
 								}
 							} 
-							else s+=s1+'<br>';
+							else s += s1+'<br>';
 						}
-					} else s=xml.n[0];
+					} else s = xml.n[0];
 				}
-				s=lpName(s);
-				s=s.replace(/\[br\]/g,'<br>');
+				s = lpName(s);
+				s = s.replace(/\[br\]/g,'<br>');
 				if (xml.@s1.length())
 				{
 					for (var j:int = 1; j <= 5; j++)
