@@ -266,7 +266,7 @@ package fe
 				mainMenuMovieClip.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
 				mainMenuMovieClip.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
 			}
-			for (var j:int = 1; i<=kolOpts; i++) //Changed i to j
+			for (i = 1; i<=kolOpts; i++)
 			{
 				mainMenuMovieClip.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
 			}
@@ -443,7 +443,7 @@ package fe
 				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
 				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
-			for (var j:int = 1; i<=kolOpts; i++) //Changed i to j
+			for (i = 1; i<=kolOpts; i++)
 			{
 				mainMenuMovieClip.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 				mainMenuMovieClip.dialNew['checkOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
