@@ -55,7 +55,7 @@ package fe
 		private var arr:Array=new Array();
 		
 		private var mainTimer:Timer;
-			
+
 		public function MainMenu(nmain:Sprite) 
 		{
 			main = nmain;
@@ -110,23 +110,11 @@ package fe
 		private function mainMenuOn():void
 		{
 			active = true;
-			mainMenuMovieClip.butNewGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butNewGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butLoadGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butLoadGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butContGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butContGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butOpt.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butOpt.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butAbout.addEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butAbout.addEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butOpt.addEventListener(MouseEvent.CLICK, funOpt);
-			mainMenuMovieClip.butNewGame.addEventListener(MouseEvent.CLICK, funNewGame);
-			mainMenuMovieClip.butLoadGame.addEventListener(MouseEvent.CLICK, funLoadGame);
-			mainMenuMovieClip.butContGame.addEventListener(MouseEvent.CLICK, funContGame);
-			mainMenuMovieClip.butAbout.addEventListener(MouseEvent.CLICK, funAbout);
+			menuButtonListeners(true);
+
 			mainMenuMovieClip.adv.addEventListener(MouseEvent.CLICK, funAdv);
 			mainMenuMovieClip.adv.addEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
+			
 			if (!main.contains(mainMenuMovieClip)) main.addChild(mainMenuMovieClip);
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
@@ -134,24 +122,13 @@ package fe
 
 		private function mainMenuOff():void
 		{
-			active=false;
-			mainMenuMovieClip.butNewGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butNewGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butLoadGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butLoadGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butContGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butContGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butOpt.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butOpt.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butAbout.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
-			mainMenuMovieClip.butAbout.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
-			mainMenuMovieClip.butOpt.removeEventListener(MouseEvent.CLICK, funOpt);
-			mainMenuMovieClip.butNewGame.removeEventListener(MouseEvent.CLICK, funNewGame);
-			mainMenuMovieClip.butLoadGame.removeEventListener(MouseEvent.CLICK, funLoadGame);
-			mainMenuMovieClip.butContGame.removeEventListener(MouseEvent.CLICK, funContGame);
-			mainMenuMovieClip.butAbout.removeEventListener(MouseEvent.CLICK, funAbout);
+			active = false;
+			menuButtonListeners(false);
+
 			mainMenuMovieClip.adv.removeEventListener(MouseEvent.CLICK, funAdv);
 			mainMenuMovieClip.adv.removeEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
+
+
 			file.removeEventListener(Event.SELECT, selectHandler);
 			file.removeEventListener(Event.COMPLETE, completeHandler);
 			for each(var m:MovieClip in butsLang) 
@@ -163,23 +140,65 @@ package fe
 			world.vwait.progres.text=Res.guiText('loading');
 		}
 
-		private function funNewGame(event:MouseEvent):void
+		private function menuButtonListeners(setState:Boolean):void
 		{
-			world.mmArmor=false;
+			var mainFivebuttons:Array = [mainMenuMovieClip.butContGame, mainMenuMovieClip.butLoadGame, mainMenuMovieClip.butNewGame, mainMenuMovieClip.butOpt, mainMenuMovieClip.butAbout];	
+			var handleListeners:Function;
+
+			for each (var mainFiveButton:Object in mainFivebuttons) 
+			{
+				handleListeners = setState ? mainFiveButton.addEventListener : mainFiveButton.removeEventListener;
+				handleListeners(MouseEvent.MOUSE_OVER, funOver);
+				handleListeners(MouseEvent.MOUSE_OUT, funOut);
+				handleListeners(MouseEvent.CLICK, funButtonPress);
+			}
+
+			function funButtonPress(event:MouseEvent):void
+			{
+				trace('MainMenu.as/funButtonPress() - "' + event.currentTarget.name + '" pressed.');
+				switch(event.currentTarget.name)
+				{
+					case "butContGame":
+						funContGame();
+					break;
+
+					case "butLoadGame":
+						funLoadGame();
+					break;
+
+					case "butNewGame":
+						funNewGame();
+					break;
+
+					case "butOpt":
+						funOpt();
+					break;
+
+					case "butAbout":
+						funAbout();
+					break;
+				}
+			}
+		}
+
+
+		private function funNewGame():void
+		{
+			world.mmArmor = false;
 			mainLoadOff();
 			mainNewOn();
 		}
 
-		private function funLoadGame(event:MouseEvent):void
+		private function funLoadGame():void
 		{
-			world.mmArmor=true;
+			world.mmArmor = true;
 			mainNewOff();
-			loadReg=0;
+			loadReg = 0;
 			mainLoadOn();
 		}
 
 		//продолжить игру
-		private function funContGame(event:MouseEvent):void
+		private function funContGame():void
 		{
 			var n:int=0;
 			var maxDate:Number=0;
@@ -561,7 +580,7 @@ package fe
 			mainMenuMovieClip.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
 		}
 		
-		private function funOpt(event:MouseEvent):void
+		private function funOpt():void
 		{
 			mainNewOff();
 			mainLoadOff();
@@ -592,7 +611,7 @@ package fe
 		}
 		
 		//создатели
-		private function funAbout(event:MouseEvent):void
+		private function funAbout():void
 		{
 			mainMenuMovieClip.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
