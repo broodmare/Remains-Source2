@@ -1,4 +1,5 @@
-﻿package fe.loc {
+﻿package fe.loc
+{
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
 
@@ -13,9 +14,11 @@
 	import fe.serv.LootGen;
 	import fe.serv.Item;
 	import fe.unit.UnitTurret;
+
+	import fe.loc.ColorFilter;
 	
-	public class Location {
-		
+	public class Location
+	{
 		public var land:Land;
 		
 		public var id:String;
@@ -123,7 +126,7 @@
 		//враги
 		public var tipEnemy:int=-1;				//тип случайных врагов
 		public var kolEn:Array=[0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
-		var tipEn:Array=['','enl1','enl2','enf1','enc1','lov'];
+		private var tipEn:Array = ['','enl1','enl2','enf1','enc1','lov'];
 		public var tipSpawn:String='enl2';
 		public var kolEnSpawn:int=0;		//может заспавнится обычных врагов
 		public var tileSpawn:Number=0;		//спавн при разрушении блоков
@@ -149,13 +152,6 @@
 		public var enemyLevel:int=0;		//левел мобов
 		public var earMult:Number=1; 		//множитель слуха мобов
 		
-		
-		
-		
-		
-		
-		
-		
 //**************************************************************************************************************************
 //
 //				Создание
@@ -166,7 +162,8 @@
 // ------------------------------------------------------------------------------------------------
 // первый этап - создать и построить по карте из xml
 
-		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null) {
+		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null)
+		{
 			land=nland;
 			spaceX=World.cellsX;
 			spaceY=World.cellsY;
@@ -209,23 +206,23 @@
 		}
 
 		// добавить гг в массив юнитов
-		public function addPlayer(un:UnitPlayer) {
-			gg=un;
-			//units.shift(null)
-			//units.shift(un);
-			//units['gg']=un;
-			//units['pet']=un.pets[0];
+		public function addPlayer(un:UnitPlayer):void
+		{
+			gg = un;
 			units.push(un);
 			units.push(un.defpet);
 		}
 		
 		//построить по карте xml
-		public function buildLoc(nroom:XML) {
+		public function buildLoc(nroom:XML):void
+		{
 			//создать массив блоков
-			for (var i=0; i<spaceX; i++) {
-				space[i]=new Array();
-				for (var j=0; j<spaceY; j++) {
-					space[i][j]=new Tile(i,j);
+			for (var i:int = 0; i < spaceX; i++)
+			{
+				space[i] = new Array();
+				for (var j:int = 0; j < spaceY; j++)
+				{
+					space[i][j] = new Tile(i,j);
 				}
 			}
 			//опции
@@ -241,7 +238,8 @@
 			visMult=land.act.visMult;
 			opacWater=land.act.opacWater;
 			darkness=land.act.darkness;
-			if (nroom.options.length()) {
+			if (nroom.options.length())
+			{
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
 				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
 				if (nroom.options.@transpfon.length()) transpFon=true;
@@ -288,17 +286,20 @@
 					}
 				}
 			}
-			if (homeStable) {
+			if (homeStable)
+			{
 				color='yellow';
 				lightOn=1;
 				base=true;
 			}
-			if (homeAtk) {
+			if (homeAtk)
+			{
 				color='fire';
 				lightOn=1;
 			}
 
-			for (j=0; j<spaceY; j++) {
+			for (j=0; j<spaceY; j++)
+			{
 				var js:String='';
 				js=nroom.a[j];
 				var arri:Array=js.split('.');
@@ -320,7 +321,8 @@
 					//линия воды
 					if (j>=waterLevel) space[i][j].water=1;
 					//рамка
-					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1) {
+					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1)
+					{
 						if (ramka==1
 							|| (ramka==2 || ramka==4) && (i==0 || i==spaceX-1)
 							|| (ramka==3 || ramka==4) && (j==spaceY-1)
@@ -335,7 +337,8 @@
 			}
 			
 			//возможные проходы в другие локации
-			if (nroom.doors.length()>0) {
+			if (nroom.doors.length()>0)
+			{
 				var s:String=nroom.doors[0];
 				doors=s.split('.');
 				if (mirror) {
@@ -352,13 +355,16 @@
 					d=doors[18];
 					doors[18]=doors[20];
 					doors[20]=d;
-					for (i=0; i<=5; i++) {
+					for (i=0; i<=5; i++)
+					{
 						d=doors[i];
 						doors[i]=doors[i+11];
 						doors[i+11]=d;
 					}
 				}
-			} else {
+			} 
+			else
+			{
 				doors=new Array();
 				for (i=0; i<22; i++) doors[i]=2;
 			}
@@ -366,8 +372,10 @@
 			//видимость
 			lDist1*=visMult;
 			lDist2*=visMult;
-			if (isNaN(lDist1)) {
-				lDist1=300, lDist2=1000;
+			if (isNaN(lDist1))
+			{
+				lDist1 =  300;
+				lDist2 = 1000;
 			}
 			//цветофильтр
 			cTransform=colorFilter(color);
@@ -375,98 +383,56 @@
 			
 			
 			//точки появления активных объектов
-			objsT=new Array();
-			for each(var obj:XML in nroom.obj) {
-				var xmll:XML=AllData.d.obj.(@id==obj.@id)[0];
-				var size:int=xmll.@size;
-				if (size<=0) size=1;
-				var nx:int=obj.@x;
-				var ny:int=obj.@y;
-				if (mirror) nx=spaceX-nx-size;
-				if (xmll.@tip=='spawnpoint') spawnPoints.push({x:nx, y:ny});
-				else if (xmll.@tip=='enspawn') addEnSpawn(nx, ny, xmll);
-				else if (xmll.@tip=='up') {
-					var n:int=xmll.@tipn;
+			objsT = new Array();
+			for each(var obj:XML in nroom.obj)
+			{
+				var xmll:XML = AllData.d.obj.(@id==obj.@id)[0];
+				var size:int = xmll.@size;
+				if (size <= 0) size = 1;
+				var nx:int = obj.@x;
+				var ny:int = obj.@y;
+				if (mirror) nx = spaceX - nx - size;
+				if (xmll.@tip == 'spawnpoint') spawnPoints.push({x:nx, y:ny});
+				else if (xmll.@tip == 'enspawn') addEnSpawn(nx, ny, xmll);
+				else if (xmll.@tip == 'up')
+				{
+					var n:int = xmll.@tipn;
 					ups[n].push({x:nx, y:ny, xml:obj});
-				} else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
+				}
+				else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
 			}
 			
 			//фоновые объекты
-			for each(obj in nroom.back) {
+			for each(obj in nroom.back)
+			{
 				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tileX,obj.@y*Tile.tileY, obj));
 			}
-			if (zoom>1) {
+			if (zoom>1)
+			{
 				limX*=zoom;
 				limY*=zoom;
 			}
 		}
 		
 		//цветофильтр
-		public function colorFilter(f:String=''):ColorTransform {
-			var cT = new ColorTransform();
-			if (f=='green') {
-				cT.blueMultiplier=cT.redMultiplier=0.8;
-				cT.greenMultiplier=1.16;
-			} else if (f=='red') {
-				cT.blueMultiplier=0.7;
-				cT.greenMultiplier=0.9;
-				cT.redMultiplier=1.1;
-			} else if (f=='fire') {
-				cT.blueMultiplier=0.5;
-				cT.greenMultiplier=0.7;
-				cT.redMultiplier=1.1;
-			} else if (f=='lab') {
-				cT.blueMultiplier=0.7;
-				cT.greenMultiplier=1.1;
-				cT.redMultiplier=0.9;
-			} else if (f=='black') {
-				cT.blueMultiplier=0.7;
-				cT.greenMultiplier=0.6;
-				cT.redMultiplier=0.5;
-			} else if (f=='blue') {
-				cT.blueMultiplier=1.16;
-				cT.greenMultiplier=cT.redMultiplier=0.8;
-			} else if (f=='sky') {
-				cT.blueMultiplier=cT.greenMultiplier=1.12;
-				cT.redMultiplier=0.85;
-			} else if (f=='yellow') {
-				cT.blueMultiplier=0.9;
-				cT.greenMultiplier=1.2;
-				cT.redMultiplier=1.25;
-			} else if (f=='purple') {
-				cT.blueMultiplier=1.12;
-				cT.greenMultiplier=0.8;
-				cT.redMultiplier=1.08;
-			} else if (f=='pink') {
-				cT.blueMultiplier=1;
-				cT.greenMultiplier=0.9; //ff66aa
-				cT.redMultiplier=1.1;
-			} else if (f=='blood') {
-				cT.blueMultiplier=0.6;
-				cT.greenMultiplier=0.6;
-				cT.redMultiplier=1.08;
-			} else if (f=='blood2') {
-				cT.blueMultiplier=0.1;
-				cT.greenMultiplier=0.1;
-				cT.redMultiplier=1;
-			} else if (f=='dark') {
-				cT.blueMultiplier=0;
-				cT.greenMultiplier=0;
-				cT.redMultiplier=0;
-			} else if (f=='mf') {
-				cT.redMultiplier=0.5;
-				cT.greenMultiplier=0.5;
-				cT.blueMultiplier=1.08;
-			}
-			return cT;
-			//cTransform.blueMultiplier=cTransform.greenMultiplier=cTransform.redMultiplier=0.3;
+		public function colorFilter(filterName:String = ''):ColorTransform // Color filter
+		{
+			var filter:ColorFilter = ColorFilter.getColorFromTable(filterName);
+			
+			var colorT:ColorTransform = new ColorTransform();
+			colorT.redMultiplier 	= filter.red;
+			colorT.greenMultiplier 	= filter.green;
+			colorT.blueMultiplier 	= filter.blue;
+
+			return colorT;
 		}
 		
 // ------------------------------------------------------------------------------------------------
 // второй этап - определить проходы, сделать рамку, создать объекты в зависимости от сложности и проходов
 
 		//добавить переход с номером n
-		public function setDoor(n:int, fak:int=2) {
+		public function setDoor(n:int, fak:int=2):void
+		{
 			var q:int;
 			if (fak<2) return;
 			var dyr:Boolean=false;
@@ -583,7 +549,8 @@
 		}
 		
 		//создать активные объекты в местах их появления, кроме мест около переходов, вызывать после проделывания проходов
-		public function setObjects() {
+		public function setObjects():void
+		{
 			for each (var obj in objsT) {
 				if (noHolesPlace && obj.rem>0 && !space[obj.x][obj.y].place) continue;	//не ставить ящики около прохода
 				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
@@ -595,7 +562,8 @@
 		}
 		
 		//задать количество случайных врагов
-		public function setKolEn(en:int, min:int, max:int, spl:int=0) {
+		public function setKolEn(en:int, min:int, max:int, spl:int=0):void
+		{
 			if (en==-1) {
 				kolEnSpawn=min+Math.floor(Math.random()*(max-min+1));
 			} else {
@@ -605,7 +573,8 @@
 		}
 		
 		//создать случайных врагов в точках их появления
-		public function setRandomUnits() {
+		public function setRandomUnits():void
+		{
 			for (var i=1; i<kolEn.length; i++) {
 				if (kolEn[i]>0 && ups[i].length) {
 					//убрать точки от проходов
@@ -641,10 +610,12 @@
 		}
 		
 		//создать рандомный лут
-		public function putRandomLoot() {
+		public function putRandomLoot():void
+		{
 			var nx:int=Math.floor(Math.random()*(spaceX-2)+1);
 			var ny:int=Math.floor(Math.random()*(spaceY-2)+1);
-			if (space[nx][ny].phis==0) {
+			if (space[nx][ny].phis==0) 
+			{
 				LootGen.lootCont(this,(nx+0.5)*Tile.tileX,(ny+0.8)*Tile.tileY,'metal');
 			}
 		}
@@ -665,19 +636,16 @@
 			var loadObj:Object=null;
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];
 			//не генерировать юнита, который сдох
-			if (loadObj && loadObj.dead>0 && loadObj.loot!=2) {
-				return null;
-			}
+			if (loadObj && loadObj.dead>0 && loadObj.loot!=2) return null;
 			var un:Unit;
 			var scid:String;
 			var hero:int=0;
 			var inWater:Boolean=false;
-			if ((biom==1 || biom==5) && abs==false) {
-				inWater=getTile(nx,ny).water>0;
-			}
+			if ((biom == 1 || biom == 5) && abs == false) inWater = getTile(nx, ny).water > 0;
 			var s:String=randomUnit(tip,inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
 			//если тип был случайным и удалось сгенерировать его id
-			if (s!='') {
+			if (s!='') 
+			{
 				if (cid) scid=cid;
 				else scid=randomCid(s);
 				if (s=='slmine') s='slime';
@@ -689,11 +657,12 @@
 				else scid=randomCid(tip);
 				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
 			}
-			if (un!=null) {
-				var enl=enemyLevel;
-				if (land.rnd && landProb=='') {//геройский юнит
+			if (un!=null) 
+			{
+				var enl:int = enemyLevel;
+				if (land.rnd && landProb=='') //геройский юнит
+				{
 					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
-					//hero=Math.floor(Math.random()*4+1);
 				}
 				if (hero==0 && un.boss==false) enl=Math.round(enl*(1.1-Math.random()*0.4));
 				un.setLevel(enl);
@@ -701,7 +670,7 @@
 				if (abs) {
 					un.putLoc(this,nx,ny);
 				} else {
-					var size=Math.floor((un.scX-1)/40)+1;
+					var size:int = Math.floor((un.scX-1)/40)+1;
 					un.putLoc(this,(nx+0.5*size)*Tile.tileX,(ny+1)*Tile.tileY-1);
 				}
 				if (active) {
@@ -718,7 +687,6 @@
 				if (homeAtk) {
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
 					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tileX,(ny-Math.random()*4)*Tile.tileY));
-					//if (un is UnitSentinel) un.fraction=Unit.F_PLAYER;
 					
 				}
 				if (xml && xml.@code.length()) saves.push(un);
@@ -734,7 +702,8 @@
 		}
 		
 		//создать феникса, сидящего на ящике
-		function createPhoenix(box:Box):Boolean {
+		private function createPhoenix(box:Box):Boolean
+		{
 			if (box.wall || !box.shelf) return false;
 			if (collisionUnit(box.X,box.Y1-1,38,38)) return false;
 			var un:Unit=new UnitPhoenix();
@@ -743,11 +712,11 @@
 			units.push(un);
 			kol_phoenix++;
 			land.kol_phoenix++;
-			//trace('Феникс',landX, landY);
 			return true;
 		}
 		//создать передатчик на ящике
-		function createTransmitter(box:Box):Boolean {
+		private function createTransmitter(box:Box):Boolean
+		{
 			if (box.wall || !box.shelf) return false;
 			if (land.rnd && Math.random()<0.5) return false;
 			if (collisionUnit(box.X,box.Y1-1,30,20)) return false;
@@ -760,8 +729,10 @@
 		}
 		
 		//создать предмет, стоящий на ящике
-		function createSur(box:Box, nsur:String=null) {
-			if (nsur==null) {
+		private function createSur(box:Box, nsur:String=null):void
+		{
+			if (nsur==null) 
+			{
 				if (Math.random()>0.25) return;
 				if (biom==0) nsur='fan';
 				if (biom==2) nsur='lamp';
@@ -770,14 +741,16 @@
 			}
 			var item:Item=new Item(null, nsur, 1);
 			var l:Loot=new Loot(this,item,box.X,box.Y-box.scY-3,false,false,false);
-			if (base) {
+			if (base) 
+			{
 				l.inter.active=false;
 				l.levitPoss=false;
 			}
 		}
 		
 		//создать скрытый юнит или дополнительный объект
-		public function createHidden(nx:int,ny:int) {
+		public function createHidden(nx:int,ny:int):void
+		{
 			if (biom==10 || biom==11) return;
 			if (tipEnemy==0) createUnit('zombie',nx,ny, false, <unit dig='2'/>);
 			else if (tipEnemy==2) createObj('robocell','box',nx,ny);
@@ -786,24 +759,31 @@
 		}
 		
 		//облака газа
-		public function createClouds(lvl:int, ncloud:String=null) {
-			if (ncloud==null) {
-				if (biom==1) {
+		public function createClouds(lvl:int, ncloud:String=null):void
+		{
+			if (ncloud == null)
+			{
+				if (biom == 1)
+				{
 					ncloud='tcloud1';
 					if (lvl>=2) return;
 				}
-				if (biom==5) {
-					ncloud='pcloud1';
+				if (biom == 5)
+				{
+					ncloud = 'pcloud1';
 				}
 			}
-			if (ncloud!=null) {
+			if (ncloud!=null)
+			{
 				var kol:int=1;
-				if (biom==1) kol=Math.random()*5;
-				if (biom==5) {
+				if (biom == 1) kol=Math.random()*5;
+				if (biom == 5)
+				{
 					if (lvl==0) kol=Math.random()*2;
 					else kol=Math.random()*3;
 				}
-				for (var i=0; i<kol; i++) {
+				for (var i:int = 0; i<kol; i++)
+				{
 					var nx:int=Math.floor(Math.random()*(spaceX-4)+2);
 					var ny:int=Math.floor(Math.random()*(spaceY-4)+2);
 					if (cp) {
@@ -819,7 +799,8 @@
 		}
 		
 		//определение id случайного юнита
-		public function randomUnit(tip:String, inWater:Boolean=false):String {
+		public function randomUnit(tip:String, inWater:Boolean=false):String
+		{
 			var s:String='';
 			switch (tip) {
 				case 'enl2':
@@ -1048,7 +1029,8 @@
 		}
 		
 		//создать активный объект, nx,ny-координаты в блоках
-		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj {
+		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj
+		{
 			var obj:Obj;
 			var size:int=AllData.d.obj.(@id==id).@size;
 			if (size<=0) size=1;
@@ -1091,13 +1073,12 @@
 				}
 			}
 			//Добавление объектов, имеющих uid в массив
-			if (xml && xml.@uid.length()) {
+			if (xml && xml.@uid.length())
+			{
 				obj.uid=xml.@uid;
 				land.uidObjs[obj.uid]=obj;
 			}
-			if (xml && xml.@nazv.length()) {
-				obj.nazv=xml.@nazv;
-			}
+			if (xml && xml.@nazv.length()) obj.nazv=xml.@nazv;
 			//Добавление id испытаний
 			if (landProb=='' && xml && xml.@prob.length() && xml.@prob!='') land.probIds.push(xml.@prob);
 			addObj(obj);
@@ -1105,31 +1086,38 @@
 		}
 		
 		//создание чекпоинта в случайной точке появления
-		public function createCheck(act:Boolean=false) {
-			if (spawnPoints.length>0) {
-				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
-				var id='checkpoint';
-				if (!act && land.rnd && Math.random()<0.5) {
-					id+=Math.floor(Math.random()*5+1);
+		public function createCheck(act:Boolean=false):void
+		{
+			if (spawnPoints.length>0)
+			{
+				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+				var id = 'checkpoint';
+				if (!act && land.rnd && Math.random()<0.5)
+				{
+					id += Math.floor(Math.random()*5+1);
 				}
-				cp=createObj(id,'checkpoint',sp.x,sp.y) as CheckPoint;
+				cp = createObj(id,'checkpoint',sp.x,sp.y) as CheckPoint;
 				if (land.act.landStage==0 && act) cp.teleOn=true;
 				if (act) cp.activate(true);
 				isCheck=true;
 			}
 		}
 		//создание выхода в случайной точке появления
-		public function createExit(s:String='') {
-			if (spawnPoints.length>0) {
+		public function createExit(s:String=''):void
+		{
+			if (spawnPoints.length>0)
+			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={land.act.exitProb+s} time='20' inter='8' sign='1'/>);
 				isCheck=true;
 			}
 		}
 		//создание двери испытаний в случайной точке появления
-		public function createDoorProb(nid:String, nprob:String):Boolean {
-			if (spawnPoints.length>0) {
-				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+		public function createDoorProb(nid:String, nprob:String):Boolean
+		{
+			if (spawnPoints.length > 0)
+			{
+				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv={Res.txt('m',nprob)} time='20' inter='8'/>);
 				isCheck=true;
 				return true;
@@ -1138,37 +1126,52 @@
 		}
 		
 		
-		public function createXpBonuses(kol:int=5) {
+		public function createXpBonuses(kol:int=5):void
+		{
 			if (homeStable || homeAtk) return;
 			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
 			var mesto:int=4;
 			var n:int=5;
 			maxXp=kol;
-			for (var i=1; i<=100; i++) {
+			for (var i:int = 1; i<=100; i++)
+			{
 				x1=2, y1=2, x2=spaceX-2, y2=spaceY-2;
-				if (mesto==4) {
-					x2=spaceX/2;
-					y2=spaceY/2;
-				} else if (mesto==3) {
-					x1=spaceX/2;
-					y2=spaceY/2;
-				} else if (mesto==2) {
-					x2=spaceX/2;
-					y1=spaceY/2;
-				} else if (mesto==1) {
-					x1=spaceX/2;
-					y1=spaceY/2;
+
+				switch (mesto)
+				{
+					case 4:
+						x2=spaceX/2;
+						y2=spaceY/2;
+					break;
+					case 3:
+						x1=spaceX/2;
+						y2=spaceY/2;
+					break;
+					case 2:
+						x2=spaceX/2;
+						y1=spaceY/2;
+					break;
+					case 1:
+						x1=spaceX/2;
+						y1=spaceY/2;
+					break;
+					
 				}
+
 				nx=Math.floor(x1+Math.random()*(x2-x1));
 				ny=Math.floor(y1+Math.random()*(y2-y1));
-				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0)) {
+				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0))
+				{
 					createObj('xp','bonus',nx,ny);
 					kolXp++;
 					if (mesto>0) mesto--;
 					if (kolXp>=kol) return;
-				} else {
+				} 
+				else
+				{
 					n--;
-					if (n<=0) {
+					if (n<=0)
+					{
 						n=5;
 						if (mesto>0) mesto--;
 					}
@@ -1176,8 +1179,9 @@
 			}
 		}
 		
-		public function preStep() {
-			for (var i=0; i<30; i++) stepInvis();
+		public function preStep():void
+		{
+			for (var i:int = 0; i<30; i++) stepInvis();
 		}
 		
 //**************************************************************************************************************************
@@ -1187,19 +1191,15 @@
 //**************************************************************************************************************************
 		
 		//активировать при входе гг в локацию
-		public function reactivate(n:int=0) {
+		public function reactivate(n:int=0):void
+		{
 			var obj:Pt=firstObj;
-			while (obj) {
+			while (obj)
+			{
 				nextObj=obj.nobj;
 				obj.setNull(n-nAct>2 || n==0 || prob &&!prob.closed);
 				obj=nextObj;
 			}
-			/*for (var i=0; i<spaceX; i++) {
-				for (var j=0; j<spaceY; j++) {
-				}
-			}*/
-			//отвильтровать уничтоженные юниты
-			//if (prob==null || prob.closed)
 			resetUnits();
 			if (n>0) nAct=n;
 			showSign(false);
@@ -1210,22 +1210,24 @@
 			Snd.resetShum();
 		}
 		
-		public function resetUnits() {
-			units=units.filter(isAct);
-			//trace('Юнитов:',units.length);
+		public function resetUnits():void
+		{
+			units = units.filter(isAct);
 		}
 		
-		private function isAct(element:*, index:int, arr:Array):Boolean {
-			//trace(element);
+		private function isAct(element:*, index:int, arr:Array):Boolean
+		{
 			if (element==null) return false;
 			if (element is fe.unit.UnitPet) return true;
             return (element.sost < 4);
         }
 		
 		//деактивировать локацию
-		public function out() {
+		public function out():void
+		{
 			active=false;
-			for each (var un:Unit in units) {
+			for each (var un:Unit in units)
+			{
 				un.locout();
 			}
 			if (prob) prob.out();
@@ -1237,10 +1239,12 @@
 //
 //**************************************************************************************************************************
 		//добавить любой объект в цепочку обработки
-		public function addObj(obj:Pt) {
+		public function addObj(obj:Pt):void
+		{
 			if (obj.in_chain) return;
 			if (!firstObj) firstObj=obj;
-			else {
+			else
+			{
 				lastObj.nobj=obj;
 				obj.pobj=lastObj;
 			}
@@ -1251,18 +1255,16 @@
 		}
 		
 		//удалить объект из цепочки обработки
-		public function remObj(obj:Pt) {
+		public function remObj(obj:Pt):void
+		{
 			if (!obj.in_chain) return;
-			if (obj.nobj) {
-				obj.nobj.pobj=obj.pobj;
-			} else {
-				lastObj=obj.pobj;
-			}
-			if (obj.pobj) {
-				obj.pobj.nobj=obj.nobj;
-			} else {
-				firstObj=obj.nobj;
-			}
+
+			if (obj.nobj) obj.nobj.pobj = obj.pobj;
+			else lastObj = obj.pobj;
+
+			if (obj.pobj) obj.pobj.nobj = obj.nobj;
+			else firstObj = obj.nobj;
+
 			obj.in_chain=false;
 			obj.nobj=obj.pobj=null;
 			obj.remVisual();
@@ -1274,36 +1276,43 @@
 //
 //**************************************************************************************************************************
 		//получить блок
-		public function getTile(nx:int,ny:int):Tile {
+		public function getTile(nx:int,ny:int):Tile
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return otstoy;
 			else return space[nx][ny] as Tile;
 		}
-		public function getAbsTile(nx:int,ny:int):Tile {
+
+		public function getAbsTile(nx:int,ny:int):Tile
+		{
 			if (nx<0 || nx>=spaceX*Tile.tileX || ny<0 || ny>=spaceY*Tile.tileY) return otstoy;
 			else return space[Math.floor(nx/Tile.tileX)][Math.floor(ny/Tile.tileY)] as Tile;
 		}
-		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean {
-			var X1=X-scX/2, X2=X+scX/2, Y1=Y-scY;
-			//trace(X1,X2,Y1,Y);
-			for (var i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-				for (var j=Math.floor(Y1/Tile.tileY); j<=Math.floor(Y/Tile.tileY); j++) {
-					//trace(i,j);
+
+		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean
+		{
+			var X1 = X-scX/2, X2=X+scX/2, Y1=Y-scY;
+			for (var i:int = Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++)
+			{
+				for (var j:int = Math.floor(Y1/Tile.tileY); j<=Math.floor(Y/Tile.tileY); j++)
+				{
 					if (i<0 || i>=spaceX || j<0 || j>=spaceY) continue;
 					if (space[i][j].phis>0) return true;
 				}
 			}
 			return false;
 		}
+
 		//попробовать проложить линию. obj - дверь, которую нужно игнорировать
-		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean {
-			var ndx=cx-nx;
-			var ndy=cy-ny;
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			//trace('check');
-			for (var i=1; i<div; i++) {
+		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean
+		{
+			var ndx:Number = cx-nx;
+			var ndy:Number = cy-ny;
+			var div:int = Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
+			for (var i:int = 1; i<div; i++)
+			{
 				var t:Tile=World.w.loc.getAbsTile(Math.floor(nx+ndx*i/div),Math.floor(ny+ndy*i/div));
-				//trace(t.X,t.Y);
-				if (t.phis==1 && nx+ndx*i/div>=t.phX1 && nx+ndx*i/div<=t.phX2 && ny+ndy*i/div>=t.phY1 && ny+ndy*i/div<=t.phY2) {
+				if (t.phis==1 && nx+ndx*i/div>=t.phX1 && nx+ndx*i/div<=t.phX2 && ny+ndy*i/div>=t.phY1 && ny+ndy*i/div<=t.phY2)
+				{
 					if (obj==null || t.door!=obj) return false;
 				}
 			}
@@ -1311,9 +1320,11 @@
 		}
 	
 		//контуры блоков
-		public function tileKontur(tx:int, ty:int, t:Tile) {
+		public function tileKontur(tx:int, ty:int, t:Tile):void
+		{
 			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
-			if (t.phis==1) {
+			if (t.phis==1)
+			{
 				a0=uslKontur(tx-1,ty-1);
 				a1=uslKontur(tx,  ty-1);
 				a2=uslKontur(tx+1,ty-1);
@@ -1322,12 +1333,12 @@
 				a5=uslKontur(tx,  ty+1);
 				a6=uslKontur(tx-1,ty+1);
 				a7=uslKontur(tx-1,ty);
-				//if (t.zForm>0) a1=true;
 				t.kont1=insKontur(a1,a7,a0);
 				t.kont2=insKontur(a1,a3,a2);
 				t.kont3=insKontur(a5,a7,a6);
 				t.kont4=insKontur(a5,a3,a4);
-				if (b!='') {
+				if (b!='')
+				{
 					if (!a1) a1=uslPontur(tx, ty-1);
 					if (!a3) a3=uslPontur(tx+1,ty);
 					if (!a5) a5=uslPontur(tx, ty+1);
@@ -1337,7 +1348,9 @@
 					t.pont3=insKontur(a5,a7,a6);
 					t.pont4=insKontur(a5,a3,a4);
 				}
-			} else {
+			} 
+			else
+			{
 				var b:String=t.back;
 				var vse:Boolean=(backwall=='sky');
 				a0=uslBontur(tx-1,ty-1, b, vse);
@@ -1355,7 +1368,8 @@
 			}
 		}
 		
-		private function insKontur(a:Boolean, b:Boolean, c:Boolean):int {
+		private function insKontur(a:Boolean, b:Boolean, c:Boolean):int
+		{
 			if (a && b) return c?0:1;
 			else if (!a && b) return 2;
 			else if (a && !b) return 3;
@@ -1363,74 +1377,93 @@
 		}
 		
 		//контуры переднего плана
-		private function uslKontur(nx:int,ny:int):Boolean {
+		private function uslKontur(nx:int,ny:int):Boolean
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].phis==1 || space[nx][ny].door!=null);
-			//else return space[nx][ny].back==b;
 		}
+
 		//контуры заднего плана если есть стенка
-		private function uslPontur(nx:int,ny:int):Boolean {
+		private function uslPontur(nx:int,ny:int):Boolean
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back!='' || space[nx][ny].shelf>0);
 		}
 		//контуры заднего плана если нет стенки
-		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean {
+		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back==b || vse && space[nx][ny].back!='' || space[nx][ny].phis==1 || space[nx][ny].shelf>0);
 		}
 		
 		//урон блоку
-		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9) {
+		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9):void
+		{
 			//урон от падения
 			if (tip==100 && hit<=50 && (t.thre>0 || t.indestruct)) return;
 			if (tip==100) tip=4;
 			//стены в локации не разрушаются
-			if (!destroyOn && t.hp>500) {
+			if (!destroyOn && t.hp>500)
+			{
 				if (active && t.phis==1) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 				return;
 			}
 			//был ли нанесён урон блоку
-			if (t.udar(hit)) {	//удар по блоку, проходит если был нанесён урон
-				if (t.hp<=0) {	//если блок уничтожен
-					if (t.phis>=1) {
+			if (t.udar(hit))			//удар по блоку, проходит если был нанесён урон
+			{	
+				if (t.hp<=0)			//если блок уничтожен
+				{
+					if (t.phis>=1)
+					{
 						isRebuild=true;				//изменить конфигурацию локации				
-						if (t.Y<waterLevel) {		//пересчитать воду
+						if (t.Y<waterLevel)			//пересчитать воду
+						{		
 							recalcTiles.push(t);
 							isRecalc=true;
 						}
 					}
-					if (t.door) {				//если это дверь
-						t.door.die(tip);
-					} else if (t.phis>=1) {		//если обычный твёрдый блок
-					//} else if (t.phis>=1 || t.diagon!=0 || t.stair!=0 || t.floor!=0) {		//если обычный твёрдый блок
+					if (t.door) t.door.die(tip);//если это дверь
+					else if (t.phis>=1)			//если обычный твёрдый блок
+					{
 						t.die();
-						try {
+						try
+						{
 							if (tileSpawn>0 && Math.random()<tileSpawn) enemySpawn(true,true);
-						} catch(err) {}
+						} 
+						catch(err) {}
 						if (active) grafon.tileDie(t,tip);
 					}
-				} else if (t.phis>=1) {	//если не уничтожен, но был нанесён урон
+				} 
+				else if (t.phis>=1)			//если не уничтожен, но был нанесён урон
+				{	
 					if (active) grafon.dyrka(nx,ny,tip,t.mat,false,hit/t.hp);
 				}
-			} else if (t.phis>=1) {		//если не было урона
+			} 
+			else if (t.phis>=1)				//если не было урона
+			{
 				if (active) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 			}
 		}
 		
 		//уничтожить блок
-		public function dieTile(t:Tile) {
+		public function dieTile(t:Tile):void
+		{
 			if (t.indestruct) return;
-			if (t.phis==1) {
-				if (t.door) {				//если это дверь
+			if (t.phis==1) 
+			{
+				if (t.door)				//если это дверь
+				{
 					t.door.die(4);
 				} 				
-				isRebuild=true;				//изменить конфигурацию локации				
-				if (t.Y<waterLevel) {		//пересчитать воду
+				isRebuild=true;			//изменить конфигурацию локации				
+				if (t.Y<waterLevel)		//пересчитать воду
+				{		
 					recalcTiles.push(t);
 					isRecalc=true;
 				}
 			}
-			if (t.phis>=1) {
+			if (t.phis>=1)
+			{
 				t.die();
 				if (active) grafon.tileDie(t,4);
 			}
@@ -1438,19 +1471,21 @@
 		
 		
 		//вызывается при любом изменении конфигурации пространства блоков
-		private function rebuild() {
+		private function rebuild():void
+		{
 			recalcWater();
-			isRebuild=false;
+			isRebuild = false;
 		}
 		
 		//физика воды		
-		private function recalcWater() {
-			//trace(recalcTiles.length);
+		private function recalcWater():void
+		{
 			var rec:Array=recalcTiles;
 			recalcTiles=new Array();
 			isRecalc=false;
 			var t:Tile, tl:Tile, tr:Tile, tt:Tile, tb:Tile;
-			for (var i in rec) {
+			for (var i in rec)
+			{
 				t=rec[i];
 				if (t.Y>=waterLevel) continue;
 				if (t.phis!=1) {
@@ -1461,20 +1496,25 @@
 					if ((tb.phis==1 || tb.water==1) && (tr.phis==1 || tr.water==1) && (tl.phis==1 || tl.water==1) && (tl.water==1 || tr.water==1 || tt.water==1)) {
 						t.water=1;
 						if (active) grafon.drawWater(t);
-					} else {
-						if (tl.water>0 && t.phis!=1) {
+					} 
+					else
+					{
+						if (tl.water>0 && t.phis!=1)
+						{
 							tl.water=0;
 							recalcTiles.push(tl);
 							if (active) grafon.drawWater(tl);
 							isRecalc=true;
 						}
-						if (tr.water>0 && t.phis!=1) {
+						if (tr.water>0 && t.phis!=1)
+						{
 							tr.water=0;
 							recalcTiles.push(tr);
 							if (active) grafon.drawWater(tr);
 							isRecalc=true;
 						}
-						if (tt.water>0 && t.phis!=1) {
+						if (tt.water>0 && t.phis!=1)
+						{
 							tt.water=0;
 							recalcTiles.push(tt);
 							if (active) grafon.drawWater(tt);
@@ -1489,56 +1529,58 @@
 				if (obj is Obj) (obj as Obj).checkStay();
 				obj=obj.nobj;
 			}
-
-			//for each(var box in objs) if (box is Box) box.checkStay();
 		}
 		
 		//проверка на возможность установки призрачной стены, возвращает true если ничего не мешает
-		public function testTile(t:Tile):Boolean {
+		public function testTile(t:Tile):Boolean
+		{
 			if (t.phis>0 || t.stair!=0 || t.water!=0 || t.door) return false;
-			for each (var cel in units) {
+			for each (var cel in units)
+			{
 				if (cel==null || (cel as Unit).sost==4) continue;
 				if (cel.transT) continue;
-				if (!(cel.X1>=(t.X+1)*Tile.tileX || cel.X2<=t.X*Tile.tileX || cel.Y1>=(t.Y+1)*Tile.tileY || cel.Y2<=t.Y*Tile.tileY)) {
+				if (!(cel.X1>=(t.X+1)*Tile.tileX || cel.X2<=t.X*Tile.tileX || cel.Y1>=(t.Y+1)*Tile.tileY || cel.Y2<=t.Y*Tile.tileY))
+				{
 					return false;
 				}
 			}
-			/*for each (cel in loc.objs) {
-				if ((cel as Box).wall>0) continue;
-				if (!(cel.X-cel.scX/2>=X2 || cel.X+cel.scX/2<=X1 || cel.Y-cel.scY>=Y2 || cel.Y<=Y1)) {
-					return true;
-				}
-			}*/
 			return true;
 		}
 		
 		//прорисовка карты
-		public function drawMap(m:BitmapData) {
-			//m.fillRect(m.rect,0xFF000000);
+		public function drawMap(m:BitmapData)
+		{
 			var vid:Number=1;
-			for (var i=0; i<spaceX; i++) {
-				for (var j=0; j<spaceY; j++) {
+			for (var i:int = 0; i<spaceX; i++)
+			{
+				for (var j:int = 0; j<spaceY; j++)
+				{
 					var color:uint=0x003323;
 					var t:Tile=space[i][j];
 					if (t.water) color=0x0066FF;
 					if (t.shelf || t.diagon!=0) color=0x7B482F;
 					if (t.stair!=0) color=0x666666;
-					if (t.phis==1) {
+					if (t.phis==1)
+					{
 						if (t.indestruct) color=0xFFFFFF;
 						else if (t.door) color=0x639104;
 						else if (t.hp<100) color=0x01995A; 
 						else color=0x00FF99;
 					}
 					if (t.phis==2) color=0x01995A; 
-					if (!World.w.drawAllMap) {
+					if (!World.w.drawAllMap)
+					{
 						vid=space[i][j].visi;
-						if (i<spaceX-1) {
+						if (i<spaceX-1)
+						{
 							if (space[i+1][j].visi>vid) vid=space[i+1][j].visi;
-							if (j<spaceY-1) {
+							if (j<spaceY-1)
+							{
 								if (space[i+1][j+1].visi>vid) vid=space[i+1][j+1].visi;
 							}
 						}
-						if (j<spaceY-1) {
+						if (j<spaceY-1) 
+						{
 							if (space[i][j+1].visi>vid) vid=space[i][j+1].visi;
 						}
 					}
@@ -1546,30 +1588,27 @@
 					m.setPixel32((landX-land.minLocX)*World.cellsX+i,(landY-land.minLocY)*World.cellsY+j,color);
 				}
 			}
-			for each (var obj:Obj in objs) {
-				if (obj.inter && obj.inter.cont!='' && obj.inter.active) {
-					drawMapObj(m, obj, 0xFFCC00);
-					//m.setPixel(landX*World.cellsX+Math.floor(obj.X/World.tileX),landY*World.cellsY+Math.floor((obj.Y-obj.scY/2)/World.tileY),color);
-				}
-				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) {
-					drawMapObj(m, obj, 0xFF0077);
-				}
+			for each (var obj:Obj in objs)
+			{
+				if (obj.inter && obj.inter.cont!='' && obj.inter.active) drawMapObj(m, obj, 0xFFCC00);
+				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) drawMapObj(m, obj, 0xFF0077);
 			}
-			for each (obj in acts) {
-				if (obj is CheckPoint) {
-					drawMapObj(m, obj, 0xFF00FF)
-				}
+			for each (obj in acts)
+			{
+				if (obj is CheckPoint) drawMapObj(m, obj, 0xFF00FF)
 			}
-			for each (obj in units) {
-				if ((obj as Unit).npc) {
-					drawMapObj(m, obj, 0x5500FF);
-				}
+			for each (obj in units)
+			{
+				if ((obj as Unit).npc) drawMapObj(m, obj, 0x5500FF);
 			}
 		}
 		
-		function drawMapObj(m, obj:Obj, color:uint) {
-			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tileX+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tileX-0.5); i++) {
-				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tileY+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tileY-0.5); j++) {
+		private function drawMapObj(m, obj:Obj, color:uint)
+		{
+			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tileX+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tileX-0.5); i++)
+			{
+				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tileY+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tileY-0.5); j++)
+				{
 					m.setPixel(i,j,color);
 				}
 			}
@@ -1581,24 +1620,31 @@
 //
 //**************************************************************************************************************************
 		//команда всем объектам
-		public function allAct(emit:Obj, allact:String, allid:String='') {
+		public function allAct(emit:Obj, allact:String, allid:String=''):void
+		{
 			var obj:Obj;
-			for each (obj in objs) {
+			for each (obj in objs)
+			{
 				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) obj.command(allact,'13');
 			}
-			for each (obj in areas) {
+			for each (obj in areas)
+			{
 				if (obj!=emit && allid=='' || allid==null || (obj as Area).allid==allid) obj.command(allact);
 			}
-			for each (obj in units) {
+			for each (obj in units)
+			{
 				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) obj.command(allact);
 			}
 		}
 		
 		//пробуждение всех вокруг
-		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null) {
+		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null):void
+		{
 			var r2:Number=rad*rad*earMult*earMult;
-			for each(var un in units) {
-				if (un && un!=owner && un.sost==1 && !un.unres) {
+			for each(var un in units)
+			{
+				if (un && un!=owner && un.sost==1 && !un.unres)
+				{
 					var dx=un.X-nx;
 					var dy=un.Y-ny;
 					var delta=rad/2;
@@ -1608,88 +1654,103 @@
 			}
 		}
 		
-		public function electroCheck() {
-			electroDam=0;
-			for each (var obj in objs) {
+		public function electroCheck():void
+		{
+			electroDam = 0;
+			for each (var obj in objs)
+			{
 				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
 			}
 		}
 		
 		//активировать все ячейки роботов
-		public function robocellActivate() {
-			for each(var un in objs) {
+		public function robocellActivate():void
+		{
+			for each(var un in objs)
+			{
 				if (un.inter && un.inter.allact=='robocell') un.inter.genRobot();
 			}
 		}
 		
 		//включить сигнализацию
-		public function signal(n:int=300) {
+		public function signal(n:int=300):void
+		{
 			t_alarm=n;
 			t_alarmsp=Math.floor(n*Math.random()*0.25+0.25);
 			if (prob && prob.alarmScript) prob.alarmScript.start(); 
 		}
 		//включить всё
-		public function allon() {
-			color='yellow';
+		public function allon():void
+		{
+			color = 'yellow';
 			cTransform=colorFilter(color);
 			lightOn=1;
 			darkness=-20;
 			gg.inLoc(this);
-			for each(var obj in units) {
+			for each(var obj in units)
+			{
 				obj.cTransform=cTransform;
 			}
-			for each(var obj in objs) {
+			for each(var obj in objs)
+			{
 				obj.cTransform=cTransform;
-				if (obj.inter) {
+				if (obj.inter)
+				{
 					if (obj.inter.lockTip=='4') obj.inter.setAct('open',0);
 					obj.inter.active=true;
 					obj.inter.update();
 				}
 			}
-			for each(var obj in backobjs) {
+			for each(var obj in backobjs)
+			{
 				obj.onoff(1);
 			}
 			World.w.redrawLoc();
 		}
+
 		//выключить всё
-		public function alloff() {
+		public function alloff():void
+		{
 			color='black';
 			cTransform=colorFilter(color);
 			lightOn=-1;
 			darkness=20;
 			gg.inLoc(this);
-			for each(var obj in units) {
+			for each(var obj in units)
+			{
 				obj.cTransform=cTransform;
 			}
-			for each(var obj in objs) {
+			for each(var obj in objs)
+			{
 				obj.cTransform=cTransform;
 			}
-			for each(var obj in backobjs) {
+			for each(var obj in backobjs)
+			{
 				obj.onoff(-1);
 			}
 			World.w.redrawLoc();
 		}
 		
 		//спавн врага в точке спавна
-		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null) {
-			if (kolEnSpawn<=0 || enspawn==null || enspawn.length==0) return;
+		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null):void
+		{
+			if (kolEnSpawn <= 0 || enspawn == null || enspawn.length == 0) return;
 			kolEnSpawn--;
 			if (!one) t_alarmsp=Math.floor(Math.random()*30);
 			var sp:Object=enspawn[Math.floor(Math.random()*enspawn.length)];
 			var un:Unit=createUnit((tipSp==null)?tipSpawn:tipSp,sp.x,sp.y,true,null,null,30);
-			if (getGG) {
-				un.alarma(gg.X, gg.Y);
-			} else {
-				un.alarma();
-			}
+
+			if (getGG) un.alarma(gg.X, gg.Y);
+			else un.alarma();
 		}
 		
 		//спавн врага из волны
-		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit {
-			if (w==null) return null;
-			if (enspawn.length==0) return null;
-			var sp:Object=enspawn[n];
-			if (sp==null) sp=enspawn[Math.floor(Math.random()*enspawn.length)];
+		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit
+		{
+			if (w == null) return null;
+			if (enspawn.length == 0) return null;
+			var sp:Object = enspawn[n];
+			if (sp == null) sp = enspawn[Math.floor(Math.random() * enspawn.length)];
 			var un:Unit=createUnit(w.@id,sp.x,sp.y,true,w,w.@cid,30);
 			if (spart!=null) Emitter.emit(spart,this,sp.x,sp.y);
 			if (un) {
@@ -1704,14 +1765,17 @@
 		}
 		
 		//устроить трясучку
-		public function earthQuake(n:int) {
-			if (quake<n) {
-				quake=n;
-				World.w.quake(n,n/4);
+		public function earthQuake(n:int):void
+		{
+			if (quake < n)
+			{
+				quake = n;
+				World.w.quake(n, n / 4);
 			}
 		}
 		
-		public function createHealBonus(nx:Number, ny:Number) {
+		public function createHealBonus(nx:Number, ny:Number):void
+		{
 			if (World.w.pers.bonusHeal<=0) return;
 			var obj:Bonus=new Bonus(this,'heal',nx,ny);
 			obj.liv=300;
@@ -1722,18 +1786,25 @@
 		}
 		
 		//обработать призрачные стены
-		function gwalls() {
+		private function gwalls():void
+		{
 			var est=false;
 			var t:Tile
-			for (var i=0; i<spaceX; i++) {
-				for (var j=0; j<spaceY; j++) {
+			for (var i=0; i<spaceX; i++) 
+			{
+				for (var j=0; j<spaceY; j++)
+				{
 					t=space[i][j];
-					if (t.phis==3) {
-						if (active) {
+					if (t.phis==3)
+					{
+						if (active)
+						{
 							t.t_ghost--;
 							est=true;
 							if (t.t_ghost<=0) dieTile(t);
-						} else {
+						}
+						else
+						{
 							t.t_ghost=0;
 							dieTile(t);
 						}
@@ -1743,21 +1814,17 @@
 			if (est) t_gwall=World.fps+1;
 		}
 		
-		public function lightAll() {
-			for each (var cel in objs) {
-				if (cel.light) {
+		public function lightAll():void
+		{
+			for each (var cel in objs) 
+			{
+				if (cel.light) 
+				{
 					lighting(cel.X-10, cel.Y-cel.scY/2);
 					lighting(cel.X, cel.Y-cel.scY/2);
 					lighting(cel.X+10, cel.Y-cel.scY/2);
 				}
 			}
-			/*for each (cel in units) {
-				if (cel.light) {
-					lighting(cel.X-10, cel.Y-cel.scY/2);
-					lighting(cel.X, cel.Y-cel.scY/2);
-					lighting(cel.X+10, cel.Y-cel.scY/2);
-				}
-			}*/
 		}
 		
 		public function lighting(nx:int=-10000,ny:int=-10000,dist1:int=-1, dist2:int=-1) {
@@ -1853,7 +1920,8 @@
 		}
 		
 		//дать опыт
-		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false) {
+		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false):void
+		{
 			if (un) {
 				if (dxp>summXp) {
 					dxp=summXp;
@@ -1868,22 +1936,26 @@
 		
 		
 		//обработка за кадром
-		public function stepInvis() {
-			//for each (var un:Unit in units) if (!un.player) un.step();
-			//for each (var obj:Obj in objs) obj.step();
+		public function stepInvis():void
+		{
 			var numb=0;
 			var obj:Pt=firstObj;
-			if (warning>0) warning--;
-			while (obj) {
+			if (warning > 0) warning--;
+			while (obj)
+			{
 				nextObj=obj.nobj;
-				try {
+				try
+				{
 					obj.step();
-				} catch(err) {
+				} 
+				catch(err)
+				{
 					World.w.showError(err, obj.err());
 				}
 				obj=nextObj;
 				numb++;
-				if (numb>10000) {
+				if (numb>10000)
+				{
 					trace('alarma');
 					break;
 				}
@@ -1894,33 +1966,40 @@
 			if (t_gwall>0) t_gwall--;
 		}
 		
-		public function step() {
+		public function step():void
+		{
 			gg.step();
 			if (prob) prob.step();
 			//пройтись по всей цепочке объектов
 			var numb=0;
 			var obj:Pt=firstObj;
 			if (warning>0) warning--;
-			while (obj) {
+			while (obj) 
+			{
 				nextObj=obj.nobj;
-				try {
+				try 
+				{
 					obj.step();
 					//определить объект под курсором
 					if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
-				} catch(err) {
+				} 
+				catch(err)
+				{
 					World.w.showError(err, obj.err());
 				}
 				obj=nextObj;
 				//нет ли бесконечного цикла
 				numb++;
-				if (numb>10000) {
+				if (numb>10000) 
+				{
 					trace('alarma');
 					break;
 				}
 			}
 			if (unitCoord && unitCoord.step) unitCoord.step();
 			if (celObj && celObj.onCursor<=0) celObj=null;
-			if (black) {
+			if (black)
+			{
 				if (gg.dx+gg.osndx>0.5 || gg.dy+gg.osndy>0.5 || gg.dx+gg.osndx<-0.5 || gg.dy+gg.osndy<-0.5 || isRelight || isRebuild) lighting();
 				else if (relight_t>0) lighting2();
 			}
@@ -1934,10 +2013,9 @@
 			//показать/скрыть указатели перехода
 			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) showSign(!sign_vis);
 			//тревога
-			if (t_alarm>0) {
-				t_alarm--;
-			}
-			if (t_alarmsp>0) {
+			if (t_alarm > 0) t_alarm--;
+			if (t_alarmsp > 0)
+			{
 				t_alarmsp--;
 				if (t_alarmsp==0) enemySpawn();
 			}
@@ -1947,41 +2025,51 @@
 		}
 		
 		//убить всех врагов и открыть все контейнеры
-		public function getAll():int {
+		public function getAll():int 
+		{
 			World.w.summxp=0;
 			World.w.pers.expa(unXp*9);
-			for each (var un:Unit in units) {
+			for each (var un:Unit in units)
+			{
 				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
 			}
-			for each (var box:Box in objs) {
+			for each (var box:Box in objs)
+			{
 				if (box.inter && box.inter.cont) box.inter.loot();
 			}
 			return World.w.summxp;
 		}
 		
-		public function openAllPrize() {
-			for each (var box:Box in objs) {
+		public function openAllPrize():void
+		{
+			for each (var box:Box in objs) 
+			{
 				if (box.inter && box.inter.cont && box.inter.prize) box.inter.loot();
 			}
 		}
 		
 		
 		//дистанция между гг и активным объектом
-		private function getDist() {
+		private function getDist():void 
+		{
 			if (getTile(Math.round(World.w.celX/Tile.tileX),Math.round(World.w.celY/Tile.tileY)).visi<0.1) celObj=null;
-			if (celObj) {
+			if (celObj) 
+			{
 				celDist=(gg.X-celObj.X)*(gg.X-celObj.X)+(gg.Y-celObj.Y)*(gg.Y-celObj.Y);
-			} else celDist=-1;
+			} 
+			else celDist=-1;
 		}
 		
 		
 		//показать/скрыть указатели перехода
-		private function showSign(n:Boolean) {
+		private function showSign(n:Boolean):void
+		{
 			for each (var s in signposts) s.visible=n;
 			sign_vis=n;
 		}
 		
-		public function newGrenade(g:Bullet) {
+		public function newGrenade(g:Bullet):void
+		{
 			if (grenades[0]==null) grenades[0]=g;
 			else {
 				for (var i=1; i<10; i++) {
@@ -1989,22 +2077,26 @@
 				}
 			}
 		}
-		public function remGrenade(g:Bullet) {
+
+		public function remGrenade(g:Bullet):void
+		{
 			if (grenades[0]==g) grenades[0]=null;
-			else {
-				for (var i=1; i<10; i++) {
-					if (grenades[i]==g) grenades[i]=null;
+			else 
+			{
+				for (var i=1; i<10; i++) 
+				{
+					if (grenades[i] == g) grenades[i] = null;
 				}
 			}
 		}
 		
 		//сохранить все объекты
-		public function saveObjs(arr:Array) {
-			for each (var obj:Obj in saves) {
+		public function saveObjs(arr:Array)
+		{
+			for each (var obj:Obj in saves)
+			{
 				if (obj.code) arr[obj.code]=obj.save();
 			}
-		}
-		
-	}
-	
+		}	
+	}	
 }
