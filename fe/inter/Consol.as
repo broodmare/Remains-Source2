@@ -71,9 +71,10 @@
 			vis.butEnter.addEventListener(MouseEvent.CLICK,onButEnter);
 			vis.butClose.addEventListener(MouseEvent.CLICK,onButClose);
 			for each(var i in help.a) vis.help.text+=i+'\n';
-			for each(i in Res.d.weapon) vis.list1.text+=i.@id+' \t'+i.n[0]+'\n';
-			for each(i in Res.d.item) vis.list2.text+=i.@id+' \t'+i.n[0]+'\n';
-			for each(i in Res.d.ammo) vis.list2.text+=i.@id+' \t'+i.n[0]+'\n';
+			// TODO: Stop searching Res on your own.
+			for each(i in Res.currentLanguageData.weapon) vis.list1.text+=i.@id+' \t'+i.n[0]+'\n';
+			for each(i in Res.currentLanguageData.item) vis.list2.text+=i.@id+' \t'+i.n[0]+'\n';
+			for each(i in Res.currentLanguageData.ammo) vis.list2.text+=i.@id+' \t'+i.n[0]+'\n';
 			vis.help.visible=vis.list1.visible=vis.list2.visible=false;
 		}
 		

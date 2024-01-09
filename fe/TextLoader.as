@@ -8,73 +8,75 @@
 	
 	public class TextLoader
 	{
-
 		public var id:String;
-		public var n:int=0;
+		public var n:int = 0;
 		
 		// Set private
-		private var def:Boolean = false;
-		
-		public var textFile:String;
+		private var defaultLanguage:Boolean = false; // Indicates if the language being loaded is used as the fall-back default language.
+		private var filepath:String;
 
 		// Set these two private
 		private var loader_text:URLLoader; 
-		private var request:URLRequest;
-
 		public var progressLoad:Number = 0;
 		
 		public var loaded:Boolean  = false;
 		public var errLoad:Boolean = false;
 		
-		public var d:XML;
+		public var xmlData:XML;
 		
-		public function TextLoader(nfile:String, ndef:Boolean = false)
+		public function TextLoader(filePath:String, isDefault:Boolean = false)
 		{
-			def = ndef;
-			textFile = nfile;
-			if (World.w.playerMode == 'PlugIn') textFile += "?u=" + Math.random().toFixed(5);
-			loader_text = new URLLoader(); 
-			request = new URLRequest(textFile); 
-			loader_text.load(request); 
+			defaultLanguage = isDefault;
+			filepath = filePath;
+
+			loader_text = new URLLoader();
+			var request:URLRequest = new URLRequest(filepath);
+			
 			loader_text.addEventListener(Event.COMPLETE, onCompleteLoadText);
 			loader_text.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
 			loader_text.addEventListener(ProgressEvent.PROGRESS, funProgress);
+
+			loader_text.load(request); 
 		}
 
 		private function onCompleteLoadText(event:Event):void
 		{
-			loaded = true;
-			World.w.load_log+='Text '+textFile+' loaded\n';
-			try
-			{
-				d = new XML(loader_text.data);
-				if (def) Res.e = d;
-				loaded = true;
-			} catch(err)
-			{
-				World.w.load_log+='Text file error '+textFile+'\n';
-				errLoad=true;
-			}
-			World.w.textsLoadOk();
 			loader_text.removeEventListener(Event.COMPLETE, onCompleteLoadText);
 			loader_text.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
 			loader_text.removeEventListener(ProgressEvent.PROGRESS, funProgress);
+
+			loaded = true;
+			World.w.load_log += filepath + ' loaded\n';
+			try
+			{
+				xmlData = new XML(loader_text.data);
+				if (defaultLanguage) Res.fallbackLanguageData = xmlData; // IF THIS LANGAUGE IS THE DEFAULT, COPY IT TO res.fallbackLanguage TO USE AS A FALLBACK.
+				loaded = true;
+			} 
+			catch(err)
+			{
+				World.w.load_log += 'Text file error ' + filepath + '\n';
+				errLoad = true;
+			}
+
+			World.w.textsLoadOk();
 		}
 		
 		private function onErrorLoadText(event:IOErrorEvent):void
 		{
-			errLoad = true;
-			World.w.load_log+='File not found '+textFile+'\n';
-			World.w.textsLoadOk();
 			loader_text.removeEventListener(Event.COMPLETE, onCompleteLoadText);
 			loader_text.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
 			loader_text.removeEventListener(ProgressEvent.PROGRESS, funProgress);
+
+			errLoad = true;
+			World.w.load_log += filepath + ' failed to load.\n';
+			World.w.textsLoadOk();
         }
 		
 		private function funProgress(event:ProgressEvent):void
 		{
-			progressLoad=event.bytesLoaded/event.bytesTotal;
-			World.w.textProgressLoad=progressLoad;
+			progressLoad = event.bytesLoaded / event.bytesTotal;
+			World.w.textProgressLoad = progressLoad;
         }	
 	}	
 }

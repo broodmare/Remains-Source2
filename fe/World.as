@@ -172,13 +172,13 @@
 		public static const boxDamage=0.2;		//мультипликатор силы удара ящиками
 		
 		//Загрузка текстов
-		public var lang:String='en';
-		public var langDef:String='ru';
-		public var langs:Array;
-		public var kolLangs:int=0;
+		public var currentLanguage:String = 'en';		// Two letter language id, eg. 'en'
+		public var userDefaultLanguage:String = 'ru';	// Two letter language id, eg. 'ru'
+		public var langs:Array;							// An array of objects representing langauges. Each obj has two properties, 'file' - the filename, and 'nazv' - the full name of each language, eg. 'english'
+		public var kolLangs:int = 0;					// How many language objects are in lang.
 
+		public var tld:TextLoader;	// Default user language
 		public var tl:TextLoader;
-		public var tld:TextLoader;
 
 		public var textLoaded:Boolean=false;
 		public var textLoadErr:Boolean=false;
@@ -265,21 +265,6 @@
 			langURL='lang.xml';
 			landPath='Rooms/';
 			if (testMode) fileVersion=Math.random()*100000;
-			if (playerMode=='PlugIn') {
-				musicPath='http://foe.ucoz.org/Sound/music/';
-				//soundPath='http://foe.ucoz.org/Sound/';
-				//musicPath='Sound/music/';
-				soundPath='';
-				langURL+='?u='+ Math.random().toFixed(5);
-				//langURL+='?u='+fileVersion;
-				textureURL+='?u='+fileVersion;
-				spriteURL+='?u='+fileVersion;
-				//ressoundURL+='?u='+fileVersion;
-				//textURL='http://foe.ucoz.org/text.xml?u='+ Math.random().toFixed(5);
-				//landPath='http://foe.ucoz.org/Rooms/';
-				//graphURL='http://foe.ucoz.org/texture.swf'
-				//ressoundURL='http://foe.ucoz.org/res.swf'
-			}
 			
 			main=nmain;
 			swfStage=main.stage;
@@ -288,7 +273,7 @@
 			Tile.tileX=tileX;
 			Tile.tileY=tileY;
 			
-			//инициализация данных
+			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
 			loader_lang = new URLLoader(); 
 			request_lang = new URLRequest(langURL); 
 
@@ -355,61 +340,64 @@
 //			Техническая часть
 //=============================================================================================================
 		
-		//успешно завершена загрузка списка языков из xml
+		// The list of languages 'lang.xml' loaded successfully.
 		private function onCompleteLoadLang(event:Event):void
 		{
-			try
-			{
-				langsXML = new XML(loader_lang.data);
-				initLangs(false)
-			}
-			catch(err)
-			{
-				trace('ОШИБКА В ФАЙЛЕ ЯЗЫКОВ');
-				load_log+='Lang file error: '+langURL+'\n';
-				initLangs(true);
-			}
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			load_log+='Lang file loading: '+langURL+' Ok\n';
+
+			langsXML = new XML(loader_lang.data);
+			initLangs(false);
+			
+			load_log += 'Language file loading: ' + langURL + ' Ok\n';
 		}
 		
-		//ошибка загрузки списка языков из xml
+		// The list of languages 'lang.xml' did not load successfully.
 		private function onErrorLoadLang(event:IOErrorEvent):void
 		{
-			initLangs(true);
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			load_log+='Load lang error '+langURL+'\n';
-			trace('Нельзя загрузить список языков');
+			
+			initLangs(true);
+			
+			load_log += 'ERROR: Could not load language: ' + langURL + '.\n';
         }
 		
 		//создать список языков, инициировать загрузку языков
 		private function initLangs(err:Boolean = false):void
 		{
-			if (err) langsXML = <all>
-				<lang id='ru' file='text_ru.xml'>Русский</lang>
-				<lang id='en' file='text_en.xml'>English</lang>
-			</all>;	
-			lang = Capabilities.language;
-			if (configObj.data.language != null) lang = configObj.data.language;
-			if (langsXML && langsXML.@defaultLanguage.length()) langDef = langsXML.@defaultLanguage;
+			if (err) // Failsafe if lang.xml couldn't be loaded correctly.
+			{
+				langsXML = 
+				<all>
+					<lang id='ru' file='text_ru.xml'>Русский</lang>
+					<lang id='en' file='text_en.xml'>English</lang>
+				</all>;
+			}
+
+			currentLanguage = Capabilities.language; // Try to detect default langauge for the user.
+			if (configObj.data.language != null) currentLanguage = configObj.data.language; // If user settings exist, overwrite the default language.
+			if (langsXML && langsXML.@defaultLanguage.length()) userDefaultLanguage = langsXML.@defaultLanguage;
+
 			langs = new Array();
 			for each (var xl:XML in langsXML.lang)
 			{
-				if (xl.@off.length()==0 || !xl.@off>0)
-				{
-					var obj={file:xl.@file, nazv:xl[0]};
-					langs[xl.@id]=obj;
-					kolLangs++;
-				}
+				var obj:Object = {file:xl.@file, nazv:xl[0]};	//Creates an obj with two properties, The file path, eg. 'text_en.xml', and the language name eg. 'English' 
+				langs[xl.@id] = obj;							//Adds each object into the langs array under it's id, eg. 'en'
+				kolLangs++;										//Increase the number of languages.
+				
 			}
-			if (langs[lang]==null) lang=langDef;
-			tld=new TextLoader(langs[langDef].file,true);
-			if (lang!=langDef) {
-				tl=new TextLoader(langs[lang].file);
-			} else {
-				tl=tld;
+			if (langs[currentLanguage] == null) currentLanguage = userDefaultLanguage;
+
+
+			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
+			if (currentLanguage != userDefaultLanguage) 					// If the current language is different from the default, load the user's preferred language as well.
+			{
+				tl = new TextLoader(langs[currentLanguage].file);
+			} 
+			else 
+			{
+				tl = tld;													// Otherwise, write the default user language into tl.
 			}
 		}
 		
@@ -418,34 +406,34 @@
 		{
 			if (tl.loaded)
 			{
-				textLoaded=true;
-				Res.d=tl.d;
+				textLoaded = true;
+				Res.currentLanguageData = tl.xmlData;
 			}
 			if (tl.errLoad)
 			{
-				lang=langDef;
+				currentLanguage = userDefaultLanguage;
 				if (tld.loaded)
 				{
-					textLoaded=true;
-					Res.d=tld.d;
+					textLoaded = true;
+					Res.currentLanguageData = tld.xmlData;
 				}
-				textLoadErr=true;
+				textLoadErr = true;
 			}
 		}
 		
 		//выбрать новый язык
 		public function defuxLang(nid:String):void
 		{
-			lang = nid;
+			currentLanguage = nid;
 			textLoadErr = false;
-			if (nid != langDef)
+			if (nid != userDefaultLanguage)	// If the desired language isn't the user's default, create a new textloader for it.
 			{
-				textLoaded=false;
-				tl=new TextLoader(langs[nid].file);
+				textLoaded = false;
+				tl = new TextLoader(langs[nid].file);
 			}
-			else
+			else							// Otherwise, just copy Res.e to Res.d
 			{
-				Res.d=Res.e;
+				Res.currentLanguageData = Res.fallbackLanguageData;
 				pip.updateLang();
 			}
 			saveConfig();
@@ -458,14 +446,12 @@
 			consol=new Consol(vconsol, lastCom);
 			//сейвы и конфиг
 			saveArr=new Array();
-			for (var i=0; i<=saveKol; i++) {
+			for (var i:int = 0; i<=saveKol; i++) 
+			{
 				saveArr[i]=SharedObject.getLocal('PFEgame'+i,savePath);
 			}
 			saveObj = saveArr[0];
-			/*if (configObj.data.lang) {
-				curLang=configObj.data.lang;
-				setLang();
-			}*/
+
 			if (configObj.data.dialon!=null) dialOn=configObj.data.dialon;
 			if (configObj.data.zoom100!=null) zoom100=configObj.data.zoom100;
 			if (zoom100) cam.isZoom=0; else cam.isZoom=2;
@@ -477,20 +463,23 @@
 			if (configObj.data.showFavs!=null) showFavs=configObj.data.showFavs;
 			if (configObj.data.quakeCam!=null) quakeCam=configObj.data.quakeCam;
 			if (configObj.data.errorShowOpt!=null) errorShowOpt=configObj.data.errorShowOpt;
-			if (configObj.data.app) {
-				app.load(configObj.data.app);// .loadObj=configObj.data.app;
+			if (configObj.data.app)
+			{
+				app.load(configObj.data.app);
 				app.setTransforms();
 			}
-			try {
-				koladv=Res.d.advice[0].a.length();
-			} catch (err) {}
-			if (configObj.data.nadv) {
+
+			try { koladv = Res.currentLanguageData.advice[0].a.length(); } 
+			catch (err) {}
+
+			if (configObj.data.nadv)
+			{
 				nadv=configObj.data.nadv;
 				configObj.data.nadv++;
 				if (configObj.data.nadv>=koladv) configObj.data.nadv=0;
-			} else {
-				configObj.data.nadv=1;
 			}
+			else configObj.data.nadv=1;
+
 			if (configObj.data.chit>0) chitOn=true;
 			
 			if (configObj.data.vsWeaponNew>0) vsWeaponNew=false;
@@ -508,21 +497,20 @@
 			if (configObj.data.vsComp>0) vsComp=false;
 			if (configObj.data.vsIngr>0) vsIngr=false;
 			
-			//trace(configObj.data.vsWeaponNew,vsWeaponNew);
 			ctr=new Ctr(configObj.data.ctr);
 			pip=new PipBuck(vpip);
 			if (!sysCur) Mouse.cursor='arrow';
 			
 			//загрузка карт локаций
-			landData=new Array();
-			for each(var xl in GameData.d.land) {
+			landData = new Array();
+			for each(var xl in GameData.d.land)
+			{
 				if (!testMode && xl.@test>0) continue;
 				var ll:LandLoader=new LandLoader(xl.@id);
 				if (!(xl.@test>0)) kolLands++;
 				landData[xl.@id]=ll;
 			}
 			
-			//
 			load_log+='Stage 2 Ok\n';
 			Snd.loadMusic();
 		}
@@ -541,10 +529,7 @@
 		//Пауза и вызов пипбака если потерян фокус
 		public function onDeactivate(event:Event):void
 		{
-			if (allStat==1)
-			{
-				pip.onoff(11);
-			}
+			if (allStat==1) pip.onoff(11);
 			if (allStat>0 && !alicorn) saveGame();
 		}
 		
@@ -1235,7 +1220,7 @@
 			{
 				configObj.data.ctr=ctr.save();
 				configObj.data.snd=Snd.save();
-				configObj.data.language=lang;
+				configObj.data.language = currentLanguage;
 				configObj.data.chit=(chitOn?1:0);
 				configObj.data.dialon=dialOn;
 				configObj.data.zoom100=zoom100;

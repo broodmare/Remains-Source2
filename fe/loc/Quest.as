@@ -113,8 +113,11 @@
 			if (loadObj && loadObj.invis!=undefined) {
 				invis=loadObj.invis;
 			}
-			var node=Res.d.txt.(@id==pid);
-			if (node.length()==0) node=Res.e.txt.(@id==pid);
+
+			// TODO: Stop searching Res on your own.
+			var node=Res.currentLanguageData.txt.(@id==pid);
+			if (node.length()==0) node=Res.fallbackLanguageData.txt.(@id==pid);
+			
 			if (node.length()) {
 				node=node[0]
 				nazv=node.n[0];
@@ -374,7 +377,5 @@
 				World.w.game.runScript(endScript);
 			}
 		}
-
-	}
-	
+	}	
 }

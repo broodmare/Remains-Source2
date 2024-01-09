@@ -1,44 +1,31 @@
 ﻿package fe
 {
-	import flash.utils.*;
+	import flash.utils.getDefinitionByName;
 	import flash.display.MovieClip;
  
 	public class Res
 	{
-		
-		public static var d:XML;
-		public static var e:XML;
+		public static var currentLanguageData:XML; 		// Current localization file eg. 'text_en.xml'
+		public static var fallbackLanguageData:XML;		// Default language that is used a fallback if an error occurs.
 
-		private static var rainbowcol:Array = ['red','or','yel','green','blu','purp'];
+		private static const typeDictionary:Object = 
+		{
+			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
+			'e':'eff', 'f':'info', 'p':'pip', 'k':'key', 'g':'gui', 'm':'map',
+			0:'n', 1:'info', 2:'mess', 3:'help'
+		};
 
-		public static var clob:Array = new Array();
-		clob['u']='unit';
-		clob['w']='weapon';
-		clob['a']='armor';
-		clob['o']='obj';
-		clob['i']='item';
-		clob['e']='eff';
-		clob['f']='info';
-		clob['p']='pip';
-		clob['k']='key';
-		clob['g']='gui';
-		clob['m']='map';
-		clob[0]='n';
-		clob[1]='info';
-		clob[2]='mess';
-		clob[3]='help';
-		
 		public static function istxt(tip:String, id:String):Boolean
 		{
-			var xmlList:XMLList = d[clob[tip]].(@id == id); // Check d for matching nodes.
+			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
 			if (xmlList.length() == 0)
 			{
-				xmlList = e[clob[tip]].(@id == id); // If no matching nodes are found, check e.
+				xmlList = fallbackLanguageData[typeDictionary[tip]].(@id == id); // If no matching nodes are found, check fallbackLanguageData.
 				if (xmlList.length() == 0) return false; // If there's still no matching nodes, return false.
 			}
 			return true;
 		}
-		
+
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String
 		{
 			if (id == '') return '';
@@ -46,28 +33,28 @@
 			var s:String;	// String representation of localized text.
 			var xl1:XMLList; // XML List of all returned nodes for the type[id].
 
-			try // Try to get a localized string from d.
+			try // Try to get a localized string from currentLanguageData.
 			{
-				xl1 = d[clob[tip]].(@id==id);
-				s = xl1[clob[razd]][0];		
+				xl1 = currentLanguageData[typeDictionary[tip]].(@id==id);
+				s = xl1[typeDictionary[razd]][0];		
 			} 
 			catch (err) {}
 
-			if (s == null) // If a string wasn't grabbed, try e instead.
+			if (s == null) // If a string wasn't grabbed, try fallbackLanguageData instead.
 			{
 				try
 				{
-					xl1=e[clob[tip]].(@id==id);
-					s=xl1[clob[razd]][0];		
+					xl1=fallbackLanguageData[typeDictionary[tip]].(@id==id);
+					s=xl1[typeDictionary[razd]][0];		
 				}
 				catch (err) {}
 			}
 
-			// If neither d or e returned a string, return a blank string early for objects, 
+			// If neither currentLanguageData or fallbackLanguageData returned a string, return a blank string early for objects, 
 			if (s == null) 
 			{
 				if (tip == 'o') return '';
-				if (razd == 0) return '*' + clob[tip] + '_' + id;
+				if (razd == 0) return '*' + typeDictionary[tip] + '_' + id;
 				return '';
 			}			
 
@@ -83,7 +70,7 @@
 				if (xl2.@s1.length()) s=addKeys(s, xl2);	//клавиши управления
 				try
 				{
-					if (xl2[clob[razd]][0].@s1.length()) s=addKeys(s,xl2[clob[razd]][0]);
+					if (xl2[typeDictionary[razd]][0].@s1.length()) s=addKeys(s,xl2[typeDictionary[razd]][0]);
 				}
 				catch (err) {}
 				s=s.replace(/\[br\]/g,'<br>');
@@ -108,36 +95,43 @@
 			return txt('p',id);
 		}
 
-		public static function messText(id:String, v:int=0, imp:Boolean=true):String
+		public static function messText(id:String, v:int = 0, imp:Boolean = true):String
 		{
-			var s:String='';
+			var s:String = '';
 			try
 			{
-				var xml=d.txt.(@id==id);
-				if (xml.length()==0) xml=e.txt.(@id==id);
+				var xml:XMLList = currentLanguageData.txt.(@id==id);
+				if (xml.length()==0) 
+				{
+					xml = fallbackLanguageData.txt.(@id==id);
+				}
 				if (xml.length()==0) return '';
-				if (!imp && !(xml.@imp>0)) return '';
-				var tip:int=xml.@imp;
-				if (v==1) {
-					s=xml.info[0];
+
+				if (!imp && !(xml.@imp > 0)) return '';
+				var tip:int = xml.@imp;
+				if (v==1) 
+				{
+					s = xml.info[0];
 				}
 				else
 				{
 					if (xml.n[0].r.length())
 					{
-						for each (var node in xml.n[0].r)
+						for each (var node:XML in xml.n[0].r)
 						{
 							var s1:String=node.toString();
-							if (node.@m.length()) {
+							if (node.@m.length())
+							{
 								var sar:Array=s1.split('|');
-								if (sar) {
+								if (sar) 
+								{
 									if (World.w.matFilter && sar.length>1) s1=sar[1];
 									else s1=sar[0];
 								}
 							}
 							if (node.@s1.length())
 							{
-								for (var i=1; i<=5; i++)
+								for (var i:int = 1; i <= 5; i++)
 								{
 									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yel'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
 								}
@@ -148,8 +142,8 @@
 								if (node.@p.length()==0) s+="<span class='dark'>"+s1+"</span>"+'<br>';
 								else
 								{
-									var pers=node.@p;
-									if (pers.substr(0,2)=='lp') s+="<span class='light'>"+' - '+s1+"</span>"+'<br>';
+									var pers:XML = node.@p;
+									if (pers.indexOf("lp") == 0) s+="<span class='light'>"+' - '+s1+"</span>"+'<br>';
 									else s+=' - '+s1+'<br>';
 								}
 							} 
@@ -161,40 +155,40 @@
 				s=s.replace(/\[br\]/g,'<br>');
 				if (xml.@s1.length())
 				{
-					for (var i=1; i<=5; i++)
+					for (var j:int = 1; j <= 5; j++)
 					{
-						if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='r2'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span class='r2'>" + World.w.ctr.retKey(xml.attribute('s' + j)) + "</span>");
 					}
 				}
 			}
 			catch (err)
 			{
-				return 'err: '+id;
+				return 'err: ' + id;
 			}
-			return (s==null)?'':s;
+			return (s == null) ? '':s;
 		}
 
 		public static function advText(n:int):String
 		{
-			var xml=d.advice[0];
-			var s:String=xml.a[n];
-			return (s==null)?'':s;
+			var xml:XML = currentLanguageData.advice[0]; // Grab the entire advice node with all its child 'a' nodes.
+			var s:String = xml.a[n];
+			return (s == null)?'':s;
 		}
 
 		public static function repText(id:String, act:String, msex:Boolean=true):String
 		{
-			var xl:XMLList=d.replic[0].rep.(@id==id && @act==act);
+			var xl:XMLList = currentLanguageData.replic[0].rep.(@id==id && @act==act);
 			if (xl.length()==0) return '';
 			xl=xl[0].r;	//AllData.lang
-			var n=xl.length();
-			if (n==0) return '';
-			var num:int=Math.floor(Math.random()*n);
+			var n:int = xl.length();
+			if (n == 0) return '';
+			var num:int = Math.floor(Math.random() * n);
 			if (World.w.matFilter && xl[num].@m.length()) return '';
-			var s:String=xl[num];
-			var n1=s.indexOf('#');
+			var s:String = xl[num];
+			var n1:int = s.indexOf('#');
 			if (n1>=0)
 			{
-				var n2=s.lastIndexOf('#');
+				var n2:int = s.lastIndexOf('#');
 				var ss:String=s.substring(n1+1,n2);
 				s=s.substring(0,n1)+ss.split('|')[msex?0:1]+s.substring(n2+1);
 			}
@@ -204,13 +198,13 @@
 		
 		public static function namesArr(id:String):Array
 		{
-			var xl:XMLList=d.names;
+			var xl:XMLList = currentLanguageData.names;
 			if (xl.length()==0) return null;
 			xl=xl[0].name.(@id==id);
 			if (xl.length()==0) return null;
 			xl=xl[0].r;
 			var arr:Array=new Array();
-			for each (var n in xl) arr.push(n.toString());
+			for each (var n:XML in xl) arr.push(n.toString());
 			return arr;
 		}
 		
@@ -219,9 +213,9 @@
 			return s.replace(/@lp/g,World.w.pers.persName);
 		}
 		
-		public static function getDate(d:Number):String
+		public static function getDate(num:Number):String
 		{
-			var date:Date=new Date(d);
+			var date:Date=new Date(num);
 			return date.fullYear+'.'+(date.month>=9?'':'0')+(date.month+1)+'.'+(date.date>=10?'':'0')+date.date+'  '+date.hours+':'+(date.minutes>=10?'':'0')+date.minutes;
 		}
 		
@@ -239,7 +233,8 @@
 		public static function addKeys(s:String,xml:XML):String
 		{
 			if (s==null) return '';
-			for (var i=1; i<=5; i++) {
+			for (var i:int = 1; i <= 5; i++)
+			{
 				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
 			}
 			return s;
@@ -260,49 +255,60 @@
 			var s:int=sec%60;
 			return h.toString()+':'+((m<10)?'0':'')+m+':'+((s<10)?'0':'')+s;
 		}
-		
-		
-		
-		public static function rainbow(s:String):String {
-			var n=0;
-			var res:String='';
-			for (var i=0; i<s.length; i++) {
-				res+="<span class='"+rainbowcol[n]+"'>"+s.charAt(i)+"</span>";
+
+		public static function rainbow(s:String):String 
+		{
+			var n:int = 0;
+			var res:String = '';
+			var rainbowcol:Array = ['red', 'or', 'yel', 'green', 'blu', 'purp'];
+
+			for (var i:int = 0; i < s.length; i++) 
+			{
+				res += "<span class='" + rainbowcol[n] + "'>" + s.charAt(i) + "</span>";
 				n++;
-				if (n>=6) n=0;
+				if (n >= 6) n = 0;
 			}
 			return res;
 		}
 		
-		public static function getVis(id:String, def:Class=null):MovieClip {
+		public static function getVis(id:String, def:Class=null):MovieClip
+		{
 			var r:Class;
-			try {
-				r=getDefinitionByName(id) as Class;
-			} catch (err:ReferenceError) {
-				r=def;
+			try
+			{
+				r = getDefinitionByName(id) as Class;
+			}
+			catch (err:ReferenceError)
+			{
+				r = def;
 			}
 			if (r) return new r()
 			else return null;
 		}
 		
-		public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
+		public static function getClass(id1:String, id2:String=null, def:Class=null):Class 
+		{
 			var r:Class;
-			try {
-				r=getDefinitionByName(id1) as Class;
-			} catch (err:ReferenceError) {
-				if (id2==null) r=def;
-				else {
-					try {
-						r=getDefinitionByName(id2) as Class;
-					} catch (err:ReferenceError) {
-						r=def;
+			try 
+			{
+				r = getDefinitionByName(id1) as Class;
+			} 
+			catch (err:ReferenceError)
+			{
+				if (id2 == null) r = def;
+				else
+				{
+					try
+					{
+						r = getDefinitionByName(id2) as Class;
+					}
+					catch (err:ReferenceError)
+					{
+						r = def;
 					}
 				}
 			}
 			return r;
 		}
-		
-
-	}
-	
+	}	
 }

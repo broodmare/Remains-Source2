@@ -143,7 +143,10 @@
 					s=s.replace(/&lp/g,World.w.pers.persName);
 					s=s.replace(/\[/g,"<span class='yel'>");
 					s=s.replace(/\]/g,"</span>");*/
-					var xml=Res.d.txt.(@id==note);
+
+					//TODO: Stop searching Res on your own.
+					var xml=Res.currentLanguageData.txt.(@id==note);
+					
 					var nico:int=0;
 					if (xml && xml.@imp>0) {
 						nico=int(xml.@imp);

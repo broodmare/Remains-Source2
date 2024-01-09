@@ -867,9 +867,7 @@
 			var s:String=Res.txt('f',id);
 			s=s.replace('@1','<b>'+p1+'</b>');
 			if (p2!=null) s=s.replace('@2',p2);
-			//s=s.replace('&3',p3);
 			if (s!=prevInfoText) {
-				//bulbText="<span class = 'r"+Res.d.info.(@id==id).@st+"'>"+s+"</span>";
 				bulbText=s;
 				info.htmlText+=bulbText+"<br>";
 				if (addlog) World.w.log+=bulbText+"<br>";
@@ -927,14 +925,8 @@
 			t_mess=nt_mess;
 			var s:String='';
 			if (id!='' && id+'_'+str!=id_mess) {
-				//var xml=Res.d.txt.(@id==id);
 				if (id!='') s=Res.messText(id);
-				/*s=s.replace(/\[br\]/g,'<br>');
-				for (var i=1; i<=5; i++) {
-					if (xml.attribute('s'+i).length())  s=s.replace('&'+i,"<span class='r2'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
-				}*/
 				id_mess=id+'_'+str;
-				//World.w.game.addNote(id);
 			}
 			if (str!='') s+=' '+str;
 			if (s!='') {
@@ -971,6 +963,7 @@
 			if (World.w.loc.prob) informText(World.w.loc.prob.info+'<br><br>'+World.w.loc.prob.help);
 			event.stopPropagation();
 		}
+
 		public function scrollClick(event:MouseEvent) {
 			World.w.ctr.active=false;
 			World.w.ctr.keyPressed=false;
@@ -986,9 +979,10 @@
 				return false;
 			}
 			var xml;
+			// TODO: Stop searching Res on your own
 			if (id is String) {
-				xml=Res.d.txt.(@id==id);
-				if (xml.length()==0) xml=Res.e.txt.(@id==id);
+				xml=Res.currentLanguageData.txt.(@id==id);
+				if (xml.length()==0) xml=Res.fallbackLanguageData.txt.(@id==id);
 				if (xml.length()==0) return false;
 				xml=xml.n[0];
 				if (xml.length()==0) return false;

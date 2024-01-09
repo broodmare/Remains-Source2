@@ -591,9 +591,9 @@ package fe
 		{
 			mainMenuMovieClip.loading.text='';
 			var nid:String = event.currentTarget.n.text;
-			if (nid==world.lang) return;
+			if (nid==world.currentLanguage) return;
 			world.defuxLang(nid);
-			if (nid==world.langDef) 
+			if (nid==world.userDefaultLanguage) 
 			{
 				setMainLang();
 			} 
@@ -616,7 +616,7 @@ package fe
 			mainMenuMovieClip.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
 			s+='<br><br>'+Res.guiText('usedmusic')+'<br>';
-			s+="<br><span class='music'>"+Res.formatText(Res.d.gui.(@id=='usedmusic').info[0])+"</span>"
+			s+="<br><span class='music'>"+Res.formatText(Res.currentLanguageData.gui.(@id=='usedmusic').info[0])+"</span>"
 			s+="<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
 			mainMenuMovieClip.dialAbout.txt.styleSheet=style;
 			mainMenuMovieClip.dialAbout.txt.htmlText=s;
