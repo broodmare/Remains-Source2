@@ -1,5 +1,5 @@
-﻿package fe.inter {
-	
+﻿package fe.inter 
+{	
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
@@ -26,7 +26,8 @@
 		var inbase:Boolean=false;
 		var selall:Boolean=true;
 
-		public function PipPageVend(npip:PipBuck, npp:String) {
+		public function PipPageVend(npip:PipBuck, npp:String)
+		{
 			isLC=isRC=true;
 			itemClass=visPipBuyItem;
 			super(npip,npp);
@@ -46,7 +47,9 @@
 				//ns.textField.textField.textColor=0x00FF99;
 				ns.setStyle("textFormat", tf);
 			}
-			tips=[[],
+			tips = 
+			[
+				[],
 				['',
 					[Item.L_WEAPON, Item.L_ARMOR,'spell'],
 					['a','e'],
@@ -82,7 +85,6 @@
 				if (page2==4) page2=1;
 				vis.but4.visible=false;
 			}
-			//trace(npcId, npcInter)
 			if (npcInter=='vr') vis.but3.text.text=Res.pipText('vend3');
 			if (npcInter=='doc') vis.but3.text.text=Res.pipText('med1');
 			if (npcInter=='v') {
@@ -105,7 +107,6 @@
 				statHead.hp.text=Res.pipText('iv2')+' / '+Res.pipText('iv6');
 				statHead.price.text=Res.pipText('iv3');
 				statHead.kol.text=Res.pipText('iv4');
-				//statHead.bou.text='';
 				statHead.cat.visible=false;
 				for each(var b:Item in vend.buys) {
 					if (b.kol<=0) continue;
@@ -158,7 +159,6 @@
 				statHead.hp.text='';
 				statHead.price.text=Res.pipText('iv3');
 				statHead.kol.text=Res.pipText('iv6');
-				//statHead.bou.text='';
 				statHead.cat.visible=false;
 				for (var s in inv.items) {
 					if (s=='' || inv.items[s].kol<=0) continue;
@@ -174,7 +174,6 @@
 							n.wtip='drink';
 						}
 						if (n.wtip=='valuables') n.sort='a';
-						//vend.kolSell+=n.price*n.kol;
 						assArr[n.id]=n;
 						arr.push(n);
 					}
@@ -204,7 +203,6 @@
 				statHead.price.text=Res.pipText('iv5');
 				statHead.kol.text='';
 				statHead.price.x=450;
-				//statHead.bou.text='';
 				statHead.cat.visible=false;
 				if (inv.items['owl'] && inv.items['owl'].kol) {
 					World.w.pers.setRoboowl();
@@ -241,7 +239,6 @@
 				vis.butOk.visible=false;
 			}
 			if (page2==4) {
-				//setTopText('infotasks');
 				statHead.visible=false;
 				if (npcId=='' || vend==null || vend.xml==null || vend.xml.task.length()==0) {
 					vis.emptytext.text=Res.pipText('emptytasks');
@@ -278,7 +275,8 @@
 		}
 		//
 		
-		override function setSigns() {
+		override function setSigns()
+		{
 			if (vend==null) return;
 			super.setSigns();
 			if (vis.but4.visible && vend.xml) {
@@ -299,35 +297,40 @@
 			}
 		}
 		
-		public override function page2Click(event:MouseEvent) {
+		public override function page2Click(event:MouseEvent)
+		{
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			pip.snd(2);
-			if (page2==3 && npcInter=='doc') {
+			if (page2==3 && npcInter=='doc')
+			{
 				page2=1;
 				pip.onoff(6);
-			} else {
+			}
+			else
+			{
 				setStatus();
 			}
 		}
 		
 	
-		function showBottext() {
+		function showBottext()
+		{
 			if (page2==1 && vend) {
-				vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money)+' (';
-				if (vend.kolBou>0) vis.bottext.htmlText+='-'+yel(Math.ceil(vend.kolBou))+'; ';
-				vis.bottext.htmlText+=yel(Math.floor(pip.money-vend.kolBou))+' '+Res.pipText('ost')+')';
+				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (';
+				if (vend.kolBou>0) vis.bottext.htmlText+='-'+numberAsColor('yellow', Math.ceil(vend.kolBou))+'; ';
+				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(pip.money-vend.kolBou))+' '+Res.pipText('ost')+')';
 			}
 			if (page2==2 && vend) {
-				vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money)+' (+'+yel(Math.floor(vend.kolSell))+')';
-				if (!inbase) vis.bottext.htmlText+='   '+Res.pipText('vcaps')+': '+yel(vend.money);
+				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (+'+numberAsColor('yellow', Math.floor(vend.kolSell))+')';
+				if (!inbase) vis.bottext.htmlText+='   '+Res.pipText('vcaps')+': '+numberAsColor('yellow', vend.money);
 			}
-			if (page2==3) vis.bottext.htmlText=Res.pipText('caps')+': '+yel(inv.money.kol);
+			if (page2==3) vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', inv.money.kol);
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
-				//trace(obj.id,obj.rid,obj.tip,obj.nazv)
+		override function setStatItem(item:MovieClip, obj:Object)
+		{
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.cat.visible=false;
@@ -362,7 +365,6 @@
 					item.hp.text=(obj.sost==0)?'-':obj.sost;
 					item.price.text=Math.round(obj.price*obj.mp*10)/10;
 				}
-				//item.bou.text=(obj.bou==0)?'':obj.bou;
 			} 
 			if (page2==2) {
 				item.cat.text=obj.tip;
@@ -381,14 +383,12 @@
 				item.cat.text=obj.tip;
 				item.nazv.text=obj.nazv;
 				item.hp.text=Math.round(obj.hp/obj.maxhp*100)+'%';
-				//item.price.text=Math.ceil(obj.price*(obj.maxhp-obj.hp)/obj.maxhp*0.5*vend.multPrice);
 				var mp:Number=1;
 				if (obj.tip==Item.L_ARMOR) mp=gg.pers.priceRepArmor;
 				item.price.text=Math.ceil(obj.price*(obj.maxhp-obj.hp)/obj.maxhp*vend.multPrice*mp);
 				item.kol.text='';
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
-				//item.bou.text='';
 			} 
 			if (page2==4) {
 				item.cat.text=obj.state;
@@ -460,23 +460,15 @@
 			if (page2==2) vend.kolSell-=buy.price*n;
 		}
 		
-		/*function chBuy(buy:Object, kol:int=0) {
-			if (buy==null) return;
-			vis.butOk.visible=true;
-			if (Math.round(buy.price*vend.multPrice*n)>pip.money-vend.kolBou) {
-				n=Math.floor((pip.money-vend.kolBou)/buy.price*vend.multPrice);
-				if (n<=0) {
-					World.w.gui.infoText('noMoney',Math.round(buy.price*vend.multPrice-(pip.money-vend.kolBou)));
-					return;
-				}
-			}
-		}*/
-		
-		function nsClick(event:MouseEvent) {
+		function nsClick(event:MouseEvent) 
+		{
 			event.stopPropagation();
 		}
-		function nsCh(event:Event) {
-			if (page2==1 || page2==2) {
+
+		function nsCh(event:Event)
+		{
+			if (page2==1 || page2==2)
+			{
 				var buy:Object=assArr[event.currentTarget.parent.rid.text];
 				var n=event.currentTarget.value-buy.bou;
 				if (n>0) selBuy(buy, n);
@@ -488,7 +480,8 @@
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent)
+		{
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n=1;

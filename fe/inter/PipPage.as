@@ -115,7 +115,8 @@
 			setStyle(vis.bottext);
 		}
 		
-		public static function setStyle(tt:TextField) {
+		public static function setStyle(tt:TextField):void
+		{
 			var style:StyleSheet = new StyleSheet(); 
 			var styleObj:Object = new Object(); 
 			styleObj.color = "#00FF99"; 
@@ -124,15 +125,15 @@
 			styleObj.color = "#FF3333"; 
 			style.setStyle(".red", styleObj);	//красный
 			styleObj.color = "#FFFF33"; 
-			style.setStyle(".yel", styleObj);	//жёлтый
+			style.setStyle(".yellow", styleObj);	//жёлтый
 			styleObj.color = "#FF9900"; 
 			style.setStyle(".or", styleObj);	//оранжевый
 			styleObj.color = "#FC7FED"; 
 			style.setStyle(".pink", styleObj);	//розовый
 			styleObj.color = "#00FFFF"; 
-			style.setStyle(".blu", styleObj);	//голубой
+			style.setStyle(".blue", styleObj);	//голубой
 			styleObj.color = "#99CCFF"; 
-			style.setStyle(".mass", styleObj);	//серо-голубой
+			style.setStyle(".lightBlue", styleObj);	//серо-голубой
 			styleObj.color = "#007E4B"; 
 			style.setStyle(".dark", styleObj);	//7 - тёмно-зелёный
 			styleObj.color = "#8AFFD0"; 
@@ -144,21 +145,35 @@
 			tt.styleSheet=style;
 		}
 		
-		public function updateLang() {
-			for (var i=1; i<=5; i++) {
-				var item=vis.getChildByName('but'+i) as MovieClip;
-				item.text.text=Res.pipText(pp+i);
+		//Print colored text
+		public static function textAsColor(color:String, text:String):String
+		{
+			return "<span class = " + "'" + color + "'" + ">" + text + "</span>";
+		}
+		public static function numberAsColor(color:String, number:Number):String
+		{
+			return "<span class = " + "'" + color + "'" + ">" + number.toString() + "</span>";
+		}
+
+		public function updateLang()
+		{
+			for (var i:int = 1; i <= 5; i++) 
+			{
+				var button:MovieClip = vis.getChildByName('but'+i) as MovieClip;
+				button.text.text = Res.pipText(pp + i);
 			}
 		}
 
-		public function page2Click(event:MouseEvent) {
+		public function page2Click(event:MouseEvent) 
+		{
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
 		}
 		
-		function setButtons() {
+		function setButtons() 
+		{
 			for (var i=1; i<=5; i++) {
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page2==i) item.gotoAndStop(2);
@@ -167,7 +182,8 @@
 			}
 		}
 		
-		public function setStatus(flop:Boolean=true) {
+		public function setStatus(flop:Boolean=true) 
+		{
 			pip.reqKey=false;
 			statHead.id.text='';
 			vis.visible=true;
@@ -188,46 +204,65 @@
 			setStatItems(flop?0:-1);
 
 			var sc:ScrollBar=vis.scBar;
-			if (arr.length>maxrows) {
+
+			if (arr.length>maxrows) 
+			{
 				sc.visible=true;
 				sc.minScrollPosition=0
 				sc.maxScrollPosition=arr.length-maxrows;
 				sc.scrollPosition=scrl;
-			} else {
-				sc.visible=false;
-			}
+			} 
+			else sc.visible=false;
+
 			setSigns();
 			setButtons();
 		}
 		
 		//подготовка страниц
-		function setSubPages() {
+		function setSubPages() 
+		{
+
 		}
+
 		//определение подсвеченности кнопок
-		function setSigns() {
+		function setSigns() 
+		{
 			signs=[0,0,0,0,0,0];
 		}
 		
 		//показ одного элемента
-		function setStatItem(item:MovieClip, obj:Object) {
+		function setStatItem(item:MovieClip, obj:Object)
+		{
+
 		}
 		
 		//информация об элементе
-		function statInfo(event:MouseEvent) {
+		function statInfo(event:MouseEvent)
+		{
+
 		}
 		
-		function itemClick(event:MouseEvent) {
+		function itemClick(event:MouseEvent)
+		{
+
 		}
-		function itemRightClick(event:MouseEvent) {
+		function itemRightClick(event:MouseEvent)
+		{
+
 		}
 		
 		//показ всех элементов
-		public function setStatItems(n:int=-1) {
+		public function setStatItems(n:int=-1)
+		{
 			if (n>=0) scrl=n;
-			for (var i=0; i<statArr.length; i++) {
-				if (i+scrl>=arr.length) {
+			for (var i=0; i<statArr.length; i++)
+			{
+				if (i+scrl>=arr.length)
+				{
 					statArr[i].visible=false;
-				} else {
+				}
+				else
+				{
 					statArr[i].visible=true;
 					setStatItem(statArr[i],arr[i+scrl]);
 				}
@@ -238,7 +273,6 @@
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible=vis.skill.visible=false;
 			vis.item.gotoAndStop(1);
-			//vis.ico.y=vis.nazv.y+vis.nazv.textHeight+20;
 			vis.info.y=vis.ico.y;
 			if (tip==1) {//оружие
 				var w:Weapon=pip.arrWeapon[id];
@@ -275,7 +309,6 @@
 				}
 			}
 			if (tip==2) {//бронька
-				//var child:DisplayObject;
 				pip.setArmor(id);
 				vis.pers.gotoAndStop(2);
 				vis.pers.gotoAndStop(1);
@@ -305,23 +338,7 @@
 				}
 			}
 		}
-		
-		public static function yel(s):String {
-			return "<span class = 'yel'>"+s+"</span>";
-		}
-		public static function red(s):String {
-			return "<span class = 'red'>"+s+"</span>";
-		}
-		public static function pink(s):String {
-			return "<span class = 'pink'>"+s+"</span>";
-		}
-		public static function mass(s):String {
-			return "<span class = 'mass'>"+s+"</span>";
-		}
-		public static function blue(s):String {
-			return "<span class = 'blu'>"+s+"</span>";
-		}
-		
+
 		//добавить в текстовую строку значения
 		public static function addVar(s:String, xml):String {
 			for (var i=1; i<=5; i++) {
@@ -363,7 +380,7 @@
 			if (dp.eff.length() && lvl>0) {
 				s+='<br>';
 				for each(var eff in dp.eff) {
-					s+='<br>'+(eff.@id.length()?Res.pipText(eff.@id):Res.pipText('refeff'))+': '+yel(eff.attribute('n'+lvl));
+					s+='<br>'+(eff.@id.length()?Res.pipText(eff.@id):Res.pipText('refeff'))+': '+textAsColor('yellow', eff.attribute('n'+lvl));
 				}
 			}
 			//добавление эффектов веса
@@ -371,9 +388,9 @@
 				s+='<br>';
 				for each(var sk in dp.sk) {
 					if (sk.@tip=='m') {
-						var add=mass('+1');
-						if (sk.@vd>0) add=mass('+'+sk.@vd)+' '+Res.pipText('perlevel');
-						if (sk.@v1>0) add=mass('+'+sk.@v1);
+						var add=textAsColor('lightBlue', '+1');
+						if (sk.@vd>0) add=textAsColor('lightBlue', '+'+sk.@vd)+' '+Res.pipText('perlevel');
+						if (sk.@v1>0) add=textAsColor('lightBlue', '+'+sk.@v1);
 						s+='<br>'+Res.pipText('add_'+sk.@id)+' '+add;
 					}
 				}
@@ -399,8 +416,8 @@
 						if (pers.getSkLevel(pers.skills[req.@id])<reqlevel) ok=false;
 					}
 					s1+=': '+reqlevel;
-					if (ok)	s+=yel(s1);
-					else s+=red(s1);
+					if (ok)	s+=textAsColor('yellow', s1);
+					else s+=textAsColor('red', s1);
 				}
 			}
 			return s;
@@ -423,10 +440,10 @@
 				if (razn==1) skillConf=0.75;
 				if (razn>=2) skillConf=0.5;
 				w.skillConf=skillConf;
-				s+=Res.pipText('weapontip')+': '+yel(Res.pipText('weapontip'+w.skill));
+				s+=Res.pipText('weapontip')+': '+textAsColor('yellow', Res.pipText('weapontip'+w.skill));
 				if (w.lvl>0) {
-					s+='\n'+Res.pipText('lvl')+': '+yel(w.lvl);
-					s+='\n'+Res.pipText('islvl')+': '+yel(gg.pers.getWeapLevel(w.skill));
+					s+='\n'+Res.pipText('lvl')+': '+numberAsColor('yellow', w.lvl);
+					s+='\n'+Res.pipText('islvl')+': '+textAsColor('yellow', gg.pers.getWeapLevel(w.skill));
 					if (razn>0) s+="<span class = 'red'>";
 					if (w.lvlNoUse && razn>0 || razn>2) s+=' ('+Res.pipText('weapnouse')+')</span>';
 					else if (razn>0){
@@ -442,25 +459,25 @@
 					}
 				}
 				if (w.perslvl>0) {
-					s+='\n'+Res.pipText('perslvl')+': '+yel(w.perslvl);
-					s+='\n'+Res.pipText('isperslvl')+': '+yel(gg.pers.level);
-					if (gg.pers.level<w.perslvl) s+=red(' ('+Res.pipText('weapnouse')+')');
+					s+='\n'+Res.pipText('perslvl')+': '+numberAsColor('yellow', w.perslvl);
+					s+='\n'+Res.pipText('isperslvl')+': '+textAsColor('yellow', gg.pers.level);
+					if (gg.pers.level<w.perslvl) s+=textAsColor('red', ' ('+Res.pipText('weapnouse')+')');
 				}
 				s+='\n'+Res.pipText('damage')+': ';
 				var wdam=w.damage, wdamexpl=w.damageExpl;
 				if (w.damage>0) {
-					s+=yel(Math.round(w.damage*10)/10);
+					s+=numberAsColor('yellow', Math.round(w.damage*10)/10);
 					wdam=w.resultDamage(w.damage,gg.pers.weaponSkills[w.skill]);
 					if (wdam!=w.damage) {
-						s+=' ('+yel(Math.round(wdam*10)/10)+')';
+						s+=' ('+numberAsColor('yellow', Math.round(wdam*10)/10)+')';
 					}
 				}
 				if (w.damage>0 && w.damageExpl>0) s+=' + ';
 				if (w.damageExpl>0) {
-					s+=yel(Math.round(w.damageExpl*w.damMult*10)/10);
+					s+=numberAsColor('yellow', Math.round(w.damageExpl*w.damMult*10)/10);
 					wdamexpl=w.resultDamage(w.damageExpl,gg.pers.weaponSkills[w.skill]);
 					if (wdamexpl!=w.damageExpl) {
-						s+=' ('+yel(Math.round(wdamexpl*10)/10)+')';
+						s+=' ('+numberAsColor('yellow', Math.round(wdamexpl*10)/10)+')';
 					}
 					s+=' '+Res.pipText('expldam');
 				}
@@ -468,32 +485,32 @@
 				if (w.explKol>1) s+=' [x'+w.explKol+']';
 				var wrapid=w.resultRapid(w.rapid);
 				if (w.tip!=4) {
-					s+='\n'+Res.pipText('aps')+': '+yel(Number(World.fps/wrapid).toFixed(1));
-					s+='\n'+Res.pipText('dps')+': '+yel(Number((wdam+wdamexpl)*w.kol*World.fps/wrapid).toFixed(1));
-					if (w.holder) s+=' ('+yel(Number((wdam+wdamexpl)*w.kol*World.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
+					s+='\n'+Res.pipText('aps')+': '+textAsColor('yellow', Number(World.fps/wrapid).toFixed(1));
+					s+='\n'+Res.pipText('dps')+': '+textAsColor('yellow', Number((wdam+wdamexpl)*w.kol*World.fps/wrapid).toFixed(1));
+					if (w.holder) s+=' ('+textAsColor('yellow', Number((wdam+wdamexpl)*w.kol*World.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
 				}
-				s+='\n'+Res.pipText('critch')+': '+yel(Math.round((w.critCh+w.critchAdd+gg.critCh)*100)+'%');
-				//s+='\n'+Res.pipText('critmult')+': '+yel(Math.round((w.critDamPlus+gg.critDamMult)*100)+'%');
-				s+='\n'+Res.pipText('tipdam')+': '+blue(Res.pipText('tipdam'+w.tipDamage));
-				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('inv5')+': '+yel(Res.txt('i',w.ammo));
-				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('holder')+': '+yel(w.holder);
-				if (w.rashod>1) s+=' ('+yel(w.rashod)+' '+Res.pipText('rashod')+')';
-				if (w.tip==5) s+='\n'+Res.pipText('dmana')+': '+yel(Math.round(w.mana));
-				if (w.precision>0) s+='\n'+Res.pipText('prec')+': '+yel(Math.round(w.precision*w.precMult/40));
-				if (w.pier+w.pierAdd>0) s+='\n'+Res.pipText('pier')+': '+yel(Math.round(w.pier+w.pierAdd));
+				s+='\n'+Res.pipText('critch')+': '+textAsColor('yellow', Math.round((w.critCh+w.critchAdd+gg.critCh)*100)+'%');
+				//s+='\n'+Res.pipText('critmult')+': '+textAsColor('yellow', Math.round((w.critDamPlus+gg.critDamMult)*100)+'%');
+				s+='\n'+Res.pipText('tipdam')+': '+textAsColor('blue', Res.pipText('tipdam'+w.tipDamage));
+				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('inv5')+': '+textAsColor('yellow', Res.txt('i',w.ammo));
+				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('holder')+': '+numberAsColor('yellow', w.holder);
+				if (w.rashod>1) s+=' ('+numberAsColor('yellow', w.rashod)+' '+Res.pipText('rashod')+')';
+				if (w.tip==5) s+='\n'+Res.pipText('dmana')+': '+numberAsColor('yellow', Math.round(w.mana));
+				if (w.precision>0) s+='\n'+Res.pipText('prec')+': '+numberAsColor('yellow', Math.round(w.precision*w.precMult/40));
+				if (w.pier+w.pierAdd>0) s+='\n'+Res.pipText('pier')+': '+numberAsColor('yellow', Math.round(w.pier+w.pierAdd));
 				if (!w.noSats) {
 					s+='\n'+Res.pipText('ap')+': ';
 					if (razn>0) s+="<span class = 'red'>";
 					else s+="<span class = 'yel'>";
 					s+=Math.round(w.satsCons*w.consMult/skillConf*gg.pers.satsMult);
 					s+="</span>";
-					if (w.satsQue>1) s+=' (x'+yel(w.satsQue)+')';
+					if (w.satsQue>1) s+=' (x'+numberAsColor('yellow', w.satsQue)+')';
 				}
 				if (w.destroy>=100) {
 					s+='\n'+Res.pipText('destroy');
 				}
 				if (w.opt && w.opt.perk) {
-					s+='\n'+Res.pipText('refperk')+': '+pink(Res.txt('e',w.opt.perk));
+					s+='\n'+Res.pipText('refperk')+': '+textAsColor('pink', Res.txt('e',w.opt.perk));
 				}
 				var sinf=Res.txt('w',id,1);
 				if (sinf=='') sinf=Res.txt('w',w.id,1);
@@ -503,29 +520,29 @@
 			} else if (tip==Item.L_ARMOR) {
 				var a:Armor=inv.armors[id];
 				if (a==null) a=pip.arrArmor[id];
-				if (a.armor_qual>0) s+=Res.pipText('aqual')+': '+yel(Math.round(a.armor_qual*100)+'%');
-				if (a.armor>0) s+='\n'+Res.pipText('armor')+': '+yel(Math.round(a.armor));
-				if (a.marmor>0) s+='\n'+Res.pipText('marmor')+': '+yel(Math.round(a.marmor));
-				if (a.dexter!=0) s+='\n'+Res.pipText('dexter')+': '+yel(Math.round(a.dexter*100)+'%');
-				if (a.sneak!=0) s+='\n'+Res.pipText('sneak')+': '+yel(Math.round(a.sneak*100)+'%');
-				if (a.meleeMult!=1) s+='\n'+Res.pipText('meleedamage')+': +'+yel(Math.round((a.meleeMult-1)*100)+'%');
-				if (a.gunsMult!=1) s+='\n'+Res.pipText('gunsdamage')+': +'+yel(Math.round((a.gunsMult-1)*100)+'%');
-				if (a.magicMult!=1) s+='\n'+Res.pipText('spelldamage')+': +'+yel(Math.round((a.magicMult-1)*100)+'%');
-				if (a.crit!=0) s+='\n'+Res.pipText('critch')+': +'+yel(Math.round(a.crit*100)+'%');
-				if (a.radVul<1) s+='\n'+Res.pipText('radx')+': '+yel(Math.round((1-a.radVul)*100)+'%');
-				if (a.resist[Unit.D_BUL]!=0) s+='\n'+Res.pipText('bullet')+': '+yel(Math.round(a.resist[Unit.D_BUL]*100)+'%');
-				if (a.resist[Unit.D_EXPL]!=0) s+='\n'+Res.pipText('expl')+': '+yel(Math.round(a.resist[Unit.D_EXPL]*100)+'%');
-				if (a.resist[Unit.D_PHIS]!=0) s+='\n'+Res.pipText('phis')+': '+yel(Math.round(a.resist[Unit.D_PHIS]*100)+'%');
-				if (a.resist[Unit.D_BLADE]!=0) s+='\n'+Res.pipText('blade')+': '+yel(Math.round(a.resist[Unit.D_BLADE]*100)+'%');
-				if (a.resist[Unit.D_FANG]!=0) s+='\n'+Res.pipText('fang')+': '+yel(Math.round(a.resist[Unit.D_FANG]*100)+'%');
-				if (a.resist[Unit.D_FIRE]!=0) s+='\n'+Res.pipText('fire')+': '+yel(Math.round(a.resist[Unit.D_FIRE]*100)+'%');
-				if (a.resist[Unit.D_LASER]!=0) s+='\n'+Res.pipText('laser')+': '+yel(Math.round(a.resist[Unit.D_LASER]*100)+'%');
-				if (a.resist[Unit.D_PLASMA]!=0) s+='\n'+Res.pipText('plasma')+': '+yel(Math.round(a.resist[Unit.D_PLASMA]*100)+'%');
-				if (a.resist[Unit.D_SPARK]!=0) s+='\n'+Res.pipText('spark')+': '+yel(Math.round(a.resist[Unit.D_SPARK]*100)+'%');
-				if (a.resist[Unit.D_CRIO]!=0) s+='\n'+Res.pipText('crio')+': '+yel(Math.round(a.resist[Unit.D_CRIO]*100)+'%');
-				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.pipText('venom')+': '+yel(Math.round(a.resist[Unit.D_VENOM]*100)+'%');
-				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.pipText('acid')+': '+yel(Math.round(a.resist[Unit.D_ACID]*100)+'%');
-				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.pipText('necro')+': '+yel(Math.round(a.resist[Unit.D_NECRO]*100)+'%');
+				if (a.armor_qual>0) s+=Res.pipText('aqual')+': '+textAsColor('yellow', Math.round(a.armor_qual*100)+'%');
+				if (a.armor>0) s+='\n'+Res.pipText('armor')+': '+numberAsColor('yellow', Math.round(a.armor));
+				if (a.marmor>0) s+='\n'+Res.pipText('marmor')+': '+numberAsColor('yellow', Math.round(a.marmor));
+				if (a.dexter!=0) s+='\n'+Res.pipText('dexter')+': '+textAsColor('yellow', Math.round(a.dexter*100)+'%');
+				if (a.sneak!=0) s+='\n'+Res.pipText('sneak')+': '+textAsColor('yellow', Math.round(a.sneak*100)+'%');
+				if (a.meleeMult!=1) s+='\n'+Res.pipText('meleedamage')+': +'+textAsColor('yellow', Math.round((a.meleeMult-1)*100)+'%');
+				if (a.gunsMult!=1) s+='\n'+Res.pipText('gunsdamage')+': +'+textAsColor('yellow', Math.round((a.gunsMult-1)*100)+'%');
+				if (a.magicMult!=1) s+='\n'+Res.pipText('spelldamage')+': +'+textAsColor('yellow', Math.round((a.magicMult-1)*100)+'%');
+				if (a.crit!=0) s+='\n'+Res.pipText('critch')+': +'+textAsColor('yellow', Math.round(a.crit*100)+'%');
+				if (a.radVul<1) s+='\n'+Res.pipText('radx')+': '+textAsColor('yellow', Math.round((1-a.radVul)*100)+'%');
+				if (a.resist[Unit.D_BUL]!=0) s+='\n'+Res.pipText('bullet')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_BUL]*100)+'%');
+				if (a.resist[Unit.D_EXPL]!=0) s+='\n'+Res.pipText('expl')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_EXPL]*100)+'%');
+				if (a.resist[Unit.D_PHIS]!=0) s+='\n'+Res.pipText('phis')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_PHIS]*100)+'%');
+				if (a.resist[Unit.D_BLADE]!=0) s+='\n'+Res.pipText('blade')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_BLADE]*100)+'%');
+				if (a.resist[Unit.D_FANG]!=0) s+='\n'+Res.pipText('fang')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_FANG]*100)+'%');
+				if (a.resist[Unit.D_FIRE]!=0) s+='\n'+Res.pipText('fire')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_FIRE]*100)+'%');
+				if (a.resist[Unit.D_LASER]!=0) s+='\n'+Res.pipText('laser')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_LASER]*100)+'%');
+				if (a.resist[Unit.D_PLASMA]!=0) s+='\n'+Res.pipText('plasma')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_PLASMA]*100)+'%');
+				if (a.resist[Unit.D_SPARK]!=0) s+='\n'+Res.pipText('spark')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_SPARK]*100)+'%');
+				if (a.resist[Unit.D_CRIO]!=0) s+='\n'+Res.pipText('crio')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_CRIO]*100)+'%');
+				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.pipText('venom')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_VENOM]*100)+'%');
+				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.pipText('acid')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_ACID]*100)+'%');
+				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.pipText('necro')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_NECRO]*100)+'%');
 				s+='\n\n'+Res.txt('a',id,1);
 			} else if (tip==Item.L_AMMO) {
 				var ammo=inv.items[id].xml;
@@ -540,13 +557,13 @@
 					s=Res.txt('i',id,1);
 				}
 				s+='\n';
-				if (ammo.@damage.length()) s+='\n'+Res.pipText('damage')+': x'+yel(ammo.@damage);
-				if (ammo.@pier.length()) s+='\n'+Res.pipText('pier')+': '+yel(ammo.@pier);
-				if (ammo.@armor.length()) s+='\n'+Res.pipText('tarmor')+': x'+yel(ammo.@armor);
-				if (ammo.@prec.length()) s+='\n'+Res.pipText('prec')+': x'+yel(ammo.@prec);
+				if (ammo.@damage.length()) s+='\n'+Res.pipText('damage')+': x'+textAsColor('yellow', ammo.@damage);
+				if (ammo.@pier.length()) s+='\n'+Res.pipText('pier')+': '+textAsColor('yellow', ammo.@pier);
+				if (ammo.@armor.length()) s+='\n'+Res.pipText('tarmor')+': x'+textAsColor('yellow', ammo.@armor);
+				if (ammo.@prec.length()) s+='\n'+Res.pipText('prec')+': x'+textAsColor('yellow', ammo.@prec);
 				if (ammo.@det>0) s+='\n'+Res.pipText('det');
 				if (World.w.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
-				if (ammo.@sell>0) s+='\n'+Res.pipText('sell')+": "+yel(ammo.@sell);
+				if (ammo.@sell>0) s+='\n'+Res.pipText('sell')+": "+textAsColor('yellow', ammo.@sell);
 			} else {
 				var hhp:Number=0;
 				s=Res.txt('i',id,1)+'\n';
@@ -557,49 +574,49 @@
 				}
 				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') {
 					if (pot.@hhp.length() || pot.@hhplong.length())
-					s+='\n'+Res.pipText('healhp')+': '+yel(Math.round(pot.@hhp*World.w.pers.healMult));
-					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.w.pers.healMult));
-					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+yel(Math.round(pot.@hrad*World.w.pers.healMult));
-					if (pot.@hcut.length()) s+='\n'+Res.pipText('healcut')+': '+yel(Math.round(pot.@hcut));
-					if (pot.@hpoison.length()) s+='\n'+Res.pipText('healpoison')+': '+yel(Math.round(pot.@hpoison));
-					if (pot.@horgan.length()) s+='\n'+Res.pipText('healorgan')+': '+yel(Math.round(pot.@horgan));
-					if (pot.@horgans.length()) s+='\n'+Res.pipText('healorgans')+': '+yel(Math.round(pot.@horgans));
-					if (pot.@hblood.length()) s+='\n'+Res.pipText('healblood')+': '+yel(Math.round(pot.@hblood));
-					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+yel(Math.round(pot.@hmana*World.w.pers.healManaMult));
-					if (pot.@alc.length()) s+='\n'+Res.pipText('alcohol')+': '+yel(Math.round(pot.@alc));
-					if (pot.@rad.length()) s+='\n'+Res.pipText('rad')+': '+yel(Math.round(pot.@rad));
+					s+='\n'+Res.pipText('healhp')+': '+numberAsColor('yellow', Math.round(pot.@hhp*World.w.pers.healMult));
+					if (pot.@hhplong.length()) s+='+'+numberAsColor('yellow', Math.round(pot.@hhplong*World.w.pers.healMult));
+					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+numberAsColor('yellow', Math.round(pot.@hrad*World.w.pers.healMult));
+					if (pot.@hcut.length()) s+='\n'+Res.pipText('healcut')+': '+numberAsColor('yellow', Math.round(pot.@hcut));
+					if (pot.@hpoison.length()) s+='\n'+Res.pipText('healpoison')+': '+numberAsColor('yellow', Math.round(pot.@hpoison));
+					if (pot.@horgan.length()) s+='\n'+Res.pipText('healorgan')+': '+numberAsColor('yellow', Math.round(pot.@horgan));
+					if (pot.@horgans.length()) s+='\n'+Res.pipText('healorgans')+': '+numberAsColor('yellow', Math.round(pot.@horgans));
+					if (pot.@hblood.length()) s+='\n'+Res.pipText('healblood')+': '+numberAsColor('yellow', Math.round(pot.@hblood));
+					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+numberAsColor('yellow', Math.round(pot.@hmana*World.w.pers.healManaMult));
+					if (pot.@alc.length()) s+='\n'+Res.pipText('alcohol')+': '+numberAsColor('yellow', Math.round(pot.@alc));
+					if (pot.@rad.length()) s+='\n'+Res.pipText('rad')+': '+numberAsColor('yellow', Math.round(pot.@rad));
 					if (pot.@effect.length()) {
 						s+='\n'+Res.pipText('refeff')+': '+effStr('eff',pot.@effect);
 						//if (tip=='him' && gg.pers.himLevel>1) s+=effStr('eff',pot.@effect,gg.pers.himLevel-1);
 						//else s+=;
 					}
-					if (pot.@perk.length()) s+='\n'+pink(Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
+					if (pot.@perk.length()) s+='\n'+textAsColor('pink', Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
 				if (tip=='book') {
-					if (World.w.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+pink(Res.txt('e',id));
+					if (World.w.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+textAsColor('pink', Res.txt('e',id));
 				}
 				if (tip=='spell') {
-					s+='\n'+Res.pipText('dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*World.w.pers.allDManaMult))+')';
-					s+='\n'+Res.pipText('culd')+': '+yel(pot.@culd+Res.guiText('sec'))+' ('+yel(Math.round(pot.@culd*World.w.pers.spellDown)+Res.guiText('sec'))+')';
-					s+='\n'+Res.pipText('is1')+': '+pink((pot.@tele>0)?Res.txt('e','tele'):Res.txt('e','magic'));
+					s+='\n'+Res.pipText('dmana2')+': '+textAsColor('yellow', pot.@mana)+' ('+numberAsColor('yellow', Math.round(pot.@mana*World.w.pers.allDManaMult))+')';
+					s+='\n'+Res.pipText('culd')+': '+textAsColor('yellow', pot.@culd+Res.guiText('sec'))+' ('+textAsColor('yellow', Math.round(pot.@culd*World.w.pers.spellDown)+Res.guiText('sec'))+')';
+					s+='\n'+Res.pipText('is1')+': '+textAsColor('pink', (pot.@tele>0)?Res.txt('e','tele'):Res.txt('e','magic'));
 				}
 				if (id=='rep') {
 					if (pot.@hp.length()) hhp=pot.@hp*gg.pers.repairMult;
-					if (hhp>0) s+='\n'+Res.pipText('effect')+': '+yel(Math.round(hhp));
+					if (hhp>0) s+='\n'+Res.pipText('effect')+': '+numberAsColor('yellow', Math.round(hhp));
 				}
 				if (pot.@pet_info.length()) {
 					var pet:UnitPet=gg.pets[pot.@pet_info];
 					if (pet) {
-						s+='\n'+Res.pipText('hp')+': '+yel(Math.round(pet.hp))+'/'+yel(Math.round(pet.maxhp));
-						s+='\n'+Res.pipText('skin')+': '+yel(Math.round(pet.skin));
-						if (pet.allVulnerMult<1) s+='\n'+Res.pipText('allresist')+': '+yel(Math.round((1-pet.allVulnerMult)*100)+'%');
-						s+='\n'+Res.pipText('damage')+': '+yel(Math.round(pet.dam));
+						s+='\n'+Res.pipText('hp')+': '+numberAsColor('yellow', Math.round(pet.hp))+'/'+numberAsColor('yellow', Math.round(pet.maxhp));
+						s+='\n'+Res.pipText('skin')+': '+numberAsColor('yellow', Math.round(pet.skin));
+						if (pet.allVulnerMult<1) s+='\n'+Res.pipText('allresist')+': '+textAsColor('yellow', Math.round((1-pet.allVulnerMult)*100)+'%');
+						s+='\n'+Res.pipText('damage')+': '+numberAsColor('yellow', Math.round(pet.dam));
 					}
 				}
 				if (tip=='paint') s=Res.txt('p','paint',1);
 				if (World.w.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
-				if (pot.@sell>0) s+='\n'+Res.pipText('sell')+": "+yel(pot.@sell);
+				if (pot.@sell>0) s+='\n'+Res.pipText('sell')+": "+textAsColor('yellow', pot.@sell);
 			}
 			return s;
 		}
@@ -706,14 +723,14 @@
 					if (st.invis && st.state<2) continue;
 					s+="\n";
 					if (st.state==2) s+="<span class = 'dark'>";
-					s+=yel(n+'.')+" "
+					s+=textAsColor('yellow', n+'.')+" "
 					if (st.hidden && st.state<2 && st.est<=0) s+='?????';
 					else s+=st.nazv;
 					if (st.collect && st.colTip==0) {
 						if (st.give) {
-							s+=' ('+yel(st.gived+'/'+st.kol)+')';
-							if (st.est>0 && st.state<2) s+=' ('+yel('+'+st.est)+')';
-						} else s+=' ('+yel(st.est+'/'+st.kol)+')';
+							s+=' ('+textAsColor('yellow', st.gived+'/'+st.kol)+')';
+							if (st.est>0 && st.state<2) s+=' ('+textAsColor('yellow', '+'+st.est)+')';
+						} else s+=' ('+textAsColor('yellow', st.est+'/'+st.kol)+')';
 					}
 					if (st.nn) s+=' ('+Res.pipText('nn')+')';
 					if (st.state==2) s+="</span>";
@@ -727,16 +744,16 @@
 			var ok=false;
 			if (World.w.pers.factor[id] is Array) {
 				var xml=AllData.d.param.(@v==id);
-				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+yel('100%')+'\n';
+				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', '100%')+'\n';
 				for each (var obj in World.w.pers.factor[id]) {
 					if (obj.id=='beg') {
 						if (xml.@nobeg>0) continue;
 						if (xml.@tip=='0') {
-							if (obj.res!=0) s+='- '+Res.pipText('begval')+': '+yel(Res.numb(obj.res))+'\n';
+							if (obj.res!=0) s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res))+'\n';
 						} else if (xml.@tip=='3') {
-							s+='- '+Res.pipText('begvulner')+': '+yel(Res.numb(obj.res*100)+'%')+'\n';
+							s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
 						} else {
-							s+='- '+Res.pipText('begval')+': '+yel(Res.numb(obj.res*100)+'%')+'\n';
+							s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
 						}
 					} else {
 						if (obj.ref=='add' && obj.val==0 || obj.ref=='mult' && obj.val==1) continue;
@@ -750,37 +767,37 @@
 						s+='- '+s1+': ';
 						if (obj.ref=='add') {
 							if (xml.@tip=='0') {
-								s+=(obj.val>0?'+':'-')+' '+yel(Math.abs(obj.val));
-								s+=' = '+yel(Res.numb(obj.res));
+								s+=(obj.val>0?'+':'-')+' '+numberAsColor('yellow', Math.abs(obj.val));
+								s+=' = '+textAsColor('yellow', Res.numb(obj.res));
 							} else {
-								s+=(obj.val>0?'+':'-')+' '+yel(Res.numb(Math.abs(obj.val*100))+'%');
-								s+=' = '+yel(Res.numb(obj.res*100)+'%');
+								s+=(obj.val>0?'+':'-')+' '+textAsColor('yellow', Res.numb(Math.abs(obj.val*100))+'%');
+								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							}
 						} else if (obj.ref=='mult') {
 							if (xml.@tip=='0') {
-								s+='× '+yel(obj.val)+' = '+yel(Res.numb(obj.res));
+								s+='× '+textAsColor('yellow', obj.val)+' = '+textAsColor('yellow', Res.numb(obj.res));
 							} else if (xml.@tip=='3' || xml.@tip=='4') {
-								s+='× (1 '+(obj.val<1?'-':'+')+' '+yel(Math.abs(Math.round(100-obj.val*100))*0.01)+')';
-								s+=' = '+yel(Res.numb(obj.res*100)+'%');
+								s+='× (1 '+(obj.val<1?'-':'+')+' '+numberAsColor('yellow', Math.abs(Math.round(100-obj.val*100))*0.01)+')';
+								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							} else {
-								s+='× '+yel(obj.val);
-								s+=' = '+yel(Res.numb(obj.res*100)+'%');
+								s+='× '+textAsColor('yellow', obj.val);
+								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							}
 						} else if (obj.ref=='min') {
-								s+='- '+yel(Res.numb(Math.abs(obj.val*100))+'%');
-								s+=' = '+yel(Res.numb((obj.res)*100)+'%');
+								s+='- '+textAsColor('yellow', Res.numb(Math.abs(obj.val*100))+'%');
+								s+=' = '+textAsColor('yellow', Res.numb((obj.res)*100)+'%');
 						} else {
 							if (xml.@tip=='0') {
-								s+=yel(obj.val);
+								s+=textAsColor('yellow', obj.val);
 							} else {
-								s+=yel(Res.numb(obj.val*100)+'%');
+								s+=textAsColor('yellow', Res.numb(obj.val*100)+'%');
 							}
 						}
 						s+='\n';
 					}
 				}
 				if (obj && (xml.@tip=='3' || xml.@tip=='4')) {
-					s+='- '+Res.pipText('result')+': 100% - '+yel(Res.numb(obj.res*100)+'%')+' = '+yel(Res.numb((1-obj.res)*100)+'%');
+					s+='- '+Res.pipText('result')+': 100% - '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+' = '+textAsColor('yellow', Res.numb((1-obj.res)*100)+'%');
 				}
 			}
 			if (ok) s=Res.pipText('factor')+':\n'+s;
@@ -852,13 +869,15 @@
 
 		
 		//выбор подкатегории инвентаря
-		function selCatEvent(event:MouseEvent) {
+		function selCatEvent(event:MouseEvent) 
+		{
 			var n:int=int(event.currentTarget.name.substr(3));
 			cat[page2]=n;
 			setStatus();
 		}
 		
-		function selCat(n:int=0) {
+		function selCat(n:int=0)
+		{
 			for (var i=0; i<=kolCats; i++) {
 				vis.cats['cat'+i].fon.gotoAndStop(1);
 			}
@@ -873,7 +892,8 @@
 		}
 		
 		//проверить соответствии категории
-		function checkCat(tip:String):Boolean {
+		function checkCat(tip:String):Boolean 
+		{
 			if (curTip=='' || curTip==null || curTip==tip) return true;
 			if (curTip is Array) {
 				for each (var t in curTip) if (t==tip) return true;
@@ -881,10 +901,13 @@
 			return false;
 		}
 		
-		public function statScroll(event:ScrollEvent) {
+		public function statScroll(event:ScrollEvent) 
+		{
 			setStatItems(event.position);
 		}
-		public function onMouseWheel1(event:MouseEvent):void {
+
+		public function onMouseWheel1(event:MouseEvent):void 
+		{
 			if (World.w.ctr.setkeyOn) return;
 			try {
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
@@ -895,10 +918,15 @@
 			if (event.delta>0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
 			event.stopPropagation();
 		}
-		public function scroll(dn:int=0) {
+
+		public function scroll(dn:int=0) 
+		{
+
 		}
-		public function step() {
+
+		public function step() 
+		{
+
 		}
-	}
-	
+	}	
 }

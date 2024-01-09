@@ -182,7 +182,7 @@
 		}
 		
 		function showBottext() {
-			vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money);
+			vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money);
 			if (World.w.hardInv) {
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
 				else if (page2==3) vis.bottext.htmlText+='    '+inv.retMass(1);
@@ -378,11 +378,13 @@
 			}
 		}
 		
-		public function assignKey(num:int) {
+		public function assignKey(num:int)
+		{
 			trace('назначение клавиши',num,assId);
 			pip.snd(1);
 			var temp=assId;
-			if (page2<=3 && assId!=null) {
+			if (page2<=3 && assId!=null)
+			{
 				World.w.invent.favItem(assId, num);
 				setStatus(false);
 			}
@@ -410,24 +412,26 @@
 			}
 		}
 		
-		function buttonOk(act:String) {
+		function buttonOk(act:String)
+		{
 			vis.butOk.visible=true;
 			vis.butOk.text.text=Res.pipText(act);
 			actCurrent=act;
 		}
 		
 		
-		public override function step() {
+		public override function step()
+		{
 			if (over_t>0) over_t--;
-			if (over_t==1 && overItem) {
-				try {
+			if (over_t==1 && overItem)
+			{
+				try
+				{
 					if (overItem.fav.text=='☩' || overItem.fav.text=='+') overItem.fav.text='';
 					inv.items[overId].nov=0;
-				} catch (err) {}
-				
+				}
+				catch (err) {}				
 			}
-		}
-		
-	}
-	
+		}	
+	}	
 }

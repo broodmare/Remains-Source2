@@ -19,7 +19,8 @@
 		var n_food:String;
 		var drunk:int=0;
 
-		public function PipPageStat(npip:PipBuck, npp:String) {
+		public function PipPageStat(npip:PipBuck, npp:String)
+		{
 			isLC=isRC=true;
 			itemClass=visPipStatItem;
 			skills=new Array();
@@ -30,7 +31,8 @@
 		}
 		
 		//подготовка страниц
-		override function setSubPages() {
+		override function setSubPages()
+		{
 			setIco();
 			pers=World.w.pers;
 			maxSkLvl=Pers.maxSkLvl;
@@ -79,38 +81,8 @@
 						if (xml.@tip=='3' || xml.@tip=='4') {
 							if (param!=1) arr.push({id:xml.@id, nazv:nazv, lvl:((param<1?'+':'')+Res.numb((1-param)*100)+'%')});
 						}
-						/*if (xml.@tip=='5') {
-							if (param!=1) arr.push({id:xml.@id, nazv:nazv, lvl:((1/param>1?'+':'')+Res.numb((1/param-1)*100)+'%')});
-						}*/
 					}
 				}
-				
-				/*if (gg.pers.allDamMult!=1) arr.push({id:'alldamage', nazv:Res.pipText('alldamage'), lvl:(gg.pers.allDamMult>1?'+':'')+Math.round((gg.pers.allDamMult-1)*100)+'%'});
-				if (gg.pers.meleeDamMult!=1) arr.push({id:'meleedamage', nazv:Res.pipText('meleedamage'), lvl:(gg.pers.meleeDamMult>1?'+':'')+Math.round((gg.pers.meleeDamMult-1)*100)+'%'});
-				if (gg.pers.spellsDamMult!=1) arr.push({id:'spelldamage', nazv:Res.pipText('spelldamage'), lvl:(gg.pers.spellsDamMult>1?'+':'')+Math.round((gg.pers.spellsDamMult-1)*100)+'%'});
-				
-				if (gg.skin>0) arr.push({id:'skin', nazv:Res.pipText('skin'), lvl:Math.round(gg.skin*10)/10});
-				if (gg.armor>0) arr.push({id:'armor', nazv:Res.pipText('armor'), lvl:Math.round(gg.armor*10)/10});
-				if (gg.marmor>0) arr.push({id:'marmor', nazv:Res.pipText('marmor'), lvl:Math.round(gg.marmor*10)/10});
-				if (gg.armor>0 || gg.marmor>0) arr.push({id:'aqual', nazv:Res.pipText('aqual'), lvl:Math.round(gg.armor_qual*100)+'%'});
-				if (gg.dexter!=1) arr.push({id:'dexter', nazv:Res.pipText('dexter'), lvl:Math.round((gg.dexter-1)*100)+'%'});
-				if (gg.allVulnerMult!=1) arr.push({id:'allresist', nazv:Res.pipText('allresist'), lvl:Math.round((1-gg.allVulnerMult)*100)+'%'});
-				if (gg.vulner[Unit.D_BUL]!=1) arr.push({nazv:Res.pipText('bullet'), lvl:Math.round((1-gg.vulner[Unit.D_BUL])*100)+'%'});
-				if (gg.vulner[Unit.D_BLADE]!=1) arr.push({nazv:Res.pipText('blade'), lvl:Math.round((1-gg.vulner[Unit.D_BLADE])*100)+'%'});
-				if (gg.vulner[Unit.D_PHIS]!=1) arr.push({nazv:Res.pipText('phis'), lvl:Math.round((1-gg.vulner[Unit.D_PHIS])*100)+'%'});
-				if (gg.vulner[Unit.D_FANG]!=1) arr.push({nazv:Res.pipText('fang'), lvl:Math.round((1-gg.vulner[Unit.D_FANG])*100)+'%'});
-				if (gg.vulner[Unit.D_FIRE]!=1) arr.push({nazv:Res.pipText('fire'), lvl:Math.round((1-gg.vulner[Unit.D_FIRE])*100)+'%'});
-				if (gg.vulner[Unit.D_CRIO]!=1) arr.push({nazv:Res.pipText('crio'), lvl:Math.round((1-gg.vulner[Unit.D_CRIO])*100)+'%'});
-				if (gg.vulner[Unit.D_EXPL]!=1) arr.push({nazv:Res.pipText('expl'), lvl:Math.round((1-gg.vulner[Unit.D_EXPL])*100)+'%'});
-				if (gg.vulner[Unit.D_LASER]!=1) arr.push({nazv:Res.pipText('laser'), lvl:Math.round((1-gg.vulner[Unit.D_LASER])*100)+'%'});
-				if (gg.vulner[Unit.D_PLASMA]!=1) arr.push({nazv:Res.pipText('plasma'), lvl:Math.round((1-gg.vulner[Unit.D_PLASMA])*100)+'%'});
-				if (gg.vulner[Unit.D_VENOM]!=1) arr.push({nazv:Res.pipText('venom'), lvl:Math.round((1-gg.vulner[Unit.D_VENOM])*100)+'%'});
-				if (gg.vulner[Unit.D_ACID]!=1) arr.push({nazv:Res.pipText('acid'), lvl:Math.round((1-gg.vulner[Unit.D_ACID])*100)+'%'});
-				if (gg.vulner[Unit.D_SPARK]!=1) arr.push({nazv:Res.pipText('spark'), lvl:Math.round((1-gg.vulner[Unit.D_SPARK])*100)+'%'});
-				if (gg.vulner[Unit.D_PINK]!=1 && World.w.game.triggers['story_canter']>0) arr.push({nazv:Res.pipText('pink'), lvl:Math.round((1-gg.vulner[Unit.D_PINK])*100)+'%'});
-				if (gg.vulner[Unit.D_NECRO]!=1) arr.push({nazv:Res.pipText('necro'), lvl:Math.round((1-gg.vulner[Unit.D_NECRO])*100)+'%'});
-				
-				if (gg.pers.visiMult!=1) arr.push({id:'sneak', nazv:Res.pipText('sneak'), lvl:Math.round((1-gg.pers.visiMult)*100)+'%'});*/
 			} else if (page2==5) {
 				if (World.w.game.triggers['nomed']>0) {
 					vis.emptytext.text=Res.pipText('emptymed');
@@ -401,16 +373,16 @@
 		function showBottext() {
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.w.game.gameTime();
-			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+pink(skillPoint);
-			if (page2==3) vis.bottext.htmlText=Res.pipText('perkpoint')+': '+pink(perkPoint);
+			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+numberAsColor('pink', skillPoint);
+			if (page2==3) vis.bottext.htmlText=Res.pipText('perkpoint')+': '+numberAsColor('pink', perkPoint);
 			if (page2==6) {
 				if (selectedPerk=='') vis.bottext.htmlText=Res.pipText('chooseperk');
-				else vis.bottext.htmlText=pink(Res.txt('e',selectedPerk));
+				else vis.bottext.htmlText=textAsColor('pink', Res.txt('e',selectedPerk));
 			}
 			if (page2==5 && infoItemId!='') {
 				var ci:String='';
 				if (infoItemId=='hp') {
-					vis.bottext.htmlText=Res.pipText('healpotions')+': '+yel(inv.items['pot1'].kol+inv.items['pot2'].kol+inv.items['pot3'].kol);
+					vis.bottext.htmlText=Res.pipText('healpotions')+': '+textAsColor('yellow', inv.items['pot1'].kol+inv.items['pot2'].kol+inv.items['pot3'].kol);
 				} else if (infoItemId=='rad') {
 					ci='antiradin';
 				} else if (infoItemId=='cut') {
@@ -420,7 +392,7 @@
 				} else if (infoItemId.substr(0,9)=='statBlood') {
 					ci='bloodpak';
 				} else if (infoItemId.substr(0,8)=='statMana') {
-					vis.bottext.htmlText=Res.txt('i','potm1')+': '+yel(inv.items['potm1'].kol+inv.items['potm2'].kol+inv.items['potm3'].kol);
+					vis.bottext.htmlText=Res.txt('i','potm1')+': '+textAsColor('yellow', inv.items['potm1'].kol+inv.items['potm2'].kol+inv.items['potm3'].kol);
 				} else if (infoItemId=='phoenix') {
 					ci='radcookie';
 				} else if (infoItemId.substr(0,8)=='statHead') {
@@ -435,7 +407,7 @@
 				} else if (infoItemId.substr(0,5)=='post_') {
 					ci='detoxin'
 				}
-				if (ci!='') vis.bottext.htmlText=Res.txt('i',ci)+': '+yel(inv.items[ci].kol);
+				if (ci!='') vis.bottext.htmlText=Res.txt('i',ci)+': '+textAsColor('yellow', inv.items[ci].kol);
 			}
 		}
 		
@@ -545,6 +517,5 @@
 				pip.snd(2);
 			}
 		}
-	}
-	
+	}	
 }

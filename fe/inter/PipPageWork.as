@@ -219,8 +219,8 @@
 		
 		function showBottext(cid) {
 			if (inv.items[cid]) {
-				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+yel(inv.items[cid].kol);
-				if (World.w.loc.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
+				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+textAsColor('yellow', inv.items[cid].kol);
+				if (World.w.loc.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+textAsColor('yellow', inv.items[cid].vault)+' '+Res.pipText('invault')+')';
 			} else {
 				vis.bottext.htmlText='';
 			}

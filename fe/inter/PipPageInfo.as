@@ -260,11 +260,11 @@
 				if (l.dif>0) s+='\n\n'+Res.pipText('recLevel')+' '+Math.round(l.dif);
 				if (l.dif>World.w.pers.level) s+='\n\n'+Res.pipText('wrLevel');
 				if (World.w.pers.speedShtr>=3) {
-					s+='\n\n'+red(Res.pipText('speedshtr3'));
+					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr3'));
 				} else if (World.w.pers.speedShtr==2) {
-					s+='\n\n'+red(Res.pipText('speedshtr2'));
+					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr2'));
 				} else if (World.w.pers.speedShtr==1) {
-					s+='\n\n'+red(Res.pipText('speedshtr1'));
+					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr1'));
 				}
 				if (World.w.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
 				vis.info.htmlText=s;
@@ -338,25 +338,25 @@
 				var node=un.comb[0];
 				if (n>=1) {
 					//ХП
-					s+=Res.pipText('hp')+': '+yel(v_hp)+'\n';
+					s+=Res.pipText('hp')+': '+textAsColor('yellow', v_hp)+'\n';
 					//порог урона и броня
-					if (v_skin) 	s+=Res.pipText('skin')+': '+yel(v_skin)+'\n';
+					if (v_skin) 	s+=Res.pipText('skin')+': '+textAsColor('yellow', v_skin)+'\n';
 					if (v_aqual) {
-						if (v_armor) 	s+=Res.pipText('armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=Res.pipText('marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=Res.pipText('armor')+': '+textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
+						if (v_marmor) 	s+=Res.pipText('marmor')+': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
 				if (n>=2) {
 					if ((v_visdam==1 || v_visdam==3) && v_damage) {
 						s+=Res.pipText('dam_melee')+': ';
-						if (v_tipdam) s+=blue(Res.pipText('tipdam'+v_tipdam)); else s+=blue(Res.pipText('tipdam2'));
-						s+=' ('+yel(v_damage)+')\n'
+						if (v_tipdam) s+=textAsColor('blue', Res.pipText('tipdam'+v_tipdam)); else s+=textAsColor('blue', Res.pipText('tipdam2'));
+						s+=' ('+textAsColor('yellow', v_damage)+')\n'
 					}
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) {
 						s+=Res.pipText('dam_shoot')+': ';
-						if (v_stipdam) s+=blue(Res.pipText('tipdam'+v_stipdam)); else s+=blue(Res.pipText('tipdam0'));
-						s+=' ('+yel(v_sdamage)+')\n'
+						if (v_stipdam) s+=textAsColor('blue', Res.pipText('tipdam'+v_stipdam)); else s+=textAsColor('blue', Res.pipText('tipdam0'));
+						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
 					}
 					if (un.w.length()) {
 						var wk:Boolean=false;
@@ -364,13 +364,13 @@
 							if (!(weap.@no>0)) {// && Res.istxt('w', weap.@id)) {
 								if (wk) s+=', ';
 								else s+=Res.pipText('enemy_weap')+': ';
-								s+=blue(Res.txt('w', weap.@id));
+								s+=textAsColor('blue', Res.txt('w', weap.@id));
 								try {
 									var w=AllData.d.weapon.(@id==weap.@id);
 									var dam=0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
-									s+=' ('+yel(Res.numb(dam))+')';
+									s+=' ('+textAsColor('yellow', Res.numb(dam))+')';
 								} catch (err) {};
 								wk=true;
 							}
@@ -380,9 +380,9 @@
 				}
 				//уклонение
 				if (n>=3) {
-					if (v_dexter!=null) 	s+=Res.pipText('dexter')+': '+yel((v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=Res.pipText('observ')+': '+yel((v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=Res.pipText('weapskill')+': '+yel(Math.round(v_skill*100)+'%')+'\n';
+					if (v_dexter!=null) 	s+=Res.pipText('dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=Res.pipText('observ')+': '+textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
+					if (v_skill!=null) 	s+=Res.pipText('weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
 			//сопротивления
@@ -406,7 +406,7 @@
 		}
 		
 		function vulner(n:int, val:Number):String {
-			return blue(Res.pipText('tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
+			return textAsColor('blue', Res.pipText('tipdam'+n))+': '+textAsColor('yellow', Math.round((1-val)*100)+'%   ');
 		}
 		
 		

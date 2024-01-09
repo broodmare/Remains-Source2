@@ -24,7 +24,8 @@
 		
 		var plata:Item;
 
-		public function PipPageMed(npip:PipBuck, npp:String) {
+		public function PipPageMed(npip:PipBuck, npp:String)
+		{
 			isLC=true;
 			itemClass=visPipMedItem;
 			super(npip,npp);
@@ -136,9 +137,9 @@
 		}
 
 		function showBottext() {
-			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+yel(plata.kol);
-			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+yel(plata.kol);
-			else vis.bottext.htmlText=Res.pipText('caps')+': '+yel(plata.kol);
+			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+numberAsColor('yellow', plata.kol);
+			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+numberAsColor('yellow', plata.kol);
+			else vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', plata.kol);
 		}
 		
 		override function itemClick(event:MouseEvent) {
@@ -146,7 +147,6 @@
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			//if (plata.kol<=0) return;
 			var cena:Number;
 			infoItemId=event.currentTarget.id.text;
 			var need:String;
@@ -213,6 +213,5 @@
 			showBottext();
 			pip.setRPanel();
 		}
-	}
-	
+	}	
 }
