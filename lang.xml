@@ -1,4 +1,4 @@
-<all default='en'>
+<all defaultLanguage='en'>
 <lang id='ru' file='text_ru.xml'>Русский</lang>
 <lang id='en' file='text_en.xml'>English</lang>
 <lang id='zh' file='text_zh.xml'>中文</lang>
