@@ -2,9 +2,9 @@ package fe.stubs
 {
     import flash.display.MovieClip;
 
-    public class visualRoller extends MovieClip 
+    public class zastavka extends MovieClip 
     {
-        public function visualRoller() 
+        public function zastavka() 
         {
             // This is a stub.
         }

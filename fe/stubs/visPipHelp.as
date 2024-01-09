@@ -1,4 +1,4 @@
-package stubs
+package fe.stubs
 {
     import flash.display.MovieClip;
 
