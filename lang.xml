@@ -1,0 +1,9 @@
+<all default='en'>
+<lang id='ru' file='text_ru.xml'>Русский</lang>
+<lang id='en' file='text_en.xml'>English</lang>
+<lang id='zh' file='text_zh.xml'>中文</lang>
+<lang id='pl' file='text_pl.xml'>Polski</lang>
+<lang id='de' file='text_de.xml'>Deutsch</lang>
+<lang id='es' file='text_es.xml'>Español</lang>
+<lang id='jp' file='text_jp.xml'>日本語</lang>
+</all>
