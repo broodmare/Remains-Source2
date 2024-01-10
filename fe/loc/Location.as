@@ -152,6 +152,9 @@
 		public var enemyLevel:int=0;		//левел мобов
 		public var earMult:Number=1; 		//множитель слуха мобов
 		
+
+		private static var tileWidth:int  = Tile.tileX;
+		private static var tileHeight:int = Tile.tileY;
 //**************************************************************************************************************************
 //
 //				Создание
@@ -1282,10 +1285,10 @@
 			else return space[nx][ny] as Tile;
 		}
 
-		public function getAbsTile(nx:int,ny:int):Tile
+		public function getAbsTile(nx:int, ny:int):Tile
 		{
-			if (nx<0 || nx>=spaceX*Tile.tileX || ny<0 || ny>=spaceY*Tile.tileY) return otstoy;
-			else return space[Math.floor(nx/Tile.tileX)][Math.floor(ny/Tile.tileY)] as Tile;
+			if (nx < 0 || nx >= spaceX * tileWidth || ny < 0 || ny >= spaceY * tileHeight) return otstoy;
+			else return space[Math.floor(nx / tileWidth)][Math.floor(ny / tileHeight)] as Tile;
 		}
 
 		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean
@@ -1827,97 +1830,149 @@
 			}
 		}
 		
-		public function lighting(nx:int=-10000,ny:int=-10000,dist1:int=-1, dist2:int=-1) {
+		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1):void
+		{
 			if (!active) return;
-			if (dist1<0) dist1=lDist1;
-			if (dist2<0) dist2=lDist2;
-			if (nx==-10000) {
-				nx=gg.X+gg.storona*12;
-				ny=gg.Y1+gg.stayY*0.247;
+			if (dist1 < 0) dist1 = lDist1;
+			if (dist2 < 0) dist2 = lDist2;
+			if (nx == -10000)
+			{
+				nx = gg.X  + gg.storona * 12;
+				ny = gg.Y1 + gg.stayY * 0.247;
 			}
-			var n1:Number, n2:Number;
-			relight_t=10;
-//			trace(opacWater);
-			for (var i=1; i<spaceX; i++) {
-				for (var j=1; j<spaceY; j++) {
-					n1=space[i][j].visi;
-					if (!retDark && n1>=1) continue;
-					var dx:int=i*Tile.tileX-nx;
-					var dy:int=j*Tile.tileY-ny;
-					var rasst=dx*dx+dy*dy;
-					if (rasst>=dist2*dist2) {
-						if (retDark && space[i][j].t_visi>0) {
-							space[i][j].t_visi-=0.025;
-							if (space[i][j].t_visi<0) space[i][j].t_visi=0;
-							grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+
+			var n1:Number;
+			var n2:Number;
+
+			relight_t = 10;
+			for (var i:int = 1; i < spaceX; i++) // For each Row...
+			{
+				for (var j:int = 1; j < spaceY; j++) // For each Column...
+				{
+					var currentTile:Tile = space[i][j]; // STOP ACCESSING TWO ARRAYS EVERY TIME. 
+					n1 = currentTile.visi;
+					if (!retDark && n1 >= 1) continue;
+
+					var dx:int = i * tileWidth - nx;
+					var dy:int = j * tileHeight - ny;
+					var rasst:int = (dx * dx) + (dy * dy);
+					var dist2Squared:int = (dist2 * dist2) // Pre-calculate to save cycles.
+
+					if (rasst >= dist2Squared)
+					{
+						if (retDark && currentTile.t_visi > 0)
+						{
+							currentTile.t_visi -= 0.025;
+							if (currentTile.t_visi < 0) currentTile.t_visi = 0;
+							changePixelOpacity(currentTile);
 						}
 						continue;
 					}
-					var rasst1=Math.sqrt(rasst);
-					if (rasst1<=dist1) n2=1;
-					else n2=(dist2-rasst1)/(dist2-dist1);
-					//видимость по линии
-					if (rasst<=dist2*dist2) {
-						var dex:Number,dey:Number,maxe:int;
-						if (Math.abs(dx)==Math.abs(dy)) dy++;
-						if (Math.abs(dx)>=Math.abs(dy)) {//двигаемся по х
-							if (dx>0) {
-								dex=Tile.tileX;
-								dey=dy/dx*Tile.tileY;
-							} else {
-								dex=-Tile.tileX;
-								dey=-dy/dx*Tile.tileY;
-							}
-							maxe=dx/dex;
-						} else {
-							if (dy>0) {
-								dey=Tile.tileY;
-								dex=dx/dy*Tile.tileX;
-							} else {
-								dey=-Tile.tileY;
-								dex=-dx/dy*Tile.tileX;
-							}
-							maxe=dy/dey;
+
+					var rasst1 = Math.sqrt(rasst);
+
+					if (rasst1 <= dist1) n2 = 1;
+					else n2 = (dist2 - rasst1) / (dist2 - dist1);
+					
+
+					if (rasst <= dist2Squared) //видимость по линии
+					{
+						var dex:Number, dey:Number, maxe:int;
+
+						var absDx:int = Math.abs(dx); // Pre-calculate these to save cycles.
+						var absDy:int = Math.abs(dy);
+						if (absDx == absDy) // Increment and re-calculate only if we have to.
+						{
+							dy++; 
+							absDy = Math.abs(dy);
 						}
-						for (var e=1; e<=maxe; e++) {
-							var t:Tile=getAbsTile(nx+e*dex, ny+e*dey);
-							var opac:Number=t.opac;
-							if (opacWater>0 && t.water>0 && opacWater>opac) opac=opacWater;
-							if (opac>0) {
-								n2-=opac;
-								if (n2<=0) {
-									n2=0;
+						if (absDx >= absDy)
+						{
+							if (dx > 0)
+							{
+								dex = tileWidth;
+								dey = dy / dx * tileHeight;
+							}
+							else
+							{
+								dex = -tileWidth;
+								dey = -dy / dx * tileHeight;
+							}
+							maxe = dx / dex;
+						}
+						else
+						{
+							if (dy > 0)
+							{
+								dey = tileHeight;
+								dex = dx / dy * tileWidth;
+							}
+							else
+							{
+								dey = -tileHeight;
+								dex = -dx / dy * tileWidth;
+							}
+							maxe = dy / dey;
+						}
+						for (var e:int = 1; e <= maxe; e++)
+						{
+							var t:Tile = getAbsTile(nx + e * dex, ny + e * dey);
+							var opac:Number = t.opac;
+							if (opacWater > 0 && t.water > 0 && opacWater > opac) opac = opacWater;
+							if (opac > 0)
+							{
+								n2 -= opac;
+								if (n2 <= 0)
+								{
+									n2 = 0;
 									break;
 								}
 							}
 						}
 					}
-					if (n2>1) n2=1;
-					if (n2>n1+0.01) {
-						space[i][j].t_visi=n2;
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
-					//} else if (retDark && n2==0 && space[i][j].t_visi!=0) {
-						//space[i][j].t_visi=0;
-					} else if (retDark && n2<n1-0.01) {
-						space[i][j].t_visi-=0.025;
-						if (space[i][j].t_visi<n2) space[i][j].t_visi=n2;
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+					if (n2 > 1) n2 = 1;
+					if (n2 > n1 + 0.01)
+					{
+						currentTile.t_visi = n2;
+						changePixelOpacity(currentTile);
+					}
+					else if (retDark && n2 < n1 - 0.01)
+					{
+						currentTile.t_visi -= 0.025;
+						if (currentTile.t_visi < n2) currentTile.t_visi = n2;
+						changePixelOpacity(currentTile);
 					}
 				}
+			}
+
+			function changePixelOpacity(tileToChange:Tile):void
+			{
+				grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - tileToChange.updVisi()) * 255) * 0x1000000);
 			}
 		}
 		
-		public function lighting2() {
+		public function lighting2():void
+		{
 			if (!active) return;
 			relight_t--;
-			for (var i=1; i<spaceX; i++) {
-				for (var j=1; j<spaceY; j++) {
-					if (space[i][j].visi!=space[i][j].t_visi) {
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+			for (var i:int = 1; i < spaceX; i++)
+			{
+				for (var j:int = 1; j < spaceY; j++)
+				{
+					var currentTile:Tile = space[i][j];
+					if (currentTile.visi != currentTile.t_visi)
+					{
+						changePixelOpacity(currentTile);
 					}
 				}
 			}
+
+			function changePixelOpacity(tileToChange:Tile):void
+			{
+				grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - tileToChange.updVisi()) * 255) * 0x1000000);
+			}
 		}
+		
 		
 		//дать опыт
 		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false):void
