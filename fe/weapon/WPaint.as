@@ -1,4 +1,5 @@
-﻿package fe.weapon  {
+package fe.weapon 
+{
 	import flash.display.MovieClip;
 	
 	import fe.unit.Unit;
@@ -7,8 +8,8 @@
 	import fe.loc.Tile;
 	import fe.*;
 	
-	public class WPaint extends Weapon {
-		
+	public class WPaint extends Weapon
+	{
 		var del:Object={x:0, y:0};
 		var celX:Number, celY:Number;
 		var pX:Number=-1, pY:Number=-1;
@@ -17,14 +18,16 @@
 		public var paintId:String='p_black';
 		public var paintNazv:String='';
 
-		public function WPaint(own:Unit, id:String, nvar:int=0) {
+		public function WPaint(own:Unit, id:String, nvar:int=0)
+		{
 			super(own, id,nvar);
 			vWeapon=visualpaint;
 			vis=new vWeapon();
 		}
 		
 	
-		public function lineCel():int {
+		public function lineCel():int
+		{
 			var res=0;
 			var bx:Number=owner.X;
 			var by:Number=owner.Y-owner.scY*0.75;
@@ -42,12 +45,12 @@
 			return 1;
 		}
 		
-		public override function actions() {
+		public override function actions():void
+		{
 			var ds=40*owner.storona;
 			if (owner.player) {
 				celX=owner.celX;
 				celY=owner.celY;
-				//lineCel();
 				storona=owner.storona;
 				del.x=(celX-(owner.X+ds));
 				del.y=(celY-owner.weaponY);
@@ -63,33 +66,31 @@
 					norma(del,20);
 				}
 				pX=X, pY=Y;
-				X+=del.x;//(tx)/Math.max(3,massa*50);
-				Y+=del.y;//(ty)/Math.max(3,massa*50);
+				X+=del.x;
+				Y+=del.y;
 			}
 		}
 		
-		public override function attack(waitReady:Boolean=false):Boolean {
+		public override function attack(waitReady:Boolean=false):Boolean
+		{
 			World.w.grafon.paint(pX,pY,X,Y,World.w.ctr.keyRun);
 			return true;
 		}
 
-		public function setPaint(npaint:String, ncolor:uint, nblend:String) {
+		public function setPaint(npaint:String, ncolor:uint, nblend:String)
+		{
 			paintId=npaint;
 			paintNazv=Res.txt('i',paintId);
 			World.w.grafon.brTrans.color=ncolor
-			/*try {
-				World.w.grafon.pa.gotoAndStop(paintId);
-				World.w.grafon.pb.gotoAndStop(paintId);
-			} catch (err) {}*/
 		}
 		
-		public override function animate() {
+		public override function animate():void
+		{
 			if (vis) {
 				vis.y=Y;
 				vis.x=X;
 				vis.scaleX=storona;
 			}
 		}
-	}
-	
+	}	
 }

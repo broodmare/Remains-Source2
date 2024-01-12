@@ -1,4 +1,5 @@
-﻿package fe.weapon  {
+package fe.weapon 
+{
 	import flash.display.MovieClip;
 	
 	import fe.unit.Unit;
@@ -7,8 +8,8 @@
 	import fe.loc.Tile;
 	import fe.*;
 	
-	public class WClub extends Weapon {
-		
+	public class WClub extends Weapon
+	{
 		var anim:Number=0;
 		var rapid_act:Number=10;	//актуальная скорость атаки
 		var sin0:Number,cos0:Number,sin1:Number,cos1:Number,sin2:Number,cos2:Number;
@@ -42,7 +43,8 @@
 		public var powerfull:Boolean=false;	//можно усиливать удар
 		public var combinat:Boolean=false;	//каждый 4й удар усиленный
 
-		public function WClub(own:Unit, id:String, nvar:int=0){
+		public function WClub(own:Unit, id:String, nvar:int=0)
+		{
 			var node=AllData.d.weapon.(@id==id)[0];
 			if (node.vis[0].@lasm>0) lasM=true;
 			if (!lasM) {
@@ -55,7 +57,6 @@
 			super(own,id,nvar);
 			vis.stop();
 			speed=15;
-			//noPerc=true;
 			satsMelee=noTrass=true;
 			if (node.@mtip.length()) mtip=node.@mtip;
 			if (node.phis[0].@long>0) dlina=node.phis[0].@long;
@@ -79,10 +80,8 @@
 			b.probiv=0.75;
 			b.dx=b.dy=b.vel=0;
 			if (node.@crack.length()) b.crack=node.@crack;
-			//if (mtip>0) 
 			checkLine=true;
 			b.checkLine=checkLine;
-			//b.flare='bum';
 			rot=-Math.PI/2-(Math.PI/6)*storona;
 			cos0=Math.cos(rot), sin0=Math.sin(rot);
 			for (var i=0; i<=kolvzz; i++) {
@@ -93,15 +92,18 @@
 			if (!auto && !powerfull)combinat=true;
 		}
 		
-		public override function addVisual() {
+		public override function addVisual()
+		{
 			super.addVisual();
 			if (visvzz) World.w.grafon.visObjs[sloy].addChild(visvzz);
 		}
-		public override function remVisual() {
+		public override function remVisual()
+		{
 			super.remVisual();
 			if (visvzz && visvzz.parent) visvzz.parent.removeChild(visvzz);
 		}
-		public override function setPers(gg:UnitPlayer, pers:Pers) {
+		public override function setPers(gg:UnitPlayer, pers:Pers):void
+		{
 			super.setPers(gg,pers);
 			rapidMult=1/pers.meleeSpdMult;
 			damMult*=pers.meleeDamMult;
@@ -125,7 +127,8 @@
 			return 1;
 		}
 		
-		public override function actions() {
+		public override function actions():void
+		{
 			var ds=40*owner.storona;
 			meleeR=World.w.pers.meleeR;
 			if (loc && loc.sky) meleeR*=10;
@@ -145,13 +148,7 @@
 					if (mtip==2 || t_attack<=0) {
 						celRX=owner.celX;
 						celRY=owner.celY;
-					} /*else if (mtip==1) {
-						del.x=(celX-owner.weaponX);
-						del.y=(celY-owner.weaponY);
-						norma(del,100);
-						celRX=del.x;
-						celRX=del.y;
-					}*/
+					}
 					celX=celRX;
 					celY=celRY;
 					if (mtip==2 || t_attack<=0) {
@@ -187,7 +184,6 @@
 				X=owner.weaponX;
 				Y=owner.weaponY;
 				ready=true;
-				//rot=Math.atan2(owner.celY-Y, Math.abs(owner.celX-X)*owner.storona);
 			} else {
 				var tx=celX-X;
 				var ty=celY-Y;
@@ -202,15 +198,13 @@
 					norma(del,Math.max(levitRun,1/massa));
 				}
 				blumR=(del.x*storona+del.y)/2;
-				X+=del.x;//(tx)/Math.max(3,massa*50);
-				Y+=del.y;//(ty)/Math.max(3,massa*50);
-				//rot=Math.atan2(owner.celY-Y, owner.celX-X);
+				X+=del.x;
+				Y+=del.y;
 			}
 			visvzz.visible=false;
 			if (t_attack>0) {
 				var isPow:Boolean=false;
 				if (powerfull && t_attack<rapid_act*5/6 && pow>2 && pow<rapid_act*2.15) {
-					//trace(Math.round(pow/(rapid_act*2.15)*100));
 					anim=-1/4;
 					if (mtip==1) quakeY=pow/(rapid_act*2.15)*30*(Math.random()-0.5);
 					else quakeY=pow/(rapid_act*2.15)*30;
@@ -245,7 +239,7 @@
 						}
 						cos2=Math.cos(rot), sin2=Math.sin(rot);
 						for (var i=0; i<=kolvzz; i++) {
-							var nx=X+cos2*(mindlina+i*stepdlina);//+anim*storona*(mindlina+i*stepdlina);
+							var nx=X+cos2*(mindlina+i*stepdlina);
 							var ny=Y+sin2*(mindlina+i*stepdlina);
 							if (!isPow) b.bindMove(nx,ny, vzz[i].X, vzz[i].Y);
 							vzz[i].X=nx, vzz[i].Y=ny;
@@ -381,7 +375,6 @@
 				hold-=rashod;
 				if (owner.player && loc.train && ammo!='recharg') World.w.invent.items[ammo].kol+=rashod;
 			}
-			//b=new Bullet(owner,X-(dlina/2)*owner.storona,Y-dlina,vBullet);
 			t_auto=3;
 			return b;
 		}
@@ -396,7 +389,8 @@
 			return rap0/skillConf*rapidMult/owner.rapidMultCont;
 		}
 		
-		protected override function weaponAttack() {
+		protected override function weaponAttack():void
+		{
 			powerMult=1;
 			if (t_attack<=0) {
 				setBullet(b);
@@ -418,7 +412,8 @@
 			} else if (t_attack>10) combo=0;
 		}
 		
-		public override function crash(dam:int=1) {
+		public override function crash(dam:int=1):void
+		{
 			if (owner.player) {
 				if (!loc.train && !World.w.alicorn) hp-=dam+ammoHP;
 				if (hp<0) hp=0;
@@ -436,7 +431,8 @@
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void
+		{
 			if (quakeX!=0) {
 				quakeX*=(Math.random()*0.3+0.5);
 				if (quakeX<1 && quakeX>-1) quakeX=0;
@@ -447,9 +443,9 @@
 			}
 			vis.y=Y+plY+quakeY;
 			if (krep==0) {
-				vis.x=X+plX+quakeX;//+anim*storona*dlina;
+				vis.x=X+plX+quakeX;
 				vis.scaleY=storona;
-				vis.rotation=rot*180/Math.PI+blumR; //-90-((30-anim*180)*owner.storona);//+rot*180/Math.PI+(1-owner.storona)*90;
+				vis.rotation=rot*180/Math.PI+blumR;
 				visvzz.x=vis.x;
 				visvzz.y=vis.y;
 				visvzz.rotation=vis.rotation;
@@ -457,9 +453,8 @@
 			} else {
 				vis.x=X;
 				vis.scaleY=owner.storona;
-				vis.rotation=90*owner.storona-90+owner.weaponR*owner.storona;// 90*owner.storona-90-owner.weaponR*owner.storona; //-90-((30-anim*180)*owner.storona);//+rot*180/Math.PI+(1-owner.storona)*90;
+				vis.rotation=90*owner.storona-90+owner.weaponR*owner.storona;
 			}
 		}
-	}
-	
+	}	
 }

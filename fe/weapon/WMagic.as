@@ -1,4 +1,4 @@
-﻿package fe.weapon {
+package fe.weapon {
 	
 	import fe.*;
 	import fe.unit.Unit;
@@ -57,7 +57,8 @@
 			return true;
 		}
 		
-		public override function setPers(gg:UnitPlayer, pers:Pers) {
+		public override function setPers(gg:UnitPlayer, pers:Pers):void
+		{
 			super.setPers(gg,pers);
 			dmana=mana*pers.allDManaMult*pers.warlockDManaMult;
 			dmagic=magic*pers.allDManaMult*pers.warlockDManaMult;
@@ -83,7 +84,8 @@
 			return b;
 		}
 		
-		public override function animate() {
+		public override function animate():void
+		{
 			
 			if (!vis) return;
 			vis.x=X;
@@ -92,8 +94,6 @@
 				if (t_prep>1) vis.gotoAndStop(t_prep);
 				else vis.gotoAndStop(1);
 			}
-		}
-		
-	}
-	
+		}	
+	}	
 }

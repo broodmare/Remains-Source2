@@ -1,15 +1,16 @@
-﻿package fe.weapon  {
-	
+package fe.weapon 
+{
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
 	import fe.loc.Tile
 	
-	public class WKick extends Weapon {
-		
+	public class WKick extends Weapon
+	{
 		public var kick:Boolean=true;
 		
-		public function WKick(own:Unit, id:String, nvar:int=0){
+		public function WKick(own:Unit, id:String, nvar:int=0)
+		{
 			super(own, id,nvar);
 			vBullet=visualPunch;
 			b=new Bullet(own,X-(dlina/2)*storona,Y-dlina,null,false);
@@ -19,8 +20,8 @@
 			setBullet(b);
 		}
 		
-		public override function actions() {
-			//owner.setPunchWeaponPos(this);
+		public override function actions():void
+		{
 			X=owner.X;
 			Y=owner.Y;
 			storona=owner.storona;
@@ -83,8 +84,8 @@
 			return true;
 		}
 		
-		public override function animate() {
+		public override function animate():void {
+
 		}
-	}
-	
+	}	
 }

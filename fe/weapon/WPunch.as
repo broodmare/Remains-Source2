@@ -1,18 +1,21 @@
-﻿package fe.weapon  {
-	
+package fe.weapon
+{
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
-	public class WPunch extends Weapon {
-		
+
+	public class WPunch extends Weapon
+	{
 		public var zadok:Boolean=false;	//может действовать назад
 
-		public function WPunch(own:Unit, id:String, nvar:int=0){
+		public function WPunch(own:Unit, id:String, nvar:int=0)
+		{
 			super(own, id,nvar);
-			vBullet=visualPunch;
+			vBullet = visualPunch;
 		}
 		
-		public override function actions() {
+		public override function actions():void
+		{
 			owner.setPunchWeaponPos(this);
 			if (t_attack>0) t_attack--;
 			if (t_attack==rapid-5) {
@@ -44,15 +47,10 @@
 			}
 		}
 
-		public override function attack(waitReady:Boolean=false):Boolean {
-			if (t_attack<=0) {
-				t_attack=rapid;
-			}
+		public override function attack(waitReady:Boolean=false):Boolean
+		{
+			if (t_attack<=0) t_attack=rapid;
 			return true;
 		}
-		
-		public override function animate() {
-		}
 	}
-	
 }

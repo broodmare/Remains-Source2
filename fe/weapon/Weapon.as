@@ -1,19 +1,21 @@
-﻿package fe.weapon {
-	
+package fe.weapon
+{	
 	import flash.geom.Point;
 	import flash.utils.*;
 	import flash.media.SoundChannel;
 	import flash.display.Graphics;
 	import fe.*;
+	import fe.Obj;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.unit.Pers;
 
-	public class Weapon extends fe.Obj{
+	public class Weapon extends Obj
+	{
 		
 		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
-		public static var variant2=' - II';
+		public static var variant2:String = ' - II';
 		
 		public var b:Bullet;
 		public var trasser:Trasser;
@@ -202,7 +204,8 @@
 		public var price:int=0;
 		var breaking:Number=0;
 
-		public function Weapon(own:Unit, nid:String, nvar:int=0) {
+		public function Weapon(own:Unit, nid:String, nvar:int=0)
+		{
 			sloy=2;
 			owner=own;
 			id=nid;
@@ -216,7 +219,8 @@
 			if (!own.player) auto=true;
 		}
 		
-		public static function create(owner:Unit, id:String, nvar:int=0):Weapon {
+		public static function create(owner:Unit, id:String, nvar:int=0):Weapon
+		{
 			if (id.charAt(id.length-2)=='^') {
 				id=id.substr(0,id.length-2);
 				nvar=1;
@@ -243,11 +247,13 @@
 			return w;
 		}
 		
-		public override function err():String {
+		public override function err():String
+		{
 			return 'Error weapon '+nazv+':'+(owner?owner.nazv:'????');
 		}
 		
-		public function getXmlParam() {
+		public function getXmlParam():void
+		{
 			//общие характеристики
 			var node:XML=AllData.d.weapon.(@id==id)[0];
 			
@@ -349,7 +355,8 @@
 			}
 		}
 		
-		function getVisParam(node:XML) {
+		protected function getVisParam(node:XML):void
+		{
 			if (node==null) return;
 			if (node.@vweap.length()>0) svisv=node.@vweap;
 			if (node.@tipdec.length()) tipDecal=node.@tipdec;
@@ -363,7 +370,8 @@
 			if (node.@flare.length()) flare=node.@flare;
 		}
 		
-		function getSndParam(node:XML) {
+		protected function getSndParam(node:XML):void
+		{
 			if (node==null) return;
 			if (node.@shoot.length()) sndShoot=node.@shoot;
 			if (node.@shoot_n.length()) sndShoot_n=node.@shoot_n;
@@ -375,7 +383,8 @@
 			if (node.@noise.length()) noise=node.@noise;
 		}
 		
-		function getDopParam(node:XML) {
+		protected function getDopParam(node:XML):void
+		{
 			if (node==null) return;
 			if (node.@vision.length()) visionMult=node.@vision;
 			if (node.@effect.length()) dopEffect=node.@effect;
@@ -384,7 +393,8 @@
 			if (node.@probiv.length()) probiv=node.@probiv;
 		}
 		
-		function getPhisParam(node:XML) {
+		protected function getPhisParam(node:XML):void
+		{
 			if (node==null) return;
 			if (node.@massa>0) massa=node.@massa/50;
 			else massa=0;
@@ -403,7 +413,8 @@
 			if (node.@volna.length()) volna=true;
 		}
 		
-		function getCharParam(node:XML) {
+		protected function getCharParam(node:XML):void
+		{
 			if (node==null) return;
 			if (node.@maxhp.length()) maxhp=node.@maxhp;
 			if (node.@damage.length()) damage=node.@damage;
@@ -430,7 +441,8 @@
 			if (node.@auto.length()) auto=(node.@auto!='0');
 		}
 		
-		function getAmmoParam(node:XML) {
+		protected function getAmmoParam(node:XML):void
+		{
 			if (node==null) return;
 			if (node.@holder.length()) holder=node.@holder;
 			if (node.@rashod.length()) rashod=node.@rashod;
@@ -440,7 +452,8 @@
 			if (node.@magic.length()) magic=dmagic=node.@magic;
 		}
 		
-		public function updVariant(nvar:int) {
+		public function updVariant(nvar:int):void
+		{
 			if (uniq<0) return;
 			variant=nvar;
 			if (owner.player && World.w.gg.currentWeapon==this) {
@@ -453,12 +466,15 @@
 			}
 		}
 		
-		public override function step() {
+		public override function step()
+		{
 			actions();		//различные действия
 			if (owner) owner.setWeaponPos(tip);
 			if (vis) animate();		//анимация
 		}
-		public override function addVisual() {
+
+		public override function addVisual()
+		{
 			if (owner) {
 				loc=owner.loc;
 			} else {
@@ -469,11 +485,13 @@
 				vis.transform.colorTransform=owner.cTransform;
 			}
 		}
-		public function addVisual2() {
+		public function addVisual2():void
+		{
 			if (tip==5 && vis) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			t_attack=t_reload=0;
 			if (owner) {
 				X=owner.weaponX;
@@ -482,7 +500,8 @@
 			}
 		}
 		
-		public function setPers(gg:UnitPlayer, pers:Pers) {
+		public function setPers(gg:UnitPlayer, pers:Pers):void
+		{
   			weaponSkill=pers.weaponSkills[skill];
 			if (pers.desintegr>0) desintegr=pers.desintegr;
 			if (tip!=5) drotMult=pers.drotMult;
@@ -495,14 +514,12 @@
 			var razn=lvl-pers.getWeapLevel(skill);
 			if (razn<0) skillPlusDam=1-razn*0.1;
 			else skillPlusDam=1;
-			//skillPlusDam=1;
 			speedMult=1;
 			damAdd=0;
 			pierAdd=0;
 			critchAdd=0;
 			otbrosMult=1;
 			devMult=1;
-			//dopDamage=1;
 			for each(var wp in weaponPerks) {
 				if (opt[wp]) {
 					if (pers.hasOwnProperty(wp+'Prec')) precMult*=pers[wp+'Prec'];
@@ -525,7 +542,8 @@
 			explRadMult=pers.explRadMult;
 		}
 		
-		public function actions() {
+		public function actions():void
+		{
 			var rot2:Number;
 			if (owner==null) return;
 			if (X<owner.celX) storona=1;
@@ -677,19 +695,21 @@
 			return true;
 		}
 		
-		protected function weaponAttack() {
+		protected function weaponAttack():void
+		{
 			if (jammed) {
 				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.w.gui.infoText('weaponCircuit',null,null,false);
 				else World.w.gui.infoText('weaponJammed',null,null,false);
 				Snd.ps('no_ammo',X,Y);
 				initReload();
-				return false;
+				return;
 			}
 			if (hp<maxhp/2) breaking=(maxhp-hp)/maxhp*2-1;
 			else breaking=0;
 		}
 		
-		protected function checkAvail():Boolean {
+		protected function checkAvail():Boolean
+		{
 			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.8;
 			else if (razn==2) skillConf=0.6;
@@ -705,11 +725,13 @@
 		}
 		
 		//возможность атаки
-		public function attackPos():Boolean {
+		public function attackPos():Boolean
+		{
 			return t_attack<=0 && t_reload<=0;
 		}
 		
-		public function getBulXY() {
+		public function getBulXY():void
+		{
 			try {
 				if (vis && vis.emit && vis.parent) {
 					var p:Point=new Point(vis.emit.x,vis.emit.y);
@@ -724,7 +746,8 @@
 			}
 		}
 		
-		protected function shoot():Bullet {
+		protected function shoot():Bullet
+		{
 			//осечка
 			if (breaking>0 && owner && owner.player) {
 				var rnd=Math.random();
@@ -764,7 +787,6 @@
 				}
 				if (b.vis && spring==3) b.vis.gotoAndStop(i+1);
 				b.rot=rot-rotUp*storona/50+r+(i-(kol-1)/2)*deviation*3.1415/360;
-				//trace(b.rot);
 				if (grav>0 || volna) b.vel=speed*speedMult; 
 				else b.vel=speed*speedMult*(Math.random()*0.4+0.8);
 				b.dx=Math.cos(b.rot)*b.vel;
@@ -842,38 +864,31 @@
 			is_shoot=true;
 			if (sndShoot!='' && kol_shoot%sndShoot_n==0) Snd.ps(sndShoot,X,Y);
 			t_auto=3;
-			//Snd.psr();
-			//trace(b.precision)
 			return b;
 		}
 		
 		//результирующий урон
-		public function resultDamage(dam0:Number, sk:Number=1):Number {
-			//return (dam0+damAdd)*damMult*(1+(sk-1)*0.5)*(1-breaking*0.3);
+		public function resultDamage(dam0:Number, sk:Number=1):Number
+		{
 			return (dam0+damAdd)*damMult*sk*skillPlusDam*(1-breaking*0.3);
 		}
 		//результирующая дальность
-		public function resultPrec(pm:Number=1, sk:Number=1):Number {
+		public function resultPrec(pm:Number=1, sk:Number=1):Number
+		{
 			return precision*precMult*(1+(sk-1)*0.5)*pm*owner.precMultCont;
 		}
 		//результирующее время атаки
-		public function resultRapid(rap0:Number, sk:Number=1):Number {
+		public function resultRapid(rap0:Number, sk:Number=1):Number
+		{
 			return rap0;
 		}
 		
-		public function setTrass(gr:Graphics) {
+		public function setTrass(gr:Graphics):void
+		{
 			var rot3=Math.atan2(World.w.celY-Y, World.w.celX-X);
-			/*var p:Point, p1:Point;
-			if (vis && vis.emit) {
-				p=new Point(vis.emit.x,vis.emit.y);
-				p1=vis.localToGlobal(p);
-				p1=vis.parent.globalToLocal(p1);
-			} else {
-				p1=new Point(X,Y);
-			}*/
 			trasser.loc=owner.loc;
-			trasser.X=trasser.begx=X;//p1.x;
-			trasser.Y=trasser.begy=Y;//p1.y;
+			trasser.X=trasser.begx=X;
+			trasser.Y=trasser.begy=Y;
 			trasser.dx=trasser.begdx=Math.cos(rot3)*speed*speedMult;
 			trasser.dy=trasser.begdy=Math.sin(rot3)*speed*speedMult;
 			trasser.ddy=trasser.ddx=0;
@@ -889,7 +904,8 @@
 		}
 		
 		
-		protected function setBullet(bul:Bullet) {
+		protected function setBullet(bul:Bullet):void
+		{
 			bul.tipDamage=tipDamage;
 			bul.tipDecal=tipDecal;
 			bul.otbros=otbros*otbrosMult*ammoOtbros;
@@ -919,7 +935,8 @@
 			if (absPierRnd>0 && Math.random()<absPierRnd*critCh) bul.pier=1000;
 		}
 		
-		public function reloadWeapon() {
+		public function reloadWeapon():void
+		{
 			jammed=false;
 			if (ammo=='recharg') return;
 			if (owner && owner.player && ammo!='not') {
@@ -943,7 +960,8 @@
 		}
 		
 		//установить использующийся тип боеприпасов
-		public function setAmmo(nammo:String=null, node:XML=null) {
+		public function setAmmo(nammo:String=null, node:XML=null):void
+		{
 			if (nammo!=null) ammo=nammo;
 			if (node==null) {
 				node=World.w.invent.items[ammo].xml;
@@ -974,7 +992,8 @@
 		}
 		
 		//разрядить
-		public function unloadWeapon() {
+		public function unloadWeapon():void
+		{
 			if (owner && owner.player && holder && hold && ammo!='' && ammo!='recharg' && ammo!='not') {
 				World.w.gui.infoText('unloadWeapon',nazv,null,false);
 				(owner as UnitPlayer).invent.items[ammo].kol+=hold;
@@ -985,7 +1004,8 @@
 		}
 		
 		//0-готово к стрельбе, 1-стреляет, 2-пустая обойма, 3-перезаряжается, 4-нет боеприпасов, 5-сломано, 6-нет маны
-		public function status():int {
+		public function status():int
+		{
 			if (hp<=0) return 5;
 			if (jammed) return 2;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && hold<rashod) {
@@ -999,7 +1019,8 @@
 		}
 		
 		//доступность для использования
-		public function avail():int {
+		public function avail():int
+		{
 			if (hp<=0) return -2;
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) return -1; 
 			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
@@ -1008,15 +1029,19 @@
 			return 1;
 		}
 		
-		public function repair(nhp:int) {
+		public function repair(nhp:int):void
+		{
 			hp+=nhp;
 			if (hp>maxhp) hp=maxhp;
 		}
 		
-		public function crash(dam:int=1) {
+		public function crash(dam:int=1):void
+		{
+			
 		}
 
-		public function initReload(nammo:String='') {
+		public function initReload(nammo:String=''):void
+		{
 			if (!jammed && (holder<=0 || (hold==holder && nammo=='') || recharg>0)) return;
 			if (nammo=='') ammoTarg=ammo;
 			if (owner.player) {
@@ -1042,7 +1067,6 @@
 			}
 			if (t_reload<=0 || reload==0) {
 				if (reload>0) {
-					//if (owner==World.w.gg && holder>rashod) World.w.gui.infoText('reloadWeapon',nazv);
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) {
 						try {
@@ -1054,11 +1078,13 @@
 			}
 		}
 
-		public function detonator():Boolean {
+		public function detonator():Boolean
+		{
 			return false;
 		}
 
-		public function animate() {
+		public function animate():void
+		{
 			if (!vis) return;
 			vis.x=X-t_ret*vis.scaleX*2;
 			vis.y=Y;
@@ -1075,13 +1101,6 @@
 				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);
 			}
 			if (krep==0) {
-				/*if (rot>Math.PI/2 || rot<-Math.PI/2) {
-					vis.scaleX=-1;
-					vis.rotation=rot*180/Math.PI+180;
-				} else {
-					vis.scaleX=1;
-					vis.rotation=rot*180/Math.PI;
-				}*/
 				if (X>owner.celX) {
 					vis.scaleX=-1;
 					vis.rotation=rot*180/Math.PI+180+rotUp;
@@ -1096,7 +1115,8 @@
 			}
 		}
 		
-		public function write():String {
+		public function write():String
+		{
 			var s:String='';
 			s+=id;
 			if (variant>0) s+='^'+variant;
@@ -1138,7 +1158,5 @@
 			else s+=price+'\t';
 			return s;
 		}
-
-	}
-	
+	}	
 }

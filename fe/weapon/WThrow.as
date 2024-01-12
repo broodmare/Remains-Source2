@@ -1,5 +1,5 @@
-﻿package fe.weapon  {
-	
+package fe.weapon
+{
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
@@ -7,7 +7,8 @@
 	import flash.display.Graphics;
 	
 	
-	public class WThrow  extends Weapon{
+	public class WThrow  extends Weapon
+	{
 		
 		public var kolAmmo:int=4;
 		public var detTime:int=75;
@@ -18,7 +19,8 @@
 		public var sndFall:String='';
 		
 		
-		public function WThrow(own:Unit, nid:String, nvar:int=0) {
+		public function WThrow(own:Unit, nid:String, nvar:int=0)
+		{
 			super(own,nid,nvar);
 			noPerc=true;
 			vBullet=vWeapon;
@@ -35,15 +37,18 @@
 			if (node.snd.length() && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
 		}
 
-		public override function attack(waitReady:Boolean=false):Boolean {
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) {
+		public override function attack(waitReady:Boolean=false):Boolean
+		{
+			if (!waitReady && !World.w.alicorn && !auto && t_auto>0)
+			{
 				t_auto=3;
 				return false;
 			}
 			skillConf=1;
 			if (owner.player && World.w.weaponsLevelsOff) {
 				if (lvlNoUse) {
-					if ((owner as UnitPlayer).pers.getWeapLevel(skill)<lvl) {
+					if ((owner as UnitPlayer).pers.getWeapLevel(skill)<lvl)
+					{
 						World.w.gui.infoText('weaponSkillLevel');
 						return false;
 					}
@@ -143,7 +148,8 @@
 			return b;
 		}
 		
-		public override function setTrass(gr:Graphics) {
+		public override function setTrass(gr:Graphics):void
+		{
 			skillConf=1;
 			var razn=lvl-World.w.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
@@ -169,11 +175,8 @@
 			trasser.trass(gr);
 		}
 
-		public override function reloadWeapon() {
-			
-		}
-		
-		public function getAmmo():Boolean {
+		public function getAmmo():Boolean
+		{
 			if (owner.player) {
 				return (owner as UnitPlayer).getInvAmmo(ammo,1,1,true)>0
 			} else {
@@ -188,7 +191,8 @@
 		}
 		
 		
-		public override function animate() {
+		public override function animate():void
+		{
 			super.animate();
 			vis.rotation=0;
 			vis.scaleX=1;
@@ -196,7 +200,8 @@
 			else vis.alpha=1;
 		}
 		
-		public override function detonator():Boolean {
+		public override function detonator():Boolean
+		{
 			if (radio) {
 				for each (var un:Unit in loc.units) {
 					if ((un is Mine) && un.id==id) {
@@ -207,11 +212,9 @@
 			} else return false;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull();
-			//initReload();
-		}
-		
-	}
-	
+		}	
+	}	
 }
