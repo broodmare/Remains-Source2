@@ -1,10 +1,7 @@
-package  fe.loc {
-	import flash.display.Sprite;
-	import flash.display.MovieClip;
-	
-	import fe.*;
-	
-	public class Tile {
+package  fe.loc
+{
+	public class Tile
+	{
 		public static var tileX=40;
 		public static var tileY=40;
 		
@@ -108,7 +105,6 @@ package  fe.loc {
 			var fr:int=s.charCodeAt(0);
 			if (fr>64 && fr!=95) {
 				inForm(Form.fForms[s.charAt(0)]);
-				//phis=1;
 			}
 			if (s.length>1) {
 				for (var i=1; i<s.length; i++) {
@@ -116,7 +112,6 @@ package  fe.loc {
 					var sym:String=s.charAt(i);
 					if (sym=='*') {
 						water=1;
-						//opac=0.2;
 					} else if (sym==',') {
 						setZForm(1);
 					} else if (sym==';') {
@@ -149,6 +144,7 @@ package  fe.loc {
 			if (visi>t_visi) visi=t_visi;
 			return visi;
 		}
+
 		public function setZForm(n:int) {
 			if (n<0) n=0;
 			if (n>3) n=3;
@@ -156,6 +152,7 @@ package  fe.loc {
 			phY1=(Y+zForm/4)*Tile.tileY;
 			if (n>0) opac=0;
 		}
+
 		public function mainFrame(nfront:String='A') {
 			phis=1;
 			vid=vid2=diagon=stair=0;
@@ -166,6 +163,7 @@ package  fe.loc {
 			hp=10000;
 			opac=1;
 		}
+		
 		public function getMaxY(rx:Number):Number {
 			if (diagon==0) return phY1;
 			else if (diagon>0) {
@@ -188,7 +186,6 @@ package  fe.loc {
 		
 		//уничтожить блок
 		public function die() {
-			//phis=diagon=floor=stair=0;
 			if (phis!=3) front='';
 			phis=0;
 			opac=0;
@@ -197,8 +194,5 @@ package  fe.loc {
 			t_ghost=0;
 			if (trap) trap.die();	//уничтожить привязки
 		}
-		
-
 	}
-	
 }
