@@ -1,4 +1,5 @@
-﻿package fe.unit {
+package fe.unit
+{
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
@@ -12,39 +13,40 @@
 	
 	import fe.*;
 	import fe.weapon.*;
+	import fe.projectile.Bullet;
 	import fe.loc.*;
 	import fe.serv.*;
 	import fe.graph.Emitter;
-	import fe.graph.Grafon;
 	import flash.media.SoundChannel;
 	import flash.filters.GlowFilter;
 	import fe.graph.Part;
 	
-	public class Unit extends Obj{
+	public class Unit extends Obj
+	{
 		
-		public static const
-		D_BUL=0,		//пули		+
-		D_BLADE=1,		//лезвие	+
-		D_PHIS=2,		//дробящий	+
-		D_FIRE=3,		//огонь		*
-		D_EXPL=4,		//взрыв		+
-		D_LASER=5,		//лазер		*
-		D_PLASMA=6,		//плазма	*
-		D_VENOM=7,		//отравляющие вещества
-		D_EMP=8,		//ЭМП
-		D_SPARK=9,		//молния	*
-		D_ACID=10,		//кислота	*
-		D_CRIO=11,		//холод		*
-		D_POISON=12,	//отравление
-		D_BLEED=13,		//кровотечение
-		D_FANG=14,		//звери		+
-		D_BALE=15,		//пиздец
-		D_NECRO=16,		//некромантия
-		D_PSY=17,		//пси
-		D_ASTRO=18,		//звиздец
-		D_PINK=19,		//розовое облако
-		D_INSIDE=100,	//???
-		D_FRIEND=101;	//дружба
+		
+		public static const D_BUL:int =0;		//пули		+
+		public static const D_BLADE:int =1;		//лезвие	+
+		public static const D_PHIS:int =2;		//дробящий	+
+		public static const D_FIRE:int =3;		//огонь		*
+		public static const D_EXPL:int =4;		//взрыв		+
+		public static const D_LASER:int =5;		//лазер		*
+		public static const D_PLASMA:int =6;	//плазма	*
+		public static const D_VENOM:int =7;		//отравляющие вещества
+		public static const D_EMP:int =8;		//ЭМП
+		public static const D_SPARK:int =9;		//молния	*
+		public static const D_ACID:int =10;		//кислота	*
+		public static const D_CRIO:int =11;		//холод		*
+		public static const D_POISON:int =12;	//отравление
+		public static const D_BLEED:int =13;	//кровотечение
+		public static const D_FANG:int =14;		//звери		+
+		public static const D_BALE:int =15;		//пиздец
+		public static const D_NECRO:int =16;	//некромантия
+		public static const D_PSY:int =17;		//пси
+		public static const D_ASTRO:int =18;	//звиздец
+		public static const D_PINK:int =19;		//розовое облако
+		public static const D_INSIDE:int =100;	//???
+		public static const D_FRIEND:int =101;	//дружба
 		
 		public static var txtMiss:String;
 		
@@ -2702,15 +2704,11 @@
 				}
 			}
 		}
-		
-		
+
 //--------------------------------------------------------------------------------------------------------------------
 //				Рандом
 		protected function isrnd(n:Number=0.5):Boolean {
 			return Math.random()<n;
 		}
-		
-		
 	}
-	
 }

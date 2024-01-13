@@ -1,4 +1,5 @@
-﻿package fe.unit {
+﻿package fe.unit
+{
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
@@ -7,8 +8,10 @@
 	import fe.loc.Tile;
 	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
+	import fe.projectile.Bullet;
 	
-	public class UnitRaider extends UnitPon{
+	public class UnitRaider extends UnitPon
+	{
 		
 		protected var animFrame:int=0;
 		public var parentId:String;

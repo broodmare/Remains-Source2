@@ -1,10 +1,11 @@
-package fe.weapon {
-	
+package fe.weapon
+{	
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Pers;
-	
+	import fe.projectile.Bullet;
+
 	public class WMagic extends Weapon {
 		
 		public function WMagic(own:Unit, nid:String, nvar:int=0) {

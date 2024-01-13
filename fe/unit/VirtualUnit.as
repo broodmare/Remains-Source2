@@ -1,6 +1,6 @@
 ﻿package fe.unit {
 	import fe.Obj;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.loc.Box;
 	
 	public class VirtualUnit extends Unit{

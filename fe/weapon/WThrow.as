@@ -1,12 +1,16 @@
 package fe.weapon
 {
+	import flash.display.Graphics;
+	
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Mine;
-	import flash.display.Graphics;
-	
-	
+	import fe.projectile.Bullet;
+	import fe.projectile.SmartBullet;
+	import fe.projectile.Trasser;
+	import fe.projectile.PhisBullet;
+
 	public class WThrow  extends Weapon
 	{
 		

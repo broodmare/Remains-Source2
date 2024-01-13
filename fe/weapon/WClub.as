@@ -7,6 +7,7 @@ package fe.weapon
 	import fe.unit.Pers;
 	import fe.loc.Tile;
 	import fe.*;
+	import fe.projectile.Bullet;
 	
 	public class WClub extends Weapon
 	{

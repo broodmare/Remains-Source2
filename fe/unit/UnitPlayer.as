@@ -1,20 +1,22 @@
-﻿package fe.unit {
+﻿package fe.unit
+{
 	import flash.filters.GlowFilter;
-	//import flash.filters.GradientGlowFilter;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
 	import flash.filters.DropShadowFilter;
-	
+	import flash.filters.BlurFilter;
+
 	import fe.*;
 	import fe.loc.*;
 	import fe.weapon.*;
 	import fe.inter.*;
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
-	import flash.filters.BlurFilter;
+	import fe.projectile.Bullet;
 	
-	public class UnitPlayer extends UnitPon{
+	public class UnitPlayer extends UnitPon
+	{
 		
 		public var ctr:Ctr;
 		//движение

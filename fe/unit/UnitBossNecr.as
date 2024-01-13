@@ -1,6 +1,8 @@
-﻿package fe.unit {
+﻿package fe.unit
+{
 	import flash.display.MovieClip;
 	import flash.filters.DropShadowFilter;
+	import flash.filters.GlowFilter;
 	
 	import fe.weapon.*;
 	import fe.*;
@@ -8,11 +10,11 @@
 	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;
-	import fe.weapon.MagSymbol;
-	import flash.filters.GlowFilter;
+	import fe.projectile.Bullet;
+	import fe.projectile.MagSymbol;
 	
-	public class UnitBossNecr extends UnitPon{
-		
+	public class UnitBossNecr extends UnitPon
+	{
 		public var scrAlarmOn:Boolean=true;
 		public var controlOn:Boolean=true;
 		public var kol_emit=6;
@@ -480,7 +482,6 @@
 			} else if (com=='on') {
 				controlOn=true;
 			}
-		}
-		
+		}		
 	}
 }

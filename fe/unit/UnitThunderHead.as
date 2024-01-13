@@ -6,6 +6,7 @@
 	import flash.geom.ColorTransform;
 	
 	import fe.weapon.*;
+	import fe.projectile.Bullet;
 	import fe.*;
 	import fe.loc.Location;
 	import fe.serv.LootGen;

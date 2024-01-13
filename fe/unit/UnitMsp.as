@@ -4,7 +4,7 @@
 	import fe.weapon.Weapon;
 	import fe.serv.LootGen;
 	import fe.loc.Location;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.loc.Tile;
 
 	public class UnitMsp extends Unit{

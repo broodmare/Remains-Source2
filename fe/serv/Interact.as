@@ -1,18 +1,15 @@
-﻿package fe.serv {
-	
+package fe.serv
+{
 	import fe.*;
 	import fe.loc.*;
 	import fe.unit.Unit;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import flash.media.SoundChannel;
-	import flash.sampler.StackFrame;
 	
-	public class Interact {
-		
-		//public var id:String;
-		
+	public class Interact
+	{
 		var inited:Boolean=false;
 		public var owner:Obj;
 		public var loc:Location;
@@ -1133,5 +1130,4 @@
 			setAct('loot',imp_loot);
 		}
 	}
-	
 }

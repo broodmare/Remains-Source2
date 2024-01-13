@@ -8,7 +8,7 @@
 	import fe.loc.Location;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.loc.Box;
 	
 	public class UnitAlicorn extends UnitPon{

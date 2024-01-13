@@ -1,4 +1,4 @@
-﻿package fe.loc
+package fe.loc
 {
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
@@ -10,7 +10,7 @@
 	import fe.unit.UnitTransmitter;
 	import fe.graph.*;
 	import flash.display.BitmapData;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
 	import fe.unit.UnitTurret;

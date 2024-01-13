@@ -1,13 +1,11 @@
-﻿package fe.unit {
-	
-	//import flash.utils.*;
+package fe.unit
+{
 	import fe.*;
-	//import fe.weapon.Bullet;
-	import fe.serv.Interact;
 	import fe.serv.LootGen;
 	import fe.loc.Location;
 	
-	public class Mine extends Unit{
+	public class Mine extends Unit
+	{
 
 		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
 		public var wdestroy:Number=10;	//урон блокам
@@ -217,10 +215,5 @@
 				}
 			}
 		}
-		
-		//public override function animate() {
-			
-		//}
 	}
-	
 }

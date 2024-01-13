@@ -1,6 +1,6 @@
 ﻿package fe.unit {
 	import fe.*;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	//import fe.serv.Script;
 	
 	public class UnitPhoenix extends Unit {

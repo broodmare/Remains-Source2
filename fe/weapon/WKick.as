@@ -4,6 +4,7 @@ package fe.weapon
 	import fe.Snd;
 	import fe.unit.Unit;
 	import fe.loc.Tile
+	import fe.projectile.Bullet;
 	
 	public class WKick extends Weapon
 	{

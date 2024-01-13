@@ -6,7 +6,7 @@
 	import fe.weapon.Weapon;
 	import fe.serv.LootGen;
 	import fe.weapon.WThrow;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	
 	//механизмы, наносящие урон
 	

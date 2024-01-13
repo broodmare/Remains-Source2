@@ -1,5 +1,5 @@
-﻿package fe.weapon {
-	
+package fe.projectile
+{
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
@@ -7,18 +7,23 @@
 	import fe.loc.Tile;
 	import fe.loc.Box;
 	
-	public class PhisBullet extends Bullet {
+	public class PhisBullet extends Bullet
+	{
 		
-		var brake=2;
-		var dr:Number=0;
-		var lip:Boolean=false, prilip:Boolean=false, bumc:Boolean=false;
+		public var brake=2;
+		public var dr:Number=0;
+		public var lip:Boolean=false;
+		public var prilip:Boolean=false;
+		public var bumc:Boolean=false;
 		
-		var skok:Number=0.5, tormoz:Number=0.7;
-		var isSensor:Boolean=false;
+		public var skok:Number=0.5;
+		public var tormoz:Number=0.7;
+		public var isSensor:Boolean=false;
 		
 		public var sndHit:String='';
 
-		public function PhisBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null) {
+		public function PhisBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null)
+		{
 			super(own,nx,ny,visClass);
 			ddy=World.ddy;
 			massa=0.1;
@@ -27,8 +32,8 @@
 			inWater=0;
 			scX=scY=30;
 			if (vis) vis.visible=true;
-			// constructor code
 		}
+
 		public override function step() {
 			if (levit) {
 				dy*=0.8; dx*=0.8;
@@ -209,6 +214,5 @@
 				}
 			}
 		}
-	}
-	
+	}	
 }

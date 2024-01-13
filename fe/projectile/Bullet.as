@@ -1,13 +1,14 @@
-﻿package fe.weapon {
-	
+package fe.projectile
+{
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.loc.*;
 	import fe.graph.Emitter;
 	import fe.unit.UnitMsp;
+	import fe.weapon.Weapon;
 	
-	public class Bullet extends Obj{
-		
+	public class Bullet extends Obj
+	{	
 		//типы реакции на попадание
 		//-1 - промах, пуля летит дальше
 		//0 - попал, пуля исчезла
@@ -597,9 +598,6 @@
 					}
 				}
 			}
-			
 		}
-		
 	}
-	
 }

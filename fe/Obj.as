@@ -1,5 +1,5 @@
-﻿package  fe{
-	
+package  fe
+{
 	//Базовый класс для объектов, взаимодействующих с игроком или миром
 	
 	import flash.display.MovieClip;
@@ -10,7 +10,7 @@
 	import fe.graph.Part;
 	import fe.loc.Location;
 	import fe.serv.Interact;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.unit.UnitPlayer;
 	import fe.inter.Appear;
 	
@@ -49,6 +49,7 @@
 			super.remVisual(); 
 			onCursor=0;
 		}
+		
 		public function setVisState(s:String) {
 		}
 		
@@ -181,10 +182,9 @@
 		public static function setEye(m:MovieClip) {
 			m.gotoAndStop(Appear.fEye);
 		}
+
 		public static function setHair(m:MovieClip) {
 			m.gotoAndStop(Appear.fHair);
 		}
-
 	}
-	
 }

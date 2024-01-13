@@ -2,7 +2,7 @@
 	import fe.*;
 	import fe.serv.BlitAnim;
 	import fe.weapon.Weapon;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 	

@@ -1,12 +1,11 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.weapon.Weapon;
-	import fe.weapon.Bullet;
-	import fe.serv.LootGen;
-	import fe.graph.Emitter;
-	public class UnitAIRobot extends UnitPon{
-
+	import fe.projectile.Bullet;
+	
+	public class UnitAIRobot extends UnitPon
+	{
 		public var tr:int=0;
 		var weap:String;
 		var isPort:Boolean=false;
@@ -364,5 +363,4 @@
 			}
 		}
 	}
-	
 }

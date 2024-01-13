@@ -1,7 +1,7 @@
 ﻿package fe.unit {
 	
 	import fe.*;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	

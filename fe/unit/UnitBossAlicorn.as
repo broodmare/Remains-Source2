@@ -1,4 +1,5 @@
-﻿package fe.unit {
+﻿package fe.unit
+{
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
@@ -10,8 +11,10 @@
 	import fe.graph.Emitter;
 	import fe.loc.Box;
 	import fe.loc.Tile;
+	import fe.projectile.Bullet;
 	
-	public class UnitBossAlicorn extends UnitPon{
+	public class UnitBossAlicorn extends UnitPon
+	{
 		
 		public var wPos:Array;
 		public var tr:int=1;

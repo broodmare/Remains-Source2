@@ -2,7 +2,7 @@
 	
 	import fe.*;
 	import fe.weapon.Weapon;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.serv.Interact;
 	import fe.loc.Tile;
 	import fe.loc.Location;

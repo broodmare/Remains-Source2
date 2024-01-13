@@ -8,6 +8,7 @@
 	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;
+	import fe.projectile.Bullet;
 	
 	public class UnitBossRaider extends UnitPon{
 		

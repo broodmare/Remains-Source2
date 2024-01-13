@@ -10,6 +10,9 @@ package fe.weapon
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.unit.Pers;
+	import fe.projectile.Bullet;
+	import fe.projectile.Trasser;
+	import fe.projectile.SmartBullet;
 
 	public class Weapon extends Obj
 	{

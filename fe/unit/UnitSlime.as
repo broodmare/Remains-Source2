@@ -2,7 +2,7 @@
 	
 	import fe.*;
 	import fe.loc.Location;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	public class UnitSlime extends Unit{
 		
 		var pluh:int=100;

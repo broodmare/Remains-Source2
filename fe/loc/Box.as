@@ -1,5 +1,5 @@
-﻿package fe.loc {
-	
+package fe.loc
+{
 	import flash.utils.*;
 	import flash.filters.DropShadowFilter;
 	import flash.display.MovieClip;
@@ -12,7 +12,7 @@
 	import fe.graph.Emitter;
 	import fe.graph.Grafon;
 	import fe.serv.Script;
-	import fe.weapon.Bullet;
+	import fe.projectile.Bullet;
 	import fe.unit.Mine;
 
 	public class Box extends Obj{
@@ -722,7 +722,5 @@
 			World.w.gui.infoText('unFixLock');
 			World.w.game.runScript('fixGenerator',this);
 		}
-
 	}
-	
 }
