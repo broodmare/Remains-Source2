@@ -15,7 +15,7 @@ package  fe.entities
 		public var uid:String;		// [Unique identifier used for script access to the object]
 		
 		public var prior:Number=1;
-		public var scX:Number=10, scY:Number=10, storona:int=1;	//размеры
+		public var scX:Number=10, scY:Number=10, storona:int=1;	// Dimensions (Width, Height, which direction the sprite is facing.)
 		public var rasst2:Number=0;	//расстояние до ГГ в квадрате
 		public var massa:Number=1;
 		public var levit:int=0;
