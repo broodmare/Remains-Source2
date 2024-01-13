@@ -19,7 +19,6 @@ package fe.unit
 	
 	public class UnitPlayer extends UnitPon
 	{
-		
 		public var ctr:Ctr;
 		//движение
 		public var maxjumpp:int,jumpNumb:int=0;
@@ -172,12 +171,13 @@ package fe.unit
 		public var visSel:Boolean=false; //селектор оружия
 		public var animOff:Boolean=false;
 		
-		function testFunction() {
-			//trace(World.w.game.triggers['ouch']); return;
-			//World.w.gui.impMess(Res.itemNazv('stat_rd'),Res.itemMess('stat_rd'),'stat_rd');
-			//World.w.gui.dialog('surfDialHello3');
-			//addEffect('sacrifice');
-			//return;
+		private var cframe:int = -1;		// Private working variable used by animate(), moved here after splitting functions.
+		private var lastFrame:int = -1;		// Keep track of last frame to hopefully avoid redrawing the same texture.
+		private var orientation:int;		// Ditto
+		private var movementSpeed:int;		// Ditto
+
+
+		private function testFunction():void {
 			if (World.w.chitOn) {
 				World.w.godMode=true;
 				World.w.chit='port';
@@ -189,8 +189,8 @@ package fe.unit
 		}
 		
 		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			//sloy=3;
-			player=true; id='littlepip';
+			player=true;
+			id='littlepip';
 			vis=new visualPlayer();
 			vis.osn.body.pip2.visible=false;
 			vis.osn.stop();
@@ -200,7 +200,7 @@ package fe.unit
 			vis.addChild(reloadbar);
 			if (vis.shit) vis.shit.visible=false;
 			if (vis.svet) vis.svet.visible=false;
-			storona=1;
+			storona=1; // Whether the unit is facing left or right.
 			id_replic='pip';
 			
 			getXmlParam();
@@ -221,7 +221,6 @@ package fe.unit
 			weaponKrep=0;	//0 - левитация оружия, 1 - держать
 			
 			teleColor=World.w.app.cMagic;
-			//levitFilter=new GradientGlowFilter(0,0,[teleColor,teleColor,teleColor],[0,1,0],[0,100,255],6,6,1,3,"outer");
 			levitFilter1=new GlowFilter(teleColor,0,6,6,2,3);
 			teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
 			dieFilter=new GlowFilter(0xCC00FF,0,6,6,2,3);
@@ -238,7 +237,6 @@ package fe.unit
 			doop=true;
 			transT=true;
 			fraction=F_PLAYER;
-			//destroy=20;
 		}
 		
 		public function attach() {
@@ -321,7 +319,6 @@ package fe.unit
 			dropTeleObj();
 			actionObj=null;
 			isLaz=0;
-			//t_work=0;
 			levit=0;
 			f_stealth=stealthMult<1;
 			f_die=f_levit=f_dash=f_inv=false;
@@ -434,7 +431,6 @@ package fe.unit
 				isStayDam=45;
 			}
 			vis.svet.visible=loc.sky;
-			//	trace(loc.sky)
 		}
 		
 		public override function addVisual() {
@@ -572,16 +568,7 @@ package fe.unit
 		
 		public override function actions() {
 			super.actions();
-			
-			//взаимодействие с объектами
-			/*for each(var obj:Obj in loc.objs) {
-				if (obj.radioactiv) {
-					if (obj.rasst2<obj.radioactiv*obj.radioactiv) {
-						drad+=(obj.radioactiv-Math.sqrt(obj.rasst2))/200;
-					}
-				}
-			}*/
-			
+
 			inBattle=World.w.t_battle>0 || World.w.testBattle;
 			
 			//захват лута
@@ -700,8 +687,6 @@ package fe.unit
 			}
 
 			//видимость
-			/*visibility=1500*pers.visiMult;
-			if (dx<2 && dx>-2 && dy<2 && dy>-2) visibility*=(0.5+pers.visiMult*0.5);*/
 			visibility=2000;
 			if (dx<2 && dx>-2 && dy<2 && dy>-2) visibility=1500;
 			if (dx>10 || dx<-10 || dy>10 || dy<-10) {
@@ -719,8 +704,6 @@ package fe.unit
 				visibility*=0.5;
 			}
 			if (stealthMult<0.5) detecting=0;
-
-			//trace(detecting)
 
 			//--------------------- оружие ------------------------
 			//если выстрел был выполнен
@@ -747,8 +730,6 @@ package fe.unit
 				}
 			} else if (attackForever) {
 				if (isrnd(0.05)) {
-					//celX=World.w.celX+Math.random()*600-300;
-					//celY=World.w.celY+Math.random()*600-300;
 					celX=Math.random()*loc.limX;
 					celY=Math.random()*loc.limY;
 				}
@@ -761,7 +742,6 @@ package fe.unit
 			if (sats.que.length==0 && !lurked) {
 				if (pers.runPenalty>0 && (dx>10 || dx<-10 || dy>10 || dy<-10))  precMult*=(1-pers.runPenalty);
 				if (!stay) precMult*=(1-pers.jumpPenalty);
-				//if (isLaz) precMult*=0.8;
 				if (stay && dx<1 && dx>-1)  precMult*=(1+pers.stayBonus);
 				if (currentWeapon && (currentWeapon.storona!=storona)) precMult*=(1-pers.backPenalty);
 			}
@@ -799,14 +779,7 @@ package fe.unit
 				}
 			}
 			if (teleObj) {
-				if (loc.celDist>pers.teleDist*1.2 || mana<=0 || !teleObj.levitPoss) {
-					dropTeleObj();
-				} else if (teleObj is Unit && (teleObj as Unit).sost==1) {
-					/*if (Math.abs(teleObj.X-celX)>maxTeleDist || Math.abs(teleObj.Y-celY)>maxTeleDist) {
-						dropTeleObj();
-					}*/
-				}
-				//trace(teleObj.dx,teleObj.dy)
+				if (loc.celDist>pers.teleDist*1.2 || mana<=0 || !teleObj.levitPoss) dropTeleObj();
 			}
 			if (levit==1) aMagic=100;
 			if (sost>1) aMagic=0;
@@ -952,10 +925,7 @@ package fe.unit
 				}
 			}
 			//урон от блоков
-			if (isStayDam>0) {
-				isStayDam--;
-				//vis.alpha=0.4;
-			} //else vis.alpha=1;
+			if (isStayDam>0) isStayDam--;
 			if (loc.electroDam>0 && isStayDam==0) {
 				if (stay && stayMat==1 || isLaz || inWater || tykMat==1) {
 					isStayDam=20;
@@ -986,7 +956,7 @@ package fe.unit
 		}
 		
 		//активировать заклинание телепорта
-		function actPort() {
+		private function actPort():void {
 			if (!loc.portOn) return;
 			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
 				World.w.gui.infoText('overMana',null,null,false);
@@ -1009,7 +979,7 @@ package fe.unit
 			}
 		}
 		
-		function alicornPort() {
+		private function alicornPort() {
 			if (mana<pers.alicornPortMana && mana<maxmana*0.99) {
 				World.w.gui.infoText('overMana',null,null,false);
 				World.w.gui.bulb(X,Y-20);
@@ -1036,36 +1006,29 @@ package fe.unit
 			var nx=Math.round(World.w.celX/World.tileX)*World.tileX
 			var ny=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
 			var t:Tile=loc.getAbsTile(World.w.celX,World.w.celY);
-			//if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			if (t.visi>=0.8 && !loc.collisionUnit(nx, ny,stayX,stayY)) return true;
-			//if (t.visi>=0.8 && !collisionAll(nx-X, ny-Y)) return true;
 			return false;
 		}
 		
 		//снять нужное количество маны, установить время перезарядки
-		function manaSpell(dmag:Number, dm:Number) {
-			//if (culd>0) t_culd=Math.floor(pers.spellDown*culd);
+		public function manaSpell(dmag:Number, dm:Number):void {
 			mana-=dmag*pers.allDManaMult;
 			pers.manaDamage(dm*pers.allDManaMult);
 			dmana=0;
 			if (teleObj) dropTeleObj();
 		}
 		
-		function castSpell(sid:String=null) {
-			
-		}
-		
-		function spellDisact() {
+		private function spellDisact():void {
 			ctr.keyDef=false;
 		}
 		
-		public function bindChain(nx:Number, ny:Number) {
+		public function bindChain(nx:Number, ny:Number):void {
 			addEffect('fetter',0,10,false);
 			fetX=nx, fetY=ny;
 		}
 		
 		//включить или выключить левитацию объекта при нажатой клавише левитации
-		function actTele() {
+		private function actTele():void {
 			//двойной клик
 			if (t_dclick>0) {
 			}
@@ -1125,7 +1088,7 @@ package fe.unit
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		private function throwTele() {
 			if (teleObj) {
 				if (pers.spellsPoss<=0) {
 					dropTeleObj();
@@ -1157,7 +1120,6 @@ package fe.unit
 					Emitter.emit('throw',loc,teleObj.X,teleObj.Y-teleObj.scY/2,{rotation:Math.atan2(teleObj.dy,teleObj.dx)*180/Math.PI});
 					Snd.ps('dash',teleObj.X,teleObj.Y);
 				}
-				//Emitter.emit('magrun',loc,teleObj.X,teleObj.Y-teleObj.scY/2,{dx:teleObj.dx, dy:teleObj.dx});
 				dropTeleObj();
 			}
 		}
@@ -1172,7 +1134,7 @@ package fe.unit
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void {
 			if (teleObj) {
 				if (teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -1186,10 +1148,8 @@ package fe.unit
 		
 		
 		//действие с активным объектом при удерживаемой клавише действия
-		function actAction() {
+		private function actAction():void {
 			if (actionObj) {
-				//actionObj.getRasst2()
-					//trace(actionObj.X, actionObj.Y);
 				if ((X-actionObj.X)*(X-actionObj.X)+(Y-actionObj.Y)*(Y-actionObj.Y)>World.w.actionDist) {
 					actionObj=null;
 				}
@@ -1237,14 +1197,16 @@ package fe.unit
 				}
 			}
 		}
-		function crackAction() {
+
+		private function crackAction():void {
 			if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
 				if (loc.celObj.inter &&  loc.celObj.inter.needRuna(this)) {
 					loc.celObj.inter.useRuna(this);
 				}
 			}
 		}
-		function chit() {
+
+		private function chit():void {
 			if (World.w.chit=='fly') isFly=!isFly;
 			if (World.w.chit=='port') {
 				var tx=Math.round(World.w.celX/World.tileX)*World.tileX
@@ -1257,7 +1219,7 @@ package fe.unit
 		}
 		
 		//включить неуязвимость, отключить управление
-		public function controlOff() {
+		public function controlOff():void {
 			ctr.clearAll();
 			ggControl=false;
 			dropTeleObj();
@@ -1270,7 +1232,7 @@ package fe.unit
 		}
 		
 		//вернуть обычный режим
-		public function controlOn() {
+		public function controlOn():void {
 			if (pers.dead) return;
 			invulner=false;
 			ggControl=true;
@@ -1612,11 +1574,9 @@ package fe.unit
 					dash_t=dash_maxt;
 					jumpNumb=2;
 					dJump=false;
-					//if (!loc.levitOn) {
-						stay=false;
-						jumpp=0;
-						ctr.keyJump=false;
-					//}
+					stay=false;
+					jumpp=0;
+					ctr.keyJump=false;
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
 				ctr.keyDubLeft=ctr.keyDubRight=ctr.keyDash=false;
@@ -1624,7 +1584,6 @@ package fe.unit
 			
 			//прыг
 			if (levit==1) levit=0;
-			//throu=(ctr.keyJump || isLaz)&&ctr.keySit || isPlav;
 			throu=(ctr.keyJump || !stay)&&ctr.keySit || isPlav || kdash_t>3 || pinok>70;
 			if (stay && !ctr.keyJump || isLaz) {
 				jumpp=maxjumpp;//пока стоим, прыжок заряжен полностью
@@ -1656,7 +1615,7 @@ package fe.unit
 				if (stay && World.w.hardInv) invent.damageItems(0,false);
 				if (isPlav) {
 					dy-=plavdy*pers.speedPlavMult;
-				} else if (jumpp>0) { //&& !isSit
+				} else if (jumpp>0) {
 					if (isSit) unsit();
 					if (!isSit) {
 						spellDisact();
@@ -1724,7 +1683,7 @@ package fe.unit
 			}
 			//плавание
 			//присесть
-			if (ctr.keySit) {// !isSit &&!levit &&!isLaz &&!isPlav) {
+			if (ctr.keySit) {
 				porog=0;
 				if (stay && diagon==0 && runForever<=0 && !inWater && isFetter<=0 && !noStairs && rat==0) {
 					if (checkStairs(2)) {	//проверить лестницу
@@ -1831,7 +1790,7 @@ package fe.unit
 			return 1;
 		}
 		
-		function lurk() {
+		private function lurk():void {
 			lurkTip=0;
 			if (stay && !isSit && dx<5 && dx>-5 && stayPhis>=1 && work=='')	{
 				lurkBox=null;
@@ -1872,29 +1831,21 @@ package fe.unit
 			}
 		}
 		
-		function unlurk() {
+		private function unlurk():void {
 			if (lurked && stay) {
 				t_work=10;
 				work='unlurk';
 			}
 			lurked=false;
 		}
-		
-		/*public override function destroyWall(t:Tile, napr:int=0):Boolean {
-			if (isPlav || levit) return false;
-			if (napr==3 && dy>10) loc.hitTile(t,50,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,4);
-			if (t.phis>0) return false;
-			return true;
-		}*/
-		
-		
+
 //**************************************************************************************************************************
 //
-//				Эффекты и скиллы
+//				Effects and Skills
 //
 //**************************************************************************************************************************
 		// Установить зависимости
-		public function setAddictions() {
+		public function setAddictions():void {
 			for (var ad in pers.addictions) {
 				if (pers.addictions[ad]>=pers.ad1) {
 					var eff:Effect=addEffect(ad);
@@ -1906,14 +1857,14 @@ package fe.unit
 			if (World.w.game.triggers['curse']>0) addEffect('curse');
 		}
 
-		function endAllEffect() {
+		private function endAllEffect():void {
 			if (effects.length>0) {
 				for each (var eff in effects) eff.unsetEff();
 				effects=new Array();
 			}
 		}
 		
-		function clearAddictions() {
+		private function clearAddictions():void {
 			for (var ad in pers.addictions) {
 				pers.addictions[ad]=0;
 			}
@@ -1921,7 +1872,7 @@ package fe.unit
 
 //**************************************************************************************************************************
 //
-//				Урон и лечение
+//				Damage and Healing
 //
 //**************************************************************************************************************************
 
@@ -1931,8 +1882,6 @@ package fe.unit
 		//nobs - наблюдательность врага. если она не передаётся, то рассчёт соотношения скрытности героя и наблюдательности врага не производится
 		public function observation(nlook:Number, nobs:Number=-1000):Boolean {
 			var nsneak=sneak-demask/20;
-			//if (lurked) nsneak+=pers.sneakLurk*2.5;
-			//if (isSit) nsneak+=pers.sneakLurk;
 			if (nsneak<0) nsneak=0;
 			if (nobs>-1000) {
 				if (nobs>nsneak) {
@@ -2159,13 +2108,10 @@ package fe.unit
 		
 //**************************************************************************************************************************
 //
-//				Оружие и броня
+//				Weapons and Armor
 //
 //**************************************************************************************************************************
 		//удар хол. оружием достиг цели
-		/*public override function crash(b:Bullet) {
-			super.crash(b);
-		}*/
 		public override function setWeaponPos(tip:int=0) {
 			if (weaponKrep==0) {			//телекинез
 				if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
@@ -2229,7 +2175,6 @@ package fe.unit
 				if (World.w.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
 					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) {
 						World.w.gui.infoText('weaponSkillLevel',null,null,false);
-						//return false;
 					}
 				}
 			}
@@ -2254,7 +2199,6 @@ package fe.unit
 		
 		//непосредственно замена оружия
 		private function changeWeaponNow(st:int) {
-			//trace(st,currentWeapon,newWeapon);
 			vision=1;
 			if (st==1) {
 				if (currentWeapon) {
@@ -2358,13 +2302,11 @@ package fe.unit
 					currentAmul.active=true;
 				}
 			}
-//			vis.osn.body.stop();
 			pers.setParameters();
 			return true;
 		}
 		
 		public function changeSpell (nid:String='', inf:Boolean=true) {
-			//if (invent.spells[nid]==null) invent.addSpell(nid);
 			if (currentSpell==invent.spells[nid]) currentSpell=null;
 			else currentSpell=invent.spells[nid];
 			if (inf && currentSpell) World.w.gui.infoText('usedSpell',currentSpell.nazv);
@@ -2432,7 +2374,7 @@ package fe.unit
 			World.w.gui.setPet();
 		}
 		
-		public function uncallPet(ret:Boolean=false) {
+		public function uncallPet(ret:Boolean=false):void {
 			if (pet) {
 				if (ret && currentPet!='moon') retPet=currentPet;
 				World.w.gui.infoText('petRecall',pet.nazv);
@@ -2444,7 +2386,7 @@ package fe.unit
 			World.w.gui.setPet();
 		}
 		
-		public function alicornOn(eff:Boolean=true) {
+		public function alicornOn(eff:Boolean=true):void {
 			World.w.alicorn=true;
 			if (armorEffect) {
 				armorEffect.unsetEff(true,false,true);
@@ -2455,7 +2397,6 @@ package fe.unit
 			invent.addWeapon('a_energ');
 			invent.addWeapon('a_expl');
 			invent.addWeapon('a_magic');
-			//changeWeapon('');
 			uncallPet();
 			clearAddictions();
 			endAllEffect();
@@ -2469,7 +2410,7 @@ package fe.unit
 			refreshVis();
 		}
 		
-		public function alicornOff() {
+		public function alicornOff():void {
 			World.w.alicorn=false;
 			isFly=false;
 			changeWeapon('not',true);
@@ -2477,7 +2418,7 @@ package fe.unit
 			refreshVis();
 		}
 		
-		public function ratOn() {
+		public function ratOn():void {
 			unlurk();
 			uncallPet(true);
 			changeWeapon('not');
@@ -2494,6 +2435,7 @@ package fe.unit
 			newPart('black',30);
 			rat=1;
 		}
+
 		public function ratOff():Boolean {
 			scX=stayX, scY=stayY;
 			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
@@ -2523,7 +2465,7 @@ package fe.unit
 		
 //**************************************************************************************************************************
 //
-//				Визаульная часть
+//				Animation and Graphics
 //
 //**************************************************************************************************************************
 		
@@ -2545,14 +2487,14 @@ package fe.unit
 			otherVisual();
 		}
 		
-		function chSloy(n:int) {
+		private function chSloy(n:int):void {
 			if (sloy==n) return;
 			remVisual();
 			sloy=n;
 			addVisual();
 		}
 		
-		public function setFilters() {
+		public function setFilters():void {
 			var arr:Array;
 			if (f_levit) {
 				if (levit>=1 && fracLevit!=fraction && levitFilter2) arr=[levitFilter2];
@@ -2562,391 +2504,551 @@ package fe.unit
 			else arr=[];
 			if (f_die) arr.push(dieFilter);
 			if (f_shad) arr.push(shadowFilter);
-			if (f_dash) arr.push(dashFilter); //trace('dash')
+			if (f_dash) arr.push(dashFilter);
 			if (f_stealth) arr.push(stealthFilter);
 			if (f_stealth) vis.alpha=0.5; else vis.alpha=1;
 			if (f_inv) arr.push(invulnerFilter1,invulnerFilter2);
 			vis.osn.filters=arr;
 		}
-		
-		public override function animate() {
+
+//##########################################################################################################
+
+		public override function animate()
+		{
 			if (animOff) return;
-			vis.osn.y=0;
-			vis.osn.rotation=0;
-			if (t_work && work=='die') {
-				reloadbar.visible=false;
-				if (!World.w.alicorn) {
-					if (animState!='die') {
+
+			orientation = diagon * storona;
+			movementSpeed = dx * storona;
+			
+			vis.osn.y = 0;
+			vis.osn.rotation = 0;
+
+			animatePlayerDeath();
+
+			animateLurking();
+
+			animateRessurecting();
+
+			if (lurked)
+			{
+				vis.osn.body.head.morda.eye.gotoAndStop(1);
+				otherVisual();
+				return;
+			}
+			
+			if (klip > 0) klip--;
+			else klip = Math.random() * 200 + 50;
+			
+			if (stay) t_stay = 5;
+			else if (t_stay > 0) t_stay--;
+
+			lastFrame = cframe;
+			cframe = 0;
+
+			animateHoofStrikes();
+
+			animatePlayerMovement();
+
+			animateHeadTurning();
+
+			animateSelfLeviation();
+
+			animateDashBlur();
+
+			otherVisual(); // I didn't name this, check what this does.
+
+			animateEye();
+		}
+
+		private function animateHoofStrikes():void
+		{
+			if (t_work && work == 'punch') freeAnim = 0;
+			if (t_work && work == 'punch' && animState != 'punch')
+			{
+				if (!ctr.keyRun) vis.osn.gotoAndStop('punch');
+				else vis.osn.gotoAndStop('kick');
+				animState = 'punch';
+			}
+			if (t_work == 0 && animState == 'punch') animState = '';
+		}
+
+		private function animatePlayerMovement():void
+		{
+			if (stay || t_stay > 0)
+			{
+				// [Some actions]
+				if (animState=='punch' || animState=='kick')
+				{
+					// [if you don’t press left or right, or stand still, then STAND]
+				}
+				else if  (diagon == 0 && (dx<=1 && dx>=-1 && walk!=0 || dx<=4 && dx>=-4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit))
+				{
+					t_walk = 0;
+					if (freeAnim == 0 || isSit)
+					{
+						freeAnim = 0;
+						if (vis.osn.currentFrameLabel != 'stay')
+						{
+							if (vis.osn.currentFrameLabel == 'jump' || vis.osn.currentFrameLabel == 'levit')
+							{
+								vis.osn.gotoAndStop('stay');
+								vis.osn.body.gotoAndPlay('jump');
+							}
+							else vis.osn.gotoAndStop('stay');
+						}
+						cframe = getStayFrame();
+						
+						if (isSit) // [if we are sitting]
+						{
+							if (animState=='jump')
+							{
+								if (animState!='downjump')
+								{
+									animState = 'downjump';
+									vis.osn.body.gotoAndPlay('downjump');
+								}
+							}
+							if (animState != 'down' && animState != 'downjump')
+							{
+								if (animState=='polz' || cframe!=2) vis.osn.body.gotoAndStop(cframe);
+								else if (animState!='roll') vis.osn.body.gotoAndPlay('down');
+								else 
+								{
+									vis.osn.body.gotoAndStop('sit');
+									animState='down';
+								}
+							}
+							
+						} 
+						else // [if we are standing]
+						{
+							if (animState == 'down')
+							{
+								vis.osn.body.gotoAndPlay('up');
+								animState = 'up';
+							}
+							if (animState!='up' || cframe != 1)
+							{
+								if (vis.osn.body.currentFrame < 70 && cframe != lastFrame) // added check here to avoid loading the same texture while standing still
+								{
+									vis.osn.body.gotoAndStop(cframe);
+								}
+								animState = '';
+							}
+						}
+
+						if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) vis.osn.body.gotoAndStop(cframe);
+						if (vis.osn.currentFrameLabel=='stay' && cframe==1)
+						{
+							if (isrnd(0.01))
+							{
+								freeAnim=Math.floor(Math.random()*3)+1;
+								vis.osn.gotoAndStop('free'+freeAnim);
+								vis.osn.body.play();
+							}
+						}
+					}
+					else
+					{
+						if (vis.osn.body.currentFrame >= 49) freeAnim = 0;
+					}
+				} 
+				else if (diagon != 0 && dx == 0)
+				{
+					freeAnim = 0;
+					t_walk = 0;
+					if (orientation > 0)
+					{
+						if (animState!='diag_up')
+						{
+							animState='diag_up';
+							vis.osn.gotoAndStop('trot_up');
+							vis.osn.body.gotoAndStop(1);
+						}
+					}
+					else
+					{
+						if (animState!='diag_down')
+						{
+							animState='diag_down';
+							vis.osn.gotoAndStop('trot_down');
+							vis.osn.body.gotoAndStop(1);
+						}
+					}
+				}
+				else	// [Movement]
+				{
+					freeAnim = 0;
+					if (diagon != 0)
+					{
+						if (orientation > 0)
+						{
+							if (animState != 'trot_up')
+							{
+								setPlayerAnimationAndPlay('trot_up');
+							}
+						}
+						else
+						{
+							if (animState != 'trot_down')
+							{
+								setPlayerAnimationAndPlay('trot_down');
+							}
+						}
+						sndStep(t_walk, 1);
+						t_walk++;
+					}
+					else
+					{
+						if (isSit)
+						{
+							if (animState == 'roll' && vis.osn.body.currentFrame >= 15)
+							{
+								setPlayerAnimation('polz');
+							}
+							if (animState != 'polz' && animState != 'roll')
+							{
+								if (maxSpeed > walkSpeed * 1.6 && movementSpeed > 0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))
+								{
+									setPlayerAnimationAndPlay('roll');
+								}
+								else setPlayerAnimationAndPlay('polz');
+							}
+						}
+						else if (maxSpeed < 5)
+						{
+							sndStep(t_walk, 4);
+							t_walk++;
+							if (animState!='walk')
+							{
+								setPlayerAnimationAndPlay('walk');
+							}
+						}
+						else if (maxSpeed > walkSpeed * 1.6 && movementSpeed > 0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))
+						{
+							sndStep(t_walk, 2);
+							t_walk++;
+							if (animState != 'run')
+							{
+								setPlayerAnimationAndPlay('run');
+							}
+						}
+						else if (movementSpeed > 0)
+						{
+							sndStep(t_walk,1);
+							t_walk++;
+							if (animState != 'trot')
+							{
+								setPlayerAnimationAndPlay('trot');
+							}
+						}
+					}
+				}
+ 			
+			}
+			else if (isLaz)		// [on the stairs] I think this means ladder
+			{
+				freeAnim = 0;
+				if (animState!='laz') setPlayerAnimation('laz');
+
+				if (dy == 0) vis.osn.body.gotoAndStop(1);
+				else
+				{
+					cframe = vis.osn.body.currentFrame;
+					sndStep(cframe, 3);
+					if (dy < 0)
+					{
+						if (cframe <= 12) vis.osn.body.gotoAndStop(cframe + 1);
+						else vis.osn.body.gotoAndStop(2);
+					}
+					else
+					{
+						if (cframe >= 3) vis.osn.body.gotoAndStop(cframe - 1);
+						else vis.osn.body.gotoAndStop(13);
+					}
+				}
+			}
+			else if (isPlav)	// [Swimming]
+			{
+				freeAnim = 0;
+				vis.osn.rotation = dy * 1.5;
+				if (animState != 'plav') setPlayerAnimation('plav');
+			} 
+			else // [in the air]
+			{
+				freeAnim = 0;
+
+				if (animState != 'jump' && animState != 'levit')
+				{
+					if (aJump > 0) setPlayerAnimation('jump');
+					else setPlayerAnimation('pinok');
+				}
+
+				if (animState == 'pinok' && isFly)
+				{
+					setPlayerAnimation('jump');
+				}
+
+				if (levit==1 && animState != 'levit')	// [Start levitating]
+				{
+					if (aJump > 0 && vis.osn.body.currentFrame >= 14 && vis.osn.body.currentFrame <= 18)
+					{
+						
+						setPlayerAnimation('levit');
+					}
+					if (aJump == 0 && vis.osn.body.currentFrame >= 10 && vis.osn.body.currentFrame <= 22)
+					{
+						setPlayerAnimation('levit');
+						vis.osn.body.gotoAndPlay(51);
+					}
+				}
+				if (levit==0 && animState=='levit')		// [Stop levitating]
+				{
+					vis.osn.gotoAndStop('levit');
+					if (vis.osn.body.currentFrame < 66) vis.osn.body.gotoAndPlay(67);
+				}
+
+				if (levit == 1 && animState == 'levit')
+				{
+					if (vis.osn.body.currentFrame > 66) vis.osn.body.gotoAndPlay(17);
+				}
+				else if (animState != 'levit')
+				{
+					if (aJump > 0)
+					{
+						cframe = Math.round(16 + dy);
+						if (cframe > 32) cframe = 32;
+						if (cframe < 1) cframe = 1;
+					}
+					else
+					{
+						if (dy > 2 && dx > -6 && dx < 6)
+						{
+							cframe = Math.round(31 + dy);
+							if (cframe < 33) cframe = 33;
+							if (cframe > 42) cframe = 42;
+						}
+						else
+						{
+							cframe = Math.round(16 + dx * storona);
+							if (cframe > 32) cframe = 32;
+							if (cframe <  1) cframe =  1;
+						}
+					}
+					vis.osn.body.gotoAndStop(cframe);
+				}
+			}
+		}
+
+		private function animateRessurecting():void
+		{
+			if (t_work && work == 'res')
+			{
+				if (animState != 'res')
+				{
+					vis.osn.gotoAndStop('res');
+					animState = 'res';
+				}
+				otherVisual();
+				return;
+			}
+		}
+
+		private function animateHeadTurning():void
+		{
+			if (vis.osn.body.head.morda)
+			{
+				var drot:int = 3;
+
+				if (lurked) headR = 25;
+				else if (headRO - weaponR <= 1 && headRO - weaponR >= -1)
+				{
+					t_head--;
+					drot = 6;
+					if (t_head <= 0)
+					{
+						t_head = Math.floor(Math.random() * 100 + 10);
+						headR = Math.random() * 70 - 25;
+					}
+				}
+				else
+				{
+					headR=weaponR;
+					t_head=100;
+				}
+
+				if (headRA - headR <= 1 && headRA - headR >= -1) headRA = headR;
+				else headRA += (headR - headRA) / drot;
+
+				if (isNaN(headRA)) headRA =   0;
+				if (headRA >  55)  headRA =  55;
+				if (headRA < -35)  headRA = -35;
+				vis.osn.body.head.morda.rotation = headRA;
+				headRO = weaponR;
+			}
+		}
+
+		private function animateLurking():void
+		{
+			if (t_work && work == 'lurk')
+			{
+				if (animState!='lurk')
+				{
+					vis.osn.gotoAndStop('lurk'+lurkTip);
+					vis.osn.body.gotoAndPlay(1);
+					animState = 'lurk';
+				}
+				setFilters();
+				otherVisual();
+				return;
+			}
+			if (t_work && work == 'unlurk')
+			{
+				if (animState != 'unlurk')
+				{
+					vis.osn.body.gotoAndPlay('un');
+					animState = 'unlurk';
+
+				}
+				setFilters();
+				otherVisual();
+				return;
+			}
+		}
+
+		private function animatePlayerDeath():void
+		{
+			if (t_work && work=='die')
+			{
+				reloadbar.visible = false;
+
+				if (!World.w.alicorn)
+				{
+					if (animState!='die')
+					{
 						vis.osn.gotoAndStop('die');
 						animState='die';
 					}
-					if (t_work<170 && t_work>120) {
+					if (t_work<170 && t_work>120)
+					{
 						dieFilter.alpha=1-(t_work-120)/50;
 						f_die=true;
 						dieTransform.redOffset=(170-t_work)*2;
 						dieTransform.blueOffset=(170-t_work)*3;
 						vis.osn.transform.colorTransform=dieTransform;
 						Emitter.emit('die_spark',loc,X+Math.random()*120-60+20*storona,Y);
-					} else if (t_work<120 && t_work>70) {
-						vis.osn.alpha=(t_work-70)/50;
 					}
-				} else {
-					if (animState!='die') {
+					else if (t_work<120 && t_work>70) vis.osn.alpha = (t_work - 70) / 50;
+
+				}
+				else
+				{
+					if (animState!='die')
+					{
 						vis.osn.gotoAndStop('dieali');
 						animState='die';
 					}
-					if (t_work<200 && t_work>140) {
+					if (t_work<200 && t_work>140)
+					{
 						f_die=true;
 						dieTransform.redOffset=(200-t_work)*4;
 						dieTransform.blueOffset=(200-t_work);
 						vis.osn.transform.colorTransform=dieTransform;
 						newPart('redray');
 					}
-					if (t_work==140) {
+					if (t_work==140)
+					{
 						newPart('bloodblast');
 						Snd.ps('bale_e');
 						vis.osn.alpha=0;
 					}
 				}
-				setFilters();
-				otherVisual();
-				return;
-			}
-			if (t_work && work=='lurk') {
-				if (animState!='lurk') {
-					vis.osn.gotoAndStop('lurk'+lurkTip);
-					vis.osn.body.gotoAndPlay(1);
-					animState='lurk';
-				}
-				setFilters();
-				otherVisual();
-				return;
-			}
-			if (t_work && work=='unlurk') {
-				if (animState!='unlurk') {
-					try {
-						vis.osn.body.gotoAndPlay('un');
-						animState='unlurk';
-					} catch (err) {
-					}
-				}
-				setFilters();
-				otherVisual();
-				return;
-			}
-			if (t_work && work=='res') {
-				if (animState!='res') {
-					vis.osn.gotoAndStop('res');
-					animState='res';
-				}
-				otherVisual();
-				return;
-			}
-			if (lurked) {
-				vis.osn.body.head.morda.eye.gotoAndStop(1);
-				otherVisual();
-				return;
-			}
-			
-			if (klip>0) klip--;
-			else klip=Math.random()*200+50;
-			
-			if (stay) t_stay=5;
-			else if (t_stay>0) t_stay--;
-			
 
-			var cframe:int;
-			if (t_work && work=='punch') freeAnim=0;
-			if (t_work && work=='punch' && animState!='punch') {
-				//if (storona>0 && celX>X || storona<0 && celX<X) vis.osn.gotoAndStop('punch');
-				if (!ctr.keyRun) vis.osn.gotoAndStop('punch');
-				else vis.osn.gotoAndStop('kick');
-				animState='punch';
-			}
-			if (t_work==0 && animState=='punch') {
-				animState='';
-			}
-			if (stay || t_stay>0) {
-				//Какие-то действия
-				if (animState=='punch' || animState=='kick') {
-				//если не нажаты влево или вправа, или стоим на месте, то СТОИМ
-				} else if  (diagon==0 && (dx<=1 && dx>=-1 && walk!=0 || dx<=4 && dx>=-4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
-					t_walk=0;
-					if (freeAnim==0 || isSit) {
-						freeAnim=0;
-						if (vis.osn.currentFrameLabel!='stay') {
-							if (vis.osn.currentFrameLabel=='jump' || vis.osn.currentFrameLabel=='levit') {
-								vis.osn.gotoAndStop('stay');
-								vis.osn.body.gotoAndPlay('jump');
-							} else {
-								vis.osn.gotoAndStop('stay');
-							}
-						}
-						cframe=getStayFrame();
-						//если сидим
-						if (isSit) {
-							if (animState=='jump') {
-								if (animState!='downjump') {
-									animState='downjump';
-									vis.osn.body.gotoAndPlay('downjump');
-								}
-							}
-							if (animState!='down' && animState!='downjump') {// && 
-								if (animState=='polz' || cframe!=2) {
-									vis.osn.body.gotoAndStop(cframe);
-								} else if (animState!='roll') {
-									vis.osn.body.gotoAndPlay('down');
-								} else vis.osn.body.gotoAndStop('sit');
-									animState='down';
-							}
-							//если стоим
-						} else {
-							if (animState=='down') {
-								vis.osn.body.gotoAndPlay('up');
-								animState='up';
-							}
-							if (animState!='up' || cframe!=1) {
-								if (vis.osn.body.currentFrame<70) vis.osn.body.gotoAndStop(cframe);
-								animState='';
-							}
-						}
-						if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) vis.osn.body.gotoAndStop(cframe);
-						if (vis.osn.currentFrameLabel=='stay' && cframe==1) {
-							if (isrnd(0.01)) {
-								freeAnim=Math.floor(Math.random()*3)+1;
-								vis.osn.gotoAndStop('free'+freeAnim);
-								vis.osn.body.play();
-							}
-						}
-						//trace(vis.body.currentFrame+' '+cframe);
-					} else {
-						if (vis.osn.body.currentFrame>=49) freeAnim=0;
-					}
-				} else if (diagon!=0 && dx==0) {
-					freeAnim=0;
-					t_walk=0;
-					if (diagon*storona>0) {
-						if (animState!='diag_up') {
-							animState='diag_up';
-							vis.osn.gotoAndStop('trot_up');
-							vis.osn.body.gotoAndStop(1);
-						}
-					} else {
-						if (animState!='diag_down') {
-							animState='diag_down';
-							vis.osn.gotoAndStop('trot_down');
-							vis.osn.body.gotoAndStop(1);
-						}
-					}
-				} else {			//движение
-					freeAnim=0;
-					if (diagon!=0) {
-						if (diagon*storona>0) {
-							if (animState!='trot_up') {
-								animState='trot_up';
-								vis.osn.gotoAndStop('trot_up');
-								vis.osn.body.play();
-							}
-						} else {
-							if (animState!='trot_down') {
-								animState='trot_down';
-								vis.osn.gotoAndStop('trot_down');
-								vis.osn.body.play();
-							}
-						}
-						sndStep(t_walk,1);
-						t_walk++;
-					} else {
-						if (isSit) {
-							if (animState=='roll' && vis.osn.body.currentFrame>=15) {
-								vis.osn.gotoAndStop('polz');
-								animState='polz';
-							}
-							if (animState!='polz' && animState!='roll') {
-								if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight))) {
-									vis.osn.gotoAndStop('roll');
-									animState='roll';
-								} else {
-									vis.osn.gotoAndStop('polz');
-									animState='polz';
-								}
-								vis.osn.body.play();
-							}
-						} else if (maxSpeed<5) {
-							sndStep(t_walk,4);
-							t_walk++;
-							if (animState!='walk') {
-								vis.osn.gotoAndStop('walk');
-								vis.osn.body.play();
-								animState='walk';
-							}
-						} else if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight))) {
-							sndStep(t_walk,2);
-							t_walk++;
-							if (animState!='run') {
-								vis.osn.gotoAndStop('run');
-								vis.osn.body.play();
-								animState='run';
-							}
-						} else if (dx*storona>0) {
-							sndStep(t_walk,1);
-							t_walk++;
-							//nstep==7 || nstep==13 || nstep==15) Snd.ps('footstep'+Math.floor(Math.random()*8),X,Y,0,noiseRun/1000);
-							if (animState!='trot') {
-								vis.osn.gotoAndStop('trot');
-								vis.osn.body.play();
-								animState='trot';
-							}
-						}
-					}
-				}
- 			//на лестнице
-			} else if (isLaz) {
-				freeAnim=0;
-				if (animState!='laz') {
-					vis.osn.gotoAndStop('laz');
-					animState='laz';
-				}
-				if (dy==0) vis.osn.body.gotoAndStop(1);
-				else {
-					cframe=vis.osn.body.currentFrame;
-					sndStep(cframe,3);
-					if (dy<0) {
-						if (cframe<=12) vis.osn.body.gotoAndStop(cframe+1);
-						else vis.osn.body.gotoAndStop(2);
-					} else {
-						if (cframe>=3) vis.osn.body.gotoAndStop(cframe-1);
-						else vis.osn.body.gotoAndStop(13);
-					}
-				}
-			//плавание
-			} else if (isPlav) {
-				freeAnim=0;
-				vis.osn.rotation=dy*1.5;
-				if (animState!='plav') {
-					animState='plav';
-					vis.osn.gotoAndStop('plav');
-				}
-			//в воздухе
-			} else {
-				freeAnim=0;
-				if (animState!='jump' && animState!='levit') {
-					if (aJump>0) {
-						vis.osn.gotoAndStop('jump');
-						animState='jump';
-					} else {
-						vis.osn.gotoAndStop('pinok');
-						animState='pinok';
-					}
-				}
-				if (animState=='pinok' && isFly) {
-					vis.osn.gotoAndStop('jump');
-					animState='jump';
-				}
-				if (levit==1 && animState!='levit') {	//начать левитировать
-					if (aJump>0 && vis.osn.body.currentFrame>=14 && vis.osn.body.currentFrame<=18) {
-						animState='levit';
-						vis.osn.gotoAndStop('levit');
-					}
-					if (aJump==0 && vis.osn.body.currentFrame>=10 && vis.osn.body.currentFrame<=22) {
-						animState='levit';
-						vis.osn.gotoAndStop('levit');
-						vis.osn.body.gotoAndPlay(51);
-					}
-				}
-				if (levit==0 && animState=='levit') {	//перестать левитировать
-					vis.osn.gotoAndStop('levit');
-					if (vis.osn.body.currentFrame<66) vis.osn.body.gotoAndPlay(67);
-				}
-				if (levit==1 && animState=='levit') {
-					if (vis.osn.body.currentFrame>66) vis.osn.body.gotoAndPlay(17);
-				} else if (animState!='levit') {
-					if (aJump>0) {
-						cframe=Math.round(16+dy);
-						if (cframe>32) cframe=32;
-						if (cframe<1) cframe=1;
-					} else {
-						if (dy>2 && dx>-6 && dx<6) {
-							cframe=Math.round(31+dy);
-							if (cframe<33) cframe=33;
-							if (cframe>42) cframe=42;
-						} else {
-							cframe=Math.round(16+dx*storona);
-							if (cframe>32) cframe=32;
-							if (cframe<1) cframe=1;
-						}
-					}
-					vis.osn.body.gotoAndStop(cframe);
-				}
-			}
-			//поворот головы
-			if (vis.osn.body.head.morda) {
-				//trace(headR,headRA,headRO,t_head)
-				var drot:int=3;
-				if (lurked) headR=25;
-				else if (headRO-weaponR<=1 && headRO-weaponR>=-1) {
-					t_head--;
-					drot=6;
-					if (t_head<=0) {
-						t_head=Math.floor(Math.random()*100+10);
-						headR=Math.random()*70-25;
-					}
-				} else {
-					headR=weaponR;
-					t_head=100;
-				}
-				if (headRA-headR<=1 && headRA-headR>=-1) headRA=headR;
-				else headRA+=(headR-headRA)/drot;
-				if (isNaN(headRA)) headRA=0;
-				if (headRA>55) headRA=55;
-				if (headRA<-35) headRA=-35;
-				vis.osn.body.head.morda.rotation=headRA;
-				headRO=weaponR;
-			}
-			//самолевитация
-			if (levit>0 && t_levitfilter<=20) t_levitfilter+=2;
-			if (dJump2 && t_levitfilter<=20) t_levitfilter+=10;
-			if (levit==0 && !dJump2 && t_levitfilter>=0) t_levitfilter--;
-			if (t_levitfilter==0) {
-				f_levit=false;
 				setFilters();
-			} else if (t_levitfilter>0 && t_levitfilter<=20) {
-				levitFilter1.alpha=t_levitfilter/20;
-				//levitFilter.strength=t_levitfilter/20;
-				levitFilter1.blurX=levitFilter1.blurY=t_levitfilter/4+2;
-				f_levit=true;
-				setFilters();
+				otherVisual();
+				return;
 			}
-			if (dash_t>=dash_maxt-20) {
+		}
+
+		private function animateDashBlur():void
+		{
+			if (dash_t >= dash_maxt-20)
+			{
 				dashFilter.blurX=Math.min(dash_t-dash_maxt+20,10)/2;
 				setFilters();
 			}
-			else dashFilter.blurX=0;
-			otherVisual();
-			if ((shok>0 || runForever>0 || attackForever>0) && vis.osn.body.head.morda.eye.currentFrame==1) {
+			else dashFilter.blurX = 0;
+		}
+
+		private function animateLevitatedObjects():void
+		{
+
+		}
+
+		private function animateEye():void
+		{
+			if ((shok>0 || runForever>0 || attackForever>0) && vis.osn.body.head.morda.eye.currentFrame==1)
+			{
 				vis.osn.body.head.morda.eye.gotoAndStop(2);
 			}
-			if (shok==0 && runForever<=0 && attackForever<=0 && vis.osn.body.head.morda.eye.currentFrame==2 || klip==1) {
+			if (shok==0 && runForever<=0 && attackForever<=0 && vis.osn.body.head.morda.eye.currentFrame==2 || klip==1)
+			{
 				vis.osn.body.head.morda.eye.gotoAndStop(1);
 			}
-			if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) {
+			if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1)
+			{
 				vis.osn.body.head.morda.eye.gotoAndStop(3);
 			}
-			if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2)) {
+			if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2))
+			{
 				vis.osn.body.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
 				if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) vis.osn.body.head.morda.eye.eye.zrak.x=-20;
 				if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) vis.osn.body.head.morda.eye.eye.zrak.x=-11;
 				vis.osn.body.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
 			}
-			//if (currentWeapon) currentWeapon.animate();
-			//trace(animState +'  ' + vis.body.currentFrame);
 		}
+
+		private function animateSelfLeviation():void
+		{
+			if (levit > 0 && t_levitfilter <= 20) t_levitfilter += 2;
+			if (dJump2 && t_levitfilter <= 20) t_levitfilter += 10;
+			if (levit == 0 && !dJump2 && t_levitfilter >= 0) t_levitfilter--;
+
+			if (t_levitfilter == 0)
+			{
+				f_levit = false;
+				setFilters();
+			}
+			else if (t_levitfilter > 0 && t_levitfilter <= 20)
+			{
+				levitFilter1.alpha = t_levitfilter / 20;
+				levitFilter1.blurX = levitFilter1.blurY = t_levitfilter / 4 + 2;
+				f_levit = true;
+				setFilters();
+			}
+		}
+
+		private function setPlayerAnimation(animationName:String):void
+		{
+			animState = animationName;
+			vis.osn.gotoAndStop(animationName);
+		}
+
+		private function setPlayerAnimationAndPlay(animationName:String):void
+		{
+			animState = animationName;
+			vis.osn.gotoAndStop(animationName);
+			vis.osn.body.play();
+		}
+
+//##########################################################################################################
 		
-		public function stopAnim() {
+		public function stopAnim():void
+		{
 			vis.osn.body.stop();
 		}
 		
-		function getStayFrame():int {
+		private function getStayFrame():int {
 			if (shX2>=1 && shX2>=1) return isSit?2:1;  
 			if (storona>0) {
 				if (isSit) {
@@ -2956,23 +3058,27 @@ package fe.unit
 					if (shX2>0.3) return 27+Math.round((shX2-0.3)*13);
 					if (shX1>0.3) return 27+11+Math.round((shX1-0.3)*13);
 				}
-			} else {
-				if (isSit) {
+			}
+			else
+			{
+				if (isSit)
+				{
 					if (shX1>0) return 49+Math.round(shX1*10);
 					if (shX2>0) return 49+11+Math.round(shX2*10);
-				} else {
+				}
+				else
+				{
 					if (shX1>0.3) return 27+Math.round((shX1-0.3)*13);
 					if (shX2>0.3) return 27+11+Math.round((shX2-0.3)*13);
 				}
 			}
-			return isSit?2:1;
+			return isSit ? 2:1;
 		}
 		
 		
-		function otherVisual() {
+		private function otherVisual():void {
 			if (levit!=prev_levit) setFilters();
 			prev_levit=levit;
-			//trace(f_levit, levit)
 			
 			//перезарядка
 			if (currentWeapon && currentWeapon.t_reload>1) {
@@ -3031,7 +3137,6 @@ package fe.unit
 						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
 						vis.osn.body.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
 						vis.osn.body.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
-						//vis.osn.body.rwing.wing..rotation=Math.abs(dy)*2;
 					} catch (err) {}
 				} else if (isFly && !stay && !isPlav && !isLaz) {
 					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) vis.osn.body.rwing.gotoAndPlay(2);
@@ -3065,7 +3170,7 @@ package fe.unit
 			}
 		}
 		
-		public function refreshVis() {
+		public function refreshVis():void {
 			var dez=vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
@@ -3101,12 +3206,10 @@ package fe.unit
 			if (rat>0) return;
 			super.sndStep(faza,tip);
 		}
+
 		protected override function sndFall() {
 			if (rat>0) return;
 			super.sndFall();
 		}
-		
-		
 	}
-	
 }
