@@ -7,6 +7,8 @@ package fe.unit
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	
+	// Cheat sheet
+	// Puha = The gun part of the turret, not the base.
 	public class UnitTurret extends Unit
 	{
 		public var tr:int;
@@ -26,16 +28,18 @@ package fe.unit
 		var aRot:Array;		//массив углов поворота
 		var nRot:int=0;		//и текущий элемент массива
 		var mxml:XML;
-		var angle:String;
+		var angle:String; 
+
+		private var gunTextureLoaded:Boolean = false;
 		
 		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			//определить разновидность tr (используемое оружие)
-			if (loadObj && loadObj.tr) {			//из загружаемого объекта
+			// [Define turret type, tr. (Weapon used)]
+			if (loadObj && loadObj.tr) {			// [from the loaded object]
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			} else if (xml && xml.@tr.length()) {	// [from map settings]
 				tr=xml.@tr;
-			} else {								//случайно по параметру ndif
+			} else {								// [randomly by ndif parameter]
 				if (ndif<10) {
 					tr=Math.floor(Math.random()*3+1);
 				} else if (ndif<15) {
@@ -44,7 +48,8 @@ package fe.unit
 					tr=Math.floor(Math.random()*7+1);
 				}
 			}
-			//определить тип турели
+
+			// [determine the turret type]
 			if (cid=='land') turrettip=1;
 			if (cid=='arm') turrettip=3;
 			if (cid=='wall') turrettip=2;
@@ -53,6 +58,7 @@ package fe.unit
 			if (cid=='combat') turrettip=4;
 			if (cid=='boss') turrettip=5;
 			id='turret'+turrettip;
+
 			if (turrettip==0) vis=new visualTurret0();
 			else if (turrettip==1) vis=new visualTurret1();
 			else if (turrettip==2) vis=new visualTurret2();
@@ -72,23 +78,17 @@ package fe.unit
 			currentWeapon.rot=currentWeapon.forceRot;
 			currentWeapon.auto=true;
 			currentWeapon.hold=currentWeapon.holder;
-			if (xml && xml.move.length()) {
-				mxml=xml;
-			}
-			if (xml && xml.@vis.length()) {
-				angle=xml.@vis;
-			}
-			if (xml && xml.@fraction.length()) {
-				fraction=xml.@fraction;
-			}
-			if (xml && xml.@hidden.length()) {
-				hidden=xml.@hidden;
-			}
+
+			if (xml && xml.move.length()) mxml=xml;
+			if (xml && xml.@vis.length()) angle=xml.@vis;
+			if (xml && xml.@fraction.length()) fraction=xml.@fraction;
+			if (xml && xml.@hidden.length()) hidden=xml.@hidden;
 			if (turrettip!=3) acidDey=1;
 			if (fraction==F_PLAYER) warn=0;
 			if (loadObj && loadObj.off) hack(0);
 			if (loadObj && loadObj.reprog) hack(1);
 		}
+		
 		public override function save():Object {
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
@@ -101,7 +101,7 @@ package fe.unit
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
 			super.putLoc(nloc,nx,ny);
 			if (mxml) inter=new Interact(this,null,mxml,null);
-			//определить углы
+			// Turret aiming constraints
 			if (turrettip==0 || turrettip==4) {
 				currentWeapon.fixRot=1;
 				aRot=[30,150];
@@ -166,34 +166,52 @@ package fe.unit
 		}
 		
 		public override function setVisPos() {
-			//if (noTurn) super.setVisPos();
-			//else 
 			vis.x=X,vis.y=Y;
 		}
-		public override function animate() {
-			try {
-			vis.osn.puha.gotoAndStop(tr);
-			if (fixed && levit) vis.osn.rotation=Math.random()*6-3;
-			else if (vis.osn.rotation!=0) vis.osn.rotation=0;
-			if (vis.osn.currentFrame==1) {
-				vis.osn.puha.rotation=currentWeapon.rot*180/Math.PI;
-				if (vis.osn.light.currentFrame!=aiState+1) vis.osn.light.gotoAndStop(aiState+1);
-				if (isShoot) {
-					isShoot=false;
-					vis.osn.puha.puha.gotoAndPlay(2);
-				}
-				if (aiState==0 && hidden && fixed) vis.osn.gotoAndPlay(2);
-			} else if (vis.osn.currentFrame==6 && aiState>0) {
-				vis.osn.gotoAndPlay(7);
+
+		public override function animate()
+		{
+			if (!gunTextureLoaded)
+			{
+				intializeTurretGun();
 			}
-			} catch(err) {}
+
+			if (fixed && levit) vis.osn.rotation = Math.random() * 6 - 3;
+			else if (vis.osn.rotation != 0) vis.osn.rotation = 0;
+
+			if (vis.osn.currentFrame == 1)
+			{
+				vis.osn.puha.rotation = radiansToDegrees(currentWeapon.rot); // Rotate the gun of the turret.
+
+				if (vis.osn.light.currentFrame != aiState + 1) vis.osn.light.gotoAndStop(aiState + 1);
+				if (isShoot)
+				{
+					isShoot = false;
+					vis.osn.puha.puha.gotoAndPlay(2); 
+				}
+				if (aiState == 0 && hidden && fixed) vis.osn.gotoAndPlay(2);
+			} 
+			else if (vis.osn.currentFrame == 6 && aiState > 0) vis.osn.gotoAndPlay(7);
+
+			function intializeTurretGun():void
+			{
+				vis.osn.puha.gotoAndStop(tr);
+				gunTextureLoaded = true;
+			}
 		}
+
+		private function radiansToDegrees(radians:Number):Number
+		{
+			return radians * 180 / Math.PI;
+		}
+
 		public override function setPos(nx:Number,ny:Number) {
 			super.setPos(nx,ny);
 			if ((turrettip==0 || turrettip==4) && loc && !loc.active) {
 				osnova=loc.getAbsTile(X, Y-50);
 			}
 		}
+
 		public override function alarma(nx:Number=-1,ny:Number=-1) {
 			super.alarma(nx,ny);
 			if (turrettip==3) return;
@@ -240,6 +258,7 @@ package fe.unit
 			}
 			warn=0;
 		}
+
 		public override function expl()	{
 			newPart('metal',4);
 			newPart('miniexpl');
