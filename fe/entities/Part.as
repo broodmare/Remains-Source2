@@ -40,7 +40,6 @@ package fe.entities
 			if (visData) visData.dispose();
 			loc.remObj(this);
 			if (maxkol>0) Emitter.kols[maxkol]--;
-			delete this;
 		}
 		
 		public function initBlit(blitId:String) {
