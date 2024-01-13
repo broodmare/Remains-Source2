@@ -3,6 +3,7 @@ package fe.projectile
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.loc.*;
+	import fe.entities.Obj;
 	import fe.graph.Emitter;
 	import fe.unit.UnitMsp;
 	import fe.weapon.Weapon;

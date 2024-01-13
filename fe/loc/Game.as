@@ -4,6 +4,7 @@ package fe.loc
 	import fe.serv.Vendor;
 	import fe.serv.Script;
 	import fe.serv.NPC;
+	import fe.entities.Obj;
 	
 	public class Game
 	{

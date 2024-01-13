@@ -1,7 +1,8 @@
 package fe.loc
 {
 	import fe.*;
-
+	import fe.entities.Obj;
+	
 	//Бонусы, которые подбираются путём контакта с ними
 	public class Bonus extends Obj
 	{

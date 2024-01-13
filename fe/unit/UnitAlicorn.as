@@ -1,8 +1,10 @@
-package fe.unit {
+package fe.unit
+{
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.serv.BlitAnim;
 	import fe.loc.Tile;
 	import fe.loc.Location;
@@ -11,7 +13,8 @@ package fe.unit {
 	import fe.projectile.Bullet;
 	import fe.loc.Box;
 	
-	public class UnitAlicorn extends UnitPon{
+	public class UnitAlicorn extends UnitPon
+	{
 
 		public var tr:int=0;
 		
@@ -22,8 +25,6 @@ package fe.unit {
 		var resmana=5;
 		var visshit:MovieClip;
 		var shitMaxHp:Number=300;
-
-		//var superX:Number=0, superY:Number=0;
 
 		//суперсила
 		var superSilaTip:int=1;	//1-невидимость, 2-телепортация, 3-телепатия
@@ -78,7 +79,6 @@ package fe.unit {
 			getXmlParam();
 			
 			currentWeapon=Weapon.create(this,'alilight');
-			//currentWeapon=Weapon.create(this,'alipsy');
 			if (currentWeapon) {
 				childObjs=new Array(currentWeapon);
 				currentWeapon.fromWall=true;
@@ -125,7 +125,6 @@ package fe.unit {
 			visshit.y=-50;
 			visshit.scaleX=visshit.scaleY=1.5;
 			
-			//setSuper();
 			spd=new Object();
 			aiNapr=storona;
 			if (aiTip=='stay') stroll=false;
@@ -140,8 +139,6 @@ package fe.unit {
 			if (aiTip=='pole') {
 				pole=true;
 			}
-			//!!!
-			//currentWeapon.damage=0;
 			sit(true);
 			nomaterFilter=new GlowFilter(nmColor,1,15,5,2,3,true,true);
 			teleFilter=new GlowFilter(tlColor,1,6,6,1,3);
@@ -171,28 +168,6 @@ package fe.unit {
 			super.putLoc(nloc,nx,ny);
 			unsit();
 		}
-
-
-		//сделать героем
-		/*public override function setHero(nhero:int=1) {
-			super.setHero(nhero);
-			if (hero==1) {
-				tZlo=Math.round(tZlo*0.6);
-			}
-		}*/
-		
-		/*public override function getXmlParam(mid:String=null) {
-			//super.getXmlParam('zombie');
-			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
-			if (node0.un.length()) {
-				if (node0.un.@ss.length()) superSilaTip=node0.un.@ss;		//суперсила
-			}
-		}
-		
-		public override function setLevel(nlevel:int=0) {
-			super.setLevel(nlevel);
-		}*/
 		
 		public override function save():Object {
 			var obj:Object=super.save();
@@ -210,7 +185,7 @@ package fe.unit {
 					else animState='die';
 				} else animState='death';
 			} else {
-				if (isFly) { //|| levit || isPlav
+				if (isFly) {
 					animState='fly';
 				} else if (isSit) {
 					if (stay && (dx>1 || dx<-1)) {
@@ -261,9 +236,6 @@ package fe.unit {
 			if (hpbar) hpbar.alpha=vis.alpha;
 			if (!mater && visBmp.filters.length==0) visBmp.filters=[nomaterFilter];
 			if (mater && visBmp.filters.length>0) visBmp.filters=[];
-			/*if (teleObj && teleObj.vis) {
-				teleObj.vis.filters=[teleFilter];
-			}*/
 		}
 		
 		public override function budilo(rad:Number=500) {
@@ -299,7 +271,6 @@ package fe.unit {
 		}
 		
 		public override function alarma(nx:Number=-1,ny:Number=-1) {
-			//trace('alarm',aiState)
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiState=3;
@@ -366,7 +337,6 @@ package fe.unit {
 				} catch(err) {}
 				return;
 			}
-			//trace(X,Y,dx,dy);
 			if (levit && stun==0) {
 				if (aiState<=1) {
 					aiState=3;
@@ -394,7 +364,6 @@ package fe.unit {
 			}
 
 			var jmp:Number=0;
-			//return;
 			invis=superInvis;
 			if (World.w.pers.infravis==0) dexter=2-curA/100;
 			else dexter=1;
@@ -421,7 +390,6 @@ package fe.unit {
 
 					if (isPlav && aiState==0) aiState=1;
 					if (aiState==0 && superSilaTip==1 && isrnd() && stroll) superSila();	//включить невидимость в спокойном состоянии
-					//aiZlo=0;
 					storona=aiNapr;
 				}
 				if (aiSpok>0) aiState=2;
@@ -432,7 +400,6 @@ package fe.unit {
 				if (aiState<=1) aiTCh=Math.floor(Math.random()*50)+40;
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				//установить точку зрения
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
@@ -456,7 +423,6 @@ package fe.unit {
 					//увидели
 					if (celUnit) {
 						if (aiTCh%30==1) telepat();
-						//teleUnit=celUnit;
 						aiSpok=maxSpok+10;
 					//услышали
 					} else {
@@ -467,11 +433,7 @@ package fe.unit {
 					if (aiSpok>0) {
 						aiSpok--;
 					}
-					//if (aiSpok<maxSpok+5) teleUnit=null;
 				}
-				//if (aiState==2 || aiState==3) findSuper();
-				//Emitter.emit('laser',loc,celX,celY);
-				//Emitter.emit('plasma',loc,eyeX,eyeY);
 			}
 			//направление
 			celDX=celX-X;
@@ -493,8 +455,6 @@ package fe.unit {
 				if (t_gotov>tGotov) superSila();
 				vision=2;
 			}
-			//if (aiState==7) superSila2()
-			
 			
 			//скорость
 			maxSpeed=walkSpeed;
@@ -577,13 +537,9 @@ package fe.unit {
 			}
 			//поведение при различных состояниях
 			if (aiState==0) {
-				//aiNapr=0;
 				overLook=false;
 				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
-			//} else if (aiState==4) {
-				//if (celDX>40) aiNapr=storona=1;
-				//if (celDX<-40) aiNapr=storona=-1;
 			} else if (aiState==1) {
 				//поворачиваем, если впереди некуда бежать
 				overLook=false;
@@ -616,7 +572,6 @@ package fe.unit {
 				overLook=true;
 				if (aiVNapr<0) jmp=1;		//взлететь
 				if (aiTCh%15==1) {
-					//if (isrnd(0.3)) jmp=1;
 					if (isrnd(0.8)) {
 						if (celDX>100) aiNapr=storona=1;
 						if (celDX<-100) aiNapr=storona=-1;
@@ -642,10 +597,8 @@ package fe.unit {
 				}
 				if (jmp>0) {
 					if (isPlav) jmp*=1.5;
-					//if (checkJump()) {
-						jump(jmp);
-						jmp=0;
-					//}
+					jump(jmp);
+					jmp=0;
 				}
 			}
 
@@ -653,11 +606,6 @@ package fe.unit {
 			
 			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
 			
-			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
-				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
-					//if (aiZlo>80) aiZlo-=50;
-				}
-			}
 			if (celUnit && t_shit<900 && aiTCh%5==1 && isrnd(0.25) && aiAttackT<=-15 && currentWeapon.t_attack<=0) aiAttackT=16;
 			if (aiAttackT>-15) {
 				aiAttackT--;
@@ -771,7 +719,6 @@ package fe.unit {
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
-					//if (teleObj.cTransform) teleObj.vis.transform.colorTransform=teleObj.cTransform;
 				}
 				teleObj.levit=0;
 				teleObj=null;
@@ -781,8 +728,6 @@ package fe.unit {
 		//бросок телекинезом
 		function throwTele() {
 			if (teleObj) {
-				//if (teleObj is UnitPlayer) return;
-				//noBox=true;//!!!
 				var p:Object;
 				var tspeed:Number=throwForce;
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
@@ -806,7 +751,6 @@ package fe.unit {
 		
 		public function actPort(rnd:Boolean=false) {
 			var cel:Unit=World.w.gg;
-			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
 			var ny:Number=0;
 			for (var i=1; i<=20; i++) {

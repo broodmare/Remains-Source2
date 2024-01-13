@@ -19,6 +19,7 @@ package fe.graph
 
 	import fe.*;
 	import fe.loc.*;
+	import fe.entities.Pt;
 	
 	public class Grafon
 	{

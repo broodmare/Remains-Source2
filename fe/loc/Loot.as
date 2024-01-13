@@ -6,12 +6,12 @@ package fe.loc
 	import fe.graph.Emitter;
 	import fe.serv.Item;
 	import fe.serv.Interact;
+	import fe.entities.Obj;
 	
-	public class Loot extends Obj{
-		
+	public class Loot extends Obj
+	{
 		public var item:Item;
-		
-		
+
 		const osnRad=50, actRad=250;
 		public var vClass:Class;
 		public var osnova:Box=null;
@@ -333,8 +333,5 @@ package fe.loc
 			}
 			return isPlav;
 		}
-		
-
 	}
-	
 }

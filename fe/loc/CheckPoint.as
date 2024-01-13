@@ -3,6 +3,7 @@ package fe.loc
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.serv.Interact;
 	
 	public class CheckPoint extends Obj

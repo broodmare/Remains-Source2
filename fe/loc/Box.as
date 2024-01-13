@@ -4,6 +4,7 @@ package fe.loc
 	import flash.display.MovieClip;
 
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
 	import fe.unit.VirtualUnit;

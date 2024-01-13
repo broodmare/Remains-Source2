@@ -19,7 +19,8 @@ package fe.unit
 	import fe.graph.Emitter;
 	import flash.media.SoundChannel;
 	import flash.filters.GlowFilter;
-	import fe.graph.Part;
+	import fe.entities.Obj;
+	import fe.entities.Part;
 	
 	public class Unit extends Obj
 	{

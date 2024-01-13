@@ -1,5 +1,7 @@
 package  fe.loc
 {
+	import fe.entities.Obj;
+	
 	public class Tile
 	{
 		public static var tileX=40;

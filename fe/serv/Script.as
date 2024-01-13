@@ -1,10 +1,13 @@
-package fe.serv {
-	import fe.loc.Land;
+package fe.serv
+{
 	import fe.*;
+	import fe.entities.Obj;
+	import fe.loc.Land;
+
 	import fe.unit.Unit;
 	
-	public class Script {
-		
+	public class Script
+	{
 		var land:Land;
 		public var owner:Obj;
 		
@@ -102,7 +105,6 @@ package fe.serv {
 		//выполнение команды
 		function com(obj:Object) {
 			if (obj==null) return;
-			//trace('SCR', obj.targ, obj.act, obj.val);
 			actObj=obj;
 			if (World.w.gui.vis.dial.visible) World.w.gui.dialText();
 			World.w.ctr.keyPressed=World.w.ctr.keyPressed2=false;
@@ -302,5 +304,4 @@ package fe.serv {
 			}
 		}
 	}
-	
 }

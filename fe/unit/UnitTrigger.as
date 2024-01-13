@@ -3,6 +3,7 @@ package fe.unit
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Location;
+	import fe.entities.Obj;
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	

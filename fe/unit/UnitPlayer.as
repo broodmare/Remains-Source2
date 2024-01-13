@@ -11,6 +11,8 @@ package fe.unit
 	import fe.loc.*;
 	import fe.weapon.*;
 	import fe.inter.*;
+	import fe.entities.Pt;
+	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;

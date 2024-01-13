@@ -4,6 +4,7 @@ package fe.loc
 	import fe.serv.Script;
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
+	import fe.entities.Obj;
 	
 	//Активная область
 	

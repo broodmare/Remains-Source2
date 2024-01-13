@@ -1,13 +1,15 @@
 package fe.serv
 {
+	import flash.media.SoundChannel;
+
 	import fe.*;
 	import fe.loc.*;
+	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.projectile.Bullet;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
-	import flash.media.SoundChannel;
-	
+
 	public class Interact
 	{
 		var inited:Boolean=false;
@@ -110,8 +112,6 @@ package fe.serv
 			loc=owner.loc;
 			X=own.X, Y=own.Y;
 			xml=nxml;
-			//var rnd:Boolean=false;
-			//if (loc && loc.land.rnd) 
 			var rnd=true;
 			if (xml && xml.@set.length()) rnd=false;	//если задано свойство set='1', не будет случайных параметров
 			//тип замка
@@ -287,7 +287,6 @@ package fe.serv
 				lockTip=0;
 				lock=1;
 			}
-			//if (lockTip==0 && lock>0) active=false;
 			update();
 			owner.prior+=1;
 			inited=true;
@@ -416,7 +415,6 @@ package fe.serv
 				}
 				if (n==102) {
 					saveLock=102;
-					//active=false;
 					lock=100;
 					if (lockTip==1) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
 					if (lockTip==2) stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
@@ -515,11 +513,6 @@ package fe.serv
 					var lockDam1:Number=0, lockDam2:Number=2;
 					verFail=0;
 					if (lockTip==1 || lockTip==5) {
-						/*if (lock-unlock<0) verFail=0.2;
-						else if (lock-unlock==0) verFail=0.4;
-						else if (lock-unlock==1) verFail=0.6;
-						else if (lock-unlock==2) verFail=0.8;
-						else verFail=1;*/
 						verFail=1-this.getChance(lock-unlock);
 						if (master<lockLevel) verFail=1;
 						if (lock-unlock==1) {
@@ -530,11 +523,6 @@ package fe.serv
 							lockDam2=4;
 						}
 					} else if (lockTip==2) {
-						/*if (lock-unlock<0) verFail=0.2;
-						else if (lock-unlock==0) verFail=0.5;
-						else if (lock-unlock==1) verFail=0.75;
-						else if (lock-unlock==2) verFail=0.85;
-						else verFail=1;*/
 						verFail=1-this.getChance(lock-unlock);
 						if (master<lockLevel) verFail=1;
 					} else if (lockTip==4) {
@@ -546,8 +534,6 @@ package fe.serv
 						lockDam1=2;
 						lockDam2=4;
 					}
-					//trace(lock,unlock,lockDam1,lockDam2);
-					//trace(lock,unlock,verFail);
 					var lockDam:Number=lockDam1;
 					if (Math.random()<verFail) { //неудача	
 						if (lockTip==1) {
@@ -560,7 +546,6 @@ package fe.serv
 							} else lockDam1+=2;
 							lockDam=(lockDam1+Math.random()*lockDam2)*World.w.pers.lockAtt;
 							lockHP-=lockDam;
-							//trace(lockDam,lockHP);
 							if (lockHP<=0) {		//Замок заклинило
 								setAct('lock',102);
 								World.w.gui.infoText('unLockZhopa');
@@ -594,9 +579,7 @@ package fe.serv
 						} else if (lockTip==4) {		//отключение с помощью навыка ремонт
 							var lockDam=(lockDam1+Math.random()*lockDam2);
 							lockHP-=lockDam;
-							//trace(lockDam,lockHP);
 							if (lockHP<=0) {		//Удар током
-								//setAct('lock',102);
 								discharge();
 								World.w.gui.infoText('unRepZhopa',null,null,false);
 								replic('zhopa');
@@ -608,7 +591,6 @@ package fe.serv
 						} else if (lockTip==5) {		//ремонт механизма
 							lockDam=(lockDam1+Math.random()*lockDam2);
 							lockHP-=lockDam;
-							//trace(lockDam,lockHP);
 							if (lockHP<=0) {		//Замок заклинило
 								setAct('lock',102);
 								World.w.gui.infoText('unFixZhopa');
@@ -775,9 +757,6 @@ package fe.serv
 		//неудачная попытка взлома силового поля - удар током
 		public function discharge() {
 			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
-			//damage(,Unit.D_SPARK);
-			//Emitter.emit('moln',loc,owner.X,owner.Y-owner.scY/2,{celx:World.w.gg.X, cely:(World.w.gg.Y-World.w.gg.scY/2)});
-			//Snd.ps('electro',X,Y);
 			damdis+=50;
 			if (damdis>500) damdis=500;
 		}
@@ -915,11 +894,6 @@ package fe.serv
 			} else if (allact=='vault') {
 				World.w.pip.onoff(9);
 			} else owner.loc.allAct(owner,allact,allid);
-			/*{
-				for each (var obj:Obj in owner.loc.objs) {
-					if (obj.inter && obj.inter!=this && obj.inter.allid==allid) obj.inter.command(allact);
-				}
-			}*/
 		}
 		
 		//начало продолжительного действия над объектом

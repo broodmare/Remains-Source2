@@ -1,6 +1,7 @@
 package fe.inter
 {
 	import fe.*;
+	import fe.entities.Obj;
 
 	public class SatsCel extends Obj
 	{

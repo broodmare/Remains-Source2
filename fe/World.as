@@ -17,8 +17,8 @@ package  fe
 	
 	import fe.loc.*;
 	import fe.rooms.Rooms;
+	import fe.entities.Part;
 	import fe.graph.Grafon;
-	import fe.graph.Part;
 	import fe.graph.Emitter;
 	import fe.inter.*;
 	import fe.serv.LootGen;

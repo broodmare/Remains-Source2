@@ -6,6 +6,7 @@ package fe.projectile
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	import fe.loc.Box;
+	import fe.entities.Obj;
 	
 	public class PhisBullet extends Bullet
 	{

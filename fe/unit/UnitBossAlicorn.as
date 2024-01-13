@@ -3,14 +3,14 @@ package fe.unit
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
-	import fe.weapon.*;
 	import fe.*;
+	import fe.weapon.*;
+	import fe.entities.Obj;
 	import fe.serv.BlitAnim;
-	import fe.loc.Location;
-	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	import fe.loc.Box;
 	import fe.loc.Tile;
+	import fe.loc.Location;
 	import fe.projectile.Bullet;
 	
 	public class UnitBossAlicorn extends UnitPon
@@ -51,21 +51,7 @@ package fe.unit
 		public function UnitBossAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossalicorn';
-			//определить разновидность tr
-			/*if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}*/
 			tr=1;
-			
-			//взять параметры из xml
-			//vis=new visualUltraSentinel();
-			//vis.osn.gotoAndStop(1);
 			
 			getXmlParam();
 			walkSpeed=maxSpeed;
@@ -250,8 +236,6 @@ package fe.unit
 		//3 - выполняет действие
 		
 		public override function control() {
-
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
@@ -262,7 +246,6 @@ package fe.unit
 			
 			t_replic--;
 			var jmp:Number=0;
-			//return;
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
@@ -283,7 +266,6 @@ package fe.unit
 				if (aiState>3) aiState=1;
 				if (aiState==1) {	//выбор точки перемещения
 					attState=Math.floor(Math.random()*5);
-					//attState=3;
 					var nmp=Math.floor(Math.random()*7);
 					if (nmp==mp) nmp++;
 					if (nmp>=7) nmp=0;
@@ -301,7 +283,6 @@ package fe.unit
 						isVis=true;
 					}
 					if (attState==5) currentWeapon=weaps[3];
-					//castShit();
 				} else if (aiState==2) {
 					aiTCh=30;
 					if (attState==3) {
@@ -319,7 +300,6 @@ package fe.unit
 				}
 			}
 			//поиск цели
-			//trace(aiState)
 			if ((aiState==1 || aiState>1 && attState<=2) && aiTCh%10==1 || attState==5 && aiState==3) {
 				if (attState<2 && loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.2)) setCel(loc.gg.pet);
 				else setCel(loc.gg);
@@ -342,7 +322,7 @@ package fe.unit
 				if (dx<-0.5) storona=-1;
 				walk=0;
 			}
-			if (aiState>0) {// && !(aiState==3 && attState==5)
+			if (aiState>0) {
 				aiNapr=(celX>X)?1:-1;
 				if (storona!=aiNapr) {
 					t_turn--;
@@ -420,7 +400,6 @@ package fe.unit
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
-					//if (teleObj.cTransform) teleObj.vis.transform.colorTransform=teleObj.cTransform;
 				}
 				teleObj.levit=0;
 				teleObj=null;
@@ -430,7 +409,6 @@ package fe.unit
 		//бросок телекинезом
 		function throwTele() {
 			if (teleObj) {
-				//noBox=true;//!!!
 				var p:Object;
 				var tspeed:Number=throwForce;
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
@@ -484,6 +462,5 @@ package fe.unit
 				controlOn=true;
 			}
 		}
-		
 	}
 }

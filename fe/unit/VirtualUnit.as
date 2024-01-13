@@ -1,6 +1,6 @@
 package fe.unit
 {
-	import fe.Obj;
+	import fe.entities.Obj;
 	import fe.projectile.Bullet;
 	import fe.loc.Box;
 	

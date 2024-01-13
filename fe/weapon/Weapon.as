@@ -6,7 +6,7 @@ package fe.weapon
 	import flash.display.Graphics;
 	
 	import fe.*;
-	import fe.Obj;
+	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;

@@ -1,7 +1,6 @@
 package fe.projectile
 {
 	import fe.*;
-	import fe.unit.Unit;
 	import fe.loc.*;
 	import flash.display.Graphics;
 	

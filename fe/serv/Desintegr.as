@@ -1,4 +1,5 @@
-package fe.serv {
+package fe.serv
+{
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;
 	import flash.display.BitmapData;
@@ -7,11 +8,13 @@ package fe.serv {
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
+
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.graph.Emitter;
 	
-	public class Desintegr {
-		
+	public class Desintegr
+	{
 		public var owner:Obj;
 		
 		var burnBmp:BitmapData;

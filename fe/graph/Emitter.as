@@ -1,8 +1,10 @@
 package fe.graph
 {
-	import fe.*;
-	import fe.loc.Location;
 	import flash.filters.GlowFilter;
+	
+	import fe.*;
+	import fe.entities.Part;
+	import fe.loc.Location;
 
 	public class Emitter
 	{
@@ -24,7 +26,6 @@ package fe.graph
 			if (em) em.cast(loc,nx,ny,param);
 			else trace ('Нет частицы '+nid);
 		}
-		
 		/*
 				Частицы
 				vis - визуальный класс

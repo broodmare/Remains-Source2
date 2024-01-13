@@ -7,6 +7,7 @@ package fe.inter
 	import flash.events.MouseEvent;
 	
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.weapon.Weapon;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;

@@ -1,7 +1,5 @@
 package fe.projectile
 {
-	
-	import fe.*;
 	import fe.unit.Unit;
 	
 	public class SmartBullet  extends Bullet

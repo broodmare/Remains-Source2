@@ -1,18 +1,16 @@
-package fe.loc {
-	
-	import flash.geom.ColorTransform;
+package fe.loc
+{
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.unit.Unit;
 	
-	public class Trap extends Obj{
-
+	public class Trap extends Obj
+	{
 		public var id:String;
 		public var vis2:MovieClip;
-		
-		//public var maxhp:Number=100;
-		//public var armor:Number=0;		
+
 		public var dam:Number=0;
 		public var tipDamage:int=0;
 		
@@ -21,7 +19,6 @@ package fe.loc {
 		public var floor:Boolean=false;
 		
 		var anim:Boolean=false;
-
 
 		public function Trap(nloc:Location, nid:String, nx:int=0, ny:int=0) {
 			loc=nloc;
@@ -58,15 +55,12 @@ package fe.loc {
 			nazv=Res.txt('u',id);
 			if (node.@sX>0) scX=node.@sX; else scX=node.@size*World.tileX;
 			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*World.tileY;
-			//armor=node.@armor;
-			//if (node.@hp>0) hp=maxhp=node.@hp;
 			dam=node.@damage;
 			if (node.@tipdam.length()) tipDamage=node.@tipdam;
 			if (node.@anim.length()) anim=true;
 			if (node.@floor.length()) floor=true;
 			if (node.@att.length()) spDam=node.@att;
 			if (node.@bind.length()) spBind=node.@bind;
-			//if (node.@sprX>0) {blitX=node.@sprX, blitY=node.@sprX;}
 		}
 		
 		public override function addVisual() {
@@ -121,7 +115,5 @@ package fe.loc {
 			}
 			return true;
 		}
-
 	}
-	
 }

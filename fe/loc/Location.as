@@ -4,6 +4,8 @@ package fe.loc
 	import flash.display.MovieClip;
 
 	import fe.*;
+	import fe.entities.Pt;
+	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.UnitPhoenix;

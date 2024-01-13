@@ -1,9 +1,11 @@
-package fe.serv {
-	
+package fe.serv
+{	
 	import fe.*;
+	import fe.entities.Obj;
 	import fe.unit.UnitNPC;
 
-	public class NPC {
+	public class NPC
+	{
 
 		public var xml:XML;			//XML из GameData
 		public var id:String='';			//id npc-а
@@ -173,7 +175,6 @@ package fe.serv {
 							}
 							scr.acts.push({act:'trigger', val:('dial_'+dial.@id), t:0, n:1, opt1:0, opt2:0, targ:""});
 							scr.acts.push({act:'checkall', val:0, t:0, n:1, opt1:0, opt2:0, targ:""});
-							//scr.acts.push({act:'check', val:0, t:0, n:1, opt1:0, opt2:0, targ:"this"});
 							scr.start();
 						} else {
 							if (World.w.dialOn) World.w.gui.dialog(dial.@id);
@@ -325,5 +326,4 @@ package fe.serv {
 			refresh();
 		}
 	}
-	
 }

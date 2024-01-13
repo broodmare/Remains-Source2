@@ -1,17 +1,18 @@
-package  fe
+package  fe.entities
 {
 	//Базовый класс для объектов, взаимодействующих с игроком или миром
-	
 	import flash.display.MovieClip;
 	import flash.geom.ColorTransform;
 	
+	import fe.World;
 	import fe.serv.Interact;
 	import fe.projectile.Bullet;
 	import fe.inter.Appear;
 	
-	public class Obj extends Pt{
-		public var code:String;		//идивидуальный код
-		public var uid:String;		//уникальный идентификатор, служащий для доступа скрипта к объекту
+	public class Obj extends Pt
+	{
+		public var code:String;		// [Individual code]
+		public var uid:String;		// [Unique identifier used for script access to the object]
 		
 		public var prior:Number=1;
 		public var scX:Number=10, scY:Number=10, storona:int=1;	//размеры

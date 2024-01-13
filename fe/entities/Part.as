@@ -1,12 +1,13 @@
-package fe.graph
+package fe.entities
 {
+	import flash.display.MovieClip;
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
-	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.graph.Emitter;
 
 	public class Part  extends Pt
 	{
@@ -19,14 +20,14 @@ package fe.graph
 		public var otklad:int=0;
 
 		public var blitData:BitmapData;
-		var blitX:int=120, blitY:int=120;
+		public var blitX:int=120, blitY:int=120;
 		var blitRect:Rectangle;
 		var blitPoint:Point;
 		var visData:BitmapData;
 		var visBmp:Bitmap;
-		var blitFrame:Number=0;
-		var blitDelta:Number=1;
-		var blitMFrame:int=-1;
+		public var blitFrame:Number=0;
+		public var blitDelta:Number=1;
+		public var blitMFrame:int=-1;
 		
 		public var water:int=0;
 		public var maxkol:int=0;
