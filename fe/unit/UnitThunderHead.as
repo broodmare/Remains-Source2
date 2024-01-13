@@ -1,5 +1,5 @@
-﻿package fe.unit {
-	import flash.filters.GlowFilter;
+package fe.unit
+{
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
@@ -9,11 +9,10 @@
 	import fe.projectile.Bullet;
 	import fe.*;
 	import fe.loc.Location;
-	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	
-	public class UnitThunderHead extends Unit{
-		
+	public class UnitThunderHead extends Unit
+	{
 		public var controlOn:Boolean=true;
 		var spd:Object;
 		var dopWeapon:Weapon;
@@ -66,8 +65,6 @@
 			osn.scaleX=osn.scaleY=3;
 			osn.x=-osn.width/2;
 			osn.y=-osn.height/2;
-			
-			//500, 666, 1700;
 			
 			moln1=new ThunderHeadMoln();
 			moln2=new ThunderHeadMoln();
@@ -183,18 +180,11 @@
 		}
 		
 		public override function run(div:int=1) {
-			/*X+=dx/div;
-			Y+=dy/div;*/
 			X1=X-scX/2+300*3, X2=X1+1370*3;
 			Y1=Y-scY/2+170*3, Y2=Y1+580*3;
 		}
 		
-		/*public override function forces() {
-			if (dx>maxSpeed) dx=maxSpeed;
-			if (dx<-maxSpeed) dx=-maxSpeed;
-			if (dy>maxSpeed) dy=maxSpeed;
-			if (dy<-maxSpeed) dy=-maxSpeed;
-		}*/
+
 		
 		function setUgolPos() {
 			var def:Number=Math.sin(ugol/45*Math.PI);
@@ -304,7 +294,6 @@
 			//миньоны
 			if ((maxhp-hp)/maxhp*max_emit>kol_emit) emit();
 			setUgolPos();
-			//attack();
 		}
 		
 		
@@ -392,6 +381,5 @@
 			World.w.gg.dx+=p.x;
 			World.w.gg.dy+=p.y;
 		}
-		
 	}
 }

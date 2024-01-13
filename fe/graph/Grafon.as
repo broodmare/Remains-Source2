@@ -1,4 +1,5 @@
-﻿package fe.graph {
+package fe.graph
+{
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.Bitmap;
@@ -8,29 +9,22 @@
 	import flash.geom.Point;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
-	import flash.filters.BevelFilter;
 	import flash.filters.BlurFilter;
-	import flash.filters.GlowFilter;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.DropShadowFilter;
-	import flash.utils.*;
-	import flash.net.URLRequest;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.events.ProgressEvent;
     import flash.ui.MouseCursorData;
     import flash.ui.Mouse;
 	
-	import fe.*;
-	import fe.loc.*;	
 	import fl.motion.Color;
+
+	import fe.*;
+	import fe.loc.*;
 	
-	public class Grafon {
-		
+	public class Grafon
+	{
 		public var loc:Location;
-		
+
 		public var visual:Sprite;
-		
 		public var visBack:Sprite;
 		public var visBack2:Sprite;
 		public var visObjs:Array;
@@ -73,7 +67,7 @@
 			
 		
 		var voda=new tileVoda();
-		//********************************************************************************************************************************************************************************************************************
+
 		var m:Matrix;
 		
 		//рамки
@@ -90,15 +84,8 @@
 		var lightRect:Rectangle=new Rectangle(0,0,lightX,lightY);
 		
 		//загрузка
-		//public var loadTex:Loader, loadTex1:Loader, loadSprite:Loader, loadSprite1:Loader;
 		public var resIsLoad:Boolean=false;
 		public var progressLoad:Number=0;
-		/*progressTex:Number=0, progressSprite:Number=0;
-		public static var resTex:*;		//содержимое загруженного файла
-		public static var resTex1:*;		//содержимое загруженного файла
-		public static var resSprite:*;		//содержимое загруженного файла
-		public static var resSprite1:*;		//содержимое загруженного файла
-		*/
 		public static var spriteLists:Array=new Array();
 		public static var texUrl:Array=['texture.swf','texture1.swf','sprite.swf','sprite1.swf'];
 		public var grLoaders:Array;
@@ -218,8 +205,6 @@
 			createCursor(visCurTarget,'target',13,13);
 			createCursor(visCurTarget1,'combat',13,13);
 			createCursor(visCurTarget2,'action',13,13);
-			//if (!World.w.sysCur) Mouse.cursor='arrow';
-			//Mouse.unregisterCursor('arrow');
  		}
 		
 		function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0) {
@@ -233,33 +218,6 @@
             //mouseCursorData.frameRate = 1;
             Mouse.registerCursor(nazv, mouseCursorData);
 		}
-		
-		/*function texLoaded(event:Event):void {
-			resTex = event.target.content;
-			checkLoaded();
-			trace(event.target.loader.x);
-		}
-		
-		function spriteLoaded(event:Event):void {
-			resSprite = event.target.content;
-			checkLoaded();
- 		}
-		function sprite1Loaded(event:Event):void {
-			resSprite1 = event.target.content;
-			checkLoaded();
- 		}
-		function checkLoaded() {
-			if (resTex!=null && resSprite!=null && resSprite1!=null) resIsLoad=true;
-		}
-		
-		private function progressTexHandler(event:ProgressEvent):void {
-			progressTex=event.bytesLoaded/event.bytesTotal;
-			progressLoad=(progressTex+progressSprite)/2;
-        }
-		private function progressSpriteHandler(event:ProgressEvent):void {
-			progressSprite=event.bytesLoaded/event.bytesTotal;
-			progressLoad=(progressTex+progressSprite)/2;
-        }*/
 		
 //============================================================================================		
 //							Начальная прорисовка локации
@@ -312,7 +270,6 @@
 		//прорисовка локации
 		public function drawLoc(nloc:Location) {
 			try {
-			//var d1:Date=new Date();
 		/* ****** */World.w.gr_stage=1;
 			loc=nloc;
 			loc.grafon=this;
@@ -333,12 +290,6 @@
 			ramT.scaleY=ramB.scaleY=2;
 			ramR.scaleY=ramL.scaleY=loc.limY/100;
 			ramR.scaleX=ramL.scaleX=2;
-			
-			/*nn++;
-			if (nn%3==0) {
-				var g;
-				g.t=0;
-			}*/
 		
 		/* ****** */World.w.gr_stage=3;		//где-то тут
 			frontBmp.lock();
@@ -357,18 +308,11 @@
 			visLight.visible=loc.black&&World.w.black;
 			warShadow();
 			
-			//if (colorBmp) colorBmp.dispose();
 			var darkness:int=0xAA+loc.darkness;
 			if (darkness>0xFF) darkness=0xFF;
 			if (darkness<0) darkness=0;
 			colorBmp.fillRect(allRect,darkness*0x1000000);
 			shadBmp.fillRect(allRect,0xFFFFFFFF);
-			//colorBmp=new BitmapData(resX, resY, true, darkness*0x1000000);
-			
-			
-			//if (shadBmp) shadBmp.dispose();
-			//shadBmp=new BitmapData(resX, resY,true,0xFFFFFFFF);
-		
 
 		/* ****** */World.w.gr_stage=4;
 
@@ -390,9 +334,6 @@
 			for (var i=0; i<loc.spaceX; i++) {
 				for (var j=0; j<loc.spaceY; j++) {
 					t=loc.getTile(i,j);
-					//if (t.phis==1) gret=1;
-					//else if (t.back!='' && arrBack[t.back] && arrBack[t.back].slit) gret=2;
-					//else gret=0;
 					loc.tileKontur(i,j,t);
 					if (arrFront[t.front]) arrFront[t.front].used=true;
 					if (arrBack[t.back]) arrBack[t.back].used=true;
@@ -445,14 +386,11 @@
 					World.w.showError(err,'Ошибка рисования слоя '+arrBack[e].id);
 				}
 			}
-							//if (nloc.landX>0) {var d; d.d=0;}
 		/* ****** */World.w.gr_stage=10;
 			satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			var darkness2=1-(255-darkness)/150;
-			//ct=new ColorTransform(darkness2,darkness2,darkness2);
 			//объекты заднего плана
 			var ct:ColorTransform=new ColorTransform();
-			//var et:ColorTransform=new ColorTransform(1,1,1,1,255,255,255);
 		/* ****** */World.w.gr_stage=11;
 			for (j=-2; j<=3; j++) {
 				if (j==-1) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
@@ -460,7 +398,6 @@
 					if (bo.sloy==j && !bo.er || j==-2 && bo.er) {
 						m=new Matrix();
 						m.scale(bo.scX, bo.scY);
-						//trace(m.a,m.b,m.c,m.d);
 						m.tx=bo.X;
 						m.ty=bo.Y;
 						ct.alphaMultiplier=bo.alpha;
@@ -473,7 +410,6 @@
 									if (darkness2>=0.43) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
 									else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=0.55+darkness2;
 								} else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
-								//trace(darkness2)
 								backBmp2.draw(bo.vis, m, ct, bo.blend, null, true);
 								if (bo.light) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
 								else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
@@ -497,7 +433,7 @@
 			
 			if (nloc.cTransform) {
 				backBmp.colorTransform(backBmp.rect,nloc.cTransform);
-				ct=new ColorTransform();//170,130
+				ct=new ColorTransform();
 				darkness2=1+(170-darkness)/33;
 				ct.concat(nloc.cTransform);
 				if (darkness2>1) {
@@ -509,14 +445,12 @@
 			}
 		/* ****** */World.w.gr_stage=14;
 			backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
-			//backBmp2.colorTransform(backBmp2.rect,ct);
 			
 		/* ****** */World.w.gr_stage=15;
 			if (transpFon) satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			backBmp.draw(colorBmp,null,null,'hardlight');
 			backBmp.draw(shadBmp);
 			if (transpFon) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-			//backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			
 			//розовое облако
 		/* ****** */World.w.gr_stage=16;
@@ -524,7 +458,6 @@
 				m=new Matrix();
 				m.ty=520;
 				backBmp2.draw(getObj('back_pink_t',numbBack),m,new ColorTransform(1,1,1,0.3));
-				//vodaBmp
 			}
 			
 		/* ****** */World.w.gr_stage=17;
@@ -547,8 +480,6 @@
 		/* ****** */World.w.gr_stage=19;
 			//активные объекты
 			drawAllObjs();
-			//var d2:Date=new Date();
-			//trace('***',d2.getTime()-d1.getTime(),'ms')
 		/* ****** */World.w.gr_stage=0;
 		}
 		
@@ -599,7 +530,6 @@
 				osn.graphics.drawRect(0,24*Tile.tileY+10,kusokX*Tile.tileX,kusokY*Tile.tileY);
 			}
 			backBmp.draw(osn, m, null, null, null, false);
-			//backBmp.draw(dyr, m, null, 'erase', null, true);
 		}
 		
 		function setMCT(mc:MovieClip, t:Tile, toFront:Boolean) {
@@ -679,7 +609,7 @@
 								mc.y=(t.phY2+t.phY1)/2;
 							}							
 						}
-						if (material.floorMask) {// && !t.zForm
+						if (material.floorMask) {
 							mc=new material.floorMask();
 							if (mc.c1) {
 								mc.c1.gotoAndStop(t.kont1+1);
@@ -687,7 +617,7 @@
 							}
 							fmaska.addChild(mc);
 							mc.x=(i+0.5)*Tile.tileX;
-							mc.y=(j+0.5+t.zForm/4)*Tile.tileY;	//
+							mc.y=(j+0.5+t.zForm/4)*Tile.tileY;
 						}
 					}
 				}
@@ -698,7 +628,6 @@
 			osn.cacheAsBitmap=maska.cacheAsBitmap=border.cacheAsBitmap=bmaska.cacheAsBitmap=floor.cacheAsBitmap=fmaska.cacheAsBitmap=true;
 			osn.mask=maska; border.mask=bmaska; floor.mask=fmaska;
 			if (material.F) kusok.filters=material.F;
-			//trace(material.id,material.F);
 			if (toFront) frontBmp.draw(kusok, m, null, null, null, false);
 			else if (dop) backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
 			else backBmp.draw(kusok, m, null, null, null, false); 
@@ -728,7 +657,6 @@
 		public function onSats(on:Boolean) {
 			visSats.visible=on;
 			visObjs[2].visible=!on;
-			//for each (var ob in visObjs) ob.visible=!on;
 		}
 		
 		//рисование одного блока воды
@@ -864,11 +792,6 @@
 				if (!soft && Math.random()*0.5<ver) drC=plaexpl_tre;
 				centr=true;
 			}			
-			/*
-			if (centr) {
-				nx=(Math.floor(nx/World.tileX)+0.5)*World.tileX;
-				ny=(Math.floor(nx/World.tileX)+0.5)*World.tileX;
-			}*/
 			
 			decal(erC,drC,nx,ny,sc,rc,bl);
 		}
@@ -890,7 +813,6 @@
 				nagar.scaleX=nagar.scaleY=sc;
 				nagar.rotation=rc;
 				var dyrx=Math.round(nagar.width/2+2)*2, dyry=Math.round(nagar.height/2+2)*2;
-				//var dyrx=Math.round(nagar.width)+4, dyry=Math.round(nagar.height)+4;
 				var res2:BitmapData = new BitmapData(dyrx, dyry, false, 0x0);
 				var rdx=0, rdy=0;
 				if (nx-dyrx/2<0) rdx=-(nx-dyrx/2);
@@ -954,16 +876,13 @@
 			if (n==0) {
 				visual.filters=[];
 				visFon.filters=[]
-				//visual.rotation=0;
 			} else if (n==1) {
 				visual.filters=[new ColorMatrixFilter([2,-0.9,-0.1,0,0,-0.4,1.5,-0.1,0,0,-0.4,-0.9,2,0,0,0,0,0,1,0])];
 			} else if (n==2) {
 				visual.filters=[new ColorMatrixFilter([-0.574,1.43,0.144,0,0,0.426,0.43,0.144,0,0,0.426,1.430,-0.856,0,0,0,0,0,1,0])];
 			} else if (n==3) {
-//				visual.filters=[new ColorMatrixFilter([0.5,-1.9,1.1,0,0,0.5,0.5,0.5,0,0,2.4,-1.9,0.5,0,0,0,0,0,1,0])];
 				visual.filters=[new ColorMatrixFilter([0,1,0,0,0,1,0,0,0,0,0,0,-0.2,0,100,0,0,0,1,0])];
 			} else if (n==4) {
-				//visual.filters=[new ColorMatrixFilter([-1,0,0,0,255,0,-1,0,0,255,0,0,-1,0,255,0,0,0,1,0])];
 				visual.filters=[new ColorMatrixFilter([0,-0.5,-0.5,0,255,-0.5,0,-0.5,0,255,-0.5,-0.5,0,0,255,0,0,0,1,0])];
 			} else if (n==5) {
 				visual.filters=[new ColorMatrixFilter([3.4,6.7,0.9,0,-635,3.4,6.75,0.9,0,-635,3.4,6.7,0.9,0,-635,0,0,0,1,0])];
@@ -974,8 +893,5 @@
 				visFon.filters=[new BlurFilter(n-100,n-100)];
 			}
 		}
-		
-		
 	}
-	
 }

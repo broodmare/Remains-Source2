@@ -1,5 +1,12 @@
 package fe.inter 
 {	
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.text.TextFormat;
+
+	import fl.controls.NumericStepper;
+
 	import fe.*;
 	import fe.unit.Armor;
 	import fe.unit.UnitPet;
@@ -7,11 +14,6 @@ package fe.inter
 	import fe.serv.Vendor;
 	import fe.weapon.Weapon;
 	import fe.loc.Quest;
-	import flash.display.MovieClip;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import fl.controls.NumericStepper;
-	import flash.text.TextFormat;
 
 	import fe.stubs.visPipBuyItem;
 
@@ -44,7 +46,6 @@ package fe.inter
 				ns.addEventListener(Event.CHANGE,nsCh);
 				ns.tabEnabled=false;
 				ns.focusRect=false;
-				//ns.textField.textField.textColor=0x00FF99;
 				ns.setStyle("textFormat", tf);
 			}
 			tips = 

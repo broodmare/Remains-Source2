@@ -1,12 +1,8 @@
-﻿package fe.graph {
-	
+package fe.graph
+{
 	import flash.display.MovieClip;
-    import flash.display.Bitmap;
     import flash.display.BitmapData;
     import flash.display.BitmapDataChannel;
-    import flash.display.GradientType;
-    import flash.display.SpreadMethod;
-    import flash.filters.BitmapFilter;
     import flash.filters.DisplacementMapFilter;
     import flash.filters.DisplacementMapFilterMode;
     import flash.geom.Matrix;
@@ -43,12 +39,6 @@
 			gr=ngr;
 			displBmpd=new BitmapData(240,300,false,0x7F7F7F);
 			displStamp=new displVolna();
-			/*displStamp.blendMode='overlay';
-			displStamp.alpha=0.5;
-			addChild(displStamp);
-			displStamp.x=volna.x;
-			displStamp.y=volna.y;*/
-			//displMatrix.d=2;
 			displMatrix.tx=mm.target.x-mm.displ1.x;
 			displMatrix.ty=mm.target.y-mm.displ1.y;
 			displFilter1=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,displX,displY,DisplacementMapFilterMode.COLOR);
@@ -79,7 +69,6 @@
 				mm.eye.play();
 				t_klip=Math.floor(Math.random()*110+60);
 			}
-			//var sc:Number=1+Math.sin(disp_t/100)*0.5;
 			for (var i:int=0; i<wavKol; i++) {
 				var v:MovieClip=wavArr[i];
 				v.x-=(spd+i/2);
@@ -122,8 +111,5 @@
 				}
 			}
 		}
-		
-		
 	}
-	
 }

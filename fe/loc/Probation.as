@@ -1,4 +1,4 @@
-﻿package fe.loc {
+package fe.loc {
 	
 	import fe.*;
 	import fe.loc.Box;

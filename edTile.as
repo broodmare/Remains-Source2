@@ -1,10 +1,9 @@
-﻿package {
-	
+package
+{
 	import flash.display.MovieClip;
-	
-	
-	public class edTile extends MovieClip {
-		
+
+	public class edTile extends MovieClip
+	{
 		//для блоков-образцов
 		public var tip:int=0;	//слой, он же индекс ids. 1-фронт, 2-зад, 3-лестница, 4-балка или ступеньки, 5-вода
 		public var id:String;
@@ -18,7 +17,6 @@
 		
 		public function edTile() {
 			cacheAsBitmap=true;
-			// constructor code
 		}
 		
 		public function upd() {
@@ -87,5 +85,4 @@
 			}
 		}
 	}
-	
 }

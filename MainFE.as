@@ -1,4 +1,4 @@
-﻿package  
+package  
 {
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
@@ -12,7 +12,7 @@
 	
 	public class MainFE extends flash.display.MovieClip
 	{
-		private var mainMenu:MainMenu;
+		private var mainMenuMovieClip:MainMenu;
 		
 		public function MainFE() 
 		{
@@ -39,7 +39,7 @@
 				zastavka.visible = false;
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 				nextFrame();
-				mainMenu = new MainMenu(this);
+				mainMenuMovieClip = new MainMenu(this);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-﻿package fe
+package fe
 {
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 

@@ -1,9 +1,10 @@
-﻿package fe.unit {
-	
+﻿package fe.unit
+{
 	import fe.*;
 	import fe.loc.Location;
-	public class UnitScythe extends Unit{
-		
+	
+	public class UnitScythe extends Unit
+	{
 		var napr:Number=-1;
 		var dr:Number=0;
 		var t:int=0;
@@ -25,7 +26,6 @@
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));
 			vis.osn.alpha=0;
 			vis.vzz.alpha=0;
-			//vis.stop();
 			mater=false;
 			getXmlParam();
 			levitPoss=false;
@@ -88,5 +88,4 @@
 			if (t>60) attKorp(cel);
 		}
 	}
-	
 }

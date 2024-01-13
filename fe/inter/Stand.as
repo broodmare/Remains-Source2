@@ -1,7 +1,6 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	//Стенд для оружия, коллекционных вещей и ачивок
-	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
@@ -15,8 +14,8 @@
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	
-	public class Stand {
-
+	public class Stand
+	{
 		public var active:Boolean=false;
 		
 		var vis:MovieClip;
@@ -108,7 +107,6 @@
 			for each (var weap in AllData.d.weapon.(@tip>0)) {
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
-					//if (weap.@lvl.length()==0 || weap.@lvl>=kolLevels) continue;
 					var item=new itemStand();
 					if (weap.@tip==5) {
 						stolb++;
@@ -116,7 +114,6 @@
 					} else {
 						stolb=weap.@lvl;
 					}
-					//else stolb=weap.@osob;
 					levels[stolb]++;
 					item.x=80+stolb*160;
 					item.y=40+levels[stolb]*100;
@@ -173,8 +170,6 @@
 							item.weapon2.addChild(infIco);
 							item.dop.text='2'; //есть уникальный вариант со своей картинкой
 						}
-					} else {
-						//item.nazv2.visible=false;
 					}
 					pages[n].addChild(item);
 					weapons[weap.@id]=item;
@@ -265,7 +260,6 @@
 			vis.toptext.visible=(n<=5);
 			for each (var weap in AllData.d.weapon.(@tip>0)) {
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
-					//trace(weap.@id,weapons[weap.@id].spell,inv.items[weap.@id].kol)
 					if (weapons[weap.@id]==null) continue;
 					if (weap.@spell>0 && (inv.items[weap.@id]==null || inv.items[weap.@id].kol<=0)) {
 						showWeapon(weapons[weap.@id],0,0);
@@ -455,5 +449,4 @@
 			}
 		}
 	}
-	
 }

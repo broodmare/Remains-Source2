@@ -1,4 +1,4 @@
-﻿package fe.inter {
+package fe.inter {
 	
 	import flash.events.MouseEvent;
 	import flash.events.KeyboardEvent;

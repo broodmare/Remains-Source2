@@ -1,11 +1,10 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
-	import fe.serv.BlitAnim;
 	import fe.loc.Tile;
 	
-	public class UnitRoller extends Unit{
-		
+	public class UnitRoller extends Unit
+	{
 		var rollDr:Number=0;
 		var tr:int=1;
 
@@ -117,7 +116,6 @@
 				aiTCh=Math.floor(Math.random()*50)+40;
 			}
 			//поиск цели
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
@@ -190,8 +188,5 @@
 			}
 			jump(0.3);
 		}
-
-		
 	}
-	
 }

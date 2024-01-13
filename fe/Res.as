@@ -1,4 +1,4 @@
-﻿package fe
+package fe
 {
 	import flash.utils.getDefinitionByName;
 	import flash.display.MovieClip;

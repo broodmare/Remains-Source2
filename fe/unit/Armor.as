@@ -1,9 +1,9 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	
-	public class Armor {
-
+	public class Armor
+	{
 		public var id:String;
 		public var nazv:String;
 		public var owner:Unit;
@@ -110,8 +110,7 @@
 			if (node.@act.length()) dmana_act=node.@act;
 			if (node.@used.length()) dmana_use=node.@used;
 			if (node.@res.length()) dmana_res=node.@res;
-			
-			//showObsInd=true;//!!!!
+
 			nazv=Res.txt('a',id);
 			if (lvl>0) nazv+=' - '+lvl;
 		}
@@ -157,8 +156,6 @@
 			lvl++;
 			for (var i=0; i<Unit.kolVulners; i++) resist[i]=0;
 			getXmlParam(xml.upd[lvl]);
-		}
-		
-	}
-	
+		}	
+	}	
 }

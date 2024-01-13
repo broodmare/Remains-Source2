@@ -4,6 +4,7 @@ package fe.weapon
 	import flash.utils.*;
 	import flash.media.SoundChannel;
 	import flash.display.Graphics;
+	
 	import fe.*;
 	import fe.Obj;
 	import fe.unit.Unit;

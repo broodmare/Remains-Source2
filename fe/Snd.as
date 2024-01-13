@@ -1,14 +1,15 @@
-﻿package fe{
+package fe
+{
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
-	import flash.utils.*;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	public class Snd {
+	public class Snd
+	{
 		public static var snd:Array = new Array();
 		public static var globalVol = 0.4;		// Used by pipbuckOpt as a string.
 		public static var stepVol = 0.5;		// Used by pipbuckOpt as a string.

@@ -1,11 +1,12 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.serv.LootGen;
 	import fe.serv.BlitAnim;
-	public class UnitProtect extends UnitAIRobot{
 
+	public class UnitProtect extends UnitAIRobot
+	{
 		var jump_n:int=100;
 		var jump_m:int=90;
 		
@@ -86,8 +87,5 @@
 				dy-=jumpdy*v/4;
 			}
 		}
-		
-
 	}
-	
 }

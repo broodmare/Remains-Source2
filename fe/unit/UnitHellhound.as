@@ -1,4 +1,4 @@
-﻿package fe.unit {
+package fe.unit {
 	import fe.*;
 	import fe.loc.Location;
 	import fe.loc.Tile;

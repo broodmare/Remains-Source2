@@ -1,14 +1,14 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
+	import flash.display.MovieClip;
+
 	import fe.*;
 	import fe.loc.CheckPoint;
 	import fe.serv.LootGen;
-	import flash.display.MovieClip;
 	
-	public dynamic class Pers {
-		
+	public dynamic class Pers
+	{	
 		public var gg:UnitPlayer;
-		
 		public var persName:String='LP';
 
 		public var skills:Array;		//значения скиллов по id
@@ -389,13 +389,6 @@
 			xml_legs=AllData.d.perk.(@id=='trauma_legs')[0]
 			xml_blood=AllData.d.perk.(@id=='trauma_blood')[0]
 			xml_mana=AllData.d.perk.(@id=='trauma_mana')[0]
-			//подсчёт таблицы опыта
-			/*var prXP:int=0;
-			for (var i=1; i<=50; i++) {
-				var arXP:int=xpProgress(i);
-				trace(i+'\t'+(arXP-prXP)+'\t'+arXP);
-				prXP=arXP;
-			}*/
 			factor=new Array();
 			for each (var param in AllData.d.param) {
 				if (param.@f>0 && param.@v.length() && param.@v!='')	factor[param.@v]=new Array();
@@ -437,8 +430,7 @@
 			
 			obj.rep=rep;
 			obj.alicorn=World.w.alicorn;
-			//obj.isDJ=isDJ;
-			
+
 			obj.pet=gg.currentPet;
 			setRoboowl();
 			obj.owlhp=owlhpProc;
@@ -448,7 +440,6 @@
 		}
 		
 		public function setGlobalDif(ndif:int=2) {
-			//trace('difff',ndif);
 			if (ndif==0) {
 				begHP=200, lvlHP=25;
 				organMult=0.2;
@@ -517,7 +508,7 @@
 			gg.djumpdy=6;
 			gg.maxdjumpp=10;
 			maxOd=75;
-			kickDestroy=30;//80
+			kickDestroy=30;
 			stamRes=2;
 			recMana=0.025;
 			levitDMana=5;
@@ -1058,9 +1049,7 @@
 		
 		public function manaDamage(dam:Number) {
 			if (dam<=0) return;
-			//if (dam>0.5) gg.numbEmit.cast(gg.loc,gg.X,gg.Y-gg.scY/2,{txt:Math.round(dam), frame:6, rx:20, ry:20});
 			if (gg.loc.train) return;
-			//dam*=manahpMult;
 			var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
 			manaHP-=dam;
 			if (manaMin>0 && manaHP<1) manaHP=1;
@@ -1271,7 +1260,7 @@
 			//скиллы
 			for (var id in skills) {
 				var lvl=0;
-				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]); //trace(id,lvl);
+				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]);
 				else lvl=getSkLevel(skills[id]);
 				xml=AllData.d.skill.(@id==id)[0];
 				setSkillParam(xml, lvl, skills[id]);
@@ -1281,7 +1270,6 @@
 				xml=AllData.d.perk.(@id==id)[0];
 				setSkillParam(xml, perks[id]);
 			}
-			//trace('et2',runSpeedMult,stamRun);
 			//восст. хп органов
 			headHP=procHead*inMaxHP;
 			torsHP=procTors*inMaxHP;
@@ -1290,9 +1278,7 @@
 			manaHP=procMana*inMaxMana;
 			//уменьшение характеристик от состояния здоровья
 			if (!World.w.alicorn) traumaParameters();
-			//trace('et3',runSpeedMult,stamRun);
 			gg.showObsInd=false;
-			//trace('-------------');
 				//эффекты
 			for each(var eff:Effect in gg.effects) {
 				id=eff.id;
@@ -1405,8 +1391,6 @@
 		//определить необходимое для действия время
 		public function getLockPickTime(lock:int, lockTip:int):int {
 			var pick=getLockTip(lockTip);
-			//if (lock>pick+1) return lockPickTime*(1+(lock-pick-1)*0.5);
-			//if (lock>pick+1) return Math.min(lockPickTime*(1+(lock-pick-1)*0.2),100);
 			if (lock<pick) return lockPickTime*0.6;
 			return lockPickTime;
 		}
@@ -1419,8 +1403,5 @@
 			if (rep>=rep1) return Res.pipText('reput1');
 			return Res.pipText('reput0');
 		}
-		
-		
 	}
-	
 }

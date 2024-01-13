@@ -1,17 +1,15 @@
-﻿package  fe.unit {
-	
+package  fe.unit
+{
 	import fe.*;
 	import fe.weapon.Weapon;
-	import fe.projectile.Bullet;
 	
-	public class UnitThunderTurret extends Unit{
-		
+	public class UnitThunderTurret extends Unit
+	{
 		public var head:UnitThunderHead;
 		var bindX:Number=0, bindY:Number=0;
 		public var tr:int;
 		
 		var attTurN:int=15;
-		//var waitTur:Boolean=true; //очерёдность
 		var t_wait:int=0;
 
 		public function UnitThunderTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -45,7 +43,6 @@
 			}
 			Y1=Y-scY, Y2=Y;
 			X1=X-scX/2, X2=X+scX/2;
-			//setWeaponPos();
 			setVisPos();
 		}
 		
@@ -58,10 +55,8 @@
 					return;
 				}
 				currentWeapon.reloadMult=1/head.reloadDiv;
-					//setCel(null, World.w.gg.X+Math.random()*500-250, World.w.gg.Y+Math.random()*400-200);
 				setCel(World.w.gg);
 				storona=(celDX>0)?1:-1;
-				//if (head.attTur<=0) 
 					currentWeapon.attack();
 				if (isShoot) {
 					head.attTur=attTurN;
@@ -86,10 +81,6 @@
 		}
 		public override function animate() {
 			if (sost>1) return;
-			try {
-				//vis.osn.puha.gotoAndStop(tr);
-				//vis.osn.puha.rotation=currentWeapon.rot*180/Math.PI+90*(1-storona);
-			} catch(err) {}
 		}
 
 		public override function setVisPos() {
@@ -99,12 +90,15 @@
 				currentWeapon.vis.y=Y-scY/2;
 			}
 		}
-		public override function makeNoise(n:int, hlup:Boolean=false) {}
+
+		public override function makeNoise(n:int, hlup:Boolean=false) {
+
+		}
+
 		public override function setHpbarPos() {
 			hpbar.y=Y-140;
 			hpbar.x=X;
 			if (loc && loc.zoom!=1) hpbar.scaleX=hpbar.scaleY=loc.zoom;
 		}
 	}
-	
 }

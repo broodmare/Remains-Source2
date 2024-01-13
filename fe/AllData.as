@@ -1,10 +1,10 @@
-﻿package fe {
-	
-	//var ClassRef:Class = getDefinitionByName("int") as Class;
-	
-	public class AllData {
+package fe 
+{
+	public class AllData 
+	{
+		public function AllData() 
+		{
 
-		public function AllData() {
 		}
 		
 		public static var d:XML=
@@ -19,7 +19,7 @@
 			</unit>
 			
 		
-	<!--       *******   Юниты   *******         -->
+			<!--       *******   Юниты   *******         -->
 			
 			<!-- игрок и союзники -->
 			<unit id='littlepip'>
@@ -6672,7 +6672,7 @@
 				<filter f='cloud'/>
 			</mat>
 			
-	<!--       *******   Объекты заднего плана   *******         -->
+			<!--       *******   Объекты заднего плана   *******         -->
 			
 			<back id='' n='окна и двери'/>
 			<back id='fwindow' er='1' n='Окно завода' x2='6' y2='6'/>
@@ -6874,7 +6874,7 @@
 			
 			
 			
-	<!--       *******   Частицы   *******         -->
+			<!--       *******   Частицы   *******         -->
 			<!--
 				vis - визуальный класс
 				blit - блиттинг
@@ -7037,14 +7037,6 @@
 			<part id='replic2' vis='visReplic2' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>
 			<part id='gui' vis='visBulb' minliv='50' alph='1' sloy='5' camscale='1' imp='1'/>
 			<part id='take' vis='visBulb' minliv='50' alph='1' sloy='5' dy='-1' camscale='1' imp='1'/>
-			
-			
-			
-			
 	</all>
-		
-		
-		
 	}
-	
 }

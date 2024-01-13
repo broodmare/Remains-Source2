@@ -1,4 +1,4 @@
-﻿package  fe.loc {
+package  fe.loc {
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	

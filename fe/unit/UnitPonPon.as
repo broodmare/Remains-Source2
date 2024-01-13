@@ -1,10 +1,11 @@
-﻿package fe.unit {
+package fe.unit
+{
 	import flash.display.MovieClip;
 	
 	import fe.*;
 	
-	public class UnitPonPon extends Unit{
-		
+	public class UnitPonPon extends Unit
+	{
 		var tr:int=1;
 		var act:Boolean=true;
 		var novoi:Boolean=false;
@@ -100,7 +101,5 @@
 				t_replic=Math.random()*1500+1000;
 			}
 		}
-		
-	
 	}
 }

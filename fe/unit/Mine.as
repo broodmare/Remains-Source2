@@ -92,10 +92,8 @@ package fe.unit
 			doop=true;
 			transT=true;
 			
-			//inter.t_action=30;
 			vulner[D_EMP]=1;
 			vulner[D_VENOM]=0;
-			//inter = new Interact(this);
 			inter.mine=Math.round(1+Math.random()*(ndif+1));
 			if (inter.mine>inter.maxMechLvl) inter.mine=inter.maxMechLvl;
 			if (tr>=5) {
@@ -110,8 +108,6 @@ package fe.unit
 			inter.update();
 			inter.successRemine=remine;
 			inter.fiascoRemine=activate;
-			
-			//fixed=1;
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {

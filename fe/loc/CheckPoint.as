@@ -1,13 +1,12 @@
-﻿package fe.loc {
-	
-	import flash.geom.ColorTransform;
+package fe.loc
+{
 	import flash.display.MovieClip;
 	
 	import fe.*;
 	import fe.serv.Interact;
 	
-	public class CheckPoint extends Obj{
-
+	public class CheckPoint extends Obj
+	{
 		public var id:String;
 		public var vis2:MovieClip;
 		
@@ -38,22 +37,13 @@
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
 			X=nx, Y=ny;
 			var vClass:Class=Res.getClass('vischeckpoint', null, vischeckpoint);
-			//var vClass2:Class=AllData.getClass('vistrap'+id+'2', null, null);
 			vis=new vClass();
 			vis.x=X, vis.y=Y;
-			/*if (vClass2!=null) {
-				vis2=new vClass2();
-				vis2.x=X, vis2.y=Y;
-			}*/
 			vis.gotoAndStop(1);
-			try {
-				if (id.charAt(10)) {
-					vis.lock.gotoAndStop(int(id.charAt(10)));
-					locked=true;
-				} else vis.lock.visible=false;
-			} catch (err) {}
-			//if (!anim) vis.cacheAsBitmap=true;
-			//if (vis2 && !anim) vis2.cacheAsBitmap=true;
+			if (id.charAt(10)) {
+				vis.lock.gotoAndStop(int(id.charAt(10)));
+				locked=true;
+			} else vis.lock.visible=false;
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
 			cTransform=loc.cTransform;
 			loc.getAbsTile(X-20,Y+10).shelf=true;
@@ -83,7 +73,6 @@
 				}
 				if (loadObj.used) used=true;
 			}
-			//trace(main);
 			if (main) {
 				area=null;
 				active=2;
@@ -113,7 +102,6 @@
 		}
 		public override function remVisual() {
 			super.remVisual();
-			//if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
 		public override function save():Object {
@@ -135,9 +123,6 @@
 			if (active==2) {
 				return;
 			}
-			/*if (active==0 && World.w.addCheckSP && first==false) {
-				World.w.pers.addSkillPoint();
-			}*/
 			if (active==0 && first==false) {
 				if (World.w.pers.manaCPres) World.w.pers.heal(World.w.pers.manaCPres,6);
 				if (World.w.pers.xpCPadd) World.w.pers.expa(loc.unXp*3);
@@ -158,7 +143,6 @@
 				if (World.w.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
 			}
 			if (used) vis.fiol.gotoAndStop(1);
-			//trace(World.w.game.mReturn)
 			if (World.w.game.mReturn && teleOn && !used) {
 				inter.actFun=teleport;
 				inter.userAction='returnb';
@@ -182,7 +166,6 @@
 					vis.fiol.gotoAndStop(1);
 				}
 			} else if (World.w.game.missionId!='rbl') World.w.game.gotoLand(World.w.game.missionId);
-			//trace('GOTO '+World.w.game.curLandId);
 		}
 		
 		public function areaActivate() {
@@ -216,7 +199,5 @@
 			if (area) area.step();
 			if (active==2 && World.w.pers.currentCP!=this) deactivate();
 		}
-		
 	}
-	
 }

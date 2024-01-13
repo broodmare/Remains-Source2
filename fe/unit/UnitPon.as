@@ -1,19 +1,14 @@
-﻿package fe.unit {
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
+package fe.unit
+{
 	import flash.filters.GlowFilter;
-	import flash.geom.Point;
+
 	import fe.Snd;
-	
 	import fe.World;
 	
-	public class UnitPon extends Unit{
-		
+	public class UnitPon extends Unit
+	{
 		public var teleColor:uint=0;
 		protected var teleFilter:GlowFilter;
-		
-
-		
 		protected var footstepVol:Number=0.2;
 		
 		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -45,7 +40,6 @@
 				else currentWeapon.vis.filters=[teleFilter];
 			} 
 		}
-		
 		
 		public function sndStep(faza:int,tip:int=0) {
 			if (loc==null || !loc.active) return;
@@ -106,11 +100,5 @@
 		public override function command(com:String, val:String=null) {
 			super.command(com,val);
 		}
-
-
-//**********************************************************************************************************		
 	}
-		
-//**********************************************************************************************************		
-	
 }

@@ -1,12 +1,11 @@
-﻿package fe.loc {
-	
+package fe.loc
+{
 	//Класс, описывающий местность и активность игрока по отношению к местности
 	//Содержится в объекте game
 	import fe.*;
-	import fe.serv.Script;
 	
-	public class LandAct {
-
+	public class LandAct
+	{
 		public var id:String;
 		public var tip:String='';
 		public var land:Land;
@@ -65,8 +64,6 @@
 		public function LandAct(land:XML) {
 			xmlland=land;
 			id=land.@id;
-			//nazv=Res.mapText(id);
-			//info=Res.mapInfo(id);
 			if (land.@tip.length()) tip=land.@tip;
 			if (land.@dif.length()) dif=land.@dif;
 			if (land.@biom.length()) biom=land.@biom;
@@ -125,6 +122,7 @@
 			obj.passed=passed;
 			return obj;
 		}
+		
 		public function load(obj:Object) {
 			if (obj.cp!=null) lastCpCode=obj.cp;
 			if (obj.st!=null) landStage=obj.st;
@@ -134,5 +132,4 @@
 			return obj;
 		}
 	}
-	
 }

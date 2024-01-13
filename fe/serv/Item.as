@@ -1,4 +1,4 @@
-﻿package fe.serv {
+package fe.serv {
 	
 	//Элемент инвентаря
 	import fe.*;

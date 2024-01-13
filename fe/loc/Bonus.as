@@ -1,13 +1,10 @@
-﻿package fe.loc {
+package fe.loc
+{
 	import fe.*;
-	import fe.serv.Script;
-	import fe.graph.Emitter;
-	import fe.unit.Unit;
-	
+
 	//Бонусы, которые подбираются путём контакта с ними
-	
-	public class Bonus extends Obj{
-		
+	public class Bonus extends Obj
+	{
 		public var sost:int=1; 	//состояние 0-неактивен, 1-активен, 2-взят
 		public var id:String='';
 		public var val:Number=100;
@@ -86,7 +83,5 @@
 				Snd.ps('bonus1');
 			}
 		}
-		
 	}
-	
 }

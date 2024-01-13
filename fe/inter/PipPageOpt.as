@@ -1,18 +1,20 @@
 package fe.inter
 {	
-	import fe.*;
 	import flash.display.MovieClip;
 	import flash.text.TextField;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
 	import flash.display.StageDisplayState;
-	import fl.controls.CheckBox;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
 	import flash.utils.ByteArray;
 
+	import fl.controls.CheckBox;
+	import fl.controls.ScrollBar;
+	import fl.events.ScrollEvent;
+
+	import fe.*;
+	
 	import fe.stubs.visPipOptItem;
 	import fe.stubs.logText;
 	
@@ -442,7 +444,6 @@ package fe.inter
 				} catch(err) {
 					sfile.save(ba,'Name('+gg.pers.level+').sav');
 				}
-				//World.w.gui.infoText('SaveGame');
 			}
 		}
 		

@@ -1,12 +1,11 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.projectile.Bullet;
 	import fe.graph.Emitter;
-	import fe.loc.Tile;
 	
-	public class UnitSpectre extends Unit{
-		
+	public class UnitSpectre extends Unit
+	{
 		var spd:Object;
 		var br:Number=0;
 		var iskr:Emitter;
@@ -16,7 +15,6 @@
 			id='spectre';
 			vis=new visualSpectre();
 			vis.visible=false;
-			//vis.osn.gotoAndStop(1);
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
@@ -112,5 +110,4 @@
 			}
 		}
 	}
-	
 }

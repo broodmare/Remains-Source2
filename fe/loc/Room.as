@@ -1,4 +1,4 @@
-﻿package fe.loc {
+package fe.loc {
 	
 	//класс шаблона комнаты
 	

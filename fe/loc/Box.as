@@ -1,10 +1,8 @@
 package fe.loc
 {
-	import flash.utils.*;
 	import flash.filters.DropShadowFilter;
 	import flash.display.MovieClip;
-	import flash.geom.ColorTransform;
-	
+
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
@@ -15,8 +13,8 @@ package fe.loc
 	import fe.projectile.Bullet;
 	import fe.unit.Mine;
 
-	public class Box extends Obj{
-		
+	public class Box extends Obj
+	{
 		public var osnova:Box=null;		//на чём стоит
 		public var shelf:Boolean=true;	//на этом можно стоять
 		public var isPlav:Boolean=false, isPlav2:Boolean=false, fixPlav:Boolean=false;
@@ -31,7 +29,6 @@ package fe.loc
 		public var wall:int=0;		//крепится на стену
 		public var phis:int=1;
 		public var sur:int=0;		//предме на ящике
-		//public var trap:int=0;
 		public var hp:Number=100;
 		public var thre:Number=0;
 		public var montdam:int=5;		//насколько будет ломаться монтировка
@@ -78,7 +75,6 @@ package fe.loc
 			if (loc.land.kolAll) {
 				if (loc.land.kolAll[id]>0) loc.land.kolAll[id]++;
 				else loc.land.kolAll[id]=1;
-				//trace(id, loc.land.kolAll[id])
 			}
 			prior=1;
 			vis=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
@@ -87,14 +83,6 @@ package fe.loc
 				vis=new visbox0();
 				shad=new visbox0();
 			}
-			/*var vClass:Class;
-			try {
-				vClass=getDefinitionByName('vis'+id) as Class;
-			} catch (err:ReferenceError) {
-				vClass=visbox0;
-			}
-			vis=new vClass();
-			shad=new vClass();*/
 			vis.stop();
 			shad.gotoAndStop(vis.currentFrame);
 			shad.filters=[dsf];
@@ -277,7 +265,7 @@ package fe.loc
 				getRasst2()
 				ggModum();
 			}
-			if (molnDam>0) {// && !inter.open
+			if (molnDam>0) {
 				moln_t++;
 				if (moln_t>=molnPeriod) {
 					moln_t=0;
@@ -326,7 +314,6 @@ package fe.loc
 			}
 			cdx=X-stX, cdy=Y-stY;
 			if (t_throw>0) t_throw--;
-			//setVisual();
 			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
 		}
 		
@@ -399,7 +386,6 @@ package fe.loc
 				return mat;
 			}
 			if (sposob==0 && bulChance>0) {
-				//if (!bulTele) return -1;
 				if (Math.random()<bulChance) {
 					var sila=Math.random()*0.4+0.8;
 					sila/=massa;
@@ -489,8 +475,6 @@ package fe.loc
 				}
 				cel.udarBox(this);
 				isThrow=false;
-				//if (cel.sost==4 || cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2+dy || cel.Y2<Y2) continue;
-				//if (dy>5 && cel.Y1>=Y2 && cel.Y1<Y2+dy || dx>5 && cel.X1>=X2 && cel.X1<X2+dx || dx<-5 && cel.X2<=X1 && cel.X2>X1+dx) cel.udarBox(this);
 			}
 		}
 		
@@ -592,7 +576,6 @@ package fe.loc
 						stay=true;
 						isThrow=false;
 						fracLevit=0;
-						//splund();
 					}
 					sndOn=true;
 				} else {
@@ -658,12 +641,6 @@ package fe.loc
 			}
 			return false;
 		}
-		/*function splund() { //ищбавится от бага отображения
-			if (vis && World.w.gg) {
-				vis.transform.colorTransform.concat(Obj.nullTransfom);// =World.w.gg.shineTransform;
-				//vis.transform.colorTransform=cTransform;
-			}
-		}*/
 		
 		public function bindUnit(n:String='-1') {
 			un=new VirtualUnit(n);
@@ -715,9 +692,6 @@ package fe.loc
 		}
 		
 		public function funGenerator() {
-			//inter.setAct('open',1);
-			//setVisState('open');
-			//trace(inter.scrOpen);
 			inter.active=false;
 			World.w.gui.infoText('unFixLock');
 			World.w.game.runScript('fixGenerator',this);

@@ -1,10 +1,10 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.loc.Location;
-	import fe.projectile.Bullet;
-	public class UnitSlime extends Unit{
-		
+
+	public class UnitSlime extends Unit
+	{
 		var pluh:int=100;
 		var tr:int=0;
 		
@@ -35,11 +35,9 @@
 			}
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));
 			if (isMine) {
-				//fixed=true;
 				levitPoss=false;
 				setVis(false);
 			}
-			//vis.stop();
 			getXmlParam();
 			maxSpeed*=(Math.random()*0.3+0.85);
 			accel*=(Math.random()*0.3+0.85);
@@ -72,7 +70,6 @@
 				fixed=true;
 			} else aiState=0;
 		}
-		
 		
 		public override function setVisPos() {
 			if (vis) {
@@ -115,13 +112,6 @@
 			die();
 		}
 		
-		/*public override function udarBullet(bul:Bullet, sposob:int=0):int {	
-			var res:int=super.udarBullet(bul, sposob);
-			if (res==10) return 12;
-			else return res;
-		
-		}*/
-		
 		public override function control() {
 			if (sost>=3) return;
 			if (World.w.enemyAct<=0) {
@@ -163,7 +153,6 @@
 					}
 				}
 			}
-			//if (d)dx+=storona*(accel+Math.random());
 			
 			//атака
 			if (World.w.enemyAct>=3 && oduplenie<=0) {
@@ -178,8 +167,6 @@
 					}
 				}
 			}
-			
 		}
 	}
-	
 }

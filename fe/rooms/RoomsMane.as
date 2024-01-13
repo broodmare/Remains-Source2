@@ -1,4 +1,4 @@
-﻿package fe.rooms {
+package fe.rooms {
 	
 	public class RoomsMane {
 		

@@ -1,13 +1,13 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Location;
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
-	public class UnitTrigger extends Unit{
-		
+	public class UnitTrigger extends Unit
+	{
 		var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
 		var trapT:int=0;	//тип области
 		var ax1:Number, ax2:Number, ay1:Number, ay2:Number;
@@ -40,9 +40,6 @@
 			doop=true;
 			sloy=0;
 			noBox=true;
-			if (loadObj && loadObj.status!=null) {
-				//status=loadObj.status;
-			}
 			if (xml) {
 				if (xml.@allid.length()) allid=xml.@allid;
 				if (xml.@allact.length()) allact=xml.@allact;
@@ -290,5 +287,4 @@
 			}
 		}
 	}
-	
 }

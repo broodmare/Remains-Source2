@@ -1,4 +1,5 @@
-﻿package fe.graph {
+package fe.graph
+{
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
@@ -6,9 +7,9 @@
 	import flash.display.MovieClip;
 	
 	import fe.*;
-	//import fe.serv.BlitAnim;
-	
-	public class Part  extends Pt{
+
+	public class Part  extends Pt
+	{
 		public var vClass:Class;
 		
 		public var isMove:Boolean=false, isAnim:int=0, isAlph:Boolean=false, isPreAlph:Boolean=false;
@@ -117,7 +118,5 @@
 			}
 			Emitter.kol1++;
 		}
-
-	}
-	
+	}	
 }

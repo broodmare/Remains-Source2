@@ -1,8 +1,9 @@
-﻿package  fe.unit {
+package  fe.unit
+{
 	import fe.loc.Location;
 	
-	public class Coord {
-		
+	public class Coord
+	{	
 		public var tip:String;
 		public var loc:Location;
 		
@@ -60,7 +61,5 @@
 				rndOpened();
 			}
 		}
-
-	}
-	
+	}	
 }

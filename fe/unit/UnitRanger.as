@@ -1,13 +1,10 @@
-﻿package fe.unit {
-	import fe.*;
+package fe.unit
+{
 	import fe.serv.BlitAnim;
 	import fe.weapon.Weapon;
-	import fe.loc.Tile;
-	import fe.graph.Emitter;
-	import fe.serv.LootGen;
 	
-	public class UnitRanger extends UnitRaider{
-		
+	public class UnitRanger extends UnitRaider
+	{
 		var dopWeapon1:Weapon;
 		var dopWeapon2:Weapon;
 		var t_gren:int=Math.round(Math.random()*120+50);
@@ -21,7 +18,8 @@
 			allLink=true;
 			isDropArm=false;
 			wPos=BlitAnim.wPosRanger1;
-			if (1) {
+			if (1)
+			{
 				dopWeapon1=Weapon.create(this,'robomlau');
 				dopWeapon2=Weapon.create(this,'robogas');
 				childObjs.push(dopWeapon1, dopWeapon2);
@@ -64,9 +62,6 @@
 				if (stay) {
 					if  (dx==0 || aiState==7) {
 						animState='stay';
-					//} else if (flyer) {
-						//animState='walk';
-						//sndStep(anims[animState].f,1);
 					} else if (attackerType==0 && aiAttack || aiState==8) {
 						animState='run';
 						sndStep(anims[animState].f,2);
@@ -94,6 +89,5 @@
 			}
 			anims[animState].step();
 		}
-		
 	}
 }

@@ -1,10 +1,7 @@
-﻿package fe.unit {
-	
-	import fe.*;
-	import fe.weapon.Weapon;
-	import fe.serv.LootGen;
-	public class UnitRobobrain extends UnitAIRobot{
-
+package fe.unit 
+{
+	public class UnitRobobrain extends UnitAIRobot
+	{
 		public function UnitRobobrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='robobrain';
@@ -21,7 +18,8 @@
 			if (quiet) id_replic='';
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
@@ -40,12 +38,10 @@
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-40;
 		}
-		
-
 	}
-	
 }

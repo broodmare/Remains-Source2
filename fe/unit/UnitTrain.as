@@ -1,9 +1,7 @@
-﻿package fe.unit {
-	
-	import fe.*;
-	import fe.serv.Interact;
-	public class UnitTrain extends Unit{
-		
+package fe.unit 
+{
+	public class UnitTrain extends Unit
+	{
 		var tr:int=0;
 		
 		public function UnitTrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -25,7 +23,6 @@
 			} else vis=new visualTrain();
 			vis.gotoAndStop(1);
 			doop=true;
-			//dodge=0.2;
 		}
 
 		public override function control() {
@@ -44,5 +41,4 @@
 		public override function setLevel(nlevel:int=0) {
 		}
 	}
-	
 }

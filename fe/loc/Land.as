@@ -1,19 +1,18 @@
-﻿package fe.loc {
-	
+package fe.loc
+{
 	import fe.*;
 	import fe.unit.UnitPlayer;
-	import fe.unit.Pers;
 	import flash.display.BitmapData;
 	import fe.serv.Script;
-	
-	public class Land {
+
+	public class Land
+	{
 		
 		public var act:LandAct;					//шаблон, по которому была создана местность
 		
 		public var rnd:Boolean=false;			//true если местность с рандомной генерацией
 		public var loc:Location;				//текущая локация
 		private var prevloc:Location;			//предыдущая посещённая локация
-		//private var prevCreated:Location;		//предыдущая созданная локация, для предотвращения
 		public var locs:Array;					//трёхмераня карта всех локаций
 		public var probs:Array;					//локации испытаний
 		public var listLocs:Array;				//линейный массив локаций
@@ -201,7 +200,6 @@
 							opt.transpFon=true;
 							loc1=newRandomLoc(act.landStage,i,j,opt,'surf');
 							loc1.visMult=2;
-							//loc1.backwall='sky';
 						} else {
 							loc1=newRandomLoc(act.landStage,i,j,opt);
 						}
@@ -305,7 +303,6 @@
 					var isBonuses=true;
 					locs[i][j][0].setObjects();
 					//Создание контрольных точек
-					//if ((i+j)%2==0 && !(act.conf==2 && j>=2) && !(act.conf==3 && (j==0 || i==2))) locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
 					//Создание точек выхода
 					//конфигурация завода и стойла
 					if (act.conf==0 || act.conf==1) {	
@@ -394,12 +391,6 @@
 				}
 			}
 			buildProbs();
-			//Количество объектов
-			//trace('safe', kolAll['safe']+kolAll['wallsafe']);
-			//trace('bookcase', kolAll['bookcase']);
-			//trace('table2', kolAll['chest']);
-			//trace('table', kolAll['table']);
-			//trace('Сложность местности ',landDifLevel)
 		}
 		
 		public function buildSpecifLand() {
@@ -492,7 +483,6 @@
 			} catch (err) {};
 			if (!nloc.createDoorProb(did,pid)) return false;
 			buildProb(pid);
-			//trace(pid);
 			return true;
 		}
 		
@@ -525,8 +515,6 @@
 					var rndKol=room.kol*room.kol;
 					if (rndKol==4 && room.lvl==0 && maxlevel>1) {
 						rndKol=2;
-						//if (maxlevel==1 || maxlevel==2) rndKol=2;
-						//if (maxlevel>2) rndKol=1;
 					}
 					for (var i=0; i<rndKol; i++) {
 						rndRoom.push(room);
@@ -580,11 +568,9 @@
 			var ml:Number=landDifLevel+deep;
 			loc.locDifLevel=ml;
 			loc.locksLevel=ml*0.7;	//уровень замков
-			//loc.locksDif=ml*0.9;	//качество замков
 			loc.mechLevel=ml/4;		//уровень мин и механизмов
 			loc.weaponLevel=1+ml/4;	//уровень попадающегося оружия
 			loc.enemyLevel=ml;		//уровень врагов
-			//if (ml<4) loc.earMult=ml/4;
 			//влияние настроек сложности
 			if (World.w.game.globalDif<2) loc.earMult*=0.5;
 			if (World.w.game.globalDif>2) loc.enemyLevel+=(World.w.game.globalDif-2)*2;	//уровень врагов в зависимости от сложности
@@ -597,19 +583,16 @@
 				loc.tipEnemy=Math.floor(Math.random()*3)+3;			//4-наёмники, 5-аликорны
 			}
 			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	//зебры
-			//loc.tipEnemy=6;
 			if (act.biom==4) loc.tipEnemy=7;	//стальные+роботы
 			if (act.biom==5) {
 				if (Math.random()<0.3) loc.tipEnemy=5;
-				//else if (loc.landY==0 && Math.random()<0.05) loc.tipEnemy=4;
 				else loc.tipEnemy=8;	//розовые
 			}
-			if (act.biom==6) {// || act.biom==11
+			if (act.biom==6) {
 				if (Math.random()>0.3) loc.tipEnemy=9;	//анклав
 				else loc.tipEnemy=10;//гончие
 			}
 			if (act.biom==11) loc.tipEnemy=11; //анклав и гончие
-			//loc.tipEnemy=4;
 			//количество врагов
 			//тип, мин, макс, случайное увеличение
 			if (ml<4) {
@@ -653,11 +636,8 @@
 				loc.setKolEn(2,1,3,1);
 			}
 			if (act.biom==11) {
-				//if (loc.tipEnemy==10) loc.setKolEn(2,4,5,0);
-				//else 
-					loc.setKolEn(2,5,8,0);
+				loc.setKolEn(2,5,8,0);
 			}
-			//loc.kolEnHid=2;
 		}
 		
 		public function createMap() {
@@ -682,7 +662,6 @@
 				setGGToSpawnPoint();
 			} else if (currentCP && !first) {
 				World.w.pers.currentCP=currentCP;
-				//trace('currentCP', currentCP);
 				gotoCheckPoint();
 				currentCP.activate();
 			} else {
@@ -718,7 +697,6 @@
 			gg.setLocPos((nx+1)*Tile.tileX, (ny+1)*Tile.tileY-1);
 			gg.dx=3;
 			loc.lighting(gg.X, gg.Y-75);
-			//World.w.cam.calc(gg);
 		}
 		
 		//сделать активной локацию с текущими координатами
@@ -734,7 +712,6 @@
 			}
 			
 			if (loc==nloc) return false;
-			//if (loc) loc.out(); 
 			locN++;
 			prevloc=loc;
 			loc=nloc;
@@ -933,8 +910,5 @@
 				}
 			}
 		}
-		
-
 	}
-	
 }

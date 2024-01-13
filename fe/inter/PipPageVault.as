@@ -1,13 +1,15 @@
 package fe.inter
 {
-	import fe.*;
-	import fe.serv.Item;
-	import fe.weapon.Weapon;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import fl.controls.NumericStepper;
 	import flash.text.TextFormat;
+
+	import fl.controls.NumericStepper;
+
+	import fe.*;
+	import fe.serv.Item;
+	import fe.weapon.Weapon;
 
 	import fe.stubs.visPipVaultItem;
 	

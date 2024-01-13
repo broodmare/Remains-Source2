@@ -1,8 +1,9 @@
-﻿package fe.loc {
-	
+package fe.loc
+{
 	import fe.*;
-	public class Form {
-		
+
+	public class Form
+	{
 		public var id:String;
 		public var idMirror:String;
 		public var tip:int=0;	//1  передний план, 2-задний план
@@ -57,7 +58,5 @@
 				else oForms[node.@id]=new Form(node);
 			}
 		}
-
 	}
-	
 }

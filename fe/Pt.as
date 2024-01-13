@@ -1,12 +1,11 @@
-﻿package fe {
-	
+package fe
+{
 	//Базовый класс для всех объектов
-	
 	import flash.display.MovieClip;
 	import fe.loc.Location;
 	
-	public class Pt {
-
+	public class Pt
+	{
 		public var loc:Location;
 		public var nobj:Pt, pobj:Pt;
 		public var in_chain:Boolean=false;
@@ -21,7 +20,6 @@
 		public var vis:MovieClip;
 		
 		public function Pt() {
-			// constructor code
 		}
 
 		public function addVisual() {
@@ -40,7 +38,5 @@
 		
 		public function step() {
 		}
-		
 	}
-	
 }

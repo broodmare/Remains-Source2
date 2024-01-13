@@ -1,21 +1,15 @@
-﻿package fe.inter {
+package fe.inter {
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
-	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-	import flash.display.DisplayObject;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.events.MouseEvent;
 
-	//import flash.text.TextFormat;
-
-	//import flash.events.MouseEvent;
-	
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.weapon.Weapon;
@@ -24,8 +18,6 @@
 	public class Sats {
 		
 		public var vis:MovieClip;
-		//public var allvis:Bitmap;
-		//public var bmp:BitmapData;
 		public var trasser:MovieClip;
 		public var radius:MovieClip;
 		public var active:Boolean=false;
@@ -42,16 +34,12 @@
 		public var odv:Number=80;	//виртуальные од
 		public var odd:Number=0.1;
 		public var limOd:Number=200;
-		//var format1:TextFormat;
 		
 		public function Sats(nvis:MovieClip) {
 			vis=nvis;
 			vis.visible=false;
 			trasser=new MovieClip();
-			//bmp=new BitmapData(1920,1080);
-			//allvis=new Bitmap(bmp);
 			radius=new satsRadius();
-			//vis.addChild(allvis);
 			vis.addChild(trasser);
 			vis.addChild(radius);
 			que=new Array();
@@ -120,7 +108,6 @@
 				if (que.length>0) clearAll();
 				World.w.grafon.drawSats();
 				World.w.grafon.onSats(true);
-				//World.w.grafon.visSats.x=10;
 				getUnits();
 				World.w.gui.offCelObj();
 				odv=od;
@@ -134,7 +121,7 @@
 				World.w.ctr.clearAll();
 				World.w.gui.setTopText('');
 			}
-			vis.visible=active; //World.w.grafon.visObjs[5].visible=
+			vis.visible=active;
 			World.w.gui.setSats(active);
 		}
 		
@@ -178,7 +165,6 @@
 			}
 			odv=od;
 			World.w.gui.setOd();
-			//trace('cl all');
 		}
 		
 		public function setCel() {
@@ -189,7 +175,6 @@
 			var cel:SatsCel;
 			if (units.length) {
 				for each (var obj in units) {
-					//trace (obj.du.filters);
 					if (obj.du.filters.length>0) {
 						cel=new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 						break;
@@ -197,8 +182,6 @@
 				}
 			}
 			if (cel==null) cel=new SatsCel(null, World.w.celX,World.w.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
-			//if (cel.un!=null) trace ('set '+cel.un.u);
-			//else trace ('set *');
 			weapon.ready=false;
 			odv-=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
 			World.w.gui.setOd();
@@ -214,8 +197,6 @@
 			else cel=que.pop();
 			if (cel.un) cel.un.n--;
 			cel.remove();
-			//if (cel.un!=null) trace ('unset '+cel.un.u);
-			//else trace ('unset *');
 			odv+=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
 			if (que.length==0) {
 				onoff(-1);
@@ -258,7 +239,6 @@
 				var ug1=Math.atan2(un.scY,rasst)*180/Math.PI;
 				var ug2=(weapon.deviation/(sk+0.01)+gg.mazil);
 				if (ug2>ug1) prec=prec*ug1/ug2;
-				//trace (ug1,ug2);
 			}
 			if (prec>0.95) prec=0.95;
 			if (prec>skillConf) prec=skillConf;
@@ -366,7 +346,6 @@
 		}
 		
 		public function mMove(event:MouseEvent):void {
-			//trace(World.w.celX, World.w.celY);
 			trass();
 		}
 		
@@ -384,5 +363,4 @@
 			}
 		}
 	}
-	
 }

@@ -1,12 +1,11 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
-	import fe.weapon.Weapon;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	
-	public class UnitVortex extends Unit{
-		
+	public class UnitVortex extends Unit
+	{
 		var spd:Object;
 		var br:Number=0;
 		var iskr:Emitter;
@@ -15,7 +14,6 @@
 			super(cid, ndif, xml, loadObj);
 			id='vortex';
 			vis=new visualVortex();
-			//vis.osn.gotoAndStop(1);
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;
@@ -144,5 +142,4 @@
 			}
 		}
 	}
-	
 }

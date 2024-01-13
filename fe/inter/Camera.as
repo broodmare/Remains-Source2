@@ -1,13 +1,13 @@
-﻿package fe.inter {
-	
+package fe.inter
+{
 	import fe.unit.Unit;
 	import fe.World;
 	import fe.Snd;
 	import fe.loc.Location;
 	import flash.display.DisplayObject;
 	
-	public class Camera {
-		
+	public class Camera
+	{
 		public var w:World;
 		public var moved:Boolean;
 		public var screenX:int=1280; //размеры экрана
@@ -58,7 +58,6 @@
 			} else {
 				moved=true;
 			}
-			//moved=true;
 			setZoom();
 		}
 		
@@ -84,7 +83,6 @@
 				scaleV=1;
 			}
 			scaleS=Math.min(screenX/1920, screenY/1000);
-			//scaleV*=0.5;
 			if (scaleV>0.98) scaleV=1;
 			maxvx=maxsx*scaleV-screenX;
 			maxvy=maxsy*scaleV-screenY;
@@ -188,7 +186,5 @@
 				}
 			}
 		}
-
 	}
-	
 }

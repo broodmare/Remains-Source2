@@ -1,4 +1,5 @@
-﻿package fe.loc {
+package fe.loc
+{
 	import fe.*;
 	import fe.serv.Script;
 	import fe.graph.Emitter;
@@ -6,8 +7,8 @@
 	
 	//Активная область
 	
-	public class Area extends Obj{
-		
+	public class Area extends Obj
+	{
 		public var enabled:Boolean=true;
 		public var tip:String='gg';	//1 - активируется ГГ
 		
@@ -221,5 +222,4 @@
 			}
 		}
 	}
-	
 }

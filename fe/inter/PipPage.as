@@ -1,12 +1,15 @@
 package fe.inter
 {
 	import flash.display.MovieClip;
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.StyleSheet;
-	
+	import flash.filters.GlowFilter;
+	import flash.geom.ColorTransform;
+
+	import fl.controls.ScrollBar;
+	import fl.events.ScrollEvent;
+
 	import fe.*;
 	import fe.unit.Invent;
 	import fe.unit.Pers;
@@ -17,43 +20,31 @@ package fe.inter
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import fe.loc.LandAct;
-	import flash.filters.GlowFilter;
-	import flash.geom.ColorTransform;
 	import fe.unit.UnitPet;
 
 	import fe.stubs.visPipInv;
 	
 	public class PipPage
 	{
-
 		var vis:MovieClip;
-
 		var arr:Array;
 		var statArr:Array;
 		var statHead:MovieClip;
 		var pageClass:Class;
 		var itemClass:Class;
-
 		var maxrows:int=18;
 		var selItem:MovieClip;
-		
 		var pip:PipBuck;
 		var inv:Invent;
 		var gg:UnitPlayer;
-		
 		var isLC:Boolean=false, isRC:Boolean=false; //реакция на клик
-		
 		var signs:Array=[0,0,0,0,0,0];
-		
 		var page2:int=1;
 		var scrl:int=0;
-		
 		var infIco:MovieClip;
 		var itemFilter:GlowFilter=new GlowFilter(0x00FF88,1,3,3,3,1);
 		var itemTrans:ColorTransform=new ColorTransform(1,1,1);
-		
 		var pp:String;
-		
 		var kolCats:int=6;
 		var cat:Array=[0,0,0,0,0,0,0];
 		var curTip='';

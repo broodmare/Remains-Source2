@@ -1,5 +1,5 @@
-﻿package fe.loc {
-	
+package fe.loc
+{
 	//Класс, производящий загрузку карт местности из файла, или берущий их из переменных
 	//Содержится в объекте world
 	import flash.net.URLLoader; 
@@ -8,7 +8,8 @@
 	import flash.events.IOErrorEvent;
 	import fe.*;
 	
-	public class LandLoader {
+	public class LandLoader
+	{
 
 		public var id:String;
 		
@@ -59,7 +60,5 @@
 		private function ioErrorHandler(event:IOErrorEvent):void {
 			World.w.load_log+='IOerror '+roomsFile+'\n';
         }
-		
 	}
-	
 }

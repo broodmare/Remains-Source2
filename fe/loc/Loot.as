@@ -1,11 +1,10 @@
-﻿package fe.loc {
+package fe.loc
+{
+	import flash.display.MovieClip;
 	
-	import flash.geom.ColorTransform;
-	import flash.utils.*;
 	import fe.*;
 	import fe.graph.Emitter;
 	import fe.serv.Item;
-	import flash.display.MovieClip;
 	import fe.serv.Interact;
 	
 	public class Loot extends Obj{
@@ -88,7 +87,6 @@
 				try {
 					vis.gotoAndStop(item.id);
 				} catch(err) {
-					//var item.tip:String;
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
@@ -120,15 +118,13 @@
 			}
 			if (!loc.active) sndFall='';
 			auto=nauto;
-			//if (!loc.base) {
-				inter=new Interact(this);
-				inter.active=true;
-				inter.action=100;
-				inter.userAction='take';
-				inter.actFun=toTake;
-				inter.update();
-				levitPoss=true;
-			//}
+			inter=new Interact(this);
+			inter.active=true;
+			inter.action=100;
+			inter.userAction='take';
+			inter.actFun=toTake;
+			inter.update();
+			levitPoss=true;
 			loc.addObj(this);
 			auto2=item.checkAuto();
 		}

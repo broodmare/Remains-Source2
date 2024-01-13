@@ -1,8 +1,12 @@
-﻿package fe {
-	
-	public class GameData {
+package fe
+{
+	public class GameData
+	{
 
-		public function GameData() {}
+		public function GameData() 
+		{
+
+		}
 
 		public static var d:XML=<game>
 		
@@ -2705,5 +2709,4 @@
 			
 		</game>
 	}
-	
 }

@@ -1,20 +1,21 @@
-﻿package fe.inter {
-	
-	import fl.controls.ColorPicker;
-	import fl.events.ColorPickerEvent;
-	import fl.events.SliderEvent;
+package fe.inter
+{
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.ColorTransform;
-	import fl.motion.Color;
 	import flash.display.MovieClip;
-	import fe.*;
 	import flash.display.DisplayObject;
+
+	import fl.controls.ColorPicker;
+	import fl.motion.Color;
+	import fl.events.ColorPickerEvent;
+	import fl.events.SliderEvent;
+
+	import fe.*;
 	
 	//Настройки внешнего вида персонажа
-	
-	public class Appear {
-		
+	public class Appear
+	{
 		public var vis:MovieClip;
 		var col:Color=new Color;
 		
@@ -256,6 +257,7 @@
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
+		
 		//кнопки выбора вариантов
 		public function chBut(event:MouseEvent) {
 			var nam:String=(event.currentTarget as flash.display.DisplayObject).name;
@@ -287,14 +289,5 @@
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
-		
-		/*function encode():String {
-			return cFur+'|'+cHair+'|'+cHair1+'|'+cEye+'|'+cMagic+'|'+fEye+'|'+(visHair1?1:0);
-		}
-		function decode(s:String) {
-			return cFur+'|'+cHair+'|'+cHair1+'|'+cEye+'|'+cMagic+'|'+fEye+'|'+(visHair1?1:0);
-		}*/
-		
 	}
-	
 }

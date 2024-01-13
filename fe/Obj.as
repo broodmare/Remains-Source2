@@ -3,15 +3,10 @@ package  fe
 	//Базовый класс для объектов, взаимодействующих с игроком или миром
 	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	
-	import fe.graph.Emitter;
-	import fe.graph.Part;
-	import fe.loc.Location;
 	import fe.serv.Interact;
 	import fe.projectile.Bullet;
-	import fe.unit.UnitPlayer;
 	import fe.inter.Appear;
 	
 	public class Obj extends Pt{
@@ -42,7 +37,6 @@ package  fe
 		public var cTransform:ColorTransform=nullTransfom;
 		
 		public function Obj() {
-			// constructor code
 		}
 		
 		public override function remVisual() {
@@ -99,7 +93,6 @@ package  fe
 				var nr=Math.sqrt(p.x*p.x+p.y*p.y);
 				p.x*=mr/nr;
 				p.y*=mr/nr;
-				//trace(p.x,p.y);
 			}
 		}
 		
@@ -157,7 +150,6 @@ package  fe
 		public static function setColor(m:MovieClip, c:int) {
 			if (Appear.transp) {
 				m.visible=false;
-				//m.transform.colorTransform=Appear.trBlack;
 				return;
 			}
 			if (c==0) m.transform.colorTransform=Appear.trFur;

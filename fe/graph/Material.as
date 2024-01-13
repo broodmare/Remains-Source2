@@ -1,17 +1,16 @@
-﻿package fe.graph {
-	
+package fe.graph
+{
 	import flash.utils.*;
 	import flash.filters.BevelFilter;
 	import flash.filters.GlowFilter;
 	import flash.filters.DropShadowFilter;
-	import flash.filters.BitmapFilter;
 	import flash.display.BitmapData;
 	import fe.World;
 	
-	public class Material {
+	public class Material
+	{
 		public var id:String;
 		public var used:Boolean=false;
-		//public var cM:Class, cT:Class, cMB:Class, cTB:Class, cMF:Class, cTF:Class,
 		public var texture:BitmapData, alttexture:BitmapData, border:BitmapData, floor:BitmapData;
 		public var textureMask:Class, borderMask:Class, floorMask:Class;
 		public var F:Array;
@@ -54,7 +53,5 @@
 			if (p.@rear>0 || p.@ed=='2') rear=true;
 			if (p.@slit>0) slit=true;
 		}
-		
 	}
-	
 }

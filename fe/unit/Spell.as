@@ -1,13 +1,12 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
-	import flash.ui.Multitouch;
 
-	public class Spell {
-		
+	public class Spell
+	{	
 		public var owner:Unit;
 		public var gg:UnitPlayer;
 		public var loc:Location;
@@ -221,7 +220,6 @@
 				rad2=Math.sqrt(rad2);
 				var sila:Number=dam*power*(1-rad2/rad)*(Math.random()*0.4+0.8)*un.knocked/un.massa;
 				if (sila>dam*power) sila=dam*power;
-				//trace(sila);
 				un.dx=dx/rad2*sila;
 				un.dy=dy/rad2*sila;
 				un.stun+=Math.floor(Math.random()*power*dam);
@@ -281,7 +279,5 @@
 				}
 			}
 		}
-
 	}
-	
 }

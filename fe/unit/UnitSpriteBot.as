@@ -1,10 +1,10 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.weapon.Weapon;
 	
-	public class UnitSpriteBot extends Unit{
-		
+	public class UnitSpriteBot extends Unit
+	{
 		var cDam:Number;
 
 		public function UnitSpriteBot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -118,16 +118,12 @@
 					storona=(celDX>0)?1:-1;
 				}
 			}
-			
-			//vision=(aiState==0)?0.4:1;
 	
 			if (turnX) {
 				storona=turnX;
-				//dx=Math.abs(dx)*turnX;
 				turnX=0;
 			}
 			if (turnY) {
-				//dy=Math.abs(dy)*turnY;
 				turnY=0;
 			}
 			//атака
@@ -136,5 +132,4 @@
 			}
 		}
 	}
-	
 }

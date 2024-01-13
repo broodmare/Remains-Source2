@@ -1,4 +1,4 @@
-﻿package fe.loc {
+package fe.loc {
 	
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;

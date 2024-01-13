@@ -1,18 +1,16 @@
-﻿package fe.loc {
-	
+package fe.loc
+{
 	import fe.*;
-	import fe.unit.Pers;
 	import fe.serv.Vendor;
 	import fe.serv.Script;
 	import fe.serv.NPC;
 	
-	public class Game {
-		
+	public class Game
+	{
 		public var lands:Array;
 		public var probs:Array;
 		public var vendors:Array;
 		public var npcs:Array;
-//		public var curLandId:String='begin';
 		public var curLandId:String='test';
 		public var curCoord:String=null;
 		public var curLand:LandAct;
@@ -48,7 +46,6 @@
 			names=new Array();
 			
 			for each(var xl in GameData.d.land) {
-				//if (!World.w.testMode && xl.@test>0) continue;
 				var land:LandAct=new LandAct(xl);
 				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) {
 					land.allroom=World.w.landData[xl.@id].allroom;
@@ -123,7 +120,6 @@
 					var obj=loadObj.objs[uid];
 					var nobj=new Object();
 					for (var n in obj) {
-						//if (uid=='i40Ck396UNu1Lzef') trace(n,obj[n]);
 						nobj[n]=obj[n];
 					}
 					objs[uid]=nobj;
@@ -178,7 +174,6 @@
 			addNote('helpGl2');
 			dBeg=new Date();
 			if (loadObj==null) triggers['nomed']=1;
-			//trace('Глобальная сложность ',globalDif)
 		}
 		
 		public function changeDif(ndif):Boolean {
@@ -200,7 +195,7 @@
 			curLand=lands[curLandId];
 			if (curLand==null) curLand=lands['rbl'];
 			var first=false;
-			if (!curLand.rnd && !curLand.visited) first=true;// || curLand.rnd && crea
+			if (!curLand.rnd && !curLand.visited) first=true;
 			if (curLand.land==null || crea) {
 				var n:int=0;
 				if (triggers['firstroom']>0) {
@@ -233,8 +228,6 @@
 				curLand.upStage=false;
 			}
 			World.w.time___metr('Вход в местность');
-			//trace('Этап сюжета ', curLand.land.gameStage);
-			//trace('Общая сложность ', curLand.land.landDifLevel);
 		}
 		
 		//Перенаправление на другую локацию
@@ -244,15 +237,6 @@
 			if (curLandId=='stable_pi' && triggers['storm']==4) curLandId='stable_pi_atk';
 			if (curLandId=='stable_pi' && triggers['storm']==5) curLandId='stable_pi_surf';
 		}
-		
-		/*переход в новую местность
-			gotoLand(nland:String)
-			World.w.exitLand();
-			enterToCurLand();
-			World.w.ativateLand(curLand.land);
-			World.w.land.enterLand(first);
-			ativateLoc();
-		*/
 		
 		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false) {
 			if (nland!=baseId && !World.w.pers.dopusk()) {
@@ -284,7 +268,6 @@
 			World.w.pers.prevCPCode=null;
 			World.w.pers.currentCPCode=null;
 			curLand.land.currentCP=null;
-//			if (curLand.landStage>=curLand.maxStage && curLand.nextLand && lands[curLand.nextLand]) lands[curLand.nextLand].access=true;
 			crea=true;
 			curLand.land.refill();
 			gotoLand(missionId);
@@ -293,7 +276,6 @@
 		public function upLandLevel() {
 			if (!curLand.upStage) curLand.landStage++;
 			curLand.upStage=true;
-			//trace('landStage',curLand.landStage);
 		}
 		
 		//проверить возможность путешествия через карту
@@ -338,7 +320,6 @@
 			var xq:XML=xlq[0];
 			var q:Quest=new Quest(xq,loadObj);
 			quests[q.id]=q;
-			//if (q.collect) q.check();
 			if (noVis && !q.auto) q.state=0;
 			if (loadObj==null && q.state>0) {
 				World.w.gui.infoText('addTask',q.nazv);
@@ -454,7 +435,6 @@
 		
 		//создать скрипт из gamedata
 		public function getScript(scr:String, own:Obj=null):Script {
-				//trace(scr,own);
 			var xml1=GameData.d.scr.(@id==scr);
 			if (xml1.length()) {
 				xml1=xml1[0];
@@ -472,7 +452,5 @@
 			}
 			return Res.gameTime(n);
 		}
-		
 	}
-	
 }

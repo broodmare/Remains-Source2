@@ -1,9 +1,7 @@
-﻿package fe.unit {
-	import fe.*;
-	
-	public class UnitSlaver extends UnitRaider{
-		
-		
+﻿package fe.unit
+{
+	public class UnitSlaver extends UnitRaider
+	{
 		public function UnitSlaver(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			parentId='slaver';
 			kolTrs=6;

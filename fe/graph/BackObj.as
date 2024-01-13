@@ -1,10 +1,11 @@
-﻿package fe.graph {
+package fe.graph
+{
 	import flash.display.MovieClip;
-	import flash.utils.*;
 	import fe.*;
 	import fe.loc.Location;
 	
-	public class BackObj {
+	public class BackObj
+	{
 		public var id:String;
 		public var X:Number;
 		public var Y:Number;
@@ -23,9 +24,6 @@
 			id=nid;
 			X=nx, Y=ny;
 			var node:XML=AllData.d.back.(@id==id)[0];
-			/*if (node.@light>0) {
-				light=Grafon.resTex.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_l');
-			}*/
 			var wid=node.@x2*World.tileX;
 			if (xml && xml.@w.length()) wid=xml.@w*World.tileX
 			if (!(wid>0)) wid=World.tileX;
@@ -81,7 +79,5 @@
 				if (light) light.gotoAndStop(frame);
 			}
 		}
-
 	}
-	
 }

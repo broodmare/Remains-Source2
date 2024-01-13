@@ -1,4 +1,4 @@
-﻿package fe.serv {
+package fe.serv {
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;
 	import flash.display.BitmapData;
@@ -90,7 +90,5 @@
 			}
 			burnN++;
 		}
-
-	}
-	
+	}	
 }

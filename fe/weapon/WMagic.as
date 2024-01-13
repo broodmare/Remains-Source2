@@ -14,7 +14,6 @@ package fe.weapon
 		}
 
 		public override function attack(waitReady:Boolean=false):Boolean {
-			//trace('atk');
 			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) {
 				t_auto=3;
 				return false;

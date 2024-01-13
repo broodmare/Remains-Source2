@@ -1,18 +1,15 @@
-﻿package fe.graph {
-	
+package fe.graph
+{
 	import fe.*;
 	import fe.loc.Location;
-	import fe.serv.BlitAnim;
 	import flash.filters.GlowFilter;
 
-	public class Emitter {
-		
+	public class Emitter
+	{
 		public static var arr:Array;
 		public static var kols:Array=[0,0,0,0,0,0];
-		
 		public static var kol1:int=0, kol2:int=0;
-		
-		
+
 		public static function init() {
 			arr=new Array();
 			for each(var xml:XML in AllData.d.part) {
@@ -93,7 +90,6 @@
 				if (this.hasOwnProperty(att)) {
 					if (this[att] is Boolean) this[att]=true;
 					else this[att]=xml.attributes()[i];
-					//trace(att,this[att]);
 				}
 			}
 			if (vis) visClass=Res.getClass(vis);
@@ -227,7 +223,5 @@
 			}
 			return p;
 		}
-		
 	}
-	
 }

@@ -277,7 +277,6 @@ package fe.loc
 				if (nroom.options.@maxdy.length()) maxdy=nroom.options.@maxdy;
 				if (nroom.options.@sky.length()) {
 					sky=true;
-					//spaceY=spaceX=1;
 				}
 				if (nroom.options.@zoom.length()) zoom=nroom.options.@zoom;
 				if (nroom.options.@trus.length()) trus=nroom.options.@trus;

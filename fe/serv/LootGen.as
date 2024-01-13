@@ -1,4 +1,4 @@
-﻿package fe.serv {
+package fe.serv {
 	
 	import fe.*;
 	import fe.loc.Loot;

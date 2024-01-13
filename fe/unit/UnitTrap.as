@@ -1,9 +1,10 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.serv.Interact;
-	public class UnitTrap extends Unit{
-		
+
+	public class UnitTrap extends Unit
+	{
 		var rearm:Boolean=false;
 
 		public function UnitTrap(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -18,11 +19,7 @@
 			getXmlParam();
 			visibility=300;
 			showNumbs=false;
-			//trup=false;
 			doop=true;
-			//knocked=0.1;
-			//activateTrap=0;
-			//brake=10;
 			if (loadObj && loadObj.rearm) {
 				rearm=true;
 				fraction=F_PLAYER;
@@ -111,5 +108,4 @@
 			}
 		}
 	}
-	
 }

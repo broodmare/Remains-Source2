@@ -1,4 +1,4 @@
-﻿package fe.unit {
+package fe.unit {
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	

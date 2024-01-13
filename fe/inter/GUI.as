@@ -1,12 +1,10 @@
-﻿package fe.inter {
-	import flash.display.Sprite;
+package fe.inter 
+{
 	import flash.text.TextField;
 	import flash.display.MovieClip;
 	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
 	import flash.text.StyleSheet;
 	import flash.events.MouseEvent;
-	import fl.events.ScrollEvent;
 	
 	import fe.*;
 	import fe.weapon.Weapon;
@@ -14,11 +12,11 @@
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.unit.Invent;
-	import fe.serv.Item;
 	import fe.serv.Script;
 	import fe.weapon.WPaint;
 	
-	public class GUI {
+	public class GUI
+	{
 		public var vis:MovieClip;
 		public var active:Boolean=true;
 		var weapon:TextField, holder:TextField, ammo:TextField, mana:TextField, celobj:TextField, info:TextField, item:TextField, hp:TextField, vitem:MovieClip, mess:MovieClip, dial:MovieClip, inform:MovieClip, imp:MovieClip, pet:MovieClip, pr_bar:MovieClip, levit_poss:MovieClip, tharrow:MovieClip;
@@ -64,7 +62,6 @@
 			vis=vgui;
 			vis.mouseChildren=vis.mouseEnabled=false;
 			
-			//styleObj.fontWeight = "bold"; 
 			styleObj.color = "#00FF99"; 
 			style.setStyle(".r", styleObj); 	//по умолчанию зелёный
 			
@@ -83,7 +80,6 @@
 			styleObj.color = "#FC7FED"; 
 			style.setStyle(".r4", styleObj);	//4 - розовый 
 			
-			//styleObj.fontWeight = "bold"; 
 			styleObj.color = "#FF3333"; 
 			style.setStyle(".r5", styleObj);	//5 - красный
 			
@@ -194,13 +190,10 @@
 			informScript=new Script(<scr act="inform" val="id"/>);
 			dialScript=new Script(<scr act="dialog" val="id"/>);
 			vis.inform.but0.addEventListener(MouseEvent.MOUSE_DOWN,showHelp);
-			//vis.inform.scText.addEventListener(MouseEvent.MOUSE_DOWN,scrollClick);
 			vis.inform.but0.text.text=Res.guiText('help');
 			vis.blood.visible=false;
 			vis.blood.stop();
 		}
-//		public function onMouseWheel1(event:MouseEvent):void {
-//		}
 		
 		public function resizeScreen(nx:int, ny:int) {
 			screenX=nx;
@@ -542,7 +535,6 @@
 				vis.visibility.visible=false;
 			} else {
 				vis.visibility.visible=true;
-				//vis.visibility.txt.text=Math.round(gg.obs/gg.maxObs*100)+'%';
 				vis.visibility.gotoAndStop(Math.floor(gg.obs/gg.maxObs*40+1));
 				World.w.cam.setKoord(vis.visibility,gg.X,gg.Y-80);
 			}
@@ -707,7 +699,7 @@
 					if (perc>1) perc=1; if(perc<0) perc=0;
 					pr_bar.visible=true;
 					pr_bar.pr.scaleX=perc;
-					s+='\n'+gg.actionObj.actionText;//+' '+gg.t_action;
+					s+='\n'+gg.actionObj.actionText;
 					celobj.text=s;
 					World.w.cam.setKoord(celobj,gg.actionObj.owner.X,gg.actionObj.owner.Y);
 					World.w.cam.setKoord(pr_bar,gg.actionObj.owner.X,gg.actionObj.owner.Y);
@@ -725,12 +717,6 @@
 					warn='warn';
 				}
 				s="<span class = '"+warn+"'>"+celObj.nazv+"</span>";
-				//!!!!!!!!!!!! дополнительно
-				/*if (World.w.showAddInfo) {
-					if (celObj is Unit) {
-						s+=' ('+(celObj as Unit).level+'/'+Math.round((celObj as Unit).observ)+')';
-					}
-				}*/
 				//добавить статус объекта
 				if (celObj.inter && celObj.inter.stateText!='') s+=' ['+celObj.inter.stateText+']';
 				//телекинез
@@ -748,7 +734,6 @@
 					World.w.cur('action');
 					if (!World.w.loc.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
 						//заперто и имеется ключ
-						//if (World.w.showAddInfo) s+='\nзамок '+celObj.inter.lock+';'+celObj.inter.lockLevel+', мина '+celObj.inter.mine+', уровень['+celObj.inter.allDif+']';
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
 							if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
@@ -757,8 +742,6 @@
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
 							s+="\n(<span class = 'r5'>"+Res.guiText('required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
 						//заклинило
-						} else if (celObj.inter.lock>=100) {
-							//s+="\n(<span class = 'warn'>"+txtNoUnlock+"</span>)"; 
 						} else if (celObj.inter.mine==0 && celObj.inter.lock>0 && celObj.inter.lockTip==0) {	//невскрываемый замок
 							s+="\n(<span class = 'r3'>"+txtUndef0+"</span>)"; 
 						} else if (celObj.inter.actionText!='') {
@@ -812,7 +795,6 @@
 				celobj.visible=false;
 				World.w.cur('target');
 			}
-			//if (World.w.t_battle>0) World.w.cur('combat');
 			if (celobj.visible) {
 				celobj.x-=celobj.width/2;
 				if (celobj.y>World.w.cam.screenY-40-celobj.height) celobj.y=pr_bar.y=World.w.cam.screenY-40-celobj.height;
@@ -883,7 +865,6 @@
 			info.htmlText+=(s+"<br>");
 			kolStr++, t_info=150;
 			if (kolStr>6) remStr();
-			//trace(s);
 		}
 		
 		public function bulb(nx:int, ny:int) {
@@ -1056,7 +1037,6 @@
 		public function impMess(ntitle:String, ntext:String, nico:String='') {
 			World.w.ctr.active=false;
 			World.w.ctr.keyPressed=false;
-			//World.w.pip.onoff(-1);
 			imp.ico.gotoAndStop(1);
 			if (nico!='') {
 				try {
@@ -1098,8 +1078,6 @@
 				if (infoAlpha<realAlpha) {
 					realAlpha-=0.1;
 				}
-				
-				//trace(vis.info.alpha)
 			}
 			if (gg.t_port>15) {
 				showPortCel()
@@ -1110,8 +1088,6 @@
 			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || World.w.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) setMana();
 			else if (mana.text!='') mana.text='';
 			if (gg.effects.length || gg.poison>0 || gg.cut>0 || gg.shithp>0 || effIsVis) setEffects();
-			//mana.text=Math.round(gg.X)+' ' +Math.round(gg.Y)+' ' +gg.isLaz;
-			//mana.text=gg.aJump.toString();
 			if (t_sel>0) t_sel--;
 			if (t_sel==1) unshowSelector(1);
 			if (t_od>0) t_od--;
@@ -1160,7 +1136,5 @@
 		public function setSats(turn:Boolean) {
 			vis.sats.visible=turn && active;
 		}
-
 	}
-	
 }

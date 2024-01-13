@@ -1,20 +1,15 @@
-﻿package fe.unit {
-	
+package fe.unit 
+{
 	import fe.*;
-	import fe.weapon.Weapon;
-	//import flash.media.SoundChannel;
-	//import flash.media.SoundTransform;
 	import fe.graph.Emitter;
 	import fe.loc.Location;
 	
-	public class UnitTransmitter extends Unit{
-		
+	public class UnitTransmitter extends Unit
+	{
 		var cDam:Number;
 		var dist:Number=1000, distdam:Number=400;
 		var upKoef:Number=0;
 		var prevKoef:Number=0;
-		//var shum:SoundChannel;
-		//var shumT:SoundTransform;
 		var cep:int=-1;
 
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -55,8 +50,6 @@
 
 		public override function expl()	{
 			newPart('metal',4);
-			//if (shum) shum.stop();
-			//shum=null;
 		}
 		public override function setVisPos() {
 			if (vis) {
@@ -66,8 +59,6 @@
 		
 		public override function locout()	{
 			super.locout();
-			//if (shum) shum.stop();
-			//shum=null;
 			upKoef=0;
 		}
 		
@@ -102,7 +93,6 @@
 						}
 					}
 				}
-			} else {
 			}
 		}
 	}

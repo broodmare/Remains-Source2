@@ -1,10 +1,11 @@
-﻿package fe.unit {
+package fe.unit
+{
 	import fe.Obj;
 	import fe.projectile.Bullet;
 	import fe.loc.Box;
 	
-	public class VirtualUnit extends Unit{
-		
+	public class VirtualUnit extends Unit
+	{
 		public var owner:Obj;
 		var nTipDam:int=-1;
 
@@ -26,7 +27,6 @@
 		}
 		
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
-			//trace(nTipDam, bul.tipDamage)
 			if (nTipDam>=0 && nTipDam!=bul.tipDamage) return 0;
 			owner.command('dam');
 			return 1;
@@ -41,8 +41,5 @@
 		public override function die(sposob:int=0) {
 				exterminate();
 		}
-
-
 	}
-	
 }

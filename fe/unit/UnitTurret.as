@@ -1,5 +1,5 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
@@ -7,8 +7,8 @@
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	
-	public class UnitTurret extends Unit{
-		
+	public class UnitTurret extends Unit
+	{
 		public var tr:int;
 		
 		var osnova:Tile;
@@ -124,7 +124,6 @@
 				if (angle=='left') aRot=[135,-135];
 				if (angle=='right') aRot=[45,-45];
 			} else if (turrettip==3){
-				//trace(storona);
 				if (storona>0) {
 					aRot=[-15, 15];
 					currentWeapon.fixRot=2;
@@ -285,7 +284,6 @@
 		}
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
-			//var aq:Number=
 			if (turrettip==3) {
 				shithp=1000;
 				shitArmor=25;
@@ -370,7 +368,6 @@
 					}
 					aiTCh=period;
 				} else {
-					//currentWeapon.drot=6;
 					aiTCh=Math.floor(Math.random()*50)+40;
 				}
 				if (aiSpok>0) aiState=4;
@@ -440,7 +437,5 @@
 				attKorp(celUnit,1);
 			}
 		}
-		
 	}
-	
 }

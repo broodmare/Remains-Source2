@@ -1,14 +1,11 @@
-﻿package  fe{
+package  fe
+{
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
-	import flash.display.StageDisplayState;
-	import flash.display.StageScaleMode;
-	import flash.display.StageAlign;
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;
-	import flash.events.TimerEvent;
 	import flash.events.IOErrorEvent;
 	import flash.system.Capabilities;
 	import flash.utils.Timer;
@@ -29,7 +26,6 @@
 	import fe.unit.UnitPlayer;
 	import fe.unit.Invent;
 	import fe.unit.Pers;
-	import flash.external.ExternalInterface;
 	import fe.weapon.Weapon;
 	
 	public class World {

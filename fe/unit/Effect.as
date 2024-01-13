@@ -1,11 +1,12 @@
-﻿package fe.unit {
+package fe.unit
+{
+	import flash.geom.ColorTransform;
 	
 	import fe.*;
 	import fe.graph.Emitter;
-	import flash.geom.ColorTransform;
-	
-	public class Effect {
-		
+
+	public class Effect
+	{
 		public var owner:Unit;
 		public var id:String;
 		public var tip:int=0;
@@ -61,7 +62,6 @@
 				if (node.@lvl2.length()) lvl2=node.@lvl2;
 				if (node.@lvl3.length()) lvl3=node.@lvl3;
 				if (node.@add.length()) add=true;
-				//if (player && him
 				if (node.del.length()) {
 					for each(var ndel in node.del) del.push(ndel.@id);
 				}
@@ -149,7 +149,6 @@
 				if (owner.vis.inh) {
 					owner.vis.inh.visible=true;
 					owner.vis.inh.gotoAndPlay(1);
-					//owner.vis.inh.scaleX=owner.vis.inh.scaleY=val/50;
 				}
 			}
 			if (id=='freezing') {
@@ -174,7 +173,6 @@
 				else World.w.gui.infoText('endEffect',Res.txt('e',id));
 			}
 			if (post && onPost) {		//замена эффекта пост-эффектом
-				//if (!player || !postBad || World.w.pers.himBad>0) {
 					id=post;
 					var isBad:Boolean=postBad;
 					getXmlParam();
@@ -188,8 +186,6 @@
 						if (proc>=World.w.pers.ad3) lvl=3;
 					}
 					vse=false;
-					//if (player && isBad) t*=World.w.pers.himBad;
-				//}
 			}
 			if (params && setParam) {
 				if (player) (owner as UnitPlayer).pers.setParameters();
@@ -289,7 +285,6 @@
 			}
 			stepEffect();
 			t--; 
-			//t-=5;
 			if (t<=0) {
 				if (forever) t=30;
 				else {
@@ -297,7 +292,5 @@
 				}
 			}
 		}
-
-	}
-	
+	}	
 }

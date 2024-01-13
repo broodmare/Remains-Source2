@@ -1,13 +1,12 @@
-﻿package fe.unit {
+package fe.unit 
+{
 	import fe.*;
 	import fe.serv.BlitAnim;
-	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.loc.Tile;
-	import fe.graph.Emitter;
 	
-	public class UnitZebra extends UnitRaider{
-		
+	public class UnitZebra extends UnitRaider
+	{
 		var shine:int=0;
 		var shine2:int=0;
 		var red:Boolean=false;
@@ -78,7 +77,6 @@
 				var nx=X+cx*i/div;
 				var ny=Y-scY*0.6+cy*i/div;
 				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tileX),Math.floor(ny/Tile.tileY));
-				//Emitter.emit('marker',loc,nx,ny);
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return false;
 				}

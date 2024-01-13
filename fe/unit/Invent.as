@@ -1,23 +1,20 @@
-﻿package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.weapon.*;
 	import fe.serv.Item;
 	import fe.serv.LootGen;
-	import fl.controls.progressBarClasses.IndeterminateBar;
 	import fe.serv.Script;
-	import flash.sampler.StackFrame;
 	import fe.loc.Loot;
 	
-	public class Invent {
+	public class Invent
+	{
 		public var gg:UnitPlayer;
 		public var owner:Unit;
 		
 		public var weapons:Array;
 		public var fav:Array;		//массив избранного по номеру ячейки
 		public var favIds:Array;	//массив избранного по id предмета
-		//public var favKol:int=24;
-		//public var cWeapon:int=0; 
 		public var cWeaponId:String='';
 		
 		public var armors:Array;
@@ -182,12 +179,6 @@
 					return false;
 				}
 			}
-			//проверить нужду
-			/*if (pot.@heal=='hp' && need1<1) {
-				World.w.gui.infoText('noHeal');
-				if (gg.rad>1) World.w.gui.infoText('useAntirad');
-				return false;
-			} else */
 			if (pot.@heal=='rad' && gg.rad<1) {
 				World.w.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
@@ -452,14 +443,12 @@
 			}
 			var w:Weapon=Weapon.create(owner,id,nvar);
 			if (w==null) return null;
-			if (w.tip==5 || hp==0xFFFFFF) w.hp=w.maxhp;//w.hp=Math.round(Math.random()*w.maxhp);
+			if (w.tip==5 || hp==0xFFFFFF) w.hp=w.maxhp;
 			else w.hp=hp;
 			if (hold>0) w.hold=hold;
 			if (w.tip==4 && respect==3) respect=0;
 			w.respect=respect;
 			weapons[id]=w;
-			//weaponsFav[w.cat].push(w);
-			//if (!weaponsFav[w.cat][0]) weaponsFav[w.cat][0]=1;
 			return w;
 		}
 		
@@ -616,7 +605,6 @@
 				if (tr==0 && patron && patron!='recharg') {
 					kol=Math.floor(Math.random()*AllData.d.item.(@id==patron).@kol)+1;
 					items[patron].kol+=kol;
-					//World.w.gui.infoText('takeAmmo',Res.itemNazv(patron),kol);
 				}
 				var hp:int;
 				if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
@@ -646,7 +634,6 @@
 				color=3;
 			} else if (l.tip==Item.L_SPELL) {
 				plus(l,tr);
-				//addSpell(l.id);
 				World.w.calcMassW=true;
 				color=5;
 			} else if (l.tip==Item.L_SCHEME) {
@@ -666,7 +653,6 @@
 				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
 				color=3;
 			} else if (l.tip==Item.L_AMMO) {
-				//if (l.kol<=0) l.kol=1;
 				plus(l,tr);
 				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo',l.nazv,l.kol);
 				color=3;
@@ -687,7 +673,7 @@
 				if (items[l.id].kol==0)	takeScript(l.id);
 				plus(l,tr);
 				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-				gg.pers.setParameters();// .setInvParameters(this);
+				gg.pers.setParameters();
 				color=6;
 			} else {
 				if (items[l.id].kol==0)	takeScript(l.id);
@@ -898,10 +884,6 @@
 			if (!World.w.loc.base) {
 				World.w.gui.infoText('noBase');
 				return false;
-			/*} else if (World.w.game.triggers['rollup']>0) {
-				World.w.pip.onoff(-1);
-				World.w.gui.dialog('dialNoSmoke');
-				return false;*/
 			} else {
 				World.w.pip.onoff(-1);
 				var xml1=GameData.d.scr.(@id=='smokeRollup')
@@ -920,7 +902,6 @@
 			addWeapon('rech');
 			addWeapon('mont');
 			addWeapon('bat');
-			//cWeapon=2;
 			cWeaponId='r32'
 			
 			addArmor('pip');
@@ -980,24 +961,6 @@
 			for each(var arm in AllData.d.armor) {
 				addArmor(arm.@id);
 			}
-			/*addArmor('pip');
-			addArmor('kombu',400);
-			addArmor('antirad');
-			addArmor('metal');
-			addArmor('antihim');
-			addArmor('skin');
-			addArmor('battle');
-			addArmor('assault');
-			addArmor('moon');
-			addArmor('magus');
-			addArmor('intel');
-			addArmor('astealth');
-			addArmor('sapper');
-			addArmor('tre');
-			addArmor('spec');
-			addArmor('polic');
-			addArmor('power');
-			addArmor('socks');*/
 		}
 		
 		public function addAll() {
@@ -1065,5 +1028,4 @@
 			return obj;
 		}
 	}
-	
 }

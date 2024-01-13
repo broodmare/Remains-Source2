@@ -1,21 +1,19 @@
-﻿package fe.unit {
+package fe.unit
+{
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
 	import fe.*;
-	import fe.serv.BlitAnim;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
-	import fl.controls.progressBarClasses.IndeterminateBar;
-	
-	public class UnitZombie extends UnitPon{
+
+	public class UnitZombie extends UnitPon
+	{
 
 		public var tr:int=0;
 		
 		protected var animFrame:int=0;
-//		public var tr:int;
-
 		protected var digger:int=0;		//нужно ли закапываться, 0-не нужно, 1-закопаться просто, 2-закопаться конкретно, 3-закопаться навсегда
 		protected var kop1:Tile, kop2:Tile;
 		
@@ -174,15 +172,12 @@
 					if  (dx<1 && dx>-1) {
 						animState='stay';
 					} else if (aiState==3) {
-						//if (animState!='run') t_ca=8;
 						animState='run';
 						sndStep(anims[animState].f,2);
 					} else if (aiState==2 || dx>6 || dx<-6) {
-						//if (animState!='trot') t_ca=8;
 						animState='trot';
 						sndStep(anims[animState].f,1);
 					} else {
-						//if (animState!='walk') t_ca=8;
 						animState='walk';
 						sndStep(anims[animState].f,1);
 					}
@@ -200,7 +195,6 @@
 				anims[animState].restart();
 				animState2=animState;
 			}
-			//if (t_ca>0) t_ca--;
 			if (!anims[animState].st) {
 				blit(anims[animState].id,anims[animState].f);
 			}
@@ -209,7 +203,6 @@
 		
 		
 		public override function alarma(nx:Number=-1,ny:Number=-1) {
-			//trace('alarm',aiState)
 			if (digger==3) return;
 			if (sost==1 && (aiState<=1 || aiState==5)) {
 				super.alarma(nx,ny);
@@ -385,7 +378,6 @@
 			}
 
 			var jmp:Number=0;
-			//return;
 			
 			if (World.w.enemyAct<=0) {
 				celY=Y-scY;
@@ -398,10 +390,7 @@
 			}
 			
 			if (digger==3) return;
-			
-			/*overLook=(aiState==5);
-			ear=(aiState==5)?0:1;*/
-			
+
 			if (aiJump>0) aiJump--;
 			
 			//таймер смены состояний
@@ -438,7 +427,6 @@
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
 			//поиск цели
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
 				if (findCel()) {
 					//увидели
@@ -456,7 +444,6 @@
 					}
 					if (aiSpok<maxSpok+5) teleUnit=null
 				}
-				//if (aiState==2 || aiState==3) findSuper();
 			}
 			//направление
 			celDX=celX-X;
@@ -504,7 +491,6 @@
 			if (aiState==0) {
 				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
-				//if (isPlav) jump();
 			} else if (aiState==4) {
 				if (celDX>40) aiNapr=storona=1;
 				if (celDX<-40) aiNapr=storona=-1;
@@ -545,7 +531,6 @@
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
 				if (aiTCh%15==1) {
-					//if (isrnd(0.3)) jmp=1;
 					if (isrnd(0.8)) {
 						if (celDX>100) aiNapr=storona=1;
 						if (celDX<-100) aiNapr=storona=-1;
@@ -583,10 +568,8 @@
 				}
 				if (jmp>0) {
 					if (isPlav) jmp*=1.5;
-					//if (checkJump()) {
-						jump(jmp);
-						jmp=0;
-					//}
+					jump(jmp);
+					jmp=0;
 				}
 			}
 			pumpObj=null;
@@ -599,7 +582,6 @@
 				}
 				if (superSilaTip==7 && isrnd(0.1)) currentWeapon.attack();
 			} 
-				//World.w.gui.vis.sist.text=teleUnit+' '+celUnit+' '+aiZlo;
 		}
 		
 		function setSuper() {
@@ -677,7 +659,6 @@
 			superX=-1;
 			var nx:int=Math.floor(celX/World.tileX);
 			var ny:int=Math.floor((celY+40)/World.tileY);
-			//Emitter.emit('laser',loc,nx*40+20,ny*40+20);
 			if (superSilaTip==1) superY=ny*World.tileY+World.tileY+scY;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 			if (Y-celY>120) {
@@ -705,9 +686,6 @@
 					superY=Y;
 				}
 			}
-			/*if (superX>=0) {
-				Emitter.emit('plasma',loc,superX,superY);
-			}*/
 		}
 		
 		//суперсила в начальный момент
@@ -715,7 +693,6 @@
 			super_on=true;
 			if (superSilaTip==1) {
 				if (superX>0 && superY>0 && stay) {
-					//Emitter.emit('plasma',loc,superX,superY);
 					var tdx=superX-X;
 					var tdy=superY-Y;
 					var rasst=Math.sqrt(tdx*tdx+tdy*tdy);
@@ -724,7 +701,6 @@
 					tSuper=Math.round(rasst/vJump);
 					if (tSuper>20) tSuper=20;
 					grav=0;
-					//Emitter.emit('plasma',loc,superX,superY);
 				}
 			} else if (superSilaTip==2 || superSilaTip==7) {
 			} else if (superSilaTip==3 || superSilaTip==4 || superSilaTip==8) {
@@ -765,7 +741,6 @@
 					if (tdy>0 && teleUnit.dy<teleSpeed || tdy<0 && teleUnit.dy>-teleSpeed) teleUnit.dy+=tdy;
 					if (teleUnit.player) (teleUnit as UnitPlayer).levitFilter2=levitFilter;
 				}
-				//Emitter.emit('plasma',loc,superX,superY);
 			} else if (superSilaTip==5) {
 				radioactiv-=(radMax-radMin)/tSuper;
 			} else if (superSilaTip==6) {
@@ -792,6 +767,5 @@
 			super.dropLoot();
 			if (superSilaTip==8) explosion(dam*0.4,19,150,15);
 		}
-		
 	}
 }

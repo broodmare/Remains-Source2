@@ -1,11 +1,12 @@
-﻿package fe.graph {
-	
+package fe.graph
+{
 	import flash.net.URLRequest;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	
-	public class GrLoader {
+	public class GrLoader
+	{
 		
 		public var id:int;
 		public var loader:Loader;
@@ -26,8 +27,6 @@
 			loader.load(urlReq);
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, funLoaded);  
 			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, funProgress);
-			
-			// constructor code
 		}
 		
 		function funLoaded(event:Event):void {
@@ -43,7 +42,5 @@
 			progressLoad=event.bytesLoaded/event.bytesTotal;
 			gr.allProgress();
         }
-
 	}
-	
 }

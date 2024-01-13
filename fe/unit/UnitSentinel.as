@@ -1,11 +1,9 @@
-﻿package fe.unit {
-	
-	import fe.*;
+package fe.unit
+{
 	import fe.weapon.Weapon;
-	import fe.serv.LootGen;
-	import fe.serv.BlitAnim;
-	public class UnitSentinel extends UnitAIRobot{
 
+	public class UnitSentinel extends UnitAIRobot
+	{
 		var jump_n:int=100;
 		var dopWeapon:Weapon;
 		var kolRock=6;
@@ -90,8 +88,5 @@
 			currentWeapon.attack();
 			if (celUnit && !(celDX<160 && celDX>-160 && celDY<80 && celDY>-80)) dopWeapon.attack();
 		}
-		
-
 	}
-	
 }

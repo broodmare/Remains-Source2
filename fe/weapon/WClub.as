@@ -2,11 +2,11 @@ package fe.weapon
 {
 	import flash.display.MovieClip;
 	
+	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Pers;
 	import fe.loc.Tile;
-	import fe.*;
 	import fe.projectile.Bullet;
 	
 	public class WClub extends Weapon
