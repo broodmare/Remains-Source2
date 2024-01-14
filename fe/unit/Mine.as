@@ -50,7 +50,7 @@ package fe.unit
 			if (reloadTime) vis.gotoAndStop(1);
 			else vis.gotoAndStop(2);
 			setVis(false);
-			var node:XML=AllData.d.weapon.(@id==id)[0];
+			var node:XML = AllData.fetchNodeWithChildID('weapons', id);
 			nazv=Res.txt('w',id);
 			scX=node.@sX;
 			scY=node.@sY;
@@ -75,7 +75,7 @@ package fe.unit
 			massa=massaFix;
 			
 			damage1*=(Math.random()*0.3+0.85);
-			node=AllData.d.weapon.(@id==id)[0].vis[0];
+			node = node.vis[0];
 			if (node.@tipdec.length()) tipDecal=node.@tipdec;
 			
 			aiState=1;

@@ -46,7 +46,7 @@ package fe.weapon
 
 		public function WClub(own:Unit, id:String, nvar:int=0)
 		{
-			var node=AllData.d.weapon.(@id==id)[0];
+			var node = AllData.fetchNodeWithChildID('weapons', id);
 			if (node.vis[0].@lasm>0) lasM=true;
 			if (!lasM) {
 				visvzz=new visVzz();

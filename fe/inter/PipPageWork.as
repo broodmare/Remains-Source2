@@ -77,7 +77,7 @@ package fe.inter
 								arr.push(n);
 							}
 						} else {
-							var node1=AllData.d.item.(@id==wid);
+							var node1 = AllData.fetchNodeWithChildID('items', wid);
 							if (node1.length()==0) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
 							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
@@ -266,8 +266,10 @@ package fe.inter
 			var cid:String=event.currentTarget.id.text;
 			var ccat:String=event.currentTarget.cat.text;
 			var cnazv:String=event.currentTarget.nazv.text
-			if (page2==1) {
-				var sch=AllData.d.item.(@id=='s_'+cid);
+			if (page2==1)
+			{
+				var string2:String = 's_' + cid;
+				var sch = AllData.fetchNodeWithChildID('items', string2);
 				if (sch.length()) sch=sch[0];
 				var kol:int=1;
 				if (sch.@kol.length()) kol=int(sch.@kol);
@@ -339,7 +341,8 @@ package fe.inter
 						World.w.gui.infoText('noMaterials');
 					}
 				} else if (ccat==Item.L_WEAPON) {
-					var sch=AllData.d.item.(@id=='s_'+cid);
+					var string3:String = 's_' + cid;
+					var sch = AllData.fetchNodeWithChildID('items', string3);
 					if (sch.length()) sch=sch[0];
 					if (!checkScheme(sch)) return;
 					minusCraftComp(sch);

@@ -88,7 +88,7 @@ package fe.loc
 			shad.gotoAndStop(vis.currentFrame);
 			shad.filters=[dsf];
 			
-			var node:XML=AllData.d.obj.(@id==id)[0];
+			var node:XML = AllData.fetchNodeWithChildID('objs', id);
 			
 			X=begX=nx, Y=begY=ny;
 			scX=vis.width;

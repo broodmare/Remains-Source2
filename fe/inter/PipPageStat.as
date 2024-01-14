@@ -50,10 +50,13 @@ package fe.inter
 				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.guiText('dif'+World.w.game.globalDif)});
 				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
-				
-				for (var i=0; i<AllData.d.param.length(); i++) {
-					var xml=AllData.d.param[i];
-					if (xml.@show>0) {
+
+				var paramList:XMLList = AllData.fetchNodeList('params', 'param');
+				for (var i = 0; i < paramList.length(); i++)
+				{
+					var xml = paramList[i];
+					if (xml.@show>0)
+					{
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
 						var nazv=Res.pipText(xml.@id);
@@ -141,7 +144,7 @@ package fe.inter
 				statHead.numb.text=Res.pipText('is2');
 				for (var pid in pers.perks) {
 					var maxlvl=1;
-					var xperk=AllData.d.perk.(@id==pid);
+					var xperk = AllData.fetchNodeWithChildID('perks', pid);
 					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
 					var n:Object={id:pid, nazv:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
@@ -194,7 +197,10 @@ package fe.inter
 				perkPoint=pers.perkPoint;
 				statHead.nazv.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
-				for each(var dp:XML in AllData.d.perk) {
+
+				var perkList:XMLList = AllData.fetchNodeList('perks', 'perk');
+				for each(var dp:XML in perkList)
+				{
 					if (dp.@tip==1) {
 						var res:int=pers.perkPoss(dp.@id, dp);
 						if (res<0) continue;
@@ -206,6 +212,8 @@ package fe.inter
 						arr.push(n);
 					}
 				}
+
+				perkList = null; // Manual cleanup.
 				arr.sortOn(['sort','nazv']);
 				vis.butOk.text.text=Res.pipText('accept');
 				vis.butDef.text.text=Res.guiText('cancel');
@@ -283,7 +291,7 @@ package fe.inter
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
-					var xml=AllData.d.param.(@id==id);
+					var xml = AllData.fetchNodeWithChildID('params', id);
 					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} else if (page2==5) {
 					infoItemId=id;

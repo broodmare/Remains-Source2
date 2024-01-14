@@ -50,8 +50,9 @@ package fe.loc
 			bindTile();
 		}
 		
-		public function getXmlParam() {
-			var node:XML=AllData.d.obj.(@id==id)[0];
+		public function getXmlParam()
+		{
+			var node:XML = AllData.fetchNodeWithChildID('objs', id);
 			nazv=Res.txt('u',id);
 			if (node.@sX>0) scX=node.@sX; else scX=node.@size*World.tileX;
 			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*World.tileY;

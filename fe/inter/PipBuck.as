@@ -352,11 +352,14 @@ package fe.inter
 		
 		public function allItems():void
 		{
-			arrWeapon=new Array();
-			arrArmor=new Array();
-			var owner:Unit=new Unit();
-			var w:Weapon, a:Armor;
-			for each (var weap:XML in AllData.d.weapon.(@tip>0))
+			arrWeapon = [];
+			arrArmor  = [];
+			var owner:Unit = new Unit();
+			var w:Weapon;
+			var a:Armor;
+
+			var weaponList = AllData.fetchNodeList('weapons', 'weapon');
+			for each (var weap:XML in weaponList.(@tip > 0))
 			{
 				w = Weapon.create(owner, weap.@id, 0);
 				arrWeapon[weap.@id] = w;
@@ -366,11 +369,15 @@ package fe.inter
 					arrWeapon[weap.@id+'^'+1]=w;
 				}
 			}
-			for each (var armor:XML in AllData.d.armor)
+			weaponList = null; // Manual cleanup.
+
+			var armorList = AllData.fetchNodeList('armors', 'armor');
+			for each (var armor:XML in armorList)
 			{
 				a = new Armor(armor.@id);
 				arrArmor[armor.@id] = a;
 			}
+			armorList = null; // Manual cleanup.
 		}
 		
 		public function setRPanel():void
@@ -433,8 +440,8 @@ package fe.inter
 		public function setArmor(aid:String):void
 		{
 			ArmorId = aid;
-			try { hideMane = AllData.d.armor.(@id==aid).@hide; } 
-			catch (err) { hideMane = 0; }
+			try { hideMane = AllData.fetchNodeWithChildID('armors', aid).@hide; } 
+			catch (err)  { hideMane = 0; }
 		}
 		
 		public function step():void

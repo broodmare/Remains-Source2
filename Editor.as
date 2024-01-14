@@ -1,4 +1,4 @@
-﻿package {
+package {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Loader;
@@ -98,8 +98,19 @@
 		public var resTex:*;		//содержимое загруженного файла
 		var grafLoaded:Boolean=false;
 		var inited:Boolean=false;
+
+		private static var matList:XMLList;
+		private static var backList:XMLList;
+		private static var objList:XMLList;
 		
-		public function Editor(ned:MovieClip) {
+		public function Editor(ned:MovieClip)
+		{
+			matList = AllData.fetchNodeList('mats', 'mat');
+			backList = AllData.fetchNodeList('backs', 'back');
+			objList = AllData.fetchNodeList('objs', 'obj');
+
+
+
 			allroom=new XML();
 			ed=ned;
 			//подготовка рабочей области
@@ -165,7 +176,7 @@
 			if (!grafLoaded || !textLoaded || inited) return;
 			//создание списков материалов
 			//первый список
-			var xmll:XMLList=AllData.d.mat.(@ed=='1');
+			var xmll:XMLList = matList.(@ed=='1');
 			addMaterial(0,<mat ed='1' id='' n='[пусто]'/>);
 			var j=1;
 			for (var i in xmll) {
@@ -173,7 +184,7 @@
 				j++;
 			}
 			//второй список
-			xmll=AllData.d.mat.(@ed=='2');
+			xmll = matList.(@ed=='2');
 			addMaterial(0,<mat ed='2' id='' n='[пусто]'/>);
 			j=1;
 			for (i in xmll) {
@@ -181,7 +192,7 @@
 				j++;
 			}
 			//третий список
-			xmll=AllData.d.mat.(@ed=='3' || @ed=='4');
+			xmll = matList.(@ed=='3' || @ed=='4');
 			addMaterial(0,<mat ed='1' id='' n='[пусто]'/>);
 			j=1;
 			for (i in xmll) {
@@ -205,7 +216,7 @@
 			ed.objList0.dataProvider = dp[1];
 			ed.objList1.dataProvider = dp[11];
 			ed.objList2.dataProvider = dp[21];
-			xmll=AllData.d.obj.(@ed>0);
+			xmll = objList.(@ed > 0);
 			for (i in xmll) {
 				var id:String=xmll[i].@id;
 				var lab:String='['+id+']';
@@ -213,7 +224,7 @@
 				if (xmll[i].@n.length()) lab=xmll[i].@n;
 				dp[xmll[i].@ed].addItem({label:lab, id:id, ed:xmll[i].@ed, icon:'ico_'+xmll[i].@ico, size:xmll[i].@size, wid:xmll[i].@wid});
 			}
-			xmll=AllData.d.back;
+			xmll = backList;
 			for (i in xmll) {
 				if (xmll[i].@nope!='1')	dp[21].addItem({label:((xmll[i].@id=='')?('-------  '+xmll[i].@n+'  ------------'):xmll[i].@n), icon:((xmll[i].@id=='')?'':'iconBack'), id:xmll[i].@id, ed:21, x1:xmll[i].@x1, x2:xmll[i].@x2, y1:xmll[i].@y1, y2:xmll[i].@y2});
 			}
@@ -1011,9 +1022,9 @@
 			obj.vis.selPoint.visible=obj.vis.tid.visible=v_ids;
 			
 			var isback=false;
-			var xmll:XML=AllData.d.obj.(@ed>0 && @id==nid)[0];
+			var xmll:XML = objList.(@ed > 0 && @id == nid)[0];
 			if (xmll==null) {
-				xmll=AllData.d.back.(@id==nid)[0];
+				xmll = backList.(@id == nid)[0];
 				if (xmll) isback=true;
 				else return null;
 			}
@@ -1122,10 +1133,10 @@
 					}
 					var lab:String='';
 					if (textXML.obj.(@id==obj.id).length() && textXML.obj.(@id==obj.id).n[0].length()) lab=textXML.obj.(@id==obj.id).n[0];
-					var xmll=AllData.d.obj.(@id==obj.id);
+					var xmll = objList.(@id == obj.id);
 					if (xmll.length() && xmll[0].@n.length()) lab=xmll[0].@n;
 					else {
-						xmll=AllData.d.back.(@id==obj.id);
+						xmll = backList.(@id == obj.id);
 						if (xmll.length() && xmll[0].@n.length()) lab=xmll[0].@n;
 					}
 					ed.objInfo.visible=true;

@@ -293,21 +293,22 @@ package fe.unit
 		
 		public var factor:Array;
 		
-		public function Pers(loadObj:Object=null, opt:Object=null) {
+		public function Pers(loadObj:Object=null, opt:Object=null)
+		{
 			skill_ids=new Array();
 			skills=new Array();
 			addictions=new Array();
 			var ndif:int=2;
-			//if (opt && opt.dif!=null) ndif=opt.dif;
-			ndif=World.w.game.globalDif;
-			//for (var i in skills) trace(i,skills[i]);
-			for each (var sk in AllData.d.skill) {
+			ndif = World.w.game.globalDif;
+
+			var skillList:XMLList = AllData.fetchNodeList('skills', 'skill');
+			for each (var sk in skillList)
+			{
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
 				if (loadObj==null || loadObj.skills[sk.@id]==null) {
-					skills[sk.@id]=0;//Math.floor(Math.random()*10);
-				} else {
-					skills[sk.@id]=loadObj.skills[sk.@id];
+					skills[sk.@id]=0;
 				}
+				else skills[sk.@id]=loadObj.skills[sk.@id];
 			}
 			//сложность игры
 			setGlobalDif(ndif);
@@ -343,7 +344,6 @@ package fe.unit
 				if (loadObj.rndpump) rndpump=true;
 				if (loadObj.cp) currentCPCode=loadObj.cp;
 				if (loadObj.prevcp) prevCPCode=loadObj.prevcp;
-				//if (loadObj.isDJ!=null) isDJ=loadObj.isDJ;
 				if (loadObj.hasOwnProperty('headHP')) headHP=loadObj.headHP*inMaxHP;
 				if (loadObj.hasOwnProperty('torsHP')) torsHP=loadObj.torsHP*inMaxHP;
 				if (loadObj.hasOwnProperty('legsHP')) legsHP=loadObj.legsHP*inMaxHP;
@@ -369,7 +369,6 @@ package fe.unit
 				if (opt.fastxp) xpDelta=3000;
 				if (opt.rndpump) rndpump=true;
 				if (opt.hardskills) levelSkAdd=3;
-				//if (opt.djump) isDJ=true;
 				xpNext=xpDelta;
 			}
 			setAllSt();
@@ -377,22 +376,28 @@ package fe.unit
 			if (loadObj && loadObj.perks) {
 				for (var pid in loadObj.perks) {
 					perks[pid]=loadObj.perks[pid];
-					//trace(pid,loadObj.perks[pid]);
 				}
 			}
 			if (loadObj && loadObj.persName) persName=loadObj.persName;
 			if (loadObj==null && opt && opt.propusk) {
 				perks['levitation']=1;
 			}
-			xml_head=AllData.d.perk.(@id=='trauma_head')[0]
-			xml_tors=AllData.d.perk.(@id=='trauma_tors')[0]
-			xml_legs=AllData.d.perk.(@id=='trauma_legs')[0]
-			xml_blood=AllData.d.perk.(@id=='trauma_blood')[0]
-			xml_mana=AllData.d.perk.(@id=='trauma_mana')[0]
-			factor=new Array();
-			for each (var param in AllData.d.param) {
-				if (param.@f>0 && param.@v.length() && param.@v!='')	factor[param.@v]=new Array();
+			
+			xml_head = AllData.fetchNodeWithChildID('perks', 'trauma_head');
+			xml_tors = AllData.fetchNodeWithChildID('perks', 'trauma_tors');
+			xml_legs = AllData.fetchNodeWithChildID('perks', 'trauma_legs');
+			xml_blood = AllData.fetchNodeWithChildID('perks', 'trauma_blood');
+			xml_mana = AllData.fetchNodeWithChildID('perks', 'trauma_mana');
+
+			factor = [];
+
+			var paramList:XMLList = AllData.fetchNodeList('params', 'param');
+			for each (var param in paramList)
+			{
+				if (param.@f>0 && param.@v.length() && param.@v!='') factor[param.@v] = [];
 			}
+
+			paramList = null; // Manual cleanup.
 		}
 		
 		public function save():Object {
@@ -801,8 +806,10 @@ package fe.unit
 			World.w.gui.setAll();
 		}
 		
-		public function addPerk(id:String, minus:Boolean=false) {
-			var maxlvl=AllData.d.perk.(@id==id).@lvl;
+		public function addPerk(id:String, minus:Boolean=false)
+		{
+			var maxlvl = AllData.fetchNodeWithChildID.('perks', id).@lvl;
+
 			if (!(maxlvl>0)) maxlvl=1;
 			if (perks[id]) {
 				if (perks[id]<maxlvl) {
@@ -850,13 +857,18 @@ package fe.unit
 			}
 			n=100;
 			while (perkPoint>0 && n>0) {
-				dost=new Array();
-				for each(var dp:XML in AllData.d.perk) {
+				dost = [];
+
+				var perkList = AllData.fetchNodeList('perks', 'perk');
+				for each(var dp:XML in perkList)
+				{
 					if (dp.@tip==1) {
 						var res:int=perkPoss(dp.@id, dp);
 						if (res==1) dost.push(dp.@id);
 					}
 				}
+				perkList = null; // Manual cleanup.
+
 				if (dost.length==0) break;
 				sk=dost[Math.floor(Math.random()*dost.length)];
 				addPerk(sk,true);
@@ -865,8 +877,10 @@ package fe.unit
 		}
 		
 		//вернуть -1 если перк уже вкачан по максимуму, вернуть 0 если не выполнены условия, вернуть 1 если условия выполнены
-		public function perkPoss(nid:String, dp:XML=null):int {
-			if (dp==null) dp=AllData.d.perk.(@id==nid)[0];
+		public function perkPoss(nid:String, dp:XML=null):int
+		{
+			
+			if (dp==null) dp = AllData.fetchNodeWithChildID('perks', nid);
 			if (dp==null) return -1;
 			var numb=perks[nid];
 			if (numb==null) numb=0;
@@ -1262,12 +1276,14 @@ package fe.unit
 				var lvl=0;
 				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]);
 				else lvl=getSkLevel(skills[id]);
-				xml=AllData.d.skill.(@id==id)[0];
+
+				xml = AllData.fetchNodeWithChildID('skills', id);
 				setSkillParam(xml, lvl, skills[id]);
 			}
 			//перки
-			for (id in perks) {
-				xml=AllData.d.perk.(@id==id)[0];
+			for (id in perks)
+			{
+				xml=AllData.fetchNodeWithChildID('perks', id);
 				setSkillParam(xml, perks[id]);
 			}
 			//восст. хп органов
@@ -1283,7 +1299,7 @@ package fe.unit
 			for each(var eff:Effect in gg.effects) {
 				id=eff.id;
 				if (eff.vse) continue;
-				xml=AllData.d.eff.(@id==id)[0];
+				xml = AllData.fetchNodeWithChildID('effs', id);
 				setSkillParam(xml, eff.vse?0:eff.lvl);
 			}
 			//броня и защиты
@@ -1301,8 +1317,10 @@ package fe.unit
 				if (gg.currentAmul) armorParameters(gg.currentAmul);
 				//параметры от предметов из инвентаря
 				if (gg.invent) setInvParameters(gg.invent);
-			} else {
-				xml=AllData.d.eff.(@id=='alicorn')[0];
+			}
+			else
+			{
+				xml = AllData.fetchNodeWithChildID('skills', 'alicorn');
 				setSkillParam(xml, 1);
 				
 				setBegFactor('skin',gg.skin);
@@ -1345,8 +1363,10 @@ package fe.unit
 				if (inv.items[w].kol>0) {
 					if (inv.items[w].xml && inv.items[w].xml.sk.length()) {
 						setSkillParam(inv.items[w].xml, 1);	
-					} else {
-						var xml=AllData.d.eff.(@id==w);
+					}
+					else
+					{
+						var xml = AllData.fetchNodeWithChildID('effs', w);
 						if (xml.length()) setSkillParam(xml[0], 1);
 					}
 				}

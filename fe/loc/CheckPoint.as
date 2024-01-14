@@ -28,7 +28,8 @@ package fe.loc
 			prior=1;
 			id=nid;
 			levitPoss=false;
-			var node:XML=AllData.d.obj.(@id==id)[0];
+			
+			var node:XML = AllData.fetchNodeWithChildID('objs', id);
 			
 			X=nx, Y=ny;
 			scX=node.@size*World.tileX;

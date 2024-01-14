@@ -1,0 +1,2327 @@
+	<!--       *******   Оружие   *******         -->
+			<!--
+			Основные:
+				tip - тип оружия
+					0 - внутреннее
+					1 - холодное
+					2 - маленькое (пистолеты)
+					3 - большое (винтовки и больше)
+					4 - метательное
+					5 - магия
+				mtip - тип холодного оружия
+					0 - обычное
+					1 - копья
+					2 - цепная пила
+				throwtip - тип взрывчатки
+					0 - граната
+					1 - мина
+					2 - липкая бомба
+				skill - требуемый навык
+					1 - холодное
+					2 - лёгкое
+					3 - самодельное
+					4 - энергомагическое
+					5 - взрывчатка
+					6 - магия
+				lvl - уровень навыка
+				perk - связанный перк
+				cat - категория
+					1 - холодное
+					2 - пистолеты
+					3 - автоматы
+					4 - дробовики
+					5 - винтовки
+					6 - тяжёлое
+					7 - снайперки
+					8 - взрывчатка
+					9 - магия
+				crack='1' - холодное оружие может взламывать контейнеры (монтировка)
+					
+			com - параметры, связанные с нахождением, покупкой и ремонтом
+				price - цена покупки и ремонта
+				worth - где встречается
+					1 - хлам
+					2 - инструмент
+					3 - обычное оружие
+					4 - боевое оружие (оружейный шкаф)
+					5 - большое и тяжёлое оружие (оружейный ящик)
+				stage - этап сюжета
+				chance - шанс на рандомное выпадение
+				uniq - шанс найти уникальный вариант (если он есть)
+				rep - эффективность ремонта инструментами
+				
+			char - характеристики
+				
+				maxhp - выстрелов или ударов до поломки
+				damage - урон
+				rapid - тактов на выстрел (30 в сек)
+				prep - тактов на запуск (для минигана)
+				tipdam - Типы урона
+					0 - пуля
+					1 - лезвие или шипы
+					2 - физический
+					3 - огонь
+					4 - взрыв
+					5 - лазер
+					6 - плазма
+					7 - яд
+					8 - эми
+				knock - отброс
+				destroy - урон стенам
+				prec - прицельная точность в блоках (на этой дистации шанс попасть 100%), 0 - если попадание всегда
+				holder - магазин
+				rashod - затраты на один выстрел
+				reload - время на перезарядку в тактах
+				kol - пуль за один выстрел (для дробовиков)
+				pier - бронебойность
+				expl - радиус взрыва
+				time - задержка взрыва
+				sens - радиус срабатывания
+				
+			phis - физические параметры оружия и снарядов
+			
+				speed - скорость полёта снаряда
+				deviation - разлёт пуль, в градусах
+				minlong - минимальная длина холодного оружия (от основания)
+				long - длина холодного оружия
+				minlong - длина, с которой начинается ударная часть
+				drot - скорость вращения, если не задано, то мгновенная
+				drot2 - скорость вращения при стрельбе
+				massa - вес оружия
+				
+			vis - визуальные эффекты
+				
+				tipdec - тип оставляемых на стенах следов
+					1-3 - дырки от пуль
+					4-6 - трещины от ударов
+					9	- трещины от взрывов
+					11 - огонь
+					12 - лазер
+					13 - слабый лазер
+					15 - зелёная плазма
+					16 - синяя плазма
+					17 - малиновая плазма
+					19 - взрыв плазмы
+				shell - выброс гильзы
+				vbul - вид снаряда
+				laser - снаряд в виде луча
+				flame - огонь
+				
+			snd - звуки
+			noise - шум от выстрела -->
+<weapons>
+	
+	<weapon id='armature' tip='1' cat='1' skill='1' lvl='0' perk='stunning'>
+		<char maxhp='180' damage='11' rapid='15' tipdam='2' knock='5' destroy='20'/>
+		<phis massa='2' minlong='30' long='50'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_metal_item' noise='400'/>
+		<sats cons='18'/>
+		<com price='28' chance='1' stage='1' worth='1' rep='0'/>
+		<n>Кусок арматуры</n>
+	</weapon>
+	
+	<weapon id='bat' tip='1' cat='1' skill='1' lvl='0' perk='stunning'>
+		<char maxhp='100' damage='10' rapid='12' tipdam='2' knock='5' destroy='10'/>
+		<phis massa='1' minlong='30' long='50'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='falll_item' noise='200'/>
+		<sats cons='18'/>
+		<com price='20' chance='1' stage='1' worth='1' rep='2'/>
+		<n>Бита с гвоздями</n>
+	</weapon>
+	
+	<weapon id='hsword' tip='1' cat='1' skill='1' lvl='0' perk='acute'>
+		<char maxhp='200' damage='12' rapid='12' tipdam='1' knock='5' destroy='10'/>
+		<phis massa='4' m='2' minlong='20' long='60'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_metal_item' noise='400'/>
+		<sats cons='16'/>
+		<dop effect='cut' damage='2' ch='0.5'/>
+		<com price='85' chance='0' stage='1' worth='2' rep='2'/>
+		<n>Самодельный меч</n>
+	</weapon>
+	
+	<weapon id='knife' tip='1' cat='1' skill='1' lvl='0' perk='acute'>
+		<char maxhp='100' damage='9' rapid='8' tipdam='1' knock='2' destroy='10' auto='1'/>
+		<phis massa='2' minlong='10' long='30'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_small' fall='fall_metal_item' noise='200'/>
+		<sats cons='24' que='3'/>
+		<dop effect='cut' damage='1' ch='0.25'/>
+		<com price='25' chance='1' stage='1' worth='2' rep='2'/>
+		<n>Нож</n>
+	</weapon>
+	
+	<weapon id='mont' tip='1' cat='1' skill='1' lvl='1' perk='stunning' crack='1' mess='mont'>
+		<char maxhp='300' damage='14' rapid='15' tipdam='2' knock='5' destroy='80' auto='1'/>
+		<char maxhp='800' rapid='12' destroy='150' auto='1'/>
+		<phis massa='2' minlong='20' long='30'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_metal_item' noise='400'/>
+		<sats cons='25'/>
+		<com price='500' chance='0.3' stage='1' worth='2' rep='0' uniq='0'/>
+		<n>Монтировка</n>
+	</weapon>
+	
+	<weapon id='chopper' tip='1' cat='1' skill='1' lvl='1' perk='acute'>
+		<char maxhp='180' damage='14' rapid='12' tipdam='1' knock='5' destroy='10'/>
+		<phis massa='3' minlong='15' long='43'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_metal_item' noise='400'/>
+		<sats cons='18'/>
+		<dop effect='cut' damage='2' ch='0.5'/>
+		<com price='180' chance='1' stage='1' worth='2' rep='2'/>
+		<n>Тесак</n>
+	</weapon>
+	
+	<weapon id='shovel' tip='1' cat='1' skill='1' lvl='1' perk='acute'>
+		<char maxhp='100' damage='18' rapid='20' tipdam='1' knock='10' destroy='20' pow='1'/>
+		<phis massa='7' m='2' minlong='40' long='60'/>
+		<vis tipdec='5'/>
+		<snd shoot='m_med' fall='fall_hammer' noise='500'/>
+		<sats cons='25'/>
+		<dop effect='cut' damage='2' ch='0.25'/>
+		<com price='150' worth='2' stage='2' chance='1' rep='2'/>
+		<n>Лопата</n>
+	</weapon>
+	
+	<weapon id='spear' tip='1' mtip='1' cat='1' skill='1' lvl='2' perk='acute'>
+		<char maxhp='100' damage='32' rapid='20' tipdam='1' knock='5' destroy='10' pow='1'/>
+		<char maxhp='200' damage='30'/>
+		<phis massa='2' m='2' long='50'/>
+		<vis tipdec='4'/>
+		<dop/>
+		<dop effect='poison' damage='4' ch='0.5'/>
+		<snd shoot='m_med' fall='falll_item' noise='400'/>
+		<sats cons='20'/>
+		<com price='180' worth='1' chance='1' stage='1' rep='2' uniq='1'/>
+		<n>Копьё</n>
+	</weapon>
+	
+	<weapon id='mach' tip='1' cat='1' skill='1' lvl='2' perk='acute'>
+		<char maxhp='300' damage='16' rapid='12' tipdam='1' knock='5' destroy='10' combo='1'/>
+		<char maxhp='300' damage='18' knock='10'/>
+		<phis massa='3' m='2' minlong='20' long='60'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_metal_item' noise='400'/>
+		<sats cons='18'/>
+		<dop effect='cut' damage='2' ch='0.5'/>
+		<com price='400' worth='2' chance='0.6' stage='1' uniq='1'/>
+		<n>Мачете</n>
+	</weapon>
+	
+	<weapon id='zknife' tip='1' cat='1' skill='1' lvl='1' perk='acute'>
+		<char maxhp='200' damage='12' rapid='8' tipdam='1' knock='2' destroy='10' auto='1'/>
+		<char maxhp='250' damage='13' auto='1'/>
+		<phis massa='2' minlong='10' long='30'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_small' fall='fall_metal_item' noise='200'/>
+		<sats cons='24' que='3'/>
+		<dop effect='cut' damage='2' ch='0.2'/>
+		<dop effect='cut' damage='4' ch='0.5'/>
+		<com price='210' chance='1' stage='1' worth='2' rep='2' uniq='1'/>
+		<n>Нож</n>
+	</weapon>
+	
+	<weapon id='cknife' tip='1' cat='1' skill='1' lvl='2' perk='acute'>
+		<char maxhp='450' damage='15' rapid='8' tipdam='1' knock='2' destroy='10' auto='1'/>
+		<char maxhp='550' damage='17' auto='1'/>
+		<phis massa='2' minlong='10' long='30'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_small' fall='fall_metal_item' noise='200'/>
+		<sats cons='24' que='3'/>
+		<dop effect='cut' damage='2' ch='0.5'/>
+		<com price='600' worth='4' chance='1' stage='1' uniq='0'/>
+		<n>Боевой Нож</n>
+	</weapon>
+	
+	<weapon id='edagger' tip='1' cat='1' skill='1' lvl='3'>
+		<char maxhp='500' damage='18' rapid='9' tipdam='6' knock='2' destroy='10' auto='1'/>
+		<phis massa='2' minlong='10' long='40'/>
+		<vis tipdec='15'/>
+		<snd shoot='m_small' fall='fall_metal_item' noise='200'/>
+		<sats cons='24' que='3'/>
+		<com price='1600' chance='0.7' stage='1' worth='4' rep='1'/>
+	</weapon>
+	
+	<weapon id='cdagger' tip='1' cat='1' skill='1' lvl='4'>
+		<char maxhp='500' damage='25' rapid='8' tipdam='1' pier='15' knock='3' destroy='10' auto='1'/>
+		<phis massa='2' minlong='10' long='50'/>
+		<vis tipdec='15'/>
+		<snd shoot='m_small' fall='fall_metal_item' noise='200'/>
+		<sats cons='24' que='3'/>
+		<com price='1500' chance='0' stage='1' worth='4' rep='1'/>
+	</weapon>
+	
+	<weapon id='mace' tip='1' cat='1' skill='1' lvl='2' perk='stunning'>
+		<char maxhp='140' damage='30' rapid='20' tipdam='2' knock='10' destroy='80' pow='1'/>
+		<phis massa='7' m='2' minlong='40' long='60'/>
+		<vis tipdec='5' flare='bum'/>
+		<snd shoot='m_big' fall='fall_hammer' noise='500'/>
+		<sats cons='25'/>
+		<com price='350' worth='2' stage='2' chance='0.6' rep='0'/>
+		<n>Палица</n>
+	</weapon>
+	
+	<weapon id='pipe' tip='1' cat='1' skill='1' lvl='3' perk='stunning'>
+		<char maxhp='120' damage='26' rapid='15' tipdam='2' knock='8' destroy='30'/>
+		<phis massa='2' minlong='20' long='45'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_metal_item' noise='400'/>
+		<sats cons='18'/>
+		<com chance='1' stage='1' price='200' worth='2' rep='0'/>
+		<n>Труба</n>
+	</weapon>
+	
+	<weapon id='zsword' tip='1' cat='1' skill='1' lvl='3' perk='acute'>
+		<char maxhp='300' damage='24' rapid='12' crit='1.5' tipdam='1' knock='5' destroy='10'/>
+		<char maxhp='400' damage='25' rapid='10'/>
+		<phis massa='5' m='2' minlong='30' long='75'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_hammer' noise='300'/>
+		<sats cons='18'/>
+		<dop effect='cut' damage='3' ch='0.5'/>
+		<com price='800' chance='0.5' stage='3' worth='4' uniq='1' rep='0.5'/>
+		<n>Меч</n>
+	</weapon>
+	
+	<weapon id='ripper' tip='1' mtip='2' cat='1' skill='1' lvl='3'>
+		<char maxhp='900' damage='10' rapid='3' tipdam='1' knock='2' destroy='10'/>
+		<char maxhp='1500' damage='11' pier='15'/>
+		<phis massa='10' m='2' minlong='30' long='80'/>
+		<vis tipdec='5' lasm='1'/>
+		<snd prep='pila_s' t1='800' t2='4000' reload='laser_r' fall='fall_metal_item' noise='800'/>
+		<sats cons='24' que='6'/>
+		<dop effect='cut' damage='4' ch='0.1'/>
+		<ammo holder='200' reload='30'/>
+		<a>batt</a>
+		<com price='1200' worth='2' stage='2' chance='0.1' rep='0.5' uniq='0'/>
+		<n>Потрошитель</n>
+	</weapon>
+	
+	<weapon id='axe' tip='1' cat='1' skill='1' lvl='3' perk='acute'>
+		<char maxhp='240' damage='34' rapid='17' tipdam='1' knock='12' destroy='80' pow='1'/>
+		<phis massa='10' m='2' minlong='50' long='60'/>
+		<vis tipdec='5'/>
+		<snd shoot='m_big' fall='fall_hammer' noise='400'/>
+		<sats cons='36'/>
+		<dop effect='cut' damage='4' ch='0.5'/>
+		<com price='600' worth='2' stage='2' chance='0.5'/>
+		<n>Топор</n>
+	</weapon>
+	
+	<weapon id='hammer' tip='1' cat='1' skill='1' lvl='4' perk='stunning'>
+		<char maxhp='200' damage='44' rapid='20' tipdam='2' knock='15' destroy='350' pow='1'/>
+		<char maxhp='400' damage='50'/>
+		<phis massa='15' m='2' minlong='50' long='60'/>
+		<vis tipdec='5' flare='bum'/>
+		<snd shoot='m_big' fall='fall_hammer' noise='500'/>
+		<sats cons='32'/>
+		<com price='500' worth='2' stage='2' chance='0.5' rep='0.5' uniq='0'/>
+		<n>Кувалда</n>
+	</weapon>
+	
+	<weapon id='tlance' tip='1' mtip='1' cat='1' skill='1' lvl='4'>
+		<char maxhp='350' damage='50' rapid='18' tipdam='3' knock='5' destroy='200' pow='1'/>
+		<phis massa='6' m='2' long='60'/>
+		<vis tipdec='12' flare='flame'/>
+		<snd shoot='m_big' fall='falll_item' noise='400'/>
+		<sats cons='25'/>
+		<dop effect='igni' damage='8' ch='1'/>
+		<com price='2800' worth='4' chance='0.1' stage='3' rep='0.25'/>
+		<n>Копьё</n>
+	</weapon>
+	
+	<weapon id='elsword' tip='1' cat='1' skill='1' lvl='4'>
+		<char maxhp='350' damage='30' rapid='12' crit='2' tipdam='9' knock='5' destroy='10'/>
+		<char maxhp='480' damage='35'/>
+		<phis massa='5' m='2' minlong='30' long='75'/>
+		<vis tipdec='4' lasm='1' flare='spark'/>
+		<snd shoot='lasm_s' hit='hit_pole' fall='fall_hammer' noise='300'/>
+		<sats cons='25'/>
+		<com price='1900' worth='4' chance='0.1' stage='5' rep='0.25' uniq='0'/>
+		<n>Меч</n>
+	</weapon>
+	
+	<weapon id='autoaxe' tip='1' mtip='2' cat='1' skill='1' lvl='4'>
+		<char maxhp='400' damage='25' rapid='6' tipdam='1' pier='30' knock='2' destroy='80' auto='1'/>
+		<phis massa='10' m='3' minlong='30' long='70'/>
+		<vis tipdec='5' lasm='1'/>
+		<snd prep='autoaxe_s' t1='300' t2='1450' reload='laser_r' fall='fall_hammer' noise='800'/>
+		<sats cons='36' que='3'/>
+		<dop effect='cut' damage='9' ch='0.1'/>
+		<ammo holder='300' reload='30' rashod='3'/>
+		<a>energ</a>
+		<com price='1100' worth='2' stage='5' chance='0.1' rep='0.25'/>
+		<n>Автотопор</n>
+	</weapon>
+	
+	<weapon id='mspear' tip='1' mtip='1' cat='1' skill='1' lvl='5'>
+		<char maxhp='350' damage='64' rapid='20' tipdam='6' knock='5' destroy='300' pow='1'/>
+		<char maxhp='400' damage='74' rapid='20' destroy='500'/>
+		<phis massa='6' m='3' long='50'/>
+		<vis tipdec='15' lasm='1' flare='plasma'/>
+		<vis tipdec='16' flare='plasma1'/>
+		<snd shoot='m_med' fall='fall_metal_item' flare='plasma' noise='400'/>
+		<sats cons='18'/>
+		<com price='4500' worth='5' chance='0.1' stage='3' rep='0.12' uniq='0'/>
+		<n>МКопьё</n>
+	</weapon>
+	
+	<weapon id='sword' tip='1' cat='1' skill='1' lvl='5' perk='acute'>
+		<char maxhp='500' damage='35' rapid='12' crit='2' tipdam='1' knock='5' destroy='10'/>
+		<char maxhp='1000' damage='40' pier='25'/>
+		<phis massa='5' m='2' minlong='30' long='80'/>
+		<phis massa='5' m='2' minlong='30' long='90'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_med' fall='fall_hammer' noise='300'/>
+		<sats cons='25'/>
+		<dop effect='cut' damage='6' ch='0.5'/>
+		<dop effect='cut' damage='10' ch='0.5'/>
+		<com price='3500' chance='0.2' stage='5' worth='4' rep='0' uniq='0'/>
+		<n>Меч</n>
+	</weapon>
+	
+	<weapon id='lsword' tip='1' cat='1' skill='1' lvl='5'>
+		<char maxhp='320' damage='45' rapid='15' crit='2' tipdam='5' knock='2' destroy='250'/>
+		<char maxhp='450' damage='52'/>
+		<phis massa='2' m='2' minlong='30' long='80'/>
+		<vis tipdec='12' lasm='1' flare='bum'/>
+		<snd shoot='lasm_s' hit='lasm_h' noise='400'/>
+		<sats cons='22'/>
+		<com price='4500' chance='0.1' stage='7' worth='4' rep='0.12' uniq='0'/>
+		<n>ЛазМеч</n>
+	</weapon>
+	
+	<weapon id='bsaw' tip='1' mtip='2' cat='1' skill='1' lvl='5'>
+		<char maxhp='1500' damage='14' rapid='3' pier='15' tipdam='1' knock='2' destroy='10'/>
+		<phis massa='10' m='3' minlong='10' long='60'/>
+		<vis tipdec='5' lasm='1'/>
+		<snd prep='bsaw_s' t1='800' t2='3000' reload='laser_r' fall='fall_hammer' noise='800'/>
+		<sats cons='36' que='6'/>
+		<dop effect='cut' damage='5' ch='0.1'/>
+		<ammo holder='600' reload='30' rashod='3'/>
+		<a>energ</a>
+		<com price='2100' worth='2' stage='5' chance='0.2' rep='0.2'/>
+		<n>Цепная пила</n>
+	</weapon>
+	
+	<weapon id='sledge' tip='1' cat='1' skill='1' lvl='5' perk='stunning'>
+		<char maxhp='500' damage='75' rapid='25' tipdam='2' knock='25' destroy='500' pow='1'/>
+		<char maxhp='500' damage='85' knock='28'/>
+		<phis massa='15' m='3' minlong='60' long='70'/>
+		<vis tipdec='5' flare='bum'/>
+		<snd shoot='m_big' fall='fall_hammer' noise='500'/>
+		<sats cons='32'/>
+		<com price='5800' worth='5' stage='7' chance='0.3' uniq='0.3' rep='0.15'/>
+		<n>Кувалда</n>
+	</weapon>
+	
+	<weapon id='kosa' tip='1' cat='1' skill='1' lvl='5'>
+		<char maxhp='400' damage='66' rapid='20' crit='2' tipdam='16' knock='1' destroy='10' pow='1'/>
+		<phis massa='6' m='3' minlong='70' long='80'/>
+		<vis tipdec='12' lasm='1' flare='bumn'/>
+		<snd shoot='m_big' hit='hit_necr' noise='300'/>
+		<sats cons='32'/>
+		<com price='7500' chance='0' rep='0.12'/>
+		<n>Коса смерти</n>
+	</weapon>
+	
+	<weapon id='p9mm' tip='2' cat='2' skill='2' lvl='0' perk='pistol'>
+		<char maxhp='200' damage='8' rapid='9' prec='8' knock='2' destroy='10'/>
+		<phis speed='150' deviation='5' recoil='5' massa='2'/>
+		<vis tipdec='1' shell='1'/>
+		<snd shoot='p10mm_s' reload='p10mm_r' noise='700'/>
+		<sats cons='17'/>
+		<ammo holder='8' reload='30'/>
+		<a>p9</a>
+		<com price='275' worth='3' chance='1' stage='1' rep='2'/>
+		<n>10-мм пистолет</n>
+	</weapon>
+	
+	<weapon id='r32' tip='2' cat='2' skill='2' lvl='0' perk='pistol' mess='r32'>
+		<char maxhp='200' damage='14' rapid='16' prec='8' knock='2' destroy='10'/>
+		<phis speed='150' deviation='5' recoil='10' massa='2'/>
+		<vis tipdec='1'/> 
+		<snd shoot='p10mm_s' reload='revo_r' noise='800'/>
+		<sats cons='32'/>
+		<ammo holder='5' reload='45'/>
+		<a>p32</a>
+		<com price='180' worth='3' chance='1' stage='1' rep='2'/>
+		<n>Револьвер .32</n>
+	</weapon>
+	
+	<weapon id='r375' tip='2' cat='2' skill='2' lvl='2' perk='pistol'>
+		<char maxhp='350' damage='24' rapid='18' prec='10' crit='2' knock='8' destroy='10'/>
+		<phis speed='150' deviation='5' recoil='10' massa='2'/>
+		<vis tipdec='1'/> 
+		<snd shoot='revo_s' reload='revo_r' noise='800'/>
+		<sats cons='32'/>
+		<ammo holder='6' reload='45'/>
+		<a>p375</a>
+		<com price='500' worth='3' chance='1' stage='1' rep='2'/>
+		<n>Револьвер .375</n>
+	</weapon>
+	
+	<weapon id='p10mm' tip='2' cat='2' skill='2' lvl='1' perk='pistol'>
+		<char maxhp='300' damage='11' rapid='7' prec='8' knock='4' destroy='10'/>
+		<char maxhp='400' damage='12' rapid='7' prec='10'/>
+		<phis speed='150' deviation='5' recoil='5' massa='2'/>
+		<vis tipdec='1' shell='1'/>
+		<snd shoot='p10mm_s' reload='p10mm_r' noise='700'/>
+		<sats cons='17'/>
+		<ammo holder='12' reload='35'/>
+		<a>p10</a>
+		<com price='275' worth='3' chance='1' stage='1' rep='2' uniq='1'/>
+		<n>10-мм пистолет</n>
+	</weapon>
+	
+	<weapon id='p10s' tip='2' cat='2' skill='2' lvl='2' perk='pistol'>
+		<char maxhp='300' damage='9' rapid='7' prec='8' knock='4' destroy='10'/>
+		<phis speed='150' deviation='5' recoil='4' massa='2.5'/>
+		<vis tipdec='1' shell='1' shine='100'/> 
+		<snd shoot='silen_s' reload='p10mm_r' noise='200'/>
+		<sats cons='17'/>
+		<ammo holder='12' reload='35'/>
+		<a>p10</a>
+		<com price='360' worth='3' chance='0.2' stage='1' rep='2'/>
+		<n>10-мм пистолет с глушителем</n>
+	</weapon>
+	
+	<weapon id='revo' tip='2' cat='2' skill='2' lvl='3' perk='pistol'>
+		<char maxhp='400' damage='36' rapid='16' prec='13' crit='2' knock='12' destroy='10'/>
+		<char maxhp='500' damage='44' prec='14'/>
+		<phis speed='200' deviation='3' recoil='10' massa='2'/>
+		<phis deviation='1.5'/>
+		<vis tipdec='2'/> 
+		<snd shoot='revo_s' reload='revo_r' noise='1200'/>
+		<dop vision='2'/>
+		<sats cons='32'/>
+		<ammo holder='6' reload='30'/>
+		<a>p44</a>
+		<com price='1550' worth='3' chance='0.25' stage='2' uniq='0'/>
+		<n>Револьвер .44</n>
+	</weapon>
+	
+	<weapon id='p308c' tip='2' cat='2' skill='2' lvl='3' perk='pistol'>
+		<char maxhp='600' damage='26' rapid='9' prec='10' crit='2' knock='10' destroy='10'/>
+		<phis speed='250' deviation='5' recoil='6' massa='3'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='p127_s' reload='p10mm_r' noise='1200'/>
+		<sats cons='17'/>
+		<ammo holder='12' reload='30'/>
+		<a>p308</a>
+		<com price='1000' worth='3' chance='0.3' stage='3'/>
+		<n>308 пистолет</n>
+	</weapon>
+	
+	<weapon id='p127mm' tip='2' cat='2' skill='2' lvl='4' perk='pistol'>
+		<char maxhp='400' damage='32' rapid='8' prec='10' crit='2' knock='18' destroy='30'/>
+		<char maxhp='400' damage='36' prec='11' crit='2' knock='26' destroy='150'/>
+		<phis speed='250' deviation='5' recoil='12' massa='3'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='p127_s' reload='p10mm_r' noise='1700'/>
+		<sats cons='17'/>
+		<ammo holder='7' reload='30'/>
+		<a>p127</a>
+		<com price='2000' worth='4' chance='0.4' stage='5' uniq='0.5'/>
+		<n>12,7-мм пистолет</n>
+	</weapon>
+	
+	<weapon id='psc' tip='2' cat='2' skill='2' lvl='5' perk='pistol'>
+		<char maxhp='360' damage='55' rapid='12' prec='9' crit='2' knock='20' destroy='30'/>
+		<char maxhp='420' damage='60' prec='10'/>
+		<phis speed='250' deviation='5' recoil='15' massa='3'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='p127_s' reload='p10mm_r' noise='1700'/>
+		<sats cons='17'/>
+		<ammo holder='7' reload='30'/>
+		<a>p50mg</a>
+		<com price='2500' worth='4' chance='0.3' stage='7' uniq='0' rep='0.5'/>
+	</weapon>
+	
+	<weapon id='shok' tip='2' cat='2' skill='4' lvl='0'>
+		<char maxhp='200' damage='10' rapid='15' prec='0' tipdam='9' destroy='0'/>
+		<phis speed='30' deviation='7' recoil='2' massa='2'/>
+		<vis tipdec='11' vbul='spark' bulanim='1'/> 
+		<snd shoot='spark_s' reload='p10mm_r' noise='400'/>
+		<sats cons='24'/>
+		<ammo holder='10' rashod='1' reload='45'/>
+		<a>batt</a>
+		<com price='300' worth='3' chance='0.5' stage='1' rep='2'/>
+		<n>Шоковый пистолет</n>
+	</weapon>
+	
+	<weapon id='rech' tip='2' cat='2' skill='4' lvl='0' perk='laser' mess='rech'>
+		<char maxhp='200' damage='5' rapid='12' prec='8' tipdam='5' destroy='10' auto='1'/>
+		<phis speed='200' deviation='5' recoil='2' massa='2'/>
+		<vis tipdec='11' vbul='blump'/> 
+		<snd shoot='las_s' reload='p10mm_r' noise='300'/>
+		<sats cons='20'/>
+		<ammo holder='20' rashod='1' reload='600' recharg='30'/>
+		<a>recharg</a>
+		<com price='250' worth='3' chance='0.25' stage='1' rep='2'/>
+		<n>Пистолет с подзарядкой</n>
+	</weapon>
+	
+	<weapon id='flaregun' tip='2' cat='2' skill='4' lvl='1' perk='pyro'>
+		<char maxhp='100' damage='15' rapid='20' prec='8' tipdam='3' knock='5' destroy='20'/>
+		<phis speed='50' deviation='5' recoil='5' massa='3'/>
+		<vis tipdec='11' vbul='flare'/> 
+		<snd shoot='incin_s' reload='p10mm_r' noise='400'/>
+		<dop effect='igni' damage='6' ch='1'/>
+		<sats cons='24'/>
+		<ammo holder='30' rashod='5' reload='45'/>
+		<a>fuel</a>
+		<com price='200' worth='3' chance='0.5' stage='1' rep='2'/>
+		<n>Сигнальный пистолет</n>
+	</weapon>
+	
+	<weapon id='lasp' tip='2' cat='2' skill='4' lvl='1' perk='laser'>
+		<char maxhp='275' damage='8' rapid='7' prec='9' tipdam='5' destroy='10' auto='1'/>
+		<char maxhp='275' damage='10' auto='1'/>
+		<phis speed='2000' deviation='5' recoil='2' massa='2'/>
+		<vis tipdec='13' vbul='laser2' spring='2'/> 
+		<snd shoot='las_s' reload='p10mm_r' noise='300'/>
+		<dop effect='blind' ch='0.1'/>
+		<sats cons='17'/>
+		<ammo holder='15' rashod='1' reload='45'/>
+		<ammo holder='30'/>
+		<a>batt</a>
+		<com price='450' worth='3' chance='0.5' stage='1' rep='2' uniq='1'/>
+		<n>Лазерный пистолет</n>
+	</weapon>
+	
+	<weapon id='plap' tip='2' cat='2' skill='4' lvl='2' perk='plasma'>
+		<char maxhp='300' damage='20' rapid='12' prec='6' tipdam='6' knock='3' destroy='50'/>
+		<char maxhp='300' rapid='10' prec='9'/>
+		<phis speed='70' deviation='5' recoil='2' massa='2'/>
+		<phis speed='150'/>
+		<vis tipdec='15' vbul='plasma1'/> 
+		<snd shoot='plap_s' reload='p10mm_r' noise='400'/>
+		<sats cons='17'/>
+		<ammo holder='40' rashod='4' reload='45'/>
+		<ammo holder='60' rashod='3'/>
+		<a>batt</a>
+		<com worth='3' price='850' chance='0.25' stage='1' uniq='0'/>
+		<n>Плазменный пистолет</n>
+	</weapon>
+	
+	<weapon id='pulsep' tip='2' cat='2' skill='4' lvl='3'>
+		<char maxhp='100' damage='40' rapid='15' prec='6' tipdam='8' knock='0' destroy='0'/>
+		<phis speed='70' deviation='5' recoil='0' massa='2'/>
+		<vis vbul='pulse' flare=''/> 
+		<snd shoot='pulse_s' reload='p10mm_r' noise='200'/>
+		<sats cons='17'/>
+		<ammo holder='40' rashod='4' reload='45'/>
+		<a>batt</a>
+		<com worth='3' price='1200' chance='0.125' stage='5'/>
+		<n>Импульсный пистолет</n>
+	</weapon>
+	
+	<weapon id='blaster' tip='2' cat='2' skill='4' lvl='5'>
+		<char maxhp='500' damage='120' rapid='10' prec='10' tipdam='18' knock='0' destroy='300'/>
+		<phis speed='2000' deviation='5' recoil='0' massa='2'/>
+		<vis vbul='laser1' spring='2' flare='plasma2' tipdec='12'/> 
+		<snd shoot='blaster_s' reload='p10mm_r' noise='500'/>
+		<sats cons='20'/>
+		<ammo holder='12' rashod='1' reload='45'/>
+		<a>bcell</a>
+		<com worth='3' price='10000' chance='0' rep='0.12'/>
+	</weapon>
+	
+	<!-- квестовый-->
+	<weapon id='wquest1' tip='2' cat='2' skill='2' lvl='3' perk='pistol' nostand='1'>
+		<char maxhp='600' damage='26' rapid='9' prec='10' crit='2' knock='10' destroy='10'/>
+		<phis speed='250' m='1' deviation='5' recoil='6' massa='3'/>
+		<vis vweap='visp308c' tipdec='2' shell='1'/> 
+		<snd shoot='p127_s' reload='p10mm_r' noise='1200'/>
+		<sats cons='17'/>
+		<ammo holder='12' reload='30'/>
+		<a>p308</a>
+		<com price='1000' worth='3' chance='0' stage='3'/>
+	</weapon>
+	
+	<weapon id='smg9' tip='2' cat='3' skill='2' lvl='1' perk='pistol'>
+		<char maxhp='500' damage='7' rapid='3' prec='6' knock='3' destroy='10'/>
+		<phis speed='150' deviation='10' recoil='5' massa='3'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='smg10mm_s' reload='p10mm_r' noise='800'/>
+		<sats que='4' cons='20'/>
+		<ammo holder='24' reload='45'/>
+		<a>p9</a>
+		<com price='500' worth='3' chance='0.7' stage='1'/>
+		<n>9-мм пистолет-пулемёт</n>
+	</weapon>
+	
+	<weapon id='smg10' tip='2' cat='3' skill='2' lvl='2' perk='pistol'>
+		<char maxhp='600' damage='10' rapid='3' prec='6' knock='3' destroy='10'/>
+		<phis speed='150' deviation='10' recoil='5' massa='3'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='smg10mm_s' reload='p10mm_r' noise='900'/>
+		<sats que='4' cons='20'/>
+		<ammo holder='24' reload='35'/>
+		<a>p10</a>
+		<com price='650' worth='3' chance='0.5' stage='1'/>
+		<n>10-мм пистолет-пулемёт</n>
+	</weapon>
+	
+	<weapon id='pp127mm' tip='3' cat='3' skill='2' lvl='4' perk='pistol'>
+		<char maxhp='1400' damage='16' rapid='3' prec='7' knock='6' destroy='10'/>
+		<char maxhp='1800' damage='17' prec='9'/>
+		<phis speed='200' deviation='10' recoil='5' massa='4'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='pp127_s' reload='p10mm_r' noise='850'/>
+		<sats que='4' cons='20'/>
+		<ammo holder='24' reload='30'/>
+		<a>p127</a>
+		<com price='2450' worth='4' chance='0.25' stage='5' uniq='0.05' rep='0.5'/>
+		<n>12,7-мм пистолет-пулемёт</n>
+	</weapon>
+	
+	<weapon id='assr' tip='3' cat='3' skill='2' lvl='2' perk='commando'>
+		<char maxhp='800' damage='9' rapid='3' prec='10' knock='3' destroy='10'/>
+		<char maxhp='1000' damage='11' prec='11' knock='5'/>
+		<phis speed='200' m='2' drot='15' deviation='5' recoil='5' massa='5'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='rifle_s' reload='rifle_r' noise='1000'/>
+		<sats que='3' cons='25'/>
+		<ammo holder='24' reload='40'/>
+		<a>p556</a>
+		<com price='750' worth='4' chance='1' stage='1' uniq='1'/>
+		<n>Штурмовая винтовка</n>
+	</weapon>
+	
+	<weapon id='carbine' tip='3' cat='3' skill='2' lvl='3' perk='commando'>
+		<char maxhp='900' damage='12' rapid='3' prec='13' knock='3' destroy='10'/>
+		<char maxhp='1100' damage='13' prec='15'/>
+		<phis speed='200' m='2' drot='15' deviation='5' recoil='5' massa='5'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='rifle_s' reload='rifle_r' noise='1000'/>
+		<dop vision='2'/>
+		<sats que='3' cons='25'/>
+		<ammo holder='32' reload='40'/>
+		<ammo holder='40' reload='30'/>
+		<a>p556</a>
+		<com price='1900' worth='4' chance='0.5' stage='3' uniq='1' rep='0.5'/>
+		<n>Штурмовой карабин</n>
+	</weapon>
+	
+	<weapon id='zebr' tip='3' cat='3' skill='2' lvl='4' perk='commando'>
+		<char maxhp='800' damage='14' rapid='3' prec='16' dkol='3' knock='4' destroy='10'/>
+		<char maxhp='1100' damage='16' prec='20'/>
+		<phis speed='200' m='2' deviation='2' drot='15' recoil='3' massa='5'/>
+		<vis tipdec='1' shell='1' shine='200'/> 
+		<snd shoot='zebr_s' reload='rifle_r' noise='200'/>
+		<sats que='3' cons='30'/>
+		<dop effect='igni' damage='6' ch='1' vision='2'/>
+		<dop effect='igni' damage='24'/>
+		<ammo holder='24' reload='40'/>
+		<a>p556</a>
+		<com price='2700' worth='4' chance='0.2' stage='5' rep='0.25' uniq='0'/>
+		<n>Зебринская винтовка</n>
+	</weapon>
+	
+	<weapon id='lmg' tip='3' cat='3' skill='2' lvl='5' perk='commando'>
+		<char maxhp='1200' damage='12' rapid='2' prec='12' knock='3' destroy='10'/>
+		<char maxhp='1500' damage='14' prec='14'/>
+		<phis speed='200' m='2' drot='13' deviation='6' recoil='5' massa='12'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='lmg_s' reload='rifle_r' noise='1000'/>
+		<sats que='6' cons='25'/>
+		<ammo holder='90' reload='60'/>
+		<a>p556</a>
+		<com price='3500' worth='5' chance='0.5' stage='5' rep='0.25' uniq='0'/>
+		<n>Лёгкий пулемёт</n>
+	</weapon>
+	
+	<weapon id='autor' tip='3' cat='3' skill='2' lvl='5' perk='perf'>
+		<char maxhp='900' damage='30' rapid='5' prec='16' knock='6' destroy='10'/>
+		<phis speed='300' m='2' drot='12' deviation='4' recoil='7' massa='15'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='hmg_s' reload='rifle_r' noise='1000'/>
+		<sats que='3' cons='32'/>
+		<ammo holder='20' reload='45'/>
+		<a>p308</a>
+		<com price='2800' worth='5' chance='0.25' stage='7' rep='0.25'/>
+		<n>Автоматическая</n>
+	</weapon>
+	
+	<weapon id='sparkl' tip='3' cat='3' skill='4' lvl='3' perk='laser'>
+		<char maxhp='1100' damage='14' rapid='3' prec='16' tipdam='5' dkol='3' destroy='50'/>
+		<char maxhp='1200' damage='15' dkol='0'/>
+		<phis speed='2000' m='2' drot='15' deviation='3' recoil='2' massa='5'/>
+		<vis tipdec='12' vbul='sparkl' spring='2'/> 
+		<snd shoot='laser_s' reload='laser_r' noise='500'/>
+		<dop effect='blind' ch='0.05'/>
+		<sats que='3' cons='25'/>
+		<ammo holder='120' rashod='4' reload='45'/>
+		<ammo holder='160'/>
+		<a>energ</a>
+		<com price='1500' worth='4' chance='0.5' stage='5' rep='0.5' uniq='0.6'/>
+		<n>Спаркл-пушка</n>
+	</weapon>
+	
+	<weapon id='plamg' tip='3' cat='3' skill='4' lvl='4' perk='plasma'>
+		<char maxhp='1200' damage='17' rapid='4' prec='8' tipdam='6' knock='2' destroy='150'/>
+		<char maxhp='1200' damage='18' pier='10'/>
+		<phis speed='80' m='2' drot='11' deviation='5' recoil='2' massa='7'/>
+		<vis tipdec='16' vbul='plasma2'/> 
+		<snd shoot='caster_s' reload='laser_r' noise='500'/>
+		<sats que='3' cons='25'/>
+		<ammo holder='180' rashod='5' reload='45'/>
+		<a>energ</a>
+		<com price='2900' worth='4' chance='0.25' stage='5' rep='0.25' uniq='0'/>
+		<n>Плазмомёт</n>
+	</weapon>
+	
+	<weapon id='nova' tip='3' cat='3' skill='4' lvl='4' perk='laser'>
+		<char maxhp='1000' damage='25' rapid='6' prec='13' tipdam='5' destroy='150'/>
+		<char maxhp='1500' damage='28'/>
+		<phis speed='2000' m='2' drot='13' deviation='3' recoil='2' massa='5'/>
+		<vis tipdec='12' vbul='laser5' spring='2' flare='laser'/> 
+		<snd shoot='laser_s' reload='laser_r' noise='500'/>
+		<dop effect='blind' ch='0.1'/>
+		<sats que='3' cons='30'/>
+		<ammo holder='240' rashod='8' reload='45'/>
+		<ammo holder='320'/>
+		<a>energ</a>
+		<com price='2850' worth='4' chance='0.25' stage='7' rep='0.25' uniq='0.25'/>
+		<n>Прибой</n>
+	</weapon>
+	
+	<weapon id='quick' tip='3' cat='3' skill='4' lvl='5' perk='plasma'>
+		<char maxhp='1500' damage='13' rapid='2' prec='10' tipdam='6' knock='2' destroy='150'/>
+		<char maxhp='2000' damage='15' prec='11'/>
+		<phis speed='80' m='2' drot='11' deviation='5' recoil='2' massa='8'/>
+		<vis tipdec='17' vbul='plasma6' flare='laser'/> 
+		<snd shoot='quick_s' reload='laser_r' noise='500'/>
+		<sats que='6' cons='25'/>
+		<ammo holder='160' rashod='4' reload='45'/>
+		<ammo holder='200'/>
+		<a>energ</a>
+		<com price='4200' worth='4' chance='0.1' stage='7' rep='0.15' uniq='0'/>
+		<n>Плазмомёт</n>
+	</weapon>
+	
+	<weapon id='oldshot' tip='2' cat='4' skill='2' lvl='1' perk='shot'>
+		<char maxhp='150' damage='6' kol='5' rapid='10' prec='6' knock='3' destroy='10'/>
+		<char maxhp='250' damage='7' rapid='10' prec='7'/>
+		<phis speed='150' m='2' drot='13' deviation='5' recoil='12' massa='5'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='oldshot_s' reload='shotgun_r' noise='1200'/>
+		<sats cons='32'/>
+		<ammo holder='2' reload='45'/>
+		<a>p20</a>
+		<com price='360' worth='4' chance='1' stage='1' uniq='1'/>
+		<n>Старый дробовик</n>
+	</weapon>
+	
+	<weapon id='lshot' tip='2' cat='4' skill='2' lvl='2' perk='shot'>
+		<char maxhp='200' damage='8' kol='5' rapid='15' prec='4' knock='3' destroy='10'/>
+		<phis speed='150' m='2' drot='10' deviation='7' recoil='12' massa='4'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='oldshot_s' reload='rifle2_r' noise='1200'/>
+		<sats cons='32'/>
+		<ammo holder='5' reload='60'/>
+		<a>p20</a>
+		<com price='950' worth='4' chance='1' stage='1'/>
+		<n>Рычажный</n>
+	</weapon>
+	
+	<weapon id='shotgun' tip='2' cat='4' skill='2' lvl='3' perk='shot'>
+		<char maxhp='200' damage='9' kol='5' rapid='12' prec='4' knock='3' destroy='10' auto='1'/>
+		<char maxhp='300' damage='10' rapid='10' prec='6' auto='1'/>
+		<phis speed='150' m='1' drot='15' deviation='7' recoil='12' massa='3'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='shotgun_s' reload='shotgun_r' noise='1200'/>
+		<sats cons='25'/>
+		<ammo holder='2' reload='30'/>
+		<a>p20</a>
+		<com price='900' worth='3' chance='0.25' stage='1' uniq='0'/>
+		<n>Обрез</n>
+	</weapon>
+	
+	<weapon id='saf9' tip='2' cat='4' skill='2' lvl='4' perk='shot'>
+		<char maxhp='350' damage='10' kol='5' rapid='11' prec='7' knock='3' destroy='10' auto='1'/>
+		<char maxhp='350' rapid='9' prec='9' knock='5' auto='1'/>
+		<phis speed='150' m='1' drot='15' deviation='5' recoil='10' massa='3'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='saf9_s' reload='shotgun_r' noise='1200'/>
+		<sats cons='25'/>
+		<ammo holder='8' reload='45'/>
+		<ammo holder='12'/>
+		<a>p12</a>
+		<com price='3000' worth='4' chance='0.25' stage='5' rep='0.5' uniq='0.5'/>
+		<n>Боевой дробовик АФ-9</n>
+	</weapon>
+	
+	<weapon id='pshot' tip='3' cat='4' skill='2' lvl='5' perk='shot'>
+		<char maxhp='300' damage='12' kol='5' rapid='10' prec='7' knock='3' destroy='10' auto='1'/>
+		<char maxhp='400' damage='14' prec='9' knock='5' auto='1'/>
+		<phis speed='150' m='2' drot='13' deviation='5' recoil='10' massa='4'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd shoot='pshot_s' reload='shotgun_r' noise='1200'/>
+		<sats cons='25'/>
+		<ammo holder='12' reload='60'/>
+		<ammo reload='30'/>
+		<a>p12</a>
+		<com price='4200' worth='4' chance='0.15' stage='7' rep='0.2' uniq='0'/>
+		<n>Полицейский дробовик</n>
+	</weapon>
+	
+	<weapon id='prism' tip='3' cat='4' skill='4' lvl='2' perk='laser'>
+		<char maxhp='200' damage='8' kol='6' rapid='15' prec='8' tipdam='5' destroy='20'/>
+		<char maxhp='250' damage='10' knock='5'/>
+		<phis speed='2000' drot='15' deviation='8' recoil='2' massa='6' m='2'/>
+		<vis tipdec='12' vbul='laser6' spring='3' flare='laser'/> 
+		<snd shoot='prisma_s' reload='laser_r' noise='400'/>
+		<dop effect='blind' ch='0.05'/>
+		<sats cons='32'/>
+		<ammo holder='60' rashod='12' reload='60'/>
+		<a>energ</a>
+		<com price='1400' worth='4' chance='0.5' stage='5' rep='0.75' uniq='0.7'/>
+		<n>Призма</n>
+	</weapon>
+	
+	<weapon id='cryo' tip='3' cat='4' skill='4' lvl='3'>
+		<char maxhp='200' damage='18' kol='5' rapid='20' prec='6' tipdam='11' knock='5' destroy='10'/>
+		<phis speed='80' drot='15' deviation='8' recoil='3' massa='10' m='2'/>
+		<vis vbul='cryo' flare='' tipdec='18'/> 
+		<snd shoot='cryo_s' reload='laser_r' noise='400'/>
+		<dop effect='ice' ch='0.2'/>
+		<sats cons='32'/>
+		<ammo holder='12' rashod='1' reload='45'/>
+		<a>pcryo</a>
+		<com price='2800' worth='4' chance='0.1' stage='5' rep='0.5'/>
+		<n>Криопушка</n>
+	</weapon>
+	
+	<weapon id='plam' tip='3' cat='4' skill='4' lvl='4' perk='plasma'>
+		<char maxhp='200' damage='32' kol='3' rapid='20' prec='6' tipdam='6' knock='8' destroy='150'/>
+		<char maxhp='250' damage='38' prec='7'/>
+		<phis speed='80' drot='15' deviation='8' recoil='3' massa='10' m='2'/>
+		<vis tipdec='15' vbul='plasma'/> 
+		<vis tipdec='17' vbul='plasma5' flare='laser'/> 
+		<snd shoot='plasma_s' reload='laser_r' noise='400'/>
+		<sats cons='32'/>
+		<ammo holder='200' rashod='25' reload='60'/>
+		<ammo holder='300'/>
+		<a>energ</a>
+		<com price='3750' worth='4' chance='0.25' stage='5' rep='0.3' uniq='0'/>
+		<n>Мультикристальный плазменный дробовик</n>
+	</weapon>
+	
+	<weapon id='oldr' tip='3' cat='5' skill='2' lvl='1' perk='rifle'>
+		<char maxhp='100' damage='16' rapid='25' prec='16' crit='1.5' knock='5' destroy='10'/>
+		<char maxhp='100' damage='18'/>
+		<phis speed='300' drot='15' deviation='3' recoil='10' massa='3' m='2'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='hunt_s' reload='rifle2_r' noise='1000'/>
+		<sats cons='25'/>
+		<ammo holder='2' reload='40'/>
+		<a>p32</a>
+		<com price='250' worth='3' chance='0.5' stage='1' uniq='0.01'/>
+		<n>Старое ружьё</n>
+	</weapon>
+	
+	<weapon id='hunt' tip='3' cat='5' skill='2' lvl='2' perk='rifle'>
+		<char maxhp='200' damage='22' rapid='25' prec='18' crit='1.5' knock='8' destroy='10'/>
+		<phis speed='300' drot='15' deviation='2' recoil='10' massa='3' m='2'/>
+		<dop probiv='0.3'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='hunt_s' reload='rifle2_r'  noise='1000'/>
+		<sats cons='25'/>
+		<ammo holder='5' reload='50'/>
+		<a>p32</a>
+		<com price='850' worth='4' chance='1' stage='1'/>
+		<n>Охотничья винтовка</n>
+	</weapon>
+	
+	<weapon id='winchester' tip='3' cat='5' skill='2' lvl='3' perk='rifle'>
+		<char maxhp='250' damage='36' rapid='20' prec='16' crit='1.5' knock='12' destroy='10'/>
+		<char maxhp='300' damage='38' rapid='16' prec='18'/>
+		<phis speed='300' drot='15' deviation='2' recoil='10' massa='4' m='2'/>
+		<dop probiv='0.3'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='winchester_s' reload='rifle2_r'  noise='1000'/>
+		<sats cons='25'/>
+		<ammo holder='8' reload='40'/>
+		<a>p375</a>
+		<com price='1400' worth='4' chance='0.5' stage='3' uniq='1' rep='0.5'/>
+		<n>Винтовка ковпони</n>
+	</weapon>
+	
+	<weapon id='brushgun' tip='3' cat='5' skill='2' lvl='4' perk='rifle'>
+		<char maxhp='200' damage='58' rapid='25' prec='16' crit='1.5' knock='18' destroy='30'/>
+		<char maxhp='200' damage='64' rapid='20' knock='22'/>
+		<phis speed='300' drot='15' deviation='2'  recoil='10' massa='6' m='2'/>
+		<dop probiv='0.4'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='brushgun_s' reload='rifle2_r' noise='1200'/>
+		<sats cons='30'/>
+		<ammo holder='5' reload='60'/>
+		<a>p44</a>
+		<com price='2750' worth='4' chance='0.25' stage='5' uniq='0.5' rep='0.25'/>
+		<n>Медвежье</n>
+	</weapon>
+	
+	<weapon id='rechr' tip='2' cat='2' skill='4' lvl='1' perk='laser'>
+		<char maxhp='200' damage='10' rapid='15' prec='12' crit='1.5' tipdam='5' knock='0' destroy='10'/>
+		<phis speed='300' deviation='5' recoil='2' massa='4' m='2'/>
+		<vis tipdec='11' vbul='blump'/> 
+		<snd shoot='laser_s' noise='300'/>
+		<sats cons='17'/>
+		<ammo holder='20' rashod='1' reload='600' recharg='30'/>
+		<a>recharg</a>
+		<com price='550' worth='3' chance='0.5' stage='1'/>
+		<n>Винтовка с подзарядкой</n>
+	</weapon>
+	
+	<weapon id='lasr' tip='3' cat='5' skill='4' lvl='2' perk='laser'>
+		<char maxhp='350' damage='18' rapid='13' prec='15' crit='1.5' tipdam='5' knock='0' destroy='50'/>
+		<char maxhp='450' damage='20' prec='17'/>
+		<phis speed='2000' deviation='4' drot='15' recoil='2' massa='5' m='2'/>
+		<phis deviation='2'/>
+		<vis tipdec='12' vbul='laser' spring='2'/> 
+		<snd shoot='laser_s' reload='laser_r' noise='400'/>
+		<dop effect='blind' ch='0.15' probiv='0.3'/>
+		<sats cons='17'/>
+		<ammo holder='60' rashod='4' reload='40'/>
+		<ammo holder='120'/>
+		<a>energ</a>
+		<com price='800' worth='4' chance='0.75' stage='3' rep='0.75' uniq='1'/>
+		<n>Лазерная винтовка</n>
+	</weapon>
+	
+	<weapon id='plar' tip='3' cat='5' skill='4' lvl='3' perk='plasma'>
+		<char maxhp='300' damage='44' rapid='20' prec='10' crit='1.5' tipdam='6' knock='10' destroy='300'/>
+		<char maxhp='400' rapid='18'/>
+		<phis speed='80' drot='15' deviation='8' recoil='2' massa='10' m='2'/>
+		<phis speed='120'/>
+		<vis tipdec='15' vbul='plasma'/> 
+		<snd shoot='plasma_s' reload='laser_r' noise='400'/>
+		<dop probiv='0.3'/>
+		<sats cons='25'/>
+		<ammo holder='100' rashod='10' reload='60'/>
+		<ammo holder='120' rashod='8'/>
+		<a>energ</a>
+		<com price='1550' worth='4' chance='0.35' stage='4' rep='0.5' uniq='0'/>
+		<n>Плазменная винтовка</n>
+	</weapon>
+	
+	<weapon id='pulser' tip='3' cat='5' skill='4' lvl='4'>
+		<char maxhp='100' damage='110' rapid='25' prec='8' tipdam='8' knock='0' destroy='0'/>
+		<char maxhp='100' rapid='18' prec='9'/>
+		<phis speed='70' deviation='5' recoil='0' massa='8' m='2'/>
+		<vis vbul='pulse' flare=''/> 
+		<snd shoot='pulse_s' reload='laser_r' noise='200'/>
+		<sats cons='25'/>
+		<ammo holder='200' rashod='20' reload='60'/>
+		<ammo holder='300'/>
+		<a>energ</a>
+		<com worth='4' price='3000' chance='0.1' stage='6' uniq='0.05' rep='0.25'/>
+	</weapon>
+	
+	<weapon id='termo' tip='3' cat='5' skill='4' lvl='4'>
+		<char maxhp='300' damage='58' rapid='14' prec='11' tipdam='3' knock='0' destroy='0'/>
+		<char maxhp='300' damage='75' rapid='12' destroy='50'/>
+		<phis speed='2000' deviation='5' recoil='0' massa='8' m='2'/>
+		<vis vbul='termo' tipdec='11' flare='laser' spring='2'/> 
+		<snd shoot='termo_s' reload='laser_r' noise='200'/>
+		<dop effect='igni' damage='20' ch='1' probiv='0.4'/>
+		<dop effect='igni' damage='36'/>
+		<sats cons='25'/>
+		<ammo holder='75' rashod='15' reload='60'/>
+		<ammo holder='90'/>
+		<a>energ</a>
+		<com worth='4' price='3000' chance='0.1' stage='5' rep='0.5' uniq='0'/>
+	</weapon>
+	
+	<weapon id='rail' tip='3' cat='5' skill='4' lvl='5' perk='rifle'>
+		<char maxhp='300' damage='66' rapid='15' prec='18' crit='1.5' pier='15' knock='15' destroy='30'/>
+		<char maxhp='300' damage='72'/>
+		<phis speed='500' drot='6' deviation='4' recoil='10' massa='10' m='2'/>
+		<vis tipdec='3' vbul='rail' flare=''/> 
+		<snd shoot='rail_s' reload='laser_r'  noise='500'/>
+		<dop vision='2' probiv='0.4'/>
+		<sats cons='25'/>
+		<ammo holder='80' rashod='8' reload='75'/>
+		<ammo holder='105' rashod='7' reload='45'/>
+		<a>crystal</a>
+		<com price='4800' worth='5' chance='0.2' stage='7' rep='0.15' uniq='0.2'/>
+		<n>Рельсотрон</n>
+	</weapon>
+	
+	<weapon id='sniper' tip='3' cat='7' skill='2' lvl='3' perk='rifle'>
+		<char maxhp='300' damage='40' rapid='24' prec='24' antiprec='8' crit='2' critdam='0.5' knock='10' destroy='10'/>
+		<char maxhp='400' rapid='20' prec='28'/>
+		<phis speed='500' drot='10' deviation='1' recoil='5' massa='5' m='2'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='sniper_s' reload='sniper_r'  noise='1000'/>
+		<dop vision='2' probiv='0.4'/>
+		<sats cons='40'/>
+		<ammo holder='5' reload='60'/>
+		<ammo holder='8' reload='45'/>
+		<a>p308</a>
+		<com price='2200' worth='4' chance='0.3' stage='2' rep='0.5' uniq='0'/>
+		<n>Снайперская винтовка</n>
+	</weapon>
+	
+	<weapon id='lassn' tip='3' cat='5' skill='4' lvl='3' perk='laser'>
+		<char maxhp='500' damage='30' rapid='15' prec='24' antiprec='8' crit='2' critdam='0.5' tipdam='5' destroy='50'/>
+		<char maxhp='500' damage='40'/>
+		<phis speed='2000' drot='10' deviation='1' recoil='1' massa='6' m='2'/>
+		<vis tipdec='12' vbul='laser4' spring='2' flare='plasma'/> 
+		<snd shoot='laser2_s' reload='laser_r' noise='400'/>
+		<dop vision='2' effect='blind' ch='0.3' probiv='0.4'/>
+		<sats cons='40'/>
+		<ammo holder='80' rashod='8' reload='60'/>
+		<a>energ</a>
+		<com price='2400' worth='4' chance='0.2' stage='2' rep='0.5' uniq='0'/>
+		<n>Лазерная снайперка</n>
+	</weapon>
+	
+	<weapon id='grom' tip='3' cat='7' skill='4' lvl='5' perk='rifle'>
+		<char maxhp='250' damage='76' rapid='20' prec='24' antiprec='8' crit='2' critdam='0.5' tipdam='9' destroy='300'/>
+		<char maxhp='250' damage='85' pier='20'/>
+		<phis speed='2000' drot='7' deviation='2' massa='10' m='3'/>
+		<vis tipdec='12' vbul='laser3' spring='2'/> 
+		<snd shoot='grom_s' reload='laser_r' noise='1000'/>
+		<dop vision='2' probiv='0.85'/>
+		<sats cons='48'/>
+		<ammo holder='80' reload='60' rashod='8'/>
+		<a>crystal</a>
+		<com price='5200' worth='5' chance='0.3' stage='6' rep='0.12' uniq='0'/>
+		<n>Грозовая</n>
+	</weapon>
+	
+	<weapon id='anti' tip='3' cat='7' skill='2' lvl='5' perk='rifle'>
+		<char maxhp='250' damage='85' rapid='25' prec='24' antiprec='8' crit='2' critdam='0.5' knock='15' destroy='30'/>
+		<char maxhp='300' damage='95' prec='27' pier='10' knock='18'/>
+		<phis speed='500' drot='8' deviation='2' recoil='10' massa='10' m='3'/>
+		<phis drot='10' deviation='2' recoil='0'/>
+		<vis tipdec='3' shell='1'/> 
+		<snd shoot='anti_s' reload='sniper_r' noise='1200'/>
+		<snd shoot='spitfire_s' noise='2200'/>
+		<dop vision='2' probiv='0.6'/>
+		<sats cons='55'/>
+		<ammo holder='5' reload='60'/>
+		<a>p50mg</a>
+		<com price='5400' worth='5' chance='0.4' stage='5' rep='0.12' uniq='0'/>
+		<n>Антимех-винтовка</n>
+	</weapon>
+	
+	<weapon id='minigun' tip='3' cat='8' skill='2' lvl='4' perk='perf'>
+		<char maxhp='3000' damage='7' rapid='1' prec='10' knock='3' prep='32' destroy='10'/>
+		<char maxhp='4000' damage='9' prec='12'/>
+		<phis speed='200' deviation='5' drot='6' drot2='3' recoil='1' massa='20' m='3'/>
+		<vis tipdec='1' shell='1'/> 
+		<snd prep='minigun_s' t1='1030' t2='3060' reload='flamer_r' noise='1300'/>
+		<sats que='15' cons='25'/>
+		<ammo holder='500' reload='60'/>
+		<a>p5</a>
+		<com price='5000' worth='5' chance='0.5' rep='0.2' stage='3' uniq='0'/>
+		<n>Миниган</n>
+	</weapon>
+	
+	<weapon id='hmg' tip='3' cat='8' skill='2' lvl='5' perk='perf'>
+		<char maxhp='1500' damage='18' rapid='2' prec='12' knock='5' destroy='20'/>
+		<phis speed='200' drot='6' deviation='5' recoil='5' massa='20' m='3'/>
+		<vis tipdec='2' shell='1'/> 
+		<snd shoot='hmg_s' reload='rifle_r' noise='1200'/>
+		<sats que='6' cons='25'/>
+		<ammo holder='90' reload='60'/>
+		<a>p127</a>
+		<com price='4800' worth='5' chance='0.15' stage='7' rep='0.12'/>
+		<n>Станковый</n>
+	</weapon>
+	
+	<weapon id='antidrak' tip='3' cat='8' skill='2' lvl='5' perk='perf'>
+		<char maxhp='600' damage='44' rapid='5' prec='14' knock='8' destroy='50'/>
+		<char maxhp='750' damage='50' prec='15' knock='9'/>
+		<phis speed='200' drot='5' deviation='5' recoil='8' massa='25' m='3'/>
+		<vis tipdec='3' shell='1'/> 
+		<snd shoot='antidrak_s' reload='flamer_r' noise='1500'/>
+		<sats que='3' cons='32'/>
+		<ammo holder='45' reload='60'/>
+		<a>p145</a>
+		<com price='6000' worth='5' chance='0.05' stage='7' rep='0.12' uniq='0'/>
+		<n>Антидракон</n>
+	</weapon>
+	
+	<weapon id='gatl' tip='3' cat='8' skill='4' lvl='4' perk='laser'>
+		<char maxhp='3000' damage='12' rapid='2' prec='8' tipdam='5' knock='0' destroy='20'/>
+		<char maxhp='4000' prec='10'/>
+		<phis speed='2000' deviation='6' drot='6' drot2='3' massa='20' m='3'/>
+		<phis speed='2000' deviation='3' drot='12' drot2='3' massa='15'/>
+		<vis tipdec='12' vbul='laser' spring='2'/> 
+		<snd prep='gatl_s' t1='100' t2='1500' reload='laser_r' noise='500'/>
+		<dop effect='blind' ch='0.05'/>
+		<sats que='6' cons='20'/>
+		<ammo holder='300' rashod='2' reload='60'/>
+		<ammo holder='600'/>
+		<a>crystal</a>
+		<com price='5000' worth='5' chance='0.3' stage='5' rep='0.25' uniq='0.3'/>
+		<n>Лазерный миниган</n>
+	</weapon>
+	
+	<weapon id='gatp' tip='3' cat='5' skill='4' lvl='5' perk='plasma'>
+		<char maxhp='2000' damage='25' rapid='3' prec='8' tipdam='6' knock='3' destroy='100'/>
+		<char maxhp='2500' damage='28' prec='10' destroy='150'/>
+		<phis speed='80' drot='6' deviation='8' recoil='2' massa='20' m='3'/>
+		<phis speed='110' deviation='5'/>
+		<vis tipdec='15' vbul='plasma3' flare='plasma'/> 
+		<snd prep='gatl_s' t1='100' t2='1500' reload='laser_r' noise='400'/>
+		<sats que='6' cons='25'/>
+		<ammo holder='1000' rashod='5' reload='60'/>
+		<a>crystal</a>
+		<com price='6500' worth='4' chance='0.2' stage='5' rep='0.15' uniq='0.2'/>
+		<n>Плазменный миниган</n>
+	</weapon>
+	
+	<weapon id='flamer' tip='3' cat='8' skill='4' lvl='2' perk='pyro'>
+		<char maxhp='3000' damage='2.5' rapid='1' pier='10' prec='6' crit='0' tipdam='3' knock='0' destroy='10'/>
+		<char maxhp='3500' damage='3' prec='8' pier='12'/>
+		<phis speed='40' drot='10' drot2='3' deviation='6' flame='1' massa='10' m='2'/>
+		<phis speed='45'/>
+		<vis tipdec='11' vbul='flame' bulanim='1'/> 
+		<snd prep='flamer_s' t1='1540' t2='2840' reload='flamer_r' noise='400'/>
+		<dop effect='igni' damage='10' ch='0.2'/>
+		<sats que='10' cons='32'/>
+		<ammo holder='200' reload='60'/>
+		<a>fuel</a>
+		<com price='600' worth='5' chance='1' stage='1' uniq='0.8'/>
+		<n>Огнемёт</n>
+	</weapon>
+	
+	<weapon id='incin' tip='3' cat='8' skill='4' lvl='3' perk='pyro'>
+		<char maxhp='300' damage='12' damexpl='20' pier='10' expl='50' rapid='10' prec='6' crit='0' tipdam='3' knock='0' destroy='10'/>
+		<phis speed='35' grav='1' drot='5' deviation='4' massa='15' m='2'/>
+		<vis tipdec='11' vbul='fireball' visexpl='react'/> 
+		<snd shoot='incin_s' reload='flamer_r' noise='400'/>
+		<dop effect='igni' damage='15' ch='1'/>
+		<sats cons='32'/>
+		<ammo holder='360' rashod='12' reload='60'/>
+		<a>fuel</a>
+		<com price='1400' worth='5' chance='0.6' stage='4' rep='0.5'/>
+		<n>Инсинератор</n>
+	</weapon>
+	
+	<weapon id='cflamer' tip='3' cat='8' skill='4' lvl='5' perk='pyro'>
+		<char maxhp='3000' damage='6' rapid='1' pier='16' prec='6' crit='0' tipdam='3' knock='0' destroy='10'/>
+		<char maxhp='3600' damage='7' prec='8' pier='20'/>
+		<phis speed='40' drot='5' drot2='3' deviation='4' grav='1' massa='20' m='3'/>
+		<phis speed='45' drot='8' massa='15'/>
+		<vis tipdec='11' vbul='flame' flare='flame' bulanim='1'/> 
+		<vis tipdec='11' vbul='flame2' flare='flame' bulanim='1'/> 
+		<snd prep='flamer_s' t1='1540' t2='2840' reload='flamer_r' noise='400'/>
+		<dop effect='igni' damage='15' ch='0.2'/>
+		<dop effect='igni' damage='25' ch='0.2'/>
+		<sats que='10' cons='32'/>
+		<ammo holder='600' rashod='3' reload='60'/>
+		<a>fuel</a>
+		<com price='3000' worth='5' chance='0.4' stage='5' rep='0.25' uniq='0'/>
+		<n>Боевой огнемёт</n>
+	</weapon>
+	
+	<weapon id='bfg' tip='3' cat='5' skill='4' lvl='5' perk='plasma'>
+		<char maxhp='50' damage='80' damexpl='100' expl='200' rapid='15' prep='30' prec='7' tipdam='6' knock='20' destroy='350' auto='1'/>
+		<phis speed='30' drot='6' deviation='5' recoil='12' massa='20' m='3'/>
+		<vis tipdec='19' vbul='plasma4' flare='' shine='1000'/> 
+		<snd shoot='bfg_s' prep='bfg_p' t2='950' reload='laser_r' noise='400'/>
+		<sats noperc='1' cons='60'/>
+		<ammo holder='20' rashod='20' reload='30'/>
+		<a>crystal</a>
+		<com price='2000' worth='5' chance='0' rep='0.2'/>
+		<n>BFG</n>
+	</weapon>
+	
+	<weapon id='arson' tip='2' cat='2' skill='3' lvl='0' perk='pyro'>
+		<char maxhp='1500' damage='1.6' pier='5' rapid='1' prec='4' crit='0' tipdam='3' destroy='3'/>
+		<char maxhp='2000' damage='2' pier='10'/>
+		<phis speed='14' deviation='6' flame='2' massa='2'/>
+		<vis tipdec='11' vbul='arson' bulanim='1'/> 
+		<snd prep='arson_s' t1='990' t2='2270' noise='200'/>
+		<dop effect='igni' damage='3' ch='0.1'/>
+		<sats que='20' cons='32'/>
+		<ammo holder='100' reload='40'/>
+		<a>aero</a>
+		<com worth='3' price='100' chance='0' rep='2' uniq='0'/>
+		<n>Поджигалка</n>
+	</weapon>
+	
+	<weapon id='dartgun' tip='2' cat='2' skill='3' lvl='1'>
+		<char maxhp='100' damage='5' pier='20' rapid='10' prec='8' destroy='0'/>
+		<char maxhp='130'/>
+		<phis speed='100' deviation='5' massa='2'/>
+		<vis vbul='dart' flare='' phisbul='1' spring='0' shine='0'/> 
+		<snd shoot='silen_s' noise='50'/>
+		<sats cons='18'/>
+		<dop effect='poison' damage='10' ch='1'/>
+		<dop effect='poison' damage='16' ch='1'/>
+		<ammo holder='1' reload='45'/>
+		<a>dart</a>
+		<com worth='3' price='200' chance='0' rep='2' uniq='0'/>
+		<n>Дротикомёт</n>
+	</weapon>
+	
+	<weapon id='acidgun' tip='2' cat='4' skill='3' lvl='2'>
+		<char maxhp='150' damage='7' kol='5' rapid='15' prec='7' tipdam='10' knock='0' destroy='10'/>
+		<char maxhp='200' damage='10' prec='8'/>
+		<phis speed='100' deviation='7' recoil='10' massa='4' m='2'/>
+		<vis tipdec='15' vbul='plevok' shine='100'/> 
+		<snd shoot='incin_s' reload='flamer_r' noise='300'/>
+		<sats cons='22'/>
+		<ammo holder='10' reload='45'/>
+		<a>acid</a>
+		<com price='500' worth='3' chance='0' uniq='0'/>
+		<n>Кислотная пушка</n>
+	</weapon>
+	
+	<weapon id='sawgun' tip='3' cat='5' skill='3' lvl='3'>
+		<char maxhp='100' damage='45' rapid='10' tipdam='1' prec='0' crit='1.5' knock='16' destroy='40'/>
+		<char maxhp='130' damage='55' pier='10'/>
+		<phis speed='150' drot='15' deviation='5' recoil='10' massa='6' m='2'/>
+		<vis vbul='saw' tipdec='5' flare='' phisbul='1' spring='0' shine='100'/> 
+		<snd shoot='sawgun_s' noise='700'/>
+		<sats cons='25'/>
+		<dop probiv='0.7'/>
+		<ammo holder='1' reload='30'/>
+		<a>saw</a>
+		<com worth='3' price='900' chance='0' uniq='0'/>
+		<n>Пиломёт</n>
+	</weapon>
+	
+	<weapon id='buckshot' tip='3' cat='4' skill='3' lvl='4'>
+		<char maxhp='50' damage='16' kol='5' rapid='18' prec='6' knock='10' destroy='10'/>
+		<char maxhp='70' damage='20'/>
+		<phis speed='200' deviation='5' drot='8' recoil='10' massa='11' m='2'/>
+		<vis tipdec='1'  shine='100'/> 
+		<snd shoot='pshot_s' noise='600'/>
+		<sats cons='25'/>
+		<ammo holder='2' rashod='2' reload='0'/>
+		<a>scrap</a>
+		<com price='1400' worth='3' chance='0' rep='0.5' uniq='0'/>
+		<n>Картечная пушка</n>
+	</weapon>
+	
+	<weapon id='railway' tip='3' cat='3' skill='3' lvl='5'>
+		<char maxhp='400' damage='30' rapid='6' prec='10' knock='20' destroy='50' auto='1'/>
+		<char maxhp='550' damage='36' pier='10'/>
+		<phis speed='150' drot='12' deviation='5' recoil='5' massa='8' m='2'/>
+		<vis tipdec='3' vbul='spikenail' flare=''/> 
+		<snd shoot='railway_s' reload='flamer_r' noise='500'/>
+		<sats que='3' cons='35'/>
+		<ammo holder='12' reload='45'/>
+		<a>spikenail</a>
+		<com price='1800' worth='4' chance='0' rep='0.5' uniq='0'/>
+		<n>ЖД-винтовка</n>
+	</weapon>
+	
+	<weapon id='friend' tip='3' cat='3' skill='3' lvl='5'>
+		<char maxhp='400' damage='25' rapid='3' prec='16' destroy='50' tipdam='101' dkol='5'/>
+		<char maxhp='550' damage='30' prec='20'/>
+		<phis speed='2000' drot='12' deviation='3' massa='8' m='2'/>
+		<vis tipdec='12' vbul='friend' spring='2' flare='sparkl'/> 
+		<snd shoot='laser2_s' reload='laser_r' noise='500'/>
+		<dop effect='blind' ch='0.05'/>
+		<sats que='5' cons='35'/>
+		<ammo holder='100' rashod='5' reload='60'/>
+		<a>crystal</a>
+		<com price='2000' worth='4' chance='0' rep='0.5' uniq='0'/>
+	</weapon>
+	
+	<!-- взрывчатка -->
+	<weapon id='glau1' tip='3' cat='6' skill='5' lvl='2'>
+		<char maxhp='50' damage='0' damexpl='120' rapid='20' prec='6' crit='0' tipdam='4' knock='50' destroy='600' expl='150'/>
+		<phis speed='35' grav='1' grav2='0' drot='8' deviation='10' recoil='10' massa='10' m='2'/>
+		<vis tipdec='9' vbul='gren40' spring='0'/> 
+		<snd shoot='glau_s' reload='flamer_r' noise='800'/>
+		<sats noperc='1' cons='32'/>
+		<ammo holder='1' reload='30'/>
+		<a>gren40</a>
+		<com price='800' worth='5' chance='1' stage='1' rep='0.5'/>
+		<n>Гранатомёт</n>
+	</weapon>
+	
+	<weapon id='glau' tip='3' cat='6' skill='5' lvl='3'>
+		<char maxhp='100' damexpl='120' damage='0' rapid='25' prec='6' crit='0' tipdam='4' knock='50' destroy='600' expl='150'/>
+		<char maxhp='140' rapid='15'/>
+		<phis speed='35' grav='1' grav2='0' drot='8' deviation='8' recoil='5' massa='10' m='2'/>
+		<vis tipdec='9' vbul='gren40' spring='0'/> 
+		<snd shoot='glau_s' reload='flamer_r' noise='800'/>
+		<sats noperc='1' cons='32'/>
+		<ammo holder='6' reload='60'/>
+		<ammo holder='10'/>
+		<a>gren40</a>
+		<com price='2200' worth='5' chance='0.7' stage='3' rep='0.5' uniq='0.4'/>
+		<n>Гранатомёт</n>
+	</weapon>
+	
+	<weapon id='aglau' tip='3' cat='6' skill='5' lvl='4'>
+		<char maxhp='200' damage='0' damexpl='130' rapid='12' prec='7' crit='0' tipdam='4' knock='50' destroy='600' expl='150' auto='1'/>
+		<phis speed='45' grav='1' grav2='0' drot='8' deviation='8' recoil='5' massa='14' m='2'/>
+		<vis tipdec='9' vbul='gren40' spring='0'/> 
+		<snd shoot='glau_s' reload='flamer_r' noise='800'/>
+		<sats noperc='1' cons='32'/>
+		<ammo holder='12' reload='45'/>
+		<a>gren40</a>
+		<com price='5000' worth='5' chance='0.1' stage='5' rep='0.3'/>
+	</weapon>
+	
+	<weapon id='mlau' tip='3' cat='6' skill='5' lvl='4'>
+		<char maxhp='50' damexpl='250' damage='50' pier='20' rapid='30' prec='9' crit='0' tipdam='4' knock='50' destroy='600' expl='180'/>
+		<char maxhp='70' pier='40' prec='12'/>
+		<phis speed='15' accel='1' drot='5' deviation='3' recoil='15' massa='20' m='3'/>
+		<phis speed='18' deviation='2' recoil='10'/>
+		<vis tipdec='9' vbul='rocket' bulanim='1' spring='0' phisbul='1'/> 
+		<snd shoot='rocket_s' reload='flamer_r' noise='800'/>
+		<sats noperc='1' cons='60'/>
+		<ammo holder='1' reload='60'/>
+		<a>rocket</a>
+		<com price='3500' worth='5' chance='0.3' stage='5' rep='0.3' uniq='0'/>
+		<n>Ракетная установка</n>
+	</weapon>
+	
+	<weapon id='bel' tip='3' cat='6' skill='5' lvl='5'>
+		<char maxhp='25' damexpl='800' damage='0' rapid='30' prec='9' crit='0' tipdam='15' knock='150' destroy='5000' expl='270'/>
+		<char maxhp='50' rapid='20' prec='13'/>
+		<phis speed='40' accel='1' drot='5' deviation='3' recoil='15' massa='20' m='3'/>
+		<vis tipdec='9' vbul='baleegg' spring='0' grav='1'/> 
+		<snd shoot='glau_s' reload='flamer_r' noise='800'/>
+		<sats noperc='1' cons='60'/>
+		<ammo holder='1' reload='60'/>
+		<ammo holder='1' reload='30'/>
+		<a>egg</a>
+		<com price='2000' worth='5' chance='0.2' stage='5' rep='0.5' uniq='0'/>
+		<n>Яйцемёт</n>
+	</weapon>
+	
+	<weapon id='dinamit' tip='4' cat='9' skill='5' lvl='0'>
+		<char rapid='15' damexpl='75' tipdam='4' knock='15' destroy='300' expl='130' time='150'/>
+		<phis speed='20' deviation='6'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='dinamit_f'/>
+		<sats cons='32'/>
+		<n>Динамит</n>
+	</weapon>
+	
+	<weapon id='hgren' tip='4' cat='9' skill='5' lvl='0'>
+		<char rapid='15' damexpl='110' tipdam='4' knock='20' destroy='60' expl='250' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis tipdec='9' icomult='2'/> 
+		<sats cons='24'/>
+		<snd fall='fall_metal_small'/>
+		<n>Самодельная граната</n>
+	</weapon>
+	
+	<weapon id='grenade' tip='4' cat='9' skill='5' lvl='1'>
+		<char rapid='15' damexpl='150' tipdam='4' knock='25' destroy='80' expl='300' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis tipdec='9' icomult='2'/> 
+		<sats cons='24'/>
+		<snd fall='fall_grenade'/>
+		<n>Осколочная граната</n>
+	</weapon>
+	
+	<weapon id='gasgr' tip='4' cat='9' skill='5' lvl='1'>
+		<char rapid='15' damexpl='25' explkol='12' expltip='2' crit='0' tipdam='7' destroy='0' expl='200' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis tipdec='9' icomult='2'/> 
+		<sats cons='24'/>
+		<snd fall='fall_grenade'/>
+		<n>Газовая граната</n>
+	</weapon>
+	
+	<weapon id='acidgr' tip='4' cat='9' skill='5' lvl='1'>
+		<char rapid='15' damexpl='20' explkol='12' crit='0' expltip='3' tipdam='10' destroy='10' expl='200' time='75'/>
+		<phis speed='20' deviation='6' bumc='1'/>
+		<vis tipdec='19' icomult='2'/> 
+		<sats cons='24'/>
+		<snd fall='bottle_hit'/>
+		<dop effect='acid' damage='8' ch='1'/>
+		<n>Пузырёк с кислотой</n>
+	</weapon>
+	
+	<weapon id='plagr' tip='4' cat='9' skill='5' lvl='2'>
+		<char rapid='15' damexpl='225' tipdam='6' knock='10' destroy='300' expl='230' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis tipdec='19' icomult='2'/> 
+		<sats cons='24'/>
+		<snd fall='fall_grenade'/>
+		<n>Плазменная граната</n>
+	</weapon>
+	
+	<weapon id='impgr' tip='4' cat='9' skill='5' lvl='3'>
+		<char rapid='15' damexpl='300' expltip='1' tipdam='8' knock='0' destroy='0' expl='200' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis icomult='2'/> 
+		<snd fall='fall_grenade'/>
+		<sats cons='24'/>
+		<n>Импульсная граната</n>
+	</weapon>
+	
+	<weapon id='cryogr' tip='4' cat='9' skill='5' lvl='3'>
+		<char rapid='15' damexpl='250' tipdam='11' knock='10' destroy='30' expl='230' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis icomult='2'/> 
+		<dop effect='ice' ch='1'/>
+		<sats cons='24'/>
+		<snd fall='fall_metal_small'/>
+	</weapon>
+	
+	<weapon id='molotov' tip='4' cat='9' skill='5' perk='pyro' lvl='1'>
+		<char rapid='25' damexpl='20' explkol='10' tipdam='3' knock='0' destroy='30' expl='150' time='75'/>
+		<phis speed='20' deviation='6' bumc='1'/>
+		<vis icomult='2'/> 
+		<sats cons='24'/>
+		<snd fall='bottle_hit'/>
+		<dop effect='igni' damage='10' ch='1'/>
+		<n>Зажигательный коктейль</n>
+	</weapon>
+	
+	<weapon id='fgren' tip='4' cat='9' skill='5' perk='pyro' lvl='2'>
+		<char rapid='25' damexpl='30' explkol='10' tipdam='3' knock='0' destroy='30' expl='200' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis icomult='2'/> 
+		<sats cons='24'/>
+		<dop effect='igni' damage='15' ch='1'/>
+		<snd fall='fall_grenade'/>
+		<n>Огненная бомба</n>
+	</weapon>
+	
+	<weapon id='spgren' tip='4' cat='9' skill='5' lvl='5'>
+		<char rapid='15' damexpl='666' tipdam='4' knock='40' destroy='1000' expl='350' time='75'/>
+		<phis speed='20' deviation='6'/>
+		<vis tipdec='19' icomult='2' visexpl='sparkle'/> 
+		<sats cons='24'/>
+		<snd fall='fall_metal_small'/>
+		<n>Спаркл граната</n>
+	</weapon>
+	
+	<weapon id='hmine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='1'>
+		<char rapid='30' maxhp='10' time='15' massafix='70' sens='100' damexpl='125' tipdam='4' knock='25' destroy='80' expl='180'/>
+		<phis speed='5'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Самодельная мина</n>
+	</weapon>
+	
+	<weapon id='mine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='2'>
+		<char rapid='30' maxhp='10' time='15' massafix='100' sens='100' damexpl='170' tipdam='4' knock='25' destroy='80' expl='180'/>
+		<phis speed='5'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Осколочная мина</n>
+	</weapon>
+	
+	<weapon id='cryomine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='3'>
+		<char rapid='30' maxhp='10' time='15' massafix='100' sens='100' damexpl='250' tipdam='11' knock='10' destroy='30' expl='150'/>
+		<phis speed='5'/>
+		<vis icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Криомина</n>
+	</weapon>
+	
+	<weapon id='plamine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='3'>
+		<char rapid='30' maxhp='10' time='15' massafix='200' sens='100' damexpl='275' tipdam='6' knock='25' destroy='300' expl='150'/>
+		<phis speed='5'/>
+		<vis tipdec='19' icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Плазменная мина</n>
+	</weapon>
+	
+	<weapon id='impmine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='4'>
+		<char rapid='30' maxhp='10' time='15' massafix='200' sens='100' damexpl='325' expltip='1' tipdam='8' knock='25' destroy='0' expl='150'/>
+		<phis speed='5'/>
+		<vis icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Имп мина</n>
+	</weapon>
+	
+	<weapon id='x37' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='4'>
+		<char rapid='30' maxhp='10' time='15' massafix='200' sens='0' damexpl='350' tipdam='4' knock='25' destroy='1000' expl='150' radio='1'/>
+		<phis speed='5'/>
+		<vis icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Радиомина</n>
+	</weapon>
+	
+	<weapon id='zebmine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='4'>
+		<char rapid='30' maxhp='10' time='15' massafix='200' sens='100' damexpl='350' tipdam='4' knock='25' destroy='200' expl='200'/>
+		<phis speed='5'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+	</weapon>
+	
+	<weapon id='balemine' tip='4' cat='9' skill='5' throwtip='1' sX='30' sY='20' lvl='5'>
+		<char rapid='30' maxhp='10' time='15' massafix='200' sens='100' damexpl='750' tipdam='15' knock='25' destroy='5000' expl='300'/>
+		<phis speed='5'/>
+		<vis tipdec='19' icomult='2'/> 
+		<snd shoot='mine_s' dem='mine_dem' sens='mine_bip' fall='fall_metal_small'/>
+		<sats no='1'/>
+		<n>Плазменная мина</n>
+	</weapon>
+	
+	<weapon id='dbomb' tip='4' cat='9' skill='5' throwtip='2' lvl='2'>
+		<char rapid='60' time='90' damexpl='250' tipdam='4' knock='20' destroy='1000' expl='120'/>
+		<phis speed='10'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='dinamit_f'/>
+		<sats no='1'/>
+		<n>Связка динамита</n>
+	</weapon>
+	
+	<weapon id='bomb' tip='4' cat='9' skill='5' throwtip='2' lvl='3'>
+		<char rapid='60' time='90' damexpl='400' tipdam='4' knock='25' destroy='1500' expl='120'/>
+		<phis speed='10'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='mine_s'/>
+		<sats no='1'/>
+		<n>Самодельная бомба</n>
+	</weapon>
+	
+	<weapon id='exc4' tip='4' cat='9' skill='5' throwtip='2' lvl='5'>
+		<char rapid='60' time='90' damexpl='700' tipdam='4' knock='25' destroy='5000' expl='120'/>
+		<phis speed='10'/>
+		<vis tipdec='9' icomult='2'/> 
+		<snd shoot='mine_s'/>
+		<sats no='1'/>
+		<n>Взрывчатка C-4</n>
+	</weapon>
+	
+	<weapon id='telebul' tip='5' cat='2' skill='7' perslvl='0' mess='telebul'>
+		<char damage='15' rapid='16' prec='8' tipdam='2' knock='25' destroy='10'/>
+		<phis speed='80' deviation='5'/>
+		<vis tipdec='5' vbul='telebullet' loot='telebul'/> 
+		<snd shoot='telebul' noise='500'/>
+		<sats cons='18'/>
+		<ammo magic='150' mana='4'/>
+		<com price='100' chance='0' stage='1'/>
+	</weapon>
+	
+	<weapon id='mbul' tip='5' cat='2' skill='6' perslvl='2'>
+		<char damage='8' rapid='6' prec='9' tipdam='6' knock='5' destroy='10'/>
+		<char damage='16'/>
+		<phis speed='50' deviation='5'/>
+		<vis tipdec='16' vbul='mbul' flare='sparkl'/> 
+		<snd shoot='plap_s' noise='500'/>
+		<sats cons='24' que='3'/>
+		<ammo magic='50' mana='2'/>
+		<ammo mana='4'/>
+		<com price='200' chance='0' stage='1' uniq='0'/>
+		<com price='1200'/>
+	</weapon>
+	
+	<weapon id='ice' tip='5' cat='2' skill='6' perslvl='4'>
+		<char damage='5' kol='5' rapid='15' prec='4' tipdam='11' knock='5' destroy='10'/>
+		<char damage='10'/>
+		<phis speed='70' deviation='6'/>
+		<vis vbul='ice'/> 
+		<dop effect='ice' ch='0.1'/>
+		<snd shoot='ice' noise='300'/>
+		<sats cons='32'/>
+		<ammo magic='200' mana='5'/>
+		<ammo mana='13'/>
+		<com price='400' chance='0' stage='1' uniq='0'/>
+		<com price='1800'/>
+	</weapon>
+	
+	<weapon id='dragon' tip='5' cat='2' skill='6' perslvl='6'>
+		<char damage='1.8' rapid='1' pier='5' prec='8' crit='0' tipdam='3' destroy='10'/>
+		<char damage='3.5' pier='10'/>
+		<phis speed='40' deviation='8' flame='2'/>
+		<vis tipdec='11' vbul='dflame' flare='flame' bulanim='1'/> 
+		<snd prep='arson_s' t1='990' t2='2270' noise='300'/>
+		<dop effect='igni' damage='5' ch='0.1'/>
+		<sats que='20' cons='32'/>
+		<ammo magic='10' mana='0.5'/>
+		<ammo mana='1'/>
+		<com price='700' chance='0' stage='1' uniq='0'/>
+		<com price='2300'/>
+	</weapon>
+	
+	<weapon id='blades' tip='5' cat='2' skill='6' perslvl='8'>
+		<char damage='14' kol='5' rapid='24' prec='6' tipdam='1' knock='5' destroy='10'/>
+		<char damage='22'/>
+		<phis speed='70' deviation='6' volna='1'/>
+		<vis vbul='blade' flare=''/> 
+		<snd shoot='blade' noise='300'/>
+		<sats cons='32'/>
+		<ammo magic='330' mana='20'/>
+		<ammo mana='35'/>
+		<com price='1100' chance='0' stage='1' uniq='0'/>
+		<com price='2800'/>
+	</weapon>
+	
+	<weapon id='lightning' tip='5' cat='2' skill='6' perslvl='10'>
+		<char damage='75' rapid='30' prec='0' tipdam='9' destroy='50'/>
+		<char damage='120'/>
+		<phis speed='100' deviation='7'/>
+		<vis tipdec='11' vbul='lightning' flare='spark' bulanim='1'/> 
+		<snd shoot='lightning' noise='800'/>
+		<sats cons='32'/>
+		<ammo magic='400' mana='30'/>
+		<ammo mana='60'/>
+		<com price='1500' chance='0' stage='2' uniq='0'/>
+		<com price='3500'/>
+	</weapon>
+	
+	<weapon id='fireball' tip='5' cat='6' skill='6' perslvl='12'>
+		<char damexpl='85' damage='0' rapid='24' prec='10' crit='0' tipdam='3' knock='25' destroy='120' expl='100'/>
+		<char damexpl='120'/>
+		<phis speed='75' deviation='3'/>
+		<vis tipdec='11' vbul='fireball' flare=''/> 
+		<dop effect='igni' damage='15' ch='1'/>
+		<snd shoot='fireball' noise='800'/>
+		<sats cons='60'/>
+		<ammo magic='500' mana='40'/>
+		<ammo mana='75'/>
+		<com price='2000' chance='0' stage='3' uniq='0'/>
+		<com price='4500'/>
+	</weapon>
+	
+	<weapon id='mray' tip='5' cat='5' skill='6' perslvl='14'>
+		<char damage='4' rapid='1' prec='15' prep='18' tipdam='5' destroy='10'/>
+		<char damage='6'/>
+		<phis speed='2000' deviation='1' drot2='3'/>
+		<vis tipdec='12' vbul='mray' spring='2' flare='plasma'/> 
+		<snd prep='mray' t1='2540' t2='3040' noise='400'/>
+		<sats que='10' cons='20'/>
+		<ammo magic='25' mana='1.5'/>
+		<ammo mana='2.5'/>
+		<com price='2500' chance='0' stage='3' uniq='0'/>
+		<com price='5500'/>
+	</weapon>
+	
+	<weapon id='defwave' tip='5' cat='2' skill='6' perslvl='16'>
+		<char damage='75' rapid='25' prec='0' knock='25' tipdam='4' destroy='300'/>
+		<char damage='115'/>
+		<phis speed='50' deviation='3'/>
+		<vis tipdec='5' vbul='defwave' flare=''/> 
+		<snd shoot='wavedef' noise='800'/>
+		<dop probiv='0.7'/>
+		<sats cons='32'/>
+		<ammo magic='300' mana='30'/>
+		<ammo mana='55'/>
+		<com price='3000' chance='0' stage='2' uniq='0'/>
+		<com price='6500'/>
+	</weapon>
+	
+	<weapon id='eclipse' tip='5' cat='6' skill='6' perslvl='18'>
+		<char damexpl='150' damage='0' rapid='40' prec='0' crit='0' tipdam='6' knock='25' destroy='300' expl='150'/>
+		<char damexpl='200'/>
+		<phis speed='35' deviation='5'/>
+		<vis tipdec='19' vbul='eclipse' spring='0' visexpl='eclipse'/> 
+		<snd shoot='plasma_s' noise='800'/>
+		<sats noperc='1' cons='60'/>
+		<ammo magic='800' mana='120'/>
+		<ammo mana='160'/>
+		<com price='4000' chance='0' stage='3' uniq='0'/>
+		<com price='7500'/>
+	</weapon>
+	
+	<weapon id='dray' tip='5' cat='5' skill='6' perslvl='20'>
+		<char damage='90' rapid='20' prec='20' tipdam='16' destroy='0'/>
+		<phis speed='2000' deviation='0'/>
+		<vis vbul='dray' spring='2'/> 
+		<dop probiv='0.5'/>
+		<snd shoot='dray' noise='400'/>
+		<sats cons='40'/>
+		<ammo magic='500' mana='50'/>
+		<com price='5000' chance='0' stage='3'/>
+	</weapon>
+	
+	<weapon id='udar' tip='5' cat='2' skill='7' perslvl='22'>
+		<char damage='28' kol='5' rapid='24' prec='6' tipdam='2' knock='15' destroy='10'/>
+		<phis speed='80' deviation='5'/>
+		<vis tipdec='5' vbul='telebullet' vweap='vistelebul'/> 
+		<snd shoot='telebul' noise='800'/>
+		<sats cons='32'/>
+		<ammo magic='400' mana='40'/>
+		<com price='6000' chance='0' stage='3'/>
+	</weapon>
+	
+	<weapon id='skybolt' tip='5' cat='2' skill='6' perslvl='24'>
+		<char damage='30' rapid='6' prec='8' tipdam='18' knock='5' destroy='30'/>
+		<phis speed='70' deviation='5'/>
+		<vis tipdec='12' flare='plasma2' vbul='skybolt'/> 
+		<snd shoot='plap_s' noise='500'/>
+		<sats cons='24' que='3'/>
+		<ammo magic='150' mana='10'/>
+		<com price='7000' chance='0' stage='1'/>
+	</weapon>
+	
+	<weapon id='test' tip='2' cat='2' skill='2' lvl='0' nostand='1'>
+		<char maxhp='200000' damage='1000' tipdam='0' rapid='10' prec='25' knock='2' destroy='300'/>
+		<phis speed='200' deviation='5' recoil='10' massa='2'/>
+		<vis tipdec='1'/> 
+		<dop vision='2' probiv='0.5'/>
+		<snd shoot='p10mm_s' noise='10'/>
+		<sats cons='18'/>
+		<ammo holder='100' reload='30'/>
+		<a>p32</a>
+		<com price='10' worth='3' chance='0' rep='2'/>
+		<n>Тестовый</n>
+	</weapon>
+	
+	<weapon id='a_melee' tip='1' cat='1' skill='1' lvl='5' nostand='1' alicorn='1'>
+		<char maxhp='1000' damage='60' rapid='10' crit='2' tipdam='1' knock='5' destroy='10'/>
+		<phis massa='5' m='0' minlong='70' long='140'/>
+		<vis tipdec='4'/>
+		<snd shoot='m_large' noise='300'/>
+		<sats no='1'/>
+		<com price='1000'/>
+	</weapon>
+	
+	<weapon id='a_fire' tip='3' cat='3' skill='2' lvl='5' nostand='1' alicorn='1'>
+		<char maxhp='100000' damage='11' rapid='2' prec='12' knock='3' destroy='100'/>
+		<phis speed='200' drot='10' deviation='5' recoil='3' massa='12' m='0'/>
+		<vis tipdec='1'/> 
+		<snd shoot='lmg_s' reload='rifle_r' noise='1000'/>
+		<sats no='1'/>
+		<ammo holder='90' reload='60'/>	<a>not</a>
+		<com price='1000'/>
+	</weapon>
+	
+	<weapon id='a_energ' tip='3' cat='3' skill='4' lvl='5' nostand='1' alicorn='1'>
+		<char maxhp='100000' damage='16' rapid='3' prec='12' tipdam='6' knock='2' destroy='150'/>
+		<phis speed='150' drot='11' deviation='5' recoil='2' massa='12' m='0'/>
+		<vis tipdec='16' vbul='plasma2'/> 
+		<snd shoot='quick_s' reload='laser_r' noise='500'/>
+		<sats no='1'/>
+		<ammo holder='30' reload='30'/>	<a>not</a>
+		<com price='1000'/>
+	</weapon>
+	
+	<weapon id='a_expl' tip='3' cat='6' skill='5' lvl='5' nostand='1' alicorn='1'>
+		<char maxhp='100000' damage='0' damexpl='50' rapid='7' prec='6' crit='0' tipdam='4' knock='50' destroy='600' expl='150' expltip='1'  auto='1'/>
+		<phis speed='25' accel='2' drot='10' drot2='5' deviation='20' recoil='5' massa='20' m='0'/><!--  navod='5'-->
+		<vis tipdec='9' vbul='gren50' spring='0' phisbul='1'/> 
+		<snd shoot='glau_s' reload='flamer_r' noise='800'/> 
+		<sats no='1'/>
+		<ammo holder='10' reload='90'/>	<a>not</a>
+		<com price='1000'/>
+	</weapon>
+	
+	<weapon id='a_magic' tip='5' cat='2' skill='6' perslvl='28' nostand='1' alicorn='1'>
+		<char damage='38' rapid='8' prec='12' tipdam='18' knock='5' destroy='30'/>
+		<phis speed='140' deviation='10'/>
+		<vis tipdec='12' flare='plasma2' vbul='sel'/> 
+		<snd shoot='plap_s' noise='500'/>
+		<sats no='1'/>
+		<ammo magic='0' mana='7'/>
+		<com price='1000'/>
+	</weapon>
+	
+	<weapon id='paint' tip='0'>
+		<phis massa='1'/>
+		<sats no='1'/>
+	</weapon>
+	
+	<weapon id='punch' tip='0' cat='0' skill='1' tipdec='5'>
+		<char rapid='13' damage='10' tipdam='2' knock='5' destroy='4'/>
+		<phis speed='9' deviation='0'/>
+		<snd noise='400'/>
+		<vis tipdec='4'/>
+	</weapon>
+	
+	<!-- SPELLS -->
+	<weapon id='sp_slow' tip='5' skill='6' perslvl='3' spell='1'/>
+	<weapon id='sp_mwall' tip='5' skill='6' perslvl='6' spell='1'/>
+	<weapon id='sp_blast' tip='5' skill='7' perslvl='9' spell='1'/>
+	<weapon id='sp_cryst' tip='5' skill='6' perslvl='12' spell='1'/>
+	<weapon id='sp_kdash' tip='5' skill='7' perslvl='15' spell='1'/>
+	<weapon id='sp_mshit' tip='5' skill='6' perslvl='18' spell='1'/>
+	<weapon id='sp_moon' tip='5' skill='6' perslvl='20' spell='1'/>
+	<weapon id='sp_gwall' tip='5' skill='6' perslvl='21' spell='1'/>
+	<weapon id='sp_invulner' tip='5' skill='6' perslvl='24' spell='1'/>
+	
+	<!-- NPC WEAPONS -->
+	<weapon id='necrbullet' tip='0'>
+		<char damage='22' rapid='6' prec='0' tipdam='16' destroy='0'/>
+		<phis speed='50' deviation='30'/>
+		<vis vbul='necrbullet' tipdec='11' flare='' phisbul='1'/> 
+		<snd shoot='dash' noise='800'/>
+	</weapon>
+	
+	<weapon id='mercgr' tip='4' throwtip='2'>
+		<char rapid='90' damexpl='250' tipdam='6' knock='10' destroy='300' expl='200' time='120'/>
+		<phis speed='30' deviation='5'/>
+		<vis tipdec='19'/> 
+		<snd fall='fall_grenade'/>
+	</weapon>
+	
+	<weapon id='alilight' tip='0'>
+		<char damage='50' rapid='35' prep='12' prec='0' tipdam='9' destroy='50'/>
+		<phis speed='50' deviation='7'/>
+		<vis vweap='visalilight' tipdec='11' vbul='lightning' flare='spark' bulanim='1'/> 
+		<snd shoot='lightning' noise='800'/>
+		<n>Молния</n>
+	</weapon>
+	
+	<weapon id='alipsy' tip='0'>
+		<char damage='5' rapid='5' prec='0' tipdam='9' destroy='0'/>
+		<phis speed='35' deviation='7'/>
+		<vis vweap='vismray' vbul='psy' flare='plasma'/> 
+		<dop effect='psy' ch='1'/>
+		<snd shoot='psy'/>
+		<n>Пси-атака</n>
+	</weapon>
+	
+	<weapon id='alilight2' tip='0'>
+		<char damage='70' rapid='20' prec='0' tipdam='9' destroy='0'/>
+		<phis speed='55' deviation='20'/>
+		<vis vweap='visbloodlight' tipdec='11' vbul='bloodlight' flare='laser' bulanim='1'/> 
+		<snd shoot='lightning' noise='800'/>
+	</weapon>
+	
+	<weapon id='aliblade' tip='0'>
+		<char damage='24' rapid='10' prec='12' tipdam='1' destroy='0'/>
+		<phis speed='70' deviation='6'/>
+		<dop effect='cut' damage='5' ch='0.5'/>
+		<vis vweap='visbloodlight' tipdec='1' vbul='blood'/> 
+		<snd shoot='blade2' noise='400'/>
+	</weapon>
+	
+	<weapon id='alipsy2' tip='0'>
+		<char damage='15' rapid='30' prec='0' tipdam='8' destroy='0'/>
+		<phis speed='35' deviation='7'/>
+		<vis vweap='visbloodlight' vbul='bloodpsy' flare='laser'/> 
+		<dop shoot='psy' effect='psy' ch='1'/>
+		<snd/>
+	</weapon>
+	
+	<weapon id='alimray' tip='0'>
+		<char damage='12' pier='30' rapid='1' prec='0' prep='24' tipdam='16' destroy='10'/>
+		<phis speed='2000' deviation='0' drot2='1'/>
+		<vis vweap='visalimray' tipdec='12' vbul='laser7' spring='2' flare='laser'/> 
+		<snd prep='mray' t1='2540' t2='3040' noise='400'/>
+		<com price='2500' chance='0' stage='3'/>
+	</weapon>
+	
+	<weapon id='zombivenom' tip='0'>
+		<char damexpl='15' damage='0' expltip='2' explkol='12' rapid='90' prec='0' destroy='0' crit='0' tipdam='7' expl='200'/>
+		<phis speed='15' deviation='3'/>
+		<vis vbul='venom'/> 
+	</weapon>
+	
+	<weapon id='zombiacid' tip='0'>
+		<char damexpl='20' damage='0' expltip='3' explkol='12' rapid='90' prec='0' destroy='50' crit='0' tipdam='10' expl='200'/>
+		<phis speed='45' deviation='6'/>
+		<dop effect='acid' damage='3' ch='1'/>
+		<vis vbul='venom'/> 
+	</weapon>
+	
+	<weapon id='zombinecro' tip='0'>
+		<char damage='15' kol='5' rapid='60' prec='6' tipdam='16' knock='0' destroy='0'/>
+		<phis speed='70' deviation='6'/>
+		<vis vbul='necro' flare=''/> 
+		<snd shoot='telebul' noise='300'/>
+	</weapon>
+	
+	<weapon id='zombipink' tip='0'>
+		<char damexpl='25' damage='0' expltip='2' explkol='12' rapid='90' prec='0' destroy='0' crit='0' tipdam='19' expl='200'/>
+		<phis speed='15' deviation='3'/>
+		<vis vbul='pink'/> 
+	</weapon>
+	
+	<weapon id='bloat' tip='0'>
+		<char damage='5' rapid='60' prec='6' tipdam='10' knock='2' destroy='10'/>
+		<phis speed='25' deviation='10'/>
+		<vis vbul='plevok'/>
+	</weapon>
+	
+	<weapon id='ship' tip='0'>
+		<char damage='3' rapid='80' prec='8' tipdam='14' knock='2' destroy='0'/>
+		<phis speed='30' deviation='8'/>
+		<vis vbul='ship' flare=''/>
+		<dop effect='poison' damage='1' ch='1'/>
+	</weapon>
+	
+	<weapon id='pinkbloat' tip='0'>
+		<char damage='15' rapid='60' prec='6' tipdam='19' knock='2' destroy='10'/>
+		<phis speed='25' deviation='10'/>
+		<vis vbul='pinkplevok' flare=''/>
+	</weapon>
+	
+	<weapon id='scorppunch' punch='1' tip='0'>
+		<char damage='12' rapid='15' tipdam='14' knock='16'/>
+		<phis speed='9' deviation='0'/>
+		<dop effect='poison' damage='2' ch='1'/>
+		<vis tipdec='3'/>
+	</weapon>
+	
+	<weapon id='scorp2punch' punch='1' tip='0'>
+		<char damage='18' rapid='15' tipdam='14' knock='16'/>
+		<phis speed='9' deviation='0'/>
+		<dop effect='cut' damage='3' ch='1'/>
+		<vis tipdec='3'/>
+	</weapon>
+	
+	<weapon id='scorp3punch' punch='1' tip='0'>
+		<char damage='48' rapid='15' tipdam='14' knock='20'/>
+		<phis speed='9' deviation='0'/>
+		<dop effect='pink' damage='20' ch='1'/>
+		<vis tipdec='3'/>
+	</weapon>
+	
+	<weapon id='scorp3punch' punch='1' tip='0'>
+		<char damage='48' rapid='15' tipdam='14' knock='20'/>
+		<phis speed='9' deviation='0'/>
+		<dop effect='pink' damage='20' ch='1'/>
+		<vis tipdec='3'/>
+	</weapon>
+	
+	<weapon id='antfire' tip='0'>
+		<char damage='2' rapid='2' prec='4' crit='0' tipdam='3' knock='0' destroy='3'/>
+		<phis speed='10' deviation='6' flame='2'/>
+		<vis tipdec='11' vbul='arson' bulanim='1'/> 
+		<snd prep='arson_s' t1='990' t2='2270'/>
+		<dop effect='igni' damage='2' ch='0.1'/>
+	</weapon>
+	
+	<weapon id='slime' tip='0'>
+		<char damage='5' rapid='10' prec='0' tipdam='10' knock='0' destroy='0'/>
+		<phis speed='1' grav='1' deviation='10'/>
+		<vis vbul='kapl' flare='plevok' phisbul='1'/>
+		<snd noise='0'/>
+	</weapon>
+	
+	<weapon id='pinkslime' tip='0'>
+		<char damage='25' rapid='10' prec='0' tipdam='19' knock='0' destroy='0'/>
+		<phis speed='1' grav='1' deviation='10'/>
+		<vis vbul='pinkkapl' flare='pinkplevok' phisbul='1'/>
+		<snd noise='0'/>
+	</weapon>
+	
+	<weapon id='phoenix' tip='0'>
+		<char damage='2' rapid='2' prec='8' crit='0' tipdam='3' destroy='10' prep='10' pier='5'/>
+		<phis speed='40' deviation='8' flame='2' drot2='5'/>
+		<vis tipdec='11' vbul='dflame' flare='flame' bulanim='1'/> 
+		<snd prep='arson_s' t1='990' t2='2270' noise='300'/>
+		<ammo holder='30' reload='60'/>
+	</weapon>
+	
+	<weapon id='robolaser' tip='0'>
+		<char damage='7' rapid='30' prec='10' tipdam='5' knock='0' destroy='30'/>
+		<phis speed='2000' deviation='5'/>
+		<vis tipdec='13' vweap='visrobolaser' vbul='laser2' spring='2'/> 
+		<snd shoot='las_s' noise='400'/>
+	</weapon>
+	
+	<weapon id='robospark' tip='0'>
+		<char damage='12' rapid='40' prec='0' tipdam='9' knock='0' destroy='0'/>
+		<phis speed='30' deviation='5'/>
+		<vis tipdec='11' vweap='visrobospark' vbul='spark' bulanim='1'/> 
+		<snd shoot='spark_s' noise='400'/>
+	</weapon>
+	
+	<weapon id='robolaser2' tip='0'>
+		<char damage='11' rapid='30' prec='10' tipdam='5' knock='0' destroy='30' noise='400'/>
+		<phis speed='2000' deviation='5'/>
+		<dop effect='blind' ch='0.05'/>
+		<vis tipdec='13' vweap='visrobolaser' vbul='laser' spring='2'/> 
+		<snd shoot='las_s'/>
+	</weapon>
+	
+	<weapon id='robospark2' tip='0'>
+		<char damage='16' rapid='40' prec='0' tipdam='9' knock='0' destroy='0' noise='400'/>
+		<phis speed='30' deviation='5'/>
+		<vis tipdec='11' vweap='visrobospark' vbul='spark' bulanim='1'/> 
+		<snd shoot='spark_s'/>
+	</weapon>
+	
+	<weapon id='roboplasma' tip='0'>
+		<char damage='22' rapid='40' prec='10' tipdam='6' knock='10' destroy='100'/>
+		<phis speed='40' deviation='8'/>
+		<vis tipdec='15' vweap='visroboplasma' vbul='plasma1'/> 
+		<snd shoot='plap_s' noise='400'/>
+	</weapon>
+	
+	<weapon id='roboplasma2' tip='0'>
+		<char damage='27' rapid='40' prec='10' tipdam='6' knock='10' destroy='100'/>
+		<phis speed='50' deviation='8'/>
+		<vis tipdec='17' vweap='visroboplasma' vbul='plasma5' flare='laser'/> 
+		<snd shoot='plasma_s' noise='400'/>
+	</weapon>
+	
+	<weapon id='robofire' tip='0'>
+		<char damage='2.2' rapid='1' prec='5' crit='0' holder='100' reload='45' tipdam='3' knock='0' destroy='10'/>
+		<phis speed='40' drot='5' deviation='6' flame='1'/>
+		<vis tipdec='11' vbul='flame' bulanim='1'/> 
+		<snd prep='flamer_s' t1='1540' t2='2840' noise='400'/>
+		<ammo holder='90' reload='45'/>
+		<dop effect='igni' damage='5' ch='0.002'/>
+	</weapon>
+	
+	<weapon id='roboplam' tip='0'>
+		<char damage='13' rapid='5' prec='8' tipdam='6' knock='3' holder='30' reload='45' destroy='80'/>
+		<phis speed='60' drot='11' deviation='5'/>
+		<vis tipdec='16' vbul='plasma2' vweap='visroboplam'/> 
+		<snd shoot='caster_s' reload='laser_r' noise='500'/>
+	</weapon>
+	
+	<weapon id='robosparkl' tip='0'>
+		<char damage='10' rapid='3' dkol='3' prec='10' tipdam='5' knock='0' holder='60' reload='45' destroy='50'/>
+		<phis speed='2000' drot='15' deviation='3'/>
+		<dop effect='blind' ch='0.05'/>
+		<vis tipdec='12' vbul='sparkl' spring='2' vweap='visrobosparkl'/> 
+		<snd shoot='laser_s' reload='laser_r' noise='500'/>
+	</weapon>
+	
+	<weapon id='robonova' tip='0'>
+		<char damage='20' rapid='7' prec='10' tipdam='5' knock='0' holder='30' reload='45' destroy='50'/>
+		<phis speed='2000' drot='15' deviation='3'/>
+		<dop effect='blind' ch='0.1'/>
+		<vis tipdec='12' vbul='laser5' spring='2' flare='laser' vweap='visrobonova'/> 
+		<snd shoot='laser_s' reload='laser_r' noise='500'/>
+	</weapon>
+	
+	<weapon id='robofire2' tip='0'>
+		<char damage='5' rapid='1' prec='5' crit='0' tipdam='3' knock='0' destroy='10'/>
+		<phis speed='40' drot='5' deviation='6' flame='1'/>
+		<vis tipdec='11' vbul='flame2' bulanim='1'/> 
+		<snd prep='flamer_s' t1='1540' t2='2840' noise='400'/>
+		<dop effect='igni' damage='10' ch='0.002'/>
+		<ammo holder='90' reload='45'/>
+	</weapon>
+	
+	<weapon id='robominigun' tip='0'>
+		<char damage='8' rapid='2' prec='10' knock='1' holder='60' reload='50' prep='32' destroy='10'/>
+		<phis speed='200' drot='12' deviation='5'/>
+		<vis tipdec='1' shell='1' vweap='visrobominigun'/> 
+		<snd prep='minigun_s' t1='1030' t2='3060' noise='1300'/>
+	</weapon>
+	
+	<weapon id='robogatl' tip='0'>
+		<char damage='12' rapid='3' prec='8' tipdam='5' knock='0' holder='60' reload='30' destroy='20'/>
+		<phis speed='2000' drot='12' deviation='6'/>
+		<dop effect='blind' ch='0.05'/>
+		<vis tipdec='12' vbul='laser' spring='2' vweap='visrobogatl'/> 
+		<snd shoot='laser_s' noise='500'/>
+	</weapon>
+	
+	<weapon id='robomlau' tip='0'>
+		<char damexpl='150' damage='50' rapid='150' prec='9' crit='0' tipdam='4' knock='20' destroy='150' expl='180'/>
+		<phis speed='10' deviation='3' accel='0.7'/>
+		<vis tipdec='9' vbul='rocket' bulanim='1' spring='0' phisbul='1'/> 
+		<snd shoot='rocket_s' noise='800'/>
+	</weapon>
+	
+	<weapon id='robogatp' tip='0'>
+		<char damage='15' rapid='4' prec='10' tipdam='6' knock='5' holder='60' reload='30' destroy='50'/>
+		<phis speed='80' deviation='6' drot='12'/>
+		<vis tipdec='15' vbul='plasma3' flare='plasma' vweap='visrobogatp'/> 
+		<snd prep='gatl_s' t1='100' t2='1500' reload='laser_r' noise='400'/>
+	</weapon>
+	
+	<weapon id='robogatp2' tip='0'>
+		<char damage='18' rapid='4' prec='10' tipdam='6' knock='5' holder='60' reload='30' destroy='100'/>
+		<phis speed='80' deviation='6' drot='12'/>
+		<vis tipdec='15' vbul='plasma3a' flare='plasma' vweap='visrobogatp2'/> 
+		<snd prep='gatl_s' t1='100' t2='1500' reload='laser_r' noise='400'/>
+	</weapon>
+	
+	<weapon id='robomlau2' tip='0'>
+		<char damexpl='100' damage='50' rapid='12' prec='6' crit='0' tipdam='4' knock='20' destroy='400' expl='180'/>
+		<phis speed='10' deviation='8' accel='0.7'/>
+		<vis tipdec='9' vbul='rocket' bulanim='1' spring='0' phisbul='1'/> 
+		<snd shoot='rocket_s' noise='800'/>
+	</weapon>
+	
+	<weapon id='robogas' tip='0'>
+		<char damexpl='20' damage='0' expltip='2' explkol='12' rapid='90' prec='0' destroy='0' crit='0' tipdam='7' expl='200'/>
+		<phis speed='10' deviation='2' accel='1'/>
+		<vis tipdec='9' vbul='rocketgas' bulanim='1' spring='0'/> 
+		<snd shoot='rocket_s' noise='800'/>
+	</weapon>
+	
+	<weapon id='roboplagr' tip='4'>
+		<char rapid='15' damexpl='140' tipdam='6' knock='10' destroy='300' expl='200' time='75'/>
+		<phis speed='20' deviation='18'/>
+		<vis tipdec='19'/> 
+		<snd fall='fall_grenade'/>
+	</weapon>
+	
+	<weapon id='dronmlau' tip='0'>
+		<char damexpl='150' damage='50' rapid='150' prec='9' crit='0' tipdam='4' knock='20' destroy='150' expl='250'/>
+		<phis speed='15' deviation='3' accel='0.7'/>
+		<vis tipdec='9' vbul='rocket' bulanim='1' spring='0' phisbul='1'/> 
+		<snd shoot='rocket_s' noise='800'/>
+	</weapon>
+	
+	<weapon id='drongr' tip='4' throwtip='2'>
+		<char rapid='10' damexpl='250' tipdam='6' knock='10' destroy='300' expl='200' time='60'/>
+		<phis speed='30' deviation='45'/>
+		<vis tipdec='19'/> 
+		<snd fall='fall_grenade'/>
+	</weapon>
+	
+	<weapon id='dronlaser' tip='0'>
+		<char damage='3' pier='50' dkol='15' rapid='1' prec='15' crit='0' prep='10' tipdam='5' destroy='10'/>
+		<phis speed='2000' deviation='0' drot2='1'/>
+		<vis vweap='visdronlaser' tipdec='12' vbul='laser8' spring='2' flare='plasma'/> 
+		<snd prep='lasercraft_s' t11='440' t21='1200' noise='400'/>
+		<ammo holder='15' reload='55'/>
+	</weapon>
+	
+	<weapon id='dronplasma' tip='0'>
+		<char damage='12' rapid='5' prec='20' dkol='3' tipdam='6' knock='0' destroy='10' noise='400'/>
+		<phis speed='30'/>
+		<vis tipdec='17' vweap='visbloodlight' vbul='plasma5' flare='laser'/> 
+		<snd shoot='termo_s'/>
+		<ammo holder='3' reload='60'/>
+	</weapon>
+	
+	<weapon id='dronpspark' tip='0'>
+		<char damage='12' rapid='5' prec='20' dkol='3' tipdam='9' knock='0' destroy='10' noise='400'/>
+		<phis speed='30'/>
+		<vis tipdec='17' vweap='vislightning' vbul='spark' bulanim='1' flare='spark'/> 
+		<snd shoot='spark_s'/>
+		<ammo holder='3' reload='60'/>
+	</weapon>
+	
+	<weapon id='owllaser' tip='0'>
+		<char damage='2' rapid='2' prec='15' pier='50' crit='0' prep='10' tipdam='5' destroy='10'/>
+		<phis speed='2000' deviation='0' drot2='1'/>
+		<vis vweap='visowllaser' tipdec='12' vbul='laser2' spring='2'/> 
+		<snd shoot='owl_s' noise='200'/>
+		<dop effect='blind' ch='0.02'/>
+		<ammo holder='15' reload='30'/>
+	</weapon>
+	
+	<weapon1 id='phoenix' tip='0'>
+		<char damage='2' rapid='2' prec='8' pier='5' crit='0' tipdam='3' destroy='10' prep='10'/>
+		<phis speed='40' deviation='8' flame='2' drot2='5'/>
+		<vis tipdec='11' vbul='dflame' flare='flame' bulanim='1'/> 
+		<snd prep='arson_s' t1='990' t2='2270' noise='300'/>
+		<ammo holder='30' reload='60'/>
+	</weapon1>
+	
+	<weapon id='turret1' tip='0'>
+		<char damage='6.5' rapid='3' prec='10' knock='3' destroy='10'/>
+		<phis speed='200' deviation='8'/>
+		<vis tipdec='1' vweap='viswturret'/> 
+		<snd shoot='lmg_s' noise='1000'/>
+		<ammo holder='100' reload='60'/>
+	</weapon>
+	
+	<weapon id='turret2' tip='0'>
+		<char damage='8' rapid='10' prec='12' tipdam='5' knock='0' destroy='30'/>
+		<phis speed='2000' deviation='5'/>
+		<dop effect='blind' ch='0.05'/>
+		<vis tipdec='12' vweap='viswturret' vbul='laser' spring='2'/> 
+		<snd shoot='laser_s' noise='400'/>
+		<ammo holder='12' reload='60'/>
+	</weapon>
+	
+	<weapon id='turret3' tip='0'>
+		<char damage='26' rapid='40' prec='8' tipdam='6' knock='10' destroy='100'/>
+		<phis speed='50' deviation='8'/>
+		<vis tipdec='15' vweap='viswturret' vbul='plasma'/> 
+		<snd shoot='plasma_s' noise='400'/>
+		<ammo holder='12' reload='60'/>
+	</weapon>
+	
+	<weapon id='turret4' tip='0'>
+		<char damage='50' rapid='30' prec='11' tipdam='3' knock='0' destroy='50'/>
+		<phis speed='2000' deviation='5'/>
+		<vis vbul='termo' vweap='viswturret' tipdec='11' flare='laser' spring='2'/> 
+		<snd shoot='termo_s' noise='200'/>
+		<dop effect='igni' damage='5' ch='1'/>
+		<ammo holder='15' reload='60'/>
+	</weapon>
+	
+	<weapon id='turret5' tip='0'>
+		<char damage='15' rapid='3' prec='16' tipdam='5' destroy='30'/>
+		<phis speed='2000' deviation='3'/>
+		<vis tipdec='12' vbul='laser1' spring='2' flare='plasma2' vweap='viswturret'/> 
+		<snd shoot='laser_s' noise='500'/>
+		<dop effect='blind' ch='0.1'/>
+		<ammo holder='20' reload='60'/>
+	</weapon>
+	
+	<weapon id='turret6' tip='0'>
+		<char damage='11' rapid='2' prec='12' knock='5' pier='15' destroy='10'/>
+		<phis speed='200' drot2='6' deviation='5'/>
+		<vis tipdec='2' vweap='viswturret'/> 
+		<snd shoot='hmg_s' noise='1200'/>
+		<ammo holder='90' reload='60'/>
+	</weapon>
+	
+	<weapon id='turret7' tip='0'>
+		<char damage='60' rapid='25' prec='20' tipdam='9' crit='2' knock='0' destroy='50'/>
+		<phis speed='2000' deviation='2'/>
+		<vis vbul='laser3' vweap='viswturret' tipdec='12' spring='2'/> 
+		<snd shoot='grom_s' noise='1000'/>
+		<ammo holder='5' reload='30'/>
+		<dop probiv='1'/>
+	</weapon>
+	
+	<weapon id='turret10' tip='0'>
+		<char damage='25' rapid='3' prec='0' tipdam='18' knock='5' destroy='10'/>
+		<phis speed='200' deviation='3'/>
+		<ammo holder='30' reload='55'/>
+		<vis tipdec='15' vbul='plasma3a' flare='plasma'/> 
+		<snd shoot='quick_s' noise='500'/>
+	</weapon>
+	
+	<weapon id='ttweap1' tip='0'><!--  пулемёт -->
+		<char damage='140' rapid='3' prec='50' knock='1'/>
+		<phis speed='200' drot='12' drot2='5' deviation='5'/>
+		<vis vweap='visttweap1'/> 
+		<snd shoot='zebr_s'/>
+		<ammo holder='30' reload='120'/>
+	</weapon>
+	
+	<weapon id='ttweap2' tip='0'><!--  волна -->
+		<char damage='800' kol='5' rapid='5' prec='60' knock='1' tipdam='6'/>
+		<phis speed='50' accel='0.2' deviation='8' volna='1' drot='10'/>
+		<vis vweap='visttweap2' vbul='ttplasma' flare=''/> 
+		<snd shoot='termo_s'/>
+		<ammo holder='1' reload='110'/>
+	</weapon>
+	
+	<weapon id='ttweap3' tip='0'><!--  лазер -->
+		<char damage='400' rapid='5' prec='0' tipdam='5'/>
+		<phis speed='2000' deviation='6' drot='1.3'/>
+		<vis vweap='visttweap3' vbul='ttlaser' spring='2' flare='laser'/> 
+		<snd shoot='laser2_s'/>
+		<ammo holder='1' reload='90'/>
+	</weapon>
+	
+	<weapon id='ttweap4' tip='0'><!--  массовые ракеты -->
+		<char damexpl='800' damage='100' rapid='5' prec='20' crit='0' tipdam='4' expl='300'/>
+		<phis speed='50' deviation='15' distexpl='1' drot='6'/>
+		<vis vweap='visttweap4' vbul='ttzalp' flare='' visexpl='ttexpl'/> 
+		<snd shoot='fireball'/>
+		<ammo holder='4' reload='300'/>
+	</weapon>
+	
+	<weapon id='ttweap5' tip='0'><!--  самонавод ракеты -->
+		<char damexpl='1100' damage='100' rapid='5' prec='0' crit='0' tipdam='4' expl='300'/>
+		<phis speed='15' accel='0.65' deviation='1' navod='5' drot='10'/>
+		<vis vweap='visttweap5' vbul='ttnavod' flare='' visexpl='ttplaexpl'/> 
+		<snd shoot='fireball'/>
+		<ammo holder='1' reload='150'/>
+	</weapon>
+	
+	<weapon id='ttweap6' tip='0'><!--  самонавод снаряды -->
+		<char damage='700' rapid='5' prec='0' tipdam='18'/>
+		<phis speed='50' accel='0.2' deviation='8' navod='4' drot='1'/>
+		<vis vweap='visttweap6' vbul='ttmoln' flare=''/> 
+		<snd shoot='fireball'/>
+		<ammo holder='3' reload='160'/>
+	</weapon>
+	
+</weapons>

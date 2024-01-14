@@ -35,26 +35,37 @@ package fe.unit
 		public var mass:Array=[0,0,0,0];
 		public var massW:int=0;
 		public var massM:int=0;
+
+		private var itemList:XMLList;	// Pre-load these lists and keep them in memory instead of costly lookups all the time.
+		private var armorList:XMLList;
+		private var weaponList:XMLList;
 		
-		public function Invent(own:Unit,loadObj:Object=null, opt:Object=null) {
-			owner=own;
-			weapons=new Array();
-			favIds=new Array();
-			armors=new Array();
-			spells=new Array();
-			items=new Array();
-			eqip=new Array();
-			ammos=new Array();
-			fav=new Array();
+		public function Invent(own:Unit,loadObj:Object=null, opt:Object=null)
+		{
+			owner	= own;
+			weapons	= [];
+			favIds	= [];
+			armors	= [];
+			spells	= [];
+			items	= [];
+			eqip	= [];
+			ammos	= [];
+			fav		= [];
 			
-			itemsId=new Array();
-			for each (var node in AllData.d.item) {
-				var item:Item=new Item(node.@tip, node.@id, 0, 0, node);
+			itemsId = [];
+			itemList = AllData.fetchNodeList('items', 'item');
+			armorList = AllData.fetchNodeList('armors', 'armor');
+			weaponList = AllData.fetchNodeList('weapons', 'weapon');
+
+			for each (var node in itemList)
+			{
+				var item:Item = new Item(node.@tip, node.@id, 0, 0, node);
 				items[node.@id]=item;
 				if (node.@us>=2) itemsId.push(node.@id);
 				if (item.invCat==1 && item.mass>0 && node.@perk.length()==0) eqip.push(node.@id);
 				if (node.@base.length()) ammos[node.@base]=0;
 			}
+
 			money=items['money'];
 			pin=items['pin'];
 			gel=items['gel'];
@@ -95,10 +106,10 @@ package fe.unit
 			} else if (n==3) {
 				nhp=gg.pers.inMaxHP-gg.pers.legsHP;
 			} else return '';
-			var list:XMLList=AllData.d.item;
 			var minRazn:Number=10000;
 			var nci:String='';
-			for each (var pot in list) {
+			for each (var pot in itemList)
+			{
 				if (pot.@heal=='organ' && items[pot.@id].kol>0 && (pot.@minmed.length()==0 || pot.@minmed<=gg.pers.medic)) {
 					var hhp=0;
 					if (pot.@horgan.length()) hhp=pot.@horgan;
@@ -125,10 +136,9 @@ package fe.unit
 				return false;
 			}
 			if (ci==null) {	//применить наиболее подходящее зелье
-				var list:XMLList=AllData.d.item;
 				var minRazn:Number=10000;
 				var nci:String='';
-				for each (pot in list) {
+				for each (pot in itemList) {
 					if (pot.@heal=='hp' && items[pot.@id].kol>0) {
 						hhp=0;
 						if (pot.@hhp.length()) hhp+=pot.@hhp*gg.pers.healMult;
@@ -146,12 +156,11 @@ package fe.unit
 				} else ci=nci;
 			}
 			if (ci=='mana') {	//применить наиболее подходящее зелье маны
-				list=AllData.d.item;
 				var minRazn:Number=10000;
 				need1=gg.pers.inMaxMana-gg.pers.manaHP;
 				if (need1<1) return false;
 				var nci:String='';
-				for each (pot in list) {
+				for each (pot in itemList) {
 					if (pot.@heal=='mana' && items[pot.@id].kol>0) {
 						hhp=0;
 						if (pot.@hmana.length()) hhp=pot.@hmana;
@@ -170,7 +179,7 @@ package fe.unit
 			if (ci=='potion_swim') {
 				gg.h2o=1000;
 			}
-			pot=AllData.d.item.(@id==ci);
+			pot = itemList.(@id==ci);
 			if (pot.length()==0) return false;
 			
 			if (World.w.alicorn) {
@@ -416,34 +425,38 @@ package fe.unit
 		}
 		
 		
-		public function useFav(n:int) {
+		public function useFav(n:int)
+		{
 			var ci:String=fav[n];
 			if (ci==null) return;
-			var item=AllData.d.weapon.(@id==ci);
+			var item = weaponList.(@id==ci);
 			if (item.length()) {
 				gg.changeWeapon(ci);
 				return;
 			}
-			item=AllData.d.armor.(@id==ci);
+			item = armorList.(@id==ci);
 			if (item.length()) {
 				gg.changeArmor(ci);
 				return;
 			}
-			item=AllData.d.item.(@id==ci);
+			item = itemList.(@id==ci);
 			if (item.length()) {
 				useItem(ci);
 			}
 		}
 		
-		public function addWeapon(id:String, hp:int=0xFFFFFF, hold:int=0, respect:int=0, nvar:int=0):Weapon {
-			if (id==null) return null;
-			if (weapons[id]) {
+		public function addWeapon(id:String, hp:int = 0xFFFFFF, hold:int = 0, respect:int = 0, nvar:int = 0):Weapon
+		{
+			if (id == null) return null;
+			if (weapons[id])
+			{
 				weapons[id].repair(hp);
 				return weapons[id];
 			}
-			var w:Weapon=Weapon.create(owner,id,nvar);
-			if (w==null) return null;
-			if (w.tip==5 || hp==0xFFFFFF) w.hp=w.maxhp;
+
+			var w:Weapon = Weapon.create(owner, id, nvar);
+			if (w == null) return null;
+			if (w.tip == 5 || hp == 0xFFFFFF) w.hp = w.maxhp;
 			else w.hp=hp;
 			if (hold>0) w.hold=hold;
 			if (w.tip==4 && respect==3) respect=0;
@@ -464,7 +477,7 @@ package fe.unit
 			}
 		}
 		
-		public function updWeapon(id:String, nvar:int) {
+		public function updWeapon(id:String, nvar:int){
 			if (weapons[id]==null) addWeapon(id);
 			weapons[id].updVariant(nvar);
 		}
@@ -548,7 +561,7 @@ package fe.unit
 				}
 			}
 			if (cell<29 && cell>=25) {
-				var xml=AllData.d.item.(@id==id);
+				var xml = itemList.(@id==id);
 				if (xml.length()==0 || xml.@tip!='spell') {
 					World.w.gui.infoText('onlySpell');
 					return;
@@ -564,9 +577,10 @@ package fe.unit
 			}
 		}
 		
-		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor {
+		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor
+		{
 			if (armors[id]) return null;
-			var node=AllData.d.armor.(@id==id);
+			var node = armorList.(@id==id);
 			if (!node) return null;
 			var w:Armor=new Armor(id, nlvl);
 			w.hp=hp;
@@ -575,22 +589,24 @@ package fe.unit
 			return w;
 		}
 		
-		public function addSpell(id:String):Spell {
-			if (id==null) return null;
-			if (spells[id]) {
-				return spells[id];
-			}
-			var sp:Spell=new Spell(owner, id);
-			if (sp==null) return null;
-			spells[id]=sp;
-			var w:Weapon=addWeapon(id);
-			w.spell=true;
-			w.nazv=sp.nazv;
+		public function addSpell(id:String):Spell
+		{
+			if (id == null) return null;
+			if (spells[id]) return spells[id];
+
+			var sp:Spell = new Spell(owner, id);
+			if (sp == null) return null;
+			spells[id] = sp;
+			var w:Weapon = addWeapon(id);
+			w.spell = true;
+			w.nazv = sp.nazv;
 			return sp;
 		}
 		
-		public function addAllSpells() {
-			for each(var sp in AllData.d.item.(@tip=='spell')) {
+		public function addAllSpells()
+		{
+			for each(var sp in itemList.(@tip=='spell'))
+			{
 				addSpell(sp.@id);
 			}
 		}
@@ -603,7 +619,7 @@ package fe.unit
 			if (l.tip==Item.L_WEAPON) {
 				var patron=l.xml.a[0];
 				if (tr==0 && patron && patron!='recharg') {
-					kol=Math.floor(Math.random()*AllData.d.item.(@id==patron).@kol)+1;
+					kol=Math.floor(Math.random()*itemList.(@id==patron).@kol)+1;
 					items[patron].kol+=kol;
 				}
 				var hp:int;
@@ -958,7 +974,8 @@ package fe.unit
 			items['screwdriver'].kol=1;
 		}
 		public function addAllArmor() {
-			for each(var arm in AllData.d.armor) {
+			for each(var arm in armorList)
+			{
 				addArmor(arm.@id);
 			}
 		}

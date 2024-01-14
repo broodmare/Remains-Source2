@@ -1,0 +1,535 @@
+<effs>
+
+	<eff id='alicorn' tip='4' t='20'>
+		<sk id='ableFly' v1='1'/>
+		<sk id='maxhp' ref='mult' v1='5'/>
+		<sk id='healMult' ref='mult' v1='2.5'/>
+		<sk id='allSpeedMult' ref='mult' v1='1.8'/>
+		<sk id='knocked' ref='mult' v1='0.1'/>
+		<sk id='allDamMult' ref='mult' v1='5'/>
+		<sk id='allPrecMult' ref='mult' v1='2'/>
+		<sk id='meleeR' ref='mult' v1='1.5'/>
+		<sk id='runForever' ref='add' v1='-1'/>
+		<sk id='shitArmor' ref='add' v1='30'/>
+		<sk id='recManaMin' ref='add' v1='2'/>
+		<sk id='allDManaMult' ref='mult' v1='0.75'/>
+		<sk id='pipEmpVulner' v1='0'/>
+	</eff>
+	
+	<!-- эффекты -->
+	<eff id='burning' tip='2' t='7' val='2'>
+		<sk id='runForever' ref='add' v1='1'/>
+		<sk tip='res' id='11' v1='0.5'/>
+		<del id='freezing'/>
+		<eff id='crio' n1='+50%'/>
+	</eff>
+	
+	<eff id='chemburn' tip='2' t='15' val='2'/>
+	
+	<eff id='inhibitor' tip='2' t='60'/>
+	
+	<eff id='freezing' tip='2' t='15' val='2'>
+		<sk tip='res' id='0' v1='-0.3'/>
+		<sk tip='res' id='2' v1='-0.3'/>
+		<sk tip='res' id='4' v1='-0.3'/>
+		<sk tip='res' id='3' v1='0.25'/>
+		<sk id='tormoz' ref='mult' v1='0.75'/>
+		<del id='burning'/>
+		<textvar s1='25%'/>
+		<eff id='bullet' n1='-30%'/>
+		<eff id='phis' n1='-30%'/>
+		<eff id='expl' n1='-30%'/>
+		<eff id='fire' n1='+25%'/>
+	</eff>
+	
+	<eff id='blindness' tip='2' t='15'>
+		<sk id='precMultCont' ref='mult' v1='0.4'/>
+		<textvar s1='60%'/>
+	</eff>
+	
+	<eff id='contusion' tip='2' t='60'>
+		<sk id='tormoz' ref='mult' v1='0.75'/>
+		<sk id='precMultCont' ref='mult' v1='0.8'/>
+		<sk id='rapidMultCont' ref='mult'  v1='0.8'/>
+		<sk id='allDManaMult' ref='mult' v1='1.5'/>
+		<textvar s1='25%' s2='20%' s3='20%' s4='50%'/>
+	</eff>
+	
+	<eff id='namok' tip='2' t='60' val='2'>
+		<sk tip='res' id='3' v1='0.25'/>
+		<sk tip='res' id='11' v1='-0.25'/>
+		<sk tip='res' id='9' v1='-0.5'/>
+		<eff id='fire' n1='+25%'/>
+		<eff id='crio' n1='-25%'/>
+		<eff id='spark' n1='-50%'/>
+	</eff>
+	
+	<eff id='stealth' tip='2' t='60' val='0.2'>
+		<sk id='showObsInd' v0='0' v1='1'/>
+		<sk id='stealthMult' v1='0.2'/>
+		<del id='potion_shadow'/>
+	</eff>
+	
+	<eff id='stealth_armor' tip='2'>
+		<sk id='stealthMult' v1='0.2'/>
+		<del id='potion_shadow'/>
+	</eff>
+	
+	<eff id='curse' tip='0'>
+		<sk id='healMult' ref='mult' v1='0'/>
+	</eff>
+	
+	<eff id='reanim' tip='2' t='60'/>
+	
+	<eff id='disorient' tip='4' t='15'>
+		<sk id='zaput' v0='0' v1='1'/>
+	</eff>
+	
+	<eff id='horror' tip='4' t='15'>
+		<sk id='runForever' ref='add' v1='1'/>
+		<sk id='mazilAdd' ref='add' v1='25'/>
+	</eff>
+	
+	<eff id='vote' tip='4' t='8'>
+		<sk id='attackForever' ref='add' v1='1'/>
+		<sk id='autoAttack' v0='0' v1='1'/>
+	</eff>
+	
+	<eff id='antidote' tip='2' t='30'>
+		<sk tip='res' id='12' v1='0.5'/>
+		<textvar s1='50%'/>
+	</eff>
+	
+	<eff id='radx' tip='2' t='120' him='1'>
+		<sk id='radX' ref='add' v1='-0.25'/>
+		<textvar s1='25%'/>
+	</eff>
+	
+	<eff id='bloodinv' tip='2' t='4'>
+		<sk id='allVulnerMult' ref='mult' v1='0'/>
+	</eff>
+	
+	<eff id='drunk' tip='2' t='120' val='3' him='1' add='1' lvl1='150' lvl2='350' lvl3='750'>
+		<sk id='tormoz' ref='mult' v1='0.9' v2='0.8' v3='0.6' v4='0.2'/>
+		<sk id='precMultCont' ref='mult' v1='0.9' v2='0.8' v3='0.5' v4='0.2'/>
+		<sk id='allDManaMult' ref='mult' v1='1.2' v2='1.5' v3='2' v4='3'/>
+		<sk id='meleeDamMult' ref='mult' v1='1.1' v2='1.2' v3='1.5' v4='0.5'/>
+		<sk id='allVulnerMult' ref='mult' v1='0.95' v2='0.9' v3='0.85' v4='0.85'/>
+		<sk id='dexter' ref='mult' v1='0.9' v2='0.8' v3='0.6' v4='0.2'/>
+		<sk id='mordaN' v0='1' v1='1' v2='2' v3='2' v4='3'/>
+		<textvar s1='+5%' s2='+10%' s3='-10%' s4='-10%' s5='+20%'/>
+		<textvar s1='+10%' s2='+20%' s3='-20%' s4='-20%' s5='+50%'/>
+		<textvar s1='+15%' s2='+50%' s3='-50%' s4='-40%' s5='+100%'/>
+		<textvar s1='+15%' s2='-50%' s3='-80%' s4='-80%' s5='+200%'/>
+	</eff>
+	
+	<eff id='coffee' tip='2' t='120' him='1'>
+		<sk id='lockPick' ref='add' v1='1'/>
+		<sk id='hacker' ref='add' v1='1'/>
+		<textvar s1='1' s2='1'/>
+	</eff>
+	
+	<eff id='stupor' tip='4' t='9'>
+		<sk id='tormoz' ref='mult' v1='0.25'/>
+		<sk id='runSpeedMult' ref='mult' v1='0.5'/>
+		<sk id='jumpdy' ref='add' v1='-3'/>
+		<sk id='stamRes' ref='mult' v1='0'/>
+	</eff>
+	
+	<eff id='weak' tip='4' t='15'>
+		<sk id='precMultCont' ref='mult' v1='0.5'/>
+		<sk id='meleeDamMult' ref='mult' v1='0.7'/>
+		<sk id='spellsDamMult' ref='mult' v1='0.7'/>
+		<sk id='throwForce' ref='mult' v1='0.8'/>
+	</eff>
+	
+	<eff id='sacrifice' tip='4' t='10'>
+		<textvar s1='50%'/>
+	</eff>
+	
+	<eff id='relat' tip='4' t='10'>
+		<sk id='relat' v1='0.2'/>
+		<textvar s1='20%'/>
+	</eff>
+	
+	<eff id='fetter' tip='4' t='7'>
+		<sk id='isFetter' v1='130'/>
+	</eff>
+	
+	<eff id='pinkcloud' tip='4' t='15' val='20'/>
+	
+	<eff id='antil' tip='4' t='20'>
+		<sk id='healMult' ref='mult' v1='0'/>
+	</eff>
+	
+	<!-- боевая химия -->
+	<eff id='mint' tip='2' t='100' him='1' postbad='post_mint'>
+		<sk id='lockPick' ref='add' v1='2' v2='3'/>
+		<sk id='hacker' ref='add' v1='2' v2='3'/>
+		<sk id='remine' ref='add' v1='1' v2='1'/>
+		<sk id='repair' ref='add' v1='1' v2='1'/>
+		<sk id='unlockMaster' ref='add' v1='1' v2='1'/>
+		<sk id='hackerMaster' ref='add' v1='1' v2='1'/>
+		<del id='pmint'/>
+		<textvar s1='2' s2='2' s3='1'/>
+		<textvar s1='3' s2='3' s3='1'/>
+	</eff>
+	
+	<eff id='pmint' tip='2' t='100' him='1' postbad='post_mint'>
+		<sk id='lockPick' ref='add' v1='4' v2='5'/>
+		<sk id='hacker' ref='add' v1='4' v2='5'/>
+		<sk id='remine' ref='add' v1='1' v2='1'/>
+		<sk id='repair' ref='add' v1='1' v2='1'/>
+		<sk id='unlockMaster' ref='add' v1='1' v2='1'/>
+		<sk id='hackerMaster' ref='add' v1='1' v2='1'/>
+		<del id='mint'/>
+		<textvar s1='4' s2='4' s3='1'/>
+		<textvar s1='5' s2='5' s3='1'/>
+	</eff>
+	
+	<eff id='post_mint' tip='2' him='2' t='100'>
+		<sk id='lockPick' ref='add' vd='-1'/>
+		<sk id='hacker' ref='add' vd='-1'/>
+		<textvar s1='1' s2='1'/>
+		<textvar s1='2' s2='2'/>
+		<textvar s1='3' s2='3'/>
+	</eff>
+	
+	<eff id='dash' tip='2' t='180' him='1' postbad='post_dash'>
+		<sk id='runSpeedMult' ref='mult' v1='1.3' v2='1.4'/>
+		<sk id='allSpeedMult' ref='mult' v1='1.1' v2='1.2'/>
+		<sk id='jumpdy' ref='add' v1='2' v2='2'/>
+		<sk id='maxOd' ref='add' v1='30' v2='40'/>
+		<del id='ultradash'/>
+		<textvar s1='30%' s2='30'/>
+		<textvar s1='40%' s2='40'/>
+	</eff>
+	
+	<eff id='ultradash' tip='2' t='180' him='1' postbad='post_dash'>
+		<sk id='runSpeedMult' ref='mult' v1='1.5' v2='1.6'/>
+		<sk id='allSpeedMult' ref='mult' v1='1.1' v2='1.2'/>
+		<sk id='jumpdy' ref='add' v1='4' v2='4'/>
+		<sk id='maxOd' ref='add' v1='70' v2='90'/>
+		<del id='dash'/>
+		<textvar s1='50%' s2='70'/>
+		<textvar s1='60%' s2='90'/>
+	</eff>
+	
+	<eff id='post_dash' tip='2' him='2' t='120'>
+		<sk id='allSpeedMult' ref='mult' v1='0.9' v2='0.82' v3='0.75'/>
+		<sk id='maxOd' ref='add' vd='-10'/>
+		<textvar s1='10%' s2='10'/>
+		<textvar s1='18%' s2='20'/>
+		<textvar s1='25%' s2='30'/>
+	</eff>
+	
+	<eff id='rage' tip='2' t='180' him='1' postbad='post_rage'>
+		<sk id='allDamMult' ref='mult' v1='1.25' v2='1.35'/>
+		<del id='stampede'/>
+		<textvar s1='25%'/>
+		<textvar s1='35%'/>
+	</eff>
+	
+	<eff id='post_rage' tip='2' him='2' t='120'>
+		<sk id='allDamMult' ref='mult' v1='0.9' v2='0.8' v3='0.7'/>
+		<textvar s1='10%'/>
+		<textvar s1='20%'/>
+		<textvar s1='30%'/>
+	</eff>
+		
+	<eff id='medx' tip='2' t='180' him='1' postbad='post_medx'>
+		<sk id='allVulnerMult' ref='mult' v1='0.75' v2='0.7'/>
+		<sk id='runForever' ref='add' v1='-1' v2='-1'/>
+		<del id='stampede'/>
+		<textvar s1='25%'/>
+		<textvar s1='30%'/>
+	</eff>
+	
+	<eff id='post_medx' tip='2' him='2' t='120'>
+		<sk id='allVulnerMult' ref='mult' v1='1.1' v2='1.2' v3='1.3'/>
+		<textvar s1='10%'/>
+		<textvar s1='20%'/>
+		<textvar s1='30%'/>
+	</eff>
+		
+	<eff id='stampede' tip='2' t='180' him='1' postbad='post_stampede'>
+		<sk id='allDamMult' ref='mult' v1='1.3' v2='1.4'/>
+		<sk id='allVulnerMult' ref='mult' v1='0.75' v2='0.7'/>
+		<sk id='runForever' ref='add' v1='-1' v2='-1'/>
+		<del id='rage'/>
+		<del id='medx'/>
+		<textvar s1='30%' s2='25%'/>
+		<textvar s1='40%' s2='30%'/>
+	</eff>
+	
+	<eff id='post_stampede' tip='2' him='2' t='120'>
+		<sk id='allDamMult' ref='mult' v1='0.9' v2='0.8' v3='0.7'/>
+		<sk id='allVulnerMult' ref='mult' v1='1.1' v2='1.2' v3='1.3'/>
+		<textvar s1='10%' s2='10%'/>
+		<textvar s1='20%' s2='20%'/>
+		<textvar s1='30%' s2='30%'/>
+	</eff>
+	
+	<eff id='buck' tip='2' t='180' him='1' postbad='post_buck'>
+		<sk id='stamRun' ref='mult' v1='0.5' v2='0.35'/>
+		<sk id='maxhp' ref='mult' v1='1.25' v2='1.35'/>
+		<sk id='skin' ref='add' v1='3' v2='4'/>
+		<sk id='punchDamMult' ref='add' v1='0.5' v2='0.7'/>
+		<sk id='kickDestroy' ref='add' v1='50' v2='80'/>
+		<textvar s1='25%' s2='-50%' s3='3' s4='50%'/>
+		<textvar s1='35%' s2='-65%' s3='4' s4='70%'/>
+	</eff>
+	
+	<eff id='post_buck' tip='2' him='2' t='120'>
+		<sk id='stamRun' ref='mult' v1='1.5' v2='2' v3='2.5'/>
+		<sk id='maxhp' ref='mult' v1='0.9' v2='0.8' v3='0.7'/>
+		<textvar s1='10%' s2='+50%'/>
+		<textvar s1='20%' s2='+100%'/>
+		<textvar s1='30%' s2='+150%'/>
+	</eff>
+		
+	<eff id='hydra' tip='2' t='30' him='1' val='10' postbad='post_hydra'/>
+	
+	<eff id='post_hydra' tip='2' him='2' t='120'>
+		<sk id='healMult' ref='mult' v1='0.5'/>
+		<textvar s1='50%'/>
+	</eff>
+	
+	<!-- зелья -->
+	<eff id='potion_fly' tip='2' t='120' him='1'>
+		<sk id='ableFly' v1='1'/>
+	</eff>
+	
+	<eff id='potion_shadow' tip='2' t='60' him='1'>
+		<sk id='atkPoss' v1='0'/>
+		<sk id='visiMult' ref='mult' v1='0'/>
+		<sk id='noiseRun' ref='mult' v1='0'/>
+		<sk id='stealthMult' v1='0.01'/>
+		<sk id='allDamMult' ref='mult' v1='0'/>
+		<sk id='allVulnerMult' ref='mult' v1='0.1'/>
+		<sk id='maxTeleMassa' ref='mult' v1='0.01'/>
+		<sk id='activateTrap' ref='mult' v1='0'/>
+		<sk id='potShad' v1='1'/>
+		<del id='stealth'/>
+	</eff>
+	
+	<eff id='potion_mage' tip='2' t='120' him='1'>
+		<sk id='recManaMin' ref='add' v1='5'/>
+		<sk id='allDManaMult' ref='mult' v1='0.75'/>
+		<sk id='spellDown' ref='mult' v1='0.75'/>
+		<sk id='spellsDamMult' ref='add' v1='0.2'/>
+		<textvar s1='25%' s2='20%'/>
+	</eff>
+	
+	<eff id='potion_infra' tip='2' t='30' him='1'>
+		<sk id='infravis' v1='1'/>
+		<sk id='visiTrap' ref='mult' v1='10'/>
+	</eff>
+	
+	<eff id='potion_swim' tip='2' t='300' him='1'>
+		<sk id='h2oPlav' ref='mult' v1='0'/>
+		<sk id='speedPlavMult' ref='mult' v1='2'/>
+		<sk id='ddyPlav' ref='mult' v1='0'/>
+	</eff>
+	
+	<eff id='potion_pink' tip='2' t='300' him='1'>
+		<sk tip='res' id='19' v0='0' v1='0.5'/>
+		<eff id='pink' n1='+50%'/>
+	</eff>
+	
+	<eff id='potion_chance' tip='2' t='120' him='1'>
+		<sk id='lastCh' v1='300'/>
+	</eff>
+	
+	<eff id='post_chance' tip='2' t='5'>
+		<sk id='allVulnerMult' ref='mult' v1='0'/>
+		<sk id='metaMult' ref='mult' v1='10'/>
+	</eff>
+	
+	<eff id='potion_rat' tip='2' t='30' him='1'>
+		<sk id='atkPoss' v1='0'/>
+		<sk id='visiMult' ref='mult' v1='0.1'/>
+		<sk id='noiseRun' ref='mult' v1='0'/>
+		<sk id='allDamMult' ref='mult' v1='0'/>
+		<sk id='maxTeleMassa' ref='mult' v1='0'/>
+		<sk id='activateTrap' ref='mult' v1='0'/>
+		<sk id='runSpeedMult' v1='1'/>
+		<sk id='jumpdy' v1='11'/>
+		<sk id='isDJ' v1='0'/>
+		<sk id='levitOn' v1='0'/>
+		<sk id='maxhp' ref='mult' v1='0.2'/>
+		<del id='stealth'/>
+		<del id='potion_shadow'/>
+	</eff>
+	
+	<!-- еда -->
+	<eff id='f_hp' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.1'/>
+		<textvar s1='10%'/>
+	</eff>
+	
+	<eff id='f_speed' tip='3' t='450'>
+		<sk id='stamRun' ref='mult' v1='0.9'/>
+		<sk id='allSpeedMult' ref='mult' v1='1.1'/>
+		<textvar s1='10%'/>
+	</eff>
+	
+	<eff id='f_prec' tip='3' t='450'>
+		<sk id='allPrecMult' ref='add' v1='0.1'/>
+		<textvar s1='10%'/>
+	</eff>
+	
+	<eff id='f_melee' tip='3' t='900'>
+		<sk id='meleeDamMult' ref='add' v1='0.1'/>
+		<textvar s1='10%'/>
+	</eff>
+	
+	<eff id='f_mana' tip='3' t='450'>
+		<sk id='warlockDManaMult' ref='mult' v1='0.9'/>
+		<textvar s1='10%'/>
+	</eff>
+	
+	<eff id='f_od' tip='3' t='450'>
+		<sk id='maxOd' ref='add' v1='20'/>
+		<textvar s1='20'/>
+	</eff>
+	
+	<eff id='f_vulner' tip='3' t='900'>
+		<sk id='allVulnerMult' ref='mult' v1='0.93'/>
+		<textvar s1='7%'/>
+	</eff>
+	
+	<eff id='f_cucsand' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.1'/>
+		<sk tip='res' id='14' v1='0.1'/>
+		<sk tip='res' id='1' v1='0.1'/>
+		<sk tip='res' id='2' v1='0.1'/>
+		<textvar s1='10%' s2='10%'/>
+	</eff>
+	
+	<eff id='f_frpot' tip='3' t='900'>
+		<sk id='stamRun' ref='mult' v1='0.9'/>
+		<sk id='allSpeedMult' ref='mult' v1='1.1'/>
+		<sk id='maxOd' ref='add' v1='20'/>
+		<textvar s1='10%' s2='20'/>
+	</eff>
+	
+	<eff id='f_oatmeal' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.1'/>
+		<sk tip='res' id='7' v1='0.2'/>
+		<sk id='radX' ref='add' v1='-0.2'/>
+		<textvar s1='10%' s2='20%'/>
+	</eff>
+	
+	<eff id='f_salad' tip='3' t='900'>
+		<sk id='stamRun' ref='mult' v1='0.9'/>
+		<sk id='allSpeedMult' ref='mult' v1='1.1'/>
+		<sk id='runSpeedMult' ref='mult' v1='1.1'/>
+		<sk id='dexter' ref='add' v1='0.1'/>
+		<sk id='dodgePlus' ref='add' v1='0.1'/>
+		<textvar s1='10%' s2='10%'/>
+	</eff>
+	
+	<eff id='f_chpasta' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.12'/>
+		<sk id='allVulnerMult' ref='mult' v1='0.92'/>
+		<textvar s1='12%' s2='8%'/>
+	</eff>
+	
+	<eff id='f_omelet' tip='3' t='900'>
+		<sk id='warlockDManaMult' ref='mult' v1='0.9'/>
+		<sk id='spellsDamMult' ref='add' vd='0.1'/>
+		<textvar s1='10%' s2='10%'/>
+	</eff>
+	
+	<eff id='f_butterbr' tip='3' t='900'>
+		<sk id='skin' ref='add' v1='3'/>
+		<sk id='allVulnerMult' ref='mult' v1='0.95'/>
+		<textvar s1='3' s2='5%'/>
+	</eff>
+	
+	<eff id='f_breakfast' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.25'/>
+		<textvar s1='25%'/>
+	</eff>
+	
+	<eff id='f_soup' tip='3' t='900'>
+		<sk id='dexter' ref='add' v1='0.2'/>
+		<sk id='dodgePlus' ref='add' v1='0.2'/>
+		<textvar s1='20%'/>
+	</eff>
+	
+	<eff id='f_pizza' tip='3' t='900'>
+		<sk id='critCh' ref='add' v1='0.05'/>
+		<sk id='critDamMult' ref='add' v1='0.2'/>
+		<textvar s1='5%' s2='20%'/>
+	</eff>
+	
+	<eff id='f_casser' tip='3' t='900'>
+		<sk id='visiMult' ref='mult' v1='0.8'/>
+		<sk id='noiseRun' ref='mult' v1='0.33'/>
+		<textvar s1='20%' s2='3'/>
+	</eff>
+	
+	<eff id='f_ragu' tip='3' t='900'>
+		<sk id='meleeDamMult' ref='add' v1='0.1'/>
+		<sk id='meleeSpdMult' ref='add' v1='0.1'/>
+		<sk id='punchDamMult' ref='add' v1='0.5'/>
+		<textvar s1='10%' s2='50%'/>
+	</eff>
+	
+	<eff id='f_spsalad' tip='3' t='900'>
+		<sk id='spellsDamMult' ref='add' v1='0.15'/>
+		<sk id='throwForce' ref='mult' v1='1.25'/>
+		<textvar s1='15%' s2='25%'/>
+	</eff>
+	
+	<eff id='f_patty' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.15'/>
+		<sk tip='res' id='9' v1='0.3'/>
+		<sk id='teleEnemy' ref='mult' v1='0.1'/>
+		<textvar s1='15%' s2='30%'/>
+	</eff>
+	
+	<eff id='f_maffin' tip='3' t='900'>
+		<sk id='lockPick' ref='add' v1='1'/>
+		<sk id='hacker' ref='add' v1='1'/>
+		<sk id='remine' ref='add' v1='1'/>
+		<sk id='repair' ref='add' v1='1'/>
+		<sk id='unlockMaster' ref='add' v1='1'/>
+		<sk id='hackerMaster' ref='add' v1='1'/>
+		<textvar s1='1' s2='1'/>
+	</eff>
+	
+	<eff id='f_apie' tip='3' t='900'>
+		<sk id='maxhp' ref='mult' v1='1.25'/>
+		<sk id='metaMult' ref='add' v1='1.5'/>
+		<sk id='healMult' ref='add' v1='0.1'/>
+		<textvar s1='25%' s2='10%'/>
+	</eff>
+	
+	<eff id='f_mpie' tip='3' t='900'>
+		<sk id='allDamMult' ref='mult' v1='1.12'/>
+		<textvar s1='12%'/>
+	</eff>
+	
+	<eff id='f_ppie' tip='3' t='900'>
+		<sk id='gunsDamMult' ref='add' v1='0.15'/>
+		<sk id='reloadMult' ref='mult' v1='0.5'/>
+		<textvar s1='15%' s2='2'/>
+	</eff>
+	
+	<eff id='f_spie' tip='3' t='900'>
+		<sk id='allPrecMult' ref='add' v1='0.15'/>
+		<sk id='meleeSpdMult' ref='add' v1='0.15'/>
+		<sk id='critCh' ref='add' v1='0.05'/>
+		<textvar s1='15%' s2='15%' s3='5%'/>
+	</eff>
+	
+	<eff id='f_borsch' tip='3' t='900'>
+		<sk id='allVulnerMult' ref='mult' v1='0.88'/>
+		<sk id='spellPower' ref='add' v1='1'/>
+		<textvar s1='12%' s2='100%'/>
+	</eff>
+	
+</effs>

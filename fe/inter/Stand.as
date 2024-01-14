@@ -104,7 +104,10 @@ package fe.inter
 		function createWeaponLists(n:int) {
 			var levels:Array=[0,0,0,0,0,0,0];
 			var stolb:int=-1;
-			for each (var weap in AllData.d.weapon.(@tip>0)) {
+			var weaponList:XMLList = AllData.fetchNodeList('weapons', 'weapon');
+
+			for each (var weap in weaponList.(@tip > 0))
+			{
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
 					var item=new itemStand();
@@ -198,7 +201,9 @@ package fe.inter
 			var sc:Number=1.5;
 			var aid=Appear.ggArmorId;
 			Appear.transp=true;
-			for each(var arm in AllData.d.armor) {
+			var armorList:XMLList = AllData.fetchNodeList('armors', 'armor');
+			for each(var arm in armorList)
+			{
 				if (n==6 && arm.@tip>1 || n==7 && arm.@tip!=3) continue;
 				var item=new itemArt();
 				item.x=80+stolb*160;
@@ -236,6 +241,7 @@ package fe.inter
 					item.art.y=100;
 				}
 			}
+			armorList = null; // Manual cleanup.
 			Appear.transp=false;
 			World.w.armorWork='';
 		}
@@ -258,7 +264,9 @@ package fe.inter
 			if (n<5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			vis.toptext.visible=(n<=5);
-			for each (var weap in AllData.d.weapon.(@tip>0)) {
+			var weaponList = AllData.fetchNodeList('weapons', 'weapon');
+			for each (var weap in weaponList.(@tip>0))
+			{
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
 					if (weapons[weap.@id]==null) continue;
 					if (weap.@spell>0 && (inv.items[weap.@id]==null || inv.items[weap.@id].kol<=0)) {
@@ -267,7 +275,11 @@ package fe.inter
 					else showWeapon(weapons[weap.@id],inv.weapons[weap.@id].variant+1,inv.weapons[weap.@id].respect);
 				}
 			}
-			for each(var arm in AllData.d.armor) {
+			weaponList = null; // Manual cleanup.
+
+			var armorList = AllData.fetchNodeList('armors', 'armor');
+			for each(var arm in armorList)
+			{
 				if (armors[arm.@id]) {
 					if (inv.armors[arm.@id] && inv.armors[arm.@id].lvl>=0) {
 						armors[arm.@id].nazv.visible=true;
@@ -278,6 +290,8 @@ package fe.inter
 					}
 				}
 			}
+			armorList = null; // Manual cleanup.
+			
 			for (var i in ls) {
 				if (inv.items[ls[i]].kol) {
 					arts[i].nazv.visible=true;

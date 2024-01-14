@@ -56,8 +56,14 @@ package fe
 		
 		private var mainTimer:Timer;
 
+		private var part2Loaded:Boolean = false;
+
 		public function MainMenu(nmain:Sprite) 
 		{
+			trace('LOADING XML DATA FROM EXTERNAL SOURCES');
+			AllData.initializeGameData(); // QUICK HACK, LOAD ALLDATA XML FILES
+			GameData.initializeGameData(); // QUICK HACK, LOAD GAMEDATA XML FILES
+
 			main = nmain;
 			mainMenuMovieClip = new visMainMenu();
 			mainMenuMovieClip.dialLoad.visible=false;
@@ -71,8 +77,16 @@ package fe
 
 			mainMenuOn();
 			
-			var paramObj:Object = LoaderInfo(main.root.loaderInfo).parameters;
+			
 
+			if (AllData.allFilesLoaded && GameData.allFilesLoaded) mainMenu2();
+		}
+
+		private function mainMenu2():void
+		{
+			trace('ALL XML LOADED, STARTING LOADING PART 2!');
+
+			var paramObj:Object = LoaderInfo(main.root.loaderInfo).parameters;
 			world = new World(main, paramObj);
 			world.mainMenuClass = this;
 			
@@ -80,7 +94,7 @@ package fe
 			mainMenuMovieClip.info.visible=false;
 			Snd.initSnd();
 			setMenuSize();
-			displ=new Displ(mainMenuMovieClip.pipka, mainMenuMovieClip.groza);
+			displ = new Displ(mainMenuMovieClip.pipka, mainMenuMovieClip.groza);
 			mainMenuMovieClip.groza.visible=false;
 			format.font = "_sans";
             format.color = 0xFFFFFF;
@@ -105,8 +119,6 @@ package fe
 			mainMenuMovieClip.info.txt.styleSheet=style;
 			mainMenuMovieClip.link.l1.styleSheet=style;
 			mainMenuMovieClip.link.l2.styleSheet=style;
-
-			GameData.initializeGameData(); // QUICK HACK, LOAD ALL GAMEDATA
 		}
 
 		private function mainMenuOn():void
@@ -676,6 +688,7 @@ package fe
 			else 
 			{
 				mainMenuMovieClip.loading.text='Loading '+Math.round(world.grafon.progressLoad*100)+'%';
+				
 			}
 		}
 		
@@ -686,6 +699,16 @@ package fe
 
 		private function mainStep(event:Event):void 
 		{
+			if (!part2Loaded)
+			{
+				if (AllData.allFilesLoaded && GameData.allFilesLoaded)
+				{
+					part2Loaded = true;
+					mainMenu2();
+				}
+				else return;
+			}
+
 			if (active) step();
 			else if (command>0)
 			{

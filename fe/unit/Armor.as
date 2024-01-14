@@ -49,7 +49,7 @@ package fe.unit
 			id=nid;
 			lvl=nlvl;
 			
-			xml=AllData.d.armor.(@id==id)[0];
+			var xml:XML = AllData.fetchNodeWithChildID('armors', id);
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@clo.length()) clo=xml.@clo;
 			if (xml.@hp.length()) hp=maxhp=(xml.@hp);

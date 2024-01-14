@@ -50,13 +50,19 @@ package fe.loc
 		public static var fForms:Array;
 		public static var oForms:Array;
 		
-		public static function setForms() {
-			fForms=new Array();
-			oForms=new Array();
-			for each (var node in AllData.d.mat) {
+		public static function setForms()
+		{
+			fForms = [];
+			oForms = [];
+			var xmlList = AllData.fetchNodeList('mats', 'mat');
+
+			for each (var node in xmlList)
+			{
 				if (node.@ed==1) fForms[node.@id]=new Form(node);
 				else oForms[node.@id]=new Form(node);
 			}
+
+			xmlList = null; // Manual cleanup.
 		}
 	}
 }

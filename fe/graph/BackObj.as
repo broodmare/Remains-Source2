@@ -23,7 +23,9 @@ package fe.graph
 		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
 			id=nid;
 			X=nx, Y=ny;
-			var node:XML=AllData.d.back.(@id==id)[0];
+			
+			var node:XML = AllData.fetchNodeWithChildID('backs', id);
+
 			var wid=node.@x2*World.tileX;
 			if (xml && xml.@w.length()) wid=xml.@w*World.tileX
 			if (!(wid>0)) wid=World.tileX;

@@ -50,7 +50,8 @@ package fe.unit {
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam('bloat');
 			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			
+			var node0:XML = AllData.fetchNodeWithChildID('units', id);
 			if (node0.un.length()) {
 				if (node0.un.@attr.length()) attRasst=node0.un.@attr;		//дистанция атаки
 				if (node0.un.@attch.length()) attCh=node0.un.@attch;				//шанс атаки

@@ -61,20 +61,29 @@ package fe.serv {
 			kol=nkol;
 			if (tip=='' || tip==null) itemTip();
 			if (tip==L_UNIQ) tip=L_WEAPON;
-			if (nxml==null) {
+			if (nxml == null)
+			{
 				var l:XMLList;
-				if (tip==L_ARMOR) {
-					l=AllData.d.armor.(@id==id);
-				} else if (tip==L_WEAPON) {
-					l=AllData.d.weapon.(@id==id);
-				} else {
-					l=AllData.d.item.(@id==id);
+				if (tip == L_ARMOR)
+				{
+					l = AllData.fetchNodesWithMatchingIDs('armors', id);
+				} 
+				else if (tip == L_WEAPON)
+				{
+					l = AllData.fetchNodesWithMatchingIDs('weapons', id);
+				} 
+				else
+				{
+					l = AllData.fetchNodesWithMatchingIDs('items', id);
 				}
-				if (l.length()) {
-					xml=l[0];
-					wtip=xml.@tip;
+				if (l.length())
+				{
+					xml = l[0];
+					wtip = xml.@tip;
 				}
-			} else {
+			}
+			else
+			{
 				xml=nxml;
 				wtip=xml.@tip;
 			}
@@ -130,21 +139,29 @@ package fe.serv {
 			}
 		}
 
-		public function itemTip() {
+		public function itemTip()
+		{
 			var l:XMLList;
-			l=AllData.d.item.(@id==id);
-			if (l.length()) {
+			l = AllData.fetchNodesWithMatchingIDs('items', id);
+			if (l.length())
+			{
 				xml=l[0];
 				if (xml.@tip.length()) tip=xml.@tip;
 				else tip=L_ITEM;
-			} else {
-				l=AllData.d.weapon.(@id==id);
-				if (l.length()) {
+			}
+			else
+			{
+				l = AllData.fetchNodesWithMatchingIDs('weapons', id);
+				if (l.length())
+				{
 					xml=l[0];
 					tip=L_WEAPON;
-				} else {
-					l=AllData.d.armor.(@id==id);
-					if (l.length()) {
+				} 
+				else
+				{
+					l = AllData.fetchNodesWithMatchingIDs('armors', id);
+					if (l.length())
+					{
 						xml=l[0];
 						tip=L_ARMOR;
 					} 

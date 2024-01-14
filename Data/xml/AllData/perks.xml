@@ -1,0 +1,579 @@
+<perks>
+	<!-- перки -->
+	<!-- телекинез -->
+	<perk id='levitation' tip='1'>
+		<req id='level' lvl='1'/>
+		<sk id='isDJ' v1='1'/>
+	</perk>
+	<perk id='selflevit' tip='1' lvl='2'>
+		<req id='tele' lvl='2' dlvl='3'/>
+		<sk id='levitOn' v0='0' v1='1' v2='1'/>
+		<sk id='levitDMana' v1='5' v2='1'/>
+		<sk id='levitDManaUp' v1='20' v2='4'/>
+		<sk tip='m' id='maxmM' vd='1'/>
+	</perk>
+	<perk id='telemaster' tip='1'>
+		<req id='tele' lvl='4'/>
+		<req id='level' lvl='15'/>
+		<sk id='telemaster' v0='0' v1='1'/>
+		<sk id='teleDist' v0='360000' v1='640000'/>
+		<sk tip='m' id='maxmM' v1='1'/>
+		<textvar s1='33%'/>
+	</perk>
+	<perk id='telethrow' tip='1' lvl='2'>
+		<req id='tele' lvl='2' dlvl='2'/>
+		<sk id='throwForce' v0='0' v1='25' v2='35'/>
+		<sk id='throwDmagic' v0='300' v1='200' v2='150'/>
+		<sk tip='m' id='maxmM' vd='1'/>
+	</perk>
+	
+	<!-- магия -->
+	<perk id='spell_port' tip='1'>
+		<req id='level' lvl='12'/>
+		<req id='magic' lvl='4'/>
+		<sk id='portPoss' v0='0' vd='1'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+	</perk>
+	<perk id='diel' tip='1'>
+		<req id='magic' lvl='2'/>
+		<sk tip='res' id='9' v1='0.2'/>
+		<sk tip='m' id='maxmM' v1='1'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<eff id='spark' n1='+20%'/>
+	</perk>
+	<perk id='warlock' tip='1' lvl='3'>
+		<req id='magic' lvl='1' dlvl='2'/>
+		<sk id='warlockDManaMult' v0='1' v1='0.8' v2='0.65' v3='0.5'/>
+		<sk tip='m' id='maxmM' vd='1'/>
+		<eff id='wmana' n1='-20%' n2='-35%' n3='-50%'/>
+	</perk>
+	
+	<!-- холодное оружие -->
+	<perk id='oak' tip='1'>
+		<req id='melee' lvl='1'/>
+		<sk tip='res' id='1' v0='0' v1='0.25'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<eff id='blade' n1='+25%'/>
+	</perk>
+	<perk id='stonewall' tip='1'>
+		<req id='melee' lvl='2'/>
+		<sk tip='res' id='2' v0='0' v1='0.25'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<eff id='phis' n1='+25%'/>
+	</perk>
+	<perk id='acute' tip='1'>
+		<req id='melee' lvl='3'/>
+		<sk id='acutePier' v0='0' v1='25'/>
+		<sk tip='m' id='maxmW' v1='2'/>
+		<eff id='pier' n1='+25'/>
+	</perk>
+	<perk id='stunning' tip='1'>
+		<req id='melee' lvl='4'/>
+		<sk id='stunningStun' v0='0' v1='90'/>
+		<sk id='stunningKnock' v0='1' v1='1.25'/>
+		<sk tip='m' id='maxmW' v1='2'/>
+		<textvar s1='3'/>
+		<eff id='knock' n1='+25%'/>
+	</perk>
+	<perk id='mmaster' tip='1'>
+		<req id='melee' lvl='5'/>
+		<sk id='meleeSpdMult' ref='add' v1='0.15'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<textvar s1='15%'/>
+	</perk>
+	
+	<!-- огнестрельное оружие -->
+	<perk id='pistol' tip='1'>
+		<req id='smallguns' lvl='1'/>
+		<sk id='pistolPrec' v0='1' v1='1.25'/>
+		<sk id='pistolCons' v0='1' v1='0.75'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<eff id='prec' n1='+25%'/>
+		<textvar s1='25%'/>
+	</perk>
+	<perk id='reinforced' tip='1'>
+		<req id='level' lvl='10'/>
+		<req id='smallguns' lvl='2'/>
+		<sk tip='res' id='0' v0='0' v1='0.15'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<eff id='bullet' n1='+15%'/>
+	</perk>
+	<perk id='shot' tip='1'>
+		<req id='smallguns' lvl='2'/>
+		<sk id='shotPier' v0='0' v1='15'/>
+		<sk id='shotKnock' v0='1' v1='1.25'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<eff id='pier' n1='+15'/>
+		<eff id='knock' n1='+25%'/>
+	</perk>
+	<perk id='commando' tip='1'>
+		<req id='smallguns' lvl='3'/>
+		<sk id='commandoDet' v0='0' v1='3'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<eff id='damage' n1='+3'/>
+	</perk>
+	<perk id='hardness' tip='1'>
+		<req id='smallguns' lvl='4'/>
+		<req id='tele' lvl='3'/>
+		<sk id='recoilMult' v0='1' v1='0.2'/>
+		<sk id='commandoPrec' v0='1' v1='1.15'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<eff id='recoil' n1='-80%'/>
+		<eff id='prec' n1='+15%'/>
+	</perk>
+	<perk id='perf' tip='1'>
+		<req id='smallguns' lvl='5'/>
+		<sk id='perfPier' v0='0' v1='20'/>
+		<sk id='perfDev' v0='1' v1='0.5'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<eff id='pier' n1='+20'/>
+		<textvar s1='2'/>
+	</perk>
+
+	<!-- энерг оружие -->
+	<perk id='antifire' tip='1'>
+		<req id='level' lvl='5'/>
+		<req id='energy' lvl='2'/>
+		<sk tip='res' id='3' v0='0' v1='0.25'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<eff id='fire' n1='+25%'/>
+	</perk>
+	<perk id='laser' tip='1'>
+		<req id='energy' lvl='2'/>
+		<sk id='laserDam' v0='1' v1='1.15'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<eff id='damage' n1='+15%'/>
+	</perk>
+	<perk id='plasma' tip='1'>
+		<req id='energy' lvl='3'/>
+		<sk id='plasmaPrec' v0='1' v1='1.25'/>
+		<sk id='plasmaSpeed' v0='1' v1='1.5'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<eff id='prec' n1='+25%'/>
+		<textvar s1='50%'/>
+	</perk>
+	<perk id='pyro' tip='1'>
+		<req id='energy' lvl='3'/>
+		<sk id='pyroDam' v0='1' v1='1.25'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<eff id='damage' n1='+25%'/>
+	</perk>
+	<perk id='recyc' tip='1'>
+		<req id='energy' lvl='4'/>
+		<sk id='recyc' v0='0' v1='0.25'/>
+		<sk tip='m' id='maxm2' v1='300'/>
+		<textvar s1='25%'/>
+	</perk>
+	<perk id='desintegr' tip='1'>
+		<req id='level' lvl='15'/>
+		<req id='energy' lvl='5'/>
+		<sk id='desintegr' v0='0' v1='0.05'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<textvar s1='5%' s2='20%'/>
+	</perk>
+	
+	<!-- огнестрельное или энерг. оружие -->
+	<perk id='fastreload' tip='1'>
+		<req id='guns' lvl='2'/>
+		<sk id='reloadMult' v0='1' v1='0.5'/>
+		<sk tip='m' id='maxm2' v1='300'/>
+		<eff id='reload' n1='-50%'/>
+	</perk>
+	<perk id='rungun' tip='1'>
+		<req id='level' lvl='4'/>
+		<req id='guns' lvl='2'/>
+		<sk id='runPenalty' v0='0.5' v1='0.25'/>
+		<sk id='jumpPenalty' v0='0.3' v1='0.15'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<textvar s1='-25%' s2='-50%' s3='-15%' s4='-30%'/>
+	</perk>
+	<perk id='composure' tip='1'>
+		<req id='level' lvl='6'/>
+		<req id='guns' lvl='3'/>
+		<sk id='backPenalty' v0='0.4' v1='0.2'/>
+		<sk id='stayBonus' v0='0.3' v1='0.45'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<textvar s3='-20%' s4='-40%' s1='+45%' s2='+30%'/>
+	</perk>
+	<perk id='rifle' tip='1'>
+		<req id='guns' lvl='4'/>
+		<sk id='rifleCritch' v0='0' v1='0.2'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<eff id='critch' n1='+20%'/>
+	</perk>
+	<perk id='bigsize' tip='1'>
+		<req id='level' lvl='10'/>
+		<sk id='bigGunsSlow' v0='1' v1='0'/>
+		<sk id='drotMult' v0='1' v1='2'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+	</perk>
+	
+	<!-- взрывчатка -->
+	<perk id='babah' tip='1'>
+		<req id='level' lvl='6'/>
+		<req id='explosives' lvl='2'/>
+		<sk tip='res' id='4' v0='0' v1='0.25'/>
+		<sk tip='m' id='maxm2' v1='300'/>
+		<eff id='expl' n1='+25%'/>
+	</perk>
+	<perk id='grenader' tip='1'>
+		<req id='explosives' lvl='4'/>
+		<sk id='grenader' v0='0' v1='1'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+	</perk>
+	<perk id='zona' tip='1'>
+		<req id='explosives' lvl='3'/>
+		<sk id='explRadMult' v0='1' v1='1.25'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<textvar s1='25%'/>
+	</perk>
+	<perk id='sapper' tip='1'>
+		<req id='explosives' lvl='4'/>
+		<sk id='sapper' v0='1' v1='1.25'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<textvar s1='25%'/>
+	</perk>
+	<perk id='friendly' tip='1'>
+		<req id='explosives' lvl='5'/>
+		<req id='survival' lvl='3'/>
+		<sk id='autoExpl' v0='1' v1='0.25'/>
+		<sk tip='m' id='maxm2' v1='300'/>
+		<textvar s1='25%'/>
+	</perk>
+	
+	<!-- взлом -->
+	<perk id='fortune' tip='1' lvl='2'>
+		<req id='lockpick' lvl='3' dlvl='2'/>
+		<sk id='capsMult' v0='1' v1='2' v2='3'/>
+		<sk id='bitsMult' v0='1' v1='1.5' v2='2'/>
+		<sk tip='m' id='maxm3' vd='100'/>
+	</perk>
+	<perk id='infiltrator' tip='1'>
+		<req id='lockpick' lvl='2'/>
+		<sk id='lockAtt' v0='1' v1='0.75'/>
+		<sk id='pinBreak' v0='1' v1='0.5'/>
+		<sk tip='m' id='maxm3' v1='200'/>
+		<textvar s1='25%'/>
+	</perk>
+	<perk id='freel' tip='1'>
+		<req id='lockpick' lvl='4'/>
+		<sk id='freel' v0='0' v1='1'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+	</perk>
+	
+	<!-- наука -->
+	<perk id='entomolog' tip='1'>
+		<req id='science' lvl='1'/>
+		<sk id='damInsect' v0='1' v1='1.4'/>
+		<sk tip='m' id='maxm3' v1='200'/>
+		<textvar s1='40%'/>
+	</perk>
+	<perk id='coolhacker' tip='1'>
+		<req id='level' lvl='10'/>
+		<req id='science' lvl='3'/>
+		<sk id='hackAtt' v0='3' v1='5'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<textvar s1='5' s2='3'/>
+	</perk>
+	<perk id='robot' tip='1'>
+		<req id='level' lvl='6'/>
+		<req id='science' lvl='3'/>
+		<sk id='damRobot' v0='1' v1='1.2'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<textvar s1='20%'/>
+	</perk>
+	<perk id='security' tip='1'>
+		<req id='science' lvl='4'/>
+		<sk id='security' v0='0' v1='1'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+	</perk>
+	<perk id='mathlogic' tip='1' lvl='2'>
+		<req id='science' lvl='3' dlvl='2'/>
+		<sk id='satsMult' v0='1' v1='0.85' v2='0.75'/>
+		<sk tip='m' id='maxm1' vd='10'/>
+		<textvar s1='15%' s2='25%'/>
+	</perk>
+	
+	<!-- ремонт -->
+	<perk id='remont' tip='1'>
+		<req id='repair' lvl='1'/>
+		<sk id='jammedMult' v0='1' v1='0.2'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<textvar s1='5'/>
+	</perk>
+	<perk id='sparepart' tip='1'>
+		<req id='repair' lvl='2'/>
+		<sk id='barahlo' v0='0' v1='1'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+	</perk>
+	<perk id='uparmor' tip='1' lvl='2'>
+		<req id='repair' lvl='3' dlvl='2'/>
+		<sk id='maxArmorLvl' v0='0' v1='1' v2='2'/>
+		<sk tip='m' id='maxm3' vd='50'/>
+	</perk>
+	<perk id='durable' tip='1'>
+		<req id='repair' lvl='4'/>
+		<sk id='armorVulner' v0='1' v1='0.8'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+		<textvar s1='20%'/>
+	</perk>
+	
+	<!-- медицина -->
+	<perk id='metabol' tip='1'>
+		<req id='medic' lvl='1'/>
+		<sk id='metaMult' v0='1' v1='2.5'/>
+		<sk id='healMult' ref='add' v1='0.1'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<textvar s1='10%' s2='2.5'/>
+	</perk>
+	<perk id='anatomy' tip='1'>
+		<req id='level' lvl='10'/>
+		<req id='medic' lvl='4'/>
+		<sk id='damPony' v0='1' v1='1.15'/>
+		<sk tip='m' id='maxmW' v1='1'/>
+		<textvar s1='15%'/>
+	</perk>
+	<perk id='longtime' tip='1'>
+		<req id='medic' lvl='3'/>
+		<sk id='himTimeMult' v0='1' v1='2'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<textvar s1='2'/>
+	</perk>
+	<perk id='fightstim' tip='1'>
+		<req id='medic' lvl='5'/>
+		<sk id='himLevel' v0='1' v1='2'/>
+		<sk id='himBadMult' v0='1' v1='0.5'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<textvar s1='2'/>
+	</perk>
+	
+	<!-- скрытность -->
+	<perk id='jump' tip='1'>
+		<req id='level' lvl='8'/>
+		<req id='sneak' lvl='3'/>
+		<sk id='jumpdy' ref='add' v1='2'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+	</perk>
+	<perk id='lightstep' tip='1'>
+		<req id='level' lvl='12'/>
+		<req id='sneak' lvl='4'/>
+		<req id='explosives' lvl='2'/>
+		<sk id='activateTrap' v0='2' v1='1'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+	</perk>
+	<perk id='dexter' tip='1' lvl='3'>
+		<req id='sneak' lvl='1' dlvl='2'/>
+		<sk id='dexter' ref='add' vd='0.15'/>
+		<sk tip='m' id='maxm3' vd='100'/>
+		<textvar s1='15%'/>
+	</perk>
+	
+	<!-- выживание -->
+	<perk id='stamina' tip='1'>
+		<req id='survival' lvl='1'/>
+		<sk id='stamRun' ref='mult' v1='0.6'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+		<textvar s1='40%'/>
+	</perk>
+	<perk id='envir' tip='1'>
+		<req id='survival' lvl='2'/>
+		<sk tip='res' id='7' v0='0' v1='0.2'/>
+		<sk tip='res' id='10' v0='0' v1='0.2'/>
+		<sk id='radX' ref='add' v1='-0.2'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+		<eff id='radx' n1='+20%'/>
+		<eff id='venom' n1='+20%'/>
+		<eff id='acid' n1='+20%'/>
+	</perk>
+	<perk id='wild' tip='1'>
+		<req id='survival' lvl='3'/>
+		<sk tip='res' id='12' v0='0' v1='0.1'/>
+		<sk tip='res' id='13' v0='0' v1='0.1'/>
+		<sk tip='res' id='14' v0='0' v1='0.2'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+		<eff id='fang' n1='+20%'/>
+		<eff id='respoison' n1='+10%'/>
+		<eff id='resbleeding' n1='+10%'/>
+	</perk>
+	<perk id='purifier' tip='1'>
+		<req id='survival' lvl='3'/>
+		<sk id='damMonster' v0='1' v1='1.2'/>
+		<sk id='damZombie' ref='add' v1='0.2'/>
+		<sk tip='m' id='maxm2' v1='200'/>
+		<textvar s1='20%'/>
+	</perk>
+	<perk id='potmaster' tip='1'>
+		<req id='survival' lvl='4'/>
+		<sk id='potmaster' v0='0' v1='1'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+	</perk>
+	<perk id='radchild' tip='1'>
+		<req id='survival' lvl='5'/>
+		<sk id='radChild' v0='0' v1='0.2'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+		<textvar s1='80%'/>
+	</perk>
+	
+	<!-- торговля -->
+	<perk id='econom' tip='1'>
+		<req id='barter' lvl='3'/>
+		<sk id='limitBuys' ref='add' v1='0.4'/>
+		<sk id='eco' v0='0' v1='1'/>
+		<sk tip='m' id='maxm1' v1='10'/>
+		<sk tip='m' id='maxm2' v1='100'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+	</perk>
+	
+	<!-- прочее -->
+	<perk id='action' tip='1' lvl='3'>
+		<req id='level' lvl='5' dlvl='5'/>
+		<sk id='maxOd' ref='add' vd='25'/>
+		<sk tip='m' id='maxm1' vd='10'/>
+		<sk tip='m' id='maxm2' vd='100'/>
+		<textvar s1='25' s2='75'/>
+	</perk>
+	<perk id='critch' tip='1' lvl='3'>
+		<req id='level' lvl='8' dlvl='4'/>
+		<sk id='critCh' ref='add' vd='0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='critdam' tip='1'>
+		<req id='level' lvl='20'/>
+		<sk id='critDamMult' ref='add' v1='0.4'/>
+		<textvar s1='40%'/>
+	</perk>
+	<perk id='powerkick' tip='1'>
+		<sk id='punchDamMult' ref='add' v1='0.5'/>
+		<sk id='kickDestroy' v0='30' v1='80'/>
+		<sk tip='m' id='maxm3' v1='100'/>
+		<textvar s1='50%'/>
+	</perk>
+	<perk id='empathy' tip='1' lvl='3'>
+		<req id='level' lvl='5' dlvl='5'/>
+		<sk id='petDam' v0='2' vd='0.5'/>
+		<sk id='petSkin' v0='0' vd='4'/>
+		<sk id='petVulner' v0='1' vd='-0.2'/>
+		<sk id='owlDam' v0='3' vd='0.3'/>
+		<sk id='owlSkin' v0='5' vd='1'/>
+		<sk id='owlVulner' v0='1' vd='-0.1'/>
+		<sk tip='m' id='maxm1' vd='10'/>
+	</perk>
+	
+	<perk id='dead' tip='0' lvl='10000' val='1'>
+	</perk>
+	<perk id='life' tip='0' lvl='40'>
+		<sk id='maxhp' ref='add' vd='5'/>
+		<textvar s1='5'/>
+	</perk>
+	<perk id='spirit' tip='0' lvl='30'>
+		<sk id='inMaxMana' ref='add' vd='20'/>
+		<textvar s1='20'/>
+	</perk>
+	
+	<!-- зелья -->
+	<perk id='potion_dskel' tip='0' lvl='5'>
+		<sk id='organMultPot' v0='1' vd='-0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_immun' tip='0' lvl='5'>
+		<sk tip='res' id='12' v0='0' vd='0.05'/>
+		<sk tip='res' id='13' v0='0' vd='0.05'/>
+		<sk id='radX' ref='add' vd='-0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_might' tip='0' lvl='5'>
+		<sk id='meleeDamMult' v0='1' vd='0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_speed' tip='0' lvl='5'>
+		<sk id='runSpeedMult' ref='mult' vd='0.05'/>
+		<sk id='stamRun' ref='mult' v0='1' vd='-0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_prec' tip='0' lvl='5'>
+		<sk id='allPrecMult' v0='1' vd='0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_elements' tip='0' lvl='5'>
+		<sk id='spellsDamMult' ref='add' vd='0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_dexter' tip='0' lvl='5'>
+		<sk id='dexter' ref='add' vd='0.05'/>
+		<textvar s1='5%'/>
+	</perk>
+	<perk id='potion_crit' tip='0' lvl='5'>
+		<sk id='critCh' ref='add' vd='0.02'/>
+		<textvar s1='2%'/>
+	</perk>
+	<perk id='potion_consc' tip='0' lvl='2'>
+		<sk tip='m' id='maxmM' vd='3'/>
+	</perk>
+	
+	<perk id='dam_alicorn' tip='0'>
+		<sk id='damAlicorn' v0='1' v1='1.15'/>
+		<textvar s1='15%'/>
+	</perk>
+	<perk id='dam_zombie' tip='0'>
+		<sk id='damZombie' ref='add' v1='0.1'/>
+		<textvar s1='10%'/>
+	</perk>
+	
+	<!-- травмы -->
+	<perk id='trauma_head' tip='0' lvl='3'>
+		<sk id='allPrecMult' ref='mult' v1='0.9' v2='0.8' v3='0.7'/>
+		<sk id='meleeSpdMult' ref='mult' v1='0.9' v2='0.8' v3='0.7'/>
+		<sk id='allDManaMult' ref='mult' v1='1' v2='1.5' v3='2'/>
+		<sk id='mazilAdd' ref='add' v1='0' v2='5' v3='15'/>
+		<textvar s1='10%' s2='10%' s3='0%'/>
+		<textvar s1='20%' s2='20%' s3='50%'/>
+		<textvar s1='30%' s2='30%' s3='100%'/>
+	</perk>
+	<perk id='trauma_tors' tip='0' lvl='3'>
+		<sk id='maxhp' ref='mult' v1='0.9' v2='0.8' v3='0.6'/>
+		<sk id='stamRun' ref='mult' v1='1.5' v2='2' v3='3'/>
+		<sk id='stamRes' ref='mult' v1='0.66' v2='0.5' v3='0.25'/>
+		<textvar s1='10%' s2='50%' s3='33%'/>
+		<textvar s1='20%' s2='100%' s3='50%'/>
+		<textvar s1='40%' s2='200%' s3='75%'/>
+	</perk>
+	<perk id='trauma_legs' tip='0' lvl='3'>
+		<sk id='runSpeedMult' ref='mult' v1='0.85' v2='0.7' v3='0.5'/>
+		<sk id='allSpeedMult' ref='mult' v1='1' v2='0.9' v3='0.75'/>
+		<sk id='jumpdy' ref='add' v1='0' v2='0' v3='-2'/>
+		<textvar s1='30%' s2='0%'/>
+		<textvar s1='60%' s2='10%'/>
+		<textvar s1='100%' s2='25%'/>
+	</perk>
+	<perk id='trauma_blood' tip='0' lvl='3'>
+		<sk id='allVulnerMult' ref='mult' v1='1.1' v2='1.2' v3='1.3'/>
+		<sk id='allDamMult' ref='mult' v1='1' v2='0.9' v3='0.8'/>
+		<textvar s1='10%' s2='0%'/>
+		<textvar s1='20%' s2='10%'/>
+		<textvar s1='30%' s2='20%'/>
+	</perk>
+	<perk id='trauma_mana' tip='0' lvl='4'>
+		<sk id='maxTeleMassa' ref='mult' v1='1' v2='1' v3='0.8' v4='0.3'/>
+		<sk id='spellsDamMult' ref='mult' v1='1' v2='1' v3='0.75' v4='0'/>
+		<textvar/>
+		<textvar/>
+		<textvar s1='20%' s2='25%'/>
+		<textvar s1='70%' s2='100%'/>
+	</perk>
+	
+</perks>

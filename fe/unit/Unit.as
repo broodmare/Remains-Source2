@@ -345,7 +345,7 @@ package fe.unit
 			if (id=='mwall') return new UnitMWall(null,0,null,null);
 			if (id=='scythe') return new UnitScythe(null,0,null,null);
 			if (id=='ttur') return new UnitThunderTurret(ncid,0,null,null);
-			var node:XML=AllData.d.obj.(@id==id)[0];
+			var node:XML = AllData.fetchNodeWithChildID('objs', id);
 			if (node==null) {
 				trace('Не найден юнит',id);
 				return null;
@@ -436,7 +436,8 @@ package fe.unit
 				if (hero>0) isHero=true;
 				mid=id;
 			}
-			var node0:XML=AllData.d.unit.(@id==mid)[0];
+			
+			var node0:XML = AllData.fetchNodeWithChildID('units', mid);
 			if (mid && !uniqName) nazv=Res.txt('u',mid);
 			if (node0.@fraction.length()) fraction=node0.@fraction;
 			inter.cont=mid;
@@ -503,7 +504,6 @@ package fe.unit
 			}
 			//уязвимости
 			if (node0.vulner.length()) {
-		//public static const D_BUL=0, D_BLADE=1, D_PHIS=2, D_FIRE=3, D_EXPL=4, D_LASER=5, D_PLASMA=6, D_VENOM=7, D_EMP=8, D_SPARK=9, D_ACID=10, D_INSIDE=100;
 				node=node0.vulner[0];
 				if (node.@bul.length()) vulner[D_BUL]=node.@bul;
 				if (node.@blade.length()) vulner[D_BLADE]=node.@blade;
@@ -594,7 +594,7 @@ package fe.unit
 		}
 		
 		public function getXmlWeapon(dif:int):Weapon {
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			var node0:XML = AllData.fetchNodeWithChildID('units', id);
 			var weap:Weapon;
 			for each(var n:XML in node0.w) {
 				if (n.@f.length()) continue;
@@ -1470,24 +1470,18 @@ package fe.unit
 //
 //**************************************************************************************************************************
 
-		public static function initIcos() {
-			arrIcos=new Array();
-			for each(var xml in AllData.d.unit) {
-				if (xml.@cat=='3') {
+		public static function initIcos()
+		{
+			arrIcos = [];
+			var unitList:XMLList = AllData.fetchNodeList('units', 'unit');
+			for each(var xml in unitList)
+			{
+				if (xml.@cat=='3')
+				{
 					var bmpd:BitmapData;
 					var ok:Boolean=false;
-					if (xml.vis.length() && xml.vis.@blit.length()) {
-						/*var data:BitmapData=World.w.grafon.getSpriteList(xml.vis.@blit);
-						if (data==null) continue;
-						var sprX:int=xml.vis.@sprX;
-						var sprY:int=(xml.vis.@sprY>0)?xml.vis.@sprY:sprX;
-						var begSprX:int=(xml.vis.@icoX>0)?xml.vis.@icoX:0;
-						var begSprY:int=(xml.vis.@icoY>0)?xml.vis.@icoY:0;
-						var rect:Rectangle = new Rectangle(begSprX*sprX, begSprY*sprY, (begSprX+1)*sprX, (begSprY+1)*sprY);
-						bmpd=new BitmapData(sprX,sprY);
-						bmpd.copyPixels(data,rect,new Point(0,0));
-						ok=true;*/
-					} else if (xml.vis.length() && xml.vis.@vclass.length()) {
+					if (xml.vis.length() && xml.vis.@vclass.length())
+					{
 						var dvis:MovieClip=Res.getVis(xml.vis.@vclass);
 						var sprX:int=dvis.width+2;
 						var sprY:int=dvis.height+2;
@@ -1504,12 +1498,15 @@ package fe.unit
 					}
 				}
 			}
+
+			unitList = null; // Manual cleanup.
 		}
 		
 		public static function initIco(nid:String) {
 			if (arrIcos==null) arrIcos=new Array();
 			if (arrIcos[nid]) return;
-			var xml=AllData.d.unit.(@id==nid);
+			
+			var xml = AllData.fetchNodesWithMatchingIDs('units', nid);
 			if (xml.vis.length() && xml.vis.@blit.length()) {
 				var bmpd:BitmapData;
 				var data:BitmapData=World.w.grafon.getSpriteList(xml.vis.@blit);
@@ -1892,8 +1889,8 @@ package fe.unit
 				vulner[D_PINK]=0;	//неуязв. к розовому облаку
 			}
 			for each(var eff:Effect in effects) {
-				var effid=eff.id;
-				var sk=AllData.d.eff.(@id==effid)[0];
+				var effid = eff.id;
+				var sk = AllData.fetchNodeWithChildID('effs', effid);
 				setSkillParam(sk, eff.vse?0:1);
 			}
 			setHeroVulners();

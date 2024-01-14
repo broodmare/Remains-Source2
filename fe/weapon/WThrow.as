@@ -7,8 +7,6 @@ package fe.weapon
 	import fe.unit.UnitPlayer;
 	import fe.unit.Mine;
 	import fe.projectile.Bullet;
-	import fe.projectile.SmartBullet;
-	import fe.projectile.Trasser;
 	import fe.projectile.PhisBullet;
 
 	public class WThrow  extends Weapon
@@ -32,7 +30,7 @@ package fe.weapon
 			vis.gotoAndStop(1);
 			holder=1;
 			ammo=id;
-			var node=AllData.d.weapon.(@id==id)[0];
+			var node = AllData.fetchNodeWithChildID('weapons', id);
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
 			if (node.char.length() && node.char[0].@time>0) detTime=node.char[0].@time;

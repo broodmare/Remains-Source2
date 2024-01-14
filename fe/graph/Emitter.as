@@ -12,12 +12,18 @@ package fe.graph
 		public static var kols:Array=[0,0,0,0,0,0];
 		public static var kol1:int=0, kol2:int=0;
 
-		public static function init() {
-			arr=new Array();
-			for each(var xml:XML in AllData.d.part) {
-				var em:Emitter=new Emitter(xml);
-				arr[em.id]=em;
+		public static function init()
+		{
+			arr = new Array();
+			var xmlList:XMLList = AllData.fetchNodeList('parts', 'part');
+
+			for each(var node:XML in xmlList)
+			{
+				var em:Emitter = new Emitter(node);
+				arr[em.id] = em;
 			}
+
+			xmlList = null; // Manual cleanup.
 		}
 		
 		//заданный эмиттер создаёт частицу

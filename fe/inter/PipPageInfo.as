@@ -178,7 +178,10 @@ package fe.inter
 				statHead.mq.visible=false;
 				statHead.kol.text=Res.pipText('frag');
 				vis.ico.visible=true;
-				for each(var xml in AllData.d.unit) {
+
+				var unitList:XMLList = AllData.fetchNodeList('units', 'unit');
+				for each(var xml in unitList)
+				{
 					if (xml && xml.@cat.length()) {
 						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
 						if (xml.@cat=='3' && World.w.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.w.game.triggers['frag_'+xml.@id]);
@@ -194,6 +197,8 @@ package fe.inter
 						arr.push(n);
 					}
 				}
+
+				unitList = null; // Manual cleanup.
 				arr=arr.filter(isKol);		//отфильтровать
 			}
 		}
@@ -306,11 +311,11 @@ package fe.inter
 		{
 			var n:int=0, delta;
 			//юнит
-			var un=AllData.d.unit.(@id==id);
+			var un=AllData.fetchNodeWithChildID('units', id);
 			if (un.length()==0 || un.@cat!='3') return '';
 			//родитель
 			var pun;
-			if (un.@parent.length()) pun=AllData.d.unit.(@id==un.@parent);
+			if (un.@parent.length()) pun = AllData.fetchNodeWithChildID('units', un.@parent);
 			//дельта
 			delta=getParam(un,pun,'vis','dkill');
 			if (delta==null) delta=5;
@@ -364,8 +369,9 @@ package fe.inter
 								if (wk) s+=', ';
 								else s+=Res.pipText('enemy_weap')+': ';
 								s+=textAsColor('blue', Res.txt('w', weap.@id));
-								try {
-									var w=AllData.d.weapon.(@id==weap.@id);
+								try
+								{
+									var w = AllData.fetchNodeWithChildID('weapons', weap.@id);
 									var dam=0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);

@@ -40,12 +40,13 @@ package fe.unit
 		public function Spell(own:Unit, nid:String) {
 			id=nid;
 			owner=own;
-			if (owner && owner.player) {
+			if (owner && owner.player)
+			{
 				player=true;
 				gg=owner as UnitPlayer;
 			}
 			
-			xml=AllData.d.item.(@id==id)[0];
+			var xml:XML = AllData.fetchNodeWithChildID('items', id);
 			if (xml.@hp.length()) hp=xml.@hp;
 			if (xml.@mana.length()) mana=xml.@mana;
 			if (xml.@magic.length()) magic=xml.@magic;

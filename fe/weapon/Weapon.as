@@ -208,8 +208,17 @@ package fe.weapon
 		public var price:int=0;
 		var breaking:Number=0;
 
+		private static var weaponList:XMLList;
+		private static var listSetup:Boolean = false;
+
 		public function Weapon(own:Unit, nid:String, nvar:int=0)
 		{
+			if (!listSetup)
+			{
+				listSetup = true;
+				weaponList = AllData.fetchNodeList('weapons', 'weapon');
+			}
+
 			sloy=2;
 			owner=own;
 			id=nid;
@@ -225,29 +234,29 @@ package fe.weapon
 		
 		public static function create(owner:Unit, id:String, nvar:int=0):Weapon
 		{
-			if (id.charAt(id.length-2)=='^') {
+
+			if (!listSetup)
+			{
+				listSetup = true;
+				weaponList = AllData.fetchNodeList('weapons', 'weapon');
+			}
+			
+			if (id.charAt(id.length-2)=='^')
+			{
 				id=id.substr(0,id.length-2);
 				nvar=1;
 			}
-			var xl:XMLList=AllData.d.weapon.(@id==id);
-			if (xl.length()==0) return null;
-			var node=AllData.d.weapon.(@id==id);
-			if (node.length()==0) return null;
-			node=node[0];
+
+			var node:XML = weaponList.(@id==id)[0];
 			var w:Weapon;
-			if (node.@tip==1) {
-				w=new WClub(owner,id,nvar);
-			} else if (node.@tip==12) {
-				w=new WPaint(owner,id,nvar);
-			} else if (node.@tip==4) {
-				w=new WThrow(owner,id,nvar);
-			} else if (node.@tip==5) {
-				w=new WMagic(owner,id,nvar);
-			} else if (node.@punch>0){
-				w=new WPunch(owner,id,nvar);
-			} else {
-				w=new Weapon(owner,id,nvar);
-			}
+
+			if (node.@tip==1) w = new WClub(owner,id,nvar);
+			else if (node.@tip==12) w = new WPaint(owner,id,nvar);
+			else if (node.@tip==4) w = new WThrow(owner,id,nvar);
+			else if (node.@tip==5) w = new WMagic(owner,id,nvar);
+			else if (node.@punch>0) w = new WPunch(owner,id,nvar);	
+			else w=new Weapon(owner,id,nvar);
+			
 			return w;
 		}
 		
@@ -259,7 +268,7 @@ package fe.weapon
 		public function getXmlParam():void
 		{
 			//общие характеристики
-			var node:XML=AllData.d.weapon.(@id==id)[0];
+			var node:XML = weaponList.(@id==id)[0];
 			
 			if (node.@tip.length()) tip=node.@tip;
 			if (variant==0)	nazv=Res.txt('w',id);
@@ -338,9 +347,10 @@ package fe.weapon
 				if (variant>0) getDopParam(node.dop[variant]);
 			}
 			//боеприпасы
-			if (node.a.length()) {
+			if (node.a.length())
+			{
 				ammo=ammoBase=node.a[0];
-				var ammoNode=AllData.d.item.(@id==ammo)[0];
+				var ammoNode = AllData.fetchNodeWithChildID('items', ammo);
 				setAmmo(ammo,ammoNode);
 			}
 			
@@ -1050,8 +1060,9 @@ package fe.weapon
 			if (nammo=='') ammoTarg=ammo;
 			if (owner.player) {
 				//не подходящие боеприпасы
-				if (nammo!='' && nammo!=ammo) {
-					var am=AllData.d.item.(@id==nammo);
+				if (nammo!='' && nammo!=ammo)
+				{
+					var am = AllData.fetchNodeWithChildID('items', nammo);
 					if (am.length()==0) return;
 					if (am.@base!=ammoBase) {
 						World.w.gui.infoText('imprAmmo',World.w.invent.items[nammo].nazv,null,false);
@@ -1157,7 +1168,7 @@ package fe.weapon
 			s+='\t';
 			if (tip<4) s+=maxhp+'\t';
 			else s+='\t';
-			if (tip==4) s+=AllData.d.item.(@id==id).@price+'\t';
+			if (tip==4) s += AllData.fetchNodeWithChildID.('items', id).@price + '\t';
 			else if (tip!=5 && variant>0) s+=price*3+'\t';
 			else s+=price+'\t';
 			return s;

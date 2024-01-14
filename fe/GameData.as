@@ -10,9 +10,10 @@ package fe
 		private static var fileNames:Array; 
 		private static var gameDataEntryCount:int;
 		private static var gameDataEntriesLoaded:int;
-		public static var gameDataSetup:Boolean;
+
+		public static var allFilesLoaded:Boolean = false;
 		
-		public function GameData() 
+		public function GameData()
 		{
 
 		}
@@ -26,7 +27,6 @@ package fe
         	];
 			gameDataEntryCount = 0;
 			gameDataEntriesLoaded = 0;
-			gameDataSetup = false;
 
 
 			for each (var filename:String in fileNames)
@@ -59,8 +59,8 @@ package fe
 			var totalDictionaryKeys:int = countDictionaryKeys(gameData);
             if (gameDataEntriesLoaded >= gameDataEntryCount) 
 			{
-				trace('ALL LOADED');
-				gameDataSetup = true;
+				trace('GameData: ALL XML FILES LOADED');
+				allFilesLoaded = true;
 			}
 
 			function countDictionaryKeys(dictionary:Dictionary):int 
@@ -89,7 +89,7 @@ package fe
 			var nodeList:XMLList = gameData[key].descendants().(attribute('id') == nodeID);
 			return nodeList[0];
 		}
-
+		
 		public static function findProbById(nprob:String):XML
 		{
 			for each (var land:XML in gameData["Lands"])

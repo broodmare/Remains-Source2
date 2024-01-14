@@ -31,15 +31,24 @@ package fe.serv {
 			arr['magic']=new Array();
 			arr['uniq']=new Array();
 			arr['pers']=new Array();
-			for each (var weap in AllData.d.weapon.(@tip>0 && @tip<4)) {
+
+			var weaponList:XMLList = AllData.fetchNodeList('weapons', 'weapon');
+
+			for each (var weap in weaponList.(@tip > 0 && @tip < 4))
+			{
 				if (weap.com.length()==0) continue;
 				arr['weapon'].push({id:weap.@id, st:weap.com.@stage, chance:weap.com.@chance, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['weapon']+=Number(weap.com.@chance))});
 				if (weap.com.@uniq.length()) arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
 			}
-			for each (weap in AllData.d.weapon.(@tip==5)) {
+			for each (weap in weaponList.(@tip==5))
+			{
 				arr['magic'].push({id:weap.@id, st:0, chance:0, worth:0, lvl:0, r:0});
 			}
-			for each (var item in AllData.d.item) {
+			weaponList = null; // Manual cleanup.
+
+			var itemList:XMLList = AllData.fetchNodeList('items', 'item');
+			for each (var item in itemList)
+			{
 				if (item.@tip.length()) {
 					if (arr[item.@tip]==null) {
 						arr[item.@tip]=new Array();
@@ -56,18 +65,7 @@ package fe.serv {
 					arr[item.@tip2].push({id:item.@id, st:item.@stage, chance:(item.@chance2.length()?item.@chance2:item.@chance), lvl:item.@lvl,  r:(n[item.@tip2]+=Number(item.@chance2.length()?item.@chance2:item.@chance))});
 				}
 			}
-			
-			// проверка рандома
-			var a:Array=new Array();
-			/*for (var i=0; i<10000; i++) {
-				var str:String =getRandom('food',3);
-				if (a[str]) a[str]++;
-				else a[str]=1;
-			}
-			for (i in a) trace (i,a[i]);*/
-			/*for (i=0; i<100; i++) {
-				trace(getRandom('weapon',2,2))
-			}*/
+			itemList = null; // Manual cleanup.
 		}
 		
 		public static function getRandom(tip:String, maxlvl:Number=-100, worth:int=-100):String {

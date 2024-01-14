@@ -45,7 +45,9 @@ package fe.unit
 			him=0;
 			lvl=1;
 			forever=false;
-			var node=AllData.d.eff.(@id==id);
+
+			var node = AllData.fetchNodesWithMatchingIDs('effs', id);
+			
 			if (node.length()) {
 				tip=node.@tip;
 				t=node.@t*30;

@@ -154,14 +154,21 @@ package fe.graph
 		public function checkLoaded(n:int) {
 			if (n==0) {
 				//считывание материалов их xml
-				arrFront=new Array();
-				arrBack=new Array();
-				for each (var p:XML in AllData.d.mat) {
-					if (p.@vid.length()==0) {
+				arrFront = [];
+				arrBack  = [];
+
+				var xmlList:XMLList = AllData.fetchNodeList('mats', 'mat');
+
+				for each (var p:XML in xmlList)
+				{
+					if (p.@vid.length()==0)
+					{
 						if (p.@ed=='2') arrBack[p.@id]=new Material(p);
 						else arrFront[p.@id]=new Material(p);
 					}
 				}
+
+				xmlList = null; // Manual cleanup.
 			}
 			resIsLoad=(GrLoader.kolIsLoad>=GrLoader.kol);
 		}

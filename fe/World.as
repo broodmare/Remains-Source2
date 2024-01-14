@@ -237,17 +237,7 @@ package  fe
 			World.w=this;
 			//техническая часть
 			//Узнать тип плеера и адрес, с которого он запущен
-			playerMode=Capabilities.playerType;
-			//if (playerMode=='PlugIn') roomsLoad=0;
-			/*if (playerMode=='PlugIn' && ExternalInterface.available)
-			{
-			   urle = ExternalInterface.call("window.location.href.toString");
-			   if (urle=="http://foe.ucoz.org/test318/pfe.html") chitOn=true;
-			}
-
-
-			if (playerMode=='External') chitOn=true;
-			chitOn=true;*/
+			playerMode = Capabilities.playerType;
 			
 			//файлы
 			soundPath='';
@@ -255,8 +245,6 @@ package  fe
 			textureURL='texture.swf';
 			spriteURL='sprite.swf';
 			sprite1URL='sprite1.swf';
-			//ressoundURL='sound.swf';
-			//textURL='D:/Dropbox/foe/text.xml';
 			langURL='lang.xml';
 			landPath='Rooms/';
 			if (testMode) fileVersion=Math.random()*100000;
@@ -577,8 +565,8 @@ package  fe
 				vwait.progres.text='error';
 				return;
 			}
-			try
-			{
+			//try
+			//{
 				time___metr();
 				allStat=-1;
 				opt=nopt;
@@ -616,15 +604,15 @@ package  fe
 				ng_wait=1;
 				time___metr('Game init');
 				
-			} 
-			catch (err) {showError(err);}
+			//} 
+			//catch (err) {showError(err);}
 		}
 		
 		//этап 1 - создать персонажа и инвентарь
 		public function newGame1():void
 		{
-			try
-			{
+			//try
+			//{
 				if (!ng) app.load(data.app);
 				if (data.hardInv==true) hardInv=true; else hardInv=false;
 				if (opt && opt.hardinv) hardInv=true;
@@ -649,15 +637,15 @@ package  fe
 				waitLoadClick();
 				ng_wait=2;
 				time___metr('Местность');
-			} 
-			catch (err) {showError(err);}
+			//} 
+			//catch (err) {showError(err);}
 		}
 		
 		//этап 2 - создать местность и войти в неё
 		public function newGame2():void
 		{
-			try
-			{
+			//try
+			//{
 				
 				//визуальная часть
 				resizeScreen();
@@ -674,8 +662,8 @@ package  fe
 				gui.setAll();
 				allStat=1;
 				ng_wait=0;
-			}
-			catch (err) {showError(err);}
+			//}
+			//catch (err) {showError(err);}
 		}
 		
 		public function loadGame(nload:int=0):void
@@ -866,8 +854,8 @@ package  fe
 		//главный цикл
 		public function step():void
 		{
-			try
-			{
+			//try
+			//{
 				if (verror.visible) return;
 				//Управление
 				ctr.step();				
@@ -915,7 +903,6 @@ package  fe
 					}
 					checkLoot=false;
 				}
-				//trace(clickReq,t_exit)
 				
 				if (comLoad>=0) {
 					if (comLoad>=100) {
@@ -972,8 +959,8 @@ package  fe
 						onConsol=consol.vis.visible=consol.visoff=false;
 					}
 				}
-			}
-			catch (err) {showError(err);}
+			//}
+			//catch (err) {showError(err);}
 		}
 
 //=============================================================================================================
@@ -1257,7 +1244,8 @@ package  fe
 		{
 			var un:Unit = new Unit();
 			var s:String = '';
-			for each (var w in AllData.d.weapon.(@tip>0))
+			var xmlList:XMLList = AllData.fetchNodeList('weapons', 'weapon');
+			for each (var w:XML in xmlList.(@tip>0))
 			{
 				var weap:Weapon = new Weapon(un, w.@id, 0);
 				s += weap.write() + '\n';
@@ -1267,6 +1255,8 @@ package  fe
 					s += weap.write() + '\n';
 				}
 			}
+
+			xmlList = null; // Manual cleanup.
 			trace(s);
 		}	
 	}	

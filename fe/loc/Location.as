@@ -390,7 +390,7 @@ package fe.loc
 			objsT = new Array();
 			for each(var obj:XML in nroom.obj)
 			{
-				var xmll:XML = AllData.d.obj.(@id==obj.@id)[0];
+				var xmll:XML = AllData.fetchNodeWithChildID('objs', obj.@id);
 				var size:int = xmll.@size;
 				if (size <= 0) size = 1;
 				var nx:int = obj.@x;
@@ -1036,7 +1036,7 @@ package fe.loc
 		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj
 		{
 			var obj:Obj;
-			var size:int=AllData.d.obj.(@id==id).@size;
+			var size:int = AllData.fetchNodeWithChildID('objs', id).@size;
 			if (size<=0) size=1;
 			var loadObj:Object=null;
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];

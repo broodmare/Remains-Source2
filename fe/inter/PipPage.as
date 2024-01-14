@@ -275,8 +275,9 @@ package fe.inter
 					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
 				} else {
 					var vWeapon:Class=w.vWeapon;
-					var node=AllData.d.weapon.(@id==id);
-					if (node.length()) {
+					var node = AllData.fetchNodesWithMatchingIDs('weapons', id);
+					if (node.length())
+					{
 						node=node[0];
 						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
 					}
@@ -350,7 +351,8 @@ package fe.inter
 			if (tip=='item') s=Res.txt('i',id,1)
 			else s=Res.txt('e',id,1);
 			if (id.substr(-3)=='_ad') id=id.substr(0,id.length-3);
-			var dp=AllData.d[tip];
+			var typeName:String = tip + 's';
+			var dp = AllData.fetchNodeWithChildID(typeName, id);
 			if (dp.length()==0) return s;
 			dp=dp.(@id==id);
 			if (dp.length()==0) return s;
@@ -543,16 +545,18 @@ package fe.inter
 				s+='\n\n'+Res.txt('a',id,1);
 			} else if (tip==Item.L_AMMO) {
 				var ammo=inv.items[id].xml;
-				if (AllData.d.weapon.(@id==id).length()) {
+				if (AllData.fetchNodeWithChildID('weapons', id).length())
+				{
 					s=Res.txt('w',id,1);
-				} else if (ammo.@base.length()) {
+				}
+				else if (ammo.@base.length())
+				{
 					s=Res.txt('i',ammo.@base,1);
 					if (ammo.@mod>0) {
 						s+='\n\n'+Res.txt('p','ammomod_'+ammo.@mod,1);
 					}
-				} else {
-					s=Res.txt('i',id,1);
 				}
+				else s = Res.txt('i', id, 1);
 				s+='\n';
 				if (ammo.@damage.length()) s+='\n'+Res.pipText('damage')+': x'+textAsColor('yellow', ammo.@damage);
 				if (ammo.@pier.length()) s+='\n'+Res.pipText('pier')+': '+textAsColor('yellow', ammo.@pier);
@@ -620,9 +624,9 @@ package fe.inter
 			var s:String='';
 			if (id.substr(0,2)=='s_') {
 				id=id.substr(2);
-				craft=1;
-				if (AllData.d.weapon.(@id==id).length()) tip=Item.L_WEAPON;
-				else if (AllData.d.armor.(@id==id).length()) tip=Item.L_ARMOR;
+				craft=1; 
+				if (AllData.fetchNodeWithChildID('weapons', id).length()) tip=Item.L_WEAPON;
+				else if (AllData.fetchNodeWithChildID('armors', id).length()) tip=Item.L_ARMOR;
 				else tip=Item.L_ITEM;
 			}
 			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
@@ -679,7 +683,8 @@ package fe.inter
 		public function craftInfo(id:String):String
 		{
 			var s:String='\n';
-			var sch=AllData.d.item.(@id=='s_'+id);
+			var cs:String = 's_' + id;
+			var sch=AllData.fetchNodeWithChildID('items', cs);
 			if (sch.length()) sch=sch[0];
 			else return '';
 			var kol:int=1;
@@ -736,8 +741,11 @@ package fe.inter
 		{
 			var s:String='', s1:String;
 			var ok=false;
-			if (World.w.pers.factor[id] is Array) {
-				var xml=AllData.d.param.(@v==id);
+			if (World.w.pers.factor[id] is Array)
+			{
+				var paramList:XMLList = AllData.fetchNodeList('params', 'param');
+
+				var xml = paramList.(@v==id);
 				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', '100%')+'\n';
 				for each (var obj in World.w.pers.factor[id]) {
 					if (obj.id=='beg') {
