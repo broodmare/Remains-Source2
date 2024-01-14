@@ -12,7 +12,7 @@ package fe.inter {
 		public var ist:Array;
 		public var istN:int=0;
 		
-		var help:XML=<chit>
+		private var help:XML=<chit>
 			<a>all - добавить всё</a>
 			<a>all weapon - добавить всё оружие</a>
 			<a>all armor - добавить всю броню</a>
@@ -111,7 +111,8 @@ package fe.inter {
 			visoff=true;
 		}
 		
-		function analis() {
+		private function analis():void
+		{
 			var str:String=vis.input.text;
 			ist.push(str);
 			World.w.lastCom=str;
@@ -119,222 +120,230 @@ package fe.inter {
 			istN=ist.length;
 			vis.input.text='';
 			var s:Array=str.split(' ');
-			if (s[0]=='clear') {
-				World.w.cam.dblack=0;
-				World.w.gg.controlOn();
-				World.w.gg.vis.visible=true;
-				World.w.vblack.alpha=0;
-				World.w.vblack.visible=false;
-				World.w.t_exit=World.w.t_die=0;
-				World.w.vgui.visible=World.w.vfon.visible=World.w.visual.visible=true;
-				Snd.off=false;
-				World.w.pip.noAct=false;
+			switch (s[0]) 
+			{
+				case 'clear':
+					World.w.cam.dblack=0;
+					World.w.gg.controlOn();
+					World.w.gg.vis.visible=true;
+					World.w.vblack.alpha=0;
+					World.w.vblack.visible=false;
+					World.w.t_exit=World.w.t_die=0;
+					World.w.vgui.visible=World.w.vfon.visible=World.w.visual.visible=true;
+					Snd.off=false;
+					World.w.pip.noAct=false;
+					break;
+				case 'redraw':
+					World.w.redrawLoc();
+					break;
+				case 'hud':
+					World.w.gui.vis.visible=!World.w.gui.vis.visible;
+					break;
+				case 'die':
+					World.w.gg.damage(10000,Unit.D_INSIDE);
+					break;
+				case 'hardreset':
+					if (World.w.pers.dead)
+					{
+						World.w.pers.dead=false;
+						World.w.t_die=210;
+						World.w.gg.anim('die',true);
+						off();
+					}
+					break;
+				case 'hardinv':
+					World.w.hardInv=!World.w.hardInv;
+					break;
+				case 'res_watcher':
+					World.w.game.triggers['observer']=1;
+					break;
+				case 'mqt':
+					World.w.chitOn=!World.w.chitOn;
+					World.w.saveConfig();
+					break;
+				case '?':
+					vis.help.visible=vis.list1.visible=vis.list2.visible=!vis.help.visible;
+					break;
+				//TODO: Re-implement check that chitOn == true for commands below this point.
+				case 'hardcore':
+					World.w.pers.hardcore=!World.w.pers.hardcore;
+					break;
+				case 'testmode':
+					World.w.testMode=!World.w.testMode;
+					break;
+				case 'dif':
+					World.w.game.globalDif=s[1];
+					if (World.w.game.globalDif<0) World.w.game.globalDif=0;
+					if (World.w.game.globalDif>4) World.w.game.globalDif=4;
+					World.w.pers.setGlobalDif(World.w.game.globalDif);
+					World.w.pers.setParameters();
+					break;
+				case 'all':
+					if (s.length==1)
+					{
+						World.w.invent.addAll();
+						World.w.pers.addSkillPoint(10);
+					}
+					else if (s[1]=='weapon') World.w.invent.addAllWeapon();
+					else if (s[1]=='ammo') World.w.invent.addAllAmmo();
+					else if (s[1]=='item') World.w.invent.addAllItem();
+					else if (s[1]=='armor') World.w.invent.addAllArmor();
+					off();
+					break;
+				case 'min':
+					World.w.invent.addMin();
+					off();
+					break;
+				case 'god':
+					World.w.godMode=!World.w.godMode;
+					break;
+				case 'lvl':
+				case 'level':
+					World.w.pers.setForcLevel(s[1]);
+					break;
+				case 'xp':
+					World.w.pers.expa(s[1]);
+					break;
+				case 'sp':
+					if (s.length==1) World.w.pers.addSkillPoint();
+					else World.w.pers.addSkillPoint(int(s[1]));
+					break;
+				case 'pp':
+					if (s.length==1) World.w.pers.perkPoint++;
+					else  World.w.pers.perkPoint+=int(s[1]);
+					break;
+				case 'weapon':
+					if (s.length==2) World.w.invent.addWeapon(s[1]);
+					else if (s.length>2) World.w.invent.updWeapon(s[1],1)
+					break;
+				case 'remw':
+					if (s.length==2) World.w.invent.remWeapon(s[1]);
+					break;
+				case 'armor':
+					if (s.length==2) World.w.invent.addArmor(s[1]);
+					break;
+				case 'money':
+					if (s.length==2) World.w.invent.items['money'].kol=int(s[1]);
+					break;
+				case 'item':
+					if (World.w.invent.items[s[1]]==null) return;
+					if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
+					else if (s.length==2) World.w.invent.items[s[1]].kol++;
+					World.w.game.checkQuests(s[1]);
+					World.w.pers.setParameters();
+					break;
+				case 'ammo':
+					if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
+					break;
+				case 'perk':
+					if (s.length==2) World.w.pers.addPerk(s[1]);
+					break;
+				case 'skill':
+					if (s.length==3) World.w.pers.setSkill(s[1], s[2]);
+					break;
+				case 'eff':
+					if (s.length==2) World.w.gg.addEffect(s[1]);
+					break;
+				case 'res':
+					if (World.w.gg.effects.length>0) {
+						for each (var eff in World.w.gg.effects) eff.unsetEff();
+					}
+					break;
+				case 'repair':
+					World.w.gg.currentWeapon.repair(1000000);
+					break;
+				case 'refill':
+					World.w.game.refillVendors();
+					break;
+				case 'rep':
+					if (s.length==2) World.w.pers.rep=int(s[1]);
+					break;
+				case 'crack':
+					if (s.length==2 && World.w.gg.currentWeapon) World.w.gg.currentWeapon.hp=Math.round(World.w.gg.currentWeapon.maxhp*Number(s[1])/100);
+					break;
+				case 'break':
+					if (s.length==2 && World.w.gg.currentArmor) World.w.gg.currentArmor.hp=Math.round(World.w.gg.currentArmor.maxhp*Number(s[1])/100);
+					break;
+				case 'heal':
+					World.w.gg.heal(10000);
+					break;
+				case 'rad':
+					World.w.gg.rad=s[1];
+					World.w.gui.setAll();
+					break;
+				case 'mana':
+					World.w.pers.manaHP=int(s[1]);
+					World.w.pers.setParameters();
+					break;
+				case 'check':
+					World.w.land.gotoCheckPoint();
+					break;
+				case 'goto':
+					if (s.length==3) World.w.land.gotoXY(s[1],s[2]);
+					break;
+				case 'map':
+					World.w.drawAllMap=!World.w.drawAllMap;
+					break;
+				case 'black':
+					World.w.black=!World.w.black;
+					World.w.grafon.visLight.visible=World.w.black && World.w.loc.black;
+					break;
+				case 'battle':
+					World.w.testBattle=!World.w.testBattle;
+					break;
+				case 'testeff':
+					World.w.testEff=!World.w.testEff;
+					break;
+				case 'testdam':
+					World.w.testDam=!World.w.testDam;
+					break;
+				case 'enemy':
+					if (World.w.enemyAct==3) World.w.enemyAct=0;
+					else World.w.enemyAct=3;
+					break;
+				case 'lim':
+					if (s.length==2) World.w.land.lootLimit=Number(s[1]);
+					break;
+				case 'fly':
+				case 'port':
+				case 'emit':
+					World.w.chit=s[0];
+					World.w.chitX=s[1];
+					break;
+				case 'getroom':
+					World.w.testLoot=true;
+					trace('получено опыта', World.w.loc.getAll());
+					World.w.testLoot=false;
+					break;
+				case 'err':
+					World.w.landError=!World.w.landError;
+					break;
+				case 'getloc':
+					World.w.testLoot=true;
+					trace('получено опыта', World.w.land.getAll());
+					World.w.testLoot=false;	
+					break;
+				case 'alicorn':
+					if (World.w.alicorn) World.w.gg.alicornOff();
+					else World.w.gg.alicornOn();
+					break;
+				case 'st':
+					if (s.length==3) World.w.game.triggers[s[1]]=s[2];
+					break;
+				case 'trigger':
+					if (s.length==2) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
+					break;
+				case 'triggers':
+					if (s.length>1) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
+					else {
+						for (var i in World.w.game.triggers)  World.w.gui.infoText('trigger',i,World.w.game.triggers[i]);
+					}
+					break;
+				default:
+					off();
+					break;
 			}
-			if (s[0]=='redraw') {
-				World.w.redrawLoc();
-			}
-			if (s[0]=='hud') {
-				World.w.gui.vis.visible=!World.w.gui.vis.visible;
-			}
-			if (s[0]=='die') {
-				World.w.gg.damage(10000,Unit.D_INSIDE);
-			}
-			if (s[0]=='hardreset' && World.w.pers.dead) {
-				World.w.pers.dead=false;
-				World.w.t_die=210;
-				World.w.gg.anim('die',true);
-				off();
-			}
-			if (s[0]=='hardinv') {
-				World.w.hardInv=!World.w.hardInv;
-			}
-			if (s[0]=='res_watcher') {	//исправление бага с наблюдателем
-				World.w.game.triggers['observer']=1;
-			}
-			if (s[0]=='mqt') {
-				World.w.chitOn=!World.w.chitOn;
-				World.w.saveConfig();
-				return;
-			}
-			if (!World.w.chitOn) {
-				off();
-				return;
-			}
-			if (str=='?') {
-				vis.help.visible=vis.list1.visible=vis.list2.visible=!vis.help.visible;
-				return;
-			}
-			if (s[0]=='hardcore') {
-				World.w.pers.hardcore=!World.w.pers.hardcore;
-			}
-			if (s[0]=='testmode') {
-				World.w.testMode=!World.w.testMode;
-			}
-			if (s[0]=='dif') {
-				World.w.game.globalDif=s[1];
-				if (World.w.game.globalDif<0) World.w.game.globalDif=0;
-				if (World.w.game.globalDif>4) World.w.game.globalDif=4;
-				World.w.pers.setGlobalDif(World.w.game.globalDif);
-				World.w.pers.setParameters();
-			}
-			if (s[0]=='all') {
-				if (s.length==1) {
-					World.w.invent.addAll();
-					World.w.pers.addSkillPoint(10);
-				}
-				else if (s[1]=='weapon') World.w.invent.addAllWeapon();
-				else if (s[1]=='ammo') World.w.invent.addAllAmmo();
-				else if (s[1]=='item') World.w.invent.addAllItem();
-				else if (s[1]=='armor') World.w.invent.addAllArmor();
-				off();
-			}
-			if (s[0]=='min') {
-				World.w.invent.addMin();
-				off();
-			}
-			if (s[0]=='god') {
-				World.w.godMode=!World.w.godMode;
-			}
-			if (s[0]=='lvl' || s[0]=='level') {
-				World.w.pers.setForcLevel(s[1]);
-			}
-			if (s[0]=='xp') {
-				World.w.pers.expa(s[1]);
-			}
-			if (s[0]=='sp') {
-				if (s.length==1) World.w.pers.addSkillPoint();
-				else World.w.pers.addSkillPoint(int(s[1]));
-			}
-			if (s[0]=='pp') {
-				if (s.length==1) World.w.pers.perkPoint++;
-				else  World.w.pers.perkPoint+=int(s[1]);
-			}
-			if (s[0]=='weapon') {
-				if (s.length==2) World.w.invent.addWeapon(s[1]);
-				else if (s.length>2) World.w.invent.updWeapon(s[1],1)
-			}
-			if (s[0]=='remw') {
-				if (s.length==2) World.w.invent.remWeapon(s[1]);
-			}
-			if (s[0]=='armor') {
-				if (s.length==2) World.w.invent.addArmor(s[1]);
-			}
-			if (s[0]=='money') {
-				if (s.length==2) World.w.invent.items['money'].kol=int(s[1]);
-			}
-			if (s[0]=='item') {
-				if (World.w.invent.items[s[1]]==null) return;
-				if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
-				else if (s.length==2) World.w.invent.items[s[1]].kol++;
-				World.w.game.checkQuests(s[1]);
-				World.w.pers.setParameters();
-			}
-			if (s[0]=='ammo') {
-				if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
-			}
-			if (s[0]=='perk') {
-				if (s.length==2) World.w.pers.addPerk(s[1]);
-			}
-			if (s[0]=='skill') {
-				if (s.length==3) World.w.pers.setSkill(s[1], s[2]);
-			}
-			if (s[0]=='eff') {
-				if (s.length==2) World.w.gg.addEffect(s[1]);
-			}
-			if (s[0]=='res') {
-				if (World.w.gg.effects.length>0) {
-					for each (var eff in World.w.gg.effects) eff.unsetEff();
-				}
-			}
-			if (s[0]=='repair') {
-				World.w.gg.currentWeapon.repair(1000000);
-			}
-			if (s[0]=='refill') {
-				World.w.game.refillVendors();
-			}
-			if (s[0]=='rep') {
-				if (s.length==2) World.w.pers.rep=int(s[1]);
-			}
-			if (s[0]=='crack') {
-				if (s.length==2 && World.w.gg.currentWeapon) World.w.gg.currentWeapon.hp=Math.round(World.w.gg.currentWeapon.maxhp*Number(s[1])/100);
-			}
-			if (s[0]=='break') {
-				if (s.length==2 && World.w.gg.currentArmor) World.w.gg.currentArmor.hp=Math.round(World.w.gg.currentArmor.maxhp*Number(s[1])/100);
-			}
-			if (s[0]=='heal') {
-				World.w.gg.heal(10000);
-			}
-			if (s[0]=='rad') {
-				World.w.gg.rad=s[1];
-				World.w.gui.setAll();
-			}
-			if (s[0]=='mana') {
-				World.w.pers.manaHP=int(s[1]);
-				World.w.pers.setParameters();
-			}
-			if (s[0]=='check') {
-				World.w.land.gotoCheckPoint();
-			}
-			if (s[0]=='goto') {
-				if (s.length==3) World.w.land.gotoXY(s[1],s[2]);
-			}
-			if (s[0]=='map') {
-				World.w.drawAllMap=!World.w.drawAllMap;
-			}
-			if (s[0]=='black') {
-				World.w.black=!World.w.black;
-				World.w.grafon.visLight.visible=World.w.black && World.w.loc.black;
-			}
-			if (s[0]=='battle') {
-				World.w.testBattle=!World.w.testBattle;
-			}
-			if (s[0]=='testeff') {
-				World.w.testEff=!World.w.testEff;
-			}
-			if (s[0]=='testdam') {
-				World.w.testDam=!World.w.testDam;
-			}
-			if (s[0]=='enemy') {
-				if (World.w.enemyAct==3) World.w.enemyAct=0;
-				else World.w.enemyAct=3;
-			}
-			if (s[0]=='lim') {
-				if (s.length==2) World.w.land.lootLimit=Number(s[1]);
-			}
-			if (s[0]=='fly' || s[0]=='port' || s[0]=='emit') {
-				World.w.chit=s[0];
-				World.w.chitX=s[1];
-			}
-			if (s[0]=='getroom') {
-				World.w.testLoot=true;
-				trace('получено опыта', World.w.loc.getAll());
-				World.w.testLoot=false;
-			}
-			if (s[0]=='err') {
-				World.w.landError=!World.w.landError;
-			}
-			if (s[0]=='getloc') {
-				World.w.testLoot=true;
-				trace('получено опыта', World.w.land.getAll());
-				World.w.testLoot=false;	
-			}
-			if (s[0]=='alicorn') {
-				if (World.w.alicorn) World.w.gg.alicornOff();
-				else World.w.gg.alicornOn();
-			}
-			if (s[0]=='st') {
-				if (s.length==3) World.w.game.triggers[s[1]]=s[2];
-			}
-			if (s[0]=='trigger') {
-				if (s.length==2) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
-			}
-			if (s[0]=='triggers') {
-				if (s.length>1) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
-				else {
-					for (var i in World.w.game.triggers)  World.w.gui.infoText('trigger',i,World.w.game.triggers[i]);
-				}
-			}
-				
+
 			World.w.gui.setAll();
 		}
 	}
