@@ -1,0 +1,19 @@
+<Land1s>
+
+	<land1 id='test' autolevel='1' file='rooms' locx='0' locy='0' stage='4' limit='1' test='1' list='-11' tip='test'>
+		<options  music='music_cat_1' fon='fonRuins'/>
+		<scr eve='take' item='captive'>
+			<s act="quest" val="freeCaptive"/>
+		</scr>
+	</land1>
+
+	<land1 id='test2' dif='0' file='rooms2' locx='0' locy='0' stage='4' limit='1' test='1' list='-10' tip='test' fin='0'>
+		<options backwall='sky' fon='fonFinalb'  music='music_encl_1' xp='500' color='blue' border='S'/>
+		<scr eve='take' item='diary'>
+			<s act="dialog" val="velvetDial6"/>
+			<s act="stage" val="storyFind" n="2"/>
+			<s act="xp" val="5000"/>
+		</scr>
+	</land1>
+	
+</Land1s>

@@ -46,8 +46,10 @@ package fe.loc
 			quests=new Array();
 			names=new Array();
 			
-			for each(var xl in GameData.d.land) {
-				var land:LandAct=new LandAct(xl);
+			var xmlList:XMLList = GameData.fetchNodeList("Lands", "land");
+			for each(var xl in xmlList)
+			{
+				var land:LandAct = new LandAct(xl);
 				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) {
 					land.allroom=World.w.landData[xl.@id].allroom;
 					land.loaded=true;
@@ -55,6 +57,7 @@ package fe.loc
 				if (land.prob==0) lands[land.id]=land;
 				else probs[land.id]=land;
 			}
+			xmlList = null; // Manual cleanup.
 		}
 
 		public function save():Object {
@@ -127,18 +130,27 @@ package fe.loc
 				}
 				
 			}
-			for each(var xl in GameData.d.vendor) {
+
+			var vendorList:XMLList = GameData.fetchNodeList("Vendors", "vendor");
+			for each(var xl in vendorList)
+			{
 				var loadVendor=null;
 				if (loadObj && loadObj.vendors && loadObj.vendors[xl.@id]) loadVendor=loadObj.vendors[xl.@id];
 				var v:Vendor=new Vendor(0,xl,loadVendor);
 				vendors[v.id]=v;
 			}
-			for each(var xl in GameData.d.npc) {
+			vendorList = null; // Manual cleanup.
+
+			var npcList:XMLList = GameData.fetchNodeList("Npcs", "npc");
+			for each(var xl in npcList)
+			{
 				var loadNPC=null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) loadNPC=loadObj.npcs[xl.@id];
 				var npc:NPC=new NPC(xl,loadNPC);
 				npcs[npc.id]=npc;
 			}
+			npcList = null; // Manual cleanup.
+
 			if (loadObj) {
 				for (var i in loadObj.triggers) {
 					triggers[i]=loadObj.triggers[i];
@@ -313,12 +325,7 @@ package fe.loc
 				}
 				return quests[id];
 			}
-			var xlq:XMLList=GameData.d.quest.(@id==id);
-			if (xlq.length()==0) {
-				trace ('не найден квест',id);
-				return null;
-			}
-			var xq:XML=xlq[0];
+			var xq:XML = GameData.fetchNodeWithChildID("Quests", id);
 			var q:Quest=new Quest(xq,loadObj);
 			quests[q.id]=q;
 			if (noVis && !q.auto) q.state=0;
@@ -423,25 +430,19 @@ package fe.loc
 		}
 		
 		//Запустить скрипт из gamedata
-		public function runScript(scr:String, own:Obj=null):Boolean {
-			var xml1=GameData.d.scr.(@id==scr);
-			if (xml1.length()) {
-				xml1=xml1[0];
-				var	runScr:Script=new Script(xml1,World.w.land,own);
-				runScr.start();
-				return true;
-			}
-			return false;
+		public function runScript(scr:String, own:Obj=null):Boolean
+		{
+			var xml1:XML = GameData.fetchNodeWithChildID("Scripts", scr);
+			var	runScr:Script=new Script(xml1,World.w.land,own);
+			runScr.start();
+			return true;
 		}
 		
 		//создать скрипт из gamedata
-		public function getScript(scr:String, own:Obj=null):Script {
-			var xml1=GameData.d.scr.(@id==scr);
-			if (xml1.length()) {
-				xml1=xml1[0];
-				return new Script(xml1,(own==null)?World.w.land:own.loc.land,own);
-			}
-			return null;
+		public function getScript(scr:String, own:Obj=null):Script
+		{
+			var xml1:XML = GameData.fetchNodeWithChildID("Scripts", scr);
+			return new Script(xml1,(own==null)?World.w.land:own.loc.land,own);
 		}
 		
 		//строковое представление времени игры

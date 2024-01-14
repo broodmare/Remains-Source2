@@ -91,17 +91,25 @@ package fe.inter
 					}
 				}
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
-				if (World.w.loc && World.w.loc.base) {
-					for each (var task in GameData.d.vendor.task) {
-						if (checkQuest(task)) {
-							var q:Quest=game.quests[task.@id];
-							if (q==null || q.state==0) {
-								vis.butOk.visible=true;
-								vis.butOk.text.text=Res.pipText('alltask');
+				if (World.w.loc && World.w.loc.base)
+				{
+					var nodeList:XMLList = GameData.fetchNodeList("Vendors", "task");
+
+					for each (var task in nodeList)
+					{
+						if (checkQuest(task))
+						{
+							var q:Quest = game.quests[task.@id];
+							if (q == null || q.state == 0)
+							{
+								vis.butOk.visible = true;
+								vis.butOk.text.text = Res.pipText('alltask');
 								break;
 							}
 						}
 					}
+
+					var nodeList = null;
 				}
 			} else if (page2==3) {	//общая карта
 				vis.nazv.x=vis.info.x=584;
@@ -127,7 +135,6 @@ package fe.inter
 						} catch (err) {
 							sim.sim.gotoAndStop(1);
 						}
-						//trace(land.id, World.w.testMode);
 						if (land.test && !World.w.testMode) continue;
 						if (!game.checkTravel(land.id)) sim.alpha=0.5;
 						if (World.w.testMode && !land.visited && !land.access) sim.alpha=0.3;
@@ -188,7 +195,6 @@ package fe.inter
 					}
 				}
 				arr=arr.filter(isKol);		//отфильтровать
-				//if (arr.length) arr.sortOn('sort');
 			}
 		}
 		
@@ -444,16 +450,27 @@ package fe.inter
 					
 				}
 			}
-			if (page2==2) {
-				for each (var task in GameData.d.vendor.task) {
-					if (task.@man=='1') continue;
-					if (checkQuest(task)) {
-						var q:Quest=game.quests[task.@id];
-						if (q==null || q.state==0) game.addQuest(task.@id,null,false,false,false);
-					}
-				}
+			if (page2==2)
+			{
+
+				addAllQuestsToGameClass();
 				setStatus();
 			}
+		}
+
+		private function addAllQuestsToGameClass():void
+		{
+			var nodeList:XMLList = GameData.fetchNodeList("Vendors", "task");
+			for each (var task:XML in nodeList)
+			{
+				if (task.@man=='1') continue;
+				if (checkQuest(task))
+				{
+					var q:Quest = game.quests[task.@id];
+					if (q == null || q.state==0) game.addQuest(task.@id,null,false,false,false);
+				}
+			}
+			nodeList = null; // Manual cleanup 
 		}
 		
 		public function onMouseDown(event:MouseEvent):void

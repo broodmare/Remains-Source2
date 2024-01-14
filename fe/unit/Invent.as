@@ -880,19 +880,20 @@ package fe.unit
 		}
 		
 		//выкурить косяк
-		function useRollup():Boolean {
+		private function useRollup():Boolean
+		{
 			if (!World.w.loc.base) {
 				World.w.gui.infoText('noBase');
 				return false;
-			} else {
+			} 
+			else
+			{
 				World.w.pip.onoff(-1);
-				var xml1=GameData.d.scr.(@id=='smokeRollup')
-				if (xml1.length()) {
-					xml1=xml1[0];
-					var smokeScr:Script=new Script(xml1,World.w.loc.land, gg);
-					smokeScr.start();
-					World.w.game.triggers['rollup']=1;
-				}
+				
+				var xml1:XML = GameData.fetchNodeWithChildID("Scripts", "smokeRollup");
+				var smokeScr:Script = new Script(xml1,World.w.loc.land, gg);
+				smokeScr.start();
+				World.w.game.triggers['rollup']=1;
 				return true;
 			}
 		}
@@ -925,7 +926,6 @@ package fe.unit
 		
 		public function addAllWeapon() {
 			var w;
-			//for each (w in LootGen.arr['weapon']) updWeapon(w.id,1);
 			for each (w in LootGen.arr['weapon']) addWeapon(w.id);
 			for each (w in LootGen.arr['e']) addWeapon(w.id);
 			for each (w in LootGen.arr['magic']) addWeapon(w.id);
@@ -973,7 +973,6 @@ package fe.unit
 			if (obj==null) return;
 			var w;
 			for each(w in obj.weapons) {
-				//trace(w.id);
 				var weap:Weapon=addWeapon(w.id,w.hp,w.hold,w.respect,w.variant);
 				if (w.ammo) weap.setAmmo(w.ammo, items[w.ammo].xml);
 			}

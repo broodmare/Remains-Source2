@@ -17,7 +17,6 @@ package  fe
 	
 	import fe.loc.*;
 	import fe.rooms.Rooms;
-	import fe.entities.Part;
 	import fe.graph.Grafon;
 	import fe.graph.Emitter;
 	import fe.inter.*;
@@ -499,14 +498,17 @@ package  fe
 			
 			//загрузка карт локаций
 			landData = new Array();
-			for each(var xl in GameData.d.land)
+
+			var xmlList:XMLList = GameData.fetchNodeList("Lands", "land");
+			for each(var xl in xmlList)
 			{
 				if (!testMode && xl.@test>0) continue;
 				var ll:LandLoader=new LandLoader(xl.@id);
 				if (!(xl.@test>0)) kolLands++;
 				landData[xl.@id]=ll;
 			}
-			
+			xmlList = null; // Manual cleanup
+
 			load_log+='Stage 2 Ok\n';
 			Snd.loadMusic();
 		}

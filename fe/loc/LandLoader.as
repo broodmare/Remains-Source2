@@ -24,9 +24,11 @@ package fe.loc
 		public var allroom:XML;
 		
 		public function LandLoader(nid:String) {
-			id=nid;
-			roomsFile=GameData.d.land.(@id==id).@file;
-			test=GameData.d.land.(@id==id).@test>0;
+			id = nid;
+
+			roomsFile = GameData.fetchNodeWithChildID("Lands", id).@file;
+			test = GameData.fetchNodeWithChildID("Lands", id).@test > 0;
+
 			//источник шаблонов локаций
 			if (World.w.roomsLoad) {
 				loader_rooms = new URLLoader();

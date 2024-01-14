@@ -84,13 +84,6 @@ package fe.unit {
 				else World.w.game.triggers['tame']=1;
 				if (World.w.game.triggers['tame']>=5 && !World.w.game.triggers['pet_phoenix']) {	//приручить
 					if (World.w.game.runScript('tamePhoenix',this)) World.w.game.triggers['pet_phoenix']=1;
-					/*var xml1=GameData.d.script.(@id==)
-					if (xml1.length()) {
-						xml1=xml1[0];
-						tameScr=new Script(xml1,loc.land,this);
-						tameScr.start();
-						World.w.game.triggers['pet_phoenix']=1;
-					}*/
 				} else {
 					die();
 					World.w.gui.messText('phoenixFeed2','',Y<300);
@@ -112,7 +105,5 @@ package fe.unit {
 				questOk=true;
 			}
 		}
-
 	}
-	
 }

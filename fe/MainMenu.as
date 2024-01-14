@@ -105,6 +105,8 @@ package fe
 			mainMenuMovieClip.info.txt.styleSheet=style;
 			mainMenuMovieClip.link.l1.styleSheet=style;
 			mainMenuMovieClip.link.l2.styleSheet=style;
+
+			GameData.initializeGameData(); // QUICK HACK, LOAD ALL GAMEDATA
 		}
 
 		private function mainMenuOn():void

@@ -449,7 +449,10 @@ package fe.loc
 					var loc:Location=newLoc(room,0,0,0,{prob:nprob});
 					loc.landProb=nprob;
 					loc.noMap=true;
-					var xmll=GameData.d.land.prob.(@id==nprob);
+					
+					var xmlList:XMLList = GameData.fetchNodeList("Lands", "prob");
+
+					var xmll = xmlList.(@id==nprob);
 					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
 					//добавить дверь для выхода
 					if (loc.spawnPoints.length) {
