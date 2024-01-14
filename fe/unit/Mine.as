@@ -4,6 +4,8 @@ package fe.unit
 	import fe.serv.LootGen;
 	import fe.loc.Location;
 	
+	import fe.stubs.vismine;
+	
 	public class Mine extends Unit
 	{
 
@@ -50,6 +52,7 @@ package fe.unit
 			if (reloadTime) vis.gotoAndStop(1);
 			else vis.gotoAndStop(2);
 			setVis(false);
+
 			var node:XML = AllData.fetchNodeWithChildID('weapons', id);
 			nazv=Res.txt('w',id);
 			scX=node.@sX;
@@ -59,24 +62,25 @@ package fe.unit
 			if (node.snd.@sens.length()) sndSens=node.snd.@sens;
 
 			massaMove=0.05;
-			node=node.char[0];
-			if (node.@massa>0) massaMove=node.@massa/50;
-			if (node.@massafix.length()) massaFix=node.@massafix/50;
+
+			var charNode:XML = node.char[0];
+			if (charNode.@massa>0) massaMove=charNode.@massa/50;
+			if (charNode.@massafix.length()) massaFix=charNode.@massafix/50;
 			else massaFix=massaMove;
-			if (node.@maxhp>0) hp=maxhp=node.@maxhp;
-			if (node.@damexpl.length()) damage1=node.@damexpl;
-			if (node.@knock.length()) otbros1=node.@knock;
-			if (node.@tipdam.length()) tipDamage=node.@tipdam;
-			if (node.@destroy.length()) wdestroy=node.@destroy;
-			if (node.@expl.length()) explRadius=node.@expl;
-			if (node.@time.length()) explTime=node.@time;
+			if (charNode.@maxhp>0) hp=maxhp=charNode.@maxhp;
+			if (charNode.@damexpl.length()) damage1=charNode.@damexpl;
+			if (charNode.@knock.length()) otbros1=charNode.@knock;
+			if (charNode.@tipdam.length()) tipDamage=charNode.@tipdam;
+			if (charNode.@destroy.length()) wdestroy=charNode.@destroy;
+			if (charNode.@expl.length()) explRadius=charNode.@expl;
+			if (charNode.@time.length()) explTime=charNode.@time;
 			else if (Math.random()<Math.min(0.25,ndif/50)) explTime=5;
-			if (node.@sens.length()) sens=node.@sens;
+			if (charNode.@sens.length()) sens=charNode.@sens;
 			massa=massaFix;
 			
 			damage1*=(Math.random()*0.3+0.85);
-			node = node.vis[0];
-			if (node.@tipdec.length()) tipDecal=node.@tipdec;
+			var visNode = node.vis[0];
+			if (visNode.@tipdec.length()) tipDecal = visNode.@tipdec;
 			
 			aiState=1;
 			isFly=false;
