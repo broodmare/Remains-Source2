@@ -20,7 +20,7 @@ package fe
 		public static function initializeGameData():void
 		{
 			gameData = new Dictionary();
-			fileLocation = 'fe/xml/GameData/';
+			fileLocation = 'Data/xml/GameData/';
 			fileNames = [
             	"Land1s", "Lands", "Npcs", "Quests", "Scripts", "Vendors"
         	];
