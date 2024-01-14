@@ -29,8 +29,6 @@ package fe.unit
 		var nRot:int=0;		//и текущий элемент массива
 		var mxml:XML;
 		var angle:String; 
-
-		private var gunTextureLoaded:Boolean = false;
 		
 		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
@@ -171,10 +169,7 @@ package fe.unit
 
 		public override function animate()
 		{
-			if (!gunTextureLoaded)
-			{
-				intializeTurretGun();
-			}
+			if (vis.osnCurrentFrame != tr) vis.osn.puha.gotoAndStop(tr);
 
 			if (fixed && levit) vis.osn.rotation = Math.random() * 6 - 3;
 			else if (vis.osn.rotation != 0) vis.osn.rotation = 0;
@@ -193,11 +188,6 @@ package fe.unit
 			} 
 			else if (vis.osn.currentFrame == 6 && aiState > 0) vis.osn.gotoAndPlay(7);
 
-			function intializeTurretGun():void
-			{
-				vis.osn.puha.gotoAndStop(tr);
-				gunTextureLoaded = true;
-			}
 		}
 
 		private function radiansToDegrees(radians:Number):Number
