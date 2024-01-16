@@ -444,15 +444,14 @@ package fe.loc
 			//создать одиночную комнату
 			var arrr:XML=World.w.game.probs['prob'].allroom;
 			for each(var xml in arrr.room) {
-				if (xml.@name==nprob) {
-					var room:Room=new Room(xml);
-					var loc:Location=newLoc(room,0,0,0,{prob:nprob});
-					loc.landProb=nprob;
-					loc.noMap=true;
+				if (xml.@name == nprob)
+				{
+					var room:Room = new Room(xml);
+					var loc:Location = newLoc(room,0,0,0,{prob:nprob});
+					loc.landProb = nprob;
+					loc.noMap = true;
 					
-					var xmlList:XMLList = GameData.fetchNodeList("Lands", "prob");
-
-					var xmll = xmlList.(@id==nprob);
+					var xmll:XML = XMLDataGrabber.getNodeByNameWithAttributeThatMatches("core", "GameData", "Lands", "prob", "id", nprob);
 					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
 					//добавить дверь для выхода
 					if (loc.spawnPoints.length) {

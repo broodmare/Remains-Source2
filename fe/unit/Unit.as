@@ -1,6 +1,5 @@
 package fe.unit
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.BitmapData;
@@ -9,7 +8,6 @@ package fe.unit
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-	import flash.utils.*;
 	
 	import fe.*;
 	import fe.weapon.*;
@@ -345,7 +343,7 @@ package fe.unit
 			if (id=='mwall') return new UnitMWall(null,0,null,null);
 			if (id=='scythe') return new UnitScythe(null,0,null,null);
 			if (id=='ttur') return new UnitThunderTurret(ncid,0,null,null);
-			var node:XML = AllData.fetchNodeWithChildID('objs', id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			if (node==null) {
 				trace('Не найден юнит',id);
 				return null;
@@ -437,7 +435,7 @@ package fe.unit
 				mid=id;
 			}
 			
-			var node0:XML = AllData.fetchNodeWithChildID('units', mid);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", mid);
 			if (mid && !uniqName) nazv=Res.txt('u',mid);
 			if (node0.@fraction.length()) fraction=node0.@fraction;
 			inter.cont=mid;
@@ -594,7 +592,7 @@ package fe.unit
 		}
 		
 		public function getXmlWeapon(dif:int):Weapon {
-			var node0:XML = AllData.fetchNodeWithChildID('units', id);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			var weap:Weapon;
 			for each(var n:XML in node0.w) {
 				if (n.@f.length()) continue;
@@ -720,7 +718,6 @@ package fe.unit
 				runSpeed*=1.25;
 			}
 			setHeroVulners();
-			//trace(id,hero)
 		}
 		
 		public function setHeroVulners() {
@@ -810,10 +807,8 @@ package fe.unit
 			getRasst2();
 			if (radioactiv) ggModum();	//действие на ГГ (радиация)
 			forces();		//внешние силы, влияющие на ускорение
-			//try {
-				control();		//управление игроком или ИИ
-			//} catch (err) {
-			//}
+			control();		//управление игроком или ИИ
+
 			//движение
 			if (fixed) {
 			} else if (bind || Math.abs(dx+osndx)<World.maxdelta && Math.abs(dy+osndy)<World.maxdelta)	{
@@ -842,26 +837,17 @@ package fe.unit
 			}
 			visDamDY=0;
 			if (sndRunOn && sndRun && loc && loc.active) sndRunPlay();
-
-			//if (id=='slaver1')	trace(dx);
-
 		}
 		
 		public function control() {
 		}
 		
-//**************************************************************************************************************************
-//
-//				Движение
-//
-//**************************************************************************************************************************
 		//перемещение в точку
 		public function setPos(nx:Number,ny:Number) {
 			X=nx, Y=ny;
 			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
 			setCel();
 		}
-		
 		
 		//Выход за пределы локации
 		public function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean {
@@ -913,7 +899,6 @@ package fe.unit
 				}
 			} else {
 				if (inWater) dx*=0.5;
-				//if (!levit && dy<World.maxdy) dy+=World.ddy;
 				if (!levit && isLaz==0) {
 					var t:Tile=loc.getAbsTile(X,Y-scY/4);
 					if (t.grav>0 && dy<World.maxdy*t.grav || t.grav<0 && dy>World.maxdy*t.grav) dy+=World.ddy*t.grav*grav;
@@ -965,7 +950,6 @@ package fe.unit
 			var i:int;
 			var newmy:Number=0;
 			var autoSit:Boolean=false;
-			//porog=(diagon==0)?10:40;
 			
 			if (!throu && stay && diagon!=0 && dy>=0) {
 				if (!collisionAll(dx/div,-dx/div*diagon)) {
@@ -984,7 +968,6 @@ package fe.unit
 			//ГОРИЗОНТАЛЬ
 			if (!isLaz) {
 				X+=(dx+osndx)/div;
-				//Y-=dx/div*diagon;
 				if (X-scX/2<0) {
 					if (!outLoc(1)) {
 						X=scX/2;
@@ -1304,7 +1287,6 @@ package fe.unit
 			if (X2+gx<=t.phX1 || X1+gx>=t.phX2 || Y2+gy<=t.phY1 || Y1+gy>=t.phY2) {
 				return 0;
 			} else if ((t.phis==0 || transT&&t.phis==3) && t.shelf && (Y2-(stay?porog:porog_jump)>t.phY1 || throu || t_throw>0 || levit || isFly || diagon!=0)) {  //полка 
-			//} else if (t.phis==0 && t.shelf && (Y2>t.phY1 || throu || levit || isFly || diagon!=0)) {  //полка 
 				return 0;
 			}
 			else return 1;
@@ -1312,50 +1294,47 @@ package fe.unit
 
 		//поиск лестницы
 		public function checkStairs(ny:int=-1, nx:int=0):Boolean {
-			try {
-				var i=Math.floor((X+nx)/Tile.tileX);
-				var j=Math.floor((Y+ny)/Tile.tileY);
-				if (j>=loc.spaceY) j=loc.spaceY-1;
-				if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3)) {
-					isLaz=0;
-					return false;
-				}
-				if ((loc.space[i][j] as Tile).stair) {
-					isLaz=storona=(loc.space[i][j] as Tile).stair;
-					if (isLaz==-1) X=(loc.space[i][j] as Tile).phX1+scX/2;
-					else X=(loc.space[i][j] as Tile).phX2-scX/2;
-					X1=X-scX/2, X2=X+scX/2;
-					stay=false;
-					sit(false);
-					return true;
-				}
-			} catch (err) {
+
+			var i=Math.floor((X+nx)/Tile.tileX);
+			var j=Math.floor((Y+ny)/Tile.tileY);
+			if (j>=loc.spaceY) j=loc.spaceY-1;
+			if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3)) {
+				isLaz=0;
+				return false;
 			}
+			if ((loc.space[i][j] as Tile).stair) {
+				isLaz=storona=(loc.space[i][j] as Tile).stair;
+				if (isLaz==-1) X=(loc.space[i][j] as Tile).phX1+scX/2;
+				else X=(loc.space[i][j] as Tile).phX2-scX/2;
+				X1=X-scX/2, X2=X+scX/2;
+				stay=false;
+				sit(false);
+				return true;
+			}
+
 			isLaz=0;
 			return false;
 		}
 		//поиск жидкости
 		public function checkWater():Boolean {
 			var pla=inWater;
-			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.75)/Tile.tileY)] as Tile).water>0) {
-					isPlav=true;
-					inWater=true;
-					if (plav) {
-						stay=false;
-						sit(false);
-					}
-				} else {
-					isPlav=false;
-					if (scY<=Tile.tileY) {
-						inWater=false;
-					} else if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.25)/Tile.tileY)] as Tile).water>0) {
-						inWater=true;
-					} else inWater=false;
+
+			if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.75)/Tile.tileY)] as Tile).water>0) {
+				isPlav=true;
+				inWater=true;
+				if (plav) {
+					stay=false;
+					sit(false);
 				}
-			} catch (err) {
-				isPlav=inWater=false;
+			} else {
+				isPlav=false;
+				if (scY<=Tile.tileY) {
+					inWater=false;
+				} else if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.25)/Tile.tileY)] as Tile).water>0) {
+					inWater=true;
+				} else inWater=false;
 			}
+
 			if (pla!=inWater && (dy>8 || dy<-8 || plaKap)) {
 				Emitter.emit('kap',loc,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)+1)});
 				
@@ -1367,9 +1346,7 @@ package fe.unit
 				else sound('fall_item_water', 0, dy/10);
 			}
 			if (pla!=inWater && dy<-5 && massa>0.4) sound('fall_water2', 0, -dy/10);
-			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-scY*0.25,0,-Math.abs(dy)*(Math.random()*0.3+0.3),Math.min(30,Math.floor(Math.abs(dy*massa*3)-5)));
 			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit('kap',loc,X,Y-scY*0.25,{rx:scX});
-			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-Tile.tileY,0,-Math.abs(dy)*(Math.random()*0.3+0.3));
 			if (isPlav) {
 				namok_t++;
 				if (namok_t>=100) {
@@ -1464,16 +1441,10 @@ package fe.unit
 			fixed=false;
 		}
 
-//**************************************************************************************************************************
-//
-//				Визуальная часть
-//
-//**************************************************************************************************************************
-
 		public static function initIcos()
 		{
 			arrIcos = [];
-			var unitList:XMLList = AllData.fetchNodeList('units', 'unit');
+			var unitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 			for each(var xml in unitList)
 			{
 				if (xml.@cat=='3')
@@ -1506,7 +1477,8 @@ package fe.unit
 			if (arrIcos==null) arrIcos=new Array();
 			if (arrIcos[nid]) return;
 			
-			var xml = AllData.fetchNodesWithMatchingIDs('units', nid);
+			var xml:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", nid);
+
 			if (xml.vis.length() && xml.vis.@blit.length()) {
 				var bmpd:BitmapData;
 				var data:BitmapData=World.w.grafon.getSpriteList(xml.vis.@blit);
@@ -1562,7 +1534,6 @@ package fe.unit
 				for (var i in childObjs) {
 					if (childObjs[i]!=null && childObjs[i].vis) {
 						childObjs[i].addVisual();
-						//World.w.grafon.visObjs[.sloy].addChild(childObjs[i].vis);
 					}
 				}
 			}
@@ -1574,7 +1545,6 @@ package fe.unit
 			if (childObjs) {
 				for (var i in childObjs) {
 					if (childObjs[i]) childObjs[i].remVisual();
-					//if (childObjs[i].vis && childObjs[i].vis.parent) World.w.grafon.visObjs[childObjs[i].sloy].removeChild(childObjs[i].vis);
 				}
 			}
 		}
@@ -1622,7 +1592,6 @@ package fe.unit
 						hpbar.armor.gotoAndStop(Math.floor((1-armor_hp/armor_maxhp)*20+1));
 					} else hpbar.armor.visible=false;
 				}
-				//hpbar.hpNum.text=Math.round(hp)+'/'+maxhp;
 			} else hpbar.visible=false;
 		}
 		
@@ -1642,12 +1611,6 @@ package fe.unit
 		public function sound(sid:String, msec:Number=0, vol:Number=1):SoundChannel {
 			return Snd.ps(sid,X,Y,msec,vol);
 		}
-
-//**************************************************************************************************************************
-//
-//				Действия
-//
-//**************************************************************************************************************************
 
 		public function actions() {
 			if (isNaN(dx)) {
@@ -1721,7 +1684,6 @@ package fe.unit
 						Emitter.emit('poison',loc,X,Y-scY*0.5);
 					}
 					if (inWater && loc.wdam>0) {
-						//trace('wdam',loc.wdam,loc.wtipdam,vulner[loc.wtipdam]);
 						damage(loc.wdam,loc.wtipdam,null,true);
 					}
 				}
@@ -1729,7 +1691,6 @@ package fe.unit
 			if (stun>0) {
 				stun--;
 				if (stun%10==0) {
-					//trace(stun)
 					if (opt && opt.robot) {
 						Emitter.emit('discharge',loc,X,Y-scY*0.5);
 						Emitter.emit('iskr',loc,X,Y-scY*0.5,{kol:5});
@@ -1775,10 +1736,12 @@ package fe.unit
 			if (cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1 || cel.neujaz>0) return false;
 			return cel.udarUnit(this, mult);
 		}
+
 		//удар достиг цели
 		public function crash(b:Bullet) {
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
+
 		//задать положение оружия
 		public function setWeaponPos(tip:int=0) {
 			weaponX=X;
@@ -1786,6 +1749,7 @@ package fe.unit
 			magicX=X;
 			magicY=Y-scY*0.5;
 		}
+
 		public function setPunchWeaponPos(w:WPunch) {
 			w.X=X+scX/3*storona;
 			w.Y=Y-scY*0.75;
@@ -1890,7 +1854,7 @@ package fe.unit
 			}
 			for each(var eff:Effect in effects) {
 				var effid = eff.id;
-				var sk = AllData.fetchNodeWithChildID('effs', effid);
+				var sk = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", effid);
 				setSkillParam(sk, eff.vse?0:1);
 			}
 			setHeroVulners();
@@ -1930,17 +1894,8 @@ package fe.unit
 			//var damageNumb:Part;
 			var isCrit:int=0;
 			var isShow:Boolean=false;
-			if (bul) {					//критический урон
-				/*if (Math.random()<bul.critCh) {
-					dam*=bul.critDamMult;
-					isCrit=1;
-				}
-				if (!doop && celUnit!=bul.owner && bul.critInvis>0) {
-					if (Math.random()<bul.critInvis) {
-						dam*=2;
-						isCrit+=2;
-					}
-				}*/
+			if (bul) //критический урон
+			{					
 				//урон определённым типам
 				if (bul.owner && bul.owner.player && opt) {
 					if (opt.pony) dam*=(bul.owner as UnitPlayer).pers.damPony;
@@ -1966,7 +1921,6 @@ package fe.unit
 			if (!player && armor_hp>0 && (shithp<=0 || dam>shitArmor) && (armor>0 || marmor>0) && (tip<=D_BALE && tip!=D_EMP && tip!=D_POISON && tip!=D_BLEED || tip==D_ASTRO)) {
 				var damarm=dam;
 				if (shithp>0) damarm-=shitArmor;
-				//if (bul && bul.pier>0) damarm+=bul.pier;
 				if (bul && bul.armorMult>1) damarm/=bul.armorMult;
 				if (tip==D_ACID) damarm*=4;
 				else if (tip==D_EXPL) damarm*=2;
@@ -1977,11 +1931,6 @@ package fe.unit
 					mess=Res.guiText('abr');
 				}
 			}
-			/*if (!player && tip==D_ACID && acidDey>0 && armor>0 && armor_qual>0.25) {
-				armor_qual-=dam/maxhp*acidDey;
-				if (armor_qual<0.25) armor_qual=0.25;
-				if (dam/maxhp>0.01) numbEmit.cast(loc,X,Y-scY/2,{txt:('-'+Math.round(dam/maxhp*100).toString()+'%'), frame:5, rx:20, ry:20});
-			}*/
 			if (dam<0) {
 				heal(-dam);
 				return 0;
@@ -2195,7 +2144,7 @@ package fe.unit
 					if (napr==2) nx=X-scX/2;
 					if (napr==3) ny=Y;
 					if (napr==4) ny=Y-scY;
-					Emitter.emit('bum',loc,nx,ny);//,{scale:dam/damWall}
+					Emitter.emit('bum',loc,nx,ny);
 					Snd.ps('hit_flesh',X,Y);
 				}
 			}
@@ -2213,17 +2162,11 @@ package fe.unit
 			if (World.w.showHit>=1) {
 				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc,X,Y-scY/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
 			}
-			//newPart('numb',4,X+Math.random()*20-10,Y-scY/2+Math.random()*20-10,0,0,1,'+'+Math.round(hl));
 		}
 		
-		public function dopTest(bul:Bullet):Boolean {
+		public function dopTest(bul:Bullet):Boolean
+		{
 			return true;
-			/*ppp.x=nx-vis.x;
-			ppp.y=ny-vis.y;
-			ppp=vis.localToGlobal(ppp);
-			if (!vis.hitTestPoint(ppp.x,ppp.y,true)) return false;
-			Emitter.emit('marker',loc,nx,ny);
-			return true;*/
 		}
 		
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
@@ -2235,7 +2178,6 @@ package fe.unit
 				bul.tipBullet==0 && Math.random()<acc/(dexter+dexterPlus+0.05) || 
 				bul.tipBullet==1 && dodge<1 && (dodge<=0 || Math.random()>dodge)
 			)) {
-				//trace('попал',bul.precision/bul.dist);
 				var dm=0;
 				if (transp && (vulner[bul.tipDamage]<=0 || invulner)) {
 					return -1;
@@ -2245,9 +2187,6 @@ package fe.unit
 					}
 					dm=bul.damage*(Math.random()*0.6+0.7);
 					if (World.w.testDam) dm=bul.damage;
-					/*if (acc>1 && bul.critM>0) {		//если меткость>1 и у оружия есть дополнительный модификатор крита, то увеличить урон
-						dm+=dm*bul.critM*(1-1/acc);
-					}*/
 					dm=damage(dm, bul.tipDamage, bul);
 					otbros(bul);
 					if (bul.owner && bul.owner.fraction!=0) priorUnit=bul.owner;
@@ -2335,9 +2274,6 @@ package fe.unit
 			if (sila>3) sila=3;
 			dx+=bul.knockx*bul.otbros*sila;
 			dy+=bul.knocky*bul.otbros*sila;
-			if (bul.explRadius>0) {
-				//trace(bul.dx/bul.vel*bul.otbros/massa*sila,bul.dy/bul.vel*bul.otbros/massa*sila)
-			}
 		}
 		
 		//активация из пассивного режима
@@ -2367,10 +2303,6 @@ package fe.unit
 		//отключение (для систем безопасности)
 		public function hack(sposob:int=0) {
 		}
-		
-		
-//--------------------------------------------------------------------------------------------------------------------
-//				Смерть
 		
 		public override function die(sposob:int=0) {
 			if (hpbar) hpbar.visible=false;
@@ -2673,14 +2605,9 @@ package fe.unit
 				if (fraction==F_PLAYER) warn=0;
 				else warn=1;
 			}
-			//trace(com,val);
 		}
-		
-//--------------------------------------------------------------------------------------------------------------------
-//				Разговоры
 
 		public function replic(s:String) {
-			//trace(id,s);
 			if (sost!=1 || id_replic=='' || !loc.active) return;
 			var s_replic:String;
 			if (s=='dam') {
@@ -2698,14 +2625,12 @@ package fe.unit
 				s_replic=Res.repText(id_replic, s, msex);
 				if (s_replic!='' && s_replic!=null) {
 					Emitter.emit('replic',loc,X,Y-110,{txt:s_replic, ry:50});
-					//var p:Part=newPart('replic',0,X,Y-80-Math.random()*50,0,0,1,s_replic);
 				}
 			}
 		}
 
-//--------------------------------------------------------------------------------------------------------------------
-//				Рандом
-		protected function isrnd(n:Number=0.5):Boolean {
+		protected function isrnd(n:Number=0.5):Boolean
+		{
 			return Math.random()<n;
 		}
 	}

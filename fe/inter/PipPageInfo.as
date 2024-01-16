@@ -93,9 +93,9 @@ package fe.inter
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
 				if (World.w.loc && World.w.loc.base)
 				{
-					var nodeList:XMLList = GameData.fetchNodeList("Vendors", "task");
+					var taskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
 
-					for each (var task in nodeList)
+					for each (var task:XML in taskList)
 					{
 						if (checkQuest(task))
 						{
@@ -109,7 +109,7 @@ package fe.inter
 						}
 					}
 
-					var nodeList = null;
+					taskList = null;
 				}
 			} else if (page2==3) {	//общая карта
 				vis.nazv.x=vis.info.x=584;
@@ -179,7 +179,7 @@ package fe.inter
 				statHead.kol.text=Res.pipText('frag');
 				vis.ico.visible=true;
 
-				var unitList:XMLList = AllData.fetchNodeList('units', 'unit');
+				var unitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 				for each(var xml in unitList)
 				{
 					if (xml && xml.@cat.length()) {
@@ -311,11 +311,11 @@ package fe.inter
 		{
 			var n:int=0, delta;
 			//юнит
-			var un=AllData.fetchNodeWithChildID('units', id);
+			var un = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (un.length()==0 || un.@cat!='3') return '';
 			//родитель
 			var pun;
-			if (un.@parent.length()) pun = AllData.fetchNodeWithChildID('units', un.@parent);
+			if (un.@parent.length()) pun = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", un.@parent);
 			//дельта
 			delta=getParam(un,pun,'vis','dkill');
 			if (delta==null) delta=5;
@@ -371,7 +371,7 @@ package fe.inter
 								s+=textAsColor('blue', Res.txt('w', weap.@id));
 								try
 								{
-									var w = AllData.fetchNodeWithChildID('weapons', weap.@id);
+									var w = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", weap.@id);
 									var dam=0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
@@ -466,17 +466,17 @@ package fe.inter
 
 		private function addAllQuestsToGameClass():void
 		{
-			var nodeList:XMLList = GameData.fetchNodeList("Vendors", "task");
-			for each (var task:XML in nodeList)
+			var taskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
+			for each (var task:XML in taskList)
 			{
 				if (task.@man=='1') continue;
 				if (checkQuest(task))
 				{
 					var q:Quest = game.quests[task.@id];
-					if (q == null || q.state==0) game.addQuest(task.@id,null,false,false,false);
+					if (q == null || q.state==0) game.addQuest(task.@id, null, false, false, false);
 				}
 			}
-			nodeList = null; // Manual cleanup 
+			taskList = null; // Manual cleanup 
 		}
 		
 		public function onMouseDown(event:MouseEvent):void

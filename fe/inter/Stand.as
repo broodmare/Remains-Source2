@@ -104,7 +104,7 @@ package fe.inter
 		function createWeaponLists(n:int) {
 			var levels:Array=[0,0,0,0,0,0,0];
 			var stolb:int=-1;
-			var weaponList:XMLList = AllData.fetchNodeList('weapons', 'weapon');
+			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 
 			for each (var weap in weaponList.(@tip > 0))
 			{
@@ -201,7 +201,7 @@ package fe.inter
 			var sc:Number=1.5;
 			var aid=Appear.ggArmorId;
 			Appear.transp=true;
-			var armorList:XMLList = AllData.fetchNodeList('armors', 'armor');
+			var armorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 			for each(var arm in armorList)
 			{
 				if (n==6 && arm.@tip>1 || n==7 && arm.@tip!=3) continue;
@@ -264,7 +264,7 @@ package fe.inter
 			if (n<5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			vis.toptext.visible=(n<=5);
-			var weaponList = AllData.fetchNodeList('weapons', 'weapon');
+			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			for each (var weap in weaponList.(@tip>0))
 			{
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
@@ -277,7 +277,7 @@ package fe.inter
 			}
 			weaponList = null; // Manual cleanup.
 
-			var armorList = AllData.fetchNodeList('armors', 'armor');
+			var armorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 			for each(var arm in armorList)
 			{
 				if (armors[arm.@id]) {

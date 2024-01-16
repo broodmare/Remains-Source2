@@ -24,7 +24,7 @@ package fe.graph
 			id=nid;
 			X=nx, Y=ny;
 			
-			var node:XML = AllData.fetchNodeWithChildID('backs', id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "backs", "id", id);
 
 			var wid=node.@x2*World.tileX;
 			if (xml && xml.@w.length()) wid=xml.@w*World.tileX

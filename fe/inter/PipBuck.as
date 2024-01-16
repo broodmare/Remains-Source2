@@ -358,7 +358,7 @@ package fe.inter
 			var w:Weapon;
 			var a:Armor;
 
-			var weaponList = AllData.fetchNodeList('weapons', 'weapon');
+			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			for each (var weap:XML in weaponList.(@tip > 0))
 			{
 				w = Weapon.create(owner, weap.@id, 0);
@@ -371,7 +371,7 @@ package fe.inter
 			}
 			weaponList = null; // Manual cleanup.
 
-			var armorList = AllData.fetchNodeList('armors', 'armor');
+			var armorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 			for each (var armor:XML in armorList)
 			{
 				a = new Armor(armor.@id);
@@ -440,7 +440,11 @@ package fe.inter
 		public function setArmor(aid:String):void
 		{
 			ArmorId = aid;
-			try { hideMane = AllData.fetchNodeWithChildID('armors', aid).@hide; } 
+			try 
+			{ 
+				var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", aid);
+				hideMane = node.@hide; 
+			} 
 			catch (err)  { hideMane = 0; }
 		}
 		

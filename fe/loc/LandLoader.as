@@ -1,7 +1,6 @@
 package fe.loc
 {
-	//Класс, производящий загрузку карт местности из файла, или берущий их из переменных
-	//Содержится в объекте world
+	// [Class that loads terrain maps from a file or takes them from variables contained in the world object]
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;
@@ -23,14 +22,17 @@ package fe.loc
 		
 		public var allroom:XML;
 		
-		public function LandLoader(nid:String) {
+		public function LandLoader(nid:String)
+		{
 			id = nid;
+			var roomNode:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "GameData", "Lands", "id", id);
 
-			roomsFile = GameData.fetchNodeWithChildID("Lands", id).@file;
-			test = GameData.fetchNodeWithChildID("Lands", id).@test > 0;
+			roomsFile = roomNode.@file;
+			test = (roomNode.@test > 0);
 
 			//источник шаблонов локаций
-			if (World.w.roomsLoad) {
+			if (World.w.roomsLoad)
+			{
 				loader_rooms = new URLLoader();
 				var roomsURL=World.w.landPath+roomsFile+".xml";
 				if (World.w.playerMode=='PlugIn') roomsURL+="?u="+Math.random().toFixed(5);
@@ -52,14 +54,16 @@ package fe.loc
 			}
 		}
 
-		function onCompleteLoadRooms(event:Event):void  {
+		private function onCompleteLoadRooms(event:Event):void
+		{
 			loaded=true;
 			World.w.load_log+='Land '+roomsFile+' loaded\n';
 			allroom = new XML(loader_rooms.data);
 			if (!test) World.w.roomsLoadOk();
 		}
 		
-		private function ioErrorHandler(event:IOErrorEvent):void {
+		private function ioErrorHandler(event:IOErrorEvent):void
+		{
 			World.w.load_log+='IOerror '+roomsFile+'\n';
         }
 	}

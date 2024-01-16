@@ -15,7 +15,7 @@ package fe.graph
 		public static function init()
 		{
 			arr = new Array();
-			var xmlList:XMLList = AllData.fetchNodeList('parts', 'part');
+			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "parts", "part");
 
 			for each(var node:XML in xmlList)
 			{

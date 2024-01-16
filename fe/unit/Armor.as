@@ -48,8 +48,7 @@ package fe.unit
 		public function Armor(nid:String, nlvl:int=0) {
 			id=nid;
 			lvl=nlvl;
-			
-			var xml:XML = AllData.fetchNodeWithChildID('armors', id);
+			xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@clo.length()) clo=xml.@clo;
 			if (xml.@hp.length()) hp=maxhp=(xml.@hp);

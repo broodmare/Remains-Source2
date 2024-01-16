@@ -54,7 +54,8 @@ package fe.loc
 		{
 			fForms = [];
 			oForms = [];
-			var xmlList = AllData.fetchNodeList('mats', 'mat');
+			
+			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "mats", "mat");
 
 			for each (var node in xmlList)
 			{

@@ -29,7 +29,7 @@ package fe.loc
 			id=nid;
 			levitPoss=false;
 			
-			var node:XML = AllData.fetchNodeWithChildID('objs', id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			
 			X=nx, Y=ny;
 			scX=node.@size*World.tileX;

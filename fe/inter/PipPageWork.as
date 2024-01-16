@@ -77,8 +77,8 @@ package fe.inter
 								arr.push(n);
 							}
 						} else {
-							var node1 = AllData.fetchNodeWithChildID('items', wid);
-							if (node1.length()==0) continue;
+							var node1:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", wid);
+							if (node1 != null) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
 							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
 							arr.push(n);
@@ -269,8 +269,7 @@ package fe.inter
 			if (page2==1)
 			{
 				var string2:String = 's_' + cid;
-				var sch = AllData.fetchNodeWithChildID('items', string2);
-				if (sch.length()) sch=sch[0];
+				var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", string2);
 				var kol:int=1;
 				if (sch.@kol.length()) kol=int(sch.@kol);
 				if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
@@ -342,8 +341,7 @@ package fe.inter
 					}
 				} else if (ccat==Item.L_WEAPON) {
 					var string3:String = 's_' + cid;
-					var sch = AllData.fetchNodeWithChildID('items', string3);
-					if (sch.length()) sch=sch[0];
+					var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", string3);
 					if (!checkScheme(sch)) return;
 					minusCraftComp(sch);
 					inv.updWeapon(cid,1);

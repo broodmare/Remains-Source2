@@ -40,7 +40,7 @@
 			switch (event.type) 
 			{
 				case Event.COMPLETE:
-					trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" loaded!.');
+					//trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" loaded!.');
 					xmlData = new XML(loader.data);
 					dispatchEvent(new Event(XMLLoader.XML_LOADED));
 					break;

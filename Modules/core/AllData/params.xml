@@ -1,0 +1,68 @@
+<!-- отслеживаемые и требующие начальной установки параметры
+	f='1' - отслеживать факторы
+	show
+		1 - показывать в пипбаке всегда
+		2 - показывать, если надета броня
+		3 - показывать, если достигнут Кантерлот
+	tip - способ показа
+		0 - абсолютное значение
+		1 - мультипликатор, показывать в процентах, только если !=1
+		2 - показывать в процентах всех
+		3 - способ показа обратных величин
+		4 - сопротивления
+		5 - обратный мультипликатор
+		
+	-->
+<params>
+
+	<param id='hp' v='maxhp' f='1' tip='0'/>
+	<param id='resbleeding' v='13' f='1' tip='4'/>
+	<param id='respoison' v='12' f='1' tip='4'/>
+	<param id='radx' v='radX' f='1' tip='3'/>
+	
+	<param id='param_atk' v='' show='1'/>
+	<param id='alldamage' v='allDamMult' f='1' show='1' tip='1'/>
+	<param id='meleedamage' v='meleeDamMult' f='1' show='1' tip='1'/>
+	<param id='meleerapid' v='meleeSpdMult' f='1' show='1' tip='1'/>
+	<param id='gunsdamage' v='gunsDamMult' f='1' show='1' tip='1'/>
+	<param id='allprec' v='allPrecMult' f='1' show='1' tip='1'/>
+	<param id='reload' v='reloadMult' f='1' show='1' tip='1'/>
+	<param id='spelldamage' v='spellsDamMult' f='1' show='1' tip='1'/>
+	<param id='punchdamage' v='punchDamMult' f='1' show='1' tip='1'/>
+	
+	<param id='param_def' v='' show='1'/>
+	<param id='skin' v='skin' f='1' show='1' tip='0'/>
+	<param id='armor' v='armor' show='1' tip='0'/>
+	<param id='marmor' v='marmor' show='1' tip='0'/>
+	<param id='aqual' v='armor_qual' show='2' tip='2'/>
+	<param id='dexter' v='dexter' f='1' show='1' tip='1'/>
+	
+	<param id='allresist' v='allVulnerMult' f='1' show='1' tip='3'/>
+	<param id='bullet' v='0' f='1' show='1' tip='4'/>
+	<param id='blade' v='1' f='1' show='1' tip='4'/>
+	<param id='phis' v='2' f='1' show='1' tip='4'/>
+	<param id='fang' v='14' f='1' show='1' tip='4'/>
+	<param id='expl' v='4' f='1' show='1' tip='4'/>
+	<param id='fire' v='3' f='1' show='1' tip='4'/>
+	<param id='crio' v='11' f='1' show='1' tip='4'/>
+	<param id='laser' v='5' f='1' show='1' tip='4'/>
+	<param id='plasma' v='6' f='1' show='1' tip='4'/>
+	<param id='spark' v='9' f='1' show='1' tip='4'/>
+	<param id='venom' v='7' f='1' show='1' tip='4'/>
+	<param id='acid' v='10' f='1' show='1' tip='4'/>
+	<param id='pink' v='19' f='1' show='3' tip='4'/>
+	<param id='necro' v='16' f='1' show='1' tip='4'/>
+	
+	<param id='param_oth' v='' show='1'/>
+	<param id='sneak' v='visiMult' f='1' show='1' tip='3'/>
+	<param id='allspeed' v='allSpeedMult' f='1' show='1' tip='1'/>
+	<param id='runspeed' v='runSpeedMult' f='1' show='1' tip='1'/>
+	<param id='stamrun' v='stamRun' f='1' show='1' tip='2'/>
+	<param id='alldmana' v='allDManaMult' f='1' show='1' tip='2'/>
+	<param id='wmana' v='warlockDManaMult' f='1' show='1' tip='2'/>
+	<param id='healeff' v='healMult' f='1' show='1' tip='2' nobeg='1'/>
+	<param id='lockpick' v='lockPick' f='1' show='1' tip='0' nobeg='1'/>
+	<param id='hacker' v='hacker' f='1' show='1' tip='0' nobeg='1'/>
+	<param id='od' v='maxOd' f='1' show='1' tip='0'/>
+	
+</params>

@@ -53,7 +53,7 @@ package fe.unit
 			else vis.gotoAndStop(2);
 			setVis(false);
 
-			var node:XML = AllData.fetchNodeWithChildID('weapons', id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			nazv=Res.txt('w',id);
 			scX=node.@sX;
 			scY=node.@sY;

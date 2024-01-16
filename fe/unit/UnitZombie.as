@@ -95,7 +95,7 @@ package fe.unit
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam('zombie');
 			super.getXmlParam();
-			var node0:XML = AllData.fetchNodeWithChildID('units', id);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
 				if (node0.un.@ss.length()) superSilaTip=node0.un.@ss;		//суперсила
 				if (node0.un.@glow.length()) glowTip=node0.un.@glow;		//свечение

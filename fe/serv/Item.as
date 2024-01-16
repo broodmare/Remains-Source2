@@ -63,22 +63,22 @@ package fe.serv {
 			if (tip==L_UNIQ) tip=L_WEAPON;
 			if (nxml == null)
 			{
-				var l:XMLList;
+				var l:XML;
 				if (tip == L_ARMOR)
 				{
-					l = AllData.fetchNodesWithMatchingIDs('armors', id);
+					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
 				} 
 				else if (tip == L_WEAPON)
 				{
-					l = AllData.fetchNodesWithMatchingIDs('weapons', id);
+					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 				} 
 				else
 				{
-					l = AllData.fetchNodesWithMatchingIDs('items', id);
+					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
 				}
-				if (l.length())
+				if (l != null)
 				{
-					xml = l[0];
+					xml = l;
 					wtip = xml.@tip;
 				}
 			}
@@ -141,29 +141,29 @@ package fe.serv {
 
 		public function itemTip()
 		{
-			var l:XMLList;
-			l = AllData.fetchNodesWithMatchingIDs('items', id);
-			if (l.length())
+			var l:XML;
+			l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+			if (l != null)
 			{
-				xml=l[0];
-				if (xml.@tip.length()) tip=xml.@tip;
-				else tip=L_ITEM;
+				xml = l;
+				if (xml.@tip.length()) tip = xml.@tip;
+				else tip = L_ITEM;
 			}
 			else
 			{
-				l = AllData.fetchNodesWithMatchingIDs('weapons', id);
-				if (l.length())
+				l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+				if (l != null)
 				{
-					xml=l[0];
-					tip=L_WEAPON;
+					xml = l;
+					tip = L_WEAPON;
 				} 
 				else
 				{
-					l = AllData.fetchNodesWithMatchingIDs('armors', id);
-					if (l.length())
+					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
+					if (l != null)
 					{
-						xml=l[0];
-						tip=L_ARMOR;
+						xml = l;
+						tip = L_ARMOR;
 					} 
 				}
 			}

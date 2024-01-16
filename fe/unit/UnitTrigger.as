@@ -67,7 +67,7 @@ package fe.unit
 		
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam();
-			var node0:XML = AllData.fetchNodeWithChildID('units', id);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
 				if (node0.un.@res.length()) res=node0.un.@res;

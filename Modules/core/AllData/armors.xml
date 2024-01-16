@@ -1,0 +1,147 @@
+<!--       *******   Броня   *******         -->
+<armors>
+			
+	<armor id='pip' sort='0' clo='1' hp='5000' price='100' und='1' norep='1'>
+		<upd dexter='0.2'/>
+	</armor>
+	<armor id='kombu' sort='1' hp='2000' price='800' lvl='2' kolcomp='2'>
+		<upd armor='4' marmor='3' qual='0.6' fire='0.1' cryo='0.1' dexter='0.15'/>
+		<upd armor='5' marmor='4' qual='0.7' fire='0.1' cryo='0.1' dexter='0.15' kol='10'/>
+		<upd armor='6' marmor='5' qual='0.8' fire='0.1' cryo='0.1' dexter='0.15' kol='20'/>
+	</armor>
+	<armor id='antirad' sort='21' clo='1' hp='2000' price='1500' h2o='0.25' lvl='2' kolcomp='2' hide='1'>
+		<upd armor='2' marmor='1' qual='1' radx='0.5' venom='0.25' acid='0.25'/>
+		<upd armor='3' marmor='1' qual='1' radx='0.6' venom='0.3' acid='0.3' kol='15'/>
+		<upd armor='4' marmor='1' qual='1' radx='0.7' venom='0.35' acid='0.35' kol='30'/>
+	</armor>
+	<armor id='antihim' sort='22' clo='1' hp='3000' price='2200' h2o='0.25' lvl='2' kolcomp='2' hide='1'>
+		<upd armor='1' marmor='2' qual='1' venom='0.7' acid='0.7' spark='0.25'/>
+		<upd armor='1' marmor='3' qual='1' venom='0.75' acid='0.75' spark='0.25' kol='15'/>
+		<upd armor='1' marmor='4' qual='1' venom='0.8' acid='0.8' spark='0.25' kol='30'/>
+	</armor>
+	<armor id='skin' sort='2' hp='4000' price='5000' lvl='2' kolcomp='4'>
+		<upd armor='5' marmor='5' qual='0.7' fire='0.2' fang='0.2' laser='0.1' spark='0.1'/>
+		<upd armor='6' marmor='6' qual='0.75' fire='0.25' fang='0.25'  laser='0.1' spark='0.1' kol='15'/>
+		<upd armor='7' marmor='7' qual='0.8' fire='0.3' fang='0.3' laser='0.1' spark='0.1' kol='30'/>
+	</armor>
+	<armor id='metal' sort='3' hp='5000' price='4000' lvl='2' kolcomp='4'>
+		<upd armor='12' qual='0.5' bul='0.2' phis='0.1' blade='0.1' fang='0.1' expl='0.1' laser='0.25' spark='-0.3' dexter='-0.3'/>
+		<upd armor='14' qual='0.6' bul='0.2' phis='0.1' blade='0.1' fang='0.1' expl='0.1' laser='0.25' spark='-0.2' dexter='-0.25' kol='15'/>
+		<upd armor='16' qual='0.7' bul='0.2' phis='0.1' blade='0.1' fang='0.1' expl='0.1' laser='0.25' spark='-0.1' dexter='-0.2' kol='20'/>
+	</armor>
+	<armor id='chitin' sort='4' hp='4000' price='4000' lvl='2' kolcomp='4'>
+		<upd armor='8' marmor='5' qual='0.6' fang='0.4' fire='0.2' blade='0.2' phis='0.2' acid='0.3'/>
+		<upd armor='11' marmor='7' qual='0.7' fang='0.5' fire='0.2' blade='0.25' phis='0.25' acid='0.3' kol='20'/>
+		<upd armor='14' marmor='9' qual='0.8' fang='0.6' fire='0.2' blade='0.3' phis='0.3' acid='0.3' kol='40'/>
+	</armor>
+	<armor id='intel' sort='5' hp='3500' price='6000' lvl='2' crit='0.05' kolcomp='4' hide='1'>
+		<upd armor='4' marmor='8' qual='0.9' laser='0.1' dexter='0.2' sneak='0.2'/>
+		<upd armor='4' marmor='9' qual='0.9' laser='0.15' dexter='0.3' sneak='0.25' kol='15'/>
+		<upd armor='4' marmor='10' qual='0.9' laser='0.20' dexter='0.4' sneak='0.3' kol='30'/>
+	</armor>
+	<armor id='sapper' sort='4' hp='5000' comp='metal_comp' price='5000' lvl='2' kolcomp='6'>
+		<upd armor='12' marmor='5' qual='0.8' bul='0.2' expl='0.5' fire='0.3' blade='0.2' phis='0.2' dexter='-0.3'/>
+		<upd armor='13' marmor='5' qual='0.8' bul='0.2' expl='0.55' fire='0.35' blade='0.2' phis='0.2' dexter='-0.25' kol='20'/>
+		<upd armor='14' marmor='5' qual='0.8' bul='0.2' expl='0.6' fire='0.4' blade='0.2' phis='0.2' dexter='-0.3' kol='40'/>
+	</armor>
+	<armor id='battle' sort='6' hp='10000' price='11000' lvl='2' guns='1.1' kolcomp='6'>
+		<upd armor='14' marmor='8' qual='0.75' 	bul='0.25' fang='0.2' blade='0.1' phis='0.1' expl='0.25' fire='0.1' />
+		<upd armor='16' marmor='9' qual='0.75' bul='0.3' fang='0.2' blade='0.15' phis='0.15' expl='0.25' fire='0.15' kol='20'/>
+		<upd armor='18' marmor='10' qual='0.75' bul='0.35' fang='0.2' blade='0.2' phis='0.2' expl='0.25' fire='0.2' kol='20'/>
+	</armor>
+	<armor id='polic' sort='6' hp='10000' price='12000' lvl='2' melee='1.1' kolcomp='6'>
+		<upd armor='11' marmor='11' qual='0.75' bul='0.1' blade='0.2' phis='0.2' expl='0.1' fire='0.3' laser='0.1' spark='0.1' acid='0.2'/>
+		<upd armor='12' marmor='13' qual='0.75' bul='0.1' blade='0.25' phis='0.25' expl='0.1' fire='0.4' laser='0.1' spark='0.1' acid='0.2' kol='20'/>
+		<upd armor='14' marmor='14' qual='0.75' bul='0.1' blade='0.3' phis='0.3' expl='0.1' fire='0.5' laser='0.1' spark='0.1' acid='0.2' kol='20'/>
+	</armor>
+	<armor id='magus' sort='7' hp='8000' price='12000' lvl='2' magic='1.1' kolcomp='6'>
+		<upd armor='8' marmor='14' qual='0.75' fire='0.25' laser='0.3' spark='0.4' plasma='0.25'/>
+		<upd armor='9' marmor='16' qual='0.75' fire='0.25' laser='0.4' spark='0.45' plasma='0.3' kol='20'/>
+		<upd armor='10' marmor='18' qual='0.75' fire='0.25' laser='0.5' spark='0.5' plasma='0.35' kol='20'/>
+	</armor>
+	<armor id='astealth' sort='8' hp='8000' price='18000' comp='intel_comp' lvl='2' crit='0.1' abil='stealth_armor' kolcomp='8' hide='1'>
+		<upd armor='12' marmor='12' qual='1' dexter='0.4' laser='0.25' sneak='0.3' mana='1000' act='100' used='1' res='1'/>
+		<upd armor='14' marmor='14' qual='1' dexter='0.45' laser='0.25' sneak='0.35' kol='20' mana='1000' act='100' used='1' res='1'/>
+		<upd armor='16' marmor='16' qual='1' dexter='0.5' laser='0.25' sneak='0.4' kol='40' mana='1000' act='100' used='1' res='1'/>
+	</armor>
+	<armor id='assault' sort='9' hp='20000' price='30000' comp='battle_comp' lvl='2' guns='1.2' kolcomp='12'>
+		<upd armor='18' marmor='10' qual='0.75' bul='0.3' fang='0.25' blade='0.2' phis='0.2' expl='0.3' fire='0.2'/>
+		<upd armor='20' marmor='11' qual='0.8' bul='0.35' fang='0.25' blade='0.2' phis='0.2' expl='0.35' fire='0.25' kol='20'/>
+		<upd armor='22' marmor='12' qual='0.85' bul='0.4' fang='0.25' blade='0.2' phis='0.2' expl='0.4' fire='0.3' kol='40'/>
+	</armor>
+	<armor id='spec' sort='9' hp='20000' price='30000' comp='polic_comp' lvl='2' melee='1.2' kolcomp='12'>
+		<upd armor='14' marmor='14' qual='0.75' bul='0.2' blade='0.2' phis='0.3' expl='0.2' fire='0.5' laser='0.2' spark='0.1' acid='0.2'/>
+		<upd armor='15' marmor='15' qual='0.75' bul='0.2' blade='0.25' phis='0.4' expl='0.2' fire='0.5' laser='0.2' spark='0.15' acid='0.2' kol='20'/>
+		<upd armor='16' marmor='16' qual='0.75' bul='0.2' blade='0.3' phis='0.5' expl='0.2' fire='0.5' laser='0.2' spark='0.2' acid='0.2' kol='40'/>
+	</armor>
+	<armor id='moon' sort='10' hp='18000' price='30000' comp='magus_comp' magic='1.2' lvl='2' kolcomp='12'>
+		<upd armor='10' marmor='20' qual='0.75' fire='0.3' laser='0.5' spark='0.5' plasma='0.3' />
+		<upd armor='11' marmor='22' qual='0.75' fire='0.35' laser='0.5' spark='0.5' plasma='0.4' kol='20'/>
+		<upd armor='12' marmor='24' qual='0.75' fire='0.4' laser='0.5' spark='0.5' plasma='0.5' kol='40'/>
+	</armor>
+	<armor id='power' sort='11' hp='30000' price='50000' comp='power_comp' lvl='2' kolcomp='12' hide='1'>
+		<upd armor='25' marmor='14' qual='1' bul='0.4' fang='0.25' blade='0.25' phis='0.25' expl='0.3' fire='0.3' radx='0.5' venom='0.75' dexter='-0.5'/>
+		<upd armor='27' marmor='16' qual='1' bul='0.45' fang='0.25' blade='0.25' phis='0.25' expl='0.35' fire='0.35' radx='0.5' venom='0.75' dexter='-0.5' kol='20'/>
+		<upd armor='30' marmor='18' qual='1' bul='0.5' fang='0.25' blade='0.25' phis='0.25' expl='0.4' fire='0.4' radx='0.5' venom='0.75' dexter='-0.5' kol='40'/>
+	</armor>
+	<armor id='encl' sort='11' hp='20000' price='40000' comp='power_comp' lvl='2' kolcomp='12' hide='1'>
+		<upd armor='15' marmor='25' qual='1' bul='0.2' fire='0.5' laser='0.5' spark='0.5' plasma='0.5' acid='0.3' venom='0.75' dexter='-0.2'/>
+		<upd armor='15' marmor='25' qual='1' bul='0.2' fire='0.55' laser='0.55' spark='0.55' plasma='0.5' acid='0.3' venom='0.75' dexter='-0.2' kol='20'/>
+		<upd armor='15' marmor='25' qual='1' bul='0.2' fire='0.6' laser='0.6' spark='0.6' plasma='0.5' acid='0.3' venom='0.75' dexter='-0.2' kol='40'/>
+	</armor>
+	<armor id='ali' sort='11' hp='40000' price='70000' comp='power_comp' lvl='2' kolcomp='15' hide='1' fly='1'>
+		<upd armor='20' marmor='20' qual='1' bul='0.3' fang='0.3' blade='0.3' phis='0.3' expl='0.3' fire='0.3' laser='0.3' spark='0.3' plasma='0.3' acid='0.3' venom='0.75'/>
+		<upd armor='20' marmor='20' qual='1' bul='0.35' fang='0.3' blade='0.3' phis='0.35' expl='0.3' fire='0.3' laser='0.35' spark='0.3' plasma='0.35' acid='0.3' venom='0.75' kol='20'/>
+		<upd armor='20' marmor='20' qual='1' bul='0.4' fang='0.3' blade='0.3' phis='0.4' expl='0.3' fire='0.3' laser='0.4' spark='0.3' plasma='0.4' acid='0.3' venom='0.75' kol='40'/>
+	</armor>
+	<armor id='tre' sort='31' clo='1' hp='6000' price='5000' tre='3' norep='1'>
+		<upd armor='3' marmor='3' qual='0.4' fang='0.2' dexter='0.2' sneak='0.1'/>
+	</armor>
+	<armor id='socks' sort='32' clo='1' hp='5000' price='1000' norep='1' und='1'>
+		<upd dexter='0.2'/>
+	</armor>
+	
+	<armor id='amul_bul' tip='3' price='2000' und='1' norep='1'>
+		<upd bul='0.15'/>
+	</armor>
+	<armor id='amul_phis' tip='3' price='2500' und='1' norep='1'>
+		<upd phis='0.15' blade='0.15'/>
+	</armor>
+	<armor id='amul_expl' tip='3' price='2000' und='1' norep='1'>
+		<upd expl='0.25' fire='0.1'/>
+	</armor>
+	<armor id='amul_fang' tip='3' price='3000' und='1' norep='1'>
+		<upd fang='0.3' acid='0.15'/>
+	</armor>
+	<armor id='amul_fire' tip='3' price='2000' und='1' norep='1'>
+		<upd fire='0.2' laser='0.1' spark='0.1'/>
+	</armor>
+	<armor id='amul_energ' tip='3' price='2000' und='1' norep='1'>
+		<upd laser='0.15' plasma='0.15'/>
+	</armor>
+	<armor id='amul_spark' tip='3' price='3000' und='1' norep='1'>
+		<upd spark='0.3'/>
+	</armor>
+	<armor id='amul_sneak' tip='3' price='3000' und='1' norep='1'>
+		<upd sneak='0.2' dexter='0.2'/>
+	</armor>
+	<armor id='amul_dark' tip='3' price='2000' und='1' norep='1'>
+		<upd necro='0.3' cryo='0.1'/>
+	</armor>
+	<armor id='amul_mage' tip='3' price='10000' und='1' norep='1'>
+		<upd fire='0.15' cryo='0.15' laser='0.15' spark='0.15' plasma='0.15'/>
+	</armor>
+	<armor id='amul_war' tip='3' price='10000' und='1' norep='1'>
+		<upd bul='0.15' phis='0.15' blade='0.15' expl='0.15'/>
+	</armor>
+	<armor id='amul_sniper' tip='3' price='5000' und='1' norep='1' guns='1.16'>
+		<upd sneak='0.2'/>
+	</armor>
+	<armor id='amul_berserk' tip='3' price='5000' und='1' norep='1' melee='1.16'>
+		<upd blade='0.2'/>
+	</armor>
+	<armor id='amul_adept' tip='3' price='5000' und='1' norep='1' magic='1.16'>
+		<upd dark='0.2'/>
+	</armor>
+	
+</armors>

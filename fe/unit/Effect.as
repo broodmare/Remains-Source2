@@ -45,8 +45,7 @@ package fe.unit
 			him=0;
 			lvl=1;
 			forever=false;
-
-			var node = AllData.fetchNodesWithMatchingIDs('effs', id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
 			
 			if (node.length()) {
 				tip=node.@tip;

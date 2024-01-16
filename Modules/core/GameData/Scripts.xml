@@ -1,0 +1,626 @@
+<Scripts>
+
+	<!-- приручить феникса -->
+	<scr id='tamePhoenix'>
+		<s act="dialog" val="dialTamePhoenix"/>
+		<s targ="this" act="tame"/>
+		<s act="stage" val="tamePhoenix" n="2"/>
+		<s t="3" act="take" val="whistle" n="1"/>
+		<s act="dialog" val="dialTakeWhistle"/>
+	</scr>
+	
+	<!-- выкурить косяк -->
+	<scr id='smokeRollup'>
+		<s act="control off"/>
+		<s act="dial" val="dialSmoke" n="0"/>
+		<s act="dial" val="dialSmoke" n="1" t="2"/>
+		<s act="dial" val="dialSmoke" n="2"/>
+		<s act="dial" val="dialSmoke" n="1" t="2"/>
+		<s act="speceffect" n="1"/>
+		<s act="dial" val="dialSmoke" n="4"/>
+		<s act="speceffect" n="2" t="3"/>
+		<s act="dial" val="dialSmoke" n="5"/>
+		<s act="speceffect" n="3" t="3"/>
+		<s act="dial" val="dialSmoke" n="6"/>
+		<s act="speceffect" n="4" t="3"/>
+		<s act="dial" val="dialSmoke" n="7"/>
+		<s act="speceffect" n="5" t="3"/>
+		<s act="dial" val="dialSmoke" n="8"/>
+		<s act="dblack" val="2" t="3"/>
+		<s act="speceffect" n="6"/>
+		<s act="dblack" val="-3" t="3"/>
+		<s act="black" val="0"/>
+		<s act="dial" val="dialSmoke" n="9"/>
+		<s act="speceffect" n="0"/>
+		<s act="dial" val="dialSmoke" n="10"/>
+		<s act="control on"/>
+		<s act="xp" val="500"/>
+	</scr>
+	
+	<!-- починка генератора -->
+	<scr id='fixGenerator'>
+		<s act="control off"/>
+		<s act="dblack" val="2" t="3"/>
+		<s act="locon"/>
+		<s act="control on"/>
+		<s act="dblack" val="-3" t="3"/>
+		<s act="black" val="0"/>
+	</scr>
+	
+	<!-- самое начало игры -->
+	<scr id='beginBeg'>
+		<s act="black" val="1"/>
+		<s act="gui off"/>
+		<s act="control off"/>
+		<s act="anim" val="die" opt1="1"/>
+		<s act="mess" val="beginMess" t="2"/>
+		<s act="dblack" val="-2"/>
+		<s act="dial" val="begDial" n="0" t="4"/>
+		<s act="dial" val="begDial" n="1" t="2"/>
+		<s act="anim" val="res" t="2"/>
+		<s act="dial" val="begDial" n="2" t="2"/>
+		<s act="control on" t="1"/>
+		<s act="off" targ="this"/>
+		<s act="mess" val="trWalk"/>
+	</scr>
+	
+	<!-- контакт с терминалом мтн -->
+	<scr id='beginMtn'>
+		<s act="control off"/>
+		<s act="music" val="music_strange"/>
+		<s act="dial" val="begDialCP" n="0" t="2"/>
+		<s act="dial" val="begDialCP" n="1" t="2"/>
+		<s act="dial" val="begDialCP" n="2"/>
+		<s act="on" targ="begCP" t="2"/>
+		<s act="dial" val="begDialCP" n="3"/>
+		<s act="dial" val="begDialCP" n="4"/>
+		<s act="dial" val="begDialCP" n="5"/>
+		<s act="dial" val="begDialCP" n="6"/>
+		<s act="quest" val="toExit"/>
+		<s act="gui on"/>
+		<s act="unlock" targ="begDoor"/>
+		<s act="off" targ="this"/>
+		<s act="control on" t="1"/>
+	</scr>
+	
+	<!-- получение перка самолевитации -->
+	<scr id='beginLevit'>
+		<s act="control off"/>
+		<s act="dial" val="begDialLevit" n="0" t="2"/>
+		<s act="dial" val="begDialLevit" n="1" t="1"/>
+		<s act="dial" val="begDialLevit" n="2"/>
+		<s act="perk" val="levitation"/>
+		<s act="mess" val="perkLevit" t="1"/>
+		<s act="off" targ="this"/>
+		<s act="on" targ="trLevit"/>
+		<s act="control on" t="0.2"/>
+	</scr>
+	
+	<!-- Добраться до точки выхода, получить левелап -->
+	<scr id='beginUp'>
+		<s act="control off"/>
+		<s act="dial" val="begDialExit" n="0"/>
+		<s act="dial" val="begDialExit" n="1"/>
+		<s act="dial" val="begDialExit" n="2"/>
+		<s act="stage" val="toExit" n="1" t="2"/>
+		<s act="dial" val="begDialExit" n="3"/>
+		<s act="dial" val="begDialExit" n="4"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+		<s act="pip" val="1" n="2"/>
+		<s act="on" targ="trCrossroad"/>
+	</scr>
+	
+	<!-- разговор с Наставником через пипбак -->
+	<scr id='beginStory'>
+		<s act="control off"/>
+		<s act="dialog" val="storyDial1"/>
+		<s act="quest" val="storyContact"/>
+		<s act="quest" val="storyFind"/>
+		<s act="quest" val="storyMain"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- встреча с Каламити -->
+	<scr id='surfStory'>
+		<s act="control off"/>
+		<s act="dial" val="dialCalam1" n="0"/>
+		<s act="dial" val="dialCalam1" n="1"/>
+		<s act="dial" val="dialCalam1" n="2"/>
+		<s act="dial" val="dialCalam1" n="3"/>
+		<s targ="surfCalam" act="fly" val="40:7"/>
+		<s targ="surfCalam" act="show" t="2.5"/>
+		<s targ="surfCalam" act="sign"/>
+		<s act="dial" val="dialCalam1" n="4" t="1.5"/>
+		<s targ="surfCalam" act="ai" val="agro"/>
+		<s targ="surfCalam" act="rep" val="1"/>
+		<s act="show"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- первое появление в лагере -->
+	<scr id='rblVisit'>
+		<s act="dialog" val="rblDialM"/>
+		<s act="trigger" val="rbl_visited" n="1"/>
+		<s act="stage" val="storyContact" n="1"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- разговор с Наставником через пипбак в лагере, если не было в обучении -->
+	<scr id='rblStory'>
+		<s act="control off"/>
+		<s act="music" val="music_strange"/>
+		<s act="dialog" val="storyDial1"/>
+		<s act="quest" val="storyContact"/>
+		<s act="quest" val="storyFind"/>
+		<s act="quest" val="storyMain"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- на переходе между 1 и 2 уровнями завода -->
+	<scr id='plantStory1'>
+		<s act="stage" val="storyMain" n="2"/>
+		<s act="showstage" val="storyMain" n="3"/>
+		<s act="showstage" val="storyMain" n="4"/>
+		<s act="dialog" val="plantNextLevel"/>
+	</scr>
+	
+	<!-- вход в отдел особых исседований -->
+	<scr id='plantStory2'>
+		<s act="dialog" val="nioDial1"/>
+		<s act="stage" val="storyMain" n="4"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<scr id='raidersCapt'>
+		<s act="dialog" val="surfDialCaptive"/>
+		<s act="quest" val="freeCaptive"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- вход в стойло -->
+	<scr id='stableStory'>
+		<s act="stage" val="storyStable" n="2"/>
+		<s act="gotoland" val="random_stable"/>
+		<s act="passed"/>
+	</scr>
+	
+	<!-- явиться к гаражам -->
+	<scr id='garages'>
+		<s act="stage" val="storyMeet" n="1"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- осмотр обломков спрайт-бота -->
+	<scr id='brspr'>
+		<s act="dialog" val="meetDial2"/>
+		<s act="stage" val="storyMeet" n="3"/>
+		<s act="stage" val="storyMeet"/>
+		<s act="quest" val="storyMane"/>
+		<s act="trigger" val="story_mane" n="1"/>
+		<s act="passed"/>
+	</scr>
+	
+	<!-- осмотр с крыши высотки -->
+	<scr id='maneStory0'>
+		<s act="dialog" val="maneNextLevel"/>
+		<s act="stage" val="storyMane" n="2"/>
+		<s act="showstage" val="storyMane" n="3"/>
+	</scr>
+	
+	<!-- встреча с аликорнами -->
+	<scr id='maneStory1'>
+		<s act="control off"/>
+		<s act="music" val="pre_1"/>
+		<s act="stage" val="storyMane" n="3"/>
+		<s act="allact" val="activate" n="1"/>
+		<s act="dialog" val="dialAlicorn1"/>
+		<s act="showstage" val="storyMane" n="4"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- встреча с боссом аликорнов -->
+	<scr id='maneStory2'>
+		<s act="control off"/>
+		<s act="music" val="pre_1"/>
+		<s act="turn" val="-1"/>
+		<s act="dialog" val="dialAlicorn2"/>
+		<s act="stage" val="storyMane" n="4"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- встреча с Зебрами -->
+	<scr id='zebraWay'>
+		<s act="control off"/>
+		<s act="dialog" val="dialZebra1"/>
+		<s act="trigger" val="encounter_way" n="1"/>
+		<s act="gotoland" val="covert"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- встреча с Вельвет -->
+	<scr id='covertStory'>
+		<s act="control off"/>
+		<s act="music" val="music_enc"/>
+		<s act="dialog" val="dialVelvet1"/>
+		<s act="trigger" val="rbl_visited" n="1"/>
+		<s act="stage" val="storyFind" n="4"/>
+		<s act="stage" val="storyFind"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- квест на лечение -->
+	<scr id='coverPatient'>
+		<s act="control off"/>
+		<s act="dialog" val="dialPatient1"/>
+		<s act="quest" val="patientHeal"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- кантерлот, вход -->
+	<scr id='canterStory1'>
+		<s act="stage" val="storyCanter" n="2"/>
+		<s act="dialog" val="dialCanter3"/>
+	</scr>
+	
+	<!-- кантерлот, встреча с СР -->
+	<scr id='canterRangers'>
+		<s act="control off"/>
+		<s act="dialog" val="dialCanter5"/>
+		<s act="openland" val="src"/>
+		<s act="control on"/>
+		<s act="refill"/>
+		<s act="upland"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- мин ст, вход -->
+	<scr id='canterStory2'>
+		<s act="stage" val="storyCanter" n="3"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- мин ст, встреча с боссом -->
+	<scr id='canterStory3'>
+		<s act="control off"/>
+		<s act="music" val="pre_1"/>
+		<s act="turn" val="1"/>
+		<s targ="minstMchavi" act="show" t="1"/>
+		<s act="dialog" val="dialMinst1"/>
+		<s act="show"/>
+		<s act="stage" val="storyMane" n="4"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- база СР, диалог с охраной -->
+	<scr id='rangerStory1'>
+		<s act="control off"/>
+		<s act="music" val="pre_1" t="1"/>
+		<s act="turn" val="1"/>
+		<s act="dialog" val="dialRanger2"/>
+		<s targ="mbaseSteel" act="ai" val="agro"/>
+		<s act="showstage" val="storyRanger" n="3"/>
+		<s act="off" targ="this"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- база СР, вход -->
+	<scr id='rangerStory2'>
+		<s act="trigger" val="mbase_visited" n="1"/>
+		<s act="stage" val="storyRanger" n="2"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- база СР, встреча с Колдсайтом -->
+	<scr id='rangerStory3'>
+		<s act="music" val="pre_1"/>
+		<s act="dialog" val="dialRanger4"/>
+	</scr>
+	
+	<!-- база СР, убийство Колдсайта -->
+	<scr id='rangerStoryOk'>
+		<s act="stage" val="storyRanger" n="3"/>
+		<s act="showstage" val="storyRanger" n="4"/>
+		<s act="trigger" val="cold_death" n="1"/>
+		<s act="refill"/>
+		<s act="passed"/>
+	</scr>
+	
+	<!-- исследовать орудийный цех -->
+	<scr id='helpCampOk'>
+		<s act="dialog" val="dialHelpCamp3"/>
+		<s act="stage" val="storyHelpCamp" n="2"/>
+		<s act="showstage" val="storyHelpCamp" n="3"/>
+		<s act="passed"/>
+	</scr>
+	
+	<!-- совет общины -->
+	<scr id='sovietStory'>
+		<s act="control off"/>
+		<s act="dblack" val="-3" t="2"/>
+		<s act="black" val="0"/>
+		<s act="dialog" val="dialSoviet"/>
+		<s act="stage" val="storyHelpCovert" n="2"/>
+		<s act="showstage" val="storyHelpCovert" n="3"/>
+		<s act="showstage" val="storyHelpCovert" n="4"/>
+		<s act="showstage" val="storyHelpCovert" n="5"/>
+		<s act="showstage" val="storyHelpCovert" n="6"/>
+		<s act="dblack" val="3" t="2"/>
+		<s act="control on"/>
+		<s act="goto" val="1 0"/>
+		<s act="black" val="0"/>
+	</scr>
+	
+	<!-- войти в орудийный цех -->
+	<scr id='workshopIn'>
+		<s act="off" targ="this"/>
+		<s act="dialog" val="dialHelpCamp1"/>
+		<s act="close" targ="elpanel1" t="1"/>
+		<s act="dialog" val="dialHelpCamp2"/>
+	</scr>
+	
+	<!-- войти в штаб -->
+	<scr id='hqlIn'>
+		<s act="stage" val="storyHelpCovert" n="4"/>
+		<s act="off" targ="this"/>
+	</scr>
+	
+	<!-- убить центуриона -->
+	<scr id='zebraKill'>
+		<s act="stage" val="storyHelpCovert" n="5"/>
+	</scr>
+	
+	<!-- пост анклава, встреча с охраной -->
+	<scr id='postStory1'>
+		<s act="control off"/>
+		<s act="music" val="pre_1" t="1"/>
+		<s act="dialog" val="dialEncl1"/>
+		<s act="off" targ="this"/>
+		<s act="control on" t="1"/>
+		<s act="fraction" val="4" targ="postE2"/>
+		<s act="fraction" val="4" targ="postE1" t="5"/>
+		<s act="alarm"/>
+	</scr>
+	
+	<!-- пост анклава, вход на базу -->
+	<scr id='postStory3'>
+		<s act="dialog" val="dialEncl2"/>
+		<s act="stage" val="storyEncl" n="1"/>
+		<s act="showstage" val="storyEncl" n="2"/>
+		<s act="showstage" val="storyEncl" n="3"/>
+		<s act="trigger" val="encounter_post" n="1"/>
+		<s act="passed"/>
+		<s act="gotoland" val="random_encl"/>
+	</scr>
+	
+	<!-- командный центр, вход -->
+	<scr id='commStory0'>
+		<s act="dialog" val="dialEncl3"/>
+		<s act="stage" val="storyEncl" n="2"/>
+		<s targ="commCheck" act="check"/>
+		<s targ="this" act="off"/>
+	</scr>
+	
+	<scr id='commStory1'>
+		<s val="colonel_show" act="trigger" n="1"/>
+		<s targ="this" act="off"/>
+	</scr>
+	
+	<!-- командный центр, разговор с полковником -->
+	<scr id='commStory2'>
+		<s val="colonel_show" act="trigger" n="2"/>
+		<s act="dialog" val="dialEncl4"/>
+		<s act="take" val="key_encl" n="1"/>
+		<s act="stage" val="storyEncl" n="3"/>
+		<s act="stage" val="storyHome" n="3"/>
+		<s act="showstage" val="storyHome" n="4"/>
+		<s act="trigger" val="observer" n="1"/>
+		<s act="trigger" val="dial_dialWat1" n="1"/>
+		<s act="passed"/>
+		<s targ="this" act="off"/>
+	</scr>
+	
+	<!-- командный центр, убить полковника -->
+	<scr id='commStory3'>
+		<s val="colonel_show" act="trigger" n="3"/>
+		<s act="dialog" val="dialEncl5"/>
+	</scr>
+	
+	<!-- стойло пи, первое посещение -->
+	<scr id='stablePi0'>
+		<s act="control off"/>
+		<s act="turn" val="1"/>
+		<s act="dialog" val="dialMen1"/>
+		<s act="control off"/>
+		<s act="dblack" val="3" t="2"/>
+		<s act="mess" val="mentorMess" t="2"/>
+		<s act="dblack" val="-3" t="2"/>
+		<s act="black" val="0"/>
+		<s act="dialog" val="dialMen2"/>
+		<s act="stage" val="storyHome" n="6"/>
+		<s act="stage" val="storyHome"/>
+		<s act="take" val="kogit" n="-1"/>
+		<s act="take" val="amul_al" n="-1"/>
+		<s act="take" val="blackbook" n="-1"/>
+		<s act="quest" val="storyStorm"/>
+		<s act="trigger" val="storm" n="1"/>
+		<s act="trigger" val="pi_visited" n="1"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- стойло пи, комната ЛП -->
+	<scr id='stablePi1'>
+		<s act="music" val="music_enc"/>
+		<s act="dialog" val="roomLP"/>
+	</scr>
+	
+	<!-- форт Рокс, вход -->
+	<scr id='fortRocks1'>
+		<s act="stage" val="storyStorm" n="3"/>
+		<s act="trigger" val="fin" n="1"/>
+		<s targ="artF1" act="check"/>
+		<s targ="this" act="off"/>
+	</scr>
+	
+	<!-- форт Рокс, отключение генераторов -->
+	<scr id='fortRocks2'>
+		<s act="control off"/>
+		<s act="dial" val="dialStorm3" n="0"/>
+		<s act="control off"/>
+		<s act="black" val="1"/>
+		<s act="allact" val="open" n="a1"/>
+		<s act="trigger" val="art_trigger" n="1"/>
+		<s act="trigger" val="storm" n="3"/>
+		<s act="passed"/>
+		<s act="locoff"/>
+		<s act="dial" val="dialStorm3" n="1"/>
+		<s act="control off"/>
+		<s act="dblack" val="-3" t="2"/>
+		<s act="black" val="0"/>
+		<s act="stage" val="storyStorm" n="4"/>
+		<s act="showstage" val="storyStorm" n="5"/>
+		<s act="dial" val="dialStorm3" n="2"/>
+		<s targ="this" act="off"/>
+		<s act="control on"/>
+	</scr>
+	
+	<!-- атакованное стойло пи, вход -->
+	<scr id='stablePi2'>
+		<s act="dialog" val="dialFin1"/>
+		<s act="open" targ="piF2"/>
+	</scr>
+	
+	<!-- атакованное стойло пи, разговор с наставником -->
+	<scr id='stablePi3'>
+		<s act="dialog" val="dialFin3"/>
+		<s act="stage" val="storyFbattle" n="1"/>
+		<s act="showstage" val="storyFbattle" n="2"/>
+		<s act="sign" targ="piF3" n="1"/>
+		<s targ="this" act="off"/>
+	</scr>
+	
+	<!-- атакованное стойло пи, получение брони аликорна -->
+	<scr id='stablePi4'>
+		<s act="dialog" val="dialFin4"/>
+		<s act="control off"/>
+		<s act="dblack" val="1" t="4"/>
+		<s act="music" val="music_strange"/>
+		<s act="open" targ="piF4"/>
+		<s act="alicorn" val="1"/>
+		<s act="dblack" val="-10" t="1"/>
+		<s act="black" val="0"/>
+		<s act="trigger" val="storm" n="5"/>
+		<s act="trigger" val="fin" n="3"/>
+		<s act="stage" val="storyFbattle" n="2"/>
+		<s act="dialog" val="dialFin5"/>
+		<s act="showstage" val="storyFbattle" n="3"/>
+		<s act="showstage" val="storyFbattle" n="5"/>
+		<s targ="this" act="off"/>
+		<s act="control on"/>
+		<s act="dialog" val="alicornArmor"/>
+	</scr>
+	
+	<!-- тандерхед -->
+	<scr id='megabossDie'>
+		<s act="control off" t="1"/>
+		<s act="dialog" val="dialFB5"/>
+		<s act="dblack" val="1.6"/>
+		<s act="vsos" targ="megaboss" t="2"/>
+		<s act="black" val="1"/>
+		<s act="goto" val="1 0"/>
+		<s act="black" val="0"/>
+		<s act="control on"/>
+	</scr>
+	
+	<scr id='megabossDie2'>
+		<s act="trus" val="1"/>
+		<s act="open" targ="th1"/>
+		<s act="open" targ="th2"/>
+		<s act="dialog" val="dialFB6" t="1"/>
+		<s act="stage" val="storyFbattle" n="4"/>
+	</scr>
+	
+	<scr id='lp_fall'>
+		<s act="music" val="music_fall_1" n="1"/>
+		<s act="scene" val="thunder1" t="7"/>
+		<s act="dblack" val="3" t="1"/>
+		<s act="black" val="1" t="1"/>
+		<s act="scene" val="thunder2"/>
+		<s act="dblack" val="-1" t="3"/>
+		<s act="black" val="0" t="1"/>
+		<s act="dialog" val="dialFB7"/>
+		<s act="music" val="music_fall_2"/>
+		<s act="scene" val="thunder2" t="2"/>
+		<s act="scene" val="thunder2" n="3" t="1"/>
+		<s act="dblack" val="3" t="1"/>
+		<s act="scene" val="thunder3"/>
+		<s act="dblack" val="-1" t="3"/>
+		<s act="black" val="0"/>
+		<s act="dialog" val="dialFB8"/>
+		<s act="scene" val="thunder3" n="3" t="1"/>
+		<s act="dialog" val="dialFB9"/>
+		<s act="scene" val="thunder3" n="51"/>
+		<s act="dblack" val="1" t="5"/>
+		<s act="black" val="1" t="1"/>
+		<s act="trigger" val="theend" n="1"/>
+		<s act="scene"/>
+		<s act="gotoland" val="grave" n="2"/>
+	</scr>
+	
+	<!-- кладбище -->
+	<scr id='vse'>
+		<s act="black" val="1"/>
+		<s act="black" val="1"/>
+		<s act="dblack" val="0"/>
+		<s act="black" val="1"/>
+		<s act="mess" val="graveMess"/>
+		<s act="music" val="music_end"/>
+		<s act="control off" t="2"/>
+		<s act="trigger" val="fin" n="0"/>
+		<s act="trigger" val="storm" n="0"/>
+		<s act="trigger" val="dial_dialSc1" n="1"/>
+		<s act="trigger" val="dial_dialSc2" n="1"/>
+		<s act="trigger" val="dial_dialSc3" n="1"/>
+		<s act="trigger" val="dial_dialSc4" n="1"/>
+		<s act="alicorn" val="0"/>
+		<s act="armor" val="pip"/>
+		<s act="turn" val="-1"/>
+		<s act="dblack" val="-1.1" t="3"/>
+		<s act="black" val="0"/>
+		<s act="dialog" val="dialEnd0"/>
+		<s act="stage" val="storyFbattle" n="5"/>
+		<s act="stage" val="storyFbattle"/>
+		<s act="take" val="ali" n="1"/>
+		<s act="control on"/>
+		<s targ="this" act="off"/>
+	</scr>
+	
+	<scr id='endgame'>
+		<s act="control off"/>
+		<s act="dblack" val="1" t="5"/>
+		<s act="black" val="1"/>
+		<s act="endgame"/>
+		<s act="dblack" val="-3" t="1"/>
+		<s act="black" val="0"/>
+		<s act="wait"/>
+		<s act="dblack" val="2" t="2"/>
+		<s act="black" val="1"/>
+		<s act="dialog" val="dial_endgame"/>
+		<s act="gotoland" val="rbl" n="2"/>
+	</scr>
+	
+	<scr id='gameover'>
+		<s act="gameover"/>
+		<s act="dblack" val="-3" t="1"/>
+		<s act="black" val="0"/>
+		<s act="wait"/>
+		<s act="pip" val="5" n="1"/>
+	</scr>
+	
+</Scripts>

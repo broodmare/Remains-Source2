@@ -105,9 +105,9 @@ package {
 		
 		public function Editor(ned:MovieClip)
 		{
-			matList = AllData.fetchNodeList('mats', 'mat');
-			backList = AllData.fetchNodeList('backs', 'back');
-			objList = AllData.fetchNodeList('objs', 'obj');
+			matList = XMLDataGrabber.getNodesWithName("core", "AllData", "mats", "mat");
+			backList = XMLDataGrabber.getNodesWithName("core", "AllData", "backs", "back");
+			objList = XMLDataGrabber.getNodesWithName("core", "AllData", "objs", "obj");
 
 
 

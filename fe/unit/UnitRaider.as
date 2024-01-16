@@ -158,7 +158,7 @@ package fe.unit
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam(parentId);
 			super.getXmlParam();
-			var node0:XML = AllData.fetchNodeWithChildID('units', id);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.vis.length()) {
 				if (node0.vis.@telecolor.length()) teleColor=node0.vis.@telecolor;
 			}

@@ -157,7 +157,7 @@ package fe.graph
 				arrFront = [];
 				arrBack  = [];
 
-				var xmlList:XMLList = AllData.fetchNodeList('mats', 'mat');
+				var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "mats", "mat");
 
 				for each (var p:XML in xmlList)
 				{

@@ -45,8 +45,7 @@ package fe.unit
 				player=true;
 				gg=owner as UnitPlayer;
 			}
-			
-			var xml:XML = AllData.fetchNodeWithChildID('items', id);
+			var xml:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
 			if (xml.@hp.length()) hp=xml.@hp;
 			if (xml.@mana.length()) mana=xml.@mana;
 			if (xml.@magic.length()) magic=xml.@magic;

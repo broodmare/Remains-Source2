@@ -15,17 +15,17 @@ package fe.inter
 		private var maxSkLvl:int=20;
 		private var skillPoint:int=0;
 		private var perkPoint:int=0;
-		private var selectedPerk:String='';
-		private var infoItemId:String='';
+		private var selectedPerk:String = '';
+		private var infoItemId:String = '';
 		private var n_food:String;
-		private var drunk:int=0;
+		private var drunk:int = 0;
 
 		public function PipPageStat(npip:PipBuck, npp:String)
 		{
 			isLC=isRC=true;
 			itemClass=visPipStatItem;
 			skills=new Array();
-			super(npip,npp);
+			super(npip, npp);
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK,gotoDef);
 			n_food=Res.txt('e','food');
@@ -51,15 +51,16 @@ package fe.inter
 				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 
-				var paramList:XMLList = AllData.fetchNodeList('params', 'param');
+				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+
 				for (var i = 0; i < paramList.length(); i++)
 				{
-					var xml = paramList[i];
-					if (xml.@show>0)
+					var xml:XML = paramList[i];
+					if (xml.@show > 0)
 					{
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
-						var nazv=Res.pipText(xml.@id);
+						var nazv:String = Res.pipText(xml.@id);
 						if (xml.@v!='') nazv='-  '+nazv;
 						else {
 							arr.push({id:xml.@id, nazv:nazv, lvl:''});
@@ -144,7 +145,7 @@ package fe.inter
 				statHead.numb.text=Res.pipText('is2');
 				for (var pid in pers.perks) {
 					var maxlvl=1;
-					var xperk = AllData.fetchNodeWithChildID('perks', pid);
+					var xperk:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", pid);
 					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
 					var n:Object={id:pid, nazv:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
@@ -198,7 +199,7 @@ package fe.inter
 				statHead.nazv.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
 
-				var perkList:XMLList = AllData.fetchNodeList('perks', 'perk');
+				var perkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
 				for each(var dp:XML in perkList)
 				{
 					if (dp.@tip==1) {
@@ -291,8 +292,8 @@ package fe.inter
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
-					var xml = AllData.fetchNodeWithChildID('params', id);
-					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
+					var xml:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
+					if (xml != null && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} else if (page2==5) {
 					infoItemId=id;
 					showBottext();

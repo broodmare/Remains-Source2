@@ -1,0 +1,166 @@
+<!--       *******   Частицы   *******         -->
+<!--
+	vis - визуальный класс
+	blit - блиттинг
+	blitx, blity - размеры блиттинга
+	blitf - количество кадров в повторяющейся анимации
+	
+	anim='1' - частица анимируется 
+	anim='1' - частица анимируется со случайной позиции
+	alph='1' - частица становится прозрачной под конец жизни
+	ctrans='1' - применяются цветовые настройки локации
+	rsc - случайный масштаб, вычитается из 1
+	
+	minliv, rliv - время жизни
+	
+	minv, rv - начальная скорость в случайном направлении
+	rx, ry - случайное начальное отклонение
+	rdx, rdy - случайная скорость по направлению x,y
+	dx, dy - заданная скорость по направлению x,y
+	rr - случайная скорость вращения
+	rot='1' - случайный начальный угол поворота
+	grav - степень подверженности гравитации
+	water='1' - частица существует только вне воды
+	water='2' - частица существует только в воде
+-->
+<parts>
+	
+	<!-- Разрушение стен -->
+	<part id='kusok' vis='visualKusok' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
+	<part id='kusokB' vis='visualKusokB' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
+	<part id='kusokD' vis='visualKusokD' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
+	<part id='steklo' vis='visualSteklo' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
+	<part id='kusoch' vis='visualKusoch' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='6' rot='1' dy='-5'/>
+	<part id='kusochB' vis='visualKusochB' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='6' rot='1' dy='-5'/>
+	<part id='schep' vis='visualSchep' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
+	<part id='schepoch' vis='visualSchepoch' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='6' rot='1' dy='-5'/>
+	<part id='metal' vis='visualMetal' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5' rsc='0.4'/>
+	<part id='pole' vis='visualPole' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='3' rv='8' rsc='0.4' brake='0.92'/>
+	<part id='bur' vis='visualBur' anim='1' minliv='10' filter='bur' blend='screen' imp='1'/>
+	<part id='plav' vis='visualPlav' anim='1' minliv='10' filter='plav' blend='hardlight' imp='1'/>
+	<part id='fake' vis='visualFake' anim='1' minliv='8' blend='screen' alph='1' imp='1'/>
+	<part id='gwall' vis='visualGwall' anim='1' minliv='12' blend='screen' imp='1'/>
+	<part id='iskr_wall' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='10' rliv='10' grav='0.5' minv='1' rv='2' dy='-2' blend='screen'/>
+
+	<!-- взрывы -->
+	<part id='expl' blit='sprExpl' blitx='240' blity='240' anim='1' minliv='15' imp='1'/>
+	<part id='explw' blit='sprExplW' blitx='240' blity='240' ctrans='1' anim='1' minliv='15' blend='hardlight' imp='1'/>
+	<part id='fireexpl' blit='sprExpl' blitx='240' blity='240' anim='1' minliv='15' blend='screen' imp='1'/>
+	<part id='plaexpl' vis='visualPlaExpl' anim='1' minliv='25' imp='1'/>
+	<part id='impexpl' vis='visualImpExpl' anim='1' minliv='25' imp='1'/>
+	<part id='iceexpl' vis='visualIceExpl' anim='1' minliv='25' imp='1'/>
+	<part id='sparkleexpl' vis='visualSparkleExpl' anim='1' minliv='25' imp='1'/>
+	<part id='blast' vis='visualBlast' anim='1' minliv='10' imp='1'/>
+	<part id='balefire' blit='sprBale' blitx='240' blity='360' blitd='0.5' anim='1' minliv='60' imp='1'/>
+	<part id='baleblast' vis='visualBaleblast' anim='1' minliv='30' imp='1'/>
+	<part id='acidexpl' vis='visualAcidExpl' anim='1' minliv='10' imp='1'/>
+	<part id='eclipse' vis='visualEclipse' anim='1' minliv='25' imp='1'/>
+	<part id='gas' vis='visualGas' ctrans='1' alph='1' prealph='1' minliv='60' rr='6' rdy='1' rd='-2' rot='1' maxkol='1' imp='1'/>
+	<part id='pinkgas' vis='visualPinkGas' ctrans='1' alph='1' prealph='1' minliv='60' rr='6' rdy='1' rd='-2' rot='1' maxkol='1' imp='1'/>
+	<part id='miniexpl' vis='visualMiniexpl' minliv='5' anim='1' imp='1'/>
+	<part id='magsymbol' vis='visualMagSymbol' minliv='30' anim='1' sloy='2' imp='1'/>
+	<part id='throw' vis='visualThrow' minliv='5' anim='1' imp='1'/>
+	<part id='ttexpl' blit='sprExpl' blitx='240' blity='240' anim='1' minliv='15' scale='2' rsc='0.5' imp='1'/>
+	<part id='ttplaexpl' vis='visualPlaExpl' anim='1' minliv='25' scale='2' rsc='0.5' imp='1'/>
+	<part id='bloodblast' vis='visualBloodblast' anim='1' minliv='30' imp='1'/>
+	<part id='bloodblast2' vis='visualBloodblast2' anim='1' minliv='120' imp='1'/>
+	<part id='necrblast' vis='visualNecrblast' anim='1' minliv='30' imp='1'/>
+	<part id='necrblast2' vis='visualNecrblast2' anim='1' minliv='120' imp='1'/>
+	<part id='necrblast3' vis='visualNecrblast3' anim='1' minliv='30' imp='1'/>
+	
+	<!-- Эффекты оружия -->
+	<part id='gilza' vis='visualGilza' ctrans='1' minliv='20' rliv='10' grav='1' rdx='4' rdy='4'/>
+	<part id='react' blit='sprReact' blitx='60' blity='60' anim='1' minliv='15' blend='screen'/>
+	<part id='snow' vis='visualSnow' alph='1' ctrans='1' minliv='20' rliv='10' minv='15' rv='5' rr='20' rot='1' rsc='0.6' brake='0.95'/>
+	<part id='acid' vis='visualAcid' ctrans='1' alph='1' prealph='1' anim='2' minliv='100' rliv='30' imp='1'/>
+	<part id='fire' blit='sprFire' blitf='17' blitx='50' blity='67' anim='2' alph='1' prealph='1' minliv='100' rliv='30' blend='hardlight' imp='1'/>
+	<part id='acidkap' blit='sprGBlood' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='1' minv='0' rv='10' dy='-6'/>
+	<part id='steam' vis='visualSteam' ctrans='1' minliv='30' rr='12' rdy='1' grav='-0.2' rd='-2' rot='1' anim='1' rsc='0.3' maxkol='1'/>
+	<part id='iskr' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='20' rliv='20' grav='0.5' minv='10' rv='5' dy='-5' blend='screen'/>
+	<part id='iskr_bul' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='15' rliv='5' grav='0.7' minv='5' rv='3' dy='-5' blend='screen'/>
+	
+	<!-- Вспышки при ударах пуль и корпуса -->
+	<part id='flare' vis='visualFlare' minliv='10' anim='1'/>
+	<part id='bum' vis='visualBum' minliv='5' anim='1'/>
+	<part id='buma' vis='visualBumAcid' minliv='5' anim='1'/>
+	<part id='bumn' vis='visualBumNecro' minliv='5' anim='1'/>
+	<part id='flame' vis='visualFlame' alph='1' minliv='15' grav='-1' rx='20' ry='20' rdx='4' rdy='4' blend='screen'/>
+	<part id='arson' vis='visualFlame' alph='1' minliv='10' grav='-1' rx='20' ry='20' rdx='4' rdy='4' blend='screen'/>
+	<part id='plasma' vis='flPlasma' minliv='3' anim='1'/>
+	<part id='plasma1' vis='flPlasma' minliv='3' anim='1'/>
+	<part id='plasma2' vis='flPlasma2' minliv='3' anim='1'/>
+	<part id='blump' vis='flLaser' minliv='3' anim='1'/>
+	<part id='laser' vis='flLaser' minliv='3' anim='1'/>
+	<part id='laser2' vis='flLaser2' minliv='3' anim='1'/>
+	<part id='laser3' vis='flPlasma2' minliv='3' anim='1'/>
+	<part id='spark' vis='flSpark' minliv='3' anim='1'/>
+	<part id='sparkl' vis='flSparkl' minliv='3' anim='1'/>
+	<part id='dray' vis='flDray' minliv='3' anim='1'/>
+	<part id='telebullet' vis='visualTeleFlare' minliv='4' anim='1'/>
+	<part id='ice' vis='visualIceFlare' minliv='4' anim='1'/>
+	<part id='plevok' vis='flPlevok' minliv='3' anim='1'/>
+	<part id='pinkplevok' vis='flPinkPlevok' minliv='3' anim='1'/>
+	
+	<!-- Кровь -->
+	<part id='bloodexpl1' blit='sprBl1' blitx='240' blity='240' anim='1' minliv='20'/>
+	<part id='bloodexpl2' blit='sprBl2' blitx='240' blity='240' anim='1' minliv='20'/>
+	<part id='bloodexpl3' blit='sprBl3' blitx='240' blity='240' anim='1' minliv='20'/>
+	<part id='blood' blit='sprBlood' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='1' minv='0' rv='5' dy='-6'/>
+	<part id='gblood' blit='sprGBlood' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='1' minv='0' rv='5' dy='-5'/>
+	<part id='pblood' blit='sprPBlood' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='1' minv='0' rv='5' dy='-6'/>
+	
+	<!-- Удары и смерть -->
+	<part id='pole2' vis='visualPole2' alph='1' minliv='10' rliv='5'/>
+	<part id='burn' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='20' rliv='20' grav='-0.5' minv='0' rv='5' dy='-3' blend='screen'/>
+	<part id='krupa' blit='sprKrupa' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='0.5' minv='0' rv='5' dy='3'/>
+	<part id='discharge' vis='visualDischarge' alph='1' minliv='5' rr='10' rot='1' blend='screen'/>
+	<part id='plakap' vis='PlasmaKap' alph='1' minliv='15' rliv='5' grav='0.6' rgrav='0.4' rdx='1' rdy='2'/>
+	<part id='die_spark' vis='die_spark' alph='1' minliv='20' rliv='20' grav='-0.1' rgrav='-0.2' rdx='1' rdy='1' rsc='0.7' blend='screen'/>
+	<part id='shmatok' vis='visualShmatok' alph='1' ctrans='1' minliv='20' rliv='40' grav='0.8' minv='2' rv='10' rr='20' rot='1' dy='-5'/>
+	<part id='bloat_kap' vis='bloat_kap' alph='1' ctrans='1' minliv='20' rliv='40' grav='0.8' minv='2' rv='10' dy='-5'/>
+	<part id='black' vis='visualBlack' alph='1' ctrans='1' minliv='20' rliv='10' minv='3' rv='8' rsc='0.4' brake='0.92'/>
+	
+	<!-- Эффекты -->
+	<part id='poison' vis='visualPoison' alph='1' ctrans='1' minliv='20' rliv='10' grav='-0.2' minv='0' rv='3' rsc='0.6' brake='0.95'/>
+	<part id='stun' vis='visualStun' alph='1' ctrans='1' minliv='20' rliv='10' minv='5' rv='5' rr='20' rot='1' rsc='0.6' brake='0.91'/>
+	<part id='slow' vis='visualSlow' alph='1' ctrans='1' minliv='20' rliv='10' rsc='0.2' brake='0.91'/>
+	<part id='blind' vis='visualBlind' alph='1' minliv='40' rliv='20' rsc='0.5' blend='multiply'/>
+	
+	<!-- Способности -->
+	<part id='teleport' vis='visualTele' minliv='12' anim='1' imp='1'/>
+	<part id='tele' blit='sprBSpark' blitx='9' blity='9' alph='1' minliv='10' rliv='20' rv='5' blend='screen'/>
+	<part id='telered' blit='sprRSpark' blitx='9' blity='9' alph='1' minliv='10' rliv='20' rv='5' blend='screen'/>
+	<part id='radioblast' vis='visualRadioblast' anim='1' minliv='30' imp='1'/>
+	<part id='quake' vis='visualQuake' anim='1' minliv='10'/>
+	<part id='necronoise' vis='visualNecroNoise' minliv='9' anim='1' sloy='4'/>
+	<part id='zzz' vis='visualZzz' alph='1' ctrans='1' minliv='20' rliv='10' grav='-0.2' minv='0' rv='3' rsc='0.6' brake='0.95'/>
+	<part id='magrun' blit='sprKap' blitx='3' blity='3' alph='1' minliv='15' rliv='5'/>
+	<part id='redray' vis='visualRedRay' minliv='50' rot='1' rsc='0.7' anim='1' otklad='15'/>
+	<part id='vsos' vis='visualVsos' alph='1' minliv='30' rsc='0.2'/>
+	
+	<!-- Прочие -->
+	<part id='kap' blit='sprKap' blitx='3' blity='3' alph='1' minliv='15' rliv='5' grav='1' minv='3' rv='3' dy='-5'/>
+	<part id='unlock' vis='flUnlock' minliv='17' anim='1' blend='screen'/>
+	<part id='lift' blit='sprBSpark' blitx='9' blity='9' alph='1' minliv='20' rliv='20' dy='-5' rdy='-5' blend='screen'/>
+	<part id='moln' vis='flMoln' minliv='8' anim='1' blend='screen'/>
+	<part id='bubble' vis='visualBubble' alph='1' ctrans='1' minliv='20' rliv='10' grav='-0.4' minv='0' rv='3' rsc='0.6' brake='0.95' water='2'/>
+	<part id='purple_spark' vis='purple_spark' alph='1' minliv='40' rsc='0.7' blend='screen'/>
+	<part id='green_spark' vis='green_spark' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='8' rv='1' rsc='0.4' brake='0.92'/>
+	<part id='gold_spark' vis='gold_spark' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='8' rv='1' rsc='0.4' brake='0.92'/>
+	<part id='blue_spark' vis='blue_spark' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='8' rv='1' rsc='0.4' brake='0.92'/>
+	<part id='orange_spark' vis='orange_spark' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='8' rv='1' rsc='0.4' brake='0.92'/>
+	<part id='electro' vis='visualElectro' minliv='5' blend='screen' alph='1' rot='1'/>
+	<part id='noise' vis='visualNoise' minliv='10' anim='1' sloy='4'/>
+	<part id='sign1' vis='visualSign1' minliv='20' anim='1' sloy='4'/>
+	<part id='green' vis='flGreen' minliv='30' rliv='15' alph='1'/>
+	<part id='red' vis='flRed' minliv='30' rliv='15' alph='1'/>
+	<part id='marker' vis='visualMarker' minliv='10' sloy='4' camscale='1'/>
+	
+	<!-- Числа урона и надписи -->
+	<part id='numb' vis='visualNumb' minliv='60' dy='-1' brake='0.98' sloy='4' camscale='1'/>
+	<part id='replic' vis='visReplic' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>
+	<part id='replic2' vis='visReplic2' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>
+	<part id='gui' vis='visBulb' minliv='50' alph='1' sloy='5' camscale='1' imp='1'/>
+	<part id='take' vis='visBulb' minliv='50' alph='1' sloy='5' dy='-1' camscale='1' imp='1'/>
+	
+</parts>

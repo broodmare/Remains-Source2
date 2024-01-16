@@ -50,8 +50,7 @@ package fe.unit {
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam('bloat');
 			super.getXmlParam();
-			
-			var node0:XML = AllData.fetchNodeWithChildID('units', id);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
 				if (node0.un.@attr.length()) attRasst=node0.un.@attr;		//дистанция атаки
 				if (node0.un.@attch.length()) attCh=node0.un.@attch;				//шанс атаки
@@ -63,10 +62,7 @@ package fe.unit {
 		//сделать героем
 		public override function setHero(nhero:int=1) {
 			super.setHero(nhero);
-			if (hero==1) {
-				//vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
-				shootCh=0.3;
-			}
+			if (hero == 1) shootCh = 0.3;
 		}
 		public override function setNull(f:Boolean=false) {
 			super.setNull(f);
@@ -172,8 +168,6 @@ package fe.unit {
 				turnY=-1;
 			}
 			if (levit) isGryz=false;
-			
-			//vision=(aiState==0)?0.4:1;
 	
 			if (turnX) {
 				storona=turnX;

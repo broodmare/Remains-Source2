@@ -486,8 +486,8 @@ package  fe
 			
 			//загрузка карт локаций
 			landData = new Array();
-
-			var xmlList:XMLList = GameData.fetchNodeList("Lands", "land");
+			
+			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
 			for each(var xl in xmlList)
 			{
 				if (!testMode && xl.@test>0) continue;
@@ -790,8 +790,8 @@ package  fe
 		
 		private function exitStep():void
 		{
-			try
-			{
+			//try
+			//{
 				t_exit--;
 				if (t_exit==99) cam.dblack=1.5;
 				if (t_exit==20) {
@@ -818,8 +818,8 @@ package  fe
 				if (t_exit==1) {
 					gui.allOn();
 				}
-			} 
-			catch (err) {showError(err);}
+			//} 
+			//catch (err) {showError(err);}
 		}
 		
 		private function ggDieStep():void
@@ -879,7 +879,6 @@ package  fe
 					//счёт частиц
 					Emitter.kol2=Emitter.kol1;
 					Emitter.kol1=0;
-					//trace(Emitter.kol2);
 					//основной цикл !!!!
 					if (t_exit!=17) land.step();
 					//цикл смерти
@@ -1244,7 +1243,7 @@ package  fe
 		{
 			var un:Unit = new Unit();
 			var s:String = '';
-			var xmlList:XMLList = AllData.fetchNodeList('weapons', 'weapon');
+			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			for each (var w:XML in xmlList.(@tip>0))
 			{
 				var weap:Weapon = new Weapon(un, w.@id, 0);

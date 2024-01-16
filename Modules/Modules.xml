@@ -1,0 +1,6 @@
+<modules>
+	
+	<module moduleName = "core"/>
+	<module moduleName = "exampleMod"/>
+	
+</modules>

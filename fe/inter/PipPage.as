@@ -247,7 +247,7 @@ package fe.inter
 		//показ всех элементов
 		protected function setStatItems(n:int=-1):void
 		{
-			if (n>=0) scrl=n;
+			if (n >= 0) scrl = n;
 			for (var i:int = 0; i < statArr.length; i++)
 			{
 				if (i+scrl>=arr.length)
@@ -275,10 +275,9 @@ package fe.inter
 					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
 				} else {
 					var vWeapon:Class=w.vWeapon;
-					var node = AllData.fetchNodesWithMatchingIDs('weapons', id);
-					if (node.length())
+					var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+					if (node != null)
 					{
-						node=node[0];
 						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
 					}
 					if (vWeapon==null) {
@@ -289,10 +288,9 @@ package fe.inter
 						infIco.stop();
 						if (infIco.lez) infIco.lez.stop();
 						var r:Number=1;
-						if (node.length() && node.vis.length()) {
-							if (node.vis.@icomult.length()) {
-								r=infIco.scaleX=infIco.scaleY=node.vis.@icomult;
-							}
+						if (node != null && node.vis.length())
+						{
+							if (node.vis.@icomult.length()) r=infIco.scaleX=infIco.scaleY=node.vis.@icomult;
 						}
 						infIco.x=-infIco.getRect(infIco).left*r+140-infIco.width/2;
 						infIco.y=-infIco.getRect(infIco).top;
@@ -351,10 +349,11 @@ package fe.inter
 			if (tip=='item') s=Res.txt('i',id,1)
 			else s=Res.txt('e',id,1);
 			if (id.substr(-3)=='_ad') id=id.substr(0,id.length-3);
+
 			var typeName:String = tip + 's';
-			var dp = AllData.fetchNodeWithChildID(typeName, id);
-			if (dp.length()==0) return s;
-			dp=dp.(@id==id);
+			var dp = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", typeName, "id", id);
+			if (dp == null) return s;
+			dp = dp.(@id==id);
 			if (dp.length()==0) return s;
 			dp=dp[0];
 			//определение текущего уровня
@@ -545,9 +544,9 @@ package fe.inter
 				s+='\n\n'+Res.txt('a',id,1);
 			} else if (tip==Item.L_AMMO) {
 				var ammo=inv.items[id].xml;
-				if (AllData.fetchNodeWithChildID('weapons', id).length())
+				if (XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id) != null)
 				{
-					s=Res.txt('w',id,1);
+					s = Res.txt('w',id,1);
 				}
 				else if (ammo.@base.length())
 				{
@@ -624,9 +623,10 @@ package fe.inter
 			var s:String='';
 			if (id.substr(0,2)=='s_') {
 				id=id.substr(2);
-				craft=1; 
-				if (AllData.fetchNodeWithChildID('weapons', id).length()) tip=Item.L_WEAPON;
-				else if (AllData.fetchNodeWithChildID('armors', id).length()) tip=Item.L_ARMOR;
+				craft=1;
+				
+				if (XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id).length()) tip=Item.L_WEAPON;
+				else if (XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id).length()) tip=Item.L_ARMOR;
 				else tip=Item.L_ITEM;
 			}
 			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
@@ -684,7 +684,7 @@ package fe.inter
 		{
 			var s:String='\n';
 			var cs:String = 's_' + id;
-			var sch=AllData.fetchNodeWithChildID('items', cs);
+			var sch = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
 			if (sch.length()) sch=sch[0];
 			else return '';
 			var kol:int=1;
@@ -743,7 +743,7 @@ package fe.inter
 			var ok=false;
 			if (World.w.pers.factor[id] is Array)
 			{
-				var paramList:XMLList = AllData.fetchNodeList('params', 'param');
+				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
 				var xml = paramList.(@v==id);
 				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', '100%')+'\n';

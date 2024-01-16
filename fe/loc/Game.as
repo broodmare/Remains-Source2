@@ -46,18 +46,19 @@ package fe.loc
 			quests=new Array();
 			names=new Array();
 			
-			var xmlList:XMLList = GameData.fetchNodeList("Lands", "land");
-			for each(var xl in xmlList)
+			var landList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
+			for each(var xl:XML in landList)
 			{
 				var land:LandAct = new LandAct(xl);
-				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) {
+				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom)
+				{
 					land.allroom=World.w.landData[xl.@id].allroom;
 					land.loaded=true;
 				}
 				if (land.prob==0) lands[land.id]=land;
 				else probs[land.id]=land;
 			}
-			xmlList = null; // Manual cleanup.
+			landList = null; // Manual cleanup.
 		}
 
 		public function save():Object {
@@ -131,8 +132,8 @@ package fe.loc
 				
 			}
 
-			var vendorList:XMLList = GameData.fetchNodeList("Vendors", "vendor");
-			for each(var xl in vendorList)
+			var vendorList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "vendor");
+			for each(var xl:XML in vendorList)
 			{
 				var loadVendor=null;
 				if (loadObj && loadObj.vendors && loadObj.vendors[xl.@id]) loadVendor=loadObj.vendors[xl.@id];
@@ -141,7 +142,7 @@ package fe.loc
 			}
 			vendorList = null; // Manual cleanup.
 
-			var npcList:XMLList = GameData.fetchNodeList("Npcs", "npc");
+			var npcList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Npcs", "npc");
 			for each(var xl in npcList)
 			{
 				var loadNPC=null;
@@ -244,7 +245,8 @@ package fe.loc
 		}
 		
 		//Перенаправление на другую локацию
-		function Encounter() {
+		private function Encounter():void
+		{
 			if (curLandId=='random_canter' && !(triggers['encounter_way']>0)) curLandId='way';
 			if (curLandId=='random_encl' && !(triggers['encounter_post']>0)) curLandId='post';
 			if (curLandId=='stable_pi' && triggers['storm']==4) curLandId='stable_pi_atk';
@@ -310,28 +312,30 @@ package fe.loc
 			World.w.gui.infoText('refill');
 		}
 		
-		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest {
+		public function addQuest(questID:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest {
 			//Если квест уже есть
-			if (quests[id]) {
+			if (quests[questID]) {
 				//Если есть, но не активен, сделать активным
-				if (quests[id].state==0) {
-					quests[id].state=1;
-					World.w.gui.infoText('addTask',quests[id].nazv);
+				if (quests[questID].state==0) {
+					quests[questID].state=1;
+					World.w.gui.infoText('addTask',quests[questID].nazv);
 					Snd.ps('quest');
 					//проверить этапы, если все выполнены, то сразу и закрыть
-					quests[id].isClosed();
-					quests[id].deposit();
-					if (quests[id].state==2) World.w.gui.infoText('doneTask',quests[id].nazv);
+					quests[questID].isClosed();
+					quests[questID].deposit();
+					if (quests[questID].state==2) World.w.gui.infoText('doneTask',quests[questID].nazv);
 				}
-				return quests[id];
+				return quests[questID];
 			}
-			var xq:XML = GameData.fetchNodeWithChildID("Quests", id);
+
+			var xq:XML = XMLDataGrabber.getNodeFromAllWithAttributeThatMatches("core", "GameData", "Quests", "id", questID);
+
 			var q:Quest=new Quest(xq,loadObj);
 			quests[q.id]=q;
 			if (noVis && !q.auto) q.state=0;
 			if (loadObj==null && q.state>0) {
 				World.w.gui.infoText('addTask',q.nazv);
-				quests[id].deposit();
+				quests[questID].deposit();
 				if (snd) Snd.ps('quest');
 			}
 			if (loadObj==null && showDial && q.begDial && World.w.dialOn && World.w.loc.prob==null) {
@@ -430,18 +434,18 @@ package fe.loc
 		}
 		
 		//Запустить скрипт из gamedata
-		public function runScript(scr:String, own:Obj=null):Boolean
+		public function runScript(scriptID:String, own:Obj=null):Boolean
 		{
-			var xml1:XML = GameData.fetchNodeWithChildID("Scripts", scr);
+			var xml1:XML = XMLDataGrabber.getNodeFromAllWithAttributeThatMatches("core", "GameData", "Scripts", "id", scriptID);
 			var	runScr:Script=new Script(xml1,World.w.land,own);
 			runScr.start();
 			return true;
 		}
 		
 		//создать скрипт из gamedata
-		public function getScript(scr:String, own:Obj=null):Script
+		public function getScript(scriptID:String, own:Obj=null):Script
 		{
-			var xml1:XML = GameData.fetchNodeWithChildID("Scripts", scr);
+			var xml1:XML = XMLDataGrabber.getNodeFromAllWithAttributeThatMatches("core", "GameData", "Scripts", "id", scriptID);
 			return new Script(xml1,(own==null)?World.w.land:own.loc.land,own);
 		}
 		

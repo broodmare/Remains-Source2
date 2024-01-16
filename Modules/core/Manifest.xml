@@ -1,0 +1,27 @@
+<directories moduleName = "core">
+
+	<directory directoryName = "AllData">
+		<file fileName = "armors"/>
+		<file fileName = "backs"/>
+		<file fileName = "effs"/>
+		<file fileName = "items"/>
+		<file fileName = "mats"/>
+		<file fileName = "objs"/>
+		<file fileName = "params"/>
+		<file fileName = "parts"/>
+		<file fileName = "perks"/>
+		<file fileName = "skills"/>
+		<file fileName = "units"/>
+		<file fileName = "weapons"/>
+	</directory>
+	
+	<directory directoryName = "GameData">
+		<file fileName = "Land1s"/>
+		<file fileName = "Lands"/>
+		<file fileName = "Npcs"/>
+		<file fileName = "Quests"/>
+		<file fileName = "Scripts"/>
+		<file fileName = "Vendors"/>
+	</directory>
+	
+</directories>

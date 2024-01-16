@@ -56,15 +56,16 @@ package fe
 		
 		private var mainTimer:Timer;
 
+		private var part1Loaded:Boolean = false;
 		private var part2Loaded:Boolean = false;
 
 		public function MainMenu(nmain:Sprite) 
 		{
 			trace('LOADING XML DATA FROM EXTERNAL SOURCES');
-			AllData.initializeGameData(); // QUICK HACK, LOAD ALLDATA XML FILES
-			GameData.initializeGameData(); // QUICK HACK, LOAD GAMEDATA XML FILES
+			XMLData.initializeModules();
 
 			main = nmain;
+
 			mainMenuMovieClip = new visMainMenu();
 			mainMenuMovieClip.dialLoad.visible=false;
 			mainMenuMovieClip.dialNew.visible=false;
@@ -76,10 +77,6 @@ package fe
 			showButtons(false);
 
 			mainMenuOn();
-			
-			
-
-			if (AllData.allFilesLoaded && GameData.allFilesLoaded) mainMenu2();
 		}
 
 		private function mainMenu2():void
@@ -699,14 +696,25 @@ package fe
 
 		private function mainStep(event:Event):void 
 		{
-			if (!part2Loaded)
+			if (!part1Loaded)
 			{
-				if (AllData.allFilesLoaded && GameData.allFilesLoaded)
+				if (XMLData.fileCount < 1) return;
+				else if (XMLData.filesLoaded >= XMLData.fileCount)
 				{
-					part2Loaded = true;
-					mainMenu2();
+					trace('Finished loading: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
+					part1Loaded = true;
 				}
-				else return;
+				else 
+				{
+					trace('Loaded: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
+					return;
+				}
+
+			}
+			if (part1Loaded && !part2Loaded)
+			{
+				part2Loaded = true;
+				mainMenu2();
 			}
 
 			if (active) step();

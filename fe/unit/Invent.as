@@ -53,9 +53,12 @@ package fe.unit
 			fav		= [];
 			
 			itemsId = [];
-			itemList = AllData.fetchNodeList('items', 'item');
-			armorList = AllData.fetchNodeList('armors', 'armor');
-			weaponList = AllData.fetchNodeList('weapons', 'weapon');
+
+			
+
+			itemList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
+			armorList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
+			weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 
 			for each (var node in itemList)
 			{
@@ -905,8 +908,7 @@ package fe.unit
 			else
 			{
 				World.w.pip.onoff(-1);
-				
-				var xml1:XML = GameData.fetchNodeWithChildID("Scripts", "smokeRollup");
+				var xml1:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "Scripts", "id", 'smokeRollup');
 				var smokeScr:Script = new Script(xml1,World.w.loc.land, gg);
 				smokeScr.start();
 				World.w.game.triggers['rollup']=1;

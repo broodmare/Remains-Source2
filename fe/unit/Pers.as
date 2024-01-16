@@ -301,7 +301,7 @@ package fe.unit
 			var ndif:int=2;
 			ndif = World.w.game.globalDif;
 
-			var skillList:XMLList = AllData.fetchNodeList('skills', 'skill');
+			var skillList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "skills", "skill")
 			for each (var sk in skillList)
 			{
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
@@ -383,15 +383,15 @@ package fe.unit
 				perks['levitation']=1;
 			}
 			
-			xml_head = AllData.fetchNodeWithChildID('perks', 'trauma_head');
-			xml_tors = AllData.fetchNodeWithChildID('perks', 'trauma_tors');
-			xml_legs = AllData.fetchNodeWithChildID('perks', 'trauma_legs');
-			xml_blood = AllData.fetchNodeWithChildID('perks', 'trauma_blood');
-			xml_mana = AllData.fetchNodeWithChildID('perks', 'trauma_mana');
+			xml_head = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_head');
+			xml_tors = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_tors');
+			xml_legs = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_legs');
+			xml_blood = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_blood');
+			xml_mana = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_mana');
 
 			factor = [];
 
-			var paramList:XMLList = AllData.fetchNodeList('params', 'param');
+			var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 			for each (var param in paramList)
 			{
 				if (param.@f>0 && param.@v.length() && param.@v!='') factor[param.@v] = [];
@@ -806,9 +806,11 @@ package fe.unit
 			World.w.gui.setAll();
 		}
 		
-		public function addPerk(id:String, minus:Boolean=false)
+		public function addPerk(id:String, minus:Boolean=false):void
 		{
-			var maxlvl = AllData.fetchNodeWithChildID.('perks', id).@lvl;
+			var perkNode:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id)
+			var maxlvl:int = perkNode.@lvl;
+			perkNode = null;
 
 			if (!(maxlvl>0)) maxlvl=1;
 			if (perks[id]) {
@@ -859,7 +861,7 @@ package fe.unit
 			while (perkPoint>0 && n>0) {
 				dost = [];
 
-				var perkList = AllData.fetchNodeList('perks', 'perk');
+				var perkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
 				for each(var dp:XML in perkList)
 				{
 					if (dp.@tip==1) {
@@ -880,7 +882,7 @@ package fe.unit
 		public function perkPoss(nid:String, dp:XML=null):int
 		{
 			
-			if (dp==null) dp = AllData.fetchNodeWithChildID('perks', nid);
+			if (dp==null) dp = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", nid);
 			if (dp==null) return -1;
 			var numb=perks[nid];
 			if (numb==null) numb=0;
@@ -1276,14 +1278,13 @@ package fe.unit
 				var lvl=0;
 				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]);
 				else lvl=getSkLevel(skills[id]);
-
-				xml = AllData.fetchNodeWithChildID('skills', id);
+				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
 				setSkillParam(xml, lvl, skills[id]);
 			}
 			//перки
 			for (id in perks)
 			{
-				xml=AllData.fetchNodeWithChildID('perks', id);
+				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
 				setSkillParam(xml, perks[id]);
 			}
 			//восст. хп органов
@@ -1299,7 +1300,7 @@ package fe.unit
 			for each(var eff:Effect in gg.effects) {
 				id=eff.id;
 				if (eff.vse) continue;
-				xml = AllData.fetchNodeWithChildID('effs', id);
+				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
 				setSkillParam(xml, eff.vse?0:eff.lvl);
 			}
 			//броня и защиты
@@ -1320,7 +1321,7 @@ package fe.unit
 			}
 			else
 			{
-				xml = AllData.fetchNodeWithChildID('skills', 'alicorn');
+				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", 'alicorn');
 				setSkillParam(xml, 1);
 				
 				setBegFactor('skin',gg.skin);
@@ -1366,7 +1367,7 @@ package fe.unit
 					}
 					else
 					{
-						var xml = AllData.fetchNodeWithChildID('effs', w);
+						var xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", w);
 						if (xml.length()) setSkillParam(xml[0], 1);
 					}
 				}

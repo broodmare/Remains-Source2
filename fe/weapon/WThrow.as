@@ -30,7 +30,7 @@ package fe.weapon
 			vis.gotoAndStop(1);
 			holder=1;
 			ammo=id;
-			var node = AllData.fetchNodeWithChildID('weapons', id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
 			if (node.char.length() && node.char[0].@time>0) detTime=node.char[0].@time;
@@ -67,7 +67,6 @@ package fe.weapon
 			if (t_attack<=0) {
 				if (getAmmo()) {
 					t_attack=rapid;
-					//shoot();
 				}
 			}
 			return true;
@@ -93,7 +92,6 @@ package fe.weapon
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
 				un.putLoc(World.w.loc,X,Y);
-				//un.loc=World.w.loc;
 				un.loc.addObj(un);
 				un.loc.units.push(un);
 				un.fraction=owner.fraction;
@@ -105,7 +103,6 @@ package fe.weapon
 				un.vis.gotoAndStop(1);
 				un.setVis(true);
 				un.inter.mine=1;
-				//un.setPos(X,Y);
 				if (un.collisionAll()) un.setPos(owner.X,owner.Y);
 				if (un.collisionAll()) un.fixed=true;
 				if (owner && owner.player && World.w.pers.sapper>1) {
@@ -128,7 +125,7 @@ package fe.weapon
 				(b as PhisBullet).tormoz=tormoz;
 				(b as PhisBullet).brake=brake;
 				setBullet(b);
-				(b as PhisBullet).dr=(throwTip==2)?0:b.dx;// owner.storona*Math.random()*15+5;
+				(b as PhisBullet).dr=(throwTip==2)?0:b.dx;
 				(b as PhisBullet).lip=(throwTip==2);
 				b.vis.play();
 				b.critDamMult=1;

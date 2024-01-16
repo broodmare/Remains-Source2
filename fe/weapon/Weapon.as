@@ -216,7 +216,7 @@ package fe.weapon
 			if (!listSetup)
 			{
 				listSetup = true;
-				weaponList = AllData.fetchNodeList('weapons', 'weapon');
+				weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			}
 
 			sloy=2;
@@ -238,7 +238,7 @@ package fe.weapon
 			if (!listSetup)
 			{
 				listSetup = true;
-				weaponList = AllData.fetchNodeList('weapons', 'weapon');
+				weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			}
 			
 			if (id.charAt(id.length-2)=='^')
@@ -350,7 +350,7 @@ package fe.weapon
 			if (node.a.length())
 			{
 				ammo=ammoBase=node.a[0];
-				var ammoNode = AllData.fetchNodeWithChildID('items', ammo);
+				var ammoNode = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", ammo);
 				setAmmo(ammo,ammoNode);
 			}
 			
@@ -1062,7 +1062,7 @@ package fe.weapon
 				//не подходящие боеприпасы
 				if (nammo!='' && nammo!=ammo)
 				{
-					var am = AllData.fetchNodeWithChildID('items', nammo);
+					var am = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", nammo);
 					if (am.length()==0) return;
 					if (am.@base!=ammoBase) {
 						World.w.gui.infoText('imprAmmo',World.w.invent.items[nammo].nazv,null,false);
@@ -1168,7 +1168,7 @@ package fe.weapon
 			s+='\t';
 			if (tip<4) s+=maxhp+'\t';
 			else s+='\t';
-			if (tip==4) s += AllData.fetchNodeWithChildID.('items', id).@price + '\t';
+			if (tip==4) s += XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id).@price + '\t';
 			else if (tip!=5 && variant>0) s+=price*3+'\t';
 			else s+=price+'\t';
 			return s;

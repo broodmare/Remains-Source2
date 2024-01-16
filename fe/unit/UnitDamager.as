@@ -117,7 +117,7 @@ package fe.unit {
 		
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam();
-			var node0:XML = AllData.fetchNodeWithChildID('units', id);
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
 				if (node0.un.@tip.length()) tipDamager=node0.un.@tip;		//требуемый скилл
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
@@ -167,11 +167,6 @@ package fe.unit {
 			vis.gotoAndStop(status+1);
 			inter.update();
 		}
-		
-		/*public override function die(sposob:int=0) {
-			super.die(sposob);
-			//if (status==0) activate();
-		}*/
 		
 		public function setVis(v:Boolean) {
 			isVis=v;
@@ -256,7 +251,6 @@ package fe.unit {
 				kolammo--;
 				if (noch>=och) {
 					status=0;
-					//currentWeapon.initReload();
 				}
 				if (kolammo<=0) {
 					disarm();
@@ -277,5 +271,4 @@ package fe.unit {
 			}
 		}
 	}
-	
 }

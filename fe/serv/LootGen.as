@@ -4,14 +4,10 @@ package fe.serv {
 	import fe.loc.Loot;
 	import fe.loc.Location;
 	
-	public class LootGen {
-
-		public function LootGen() {
-			// constructor code
-		}
+	public class LootGen
+	{
 
 		//случайные объекты 
-		
 		private static var rndArr:Array;
 		public static var arr:Array;
 				
@@ -19,21 +15,19 @@ package fe.serv {
 		private static var loc:Location;				//целевая локация
 		private static var nx:Number, ny:Number;
 		private static var lootBroken:Boolean=false;
-		//public static const L_ARMOR=1, L_WEAPON=2, L_AMMO=3, L_ITEM=4, L_MED=5, L_BOOK=6, L_EXPL=7, L_HIM=8, L_SCHEME=9, L_SPECIAL=10, L_COMP1=11, L_COMP2=12, L_COMP3=13;
 		
-		public static function init() {
-			//var n:Number;
+		public static function init():void
+		{
 			arr=new Array();
 			var n:Array = new Array();
-			//arrWeapon=new Array();
 			n['weapon']=0;
 			arr['weapon']=new Array();
 			arr['magic']=new Array();
 			arr['uniq']=new Array();
 			arr['pers']=new Array();
 
-			var weaponList:XMLList = AllData.fetchNodeList('weapons', 'weapon');
 
+			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			for each (var weap in weaponList.(@tip > 0 && @tip < 4))
 			{
 				if (weap.com.length()==0) continue;
@@ -46,7 +40,7 @@ package fe.serv {
 			}
 			weaponList = null; // Manual cleanup.
 
-			var itemList:XMLList = AllData.fetchNodeList('items', 'item');
+			var itemList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
 			for each (var item in itemList)
 			{
 				if (item.@tip.length()) {
@@ -219,7 +213,6 @@ package fe.serv {
 				newLoot(0.1,Item.L_ITEM,'stealth');
 				if (World.w.pers.barahlo) newLoot(0.1, Item.L_COMPA, 'intel_comp');
 			} else if (cont=='case') {
-				//newLoot(1, Item.L_UNIQ);	//!!!!!!!!!!!!!!!!!!!!
 				newLoot(0.9, Item.L_ITEM,'money',Math.random()*20*(locdif*0.11+1)+5);
 			} else if (cont=='wbig') {
 				if (!newLoot(0.08, Item.L_UNIQ)) {
@@ -369,7 +362,6 @@ package fe.serv {
 				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
 					for (i=0; i<4; i++) loc.createUnit('bloat',nx,ny,true);
 				} else {
-					//dif - 0..50
 					newLoot(dif/100, Item.L_UNIQ);
 					newLoot(0.1+dif/100, Item.L_ITEM,'sphera');
 					newLoot(0.2+dif/200, Item.L_ITEM,'stealth');
