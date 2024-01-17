@@ -1331,14 +1331,14 @@ package fe.unit
 				} else ctr.keyMagic=false;
 			}
 			//заклинание
-			if (ctr.keyDef && rat==0) { //&& !loc.base
+			if (ctr.keyDef && rat==0) { 
 				if (sats.que.length>0) sats.clearAll();
 				if (World.w.alicorn) currentSpell=invent.spells['sp_mshit'];
 				if (currentSpell) {
 					if (!currentSpell.cast(World.w.celX, World.w.celY)) ctr.keyDef=false;
 					if (!currentSpell.prod) ctr.keyDef=false;
 				} else ctr.keyDef=false;
-			} //else if (currentSpell) currentSpell.active=false;
+			}
 			for (var i=1; i<=World.kolQS; i++) {
 				if (ctr['keySpell'+i]) {
 					if (invent.fav[World.kolHK*2+i]!=null) {
@@ -1352,7 +1352,7 @@ package fe.unit
 				}
 			}
 			//спутник
-			if (ctr.keyPet) { //&& !loc.base
+			if (ctr.keyPet) { 
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
@@ -1507,12 +1507,11 @@ package fe.unit
 				maxSpeed=sitSpeed;
 			}
 			porog=0;
-			porog_jump=0;//(dy>=0)?5:0;
+			porog_jump=0;
 			
 			if ((isRun || ctr.keyBeUp)&& jumpNumb==0) porog_jump=10;
 
 			//ускорение
-			//trace(diagonRot);
 			if (!isLaz) {
 				if (keyLeft && !keyRight) {
 					storona=-1;
@@ -1557,11 +1556,9 @@ package fe.unit
 					dash_t=dash_maxt;
 					jumpNumb=2;
 					dJump=false;
-					//if (!loc.levitOn) {
-						stay=false;
-						jumpp=0;
-						ctr.keyJump=false;
-					//}
+					stay=false;
+					jumpp=0;
+					ctr.keyJump=false;
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
 				ctr.keyDubRight=ctr.keyDubLeft=ctr.keyDash=false;
@@ -2469,20 +2466,24 @@ package fe.unit
 //
 //**************************************************************************************************************************
 		
-		public function anim(dey:String=null, ok:Boolean=false) {
-			if (dey==null || dey=='') {
+		public function anim(dey:String = null, ok:Boolean = false)
+		{
+			if (dey == null || dey == '')
+			{
 				animOff=false;
 				return;
 			}
 			vis.osn.gotoAndStop(dey);
-			var f=vis.osn.body.totalFrames;
+			var f = vis.osn.body.totalFrames;
 			if (ok) {
-				animOff=true;
+				animOff = true;
 				vis.osn.body.gotoAndStop(f);
-			} else {
-				animOff=false;
-				work=dey;
-				t_work=f;
+			} 
+			else
+			{
+				animOff = false;
+				work = dey;
+				t_work = f;
 			}
 			otherVisual();
 		}
@@ -2495,22 +2496,56 @@ package fe.unit
 		}
 		
 		public function setFilters():void {
-			var arr:Array;
-			if (f_levit) {
-				if (levit>=1 && fracLevit!=fraction && levitFilter2) arr=[levitFilter2];
-				else if (levit==1 && fracLevit==fraction || dJump && levit<2) arr=[levitFilter1];
-				else arr=[];
+			var arr:Array = [];
+			if (f_levit)
+			{
+				if (levit>=1 && fracLevit!=fraction && levitFilter2) arr = [levitFilter2];
+				else if (levit==1 && fracLevit==fraction || dJump && levit<2) arr = [levitFilter1];
+
 			}
-			else arr=[];
 			if (f_die) arr.push(dieFilter);
 			if (f_shad) arr.push(shadowFilter);
 			if (f_dash) arr.push(dashFilter);
 			if (f_stealth) arr.push(stealthFilter);
-			if (f_stealth) vis.alpha=0.5; else vis.alpha=1;
-			if (f_inv) arr.push(invulnerFilter1,invulnerFilter2);
+
+			if (f_stealth) vis.alpha=0.5;
+			else vis.alpha=1;
+
+			if (f_inv) arr.push(invulnerFilter1, invulnerFilter2);
 			vis.osn.filters=arr;
 		}
 
+//##########################################################################################################
+//		Player Unit cheatsheet for 'vis.osn', the main player sprite.
+//		Animation states have both a frame number and alias.
+//		//	Num	:	Alias
+//		//###################
+//		//	 1	:	Stay
+//		//	 2	:	Trot
+//		//	 3	:	Trot Up
+//		//	 4	:	Trot Down
+//		//	 5	:	Run
+//		//	 6	:	Polz (Crawl)
+//		//	 7	:	Walk
+//		//	 8	:	Jump
+//		//	 9	:	Sitjump (Jump from crouched)
+//		//	10	:	Laz (Climb Ladder)
+//		//	11	:	Plav (Swim)
+//		//	12	:	Punch
+//		//	13	:	Kick
+//		//	14	:	Die
+//		//	15	:	Die (Alicorn version)
+//		//	16	:	Derg (Panic, running on fire)
+//		//	17	:	Res (Ressurect, stands up from ground)
+//		//	18	:	Lurk1
+//		//	19	:	Lurk2 (Hide behind object in background)
+//		//	20	:	Lurk3 (Hop behind box)
+//		//	21	:	Pinok (???)
+//		//	22	:	Levit (Levitation effect)
+//		//	23	:	Free1 (Idle animation)
+//		//	24	:	Free2 (Idle animation)
+//		//	25	:	Free3 (Idle animation)
+//		//	26	:	Roll (Switch from running, to rolling, to crawling)
 //##########################################################################################################
 
 		public override function animate()

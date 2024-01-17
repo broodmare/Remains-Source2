@@ -9,6 +9,16 @@ package fe.unit
 	
 	// Cheat sheet
 	// Puha = The gun part of the turret, not the base.
+	//	Num	:	Gun Type
+	//###################
+	//	 1	:	Light
+	//	 2	:	Red Barrel
+	//	 3	:	Plasma
+	//	 4	:	Fire
+	//	 5	:	Radar dish
+	//	 6	:	Chunky green
+	//	 7	:	Lightning
+	//	10	:	Chunky plasma
 	public class UnitTurret extends Unit
 	{
 		public var tr:int;
@@ -100,17 +110,20 @@ package fe.unit
 			super.putLoc(nloc,nx,ny);
 			if (mxml) inter=new Interact(this,null,mxml,null);
 			// Turret aiming constraints
-			if (turrettip==0 || turrettip==4) {
+			if (turrettip == 0 || turrettip == 4)
+			{
 				currentWeapon.fixRot=1;
 				aRot=[30,150];
 				if (turrettip==4) {
 					period=80;
 					watchDrot=0.05;
 				}
-			} else if (turrettip==1){
+			}
+			else if (turrettip==1){
 				aRot=[-15,-165];
 				watchDrot=0.1;
-			} else if (turrettip==2 || turrettip==5){
+			}
+			else if (turrettip==2 || turrettip==5){
 				aRot=[45,135,-135,-45];
 				vKonus=Math.PI/2;
 				if (loc.mirror) {
@@ -121,12 +134,17 @@ package fe.unit
 				if (angle=='up') aRot=[-45,-135];
 				if (angle=='left') aRot=[135,-135];
 				if (angle=='right') aRot=[45,-45];
-			} else if (turrettip==3){
-				if (storona>0) {
+			}
+			else if (turrettip==3)
+			{
+				if (storona>0)
+				{
 					aRot=[-15, 15];
 					currentWeapon.fixRot=2;
 					vAngle=0;
-				} else {
+				}
+				else
+				{
 					aRot=[-165,165]
 					currentWeapon.fixRot=3;
 					vAngle=Math.PI;
