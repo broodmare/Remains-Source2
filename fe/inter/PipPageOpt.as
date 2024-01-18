@@ -270,7 +270,7 @@ package fe.inter
 			super.setStatus(flop);
 		}
 
-		override protected function updateLang():void
+		override public function updateLang():void
 		{
 			vis.butOk.text.text=Res.pipText('accept');
 			vis.butDef.text.text=Res.pipText('default');

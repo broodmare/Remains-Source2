@@ -146,7 +146,7 @@ package fe.inter
 			return "<span class = " + "'" + color + "'" + ">" + number.toString() + "</span>";
 		}
 
-		protected function updateLang():void
+		public function updateLang():void
 		{
 			for (var i:int = 1; i <= 5; i++) 
 			{
