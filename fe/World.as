@@ -196,6 +196,7 @@ package  fe
 		
 		//public var ressoundURL:String;
 		public var langURL:String;
+		public var langFolder:String;
 		
 		//загрузка, сейвы, конфиг
 		public var configObj:SharedObject;
@@ -240,13 +241,14 @@ package  fe
 			playerMode = Capabilities.playerType;
 			
 			//файлы
-			soundPath='';
-			musicPath='Music/';
-			textureURL='texture.swf';
-			spriteURL='sprite.swf';
-			sprite1URL='sprite1.swf';
-			langURL='lang.xml';
-			landPath='Rooms/';
+			soundPath = '';
+			musicPath = 'Music/';
+			textureURL = 'texture.swf';
+			spriteURL = 'sprite.swf';
+			sprite1URL = 'sprite1.swf';
+			langURL = 'Modules/core/Language/lang.xml';
+			langFolder = 'Modules/core/Language/'
+			landPath = 'Rooms/';
 			if (testMode) fileVersion=Math.random()*100000;
 			
 			main=nmain;
@@ -351,6 +353,8 @@ package  fe
 		{
 			if (err) // Failsafe if lang.xml couldn't be loaded correctly.
 			{
+				load_log += 'ERROR: Initializing languages failed, using failsafes!.\n';
+
 				langsXML = 
 				<all>
 					<lang id='ru' file='text_ru.xml'>Русский</lang>
@@ -376,6 +380,7 @@ package  fe
 			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
 			if (currentLanguage != userDefaultLanguage) 					// If the current language is different from the default, load the user's preferred language as well.
 			{
+				var languageURL:String = langFolder + currentLanguage;
 				tl = new TextLoader(langs[currentLanguage].file);
 			} 
 			else 

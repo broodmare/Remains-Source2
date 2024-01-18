@@ -27,7 +27,7 @@ package fe
 		public function TextLoader(filePath:String, isDefault:Boolean = false)
 		{
 			defaultLanguage = isDefault;
-			filepath = filePath;
+			filepath = 'Modules/core/Language/' + filePath;
 
 			loader_text = new URLLoader();
 			var request:URLRequest = new URLRequest(filepath);
@@ -35,6 +35,8 @@ package fe
 			loader_text.addEventListener(Event.COMPLETE, onCompleteLoadText);
 			loader_text.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
 			loader_text.addEventListener(ProgressEvent.PROGRESS, funProgress);
+			
+			World.w.load_log += 'Attempting to load language file from: ' + filepath + '.\n';
 
 			loader_text.load(request); 
 		}
