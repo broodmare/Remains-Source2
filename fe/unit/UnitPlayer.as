@@ -171,9 +171,6 @@ package fe.unit
 		public var visSel:Boolean=false; //селектор оружия
 		public var animOff:Boolean=false;
 
-		private var mainAnimation:MovieClip;
-		private var subAnimation:MovieClip;
-
 		private function testFunction():void
 		{
 			if (World.w.chitOn)
@@ -192,14 +189,10 @@ package fe.unit
 			id='littlepip';
 			vis=new visualPlayer();
 
-			mainAnimation = vis.osn;
-			subAnimation = vis.osn.body;
-
-			subAnimation.pip2.visible = false;
-			mainAnimation.stop();
-			
+			vis.osn.body.pip2.visible=false;
+			vis.osn.stop();
 			vis.inh.visible=vis.cryst.visible=vis.fetter.visible=vis.rat.visible=false;
-			reloadbar = new reloadBar();
+			reloadbar=new reloadBar();
 			reloadbar.visible=false;
 			vis.addChild(reloadbar);
 			if (vis.shit) vis.shit.visible=false;
@@ -208,13 +201,13 @@ package fe.unit
 			id_replic='pip';
 			
 			getXmlParam();
-			walkSpeed=osnSpeed=maxSpeed;
-			plavSpeed=walkSpeed*0.75;
-			sitSpeed=walkSpeed*0.5;
-			lazSpeed=walkSpeed*0.75;
-			runSpeed=walkSpeed*2;
+			walkSpeed = osnSpeed = maxSpeed;
+			plavSpeed = walkSpeed * 0.75;
+			sitSpeed = walkSpeed * 0.5;
+			lazSpeed = walkSpeed * 0.75;
+			runSpeed = walkSpeed * 2;
 			
-			critCh=0.05;
+			critCh = 0.05;
 			
 			brake=2;
 			maxjumpp=8, plavdy=accel*0.5, levidy=accel*0.25;
@@ -327,8 +320,8 @@ package fe.unit
 			f_stealth=stealthMult<1;
 			f_die=f_levit=f_dash=f_inv=false;
 			setFilters();
-			mainAnimation.alpha=1;
-			mainAnimation.transform.colorTransform=new ColorTransform();
+			vis.osn.alpha=1;
+			vis.osn.transform.colorTransform=new ColorTransform();
 		}
 		
 		public function setSpeeds() {
@@ -2131,8 +2124,8 @@ package fe.unit
 					weaponY=Y-scY*0.5;
 			}
 			try {
-				var p:Point = new Point(subAnimation.head.morda.konec.x, subAnimation.head.morda.konec.y);
-				p = subAnimation.head.morda.localToGlobal(p);
+				var p:Point=new Point(vis.osn.body.head.morda.konec.x,vis.osn.body.head.morda.konec.y);
+				p=vis.osn.body.head.morda.localToGlobal(p);
 				p=vis.parent.globalToLocal(p);
 				magicX=p.x;
 				magicY=p.y;
@@ -2431,7 +2424,7 @@ package fe.unit
 			scX=ratX;
 			scY=ratY;
 			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
-			mainAnimation.visible=false;
+			vis.osn.visible=false;
 			vis.rat.visible=true;
 			newPart('black',30);
 			rat=1;
@@ -2456,7 +2449,7 @@ package fe.unit
 					X1=X-scX/2, X2=X+scX/2;
 				}
 			}
-			mainAnimation.visible=true;
+			vis.osn.visible=true;
 			vis.rat.visible=false;
 			newPart('black',30);
 			rat=0;
@@ -2477,11 +2470,11 @@ package fe.unit
 				animOff=false;
 				return;
 			}
-			mainAnimation.gotoAndStop(dey);
-			var f = subAnimation.totalFrames;
+			vis.osn.gotoAndStop(dey);
+			var f = vis.osn.body.totalFrames;
 			if (ok) {
 				animOff = true;
-				subAnimation.gotoAndStop(f);
+				vis.osn.body.gotoAndStop(f);
 			} 
 			else
 			{
@@ -2516,11 +2509,11 @@ package fe.unit
 			else vis.alpha=1;
 
 			if (f_inv) arr.push(invulnerFilter1, invulnerFilter2);
-			mainAnimation.filters=arr;
+			vis.osn.filters=arr;
 		}
 
 //##########################################################################################################
-//		Player Unit cheatsheet for 'mainAnimation', the main player sprite.
+//		Player Unit cheatsheet for 'vis.osn', the main player sprite.
 //		OSN Animation states have both a frame number and alias.
 //		//	Num	:	Alias
 //		//###################
@@ -2570,13 +2563,13 @@ package fe.unit
 		public override function animate()
 		{
 			if (animOff) return;
-			mainAnimation.y=0;
-			mainAnimation.rotation=0;
+			vis.osn.y=0;
+			vis.osn.rotation=0;
 			if (t_work && work=='die') {
 				reloadbar.visible=false;
 				if (!World.w.alicorn) {
 					if (animState!='die') {
-						mainAnimation.gotoAndStop('die');
+						vis.osn.gotoAndStop('die');
 						animState='die';
 					}
 					if (t_work<170 && t_work>120) {
@@ -2584,27 +2577,27 @@ package fe.unit
 						f_die=true;
 						dieTransform.redOffset=(170-t_work)*2;
 						dieTransform.blueOffset=(170-t_work)*3;
-						mainAnimation.transform.colorTransform=dieTransform;
+						vis.osn.transform.colorTransform=dieTransform;
 						Emitter.emit('die_spark',loc,X+Math.random()*120-60+20*storona,Y);
 					} else if (t_work<120 && t_work>70) {
-						mainAnimation.alpha=(t_work-70)/50;
+						vis.osn.alpha=(t_work-70)/50;
 					}
 				} else {
 					if (animState!='die') {
-						mainAnimation.gotoAndStop('dieali');
+						vis.osn.gotoAndStop('dieali');
 						animState='die';
 					}
 					if (t_work<200 && t_work>140) {
 						f_die=true;
 						dieTransform.redOffset=(200-t_work)*4;
 						dieTransform.blueOffset=(200-t_work);
-						mainAnimation.transform.colorTransform=dieTransform;
+						vis.osn.transform.colorTransform=dieTransform;
 						newPart('redray');
 					}
 					if (t_work==140) {
 						newPart('bloodblast');
 						Snd.ps('bale_e');
-						mainAnimation.alpha=0;
+						vis.osn.alpha=0;
 					}
 				}
 				setFilters();
@@ -2615,8 +2608,8 @@ package fe.unit
 			{
 				if (animState != 'lurk')
 				{
-					mainAnimation.gotoAndStop('lurk' + lurkTip);
-					subAnimation.gotoAndPlay(1);
+					vis.osn.gotoAndStop('lurk' + lurkTip);
+					vis.osn.body.gotoAndPlay(1);
 					animState = 'lurk';
 				}
 				setFilters();
@@ -2627,7 +2620,7 @@ package fe.unit
 			{
 				if (animState!='unlurk')
 				{
-					subAnimation.gotoAndPlay('un');
+					vis.osn.body.gotoAndPlay('un');
 					animState='unlurk';
 
 				}
@@ -2639,7 +2632,7 @@ package fe.unit
 			{
 				if (animState!='res')
 				{
-					mainAnimation.gotoAndStop('res');
+					vis.osn.gotoAndStop('res');
 					animState='res';
 				}
 				otherVisual();
@@ -2647,7 +2640,7 @@ package fe.unit
 			}
 			if (lurked)
 			{
-				subAnimation.head.morda.eye.gotoAndStop(1);
+				vis.osn.body.head.morda.eye.gotoAndStop(1);
 				otherVisual();
 				return;
 			}
@@ -2663,8 +2656,8 @@ package fe.unit
 			if (t_work && work=='punch') freeAnim=0;
 			if (t_work && work=='punch' && animState!='punch')
 			{
-				if (!ctr.keyRun) mainAnimation.gotoAndStop('punch');
-				else mainAnimation.gotoAndStop('kick');
+				if (!ctr.keyRun) vis.osn.gotoAndStop('punch');
+				else vis.osn.gotoAndStop('kick');
 				animState='punch';
 			}
 			if (t_work==0 && animState=='punch') {
@@ -2682,12 +2675,12 @@ package fe.unit
 					{
 						freeAnim = 0;
 
-						if (mainAnimation.currentFrameLabel != 'stay')		// ANIMATION IS SET TO 'STAY' EVERY FRAME
+						if (vis.osn.currentFrameLabel != 'stay')		// ANIMATION IS SET TO 'STAY' EVERY FRAME
 						{
-							mainAnimation.gotoAndStop('stay');
-							if (mainAnimation.currentFrameLabel == 'jump' || mainAnimation.currentFrameLabel == 'levit')
+							vis.osn.gotoAndStop('stay');
+							if (vis.osn.currentFrameLabel == 'jump' || vis.osn.currentFrameLabel == 'levit')
 							{
-								subAnimation.gotoAndPlay('jump');
+								vis.osn.body.gotoAndPlay('jump');
 							}
 						}
 
@@ -2699,20 +2692,20 @@ package fe.unit
 								if (animState!='downjump')
 								{
 									animState='downjump';
-									subAnimation.gotoAndPlay('downjump');
+									vis.osn.body.gotoAndPlay('downjump');
 								}
 							}
 							if (animState!='down' && animState!='downjump')
 							{
 								if (animState=='polz' || cframe!=2)
 								{
-									subAnimation.gotoAndStop(cframe);
+									vis.osn.body.gotoAndStop(cframe);
 								}
 								else if (animState!='roll')
 								{
-									subAnimation.gotoAndPlay('down');
+									vis.osn.body.gotoAndPlay('down');
 								}
-								else subAnimation.gotoAndStop('sit');
+								else vis.osn.body.gotoAndStop('sit');
 									animState='down';
 							}
 							//если стоим
@@ -2721,25 +2714,25 @@ package fe.unit
 						{
 							if (animState=='down')
 							{
-								subAnimation.gotoAndPlay('up');
+								vis.osn.body.gotoAndPlay('up');
 								animState='up';
 							}
 							if (animState!='up' || cframe!=1) {
-								if (subAnimation.currentFrame < 70) subAnimation.gotoAndStop(cframe);
+								if (vis.osn.body.currentFrame < 70) vis.osn.body.gotoAndStop(cframe);
 								animState='';
 							}
 						}
-						if (subAnimation.currentFrame!=cframe && !(subAnimation.currentFrame>=3 && subAnimation.currentFrame<=26 || subAnimation.currentFrame>70)) subAnimation.gotoAndStop(cframe);
-						if (mainAnimation.currentFrameLabel=='stay' && cframe==1)
+						if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) vis.osn.body.gotoAndStop(cframe);
+						if (vis.osn.currentFrameLabel=='stay' && cframe==1)
 						{
 							if (isrnd(0.01)) {
 								freeAnim=Math.floor(Math.random()*3) + 1;
-								mainAnimation.gotoAndStop('free' + freeAnim);
-								subAnimation.play();
+								vis.osn.gotoAndStop('free' + freeAnim);
+								vis.osn.body.play();
 							}
 						}
 					}
-					else if (subAnimation.currentFrame>=49) freeAnim=0;
+					else if (vis.osn.body.currentFrame>=49) freeAnim=0;
 				}
 				else if (diagon!=0 && dx==0)
 				{
@@ -2750,8 +2743,8 @@ package fe.unit
 						if (animState!='diag_up')
 						{
 							animState='diag_up';
-							mainAnimation.gotoAndStop('trot_up');
-							subAnimation.gotoAndStop(1);
+							vis.osn.gotoAndStop('trot_up');
+							vis.osn.body.gotoAndStop(1);
 						}
 					}
 					else
@@ -2759,8 +2752,8 @@ package fe.unit
 						if (animState!='diag_down')
 						{
 							animState='diag_down';
-							mainAnimation.gotoAndStop('trot_down');
-							subAnimation.gotoAndStop(1);
+							vis.osn.gotoAndStop('trot_down');
+							vis.osn.body.gotoAndStop(1);
 						}
 					}
 				}
@@ -2771,14 +2764,14 @@ package fe.unit
 						if (diagon*storona>0) {
 							if (animState!='trot_up') {
 								animState='trot_up';
-								mainAnimation.gotoAndStop('trot_up');
-								subAnimation.play();
+								vis.osn.gotoAndStop('trot_up');
+								vis.osn.body.play();
 							}
 						} else {
 							if (animState!='trot_down') {
 								animState='trot_down';
-								mainAnimation.gotoAndStop('trot_down');
-								subAnimation.play();
+								vis.osn.gotoAndStop('trot_down');
+								vis.osn.body.play();
 							}
 						}
 						sndStep(t_walk,1);
@@ -2788,27 +2781,27 @@ package fe.unit
 					{
 						if (isSit)
 						{
-							if (animState=='roll' && subAnimation.currentFrame>=15) {
-								mainAnimation.gotoAndStop('polz');
+							if (animState=='roll' && vis.osn.body.currentFrame>=15) {
+								vis.osn.gotoAndStop('polz');
 								animState='polz';
 							}
 							if (animState!='polz' && animState!='roll') {
 								if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight))) {
-									mainAnimation.gotoAndStop('roll');
+									vis.osn.gotoAndStop('roll');
 									animState='roll';
 								} else {
-									mainAnimation.gotoAndStop('polz');
+									vis.osn.gotoAndStop('polz');
 									animState='polz';
 								}
-								subAnimation.play();
+								vis.osn.body.play();
 							}
 						}
 						else if (maxSpeed<5) {
 							sndStep(t_walk,4);
 							t_walk++;
 							if (animState!='walk') {
-								mainAnimation.gotoAndStop('walk');
-								subAnimation.play();
+								vis.osn.gotoAndStop('walk');
+								vis.osn.body.play();
 								animState='walk';
 							}
 						}
@@ -2816,8 +2809,8 @@ package fe.unit
 							sndStep(t_walk,2);
 							t_walk++;
 							if (animState!='run') {
-								mainAnimation.gotoAndStop('run');
-								subAnimation.play();
+								vis.osn.gotoAndStop('run');
+								vis.osn.body.play();
 								animState='run';
 							}
 						}
@@ -2827,8 +2820,8 @@ package fe.unit
 							t_walk++;
 							if (animState!='trot')
 							{
-								mainAnimation.gotoAndStop('trot');
-								subAnimation.play();
+								vis.osn.gotoAndStop('trot');
+								vis.osn.body.play();
 								animState='trot';
 							}
 						}
@@ -2840,33 +2833,33 @@ package fe.unit
 			{
 				freeAnim=0;
 				if (animState!='laz') {
-					mainAnimation.gotoAndStop('laz');
+					vis.osn.gotoAndStop('laz');
 					animState='laz';
 				}
-				if (dy==0) subAnimation.gotoAndStop(1);
+				if (dy==0) vis.osn.body.gotoAndStop(1);
 				else
 				{
-					cframe=subAnimation.currentFrame;
+					cframe=vis.osn.body.currentFrame;
 					sndStep(cframe,3);
 					if (dy<0)
 					{
-						if (cframe<=12) subAnimation.gotoAndStop(cframe+1);
-						else subAnimation.gotoAndStop(2);
+						if (cframe<=12) vis.osn.body.gotoAndStop(cframe+1);
+						else vis.osn.body.gotoAndStop(2);
 					}
 					else
 					{
-						if (cframe>=3) subAnimation.gotoAndStop(cframe-1);
-						else subAnimation.gotoAndStop(13);
+						if (cframe>=3) vis.osn.body.gotoAndStop(cframe-1);
+						else vis.osn.body.gotoAndStop(13);
 					}
 				}
 			//плавание
 			} else if (isPlav)
 			{
 				freeAnim=0;
-				mainAnimation.rotation=dy*1.5;
+				vis.osn.rotation=dy*1.5;
 				if (animState!='plav') {
 					animState='plav';
-					mainAnimation.gotoAndStop('plav');
+					vis.osn.gotoAndStop('plav');
 				}
 			//в воздухе
 			}
@@ -2875,34 +2868,34 @@ package fe.unit
 				freeAnim=0;
 				if (animState!='jump' && animState!='levit') {
 					if (aJump>0) {
-						mainAnimation.gotoAndStop('jump');
+						vis.osn.gotoAndStop('jump');
 						animState='jump';
 					} else {
-						mainAnimation.gotoAndStop('pinok');
+						vis.osn.gotoAndStop('pinok');
 						animState='pinok';
 					}
 				}
 				if (animState=='pinok' && isFly) {
-					mainAnimation.gotoAndStop('jump');
+					vis.osn.gotoAndStop('jump');
 					animState='jump';
 				}
 				if (levit==1 && animState!='levit') {	//начать левитировать
-					if (aJump>0 && subAnimation.currentFrame>=14 && subAnimation.currentFrame<=18) {
+					if (aJump>0 && vis.osn.body.currentFrame>=14 && vis.osn.body.currentFrame<=18) {
 						animState='levit';
-						mainAnimation.gotoAndStop('levit');
+						vis.osn.gotoAndStop('levit');
 					}
-					if (aJump==0 && subAnimation.currentFrame>=10 && subAnimation.currentFrame<=22) {
+					if (aJump==0 && vis.osn.body.currentFrame>=10 && vis.osn.body.currentFrame<=22) {
 						animState='levit';
-						mainAnimation.gotoAndStop('levit');
-						subAnimation.gotoAndPlay(51);
+						vis.osn.gotoAndStop('levit');
+						vis.osn.body.gotoAndPlay(51);
 					}
 				}
 				if (levit==0 && animState=='levit') {	//перестать левитировать
-					mainAnimation.gotoAndStop('levit');
-					if (subAnimation.currentFrame<66) subAnimation.gotoAndPlay(67);
+					vis.osn.gotoAndStop('levit');
+					if (vis.osn.body.currentFrame<66) vis.osn.body.gotoAndPlay(67);
 				}
 				if (levit==1 && animState=='levit') {
-					if (subAnimation.currentFrame>66) subAnimation.gotoAndPlay(17);
+					if (vis.osn.body.currentFrame>66) vis.osn.body.gotoAndPlay(17);
 				} else if (animState!='levit') {
 					if (aJump>0) {
 						cframe=Math.round(16+dy);
@@ -2919,12 +2912,12 @@ package fe.unit
 							if (cframe<1) cframe=1;
 						}
 					}
-					subAnimation.gotoAndStop(cframe);
+					vis.osn.body.gotoAndStop(cframe);
 				}
 			}
 
 			//поворот головы
-			if (subAnimation.head.morda)
+			if (vis.osn.body.head.morda)
 			{
 				var drot:int=3;
 				if (lurked) headR=25;
@@ -2944,7 +2937,7 @@ package fe.unit
 				if (isNaN(headRA)) headRA=0;
 				if (headRA>55) headRA=55;
 				if (headRA<-35) headRA=-35;
-				subAnimation.head.morda.rotation=headRA;
+				vis.osn.body.head.morda.rotation=headRA;
 				headRO=weaponR;
 			}
 			//самолевитация
@@ -2969,24 +2962,24 @@ package fe.unit
 			}
 			else dashFilter.blurX=0;
 			otherVisual();
-			if ((shok>0 || runForever>0 || attackForever>0) && subAnimation.head.morda.eye.currentFrame==1)
+			if ((shok>0 || runForever>0 || attackForever>0) && vis.osn.body.head.morda.eye.currentFrame==1)
 			{
-				subAnimation.head.morda.eye.gotoAndStop(2);
+				vis.osn.body.head.morda.eye.gotoAndStop(2);
 			}
-			if (shok==0 && runForever<=0 && attackForever<=0 && subAnimation.head.morda.eye.currentFrame==2 || klip==1)
+			if (shok==0 && runForever<=0 && attackForever<=0 && vis.osn.body.head.morda.eye.currentFrame==2 || klip==1)
 			{
-				subAnimation.head.morda.eye.gotoAndStop(1);
+				vis.osn.body.head.morda.eye.gotoAndStop(1);
 			}
-			if (klip==5 && subAnimation.head.morda.eye.currentFrame==1)
+			if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1)
 			{
-				subAnimation.head.morda.eye.gotoAndStop(3);
+				vis.osn.body.head.morda.eye.gotoAndStop(3);
 			}
-			if (subAnimation.head.morda.eye.eye && klip%10==3 && isrnd(0.2))
+			if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2))
 			{
-				subAnimation.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
-				if (subAnimation.head.morda.eye.eye.zrak.x<-20) subAnimation.head.morda.eye.eye.zrak.x=-20;
-				if (subAnimation.head.morda.eye.eye.zrak.x>-11) subAnimation.head.morda.eye.eye.zrak.x=-11;
-				subAnimation.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
+				vis.osn.body.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
+				if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) vis.osn.body.head.morda.eye.eye.zrak.x=-20;
+				if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) vis.osn.body.head.morda.eye.eye.zrak.x=-11;
+				vis.osn.body.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
 			}
 		}
 
@@ -2994,7 +2987,7 @@ package fe.unit
 		
 		public function stopAnim():void
 		{
-			subAnimation.stop();
+			vis.osn.body.stop();
 		}
 		
 		private function getStayFrame():int
@@ -3044,65 +3037,65 @@ package fe.unit
 				if (reloadbar.visible) reloadbar.visible=false;
 			}
 			//волосы
-			hair=subAnimation.head.morda.hair;
+			hair=vis.osn.body.head.morda.hair;
 			if (hair) {
 				if (hairY!=-1000) {
-					hairDY+=((Y/5+subAnimation.head.y*4-subAnimation.head.morda.rotation)-hairY)/4;
+					hairDY+=((Y/5+vis.osn.body.head.y*4-vis.osn.body.head.morda.rotation)-hairY)/4;
 					hairR+=hairDY;
 					hairDY-=hairR/4;
 					hairDY*=0.8;
 					if (hairR>8) hairR=8;
 					if (hairR<-8) hairR=-8;
 				}
-				hairY=Y/5+subAnimation.head.y*4-subAnimation.head.morda.rotation;
+				hairY=Y/5+vis.osn.body.head.y*4-vis.osn.body.head.morda.rotation;
 				hair.rotation=hairR;
-				tail=subAnimation.tail.h0;
+				tail=vis.osn.body.tail.h0;
 				if (tail) tail.rotation=-hairR;
-				tail=subAnimation.tail.h1;
+				tail=vis.osn.body.tail.h1;
 				if (tail) tail.rotation=-hairR;
 			}
 			//пип
 			if (vis.scaleX>0) {
-				subAnimation.pip1.visible=true;
-				subAnimation.pip2.visible=false;
-				if (subAnimation.frleg3) {
-					subAnimation.pip1.x=subAnimation.frleg3.x;
-					subAnimation.pip1.y=subAnimation.frleg3.y;
-					subAnimation.pip1.rotation=subAnimation.frleg3.rotation;
+				vis.osn.body.pip1.visible=true;
+				vis.osn.body.pip2.visible=false;
+				if (vis.osn.body.frleg3) {
+					vis.osn.body.pip1.x=vis.osn.body.frleg3.x;
+					vis.osn.body.pip1.y=vis.osn.body.frleg3.y;
+					vis.osn.body.pip1.rotation=vis.osn.body.frleg3.rotation;
 				}
 			} else {
-				subAnimation.pip2.visible=true;
-				subAnimation.pip1.visible=false;
-				if (subAnimation.flleg3) {
-					subAnimation.pip2.x=subAnimation.flleg3.x;
-					subAnimation.pip2.y=subAnimation.flleg3.y;
-					subAnimation.pip2.rotation=subAnimation.flleg3.rotation;
+				vis.osn.body.pip2.visible=true;
+				vis.osn.body.pip1.visible=false;
+				if (vis.osn.body.flleg3) {
+					vis.osn.body.pip2.x=vis.osn.body.flleg3.x;
+					vis.osn.body.pip2.y=vis.osn.body.flleg3.y;
+					vis.osn.body.pip2.rotation=vis.osn.body.flleg3.rotation;
 				}
 			}
 			//магия
-			subAnimation.head.morda.magic.alpha=aMC/100;
-			subAnimation.head.morda.magic.visible=subAnimation.head.morda.magic.alpha>0;
+			vis.osn.body.head.morda.magic.alpha=aMC/100;
+			vis.osn.body.head.morda.magic.visible=vis.osn.body.head.morda.magic.alpha>0;
 			//крылья
 			if (pers.ableFly) {
-				if (subAnimation.rwing) subAnimation.rwing.visible=true;
-				if (subAnimation.lwing) subAnimation.lwing.visible=true;
+				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=true;
+				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=true;
 				if (World.w.alicorn || currentArmor && currentArmor.ableFly) {
 					try {
-						if (subAnimation.rwing.currentFrame!=11) subAnimation.rwing.gotoAndStop(11);
-						if (subAnimation.lwing.currentFrame!=11) subAnimation.lwing.gotoAndStop(11);
-						subAnimation.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
-						subAnimation.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
+						if (vis.osn.body.rwing.currentFrame!=11) vis.osn.body.rwing.gotoAndStop(11);
+						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
+						vis.osn.body.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
+						vis.osn.body.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
 					} catch (err) {}
 				} else if (isFly && !stay && !isPlav && !isLaz) {
-					if (subAnimation.rwing && subAnimation.rwing.currentFrame==1) subAnimation.rwing.gotoAndPlay(2);
-					if (subAnimation.lwing && subAnimation.lwing.currentFrame==1) subAnimation.lwing.gotoAndPlay(2);
+					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) vis.osn.body.rwing.gotoAndPlay(2);
+					if (vis.osn.body.lwing && vis.osn.body.lwing.currentFrame==1) vis.osn.body.lwing.gotoAndPlay(2);
 				} else {
-					if (subAnimation.rwing) subAnimation.rwing.gotoAndStop(1);
-					if (subAnimation.lwing) subAnimation.lwing.gotoAndStop(1);
+					if (vis.osn.body.rwing) vis.osn.body.rwing.gotoAndStop(1);
+					if (vis.osn.body.lwing) vis.osn.body.lwing.gotoAndStop(1);
 				}
 			} else {
-				if (subAnimation.rwing) subAnimation.rwing.visible=false;
-				if (subAnimation.lwing) subAnimation.lwing.visible=false;
+				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=false;
+				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=false;
 			}
 			//щит
 			if (vis.shit && !vis.shit.visible && shithp>0) {
@@ -3125,11 +3118,10 @@ package fe.unit
 			}
 		}
 		
-		public function refreshVis():void
-		{
-			var dez = mainAnimation.currentFrameLabel;
-			mainAnimation.gotoAndStop('nope');
-			mainAnimation.gotoAndStop(dez);
+		public function refreshVis():void {
+			var dez=vis.osn.currentFrameLabel;
+			vis.osn.gotoAndStop('nope');
+			vis.osn.gotoAndStop(dez);
 			teleColor=World.w.app.cMagic;
 			levitFilter1.color=teleColor;
 			teleFilter.color=teleColor;
