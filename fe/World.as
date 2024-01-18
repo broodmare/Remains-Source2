@@ -16,7 +16,6 @@ package  fe
 	import flash.system.System;
 	
 	import fe.loc.*;
-	import fe.rooms.Rooms;
 	import fe.graph.Grafon;
 	import fe.graph.Emitter;
 	import fe.inter.*;
@@ -68,7 +67,7 @@ package  fe
 		//Компоненты локаций
 		public var land:Land;		//текущая местность
 		public var loc:Location;	//текущая локация
-		public var rooms:Rooms;
+		public var rooms:Array;
 		
 		//Рабочие переменные
 		public var onConsol:Boolean=false;	//Консоль активна
