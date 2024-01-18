@@ -660,7 +660,6 @@ package  fe
 				pip.onoff(-1);
 				//войти в текущую местность
 				game.enterToCurLand();//!!!!
-				game.beginGame();
 				
 				Snd.off=false;
 				gui.setAll();
@@ -722,7 +721,6 @@ package  fe
 				time___metr('Персонаж');
 				//войти в текущую местность
 				game.enterToCurLand();//!!!!
-				game.beginGame();
 				log='';
 				Snd.off=false;
 				gui.setAll();
