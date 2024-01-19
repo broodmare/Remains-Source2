@@ -157,6 +157,8 @@ package fe.loc
 
 		private static var tileWidth:int  = Tile.tileX;
 		private static var tileHeight:int = Tile.tileY;
+		private var maxX:int;
+    	private var maxY:int;
 //**************************************************************************************************************************
 //
 //				Создание
@@ -190,6 +192,10 @@ package fe.loc
 			grenades=new Array();
 			bonuses=new Array();
 			maxdy=World.maxdy;
+
+			maxX = spaceX * tileWidth;	//GetAbsTile uses thse values CONSTANTLY, calculating beforehand.
+			maxY = spaceY * tileHeight;
+
 			if (rnd) ramka=1;
 			if (opt) {
 				if (opt.prob) ramka=0;
@@ -203,11 +209,14 @@ package fe.loc
 				if (opt.home) homeStable=true;
 				if (opt.atk) homeAtk=true;
 			}
-			//mirror=true;
+
+
+			
 			for (var i=0; i<kolEn.length; i++) ups[i]=new Array();
 			noHolesPlace=rnd;
 			
 			buildLoc(nroom);
+			
 		}
 
 		// добавить гг в массив юнитов
@@ -1280,44 +1289,54 @@ package fe.loc
 //
 //**************************************************************************************************************************
 		//получить блок
-		public function getTile(nx:int,ny:int):Tile
+		public function getTile(nx:int, ny:int):Tile
 		{
-			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return otstoy;
+			if (nx < 0 || nx >= spaceX || ny < 0 || ny >= spaceY) return otstoy;
 			else return space[nx][ny] as Tile;
 		}
 
+		// Changed Math.floor calls to int
 		public function getAbsTile(nx:int, ny:int):Tile
 		{
-			if (nx < 0 || nx >= spaceX * tileWidth || ny < 0 || ny >= spaceY * tileHeight) return otstoy;
-			else return space[Math.floor(nx / tileWidth)][Math.floor(ny / tileHeight)] as Tile;
+			if (nx < 0 || nx >= maxX || ny < 0 || ny >= maxY) return otstoy;
+			else return space[int(nx / tileWidth)][int(ny / tileHeight)] as Tile;
 		}
 
 		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean
 		{
-			var X1 = X-scX/2, X2=X+scX/2, Y1=Y-scY;
-			for (var i:int = Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++)
+			var X1 = X - scX / 2, X2 = X + scX / 2, Y1 = Y - scY;
+			for (var i:int = int(X1 / Tile.tileX); i <= int(X2 / Tile.tileX); i++)
 			{
-				for (var j:int = Math.floor(Y1/Tile.tileY); j<=Math.floor(Y/Tile.tileY); j++)
+				for (var j:int = int(Y1 / Tile.tileY); j <= int(Y / Tile.tileY); j++)
 				{
-					if (i<0 || i>=spaceX || j<0 || j>=spaceY) continue;
-					if (space[i][j].phis>0) return true;
+					if (i < 0 || i >= spaceX || j < 0 || j >= spaceY) continue;
+					if (space[i][j].phis > 0) return true;
 				}
 			}
 			return false;
 		}
 
 		//попробовать проложить линию. obj - дверь, которую нужно игнорировать
+		// Move as much calculation as possible outside the loop
 		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean
 		{
-			var ndx:Number = cx-nx;
-			var ndy:Number = cy-ny;
-			var div:int = Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			for (var i:int = 1; i<div; i++)
+			var ndx:Number = cx - nx;
+			var ndy:Number = cy - ny;
+			var div:int = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
+
+			var deltaX:Number = ndx / div;
+			var deltaY:Number = ndy / div;
+
+			for (var i:int = 1; i < div; i++)
 			{
-				var t:Tile=World.w.loc.getAbsTile(Math.floor(nx+ndx*i/div),Math.floor(ny+ndy*i/div));
-				if (t.phis==1 && nx+ndx*i/div>=t.phX1 && nx+ndx*i/div<=t.phX2 && ny+ndy*i/div>=t.phY1 && ny+ndy*i/div<=t.phY2)
+				var currentX:Number = nx + deltaX * i;
+				var currentY:Number = ny + deltaY * i;
+
+				var t:Tile = World.w.loc.getAbsTile(int(currentX), int(currentY));
+
+				if (t.phis == 1 && currentX >= t.phX1 && currentX <= t.phX2 && currentY >= t.phY1 && currentY <= t.phY2)
 				{
-					if (obj==null || t.door!=obj) return false;
+					if (obj == null || t.door != obj) return false;
 				}
 			}
 			return true;
@@ -1401,52 +1420,53 @@ package fe.loc
 		}
 		
 		//урон блоку
-		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9):void
+		public function hitTile(t:Tile, hit:int, nx:int, ny:int, tip:int = 9):void
 		{
-			//урон от падения
-			if (tip==100 && hit<=50 && (t.thre>0 || t.indestruct)) return;
-			if (tip==100) tip=4;
-			//стены в локации не разрушаются
-			if (!destroyOn && t.hp>500)
+			var isPhisGreaterThanOrEqualToOne:Boolean = t.phis >= 1;
+			var isHpZeroOrLess:Boolean = t.hp <= 0;
+
+			if (tip == 100 && hit <= 50 && (t.thre > 0 || t.indestruct)) return;
+			if (tip == 100) tip = 4;
+
+			var hitDivHp:Number = hit / t.hp;
+
+			if (!destroyOn && t.hp > 500)
 			{
-				if (active && t.phis==1) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
+				if (active && isPhisGreaterThanOrEqualToOne) grafon.dyrka(nx, ny, tip, t.mat, true, hitDivHp);
 				return;
 			}
-			//был ли нанесён урон блоку
-			if (t.udar(hit))			//удар по блоку, проходит если был нанесён урон
-			{	
-				if (t.hp<=0)			//если блок уничтожен
+			if (!t.udar(hit)) 
+			{
+				if (isPhisGreaterThanOrEqualToOne && active) grafon.dyrka(nx, ny, tip, t.mat, true, hitDivHp);
+				return;
+			}
+			if (isHpZeroOrLess) // Damage was dealt to the block
+			{
+				if (isPhisGreaterThanOrEqualToOne)
 				{
-					if (t.phis>=1)
+					isRebuild = true;
+					if (t.Y < waterLevel)
 					{
-						isRebuild=true;				//изменить конфигурацию локации				
-						if (t.Y<waterLevel)			//пересчитать воду
-						{		
-							recalcTiles.push(t);
-							isRecalc=true;
-						}
+						recalcTiles.push(t);
+						isRecalc = true;
 					}
-					if (t.door) t.door.die(tip);//если это дверь
-					else if (t.phis>=1)			//если обычный твёрдый блок
+				}
+				if (t.door) t.door.die(tip);
+				else if (isPhisGreaterThanOrEqualToOne)
+				{
+					t.die();
+					if (tileSpawn > 0 && Math.random() < tileSpawn)
 					{
-						t.die();
 						try
 						{
-							if (tileSpawn>0 && Math.random()<tileSpawn) enemySpawn(true,true);
+							enemySpawn(true, true);
 						} 
 						catch(err) {}
-						if (active) grafon.tileDie(t,tip);
 					}
-				} 
-				else if (t.phis>=1)			//если не уничтожен, но был нанесён урон
-				{	
-					if (active) grafon.dyrka(nx,ny,tip,t.mat,false,hit/t.hp);
+					if (active) grafon.tileDie(t, tip);
 				}
 			} 
-			else if (t.phis>=1)				//если не было урона
-			{
-				if (active) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
-			}
+			else if (isPhisGreaterThanOrEqualToOne && active) grafon.dyrka(nx, ny, tip, t.mat, false, hitDivHp);
 		}
 		
 		//уничтожить блок
