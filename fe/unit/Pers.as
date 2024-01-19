@@ -73,12 +73,14 @@ package fe.unit
 		public var torsMin:Number=0;
 		public var legsMin:Number=0;
 		public var bloodMin:Number=0;
-		var xml_head:XML;
-		var xml_tors:XML;
-		var xml_legs:XML;
-		var xml_blood:XML;
-		var xml_mana:XML;
 
+		//Cached
+		private static var xml_head:XML		= XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id",  'trauma_head');
+		private static var xml_tors:XML		= XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id",  'trauma_tors');
+		private static var xml_legs:XML		= XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id",  'trauma_legs');
+		private static var xml_blood:XML	= XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_blood');
+		private static var xml_mana:XML		= XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id",  'trauma_mana');
+ 
 		public var manaHP:Number;
 		public var manaSt:int=0;
 		public var manaMin:Number=0;
@@ -292,6 +294,14 @@ package fe.unit
 		public var ad1:int=100, ad2:int=250, ad3:int=500, admax:int=750;
 		
 		public var factor:Array;
+
+		private static var cachedSkillList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "skills", "skill");
+		private static var cachedParamList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+		private static var cachedPerkList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
+		
+		private static var cachedPerks:Object = {};
+		private static var cachedSkills:Object = {};
+		private static var cachedEffs:Object = {};
 		
 		public function Pers(loadObj:Object=null, opt:Object=null)
 		{
@@ -301,14 +311,11 @@ package fe.unit
 			var ndif:int=2;
 			ndif = World.w.game.globalDif;
 
-			var skillList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "skills", "skill")
-			for each (var sk in skillList)
+			for each (var sk:XML in cachedSkillList)
 			{
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
-				if (loadObj==null || loadObj.skills[sk.@id]==null) {
-					skills[sk.@id]=0;
-				}
-				else skills[sk.@id]=loadObj.skills[sk.@id];
+				if (loadObj == null || loadObj.skills[sk.@id] == null) skills[sk.@id] = 0;
+				else skills[sk.@id] = loadObj.skills[sk.@id];
 			}
 			//сложность игры
 			setGlobalDif(ndif);
@@ -379,37 +386,29 @@ package fe.unit
 				}
 			}
 			if (loadObj && loadObj.persName) persName=loadObj.persName;
-			if (loadObj==null && opt && opt.propusk) {
-				perks['levitation']=1;
-			}
-			
-			xml_head = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_head');
-			xml_tors = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_tors');
-			xml_legs = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_legs');
-			xml_blood = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_blood');
-			xml_mana = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", 'trauma_mana');
+			if (loadObj==null && opt && opt.propusk) perks['levitation'] = 1;
 
 			factor = [];
 
-			var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
-			for each (var param in paramList)
+			for each (var param in cachedParamList)
 			{
 				if (param.@f>0 && param.@v.length() && param.@v!='') factor[param.@v] = [];
 			}
-
-			paramList = null; // Manual cleanup.
 		}
 		
-		public function save():Object {
-			var obj:Object=new Object;
-			obj.skills=new Array();
-			obj.perks=new Array();
-			obj.addictions=new Array();
+		public function save():Object
+		{
+			var obj:Object	= {};
+			obj.skills		= [];
+			obj.perks		= [];
+			obj.addictions	= [];
 			for (var sk in skills) obj.skills[sk]=skills[sk];
-			for (var pid in perks) {
+			for (var pid in perks)
+			{
 				obj.perks[pid]=perks[pid];
 			}
-			for (var ad in addictions) {
+			for (var ad in addictions)
+			{
 				obj.addictions[ad]=addictions[ad];
 			}
 			obj.dead=dead;
@@ -441,9 +440,44 @@ package fe.unit
 			obj.owlhp=owlhpProc;
 			
 			return obj;
-			
 		}
-		
+
+		public static function getPerkInfo(id:String):XML
+		{
+			var node:XML;
+			if (cachedPerks[id] != undefined) node = cachedPerks[id]; // Check if the node is already cached
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
+				cachedPerks[id] = node;
+			}
+			return node;
+		}
+
+		public static function getSkillInfo(id:String):XML
+		{
+			var node:XML;
+			if (cachedSkills[id] != undefined) node = cachedSkills[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
+				cachedSkills[id] = node;
+			}
+			return node;
+		}
+
+		public static function getEffInfo(id:String):XML
+		{
+			var node:XML;
+			if (cachedEffs[id] != undefined) node = cachedEffs[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
+				cachedEffs[id] = node;
+			}
+			return node;
+		}
+
 		public function setGlobalDif(ndif:int=2) {
 			if (ndif==0) {
 				begHP=200, lvlHP=25;
@@ -798,7 +832,8 @@ package fe.unit
 		}
 		
 		//установить уровень скилла принудительно
-		public function setSkill(id:String, n:int) {
+		public function setSkill(id:String, n:int)
+		{
 			if (n<0) n=0;
 			if (n>maxSkLvl) n=maxSkLvl;
 			if (skills[id]) skills[id]=n;
@@ -808,17 +843,21 @@ package fe.unit
 		
 		public function addPerk(id:String, minus:Boolean=false):void
 		{
-			var perkNode:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id)
+			var perkNode:XML = getPerkInfo(id)
 			var maxlvl:int = perkNode.@lvl;
 			perkNode = null;
 
 			if (!(maxlvl>0)) maxlvl=1;
-			if (perks[id]) {
-				if (perks[id]<maxlvl) {
+			if (perks[id])
+			{
+				if (perks[id]<maxlvl)
+				{
 					perks[id]++;
 					World.w.gui.infoText('perk',Res.txt('e',id)+'-'+perks[id]);
 					Snd.ps('skill');
-				} else {
+				}
+				else
+				{
 					World.w.gui.infoText('noPerk');
 					return;
 				}
@@ -833,9 +872,11 @@ package fe.unit
 		}
 		
 		//рандомная прокачка
-		function autoPump() {
+		function autoPump()
+		{
 			var n:int=1000;
-			while (skillPoint>0 && n>0) {
+			while (skillPoint>0 && n>0)
+			{
 				//определить скиллы, доступные для увеличения
 				var dost:Array=new Array();
 				for (var sk in skills) {
@@ -858,18 +899,17 @@ package fe.unit
 				n--;
 			}
 			n=100;
-			while (perkPoint>0 && n>0) {
+			while (perkPoint>0 && n>0)
+			{
 				dost = [];
 
-				var perkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
-				for each(var dp:XML in perkList)
+				for each(var dp:XML in cachedPerkList)
 				{
 					if (dp.@tip==1) {
 						var res:int=perkPoss(dp.@id, dp);
 						if (res==1) dost.push(dp.@id);
 					}
 				}
-				perkList = null; // Manual cleanup.
 
 				if (dost.length==0) break;
 				sk=dost[Math.floor(Math.random()*dost.length)];
@@ -882,7 +922,7 @@ package fe.unit
 		public function perkPoss(nid:String, dp:XML=null):int
 		{
 			
-			if (dp==null) dp = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", nid);
+			if (dp==null) dp = getPerkInfo(nid);
 			if (dp==null) return -1;
 			var numb=perks[nid];
 			if (numb==null) numb=0;
@@ -1274,17 +1314,18 @@ package fe.unit
 			gg.maxhp+=(level-1)*lvlHP;
 			inMaxHP+=(level-1)*lvlOrganHp;
 			//скиллы
-			for (var id in skills) {
+			for (var id in skills)
+			{
 				var lvl=0;
 				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]);
 				else lvl=getSkLevel(skills[id]);
-				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
+				xml = getSkillInfo(id);
 				setSkillParam(xml, lvl, skills[id]);
 			}
 			//перки
 			for (id in perks)
 			{
-				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
+				xml = getPerkInfo(id);
 				setSkillParam(xml, perks[id]);
 			}
 			//восст. хп органов
@@ -1300,7 +1341,7 @@ package fe.unit
 			for each(var eff:Effect in gg.effects) {
 				id=eff.id;
 				if (eff.vse) continue;
-				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
+				xml = getEffInfo(id);
 				setSkillParam(xml, eff.vse?0:eff.lvl);
 			}
 			//броня и защиты
@@ -1321,7 +1362,7 @@ package fe.unit
 			}
 			else
 			{
-				xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", 'alicorn');
+				xml = getEffInfo('alicorn');
 				setSkillParam(xml, 1);
 				
 				setBegFactor('skin',gg.skin);
@@ -1362,12 +1403,13 @@ package fe.unit
 			
 			for each (var w in LootGen.arr['pers']) {
 				if (inv.items[w].kol>0) {
-					if (inv.items[w].xml && inv.items[w].xml.sk.length()) {
+					if (inv.items[w].xml && inv.items[w].xml.sk.length())
+					{
 						setSkillParam(inv.items[w].xml, 1);	
 					}
 					else
 					{
-						var xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", w);
+						var xml = getEffInfo(w);
 						if (xml.length()) setSkillParam(xml[0], 1);
 					}
 				}

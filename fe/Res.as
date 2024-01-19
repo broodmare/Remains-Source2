@@ -29,70 +29,88 @@ package fe
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String
 		{
 			if (id == '') return '';
-
-			var s:String;	// String representation of localized text.
-			var xl1:XMLList; // XML List of all returned nodes for the type[id].
-
-			try // Try to get a localized string from currentLanguageData.
+			try
 			{
-				xl1 = currentLanguageData[typeDictionary[tip]].(@id==id);
-				s = xl1[typeDictionary[razd]][0];		
-			} 
-			catch (err) {}
+				// Pre-compile regular expressions
+				var brRegExp:RegExp	= /\[br\]/g;
+				var openTagRegExp:RegExp = /\[/g;
+				var closeTagRegExp:RegExp = /\]/g;
+				var controlCharsRegExp:RegExp = /[\b\r\t]/g;
 
-			if (s == null) // If a string wasn't grabbed, try fallbackLanguageData instead.
-			{
-				try
+				// Reduce redundant dictionary lookups
+				var tipType:String = typeDictionary[tip];
+				var razdType:String = typeDictionary[razd];
+
+				var s:String;	// String representation of localized text.
+				var xl1:XMLList; // XML List of all returned nodes for the type[id].
+
+				// Try to get a localized string from currentLanguage or fallbackLanguage
+				for each (var langData in [currentLanguageData, fallbackLanguageData])
 				{
-					xl1=fallbackLanguageData[typeDictionary[tip]].(@id==id);
-					s=xl1[typeDictionary[razd]][0];		
+					if (!s) // Skip checking fallback if string was found
+					{
+						xl1 = langData[tipType].(@id == id);
+						if (xl1.length() > 0) s = xl1[razdType][0];
+					}
 				}
-				catch (err) {}
-			}
 
-			// If neither currentLanguageData or fallbackLanguageData returned a string, return a blank string early for objects, 
-			if (s == null) 
-			{
-				if (tip == 'o') return '';
-				if (razd == 0) return '*' + typeDictionary[tip] + '_' + id;
-				return '';
-			}			
-
-			var xl2:XML = xl1[0];
-			
-			if (xl2.@m=='1')								//присутствует мат
-			{		
-				var spl:Array=s.split('|');
-				if (spl.length>=2) s=spl[World.w.matFilter?1:0];
-			}
-			if (razd>=1 || dop)
-			{
-				if (xl2.@s1.length()) s=addKeys(s, xl2);	//клавиши управления
-				try
+				// Handle cases where no data was found
+				if (!s)
 				{
-					if (xl2[typeDictionary[razd]][0].@s1.length()) s=addKeys(s,xl2[typeDictionary[razd]][0]);
+					if (tip == 'o') return '';
+					if (razd == 0) return '*' + tipType + '_' + id;
+					return '';
+				}		
+
+				var xl2:XML = xl1[0];
+				
+				if (xl2.@m == '1')								//присутствует мат
+				{		
+					var spl:Array = s.split('|');
+					if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
 				}
-				catch (err) {}
-				s=s.replace(/\[br\]/g,'<br>');
-				s=s.replace(/\[/g,"<span class='yel'>");
-				s=s.replace(/\]/g,"</span>");
+				if (razd >= 1 || dop)
+				{
+					if (xl2.@s1.length()) s = addKeys(s, xl2);
+					try
+					{
+						if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
+					}
+					catch (err:Error) {}
+
+					// Perform string replacements
+					s = s.replace(brRegExp, '<br>')
+						.replace(openTagRegExp, "<span class='yel'>")
+						.replace(closeTagRegExp, "</span>");
+				}
+
+				if (dop)
+				{
+					s = s.replace(controlCharsRegExp, '');
+				}
+
+				if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length())
+				{
+					s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
+				}
 			}
-			if (dop)
+			catch(err:Error)
 			{
-				s=s.replace(/[\b\r\t]/g,'');
+				s = '';
+				return s;
 			}
-			if (tip=='f' || tip=='e' && razd==2 || razd>=1 && xl2.@st.length()) s="<span class = 'r"+xl2.@st+"'>"+s+"</span>";
+
 			return s;
 		}
 
 		public static function guiText(id:String):String
 		{
-			return txt('g',id);
+			return txt('g', id);
 		}
 
 		public static function pipText(id:String):String
 		{
-			return txt('p',id);
+			return txt('p', id);
 		}
 
 		public static function messText(id:String, v:int = 0, imp:Boolean = true):String
