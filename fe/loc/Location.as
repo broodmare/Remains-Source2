@@ -1866,18 +1866,22 @@ package fe.loc
 			var n2:Number;
 
 			relight_t = 10;
-			for (var i:int = 1; i < spaceX; i++) // For each Row...
+
+			// Pre-calculate squared distances to avoid square root calculations, done outside the loop to save cycles.
+			var dist1Squared:int = dist1 * dist1;
+			var dist2Squared:int = dist2 * dist2;
+
+			for (var i:int = 1; i < spaceX; i++)
 			{
-				for (var j:int = 1; j < spaceY; j++) // For each Column...
+				for (var j:int = 1; j < spaceY; j++)
 				{
-					var currentTile:Tile = space[i][j]; // STOP ACCESSING TWO ARRAYS EVERY TIME. 
+					var currentTile:Tile = space[i][j];
 					n1 = currentTile.visi;
 					if (!retDark && n1 >= 1) continue;
 
 					var dx:int = i * tileWidth - nx;
 					var dy:int = j * tileHeight - ny;
 					var rasst:int = (dx * dx) + (dy * dy);
-					var dist2Squared:int = (dist2 * dist2) // Pre-calculate to save cycles.
 
 					if (rasst >= dist2Squared)
 					{
@@ -1890,10 +1894,9 @@ package fe.loc
 						continue;
 					}
 
-					var rasst1 = Math.sqrt(rasst);
-
-					if (rasst1 <= dist1) n2 = 1;
-					else n2 = (dist2 - rasst1) / (dist2 - dist1);
+					// Revised visibility calculation using squared distances
+					if (rasst <= dist1Squared) n2 = 1;
+					else n2 = (dist2Squared - rasst) / (dist2Squared - dist1Squared);
 					
 
 					if (rasst <= dist2Squared) //видимость по линии

@@ -18,6 +18,8 @@ package fe.inter
 		
 		private var owlRep:int=100;
 
+		private static var cachedItems:Object = {};
+
 		public function PipPageWork(npip:PipBuck, npp:String)
 		{
 			isLC=true;
@@ -77,7 +79,7 @@ package fe.inter
 								arr.push(n);
 							}
 						} else {
-							var node1:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", wid);
+							var node1:XML = getItemInfo(wid);
 							if (node1 != null) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
 							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
@@ -165,6 +167,19 @@ package fe.inter
 				}
 			}
 			
+		}
+
+		public static function getItemInfo(id:String):XML
+		{
+			// Check if the node is already cached
+			var node:XML;
+			if (cachedItems[id] != undefined) node = cachedItems[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+				cachedItems[id] = node;
+			}
+			return node;
 		}
 		
 		//показ одного элемента
@@ -269,7 +284,7 @@ package fe.inter
 			if (page2==1)
 			{
 				var string2:String = 's_' + cid;
-				var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", string2);
+				var sch:XML = getItemInfo(string2);
 				var kol:int=1;
 				if (sch.@kol.length()) kol=int(sch.@kol);
 				if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
@@ -341,7 +356,7 @@ package fe.inter
 					}
 				} else if (ccat==Item.L_WEAPON) {
 					var string3:String = 's_' + cid;
-					var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", string3);
+					var sch:XML = getItemInfo(string3);
 					if (!checkScheme(sch)) return;
 					minusCraftComp(sch);
 					inv.updWeapon(cid,1);

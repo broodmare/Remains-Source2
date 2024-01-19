@@ -45,6 +45,7 @@ package fe.unit
 		public var sort:int=0;
 		public var hideMane:int=0;
 
+		public static var cachedArmorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 		private static var cachedArmors:Object = {};
 		
 		public function Armor(nid:String, nlvl:int=0) {

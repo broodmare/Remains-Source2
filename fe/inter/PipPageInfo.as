@@ -30,6 +30,11 @@ package fe.inter
 		var targetLand:String='';
 		var game:Game;
 
+		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
+		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
+
+		private static var cachedUnits:Object = {};
+
 		public function PipPageInfo(npip:PipBuck, npp:String)
 		{
 			itemClass=visPipQuestItem;
@@ -58,7 +63,19 @@ package fe.inter
 			visMap.butZoomM.addEventListener(MouseEvent.CLICK,funZoomM);
 			visMap.butCenter.addEventListener(MouseEvent.CLICK,funCenter);
 		}
-		
+
+		public static function getUnitInfo(id:String):XML
+		{
+			// Check if the node is already cached
+			var node:XML;
+			if (cachedUnits[id] != undefined) node = cachedUnits[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+				cachedUnits[id] = node;
+			}
+			return node;
+		}
 
 		override protected function setSubPages():void
 		{
@@ -95,9 +112,7 @@ package fe.inter
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
 				if (World.w.loc && World.w.loc.base)
 				{
-					var taskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
-
-					for each (var task:XML in taskList)
+					for each (var task:XML in cachedTaskList)
 					{
 						if (checkQuest(task))
 						{
@@ -110,8 +125,6 @@ package fe.inter
 							}
 						}
 					}
-
-					taskList = null;
 				}
 			} else if (page2==3) {	//общая карта
 				vis.nazv.x=vis.info.x=584;
@@ -181,8 +194,7 @@ package fe.inter
 				statHead.kol.text=Res.pipText('frag');
 				vis.ico.visible=true;
 
-				var unitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
-				for each(var xml in unitList)
+				for each(var xml in cachedUnitList)
 				{
 					if (xml && xml.@cat.length()) {
 						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
@@ -200,7 +212,6 @@ package fe.inter
 					}
 				}
 
-				unitList = null; // Manual cleanup.
 				arr=arr.filter(isKol);		//отфильтровать
 			}
 		}
@@ -313,17 +324,17 @@ package fe.inter
 		{
 			var n:int=0, delta;
 			//юнит
-			var un = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			var un = getUnitInfo(id);
 			if (un.length()==0 || un.@cat!='3') return '';
 			//родитель
 			var pun;
-			if (un.@parent.length()) pun = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", un.@parent);
+			if (un.@parent.length()) pun = getUnitInfo(un.@parent);
 			//дельта
 			delta=getParam(un,pun,'vis','dkill');
 			if (delta==null) delta=5;
 			if (delta<=0) n=10;
-			else n=Math.floor(int(kol)/delta);
-			//n=10;
+			else n = Math.floor(int(kol)/delta);
+
 			
 			var v_hp=getParam(un,pun,'comb','hp');
 			var v_skin=getParam(un,pun,'comb','skin');
@@ -468,8 +479,7 @@ package fe.inter
 
 		private function addAllQuestsToGameClass():void
 		{
-			var taskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
-			for each (var task:XML in taskList)
+			for each (var task:XML in cachedTaskList)
 			{
 				if (task.@man=='1') continue;
 				if (checkQuest(task))
@@ -478,7 +488,6 @@ package fe.inter
 					if (q == null || q.state==0) game.addQuest(task.@id, null, false, false, false);
 				}
 			}
-			taskList = null; // Manual cleanup 
 		}
 		
 		public function onMouseDown(event:MouseEvent):void

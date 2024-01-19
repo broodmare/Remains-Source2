@@ -38,9 +38,6 @@ package fe.inter
 		var glowFilter:GlowFilter=new GlowFilter(0x00FF99,1,10,6,2,3);
 		
 		var info:MovieClip;
-
-		private static var weaponListCache:XMLList	= XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-		private static var armorListCache:XMLList	= XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 		
 		public function Stand(vstand:MovieClip, ninv:Invent) {
 			vis =vstand;
@@ -109,7 +106,7 @@ package fe.inter
 			var levels:Array=[0,0,0,0,0,0,0];
 			var stolb:int=-1;
 
-			for each (var weap in weaponListCache.(@tip > 0))
+			for each (var weap in Weapon.cachedWeaponList.(@tip > 0))
 			{
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
@@ -204,7 +201,7 @@ package fe.inter
 			var sc:Number=1.5;
 			var aid=Appear.ggArmorId;
 			Appear.transp=true;
-			for each(var arm in armorListCache)
+			for each(var arm in Armor.cachedArmorList)
 			{
 				if (n==6 && arm.@tip>1 || n==7 && arm.@tip!=3) continue;
 				var item=new itemArt();
@@ -266,7 +263,7 @@ package fe.inter
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			vis.toptext.visible=(n<=5);
 
-			for each (var weap in weaponListCache.(@tip>0))
+			for each (var weap in Weapon.cachedWeaponList.(@tip>0))
 			{
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
 					if (weapons[weap.@id]==null) continue;
@@ -277,7 +274,7 @@ package fe.inter
 				}
 			}
 
-			for each(var arm in armorListCache)
+			for each(var arm in Armor.cachedArmorList)
 			{
 				if (armors[arm.@id]) {
 					if (inv.armors[arm.@id] && inv.armors[arm.@id].lvl>=0) {

@@ -20,6 +20,12 @@ package fe.inter
 		private var n_food:String;
 		private var drunk:int = 0;
 
+		private static var cachedPerkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
+		private static var cachedParamList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+
+		private static var cachedPerks:Object = {};
+		private static var cachedParams:Object = {};
+
 		public function PipPageStat(npip:PipBuck, npp:String)
 		{
 			isLC=isRC=true;
@@ -29,6 +35,30 @@ package fe.inter
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK,gotoDef);
 			n_food=Res.txt('e','food');
+		}
+
+		public static function getPerkInfo(id:String):XML
+		{
+			var node:XML;
+			if (cachedPerks[id] != undefined) node = cachedPerks[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
+				cachedPerks[id] = node;
+			}
+			return node;
+		}
+
+		public static function getParamInfo(id:String):XML
+		{
+			var node:XML;
+			if (cachedParams[id] != undefined) node = cachedParams[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
+				cachedParams[id] = node;
+			}
+			return node;
 		}
 		
 		//подготовка страниц
@@ -51,11 +81,9 @@ package fe.inter
 				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 
-				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
-
-				for (var i = 0; i < paramList.length(); i++)
+				for (var i = 0; i < cachedParamList.length(); i++)
 				{
-					var xml:XML = paramList[i];
+					var xml:XML = cachedParamList[i];
 					if (xml.@show > 0)
 					{
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
@@ -145,7 +173,7 @@ package fe.inter
 				statHead.numb.text=Res.pipText('is2');
 				for (var pid in pers.perks) {
 					var maxlvl=1;
-					var xperk:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", pid);
+					var xperk:XML = getPerkInfo(pid);
 					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
 					var n:Object={id:pid, nazv:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
@@ -199,8 +227,7 @@ package fe.inter
 				statHead.nazv.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
 
-				var perkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
-				for each(var dp:XML in perkList)
+				for each(var dp:XML in cachedPerkList)
 				{
 					if (dp.@tip==1) {
 						var res:int=pers.perkPoss(dp.@id, dp);
@@ -214,7 +241,6 @@ package fe.inter
 					}
 				}
 
-				perkList = null; // Manual cleanup.
 				arr.sortOn(['sort','nazv']);
 				vis.butOk.text.text=Res.pipText('accept');
 				vis.butDef.text.text=Res.guiText('cancel');
@@ -292,7 +318,7 @@ package fe.inter
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
-					var xml:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
+					var xml:XML = getParamInfo(id);
 					if (xml != null && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} else if (page2==5) {
 					infoItemId=id;

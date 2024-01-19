@@ -208,6 +208,8 @@ package fe.weapon
 		public var price:int=0;
 		var breaking:Number=0;
 
+		public static var cachedWeaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
+
 		private static var cachedWeapons:Object	= {}; // Save object nodes that have been used before to avoid parsing XML for lots of objects.
 		private static var cachedAmmo:Object	= {};
 

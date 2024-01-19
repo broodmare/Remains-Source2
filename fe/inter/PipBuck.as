@@ -358,8 +358,7 @@ package fe.inter
 			var w:Weapon;
 			var a:Armor;
 
-			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			for each (var weap:XML in weaponList.(@tip > 0))
+			for each (var weap:XML in Weapon.cachedWeaponList.(@tip > 0))
 			{
 				w = Weapon.create(owner, weap.@id, 0);
 				arrWeapon[weap.@id] = w;
@@ -369,15 +368,12 @@ package fe.inter
 					arrWeapon[weap.@id+'^'+1]=w;
 				}
 			}
-			weaponList = null; // Manual cleanup.
 
-			var armorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
-			for each (var armor:XML in armorList)
+			for each (var armor:XML in Armor.cachedArmorList)
 			{
 				a = new Armor(armor.@id);
 				arrArmor[armor.@id] = a;
 			}
-			armorList = null; // Manual cleanup.
 		}
 		
 		public function setRPanel():void
