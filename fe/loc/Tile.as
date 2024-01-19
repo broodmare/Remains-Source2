@@ -4,8 +4,8 @@ package  fe.loc
 	
 	public class Tile
 	{
-		public static var tileX=40;
-		public static var tileY=40;
+		public static var tileX:int = 40;
+		public static var tileY:int = 40;
 		
 		public var X:int, Y:int;
 		
@@ -57,15 +57,19 @@ package  fe.loc
 		public var door:Box;
 		public var trap:Obj;
 		
-		public function Tile(nx:int,ny:int) {
-			X=nx, Y=ny;
-			phX1=X*Tile.tileX;
-			phX2=(X+1)*Tile.tileX;
-			phY1=Y*Tile.tileY;
-			phY2=(Y+1)*Tile.tileY;
+		public function Tile(nx:int,ny:int)
+		{
+			X = nx;
+			Y = ny;
+
+			phX1 =  X * Tile.tileX;
+			phY1 =  Y * Tile.tileY;
+			phX2 = (X + 1) * Tile.tileX;
+			phY2 = (Y + 1) * Tile.tileY;
 		}
 		
-		function inForm(f:Form) {
+		private function inForm(f:Form)
+		{
 			if (f==null) return;
 			if (f.tip==2) {
 				if (f.front) back=f.front;

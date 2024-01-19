@@ -25,7 +25,8 @@ package fe.unit
 		var postBad:Boolean=false;
 		var del:Array;
 		
-		
+		private static var cachedEffects:Object = {};
+
 		public var vse:Boolean=false;		//действие окончено
 
 		public function Effect(nid:String, own:Unit=null, nval:Number=0) {
@@ -37,7 +38,21 @@ package fe.unit
 			getXmlParam();
 		}
 		
-		function getXmlParam() {
+		public static function getEffectInfo(id:String):XML
+		{
+			// Check if the node is already cached
+			var node:XML;
+			if (cachedEffects[id] != undefined) node = cachedEffects[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
+				cachedEffects[id] = node;
+			}
+			return node;
+		}
+		
+		function getXmlParam()
+		{
 			t=1;
 			post=null;
 			postBad=false;
@@ -45,7 +60,7 @@ package fe.unit
 			him=0;
 			lvl=1;
 			forever=false;
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
+			var node:XML = getEffectInfo(id);
 			
 			if (node.length()) {
 				tip=node.@tip;

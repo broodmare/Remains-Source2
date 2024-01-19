@@ -25,7 +25,7 @@ package fe.inter
 		public var active:Boolean=false;
 		public var noAct:Boolean=false;
 		private var noAct2:Boolean=false;
-		public var ArmorId:String;
+		public var armorID:String;
 		public var hideMane:int=0;
 		private var visX=1200, visY=800;
 		private var page:int=1;
@@ -437,15 +437,12 @@ package fe.inter
 			return '';
 		}
 		
-		public function setArmor(aid:String):void
+		public function setArmor(id:String):void
 		{
-			ArmorId = aid;
-			try 
-			{ 
-				var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", aid);
-				hideMane = node.@hide; 
-			} 
-			catch (err)  { hideMane = 0; }
+			armorID = id;
+			var node:XML = Armor.getArmorInfo(id);
+			hideMane = node.@hide; 
+
 		}
 		
 		public function step():void

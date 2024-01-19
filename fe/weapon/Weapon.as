@@ -208,46 +208,33 @@ package fe.weapon
 		public var price:int=0;
 		var breaking:Number=0;
 
-		private static var weaponList:XMLList;
-		private static var listSetup:Boolean = false;
+		private static var cachedWeapons:Object	= {}; // Save object nodes that have been used before to avoid parsing XML for lots of objects.
+		private static var cachedAmmo:Object	= {};
 
 		public function Weapon(own:Unit, nid:String, nvar:int=0)
 		{
-			if (!listSetup)
-			{
-				listSetup = true;
-				weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			}
-
 			sloy=2;
 			owner=own;
 			id=nid;
 			variant=nvar;
-			opt=new Object();
+			opt = new Object();
 			
-			trasser=new Trasser();
+			trasser = new Trasser();
 			
 			getXmlParam();
 			setNull();
-			if (!own.player) auto=true;
+			if (!own.player) auto = true;
 		}
 		
 		public static function create(owner:Unit, id:String, nvar:int=0):Weapon
 		{
-
-			if (!listSetup)
-			{
-				listSetup = true;
-				weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			}
-			
 			if (id.charAt(id.length-2)=='^')
 			{
 				id=id.substr(0,id.length-2);
 				nvar=1;
 			}
 
-			var node:XML = weaponList.(@id==id)[0];
+			var node:XML = getWeaponInfo(id);
 			var w:Weapon;
 
 			if (node.@tip==1) w = new WClub(owner,id,nvar);
@@ -259,6 +246,31 @@ package fe.weapon
 			
 			return w;
 		}
+
+		public static function getWeaponInfo(id:String):XML
+		{
+			// Check if the node is already cached
+			var node:XML;
+			if (cachedWeapons[id] != undefined) node = cachedWeapons[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+				cachedWeapons[id] = node;
+			}
+			return node;
+		}
+
+		public static function getAmmoInfo(id:String):XML
+		{
+			var node:XML;
+			if (cachedAmmo[id] != undefined) node = cachedAmmo[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+				cachedAmmo[id] = node;
+			}
+			return node;
+		}
 		
 		public override function err():String
 		{
@@ -268,7 +280,7 @@ package fe.weapon
 		public function getXmlParam():void
 		{
 			//общие характеристики
-			var node:XML = weaponList.(@id==id)[0];
+			var node:XML = getWeaponInfo(id);
 			
 			if (node.@tip.length()) tip=node.@tip;
 			if (variant==0)	nazv=Res.txt('w',id);
@@ -349,8 +361,8 @@ package fe.weapon
 			//боеприпасы
 			if (node.a.length())
 			{
-				ammo=ammoBase=node.a[0];
-				var ammoNode = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", ammo);
+				ammo = ammoBase = node.a[0];
+				var ammoNode = getAmmoInfo(ammo);
 				setAmmo(ammo,ammoNode);
 			}
 			
@@ -1062,7 +1074,7 @@ package fe.weapon
 				//не подходящие боеприпасы
 				if (nammo!='' && nammo!=ammo)
 				{
-					var am = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", nammo);
+					var am = getAmmoInfo(nammo);
 					if (am.length()==0) return;
 					if (am.@base!=ammoBase) {
 						World.w.gui.infoText('imprAmmo',World.w.invent.items[nammo].nazv,null,false);
@@ -1168,7 +1180,7 @@ package fe.weapon
 			s+='\t';
 			if (tip<4) s+=maxhp+'\t';
 			else s+='\t';
-			if (tip==4) s += XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id).@price + '\t';
+			if (tip==4) s += getWeaponInfo(id).@price + '\t';
 			else if (tip!=5 && variant>0) s+=price*3+'\t';
 			else s+=price+'\t';
 			return s;

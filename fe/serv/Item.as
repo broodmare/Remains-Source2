@@ -47,35 +47,37 @@ package fe.serv {
 		public var noref:Boolean=false;	//не восполнять
 		public var nocheap:Boolean=false;	//не уменьшать цену
 		public var hardinv:Boolean=false;	//только при ограниченном инвентаре
+
+		private static var cachedItems:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		
 		//nkol - количество предметов или состояние оружия/брони 0-1-2
 		//если nkol=-1, количество берётся из xml
-		public function Item(ntip:String, nid:String, nkol:int=-1, nvar:int=0, nxml:XML=null) {
-			variant=nvar;
-			if (nid!=null && nid.charAt(nid.length-2)=='^') {
-				variant=int(nid.charAt(nid.length-1));
-				id=nid.substr(0,nid.length-2);
-			} else id=nid;
-			//trace(id);
-			tip=ntip;
-			kol=nkol;
-			if (tip=='' || tip==null) itemTip();
-			if (tip==L_UNIQ) tip=L_WEAPON;
+		public function Item(ntip:String, nid:String, nkol:int=-1, unique:int = 0, nxml:XML = null)
+		{
+			variant = unique;
+
+			//	ID
+			if (nid.charAt(nid.length - 2) == '^')
+			{
+				variant = int(nid.charAt(nid.length-1));
+				id = nid.substr(0,nid.length-2);
+			}
+			else id = nid;
+
+			//	TYPE
+			tip = ntip;
+			if (tip == null || tip == '') itemTip(); // Get tip if it's null or empty
+			if (tip == L_UNIQ) tip = L_WEAPON; // All uniques are weapon, change to L_WEAPON
+			
+			//	XML CODE
 			if (nxml == null)
 			{
-				var l:XML;
-				if (tip == L_ARMOR)
-				{
-					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
-				} 
-				else if (tip == L_WEAPON)
-				{
-					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
-				} 
-				else
-				{
-					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-				}
+				var nodeType:String;
+				if (tip == L_ARMOR) nodeType = "armors";	
+				else if (tip == L_WEAPON) nodeType = "weapons";
+				else nodeType = "items";
+
+				var l:XML = getItemInfo(nodeType, id);
 				if (l != null)
 				{
 					xml = l;
@@ -84,87 +86,105 @@ package fe.serv {
 			}
 			else
 			{
-				xml=nxml;
-				wtip=xml.@tip;
+				xml = nxml;
+				wtip = xml.@tip;
 			}
-			if (tip==L_ARMOR || tip==L_WEAPON) {
-				kol=1;
-				if (tip==L_ARMOR && xml && xml.@tip=='3') {
-					sost=1;
-				} else {
-					if (nkol==0) sost=0.05+Math.random()*0.15;
-					if (nkol==1) sost=0.6+Math.random()*0.25;
+
+
+			if (tip == L_ARMOR || tip == L_WEAPON)
+			{
+				kol = 1;
+
+				if (tip == L_ARMOR && xml && xml.@tip == '3') sost = 1;
+				else
+				{
+					if (nkol == 0) sost = 0.05 + Math.random() * 0.15;
+					if (nkol == 1) sost = 0.60 + Math.random() * 0.25;
 				}
 			}
-			if (kol<0 && xml) {
-				if (xml.@kol.length()) kol=xml.@kol;
+			if (kol < 0 && xml)
+			{
+				if (xml.@kol.length()) kol = xml.@kol;
 				else kol=1;
 			}
-			if (tip==L_WEAPON || tip==L_EXPL) {
+			if (tip==L_WEAPON || tip==L_EXPL)
+			{
 				if (variant==0)	nazv=Res.txt('w',id);
-				else {
+				else
+				{
 					if (Res.istxt('w',id+'^'+variant)) nazv=Res.txt('w',id+'^'+variant);
 					else nazv=Res.txt('w',id)+' - II';
 				}
 				if (tip==L_EXPL) wtip='w5';
 				else wtip='w'+l.@skill;
-			} else if (tip==L_ARMOR) {
+			}
+			else if (tip==L_ARMOR)
+			{
 				nazv=Res.txt('a',id);
-				if (xml && xml.@tip.length()) {
+				if (xml && xml.@tip.length())
+				{
 					wtip='armor'+xml.@tip;
-				} else wtip='armor1';
-			} else if (xml && xml.@base.length()) {
+				}
+				else wtip='armor1';
+			}
+			else if (xml && xml.@base.length())
+			{
 				base=xml.@base;
 				nazv=Res.txt('i',base);
 				if (xml.@mod.length()) nazv+=' ('+Res.pipText('am_'+xml.@mod)+')';
-			} else nazv=Res.txt('i',id);
+			}
+			else nazv=Res.txt('i',id);
+
 			if (tip==L_ITEM && xml && xml.@tip.length()) tip=xml.@tip;
-			if (tip==L_SCHEME && !Res.istxt('i',id)) {
+			if (tip==L_SCHEME && !Res.istxt('i',id))
+			{
 				var wid:String=id.substr(2);
 				if (xml.@work=='work') nazv=Res.pipText('scheme1')+' «'+Res.txt('i',wid)+'»';
 				else nazv=Res.pipText('recipe')+' «'+Res.txt('i',wid)+'»';
 			}
-			if (tip==L_AMMO || tip==L_EXPL) invCat=2;
-			if (xml && xml.@us>0 && tip!=L_FOOD && tip!='eda' && tip!=L_BOOK) invCat=1;
-			if (tip==L_WEAPON && xml) {
-				if (xml.@tip!=4) mass=1;
-				if (xml.phis.length() && xml.phis.@m.length()) mass=xml.phis.@m;
+			if (tip == L_AMMO || tip == L_EXPL) invCat = 2;
+			if (xml && xml.@us > 0 && tip != L_FOOD && tip != 'eda' && tip != L_BOOK) invCat = 1;
+			if (tip == L_WEAPON && xml)
+			{ 
+				if (xml.@tip != 4) mass = 1;
+				if (xml.phis.length() && xml.phis.@m.length()) mass = xml.phis.@m;
 			}
-			if (xml) {
-				if (xml.@invcat.length()) invCat=xml.@invcat;
-				if (xml.@invis.length()) invis=true;
-				if (xml.@fc.length()) fc=xml.@fc;
-				if (xml.@mess.length()) mess=xml.@mess;
-				if (xml.@m.length()) mass=xml.@m;
+			if (xml)
+			{
+				if (xml.@invcat.length())	invCat = xml.@invcat;
+				if (xml.@invis.length())	invis = true;
+				if (xml.@fc.length())		fc = xml.@fc;
+				if (xml.@mess.length())		mess = xml.@mess;
+				if (xml.@m.length())		mass = xml.@m;
+			}
+
+			function getItemInfo(nodeType:String, id:String):XML
+			{
+				// Check if the node is already cached
+				var node:XML;
+				if (cachedItems[id] != undefined) node = cachedItems[id];
+				else
+				{
+					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", nodeType, "id", id);
+					cachedItems[id] = node;
+				}
+				return node;
 			}
 		}
 
 		public function itemTip()
 		{
-			var l:XML;
-			l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-			if (l != null)
+			var categories:Array = ["items", "weapons", "armors"];
+			var tips:Array = [L_ITEM, L_WEAPON, L_ARMOR];
+			
+			for (var i:int = 0; i < categories.length; i++)
 			{
-				xml = l;
-				if (xml.@tip.length()) tip = xml.@tip;
-				else tip = L_ITEM;
-			}
-			else
-			{
-				l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+				var l:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", categories[i], "id", id);
 				if (l != null)
 				{
 					xml = l;
-					tip = L_WEAPON;
-				} 
-				else
-				{
-					l = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
-					if (l != null)
-					{
-						xml = l;
-						tip = L_ARMOR;
-					} 
+					tip = (categories[i] == "items" && xml.@tip.length()) ? xml.@tip : tips[i];
+					break;
 				}
 			}
 		}
@@ -252,13 +272,15 @@ package fe.serv {
 			return false;
 		}
 		
-		public function save():Object {
+		public function save():Object
+		{
 			return {tip:tip, id:id, kol:kol, sost:sost, barter:barter, lvl:lvl, trig:trig,variant:variant};
 		}
 		
-		public function trade() {
-			kol-=bou;
-			bou=0;
+		public function trade()
+		{
+			kol -= bou;
+			bou = 0;
 		}
 		
 	}

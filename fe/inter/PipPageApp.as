@@ -35,7 +35,7 @@ package fe.inter
 			setTopText();
 			if (page2==1)
 			{
-				pip.ArmorId='';
+				pip.armorID = '';
 				World.w.app.attach(vis,funVidOk,funVidCancel);
 				World.w.app.vis.y=400;
 				World.w.app.vis.x=444;

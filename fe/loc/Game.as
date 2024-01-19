@@ -35,16 +35,17 @@ package fe.loc
 		var objs:Array;
 		
 
-		public function Game() {
-			lands=new Array();
-			probs=new Array();
-			notes=new Array();
-			vendors=new Array();
-			npcs=new Array();
-			triggers=new Array();
-			limits=new Array();
-			quests=new Array();
-			names=new Array();
+		public function Game()
+		{
+			lands		= [];
+			probs		= [];
+			notes		= [];
+			vendors		= [];
+			npcs		= [];
+			triggers	= [];
+			limits		= [];
+			quests		= [];
+			names		= [];
 			
 			var landList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
 			for each(var xl:XML in landList)
@@ -109,7 +110,7 @@ package fe.loc
 			return obj;
 		}
 		
-		public function init(loadObj:Object=null, opt:Object=null) {
+		public function init(loadObj:Object=null, opt:Object=null):void {
 			if (loadObj) {
 				if (loadObj.dif!=null) globalDif=loadObj.dif;
 				else globalDif=2;
@@ -119,9 +120,11 @@ package fe.loc
 				else globalDif=2;
 				triggers['noreturn']=1;
 			}
-			objs=new Array();
-			if (loadObj && loadObj.objs) {
-				for (var uid in loadObj.objs) {
+			objs = new Array();
+			if (loadObj && loadObj.objs)
+			{
+				for (var uid in loadObj.objs)
+				{
 					var obj=loadObj.objs[uid];
 					var nobj=new Object();
 					for (var n in obj) {
@@ -129,21 +132,20 @@ package fe.loc
 					}
 					objs[uid]=nobj;
 				}
-				
 			}
 
 			var vendorList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "vendor");
 			for each(var xl:XML in vendorList)
 			{
-				var loadVendor=null;
-				if (loadObj && loadObj.vendors && loadObj.vendors[xl.@id]) loadVendor=loadObj.vendors[xl.@id];
-				var v:Vendor=new Vendor(0,xl,loadVendor);
+				var loadVendor = null;
+				if (loadObj && loadObj.vendors && loadObj.vendors[xl.@id]) loadVendor = loadObj.vendors[xl.@id];
+				var v:Vendor = new Vendor(0, xl, loadVendor);
 				vendors[v.id]=v;
 			}
 			vendorList = null; // Manual cleanup.
 
 			var npcList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Npcs", "npc");
-			for each(var xl in npcList)
+			for each(var xl:XML in npcList)
 			{
 				var loadNPC=null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) loadNPC=loadObj.npcs[xl.@id];
@@ -152,8 +154,9 @@ package fe.loc
 			}
 			npcList = null; // Manual cleanup.
 
-			if (loadObj) {
-				for (var i in loadObj.triggers) {
+			if (loadObj)
+			{
+				for (var i in loadObj.triggers){
 					triggers[i]=loadObj.triggers[i];
 				}
 				for (var i in loadObj.notes) {
@@ -167,22 +170,27 @@ package fe.loc
 				}
 				if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
 			}
-			baseId=curLandId='rbl';
-			if (loadObj) {
+
+			baseId		= 'rbl';
+			curLandId	= 'rbl';
+
+			if (loadObj)
+			{
 				curLandId=loadObj.land;
 				if (curLandId!='rbl') missionId=loadObj.land;
-			} else if (opt && opt.propusk==true) {		//пропустить обучение
-				triggers['dial_dialCalam2']=1;
-			} else {									//не пропускать обучение
-				curLandId='begin';
 			}
-			for each(var q in quests) {
-				if (q!=null && q.state==2 && q.xml.next.length()) {
+			else if (opt && opt.propusk==true) triggers['dial_dialCalam2']=1; //пропустить обучение
+			else curLandId = 'begin';					//не пропускать обучение
+
+			for each(var q in quests)
+			{
+				if (q!=null && q.state==2 && q.xml.next.length())
+				{
 					for each (var nq in q.xml.next) addQuest(nq.@id);
 				}
 			}
 
-			if (lands[curLandId]==null || lands[curLandId].rnd) curLandId='rbl';
+			if (lands[curLandId] == null || lands[curLandId].rnd) curLandId = 'rbl';
 			addNote('helpControl');
 			addNote('helpGl1');
 			addNote('helpGl2');
@@ -200,15 +208,18 @@ package fe.loc
 			return true;
 		}
 		
-		public function enterToCurLand() {
-			Land.locN+=5;
+		public function enterToCurLand()
+		{
+			Land.locN += 5;
 			World.w.time___metr();
+
 			if (World.w.land && objs) World.w.land.saveObjs(objs);
-			//переход на случайную встречу
+			// Check for random encounter(?)
 			Encounter();
-			curLand=lands[curLandId];
-			if (curLand==null) curLand=lands['rbl'];
-			var first=false;
+
+			curLand = lands[curLandId];
+			if (curLand == null) curLand = lands['rbl'];
+			var first = false;
 			if (!curLand.rnd && !curLand.visited) first=true;
 			if (curLand.land==null || crea) {
 				var n:int=0;
@@ -228,7 +239,8 @@ package fe.loc
 				triggers['noreturn']=0;
 				triggers['nomed']=0;
 				triggers['rbl_visited']=1;
-			} else {
+			}
+			else {
 				if (curLand.tip!='base') {
 					missionId=curLand.id;
 					trace(curLand.tip=='base')
@@ -265,12 +277,11 @@ package fe.loc
 			}
 		}
 		
-		public function beginGame() {
-		}
-		
-		public function beginMission(nid:String=null) {
+		public function beginMission(nid:String=null)
+		{
 			if (nid==curLandId) return;
-			if (nid && lands[nid]) {
+			if (nid && lands[nid])
+			{
 				if (lands[nid].tip!='base') {
 					missionId=nid;
 					crea=true;

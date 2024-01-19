@@ -5,10 +5,12 @@ package fe.inter
 	import flash.events.MouseEvent;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+
 	import fe.loc.Game;
 	import fe.loc.Quest;
 	import fe.loc.LandAct;
 	import fe.unit.Unit;
+	import fe.weapon.Weapon;
 
 	import fe.stubs.visPipQuestItem;
 	import fe.stubs.visPipInfo;
@@ -371,8 +373,8 @@ package fe.inter
 								s+=textAsColor('blue', Res.txt('w', weap.@id));
 								try
 								{
-									var w = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", weap.@id);
-									var dam=0;
+									var w = Weapon.getWeaponInfo(weap.@id);
+									var dam = 0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
 									s+=' ('+textAsColor('yellow', Res.numb(dam))+')';

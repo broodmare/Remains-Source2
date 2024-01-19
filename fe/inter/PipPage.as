@@ -21,6 +21,7 @@ package fe.inter
 	import fe.serv.Item;
 	import fe.loc.LandAct;
 	import fe.unit.UnitPet;
+	import fe.unit.Effect;
 
 	import fe.stubs.visPipInv;
 	
@@ -273,9 +274,11 @@ package fe.inter
 				if (w.tip==5) {
 					tip=3;
 					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
-				} else {
-					var vWeapon:Class=w.vWeapon;
-					var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+				}
+				else
+				{
+					var vWeapon:Class = w.vWeapon;
+					var node:XML = Weapon.getWeaponInfo(id);
 					if (node != null)
 					{
 						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
@@ -351,7 +354,8 @@ package fe.inter
 			if (id.substr(-3)=='_ad') id=id.substr(0,id.length-3);
 
 			var typeName:String = tip + 's';
-			var dp = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", typeName, "id", id);
+			var dp = Effect.getEffectInfo(id);
+
 			if (dp == null) return s;
 			dp = dp.(@id==id);
 			if (dp.length()==0) return s;
@@ -543,8 +547,8 @@ package fe.inter
 				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.pipText('necro')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_NECRO]*100)+'%');
 				s+='\n\n'+Res.txt('a',id,1);
 			} else if (tip==Item.L_AMMO) {
-				var ammo=inv.items[id].xml;
-				if (XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id) != null)
+				var ammo = inv.items[id].xml;
+				if (Weapon.getWeaponInfo(id) != null)
 				{
 					s = Res.txt('w',id,1);
 				}
@@ -625,8 +629,8 @@ package fe.inter
 				id=id.substr(2);
 				craft=1;
 				
-				if (XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id).length()) tip=Item.L_WEAPON;
-				else if (XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id).length()) tip=Item.L_ARMOR;
+				if (Weapon.getWeaponInfo(id).length())		tip = Item.L_WEAPON;
+				else if (Armor.getArmorInfo(id).length())	tip = Item.L_ARMOR;
 				else tip=Item.L_ITEM;
 			}
 			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
@@ -685,8 +689,6 @@ package fe.inter
 			var s:String='\n';
 			var cs:String = 's_' + id;
 			var sch = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
-			if (sch.length()) sch=sch[0];
-			else return '';
 			var kol:int=1;
 			if (sch.@kol.length()) kol=sch.@kol;
 			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;

@@ -38,15 +38,19 @@ package fe.inter
 		var glowFilter:GlowFilter=new GlowFilter(0x00FF99,1,10,6,2,3);
 		
 		var info:MovieClip;
+
+		private static var weaponListCache:XMLList	= XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
+		private static var armorListCache:XMLList	= XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 		
 		public function Stand(vstand:MovieClip, ninv:Invent) {
-			vis=vstand;
-			inv=ninv;
-			pages=new Array();
-			buttons=new Array();
-			weapons=new Array();
-			armors=new Array();
-			arts=new Array();
+			vis =vstand;
+			inv =ninv;
+			pages	= [];
+			buttons	= [];
+			weapons	= [];
+			armors	= [];
+			arts	= [];
+
 			for (var i=0; i<kolPages; i++) {
 				var page:MovieClip=new MovieClip();
 				page.x=200;
@@ -101,12 +105,11 @@ package fe.inter
 			showWeaponList(page);
 		}
 		
-		function createWeaponLists(n:int) {
+		private function createWeaponLists(n:int) {
 			var levels:Array=[0,0,0,0,0,0,0];
 			var stolb:int=-1;
-			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 
-			for each (var weap in weaponList.(@tip > 0))
+			for each (var weap in weaponListCache.(@tip > 0))
 			{
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
@@ -180,7 +183,7 @@ package fe.inter
 			}
 		}
 		
-		function createArtList(n:int) {
+		private function createArtList(n:int) {
 			for (var stolb=0; stolb<6; stolb++) {
 				var item=new itemArt();
 				item.x=80+stolb*160;
@@ -194,15 +197,14 @@ package fe.inter
 			}
 		}
 		
-		function createArmorList(n:int) {
+		private function createArmorList(n:int) {
 			var stolb:int=0;
 			var str:int=0;
 			var dvis:MovieClip=new visBodyStay();
 			var sc:Number=1.5;
 			var aid=Appear.ggArmorId;
 			Appear.transp=true;
-			var armorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
-			for each(var arm in armorList)
+			for each(var arm in armorListCache)
 			{
 				if (n==6 && arm.@tip>1 || n==7 && arm.@tip!=3) continue;
 				var item=new itemArt();
@@ -241,12 +243,11 @@ package fe.inter
 					item.art.y=100;
 				}
 			}
-			armorList = null; // Manual cleanup.
 			Appear.transp=false;
 			World.w.armorWork='';
 		}
 		
-		function showMass() {
+		private function showMass() {
 			vis.bottext.htmlText='';
 			try {
 				if (page<=4) vis.bottext.htmlText=inv.retMass(4);
@@ -255,7 +256,7 @@ package fe.inter
 			}
 		}
 		
-		function showWeaponList(n:int) {
+		private function showWeaponList(n:int) {
 			for (var i=0; i<kolPages; i++) {
 				pages[i].visible=false;
 			}
@@ -264,8 +265,8 @@ package fe.inter
 			if (n<5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			vis.toptext.visible=(n<=5);
-			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			for each (var weap in weaponList.(@tip>0))
+
+			for each (var weap in weaponListCache.(@tip>0))
 			{
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
 					if (weapons[weap.@id]==null) continue;
@@ -275,10 +276,8 @@ package fe.inter
 					else showWeapon(weapons[weap.@id],inv.weapons[weap.@id].variant+1,inv.weapons[weap.@id].respect);
 				}
 			}
-			weaponList = null; // Manual cleanup.
 
-			var armorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
-			for each(var arm in armorList)
+			for each(var arm in armorListCache)
 			{
 				if (armors[arm.@id]) {
 					if (inv.armors[arm.@id] && inv.armors[arm.@id].lvl>=0) {
@@ -290,7 +289,6 @@ package fe.inter
 					}
 				}
 			}
-			armorList = null; // Manual cleanup.
 			
 			for (var i in ls) {
 				if (inv.items[ls[i]].kol) {
@@ -305,7 +303,7 @@ package fe.inter
 		
 		//n - 0-нет, 1-обычное, 2-уникальное
 		//respect - 0-новое, 1-скрытое, 2-используемое, 3-схема
-		function showWeapon(item:MovieClip, n:int, respect:int) {
+		private function showWeapon(item:MovieClip, n:int, respect:int) {
 			if (n==0) {
 				item.weapon.filters=[clearFilter, glowFilter];
 				item.weapon2.filters=[clearFilter, glowFilter];

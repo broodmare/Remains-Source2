@@ -70,25 +70,30 @@ package fe.loc
 		
 		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
 		
-		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
+		private static var cachedObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
+		
+		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null)
+		{
 			loc=nloc;
 			id=nid;
-			if (loc.land.kolAll) {
+			if (loc.land.kolAll)
+			{
 				if (loc.land.kolAll[id]>0) loc.land.kolAll[id]++;
 				else loc.land.kolAll[id]=1;
 			}
 			prior=1;
 			vis=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
 			shad=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
-			if (vis==null) {
-				vis=new visbox0();
-				shad=new visbox0();
+			if (vis == null)
+			{
+				vis  = new visbox0();
+				shad = new visbox0();
 			}
 			vis.stop();
 			shad.gotoAndStop(vis.currentFrame);
-			shad.filters=[dsf];
+			shad.filters = [dsf];
 			
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
+			var node:XML = getObjInfo(id);
 			
 			X=begX=nx, Y=begY=ny;
 			scX=vis.width;
@@ -201,7 +206,18 @@ package fe.loc
 			if (loadObj && loadObj.dead) die(-1);		//если объект был уничтожен
 			
 
-			
+			function getObjInfo(id:String):XML
+			{
+				// Check if the node is already cached
+				var node:XML;
+				if (cachedObjs[id] != undefined) node = cachedObjs[id];
+				else
+				{
+					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
+					cachedObjs[id] = node;
+				}
+				return node;
+			}
 		}
 		
 		public override function save():Object {

@@ -20,11 +20,15 @@ package fe.graph
 		public var sloy:int=0;
 		public var er:Boolean=false;	//стирание
 
-		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
-			id=nid;
-			X=nx, Y=ny;
+		private static var cachedBackObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
+
+		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null)
+		{
+			id	= nid;
+			X	= nx;
+			Y	= ny;
 			
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "backs", "id", id);
+			var node:XML = getBackObjInfo(id);
 
 			var wid=node.@x2*World.tileX;
 			if (xml && xml.@w.length()) wid=xml.@w*World.tileX
@@ -39,7 +43,8 @@ package fe.graph
 				} else {
 					X=nloc.limX-X-wid;
 				}
-			} else if (node.@mirr=='2' && Math.random()<0.5) {
+			}
+			else if (node.@mirr=='2' && Math.random()<0.5) {
 				X=nx+wid;
 				scX=-1;
 			} 
@@ -70,6 +75,19 @@ package fe.graph
 			}
 			if (node.@loff.length()) frameOff=node.@loff;
 			if (node.@lon.length()) frameOn=node.@lon;
+
+			function getBackObjInfo(id:String):XML
+			{
+				var node:XML;
+				// Check if the node is already cached
+				if (cachedBackObjs[id] != undefined) node = cachedBackObjs[id];
+				else
+				{
+					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "backs", "id", id);
+					cachedBackObjs[id] = node;
+				}
+				return node;
+			}
 		}
 		
 		public function onoff(n:int) {
@@ -81,5 +99,7 @@ package fe.graph
 				if (light) light.gotoAndStop(frame);
 			}
 		}
+
+
 	}
 }

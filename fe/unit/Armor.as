@@ -44,6 +44,8 @@ package fe.unit
 		public var price:int=0;
 		public var sort:int=0;
 		public var hideMane:int=0;
+
+		private static var cachedArmors:Object = {};
 		
 		public function Armor(nid:String, nlvl:int=0) {
 			id=nid;
@@ -76,6 +78,20 @@ package fe.unit
 			if (lvl>=0) getXmlParam(xml.upd[lvl]);
 			else getXmlParam(xml.upd[0])
 		}
+
+		public static function getArmorInfo(id:String):XML
+		{
+			// Check if the node is already cached
+			var node:XML;
+			if (cachedArmors[id] != undefined) node = cachedArmors[id];
+			else
+			{
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
+				cachedArmors[id] = node;
+			}
+			return node;
+		}
+
 		
 		public function getXmlParam(node:XML) {
 			if (node.@armor.length()) armor=(node.@armor);

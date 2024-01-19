@@ -127,7 +127,7 @@ package  fe.entities
 		public static function setArmor(m:MovieClip) {
 			var aid:String='';
 			if (World.w) {
-				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat==0) aid=World.w.pip.ArmorId;
+				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat==0) aid=World.w.pip.armorID;
 				else if (World.w.armorWork!='') aid=World.w.armorWork;
 				else if (World.w.alicorn) aid='ali';
 				else aid=Appear.ggArmorId;
