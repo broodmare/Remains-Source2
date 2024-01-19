@@ -347,7 +347,7 @@ package fe.weapon
 			b.otbros=otbros*otbrosMult;
 			b.dist=0;
 			b.tilehit=false;
-			b.parr=null;
+			b.parrDict=null;
 			b.partEmit=true;
 			if (mtip==0) {
 				sin2=sin0; cos2=cos0;

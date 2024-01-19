@@ -124,7 +124,7 @@ package fe.projectile
 			babah=true;
 		}
 		
-		public override function run(div:int=1) {
+		public override function run(div:int=1):void {
 			var t:Tile;
 			X+=dx/div;
 			if (lip) {

@@ -34,7 +34,7 @@ package fe.weapon
 				b.loc=owner.loc;
 				b.knocky=-0.1;
 				b.knockx=storona;
-				b.parr=null;
+				b.parrDict=null;
 				b.dist=0;
 				b.damage=damage*World.w.pers.punchDamMult;
 				b.otbros=otbros*World.w.pers.punchDamMult;;
