@@ -36,8 +36,11 @@ package fe.graph
 		public var visSats:Sprite;
 		public var visFon:MovieClip;
 		
-		var resX:int, resY:int;
-		var kusokX:int=48, kusokY:int=25;
+		var resX:int;		//	screen pixel width
+		var resY:int;		//	screen pixel height
+
+		var kusokX:int=48;	// room tile width
+		var kusokY:int=25;	// room tile height
 		
 		public var frontBmp:BitmapData;
 		var frontBitmap:Bitmap;
@@ -520,122 +523,165 @@ package fe.graph
 		}
 		
 		//заполнение заднего плана текстурой
-		public function drawBackWall(tex:String, sposob:int=0) {
+		public function drawBackWall(tex:String, sposob:int=0)
+		{
+			var roomPixelWidth:int	= kusokX * Tile.tileX;
+			var roomPixelHeight:int	= kusokY * Tile.tileY
+
 			if (tex=='sky') return;
 			m=new Matrix();
 			var fill:BitmapData=getObj(tex);
 			if (fill==null) fill=getObj('tBackWall')
 			var osn:Sprite=new Sprite();
 			osn.graphics.beginBitmapFill(fill);
-			if (sposob==0) {
-				osn.graphics.drawRect(0,0,kusokX*Tile.tileX,kusokY*Tile.tileY);
-			} else if (sposob==1) {
-				osn.graphics.drawRect(0,0,11*Tile.tileX-10,kusokY*Tile.tileY);
-				osn.graphics.drawRect(37*Tile.tileX+10,0,kusokX*Tile.tileX,kusokY*Tile.tileY);
-			} else if (sposob==2) {
-				osn.graphics.drawRect(0,16*Tile.tileY+10,kusokX*Tile.tileX,kusokY*Tile.tileY);
-			} else if (sposob==3) {
-				osn.graphics.drawRect(0,24*Tile.tileY+10,kusokX*Tile.tileX,kusokY*Tile.tileY);
+			if (sposob==0)
+			{
+				osn.graphics.drawRect(0,0,roomPixelWidth,roomPixelHeight);
+			}
+			else if (sposob == 1)
+			{
+				osn.graphics.drawRect(0,0,11*Tile.tileX-10, roomPixelHeight);
+				osn.graphics.drawRect(37*Tile.tileX+10,0,roomPixelWidth, roomPixelHeight);
+			}
+			else if (sposob == 2)
+			{
+				osn.graphics.drawRect(0,16*Tile.tileY+10,roomPixelWidth, roomPixelHeight);
+			}
+			else if (sposob == 3)
+			{
+				osn.graphics.drawRect(0,24*Tile.tileY+10,roomPixelWidth, roomPixelHeight);
 			}
 			backBmp.draw(osn, m, null, null, null, false);
 		}
 		
-		function setMCT(mc:MovieClip, t:Tile, toFront:Boolean) {
-			if (mc.c1) {
-				if (toFront) {
-					mc.c1.gotoAndStop(t.kont1+1);
-					mc.c2.gotoAndStop(t.kont2+1);
-					mc.c3.gotoAndStop(t.kont3+1);
-					mc.c4.gotoAndStop(t.kont4+1);
-				} else {
-					mc.c1.gotoAndStop(t.pont1+1);
-					mc.c2.gotoAndStop(t.pont2+1);
-					mc.c3.gotoAndStop(t.pont3+1);
-					mc.c4.gotoAndStop(t.pont4+1);
+		private function setMovieClipTile(mc:MovieClip, t:Tile, toFront:Boolean)
+		{
+			if (mc.c1)
+			{
+				if (toFront)
+				{
+					mc.c1.gotoAndStop(t.kont1 + 1);
+					mc.c2.gotoAndStop(t.kont2 + 1);
+					mc.c3.gotoAndStop(t.kont3 + 1);
+					mc.c4.gotoAndStop(t.kont4 + 1);
+				}
+				else
+				{
+					mc.c1.gotoAndStop(t.pont1 + 1);
+					mc.c2.gotoAndStop(t.pont2 + 1);
+					mc.c3.gotoAndStop(t.pont3 + 1);
+					mc.c4.gotoAndStop(t.pont4 + 1);
 				}
 			}
 		}
 		
 		//рисование текстурных материалов
-		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean=false) {
+		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean=false)
+		{
+			var roomPixelWidth:int	= kusokX * Tile.tileX;
+			var roomPixelHeight:int	= kusokY * Tile.tileY
+
+
 			if (!material.used) return;
-			if (material.rear==toFront) return;
+			if (material.rear == toFront) return;
 			var t:Tile;
 			var mc:MovieClip;
-			var kusok:Sprite=new Sprite();
+			var kusok:Sprite = new Sprite();	// Canvas(?)
 			
-			var osn:Sprite=new Sprite();
-			var maska:Sprite=new Sprite();
-			var border:Sprite=new Sprite();
-			var bmaska:Sprite=new Sprite();
-			var floor:Sprite=new Sprite();
-			var fmaska:Sprite=new Sprite();
+			var osn:Sprite		= new Sprite(); // Player
+			var maska:Sprite	= new Sprite();
+			var border:Sprite	= new Sprite();
+			var bmaska:Sprite	= new Sprite();
+			var floor:Sprite	= new Sprite();
+			var fmaska:Sprite	= new Sprite();
 			
-			if (material.texture==null) osn.graphics.beginFill(0x666666);
+			if (material.texture == null) osn.graphics.beginFill(0x666666);
 			else if (loc.homeStable && material.alttexture!=null) osn.graphics.beginBitmapFill(material.alttexture);
 			else osn.graphics.beginBitmapFill(material.texture);
-			osn.graphics.drawRect(0,0,kusokX*Tile.tileX,kusokY*Tile.tileY);
+			
+			osn.graphics.drawRect(0,0,roomPixelWidth, roomPixelHeight);
 			kusok.addChild(osn);
 			kusok.addChild(maska);
-			if (material.border) {
+
+			if (material.border)
+			{
 				border.graphics.beginBitmapFill(material.border);
-				border.graphics.drawRect(0,0,kusokX*Tile.tileX,kusokY*Tile.tileY);
+				border.graphics.drawRect(0,0,roomPixelWidth, roomPixelHeight);
 				kusok.addChild(border);
 				kusok.addChild(bmaska);
 			}
-			if (material.floor) {
+			if (material.floor)
+			{
 				floor.graphics.beginBitmapFill(material.floor);
-				floor.graphics.drawRect(0,0,kusokX*Tile.tileX,kusokY*Tile.tileY);
+				floor.graphics.drawRect(0,0,roomPixelWidth, roomPixelHeight);
 				kusok.addChild(floor);
 				kusok.addChild(fmaska);
 			}
 			
-			var isDraw:Boolean=false;
+			var isDraw:Boolean = false;
 			
-			for (var i=0; i<loc.spaceX; i++) {
-				for (var j=0; j<loc.spaceY; j++) {
-					t=loc.getTile(i,j);
-					if (t.front==material.id && (toFront || dop) || t.back==material.id && !toFront) {
-						isDraw=true;
-						mc=new material.textureMask();
-							setMCT(mc,t,toFront);
-							mc.x=(i+0.5)*Tile.tileX;
-							mc.y=(j+0.5)*Tile.tileY;
-							maska.addChild(mc);
-							if (t.zForm && toFront) {
-								mc.scaleY=(t.phY2-t.phY1)/Tile.tileY;
-								mc.y=(t.phY2+t.phY1)/2;
-							}							
-						if (material.borderMask) {
-							mc=new material.borderMask();
-							setMCT(mc,t,toFront);
-							mc.x=(i+0.5)*Tile.tileX;
-							mc.y=(j+0.5)*Tile.tileY;
+			for (var i:int = 0; i < loc.spaceX; i++)
+			{
+				for (var j:int = 0; j < loc.spaceY; j++)
+				{
+					t = loc.getTile(i, j);
+					if (t.front == material.id && (toFront || dop) || t.back==material.id && !toFront)
+					{
+						var adjustedWidth:Number	= (i + 0.5);
+						var adjustedHeight:Number	= (j + 0.5);
+
+						var pixelWidth:Number	= adjustedWidth * Tile.tileX;
+						var pixelHeight:Number	= adjustedHeight * Tile.tileY;
+
+						isDraw = true;
+						mc = new material.textureMask();
+						setMovieClipTile(mc, t, toFront);
+
+						mc.x = pixelWidth;
+						mc.y = pixelHeight;
+
+						maska.addChild(mc);
+
+						if (t.zForm && toFront)
+						{
+							mc.scaleY = (t.phY2 - t.phY1) / Tile.tileY;
+							mc.y = (t.phY2 + t.phY1) / 2;
+						}							
+						if (material.borderMask)
+						{
+							mc = new material.borderMask();
+							setMovieClipTile(mc, t, toFront);
+							mc.x = pixelWidth;
+							mc.y = pixelHeight;
 							bmaska.addChild(mc);
-							if (t.zForm && toFront) {
-								mc.scaleY=(t.phY2-t.phY1)/Tile.tileY;
-								mc.y=(t.phY2+t.phY1)/2;
+							if (t.zForm && toFront)
+							{
+								mc.scaleY = (t.phY2 - t.phY1) / Tile.tileY;
+								mc.y = (t.phY2 + t.phY1) / 2;
 							}							
 						}
-						if (material.floorMask) {
-							mc=new material.floorMask();
-							if (mc.c1) {
-								mc.c1.gotoAndStop(t.kont1+1);
-								mc.c2.gotoAndStop(t.kont2+1);
+						if (material.floorMask)
+						{
+							mc = new material.floorMask();
+							if (mc.c1)
+							{
+								mc.c1.gotoAndStop(t.kont1 + 1);
+								mc.c2.gotoAndStop(t.kont2 + 1);
 							}
 							fmaska.addChild(mc);
-							mc.x=(i+0.5)*Tile.tileX;
-							mc.y=(j+0.5+t.zForm/4)*Tile.tileY;
+							mc.x = pixelWidth;
+							mc.y = (adjustedHeight + t.zForm / 4) * Tile.tileY;
 						}
 					}
 				}
 			}
 			if (!isDraw) return;
-			m.tx=0;
-			m.ty=0;
-			osn.cacheAsBitmap=maska.cacheAsBitmap=border.cacheAsBitmap=bmaska.cacheAsBitmap=floor.cacheAsBitmap=fmaska.cacheAsBitmap=true;
-			osn.mask=maska; border.mask=bmaska; floor.mask=fmaska;
-			if (material.F) kusok.filters=material.F;
+
+			m.tx = 0;
+			m.ty = 0;
+			osn.cacheAsBitmap = maska.cacheAsBitmap = border.cacheAsBitmap = bmaska.cacheAsBitmap = floor.cacheAsBitmap = fmaska.cacheAsBitmap = true;
+			osn.mask = maska; border.mask=bmaska; floor.mask=fmaska;
+			if (material.F) kusok.filters = material.F;
 			if (toFront) frontBmp.draw(kusok, m, null, null, null, false);
 			else if (dop) backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
 			else backBmp.draw(kusok, m, null, null, null, false); 
@@ -645,19 +691,23 @@ package fe.graph
 //							Время выполнения
 //============================================================================================		
 		
-		public function getSpriteList(id:String, n:int=0):BitmapData {
-			if (spriteLists[id]==null) {
-				if (n>0) spriteLists[id]=getObj(id,numbSprite+n);
-				else {
-					spriteLists[id]=getObj(id,numbSprite);
-					if (spriteLists[id]==null) spriteLists[id]=getObj(id,numbSprite+1);
+		public function getSpriteList(id:String, n:int=0):BitmapData
+		{
+			if (spriteLists[id] == null)
+			{
+				if (n > 0) spriteLists[id] = getObj(id, numbSprite + n);
+				else
+				{
+					spriteLists[id] = getObj(id, numbSprite);
+					if (spriteLists[id] == null) spriteLists[id] = getObj(id, numbSprite + 1);
 				}
 			}
 			if (spriteLists[id]==null) trace('нет спрайтов', id)
 			return spriteLists[id];
 		}
 		
-		public function drawSats() {
+		public function drawSats()
+		{
 			satsBmp.fillRect(satsBmp.rect,0);
 			satsBmp.draw(visual,new Matrix);
 		}
@@ -668,7 +718,8 @@ package fe.graph
 		}
 		
 		//рисование одного блока воды
-		public function drawWater(t:Tile, recurs:Boolean=true) {
+		public function drawWater(t:Tile, recurs:Boolean = true)
+		{
 			m=new Matrix();
 			m.tx=t.X*Tile.tileX;
 			m.ty=t.Y*Tile.tileY;
@@ -709,113 +760,154 @@ package fe.graph
 			decal(erC,drC,nx,ny,1,0,'hardlight');
 		}
 		
-		//дырки от выстрелов
-		public function dyrka(nx:int,ny:int,tip:int,mat:int, soft:Boolean=false, ver:Number=1) {
-			var erC:Class, drC:Class;
-			var bl:String='normal';
-			var centr:Boolean=false;
-			var sc=Math.random()*0.5+0.5;
-			var rc=Math.random()*360
-			if (tip==0 || mat==0) return;
-			if (mat==1) { 			//металл
-				if (tip>=1 && tip<=6) drC=bullet_metal;
-				else if (tip==9) {		//взрыв
-					if (!soft && Math.random()*0.5<ver) drC=metal_tre;
+		// Bullethole
+		public function dyrka(nx:int,ny:int,tip:int,mat:int, soft:Boolean=false, ver:Number=1)
+		{
+			var erC:Class;
+			var drC:Class;
+			var bl:String = 'normal';
+			var centr:Boolean = false;
+			var sc = Math.random() * 0.5 + 0.5;
+			var rc = Math.random() * 360
+
+			if (tip == 0 || mat == 0) return;
+
+			switch (mat)
+			{
+				case 1:	//металл
+					if (tip >= 1 && tip <= 6) drC = bullet_metal;
+					else if (tip==9) //взрыв
+					{		
+						if (!soft && Math.random()*0.5<ver) drC=metal_tre;
+						centr=true;
+					}
+				break;
+
+				case 2:  //камень
+				case 4:
+				case 6:
+					if (tip>=1 && tip<=3) //пули
+					{					
+						if (tip>1 && Math.random()>0.5) erC=bullet_dyr;
+						drC=bullet_tre;
+						if (tip==2) sc+=0.5;
+						if (tip==3) sc+=1;
+					}
+					else if (tip>=4 && tip<=6) //удары
+					{
+						if (!soft) drC=punch_tre;
+						if (tip==5) sc+=0.5;
+						if (tip==6) sc+=1;
+					}
+					else if (tip==9) //взрыв
+					{
+						if (!soft && Math.random()*0.5<ver) drC=expl_tre;
+						centr=true;
+					}
+
+					if (tip<10 && !soft)
+					{
+						if (mat==2) Emitter.emit('kusoch',loc,nx,ny,{kol:3});
+						else Emitter.emit('kusochB',loc,nx,ny,{kol:3});
+					}
+				break;
+
+				case 3: //дерево
+					if (tip>=1 && tip<=3) //пули
+					{
+						erC=bullet_dyr;
+						drC=bullet_wood;
+						rc=0;
+						if (tip==2) sc+=0.5;
+						if (tip==3) sc+=1;
+					}
+					else if (tip>=4 && tip<=6) //удары
+					{
+						if (!soft) drC=punch_tre;
+						if (tip==5) sc+=0.5;
+						if (tip==6) sc+=1;
+					}
+					else if (tip==9) //взрыв
+					{
+						if (!soft && Math.random()*0.5<ver) drC=expl_tre;
+						centr=true;
+					}
+
+					if (tip < 10 && !soft)
+					{
+						Emitter.emit('schepoch',loc,nx,ny,{kol:3});
+					}
+				break;
+
+				case 7: //поле
+					Emitter.emit('pole',loc,nx,ny,{kol:5});
+				break;
+
+				case 11:
+					if (Math.random() < 0.1) drC=fire_soft;
+				break;
+
+				case 12: //лазеры
+				case 13:
+					if (soft && Math.random()*0.2>ver) drC=fire_soft;
+					else drC=laser_tre;
+
+					if (tip == 13) sc *= 0.6;
+					bl='hardlight';
+				break;
+
+				case 15: //плазма
+					if (soft) drC = plasma_soft;
+					else erC=plasma_dyr, drC=plasma_tre;
+
+					bl = 'hardlight';
+				break;
+
+				case 16:
+					if (soft) drC=fire_soft;
+					else erC=plasma_dyr, drC=bluplasma_tre;
+					bl = 'hardlight';
+				break;
+
+				case 17:
+					if (soft) drC=fire_soft;
+					else erC=plasma_dyr, drC=pinkplasma_tre;
+					bl = 'hardlight';
+				break;
+
+				case 18:
+					drC = cryo_soft;
+					bl = 'hardlight';
+				break;
+
+				case 19: //взрыв
+					if (!soft && Math.random() * 0.5 < ver) drC=plaexpl_tre;
 					centr=true;
-				}
-			} else if (mat==2 || mat==4 || mat==6) {	//камень
-				if (tip>=1 && tip<=3) {					//пули
-					if (tip>1 && Math.random()>0.5) erC=bullet_dyr;
-					drC=bullet_tre;
-					if (tip==2) sc+=0.5;
-					if (tip==3) sc+=1;
-				} else if (tip>=4 && tip<=6) {			//удары
-					if (!soft) drC=punch_tre;
-					if (tip==5) sc+=0.5;
-					if (tip==6) sc+=1;
-				} else if (tip==9) {					//взрыв
-					if (!soft && Math.random()*0.5<ver) drC=expl_tre;
-					centr=true;
-				}
-				if (tip<10 && !soft) {
-					if (mat==2) Emitter.emit('kusoch',loc,nx,ny,{kol:3});
-					else Emitter.emit('kusochB',loc,nx,ny,{kol:3});
-				}
-			} else if (mat==3) {	//дерево
-				if (tip>=1 && tip<=3) {					//пули
-					erC=bullet_dyr;
-					drC=bullet_wood;
-					rc=0;
-					if (tip==2) sc+=0.5;
-					if (tip==3) sc+=1;
-				} else if (tip>=4 && tip<=6) {			//удары
-					if (!soft) drC=punch_tre;
-					if (tip==5) sc+=0.5;
-					if (tip==6) sc+=1;
-				} else if (tip==9) {					//взрыв
-					if (!soft && Math.random()*0.5<ver) drC=expl_tre;
-					centr=true;
-				}
-				if (tip<10 && !soft) {
-					Emitter.emit('schepoch',loc,nx,ny,{kol:3});
-				}
-			} else if (mat==7) {	//поле
-				Emitter.emit('pole',loc,nx,ny,{kol:5});
+				break;
+
+				default:
+					trace('ERROR: unknown bullethole: "' + mat + '" !');
+				break;
 			}
-			if (tip==11) {					//огонь
-				if (Math.random()<0.1) drC=fire_soft;
-			} else if (tip==12 || tip==13) {		//лазеры
-				if (soft && Math.random()*0.2>ver) {
-					drC=fire_soft;
-				} else {
-					drC=laser_tre;
-				}
-				if (tip==13) sc*=0.6;
-				bl='hardlight';
-			} else if (tip==15) {					//плазма
-				if (soft) {
-					drC=plasma_soft;
-				} else {
-					erC=plasma_dyr, drC=plasma_tre;
-				}
-				bl='hardlight';
-			} else if (tip==16) {
-				if (soft) {
-					drC=fire_soft;
-				} else {
-					erC=plasma_dyr, drC=bluplasma_tre;
-				}
-				bl='hardlight';
-			} else if (tip==17) {
-				if (soft) {
-					drC=fire_soft;
-				} else {
-					erC=plasma_dyr, drC=pinkplasma_tre;
-				}
-				bl='hardlight';
-			} else if (tip==18) {
-				drC=cryo_soft;
-				bl='hardlight';
-			} else if (tip==19) {							//взрыв
-				if (!soft && Math.random()*0.5<ver) drC=plaexpl_tre;
-				centr=true;
-			}			
 			
 			decal(erC,drC,nx,ny,sc,rc,bl);
 		}
 		
-		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number=1, rc:Number=0, bl:String='normal') {
+		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number=1, rc:Number=0, bl:String='normal')
+		{
 			m=new Matrix();
 			if (sc!=1) m.scale(sc,sc);
 			if (rc!=0) m.rotate(rc);
 			m.tx=nx;
 			m.ty=ny;
-			if (erC) {
+			if (erC)
+			{
 				var erase:MovieClip=new erC();
 				if (erase.totalFrames>1) erase.gotoAndStop(Math.floor(Math.random()*erase.totalFrames+1));
 				frontBmp.draw(erase, m, null, 'erase', null, true);
 			}
-			if (drD) {
+			if (drD)
+			{
 				var nagar:MovieClip=new drD();
 				if (nagar.totalFrames>1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
 				nagar.scaleX=nagar.scaleY=sc;
@@ -835,7 +927,8 @@ package fe.graph
 			}
 		}
 		
-		public function gwall(nx:int,ny:int) {
+		public function gwall(nx:int, ny:int)
+		{
 			var m:Matrix=new Matrix();
 			m.tx=nx*Tile.tileX;
 			m.ty=ny*Tile.tileY;
@@ -843,7 +936,8 @@ package fe.graph
 			frontBmp.draw(wall, m);
 		}
 		
-		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean=false) {
+		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean=false)
+		{
 			var br:MovieClip;
 			if (aero) br=pa; else br=pb;
 			var rasst:Number=Math.sqrt((nx2-nx1)*(nx2-nx1)+(ny2-ny1)*(ny2-ny1));
@@ -852,23 +946,21 @@ package fe.graph
 			var dy:Number=(ny2-ny1)/kol;
 			
 			var rx1:int, rx2:int, ry1:int, ry2:int;
-			if (nx1<nx2) {
-				rx1=nx1-25, rx2=nx2+25;
-			} else {
-				rx1=nx2-25, rx2=nx1+25;
-			}
-			if (ny1<ny2) {
-				ry1=ny1-25, ry2=ny2+25;
-			} else {
-				ry1=ny2-25, ry2=ny1+25;
-			}
+
+			if (nx1<nx2) rx1=nx1-25, rx2=nx2+25;
+			else rx1=nx2-25, rx2=nx1+25;
+
+			if (ny1<ny2) ry1=ny1-25, ry2=ny2+25;
+			else ry1=ny2-25, ry2=ny1+25;
+
 			
 			brPoint.x=0, brPoint.y=0;
 			brRect.left=rx1, brRect.right=rx2;
 			brRect.top=ry1, brRect.bottom=ry2;
 			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
 			
-			for (var i=1; i<=kol; i++) {
+			for (var i=1; i<=kol; i++)
+			{
 				pm.tx=nx1+dx*i;
 				pm.ty=ny1+dy*i;				
 				backBmp.draw(br, pm, brTrans, 'normal', null, false);
@@ -880,25 +972,46 @@ package fe.graph
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
 		
-		public function specEffect(n:Number=0) {
-			if (n==0) {
-				visual.filters=[];
-				visFon.filters=[]
-			} else if (n==1) {
-				visual.filters=[new ColorMatrixFilter([2,-0.9,-0.1,0,0,-0.4,1.5,-0.1,0,0,-0.4,-0.9,2,0,0,0,0,0,1,0])];
-			} else if (n==2) {
-				visual.filters=[new ColorMatrixFilter([-0.574,1.43,0.144,0,0,0.426,0.43,0.144,0,0,0.426,1.430,-0.856,0,0,0,0,0,1,0])];
-			} else if (n==3) {
-				visual.filters=[new ColorMatrixFilter([0,1,0,0,0,1,0,0,0,0,0,0,-0.2,0,100,0,0,0,1,0])];
-			} else if (n==4) {
-				visual.filters=[new ColorMatrixFilter([0,-0.5,-0.5,0,255,-0.5,0,-0.5,0,255,-0.5,-0.5,0,0,255,0,0,0,1,0])];
-			} else if (n==5) {
-				visual.filters=[new ColorMatrixFilter([3.4,6.7,0.9,0,-635,3.4,6.75,0.9,0,-635,3.4,6.7,0.9,0,-635,0,0,0,1,0])];
-			} else if (n==6) {
-				visual.filters=[new ColorMatrixFilter([0.33,0.33,0.33,0,0,0.33,0.33,0.33,0,0,0.33,0.33,0.33,0,0,0,0,0,1,0])];
-			} else if (n>100) {
-				visual.filters=[new BlurFilter(n-100,n-100)];
-				visFon.filters=[new BlurFilter(n-100,n-100)];
+		public function specEffect(n:Number = 0)
+		{
+			switch (n)
+			{
+				case 0:
+					visual.filters = [];
+					visFon.filters = [];
+				break;
+
+				case 1:
+					visual.filters=[new ColorMatrixFilter([2,-0.9,-0.1,0,0,-0.4,1.5,-0.1,0,0,-0.4,-0.9,2,0,0,0,0,0,1,0])];
+				break;
+
+				case 2:
+					visual.filters=[new ColorMatrixFilter([-0.574,1.43,0.144,0,0,0.426,0.43,0.144,0,0,0.426,1.430,-0.856,0,0,0,0,0,1,0])];
+				break;
+
+				case 3:
+					visual.filters=[new ColorMatrixFilter([0,1,0,0,0,1,0,0,0,0,0,0,-0.2,0,100,0,0,0,1,0])];
+				break;
+
+				case 4:
+					visual.filters=[new ColorMatrixFilter([0,-0.5,-0.5,0,255,-0.5,0,-0.5,0,255,-0.5,-0.5,0,0,255,0,0,0,1,0])];
+				break;
+
+				case 5:
+					visual.filters=[new ColorMatrixFilter([3.4,6.7,0.9,0,-635,3.4,6.75,0.9,0,-635,3.4,6.7,0.9,0,-635,0,0,0,1,0])];
+				break;
+
+				case 6:
+					visual.filters=[new ColorMatrixFilter([0.33,0.33,0.33,0,0,0.33,0.33,0.33,0,0,0.33,0.33,0.33,0,0,0,0,0,1,0])];
+				break;
+
+				default:
+					if (n > 100)
+					{
+						visual.filters=[new BlurFilter(n-100,n-100)];
+						visFon.filters=[new BlurFilter(n-100,n-100)];
+					}
+					else trace('ERROR: Unknown special effect: "' + n + '"!');
 			}
 		}
 	}
