@@ -37,45 +37,66 @@ package fe.unit
 		
 		public var snd:String;
 
-		public function Spell(own:Unit, nid:String) {
-			id=nid;
-			owner=own;
+		private static var cachedItems:Object = {};
+
+		public function Spell(own:Unit, nid:String)
+		{
+			id = nid;
+			owner = own;
+
 			if (owner && owner.player)
 			{
-				player=true;
-				gg=owner as UnitPlayer;
+				player = true;
+				gg = owner as UnitPlayer;
 			}
-			var xml:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-			if (xml.@hp.length()) hp=xml.@hp;
-			if (xml.@mana.length()) mana=xml.@mana;
-			if (xml.@magic.length()) magic=xml.@magic;
-			if (xml.@culd.length()) culd=xml.@culd*World.fps;
-			if (xml.@dist.length()) dist=xml.@dist;
-			if (xml.@line.length()) line=xml.@line;
-			if (xml.@rad.length()) rad=xml.@rad;
-			if (xml.@dam.length()) dam=xml.@dam;
-			if (xml.@prod.length()) prod=true;
-			if (xml.@tele.length()) teleSpell=true;
-			if (xml.@atk.length()) atk=true;
-			nazv=Res.txt('i',id);
-			if (xml.@snd.length()) snd=xml.@snd;
+
+			var xml:XML = getItemInfo(id);
+
+			if (xml.@hp.length())		hp		= xml.@hp;
+			if (xml.@mana.length())		mana	= xml.@mana;
+			if (xml.@magic.length())	magic	= xml.@magic;
+			if (xml.@culd.length())		culd	= xml.@culd*World.fps;
+			if (xml.@dist.length())		dist	= xml.@dist;
+			if (xml.@line.length()) 	line	= xml.@line;
+			if (xml.@rad.length())		rad		= xml.@rad;
+			if (xml.@dam.length())		dam		= xml.@dam;
+			if (xml.@prod.length())		prod	= true;
+			if (xml.@atk.length())		atk		= true;
+			if (xml.@tele.length())		teleSpell = true;
+			if (xml.@snd.length())		snd = xml.@snd;
+
+			nazv = Res.txt('i', id);
+
 			
-			if (id=='sp_mwall') cf=cast_mwall;
-			if (id=='sp_mshit') cf=cast_mshit;
-			if (id=='sp_blast') cf=cast_blast;
-			if (id=='sp_kdash') cf=cast_kdash;
-			if (id=='sp_slow') cf=cast_slow;
-			if (id=='sp_cryst') cf=cast_cryst;
-			if (id=='sp_moon') cf=cast_moon;
-			if (id=='sp_gwall') cf=cast_gwall;
-			if (id=='sp_invulner') cf=cast_invulner;
+			
+			if (id == 'sp_mwall')		cf = cast_mwall;
+			if (id == 'sp_mshit')		cf = cast_mshit;
+			if (id == 'sp_blast')		cf = cast_blast;
+			if (id == 'sp_kdash')		cf = cast_kdash;
+			if (id == 'sp_slow')		cf = cast_slow;
+			if (id == 'sp_cryst')		cf = cast_cryst;
+			if (id == 'sp_moon')		cf = cast_moon;
+			if (id == 'sp_gwall')		cf = cast_gwall;
+			if (id == 'sp_invulner')	cf = cast_invulner;
+		}
+
+		public static function getItemInfo(id:String):XML
+		{
+			if (cachedItems[id] != undefined) return cachedItems[id];
+
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+			if (node) cachedItems[id] = node;
+
+			return node;
 		}
 		
-		public function step() {
-			if (t_culd>0) t_culd--;
+		public function step():void
+		{
+			if (t_culd > 0) t_culd--;
 		}
 		
-		public function cast(nx:Number=0, ny:Number=0):Boolean {
+		public function cast(nx:Number=0, ny:Number=0):Boolean
+		{
 			//проверка возможности магии и наличия маны
 			if (cf==null) return false;
 			if (player) {
@@ -126,8 +147,10 @@ package fe.unit
 				if (player && teleSpell) {
 					power=gg.pers.telePower;
 				}
-			} else {
-				loc=World.w.loc;
+			}
+			else
+			{
+				loc = World.w.loc;
 			}
 			//координаты цели
 			cx=nx, cy=ny;
@@ -163,7 +186,7 @@ package fe.unit
 		}
 		
 		//создать магическую стену
-		function cast_mwall() {
+		private function cast_mwall():void {
 			var un:Unit=loc.createUnit('mwall',cx,cy+60,true);
 			if (owner) un.fraction=owner.fraction;
 			un.maxhp=hp*power;
@@ -171,12 +194,12 @@ package fe.unit
 		}
 		
 		//магический щит
-		function cast_mshit() {
+		private function cast_mshit():void {
 			if (owner.player && World.w.alicorn) owner.shithp=World.w.pers.alicornShitHP;
 			else owner.shithp=hp*power;
 		}
 		//магический щит
-		function cast_cryst() {
+		private function cast_cryst():void {
 			est=1;
 			if (player) {
 				if (gg.t_cryst>0) est=2;
@@ -185,7 +208,7 @@ package fe.unit
 		}
 		
 		//кинетический рывок
-		function cast_kdash() {
+		private function cast_kdash():void {
 			if (!owner.loc.levitOn) return;
 			var dx:Number=(cx-owner.X);
 			var dy:Number=(cy-owner.Y+owner.scY);
@@ -207,7 +230,7 @@ package fe.unit
 		}
 		
 		//кинетический взрыв
-		function cast_blast() {
+		private function cast_blast():void {
 			if (loc==null) return;
 			X=owner.X;
 			Y=owner.Y;
@@ -232,12 +255,12 @@ package fe.unit
 		}
 		
 		//замедляющее поле
-		function cast_slow() {
+		private function cast_slow():void {
 			if (owner) owner.addEffect('inhibitor',rad*power);
 		}
 		
 		//лунный клинок
-		function cast_moon() {
+		private function cast_moon():void {
 			if (gg.currentPet!='moon') {
 				gg.pets['moon'].hp=gg.pets['moon'].maxhp;
 				gg.callPet('moon',true);
@@ -246,7 +269,7 @@ package fe.unit
 			}
 		}
 		
-		public function gwall(nx,ny) {
+		public function gwall(nx,ny):void {
 			var t:Tile=loc.getAbsTile(nx,ny);
 			if (loc.testTile(t)) {
 				t.phis=3;
@@ -259,7 +282,7 @@ package fe.unit
 			Emitter.emit('gwall',loc,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY);
 		}
 		
-		function cast_gwall() {
+		private function cast_gwall():void {
 			est=0;
 			gwall(cx,cy-40);				
 			gwall(cx,cy);				
@@ -268,7 +291,7 @@ package fe.unit
 		}
 		
 		//замедляющее поле
-		function cast_invulner() {
+		private function cast_invulner():void {
 			if (owner && player) {
 				if (gg.pers.bloodHP<=dam*3) {
 					est=0;
