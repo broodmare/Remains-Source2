@@ -60,8 +60,9 @@ package fe.graph
 		var infraTransform:ColorTransform=new ColorTransform(1,1,1,1,100);
 		var defTransform:ColorTransform=new ColorTransform();
 		
-		public var pa:MovieClip=new paintaero();
-		public var pb:MovieClip=new paintbrush();
+		public var pa:MovieClip;
+		public var pb:MovieClip;
+
 		public var brTrans:ColorTransform=new ColorTransform();
 		public var brColor:Color=new Color();
 		var brData:BitmapData = new BitmapData(100, 100, false, 0x0);
@@ -226,7 +227,6 @@ package fe.graph
 			mouseCursorData = new MouseCursorData();
             mouseCursorData.data = cursorData;
 			mouseCursorData.hotSpot=new Point(nx,ny);
-            //mouseCursorData.frameRate = 1;
             Mouse.registerCursor(nazv, mouseCursorData);
 		}
 		
@@ -708,9 +708,10 @@ package fe.graph
 			satsBmp.draw(visual,new Matrix);
 		}
 		
-		public function onSats(on:Boolean) {
-			visSats.visible=on;
-			visObjs[2].visible=!on;
+		public function onSats(on:Boolean)
+		{
+			visSats.visible = on;
+			visObjs[2].visible =! on;
 		}
 		
 		//рисование одного блока воды
@@ -726,34 +727,50 @@ package fe.graph
 			if (recurs) drawWater(loc.getTile(t.X,t.Y+1),false);
 		}
 		
-		public function tileDie(t:Tile,tip:int) {
-			var erC:Class=block_dyr, drC:Class=block_tre;
-			var nx=(t.X+0.5)*Tile.tileX;
-			var ny=(t.Y+0.5)*Tile.tileY;
-			if (t.fake) {
-				Emitter.emit('fake',loc,nx,ny);
-				drC=block_bur;
-			} else if (t.mat==7) {
-				Emitter.emit('fake',loc,nx,ny);
-				Emitter.emit('pole',loc,nx,ny,{kol:10, rx:Tile.tileX, ry:Tile.tileY});
-				erC=TileMask;
-				drC=null;
-			} else if (tip<10) {
-				if (t.mat==1) Emitter.emit('metal',loc,nx,ny,{kol:6, rx:Tile.tileX, ry:Tile.tileY})
-				else if (t.mat==2) Emitter.emit('kusok',loc,nx,ny,{kol:6, rx:Tile.tileX, ry:Tile.tileY})
-				else if (t.mat==3) Emitter.emit('schep',loc,nx,ny,{kol:6, rx:Tile.tileX, ry:Tile.tileY})
-				else if (t.mat==4) Emitter.emit('kusokB',loc,nx,ny,{kol:6, rx:Tile.tileX, ry:Tile.tileY})
-				else if (t.mat==5) Emitter.emit('steklo',loc,nx,ny,{kol:6, rx:Tile.tileX, ry:Tile.tileY})
-				else if (t.mat==6) Emitter.emit('kusokD',loc,nx,ny,{kol:6, rx:Tile.tileX, ry:Tile.tileY})
-			} else if (tip>=15) {
-				Emitter.emit('plav',loc,nx,ny);
-				erC=block_plav;
-				drC=block_pla;
-			} else if (tip>=11 && tip<=13) {
-				Emitter.emit('bur',loc,nx,ny);
-				drC=block_bur;
+		public function tileDie(t:Tile,tip:int):void
+		{
+			var tilex:int = Tile.tileX;
+			var tiley:int = Tile.tileY;
+
+			var erC:Class = block_dyr;	// .fla linkage
+			var drC:Class = block_tre;	// .fla linkage
+			var nx = (t.X + 0.5) * tilex;
+			var ny = (t.Y + 0.5) * tiley;
+
+			if (t.fake)
+			{
+				Emitter.emit('fake', loc, nx, ny);
+				drC = block_bur;	// .fla linkage
 			}
-			decal(erC,drC,nx,ny,1,0,'hardlight');
+			else if (t.mat == 7)
+			{
+				Emitter.emit('fake',loc,nx,ny);
+				Emitter.emit('pole',loc,nx,ny,{kol:10, rx:Tile.tileX, ry:tiley});
+				erC = TileMask;
+				drC = null;
+			}
+			else if (tip < 10)
+			{
+				if (t.mat == 1)			Emitter.emit('metal',loc,nx,ny,{kol:6, rx:tilex, ry:tiley})
+				else if (t.mat == 2)	Emitter.emit('kusok',loc,nx,ny,{kol:6, rx:tilex, ry:tiley})
+				else if (t.mat == 3)	Emitter.emit('schep',loc,nx,ny,{kol:6, rx:tilex, ry:tiley})
+				else if (t.mat == 4)	Emitter.emit('kusokB',loc,nx,ny,{kol:6, rx:tilex, ry:tiley})
+				else if (t.mat == 5)	Emitter.emit('steklo',loc,nx,ny,{kol:6, rx:tilex, ry:tiley})
+				else if (t.mat == 6)	Emitter.emit('kusokD',loc,nx,ny,{kol:6, rx:tilex, ry:tiley})
+			}
+			else if (tip >= 15)
+			{
+				Emitter.emit('plav',loc,nx,ny);
+				erC=block_plav;		// .fla linkage
+				drC = block_pla;		// .fla linkage
+			}
+			else if (tip >= 11 && tip <= 13)
+			{
+				Emitter.emit('bur',loc,nx,ny);
+				drC = block_bur;		// .fla linkage
+			}
+
+			decal(erC, drC, nx, ny, 1, 0, 'hardlight');
 		}
 		
 		// Bullethole
@@ -925,46 +942,72 @@ package fe.graph
 		
 		public function gwall(nx:int, ny:int)
 		{
-			var m:Matrix=new Matrix();
-			m.tx=nx*Tile.tileX;
-			m.ty=ny*Tile.tileY;
-			var wall:MovieClip=new tileGwall();
+			var m:Matrix = new Matrix();
+			m.tx = nx * Tile.tileX;
+			m.ty = ny * Tile.tileY;
+			var wall:MovieClip = new tileGwall();
 			frontBmp.draw(wall, m);
 		}
 		
-		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean=false)
+		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false)
 		{
-			var br:MovieClip;
-			if (aero) br=pa; else br=pb;
-			var rasst:Number=Math.sqrt((nx2-nx1)*(nx2-nx1)+(ny2-ny1)*(ny2-ny1));
-			var kol:int=Math.ceil(rasst/3);
-			var dx:Number=(nx2-nx1)/kol;
-			var dy:Number=(ny2-ny1)/kol;
+			var padding:int = 25;
+			var br:MovieClip; //brush
+
+			// Determine what brush to use. I moved brush instantiation here was well instead being loaded with the class.
+			if (aero)
+			{
+				if (!pa) pa = new paintaero();
+				br = pa;
+			}
+			else
+			{
+				if (!pb) pb = new paintbrush();
+				br = pb;
+			}	
 			
+			// Calculate the straight-line distance between two points (start and end positions, I assume how far the mouse moved).
+			var rasst:Number = Math.sqrt((nx2 - nx1) * (nx2 - nx1) + (ny2 - ny1) * (ny2 - ny1));
+
+			// Determine how many times to repeat the painting action based on the distance.
+			var kol:int = Math.ceil(rasst / 3);
+
+			var dx:Number = (nx2 - nx1) / kol;
+			var dy:Number = (ny2 - ny1) / kol;
+			
+			// Set up an area around the line being drawn.
 			var rx1:int, rx2:int, ry1:int, ry2:int;
 
-			if (nx1<nx2) rx1=nx1-25, rx2=nx2+25;
-			else rx1=nx2-25, rx2=nx1+25;
-
-			if (ny1<ny2) ry1=ny1-25, ry2=ny2+25;
-			else ry1=ny2-25, ry2=ny1+25;
-
+			// Simplified calculation of bounding rectangle's coordinates. Math.min/Math.max returns the smaller/larger number of the two.
+			rx1 = Math.min(nx1, nx2) - padding;
+			ry1 = Math.min(ny1, ny2) - padding;
+			rx2 = Math.max(nx1, nx2) + padding;
+			ry2 = Math.max(ny1, ny2) + padding;
 			
-			brPoint.x=0, brPoint.y=0;
-			brRect.left=rx1, brRect.right=rx2;
-			brRect.top=ry1, brRect.bottom=ry2;
+			// Prepare the canvas for drawing.
+			brPoint.x = 0;
+			brPoint.y = 0;
+			brRect.left		= rx1;
+			brRect.right	= rx2;
+			brRect.top		= ry1;
+			brRect.bottom	= ry2;
 			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
 			
-			for (var i=1; i<=kol; i++)
+			// Paint along the line, step by step.
+			for (var i = 1; i <= kol; i++)
 			{
-				pm.tx=nx1+dx*i;
-				pm.ty=ny1+dy*i;				
+				// Calculate the next point to paint.
+				pm.tx = nx1 + dx * i;
+				pm.ty = ny1 + dy * i;
+
+				// Perform the painting action at this point.		
 				backBmp.draw(br, pm, brTrans, 'normal', null, false);
 			}
 			
-			brPoint.x=rx1, brPoint.y=ry1;
-			brRect.left=0, brRect.right=rx2-rx1;
-			brRect.top=0, brRect.bottom=ry2-ry1;
+			// Finish up by adjusting the painted area on the canvas.
+			brPoint.x = rx1, brPoint.y = ry1;
+			brRect.left = 0, brRect.right = rx2 - rx1;
+			brRect.top = 0, brRect.bottom = ry2 - ry1;
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
 		
@@ -1004,8 +1047,8 @@ package fe.graph
 				default:
 					if (n > 100)
 					{
-						visual.filters=[new BlurFilter(n-100,n-100)];
-						visFon.filters=[new BlurFilter(n-100,n-100)];
+						visual.filters = [new BlurFilter(n - 100, n - 100)];
+						visFon.filters = [new BlurFilter(n - 100, n - 100)];
 					}
 					else trace('ERROR: Unknown special effect: "' + n + '"!');
 			}
