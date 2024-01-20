@@ -576,87 +576,90 @@ package fe.graph
 		}
 		
 		//рисование текстурных материалов
-		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean=false)
+		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean = false)
 		{
-			// Cached tilesize
-			var tileX:int = Tile.tileX;
-			var tileY:int = Tile.tileY;
+			var tilex:int = Tile.tileX;
+			var tiley:int = Tile.tileY;
 
-			//Precalculated to save cycles
-			var roomPixelWidth:int = kusokX * tileX;
-			var roomPixelHeight:int = kusokY * tileY;
+			var roomPixelWidth:int = kusokX * tilex;
+			var roomPixelHeight:int = kusokY * tiley;
 
-			if (!material.used || material.rear == toFront) return;
+			if (!material.used) return;
+			if (material.rear == toFront) return;
+			
+			var t:Tile;
+			var mc:MovieClip;
 
-			var kusok:Sprite = new Sprite();
-			var osn:Sprite = new Sprite();
-			kusok.addChild(osn);
-
-			if (material.texture == null) osn.graphics.beginFill(0x666666);
+			var kusok:Sprite	= new Sprite();	
+			var osn:Sprite		= new Sprite();
+			var maska:Sprite	= new Sprite();
+			var border:Sprite	= new Sprite();
+			var bmaska:Sprite	= new Sprite();
+			var floor:Sprite	= new Sprite();
+			var fmaska:Sprite	= new Sprite();
+			
+			if (!material.texture) osn.graphics.beginFill(0x666666);
 			else if (loc.homeStable && material.alttexture != null) osn.graphics.beginBitmapFill(material.alttexture);
 			else osn.graphics.beginBitmapFill(material.texture);
 
 			osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 
-			var isDraw:Boolean = false;
-			var mc:MovieClip;
-			var maska:Sprite;
-			var border:Sprite;
-			var bmaska:Sprite;
-			var floor:Sprite;
-			var fmaska:Sprite;
-
-			// Border Handling | Removed from loop
-			if (material.border && !border)
+			kusok.addChild(osn);
+			kusok.addChild(maska);
+			if (material.border)
 			{
-				border = new Sprite();
-				bmaska = new Sprite();
+				border.graphics.beginBitmapFill(material.border);
+				border.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(border);
 				kusok.addChild(bmaska);
 			}
-			// Floor Handling | Removed from loop
-			if (material.floor && !floor)
+			if (material.floor)
 			{
-				floor = new Sprite();
-				fmaska = new Sprite();
+				floor.graphics.beginBitmapFill(material.floor);
+				floor.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(floor);
 				kusok.addChild(fmaska);
 			}
-
-
+			
+			var isDraw:Boolean = false;
+			
 			for (var i:int = 0; i < loc.spaceX; i++)
 			{
 				for (var j:int = 0; j < loc.spaceY; j++)
 				{
-					var t:Tile = loc.getTile(i, j);
-					if ((t.front == material.id && (toFront || dop)) || (t.back == material.id && !toFront))
+					t = loc.getTile(i, j);
+					if (t.front == material.id && (toFront || dop) || t.back == material.id && !toFront)
 					{
-						if (!maska)
-						{
-							maska = new Sprite();
-							kusok.addChild(maska);
-						}
-
 						isDraw = true;
-						mc = MovieClipPool.getMovieClip(material.textureMask);
+						mc = new material.textureMask();
 						setMovieClipTile(mc, t, toFront);
-
-						mc.x = (i + 0.5) * tileX;
-						mc.y = (j + 0.5) * tileY;
+						mc.x = (i + 0.5) * tilex;
+						mc.y = (j + 0.5) * tiley;
 						maska.addChild(mc);
-
-						if (material.border)
-						{
-							mc = MovieClipPool.getMovieClip(material.borderMask);
-							setMovieClipTile(mc, t, toFront);
-							mc.x = mc.y = 0;
+						if (t.zForm && toFront) {
+							mc.scaleY=(t.phY2-t.phY1)/tiley;
+							mc.y=(t.phY2+t.phY1)/2;
+						}							
+						if (material.borderMask) {
+							mc=new material.borderMask();
+							setMovieClipTile(mc,t,toFront);
+							mc.x=(i+0.5)*tilex;
+							mc.y=(j+0.5)*tiley;
 							bmaska.addChild(mc);
+							if (t.zForm && toFront) {
+								mc.scaleY=(t.phY2-t.phY1)/tiley;
+								mc.y=(t.phY2+t.phY1)/2;
+							}							
 						}
-						if (material.floor)
-						{
-							mc = MovieClipPool.getMovieClip(material.floorMask);
-							mc.x = mc.y = 0;
+						if (material.floorMask) {
+							mc=new material.floorMask();
+							if (mc.c1) {
+								mc.c1.gotoAndStop(t.kont1+1);
+								mc.c2.gotoAndStop(t.kont2+1);
+							}
 							fmaska.addChild(mc);
+							mc.x=(i+0.5)*tilex;
+							mc.y=(j+0.5+t.zForm/4)*tiley;
 						}
 					}
 				}
@@ -664,20 +667,11 @@ package fe.graph
 
 			if (!isDraw) return;
 
-			osn.cacheAsBitmap = false;
-			if (maska) maska.cacheAsBitmap = false;
-			if (border) border.cacheAsBitmap = false;
-			if (bmaska) bmaska.cacheAsBitmap = false;
-			if (floor) floor.cacheAsBitmap = false;
-			if (fmaska) fmaska.cacheAsBitmap = false;
-
-			osn.mask = maska; 
-			if (border) border.mask = bmaska; 
-			if (floor) floor.mask = fmaska;
-
+			m.tx = 0;
+			m.ty = 0;
+			osn.cacheAsBitmap=maska.cacheAsBitmap=border.cacheAsBitmap=bmaska.cacheAsBitmap=floor.cacheAsBitmap=fmaska.cacheAsBitmap=true;
+			osn.mask=maska; border.mask=bmaska; floor.mask=fmaska;
 			if (material.F) kusok.filters = material.F;
-
-			var m:Matrix = new Matrix();
 			if (toFront) frontBmp.draw(kusok, m, null, null, null, false);
 			else if (dop) backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
 			else backBmp.draw(kusok, m, null, null, null, false); 
