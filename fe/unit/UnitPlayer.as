@@ -182,30 +182,31 @@ package fe.unit
 		{
 			if (World.w.chitOn)
 			{
-				World.w.godMode=true;
-				World.w.chit='port';
-				World.w.drawAllMap=true;
-				World.w.black=false;
-				World.w.showAddInfo=true;
-				World.w.grafon.visLight.visible=false;
+				World.w.godMode = true;
+				World.w.chit = 'port';
+				World.w.drawAllMap = true;
+				World.w.black = false;
+				World.w.showAddInfo = true;
+				World.w.grafon.visLight.visible = false;
 			}
 		}
 		
-		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			player=true;
-			id='littlepip';
-			vis=new visualPlayer();
+		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
+			player = true;
+			id = 'littlepip';
+			vis = new visualPlayer();
 
-			vis.osn.body.pip2.visible=false;
+			vis.osn.body.pip2.visible = false;
 			vis.osn.stop();
 			vis.inh.visible=vis.cryst.visible=vis.fetter.visible=vis.rat.visible=false;
-			reloadbar=new reloadBar();
-			reloadbar.visible=false;
+			reloadbar = new reloadBar();
+			reloadbar.visible = false;
 			vis.addChild(reloadbar);
-			if (vis.shit) vis.shit.visible=false;
-			if (vis.svet) vis.svet.visible=false;
+			if (vis.shit) vis.shit.visible = false;
+			if (vis.svet) vis.svet.visible = false;
 			storona=1; // Whether the unit is facing left or right.
-			id_replic='pip';
+			id_replic = 'pip';
 			
 			getXmlParam();
 			walkSpeed = osnSpeed = maxSpeed;
@@ -216,9 +217,11 @@ package fe.unit
 			
 			critCh = 0.05;
 			
-			brake=2;
-			maxjumpp=8, plavdy=accel*0.5, levidy=accel*0.25;
-			if (World.w.alicorn) levidy=accel*0.5;
+			brake = 2;
+			maxjumpp = 8;
+			plavdy = accel * 0.50;
+			levidy = accel * 0.25;	// Levitation speed.
+			if (World.w.alicorn) levidy = accel * 0.5;
 			hp=maxhp;
 			reloadbar.y=-scY-10;
 			
@@ -365,14 +368,14 @@ package fe.unit
 			
 			var laz=isLaz, lev=levit;
 			var outP:Object=World.w.land.gotoLoc(napr, portX, portY);
-			if (outP!=null) {
-				if (outP.die) {						//смерть от падения в бездну (переход на кт)
-					//damage(10000,Unit.D_INSIDE);
+			if (outP)
+			{
+				if (outP.die) // [Death from falling into the abyss (switch to CT)]
+				{
 					die(-1);
 					vis.visible=false;
 					return false;
 				}
-				//if (napr!=5) teleport(outP.x,outP.y);
 				if (napr==3 || napr==4) {
 					if (laz!=0) {
 						checkStairs();
@@ -392,11 +395,9 @@ package fe.unit
 				if (sats.que.length>0) sats.clearAll();
 				if (levit==1 && !ctr.keyJump) levit=0;
 				return true;
-			} else {
-				return false;
 			}
+
 			return false;
-			
 		}
 		
 		//вход в локацию
@@ -795,12 +796,12 @@ package fe.unit
 			}
 			if (levit==1) aMagic=100;
 			if (sost>1) aMagic=0;
-			//двойной клик
+			// Double click
 			if (t_dclick>0) t_dclick--;
-			//кулдаун заклинания
+			// Weapon/Spell cooldown
 			if (t_culd>0) t_culd--;
 			if (shithp>0) shithp-=0.05;
-			//мана
+			// Mana
 			if (teleObj || levit==1 || cryst) {
 				dmana=0;
 				if (teleObj) {			
@@ -938,55 +939,77 @@ package fe.unit
 			}
 			//урон от блоков
 			if (isStayDam>0) isStayDam--;
-			if (loc.electroDam>0 && isStayDam==0) {
-				if (stay && stayMat==1 || isLaz || inWater || tykMat==1) {
-					isStayDam=20;
-					if (tykMat==1) {
+			if (loc.electroDam>0 && isStayDam==0)
+			{
+				if (stay && stayMat==1 || isLaz || inWater || tykMat==1)
+				{
+					isStayDam = 20;
+					if (tykMat==1)
+					{
 						if (turnX!=0) Emitter.emit('moln',loc,X,Y-scY/2,{celx:(X+45*storona), cely:Y-10});
 						else if (turnY==1) Emitter.emit('moln',loc,X,Y-scY/2,{celx:X, cely:Y-70});
 						else if (turnY==-1) Emitter.emit('moln',loc,X,Y-scY/2,{celx:X, cely:Y+20});
-					} else if (isLaz) {
+					}
+					else if (isLaz)
+					{
 						Emitter.emit('moln',loc,X,Y-scY/2,{celx:(X+20*storona), cely:Y-10});
-					} else if (stay) {
+					}
+					else if (stay)
+					{
 						Emitter.emit('moln',loc,X,Y-scY/2,{celx:(X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(Y+20)});
 					}
+
 					electroDamage();
 				}
 			}
-			if (loc.electroDam>0) showElectroBlock();
-			if (loc.sky) isFly=true;
-			turnY=turnX=0;
-			tykMat=0;
+			if (loc.electroDam > 0) showElectroBlock();
+			if (loc.sky) isFly = true;
+			turnY = 0;
+			turnX = 0;
+			tykMat = 0;
+
 			//заклинания
-			for each (var sp:Spell in invent.spells) sp.step();
+			for each (var sp:Spell in invent.spells)
+			{
+				sp.step();
+			}
 			t_replic--;
 		}
 		
 		//расход магии при ударах по левитируемому ящику
-		public function otbrosTele(knock:Number) {
-			mana-=pers.teleMult*knock*5;
+		public function otbrosTele(knock:Number):void
+		{
+			mana -= pers.teleMult * knock * 5;
 		}
 		
 		//активировать заклинание телепорта
-		private function actPort():void {
+		private function actPort():void
+		{
 			if (!loc.portOn) return;
-			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
-				World.w.gui.infoText('overMana',null,null,false);
-				World.w.gui.bulb(X,Y-20);
-			} else {
-				var nx=Math.round(World.w.celX/World.tileX)*World.tileX
-				var ny=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
-				if (checkPort()) {
+
+			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99)
+			{
+				World.w.gui.infoText('overMana', null, null, false);
+				World.w.gui.bulb(X, Y - 20);
+			}
+			else
+			{
+				var nx = Math.round(World.w.celX / World.tileX) * World.tileX
+				var ny = Math.round(World.w.celY / World.tileY + 1) * World.tileY - 1;
+				if (checkPort())
+				{
 					teleport(nx, ny, 1);
 					sound('teleport');
 					manaSpell(pers.portMagic,pers.portMana);
-					if (loc.electroDam) {
+					if (loc.electroDam)
+					{
 						electroDamage(loc.electroDam);
 						addEffect('burning',40);
 						newPart('iskr',40);
 					}
-					t_culd=Math.floor(pers.spellDown*pers.portDown);
-					dx=dy=0;
+					t_culd = int(pers.spellDown * pers.portDown);
+					dx = 0;
+					dy = 0;
 				}
 			}
 		}
@@ -1671,29 +1694,34 @@ package fe.unit
 					levit=0;
 					jumpNumb=2;
 				}
-			} else {
-				isJump=false;
 			}
-			if (isPlav && ctr.keyBeUp && !ctr.keyJump) {
-				dy-=plavdy*pers.speedPlavMult;
+			else isJump = false;
+
+			if (isPlav && ctr.keyBeUp && !ctr.keyJump) dy -= plavdy * pers.speedPlavMult;
+
+			//Self-levitation
+			if (levit)
+			{
+				if (ctr.keyBeUp)
+				{
+					dy -= levidy * 0.7;
+					levitup = true;
+					t_up = 10;
+				}
+				else levitup = false;
+
+				if (ctr.keySit) dy += levidy;
 			}
-			//самолевитация
-			if (levit==1) {
-				if (ctr.keyBeUp) {
-					dy-=levidy*0.7;
-					levitup=true;
-					t_up=10;
-				} else levitup=false;
-				if (ctr.keySit) dy+=levidy;
+			if (isFly)
+			{
+				if (ctr.keyBeUp) dy -= levidy;
+				if (ctr.keySit) dy += levidy;
 			}
-			if (isFly) {
-				if (ctr.keyBeUp) dy-=levidy;
-				if (ctr.keySit) dy+=levidy;
-			}
-			//плавание
-			//присесть
-			if (ctr.keySit) {
-				porog=0;
+			// Swimming
+			// Sit down
+			if (ctr.keySit)
+			{
+				porog = 0;
 				if (stay && diagon==0 && runForever<=0 && !inWater && isFetter<=0 && !noStairs && rat==0) {
 					if (checkStairs(2)) {	//проверить лестницу
 						t_stay=0;
@@ -1718,81 +1746,97 @@ package fe.unit
 					dy+=plavdy*pers.speedPlavMult/2;
 				}
 				if (downp<6) downp++;
-			} else {
-				downp=0;
 			}
-			//встать
-			if (isSit && ctr.keyBeUp && !ctr.keySit && rat==0) {
-				t_up=10;
+			else downp = 0;
+
+			//Stand up
+			if (isSit && ctr.keyBeUp && !ctr.keySit && !rat)
+			{
+				t_up = 10;
 				unsit();
 			}
-			if (isSit && !stay && rat==0) {
-				unsit();
-			}
-			//поднять оружие или спрятаться
-			weapUp=false;
-			if (stay && ctr.keyBeUp && rat==0) {
-				if (isSit) t_up=10;
+			if (isSit && !stay && !rat) unsit();
+
+			// [Raise weapon or hide]
+			weapUp = false;
+			if (stay && ctr.keyBeUp && !rat)
+			{
+				if (isSit) t_up = 10;
 				t_up++;
-				if (t_up>10) weapUp=true;
-			} else {
-				if (t_up>0 && t_up<=7 && !keyLeft && !keyRight && rat==0) {
-					lurk();	//спрятаться
+				if (t_up > 10) weapUp = true;
+			}
+			else
+			{
+				if (t_up > 0 && t_up <= 7 && !keyLeft && !keyRight && !rat)
+				{
+					lurk();
 				}
-				if (!ctr.keyBeUp) t_up=0;
+				if (!ctr.keyBeUp) t_up = 0;
 			}
 			//быстро спрыгнуть с балки
-			if (ctr.keyDubSit) {
-				if (stay && stayPhis==2) {
-					t_stay=0;
-					throu=true;
-					dy+=10;
+			if (ctr.keyDubSit)
+			{
+				if (stay && stayPhis == 2)
+				{
+					t_stay = 0;
+					throu = true;
+					dy += 10;
 				}
-				ctr.keyDubSit=false;
+				ctr.keyDubSit = false;
 			}
-			if (loc.quake>5) throu=true;
+			if (loc.quake > 5) throu = true;
 			//лезть
-			if (!isSit && !isFly && ctr.keyBeUp && runForever<=0 && loc.quake<=5 && !cryst && isFetter<=0 && !noStairs && pinok<30 && rat==0) {
-				if (checkStairs()) {
-					t_stay=0;
-					dy=-lazSpeed;
-					t_up=10;
+			if (!isSit && !isFly && ctr.keyBeUp && runForever<=0 && loc.quake<=5 && !cryst && isFetter<=0 && !noStairs && pinok<30 && !rat)
+			{
+				if (checkStairs())
+				{
+					t_stay = 0;
+					dy = -lazSpeed;
+					t_up = 10;
 				}
 			}
 			//перестать лезть
-			if (runForever>0 || ctr.keyJump && !ctr.keyBeUp || loc.quake>5) {
-				isLaz=0;
+			if (runForever > 0 || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5)
+			{
+				isLaz = 0;
 			}
-			isUp=ctr.keyBeUp;
-			if (rat==1) {
-				isSit=false;
-				scX=ratX;
-				scY=ratY;
+
+			isUp = ctr.keyBeUp;
+			
+			if (rat)
+			{
+				isSit = false;
+				scX = ratX;
+				scY = ratY;
 			}
 		}
 		
 		
 		//определить, видна ли ловушка
-		public function lookInvis(ncel:Unit, visParam:Number=-1):Boolean {
-			if (visParam==-1) visParam=pers.visiTrap;
-			if (loc!=ncel.loc) return false;
-			return look(ncel,false,visParam)>0;
+		public function lookInvis(ncel:Unit, visParam:Number=-1):Boolean
+		{
+			if (visParam == -1) visParam = pers.visiTrap;
+			if (loc != ncel.loc) return false;
+			return look(ncel, false, visParam) > 0;
 		}
 		
 		
 		//смотреть на целевую точку
-		public function lineCel(rdx:int=0, rdy:int=0):int {
-			var res=0;
-			var ndx=(celX+rdx-X);
-			var ndy=(celY+rdy-Y+scY/2);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			for (var i=1; i<div; i++) {
-				var nx=X+ndx*i/div;
-				var ny=Y-scY/2+ndy*i/div;
-				var t:Tile=World.w.loc.getAbsTile(Math.floor(nx),Math.floor(ny));
-				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
-					celX=nx;
-					celY=ny;
+		public function lineCel(rdx:int=0, rdy:int=0):int
+		{
+			var res = 0;
+			var ndx = (celX+rdx-X);
+			var ndy = (celY+rdy-Y+scY/2);
+			var div = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta) + 1;
+			for (var i = 1; i < div; i++)
+			{
+				var nx = X + ndx * i / div;
+				var ny = Y - scY / 2 + ndy * i / div;
+				var t:Tile = World.w.loc.getAbsTile(int(nx), int(ny));
+				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2)
+				{
+					celX = nx;
+					celY = ny;
 					return 0
 				}
 			}
@@ -1800,52 +1844,63 @@ package fe.unit
 		}
 		
 		private function lurk():void {
-			lurkTip=0;
-			if (stay && !isSit && dx<5 && dx>-5 && stayPhis>=1 && work=='')	{
-				lurkBox=null;
-				for each (var b:Box in loc.objs) {
-					if (b.lurk>lurkTip && X>b.X1 && X<b.X2 && Y-10>b.Y1 && Y-10<b.Y2) {
+			lurkTip = 0;
+			if (stay && !isSit && dx < 5 && dx > -5 && stayPhis >= 1 && work == '')
+			{
+				lurkBox = null;
+				for each (var b:Box in loc.objs)
+				{
+					if (b.lurk>lurkTip && X>b.X1 && X<b.X2 && Y-10>b.Y1 && Y-10<b.Y2)
+					{
 						lurkTip=b.lurk;
 						lurkBox=b;
 					}
 				}
-				if (lurkBox) {
-					lurkX=X;
-					dx=0;
-					t_work=20;
-					work='lurk';
-					lurked=true;
-					if (lurkBox.lurk==2) {
-						if (X>lurkBox.X) {
-							storona=1;
-							lurkX=lurkBox.X2-10;
-						} else {
-							storona=-1;
-							lurkX=lurkBox.X1+10;
+				if (lurkBox)
+				{
+					lurkX = X;
+					dx = 0;
+					t_work = 20;
+					work = 'lurk';
+					lurked = true;
+
+					if (lurkBox.lurk == 2)
+					{
+						if (X > lurkBox.X)
+						{
+							storona = 1;
+							lurkX = lurkBox.X2 - 10;
 						}
-					} else {
-						lurkX=lurkBox.X;
+						else
+						{
+							storona = -1;
+							lurkX = lurkBox.X1 + 10;
+						}
 					}
-				} else if (loc.getAbsTile(X-20,Y-10).lurk && loc.getAbsTile(X+20,Y-10).lurk) {
+					else lurkX = lurkBox.X;
+
+				}
+				else if (loc.getAbsTile(X-20,Y-10).lurk && loc.getAbsTile(X+20,Y-10).lurk)
+				{
 					lurkTip=1;
 					lurkX=Math.round(X/Tile.tileX)*Tile.tileX;
 					dx=0;
 					t_work=20;
 					work='lurk';
 					lurked=true;
-				} else {
-					//включить особые свойства брони
-					armorAbil();
 				}
+				else armorAbil(); //включить особые свойства брони
 			}
 		}
 		
-		private function unlurk():void {
-			if (lurked && stay) {
-				t_work=10;
-				work='unlurk';
+		private function unlurk():void
+		{
+			if (lurked && stay)
+			{
+				t_work = 10;
+				work = 'unlurk';
 			}
-			lurked=false;
+			lurked = false;
 		}
 
 //**************************************************************************************************************************
@@ -2800,8 +2855,9 @@ package fe.unit
 							if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) vis.osn.body.gotoAndStop(cframe);
 							if (vis.osn.currentFrameLabel=='stay' && cframe==1)
 							{
-								if (isrnd(0.01)) {
-									freeAnim=Math.floor(Math.random()*3) + 1;
+								if (isrnd(0.01))
+								{
+									freeAnim = int(Math.random() * 3) + 1;
 									vis.osn.gotoAndStop('free' + freeAnim);
 									vis.osn.body.play();
 								}
@@ -3002,13 +3058,14 @@ package fe.unit
 					{
 						t_head--;
 						drot=6;
-						if (t_head<=0)
+						if (t_head <= 0)
 						{
-							t_head=Math.floor(Math.random()*100+10);
-							headR=Math.random()*70-25;
+							t_head = int(Math.random() * 100 + 10);
+							headR = Math.random() * 70 - 25;
 						}
 					}
-					else {
+					else
+					{
 						headR = weaponR;
 						t_head = 100;
 					}
@@ -3113,98 +3170,120 @@ package fe.unit
 			if (levit != prev_levit) setFilters();
 			prev_levit=levit;
 			
-			//перезарядка
-			if (currentWeapon && currentWeapon.t_reload>1) {
+			// Reload
+			if (currentWeapon && currentWeapon.t_reload>1)
+			{
 				if (!reloadbar.visible) reloadbar.visible=true;
-				reloadbar.gotoAndStop(Math.floor(currentWeapon.t_reload/(currentWeapon.reload*currentWeapon.reloadMult)*11)+1)
+				reloadbar.gotoAndStop(int(currentWeapon.t_reload/(currentWeapon.reload*currentWeapon.reloadMult)*11)+1)
 				World.w.gui.setHolder();
-			} else {
-				if (reloadbar.visible) reloadbar.visible=false;
 			}
-			//волосы
-			hair=vis.osn.body.head.morda.hair;
-			if (hair) {
-				if (hairY!=-1000) {
-					hairDY+=((Y/5+vis.osn.body.head.y*4-vis.osn.body.head.morda.rotation)-hairY)/4;
-					hairR+=hairDY;
-					hairDY-=hairR/4;
-					hairDY*=0.8;
-					if (hairR>8) hairR=8;
-					if (hairR<-8) hairR=-8;
+			else if (reloadbar.visible) reloadbar.visible = false;
+
+			// Hair
+			hair = vis.osn.body.head.morda.hair;
+			if (hair)
+			{
+				if (hairY != -1000)
+				{
+					hairDY += ((Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation) - hairY) / 4;
+					hairR += hairDY;
+					hairDY -= hairR/4;
+					hairDY *= 0.8;
+					if (hairR > 8) hairR = 8;
+					if (hairR < -8) hairR = -8;
 				}
-				hairY=Y/5+vis.osn.body.head.y*4-vis.osn.body.head.morda.rotation;
-				hair.rotation=hairR;
-				tail=vis.osn.body.tail.h0;
-				if (tail) tail.rotation=-hairR;
-				tail=vis.osn.body.tail.h1;
-				if (tail) tail.rotation=-hairR;
+				hairY = Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation;
+				hair.rotation = hairR;
+				tail = vis.osn.body.tail.h0;
+				if (tail) tail.rotation = -hairR;
+				tail = vis.osn.body.tail.h1;
+				if (tail) tail.rotation = -hairR;
 			}
-			//пип
-			if (vis.scaleX>0) {
-				vis.osn.body.pip1.visible=true;
-				vis.osn.body.pip2.visible=false;
+
+			// Pip
+			if (vis.scaleX > 0)
+			{
+				vis.osn.body.pip1.visible = true;
+				vis.osn.body.pip2.visible = false;
 				if (vis.osn.body.frleg3) {
 					vis.osn.body.pip1.x=vis.osn.body.frleg3.x;
 					vis.osn.body.pip1.y=vis.osn.body.frleg3.y;
 					vis.osn.body.pip1.rotation=vis.osn.body.frleg3.rotation;
 				}
-			} else {
-				vis.osn.body.pip2.visible=true;
-				vis.osn.body.pip1.visible=false;
-				if (vis.osn.body.flleg3) {
+			}
+			else
+			{
+				vis.osn.body.pip2.visible = true;
+				vis.osn.body.pip1.visible = false;
+				if (vis.osn.body.flleg3)
+				{
 					vis.osn.body.pip2.x=vis.osn.body.flleg3.x;
 					vis.osn.body.pip2.y=vis.osn.body.flleg3.y;
 					vis.osn.body.pip2.rotation=vis.osn.body.flleg3.rotation;
 				}
 			}
-			//магия
+			// Magic
 			vis.osn.body.head.morda.magic.alpha=aMC/100;
 			vis.osn.body.head.morda.magic.visible=vis.osn.body.head.morda.magic.alpha>0;
-			//крылья
-			if (pers.ableFly) {
+
+			// Wings
+			if (pers.ableFly)
+			{
 				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=true;
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=true;
-				if (World.w.alicorn || currentArmor && currentArmor.ableFly) {
-					try {
+				if (World.w.alicorn || currentArmor && currentArmor.ableFly)
+				{
+					try
+					{
 						if (vis.osn.body.rwing.currentFrame!=11) vis.osn.body.rwing.gotoAndStop(11);
 						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
 						vis.osn.body.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
 						vis.osn.body.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
 					} catch (err) {}
-				} else if (isFly && !stay && !isPlav && !isLaz) {
+				}
+				else if (isFly && !stay && !isPlav && !isLaz) {
 					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) vis.osn.body.rwing.gotoAndPlay(2);
 					if (vis.osn.body.lwing && vis.osn.body.lwing.currentFrame==1) vis.osn.body.lwing.gotoAndPlay(2);
-				} else {
+				}
+				else
+				{
 					if (vis.osn.body.rwing) vis.osn.body.rwing.gotoAndStop(1);
 					if (vis.osn.body.lwing) vis.osn.body.lwing.gotoAndStop(1);
 				}
-			} else {
+			}
+			else
+			{
 				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=false;
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=false;
 			}
-			//щит
-			if (vis.shit && !vis.shit.visible && shithp>0) {
-				vis.shit.visible=true;
+
+			// Shield
+			if (vis.shit && !vis.shit.visible && shithp > 0)
+			{
+				vis.shit.visible = true;
 				vis.shit.gotoAndPlay(1);
 			}
-			if (vis.shit && vis.shit.visible && shithp<=0) {
-				vis.shit.visible=false;
+			if (vis.shit && vis.shit.visible && shithp <= 0)
+			{
+				vis.shit.visible = false;
 				vis.shit.gotoAndStop(1);
 			}
-			if (isFetter>0) {
-				dfx=fetX-X;
-				dfy=fetY-Y+30;
-				rfetter=Math.sqrt(dfx*dfx+dfy*dfy);
-				vis.fetter.visible=true;
-				vis.fetter.scaleX=rfetter/100;
-				vis.fetter.rotation=Math.atan2(dfy,dfx*storona)/Math.PI*180;
-			} else {
-				vis.fetter.visible=false;
+			// Shackles
+			if (isFetter > 0)
+			{
+				dfx = fetX - X;
+				dfy = fetY - Y + 30;
+				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
+				vis.fetter.visible = true;
+				vis.fetter.scaleX = rfetter / 100;
+				vis.fetter.rotation = Math.atan2(dfy, dfx * storona) / Math.PI * 180;
 			}
+			else if (vis.fetter.visible) vis.fetter.visible = false;
 		}
 		
-		public function refreshVis():void {
-			var dez=vis.osn.currentFrameLabel;
+		public function refreshVis():void
+		{
+			var dez = vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
 			teleColor=World.w.app.cMagic;
@@ -3212,36 +3291,44 @@ package fe.unit
 			teleFilter.color=teleColor;
 		}
 		
-		public override function visDetails() {
+		public override function visDetails()
+		{
 			World.w.gui.setHp();
 		}
 		
-		public function showElectroBlock() {
-			var t:Tile=loc.getAbsTile(X+Math.random()*320-160, Y-scY/2+Math.random()*320-160);
+		public function showElectroBlock()
+		{
+			var t:Tile = loc.getAbsTile((X + Math.random() * 320 - 160), (Y - scY / 2 + Math.random() * 320-160));
 			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*Tile.tileX, (t.Y+0.5)*Tile.tileY);
 		}
 		
-		public override function replic(s:String) {
-			if (sost!=1 || id_replic=='') return;
-			if (t_replic>0) return;
+		public override function replic(s:String)
+		{
+			if (sost != 1 || id_replic == '') return;
+			if (t_replic) return;
+			
 			var s_replic:String;
-			t_replic=75+Math.random()*30;
-			s_replic=Res.repText(id_replic, s, false);
-			if (s_replic==prev_replic) s_replic=Res.repText(id_replic, s, false);
-			if (s_replic==prev_replic) return;
+			t_replic = 75 + Math.random() * 30;
+			s_replic = Res.repText(id_replic, s, false);
+			if (s_replic == prev_replic) s_replic = Res.repText(id_replic, s, false);
+			
+			if (s_replic == prev_replic) return;
 			prev_replic=s_replic;
-			if (s_replic!='' && s_replic!=null) {
-				Emitter.emit('replic2',loc,X,Y-90,{txt:s_replic, ry:20});
+			if (s_replic != '' && s_replic)
+			{
+				Emitter.emit('replic2', loc, X, Y - 90,{txt:s_replic, ry:20});
 			}
 		}
 		
-		public override function sndStep(faza:int,tip:int=0) {
-			if (rat>0) return;
+		public override function sndStep(faza:int,tip:int=0)
+		{
+			if (rat) return;
 			super.sndStep(faza,tip);
 		}
 
-		protected override function sndFall() {
-			if (rat>0) return;
+		protected override function sndFall()
+		{
+			if (rat) return;
 			super.sndFall();
 		}
 	}
