@@ -251,26 +251,22 @@ package fe.weapon
 
 		public static function getWeaponInfo(id:String):XML
 		{
-			// Check if the node is already cached
-			var node:XML;
-			if (cachedWeapons[id] != undefined) node = cachedWeapons[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
-				cachedWeapons[id] = node;
-			}
+			if (cachedWeapons[id] != undefined) return cachedWeapons[id];
+
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+			if (node) cachedWeapons[id] = node;
+
 			return node;
 		}
 
 		public static function getAmmoInfo(id:String):XML
 		{
 			var node:XML;
-			if (cachedAmmo[id] != undefined) node = cachedAmmo[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-				cachedAmmo[id] = node;
-			}
+			if (cachedAmmo[id] != undefined) return cachedAmmo[id];
+
+			node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+			if (node) cachedAmmo[id] = node;
+
 			return node;
 		}
 		

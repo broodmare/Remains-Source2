@@ -33,7 +33,14 @@ package fe.unit
 		
 		//телекинез
 		public var levitOn:int=0;
-		public var teleObj:Obj, teleSqrtMassa:Number, teleSpeed:Number=8, teleAccel:Number=1, maxTeleDist:int=200;
+		
+		//Telekensis variables
+		public var teleObj:Obj;
+		public var teleSqrtMassa:Number;
+		public var teleSpeed:Number = 8;
+		public var teleAccel:Number = 1;
+		public var maxTeleDist:int = 200;
+		
 		public var levitup:Boolean=false;
 		
 		//действия
@@ -538,29 +545,37 @@ package fe.unit
 				}
 			}
 			stayOsn=null;
-			//оковы
-			if (isFetter>0) {
-				isLaz=0;
-				dfx=fetX-X;
-				dfy=fetY-Y+30;
-				rfetter=Math.sqrt(dfx*dfx+dfy*dfy);
-				if (rfetter>isFetter*2) {
-					fetX=X;
-					fetY=Y;
-					dfx=dfy=rfetter=0;
+
+			//Fettered (Chained up)
+			if (isFetter > 0)
+			{
+				isLaz = 0;
+				dfx = fetX - X;
+				dfy = fetY - Y + 30;
+				rfetter = dfx * dfx + dfy * dfy; // Chain-ging this to using squared distance instead of square root for comparisons to save cycles.
+				if (rfetter > isFetter * 2)
+				{
+					fetX = X;
+					fetY = Y;
+					dfx		= 0;
+					dfy		= 0;
+					rfetter	= 0;
 				} 
-				if (rfetter>isFetter*0.95) {
-					if (rfetter>isFetter) {
-						dx+=dfx/20;
-						dy+=dfy/20;
-					} else {
-						dx+=dfx/20*(rfetter/isFetter*20-19);
-						dy+=dfy/20*(rfetter/isFetter*20-19);
+				if (rfetter > isFetter * 0.95)
+				{
+					if (rfetter > isFetter)
+					{
+						dx += dfx / 20;
+						dy += dfy / 20;
+					}
+					else
+					{
+						dx += dfx / 20 * (rfetter / isFetter * 20 - 19);
+						dy += dfy / 20 * (rfetter / isFetter * 20 - 19);
 					}
 				}
-			} else {
-				rfetter=0;
 			}
+			else rfetter = 0;
 		}
 		
 		public override function actions() {

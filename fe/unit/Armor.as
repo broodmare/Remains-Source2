@@ -82,14 +82,11 @@ package fe.unit
 
 		public static function getArmorInfo(id:String):XML
 		{
-			// Check if the node is already cached
-			var node:XML;
-			if (cachedArmors[id] != undefined) node = cachedArmors[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
-				cachedArmors[id] = node;
-			}
+			if (cachedArmors[id] != undefined) return cachedArmors[id];
+
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
+			if (node) cachedArmors[id] = node;
+
 			return node;
 		}
 
@@ -117,9 +114,10 @@ package fe.unit
 			if (node.@radx.length()) radVul=1-Number(node.@radx);
 			
 			if (node.@dexter.length()) dexter=(node.@dexter);
-			if (node.@sneak.length()) {
-				sneak=(node.@sneak);
-				showObsInd=true;
+			if (node.@sneak.length())
+			{
+				sneak = (node.@sneak);
+				showObsInd = true;
 			}
 			
 			if (node.@mana.length()) maxmana=node.@mana;
@@ -127,11 +125,12 @@ package fe.unit
 			if (node.@used.length()) dmana_use=node.@used;
 			if (node.@res.length()) dmana_res=node.@res;
 
-			nazv=Res.txt('a',id);
-			if (lvl>0) nazv+=' - '+lvl;
+			nazv = Res.txt('a',id);
+			if (lvl > 0) nazv += ' - ' + lvl;
 		}
 		
-		public function setArmor() {
+		public function setArmor():void
+		{
 			if (owner && active) {
 				var koef:Number=1;
 				if (hp<maxhp/2) koef=0.5+hp/maxhp;
@@ -141,7 +140,8 @@ package fe.unit
 			}
 		}
 		
-		public function damage(dam:Number, tip:int) {
+		public function damage(dam:Number, tip:int):void
+		{
 			if (und) return;
 			if (tip!=Unit.D_VENOM && tip!=Unit.D_EMP && tip!=Unit.D_POISON && tip!=Unit.D_BLEED && tip!=Unit.D_INSIDE) {
 				dam*=1-resist[tip];
@@ -156,18 +156,21 @@ package fe.unit
 			setArmor();
 		}
 		
-		public function repair(nhp:int) {
+		public function repair(nhp:int):void
+		{
 			hp+=nhp;
 			if (hp>maxhp) hp=maxhp;
 			setArmor();
 		}
 		
-		public function needComp():int {
+		public function needComp():int
+		{
 			if (xml.upd[lvl+1]) return xml.upd[lvl+1].@kol;
 			else return 0;
 		}
 		
-		public function upgrade() {
+		public function upgrade():void
+		{
 			if (lvl>=maxlvl) return;
 			lvl++;
 			for (var i=0; i<Unit.kolVulners; i++) resist[i]=0;

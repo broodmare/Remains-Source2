@@ -263,16 +263,19 @@ package fe.inter
 			}
 		}
 		
-		protected function setIco(tip:int=0, id:String=''):void
+		protected function setIco(tip:int = 0, id:String = ''):void
 		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
-			vis.pers.visible=vis.skill.visible=false;
+			vis.pers.visible = false;
+			vis.skill.visible = false;
 			vis.item.gotoAndStop(1);
-			vis.info.y=vis.ico.y;
-			if (tip==1) {//оружие
-				var w:Weapon=pip.arrWeapon[id];
-				if (w.tip==5) {
-					tip=3;
+			vis.info.y = vis.ico.y;
+			if (tip == 1) // Weapon
+			{
+				var w:Weapon = pip.arrWeapon[id];
+				if (w.tip == 5)
+				{
+					tip = 3;
 					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
 				}
 				else
@@ -621,66 +624,85 @@ package fe.inter
 			return s;
 		}
 		
-		protected function infoItem(tip:String, id:String, nazv:String, craft:int=0):void
+		protected function infoItem(tip:String, itemID:String, nazv:String, craft:int=0):void
 		{
 			vis.nazv.text=nazv;
-			var s:String='';
-			if (id.substr(0,2)=='s_') {
-				id=id.substr(2);
-				craft=1;
+			var s:String = '';
+			var id:String = itemID;
+
+			if (itemID.indexOf('s_') == 0)
+			{
+				id = itemID.substr(2);
+				craft = 1;
 				
-				if (Weapon.getWeaponInfo(id).length())		tip = Item.L_WEAPON;
-				else if (Armor.getArmorInfo(id).length())	tip = Item.L_ARMOR;
-				else tip=Item.L_ITEM;
+				if (Weapon.getWeaponInfo(id))		tip = Item.L_WEAPON;
+				else if (Armor.getArmorInfo(id))	tip = Item.L_ARMOR;
+				else tip = Item.L_ITEM;
 			}
-			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
-				if (craft>0) setIco();
-				else setIco(1,id);
-				s=infoStr(tip, id);
-				if (craft==1) s+=craftInfo(id);
-				if (craft==2) s+=craftInfo(id.substr(0,id.length-2));
-			} else if (tip==Item.L_ARMOR) {
+
+			if (tip == Item.L_WEAPON || tip == Item.L_EXPL)
+			{
+				if (craft > 0) setIco();
+				else setIco(1, id);
+
+				s = infoStr(tip, id);
+				if (craft == 1) s += craftInfo(id);
+				if (craft == 2) s += craftInfo(id.substr(0, id.length - 2));
+			}
+			else if (tip == Item.L_ARMOR)
+			{
 				var a:Armor=inv.armors[id];
-				if (a==null) a=pip.arrArmor[id];
-				if (craft>0) setIco();
-				else if (a.tip==3) setIco(3,id);
-				else setIco(2,id);
-				s=infoStr(tip, id);
-				if (craft==2) {
-					var cid:String=a.idComp;
-					var kolcomp:int=a.needComp();
-					s+="\n\n<span class = 'or'>"+Res.txt('i',cid)+ " - "+kolcomp+" <span ";
+				if (a == null) a = pip.arrArmor[id];
+
+				if (craft > 0) setIco();
+				else if (a.tip == 3) setIco(3, id);
+				else setIco(2, id);
+
+				s = infoStr(tip, id);
+				if (craft == 2)
+				{
+					var cid:String = a.idComp;
+					var kolcomp:int = a.needComp();
+					s += "\n\n<span class = 'or'>" + Res.txt('i', cid) +  " - " + kolcomp + " <span ";
 					if (!World.w.loc.base && kolcomp>inv.items[cid].kol || World.w.loc.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
-					s+="> ("+inv.items[cid].kol;
-					if (World.w.loc.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
-					s+=")</span></span>";
+					s += "> ("+inv.items[cid].kol;
+					if (World.w.loc.base && inv.items[cid].vault > 0) s += ' +' + inv.items[cid].vault;
+					s += ")</span></span>";
 				}
-				if (craft==1) s+=craftInfo(id);
-			} else if (tip==Item.L_AMMO) {
+				if (craft == 1) s += craftInfo(id);
+			}
+			else if (tip == Item.L_AMMO)
+			{
 				var ammo=inv.items[id].xml;
-				if (ammo.@base.length()) {
-					vis.nazv.text=Res.txt('i',ammo.@base);
-					if (ammo.@mod>0) {
-						vis.nazv.text+='\n'+Res.pipText('ammomod_'+ammo.@mod);
-					} else {
-						vis.nazv.text+='\n'+Res.pipText('ammomod_0');
-					}
+				if (ammo.@base.length())
+				{
+					vis.nazv.text = Res.txt('i', ammo.@base);
+
+					if (ammo.@mod > 0) vis.nazv.text += '\n' + Res.pipText('ammomod_' + ammo.@mod);
+					else vis.nazv.text += '\n' + Res.pipText('ammomod_0');
 				}
 				setIco();
-				s=infoStr(tip, id);
-			} else {
-				if (craft>0) setIco();
-				else setIco(3,id);
-				s=infoStr(tip, id);
-				if (craft==1) s+=craftInfo(id);
+				s = infoStr(tip, id);
 			}
-			vis.info.htmlText=s;
-			vis.info.height=680-vis.info.y;
-			vis.info.scaleX=vis.info.scaleY=1;
-			if (vis.scText) vis.scText.visible=false;
-			if (vis.info.height<vis.info.textHeight && vis.scText) {
-				vis.scText.maxScrollPosition=vis.info.maxScrollV;
-				vis.scText.visible=true;
+			else
+			{
+				if (craft > 0) setIco();
+				else setIco(3, id);
+				s = infoStr(tip, id);
+				if (craft == 1) s += craftInfo(id);
+			}
+
+			vis.info.htmlText = s;
+			vis.info.height = 680 - vis.info.y;
+			vis.info.scaleX = 1;
+			vis.info.scaleY = 1;
+
+			if (vis.scText) vis.scText.visible = false;
+
+			if (vis.info.height<vis.info.textHeight && vis.scText)
+			{
+				vis.scText.maxScrollPosition = vis.info.maxScrollV;
+				vis.scText.visible = true;
 			}
 		}
 		

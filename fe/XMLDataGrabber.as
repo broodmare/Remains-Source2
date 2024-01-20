@@ -23,7 +23,9 @@ package fe
         {
             var file:XML = getFileFromModuleDictionary(module, directory, fileName);
             var nodeList:XMLList = file.children().(attribute(attributeName) == attributeKey);
-            return nodeList[0];
+
+            if (nodeList.length() > 0) return nodeList[0];
+            else return null;
         }
 
         //  Search !!ALL!! child nodes in the file that have a matching attribute, eg. '<a id= />' AND a matching key '<a id=attributeKey />'.
@@ -31,7 +33,8 @@ package fe
         {
             var file:XML = getFileFromModuleDictionary(module, directory, fileName);
             var nodeList:XMLList = file.descendants().(attribute(attributeName) == attributeKey);
-            return nodeList[0];
+            if (nodeList.length() > 0) return nodeList[0];
+            else return null;
         }
 
         public static function getNodeByNameWithAttributeThatMatches(module:String, directory:String, fileName:String, nodeName:String, attributeName:String, attributeKey:String):XML
