@@ -1387,20 +1387,23 @@ package fe.unit
 				}
 			}
 			//спутник
-			if (ctr.keyPet) { 
+			if (ctr.keyPet)
+			{ 
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
-						pet.goto(X,Y-40,true);		//отзыв назад
+						pet.moveto(X,Y-40,true);		//отзыв назад
 					}
 					k_pet=0;
 					ctr.keyPet=false;
 				}
-			} else {
+			}
+			else
+			{
 				if (k_pet>0) {				//приказ
 					if (pet) {
 						if (loc.celObj && loc.celObj is Unit && (loc.celObj as Unit).fraction!=fraction) pet.atk((loc.celObj as Unit));
-						else pet.goto(celX,celY);
+						else pet.moveto(celX,celY);
 					}
 				}
 				k_pet=0;

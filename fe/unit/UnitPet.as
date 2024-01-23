@@ -246,7 +246,8 @@ package fe.unit {
 		}
 		
 		//приказ двигаться
-		public function goto(nx:Number, ny:Number, unmat:Boolean=false) {
+		public function moveto(nx:Number, ny:Number, unmat:Boolean=false)
+		{
 			if (sost==4 || oduplenie>0) return;
 			tempUnmat=unmat;
 			flyBox=null;
