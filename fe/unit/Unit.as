@@ -24,28 +24,28 @@ package fe.unit
 	{
 		
 		
-		public static const D_BUL:int =0;		//пули		+
-		public static const D_BLADE:int =1;		//лезвие	+
-		public static const D_PHIS:int =2;		//дробящий	+
-		public static const D_FIRE:int =3;		//огонь		*
-		public static const D_EXPL:int =4;		//взрыв		+
-		public static const D_LASER:int =5;		//лазер		*
-		public static const D_PLASMA:int =6;	//плазма	*
-		public static const D_VENOM:int =7;		//отравляющие вещества
-		public static const D_EMP:int =8;		//ЭМП
-		public static const D_SPARK:int =9;		//молния	*
-		public static const D_ACID:int =10;		//кислота	*
-		public static const D_CRIO:int =11;		//холод		*
-		public static const D_POISON:int =12;	//отравление
-		public static const D_BLEED:int =13;	//кровотечение
-		public static const D_FANG:int =14;		//звери		+
-		public static const D_BALE:int =15;		//пиздец
-		public static const D_NECRO:int =16;	//некромантия
-		public static const D_PSY:int =17;		//пси
-		public static const D_ASTRO:int =18;	//звиздец
-		public static const D_PINK:int =19;		//розовое облако
-		public static const D_INSIDE:int =100;	//???
-		public static const D_FRIEND:int =101;	//дружба
+		public static const D_BUL:int = 0;		//Bullets	+
+		public static const D_BLADE:int = 1;	//Blade		+
+		public static const D_PHIS:int = 2;		//Blunt		+
+		public static const D_FIRE:int = 3;		//Fire		*
+		public static const D_EXPL:int = 4;		//Explosion	+
+		public static const D_LASER:int = 5;	//Laser		*
+		public static const D_PLASMA:int = 6;	//Plasma	*
+		public static const D_VENOM:int = 7;	//Venom
+		public static const D_EMP:int = 8;		//EMP
+		public static const D_SPARK:int = 9;	//Lightning	*
+		public static const D_ACID:int = 10;	//Acid		*
+		public static const D_CRIO:int = 11;	//Cold		*
+		public static const D_POISON:int = 12;	//Poison
+		public static const D_BLEED:int = 13;	//Bleeding
+		public static const D_FANG:int = 14;	//Beast		+
+		public static const D_BALE:int = 15;	//Balefire
+		public static const D_NECRO:int = 16;	//Necromancy
+		public static const D_PSY:int = 17;		//Psychic
+		public static const D_ASTRO:int = 18;	//???
+		public static const D_PINK:int = 19;	//Pink Cloud
+		public static const D_INSIDE:int = 100;	//???
+		public static const D_FRIEND:int = 101;	//???
 		
 		public static var txtMiss:String;
 		
@@ -53,42 +53,69 @@ package fe.unit
 		
 		public var id:String;
 		var mapxml:XML;
-		var uniqName:Boolean=false;
+		var uniqName:Boolean = false;
 		
-		//координаты и размеры
-		public var sitY:Number=40, stayY:Number=40, sitX:Number=40, stayX:Number=40;	//размеры
-		public var begX:Number=-1, begY:Number=-1; 		//исходная точка
-		public var rasst:Number=0;	//расстояние до ГГ
+		// Unit's size (in pixels)
+		public var sitY:Number	= 40;	// While standing
+		public var stayY:Number	= 40;
+		public var sitX:Number	= 40;	// While crouching
+		public var stayX:Number	= 40;
+
+		// Starting coordinates
+		public var begX:Number = -1;
+		public var begY:Number = -1;
 		
-		public var level:int=0;
-		public var hero:int=0;
-		public var boss:Boolean=false;
-		//хп
-		public var maxhp:Number=100;
-		public var hpmult:Number=1;
-		public var hp:Number=100;
-		public var cut:Number=0;	//раны
-		public var poison:Number=0;	//яд
-		public var critHeal:Number=0.2;
-		public var shithp:Number=0;
+		// Distance to player
+		public var rasst:Number = 0;
+		
+		public var level:int = 0;
+		public var hero:int = 0;
+		public var boss:Boolean = false;
+
+		// Health
+		public var maxhp:Number = 100;
+		public var hpmult:Number = 1;
+		public var hp:Number = 100;
+		public var cut:Number = 0;	// Wounds (For bleed status?)
+		public var poison:Number = 0;	// Poison (For poison status?)
+		public var critHeal:Number = 0.2;
+		public var shithp:Number = 0;
+
 		var t_hp:int;
-		public var mana:Number=1000, maxmana:Number=1000, dmana:Number=1;
-		//броня и уязвимости
+		public var mana:Number = 1000;
+		public var maxmana:Number = 1000;
+		public var dmana:Number=1;
+		
+		// Armor and [vulnerabilities]
 		public var invulner:Boolean=false;
 		public var allVulnerMult:Number=1;
-		public var skin:Number=0, armor:Number=0, marmor:Number=0, armor_hp:Number=0, armor_maxhp:Number=0, armor_qual:Number=0;		//шкура, броня, вероятность того, что она сработает
+		public var skin:Number=0;			// [Skin, armor, probability that it will work]
+		public var armor:Number=0;
+		public var marmor:Number=0;
+		public var armor_hp:Number=0;
+		public var armor_maxhp:Number=0;
+		public var armor_qual:Number=0;
+		
 		public var shitArmor:Number=20;
 		public var vulner:Array;		
 		public var begvulner:Array;
-		public static var begvulners:Array=new Array();
-		public var dexter:Number=1, dexterPlus:Number=0;			//уклонение, 1 - стандартное, больше 1 - больше, 0 - всегда попадёшь		
-		public var dodge:Number=0, undodge:Number=0;			//вероятность уклониться в ближнем бою, прибавка к вероятности попасть по врагу, 1 - всегда
-		public var transp:Boolean=false;	//прозрачный для пуль, не наносящих урона
-		public var damWall:Number=0;		//урон от удара об стену
+		public static var begvulners:Array = new Array();
+		
+		// Evasion, 1 is standard, 0 always hits
+		public var dexter:Number = 1;
+		public var dexterPlus:Number = 0;
+		
+		// [The probability of evading in close combat, an increase in the probability of hitting the enemy, 1 - always]
+		public var dodge:Number = 0;
+		public var undodge:Number = 0;			
+		
+		public var transp:Boolean=false;	// [Transparent for non-damaging bullets]
+		public var damWall:Number=0;		// [Wall impact damage]
 		public var damWallSpeed:Number=12;
-		public var dopTestOn:Boolean=false;	//сложная проверка попадания
+		public var dopTestOn:Boolean=false;	// [Difficult hit check]
 		public var friendlyExpl:Number=0.25;
-		// урон
+		
+		// Damage
 		public var dam:Number=0;			//урон самого юнита
 		public static const kolVulners=20;
 		public var tipDamage:int=D_PHIS;		//тип урона
@@ -339,84 +366,98 @@ package fe.unit
 			mapxml=xml;
 		}
 		
-		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit {
-			if (id=='mwall') return new UnitMWall(null,0,null,null);
-			if (id=='scythe') return new UnitScythe(null,0,null,null);
-			if (id=='ttur') return new UnitThunderTurret(ncid,0,null,null);
+		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit
+		{
+			switch (id)
+			{
+				case 'mwall':
+					return new UnitMWall(null,0,null,null);
+				break;
+				case 'scythe':
+					return new UnitScythe(null,0,null,null);
+				break;
+				case 'ttur':
+					return new UnitThunderTurret(ncid,0,null,null);
+				break;
+			}
+
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
-			if (node==null) {
-				trace('Не найден юнит',id);
+			if (!node)
+			{
+				trace('ERROR: unit: "' + id + '" not found!');
 				return null;
 			}
 			var uc:Class;
-			var cn:String=node.@cl;
-			switch (cn) {
-				case 'Mine': uc=Mine;break;
-				case 'UnitTrap': uc=UnitTrap;break;
-				case 'UnitTrigger': uc=UnitTrigger;break;
-				case 'UnitDamager': uc=UnitDamager;break;
-				case 'UnitRaider': uc=UnitRaider;break;
-				case 'UnitSlaver': uc=UnitSlaver;break;
-				case 'UnitZebra': uc=UnitZebra;break;
-				case 'UnitRanger': uc=UnitRanger;break;
-				case 'UnitEncl': uc=UnitEncl;break;
-				case 'UnitMerc': uc=UnitMerc;break;
-				case 'UnitZombie': uc=UnitZombie;break;
-				case 'UnitAlicorn': uc=UnitAlicorn;break;
-				case 'UnitHellhound': uc=UnitHellhound;break;
-				case 'UnitRobobrain': uc=UnitRobobrain;break;
-				case 'UnitProtect': uc=UnitProtect;break;
-				case 'UnitGutsy': uc=UnitGutsy;break;
-				case 'UnitEqd': uc=UnitEqd;break;
-				case 'UnitSentinel': uc=UnitSentinel;break;
-				case 'UnitTurret':uc=UnitTurret;break;
-				case 'UnitBat': uc=UnitBat;break;
-				case 'UnitFish': uc=UnitFish;break;
-				case 'UnitBloat': uc=UnitBloat;break;
-				case 'UnitBloatEmitter': uc=UnitBloatEmitter;break;
-				case 'UnitSpriteBot': uc=UnitSpriteBot;break;
-				case 'UnitDron': uc=UnitDron;break;
-				case 'UnitVortex': uc=UnitVortex;break;
-				case 'UnitMonstrik': uc=UnitMonstrik;break;
-				case 'UnitAnt': uc=UnitAnt;break;
-				case 'UnitSlime': uc=UnitSlime;break;
-				case 'UnitRoller': uc=UnitRoller;break;
-				case 'UnitNPC': uc=UnitNPC;break;
-				case 'UnitCaptive': uc=UnitCaptive;break;
-				case 'UnitPonPon': uc=UnitPonPon;break;
-				case 'UnitTrain': uc=UnitTrain;break;
-				case 'UnitMsp': uc=UnitMsp;break;
-				case 'UnitTransmitter': uc=UnitTransmitter;break;
-				case 'UnitNecros': uc=UnitNecros;break;
-				case 'UnitSpectre': uc=UnitSpectre;break;
-				case 'UnitBossRaider': uc=UnitBossRaider;break;
-				case 'UnitBossAlicorn': uc=UnitBossAlicorn;break;
-				case 'UnitBossUltra': uc=UnitBossUltra;break;
-				case 'UnitBossNecr': uc=UnitBossNecr;break;
-				case 'UnitBossDron': uc=UnitBossDron;break;
-				case 'UnitBossEncl': uc=UnitBossEncl;break;
-				case 'UnitThunderHead': uc=UnitThunderHead;break;
-				case 'UnitDestr': uc=UnitDestr;break;
+			var cn:String = node.@cl;
+			switch (cn)
+			{
+				case 'Mine':			uc = Mine;break;
+				case 'UnitTrap':		uc = UnitTrap;break;
+				case 'UnitTrigger':		uc = UnitTrigger;break;
+				case 'UnitDamager':		uc = UnitDamager;break;
+				case 'UnitRaider':		uc = UnitRaider;break;
+				case 'UnitSlaver':		uc = UnitSlaver;break;
+				case 'UnitZebra':		uc = UnitZebra;break;
+				case 'UnitRanger':		uc = UnitRanger;break;
+				case 'UnitEncl':		uc = UnitEncl;break;
+				case 'UnitMerc':		uc = UnitMerc;break;
+				case 'UnitZombie':		uc = UnitZombie;break;
+				case 'UnitAlicorn':		uc = UnitAlicorn;break;
+				case 'UnitHellhound':	uc = UnitHellhound;break;
+				case 'UnitRobobrain':	uc = UnitRobobrain;break;
+				case 'UnitProtect':		uc = UnitProtect;break;
+				case 'UnitGutsy':		uc = UnitGutsy;break;
+				case 'UnitEqd':			uc = UnitEqd;break;
+				case 'UnitSentinel':	uc = UnitSentinel;break;
+				case 'UnitTurret':		uc = UnitTurret;break;
+				case 'UnitBat':			uc = UnitBat;break;
+				case 'UnitFish':		uc = UnitFish;break;
+				case 'UnitBloat':		uc = UnitBloat;break;
+				case 'UnitSpriteBot':	uc = UnitSpriteBot;break;
+				case 'UnitDron':		uc = UnitDron;break;
+				case 'UnitVortex':		uc = UnitVortex;break;
+				case 'UnitMonstrik':	uc = UnitMonstrik;break;
+				case 'UnitAnt':			uc = UnitAnt;break;
+				case 'UnitSlime':		uc = UnitSlime;break;
+				case 'UnitRoller':		uc = UnitRoller;break;
+				case 'UnitNPC':			uc = UnitNPC;break;
+				case 'UnitCaptive':		uc = UnitCaptive;break;
+				case 'UnitPonPon':		uc = UnitPonPon;break;
+				case 'UnitTrain':		uc = UnitTrain;break;
+				case 'UnitMsp':			uc = UnitMsp;break;
+				case 'UnitTransmitter':	uc = UnitTransmitter;break;
+				case 'UnitNecros':		uc = UnitNecros;break;
+				case 'UnitSpectre':		uc = UnitSpectre;break;
+				case 'UnitBossRaider':	uc = UnitBossRaider;break;
+				case 'UnitBossAlicorn':	uc = UnitBossAlicorn;break;
+				case 'UnitBossUltra':	uc = UnitBossUltra;break;
+				case 'UnitBossNecr':	uc = UnitBossNecr;break;
+				case 'UnitBossDron':	uc = UnitBossDron;break;
+				case 'UnitBossEncl':	uc = UnitBossEncl;break;
+				case 'UnitThunderHead':	uc = UnitThunderHead;break;
+				case 'UnitDestr':		uc = UnitDestr;break;
+				case 'UnitBloatEmitter': uc = UnitBloatEmitter;break;
 			}
-			if (uc==null) {
-				return null;
-			}
-			var cid:String=null;						//идентификатор создания
-			if (node.@cid.length()) cid=node.@cid;
-			if (ncid!=null) cid=ncid;
-			var un:Unit=new uc(cid,dif,xml,loadObj);
-			if (xml && xml.@code.length()) un.code=xml.@code;
+			if (!uc) return null;
+
+			var cid:String = null;	// [Creation ID]
+			if (node.@cid.length()) cid = node.@cid;
+			if (ncid) cid = ncid;
+			var un:Unit=new uc(cid, dif, xml, loadObj);
+			if (xml && xml.@code.length()) un.code = xml.@code;
 			return un;
 		}
 		
-		public override function save():Object {
-			var obj:Object=new Object();
-			if (sost>=3 && !postDie) obj.dead=true;
+		public override function save():Object
+		{
+			var obj:Object = new Object();
+			if (sost >= 3 && !postDie) obj.dead = true;
 			if (inter) inter.save(obj);
 			return obj;
 		}
 		
-		public function getXmlParam(mid:String=null) {
+		public function getXmlParam(mid:String = null)
+		{
 			var setOpts:Boolean=false;
 			if (opts[id]) {
 				opt=opts[id];
@@ -720,23 +761,27 @@ package fe.unit
 			setHeroVulners();
 		}
 		
-		public function setHeroVulners() {
-			vulner[D_EMP]*=0.8;
-			vulner[D_BALE]*=0.7;
-			vulner[D_NECRO]*=0.7;
-			vulner[D_ASTRO]*=0.7;
-			if (hero==2) {
-				vulner[D_BUL]*=0.5;
-				vulner[D_PHIS]*=0.65;
-				vulner[D_BLADE]*=0.65;
-				vulner[D_EXPL]*=0.75;
+		public function setHeroVulners()
+		{
+			vulner[D_EMP]	*= 0.80;
+			vulner[D_BALE]	*= 0.70;
+			vulner[D_NECRO]	*= 0.70;
+			vulner[D_ASTRO]	*= 0.70;
+
+			if (hero == 2)
+			{
+				vulner[D_BUL]		*= 0.50;
+				vulner[D_PHIS]		*= 0.65;
+				vulner[D_BLADE]		*= 0.65;
+				vulner[D_EXPL]		*= 0.75;
 			}
-			if (hero==3) {
-				vulner[D_LASER]*=0.6;
-				vulner[D_PLASMA]*=0.5;
-				vulner[D_EMP]*=0.75;
-				vulner[D_SPARK]*=0.7;
-				vulner[D_FIRE]*=0.7;
+			if (hero == 3)
+			{
+				vulner[D_LASER]		*= 0.60;
+				vulner[D_PLASMA]	*= 0.50;
+				vulner[D_EMP]		*= 0.75;
+				vulner[D_SPARK]		*= 0.70;
+				vulner[D_FIRE]		*= 0.70;
 			}
 		}
 		
@@ -766,18 +811,21 @@ package fe.unit
 			levit=0;
 		}
 		
-		//условие, при котором босс не восстанавливает хп
-		public function isNoResBoss():Boolean {
-			var res=false;
-			try {
-				res=World.w.game.globalDif<=3 && loc && loc.land.act.tip!='base';
-			} catch(err) {}
+		// The condition under which the boss does not restore hp
+		public function isNoResBoss():Boolean
+		{
+			var res = false;
+			try
+			{
+				res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != 'base';
+			}
+			catch(err) {}
 			return res;
 		}
 		
-		public override function err():String {
-			//setNull();
-			return 'Error unit '+nazv;
+		public override function err():String
+		{
+			return 'Error unit ' + nazv;
 		}
 		
 		
@@ -821,25 +869,35 @@ package fe.unit
 			actions();		//различные действия
 			setVisPos();
 			if (hpbar) setHpbarPos();
-			if (burn==null) animate();		//анимация
-			else {
+
+			if (!burn) animate();		//анимация
+			else
+			{
 				burn.step();
 				if (burn.vse) exterminate();
 			}
-			onCursor=(isVis && !disabled && sost<4 && X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
-			//подчинённые объекты
-			for (i in childObjs) if (childObjs[i]) {
-				try {
+
+			onCursor = (isVis && !disabled && sost < 4 && X1 < World.w.celX && X2 > World.w.celX && Y1 < World.w.celY && Y2 > World.w.celY) ? prior:0;
+
+			for (i in childObjs) if (childObjs[i])
+			{
+				try
+				{
 					childObjs[i].step();
-				} catch(err) {
+				}
+				catch(err)
+				{
 					childObjs[i].err();
 				}
 			}
-			visDamDY=0;
+
+			visDamDY = 0;
 			if (sndRunOn && sndRun && loc && loc.active) sndRunPlay();
 		}
 		
-		public function control() {
+		public function control()
+		{
+
 		}
 		
 		//перемещение в точку
@@ -872,44 +930,62 @@ package fe.unit
 		}
 		
 		//постепенное появление
-		public function emergence(n:int=30) {
-			t_emerg=max_emerg=n;
+		public function emergence(n:int=30)
+		{
+			t_emerg = n;
+			max_emerg = n;
 		}
 
-		//Действующие силы
-		public function forces() {
-			if (levit) {
-				dy*=0.8;
-				dx*=0.8;
-				isLaz=0;
+		// [Current forces]
+		public function forces()
+		{
+			if (levit)
+			{
+				dy *= 0.80;
+				dx *= 0.80;
+				isLaz = 0;
 			}
-			if (isPlav) {
-				if (!levit) dy+=World.ddy*ddyPlav;
-				dy*=0.8;
-				dx*=0.8;
-			} else if (isFly) {
-				if (t_throw>0) {
-				} else {
-					if ((dx*dx+dy*dy)>maxSpeed*maxSpeed) {
-						dx*=0.7;
-						dy*=0.7;
+
+			if (isPlav)
+			{
+				if (!levit) dy += World.ddy * ddyPlav;
+				dy *= 0.80;
+				dx *= 0.80;
+			}
+			else if (isFly)
+			{
+				if (t_throw <= 0)
+				{
+					if ((dx * dx + dy * dy) > maxSpeed * maxSpeed)
+					{
+						dx *= 0.70;
+						dy *= 0.70;
 					}
-					if (dx>-brake && dx<brake) dx=0;
-					if (dy>-brake && dy<brake) dy=0;
+					if (dx > -brake && dx < brake) dx = 0;
+					if (dy > -brake && dy < brake) dy = 0;
 				}
-			} else {
-				if (inWater) dx*=0.5;
-				if (!levit && isLaz==0) {
-					var t:Tile=loc.getAbsTile(X,Y-scY/4);
-					if (t.grav>0 && dy<World.maxdy*t.grav || t.grav<0 && dy>World.maxdy*t.grav) dy+=World.ddy*t.grav*grav;
+			}
+			else
+			{
+				if (inWater) dx *= 0.5;
+				if (!levit && !isLaz)
+				{
+					var t:Tile = loc.getAbsTile(X, Y - scY / 4);
+					if (t.grav > 0 && dy < World.maxdy * t.grav || t.grav < 0 && dy > World.maxdy * t.grav) dy += World.ddy * t.grav * grav;
 				}
-				if (stay) {
-					dx*=tormoz;
-					if (walk<0) {
+				if (stay)
+				{
+					dx *= tormoz;
+					if (walk < 0)
+					{
 						if (dx<-maxSpeed) dx+=brake;
-					} else if (walk>0) {
+					}
+					else if (walk > 0)
+					{
 						if (dx>maxSpeed) dx-=brake;
-					} else {
+					}
+					else
+					{
 						if (dx>-brake && dx<brake) dx=0;
 						else if (dx>0) dx-=brake;
 						else if (dx<0) dx+=brake;
@@ -922,17 +998,23 @@ package fe.unit
 					}
 				}
 			}
-			if (slow>0) {
-				dx*=0.75;
-				dy*=0.75;
+			if (slow)
+			{
+				dx *= 0.75;
+				dy *= 0.75;
 			}
-			osndx=osndy=0;
-			if (stayOsn) {
-				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
-					stay=false;
-				} else {
-					osndx=stayOsn.cdx;
-					osndy=stayOsn.cdy;
+			osndx = 0;
+			osndy = 0;
+			if (stayOsn)
+			{
+				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10)
+				{
+					stay = false;
+				}
+				else
+				{
+					osndx = stayOsn.cdx;
+					osndy = stayOsn.cdy;
 				}
 			}
 			stayOsn=null;
@@ -940,93 +1022,139 @@ package fe.unit
 		
 		
 		
-		public function run(div:int=1) {
-			if (loc.sky) {
+		public function run(div:int=1)
+		{
+			if (loc.sky)
+			{
 				run2(div);
 				return;
 			}
+
 			//движение
 			var t:Tile, t2:Tile;
 			var i:int;
-			var newmy:Number=0;
-			var autoSit:Boolean=false;
-			
-			if (!throu && stay && diagon!=0 && dy>=0) {
-				if (!collisionAll(dx/div,-dx/div*diagon)) {
-					X+=dx/div;
-					Y-=dx/div*diagon;
-					Y1=Y-scY, Y2=Y;
-					X1=X-scX/2, X2=X+scX/2;
-					dy=0;
+			var newmy:Number = 0;
+			var autoSit:Boolean = false;
+
+			// Cached for speed
+			var halfScX = scX / 2;
+			var tilex:int = Tile.tileX;
+			var tiley:int = Tile.tileY;
+
+			if (!throu && stay && diagon && dy >= 0)
+			{
+				var dxdiv:Number = dx / div;
+				var dxNegDiagon:Number = -dxdiv * diagon;
+
+				if (!collisionAll(dxdiv, -dx / div * diagon))
+				{
+					
+
+					X += dxdiv;
+					Y -= dxNegDiagon;
+					
+					Y1 = Y - scY;
+					Y2 = Y;
+					X1 = X - halfScX;
+					X2 = X + halfScX;
+					dy = 0;
 					checkDiagon(0);
-				} else if (-dx/div*diagon>0 && !collisionAll(dx/div,0)) {
-					diagon=0;
+				}
+				else if (dxNegDiagon > 0 && !collisionAll(dxdiv, 0))
+				{
+					diagon = 0;
 				}
 				return;
-			}			
-			diagon=0;
+			}
+
+			diagon = 0;
+			
 			//ГОРИЗОНТАЛЬ
-			if (!isLaz) {
-				X+=(dx+osndx)/div;
-				if (X-scX/2<0) {
-					if (!outLoc(1)) {
-						X=scX/2;
-						dx=Math.abs(dx)*elast;
-						turnX=1;
-						kray=true;
+			if (!isLaz)
+			{
+
+				X += (dx + osndx) / div;
+				if (X - halfScX < 0)
+				{
+					if (!outLoc(1))
+					{
+						X = halfScX;
+						dx = Math.abs(dx) * elast;
+						turnX = 1;
+						kray = true;
 					}
 				}
-				if (X+scX/2>=loc.limX) {
-					if (!outLoc(2)) {
-						X=loc.limX-1-scX/2;
-						dx=-Math.abs(dx)*elast;
-						turnX=-1;
-						kray=true;
+				if (X + halfScX >= loc.limX)
+				{
+					if (!outLoc(2))
+					{
+						X = loc.limX - 1 - halfScX;
+						dx = -Math.abs(dx) * elast;
+						turnX = -1;
+						kray = true;
 					}
 				}
-				X1=X-scX/2, X2=X+scX/2;
+				X1 = X - halfScX, X2 = X + halfScX;
 				//движение влево
-				if (dx+osndx<0) {
-					if (!player && stay && shX1>0.5) {
-						newmy=checkDiagon(-5);
-						if (newmy>0) {
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+				if (dx + osndx < 0)
+				{
+					if (!player && stay && shX1 > 0.5)
+					{
+						newmy = checkDiagon(-5);
+						if (newmy > 0)
+						{
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
-					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1>0.5)) {
-						newmy=checkDiagon(-2,-1);
-						if (newmy>0) {
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1>0.5))
+					{
+						newmy=checkDiagon(-2, -1);
+						if (newmy > 0)
+						{
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
-					if (player && isUp && stay && !isSit) {
-						t=loc.space[Math.floor(X1/Tile.tileX)][Math.floor(Y1/Tile.tileY)];
-						t2=loc.space[Math.floor(X1/Tile.tileX)][Math.floor(Y1/Tile.tileY)+1];
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+					if (player && isUp && stay && !isSit)
+					{
+						t  = loc.space[int(X1/tilex)][int(Y1/tiley)];
+						t2 = loc.space[int(X1/tilex)][int(Y1/tiley) + 1];
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
+						{
 							Y=Y2=t2.phY1;
 							sit(true);
-							autoSit=true;
+							autoSit = true;
 						}
 					}
 					if (mater) {
-						for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-							t=loc.space[Math.floor(X1/Tile.tileX)][i];
-							if (collisionTile(t)) {
+						for (i = int(Y1/tiley); i <= int(Y2/tiley); i++)
+						{
+							t = loc.space[int(X1/tilex)][i];
+							if (collisionTile(t))
+							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-Y2)) {
+								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-Y2))
+								{
 									Y=t.phY1;
-								} else {
-									X=t.phX2+scX/2;
-									if (t_throw>0 && dx<-damWallSpeed && damWall) damageWall(2);//((-dx-damWallSpeed)/4*damWall,D_PHIS);
-									if (destroy>0 && destroyWall(t,1)) {
-										dx*=0.75;
-									} else {
-										dx=Math.abs(dx)*elast;
-										turnX=1;
-										if (t.mat==1) tykMat=1;
-										X1=X-scX/2, X2=X+scX/2;
+								}
+								else
+								{
+									X = t.phX2 + halfScX;
+									if (t_throw > 0 && dx < -damWallSpeed && damWall) damageWall(2);
+
+									if (destroy > 0 && destroyWall(t, 1))
+									{
+										dx *= 0.75;
+									}
+									else
+									{
+										dx = Math.abs(dx) * elast;
+										turnX = 1;
+										if (t.mat == 1) tykMat = 1;
+										X1 = X - halfScX, X2 = X + halfScX;
 									}
 								}
 							}
@@ -1034,95 +1162,129 @@ package fe.unit
 					}
 				}
 				//движение вправо
-				if (dx+osndx>0) {
-					if (!player && stay && shX2>0.5) {
-						newmy=checkDiagon(-5);
-						if (newmy>0) {
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+				if (dx + osndx > 0)
+				{
+					if (!player && stay && shX2 > 0.5)
+					{
+						newmy = checkDiagon(-5);
+						if (newmy > 0)
+						{
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
-					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2>0.5)) {
-						newmy=checkDiagon(-2,1);
-						if (newmy>0) {
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5))
+					{
+						newmy = checkDiagon(-2, 1);
+						if (newmy > 0)
+						{
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
-					if (player && isUp && stay && !isSit) {
-						t=loc.space[Math.floor(X2/Tile.tileX)][Math.floor(Y1/Tile.tileY)];
-						t2=loc.space[Math.floor(X2/Tile.tileX)][Math.floor(Y1/Tile.tileY)+1];
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
-							Y=Y2=t2.phY1;
+					if (player && isUp && stay && !isSit)
+					{
+						t  = loc.space[int(X2/tilex)][int(Y1/tiley)];
+						t2 = loc.space[int(X2/tilex)][int(Y1/tiley)+1];
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
+						{
+							Y  = t2.phY1;
+							Y2 = t2.phY1;
 							sit(true);
-							autoSit=true;
+							autoSit = true;
 						}
 					} 
-					if (mater) {
-						for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-							t=loc.space[Math.floor(X2/Tile.tileX)][i];
-							if (collisionTile(t)) {
+					if (mater)
+					{
+						for (i = int(Y1/tiley); i<= int(Y2/tiley); i++)
+						{
+							t=loc.space[int(X2/tilex)][i];
+							if (collisionTile(t))
+							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-Y2)) {
-									Y=t.phY1;
-								} else {
-									X=t.phX1-scX/2;
+								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-Y2))
+								{
+									Y = t.phY1;
+								}
+								else
+								{
+									X = t.phX1 - halfScX;
 									if (t_throw>0 && dx>damWallSpeed && damWall) damageWall(1);
-									if (destroy>0 && destroyWall(t,2)) {
-										dx*=0.75;
-									} else {
-										dx=-Math.abs(dx)*elast;
-										turnX=-1;
-										if (t.mat==1) tykMat=1;
-										X1=X-scX/2, X2=X+scX/2;
+									if (destroy>0 && destroyWall(t,2))
+									{
+										dx *= 0.75;
+									}
+									else
+									{
+										dx = -Math.abs(dx) * elast;
+										turnX = -1;
+										if (t.mat == 1) tykMat = 1;
+										X1 = X - halfScX, X2 = X + halfScX;
 									}
 								}
 							}
 						}
 					}
 				}
-				Y1=Y-scY, Y2=Y;
+				Y1 = Y - scY;
+				Y2 = Y;
 			}
 			//отталкивание
 			
 			
-			//ВЕРТИКАЛЬ
-			//движение вниз
-			newmy=0;
-			if (dy+osndy>0) {
-				if (dy>0) {
-					stay=false;
-					stayPhis=stayMat=0;
+			//VERTICAL
+			//downward movement
+			newmy = 0;
+			if (dy + osndy > 0)
+			{
+				if (dy > 0)
+				{
+					stay = false;
+					stayPhis = 0;
+					stayMat = 0;
 				}
-				//diagon=0;
-				shX1=shX2=1; //если >0, то не полностью стоишь на полу
-				if (levit || plav && isPlav || isFly) {	//полёт, левитация или плавание 
-					diagon=0;
-					Y+=(dy+osndy)/div;
-					if (Y>loc.limY) {
-						if (!outLoc(3)) {
-							Y=loc.limY-1;
-							dy=0;
-							turnY=-1;
-						}
+				
+				shX1 = 1;
+				shX2 = 1; //if >0, then you are not completely standing on the floor
+
+				if (levit || plav && isPlav || isFly) // Flying, levitating or swimming
+				{
+					diagon = 0;
+					Y += (dy + osndy) / div;
+					if (Y > loc.limY && !outLoc(3))
+					{
+						Y = loc.limY - 1;
+						dy = 0;
+						turnY = -1;
 					}
-					Y1=Y-scY, Y2=Y;
-					if (mater) {
-						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-							t=loc.space[i][Math.floor(Y2/Tile.tileY)];
-							if (collisionTile(t)) {
-								Y=t.phY1;
-								Y1=Y-scY, Y2=Y;
-								dy=0;
-								turnY=-1;
-								if (t.mat==1) tykMat=1;
+					Y1 = Y - scY;
+					Y2 = Y;
+					if (mater)
+					{
+						for (i = int(X1/tilex); i <= int(X2/tilex); i++)
+						{
+							t = loc.space[i][int(Y2/tiley)];
+							if (collisionTile(t))
+							{
+								Y = t.phY1;
+								Y1 = Y-scY;
+								Y2 = Y;
+								dy = 0;
+								turnY = -1;
+								if (t.mat == 1) tykMat = 1;
 							}
 						}
 					}
-				} else {						//падение
-					if (mater) {
-						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-							t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tileY)];
+				}
+				else // [a fall]
+				{						
+					if (mater)
+					{
+						for (i = int(X1/tilex); i<=int(X2/tilex); i++)
+						{
+							t=loc.space[i][int((Y2+dy/div)/tiley)];
 							if (collisionTile(t,0,dy/div)) {
 								if (-(X1-t.phX1)/scX<shX1) shX1=-(X1-t.phX1)/scX;
 								if ((X2-t.phX2)/scX<shX2) shX2=(X2-t.phX2)/scX;
@@ -1140,12 +1302,16 @@ package fe.unit
 							}
 						}
 					}
-					if (newmy==0 && !throu) newmy=checkDiagon(dy/div);
-					if (newmy==0 && !throu) newmy=checkShelf(dy/div, osndy/div);
-					if (newmy) {	//баги!!!!!
+
+					if (newmy == 0 && !throu) newmy = checkDiagon(dy / div);
+					if (newmy == 0 && !throu) newmy = checkShelf(dy / div, osndy / div);
+
+					if (newmy) // Bugs!!!!!
+					{
 						Y1=newmy-scY;
-						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-							t=loc.space[i][Math.floor((newmy-scY)/Tile.tileY)];
+						for (i = int(X1/tilex); i <= int(X2/tilex); i++)
+						{
+							t=loc.space[i][int((newmy-scY)/tiley)];
 							if (collisionTile(t)) newmy=0;
 						}
 					}
@@ -1158,20 +1324,25 @@ package fe.unit
 						if (jumpBall>0 && dy>3) {
 							dy=-dy*jumpBall;
 							turnY=-1;
-						} else {
-							dy=0;
-							
 						}
+						else dy=0;
+
 						stay=true;
 						fracLevit=0;
 		
 						isLaz=0;
-					} else {
-						Y+=dy/div;
-						Y1=Y-scY, Y2=Y;
 					}
-					if (Y>loc.limY) {
-						if (!outLoc(3)) {
+					else
+					{
+						Y += dy/div;
+						Y1 = Y-scY;
+						Y2 = Y;
+					}
+					
+					if (Y > loc.limY)
+					{
+						if (!outLoc(3))
+						{
 							Y=loc.limY-1;
 							turnY=-1;
 							Y1=Y-scY, Y2=Y;
@@ -1180,19 +1351,24 @@ package fe.unit
 				}
 			}
 			//движение вверх
-			if (dy+osndy<0) {
-				if (dy<0) {
-					stay=false;
-					diagon=0;
+			if (dy + osndy < 0)
+			{
+				if (dy < 0)
+				{
+					stay = false;
+					diagon = 0;
 				}
-				if (Y-scY<0) {
-					if (!outLoc(4)) {
-						Y=scY-0.1;
-						dy=0;
-						turnY=1;
+				if (Y - scY < 0)
+				{
+					if (!outLoc(4))
+					{
+						Y = scY - 0.1;
+						dy = 0;
+						turnY = 1;
 					}
 				}
-				if (dy>0) {
+				if (dy > 0)
+				{
 					newmy=checkShelf(dy/div, osndy/div);
 					if (newmy) {
 						Y=newmy;
@@ -1200,57 +1376,74 @@ package fe.unit
 						dy=0;
 						stay=true;
 					}
-				} else {
-					Y+=(dy+osndy)/div;
-					Y1=Y-scY, Y2=Y;
 				}
-				if (mater) {
-					for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-						t=loc.space[i][Math.floor(Y1/Tile.tileY)];
-						if (collisionTile(t)) {
-							if (t_throw>0 && dy<-damWallSpeed && damWall) damageWall(4);
-							if (destroy>0) destroyWall(t,4);
-							Y=t.phY2+scY;
-							Y1=Y-scY, Y2=Y;
-							dy=0;
-							turnY=1;
-							if (t.mat==1) tykMat=1;
-							stay=false;
+				else
+				{
+					Y += (dy + osndy) / div;
+					Y1 = Y-scY;
+					Y2 = Y;
+				}
+
+				if (mater)
+				{
+					for (i = int(X1/tilex); i <= int(X2/tilex); i++)
+					{
+						t=loc.space[i][int(Y1/tiley)];
+						if (collisionTile(t))
+						{
+							if (t_throw > 0 && dy < -damWallSpeed && damWall) damageWall(4);
+							if (destroy > 0) destroyWall(t, 4);
+							Y = t.phY2 + scY;
+							Y1 = Y-scY;
+							Y2 = Y;
+							dy = 0;
+							turnY = 1;
+							if (t.mat == 1) tykMat = 1;
+							stay = false;
 						}
 					}
 				}
 			} 
-			if (autoSit) {
-				autoSit=false;	
+			if (autoSit)
+			{
+				autoSit = false;	
 				unsit();
 			}
 		}
 		
-		public function run2(div:int=1) {
-			X+=dx/div;
-			Y+=dy/div;
-			if (X-scX/2<0) {
-				X=scX/2;
+		public function run2(div:int=1)
+		{
+			var halfScX = scX/2;
+			X += dx/div;
+			Y += dy/div;
+			if (X - halfScX < 0)
+			{
+				X = halfScX;
 				dx=Math.abs(dx)*elast;
 				turnX=1;
 			}
-			if (X+scX/2>=loc.limX) {
-				X=loc.limX-1-scX/2;
-				dx=-Math.abs(dx)*elast;
-				turnX=-1;
+			if (X + halfScX >= loc.limX)
+			{
+				X = loc.limX - 1 - halfScX;
+				dx = -Math.abs(dx) * elast;
+				turnX = -1;
 			}
-			if (Y-scY<0) {
-				Y=scY-0.1;
-				dy=0;
-				turnY=1;
+			if (Y - scY < 0)
+			{
+				Y = scY-0.1;
+				dy = 0;
+				turnY = 1;
 			}
-			if (Y>loc.limY) {
-				Y=loc.limY-1;
-				dy=0;
-				turnY=-1;
+			if (Y > loc.limY)
+			{
+				Y = loc.limY - 1;
+				dy = 0;
+				turnY = -1;
 			}
-			X1=X-scX/2, X2=X+scX/2;
-			Y1=Y-scY, Y2=Y;
+			X1 = X - halfScX;
+			X2 = X + halfScX;
+			Y1 = Y - scY;
+			Y2 = Y;
 		}
 		
 		public function sit(turn:Boolean) {

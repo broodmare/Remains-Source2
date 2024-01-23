@@ -16,6 +16,9 @@ package fe.unit
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
+
+	import fe.stubs.visualPlayer;	// .fla linkage
+	import fe.stubs.reloadBar;		// .fla linkage
 	
 	public class UnitPlayer extends UnitPon
 	{

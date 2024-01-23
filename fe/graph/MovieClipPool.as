@@ -3,7 +3,7 @@ package fe.graph
     import flash.display.MovieClip;
     import flash.utils.Dictionary;
 
-    public class MovieClipPool
+    public class MovieClipPool // I DON'T KNOW IF THIS ACTUALLY HELPS OR NOT!
     {
         // A dictionary to hold arrays of MovieClips for each type
         private static var pools:Dictionary = new Dictionary();

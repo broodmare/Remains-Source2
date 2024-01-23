@@ -8,8 +8,11 @@ package fe.graph
     import flash.geom.Matrix;
     import flash.geom.Point;
 	
-	//класс отвечает за анимацию главного меню
+	import fe.stubs.displVolna;		// .fla linkage
+	import fe.stubs.visWav;			// .fla linkage
+	import fe.stubs.visSerost;		// .fla linkage
 	
+	//класс отвечает за анимацию главного меню	
 	public class Displ {
 		
 		var mm:MovieClip, gr:MovieClip;
