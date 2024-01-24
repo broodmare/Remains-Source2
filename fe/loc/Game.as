@@ -227,10 +227,12 @@ package fe.loc
 					n=1;
 					if (World.w.pers.level>1) n=World.w.pers.level-1;
 				}
-				curLand.land=new Land(World.w.gg, curLand, n);
+				curLand.land = new Land(World.w.gg, curLand, n);
 			}
-			World.w.time___metr('Создание местности');
-			if (!first) triggers['firstroom']=1;
+
+			World.w.time___metr('Creating level');
+
+			if (!first) triggers['firstroom'] = 1;
 			crea=false;
 			World.w.ativateLand(curLand.land);
 			World.w.land.enterLand(first, curCoord);
@@ -253,7 +255,7 @@ package fe.loc
 			if (curLand.upStage) {
 				curLand.upStage=false;
 			}
-			World.w.time___metr('Вход в местность');
+			World.w.time___metr('Entering level');
 		}
 		
 		//Перенаправление на другую локацию

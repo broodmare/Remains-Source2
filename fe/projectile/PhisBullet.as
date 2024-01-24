@@ -136,7 +136,7 @@ package fe.projectile
 			}
 			if (loc.sky) {
 				Y+=dy/div;
-				if (X<0 || X>=loc.limX || Y<0 || Y>=loc.limY) {
+				if (X<0 || X>=loc.maxX || Y<0 || Y>=loc.maxY) {
 					vse=true;
 					return;
 				}

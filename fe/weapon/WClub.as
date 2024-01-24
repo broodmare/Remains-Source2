@@ -44,6 +44,9 @@ package fe.weapon
 		public var powerfull:Boolean=false;	//можно усиливать удар
 		public var combinat:Boolean=false;	//каждый 4й удар усиленный
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function WClub(own:Unit, id:String, nvar:int=0)
 		{
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
@@ -116,11 +119,11 @@ package fe.weapon
 			var by:Number=owner.Y-owner.scY*0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
+			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
 			for (var i=1; i<div; i++) {
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
-				var t:Tile=World.w.loc.getAbsTile(Math.floor(celX),Math.floor(celY));
+				var t:Tile=World.w.loc.getAbsTile(int(celX),int(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) {
 					return 0
 				}
@@ -365,8 +368,8 @@ package fe.weapon
 			b.inWater=0;
 			if (loc.getAbsTile(b.X, b.Y).water>0) b.inWater=1;
 			if (mtip==0) {
-				b.tileX=Math.floor(owner.celX/World.tileX);
-				b.tileY=Math.floor(owner.celY/World.tileY);
+				b.tileX=int(owner.celX/tileX);
+				b.tileY=int(owner.celY/tileY);
 			}
 			if (mtip==2) {
 				quakeX=Math.random()*otbros;

@@ -12,6 +12,8 @@ package fe.unit {
 		var optJumpAtt:Boolean=true;
 		var optAnimAtt:Boolean=false;
 		var t_punch:int=0;
+
+		private static var tileY:int = Tile.tileY;
 		
 		public function UnitMonstrik(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
@@ -325,7 +327,7 @@ package fe.unit {
 				}
 			}
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
+			if (Y > loc.spaceY * tileY-80) throu = false;
 		}
 		
 		public function attack() {

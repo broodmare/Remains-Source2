@@ -1,16 +1,14 @@
-package fe.unit {
-	import flash.filters.GlowFilter;
+package fe.unit
+{
 	import flash.display.MovieClip;
 	
-//	import fe.inter.Vendor;
-	import fe.serv.Interact;
 	import fe.*;
-	import fe.serv.Script;
-	import fe.serv.Item;
+	import fe.loc.Tile;
 	import fe.serv.NPC;
 	import fe.weapon.Weapon;
 	
-	public class UnitNPC extends UnitPon{
+	public class UnitNPC extends UnitPon
+	{
 		
 		public var targNPC:NPC;
 		public var npcId:String='';
@@ -35,13 +33,17 @@ package fe.unit {
 		var t_float:Number=0;
 		var floatX:Number=0, floatY:Number=0;
 		
-		var que:Array=new Array();
+		var que:Array = [];
 		var wait:int=0;
 		var dey:String='';
 		var cx:Number=-1, cy:Number=-1;
 		var dvig:Object=new Object;
+
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 		
-		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid!='' && cid!=null) {
 				id=cid;
@@ -62,7 +64,6 @@ package fe.unit {
 				npcId=id;
 				targNPC = new NPC(null,null,id,ndif);
 			}
-			//sost=1, disabled=false;
 			targNPC.inter=inter;
 			targNPC.owner=this;
 			//если есть настройки npc
@@ -120,7 +121,6 @@ package fe.unit {
 			if (xml) {
 				if (xml.@fly.length()) {
 					animFly=true;
-					//if (rep==0) 
 					aiTip='fly';
 					isFly=true;
 				}
@@ -130,7 +130,6 @@ package fe.unit {
 			targNPC.init();
 			setInter();
 		}
-		
 
 		public override function addVisual() {
 			super.addVisual();
@@ -138,7 +137,6 @@ package fe.unit {
 				targNPC.refresh();
 				targNPC.check();
 				isVis=!targNPC.hidden;
-				//trace(nazv,targNPC.rep, targNPC.hidden);
 			}
 			vis.visible=isVis;
 			if (currentWeapon) currentWeapon.vis.visible=isVis;
@@ -158,7 +156,7 @@ package fe.unit {
 			if (t_anim>0) t_anim--;
 			else {
 				t_anim=Math.random()*200+150;
-				var br:int=Math.floor(Math.random()*2+1);
+				var br:int = int(Math.random()*2+1);
 				try {
 					vis.osn.gotoAndPlay('move'+br);
 				} catch (err) {
@@ -181,14 +179,12 @@ package fe.unit {
 			}
 		}
 		
-		
 		function hide() {
 			inter.active=false;
 			isVis=false;
 			if (vis) vis.visible=false;
 			if (currentWeapon) currentWeapon.vis.visible=false;
 		}
-		
 		
 		public function npcFun() {
 			if (zanyato || t_ref>0) return;
@@ -199,8 +195,6 @@ package fe.unit {
 			}
 			if (targNPC) targNPC.activate();
 		}
-		
-		
 		
 		public override function command(com:String, val:String=null) {
 			super.command(com,val);
@@ -257,8 +251,8 @@ package fe.unit {
 			//лететь в точку
 			} else if (q.com=='fly') {
 				var celF:Array=q.val.split(":");
-				cx=(int(celF[0])+1)*World.tileX;
-				cy=(int(celF[1]))*World.tileY;
+				cx=(int(celF[0])+1)*tileX;
+				cy=(int(celF[1]))*tileY;
 				trace(cx,cy);
 				dey='fly';
 				wait=1000;
@@ -288,8 +282,6 @@ package fe.unit {
 			celUnit=priorUnit=null;
 			return false;
 		}
-		
-		
 		
 		public override function control() {
 			if (t_ref>0) t_ref--;
@@ -376,7 +368,5 @@ package fe.unit {
 				}
 			}
 		}
-		
-	
 	}
 }

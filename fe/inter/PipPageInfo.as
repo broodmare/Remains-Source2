@@ -6,6 +6,7 @@ package fe.inter
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 
+	import fe.loc.Tile;
 	import fe.loc.Game;
 	import fe.loc.Quest;
 	import fe.loc.LandAct;
@@ -30,22 +31,24 @@ package fe.inter
 		var targetLand:String='';
 		var game:Game;
 
+		private static var cachedUnits:Object = {};
 		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
 		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
-
-		private static var cachedUnits:Object = {};
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 
 		public function PipPageInfo(npip:PipBuck, npp:String)
 		{
-			itemClass=visPipQuestItem;
-			pageClass=visPipInfo;
-			isLC=true;
-			super(npip,npp);
+			itemClass = visPipQuestItem;
+			pageClass = visPipInfo;
+			isLC = true;
+			super(npip, npp);
 			//объект карты
-			visMap=new visPipMap();
-			visWMap=new visPipWMap();
+			visMap	= new visPipMap();
+			visWMap	= new visPipWMap();
 			vis.addChild(visMap);
 			vis.addChild(visWMap);
+
 			visMap.x=12;
 			visMap.y=75;
 			visWMap.x=17;
@@ -56,6 +59,7 @@ package fe.inter
 			visMap.vmap.mask=visMap.maska;
 			plTag=visMap.vmap.plTag;
 			visMap.vmap.swapChildren(map,plTag);
+			
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			visMap.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
 			visMap.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
@@ -457,16 +461,17 @@ package fe.inter
 		
 		private function transOk(event:MouseEvent):void
 		{
-			if (pip.noAct) {
+			if (pip.noAct)
+			{
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.w.testMode)) {
-				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
+			if (page2==3 && (pip.travel || World.w.testMode))
+			{
+				if (game.lands[targetLand] && game.lands[targetLand].loaded)
+				{
 					game.beginMission(targetLand);
 					pip.onoff(-1);
-				} else {
-					
 				}
 			}
 			if (page2==2)
@@ -521,16 +526,22 @@ package fe.inter
 		
 		private function setMapSize(cx:Number=350, cy:Number=285):void
 		{
-			if (mapScale>6) mapScale=6;
-			if (mapScale<1) mapScale=1;
-			map.scaleX=map.scaleY=mapScale;
-			var tx=(visMap.vmap.x-cx)*mapScale/ms;
-			var ty=(visMap.vmap.y-cy)*mapScale/ms;
-			visMap.vmap.x=tx+cx;
-			visMap.vmap.y=ty+cy;
-			plTag.x=World.w.land.ggX/World.tileX*mapScale;
-			plTag.y=World.w.land.ggY/World.tileY*mapScale;
-			ms=mapScale;
+			if (mapScale > 6) mapScale = 6;
+			if (mapScale < 1) mapScale = 1;
+
+			map.scaleX = mapScale;
+			map.scaleY = mapScale;
+
+			var tx = (visMap.vmap.x - cx) * mapScale / ms;
+			var ty = (visMap.vmap.y - cy) * mapScale / ms;
+
+			visMap.vmap.x = tx + cx;
+			visMap.vmap.y = ty + cy;
+
+			plTag.x = World.w.land.ggX / tileX * mapScale;
+			plTag.y = World.w.land.ggY / tileY * mapScale;
+
+			ms = mapScale;
 		}
 		
 		public override function scroll(dn:int=0):void

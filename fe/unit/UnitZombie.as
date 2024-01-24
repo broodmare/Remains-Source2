@@ -45,6 +45,9 @@ package fe.unit
 		
 		protected var levitFilter:GlowFilter;
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function UnitZombie(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
@@ -249,7 +252,7 @@ package fe.unit
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
-				aiJump=Math.floor(30+Math.random()*50);
+				aiJump=int(30+Math.random()*50);
 			} else if (isPlav) {
 				dy-=plavdy;
 			}
@@ -328,8 +331,8 @@ package fe.unit
 			tZlo=120;
 			aiTCh=30;
 			transT=false;
-			for (var i=Math.floor((X1)/Tile.tileX); i<=Math.floor((X2)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y1)/Tile.tileY); j<=Math.floor((Y2)/Tile.tileY); j++) {
+			for (var i=int((X1)/tileX); i<=int((X2)/tileX); i++) {
+				for (var j=int((Y1)/tileY); j<=int((Y2)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j])) loc.dieTile(loc.space[i][j]);
 				}
@@ -574,7 +577,7 @@ package fe.unit
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (Y>loc.spaceY*tileY-80) throu=false;
 			
 			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
 				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
@@ -657,25 +660,25 @@ package fe.unit
 		
 		function findSuper() {
 			superX=-1;
-			var nx:int=Math.floor(celX/World.tileX);
-			var ny:int=Math.floor((celY+40)/World.tileY);
-			if (superSilaTip==1) superY=ny*World.tileY+World.tileY+scY;
+			var nx:int = int(celX/tileX);
+			var ny:int = int((celY+40)/tileY);
+			if (superSilaTip==1) superY=ny*tileY+tileY+scY;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 			if (Y-celY>120) {
 				if (loc.getTile(nx,ny).phis==0) {
 					if (loc.getTile(nx-1,ny).phis==0) {
-						superX=nx*World.tileX;
+						superX=nx*tileX;
 					} else if (loc.getTile(nx+1,ny).phis==0) {
-						superX=(nx+1)*World.tileX;
+						superX=(nx+1)*tileX;
 					}
 				}
 				if (superX<0 && loc.getTile(nx-2,ny).phis==0) {
-					if (loc.getTile(nx-1,ny).phis==0) superX=(nx-1)*World.tileX;
-					else if (loc.getTile(nx-3,ny).phis==0) superX=(nx-2)*World.tileX;
+					if (loc.getTile(nx-1,ny).phis==0) superX=(nx-1)*tileX;
+					else if (loc.getTile(nx-3,ny).phis==0) superX=(nx-2)*tileX;
 				}
 				if (superX<0 && loc.getTile(nx+2,ny).phis==0) {
-					if (loc.getTile(nx+1,ny).phis==0) superX=(nx+2)*World.tileX;
-					else if (loc.getTile(nx+3,ny).phis==0) superX=(nx+3)*World.tileX;
+					if (loc.getTile(nx+1,ny).phis==0) superX=(nx+2)*tileX;
+					else if (loc.getTile(nx+3,ny).phis==0) superX=(nx+3)*tileX;
 				}
 			} else {
 				if (superSilaTip==1) {

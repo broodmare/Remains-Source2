@@ -62,6 +62,9 @@ package fe.unit
 		public var poleId:String='';
 		var t_pole:int=0;
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function UnitAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
@@ -604,7 +607,7 @@ package fe.unit
 
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (Y>loc.spaceY*tileY-80) throu=false;
 			
 			if (celUnit && t_shit<900 && aiTCh%5==1 && isrnd(0.25) && aiAttackT<=-15 && currentWeapon.t_attack<=0) aiAttackT=16;
 			if (aiAttackT>-15) {
@@ -763,15 +766,15 @@ package fe.unit
 					else  nx=cel.X+cel.storona*(Math.random()*800+200);
 					ny=cel.Y+Math.random()*160-80;
 				} else {
-					nx=Math.random()*loc.limX;
-					ny=Math.random()*loc.limY;
+					nx = Math.random()*loc.maxX;
+					ny = Math.random()*loc.maxY;
 				}
-				nx=Math.round(nx/World.tileX)*World.tileX
-				ny=Math.ceil(ny/World.tileY)*World.tileY-1;
+				nx = Math.round(nx/tileX)*tileX
+				ny = Math.ceil(ny/tileY)*tileY-1;
 				if (nx<scX) nx=scX;
 				if (ny<scY+40) ny=scY+40;
-				if (nx>loc.limX-scX) nx=loc.limX-scX;
-				if (ny>loc.limY-40) ny=loc.limY-40;
+				if (nx>loc.maxX-scX) nx=loc.maxX-scX;
+				if (ny>loc.maxY-40) ny=loc.maxY-40;
 				if (!collisionAll(nx-X, ny-Y)) {
 					teleport(nx,ny,1);
 					dx=dy=0;

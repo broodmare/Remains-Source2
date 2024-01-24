@@ -147,23 +147,22 @@ package  fe
 		
 		//Глобальные константы
 		public var actionDist=200*200;
-		public static const tileX=40;
-		public static const tileY=40;
-		public static const cellsX:int=48;
-		public static const cellsY:int=25;
-		public static const fps=30;
-		public static const ddy=1;
-		public static const maxdy=20;
-		public static const maxwaterdy=20;
-		public static const maxdelta=9;
-		public static const oduplenie=100;
-		public static const battleNoOut=120;
-		public static const unitXPMult:Number=2;
-		public static const kolHK=12;			//количество горячих клавиш
-		public static const kolQS=4;			//количество быстрых заклинаний
+
+		public static const cellsX:int = 48;
+		public static const cellsY:int = 25;
+		public static const fps:int = 30;
+		public static const ddy:int = 1;
+		public static const maxdy:int = 20;
+		public static const maxwaterdy:int = 20;
+		public static const maxdelta:int = 9;
+		public static const oduplenie:int = 100;
+		public static const battleNoOut:int = 120;
+		public static const unitXPMult:Number = 2;
+		public static const kolHK:int = 12;			//количество горячих клавиш
+		public static const kolQS:int = 4;			//количество быстрых заклинаний
 			
 		
-		public static const boxDamage=0.2;		//мультипликатор силы удара ящиками
+		public static const boxDamage:int = 0.2;		//мультипликатор силы удара ящиками
 		
 		//Загрузка текстов
 		public var currentLanguage:String = 'en';		// Two letter language id, eg. 'en'
@@ -177,8 +176,8 @@ package  fe
 		public var textLoaded:Boolean=false;
 		public var textLoadErr:Boolean=false;
 
-		var loader_lang:URLLoader; 
-		var request_lang:URLRequest;
+		private var loader_lang:URLLoader; 
+		private var request_lang:URLRequest;
 
 		public var langsXML:XML;
 		public var textProgressLoad:Number=0;
@@ -199,13 +198,14 @@ package  fe
 		
 		//загрузка, сейвы, конфиг
 		public var configObj:SharedObject;
-		var saveObj:SharedObject;
-		var saveArr:Array;
-		public var saveKol:int=10;
-		var savePath:String=null;
-		var t_save:int=0;
-		public var loaddata:Object;				//данные, загружаемые из файла
-		public var nadv:int=0, koladv:int=10;	//номер совета
+		private var saveObj:SharedObject;
+		private var saveArr:Array;
+		public var saveKol:int = 10;
+		private var savePath:String = null;
+		private var t_save:int = 0;
+		public var loaddata:Object;	//данные, загружаемые из файла
+		public var nadv:int=0;
+		public var koladv:int = 10;	//номер совета
 		public var load_log:String='';
 		
 		//карты местностей
@@ -225,16 +225,17 @@ package  fe
 		
 		//счетчик fps
 		public var tfc:Timer;			
-		var fc:int=0;
+		private var fc:int=0;
 		//var date:Date,
-		var d1:int, d2:int;
+		private var d1:int;
+		private var d2:int;
 		
-		public var landError:Boolean=false;
+		public var landError:Boolean = false;
 
 
 		public function World(nmain:Sprite, paramObj:Object)
 		{
-			World.w=this;
+			World.w = this;
 			//техническая часть
 			//Узнать тип плеера и адрес, с которого он запущен
 			playerMode = Capabilities.playerType;
@@ -254,8 +255,6 @@ package  fe
 			swfStage=main.stage;
 			swfStage.tabChildren=false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
-			Tile.tileX=tileX;
-			Tile.tileY=tileY;
 			
 			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
 			loader_lang = new URLLoader(); 
@@ -304,18 +303,20 @@ package  fe
 			main.addChild(vstand);
 			main.addChild(verror);
 			main.addChild(vconsol);
-			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
-			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible=false;});
-			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow=false; verror.visible=false;});
+			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function():void {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
+			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function():void {verror.visible=false;});
+			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function():void {errorShow=false; verror.visible=false;});
 			vstand.visible=false;
 			grafon=new Grafon(visual);
 			cam=new Camera(this);
 			load_log+='Stage 1 Ok\n';
-			//счётчик FPS
-			d1=d2=getTimer();
+			
+			// FPS Counter (This seems to also be used for other things like measuring load times.)
+			d1 = getTimer();
+			d2 = getTimer();
 			
 			//конфиг, сразу загружает настройки звука
-			configObj=SharedObject.getLocal('config',savePath);
+			configObj = SharedObject.getLocal('config', savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
 			
 		}
@@ -1017,12 +1018,13 @@ package  fe
 			verror.visible=true;
 		}
 		
-		//измерение времени действий
-		public function time___metr(s=null):void
+		//[Action measurement time]
+		public function time___metr(message:String = null):void // TODO: 'S' IS USED A BOTH A STRING AND NUMBER
 		{
-			d2=getTimer();
-			if (s!=null) trace(d2-d1,s);
-			d1=d2;
+			d2 = getTimer();
+			var timeDif:int = d2 - d1;
+			if (message != null) trace(message + ': ' + timeDif.toString());
+			d1 = d2;
 		}
 		
 		public function gc():void

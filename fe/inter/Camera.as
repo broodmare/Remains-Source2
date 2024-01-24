@@ -27,8 +27,8 @@ package fe.inter
 		public var quakeX:Number=0;
 		public var quakeY:Number=0;
 		public var isZoom:int=0;
-		public var scaleV=1;
-		public var scaleS=1;
+		public var scaleV = 1;
+		public var scaleS = 1;
 		public var dblack:Number=0;
 		
 		//режим показа
@@ -36,28 +36,30 @@ package fe.inter
 		public var showX:Number=-1;
 		public var showY:Number=0;
 		
-		public function Camera(nw:World) {
-			w=nw;
+		public function Camera(nw:World)
+		{
+			w = nw;
 		}
 		
-		public function setLoc(loc:Location) {
-			if (loc==null) return;
-			screenX=w.swfStage.stageWidth;
-			screenY=w.swfStage.stageHeight;
-			maxsx=loc.limX;
-			maxsy=loc.limY;
-			maxvx=maxsx-screenX;
-			maxvy=maxsy-screenY;
-			quakeX=quakeY=0;
-			if (loc.limX-40<=screenX && loc.limY-40<=screenY) {
+		public function setLoc(loc:Location)
+		{
+			if (loc == null) return;
+			screenX = w.swfStage.stageWidth;
+			screenY = w.swfStage.stageHeight;
+			maxsx = loc.maxX;
+			maxsy = loc.maxY;
+			maxvx = maxsx - screenX;
+			maxvy = maxsy - screenY;
+			quakeX = 0;
+			quakeY = 0;
+			if (loc.maxX-40<=screenX && loc.maxY-40<=screenY) {
 				moved=false;
 				vx=-maxvx/2;
 				vy=-maxvy/2;
 				w.visual.x=w.sats.vis.x=vx;
 				w.visual.y=w.sats.vis.y=vy;
-			} else {
-				moved=true;
 			}
+			else moved = true;
 			setZoom();
 		}
 		
@@ -66,39 +68,49 @@ package fe.inter
 			mc.y=ny*scaleV+vy;
 		}
 		
-		public function setZoom(turn:int=-1000) {
-			if (turn==1000) {
+		public function setZoom(turn:int=-1000)
+		{
+			if (turn == 1000)
+			{
 				isZoom++;
-				if (isZoom>2) isZoom=0;
-				World.w.gui.infoText('zoom'+isZoom);
-			} else if (turn>=0) {
-				isZoom=turn;
+				if (isZoom > 2) isZoom = 0;
+				World.w.gui.infoText('zoom' + isZoom);
 			}
+			else if (turn >= 0) isZoom = turn;
 			
-			if (isZoom==1) {
-				scaleV=Math.max(screenX/maxsx, screenY/maxsy);
-			} else if (isZoom==2) {
-				scaleV=Math.min(screenX/maxsx, screenY/maxsy);
-			} else {
-				scaleV=1;
-			}
-			scaleS=Math.min(screenX/1920, screenY/1000);
-			if (scaleV>0.98) scaleV=1;
-			maxvx=maxsx*scaleV-screenX;
-			maxvy=maxsy*scaleV-screenY;
-			w.visual.scaleX=w.sats.vis.scaleX=w.visual.scaleY=w.sats.vis.scaleY=scaleV;
-			w.vscene.scaleX=w.vscene.scaleY=scaleS;
-			if (screenY>maxsy*scaleV) {
+			if (isZoom==1) scaleV = Math.max(screenX / maxsx, screenY / maxsy);
+			else if (isZoom == 2) scaleV = Math.min(screenX / maxsx, screenY / maxsy);
+			else scaleV = 1;
+
+			scaleS = Math.min(screenX / 1920, screenY / 1000);
+			if (scaleV > 0.98) scaleV = 1;
+			maxvx = maxsx * scaleV - screenX;
+			maxvy = maxsy * scaleV - screenY;
+
+			w.visual.scaleX		= scaleV;
+			w.sats.vis.scaleX	= scaleV;
+			w.visual.scaleY		= scaleV;
+			w.sats.vis.scaleY	= scaleV;
+			w.vscene.scaleX		= scaleS;
+			w.vscene.scaleY		= scaleS;
+			
+			if (screenY>maxsy*scaleV)
+			{
 				World.w.grafon.ramT.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
 				World.w.grafon.ramB.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
-			} else {
+			}
+			else
+			{
 				World.w.grafon.ramT.scaleY=-0.5/scaleV;
 				World.w.grafon.ramB.scaleY=0.6/scaleV;
 			}
+			
 			if (screenX>maxsx*scaleV) {
 				World.w.grafon.ramL.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
 				World.w.grafon.ramR.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
-			} else {
+			}
+			else
+			{
 				World.w.grafon.ramL.scaleX=-0.5/scaleV;
 				World.w.grafon.ramR.scaleX=0.5/scaleV;
 			}

@@ -141,7 +141,6 @@ package fe.unit
 			if (curA>celA) curA-=5;
 			if (curA<celA) curA+=5;
 			vis.alpha=curA/100;
-			//World.w.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
@@ -207,7 +206,6 @@ package fe.unit
 			}
 			
 			var jmp:Number=0;
-			//return;
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
@@ -446,9 +444,9 @@ package fe.unit
 				nx+=Math.random()*200-100;
 				ny+=Math.random()*100-50;
 			}
-			if (nx>loc.limX-100) nx=loc.limX-100;
+			if (nx>loc.maxX-100) nx=loc.maxX-100;
 			if (nx<100) nx=100;
-			if (ny>loc.limY-100) ny=loc.limY-100;
+			if (ny>loc.maxY-100) ny=loc.maxY-100;
 			if (ny<100) ny=100;
 			var ms:MagSymbol=new MagSymbol(this,curses[Math.floor(Math.random()*(phase==2?9:5))],nx,ny,otlozh);
 		}

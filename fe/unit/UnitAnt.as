@@ -16,18 +16,18 @@ package fe.unit {
 		var t_punch:int=0;
 		
 		var vstorona:int=0;
+
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 		
 		public function UnitAnt(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}
+			
+			if (loadObj && loadObj.tr) tr=loadObj.tr;		//из загружаемого объекта
+			else if (xml && xml.@tr.length()) tr=xml.@tr;	//из настроек карты
+			else if (cid) tr=int(cid);						//из заданного идентификатора cid
+			else tr=1;										//случайно по параметру ndif
+
 			id='ant'+tr;
 			getXmlParam();
 			initBlit();
@@ -397,15 +397,15 @@ package fe.unit {
 				currentWeapon.attack();
 			}
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
-			//World.w.gui.vis.sist.text=aiNeedLaz+':'+isLaz;
+			if (Y > loc.spaceY * tileY - 80) throu=false;
 		}
 		
 		//поиск лестницы
-		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
+		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
+		{
 			try {
-				var i=Math.floor((X+nx)/Tile.tileX);
-				var j=Math.floor((Y+ny)/Tile.tileY);
+				var i:int = int((X+nx)/tileX);
+				var j:int = int((Y+ny)/tileY);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
 				if (loc.space[i][j].phis>=1) {
 					isLaz=0;
@@ -436,8 +436,5 @@ package fe.unit {
 			}
 			if (optJumpAtt && isLaz==0) jump(0.5);
 		}
-
-		
 	}
-	
 }

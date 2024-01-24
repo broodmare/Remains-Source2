@@ -29,8 +29,8 @@ package fe.unit
 		var speedBonus:Number=1;
 		var t_doptest=20;
 		
-		var limX:int=1920*3;
-		var limY:int=3000;
+		var maxX:int=1920*3;
+		var maxY:int=3000;
 		
 		var moln1_x=500;
 		var moln2_x=1700;
@@ -191,8 +191,8 @@ package fe.unit
 			var dif:Number=Math.sin(ugol/90*Math.PI);
 			var ugol2:Number=-def*12+ugol;
 			var distanc2:Number=distanc+dif*dif*dif*dif*1000;
-			X=limX/2+Math.sin(ugol2/180*Math.PI)*distanc2;
-			Y=limY/2+Math.cos(ugol2/180*Math.PI)*distanc2/1.6;
+			X=maxX/2+Math.sin(ugol2/180*Math.PI)*distanc2;
+			Y=maxY/2+Math.cos(ugol2/180*Math.PI)*distanc2/1.6;
 			for each (var un:Unit in turrets) {
 				un.run();
 			}
@@ -347,9 +347,9 @@ package fe.unit
 			var nx:Number=X;
 			var ny:Number=Y;
 			if (nx<200) nx=200;
-			if (nx>loc.limX-200) nx=loc.limX-200;
+			if (nx>loc.maxX-200) nx=loc.maxX-200;
 			if (ny<200) ny=200;
-			if (ny>loc.limY-200) ny=loc.limY-200;
+			if (ny>loc.maxY-200) ny=loc.maxY-200;
 			var un:Unit=loc.createUnit('dron',nx,ny,true,null,'100');
 			un.fraction=fraction;
 			un.inter.cont='';

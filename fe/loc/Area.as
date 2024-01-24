@@ -5,6 +5,7 @@ package fe.loc
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.entities.Obj;
+	import fe.loc.Tile;
 	
 	//Активная область
 	
@@ -42,6 +43,9 @@ package fe.loc
 		public var frec:Number=1, t_frec:Number=0;
 		public var trig:Boolean;	//при первой активации отключить и установить триггер
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
 			loc=nloc;
 			if (xml) {
@@ -51,12 +55,14 @@ package fe.loc
 				if (mirror) {
 					bx=loc.spaceX-bx-rx;
 				}
-				scX=rx*World.tileX;
-				X=X1=bx*World.tileX;
-				Y=Y2=by*World.tileY+World.tileY;
+				scX = rx * tileX;
+				X  = bx * tileX;
+				X1 = bx * tileX;
+				Y  = by * tileY + tileY;
+				Y2 = by * tileY + tileY;
 				X2=X1+scX;
 				if (xml.@h.length()) ry=xml.@h;
-				scY=ry*World.tileY;
+				scY=ry*tileY;
 				Y1=Y2-scY;
 				//визуал
 				if (xml.@vis.length()) {
@@ -119,9 +125,7 @@ package fe.loc
 					}
 				}
 			}
-			if (loadObj) {
-				enabled=loadObj.enabled;
-			}
+			if (loadObj) enabled = loadObj.enabled;
 			if (enabled && lift!=1) setLift();
 			if (vis) {
 				if (vis.totalFrames<=1) vis.cacheAsBitmap=true;
@@ -139,7 +143,8 @@ package fe.loc
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='onoff') enabled=!enabled;
 			if (com=='off') enabled=false;
 			if (com=='on') enabled=true;
@@ -148,7 +153,8 @@ package fe.loc
 			if (com=='dam') damTiles(int(val));
 		}
 		
-		public override function step() {
+		public override function step()
+		{
 			if (!enabled || !loc.active || tip=='') return;
 			if (emit) {
 				t_frec+=frec;
@@ -159,14 +165,19 @@ package fe.loc
 				}
 			}
 			activator=null;
-			if (tip=='gg') {
+			if (tip=='gg')
+			{
 				active=areaTest(loc.gg);
 				if (active && noRad) loc.gg.noRad=true;
 				activator=loc.gg;
-			} else {
+			}
+			else
+			{
 				active=false;
-				for each(var un:Unit in loc.units) {
-					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un)) {
+				for each(var un:Unit in loc.units)
+				{
+					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un))
+					{
 						active=true;
 						activator=un;
 						break;
@@ -180,8 +191,10 @@ package fe.loc
 			if (active && !preactive && onPort) teleport(activator);
 			if (!active && preactive && out) out();
 			if (active && !preactive && scrOver) {
-				if (trig && uid) {
-					if (World.w.game.triggers[uid]!=1) {
+				if (trig && uid)
+				{
+					if (World.w.game.triggers[uid]!=1)
+					{
 						World.w.game.triggers[uid]=1;
 						scrOver.start();
 					}
@@ -191,16 +204,20 @@ package fe.loc
 			preactive=active;
 		}
 		
-		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number) {
-			X=X1=x1;
-			Y1=y1;
-			X2=x2;
-			Y=Y2=y2;
-			scX=X2-X1;
-			scY=Y2-Y1;
+		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number)
+		{
+			X  = x1;
+			X1 = x1;
+			Y1 = y1;
+			X2 = x2;
+			Y  = y2;
+			Y2 = y2;
+			scX = X2 - X1;
+			scY = Y2 - Y1;
 		}
 		
-		public function setLift() {
+		public function setLift()	// Grave lift effect
+		{
 			for (var i=bx; i<bx+rx; i++) {
 				for (var j=by-ry+1; j<=by; j++) {
 					loc.getTile(i,j).grav=enabled?lift:1;
@@ -208,18 +225,23 @@ package fe.loc
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11) {
-			for (var i=bx; i<bx+rx; i++) {
-				for (var j=by-ry+1; j<=by; j++) {
-					loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tileX,(j+0.5)*Tile.tileY,tipDam);
+		public function damTiles(destroy:int,tipDam:int=11)
+		{
+			for (var i = bx; i < bx + rx; i++)
+			{
+				for (var j = by - ry + 1; j <= by; j++)
+				{
+					loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * tileY, (j + 0.5) * tileY, tipDam);
 				}
 			}
 		}
 		
-		public function teleport(un:Unit) {
-			if (un==null) return;
-			if (!loc.collisionUnit((portX+1)*World.tileX, (portY+1)*World.tileY-1,un.scX, un.scY)) {
-				un.teleport((portX+1)*World.tileX, (portY+1)*World.tileY-1);
+		public function teleport(un:Unit)
+		{
+			if (!un) return;
+			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.scX, un.scY))
+			{
+				un.teleport((portX + 1) * tileX, (portY + 1) * tileY - 1);
 			}
 		}
 	}

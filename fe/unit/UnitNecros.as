@@ -78,10 +78,10 @@ package fe.unit {
 					if (aiTip!='stay' && isrnd()) {
 						celX=X+(Math.random()*300+400)*(isrnd()?1:-1);
 						if (celX<0) celX=200;
-						if (celX>loc.limX) celX=loc.limX-200;
+						if (celX>loc.maxX) celX=loc.maxX-200;
 						celY=Y+Math.random()*200-100;
 						if (celY<0) celX=200;
-						if (celY>loc.limY) celY=loc.limY-200;
+						if (celY>loc.maxY) celY=loc.maxY-200;
 					} else {
 						celX=X, celY=Y-scY/2;
 					}

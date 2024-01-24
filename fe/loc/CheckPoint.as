@@ -21,6 +21,9 @@ package fe.loc
 		
 		public var area:Area;
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			id=nid;
 			loc=nloc;
@@ -32,8 +35,8 @@ package fe.loc
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			
 			X=nx, Y=ny;
-			scX=node.@size*World.tileX;
-			scY=node.@wid*World.tileY;
+			scX = node.@size * tileX;
+			scY = node.@wid * tileY;
 			nazv=Res.txt('o','checkpoint');
 			
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;

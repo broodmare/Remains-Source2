@@ -72,6 +72,9 @@ package fe.loc
 		
 		private static var cachedObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null)
 		{
 			loc=nloc;
@@ -334,11 +337,14 @@ package fe.loc
 			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
 		}
 		
-		public function initDoor() {
-			tiles=new Array();
-			for (var i=Math.floor(X1/Tile.tileX+0.5); i<=Math.floor(X2/Tile.tileX-0.5); i++) {
-				for (var j=Math.floor(Y1/Tile.tileY+0.5); j<=Math.floor(Y2/Tile.tileY-0.5); j++) {
-					 var t:Tile=loc.getTile(i,j);
+		public function initDoor()
+		{
+			tiles = [];
+			for (var i=int(X1/tileX+0.5); i<=Math.floor(X2/tileX-0.5); i++)
+			{
+				for (var j=int(Y1/tileY+0.5); j<=Math.floor(Y2/tileY-0.5); j++)
+				{
+					 var t:Tile = loc.getTile(i,j);
 					 t.front='';
 					 t.phis=phis;
 					 t.opac=door_opac;
@@ -372,10 +378,9 @@ package fe.loc
 					continue;
 				}
 				if (!(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) {
-					trace('Мешает:',cel.nazv);
+					trace('Мешает:', cel.nazv);
 					return true;
 				}
-				//cel.udarBox(this);
 			}
 			for each (cel in loc.objs) {
 				if ((cel as Box).wall>0) continue;
@@ -502,8 +507,9 @@ package fe.loc
 			if (isPlav&&!isPlav2 && dy<2 && dy>-2) {
 				fixPlav=true;
 			}
-			for (var i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-				var t=loc.space[i][Math.floor((Y2+1)/Tile.tileY)];
+			for (var i=int(X1/tileX); i<=int(X2/tileX); i++)
+			{
+				var t=loc.space[i][int((Y2+1)/tileY)];
 				if (collisionTile(t,0,1)) {
 					return true;
 				}
@@ -523,15 +529,15 @@ package fe.loc
 					X=scX/2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*Tile.tileX) {
-					X=loc.spaceX*Tile.tileX-1-scX/2;
+				if (X+scX/2>=loc.spaceX*tileX) {
+					X=loc.spaceX*tileX-1-scX/2;
 					dx=-Math.abs(dx);
 				}
 				X1=X-scX/2, X2=X+scX/2;
 				//движение влево
 				if (dx<0) {
-					for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-						t=loc.space[Math.floor(X1/Tile.tileX)][i];
+					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++) {
+						t=loc.space[int(X1/tileX)][i];
 						if (collisionTile(t)) {
 								X=t.phX2+scX/2;
 								if (dx<-10) dx=-dx*0.2;
@@ -543,8 +549,8 @@ package fe.loc
 				}
 				//движение вправо
 				if (dx>0) {
-					for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-						t=loc.space[Math.floor(X2/Tile.tileX)][i];
+					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++) {
+						t=loc.space[int(X2/tileX)][i];
 						if (collisionTile(t)) {
 								X=t.phX1-scX/2;
 								if (dx>10) dx=-dx*0.2;
@@ -561,16 +567,16 @@ package fe.loc
 			var newmy:Number=0;
 			if (dy>0) {
 				stay=false;
-				for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-					t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tileY)];
+				for (i=int(X1/tileX); i<=int(X2/tileX); i++) {
+					t=loc.space[i][int((Y2+dy/div)/tileY)];
 					if (collisionTile(t,0,dy/div)) {
 						newmy=t.phY1;
 						break;
 					}
 				}
 				if (newmy==0 && !levit && !isThrow) newmy=checkShelf(dy/div);
-				if (Y>=(loc.spaceY-1)*Tile.tileY && !loc.bezdna) newmy=(loc.spaceY-1)*Tile.tileY;
-				if (Y>=loc.spaceY*Tile.tileY-1 && loc.bezdna) {
+				if (Y>=(loc.spaceY-1)*tileY && !loc.bezdna) newmy=(loc.spaceY-1)*tileY;
+				if (Y>=loc.spaceY*tileY-1 && loc.bezdna) {
 					invis=true;
 					if (vis) remVisual();
 				}
@@ -606,8 +612,8 @@ package fe.loc
 				Y+=dy/div;
 				Y1=Y-scY, Y2=Y;
 				if (Y-scY<0) Y=scY;
-				for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-					t=loc.space[i][Math.floor(Y1/Tile.tileY)];
+				for (i=Math.floor(X1/tileX); i<=Math.floor(X2/tileX); i++) {
+					t=loc.space[i][Math.floor(Y1/tileY)];
 					if (collisionTile(t)) {
 						Y=t.phY2+scY;
 						Y1=Y-scY, Y2=Y;
@@ -622,10 +628,10 @@ package fe.loc
 			var pla=isPlav;
 			isPlav=isPlav2=false;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.45)/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/tileX)][Math.floor((Y-scY*0.45)/tileY)] as Tile).water>0) {
 					isPlav=true;
 				}
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.55)/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/tileX)][Math.floor((Y-scY*0.55)/tileY)] as Tile).water>0) {
 					isPlav2=true;
 				}
 			} catch (err) {
@@ -651,8 +657,8 @@ package fe.loc
 			return 0;
 		}
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
-			for (var i=Math.floor((X1+gx)/Tile.tileX); i<=Math.floor((X2+gx)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y1+gy)/Tile.tileY); j<=Math.floor((Y2+gy)/Tile.tileY); j++) {
+			for (var i=Math.floor((X1+gx)/tileX); i<=Math.floor((X2+gx)/tileX); i++) {
+				for (var j=Math.floor((Y1+gy)/tileY); j<=Math.floor((Y2+gy)/tileY); j++) {
 					if (collisionTile(loc.space[i][j],gx,gy)) return true;
 				}
 			}

@@ -3,7 +3,7 @@ package fe.projectile
 	import fe.*;
 	import fe.loc.*;
 	import flash.display.Graphics;
-	
+
 	public class Trasser
 	{
 		public var loc:Location;
@@ -16,6 +16,9 @@ package fe.projectile
 		public var brake=2;
 		public var skok:Number=0.5;
 		public var tormoz:Number=0.7;
+
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 
 		public function Trasser() 
 		{
@@ -47,8 +50,8 @@ package fe.projectile
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
 				else
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-					for (var j=0; (j<div && !vse); j++) run(div);
+					var div:int = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					for (var j:int = 0; (j < div && !vse); j++) run(div);
 				}
 				gr.lineTo(X,Y);
 				sled.push({x:X, y:Y});
@@ -60,8 +63,8 @@ package fe.projectile
 		{
 			if (vse) return;
 			var t:Tile;
-			X+=dx/div;
-			if (X<0 || X>=loc.spaceX*Tile.tileX)
+			X += dx / div;
+			if (X < 0 || X >= loc.spaceX * tileX)
 			{
 				vse=true;
 				return;
@@ -115,10 +118,10 @@ package fe.projectile
 			}
 			//движение вниз
 			var newmy:Number=0;
-			if (dy>0)
+			if (dy > 0)
 			{
-				Y+=dy/div;
-				if (Y>=loc.spaceY*Tile.tileY)
+				Y += dy / div;
+				if (Y >= loc.spaceY * tileY)
 				{
 					vse=true;
 					return;

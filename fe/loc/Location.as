@@ -30,8 +30,6 @@ package fe.loc
 		//рамеры и положение
 		public var spaceX:int;	//размер локации в блоках
 		public var spaceY:int;
-		public var limX:int;	//размер локации в пикселях
-		public var limY:int;
 		public var landX:int=0;	//положение локации на местности
 		public var landY:int=0;
 		public var landZ:int=0;
@@ -71,7 +69,6 @@ package fe.loc
 		//служебные
 		public var cp:CheckPoint;
 		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
-		//public var unitsT:Array;			//юниты
 		public var objsT:Array;				//активные объекты
 		public var recalcTiles:Array;		//пересчитать воду
 		public var firstObj:Pt, nextObj:Pt, lastObj:Pt;	//цепочка выполнения
@@ -105,7 +102,6 @@ package fe.loc
 		public var transpFon:Boolean=false;		//задний фон имеет прозрачность
 		public var cTransform:ColorTransform;
 		public var cTransformFon:ColorTransform;
-		//public var fonTransform:Boolean=false;
 		public var color:String;
 		public var colorfon:String;
 		public var sndMusic:String='music_0';
@@ -148,17 +144,17 @@ package fe.loc
 		public var locDifLevel:Number=0;
 		public var biom:int=0;
 		public var locksLevel:Number=0;		//уровень замков 0-25
-		//public var locksDif:Number=0;		//сложность замков
 		public var mechLevel:Number=0;		//уровень мин и механизмов 0-7
 		public var weaponLevel:Number=0;	//уровень случайно выпадающего оружия
 		public var enemyLevel:int=0;		//левел мобов
 		public var earMult:Number=1; 		//множитель слуха мобов
 		
-
-		private static var tileWidth:int  = Tile.tileX;
-		private static var tileHeight:int = Tile.tileY;
-		private var maxX:int;
-    	private var maxY:int;
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+		public var maxX:int;
+    	public var maxY:int;
+		private var halfSpaceX = spaceX / 2;
+		private var halfSpaceY = spaceY /2;
 //**************************************************************************************************************************
 //
 //				Создание
@@ -169,35 +165,25 @@ package fe.loc
 // ------------------------------------------------------------------------------------------------
 // первый этап - создать и построить по карте из xml
 
-		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null)
+		public function Location(land:Land, room:XML, rnd:Boolean, opt:Object=null)
 		{
-			land=nland;
-			spaceX=World.cellsX;
-			spaceY=World.cellsY;
-			limX=spaceX*World.tileX;
-			limY=spaceY*World.tileY;
-			otstoy=new Tile(-1,-1);
-			units=new Array();
-			ups=new Array();
-			objs=new Array();
-			acts=new Array();
-			areas=new Array();
-			saves=new Array();
-			enspawn=new Array();
-			backobjs=new Array();
-			space=new Array();
-			signposts=new Array();
-			recalcTiles=new Array();
-			spawnPoints=new Array();
-			grenades=new Array();
-			bonuses=new Array();
-			maxdy=World.maxdy;
+			this.land = land;
+			spaceX = World.cellsX;
+			spaceY = World.cellsY;
 
-			maxX = spaceX * tileWidth;	//GetAbsTile uses thse values CONSTANTLY, calculating beforehand.
-			maxY = spaceY * tileHeight;
+			maxX = spaceX * tileX;	//GetAbsTile uses thse values CONSTANTLY, calculating beforehand.
+			maxY = spaceY * tileY;
 
-			if (rnd) ramka=1;
-			if (opt) {
+			otstoy = new Tile(-1,-1);
+
+			initializeArrays();
+			maxdy = World.maxdy;
+
+
+
+			if (rnd) ramka = 1;
+			if (opt)
+			{
 				if (opt.prob) ramka=0;
 				if (opt.mirror) mirror=true;
 				if (opt.water!=null) waterLevel=opt.water;
@@ -210,13 +196,32 @@ package fe.loc
 				if (opt.atk) homeAtk=true;
 			}
 
+			for (var i:int = 0; i < kolEn.length; i++)
+			{
+				ups[i] = [];
+			}
 
+			noHolesPlace = rnd;
 			
-			for (var i=0; i<kolEn.length; i++) ups[i]=new Array();
-			noHolesPlace=rnd;
-			
-			buildLoc(nroom);
-			
+			buildLoc(room);
+		}
+
+		private function initializeArrays():void
+		{
+			units		= [];
+			ups			= [];
+			objs		= [];
+			acts		= [];
+			areas		= [];
+			saves		= [];
+			enspawn		= [];
+			backobjs	= [];
+			space		= [];
+			signposts	= [];
+			recalcTiles = [];
+			spawnPoints	= [];
+			grenades	= [];
+			bonuses		= [];
 		}
 
 		// добавить гг в массив юнитов
@@ -233,10 +238,11 @@ package fe.loc
 			//создать массив блоков
 			for (var i:int = 0; i < spaceX; i++)
 			{
-				space[i] = new Array();
+				space[i] = [];
+
 				for (var j:int = 0; j < spaceY; j++)
 				{
-					space[i][j] = new Tile(i,j);
+					space[i][j] = new Tile(i, j);
 				}
 			}
 			//опции
@@ -286,55 +292,58 @@ package fe.loc
 				if (nroom.options.@tilespawn.length()) tileSpawn=nroom.options.@tilespawn;
 				if (nroom.options.@items.length()) itemsTip=nroom.options.@items;
 				if (nroom.options.@maxdy.length()) maxdy=nroom.options.@maxdy;
-				if (nroom.options.@sky.length()) {
-					sky=true;
-				}
+				if (nroom.options.@sky.length()) sky=true;
 				if (nroom.options.@zoom.length()) zoom=nroom.options.@zoom;
 				if (nroom.options.@trus.length()) trus=nroom.options.@trus;
-				if (!black) {
-					for (i=0; i<spaceX; i++) {
-						for (j=0; j<spaceY; j++) {
-							(space[i][j] as Tile).visi=1;
+				if (!black)
+				{
+					for (i = 0; i<spaceX; i++)
+					{
+						for (j = 0; j<spaceY; j++)
+						{
+							(space[i][j] as Tile).visi = 1;
 						}
 					}
 				}
 			}
 			if (homeStable)
 			{
-				color='yellow';
-				lightOn=1;
-				base=true;
+				color = 'yellow';
+				lightOn = 1;
+				base = true;
 			}
 			if (homeAtk)
 			{
-				color='fire';
-				lightOn=1;
+				color = 'fire';
+				lightOn = 1;
 			}
 
-			for (j=0; j<spaceY; j++)
+			for (j = 0; j < spaceY; j++)
 			{
-				var js:String='';
-				js=nroom.a[j];
-				var arri:Array=js.split('.');
-				for (i=0; i<spaceX; i++) {
+				var js:String = '';
+				js = nroom.a[j];
+				var arri:Array = js.split('.');
+				for (i = 0; i<spaceX; i++)
+				{
 					var jis:String;
-					if (mirror) {
-						jis=arri[spaceX-i-1];
-					} else {
-						jis=arri[i];
-					}
-					if (jis==null) jis='';
-					space[i][j].dec(jis,mirror);
-					if (space[i][j].stair!=0) {  //полочка наверху лестницы
-						if (j>0 && space[i][j].phis==0 && !space[i][j].shelf && space[i][j].stair!=space[i][j-1].stair) {
-							space[i][j].shelf=true;
+
+					if (mirror) jis = arri[spaceX - i - 1];
+					else jis = arri[i];
+						
+					if (jis == null) jis = '';
+					space[i][j].dec(jis, mirror);
+					if (space[i][j].stair != 0)	//полочка наверху лестницы
+					{  
+						if (j > 0 && space[i][j].phis == 0 && !space[i][j].shelf && space[i][j].stair != space[i][j - 1].stair)
+						{
+							space[i][j].shelf = true;
 							space[i][j].vid++;
 						}
 					}
 					//линия воды
-					if (j>=waterLevel) space[i][j].water=1;
+					if (j >= waterLevel) space[i][j].water = 1;
 					//рамка
-					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1)
+					if (i == 0 || i == spaceX - 1 || j == 0 || j == spaceY - 1)
 					{
 						if (ramka==1
 							|| (ramka==2 || ramka==4) && (i==0 || i==spaceX-1)
@@ -350,49 +359,51 @@ package fe.loc
 			}
 			
 			//возможные проходы в другие локации
-			if (nroom.doors.length()>0)
+			if (nroom.doors.length() > 0)
 			{
-				var s:String=nroom.doors[0];
-				doors=s.split('.');
-				if (mirror) {
+				var s:String = nroom.doors[0];
+				doors = s.split('.');
+				if (mirror)
+				{
 					var d;
-					d=doors[6];
-					doors[6]=doors[10];
-					doors[10]=d;
-					d=doors[7];
-					doors[7]=doors[9];
-					doors[9]=d;
-					d=doors[17];
-					doors[17]=doors[21];
-					doors[21]=d;
-					d=doors[18];
-					doors[18]=doors[20];
-					doors[20]=d;
-					for (i=0; i<=5; i++)
+					d = doors[6];
+					doors[6] = doors[10];
+					doors[10] = d;
+					d = doors[7];
+					doors[7] = doors[9];
+					doors[9] = d;
+					d = doors[17];
+					doors[17] = doors[21];
+					doors[21] = d;
+					d = doors[18];
+					doors[18] = doors[20];
+					doors[20] = d;
+					
+					for (i = 0; i <= 5; i++)
 					{
-						d=doors[i];
-						doors[i]=doors[i+11];
-						doors[i+11]=d;
+						d = doors[i];
+						doors[i] = doors[i + 11];
+						doors[i + 11] = d;
 					}
 				}
 			} 
 			else
 			{
-				doors=new Array();
-				for (i=0; i<22; i++) doors[i]=2;
+				doors = [];
+				for (i = 0; i < 22; i++) doors[i] = 2;
 			}
 			
 			//видимость
-			lDist1*=visMult;
-			lDist2*=visMult;
+			lDist1 *= visMult;
+			lDist2 *= visMult;
 			if (isNaN(lDist1))
 			{
 				lDist1 =  300;
 				lDist2 = 1000;
 			}
 			//цветофильтр
-			cTransform=colorFilter(color);
-			if (colorfon) cTransformFon=colorFilter(colorfon);
+			cTransform = colorFilter(color);
+			if (colorfon) cTransformFon = colorFilter(colorfon);
 			
 			
 			//точки появления активных объектов
@@ -405,6 +416,7 @@ package fe.loc
 				var nx:int = obj.@x;
 				var ny:int = obj.@y;
 				if (mirror) nx = spaceX - nx - size;
+
 				if (xmll.@tip == 'spawnpoint') spawnPoints.push({x:nx, y:ny});
 				else if (xmll.@tip == 'enspawn') addEnSpawn(nx, ny, xmll);
 				else if (xmll.@tip == 'up')
@@ -418,17 +430,17 @@ package fe.loc
 			//фоновые объекты
 			for each(obj in nroom.back)
 			{
-				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tileX,obj.@y*Tile.tileY, obj));
+				backobjs.push(new BackObj(this, obj.@id, obj.@x * tileX,obj.@y * tileY, obj));
 			}
 			if (zoom>1)
 			{
-				limX*=zoom;
-				limY*=zoom;
+				maxX *= zoom;
+				maxY *= zoom;
 			}
 		}
 		
 		//цветофильтр
-		public function colorFilter(filterName:String = ''):ColorTransform // Color filter
+		public function colorFilter(filterName:String = ''):ColorTransform
 		{
 			var filter:ColorFilter = ColorFilter.getColorFromTable(filterName);
 			
@@ -447,27 +459,32 @@ package fe.loc
 		public function setDoor(n:int, fak:int=2):void
 		{
 			var q:int;
-			if (fak<2) return;
-			var dyr:Boolean=false;
-			if (n>21) return;
-			else if (n>=17) {
-				q=(n-17)*9+4;
-				dyr=space[q+1][0].hole() || dyr;
-				dyr=space[q+2][0].hole() || dyr;
-				space[q+1][1].hole();
-				space[q+2][1].hole();
-				setNoObj(q+1,0,0,2);
-				setNoObj(q+2,0,0,2);
-				if (fak>2) {
-					dyr=space[q][0].hole() || dyr;
-					dyr=space[q+3][0].hole() || dyr;
+			if (fak < 2) return;
+
+			var dyr:Boolean = false;
+
+			if (n > 21) return;
+			else if (n >= 17)
+			{
+				q = (n - 17) * 9 + 4;
+				dyr = space[q+1][0].hole() || dyr;
+				dyr = space[q+2][0].hole() || dyr;
+				space[q + 1][1].hole();
+				space[q + 2][1].hole();
+				setNoObj(q + 1, 0, 0, 2);
+				setNoObj(q + 2, 0, 0, 2);
+				if (fak > 2)
+				{
+					dyr = space[q][0].hole() || dyr;
+					dyr = space[q + 3][0].hole() || dyr;
 					space[q][1].hole();
-					space[q+3][1].hole();
-					setNoObj(q,0,0,2);
-					setNoObj(q+3,0,0,2);
+					space[q + 3][1].hole();
+					setNoObj(q, 0, 0, 2);
+					setNoObj(q + 3, 0, 0, 2);
 				}
-				if (dyr) addSignPost(q+2,0,-90);
-			} else if (n>=11) {
+				if (dyr) addSignPost(q + 2, 0, -90);
+			}
+			else if (n>=11) {
 				q=(n-11)*4+3;
 				dyr=space[0][q].hole() || dyr;
 				dyr=space[0][q-1].hole() || dyr;
@@ -480,8 +497,9 @@ package fe.loc
 					space[1][q-2].hole();
 				} 
 				if (dyr) addSignPost(0,q,180);
-				addEnSpawn(Tile.tileX, (q+1)*Tile.tileY-1);
-			} else if (n>=6) {
+				addEnSpawn(tileX, (q+1)*tileY-1);
+			}
+			else if (n>=6) {
 				q=(n-6)*9+4;
 				dyr=space[q+1][spaceY-1].hole() || dyr;
 				dyr=space[q+2][spaceY-1].hole() || dyr;
@@ -498,7 +516,9 @@ package fe.loc
 					setNoObj(q+3,spaceY-1,0,-2);
 				} 
 				if (dyr) addSignPost(q+2,spaceY,90);
-			} else if (n>=0) {
+			}
+			else if (n>=0)
+			{
 				q=(n)*4+3;
 				dyr=space[spaceX-1][q].hole() || dyr;
 				dyr=space[spaceX-1][q-1].hole() || dyr;
@@ -506,118 +526,150 @@ package fe.loc
 				space[spaceX-2][q-1].hole();
 				setNoObj(spaceX-1,q,-5,0);
 				setNoObj(spaceX-1,q-1,-5,0);
-				if (fak>2) {
+				if (fak>2)
+				{
 					dyr=space[spaceX-1][q-2].hole() || dyr;
 					space[spaceX-2][q-2].hole();
 				} 
 				if (dyr) addSignPost(spaceX,q,0);
-				addEnSpawn((spaceX-1)*Tile.tileX, (q+1)*Tile.tileY-1);
-			} else return;
+				addEnSpawn((spaceX-1)*tileX, (q+1)*tileY-1);
+			}
+			else return;
 		}
 		
 		//добавить указатели перехода в соседние локации
-		private function addSignPost(nx:int,ny:int,r:int) {
+		private function addSignPost(xCoord:int, yCoord:int, rotation:int)
+		{
 			var sign:MovieClip;
-			sign=new signPost();
-			sign.x=nx*Tile.tileX, sign.y=ny*Tile.tileY, sign.rotation=r;
+			sign = new signPost();
+			sign.x = xCoord * tileX;
+			sign.y = yCoord * tileY;
+			sign.rotation = rotation;
 			signposts.push(sign);
 		}
 		
 		//добавить точки спавна врагов 
-		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null) {
-			var obj:Object=new Object();
-			if (xmll) {
-				var size:int=xmll.@size;
-				if (size<=0) size=1;
-				obj.x=(nx+0.5*size)*Tile.tileX;
-				obj.y=(ny+1)*Tile.tileY-1;
-			} else {
-				obj.x=nx, obj.y=ny;
+		private function addEnSpawn(xCoord:Number, yCoord:Number, xmll:XML=null) 
+		{
+			var obj:Object = new Object();
+			if (xmll)
+			{
+				var size:int = xmll.@size;
+				if (size <= 0) size = 1;
+				obj.x = (xCoord + 0.5 * size) * tileX;
+				obj.y = (yCoord + 1.0) * tileY - 1;
+			}
+			else
+			{
+				obj.x = xCoord;
+				obj.y = yCoord;
 			}
 			enspawn.push(obj);
 		}
 		
 		//добавить места, в которых не должно быть контейнеров (около переходов)
-		private function setNoObj(nx:int, ny:int, dx:int, dy:int) {
+		private function setNoObj(nx:int, ny:int, dx:int, dy:int)
+		{
 			var i:int;
-			if (dx>0) for (i=nx; i<=nx+dx; i++) space[i][ny].place=false;
-			if (dx<0) for (i=nx+dx; i<=nx; i++) space[i][ny].place=false;
-			if (dy>0) for (i=ny; i<=ny+dy; i++) space[nx][i].place=false;
-			if (dy<0) for (i=ny+dy; i<=ny; i++) space[nx][i].place=false;
+			if (dx > 0) for (i = nx; i<=nx+dx; i++) space[i][ny].place = false;
+			if (dx < 0) for (i = nx+dx; i<=nx; i++) space[i][ny].place = false;
+			if (dy > 0) for (i = ny; i<=ny+dy; i++) space[nx][i].place = false;
+			if (dy < 0) for (i = ny+dy; i<=ny; i++) space[nx][i].place = false;
 		}
 		
 		
 		//главная рамка, вызывать после проделывания проходов
-		public function mainFrame() {
-			var border:String='A';
-			if (land && land.act) border=land.act.border;
-			for (var j=0; j<spaceX; j++) {
-				if (space[j][0].phis>=1) space[j][0].mainFrame(border);
-				if (space[j][spaceY-1].phis>=1) space[j][spaceY-1].mainFrame(border);
+		public function mainFrame()
+		{
+			var border:String = 'A';
+			if (land && land.act) border = land.act.border;
+			for (var j:int = 0; j<spaceX; j++)
+			{
+				if (space[j][0].phis >= 1) space[j][0].mainFrame(border);
+				if (space[j][spaceY - 1].phis >= 1) space[j][spaceY - 1].mainFrame(border);
 			}
-			for (j=0; j<spaceY; j++) {
-				if (space[0][j].phis>=1) space[0][j].mainFrame(border);
-				if (space[spaceX-1][j].phis>=1) space[spaceX-1][j].mainFrame(border);
+			for (j = 0; j<spaceY; j++)
+			{
+				if (space[0][j].phis >= 1) space[0][j].mainFrame(border);
+				if (space[spaceX - 1][j].phis >= 1) space[spaceX - 1][j].mainFrame(border);
 			}
 		}
 		
 		//создать активные объекты в местах их появления, кроме мест около переходов, вызывать после проделывания проходов
 		public function setObjects():void
 		{
-			for each (var obj in objsT) {
+			for each (var obj in objsT)
+			{
 				if (noHolesPlace && obj.rem>0 && !space[obj.x][obj.y].place) continue;	//не ставить ящики около прохода
+				
 				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
 				else createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
 			}
-			objsT=null;
+			objsT = null;
 			setRandomUnits();
-			if (land.rnd && World.w.pers.modMetal>0 && Math.random()<World.w.pers.modMetal) putRandomLoot();
+			if (land.rnd && World.w.pers.modMetal > 0 && Math.random() < World.w.pers.modMetal) putRandomLoot();
 		}
 		
 		//задать количество случайных врагов
 		public function setKolEn(en:int, min:int, max:int, spl:int=0):void
 		{
-			if (en==-1) {
-				kolEnSpawn=min+Math.floor(Math.random()*(max-min+1));
-			} else {
-				kolEn[en]=min+Math.floor(Math.random()*(max-min+1));
-				if (spl>0 && Math.random()<0.2) kolEn[en]+=spl;
+			if (en == -1)
+			{
+				kolEnSpawn = min + int(Math.random()*(max-min+1));
+			}
+			else
+			{
+				kolEn[en] = min + int(Math.random() * (max - min + 1));
+				if (spl > 0 && Math.random() < 0.2) kolEn[en] += spl;
 			}
 		}
 		
 		//создать случайных врагов в точках их появления
 		public function setRandomUnits():void
 		{
-			for (var i=1; i<kolEn.length; i++) {
-				if (kolEn[i]>0 && ups[i].length) {
+			for (var i:int = 1; i < kolEn.length; i++)
+			{
+				if (kolEn[i] > 0 && ups[i].length)
+				{
 					//убрать точки от проходов
-					if (noHolesPlace) {
-						for (var j=0; j<ups[i].length; j++) {
-							if (!space[ups[i][j].x][ups[i][j].y].place) {
+					if (noHolesPlace)
+					{
+						for (var j=0; j<ups[i].length; j++)
+						{
+							if (!space[ups[i][j].x][ups[i][j].y].place)
+							{
 								ups[i].splice(j,1);
 								j--;
 							}
 						}
 					}
-					if (ups[i].length>0) {
-						for (j=0; j<kolEn[i]; j++) {
-							var n=Math.floor(Math.random()*ups[i].length);
-							createUnit(tipEn[i],ups[i][n].x,ups[i][n].y, false, ups[i][n].xml);
-							if (ups[i].length<=1) {
-								ups[i]=[];
+					if (ups[i].length > 0)
+					{
+						for (j = 0; j < kolEn[i]; j++)
+						{
+							var n = int(Math.random() * ups[i].length);
+							createUnit(tipEn[i], ups[i][n].x, ups[i][n].y, false, ups[i][n].xml);
+							
+							if (ups[i].length <= 1)
+							{
+								ups[i] = [];
 								break;
-							} else ups[i].splice(n,1);
+							}
+							else ups[i].splice(n, 1);
 						}
 					}
 				}
 			}
 			//добавить скрытых врагов
-			if (kolEnHid>0 && ups[2].length>0) {
-				for (j=0; j<kolEnHid; j++) {
-					n=Math.floor(Math.random()*ups[2].length);
-					createHidden(ups[2][n].x,ups[2][n].y);
-					if (ups[2].length<=1) break;
-					else ups[2].splice(n,1);
+			if (kolEnHid > 0 && ups[2].length > 0)
+			{
+				for (j = 0; j < kolEnHid; j++)
+				{
+					n = int(Math.random() * ups[2].length);
+					createHidden(ups[2][n].x, ups[2][n].y);
+					
+					if (ups[2].length <= 1) break;
+					else ups[2].splice(n, 1);
 				}
 			}
 		}
@@ -625,11 +677,11 @@ package fe.loc
 		//создать рандомный лут
 		public function putRandomLoot():void
 		{
-			var nx:int=Math.floor(Math.random()*(spaceX-2)+1);
-			var ny:int=Math.floor(Math.random()*(spaceY-2)+1);
-			if (space[nx][ny].phis==0) 
+			var nx:int = int(Math.random() * (spaceX - 2) + 1);
+			var ny:int = int(Math.random() * (spaceY - 2) + 1);
+			if (space[nx][ny].phis == 0) 
 			{
-				LootGen.lootCont(this,(nx+0.5)*Tile.tileX,(ny+0.8)*Tile.tileY,'metal');
+				LootGen.lootCont(this, (nx + 0.5) * tileX, (ny + 0.8) * tileY, 'metal');
 			}
 		}
 		
@@ -684,7 +736,7 @@ package fe.loc
 					un.putLoc(this,nx,ny);
 				} else {
 					var size:int = Math.floor((un.scX-1)/40)+1;
-					un.putLoc(this,(nx+0.5*size)*Tile.tileX,(ny+1)*Tile.tileY-1);
+					un.putLoc(this,(nx+0.5*size)*tileX,(ny+1)*tileY-1);
 				}
 				if (active) {
 					un.xp=0;
@@ -699,7 +751,7 @@ package fe.loc
 				}
 				if (homeAtk) {
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
-					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tileX,(ny-Math.random()*4)*Tile.tileY));
+					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*tileX,(ny-Math.random()*4)*tileY));
 					
 				}
 				if (xml && xml.@code.length()) saves.push(un);
@@ -786,26 +838,26 @@ package fe.loc
 					ncloud = 'pcloud1';
 				}
 			}
-			if (ncloud!=null)
+			if (ncloud != null)
 			{
-				var kol:int=1;
-				if (biom == 1) kol=Math.random()*5;
+				var kol:int = 1;
+				if (biom == 1) kol = Math.random() * 5;
 				if (biom == 5)
 				{
-					if (lvl==0) kol=Math.random()*2;
-					else kol=Math.random()*3;
+					if (lvl == 0) kol = Math.random() * 2;
+					else kol = Math.random()*3;
 				}
 				for (var i:int = 0; i<kol; i++)
 				{
-					var nx:int=Math.floor(Math.random()*(spaceX-4)+2);
-					var ny:int=Math.floor(Math.random()*(spaceY-4)+2);
+					var nx:int = int(Math.random()*(spaceX-4)+2);
+					var ny:int = int(Math.random()*(spaceY-4)+2);
 					if (cp) {
-						var dnx=cp.X-(nx*World.tileX+20);
-						var dny=cp.Y-(ny*World.tileY+40);
-						if (dnx*dnx+dny*dny<80*80) continue;
+						var dnx = cp.X - (nx * tileX + 20);
+						var dny = cp.Y - (ny * tileY + 40);
+						if (dnx * dnx + dny * dny < 80 * 80) continue;
 					}
 					if (biom==1 && lvl==1 && ny>15) ny=15;
-					if (biom==5 && lvl==0) ny=Math.floor(Math.random()*15+9);
+					if (biom==5 && lvl==0) ny = int(Math.random()*15+9);
 					createObj(ncloud,'box',nx,ny);
 				}
 			}
@@ -920,37 +972,37 @@ package fe.loc
 			var tr:int=0;
 			switch (tip) {
 				case 'raider':
-					if (locDifLevel>=5) tr=Math.floor(Math.random()*9+1);
-					else if (locDifLevel>=2) tr=Math.floor(Math.random()*5+1);
-					else tr=Math.floor(Math.random()*2+1);
+					if (locDifLevel>=5) tr = int(Math.random()*9+1);
+					else if (locDifLevel>=2) tr = int(Math.random()*5+1);
+					else tr = int(Math.random()*2+1);
 					return tr.toString();
 				break;
 				case 'slaver':
-					if (locDifLevel>=18) tr=Math.floor(Math.random()*6+1);
-					else if (locDifLevel>=15) tr=Math.floor(Math.random()*5+1);
-					else tr=Math.floor(Math.random()*4+1);
+					if (locDifLevel>=18) tr = int(Math.random()*6+1);
+					else if (locDifLevel>=15) tr = int(Math.random()*5+1);
+					else tr = int(Math.random()*4+1);
 					return tr.toString();
 				break;
 				case 'zebra':
-					if (locDifLevel>=15) tr=Math.floor(Math.random()*4+1);
-					else tr=Math.floor(Math.random()*2+1);
+					if (locDifLevel>=15) tr = int(Math.random()*4+1);
+					else tr = int(Math.random()*2+1);
 					if (locDifLevel>=25 && Math.random()<0.1) tr=5; 
 					return tr.toString();
 				break;
 				case 'ranger':
-					if (land.act.conf==7) tr=Math.floor(Math.random()*3+1);
+					if (land.act.conf==7) tr = int(Math.random()*3+1);
 					else if (landY==0) tr=1;
-					else tr=Math.floor(Math.random()*2+1);
+					else tr = int(Math.random()*2+1);
 					return tr.toString();
 				break;
 				case 'merc':
-					if (locDifLevel>=19) tr=Math.floor(Math.random()*5+1);
-					else if (locDifLevel>=15 && Math.random()>0.5) tr=Math.floor(Math.random()*4+1);
-					else tr=Math.floor(Math.random()*2+1);
+					if (locDifLevel>=19) tr = int(Math.random()*5+1);
+					else if (locDifLevel>=15 && Math.random()>0.5) tr = int(Math.random()*4+1);
+					else tr = int(Math.random()*2+1);
 					return tr.toString();
 				break;
 				case 'encl':
-					tr=Math.floor(Math.random()*4+1);
+					tr = int(Math.random()*4+1);
 					return tr.toString();
 				break;
 				case 'protect':
@@ -963,10 +1015,10 @@ package fe.loc
 				break;
 				case 'dron':
 					if (tipEnemy==9) {
-						tr=Math.floor(Math.random()*4+1);
+						tr = int(Math.random()*4+1);
 						if (tr>3) tr=3;
 					}
-					else tr=Math.floor(Math.random()*2+1);
+					else tr = int(Math.random()*2+1);
 					return tr.toString();
 				break;
 				case 'roller':
@@ -977,15 +1029,15 @@ package fe.loc
 				case 'zombie':
 					if (biom==5) {
 						if (locDifLevel>=20 && Math.random()<0.1) tr=9;
-						else tr=Math.floor(Math.random()*4+5);
-					} else if (biom>=1 && locDifLevel>=8) tr=Math.floor(Math.random()*7);
-					else if (locDifLevel>=5) tr=Math.floor(Math.random()*5);
-					else if (locDifLevel>=2) tr=Math.floor(Math.random()*4);
+						else tr = int(Math.random()*4+5);
+					} else if (biom>=1 && locDifLevel>=8) tr = int(Math.random()*7);
+					else if (locDifLevel>=5) tr = int(Math.random()*5);
+					else if (locDifLevel>=2) tr = int(Math.random()*4);
 					else tr=0;
 					return tr.toString();
 				break;
 				case 'alicorn':
-					tr=Math.floor(Math.random()*3+1);
+					tr = int(Math.random()*3+1);
 					return tr.toString();
 				break;
 				case 'hellhound':
@@ -993,22 +1045,22 @@ package fe.loc
 					return tr.toString();
 				break;
 				case 'bloat':
-					if (biom==5) tr=Math.floor(Math.random()*3+4);
-					else if (locDifLevel>=10) tr=Math.floor(Math.random()*5);
-					else if (locDifLevel>=4) tr=Math.floor(Math.random()*4);
-					else if (locDifLevel>=2) tr=Math.floor(Math.random()*3);
+					if (biom==5) tr = int(Math.random()*3+4);
+					else if (locDifLevel>=10) tr = int(Math.random()*5);
+					else if (locDifLevel>=4) tr = int(Math.random()*4);
+					else if (locDifLevel>=2) tr = int(Math.random()*3);
 					else tr=0;
 					return tr.toString();
 				break;
 				case 'ant':
-					if (biom>=1 && locDifLevel>=6) tr=Math.floor(Math.random()*3+1);
-					else if (locDifLevel>=3) tr=Math.floor(Math.random()*2+1);
+					if (biom>=1 && locDifLevel>=6) tr = int(Math.random()*3+1);
+					else if (locDifLevel>=3) tr = int(Math.random()*2+1);
 					else tr=1;
 					return tr.toString();
 				break;
 				case 'fish':
 					if (biom==5) tr=3;
-					else tr=Math.floor(Math.random()*2+1);
+					else tr = int(Math.random()*2+1);
 					return tr.toString();
 				break;
 				case 'slime':
@@ -1027,7 +1079,7 @@ package fe.loc
 					return tr.toString();
 				break;
 				case 'scorp':
-					if (locDifLevel>=5) tr=Math.floor(Math.random()*2+1);
+					if (locDifLevel>=5) tr = int(Math.random()*2+1);
 					else tr=1;
 					return 'scorp'+tr;
 				break;
@@ -1050,7 +1102,7 @@ package fe.loc
 			var loadObj:Object=null;
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];
 			if (tip=='box' || tip=='door') {
-				obj=new Box(this, id, (nx+0.5*size)*Tile.tileX, (ny+1)*Tile.tileY-1, xml, loadObj);
+				obj=new Box(this, id, (nx+0.5*size)*tileX, (ny+1)*tileY-1, xml, loadObj);
 				objs.push(obj);
 				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
 				//создать феникса
@@ -1063,9 +1115,9 @@ package fe.loc
 				if (!land.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
 				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
 			} else if (tip=='trap') {
-				obj=new Trap(this, id,(nx+0.5*size)*Tile.tileX, (ny+1)*Tile.tileY-1);
+				obj=new Trap(this, id,(nx+0.5*size)*tileX, (ny+1)*tileY-1);
 			} else if (tip=='checkpoint') {
-				obj=new CheckPoint(this, id,(nx+0.5*size)*Tile.tileX, (ny+1)*Tile.tileY-1, xml, loadObj);
+				obj=new CheckPoint(this, id,(nx+0.5*size)*tileX, (ny+1)*tileY-1, xml, loadObj);
 				//установить на контрольных точках телепорты на базу
 				if (World.w.game.globalDif<=1 || land.rnd && World.w.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
 				acts.push(obj);
@@ -1073,7 +1125,7 @@ package fe.loc
 				obj=new Area(this, xml, loadObj, mirror);
 				areas.push(obj);
 			} else if (tip=='bonus') {
-				obj=new Bonus(this, id,(nx+0.5)*Tile.tileX, (ny+0.5)*Tile.tileY, xml, loadObj);
+				obj=new Bonus(this, id,(nx+0.5)*tileX, (ny+0.5)*tileY, xml, loadObj);
 				bonuses.push(obj);
 			}
 			if (xml && xml.@code.length()) {
@@ -1103,11 +1155,11 @@ package fe.loc
 		{
 			if (spawnPoints.length>0)
 			{
-				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+				var sp = spawnPoints[int(Math.random()*spawnPoints.length)];
 				var id = 'checkpoint';
 				if (!act && land.rnd && Math.random()<0.5)
 				{
-					id += Math.floor(Math.random()*5+1);
+					id += int(Math.random()*5+1);
 				}
 				cp = createObj(id,'checkpoint',sp.x,sp.y) as CheckPoint;
 				if (land.act.landStage==0 && act) cp.teleOn=true;
@@ -1120,7 +1172,7 @@ package fe.loc
 		{
 			if (spawnPoints.length>0)
 			{
-				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+				var sp=spawnPoints[int(Math.random()*spawnPoints.length)];
 				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={land.act.exitProb+s} time='20' inter='8' sign='1'/>);
 				isCheck=true;
 			}
@@ -1130,7 +1182,7 @@ package fe.loc
 		{
 			if (spawnPoints.length > 0)
 			{
-				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+				var sp = spawnPoints[int(Math.random()*spawnPoints.length)];
 				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv={Res.txt('m',nprob)} time='20' inter='8'/>);
 				isCheck=true;
 				return true;
@@ -1145,35 +1197,38 @@ package fe.loc
 			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
 			var mesto:int=4;
 			var n:int=5;
-			maxXp=kol;
+			maxXp = kol;
 			for (var i:int = 1; i<=100; i++)
 			{
-				x1=2, y1=2, x2=spaceX-2, y2=spaceY-2;
+				x1 = 2;
+				y1 = 2;
+				x2 = spaceX - 2;
+				y2 = spaceY - 2;
 
 				switch (mesto)
 				{
 					case 4:
-						x2=spaceX/2;
-						y2=spaceY/2;
+						x2 = halfSpaceX;
+						y2 = halfSpaceY;
 					break;
 					case 3:
-						x1=spaceX/2;
-						y2=spaceY/2;
+						x1 = halfSpaceX;
+						y2 = halfSpaceY;
 					break;
 					case 2:
-						x2=spaceX/2;
-						y1=spaceY/2;
+						x2 = halfSpaceX;
+						y1 = halfSpaceY;
 					break;
 					case 1:
-						x1=spaceX/2;
-						y1=spaceY/2;
+						x1 = halfSpaceX;
+						y1 = halfSpaceY;
 					break;
 					
 				}
 
-				nx=Math.floor(x1+Math.random()*(x2-x1));
-				ny=Math.floor(y1+Math.random()*(y2-y1));
-				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0))
+				nx = int(x1 + Math.random() * (x2 - x1));
+				ny = int(y1 + Math.random() * (y2 - y1));
+				if (getTile(nx, ny).phis == 0 && (getTile(nx - 1, ny).phis == 0 || getTile(nx + 1, ny).phis == 0)) // Check that the tile is empty.
 				{
 					createObj('xp','bonus',nx,ny);
 					kolXp++;
@@ -1183,10 +1238,10 @@ package fe.loc
 				else
 				{
 					n--;
-					if (n<=0)
+					if (n <= 0)
 					{
-						n=5;
-						if (mesto>0) mesto--;
+						n = 5;
+						if (mesto > 0) mesto--;
 					}
 				}
 			}
@@ -1194,7 +1249,7 @@ package fe.loc
 		
 		public function preStep():void
 		{
-			for (var i:int = 0; i<30; i++) stepInvis();
+			for (var i:int = 0; i < 30; i++) stepInvis();
 		}
 		
 //**************************************************************************************************************************
@@ -1204,9 +1259,9 @@ package fe.loc
 //**************************************************************************************************************************
 		
 		//активировать при входе гг в локацию
-		public function reactivate(n:int=0):void
+		public function reactivate(n:int = 0):void
 		{
-			var obj:Pt=firstObj;
+			var obj:Pt = firstObj;
 			while (obj)
 			{
 				nextObj=obj.nobj;
@@ -1299,15 +1354,18 @@ package fe.loc
 		public function getAbsTile(nx:int, ny:int):Tile
 		{
 			if (nx < 0 || nx >= maxX || ny < 0 || ny >= maxY) return otstoy;
-			else return space[int(nx / tileWidth)][int(ny / tileHeight)] as Tile;
+			else return space[int(nx / tileX)][int(ny / tileY)] as Tile;
 		}
 
 		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean
 		{
-			var X1 = X - scX / 2, X2 = X + scX / 2, Y1 = Y - scY;
-			for (var i:int = int(X1 / Tile.tileX); i <= int(X2 / Tile.tileX); i++)
+			var X1 = X - scX / 2;
+			var X2 = X + scX / 2;
+			var Y1 = Y - scY;
+
+			for (var i:int = int(X1 / tileX); i <= int(X2 / tileX); i++)
 			{
-				for (var j:int = int(Y1 / Tile.tileY); j <= int(Y / Tile.tileY); j++)
+				for (var j:int = int(Y1 / tileY); j <= int(Y / tileY); j++)
 				{
 					if (i < 0 || i >= spaceX || j < 0 || j >= spaceY) continue;
 					if (space[i][j].phis > 0) return true;
@@ -1563,7 +1621,7 @@ package fe.loc
 			{
 				if (cel==null || (cel as Unit).sost==4) continue;
 				if (cel.transT) continue;
-				if (!(cel.X1>=(t.X+1)*Tile.tileX || cel.X2<=t.X*Tile.tileX || cel.Y1>=(t.Y+1)*Tile.tileY || cel.Y2<=t.Y*Tile.tileY))
+				if (!(cel.X1>=(t.X+1)*tileX || cel.X2<=t.X*tileX || cel.Y1>=(t.Y+1)*tileY || cel.Y2<=t.Y*tileY))
 				{
 					return false;
 				}
@@ -1575,32 +1633,32 @@ package fe.loc
 		public function drawMap(m:BitmapData)
 		{
 			var vid:Number=1;
-			for (var i:int = 0; i<spaceX; i++)
+			for (var i:int = 0; i < spaceX; i++)
 			{
-				for (var j:int = 0; j<spaceY; j++)
+				for (var j:int = 0; j < spaceY; j++)
 				{
-					var color:uint=0x003323;
-					var t:Tile=space[i][j];
-					if (t.water) color=0x0066FF;
-					if (t.shelf || t.diagon!=0) color=0x7B482F;
-					if (t.stair!=0) color=0x666666;
-					if (t.phis==1)
+					var color:uint = 0x003323;
+					var t:Tile = space[i][j];
+					if (t.water) color = 0x0066FF;
+					if (t.shelf || t.diagon != 0) color = 0x7B482F;
+					if (t.stair != 0) color = 0x666666;
+					if (t.phis == 1)
 					{
-						if (t.indestruct) color=0xFFFFFF;
-						else if (t.door) color=0x639104;
-						else if (t.hp<100) color=0x01995A; 
-						else color=0x00FF99;
+						if (t.indestruct) color = 0xFFFFFF;
+						else if (t.door) color = 0x639104;
+						else if (t.hp<100) color = 0x01995A; 
+						else color = 0x00FF99;
 					}
-					if (t.phis==2) color=0x01995A; 
+					if (t.phis == 2) color = 0x01995A; 
 					if (!World.w.drawAllMap)
 					{
-						vid=space[i][j].visi;
-						if (i<spaceX-1)
+						vid = space[i][j].visi;
+						if (i < spaceX - 1)
 						{
-							if (space[i+1][j].visi>vid) vid=space[i+1][j].visi;
-							if (j<spaceY-1)
+							if (space[i + 1][j].visi > vid) vid = space[i + 1][j].visi;
+							if (j < spaceY - 1)
 							{
-								if (space[i+1][j+1].visi>vid) vid=space[i+1][j+1].visi;
+								if (space[i + 1][j + 1].visi > vid) vid = space[i + 1][j + 1].visi;
 							}
 						}
 						if (j<spaceY-1) 
@@ -1608,8 +1666,8 @@ package fe.loc
 							if (space[i][j+1].visi>vid) vid=space[i][j+1].visi;
 						}
 					}
-					color+=Math.floor(vid*255)*0x1000000;
-					m.setPixel32((landX-land.minLocX)*World.cellsX+i,(landY-land.minLocY)*World.cellsY+j,color);
+					color += int(vid * 255) * 0x1000000;
+					m.setPixel32((landX - land.minLocX) * World.cellsX + i, (landY - land.minLocY) * World.cellsY + j, color);
 				}
 			}
 			for each (var obj:Obj in objs)
@@ -1627,13 +1685,24 @@ package fe.loc
 			}
 		}
 		
-		private function drawMapObj(m, obj:Obj, color:uint)
+		private function drawMapObj(map:BitmapData, obj:Obj, color:uint):void
 		{
-			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tileX+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tileX-0.5); i++)
+			var worldCellsX:int = World.cellsX;
+			var worldCellsY:int = World.cellsY;
+			
+			var startXIndex:int = (landX - land.minLocX) * worldCellsX;
+			var startYIndex:int = (landY - land.minLocY) * worldCellsY;
+
+			var xStart:int	= startXIndex + int(obj.X1 / tileX + 0.5);
+			var xEnd:int	= startXIndex + int(obj.X2 / tileX - 0.5);
+			var yStart:int	= startYIndex + int(obj.Y1 / tileY + 0.4);
+			var yEnd:int	= startYIndex + int(obj.Y2 / tileY - 0.5);
+
+			for (var i:int = xStart; i <= xEnd; i++)
 			{
-				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tileY+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tileY-0.5); j++)
+				for (var j:int = yStart; j <= yEnd; j++)
 				{
-					m.setPixel(i,j,color);
+					map.setPixel(i, j, color);
 				}
 			}
 		}
@@ -1664,16 +1733,17 @@ package fe.loc
 		//пробуждение всех вокруг
 		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null):void
 		{
-			var r2:Number=rad*rad*earMult*earMult;
+			var r2:Number = rad * rad * earMult * earMult;
+
 			for each(var un in units)
 			{
-				if (un && un!=owner && un.sost==1 && !un.unres)
+				if (un && un != owner && un.sost == 1 && !un.unres)
 				{
-					var dx=un.X-nx;
-					var dy=un.Y-ny;
-					var delta=rad/2;
-					if (delta>400) delta=400;
-					if (dx*dx+dy*dy<r2*un.ear*un.ear) un.alarma(nx+(Math.random()-0.5)*delta,ny+(Math.random()-0.5)*delta);
+					var dx = un.X - nx;
+					var dy = un.Y - ny;
+					var delta = rad / 2;
+					if (delta > 400) delta = 400;
+					if (dx * dx + dy * dy < r2 * un.ear * un.ear) un.alarma(nx+(Math.random()-0.5)*delta,ny+(Math.random()-0.5)*delta);
 				}
 			}
 		}
@@ -1683,7 +1753,7 @@ package fe.loc
 			electroDam = 0;
 			for each (var obj in objs)
 			{
-				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
+				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
 			}
 		}
 		
@@ -1699,29 +1769,30 @@ package fe.loc
 		//включить сигнализацию
 		public function signal(n:int=300):void
 		{
-			t_alarm=n;
-			t_alarmsp=Math.floor(n*Math.random()*0.25+0.25);
+			t_alarm = n;
+			t_alarmsp = int(n*Math.random() * 0.25 + 0.25);
 			if (prob && prob.alarmScript) prob.alarmScript.start(); 
 		}
+
 		//включить всё
 		public function allon():void
 		{
 			color = 'yellow';
-			cTransform=colorFilter(color);
-			lightOn=1;
-			darkness=-20;
+			cTransform = colorFilter(color);
+			lightOn = 1;
+			darkness = -20;
 			gg.inLoc(this);
 			for each(var obj in units)
 			{
-				obj.cTransform=cTransform;
+				obj.cTransform = cTransform;
 			}
 			for each(var obj in objs)
 			{
 				obj.cTransform=cTransform;
 				if (obj.inter)
 				{
-					if (obj.inter.lockTip=='4') obj.inter.setAct('open',0);
-					obj.inter.active=true;
+					if (obj.inter.lockTip == '4') obj.inter.setAct('open', 0);
+					obj.inter.active = true;
 					obj.inter.update();
 				}
 			}
@@ -1735,18 +1806,18 @@ package fe.loc
 		//выключить всё
 		public function alloff():void
 		{
-			color='black';
-			cTransform=colorFilter(color);
-			lightOn=-1;
-			darkness=20;
+			color = 'black';
+			cTransform = colorFilter(color);
+			lightOn = -1;
+			darkness = 20;
 			gg.inLoc(this);
 			for each(var obj in units)
 			{
-				obj.cTransform=cTransform;
+				obj.cTransform = cTransform;
 			}
 			for each(var obj in objs)
 			{
-				obj.cTransform=cTransform;
+				obj.cTransform = cTransform;
 			}
 			for each(var obj in backobjs)
 			{
@@ -1777,11 +1848,12 @@ package fe.loc
 			if (sp == null) sp = enspawn[Math.floor(Math.random() * enspawn.length)];
 			var un:Unit=createUnit(w.@id,sp.x,sp.y,true,w,w.@cid,30);
 			if (spart!=null) Emitter.emit(spart,this,sp.x,sp.y);
-			if (un) {
-				un.trup=false;
-				un.isRes=false;
-				un.fraction=1;
-				un.wave=1;
+			if (un)
+			{
+				un.trup = false;
+				un.isRes = false;
+				un.fraction = 1;
+				un.wave = 1;
 				un.alarma();
 				return un;
 			}
@@ -1800,53 +1872,54 @@ package fe.loc
 		
 		public function createHealBonus(nx:Number, ny:Number):void
 		{
-			if (World.w.pers.bonusHeal<=0) return;
-			var obj:Bonus=new Bonus(this,'heal',nx,ny);
-			obj.liv=300;
-			obj.val=World.w.pers.bonusHeal*World.w.pers.bonusHealMult;
+			if (World.w.pers.bonusHeal <= 0) return;
+			var obj:Bonus = new Bonus(this, 'heal', nx, ny);
+			obj.liv = 300;
+			obj.val = World.w.pers.bonusHeal * World.w.pers.bonusHealMult;
 			if (active) obj.addVisual();
-			//bonuses.push(obj);
 			addObj(obj);
 		}
 		
 		//обработать призрачные стены
 		private function gwalls():void
 		{
-			var est=false;
+			var est = false;
 			var t:Tile
-			for (var i=0; i<spaceX; i++) 
+			for (var i:int = 0; i < spaceX; i++) 
 			{
-				for (var j=0; j<spaceY; j++)
+				for (var j:int = 0; j < spaceY; j++)
 				{
-					t=space[i][j];
-					if (t.phis==3)
+					t = space[i][j];
+					if (t.phis == 3)
 					{
 						if (active)
 						{
 							t.t_ghost--;
-							est=true;
-							if (t.t_ghost<=0) dieTile(t);
+							est = true;
+							if (t.t_ghost <= 0) dieTile(t);
 						}
 						else
 						{
-							t.t_ghost=0;
+							t.t_ghost = 0;
 							dieTile(t);
 						}
 					}
 				}
 			}
-			if (est) t_gwall=World.fps+1;
+			if (est) t_gwall = World.fps + 1;
 		}
 		
 		public function lightAll():void
 		{
-			for each (var cel in objs) 
+			for each (var cell:Object in objs)
 			{
-				if (cel.light) 
+				if (cell.light)
 				{
-					lighting(cel.X-10, cel.Y-cel.scY/2);
-					lighting(cel.X, cel.Y-cel.scY/2);
-					lighting(cel.X+10, cel.Y-cel.scY/2);
+					var adjustedY:Number = cell.Y - cell.scY / 2;
+
+					lighting(cell.X - 10, adjustedY);
+					lighting(cell.X, adjustedY);
+					lighting(cell.X + 10, adjustedY);
 				}
 			}
 		}
@@ -1879,8 +1952,8 @@ package fe.loc
 					n1 = currentTile.visi;
 					if (!retDark && n1 >= 1) continue;
 
-					var dx:int = i * tileWidth - nx;
-					var dy:int = j * tileHeight - ny;
+					var dx:int = i * tileX - nx;
+					var dy:int = j * tileY - ny;
 					var rasst:int = (dx * dx) + (dy * dy);
 
 					if (rasst >= dist2Squared)
@@ -1914,13 +1987,13 @@ package fe.loc
 						{
 							if (dx > 0)
 							{
-								dex = tileWidth;
-								dey = dy / dx * tileHeight;
+								dex = tileX;
+								dey = dy / dx * tileY;
 							}
 							else
 							{
-								dex = -tileWidth;
-								dey = -dy / dx * tileHeight;
+								dex = -tileX;
+								dey = -dy / dx * tileY;
 							}
 							maxe = dx / dex;
 						}
@@ -1928,13 +2001,13 @@ package fe.loc
 						{
 							if (dy > 0)
 							{
-								dey = tileHeight;
-								dex = dx / dy * tileWidth;
+								dey = tileY;
+								dex = dx / dy * tileX;
 							}
 							else
 							{
-								dey = -tileHeight;
-								dex = -dx / dy * tileWidth;
+								dey = -tileY;
+								dex = -dx / dy * tileX;
 							}
 							maxe = dy / dey;
 						}
@@ -1971,7 +2044,7 @@ package fe.loc
 
 			function changePixelOpacity(tileToChange:Tile):void
 			{
-				grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - tileToChange.updVisi()) * 255) * 0x1000000);
+				grafon.lightBmp.setPixel32(i, j + 1, int((1 - tileToChange.updVisi()) * 255) * 0x1000000);
 			}
 		}
 		
@@ -1993,7 +2066,7 @@ package fe.loc
 
 			function changePixelOpacity(tileToChange:Tile):void
 			{
-				grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - tileToChange.updVisi()) * 255) * 0x1000000);
+				grafon.lightBmp.setPixel32(i, j + 1, int((1 - tileToChange.updVisi()) * 255) * 0x1000000);
 			}
 		}
 		
@@ -2001,16 +2074,17 @@ package fe.loc
 		//дать опыт
 		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false):void
 		{
-			if (un) {
-				if (dxp>summXp) {
+			if (un)
+			{
+				if (dxp>summXp)
+				{
 					dxp=summXp;
 					summXp=0;
-				} else {
-					summXp-=dxp;
 				}
-				land.summXp+=dxp;
+				else summXp -= dxp;
+				land.summXp += dxp;
 			}
-			if (dxp>0) World.w.pers.expa(dxp,nx,ny);
+			if (dxp > 0) World.w.pers.expa(dxp, nx, ny);
 		}
 		
 		
@@ -2087,8 +2161,8 @@ package fe.loc
 			//если нужно, пересчитать пространство
 			if (isRebuild) rebuild();
 			if (isRecalc) recalcWater();
-			if (t_gwall==1) gwalls();
-			if (t_gwall>0) t_gwall--;
+			if (t_gwall == 1) gwalls();
+			if (t_gwall > 0) t_gwall--;
 			//показать/скрыть указатели перехода
 			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) showSign(!sign_vis);
 			//тревога
@@ -2099,8 +2173,8 @@ package fe.loc
 				if (t_alarmsp==0) enemySpawn();
 			}
 			//трясучка
-			if (quake>0) quake--;
-			if (trus>0) World.w.quake(trus/2,trus);
+			if (quake > 0) quake--;
+			if (trus > 0) World.w.quake(trus / 2, trus);
 		}
 		
 		//убить всех врагов и открыть все контейнеры
@@ -2131,7 +2205,7 @@ package fe.loc
 		//дистанция между гг и активным объектом
 		private function getDist():void 
 		{
-			if (getTile(Math.round(World.w.celX/Tile.tileX),Math.round(World.w.celY/Tile.tileY)).visi<0.1) celObj=null;
+			if (getTile(Math.round(World.w.celX/tileX),Math.round(World.w.celY/tileY)).visi<0.1) celObj=null;
 			if (celObj) 
 			{
 				celDist=(gg.X-celObj.X)*(gg.X-celObj.X)+(gg.Y-celObj.Y)*(gg.Y-celObj.Y);
@@ -2143,26 +2217,31 @@ package fe.loc
 		//показать/скрыть указатели перехода
 		private function showSign(n:Boolean):void
 		{
-			for each (var s in signposts) s.visible=n;
-			sign_vis=n;
+			for each (var s in signposts)
+			{
+				s.visible = n;
+			}
+			sign_vis = n;
 		}
 		
 		public function newGrenade(g:Bullet):void
 		{
-			if (grenades[0]==null) grenades[0]=g;
-			else {
-				for (var i=1; i<10; i++) {
-					if (grenades[i]==null) grenades[i]=g;
+			if (grenades[0] == null) grenades[0] = g;
+			else
+			{
+				for (var i:int = 1; i < 10; i++)
+				{
+					if (grenades[i] == null) grenades[i] = g;
 				}
 			}
 		}
 
 		public function remGrenade(g:Bullet):void
 		{
-			if (grenades[0]==g) grenades[0]=null;
+			if (grenades[0] == g) grenades[0] = null;
 			else 
 			{
-				for (var i=1; i<10; i++) 
+				for (var i:int = 1; i < 10; i++) 
 				{
 					if (grenades[i] == g) grenades[i] = null;
 				}

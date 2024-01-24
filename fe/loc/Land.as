@@ -53,6 +53,8 @@ package fe.loc
 		public var probIds:Array;		//имеющиеся комнаты испытаний
 		var impProb:int=-1;				//важная комната испытаний
 
+		private var tileX:int = Tile.tileX;
+		private var tileY:int = Tile.tileY;
 
 		//lvl - уровень перса-1
 		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
@@ -566,7 +568,8 @@ package fe.loc
 		}
 		
 		//установка сложности локации, в зависимости от уровня персонажа и градиена сложности
-		function setLocDif(loc:Location, deep:Number) {
+		private function setLocDif(loc:Location, deep:Number):void
+		{
 			var ml:Number=landDifLevel+deep;
 			loc.locDifLevel=ml;
 			loc.locksLevel=ml*0.7;	//уровень замков
@@ -642,8 +645,9 @@ package fe.loc
 			}
 		}
 		
-		public function createMap() {
-			map=new BitmapData(World.cellsX*(maxLocX-minLocX), World.cellsY*(maxLocY-minLocY),true,0);
+		public function createMap():void
+		{
+			map = new BitmapData(World.cellsX * (maxLocX - minLocX), World.cellsY * (maxLocY - minLocY), true, 0);
 		}
 		
 //==============================================================================================================================		
@@ -653,24 +657,34 @@ package fe.loc
 		//войти в местность
 		public function enterLand(first:Boolean=false, coord:String=null) {
 			act.visited=true;
-			loc=null;
-			if (coord!=null) {
+			loc = null;
+			if (coord != null)
+			{
 				var narr:Array=coord.split(':');
-				if (narr.length>=1) locX=narr[0]; else locX=0;
-				if (narr.length>=2) locY=narr[1]; else locY=0;
-				locZ=0;
-				prob='';
+
+				if (narr.length>=1) locX=narr[0];
+				else locX=0;
+
+				if (narr.length>=2) locY=narr[1];
+				else locY=0;
+
+				locZ = 0;
+				prob = '';
 				ativateLoc();
 				setGGToSpawnPoint();
-			} else if (currentCP && !first) {
+			}
+			else if (currentCP && !first)
+			{
 				World.w.pers.currentCP=currentCP;
 				gotoCheckPoint();
 				currentCP.activate();
-			} else {
-				locX=act.begLocX;
-				locY=act.begLocY;
-				locZ=0;
-				prob='';
+			}
+			else
+			{
+				locX = act.begLocX;
+				locY = act.begLocY;
+				locZ = 0;
+				prob = '';
 				ativateLoc();
 				setGGToSpawnPoint();
 			}
@@ -696,7 +710,7 @@ package fe.loc
 				nx=loc.spawnPoints[n].x;
 				ny=loc.spawnPoints[n].y;
 			}
-			gg.setLocPos((nx+1)*Tile.tileX, (ny+1)*Tile.tileY-1);
+			gg.setLocPos((nx+1) * tileX, (ny+1) * tileY - 1);
 			gg.dx=3;
 			loc.lighting(gg.X, gg.Y-75);
 		}
@@ -744,15 +758,38 @@ package fe.loc
 		
 		
 		//переход между локациями
-		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
+		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object
+		{
 			var X:Number=gg.X, Y:Number=gg.Y, scX:Number=gg.scX, scY:Number=gg.scY;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
-			if (napr==1) newX--;
-			else if (napr==2) newX++;
-			else if (napr==3) newY++;
-			else if (napr==4) newY--;
-			else if (napr==5) newZ=1-newZ;
-			else return null;
+
+			switch (napr)
+			{
+				case 1:
+					newX--;
+				break;
+
+				case 2:
+					newX++;
+				break;
+
+				case 3:
+					newY++;
+				break;
+
+				case 4:
+					newY--;
+				break;
+
+				case 5:
+					newZ = 1 - newZ;
+				break;
+
+				default:
+					return null;
+				break;
+			}
+
 			if (prob=='' && (locs[newX]==null || locs[newX][newY]==null || locs[newX][newY][newZ]==null)) {
 				if (napr==3) return {die:true};
 				return null;
@@ -762,28 +799,45 @@ package fe.loc
 				return null;
 			}
 			var newLoc:Location=locs[newX][newY][newZ];
-			var outP:Object=new Object();
-			if (napr==1) {
-				outP.x=newLoc.limX-scX/2-9;
-				outP.y=Y-1;
-			} else if (napr==2) {
-				outP.x=0+scX/2+9;
-				outP.y=Y-1;
-			} else if (napr==3) {
-				outP.x=X;
-				outP.y=0+scY+10;
-			} else if (napr==4) {
-				outP.x=X;
-				outP.y=newLoc.limY-10;
-			} else if (napr==5) {
-				outP.x=portX;
-				outP.y=portY;
+			var outP:Object = new Object();
+
+			switch (napr)
+			{
+				case 1:
+					outP.x = newLoc.maxX - scX / 2 - 9;
+					outP.y = Y - 1;
+				break;
+
+				case 2:
+					outP.x = 0 + scX / 2 + 9;
+					outP.y = Y - 1;
+				break;
+
+				case 3:
+					outP.x = X;
+					outP.y = 0 + scY + 10;
+				break;
+
+				case 4:
+					outP.x = X;
+					outP.y = newLoc.maxY - 10;
+				break;
+
+				case 5:
+					outP.x = portX;
+					outP.y = portY;
+				break;
 			}
-			if (newLoc.collisionUnit(outP.x,outP.y,scX-4,scY)) return null;
-			loc_t=150;
-			locX=newX, locY=newY, locZ=newZ;
+
+			if (newLoc.collisionUnit(outP.x, outP.y, scX - 4, scY)) return null;
+			loc_t = 150;
+			
+			locX = newX;
+			locY = newY;
+			locZ = newZ;
+
 			ativateLoc();
-			gg.setLocPos(outP.x,outP.y);
+			gg.setLocPos(outP.x, outP.y);
 			return outP;
 		}
 		
@@ -791,9 +845,9 @@ package fe.loc
 		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) {
 			if (nprob=='') {
 				prob='';
-				locX=retLocX;
-				locY=retLocY;
-				locZ=retLocZ;
+				locX = retLocX;
+				locY = retLocY;
+				locZ = retLocZ;
 				ativateLoc();
 				if (retX==0 && retY==0) setGGToSpawnPoint();
 				else gg.setLocPos(retX,retY);
@@ -808,11 +862,13 @@ package fe.loc
 				locX=locY=locZ=0;
 				if (ativateLoc()) {
 					setGGToSpawnPoint();
-				} else {
-					prob='';
-					locX=retLocX;
-					locY=retLocY;
-					locZ=retLocZ;
+				}
+				else
+				{
+					prob = '';
+					locX = retLocX;
+					locY = retLocY;
+					locZ = retLocZ;
 				}
 			}
 		}
@@ -864,7 +920,7 @@ package fe.loc
 		public function artStep() {
 			art_t--;
 			if (art_t<=0) {
-				art_t=Math.floor(Math.random()*1000+20);
+				art_t=int(Math.random()*1000+20);
 				if (act.artFire!=null && World.w.game.triggers[act.artFire]!=1) {
 					artBabah();
 				}
@@ -878,8 +934,8 @@ package fe.loc
 					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
-			ggX=(loc.landX-minLocX)*World.cellsX*World.tileX+gg.X;
-			ggY=(loc.landY-minLocY)*World.cellsY*World.tileY+gg.Y-gg.scY/2;
+			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.X;
+			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.Y - gg.scY / 2;
 			return map;
 		}
 		

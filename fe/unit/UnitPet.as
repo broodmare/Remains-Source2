@@ -185,20 +185,23 @@ package fe.unit {
 		}
 		
 		//найти точку следования
-		function getFlyPoint() {
+		private function getFlyPoint()
+		{
 			var rx:Number=-120;
 			var ry:Number=-80;
 			flyBox=null;
-			//var nx:Number, ny:Number;
 			flyX=gg.X+gg.storona*rx;
 			flyY=gg.Y+ry;
 			if (flyX<60) flyX=60;
-			if (flyX>loc.limX-60) flyX=loc.limX-60;
+			if (flyX>loc.maxX-60) flyX=loc.maxX-60;
 			if (flyY<80) flyY=80;
-			if (flyY>loc.limY-40) flyY=loc.limY-40;
-			if (optSit) {
-				for each (var b:Box in loc.objs) {
-					if (b.wall==0 && b.stay && !b.invis && b.X1<flyX && b.X2>flyX && flyY-b.Y1<80 &&  flyY-b.Y1>-40) {
+			if (flyY>loc.maxY-40) flyY=loc.maxY-40;
+			if (optSit)
+			{
+				for each (var b:Box in loc.objs)
+				{
+					if (b.wall==0 && b.stay && !b.invis && b.X1<flyX && b.X2>flyX && flyY-b.Y1<80 &&  flyY-b.Y1>-40)
+					{
 						flyY=b.Y1;
 						flyX=b.X;
 						flyBox=b;
@@ -207,22 +210,24 @@ package fe.unit {
 				}
 			}
 			if (!loc.collisionUnit(flyX,flyY,scX,scY)) return;
-			flyX=Math.floor(flyX/40)*40+20;
-			flyY=Math.floor(flyY/40)*40+39;
-			if (loc.getAbsTile(flyX,flyY).phis==0) return;
-			flyX+=40*gg.storona;
-			flyY+=40;
-			if (loc.getAbsTile(flyX,flyY).phis==0) return;
-			flyY+=40;
-			if (loc.getAbsTile(flyX,flyY).phis==0) return;
-			flyX+=40*gg.storona;
-			if (loc.getAbsTile(flyX,flyY).phis==0) return;
-			flyX=gg.X;
-			flyY=gg.Y-1;
+			flyX = int(flyX / 40) * 40 + 20; // Weird math is grid alignment
+			flyY = int(flyY / 40) * 40 + 39;
+			if (loc.getAbsTile(flyX,flyY).phis == 0) return;
+			flyX += 40 * gg.storona;
+			flyY += 40;
+			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
+			flyY += 40;
+			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
+			flyX += 40 * gg.storona;
+			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
+
+			flyX = gg.X;
+			flyY = gg.Y - 1;
 		}
 		
-		function visCelUnit(un:Unit):Boolean {
-			return loc.isLine(X,Y-30,un.X,un.Y-un.scY/2);
+		function visCelUnit(un:Unit):Boolean
+		{
+			return loc.isLine(X, Y - 30, un.X, un.Y - un.scY / 2);
 		}
 		
 		public override function findCel(over:Boolean=false):Boolean {

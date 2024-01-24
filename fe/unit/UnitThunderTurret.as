@@ -49,7 +49,7 @@ package  fe.unit
 		public override function control() {
 			if (head==null || loc==null) return;
 			if (sost>1 || head.sost>1) return;
-			if (head.isAtt && X>200 && Y>200 && X<loc.limX-200 && Y<loc.limY-200) {
+			if (head.isAtt && X>200 && Y>200 && X<loc.maxX-200 && Y<loc.maxY-200) {
 				if (t_wait>0) {
 					t_wait--;
 					return;

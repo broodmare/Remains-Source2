@@ -4,12 +4,16 @@ package fe.unit
 
 	import fe.Snd;
 	import fe.World;
+	import fe.loc.Tile;
 	
 	public class UnitPon extends Unit
 	{
 		public var teleColor:uint=0;
 		protected var teleFilter:GlowFilter;
 		protected var footstepVol:Number=0.2;
+
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 		
 		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
@@ -21,7 +25,7 @@ package fe.unit
 					if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
 					else weaponX=X;
 					if (isLaz) weaponX=X;
-					if (loc.getTile(Math.floor((weaponX+storona*15)/World.tileX),Math.floor(weaponY/World.tileY)).phis==1) weaponX=X;
+					if (loc.getTile(int((weaponX+storona*15)/tileX), int(weaponY/tileY)).phis==1) weaponX=X;
 					if (tip==1) weaponY=Y-scY*0.4;
 					else weaponY=Y-scY*0.7;
 				} else if (tip==1 || tip==2 || tip==4) {	 //в зубах	
@@ -91,9 +95,9 @@ package fe.unit
 			var nleg:int;
 			var sst='footstep';
 			if (stayMat==1) sst='metalstep';
-			nleg=Math.floor(Math.random()*4)+1;
+			nleg=int(Math.random()*4)+1;
 			Snd.ps(sst+nleg+rnd,X,Y,0,footstepVol-volMinus);
-			nleg=Math.floor(Math.random()*4)+1;
+			nleg=int(Math.random()*4)+1;
 			Snd.ps(sst+nleg+rnd,X,Y,0,footstepVol-volMinus);
 		}
 		

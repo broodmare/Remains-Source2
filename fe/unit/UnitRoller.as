@@ -5,21 +5,20 @@ package fe.unit
 	
 	public class UnitRoller extends Unit
 	{
-		var rollDr:Number=0;
-		var tr:int=1;
+		var rollDr:Number = 0;
+		var tr:int = 1;
 
-		public function UnitRoller(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		private static var tileY:int = Tile.tileY;
+
+		public function UnitRoller(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
-			if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {									
-				tr=1;
-			}
-			if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} 
+			if (cid) tr=int(cid);							//из заданного идентификатора cid
+			else tr=1;
+			
+			if (loadObj && loadObj.tr) tr=loadObj.tr;		//из загружаемого объекта
+			else if (xml && xml.@tr.length()) tr=xml.@tr;	//из настроек карты
+
 			if (!(tr>0)) tr=1;
 			id='roller';
 			if (tr>=2) id+=tr;
@@ -95,7 +94,6 @@ package fe.unit
 			if (sost==3) return;
 
 			var jmp:Number=0;
-			//return;
 			
 			if (World.w.enemyAct<=0) {
 				celY=Y-scY;
@@ -179,7 +177,7 @@ package fe.unit
 				}
 			} 
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
+			if (Y>loc.spaceY*tileY-80) throu=false;
 		}
 		
 		public function attack() {

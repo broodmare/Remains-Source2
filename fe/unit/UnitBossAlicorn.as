@@ -265,8 +265,8 @@ package fe.unit
 				aiState++;
 				if (aiState>3) aiState=1;
 				if (aiState==1) {	//выбор точки перемещения
-					attState=Math.floor(Math.random()*5);
-					var nmp=Math.floor(Math.random()*7);
+					attState = int(Math.random() * 5);
+					var nmp  = int(Math.random() * 7);
 					if (nmp==mp) nmp++;
 					if (nmp>=7) nmp=0;
 					mp=nmp;
@@ -412,7 +412,7 @@ package fe.unit
 				var p:Object;
 				var tspeed:Number=throwForce;
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
-				if (teleObj.X<200 || teleObj.X>loc.limX-200) tspeed*=0.6;
+				if (teleObj.X<200 || teleObj.X>loc.maxX-200) tspeed*=0.6;
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
 				} else {

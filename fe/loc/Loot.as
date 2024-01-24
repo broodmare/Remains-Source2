@@ -29,6 +29,9 @@ package fe.loc
 		private var tvsos:int=0;
 		public var sndFall:String='fall_item';
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true) {
 			loc=nloc;
 			item=nitem;
@@ -36,9 +39,9 @@ package fe.loc
 			sloy=2, prior=3;
 			X=nx, Y=ny;
 			krit=nkrit;
-			if (nx<Tile.tileX) nx=Tile.tileX;
-			if (nx>(loc.spaceX-1)*Tile.tileX) nx=(loc.spaceX-1)*Tile.tileX;
-			if (ny>(loc.spaceY-1)*Tile.tileY) ny=(loc.spaceY-1)*Tile.tileY;
+			if (nx<tileX) nx=tileX;
+			if (nx>(loc.spaceX-1)*tileX) nx=(loc.spaceX-1)*tileX;
+			if (ny>(loc.spaceY-1)*tileY) ny=(loc.spaceY-1)*tileY;
 			massa=0.1;
 			nazv=item.nazv;
 			scX=30, scY=20;
@@ -235,8 +238,8 @@ package fe.loc
 					X=scX/2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*Tile.tileX) {
-					X=loc.spaceX*Tile.tileX-1-scX/2;
+				if (X+scX/2>=loc.spaceX*tileX) {
+					X=loc.spaceX*tileX-1-scX/2;
 					dx=-Math.abs(dx);
 				}
 				//движение влево
@@ -273,7 +276,7 @@ package fe.loc
 			var newmy:Number=0;
 			if (dy>0) {
 				stay=false;
-				if (Y+dy/div>=loc.spaceY*Tile.tileY) {
+				if (Y+dy/div>=loc.spaceY*tileY) {
 					if (auto2) take(true);
 					dx=0;
 					return;
@@ -283,7 +286,7 @@ package fe.loc
 					newmy=t.phY1;
 				}
 				if (newmy==0 && !levit && !vsos) newmy=checkShelf(dy/div);
-				if (!loc.active && Y>=(loc.spaceY-1)*Tile.tileY) newmy=(loc.spaceY-1)*Tile.tileY;
+				if (!loc.active && Y>=(loc.spaceY-1)*tileY) newmy=(loc.spaceY-1)*tileY;
 				if (newmy) {
 					Y=newmy-1;
 					if (!levit) {
@@ -321,7 +324,7 @@ package fe.loc
 			var pla=isPlav;
 			isPlav=false;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor(Y/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[int(X/tileX)][int(Y/tileY)] as Tile).water>0) {
 					isPlav=true;
 				}
 			} catch (err) {

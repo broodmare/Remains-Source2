@@ -105,6 +105,9 @@ package fe.serv
 		
 		public static var chanceUnlock:Array=[0.9, 0.75, 0.5, 0.3, 0.15, 0.05, 0.01];
 		public static var chanceUnlock2:Array=[0.95, 0.8, 0.55, 0.35, 0.2, 0.08, 0.03];
+
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 		
 		//node - шаблон, xml - индивидуальный параметр, взятый из карты
 		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) {
@@ -209,10 +212,10 @@ package fe.serv
 					isMove=true;
 					begX=X, begY=Y;
 					if (xml.move.@dx.length()) {
-						if (loc && loc.mirror) endX=X-xml.move.@dx*World.tileX;
-						else endX=X+xml.move.@dx*World.tileX;
+						if (loc && loc.mirror) endX=X-xml.move.@dx*tileX;
+						else endX=X+xml.move.@dx*tileX;
 					} else endX=endX2=X;
-					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*World.tileY;
+					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*tileY;
 					else endY=Y;
 					if (xml.move.@tstay.length()) tStay=xml.move.@tstay;
 					if (xml.move.@tmove.length()) tMove=xml.move.@tmove;
@@ -243,7 +246,7 @@ package fe.serv
 					if (lock>0 && low<=0 && own && own.loc && own.loc.land.rnd && own.loc.prob==null && Math.random()<0.2) lock+=Math.floor(Math.random()*2)+2;
 					//определить уровень замка
 					if (lock>2 && lockLevel==0) {
-						lockLevel=Math.round(Math.random()*(lock-2)/3.2);
+						lockLevel = Math.round(Math.random()*(lock-2)/3.2);
 						if (lockLevel>5) lockLevel=5;
 					}
 					if (!difSet) allDif=lock+lockLevel*2;
@@ -330,80 +333,136 @@ package fe.serv
 			}
 		}
 		
-		public function update() {
-			if (userAction && userAction!='') {
-				 actionText=Res.guiText(userAction);
-			} else {
-				if (active && action>0) {
-					if (action==1) actionText=Res.guiText(!open?'open':'close');
-					if (action==2) actionText=Res.guiText('use'); 
-					if (action==3) actionText=Res.guiText('remine'); 
-					if (action==4) actionText=Res.guiText('press'); 
-					if (action==5) actionText=Res.guiText('shutoff'); 
-					if (action==8) actionText=Res.guiText('comein'); 
-					if (action==9) actionText=Res.guiText('exit'); 
-					if (action==10) actionText=Res.guiText('beginm'); 
-					if (action==11) actionText=Res.guiText('return'); 
-					if (action==12) actionText=Res.guiText('see'); 
-				} else actionText='';
+		public function update()
+		{
+			if (userAction && userAction != '')
+			{
+				 actionText = Res.guiText(userAction);
+			}
+			else
+			{
+				if (active && action)
+				{
+					switch (action)
+					{
+						case 1:
+							actionText = Res.guiText(!open ? 'open':'close');
+						break;
+
+						case 2:
+							actionText = Res.guiText('use'); 
+						break;
+
+						case 3:
+							actionText = Res.guiText('remine'); 
+						break;
+
+						case 4:
+							actionText = Res.guiText('press'); 
+						break;
+
+						case 5:
+							actionText = Res.guiText('shutoff'); 
+						break;
+
+						case 8:
+							actionText = Res.guiText('comein'); 
+						break;
+
+						case 9:
+							actionText = Res.guiText('exit'); 
+						break;
+
+						case 10:
+							actionText = Res.guiText('beginm'); 
+						break;
+
+						case 11:
+							actionText = Res.guiText('return'); 
+						break;
+						case 12:
+							actionText = Res.guiText('see'); 
+						break;
+						default:
+						trace('ERROR: Uknown action: "' + action.toString() + '"!');
+							actionText = '';
+						break;
+					}
+				}
 			}
 			
-			if (mine>0) {
-				if (mineTip==6) {
+			if (mine)
+			{
+				if (mineTip == 6)
+				{
 					stateText="<span class = 'r2'>"+Res.guiText('signal')+"</span>";
 					actionText=Res.guiText('shutoff');
-				} else {
+				}
+				else
+				{
 					if (owner is Box) stateText="<span class = 'warn'>"+Res.guiText('mined')+"</span>";
 					actionText=Res.guiText('remine');
 				}
-				sndAct='rem_act';
-			} else if (lock>0) {
-				if (lockTip==0)	{
-					stateText="<span class = 'r2'>"+Res.guiText('lock')+"</span>";
-					actionText='';
-					sndAct='lock_act';
-				}
-				if (lockTip==1)	{
-					if (lock>=100) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
-					else stateText="<span class = 'r2'>"+Res.guiText('lock')+"</span>";
-					actionText=Res.guiText('unlock');
-					sndAct='lock_act';
-				}
-				if (lockTip==2)	{
-					if (lock>=100)stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
-					else stateText="<span class = 'r2'>"+Res.guiText('termlock')+"</span>";
-					actionText=Res.guiText('termunlock'); 
-					sndAct='term_act';
-				}
-				if (lockTip==4)	{
-					actionText=Res.guiText('shutoff');
-					sndAct='rem_act';
-				}
-				if (lockTip==5)	{
-					actionText=Res.guiText('fixup');
-					sndAct='rem_act';
-				}
-			} else if (cont=='empty') {
-				stateText="<span class = 'r0'>"+Res.guiText('empty')+"</span>";
-			} else {
-				stateText='';
+				sndAct = 'rem_act';
 			}
+			else if (lock)
+			{
+				switch (lockTip)
+				{
+					case 0:
+						stateText = "<span class = 'r2'>" + Res.guiText('lock') + "</span>";
+						actionText = '';
+						sndAct = 'lock_act';
+					break;
+
+					case 1:
+						if (lock >= 100) stateText = "<span class = 'r3'>" + Res.guiText('zhopa') + "</span>";
+						else stateText = "<span class = 'r2'>" + Res.guiText('lock') + "</span>";
+						actionText = Res.guiText('unlock');
+						sndAct = 'lock_act';
+					break;
+
+					case 2:
+						if (lock >= 100) stateText = "<span class = 'r3'>" + Res.guiText('block') + "</span>";
+						else stateText = "<span class = 'r2'>" + Res.guiText('termlock') + "</span>";
+						actionText = Res.guiText('termunlock'); 
+						sndAct = 'term_act';
+					break;
+
+					case 4:
+						actionText = Res.guiText('shutoff');
+						sndAct = 'rem_act';
+					break;
+
+					case 5:
+						actionText = Res.guiText('fixup');
+						sndAct = 'rem_act';
+					break;
+				}
+			}
+			else if (cont == 'empty') stateText = "<span class = 'r0'>" + Res.guiText('empty') + "</span>";
+			else stateText = '';
 		}
 		
 		//установить состояние
-		public function setAct(a:String, n:int=0) {
-			if (a=='mine') {
-				if (n<100) {
-					mine=n;
-					saveMine=mine;
+		public function setAct(a:String, n:int = 0)
+		{
+			if (a == 'mine')
+			{
+				if (n < 100)
+				{
+					mine = n;
+					saveMine = mine;
 				}
-				if (n==101) {
-					mine=0;
-					saveMine=101;
-					owner.warn=0;
+				if (n == 101)
+				{
+					mine = 0;
+					saveMine = 101;
+					owner.warn = 0;
 				}
 			}
-			if (a=='lock') {
+			if (a == 'lock')
+			{
 				if (n<100) {
 					lock=n;
 					saveLock=lock;
@@ -449,9 +508,7 @@ package fe.serv
 				}
 				if (loc && loc.prob && loc.active) loc.prob.check();
 			}
-			if (a=='expl') {
-				saveExpl=n;
-			}
+			if (a == 'expl') saveExpl = n;
 		}
 		
 		//произвести действие

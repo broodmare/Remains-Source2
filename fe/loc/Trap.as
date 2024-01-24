@@ -5,6 +5,9 @@ package fe.loc
 	import fe.*;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
+	import fe.loc.Tile;
+
+	import fe.stubs.vistrapspikes
 	
 	public class Trap extends Obj
 	{
@@ -14,39 +17,56 @@ package fe.loc
 		public var dam:Number=0;
 		public var tipDamage:int=0;
 		
-		public var spDam:int=1;		//способ нанесения урона
-		public var spBind:int=1;	//способ прикрепления
-		public var floor:Boolean=false;
+		public var spDam:int = 1;		//способ нанесения урона
+		public var spBind:int = 1;	//способ прикрепления
+		public var floor:Boolean = false;
 		
-		var anim:Boolean=false;
+		var anim:Boolean = false;
+		
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 
-		public function Trap(nloc:Location, nid:String, nx:int=0, ny:int=0) {
-			loc=nloc;
-			sloy=0;
-			prior=1;
-			id=nid;
-			X=nx, Y=ny;
-			var vClass:Class=Res.getClass('vistrap'+id, null, vistrapspikes);
-			var vClass2:Class=Res.getClass('vistrap'+id+'2', null, null);
-			vis=new vClass();
-			vis2=new vClass2();
-			var n1=Math.floor(Math.random()*vis.totalFrames)+1;
-			var n2=Math.floor(Math.random()*vis.totalFrames)+1;
-			levitPoss=false;
+		public function Trap(loc:Location, id:String, X:int=0, Y:int=0)
+		{
+			this.loc = loc;
+			this.id = id;
+			this.X = X;
+			this.Y = Y;
+			sloy = 0;
+			prior = 1;
+
+			var vClass:Class  = Res.getClass('vistrap' + id, null, vistrapspikes);
+			var vClass2:Class = Res.getClass('vistrap' + id + '2', null, null);
+			vis  = new vClass();
+			vis2 = new vClass2();
+			var n1 = int(Math.random() * vis.totalFrames) + 1;
+			var n2 = int(Math.random() * vis.totalFrames) + 1;
+			levitPoss = false;
 			vis.gotoAndStop(n1);
 			vis2.gotoAndStop(n2);
 			getXmlParam()
-			if (!anim) vis.cacheAsBitmap=true;
-			if (vis2 && !anim) vis2.cacheAsBitmap=true;
-			X1=X-scX/2, X2=X+scX/2;
-			if (floor) {
-				Y1=Y-scY, Y2=Y;
-			} else {
-				Y1=Y-World.tileY, Y2=Y1+scY;
+			if (!anim) vis.cacheAsBitmap = true;
+			if (vis2 && !anim) vis2.cacheAsBitmap = true;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			
+			if (floor)
+			{
+				Y1 = Y - scY; 
+				Y2 = Y;
 			}
-			vis.x=X, vis.y=Y;
-			vis2.x=X, vis2.y=Y;
-			cTransform=loc.cTransform;
+			else
+			{
+				Y1 = Y - tileY;
+				Y2 = Y1 + scY;
+			}
+
+			vis.x = X;
+			vis.y = Y;
+			vis2.x = X;
+			vis2.y = Y;
+
+			cTransform = loc.cTransform;
 			bindTile();
 		}
 		
@@ -54,8 +74,13 @@ package fe.loc
 		{
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			nazv=Res.txt('u',id);
-			if (node.@sX>0) scX=node.@sX; else scX=node.@size*World.tileX;
-			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*World.tileY;
+
+			if (node.@sX>0) scX = node.@sX;
+			else scX = node.@size * tileX;
+			
+			if (node.@sY>0) scY=node.@sY;
+			else scY = node.@wid * tileY;
+			
 			dam=node.@damage;
 			if (node.@tipdam.length()) tipDamage=node.@tipdam;
 			if (node.@anim.length()) anim=true;
@@ -64,53 +89,58 @@ package fe.loc
 			if (node.@bind.length()) spBind=node.@bind;
 		}
 		
-		public override function addVisual() {
-			if (vis) {
+		public override function addVisual()
+		{
+			if (vis)
+			{
 				World.w.grafon.visObjs[sloy].addChild(vis);
-				if (cTransform) {
-					vis.transform.colorTransform=cTransform;
-				}
+				if (cTransform) vis.transform.colorTransform = cTransform;
 			}
-			if (vis2) {
+			if (vis2)
+			{
 				World.w.grafon.visObjs[3].addChild(vis2);
-				if (cTransform) {
-					vis2.transform.colorTransform=cTransform;
-				}
+				if (cTransform) vis2.transform.colorTransform=cTransform;
 			}
 		}
-		public override function remVisual() {
+		public override function remVisual()
+		{
 			super.remVisual();
 			if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
-		public override function step() {
+		public override function step()
+		{
 			if(!loc.active) return;
-			for each (var un:Unit in loc.units) {
-				if (!un.activateTrap || un.sost==4) continue;
+			for each (var un:Unit in loc.units)
+			{
+				if (!un.activateTrap || un.sost == 4) continue;
 				attKorp(un);
 			}
 		}
 		
-		public function bindTile() {
-			if (spBind==1) {		//прикрепление к полу
-				loc.getAbsTile(X,Y+10).trap=this;
-			}
-			if (spBind==2) {		//прикрепление к потолку
-				loc.getAbsTile(X,Y-50).trap=this;
-			}
+		private function bindTile():void
+		{
+			//прикрепление к полу
+			if (spBind == 1) loc.getAbsTile(X, Y + 10).trap = this;	
+			//прикрепление к потолку
+			if (spBind == 2) loc.getAbsTile(X, Y - 50).trap = this;
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int = 0)
+		{
 			loc.remObj(this);
 		}
 		
-		public function attKorp(cel:Unit):Boolean {
+		public function attKorp(cel:Unit):Boolean
+		{
 			if (cel==null || cel.neujaz) return false;
-			if (spDam==1 && !cel.isFly && cel.dy>8 && cel.X<=X2 && cel.X>=X1 && cel.Y<=Y2 && cel.Y>=Y1) {		//шипы
+			if (spDam==1 && !cel.isFly && cel.dy>8 && cel.X<=X2 && cel.X>=X1 && cel.Y<=Y2 && cel.Y>=Y1) //шипы
+			{		
 				cel.damage(cel.massa*cel.dy/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
-			if (spDam==2 && !cel.isFly && (cel.dy+cel.osndy<0) && cel.X<=X2 && cel.X>=X1 && cel.Y1<=Y2 && cel.Y1>=Y1) {		//шипы
+			if (spDam==2 && !cel.isFly && (cel.dy+cel.osndy<0) && cel.X<=X2 && cel.X>=X1 && cel.Y1<=Y2 && cel.Y1>=Y1) //шипы
+			{
 				cel.damage(cel.massa*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}

@@ -15,6 +15,7 @@ package fe.inter
 	import fe.unit.Invent;
 	import fe.serv.Script;
 	import fe.weapon.WPaint;
+	import fe.loc.Tile;
 	
 	public class GUI
 	{
@@ -58,6 +59,9 @@ package fe.inter
 		
 		var informScript:Script;
 		public var dialScript:Script;
+
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 
 		public function GUI(vgui:MovieClip) {
 			vis=vgui;
@@ -824,7 +828,8 @@ package fe.inter
 			return s;
 		}
 		
-		public function setAll() {
+		public function setAll()
+		{
 			setWeapon();
 			setItems();
 			setMana();
@@ -835,18 +840,23 @@ package fe.inter
 			setPet();
 		}
 		
-		function showPortCel() {
+		function showPortCel()
+		{
 			vis.portCel.visible=true;
-			var nx=Math.round(World.w.celX/World.tileX)*World.tileX;
-			var ny=Math.round(World.w.celY/World.tileY)*World.tileY;
+			var nx = Math.round(World.w.celX / tileX) * tileX;
+			var ny = Math.round(World.w.celY / tileY) * tileY;
 			World.w.cam.setKoord(vis.portCel,nx,ny);
-			if (gg.checkPort()) {
+			
+			if (gg.checkPort())
+			{
 				if (gg.t_port<gg.pers.portTime) vis.portCel.gotoAndStop(1);
 				else vis.portCel.gotoAndStop(2);
-			} else vis.portCel.gotoAndStop(3);
+			}
+			else vis.portCel.gotoAndStop(3);
 		}
 		
-		public function infoText(id:String, p1=0, p2=null, addlog:Boolean=true) {
+		public function infoText(id:String, p1=0, p2=null, addlog:Boolean=true)
+		{
 			var s:String=Res.txt('f',id);
 			s=s.replace('@1','<b>'+p1+'</b>');
 			if (p2!=null) s=s.replace('@2',p2);
@@ -887,17 +897,16 @@ package fe.inter
 			ny=ny-80+float_dy;
 			if (ny<40) ny-=100;
 			if (nx<50) nx=50;
-			if (nx>World.w.loc.limX-50) nx=World.w.loc.limX-50;
+			if (nx>World.w.loc.maxX-50) nx=World.w.loc.maxX-50;
 			Emitter.emit('take',World.w.loc,nx,ny,{txt:bulbText});
 			t_bulb=10;
 		}
 		
-		public function remStr() {
-			if (kolStr<=1) {
-				info.htmlText='';
-			} else {
-				info.htmlText=info.htmlText.substr(info.htmlText.search('<br>')+4);
-			}
+		public function remStr()
+		{
+			if (kolStr <= 1) info.htmlText = '';
+			else info.htmlText = info.htmlText.substr(info.htmlText.search('<br>') + 4);
+
 			if (kolStr>0) kolStr--;
 		}
 		

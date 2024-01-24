@@ -110,8 +110,8 @@ package fe.graph
 		public static const numbSprite=2;	//номер, с которого начинаются файлы спрайтов
 
 
-		private static var tileX = Tile.tileX;
-		private static var tileY = Tile.tileY;
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 		
 		
 		public function Grafon(nvis:Sprite)
@@ -234,7 +234,7 @@ package fe.graph
 			progressLoad /= GrLoader.kol;
 		}
 		
-		function createCursors():void
+		private function createCursors():void
 		{
 			createCursor(visCurArrow,'arrow');
 			createCursor(visCurTarget,'target',13,13);
@@ -242,7 +242,7 @@ package fe.graph
 			createCursor(visCurTarget2,'action',13,13);
  		}
 		
-		function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void
+		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void
 		{
 			var cursorData:Vector.<BitmapData>;
 			var mouseCursorData:MouseCursorData;
@@ -330,11 +330,11 @@ package fe.graph
 				ramR.y=ramL.y=0;
 				ramT.y=0;
 				ramL.x=0;
-				ramB.y=loc.limY-1;
-				ramR.x=loc.limX-1;
-				ramT.scaleX=ramB.scaleX=loc.limX/100+1;
+				ramB.y=loc.maxY-1;
+				ramR.x=loc.maxX-1;
+				ramT.scaleX=ramB.scaleX=loc.maxX/100+1;
 				ramT.scaleY=ramB.scaleY=2;
-				ramR.scaleY=ramL.scaleY=loc.limY/100;
+				ramR.scaleY=ramL.scaleY=loc.maxY/100;
 				ramR.scaleX=ramL.scaleX=2;
 			
 				World.w.gr_stage=3;		//где-то тут
@@ -564,7 +564,7 @@ package fe.graph
 
 			loc.gg.addVisual();
 
-			for (var j in loc.signposts) // WHY IS 'I' BEING REUSED AS A STRING? (Changed to J)
+			for (var i in loc.signposts) // WHY IS 'I' BEING REUSED AS A STRING? (Changed to J)
 			{
 				visObjs[3].addChild(loc.signposts[i]);
 			}

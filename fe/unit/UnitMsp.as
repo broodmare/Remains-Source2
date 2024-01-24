@@ -1,19 +1,21 @@
-package fe.unit {
+package fe.unit
+{
 	
 	import fe.*;
-	import fe.weapon.Weapon;
-	import fe.serv.LootGen;
-	import fe.loc.Location;
-	import fe.projectile.Bullet;
 	import fe.loc.Tile;
+	import fe.loc.Location;
 
-	public class UnitMsp extends Unit{
+	public class UnitMsp extends Unit
+	{
 
 		public var tr:int;
 		var weap:String;
 		var cep:int=0; //способ прикрепления 0-обычный, 1-к потолку, 2- к стене слева, 3-к стене справа
 		
-		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		private var tileY:int = Tile.tileY;
+
+		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -134,8 +136,8 @@ package fe.unit {
 		//3 - видит цель, атакует
 		//4 - не видит цель
 		
-		public override function control() {
-			//var t:Tile;
+		public override function control()
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -260,12 +262,7 @@ package fe.unit {
 				walk=0;
 			}
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
-			
-			//if ((aiState==3 || aiState==4) && World.w.enemyAct>=3) attack();
-
+			if (Y>loc.spaceY * tileY - 80) throu = false;
 		}
-		
 	}
-	
 }

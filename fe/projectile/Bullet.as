@@ -50,7 +50,8 @@ package fe.projectile
 		public var destroy:Number=0;	//урон блокам
 		public var crack:int=0;			//взлом контейнеров
 		var box:Box;
-		public var tileX:int=-1, tileY:int=-1;	//урон блокам для холодного оружия (координаты, на которые указывает курсор)
+		public var tileX:int=-1;
+		public var tileY:int=-1;	//урон блокам для холодного оружия (координаты, на которые указывает курсор)
 		public var damage:Number=0;
 		public var pier:Number=0;		//бронебойность
 		public var armorMult:Number=1;	//модификатор действия брони
@@ -77,6 +78,8 @@ package fe.projectile
 		
 		public var retDam:Boolean=false;	//возврат урона
 
+		private static var constTileX:int = Tile.tileX;
+		private static var constTileY:int = Tile.tileY;
 
 		public function Bullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true)
 		{
@@ -236,10 +239,10 @@ package fe.projectile
 			X += dx / div;
 			Y += dy / div;
 			
-			if (loc.sky && (X < 0 || X >= loc.limX || Y < 0 || Y >= loc.limY)) popadalo(0);
+			if (loc.sky && (X < 0 || X >= loc.maxX || Y < 0 || Y >= loc.maxY)) popadalo(0);
 			else
 			{
-				if (!outspace && X<0 || X>=loc.spaceX*Tile.tileX || Y<0 || Y>=loc.spaceY*Tile.tileY) popadalo(0);
+				if (!outspace && X < 0 || X >= loc.spaceX * constTileX || Y<0 || Y >= loc.spaceY * constTileY) popadalo(0);
 
 				var t:Tile = loc.getAbsTile(X, Y);
 
@@ -270,14 +273,15 @@ package fe.projectile
 					{
 						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE))
 						{
-							Emitter.emit('kap', loc, X, Y, {dx:dx/vel*10, dy:dy/vel*10, kol:Math.floor(Math.random()*5+damage/5)});
+							Emitter.emit('kap', loc, X, Y, {dx:dx/vel*10, dy:dy/vel*10, kol:int(Math.random()*5+damage/5)});
 							sound(11);
 							partEmit = false;
 						}
 					}
 					inWater = 0;
 				}
-				if (!tilehit && (tileX<0 || Math.floor(X/World.tileX)==tileX && Math.floor(Y/World.tileY)==tileY) && (t.phis==1 || t.phis==2 && Math.floor(X/World.tileX)==tileX && Math.floor(Y/World.tileY)==tileY) && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
+				if (!tilehit && (tileX < 0 || int(X / constTileX) == tileX && int(Y / constTileY) == tileY) && (t.phis == 1 || t.phis == 2 && int(X / constTileX) == tileX && int(Y / constTileY) == tileY) && X >= t.phX1 && X <= t.phX2 && Y >= t.phY1 && Y <= t.phY2)
+				{
 					if (!inWall)
 					{
 						popadalo(t.mat);
@@ -427,12 +431,14 @@ package fe.projectile
 		//поражение всех стен в радиусе
 		private function explDestroy():void
 		{
-			for (var i=Math.floor((X-explRadius)/Tile.tileX); i<=Math.floor((X+explRadius)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y-explRadius)/Tile.tileY); j<=Math.floor((Y+explRadius)/Tile.tileY); j++) {
-					var tx=X-(i+0.5)*Tile.tileX;
-					var ty=Y-(j+0.5)*Tile.tileY;
-					var ter=tx*tx+ty*ty;
-					if (ter<explRadius*explRadius) loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tileX,(j+0.5)*Tile.tileY,tipDecal);
+			for (var i:int = int((X - explRadius) / constTileX); i<= int((X + explRadius) / constTileX); i++)
+			{
+				for (var j:int = int((Y - explRadius) / constTileY); j<= int((Y + explRadius) / constTileY); j++)
+				{
+					var tx = X - (i + 0.5) * constTileX;
+					var ty = Y - (j + 0.5) * constTileY;
+					var ter = tx * tx + ty * ty;
+					if (ter < explRadius * explRadius) loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
 				}
 			}
 		}
@@ -440,12 +446,13 @@ package fe.projectile
 		//поражение всех юнитов, попавших в радиус, без отбрасывания и учёта стен
 		private function explGas():void
 		{
-			for each(var un:Unit in loc.units) {
+			for each(var un:Unit in loc.units)
+			{
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;// || (un is VirtualUnit)
 				if (explTip==3 && !un.stay) continue; 
-				var tx=un.X-X;
-				var ty=un.Y-un.scY/2-Y;
-				var rasst=Math.sqrt(tx*tx+ty*ty);
+				var tx = un.X-X;
+				var ty = un.Y-un.scY/2-Y;
+				var rasst = Math.sqrt(tx*tx+ty*ty);
 				var dam=damageExpl*(Math.random()*0.6+0.7);
 				//дружественный огонь врагов
 				if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
@@ -634,14 +641,15 @@ package fe.projectile
 
 		private function explLiquid(liq:String, ndy:int=0)
 		{
-			for (var i = Math.floor((X-explRadius)/Tile.tileX); i<=Math.floor((X+explRadius)/Tile.tileX); i++) {
-				for (var j = Math.floor((Y-explRadius)/Tile.tileY); j<=Math.floor((Y+explRadius)/Tile.tileY); j++) {
-					var tx=X-(i+0.5)*Tile.tileX;
-					var ty=Y-(j+0.5)*Tile.tileY;
-					var ter=tx*tx+ty*ty;
-					if (ter<explRadius*explRadius) {
+			for (var i = int((X-explRadius)/constTileX); i<=int((X+explRadius)/constTileX); i++) {
+				for (var j = int((Y-explRadius)/constTileY); j<=int((Y+explRadius)/constTileY); j++) {
+					var tx = X - (i + 0.5) * constTileX;
+					var ty = Y - (j + 0.5) * constTileY;
+					var ter = tx * tx + ty * ty;
+					if (ter<explRadius*explRadius)
+					{
 						var t:Tile=loc.getTile(i,j);
-						if (j>1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i,j-1).phis==0)) Emitter.emit(liq,loc,(i+0.5)*Tile.tileX+Math.random()*4-2,t.phY1+ndy);
+						if (j>1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i,j-1).phis==0)) Emitter.emit(liq,loc,(i+0.5) * constTileX + Math.random()*4-2,t.phY1+ndy);
 					}
 				}
 			}

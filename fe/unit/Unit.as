@@ -311,7 +311,8 @@ package fe.unit
 		static const robotKZ=75;
 		static const damWallStun=45;
 
-
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
 
 		//Параметры для создания юнита
 		//cid - идентификатор создания, на основе которого внутри конструктора класса будет определён настоящий идентификатор
@@ -355,9 +356,6 @@ package fe.unit
 				}
 				if (xml.@die.length()) postDie=true;
 			}
-			/*if (xml && xml.@code=='MraR4xuhkXhpQYkj') {
-				trace(loadObj.dead)
-			}*/
 			if (loadObj && loadObj.dead && !postDie) {
 				sost=4;
 				disabled=true;
@@ -676,8 +674,8 @@ package fe.unit
 			}
 			setPos(nx,ny);
 			if (collisionAll()) {
-				if (!collisionAll(-Tile.tileX)) {
-					setPos(nx-Tile.tileX,ny);
+				if (!collisionAll(-tileX)) {
+					setPos(nx-tileX,ny);
 				}
 			}
 			if (inter) inter.loc=nloc;
@@ -1036,10 +1034,7 @@ package fe.unit
 			var newmy:Number = 0;
 			var autoSit:Boolean = false;
 
-			// Cached for speed
 			var halfScX = scX / 2;
-			var tilex:int = Tile.tileX;
-			var tiley:int = Tile.tileY;
 
 			if (!throu && stay && diagon && dy >= 0)
 			{
@@ -1084,11 +1079,11 @@ package fe.unit
 						kray = true;
 					}
 				}
-				if (X + halfScX >= loc.limX)
+				if (X + halfScX >= loc.maxX)
 				{
 					if (!outLoc(2))
 					{
-						X = loc.limX - 1 - halfScX;
+						X = loc.maxX - 1 - halfScX;
 						dx = -Math.abs(dx) * elast;
 						turnX = -1;
 						kray = true;
@@ -1120,8 +1115,8 @@ package fe.unit
 					}
 					if (player && isUp && stay && !isSit)
 					{
-						t  = loc.space[int(X1/tilex)][int(Y1/tiley)];
-						t2 = loc.space[int(X1/tilex)][int(Y1/tiley) + 1];
+						t  = loc.space[int(X1/tileX)][int(Y1/tileY)];
+						t2 = loc.space[int(X1/tileX)][int(Y1/tileY) + 1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
 						{
 							Y=Y2=t2.phY1;
@@ -1130,9 +1125,9 @@ package fe.unit
 						}
 					}
 					if (mater) {
-						for (i = int(Y1/tiley); i <= int(Y2/tiley); i++)
+						for (i = int(Y1/tileY); i <= int(Y2/tileY); i++)
 						{
-							t = loc.space[int(X1/tilex)][i];
+							t = loc.space[int(X1/tileX)][i];
 							if (collisionTile(t))
 							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
@@ -1186,8 +1181,8 @@ package fe.unit
 					}
 					if (player && isUp && stay && !isSit)
 					{
-						t  = loc.space[int(X2/tilex)][int(Y1/tiley)];
-						t2 = loc.space[int(X2/tilex)][int(Y1/tiley)+1];
+						t  = loc.space[int(X2/tileX)][int(Y1/tileY)];
+						t2 = loc.space[int(X2/tileX)][int(Y1/tileY)+1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
 						{
 							Y  = t2.phY1;
@@ -1198,9 +1193,9 @@ package fe.unit
 					} 
 					if (mater)
 					{
-						for (i = int(Y1/tiley); i<= int(Y2/tiley); i++)
+						for (i = int(Y1/tileY); i<= int(Y2/tileY); i++)
 						{
-							t=loc.space[int(X2/tilex)][i];
+							t=loc.space[int(X2/tileX)][i];
 							if (collisionTile(t))
 							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
@@ -1253,9 +1248,9 @@ package fe.unit
 				{
 					diagon = 0;
 					Y += (dy + osndy) / div;
-					if (Y > loc.limY && !outLoc(3))
+					if (Y > loc.maxY && !outLoc(3))
 					{
-						Y = loc.limY - 1;
+						Y = loc.maxY - 1;
 						dy = 0;
 						turnY = -1;
 					}
@@ -1263,9 +1258,9 @@ package fe.unit
 					Y2 = Y;
 					if (mater)
 					{
-						for (i = int(X1/tilex); i <= int(X2/tilex); i++)
+						for (i = int(X1/tileX); i <= int(X2/tileX); i++)
 						{
-							t = loc.space[i][int(Y2/tiley)];
+							t = loc.space[i][int(Y2/tileY)];
 							if (collisionTile(t))
 							{
 								Y = t.phY1;
@@ -1282,9 +1277,9 @@ package fe.unit
 				{						
 					if (mater)
 					{
-						for (i = int(X1/tilex); i<=int(X2/tilex); i++)
+						for (i = int(X1/tileX); i<=int(X2/tileX); i++)
 						{
-							t=loc.space[i][int((Y2+dy/div)/tiley)];
+							t=loc.space[i][int((Y2+dy/div)/tileY)];
 							if (collisionTile(t,0,dy/div)) {
 								if (-(X1-t.phX1)/scX<shX1) shX1=-(X1-t.phX1)/scX;
 								if ((X2-t.phX2)/scX<shX2) shX2=(X2-t.phX2)/scX;
@@ -1309,9 +1304,9 @@ package fe.unit
 					if (newmy) // Bugs!!!!!
 					{
 						Y1=newmy-scY;
-						for (i = int(X1/tilex); i <= int(X2/tilex); i++)
+						for (i = int(X1/tileX); i <= int(X2/tileX); i++)
 						{
-							t=loc.space[i][int((newmy-scY)/tiley)];
+							t=loc.space[i][int((newmy-scY)/tileY)];
 							if (collisionTile(t)) newmy=0;
 						}
 					}
@@ -1339,11 +1334,11 @@ package fe.unit
 						Y2 = Y;
 					}
 					
-					if (Y > loc.limY)
+					if (Y > loc.maxY)
 					{
 						if (!outLoc(3))
 						{
-							Y=loc.limY-1;
+							Y=loc.maxY-1;
 							turnY=-1;
 							Y1=Y-scY, Y2=Y;
 						}
@@ -1386,9 +1381,9 @@ package fe.unit
 
 				if (mater)
 				{
-					for (i = int(X1/tilex); i <= int(X2/tilex); i++)
+					for (i = int(X1/tileX); i <= int(X2/tileX); i++)
 					{
-						t=loc.space[i][int(Y1/tiley)];
+						t=loc.space[i][int(Y1/tileY)];
 						if (collisionTile(t))
 						{
 							if (t_throw > 0 && dy < -damWallSpeed && damWall) damageWall(4);
@@ -1422,9 +1417,9 @@ package fe.unit
 				dx=Math.abs(dx)*elast;
 				turnX=1;
 			}
-			if (X + halfScX >= loc.limX)
+			if (X + halfScX >= loc.maxX)
 			{
-				X = loc.limX - 1 - halfScX;
+				X = loc.maxX - 1 - halfScX;
 				dx = -Math.abs(dx) * elast;
 				turnX = -1;
 			}
@@ -1434,9 +1429,9 @@ package fe.unit
 				dy = 0;
 				turnY = 1;
 			}
-			if (Y > loc.limY)
+			if (Y > loc.maxY)
 			{
-				Y = loc.limY - 1;
+				Y = loc.maxY - 1;
 				dy = 0;
 				turnY = -1;
 			}
@@ -1464,10 +1459,13 @@ package fe.unit
 			}
 		}
 		
-		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
+		public function collisionAll(gx:Number=0, gy:Number=0):Boolean
+		{
 			if (loc.sky) return false;
-			for (var i=Math.floor((X1+gx)/Tile.tileX); i<=Math.floor((X2+gx)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y1+gy)/Tile.tileY); j<=Math.floor((Y2+gy)/Tile.tileY); j++) {
+			for (var i:int = int((X1+gx)/tileX); i<=int((X2+gx)/tileX); i++)
+			{
+				for (var j:int = int((Y1+gy)/tileY); j<=int((Y2+gy)/tileY); j++)
+				{
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j],gx,gy)) return true;
 				}
@@ -1488,8 +1486,8 @@ package fe.unit
 		//поиск лестницы
 		public function checkStairs(ny:int=-1, nx:int=0):Boolean {
 
-			var i=Math.floor((X+nx)/Tile.tileX);
-			var j=Math.floor((Y+ny)/Tile.tileY);
+			var i:int = int((X+nx)/tileX);
+			var j:int = int((Y+ny)/tileY);
 			if (j>=loc.spaceY) j=loc.spaceY-1;
 			if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3)) {
 				isLaz=0;
@@ -1509,27 +1507,29 @@ package fe.unit
 			return false;
 		}
 		//поиск жидкости
-		public function checkWater():Boolean {
-			var pla=inWater;
+		public function checkWater():Boolean
+		{
+			var pla:Boolean = inWater;
 
-			if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.75)/Tile.tileY)] as Tile).water>0) {
+			if ((loc.space[int(X/tileX)][int((Y-scY*0.75)/tileY)] as Tile).water>0) {
 				isPlav=true;
 				inWater=true;
 				if (plav) {
 					stay=false;
 					sit(false);
 				}
-			} else {
+			}
+			else {
 				isPlav=false;
-				if (scY<=Tile.tileY) {
+				if (scY<=tileY) {
 					inWater=false;
-				} else if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.25)/Tile.tileY)] as Tile).water>0) {
+				} else if ((loc.space[int(X/tileX)][int((Y-scY*0.25)/tileY)] as Tile).water>0) {
 					inWater=true;
 				} else inWater=false;
 			}
 
 			if (pla!=inWater && (dy>8 || dy<-8 || plaKap)) {
-				Emitter.emit('kap',loc,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)+1)});
+				Emitter.emit('kap',loc,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:int(Math.abs(dy*massa*2)+1)});
 				
 			}
 			if (pla!=inWater && dy>5) {
@@ -1952,7 +1952,7 @@ package fe.unit
 		public function destroyWall(t:Tile, napr:int=0):Boolean {
 			if (isPlav || levit || sost!=1) return false;
 			if (napr==3 && dy>15 && destroy<50 && massa>=1) {
-				loc.hitTile(t,50,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,100);
+				loc.hitTile(t,50,(t.X+0.5)*tileX,(t.Y+0.5)*tileY,100);
 				if (t.phis==0) return true;
 			}
 			if (destroy>0 && (dx>10 && napr==2 || dx<-10 && napr==1 || dy<-10 && napr==4  || dy>10 && napr==3)) loc.hitTile(t,destroy,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,(napr==3?100:9));
@@ -2688,11 +2688,11 @@ package fe.unit
 			}
 			
 			//проверить линию взгляда
-			var div=Math.floor(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
+			var div=int(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
 			for (var i=(mater?1:4); i<div; i++) {
 				var nx=X+scX*0.25*storona+cx*i/div;
 				var ny=Y-scY*0.75+cy*i/div;
-				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tileX),Math.floor(ny/Tile.tileY));
+				var t:Tile = World.w.loc.getTile(int(nx/tileX), int(ny/tileY));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return 0;
 				}

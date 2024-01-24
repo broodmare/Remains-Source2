@@ -181,6 +181,9 @@ package fe.unit
 		public var visSel:Boolean=false; //селектор оружия
 		public var animOff:Boolean=false;
 
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		private function testFunction():void
 		{
 			if (World.w.chitOn)
@@ -382,8 +385,8 @@ package fe.unit
 				if (napr==3 || napr==4) {
 					if (laz!=0) {
 						checkStairs();
-						if (!isLaz) checkStairs(1,-Tile.tileX*laz);
-						if (!isLaz) checkStairs(1,Tile.tileX*laz);
+						if (!isLaz) checkStairs(1,-tileX*laz);
+						if (!isLaz) checkStairs(1,tileX*laz);
 					}
 				} 
 				if (napr==4) {
@@ -746,12 +749,12 @@ package fe.unit
 				}
 			} else if (attackForever) {
 				if (isrnd(0.05)) {
-					celX=Math.random()*loc.limX;
-					celY=Math.random()*loc.limY;
+					celX = Math.random()*loc.maxX;
+					celY = Math.random()*loc.maxY;
 				}
 			} else {
-				celX=World.w.celX;
-				celY=World.w.celY;
+				celX = World.w.celX;
+				celY = World.w.celY;
 			}
 			//модификатор точности precMult, только если стрельба не через зпс
 			precMult=pers.allPrecMult, mazil=pers.mazilAdd;
@@ -904,8 +907,6 @@ package fe.unit
 			}
 			if (noPet2>0) noPet2--;
 			if (pet && pet.sost==4 && noPet<=0 && pet.optAutores) pet.resurrect();
-			//удары ап стену
-			//if (stay) damWall=0;
 			//откл. пипбака
 			if (pipOff==1) World.w.gui.allOn();
 			if (pipOff>0) pipOff--;
@@ -997,8 +998,8 @@ package fe.unit
 			}
 			else
 			{
-				var nx = Math.round(World.w.celX / World.tileX) * World.tileX
-				var ny = Math.round(World.w.celY / World.tileY + 1) * World.tileY - 1;
+				var nx = Math.round(World.w.celX / tileX) * tileX
+				var ny = Math.round(World.w.celY / tileY + 1) * tileY - 1;
 				if (checkPort())
 				{
 					teleport(nx, ny, 1);
@@ -1027,8 +1028,8 @@ package fe.unit
 				var t:Tile=loc.getAbsTile(World.w.celX,World.w.celY);
 				if (t.visi<0.8) return;
 			}
-			var tx=Math.round(World.w.celX/World.tileX)*World.tileX
-			var ty=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+			var tx=Math.round(World.w.celX/tileX)*tileX
+			var ty=Math.round(World.w.celY/tileY+1)*tileY-1;
 			if (loc.sky || !loc.collisionUnit(tx,ty,stayX,stayY))	{
 				teleport(tx, ty, 1);
 				if (teleObj) dropTeleObj();
@@ -1041,8 +1042,8 @@ package fe.unit
 		public function checkPort():Boolean {
 			if (mana<pers.portMana*pers.allDManaMult) return false;
 			if (loc.sky) return true;
-			var nx=Math.round(World.w.celX/World.tileX)*World.tileX
-			var ny=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+			var nx=Math.round(World.w.celX/tileX)*tileX
+			var ny=Math.round(World.w.celY/tileY+1)*tileY-1;
 			var t:Tile=loc.getAbsTile(World.w.celX,World.w.celY);
 			if (t.visi>=0.8 && !loc.collisionUnit(nx, ny,stayX,stayY)) return true;
 			return false;
@@ -1217,7 +1218,6 @@ package fe.unit
 						return;
 					} else if (loc.celObj.inter.lock>0) {	//взлом
 						if (loc.celObj.inter.lockTip==0) return;
-						//if (pers.possLockPick<=0) return;
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.lockTip);
 						loc.celObj.inter.master=pers.getLockMaster(loc.celObj.inter.lockTip);
 						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.lock, loc.celObj.inter.lockTip);
@@ -1247,8 +1247,8 @@ package fe.unit
 		private function chit():void {
 			if (World.w.chit=='fly') isFly=!isFly;
 			if (World.w.chit=='port') {
-				var tx=Math.round(World.w.celX/World.tileX)*World.tileX
-				var ty=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+				var tx=Math.round(World.w.celX/tileX)*tileX
+				var ty=Math.round(World.w.celY/tileY+1)*tileY-1;
 				if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			}
 			if (World.w.chit=='emit') {
@@ -1889,7 +1889,7 @@ package fe.unit
 				else if (loc.getAbsTile(X-20,Y-10).lurk && loc.getAbsTile(X+20,Y-10).lurk)
 				{
 					lurkTip=1;
-					lurkX=Math.round(X/Tile.tileX)*Tile.tileX;
+					lurkX=Math.round(X/tileX)*tileX;
 					dx=0;
 					t_work=20;
 					work='lurk';
@@ -2191,7 +2191,7 @@ package fe.unit
 				if (tip==1) weaponY=Y-scY*0.4;
 				else weaponY=Y-scY*0.7;
 				if (stay && weapUp) {
-					if (loc.getTile(Math.floor(weaponX/Tile.tileX),Math.floor((weaponY-40)/Tile.tileY)).phis!=1) weaponY-=40;
+					if (loc.getTile(int(weaponX/tileX), int((weaponY-40)/tileY)).phis!=1) weaponY-=40;
 				}
 			} else super.setWeaponPos(tip);
 			
@@ -3305,7 +3305,7 @@ package fe.unit
 		public function showElectroBlock()
 		{
 			var t:Tile = loc.getAbsTile((X + Math.random() * 320 - 160), (Y - scY / 2 + Math.random() * 320-160));
-			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*Tile.tileX, (t.Y+0.5)*Tile.tileY);
+			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*tileX, (t.Y+0.5)*tileY);
 		}
 		
 		public override function replic(s:String)

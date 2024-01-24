@@ -38,23 +38,25 @@ package fe.unit
 		var aRot:Array;		//массив углов поворота
 		var nRot:int=0;		//и текущий элемент массива
 		var mxml:XML;
-		var angle:String; 
+		var angle:String;
+
+		private var tileX:int = Tile.tileX;
+		private var tileY:int = Tile.tileY;
 		
-		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			// [Define turret type, tr. (Weapon used)]
 			if (loadObj && loadObj.tr) {			// [from the loaded object]
 				tr=loadObj.tr;
 			} else if (xml && xml.@tr.length()) {	// [from map settings]
 				tr=xml.@tr;
-			} else {								// [randomly by ndif parameter]
-				if (ndif<10) {
-					tr=Math.floor(Math.random()*3+1);
-				} else if (ndif<15) {
-					tr=Math.floor(Math.random()*5+1);
-				} else {
-					tr=Math.floor(Math.random()*7+1);
-				}
+			}
+			else // [randomly by ndif parameter]
+			{								
+				if (ndif < 10)		tr = int(Math.random() * 3 + 1);
+				else if (ndif < 15)	tr = int(Math.random() * 5 + 1);
+				else				tr = int(Math.random() * 7 + 1);
 			}
 
 			// [determine the turret type]
@@ -154,7 +156,7 @@ package fe.unit
 				noTurn=true;
 				vis.osn.t1.scaleX=vis.osn.t2.scaleX=vis.osn.t3.scaleX=storona;
 			}
-			nRot=Math.floor(Math.random()*aRot.length);
+			nRot = int(Math.random()*aRot.length);
 			currentWeapon.rot=currentWeapon.forceRot=aRot[nRot];
 			currentWeapon.findCel=false;
 			aiState=1;
@@ -168,7 +170,8 @@ package fe.unit
 			} catch(err) {};
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.2);
@@ -181,8 +184,10 @@ package fe.unit
 			currentWeapon.damage*=(1+level*0.12);
 		}
 		
-		public override function setVisPos() {
-			vis.x=X,vis.y=Y;
+		public override function setVisPos()
+		{
+			vis.x = X;
+			vis.y = Y;
 		}
 
 		public override function animate()
@@ -213,17 +218,18 @@ package fe.unit
 			return radians * 180 / Math.PI;
 		}
 
-		public override function setPos(nx:Number,ny:Number) {
+		public override function setPos(nx:Number,ny:Number)
+		{
 			super.setPos(nx,ny);
-			if ((turrettip==0 || turrettip==4) && loc && !loc.active) {
-				osnova=loc.getAbsTile(X, Y-50);
-			}
+			if ((turrettip == 0 || turrettip == 4) && loc && !loc.active) osnova = loc.getAbsTile(X, Y - 50);
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			super.alarma(nx,ny);
 			if (turrettip==3) return;
-			if (sost==1 && !sleep) {
+			if (sost==1 && !sleep)
+			{
 				ear=10;
 				var vK=vKonus;
 				vKonus=0;
@@ -235,13 +241,16 @@ package fe.unit
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean = false)
+		{
 			super.setNull(f);
-			if (f && !sleep) {
-				if (hidden) aiState=0;
-				else aiState=1;
-				if (aiState==0) vis.osn.gotoAndStop(6);
-				aiTCh=Math.floor(Math.random()*10)+5;
+			if (f && !sleep)
+			{
+				aiState = hidden? 0 : 1;
+
+
+				if (aiState == 0) vis.osn.gotoAndStop(6);
+				aiTCh = int(Math.random()*10)+5;
 			}
 		}
 		
@@ -302,8 +311,8 @@ package fe.unit
 			if (com=='hack') hack();
 			if (com=='port') {
 				var arr:Array=val.split(':');
-				var nx=(int(arr[0])+0.5)*World.tileX;
-				var ny=(int(arr[1])+1)*World.tileY;
+				var nx=(int(arr[0])+0.5) * tileX;
+				var ny=(int(arr[1])+1) * tileY;
 				teleport(nx,ny,1);
 				aiState=2;
 				aiTCh=60;
@@ -374,29 +383,36 @@ package fe.unit
 				return;
 			}
 			if (aiTCh>0) aiTCh--;
-			else if (aiState==2) {
-				if (celUnit) {
+			else if (aiState==2)
+			{
+				if (celUnit)
+				{
 					aiSpok=maxSpok+10;
 					aiState=3;
 					budilo(750);
-				} else {
-					aiState=1;
 				}
-			} else{
-				if (aiSpok<=0) {
-					if (aiState==1 && hidden) {
+				else aiState=1;
+			}
+			else
+			{
+				if (aiSpok<=0)
+				{
+					if (aiState==1 && hidden)
+					{
 						aiState=0;
 						currentWeapon.forceRot=Math.PI/2;
-					} else if (aiState>0) aiState=1;
+					}
+					else if (aiState>0) aiState=1;
+
 					if (aiState==1) {	//установить угол поворота
 						nRot++;
 						if (nRot>=aRot.length) nRot=0;
 						currentWeapon.forceRot=aRot[nRot]*Math.PI/180;
 					}
 					aiTCh=period;
-				} else {
-					aiTCh=Math.floor(Math.random()*50)+40;
 				}
+				else aiTCh = int(Math.random() * 50) + 40;
+
 				if (aiSpok>0) aiState=4;
 				if (aiSpok>=maxSpok) aiState=3;
 			}

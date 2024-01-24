@@ -39,7 +39,7 @@ package fe.unit
 		private var itemList:XMLList;	// Pre-load these lists and keep them in memory instead of costly lookups all the time.
 		private var armorList:XMLList;
 		private var weaponList:XMLList;
-		
+
 		public function Invent(own:Unit,loadObj:Object=null, opt:Object=null)
 		{
 			owner	= own;
@@ -615,7 +615,8 @@ package fe.unit
 		}
 		
 		//добавить в инвентарь, tr=1 если вещь была куплена, 2-если была получена в награду
-		public function take(l:Item, tr:int=0) {
+		public function take(l:Item, tr:int = 0)
+		{
 			var kol:int=0;
 			var color:int=-1;
 			try {
@@ -671,11 +672,14 @@ package fe.unit
 				if (!weapons[l.id]) addWeapon(l.id);
 				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
 				color=3;
-			} else if (l.tip==Item.L_AMMO) {
-				plus(l,tr);
-				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo',l.nazv,l.kol);
+			}
+			else if (l.tip==Item.L_AMMO)
+			{
+				plus(l, tr);
+				if (tr == 0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo', l.nazv, l.kol);
 				color=3;
-			} else if (l.tip==Item.L_MED) {
+			}
+			else if (l.tip==Item.L_MED) {
 				plus(l,tr);
 				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
 				if (cItem<0) nextItem(1);
