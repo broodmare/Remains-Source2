@@ -711,15 +711,42 @@ package fe.unit
 		}
 		
 		//вернуть уровень, соответствующий параметру skill оружия
-		public function getWeapLevel(sk:int):int {
-			if (sk==1) return getSkLevel(skills['melee']);
-			if (sk==2) return getSkLevel(skills['smallguns']);
-			if (sk==3) return getSkLevel(skills['repair']);
-			if (sk==4) return getSkLevel(skills['energy']);
-			if (sk==5) return getSkLevel(skills['explosives']);
-			if (sk==6) return getSkLevel(skills['magic']);
-			if (sk==7) return getSkLevel(skills['tele']);
-			return 100;
+		public function getWeapLevel(skill:int):int
+		{
+			switch(skill)
+			{
+				case 1:
+					return getSkLevel(skills['melee']);
+				break;
+
+				case 2:
+					return getSkLevel(skills['smallguns']);
+				break;
+
+				case 3:
+					return getSkLevel(skills['repair']);
+				break;
+
+				case 4:
+					return getSkLevel(skills['energy']);
+				break;
+
+				case 5:
+					return getSkLevel(skills['explosives']);
+				break;
+
+				case 6:
+					return getSkLevel(skills['magic']);
+				break;
+
+				case 7:
+					return getSkLevel(skills['tele']);
+				break;
+
+				default:
+					return 100;
+				break;
+			}
 		}
 		//вернуть уровень скилла по его названию
 		public function getSkillLevel(sk:String):int {
