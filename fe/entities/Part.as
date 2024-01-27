@@ -9,7 +9,7 @@ package fe.entities
 	import fe.*;
 	import fe.graph.Emitter;
 
-	public class Part  extends Pt
+	public class Part  extends Entity
 	{
 		public var vClass:Class;
 		

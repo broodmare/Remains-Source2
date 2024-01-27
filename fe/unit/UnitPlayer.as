@@ -11,7 +11,7 @@ package fe.unit
 	import fe.loc.*;
 	import fe.weapon.*;
 	import fe.inter.*;
-	import fe.entities.Pt;
+	import fe.entities.Entity;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
@@ -1082,9 +1082,10 @@ package fe.unit
 				var dist=(X-World.w.celX)*(X-World.w.celX)+(Y-scY/2-World.w.celY)*(Y-scY/2-World.w.celY);
 				if (dist>pers.teleDist) return;
 				if (!loc.isLine(X,Y-scY*0.75, World.w.celX, World.w.celY)) return;
-				var pt:Pt=loc.firstObj;
+				var pt:Entity = loc.firstObj;
 				var mindist=50*50;
-				while (pt) {
+				while (pt)
+				{
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
 						dist=(World.w.celX-pt.X)*(World.w.celX-pt.X)+(World.w.celY-pt.Y+(pt as Obj).scY/2)*(World.w.celY-pt.Y+(pt as Obj).scY/2);
 						if (dist<mindist) {

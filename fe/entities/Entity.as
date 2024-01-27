@@ -6,12 +6,13 @@ package fe.entities
 	import fe.World;
 	import fe.loc.Location;
 	
-	public class Pt
+	public class Entity
 	{
-		public var vis:MovieClip; // Movieclip Object holding the entity's (sprite?).
+		public var vis:MovieClip; // Movieclip that holds the entity's sprite
 
-		public var loc:Location;			// What room the entity is currently in
-		public var nobj:Pt, pobj:Pt;		// Next Obj in processing chain, Previous Obj in processing chain
+		public var loc:Location;	// What room the entity is currently in
+		public var nobj:Entity
+		public var pobj:Entity;		// Next Obj in processing chain, Previous Obj in processing chain
 		public var in_chain:Boolean=false;
 		
 		public var stay:Boolean=false;
@@ -22,7 +23,7 @@ package fe.entities
 		// Movement
 		public var dx:Number=0, dy:Number=0;
 		
-		public function Pt() {
+		public function Entity() {
 		}
 
 		public function addVisual() {

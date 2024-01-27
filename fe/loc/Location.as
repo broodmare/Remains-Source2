@@ -4,7 +4,7 @@ package fe.loc
 	import flash.display.MovieClip;
 
 	import fe.*;
-	import fe.entities.Pt;
+	import fe.entities.Entity;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
@@ -71,7 +71,12 @@ package fe.loc
 		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
 		public var objsT:Array;				//активные объекты
 		public var recalcTiles:Array;		//пересчитать воду
-		public var firstObj:Pt, nextObj:Pt, lastObj:Pt;	//цепочка выполнения
+
+		//цепочка выполнения
+		public var firstObj:Entity;
+		public var nextObj:Entity;
+		public var lastObj:Entity;
+		
 		public var isRebuild:Boolean=false, isRecalc:Boolean=false, isRelight:Boolean=false, relight_t:int;
 		public var warning:int=0;			//имеются опасности типа брошенных гранат
 		public var t_gwall:int=0;	//имеются призрачные стены
@@ -1261,7 +1266,7 @@ package fe.loc
 		//активировать при входе гг в локацию
 		public function reactivate(n:int = 0):void
 		{
-			var obj:Pt = firstObj;
+			var obj:Entity = firstObj;
 			while (obj)
 			{
 				nextObj=obj.nobj;
@@ -1307,7 +1312,7 @@ package fe.loc
 //
 //**************************************************************************************************************************
 		//добавить любой объект в цепочку обработки
-		public function addObj(obj:Pt):void
+		public function addObj(obj:Entity):void
 		{
 			if (obj.in_chain) return;
 			if (!firstObj) firstObj=obj;
@@ -1323,7 +1328,7 @@ package fe.loc
 		}
 		
 		//удалить объект из цепочки обработки
-		public function remObj(obj:Pt):void
+		public function remObj(obj:Entity):void
 		{
 			if (!obj.in_chain) return;
 
@@ -1606,7 +1611,7 @@ package fe.loc
 					t.recalc=false;
 				}
 			}
-			var obj:Pt=firstObj;
+			var obj:Entity = firstObj;
 			while (obj) {
 				if (obj is Obj) (obj as Obj).checkStay();
 				obj=obj.nobj;
@@ -2092,7 +2097,7 @@ package fe.loc
 		public function stepInvis():void
 		{
 			var numb=0;
-			var obj:Pt=firstObj;
+			var obj:Entity = firstObj;
 			if (warning > 0) warning--;
 			while (obj)
 			{
@@ -2125,7 +2130,7 @@ package fe.loc
 			if (prob) prob.step();
 			//пройтись по всей цепочке объектов
 			var numb=0;
-			var obj:Pt=firstObj;
+			var obj:Entity = firstObj;
 			if (warning>0) warning--;
 			while (obj) 
 			{

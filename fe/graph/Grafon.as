@@ -19,7 +19,7 @@ package fe.graph
 
 	import fe.*;
 	import fe.loc.*;
-	import fe.entities.Pt;
+	import fe.entities.Entity;
 	
 	// .fla linkages
 	import fe.stubs.tileVoda;		
@@ -554,7 +554,7 @@ package fe.graph
 				visual.addChildAt(visObjs[i], n);
 			}
 
-			var obj:Pt = loc.firstObj;
+			var obj:Entity = loc.firstObj;
 
 			while (obj)
 			{

@@ -9,7 +9,7 @@ package  fe.entities
 	import fe.projectile.Bullet;
 	import fe.inter.Appear;
 	
-	public class Obj extends Pt
+	public class Obj extends Entity
 	{
 		public var code:String;		// [Individual code]
 		public var uid:String;		// [Unique identifier used for script access to the object]
