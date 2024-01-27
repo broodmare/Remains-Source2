@@ -204,7 +204,7 @@ package fe.loc
 			preactive=active;
 		}
 		
-		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number)
+		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void
 		{
 			X  = x1;
 			X1 = x1;
@@ -216,22 +216,24 @@ package fe.loc
 			scY = Y2 - Y1;
 		}
 		
-		public function setLift()	// Grave lift effect
+		public function setLift():void	// Grav lift effect
 		{
-			for (var i=bx; i<bx+rx; i++) {
-				for (var j=by-ry+1; j<=by; j++) {
-					loc.getTile(i,j).grav=enabled?lift:1;
+			for (var i:int = bx; i < bx + rx; i++)
+			{
+				for (var j:int = by - ry + 1; j <= by; j++)
+				{
+					loc.getTile(i, j).grav = enabled? lift:1;
 				}
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11)
+		public function damTiles(destroy:int,tipDam:int=11):void
 		{
-			for (var i = bx; i < bx + rx; i++)
+			for (var i:int = bx; i < bx + rx; i++)
 			{
-				for (var j = by - ry + 1; j <= by; j++)
+				for (var j:int = by - ry + 1; j <= by; j++)
 				{
-					loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * tileY, (j + 0.5) * tileY, tipDam);
+					loc.hitTile(loc.getTile(i, j), destroy, (i + 0.5) * tileY, (j + 0.5) * tileY, tipDam);
 				}
 			}
 		}
