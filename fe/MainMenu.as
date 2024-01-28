@@ -61,6 +61,8 @@ package fe
 
 		public function MainMenu(nmain:Sprite) 
 		{
+			trace('LOADING SETTINGS');
+			Settings.initializeSettings();
 			trace('LOADING XML DATA FROM EXTERNAL SOURCES');
 			XMLData.initializeModules();
 

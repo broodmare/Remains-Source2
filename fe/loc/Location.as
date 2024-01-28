@@ -37,7 +37,7 @@ package fe.loc
 		public var bindLoc:Location;	//привязанная по координате z
 		public var base:Boolean=false;	//базовый лагерь
 		public var train:Boolean=false;	//полигон
-		public var black:Boolean=true;	//туман войны
+		
 		
 		
 		//объекты
@@ -115,9 +115,13 @@ package fe.loc
 		public var homeAtk:Boolean=false;	
 		public var visMult:Number=1;
 		public var noMap:Boolean=false;			//карта недоступна
-		public var darkness:int=0;				//затемнение заднего плана
-		public var lightOn:int=0;				//если больше 0 - свет включен, меньше - выключен
-		public var retDark:Boolean=false;		//туман войны будет восстанавливаться
+		public var darkness:int = 0;			// Background darkening
+		public var lightOn:int = 0;				// More than 0, light is on, 0 or less is off
+
+		// Fog of war
+		public var black:Boolean	= true;								//	Fog of war is enabled	(Default: True)
+		public var retDark:Boolean	= Settings.settings.fogRegenerates;	//	Fog of war returns		(Default: False)
+		
 		public var levitOn:Boolean=true;		//самолевитация разрешена
 		public var portOn:Boolean=true;			//телепортация разрешена
 		public var petOn:Boolean=true;			//спутник разрешен
@@ -183,8 +187,6 @@ package fe.loc
 
 			initializeArrays();
 			maxdy = World.maxdy;
-
-
 
 			if (rnd) ramka = 1;
 			if (opt)
@@ -278,7 +280,7 @@ package fe.loc
 				if (nroom.options.@bezdna.length()) bezdna=true;
 				if (nroom.options.@wlevel.length()) waterLevel=nroom.options.@wlevel;
 				if (nroom.options.@base.length()) base=true;
-				if (nroom.options.@noblack.length()) black=false;
+				if (nroom.options.@noblack.length() && !Settings.alwaysFogOfWar) black = false;
 				if (nroom.options.@train.length()) train=true;
 				if (nroom.options.@color.length()) color=nroom.options.@color;
 				if (nroom.options.@colorfon.length()) colorfon=nroom.options.@colorfon;
@@ -302,7 +304,7 @@ package fe.loc
 				if (nroom.options.@trus.length()) trus=nroom.options.@trus;
 				if (!black)
 				{
-					for (i = 0; i<spaceX; i++)
+					for (i = 0; i < spaceX; i++)
 					{
 						for (j = 0; j<spaceY; j++)
 						{
