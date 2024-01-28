@@ -1,6 +1,7 @@
 package fe.loc
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.serv.Script;
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
@@ -56,11 +57,11 @@ package fe.loc
 					bx=loc.spaceX-bx-rx;
 				}
 				scX = rx * tileX;
-				X  = bx * tileX;
+				coordinates.X  = bx * tileX;
 				X1 = bx * tileX;
-				Y  = by * tileY + tileY;
+				coordinates.Y  = by * tileY + tileY;
 				Y2 = by * tileY + tileY;
-				X2=X1+scX;
+				X2 = X1 + scX;
 				if (xml.@h.length()) ry=xml.@h;
 				scY=ry*tileY;
 				Y1=Y2-scY;
@@ -129,9 +130,10 @@ package fe.loc
 			if (enabled && lift!=1) setLift();
 			if (vis) {
 				if (vis.totalFrames<=1) vis.cacheAsBitmap=true;
-				vis.x=X, vis.y=Y;
-				vis.scaleX=scX/100;
-				vis.scaleY=scY/100;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+				vis.scaleX = scX / 100;
+				vis.scaleY = scY / 100;
 				vis.alpha=enabled?1:0.1;
 				vis.blendMode='screen';
 			}
@@ -159,7 +161,7 @@ package fe.loc
 			if (emit) {
 				t_frec+=frec;
 				if (t_frec>1) {
-					var kol:int=Math.floor(t_frec);
+					var kol:int=int(t_frec);
 					t_frec-=kol;
 					emit.cast(loc,(X1+X2)/2,(Y1+Y2)/2,{rx:scX, ry:scY, kol:kol});
 				}
@@ -206,11 +208,11 @@ package fe.loc
 		
 		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void
 		{
-			X  = x1;
+			coordinates.X  = x1;
 			X1 = x1;
 			Y1 = y1;
 			X2 = x2;
-			Y  = y2;
+			coordinates.Y  = y2;
 			Y2 = y2;
 			scX = X2 - X1;
 			scY = Y2 - Y1;

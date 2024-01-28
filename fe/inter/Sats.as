@@ -89,8 +89,8 @@ package fe.inter {
 				} else {
 					trasser.visible=false;
 					radius.visible=true;
-					radius.x=gg.X+gg.pers.meleeS*gg.storona;
-					radius.y=gg.Y-gg.scY/2;
+					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona;
+					radius.y = gg.coordinates.Y - gg.scY / 2;
 					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
 				}
 				skillConf=1;
@@ -226,8 +226,8 @@ package fe.inter {
 		public function getPrec(un:Unit):Number {
 			var prec:Number=1;
 			var sk=gg.pers.weaponSkills[weapon.skill];
-			var dx=weapon.X-un.X;
-			var dy=weapon.Y-un.Y;
+			var dx = weapon.coordinates.X - un.coordinates.X;
+			var dy = weapon.coordinates.Y - un.coordinates.Y;
 			var rasst=Math.sqrt(dx*dx+dy*dy);
 			if (weapon.precision>0) {
 				prec=weapon.resultPrec(1,sk)/rasst/(un.dexter+0.1)*skillConf;

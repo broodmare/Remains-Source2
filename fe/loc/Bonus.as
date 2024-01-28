@@ -12,23 +12,24 @@ package fe.loc
 		public var liv:int=1000000;
 
 		public function Bonus(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
-			loc=nloc;
-			id=nid;
-			X=nx;
-			Y=ny;
+			loc = nloc;
+			id = nid;
+			coordinates.X = nx;
+			coordinates.Y = ny;
 			setSize();
-			if (loadObj) {
-				sost=loadObj.sost;
+			if (loadObj) sost = loadObj.sost;
+			levitPoss = false;
+			sloy = 3;
+			if (sost == 1)
+			{
+				if (id == 'heal')	vis = new visualHealBonus();
+				else				vis = new visualBonus();
 			}
-			levitPoss=false;
-			sloy=3;
-			if (sost==1) {
-				if (id=='heal') vis=new visualHealBonus();
-				else vis=new visualBonus();
-			}
-			if (vis) {
-				vis.bonus.cacheAsBitmap=true;
-				vis.x=X, vis.y=Y;
+			if (vis)
+			{
+				vis.bonus.cacheAsBitmap = true;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 			}
 		}
 		
@@ -36,15 +37,17 @@ package fe.loc
 		{
 			scX = 40;
 			scY = 40;
-			X1 = X - scX / 2;
-			X2 = X + scX / 2;
-			Y1 = Y - scY / 2;
-			Y2 = Y + scY / 2;
+
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY / 2;
+			Y2 = coordinates.Y + scY / 2;
 		}
 		
-		public override function save():Object {
-			var obj:Object=new Object();
-			obj.sost=sost;
+		public override function save():Object
+		{
+			var obj:Object = new Object();
+			obj.sost = sost;
 			return obj;
 		}
 		
@@ -65,22 +68,24 @@ package fe.loc
 		
 		public function take():void
 		{
-			sost=2;
-			liv=0;
+			sost = 2;
+			liv = 0;
 			vis.gotoAndPlay(2);
-			if (id=='xp')
+			if (id == 'xp')
 			{
 				loc.kolXp--;
-				if (loc.kolXp==0 && loc.maxXp>1) //собрали все бонусы
+				if (loc.kolXp == 0 && loc.maxXp > 1) //собрали все бонусы
 				{	
-					World.w.pers.expa(loc.unXp*loc.maxXp);
-					if (!loc.detecting && loc.summXp>0) {
-						loc.takeXP(loc.summXp,World.w.gg.X, World.w.gg.Y-100,true);
+					World.w.pers.expa(loc.unXp * loc.maxXp);
+					if (!loc.detecting && loc.summXp > 0)
+					{
+						loc.takeXP(loc.summXp, World.w.gg.coordinates.X, World.w.gg.coordinates.Y - 100, true);
 						World.w.gui.infoText('sneakBonus');
 					}
 					Snd.ps('bonus2');
 				}
-				else {
+				else
+				{
 					World.w.pers.expa(loc.unXp);
 					Snd.ps('bonus1');
 				}

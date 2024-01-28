@@ -1,10 +1,12 @@
-package fe.unit {
+package fe.unit
+{
 	
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	
-	public class UnitBloat extends Unit{
+	public class UnitBloat extends Unit
+	{
 		
 		public var tr:int;
 		var cDam:Number;
@@ -13,7 +15,8 @@ package fe.unit {
 		var isGryz:Boolean=false;
 		var shootCh:Number=0.1;
 		
-		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -23,7 +26,7 @@ package fe.unit {
 			} else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
 			} else {
-				tr=Math.floor(Math.random()*5);	//случайно по параметру ndif
+				tr = int(Math.random()*5);	//случайно по параметру ndif
 			}
 			if (!(tr>=0)) tr=0;
 			id='bloat'+tr;
@@ -68,7 +71,7 @@ package fe.unit {
 			super.setNull(f);
 			if (f) {
 				aiState=0;
-				aiTCh=Math.floor(Math.random()*10)+5;
+				aiTCh = int(Math.random()*10)+5;
 			}
 		}
 		public override function save():Object {
@@ -84,21 +87,21 @@ package fe.unit {
 		}
 		
 		function emit() {
-			var un:Unit=loc.createUnit('bloat',X,Y,true,null,'0');
+			var un:Unit=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, '0');
 		}
 		
 		public override function expl()	{
 			newPart('shmatok',4,2);
-			newPart('bloat_kap',Math.floor(Math.random()*3+4));
+			newPart('bloat_kap',int(Math.random()*3+4));
 		}
 		
 		public override function dropLoot() {
 			super.dropLoot();
 			var un:Unit
 			if (tr>=8) {
-				un=loc.createUnit('bloat',X,Y,true,null,String(tr-1));
+				un=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, String(tr-1));
 				un.questId=questId;
-				un=loc.createUnit('bloat',X,Y,true,null,String(tr-1));
+				un=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, String(tr-1));
 				un.questId=questId;
 			} 
 			if (isEmit) {
@@ -178,16 +181,18 @@ package fe.unit {
 				aiDy=Math.abs(aiDy)*turnY;
 				turnY=0;
 			}
-			dx+=aiDx*accel+Math.random()*2-1;
-			dy+=aiDy*accel+Math.random()*2-1;
+			dx += aiDx * accel + Math.random() * 2 - 1;
+			dy += aiDy * accel + Math.random() * 2 - 1;
 			
 			if (isGryz) {
 				if (celUnit && isMeet(celUnit)) {
-					if ((celUnit.X-X)*(celUnit.X-X)+(celUnit.Y-Y)*(celUnit.Y-Y)>10000) {
+					if ((celUnit.coordinates.X - coordinates.X) * (celUnit.coordinates.X - coordinates.X) + (celUnit.coordinates.Y - coordinates.Y) * (celUnit.coordinates.Y - coordinates.Y) > 10000)
+					{
 						isGryz=false;
-					} else {
-						dx=celUnit.X-X;
-						dy=celUnit.Y-celUnit.scY/2-Y+scY/2;
+					}
+					else {
+						dx = celUnit.coordinates.X - coordinates.X;
+						dy = celUnit.coordinates.Y - celUnit.scY / 2 - coordinates.Y + scY / 2;
 					}
 				} else {
 					isGryz=false;
@@ -201,6 +206,5 @@ package fe.unit {
 				if (atk && gryz) isGryz=true;
 			}
 		}
-	}
-	
+	}	
 }

@@ -85,7 +85,7 @@ package fe.unit {
 			id='cage';
 			nazv=Res.txt('u',id);
 			npc=false;
-			loc.takeXP(500,World.w.gg.X, World.w.gg.Y-100,true);
+			loc.takeXP(500, World.w.gg.coordinates.X, World.w.gg.coordinates.Y - 100, true);
 			fraction=0;
 			if (questId) {
 				if (loc.land.itemScripts[questId]) loc.land.itemScripts[questId].start();

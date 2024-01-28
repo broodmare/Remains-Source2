@@ -1,11 +1,9 @@
-package fe.unit {
-	import flash.filters.GlowFilter;
-	import flash.display.MovieClip;
-	
-	import fe.weapon.*;
+package fe.unit
+{
 	import fe.*;
+	import fe.util.Vector2;
+	import fe.weapon.*;
 	import fe.loc.Tile;
-	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
@@ -22,16 +20,6 @@ package fe.unit {
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossraider';
-			//определить разновидность tr
-			/*if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}*/
 			if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
 			}
@@ -130,8 +118,8 @@ package fe.unit {
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-scY*0.58;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y - scY * 0.58;
 		}
 		
 		public override function dropLoot() {
@@ -140,11 +128,11 @@ package fe.unit {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
 				var cid:String=currentWeapon.id;
 				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-				LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,cid,0);
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
 			}
 			if (attackerType==3) {
 				for (var i=0; i<3; i++) {
-					setCel(null,X+Math.random()*30-15,Y-Math.random()*15);
+					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 					currentWeapon.attack();
 				}
 			}
@@ -163,7 +151,7 @@ package fe.unit {
 		}
 
 		function emit() {
-			var un:Unit=loc.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2, true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -208,7 +196,6 @@ package fe.unit {
 		
 		public override function control() {
 			var t:Tile;
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (stun) {
@@ -217,12 +204,11 @@ package fe.unit {
 			
 			t_replic--;
 			var jmp:Number=0;
-			//return;
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			
@@ -237,14 +223,13 @@ package fe.unit {
 				else aiTCh=Math.floor(Math.random()*100)+150;
 			}
 			//поиск цели
-			//trace(aiState)
 			if (aiTCh%10==1) {
 				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.4)) setCel(loc.gg.pet);
 				else setCel(loc.gg);
 			}
 			//направление
-			celDX=celX-X;
-			if (stay) celDY=celY-Y+scY;
+			celDX = celX - coordinates.X;
+			if (stay) celDY = celY - coordinates.Y + scY;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -267,8 +252,6 @@ package fe.unit {
 				walk=0;
 			} else if (aiState==1 || (aiState==2 || aiState==3) && Math.abs(celDX)>aiDist) {
 				destroy=50;
-				//определить, куда двигаться
-				//if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;	
 				if (aiTCh%15==1 && aiState!=6) {
 					if (isrnd(0.5)) {
 						if (celDX>100) aiNapr=storona=1;
@@ -298,19 +281,17 @@ package fe.unit {
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
-				if (stay && Y-begY>=40) jmp=1;
+				if (stay && coordinates.Y-begY>=40) jmp=1;
 				if (stay && tr==2 && celDY<-100) jmp=1;
 				if (turnX!=0) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
-						aiTTurn=Math.floor(Math.random()*20)+5;
+						aiTTurn=int(Math.random()*20)+5;
 					} else {							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
-						//if (isrnd(0.1) || turnY>0 || celDY>100 || !checkJump()) aiTTurn-=10;
-						//else jmp=1;
 						if (aiTTurn<0) {
 							aiNapr=storona=turnX;
-							aiTTurn=Math.floor(Math.random()*20)+5;
+							aiTTurn=int(Math.random()*20)+5;
 						}
 					}
 					turnX=turnY=0;
@@ -322,7 +303,7 @@ package fe.unit {
 				}
 			} else if (aiState==3 || aiState==2) {
 				walk=0;
-				aiNapr=storona=(celX>X)?1:-1;
+				aiNapr=storona=(celX>coordinates.X)?1:-1;
 				if (celDX*celDX+celDY*celDY<200*200) {
 					aiState=1;
 				}
@@ -342,7 +323,6 @@ package fe.unit {
 					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
 					aiAttackT--;
 				}
-				//currentWeapon.attack();
 				if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
 				} else if (aiState==4) {		//тряска
 					if (aiTCh==5) quake();
@@ -358,7 +338,7 @@ package fe.unit {
 		
 		function quake() {
 			loc.earthQuake(40);
-			Emitter.emit('quake',loc,X+Math.random()*40-20,Y);
+			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
 		}
 		
 		public override function command(com:String, val:String=null) {

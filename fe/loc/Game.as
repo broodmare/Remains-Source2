@@ -249,7 +249,7 @@ package fe.loc
 				}
 			}
 			World.w.gg.remEffect('potion_fly');
-			World.w.gui.messText('', Res.txt('m',curLand.id)+(curLand.rnd?(' - '+(curLand.landStage+1)):''), World.w.gg.Y<300);
+			World.w.gui.messText('', Res.txt('m', curLand.id) + (curLand.rnd? (' - ' + (curLand.landStage + 1)):''), World.w.gg.coordinates.Y < 300);
 			if (!curLand.rnd) curLand.visited=true;
 			if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
 			if (curLand.upStage) {
@@ -367,15 +367,14 @@ package fe.loc
 				return;
 			}
 			q.showSub(sid);
-			try {
-				for each (var q1 in q.subs) {
-					if (q1.id==sid) {
-						World.w.gui.infoText('addTask2',q1.nazv);
-						Snd.ps('quest');
-						break;
-					}
+			
+			for each (var q1 in q.subs) {
+				if (q1.id==sid) {
+					World.w.gui.infoText('addTask2',q1.nazv);
+					Snd.ps('quest');
+					break;
 				}
-			} catch(err) {}
+			}
 		}
 		
 		public function closeQuest(id:String, sid:String=null) {

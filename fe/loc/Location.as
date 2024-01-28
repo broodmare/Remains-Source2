@@ -775,9 +775,9 @@ package fe.loc
 		private function createPhoenix(box:Box):Boolean
 		{
 			if (box.wall || !box.shelf) return false;
-			if (collisionUnit(box.X,box.Y1-1,38,38)) return false;
+			if (collisionUnit(box.coordinates.X,box.Y1-1,38,38)) return false;
 			var un:Unit=new UnitPhoenix();
-			un.putLoc(this,box.X,box.Y1-1);
+			un.putLoc(this, box.coordinates.X, box.Y1-1);
 			addObj(un);
 			units.push(un);
 			kol_phoenix++;
@@ -789,10 +789,10 @@ package fe.loc
 		{
 			if (box.wall || !box.shelf) return false;
 			if (land.rnd && Math.random()<0.5) return false;
-			if (collisionUnit(box.X,box.Y1-1,30,20)) return false;
+			if (collisionUnit(box.coordinates.X, box.Y1-1,30,20)) return false;
 			var un:Unit=new UnitTransmitter('box');
 			un.setLevel(enemyLevel);
-			un.putLoc(this,box.X,box.Y1-1);
+			un.putLoc(this,box.coordinates.X,box.Y1-1);
 			addObj(un);
 			units.push(un);
 			return true;
@@ -810,7 +810,7 @@ package fe.loc
 				if (nsur==null) return;
 			}
 			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this,item,box.X,box.Y-box.scY-3,false,false,false);
+			var l:Loot=new Loot(this,item,box.coordinates.X, box.coordinates.Y-box.scY-3,false,false,false);
 			if (base) 
 			{
 				l.inter.active=false;
@@ -857,8 +857,8 @@ package fe.loc
 					var nx:int = int(Math.random()*(spaceX-4)+2);
 					var ny:int = int(Math.random()*(spaceY-4)+2);
 					if (cp) {
-						var dnx = cp.X - (nx * tileX + 20);
-						var dny = cp.Y - (ny * tileY + 40);
+						var dnx = cp.coordinates.X - (nx * tileX + 20);
+						var dny = cp.coordinates.Y - (ny * tileY + 40);
 						if (dnx * dnx + dny * dny < 80 * 80) continue;
 					}
 					if (biom==1 && lvl==1 && ny>15) ny=15;
@@ -1520,11 +1520,7 @@ package fe.loc
 					t.die();
 					if (tileSpawn > 0 && Math.random() < tileSpawn)
 					{
-						try
-						{
-							enemySpawn(true, true);
-						} 
-						catch(err) {}
+						enemySpawn(true, true);
 					}
 					if (active) grafon.tileDie(t, tip);
 				}
@@ -1744,8 +1740,8 @@ package fe.loc
 			{
 				if (un && un != owner && un.sost == 1 && !un.unres)
 				{
-					var dx = un.X - nx;
-					var dy = un.Y - ny;
+					var dx = un.coordinates.X - nx;
+					var dy = un.coordinates.Y - ny;
 					var delta = rad / 2;
 					if (delta > 400) delta = 400;
 					if (dx * dx + dy * dy < r2 * un.ear * un.ear) un.alarma(nx+(Math.random()-0.5)*delta,ny+(Math.random()-0.5)*delta);
@@ -1840,7 +1836,7 @@ package fe.loc
 			var sp:Object=enspawn[Math.floor(Math.random()*enspawn.length)];
 			var un:Unit=createUnit((tipSp==null)?tipSpawn:tipSp,sp.x,sp.y,true,null,null,30);
 
-			if (getGG) un.alarma(gg.X, gg.Y);
+			if (getGG) un.alarma(gg.coordinates.X, gg.coordinates.Y);
 			else un.alarma();
 		}
 		
@@ -1920,11 +1916,11 @@ package fe.loc
 			{
 				if (cell.light)
 				{
-					var adjustedY:Number = cell.Y - cell.scY / 2;
+					var adjustedY:Number = cell.coordinates.Y - cell.scY / 2;
 
-					lighting(cell.X - 10, adjustedY);
-					lighting(cell.X, adjustedY);
-					lighting(cell.X + 10, adjustedY);
+					lighting(cell.coordinates.X - 10, adjustedY);
+					lighting(cell.coordinates.X, adjustedY);
+					lighting(cell.coordinates.X + 10, adjustedY);
 				}
 			}
 		}
@@ -1936,7 +1932,7 @@ package fe.loc
 			if (dist2 < 0) dist2 = lDist2;
 			if (nx == -10000)
 			{
-				nx = gg.X  + gg.storona * 12;
+				nx = gg.coordinates.X  + gg.storona * 12;
 				ny = gg.Y1 + gg.stayY * 0.247;
 			}
 
@@ -2135,17 +2131,12 @@ package fe.loc
 			while (obj) 
 			{
 				nextObj=obj.nobj;
-				try 
-				{
-					obj.step();
-					//определить объект под курсором
-					if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
-				} 
-				catch(err)
-				{
-					World.w.showError(err, obj.err());
-				}
+				obj.step();
+
+				//определить объект под курсором
+				if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
 				obj=nextObj;
+				
 				//нет ли бесконечного цикла
 				numb++;
 				if (numb>10000) 
@@ -2213,7 +2204,7 @@ package fe.loc
 			if (getTile(Math.round(World.w.celX/tileX),Math.round(World.w.celY/tileY)).visi<0.1) celObj=null;
 			if (celObj) 
 			{
-				celDist=(gg.X-celObj.X)*(gg.X-celObj.X)+(gg.Y-celObj.Y)*(gg.Y-celObj.Y);
+				celDist=(gg.coordinates.X - celObj.coordinates.X) * (gg.coordinates.X - celObj.coordinates.X) + (gg.coordinates.Y - celObj.coordinates.Y) * (gg.coordinates.Y - celObj.coordinates.Y);
 			} 
 			else celDist=-1;
 		}

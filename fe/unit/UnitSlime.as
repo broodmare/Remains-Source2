@@ -75,10 +75,14 @@ package fe.unit
 			if (vis) {
 				if (aiState==1) {
 					vis.rotation=180;
-					vis.x=X,vis.y=Y-40;
-				} else {
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y - 40;
+				}
+				else
+				{
 					vis.rotation=0;
-					vis.x=X,vis.y=Y;
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y;
 					vis.scaleX=storona;
 				}
 			}
@@ -86,21 +90,26 @@ package fe.unit
 		
 		public function setVis(v:Boolean) {
 			isVis=v;
-			//levitPoss=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
 		}
 		
 		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
-				celX=un.X, celY=un.Y-un.scY/2;
-			} else if (cx>-10000 && cy>-10000) {
-				celX=cx, celY=cy;
-			} else {
-				celX=X, celY=Y-scY/2;
+				celX = un.coordinates.X;
+				celY = un.coordinates.Y - un.scY / 2;
 			}
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			else if (cx>-10000 && cy>-10000)
+			{
+				celX=cx, celY=cy;
+			}
+			else
+			{
+				celX = coordinates.X;
+				celY = coordinates.Y - scY / 2;
+			}
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y + scY;
 		}
 		
 		public function activate() {
@@ -132,15 +141,15 @@ package fe.unit
 					if (dx<maxSpeed) dx+=accel;
 				}
 			} else if (aiState==1) {
-				if (aiN%5==0 && loc.getAbsTile(X,Y-50).phis==0) {
+				if (aiN%5==0 && loc.getAbsTile(coordinates.X, coordinates.Y - 50).phis==0) {
 					aiState=0;
 					fixed=false;
 				}
 				pluh--;
 				if (pluh<=0) {
-					setCel(null,X,Y+100);
+					setCel(null, coordinates.X, coordinates.Y + 100);
 					currentWeapon.attack();
-					pluh=Math.floor(Math.random()*75+40);
+					pluh = int(Math.random()*75+40);
 				}
 			} else if (aiState==2) {
 				if (oduplenie<=0 && aiN%4==0) {

@@ -132,7 +132,7 @@ package fe.loc {
 		
 		//войти в комнату
 		public function over() {
-			World.w.gui.messText('', nazv, World.w.gg.Y<300);
+			World.w.gui.messText('', nazv, World.w.gg.coordinates.Y < 300);
 			if (!closed) defaultProb();
 			if (inScript) {
 				inScript.start();

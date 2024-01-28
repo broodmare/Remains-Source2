@@ -1,6 +1,7 @@
 package fe.unit
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
@@ -14,7 +15,9 @@ package fe.unit
 		public var nazv:String;
 		public var xml:XML;
 		public var player:Boolean=false;		//заклинание относится к гг
-		public var X:Number=0, Y:Number=0;		//положение источника
+		//положение источника
+		public var X:Number=0;
+		public var Y:Number=0;		
 		public var cx:Number=0, cy:Number=0;	//положение цели
 		public var power:Number=1;				//множитель силы заклинания
 		public var prod:Boolean=false;			//продолжительное
@@ -49,7 +52,6 @@ package fe.unit
 				player = true;
 				gg = owner as UnitPlayer;
 			}
-
 			var xml:XML = getItemInfo(id);
 
 			if (xml.@hp.length())		hp		= xml.@hp;
@@ -67,8 +69,6 @@ package fe.unit
 
 			nazv = Res.txt('i', id);
 
-			
-			
 			if (id == 'sp_mwall')		cf = cast_mwall;
 			if (id == 'sp_mshit')		cf = cast_mshit;
 			if (id == 'sp_blast')		cf = cast_blast;
@@ -110,14 +110,14 @@ package fe.unit
 				if (World.w.pers.spellsPoss==0 || atk && !gg.atkPoss) {
 					World.w.gui.infoText('noSpells',null,null,false);
 					Snd.ps('nomagic');
-					World.w.gui.bulb(owner.X,owner.Y);
+					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 					return false;
 				}
 				if (t_culd>0) {
 					if (!active) {
 						if (culd>=100) {
 							World.w.gui.infoText('spellCuld',Math.ceil(t_culd/World.fps),null,false);
-							World.w.gui.bulb(owner.X,owner.Y-20);
+							World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y-20);
 						}
 						Snd.ps('nomagic');
 					}
@@ -129,7 +129,7 @@ package fe.unit
 				if (owner.mana<dmagic) {
 					World.w.gui.infoText('overMana',null,null,false);
 					Snd.ps('nomagic');
-					World.w.gui.bulb(owner.X,owner.Y-20);
+					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y-20);
 					return false;
 				}
 				if (dmana>World.w.pers.manaHP) {
@@ -139,19 +139,16 @@ package fe.unit
 				}
 			}
 			//координаты источника
-			if (owner) {
-				X=owner.magicX;
-				Y=owner.magicY;
-				loc=owner.loc;
-				power=owner.spellPower;
-				if (player && teleSpell) {
-					power=gg.pers.telePower;
-				}
-			}
-			else
+			if (owner)
 			{
-				loc = World.w.loc;
+				X = owner.magicX;
+				Y = owner.magicY;
+				loc = owner.loc;
+				power = owner.spellPower;
+				if (player && teleSpell) power = gg.pers.telePower;
 			}
+			else loc = World.w.loc;
+
 			//координаты цели
 			cx=nx, cy=ny;
 			//проверка видимости точки цели, если это нужно
@@ -208,11 +205,12 @@ package fe.unit
 		}
 		
 		//кинетический рывок
-		private function cast_kdash():void {
+		private function cast_kdash():void
+		{
 			if (!owner.loc.levitOn) return;
-			var dx:Number=(cx-owner.X);
-			var dy:Number=(cy-owner.Y+owner.scY);
-			var rasst:Number=Math.sqrt(dx*dx+dy*dy);
+			var dx:Number=(cx - owner.coordinates.X);
+			var dy:Number=(cy - owner.coordinates.Y + owner.scY);
+			var rasst:Number = Math.sqrt(dx * dx + dy * dy);
 			var d:Object={x:dx, y:dy};
 			var spd:Number=dam*(1+(power-1)*0.5);
 			var prod:int=15;
@@ -232,20 +230,21 @@ package fe.unit
 		//кинетический взрыв
 		private function cast_blast():void {
 			if (loc==null) return;
-			X=owner.X;
-			Y=owner.Y;
-			for each(var un:Unit in loc.units) {
+			X = owner.coordinates.X;
+			Y = owner.coordinates.Y;
+			for each(var un:Unit in loc.units)
+			{
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
-				var dx:Number=un.X-X;
-				var dy:Number=un.Y-un.scY/2-Y;
+				var dx:Number = un.coordinates.X - X;
+				var dy:Number = un.coordinates.Y - un.scY / 2 - Y;
 				var rad2:Number=(dx*dx+dy*dy);
 				if (rad2>rad*rad) continue;
 				rad2=Math.sqrt(rad2);
 				var sila:Number=dam*power*(1-rad2/rad)*(Math.random()*0.4+0.8)*un.knocked/un.massa;
 				if (sila>dam*power) sila=dam*power;
-				un.dx=dx/rad2*sila;
-				un.dy=dy/rad2*sila;
-				un.stun+=Math.floor(Math.random()*power*dam);
+				un.dx = dx / rad2 * sila;
+				un.dy = dy / rad2 * sila;
+				un.stun+=int(Math.random()*power*dam);
 				un.t_throw=30;
 			}
 			if (owner.player) loc.budilo(X,Y,500);
@@ -256,31 +255,33 @@ package fe.unit
 		
 		//замедляющее поле
 		private function cast_slow():void {
-			if (owner) owner.addEffect('inhibitor',rad*power);
+			if (owner) owner.addEffect('inhibitor', rad * power);
 		}
 		
 		//лунный клинок
-		private function cast_moon():void {
+		private function cast_moon():void
+		{
 			if (gg.currentPet!='moon') {
 				gg.pets['moon'].hp=gg.pets['moon'].maxhp;
 				gg.callPet('moon',true);
-			} else if (gg.pet){
-				gg.pet.heal(gg.pet.maxhp);
 			}
+			else if (gg.pet) gg.pet.heal(gg.pet.maxhp);
 		}
 		
-		public function gwall(nx,ny):void {
-			var t:Tile=loc.getAbsTile(nx,ny);
-			if (loc.testTile(t)) {
-				t.phis=3;
-				t.hp=Math.round(hp*power);
-				t.mat=7;
-				t.t_ghost=Math.round(dam*power);
-				World.w.grafon.gwall(t.X,t.Y);
+		public function gwall(nx, ny):void
+		{
+			var t:Tile = loc.getAbsTile(nx, ny);
+			if (loc.testTile(t))
+			{
+				t.phis = 3;
+				t.hp = Math.round(hp * power);
+				t.mat = 7;
+				t.t_ghost = Math.round(dam * power);
+				World.w.grafon.gwall(t.X, t.Y);
 				est=1;
 			}
 			Emitter.emit('gwall',loc,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY);
-		}
+					}
 		
 		private function cast_gwall():void {
 			est=0;

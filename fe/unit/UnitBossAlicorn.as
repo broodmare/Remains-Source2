@@ -4,6 +4,7 @@ package fe.unit
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.entities.Obj;
 	import fe.serv.BlitAnim;
@@ -111,9 +112,9 @@ package fe.unit
 		
 		public override function setWeaponPos(tip:int=0) {
 			try {
-				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-				weaponX=magicX=X+(obj.x+visBmp.x)*storona;
-				weaponY=magicY=Y+obj.y+visBmp.y;
+				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
+				weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
+				weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 				weaponR=obj.r;
 			} catch (err) {
 				super.setWeaponPos(tip);
@@ -176,10 +177,11 @@ package fe.unit
 		public override function setVisPos() {
 			if (vis) {
 				if (sost==2) {
-					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;;
+					vis.x = coordinates.X+(Math.random()-0.5)*(150-timerDie)/15;
+					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;;
 				} else {
-					vis.x=X,vis.y=Y;
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y;
 				}
 				vis.scaleX=storona;
 			}
@@ -200,18 +202,18 @@ package fe.unit
 		
 		//телепортация
 		public override function teleport(nx:Number,ny:Number,eff:int=0) {
-			Emitter.emit('telered',loc,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
+			Emitter.emit('telered',loc, coordinates.X, coordinates.Y-scY/2,{rx:scX, ry:scY, kol:30});
 			setPos(nx,ny);
 			dx=dy=0;
 			if (currentWeapon) {
 				setWeaponPos(currentWeapon.tip);
 				currentWeapon.setNull();
 			}
-			var t:Tile=loc.getAbsTile(X,Y+10);
+			var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y + 10);
 			if (t.phis || t.shelf) isFly=false;
 			else isFly=true;
 			levit=0;
-			if (eff>0) Emitter.emit('teleport',loc,X,Y-scY/2);
+			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-scY/2);
 		}
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
@@ -249,8 +251,8 @@ package fe.unit
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			if (t_shit>0) t_shit--;
@@ -296,7 +298,7 @@ package fe.unit
 						aiTCh=30;
 					} else if (attState==4) aiTCh=120;
 					else if (attState==5) aiTCh=75;
-					else aiTCh=Math.floor(Math.random()*100)+50;
+					else aiTCh=int(Math.random()*100)+50;
 				}
 			}
 			//поиск цели
@@ -312,10 +314,10 @@ package fe.unit
 				dx+=floatX;
 				dy+=floatY;
 			}
-			celDX=celX-X;
-			celDY=celY-Y;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y;
 			var dist2:Number=celDX*celDX+celDY*celDY;
-			var dist:Number=(moveX-X)*(moveX-X)+(moveY-Y)*(moveY-Y);
+			var dist:Number=(moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (dx>0.5) storona=1; 
@@ -323,7 +325,7 @@ package fe.unit
 				walk=0;
 			}
 			if (aiState>0) {
-				aiNapr=(celX>X)?1:-1;
+				aiNapr=(celX > coordinates.X)?1:-1;
 				if (storona!=aiNapr) {
 					t_turn--;
 					if (t_turn<=0) {
@@ -337,16 +339,16 @@ package fe.unit
 
 			if (teleObj) {
 				if (teleObj is Unit) {
-					teleX=X+storona*150;
-					teleY=Y-40;
+					teleX = coordinates.X + storona * 150;
+					teleY = coordinates.Y - 40;
 				} else {
-					teleX=X+storona*80;
-					teleY=Y-40;
+					teleX = coordinates.X + storona * 80;
+					teleY = coordinates.Y - 40;
 				} 				
-				if (teleObj.X<teleX-derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
-				if (teleObj.X>teleX+derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
-				if (teleObj.Y<teleY-derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
-				if (teleObj.Y>teleY+derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
+				if (teleObj.coordinates.X < teleX - derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
+				if (teleObj.coordinates.X > teleX + derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
+				if (teleObj.coordinates.Y < teleY - derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
+				if (teleObj.coordinates.Y > teleY + derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
 				if (teleObj.levit==1) {
 					dropTeleObj();
 				}
@@ -375,7 +377,7 @@ package fe.unit
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(X,Y-scY/2,b.X,b.Y-b.scY/2)) {
+					if (loc.isLine(coordinates.X, coordinates.Y - scY / 2, b.coordinates.X, b.coordinates.Y - b.scY / 2)) {
 						upTeleObj(b);
 						return b;
 					}
@@ -412,11 +414,11 @@ package fe.unit
 				var p:Object;
 				var tspeed:Number=throwForce;
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
-				if (teleObj.X<200 || teleObj.X>loc.maxX-200) tspeed*=0.6;
+				if (teleObj.coordinates.X<200 || teleObj.coordinates.X>loc.maxX-200) tspeed*=0.6;
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
 				} else {
-					p={x:(celX-teleObj.X), y:(celY-(teleObj.Y-teleObj.scY/2)-Math.abs(celX-teleObj.X)/4)};
+					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.scY / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
 				}
 				if (teleObj is UnitPlayer) {
 					(teleObj as UnitPlayer).damWall=dam/2;
@@ -445,7 +447,7 @@ package fe.unit
 				aiTCh=10;
 				blood=1;
 				bloodEmit=Emitter.arr['blood'];
-				bloodEmit.cast(loc,X,Y-50,{kol:100, rx:scX/2, ry:scY/2});
+				bloodEmit.cast(loc, coordinates.X, coordinates.Y-50,{kol:100, rx:scX/2, ry:scY/2});
 				visDetails();
 				sost=1;
 				mat=0;

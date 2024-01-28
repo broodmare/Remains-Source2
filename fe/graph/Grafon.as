@@ -18,6 +18,7 @@ package fe.graph
 	import fl.motion.Color;
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.loc.*;
 	import fe.entities.Entity;
 	
@@ -770,6 +771,7 @@ package fe.graph
 		{
 			var erC:Class = block_dyr;	// .fla linkage
 			var drC:Class = block_tre;	// .fla linkage
+
 			var nx = (t.X + 0.5) * tileX;
 			var ny = (t.Y + 0.5) * tileY;
 

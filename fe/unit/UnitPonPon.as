@@ -15,7 +15,6 @@ package fe.unit
 		public function UnitPonPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='ponpon';
-			//if (questId==null) questId=id;
 			npc=true;
 			getXmlParam();
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -30,7 +29,6 @@ package fe.unit
 			if (cid=='zebra') {
 				if (tr>=4) msex=true;
 				vis=new visualZebPon();
-				//id_replic='';
 				if (!uniqName) nazv=Res.txt('u','zebpon');
 				verVis=1;
 			} else if (cid=='stab') {
@@ -71,7 +69,9 @@ package fe.unit
 			return obj;
 		}	
 	
-		public override function animate() {
+		public override function animate()
+		{
+			
 		}
 		
 		public override function command(com:String, val:String=null) {
@@ -87,8 +87,8 @@ package fe.unit
 			t_replic--;
 			if (loc!=World.w.loc) return;
 			if (privet && t_replic%60==3) {
-				var nx=World.w.gg.X-X;
-				var ny=World.w.gg.Y-Y;
+				var nx = World.w.gg.coordinates.X - coordinates.X;
+				var ny = World.w.gg.coordinates.Y - coordinates.Y;
 				if (Math.abs(nx)<200 && Math.abs(ny)<60) {
 					t_replic=0;
 					replic('hi');

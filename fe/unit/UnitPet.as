@@ -1,9 +1,8 @@
 package fe.unit {
 	
 	import fe.*;
-	import fe.weapon.Weapon;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
-	import fe.loc.Tile;
 	import fe.loc.Box;
 	
 	public class UnitPet extends Unit{
@@ -28,15 +27,17 @@ package fe.unit {
 
 		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			id='phoenix';
-			if (cid!=null) id=cid;
+			id = 'phoenix';
+			if (cid != null) id = cid;
 			getXmlParam();
-			fraction=Unit.F_PLAYER;
-			//fraction=1;
-			if (id=='moon') {
-				vis=new visualMoon();
+			fraction = Unit.F_PLAYER;
+			if (id == 'moon')
+			{
+				vis = new visualMoon();
 				vis.osn.stop();
-			} else {
+			}
+			else
+			{
 				initBlit();
 				animState='fly';
 			}
@@ -106,7 +107,7 @@ package fe.unit {
 			if (hp>maxhp) hp=maxhp;
 			if (hl>0) visDetails();
 			if ((tip==0 || hl>=10) && active && ismess) {
-				numbEmit.cast(loc,X,Y-scY/2,{txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
+				numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2, {txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
 			}
 		}
 		
@@ -114,7 +115,7 @@ package fe.unit {
 			super.setNull(f);
 			aiState=1;
 			getFlyPoint();
-			if (optTurn) storona=(celX>X)?1:-1;
+			if (optTurn) storona = (celX > coordinates.X)? 1:-1;
 		}
 		
 		//настройка силы спутника
@@ -137,20 +138,23 @@ package fe.unit {
 				maxhp=gg.pers.moonHP*(1+level*0.1)*gg.spellPower;
 				dam=gg.pers.moonDam*(1+level*0.1)*gg.spellPower;
 			}
-			//currentWeapon.damage=1;
 			hp=koef*maxhp;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
-			if (id=='phoenix') {
-				weaponX=X+15*storona;
-				weaponY=Y-20;
-			} else {
-				weaponX=X+11*storona;
-				weaponY=Y-18;
+		public override function setWeaponPos(tip:int=0)
+		{
+			if (id=='phoenix')
+			{
+				weaponX = coordinates.X + 15 * storona;
+				weaponY = coordinates.Y - 20;
 			}
-			magicX=weaponX;
-			magicY=weaponY;
+			else
+			{
+				weaponX = coordinates.X + 11 * storona;
+				weaponY = coordinates.Y - 18;
+			}
+			magicX = weaponX;
+			magicY = weaponY;
 		}
 		
 		public override function animate() {
@@ -190,8 +194,8 @@ package fe.unit {
 			var rx:Number=-120;
 			var ry:Number=-80;
 			flyBox=null;
-			flyX=gg.X+gg.storona*rx;
-			flyY=gg.Y+ry;
+			flyX = gg.coordinates.X + gg.storona * rx;
+			flyY = gg.coordinates.Y + ry;
 			if (flyX<60) flyX=60;
 			if (flyX>loc.maxX-60) flyX=loc.maxX-60;
 			if (flyY<80) flyY=80;
@@ -203,7 +207,7 @@ package fe.unit {
 					if (b.wall==0 && b.stay && !b.invis && b.X1<flyX && b.X2>flyX && flyY-b.Y1<80 &&  flyY-b.Y1>-40)
 					{
 						flyY=b.Y1;
-						flyX=b.X;
+						flyX=b.coordinates.X;
 						flyBox=b;
 						break;
 					}
@@ -221,13 +225,13 @@ package fe.unit {
 			flyX += 40 * gg.storona;
 			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
 
-			flyX = gg.X;
-			flyY = gg.Y - 1;
+			flyX = gg.coordinates.X;
+			flyY = gg.coordinates.Y - 1;
 		}
 		
 		function visCelUnit(un:Unit):Boolean
 		{
-			return loc.isLine(X, Y - 30, un.X, un.Y - un.scY / 2);
+			return loc.isLine(coordinates.X, coordinates.Y - 30, un.coordinates.X, un.coordinates.Y - un.scY / 2);
 		}
 		
 		public override function findCel(over:Boolean=false):Boolean {
@@ -236,8 +240,8 @@ package fe.unit {
 			for each (var un:Unit in loc.units) {
 				if (un.disabled || un.sost>=3 || un.fraction==fraction || un.doop || un.invis || un.invulner || un.noAgro || un.trigDis) continue;
 				if (un is UnitTurret && un.aiState<=1) continue;
-				var tx=un.X-X;
-				var ty=un.Y-Y;
+				var tx = un.coordinates.X - coordinates.X;
+				var ty = un.coordinates.Y - coordinates.Y;
 				if (tx*tx+ty*ty>rasstVisEn*rasstVisEn) continue;	//если расстояние больше расстояния атаки, игнорировать
 				if (optEnW && un.isPlav) continue;	//если враг под водой, игнорировать 
 				if (currentWeapon && currentWeapon.damage*un.vulner[currentWeapon.tipDamage]<(optEnW?un.marmor:un.armor)+un.skin+1-currentWeapon.pier) continue;	//если оружие не наносит урона, игнорировать
@@ -263,7 +267,7 @@ package fe.unit {
 			//gotoX=nx, gotoY=ny;
 			flyX=nx, flyY=ny+20;
 			aiState=3;
-			if (optTurn) storona=(flyX>X)?1:-1;
+			if (optTurn) storona=(flyX > coordinates.X)? 1:-1;
 			aiTCh=100;
 		}
 		
@@ -287,10 +291,10 @@ package fe.unit {
 			aiState=1;
 			sost=1;
 			addVisual();
-			flyX=gg.X, flyY=gg.Y-20;
+			flyX = gg.coordinates.X;
+			flyY = gg.coordinates.Y - 20;
 			setLevel(gg.pers.level);
 			if (loc && loc.units) loc.units[1]=this;
-			//damage(40,Unit.D_INSIDE);
 		}
 		
 		//отзыв
@@ -311,7 +315,6 @@ package fe.unit {
 				gg.pet=null;
 				gg.childObjs[2]=null;
 				gg.currentPet='';
-				//gg.callPet(id,true)
 				return;
 			}
 			if (hpbar) hpbar.visible=false;
@@ -330,10 +333,13 @@ package fe.unit {
 			hp=Math.min(100,maxhp/2);
 			setLevel(gg.pers.level);
 			visDetails();
-			X=gg.X, Y=gg.Y-20;
+			coordinates.X = gg.coordinates.X;
+			coordinates.Y = gg.coordinates.Y - 20;
 			oduplenie=60;
 			vis.alpha=0;
-			cut=poison=stun=0;
+			cut=0;
+			poison=0;
+			stun=0;
 			vis.visible=true;
 			sost=1;
 			aiState=1;
@@ -350,10 +356,13 @@ package fe.unit {
 					World.w.gui.infoText('petRes', nazv);
 					setLevel(gg.pers.level);
 					visDetails();
-					X=gg.X, Y=gg.Y-20;
-					oduplenie=60;
-					vis.alpha=0;
-					cut=poison=stun=0;
+					coordinates.X = gg.coordinates.X;
+					coordinates.Y = gg.coordinates.Y - 20;
+					oduplenie = 60;
+					vis.alpha = 0;
+					cut=0;
+					poison=0;
+					stun=0;
 					vis.visible=true;
 					aiState=1;
 					World.w.gui.setPet();
@@ -388,10 +397,9 @@ package fe.unit {
 					if (rasst2>rasstGG*rasstGG || isPlav) {
 						aiState=1;
 						getFlyPoint();
-						if (optTurn) storona=(flyX>X)?1:-1;
-						//Emitter.emit('laser',loc,flyX,flyY);
+						if (optTurn) storona=(flyX > coordinates.X)? 1:-1;
 					} else {
-						if (optTurn) storona=(flyX>gg.X)?-1:1;
+						if (optTurn) storona=(flyX > gg.coordinates.X)? -1:1;
 					}
 				} else if (aiState==2) {
 					if (rasst2>rasstGG*rasstGG*9) getFlyPoint();
@@ -402,13 +410,13 @@ package fe.unit {
 					if (World.w.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
-				if (gg.dx>2 || gg.dx<-2) aiTCh=Math.floor(Math.random()*20)+10;
-				else aiTCh=Math.floor(Math.random()*100)+30;
+				if (gg.dx>2 || gg.dx<-2) aiTCh=int(Math.random()*20)+10;
+				else aiTCh=int(Math.random()*100)+30;
 			}
 			//движение
 			if (isFly) {
-				flyDX=flyX-X;
-				flyDY=flyY-Y;
+				flyDX = flyX - coordinates.X;
+				flyDY = flyY - coordinates.Y;
 				var flyR=Math.sqrt(flyDX*flyDX+flyDY*flyDY);
 				if (aiState==0) {
 					dy=dx=0;
@@ -418,7 +426,7 @@ package fe.unit {
 						flyBox=null;
 					}
 				} if (aiState==2) {
-					if (optTurn) storona=(celX>X)?1:-1;
+					if (optTurn) storona=(celX > coordinates.X)? 1:-1;
 					if (flyR>rasstWeap*0.9 || !mater) {
 						spd.x=flyDX;
 						spd.y=flyDY;
@@ -426,7 +434,6 @@ package fe.unit {
 					} else if (flyR<rasstOut) {	//улетать от цели
 						spd.x=-flyDX;
 						spd.y=-flyDY/2-3;
-						//norma(spd,accel*3*(rasstWeap*0.5-flyR)/rasstWeap);
 						norma(spd,accel);
 					} else {
 						dy*=0.85;
@@ -450,8 +457,8 @@ package fe.unit {
 				} else {
 					if (flyR<20 && flyBox && mater) {	//сесть на предмет
 						spd.x=spd.y=0;
-						dx=flyX-X;
-						dy=flyY-Y;
+						dx = flyX - coordinates.X;
+						dy = flyY - coordinates.Y;
 						aiState=0;
 					} else if (flyR<100 && mater) {
 						dy*=0.95;
@@ -487,12 +494,13 @@ package fe.unit {
 					else aiState=2;
 				}
 			}
-			if (aiState==2 && flyR<rasstWeap && currentWeapon==null && celUnit) {
+			if (aiState==2 && flyR<rasstWeap && currentWeapon==null && celUnit)
+			{
 				aiState=4;
 				aiTCh=15;
-				spd.x=celUnit.X-X;
-				spd.y=celUnit.Y-celUnit.scY/2-Y+scY/2;
-				norma(spd,runSpeed);
+				spd.x = celUnit.coordinates.X - coordinates.X;
+				spd.y = celUnit.coordinates.Y - celUnit.scY / 2 - coordinates.Y + scY / 2;
+				norma(spd, runSpeed);
 			}
 			if (aiState==4) {
 				if (celUnit) {
@@ -511,8 +519,10 @@ package fe.unit {
 	
 			//атака
 			if (aiState==2 && celUnit && !isPlav) {
-				celX=celUnit.X, celY=celUnit.Y-celUnit.scY/2;
-				flyX=celUnit.X, flyY=celUnit.Y-80;
+				celX = celUnit.coordinates.X;
+				celY = celUnit.coordinates.Y - celUnit.scY / 2;
+				flyX = celUnit.coordinates.X;
+				flyY = celUnit.coordinates.Y - 80;
 				if (flyR<=rasstWeap && currentWeapon) currentWeapon.attack();
 			}
 		}

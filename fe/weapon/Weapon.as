@@ -6,6 +6,7 @@ package fe.weapon
 	import flash.display.Graphics;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
@@ -518,8 +519,8 @@ package fe.weapon
 		{
 			t_attack=t_reload=0;
 			if (owner) {
-				X=owner.weaponX;
-				Y=owner.weaponY;
+				coordinates.X = owner.weaponX;
+				coordinates.Y = owner.weaponY;
 				animate();
 			}
 		}
@@ -570,25 +571,35 @@ package fe.weapon
 		{
 			var rot2:Number;
 			if (owner==null) return;
-			if (X<owner.celX) storona=1;
-			else storona=-1;
-			if (findCel) {
-				if (tip==5) {
-					X=owner.magicX;
-					Y=owner.magicY;
-					rot2=Math.atan2(owner.celY-Y, owner.celX-X);
-				} else if (krep>0 || !X) {
-					X=owner.weaponX;
-					Y=owner.weaponY;
-					rot2=Math.atan2(owner.celY-Y, Math.abs(owner.celX-X)*owner.storona);
-				} else {
-					X+=(owner.weaponX-X)/5;
-					Y+=(owner.weaponY-Y)/5;
-					rot2=Math.atan2(owner.celY-Y, owner.celX-X);
+
+			if (coordinates.X < owner.celX) storona = 1;
+			else storona = -1;
+
+			if (findCel)
+			{
+				if (tip == 5)
+				{
+					coordinates.X = owner.magicX;
+					coordinates.Y = owner.magicY;
+					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
-			} else {
-				X=owner.weaponX;
-				Y=owner.weaponY;
+				else if (krep>0 || !coordinates.X)
+				{
+					coordinates.X = owner.weaponX;
+					coordinates.Y = owner.weaponY;
+					rot2=Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X)*owner.storona);
+				}
+				else
+				{
+					coordinates.X += (owner.weaponX - coordinates.X) / 5;
+					coordinates.Y += (owner.weaponY - coordinates.Y) / 5;
+					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
+				}
+			}
+			else
+			{
+				coordinates.X = owner.weaponX;
+				coordinates.Y = owner.weaponY;
 				rot2=forceRot;
 			}
 			ready=false;
@@ -627,7 +638,6 @@ package fe.weapon
 				if (rot>0 && rot<Math.PI*5/6) rot=Math.PI*5/6;
 				if (rot<=0 && rot>-Math.PI*5/6) rot=-Math.PI*5/6;
 			}
-			//if (owner.player) trace(rot);
 			try {
 				if (dkol<=0 && t_attack==rapid) shoot();
 				if (dkol>0 && t_attack>rapid && t_attack%rapid==0) shoot();
@@ -656,18 +666,20 @@ package fe.weapon
 			} else pow=0;
 			if (t_shoot>0) t_shoot--;
 			
-			if (sndPrep!='') {
-				//trace('act',is_attack, is_pattack)
+			if (sndPrep!='')
+			{
 				if (!is_pattack && is_attack) {
-					sndCh=Snd.ps(sndPrep,X,Y,t_prep*30);
+					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, t_prep * 30);
 				}	//звук раскрутки
-				if (snd_t_prep1>0 && is_attack && sndCh!=null && sndCh.position>snd_t_prep2-300) {
+				if (snd_t_prep1>0 && is_attack && sndCh!=null && sndCh.position>snd_t_prep2-300)
+				{
 					sndCh.stop();
-					sndCh=Snd.ps(sndPrep,X,Y,snd_t_prep1+200);
+					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep1 + 200);
 				}//	звук продолжения
-				if (snd_t_prep2>0 && is_pattack && !is_attack && t_prep>0 && sndCh!=null && sndCh.position<snd_t_prep2-400)	{
+				if (snd_t_prep2>0 && is_pattack && !is_attack && t_prep>0 && sndCh!=null && sndCh.position<snd_t_prep2-400)
+				{
 					sndCh.stop();
-					sndCh=Snd.ps(sndPrep,X,Y,snd_t_prep2+100);
+					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep2 + 100);
 				}	//звук остановки
 			}
 			if (recharg && hold<holder && t_attack==0) {
@@ -688,7 +700,7 @@ package fe.weapon
 			if (waitReady && !ready) return false;
 			if (hp<=0 && owner==World.w.gg) {
 				World.w.gui.infoText('brokenWeapon',nazv,null,false);
-				World.w.gui.bulb(X,Y);
+				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				return false;
 			}
 			if (owner.player && (respect==1 || alicorn && !World.w.alicorn)) {
@@ -724,7 +736,7 @@ package fe.weapon
 			if (jammed) {
 				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.w.gui.infoText('weaponCircuit',null,null,false);
 				else World.w.gui.infoText('weaponJammed',null,null,false);
-				Snd.ps('no_ammo',X,Y);
+				Snd.ps('no_ammo', coordinates.X, coordinates.Y);
 				initReload();
 				return;
 			}
@@ -757,16 +769,24 @@ package fe.weapon
 		public function getBulXY():void
 		{
 			try {
-				if (vis && vis.emit && vis.parent) {
+				if (vis && vis.emit && vis.parent)
+				{
 					var p:Point=new Point(vis.emit.x,vis.emit.y);
 					var p1:Point=vis.localToGlobal(p);
 					p1=vis.parent.globalToLocal(p1);
-					bulX=p1.x,bulY=p1.y;
-				} else {
-					bulX=X,bulY=Y;
+					bulX = p1.x;
+					bulY = p1.y;
 				}
-			} catch (err) {
-				bulX=X,bulY=Y;
+				else
+				{
+					bulX = coordinates.X;
+					bulY = coordinates.Y;
+				}
+			}
+			catch (err)
+			{
+				bulX = coordinates.X;
+				bulY = coordinates.Y;
 			}
 		}
 		
@@ -783,7 +803,7 @@ package fe.weapon
 				} else if (rnd<breaking/5*jm) {
 					t_ret=2;
 					if (rapid>5) World.w.gui.infoText('misfire',null,null,false);
-					Snd.ps('no_ammo',X,Y);
+					Snd.ps('no_ammo', coordinates.X, coordinates.Y);
 					return null;
 				}
 			}
@@ -855,7 +875,7 @@ package fe.weapon
 				if (bulAnim) b.vis.play();
 			}
 			if (shell) {
-				emitShell.cast(loc,X,Y,{dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
+				emitShell.cast(loc, coordinates.X, coordinates.Y,{dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
 			}
 			if (owner.demask<shine) owner.demask=shine;	//видимость выстрела
 			if (noise>0) owner.makeNoise(noise,true);
@@ -886,7 +906,7 @@ package fe.weapon
 			if (recoil>3 && t_ret<3) t_ret=3;
 			rotUp+=recoilUp*recoilMult;
 			is_shoot=true;
-			if (sndShoot!='' && kol_shoot%sndShoot_n==0) Snd.ps(sndShoot,X,Y);
+			if (sndShoot!='' && kol_shoot%sndShoot_n==0) Snd.ps(sndShoot, coordinates.X, coordinates.Y);
 			t_auto=3;
 			return b;
 		}
@@ -909,21 +929,23 @@ package fe.weapon
 		
 		public function setTrass(gr:Graphics):void
 		{
-			var rot3=Math.atan2(World.w.celY-Y, World.w.celX-X);
-			trasser.loc=owner.loc;
-			trasser.X=trasser.begx=X;
-			trasser.Y=trasser.begy=Y;
-			trasser.dx=trasser.begdx=Math.cos(rot3)*speed*speedMult;
-			trasser.dy=trasser.begdy=Math.sin(rot3)*speed*speedMult;
-			trasser.ddy=trasser.ddx=0;
+			var rot3=Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+			trasser.loc = owner.loc;
+			trasser.X = trasser.begx = coordinates.X;
+			trasser.Y = trasser.begy = coordinates.Y;
+			trasser.dx = trasser.begdx = Math.cos(rot3) * speed * speedMult;
+			trasser.dy = trasser.begdy = Math.sin(rot3) * speed * speedMult;
+			trasser.ddy = 0;
+			trasser.ddx = 0;
 			if (grav) {
-				trasser.ddy+=World.ddy;
+				trasser.ddy += World.ddy;
 			}
 			trasser.trass(gr);
 		}
 		
-		public function isLine(cx:Number, cy:Number):Boolean {
-			if (checkLine) return owner.loc.isLine(X,Y,cx,cy);
+		public function isLine(cx:Number, cy:Number):Boolean
+		{
+			if (checkLine) return owner.loc.isLine(coordinates.X, coordinates.Y, cx, cy);
 			return true;
 		}
 		
@@ -1023,7 +1045,7 @@ package fe.weapon
 				(owner as UnitPlayer).invent.items[ammo].kol+=hold;
 				World.w.invent.mass[2]+=World.w.invent.items[ammo].mass*hold;
 				hold=0;
-				if (sndReload!='') Snd.ps(sndReload,X,Y);
+				if (sndReload!='') Snd.ps(sndReload, coordinates.X, coordinates.Y);
 			}
 		}
 		
@@ -1076,7 +1098,7 @@ package fe.weapon
 					if (am.length()==0) return;
 					if (am.@base!=ammoBase) {
 						World.w.gui.infoText('imprAmmo',World.w.invent.items[nammo].nazv,null,false);
-						World.w.gui.bulb(X,Y);
+						World.w.gui.bulb(coordinates.X, coordinates.Y);
 						return;
 					}
 					ammoTarg=nammo;
@@ -1086,7 +1108,7 @@ package fe.weapon
 				}
 				if (!jammed && ammo!='not' && World.w.invent.items[ammoTarg].kol<rashod) {
 					World.w.gui.infoText('noAmmo',World.w.invent.items[ammoTarg].nazv,null,false);
-					World.w.gui.bulb(X,Y);
+					World.w.gui.bulb(coordinates.X, coordinates.Y);
 					return;
 				}
 			}
@@ -1098,7 +1120,7 @@ package fe.weapon
 							vis.gotoAndPlay('reload');
 						} catch (err) {}
 					}
-					if (sndReload!='') Snd.ps(sndReload,X,Y);
+					if (sndReload!='') Snd.ps(sndReload, coordinates.X, coordinates.Y);
 				} else reloadWeapon();
 			}
 		}
@@ -1111,8 +1133,8 @@ package fe.weapon
 		public function animate():void
 		{
 			if (!vis) return;
-			vis.x=X-t_ret*vis.scaleX*2;
-			vis.y=Y;
+			vis.x = coordinates.X - t_ret * vis.scaleX * 2;
+			vis.y = coordinates.Y;
 			if (prep && t_shoot<=0) {
 				if (t_prep<prep && t_prep>1) {
 					vis.gotoAndStop(t_prep);
@@ -1126,11 +1148,11 @@ package fe.weapon
 				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);
 			}
 			if (krep==0) {
-				if (X>owner.celX) {
+				if (coordinates.X > owner.celX) {
 					vis.scaleX=-1;
 					vis.rotation=rot*180/Math.PI+180+rotUp;
 				}
-				if (X<owner.celX) {
+				if (coordinates.X < owner.celX) {
 					vis.scaleX=1;
 					vis.rotation=rot*180/Math.PI-rotUp;
 				}

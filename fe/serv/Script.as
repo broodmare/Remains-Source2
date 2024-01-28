@@ -200,7 +200,7 @@ package fe.serv
 					break;
 
 					case 'xp':
-						World.w.pers.expa(obj.val,World.w.gg.X,World.w.gg.Y);
+						World.w.pers.expa(obj.val, World.w.gg.coordinates.X, World.w.gg.coordinates.Y);
 					break;
 
 					case 'perk':

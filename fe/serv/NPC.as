@@ -238,11 +238,10 @@ package fe.serv
 		}
 		
 		//установить верхнюю иконку
-		function setIco(n:String=null) {
-			try {
+		function setIco(n:String=null)
+		{
 				if (n==null) owner['ico'].gotoAndStop(owner['icoFrame']);
 				else owner['ico'].gotoAndStop(n);
-			} catch (err) {}
 		}
 		
 		public function repair() {

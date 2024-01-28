@@ -27,11 +27,10 @@ package fe.unit
 			} else {								//случайно по параметру ndif
 				tr=1;
 			}
-			id='msp';
+			id = 'msp';
 			
 			vis=new visualMsp();
 			vis.stop();
-			//vis.osn.gotoAndStop(1);
 			
 			getXmlParam();
 			
@@ -67,23 +66,31 @@ package fe.unit
 		
 		public override function setVisPos() {
 			if (vis) {
-				if (cep==0) {
-					vis.x=X,vis.y=Y;
+				if (cep==0) 
+				{
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y;
 					vis.rotation=0;
-				} else if (cep==1) {
-					vis.x=X;
-					vis.y=Y1;
-					vis.rotation=180;
-				} else if (cep==3) {
-					vis.x=X2;
-					vis.y=Y-scY/2;
-					vis.rotation=-90;
-				} else if (cep==2) {
-					vis.x=X1;
-					vis.y=Y-scY/2;
-					vis.rotation=90;
 				}
-				vis.scaleX=storona;
+				else if (cep==1)
+				{
+					vis.x = coordinates.X;
+					vis.y = Y1;
+					vis.rotation=180;
+				}
+				else if (cep==3)
+				{
+					vis.x = X2;
+					vis.y = coordinates.Y - scY / 2;
+					vis.rotation = -90;
+				}
+				else if (cep==2)
+				{
+					vis.x = X1;
+					vis.y = coordinates.Y - scY / 2;
+					vis.rotation = 90;
+				}
+				vis.scaleX = storona;
 			}
 		}
 		
@@ -153,12 +160,14 @@ package fe.unit
 
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+			if (World.w.enemyAct<=0)
+			{
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
-			if (aiState>=3 && cep>0) {
+			if (aiState>=3 && cep>0)
+			{
 				cep=0;
 				fixed=false;
 			}
@@ -167,7 +176,7 @@ package fe.unit
 			else if (aiState==2) {
 				if (celUnit) {
 					aiSpok=maxSpok+10;
-					celDX=celX-X;
+					celDX = celX - coordinates.X;
 					if (celDX>40) aiNapr=1;
 					if (celDX<-40) aiNapr=-1;
 					aiState=3;
@@ -177,9 +186,10 @@ package fe.unit
 			} else {
 				if (aiSpok<=0) {
 					aiState=1;
-					aiTCh=Math.floor(Math.random()*40)+40;
-				} else {
-					aiTCh=Math.floor(Math.random()*50)+40;
+					aiTCh = int(Math.random()*40)+40;
+				}
+				else {
+					aiTCh = int(Math.random()*50)+40;
 				}
 				if (aiSpok>0) aiState=4;
 				if (aiSpok>=maxSpok) aiState=3;
@@ -189,7 +199,7 @@ package fe.unit
 				if (findCel()) {
 					if (aiState<=1) {
 						aiState=2;
-						aiTCh=Math.floor(Math.random()*10)+30;
+						aiTCh=int(Math.random()*10)+30;
 					} else if (aiState>=3) {
 						aiState=3;
 					}
@@ -203,8 +213,8 @@ package fe.unit
 			if (fixed) return;
 			
 			//направление
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y + scY;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -246,7 +256,7 @@ package fe.unit
 					else jmp=1;
 					if (aiTTurn<0) {
 						aiNapr=storona=turnX;
-						aiTTurn=Math.floor(Math.random()*20)+5;
+						aiTTurn = int(Math.random()*20)+5;
 					}
 					turnX=turnY=0;
 				}
@@ -254,15 +264,17 @@ package fe.unit
 					jump(jmp);
 					jmp=0;
 				}
-				if (celUnit) {
-					if ((X-celUnit.X)*(X-celUnit.X)+(Y-celUnit.Y+celUnit.scY/2)*(Y-celUnit.Y+celUnit.scY/2)<100*100) die();
+				if (celUnit)
+				{
+					if ((coordinates.X - celUnit.coordinates.X) * (coordinates.X - celUnit.coordinates.X) + (coordinates.Y - celUnit.coordinates.Y + celUnit.scY / 2) * (coordinates.Y - celUnit.coordinates.Y + celUnit.scY / 2) < 100 * 100) die();
 				}
 				pumpObj=null;
-			} else {
-				walk=0;
+			}
+			else {
+				walk = 0;
 			}
 			
-			if (Y>loc.spaceY * tileY - 80) throu = false;
+			if (coordinates.Y > loc.spaceY * tileY - 80) throu = false;
 		}
 	}
 }

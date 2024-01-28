@@ -74,7 +74,7 @@ package fe.weapon
 			kolvzz=Math.round((dlina-mindlina)/stepdlina);
 			vzz=new Array();
 			storona=owner.storona;
-			b=new Bullet(own,X-(dlina/2)*storona,Y-dlina,null,false);
+			b=new Bullet(own, coordinates.X - (dlina / 2) * storona, coordinates.Y - dlina, null, false);
 			b.weap=this;
 			b.tipBullet=1;
 			setBullet(b);
@@ -88,9 +88,9 @@ package fe.weapon
 			b.checkLine=checkLine;
 			rot=-Math.PI/2-(Math.PI/6)*storona;
 			cos0=Math.cos(rot), sin0=Math.sin(rot);
-			for (var i=0; i<=kolvzz; i++) {
-				var nx=X+cos2*(mindlina+i*stepdlina)+anim*storona*(mindlina+i*stepdlina);
-				var ny=Y+sin2*(mindlina+i*stepdlina);
+			for (var i:int = 0; i <= kolvzz; i++) {
+				var nx = coordinates.X + cos2 * (mindlina + i * stepdlina)+anim*storona*(mindlina+i*stepdlina);
+				var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 				vzz[i]={X:0,Y:0};
 			}
 			if (!auto && !powerfull)combinat=true;
@@ -115,14 +115,15 @@ package fe.weapon
 		
 		public function lineCel():int {
 			var res=0;
-			var bx:Number=owner.X;
-			var by:Number=owner.Y-owner.scY*0.75;
+			var bx:Number = owner.coordinates.X;
+			var by:Number = owner.coordinates.Y - owner.scY * 0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
 			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			for (var i=1; i<div; i++) {
-				celX=bx+ndx*i/div;
-				celY=by+ndy*i/div;
+			for (var i:int = 1; i < div; i++)
+			{
+				celX = bx + ndx * i / div;
+				celY = by + ndy * i / div;
 				var t:Tile=World.w.loc.getAbsTile(int(celX),int(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) {
 					return 0
@@ -143,8 +144,8 @@ package fe.weapon
 					celX=owner.celX-dlina*0.8*storona;
 					celY=owner.celY+dlina*0.3;
 					lineCel();
-					storona=(owner.celX>owner.X-100*owner.storona)?1:-1;
-					del.x=(celX-(owner.X+ds));
+					storona=(owner.celX>owner.coordinates.X-100*owner.storona)?1:-1;
+					del.x=(celX-(owner.coordinates.X+ds));
 					del.y=(celY-owner.weaponY);
 					norma(del,meleeR);
 					ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
@@ -161,14 +162,14 @@ package fe.weapon
 						celRY=owner.celY;
 					}
 					if (mtip==2) {
-						del.x=(celRX-(owner.X+ds));
+						del.x=(celRX-(owner.coordinates.X+ds));
 						del.y=(celRY-owner.weaponY);
 						norma(del,dlina-(dlina-mindlina)/2);
 						celRX-=del.x;
 						celRY-=del.y;
 					}
-					storona=(celRX>owner.X)?1:-1;
-					del.x=(celRX-(owner.X+ds));
+					storona=(celRX>owner.coordinates.X)?1:-1;
+					del.x=(celRX-(owner.coordinates.X+ds));
 					del.y=(celRY-owner.weaponY);
 					norma(del,meleeR);
 					ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
@@ -184,26 +185,26 @@ package fe.weapon
 				storona=owner.storona;
 				ready=true;
 			}
-			if (krep>0 || !X) {
-				X=owner.weaponX;
-				Y=owner.weaponY;
+			if (krep>0 || !coordinates.X) {
+				coordinates.X = owner.weaponX;
+				coordinates.Y = owner.weaponY;
 				ready=true;
 			} else {
-				var tx=celX-X;
-				var ty=celY-Y;
+				var tx = celX - coordinates.X;
+				var ty = celY - coordinates.Y;
 				if (mtip!=0) {
-					tx=celRX-X;
-					ty=celRY-Y;
+					tx = celRX - coordinates.X;
+					ty = celRY - coordinates.Y;
 				}
 				ready=((tx*tx+ty*ty)<100);			//вот тут баг с копьями
-				del.x=((owner.X+ds+del.x)-X)/2;
-				del.y=((owner.weaponY+del.y)-Y)/2;
+				del.x=((owner.coordinates.X + ds + del.x) - coordinates.X)/2;
+				del.y=((owner.weaponY + del.y) - coordinates.Y)/2;
 				if (owner.player) {
 					norma(del,Math.max(levitRun,1/massa));
 				}
 				blumR=(del.x*storona+del.y)/2;
-				X+=del.x;
-				Y+=del.y;
+				coordinates.X += del.x;
+				coordinates.Y += del.y;
 			}
 			visvzz.visible=false;
 			if (t_attack>0) {
@@ -241,16 +242,17 @@ package fe.weapon
 								visvzz.gotoAndStop(1);
 							}
 						}
-						cos2=Math.cos(rot), sin2=Math.sin(rot);
-						for (var i=0; i<=kolvzz; i++) {
-							var nx=X+cos2*(mindlina+i*stepdlina);
-							var ny=Y+sin2*(mindlina+i*stepdlina);
+						cos2 = Math.cos(rot);
+						sin2 = Math.sin(rot);
+						for (var i:int = 0; i <= kolvzz; i++) {
+							var nx = coordinates.X + cos2 * (mindlina + i * stepdlina);
+							var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 							if (!isPow) b.bindMove(nx,ny, vzz[i].X, vzz[i].Y);
 							vzz[i].X=nx, vzz[i].Y=ny;
 						}
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
-							Snd.ps(sndShoot,X,Y,0,Math.random()*0.5+0.5);
+							Snd.ps(sndShoot,coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
 							sndPl=true;
 						}
 					} else {
@@ -258,18 +260,18 @@ package fe.weapon
 						sndPl=false;
 					}
 				} else if (mtip==1) {
-					rot=Math.atan2(celY-(owner.Y-owner.scY/2),celX-owner.X);
+					rot=Math.atan2(celY - (owner.coordinates.Y - owner.scY / 2), celX - owner.coordinates.X);
 					cos2=Math.cos(rot), sin2=Math.sin(rot);
 					plX=cos2*anim*atDlina;
 					plY=sin2*anim*atDlina;
 					if (t_attack>=rapid_act/2 && t_attack<rapid_act*5/6) {
-						nx=X+cos2*dlina+plX;
-						ny=Y+sin2*dlina+plY;
+						nx = coordinates.X + cos2 * dlina + plX;
+						ny = coordinates.Y + sin2 * dlina + plY;
 						if (!isPow) b.bindMove(nx,ny, vzz[0].X, vzz[0].Y);
 						vzz[0].X=nx, vzz[0].Y=ny;
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
-							Snd.ps(sndShoot,X,Y,0,Math.random()*0.5+0.5);
+							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
 							sndPl=true;
 						}
 					} else {
@@ -277,14 +279,15 @@ package fe.weapon
 						sndPl=false;
 					}
 				} else if (mtip==2) {
-					rot=Math.atan2(celY-(owner.Y-owner.scY/2),celX-owner.X);
-					cos2=Math.cos(rot), sin2=Math.sin(rot);
+					rot=Math.atan2(celY - (owner.coordinates.Y - owner.scY / 2), celX - owner.coordinates.X);
+					cos2 = Math.cos(rot);
+					sin2 = Math.sin(rot);
 					if (t_attack==1) {
 						cos2=Math.cos(rot), sin2=Math.sin(rot);
-						b.bindMove(X+cos2*mindlina, Y+sin2*mindlina, X+cos2*dlina, Y+sin2*dlina);
+						b.bindMove(coordinates.X + cos2 * mindlina, coordinates.Y + sin2 * mindlina, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
 						if (lasM) vis.gotoAndStop(3);
 						if (sndShoot!='' && !sndPl) {
-							Snd.ps(sndShoot,X,Y,0,Math.random()*0.5+0.5);
+							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
 							sndPl=true;
 						}
 					} else {
@@ -300,20 +303,20 @@ package fe.weapon
 				if (mtip==0) {
 					rot=-Math.PI/2-Math.PI/6*storona;
 				} else {
-					rot=Math.atan2(celY-(owner.Y-owner.scY/2),celX-owner.X);
+					rot=Math.atan2(celY-(owner.coordinates.Y - owner.scY / 2), celX - owner.coordinates.X);
 				}
 			}
 			if (sndPrep!='') {
 				if (!is_pattack && is_attack) {
-					sndCh=Snd.ps(sndPrep,X,Y,t_prep*30);
+					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, t_prep * 30);
 				}	//звук раскрутки
 				if (is_attack && sndCh!=null && sndCh.position>snd_t_prep2-300) {
 					sndCh.stop();
-					sndCh=Snd.ps(sndPrep,X,Y,snd_t_prep1+200);
+					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep1 + 200);
 				}//	звук продолжения
 				if (is_pattack && !is_attack && t_prep>0 && sndCh!=null && sndCh.position<snd_t_prep2-400)	{
 					sndCh.stop();
-					sndCh=Snd.ps(sndPrep,X,Y,snd_t_prep2+100);
+					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep2 + 100);
 				}	//звук остановки
 			}
 			if (recharg && hold<holder && t_attack==0) {
@@ -354,19 +357,19 @@ package fe.weapon
 			b.partEmit=true;
 			if (mtip==0) {
 				sin2=sin0; cos2=cos0;
-				for (var i=0; i<=kolvzz; i++) {
-					vzz[i].X=X+cos2*(mindlina+i*stepdlina);
-					vzz[i].Y=Y+sin2*(mindlina+i*stepdlina);
+				for (var i = 0; i <= kolvzz; i++) {
+					vzz[i].X = coordinates.X + cos2 * (mindlina + i * stepdlina);
+					vzz[i].Y = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 				}
 			} else {
 				cos2=Math.cos(rot), sin2=Math.sin(rot);
-				vzz[0].X=X+cos2*(dlina-0.25*atDlina);
-				vzz[0].Y=Y+sin2*(dlina-0.25*atDlina);
+				vzz[0].X = coordinates.X + cos2 * (dlina - 0.25 * atDlina);
+				vzz[0].Y = coordinates.Y + sin2 * (dlina - 0.25 * atDlina);
 			}
-			b.X=X+cos2*dlina;
-			b.Y=Y+sin2*dlina;
+			b.coordinates.X = coordinates.X + cos2 * dlina;
+			b.coordinates.Y = coordinates.Y + sin2 * dlina;
 			b.inWater=0;
-			if (loc.getAbsTile(b.X, b.Y).water>0) b.inWater=1;
+			if (loc.getAbsTile(b.coordinates.X, b.coordinates.Y).water>0) b.inWater=1;
 			if (mtip==0) {
 				b.tileX=int(owner.celX/tileX);
 				b.tileY=int(owner.celY/tileY);
@@ -399,7 +402,7 @@ package fe.weapon
 			if (t_attack<=0) {
 				setBullet(b);
 				rapid_act=resultRapid(rapid);
-				if (loc.getAbsTile(X,Y).water) rapid_act*=2; 
+				if (loc.getAbsTile(coordinates.X, coordinates.Y).water) rapid_act*=2; 
 				visvzz.alpha=Math.min(10/rapid_act,1);
 				t_attack=rapid_act;
 				shoot();
@@ -445,17 +448,20 @@ package fe.weapon
 				quakeY*=(Math.random()*0.3+0.5);
 				if (quakeY<1 && quakeY>-1) quakeY=0;
 			}
-			vis.y=Y+plY+quakeY;
-			if (krep==0) {
-				vis.x=X+plX+quakeX;
-				vis.scaleY=storona;
-				vis.rotation=rot*180/Math.PI+blumR;
-				visvzz.x=vis.x;
-				visvzz.y=vis.y;
+			vis.y = coordinates.Y + plY + quakeY;
+			if (krep==0)
+			{
+				vis.x = coordinates.X + plX + quakeX;
+				vis.scaleY = storona;
+				vis.rotation = rot * 180 / Math.PI + blumR;
+				visvzz.x = vis.x;
+				visvzz.y = vis.y;
 				visvzz.rotation=vis.rotation;
 				visvzz.scaleY=dlina/100*storona;
-			} else {
-				vis.x=X;
+			}
+			else
+			{
+				vis.x = coordinates.X;
 				vis.scaleY=owner.storona;
 				vis.rotation=90*owner.storona-90+owner.weaponR*owner.storona;
 			}

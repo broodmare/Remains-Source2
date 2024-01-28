@@ -21,8 +21,6 @@ package fe.unit {
 			durak=false;
 			allLink=true;
 			maxSpok=50;
-			//if (msex) wPos=BlitAnim.wPosEncl1;
-			//else wPos=BlitAnim.wPosEncl2;
 			wPos=BlitAnim.wPosEncl1;
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');

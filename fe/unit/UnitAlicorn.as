@@ -4,6 +4,7 @@ package fe.unit
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.serv.BlitAnim;
 	import fe.loc.Tile;
@@ -155,9 +156,9 @@ package fe.unit
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-			weaponX=magicX=X+(obj.x+visBmp.x)*storona;
-			weaponY=magicY=Y+obj.y+visBmp.y;
+			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
+			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
+			weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
 		
@@ -222,7 +223,7 @@ package fe.unit
 			if (visshit && visshit.visible && shithp<=0) {
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
-				Emitter.emit('pole',loc,X,Y-50,{kol:12,rx:100, ry:100});
+				Emitter.emit('pole', loc, coordinates.X, coordinates.Y-50,{kol:12,rx:100, ry:100});
 			}
 			//невидимость
 			if (superInvis && World.w.pers.infravis==0) {
@@ -243,7 +244,8 @@ package fe.unit
 		
 		public override function budilo(rad:Number=500) {
 			if (celUnit==null) {
-				celX=X,celY=Y;
+				celX = coordinates.X;
+				celY = coordinates.Y;
 			}
 			for each(var un:Unit in loc.units) {
 				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres) {
@@ -262,7 +264,7 @@ package fe.unit
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
 			if (tr==1 && osob && !blasted && bul && bul.weap && bul.weap.tip==1 && aiState<=1) {
-				mblast.cast(X,Y);
+				mblast.cast(coordinates.X, coordinates.Y);
 				blasted=true;
 			}
 			if (tr==2 && osob && !blasted && bul && bul.weap && bul.weap.owner && bul.weap.owner.player && aiState<=1) {
@@ -357,7 +359,7 @@ package fe.unit
 				t_pole++;
 				if (t_pole>=5) {
 					t_pole=0;
-					Emitter.emit('unlock',loc,magicX,magicY,{rx:20, ry:20});
+					Emitter.emit('unlock', loc, magicX, magicY,{rx:20, ry:20});
 				}
 				if (hp<maxhp*0.7) {
 					loc.allAct(this,'unlock',poleId);
@@ -385,7 +387,7 @@ package fe.unit
 			else {
 				if (aiSpok==0) {
 					if (isFly && aiState!=4) {
-						setCel(null, X+Math.random()*200-100, Y+1000);
+						setCel(null, coordinates.X+Math.random()*200-100, coordinates.Y+1000);
 						aiState=4;
 						aiVNapr=1;
 					} else if (stroll)	aiState=Math.floor(Math.random()*2);
@@ -406,8 +408,8 @@ package fe.unit
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				//установить точку зрения
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-				eyeX=X+(obj.x+visBmp.x)*storona;
-				eyeY=Y+obj.y+visBmp.y;
+				eyeX = coordinates.X + (obj.x+visBmp.x)*storona;
+				eyeY = coordinates.Y + obj.y+visBmp.y;
 				if (loc.getAbsTile(eyeX,eyeY).phis) {
 					eyeY+=20;
 				}
@@ -439,8 +441,8 @@ package fe.unit
 				}
 			}
 			//направление
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y + scY;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -451,8 +453,8 @@ package fe.unit
 			if (aiSpok==0) {
 				vision=0.7;
 				if (loc && loc.land.aliAlarm) vision=1.5;
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 			} else {
 				t_gotov++;
 				if (t_gotov>tGotov) superSila();
@@ -498,9 +500,9 @@ package fe.unit
 					dx+=floatX;
 					dy+=floatY;
 				} else {
-					spd.x=celX-X;
+					spd.x = celX - coordinates.X;
 					if (aiState==4) spd.y=200;
-					else spd.y=celY-(Y-scY/2);
+					else spd.y=celY-(coordinates.Y - scY / 2);
 					//дематериализоваться
 					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
 						t_nomater++;
@@ -548,7 +550,7 @@ package fe.unit
 				overLook=false;
 				if (stay && shX1>0.25 && aiNapr<0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -556,7 +558,7 @@ package fe.unit
 				}
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -607,7 +609,7 @@ package fe.unit
 
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*tileY-80) throu=false;
+			if (coordinates.Y>loc.spaceY*tileY-80) throu=false;
 			
 			if (celUnit && t_shit<900 && aiTCh%5==1 && isrnd(0.25) && aiAttackT<=-15 && currentWeapon.t_attack<=0) aiAttackT=16;
 			if (aiAttackT>-15) {
@@ -618,21 +620,21 @@ package fe.unit
 			//телекинез
 			t_tele++;
 			if (t_tele==0) {
-				if (aiState<=1 || findBox()==null) t_tele=-Math.floor(Math.random()*100+50);
+				if (aiState<=1 || findBox()==null) t_tele = -int(Math.random()*100+50);
 			}
-			if (t_tele>=tTeleThrow+10) t_tele=-Math.floor(Math.random()*100+50);
+			if (t_tele>=tTeleThrow+10) t_tele = -int(Math.random()*100+50);
 			if (teleObj) {
 				if (teleObj is Unit) {
-					teleX=X+storona*150;
-					teleY=Y-40;
+					teleX = coordinates.X + storona * 150;
+					teleY = coordinates.Y - 40;
 				} else {
-					teleX=X+storona*80;
-					teleY=Y-40;
+					teleX = coordinates.X + storona * 80;
+					teleY = coordinates.Y - 40;
 				} 
-				if (teleObj.X<teleX-derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
-				if (teleObj.X>teleX+derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
-				if (teleObj.Y<teleY-derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
-				if (teleObj.Y>teleY+derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
+				if (teleObj.coordinates.X < teleX - derp && teleObj.dx < teleSpeed) teleObj.dx+=teleAccel;
+				if (teleObj.coordinates.X > teleX + derp && teleObj.dx > -teleSpeed) teleObj.dx-=teleAccel;
+				if (teleObj.coordinates.Y < teleY - derp && teleObj.dy < teleSpeed) teleObj.dy+=teleAccel;
+				if (teleObj.coordinates.Y > teleY + derp && teleObj.dy > -teleSpeed) teleObj.dy-=teleAccel;
 				if (t_tele>=tTeleThrow) {
 					if (celUnit) {
 						throwTele();
@@ -696,7 +698,8 @@ package fe.unit
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(X,Y-scY/2,b.X,b.Y-b.scY/2)) {
+					if (loc.isLine(coordinates.X, coordinates.Y - scY / 2, b.coordinates.X, b.coordinates.Y - b.scY / 2))
+					{
 						upTeleObj(b);
 						return b;
 					}
@@ -737,7 +740,7 @@ package fe.unit
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
 				} else {
-					p={x:(celX-teleObj.X), y:(celY-(teleObj.Y-teleObj.scY/2)-Math.abs(celX-teleObj.X)/4)};
+					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.scY / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
 				}
 				if (teleObj is UnitPlayer) {
 					(teleObj as UnitPlayer).damWall=dam/2;
@@ -757,15 +760,20 @@ package fe.unit
 			var nx:Number=0;
 			var ny:Number=0;
 			for (var i=1; i<=20; i++) {
-				if (i<5 && !rnd) {
-					if (isrnd(0.7)) nx=cel.X-cel.storona*(Math.random()*300+200);
-					else nx=cel.X+cel.storona*(Math.random()*300+200);
-					ny=cel.Y;
-				} else if (i<10 && !rnd) {
-					if (isrnd()) nx=cel.X-cel.storona*(Math.random()*800+200);
-					else  nx=cel.X+cel.storona*(Math.random()*800+200);
-					ny=cel.Y+Math.random()*160-80;
-				} else {
+				if (i<5 && !rnd)
+				{
+					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
+					else nx=cel.coordinates.X+cel.storona*(Math.random()*300+200);
+					ny=cel.coordinates.Y;
+				}
+				else if (i<10 && !rnd)
+				{
+					if (isrnd()) nx=cel.coordinates.X-cel.storona*(Math.random()*800+200);
+					else  nx=cel.coordinates.X+cel.storona*(Math.random()*800+200);
+					ny=cel.coordinates.Y+Math.random()*160-80;
+				}
+				else
+				{
 					nx = Math.random()*loc.maxX;
 					ny = Math.random()*loc.maxY;
 				}
@@ -775,13 +783,14 @@ package fe.unit
 				if (ny<scY+40) ny=scY+40;
 				if (nx>loc.maxX-scX) nx=loc.maxX-scX;
 				if (ny>loc.maxY-40) ny=loc.maxY-40;
-				if (!collisionAll(nx-X, ny-Y)) {
-					teleport(nx,ny,1);
+				if (!collisionAll(nx - coordinates.X, ny - coordinates.Y)) {
+					teleport(nx, ny, 1);
 					dx=dy=0;
 					setWeaponPos();
-					if (findCel(true) && celUnit) {
+					if (findCel(true) && celUnit)
+					{
 						aiSpok=0;
-						storona=(celX>X)?1:-1;
+						storona = (celX > coordinates.X)? 1:-1;
 					}
 					return;
 				}
@@ -793,7 +802,7 @@ package fe.unit
 			super.visDetails();
 			if (shithp>0) {
 				hpbar.armor.visible=true;
-				hpbar.armor.gotoAndStop(Math.floor((1-shithp/shitMaxHp)*20+1));
+				hpbar.armor.gotoAndStop(int((1-shithp/shitMaxHp)*20+1));
 			} else hpbar.armor.visible=false;
 			
 		}

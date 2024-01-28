@@ -50,10 +50,10 @@ package fe.entities
 			visData=new BitmapData(blitX,blitY,true,0);
 			visBmp=new Bitmap(visData);
 			vis.addChild(visBmp);
-			visBmp.x=-blitX/2;
-			visBmp.y=-blitY/2;
-			vis.x=X;
-			vis.y=Y;
+			visBmp.x =- blitX / 2;
+			visBmp.y =- blitY / 2;
+			vis.x = this.coordinates.X;
+			vis.y = this.coordinates.Y;
 			vis.rotation=r;
 			if (isAnim==0) {
 				var n:int=Math.floor(Math.random()*blitData.width/blitX);
@@ -74,8 +74,8 @@ package fe.entities
 			if (isAnim==0) vis.cacheAsBitmap=true;
 			else if (isAnim==2) vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames)+1);
 			else vis.gotoAndPlay(frame+1);
-			vis.x=X;
-			vis.y=Y;
+			vis.x = this.coordinates.X;
+			vis.y = this.coordinates.Y;
 			vis.rotation=r;
 		}
 		
@@ -90,12 +90,12 @@ package fe.entities
 				if (isAnim>0) vis.play();
 			}
 			if (isMove) {
-				X+=dx;
-				Y+=dy;
-				dy+=ddy;
-				r+=dr;
-				vis.x=X;
-				vis.y=Y;
+				this.coordinates.X += dx;
+				this.coordinates.Y += dy;
+				dy += ddy;
+				r += dr;
+				vis.x = this.coordinates.X;
+				vis.y = this.coordinates.Y;
 				vis.rotation=r;
 				dx*=brake;
 				dy*=brake;
@@ -108,12 +108,14 @@ package fe.entities
 				blitFrame+=blitDelta;
 				if (blitMFrame>0 && blitFrame>=blitMFrame) blitFrame=0;
 			}
-			if (water>0) {
-				var voda=loc.getAbsTile(X,Y).water;
-				if (water==2 && voda==0 || water==1 && voda>0) liv=1;
+			if (water>0)
+			{
+				var voda=loc.getAbsTile(this.coordinates.X, this.coordinates.Y).water;
+				if (water == 2 && voda == 0 || water == 1 && voda > 0) liv = 1;
 			}
 			liv--;
-			if (liv<=0) {
+			if (liv <= 0)
+			{
 				setNull();
 			}
 			Emitter.kol1++;

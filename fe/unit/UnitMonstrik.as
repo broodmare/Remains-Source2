@@ -18,7 +18,7 @@ package fe.unit {
 		public function UnitMonstrik(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id=cid;
-			if (id=='scorp') id+=Math.floor(Math.random()*2+1);
+			if (id=='scorp') id += int(Math.random()*2+1);
 			getXmlParam();
 			initBlit();
 			animState='stay';
@@ -77,7 +77,6 @@ package fe.unit {
 			super.expl();
 			if (id=='tarakan') {
 				newPart('shmatok',2,1);
-				//newPart('bloat_kap',Math.floor(Math.random()*3+4));
 			}
 		}
 		
@@ -100,7 +99,6 @@ package fe.unit {
 					animState='plav';
 				} else {
 					animState='jump';
-					//anims[animState].setStab((dy+5)/10);
 				}
 			}
 			if (animState!=animState2) {
@@ -149,11 +147,10 @@ package fe.unit {
 			if (t_punch>0) t_punch--;
 
 			var jmp:Number=0;
-			//return;
 			
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			
@@ -161,11 +158,11 @@ package fe.unit {
 			if (aiTCh>0) aiTCh--;
 			else {
 				if (aiSpok==0) {
-					aiState=Math.floor(Math.random()*2);
+					aiState = int(Math.random()*2);
 					storona=aiNapr;
 				}
 				if (aiSpok>0) aiState=2;
-				aiTCh=Math.floor(Math.random()*50)+40;
+				aiTCh = int(Math.random()*50)+40;
 			}
 			//атаковать оружием
 			if (optAnimAtt && aiState==2 && celUnit && celDY<40 && celDY>-80 && celDX<80 && celDX>-80 && isrnd(0.7)) {
@@ -190,8 +187,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 			} else {
 				vision=aiVis;
 			}
@@ -226,7 +223,7 @@ package fe.unit {
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.5 && aiNapr<0) {
 					if (optJumping && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -234,7 +231,7 @@ package fe.unit {
 				}
 				if (stay && shX2>0.5 && aiNapr>0) {
 					if (optJumping && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -326,8 +323,7 @@ package fe.unit {
 					t_punch=15;
 				}
 			}
-			
-			if (Y > loc.spaceY * tileY-80) throu = false;
+			if (coordinates.Y > loc.spaceY * tileY-80) throu = false;
 		}
 		
 		public function attack() {
@@ -335,9 +331,6 @@ package fe.unit {
 				attKorp(celUnit,1);
 			}
 			if (optJumpAtt) jump(0.5);
-		}
-
-		
-	}
-	
+		}	
+	}	
 }

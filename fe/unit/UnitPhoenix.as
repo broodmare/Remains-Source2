@@ -66,7 +66,7 @@ package fe.unit {
 				var pet:UnitPet=World.w.gg.pets['phoenix'];
 				World.w.gg.callPet('phoenix');
 				pet.oduplenie=0;
-				pet.setPos(X,Y);
+				pet.setPos(coordinates.X, coordinates.Y);
 			}
 		}
 		
@@ -74,9 +74,10 @@ package fe.unit {
 			if (World.w.game.triggers['tame']>=5) die();
 		}
 		
-		function tame() {
+		function tame()
+		{
 			if (!questOk) World.w.game.addQuest('tamePhoenix');
-			storona=(X>World.w.gg.X)?-1:1;
+			storona=(coordinates.X > World.w.gg.coordinates.X)? -1:1;
 			if (World.w.invent.items['radcookie'].kol>0) {
 				World.w.game.incQuests('tame_ph');
 				World.w.invent.minusItem('radcookie');
@@ -84,14 +85,19 @@ package fe.unit {
 				else World.w.game.triggers['tame']=1;
 				if (World.w.game.triggers['tame']>=5 && !World.w.game.triggers['pet_phoenix']) {	//приручить
 					if (World.w.game.runScript('tamePhoenix',this)) World.w.game.triggers['pet_phoenix']=1;
-				} else {
-					die();
-					World.w.gui.messText('phoenixFeed2','',Y<300);
 				}
-			} else {
-				World.w.gui.messText('phoenixFeed1','',Y<300);
+				else
+				{
+					die();
+					World.w.gui.messText('phoenixFeed2', '', coordinates.Y < 300);
+				}
 			}
-			if (World.w.game) {
+			else
+			{
+				World.w.gui.messText('phoenixFeed1', '', coordinates.Y < 300);
+			}
+			if (World.w.game)
+			{
 				World.w.game.triggers['frag_'+id]=0;
 			}
 		}

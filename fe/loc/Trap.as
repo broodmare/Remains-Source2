@@ -26,12 +26,12 @@ package fe.loc
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function Trap(loc:Location, id:String, X:int=0, Y:int=0)
+		public function Trap(loc:Location, id:String, X:int = 0, Y:int = 0)
 		{
 			this.loc = loc;
 			this.id = id;
-			this.X = X;
-			this.Y = Y;
+			this.coordinates.X = X;
+			this.coordinates.Y = Y;
 			sloy = 0;
 			prior = 1;
 
@@ -47,24 +47,24 @@ package fe.loc
 			getXmlParam()
 			if (!anim) vis.cacheAsBitmap = true;
 			if (vis2 && !anim) vis2.cacheAsBitmap = true;
-			X1 = X - scX / 2;
-			X2 = X + scX / 2;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
 			
 			if (floor)
 			{
-				Y1 = Y - scY; 
-				Y2 = Y;
+				Y1 = coordinates.Y - scY; 
+				Y2 = coordinates.Y;
 			}
 			else
 			{
-				Y1 = Y - tileY;
+				Y1 = coordinates.Y - tileY;
 				Y2 = Y1 + scY;
 			}
 
-			vis.x = X;
-			vis.y = Y;
-			vis2.x = X;
-			vis2.y = Y;
+			vis.x  = coordinates.X;
+			vis.y  = coordinates.Y;
+			vis2.x = coordinates.X;
+			vis2.y = coordinates.Y;
 
 			cTransform = loc.cTransform;
 			bindTile();
@@ -121,9 +121,9 @@ package fe.loc
 		private function bindTile():void
 		{
 			//прикрепление к полу
-			if (spBind == 1) loc.getAbsTile(X, Y + 10).trap = this;	
+			if (spBind == 1) loc.getAbsTile(coordinates.X, coordinates.Y + 10).trap = this;	
 			//прикрепление к потолку
-			if (spBind == 2) loc.getAbsTile(X, Y - 50).trap = this;
+			if (spBind == 2) loc.getAbsTile(coordinates.X, coordinates.Y - 50).trap = this;
 		}
 		
 		public override function die(sposob:int = 0)
@@ -134,15 +134,15 @@ package fe.loc
 		public function attKorp(cel:Unit):Boolean
 		{
 			if (cel==null || cel.neujaz) return false;
-			if (spDam==1 && !cel.isFly && cel.dy>8 && cel.X<=X2 && cel.X>=X1 && cel.Y<=Y2 && cel.Y>=Y1) //шипы
+			if (spDam == 1 && !cel.isFly && cel.dy > 8 && cel.coordinates.X <= X2 && cel.coordinates.X >= X1 && cel.coordinates.Y <= Y2 && cel.coordinates.Y >= Y1) //шипы
 			{		
 				cel.damage(cel.massa*cel.dy/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
-			if (spDam==2 && !cel.isFly && (cel.dy+cel.osndy<0) && cel.X<=X2 && cel.X>=X1 && cel.Y1<=Y2 && cel.Y1>=Y1) //шипы
+			if (spDam==2 && !cel.isFly && (cel.dy + cel.osndy < 0) && cel.coordinates.X <= X2 && cel.coordinates.X >= X1 && cel.Y1 <= Y2 && cel.Y1 >= Y1) //шипы
 			{
-				cel.damage(cel.massa*dam*(1+loc.locDifLevel*0.1), tipDamage);
-				cel.neujaz=cel.neujazMax;
+				cel.damage(cel.massa * dam * (1 + loc.locDifLevel * 0.1), tipDamage);
+				cel.neujaz = cel.neujazMax;
 			}
 			return true;
 		}

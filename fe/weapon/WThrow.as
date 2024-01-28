@@ -86,12 +86,12 @@ package fe.weapon
 				if (owner.player) sk=weaponSkill;
 			}
 			var r=(Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
-			var rasstx=owner.celX-X;
-			var rassty=owner.celY-Y;
+			var rasstx = owner.celX - coordinates.X;
+			var rassty = owner.celY - coordinates.Y;
 			if (throwTip==1) {
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
-				un.putLoc(World.w.loc,X,Y);
+				un.putLoc(World.w.loc, coordinates.X, coordinates.Y);
 				un.loc.addObj(un);
 				un.loc.units.push(un);
 				un.fraction=owner.fraction;
@@ -103,14 +103,14 @@ package fe.weapon
 				un.vis.gotoAndStop(1);
 				un.setVis(true);
 				un.inter.mine=1;
-				if (un.collisionAll()) un.setPos(owner.X,owner.Y);
+				if (un.collisionAll()) un.setPos(owner.coordinates.X, owner.coordinates.Y);
 				if (un.collisionAll()) un.fixed=true;
 				if (owner && owner.player && World.w.pers.sapper>1) {
 					un.damage1*=World.w.pers.sapper;
 					un.vulner[Unit.D_EXPL]=un.vulner[Unit.D_PLASMA]=0;
 				}
 			} else {
-				b = new PhisBullet(owner,X,Y,vBullet);
+				b = new PhisBullet(owner, coordinates.X, coordinates.Y, vBullet);
 				b.weap=this;
 				b.vel=getVel(rasstx, rassty, sk*skillConf);
 				b.rot=rot+r+getRot(rasstx, rassty, b.vel);
@@ -136,7 +136,7 @@ package fe.weapon
 				loc.newGrenade(b);
 			}
 			owner.isShoot=true;
-			if (sndShoot!='') Snd.ps(sndShoot,X,Y);
+			if (sndShoot!='') Snd.ps(sndShoot, coordinates.X, coordinates.Y);
 			is_shoot=true;
 			hold=0;
 			if (owner.player && loc.train) {
@@ -153,12 +153,12 @@ package fe.weapon
 			var razn=lvl-World.w.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
 			else if (razn>=2) skillConf=0.5;
-			var rot3=Math.atan2(World.w.celY-Y, World.w.celX-X);
+			var rot3=Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
 			trasser.loc=owner.loc;
-			var rasstx=World.w.celX-X;
-			var rassty=World.w.celY-Y;
-			trasser.X=trasser.begx=X;
-			trasser.Y=trasser.begy=Y;
+			var rasstx = World.w.celX - coordinates.X;
+			var rassty = World.w.celY - coordinates.Y;
+			trasser.X = trasser.begx = coordinates.X;
+			trasser.Y = trasser.begy = coordinates.Y;
 			trasser.ddy=World.ddy;
 			trasser.skok=skok;
 			trasser.tormoz=tormoz;
@@ -188,7 +188,6 @@ package fe.weapon
 			}
 			return false;
 		}
-		
 		
 		public override function animate():void
 		{

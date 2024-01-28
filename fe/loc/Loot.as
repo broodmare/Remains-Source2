@@ -3,6 +3,7 @@ package fe.loc
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.serv.Item;
 	import fe.serv.Interact;
@@ -37,7 +38,8 @@ package fe.loc
 			item=nitem;
 			if (loc.cTransform) cTransform=loc.cTransform;
 			sloy=2, prior=3;
-			X=nx, Y=ny;
+			coordinates.X = nx;
+			coordinates.Y = ny;
 			krit=nkrit;
 			if (nx<tileX) nx=tileX;
 			if (nx>(loc.spaceX-1)*tileX) nx=(loc.spaceX-1)*tileX;
@@ -110,8 +112,8 @@ package fe.loc
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			} 
 			if (vClass) {
-				vis.x=X;
-				vis.y=Y;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 				vis.cacheAsBitmap=true;
 				scX=vis.width, scY=vis.height;
 			}
@@ -156,7 +158,8 @@ package fe.loc
 		//попробовать взять
 		public function take(prinud:Boolean=false) {
 			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
-			var rx=World.w.gg.X-X, ry=World.w.gg.Y-World.w.gg.scY/2-Y;
+			var rx = World.w.gg.coordinates.X - coordinates.X;
+			var ry = World.w.gg.coordinates.Y - World.w.gg.scY / 2 - coordinates.Y;
 			//взять
 			if (prinud || (World.w.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) {
 				if (World.w.hardInv && !actTake) {
@@ -205,24 +208,26 @@ package fe.loc
 			if (!stay) {
 				if (!levit && !vsos && dy<World.maxdy) dy+=World.ddy;
 				else if (levit && !isPlav) {
-					dy*=0.8; dx*=0.8;
+					dy*=0.8;
+					dx*=0.8;
 				}
 				if (isPlav) {
-					dy*=0.7; dx*=0.7;
+					dy*=0.7;
+					dx*=0.7;
 				}
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
 				else {
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-					for (var i=0; (i<div && !stay && !isTake); i++) run(div);
+					var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					for (var i:int = 0; (i<div && !stay && !isTake); i++) run(div);
 				}
 				checkWater();
 				if (vis) {
-					vis.x=X;
-					vis.y=Y-dery;
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y - dery;
 				}
 			}
 			if (inter) inter.step();
-			onCursor=(X-scX/2<World.w.celX && X+scX/2>World.w.celX && Y-scY<World.w.celY && Y>World.w.celY)?prior:0;
+			onCursor=(coordinates.X - scX / 2 < World.w.celX && coordinates.X + scX / 2 > World.w.celX && coordinates.Y - scY<World.w.celY && coordinates.Y > World.w.celY)? prior:0;
 			if (World.w.checkLoot) auto2=item.checkAuto();
 			if (auto && auto2 || actTake) take();
 		}
@@ -233,29 +238,35 @@ package fe.loc
 			
 			
 			//ГОРИЗОНТАЛЬ
-				X+=dx/div;
-				if (X-scX/2<0) {
-					X=scX/2;
-					dx=Math.abs(dx);
+				coordinates.X += dx / div;
+				if (coordinates.X - scX / 2 < 0)
+				{
+					coordinates.X = scX / 2;
+					dx = Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*tileX) {
-					X=loc.spaceX*tileX-1-scX/2;
-					dx=-Math.abs(dx);
+				if (coordinates.X + scX / 2 >= loc.spaceX * tileX)
+				{
+					coordinates.X = loc.spaceX * tileX - 1 - scX / 2;
+					dx = -Math.abs(dx);
 				}
 				//движение влево
-				if (dx<0) {
-					t=loc.getAbsTile(X,Y);
-					if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) {
-						X=t.phX2+1;
-						dx=Math.abs(dx);
+				if (dx<0)
+				{
+					t=loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.phis==1 && coordinates.X <= t.phX2 && coordinates.X >= t.phX1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2)
+					{
+						coordinates.X = t.phX2 + 1;
+						dx = Math.abs(dx);
 					}
 				}
 				//движение вправо
-				if (dx>0) {
-					t=loc.getAbsTile(X,Y);
-					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
-						X=t.phX1-1;
-						dx=-Math.abs(dx);
+				if (dx>0)
+				{
+					t = loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.phis==1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2)
+					{
+						coordinates.X = t.phX1 - 1;
+						dx = -Math.abs(dx);
 					}
 				}
 			
@@ -264,75 +275,95 @@ package fe.loc
 			//движение вверх
 			if (dy<0) {
 				stay=false;
-				Y+=dy/div;
-				if (Y-scY<0) Y=scY;
-				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) {
-					Y=t.phY2+1;
-					dy=0;
+				coordinates.Y += dy / div;
+				if (coordinates.Y - scY < 0) coordinates.Y = scY;
+				t = loc.getAbsTile(coordinates.X, coordinates.Y);
+				if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2)
+				{
+					coordinates.Y = t.phY2 + 1;
+					dy = 0;
 				}
 			}
 			//движение вниз
 			var newmy:Number=0;
-			if (dy>0) {
-				stay=false;
-				if (Y+dy/div>=loc.spaceY*tileY) {
+			if (dy>0)
+			{
+				stay = false;
+				if (coordinates.Y + dy / div >= loc.spaceY * tileY)
+				{
 					if (auto2) take(true);
-					dx=0;
+					dx = 0;
 					return;
 				}
-				t=loc.getAbsTile(X,Y+dy/div);
-				if (t.phis==1 && Y+dy/div>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2 || t.shelf && !levit && !vsos && Y+dy/div>=t.phY1 && Y<=t.phY1 && X>=t.phX1 && X<=t.phX2) {
-					newmy=t.phY1;
+				t = loc.getAbsTile(coordinates.X, coordinates.Y + dy / div);
+				if (t.phis==1 && coordinates.Y + dy / div >= t.phY1 && coordinates.Y <= t.phY2 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 || t.shelf && !levit && !vsos && coordinates.Y + dy / div >= t.phY1 && coordinates.Y <= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2)
+				{
+					newmy = t.phY1;
 				}
-				if (newmy==0 && !levit && !vsos) newmy=checkShelf(dy/div);
-				if (!loc.active && Y>=(loc.spaceY-1)*tileY) newmy=(loc.spaceY-1)*tileY;
-				if (newmy) {
-					Y=newmy-1;
-					if (!levit) {
-						if (dy>5 && sndFall) Snd.ps(sndFall,X,Y,0,dy/15);
-						stay=true;
-						dy=dx=0;
+				if (newmy == 0 && !levit && !vsos) newmy = checkShelf(dy / div);
+				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) newmy = (loc.spaceY - 1) * tileY;
+				if (newmy)
+				{
+					coordinates.Y = newmy - 1;
+					if (!levit)
+					{
+						if (dy>5 && sndFall) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, dy / 15);
+						stay = true;
+						dy = 0;
+						dx = 0;
 					}
-				} else {
-					Y+=dy/div;
+				}
+				else
+				{
+					coordinates.Y += dy / div;
 				}
 			}
 		}
-		public override function checkStay() {
+
+		public override function checkStay()
+		{
 			if (osnova) return true;
-			var t:Tile=loc.getAbsTile(X,Y+1);
-			if ((t.phis==1 || t.shelf) && Y+1>t.phY1) {
+			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
+			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.phY1)
+			{
 				return true;
-			} else {
-				stay=false;
+			}
+			else
+			{
+				stay = false;
 				return false;
 			}
 		}
-		public function checkShelf(dy):Number {
+
+		public function checkShelf(dy):Number
+		{
 			for (var i in loc.objs) {
-				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && b.wall==0 && !(X<b.X1 || X>b.X2) && Y<=b.Y1 && Y+dy>b.Y1) {
-					osnova=b;
+				var b:Box = loc.objs[i] as Box;
+				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.X1 || coordinates.X > b.X2) && coordinates.Y <= b.Y1 && coordinates.Y + dy > b.Y1)
+				{
+					osnova = b;
 					return b.Y1;
 				}
 			}
 			return 0;
 		}
 		//поиск жидкости
-		public function checkWater():Boolean {
-			var pla=isPlav;
-			isPlav=false;
-			try {
-				if ((loc.space[int(X/tileX)][int(Y/tileY)] as Tile).water>0) {
-					isPlav=true;
+		public function checkWater():Boolean
+		{
+			var pla = isPlav;
+			isPlav = false;
+			try
+			{
+				if ((loc.space[int(coordinates.X/tileX)][int(coordinates.Y/tileY)] as Tile).water > 0)
+				{
+					isPlav = true;
 				}
 			} catch (err) {
 				
 			}
 			if (pla!=isPlav && dy>5) {
-				Emitter.emit('kap',loc,X,Y,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
-				Snd.ps('fall_item_water',X,Y,0, dy/10);
+				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
+				Snd.ps('fall_item_water', coordinates.X, coordinates.Y, 0, dy/10);
 			}
 			return isPlav;
 		}

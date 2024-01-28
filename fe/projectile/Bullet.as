@@ -3,6 +3,7 @@ package fe.projectile
 	import flash.utils.Dictionary;
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.unit.Unit;
 	import fe.loc.*;
 	import fe.entities.Obj;
@@ -93,16 +94,16 @@ package fe.projectile
 				owner=own;
 				loc=own.loc;
 			}
-			X=begx=nx;
-			Y=begy=ny;
+			coordinates.X = begx = nx;
+			coordinates.Y = begy = ny;
 			sloy=2;
 			levitPoss=false;
 			if (visClass) {
 				if (World.w.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;
 				vis=new visClass();
 				vis.stop();
-				vis.x=X;
-				vis.y=Y;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 				vis.visible=false;
 			}
 			if (addobj) loc.addObj(this);
@@ -130,11 +131,11 @@ package fe.projectile
 			}
 			if (vis)
 			{
-				vis.x=X;
-				vis.y=Y;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 				vis.rotation=rot*180/Math.PI;
 				if (vis.laser && (spring>=2)) {
-					vis.laser.scaleX=Math.sqrt((X-begx)*(X-begx)+(Y-begy)*(Y-begy))/100;
+					vis.laser.scaleX=Math.sqrt((coordinates.X - begx) * (coordinates.X - begx) + (coordinates.Y - begy) * (coordinates.Y - begy))/100;
 				} else if (spring==1 && vel>100) {
 					if (!babah) vis.scaleX=vel/100;
 				} else {
@@ -145,8 +146,8 @@ package fe.projectile
 					vis.alpha=liv/4;
 					if (weap) {
 						weap.getBulXY();
-						vis.x=X+weap.bulX-begx;
-						vis.y=Y+weap.bulY-begy;
+						vis.x = coordinates.X + weap.bulX - begx;
+						vis.y = coordinates.Y + weap.bulY - begy;
 					}
 				}
 			}
@@ -169,16 +170,17 @@ package fe.projectile
 			return 'Error bullet '+(owner?owner.nazv:'???')+' '+(weap?weap.nazv:'???');
 		}
 		
-		public override function bindMove(nx:Number,ny:Number, ox:Number=-1, oy:Number=-1) {
-			if (ox>=0) X=ox;
-			if (oy>=0) Y=oy;
-			dx=nx-X;
-			dy=ny-Y;
-			vel=Math.sqrt(dx*dx+dy*dy);
+		public override function bindMove(nx:Number,ny:Number, ox:Number=-1, oy:Number=-1)
+		{
+			if (ox >= 0) coordinates.X = ox;
+			if (oy >= 0) coordinates.Y = oy;
+			dx = nx - coordinates.X;
+			dy = ny - coordinates.Y;
+			vel = Math.sqrt(dx*dx+dy*dy);
 			if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
 			else {
-				var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-				for (var i=0; i<div; i++) run(div);
+				var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+				for (var i:int = 0; i < div; i++) run(div);
 			}
 		}
 		
@@ -200,11 +202,11 @@ package fe.projectile
 			} else if (tipDecal>0 && tipDecal<=6) { //пуля или удар
 				if (res==1 || res==2 || res==5 || res==7) {		//попадание по металлу или бетону
 					if (vis) vis.gotoAndPlay(2);
-					var koliskr:int=Math.floor(Math.random()*5+damage/5);
+					var koliskr:int = int(Math.random()*5+damage/5);
 					if (World.w.alicorn) koliskr*=0.2;
 					if (koliskr>20) koliskr=20;
-					Emitter.emit('iskr_bul',loc,X,Y,{dx:-dx/vel*10, dy:-dy/vel*10, kol:koliskr});
-					if (flare!=null && flare!='') Emitter.emit(flare,loc,X,Y);
+					Emitter.emit('iskr_bul', loc, coordinates.X, coordinates.Y, {dx:-dx/vel*10, dy:-dy/vel*10, kol:koliskr});
+					if (flare!=null && flare!='') Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
 				} else if (res==3 || res==4) {	//попадание по мясу или дереву
 					if (vis && dist<vel) {
 						vis.scaleX=dist/100;
@@ -213,7 +215,7 @@ package fe.projectile
 					if (vis && dist<vel) vis.visible=false;
 				}
 			}
-			else if ((flare!=null && flare != '') && res > 0) Emitter.emit(flare,loc,X,Y);
+			else if ((flare!=null && flare != '') && res > 0) Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
 
 			if (liv>4) liv=4;
 			babah=true;
@@ -236,22 +238,21 @@ package fe.projectile
 		public function run(div:int=1):void
 		{
 			dist += vel / div;
-			X += dx / div;
-			Y += dy / div;
+			coordinates.X += dx / div;
+			coordinates.Y += dy / div;
 			
-			if (loc.sky && (X < 0 || X >= loc.maxX || Y < 0 || Y >= loc.maxY)) popadalo(0);
+			if (loc.sky && (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY)) popadalo(0);
 			else
 			{
-				if (!outspace && X < 0 || X >= loc.spaceX * constTileX || Y<0 || Y >= loc.spaceY * constTileY) popadalo(0);
+				if (!outspace && coordinates.X < 0 || coordinates.X >= loc.spaceX * constTileX || coordinates.Y < 0 || coordinates.Y >= loc.spaceY * constTileY) popadalo(0);
 
-				var t:Tile = loc.getAbsTile(X, Y);
-
+				var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
 				if (t.water > 0)
 				{
 					if (inWater == 0)
 					{
 						if (partEmit && (tipDamage==Unit.D_BUL || tipDamage==Unit.D_PHIS || tipDamage==Unit.D_BLADE)) {
-							Emitter.emit('kap',loc,X,Y,{dx:-dx/vel*10, dy:-dy/vel*10, kol:Math.floor(Math.random()*5+damage/5)});
+							Emitter.emit('kap', loc, coordinates.X, coordinates.Y,{dx:-dx/vel*10, dy:-dy/vel*10, kol:Math.floor(Math.random()*5+damage/5)});
 							sound(11);
 							partEmit=false;
 						}
@@ -260,7 +261,7 @@ package fe.projectile
 					{
 						if (partEmit)
 						{
-							Emitter.emit('steam',loc,X,Y);
+							Emitter.emit('steam', loc, coordinates.X, coordinates.Y);
 							partEmit=false;
 						}
 						popadalo(0);
@@ -273,14 +274,14 @@ package fe.projectile
 					{
 						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE))
 						{
-							Emitter.emit('kap', loc, X, Y, {dx:dx/vel*10, dy:dy/vel*10, kol:int(Math.random()*5+damage/5)});
+							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dx:dx/vel*10, dy:dy/vel*10, kol:int(Math.random()*5+damage/5)});
 							sound(11);
 							partEmit = false;
 						}
 					}
 					inWater = 0;
 				}
-				if (!tilehit && (tileX < 0 || int(X / constTileX) == tileX && int(Y / constTileY) == tileY) && (t.phis == 1 || t.phis == 2 && int(X / constTileX) == tileX && int(Y / constTileY) == tileY) && X >= t.phX1 && X <= t.phX2 && Y >= t.phY1 && Y <= t.phY2)
+				if (!tilehit && (tileX < 0 || int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && (t.phis == 1 || t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2)
 				{
 					if (!inWall)
 					{
@@ -288,8 +289,8 @@ package fe.projectile
 						sound(t.mat);
 						if (weap) weap.crash();
 						owner.crash(this);
-						if (explRadius==0) loc.hitTile(t,destroy,X,Y,tipDecal);
-						tilehit=true;
+						if (explRadius == 0) loc.hitTile(t, destroy, coordinates.X, coordinates.Y, tipDecal);
+						tilehit = true;
 					}
 				}
 				else inWall = false;
@@ -305,9 +306,9 @@ package fe.projectile
 					else break;
 				}
 				if (un.sost == 4 || un.disabled || un.trigDis || un.loc != loc) continue;
-				if ((targetObj || un.fraction != owner.fraction) && X >= un.X1 && X <= un.X2 && Y >= un.Y1 && Y <= un.Y2)
+				if ((targetObj || un.fraction != owner.fraction) && coordinates.X >= un.X1 && coordinates.X <= un.X2 && coordinates.Y >= un.Y1 && coordinates.Y <= un.Y2)
 				{
-					if (checkLine && weap && !weap.isLine(X, Y)) //проверить досягаемость до объекта
+					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) //проверить досягаемость до объекта
 					{
 						off = true;
 						return;
@@ -335,9 +336,9 @@ package fe.projectile
 				if (targetObj) break;
 			}
 			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) {//взлом контейнера
-				box=loc.celObj as Box;
-				if (X>=box.X1 && X<=box.X2 && Y>=box.Y1 && Y<=box.Y2 && udar(box)) {
-					res=box.udarBullet(this,1);
+				box = loc.celObj as Box;
+				if (coordinates.X >= box.X1 && coordinates.X <= box.X2 && coordinates.Y >= box.Y1 && coordinates.Y <= box.Y2 && udar(box)) {
+					res = box.udarBullet(this, 1);
 					sound(res);
 					if (res>=0)
 					{
@@ -350,40 +351,41 @@ package fe.projectile
 			if (World.w.gg.loc==loc && World.w.gg.teleObj && (World.w.gg.teleObj is Box) && owner!=World.w.gg)
 			{
 				box=World.w.gg.teleObj as Box;
-				if (X>=box.X1 && X<=box.X2 && Y>=box.Y1 && Y<=box.Y2 && udar(box)) {
-					res=box.udarBullet(this,0);
+				if (coordinates.X >= box.X1 && coordinates.X <= box.X2 && coordinates.Y >= box.Y1 && coordinates.Y <= box.Y2 && udar(box))
+				{
+					res = box.udarBullet(this,0);
 					sound(res);
-					if (res>=0) {
-						popadalo(res);
-					}
+
+					if (res >= 0) popadalo(res);
 				}
 			}
 			if (celX >- 10000 && celY >- 10000 && explRadius > 0)
 			{
-				if (Math.abs(celX - X) < 50 && Math.abs(celY - Y) < 200 && Math.random() < 0.3) popadalo(100);
+				if (Math.abs(celX - coordinates.X) < 50 && Math.abs(celY - coordinates.Y) < 200 && Math.random() < 0.3) popadalo(100);
 			}
 			
 		}
 		
 		private function sound(res:int):void
 		{
-			if (weap && weap.sndHit != '') Snd.ps(weap.sndHit, X, Y);
+			if (weap && weap.sndHit != '') Snd.ps(weap.sndHit, coordinates.X, coordinates.Y);
 			if (tipDecal <= 0 || tipDecal > 6) return;
 			if (Snd.t_hit <= 0)
 			{
-				if (res==1) Snd.ps('hit_metal',X,Y,0,0.4);
-				if (res==2 || res==4 || res==6) Snd.ps('hit_concrete',X,Y,0,0.5);
-				if (res==3) Snd.ps('hit_wood',X,Y,0,0.5);
-				if (res==5) Snd.ps('hit_glass',X,Y,0,0.5);
-				if (res==7) Snd.ps('hit_pole',X,Y,0,0.5);
-				if (res==10) {
-					if (tipDamage==Unit.D_BUL) Snd.ps('hit_bullet',X,Y,0,0.8);
-					else if (tipDamage==Unit.D_BLADE) Snd.ps('hit_blade',X,Y,0,0.8);
-					else Snd.ps('hit_flesh',X,Y,0,0.5);		//удары по мясу
+				if (res==1) Snd.ps('hit_metal', coordinates.X, coordinates.Y, 0, 0.4);
+				if (res==2 || res==4 || res==6) Snd.ps('hit_concrete', coordinates.X, coordinates.Y, 0, 0.5);
+				if (res==3) Snd.ps('hit_wood', coordinates.X, coordinates.Y, 0, 0.5);
+				if (res==5) Snd.ps('hit_glass', coordinates.X, coordinates.Y, 0, 0.5);
+				if (res==7) Snd.ps('hit_pole', coordinates.X, coordinates.Y, 0, 0.5);
+				if (res==10)
+				{
+					if (tipDamage == Unit.D_BUL) Snd.ps('hit_bullet', coordinates.X, coordinates.Y, 0, 0.8);
+					else if (tipDamage==Unit.D_BLADE) Snd.ps('hit_blade', coordinates.X, coordinates.Y, 0, 0.8);
+					else Snd.ps('hit_flesh', coordinates.X, coordinates.Y, 0, 0.5);		//удары по мясу
 				}
-				if (res==11) Snd.ps('hit_water',X,Y,0,0.5);
-				if (res==12) Snd.ps('hit_slime',X,Y,0,0.5);		//удары по слизи
-				Snd.t_hit=Math.random()*3+3;
+				if (res==11) Snd.ps('hit_water', coordinates.X, coordinates.Y, 0, 0.5);
+				if (res==12) Snd.ps('hit_slime', coordinates.X, coordinates.Y, 0, 0.5);		//удары по слизи
+				Snd.t_hit = Math.random() * 3 + 3;
 			}
 		}
 		
@@ -392,12 +394,12 @@ package fe.projectile
 		{
 			if (isExpl) return;
 
-			var t:Tile=loc.getAbsTile(X,Y);
-			inWall=false;
-			isExpl=true;
+			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
+			inWall = false;
+			isExpl = true;
 			levitPoss=false;
-			if (t && t.phis && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) inWall=true;
-			if (targetObj && destroy>0 && (targetObj is Box)) (targetObj as Box).damage(destroy);
+			if (t && t.phis && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) inWall = true;
+			if (targetObj && destroy > 0 && (targetObj is Box)) (targetObj as Box).damage(destroy);
 
 			if (explKol<=0) explRun();
 			else
@@ -420,10 +422,11 @@ package fe.projectile
 		}
 		
 		//выполнять процесс взрыва
-		public function explRun():void {
-			if (destroy>0) explDestroy();
-			if (explTip==1 || explTip==3 && expl_t==0)	explBlast();	
-			if (explTip==2 || explTip==3 && expl_t>0)	explGas();
+		public function explRun():void
+		{
+			if (destroy > 0) explDestroy();
+			if (explTip == 1 || explTip == 3 && expl_t == 0) explBlast();	
+			if (explTip == 2 || explTip == 3 && expl_t >  0) explGas();
 			explVis();
 		}
 		
@@ -431,12 +434,12 @@ package fe.projectile
 		//поражение всех стен в радиусе
 		private function explDestroy():void
 		{
-			for (var i:int = int((X - explRadius) / constTileX); i<= int((X + explRadius) / constTileX); i++)
+			for (var i:int = int((coordinates.X - explRadius) / constTileX); i<= int((coordinates.X + explRadius) / constTileX); i++)
 			{
-				for (var j:int = int((Y - explRadius) / constTileY); j<= int((Y + explRadius) / constTileY); j++)
+				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j<= int((coordinates.Y + explRadius) / constTileY); j++)
 				{
-					var tx = X - (i + 0.5) * constTileX;
-					var ty = Y - (j + 0.5) * constTileY;
+					var tx = coordinates.X - (i + 0.5) * constTileX;
+					var ty = coordinates.Y - (j + 0.5) * constTileY;
 					var ter = tx * tx + ty * ty;
 					if (ter < explRadius * explRadius) loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
 				}
@@ -450,8 +453,8 @@ package fe.projectile
 			{
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;// || (un is VirtualUnit)
 				if (explTip==3 && !un.stay) continue; 
-				var tx = un.X-X;
-				var ty = un.Y-un.scY/2-Y;
+				var tx = un.coordinates.X - coordinates.X;
+				var ty = un.coordinates.Y - un.scY / 2 - coordinates.Y;
 				var rasst = Math.sqrt(tx*tx+ty*ty);
 				var dam=damageExpl*(Math.random()*0.6+0.7);
 				//дружественный огонь врагов
@@ -471,26 +474,29 @@ package fe.projectile
 		//поражение всех юнитов виртуальными осколками, с учётом защиты от стен
 		private function explBlast():void
 		{
-			var tx,ty;
-			if (loc!=owner.loc) return;
-			for each(var un:Unit in loc.units) {
+			var tx;
+			var ty;
+			if (loc != owner.loc) return;
+			for each(var un:Unit in loc.units)
+			{
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
-				var tx=un.X-X;
-				var ty=un.Y-un.scY/2-Y;
-				var b:Bullet=explBullet(tx, ty, explRadius+un.scX);
+				var tx = un.coordinates.X - coordinates.X;
+				var ty = un.coordinates.Y - un.scY / 2 - coordinates.Y;
+				var b:Bullet=explBullet(tx, ty, explRadius + un.scX);
 				if (b) {
 					b.targetObj=un;
 					//дружественный огонь врагов
-					if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
+					if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER)
+					{
 						b.damage*=un.friendlyExpl;
 					}
 					//огонь по себе
 					if (un.player) {
 						if (weap && weap.owner.fraction==Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
 						var p={x:b.knockx, y:b.knocky};
-						norma(p,10);
-						b.knockx=p.x;
-						b.knocky=p.y;
+						norma(p, 10);
+						b.knockx = p.x;
+						b.knocky = p.y;
 					}
 				}
 			}
@@ -503,8 +509,8 @@ package fe.projectile
 			var b:Bullet;
 			if (rasst < er)
 			{
-				b=new Bullet(owner,X,Y,null);
-				b.inWall=inWall;
+				b=new Bullet(owner, coordinates.X, coordinates.Y, null);
+				b.inWall = inWall;
 				b.vel=er*(1+rasst/er*4)/3;
 				b.dx=tx/rasst*er/3;
 				b.dy=ty/rasst*er/3;
@@ -540,113 +546,113 @@ package fe.projectile
 				{
 					if (inWater>0)
 					{
-						loc.budilo(X,Y,700);
-						Emitter.emit('explw',loc,X,Y);
-						Emitter.emit('bubble',loc,X,Y,{kol:30, rx:100, ry:100, rdx:10, rdy:10});
-						Snd.ps('expl_uw',X,Y);
+						loc.budilo(coordinates.X, coordinates.Y, 700);
+						Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {kol:30, rx:100, ry:100, rdx:10, rdy:10});
+						Snd.ps('expl_uw', coordinates.X, coordinates.Y);
 					}
 					else
 					{
-						loc.budilo(X,Y,1500);
-						Emitter.emit('expl',loc,X,Y);
-						Emitter.emit('sparkleexpl',loc,X,Y);
-						Emitter.emit('iskr',loc,X,Y,{kol:16});
-						Snd.ps('bale_e',X,Y);
+						loc.budilo(coordinates.X, coordinates.Y, 1500);
+						Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('sparkleexpl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y,{kol:16});
+						Snd.ps('bale_e', coordinates.X, coordinates.Y);
 					}
 				}
 				else
 				{
-					loc.budilo(X,Y,500);
-					Emitter.emit(weap.visexpl,loc,X,Y);
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit(weap.visexpl, loc, coordinates.X, coordinates.Y);
 				}
 			}
 			else if (tipDamage==Unit.D_EMP)
 			{
-				loc.budilo(X,Y,500);
-				Emitter.emit('impexpl',loc,X,Y);
-				Snd.ps('emp_e',X,Y);
+				loc.budilo(coordinates.X, coordinates.Y, 500);
+				Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
+				Snd.ps('emp_e', coordinates.X, coordinates.Y);
 			}
 			else if (tipDamage==Unit.D_CRIO)
 			{
-				loc.budilo(X,Y,500);
-				Emitter.emit('iceexpl',loc,X,Y);
-				Emitter.emit('snow',loc,X,Y,{kol:16});
-				Snd.ps('cryo_e',X,Y);
+				loc.budilo(coordinates.X, coordinates.Y, 500);
+				Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
+				Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol:16});
+				Snd.ps('cryo_e', coordinates.X, coordinates.Y);
 			}
 			else if (tipDamage==Unit.D_PLASMA)
 			{
-				loc.budilo(X,Y,500);
-				Emitter.emit('plaexpl',loc,X,Y);
-				Snd.ps('exppla_e',X,Y);
+				loc.budilo(coordinates.X, coordinates.Y, 500);
+				Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
+				Snd.ps('exppla_e', coordinates.X, coordinates.Y);
 			}
 			else if (tipDamage==Unit.D_VENOM)
 			{
-				Emitter.emit('gas',loc,X,Y);
-				if (expl_t==0) Snd.ps('gas_e',X,Y);
+				Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
+				if (expl_t==0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 			}
 			else if (tipDamage==Unit.D_PINK)
 			{
-				Emitter.emit('pinkgas',loc,X,Y);
-				if (expl_t==0) Snd.ps('gas_e',X,Y);
+				Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
+				if (expl_t==0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 			}
 			else if (tipDamage==Unit.D_ACID)
 			{
 				if (expl_t==0)
 				{
-					Emitter.emit('acidexpl',loc,X,Y);
-					Emitter.emit('acidkap',loc,X,Y, {kol:Math.floor(Math.random()*5+30)});
-					Snd.ps('acid_e',X,Y);
+					Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {kol:Math.floor(Math.random()*5+30)});
+					Snd.ps('acid_e', coordinates.X, coordinates.Y);
 					explLiquid('acid');
 				}
 			}
 			else if (tipDamage==Unit.D_BALE)
 			{
-				loc.budilo(X,Y,3000);
-				Emitter.emit('balefire',loc,X,Y-60);
-				Emitter.emit('baleblast',loc,X,Y);
-				Snd.ps('bale_e',X,Y);
+				loc.budilo(coordinates.X, coordinates.Y, 3000);
+				Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
+				Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
+				Snd.ps('bale_e', coordinates.X, coordinates.Y);
 			}
 			else if (tipDamage==Unit.D_EXPL)
 			{
 				if (inWater>0)
 				{
-					loc.budilo(X,Y,700);
-					Emitter.emit('explw',loc,X,Y);
-					Emitter.emit('bubble',loc,X,Y,{kol:30, rx:100, ry:100, rdx:10, rdy:10});
-					Snd.ps('expl_uw',X,Y);
+					loc.budilo(coordinates.X, coordinates.Y, 700);
+					Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {kol:30, rx:100, ry:100, rdx:10, rdy:10});
+					Snd.ps('expl_uw', coordinates.X, coordinates.Y);
 				}
 				else
 				{
-					loc.budilo(X,Y,1500);
-					Emitter.emit('expl',loc,X,Y);
-					Emitter.emit('flare',loc,X,Y);
-					Emitter.emit('iskr',loc,X,Y,{kol:16});
-					Snd.ps('expl_e',X,Y);
+					loc.budilo(coordinates.X, coordinates.Y, 1500);
+					Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y,{kol:16});
+					Snd.ps('expl_e', coordinates.X, coordinates.Y);
 				}
 			}
 			else if (tipDamage==Unit.D_FIRE)
 			{
 				if (!(inWater > 0) && expl_t == 0)
 				{
-					loc.budilo(X,Y,500);
-					Emitter.emit('fireexpl',loc,X,Y);
-					Emitter.emit('flare',loc,X,Y);
-					Emitter.emit('iskr',loc,X,Y,{kol:16});
-					Snd.ps('fire_e',X,Y);
-					explLiquid('fire',-33);
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y,{kol:16});
+					Snd.ps('fire_e', coordinates.X, coordinates.Y);
+					explLiquid('fire', -33);
 				}
 			}
-			if (otbros>0)	World.w.quake((Math.random()*8-4)*otbros,otbros*0.8);
+			if (otbros > 0)	World.w.quake((Math.random()*8-4)*otbros,otbros*0.8);
 		}
 
 		private function explLiquid(liq:String, ndy:int=0)
 		{
-			for (var i = int((X-explRadius)/constTileX); i<=int((X+explRadius)/constTileX); i++) {
-				for (var j = int((Y-explRadius)/constTileY); j<=int((Y+explRadius)/constTileY); j++) {
-					var tx = X - (i + 0.5) * constTileX;
-					var ty = Y - (j + 0.5) * constTileY;
+			for (var i = int((coordinates.X - explRadius) / constTileX); i <= int((coordinates.X + explRadius) / constTileX); i++) {
+				for (var j = int((coordinates.Y - explRadius) / constTileY); j <= int((coordinates.Y + explRadius) / constTileY); j++) {
+					var tx = coordinates.X - (i + 0.5) * constTileX;
+					var ty = coordinates.Y - (j + 0.5) * constTileY;
 					var ter = tx * tx + ty * ty;
-					if (ter<explRadius*explRadius)
+					if (ter < explRadius * explRadius)
 					{
 						var t:Tile=loc.getTile(i,j);
 						if (j>1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i,j-1).phis==0)) Emitter.emit(liq,loc,(i+0.5) * constTileX + Math.random()*4-2,t.phY1+ndy);

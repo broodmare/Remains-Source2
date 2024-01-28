@@ -40,8 +40,8 @@ package fe.unit
 		
 		public override function setWeaponPos(tip:int=0)
 		{
-			weaponX=X;
-			weaponY=Y-40;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y-40;
 		}
 	}
 }

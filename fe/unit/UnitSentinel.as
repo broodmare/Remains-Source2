@@ -71,8 +71,8 @@ package fe.unit
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-90;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y-90;
 		}
 		
 		public override function jump(v:Number=1) {

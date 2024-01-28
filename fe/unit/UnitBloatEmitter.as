@@ -1,11 +1,14 @@
-package fe.unit {
+package fe.unit
+{
 	import fe.*;
 	
-	public class UnitBloatEmitter  extends Unit{
+	public class UnitBloatEmitter  extends Unit
+	{
 		
 		var emitId:String='bloat';
 
-		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid!=null) id=cid;
 			else id='ebloat';
@@ -18,7 +21,8 @@ package fe.unit {
 		}
 		
 		public override function setVisPos() {
-			vis.x=X,vis.y=Y;
+			vis.x = coordinates.X;
+			vis.y = coordinates.Y;
 		}
 		
 		public override function setNull(f:Boolean=false) {
@@ -40,11 +44,11 @@ package fe.unit {
 			var emitTr:String='0';
 			if (emitId=='bloat') {
 				if (loc.locDifLevel>3) emitTr=loc.randomCid(emitId);
-				un=loc.createUnit(emitId,X,Y,true,null,emitTr);
+				un=loc.createUnit(emitId, coordinates.X, coordinates.Y, true, null, emitTr);
 			}
 			if (emitId=='ant') {
 				emitTr=loc.randomCid(emitId);
-				un=loc.createUnit(emitId,X,Y-40,true,null,emitTr);
+				un=loc.createUnit(emitId, coordinates.X, coordinates.Y - 40, true, null,emitTr);
 			}
 			if (un && d) {
 				kolChild++;
@@ -91,6 +95,5 @@ package fe.unit {
 				attKorp(celUnit);
 			}
 		}
-	}
-	
+	}	
 }

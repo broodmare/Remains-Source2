@@ -31,15 +31,18 @@ package fe.unit {
 			vulner[D_NECRO]=0;
 		}
 
-		public override function forces() {
-			if (isFly) {
-				if (dx*dx+dy*dy>maxSpeed*maxSpeed || rasst2<100*100) {
-					dx*=0.8;
-					dy*=0.8;
+		public override function forces()
+		{
+			if (isFly)
+			{
+				if (dx*dx+dy*dy>maxSpeed*maxSpeed || rasst2<100*100)
+				{
+					dx *= 0.8;
+					dy *= 0.8;
 				}
 				if (aiState!=1) {
-					dx*=0.8;
-					dy*=0.8;
+					dx *= 0.8;
+					dy *= 0.8;
 				}
 			} else super.forces();
 		}
@@ -76,14 +79,15 @@ package fe.unit {
 				aiTCh=Math.floor(Math.random()*100)+100;
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					if (aiTip!='stay' && isrnd()) {
-						celX=X+(Math.random()*300+400)*(isrnd()?1:-1);
-						if (celX<0) celX=200;
-						if (celX>loc.maxX) celX=loc.maxX-200;
-						celY=Y+Math.random()*200-100;
-						if (celY<0) celX=200;
-						if (celY>loc.maxY) celY=loc.maxY-200;
+						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? 1:-1);
+						if (celX < 0) celX = 200;
+						if (celX > loc.maxX) celX = loc.maxX - 200;
+						celY = coordinates.Y + Math.random() * 200 - 100;
+						if (celY < 0) celX = 200;
+						if (celY > loc.maxY) celY = loc.maxY - 200;
 					} else {
-						celX=X, celY=Y-scY/2;
+						celX = coordinates.X;
+						celY = coordinates.Y - scY / 2;
 					}
 				}
 			}
@@ -92,16 +96,16 @@ package fe.unit {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
-					storona=(celX>X)?1:-1;
+					storona = (celX > coordinates.X)?1:-1;
 				} else {
 					if (aiSpok>0) aiSpok--;
 				}
-				spd.x=celX-X;
-				spd.y=celY-(Y-scY/2);
+				spd.x = celX - coordinates.X;
+				spd.y = celY - (coordinates.Y - scY / 2);
 				norma(spd,aiState==0?accel/2:accel);
 			}
-			dx+=spd.x;
-			dy+=spd.y;
+			dx += spd.x;
+			dy += spd.y;
 			
 			if (aiState==0) maxSpeed=walkSpeed;
 			else maxSpeed=runSpeed;
@@ -111,6 +115,5 @@ package fe.unit {
 				attKorp(celUnit,1);
 			}
 		}
-	}
-	
+	}	
 }

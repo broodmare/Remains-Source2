@@ -190,7 +190,7 @@ package fe.unit
 			if (zanyato || t_ref>0) return;
 			t_ref=16;
 			if (!noTurn) {
-				if (X>World.w.gg.X) storona=-1;
+				if (coordinates.X > World.w.gg.coordinates.X) storona=-1;
 				else storona=1;
 			}
 			if (targNPC) targNPC.activate();
@@ -317,12 +317,12 @@ package fe.unit
 				dy+=floatY;
 			}
 			if (celUnit==null) {
-				celX=X+storona*100;
-				celY=Y-10;
+				celX = coordinates.X + storona * 100;
+				celY = coordinates.Y - 10;
 			}
 			if (dey=='fly') {
-				dvig.x=cx-X;
-				dvig.y=cy-Y;
+				dvig.x = cx - coordinates.X;
+				dvig.y = cy - coordinates.Y;
 				var dst2=dvig.x*dvig.x+dvig.y*dvig.y;
 				if (dst2<40*40) {
 					dx*=0.85;

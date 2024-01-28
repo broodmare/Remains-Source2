@@ -22,19 +22,18 @@ package fe.weapon
 			vis=new vWeapon();
 		}
 		
-	
 		public function lineCel():int
 		{
 			var res=0;
-			var bx:Number=owner.X;
-			var by:Number=owner.Y-owner.scY*0.75;
-			var ndx:Number=(celX-bx);
-			var ndy:Number=(celY-by);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
+			var bx:Number=owner.coordinates.X;
+			var by:Number=owner.coordinates.Y - owner.scY * 0.75;
+			var ndx:Number = (celX - bx);
+			var ndy:Number = (celY - by);
+			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
 			for (var i=1; i<div; i++) {
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
-				var t:Tile=World.w.loc.getAbsTile(Math.floor(celX),Math.floor(celY));
+				var t:Tile=World.w.loc.getAbsTile(int(celX), int(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) {
 					return 0
 				}
@@ -49,28 +48,29 @@ package fe.weapon
 				celX=owner.celX;
 				celY=owner.celY;
 				storona=owner.storona;
-				del.x=(celX-(owner.X+ds));
+				del.x=(celX-(owner.coordinates.X+ds));
 				del.y=(celY-owner.weaponY);
 				norma(del,600);
 				ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
 				
-				var tx=celX-X;
-				var ty=celY-Y;
+				var tx=celX - coordinates.X;
+				var ty=celY - coordinates.Y;
 				ready=((tx*tx+ty*ty)<100);
-				del.x=((owner.X+ds+del.x)-X)/2;
-				del.y=((owner.weaponY+del.y)-Y)/2;
+				del.x=((owner.coordinates.X + ds + del.x) - coordinates.X) / 2;
+				del.y=((owner.weaponY + del.y) - coordinates.Y) / 2;
 				if (owner.player) {
 					norma(del,20);
 				}
-				pX=X, pY=Y;
-				X+=del.x;
-				Y+=del.y;
+				pX = coordinates.X;
+				pY = coordinates.Y;
+				coordinates.X += del.x;
+				coordinates.Y += del.y;
 			}
 		}
 		
 		public override function attack(waitReady:Boolean=false):Boolean
 		{
-			World.w.grafon.paint(pX,pY,X,Y,World.w.ctr.keyRun);
+			World.w.grafon.paint(pX, pY, coordinates.X, coordinates.Y,World.w.ctr.keyRun);
 			return true;
 		}
 
@@ -84,8 +84,8 @@ package fe.weapon
 		public override function animate():void
 		{
 			if (vis) {
-				vis.y=Y;
-				vis.x=X;
+				vis.y = coordinates.Y;
+				vis.x = coordinates.X;
 				vis.scaleX=storona;
 			}
 		}

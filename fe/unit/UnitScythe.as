@@ -66,21 +66,24 @@
 		public function getNapr()
 		{
 			if (cel==null) return;
-			var napr2=Math.atan2(cel.X-X,cel.Y-Y);
+			var napr2 = Math.atan2(cel.coordinates.X - coordinates.X, cel.coordinates.Y - coordinates.Y);
 			if (napr==-1) napr=napr2;
 		}
 		
 		public override function run(div:int=1)
 		{
 			if (bind) {
-				X=bind.X-Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
-				Y=bind.Y-bind.scY/2-Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
+				coordinates.X = bind.coordinates.X - Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
+				coordinates.Y = bind.coordinates.Y - bind.scY / 2 - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
 			} else {
-				X+=dx/div;
-				Y+=dy/div;
-				if (X>=loc.maxX || X<=0 || Y>=loc.maxY || Y<=0) die();
+				coordinates.X += dx/div;
+				coordinates.Y += dy/div;
+				if (coordinates.X >= loc.maxX || coordinates.X <= 0 || coordinates.Y >= loc.maxY || coordinates.Y <= 0) die();
 			}
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY, Y2=Y;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
+			Y2 = coordinates.Y;
 		}
 		
 		public override function control()

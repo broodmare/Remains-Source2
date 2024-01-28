@@ -122,21 +122,19 @@ package fe.unit {
 			else {						//смена состояний
 				if (aiState==6) {	
 					aiState=4;
-					aiTCh=Math.floor(Math.random()*100)+100;
+					aiTCh=int(Math.random()*100)+100;
 				} else if (aiState==7 && isPlav) {	
 					aiState=4;
-					aiTCh=Math.floor(Math.random()*100)+100;
+					aiTCh=int(Math.random()*100)+100;
 				} else if (aiState==5) {	
 					aiState=6;
 					aiTCh=20;
 				} else if (aiSpok==0) {	//перейти в пассивный режим
-					aiState=Math.floor(Math.random()*2);
-					//if (aiState>1)	{
-						aiDx=isrnd()?1:-1;
-						if (aiDx>0) storona=1; else storona=-1;
-					//}
+					aiState=int(Math.random()*2);
+					aiDx=isrnd()?1:-1;
+					if (aiDx>0) storona=1; else storona=-1;
 					aiDy=Math.random()*0.2+0.1
-					aiTCh=Math.floor(Math.random()*50)+40;
+					aiTCh=int(Math.random()*50)+40;
 				} else if (aiSpok>=maxSpok) {	//агрессивный
 					if (aiRasst<380) {
 						if (!isPlav && isrnd()) {
@@ -144,15 +142,15 @@ package fe.unit {
 							aiTCh=20;
 						} else {
 							aiState=4;
-							aiTCh=Math.floor(Math.random()*100)+100;
+							aiTCh=int(Math.random()*100)+100;
 						}
 					} else {
 						aiState=(hp<maxhp)?4:3;
-						aiTCh=Math.floor(Math.random()*100)+100;
+						aiTCh=int(Math.random()*100)+100;
 					}
 				} else {	//режим поиска
 					aiState=2;
-					aiTCh=Math.floor(Math.random()*100)+100;
+					aiTCh=int(Math.random()*100)+100;
 				}
 			}
 			//поиск цели
@@ -164,9 +162,10 @@ package fe.unit {
 					if (aiSpok>0) aiSpok--;
 				}
 				if (aiState==2 || aiState==3 || aiState==4 || aiState==5) {
-					if (celX!=X || celY!=Y-scY/2) {
-						aiDx=celX-X;
-						aiDy=celY-(Y-scY/2);
+					if (celX != coordinates.X || celY != coordinates.Y - scY / 2)
+					{
+						aiDx = celX - coordinates.X;
+						aiDy = celY - (coordinates.Y - scY / 2);
 					}
 					if (aiDx>0) storona=1; else storona=-1;
 					aiRasst=Math.sqrt(aiDx*aiDx+aiDy*aiDy)+0.00001;

@@ -1,12 +1,15 @@
-package fe.unit {
+package fe.unit
+{
 	
 	import fe.*;
-	public class UnitBat extends Unit{
+	public class UnitBat extends Unit
+	{
 		
 		var bleedDamage=5;
 		var tr:int=1;
 		
-		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid) tr=int(cid);
 			if (xml && xml.@tr.length()) tr=xml.@tr;
@@ -63,7 +66,6 @@ package fe.unit {
 						animState='fly';
 					}
 				}
-			//vis.gotoAndStop(aiState+1);
 		}
 		public override function alarma(nx:Number=-1,ny:Number=-1) {
 			super.alarma(nx,ny);
@@ -135,9 +137,9 @@ package fe.unit {
 					if (aiSpok>0) aiSpok--;
 				}
 				if (aiState==2 || aiState==3 || aiState==4 || aiState==5) {
-					if (celX!=X || celY!=Y-scY/2) {
-						aiDx=celX-X;
-						aiDy=celY-(Y-scY/2);
+					if (celX != coordinates.X || celY != coordinates.Y - scY / 2) {
+						aiDx = celX - coordinates.X;
+						aiDy = celY - (coordinates.Y - scY / 2);
 					}
 					if (aiDx>0) storona=1; else storona=-1;
 					aiRasst=Math.sqrt(aiDx*aiDx+aiDy*aiDy)+0.00001;
@@ -150,10 +152,6 @@ package fe.unit {
 				aiState=1;
 			}
 			
-			/*if (disabled) {
-				aiState=0;
-				return;
-			}*/
 			vision=(aiState==0)?0.4:1;
 			ear=(aiState==0)?0.6:1;
 	
@@ -197,6 +195,5 @@ package fe.unit {
 				}
 			}
 		}
-	}
-	
+	}	
 }

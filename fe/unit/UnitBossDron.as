@@ -1,11 +1,10 @@
-package fe.unit {
-	import flash.filters.GlowFilter;
+package fe.unit
+{
 	import flash.display.MovieClip;
 	
 	import fe.weapon.*;
 	import fe.*;
-	import fe.loc.Location;
-	import fe.serv.LootGen;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	
 	public class UnitBossDron extends Unit{
@@ -54,7 +53,6 @@ package fe.unit {
 			
 			//дать оружие
 			currentWeapon=Weapon.create(this, 'dronmlau');
-			//dopWeapon=Weapon.create(this,'mercgr');
 			thWeapon=Weapon.create(this,'drongr');
 			(thWeapon as WThrow).kolAmmo=100000;
 			childObjs=new Array(currentWeapon, thWeapon);
@@ -67,7 +65,6 @@ package fe.unit {
 		public override function dropLoot() {
 			newPart('baleblast');
 			Snd.ps('bale_e');
-			//currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
@@ -80,10 +77,6 @@ package fe.unit {
 			hp=maxhp=hp*dMult;
 			shitMaxHp*=(1+level*0.12)*dMult;
 			dam*=dMult;
-			/*if (dopWeapon) {
-				dopWeapon.damageExpl*=wMult*dMult;
-				dopWeapon.damage*=wMult*dMult;
-			}*/
 			if (thWeapon) {
 				thWeapon.damageExpl*=wMult*dMult;
 				thWeapon.damage*=wMult*dMult;
@@ -108,14 +101,15 @@ package fe.unit {
 				visshit.visible=true;
 				visshit.gotoAndPlay(1);
 			}
-			if (visshit && visshit.visible && shithp<=0) {
+			if (visshit && visshit.visible && shithp<=0)
+			{
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
-				Emitter.emit('pole',loc,X,Y-50,{kol:12,rx:100, ry:100});
+				Emitter.emit('pole', loc, coordinates.X, coordinates.Y-50,{kol:12,rx:100, ry:100});
 			}
 			if (sost==2) {
 				if (isrnd(0.3-timerDie/500)) {
-					Emitter.emit('expl',loc,X+Math.random()*120-60,Y-Math.random()*120);
+					Emitter.emit('expl', loc, coordinates.X+Math.random()*120-60, coordinates.Y-Math.random()*120);
 					newPart('metal');
 					Snd.ps('expl_e');
 				}
@@ -124,18 +118,22 @@ package fe.unit {
 		
 		public override function setVisPos() {
 			if (vis) {
-				if (sost==2) {
-					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;;
-				} else {
-					vis.x=X,vis.y=Y;
+				if (sost==2)
+				{
+					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
+					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;;
+				}
+				else
+				{
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y;
 				}
 			}
 		}
 		
 		function emit() {
 			if (kolChild>=kol_emit) return;
-			var un:Unit=loc.createUnit('dron',X,Y-scY/2,true);
+			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - scY / 2, true);
 			un.fraction=fraction;
 			un.inter.cont='';
 			un.mother=this;
@@ -175,29 +173,31 @@ package fe.unit {
 			}
 			if (World.w.gg.isFly) speedBonus=1.6;
 			else speedBonus=1;
-			celDX=celX-X;
-			celDY=celY-Y;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y;
 			storona=(celDX>0)?1:-1;
 			var dist2:Number=celDX*celDX+celDY*celDY;
-			var dist:Number=(moveX-X)*(moveX-X)+(moveY-Y)*(moveY-Y);
+			var dist:Number=(moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			//поведение при различных состояниях
 			if (aiState==0) {
 				walk=0;
-			} else if (aiState==1) {
-				moveX=loc.gg.X;
-				moveY=loc.gg.Y;
-				spd.x=moveX-X;
-				spd.y=moveY-Y;
+			}
+			else if (aiState==1)
+			{
+				moveX = loc.gg.coordinates.X;
+				moveY = loc.gg.coordinates.Y;
+				spd.x = moveX - coordinates.X;
+				spd.y = moveY - coordinates.Y;
 				norma(spd,Math.min(accel,accel*dist/1000));
 				
 				maxSpeed=walkSpeed*(2-(hp/maxhp))*(1-Math.sin(aiTCh/12)*0.3)*speedBonus;
-				dx+=spd.x;
-				dy+=spd.y;
-				spd.x=dx;
-				spd.y=dy;
+				dx += spd.x;
+				dy += spd.y;
+				spd.x = dx;
+				spd.y = dy;
 				norma(spd,maxSpeed);
-				dx=spd.x;
-				dy=spd.y;
+				dx = spd.x;
+				dy = spd.y;
 				
 				if (dist<1000) {
 					dx*=0.8, dy*=0.8;
@@ -243,6 +243,5 @@ package fe.unit {
 				controlOn=true;
 			}
 		}
-		
 	}
 }

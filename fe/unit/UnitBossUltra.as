@@ -1,11 +1,11 @@
-package fe.unit {
-	import flash.filters.GlowFilter;
+package fe.unit
+{
 	import flash.display.MovieClip;
 	
-	import fe.weapon.*;
 	import fe.*;
+	import fe.util.Vector2;
+	import fe.weapon.*;
 	import fe.loc.Location;
-	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	
 	public class UnitBossUltra extends Unit{
@@ -26,16 +26,6 @@ package fe.unit {
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossultra';
-			//определить разновидность tr
-			/*if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}*/
 			tr=1;
 			
 			//взять параметры из xml
@@ -148,11 +138,11 @@ package fe.unit {
 			if (visshit && visshit.visible && shithp<=0) {
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
-				Emitter.emit('pole',loc,X,Y-50,{kol:12,rx:100, ry:100});
+				Emitter.emit('pole', loc, coordinates.X, coordinates.Y-50,{kol:12,rx:100, ry:100});
 			}
 			if (sost==2) {
 				if (isrnd(0.3-timerDie/500)) {
-					Emitter.emit('expl',loc,X+Math.random()*120-60,Y-Math.random()*120);
+					Emitter.emit('expl', loc, coordinates.X+Math.random()*120-60, coordinates.Y-Math.random()*120);
 					newPart('metal');
 					Snd.ps('expl_e');
 				}
@@ -162,22 +152,25 @@ package fe.unit {
 		public override function setVisPos() {
 			if (vis) {
 				if (sost==2) {
-					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;;
-				} else {
-					vis.x=X,vis.y=Y;
+					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
+					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
+				}
+				else
+				{
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y;
 				}
 				vis.scaleX=storona;
 			}
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=vis.x;
-			weaponY=vis.y-110;
+			weaponX = vis.x;
+			weaponY = vis.y - 110;
 		}
 		
 		function emit() {
-			var un:Unit=loc.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2, true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -199,9 +192,8 @@ package fe.unit {
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		public override function control() {
-
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+		public override function control()
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
@@ -212,12 +204,11 @@ package fe.unit {
 			
 			t_replic--;
 			var jmp:Number=0;
-			//return;
-			
+
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y-scY;
+				celX = coordinates.X+scX*storona*2;
 				return;
 			}
 			if (t_shit>0) t_shit--;
@@ -231,7 +222,7 @@ package fe.unit {
 					else aiState=1;
 				}
 				if (aiState==1) {	//выбор точки перемещения
-					var nmp=Math.floor(Math.random()*5);
+					var nmp=int(Math.random()*5);
 					if (nmp==mp) nmp++;
 					if (nmp>=5) nmp=0;
 					mp=nmp;
@@ -241,8 +232,8 @@ package fe.unit {
 				} else if (aiState==2) {
 					aiTCh=30;
 					if (attState!=4 && isrnd(0.33)) attState=4;
-					else attState=Math.floor(Math.random()*2);
-					if (Y<17*40 && celY>16*40 && isrnd(0.33)) {
+					else attState=int(Math.random()*2);
+					if (coordinates.Y<17*40 && celY>16*40 && isrnd(0.33)) {
 						attState=2;
 						aiTCh=5;
 					}
@@ -253,26 +244,25 @@ package fe.unit {
 					if (attState==0) aiTCh=80;
 					else if (attState==2) aiTCh=120;
 					else if (attState==4) aiTCh=60;
-					else aiTCh=Math.floor(Math.random()*100)+150;
+					else aiTCh=int(Math.random()*100)+150;
 				}
 			}
 			//поиск цели
-			//trace(aiState)
 			if ((aiState==1 || aiState>1 && attState==1) && aiTCh%10==1) {
 				setCel(loc.gg);
 			}
-			celDX=celX-X;
-			celDY=celY-Y;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y;
 			var dist2:Number=celDX*celDX+celDY*celDY;
-			var dist:Number=(moveX-X)*(moveX-X)+(moveY-Y)*(moveY-Y);
+			var dist:Number = (moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (dx>0.5) storona=1; 
 				if (dx<-0.5) storona=-1;
 				walk=0;
 			} else if (aiState==1) {
-				spd.x=moveX-X;
-				spd.y=moveY-Y;
+				spd.x = moveX - coordinates.X;
+				spd.y = moveY - coordinates.Y;
 				
 				norma(spd,Math.min(accel,accel*dist/10000));
 				dx+=spd.x;
@@ -284,12 +274,12 @@ package fe.unit {
 				dx*=0.7, dy*=0.7;
 			}
 			if (aiState==2 && aiTCh%5==1) {
-				if (attState==0) Emitter.emit('laser',loc,celX+Math.random()*100-50,celY-Math.random()*50);
-				if (attState==1) Emitter.emit('plasma',loc,celX+Math.random()*50-25,celY-Math.random()*20);
-				if (attState==4) Emitter.emit('spark',loc,celX+Math.random()*100-50,celY-Math.random()*50);
+				if (attState==0) Emitter.emit('laser', loc, celX + Math.random()*100-50, celY-Math.random()*50);
+				if (attState==1) Emitter.emit('plasma', loc, celX + Math.random()*50-25, celY-Math.random()*20);
+				if (attState==4) Emitter.emit('spark', loc, celX + Math.random()*100-50, celY-Math.random()*50);
 			}
 			if (aiState>0 && !(aiState==3 && attState==2)) {
-				aiNapr=(celX>X)?1:-1;
+				aiNapr=(celX > coordinates.X)?1:-1;
 				if (storona!=aiNapr) {
 					t_turn--;
 					if (t_turn<=0) {

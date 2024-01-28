@@ -1,7 +1,6 @@
 package fe.unit
 {
 	import flash.filters.GlowFilter;
-	import flash.display.MovieClip;
 	
 	import fe.weapon.*;
 	import fe.*;
@@ -60,13 +59,11 @@ package fe.unit
 			}
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-				//if (tr>kolTrs) tr=1;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
 			} 
 			if (!(tr>0)) tr=1;
-			//if (tr<20) id='raider'+tr;
-			//else id='slaver'+(tr-20);
 			id=parentId+tr;
 			
 			//взять параметры из xml
@@ -140,9 +137,6 @@ package fe.unit
 			else attackerType=2;//пальба
 			
 			if (attackerType<=0) stalkDist=0;
-			
-			//sndMusic='combat_1';
-			//sndMusicPrior=1;
 			acidDey=0.5;
 			spd=new Object();
 			tstor=storona;
@@ -187,7 +181,6 @@ package fe.unit
 			if (hero==1) {
 				if (currentWeapon && currentWeapon.uniq>0 && isrnd(currentWeapon.uniq/2)) {
 					currentWeapon.updVariant(1);
-					//currentWeapon.damage*=1.2;
 				}
 			}
 		}
@@ -203,18 +196,12 @@ package fe.unit
 		public override function setWeaponPos(tip:int=0) {
 			super.setWeaponPos(tip);
 			if (!enclWeap && (tip==1 || tip==2 || tip==4)) {
-				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-				weaponX=X+(obj.x+visBmp.x)*storona;
-				weaponY=Y+obj.y+visBmp.y;
+				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
+				weaponX = coordinates.X + (obj.x+visBmp.x)*storona;
+				weaponY = coordinates.Y + obj.y+visBmp.y;
 				weaponR=obj.r;
 			}
 		}
-		
-		/*public override function setVisPos() {
-			super.setVisPos();
-			if (currentWeapon) currentWeapon.
-		}*/
-
 		
 		public override function animate() {
 			var cframe:int;
@@ -229,9 +216,6 @@ package fe.unit
 				if (stay) {
 					if  (dx==0 || aiState==7) {
 						animState='stay';
-					//} else if (flyer) {
-						//animState='walk';
-						//sndStep(anims[animState].f,1);
 					} else if (attackerType==0 && aiAttack || aiState==8) {
 						animState='run';
 						sndStep(anims[animState].f,2);
@@ -273,12 +257,11 @@ package fe.unit
 				super.alarma(nx,ny);
 				aiSpok=maxSpok+10;
 				aiState=3;
-				shok=Math.floor(Math.random()*15+5);
+				shok = int(Math.random()*15+5);
 				areaTestTip='raider';
 				if (!plusObservOk) {
 					observ+=plusObserv;
 					plusObservOk=true;
-					//trace('observ ', observ)
 				}
 			}
 		}
@@ -290,24 +273,23 @@ package fe.unit
 				if (isDropArm) {
 					var cid:String=currentWeapon.id;
 					if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-					LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,cid,0);
+					LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
 				}
 			}
 			if (attackerType==3) {
 				for (var i=0; i<3; i++) {
-					setCel(null,X+Math.random()*30-15,Y-Math.random()*15);
+					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 					currentWeapon.attack();
 				}
 			}
 			if (dropWeapon) {
-				setCel(null,X+Math.random()*30-15,Y-Math.random()*15);
+				setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 				dropWeapon.attack();
 			}
-			//if (hero>0 && Math.random()<0.95) LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,'s_rollup',0);
 		}
 
 		function emit() {
-			var un:Unit=loc.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=300;
@@ -328,7 +310,7 @@ package fe.unit
 		}
 		
 		public function jump(v:Number=1) {
-			aiJump=Math.floor(30+Math.random()*50);
+			aiJump = int(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
 				dy=-jumpdy*v;
 				isLaz=0;
@@ -345,10 +327,10 @@ package fe.unit
 		
 		//проверка возможности прыжка
 		function checkJump():Boolean {
-			if (loc.getAbsTile(X,Y-85).phis!=0) return false;
-			if (loc.getAbsTile(X,Y-125).phis!=0) return false;
-			if (loc.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
-			if (loc.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).phis!=0) return false;
 			return true;
 		}
 		
@@ -378,12 +360,9 @@ package fe.unit
 		//7 - готовится атаковать рывком
 		//8 - атакует быстрым рывком
 		
-		public override function control() {
-			//trace(hpbar);
-			//if (hpbar) trace(hpbar.visible, hpbar.x, hpbar.y);
-		
+		public override function control()
+		{
 			var t:Tile;
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -401,15 +380,14 @@ package fe.unit
 			t_replic--;
 			if (emit_t>0) emit_t--;
 			var jmp:Number=0;
-			//return;
-			
+
 			//разворот
 			if (storona!=tstor && t_turn<=0) {
 				storona=tstor;
 				if (stay) t_turn=5;
 				else t_turn=30;
 				if (currentWeapon && currentWeapon.drot>0) {
-					currentWeapon.rot=Math.atan2(celY-currentWeapon.Y, Math.abs(celX-currentWeapon.X)*storona);
+					currentWeapon.rot=Math.atan2(celY-currentWeapon.coordinates.Y, Math.abs(celX-currentWeapon.coordinates.X)*storona);
 				}
 			}
 			if (t_turn>0) t_turn--;
@@ -417,8 +395,8 @@ package fe.unit
 			
 			if (!controlOn) return;
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y-scY;
+				celX = coordinates.X+scX*storona*2;
 				return;
 			}
 			
@@ -454,8 +432,6 @@ package fe.unit
 					}
 					if (attackerType==2 && aiSpok>=maxSpok+8 && (celDX*celDX+celDY*celDY<aiDist*aiDist)) aiState=isrnd(0.3)?3:4;
 					else aiState=3;
-					//рывок с атакой
-					//if (attackerType==0 && celUnit && celDY<40 && celDY>-10) {
 					if (dash && isrnd(0.3) && celUnit) {
 						aiState=7;
 					}
@@ -468,7 +444,6 @@ package fe.unit
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
 			//поиск цели
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
 				if (findCel()) {
 					//увидели
@@ -522,16 +497,16 @@ package fe.unit
 					aiState=6;
 					aiSpok=maxSpok+10;
 					aiTCh=Math.floor(Math.random()*65)+20;
-					if (acelX-X>30) aiNapr=tstor=-1;
-					if (acelX-X<-30) aiNapr=tstor=1;
+					if (acelX - coordinates.X > 30) aiNapr=tstor=-1;
+					if (acelX - coordinates.X < -30) aiNapr=tstor=1;
 				}
 			}
 			
 			//поиск левитируемой мины
 			if (aiTCh%30==1 && !levit && findLevit() && celUnit!=loc.gg) {
 				if (loc.gg.teleObj && (loc.gg.teleObj is Mine)) {
-					var gx:Number=loc.gg.teleObj.X-X;
-					var gy:Number=loc.gg.teleObj.Y-Y+scY/2;
+					var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
+					var gy:Number=loc.gg.teleObj.coordinates.Y - coordinates.Y + scY / 2;
 					alarma();
 					if (gx*gx+gy*gy<400*400) {
 						aiState=6;
@@ -550,8 +525,8 @@ package fe.unit
 			}
 			
 			//направление
-			celDX=celX-X;
-			if (stay) celDY=celY-Y+scY;
+			celDX = celX - coordinates.X;
+			if (stay) celDY = celY - coordinates.Y + scY;
 			if (celDY>40) {aiVNapr=1;		//вниз
 			} else if(celDY<-40) {aiVNapr=-1;	//прыжок
 			} else aiVNapr=0;
@@ -583,21 +558,20 @@ package fe.unit
 
 
 			if (attackerType==1) {	//битьё на месте
-				if (aiState==3 && celUnit && celDY<80 && celDY>-80 && Math.abs(celX-X)<(100) && Math.abs(celX-X)>(50)) aiState=4;
-				if (aiState==4 && !(Math.abs(celX-X)<(100) && Math.abs(celX-X)>(50))) aiState=3;
+				if (aiState==3 && celUnit && celDY<80 && celDY>-80 && Math.abs(celX-coordinates.X)<(100) && Math.abs(celX-coordinates.X)>(50)) aiState=4;
+				if (aiState==4 && !(Math.abs(celX-coordinates.X)<(100) && Math.abs(celX-coordinates.X)>(50))) aiState=3;
 			} 
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=1*visionMult;
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 			} else {
 				vision=1.5*visionMult;
 			}
 			
 			//поведение в воде
 			if (isPlav && aiState==0) aiState=1;
-			//if (isPlav && aiState==4) aiState=3;
 			
 			//скорость
 			maxSpeed=walkSpeed;
@@ -653,7 +627,7 @@ package fe.unit
 					//поворачиваем, если впереди некуда бежать
 					if (stay && shX1>0.25 && aiNapr<0) {
 						if (isrnd(0.1)) {
-							t=loc.getAbsTile(X+storona*80,Y+10);
+							t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
 							} else turnX=1;
@@ -661,7 +635,7 @@ package fe.unit
 					}
 					if (stay && shX2>0.25 && aiNapr>0) {
 						if (isrnd(0.1)) {
-							t=loc.getAbsTile(X+storona*80,Y+10);
+							t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
 							} else turnX=-1;
@@ -709,7 +683,7 @@ package fe.unit
 				if (isLaz) {
 					if (t_laz<0) t_laz=0;
 					t_laz++;
-					if (celY<Y && r_laz<=0) {
+					if (celY<coordinates.Y && r_laz<=0) {
 						r_laz=-1;
 						if (dy>-lazSpeed) dy-=lazSpeed/3;
 						else (dy=-lazSpeed);
@@ -746,20 +720,17 @@ package fe.unit
 						dx+=floatX;
 						dy+=floatY;
 					} else {
-						spd.x=celX-X;
-						spd.y=celY-(Y-scY/2);
+						spd.x=celX-coordinates.X;
+						spd.y=celY-(coordinates.Y - scY / 2);
 						//дематериализоваться
 						if (turnX!=0) {
 							spd.x=0;
-							//dx=Math.abs(dx)*turnX;
 							tstor=turnX;
-							if (celUnit==null) setCel(null,X+(Math.random()*100+50)*turnX, celY);
+							if (celUnit==null) setCel(null,coordinates.X+(Math.random()*100+50)*turnX, celY);
 							turnX=0;
 						}
 						if (turnY!=0) {
 							spd.y=0;
-							//if (turnY==1) dy=Math.abs(dy);
-							//turnY=0;
 						}
 						norma(spd,Math.min(accel,accel*(celDX*celDX+celDY*celDY)/10000));
 						dx+=spd.x+floatX;
@@ -775,7 +746,7 @@ package fe.unit
 					}
 					turnX=turnY=t_fall=0;
 				} else if (stay || isPlav) {
-					if (moving || Math.abs(X-begX)>20 || Math.abs(Y-begY)>20) {
+					if (moving || Math.abs(coordinates.X-begX)>20 || Math.abs(coordinates.Y-begY)>20) {
 						if (aiNapr==-1) {
 							if (dx>-maxSpeed) dx-=accel;
 							walk=-1;
@@ -820,7 +791,7 @@ package fe.unit
 				}
 			} else if (aiState==4) {
 				walk=0;
-				aiNapr=tstor=(celX>X)?1:-1;
+				aiNapr=tstor=(celX > coordinates.X)?1:-1;
 				if (attackerType==2 && (celDX*celDX+celDY*celDY<200*200)) {
 					if (isrnd(0.6)) {
 						dx=runSpeed*(celDX>0?-1:1)*2;
@@ -830,11 +801,11 @@ package fe.unit
 				}
 			} else if (aiState==7) {
 				walk=0;
-				aiNapr=tstor=(celX>X)?1:-1;
+				aiNapr=tstor=(celX > coordinates.X)?1:-1;
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (coordinates.Y > loc.spaceY*Tile.tileY-80) throu=false;
 			
 			if (aiState==3 || aiState==4 || aiState==6 || aiState==8) aiAttack=1;
 			else aiAttack=0;

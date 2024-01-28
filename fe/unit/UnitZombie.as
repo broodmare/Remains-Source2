@@ -4,6 +4,7 @@ package fe.unit
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
@@ -72,7 +73,7 @@ package fe.unit
 			if (glowTip>0) {
 				vlight=new visZombieLight();
 				vis.addChild(vlight);
-				vlight.y=-scY/2;
+				vlight.y = -scY / 2;
 				vlight.blendMode='screen';
 				vlight.cacheAsBitmap=true;
 			}
@@ -113,8 +114,8 @@ package fe.unit
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X+storona*30;
-			weaponY=Y-scY*0.8;
+			weaponX = coordinates.X + storona * 30;
+			weaponY = coordinates.Y - scY * 0.8;
 		}
 		
 		public override function save():Object {
@@ -127,8 +128,8 @@ package fe.unit
 		public override function setPos(nx:Number,ny:Number) {
 			super.setPos(nx,ny);
 			if (digger && loc && !loc.active) {
-				kop1=loc.getAbsTile(X-10, Y+10);
-				kop2=loc.getAbsTile(X+10, Y+10);
+				kop1 = loc.getAbsTile(coordinates.X - 10, coordinates.Y + 10);
+				kop2 = loc.getAbsTile(coordinates.X + 10, coordinates.Y + 10);
 				if (kop1.phis>0 && kop2.phis>0) {
 					zak=true;
 					zakop();
@@ -144,7 +145,7 @@ package fe.unit
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
 				blit(anims[animState].id,t_res);
-				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark',loc,X+(Math.random()-0.5)*scX,Y-Math.random()*10);
+				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5)*scX, coordinates.Y-Math.random()*10);
 				return;
 			} else if (sost==2 || sost==3) { //сдох
 				if (stay) {
@@ -291,8 +292,8 @@ package fe.unit
 		}
 		public function vykop() {
 			knocked=knocked2;
-			scY=stayY;
-			Y1=Y-scY;
+			scY = stayY;
+			Y1 = coordinates.Y - scY;
 			aiState=3;
 			aiSpok=maxSpok+10;
 			overLook=false;
@@ -308,10 +309,10 @@ package fe.unit
 		
 		//проверка возможности прыжка
 		function checkJump():Boolean {
-			if (loc.getAbsTile(X,Y-85).phis!=0) return false;
-			if (loc.getAbsTile(X,Y-125).phis!=0) return false;
-			if (loc.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
-			if (loc.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).phis!=0) return false;
 			return true;
 		}
 		
@@ -325,7 +326,8 @@ package fe.unit
 		function resurrect() {
 			hp=maxhp;
 			sost=1;
-			scY=stayY; Y1=Y-scY;
+			scY = stayY;
+			Y1 = coordinates.Y - scY;
 			fraction=Unit.F_MONSTER;
 			t_res=tIsRes;
 			tZlo=120;
@@ -340,9 +342,9 @@ package fe.unit
 		}
 		
 		function quake(n:Number) {
-			loc.budilo(X,Y,500);
+			loc.budilo(coordinates.X, coordinates.Y, 500);
 			loc.earthQuake(n*superQuake);
-			Emitter.emit('quake',loc,X+Math.random()*40-20,Y);
+			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
 		}
 		
 		var aiJump:int=0;
@@ -383,8 +385,8 @@ package fe.unit
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			
@@ -449,8 +451,8 @@ package fe.unit
 				}
 			}
 			//направление
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX=celX - coordinates.X;
+			celDY=celY - coordinates.Y + scY;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -460,8 +462,8 @@ package fe.unit
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 			} else {
 				vision=1;
 			}
@@ -508,7 +510,7 @@ package fe.unit
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr<0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -516,7 +518,7 @@ package fe.unit
 				}
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -577,7 +579,7 @@ package fe.unit
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*tileY-80) throu=false;
+			if (coordinates.Y>loc.spaceY*tileY-80) throu=false;
 			
 			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
 				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
@@ -664,7 +666,7 @@ package fe.unit
 			var ny:int = int((celY+40)/tileY);
 			if (superSilaTip==1) superY=ny*tileY+tileY+scY;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
-			if (Y-celY>120) {
+			if (coordinates.Y-celY>120) {
 				if (loc.getTile(nx,ny).phis==0) {
 					if (loc.getTile(nx-1,ny).phis==0) {
 						superX=nx*tileX;
@@ -685,8 +687,8 @@ package fe.unit
 					superY=celY;
 					superX=celX;
 				} else if (superSilaTip==2 || superSilaTip==7) {
-					superX=X;
-					superY=Y;
+					superX = coordinates.X;
+					superY = coordinates.Y;
 				}
 			}
 		}
@@ -696,8 +698,8 @@ package fe.unit
 			super_on=true;
 			if (superSilaTip==1) {
 				if (superX>0 && superY>0 && stay) {
-					var tdx=superX-X;
-					var tdy=superY-Y;
+					var tdx=superX - coordinates.X;
+					var tdy=superY - coordinates.Y;
 					var rasst=Math.sqrt(tdx*tdx+tdy*tdy);
 					dx=tdx/rasst*vJump;
 					dy=tdy/rasst*vJump;
@@ -713,13 +715,13 @@ package fe.unit
 				radrad=radradMax;
 				for each (var un:Unit in loc.units) {
 					if (un is UnitZombie && un.sost==1) {
-						var rasst=Math.sqrt((un.X-X)*(un.X-X)+(un.Y-Y)*(un.Y-Y));
+						var rasst=Math.sqrt((un.coordinates.X - coordinates.X)*(un.coordinates.X - coordinates.X)+(un.coordinates.Y - coordinates.Y)*(un.coordinates.Y - coordinates.Y));
 						if (rasst<radrad) un.heal(radHeal*(radrad-rasst)/radrad);
 					}
 				}
-				Emitter.emit('radioblast',loc,X,Y-scY/2);
+				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y-scY/2);
 			} else if (superSilaTip==6) {
-				loc.budilo(X,Y,1000);
+				loc.budilo(coordinates.X, coordinates.Y, 1000);
 			}
 		}
 		
@@ -729,12 +731,12 @@ package fe.unit
 				grav=0;
 			} else if (superSilaTip==2 || superSilaTip==7) {
 				if (aiTCh==30) {
-					superX=X;
-					superY=Y;
+					superX = coordinates.X;
+					superY = coordinates.Y;
 				}
 				if (teleUnit && teleUnit.levit!=1) {
-					var tdx=superX-teleUnit.X;
-					var tdy=superY-teleUnit.Y;
+					var tdx = superX - teleUnit.coordinates.X;
+					var tdy = superY - teleUnit.coordinates.Y;
 					var rasst=Math.sqrt(tdx*tdx+tdy*tdy);
 					tdx=tdx/rasst*teleAccel;
 					tdy=tdy/rasst*teleAccel;

@@ -151,8 +151,8 @@ package fe.unit
 		
 		public function remine() {
 			inter.active=false;
-			if (!loc.train) LootGen.lootId(loc,X,Y,id);
-			if (sndDem!='') Snd.ps(sndDem,X,Y);
+			if (!loc.train) LootGen.lootId(loc, coordinates.X, coordinates.Y, id);
+			if (sndDem!='') Snd.ps(sndDem, coordinates.X, coordinates.Y);
 			sost=4;
 			disabled=true;
 			loc.remObj(this);
@@ -179,18 +179,20 @@ package fe.unit
 				if (reloadTime==1) vis.gotoAndStop(2);
 				return;
 			}
-			inter.X=X, inter.Y=Y;
+			inter.coordinates.X = coordinates.X;
+			inter.coordinates.Y = coordinates.Y;
 			if (aiState==1 && oduplenie<=0 && sens>0) { //взведена, поиск целей
 				if (aiN%4==0) {
 					for each (var un:Unit in loc.units) {
 						if (un==null || un.activateTrap==0 || un.activateTrap==1 && fraction!=Unit.F_PLAYER && un.fraction!=Unit.F_PLAYER || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;
-						if (un.X-X<sens && un.X-X>-sens && un.Y-Y<sens*0.4 && un.Y-Y>-sens && (tipDamage!=8 || un.vulner[8]>0)) {
+						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != 8 || un.vulner[8] > 0))
+						{
 							if (otschet>0 && un.activateTrap==1 && un.fraction==Unit.F_PLAYER) {
 								otschet--;
 								continue;
 							}
 							if (un.player && chain) {
-								World.w.gg.bindChain(X,Y);
+								World.w.gg.bindChain(coordinates.X, coordinates.Y);
 							}
 							activate();
 							break;
@@ -201,7 +203,7 @@ package fe.unit
 					activate();
 				}
 			} else if (aiState==2) {
-				if (sndSens!='' && explTime%5==3) Snd.ps(sndSens,X,Y);
+				if (sndSens!='' && explTime%5==3) Snd.ps(sndSens, coordinates.X, coordinates.Y);
 				
 				explTime--;
 			}

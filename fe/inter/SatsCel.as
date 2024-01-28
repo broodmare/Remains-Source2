@@ -12,15 +12,16 @@ package fe.inter
 
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1)
 		{
-			sloy=5;
-			loc=World.w.loc;
-			var ramka:int=10;
-			if (nUn==null)
+			sloy = 5;
+			loc = World.w.loc;
+			var ramka:int = 10;
+			if (nUn == null)
 			{
-				vis=new satsCel();
-				X=nx, Y=ny;
-				vis.x=X;
-				vis.y=Y;
+				vis = new satsCel();
+				coordinates.X = nx;
+				coordinates.Y = ny;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 			}
 			else
 			{
@@ -45,9 +46,10 @@ package fe.inter
 		{
 			if (un)
 			{
-				X=un.u.X, Y=un.u.Y-un.u.scY/2;
-				vis.x=X;
-				vis.y=Y;
+				coordinates.X = un.u.coordinates.X;
+				coordinates.Y = un.u.coordinates.Y - un.u.scY / 2;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 			}
 		}
 	}

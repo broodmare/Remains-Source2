@@ -1,10 +1,9 @@
 package fe.unit {
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
-	import fe.graph.Emitter;
-	import fe.loc.Tile;
 	
 	public class UnitDron extends Unit{
 		
@@ -31,7 +30,7 @@ package fe.unit {
 			} else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
 			} else {								//случайно по параметру ndif
-				tr=Math.floor(Math.random()*2+1);
+				tr=int(Math.random()*2+1);
 			}
 			id='dron'+tr;
 			if (tr==100) id='dront';
@@ -55,7 +54,7 @@ package fe.unit {
 			if (tr==2) aiAgr=true;
 			//дать оружие
 			if (tr==100) {
-				currentWeapon=Weapon.create(this, 'ttweap'+Math.floor(Math.random()*6+1));
+				currentWeapon=Weapon.create(this, 'ttweap'+int(Math.random()*6+1));
 			} else currentWeapon=getXmlWeapon(ndif);
 			if (currentWeapon) {
 				childObjs=new Array(currentWeapon);
@@ -114,12 +113,11 @@ package fe.unit {
 			}
 			if (vis.dis.alpha>0.1) vis.dis.alpha-=0.2;
 			else vis.dis.visible=false;
-			//vis.cif.text=aiState;
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-scY/2;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y - scY / 2;
 			if (tr>=100) {
 				weaponY+=40;
 			}
@@ -150,8 +148,8 @@ package fe.unit {
 				}
 				aiTCh=Math.floor(Math.random()*100)+100;
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
-					celX=X+(Math.random()*300+400)*(isrnd()?1:-1);
-					celY=Y-scY/2;
+					celX = coordinates.X + (Math.random()*300+400)*(isrnd()?1:-1);
+					celY = coordinates.Y - scY / 2;
 				}
 			}
 			//поиск цели
@@ -160,7 +158,7 @@ package fe.unit {
 					stuk=0;
 					aiSpok=maxSpok+10;
 					if (aiState!=3) aiState=1;
-					storona=(celX>X)?1:-1;
+					storona=(celX > coordinates.X)?1:-1;
 				} else {
 					if (aiSpok>0) {
 						aiSpok--;
@@ -168,8 +166,8 @@ package fe.unit {
 					}
 				}
 				atkRasst=celDX*celDX+celDY*celDY;
-				spd.x=celX-X;
-				spd.y=celY-(Y-scY/2);
+				spd.x = celX - coordinates.X;
+				spd.y = celY - (coordinates.Y - scY / 2);
 				norma(spd,aiState==0?accel/2:accel);
 				if (aiState==3) {
 					dx-=spd.x;
@@ -179,23 +177,23 @@ package fe.unit {
 					dy+=spd.y;
 				} else {
 					t_float+=0.97;
-					floatX=Math.sin(t_float);
-					floatY=Math.cos(t_float);
-					dx+=floatX*accel;
-					dy+=floatY*accel;
+					floatX = Math.sin(t_float);
+					floatY = Math.cos(t_float);
+					dx += floatX * accel;
+					dy += floatY * accel;
 				}
 			}
 			
 			if (aiState==0) maxSpeed=walkSpeed;
 			else maxSpeed=runSpeed;
 			
-			if (tr==1) storona=(celX>X)?1:-1;
+			if (tr==1) storona=(celX > coordinates.X)? 1:-1;
 	
 			if (turnX!=0) {
 				stuk++;
 				storona=turnX;
 				turnX=0;
-				if (aiState==0) celX=X+400*storona;
+				if (aiState==0) celX = coordinates.X + 400 * storona;
 				if (stuk>5) setCel(null, celX+(Math.random()*80+40)*storona, celY+Math.random()*80-40);
 			}
 			if (turnY!=0) {
@@ -233,7 +231,7 @@ package fe.unit {
 				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) {
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				t_krut=45;
 				return -1;

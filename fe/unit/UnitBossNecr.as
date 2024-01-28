@@ -144,8 +144,8 @@ package fe.unit
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-scY*0.58;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y-scY*0.58;
 		}
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
@@ -209,8 +209,8 @@ package fe.unit
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y-scY;
+				celX = coordinates.X+scX*storona*2;
 				return;
 			}
 			if (levit && protculd_t<=0) castProtect(1);
@@ -290,8 +290,8 @@ package fe.unit
 				else setCel(loc.gg);
 			}
 			//направление
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y + scY;
 			//поворот от игрока
 			if (aiTCh%10==1 && aiState==1 && celDY<80 && celDY>-80) {
 				if (celDX<0 && celDX>-400) aiNapr=storona=1;
@@ -332,7 +332,7 @@ package fe.unit
 					}
 				}
 				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0) && isrnd(0.8)) jmp=0.4;
-				if (stay && Y-begY>=35) jmp=0.6;
+				if (stay && coordinates.Y-begY>=35) jmp=0.6;
 				if (turnX!=0) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
@@ -434,11 +434,11 @@ package fe.unit
 		}
 
 		public function castCurse(n:int=0, otlozh:int=0) {
-			var nx:Number=loc.gg.X+loc.gg.dx*15+(Math.random()-0.5)*50;
-			var ny:Number=loc.gg.Y-loc.gg.scY/2+loc.gg.dy*15+(Math.random()-0.5)*30;
+			var nx:Number = loc.gg.coordinates.X + loc.gg.dx*15+(Math.random()-0.5)*50;
+			var ny:Number = loc.gg.coordinates.Y - loc.gg.scY / 2 + loc.gg.dy * 15 + (Math.random() - 0.5) * 30;
 			if (n==2) {
-				nx=loc.gg.X+loc.gg.dx*15+(otlozh-8)*20*((Math.floor(loc.gg.X)%2==0)?1:-1);
-				ny=loc.gg.Y-loc.gg.scY/2+loc.gg.dy*15;
+				nx=loc.gg.coordinates.X+loc.gg.dx*15+(otlozh-8)*20*((int(loc.gg.coordinates.X)%2==0)?1:-1);
+				ny=loc.gg.coordinates.Y-loc.gg.scY/2+loc.gg.dy*15;
 			}
 			if (n==1) {
 				nx+=Math.random()*200-100;
@@ -448,7 +448,7 @@ package fe.unit
 			if (nx<100) nx=100;
 			if (ny>loc.maxY-100) ny=loc.maxY-100;
 			if (ny<100) ny=100;
-			var ms:MagSymbol=new MagSymbol(this,curses[Math.floor(Math.random()*(phase==2?9:5))],nx,ny,otlozh);
+			var ms:MagSymbol=new MagSymbol(this,curses[int(Math.random()*(phase==2?9:5))],nx,ny,otlozh);
 		}
 		
 		public function resetProtect() {

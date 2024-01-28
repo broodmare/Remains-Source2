@@ -1,6 +1,7 @@
 package fe.unit 
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.loc.Location;
 	
@@ -53,7 +54,8 @@ package fe.unit
 		}
 		public override function setVisPos() {
 			if (vis) {
-				vis.x=X,vis.y=Y;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 			}
 		}
 		
@@ -83,8 +85,8 @@ package fe.unit
 					if (loc.active) {
 						Snd.pshum(sndRun,rkoef);
 					}
-					if (aiTCh%15==1) Emitter.emit('necronoise',loc,X,Y-10,{alpha:rkoef});
-					if (!World.w.gg.invulner && aiTCh%30==1) {
+					if (aiTCh%15==1) Emitter.emit('necronoise',loc, coordinates.X, coordinates.Y-10,{alpha:rkoef});
+										if (!World.w.gg.invulner && aiTCh%30==1) {
 						if (rasst<distdam) {
 							rkoef=(distdam-rasst)/distdam;
 							if (rkoef<0.5) rkoef*=2;

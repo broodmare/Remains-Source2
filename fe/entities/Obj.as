@@ -14,8 +14,13 @@ package  fe.entities
 		public var code:String;		// [Individual code]
 		public var uid:String;		// [Unique identifier used for script access to the object]
 		
-		public var prior:Number=1;
-		public var scX:Number=10, scY:Number=10, storona:int=1;	// Dimensions (Width, Height, which direction the sprite is facing.)
+		public var prior:Number = 1;
+
+		public var scX:Number = 10;
+		public var scY:Number = 10;
+
+		public var storona:int = 1;	// Dimensions (Width, Height, which direction the sprite is facing.)
+
 		public var rasst2:Number=0;	//расстояние до ГГ в квадрате
 		public var massa:Number=1;
 		public var levit:int=0;
@@ -37,9 +42,11 @@ package  fe.entities
 		public static var nullTransfom:ColorTransform=new ColorTransform();
 		public var cTransform:ColorTransform=nullTransfom;
 		
-		public function Obj() {
+		public function Obj()
+		{
+			
 		}
-		
+
 		public override function remVisual() {
 			super.remVisual(); 
 			onCursor=0;
@@ -55,12 +62,12 @@ package  fe.entities
 		}
 		
 		public function getRasst2(obj:Obj=null):Number {
-			if (obj==null) obj=World.w.gg;
-			var nx=obj.X-X;
-			var ny=obj.Y-obj.scY/2-Y+scY/2;
-			if (obj==World.w.gg) ny=obj.Y-obj.scY*0.75-Y+scY/2;
-			rasst2=nx*nx+ny*ny;
-			if (isNaN(rasst2)) rasst2=-1;
+			if (obj == null) obj = World.w.gg;
+			var nx = obj.coordinates.X - coordinates.X;
+			var ny = obj.coordinates.Y - obj.scY / 2 - coordinates.Y + scY / 2;
+			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.scY * 0.75 - coordinates.Y + scY / 2;
+			rasst2 = nx * nx + ny * ny;
+			if (isNaN(rasst2)) rasst2 = -1;
 			return rasst2;
 		}
 		
@@ -69,11 +76,13 @@ package  fe.entities
 		}
 		
 		//команда скрипта
-		public function command(com:String, val:String=null) {
-			if (com=='show') {
-				World.w.cam.showOn=true;
-				World.w.cam.showX=X;
-				World.w.cam.showY=Y;
+		public function command(com:String, val:String=null)
+		{
+			if (com == 'show')
+			{
+				World.w.cam.showOn	= true;
+				World.w.cam.showX	= coordinates.X;
+				World.w.cam.showY	= coordinates.Y;
 			}
 		}
 		
@@ -92,22 +101,32 @@ package  fe.entities
 		public function norma(p:Object,mr:Number) {
 			if (p.x*p.x+p.y*p.y>mr*mr) {
 				var nr=Math.sqrt(p.x*p.x+p.y*p.y);
-				p.x*=mr/nr;
-				p.y*=mr/nr;
+				p.x *= mr / nr;
+				p.y *= mr / nr;
 			}
 		}
 		
 		//принудительное движение
 		public function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
-			X=nx, Y=ny;
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+			coordinates.X = nx;
+			coordinates.Y = ny;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
+			Y2 = coordinates.Y;
 		}
 		
 		//копирование состояния в другой объект
-		public function copy(un:Obj) {
-			un.X=X, un.Y=Y, un.scX=scX, un.scY=scY;
-			un.Y1=Y1, un.Y2=Y2, un.X1=X1, un.X2=X2;
-			un.storona=storona;
+		public function copy(un:Obj)
+		{
+			un.coordinates	= coordinates;
+			un.scX			= scX; 
+			un.scY			= scY;
+			un.Y1			= Y1;
+			un.Y2			= Y2;
+			un.X1			= X1;
+			un.X2			= X2;
+			un.storona		= storona;
 		}
 		
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
@@ -117,7 +136,7 @@ package  fe.entities
 		
 		//проверка пересечения с другим объектом
 		public function areaTest(obj:Obj):Boolean {
-			if (obj==null || obj.X1>=X2 || obj.X2<=X1 || obj.Y1>=Y2 || obj.Y2<=Y1) return false;
+			if (obj == null || obj.X1 >= X2 || obj.X2 <= X1 || obj.Y1 >= Y2 || obj.Y2 <= Y1) return false;
 			else return true;
 		}
 		
@@ -136,9 +155,13 @@ package  fe.entities
 				m.gotoAndStop(1);
 				return;
 			}
-			try {
+			
+			try
+			{
 				m.gotoAndStop(aid);
-			} catch (err) {
+			}
+			catch (err)
+			{
 				m.gotoAndStop(1);
 			}
 		}

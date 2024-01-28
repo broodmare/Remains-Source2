@@ -3,6 +3,7 @@ package fe.unit
 	import flash.display.MovieClip;
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.loc.CheckPoint;
 	import fe.serv.LootGen;
 	
@@ -664,21 +665,26 @@ package fe.unit
 		public function expa(dxp:int, nx:Number=-1, ny:Number=-1) {
 			if (dxp<=0) return;
 			xpCur+=dxp;
-			if (nx<0 || ny<0) {
-				nx=gg.X;
-				ny=gg.Y-gg.scY;
+			if (nx < 0 || ny < 0)
+			{
+				nx = gg.coordinates.X;
+				ny = gg.coordinates.Y - gg.scY;
 			}
 			if (World.w.testLoot) {
 				World.w.summxp+=dxp;
-			} else {
-				gg.numbEmit.cast(gg.loc,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
+			} 
+			else
+			{
+				gg.numbEmit.cast(gg.loc, nx, ny, {txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
+
 			if (xpCur>=xpNext) upLevel();
 			World.w.gui.setXp();
 		}
 		
 		//вернуть уровень навыка в зависимости от вложенных очков
-		public function getSkLevel(n:int):int {
+		public function getSkLevel(n:int):int
+		{
 			if (n>=20) return 5;
 			if (n>=14) return 4;
 			if (n>=9) return 3;
@@ -686,13 +692,24 @@ package fe.unit
 			if (n>=2) return 1;
 			return 0;
 		}
-		public function getSkBonus(n:int):int {
-			if (n==20) return 5;
-			if (n==14) return 4;
-			if (n==9) return 3;
-			if (n==5) return 2;
-			if (n==2) return 1;
-			return 0;
+
+		public function getSkBonus(n:int):int
+		{
+			switch (n)
+			{
+				case 20:
+					return 5;
+				case 14:
+					return 4;
+				case 9:
+					return 3;
+				case 5:
+					return 2;
+				case 2:
+					return 1;
+				default:
+					return 0;
+			}
 		}
 		
 		//пост-скиллы
@@ -717,37 +734,23 @@ package fe.unit
 			{
 				case 1:
 					return getSkLevel(skills['melee']);
-				break;
-
 				case 2:
 					return getSkLevel(skills['smallguns']);
-				break;
-
 				case 3:
 					return getSkLevel(skills['repair']);
-				break;
-
 				case 4:
 					return getSkLevel(skills['energy']);
-				break;
-
 				case 5:
 					return getSkLevel(skills['explosives']);
-				break;
-
 				case 6:
 					return getSkLevel(skills['magic']);
-				break;
-
 				case 7:
 					return getSkLevel(skills['tele']);
-				break;
-
 				default:
 					return 100;
-				break;
 			}
 		}
+
 		//вернуть уровень скилла по его названию
 		public function getSkillLevel(sk:String):int {
 			if (skills[sk]==undefined) return 0;
@@ -1182,7 +1185,7 @@ package fe.unit
 				if (sst!=bloodSt) setParameters();
 			}
 			if (tip==6) {
-				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc,gg.X,gg.Y-gg.scY/2,{txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
+				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.scY/2, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
 				var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
@@ -1220,9 +1223,7 @@ package fe.unit
 				spellsPoss=0;
 			}
 		}
-		
-		//function armorParam(fact:String, arm:Armor, ref:String
-		
+
 		public function armorParameters(arm:Armor) {
 			if (arm.dexter!=0) {
 				setBegFactor('dexter',gg.dexter);
@@ -1296,12 +1297,13 @@ package fe.unit
 					jumpMult=0;
 					gg.noStairs=true;
 					World.w.gui.infoText('overMass');
-					World.w.gui.bulb(gg.X, gg.Y-100);
+					World.w.gui.bulb(gg.coordinates.X, gg.coordinates.Y-100);
 				} else if (speedShtr==2) {
 					maxSpeed=3.5;
 					accelMult=0.5;
 					jumpMult=0.5;
-				} else if (speedShtr==1) {
+				}
+				else if (speedShtr==1) {
 					maxSpeed=7;
 					accelMult=0.7;
 				}
@@ -1443,17 +1445,25 @@ package fe.unit
 			}
 		}
 		//определить уровень требуемого скилла		
-		public function getLockTip(lockTip:int):int {
-			if (lockTip==1) {
-				if (possLockPick>0) return lockPick;
-				else return -100;
+		public function getLockTip(lockTip:int):int
+		{
+			switch (lockTip)
+			{
+				case 1:
+					if (possLockPick>0) return lockPick;
+					else return -100;
+				case 2:
+					return hacker;
+				case 3:
+					return remine;
+				case 4: // OR statement
+				case 5:
+					return repair;
+				case 6:
+					return signal;
+				default:
+					return 0;
 			}
-			if (lockTip==2) return hacker;
-			if (lockTip==3) return remine;
-			if (lockTip==4) return repair;
-			if (lockTip==5) return repair;
-			if (lockTip==6) return signal;
-			return 0
 		}
 		
 		public function dopusk():Boolean {
@@ -1462,10 +1472,11 @@ package fe.unit
 		}
 		
 		//определить уровень мастерства для взлома замка
-		public function getLockMaster(lockTip:int):int {
-			if (lockTip==1) return unlockMaster;
-			if (lockTip==2) return hackerMaster;
-			return 100;
+		public function getLockMaster(lockTip:int):int
+		{
+			if (lockTip == 1) return unlockMaster;
+			else if (lockTip == 2) return hackerMaster;
+			else return 100;
 		}
 		
 		public function setRoboowl() {
@@ -1479,13 +1490,15 @@ package fe.unit
 		}
 		
 		//определить необходимое для действия время
-		public function getLockPickTime(lock:int, lockTip:int):int {
-			var pick=getLockTip(lockTip);
-			if (lock<pick) return lockPickTime*0.6;
+		public function getLockPickTime(lock:int, lockTip:int):int
+		{
+			var pick = getLockTip(lockTip);
+			if (lock < pick) return lockPickTime * 0.6;
 			return lockPickTime;
 		}
 		
-		public function repTex():String {
+		public function repTex():String
+		{
 			if (rep>=repGood) return Res.pipText('reputmax');
 			if (rep>=rep4) return Res.pipText('reput4');
 			if (rep>=rep3) return Res.pipText('reput3');

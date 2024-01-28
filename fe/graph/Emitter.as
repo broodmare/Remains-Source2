@@ -125,10 +125,10 @@ package fe.graph
 				p=new Part();
 				p.loc=loc;
 				p.sloy=sloy;
-				p.X=nx;
-				p.Y=ny;
-				if (rx) p.X+=(Math.random()-0.5)*rx;
-				if (ry) p.Y+=(Math.random()-0.5)*ry;
+				p.coordinates.X = nx;
+				p.coordinates.Y = ny;
+				if (rx) p.coordinates.X += (Math.random()-0.5)*rx;
+				if (ry) p.coordinates.Y += (Math.random()-0.5)*ry;
 				
 				if (maxkol>0) {
 					p.maxkol=maxkol;
@@ -151,8 +151,8 @@ package fe.graph
 				if (rdr) p.dr=(Math.random()-0.5)*rdr;
 				if (rot) p.r=Math.random()*360;
 				if (param) {
-					if (param.rx) p.X+=(Math.random()-0.5)*param.rx;
-					if (param.ry) p.Y+=(Math.random()-0.5)*param.ry;
+					if (param.rx) p.coordinates.X+=(Math.random()-0.5)*param.rx;
+					if (param.ry) p.coordinates.Y+=(Math.random()-0.5)*param.ry;
 					if (param.dx) p.dx+=param.dx;
 					if (param.dy) p.dy+=param.dy;
 					if (param.dr) p.dr+=param.dr;
@@ -197,8 +197,8 @@ package fe.graph
 					if (ctrans) p.vis.transform.colorTransform=loc.cTransform;
 					if (filter && Emitter.fils[filter]) p.vis.filters=Emitter.fils[filter];
 					if (param && param.celx!=null && param.cely!=null && p.vis.len) {
-						var gx=param.celx-p.X;
-						var gy=param.cely-p.Y;
+						var gx=param.celx-p.coordinates.X;
+						var gy=param.cely-p.coordinates.Y;
 						var gr=Math.sqrt(gx*gx+gy*gy);
 						var gu=Math.atan2(gy,gx)*180/Math.PI;
 						p.vis.len.scaleX=gr/p.vis.len.width;

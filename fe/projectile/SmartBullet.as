@@ -25,11 +25,11 @@ package fe.projectile
 		{
 			if (!babah && cel && manevr>0)
 			{
-				p.x=cel.X-X;
-				p.y=(cel.Y1+cel.Y2)/2-Y;
+				p.x = cel.coordinates.X - coordinates.X;
+				p.y = (cel.Y1 + cel.Y2) / 2 - coordinates.Y;
 				norma(p,manevr);
-				p.x+=dx;
-				p.y+=dy;
+				p.x += dx;
+				p.y += dy;
 				if (vel<maxVel)	vel+=accel;
 				norma(p,vel);
 				dx=p.x, dy=p.y;

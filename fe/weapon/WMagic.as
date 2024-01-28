@@ -6,10 +6,11 @@ package fe.weapon
 	import fe.unit.Pers;
 	import fe.projectile.Bullet;
 
-	public class WMagic extends Weapon {
-		
-		public function WMagic(own:Unit, nid:String, nvar:int=0) {
-			super(own,nid,nvar);
+	public class WMagic extends Weapon
+	{
+		public function WMagic(own:Unit, nid:String, nvar:int=0)
+		{
+			super(own, nid, nvar);
 			if (prep) animated=false;
 		}
 
@@ -22,7 +23,7 @@ package fe.weapon
 			if (t_rel>0) return false;
 			if (owner.player && (World.w.pers.spellsPoss==0 || alicorn && !World.w.alicorn)) {
 				World.w.gui.infoText('noSpells');
-				World.w.gui.bulb(X,Y);
+				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				Snd.ps('nomagic');
 				return false;
 			}
@@ -40,7 +41,7 @@ package fe.weapon
 				if (owner.player && dmana>World.w.pers.manaHP) {
 					t_rel=t_prep*3;
 					World.w.gui.infoText('noMana');
-					World.w.gui.bulb(X,Y);
+					World.w.gui.bulb(coordinates.X, coordinates.Y);
 					Snd.ps('nomagic');
 				} else if (dmagic<=owner.mana || owner.mana>=owner.maxmana*0.99) {
 					if (dkol<=0) t_attack=rapid;
@@ -49,7 +50,7 @@ package fe.weapon
 					t_rel=t_prep*3;
 					if (owner.player) {
 						World.w.gui.infoText('noMana');
-						World.w.gui.bulb(X,Y);
+						World.w.gui.bulb(coordinates.X, coordinates.Y);
 						Snd.ps('nomagic');
 					}
 				}
@@ -86,11 +87,11 @@ package fe.weapon
 		
 		public override function animate():void
 		{
-			
 			if (!vis) return;
-			vis.x=X;
-			vis.y=Y;
-			if (prep) {
+			vis.x = coordinates.X;
+			vis.y = coordinates.Y;
+			if (prep)
+			{
 				if (t_prep>1) vis.gotoAndStop(t_prep);
 				else vis.gotoAndStop(1);
 			}

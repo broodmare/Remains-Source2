@@ -3,6 +3,7 @@ package fe.unit
 	import flash.geom.ColorTransform;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 
 	public class Effect
@@ -29,12 +30,14 @@ package fe.unit
 
 		public var vse:Boolean=false;		//действие окончено
 
-		public function Effect(nid:String, own:Unit=null, nval:Number=0) {
-			if (own==null) owner=World.w.gg;
-			else owner=own;
-			player=owner.player;
-			id=nid;
-			val=nval;
+		public function Effect(nid:String, own:Unit=null, nval:Number=0)
+		{
+			if (own == null) owner = World.w.gg;
+			else owner = own;
+
+			player = owner.player;
+			id = nid;
+			val = nval;
 			getXmlParam();
 		}
 		
@@ -125,8 +128,8 @@ package fe.unit
 				(owner as UnitPlayer).stam=0;
 			}
 			if (id=='fetter' && player) {
-				(owner as UnitPlayer).fetX=owner.X;
-				(owner as UnitPlayer).fetY=owner.Y;
+				(owner as UnitPlayer).fetX = owner.coordinates.X;
+				(owner as UnitPlayer).fetY = owner.coordinates.Y;
 			}
 			if (id=='stealth' || id=='stealth_armor') {
 				(owner as UnitPlayer).f_stealth=true;
@@ -256,17 +259,17 @@ package fe.unit
 				owner.damage(val,Unit.D_PINK,null,true);
 			}
 			if (id=='blindness' && player) {
-				if (owner.sost<4) Emitter.emit('blind',owner.loc,owner.X-300+Math.random()*600,owner.Y-200+Math.random()*400);
+				if (owner.sost<4) Emitter.emit('blind',owner.loc,owner.coordinates.X-300+Math.random()*600,owner.coordinates.Y-200+Math.random()*400);
 			}
 			if (id=='chemburn') {
 				owner.damage(val,Unit.D_ACID,null,true);
-			}
+}
 			if (id=='drunk' && lvl>3) {
 				owner.damage(val,Unit.D_POISON,null,true);
-				Emitter.emit('poison',owner.loc,owner.X+owner.storona*20,owner.Y-40);
+				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
 			}
 			if (id=='namok') {
-				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.X,owner.Y-owner.scY*0.25,{md:0.1});
+				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.scY*0.25,{md:0.1});
 			}
 			if (id=='hydra' && owner.sost==1) {
 				owner.heal(val);
@@ -283,19 +286,21 @@ package fe.unit
 			}
 			if (id=='fetter') {
 				Emitter.emit('slow',owner.loc,(owner as UnitPlayer).fetX,(owner as UnitPlayer).fetY);
-			}
+							}
 		}
 		public function stepEffect() {
 			if (id=='burning') {
-				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.X,owner.Y-owner.scY/2);
+				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.coordinates.Y - owner.scY/2);
 			}
-			if (id=='sacrifice' && t==5) {
-				owner.damage(owner.maxhp*0.5,Unit.D_INSIDE);
-				owner.newPart('blood',50);
+			if (id == 'sacrifice' && t == 5)
+			{
+				owner.damage(owner.maxhp * 0.5, Unit.D_INSIDE);
+				owner.newPart('blood', 50);
 			}
 		}
 		
-		public function step() {
+		public function step()
+		{
 			if (t%30==0) {
 				secEffect();
 			}

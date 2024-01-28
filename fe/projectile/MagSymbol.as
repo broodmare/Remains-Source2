@@ -25,15 +25,15 @@ package fe.projectile
 				loc=own.loc;
 			}
 			spellId=spell;
-			X=nx;
-			Y=ny;
+			coordinates.X = nx;
+			coordinates.Y = ny;
 			liv=20+otlozh;
 			loc.addObj(this);
 		}
 		
 		public override function step()
 		{
-			if (liv==20) Emitter.emit('magsymbol',loc,X,Y);
+			if (liv==20) Emitter.emit('magsymbol', loc, coordinates.X, coordinates.Y);
 			liv--;
 			if (liv==1) spellCast();
 			if (liv<=0) loc.remObj(this);

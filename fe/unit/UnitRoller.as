@@ -42,7 +42,8 @@ package fe.unit
 		}
 		
 		public override function setVisPos() {
-			vis.x=X,vis.y=Y-scY/2;
+			vis.x = coordinates.X;
+			vis.y = coordinates.Y - scY / 2;
 		}
 		
 		public override function dropLoot() {
@@ -96,8 +97,8 @@ package fe.unit
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			if (isPlav) {
@@ -177,7 +178,7 @@ package fe.unit
 				}
 			} 
 			
-			if (Y>loc.spaceY*tileY-80) throu=false;
+			if (coordinates.Y > loc.spaceY * tileY - 80) throu=false;
 		}
 		
 		public function attack() {

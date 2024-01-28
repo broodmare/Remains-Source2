@@ -4,6 +4,7 @@ package fe.loc
 	import flash.display.MovieClip;
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
@@ -98,12 +99,16 @@ package fe.loc
 			
 			var node:XML = getObjInfo(id);
 			
-			X=begX=nx, Y=begY=ny;
-			scX=vis.width;
-			scY=vis.height;
-			if (node.@scx.length()) scX=node.@scx;
-			if (node.@scy.length()) scY=node.@scy;
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+			coordinates.X = begX = nx; 
+			coordinates.Y = begY = ny;
+			scX = vis.width;
+			scY = vis.height;
+			if (node.@scx.length()) scX = node.@scx;
+			if (node.@scy.length()) scY = node.@scy;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
+			Y2 = coordinates.Y;
 			
 			
 			if (node.@mat.length()) mat=node.@mat;
@@ -195,8 +200,10 @@ package fe.loc
 			
 			
 			vis.cacheAsBitmap=true;
-			vis.x=shad.x=X,vis.y=Y,shad.y=Y+(wall?2:6);
-			prior+=1/(scX*scY);
+			vis.x = shad.x = coordinates.X;
+			vis.y = coordinates.Y;
+			shad.y = coordinates.Y + (wall?2:6);
+			prior +=1 / (scX * scY);
 			if (node.@actdam.length()) {
 				if (xml && xml.@tipdam.length())  bindUnit(xml.@tipdam);
 				else bindUnit();
@@ -249,13 +256,20 @@ package fe.loc
 				}
 			}
 		}
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
-			if (!dead && invis && f) {
-				invis=false;
-				X=begX, Y=begY;
-				dx=dy=0;
-				Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
+			if (!dead && invis && f)
+			{
+				invis = false;
+				coordinates.X = begX;
+				coordinates.Y = begY;
+				dx = 0;
+				dy = 0;
+				Y1 = coordinates.Y - scY;
+				Y2 = coordinates.Y;
+				X1 = coordinates.X - scX / 2;
+				X2 = coordinates.X + scX / 2;
 			}
 		}
 		
@@ -265,13 +279,14 @@ package fe.loc
 		}
 		
 		public override function setVisState(s:String) {
-			if ((s=='open' || s=='comein') && sndOpen!='' && !World.w.testLoot) Snd.ps(sndOpen,X,Y);
-			if (s=='close' && sndClose!='') Snd.ps(sndClose,X,Y);
-			try {
+			if ((s=='open' || s=='comein') && sndOpen!='' && !World.w.testLoot) Snd.ps(sndOpen, coordinates.X, coordinates.Y);
+			if (s=='close' && sndClose!='') Snd.ps(sndClose, coordinates.X, coordinates.Y);
+			try
+			{
 				if (s=='comein') vis.gotoAndPlay(s);
 				else vis.gotoAndStop(s);
-			} catch (err) {
 			}
+			catch (err) { trace('ERROR: Could not set vis state: "' + s + '"!'); }
 		}
 		
 		public override function step() {
@@ -279,7 +294,8 @@ package fe.loc
 				onCursor=0;
 				return;
 			}
-			stX=X, stY=Y;
+			stX = coordinates.X;
+			stY = coordinates.Y;
 			if (inter) inter.step();
 			if (radioactiv) {
 				getRasst2()
@@ -290,9 +306,7 @@ package fe.loc
 				if (moln_t>=molnPeriod) {
 					moln_t=0;
 					attMoln();
-					try {
-						vis.gotoAndPlay('moln');
-					} catch(err) {};
+					vis.gotoAndPlay('moln');
 				}
 			}
 			if (levit) {
@@ -308,10 +322,15 @@ package fe.loc
 					if (collisionAll(osnova.cdx,osnova.cdy)) {
 						stay=false;
 						osnova=null;
-					} else {
-						X+=osnova.cdx;
-						Y+=osnova.cdy;
-						X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+					}
+					else
+					{
+						coordinates.X += osnova.cdx;
+						coordinates.Y += osnova.cdy;
+						X1 = coordinates.X - scX / 2;
+						X2 = coordinates.X + scX / 2;
+						Y1 = coordinates.Y - scY;
+						Y2 = coordinates.Y;
 						if (vis) runVis()
 					}
 				}
@@ -320,19 +339,21 @@ package fe.loc
 				if (wall==0) forces();		//внешние силы, влияющие на ускорение
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
 				else {
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-					for (var i=0; i<div; i++) run(div);
+					var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					for (var i = 0; i < div; i++) run(div);
 				}
 				checkWater();
 				if (!fixPlav && !levit && isPlav&&!isPlav2 && dy<2 && dy>-2 && ddyPlav<0) {
-					dy=dx=0;
+					dy = 0;
+					dx = 0;
 					fixPlav=true;
 				}
 				if (!levit && (dy>5 || dy<-5 || dx>5 || dx<-5)) attDrop();
 				if (vis) runVis();
-				if (inter) {inter.X=X; inter.Y=Y;}
+				if (inter) {inter.coordinates.X = coordinates.X; inter.coordinates.Y = coordinates.Y;}
 			}
-			cdx=X-stX, cdy=Y-stY;
+			cdx = coordinates.X - stX;
+			cdy = coordinates.Y - stY;
 			if (t_throw>0) t_throw--;
 			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
 		}
@@ -340,19 +361,19 @@ package fe.loc
 		public function initDoor()
 		{
 			tiles = [];
-			for (var i=int(X1/tileX+0.5); i<=Math.floor(X2/tileX-0.5); i++)
+			for (var i = int(X1 / tileX + 0.5); i <= int(X2 / tileX - 0.5); i++)
 			{
-				for (var j=int(Y1/tileY+0.5); j<=Math.floor(Y2/tileY-0.5); j++)
+				for (var j = int(Y1 / tileY + 0.5); j <= int(Y2 / tileY - 0.5); j++)
 				{
-					 var t:Tile = loc.getTile(i,j);
-					 t.front='';
-					 t.phis=phis;
-					 t.opac=door_opac;
-					 t.door=this;
-					 t.mat=mat;
-					 t.hp=hp;
-					 t.thre=thre;
-					 tiles.push(t);
+					var t:Tile = loc.getTile(i, j);
+					t.front='';
+					t.phis=phis;
+					t.opac=door_opac;
+					t.door=this;
+					t.mat=mat;
+					t.hp=hp;
+					t.thre=thre;
+					tiles.push(t);
 				}
 			}
 		}
@@ -384,7 +405,8 @@ package fe.loc
 			}
 			for each (cel in loc.objs) {
 				if ((cel as Box).wall>0) continue;
-				if (!(cel.X-cel.scX/2>=X2 || cel.X+cel.scX/2<=X1 || cel.Y-cel.scY>=Y2 || cel.Y<=Y1)) {
+				if (!(cel.coordinates.X - cel.scX / 2 >= X2 || cel.coordinates.X + cel.scX / 2 <= X1 || cel.coordinates.Y - cel.scY >= Y2 || cel.coordinates.Y <= Y1))
+				{
 					return true;
 				}
 			}
@@ -451,10 +473,10 @@ package fe.loc
 					if (mat==3) kus='schep';
 					if (mat==5) kus='steklo';
 					if (mat==7) kus='pole';
-					Emitter.emit(kus,loc,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
-					if (sndDie!='') Snd.ps(sndDie,X,Y);
+					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-scY/2, {kol:12,rx:scX, ry:scY});
+					if (sndDie!='') Snd.ps(sndDie, coordinates.X, coordinates.Y);
 				}
-				if (noiseDie) loc.budilo(X,Y-scY/2,noiseDie);
+				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - scY / 2, noiseDie);
 				if (inter) inter.sign=0;
 			} else if (un) {
 				invis=true;
@@ -477,10 +499,14 @@ package fe.loc
 				if (!isPlav && dy<World.maxdy) dy+=World.ddy;
 				if (isPlav && isPlav2) dy+=World.ddy*ddyPlav;
 			}
-			if (isPlav) {
-				dy*=0.65; dx*=0.65;
-			} else if (levit) {
-				dy*=0.8; dx*=0.8;
+			if (isPlav)
+			{
+				dy *= 0.65;
+				dx *= 0.65;
+			}
+			else if (levit) {
+				dy *= 0.8; 
+				dx *= 0.8;
 			}
 		}
 		
@@ -524,25 +550,32 @@ package fe.loc
 			
 			
 			//ГОРИЗОНТАЛЬ
-				X+=dx/div;
-				if (X-scX/2<0) {
-					X=scX/2;
+				coordinates.X += dx / div;
+				if (coordinates.X - scX / 2 < 0)
+				{
+					coordinates.X = scX / 2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*tileX) {
-					X=loc.spaceX*tileX-1-scX/2;
-					dx=-Math.abs(dx);
+				if (coordinates.X + scX / 2 >= loc.spaceX * tileX)
+				{
+					coordinates.X = loc.spaceX * tileX - 1 - scX / 2;
+					dx = -Math.abs(dx);
 				}
-				X1=X-scX/2, X2=X+scX/2;
+				X1 = coordinates.X - scX / 2;
+				X2 = coordinates.X + scX / 2;
 				//движение влево
-				if (dx<0) {
-					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++) {
-						t=loc.space[int(X1/tileX)][i];
-						if (collisionTile(t)) {
-								X=t.phX2+scX/2;
+				if (dx<0)
+				{
+					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++)
+					{
+						t = loc.space[int(X1 / tileX)][i];
+						if (collisionTile(t))
+						{
+								coordinates.X = t.phX2 + scX / 2;
 								if (dx<-10) dx=-dx*0.2;
 								else dx=0;
-								X1=X-scX/2, X2=X+scX/2;
+								X1 = coordinates.X - scX / 2;
+								X2 = coordinates.X + scX / 2;
 							isThrow=false;
 						}
 					}
@@ -552,10 +585,11 @@ package fe.loc
 					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++) {
 						t=loc.space[int(X2/tileX)][i];
 						if (collisionTile(t)) {
-								X=t.phX1-scX/2;
+								coordinates.X = t.phX1 - scX / 2;
 								if (dx>10) dx=-dx*0.2;
 								else dx=0;
-								X1=X-scX/2, X2=X+scX/2;
+								X1 = coordinates.X - scX / 2;
+								X2 = coordinates.X + scX / 2;
 							isThrow=false;
 						}
 					}
@@ -565,135 +599,173 @@ package fe.loc
 			//ВЕРТИКАЛЬ
 			//движение вниз
 			var newmy:Number=0;
-			if (dy>0) {
+			if (dy>0)
+			{
 				stay=false;
-				for (i=int(X1/tileX); i<=int(X2/tileX); i++) {
-					t=loc.space[i][int((Y2+dy/div)/tileY)];
-					if (collisionTile(t,0,dy/div)) {
-						newmy=t.phY1;
+				for (i = int(X1 / tileX); i <= int(X2 / tileX); i++) {
+					t = loc.space[i][int((Y2 + dy / div) / tileY)];
+					if (collisionTile(t,0,dy/div))
+					{
+						newmy = t.phY1;
 						break;
 					}
 				}
-				if (newmy==0 && !levit && !isThrow) newmy=checkShelf(dy/div);
-				if (Y>=(loc.spaceY-1)*tileY && !loc.bezdna) newmy=(loc.spaceY-1)*tileY;
-				if (Y>=loc.spaceY*tileY-1 && loc.bezdna) {
-					invis=true;
+				if (newmy == 0 && !levit && !isThrow) newmy = checkShelf(dy / div);
+				if (coordinates.Y >= (loc.spaceY - 1) * tileY && !loc.bezdna) newmy = (loc.spaceY - 1) * tileY;
+				if (coordinates.Y >= loc.spaceY * tileY - 1 && loc.bezdna)
+				{
+					invis = true;
 					if (vis) remVisual();
 				}
-				if (newmy) {
-					Y=newmy;
-					Y1=Y-scY, Y2=Y;
+				if (newmy)
+				{
+					coordinates.Y = newmy;
+					Y1 = coordinates.Y - scY;
+					Y2 = coordinates.Y;
 					if (loc.active && dy>4 && dy*massa>5) World.w.quake(0,dy*Math.sqrt(massa)/2);
-					if (dy>5 && sndFall && sndOn) Snd.ps(sndFall,X,Y,0,dy/15);
-					if (dy>5) {
-						loc.budilo(X,Y,dy*dy*massa);
+					if (dy > 5 && sndFall && sndOn) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, dy / 15);
+					if (dy > 5)
+					{
+						loc.budilo(coordinates.X, coordinates.Y, dy * dy * massa);
 					}
+
 					if (dy<5 || massa>1) dy=0;
 					else dy*=-0.2;
+
 					if (dx>-5 && dx<5) dx=0;
-					else {
+					else
+					{
 						dx*=0.92;
-						if (mat==1)	Emitter.emit('iskr_wall',loc,X+(Math.random()-0.5)*scX,Y);
+						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*scX, coordinates.Y);
 					}
+
 					if (!levit && (!isPlav || ddyPlav>0)) {
 						stay=true;
 						isThrow=false;
 						fracLevit=0;
 					}
+
 					sndOn=true;
-				} else {
-					Y+=dy/div;
-					Y1=Y-scY, Y2=Y;
+				}
+				else
+				{
+					coordinates.Y += dy / div;
+					Y1 = coordinates.Y - scY;
+					Y2 = coordinates.Y;
 				}
 			}
 			//движение вверх
-			if (dy<0) {
-				stay=false;
-				Y+=dy/div;
-				Y1=Y-scY, Y2=Y;
-				if (Y-scY<0) Y=scY;
-				for (i=Math.floor(X1/tileX); i<=Math.floor(X2/tileX); i++) {
-					t=loc.space[i][Math.floor(Y1/tileY)];
-					if (collisionTile(t)) {
-						Y=t.phY2+scY;
-						Y1=Y-scY, Y2=Y;
-						dy=0;
+			if (dy<0)
+			{
+				stay = false;
+				coordinates.Y += dy / div;
+				Y1 = coordinates.Y-scY;
+				Y2 = coordinates.Y;
+				if (coordinates.Y - scY < 0) coordinates.Y = scY;
+				for (i = int(X1/tileX); i <= int(X2/tileX); i++)
+				{
+					t = loc.space[i][int(Y1/tileY)];
+					if (collisionTile(t))
+					{
+						coordinates.Y = t.phY2 + scY;
+						Y1 = coordinates.Y - scY;
+						Y2 = coordinates.Y;
+						dy = 0;
 						isThrow=false;
 					}
 				}
 			}
 		}
 		//поиск жидкости
-		public function checkWater():Boolean {
-			var pla=isPlav;
-			isPlav=isPlav2=false;
-			try {
-				if ((loc.space[Math.floor(X/tileX)][Math.floor((Y-scY*0.45)/tileY)] as Tile).water>0) {
-					isPlav=true;
-				}
-				if ((loc.space[Math.floor(X/tileX)][Math.floor((Y-scY*0.55)/tileY)] as Tile).water>0) {
-					isPlav2=true;
-				}
-			} catch (err) {
-				
+		public function checkWater():Boolean
+		{
+			var pla = isPlav;
+			isPlav = false;
+			isPlav2 = false;
+
+			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-scY*0.45) / tileY)] as Tile).water > 0)
+			{
+				isPlav=true;
 			}
-			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap',loc,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
+			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-scY*0.55) / tileY)] as Tile).water > 0)
+			{
+				isPlav2=true;
+			}
+
+
+			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-scY*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
 			if (pla!=isPlav && dy>5) {
 				if (massa>2) sound('fall_water0', 0, dy/10);
 				else if (massa>0.4) sound('fall_water1', 0, dy/10);
 				else if (massa>0.2) sound('fall_water2', 0, dy/10);
 				else sound('fall_item_water', 0, dy/10);
 			}
+
 			return isPlav;
 		}
+
 		public function checkShelf(dy):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && !(X<b.X1 || X>b.X2) && Y2<=b.Y1 && Y2+dy>b.Y1) {
-					osnova=b;
+				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.X1 || coordinates.X > b.X2) && Y2<=b.Y1 && Y2+dy>b.Y1)
+				{
+					osnova = b;
 					return b.Y1;
 				}
 			}
 			return 0;
 		}
-		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
-			for (var i=Math.floor((X1+gx)/tileX); i<=Math.floor((X2+gx)/tileX); i++) {
-				for (var j=Math.floor((Y1+gy)/tileY); j<=Math.floor((Y2+gy)/tileY); j++) {
-					if (collisionTile(loc.space[i][j],gx,gy)) return true;
+
+		public function collisionAll(gx:Number=0, gy:Number=0):Boolean
+		{
+			for (var i:int = int((X1 + gx) / tileX); i <= int((X2 + gx) / tileX); i++)
+			{
+				for (var j:int = int((Y1 + gy) / tileY); j <= int((Y2 + gy) / tileY); j++)
+				{
+					if (collisionTile(loc.space[i][j], gx, gy)) return true;
 				}
 			}
 			return false;
 		}
 		
-		public function bindUnit(n:String='-1') {
-			un=new VirtualUnit(n);
+		public function bindUnit(n:String='-1')
+		{
+			un = new VirtualUnit(n);
 			copy(un);
-			un.owner=this;
-			un.loc=loc;
+			un.owner = this;
+			un.loc = loc;
 		}
 		
 		//принудительное движение
-		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
+		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1)
+		{
 			super.bindMove(nx,ny);
 			if (this.un) un.bindMove(nx,ny);
 			if (vis) runVis()
 		}
 		
 		public function runVis() {
-			vis.x=shad.x=X,vis.y=Y,shad.y=Y+(wall?2:6);
+			vis.x = shad.x = coordinates.X;
+			vis.y = coordinates.Y;
+			shad.y = coordinates.Y + (wall? 2:6);
 		}
 		
-		public function sound(sid:String, msec:Number=0, vol:Number=1):* {
-			return Snd.ps(sid,X,Y,msec,vol);
+		public function sound(sid:String, msec:Number=0, vol:Number=1):*
+		{
+			return Snd.ps(sid, coordinates.X, coordinates.Y, msec, vol);
 		}
 		
-		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int {
+		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int
+		{
 			if (!t || (t.phis==0 || t.phis==3) && !t.shelf) return 0;  //пусто
-			if (X2+gx<=t.phX1 || X1+gx>=t.phX2 || Y2+gy<=t.phY1 || Y1+gy>=t.phY2) {
+			if (X2 + gx <= t.phX1 || X1 + gx >= t.phX2 || Y2 + gy <= t.phY1 || Y1 + gy>=t.phY2)
+			{
 				return 0;
-			} else if ((t.phis==0 || t.phis==3) && t.shelf && (Y2>t.phY1 || levit || isThrow)) {  //полка 
+			}
+			else if ((t.phis==0 || t.phis==3) && t.shelf && (Y2>t.phY1 || levit || isThrow)) {  //полка 
 				return 0;
-			} else return 1;
+			}
+			else return 1;
 		}
 		
 		//особые функции
@@ -714,7 +786,8 @@ package fe.loc
 			}
 		}
 		
-		public function funGenerator() {
+		public function funGenerator()
+		{
 			inter.active=false;
 			World.w.gui.infoText('unFixLock');
 			World.w.game.runScript('fixGenerator',this);

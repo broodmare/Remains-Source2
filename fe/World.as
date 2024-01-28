@@ -457,8 +457,8 @@ package  fe
 				app.setTransforms();
 			}
 
-			try { koladv = Res.currentLanguageData.advice[0].a.length(); } 
-			catch (err) {}
+			koladv = Res.currentLanguageData.advice[0].a.length();
+
 
 			if (configObj.data.nadv)
 			{
@@ -570,209 +570,180 @@ package  fe
 				vwait.progres.text='error';
 				return;
 			}
-			//try
-			//{
-				time___metr();
-				allStat=-1;
-				opt=nopt;
-				newName=nnewName;
-				game=new Game();
-				if (!roomsLoad) allLandsLoaded=true;
-				ng=nload<0;
-				if (ng)
+			time___metr();
+			allStat=-1;
+			opt=nopt;
+			newName=nnewName;
+			game=new Game();
+			if (!roomsLoad) allLandsLoaded=true;
+			ng=nload<0;
+			if (ng)
+			{
+				if (opt && opt.autoSaveN)
 				{
-					if (opt && opt.autoSaveN)
-					{
-						autoSaveN=opt.autoSaveN;
-						saveObj=saveArr[autoSaveN];
-						nload=autoSaveN;
-					} else nload=0;
-					saveObj.clear();
-				}
-				//создать GUI
-				gui=new GUI(vgui);
-				gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-				//перевести пипбак в игровой режим
-				pip.toNormalMode();
-				pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-				//создать интерфейс ЗПС
-				sats=new Sats(vsats);
-				time___metr('Интерфейс');
-				
-				//создать игру
-				if (nload==99) {
-					data=loaddata;	//была загрузка из файла
-				} else {
-					data=saveArr[nload].data; //была загрузка из слота
-				}
-				if (ng)	game.init(null,opt); else game.init(data.game);
-				ng_wait=1;
-				time___metr('Game init');
-				
-			//} 
-			//catch (err) {showError(err);}
+					autoSaveN=opt.autoSaveN;
+					saveObj=saveArr[autoSaveN];
+					nload=autoSaveN;
+				} else nload=0;
+				saveObj.clear();
+			}
+			//создать GUI
+			gui=new GUI(vgui);
+			gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
+			//перевести пипбак в игровой режим
+			pip.toNormalMode();
+			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
+			//создать интерфейс ЗПС
+			sats=new Sats(vsats);
+			time___metr('Интерфейс');
+			
+			//создать игру
+			if (nload==99) {
+				data=loaddata;	//была загрузка из файла
+			} else {
+				data=saveArr[nload].data; //была загрузка из слота
+			}
+			if (ng)	game.init(null,opt); else game.init(data.game);
+			ng_wait=1;
+			time___metr('Game init');
 		}
 		
 		//этап 1 - создать персонажа и инвентарь
 		public function newGame1():void
 		{
-			//try
-			//{
-				if (!ng) app.load(data.app);
-				if (data.hardInv==true) hardInv=true; else hardInv=false;
-				if (opt && opt.hardinv) hardInv=true;
-				//создать персонажа
-				pers=new Pers(data.pers, opt);
-				if (ng) pers.persName=newName;
-				//создать юнит ГГ
-				gg=new UnitPlayer();
-				gg.ctr=ctr;
-				gg.sats=sats;
-				sats.gg=gg;
-				gui.gg=gg;
-				//создат инвентарь
-				invent=new Invent(gg, data.invent, opt);
-				stand=new Stand(vstand,invent);
-				gg.attach();
-				time___metr('Персонаж');
-				//номер ячейки автосейва
-				if (!ng) if (data.n!=null) autoSaveN=data.n;
-				Unit.txtMiss=Res.guiText('miss');
-				
-				waitLoadClick();
-				ng_wait=2;
-				time___metr('Местность');
-			//} 
-			//catch (err) {showError(err);}
+			if (!ng) app.load(data.app);
+			if (data.hardInv==true) hardInv=true; else hardInv=false;
+			if (opt && opt.hardinv) hardInv=true;
+			//создать персонажа
+			pers=new Pers(data.pers, opt);
+			if (ng) pers.persName=newName;
+			//создать юнит ГГ
+			gg=new UnitPlayer();
+			gg.ctr=ctr;
+			gg.sats=sats;
+			sats.gg=gg;
+			gui.gg=gg;
+			//создат инвентарь
+			invent=new Invent(gg, data.invent, opt);
+			stand=new Stand(vstand,invent);
+			gg.attach();
+			time___metr('Персонаж');
+			//номер ячейки автосейва
+			if (!ng) if (data.n!=null) autoSaveN=data.n;
+			Unit.txtMiss=Res.guiText('miss');
+			
+			waitLoadClick();
+			ng_wait=2;
+			time___metr('Местность');
 		}
 		
 		//этап 2 - создать местность и войти в неё
 		public function newGame2():void
 		{
-			//try
-			//{
-				
-				//визуальная часть
-				resizeScreen();
-				offLoadScreen();
-				vgui.visible=vfon.visible=visual.visible=true;
-				vblack.alpha=1;
-				cam.dblack=-10;
-				pip.onoff(-1);
-				//войти в текущую местность
-				game.enterToCurLand();//!!!!
-				
-				Snd.off=false;
-				gui.setAll();
-				allStat=1;
-				ng_wait=0;
-			//}
-			//catch (err) {showError(err);}
+
+			//визуальная часть
+			resizeScreen();
+			offLoadScreen();
+			vgui.visible=vfon.visible=visual.visible=true;
+			vblack.alpha=1;
+			cam.dblack=-10;
+			pip.onoff(-1);
+			//войти в текущую местность
+			game.enterToCurLand();//!!!!
+			
+			Snd.off=false;
+			gui.setAll();
+			allStat=1;
+			ng_wait=0;
+
 		}
 		
 		public function loadGame(nload:int=0):void
 		{
-			try
-			{
-				time___metr();
-				comLoad=-1;
-				if (loc) loc.out();
-				land=null;
-				loc=null;
+			time___metr();
+			comLoad=-1;
+			if (loc) loc.out();
+			land=null;
+			loc=null;
 
-				try {cur('arrow');} 
-				catch(err){}
+			cur('arrow');
 
-				//объект загрузки
-				var data:Object;
-				if (nload==99) data=loaddata;
-				else data=saveArr[nload].data;
+			//объект загрузки
+			var data:Object;
+			if (nload==99) data=loaddata;
+			else data=saveArr[nload].data;
 
-				//создать игру
-				Snd.off=true;
-				cam.showOn=false;
-				if (data.hardInv==true) hardInv=true; else hardInv=false;
-				game=new Game();
-				game.init(data.game);
-				app.load(data.app);
-				//создать персонажа
-				pers=new Pers(data.pers);
-				//создать юнит ГГ
-				gg=new UnitPlayer();
-				gg.ctr=ctr;
-				gg.sats=sats;
-				sats.gg=gg;
-				gui.gg=gg;
-				//создат инвентарь
-				invent=new Invent(gg, data.invent);
-				if (stand) stand.inv=invent;
-				else stand=new Stand(vstand,invent);
-				gg.attach();
-				//номер ячейки автосейва
-				if (data.n!=null) autoSaveN=data.n;
-				
-				offLoadScreen();
-				vgui.visible=vfon.visible=visual.visible=true;
-				vblack.alpha=1;
-				cam.dblack=-10;
-				pip.onoff(-1);
-				gui.allOn();
-				t_die=0;
-				t_battle=0;
-				time___metr('Персонаж');
-				//войти в текущую местность
-				game.enterToCurLand();//!!!!
-				log='';
-				Snd.off=false;
-				gui.setAll();
-				allStat=1;
-			} 
-			catch (err) {showError(err);}
+			//создать игру
+			Snd.off=true;
+			cam.showOn=false;
+			if (data.hardInv==true) hardInv=true; else hardInv=false;
+			game=new Game();
+			game.init(data.game);
+			app.load(data.app);
+			//создать персонажа
+			pers=new Pers(data.pers);
+			//создать юнит ГГ
+			gg=new UnitPlayer();
+			gg.ctr=ctr;
+			gg.sats=sats;
+			sats.gg=gg;
+			gui.gg=gg;
+			//создат инвентарь
+			invent=new Invent(gg, data.invent);
+			if (stand) stand.inv=invent;
+			else stand=new Stand(vstand,invent);
+			gg.attach();
+			//номер ячейки автосейва
+			if (data.n!=null) autoSaveN=data.n;
+			
+			offLoadScreen();
+			vgui.visible=vfon.visible=visual.visible=true;
+			vblack.alpha=1;
+			cam.dblack=-10;
+			pip.onoff(-1);
+			gui.allOn();
+			t_die=0;
+			t_battle=0;
+			time___metr('Персонаж');
+			//войти в текущую местность
+			game.enterToCurLand();//!!!!
+			log='';
+			Snd.off=false;
+			gui.setAll();
+			allStat=1;
 		}
 		
 		//вызов при входе в конкретную местность
 		public function ativateLand(nland:Land):void
 		{
-			try
-			{
-				land=nland;
-				grafon.drawFon(vfon,land.act.fon);
-			}
-			catch (err) {showError(err);}
+			land = nland;
+			grafon.drawFon(vfon, land.act.fon);
 		}
 		
 		//вызов при входе в конкретную локацию
 		//тут графический баг
 		public function ativateLoc(nloc:Location):void
 		{
-			try
-			{
-				if (loc) loc.out();
-				loc=nloc;
-				grafon.drawLoc(loc);
-				cam.setLoc(loc);
-				grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
-				gui.setAll();
-				currentMusic=loc.sndMusic;
-				Snd.playMusic(currentMusic);
-				gui.hpBarBoss();
-				if (t_die<=0) World.w.gg.controlOn();
-				gui.dialText();
-				pers.invMassParam();
-				gc();
-			}
-			catch (err) {showError(err);}
+			if (loc) loc.out();
+			loc=nloc;
+			grafon.drawLoc(loc);
+			cam.setLoc(loc);
+			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
+			gui.setAll();
+			currentMusic=loc.sndMusic;
+			Snd.playMusic(currentMusic);
+			gui.hpBarBoss();
+			if (t_die<=0) World.w.gg.controlOn();
+			gui.dialText();
+			pers.invMassParam();
+			gc();
 		}
 		
 		public function redrawLoc():void
 		{
-			try
-			{
-				grafon.drawLoc(loc);
-				cam.setLoc(loc);
-				gui.setAll();
-			}
-			catch (err) {showError(err);}
+			grafon.drawLoc(loc);
+			cam.setLoc(loc);
+			gui.setAll();
 		}
 		
 		public function exitLand(fast:Boolean=false):void
@@ -780,189 +751,172 @@ package  fe
 			if (t_exit>0) return;
 			gg.controlOff();
 			pip.noAct=true;
-			if (fast)
-			{
-				t_exit=21;
-			} 
-			else
-			{
-				t_exit=100;
-			}
+
+			if (fast)	t_exit =  21;
+			else		t_exit = 100;
 		}
 		
 		
 		private function exitStep():void
 		{
-			//try
-			//{
-				t_exit--;
-				if (t_exit==99) cam.dblack=1.5;
-				if (t_exit==20) {
-					vblack.alpha=0;
-					cam.dblack=0;
-					setLoadScreen(getLoadScreen());
-					Snd.off=true;
-				}
-				if (t_exit==19) {
-					cur('arrow');
-					game.enterToCurLand();
-				}
-				if (t_exit==18 && clickReq>0) waitLoadClick();
-				if (t_exit==16) {
-					Mouse.show();
-					Snd.off=false;
-					offLoadScreen();
-					vgui.visible=vfon.visible=visual.visible=true;
-					vblack.alpha=1;
-					cam.dblack=-10;
-					gg.controlOn();
-					pip.noAct=false;
-				}
-				if (t_exit==1) {
-					gui.allOn();
-				}
-			//} 
-			//catch (err) {showError(err);}
+			t_exit--;
+			if (t_exit==99) cam.dblack=1.5;
+			if (t_exit==20) {
+				vblack.alpha=0;
+				cam.dblack=0;
+				setLoadScreen(getLoadScreen());
+				Snd.off=true;
+			}
+			if (t_exit==19) {
+				cur('arrow');
+				game.enterToCurLand();
+			}
+			if (t_exit==18 && clickReq>0) waitLoadClick();
+			if (t_exit==16) {
+				Mouse.show();
+				Snd.off=false;
+				offLoadScreen();
+				vgui.visible=vfon.visible=visual.visible=true;
+				vblack.alpha=1;
+				cam.dblack=-10;
+				gg.controlOn();
+				pip.noAct=false;
+			}
+			if (t_exit==1) {
+				gui.allOn();
+			}
 		}
 		
 		private function ggDieStep():void
 		{
-			try
-			{
-				t_die--;
-				if (t_die==200) cam.dblack=2.2;
-				if (t_die==150) {
-					if (alicorn) {
-						game.runScript('gameover');
-						t_die=0;
+			t_die--;
+			if (t_die==200) cam.dblack=2.2;
+			if (t_die==150) {
+				if (alicorn) {
+					game.runScript('gameover');
+					t_die=0;
+				} else {
+					if (gg.sost==3) {
+						game.curLandId=game.baseId;
+						game.enterToCurLand();
 					} else {
-						if (gg.sost==3) {
-							game.curLandId=game.baseId;
-							game.enterToCurLand();
-						} else {
-							land.gotoCheckPoint();
-						}
-						cam.dblack=-4;
-						gg.vis.visible=true;
+						land.gotoCheckPoint();
 					}
-				}
-				if (t_die==100) gg.resurect();
-				if (t_die==1) {
-					gg.controlOn();
+					cam.dblack=-4;
+					gg.vis.visible=true;
 				}
 			}
-			catch (err) {showError(err);}
+			if (t_die==100) gg.resurect();
+			if (t_die==1) {
+				gg.controlOn();
+			}
 		}
 
 		//главный цикл
 		public function step():void
 		{
-			//try
-			//{
-				if (verror.visible) return;
-				//Управление
-				ctr.step();				
-				Snd.step();
-				if (ng_wait>0) {
-					if (ng_wait==1) {
-						newGame1();
-					} else if (ng_wait==2) {
-						if (clickReq!=1) newGame2();
-					}
-					return;
+			if (verror.visible) return;
+			//Управление
+			ctr.step();				
+			Snd.step();
+			if (ng_wait>0) {
+				if (ng_wait==1) {
+					newGame1();
+				} else if (ng_wait==2) {
+					if (clickReq!=1) newGame2();
 				}
-				if (!onConsol && !pip.active) swfStage.focus=swfStage;
+				return;
+			}
+			if (!onConsol && !pip.active) swfStage.focus=swfStage;
+			
+			//Только если игра началась и не на паузе, игровые циклы
+			if (allStat==1 && !onPause) {
+				//цикл выхода из местности
+				if (t_exit>0) {
+					if (!(t_exit==17 && clickReq==1)) exitStep();
+				}
+				//счёт частиц
+				Emitter.kol2=Emitter.kol1;
+				Emitter.kol1=0;
+				//основной цикл !!!!
+				if (t_exit!=17) land.step();
+				//цикл смерти
+				if (t_die>0) ggDieStep();
+				//таймер боя
+				if (t_battle>0) t_battle--;
+				sats.step2();
+				//если нужен перерасчёт массы
+				if (calcMass) {
+					invent.calcMass();
+					calcMass=false;
+				}
+				if (calcMassW) {
+					invent.calcWeaponMass();
+					calcMassW=false;
+				}
+				//сохранение
+				t_save++;
+				if (t_save>5000 && !testMode && !alicorn) {
+					saveGame();
+				}
+				checkLoot=false;
+			}
+			
+			if (comLoad>=0) {
+				if (comLoad>=100) {
+					if (autoSaveN>0) saveGame();
+					loadGame(comLoad-100);
+				} else {
+					pip.onoff(-1);
+					comLoad+=100;
+					setLoadScreen();
+				}
+			}
+			
+			//Если игра началась, и на паузе тоже
+			if (allStat>=1) {
+				cam.calc(gg);
+				gui.step();
+				pip.step();
+				sats.step();
+				if (ctr.keyPip) {
+					if (!sats.active) pip.onoff();
+					ctr.keyPip=false;
+				}
+				if (ctr.keyInvent) {
+					if (!sats.active) pip.onoff(2);
+					ctr.keyInvent=false;
+				}
+				if (ctr.keyStatus) {
+					if (!sats.active) pip.onoff(1,1);
+					ctr.keyStatus=false;
+				}
+				if (ctr.keySkills) {
+					if (!sats.active) pip.onoff(1,2);
+					ctr.keySkills=false;
+				}
+				if (ctr.keyMed) {
+					if (!sats.active) pip.onoff(1,5);
+					ctr.keyMed=false;
+				}
+				if (ctr.keyMap) {
+					if (!sats.active) pip.onoff(3,1);
+					ctr.keyMap=false;
+				}
+				if (ctr.keyQuest) {
+					if (!sats.active) pip.onoff(3,2);
+					ctr.keyQuest=false;
+				}
+				if (ctr.keySats) {
+					if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
+					ctr.keySats=false;
+				}
+				allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
 				
-				//Только если игра началась и не на паузе, игровые циклы
-				if (allStat==1 && !onPause) {
-					//цикл выхода из местности
-					if (t_exit>0) {
-						if (!(t_exit==17 && clickReq==1)) exitStep();
-					}
-					//счёт частиц
-					Emitter.kol2=Emitter.kol1;
-					Emitter.kol1=0;
-					//основной цикл !!!!
-					if (t_exit!=17) land.step();
-					//цикл смерти
-					if (t_die>0) ggDieStep();
-					//таймер боя
-					if (t_battle>0) t_battle--;
-					sats.step2();
-					//если нужен перерасчёт массы
-					if (calcMass) {
-						invent.calcMass();
-						calcMass=false;
-					}
-					if (calcMassW) {
-						invent.calcWeaponMass();
-						calcMassW=false;
-					}
-					//сохранение
-					t_save++;
-					if (t_save>5000 && !testMode && !alicorn) {
-						saveGame();
-					}
-					checkLoot=false;
+				if (consol && consol.visoff) {
+					onConsol=consol.vis.visible=consol.visoff=false;
 				}
-				
-				if (comLoad>=0) {
-					if (comLoad>=100) {
-						if (autoSaveN>0) saveGame();
-						loadGame(comLoad-100);
-					} else {
-						pip.onoff(-1);
-						comLoad+=100;
-						setLoadScreen();
-					}
-				}
-				
-				//Если игра началась, и на паузе тоже
-				if (allStat>=1) {
-					cam.calc(gg);
-					gui.step();
-					pip.step();
-					sats.step();
-					if (ctr.keyPip) {
-						if (!sats.active) pip.onoff();
-						ctr.keyPip=false;
-					}
-					if (ctr.keyInvent) {
-						if (!sats.active) pip.onoff(2);
-						ctr.keyInvent=false;
-					}
-					if (ctr.keyStatus) {
-						if (!sats.active) pip.onoff(1,1);
-						ctr.keyStatus=false;
-					}
-					if (ctr.keySkills) {
-						if (!sats.active) pip.onoff(1,2);
-						ctr.keySkills=false;
-					}
-					if (ctr.keyMed) {
-						if (!sats.active) pip.onoff(1,5);
-						ctr.keyMed=false;
-					}
-					if (ctr.keyMap) {
-						if (!sats.active) pip.onoff(3,1);
-						ctr.keyMap=false;
-					}
-					if (ctr.keyQuest) {
-						if (!sats.active) pip.onoff(3,2);
-						ctr.keyQuest=false;
-					}
-					if (ctr.keySats) {
-						if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
-						ctr.keySats=false;
-					}
-					allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
-					
-					if (consol && consol.visoff) {
-						onConsol=consol.vis.visible=consol.visoff=false;
-					}
-				}
-			//}
-			//catch (err) {showError(err);}
+			}
 		}
 
 //=============================================================================================================
@@ -1004,14 +958,12 @@ package  fe
 		public function showError(err:Error, dop:String=null):void
 		{
 			if (!errorShow || !errorShowOpt) return;
-			try
-			{
-				verror.info.text=Res.pipText('error');
-				verror.butClose.text.text=Res.pipText('err_close');
-				verror.butForever.text.text=Res.pipText('err_dont_show');
-				verror.butCopy.text.text=Res.pipText('err_copy_to_clipboard');
-			} 
-			catch (e) {}
+
+			verror.info.text=Res.pipText('error');
+			verror.butClose.text.text=Res.pipText('err_close');
+			verror.butForever.text.text=Res.pipText('err_dont_show');
+			verror.butCopy.text.text=Res.pipText('err_copy_to_clipboard');
+
 			verror.txt.text=err.message+'\n'+err.getStackTrace();
 			verror.txt.text+='\n'+'gr_stage: '+gr_stage;
 			if (dop!=null) verror.txt.text+='\n'+dop;
@@ -1067,19 +1019,9 @@ package  fe
 			vwait.cacheAsBitmap=true;
 		}
 		
-		//определить, какой загрузочный экран показывать
-		private function getLoadScreen():int
+		// [Define which loading screen to show]
+		private function getLoadScreen():int // ONLY SHOWS -1 by default, removed impossible to reach code.
 		{
-			return -1;
-			try
-			{
-				var nscr=game.lands[game.curLandId].loadScr;
-				if (nscr>=0 && (game.triggers['loadScr']==null || game.triggers['loadScr']<nscr)) {
-					game.triggers['loadScr']=nscr;
-					return nscr;
-				}
-			} 
-			catch(err) {}
 			return -1;
 		}
 		
@@ -1110,13 +1052,10 @@ package  fe
 			gui.offCelObj();
 			try { vscene.gotoAndStop(sc); } 
 			catch(err) { vscene.gotoAndStop(1);}
-			try
-			{
-				if (n>0) vscene.sc.gotoAndPlay(n);
-				else vscene.sc.gotoAndPlay(1);
 
-			}
-			catch(err){}
+			if (n>0) vscene.sc.gotoAndPlay(n);
+			else vscene.sc.gotoAndPlay(1);
+
 			vscene.visible=true;
 		}
 		
@@ -1152,8 +1091,8 @@ package  fe
 				s=Res.lpName(Res.guiText('end_norm'));
 			}
 
-			try { vscene.sc.txt.htmlText = s; }
-			catch(err){}
+			vscene.sc.txt.htmlText = s;
+
 		}
 //=============================================================================================================
 //			Сейвы и конфиг

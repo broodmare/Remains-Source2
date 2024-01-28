@@ -1,6 +1,7 @@
 package fe.unit
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	
@@ -96,13 +97,16 @@ package fe.unit
 				} else {
 					aiState=2;
 				}
-				aiTCh=Math.floor(Math.random()*100)+100;
+				aiTCh = int(Math.random()*100)+100;
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					if (isrnd()) {
-						celX=X+(Math.random()*300+400)*(isrnd()?1:-1);
-						celY=Y+Math.random()*200-100;
-					} else {
-						celX=X, celY=Y-scY/2;
+						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? 1:-1);
+						celY = coordinates.Y + Math.random() * 200 - 100;
+					}
+					else
+					{
+						celX = coordinates.X;
+						celY = coordinates.Y - scY / 2;
 					}
 				}
 			}
@@ -111,23 +115,23 @@ package fe.unit
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
-					storona=(celX>X)?1:-1;
+					storona=(celX > coordinates.X)?1:-1;
 				} else {
 					if (aiSpok>0) aiSpok--;
 				}
-				spd.x=celX-X;
-				spd.y=celY-(Y-scY/2);
+				spd.x = celX - coordinates.X;
+				spd.y = celY - (coordinates.Y - scY / 2);
 				norma(spd,aiState==0?accel/2:accel);
-				dx+=spd.x;
-				dy+=spd.y;
+				dx += spd.x;
+				dy += spd.y;
 			}
 			
 			if (aiState==0) maxSpeed=walkSpeed;
 			else maxSpeed=runSpeed;
 	
 			if (turnX!=0) {
-				iskr.cast(loc,X+15*storona,Y-15,{dx:dx, kol:Math.floor(Math.random()*5+3)});
-				Snd.ps('vortex_cut',X,Y,0,sndVolkoef);
+				iskr.cast(loc, coordinates.X+15*storona, coordinates.Y-15,{dx:dx, kol:int(Math.random()*5+3)});
+				Snd.ps('vortex_cut', coordinates.X, coordinates.Y, 0, sndVolkoef);
 				storona=turnX;
 				aiTCh=0
 				turnX=0;

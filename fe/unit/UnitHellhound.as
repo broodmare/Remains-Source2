@@ -1,14 +1,17 @@
-package fe.unit {
+package fe.unit
+{
 	import fe.*;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	
-	public class UnitHellhound extends UnitPon{
+	public class UnitHellhound extends UnitPon
+	{
 		
 		var vDestroy:Number;
 		var nuh:Number=400;
 		
-		public function UnitHellhound(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitHellhound(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			var tr:int=1;
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -41,10 +44,10 @@ package fe.unit {
 		}
 		//проверка возможности прыжка
 		function checkJump():Boolean {
-			if (loc.getAbsTile(X,Y-85).phis!=0) return false;
-			if (loc.getAbsTile(X,Y-125).phis!=0) return false;
-			if (loc.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
-			if (loc.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X,coordinates.Y-85).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X,coordinates.Y-125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X+40*storona,coordinates.Y-85).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X+40*storona,coordinates.Y-125).phis!=0) return false;
 			return true;
 		}
 		
@@ -87,38 +90,20 @@ package fe.unit {
 			}
 
 			var jmp:Number=0;
-			//return;
-			
+
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY=coordinates.Y-scY;
+				celX=coordinates.X+scX*storona*2;
 				return;
 			}
 			if (aiLaz>0) aiLaz--;
-			
-			/*if (aiState==5 && (kop1.phis==0 || kop2.phis==0)) {
-				vykop();
-			}
-			
-			if (digger==3) return;
-			*/
-			/*overLook=(aiState==5);
-			ear=(aiState==5)?0:1;*/
-			
 			if (aiJump>0) aiJump--;
 			
 			//таймер смены состояний
 			if (aiTCh>0) aiTCh--;
-			/*else if (aiState==4) {
-				superSila();
-				aiState=7;
-				aiTCh=20;
-			} else if (aiState==7) {
-				aiState=3;
-				aiTCh=Math.floor(Math.random()*50)+50;
-			} */else {
+			else {
 				if (aiSpok==0) {
-					aiState=Math.floor(Math.random()*2);
+					aiState=int(Math.random()*2);
 					storona=aiNapr;
 				}
 				if (aiSpok>0) aiState=2;
@@ -126,11 +111,10 @@ package fe.unit {
 					if (aiState!=3) budilo();
 					aiState=3;
 				}
-				if (aiState<=1) aiTCh=Math.floor(Math.random()*50)+40;
-				else aiTCh=Math.floor(Math.random()*100)+100;
+				if (aiState<=1) aiTCh=int(Math.random()*50)+40;
+				else aiTCh=int(Math.random()*100)+100;
 			}
 			//поиск цели
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					//увидели
@@ -147,11 +131,10 @@ package fe.unit {
 					}
 				}
 				if (isSit) unsit();
-				//if (aiState==2 || aiState==3) findSuper();
 			}
 			//направление
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX=celX-coordinates.X;
+			celDY=celY-coordinates.Y+scY;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -161,8 +144,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY=coordinates.Y-scY;
+				celX=coordinates.X+scX*storona*2;
 			} else {
 				vision=1;
 			}
@@ -202,7 +185,7 @@ package fe.unit {
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr<0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -210,7 +193,7 @@ package fe.unit {
 				}
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -222,7 +205,6 @@ package fe.unit {
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
 				if (aiTCh%15==1) {
-					//if (isrnd(0.3)) jmp=1;
 					if (isrnd(0.8)) {
 						if (celDX>100) aiNapr=storona=1;
 						if (celDX<-100) aiNapr=storona=-1;
@@ -249,10 +231,8 @@ package fe.unit {
 				}
 				if (jmp>0) {
 					if (isPlav) jmp*=1.5;
-					//if (checkJump()) {
-						jump(jmp);
-						jmp=0;
-					//}
+					jump(jmp);
+					jmp=0;
 				}
 				if (isLaz==0 && aiVNapr==-1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вверх
 					checkStairs();
@@ -266,7 +246,7 @@ package fe.unit {
 					if (t_laz<0) t_laz=0;
 					t_laz++;
 					sit(true);
-					if (celY<Y && r_laz<=0) {
+					if (celY<coordinates.Y && r_laz<=0) {
 						r_laz=-1;
 						if (dy>-lazSpeed) dy-=lazSpeed/3;
 						else (dy=-lazSpeed);
@@ -324,7 +304,7 @@ package fe.unit {
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (coordinates.Y>loc.spaceY*Tile.tileY-80) throu=false;
 			
 			if (celUnit && celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && aiState>1) {
 				attKorp(celUnit,(shok<=0?1:0.5));
@@ -332,10 +312,12 @@ package fe.unit {
 			
 		}
 		//поиск лестницы
-		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
-			try {
-				var i=Math.floor((X+nx)/Tile.tileX);
-				var j=Math.floor((Y+ny)/Tile.tileY);
+		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
+		{
+			try
+			{
+				var i:int = int((coordinates.X + nx) / Tile.tileX);
+				var j:int = int((coordinates.Y + ny) / Tile.tileY);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
 				if (loc.space[i][j].phis>=1) {
 					isLaz=0;
@@ -348,14 +330,14 @@ package fe.unit {
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) X=(loc.space[i][j] as Tile).phX1+scX/2;
-					else X=(loc.space[i][j] as Tile).phX2-scX/2;
-					X1=X-scX/2, X2=X+scX/2;
+					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1+scX/2;
+					else coordinates.X=(loc.space[i][j] as Tile).phX2-scX/2;
+					X1=coordinates.X-scX/2, X2=coordinates.X+scX/2;
 					stay=false;
 					return true;
 				}
-			} catch (err) {
 			}
+			catch (err) { }
 			isLaz=0;
 			return false;
 		}
@@ -379,14 +361,12 @@ package fe.unit {
 					if (isSit) {
 						if (stay && (dx>1 || dx<-1)) {
 							animState='polz';
-							//sndStep(anims[animState].f,4);
 						} else {
 							animState='sit';
 						}
 					} else {
 						if (stay && (dx>6 || dx<-6)) {
 							animState='run';
-							//sndStep(anims[animState].f,4);
 						} else if (dx>1 || dx<-1) {
 							animState='walk';
 						} else {
@@ -401,7 +381,6 @@ package fe.unit {
 					anims[animState].setStab((dy*0.6+8)/16);
 				}
 			}
-			//trace(animState, anims[animState])
 			if (animState!=animState2) {
 				anims[animState].restart();
 				animState2=animState;

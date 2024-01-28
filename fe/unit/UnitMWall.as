@@ -1,7 +1,7 @@
 package fe.unit {
 	
 	import fe.*;
-	import fe.serv.Interact;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	public class UnitMWall extends Unit{
 		
@@ -13,7 +13,6 @@ package fe.unit {
 			} else id=cid
 			mat=7;
 			vis=Res.getVis('vis'+id,vismwall);
-			//vis.gotoAndStop(1);
 			getXmlParam();
 			vulner[D_NECRO]=begvulner[D_NECRO]=1;
 			nazv='';
@@ -24,7 +23,7 @@ package fe.unit {
 		}
 
 		public override function expl()	{
-			Emitter.emit('pole',loc,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
+			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-scY/2,{kol:12,rx:scX, ry:scY});
 		}
 		
 		public override function addVisual() {

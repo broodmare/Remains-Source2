@@ -7,6 +7,7 @@ package fe.inter
 	import flash.events.MouseEvent;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.weapon.Weapon;
 	import fe.unit.UnitPlayer;
@@ -541,7 +542,7 @@ package fe.inter
 			} else {
 				vis.visibility.visible=true;
 				vis.visibility.gotoAndStop(Math.floor(gg.obs/gg.maxObs*40+1));
-				World.w.cam.setKoord(vis.visibility,gg.X,gg.Y-80);
+				World.w.cam.setKoord(vis.visibility, gg.coordinates.X, gg.coordinates.Y - 80);
 			}
 		}
 		
@@ -694,7 +695,7 @@ package fe.inter
 				s="<span class = '"+warn+"'>"+gg.teleObj.nazv+"</span>"
 				if (World.w.hintTele) s+='\n'+World.w.ctr.retKey('keyTele')+' - '+txtDrop;
 				celobj.text=s;
-				World.w.cam.setKoord(celobj,gg.teleObj.X,gg.teleObj.Y);
+				World.w.cam.setKoord(celobj, gg.teleObj.coordinates.X, gg.teleObj.coordinates.Y);
 			} else if (gg.actionObj!=null && gg.actionObj.owner) {
 				World.w.cur('action');
 				try {
@@ -706,8 +707,8 @@ package fe.inter
 					pr_bar.pr.scaleX=perc;
 					s+='\n'+gg.actionObj.actionText;
 					celobj.text=s;
-					World.w.cam.setKoord(celobj,gg.actionObj.owner.X,gg.actionObj.owner.Y);
-					World.w.cam.setKoord(pr_bar,gg.actionObj.owner.X,gg.actionObj.owner.Y);
+					World.w.cam.setKoord(celobj,gg.actionObj.owner.coordinates.X, gg.actionObj.owner.coordinates.Y);
+					World.w.cam.setKoord(pr_bar,gg.actionObj.owner.coordinates.X, gg.actionObj.owner.coordinates.Y);
 				} catch (err) {
 					celobj.visible=false;
 				}
@@ -732,7 +733,7 @@ package fe.inter
 						celObj.vis.transform.colorTransform=gg.shineTransform;
 					}
 					levit_poss.visible=true;
-					World.w.cam.setKoord(levit_poss,celObj.X,celObj.Y-5);
+					World.w.cam.setKoord(levit_poss,celObj.coordinates.X, celObj.coordinates.Y-5);
 				}
 				//добавить строку про действие
 				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.w.loc.celDist<=World.w.actionDist && World.w.gg.rat==0) {
@@ -795,7 +796,7 @@ package fe.inter
 					s+=" <span class = 'r1'>(ʘ)</span>";
 				}
 				celobj.htmlText=s;
-				World.w.cam.setKoord(celobj,celObj.X,celObj.Y);
+				World.w.cam.setKoord(celobj, celObj.coordinates.X, celObj.coordinates.Y);
 			} else {
 				celobj.visible=false;
 				World.w.cur('target');
@@ -884,10 +885,15 @@ package fe.inter
 			t_bulb=20;
 		}
 		
-		public function floatText(txt:String, nx:int, ny:int, n:int=-1) {
-			var bulbText:String=txt;
-			if (n>=0) {
-				bulbText="<span class = 'r"+n+"'>"+txt+"</span>";
+		public function floatText(txt:String, nx:int, ny:int, n:int=-1)
+		{
+			var bulbText:String = txt;
+			var x = nx;
+			var y = ny;
+
+			if (n >= 0)
+			{
+				bulbText="<span class = 'r" + n + "'>" + txt + "</span>";
 			}
 			if (t_bulb<=0) {
 				float_dy=0;
@@ -1128,11 +1134,11 @@ package fe.inter
 			}
 			if (gg.teleObj && gg.pers.throwForce>0 && gg.teleObj.massa>0.1) {
 				tharrow.visible=true;
-				var ndx=gg.teleObj.X-gg.X
-				var ndy=gg.teleObj.Y-gg.teleObj.scY/2-gg.Y+gg.scY/2-10;
-				World.w.cam.setKoord(tharrow,World.w.gg.teleObj.X,World.w.gg.teleObj.Y-World.w.gg.teleObj.scY/2);
-				tharrow.rotation=Math.atan2(ndy,ndx)/Math.PI*180;
-				var alph:Number=gg.throwForceRelat();
+				var ndx = gg.teleObj.coordinates.X - gg.coordinates.X
+				var ndy = gg.teleObj.coordinates.Y - gg.teleObj.scY / 2 - gg.coordinates.Y + gg.scY / 2 - 10;
+				World.w.cam.setKoord(tharrow, World.w.gg.teleObj.coordinates.X, World.w.gg.teleObj.coordinates.Y - World.w.gg.teleObj.scY / 2);
+				tharrow.rotation = Math.atan2(ndy, ndx) / Math.PI * 180;
+				var alph:Number = gg.throwForceRelat();
 				tharrow.alpha=alph;
 				if (alph>=0.99) tharrow.gotoAndStop(1);
 				else  tharrow.gotoAndStop(2);

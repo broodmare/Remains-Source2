@@ -1,5 +1,5 @@
-package fe.unit {
-	
+package fe.unit
+{
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Location;
@@ -10,8 +10,8 @@ package fe.unit {
 	
 	//механизмы, наносящие урон
 	
-	public class UnitDamager extends Unit{
-		
+	public class UnitDamager extends Unit
+	{
 		var tr:String='0';
 		var weap:String;
 		
@@ -29,7 +29,8 @@ package fe.unit {
 		var destroyExpl:Number=0;
 		var explRadius:Number=0;
 
-		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid==null) {
 				id='damshot';
@@ -145,12 +146,16 @@ package fe.unit {
 			}
 			if (currentWeapon) {
 				if (tipDamager==2) {
-					celX=X, celY=Y;
+					celX = coordinates.X;
+					celY = coordinates.Y;
 					currentWeapon.rot=Math.PI/2;
 					currentWeapon.rapid=1;
 					(currentWeapon as WThrow).detTime=45;
-				} else if (tipDamager==1) {
-					celX=X+200*storona, celY=Y-scY/2;
+				}
+				else if (tipDamager==1)
+				{
+					celX = coordinates.X + 200 * storona;
+					celY = coordinates.Y - scY / 2;
 					currentWeapon.rot=(storona<0)?Math.PI:0;
 				}
 			}
@@ -171,28 +176,35 @@ package fe.unit {
 		public function setVis(v:Boolean) {
 			isVis=v;
 			vis.visible=v;
-			vis.alpha=v?1:0.1;
+			vis.alpha = v? 1:0.1;
 			if (currentWeapon) {
-				currentWeapon.vis.visible=v;
-				currentWeapon.vis.alpha=v?1:0.1;
+				currentWeapon.vis.visible = v;
+				currentWeapon.vis.alpha = v? 1:0.1;
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',3);
 		}
 		
 		//обезвредить
-		function disarm() {
-			if (tipDamager==1) {
-				LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,'frag',1);
-				if (kolammo>0) LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,currentWeapon.ammo,kolammo);
-			} else if (tipDamager==2 && kolammo>0) {
-				LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
-				LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
-				LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
-			} else if (tipDamager==3 && kolammo>0) {
-				LootGen.lootCont(loc,X,Y-20,'bomb');
+		function disarm()
+		{
+			if (tipDamager == 1)
+			{
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, 'frag', 1);
+				if (kolammo>0) LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.ammo, kolammo);
+			}
+			else if (tipDamager == 2 && kolammo > 0)
+			{
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 1);
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 1);
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 1);
+			}
+			else if (tipDamager == 3 && kolammo > 0)
+			{
+				LootGen.lootCont(loc, coordinates.X, coordinates.Y - 20,'bomb');
 			}
 			sost=4;
 			disabled=true;
@@ -203,7 +215,7 @@ package fe.unit {
 		public override function dropLoot() {
 			super.dropLoot();
 			if ((tipDamager==2 || tipDamager==3) && kolammo>0) iExpl();
-			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,'frag',1);
+			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,'frag',1);
 		}
 		
 		function iExpl() {
@@ -213,8 +225,8 @@ package fe.unit {
 				destroyExpl=currentWeapon.destroy;
 				explRadius=currentWeapon.explRadius;
 			}
-			if (currentWeapon) bul=new Bullet(this,currentWeapon.X,currentWeapon.Y,null,false);
-			else bul=new Bullet(this,X,Y-20,null,false);
+			if (currentWeapon) bul=new Bullet(this,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,null,false);
+			else bul=new Bullet(this, coordinates.X, coordinates.Y - 20, null, false);
 			bul.iExpl(damageExpl,destroyExpl,explRadius);
 		}
 		
@@ -259,7 +271,7 @@ package fe.unit {
 			}
 			if (status==1) {
 				if (tipDamager==2) {
-					celX=X+Math.random()*80-40;
+					celX = coordinates.X + Math.random() * 80 - 40;
 				}
 				if (currentWeapon) currentWeapon.attack();
 			}

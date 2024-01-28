@@ -34,25 +34,35 @@ package fe.loc
 			
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			
-			X=nx, Y=ny;
+			coordinates.X = nx;
+			coordinates.Y = ny;
 			scX = node.@size * tileX;
 			scY = node.@wid * tileY;
 			nazv=Res.txt('o','checkpoint');
 			
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
-			X=nx, Y=ny;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
+			Y2 = coordinates.Y;
+			coordinates.X  = nx;
+			coordinates.Y  = ny;
 			var vClass:Class=Res.getClass('vischeckpoint', null, vischeckpoint);
 			vis=new vClass();
-			vis.x=X, vis.y=Y;
+			vis.x = coordinates.X;
+			vis.y = coordinates.Y;
 			vis.gotoAndStop(1);
 			if (id.charAt(10)) {
 				vis.lock.gotoAndStop(int(id.charAt(10)));
 				locked=true;
-			} else vis.lock.visible=false;
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+			}
+			else vis.lock.visible=false;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
+			Y2 = coordinates.Y;
 			cTransform=loc.cTransform;
-			loc.getAbsTile(X-20,Y+10).shelf=true;
-			loc.getAbsTile(X+20,Y+10).shelf=true;
+			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).shelf = true;
+			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).shelf = true;
 			
 			inter = new Interact(this,node,xml,loadObj);
 			inter.userAction='activate';

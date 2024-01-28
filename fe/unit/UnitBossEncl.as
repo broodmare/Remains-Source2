@@ -1,16 +1,12 @@
-package fe.unit {
-	import flash.filters.GlowFilter;
-	import flash.display.MovieClip;
-	
+package fe.unit
+{
 	import fe.weapon.*;
 	import fe.*;
 	import fe.loc.Location;
-	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
-	import fe.graph.Emitter;
-	
-	public class UnitBossEncl extends UnitPon{
-		
+
+	public class UnitBossEncl extends UnitPon
+	{
 		public var tr:int=1;
 		var weap:String;
 		public var scrAlarmOn:Boolean=true;
@@ -27,7 +23,6 @@ package fe.unit {
 			}
 			//взять параметры из xml
 			getXmlParam();
-			//boss=true;
 			aiTCh=30;
 			aiVNapr=1;
 			if (tr==1) {
@@ -38,7 +33,6 @@ package fe.unit {
 			if (tr==2) {
 				currentWeapon=Weapon.create(this,'quick');
 				marmor=20;
-				//currentWeapon.damage;
 				vulner[D_LASER]=vulner[D_PLASMA]=vulner[D_SPARK]=0.7;
 				blitId='sprEnclboss2';
 			}
@@ -111,8 +105,8 @@ package fe.unit {
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-scY*0.58;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y - scY * 0.58;
 		}
 		
 		public override function dropLoot() {
@@ -121,24 +115,12 @@ package fe.unit {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
 				var cid:String=currentWeapon.id;
 				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-				LootGen.lootId(loc,currentWeapon.X,currentWeapon.Y,cid,0);
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
 			}
 		}
-		
-/*		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
-			var td:Number=super.damage(dam, tip, bul,tt);
-			if (tr==2 && World.w.game.globalDif>1) {
-				var tc:int=Math.floor((maxhp-hp)/maxhp*4);
-				if (tc>called) {
-					loc.enemySpawn(true,true);
-					called++;
-				}
-			}
-			return td;
-		}*/
 
 		function emit() {
-			var un:Unit=loc.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2, true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -168,9 +150,8 @@ package fe.unit {
 		//1 - летает и атакует
 		//2 - меняет оружие
 		
-		public override function control() {
-
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+		public override function control()
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (stun) {
@@ -179,29 +160,21 @@ package fe.unit {
 			
 			t_replic--;
 			var jmp:Number=0;
-			//return;
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			
 			//таймер смены состояний
 			if (aiTCh>0) aiTCh--;
 			else {
-					aiState=1;
-					aiTCh=Math.floor(Math.random()*60+150);
-				/*if (aiState==0 || aiState==2) {
-				} else if (aiState==1) {
-					aiState=2;
-					aiTCh=45;
-					sinDX=Math.random()*0.1+0.02;
-				}*/
+				aiState=1;
+				aiTCh=Math.floor(Math.random()*60+150);
 			}
 			//поиск цели
-			//trace(aiState)
 			if (aiTCh%40==1) {
 				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.4)) setCel(loc.gg.pet);
 				else setCel(loc.gg);
@@ -215,25 +188,25 @@ package fe.unit {
 			if (aiState==0) {
 			} else {
 				sinX+=sinDX;
-				if (Y<minY && dy<maxSpeed) {
+				if (coordinates.Y<minY && dy<maxSpeed) {
 					dy+=accel;
 					aiVNapr=1;
 				}
-				if (Y>maxY && dy>-maxSpeed) {
+				if (coordinates.Y>maxY && dy>-maxSpeed) {
 					dy-=accel;
 					aiVNapr=-1;
 				}
-				if (Y>=minY && Y<=maxY) {
+				if (coordinates.Y>=minY && coordinates.Y<=maxY) {
 					if (aiVNapr==1 && dy<maxSpeed) dy+=accel;
 					if (aiVNapr==-1 && dy>-maxSpeed) dy-=accel;
 				}
-				if (X<minX && dx<maxSpeed) {
+				if (coordinates.X<minX && dx<maxSpeed) {
 					dx+=accel;
 				}
-				if (X>maxX && dx>-maxSpeed) {
+				if (coordinates.X>maxX && dx>-maxSpeed) {
 					dx-=accel;
 				}
-				if (X>=minX && X<=maxX) {
+				if (coordinates.X>=minX && coordinates.X<=maxX) {
 					dx+=Math.sin(sinX)*accel/2;
 				}
 			} 
@@ -258,6 +231,5 @@ package fe.unit {
 				controlOn=true;
 			}
 		}
-		
 	}
 }

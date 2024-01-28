@@ -4,6 +4,7 @@ package fe.entities
 	import flash.display.MovieClip;
 
 	import fe.World;
+	import fe.util.Vector2;
 	import fe.loc.Location;
 	
 	public class Entity
@@ -16,12 +17,13 @@ package fe.entities
 		public var in_chain:Boolean=false;
 		
 		public var stay:Boolean=false;
-		public var X:Number;
-		public var Y:Number;
+
 		public var sloy:int=0;
 		
-		// Movement
-		public var dx:Number=0, dy:Number=0;
+		public var coordinates:Vector2	= new Vector2();
+
+		public var dx:Number = 0;
+		public var dy:Number = 0;
 		
 		public function Entity() {
 		}
@@ -42,7 +44,10 @@ package fe.entities
 			return null;
 		}
 		
-		public function step() {
+		public function step()
+		{
+
 		}
+
 	}
 }

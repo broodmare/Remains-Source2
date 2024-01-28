@@ -1,14 +1,11 @@
-package fe.unit {
-	
-	import fe.*;
-	import fe.weapon.Weapon;
-	import fe.serv.LootGen;
-	import fe.serv.BlitAnim;
-	public class UnitEqd extends UnitAIRobot{
-
+package fe.unit
+{
+	public class UnitEqd extends UnitAIRobot
+	{
 		var jump_n:int=100;
 		
-		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='eqd';
 			getXmlParam();
@@ -50,7 +47,6 @@ package fe.unit {
 					} else if (dx>9 || dx<-9) {
 						animState='run';
 						sndStep(anims[animState].f,2);
-						//if (aiNapr*storona<0) revers=true;
 					} else {
 						animState='trot';
 						sndStep(anims[animState].f,1);
@@ -73,8 +69,8 @@ package fe.unit {
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-40;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y-40;
 		}
 
 	}

@@ -47,8 +47,8 @@ package fe.unit
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			weaponY=Y-1;
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y - 1;
 		}
 		
 		public override function alarma(nx:Number=-1,ny:Number=-1) {
@@ -87,13 +87,13 @@ package fe.unit
 				if (celUnit) {
 					maxSpeed=runSpeed*(Math.random()*0.6+0.7);
 					aiRasst=Math.sqrt(celDX*celDX+celDY*celDY);
-					aiTCh=Math.floor(Math.random()*50)+20;
+					aiTCh = int(Math.random()*50)+20;
 				} else {
 					maxSpeed=walkSpeed*(Math.random()+0.5);
 					aiRasst=0;
-					aiTCh=Math.floor(Math.random()*150)+30;
+					aiTCh = int(Math.random()*150)+30;
 					storona=(dx>0)?1:-1;
-					setCel(null,X+dx*10, Y+dy*10);
+					setCel(null,coordinates.X + dx * 10, coordinates.Y + dy * 10);
 				}
 				if (aiRasst>500) {
 					aiDx=celDX/aiRasst;

@@ -38,18 +38,20 @@ package  fe.unit
 		
 		public override function run(div:int=1) {
 			if (head) {
-				X=head.X+bindX;
-				Y=head.Y+bindY;
+				coordinates.X = head.coordinates.X + bindX;
+				coordinates.Y = head.coordinates.Y + bindY;
 			}
-			Y1=Y-scY, Y2=Y;
-			X1=X-scX/2, X2=X+scX/2;
+			Y1 = coordinates.Y - scY;
+			Y2 = coordinates.Y;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
 			setVisPos();
 		}
 		
 		public override function control() {
 			if (head==null || loc==null) return;
 			if (sost>1 || head.sost>1) return;
-			if (head.isAtt && X>200 && Y>200 && X<loc.maxX-200 && Y<loc.maxY-200) {
+			if (head.isAtt && coordinates.X > 200 && coordinates.Y > 200 && coordinates.X < loc.maxX - 200 && coordinates.Y < loc.maxY - 200) {
 				if (t_wait>0) {
 					t_wait--;
 					return;
@@ -83,21 +85,25 @@ package  fe.unit
 			if (sost>1) return;
 		}
 
-		public override function setVisPos() {
-			if (vis) {
-				vis.x=X,vis.y=Y;
-				currentWeapon.vis.x=X;
-				currentWeapon.vis.y=Y-scY/2;
+		public override function setVisPos()
+		{
+			if (vis)
+			{
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+				currentWeapon.vis.x = coordinates.X;
+				currentWeapon.vis.y = coordinates.Y - scY / 2;
 			}
 		}
 
-		public override function makeNoise(n:int, hlup:Boolean=false) {
-
+		public override function makeNoise(n:int, hlup:Boolean=false)
+		{
+			
 		}
 
 		public override function setHpbarPos() {
-			hpbar.y=Y-140;
-			hpbar.x=X;
+			hpbar.y = coordinates.Y - 140;
+			hpbar.x = coordinates.X;
 			if (loc && loc.zoom!=1) hpbar.scaleX=hpbar.scaleY=loc.zoom;
 		}
 	}

@@ -1,6 +1,7 @@
 package fe.loc
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.unit.UnitPlayer;
 	import flash.display.BitmapData;
 	import fe.serv.Script;
@@ -57,16 +58,17 @@ package fe.loc
 		private var tileY:int = Tile.tileY;
 
 		//lvl - уровень перса-1
-		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
+		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int)
+		{
 			gg=ngg;
 			act=nact;
 			rnd=act.rnd;
-			uidObjs=new Array();
-			scripts=new Array();
-			kolAll=new Array();
-			listLocs=new Array();
-			probIds=new Array();
-			probs=new Array();
+			uidObjs		= [];
+			scripts		= [];
+			kolAll		= [];
+			listLocs	= [];
+			probIds		= [];
+			probs		= [];
 			prepareRooms();
 			if (rnd) {
 				landDifLevel=lvl;	//сложность определяется заданным параметром
@@ -278,7 +280,7 @@ package fe.loc
 						if (loc1.pass_r.length) {
 							loc2=locs[i+1][j][0];
 							for (e=0; e<=2; e++) {
-								var n=Math.floor(Math.random()*loc1.pass_r.length);
+								var n=int(Math.random()*loc1.pass_r.length);
 								loc1.setDoor(loc1.pass_r[n].n,loc1.pass_r[n].fak);
 								loc2.setDoor(loc1.pass_r[n].n+11,loc1.pass_r[n].fak);
 							}
@@ -287,7 +289,7 @@ package fe.loc
 					if (j<maxLocY-1) {
 						if (loc1.pass_d.length) {
 							loc2=locs[i][j+1][0];
-							n=Math.floor(Math.random()*loc1.pass_d.length);
+							n=int(Math.random()*loc1.pass_d.length);
 							loc1.setDoor(loc1.pass_d[n].n,loc1.pass_d[n].fak);
 							loc2.setDoor(loc1.pass_d[n].n+11,loc1.pass_d[n].fak);
 						}
@@ -482,9 +484,7 @@ package fe.loc
 			if (imp && impProb) pid=impProb;
 			else if (rndRoom.length==1) pid=rndRoom[0];
 			else pid=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			try {
-				if (act.xmlland.prob.(@id==pid).@tip=='2') did='doorboss';
-			} catch (err) {};
+			if (act.xmlland.prob.(@id==pid).@tip=='2') did='doorboss';
 			if (!nloc.createDoorProb(did,pid)) return false;
 			buildProb(pid);
 			return true;
@@ -712,20 +712,16 @@ package fe.loc
 			}
 			gg.setLocPos((nx+1) * tileX, (ny+1) * tileY - 1);
 			gg.dx=3;
-			loc.lighting(gg.X, gg.Y-75);
+			loc.lighting(gg.coordinates.X, gg.coordinates.Y - 75);
 		}
 		
 		//сделать активной локацию с текущими координатами
 		public function ativateLoc():Boolean {
 			var nloc:Location;
 			if (prob!='' && probs[prob]==null)  return false;
-			try {
-				if (prob!='') nloc=probs[prob][locX][locY][locZ];	
-				else nloc=locs[locX][locY][locZ];
-			} catch (err) {
-				trace('локация не найдена',act.id,locX,locY,locZ)
-				nloc=locs[0][0][0];
-			}
+
+			if (prob!='') nloc=probs[prob][locX][locY][locZ];	
+			else nloc=locs[locX][locY][locZ];
 			
 			if (loc==nloc) return false;
 			locN++;
@@ -760,7 +756,7 @@ package fe.loc
 		//переход между локациями
 		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object
 		{
-			var X:Number=gg.X, Y:Number=gg.Y, scX:Number=gg.scX, scY:Number=gg.scY;
+			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, scX:Number=gg.scX, scY:Number=gg.scY;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
 
 			switch (napr)
@@ -768,23 +764,18 @@ package fe.loc
 				case 1:
 					newX--;
 				break;
-
 				case 2:
 					newX++;
 				break;
-
 				case 3:
 					newY++;
 				break;
-
 				case 4:
 					newY--;
 				break;
-
 				case 5:
 					newZ = 1 - newZ;
 				break;
-
 				default:
 					return null;
 				break;
@@ -807,22 +798,18 @@ package fe.loc
 					outP.x = newLoc.maxX - scX / 2 - 9;
 					outP.y = Y - 1;
 				break;
-
 				case 2:
 					outP.x = 0 + scX / 2 + 9;
 					outP.y = Y - 1;
 				break;
-
 				case 3:
 					outP.x = X;
 					outP.y = 0 + scY + 10;
 				break;
-
 				case 4:
 					outP.x = X;
 					outP.y = newLoc.maxY - 10;
 				break;
-
 				case 5:
 					outP.x = portX;
 					outP.y = portY;
@@ -854,12 +841,15 @@ package fe.loc
 			} else {
 				retLocX=locX, retLocY=locY, retLocZ=locZ;
 				if (nretX<0 || nretY<0) {
-					retX=gg.X, retY=gg.Y;
+					retX=gg.coordinates.X;
+					retY=gg.coordinates.Y;
 				} else {
 					retX=nretX, retY=nretY;
 				}
-				prob=nprob;
-				locX=locY=locZ=0;
+				prob = nprob;
+				locX = 0;
+				locY = 0;
+				locZ = 0;
 				if (ativateLoc()) {
 					setGGToSpawnPoint();
 				}
@@ -891,13 +881,15 @@ package fe.loc
 				prob='';
 				if (!ativateLoc()) loc.reactivate();
 				setGGToSpawnPoint();
-			} else {
-				locX=cp.loc.landX;
-				locY=cp.loc.landY;
-				locZ=cp.loc.landZ;
-				prob=cp.loc.landProb;
+			}
+			else
+			{
+				locX = cp.loc.landX;
+				locY = cp.loc.landY;
+				locZ = cp.loc.landZ;
+				prob = cp.loc.landProb;
 				if (!ativateLoc()) loc.reactivate();
-				gg.setLocPos(cp.X,cp.Y);
+				gg.setLocPos(cp.coordinates.X,cp.coordinates.Y);
 			}
 			gg.dx=3;
 		}
@@ -934,8 +926,8 @@ package fe.loc
 					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
-			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.X;
-			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.Y - gg.scY / 2;
+			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.coordinates.X;
+			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.coordinates.Y - gg.scY / 2;
 			return map;
 		}
 		

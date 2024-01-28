@@ -4,6 +4,7 @@ package fe.serv
 
 	import fe.*;
 	import fe.loc.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.projectile.Bullet;
@@ -15,7 +16,7 @@ package fe.serv
 		var inited:Boolean=false;
 		public var owner:Obj;
 		public var loc:Location;
-		public var X:Number, Y:Number;
+		public var coordinates = new Vector2();
 		
 		public var active:Boolean=true;	//объект активен
 		//действие, отображаемое в GUI
@@ -113,8 +114,9 @@ package fe.serv
 		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) {
 			owner=own;
 			loc=owner.loc;
-			X=own.X, Y=own.Y;
-			xml=nxml;
+			coordinates.X = own.coordinates.X;
+			coordinates.Y = own.coordinates.Y;
+			xml = nxml;
 			var rnd=true;
 			if (xml && xml.@set.length()) rnd=false;	//если задано свойство set='1', не будет случайных параметров
 			//тип замка
@@ -210,16 +212,21 @@ package fe.serv
 				
 				if (xml.move.length()) {
 					isMove=true;
-					begX=X, begY=Y;
+					begX = coordinates.X, begY = coordinates.Y;
 					if (xml.move.@dx.length()) {
-						if (loc && loc.mirror) endX=X-xml.move.@dx*tileX;
-						else endX=X+xml.move.@dx*tileX;
-					} else endX=endX2=X;
-					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*tileY;
-					else endY=Y;
-					if (xml.move.@tstay.length()) tStay=xml.move.@tstay;
-					if (xml.move.@tmove.length()) tMove=xml.move.@tmove;
-					if (xml.move.@on.length()) moveSt=4;
+						if (loc && loc.mirror) endX = coordinates.X - xml.move.@dx * tileX;
+						else endX = coordinates.X + xml.move.@dx * tileX;
+					}
+					else
+					{
+						endX	= coordinates.X;
+						endX2	= coordinates.X;
+					}
+					if (xml.move.@dy.length()) endY = coordinates.Y + xml.move.@dy * tileY;
+					else endY = coordinates.Y;
+					if (xml.move.@tstay.length()) tStay = xml.move.@tstay;
+					if (xml.move.@tmove.length()) tMove = xml.move.@tmove;
+					if (xml.move.@on.length()) moveSt = 4;
 				}
 			}
 			if (loc && loc.base && cont!=null && !noBase) {
@@ -318,16 +325,16 @@ package fe.serv
 			}
 			if (t_budilo>0) {
 				if (t_budilo%30==0) {
-					loc.budilo(owner.X,owner.Y,1500);
-					Emitter.emit('laser2',loc,owner.X,owner.Y-owner.scY+20);
-					Snd.ps('alarm',X,Y);
+					loc.budilo(owner.coordinates.X, owner.coordinates.Y,1500);
+					Emitter.emit('laser2',loc, owner.coordinates.X, owner.coordinates.Y - owner.scY+20);
+					Snd.ps('alarm', coordinates.X, coordinates.Y);
 				}
 				t_budilo--;
 			}
 			if (sign>0) {
 				if (t_sign<=0) {
 					t_sign=30;
-					if (World.w.helpMess) Emitter.emit('sign'+sign,loc,owner.X,owner.Y-owner.scY/2);
+					if (World.w.helpMess) Emitter.emit('sign' + sign, loc, owner.coordinates.X, owner.coordinates.Y - owner.scY/2);
 				}
 				t_sign--;
 			}
@@ -551,7 +558,7 @@ package fe.serv
 						replic('success');
 						update();
 					}
-					World.w.gui.bulb(X,Y);
+					World.w.gui.bulb(coordinates.X, coordinates.Y);
 					//trace('разминировать',unlock,' неудача',verFail,'жопа',verZhopa);
 				unlock=0;
 				is_ready=false;
@@ -563,10 +570,11 @@ package fe.serv
 				if (lockTip==5) World.w.gui.infoText('unFixPart');
 				update();
 				if (successUnlock!=null) successUnlock();
-				//if (lockKeyMinus) 
-			} else if (lock>=100) {
-			} else if (lock>0) {
-				if (unlock>-99) {
+			}
+			else if (lock > 0)
+			{
+				if (unlock>-99)
+				{
 					var lockDam1:Number=0, lockDam2:Number=2;
 					verFail=0;
 					if (lockTip==1 || lockTip==5) {
@@ -684,10 +692,10 @@ package fe.serv
 						}
 						update();
 					}
-					World.w.gui.bulb(owner.X,owner.Y);
+					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 				} else {
 					World.w.gui.infoText('noPoss',null,null,false);
-					World.w.gui.bulb(owner.X,owner.Y);
+					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 				}
 				unlock=0;
 				is_ready=false;
@@ -710,7 +718,7 @@ package fe.serv
 				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	{
 					World.w.invent.minusItem(cons);
 					World.w.gui.infoText('usedCons', Res.txt('i',cons));
-					if (cons=='empbomb') Emitter.emit('impexpl',loc,owner.X, owner.Y-owner.scY/2);
+					if (cons=='empbomb') Emitter.emit('impexpl', loc, owner.coordinates.X, owner.coordinates.Y - owner.scY/2);
 				} else {
 					World.w.gui.infoText('needCons', Res.txt('i',cons),null,false);
 					return;
@@ -803,7 +811,7 @@ package fe.serv
 			if (saveExpl) return;
 			var un:Unit=new Unit();
 			un.loc=loc;
-			var bul:Bullet=new Bullet(un,owner.X,owner.Y,null,false);
+			var bul:Bullet=new Bullet(un,owner.coordinates.X, owner.coordinates.Y,null,false);
 			bul.iExpl(damage,destroy,explRadius);
 			setAct('expl',1);
 			if (expl) {
@@ -813,7 +821,7 @@ package fe.serv
 		
 		//неудачная попытка взлома силового поля - удар током
 		public function discharge() {
-			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
+			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.coordinates.X,owner.coordinates.Y-owner.scY / 2);
 			damdis+=50;
 			if (damdis>500) damdis=500;
 		}
@@ -847,7 +855,7 @@ package fe.serv
 		//создать робота
 		public function genRobot() {
 			if (allact!='robocell') return;
-			loc.createUnit('robot',X,Y,true,null,null,30);
+			loc.createUnit('robot', coordinates.X, coordinates.Y, true, null, null, 30);
 			allact='';
 			update();
 			owner.setVisState('active');
@@ -863,6 +871,7 @@ package fe.serv
 			if (lockTip==2 && gg.invent.items['reboot'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			return 0;
 		}
+
 		public function useRuna(gg:UnitPlayer) {
 			if (mineTip==6 && mine>0) {
 				if (fiascoRemine!=null) fiascoRemine();
@@ -878,13 +887,13 @@ package fe.serv
 				command('unlock');
 				gg.invent.minusItem('runa');
 				World.w.gui.infoText('useRuna');
-				World.w.gui.bulb(owner.X,owner.Y);
+				World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 			}
 			if (lockTip==2 && lock>0 && gg.invent.items['reboot'].kol>0) {
 				command('unlock');
 				gg.invent.minusItem('reboot');
 				World.w.gui.infoText('useReboot');
-				World.w.gui.bulb(owner.X,owner.Y);
+				World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 			}
 		}
 		
@@ -900,22 +909,22 @@ package fe.serv
 					World.w.gui.infoText('noOutLoc',null,null,false);
 					return;
 				}
-				loc.land.gotoProb(prob, owner.X, owner.Y);
+				loc.land.gotoProb(prob, owner.coordinates.X, owner.coordinates.Y);
 			} else if (allact=='probreturn') {
 				if (loc.landProb!='') {
 					if (World.w.possiblyOut()==2) {
 						World.w.gui.infoText('noOutLoc',null,null,false);
 						return;
 					}
-					loc.land.gotoProb('', owner.X, owner.Y);
+					loc.land.gotoProb('', owner.coordinates.X, owner.coordinates.Y);
 				}
 			} else if (allact=='hack_robot') {
 				World.w.gui.infoText('term1Act');
-				World.w.gui.bulb(X,Y);
+				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				for each (var un:Unit in owner.loc.units) un.hack(World.w.pers.security);				
 			} else if (allact=='hack_lock') {
 				World.w.gui.infoText('term2Act');
-				World.w.gui.bulb(X,Y);
+				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				for each (var obj:Obj in owner.loc.objs) {
 					if (obj.inter) obj.inter.command('hack');
 				}
@@ -926,9 +935,9 @@ package fe.serv
 				if (loc.electroDam<=0) World.w.gui.infoText('electroOff',null,null,true);
 				else World.w.gui.infoText('electroOn',null,null,true);
 			} else if (allact=='comein') {
-				World.w.gg.outLoc(5,X,Y);
+		 		World.w.gg.outLoc(5, coordinates);
 			} else if (allact=='bind') {
-				World.w.gg.bindChain(X,Y-20);
+				World.w.gg.bindChain(coordinates.X, coordinates.Y - 20);
 			} else if (allact=='work' || allact=='lab' || allact=='stove') {
 				World.w.pip.workTip=allact;
 				World.w.pip.onoff(7);
@@ -961,15 +970,16 @@ package fe.serv
 		}
 		
 		public function shine() {
-			Emitter.emit('unlock',loc,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
+			Emitter.emit('unlock', loc, owner.coordinates.X, owner.coordinates.Y - owner.scY/2, {kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
 		}
 		
 		public function signal(n:String) {
-			Emitter.emit(n,loc,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
+			Emitter.emit(n, loc, owner.coordinates.X, owner.coordinates.Y - owner.scY/2, {kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
 		}
 		
 		
-		public function command(com:String, val:String=null) {
+		public function command(com:String, val:String=null)
+		{
 			if (com=='hack' && is_hack) {
 				active=true;
 				setAct('mine',101);
@@ -1073,7 +1083,8 @@ package fe.serv
 				var nx:Number=begX+(endX-begX)*f;
 				var ny:Number=begY+(endY-begY)*f;
 				owner.bindMove(nx,ny);
-				X=nx, Y=ny;
+				coordinates.X = nx;
+				coordinates.Y = ny;
 				t_move+=dt_move;
 				if (t_move>=(tStay+tMove)*2) t_move=0;
 			}
@@ -1107,13 +1118,18 @@ package fe.serv
 			}
 		}
 		
-		public function sound(s:String=null) {
-			if (s=='move') {
-				moveCh=Snd.ps('move',X,Y,0);
-			} else if (s=='stop') {
+		public function sound(s:String=null)
+		{
+			if (s=='move')
+			{
+				moveCh=Snd.ps('move',coordinates.X, coordinates.Y, 0);
+			}
+			else if (s=='stop')
+			{
 				if (moveCh) moveCh.stop();
-				moveCh=Snd.ps('move',X,Y,5500);
-			} else if (sndAct!='') Snd.actionCh=Snd.ps(sndAct,X,Y);
+				moveCh=Snd.ps('move', coordinates.X, coordinates.Y, 5500);
+			}
+			else if (sndAct!='') Snd.actionCh = Snd.ps(sndAct, coordinates.X, coordinates.Y);
 			
 		}
 		
@@ -1126,9 +1142,11 @@ package fe.serv
 			saveLoot=1;
 		}
 		
-		public function loot(impOnly:Boolean=false) {
+		public function loot(impOnly:Boolean=false)
+		{
 			if (loc==null || cont=='empty') return;
-			X=owner.X, Y=owner.Y-owner.scY/2;
+			coordinates.X = owner.coordinates.X;
+			coordinates.Y = owner.coordinates.Y - owner.scY / 2;
 			var kol:int, imp:int;
 			var is_loot=false;
 			var imp_loot=1;
@@ -1141,19 +1159,19 @@ package fe.serv
 						imp=2;
 						imp_loot=2;
 					} else imp=1;
-					LootGen.lootId(loc,X,Y,item.@id,kol,imp,this,lootBroken);
-					is_loot=true;
+					LootGen.lootId(loc, coordinates.X, coordinates.Y, item.@id, kol,imp, this, lootBroken);
+					is_loot = true;
 				}
 			}
 			if (impOnly) return;
 			if (cont!='' && cont!='empty') {
 				if (owner is Unit) {
-					is_loot=LootGen.lootDrop(loc,X,Y,cont,(owner as Unit).hero) || is_loot;
+					is_loot=LootGen.lootDrop(loc, coordinates.X, coordinates.Y, cont, (owner as Unit).hero) || is_loot;
 				} else {
-					is_loot=LootGen.lootCont(loc,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
+					is_loot=LootGen.lootCont(loc, coordinates.X, coordinates.Y, cont, lootBroken, prize? allDif:50) || is_loot;
 					//дать опыт
 					if (!lootBroken && allDif>0 && xp>0) {
-						loc.takeXP(Math.round(xp*(allDif+1)),X,Y);
+						loc.takeXP(Math.round(xp*(allDif+1)), coordinates.X, coordinates.Y);
 					}
 				}
 			}

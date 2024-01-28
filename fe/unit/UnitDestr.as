@@ -1,13 +1,17 @@
-package fe.unit {
+package fe.unit
+{
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
-	public class UnitDestr extends Unit{
+	public class UnitDestr extends Unit
+	{
 		
 		var tr:int=1;
 		var t_part:int=10;
 		
-		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='destr';
 			if (cid!=null) tr=int(cid);
@@ -41,10 +45,10 @@ package fe.unit {
 				if (t_part==0) t_part=10;
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
-					Emitter.emit('lift',loc,X+(Math.random()-0.5)*scX,Y-Math.random()*scY);
+					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5)*scX, coordinates.Y-Math.random()*scY);
 				} else {
 					vis.osn.gotoAndStop(2);
-					if (t_part==3) Emitter.emit('explw',loc,X+(Math.random()-0.5)*scX,Y-Math.random()*scY);
+					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5)*scX, coordinates.Y-Math.random()*scY);
 				}
 			}
 		}

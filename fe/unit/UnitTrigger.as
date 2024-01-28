@@ -102,46 +102,46 @@ package fe.unit
 		{
 			if (res=='noise' || res=='') return;
 			var i:int=1;
-			var nx:Number=X;
-			var ny:Number=Y;
+			var nx:Number = coordinates.X;
+			var ny:Number = coordinates.Y;
 			var nxml=<obj/>;
 			var ok:Boolean=false;
-			if (res=='damgren' && isrnd(0.25) && Y<loc.maxY-100 && loc.getAbsTile(X,Y+60).phis==0) {
-				ny=Y+2*tileY;
+			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).phis==0) {
+				ny = coordinates.Y + 2 * tileY;
 				res='expl1';
 				ok=true;
 			} else for (var i=1; i<=10; i++) {
 				if (res=='damgren' || res=='hturret2') {
-					if (loc.getAbsTile(X,Y-10-i*tileY).phis) {
+					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).phis) {
 						if (i==1) break;
-						ny=Y-(i-1)*tileY;
+						ny = coordinates.Y - (i - 1) * tileY;
 						ok=true;
 						break;
 					}
 					if (res=='hturret2') {
-						if (loc.getAbsTile(X-tileX,Y-10-i*tileY).phis) {
-							ny=Y-(i-1)*tileY;
-							nx=X-tileX;
+						if (loc.getAbsTile(coordinates.X - tileX, coordinates.Y - 10 - i * tileY).phis) {
+							ny = coordinates.Y - (i-1) * tileY;
+							nx = coordinates.X - tileX;
 							ok=true;
 							break;
 						}
-						if (loc.getAbsTile(X+tileX,Y-10-i*tileY).phis) {
-							ny=Y-(i-1)*tileY;
-							nx=X+tileX;
+						if (loc.getAbsTile(coordinates.X + tileX, coordinates.Y - 10 - i * tileY).phis) {
+							ny = coordinates.Y - (i-1) * tileY;
+							nx = coordinates.X + tileX;
 							ok=true;
 							break;
 						}
 					}
 				}
 				if (res=='damshot') {
-					if (i>1 && loc.getAbsTile(X-i*tileX,Y).phis) {
-						nx=X-(i-1)*tileX;
+					if (i>1 && loc.getAbsTile(coordinates.X - i * tileX, coordinates.Y).phis) {
+						nx = coordinates.X - (i-1) * tileX;
 						nxml=<obj turn="1"/>;
 						ok=true;
 						break;
 					}
-					if (i>1 && loc.getAbsTile(X+i*tileX,Y).phis) {
-						nx=X+(i-1)*tileX;
+					if (i>1 && loc.getAbsTile(coordinates.X + i * tileX, coordinates.Y).phis) {
+						nx = coordinates.X + (i-1) * tileX;
 						nxml=<obj turn="-1"/>;
 						ok=true;
 						break;
@@ -159,10 +159,10 @@ package fe.unit
 			} else {
 				res='damshot';
 				if (isrnd()) {
-					nx=X+(3+int(Math.random()*8))*tileX;
+					nx=coordinates.X+(3+int(Math.random()*8))*tileX;
 					nxml=<obj turn="-1"/>;
 				} else {
-					nx=X-(3+int(Math.random()*8))*tileX;
+					nx = coordinates.X - (3 + int(Math.random() * 8)) * tileX;
 					nxml=<obj turn="1"/>;
 				}
 				damager=loc.createUnit(res,nx,ny,true, nxml);
@@ -202,13 +202,13 @@ package fe.unit
 		//установить границы активации
 		function setArea() {
 			if (id=='trigridge' || id=='triglaser') {
-				ax1=X-5
-				ax2=X+5;
-				ay1=Y-30;
-				ay2=Y-20;
+				ax1 = coordinates.X - 5
+				ax2 = coordinates.X + 5;
+				ay1 = coordinates.Y - 30;
+				ay2 = coordinates.Y - 20;
 			} else if (id=='trigplate') {
 				ax1=X1, ax2=X2;
-				ay1=ay2=Y-1;
+				ay1 = ay2 = coordinates.Y - 1;
 			} else {
 				ax1=X1, ax2=X2;
 				ay1=Y1, ay2=Y2;
@@ -253,8 +253,8 @@ package fe.unit
 				}
 				if (allact) loc.allAct(this,allact,allid);
 			}
-			celX=X;
-			celY=Y;
+			celX = coordinates.X;
+			celY = coordinates.Y;
 			if (res=='noise' || res=='hturret2') {
 				budilo(vNoise);
 				act=true;

@@ -1,4 +1,4 @@
-package fe.unit
+﻿package fe.unit
 {
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
@@ -8,6 +8,7 @@ package fe.unit
 	import flash.filters.BlurFilter;
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.loc.*;
 	import fe.weapon.*;
 	import fe.inter.*;
@@ -326,7 +327,7 @@ package fe.unit
 		}
 		
 		public override function setNull(f:Boolean=false) {
-			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
+			Y1 = coordinates.Y - scY, Y2 = coordinates.Y, X1 = coordinates.X - scX / 2, X2 = coordinates.X + scX / 2;
 			setWeaponPos();
 			if (currentWeapon) currentWeapon.setNull();
 			dropTeleObj();
@@ -368,12 +369,12 @@ package fe.unit
 					dy=-jumpdy;
 					dx=maxSpeed*storona;
 				}
-				if (po==2) World.w.gui.infoText('noOutLoc',null,null,false);
+				if (po==2) World.w.gui.infoText('noOutLoc', null, null, false);
 				return false;
 			}
 			
 			var laz=isLaz, lev=levit;
-			var outP:Object=World.w.land.gotoLoc(napr, portX, portY);
+			var outP:Object = World.w.land.gotoLoc(napr, portX, portY);
 			if (outP)
 			{
 				if (outP.die) // [Death from falling into the abyss (switch to CT)]
@@ -457,14 +458,16 @@ package fe.unit
 		
 		//установить позицию при входе в локацию
 		public function setLocPos(nx:Number,ny:Number) {
-			X=nx, Y=ny;
+			coordinates.X = nx;
+			coordinates.Y = ny;
 			setNull();
-			if (pet) {
-				pet.X=X;
-				pet.Y=Y-30;
-				if (isSit) pet.Y=Y;
+			if (pet)
+			{
+				pet.coordinates.X = coordinates.X;
+				pet.coordinates.Y = coordinates.Y - 30;
+				if (isSit) pet.coordinates.Y = coordinates.Y;
 				pet.setNull();
-				pet.oduplenie=60;
+				pet.oduplenie = 60;
 			}
 		}
 		
@@ -509,7 +512,7 @@ package fe.unit
 					dy+=World.ddy*ddyPlav;
 					dy*=0.8;
 				} else {
-					var t:Tile=loc.getAbsTile(X,Y-scY/4);
+					var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y - scY / 4);
 					if (t.grav>0 && dy<loc.maxdy*t.grav || t.grav<0 && dy>loc.maxdy*t.grav) {
 						if (dash_t>dash_maxt-11) dy+=World.ddy*t.grav*0.1;
 						else dy+=World.ddy*t.grav;
@@ -522,16 +525,15 @@ package fe.unit
 				if (!stay) {
 					brake1=0.1*brake;
 				}
-				//if (stay) {
-					if (walk<0) {
-						if (dx<-maxSpeed) dx+=brake1;
-					} else if (walk>0) {
-						if (dx>maxSpeed) dx-=brake1;
-					} else {
-						if (dx>-brake1 && dx<brake1) dx=0;
-						else if (dx>0) dx-=brake1;
-						else if (dx<0) dx+=brake1;
-					}
+				if (walk<0) {
+					if (dx<-maxSpeed) dx+=brake1;
+				} else if (walk>0) {
+					if (dx>maxSpeed) dx-=brake1;
+				} else {
+					if (dx>-brake1 && dx<brake1) dx=0;
+					else if (dx>0) dx-=brake1;
+					else if (dx<0) dx+=brake1;
+				}
 				if (stay) {
 					dx*=tormoz;
 					if (loc.quake && massa<=2) {
@@ -557,13 +559,13 @@ package fe.unit
 			if (isFetter > 0)
 			{
 				isLaz = 0;
-				dfx = fetX - X;
-				dfy = fetY - Y + 30;
+				dfx = fetX - coordinates.X;
+				dfy = fetY - coordinates.Y + 30;
 				rfetter = dfx * dfx + dfy * dfy; // Chain-ging this to using squared distance instead of square root for comparisons to save cycles.
 				if (rfetter > isFetter * 2)
 				{
-					fetX = X;
-					fetY = Y;
+					fetX = coordinates.X;
+					fetY = coordinates.Y;
 					dfx		= 0;
 					dfy		= 0;
 					rfetter	= 0;
@@ -667,14 +669,14 @@ package fe.unit
 				if (sloy==1 || sloy==0) chSloy(2);
 			}
 			if (work=='lurk') {
-				if (lurkX-X>3) dx=4;
-				if (lurkX-X<-3) dx=-4;
+				if (lurkX - coordinates.X > 3) dx=4;
+				if (lurkX - coordinates.X < -3) dx=-4;
 			}
 			//нычки
 			if (lurked) {
 				if (!stay) lurked=false;
 				if (lurkBox && lurkBox.wall==0 && !lurkBox.stay) lurked=false; 
-				if (work!='lurk' && (X-lurkX>10 || X-lurkX<-10)) lurked=false; 
+				if (work!='lurk' && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) lurked=false; 
 			}
 			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) chSloy(2);
 			
@@ -701,7 +703,6 @@ package fe.unit
 			}
 			if (Snd.actionCh!=null && actionObj==null) {
 				Snd.actionCh.stop();
-				//sndCh.soundTransform.volume=0;
 				Snd.actionCh=null;
 			}
 
@@ -786,10 +787,10 @@ package fe.unit
 				if (teleObj.massa>=1) aMagic=100;
 				if (demask<200) demask=200;
 				if (isTake<10) isTake=40;
-				if (teleObj.X<celX-derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
-				if (teleObj.X>celX+derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
-				if (teleObj.Y-teleObj.scY/2<celY-derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
-				if (teleObj.Y-teleObj.scY/2>celY+derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
+				if (teleObj.coordinates.X<celX-derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
+				if (teleObj.coordinates.X>celX+derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
+				if (teleObj.coordinates.Y-teleObj.scY/2<celY-derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
+				if (teleObj.coordinates.Y-teleObj.scY/2>celY+derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
 				if (teleObj is Unit) {
 					if ((teleObj as Unit).levit_max>0 && (teleObj as Unit).levit_r>(teleObj as Unit).levit_max*pers.unitLevitMult) {
 						teleObj.levitPoss=false;
@@ -822,10 +823,14 @@ package fe.unit
 					if (levit==1) pers.manaDamage(-dmana*pers.teleMana*pers.teleManaMult);
 					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
 				}
-			} else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
+			}
+			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp))
+			{
 				dmana=-pers.alicornRunMana;
-				if (!loc.sky) Emitter.emit('magrun',loc,X,Y-scY/2,{dx:(dx*0.5+Math.random()*4-2), dy:(dy*0.5+Math.random()*4-2)});
-			} else {
+				if (!loc.sky) Emitter.emit('magrun', loc, coordinates.X, coordinates.Y-scY/2,{dx:(dx*0.5+Math.random()*4-2), dy:(dy*0.5+Math.random()*4-2)});
+			}
+			else
+			{
 				if (dmana<pers.recManaMin*pers.shtrManaRes) dmana=pers.recManaMin*pers.shtrManaRes;
 				dmana+=pers.recMana*pers.shtrManaRes;
 			}
@@ -840,10 +845,10 @@ package fe.unit
 				isFly=false;
 				if (h2o>0) {
 					h2o-=pers.h2oPlav;
-					if (sost==1 && isrnd(0.1)) Emitter.emit('bubble',loc,X+storona*23,Y-58);
+					if (sost==1 && isrnd(0.1)) Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
 				} else {
 					damage(maxhp/500,D_INSIDE,null,true);
-					if (sost==1 && isrnd())Emitter.emit('bubble',loc,X+storona*23,Y-58);
+					if (sost==1 && isrnd())Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 			} else if (h2o<1000) {
 				h2o+=10;
@@ -894,7 +899,7 @@ package fe.unit
 			}
 			stun=0;
 			//поворот оружия
-			weaponR=-(celY-Y)/10;
+			weaponR=-(celY-coordinates.Y)/10;
 			if (weaponR>85) weaponR=85;
 			if (weaponR<-85) weaponR=-85;
 			//свечение магии
@@ -948,19 +953,19 @@ package fe.unit
 				if (stay && stayMat==1 || isLaz || inWater || tykMat==1)
 				{
 					isStayDam = 20;
-					if (tykMat==1)
+					if (tykMat == 1)
 					{
-						if (turnX!=0) Emitter.emit('moln',loc,X,Y-scY/2,{celx:(X+45*storona), cely:Y-10});
-						else if (turnY==1) Emitter.emit('moln',loc,X,Y-scY/2,{celx:X, cely:Y-70});
-						else if (turnY==-1) Emitter.emit('moln',loc,X,Y-scY/2,{celx:X, cely:Y+20});
+						if (turnX!=0) Emitter.emit('moln', loc,coordinates.X, coordinates.Y-scY/2,{celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
+						else if (turnY==1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-scY/2,{celx:coordinates.X, cely:coordinates.Y - 70});
+						else if (turnY==-1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-scY/2,{celx:coordinates.X, cely:coordinates.Y + 20});
 					}
 					else if (isLaz)
 					{
-						Emitter.emit('moln',loc,X,Y-scY/2,{celx:(X+20*storona), cely:Y-10});
+						Emitter.emit('moln', loc, coordinates.X, coordinates.Y-scY/2,{celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
 					}
 					else if (stay)
 					{
-						Emitter.emit('moln',loc,X,Y-scY/2,{celx:(X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(Y+20)});
+						Emitter.emit('moln', loc, coordinates.X, coordinates.Y-scY/2,{celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
 					}
 
 					electroDamage();
@@ -994,7 +999,7 @@ package fe.unit
 			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99)
 			{
 				World.w.gui.infoText('overMana', null, null, false);
-				World.w.gui.bulb(X, Y - 20);
+				World.w.gui.bulb(coordinates.X, coordinates.Y - 20);
 			}
 			else
 			{
@@ -1021,7 +1026,7 @@ package fe.unit
 		private function alicornPort() {
 			if (mana<pers.alicornPortMana && mana<maxmana*0.99) {
 				World.w.gui.infoText('overMana',null,null,false);
-				World.w.gui.bulb(X,Y-20);
+				World.w.gui.bulb(coordinates.X, coordinates.Y - 20);
 				return;
 			}
 			if (!loc.sky) {
@@ -1078,16 +1083,17 @@ package fe.unit
 			}
 			//найти ближайший подходящий объект, если курсор не указывает прямо на цель
 			if (mana<200) return;
-			if (loc.celObj==null) {
-				var dist=(X-World.w.celX)*(X-World.w.celX)+(Y-scY/2-World.w.celY)*(Y-scY/2-World.w.celY);
+			if (loc.celObj==null)
+			{
+				var dist = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (coordinates.Y - scY / 2 - World.w.celY) * (coordinates.Y - scY / 2 - World.w.celY);
 				if (dist>pers.teleDist) return;
-				if (!loc.isLine(X,Y-scY*0.75, World.w.celX, World.w.celY)) return;
+				if (!loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, World.w.celX, World.w.celY)) return;
 				var pt:Entity = loc.firstObj;
-				var mindist=50*50;
+				var mindist = 50 * 50;
 				while (pt)
 				{
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
-						dist=(World.w.celX-pt.X)*(World.w.celX-pt.X)+(World.w.celY-pt.Y+(pt as Obj).scY/2)*(World.w.celY-pt.Y+(pt as Obj).scY/2);
+						dist = (World.w.celX - pt.coordinates.X) * (World.w.celX - pt.coordinates.X) + (World.w.celY - pt.coordinates.Y + (pt as Obj).scY / 2) * (World.w.celY - pt.coordinates.Y + (pt as Obj).scY / 2);
 						if (dist<mindist) {
 							loc.celObj=(pt as Obj);
 							mindist=dist;
@@ -1101,12 +1107,13 @@ package fe.unit
 				}
 			}
 			if (loc.celObj && loc.celObj.levitPoss && loc.celObj.onCursor && loc.celDist<=pers.teleDist && loc.celObj.massa<=pers.maxTeleMassa){
-				if ((pers.telemaster==0 || !loc.portOn) && !loc.isLine(X,Y-scY*0.75,loc.celObj.X, loc.celObj.Y-loc.celObj.scY/2)) {
+				if ((pers.telemaster==0 || !loc.portOn) && !loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2)) {
 					World.w.gui.infoText('noVisible',null,null,false);
 					return;
 				}
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1) {
-					electroDamage(loc.electroDam,loc.celObj.X,loc.celObj.Y-loc.celObj.scY/2);
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1)
+				{
+					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2);
 					return;
 				}
 				teleObj=loc.celObj;
@@ -1118,7 +1125,7 @@ package fe.unit
 					teleObj.vis.transform.colorTransform=teleTransform;
 					teleObj.vis.parent.setChildIndex(teleObj.vis,teleObj.vis.parent.numChildren-1);
 				}
-				if (teleObj is Unit) (teleObj as Unit).alarma(X,Y);
+				if (teleObj is Unit) (teleObj as Unit).alarma(coordinates.X, coordinates.Y);
 				teleObj.levit=1;
 				if (teleObj.inter) teleObj.inter.sign=0;
 				teleObj.fracLevit=fraction;
@@ -1134,7 +1141,7 @@ package fe.unit
 					dropTeleObj();
 					return;
 				}
-				var p:Object={x:(teleObj.X-X), y:(teleObj.Y-teleObj.scY/2-Y+scY/2-10)}
+				var p:Object = {x:(teleObj.coordinates.X - coordinates.X), y:(teleObj.coordinates.Y - teleObj.scY / 2 - coordinates.Y + scY / 2 - 10)}
 				var dm=0
 				if (pers.throwForce>0) dm=teleObj.massa*pers.throwDmagic*pers.allDManaMult;
 				if (dm<=mana) {
@@ -1157,8 +1164,8 @@ package fe.unit
 				teleObj.dx+=p.x;
 				teleObj.dy+=p.y;
 				if (pers.throwForce>0) {
-					Emitter.emit('throw',loc,teleObj.X,teleObj.Y-teleObj.scY/2,{rotation:Math.atan2(teleObj.dy,teleObj.dx)*180/Math.PI});
-					Snd.ps('dash',teleObj.X,teleObj.Y);
+					Emitter.emit('throw',loc,teleObj.coordinates.X,teleObj.coordinates.Y-teleObj.scY/2,{rotation:Math.atan2(teleObj.dy,teleObj.dx)*180/Math.PI});
+					Snd.ps('dash',teleObj.coordinates.X,teleObj.coordinates.Y);
 				}
 				dropTeleObj();
 			}
@@ -1190,17 +1197,20 @@ package fe.unit
 		//действие с активным объектом при удерживаемой клавише действия
 		private function actAction():void {
 			if (actionObj) {
-				if ((X-actionObj.X)*(X-actionObj.X)+(Y-actionObj.Y)*(Y-actionObj.Y)>World.w.actionDist) {
-					actionObj=null;
+				if ((coordinates.X - actionObj.coordinates.X) * (coordinates.X - actionObj.coordinates.X) + (coordinates.Y - actionObj.coordinates.Y) * (coordinates.Y - actionObj.coordinates.Y) > World.w.actionDist)
+				{
+					actionObj = null;
 				}
 			} else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
 				actionReady=false;
-				if ((pers.telemaster==0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact=='comein')) && !loc.isLine(X,Y-scY*0.75,loc.celObj.X, loc.celObj.Y-loc.celObj.scY/2, loc.celObj)) {
+				if ((pers.telemaster==0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact=='comein')) && !loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2, loc.celObj))
+				{
 					World.w.gui.infoText('noVisible',null,null,false);
 					return;
 				}
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1) {
-					electroDamage(loc.electroDam,loc.celObj.X,loc.celObj.Y-loc.celObj.scY/2);
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1)
+				{
+					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2);
 					return;
 				}
 				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action>0) {
@@ -1245,15 +1255,17 @@ package fe.unit
 			}
 		}
 
-		private function chit():void {
-			if (World.w.chit=='fly') isFly=!isFly;
-			if (World.w.chit=='port') {
-				var tx=Math.round(World.w.celX/tileX)*tileX
-				var ty=Math.round(World.w.celY/tileY+1)*tileY-1;
+		private function chit():void
+		{
+			if (World.w.chit == 'fly') isFly =! isFly;
+			if (World.w.chit == 'port')
+			{
+				var tx = Math.round(World.w.celX / tileX)*tileX
+				var ty = Math.round(World.w.celY / tileY+1)*tileY-1;
 				if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			}
 			if (World.w.chit=='emit') {
-				Emitter.emit(World.w.chitX,loc,World.w.celX, World.w.celY);
+				Emitter.emit(World.w.chitX, loc, World.w.celX, World.w.celY);
 			}
 		}
 		
@@ -1396,7 +1408,7 @@ package fe.unit
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
-						pet.moveto(X,Y-40,true);		//отзыв назад
+						pet.moveto(coordinates.X, coordinates.Y - 40, true);		//отзыв назад
 					}
 					k_pet=0;
 					ctr.keyPet=false;
@@ -1666,7 +1678,7 @@ package fe.unit
 						} else if (dJump) {		//двойной прыжок
 							dy=-djumpdy*pers.jumpMult;
 							if (jumpp==maxdjumpp-1) {
-								Emitter.emit('quake',loc,X,Y);
+								Emitter.emit('quake', loc, coordinates.X, coordinates.Y);
 								if (keyLeft) dx-=djumpdy*0.5;
 								if (keyRight) dx+=djumpdy*0.5;
 								if (dx>25) dx=25;
@@ -1832,13 +1844,13 @@ package fe.unit
 		public function lineCel(rdx:int=0, rdy:int=0):int
 		{
 			var res = 0;
-			var ndx = (celX+rdx-X);
-			var ndy = (celY+rdy-Y+scY/2);
+			var ndx = (celX + rdx - coordinates.X);
+			var ndy = (celY + rdy - coordinates.Y + scY / 2);
 			var div = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta) + 1;
 			for (var i = 1; i < div; i++)
 			{
-				var nx = X + ndx * i / div;
-				var ny = Y - scY / 2 + ndy * i / div;
+				var nx = coordinates.X + ndx * i / div;
+				var ny = coordinates.Y - scY / 2 + ndy * i / div;
 				var t:Tile = World.w.loc.getAbsTile(int(nx), int(ny));
 				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2)
 				{
@@ -1857,7 +1869,7 @@ package fe.unit
 				lurkBox = null;
 				for each (var b:Box in loc.objs)
 				{
-					if (b.lurk>lurkTip && X>b.X1 && X<b.X2 && Y-10>b.Y1 && Y-10<b.Y2)
+					if (b.lurk > lurkTip && coordinates.X > b.X1 && coordinates.X < b.X2 && coordinates.Y - 10 > b.Y1 && coordinates.Y - 10 < b.Y2)
 					{
 						lurkTip=b.lurk;
 						lurkBox=b;
@@ -1865,7 +1877,7 @@ package fe.unit
 				}
 				if (lurkBox)
 				{
-					lurkX = X;
+					lurkX = coordinates.X;
 					dx = 0;
 					t_work = 20;
 					work = 'lurk';
@@ -1873,7 +1885,7 @@ package fe.unit
 
 					if (lurkBox.lurk == 2)
 					{
-						if (X > lurkBox.X)
+						if (coordinates.X > lurkBox.coordinates.X)
 						{
 							storona = 1;
 							lurkX = lurkBox.X2 - 10;
@@ -1884,17 +1896,17 @@ package fe.unit
 							lurkX = lurkBox.X1 + 10;
 						}
 					}
-					else lurkX = lurkBox.X;
+					else lurkX = lurkBox.coordinates.X;
 
 				}
-				else if (loc.getAbsTile(X-20,Y-10).lurk && loc.getAbsTile(X+20,Y-10).lurk)
+				else if (loc.getAbsTile(coordinates.X - 20, coordinates.Y - 10).lurk && loc.getAbsTile(coordinates.X + 20, coordinates.Y - 10).lurk)
 				{
-					lurkTip=1;
-					lurkX=Math.round(X/tileX)*tileX;
-					dx=0;
-					t_work=20;
-					work='lurk';
-					lurked=true;
+					lurkTip = 1;
+					lurkX = Math.round(coordinates.X / tileX) * tileX;
+					dx = 0;
+					t_work = 20;
+					work = 'lurk';
+					lurked = true;
 				}
 				else armorAbil(); //включить особые свойства брони
 			}
@@ -1996,11 +2008,12 @@ package fe.unit
 					poison-=hl;
 				}
 			}
-			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc,X,Y-scY/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
+			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
 			World.w.gui.setHp();
 		}
 		
-		public override function udarUnit(un:Unit, mult:Number=1):Boolean {
+		public override function udarUnit(un:Unit, mult:Number=1):Boolean
+		{
 			if (super.udarUnit(un, mult)) {
 				if (un.radDamage) drad2=un.radDamage;
 				return true;
@@ -2080,13 +2093,13 @@ package fe.unit
 				damage(dam,D_INSIDE,null,true);
 				pinok=90;
 			}
-			Snd.ps('electro',X,Y);
-			if (nx!=null && ny!=null) Emitter.emit('moln',loc,X,Y-scY/2,{celx:nx, cely:ny});
+			Snd.ps('electro', coordinates.X, coordinates.Y);
+			if (nx!=null && ny!=null) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-scY/2,{celx:nx, cely:ny});
 		}
 		
 		public override function udarBox(un:Box):int {
 			var res:int=super.udarBox(un);
-			if (res==2 && loc.electroDam && un.mat==1) electroDamage(loc.electroDam, un.X, un.Y-un.scY/2);
+			if (res==2 && loc.electroDam && un.mat==1) electroDamage(loc.electroDam, un.coordinates.X, un.coordinates.Y - un.scY / 2);
 			return res;
 		}
 		
@@ -2185,20 +2198,22 @@ package fe.unit
 		//удар хол. оружием достиг цели
 		public override function setWeaponPos(tip:int=0) {
 			if (weaponKrep==0) {			//телекинез
-				if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
-				else weaponX=X;
-				if (isLaz) weaponX=X;
-				if (loc.getAbsTile(weaponX,weaponY).phis==1 || loc.getAbsTile(weaponX+storona*15,weaponY).phis==1) weaponX=X;
-				if (tip==1) weaponY=Y-scY*0.4;
-				else weaponY=Y-scY*0.7;
+				if (storona > 0 && celX > X2 || storona < 0 && celX < X1) weaponX = coordinates.X + scX * 1 * storona;
+				else weaponX = coordinates.X;
+				if (isLaz) weaponX = coordinates.X;
+				if (loc.getAbsTile(weaponX, weaponY).phis == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).phis == 1) weaponX = coordinates.X;
+				
+				if (tip == 1) weaponY = coordinates.Y - scY * 0.4;
+				else weaponY = coordinates.Y - scY * 0.7;
+				
 				if (stay && weapUp) {
 					if (loc.getTile(int(weaponX/tileX), int((weaponY-40)/tileY)).phis!=1) weaponY-=40;
 				}
 			} else super.setWeaponPos(tip);
 			
 			if (work=='change' && t_work>changeWeaponTime3 && tip!=5) {
-					weaponX=X;
-					weaponY=Y-scY*0.5;
+					weaponX = coordinates.X;
+					weaponY = coordinates.Y - scY * 0.5;
 			}
 			try {
 				var p:Point=new Point(vis.osn.body.head.morda.konec.x,vis.osn.body.head.morda.konec.y);
@@ -2207,12 +2222,12 @@ package fe.unit
 				magicX=p.x;
 				magicY=p.y;
 				if (loc.getAbsTile(magicX,magicY).phis==1) {
-					if (isSit) magicY=Y-35;
-					else magicY=Y-75;
+					if (isSit) magicY = coordinates.Y - 35;
+					else magicY = coordinates.Y - 75;
 				}
 			} catch (err) {
-				magicX=X;
-				magicY=Y-scY/2;
+				magicX = coordinates.X;
+				magicY = coordinates.Y - scY / 2;
 			}
 		}
 		
@@ -2384,9 +2399,9 @@ package fe.unit
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch) {
-			w.X=X+scX/3*((celX>X)?1:-1);
-			w.Y=Y-scY/2;
-			w.rot=(celX>X)?0:Math.PI;
+			w.coordinates.X = coordinates.X + scX / 3*((celX > coordinates.X)?1:-1);
+			w.coordinates.Y = coordinates.Y - scY / 2;
+			w.rot = (celX > coordinates.X)? 0:Math.PI;
 		}
 		
 		//особая функция брони
@@ -2436,7 +2451,8 @@ package fe.unit
 					currentPet=npet;
 					pet=pets[currentPet];
 					childObjs[2]=pet;
-					pet.X=X, pet.Y=Y-20;
+					pet.coordinates.X = coordinates.X;
+					pet.coordinates.Y = coordinates.Y - 20;
 					pet.loc=loc;
 					pet.call();
 					World.w.gui.infoText('petCall',pet.nazv);
@@ -2476,7 +2492,7 @@ package fe.unit
 			pers.setParameters();
 			if (eff) {
 				newPart('redray',40);
-				Snd.ps('al_armor',X,Y);
+				Snd.ps('al_armor', coordinates.X, coordinates.Y);
 			}
 			refreshVis();
 		}
@@ -2498,37 +2514,51 @@ package fe.unit
 			isFly=false;
 			dropTeleObj();
 			actionObj=null;
-			scX=ratX;
-			scY=ratY;
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
+			scX = ratX;
+			scY = ratY;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
 			vis.osn.visible=false;
 			vis.rat.visible=true;
 			newPart('black',30);
 			rat=1;
 		}
 
-		public function ratOff():Boolean {
-			scX=stayX, scY=stayY;
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
+		public function ratOff():Boolean
+		{
+			scX = stayX;
+			scY = stayY;
+			X1 = coordinates.X - scX / 2;
+			X2 = coordinates.X + scX / 2;
+			Y1 = coordinates.Y - scY;
 			if (collisionAll()) {
 				if (collisionAll(15)) {
 					if (collisionAll(-15)) {
 						scX=ratX;
 						scY=ratY;
-						X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
+						X1 = coordinates.X - scX / 2;
+						X2 = coordinates.X + scX / 2;
+						Y1 = coordinates.Y - scY;
 						return false;
-					} else {
-						X-=15;
-						X1=X-scX/2, X2=X+scX/2;
 					}
-				} else {
-					X+=15;
-					X1=X-scX/2, X2=X+scX/2;
+					else
+					{
+						coordinates.X -= 15;
+						X1 = coordinates.X - scX / 2;
+						X2 = coordinates.X + scX / 2;
+					}
+				}
+				else
+				{
+					coordinates.X += 15;
+					X1 = coordinates.X - scX / 2;
+					X2 = coordinates.X + scX / 2;
 				}
 			}
 			vis.osn.visible=true;
 			vis.rat.visible=false;
-			newPart('black',30);
+			newPart('black', 30);
 			rat=0;
 			return true;
 		}
@@ -2690,7 +2720,7 @@ package fe.unit
 							dieTransform.redOffset=(170-t_work)*2;
 							dieTransform.blueOffset=(170-t_work)*3;
 							vis.osn.transform.colorTransform=dieTransform;
-							Emitter.emit('die_spark',loc,X+Math.random()*120-60+20*storona,Y);
+							Emitter.emit('die_spark', loc, coordinates.X+Math.random()*120-60+20*storona, coordinates.Y);
 						}
 						else if (t_work<120 && t_work>70) vis.osn.alpha=(t_work-70)/50;
 					}
@@ -3192,14 +3222,14 @@ package fe.unit
 			{
 				if (hairY != -1000)
 				{
-					hairDY += ((Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation) - hairY) / 4;
+					hairDY += ((coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation) - hairY) / 4;
 					hairR += hairDY;
 					hairDY -= hairR/4;
 					hairDY *= 0.8;
 					if (hairR > 8) hairR = 8;
 					if (hairR < -8) hairR = -8;
 				}
-				hairY = Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation;
+				hairY = coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation;
 				hair.rotation = hairR;
 				tail = vis.osn.body.tail.h0;
 				if (tail) tail.rotation = -hairR;
@@ -3278,8 +3308,8 @@ package fe.unit
 			// Shackles
 			if (isFetter > 0)
 			{
-				dfx = fetX - X;
-				dfy = fetY - Y + 30;
+				dfx = fetX - coordinates.X;
+				dfy = fetY - coordinates.Y + 30;
 				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
 				vis.fetter.visible = true;
 				vis.fetter.scaleX = rfetter / 100;
@@ -3305,7 +3335,7 @@ package fe.unit
 		
 		public function showElectroBlock()
 		{
-			var t:Tile = loc.getAbsTile((X + Math.random() * 320 - 160), (Y - scY / 2 + Math.random() * 320-160));
+			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (coordinates.Y - scY / 2 + Math.random() * 320-160));
 			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*tileX, (t.Y+0.5)*tileY);
 		}
 		
@@ -3323,7 +3353,7 @@ package fe.unit
 			prev_replic=s_replic;
 			if (s_replic != '' && s_replic)
 			{
-				Emitter.emit('replic2', loc, X, Y - 90,{txt:s_replic, ry:20});
+				Emitter.emit('replic2', loc, coordinates.X, coordinates.Y - 90,{txt:s_replic, ry:20});
 			}
 		}
 		

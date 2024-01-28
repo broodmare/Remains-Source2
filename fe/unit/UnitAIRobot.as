@@ -90,10 +90,10 @@ package fe.unit
 
 		public override function alarma(nx:Number=-1,ny:Number=-1) {
 			if (sost==1 && aiState<=1) {
-				super.alarma(nx,ny);
+				super.alarma(nx, ny);
 				aiSpok=maxSpok+10;
 				aiState=3;
-				shok=Math.floor(Math.random()*15+5);
+				shok = int(Math.random()*15+5);
 			}
 		}
 		
@@ -130,8 +130,8 @@ package fe.unit
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y-scY;
+				celX = coordinates.X+scX*storona*2;
 				return;
 			}
 			
@@ -163,7 +163,6 @@ package fe.unit
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
 			//поиск цели
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel(aiState>1)) {
 					//увидели
@@ -185,7 +184,7 @@ package fe.unit
 					if (aiSpok>0) {
 						aiSpok--;
 					} else {
-						setCel(null, X+storona*100, Y-scY*0.75);
+						setCel(null, coordinates.X + storona * 100, coordinates.Y - scY * 0.75);
 					}
 					if (aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
@@ -194,8 +193,8 @@ package fe.unit
 			}
 			
 			//направление
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y + scY;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -297,10 +296,10 @@ package fe.unit
 				}
 				pumpObj=null;
 			} else if (aiState==4 || aiState==3) {
-				storona=(celX>X)?1:-1;
+				storona=(celX>coordinates.X)?1:-1;
 			}
 			
-			if (Y>loc.spaceY*tileY-80) throu=false;
+			if (coordinates.Y>loc.spaceY*tileY-80) throu=false;
 			
 			if ((aiState==3 || aiState==4) && World.w.enemyAct>=3) attack();
 
@@ -308,18 +307,17 @@ package fe.unit
 		
 		public function actPort(rnd:Boolean=false) {
 			var cel:Unit=World.w.gg;
-			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
 			var ny:Number=0;
 			for (var i=1; i<=20; i++) {
 				if (i<5 && !rnd) {
-					if (isrnd(0.7)) nx=cel.X-cel.storona*(Math.random()*300+200);
-					else nx=cel.X+cel.storona*(Math.random()*300+200);
-					ny=cel.Y;
+					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
+					else nx=cel.coordinates.X+cel.storona*(Math.random()*300+200);
+					ny=cel.coordinates.Y;
 				} else if (i<10 && !rnd) {
-					if (isrnd()) nx=cel.X-cel.storona*(Math.random()*800+200);
-					else  nx=cel.X+cel.storona*(Math.random()*800+200);
-					ny=cel.Y+Math.random()*160-80;
+					if (isrnd()) nx=cel.coordinates.X-cel.storona*(Math.random()*800+200);
+					else  nx=cel.coordinates.X+cel.storona*(Math.random()*800+200);
+					ny=cel.coordinates.Y+Math.random()*160-80;
 				} else {
 					nx=Math.random()*loc.maxX;
 					ny=Math.random()*loc.maxY;
@@ -330,18 +328,18 @@ package fe.unit
 				if (ny<scY+40) ny=scY+40;
 				if (nx>loc.maxX-scX) nx=loc.maxX-scX;
 				if (ny>loc.maxY-40) ny=loc.maxY-40;
-				if (!collisionAll(nx-X, ny-Y)) {
+				if (!collisionAll(nx-coordinates.X, ny-coordinates.Y)) {
 					teleport(nx,ny,1);
 					dx=dy=0;
 					setWeaponPos();
 					if (findCel(true) && celUnit) {
 						aiSpok=0;
 						aiState=5;
-						storona=(celX>X)?1:-1;
-						aiTCh=Math.floor(Math.random()*30)+20;
-						t_port=Math.floor(Math.random()*90+150);
+						storona=(celX>coordinates.X)?1:-1;
+						aiTCh=int(Math.random()*30)+20;
+						t_port=int(Math.random()*90+150);
 					} else {
-						t_port=Math.floor(Math.random()*90+30);
+						t_port=int(Math.random()*90+30);
 					}
 					kol_port--;
 					return;

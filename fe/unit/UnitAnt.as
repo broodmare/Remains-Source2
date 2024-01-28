@@ -64,7 +64,7 @@ package fe.unit {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
 				aiState=2;
-				shok=Math.floor(Math.random()*5+3);
+				shok = int(Math.random()*5+3);
 				budilo(250);
 			}
 		}
@@ -76,18 +76,19 @@ package fe.unit {
 		public override function setVisPos() {
 			if (vis) {
 				if (isLaz==0) {
-					vis.x=X,vis.y=Y;
+					vis.x = coordinates.X;
+					vis.y = coordinates.Y;
 					vis.scaleX=storona;
 					vis.scaleY=1;
 					vis.rotation=0;
 				} else if (isLaz==1) {
-					vis.x=X2;
-					vis.y=Y-scY/2;
+					vis.x = X2;
+					vis.y = coordinates.Y - scY / 2;
 					vis.rotation=-90;
 					vis.scaleX=-vstorona;
 				} else if (isLaz==-1) {
-					vis.x=X1;
-					vis.y=Y-scY/2;
+					vis.x = X1;
+					vis.y = coordinates.Y - scY / 2;
 					vis.rotation=90;
 					vis.scaleX=vstorona;
 				}
@@ -115,7 +116,6 @@ package fe.unit {
 					animState='plav';
 				} else {
 					animState='jump';
-					//anims[animState].setStab((dy+5)/10);
 				}
 			}
 			if (animState!=animState2) {
@@ -166,11 +166,9 @@ package fe.unit {
 			if (t_punch>0) t_punch--;
 
 			var jmp:Number=0;
-			//return;
-			
 			if (World.w.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 				return;
 			}
 			
@@ -178,16 +176,15 @@ package fe.unit {
 			if (aiTCh>0) aiTCh--;
 			else {
 				if (aiSpok==0) {
-					aiState=Math.floor(Math.random()*2);
+					aiState=int(Math.random()*2);
 				}
 				if (aiSpok>0) aiState=2;
-				if (aiState==0) aiTCh=Math.floor(Math.random()*20)+10;
-				else aiTCh=Math.floor(Math.random()*50)+40;
-				if (isrnd(0.2)) aiNeedLaz=Math.floor(Math.random()*3-1);
+				if (aiState==0) aiTCh=int(Math.random()*20)+10;
+				else aiTCh=int(Math.random()*50)+40;
+				if (isrnd(0.2)) aiNeedLaz=int(Math.random()*3-1);
 				//атаковать оружием
 			}
 			//поиск цели
-			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
@@ -207,8 +204,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+				celY = coordinates.Y - scY;
+				celX = coordinates.X + scX * storona * 2;
 			} else {
 				vision=aiVis;
 			}
@@ -232,7 +229,6 @@ package fe.unit {
 				overLook=false;
 				storona=aiNapr;	
 			}
-			//if (id=='molerat') trace(maxSpeed,dx, aiState);
 			//поведение при различных состояниях
 			if (aiState==0 || aiState==3) {
 				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
@@ -253,7 +249,7 @@ package fe.unit {
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.5 && aiNapr<0 && isrnd()) {
 					if (optJumping && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -261,7 +257,7 @@ package fe.unit {
 				}
 				if (stay && shX2>0.5 && aiNapr>0 && isrnd()) {
 					if (optJumping && isrnd(0.1)) {
-						t=loc.getAbsTile(X+storona*80,Y+10);
+						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -380,7 +376,7 @@ package fe.unit {
 						kray=false;
 						if (aiTTurn<0) {
 							aiNapr=storona=turnX;
-							aiTTurn=Math.floor(Math.random()*20)+5;
+							aiTTurn=int(Math.random()*20)+5;
 						}
 					}
 					turnX=turnY=0;
@@ -397,15 +393,16 @@ package fe.unit {
 				currentWeapon.attack();
 			}
 			
-			if (Y > loc.spaceY * tileY - 80) throu=false;
+			if (coordinates.Y > loc.spaceY * tileY - 80) throu=false;
 		}
 		
 		//поиск лестницы
 		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
 		{
-			try {
-				var i:int = int((X+nx)/tileX);
-				var j:int = int((Y+ny)/tileY);
+			try
+			{
+				var i:int = int((coordinates.X + nx) / tileX);
+				var j:int = int((coordinates.Y + ny) / tileY);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
 				if (loc.space[i][j].phis>=1) {
 					isLaz=0;
@@ -418,14 +415,17 @@ package fe.unit {
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) X=(loc.space[i][j] as Tile).phX1+scX/2;
-					else X=(loc.space[i][j] as Tile).phX2-scX/2;
-					X1=X-scX/2, X2=X+scX/2;
+
+					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1 + scX / 2;
+					else coordinates.X = (loc.space[i][j] as Tile).phX2 - scX / 2;
+
+					X1 = coordinates.X - scX / 2, X2=coordinates.X + scX / 2;
 					stay=false;
 					return true;
 				}
-			} catch (err) {
 			}
+			catch (err) { }
+
 			isLaz=0;
 			return false;
 		}

@@ -1,15 +1,15 @@
-package fe.unit {
-	
-	import fe.*;
+package fe.unit
+{
 	import fe.weapon.Weapon;
 	import fe.serv.BlitAnim;
-	import fe.serv.LootGen;
-	public class UnitGutsy extends UnitAIRobot{
-
+	
+	public class UnitGutsy extends UnitAIRobot
+	{
 		var dopWeapon:Weapon;
 		public var wPos:Array;
 		
-		public function UnitGutsy(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitGutsy(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='gutsy';
 			if (tr>0) id+=tr;
@@ -64,15 +64,15 @@ package fe.unit {
 				animState2=animState;
 			}
 			if (!anims[animState].st) {
-				blit(anims[animState].id,Math.floor(anims[animState].f));
+				blit(anims[animState].id, int(anims[animState].f));
 			}
 			anims[animState].step();
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-			weaponX=X+(obj.x+visBmp.x)*storona;
-			weaponY=Y+obj.y+visBmp.y;
+			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
+			weaponX = coordinates.X + (obj.x+visBmp.x)*storona;
+			weaponY = coordinates.Y + obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
 		

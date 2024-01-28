@@ -186,8 +186,8 @@ package fe.unit
 		
 		public override function setVisPos()
 		{
-			vis.x = X;
-			vis.y = Y;
+			vis.x = coordinates.X;
+			vis.y = coordinates.Y;
 		}
 
 		public override function animate()
@@ -221,17 +221,17 @@ package fe.unit
 		public override function setPos(nx:Number,ny:Number)
 		{
 			super.setPos(nx,ny);
-			if ((turrettip == 0 || turrettip == 4) && loc && !loc.active) osnova = loc.getAbsTile(X, Y - 50);
+			if ((turrettip == 0 || turrettip == 4) && loc && !loc.active) osnova = loc.getAbsTile(coordinates.X, coordinates.Y - 50);
 		}
 
 		public override function alarma(nx:Number=-1,ny:Number=-1)
 		{
-			super.alarma(nx,ny);
-			if (turrettip==3) return;
+			super.alarma(nx, ny);
+			if (turrettip == 3) return;
 			if (sost==1 && !sleep)
 			{
 				ear=10;
-				var vK=vKonus;
+				var vK = vKonus;
 				vKonus=0;
 				findCel();
 				vKonus=vK;
@@ -262,7 +262,7 @@ package fe.unit
 				currentWeapon.findCel=false;
 			} else if (sposob==1) {
 				reprog=true;
-				if (fraction!=Unit.F_PLAYER && xp>0 && loc) loc.takeXP(xp,X,Y,true);
+				if (fraction!=Unit.F_PLAYER && xp>0 && loc) loc.takeXP(xp, coordinates.X, coordinates.Y, true);
 				fraction=Unit.F_PLAYER;
 				xp=0;
 				aiState=1;
@@ -282,11 +282,11 @@ package fe.unit
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
-			weaponX=X;
-			if (turrettip==0 || turrettip==4) weaponY=Y-12;
-			else if (turrettip==1) weaponY=Y-60;
-			else if (turrettip==2 || turrettip==5) weaponY=Y-20;
-			else if (turrettip==3) weaponY=Y-55;
+			weaponX = coordinates.X;
+			if (turrettip==0 || turrettip==4) weaponY = coordinates.Y - 12;
+			else if (turrettip==1) weaponY = coordinates.Y - 60;
+			else if (turrettip==2 || turrettip==5) weaponY = coordinates.Y - 20;
+			else if (turrettip==3) weaponY = coordinates.Y - 55;
 		}
 		
 		//оторвать от фиксированного места
@@ -298,21 +298,23 @@ package fe.unit
 				aiState=0;
 				currentWeapon.findCel=false;
 				warn=0;
-				if (xp>0) loc.takeXP(xp,X,Y,true);
+				if (xp>0) loc.takeXP(xp, coordinates.X, coordinates.Y, true);
 				xp=0;
 			}
 			fixed=false;
 		}
 		
 		//команда скрипта
-		public override function command(com:String, val:String=null) {
-			if (com=='shoot') currentWeapon.attack();
-			if (com=='alarma') alarma();
-			if (com=='hack') hack();
-			if (com=='port') {
+		public override function command(com:String, val:String=null)
+		{
+			if (com == 'shoot') currentWeapon.attack();
+			if (com == 'alarma') alarma();
+			if (com == 'hack') hack();
+			if (com == 'port')
+			{
 				var arr:Array=val.split(':');
-				var nx=(int(arr[0])+0.5) * tileX;
-				var ny=(int(arr[1])+1) * tileY;
+				var nx = (int(arr[0])+0.5) * tileX;
+				var ny = (int(arr[1])+1) * tileY;
 				teleport(nx,ny,1);
 				aiState=2;
 				aiTCh=60;
@@ -326,11 +328,9 @@ package fe.unit
 				if (bul) {
 					if (bul.weap!=null && bul.weap.tip==1) {	//холодное оружие
 						var w:Weapon=bul.weap;
-						if ((X-w.X)*storona>25) shitArmor=0;
-					} else {
-						if (bul.dx*storona>0) shitArmor=0;
+						if ((coordinates.X - w.coordinates.X) * storona > 25) shitArmor = 0;
 					}
-						
+					else if (bul.dx * storona > 0) shitArmor = 0;
 				}
 			}
 			var ret:Number=super.damage(dam, tip, bul, tt);

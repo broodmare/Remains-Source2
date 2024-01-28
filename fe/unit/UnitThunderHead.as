@@ -4,10 +4,11 @@ package fe.unit
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
 	import flash.geom.ColorTransform;
-	
+
+	import fe.*;
+	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.projectile.Bullet;
-	import fe.*;
 	import fe.loc.Location;
 	import fe.graph.Emitter;
 	
@@ -175,13 +176,16 @@ package fe.unit
 		
 		public override function setVisPos() {
 			if (vis) {
-				vis.x=X,vis.y=Y;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 			}
 		}
 		
 		public override function run(div:int=1) {
-			X1=X-scX/2+300*3, X2=X1+1370*3;
-			Y1=Y-scY/2+170*3, Y2=Y1+580*3;
+			X1 = coordinates.X - scX / 2 + 300 * 3;
+			X2 = X1 + 1370 * 3;
+			Y1 = coordinates.Y - scY / 2 + 170 * 3;
+			Y2 = Y1 + 580 * 3;
 		}
 		
 
@@ -191,8 +195,8 @@ package fe.unit
 			var dif:Number=Math.sin(ugol/90*Math.PI);
 			var ugol2:Number=-def*12+ugol;
 			var distanc2:Number=distanc+dif*dif*dif*dif*1000;
-			X=maxX/2+Math.sin(ugol2/180*Math.PI)*distanc2;
-			Y=maxY/2+Math.cos(ugol2/180*Math.PI)*distanc2/1.6;
+			coordinates.X = maxX / 2 + Math.sin(ugol2 / 180 * Math.PI) * distanc2;
+			coordinates.Y = maxY / 2 + Math.cos(ugol2 / 180 * Math.PI) * distanc2/1.6;
 			for each (var un:Unit in turrets) {
 				un.run();
 			}
@@ -262,10 +266,10 @@ package fe.unit
 				setCel(loc.gg);
 			}
 			attTur--;
-			celDX=celX-X;
-			celDY=celY-Y;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y;
 			var dist2:Number=celDX*celDX+celDY*celDY;
-			var dist:Number=(moveX-X)*(moveX-X)+(moveY-Y)*(moveY-Y);
+			var dist:Number = (moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (aiTCh>20) distanc-=20;
@@ -304,21 +308,21 @@ package fe.unit
 			}
 			t_moln--;
 			if (t_moln<=0) {
-				t_moln=Math.floor(Math.random()*20+10);
+				t_moln=int(Math.random()*20+10);
 				if (Math.random()<0.5) {
 					moln1.alpha=1;
 					moln1.x=moln1_x+Math.random()*300-150;
 					moln1.y=moln_y+Math.random()*30-15;
 					moln1.rotation=Math.random()*360;
 					moln1.scaleX=moln1.scaleY=Math.random()*0.3+0.7;
-					moln1.gotoAndStop(Math.floor(Math.random()*3+1));
+					moln1.gotoAndStop(int(Math.random()*3+1));
 				} else {
 					moln2.alpha=1;
 					moln2.x=moln2_x+Math.random()*300-150;
 					moln2.y=moln_y+Math.random()*30-15;
 					moln2.rotation=Math.random()*360;
 					moln2.scaleX=moln2.scaleY=Math.random()*0.3+0.7;
-					moln2.gotoAndStop(Math.floor(Math.random()*3+1));
+					moln2.gotoAndStop(int(Math.random()*3+1));
 				}
 			}
 			if (moln1.alpha>0) {
@@ -344,8 +348,8 @@ package fe.unit
 		}
 		
 		function emit() {
-			var nx:Number=X;
-			var ny:Number=Y;
+			var nx:Number = coordinates.X;
+			var ny:Number = coordinates.Y;
 			if (nx<200) nx=200;
 			if (nx>loc.maxX-200) nx=loc.maxX-200;
 			if (ny<200) ny=200;
@@ -369,17 +373,17 @@ package fe.unit
 		
 		public function vsos(n:Number=0, klob:Boolean=false) {
 			if (!loc.active) return;
-			p.x=X-World.w.gg.X;
-			p.y=Y-World.w.gg.Y;
+			p.x = coordinates.X - World.w.gg.coordinates.X;
+			p.y = coordinates.Y - World.w.gg.coordinates.Y;
 			if (n==0) {
 				norma(p,5);
 				World.w.gg.storona=(World.w.gg.dx>0)?1:-1;
 			} else {
 				norma(p,n);
 			}
-			if (klob && t_vsos%3==0) Emitter.emit('vsos',loc,World.w.gg.X,World.w.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
-			World.w.gg.dx+=p.x;
-			World.w.gg.dy+=p.y;
+			if (klob && t_vsos%3==0) Emitter.emit('vsos', loc, World.w.gg.coordinates.X, World.w.gg.coordinates.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
+			World.w.gg.dx += p.x;
+			World.w.gg.dy += p.y;
 		}
 	}
 }

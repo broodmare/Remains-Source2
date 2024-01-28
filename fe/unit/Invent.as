@@ -1,6 +1,7 @@
 package fe.unit
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.serv.Item;
 	import fe.serv.LootGen;
@@ -249,8 +250,7 @@ package fe.unit
 			if (pot.@hhplong.length()) hhplong=pot.@hhplong*gg.pers.healMult;
 			gg.heal(hhp,0,false);
 			gg.heal(hhplong,1,false);
-			if (hhp+hhplong>0) gg.numbEmit.cast(gg.loc,gg.X,gg.Y-gg.scY/2,{txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
-			
+			if (hhp+hhplong>0) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.scY/2, {txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
 			if (pot.@hrad.length()) gg.heal(pot.@hrad*gg.pers.healMult,2);
 			if (pot.@hpoison.length()) gg.heal(pot.@hpoison, 4, false);
 			if (pot.@hcut.length()) gg.heal(pot.@hcut, 3, false);
@@ -725,10 +725,9 @@ package fe.unit
 			//всплывающее сообщение
 			if (!World.w.testLoot && (tr==0 || tr==2)) {
 				if (l.fc>=0) color=l.fc;
-				World.w.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
+				World.w.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.coordinates.X, gg.coordinates.Y, color);
 			}
 			//информационное окно для важных предметов
-			//trace(l.id,l.tip,l.mess);
 			if (World.w.helpMess || l.tip=='art') {
 				if (l.mess!=null && !(World.w.game.triggers['mess_'+l.mess]>0)) {
 					World.w.game.triggers['mess_'+l.mess]=1;
@@ -794,7 +793,7 @@ package fe.unit
 					cItem=-1;
 				}
 			} catch(err) {}
-			if (snd && items[ci].xml && items[ci].xml.@uses.length())	Snd.ps(items[ci].xml.@uses,owner.X,owner.Y);
+			if (snd && items[ci].xml && items[ci].xml.@uses.length())	Snd.ps(items[ci].xml.@uses, owner.coordinates.X, owner.coordinates.Y);
 		}
 		
 		public function checkKol(ci:String, n:int=1):Boolean {
@@ -883,7 +882,7 @@ package fe.unit
 			if (kol>items[nid].kol) kol=items[nid].kol;
 			if (kol<=0) return;
 			var item:Item=new Item(null,nid,kol);
-			var loot:Loot=new Loot(World.w.loc,item,owner.X,owner.Y-owner.scY/2,true,false,false);
+			var loot:Loot=new Loot(World.w.loc, item, owner.coordinates.X, owner.coordinates.Y - owner.scY / 2, true, false, false);
 			minusItem(nid,kol,false);
 		}
 		

@@ -17,8 +17,6 @@ package fe.unit {
 			flyer=true;
 			kolTrs=1;
 			super(cid, ndif, xml, loadObj);
-			//if (msex) wPos=BlitAnim.wPosRaider1;
-			//else wPos=BlitAnim.wPosRaider2;
 			tupizna=10;
 			visionMult=1.5;
 			maxSpok=50;
@@ -51,7 +49,8 @@ package fe.unit {
 		}
 		public override function setVisPos() {
 			if (vis) {
-				vis.x=X,vis.y=Y;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
 				vis.scaleX=storona;
 			}
 			if (arm) {
@@ -115,7 +114,6 @@ package fe.unit {
 					} else {
 						animState='walk';
 						if (aiNapr*storona<0) revers=true;
-						//sndStep(anims[animState].f,1);
 					}
 				} else if (isFly || aiPlav || levit) {
 					animState='fly';
@@ -134,9 +132,9 @@ package fe.unit {
 			}
 			anims[animState].step();
 			//положение руки
-			var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-				arm.x=X+(obj.x+visBmp.x)*storona;
-				arm.y=Y+obj.y+visBmp.y;
+			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
+				arm.x = coordinates.X + (obj.x+visBmp.x)*storona;
+				arm.y = coordinates.Y + obj.y+visBmp.y;
 		}
 	}
 }

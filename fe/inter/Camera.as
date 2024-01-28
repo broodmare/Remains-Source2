@@ -139,18 +139,25 @@ package fe.inter
 				}
 				if (!camRun) {
 					if (otryv>0) {
-						if (showX>=0) {
-							X=un.X*scaleV+otryv*(showX-screenX/2)*1.3;
-							Y=un.Y*scaleV+otryv*(showY-screenY/2)*1.3;
-						} else {
-							X=un.X*scaleV+otryv*(celX-screenX/2);
-							Y=un.Y*scaleV+otryv*(celY-screenY/2);
+						if (showX >= 0)
+						{
+							X = un.coordinates.X * scaleV + otryv * (showX - screenX / 2) * 1.3;
+							Y = un.coordinates.Y * scaleV + otryv * (showY - screenY / 2) * 1.3;
 						}
-					} else {
-						X=un.X*scaleV;
-						if (ovy-un.Y*scaleV>5 && ovy-un.Y*scaleV<50) {
-							Y=ovy-(ovy-un.Y*scaleV)/4;
-						} else Y=un.Y*scaleV;
+						else
+						{
+							X = un.coordinates.X * scaleV + otryv * (celX - screenX / 2);
+							Y = un.coordinates.Y * scaleV + otryv * (celY - screenY / 2);
+						}
+					}
+					else
+					{
+						X = un.coordinates.X * scaleV;
+						if (ovy - un.coordinates.Y * scaleV > 5 && ovy - un.coordinates.Y * scaleV < 50)
+						{
+							Y = ovy-(ovy - un.coordinates.Y * scaleV) / 4;
+						}
+						else Y = un.coordinates.Y * scaleV;
 					}
 				}
 				ovy=Y;

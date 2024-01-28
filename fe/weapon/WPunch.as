@@ -20,8 +20,8 @@ package fe.weapon
 			if (t_attack>0) t_attack--;
 			if (t_attack==rapid-5) {
 				if (owner.player) {
-					var deltaX:Number=owner.celX-X;
-					var deltaY:Number=owner.celY-Y;
+					var deltaX:Number=owner.celX - coordinates.X;
+					var deltaY:Number=owner.celY - coordinates.Y;
 					var signY:int=(deltaY>0)?1:-1;
 					if (Math.abs(deltaY)>Math.abs(deltaX)) deltaY=Math.abs(deltaX)*signY;
 					rot=Math.atan2(deltaY, deltaX);
@@ -38,9 +38,9 @@ package fe.weapon
 						b.damage*=World.w.pers.punchDamMult;
 						b.destroy=World.w.pers.kickDestroy;
 					}
-					Snd.ps('m_big',X,Y,0,Math.random()*0.2+0.1);
+					Snd.ps('m_big', coordinates.X, coordinates.Y, 0, Math.random() * 0.2 + 0.1);
 				} else {
-					Snd.ps('m_med',X,Y,0,Math.random()*0.2+0.1);
+					Snd.ps('m_med', coordinates.X, coordinates.Y, 0, Math.random() * 0.2 + 0.1);
 				}
 				b.probiv=1;
 				b.retDam=true;
