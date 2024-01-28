@@ -1063,11 +1063,14 @@
 			return false;
 		}
 		
-		//снять нужное количество маны, установить время перезарядки
-		public function manaSpell(dmag:Number, dm:Number):void {
-			mana-=dmag*pers.allDManaMult;
-			pers.manaDamage(dm*pers.allDManaMult);
-			dmana=0;
+		// [remove the required amount of mana, set the cooldown time]
+		public function manaSpell(dmag:Number, dm:Number):void
+		{
+			trace('manaSpell: dmag: (' + dmag + '), dm: (' + dm + ')');
+
+			mana -= dmag * pers.allDManaMult;
+			pers.manaDamage(dm * pers.allDManaMult);
+			dmana = 0;
 			if (teleObj) dropTeleObj();
 		}
 		

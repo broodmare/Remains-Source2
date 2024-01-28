@@ -26,15 +26,18 @@ package fe.unit
 		public var teleSpell:Boolean=false;		//заклинание телекинеза
 		var est:int=1;							//результат каста
 		
-		public var magic:Number=0, dmagic:Number=0;	//сколько маны требует
-		public var mana:Number=0, dmana:Number=0;	//сколько маны требует
-		public var culd:int=0;					//кулдаун
+		public var magic:Number=0, dmagic:Number=0;	// [how much mana does it require]
+		public var mana:Number=0, dmana:Number=0;	// [how much mana does it require]
+
+		// Cooldown
+		public var culd:int=0;					
 		public var t_culd:int=0;
-		public var hp:Number=300;					//хп заклинания
-		public var dist:Number=0;					//максимальная дистанция заклинания
-		public var rad:Number=0;					//радиус заклинания
-		public var dam:Number=0;					//действие заклинания
-		public var line:int=0;			//требование к видимости цели
+		
+		public var hp:Number=300;		// [Spell HP]
+		public var dist:Number=0;		// [Maximum spell distance]
+		public var rad:Number=0;		// [Spell radius]
+		public var dam:Number=0;		// [Apell action]
+		public var line:int=0;			// [Target visibility requirement]
 		
 		public var cf:Function;
 		
@@ -84,7 +87,7 @@ package fe.unit
 		{
 			if (cachedItems[id] != undefined) return cachedItems[id];
 
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
 			if (node) cachedItems[id] = node;
 
 			return node;
@@ -97,9 +100,11 @@ package fe.unit
 		
 		public function cast(nx:Number=0, ny:Number=0):Boolean
 		{
-			//проверка возможности магии и наличия маны
+			// [checking the possibility of magic and the presence of mana]
 			if (cf==null) return false;
-			if (player) {
+			
+			if (player)
+			{
 				if (World.w.alicorn && id!='sp_mshit') return false;
 				if (gg.rat>0) return false;
 				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) {
@@ -113,11 +118,14 @@ package fe.unit
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 					return false;
 				}
-				if (t_culd>0) {
-					if (!active) {
-						if (culd>=100) {
-							World.w.gui.infoText('spellCuld',Math.ceil(t_culd/World.fps),null,false);
-							World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y-20);
+				if (t_culd > 0)
+				{
+					if (!active)
+					{
+						if (culd >= 100)
+						{
+							World.w.gui.infoText('spellCuld', Math.ceil(t_culd / World.fps), null, false);
+							World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y - 20);
 						}
 						Snd.ps('nomagic');
 					}
@@ -138,7 +146,8 @@ package fe.unit
 					return false;
 				}
 			}
-			//координаты источника
+
+			// [source coordinates]
 			if (owner)
 			{
 				X = owner.magicX;
@@ -149,14 +158,17 @@ package fe.unit
 			}
 			else loc = World.w.loc;
 
-			//координаты цели
-			cx=nx, cy=ny;
-			//проверка видимости точки цели, если это нужно
-			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy)) {
-				if (player) World.w.gui.infoText('noVisible',null,null,false);
+			// [target coordinates]
+			cx = nx;
+			cy = ny;
+
+			// [checking the visibility of the target point, if necessary]
+			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy))
+			{
+				if (player) World.w.gui.infoText('noVisible', null, null, false);
 				return false;
 			}
-			//проверка и коррекция дистанции
+			// [checking and correcting distance]
 			if (dist>0) {
 				var rasst2=(X-cx)*(X-cx)+(Y-cy)*(Y-cy);
 				if (rasst2>dist*dist) {
@@ -165,20 +177,27 @@ package fe.unit
 					cy=Y-(Y-cy)*dist/rasst;
 				}
 			}
-			//снять ману
-			//вызов нужной функции
+			// [remove mana]
+			// [call the required function]
 			cf();
-			if (est==1) {
-				if (player) {
-					gg.manaSpell(magic*gg.pers.warlockDManaMult,mana*gg.pers.warlockDManaMult);
-					t_culd=Math.round(culd*gg.pers.spellDown);
+
+			if (est == 1)
+			{
+				if (player)
+				{	
+					var dmag:Number = magic * gg.pers.warlockDManaMult;
+					var dm:Number = mana * gg.pers.warlockDManaMult;
+					
+					gg.manaSpell(dmag, dm);
+					t_culd = Math.round(culd * gg.pers.spellDown);
 				}
-				if (snd) Snd.ps(snd,X,Y);
-			} else if (est==0) {
+				if (snd) Snd.ps(snd, X, Y);
+			}
+			else if (est == 0)
+			{
 				Snd.ps('nomagic');
 				return false;
 			}
-			//active=true;
 			return true;
 		}
 		

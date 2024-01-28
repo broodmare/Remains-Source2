@@ -1138,18 +1138,26 @@ package fe.unit
 			}
 		}
 		
-		public function manaDamage(dam:Number) {
-			if (dam<=0) return;
+		public function manaDamage(dam:Number)
+		{
+			//Mana usage debug
+			var damOut:Number = Number(dam.toFixed(3));
+			var message:String = (damOut > 0) ? 'Draining mana (' + damOut + ')' : 'Draining mana (~0.0001)';
+			trace(message);
+			
+			if (dam <= 0) return;
 			if (gg.loc.train) return;
-			var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
-			manaHP-=dam;
-			if (manaMin>0 && manaHP<1) manaHP=1;
-			if (manaHP<0) {
-				manaHP=0;
+			var sst:int = 4 - Math.ceil(manaHP / inMaxMana * 4);
+			manaHP -= dam;
+			if (manaMin > 0 && manaHP < 1) manaHP = 1;
+			if (manaHP < 0)
+			{
+				trace('ManaHP fell below 0, resetting to 0!');
+				manaHP = 0;
 			}
-			manaSt=4-Math.ceil(manaHP/inMaxMana*4);
-			if (sst!=manaSt) setParameters();
-			if (manaSt>sst) trauma(manaSt,5);
+			manaSt = 4 - Math.ceil(manaHP / inMaxMana * 4);
+			if (sst != manaSt) setParameters();
+			if (manaSt > sst) trauma(manaSt, 5);
 		}
 		
 		//исцеление 0-самого повреждённого места, 1-голова, 2-корпус, 3-ноги, 4-всё, 5-кровь, 6-мана

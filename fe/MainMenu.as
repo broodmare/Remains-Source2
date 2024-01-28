@@ -446,21 +446,17 @@ package fe
 
 		private function completeHandler(event:Event):void 
 		{
-			try 
-			{
-				var obj:Object=file.data.readObject();
-				if (obj && obj.est==1){
-					loadCell=99;
-					world.loaddata=obj;
-					mainLoadOff();
-					mainMenuOff();
-					command=3;
-					com='load';
-					return;
-				}
-			} 
-			catch(err) {}
-			trace('Error load');
+			var obj:Object=file.data.readObject();
+			if (obj && obj.est==1){
+				loadCell=99;
+				world.loaddata=obj;
+				mainLoadOff();
+				mainMenuOff();
+				command=3;
+				com='load';
+				return;
+			}
+
        }		
 		
 		//новая игры
