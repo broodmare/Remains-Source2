@@ -26,7 +26,8 @@ package  fe
 	import fe.unit.Pers;
 	import fe.weapon.Weapon;
 	
-	public class World {
+	public class World
+	{
 		public static var w:World;
 		
 		public var playerMode:String;	//Режим флеш-плеера

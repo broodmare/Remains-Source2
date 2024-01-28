@@ -261,9 +261,10 @@ package fe.unit
 		//лунный клинок
 		private function cast_moon():void
 		{
-			if (gg.currentPet!='moon') {
-				gg.pets['moon'].hp=gg.pets['moon'].maxhp;
-				gg.callPet('moon',true);
+			if (gg.currentPet != 'moon')
+			{
+				gg.pets['moon'].hp = gg.pets['moon'].maxhp;
+				gg.callPet('moon', true);
 			}
 			else if (gg.pet) gg.pet.heal(gg.pet.maxhp);
 		}

@@ -358,19 +358,25 @@
 //				Движение, перемещение в другую локацию
 //
 //**************************************************************************************************************************
-		//выход из локации (попытка, возвращает true если выход успешный)
-		public override function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean {
-			//не давать выйти
-			if (teleObj || actionObj || t_work>0 || isFetter>0 || loc.sky) return false;
+		// [exit from location (attempt, returns true if exit is successful)]
+		public override function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean
+		{
+			// [Don't let me leave]
+			if (teleObj || actionObj || t_work>0 || isFetter>0 || loc.sky)
+			{
+				trace('Failed to leave room!');
+				return false;
+			}
 			
-			//не давать выйти, пока гг под атакой
-			var po:int=World.w.possiblyOut();
-			if (po>0 && !(napr==3 && loc.bezdna) && rat==0) {
+			// [Don't let them leave while they're under attack]
+			var po:int = World.w.possiblyOut();
+			if (po > 0 && !(napr==3 && loc.bezdna) && rat==0) {
 				if (napr==3 && !loc.bezdna) {
 					dy=-jumpdy;
 					dx=maxSpeed*storona;
 				}
 				if (po==2) World.w.gui.infoText('noOutLoc', null, null, false);
+				trace('Failed to leave room, under attack!');
 				return false;
 			}
 			
@@ -399,7 +405,7 @@
 						dy=-jumpdy;
 					}
 				}
-				if (napr==5) dx=3*storona;
+				if (napr==5) dx = 3 * storona;
 				if (sats.que.length>0) sats.clearAll();
 				if (levit==1 && !ctr.keyJump) levit=0;
 				return true;
@@ -408,8 +414,10 @@
 			return false;
 		}
 		
-		//вход в локацию
-		public function inLoc(nloc:Location) {
+		// [entrance to the location]
+		public function inLoc(nloc:Location)
+		{
+			trace('Entering room: "' + nloc.id + '", at (' + nloc.landX + ', ' + nloc.landY + ', ' + nloc.landZ + ').');
 			if (pet) {
 				if (!nloc.petOn && loc.petOn) {
 					World.w.gui.infoText('noPetFollow');
@@ -1195,51 +1203,70 @@
 		}
 		
 		
-		//действие с активным объектом при удерживаемой клавише действия
-		private function actAction():void {
-			if (actionObj) {
+		// [Action with the active object while holding down the action key]
+		private function actAction():void
+		{
+			if (actionObj)
+			{
+				// Object too far away
 				if ((coordinates.X - actionObj.coordinates.X) * (coordinates.X - actionObj.coordinates.X) + (coordinates.Y - actionObj.coordinates.Y) * (coordinates.Y - actionObj.coordinates.Y) > World.w.actionDist)
 				{
 					actionObj = null;
 				}
-			} else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
-				actionReady=false;
-				if ((pers.telemaster==0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact=='comein')) && !loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2, loc.celObj))
+			}
+			// Object within range
+			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist)
+			{
+				actionReady = false;
+				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == 'comein')) && !loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2, loc.celObj))
 				{
-					World.w.gui.infoText('noVisible',null,null,false);
+					World.w.gui.infoText('noVisible', null, null, false);
 					return;
 				}
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1)
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == 1)
 				{
 					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.scY / 2);
 					return;
 				}
-				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action>0) {
-					if (loc.celObj.inter.needSkill) {
-						loc.celObj.inter.unlock=pers.getSkillLevel(loc.celObj.inter.needSkill);
+				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action > 0)
+				{
+					if (loc.celObj.inter.needSkill)
+					{
+						loc.celObj.inter.unlock = pers.getSkillLevel(loc.celObj.inter.needSkill);
 					} 
-					if (loc.celObj.inter.mine>0) {	//ловушка или бабах
+					if (loc.celObj.inter.mine > 0) // Trap or Mine
+					{	
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.mineTip);
 						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.mine, 3);
 						actionObj=loc.celObj.inter;
-					} else if (loc.celObj.inter.lock>0 && loc.celObj.inter.lockKey && invent.items[loc.celObj.inter.lockKey].kol>0) {	//открыть ключом
+					}
+					else if (loc.celObj.inter.lock>0 && loc.celObj.inter.lockKey && invent.items[loc.celObj.inter.lockKey].kol>0) // Open with key
+					{	
 						loc.celObj.inter.unlock=1;
 						t_action=20;
 						actionObj=loc.celObj.inter;
-					} else if (loc.celObj.inter.lock>=100) {	//заклинило
+					}
+					else if (loc.celObj.inter.lock>=100) // Lock is jammed
+					{	
 						return;
-					} else if (loc.celObj.inter.lock>0) {	//взлом
+					}
+					else if (loc.celObj.inter.lock>0) // Lockpicking
+					{
 						if (loc.celObj.inter.lockTip==0) return;
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.lockTip);
 						loc.celObj.inter.master=pers.getLockMaster(loc.celObj.inter.lockTip);
 						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.lock, loc.celObj.inter.lockTip);
 						actionObj=loc.celObj.inter;
-					} else if (loc.celObj.inter.t_action) {			//открывается какое-то время
+					}
+					else if (loc.celObj.inter.t_action) // Timed action
+					{			
 						t_action=loc.celObj.inter.t_action;
 						actionObj=loc.celObj.inter;
 						actionObj.beginAct();
-					} else {								//открыть сразу
-						loc.celObj.inter.is_act=true;
+					}
+					else // [Open immediately]
+					{								
+						loc.celObj.inter.is_act = true;
 					}
 					mt_action=t_action;
 					if (mt_action<=0) mt_action=1;
@@ -2421,40 +2448,50 @@
 			}
 		}
 		
-		//призыв и отзыв спутника, f=true - принудительно
-		public function callPet(npet:String, f:Boolean=false) {
-			if (noPet>0 && !f) {
-				World.w.gui.infoText('petNot',null,null,false);
+		// [summoning and recalling a companion, f = true - forced]
+		public function callPet(npet:String, f:Boolean=false)
+		{
+			if (noPet > 0 && !f)
+			{
+				World.w.gui.infoText('petNot', null, null, false);
 				return;
 			}
-			if (noPet2>0 && !f || !atkPoss || World.w.alicorn) {
-				World.w.gui.infoText('petNot2',null,null,false);
+			if (noPet2 > 0 && !f || !atkPoss || World.w.alicorn)
+			{
+				World.w.gui.infoText('petNot2', null, null, false);
 				return;
 			}
 			if (npet=='owl' && currentPet=='owl' && pets[npet] && pets[npet].hp<=0 && !f) {
 				World.w.gui.infoText('petNot3',null,null,false);
 				return;
 			}
-			noPet2=5*30;
-			if (pet) {
+			noPet2 = 5 * 30;
+			if (pet)
+			{
 				World.w.gui.infoText('petRecall',pet.nazv);
 				pet.recall();
-				pet=null;
-				childObjs[2]=null;
+				pet = null;
+				childObjs[2] = null;
 			}
-			retPet='';
-			if (currentPet==npet) {
+			retPet = '';
+			if (currentPet == npet)
+			{
 				currentPet='';
-			} else {
-				if (!loc.petOn) {
+			}
+			else
+			{
+				if (!loc.petOn)
+				{
 					World.w.gui.infoText('noPetCall',null,null,false);
-				} else {
-					currentPet=npet;
-					pet=pets[currentPet];
-					childObjs[2]=pet;
+				}
+				else
+				{
+					currentPet = npet;
+					pet = pets[currentPet];
+					childObjs[2] = pet;
 					pet.coordinates.X = coordinates.X;
 					pet.coordinates.Y = coordinates.Y - 20;
-					pet.loc=loc;
+					pet.loc = loc;
 					pet.call();
 					World.w.gui.infoText('petCall',pet.nazv);
 				}

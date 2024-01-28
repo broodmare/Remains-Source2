@@ -765,21 +765,23 @@ package fe.unit
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
 				if (turnX!=0) {
 					if (pumpObj && pumpObj.door) {		//наткнулся на дверь, открыть
-						if (pumpObj.lock<=0 && pumpObj.active && pumpObj.action==1 && pumpObj.lockTip!=4) {//&& Math.abs(pumpObj.X-X)<150 && Math.abs(pumpObj.Y-Y)<100
-							pumpObj.open=true;
+						if (pumpObj.lock<=0 && pumpObj.active && pumpObj.action==1 && pumpObj.lockTip!=4)
+						{
+							pumpObj.open = true;
+							trace('Raider opening door.');
 							pumpObj.setDoor();
 						}
 					}
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=tstor=turnX;
-						aiTTurn=Math.floor(Math.random()*20)+5;
+						aiTTurn = int(Math.random()*20)+5;
 					} else {							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
 						if (isrnd(0.1) || turnY>0 || celDY>100 || !checkJump()) aiTTurn-=10;
 						else jmp=1;
 						if (aiTTurn<0 && stay) {
 							aiNapr=tstor=turnX;
-							aiTTurn=Math.floor(Math.random()*20)+5;
+							aiTTurn = int(Math.random()*20)+5;
 						}
 					}
 					turnX=turnY=0;

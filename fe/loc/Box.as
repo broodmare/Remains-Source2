@@ -21,7 +21,7 @@ package fe.loc
 		public var shelf:Boolean=true;	//на этом можно стоять
 		public var isPlav:Boolean=false, isPlav2:Boolean=false, fixPlav:Boolean=false;
 		public var id:String;
-		public var door:int=0;
+		public var door:int = 0;
 		public var begX:Number=-1, begY:Number=-1; 		//исходная точка
 		public var stX:Number=0, stY:Number=0;	//положение на начало такта
 		public var cdx:Number=0, cdy:Number=0;	//движение того, кто стоит на ящике	
@@ -36,9 +36,9 @@ package fe.loc
 		public var montdam:int=5;		//насколько будет ломаться монтировка
 		public var electroDam:Number=0;	//если больше 0 - является генератором электрозащиты
 		public var tiles:Array;			//задействованные блоки
-		public var dead:Boolean=false;
-		public var invis:Boolean=false;
-		public var light:Boolean=false;	//убрать туман войны в этой точке
+		public var dead:Boolean	= false;
+		public var invis:Boolean = false;
+		public var light:Boolean = false;	//убрать туман войны в этой точке
 		public var door_opac:Number=1;
 		var massaMult:Number=1;
 		
@@ -141,14 +141,17 @@ package fe.loc
 			massa=scX*scY*scY/250000*massaMult;
 			if (node.@massa.length()) massa=node.@massa/50;
 			
-			if (xml && xml.@indestruct.length()) {
+			if (xml && xml.@indestruct.length())
+			{
 				hp=10000;
 				thre=10000;
 			}
-			//дверь
-			if (node.@door.length()) {
-				door=node.@door;
-				if (node.@opac.length()) door_opac=node.@opac;
+
+			//Door
+			if (node.@door.length())
+			{
+				door = node.@door;
+				if (node.@opac.length()) door_opac = node.@opac;
 				initDoor();
 			}
 			//интерактивность
@@ -361,62 +364,82 @@ package fe.loc
 		public function initDoor()
 		{
 			tiles = [];
-			for (var i = int(X1 / tileX + 0.5); i <= int(X2 / tileX - 0.5); i++)
+			for (var i:int = int(X1 / tileX + 0.5); i <= int(X2 / tileX - 0.5); i++)
 			{
-				for (var j = int(Y1 / tileY + 0.5); j <= int(Y2 / tileY - 0.5); j++)
+				for (var j:int = int(Y1 / tileY + 0.5); j <= int(Y2 / tileY - 0.5); j++)
 				{
 					var t:Tile = loc.getTile(i, j);
-					t.front='';
-					t.phis=phis;
-					t.opac=door_opac;
-					t.door=this;
-					t.mat=mat;
-					t.hp=hp;
-					t.thre=thre;
+					t.front = '';
+					t.phis = phis;
+					t.opac = door_opac;
+					t.door = this;
+					t.mat = mat;
+					t.hp = hp;
+					t.thre = thre;
 					tiles.push(t);
 				}
 			}
 		}
-		public function setDoor(open:Boolean) {
-			for (var i in tiles) {
-				(tiles[i] as Tile).phis=(open?0:phis);
-				(tiles[i] as Tile).opac=(open?0:door_opac);
+
+		// This is for opening and closing doors inside of rooms, NOT for traveling to new rooms.
+		public function setDoor(state:Boolean)
+		{
+			trace('Door set as ' + (state ? 'open' : 'closed'));
+
+			for (var i in tiles)
+			{
+				(tiles[i] as Tile).phis = (state? 0:phis);
+				(tiles[i] as Tile).opac = (state? 0:door_opac);
 			}
-			setVisState(open?'open':'close');
-			if (open) {
-				loc.isRelight=true;
-				loc.isRebuild=true;
+
+			setVisState(state? 'open':'close');
+			
+			if (state && World.w.loc)
+			{
+				World.w.loc.isRelight = true;
+				World.w.loc.isRebuild = true;
 			}
 		}
-		//удар закрывающейся дверью
-		public function attDoor():Boolean {
-			for each (var cel in loc.units) {
-				if (cel==null || (cel as Unit).sost==4) continue;
+
+		// Check if doorway is clear
+		public function attDoor():Boolean
+		{
+			for each (var cel in loc.units)
+			{
+				if (cel == null || (cel as Unit).sost == 4) continue;
 				if (cel is fe.unit.UnitMWall) continue;
-				if (cel is fe.unit.Mine && !(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) {
-					cel.fixed=true;
+				if (cel is fe.unit.Mine && !(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1))
+				{
+					cel.fixed = true;
+					trace('Mine activated by door!');
 					(cel as fe.unit.Mine).activate();
 					continue;
 				}
-				if (!(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) {
-					trace('Мешает:', cel.nazv);
+				if (!(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1))
+				{
+					trace('Door blocked by unit!');
 					return true;
 				}
 			}
-			for each (cel in loc.objs) {
-				if ((cel as Box).wall>0) continue;
+			for each (cel in loc.objs)
+			{
+				if ((cel as Box).wall > 0) continue;
 				if (!(cel.coordinates.X - cel.scX / 2 >= X2 || cel.coordinates.X + cel.scX / 2 <= X1 || cel.coordinates.Y - cel.scY >= Y2 || cel.coordinates.Y <= Y1))
 				{
+					trace('Door blocked by box!');
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function attMoln() {
-			for each (var cel in loc.units) {
-				if (cel==null || (cel as Unit).sost==4) continue;
-				if (!(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) {
+		public function attMoln()
+		{
+			for each (var cel in loc.units)
+			{
+				if (cel == null || (cel as Unit).sost == 4) continue;
+				if (!(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1))
+				{
 					cel.udarBox(this);
 				}
 			}
@@ -424,12 +447,14 @@ package fe.loc
 		
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
-			if (sposob==1) {
+			if (sposob==1)
+			{
 				if (!bulPlayer) return -1;
 				damage(bul.destroy);
 				return mat;
 			}
-			if (sposob==0 && bulChance>0) {
+			if (sposob == 0 && bulChance > 0)
+			{
 				if (Math.random()<bulChance) {
 					var sila=Math.random()*0.4+0.8;
 					sila/=massa;
@@ -462,7 +487,7 @@ package fe.loc
 				setVisState('die');
 				if (inter) {
 					if (inter.mine>0) {
-						if (inter.fiascoRemine!=null) inter.fiascoRemine();
+						if (inter.fiascoRemine != null) inter.fiascoRemine();
 					}
 					inter.off();
 				}
@@ -549,7 +574,7 @@ package fe.loc
 			var t:Tile;var i:int;
 			
 			
-			//ГОРИЗОНТАЛЬ
+			//HORIZONTAL
 				coordinates.X += dx / div;
 				if (coordinates.X - scX / 2 < 0)
 				{
@@ -596,7 +621,7 @@ package fe.loc
 				}
 			
 			
-			//ВЕРТИКАЛЬ
+			//VERTICAL
 			//движение вниз
 			var newmy:Number=0;
 			if (dy>0)

@@ -25,12 +25,14 @@ package fe.unit {
 		var optUncall:Boolean=false;	//отзыв при смерти
 		var optTurn:Boolean=true;	//поворачиваться
 
-		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id = 'phoenix';
 			if (cid != null) id = cid;
 			getXmlParam();
 			fraction = Unit.F_PLAYER;
+			
 			if (id == 'moon')
 			{
 				vis = new visualMoon();

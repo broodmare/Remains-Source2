@@ -263,21 +263,26 @@ package fe.unit
 		public var portMagic:Number=950;
 		public var portMana:Number=25;
 		
-		//спутник-феникс
+
+		// (PET) Phoenix stats
 		public var petHP:Number=50;
 		public var petDam:Number=2;
 		public var petSkin:Number=0;
 		public var petVulner:Number=1;
 		public var petRes:int=30;
-		//спутник-сова
+
+		// (PET) Owl stats
 		public var owlHP:Number=200;
 		public var owlDam:Number=3;
 		public var owlSkin:Number=5;
 		public var owlVulner:Number=1;
-		//спутник-лунный
+
+		// (PET) Moon Blade stats
 		public var moonHP:Number=70;
 		public var moonDam:Number=15;
 		
+
+
 		public var alicornHeal:Number=2;
 		public var alicornManaHeal:Number=0.1;
 		public var alicornPortMana:Number=500;
@@ -306,9 +311,9 @@ package fe.unit
 		
 		public function Pers(loadObj:Object=null, opt:Object=null)
 		{
-			skill_ids=new Array();
-			skills=new Array();
-			addictions=new Array();
+			skill_ids	= [];
+			skills		= [];
+			addictions	= [];
 			var ndif:int=2;
 			ndif = World.w.game.globalDif;
 

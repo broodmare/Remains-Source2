@@ -159,11 +159,12 @@ package fe.serv
 					else if (node.@inter!='3' && Math.random()<0.4) mineTip=6;
 				}
 				saveMine=mine;
-				//можно хакнуть
+				// [can be hacked]
 				if (node.@hack>0) is_hack=true;
-				//общее действие
+				// [general action]
 				if (node.@allact.length()) allact=node.@allact;
-				//действие
+
+				// Actions 
 				action=node.@inter;
 				if (node.@xp.length()) xp=node.@xp;
 				if (node.@once.length()) at_once=node.@once;
@@ -250,7 +251,7 @@ package fe.serv
 				if (lockTip==1 || lockTip==2) {
 					if (low>0 && Math.random()<low) lock=Math.ceil(lock*0.5);
 					if (lock>maxLockLvl) lock=maxLockLvl;
-					if (lock>0 && low<=0 && own && own.loc && own.loc.land.rnd && own.loc.prob==null && Math.random()<0.2) lock+=Math.floor(Math.random()*2)+2;
+					if (lock>0 && low<=0 && own && own.loc && own.loc.land.rnd && own.loc.prob==null && Math.random()<0.2) lock += int(Math.random()*2)+2;
 					//определить уровень замка
 					if (lock>2 && lockLevel==0) {
 						lockLevel = Math.round(Math.random()*(lock-2)/3.2);
@@ -280,16 +281,19 @@ package fe.serv
 				if (node.@destroy.length()) destroy=node.@destroy;
 				if (node.@radius.length()) explRadius=node.@radius;
 			}
-			if (allact=='robocell') {
-				fiascoUnlock=robocellFail;
+			if (allact == 'robocell')
+			{
+				fiascoUnlock = robocellFail;
 			}
-			if (allact=='alarm') {
-				fiascoRemine=alarm2;
-				if (owner) {
-					area=new Area(loc);
+			if (allact=='alarm')
+			{
+				fiascoRemine = alarm2;
+				if (owner)
+				{
+					area = new Area(loc);
 					owner.copy(area);
-					area.tip='raider';
-					area.over=alarm2;
+					area.tip = 'raider';
+					area.over = alarm2;
 				}
 			}
 			if (prize) {
@@ -797,10 +801,12 @@ package fe.serv
 			}
 		}
 
-		public function setDoor() {
-			if (inited && !open && (owner as Box).attDoor()) {
-				open=true;
-				if (t_autoClose<=0) World.w.gui.infoText('noClose',null,null,false);
+		public function setDoor()
+		{
+			if (inited && !open && (owner as Box).attDoor())
+			{
+				open = true;
+				if (t_autoClose <= 0) World.w.gui.infoText('noClose', null, null, false);
 				return;
 			}
 			(owner as Box).setDoor(open);
@@ -934,16 +940,24 @@ package fe.serv
 				loc.electroCheck();
 				if (loc.electroDam<=0) World.w.gui.infoText('electroOff',null,null,true);
 				else World.w.gui.infoText('electroOn',null,null,true);
-			} else if (allact=='comein') {
-		 		World.w.gg.outLoc(5, coordinates);
-			} else if (allact=='bind') {
+			} 
+			else if (allact == 'comein')
+			{
+				trace('Interacting with door at coordinates: (' + coordinates.X + ', ' + coordinates.Y + ')');
+		 		World.w.gg.outLoc(5, coordinates.X, coordinates.Y);
+			}
+			else if (allact=='bind') {
 				World.w.gg.bindChain(coordinates.X, coordinates.Y - 20);
-			} else if (allact=='work' || allact=='lab' || allact=='stove') {
+			}
+			else if (allact=='work' || allact=='lab' || allact=='stove')
+			{
 				World.w.pip.workTip=allact;
 				World.w.pip.onoff(7);
-			} else if (allact=='app') {
+			}
+			else if (allact=='app') {
 				World.w.pip.onoff(8);
-			} else if (allact=='map') {
+			}
+			else if (allact=='map') {
 				World.w.pip.travel=true;
 				World.w.pip.onoff(3,3);
 				World.w.pip.travel=true;
