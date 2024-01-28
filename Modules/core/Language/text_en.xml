@@ -4612,7 +4612,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>use</n>
   </gui>
   <gui id="comein">
-    <n>come in</n>
+    <n>enter</n>
   </gui>
   <gui id="trade">
     <n>trade</n>
@@ -5860,7 +5860,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Attention! The medical module is damaged. Health monitoring functional is limited. Please visit a certified PipBuck technician for service</n>
   </pip>
   <pip id="emptybuy">
-    <n>Nothing to sale</n>
+    <n>This merchant has nothing to sell</n>
   </pip>
   <pip id="emptysell">
     <n>You have nothing valuable for sale</n>
@@ -6577,7 +6577,7 @@ You can always change zoom in game using the @1 key. And if a room does not fit 
     <n>Using spell @1</n>
   </info>
   <info id="noClose" st="0">
-    <n>Something prevents closing this door</n>
+    <n>Something is preventing the door from closing!</n>
   </info>
   <info id="noChArmor" st="3">
     <n>You can not change clothes during the fight!</n>
@@ -12003,8 +12003,8 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     <a>C-4 explosives will help you blow apart even the most solid concrete or stone wall. You can use a hoofmade bomb, but it is much less powerful</a>
     <a>You will not always hit the target. The likelihood of a hit is affected by the type of weapon and your skill level. To shoot an enemy from a weapon like a sawed-off shotgun, you need to get very close</a>
     <a>[Shift] + [click] on a product name in the trade window will select the maximum available quantity of the item for purchase or sale</a>
-    <a>Weapons used by raiders are always crappy and in awful condition, suitable only for spare parts. Good weapons can be found in non-looted arsenals, and sometimes in safes</a>
-    <a>Damaged weapons are less accurate, do less damage, and can also misfire or jam</a>
+    <a>Weapons found on raiders are almost always poorly maintained and only good for spare parts. Better weapons can be found weapons lockers or occasionally in safes</a>
+    <a>Damaged weapons are less accurate, do less damage, and may misfire or jam</a>
     <a>Safes are always locked, and sometimes protected by explosives or alarm. You will need skills for hacking, explosives or stealth to safely get to their contents. But this is usually worth it, because the better the lock, the higher is the probability that the safe contains something valuable</a>
     <a>Firearms use various kinds of ammunition. This can be a big problem - even though you have a cool gun, there might be nothing to shoot from it</a>
     <a>Feral ghouls like digging themselves underground. Nothing will give out their presence until they dig out and attack</a>
@@ -12611,15 +12611,15 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Prepare to die!</r>
       <r>Diiiie!</r>
       <r>Chaarge!</r>
-      <r>You are finished!</r>
+      <r>You're' finished!</r>
       <r>I`ll getcha!</r>
-      <r>Fun has been doubled!</r>
+      <r>The fun has been doubled!</r>
       <r>Fun! Fun! Fun!</r>
       <r>I`ll smash ya!</r>
-      <r>Get duncked on!</r>
-      <r>Rape time!</r>
+      <r>Get dunked on!</r>
+      <r>It's rape time!</r>
       <r>Asshole!</r>
-      <r>Kill them all!</r>
+      <r>Kill 'em all!</r>
       <r>Come here, jackass!</r>
       <r>Mu-ha-ha-ha!</r>
       <r>Aha!</r>
@@ -12666,9 +12666,9 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Where?</r>
       <r m="1">The fuck is going on?</r>
       <r>Who is shooting?</r>
-      <r>Did I hear something fall?</r>
-      <r>I`ve heard something</r>
-      <r>This again!</r>
+      <r>Did something fall?</r>
+      <r>I heard something</r>
+      <r>This again?!</r>
     </rep>
     <rep act="find" id="raider">
       <r>Where is she?</r>
@@ -12692,7 +12692,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Let her go buck herself</r>
       <r m="1">Yeah, run, bitch!</r>
       <r>Horseapples!</r>
-      <r>Will get her later</r>
+      <r>We'll get her later</r>
       <r>She won`t get far</r>
       <r m="1">Good fucking riddance</r>
       <r>Goddess, rape her dead!</r>
@@ -12702,7 +12702,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>It`s just wind</r>
       <r>Clear...</r>
       <r>I was pretty sure I`ve heard something</r>
-      <r>Nah, that`s nothing</r>
+      <r>It's nothing...</r>
       <r>Probably just rats...</r>
       <r>Nah, buck it</r>
     </rep>
@@ -12718,7 +12718,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Yikes!</r>
       <r>I`m hurt!</r>
       <r>They got me!</r>
-      <r>They are killing me!</r>
+      <r>They're killing me!</r>
       <r>AAAAAH!!!</r>
     </rep>
     <rep act="die" id="raider">
@@ -12750,23 +12750,23 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     </rep>
     <rep act="neutral" id="merc" v="0.6">
       <r>How much are they paying?</r>
-      <r>For how long must we be hanging here?</r>
-      <r>I`m darn hungry!</r>
+      <r>How long do we have to stay here?</r>
+      <r>I`m getting hungry!</r>
       <r>Telling you, she`s not coming!</r>
       <r>We should search somewhere else</r>
       <r>There is nopony there!</r>
       <r>And I`m telling you - the target was last seen over here!</r>
       <r>How much longer?</r>
-      <r>Do you have a cig?</r>
+      <r>Got a cig?</r>
       <r>Check your weapons</r>
       <r>Ready yourselves</r>
       <r>It`s dangerous here!</r>
       <r>Is it even worth it?</r>
       <r>I don`t like it here</r>
       <r>That`s it!</r>
-      <r>Someone wants to play cards maybe?</r>
+      <r>Anyone up for cards maybe?</r>
       <r>I am so fed up with this!</r>
-      <r m="1">Fuck this life!</r>
+      <r m="1">Fuck my life!</r>
       <r>Dash it all!</r>
       <r>* whistles *</r>
       <r>* spits *</r>
@@ -12778,9 +12778,9 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     <rep act="attack" id="merc">
       <r>Attention! Target spotted</r>
       <r>Open fire!</r>
-      <r>Target on 12</r>
+      <r>Target, 12 o' clock!</r>
       <r>Eliminate!</r>
-      <r>We`ve been long waiting for you!</r>
+      <r>We`ve been waiting for you!</r>
       <r>And here you are!</r>
       <r>Eliminate the target!</r>
       <r>Shoot to kill!</r>
@@ -12788,26 +12788,26 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Nothing personal!</r>
       <r>This is just business</r>
       <r>I only need your head</r>
-      <r>Better not resisting!</r>
+      <r>Give up!</r>
       <r>Stay where you are!</r>
       <r>Don`t run, or it will be more painful</r>
       <r>Together now!</r>
-      <r>A bullet between eyes!</r>
-      <r>I am just fulfilling the contract</r>
-      <r>This is my job</r>
-      <r>They will pay nicely for your head!</r>
+      <r>I'm putting a bullet between your eyes!</r>
+      <r>Just fulfilling the contract</r>
+      <r>This is just my job</r>
+      <r>They'll pay nicely for your head!</r>
     </rep>
     <rep act="ear" id="merc">
       <r>What was that?</r>
       <r>Who`s there?</r>
-      <r>Is there anypony?</r>
+      <r>Anyone there?</r>
       <r>Ah? Wha?</r>
-      <r>Suspicious noise!</r>
+      <r>I heard a suspicious noise!</r>
       <r>Hey! Check what`s there</r>
       <r>You hear that?</r>
       <r>Where?</r>
       <r>Are they shooting somewhere?</r>
-      <r>Something fell?</r>
+      <r>Did something fall?</r>
       <r>I heard something</r>
       <r>There, again!</r>
     </rep>
@@ -12821,15 +12821,15 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>She`s there somewhere</r>
       <r>I`ve lost visual on a target</r>
       <r>Where are you hiding?</r>
-      <r>Search from above</r>
+      <r>Search up above</r>
       <r>I will find you anyway</r>
-      <r>Comb the ground!</r>
+      <r>Check the down there!</r>
     </rep>
     <rep act="vse" id="merc">
       <r>Can`t find her</r>
       <r>Ceasing the search</r>
-      <r>We`ll separate and find her!</r>
-      <r>Uh oh, our caps got away...</r>
+      <r>Let's separate and find her!</r>
+      <r>There goes our caps...</r>
       <r>We`ll find her later</r>
       <r>She won`t get far</r>
       <r>You can`t run away from us forever</r>
@@ -12853,7 +12853,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     <rep act="dam" id="merc">
       <r>I`m hit!</r>
       <r>I got a scratch!</r>
-      <r>Ouch! It`s nothing!</r>
+      <r>Come on! That's nothing!</r>
       <r>I`m hurt!</r>
       <r>They got me!</r>
       <r>They are firing at me!</r>
@@ -12875,6 +12875,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Get down!</r>
       <r>Watch out!</r>
       <r>It`s a grenade!</r>
+      <r>Oh fuck!</r>
     </rep>
     <rep act="tele" id="merc">
       <r>Look!</r>
@@ -12897,15 +12898,15 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Check your weapons</r>
       <r>Stay ready</r>
       <r>We are the best!</r>
-      <r>Make Equestria great again!</r>
-      <r>They`ve cut rations again...</r>
+      <r>Making Equestria great again!</r>
+      <r>They cut rations again...</r>
       <r>Our duty is hard</r>
       <r>When do we move out?</r>
-      <r>This waiting is boring!</r>
+      <r>Waiting around is so boring!</r>
       <r>Let them attack. If they dare</r>
       <r>Another boring day...</r>
-      <r>Porom-pom-pom...</r>
-      <r>What our superiors say?</r>
+      <r>* humming *</r>
+      <r>What did our superiors say?</r>
       <r>No discipline whatsoever...</r>
       <r>Should change filters...</r>
       <r>Technology is better than magic</r>
@@ -12913,11 +12914,11 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     <rep act="attack" id="ranger" v="0.7">
       <r>Intruder!</r>
       <r>Open fire!</r>
-      <r>Barbarians attack!</r>
+      <r>Those Barbarians are attacking!</r>
       <r>Eliminate target!</r>
       <r>Shoot her!</r>
       <r>Shoot!</r>
-      <r>I open fire!</r>
+      <r>Opening fire!</r>
       <r>Invaders!</r>
       <r>Clear the area!</r>
       <r>Execute order 47</r>
@@ -12928,7 +12929,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Attack!</r>
     </rep>
     <rep act="ear" id="ranger" v="0.7">
-      <r>I hear suspicious noise</r>
+      <r>I heard a suspicious noise</r>
       <r>Enemy nearby!</r>
       <r>Attention!</r>
       <r>Battle formation</r>
@@ -12937,7 +12938,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Get ready!</r>
       <r>Caution!</r>
       <r>We are not alone here</r>
-      <r>Did something drop?</r>
+      <r>Did something fall?</r>
       <r>Halt! Who`s there?</r>
     </rep>
     <rep act="find" id="ranger" v="0.7">
@@ -12945,7 +12946,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Search and destroy</r>
       <r>Target lost</r>
       <r>Visual contact lost</r>
-      <r>Comb the area!</r>
+      <r>Search the area!</r>
     </rep>
     <rep act="vse" id="ranger" v="0.7">
       <r>Stand down</r>
@@ -12970,7 +12971,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>They must be here somewhere</r>
     </rep>
     <rep act="dam" id="ranger" v="0.7">
-      <r>Armor damaged</r>
+      <r>Armor's taking damage!</r>
       <r>Continue the fight</r>
       <r>No critical damage</r>
       <r>A light wound</r>
@@ -12990,11 +12991,11 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>* dies *</r>
     </rep>
     <rep act="neutral" id="encl" v="0.8">
-      <r>Long live Enclave!</r>
-      <r>Pegasi are superior race</r>
-      <r>Getting a leave soon?</r>
+      <r>Long live the Enclave!</r>
+      <r>Pegasi are the superior race</r>
+      <r>Think we'll get leave soon?</r>
       <r>Truth and power are on our side</r>
-      <r>Surface is such a dump</r>
+      <r>The surface is such a dump</r>
       <r>Down there is only dirt and savagery</r>
       <r>How much longer?</r>
       <r>Any orders?</r>
@@ -13007,7 +13008,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>The future is ours</r>
       <r>The command have their reasons</r>
       <r>Everything should be in order</r>
-      <r>My wings got numb already</r>
+      <r>My wings are going numb</r>
       <r>We`ve been sitting here for a month...</r>
       <r>When do we fly?</r>
       <r>I`ll be glad to get out of here already</r>
@@ -13015,21 +13016,21 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     <rep act="attack" id="encl" v="0.8">
       <r>Intruder spotted</r>
       <r>Open fire!</r>
-      <r>Savages attack!</r>
-      <r>Eliminate target!</r>
+      <r>The Savages are attacking!</r>
+      <r>Eliminate the target!</r>
       <r>Shoot to kill!</r>
-      <r>I order to open fire!</r>
+      <r>I order you to open fire!</r>
       <r>Opening fire!</r>
       <r>Outsiders!</r>
       <r>Clear the area!</r>
-      <r>Order number 56</r>
-      <r>Following instructions</r>
+      <r>Order 56!</r>
+      <r>On it!</r>
       <r>Attack from the air!</r>
       <r>No negotiations</r>
       <r>Fire!</r>
     </rep>
     <rep act="ear" id="encl" v="0.8">
-      <r>I hear a suspicious noise</r>
+      <r>I heard a suspicious noise</r>
       <r>Enemy is near!</r>
       <r>Attention!</r>
       <r>Attack formation</r>
@@ -13038,7 +13039,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Get ready!</r>
       <r>Focus!</r>
       <r>We are not alone here</r>
-      <r>Something dropped?</r>
+      <r>Did something fall?</r>
       <r>Halt! Who`s there?</r>
     </rep>
     <rep act="find" id="encl" v="0.8">
@@ -13583,7 +13584,7 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>They are doing it again...</r>
       <r>That is definitely none of his concern</r>
       <r>Why me?</r>
-      <r>What is this horrible smell?</r>
+      <r>What is that horrible smell?</r>
       <r>Ah, it`s you</r>
       <r>Oh, damn it!</r>
       <r>You won`t understand!</r>
