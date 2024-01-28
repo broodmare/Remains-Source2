@@ -1536,7 +1536,7 @@
 			if (loc.sky) {
 				maxSpeed*=3;
 			}
-			isRun = ((possRun || stam > 200) && ctr.keyRun || (runForeverOption && runForever > 0));
+			isRun = ((possRun || stam > 200) && ctr.keyRun || (burningForcesRunOption && runForever > 0));
 			if (h2o<=0) isRun=false;
 			if (isRun && stay) maxSpeed=runSpeed;
 			if (isSit && stay) maxSpeed=sitSpeed;
@@ -1576,7 +1576,7 @@
 				}
 			}
 			walk=0;
-			if ((keyLeft && !keyRight || (runForeverOption && runForever > 0)) && storona < 0) {
+			if ((keyLeft && !keyRight || (burningForcesRunOption && runForever > 0)) && storona < 0) {
 				porog=20;
 				isTake=40;
 				if (storona>0 && stay) {
@@ -1587,7 +1587,7 @@
 				}
 				walk=-1;
 				t_run++;
-			} else if ((!keyLeft && keyRight || (runForeverOption && runForever > 0)) && storona > 0) {
+			} else if ((!keyLeft && keyRight || (burningForcesRunOption && runForever > 0)) && storona > 0) {
 				porog=20;
 				isTake=40;
 				if (storona<0 && stay) {
@@ -1742,7 +1742,7 @@
 			if (ctr.keySit)
 			{
 				porog = 0;
-				if (stay && diagon == 0 && (!runForeverOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && rat == 0) {
+				if (stay && diagon == 0 && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && rat == 0) {
 					if (checkStairs(2)) {	//проверить лестницу
 						t_stay=0;
 						dy=lazSpeed;
@@ -1806,7 +1806,7 @@
 			}
 			if (loc.quake > 5) throu = true;
 			//лезть
-			if (!isSit && !isFly && ctr.keyBeUp && (!runForeverOption || runForever <= 0) && loc.quake <= 5 && !cryst && isFetter <= 0 && !noStairs && pinok < 30 && !rat)
+			if (!isSit && !isFly && ctr.keyBeUp && (!burningForcesRunOption || runForever <= 0) && loc.quake <= 5 && !cryst && isFetter <= 0 && !noStairs && pinok < 30 && !rat)
 			{
 				if (checkStairs())
 				{
@@ -1816,7 +1816,7 @@
 				}
 			}
 			//перестать лезть
-			if ((runForeverOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5)
+			if ((burningForcesRunOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5)
 			{
 				isLaz = 0;
 			}
@@ -2955,7 +2955,7 @@
 									animState='polz';
 								}
 								if (animState!='polz' && animState!='roll') {
-									if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((runForeverOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+									if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
 										vis.osn.gotoAndStop('roll');
 										animState='roll';
 									} else {
@@ -2974,7 +2974,7 @@
 									animState='walk';
 								}
 							}
-							else if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((runForeverOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+							else if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
 								sndStep(t_walk,2);
 								t_walk++;
 								if (animState!='run') {
@@ -3149,8 +3149,8 @@
 
 			function animateEyes():void
 			{
-				if ((shok > 0 || (runForeverOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) vis.osn.body.head.morda.eye.gotoAndStop(2);
-				if ((shok == 0 && (!runForeverOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) vis.osn.body.head.morda.eye.gotoAndStop(1);
+				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) vis.osn.body.head.morda.eye.gotoAndStop(2);
+				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) vis.osn.body.head.morda.eye.gotoAndStop(1);
 				if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) vis.osn.body.head.morda.eye.gotoAndStop(3);
 				if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2))
 				{
