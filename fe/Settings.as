@@ -13,7 +13,7 @@ package fe
         // GAME SETTINGS
         public static var alwaysFogOfWar:Boolean;
         public static var fogRegenerates:Boolean;
-        public static var runForeverOption:Boolean;
+        public static var burningForcesRun:Boolean;
 
         public static function initializeSettings():void
         {
@@ -39,7 +39,7 @@ package fe
 
             alwaysFogOfWar = settings.alwaysFogOfWar;
             fogRegenerates = settings.fogRegenerates;
-            runForeverOption = settings.runForeverOption;
+            burningForcesRun = settings.burningForcesRun;
         }
 
         private static function errorDebug(event:IOErrorEvent):void

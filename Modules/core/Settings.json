@@ -1,5 +1,5 @@
 {
 	"alwaysFogOfWar": true,
 	"fogRegenerates": true,
-	"runForeverOption": false
+	"burningForcesRun": false
 }
