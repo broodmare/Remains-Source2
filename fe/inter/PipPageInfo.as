@@ -151,7 +151,10 @@ package fe.inter
 						}
 						try {
 							sim.sim.gotoAndStop(land.id);
-						} catch (err) {
+						}
+						catch (err)
+						{
+							trace('ERROR: (00:3A)');
 							sim.sim.gotoAndStop(1);
 						}
 						if (land.test && !World.w.testMode) continue;
@@ -393,7 +396,11 @@ package fe.inter
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
 									s+=' ('+textAsColor('yellow', Res.numb(dam))+')';
-								} catch (err) {};
+								}
+								catch (err)
+								{
+									trace('ERROR: (00:3B)');
+								};
 								wk=true;
 							}
 						}

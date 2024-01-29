@@ -879,6 +879,7 @@ package fe.unit
 				}
 				catch(err)
 				{
+					trace('ERROR: (00:2)');
 					childObjs[i].err();
 				}
 			}

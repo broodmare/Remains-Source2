@@ -99,7 +99,10 @@ package fe.unit
 			if (vis.osn) {
 				try {
 					vis.osn.gotoAndStop('stay');
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:9)');
 					vis.osn.gotoAndStop(1);
 				}
 			}
@@ -159,8 +162,10 @@ package fe.unit
 				var br:int = int(Math.random()*2+1);
 				try {
 					vis.osn.gotoAndPlay('move'+br);
-				} catch (err) {
-					
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:A)');
 				}
 			}
 			if (animFly) {
@@ -173,8 +178,9 @@ package fe.unit
 						vis.osn.gotoAndStop('stay');
 						animState='stay';
 					}
-				} catch(err) {
-					
+				} catch(err)
+				{
+					trace('ERROR: (00:B)');	
 				}
 			}
 		}
@@ -215,7 +221,11 @@ package fe.unit
 			} else if (com=='openEyes') {
 				try {
 					vis.osn.gotoAndStop(2);
-				} catch (err) {}
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:C)');
+				}
 			//проверить, нужна ли мигающая подсказка
 			} else if (com=='sign') {
 				if (ico.sign) {
@@ -296,7 +306,11 @@ package fe.unit
 					newPart('zzz',3);
 					try {
 						vis.osn.gotoAndStop(1);
-					} catch (err) {}
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:D)');
+					}
 				}
 			}
 			if (wait>0) wait--;

@@ -2106,6 +2106,7 @@ package fe.loc
 				} 
 				catch(err)
 				{
+					trace('ERROR: (00:29)');
 					World.w.showError(err, obj.err());
 				}
 				obj=nextObj;

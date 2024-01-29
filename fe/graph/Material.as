@@ -35,18 +35,27 @@ package fe.graph
 			if (p.main.@mask.length()) {
 				try {
 					textureMask=getDefinitionByName(p.main.@mask) as Class;
-				} catch (err:ReferenceError) {
+				}
+				catch (err:ReferenceError)
+				{
+					trace('ERROR: (00:4B)');
 					textureMask=TileMask;
 				}
 			} else textureMask=TileMask;
 			try {
 				borderMask=getDefinitionByName(p.border.@mask) as Class;
-			} catch (err:ReferenceError) {
+			}
+			catch (err:ReferenceError)
+			{
+				trace('ERROR: (00:4C)');
 				borderMask=null;
 			}
 			try {
 				floorMask=getDefinitionByName(p.floor.@mask) as Class;
-			} catch (err:ReferenceError) {
+			}
+			catch (err:ReferenceError)
+			{
+				trace('ERROR: (00:4D)');
 				floorMask=null;
 			}
 			if (p.filter.length()) F=fils[p.filter.@f];

@@ -473,8 +473,10 @@ package {
 			}
 			try {
 				r.appendChild(optObj.xml);
-			} catch (err) {
-				trace('Ошибка в настройках комнаты');
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:4E)');
 			}
 			return r;
 		}
@@ -589,8 +591,10 @@ package {
 			} else {
 				try {
 					optObj.xml=new XML(options);
-				} catch (err) {
-					trace('Ошибка в настройках комнаты');
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:4F)');
 				}
 			}
 			mActive=false;
@@ -1192,8 +1196,10 @@ package {
 					var n:XML=new XML(ed.SelObj.text);
 					selobj.xml=n;
 					if (selobj!=optObj) decodeObj(selobj);
-				} catch (err) {
-					trace('Ошибка в XML')
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:50)');
 					return false;
 				}
 			}

@@ -106,7 +106,10 @@ package fe.projectile
 					inWater = 1;
 				}
 			}
-			catch (err) { }
+			catch (err)
+			{
+				trace('ERROR: (00:22)');
+			}
 
 			if (pla!=inWater && dy>5) {
 				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});

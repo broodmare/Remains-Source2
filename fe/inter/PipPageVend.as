@@ -136,8 +136,9 @@ package fe.inter
 						n.wtip='drink';
 					}
 					arr.push(n);
-					} catch (err) {
-						trace('ошибка торговца, товар', b.id);
+					} catch (err)
+					{
+						trace('ERROR: (00:41)');
 					}
 				}
 				if (arr.length) {
@@ -343,7 +344,10 @@ package fe.inter
 			item.price.width=58;
 			try {
 				item.trol.gotoAndStop(obj.wtip);
-			} catch (err) {
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:42)');
 				item.trol.gotoAndStop(1);
 			}
 			if (page2==1) {
@@ -540,7 +544,11 @@ package fe.inter
 						quest.chGive(npcId, true);
 						quest.chReport(npcId, true);
 					} else World.w.game.addQuest(event.currentTarget.id.text);
-				} catch(err) {}
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:43)');
+				}
 				setStatus(false);
 			}
 			pip.snd(1);

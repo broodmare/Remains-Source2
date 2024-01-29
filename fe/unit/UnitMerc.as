@@ -45,7 +45,11 @@ package fe.unit {
 			super.remVisual();
 			try {
 				World.w.grafon.visObjs[sloy].removeChild(arm);
-			} catch (err) {}
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:8)');
+			}
 		}
 		public override function setVisPos() {
 			if (vis) {

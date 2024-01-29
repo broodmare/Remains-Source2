@@ -289,7 +289,10 @@ package fe.loc
 				if (s=='comein') vis.gotoAndPlay(s);
 				else vis.gotoAndStop(s);
 			}
-			catch (err) { trace('ERROR: Could not set vis state: "' + s + '"!'); }
+			catch (err)
+			{
+				trace('ERROR: (00:2B) - Could not set vis state: "' + s + '"!');
+			}
 		}
 		
 		public override function step() {

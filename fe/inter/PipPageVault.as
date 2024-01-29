@@ -99,7 +99,10 @@ package fe.inter
 			item.nazv.alpha=1;
 			try {
 				item.trol.gotoAndStop(obj.tip);
-			} catch (err) {
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:40)');
 				item.trol.gotoAndStop(1);
 			}
 			item.id.text=obj.id;

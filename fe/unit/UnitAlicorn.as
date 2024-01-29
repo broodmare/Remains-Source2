@@ -339,7 +339,11 @@ package fe.unit
 						mater=true;
 						visBmp.filters=[];
 					}
-				} catch(err) {}
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:6)');
+				}
 				return;
 			}
 			if (levit && stun==0) {

@@ -1052,7 +1052,11 @@ package  fe
 			gui.allOff();
 			gui.offCelObj();
 			try { vscene.gotoAndStop(sc); } 
-			catch(err) { vscene.gotoAndStop(1);}
+			catch(err)
+			{
+				trace('ERROR: (00:20)');
+				vscene.gotoAndStop(1);
+			}
 
 			if (n>0) vscene.sc.gotoAndPlay(n);
 			else vscene.sc.gotoAndPlay(1);
@@ -1179,7 +1183,11 @@ package  fe
 				configObj.data.vsIngr=vsIngr?0:1;
 				configObj.flush();
 			} 
-			catch (err) { showError(err); }
+			catch (err)
+			{
+				trace('ERROR: (00:21)');
+				showError(err);
+			}
 		}
 		
 		// TODO: I think this is unused.

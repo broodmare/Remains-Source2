@@ -208,7 +208,10 @@ package fe.inter
 
 			try {
 				item.trol.gotoAndStop(obj.trol);
-			} catch (err) {
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:3C)');
 				item.trol.gotoAndStop(1);
 			}
 			if (page2==1) {
@@ -448,7 +451,10 @@ package fe.inter
 					if (overItem.fav.text=='☩' || overItem.fav.text=='+') overItem.fav.text='';
 					inv.items[overId].nov=0;
 				}
-				catch (err) {}				
+				catch (err)
+				{
+					trace('ERROR: (00:3C)');
+				}				
 			}
 		}	
 	}	

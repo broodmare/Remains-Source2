@@ -132,7 +132,10 @@ package fe.inter
 						infIco=new itemIco();
 						try {
 							infIco.gotoAndStop(weap.@id);
-						} catch(err){
+						}
+						catch(err)
+						{
+							trace('ERROR: (00:47)');
 							infIco.stop();
 						}
 						item.goldstar.y=-85;

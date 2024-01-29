@@ -52,7 +52,10 @@ package fe.loc
 					vis=new visualItem();
 					try {
 						vis.gotoAndStop(item.xml.vis.@loot);
-					} catch (err) {
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:25)');
 					}
 				} else {
 					if (item.variant>0) vClass=Res.getClass('vis'+item.id+'_'+item.variant,'vis'+item.id,visp10mm);
@@ -82,7 +85,10 @@ package fe.loc
 				try {
 					if (item.xml.@base.length()) vis.gotoAndStop(item.xml.@base);
 					else vis.gotoAndStop(item.id);
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:26)');
 					vis.gotoAndStop(1);
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
@@ -91,7 +97,10 @@ package fe.loc
 				vis=new vClass();
 				try {
 					vis.gotoAndStop(item.id);
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:27)');
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
@@ -358,8 +367,10 @@ package fe.loc
 				{
 					isPlav = true;
 				}
-			} catch (err) {
-				
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:28)');
 			}
 			if (pla!=isPlav && dy>5) {
 				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});

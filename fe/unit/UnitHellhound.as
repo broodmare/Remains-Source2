@@ -337,7 +337,10 @@ package fe.unit
 					return true;
 				}
 			}
-			catch (err) { }
+			catch (err) 
+			{
+				trace('ERROR: (00:7)');
+			}
 			isLaz=0;
 			return false;
 		}

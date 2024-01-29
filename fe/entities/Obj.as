@@ -162,6 +162,7 @@ package  fe.entities
 			}
 			catch (err)
 			{
+				trace('ERROR: (00:4D)');
 				m.gotoAndStop(1);
 			}
 		}

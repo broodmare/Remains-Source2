@@ -51,11 +51,10 @@ package fe.weapon
 		{
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			if (node.vis[0].@lasm>0) lasM=true;
-			if (!lasM) {
-				visvzz=new visVzz();
-			} else {
-				visvzz=new MovieClip() 
-			}
+
+			if (!lasM) visvzz = new visVzz();
+			else visvzz = new MovieClip() 
+
 			visvzz.visible=false;
 			visvzz.stop();
 			super(own,id,nvar);
@@ -72,7 +71,7 @@ package fe.weapon
 			visvzz.alpha=10/rapid;
 			if (visvzz.alpha>1) visvzz.alpha=1;
 			kolvzz=Math.round((dlina-mindlina)/stepdlina);
-			vzz=new Array();
+			vzz = [];
 			storona=owner.storona;
 			b=new Bullet(own, coordinates.X - (dlina / 2) * storona, coordinates.Y - dlina, null, false);
 			b.weap=this;
@@ -88,10 +87,11 @@ package fe.weapon
 			b.checkLine=checkLine;
 			rot=-Math.PI/2-(Math.PI/6)*storona;
 			cos0=Math.cos(rot), sin0=Math.sin(rot);
-			for (var i:int = 0; i <= kolvzz; i++) {
-				var nx = coordinates.X + cos2 * (mindlina + i * stepdlina)+anim*storona*(mindlina+i*stepdlina);
+			for (var i:int = 0; i <= kolvzz; i++)
+			{
+				var nx = coordinates.X + cos2 * (mindlina + i * stepdlina) + anim * storona * (mindlina + i * stepdlina);
 				var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
-				vzz[i]={X:0,Y:0};
+				vzz[i] = {X:0, Y:0};
 			}
 			if (!auto && !powerfull)combinat=true;
 		}
@@ -101,11 +101,13 @@ package fe.weapon
 			super.addVisual();
 			if (visvzz) World.w.grafon.visObjs[sloy].addChild(visvzz);
 		}
+		
 		public override function remVisual()
 		{
 			super.remVisual();
 			if (visvzz && visvzz.parent) visvzz.parent.removeChild(visvzz);
 		}
+
 		public override function setPers(gg:UnitPlayer, pers:Pers):void
 		{
 			super.setPers(gg,pers);

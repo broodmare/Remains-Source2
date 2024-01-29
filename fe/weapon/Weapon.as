@@ -327,14 +327,21 @@ package fe.weapon
 			if (owner && owner.weaponKrep>0) krep=owner.weaponKrep;
 			if (vis && vis.totalFrames>1) animated=true;
 			if (flare==null) flare=visbul;
-			if (visbul) { 
-				try {
-					vBullet=getDefinitionByName('visbul'+visbul) as Class;
-				} catch (err:ReferenceError) {
-					vBullet=visualBullet;
+			if (visbul)
+			{ 
+				try
+				{
+					vBullet = getDefinitionByName('visbul' + visbul) as Class;
 				}
-			} else {
-				vBullet=visualBullet;
+				catch (err:ReferenceError)
+				{
+					trace('ERROR: (00:11)');
+					vBullet = visualBullet;
+				}
+			}
+			else
+			{
+				vBullet = visualBullet;
 			}
 			
 			//звуки
@@ -638,12 +645,17 @@ package fe.weapon
 				if (rot>0 && rot<Math.PI*5/6) rot=Math.PI*5/6;
 				if (rot<=0 && rot>-Math.PI*5/6) rot=-Math.PI*5/6;
 			}
-			try {
-				if (dkol<=0 && t_attack==rapid) shoot();
-				if (dkol>0 && t_attack>rapid && t_attack%rapid==0) shoot();
-			} catch (err) {
-				trace('err shoot', owner.nazv);
+
+			try
+			{
+				if (dkol <= 0 && t_attack == rapid) shoot();
+				if (dkol > 0 && t_attack > rapid && t_attack % rapid == 0) shoot();
 			}
+			catch (err)
+			{
+				trace('ERROR: (00:12)');
+			}
+
 			if (t_attack>0) {
 				t_attack--;
 			}
@@ -740,7 +752,7 @@ package fe.weapon
 				initReload();
 				return;
 			}
-			if (hp<maxhp/2) breaking=(maxhp-hp)/maxhp*2-1;
+			if (hp<maxhp/2) breaking = (maxhp - hp) / maxhp * 2 - 1;
 			else breaking=0;
 		}
 		
@@ -768,7 +780,8 @@ package fe.weapon
 		
 		public function getBulXY():void
 		{
-			try {
+			try
+			{
 				if (vis && vis.emit && vis.parent)
 				{
 					var p:Point=new Point(vis.emit.x,vis.emit.y);
@@ -785,6 +798,7 @@ package fe.weapon
 			}
 			catch (err)
 			{
+				trace('ERROR: (00:13)');
 				bulX = coordinates.X;
 				bulY = coordinates.Y;
 			}
@@ -824,10 +838,16 @@ package fe.weapon
 				}
 				b.weap=this;
 				if (b.vis) b.vis.blendMode=bulBlend;
-				if (fromWall) {
-					try {
+				if (fromWall)
+				{
+					try
+					{
 						if (loc.getAbsTile(bulX,bulY).phis) b.inWall=true;
-					} catch(err) {}
+					}
+					catch(err)
+					{ 
+						trace('ERROR: (00:14)');
+					}
 				}
 				if (b.vis && spring==3) b.vis.gotoAndStop(i+1);
 				b.rot=rot-rotUp*storona/50+r+(i-(kol-1)/2)*deviation*3.1415/360;
@@ -895,10 +915,16 @@ package fe.weapon
 				}
 			}
 			if (owner.player && tip<4 && tip!=0 && !(loc.train || World.w.alicorn)) hp-=(1+ammoHP);
-			if (animated && t_shoot<=1) {
-				try {
+			if (animated && t_shoot<=1)
+			{
+				try
+				{
 					vis.gotoAndPlay('shoot');
-				} catch (err) {}
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:15) - Could not play movieclip "shoot"!');
+				}
 				t_shoot=3;
 			}
 			kol_shoot++;
@@ -1116,9 +1142,14 @@ package fe.weapon
 				if (reload>0) {
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) {
-						try {
+						try
+						{
 							vis.gotoAndPlay('reload');
-						} catch (err) {}
+						}
+						catch (err)
+						{
+							trace('ERROR: (00:16) - Could not play movieclip "reload"!');
+						}
 					}
 					if (sndReload!='') Snd.ps(sndReload, coordinates.X, coordinates.Y);
 				} else reloadWeapon();
@@ -1139,10 +1170,15 @@ package fe.weapon
 				if (t_prep<prep && t_prep>1) {
 					vis.gotoAndStop(t_prep);
 				}
-				if (t_prep>=prep) {
-					try {
+				if (t_prep>=prep)
+				{
+					try
+					{
 						vis.gotoAndStop('ready');
-					} catch(err) {
+					}
+					catch(err)
+					{
+						trace('ERROR: (00:17) - Could not play movieclip "ready"!');
 					}
 				}
 				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);

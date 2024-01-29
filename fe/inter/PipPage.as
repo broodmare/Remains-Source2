@@ -320,7 +320,10 @@ package fe.inter
 				try {
 					vis.item.gotoAndStop(id);
 					vis.info.y=vis.item.y+vis.item.height+25;
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:35)');
 					vis.item.gotoAndStop(1);
 					vis.item.visible=false;
 					vis.info.y=vis.ico.y;
@@ -328,10 +331,14 @@ package fe.inter
 			}
 			if (tip==5) {//перки
 				vis.skill.visible=true;
-				try {
+				try
+				{
 					vis.skill.gotoAndStop(id);
 					vis.info.y=vis.ico.y+220;
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:36)');
 					vis.skill.visible=false;
 					vis.info.y=vis.ico.y;
 				}
@@ -890,7 +897,10 @@ package fe.inter
 					vis.cats['cat'+i].visible=true;
 					try {
 						vis.cats['cat'+i].ico.gotoAndStop(ntip);
-					} catch (err) {
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:37)');
 						vis.cats['cat'+i].ico.gotoAndStop(1);
 					}
 				}
@@ -915,7 +925,10 @@ package fe.inter
 			vis.cats['cat'+n].fon.gotoAndStop(2);
 			try {
 				curTip=tips[page2][n];
-			} catch (err) {
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:38)');
 				curTip='';
 			}
 			if (curTip==null) curTip='';
@@ -942,7 +955,11 @@ package fe.inter
 			if (World.w.ctr.setkeyOn) return;
 			try {
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
-			} catch(err){}
+			}
+			catch(err)
+			{
+				trace('ERROR: (00:39)');
+			}
 			scroll(event.delta);
 			if (!vis.scBar.visible) return;
 			if (event.delta<0) (event.currentTarget as MovieClip).scBar.scrollPosition++;

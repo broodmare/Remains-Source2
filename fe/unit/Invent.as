@@ -740,7 +740,9 @@ package fe.unit
 			if (res!=null) {
 				World.w.gui.infoText('collect',res);
 			}
-			} catch (err) {
+			} catch (err)
+			{
+				trace('ERROR: (00:3)');
 				World.w.showError(err, 'Loot error. tip:'+l.tip+' id:'+l.id);
 			}
 			if (World.w.hardInv) mass[l.invCat]+=l.mass*l.kol;
@@ -792,7 +794,11 @@ package fe.unit
 				if (items[itemsId[cItem]] && items[itemsId[cItem]].kol==0) {
 					cItem=-1;
 				}
-			} catch(err) {}
+			}
+			catch(err)
+			{
+				trace('ERROR: (00:5)');
+			}
 			if (snd && items[ci].xml && items[ci].xml.@uses.length())	Snd.ps(items[ci].xml.@uses, owner.coordinates.X, owner.coordinates.Y);
 		}
 		

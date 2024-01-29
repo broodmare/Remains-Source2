@@ -228,7 +228,11 @@ package fe.inter
 			vis.gotoAndStop(1);
 			if (n==null) return;
 			try { vis.txt.text=World.w.ctr.keyNames[n]; } 
-			catch(err) { vis.gotoAndStop(n); }
+			catch(err)
+			{
+				trace('ERROR: (00:3C)');
+				vis.gotoAndStop(n);
+			}
 		}
 		
 		//показать окно назначения клавиши
@@ -392,7 +396,10 @@ package fe.inter
 						nSave=-1;
 						vis.butOk.visible=false;
 						setStatus();
-					} catch (err) {
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:3D)');
 						World.w.gui.infoText('noSaveGame');
 					}
 			}
@@ -413,7 +420,10 @@ package fe.inter
 					return;
 				}
 			}
-			catch(err) {}
+			catch(err)
+			{
+				trace('ERROR: (00:3E)');
+			}
 			World.w.gui.infoText('noLoadGame');
 			trace('Error load');
        }		
@@ -441,7 +451,10 @@ package fe.inter
 				var sfile = new FileReference();
 				try {
 					sfile.save(ba,gg.pers.persName+'('+gg.pers.level+').sav');
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:3F)');
 					sfile.save(ba,'Name('+gg.pers.level+').sav');
 				}
 			}

@@ -57,6 +57,7 @@ package fe
 			} 
 			catch(err)
 			{
+				trace('ERROR: (00:1F)');
 				World.w.load_log += 'Text file error ' + filepath + '\n';
 				errLoad = true;
 			}

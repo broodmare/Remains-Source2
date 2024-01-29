@@ -272,14 +272,22 @@ package fe.inter {
 			try {
 				var su:TextField=(event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible=true;
-			} catch(err){}
+			}
+			catch(err)
+			{
+				trace('ERROR: (00:44)');
+			}
 		}
 		public function mOut(event:MouseEvent):void {
 			if (active && !weapon.noPerc) (event.currentTarget as MovieClip).filters=[];
 			try {
 				var su:TextField=(event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible=false;
-			} catch(err){}
+			}
+			catch(err)
+			{
+				trace('ERROR: (00:45)');
+			}
 		}
 		
 		public function offUnits() {
@@ -289,8 +297,10 @@ package fe.inter {
 						vis.removeChild(obj.v);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OVER,mOver);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OUT,mOut);
-					} catch (err) {
-						
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:46)');
 					}
 				}
 			}

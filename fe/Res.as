@@ -76,7 +76,10 @@ package fe
 					{
 						if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
 					}
-					catch (err:Error) {}
+					catch (err:Error)
+					{
+						trace('ERROR: (00:18)');
+					}
 
 					// Perform string replacements
 					s = s.replace(brRegExp, '<br>')
@@ -96,6 +99,7 @@ package fe
 			}
 			catch(err:Error)
 			{
+				trace('ERROR: (00:19)');
 				s = '';
 				return s;
 			}
@@ -182,6 +186,7 @@ package fe
 			}
 			catch (err)
 			{
+				trace('ERROR: (00:1A)');
 				return 'err: ' + id;
 			}
 			return (s == null) ? '':s;
@@ -299,6 +304,7 @@ package fe
 			}
 			catch (err:ReferenceError)
 			{
+				trace('ERROR: (00:1B)');
 				r = def;
 			}
 			if (r) return new r()
@@ -314,6 +320,7 @@ package fe
 			} 
 			catch (err:ReferenceError)
 			{
+				trace('ERROR: (00:1C)');
 				if (id2 == null) r = def;
 				else
 				{
@@ -323,6 +330,7 @@ package fe
 					}
 					catch (err:ReferenceError)
 					{
+						trace('ERROR: (00:1D)');
 						r = def;
 					}
 				}

@@ -362,7 +362,10 @@ package fe.inter
 					else if (i==World.kolHK*2+7) mc.fav.text=World.w.ctr.retKey('keyDef');
 					try {
 						mc.trol.gotoAndStop('w'+arrfav[i].skill);
-					} catch (err) {
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:2D)');
 						mc.trol.gotoAndStop(1);
 					}
 				} else {
@@ -393,7 +396,10 @@ package fe.inter
 				else mc.fav.text='';
 				try {
 					mc.trol.gotoAndStop('w'+arr[n].skill);
-				} catch (err) {
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:2E)');
 					mc.trol.gotoAndStop(1);
 				}
 				n++;
@@ -411,7 +417,10 @@ package fe.inter
 					if (selMode==0 && (gg.currentWeapon==null || arr[wSelN].id!=gg.currentWeapon.id)) gg.changeWeapon(arr[wSelN].id);
 					if (selMode==1 && gg.currentWeapon && gg.currentWeapon.ammo!=arr[wSelN].id) gg.currentWeapon.initReload(arr[wSelN].id);
 				}
-			} catch(err) {
+			}
+			catch(err)
+			{
+				trace('ERROR: (00:2F)');
 			}
 		}
 		
@@ -509,7 +518,10 @@ package fe.inter
 				vitem.visible=item.visible=active;
 				try {
 					vitem.gotoAndStop(ci);
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:30)');
 					vitem.gotoAndStop(1);
 				}
 				item.text=Res.txt('i',ci)+' ('+World.w.invent.items[ci].kol+')';
@@ -665,7 +677,10 @@ package fe.inter
 					try {
 						if (gg.effects[n].tip==3) veff[i].vis.gotoAndStop('food');
 						else veff[i].vis.gotoAndStop(gg.effects[n].id);
-					} catch(err) {
+					}
+					catch(err)
+					{
+						trace('ERROR: (00:31)');
 						veff[i].vis.gotoAndStop(1);
 					}
 					n++;
@@ -673,7 +688,11 @@ package fe.inter
 					veff[i].visible=false;
 				}
 			}
-			} catch(err){};
+			}
+			catch(err)
+			{
+				trace('ERROR: (00:32)');
+			};
 		}
 		
 		public function setCelObj() {
@@ -709,7 +728,10 @@ package fe.inter
 					celobj.text=s;
 					World.w.cam.setKoord(celobj,gg.actionObj.owner.coordinates.X, gg.actionObj.owner.coordinates.Y);
 					World.w.cam.setKoord(pr_bar,gg.actionObj.owner.coordinates.X, gg.actionObj.owner.coordinates.Y);
-				} catch (err) {
+				}
+				catch (err)
+				{
+					trace('ERROR: (00:33)');
 					celobj.visible=false;
 				}
 			} else if (celObj) {
@@ -1021,7 +1043,10 @@ package fe.inter
 					try {
 						dial.portret.gotoAndStop(sp);
 						
-					} catch(err) {
+					}
+					catch(err)
+					{
+						trace('ERROR: (00:34)');
 						dial.portret.gotoAndStop(1);
 					}
 				}
@@ -1057,7 +1082,10 @@ package fe.inter
 			if (nico!='') {
 				try {
 					imp.ico.gotoAndStop(nico);
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:34)');
 					imp.ico.gotoAndStop(1);
 				}
 			}

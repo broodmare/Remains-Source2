@@ -39,7 +39,10 @@ package fe.loc
 				request = new URLRequest(roomsURL); 
 				try {
 					loader_rooms.load(request); 
-				} catch(err) {
+				}
+				catch(err)
+				{
+					trace('ERROR: (00:2A)');
 					errLoad=true;
 					trace('no load '+roomsFile);
 					World.w.load_log+='Load error '+roomsFile+'\n';

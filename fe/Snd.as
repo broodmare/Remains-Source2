@@ -439,7 +439,10 @@ package fe
 					snd[id]=s;
 					World.w.musicKol++;
 				} 
-				catch (err) { trace('music load err', req.url); }
+				catch (err)
+				{ 
+					trace('ERROR: (00:1E) - music load err', req.url);
+				}
 			}
 		}
 		

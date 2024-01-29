@@ -2256,7 +2256,10 @@
 					if (isSit) magicY = coordinates.Y - 35;
 					else magicY = coordinates.Y - 75;
 				}
-			} catch (err) {
+			}
+			catch (err)
+			{
+				trace('ERROR: (00:E)');
 				magicX = coordinates.X;
 				magicY = coordinates.Y - scY / 2;
 			}
@@ -3317,7 +3320,11 @@
 						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
 						vis.osn.body.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
 						vis.osn.body.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
-					} catch (err) {}
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:F)');
+					}
 				}
 				else if (isFly && !stay && !isPlav && !isLaz) {
 					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) vis.osn.body.rwing.gotoAndPlay(2);

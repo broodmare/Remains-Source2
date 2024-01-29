@@ -331,11 +331,21 @@ package fe.loc {
 							World.w.invent.minusItem(q.collect, q.kol);
 							try {
 								World.w.gui.infoText('withdraw',World.w.invent.items[q.collect].nazv, q.kol);
-							} catch (err) {}
-						} else if (q.colTip==1) {
-							try {
+							}
+							catch (err)
+							{
+								trace('ERROR: (00:23)');
+							}
+						}
+						else if (q.colTip==1) {
+							try
+							{
 								World.w.gui.infoText('withdraw',World.w.invent.weapons[q.collect].nazv, 1);
-							} catch (err) {}
+							}
+							catch (err)
+							{
+								trace('ERROR: (00:24)');
+							}
 							World.w.invent.remWeapon(q.collect);
 						}
 					}

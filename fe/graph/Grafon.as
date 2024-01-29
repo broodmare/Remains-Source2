@@ -421,7 +421,10 @@ package fe.graph
 				for each (mat in arrFront) {
 					try {
 						drawKusok(mat,true);	//передний план
-					} catch (err) {
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:48)');
 						World.w.showError(err,'Ошибка рисования слоя '+mat.id);
 					}
 				}
@@ -429,7 +432,10 @@ package fe.graph
 				for (var e in arrBack) {
 					try {
 						drawKusok(arrBack[e],false);		//задний план
-					} catch (err) {
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:49)');
 						World.w.showError(err,'Ошибка рисования слоя '+arrBack[e].id);
 					}
 				}
@@ -522,7 +528,11 @@ package fe.graph
 				if (nloc.cTransform && nloc.cTransformFon) visFon.transform.colorTransform=nloc.cTransformFon;
 				else if (visFon.transform.colorTransform!=defTransform) visFon.transform.colorTransform=defTransform;
 			}
-			catch (err) {World.w.showError(err)}
+			catch (err)
+			{
+				trace('ERROR: (00:4A)');
+				World.w.showError(err)
+			}
 			World.w.gr_stage = 19;
 				//активные объекты
 				drawAllObjs();
