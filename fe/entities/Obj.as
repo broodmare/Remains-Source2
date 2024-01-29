@@ -140,18 +140,23 @@ package  fe.entities
 			else return true;
 		}
 		
-		public function locout() {
+		public function locout()
+		{
+
 		}
 		
-		public static function setArmor(m:MovieClip) {
-			var aid:String='';
-			if (World.w) {
-				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat==0) aid=World.w.pip.armorID;
-				else if (World.w.armorWork!='') aid=World.w.armorWork;
-				else if (World.w.alicorn) aid='ali';
-				else aid=Appear.ggArmorId;
+		public static function setArmor(m:MovieClip)
+		{
+			var aid:String = '';
+			if (World.w)
+			{
+				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat == 0) aid = World.w.pip.armorID;
+				else if (World.w.armorWork != '') aid = World.w.armorWork;
+				else if (World.w.alicorn) aid = 'ali';
+				else aid = Appear.ggArmorId;
 			}
-			if (aid=='') {
+			if (aid == '' || aid == 'pip')
+			{
 				m.gotoAndStop(1);
 				return;
 			}
@@ -162,7 +167,7 @@ package  fe.entities
 			}
 			catch (err)
 			{
-				trace('ERROR: (00:51)');
+				trace('ERROR: (00:51) - Could not apply armor: "' + aid + '"!');
 				m.gotoAndStop(1);
 			}
 		}
@@ -177,9 +182,9 @@ package  fe.entities
 				m.visible=false;
 				return;
 			}
-			if (c==0) m.transform.colorTransform=Appear.trFur;
-			if (c==1) m.transform.colorTransform=Appear.trHair;
-			if (c==2) {
+			if (c == 0) m.transform.colorTransform=Appear.trFur;
+			if (c == 1) m.transform.colorTransform=Appear.trHair;
+			if (c == 2) {
 				if (Appear.visHair1) {
 					m.visible=true;
 					m.transform.colorTransform=Appear.trHair1;
@@ -196,11 +201,13 @@ package  fe.entities
 			m.visible=(h==0);
 		}
 		
-		public static function setEye(m:MovieClip) {
+		public static function setEye(m:MovieClip)
+		{
 			m.gotoAndStop(Appear.fEye);
 		}
 
-		public static function setHair(m:MovieClip) {
+		public static function setHair(m:MovieClip)
+		{
 			m.gotoAndStop(Appear.fHair);
 		}
 	}
