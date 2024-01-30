@@ -126,14 +126,14 @@ package fe.unit
 		public var levitAttack:Number=1;	//насколько успешной будет атака в состоянии левитации
 		public var noAgro:Boolean=false;	//не нападает первый
 		
-		//движение
-		//параметры движения
+		// Movement
+		// Motion parameters
 		public var fixed:Boolean=false;		//не двигаться вообще
 		public var bind:Obj;				//привязка
 		public var mater:Boolean=true;		//взаимодействовать со стенами
 		public var massaFix:Number=1;		//масса зафиксированного объекта
 		public var massaMove:Number=1;		//масса перемещаемого объекта
-		public var walk:int;				//движение по поверхности, 1 - вправо, -1 влево, 0 - нет движения
+		public var walk:int;				// [Movement on the floor, 1 - right, -1 left, 0 - no movement]
 		public var maxSpeed:Number=10, walkSpeed:Number=5, runSpeed:Number=10, sitSpeed:Number=3, lazSpeed:Number=5, plavSpeed:Number=5;
 		public var accel:Number=5, brake:Number=1, levitaccel:Number=1.6, knocked:Number=1;
 		public var jumpdy:Number=15, plavdy:Number=1, levidy:Number=1, elast:Number=0, jumpBall:Number=0;
@@ -145,6 +145,7 @@ package fe.unit
 		public var slow:int=0;			//внешнее замедление
 		public var tormoz:Number=1;		//на эту величину умножается dx, если объект стоит на земле
 		public var t_throw:int=0;		//включается после броска
+		
 		//переменные
 		public var stayPhis:int;
 		public var stayOsn:Box=null;

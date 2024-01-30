@@ -848,7 +848,8 @@
 				pers.manaHP+=pers.manaHPRes;
 				World.w.gui.setMana();
 			}
-			//воздух
+
+			// Flying
 			if (isPlav) {
 				isFly=false;
 				if (h2o>0) {
@@ -862,7 +863,8 @@
 				h2o+=10;
 				if (h2o>1000) h2o=1000;
 			}
-			//запас сил
+
+			// Stamina
 			if (isRun && walk && stay && !isSit && (dx!=0)) {
 				if (stam>0) {
 					if (inBattle) stam-=pers.stamRun*dstam;
@@ -872,10 +874,12 @@
 				if (stam>200) possRun=true;
 				if (stam>1000) stam=1000;
 			}
-			//рывок
+
+			// Dashing
 			if (dash_t>dash_maxt-10 || kdash_t>0) dodge=1+dodgePlus;
 			else dodge=0+dodgePlus;
-			//броня
+
+			// Armor
 			if (currentArmor && currentArmor.maxmana>0) {
 				if (currentArmor.abilActive) {
 					if (currentArmor.mana>0) {
@@ -892,7 +896,8 @@
 					}
 				}
 			}
-			//кристальный щит
+
+			// Crystal shield
 			if (t_cryst>0) {
 				if (t_cryst==4) vis.cryst.gotoAndPlay(10);
 				t_cryst--;
@@ -901,11 +906,15 @@
 					vis.cryst.visible=true;
 				}
 				cryst=true;
-			} else {
+			}
+			else
+			{
 				if (cryst) vis.cryst.visible=false;
 				cryst=false;
 			}
-			stun=0;
+
+			stun = 0;
+			
 			//поворот оружия
 			weaponR=-(celY-coordinates.Y)/10;
 			if (weaponR>85) weaponR=85;

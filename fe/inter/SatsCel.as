@@ -3,12 +3,15 @@ package fe.inter
 	import fe.*;
 	import fe.entities.Obj;
 
+	import fe.stubs.satsCel;	// Red crosshairs used when a coordinate is targeted instead of a unit.
+	import fe.stubs.satsUnCel;	// Red square around units that have been targeted in vats.
+
 	public class SatsCel extends Obj
 	{
 		var kol:int=1;
 		var cons:Number;
 		var un:Object;
-		var begined:Boolean=false;
+		var begined:Boolean = false;
 
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1)
 		{
@@ -25,15 +28,15 @@ package fe.inter
 			}
 			else
 			{
-				un=nUn;
-				vis=new satsUnCel();
+				un = nUn;
+				vis = new satsUnCel();
 				un.n++;
 				run();
-				vis.scaleX=(un.u.scX+ramka*un.n)/100;
-				vis.scaleY=(un.u.scY+ramka*un.n)/100;
+				vis.scaleX = (un.u.scX + ramka * un.n) / 100;
+				vis.scaleY = (un.u.scY + ramka * un.n) / 100;
 			}
-			cons=ncons/nkol;
-			kol=nkol;
+			cons = ncons / nkol;
+			kol = nkol;
 			addVisual();
 		}
 		
