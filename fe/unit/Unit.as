@@ -822,7 +822,8 @@ package fe.unit
 		
 		
 		
-		public override function step() {
+		public override function step()
+		{
 			if (disabled || trigDis) return;
 			if (t_emerg>0) {
 				t_emerg--;
@@ -850,12 +851,18 @@ package fe.unit
 			control();		//управление игроком или ИИ
 
 			//движение
-			if (fixed) {
-			} else if (bind || Math.abs(dx+osndx)<World.maxdelta && Math.abs(dy+osndy)<World.maxdelta)	{
+			if (fixed)
+			{
+
+			}
+			else if (bind || Math.abs(dx+osndx)<World.maxdelta && Math.abs(dy+osndy)<World.maxdelta)
+			{
 				run();
-			} else {
-				var div=Math.floor(Math.max(Math.abs(dx+osndx),Math.abs(dy+osndy))/World.maxdelta)+1;
-				for (var i=0; i<div; i++) run(div);
+			}
+			else
+			{
+				var div:int = int(Math.max(Math.abs(dx+osndx),Math.abs(dy+osndy))/World.maxdelta)+1;
+				for (var i = 0; i<div; i++) run(div); // What the fuck, this is being used as a string later.
 			}
 			checkWater();
 			actions();		//различные действия
@@ -871,7 +878,7 @@ package fe.unit
 
 			onCursor = (isVis && !disabled && sost < 4 && X1 < World.w.celX && X2 > World.w.celX && Y1 < World.w.celY && Y2 > World.w.celY) ? prior:0;
 
-			for (i in childObjs) if (childObjs[i])
+			for (i in childObjs) if (childObjs[i]) // Here is where it's called as a string.
 			{
 				try
 				{
@@ -879,7 +886,7 @@ package fe.unit
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:2)');
+					trace('ERROR: (00:2) - Child object: "' + childObjs[i].id + '" with parent: "' + id + '" failed to run step()!');
 					childObjs[i].err();
 				}
 			}

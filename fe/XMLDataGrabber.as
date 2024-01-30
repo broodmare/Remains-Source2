@@ -53,7 +53,7 @@ package fe
         // Module dictionary handler. Handles navigating the dictionary and throwing errors for anything not found.
         private static function getFileFromModuleDictionary(module:String, directory:String, fileName:String):XML
         {
-            trace('Accessing file: "' + module + '/' + directory + '/' + fileName + '".');
+            //trace('Accessing file: "' + module + '/' + directory + '/' + fileName + '".');
             var file:XML = new XML();
 
             if (data == null) trace('ERROR: Cannot find XMLData dictionary!');

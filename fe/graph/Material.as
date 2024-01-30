@@ -32,30 +32,35 @@ package fe.graph
 			if (p.main.@alt.length()) alttexture=World.w.grafon.getObj(p.main.@alt,Grafon.numbMat);
 			border=World.w.grafon.getObj(p.border.@tex,Grafon.numbMat);
 			floor=World.w.grafon.getObj(p.floor.@tex,Grafon.numbMat);
-			if (p.main.@mask.length()) {
-				try {
+			if (p.main.@mask.length())
+			{
+				try
+				{
 					textureMask=getDefinitionByName(p.main.@mask) as Class;
 				}
 				catch (err:ReferenceError)
 				{
-					trace('ERROR: (00:4B)');
+					trace('ERROR: (00:4B) - Tile: "' + id + '", Texture mask class defined in XML not found; defaulting to TileMask.');
 					textureMask=TileMask;
 				}
-			} else textureMask=TileMask;
-			try {
+			}
+			else textureMask=TileMask;
+			try
+			{
 				borderMask=getDefinitionByName(p.border.@mask) as Class;
 			}
 			catch (err:ReferenceError)
 			{
-				trace('ERROR: (00:4C)');
+				trace('ERROR: (00:4C) - Tile: "' + id + '", Border mask class defined in XML not found; defaulting to null.');
 				borderMask=null;
 			}
-			try {
+			try
+			{
 				floorMask=getDefinitionByName(p.floor.@mask) as Class;
 			}
 			catch (err:ReferenceError)
 			{
-				trace('ERROR: (00:4D)');
+				trace('ERROR: (00:4D) - Tile: "' + id + '", Floor mask class defined in XML not found; defaulting to null.');
 				floorMask=null;
 			}
 			if (p.filter.length()) F=fils[p.filter.@f];

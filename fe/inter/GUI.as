@@ -344,10 +344,13 @@ package fe.inter
 			}
 		}
 		
-		public function setFavs() {
-			for (var i=1; i<=World.kolHK*2+7; i++) {
-				var mc:MovieClip=vis.fav.getChildByName('s'+i);
-				if (arrfav[i]) {
+		public function setFavs()
+		{
+			for (var i:int = 1; i <= World.kolHK * 2 + 7; i++)
+			{
+				var mc:MovieClip = vis.fav.getChildByName('s'+i);
+				if (arrfav[i])
+				{
 					mc.visible=true;
 					mc.nazv.text=arrfav[i].nazv;
 					if (arrfav[i].ammo!=null) mc.ammo.text=arrfav[i].ammo;
@@ -360,16 +363,20 @@ package fe.inter
 					} else if (i==World.kolHK*2+5) mc.fav.text=World.w.ctr.retKey('keyGrenad');
 					else if (i==World.kolHK*2+6) mc.fav.text=World.w.ctr.retKey('keyMagic');
 					else if (i==World.kolHK*2+7) mc.fav.text=World.w.ctr.retKey('keyDef');
-					try {
-						mc.trol.gotoAndStop('w'+arrfav[i].skill);
+					
+					try
+					{
+						mc.trol.gotoAndStop('w' + arrfav[i].skill);
 					}
 					catch (err)
 					{
-						trace('ERROR: (00:2D)');
+						trace('ERROR: (00:2D) - GUI - setFavs() FAILED!');
 						mc.trol.gotoAndStop(1);
 					}
-				} else {
-					mc.visible=false;
+				}
+				else
+				{
+					mc.visible = false;
 				}
 			}
 		}

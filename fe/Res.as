@@ -99,7 +99,7 @@ package fe
 			}
 			catch(err:Error)
 			{
-				trace('ERROR: (00:19)');
+				trace('ERROR: (00:19) - Could not get localization for "' + typeDictionary[tip] + '(' + id + ')"!');
 				s = '';
 				return s;
 			}
@@ -320,7 +320,7 @@ package fe
 			} 
 			catch (err:ReferenceError)
 			{
-				trace('ERROR: (00:1C)');
+				trace('ERROR: (00:1C) - Could not retrieve class with ID1: "' + id1 + '".');
 				if (id2 == null) r = def;
 				else
 				{
@@ -330,7 +330,7 @@ package fe
 					}
 					catch (err:ReferenceError)
 					{
-						trace('ERROR: (00:1D)');
+						trace('ERROR: (00:1D) - Could not retrieve class with ID2: "' + id2 + '".');
 						r = def;
 					}
 				}

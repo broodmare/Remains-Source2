@@ -596,7 +596,7 @@ package  fe
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			//создать интерфейс ЗПС
 			sats=new Sats(vsats);
-			time___metr('Интерфейс');
+			time___metr('Interface');
 			
 			//создать игру
 			if (nload==99) {

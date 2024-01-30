@@ -11,7 +11,7 @@ package fe.unit
 	{
 		
 		public var targNPC:NPC;
-		public var npcId:String='';
+		public var npcId:String = '';
 		public var npcXML:XML;
 		
 		public var visClass:Class;
@@ -155,32 +155,37 @@ package fe.unit
 			inter.update();
 		}
 		
-		public override function animate() {
-			if (t_anim>0) t_anim--;
-			else {
-				t_anim=Math.random()*200+150;
-				var br:int = int(Math.random()*2+1);
-				try {
-					vis.osn.gotoAndPlay('move'+br);
+		public override function animate()
+		{
+			if (t_anim > 0) t_anim--;
+			else
+			{
+				t_anim = Math.random()*200+150;
+				var br:int = int(Math.random() * 2 + 1);
+				try
+				{
+					vis.osn.gotoAndPlay('move' + br);
 				}
 				catch (err)
 				{
-					trace('ERROR: (00:A)');
+					trace('ERROR: (00:A) - NPC: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
 				}
 			}
-			if (animFly) {
+			if (animFly)
+			{
 				try {
 					if (isFly && animState!='fly') {
 						vis.osn.gotoAndStop('fly');
-						animState='fly';
+						animState = 'fly';
 					}
 					if (!isFly && animState!='stay') {
 						vis.osn.gotoAndStop('stay');
-						animState='stay';
+						animState = 'stay';
 					}
-				} catch(err)
+				}
+				catch(err)
 				{
-					trace('ERROR: (00:B)');	
+					trace('ERROR: (00:B)  - NPC: "' + npcId + '" failed run flying animation!');	
 				}
 			}
 		}
