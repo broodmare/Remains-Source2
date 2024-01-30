@@ -751,8 +751,8 @@
 					sats.clearAll();	//очистить очередь
 				} else if (sats.getReady()) {	//если цель ещё не убита
 					sats.que[0].run();			//установить цель
-					celX=sats.que[0].X;
-					celY=sats.que[0].Y;
+					celX = sats.que[0].coordinates.X;
+					celY = sats.que[0].coordinates.Y;
 					currentWeapon.attack(true);	//стрелять по готовности
 				} else {			
 					sats.unsetCel(true);	//иначе отменить цель
@@ -774,7 +774,6 @@
 				if (stay && dx<1 && dx>-1)  precMult*=(1+pers.stayBonus);
 				if (currentWeapon && (currentWeapon.storona!=storona)) precMult*=(1-pers.backPenalty);
 			}
-			//trace('---',precMult)
 			
 			if (throwWeapon && currentWeapon!=throwWeapon) {
 				throwWeapon.actions();
