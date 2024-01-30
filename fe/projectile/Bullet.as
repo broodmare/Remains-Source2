@@ -3,7 +3,6 @@ package fe.projectile
 	import flash.utils.Dictionary;
 
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.unit.Unit;
 	import fe.loc.*;
 	import fe.entities.Obj;
@@ -37,11 +36,10 @@ package fe.projectile
 		public var flame:int=0;
 		public var flare:String;
 		public var outspace:Boolean=false;
-		//public var iskr:Boolean=false;
 		
 		public var otbros=0;
 		public var probiv:Number = 0;
-		public var parrDict:Dictionary = new Dictionary(); // CHANGING THIS TO A DICTIONARY FOR FASTER CHECKS
+		public var parrDict:Dictionary;	// List of objects the bullet has already interacted with.
 		
 		public var babah:Boolean=false, tilehit:Boolean=false;
 		public var off:Boolean=false;	//отключить урон по юнитам
@@ -124,9 +122,10 @@ package fe.projectile
 				}
 				if (vRot) rot=Math.atan2(dy,dx);
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
-				else {
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-					for (var i=0; (i<div && !babah); i++) run(div);
+				else
+				{
+					var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					for (var i:int = 0; (i < div && !babah); i++) run(div);
 				}
 			}
 			if (vis)
@@ -223,15 +222,17 @@ package fe.projectile
 		
 		// [returns false if the object is already in the list of objects with which the bullet has already interacted]
 		// [if not, then adds it to the list and returns true]
-		// CHANGING TO DICTIONARY FOR O1 OPERATION TIME
+		// I changed this to a dictionary for O1 searches on bullet hits, but I'm not sure if there'd ever be enough targets in the list
+		// To justify the overhead of creating a new dictionary for every bullet?
 		public function udar(un):Boolean
 		{
-			if (parrDict[un] === true) return false;
-			else
-			{
-				parrDict[un] = true;
-				return true;
-			}
+			if (parrDict == null) parrDict = new Dictionary();
+			if (parrDict[un] === true) return false; 
+				else
+				{
+					parrDict[un] = true;
+					return true;
+				}
 		}
 		
 
