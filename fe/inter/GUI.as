@@ -61,6 +61,8 @@ package fe.inter
 		var informScript:Script;
 		public var dialScript:Script;
 
+		private static var portraitHelper:PortraitHelper;
+
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
@@ -998,71 +1000,117 @@ package fe.inter
 		
 		//вывести реплику диалога, вернуть false, если реплики нет
 		//id может быть id диалога в text.xml или готовой репликой
-		public function dialText(id=null, n:int=-1, down:Boolean=false, wait:Boolean=true):Boolean {
-			if (id==null) {
-				dial.visible=inform.visible=false;
-				vis.mouseChildren=vis.mouseEnabled=false;
+		public function dialText(id=null, n:int=-1, down:Boolean=false, wait:Boolean=true):Boolean
+		{
+			if (id == null)
+			{
+				dial.visible = false;
+				inform.visible = false;
+				vis.mouseChildren = false;
+				vis.mouseEnabled = false;
 				return false;
 			}
+
 			var xml;
 			// TODO: Stop searching Res on your own
-			if (id is String) {
-				xml=Res.currentLanguageData.txt.(@id==id);
+			if (id is String)
+			{
+				trace('Playing dialogue: "' + id +'".');
+
+				xml = Res.currentLanguageData.txt.(@id==id);
 				if (xml.length()==0) xml=Res.fallbackLanguageData.txt.(@id==id);
 				if (xml.length()==0) return false;
 				xml=xml.n[0];
 				if (xml.length()==0) return false;
-				if (n>=0) {
+				if (n>=0)
+				{
 					xml=xml.r[n];
 					if (xml==null) return false;
 				}
 				World.w.game.addNote(id);
-			} else if (id is XML) xml=id;
+			}
+			else if (id is XML) xml = id;
+			
 			var reg:int=0;
 			if (xml.@mod.length()) reg=xml.@mod;
+			
 			if (reg==0) dial.visible=true;
 			else inform.visible=true;
-			var s:String=xml.toString();
-			//маты
-			if (xml && xml.@m.length()) {
+			
+			var s:String = xml.toString();
+			
+			// [mats]
+			if (xml && xml.@m.length())
+			{
 				var sar:Array=s.split('|');
 				if (sar) {
 					if (World.w.matFilter && sar.length>1) s=sar[1];
 					else s=sar[0];
 				}
 			}
-			for (var i=1; i<=5; i++) {
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+
+			for (var i = 1; i <= 5; i++)
+			{
+				if (xml.attribute('s' + i).length())  s = s.replace('@' + i, "<span class='imp'>" + World.w.ctr.retKey(xml.attribute('s' + i)) + "</span>");
 			}
-			s=s.replace(/\[/g,"<span class='yel'>");
-			s=s.replace(/\]/g,"</span>");
-			s=s.replace(/[\b\r\t]/g,'');
-			s=Res.lpName(s);
-			if (reg==0) {
-				inform.visible=false;
-				dial.portret.gotoAndStop(1);
-				if (xml.@p.length()) {
-					var sp:String=xml.@p;
-					if (sp.substr(0,2)=='lp' && World.w.alicorn) {
-						sp='lpa';
-						s="<span class='crim'>"+s+"</span>";
+
+			s = s.replace(/\[/g, "<span class='yel'>");
+			s = s.replace(/\]/g, "</span>");
+			s = s.replace(/[\b\r\t]/g, '');
+			s = Res.lpName(s);
+
+			if (!reg)
+			{
+				inform.visible = false;
+				dial.portret.gotoAndStop(1);	// Display empty portrait
+				
+				if (xml.@p.length())			// If the string of text has a 'p'ortrait
+				{
+					trace('This section of dialogue has a portrait.');
+
+					var portraitName:String = xml.@p;
+					if (portraitName.substr(0, 2) == 'lp' && World.w.alicorn)	// Replace the little pip portrait with the helmeted version
+					{
+						portraitName = 'lpa';
+						s = "<span class='crim'>" + s + "</span>";
 					}
-					try {
-						dial.portret.gotoAndStop(sp);
-						
+
+					try
+					{
+						if (portraitHelper == null)
+						{
+							trace('Creating new PortraitHelper!');
+							portraitHelper = new PortraitHelper(vis);
+						}
+						portraitHelper.displayPortrait(portraitName);
+						//dial.portret.gotoAndStop(portraitName);
 					}
 					catch(err)
 					{
-						trace('ERROR: (00:34)');
-						dial.portret.gotoAndStop(1);
+						trace('ERROR: (00:34) - Failed to load portrait: "' + portraitName + '"!');
+						portraitHelper.clearPortrait();
+						//dial.portret.gotoAndStop(1);
 					}
 				}
+				else
+				{
+					trace('This secion of dialogue has no portrait.');
+					if (portraitHelper.currentPortrait != null)
+					{
+						trace('Clearing old portrait in memory for new dialogue.');
+						portraitHelper.clearPortrait();
+					}
+					
+				}
+
 				if (xml.@push>0) dial.txt.htmlText+="<br>"+s;
 				else dial.txt.htmlText=s;
+
 				dial.lmb.visible=wait;
 				if (wait) dial.lmb.play();
 				else dial.lmb.stop();
-			} else if (reg>=1) {
+			}
+			else if (reg >= 1) {
 				dial.visible=false;
 				if (xml.@push>0) inform.txt.htmlText+="<br><br>"+s;
 				else inform.txt.htmlText=s;

@@ -932,7 +932,6 @@ package fe.inter
 				curTip='';
 			}
 			if (curTip==null) curTip='';
-			//trace(curTip);
 		}
 		
 		//проверить соответствии категории

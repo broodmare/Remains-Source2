@@ -11,34 +11,38 @@ package fe.inter
         private static var dialogueBox:MovieClip;
         private static var pictureHolder:MovieClip;
 
-        private static var currentPortrait:String;
+        public var currentPortrait:String;
 
-        public function PortraitHelper(gui:MovieClip)
+        public function PortraitHelper(guiMC:MovieClip)
         {
-            dialogueBox = gui.getChildByName('dial') as MovieClip;
+            dialogueBox = guiMC.getChildByName('dial') as MovieClip;
             pictureHolder = dialogueBox.portret;
         }
 
         public function displayPortrait(imageName:String):void
         {
+            
             if (imageName != currentPortrait) 
             {
+                trace('Loading new portrait: "' + imageName + '".');
                 clearPortrait();
+                currentPortrait = imageName;
                 loadImage(imageName);
             }
+            else trace('Ignoring request to render duplicate portrait.');
         }
 
-        private function loadImage(imageName:String):void
+        private static function loadImage(imageName:String):void
         {
             var imageLoader:Loader = new Loader();
             imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
             imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
 
-            var imageURL:String = "Modules/core/Portraits/" + 'test' + ".png";
+            var imageURL:String = "Modules/core/Portraits/" + imageName + ".png";
             imageLoader.load(new URLRequest(imageURL));
         }
 
-        private function onImageLoaded(event:Event):void
+        private static function onImageLoaded(event:Event):void
         {
             event.target.removeEventListener(Event.COMPLETE, onImageLoaded);
             event.target.removeEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
@@ -46,17 +50,18 @@ package fe.inter
             pictureHolder.addChild(event.target.loader.content);
         }
 
-        private function onImageLoadError(event:IOErrorEvent):void
+        private static function onImageLoadError(event:IOErrorEvent):void
         {
             trace("Error loading image: " + event.text);
         }
 
-        private function clearPortrait():void
+        public function clearPortrait():void
         {
             while (pictureHolder.numChildren > 0)
             {
                 pictureHolder.removeChildAt(0);
             }
+            currentPortrait = null;
         }
     }
 }
