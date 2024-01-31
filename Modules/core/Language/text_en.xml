@@ -4398,7 +4398,7 @@ Damage resistance #1, melee damage #2, accuracy #3, evasion bonus #4, magic cons
     <n>Options</n>
   </gui>
   <gui id="about" v="0.6">
-    <n>Authors</n>
+    <n>Credits</n>
     <info>[Empalu] - concept, programming, graphics.
 [DipFanken] - graphics, locations design.
 [Mihasik] - English localization.
@@ -4639,7 +4639,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>activate alarm</n>
   </gui>
   <gui id="beginm">
-    <n>start mission</n>
+    <n>travel to location</n>
   </gui>
   <gui id="return" v="0.6">
     <n>return</n>
@@ -4648,10 +4648,10 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>return to base</n>
   </gui>
   <gui id="returnm">
-    <n>resume mission</n>
+    <n>return to location</n>
   </gui>
   <gui id="exit" v="0.7">
-    <n>the next level</n>
+    <n>go to next level</n>
   </gui>
   <gui id="shutoff">
     <n>shut down</n>
@@ -4753,7 +4753,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Oxygen</n>
   </gui>
   <gui id="h2over">
-    <n>You are choking!</n>
+    <n>You are suffocating!</n>
   </gui>
   <gui id="stam">
     <n>Stamina</n>
@@ -4813,7 +4813,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Destruction of walls disabled</n>
   </gui>
   <gui id="need_help" v="0.6">
-    <n>The hints contain direct instructions on how to pass the test. Use them if you do not know what to do</n>
+    <n>The hints contain direct instructions on how to pass the trial. You can use these if you cannot figure out how to solve them.</n>
   </gui>
   <gui id="sec" v="0.8">
     <n>s</n>
@@ -4840,7 +4840,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Trading</n>
   </pip>
   <pip id="main5">
-    <n>Main menu</n>
+    <n>Settings</n>
   </pip>
   <pip id="main6">
     <n>Healing</n>
@@ -4870,7 +4870,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Health</n>
   </pip>
   <pip id="tgame">
-    <n>Playing time</n>
+    <n>Play time</n>
   </pip>
   <pip id="name">
     <n>Name</n>
@@ -4886,49 +4886,49 @@ After a few years this entire area of ​​Equestria was almost completely devo
   </pip>
   <pip id="hp">
     <n>Health</n>
-    <info>Your general health state. Defines how much damage you can take before you lose consciousness and get transferred to a check-point</info>
+    <info>Your general health state. Defines how much damage you can take before you lose consciousness and get returned to a check-point</info>
   </pip>
   <pip id="rad">
     <n>Radiation</n>
-    <info>Magical radiation sickness decreases your health level. Take RadAway to clear your body off radiation</info>
+    <info>Magical radiation sickness decreases your maximum health. RadAway can purge your body of radiation</info>
   </pip>
   <pip id="poison">
     <n>Poison</n>
-    <info>Amount of poison in your body. You will lose health points until you take an antidote or until poison effect wears off with time</info>
+    <info>Amount of poison in your body. You will lose health until you take an antidote or the poison wears off</info>
   </pip>
   <pip id="cut">
     <n>Open wounds</n>
-    <info>Open wounds make you gradually lose blood. Even though bleeding will stop eventually, it`s better to use bandages</info>
+    <info>Open wounds will cause you to lose blood. Use bandages to stop the bleeding immediately</info>
   </pip>
   <pip id="organism" v="0.71">
     <n>Body condition</n>
-    <info>Shows your internal injuries, separately for the head, body, and limbs. They are difficult to heal in the field, just using medical potions is not enough. You will need the help of a qualified medic or skills in medicine and special equipment. Head injuries cause penalties for accuracy, attack speed and magic, body injuries reduce endurance, and leg injuries - movement speed. Serious blood loss also affects your ability to cause damage and resist pain</info>
+    <info>Shows your internal injuries separately for the head, body, and limbs. These cannot be treated with potions, you will need to be treated by a qualified medic or attempt it yourself with special equipment. Head injuries cause penalties for accuracy, attack speed, and magic. Bodily injuries reduce endurance, and leg injuries reduce movement speed. Serious blood loss will lower your ability to inflict or resist damage</info>
   </pip>
   <pip id="head">
     <n>Head</n>
   </pip>
   <pip id="statHead0">
     <n>Condition: perfect</n>
-    <info>Absolutely alright</info>
+    <info>Your head is okay</info>
   </pip>
   <pip id="statHead1">
     <n>Condition: OK</n>
-    <info>Diagnosis: a bloody lump, an ear scratch, and a black eye - nothing to worry about</info>
+    <info>Diagnosis: a few bruises, scratches, and a black eye - nothing to worry about</info>
   </pip>
   <pip id="statHead2">
     <n>Condition: poor</n>
-    <info>Diagnosis: a mild traumatic brain injury. May cause headaches, dizziness, and nausea. With such a trauma it`s hard to think straight, use magic or aim weapons. Consult your doctor at the first opportunity</info>
+    <info>Diagnosis: a mild traumatic brain injury. May cause headaches, dizziness, and nausea. It`s hard to think straight, use magic or aim weapons. Consult your doctor at the first opportunity</info>
   </pip>
   <pip id="statHead3">
     <n>Condition: horrible</n>
-    <info>Diagnosis: a severe skull and brain injury. Sight and hearing are impaired. Possible memory loss, hallucinations, inadequate reaction to external stimuli. The magic limit decreased. A life threatening condition, visit a doctor as soon as possible</info>
+    <info>Diagnosis: a severe skull and brain injury. Sight and hearing are impaired. Possible memory loss, hallucinations, and inadequate reaction to external stimuli. Your magic limit is decreased. Visit a doctor as soon as possible</info>
   </pip>
   <pip id="tors">
     <n>Body</n>
   </pip>
   <pip id="statTors0">
     <n>Condition: perfect</n>
-    <info>Your body is ready</info>
+    <info>You feel in good shape and ready to go</info>
   </pip>
   <pip id="statTors1">
     <n>Condition: OK</n>
@@ -4936,18 +4936,18 @@ After a few years this entire area of ​​Equestria was almost completely devo
   </pip>
   <pip id="statTors2">
     <n>Condition: poor</n>
-    <info>Diagnosis: one or more ribs are broken, some inner organs are slightly damaged. May decrease stamina, cause dyspnea, painful breathing. A good rest in bed is recommended</info>
+    <info>Diagnosis: one or more ribs are broken, some inner organs are slightly damaged. Your stamina is decreased and it hurts to breathe. A good rest in bed is recommended</info>
   </pip>
   <pip id="statTors3">
     <n>Condition: horrible</n>
-    <info>Diagnosis: multiple rib fractures, multiple internal injuries, backbone damage suspected. Danger of heart failure. A life threatening condition, immediate hospitalization is required</info>
+    <info>Diagnosis: multiple rib fractures, internal injuries, and spinal damage suspected. Danger of heart failure. A life threatening condition, immediate hospitalization is required</info>
   </pip>
   <pip id="legs">
     <n>Legs</n>
   </pip>
   <pip id="statLegs0">
     <n>Condition: perfect</n>
-    <info>Nothing hurts</info>
+    <info>All four hooves look and feel alright</info>
   </pip>
   <pip id="statLegs1">
     <n>Condition: OK</n>
@@ -4966,45 +4966,45 @@ After a few years this entire area of ​​Equestria was almost completely devo
   </pip>
   <pip id="statBlood0">
     <n>Condition: perfect</n>
-    <info>You are full of strength</info>
+    <info>No blood loss</info>
   </pip>
   <pip id="statBlood1">
     <n>Condition: OK</n>
-    <info>Diagnosis: you lost some blood, but that`s OK. A good rest and well nourishment will bring you back to normal</info>
+    <info>Diagnosis: you've lost some blood. A good rest and staying well fed will bring you back to normal</info>
   </pip>
   <pip id="statBlood2">
     <n>Condition: poor</n>
-    <info>Diagnosis: you suffer from severe blood loss. Possible sudden muscle weakness, dizziness, loss of consciousness. Donor or synthetic blood transfusion is recommended</info>
+    <info>Diagnosis: you are suffering from severe blood loss. Possible muscle weakness, dizziness, loss of consciousness. A blood transfusion is recommended</info>
   </pip>
   <pip id="statBlood3">
     <n>Condition: horrible</n>
-    <info>Diagnosis: you are dying from blood loss. Immediately take the necessary actions before it`s too late</info>
+    <info>Diagnosis: you are dying from blood loss. Take immediate action before it`s too late</info>
   </pip>
   <pip id="mana">
-    <n>Magical power</n>
+    <n>Mana</n>
   </pip>
   <pip id="statMana0">
     <n>Condition: perfect</n>
-    <info>You have maximum magical power</info>
+    <info>Your magical reserves are full</info>
   </pip>
   <pip id="statMana1">
     <n>Condition: OK</n>
-    <info>You are tired a little, but your magical power is still ok</info>
+    <info>You are tired a little, but your magical reserves are still okay</info>
   </pip>
   <pip id="statMana2">
     <n>Condition: poor</n>
-    <info>Your magical power requires restoration. Spells and telekinesis may be somewhat weaker than usual</info>
+    <info>You need some magical restoration. Spells and telekinesis are starting to become weaker</info>
   </pip>
   <pip id="statMana3">
     <n>Condition: horrible</n>
-    <info>Your magical power is on the verge of complete exhaustion. Spells and telekinesis are considerably weakened. It is strongly advised to have some rest, perform restorative procedures and at all cost avoid using complex spells in this condition</info>
+    <info>You are nearing your limit for magic. Spells and telekinesis are considerably weakened. Avoid using any further magic to avoid magical burnout</info>
   </pip>
   <pip id="statMana4">
     <n>Condition: burnout</n>
-    <info>Your magical power is depleted. You can hardly even lift small objects, not to mention any spells</info>
+    <info>Your magical power is depleted. You can hardly even lift small objects, let alone cast any spells</info>
   </pip>
   <pip id="ad0" v="0.6">
-    <n>no addiction yet</n>
+    <n>no addiction</n>
   </pip>
   <pip id="ad1" v="0.6">
     <n>1st level - weak</n>
@@ -5016,16 +5016,16 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>3rd level - strong</n>
   </pip>
   <pip id="drunk1" v="0.7">
-    <n>Slightly dizzy</n>
+    <n>tipsy</n>
   </pip>
   <pip id="drunk2" v="0.7">
     <n>Drunk</n>
   </pip>
   <pip id="drunk3" v="0.7">
-    <n>Wasted from alcohol</n>
+    <n>Wasted</n>
   </pip>
   <pip id="drunk4" v="0.7">
-    <n>Alcohol intoxication</n>
+    <n>Alcohol poisoning</n>
   </pip>
   <pip id="alcohol" v="0.7">
     <n>Alcohol</n>
@@ -5078,19 +5078,19 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <info>Bonus to damage of firearms and magical energy weapons</info>
   </pip>
   <pip id="bullet">
-    <n>Protection against bullets</n>
+    <n>Kinetic resistance</n>
   </pip>
   <pip id="blade">
-    <n>Protection against cuts and stubs</n>
+    <n>Sharp resistance</n>
   </pip>
   <pip id="phis">
-    <n>Blunt weapons protection</n>
+    <n>Bashing resistance</n>
   </pip>
   <pip id="fang">
-    <n>Protection against teeth and claws</n>
+    <n>Animal damage resistance</n>
   </pip>
   <pip id="expl">
-    <n>Blast damage resistance</n>
+    <n>Explosives resistance</n>
   </pip>
   <pip id="fire">
     <n>Fire resistance</n>
@@ -5108,19 +5108,19 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Electrical resistance</n>
   </pip>
   <pip id="crio">
-    <n>Resistance to frost</n>
+    <n>Frost resistance</n>
   </pip>
   <pip id="pink" v="0.7">
-    <n>Protection from the Pink Cloud</n>
+    <n>Pink Cloud resistance</n>
   </pip>
   <pip id="necro" v="0.7">
-    <n>Protection from black magic</n>
+    <n>Black magic resistance</n>
   </pip>
   <pip id="venom">
-    <n>Toxic gas protection</n>
+    <n>Toxic gas resistance</n>
   </pip>
   <pip id="respoison">
-    <n>Poison damage resistance</n>
+    <n>Poison resistance</n>
     <info>Suppresses health damage caused by venom in your body</info>
   </pip>
   <pip id="radx">
@@ -5168,7 +5168,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Choose</n>
   </pip>
   <pip id="chooseperk">
-    <n>Choose the new perk</n>
+    <n>Choose a new perk</n>
   </pip>
   <pip id="default">
     <n>Default</n>
@@ -5562,7 +5562,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Show hidden</n>
   </pip>
   <pip id="retr" v="0.6">
-    <n>To base camp</n>
+    <n>Return to base</n>
   </pip>
   <pip id="info1">
     <n>Map</n>
@@ -5586,7 +5586,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Recommended level:</n>
   </pip>
   <pip id="wrLevel" v="0.7">
-    <n>Your level is too low. It is not recommended going there yet</n>
+    <n>You are below the recommended level for this area</n>
   </pip>
   <pip id="alltask" v="0.7">
     <n>Take all tasks</n>
@@ -5628,7 +5628,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>available</n>
   </pip>
   <pip id="iv5">
-    <n>repair price</n>
+    <n>repair cost</n>
   </pip>
   <pip id="iv6" v="0.7">
     <n>you have</n>
@@ -5646,7 +5646,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>left</n>
   </pip>
   <pip id="transaction">
-    <n>Accept the deal</n>
+    <n>Accept</n>
   </pip>
   <pip id="sellall" v="0.8">
     <n>Sell valuables</n>
@@ -5703,7 +5703,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Base camp</n>
   </pip>
   <pip id="actTake" v="0.6">
-    <n>Press to accept a mission</n>
+    <n>Press to accept the mission</n>
   </pip>
   <pip id="actSurr" v="0.6">
     <n>Press to finish the quest and claim your reward</n>
@@ -5731,7 +5731,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
   </pip>
   <pip id="fullscreen" v="0.7">
     <n>Full screen mode</n>
-    <info>Click for full screen mode. If the game is running in a browser, this feature may not work</info>
+    <info>Toggle fullscreen mode</info>
   </pip>
   <pip id="opt1_1">
     <n>Sound volume</n>
@@ -5740,43 +5740,43 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Music volume</n>
   </pip>
   <pip id="opt1_3">
-    <n>Steps volume</n>
+    <n>Hoofstep volume</n>
   </pip>
   <pip id="help_mess" v="0.7">
     <n>Training messages</n>
-    <info>Turn off if you are playing not the first time and you do not require hints or pointers</info>
+    <info>Disable hints</info>
   </pip>
   <pip id="dial_on" v="0.7">
     <n>Show dialogues</n>
-    <info>Turn off if you are playing not the first time and do not want to read dialogues between characters</info>
+    <info>Disables all dialogue segments</info>
   </pip>
   <pip id="show_hit1" v="0.7">
     <n>Show damage</n>
-    <info>Visualization of damage in the form of popup numbers</info>
+    <info>Toggle damage popups</info>
   </pip>
   <pip id="show_hit2" v="0.7">
     <n>Show damage as single number</n>
-    <info>When firing from shotguns or automatic weapons, total damage will be displayed by a single number, instead of individual numbers for each hit</info>
+    <info>Total damage will be shown as a single number instead of multiple number popups</info>
   </pip>
   <pip id="mat_filter" v="0.7">
-    <n>Filter obscene language</n>
-    <info>Disable this setting only if you are at least 18 years old, and your psyche is ready to withstand the selected language, sometimes used in their speech by inhabitants of the post-apocalyptic wasteland</info>
+    <n>Censor obscene language</n>
+    <info>Disables most swearing by NPCs</info>
   </pip>
   <pip id="sys_cur" v="0.8">
     <n>System cursor</n>
-    <info>Use a common cursor instead of game cursors (will take effect after game restarts)</info>
+    <info>Toggle default system cursor (Requires restart)</info>
   </pip>
   <pip id="hint_tele" v="0.8">
     <n>Telekinesis hints</n>
-    <info>Show text prompts about possibility of telekinesis</info>
+    <info>Toggle telekenesis hint popups</info>
   </pip>
   <pip id="show_favs" v="0.8">
     <n>Hotkeys info</n>
     <info>Show information about the assigned hotkeys when the cursor is at the bottom of the screen</info>
   </pip>
   <pip id='err_show' v='0.81'>
-    <n>Error monitoring</n>
-    <info>Displaying a window with an error log</info>
+    <n>Display error messages</n>
+    <info>Toggle error message windows</info>
   </pip>
   <pip id="saveslot">
     <n>Slot</n>
@@ -13490,7 +13490,6 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Calling for reinf...</r>
     </rep>
     <rep act="neutral" id="vendor">
-      <r>We take cash or credit!</r>
       <r>You name it, we`ve got it!</r>
       <r>Low prices everyday!</r>
       <r>Guns, explosives, ammo...</r>
@@ -13503,16 +13502,15 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
       <r>Lifetime warranty!</r>
       <r>Spend your money wisely!</r>
       <r>Good stuff for sale!</r>
-      <r>Discounts for veterans!</r>
     </rep>
     <rep act="vse" id="vendor">
       <r>Thank you, come back soon!</r>
       <r>Pleasure to make a deal with you</r>
-      <r>If you need me, I will be right here</r>
+      <r>If you need me, I'll' be right here</r>
       <r>Come back when you have extra caps</r>
     </rep>
     <rep act="donttoch" id="vendor">
-      <r>Hey, don`t touch this!</r>
+      <r>Are you crazy?! Don't touch that!</r>
     </rep>
     <rep act="neutral" id="doctor">
       <r>Tell me where it hurts?</r>
