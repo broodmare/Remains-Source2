@@ -199,7 +199,7 @@
 			}
 		}
 		
-		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		public function UnitPlayer(cid:String=null, ndif:Number=100)
 		{
 			player = true;
 			id = 'littlepip';

@@ -1189,26 +1189,5 @@ package  fe
 				showError(err);
 			}
 		}
-		
-		// TODO: I think this is unused.
-		private function weaponWrite():void
-		{
-			var un:Unit = new Unit();
-			var s:String = '';
-			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			for each (var w:XML in xmlList.(@tip>0))
-			{
-				var weap:Weapon = new Weapon(un, w.@id, 0);
-				s += weap.write() + '\n';
-				if (w.com.length() && w.com.@uniq.length())
-				{
-					weap = new Weapon(un, w.@id, 1);
-					s += weap.write() + '\n';
-				}
-			}
-
-			xmlList = null; // Manual cleanup.
-			trace(s);
-		}	
 	}	
 }

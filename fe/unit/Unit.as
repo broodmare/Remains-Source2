@@ -708,12 +708,13 @@ package fe.unit
 				if (mapxml.@scr.length()) scrDie=World.w.game.getScript(mapxml.@scr,this);
 				if (mapxml.@alarm.length()) scrAlarm=World.w.game.getScript(mapxml.@alarm,this);
 			}
-			if (postDie) {
+			if (postDie)
+			{
 				sost=3;
 				setCel(null, coordinates.X + storona * 100, coordinates.Y + 50);
 				lootIsDrop = true;
 				die();
-			};
+			}
 		}
 
 		// [set the mob's level (the value is added to the level specified via the map, default is 0)]
@@ -2867,7 +2868,7 @@ package fe.unit
 		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
 				celX = un.coordinates.X + un.objectWidth / 4 * un.storona;
-				celY = un.topBoundToCenter;;
+				celY = un.topBoundToCenter;
 				celUnit = un;
 				if (un.player)
 				{

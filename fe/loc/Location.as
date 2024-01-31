@@ -16,8 +16,6 @@ package fe.loc
 	import fe.serv.LootGen;
 	import fe.serv.Item;
 	import fe.unit.UnitTurret;
-
-	import fe.loc.ColorFilter;
 	
 	public class Location
 	{
@@ -1174,14 +1172,15 @@ package fe.loc
 				isCheck=true;
 			}
 		}
+
 		//создание выхода в случайной точке появления
-		public function createExit(s:String=''):void
+		public function createExit(s:String = ''):void
 		{
 			if (spawnPoints.length>0)
 			{
-				var sp=spawnPoints[int(Math.random()*spawnPoints.length)];
-				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={land.act.exitProb+s} time='20' inter='8' sign='1'/>);
-				isCheck=true;
+				var sp = spawnPoints[int(Math.random() * spawnPoints.length)];
+				createObj('exit', 'box', sp.x, sp.y, <obj name = 'exit' prob = {land.act.exitProb + s} time = '20' inter = '8' sign = '1'/>);
+				isCheck = true;
 			}
 		}
 		//создание двери испытаний в случайной точке появления
@@ -1190,7 +1189,7 @@ package fe.loc
 			if (spawnPoints.length > 0)
 			{
 				var sp = spawnPoints[int(Math.random()*spawnPoints.length)];
-				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv={Res.txt('m',nprob)} time='20' inter='8'/>);
+				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv = {Res.txt('m', nprob)} time='20' inter='8'/>);
 				isCheck=true;
 				return true;
 			}
@@ -1292,7 +1291,7 @@ package fe.loc
 		
 		private function isAct(element:*, index:int, arr:Array):Boolean
 		{
-			if (element==null) return false;
+			if (element == null) return false;
 			if (element is fe.unit.UnitPet) return true;
             return (element.sost < 4);
         }

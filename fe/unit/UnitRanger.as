@@ -50,7 +50,6 @@ package fe.unit
 		}
 		
 		public override function animate() {
-			var cframe:int;
 			//поворот
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {

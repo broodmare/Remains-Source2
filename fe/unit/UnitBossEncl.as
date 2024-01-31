@@ -74,7 +74,6 @@ package fe.unit
 
 		public override function setLevel(nlevel:int=0) {
 			super.setLevel(nlevel);
-			var wMult=(1+level*0.08);
 			var dMult=1;
 			if (World.w.game.globalDif==3) dMult=1.2;
 			if (World.w.game.globalDif==4) dMult=1.5;
@@ -86,7 +85,6 @@ package fe.unit
 		}
 		
 		public override function animate() {
-			var cframe:int;
 			var revers:Boolean=false;
 			if (isFly) {
 				animState='fly';
@@ -159,7 +157,6 @@ package fe.unit
 			}
 			
 			t_replic--;
-			var jmp:Number=0;
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {

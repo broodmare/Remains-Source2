@@ -701,7 +701,7 @@ package fe.inter
 			catch(err)
 			{
 				trace('ERROR: (00:32)');
-			};
+			}
 		}
 		
 		public function setCelObj() {
@@ -919,18 +919,12 @@ package fe.inter
 		public function floatText(txt:String, nx:int, ny:int, n:int=-1)
 		{
 			var bulbText:String = txt;
-			var x = nx;
-			var y = ny;
 
-			if (n >= 0)
-			{
-				bulbText="<span class = 'r" + n + "'>" + txt + "</span>";
-			}
-			if (t_bulb<=0) {
-				float_dy=0;
-			} else {
-				float_dy-=20;
-			}
+			if (n >= 0) bulbText="<span class = 'r" + n + "'>" + txt + "</span>";
+
+			if (t_bulb<=0) float_dy=0;
+			else float_dy -= 20;
+			
 			ny=ny-80+float_dy;
 			if (ny<40) ny-=100;
 			if (nx<50) nx=50;
