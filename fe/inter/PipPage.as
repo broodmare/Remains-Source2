@@ -50,6 +50,22 @@ package fe.inter
 		var cat:Array=[0,0,0,0,0,0,0];
 		var curTip='';
 		var tips:Array=[[]];
+
+		private static var damageTypes:Array = [
+			{type: Unit.D_BUL,		label: 'bullet'},
+			{type: Unit.D_EXPL,		label: 'expl'},
+			{type: Unit.D_PHIS,		label: 'phis'},
+			{type: Unit.D_BLADE,	label: 'blade'},
+			{type: Unit.D_FANG,		label: 'fang'},
+			{type: Unit.D_FIRE,		label: 'fire'},
+			{type: Unit.D_LASER,	label: 'laser'},
+			{type: Unit.D_PLASMA,	label: 'plasma'},
+			{type: Unit.D_SPARK,	label: 'spark'},
+			{type: Unit.D_CRIO,		label: 'crio'},
+			{type: Unit.D_VENOM,	label: 'venom'},
+			{type: Unit.D_ACID,		label: 'acid'},
+			{type: Unit.D_NECRO,	label: 'necro'}
+		];
 		
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
@@ -176,7 +192,7 @@ package fe.inter
 		}
 		
 		public function setStatus(flop:Boolean=true):void
-		{
+		{setStatus
 			pip.reqKey=false;
 			statHead.id.text='';
 			vis.visible=true;
@@ -317,16 +333,17 @@ package fe.inter
 			}
 			if (tip==3) {
 				vis.item.visible=true;
-				try {
+				try
+				{
 					vis.item.gotoAndStop(id);
-					vis.info.y=vis.item.y+vis.item.height+25;
+					vis.info.y = vis.item.y + vis.item.height + 25;
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:35)');
+					trace('ERROR: (00:35) - invalid icon ID: "' + id + '"!');
 					vis.item.gotoAndStop(1);
-					vis.item.visible=false;
-					vis.info.y=vis.ico.y;
+					vis.item.visible = false;
+					vis.info.y = vis.ico.y;
 				}
 			}
 			if (tip==5) {//перки
@@ -421,7 +438,7 @@ package fe.inter
 						s1+=Res.pipText('level');
 						if (pers.level<reqlevel) ok=false;
 					} else if (req.@id=='guns') {
-						s1+=Res.txt('e','smallguns')+' '+Res.pipText('or')+' '+Res.txt('e','energy');
+						s1+=Res.txt('e','smallguns')+' '+Res.pipText('orange')+' '+Res.txt('e','energy');
 						if (pers.getSkLevel(pers.skills['smallguns'])<reqlevel && pers.getSkLevel(pers.skills['energy'])<reqlevel) ok=false;
 					} else {
 						s1+=Res.txt('e',req.@id);
@@ -529,9 +546,13 @@ package fe.inter
 				if (World.w.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
 				if (World.w.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				s+='\n\n'+sinf;
-			} else if (tip==Item.L_ARMOR) {
-				var a:Armor=inv.armors[id];
-				if (a==null) a=pip.arrArmor[id];
+			}
+			else if (tip==Item.L_ARMOR)
+			{
+				var a:Armor = inv.armors[id];
+				if (a == null) a = pip.arrArmor[id];
+
+				// Print all armor bonuses if they exist
 				if (a.armor_qual>0) s+=Res.pipText('aqual')+': '+textAsColor('yellow', Math.round(a.armor_qual*100)+'%');
 				if (a.armor>0) s+='\n'+Res.pipText('armor')+': '+numberAsColor('yellow', Math.round(a.armor));
 				if (a.marmor>0) s+='\n'+Res.pipText('marmor')+': '+numberAsColor('yellow', Math.round(a.marmor));
@@ -542,21 +563,19 @@ package fe.inter
 				if (a.magicMult!=1) s+='\n'+Res.pipText('spelldamage')+': +'+textAsColor('yellow', Math.round((a.magicMult-1)*100)+'%');
 				if (a.crit!=0) s+='\n'+Res.pipText('critch')+': +'+textAsColor('yellow', Math.round(a.crit*100)+'%');
 				if (a.radVul<1) s+='\n'+Res.pipText('radx')+': '+textAsColor('yellow', Math.round((1-a.radVul)*100)+'%');
-				if (a.resist[Unit.D_BUL]!=0) s+='\n'+Res.pipText('bullet')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_BUL]*100)+'%');
-				if (a.resist[Unit.D_EXPL]!=0) s+='\n'+Res.pipText('expl')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_EXPL]*100)+'%');
-				if (a.resist[Unit.D_PHIS]!=0) s+='\n'+Res.pipText('phis')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_PHIS]*100)+'%');
-				if (a.resist[Unit.D_BLADE]!=0) s+='\n'+Res.pipText('blade')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_BLADE]*100)+'%');
-				if (a.resist[Unit.D_FANG]!=0) s+='\n'+Res.pipText('fang')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_FANG]*100)+'%');
-				if (a.resist[Unit.D_FIRE]!=0) s+='\n'+Res.pipText('fire')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_FIRE]*100)+'%');
-				if (a.resist[Unit.D_LASER]!=0) s+='\n'+Res.pipText('laser')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_LASER]*100)+'%');
-				if (a.resist[Unit.D_PLASMA]!=0) s+='\n'+Res.pipText('plasma')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_PLASMA]*100)+'%');
-				if (a.resist[Unit.D_SPARK]!=0) s+='\n'+Res.pipText('spark')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_SPARK]*100)+'%');
-				if (a.resist[Unit.D_CRIO]!=0) s+='\n'+Res.pipText('crio')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_CRIO]*100)+'%');
-				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.pipText('venom')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_VENOM]*100)+'%');
-				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.pipText('acid')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_ACID]*100)+'%');
-				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.pipText('necro')+': '+textAsColor('yellow', Math.round(a.resist[Unit.D_NECRO]*100)+'%');
-				s+='\n\n'+Res.txt('a',id,1);
-			} else if (tip==Item.L_AMMO) {
+				
+				// Print all armor resistances if they exist
+				for (var i:int = 0; i < damageTypes.length; i++)
+				{
+					var damageType:Object = damageTypes[i];
+					if (a.resist[damageType.type] != 0) {
+						s += '\n' + Res.pipText(damageType.label) + ': ' + textAsColor('yellow', Math.round(a.resist[damageType.type] * 100) + '%');
+					}
+				}
+				
+				s += '\n\n'+Res.txt('a',id,1);
+			}
+			else if (tip==Item.L_AMMO) {
 				var ammo = inv.items[id].xml;
 				if (Weapon.getWeaponInfo(id) != null)
 				{
@@ -578,7 +597,8 @@ package fe.inter
 				if (ammo.@det>0) s+='\n'+Res.pipText('det');
 				if (World.w.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				if (ammo.@sell>0) s+='\n'+Res.pipText('sell')+": "+textAsColor('yellow', ammo.@sell);
-			} else {
+			}
+			else {
 				var hhp:Number=0;
 				s=Res.txt('i',id,1)+'\n';
 				var pot=inv.items[id].xml;
@@ -586,7 +606,8 @@ package fe.inter
 				if (tip=='instr' || tip=='impl'|| tip=='art') {
 					s=effStr('item',id)+'\n';
 				}
-				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') {
+				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him')
+				{
 					if (pot.@hhp.length() || pot.@hhplong.length())
 					s+='\n'+Res.pipText('healhp')+': '+numberAsColor('yellow', Math.round(pot.@hhp*World.w.pers.healMult));
 					if (pot.@hhplong.length()) s+='+'+numberAsColor('yellow', Math.round(pot.@hhplong*World.w.pers.healMult));
@@ -603,7 +624,8 @@ package fe.inter
 					if (pot.@perk.length()) s+='\n'+textAsColor('pink', Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
-				if (tip=='book') {
+				if (tip=='book')
+				{
 					if (World.w.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+textAsColor('pink', Res.txt('e',id));
 				}
 				if (tip=='spell') {
@@ -670,7 +692,7 @@ package fe.inter
 				{
 					var cid:String = a.idComp;
 					var kolcomp:int = a.needComp();
-					s += "\n\n<span class = 'or'>" + Res.txt('i', cid) +  " - " + kolcomp + " <span ";
+					s += "\n\n<span class = 'orange'>" + Res.txt('i', cid) +  " - " + kolcomp + " <span ";
 					if (!World.w.loc.base && kolcomp>inv.items[cid].kol || World.w.loc.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
 					s += "> ("+inv.items[cid].kol;
 					if (World.w.loc.base && inv.items[cid].vault > 0) s += ' +' + inv.items[cid].vault;
@@ -729,7 +751,7 @@ package fe.inter
 				s+="'>"+Res.txt('e',sch.@skill)+" - "+sch.@lvl+"</span>\n";
 			}
 			for each(var c in sch.craft) {
-				s+="\n<span class = 'or'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
+				s+="\n<span class = 'orange'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
 				if (!World.w.loc.base && c.@kol>inv.items[c.@id].kol
 				  || World.w.loc.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
 				s+=">("+inv.items[c.@id].kol;
@@ -872,66 +894,74 @@ package fe.inter
 		
 		protected function initCats():void
 		{
-			for (var i=0; i<=kolCats; i++)
+			for (var i:int = 0; i <= kolCats; i++)
 			{
-				vis.cats['cat'+i].addEventListener(MouseEvent.CLICK,selCatEvent);
+				vis.cats['cat' + i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
 			selCat();
 		}
 		
-		//установить кнопки категорий
+		// Initialize filter buttons
 		protected function setCats():void
 		{
-			var arr=tips[page2];
-			if (arr==null) {
-				vis.cats.visible=false;
+			var arr = tips[page2];
+			if (arr == null)
+			{
+				vis.cats.visible = false;
 				return;
 			}
-			vis.cats.visible=true;
+
+			vis.cats.visible = true;
 			var ntip;
-			for (var i=0; i<=kolCats; i++) {
-				ntip=arr[i];
-				if (ntip==null) vis.cats['cat'+i].visible=false;
-				else {
-					if (ntip is Array) ntip=ntip[0];
-					vis.cats['cat'+i].visible=true;
-					try {
-						vis.cats['cat'+i].ico.gotoAndStop(ntip);
-					}
-					catch (err)
-					{
-						trace('ERROR: (00:37)');
-						vis.cats['cat'+i].ico.gotoAndStop(1);
-					}
+			for (var i:int = 0; i <= kolCats; i++)
+			{
+				var category:String = 'cat' + i.toString();
+
+				ntip = arr[i];
+				if (ntip == null) vis.cats[category].visible = false;
+				else	// Display filter category icons
+				{
+					if (ntip is Array) ntip = ntip[0];
+					vis.cats[category].visible = true;
+
+					if (ntip != "")vis.cats[category].ico.gotoAndStop(ntip);
+					else vis.cats[category].ico.gotoAndStop(1);	// Blank box
 				}
 			}
 			selCat(cat[page2]);
 		}
 
 		
-		//выбор подкатегории инвентаря
+		// selecting an inventory subcategory
 		protected function selCatEvent(event:MouseEvent):void
 		{
-			var n:int=int(event.currentTarget.name.substr(3));
-			cat[page2]=n;
+			// Get the 4th letter of the target's name 'cat1, cat2, etc.
+			var n:int = event.currentTarget.name.charCodeAt(3) - 48; // 0 as a character is '48', so 1 would be '49' etc
+			trace('Selecting filter category: "' + n + '".');
+			cat[page2] = n;
 			setStatus();
 		}
 		
-		protected function selCat(n:int=0):void
+		// What to do when a filter button is clicked
+		protected function selCat(n:int = 0):void
 		{
-			for (var i=0; i<=kolCats; i++) {
-				vis.cats['cat'+i].fon.gotoAndStop(1);
+			for (var i = 0; i <= kolCats; i++)
+			{
+				vis.cats['cat' + i].fon.gotoAndStop(1);
 			}
-			vis.cats['cat'+n].fon.gotoAndStop(2);
-			try {
-				curTip=tips[page2][n];
+			
+			vis.cats['cat' + n].fon.gotoAndStop(2);
+			
+			try
+			{
+				curTip = tips[page2][n];
 			}
 			catch (err)
 			{
-				trace('ERROR: (00:38)');
-				curTip='';
+				trace('ERROR: (00:38) - No icon for: "' + n + '"!');
 			}
-			if (curTip==null) curTip='';
+			
+			if (curTip == null) curTip = '';
 		}
 		
 		//проверить соответствии категории
@@ -961,8 +991,8 @@ package fe.inter
 			}
 			scroll(event.delta);
 			if (!vis.scBar.visible) return;
-			if (event.delta<0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
-			if (event.delta>0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
+			if (event.delta < 0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
+			if (event.delta > 0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
 			event.stopPropagation();
 		}
 

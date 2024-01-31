@@ -28,12 +28,15 @@ package fe.inter
 			itemClass=visPipInvItem;
 			super(npip,npp);
 			vis.butOk.addEventListener(MouseEvent.CLICK,showH);
-			tips=[[],
-			['','w1','w2','w4','w5','w6','w3'],
-			['','armor1','armor3'],
-			['','med',['him','pot'],'food',['equip','spell'],['book','sphera','note'],'paint'],
-			['',['valuables','money'],['spec','key'],['impl','art','instr','equip'],['stuff','compa','compw','compe','compm'],['compp','food'],'scheme'],
-			['','a','e']];
+			// FILTERS - each array is a subcategory in the inventory, each index in the array is the filter.
+			tips = [
+				[],									// Empty entry for correct alignment
+				['','w1','w2','w4','w5','w6','w3'],	// Weapon filter buttons
+				['','armor1','armor3'],				// Armor filter buttons
+				['','med',['him','pot'],'food',['equip','spell'],['book','sphera','note'],'paint'],
+				['',['valuables','money'],['spec','key'],['impl','art','instr','equip'],['stuff','compa','compw','compe','compm'],['compp','food'],'scheme'],
+				['','a','e']
+			];
 			initCats();
 		}
 		

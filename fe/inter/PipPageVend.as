@@ -424,9 +424,9 @@ package fe.inter
 				var s:String=infoQuest(event.currentTarget.id.text);
 				if (s=='') vis.info.htmlText=Res.messText(event.currentTarget.id.text,1);
 				else vis.info.htmlText=s;
-				if (event.currentTarget.cat.text=='0') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.pipText('actTake')+"</span>";
-				if (event.currentTarget.cat.text=='3') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.pipText('actSurr')+"</span>";
-				if (event.currentTarget.cat.text=='4') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.pipText('actGive')+"</span>";
+				if (event.currentTarget.cat.text=='0') vis.info.htmlText+="\n\n<span class = 'orange'>"+Res.pipText('actTake')+"</span>";
+				if (event.currentTarget.cat.text=='3') vis.info.htmlText+="\n\n<span class = 'orange'>"+Res.pipText('actSurr')+"</span>";
+				if (event.currentTarget.cat.text=='4') vis.info.htmlText+="\n\n<span class = 'orange'>"+Res.pipText('actGive')+"</span>";
 				setIco();
 			}
 			event.stopPropagation();

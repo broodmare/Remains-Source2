@@ -320,7 +320,7 @@ package fe.inter
 				vis.info.y=vis.nazv.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
-				s=s.replace(/\[/g,"<span class='yel'>");
+				s=s.replace(/\[/g,"<span class='yellow'>");
 				s=s.replace(/\]/g,"</span>");
 				vis.info.htmlText=s;
 			} else if (page2==5) {

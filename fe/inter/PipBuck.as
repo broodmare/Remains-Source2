@@ -390,7 +390,7 @@ package fe.inter
 			if (gg.pet) ritem1(6,gg.pet.hp,gg.pet.maxhp); else ritem1(6,0,0,false);
 			if (gg.currentWeapon && gg.currentWeapon.tip<=3) ritem2(7,gg.currentWeapon.hp,gg.currentWeapon.maxhp); else ritem1(7,0,0,false);
 			if (gg.currentArmor) ritem2(8,gg.currentArmor.hp,gg.currentArmor.maxhp); else ritem1(8,0,0,false);
-			ritems[9].txt.htmlText="<span class = 'yel'>"+gg.invent.money.kol+"</span>"
+			ritems[9].txt.htmlText="<span class = 'yellow'>"+gg.invent.money.kol+"</span>"
 			ritem3(10,inv.massW,pers.maxmW,World.w.hardInv);
 			ritem3(11,inv.massM,pers.maxmM,World.w.hardInv);
 			ritem3(12,inv.mass[1],pers.maxm1,World.w.hardInv);
@@ -429,7 +429,7 @@ package fe.inter
 		private function med(hp:Number, maxhp:Number):String
 		{
 			if (hp<maxhp*0.25) return 'red';
-			else if (hp<maxhp*0.5) return 'or';
+			else if (hp<maxhp*0.5) return 'orange';
 			return '';
 		}
 		
