@@ -362,7 +362,7 @@ package fe.unit
 		//6 - выкапывается
 		//7 - спецприём
 		
-		public override function control() {
+		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) {

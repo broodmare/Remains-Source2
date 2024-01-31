@@ -109,7 +109,7 @@ package fe.unit
 		//4 - стоит на месте и стреляет
 		//5 - увидел цель, тупит какое-то время
 		
-		public override function control()
+		override protected function control():void
 		{
 			//если сдох, то не двигаться
 			if (sost==3) return;

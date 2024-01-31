@@ -194,7 +194,7 @@ package fe.unit
 		//2 - стоит и стреляет
 		//3 - лупит по земле
 		
-		public override function control() {
+		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;

@@ -85,7 +85,7 @@ package fe.unit
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control() {
+		override protected function control():void {
 			aiN++;
 			if (sost>1) return;
 			if (aiState==1 && !levit) { //взведена, поиск целей

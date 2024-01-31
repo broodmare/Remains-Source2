@@ -77,7 +77,7 @@ package fe.unit
 		//1 - видит цель, летит к ней
 		//2 - потерял цель
 		
-		public override function control() {
+		override protected function control():void {
 			if (sost>=3) return;
 			if (rasst2<800*800) {
 				

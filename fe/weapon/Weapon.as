@@ -29,9 +29,9 @@ package fe.weapon
 		public var bulX:Number=0, bulY:Number=0;
 		
 		//визуал
-		public var svis:String, svisv:String;	//само оружие
+		public var svis:String, svisv:String;	// [the weapon itself]
 		public var vWeapon:Class;			
-		public var visbul:String;				//снаряды
+		public var visbul:String;				// [shells]
 		public var vBullet:Class;
 		public var flare:String;				//вспышка
 		public var visexpl:String;				//взрыв
@@ -923,7 +923,7 @@ package fe.weapon
 				}
 				catch (err)
 				{
-					trace('ERROR: (00:15) - Could not play movieclip "shoot"!');
+					trace('ERROR: (00:15) - weapon: ' + id + '" held by: "' + owner.id + '" Could not play movieclip "shoot"!');
 				}
 				t_shoot=3;
 			}
@@ -1148,7 +1148,7 @@ package fe.weapon
 						}
 						catch (err)
 						{
-							trace('ERROR: (00:16) - Could not play movieclip "reload"!');
+							trace('ERROR: (00:16) - weapon: ' + id + '" held by: "' + owner.id + '" Could not play movieclip "reload"!');
 						}
 					}
 					if (sndReload!='') Snd.ps(sndReload, coordinates.X, coordinates.Y);
@@ -1170,15 +1170,15 @@ package fe.weapon
 				if (t_prep<prep && t_prep>1) {
 					vis.gotoAndStop(t_prep);
 				}
-				if (t_prep>=prep)
+				if (t_prep >= prep)
 				{
 					try
 					{
-						vis.gotoAndStop('ready');
+						if (tip != 0) vis.gotoAndStop('ready'); // Don't try to animate internal weapons
 					}
 					catch(err)
 					{
-						trace('ERROR: (00:17) - Could not play movieclip "ready"!');
+						trace('ERROR: (00:17) - weapon: ' + id + '" held by: "' + owner.id + '" Could not play movieclip "ready"!');
 					}
 				}
 				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);

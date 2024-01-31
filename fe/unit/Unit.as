@@ -10,6 +10,9 @@ package fe.unit
 	import flash.geom.Matrix;
 	
 	import fe.*;
+	import fe.util.Calc;
+	import fe.util.Vector2;
+
 	import fe.weapon.*;
 	import fe.projectile.Bullet;
 	import fe.loc.*;
@@ -97,7 +100,7 @@ package fe.unit
 		public var shitArmor:Number=20;
 		public var vulner:Array;		
 		public var begvulner:Array;
-		public static var begvulners:Array = new Array();
+		public static var begvulners:Array = [];
 		
 		// Evasion, 1 is standard, 0 always hits
 		public var dexter:Number = 1;
@@ -182,7 +185,7 @@ package fe.unit
 		var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
 		var aiTTurn:int=10, aiPlav:int=0; 
 		var aiState:int=0;	//состояние ии 
-		protected var aiTCh:int= int(Math.random()*10);	// [AI state change timer]
+		protected var aiTCh:int = Calc.intBetweenZeroAnd(10);	// [AI state change timer], Changed from range of [0-9] to [0-10]
 		protected var aiSpok:int=0, maxSpok:int=30;		// [0 - calm, 1-9 - excited, maxSpok - attacks the target]
 		//координаты и вид цели
 		public var celX:Number=0, celY:Number=0, celDX:Number=0, celDY:Number=0;
@@ -643,22 +646,26 @@ package fe.unit
 			return null;
 		}
 		
-		public function getName():String {
-			if (World.w.game==null || id_name==null) return '';
-			var arr:Array=World.w.game.names[id_name];
-			if (arr==null || arr.length==0) arr=Res.namesArr(id_name); 	//подготовить массив имён
-			if (arr==null || arr.length==0) return '';
-			World.w.game.names[id_name]=arr;
-			var n=Math.floor(Math.random()*arr.length);
-			var s=arr[n];
-			arr.splice(n,1);
+		public function getName():String
+		{
+			if (World.w.game == null || id_name == null) return '';
+			var arr:Array = World.w.game.names[id_name];
+			if (arr == null || arr.length == 0) arr = Res.namesArr(id_name); 	//prepare an array of names
+			if (arr == null || arr.length == 0) return '';
+
+			World.w.game.names[id_name] = arr;
+			var n = Calc.intBetweenZeroAnd(arr.length - 1);
+			var s = arr[n];
+			arr.splice(n, 1);
 			return s;
 		}
 		
-		public function checkTrig():Boolean {
-			if (trig) {
-				if (trig=='eco' && (World.w.pers==null || World.w.pers.eco==0)) return false;
-				if (World.w.game.triggers[trig]!=1) return false;
+		public function checkTrig():Boolean
+		{
+			if (trig)
+			{
+				if (trig == 'eco' && (World.w.pers == null || World.w.pers.eco == 0)) return false;
+				if (World.w.game.triggers[trig] != 1) return false;
 			}
 			return true;
 		}
@@ -708,11 +715,13 @@ package fe.unit
 				die();
 			};
 		}
-		//установить левел моба (значение прибавляется к левелу, заданному через карту, по умолчанию 0)
-		public function setLevel(nlevel:int=0) {
-			level+=nlevel;
-			if (level<0) level=0;
-			hp=maxhp=hp*(1+level*0.11);
+
+		// [set the mob's level (the value is added to the level specified via the map, default is 0)]
+		public function setLevel(nlevel:int=0)
+		{
+			level += nlevel;
+			if (level < 0) level = 0;
+			hp = maxhp = hp * (1 + level * 0.11);
 			dam*=(1+level*0.07);
 			radDamage*=(1+level*0.1);
 			critCh=level*0.01;
@@ -720,13 +729,16 @@ package fe.unit
 			marmor*=(1+level*0.05);
 			skin*=(1+level*0.05);
 			armor_hp=armor_maxhp=armor_hp*(1+level*0.1);
-			observ+=Math.min(nlevel*0.6,15)*(0.9+Math.random()*0.2);
-			if (currentWeapon && currentWeapon.tip==0) {
+			observ += Math.min(nlevel*0.6, 15) * (0.9 + Math.random()*0.2);
+			if (currentWeapon && currentWeapon.tip==0)
+			{
 				currentWeapon.damage*=(1+level*0.07);
-			} else {
-				weaponSkill*=(1+level*0.035);
 			}
-			damWall*=(1+level*0.04);
+			else
+			{
+				weaponSkill *= (1 + level * 0.035);
+			}
+			damWall *= (1 + level * 0.04);
 		}
 		
 		//сделать героем
@@ -815,14 +827,12 @@ package fe.unit
 			res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != 'base';
 			return res;
 		}
-		
-		public override function err():String
+
+		protected function control():void
 		{
-			return 'Error unit ' + nazv;
+
 		}
-		
-		
-		
+
 		public override function step()
 		{
 			if (disabled || trigDis) return;
@@ -853,7 +863,7 @@ package fe.unit
 			getRasst2();
 			if (radioactiv) ggModum();	//действие на ГГ (радиация)
 			forces();		//внешние силы, влияющие на ускорение
-			control();		//управление игроком или ИИ
+			control();		// [player or AI control]
 
 			//движение
 			if (fixed)
@@ -892,17 +902,11 @@ package fe.unit
 				catch(err)
 				{
 					trace('ERROR: (00:2) - Child object: "' + childObjs[i].id + '" with parent: "' + id + '" failed to run step()!');
-					childObjs[i].err();
 				}
 			}
 
 			visDamDY = 0;
 			if (sndRunOn && sndRun && loc && loc.active) sndRunPlay();
-		}
-		
-		public function control()
-		{
-
 		}
 		
 		// Move unit to coordinates
@@ -2840,9 +2844,12 @@ package fe.unit
 						setCel(ncel);
 						return true;
 					}
-				} else if (res1>0){
-					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs) {
-						setCel(null,ncel.coordinates.X+(Math.random()-0.5)*200, ncel.coordinates.Y+(Math.random()-0.5)*200);
+				}
+				else if (res1 > 0)
+				{
+					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs)
+					{
+						setCel(null,ncel.coordinates.X + Calc.intBetween(-100, 100), ncel.coordinates.Y + Calc.intBetween(-100, 100));
 					}
 					if (res1>1) return true;
 				}
@@ -2936,30 +2943,33 @@ package fe.unit
 		}
 
 		public function replic(s:String) {
-			if (sost!=1 || id_replic=='' || !loc.active) return;
+			if (sost != 1 || id_replic == '' || !loc.active) return;
 			var s_replic:String;
-			if (s=='dam') {
-				if (isrnd(0.05)) t_replic=0;
-			} 
-			if (s=='die') {
-				if (isrnd()) t_replic=0;
-			} 
-			if (t_replic<=0) {
-				if (s=='attack') {
-					t_replic=50+Math.random()*100;
-				} else {
-					t_replic=110+Math.random()*150;
+
+			if (s == 'dam' && isrnd(0.05)) t_replic = 0;
+			if (s == 'die' && isrnd()) t_replic = 0
+			
+			if (t_replic <= 0)
+			{
+				if (s == 'attack')
+				{
+					t_replic = 50 +  Calc.intBetweenZeroAnd(100); //Changed from range of [0-9] to [0-10]
 				}
-				s_replic=Res.repText(id_replic, s, msex);
-				if (s_replic!='' && s_replic!=null) {
+				else 
+				{
+					t_replic = 110 + Calc.intBetweenZeroAnd(150); //Changed from range of [0-9] to [0-10]
+				}
+				s_replic = Res.repText(id_replic, s, msex);
+				if (s_replic != '' && s_replic != null)
+				{
 					Emitter.emit('replic', loc, coordinates.X, coordinates.Y - 110, {txt:s_replic, ry:50});
 				}
 			}
 		}
 
-		protected function isrnd(n:Number=0.5):Boolean
+		protected function isrnd(n:Number = 0.5):Boolean
 		{
-			return Math.random()<n;
+			return Math.random() < n;
 		}
 	}
 }

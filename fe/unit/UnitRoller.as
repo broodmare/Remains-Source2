@@ -89,7 +89,7 @@ package fe.unit
 		//0 - стоит на месте
 		//1 - видит цель, катится к ней, атакует
 		
-		public override function control() {
+		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;

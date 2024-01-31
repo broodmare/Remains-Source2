@@ -82,7 +82,7 @@ package fe.unit
 			}
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (novoi || !act) return;
 			t_replic--;
 			if (loc!=World.w.loc) return;

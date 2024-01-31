@@ -130,7 +130,7 @@ package fe.unit {
 		//2 - видит цель, бежит к ней, атакует
 		//3 - атакует оружием
 		
-		public override function control() {
+		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;

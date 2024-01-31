@@ -238,7 +238,7 @@ package fe.unit
 		var distanc:Number=6000;
 		
 		
-		public override function control() {
+		override protected function control():void {
 			if (vsosOn) vsos();
 			if (sost==3) return;
 			if (sost>1) {

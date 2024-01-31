@@ -25,7 +25,7 @@ package fe.unit
 			doop=true;
 		}
 
-		public override function control() {
+		override protected function control():void {
 			hp=maxhp;
 		}
 		public override function setNull(f:Boolean=false) {

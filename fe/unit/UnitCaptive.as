@@ -94,7 +94,7 @@ package fe.unit {
 			statusCapt=1;
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (statusCapt>0 || novoi) return;
 			t_replic--;
 			if (t_replic<=0) {

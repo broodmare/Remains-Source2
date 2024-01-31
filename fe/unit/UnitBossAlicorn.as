@@ -237,7 +237,7 @@ package fe.unit
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		public override function control() {
+		override protected function control():void {
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {

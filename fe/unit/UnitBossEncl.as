@@ -150,7 +150,7 @@ package fe.unit
 		//1 - летает и атакует
 		//2 - меняет оружие
 		
-		public override function control()
+		override protected function control():void
 		{
 			//если сдох, то не двигаться
 			if (sost==3) return;

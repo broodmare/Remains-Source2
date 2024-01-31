@@ -69,7 +69,7 @@ package fe.unit
 			for (var i=0; i<5; i++) emit();
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (World.w.enemyAct<=0) {
 				return;
 			}

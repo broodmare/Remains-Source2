@@ -376,7 +376,7 @@ package fe.unit
 		//3 - видит цель, стреляет
 		//4 - не видит цель
 		
-		public override function control() {
+		override protected function control():void {
 			if (levit && !reprog || !stay && !fixed && oduplenie<=0) {
 				if (aiState<=1 && !sleep) {
 					aiState=3;

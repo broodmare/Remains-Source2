@@ -148,7 +148,7 @@ package fe.unit
 		//0 - стоит на месте
 		//1 - движется
 		
-		public override function control() {
+		override protected function control():void {
 
 			if (sost==3) return;
 			if (sost==2) {

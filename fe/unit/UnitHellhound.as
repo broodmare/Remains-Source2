@@ -72,7 +72,7 @@ package fe.unit
 		var t_laz:int=0;	//прошло времени с начала лазения
 		var r_laz:int=0;	//изменений направления лазения
 		
-		public override function control() {
+		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) {

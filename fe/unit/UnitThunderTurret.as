@@ -48,7 +48,7 @@ package  fe.unit
 			setVisPos();
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (head==null || loc==null) return;
 			if (sost>1 || head.sost>1) return;
 			if (head.isAtt && coordinates.X > 200 && coordinates.Y > 200 && coordinates.X < loc.maxX - 200 && coordinates.Y < loc.maxY - 200) {

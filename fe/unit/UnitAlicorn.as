@@ -330,7 +330,7 @@ package fe.unit
 		//3 - видит цель, летает, атакует
 		//4 - приземляется
 		
-		public override function control() {
+		override protected function control():void {
 			//если сдох, то не двигаться
 			var t:Tile;
 			if (sost==3) {

@@ -128,7 +128,7 @@ package fe.unit {
 		//2 - потерял цель
 		//3 - удаляется для новой атаки
 		
-		public override function control() {
+		override protected function control():void {
 			if (sost>=3) return;
 			if (World.w.enemyAct<=0) {
 				return;

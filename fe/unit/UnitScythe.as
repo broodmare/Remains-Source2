@@ -86,7 +86,7 @@
 			bottomBound = coordinates.Y;
 		}
 		
-		public override function control()
+		override protected function control():void
 		{
 			if (sost>=3) return;
 			t++;

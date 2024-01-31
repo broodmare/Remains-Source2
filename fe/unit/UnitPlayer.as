@@ -1335,7 +1335,7 @@
 			super.sit(turn);
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (!ggControl) {
 				return;
 			}

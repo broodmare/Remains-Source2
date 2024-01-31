@@ -143,7 +143,7 @@ package fe.unit
 		//3 - видит цель, атакует
 		//4 - не видит цель
 		
-		public override function control()
+		override protected function control():void
 		{
 			//если сдох, то не двигаться
 			if (sost==3) return;

@@ -55,7 +55,7 @@ package fe.unit
 			}
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (shine<100 && World.w.pers.infravis>0) shine=100;
 			if (sost>1) shine=100;
 			invis=(shine<15);

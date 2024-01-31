@@ -107,7 +107,7 @@ package fe.unit {
 		//6 - рывок
 		//7 - на берегу
 		
-		public override function control() {
+		override protected function control():void {
 			if (sost>=3) {
 				ddyPlav=-0.2;
 				return;

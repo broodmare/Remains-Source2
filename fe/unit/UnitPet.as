@@ -381,7 +381,8 @@ package fe.unit {
 		//4 - атакует корпусом
 		//5 - после атаки корпусом
 		
-		public override function control() {
+		override protected function control():void
+		{
 			if (sost>=3 || !active) return;
 			if (stun) {
 				return;

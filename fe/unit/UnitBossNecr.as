@@ -196,7 +196,7 @@ package fe.unit
 		//2 - атакует
 		//3 - защита
 		
-		public override function control() {
+		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;

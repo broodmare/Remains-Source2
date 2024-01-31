@@ -102,7 +102,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (!stay) t_fall++;
 			if (t_fall>=3 || dx>1 || dx<-1) die();
 			if (!questOk && loc.celObj==this) {

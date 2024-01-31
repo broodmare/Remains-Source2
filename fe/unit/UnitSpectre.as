@@ -65,7 +65,7 @@ package fe.unit
 		//0 - ничего не делает
 		//1 - летит к цели
 		
-		public override function control() {
+		override protected function control():void {
 			if (sost>=3) return;
 			if (World.w.enemyAct<=0) {
 				return;

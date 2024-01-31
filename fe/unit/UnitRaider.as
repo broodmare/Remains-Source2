@@ -360,7 +360,7 @@ package fe.unit
 		//7 - готовится атаковать рывком
 		//8 - атакует быстрым рывком
 		
-		public override function control()
+		override protected function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться

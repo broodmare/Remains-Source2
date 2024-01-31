@@ -39,7 +39,7 @@ package fe.unit
 		public override function setLevel(nlevel:int=0) {
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (tr==1) {
 				t_part--;
 				if (t_part==0) t_part=10;

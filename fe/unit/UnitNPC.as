@@ -298,7 +298,7 @@ package fe.unit
 			return false;
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			if (t_ref>0) t_ref--;
 			if (World.w.gui.dialScript.running) {
 			} else {

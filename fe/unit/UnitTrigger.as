@@ -271,7 +271,7 @@ package fe.unit
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control() {
+		override protected function control():void {
 			if (sost>1 || status==2 || one && status==1) return;
 			aiN++;
 			if (aiN%5==0) {

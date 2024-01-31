@@ -86,7 +86,7 @@ package fe.unit
 		//5 - готовится к рывку
 		//6 - рывок
 		
-		public override function control() {
+		override protected function control():void {
 			if (sost>=3) return;
 			if (World.w.enemyAct<=0) {
 				return;

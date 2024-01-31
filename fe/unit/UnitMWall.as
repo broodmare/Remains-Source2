@@ -34,7 +34,7 @@ package fe.unit {
 		public override function visDetails() {
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			hp-=0.2;
 			if (hp<50) vis.alpha=hp/50;
 			if (hp<=0) exterminate();

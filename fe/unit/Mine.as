@@ -169,7 +169,7 @@ package fe.unit
 			super.die(0);
 		}
 		
-		public override function control() {
+		override protected function control():void {
 			aiN++;
 			if (levit || !stay && !fixed && oduplenie<=0 || !stay && fraction==F_PLAYER) {
 				massa=0.06;
