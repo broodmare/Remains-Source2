@@ -387,8 +387,6 @@ package fe.loc
 		// This is for opening and closing doors inside of rooms, NOT for traveling to new rooms.
 		public function setDoor(state:Boolean)
 		{
-			trace('Door set as ' + (state ? 'open' : 'closed'));
-
 			for (var i in tiles)
 			{
 				(tiles[i] as Tile).phis = (state? 0:phis);

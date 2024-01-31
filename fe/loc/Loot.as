@@ -93,14 +93,15 @@ package fe.loc
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			} else {
-				vClass=visualItem;
-				vis=new vClass();
-				try {
+				vClass = visualItem;
+				vis = new vClass();
+				try
+				{
 					vis.gotoAndStop(item.id);
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:27)');
+					trace('ERROR: (00:27) - Could not spawn loot with id: "' + id +'"!');
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');

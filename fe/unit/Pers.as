@@ -763,8 +763,8 @@ package fe.unit
 		}
 		
 		//принудительно установить уровень перса
-		public function setForcLevel(lvl:int) {
-			trace('Установлен уровень',lvl);
+		public function setForcLevel(lvl:int)
+		{
 			level=lvl;
 			xpPrev=xpCur=xpProgress(lvl-1);
 			xpNext=xpProgress(lvl);
@@ -799,7 +799,6 @@ package fe.unit
 		public function recalcXP() {
 			if (xpVer==0) {
 				var razn:int=xpProgress(level-1)-xpProgress06(level-1);
-				trace('Формулы расчёта опыта разных версий, разница:', razn);
 				xpCur+=razn;
 			}
 		}
@@ -1141,9 +1140,9 @@ package fe.unit
 		public function manaDamage(dam:Number)
 		{
 			//Mana usage debug
-			var damOut:Number = Number(dam.toFixed(3));
-			var message:String = (damOut > 0) ? 'Draining mana (' + damOut + ')' : 'Draining mana (~0.0001)';
-			trace(message);
+			//var damOut:Number = Number(dam.toFixed(3));
+			//var message:String = (damOut > 0) ? 'Draining mana (' + damOut + ')' : 'Draining mana (~0.0001)';
+			//trace(message);
 			
 			if (dam <= 0) return;
 			if (gg.loc.train) return;

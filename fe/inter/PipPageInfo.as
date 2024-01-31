@@ -31,6 +31,8 @@ package fe.inter
 		var targetLand:String='';
 		var game:Game;
 
+		private static var lastLandTooltipDisplayed:String;
+
 		private static var cachedUnits:Object = {};
 		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
 		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
@@ -271,12 +273,17 @@ package fe.inter
 			vis.info.y=vis.ico.y;
 			if (page2==2) {
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
-			} else if (page2==3) {
-				var l:LandAct=game.lands[event.currentTarget.name];
-				if (l==null) return;
-				vis.nazv.text=Res.txt('m',l.id);
-				var s:String=Res.txt('m',l.id,1);
-				if (!l.visited) s+="\n\n<span class ='blue'>"+Res.pipText('ls1')+"</span>";								// "Not visited" message
+			}
+			else if (page2 == 3)
+			{
+				var l:LandAct = game.lands[event.currentTarget.name];
+
+				if (l == null || l.id == lastLandTooltipDisplayed) return;
+				lastLandTooltipDisplayed = l.id;
+
+				vis.nazv.text = Res.txt('m',l.id);
+				var s:String = Res.txt('m',l.id,1);
+				if (!l.visited) s+="\n\n<span class ='blue'>"+Res.pipText('ls1')+"</span>";									// "Not visited" message
 				else if (l.passed) s+="\n\n<span class ='orange'>"+Res.pipText('ls2')+"</span>";							// "Cleared" message
 				else if (l.tip=='base') s+="\n\n<span class ='orange'>"+Res.pipText('ls4')+"</span>";						// "Base camp" message
 				else if (l.tip=='rnd') s+="\n\n<span class ='yellow'>"+Res.pipText('ls3')+": "+(l.landStage+1)+"</span>";	// "Location level reached" message
@@ -316,14 +323,18 @@ package fe.inter
 				}
 				if (World.w.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
 				vis.info.htmlText=s;
-			} else if (page2==4) {
+			}
+			else if (page2==4)
+			{
 				vis.info.y=vis.nazv.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
 				s=s.replace(/\[/g,"<span class='yellow'>");
 				s=s.replace(/\]/g,"</span>");
 				vis.info.htmlText=s;
-			} else if (page2==5) {
+			}
+			else if (page2==5)
+			{
 				if (vis.ico.numChildren>0) vis.ico.removeChildAt(0);
 				Unit.initIco(event.currentTarget.id.text)
 				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);

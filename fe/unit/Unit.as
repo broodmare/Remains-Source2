@@ -182,11 +182,13 @@ package fe.unit
 		var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
 		var aiTTurn:int=10, aiPlav:int=0; 
 		var aiState:int=0;	//состояние ии 
-		var aiTCh:int=Math.floor(Math.random()*10);	//таймер смены состояния ии 
-		var aiSpok:int=0, maxSpok:int=30;	//0 - спокоен, 1-9 - возбуждён, maxSpok - атакует цель
+		protected var aiTCh:int= int(Math.random()*10);	// [AI state change timer]
+		protected var aiSpok:int=0, maxSpok:int=30;		// [0 - calm, 1-9 - excited, maxSpok - attacks the target]
 		//координаты и вид цели
 		public var celX:Number=0, celY:Number=0, celDX:Number=0, celDY:Number=0;
-		public var acelX:Number=0, acelY:Number=0;	//антицель
+
+		public var acelX:Number=0, acelY:Number=0;	// [anti-target]
+		
 		public var celUnit:Unit;	//кто является целью
 		public var priorUnit:Unit;	//кто является врагом
 		public var eyeX:Number=-1000, eyeY:Number=-1000;	//точка зрения
@@ -353,10 +355,10 @@ package fe.unit
 				}
 				if (xml.@die.length()) postDie=true;
 			}
-			if (loadObj && loadObj.dead && !postDie) {
+			if (loadObj && loadObj.dead && !postDie)
+			{
 				sost=4;
 				disabled=true;
-				trace(this, nazv)
 			}
 			mapxml=xml;
 		}
