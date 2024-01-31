@@ -101,7 +101,7 @@ package fe.loc
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:27) - Could not spawn loot with id: "' + item.id +'"!');
+					trace('ERROR: (00:27) - Could not sprite for loot item: "' + item.id +'"!');
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
@@ -109,7 +109,11 @@ package fe.loc
 					else if (item.tip==Item.L_KEY) vis.gotoAndStop('key');
 					else if (item.tip==Item.L_PAINT) vis.gotoAndStop('paint');
 					else if (item.tip==Item.L_FOOD) vis.gotoAndStop('food');
-					else vis.gotoAndStop(1);
+					else 
+					{
+						trace('ERROR: (00:53) - ERROR: Could not general sprite for loot item: "' + item.id +'" either!');
+						vis.gotoAndStop(1);
+					}
 				}
 				if (item.tip==Item.L_SCHEME) {
 					sndFall='fall_paper';
