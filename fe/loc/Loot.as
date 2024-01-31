@@ -101,7 +101,7 @@ package fe.loc
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:27) - Could not spawn loot with id: "' + id +'"!');
+					trace('ERROR: (00:27) - Could not spawn loot with id: "' + item.id +'"!');
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
