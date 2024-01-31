@@ -4588,7 +4588,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Loading...</n>
   </gui>
   <gui id="tele">
-    <n>telekinesis</n>
+    <n>levitate</n>
   </gui>
   <gui id="miss">
     <n>miss</n>
@@ -5583,7 +5583,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Travel</n>
   </pip>
   <pip id="recLevel">
-    <n>Recommended minimum level</n>
+    <n>Recommended level:</n>
   </pip>
   <pip id="wrLevel" v="0.7">
     <n>Your level is too low. It is not recommended going there yet</n>
@@ -5592,7 +5592,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Take all tasks</n>
   </pip>
   <pip id="kolProb" v="0.71">
-    <n>Trial complete</n>
+    <n>Trials complete</n>
   </pip>
   <pip id="done">
     <n>done</n>
@@ -5649,7 +5649,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Accept the deal</n>
   </pip>
   <pip id="sellall" v="0.8">
-    <n>Sell ​​valuables</n>
+    <n>Sell valuables</n>
   </pip>
   <pip id="medprice">
     <n>Healing cost</n>
@@ -5706,7 +5706,7 @@ After a few years this entire area of ​​Equestria was almost completely devo
     <n>Press to accept a mission</n>
   </pip>
   <pip id="actSurr" v="0.6">
-    <n>Press to finish the quest and get a reward</n>
+    <n>Press to finish the quest and claim your reward</n>
   </pip>
   <pip id="actGive" v="0.6">
     <n>Press to give items</n>
@@ -12583,22 +12583,22 @@ The Omegatron-Y intergalactic robot has captured the planet and requires uncondi
     <rep act="neutral" id="raider">
       <r>I would kill for some smoke...</r>
       <r>Darn headache...</r>
-      <r>This darn place has any food?</r>
+      <r>Does this damn place have any food?</r>
       <r>Hey you, suckers!</r>
       <r>Gotta pee</r>
       <r>Some beer would make my day...</r>
-      <r>Wanna some smacking and whacking?</r>
+      <r>Ready for some hackin' and whackin'?</r>
       <r>Wanna get your balls smashed?</r>
       <r>What an asshole!</r>
       <r>Buhuu...</r>
-      <r>Dammit, I`m high!</r>
+      <r>Damn, I`m high!</r>
       <r>Go buck yourselves!</r>
       <r>Horseapples!</r>
       <r>Whatcha you looking at, asshole?</r>
       <r>Jackass!</r>
       <r m="1">To the moooon, beeach!</r>
       <r>Ahm sick of these horseapples!</r>
-      <r>Ahm through with all this crap</r>
+      <r>Ahm done with all this crap</r>
       <r>Goddesses dammit!</r>
       <r>* whistles *</r>
       <r>* spits *</r>
