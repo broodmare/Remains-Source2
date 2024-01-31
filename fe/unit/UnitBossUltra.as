@@ -306,7 +306,8 @@ package fe.unit
 			}
 		}
 		
-		public function attack() {
+		public function attack()
+		{
 			if (sost!=1) return;
 			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,1);
@@ -320,7 +321,7 @@ package fe.unit
 					thWeapon.forceRot+=0.1;
 					thWeapon.attack();
 				}
-				if ((dist2<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
+				if ((rasst2<100*100) && isrnd(0.1)) attKorp(celUnit,0.5); //Changed to use rasst2 instead of dist2
 			}
 		}
 		

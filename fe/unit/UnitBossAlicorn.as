@@ -360,7 +360,7 @@ package fe.unit
 			if (aiState==3) {							//пальба
 				if (attState<=2 || attState==5) currentWeapon.attack();
 				if (attState==4 && aiTCh%30==1) emit();
-				if (attState!=4 && (dist2<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
+				if (attState!=4 && (rasst2 < 100 * 100) && isrnd(0.1)) attKorp(celUnit,0.5); //Changed to use rasst2 instead of dist2
 			}
 		}
 		

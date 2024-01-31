@@ -16,12 +16,11 @@ package  fe.entities
 		
 		public var prior:Number = 1;
 
-		public var scX:Number = 10;
-		public var scY:Number = 10;
+		public var scX:Number = 10;	// Sprite Width
+		public var scY:Number = 10;	// Sprite Height
+		public var storona:int = 1;	// Sprite Facing (Left/Right)
 
-		public var storona:int = 1;	// Dimensions (Width, Height, which direction the sprite is facing.)
-
-		public var rasst2:Number=0;	//расстояние до ГГ в квадрате
+		public var rasst2:Number=0;	// Distance to player squared
 		public var massa:Number=1;
 		public var levit:int=0;
 		public var levitPoss:Boolean=true;	//возможность перемещать с помощью левитации
@@ -30,10 +29,11 @@ package  fe.entities
 		public var radrad:Number=250;	//радиус радиоактивности
 		public var radtip:int=0;		//0 - радиация, 1 - яд, 2 - розовое облако, 3 - смерть
 		public var warn:int=0;			//цвет вспл. подсказки
-		public var nazv:String='';
+		
+		public var nazv:String = '';	// Name
 		
 		public var inter:Interact;
-		public var dist2:Number=0;	//расстояние до ГГ в квадрате
+		
 		public var X1:Number, X2:Number, Y1:Number, Y2:Number;
 		
 		public var onCursor:Number=0;
