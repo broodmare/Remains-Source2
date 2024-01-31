@@ -8,6 +8,9 @@ package fe
 		public static var currentLanguageData:XML; 		// Current localization file eg. 'text_en.xml'
 		public static var fallbackLanguageData:XML;		// Default language that is used a fallback if an error occurs.
 
+		private static var combinedRegExp:RegExp = /\[br\]|\[|\]/g;
+		private static var controlCharsRegExp:RegExp = /[\b\r\t]/g;
+
 		private static const typeDictionary:Object = 
 		{
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
@@ -31,12 +34,6 @@ package fe
 			if (id == '') return '';
 			try
 			{
-				// Pre-compile regular expressions
-				var brRegExp:RegExp	= /\[br\]/g;
-				var openTagRegExp:RegExp = /\[/g;
-				var closeTagRegExp:RegExp = /\]/g;
-				var controlCharsRegExp:RegExp = /[\b\r\t]/g;
-
 				// Reduce redundant dictionary lookups
 				var tipType:String = typeDictionary[tip];
 				var razdType:String = typeDictionary[razd];
@@ -64,7 +61,7 @@ package fe
 
 				var xl2:XML = xl1[0];
 				
-				if (xl2.@m == '1')								//присутствует мат
+				if (xl2.@m == '1')	// Strings with profanity
 				{		
 					var spl:Array = s.split('|');
 					if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
@@ -72,30 +69,26 @@ package fe
 				if (razd >= 1 || dop)
 				{
 					if (xl2.@s1.length()) s = addKeys(s, xl2);
-					try
+					if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
+
+					//Merged all 3 regex searches instead of iterating 3 times per string.
+					s = s.replace(combinedRegExp, function(match:String, ...args):String
 					{
-						if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
-					}
-					catch (err:Error)
-					{
-						trace('ERROR: (00:18)');
-					}
-
-					// Perform string replacements
-					s = s.replace(brRegExp, '<br>')
-						.replace(openTagRegExp, "<span class='yellow'>")
-						.replace(closeTagRegExp, "</span>");
+						switch (match) {
+							case "[br]":
+								return "<br>";
+							case "[":
+								return "<span class='yellow'>";
+							case "]":
+								return "</span>";
+							default:
+								return ''; // Needed for compile, shouldn't ever actually get here
+						}
+					});
 				}
 
-				if (dop)
-				{
-					s = s.replace(controlCharsRegExp, '');
-				}
-
-				if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length())
-				{
-					s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
-				}
+				if (dop) s = s.replace(controlCharsRegExp, '');
+				if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
 			}
 			catch(err:Error)
 			{
@@ -202,8 +195,9 @@ package fe
 		public static function repText(id:String, act:String, msex:Boolean=true):String
 		{
 			var xl:XMLList = currentLanguageData.replic[0].rep.(@id==id && @act==act);
+
 			if (xl.length()==0) return '';
-			xl=xl[0].r;	//AllData.lang
+			xl = xl[0].r;
 			var n:int = xl.length();
 			if (n == 0) return '';
 			var num:int = Math.floor(Math.random() * n);
@@ -216,7 +210,7 @@ package fe
 				var ss:String=s.substring(n1+1,n2);
 				s=s.substring(0,n1)+ss.split('|')[msex?0:1]+s.substring(n2+1);
 			}
-			s=s.replace('@lp',World.w.pers.persName);
+			s = s.replace('@lp',World.w.pers.persName);
 			return s;
 		}
 		
@@ -239,8 +233,8 @@ package fe
 		
 		public static function getDate(num:Number):String
 		{
-			var date:Date=new Date(num);
-			return date.fullYear+'.'+(date.month>=9?'':'0')+(date.month+1)+'.'+(date.date>=10?'':'0')+date.date+'  '+date.hours+':'+(date.minutes>=10?'':'0')+date.minutes;
+			var date:Date = new Date(num);
+			return date.fullYear + '.' + (date.month >= 9 ? '':'0') + (date.month + 1) + '.' + (date.date >= 10 ? '':'0') + date.date + '  ' + date.hours + ':' + (date.minutes >= 10 ? '':'0') + date.minutes;
 		}
 		
 		public static function numb(n:Number):String
@@ -249,7 +243,7 @@ package fe
 			if (k%10==0) return (k/10).toString();
 			else {
 				if (n<0) return Math.ceil(k/10)+'.'+Math.abs(k%10);					
-				return Math.floor(k/10)+'.'+(k%10);
+				return int(k/10)+'.'+(k%10);
 			}
 		}
 		
@@ -273,10 +267,10 @@ package fe
 		//строковое представление времени игры
 		public static function gameTime(n:Number):String
 		{
-			var sec:int=Math.round(n/1000);
-			var h:int=Math.floor(sec/3600);
-			var m:int=Math.floor((sec-h*3600)/60);
-			var s:int=sec%60;
+			var sec:int = Math.round(n/1000);
+			var h:int = int(sec/3600);
+			var m:int = int((sec-h*3600)/60);
+			var s:int = sec%60;
 			return h.toString()+':'+((m<10)?'0':'')+m+':'+((s<10)?'0':'')+s;
 		}
 
