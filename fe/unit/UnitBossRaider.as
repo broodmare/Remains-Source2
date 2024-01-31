@@ -119,7 +119,7 @@ package fe.unit
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y - scY * 0.58;
+			weaponY = coordinates.Y - objectHeight * 0.58;
 		}
 		
 		public override function dropLoot() {
@@ -151,7 +151,7 @@ package fe.unit
 		}
 
 		function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2, true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, this.topBoundToCenter, true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -207,8 +207,8 @@ package fe.unit
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			
@@ -229,7 +229,7 @@ package fe.unit
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			if (stay) celDY = celY - coordinates.Y + scY;
+			if (stay) celDY = celY - coordinates.Y + objectHeight;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;

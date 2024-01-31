@@ -182,10 +182,10 @@ package fe.unit
 		}
 		
 		public override function run(div:int=1) {
-			X1 = coordinates.X - scX / 2 + 300 * 3;
-			X2 = X1 + 1370 * 3;
-			Y1 = coordinates.Y - scY / 2 + 170 * 3;
-			Y2 = Y1 + 580 * 3;
+			leftBound = coordinates.X - objectWidth / 2 + 300 * 3;
+			rightBound = leftBound + 1370 * 3;
+			topBound = this.topBoundToCenter + 170 * 3;
+			bottomBound = topBound + 580 * 3;
 		}
 		
 

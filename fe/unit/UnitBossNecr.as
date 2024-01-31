@@ -145,7 +145,7 @@ package fe.unit
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y-scY*0.58;
+			weaponY = coordinates.Y-objectHeight*0.58;
 		}
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
@@ -209,8 +209,8 @@ package fe.unit
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-scY;
-				celX = coordinates.X+scX*storona*2;
+				celY = coordinates.Y-objectHeight;
+				celX = coordinates.X+objectWidth*storona*2;
 				return;
 			}
 			if (levit && protculd_t<=0) castProtect(1);
@@ -291,7 +291,7 @@ package fe.unit
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + scY;
+			celDY = celY - coordinates.Y + objectHeight;
 			//поворот от игрока
 			if (aiTCh%10==1 && aiState==1 && celDY<80 && celDY>-80) {
 				if (celDX<0 && celDX>-400) aiNapr=storona=1;
@@ -435,10 +435,10 @@ package fe.unit
 
 		public function castCurse(n:int=0, otlozh:int=0) {
 			var nx:Number = loc.gg.coordinates.X + loc.gg.dx*15+(Math.random()-0.5)*50;
-			var ny:Number = loc.gg.coordinates.Y - loc.gg.scY / 2 + loc.gg.dy * 15 + (Math.random() - 0.5) * 30;
+			var ny:Number = loc.gg.coordinates.Y - loc.gg.objectHeight / 2 + loc.gg.dy * 15 + (Math.random() - 0.5) * 30;
 			if (n==2) {
 				nx=loc.gg.coordinates.X+loc.gg.dx*15+(otlozh-8)*20*((int(loc.gg.coordinates.X)%2==0)?1:-1);
-				ny=loc.gg.coordinates.Y-loc.gg.scY/2+loc.gg.dy*15;
+				ny=loc.gg.coordinates.Y-loc.gg.objectHeight/2+loc.gg.dy*15;
 			}
 			if (n==1) {
 				nx+=Math.random()*200-100;

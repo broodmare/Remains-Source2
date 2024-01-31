@@ -109,7 +109,7 @@ package fe.unit {
 			if (hp>maxhp) hp=maxhp;
 			if (hl>0) visDetails();
 			if ((tip==0 || hl>=10) && active && ismess) {
-				numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2, {txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
+				numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2, {txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
 			}
 		}
 		
@@ -206,16 +206,16 @@ package fe.unit {
 			{
 				for each (var b:Box in loc.objs)
 				{
-					if (b.wall==0 && b.stay && !b.invis && b.X1<flyX && b.X2>flyX && flyY-b.Y1<80 &&  flyY-b.Y1>-40)
+					if (b.wall==0 && b.stay && !b.invis && b.leftBound<flyX && b.rightBound>flyX && flyY-b.topBound<80 &&  flyY-b.topBound>-40)
 					{
-						flyY=b.Y1;
+						flyY=b.topBound;
 						flyX=b.coordinates.X;
 						flyBox=b;
 						break;
 					}
 				}
 			}
-			if (!loc.collisionUnit(flyX,flyY,scX,scY)) return;
+			if (!loc.collisionUnit(flyX,flyY,objectWidth,objectHeight)) return;
 			flyX = int(flyX / 40) * 40 + 20; // Weird math is grid alignment
 			flyY = int(flyY / 40) * 40 + 39;
 			if (loc.getAbsTile(flyX,flyY).phis == 0) return;
@@ -233,7 +233,7 @@ package fe.unit {
 		
 		function visCelUnit(un:Unit):Boolean
 		{
-			return loc.isLine(coordinates.X, coordinates.Y - 30, un.coordinates.X, un.coordinates.Y - un.scY / 2);
+			return loc.isLine(coordinates.X, coordinates.Y - 30, un.coordinates.X, un.coordinates.Y - un.objectHeight / 2);
 		}
 		
 		public override function findCel(over:Boolean=false):Boolean {
@@ -501,7 +501,7 @@ package fe.unit {
 				aiState=4;
 				aiTCh=15;
 				spd.x = celUnit.coordinates.X - coordinates.X;
-				spd.y = celUnit.coordinates.Y - celUnit.scY / 2 - coordinates.Y + scY / 2;
+				spd.y = celUnit.coordinates.Y - celUnit.objectHeight / 2 - coordinates.Y + objectHeight / 2;
 				norma(spd, runSpeed);
 			}
 			if (aiState==4) {
@@ -522,7 +522,7 @@ package fe.unit {
 			//атака
 			if (aiState==2 && celUnit && !isPlav) {
 				celX = celUnit.coordinates.X;
-				celY = celUnit.coordinates.Y - celUnit.scY / 2;
+				celY = celUnit.coordinates.Y - celUnit.objectHeight / 2;
 				flyX = celUnit.coordinates.X;
 				flyY = celUnit.coordinates.Y - 80;
 				if (flyR<=rasstWeap && currentWeapon) currentWeapon.attack();

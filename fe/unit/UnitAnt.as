@@ -82,13 +82,13 @@ package fe.unit {
 					vis.scaleY=1;
 					vis.rotation=0;
 				} else if (isLaz==1) {
-					vis.x = X2;
-					vis.y = coordinates.Y - scY / 2;
+					vis.x = rightBound;
+					vis.y = this.topBoundToCenter;
 					vis.rotation=-90;
 					vis.scaleX=-vstorona;
 				} else if (isLaz==-1) {
-					vis.x = X1;
-					vis.y = coordinates.Y - scY / 2;
+					vis.x = leftBound;
+					vis.y = this.topBoundToCenter;
 					vis.rotation=90;
 					vis.scaleX=vstorona;
 				}
@@ -167,8 +167,8 @@ package fe.unit {
 
 			var jmp:Number=0;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			
@@ -204,8 +204,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 			} else {
 				vision=aiVis;
 			}
@@ -416,10 +416,10 @@ package fe.unit {
 				if (isLaz!=0) {
 					storona=isLaz;
 
-					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1 + scX / 2;
-					else coordinates.X = (loc.space[i][j] as Tile).phX2 - scX / 2;
+					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1 + objectWidth / 2;
+					else coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
 
-					X1 = coordinates.X - scX / 2, X2=coordinates.X + scX / 2;
+					leftBound = coordinates.X - objectWidth / 2, rightBound=coordinates.X + objectWidth / 2;
 					stay=false;
 					return true;
 				}

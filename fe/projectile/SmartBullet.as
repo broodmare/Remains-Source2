@@ -26,7 +26,7 @@ package fe.projectile
 			if (!babah && cel && manevr>0)
 			{
 				p.x = cel.coordinates.X - coordinates.X;
-				p.y = (cel.Y1 + cel.Y2) / 2 - coordinates.Y;
+				p.y = (cel.topBound + cel.bottomBound) / 2 - coordinates.Y;
 				norma(p,manevr);
 				p.x += dx;
 				p.y += dy;

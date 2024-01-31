@@ -673,7 +673,7 @@ package fe.unit
 			if (nx < 0 || ny < 0)
 			{
 				nx = gg.coordinates.X;
-				ny = gg.coordinates.Y - gg.scY;
+				ny = gg.coordinates.Y - gg.objectHeight;
 			}
 			if (World.w.testLoot) {
 				World.w.summxp+=dxp;
@@ -1198,7 +1198,7 @@ package fe.unit
 				if (sst!=bloodSt) setParameters();
 			}
 			if (tip==6) {
-				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.scY/2, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
+				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.objectHeight/2, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
 				var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;

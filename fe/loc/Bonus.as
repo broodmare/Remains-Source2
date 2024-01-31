@@ -35,13 +35,13 @@ package fe.loc
 		
 		private function setSize():void
 		{
-			scX = 40;
-			scY = 40;
+			objectWidth = 40;
+			objectHeight = 40;
 
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY / 2;
-			Y2 = coordinates.Y + scY / 2;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
+			topBound = coordinates.Y - objectHeight / 2;
+			bottomBound = coordinates.Y + objectHeight / 2;
 		}
 		
 		public override function save():Object

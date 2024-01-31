@@ -56,15 +56,15 @@ package fe.loc
 				if (mirror) {
 					bx=loc.spaceX-bx-rx;
 				}
-				scX = rx * tileX;
+				objectWidth = rx * tileX;
 				coordinates.X  = bx * tileX;
-				X1 = bx * tileX;
+				leftBound = bx * tileX;
 				coordinates.Y  = by * tileY + tileY;
-				Y2 = by * tileY + tileY;
-				X2 = X1 + scX;
+				bottomBound = by * tileY + tileY;
+				rightBound = leftBound + objectWidth;
 				if (xml.@h.length()) ry=xml.@h;
-				scY=ry*tileY;
-				Y1=Y2-scY;
+				objectHeight=ry*tileY;
+				topBound=bottomBound-objectHeight;
 				//визуал
 				if (xml.@vis.length()) {
 					vis=Res.getVis('vis'+xml.@vis,visArea);
@@ -132,8 +132,8 @@ package fe.loc
 				if (vis.totalFrames<=1) vis.cacheAsBitmap=true;
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.scaleX = scX / 100;
-				vis.scaleY = scY / 100;
+				vis.scaleX = objectWidth / 100;
+				vis.scaleY = objectHeight / 100;
 				vis.alpha=enabled?1:0.1;
 				vis.blendMode='screen';
 			}
@@ -163,7 +163,7 @@ package fe.loc
 				if (t_frec>1) {
 					var kol:int=int(t_frec);
 					t_frec-=kol;
-					emit.cast(loc,(X1+X2)/2,(Y1+Y2)/2,{rx:scX, ry:scY, kol:kol});
+					emit.cast(loc,(leftBound+rightBound)/2,(topBound+bottomBound)/2,{rx:objectWidth, ry:objectHeight, kol:kol});
 				}
 			}
 			activator=null;
@@ -209,13 +209,13 @@ package fe.loc
 		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void
 		{
 			coordinates.X  = x1;
-			X1 = x1;
-			Y1 = y1;
-			X2 = x2;
+			leftBound = x1;
+			topBound = y1;
+			rightBound = x2;
 			coordinates.Y  = y2;
-			Y2 = y2;
-			scX = X2 - X1;
-			scY = Y2 - Y1;
+			bottomBound = y2;
+			objectWidth = rightBound - leftBound;
+			objectHeight = bottomBound - topBound;
 		}
 		
 		public function setLift():void	// Grav lift effect
@@ -243,7 +243,7 @@ package fe.loc
 		public function teleport(un:Unit)
 		{
 			if (!un) return;
-			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.scX, un.scY))
+			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.objectWidth, un.objectHeight))
 			{
 				un.teleport((portX + 1) * tileX, (portY + 1) * tileY - 1);
 			}

@@ -73,7 +73,7 @@ package fe.unit
 			if (glowTip>0) {
 				vlight=new visZombieLight();
 				vis.addChild(vlight);
-				vlight.y = -scY / 2;
+				vlight.y = -objectHeight / 2;
 				vlight.blendMode='screen';
 				vlight.cacheAsBitmap=true;
 			}
@@ -115,7 +115,7 @@ package fe.unit
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X + storona * 30;
-			weaponY = coordinates.Y - scY * 0.8;
+			weaponY = coordinates.Y - objectHeight * 0.8;
 		}
 		
 		public override function save():Object {
@@ -145,7 +145,7 @@ package fe.unit
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
 				blit(anims[animState].id,t_res);
-				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5)*scX, coordinates.Y-Math.random()*10);
+				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*10);
 				return;
 			} else if (sost==2 || sost==3) { //сдох
 				if (stay) {
@@ -191,7 +191,7 @@ package fe.unit
 					anims[animState].setStab((dy*0.6+8)/16);
 				}
 				if (vlight && vlight.alpha!=1) {
-					vlight.y=-scY/2;
+					vlight.y=-objectHeight/2;
 					vlight.alpha=1;
 				}
 			}
@@ -268,8 +268,8 @@ package fe.unit
 		public function zakop() {
 			knocked=0;
 			aiState=5;
-			scY=0;
-			Y1=Y2;
+			objectHeight=0;
+			topBound=bottomBound;
 			overLook=true;
 			levitPoss=false;
 			activateTrap=0;
@@ -292,8 +292,8 @@ package fe.unit
 		}
 		public function vykop() {
 			knocked=knocked2;
-			scY = stayY;
-			Y1 = coordinates.Y - scY;
+			objectHeight = stayY;
+			topBound = coordinates.Y - objectHeight;
 			aiState=3;
 			aiSpok=maxSpok+10;
 			overLook=false;
@@ -326,15 +326,15 @@ package fe.unit
 		function resurrect() {
 			hp=maxhp;
 			sost=1;
-			scY = stayY;
-			Y1 = coordinates.Y - scY;
+			objectHeight = stayY;
+			topBound = coordinates.Y - objectHeight;
 			fraction=Unit.F_MONSTER;
 			t_res=tIsRes;
 			tZlo=120;
 			aiTCh=30;
 			transT=false;
-			for (var i=int((X1)/tileX); i<=int((X2)/tileX); i++) {
-				for (var j=int((Y1)/tileY); j<=int((Y2)/tileY); j++) {
+			for (var i=int((leftBound)/tileX); i<=int((rightBound)/tileX); i++) {
+				for (var j=int((topBound)/tileY); j<=int((bottomBound)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j])) loc.dieTile(loc.space[i][j]);
 				}
@@ -385,8 +385,8 @@ package fe.unit
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			
@@ -452,7 +452,7 @@ package fe.unit
 			}
 			//направление
 			celDX=celX - coordinates.X;
-			celDY=celY - coordinates.Y + scY;
+			celDY=celY - coordinates.Y + objectHeight;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -462,8 +462,8 @@ package fe.unit
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 			} else {
 				vision=1;
 			}
@@ -664,7 +664,7 @@ package fe.unit
 			superX=-1;
 			var nx:int = int(celX/tileX);
 			var ny:int = int((celY+40)/tileY);
-			if (superSilaTip==1) superY=ny*tileY+tileY+scY;
+			if (superSilaTip==1) superY=ny*tileY+tileY+objectHeight;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 			if (coordinates.Y-celY>120) {
 				if (loc.getTile(nx,ny).phis==0) {
@@ -719,7 +719,7 @@ package fe.unit
 						if (rasst<radrad) un.heal(radHeal*(radrad-rasst)/radrad);
 					}
 				}
-				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y-scY/2);
+				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y-objectHeight/2);
 			} else if (superSilaTip==6) {
 				loc.budilo(coordinates.X, coordinates.Y, 1000);
 			}

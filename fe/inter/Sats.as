@@ -106,7 +106,7 @@ package fe.inter
 					trasser.visible=false;
 					radius.visible=true;
 					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona;
-					radius.y = gg.coordinates.Y - gg.scY / 2;
+					radius.y = gg.coordinates.Y - gg.objectHeight / 2;
 					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
 				}
 				skillConf=1;
@@ -270,7 +270,7 @@ package fe.inter
 			}
 			if (weapon.deviation > 0 || gg.mazil > 0)
 			{
-				var ug1 = Math.atan2(un.scY,rasst)*180/Math.PI;
+				var ug1 = Math.atan2(un.objectHeight,rasst)*180/Math.PI;
 				var ug2 = (weapon.deviation/(sk+0.01)+gg.mazil);
 				if (ug2>ug1) prec=prec*ug1/ug2;
 			}
@@ -400,7 +400,7 @@ package fe.inter
 					if (un.armor_qual>0 && un.armor>0) info.text+='\n'+Res.pipText('armor')+': '+Math.ceil(un.armor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
 					if (un.armor_qual>0 && un.marmor>0) info.text+='\n'+Res.pipText('marmor')+': '+Math.ceil(un.marmor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
 					if (mc.y<150) info.y=50;
-					else info.y=-un.scY-info.textHeight-20;
+					else info.y=-un.objectHeight-info.textHeight-20;
 				}
 				su.name='su';
 				mc.addChild(du);

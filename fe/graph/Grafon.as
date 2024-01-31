@@ -451,7 +451,7 @@ package fe.graph
 					for each(var bo:BackObj in loc.backobjs) {	
 						if (bo.sloy==j && !bo.er || j==-2 && bo.er) {
 							m=new Matrix();
-							m.scale(bo.scX, bo.scY);
+							m.scale(bo.objectWidth, bo.objectHeight);
 							m.tx=bo.X;
 							m.ty=bo.Y;
 							ct.alphaMultiplier=bo.alpha;

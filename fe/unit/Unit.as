@@ -303,12 +303,10 @@ package fe.unit
 		public var trig:String;		//условие появления
 		public var trigDis:Boolean=false;	//отключён по триггеру
 		
-		public var xp:int=0;	//опыт
+		public var xp:int = 0;	//опыт
 		
-		static var ppp:Point=new Point();
-		
-		static const robotKZ=75;
-		static const damWallStun=45;
+		static const robotKZ = 75;
+		static const damWallStun = 45;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -483,8 +481,8 @@ package fe.unit
 			//физические параметры
 			if (node0.phis.length()) {
 				node=node0.phis[0];
-				if (node.@sX.length()) stayX=scX=node.@sX;
-				if (node.@sY.length()) stayY=scY=node.@sY;
+				if (node.@sX.length()) stayX=objectWidth=node.@sX;
+				if (node.@sY.length()) stayY=objectHeight=node.@sY;
 				if (node.@sitX.length()) sitX=node.@sitX; else sitX=stayX;
 				if (node.@sitY.length()) sitY=node.@sitY; else sitY=stayY/2;
 				if (node.@massa.length()) massaMove=node.@massa/50;
@@ -829,14 +827,18 @@ package fe.unit
 			if (t_emerg>0) {
 				t_emerg--;
 				setVisPos();
-				if (vis) {
-					if (t_emerg>0) {
-						var tf=t_emerg/(max_emerg+1);
-						vis.filters=[new GlowFilter(0xAADDFF,tf,tf*20,tf*20,1,3)];
-						vis.alpha=1-tf;
-					} else {
-						vis.filters=[];
-						vis.alpha=1;
+				if (vis)
+				{
+					if (t_emerg > 0)
+					{
+						var tf = t_emerg / (max_emerg + 1);
+						vis.filters = [new GlowFilter(0xAADDFF, tf, tf * 20, tf * 20, 1, 3)];
+						vis.alpha = 1 - tf;
+					}
+					else
+					{
+						vis.filters = [];
+						vis.alpha = 1;
 					}
 				}
 				return;
@@ -877,7 +879,7 @@ package fe.unit
 				if (burn.vse) exterminate();
 			}
 
-			onCursor = (isVis && !disabled && sost < 4 && X1 < World.w.celX && X2 > World.w.celX && Y1 < World.w.celY && Y2 > World.w.celY) ? prior:0;
+			onCursor = (isVis && !disabled && sost < 4 && leftBound < World.w.celX && rightBound > World.w.celX && topBound < World.w.celY && bottomBound > World.w.celY) ? prior:0;
 
 			for (i in childObjs) if (childObjs[i]) // Here is where it's called as a string.
 			{
@@ -901,15 +903,12 @@ package fe.unit
 
 		}
 		
-		//перемещение в точку
-		public function setPos(nx:Number,ny:Number)
+		// Move unit to coordinates
+		public function setPos(nx:Number, ny:Number)
 		{
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
+			centerObj();
 			setCel();
 		}
 		
@@ -977,7 +976,7 @@ package fe.unit
 				if (inWater) dx *= 0.5;
 				if (!levit && !isLaz)
 				{
-					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - scY / 4);
+					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - objectHeight / 4);
 					if (t.grav > 0 && dy < World.maxdy * t.grav || t.grav < 0 && dy > World.maxdy * t.grav) dy += World.ddy * t.grav * grav;
 				}
 				if (stay)
@@ -1055,10 +1054,7 @@ package fe.unit
 					coordinates.X += dxdiv;
 					coordinates.Y -= dxNegDiagon;
 					
-					Y1 = coordinates.Y - scY;
-					Y2 = coordinates.Y;
-					X1 = coordinates.X - scX / 2;
-					X2 = coordinates.X + scX / 2;
+					centerObj();
 					dy = 0;
 					checkDiagon(0);
 				}
@@ -1076,28 +1072,27 @@ package fe.unit
 			{
 
 				coordinates.X += (dx + osndx) / div;
-				if (coordinates.X - scX / 2 < 0)
+				if (coordinates.X - objectWidth / 2 < 0)
 				{
 					if (!outLoc(1))
 					{
-						coordinates.X = scX / 2;
+						coordinates.X = objectWidth / 2;
 						dx = Math.abs(dx) * elast;
 						turnX = 1;
 						kray = true;
 					}
 				}
-				if (coordinates.X + scX / 2 >= loc.maxX)
+				if (coordinates.X + objectWidth / 2 >= loc.maxX)
 				{
 					if (!outLoc(2))
 					{
-						coordinates.X = loc.maxX - 1 - scX / 2;
+						coordinates.X = loc.maxX - 1 - objectWidth / 2;
 						dx = -Math.abs(dx) * elast;
 						turnX = -1;
 						kray = true;
 					}
 				}
-				X1 = coordinates.X - scX / 2;
-				X2 = coordinates.X + scX / 2;
+				centerObjHorizontally();
 				//движение влево
 				if (dx + osndx < 0)
 				{
@@ -1107,8 +1102,7 @@ package fe.unit
 						if (newmy > 0)
 						{
 							coordinates.Y = newmy;
-							Y1 = coordinates.Y - scY;
-							Y2 = coordinates.Y;
+							flattenObj();
 						}
 					}
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1>0.5))
@@ -1117,35 +1111,34 @@ package fe.unit
 						if (newmy > 0)
 						{
 							coordinates.Y = newmy;
-							Y1 = coordinates.Y - scY;
-							Y2 = coordinates.Y;
+							flattenObj();
 						}
 					}
 					if (player && isUp && stay && !isSit)
 					{
-						t  = loc.space[int(X1/tileX)][int(Y1/tileY)];
-						t2 = loc.space[int(X1/tileX)][int(Y1/tileY) + 1];
+						t  = loc.space[int(leftBound/tileX)][int(topBound/tileY)];
+						t2 = loc.space[int(leftBound/tileX)][int(topBound/tileY) + 1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
 						{
-							coordinates.Y = Y2 = t2.phY1;
+							coordinates.Y = bottomBound = t2.phY1;
 							sit(true);
 							autoSit = true;
 						}
 					}
 					if (mater) {
-						for (i = int(Y1/tileY); i <= int(Y2/tileY); i++)
+						for (i = int(topBound/tileY); i <= int(bottomBound/tileY); i++)
 						{
-							t = loc.space[int(X1/tileX)][i];
+							t = loc.space[int(leftBound/tileX)][i];
 							if (collisionTile(t))
 							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-Y2))
+								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-bottomBound))
 								{
 									coordinates.Y = t.phY1;
 								}
 								else
 								{
-									coordinates.X = t.phX2 + scX / 2;
+									coordinates.X = t.phX2 + objectWidth / 2;
 									if (t_throw > 0 && dx < -damWallSpeed && damWall) damageWall(2);
 
 									if (destroy > 0 && destroyWall(t, 1))
@@ -1157,8 +1150,7 @@ package fe.unit
 										dx = Math.abs(dx) * elast;
 										turnX = 1;
 										if (t.mat == 1) tykMat = 1;
-										X1 = coordinates.X - scX / 2;
-										X2 = coordinates.X + scX / 2;
+										centerObjHorizontally();
 									}
 								}
 							}
@@ -1174,8 +1166,7 @@ package fe.unit
 						if (newmy > 0)
 						{
 							coordinates.Y = newmy;
-							Y1 = coordinates.Y - scY;
-							Y2 = coordinates.Y;
+							flattenObj();
 						}
 					}
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5))
@@ -1184,37 +1175,36 @@ package fe.unit
 						if (newmy > 0)
 						{
 							coordinates.Y = newmy;
-							Y1 = coordinates.Y - scY;
-							Y2 = coordinates.Y;
+							flattenObj();
 						}
 					}
 					if (player && isUp && stay && !isSit)
 					{
-						t  = loc.space[int(X2/tileX)][int(Y1/tileY)];
-						t2 = loc.space[int(X2/tileX)][int(Y1/tileY)+1];
+						t  = loc.space[int(rightBound/tileX)][int(topBound/tileY)];
+						t2 = loc.space[int(rightBound/tileX)][int(topBound/tileY)+1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
 						{
 							coordinates.Y  = t2.phY1;
-							Y2 = t2.phY1;
+							bottomBound = t2.phY1;
 							sit(true);
 							autoSit = true;
 						}
 					} 
 					if (mater)
 					{
-						for (i = int(Y1/tileY); i<= int(Y2/tileY); i++)
+						for (i = int(topBound/tileY); i<= int(bottomBound/tileY); i++)
 						{
-							t=loc.space[int(X2/tileX)][i];
+							t=loc.space[int(rightBound/tileX)][i];
 							if (collisionTile(t))
 							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-Y2))
+								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-bottomBound))
 								{
 									coordinates.Y = t.phY1;
 								}
 								else
 								{
-									coordinates.X = t.phX1 - scX / 2;
+									coordinates.X = t.phX1 - objectWidth / 2;
 									if (t_throw>0 && dx>damWallSpeed && damWall) damageWall(1);
 									if (destroy>0 && destroyWall(t,2))
 									{
@@ -1225,15 +1215,14 @@ package fe.unit
 										dx = -Math.abs(dx) * elast;
 										turnX = -1;
 										if (t.mat == 1) tykMat = 1;
-										X1 = coordinates.X - scX / 2, X2 = coordinates.X + scX / 2;
+										centerObjHorizontally();
 									}
 								}
 							}
 						}
 					}
 				}
-				Y1 = coordinates.Y - scY;
-				Y2 = coordinates.Y;
+				flattenObj();
 			}
 			//отталкивание
 			
@@ -1263,18 +1252,16 @@ package fe.unit
 						dy = 0;
 						turnY = -1;
 					}
-					Y1 = coordinates.Y - scY;
-					Y2 = coordinates.Y;
+					flattenObj();
 					if (mater)
 					{
-						for (i = int(X1/tileX); i <= int(X2/tileX); i++)
+						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
 						{
-							t = loc.space[i][int(Y2/tileY)];
+							t = loc.space[i][int(bottomBound/tileY)];
 							if (collisionTile(t))
 							{
 								coordinates.Y = t.phY1;
-								Y1 = coordinates.Y - scY;
-								Y2 = coordinates.Y;
+								flattenObj();
 								dy = 0;
 								turnY = -1;
 								if (t.mat == 1) tykMat = 1;
@@ -1286,12 +1273,12 @@ package fe.unit
 				{						
 					if (mater)
 					{
-						for (i = int(X1/tileX); i<=int(X2/tileX); i++)
+						for (i = int(leftBound/tileX); i<=int(rightBound/tileX); i++)
 						{
-							t=loc.space[i][int((Y2+dy/div)/tileY)];
+							t=loc.space[i][int((bottomBound+dy/div)/tileY)];
 							if (collisionTile(t,0,dy/div)) {
-								if (-(X1-t.phX1)/scX<shX1) shX1=-(X1-t.phX1)/scX;
-								if ((X2-t.phX2)/scX<shX2) shX2=(X2-t.phX2)/scX;
+								if (-(leftBound-t.phX1)/objectWidth<shX1) shX1=-(leftBound-t.phX1)/objectWidth;
+								if ((rightBound-t.phX2)/objectWidth<shX2) shX2=(rightBound-t.phX2)/objectWidth;
 								newmy=t.phY1;
 								if (t.mat>0) stayMat=t.mat;
 								if (t.phis>=1 && !(transT && t.phis==3)) {
@@ -1312,17 +1299,17 @@ package fe.unit
 
 					if (newmy) // Bugs!!!!!
 					{
-						Y1=newmy-scY;
-						for (i = int(X1/tileX); i <= int(X2/tileX); i++)
+						topBound=newmy-objectHeight;
+						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
 						{
-							t=loc.space[i][int((newmy-scY) / tileY)];
+							t=loc.space[i][int((newmy-objectHeight) / tileY)];
 							if (collisionTile(t)) newmy = 0;
 						}
 					}
 					if (newmy) {
 						coordinates.Y = newmy;
-						Y1 = coordinates.Y-scY;
-						Y2 = coordinates.Y;
+						topBound = coordinates.Y-objectHeight;
+						bottomBound = coordinates.Y;
 						if (dy>16) makeNoise(noiseRun,true);
 						else if (dy>9) makeNoise(noiseRun/2,true);
 						if (dy>5) sndFall();
@@ -1340,8 +1327,7 @@ package fe.unit
 					else
 					{
 						coordinates.Y += dy/div;
-						Y1 = coordinates.Y - scY;
-						Y2 = coordinates.Y;
+						flattenObj();
 					}
 					
 					if (coordinates.Y > loc.maxY)
@@ -1350,8 +1336,7 @@ package fe.unit
 						{
 							coordinates.Y = loc.maxY-1;
 							turnY = -1;
-							Y1 = coordinates.Y - scY;
-							Y2 = coordinates.Y;
+							flattenObj();
 						}
 					}
 				}
@@ -1364,11 +1349,11 @@ package fe.unit
 					stay = false;
 					diagon = 0;
 				}
-				if (coordinates.Y - scY < 0)
+				if (coordinates.Y - objectHeight < 0)
 				{
 					if (!outLoc(4))
 					{
-						coordinates.Y = scY - 0.1;
+						coordinates.Y = objectHeight - 0.1;
 						dy = 0;
 						turnY = 1;
 					}
@@ -1378,8 +1363,7 @@ package fe.unit
 					newmy=checkShelf(dy/div, osndy/div);
 					if (newmy) {
 						coordinates.Y = newmy;
-						Y1 = coordinates.Y - scY;
-						Y2 = coordinates.Y;
+						flattenObj();
 						dy = 0;
 						stay = true;
 					}
@@ -1387,22 +1371,20 @@ package fe.unit
 				else
 				{
 					coordinates.Y += (dy + osndy) / div;
-					Y1 = coordinates.Y - scY;
-					Y2 = coordinates.Y;
+					flattenObj();
 				}
 
 				if (mater)
 				{
-					for (i = int(X1/tileX); i <= int(X2/tileX); i++)
+					for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
 					{
-						t=loc.space[i][int(Y1/tileY)];
+						t=loc.space[i][int(topBound/tileY)];
 						if (collisionTile(t))
 						{
 							if (t_throw > 0 && dy < -damWallSpeed && damWall) damageWall(4);
 							if (destroy > 0) destroyWall(t, 4);
-							coordinates.Y = t.phY2 + scY;
-							Y1 = coordinates.Y - scY;
-							Y2 = coordinates.Y;
+							coordinates.Y = t.phY2 + objectHeight;
+							flattenObj();
 							dy = 0;
 							turnY = 1;
 							if (t.mat == 1) tykMat = 1;
@@ -1422,21 +1404,21 @@ package fe.unit
 		{
 			coordinates.X += dx / div;
 			coordinates.Y += dy / div;
-			if (coordinates.X - scX / 2 < 0)
+			if (coordinates.X - objectWidth / 2 < 0)
 			{
-				coordinates.X = scX / 2;
+				coordinates.X = objectWidth / 2;
 				dx = Math.abs(dx) * elast;
 				turnX = 1;
 			}
-			if (coordinates.X + scX / 2 >= loc.maxX)
+			if (coordinates.X + objectWidth / 2 >= loc.maxX)
 			{
-				coordinates.X = loc.maxX - 1 - scX / 2;
+				coordinates.X = loc.maxX - 1 - objectWidth / 2;
 				dx = -Math.abs(dx) * elast;
 				turnX = -1;
 			}
-			if (coordinates.Y - scY < 0)
+			if (coordinates.Y - objectHeight < 0)
 			{
-				coordinates.Y = scY-0.1;
+				coordinates.Y = objectHeight-0.1;
 				dy = 0;
 				turnY = 1;
 			}
@@ -1446,10 +1428,7 @@ package fe.unit
 				dy = 0;
 				turnY = -1;
 			}
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
+			centerObj();
 		}
 		
 		public function sit(turn:Boolean) {
@@ -1457,16 +1436,15 @@ package fe.unit
 			isSit=turn;
 			if (isSit)
 			{
-				scX = sitX;
-				scY = sitY;
+				objectWidth = sitX;
+				objectHeight = sitY;
 			}
 			else {
-				scX = stayX;
-				scY = stayY;
+				objectWidth = stayX;
+				objectHeight = stayY;
 			}
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
+			centerObjHorizontally();
+			topBound = coordinates.Y - objectHeight;
 		}
 		
 		public function unsit()
@@ -1481,9 +1459,9 @@ package fe.unit
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean
 		{
 			if (loc.sky) return false;
-			for (var i:int = int((X1 + gx) / tileX); i <= int((X2 + gx) / tileX); i++)
+			for (var i:int = int((leftBound + gx) / tileX); i <= int((rightBound + gx) / tileX); i++)
 			{
-				for (var j:int = int((Y1 + gy) / tileY); j <= int((Y2 + gy) / tileY); j++)
+				for (var j:int = int((topBound + gy) / tileY); j <= int((bottomBound + gy) / tileY); j++)
 				{
 					if (i < 0 || i >= loc.spaceX || j < 0 || j >= loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j], gx, gy)) return true;
@@ -1496,12 +1474,12 @@ package fe.unit
 		{
 			if (!t || (t.phis == 0 || transT && t.phis == 3) && !t.shelf) return 0;  //[Empty]
 			// Normal tile collision
-			if (X2 + gx <= t.phX1 || X1 + gx >= t.phX2 || Y2 + gy <= t.phY1 || Y1 + gy >= t.phY2)
+			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy >= t.phY2)
 			{
 				return 0;
 			}
 			// Shelf collision
-			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (Y2 - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0))
+			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (bottomBound - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0))
 			{
 				return 0;
 			}
@@ -1509,12 +1487,13 @@ package fe.unit
 		}
 
 		//поиск лестницы
-		public function checkStairs(ny:int=-1, nx:int=0):Boolean {
+		public function checkStairs(ny:int = -1, nx:int = 0):Boolean
+		{
 
 			var i:int = int((coordinates.X + nx) / tileX);
 			var j:int = int((coordinates.Y + ny) / tileY);
 			if (j >= loc.spaceY) j = loc.spaceY - 1;
-			if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3))
+			if (loc.space[i][j].phis >= 1 && !(transT&&loc.space[i][j].phis==3))
 			{
 				isLaz = 0;
 				return false;
@@ -1522,24 +1501,26 @@ package fe.unit
 			if ((loc.space[i][j] as Tile).stair)
 			{
 				isLaz=storona=(loc.space[i][j] as Tile).stair;
-				if (isLaz==-1) coordinates.X = (loc.space[i][j] as Tile).phX1 + scX / 2;
-				else coordinates.X = (loc.space[i][j] as Tile).phX2 - scX / 2;
-				X1 = coordinates.X - scX / 2;
-				X2 = coordinates.X + scX / 2;
-				stay=false;
+
+				if (isLaz == -1) coordinates.X = (loc.space[i][j] as Tile).phX1 + objectWidth / 2;
+				else coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
+				
+				centerObjHorizontally();
+				stay = false;
 				sit(false);
 				return true;
 			}
 
-			isLaz=0;
+			isLaz = 0;
 			return false;
 		}
+
 		//поиск жидкости
 		public function checkWater():Boolean
 		{
 			var pla:Boolean = inWater;
 			var x:int = int(coordinates.X / tileX);
-			var y:int = int((coordinates.Y - scY * 0.75) / tileY);
+			var y:int = int((coordinates.Y - objectHeight * 0.75) / tileY);
 
 			// STOP FROM CRASHING
 			if (x < 0 || y < 0) return false;
@@ -1556,9 +1537,9 @@ package fe.unit
 			}
 			else
 			{
-				var y2:int = int((coordinates.Y - scY * 0.25) / tileY)
+				var y2:int = int((coordinates.Y - objectHeight * 0.25) / tileY)
 				isPlav = false;
-				if (scY <= tileY)
+				if (objectHeight <= tileY)
 				{
 					inWater = false;
 				}
@@ -1570,7 +1551,7 @@ package fe.unit
 			}
 
 			if (pla!=inWater && (dy>8 || dy<-8 || plaKap)) {
-				Emitter.emit('kap', loc, coordinates.X, coordinates.Y-scY*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:int(Math.abs(dy*massa*2)+1)});
+				Emitter.emit('kap', loc, coordinates.X, coordinates.Y-objectHeight*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:int(Math.abs(dy*massa*2)+1)});
 					
 			}
 			if (pla!=inWater && dy>5)
@@ -1581,7 +1562,7 @@ package fe.unit
 				else sound('fall_item_water', 0, dy/10);
 			}
 			if (pla!=inWater && dy<-5 && massa>0.4) sound('fall_water2', 0, -dy/10);
-			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-scY*0.25, {rx:scX});
+			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-objectHeight*0.25, {rx:objectWidth});
 						if (isPlav) {
 				namok_t++;
 				if (namok_t>=100) {
@@ -1601,10 +1582,10 @@ package fe.unit
 			for (var i in loc.objs)
 			{
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.shelf && !b.levit && !(X2<b.X1 || X1>b.X2) && Y2+pdy2<=b.Y1 && Y2+pdy+pdy2>b.Y1) {
+				if (!b.invis && b.shelf && !b.levit && !(rightBound<b.leftBound || leftBound>b.rightBound) && bottomBound+pdy2<=b.topBound && bottomBound+pdy+pdy2>b.topBound) {
 					shX1=shX2=1;
-					if (-(X1-b.X1)/scX<shX1) shX1=-(X1-b.X1)/scX;
-					if ((X2-b.X2)/scX<shX2) shX2=(X2-b.X2)/scX;
+					if (-(leftBound-b.leftBound)/objectWidth<shX1) shX1=-(leftBound-b.leftBound)/objectWidth;
+					if ((rightBound-b.rightBound)/objectWidth<shX2) shX2=(rightBound-b.rightBound)/objectWidth;
 					stayMat=b.mat;
 					stayPhis=2;
 					stayOsn=b;
@@ -1612,7 +1593,7 @@ package fe.unit
 						b.dy+=dy*massa/(massa+b.massa);
 						b.fixPlav=false;
 					}
-					return b.Y1;
+					return b.topBound;
 				}
 			}
 			return 0;
@@ -1674,7 +1655,7 @@ package fe.unit
 		
 		//телепортация
 		public function teleport(nx:Number,ny:Number,eff:int=0) {
-			if (eff>0) Emitter.emit('tele', loc, coordinates.X, coordinates.Y-scY/2,{rx:scX, ry:scY, kol:30});
+			if (eff>0) Emitter.emit('tele', loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
 			setPos(nx,ny);
 			if (currentWeapon) {
 				setWeaponPos(currentWeapon.tip);
@@ -1682,7 +1663,7 @@ package fe.unit
 			}
 			isLaz=0;
 			levit=0;
-			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-scY/2);
+			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-objectHeight/2);
 		}
 		
 		// [Tear away from a fixed place] I think this is for grabbing turrets.
@@ -1825,7 +1806,7 @@ package fe.unit
 		}
 		
 		function newPart(nid:String,kol:int=1,frame:int=0) {
-			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-scY/2, {kol:kol, frame:frame});
+			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:kol, frame:frame});
 		}
 
 		public function setVisPos()
@@ -1905,8 +1886,8 @@ package fe.unit
 			if (isFly && (dx>3 || dx<-3 || dy>3 || dy<-3))  makeNoise(noiseRun/2);
 			
 			//положение глаз
-			eyeX = coordinates.X + scX * 0.25 * storona;
-			eyeY = coordinates.Y - scY * 0.75;
+			eyeX = coordinates.X + objectWidth * 0.25 * storona;
+			eyeY = coordinates.Y - objectHeight * 0.75;
 			
 			//левитация
 			if (sost==1) {
@@ -1950,7 +1931,7 @@ package fe.unit
 						damage(Math.sqrt(poison),D_POISON,null,true);
 						poison-=critHeal;
 						if (poison<0) poison=0;
-						Emitter.emit('poison', loc, coordinates.X, coordinates.Y-scY*0.5);
+						Emitter.emit('poison', loc, coordinates.X, coordinates.Y-objectHeight*0.5);
 					}
 					if (inWater && loc.wdam>0) {
 						damage(loc.wdam,loc.wtipdam,null,true);
@@ -1961,16 +1942,16 @@ package fe.unit
 				stun--;
 				if (stun%10==0) {
 					if (opt && opt.robot) {
-						Emitter.emit('discharge', loc, coordinates.X, coordinates.Y-scY*0.5);
-						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y-scY*0.5,{kol:5});
-					} else if (!mech) Emitter.emit('stun', loc, coordinates.X, coordinates.Y-scY*0.75);
+						Emitter.emit('discharge', loc, coordinates.X, coordinates.Y-objectHeight*0.5);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y-objectHeight*0.5,{kol:5});
+					} else if (!mech) Emitter.emit('stun', loc, coordinates.X, coordinates.Y-objectHeight*0.75);
 									}
 			}
 			if (t_hp>0) t_hp--;
 			if (slow>0)
 			{
 				slow--;
-				if (!fixed && slow%10==0 && vis && vis.visible && (dx>3 || dx<-3 || dy>5 || dy<-5)) Emitter.emit('slow', loc, coordinates.X, coordinates.Y-scY*0.25);
+				if (!fixed && slow%10==0 && vis && vis.visible && (dx>3 || dx<-3 || dy>5 || dy<-5)) Emitter.emit('slow', loc, coordinates.X, coordinates.Y-objectHeight*0.25);
 							}
 			if (t_throw>0) t_throw--;
 			//сборный показ цифр урона
@@ -2005,7 +1986,7 @@ package fe.unit
 		// [Attack the target with the body using the unit's own damage]
 		public function attKorp(cel:Unit, mult:Number=1):Boolean {
 			if (sost>1 || cel==null || cel.loc!=loc || burn!=null) return false;
-			if (cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1 || cel.neujaz>0) return false;
+			if (cel.leftBound>rightBound || cel.rightBound<leftBound || cel.topBound>bottomBound || cel.bottomBound<topBound || cel.neujaz>0) return false;
 			return cel.udarUnit(this, mult);
 		}
 
@@ -2014,17 +1995,18 @@ package fe.unit
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
 
-		public function setWeaponPos(tip:int=0) {
+		public function setWeaponPos(tip:int=0)
+		{
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y - scY / 2;
+			weaponY = this.topBoundToCenter;
 			magicX = coordinates.X;
-			magicY = coordinates.Y - scY / 2;
+			magicY = this.topBoundToCenter;
 		}
 
 		public function setPunchWeaponPos(w:WPunch)
 		{
-			w.coordinates.X = coordinates.X + scX / 3 * storona;
-			w.coordinates.Y = coordinates.Y - scY * 0.75;
+			w.coordinates.X = coordinates.X + objectWidth / 3 * storona;
+			w.coordinates.Y = coordinates.Y - objectHeight * 0.75;
 			w.rot = (storona > 0)? 0:Math.PI;
 		}
 		
@@ -2349,7 +2331,7 @@ package fe.unit
 						if (bul) {
 							bloodEmit.cast(loc, bul.coordinates.X, bul.coordinates.Y, {dx:bul.dx/bul.vel*5, dy:bul.dy/bul.vel*5,kol:int(Math.random()*5+dam/5)});
 						} else {
-							bloodEmit.cast(loc, coordinates.X, coordinates.Y-scY/2,{kol:int(dam/3)});
+							bloodEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:int(dam/3)});
 						}
 						if (blood==1 && tip!=D_BLEED && massa>0.2) {
 							var ver=Math.random();
@@ -2359,7 +2341,7 @@ package fe.unit
 								var st:int=1;
 								if (bul && bul.dx<0) st=-1;
 								if (bul==null && Math.random()<0.5) st=-1;
-								Emitter.emit('bloodexpl'+int(Math.random()*3+1), loc, coordinates.X+80*st+(Math.random()-0.5)*scX*0.5, coordinates.Y-Math.random()*scY*0.5-40,{mirr:(st<0?1:0)});
+								Emitter.emit('bloodexpl'+int(Math.random()*3+1), loc, coordinates.X+80*st+(Math.random()-0.5)*objectWidth*0.5, coordinates.Y-Math.random()*objectHeight*0.5-40,{mirr:(st<0?1:0)});
 							}
 						}
 					}
@@ -2370,7 +2352,7 @@ package fe.unit
 				if (isShow) {//Показывать урон
 					var vnumb:int=1;
 					var castX:Number = coordinates.X;
-					var castY:Number = coordinates.Y - scY / 2;
+					var castY:Number = this.topBoundToCenter;
 					if (bul) {castX = bul.coordinates.X; castY = bul.coordinates.Y;}
 					if (player || isCrit>=2) vnumb=2;
 					if (tt) vnumb=3;
@@ -2400,7 +2382,7 @@ package fe.unit
 			visDetails();
 			if (World.w.showHit>=1 && t_mess<=0) {
 				if (hp>0 && mess) {
-					numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2,{txt:mess, frame:5, rx:20, ry:20});
+					numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:mess, frame:5, rx:20, ry:20});
 					t_mess=45;
 				}
 			}
@@ -2408,7 +2390,7 @@ package fe.unit
 			return dam;
 		}
 		
-		//удар ап стену 1-справа, 2-слева, 3-снизу, 4-сверху
+		// [hit the wall 1-right, 2-left, 3-bottom, 4-top]
 		public function damageWall(napr:int=0)
 		{
 			t_throw=0;
@@ -2419,11 +2401,13 @@ package fe.unit
 				if (Math.random()<dam/maxhp) stun=damWallStun;
 				if (napr>0) {
 					var nx:Number = coordinates.X;
-					var ny:Number = coordinates.Y - scY/2;
-					if (napr==1) nx = coordinates.X + scX/2;
-					if (napr==2) nx = coordinates.X - scX/2;
+					var ny:Number = this.topBoundToCenter;
+
+					if (napr==1) nx = coordinates.X + objectWidth / 2;
+					if (napr==2) nx = coordinates.X - objectWidth / 2;
 					if (napr==3) ny = coordinates.Y;
-					if (napr==4) ny = coordinates.Y - scY;
+					if (napr==4) ny = coordinates.Y - objectHeight;
+
 					Emitter.emit('bum', loc, nx, ny);
 					Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
 				}
@@ -2442,8 +2426,8 @@ package fe.unit
 
 			visDetails();
 			if (World.w.showHit>=1) {
-				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
-							}
+				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
+			}
 		}
 		
 		public function dopTest(bul:Bullet):Boolean
@@ -2480,7 +2464,7 @@ package fe.unit
 				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) {
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc,coordinates.X, coordinates.Y-scY/2+visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc,coordinates.X, coordinates.Y-objectHeight/2+visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				return -1;
 			}
@@ -2493,7 +2477,7 @@ package fe.unit
 			if (dodge-un.undodge>0 && isrnd(dodge-un.undodge)) {
 				if (World.w.showHit>=1)
 				{
-					numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
+					numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
 					return false;
 				}
 			}
@@ -2517,27 +2501,27 @@ package fe.unit
 			if (sc>3) sc=3;
 			if (un.tipDamage == Unit.D_SPARK)
 			{
-				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-scY/2, {celx:un.coordinates.X, cely:(un.coordinates.Y-un.scY/2)});
+				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2, {celx:un.coordinates.X, cely:(un.coordinates.Y-un.objectHeight/2)});
 				Snd.ps('electro', coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_ACID)
 			{
-				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X)/2,(coordinates.Y-scY/2+un.coordinates.Y-un.scY/2)/2,{scale:sc});
+				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X)/2,(coordinates.Y-objectHeight/2+un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
 				Snd.ps('acid',coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_NECRO)
 			{
-				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-scY/2 + un.coordinates.Y-un.scY/2)/2,{scale:sc});
+				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
 				Snd.ps('hit_necr', coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_FANG)
 			{
-				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-scY/2 + un.coordinates.Y-un.scY/2)/2,{scale:sc});
+				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
 				Snd.ps('fang_hit', coordinates.X, coordinates.Y);
 			}
 			else
 			{
-				Emitter.emit('bum', loc, (coordinates.X + un.coordinates.X)/2, (coordinates.Y-scY/2 + un.coordinates.Y-un.scY/2)/2,{scale:sc});
+				Emitter.emit('bum', loc, (coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
 				Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
 			}
 
@@ -2625,21 +2609,25 @@ package fe.unit
 				fraction=0;
 				throu=false;
 				sost=3;
-			} else if (trup && hp>-maxhp*2) {	//оставлять труп и он не уничтожен
+			}
+			else if (trup && hp > -maxhp * 2) // [Leave the corpse and it is not destroyed]
+			{	
 				replic('die');
-				isFly=false;
-				scX = sitX;
-				scY = sitY;
+				isFly = false;
+				objectWidth = sitX;
+				objectHeight = sitY;
+				
+				// Flatten the obj and make it wider since the body is stretched out on the floor
+				flattenObj();
+				leftBound = coordinates.X - objectWidth / 2;
+				rightBound = coordinates.X + objectWidth / 2;
 
-				X1 = coordinates.X - scX / 2;
-				X2 = coordinates.X + scX / 2;
-				Y1 = coordinates.Y - scY;
-
-				fraction=0;
-				throu=false;
-				porog=0;
-				sost=3;
-			} else if (trup && blood>0) {		//есть кровь
+				fraction = 0;
+				throu = false;
+				porog = 0;
+				sost = 3;
+			}
+			else if (trup && blood > 0) {		//есть кровь
 				if (burn==null) sound('trup');
 				initBurn(4+blood);
 				isFly=false;
@@ -2669,15 +2657,15 @@ package fe.unit
 				runScript();
 				dropLoot();
 				incStat();
-				if (xp>0)
+				if (xp > 0)
 				{
 					loc.takeXP(xp, coordinates.X, coordinates.Y, true);
-					xp=0;
+					xp = 0;
 				}
 				if (loc.prob) loc.prob.check();
 				if (opt && opt.hbonus)
 				{
-					loc.createHealBonus(coordinates.X, coordinates.Y - scY / 2);
+					loc.createHealBonus(coordinates.X, this.topBoundToCenter);
 				}
 			}
 		}
@@ -2702,16 +2690,16 @@ package fe.unit
 					if (blood == 2) bloodEmit = Emitter.arr['gblood'];
 					if (blood == 3) bloodEmit = Emitter.arr['pblood'];
 				}
-				bloodEmit.cast(loc, coordinates.X, coordinates.Y,{kol:massa*50, rx:scX/2, ry:scY/2});
+				bloodEmit.cast(loc, coordinates.X, coordinates.Y,{kol:massa*50, rx:objectWidth/2, ry:objectHeight/2});
 			}
 		}
 		//вызывается в любом случае в момент любого способа смерти, только один раз!
 		public function dropLoot() {
 			if (inter) inter.loot();
-			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, coordinates.Y - scY / 2, 'essence');
+			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, 'essence');
 			//выпадение драгоценного камня
 			if (World.w.pers && World.w.pers.dropTre>0 && xp>0) {
-				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,coordinates.X, coordinates.Y - scY / 2, 'gem' + int(Math.random()*3+1));
+				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, 'gem' + int(Math.random()*3+1));
 			}
 		}
 		
@@ -2760,7 +2748,7 @@ package fe.unit
 		// Whether the unit is covered by the fog of war, true if not
 		public function getTileVisi(r:Number=0.3):Boolean
 		{
-			return (loc.getAbsTile(coordinates.X, coordinates.Y - scY / 2).visi > r);
+			return (loc.getAbsTile(coordinates.X, this.topBoundToCenter).visi > r);
 		}
 		
 		//слушать другого юнита
@@ -2770,10 +2758,11 @@ package fe.unit
 			if (noi <= 0) return 0;
 			var r2:Number;		//расстояние до объекта в квадрате
 			if (ncel.player) r2=rasst2;
-			else {
+			else
+			{
 				var nx = ncel.coordinates.X - coordinates.X;
-				var ny = ncel.coordinates.Y - ncel.scY / 2 - coordinates.Y + scY / 2;
-				r2=nx*nx+ny*ny;
+				var ny = ncel.topBoundToCenter - this.bottomBoundToCenter;
+				r2 = nx * nx + ny * ny;
 			}
 			if (noi*noi>r2) return (1-r2/(noi*noi))*4;
 			return 0;
@@ -2789,7 +2778,7 @@ package fe.unit
 		{
 			if (ncel==null || nDist<=0 && visParam<=0 && vision<=0) return 0;
 			var cx = (ncel.coordinates.X - eyeX);
-			var cy = (ncel.coordinates.Y - ncel.scY * 0.6 - eyeY);
+			var cy = (ncel.coordinates.Y - ncel.objectHeight * 0.6 - eyeY);
 			if (eyeX == -1000 || eyeY == -1000)
 			{
 				eyeX = coordinates.X;
@@ -2819,8 +2808,8 @@ package fe.unit
 			//проверить линию взгляда
 			var div = int(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
 			for (var i=(mater?1:4); i<div; i++) {
-				var nx = coordinates.X + scX * 0.25 * storona + cx * i / div;
-				var ny = coordinates.Y - scY * 0.75 + cy * i / div;
+				var nx = coordinates.X + objectWidth * 0.25 * storona + cx * i / div;
+				var ny = coordinates.Y - objectHeight * 0.75 + cy * i / div;
 				var t:Tile = World.w.loc.getTile(int(nx/tileX), int(ny/tileY));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return 0;
@@ -2868,8 +2857,8 @@ package fe.unit
 		//установить цель на юнит или на точку
 		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
-				celX = un.coordinates.X + un.scX / 4 * un.storona;
-				celY = un.coordinates.Y - un.scY / 2;
+				celX = un.coordinates.X + un.objectWidth / 4 * un.storona;
+				celY = un.topBoundToCenter;;
 				celUnit = un;
 				if (un.player)
 				{
@@ -2888,11 +2877,11 @@ package fe.unit
 			else
 			{
 				celX = coordinates.X;
-				celY = coordinates.Y - scY / 2;
+				celY = this.topBoundToCenter;;
 				celUnit = null;
 			}
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + scY;
+			celDY = celY - coordinates.Y + objectHeight;
 		}
 		
 		public function findGrenades():Boolean
@@ -2901,10 +2890,10 @@ package fe.unit
 			{
 				if (loc.grenades[i]==null) continue;
 				var gx:Number = loc.grenades[i].coordinates.X - coordinates.X;
-				var gy:Number = loc.grenades[i].coordinates.Y - coordinates.Y + scY / 2;
+				var gy:Number = loc.grenades[i].coordinates.Y - this.bottomBoundToCenter;
 				if (gx*gx+gy*gy<400*400) //граната есть
 				{	
-					if (loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, loc.grenades[i].coordinates.X, loc.grenades[i].coordinates.Y))
+					if (loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.grenades[i].coordinates.X, loc.grenades[i].coordinates.Y))
 					{
 						acelX = loc.grenades[i].coordinates.X;
 						acelY = loc.grenades[i].coordinates.Y;
@@ -2919,8 +2908,8 @@ package fe.unit
 			if (isMeet(loc.gg) && loc.gg.teleObj) {
 				var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
 				if (!overLook && gx*storona<0) return false;
-				var gy:Number = loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.scY / 2 - coordinates.Y + scY / 2;
-				if (gx*gx+gy*gy<vision*vision*1000*1000 && loc.isLine(coordinates.X, coordinates.Y - scY * 0.75, loc.gg.teleObj.coordinates.X, loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.scY / 2)) return true;
+				var gy:Number = loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.halfHeight - coordinates.Y + this.halfHeight;
+				if (gx*gx+gy*gy<vision*vision*1000*1000 && loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.gg.teleObj.coordinates.X, loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.halfHeight)) return true;
 			}
 			return false;
 		}
@@ -2933,7 +2922,7 @@ package fe.unit
 				disabled=false;
 				setNull(true);
 				addVisual();
-				Emitter.emit('tele',loc, coordinates.X, coordinates.Y-scY/2,{rx:scX, ry:scY, kol:30});
+				Emitter.emit('tele',loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
 			}
 			if (com=='fraction')
 			{

@@ -117,7 +117,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y - scY / 2;
+			weaponY = this.topBoundToCenter;
 			if (tr>=100) {
 				weaponY+=40;
 			}
@@ -149,7 +149,7 @@ package fe.unit {
 				aiTCh=Math.floor(Math.random()*100)+100;
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					celX = coordinates.X + (Math.random()*300+400)*(isrnd()?1:-1);
-					celY = coordinates.Y - scY / 2;
+					celY = this.topBoundToCenter;
 				}
 			}
 			//поиск цели
@@ -167,7 +167,7 @@ package fe.unit {
 				}
 				atkRasst=celDX*celDX+celDY*celDY;
 				spd.x = celX - coordinates.X;
-				spd.y = celY - (coordinates.Y - scY / 2);
+				spd.y = celY - this.topBoundToCenter;
 				norma(spd,aiState==0?accel/2:accel);
 				if (aiState==3) {
 					dx-=spd.x;
@@ -231,7 +231,7 @@ package fe.unit {
 				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) {
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc, coordinates.X, coordinates.Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				t_krut=45;
 				return -1;

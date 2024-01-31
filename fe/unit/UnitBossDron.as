@@ -133,7 +133,7 @@ package fe.unit
 		
 		function emit() {
 			if (kolChild>=kol_emit) return;
-			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - scY / 2, true);
+			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - objectHeight / 2, true);
 			un.fraction=fraction;
 			un.inter.cont='';
 			un.mother=this;

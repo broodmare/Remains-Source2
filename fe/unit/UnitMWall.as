@@ -23,7 +23,7 @@ package fe.unit {
 		}
 
 		public override function expl()	{
-			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-scY/2,{kol:12,rx:scX, ry:scY});
+			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:12,rx:objectWidth, ry:objectHeight});
 		}
 		
 		public override function addVisual() {

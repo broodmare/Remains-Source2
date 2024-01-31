@@ -41,10 +41,10 @@ package  fe.unit
 				coordinates.X = head.coordinates.X + bindX;
 				coordinates.Y = head.coordinates.Y + bindY;
 			}
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
+			topBound = coordinates.Y - objectHeight;
+			bottomBound = coordinates.Y;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
 			setVisPos();
 		}
 		
@@ -92,7 +92,7 @@ package  fe.unit
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				currentWeapon.vis.x = coordinates.X;
-				currentWeapon.vis.y = coordinates.Y - scY / 2;
+				currentWeapon.vis.y = this.topBoundToCenter;
 			}
 		}
 

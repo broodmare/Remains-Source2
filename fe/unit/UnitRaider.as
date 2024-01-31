@@ -289,7 +289,7 @@ package fe.unit
 		}
 
 		function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2,true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, this.topBoundToCenter,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=300;
@@ -395,8 +395,8 @@ package fe.unit
 			
 			if (!controlOn) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-scY;
-				celX = coordinates.X+scX*storona*2;
+				celY = coordinates.Y-objectHeight;
+				celX = coordinates.X+objectWidth*storona*2;
 				return;
 			}
 			
@@ -506,7 +506,7 @@ package fe.unit
 			if (aiTCh%30==1 && !levit && findLevit() && celUnit!=loc.gg) {
 				if (loc.gg.teleObj && (loc.gg.teleObj is Mine)) {
 					var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
-					var gy:Number=loc.gg.teleObj.coordinates.Y - coordinates.Y + scY / 2;
+					var gy:Number=loc.gg.teleObj.coordinates.Y - coordinates.Y + objectHeight / 2;
 					alarma();
 					if (gx*gx+gy*gy<400*400) {
 						aiState=6;
@@ -526,7 +526,7 @@ package fe.unit
 			
 			//направление
 			celDX = celX - coordinates.X;
-			if (stay) celDY = celY - coordinates.Y + scY;
+			if (stay) celDY = celY - coordinates.Y + objectHeight;
 			if (celDY>40) {aiVNapr=1;		//вниз
 			} else if(celDY<-40) {aiVNapr=-1;	//прыжок
 			} else aiVNapr=0;
@@ -564,8 +564,8 @@ package fe.unit
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=1*visionMult;
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 			} else {
 				vision=1.5*visionMult;
 			}
@@ -721,7 +721,7 @@ package fe.unit
 						dy+=floatY;
 					} else {
 						spd.x=celX-coordinates.X;
-						spd.y=celY-(coordinates.Y - scY / 2);
+						spd.y=celY-(coordinates.Y - objectHeight / 2);
 						//дематериализоваться
 						if (turnX!=0) {
 							spd.x=0;

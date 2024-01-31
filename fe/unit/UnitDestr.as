@@ -45,10 +45,10 @@ package fe.unit
 				if (t_part==0) t_part=10;
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
-					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5)*scX, coordinates.Y-Math.random()*scY);
+					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*objectHeight);
 				} else {
 					vis.osn.gotoAndStop(2);
-					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5)*scX, coordinates.Y-Math.random()*scY);
+					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*objectHeight);
 				}
 			}
 		}

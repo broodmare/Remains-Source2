@@ -742,7 +742,7 @@ package fe.loc
 				if (abs) {
 					un.putLoc(this,nx,ny);
 				} else {
-					var size:int = Math.floor((un.scX-1)/40)+1;
+					var size:int = Math.floor((un.objectWidth-1)/40)+1;
 					un.putLoc(this,(nx+0.5*size)*tileX,(ny+1)*tileY-1);
 				}
 				if (active) {
@@ -777,9 +777,9 @@ package fe.loc
 		private function createPhoenix(box:Box):Boolean
 		{
 			if (box.wall || !box.shelf) return false;
-			if (collisionUnit(box.coordinates.X,box.Y1-1,38,38)) return false;
+			if (collisionUnit(box.coordinates.X,box.topBound-1,38,38)) return false;
 			var un:Unit=new UnitPhoenix();
-			un.putLoc(this, box.coordinates.X, box.Y1-1);
+			un.putLoc(this, box.coordinates.X, box.topBound-1);
 			addObj(un);
 			units.push(un);
 			kol_phoenix++;
@@ -791,10 +791,10 @@ package fe.loc
 		{
 			if (box.wall || !box.shelf) return false;
 			if (land.rnd && Math.random()<0.5) return false;
-			if (collisionUnit(box.coordinates.X, box.Y1-1,30,20)) return false;
+			if (collisionUnit(box.coordinates.X, box.topBound-1,30,20)) return false;
 			var un:Unit=new UnitTransmitter('box');
 			un.setLevel(enemyLevel);
-			un.putLoc(this,box.coordinates.X,box.Y1-1);
+			un.putLoc(this,box.coordinates.X,box.topBound-1);
 			addObj(un);
 			units.push(un);
 			return true;
@@ -812,7 +812,7 @@ package fe.loc
 				if (nsur==null) return;
 			}
 			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this,item,box.coordinates.X, box.coordinates.Y-box.scY-3,false,false,false);
+			var l:Loot=new Loot(this,item,box.coordinates.X, box.coordinates.Y-box.objectHeight-3,false,false,false);
 			if (base) 
 			{
 				l.inter.active=false;
@@ -1364,15 +1364,15 @@ package fe.loc
 			else return space[int(nx / tileX)][int(ny / tileY)] as Tile;
 		}
 
-		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean
+		public function collisionUnit(X:Number, Y:Number, objectWidth:Number=0, objectHeight:Number=0):Boolean
 		{
-			var X1 = X - scX / 2;
-			var X2 = X + scX / 2;
-			var Y1 = Y - scY;
+			var leftBound = X - objectWidth / 2;
+			var rightBound = X + objectWidth / 2;
+			var topBound = Y - objectHeight;
 
-			for (var i:int = int(X1 / tileX); i <= int(X2 / tileX); i++)
+			for (var i:int = int(leftBound / tileX); i <= int(rightBound / tileX); i++)
 			{
-				for (var j:int = int(Y1 / tileY); j <= int(Y / tileY); j++)
+				for (var j:int = int(topBound / tileY); j <= int(Y / tileY); j++)
 				{
 					if (i < 0 || i >= spaceX || j < 0 || j >= spaceY) continue;
 					if (space[i][j].phis > 0) return true;
@@ -1624,7 +1624,7 @@ package fe.loc
 			{
 				if (cel==null || (cel as Unit).sost==4) continue;
 				if (cel.transT) continue;
-				if (!(cel.X1>=(t.X+1)*tileX || cel.X2<=t.X*tileX || cel.Y1>=(t.Y+1)*tileY || cel.Y2<=t.Y*tileY))
+				if (!(cel.leftBound>=(t.X+1)*tileX || cel.rightBound<=t.X*tileX || cel.topBound>=(t.Y+1)*tileY || cel.bottomBound<=t.Y*tileY))
 				{
 					return false;
 				}
@@ -1696,10 +1696,10 @@ package fe.loc
 			var startXIndex:int = (landX - land.minLocX) * worldCellsX;
 			var startYIndex:int = (landY - land.minLocY) * worldCellsY;
 
-			var xStart:int	= startXIndex + int(obj.X1 / tileX + 0.5);
-			var xEnd:int	= startXIndex + int(obj.X2 / tileX - 0.5);
-			var yStart:int	= startYIndex + int(obj.Y1 / tileY + 0.4);
-			var yEnd:int	= startYIndex + int(obj.Y2 / tileY - 0.5);
+			var xStart:int	= startXIndex + int(obj.leftBound / tileX + 0.5);
+			var xEnd:int	= startXIndex + int(obj.rightBound / tileX - 0.5);
+			var yStart:int	= startYIndex + int(obj.topBound / tileY + 0.4);
+			var yEnd:int	= startYIndex + int(obj.bottomBound / tileY - 0.5);
 
 			for (var i:int = xStart; i <= xEnd; i++)
 			{
@@ -1918,7 +1918,7 @@ package fe.loc
 			{
 				if (cell.light)
 				{
-					var adjustedY:Number = cell.coordinates.Y - cell.scY / 2;
+					var adjustedY:Number = cell.coordinates.Y - cell.objectHeight / 2;
 
 					lighting(cell.coordinates.X - 10, adjustedY);
 					lighting(cell.coordinates.X, adjustedY);
@@ -1935,7 +1935,7 @@ package fe.loc
 			if (nx == -10000)
 			{
 				nx = gg.coordinates.X  + gg.storona * 12;
-				ny = gg.Y1 + gg.stayY * 0.247;
+				ny = gg.topBound + gg.stayY * 0.247;
 			}
 
 			var n1:Number;

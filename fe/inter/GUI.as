@@ -1054,7 +1054,7 @@ package fe.inter
 				if (xml.attribute('s' + i).length())  s = s.replace('@' + i, "<span class='imp'>" + World.w.ctr.retKey(xml.attribute('s' + i)) + "</span>");
 			}
 
-			s = s.replace(/\[/g, "<span class='yel'>");
+			s = s.replace(/\[/g, "<span class='yellow'>");
 			s = s.replace(/\]/g, "</span>");
 			s = s.replace(/[\b\r\t]/g, '');
 			s = Res.lpName(s);
@@ -1218,8 +1218,8 @@ package fe.inter
 			if (gg.teleObj && gg.pers.throwForce>0 && gg.teleObj.massa>0.1) {
 				tharrow.visible=true;
 				var ndx = gg.teleObj.coordinates.X - gg.coordinates.X
-				var ndy = gg.teleObj.coordinates.Y - gg.teleObj.scY / 2 - gg.coordinates.Y + gg.scY / 2 - 10;
-				World.w.cam.setKoord(tharrow, World.w.gg.teleObj.coordinates.X, World.w.gg.teleObj.coordinates.Y - World.w.gg.teleObj.scY / 2);
+				var ndy = gg.teleObj.coordinates.Y - gg.teleObj.objectHeight / 2 - gg.coordinates.Y + gg.objectHeight / 2 - 10;
+				World.w.cam.setKoord(tharrow, World.w.gg.teleObj.coordinates.X, World.w.gg.teleObj.coordinates.Y - World.w.gg.teleObj.objectHeight / 2);
 				tharrow.rotation = Math.atan2(ndy, ndx) / Math.PI * 180;
 				var alph:Number = gg.throwForceRelat();
 				tharrow.alpha=alph;

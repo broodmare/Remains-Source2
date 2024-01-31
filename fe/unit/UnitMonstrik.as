@@ -149,8 +149,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			
@@ -187,8 +187,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 			} else {
 				vision=aiVis;
 			}

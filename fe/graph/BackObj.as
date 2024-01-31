@@ -10,8 +10,8 @@ package fe.graph
 		public var id:String;
 		public var X:Number;
 		public var Y:Number;
-		public var scX:Number=1;
-		public var scY:Number=1;
+		public var objectWidth:Number=1;
+		public var objectHeight:Number=1;
 		public var vis:MovieClip, erase:MovieClip, light:MovieClip;
 		public var frame:int=1;
 		public var frameOn:int=0;
@@ -41,19 +41,19 @@ package fe.graph
 				if (node.@mirr == '2' && Math.random() < 0.5)
 				{
 					X = nloc.maxX - X;
-					scX = -1;
+					objectWidth = -1;
 				}
 				else if (node.@mirr == '1')
 				{
 					X = nloc.maxX - X;
-					scX = -1;
+					objectWidth = -1;
 				}
 				else X = nloc.maxX - X - wid;
 			}
 			else if (node.@mirr=='2' && Math.random() < 0.5)
 			{
 				X = nx + wid;
-				scX = -1;
+				objectWidth = -1;
 			} 
 			vis		= World.w.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_t',Grafon.numbBack);
 			erase	= World.w.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_e',Grafon.numbBack);
@@ -70,8 +70,8 @@ package fe.graph
 			if (node.@alpha.length()) alpha=node.@alpha;
 			if (node.@er.length()) er=true;
 			if (xml) {
-				if (xml.@w.length()) scX=xml.@w;
-				if (xml.@h.length()) scY=xml.@h;
+				if (xml.@w.length()) objectWidth=xml.@w;
+				if (xml.@h.length()) objectHeight=xml.@h;
 				if (xml.@a.length()) alpha=xml.@a;
 				if (xml.@fr.length()) frame=xml.@fr;
 				if (xml.@lon.length() && xml.@lon>1 && node.@lon.length()) frame=node.@lon;

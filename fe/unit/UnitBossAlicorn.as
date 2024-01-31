@@ -202,7 +202,7 @@ package fe.unit
 		
 		//телепортация
 		public override function teleport(nx:Number,ny:Number,eff:int=0) {
-			Emitter.emit('telered',loc, coordinates.X, coordinates.Y-scY/2,{rx:scX, ry:scY, kol:30});
+			Emitter.emit('telered',loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
 			setPos(nx,ny);
 			dx=dy=0;
 			if (currentWeapon) {
@@ -213,7 +213,7 @@ package fe.unit
 			if (t.phis || t.shelf) isFly=false;
 			else isFly=true;
 			levit=0;
-			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-scY/2);
+			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-objectHeight/2);
 		}
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
@@ -251,8 +251,8 @@ package fe.unit
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			if (t_shit>0) t_shit--;
@@ -377,7 +377,7 @@ package fe.unit
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(coordinates.X, coordinates.Y - scY / 2, b.coordinates.X, b.coordinates.Y - b.scY / 2)) {
+					if (loc.isLine(coordinates.X, this.topBoundToCenter, b.coordinates.X, b.topBoundToCenter)) {
 						upTeleObj(b);
 						return b;
 					}
@@ -418,7 +418,7 @@ package fe.unit
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
 				} else {
-					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.scY / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
+					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.objectHeight / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
 				}
 				if (teleObj is UnitPlayer) {
 					(teleObj as UnitPlayer).damWall=dam/2;
@@ -447,7 +447,7 @@ package fe.unit
 				aiTCh=10;
 				blood=1;
 				bloodEmit=Emitter.arr['blood'];
-				bloodEmit.cast(loc, coordinates.X, coordinates.Y-50,{kol:100, rx:scX/2, ry:scY/2});
+				bloodEmit.cast(loc, coordinates.X, coordinates.Y-50,{kol:100, rx:objectWidth/2, ry:objectHeight/2});
 				visDetails();
 				sost=1;
 				mat=0;

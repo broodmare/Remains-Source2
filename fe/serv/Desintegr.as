@@ -90,7 +90,7 @@ package fe.serv
 				burnBm.filters=[new GlowFilter(burnGlowColor,burnN/burnTime1,3,3,2,3)];
 			} else if (burnN>burnTime1 && burnN<=burnTime2+burnTime1)  {
 	   			burnBmp.pixelDissolve(burnBmp, burnBmp.rect, new Point(0,0), burnRnd, burnKolPix*(burnN-burnTime1)/burnTime2, 0x00FF0000);
-				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart, owner.loc, owner.coordinates.X, owner.coordinates.Y - owner.scY/2, {rx:owner.scX*0.75,rx:owner.scY*0.5}); 
+				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart, owner.loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2, {rx:owner.objectWidth*0.75,rx:owner.objectHeight*0.5}); 
 			} else if (burnN>=burnTime2+burnTime1) {
 				vse=true;
 }

@@ -170,7 +170,7 @@ package fe.unit
 		}
 		
 		function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - scY / 2, true);
+			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - objectHeight / 2, true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -207,8 +207,8 @@ package fe.unit
 
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-scY;
-				celX = coordinates.X+scX*storona*2;
+				celY = coordinates.Y-objectHeight;
+				celX = coordinates.X+objectWidth*storona*2;
 				return;
 			}
 			if (t_shit>0) t_shit--;

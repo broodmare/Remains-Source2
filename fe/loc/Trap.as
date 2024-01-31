@@ -47,18 +47,18 @@ package fe.loc
 			getXmlParam()
 			if (!anim) vis.cacheAsBitmap = true;
 			if (vis2 && !anim) vis2.cacheAsBitmap = true;
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
 			
 			if (floor)
 			{
-				Y1 = coordinates.Y - scY; 
-				Y2 = coordinates.Y;
+				topBound = coordinates.Y - objectHeight; 
+				bottomBound = coordinates.Y;
 			}
 			else
 			{
-				Y1 = coordinates.Y - tileY;
-				Y2 = Y1 + scY;
+				topBound = coordinates.Y - tileY;
+				bottomBound = topBound + objectHeight;
 			}
 
 			vis.x  = coordinates.X;
@@ -75,11 +75,11 @@ package fe.loc
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			nazv=Res.txt('u',id);
 
-			if (node.@sX>0) scX = node.@sX;
-			else scX = node.@size * tileX;
+			if (node.@sX>0) objectWidth = node.@sX;
+			else objectWidth = node.@size * tileX;
 			
-			if (node.@sY>0) scY=node.@sY;
-			else scY = node.@wid * tileY;
+			if (node.@sY>0) objectHeight=node.@sY;
+			else objectHeight = node.@wid * tileY;
 			
 			dam=node.@damage;
 			if (node.@tipdam.length()) tipDamage=node.@tipdam;
@@ -134,12 +134,12 @@ package fe.loc
 		public function attKorp(cel:Unit):Boolean
 		{
 			if (cel==null || cel.neujaz) return false;
-			if (spDam == 1 && !cel.isFly && cel.dy > 8 && cel.coordinates.X <= X2 && cel.coordinates.X >= X1 && cel.coordinates.Y <= Y2 && cel.coordinates.Y >= Y1) //шипы
+			if (spDam == 1 && !cel.isFly && cel.dy > 8 && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.coordinates.Y <= bottomBound && cel.coordinates.Y >= topBound) //шипы
 			{		
 				cel.damage(cel.massa*cel.dy/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
-			if (spDam==2 && !cel.isFly && (cel.dy + cel.osndy < 0) && cel.coordinates.X <= X2 && cel.coordinates.X >= X1 && cel.Y1 <= Y2 && cel.Y1 >= Y1) //шипы
+			if (spDam==2 && !cel.isFly && (cel.dy + cel.osndy < 0) && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.topBound <= bottomBound && cel.topBound >= topBound) //шипы
 			{
 				cel.damage(cel.massa * dam * (1 + loc.locDifLevel * 0.1), tipDamage);
 				cel.neujaz = cel.neujazMax;

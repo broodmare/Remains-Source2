@@ -80,14 +80,14 @@ package fe.unit
 					if (maxSpeed<runSpeed) maxSpeed+=0.01;
 				} else {
 					celX = World.w.gg.coordinates.X
-					celY = World.w.gg.coordinates.Y - World.w.gg.scY / 2;
+					celY = World.w.gg.coordinates.Y - World.w.gg.objectHeight / 2;
 				}
 				storona=(celX > coordinates.X)? 1:-1;
 			}
 			
 			if (aiState==1 && World.w.gg.loc==loc) {
 				spd.x = celX - coordinates.X;
-				spd.y = celY - (coordinates.Y - scY / 2);
+				spd.y = celY - this.topBoundToCenter;
 				norma(spd,accel);
 				dx+=spd.x;
 				dy+=spd.y;

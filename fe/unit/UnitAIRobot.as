@@ -130,8 +130,8 @@ package fe.unit
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-scY;
-				celX = coordinates.X+scX*storona*2;
+				celY = coordinates.Y-objectHeight;
+				celX = coordinates.X+objectWidth*storona*2;
 				return;
 			}
 			
@@ -184,7 +184,7 @@ package fe.unit
 					if (aiSpok>0) {
 						aiSpok--;
 					} else {
-						setCel(null, coordinates.X + storona * 100, coordinates.Y - scY * 0.75);
+						setCel(null, coordinates.X + storona * 100, coordinates.Y - objectHeight * 0.75);
 					}
 					if (aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
@@ -194,7 +194,7 @@ package fe.unit
 			
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + scY;
+			celDY = celY - coordinates.Y + objectHeight;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -324,9 +324,9 @@ package fe.unit
 				}
 				nx=Math.round(nx/tileX)*tileX
 				ny=Math.ceil(ny/tileY)*tileY-1;
-				if (nx<scX) nx=scX;
-				if (ny<scY+40) ny=scY+40;
-				if (nx>loc.maxX-scX) nx=loc.maxX-scX;
+				if (nx<objectWidth) nx=objectWidth;
+				if (ny<objectHeight+40) ny=objectHeight+40;
+				if (nx>loc.maxX-objectWidth) nx=loc.maxX-objectWidth;
 				if (ny>loc.maxY-40) ny=loc.maxY-40;
 				if (!collisionAll(nx-coordinates.X, ny-coordinates.Y)) {
 					teleport(nx,ny,1);

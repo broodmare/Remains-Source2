@@ -35,12 +35,12 @@ package fe.unit
 					fixed=true;
 				} else if (nloc.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
-					nx-=(40-scX)/2-1;
+					nx-=(40-objectWidth)/2-1;
 					vis.osn.gotoAndStop(2);
 					fixed=true;
 				} else if (nloc.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
-					nx+=(40-scX)/2-1;
+					nx+=(40-objectWidth)/2-1;
 					vis.osn.gotoAndStop(2);
 					vis.osn.scaleX=-1;
 					fixed=true;

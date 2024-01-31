@@ -101,14 +101,14 @@ package fe.loc
 			
 			coordinates.X = begX = nx; 
 			coordinates.Y = begY = ny;
-			scX = vis.width;
-			scY = vis.height;
-			if (node.@scx.length()) scX = node.@scx;
-			if (node.@scy.length()) scY = node.@scy;
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
+			objectWidth = vis.width;
+			objectHeight = vis.height;
+			if (node.@scx.length()) objectWidth = node.@scx;
+			if (node.@scy.length()) objectHeight = node.@scy;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
+			topBound = coordinates.Y - objectHeight;
+			bottomBound = coordinates.Y;
 			
 			
 			if (node.@mat.length()) mat=node.@mat;
@@ -135,10 +135,10 @@ package fe.loc
 			if (node.@nazv.length()) nazv=Res.txt('o',node.@nazv);
 			else nazv=Res.txt('o',id);
 			if (node.@explcrack.length()) explcrack=true;
-			if (scX<40 || wall>0) shelf=false;
+			if (objectWidth<40 || wall>0) shelf=false;
 			if (node.@shelf.length()) shelf=true;
 			if (node.@massaMult.length()) massaMult=node.@massaMult;
-			massa=scX*scY*scY/250000*massaMult;
+			massa=objectWidth*objectHeight*objectHeight/250000*massaMult;
 			if (node.@massa.length()) massa=node.@massa/50;
 			
 			if (xml && xml.@indestruct.length())
@@ -206,7 +206,7 @@ package fe.loc
 			vis.x = shad.x = coordinates.X;
 			vis.y = coordinates.Y;
 			shad.y = coordinates.Y + (wall?2:6);
-			prior +=1 / (scX * scY);
+			prior +=1 / (objectWidth * objectHeight);
 			if (node.@actdam.length()) {
 				if (xml && xml.@tipdam.length())  bindUnit(xml.@tipdam);
 				else bindUnit();
@@ -269,10 +269,10 @@ package fe.loc
 				coordinates.Y = begY;
 				dx = 0;
 				dy = 0;
-				Y1 = coordinates.Y - scY;
-				Y2 = coordinates.Y;
-				X1 = coordinates.X - scX / 2;
-				X2 = coordinates.X + scX / 2;
+				topBound = coordinates.Y - objectHeight;
+				bottomBound = coordinates.Y;
+				leftBound = coordinates.X - objectWidth / 2;
+				rightBound = coordinates.X + objectWidth / 2;
 			}
 		}
 		
@@ -333,10 +333,10 @@ package fe.loc
 					{
 						coordinates.X += osnova.cdx;
 						coordinates.Y += osnova.cdy;
-						X1 = coordinates.X - scX / 2;
-						X2 = coordinates.X + scX / 2;
-						Y1 = coordinates.Y - scY;
-						Y2 = coordinates.Y;
+						leftBound = coordinates.X - objectWidth / 2;
+						rightBound = coordinates.X + objectWidth / 2;
+						topBound = coordinates.Y - objectHeight;
+						bottomBound = coordinates.Y;
 						if (vis) runVis()
 					}
 				}
@@ -361,15 +361,15 @@ package fe.loc
 			cdx = coordinates.X - stX;
 			cdy = coordinates.Y - stY;
 			if (t_throw>0) t_throw--;
-			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
+			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
 		}
 		
 		public function initDoor()
 		{
 			tiles = [];
-			for (var i:int = int(X1 / tileX + 0.5); i <= int(X2 / tileX - 0.5); i++)
+			for (var i:int = int(leftBound / tileX + 0.5); i <= int(rightBound / tileX - 0.5); i++)
 			{
-				for (var j:int = int(Y1 / tileY + 0.5); j <= int(Y2 / tileY - 0.5); j++)
+				for (var j:int = int(topBound / tileY + 0.5); j <= int(bottomBound / tileY - 0.5); j++)
 				{
 					var t:Tile = loc.getTile(i, j);
 					t.front = '';
@@ -411,14 +411,14 @@ package fe.loc
 			{
 				if (cel == null || (cel as Unit).sost == 4) continue;
 				if (cel is fe.unit.UnitMWall) continue;
-				if (cel is fe.unit.Mine && !(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1))
+				if (cel is fe.unit.Mine && !(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
 				{
 					cel.fixed = true;
 					trace('Mine activated by door!');
 					(cel as fe.unit.Mine).activate();
 					continue;
 				}
-				if (!(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1))
+				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
 				{
 					trace('Door blocked by unit!');
 					return true;
@@ -427,7 +427,7 @@ package fe.loc
 			for each (cel in loc.objs)
 			{
 				if ((cel as Box).wall > 0) continue;
-				if (!(cel.coordinates.X - cel.scX / 2 >= X2 || cel.coordinates.X + cel.scX / 2 <= X1 || cel.coordinates.Y - cel.scY >= Y2 || cel.coordinates.Y <= Y1))
+				if (!(cel.coordinates.X - cel.objectWidth / 2 >= rightBound || cel.coordinates.X + cel.objectWidth / 2 <= leftBound || cel.coordinates.Y - cel.objectHeight >= bottomBound || cel.coordinates.Y <= topBound))
 				{
 					trace('Door blocked by box!');
 					return true;
@@ -441,7 +441,7 @@ package fe.loc
 			for each (var cel in loc.units)
 			{
 				if (cel == null || (cel as Unit).sost == 4) continue;
-				if (!(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1))
+				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
 				{
 					cel.udarBox(this);
 				}
@@ -501,10 +501,10 @@ package fe.loc
 					if (mat==3) kus='schep';
 					if (mat==5) kus='steklo';
 					if (mat==7) kus='pole';
-					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-scY/2, {kol:12,rx:scX, ry:scY});
+					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:12,rx:objectWidth, ry:objectHeight});
 					if (sndDie!='') Snd.ps(sndDie, coordinates.X, coordinates.Y);
 				}
-				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - scY / 2, noiseDie);
+				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - objectHeight / 2, noiseDie);
 				if (inter) inter.sign=0;
 			} else if (un) {
 				invis=true;
@@ -544,7 +544,7 @@ package fe.loc
 			if (vel2<50) return;
 			for each(var cel:Unit in loc.units) {
 				if (cel==null || fracLevit>0 && cel.fraction==fracLevit) continue;
-				if (cel.sost==4 || cel.neujaz>0 || cel.loc!=loc || cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1) continue;
+				if (cel.sost==4 || cel.neujaz>0 || cel.loc!=loc || cel.leftBound>rightBound || cel.rightBound<leftBound || cel.topBound>bottomBound || cel.bottomBound<topBound) continue;
 				if (t_throw>0) {
 					cel.neujaz=12;
 					continue;
@@ -561,9 +561,9 @@ package fe.loc
 			if (isPlav&&!isPlav2 && dy<2 && dy>-2) {
 				fixPlav=true;
 			}
-			for (var i=int(X1/tileX); i<=int(X2/tileX); i++)
+			for (var i=int(leftBound/tileX); i<=int(rightBound/tileX); i++)
 			{
-				var t=loc.space[i][int((Y2+1)/tileY)];
+				var t=loc.space[i][int((bottomBound+1)/tileY)];
 				if (collisionTile(t,0,1)) {
 					return true;
 				}
@@ -579,45 +579,45 @@ package fe.loc
 			
 			//HORIZONTAL
 				coordinates.X += dx / div;
-				if (coordinates.X - scX / 2 < 0)
+				if (coordinates.X - objectWidth / 2 < 0)
 				{
-					coordinates.X = scX / 2;
+					coordinates.X = objectWidth / 2;
 					dx=Math.abs(dx);
 				}
-				if (coordinates.X + scX / 2 >= loc.spaceX * tileX)
+				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX)
 				{
-					coordinates.X = loc.spaceX * tileX - 1 - scX / 2;
+					coordinates.X = loc.spaceX * tileX - 1 - objectWidth / 2;
 					dx = -Math.abs(dx);
 				}
-				X1 = coordinates.X - scX / 2;
-				X2 = coordinates.X + scX / 2;
+				leftBound = coordinates.X - objectWidth / 2;
+				rightBound = coordinates.X + objectWidth / 2;
 				//движение влево
 				if (dx<0)
 				{
-					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++)
+					for (i=int(topBound/tileY); i<=int(bottomBound/tileY); i++)
 					{
-						t = loc.space[int(X1 / tileX)][i];
+						t = loc.space[int(leftBound / tileX)][i];
 						if (collisionTile(t))
 						{
-								coordinates.X = t.phX2 + scX / 2;
+								coordinates.X = t.phX2 + objectWidth / 2;
 								if (dx<-10) dx=-dx*0.2;
 								else dx=0;
-								X1 = coordinates.X - scX / 2;
-								X2 = coordinates.X + scX / 2;
+								leftBound = coordinates.X - objectWidth / 2;
+								rightBound = coordinates.X + objectWidth / 2;
 							isThrow=false;
 						}
 					}
 				}
 				//движение вправо
 				if (dx>0) {
-					for (i=int(Y1/tileY); i<=int(Y2/tileY); i++) {
-						t=loc.space[int(X2/tileX)][i];
+					for (i=int(topBound/tileY); i<=int(bottomBound/tileY); i++) {
+						t=loc.space[int(rightBound/tileX)][i];
 						if (collisionTile(t)) {
-								coordinates.X = t.phX1 - scX / 2;
+								coordinates.X = t.phX1 - objectWidth / 2;
 								if (dx>10) dx=-dx*0.2;
 								else dx=0;
-								X1 = coordinates.X - scX / 2;
-								X2 = coordinates.X + scX / 2;
+								leftBound = coordinates.X - objectWidth / 2;
+								rightBound = coordinates.X + objectWidth / 2;
 							isThrow=false;
 						}
 					}
@@ -630,8 +630,8 @@ package fe.loc
 			if (dy>0)
 			{
 				stay=false;
-				for (i = int(X1 / tileX); i <= int(X2 / tileX); i++) {
-					t = loc.space[i][int((Y2 + dy / div) / tileY)];
+				for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
+					t = loc.space[i][int((bottomBound + dy / div) / tileY)];
 					if (collisionTile(t,0,dy/div))
 					{
 						newmy = t.phY1;
@@ -648,8 +648,8 @@ package fe.loc
 				if (newmy)
 				{
 					coordinates.Y = newmy;
-					Y1 = coordinates.Y - scY;
-					Y2 = coordinates.Y;
+					topBound = coordinates.Y - objectHeight;
+					bottomBound = coordinates.Y;
 					if (loc.active && dy>4 && dy*massa>5) World.w.quake(0,dy*Math.sqrt(massa)/2);
 					if (dy > 5 && sndFall && sndOn) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, dy / 15);
 					if (dy > 5)
@@ -664,7 +664,7 @@ package fe.loc
 					else
 					{
 						dx*=0.92;
-						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*scX, coordinates.Y);
+						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*objectWidth, coordinates.Y);
 					}
 
 					if (!levit && (!isPlav || ddyPlav>0)) {
@@ -678,8 +678,8 @@ package fe.loc
 				else
 				{
 					coordinates.Y += dy / div;
-					Y1 = coordinates.Y - scY;
-					Y2 = coordinates.Y;
+					topBound = coordinates.Y - objectHeight;
+					bottomBound = coordinates.Y;
 				}
 			}
 			//движение вверх
@@ -687,17 +687,17 @@ package fe.loc
 			{
 				stay = false;
 				coordinates.Y += dy / div;
-				Y1 = coordinates.Y-scY;
-				Y2 = coordinates.Y;
-				if (coordinates.Y - scY < 0) coordinates.Y = scY;
-				for (i = int(X1/tileX); i <= int(X2/tileX); i++)
+				topBound = coordinates.Y-objectHeight;
+				bottomBound = coordinates.Y;
+				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
+				for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
 				{
-					t = loc.space[i][int(Y1/tileY)];
+					t = loc.space[i][int(topBound/tileY)];
 					if (collisionTile(t))
 					{
-						coordinates.Y = t.phY2 + scY;
-						Y1 = coordinates.Y - scY;
-						Y2 = coordinates.Y;
+						coordinates.Y = t.phY2 + objectHeight;
+						topBound = coordinates.Y - objectHeight;
+						bottomBound = coordinates.Y;
 						dy = 0;
 						isThrow=false;
 					}
@@ -711,17 +711,17 @@ package fe.loc
 			isPlav = false;
 			isPlav2 = false;
 
-			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-scY*0.45) / tileY)] as Tile).water > 0)
+			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.45) / tileY)] as Tile).water > 0)
 			{
 				isPlav=true;
 			}
-			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-scY*0.55) / tileY)] as Tile).water > 0)
+			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.55) / tileY)] as Tile).water > 0)
 			{
 				isPlav2=true;
 			}
 
 
-			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-scY*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
+			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-objectHeight*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
 			if (pla!=isPlav && dy>5) {
 				if (massa>2) sound('fall_water0', 0, dy/10);
 				else if (massa>0.4) sound('fall_water1', 0, dy/10);
@@ -735,10 +735,10 @@ package fe.loc
 		public function checkShelf(dy):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.X1 || coordinates.X > b.X2) && Y2<=b.Y1 && Y2+dy>b.Y1)
+				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound+dy>b.topBound)
 				{
 					osnova = b;
-					return b.Y1;
+					return b.topBound;
 				}
 			}
 			return 0;
@@ -746,9 +746,9 @@ package fe.loc
 
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean
 		{
-			for (var i:int = int((X1 + gx) / tileX); i <= int((X2 + gx) / tileX); i++)
+			for (var i:int = int((leftBound + gx) / tileX); i <= int((rightBound + gx) / tileX); i++)
 			{
-				for (var j:int = int((Y1 + gy) / tileY); j <= int((Y2 + gy) / tileY); j++)
+				for (var j:int = int((topBound + gy) / tileY); j <= int((bottomBound + gy) / tileY); j++)
 				{
 					if (collisionTile(loc.space[i][j], gx, gy)) return true;
 				}
@@ -786,11 +786,11 @@ package fe.loc
 		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int
 		{
 			if (!t || (t.phis==0 || t.phis==3) && !t.shelf) return 0;  //пусто
-			if (X2 + gx <= t.phX1 || X1 + gx >= t.phX2 || Y2 + gy <= t.phY1 || Y1 + gy>=t.phY2)
+			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy>=t.phY2)
 			{
 				return 0;
 			}
-			else if ((t.phis==0 || t.phis==3) && t.shelf && (Y2>t.phY1 || levit || isThrow)) {  //полка 
+			else if ((t.phis==0 || t.phis==3) && t.shelf && (bottomBound>t.phY1 || levit || isThrow)) {  //полка 
 				return 0;
 			}
 			else return 1;

@@ -26,7 +26,7 @@ package fe.weapon
 		{
 			var res=0;
 			var bx:Number=owner.coordinates.X;
-			var by:Number=owner.coordinates.Y - owner.scY * 0.75;
+			var by:Number=owner.coordinates.Y - owner.objectHeight * 0.75;
 			var ndx:Number = (celX - bx);
 			var ndy:Number = (celY - by);
 			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;

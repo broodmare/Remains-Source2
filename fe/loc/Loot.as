@@ -46,7 +46,7 @@ package fe.loc
 			if (ny>(loc.spaceY-1)*tileY) ny=(loc.spaceY-1)*tileY;
 			massa=0.1;
 			nazv=item.nazv;
-			scX=30, scY=20;
+			objectWidth=30, objectHeight=20;
 			if (item.tip==Item.L_WEAPON) {
 				if (item.xml.vis.length() && item.xml.vis.@loot.length()) {
 					vis=new visualItem();
@@ -124,7 +124,7 @@ package fe.loc
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.cacheAsBitmap=true;
-				scX=vis.width, scY=vis.height;
+				objectWidth=vis.width, objectHeight=vis.height;
 			}
 			if (jump) {
 				dx=Math.random()*10-5;
@@ -168,7 +168,7 @@ package fe.loc
 		public function take(prinud:Boolean=false) {
 			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
 			var rx = World.w.gg.coordinates.X - coordinates.X;
-			var ry = World.w.gg.coordinates.Y - World.w.gg.scY / 2 - coordinates.Y;
+			var ry = World.w.gg.coordinates.Y - World.w.gg.objectHeight / 2 - coordinates.Y;
 			//взять
 			if (prinud || (World.w.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) {
 				if (World.w.hardInv && !actTake) {
@@ -236,7 +236,7 @@ package fe.loc
 				}
 			}
 			if (inter) inter.step();
-			onCursor=(coordinates.X - scX / 2 < World.w.celX && coordinates.X + scX / 2 > World.w.celX && coordinates.Y - scY<World.w.celY && coordinates.Y > World.w.celY)? prior:0;
+			onCursor=(coordinates.X - objectWidth / 2 < World.w.celX && coordinates.X + objectWidth / 2 > World.w.celX && coordinates.Y - objectHeight<World.w.celY && coordinates.Y > World.w.celY)? prior:0;
 			if (World.w.checkLoot) auto2=item.checkAuto();
 			if (auto && auto2 || actTake) take();
 		}
@@ -248,14 +248,14 @@ package fe.loc
 			
 			//ГОРИЗОНТАЛЬ
 				coordinates.X += dx / div;
-				if (coordinates.X - scX / 2 < 0)
+				if (coordinates.X - objectWidth / 2 < 0)
 				{
-					coordinates.X = scX / 2;
+					coordinates.X = objectWidth / 2;
 					dx = Math.abs(dx);
 				}
-				if (coordinates.X + scX / 2 >= loc.spaceX * tileX)
+				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX)
 				{
-					coordinates.X = loc.spaceX * tileX - 1 - scX / 2;
+					coordinates.X = loc.spaceX * tileX - 1 - objectWidth / 2;
 					dx = -Math.abs(dx);
 				}
 				//движение влево
@@ -285,7 +285,7 @@ package fe.loc
 			if (dy<0) {
 				stay=false;
 				coordinates.Y += dy / div;
-				if (coordinates.Y - scY < 0) coordinates.Y = scY;
+				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
 				if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2)
 				{
@@ -348,10 +348,10 @@ package fe.loc
 		{
 			for (var i in loc.objs) {
 				var b:Box = loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.X1 || coordinates.X > b.X2) && coordinates.Y <= b.Y1 && coordinates.Y + dy > b.Y1)
+				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.leftBound || coordinates.X > b.rightBound) && coordinates.Y <= b.topBound && coordinates.Y + dy > b.topBound)
 				{
 					osnova = b;
-					return b.Y1;
+					return b.topBound;
 				}
 			}
 			return 0;

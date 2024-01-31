@@ -446,7 +446,7 @@ package fe.unit
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + scY;
+			celDY = celY - coordinates.Y + objectHeight;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -457,8 +457,8 @@ package fe.unit
 			if (aiSpok==0) {
 				vision=0.7;
 				if (loc && loc.land.aliAlarm) vision=1.5;
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 			} else {
 				t_gotov++;
 				if (t_gotov>tGotov) superSila();
@@ -481,13 +481,13 @@ package fe.unit
 					}
 					//пригнуться
 					if (turnX==-1) {
-						if (loc.getAbsTile(X2+2,Y1).phis && loc.getAbsTile(X2+2,Y1+40).phis==0 && loc.getAbsTile(X2+2,Y1+80).phis==0) {
+						if (loc.getAbsTile(rightBound+2,topBound).phis && loc.getAbsTile(rightBound+2,topBound+40).phis==0 && loc.getAbsTile(rightBound+2,topBound+80).phis==0) {
 							sit(true);
 							turnX=0;
 						}
 					}
 					if (turnX==1) {
-						if (loc.getAbsTile(X1-2,Y1).phis && loc.getAbsTile(X1-2,Y1+40).phis==0 && loc.getAbsTile(X1-2,Y1+80).phis==0) {
+						if (loc.getAbsTile(leftBound-2,topBound).phis && loc.getAbsTile(leftBound-2,topBound+40).phis==0 && loc.getAbsTile(leftBound-2,topBound+80).phis==0) {
 							sit(true);
 							turnX=0;
 						}
@@ -506,7 +506,7 @@ package fe.unit
 				} else {
 					spd.x = celX - coordinates.X;
 					if (aiState==4) spd.y=200;
-					else spd.y=celY-(coordinates.Y - scY / 2);
+					else spd.y = celY - this.topBoundToCenter;;
 					//дематериализоваться
 					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
 						t_nomater++;
@@ -702,7 +702,7 @@ package fe.unit
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(coordinates.X, coordinates.Y - scY / 2, b.coordinates.X, b.coordinates.Y - b.scY / 2))
+					if (loc.isLine(coordinates.X, this.topBoundToCenter, b.coordinates.X, b.topBoundToCenter))
 					{
 						upTeleObj(b);
 						return b;
@@ -744,7 +744,7 @@ package fe.unit
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
 				} else {
-					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.scY / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
+					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.objectHeight / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
 				}
 				if (teleObj is UnitPlayer) {
 					(teleObj as UnitPlayer).damWall=dam/2;
@@ -783,9 +783,9 @@ package fe.unit
 				}
 				nx = Math.round(nx/tileX)*tileX
 				ny = Math.ceil(ny/tileY)*tileY-1;
-				if (nx<scX) nx=scX;
-				if (ny<scY+40) ny=scY+40;
-				if (nx>loc.maxX-scX) nx=loc.maxX-scX;
+				if (nx<objectWidth) nx=objectWidth;
+				if (ny<objectHeight+40) ny=objectHeight+40;
+				if (nx>loc.maxX-objectWidth) nx=loc.maxX-objectWidth;
 				if (ny>loc.maxY-40) ny=loc.maxY-40;
 				if (!collisionAll(nx - coordinates.X, ny - coordinates.Y)) {
 					teleport(nx, ny, 1);

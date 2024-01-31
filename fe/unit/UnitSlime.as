@@ -97,7 +97,7 @@ package fe.unit
 		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
 				celX = un.coordinates.X;
-				celY = un.coordinates.Y - un.scY / 2;
+				celY = un.coordinates.Y - un.objectHeight / 2;
 			}
 			else if (cx>-10000 && cy>-10000)
 			{
@@ -106,10 +106,10 @@ package fe.unit
 			else
 			{
 				celX = coordinates.X;
-				celY = coordinates.Y - scY / 2;
+				celY = this.topBoundToCenter;
 			}
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + scY;
+			celDY = celY - coordinates.Y + objectHeight;
 		}
 		
 		public function activate() {

@@ -87,7 +87,7 @@ package fe.unit {
 						if (celY > loc.maxY) celY = loc.maxY - 200;
 					} else {
 						celX = coordinates.X;
-						celY = coordinates.Y - scY / 2;
+						celY = this.topBoundToCenter;
 					}
 				}
 			}
@@ -101,7 +101,7 @@ package fe.unit {
 					if (aiSpok>0) aiSpok--;
 				}
 				spd.x = celX - coordinates.X;
-				spd.y = celY - (coordinates.Y - scY / 2);
+				spd.y = celY - this.topBoundToCenter;
 				norma(spd,aiState==0?accel/2:accel);
 			}
 			dx += spd.x;

@@ -192,7 +192,7 @@ package fe.unit
 					}
 					else {
 						dx = celUnit.coordinates.X - coordinates.X;
-						dy = celUnit.coordinates.Y - celUnit.scY / 2 - coordinates.Y + scY / 2;
+						dy = celUnit.coordinates.Y - celUnit.objectHeight / 2 - coordinates.Y + objectHeight / 2;
 					}
 				} else {
 					isGryz=false;

@@ -307,7 +307,7 @@ package fe.projectile
 					else break;
 				}
 				if (un.sost == 4 || un.disabled || un.trigDis || un.loc != loc) continue;
-				if ((targetObj || un.fraction != owner.fraction) && coordinates.X >= un.X1 && coordinates.X <= un.X2 && coordinates.Y >= un.Y1 && coordinates.Y <= un.Y2)
+				if ((targetObj || un.fraction != owner.fraction) && coordinates.X >= un.leftBound && coordinates.X <= un.rightBound && coordinates.Y >= un.topBound && coordinates.Y <= un.bottomBound)
 				{
 					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) //проверить досягаемость до объекта
 					{
@@ -338,7 +338,7 @@ package fe.projectile
 			}
 			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) {//взлом контейнера
 				box = loc.celObj as Box;
-				if (coordinates.X >= box.X1 && coordinates.X <= box.X2 && coordinates.Y >= box.Y1 && coordinates.Y <= box.Y2 && udar(box)) {
+				if (coordinates.X >= box.leftBound && coordinates.X <= box.rightBound && coordinates.Y >= box.topBound && coordinates.Y <= box.bottomBound && udar(box)) {
 					res = box.udarBullet(this, 1);
 					sound(res);
 					if (res>=0)
@@ -352,7 +352,7 @@ package fe.projectile
 			if (World.w.gg.loc==loc && World.w.gg.teleObj && (World.w.gg.teleObj is Box) && owner!=World.w.gg)
 			{
 				box=World.w.gg.teleObj as Box;
-				if (coordinates.X >= box.X1 && coordinates.X <= box.X2 && coordinates.Y >= box.Y1 && coordinates.Y <= box.Y2 && udar(box))
+				if (coordinates.X >= box.leftBound && coordinates.X <= box.rightBound && coordinates.Y >= box.topBound && coordinates.Y <= box.bottomBound && udar(box))
 				{
 					res = box.udarBullet(this,0);
 					sound(res);
@@ -455,7 +455,7 @@ package fe.projectile
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;// || (un is VirtualUnit)
 				if (explTip==3 && !un.stay) continue; 
 				var tx = un.coordinates.X - coordinates.X;
-				var ty = un.coordinates.Y - un.scY / 2 - coordinates.Y;
+				var ty = un.coordinates.Y - un.objectHeight / 2 - coordinates.Y;
 				var rasst = Math.sqrt(tx*tx+ty*ty);
 				var dam=damageExpl*(Math.random()*0.6+0.7);
 				//дружественный огонь врагов
@@ -482,8 +482,8 @@ package fe.projectile
 			{
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
 				var tx = un.coordinates.X - coordinates.X;
-				var ty = un.coordinates.Y - un.scY / 2 - coordinates.Y;
-				var b:Bullet=explBullet(tx, ty, explRadius + un.scX);
+				var ty = un.coordinates.Y - un.objectHeight / 2 - coordinates.Y;
+				var b:Bullet=explBullet(tx, ty, explRadius + un.objectWidth);
 				if (b) {
 					b.targetObj=un;
 					//дружественный огонь врагов

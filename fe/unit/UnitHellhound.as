@@ -92,8 +92,8 @@ package fe.unit
 			var jmp:Number=0;
 
 			if (World.w.enemyAct<=0) {
-				celY=coordinates.Y-scY;
-				celX=coordinates.X+scX*storona*2;
+				celY=coordinates.Y-objectHeight;
+				celX=coordinates.X+objectWidth*storona*2;
 				return;
 			}
 			if (aiLaz>0) aiLaz--;
@@ -134,7 +134,7 @@ package fe.unit
 			}
 			//направление
 			celDX=celX-coordinates.X;
-			celDY=celY-coordinates.Y+scY;
+			celDY=celY-coordinates.Y+objectHeight;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -144,8 +144,8 @@ package fe.unit
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY=coordinates.Y-scY;
-				celX=coordinates.X+scX*storona*2;
+				celY=coordinates.Y-objectHeight;
+				celX=coordinates.X+objectWidth*storona*2;
 			} else {
 				vision=1;
 			}
@@ -273,13 +273,13 @@ package fe.unit
 			if (stay && aiState>0) {
 				//пригнуться
 				if (turnX==-1) {
-					if (loc.getAbsTile(X2+2,Y1).phis && loc.getAbsTile(X2+2,Y1+40).phis==0 && loc.getAbsTile(X2+2,Y1+80).phis==0) {
+					if (loc.getAbsTile(rightBound+2,topBound).phis && loc.getAbsTile(rightBound+2,topBound+40).phis==0 && loc.getAbsTile(rightBound+2,topBound+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
 				}
 				if (turnX==1) {
-					if (loc.getAbsTile(X1-2,Y1).phis && loc.getAbsTile(X1-2,Y1+40).phis==0 && loc.getAbsTile(X1-2,Y1+80).phis==0) {
+					if (loc.getAbsTile(leftBound-2,topBound).phis && loc.getAbsTile(leftBound-2,topBound+40).phis==0 && loc.getAbsTile(leftBound-2,topBound+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
@@ -330,9 +330,9 @@ package fe.unit
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1+scX/2;
-					else coordinates.X=(loc.space[i][j] as Tile).phX2-scX/2;
-					X1=coordinates.X-scX/2, X2=coordinates.X+scX/2;
+					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1+objectWidth/2;
+					else coordinates.X=(loc.space[i][j] as Tile).phX2-objectWidth/2;
+					leftBound=coordinates.X-objectWidth/2, rightBound=coordinates.X+objectWidth/2;
 					stay=false;
 					return true;
 				}

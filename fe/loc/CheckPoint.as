@@ -36,14 +36,14 @@ package fe.loc
 			
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			scX = node.@size * tileX;
-			scY = node.@wid * tileY;
+			objectWidth = node.@size * tileX;
+			objectHeight = node.@wid * tileY;
 			nazv=Res.txt('o','checkpoint');
 			
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
+			topBound = coordinates.Y - objectHeight;
+			bottomBound = coordinates.Y;
 			coordinates.X  = nx;
 			coordinates.Y  = ny;
 			var vClass:Class=Res.getClass('vischeckpoint', null, vischeckpoint);
@@ -56,10 +56,10 @@ package fe.loc
 				locked=true;
 			}
 			else vis.lock.visible=false;
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
+			topBound = coordinates.Y - objectHeight;
+			bottomBound = coordinates.Y;
 			cTransform=loc.cTransform;
 			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).shelf = true;
 			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).shelf = true;
@@ -72,7 +72,7 @@ package fe.loc
 			inter.action=100;
 			
 			area=new Area(loc);
-			area.setSize(X1,Y1,X2,Y2);
+			area.setSize(leftBound,topBound,rightBound,bottomBound);
 			area.over=areaActivate;
 			
 			if (xml && xml.@main.length()) main=true;
@@ -200,7 +200,7 @@ package fe.loc
 		}
 		
 		public override function step() {
-			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
+			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) {
 				if (World.w.game.missionId && World.w.game.lands[World.w.game.missionId] && World.w.game.lands[World.w.game.missionId].tip!='base') inter.active=true;

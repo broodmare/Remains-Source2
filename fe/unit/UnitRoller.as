@@ -43,7 +43,7 @@ package fe.unit
 		
 		public override function setVisPos() {
 			vis.x = coordinates.X;
-			vis.y = coordinates.Y - scY / 2;
+			vis.y = this.topBoundToCenter;
 		}
 		
 		public override function dropLoot() {
@@ -97,8 +97,8 @@ package fe.unit
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			if (isPlav) {

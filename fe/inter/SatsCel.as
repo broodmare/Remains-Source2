@@ -32,8 +32,8 @@ package fe.inter
 				vis = new satsUnCel();
 				un.n++;
 				run();
-				vis.scaleX = (un.u.scX + ramka * un.n) / 100;
-				vis.scaleY = (un.u.scY + ramka * un.n) / 100;
+				vis.scaleX = (un.u.objectWidth + ramka * un.n) / 100;
+				vis.scaleY = (un.u.objectHeight + ramka * un.n) / 100;
 			}
 			cons = ncons / nkol;
 			kol = nkol;
@@ -50,7 +50,7 @@ package fe.inter
 			if (un)
 			{
 				coordinates.X = un.u.coordinates.X;
-				coordinates.Y = un.u.coordinates.Y - un.u.scY / 2;
+				coordinates.Y = un.u.coordinates.Y - un.u.objectHeight / 2;
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 			}

@@ -74,16 +74,16 @@
 		{
 			if (bind) {
 				coordinates.X = bind.coordinates.X - Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
-				coordinates.Y = bind.coordinates.Y - bind.scY / 2 - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
+				coordinates.Y = bind.coordinates.Y - bind.objectHeight / 2 - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
 			} else {
 				coordinates.X += dx/div;
 				coordinates.Y += dy/div;
 				if (coordinates.X >= loc.maxX || coordinates.X <= 0 || coordinates.Y >= loc.maxY || coordinates.Y <= 0) die();
 			}
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
+			topBound = coordinates.Y - objectHeight;
+			bottomBound = coordinates.Y;
 		}
 		
 		public override function control()

@@ -44,15 +44,15 @@ package fe.unit
 			if (nloc.getAbsTile(nx, ny+10).phis==0) {
 				if (nloc.getAbsTile(nx, ny-50).phis) {
 					cep=1;
-					ny-=40-scY-1
+					ny-=40-objectHeight-1
 					fixed=true;
 				} else if (nloc.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
-					nx-=(40-scX)/2-1;
+					nx-=(40-objectWidth)/2-1;
 					fixed=true;
 				} else if (nloc.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
-					nx+=(40-scX)/2-1;
+					nx+=(40-objectWidth)/2-1;
 					fixed=true;
 				}
 			}
@@ -75,19 +75,19 @@ package fe.unit
 				else if (cep==1)
 				{
 					vis.x = coordinates.X;
-					vis.y = Y1;
+					vis.y = topBound;
 					vis.rotation=180;
 				}
 				else if (cep==3)
 				{
-					vis.x = X2;
-					vis.y = coordinates.Y - scY / 2;
+					vis.x = rightBound;
+					vis.y = this.topBoundToCenter;
 					vis.rotation = -90;
 				}
 				else if (cep==2)
 				{
-					vis.x = X1;
-					vis.y = coordinates.Y - scY / 2;
+					vis.x = leftBound;
+					vis.y = this.topBoundToCenter;
 					vis.rotation = 90;
 				}
 				vis.scaleX = storona;
@@ -162,8 +162,8 @@ package fe.unit
 			
 			if (World.w.enemyAct<=0)
 			{
-				celY = coordinates.Y - scY;
-				celX = coordinates.X + scX * storona * 2;
+				celY = coordinates.Y - objectHeight;
+				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
 			if (aiState>=3 && cep>0)
@@ -214,7 +214,7 @@ package fe.unit
 			
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + scY;
+			celDY = celY - coordinates.Y + objectHeight;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -266,7 +266,7 @@ package fe.unit
 				}
 				if (celUnit)
 				{
-					if ((coordinates.X - celUnit.coordinates.X) * (coordinates.X - celUnit.coordinates.X) + (coordinates.Y - celUnit.coordinates.Y + celUnit.scY / 2) * (coordinates.Y - celUnit.coordinates.Y + celUnit.scY / 2) < 100 * 100) die();
+					if ((coordinates.X - celUnit.coordinates.X) * (coordinates.X - celUnit.coordinates.X) + (coordinates.Y - celUnit.coordinates.Y + celUnit.objectHeight / 2) * (coordinates.Y - celUnit.coordinates.Y + celUnit.objectHeight / 2) < 100 * 100) die();
 				}
 				pumpObj=null;
 			}

@@ -70,12 +70,12 @@ package fe.unit
 		public function showThis():Boolean {
 			//проверить линию взгляда
 			var cx=-(coordinates.X - World.w.gg.eyeX);
-			var cy=-(coordinates.Y - scY*0.6-World.w.gg.eyeY);
+			var cy=-(coordinates.Y - objectHeight*0.6-World.w.gg.eyeY);
 			if (cx*cx+cy*cy>1000*1000) return false;
 			var div = int(Math.max(Math.abs(cy),Math.abs(cy))/World.maxdelta)+1;
 			for (var i=1; i<div; i++) {
 				var nx = coordinates.X + cx*i/div;
-				var ny = coordinates.Y - scY*0.6+cy*i/div;
+				var ny = coordinates.Y - objectHeight*0.6+cy*i/div;
 				var t:Tile=World.w.loc.getTile(int(nx/Tile.tileX), int(ny/Tile.tileY));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return false;

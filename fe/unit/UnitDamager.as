@@ -155,7 +155,7 @@ package fe.unit
 				else if (tipDamager==1)
 				{
 					celX = coordinates.X + 200 * storona;
-					celY = coordinates.Y - scY / 2;
+					celY = this.topBoundToCenter;
 					currentWeapon.rot=(storona<0)?Math.PI:0;
 				}
 			}

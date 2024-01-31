@@ -31,8 +31,8 @@ package fe.projectile
 			warn=1;
 			levitPoss=true;
 			inWater=0;
-			scX = 30;
-			scY = 30;
+			objectWidth = 30;
+			objectHeight = 30;
 			if (vis) vis.visible = true;
 		}
 
@@ -81,12 +81,12 @@ package fe.projectile
 				loc.remObj(this);
 				loc.remGrenade(this);
 			}
-			onCursor = (liv > 5 && coordinates.X - scX / 2 < World.w.celX && coordinates.X + scX / 2 > World.w.celX && coordinates.Y - scY / 2 < World.w.celY && coordinates.Y + scY / 2 > World.w.celY)? 3:0;
+			onCursor = (liv > 5 && coordinates.X - objectWidth / 2 < World.w.celX && coordinates.X + objectWidth / 2 > World.w.celX && coordinates.Y - objectHeight / 2 < World.w.celY && coordinates.Y + objectHeight / 2 > World.w.celY)? 3:0;
 		}
 		
 		private function sensor():Boolean {
 			for each (var un:Unit in loc.units) {
-				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.X1 && coordinates.X <= un.X2 && coordinates.Y >= un.Y1 && coordinates.Y <= un.Y2 && un.sost < 3) {
+				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.leftBound && coordinates.X <= un.rightBound && coordinates.Y >= un.topBound && coordinates.Y <= un.bottomBound && un.sost < 3) {
 					explosion();
 					onCursor=0;
 					vse=true;
@@ -134,7 +134,7 @@ package fe.projectile
 			var t:Tile;
 			coordinates.X += dx/div;
 			if (lip) {
-				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && coordinates.X >= loc.celObj.X1 && coordinates.X <= loc.celObj.X2 && coordinates.Y >= loc.celObj.Y1 && coordinates.Y <= loc.celObj.Y2)
+				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && coordinates.X >= loc.celObj.leftBound && coordinates.X <= loc.celObj.rightBound && coordinates.Y >= loc.celObj.topBound && coordinates.Y <= loc.celObj.bottomBound)
 				{
 					targetObj=loc.celObj;
 					prilip=true;

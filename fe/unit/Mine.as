@@ -55,8 +55,8 @@ package fe.unit
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			nazv=Res.txt('w',id);
-			scX=node.@sX;
-			scY=node.@sY;
+			objectWidth=node.@sX;
+			objectHeight=node.@sY;
 			
 			if (node.snd.@dem.length()) sndDem=node.snd.@dem;
 			if (node.snd.@sens.length()) sndSens=node.snd.@sens;

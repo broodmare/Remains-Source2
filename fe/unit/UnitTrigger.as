@@ -207,17 +207,17 @@ package fe.unit
 				ay1 = coordinates.Y - 30;
 				ay2 = coordinates.Y - 20;
 			} else if (id=='trigplate') {
-				ax1=X1, ax2=X2;
+				ax1=leftBound, ax2=rightBound;
 				ay1 = ay2 = coordinates.Y - 1;
 			} else {
-				ax1=X1, ax2=X2;
-				ay1=Y1, ay2=Y2;
+				ax1=leftBound, ax2=rightBound;
+				ay1=topBound, ay2=bottomBound;
 			}
 		}
 		
 		//проверить активацию
 		public override function areaTest(obj:Obj):Boolean {
-			if (obj==null || obj.X1>=ax2 || obj.X2<=ax1 || obj.Y1>=ay2 || obj.Y2<=ay1) return false;
+			if (obj==null || obj.leftBound>=ax2 || obj.rightBound<=ax1 || obj.topBound>=ay2 || obj.bottomBound<=ay1) return false;
 			else return true;
 		}
 		

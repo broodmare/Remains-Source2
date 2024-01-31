@@ -83,7 +83,7 @@ package fe
 
 					// Perform string replacements
 					s = s.replace(brRegExp, '<br>')
-						.replace(openTagRegExp, "<span class='yel'>")
+						.replace(openTagRegExp, "<span class='yellow'>")
 						.replace(closeTagRegExp, "</span>");
 				}
 
@@ -155,7 +155,7 @@ package fe
 							{
 								for (var i:int = 1; i <= 5; i++)
 								{
-									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yel'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
+									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yellow'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
 								}
 							}
 							s1=s1.replace(/[\b\r\t]/g,'');
@@ -284,7 +284,7 @@ package fe
 		{
 			var n:int = 0;
 			var res:String = '';
-			var rainbowcol:Array = ['red', 'or', 'yel', 'green', 'blu', 'purp'];
+			var rainbowcol:Array = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
 
 			for (var i:int = 0; i < s.length; i++) 
 			{

@@ -16,8 +16,8 @@ package  fe.entities
 		
 		public var prior:Number = 1;
 
-		public var scX:Number = 10;	// Sprite Width
-		public var scY:Number = 10;	// Sprite Height
+		public var objectWidth:Number = 10;	// Sprite Width
+		public var objectHeight:Number = 10;	// Sprite Height
 		public var storona:int = 1;	// Sprite Facing (Left/Right)
 
 		public var rasst2:Number=0;	// Distance to player squared
@@ -34,7 +34,12 @@ package  fe.entities
 		
 		public var inter:Interact;
 		
-		public var X1:Number, X2:Number, Y1:Number, Y2:Number;
+		// Boundaries of an object
+		public var topBound:Number;
+		public var bottomBound:Number;
+		public var leftBound:Number;
+		public var rightBound:Number;
+
 		
 		public var onCursor:Number=0;
 		//цветовой фильтр
@@ -46,6 +51,50 @@ package  fe.entities
 		{
 			
 		}
+
+		public function centerObj():void
+        {
+			topBound	= coordinates.Y - objectHeight;
+            bottomBound	= coordinates.Y;
+            leftBound	= coordinates.X - objectWidth / 2;
+            rightBound	= coordinates.X + objectWidth / 2;
+        }
+
+		public function centerObjHorizontally():void
+		{
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
+		}
+
+		public function flattenObj():void
+		{
+			topBound = coordinates.Y - objectHeight;
+			bottomBound = coordinates.Y;
+		}
+
+		public function get leftBoundToCenter():Number
+		{
+			return coordinates.X + objectWidth / 2;
+		}
+		public function get rightBoundToCenter():Number
+		{
+			return coordinates.X - objectWidth / 2;
+		}
+		public function get topBoundToCenter():Number
+		{
+			return coordinates.Y - this.halfHeight;
+		}
+		public function get bottomBoundToCenter():Number
+		{
+			return coordinates.Y + this.halfHeight;
+		}
+		public function get halfHeight():Number
+		{
+			return objectHeight / 2;
+		}
+
+
+
 
 		public override function remVisual() {
 			super.remVisual(); 
@@ -64,8 +113,8 @@ package  fe.entities
 		public function getRasst2(obj:Obj=null):Number {
 			if (obj == null) obj = World.w.gg;
 			var nx = obj.coordinates.X - coordinates.X;
-			var ny = obj.coordinates.Y - obj.scY / 2 - coordinates.Y + scY / 2;
-			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.scY * 0.75 - coordinates.Y + scY / 2;
+			var ny = obj.coordinates.Y - obj.objectHeight / 2 - coordinates.Y + objectHeight / 2;
+			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.objectHeight * 0.75 - coordinates.Y + objectHeight / 2;
 			rasst2 = nx * nx + ny * ny;
 			if (isNaN(rasst2)) rasst2 = -1;
 			return rasst2;
@@ -110,22 +159,19 @@ package  fe.entities
 		public function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			X1 = coordinates.X - scX / 2;
-			X2 = coordinates.X + scX / 2;
-			Y1 = coordinates.Y - scY;
-			Y2 = coordinates.Y;
+			centerObj();
 		}
 		
 		//копирование состояния в другой объект
 		public function copy(un:Obj)
 		{
 			un.coordinates	= coordinates;
-			un.scX			= scX; 
-			un.scY			= scY;
-			un.Y1			= Y1;
-			un.Y2			= Y2;
-			un.X1			= X1;
-			un.X2			= X2;
+			un.objectWidth			= objectWidth; 
+			un.objectHeight			= objectHeight;
+			un.topBound			= topBound;
+			un.bottomBound			= bottomBound;
+			un.leftBound			= leftBound;
+			un.rightBound			= rightBound;
 			un.storona		= storona;
 		}
 		
@@ -136,7 +182,7 @@ package  fe.entities
 		
 		//проверка пересечения с другим объектом
 		public function areaTest(obj:Obj):Boolean {
-			if (obj == null || obj.X1 >= X2 || obj.X2 <= X1 || obj.Y1 >= Y2 || obj.Y2 <= Y1) return false;
+			if (obj == null || obj.leftBound >= rightBound || obj.rightBound <= leftBound || obj.topBound >= bottomBound || obj.bottomBound <= topBound) return false;
 			else return true;
 		}
 		

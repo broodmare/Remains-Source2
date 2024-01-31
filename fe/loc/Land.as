@@ -756,7 +756,7 @@ package fe.loc
 		//переход между локациями
 		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object
 		{
-			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, scX:Number=gg.scX, scY:Number=gg.scY;
+			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.objectWidth, objectHeight:Number=gg.objectHeight;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
 
 			switch (napr)
@@ -795,16 +795,16 @@ package fe.loc
 			switch (napr)
 			{
 				case 1:
-					outP.x = newLoc.maxX - scX / 2 - 9;
+					outP.x = newLoc.maxX - objectWidth / 2 - 9;
 					outP.y = Y - 1;
 				break;
 				case 2:
-					outP.x = 0 + scX / 2 + 9;
+					outP.x = 0 + objectWidth / 2 + 9;
 					outP.y = Y - 1;
 				break;
 				case 3:
 					outP.x = X;
-					outP.y = 0 + scY + 10;
+					outP.y = 0 + objectHeight + 10;
 				break;
 				case 4:
 					outP.x = X;
@@ -816,7 +816,7 @@ package fe.loc
 				break;
 			}
 
-			if (newLoc.collisionUnit(outP.x, outP.y, scX - 4, scY)) return null;
+			if (newLoc.collisionUnit(outP.x, outP.y, objectWidth - 4, objectHeight)) return null;
 			loc_t = 150;
 			
 			locX = newX;
@@ -927,7 +927,7 @@ package fe.loc
 				}
 			}
 			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.coordinates.X;
-			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.coordinates.Y - gg.scY / 2;
+			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.coordinates.Y - gg.objectHeight / 2;
 			return map;
 		}
 		

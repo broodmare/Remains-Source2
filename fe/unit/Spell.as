@@ -228,7 +228,7 @@ package fe.unit
 		{
 			if (!owner.loc.levitOn) return;
 			var dx:Number=(cx - owner.coordinates.X);
-			var dy:Number=(cy - owner.coordinates.Y + owner.scY);
+			var dy:Number=(cy - owner.coordinates.Y + owner.objectHeight);
 			var rasst:Number = Math.sqrt(dx * dx + dy * dy);
 			var d:Object={x:dx, y:dy};
 			var spd:Number=dam*(1+(power-1)*0.5);
@@ -255,7 +255,7 @@ package fe.unit
 			{
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
 				var dx:Number = un.coordinates.X - X;
-				var dy:Number = un.coordinates.Y - un.scY / 2 - Y;
+				var dy:Number = un.coordinates.Y - un.objectHeight / 2 - Y;
 				var rad2:Number=(dx*dx+dy*dy);
 				if (rad2>rad*rad) continue;
 				rad2=Math.sqrt(rad2);
