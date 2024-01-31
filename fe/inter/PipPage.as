@@ -350,7 +350,7 @@ package fe.inter
 		{
 			for (var i:int = 1; i <= 5; i++)
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yel'>"+xml.attribute('s'+i)+"</span>");
+				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yellow'>"+xml.attribute('s'+i)+"</span>");
 			}
 			return s;
 		}
@@ -513,7 +513,7 @@ package fe.inter
 				if (!w.noSats) {
 					s+='\n'+Res.pipText('ap')+': ';
 					if (razn>0) s+="<span class = 'red'>";
-					else s+="<span class = 'yel'>";
+					else s+="<span class = 'yellow'>";
 					s+=Math.round(w.satsCons*w.consMult/skillConf*gg.pers.satsMult);
 					s+="</span>";
 					if (w.satsQue>1) s+=' (x'+numberAsColor('yellow', w.satsQue)+')';

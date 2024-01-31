@@ -276,14 +276,36 @@ package fe.inter
 				if (l==null) return;
 				vis.nazv.text=Res.txt('m',l.id);
 				var s:String=Res.txt('m',l.id,1);
-				if (!l.visited) s+="\n\n<span class ='blu'>"+Res.pipText('ls1')+"</span>";
-				else if (l.passed) s+="\n\n<span class ='or'>"+Res.pipText('ls2')+"</span>";
-				else if (l.tip=='base') s+="\n\n<span class ='or'>"+Res.pipText('ls4')+"</span>";
-				else if (l.tip=='rnd') s+="\n\n<span class ='yel'>"+Res.pipText('ls3')+": "+(l.landStage+1)+"</span>";
-				if (l.tip=='rnd' && l.kolAllProb>0) {
-					s+="\n<span class ='yel'>"+Res.pipText('kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
+				if (!l.visited) s+="\n\n<span class ='blue'>"+Res.pipText('ls1')+"</span>";								// "Not visited" message
+				else if (l.passed) s+="\n\n<span class ='orange'>"+Res.pipText('ls2')+"</span>";							// "Cleared" message
+				else if (l.tip=='base') s+="\n\n<span class ='orange'>"+Res.pipText('ls4')+"</span>";						// "Base camp" message
+				else if (l.tip=='rnd') s+="\n\n<span class ='yellow'>"+Res.pipText('ls3')+": "+(l.landStage+1)+"</span>";	// "Location level reached" message
+				if (l.tip == 'rnd' && l.kolAllProb > 0)																		// "Trials complete x/x" message
+				{
+					if (l.kolClosedProb >= l.kolAllProb)	// If all trials complete, print in green
+					{
+						s += "\n" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
+					}
+					else									// Otherwise, print in yellow
+					{
+						s += "\n<span class ='yellow'>" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
+					}
 				}
-				if (l.dif>0) s+='\n\n'+Res.pipText('recLevel')+' '+Math.round(l.dif);
+				if (l.dif > 0)																							// "Reccomended level" message
+				{
+					if (World.w.pers.level < l.dif)	// Player below reccomended level, highlight red
+					{
+						trace('Highlighting level requirement. Requirement not met. 	Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
+						s += '\n\n' + "<span class = 'red'>"+ Res.pipText('recLevel') + ' ' + Math.round(l.dif) + "</span>";
+					}
+					else
+					{
+						trace('Highlighting level requirement. Requirement met. Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
+						s += '\n\n' + Res.pipText('recLevel') + ' ' + Math.round(l.dif);
+					}
+
+					
+				}
 				if (l.dif>World.w.pers.level) s+='\n\n'+Res.pipText('wrLevel');
 				if (World.w.pers.speedShtr>=3) {
 					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr3'));
