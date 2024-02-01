@@ -362,12 +362,12 @@ package fe.inter
 			}
 		}
 
-		//добавить в текстовую строку значения
-		public static function addVar(s:String, xml):String
+		// [add values ​​to text string]
+		public static function addVar(s:String, xml:XML):String
 		{
 			for (var i:int = 1; i <= 5; i++)
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yellow'>"+xml.attribute('s'+i)+"</span>");
+				if (xml.attribute('s' + i).length())  s=s.replace('#'+i,"<span class='yellow'>"+xml.attribute('s'+i)+"</span>");
 			}
 			return s;
 		}
@@ -904,7 +904,7 @@ package fe.inter
 		// Initialize filter buttons
 		protected function setCats():void
 		{
-			var arr = tips[page2];
+			var arr:Array = tips[page2];
 			if (arr == null)
 			{
 				vis.cats.visible = false;
@@ -912,7 +912,7 @@ package fe.inter
 			}
 
 			vis.cats.visible = true;
-			var ntip;
+			var ntip:String;
 			for (var i:int = 0; i <= kolCats; i++)
 			{
 				var category:String = 'cat' + i.toString();

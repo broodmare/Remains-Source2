@@ -17,7 +17,7 @@ package fe.inter
 	public class Appear
 	{
 		public var vis:MovieClip;
-		var col:Color=new Color;
+		private var col:Color = new Color;
 		
 		public var funOk:Function;
 		public var funCancel:Function;
@@ -27,7 +27,7 @@ package fe.inter
 		public var cHair1:uint=0xFFFFFF;
 		public var cEye:uint=0x16F343;
 		public var cMagic:uint=0x00FF00;
-		var tFur:uint, tHair:uint, tHair1:uint, tEye:uint, tMagic:uint;
+		private var tFur:uint, tHair:uint, tHair1:uint, tEye:uint, tMagic:uint;
 
 		public static var trFur:ColorTransform = new ColorTransform(0.8,0.8,0.8);
 		public static var trHair:ColorTransform = new ColorTransform(0xA3/0xFF,0x56/0xFF,0x0B/0xFF);
@@ -45,12 +45,11 @@ package fe.inter
 		public static var hideMane:int=0;	//скрыть волосы
 		public static var transp:Boolean=false;
 
-		var clist:Array=['Fur','Hair','Hair1','Eye','Magic'];
+		private var clist:Array = ['Fur', 'Hair', 'Hair1', 'Eye', 'Magic'];
+		private var tek:String = 'Fur';
 		
-		var tek:String='Fur';
-		
-		var temp:Object;
-		var def:Object;
+		private var temp:Object;
+		private var def:Object;
 		public var loadObj:Object;
 		
 		
@@ -66,7 +65,7 @@ package fe.inter
 		}
 		
 		//надписи
-		public function setLang() {
+		public function setLang():void {
 			vis.butOk.text.text='OK';
 			vis.butCancel.text.text=Res.guiText('cancel');
 			vis.butDef.text.text=Res.pipText('default');
@@ -79,7 +78,7 @@ package fe.inter
 		}
 		
 		//присоединить диалоговое окно
-		public function attach(mm:MovieClip, fo:Function, fc:Function) {
+		public function attach(mm:MovieClip, fo:Function, fc:Function):void {
 			mm.addChild(vis);
 			vis.fon.visible=true;
 			temp=save();
@@ -91,7 +90,7 @@ package fe.inter
 			vis.pers.gotoAndStop(1);
 		}
 		//отсоединить диалоговое окно
-		public function detach() {
+		public function detach():void {
 			if (vis.parent) vis.parent.removeChild(vis);
 			funcOff();
 			funOk=null;
@@ -102,7 +101,7 @@ package fe.inter
 			}
 		}
 		
-		public function funcOn() {
+		public function funcOn():void {
 			vis.butOk.addEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.addEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.addEventListener(MouseEvent.CLICK, buttonDef);
@@ -119,7 +118,7 @@ package fe.inter
 			vis.b1Hair.addEventListener(MouseEvent.CLICK, chBut);
 			vis.b2Hair.addEventListener(MouseEvent.CLICK, chBut);
 		}
-		public function funcOff() {
+		public function funcOff():void {
 			if (!vis.butOk.hasEventListener(MouseEvent.CLICK)) return;
 			vis.butOk.removeEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.removeEventListener(MouseEvent.CLICK, buttonCancel);
@@ -139,12 +138,12 @@ package fe.inter
 		}
 		
 		//нажать кнопку ОК
-		public function buttonOk(event:MouseEvent) {
+		public function buttonOk(event:MouseEvent):void {
 			if (funOk) funOk();
 			World.w.saveConfig();
 		}
 		//нажать кнопку отмена
-		public function buttonCancel(event:MouseEvent) {
+		public function buttonCancel(event:MouseEvent):void {
 			load(temp);
 			setTransforms();
 			setColors();
@@ -153,7 +152,7 @@ package fe.inter
 			if (funCancel) funCancel();
 		}
 		//нажать кнопку def
-		public function buttonDef(event:MouseEvent) {
+		public function buttonDef(event:MouseEvent):void {
 			load(def);
 			setTransforms();
 			setColors();
@@ -162,13 +161,21 @@ package fe.inter
 		}
 		
 		//установить все колорпикеры в соответствие с цветами
-		function setColors() {
-			for each(var l in clist) vis['color'+l].selectedColor=this['c'+l];
+		private function setColors():void
+		{
+			for each(var l in clist)
+			{
+				vis['color'+l].selectedColor=this['c'+l];
+			}
 			vis.checkHair1.selected=visHair1;
 		}
 		//преобразовать все цвета в трансформы
-		public function setTransforms() {
-			for each(var l in clist) colorToTransform(this['c'+l],Appear['tr'+l]);
+		public function setTransforms():void
+		{
+			for each(var l in clist)
+			{
+				colorToTransform(this['c'+l],Appear['tr'+l]);
+			}
 		}
 		
 		
@@ -187,17 +194,21 @@ package fe.inter
 		}
 		
 		//сохранить при вызове страницы сохранения или загрузки
-		public function saveOst() {
+		public function saveOst():void {
 			if (saved==null) saved=save();
 		}
 		
-		public function load(obj:Object) {
-			if (obj==null) {
+		public function load(obj:Object):void
+		{
+			if (obj==null)
+			{
 				for each(var l in clist) this['c'+l]=this['t'+l];
 				visHair1=false;
 				fEye=1;
 				fHair=1;
-			} else {
+			}
+			else
+			{
 				for each(var l in clist) this['c'+l]=obj['c'+l];
 				visHair1=obj.visHair1;
 				fEye=obj.fEye;
@@ -207,7 +218,7 @@ package fe.inter
 		}
 		
 		//преобразовать цвет в трансформ
-		function colorToTransform(c:uint, ct:ColorTransform) {
+		private function colorToTransform(c:uint, ct:ColorTransform):void {
 			var colMax:int=290, colSd:Number=(290-255)/255;
 			col.tintMultiplier=1;
 			col.tintColor=c;
@@ -221,14 +232,14 @@ package fe.inter
 		}
 		
 		//надписи
-		function setRGB() {
+		private function setRGB():void {
 			vis.nRed.text='R:'+col.redOffset;
 			vis.nGreen.text='G:'+col.greenOffset;
 			vis.nBlue.text='B:'+col.blueOffset;
 		}
 		
 		//событие ползунков
-		function chColor(event:SliderEvent):void {
+		private function chColor(event:SliderEvent):void {
 			col.redOffset=vis.slRed.value;
 			col.greenOffset=vis.slGreen.value;
 			col.blueOffset=vis.slBlue.value;
@@ -237,14 +248,14 @@ package fe.inter
 		}
 		
 		//события колорпикеров
-		function changeHandler(event:ColorPickerEvent):void {
+		private function changeHandler(event:ColorPickerEvent):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var myCT:ColorTransform;
 			var nam=myCP.name.substr(5);
 			tek=nam;
 			setColor(nam,myCP.selectedColor);
 		}
-		function openHandler(event:Event):void {
+		private function openHandler(event:Event):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var nam=myCP.name.substr(5);
 			tek=nam;
@@ -252,7 +263,7 @@ package fe.inter
 		}
 		
 		//вкл/выкл второй цвет
-		function changeHair1(e:Event):void {
+		private function changeHair1(e:Event):void {
 			visHair1=vis.checkHair1.selected;
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
@@ -282,7 +293,8 @@ package fe.inter
 		}
 		
 		//установить цвет модельки
-		function setColor(nam:String, c:uint) {
+		private function setColor(nam:String, c:uint):void
+		{
 			this['c'+nam]=c;
 			colorToTransform(this['c'+nam],Appear['tr'+nam]);
 			vis['color'+nam].selectedColor=c;

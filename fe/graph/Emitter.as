@@ -34,18 +34,18 @@ package fe.graph
 		}
 		/*
 				Частицы
-				vis - визуальный класс
-				ctrans='1' - применяются цветовые настройки локации
-				move='1' - частица движется
-				alph='1' - частица становится прозрачной под конец жизни
+				vis - Movieclip object
+				ctrans='1' - [location color settings are applied]
+				move='1' - the particle moves
+				alph='1' - the particle becomes transparent at the end of its life
 				
-				minliv, rliv - время жизни
-				minv, rv - начальная скорость в случайном направлении
-				rdx, rdy - случайная скорость по направлению x,y
-				dx, dy - заданная скорость по направлению x,y
-				rr - случайная скорость вращения
-				rot='1' - случайный начальный угол поворота
-				grav - степень подверженности гравитации
+				minliv, rliv - lifetime
+				minv, rv - initial speed in random direction
+				rdx, rdy - random speed in x,y direction
+				dx, dy - specified speed in x,y direction
+				rr - random rotation speed
+				rot='1' - random initial rotation angle
+				grav - degree of gravity
 		*/
 		public var id:String;
 		
@@ -167,7 +167,7 @@ package fe.graph
 				p.ddy=World.ddy*grav;
 				p.brake=brake;
 				if (rgrav) p.ddy+=World.ddy*rgrav*Math.random();
-				p.liv=p.mliv=Math.floor(Math.random()*rliv)+minliv;
+				p.liv=p.mliv=int(Math.random()*rliv)+minliv;
 				p.isAlph=alph;
 				p.isPreAlph=prealph;
 				p.isAnim=anim;
@@ -178,13 +178,13 @@ package fe.graph
 				if (blitd) p.blitDelta=blitd;
 				if (blitf>0) {
 					p.blitMFrame=blitf;
-					p.blitFrame=Math.floor(Math.random()*blitf);
+					p.blitFrame=int(Math.random()*blitf);
 				}
 				
 				if (otklad>0) {
-					p.otklad=Math.floor(Math.random()*otklad+1);
+					p.otklad=int(Math.random()*otklad+1);
 				}
-				if (vis) p.initVis(frame+((dframe==0)?0:Math.floor(Math.random()*dframe+1)));
+				if (vis) p.initVis(frame+((dframe==0)?0:int(Math.random()*dframe+1)));
 				if (blit) p.initBlit(blit)
 				
 				if (p.vis) {

@@ -189,7 +189,7 @@ package fe
 		{
 			var xml:XML = currentLanguageData.advice[0]; // Grab the entire advice node with all its child 'a' nodes.
 			var s:String = xml.a[n];
-			return (s == null)?'':s;
+			return (s == null) ? '':s;
 		}
 
 		public static function repText(id:String, act:String, msex:Boolean=true):String
@@ -221,7 +221,7 @@ package fe
 			xl=xl[0].name.(@id==id);
 			if (xl.length()==0) return null;
 			xl=xl[0].r;
-			var arr:Array=new Array();
+			var arr:Array = [];
 			for each (var n:XML in xl) arr.push(n.toString());
 			return arr;
 		}
