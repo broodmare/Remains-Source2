@@ -827,9 +827,13 @@
 					else dmana-=pers.levitDMana;
 				}
 				dmana*=pers.allDManaMult;
-				if (pers.teleMana>0) {
-					if (levit==1) pers.manaDamage(-dmana*pers.teleMana*pers.teleManaMult);
-					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
+				if (pers.teleMana>0)
+				{
+					if (levit == 1) pers.manaDamage(-dmana * pers.teleMana * pers.teleManaMult);
+
+					//CHANGE BY KOSTR184, "It was to remove free cheaty telekinesis abilites"
+					//else pers.manaDamage(-dmana / 3 * pers.teleMana * pers.teleManaMult); // OLD
+					else pers.manaDamage(-dmana * 10 * pers.teleMana * pers.teleManaMult);
 				}
 			}
 			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp))
