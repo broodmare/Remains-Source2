@@ -24,18 +24,20 @@ package fe.inter
 
 		public function PipPageInv(npip:PipBuck, npp:String)
 		{
-			isLC=isRC=true;
-			itemClass=visPipInvItem;
-			super(npip,npp);
-			vis.butOk.addEventListener(MouseEvent.CLICK,showH);
+			isLC = true;
+			isRC = true;
+			itemClass = visPipInvItem;
+			super(npip, npp);
+			vis.butOk.addEventListener(MouseEvent.CLICK, showH);
+			
 			// FILTERS - each array is a subcategory in the inventory, each index in the array is the filter.
 			tips = [
-				[],									// Empty entry for correct alignment
-				['','w1','w2','w4','w5','w6','w3'],	// Weapon filter buttons
-				['','armor1','armor3'],				// Armor filter buttons
-				['','med',['him','pot'],'food',['equip','spell'],['book','sphera','note'],'paint'],
-				['',['valuables','money'],['spec','key'],['impl','art','instr','equip'],['stuff','compa','compw','compe','compm'],['compp','food'],'scheme'],
-				['','a','e']
+				[ ], // Empty entry for correct alignment
+				[ '' , 'w1', 'w2', 'w4', 'w5', 'w6', 'w3' ],		// Weapon filter buttons
+				[ '' , 'armor1','armor3'],							// Armor filter buttons
+				[ '' , 'med', ['him', 'pot'], 'food', ['equip', 'spell'], ['book','sphera','note'], 'paint'], // Equipment
+				[ '' , ['valuables', 'money'], ['spec', 'key'], ['impl', 'art', 'instr', 'equip'], ['stuff', 'compa', 'compw', 'compe', 'compm'], ['compp', 'food'], 'scheme' ], // Misc
+				[ '' , 'a', 'e' ]									// Ammo and Grenades
 			];
 			initCats();
 		}
@@ -66,8 +68,11 @@ package fe.inter
 				statHead.ammo.text='';
 				statHead.mass.text='';
 				statHead.ammotip.text=Res.pipText('ii4');
-				for each(var obj in inv.weapons) {
-					if (obj is Weapon) {
+				
+				for each(var obj in inv.weapons)
+				{
+					if (obj is Weapon)
+					{
 						var w:Weapon=obj as Weapon;
 						if (w.respect==3) continue;
 						if (w.spell && World.w.alicorn) continue;
@@ -110,84 +115,120 @@ package fe.inter
 				actCurrent='showhidden';
 				if (arr.length) arr.sortOn(['sort1','sort2','sort3','nazv'],[0,0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
-			} else if (page2==2) {	//броня
+			}
+			else if (page2 == 2)	// Armor subcategory
+			{	
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
 				statHead.ammotip.text='';
-				for (var s in inv.armors) {
+				for (var s in inv.armors)
+				{
 					if (s=='') continue;
 					var arm:Armor=inv.armors[s];
 					if (arm.lvl<0) continue;
-					if (curTip!='' && curTip!=null && curTip!='armor'+arm.tip) continue;	//категория
+					if (curTip!='' && curTip!=null && curTip!='armor'+arm.tip) continue;	// [category]
 					n={id:s, nazv:arm.nazv, clo:arm.clo, hp:Math.round(arm.hp/arm.maxhp*100)+'%', sort:arm.sort, trol:'armor'+arm.tip};
 					arr.push(n);
 				}
 				pip.reqKey=true;
 				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv2',0,true);
-			} else if (page2==3 || page2==4 || page2==5) {	//снаряжение
-				assArr=new Array();
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii5');
-				statHead.ammotip.text=Res.pipText('ii6');
-				statHead.ammo.text='';
-				if (World.w.hardInv) statHead.mass.text=Res.pipText('ii8');
-				for (s in inv.items) {
-					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) continue;
-					var node:XML=inv.items[s].xml;
-					if (node==null) continue;
-					
-					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) inv.items[s].nov=0;
-					if (inv.items[s].nov==2 && (dat-inv.items[s].dat)>1000*60*5) inv.items[s].nov=0;
-					if (!checkCat(node.@tip)) continue;
-					var itemTip=0;
-					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
-					else if (node.@us>0) itemTip=1;
-					if ((itemTip==1 && page2==3) || (itemTip==0 && page2==4) || (itemTip==2 && page2==5)) {
-						var tcat:String;
-						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
-						else tcat=Res.pipText('stuff');
-						n={tip:node.@tip, id:s, nazv:((node.@tip=='e')?Res.txt('w',s):inv.items[s].nazv), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
-						if (node.@tip=='valuables') n.price=node.@price;
-						if (node.@tip=='food' && node.@ftip=='1') {
-							n.trol='drink';
-						}
-						if (node.@tip=='spell' && inv.weapons[s] && inv.weapons[s].respect==1) continue;	//скрытое заклинание
-						n.sort=n.cat;
-						n.sort2=node.@sort.length()?node.@sort:0;
-						//патроны к текущему оружию вперёд
-						if (page2==5 && gg.currentWeapon && gg.currentWeapon.tip<4 && (gg.currentWeapon.ammoBase==node.@base || gg.currentWeapon.ammoBase==node.@id)) n.sort='0'+n.sort;
-						arr.push(n);
-						assArr[n.id]=n;
-					}
-				}
-				if (page2==3) pip.reqKey=true;
-				if (arr.length) arr.sortOn(['sort','sort2','nazv'],[0,Array.NUMERIC,0]);
-				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv3',0,true);
 			}
-			pip.helpText=Res.txt('p','helpInv'+page2,0,true);
-			if (arr.length==0) {
-				vis.emptytext.text=Res.pipText('emptyinv');
-				statHead.visible=false;
-			} else {
-				vis.emptytext.text='';
-				statHead.visible=true;
+			else if (page2 == 3 || page2 == 4 || page2 == 5)	// Equipment subcategory
+			{
+				assArr = [ ];
+				statHead.fav.text = Res.pipText('ii1');
+				statHead.nazv.text = Res.pipText('ii2');
+				statHead.hp.text = Res.pipText('ii5');
+				statHead.ammotip.text = Res.pipText('ii6');
+				statHead.ammo.text = '';
+				if (World.w.hardInv) statHead.mass.text = Res.pipText('ii8');
+				
+				for (s in inv.items)
+				{
+					try
+					{
+						if (s == '' || inv.items[s].kol <= 0 || inv.items[s].invis) continue;
+						var node:XML = inv.items[s].xml;
+						if (node == null) 
+						{
+							trace('Item: "' + s.id + '" had no XML data');
+							continue;
+						}
+						
+						if (inv.items[s].nov == 1 && (dat - inv.items[s].dat) > 1000 * 60 * 15) inv.items[s].nov = 0;
+						if (inv.items[s].nov == 2 && (dat - inv.items[s].dat) > 1000 * 60 *  5) inv.items[s].nov = 0;
+
+						if (!checkCat(node.@tip))
+						{
+							trace('Canceling early due to item type');
+							continue;
+						} 
+						
+						var itemTip:int = 0;
+						
+						if (node.@tip == 'a' || node.@tip == 'e') itemTip = 2;
+						else if (node.@us > 0) itemTip = 1;
+						
+						if ((itemTip==1 && page2==3) || (itemTip==0 && page2==4) || (itemTip==2 && page2==5))
+						{
+							var tcat:String;
+							
+							if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
+							else tcat=Res.pipText('stuff');
+							
+							n = {tip:node.@tip, id:s, nazv:((node.@tip=='e')?Res.txt('w',s):inv.items[s].nazv), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
+							if (node.@tip == 'valuables') n.price=node.@price;
+							if (node.@tip == 'food' && node.@ftip == '1')
+							{
+								n.trol = 'drink';
+							}
+							if (node.@tip == 'spell' && inv.weapons[s] && inv.weapons[s].respect == 1) continue;	// [hidden spell]
+							n.sort = n.cat;
+							n.sort2 = node.@sort.length() ? node.@sort : 0;
+							// [cartridges for the current weapon forward]
+							if (page2==5 && gg.currentWeapon && gg.currentWeapon.tip<4 && (gg.currentWeapon.ammoBase==node.@base || gg.currentWeapon.ammoBase==node.@id)) n.sort='0'+n.sort;
+							arr.push(n);
+							assArr[n.id] = n;
+						}
+					}
+					catch (err:Error)
+					{
+						trace('ERROR: (00:56) - item not intialized correctly in inventory equipment list! Error Info: ' + err.message);
+					}
+
+				}
+				if (page2 == 3) pip.reqKey = true;
+				if (arr.length) arr.sortOn(['sort', 'sort2', 'nazv'], [0, Array.NUMERIC, 0]);
+				pip.massText = Res.txt('p', 'massInv0', 0, true) + '<br><br>' + Res.txt('p', 'massInv3', 0, true);
+			}
+			pip.helpText = Res.txt('p', 'helpInv' + page2, 0, true);
+			
+			if (arr.length == 0)
+			{
+				vis.emptytext.text = Res.pipText('emptyinv');
+				statHead.visible = false;
+			}
+			else
+			{
+				vis.emptytext.text = '';
+				statHead.visible = true;
 			}
 			showBottext();
 		}
 		
 		private function showBottext():void
 		{
-			vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money);
-			if (World.w.hardInv) {
-				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
-				else if (page2==3) vis.bottext.htmlText+='    '+inv.retMass(1);
-				else if (page2==4) vis.bottext.htmlText+='    '+inv.retMass(3);
-				else if (page2==5) vis.bottext.htmlText+='    '+inv.retMass(2);
+			vis.bottext.htmlText = Res.pipText('caps') + ': ' + numberAsColor('yellow', pip.money);
+			if (World.w.hardInv)
+			{
+				if (page2 == 1) vis.bottext.htmlText = '    ' + inv.retMass(4) + '    ' + inv.retMass(5);
+				else if (page2 == 3) vis.bottext.htmlText += '    ' + inv.retMass(1);
+				else if (page2 == 4) vis.bottext.htmlText += '    ' + inv.retMass(3);
+				else if (page2 == 5) vis.bottext.htmlText += '    ' + inv.retMass(2);
 			}
 		}
 		
@@ -200,7 +241,8 @@ package fe.inter
 			item.alpha=1;
 			item.nazv.alpha=1;
 			item.mass.text='';
-			if (inv.favIds[obj.id]) {
+			if (inv.favIds[obj.id])
+			{
 				if (inv.favIds[obj.id]==29) item.fav.text=World.w.ctr.retKey('keyGrenad');
 				else if (inv.favIds[obj.id]==30) item.fav.text=World.w.ctr.retKey('keyMagic');
 				else if (inv.favIds[obj.id]>World.kolHK*2) item.fav.text=World.w.ctr.retKey('keySpell'+(inv.favIds[obj.id]-World.kolHK*2));

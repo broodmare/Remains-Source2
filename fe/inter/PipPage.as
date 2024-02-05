@@ -924,8 +924,16 @@ package fe.inter
 					if (ntip is Array) ntip = ntip[0];
 					vis.cats[category].visible = true;
 
-					if (ntip != "")vis.cats[category].ico.gotoAndStop(ntip);
-					else vis.cats[category].ico.gotoAndStop(1);	// Blank box
+					try
+					{
+						if (ntip != "")vis.cats[category].ico.gotoAndStop(ntip);
+						else vis.cats[category].ico.gotoAndStop(1);	// Blank box
+					}
+					catch (err)
+					{
+						trace('ERROR: (00:53) - Error while setting filter button icons!');
+					}
+					
 				}
 			}
 			selCat(cat[page2]);
@@ -967,9 +975,10 @@ package fe.inter
 		//проверить соответствии категории
 		protected function checkCat(tip:String):Boolean 
 		{
-			if (curTip=='' || curTip==null || curTip==tip) return true;
-			if (curTip is Array) {
-				for each (var t in curTip) if (t==tip) return true;
+			if (curTip == '' || curTip == null || curTip == tip) return true;
+			if (curTip is Array)
+			{
+				for each (var t in curTip) if (t == tip) return true;
 			}
 			return false;
 		}

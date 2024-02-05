@@ -1779,7 +1779,8 @@ package fe.unit
 			}
 		}
 		
-		public override function remVisual() {
+		public override function remVisual()
+		{
 			super.remVisual();
 			if (hpbar && hpbar.parent) hpbar.parent.removeChild(hpbar);
 			if (childObjs) {
@@ -1799,7 +1800,7 @@ package fe.unit
 
 		}
 		
-		function sndRunPlay()
+		private function sndRunPlay()
 		{
 				if (rasst2<sndRunDist*sndRunDist)
 				{
@@ -1812,7 +1813,8 @@ package fe.unit
 				}
 		}
 		
-		function newPart(nid:String,kol:int=1,frame:int=0) {
+		public function newPart(nid:String,kol:int=1,frame:int=0)
+		{
 			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:kol, frame:frame});
 		}
 
@@ -1878,10 +1880,14 @@ package fe.unit
 			{
 				dy = 0;
 			}
-			if (neujaz>0) neujaz--;
-			if (shok>0) shok--;
-			if (oduplenie>0) {
-				if (opt && opt.izvrat && World.w.pers.socks || noAgro) {}
+			if (neujaz > 0) neujaz--;
+			if (shok > 0) shok--;
+			if (oduplenie > 0)
+			{
+				if (opt && opt.izvrat && World.w.pers.socks || noAgro)
+				{
+
+				}
 				else oduplenie--;
 			}
 			if (noise>0) noise-=20;
