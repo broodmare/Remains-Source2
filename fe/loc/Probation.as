@@ -1,5 +1,5 @@
-package fe.loc {
-	
+package fe.loc
+{
 	import fe.*;
 	import fe.loc.Box;
 	import fe.unit.Unit;
@@ -7,8 +7,8 @@ package fe.loc {
 	
 	//Класс представляет собой набор условий для испытания
 	
-	public class Probation {
-		
+	public class Probation
+	{
 		public var xml:XML;
 		public var loc:Location;
 		public var id:String;

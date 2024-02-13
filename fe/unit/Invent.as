@@ -1,12 +1,14 @@
 package fe.unit
 {
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.serv.Item;
 	import fe.serv.LootGen;
 	import fe.serv.Script;
 	import fe.loc.Loot;
+
+	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.unitTypes.UnitPet;
 	
 	public class Invent
 	{

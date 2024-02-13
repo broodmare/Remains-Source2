@@ -3,8 +3,9 @@ package fe.unit
 	import flash.geom.ColorTransform;
 	
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.graph.Emitter;
+
+	import fe.unit.unitTypes.UnitPlayer;
 
 	public class Effect
 	{

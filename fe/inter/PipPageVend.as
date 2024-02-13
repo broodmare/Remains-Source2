@@ -9,7 +9,7 @@ package fe.inter
 
 	import fe.*;
 	import fe.unit.Armor;
-	import fe.unit.UnitPet;
+	import fe.unit.unitTypes.UnitPet;
 	import fe.serv.Item;
 	import fe.serv.Vendor;
 	import fe.weapon.Weapon;

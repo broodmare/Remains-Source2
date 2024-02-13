@@ -8,7 +8,7 @@ package fe.serv
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.projectile.Bullet;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	import fe.graph.Emitter;
 
 	public class Interact

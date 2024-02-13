@@ -2,11 +2,10 @@ package fe.projectile
 {
 	import fe.*;
 	import fe.unit.Unit;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	import fe.loc.Box;
-	import fe.entities.Obj;
 	
 	public class PhisBullet extends Bullet
 	{

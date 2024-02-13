@@ -7,7 +7,7 @@ package fe.inter
 	import fe.unit.Invent;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	import fe.weapon.Weapon;
 	import fe.serv.Vendor;
 	import fe.unit.Pers;

@@ -4,7 +4,7 @@ package fe.weapon
 	
 	import fe.*;
 	import fe.unit.Unit;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	import fe.unit.Mine;
 	import fe.projectile.Bullet;
 	import fe.projectile.PhisBullet;

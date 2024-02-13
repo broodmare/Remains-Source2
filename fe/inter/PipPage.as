@@ -15,13 +15,14 @@ package fe.inter
 	import fe.unit.Pers;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
-	import fe.unit.UnitPlayer;
 	import fe.loc.Quest;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import fe.loc.LandAct;
-	import fe.unit.UnitPet;
+	
 	import fe.unit.Effect;
+	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.unitTypes.UnitPet;
 
 	import fe.stubs.visPipInv;
 	
@@ -49,7 +50,7 @@ package fe.inter
 		var kolCats:int=6;
 		var cat:Array=[0,0,0,0,0,0,0];
 		var curTip='';
-		var tips:Array=[[]];
+		var tips:Array = [[]];
 
 		private static var damageTypes:Array = [
 			{type: Unit.D_BUL,		label: 'bullet'},
@@ -912,10 +913,13 @@ package fe.inter
 			}
 
 			vis.cats.visible = true;
+			trace('setCats() - ntip: "' + ntip + '"');
 			var ntip:String;
 			for (var i:int = 0; i <= kolCats; i++)
 			{
+				
 				var category:String = 'cat' + i.toString();
+				trace('Setting up category: "' + category + '"');
 
 				ntip = arr[i];
 				if (ntip == null) vis.cats[category].visible = false;

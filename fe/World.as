@@ -21,10 +21,9 @@ package  fe
 	import fe.inter.*;
 	import fe.serv.LootGen;
 	import fe.unit.Unit;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	import fe.unit.Invent;
 	import fe.unit.Pers;
-	import fe.weapon.Weapon;
 	
 	public class World
 	{

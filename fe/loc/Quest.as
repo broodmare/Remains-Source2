@@ -1,10 +1,11 @@
-package fe.loc {
-	
+package fe.loc
+{
 	import fe.*;
 	import fe.serv.Item;
 	import fe.serv.Script;
-
-	public class Quest {
+	
+	public class Quest
+	{
 		
 		public var id:String;
 		public var xml:XML;

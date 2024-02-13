@@ -4,16 +4,17 @@ package fe.loc
 	import flash.display.MovieClip;
 
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
-	import fe.unit.Unit;
-	import fe.unit.VirtualUnit;
 	import fe.graph.Emitter;
 	import fe.graph.Grafon;
 	import fe.serv.Script;
 	import fe.projectile.Bullet;
+
+	import fe.unit.Unit;
+	import fe.unit.VirtualUnit;
 	import fe.unit.Mine;
+	import fe.unit.unitTypes.UnitMWall;
 
 	public class Box extends Obj
 	{
@@ -408,12 +409,12 @@ package fe.loc
 			for each (var cel in loc.units)
 			{
 				if (cel == null || (cel as Unit).sost == 4) continue;
-				if (cel is fe.unit.UnitMWall) continue;
-				if (cel is fe.unit.Mine && !(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
+				if (cel is UnitMWall) continue;
+				if (cel is Mine && !(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
 				{
 					cel.fixed = true;
 					trace('Mine activated by door!');
-					(cel as fe.unit.Mine).activate();
+					(cel as Mine).activate();
 					continue;
 				}
 				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
@@ -795,8 +796,8 @@ package fe.loc
 		}
 		
 		//особые функции
-		
-		function initFun(fun:String) {
+		private function initFun(fun:String):void
+		{
 			if (fun=='generator') {
 				if (inter==null) inter=new Interact(this);
 				inter.action=100;
@@ -812,7 +813,7 @@ package fe.loc
 			}
 		}
 		
-		public function funGenerator()
+		private function funGenerator():void
 		{
 			inter.active=false;
 			World.w.gui.infoText('unFixLock');

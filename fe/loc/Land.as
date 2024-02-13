@@ -1,8 +1,7 @@
 package fe.loc
 {
 	import fe.*;
-	import fe.util.Vector2;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	import flash.display.BitmapData;
 	import fe.serv.Script;
 

@@ -6,16 +6,20 @@ package fe.loc
 	import fe.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
-	import fe.unit.Unit;
-	import fe.unit.UnitPlayer;
-	import fe.unit.UnitPhoenix;
-	import fe.unit.UnitTransmitter;
+	
 	import fe.graph.*;
 	import flash.display.BitmapData;
 	import fe.projectile.Bullet;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
-	import fe.unit.UnitTurret;
+
+	// TODO: Stop using these like this!
+	import fe.unit.Unit;
+	import fe.unit.unitTypes.UnitTurret;
+	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.unitTypes.UnitPet;
+	import fe.unit.unitTypes.UnitPhoenix;
+	import fe.unit.unitTypes.UnitTransmitter;
 	
 	public class Location
 	{
@@ -1292,7 +1296,7 @@ package fe.loc
 		private function isAct(element:*, index:int, arr:Array):Boolean
 		{
 			if (element == null) return false;
-			if (element is fe.unit.UnitPet) return true;
+			if (element is UnitPet) return true;
             return (element.sost < 4);
         }
 		

@@ -1,10 +1,11 @@
 package fe.unit
 {
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
+
+	import fe.unit.unitTypes.UnitPlayer;
 
 	public class Spell
 	{	

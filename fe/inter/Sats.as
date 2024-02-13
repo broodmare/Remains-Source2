@@ -14,7 +14,7 @@ package fe.inter
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.weapon.Weapon;
-	import fe.unit.UnitPlayer;
+	import fe.unit.unitTypes.UnitPlayer;
 	
 	public class Sats
 	{
