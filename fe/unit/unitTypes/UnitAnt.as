@@ -51,7 +51,8 @@ package fe.unit.unitTypes
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				skin+=4;
@@ -71,10 +72,6 @@ package fe.unit.unitTypes
 				shok = int(Math.random()*5+3);
 				budilo(250);
 			}
-		}
-		
-		public override function expl()	{
-			super.expl();
 		}
 		
 		public override function setVisPos() {
@@ -132,7 +129,8 @@ package fe.unit.unitTypes
 			anims[animState].step();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 				dx+=storona*accel*5;

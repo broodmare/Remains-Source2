@@ -296,7 +296,8 @@ package fe.loc
 			}
 		}
 		
-		public override function step() {
+		public override function step():void
+		{
 			if (dead && invis) {
 				onCursor=0;
 				return;

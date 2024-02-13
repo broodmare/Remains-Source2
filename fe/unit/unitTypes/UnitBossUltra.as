@@ -101,7 +101,8 @@ package fe.unit.unitTypes
 			} 
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',22);
 		}
 		

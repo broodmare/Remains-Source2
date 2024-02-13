@@ -235,7 +235,8 @@ package fe.loc
 			
 		}
 		
-		public function step() {
+		public function step():void
+		{
 			if (onWave) {
 				if (t_wave>0) t_wave--;
 				if (t_wave==1 && nwave<maxwave) createWave();

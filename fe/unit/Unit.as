@@ -806,7 +806,8 @@ package fe.unit
 		}
 		
 		//сделать героем
-		public function setHero(nhero:int=1) {
+		public function setHero(nhero:int=1):void
+		{
 			if (!mHero) return;
 			if (hero==0) hero=nhero;
 			if (hero>0) {
@@ -897,7 +898,7 @@ package fe.unit
 
 		}
 
-		public override function step()
+		public override function step():void
 		{
 			if (disabled || trigDis) return;
 			if (t_emerg>0) {
@@ -2623,7 +2624,7 @@ package fe.unit
 			}
 		}
 		//пробуждение всех вокруг
-		public function budilo(rad:Number=500)
+		public function budilo(rad:Number=500):void
 		{
 			makeNoise(noiseRun*1.2);
 			for each(var un:Unit in loc.units) {
@@ -2734,7 +2735,7 @@ package fe.unit
 		}
 		
 		//взрыв, кишки или другой эффект после смерти
-		public function expl()
+		public function expl():void
 		{
 			if (blood)
 			{

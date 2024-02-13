@@ -52,9 +52,11 @@ package fe.unit.unitTypes
 			super.putLoc(nloc, nx, ny);
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',4);
 		}
+		
 		public override function setVisPos() {
 			if (vis) {
 				vis.x = coordinates.X;

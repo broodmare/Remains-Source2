@@ -35,7 +35,7 @@ package fe.projectile
 			if (vis) vis.visible = true;
 		}
 
-		public override function step()
+		public override function step():void
 		{
 			if (levit) {
 				dy*=0.8; dx*=0.8;

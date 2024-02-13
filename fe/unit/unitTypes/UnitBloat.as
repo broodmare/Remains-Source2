@@ -64,7 +64,8 @@ package fe.unit.unitTypes
 			}
 		}
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero == 1) shootCh = 0.3;
 		}
@@ -91,7 +92,8 @@ package fe.unit.unitTypes
 			var un:Unit=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, '0');
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('shmatok',4,2);
 			newPart('bloat_kap',int(Math.random()*3+4));
 		}

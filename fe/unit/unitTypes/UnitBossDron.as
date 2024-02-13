@@ -83,7 +83,8 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',22);
 		}
 		
@@ -121,7 +122,7 @@ package fe.unit.unitTypes
 				if (sost==2)
 				{
 					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
-					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;;
+					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
 				}
 				else
 				{

@@ -317,7 +317,8 @@ package fe.serv
 			obj.sign=sign;
 		}
 		
-		public function step() {
+		public function step():void
+		{
 			if (is_act) act();
 			else is_ready=true;
 			is_act=false;

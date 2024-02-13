@@ -200,7 +200,8 @@ package fe.loc
 			inter.update();
 		}
 		
-		public override function step() {
+		public override function step():void
+		{
 			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) {

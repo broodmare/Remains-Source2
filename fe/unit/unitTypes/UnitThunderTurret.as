@@ -80,7 +80,7 @@ package  fe.unit.unitTypes
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			head.dieTurret();
 			newPart('metal',4);

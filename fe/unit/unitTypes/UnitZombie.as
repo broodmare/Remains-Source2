@@ -89,7 +89,8 @@ package fe.unit.unitTypes
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				tZlo=Math.round(tZlo*0.6);
@@ -250,7 +251,8 @@ package fe.unit.unitTypes
 			visDetails();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 				aiJump=int(30+Math.random()*50);

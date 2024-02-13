@@ -26,7 +26,8 @@ package fe.unit.unitTypes
 			childObjs=new Array(currentWeapon);
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}

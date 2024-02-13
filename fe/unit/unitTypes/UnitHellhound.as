@@ -51,7 +51,8 @@ package fe.unit.unitTypes
 			return true;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay || isLaz) {		//прыжок
 				dy=-jumpdy*v;
 				isLaz=0;

@@ -144,7 +144,7 @@ package fe.inter
 		}
 		
 		// [when on pause]
-		public function step()
+		public function step():void
 		{
 			if (active)
 			{

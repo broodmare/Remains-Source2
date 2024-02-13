@@ -168,7 +168,8 @@ package fe.unit.unitTypes
 			aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			aiJump=Math.floor(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
 				dy=-jumpdy*v;

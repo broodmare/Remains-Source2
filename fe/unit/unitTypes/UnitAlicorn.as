@@ -242,7 +242,8 @@ package fe.unit.unitTypes
 			if (mater && visBmp.filters.length>0) visBmp.filters=[];
 		}
 		
-		public override function budilo(rad:Number=500) {
+		public override function budilo(rad:Number=500):void
+		{
 			if (celUnit==null) {
 				celX = coordinates.X;
 				celY = coordinates.Y;
@@ -311,7 +312,8 @@ package fe.unit.unitTypes
 			blasted=false;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (!isFly) dy=-jumpdy*v;
 			isFly=true;
 		}
@@ -506,7 +508,7 @@ package fe.unit.unitTypes
 				} else {
 					spd.x = celX - coordinates.X;
 					if (aiState==4) spd.y=200;
-					else spd.y = celY - this.topBoundToCenter;;
+					else spd.y = celY - this.topBoundToCenter;
 					//дематериализоваться
 					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
 						t_nomater++;
@@ -690,7 +692,7 @@ package fe.unit.unitTypes
 		}
 		
 		//найти подходящий для телекинеза ящик и поднять его
-		function findBox():Obj {
+		private function findBox():Obj {
 			if (celUnit && isrnd(0.25)) {
 				upTeleObj(celUnit);
 				if (teleObj is UnitPlayer) {
@@ -713,7 +715,7 @@ package fe.unit.unitTypes
 		}
 		
 		//подянть объект телекинезом
-		function upTeleObj(obj:Obj) {
+		private function upTeleObj(obj:Obj):void {
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -725,7 +727,7 @@ package fe.unit.unitTypes
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void {
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -736,7 +738,7 @@ package fe.unit.unitTypes
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		private function throwTele():void {
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number=throwForce;

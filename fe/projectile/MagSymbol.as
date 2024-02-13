@@ -31,7 +31,7 @@ package fe.projectile
 			loc.addObj(this);
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (liv==20) Emitter.emit('magsymbol', loc, coordinates.X, coordinates.Y);
 			liv--;

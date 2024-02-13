@@ -32,7 +32,8 @@ package fe.unit.unitTypes
 			sndVolkoef=0;
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}

@@ -59,7 +59,8 @@ package fe.unit.unitTypes
 		
 		var emit_t:int=0;
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			super.expl();
 			if (emitId=='ant') newPart('schep',16,2);
 			else newPart('shmatok',16,2);

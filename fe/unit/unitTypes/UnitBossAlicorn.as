@@ -121,7 +121,8 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('blood',100);
 		}
 		
@@ -178,7 +179,7 @@ package fe.unit.unitTypes
 			if (vis) {
 				if (sost==2) {
 					vis.x = coordinates.X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;;
+					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;
 				} else {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
@@ -231,13 +232,15 @@ package fe.unit.unitTypes
 		var t_turn:int=15;
 		var t_shit:int=300;
 		var t_fly:int=3;
+
 		//aiState
 		//0 - стоит на месте
 		//1 - движется
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		override protected function control():void {
+		override protected function control():void
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
@@ -365,7 +368,8 @@ package fe.unit.unitTypes
 		}
 		
 		//найти подходящий для телекинеза ящик и поднять его
-		function findBox():Obj {
+		private function findBox():Obj
+		{
 			if (celUnit && isrnd(0.5)) {
 				upTeleObj(celUnit);
 				if (teleObj is UnitPlayer) {
@@ -385,8 +389,9 @@ package fe.unit.unitTypes
 			}
 			return null;
 		}
+
 		//подянть объект телекинезом
-		function upTeleObj(obj:Obj) {
+		private function upTeleObj(obj:Obj):void {
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -398,7 +403,7 @@ package fe.unit.unitTypes
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void {
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -409,7 +414,7 @@ package fe.unit.unitTypes
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		private function throwTele():void {
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number=throwForce;

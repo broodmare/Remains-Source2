@@ -76,7 +76,8 @@ package fe.unit.unitTypes
 			weaponR=obj.r;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1):void
+		{
 			if (dy>-jumpdy) {
 				dy-=jumpdy*v/4;
 			}

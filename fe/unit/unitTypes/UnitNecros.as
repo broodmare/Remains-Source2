@@ -49,7 +49,8 @@ package fe.unit.unitTypes
 			} else super.forces();
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('black',24);
 			isFly=true;
 		}

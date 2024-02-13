@@ -21,7 +21,7 @@ package fe.projectile
 			manevr=man;
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (!babah && cel && manevr>0)
 			{

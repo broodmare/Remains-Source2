@@ -27,7 +27,7 @@ package fe.unit.unitTypes
 			transT=true;
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:12,rx:objectWidth, ry:objectHeight});
 		}

@@ -944,7 +944,8 @@ package fe.loc
 			return summ;
 		}
 		
-		public function step() {
+		public function step():void
+		{
 			if (!World.w.catPause) {
 				loc.step();
 				if (loc_t>0) {

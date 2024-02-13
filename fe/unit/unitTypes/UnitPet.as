@@ -79,13 +79,15 @@ package fe.unit.unitTypes
 			sost=4;
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			if (id=='phoenix')	newPart('green_spark',25);
 			if (id=='owl')	newPart('orange_spark',25);
 			if (id=='moon')	newPart('blue_spark',25);
 		}
 		
-		public override function step() {
+		public override function step():void
+		{
 			if (World.w.loc.petOn) super.step();
 		}
 		

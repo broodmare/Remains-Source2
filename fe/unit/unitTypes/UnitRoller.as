@@ -37,7 +37,8 @@ package fe.unit.unitTypes
 			storona=1;
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
@@ -75,7 +76,8 @@ package fe.unit.unitTypes
 			if (f) aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 			}

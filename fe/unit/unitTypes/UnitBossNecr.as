@@ -177,7 +177,8 @@ package fe.unit.unitTypes
 			aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 			}

@@ -79,7 +79,8 @@ package fe.entities
 			vis.rotation=r;
 		}
 		
-		public override function step() {
+		public override function step():void
+		{
 			if (otklad>0) {
 				vis.visible=false;
 				vis.stop();

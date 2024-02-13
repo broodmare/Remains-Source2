@@ -51,7 +51,8 @@ package fe.loc
 			return obj;
 		}
 		
-		public override function step() {
+		public override function step():void
+		{
 			if (liv < 1000000)
 			{
 				liv--;

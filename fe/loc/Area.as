@@ -155,7 +155,7 @@ package fe.loc
 			if (com=='dam') damTiles(int(val));
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (!enabled || !loc.active || tip=='') return;
 			if (emit) {

@@ -9,12 +9,12 @@ package fe.unit.unitTypes
 	public class UnitAIRobot extends UnitPon
 	{
 		public var tr:int=0;
-		var weap:String;
-		var isPort:Boolean=false;
-		public var stroll:Boolean=true;		//патрулирует в спокойном состоянии
-		public var quiet:Boolean=false;		//молчит
-		var t_port:int=0;
-		var kol_port:int=5;
+		public var weap:String;
+		public var isPort:Boolean = false;
+		public var stroll:Boolean = true;		//патрулирует в спокойном состоянии
+		public var quiet:Boolean = false;		//молчит
+		public var t_port:int = 0;
+		public var kol_port:int = 5;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -44,7 +44,8 @@ package fe.unit.unitTypes
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				kol_port=20;
@@ -52,7 +53,8 @@ package fe.unit.unitTypes
 		}
 		
 		//дать оружие
-		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null) {
+		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null)
+		{
 			if (loadObj && loadObj.weap) {
 				if (loadObj.weap!='') currentWeapon=Weapon.create(this,loadObj.weap);
 			} else currentWeapon=getXmlWeapon(ndif);
@@ -64,7 +66,8 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -72,24 +75,28 @@ package fe.unit.unitTypes
 			return obj;
 		}	
 
-		public override function expl()	{
-			newPart('metal',4);
+		public override function expl():void
+		{
+			newPart('metal', 4);
 			newPart('miniexpl');
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
+		{
 			if (sost==1) {
 				if (aiState<=1) budilo();
 			}
 			return super.damage(dam, tip, bul,tt);
 		}
 				
-		public override function budilo(rad:Number=500) {
+		public override function budilo(rad:Number=500):void
+		{
 			super.budilo(rad);
 			loc.robocellActivate();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx, ny);
 				aiSpok=maxSpok+10;
@@ -98,9 +105,11 @@ package fe.unit.unitTypes
 			}
 		}
 		
+		//стрельба очередью
+		public var aiAttackT:int=80;
+		public var aiAttackOch:int=100;	
 
-		var aiAttackT:int=80, aiAttackOch:int=100;	//стрельба очередью
-		var aiDist:int=1000; //минимальная дистанция
+		public var aiDist:int=1000; //минимальная дистанция
 		
 		//aiState
 		//0 - стоит на месте
@@ -306,11 +315,13 @@ package fe.unit.unitTypes
 
 		}
 		
-		public function actPort(rnd:Boolean=false) {
+		public function actPort(rnd:Boolean=false)
+		{
 			var cel:Unit=World.w.gg;
 			var nx:Number=0;
 			var ny:Number=0;
-			for (var i=1; i<=20; i++) {
+			for (var i:int = 1; i<=20; i++)
+			{
 				if (i<5 && !rnd) {
 					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
 					else nx=cel.coordinates.X+cel.storona*(Math.random()*300+200);
@@ -349,7 +360,8 @@ package fe.unit.unitTypes
 		}
 		
 		//прыжок
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		
 				dy=-jumpdy*v;
 			}

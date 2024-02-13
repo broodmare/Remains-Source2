@@ -497,7 +497,7 @@ package fe.weapon
 			}
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			actions();		//различные действия
 			if (owner) owner.setWeaponPos(tip);

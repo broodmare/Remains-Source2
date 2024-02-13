@@ -58,7 +58,8 @@ package fe.unit.unitTypes
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				hp=maxhp=maxhp*2;
@@ -75,7 +76,8 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			super.expl();
 			if (id=='tarakan') {
 				newPart('shmatok',2,1);
@@ -113,7 +115,8 @@ package fe.unit.unitTypes
 			anims[animState].step();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 				dx+=storona*accel*5;

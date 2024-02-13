@@ -109,7 +109,7 @@ package fe.projectile
 			if (addobj) loc.addObj(this);
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (!babah)
 			{

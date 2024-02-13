@@ -30,7 +30,8 @@ package fe.unit.unitTypes
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;

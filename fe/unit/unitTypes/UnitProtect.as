@@ -31,7 +31,8 @@ package fe.unit.unitTypes
 			super.dropLoot();
 		}
 		
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				jump_m=500;
@@ -80,7 +81,8 @@ package fe.unit.unitTypes
 			weaponY = coordinates.Y-40;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1):void
+		{
 			if (stay) jump_n=jump_m;
 			else jump_n--;
 			if (dy>-jumpdy && jump_n>0) {

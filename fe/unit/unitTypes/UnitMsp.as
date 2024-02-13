@@ -76,7 +76,7 @@ package fe.unit.unitTypes
 			super.putLoc(nloc, nx, ny);
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			newPart('miniexpl');
@@ -139,7 +139,7 @@ package fe.unit.unitTypes
 			} 
 		}
 		
-		public function jump(v:Number=1)
+		public function jump(v:Number=1):void
 		{
 			if (stay) // [bounce]
 			{		

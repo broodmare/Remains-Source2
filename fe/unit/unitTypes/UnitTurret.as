@@ -282,7 +282,8 @@ package fe.unit.unitTypes
 			warn=0;
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}

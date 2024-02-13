@@ -39,7 +39,8 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',12);
 		}
 		
@@ -76,7 +77,8 @@ package fe.unit.unitTypes
 			weaponY = coordinates.Y-90;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1):void
+		{
 			if (stay) jump_n=90;
 			else jump_n--;
 			if (dy>-jumpdy && jump_n>0) {

@@ -40,9 +40,11 @@ package fe.unit.unitTypes
 			inter.update();
 		}
 
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',3);
 		}
+		
 		public function setVis(v:Boolean) {
 			isVis=v;
 			levitPoss=v;

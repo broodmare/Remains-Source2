@@ -178,7 +178,8 @@ package fe.unit.unitTypes
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				if (currentWeapon && currentWeapon.uniq>0 && isrnd(currentWeapon.uniq/2)) {
@@ -311,7 +312,8 @@ package fe.unit.unitTypes
 			if (f) aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			aiJump = int(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
 				dy=-jumpdy*v;

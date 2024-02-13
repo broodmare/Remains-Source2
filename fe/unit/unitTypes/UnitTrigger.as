@@ -196,7 +196,8 @@ package fe.unit.unitTypes
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function expl()	{
+		public override function expl():void
+		{
 			newPart('metal',3);
 		}
 		

@@ -53,7 +53,7 @@ package fe.entities
 			return null;
 		}
 		
-		public function step()
+		public function step():void
 		{
 
 		}
