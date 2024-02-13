@@ -12,7 +12,7 @@ package fe.unit.unitTypes
 		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
 			id='phoenix';
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			initBlit();
 			animState='stay';
 			activateTrap=0;

@@ -67,7 +67,8 @@ package fe.unit.unitTypes
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function UnitAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -81,7 +82,7 @@ package fe.unit.unitTypes
 			}
 			if (!(tr>=0)) tr=Math.floor(Math.random()*3+1);
 			id='alicorn'+tr;
-			getXmlParam();
+			getXmlParamReworked();
 			
 			currentWeapon=Weapon.create(this,'alilight');
 			if (currentWeapon) {
@@ -151,9 +152,10 @@ package fe.unit.unitTypes
 			mblast=new Spell(this,'sp_blast');
 		}
 		
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam('alicorn');
-			super.getXmlParam();
+		private function getXmlParamReworked():void
+		{
+			UnitTypeDataLoader.getXmlParam(this, 'alicorn');
+			UnitTypeDataLoader.getXmlParam(this);
 		}
 		
 		public override function setWeaponPos(tip:int=0) {

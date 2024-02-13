@@ -5,8 +5,7 @@ package fe.unit.unitTypes
 	
 	public class UnitBloatEmitter  extends Unit
 	{
-		
-		var emitId:String='bloat';
+		var emitId:String = 'bloat';
 
 		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
@@ -18,7 +17,7 @@ package fe.unit.unitTypes
 				emitId='ant';
 			} else vis=new visualBloatEmitter();
 			vis.stop();
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 		}
 		
 		public override function setVisPos() {

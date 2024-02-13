@@ -46,7 +46,7 @@ package fe.unit.unitTypes
 			id='bossnecr';
 			vis=new visualNecrBoss();
 			vis.osn.gotoAndStop(1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			plavSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;

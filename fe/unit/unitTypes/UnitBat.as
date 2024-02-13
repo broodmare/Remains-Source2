@@ -20,7 +20,7 @@ package fe.unit.unitTypes
 			if (tr==2) vis=new visualBloodwing2();
 			else vis=new visualBloodwing();
 			vis.osn.gotoAndStop('stay');
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			maxSpeed+=Math.random()*2-1;
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;

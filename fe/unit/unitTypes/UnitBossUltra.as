@@ -41,7 +41,7 @@ package fe.unit.unitTypes
 			visshit.y=-70;
 			visshit.scaleX=visshit.scaleY=1.7;
 			
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			plavSpeed=maxSpeed;
 			boss=true;

@@ -1,0 +1,7603 @@
+[
+    {
+        "id": "training",
+        "fraction": "1",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "120"
+        },
+        "move": {
+            "knocked": "1",
+            "damwall": "100"
+        },
+        "comb": {
+            "hp": "500",
+            "armor": "0",
+            "marmor": "0"
+        },
+        "param": {
+            "blood": "0"
+        },
+        "vulner": {
+            "emp": "1"
+        }
+    },
+    {
+        "id": "littlepip",
+        "phis": {
+            "sX": "50",
+            "sY": "70",
+            "massa": "50"
+        },
+        "move": {
+            "speed": "7",
+            "accel": "3.5"
+        },
+        "comb": {
+            "hp": "40"
+        }
+    },
+    {
+        "id": "npc",
+        "fraction": "100",
+        "phis": {
+            "sX": "60",
+            "sY": "79",
+            "massa": "120"
+        },
+        "move": {
+            "knocked": "0",
+            "plav": "0",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "10000",
+            "dexter": "100"
+        },
+        "param": {
+            "invulner": "1",
+            "acttrap": "0",
+            "sats": "0",
+            "npc": "1"
+        }
+    },
+    {
+        "id": "vendor",
+        "fraction": "100",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "120"
+        },
+        "move": {
+            "knocked": "0",
+            "plav": "0",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "10000",
+            "dexter": "100"
+        },
+        "vis": {
+            "replic": "vendor"
+        },
+        "param": {
+            "invulner": "1",
+            "acttrap": "0",
+            "sats": "0",
+            "npc": "1"
+        }
+    },
+    {
+        "id": "doctor",
+        "fraction": "100",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "120"
+        },
+        "move": {
+            "knocked": "0",
+            "plav": "0",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "10000",
+            "dexter": "100"
+        },
+        "vis": {
+            "replic": "doctor"
+        },
+        "param": {
+            "invulner": "1",
+            "acttrap": "0",
+            "sats": "0",
+            "npc": "1"
+        }
+    },
+    {
+        "id": "captive",
+        "fraction": "100",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "250"
+        },
+        "move": {
+            "knocked": "0",
+            "plav": "0",
+            "fixed": "1",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "100",
+            "dexter": "100"
+        },
+        "vis": {
+            "replic": "captive"
+        },
+        "param": {
+            "invulner": "1",
+            "acttrap": "0",
+            "sats": "0",
+            "npc": "1"
+        }
+    },
+    {
+        "id": "ponpon",
+        "fraction": "100",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "50"
+        },
+        "move": {
+            "knocked": "0",
+            "plav": "0",
+            "fixed": "1",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "100",
+            "dexter": "100"
+        },
+        "vis": {
+            "replic": "ponpon"
+        },
+        "param": {
+            "invulner": "1",
+            "acttrap": "0",
+            "sats": "0",
+            "npc": "1"
+        }
+    },
+    {
+        "id": "pony",
+        "cat": "1"
+    },
+    {
+        "id": "raider",
+        "fraction": "2",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "60",
+            "levitaccel": "1.6",
+            "damwall": "25"
+        },
+        "comb": {
+            "skill": "0.8",
+            "aqual": "0.5",
+            "damage": "8",
+            "levitatk": "0"
+        },
+        "vis": {
+            "noise": "600",
+            "replic": "raider",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "rm"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "pony": "1",
+            "hero": "raider",
+            "hbonus": "1",
+            "izvrat": "1"
+        },
+        "un": {
+            "dist": "500"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "2",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "3",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            },
+            {
+                "id": "derg",
+                "y": "6",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "y": "7",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "laz",
+                "y": "8",
+                "len": "12",
+                "rep": "1"
+            },
+            {
+                "id": "walk",
+                "y": "9",
+                "len": "24",
+                "rep": "1"
+            }
+        ],
+        "n": "Общие параметры рейдеров"
+    },
+    {
+        "id": "raider1",
+        "cont": "raider",
+        "xp": "100",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "55"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "3"
+        },
+        "comb": {
+            "hp": "50",
+            "damage": "11",
+            "krep": "1"
+        },
+        "vis": {
+            "blit": "sprRaider1",
+            "sprX": "120",
+            "sex": "w"
+        },
+        "w": [
+            {
+                "id": "cknife",
+                "ch": "0.2",
+                "dif": "6"
+            },
+            {
+                "id": "mach",
+                "ch": "0.1"
+            },
+            {
+                "id": "armature",
+                "ch": "0.3"
+            },
+            {
+                "id": "chopper",
+                "ch": "0.3"
+            },
+            {
+                "id": "zknife",
+                "ch": "0.5"
+            },
+            {
+                "id": "knife"
+            }
+        ],
+        "n": "Рейдер-садист"
+    },
+    {
+        "id": "raider2",
+        "cont": "raider",
+        "xp": "100",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "50"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "18",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "40",
+            "dexter": "1.2",
+            "damage": "10",
+            "krep": "0"
+        },
+        "vis": {
+            "blit": "sprRaider2",
+            "sprX": "120",
+            "sex": "w",
+            "telecolor": "0xFF9900"
+        },
+        "w": [
+            {
+                "id": "mach",
+                "ch": "0.3",
+                "dif": "6"
+            },
+            {
+                "id": "bat",
+                "ch": "0.3"
+            },
+            {
+                "id": "chopper",
+                "ch": "0.3"
+            },
+            {
+                "id": "armature",
+                "ch": "0.5"
+            },
+            {
+                "id": "spear"
+            }
+        ],
+        "n": "Рейдер-бродяга"
+    },
+    {
+        "id": "raider3",
+        "cont": "raider",
+        "xp": "150",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "110"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "15",
+            "accel": "1"
+        },
+        "comb": {
+            "hp": "60",
+            "armor": "15",
+            "aqual": "0.5",
+            "dexter": "0.9",
+            "damage": "15",
+            "krep": "1"
+        },
+        "vulner": {
+            "laser": "0.5"
+        },
+        "vis": {
+            "blit": "sprRaider3",
+            "sprX": "130"
+        },
+        "w": [
+            {
+                "id": "pipe",
+                "ch": "0.3",
+                "dif": "5"
+            },
+            {
+                "id": "bat",
+                "ch": "0.3"
+            }
+        ],
+        "n": "Рейдер-металлист"
+    },
+    {
+        "id": "raider4",
+        "cont": "raider",
+        "xp": "150",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "75"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "2.6",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "60",
+            "armor": "3",
+            "aqual": "0.5",
+            "dexter": "1.2",
+            "damage": "18",
+            "krep": "0"
+        },
+        "vis": {
+            "blit": "sprRaider4",
+            "sprX": "130",
+            "telecolor": "0xFF0066"
+        },
+        "w": [
+            {
+                "id": "hammer",
+                "ch": "0.5",
+                "dif": "10"
+            },
+            {
+                "id": "axe",
+                "ch": "0.5",
+                "dif": "5"
+            },
+            {
+                "id": "mace",
+                "ch": "0.5"
+            },
+            {
+                "id": "shovel"
+            }
+        ],
+        "n": "Рейдер-развратник"
+    },
+    {
+        "id": "raider5",
+        "cont": "raider",
+        "xp": "150",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "55"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "3"
+        },
+        "comb": {
+            "hp": "50",
+            "dexter": "0.9",
+            "damage": "15",
+            "krep": "1"
+        },
+        "vis": {
+            "blit": "sprRaider5",
+            "sprX": "120",
+            "sex": "w"
+        },
+        "w": [
+            {
+                "id": "smg10",
+                "ch": "0.3",
+                "dif": "7"
+            },
+            {
+                "id": "smg9",
+                "ch": "0.3",
+                "dif": "5"
+            },
+            {
+                "id": "p10mm",
+                "ch": "0.25"
+            },
+            {
+                "id": "p9mm",
+                "ch": "0.5"
+            },
+            {
+                "id": "r32"
+            }
+        ],
+        "n": "Рейдер-бунтарь"
+    },
+    {
+        "id": "raider6",
+        "cont": "raider",
+        "xp": "200",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "60"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "3"
+        },
+        "comb": {
+            "hp": "80",
+            "armor": "2",
+            "aqual": "0.5",
+            "dexter": "0.9",
+            "damage": "10",
+            "krep": "0",
+            "skill": "1"
+        },
+        "un": {
+            "dist": "500"
+        },
+        "vis": {
+            "blit": "sprRaider6",
+            "sprX": "120",
+            "sex": "w",
+            "telecolor": "0x6699FF"
+        },
+        "w": [
+            {
+                "id": "shotgun",
+                "ch": "0.5",
+                "dif": "5"
+            },
+            {
+                "id": "lshot",
+                "ch": "0.5"
+            },
+            {
+                "id": "oldshot"
+            }
+        ],
+        "n": "Рейдер-палач"
+    },
+    {
+        "id": "raider7",
+        "cont": "raider",
+        "xp": "220",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "85"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "2"
+        },
+        "comb": {
+            "hp": "100",
+            "armor": "3",
+            "aqual": "0.75",
+            "armorhp": "200",
+            "damage": "18",
+            "krep": "1",
+            "skill": "1.2",
+            "observ": "3"
+        },
+        "un": {
+            "och": "60",
+            "walker": "1"
+        },
+        "vis": {
+            "blit": "sprRaider7",
+            "sprX": "130"
+        },
+        "w": [
+            {
+                "id": "winchester",
+                "ch": "0.2",
+                "dif": "8"
+            },
+            {
+                "id": "assr",
+                "ch": "0.4"
+            },
+            {
+                "id": "oldr",
+                "ch": "0.5"
+            },
+            {
+                "id": "hunt"
+            }
+        ],
+        "n": "Рейдер-мастер"
+    },
+    {
+        "id": "raider8",
+        "cont": "raider",
+        "xp": "200",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "90"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "17",
+            "accel": "3"
+        },
+        "comb": {
+            "hp": "80",
+            "marmor": "5",
+            "aqual": "0.5",
+            "armorhp": "120",
+            "dexter": "0.9",
+            "damage": "10",
+            "krep": "0"
+        },
+        "un": {
+            "och": "120",
+            "dist": "500"
+        },
+        "vulner": {
+            "fire": "0.5"
+        },
+        "vis": {
+            "blit": "sprRaider8",
+            "sprX": "130",
+            "telecolor": "0xFFFF00"
+        },
+        "w": [
+            {
+                "id": "molotov",
+                "ch": "0.05",
+                "dif": "5"
+            },
+            {
+                "id": "flamer",
+                "ch": "0.4",
+                "dif": "5"
+            },
+            {
+                "id": "flaregun"
+            }
+        ],
+        "n": "Рейдер-поджигатель"
+    },
+    {
+        "id": "raider9",
+        "cont": "raider",
+        "xp": "150",
+        "cat": "3",
+        "parent": "raider",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "55"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "18",
+            "accel": "3"
+        },
+        "comb": {
+            "hp": "60",
+            "dexter": "1.2",
+            "damage": "15",
+            "krep": "0"
+        },
+        "un": {
+            "dist": "700",
+            "gren": "1"
+        },
+        "vulner": {
+            "expl": "0.5"
+        },
+        "vis": {
+            "blit": "sprRaider9",
+            "sprX": "120",
+            "sex": "w",
+            "telecolor": "0xFF0000"
+        },
+        "w": [
+            {
+                "id": "hgren",
+                "ch": "0.7"
+            },
+            {
+                "id": "grenade"
+            }
+        ],
+        "n": "Рейдер-подрывник"
+    },
+    {
+        "id": "bossraider",
+        "fraction": "2",
+        "xp": "1500",
+        "cat": "3",
+        "phis": {
+            "sX": "100",
+            "sY": "100",
+            "massa": "250"
+        },
+        "move": {
+            "brake": "0.3",
+            "speed": "3",
+            "accel": "2.5",
+            "jump": "12",
+            "levit_max": "60",
+            "levitaccel": "1.6",
+            "damwall": "25",
+            "krep": "1"
+        },
+        "comb": {
+            "hp": "2000",
+            "skill": "1.2",
+            "aqual": "0.25",
+            "armor": "10",
+            "damage": "19",
+            "dexter": "0.5"
+        },
+        "vulner": {
+            "fire": "0.3"
+        },
+        "vis": {
+            "noise": "600",
+            "vclass": "visualRaiderBoss2",
+            "dkill": "0"
+        },
+        "snd": {
+            "music": "boss_1"
+        },
+        "param": {
+            "overlook": "1",
+            "blood": "1",
+            "pony": "1"
+        },
+        "w": [
+            {
+                "id": "flamer",
+                "f": "1"
+            },
+            {
+                "id": "assr",
+                "f": "1"
+            }
+        ]
+    },
+    {
+        "id": "slaver",
+        "fraction": "2",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "60",
+            "levitaccel": "1.6",
+            "damwall": "35"
+        },
+        "comb": {
+            "skill": "1",
+            "aqual": "0.65",
+            "damage": "8",
+            "levitatk": "0"
+        },
+        "vis": {
+            "noise": "600",
+            "replic": "raider",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "rm"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "pony": "1",
+            "hero": "slaver",
+            "hbonus": "1",
+            "izvrat": "1"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "2",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "3",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            },
+            {
+                "id": "derg",
+                "y": "6",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "y": "7",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "laz",
+                "y": "8",
+                "len": "12",
+                "rep": "1"
+            },
+            {
+                "id": "walk",
+                "y": "9",
+                "len": "24",
+                "rep": "1"
+            }
+        ]
+    },
+    {
+        "id": "slaver1",
+        "cont": "raider",
+        "xp": "250",
+        "cat": "3",
+        "parent": "slaver",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "18",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "80",
+            "damage": "20",
+            "skill": "1",
+            "krep": "1",
+            "armor": "5",
+            "aqual": "0.65",
+            "dexter": "1.2",
+            "observ": "3"
+        },
+        "vis": {
+            "blit": "sprSlaver1",
+            "sprX": "120",
+            "sex": "w"
+        },
+        "un": {
+            "walker": "1"
+        },
+        "w": [
+            {
+                "id": "cknife",
+                "ch": "0.2"
+            },
+            {
+                "id": "mach",
+                "ch": "0.4"
+            },
+            {
+                "id": "hunt",
+                "ch": "0.3"
+            },
+            {
+                "id": "lshot",
+                "ch": "0.3"
+            },
+            {
+                "id": "zknife",
+                "ch": "0.5"
+            },
+            {
+                "id": "pipe"
+            }
+        ],
+        "n": "Погонщик"
+    },
+    {
+        "id": "slaver2",
+        "cont": "raider",
+        "xp": "300",
+        "cat": "3",
+        "parent": "slaver",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "75"
+        },
+        "move": {
+            "speed": "4.5",
+            "jump": "18",
+            "accel": "3"
+        },
+        "comb": {
+            "hp": "100",
+            "armor": "5",
+            "aqual": "0.65",
+            "damage": "18",
+            "krep": "0",
+            "observ": "6"
+        },
+        "vis": {
+            "blit": "sprSlaver2",
+            "sprX": "130",
+            "telecolor": "0xFF0000"
+        },
+        "un": {
+            "walker": "1"
+        },
+        "w": [
+            {
+                "id": "sledge",
+                "ch": "0.04",
+                "dif": "18"
+            },
+            {
+                "id": "hammer",
+                "ch": "0.25",
+                "dif": "12"
+            },
+            {
+                "id": "p308c",
+                "ch": "0.3",
+                "dif": "15"
+            },
+            {
+                "id": "revo",
+                "ch": "0.4"
+            },
+            {
+                "id": "r375",
+                "ch": "0.5"
+            },
+            {
+                "id": "smg10",
+                "ch": "0.5"
+            },
+            {
+                "id": "spear"
+            }
+        ],
+        "n": "Ловчий"
+    },
+    {
+        "id": "slaver3",
+        "cont": "raider",
+        "xp": "300",
+        "cat": "3",
+        "parent": "slaver",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "2",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "110",
+            "dexter": "1.2",
+            "damage": "20",
+            "krep": "0",
+            "armor": "5",
+            "aqual": "0.75",
+            "observ": "6"
+        },
+        "vis": {
+            "blit": "sprSlaver3",
+            "sprX": "120",
+            "sex": "w",
+            "telecolor": "0xFFCC00"
+        },
+        "un": {
+            "och": "60",
+            "walker": "1"
+        },
+        "w": [
+            {
+                "id": "lmg",
+                "ch": "0.04",
+                "dif": "17"
+            },
+            {
+                "id": "zebr",
+                "ch": "0.1",
+                "dif": "15"
+            },
+            {
+                "id": "carbine",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "assr",
+                "ch": "0.3"
+            },
+            {
+                "id": "zsword",
+                "ch": "0.5"
+            },
+            {
+                "id": "flamer"
+            }
+        ],
+        "n": "Надзиратель"
+    },
+    {
+        "id": "slaver4",
+        "cont": "raider",
+        "xp": "450",
+        "cat": "3",
+        "parent": "slaver",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "140"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "2"
+        },
+        "comb": {
+            "hp": "125",
+            "armor": "10",
+            "marmor": "5",
+            "aqual": "0.65",
+            "armorhp": "250",
+            "dexter": "0.9",
+            "damage": "25",
+            "krep": "1",
+            "skill": "1.2",
+            "observ": "3"
+        },
+        "vis": {
+            "blit": "sprSlaver4",
+            "sprX": "130"
+        },
+        "un": {
+            "dist": "500"
+        },
+        "w": [
+            {
+                "id": "pshot",
+                "ch": "0.04",
+                "dif": "18"
+            },
+            {
+                "id": "saf9",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "shotgun",
+                "ch": "0.5"
+            },
+            {
+                "id": "lshot",
+                "ch": "0.5"
+            },
+            {
+                "id": "prism"
+            }
+        ],
+        "n": "Охранник"
+    },
+    {
+        "id": "slaver5",
+        "cont": "raider",
+        "xp": "600",
+        "cat": "3",
+        "parent": "slaver",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "180"
+        },
+        "move": {
+            "speed": "3.5",
+            "jump": "16",
+            "accel": "2"
+        },
+        "comb": {
+            "hp": "150",
+            "armor": "15",
+            "marmor": "10",
+            "aqual": "0.8",
+            "armorhp": "400",
+            "dexter": "0.8",
+            "damage": "25",
+            "krep": "1",
+            "skill": "1.5",
+            "observ": "3"
+        },
+        "vis": {
+            "blit": "sprSlaver5",
+            "sprX": "130"
+        },
+        "un": {
+            "walker": "1"
+        },
+        "w": [
+            {
+                "id": "anti",
+                "ch": "0.04",
+                "dif": "18"
+            },
+            {
+                "id": "brushgun",
+                "ch": "0.2",
+                "dif": "14"
+            },
+            {
+                "id": "sniper",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "plar",
+                "ch": "0.1",
+                "dif": "14"
+            },
+            {
+                "id": "lasr",
+                "ch": "0.3"
+            },
+            {
+                "id": "winchester"
+            }
+        ],
+        "n": "Элитный"
+    },
+    {
+        "id": "slaver6",
+        "cont": "raider",
+        "xp": "800",
+        "cat": "3",
+        "parent": "slaver",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "140"
+        },
+        "move": {
+            "speed": "3.5",
+            "jump": "18",
+            "accel": "2"
+        },
+        "comb": {
+            "hp": "200",
+            "armor": "5",
+            "marmor": "15",
+            "aqual": "0.8",
+            "armorhp": "400",
+            "damage": "25",
+            "krep": "0",
+            "skill": "1.5",
+            "observ": "6"
+        },
+        "vis": {
+            "blit": "sprSlaver6",
+            "sprX": "130",
+            "telecolor": "0xFF55FF"
+        },
+        "un": {
+            "walker": "1"
+        },
+        "w": [
+            {
+                "id": "rail",
+                "ch": "0.04",
+                "dif": "18"
+            },
+            {
+                "id": "nova",
+                "ch": "0.2",
+                "dif": "14"
+            },
+            {
+                "id": "lassn",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "plamg",
+                "ch": "0.1",
+                "dif": "14"
+            },
+            {
+                "id": "plam",
+                "ch": "0.3"
+            },
+            {
+                "id": "sparkl"
+            }
+        ]
+    },
+    {
+        "id": "zebra",
+        "fraction": "2",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "30",
+            "levitaccel": "1.6",
+            "damwall": "25"
+        },
+        "comb": {
+            "skill": "1.2",
+            "damage": "15",
+            "levitatk": "0.7"
+        },
+        "vis": {
+            "noise": "0",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "rm"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "pony": "1",
+            "hero": "zebra",
+            "hbonus": "1"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "2",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "3",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            },
+            {
+                "id": "derg",
+                "y": "6",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "y": "7",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "laz",
+                "y": "8",
+                "len": "12",
+                "rep": "1"
+            },
+            {
+                "id": "walk",
+                "y": "9",
+                "len": "24",
+                "rep": "1"
+            }
+        ]
+    },
+    {
+        "id": "zebra1",
+        "cont": "raider",
+        "xp": "300",
+        "cat": "3",
+        "parent": "zebra",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "20",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "100",
+            "damage": "20",
+            "skill": "1.2",
+            "krep": "1",
+            "dexter": "1.5",
+            "observ": "12"
+        },
+        "vis": {
+            "blit": "sprZebra1",
+            "sprX": "130",
+            "sex": "w"
+        },
+        "vulner": {
+            "laser": "0.8"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1"
+        },
+        "w": [
+            {
+                "id": "p127mm",
+                "ch": "0.2",
+                "dif": "17"
+            },
+            {
+                "id": "elsword",
+                "ch": "0.1",
+                "dif": "17"
+            },
+            {
+                "id": "p308c",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "zsword",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "cknife",
+                "ch": "0.5"
+            },
+            {
+                "id": "p10s"
+            }
+        ],
+        "n": "Зебра-шпион"
+    },
+    {
+        "id": "zebra2",
+        "cont": "raider",
+        "xp": "350",
+        "cat": "3",
+        "parent": "zebra",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "85"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "130",
+            "damage": "16",
+            "skill": "1.2",
+            "krep": "1",
+            "dexter": "1.2",
+            "observ": "8"
+        },
+        "vis": {
+            "blit": "sprZebra2",
+            "sprX": "130"
+        },
+        "vulner": {
+            "expl": "0.5",
+            "fire": "0.7"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "drop": "bomb"
+        },
+        "w": [
+            {
+                "id": "plamg",
+                "ch": "0.2",
+                "dif": "18"
+            },
+            {
+                "id": "termo",
+                "ch": "0.1",
+                "dif": "18"
+            },
+            {
+                "id": "sparkl",
+                "ch": "0.15",
+                "dif": "14"
+            },
+            {
+                "id": "plar",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "lasr",
+                "ch": "0.5"
+            },
+            {
+                "id": "plap"
+            }
+        ],
+        "n": "Зебра-диверсант"
+    },
+    {
+        "id": "zebra3",
+        "cont": "raider",
+        "xp": "450",
+        "cat": "3",
+        "parent": "zebra",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "20",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "100",
+            "damage": "14",
+            "skill": "1.3",
+            "krep": "1",
+            "dexter": "1.5",
+            "observ": "12"
+        },
+        "vis": {
+            "blit": "sprZebra3",
+            "sprX": "130",
+            "sex": "w"
+        },
+        "vulner": {
+            "laser": "0.7",
+            "plasma": "0.8"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "stay": "1"
+        },
+        "w": [
+            {
+                "id": "anti",
+                "ch": "0.1",
+                "dif": "18"
+            },
+            {
+                "id": "grom",
+                "ch": "0.1",
+                "dif": "18"
+            },
+            {
+                "id": "rail",
+                "ch": "0.15",
+                "dif": "16"
+            },
+            {
+                "id": "lassn",
+                "ch": "0.3",
+                "dif": "12"
+            },
+            {
+                "id": "sniper"
+            }
+        ],
+        "n": "Зебра-ассасин"
+    },
+    {
+        "id": "zebra4",
+        "cont": "raider",
+        "xp": "500",
+        "cat": "3",
+        "parent": "zebra",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "90"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "120",
+            "damage": "20",
+            "armor": "10",
+            "marmor": "10",
+            "aqual": "0.7",
+            "armorhp": "250",
+            "skill": "1.2",
+            "krep": "1",
+            "dexter": "1.2",
+            "observ": "8"
+        },
+        "vis": {
+            "blit": "sprZebra4",
+            "sprX": "130"
+        },
+        "vulner": {
+            "phis": "0.8",
+            "blade": "0.8",
+            "bullet": "0.9"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "och": "16"
+        },
+        "w": [
+            {
+                "id": "lmg",
+                "ch": "0.2",
+                "dif": "18"
+            },
+            {
+                "id": "pshot",
+                "ch": "0.1",
+                "dif": "18"
+            },
+            {
+                "id": "zebr"
+            }
+        ],
+        "n": "Зебра-боевик"
+    },
+    {
+        "id": "zebra5",
+        "cont": "raider",
+        "xp": "750",
+        "cat": "3",
+        "parent": "zebra",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "110"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "18",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "200",
+            "damage": "60",
+            "armor": "10",
+            "marmor": "20",
+            "aqual": "0.7",
+            "armorhp": "250",
+            "skill": "1.8",
+            "krep": "1",
+            "dexter": "1",
+            "observ": "6"
+        },
+        "vis": {
+            "blit": "sprZebra5",
+            "sprX": "130"
+        },
+        "vulner": {
+            "laser": "0.7",
+            "bullet": "0.8"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "och": "16"
+        },
+        "w": [
+            {
+                "id": "lsword",
+                "ch": "0.15"
+            },
+            {
+                "id": "sword",
+                "ch": "0.1"
+            },
+            {
+                "id": "zsword",
+                "ch": "0.15"
+            },
+            {
+                "id": "lmg",
+                "ch": "0.1"
+            },
+            {
+                "id": "zebr"
+            }
+        ]
+    },
+    {
+        "id": "bossnecr",
+        "fraction": "2",
+        "xp": "20000",
+        "cat": "3",
+        "phis": {
+            "sX": "70",
+            "sY": "70",
+            "massa": "100"
+        },
+        "move": {
+            "brake": "0.3",
+            "speed": "6",
+            "accel": "2.5",
+            "jump": "20",
+            "levit_max": "60",
+            "levitaccel": "1.6",
+            "damwall": "25",
+            "krep": "1"
+        },
+        "comb": {
+            "hp": "3200",
+            "skill": "2",
+            "damage": "30"
+        },
+        "vulner": {
+            "pink": "0"
+        },
+        "vis": {
+            "noise": "600",
+            "vclass": "visualNecrBoss",
+            "visdam": "2",
+            "sdamage": "22",
+            "stipdam": "16",
+            "dkill": "0"
+        },
+        "snd": {
+            "music": "boss_3"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "1",
+            "blood": "1"
+        }
+    },
+    {
+        "id": "merc",
+        "fraction": "2",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "30",
+            "levitaccel": "2",
+            "damwall": "25"
+        },
+        "comb": {
+            "skill": "1.2",
+            "aqual": "0.65",
+            "damage": "8",
+            "ear": "1.4",
+            "levitatk": "0.5"
+        },
+        "vis": {
+            "noise": "600",
+            "replic": "merc",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "rm"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "hero": "merc",
+            "hbonus": "1",
+            "izvrat": "1"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "y": "0",
+                "len": "25",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "fly",
+                "y": "1",
+                "len": "14",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "1",
+                "len": "14",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "25"
+            },
+            {
+                "id": "death",
+                "y": "3"
+            },
+            {
+                "id": "fall",
+                "y": "3",
+                "len": "17"
+            }
+        ]
+    },
+    {
+        "id": "merc1",
+        "cont": "raider",
+        "xp": "300",
+        "cat": "3",
+        "parent": "merc",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "12",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "80",
+            "damage": "20",
+            "skill": "1",
+            "krep": "1",
+            "dexter": "1.8",
+            "armor": "5",
+            "marmor": "5",
+            "aqual": "0.65",
+            "armorhp": "200",
+            "observ": "10"
+        },
+        "vis": {
+            "blit": "sprGriffon1",
+            "sprX": "170",
+            "sprDX": "96",
+            "sprDY": "132",
+            "icoY": "2",
+            "sex": "w"
+        },
+        "vulner": {
+            "fire": "1.2"
+        },
+        "un": {
+            "walker": "1",
+            "stalk": "500",
+            "sniper": "1"
+        },
+        "w": [
+            {
+                "id": "mercgr",
+                "f": "1"
+            },
+            {
+                "id": "psc",
+                "ch": "0.1",
+                "dif": "18"
+            },
+            {
+                "id": "p127mm",
+                "ch": "0.25",
+                "dif": "16"
+            },
+            {
+                "id": "p308c",
+                "ch": "0.5"
+            },
+            {
+                "id": "revo"
+            }
+        ]
+    },
+    {
+        "id": "merc2",
+        "cont": "raider",
+        "xp": "500",
+        "cat": "3",
+        "parent": "merc",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "12",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "120",
+            "damage": "20",
+            "skill": "1",
+            "krep": "1",
+            "dexter": "1.5",
+            "armor": "10",
+            "marmor": "10",
+            "aqual": "0.75",
+            "armorhp": "400",
+            "observ": "5"
+        },
+        "vis": {
+            "blit": "sprGriffon2",
+            "sprX": "170",
+            "sprDX": "96",
+            "sprDY": "132",
+            "icoY": "2"
+        },
+        "vulner": {
+            "phis": "0.75",
+            "blade": "0.75",
+            "fire": "0.75"
+        },
+        "un": {
+            "walker": "1",
+            "stalk": "500",
+            "och": "3",
+            "dist": "600",
+            "sniper": "1"
+        },
+        "w": [
+            {
+                "id": "mercgr",
+                "f": "1"
+            },
+            {
+                "id": "pshot",
+                "ch": "0.25",
+                "dif": "18"
+            },
+            {
+                "id": "zebr",
+                "ch": "0.1",
+                "dif": "17"
+            },
+            {
+                "id": "nova",
+                "ch": "0.04",
+                "dif": "17"
+            },
+            {
+                "id": "plam",
+                "ch": "0.3",
+                "dif": "15"
+            },
+            {
+                "id": "saf9",
+                "ch": "0.3",
+                "dif": "15"
+            },
+            {
+                "id": "shotgun",
+                "ch": "0.2"
+            },
+            {
+                "id": "carbine",
+                "ch": "0.6"
+            },
+            {
+                "id": "prism"
+            }
+        ]
+    },
+    {
+        "id": "merc3",
+        "cont": "raider",
+        "xp": "500",
+        "cat": "3",
+        "parent": "merc",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "12",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "140",
+            "damage": "20",
+            "skill": "1",
+            "krep": "1",
+            "dexter": "1.3",
+            "armor": "15",
+            "marmor": "5",
+            "aqual": "0.75",
+            "armorhp": "400",
+            "observ": "8"
+        },
+        "vis": {
+            "blit": "sprGriffon3",
+            "sprX": "170",
+            "sprDX": "96",
+            "sprDY": "132",
+            "icoY": "2"
+        },
+        "vulner": {
+            "phis": "0.85",
+            "blade": "0.85",
+            "bullet": "0.85",
+            "expl": "0.85"
+        },
+        "un": {
+            "walker": "1",
+            "stalk": "1000",
+            "och": "45",
+            "sniper": "1",
+            "grenader": "4"
+        },
+        "w": [
+            {
+                "id": "mercgr",
+                "f": "1"
+            },
+            {
+                "id": "cflamer",
+                "ch": "0.01",
+                "dif": "19"
+            },
+            {
+                "id": "autor",
+                "ch": "0.1",
+                "dif": "18"
+            },
+            {
+                "id": "gatp",
+                "ch": "0.1",
+                "dif": "20"
+            },
+            {
+                "id": "quick",
+                "ch": "0.1",
+                "dif": "19"
+            },
+            {
+                "id": "gatl",
+                "ch": "0.1",
+                "dif": "15"
+            },
+            {
+                "id": "plamg",
+                "ch": "0.2"
+            },
+            {
+                "id": "lmg",
+                "ch": "0.5"
+            },
+            {
+                "id": "minigun"
+            }
+        ]
+    },
+    {
+        "id": "merc4",
+        "cont": "raider",
+        "xp": "500",
+        "cat": "3",
+        "parent": "merc",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "12",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "100",
+            "damage": "20",
+            "skill": "1.3",
+            "krep": "1",
+            "dexter": "1.5",
+            "armor": "5",
+            "marmor": "10",
+            "aqual": "0.65",
+            "armorhp": "200",
+            "observ": "10"
+        },
+        "vis": {
+            "blit": "sprGriffon4",
+            "sprX": "170",
+            "sprDX": "96",
+            "sprDY": "132",
+            "icoY": "2",
+            "sex": "w"
+        },
+        "vulner": {
+            "laser": "0.85",
+            "plasma": "0.85",
+            "spark": "0.85"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "stalk": "1500"
+        },
+        "w": [
+            {
+                "id": "mercgr",
+                "f": "1"
+            },
+            {
+                "id": "grom",
+                "ch": "0.15",
+                "dif": "19"
+            },
+            {
+                "id": "anti",
+                "ch": "0.25",
+                "dif": "18"
+            },
+            {
+                "id": "rail",
+                "ch": "0.15",
+                "dif": "15"
+            },
+            {
+                "id": "lassn",
+                "ch": "0.4"
+            },
+            {
+                "id": "sniper"
+            }
+        ]
+    },
+    {
+        "id": "merc5",
+        "cont": "raider",
+        "xp": "800",
+        "cat": "3",
+        "parent": "merc",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "4",
+            "jump": "12",
+            "accel": "3",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "170",
+            "damage": "20",
+            "tipdam": "1",
+            "skill": "1.6",
+            "krep": "1",
+            "dexter": "1.3",
+            "armor": "15",
+            "marmor": "15",
+            "aqual": "0.8",
+            "armorhp": "500",
+            "observ": "5"
+        },
+        "vis": {
+            "blit": "sprGriffon5",
+            "sprX": "170",
+            "sprDX": "96",
+            "sprDY": "132",
+            "icoY": "2"
+        },
+        "vulner": {
+            "phis": "0.75",
+            "blade": "0.75",
+            "plasma": "0.85",
+            "laser": "0.85"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "stalk": "500",
+            "och": "25",
+            "grenader": "2"
+        },
+        "w": [
+            {
+                "id": "mercgr",
+                "f": "1"
+            },
+            {
+                "id": "anti",
+                "ch": "0.25",
+                "dif": "19"
+            },
+            {
+                "id": "lmg",
+                "ch": "0.5"
+            },
+            {
+                "id": "hmg",
+                "ch": "0.2"
+            },
+            {
+                "id": "gatl",
+                "ch": "0.3"
+            },
+            {
+                "id": "gatp",
+                "ch": "0.2"
+            },
+            {
+                "id": "pshot"
+            }
+        ]
+    },
+    {
+        "id": "ranger",
+        "fraction": "4",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "60",
+            "levitaccel": "1.3",
+            "plav": "0",
+            "damwall": "70"
+        },
+        "comb": {
+            "skill": "1",
+            "aqual": "0.9",
+            "armor": "15",
+            "marmor": "15",
+            "damage": "16",
+            "levitatk": "0.5"
+        },
+        "vis": {
+            "noise": "600",
+            "replic": "ranger",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "sr"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "pony": "1",
+            "hero": "ranger",
+            "hbonus": "1"
+        },
+        "vulner": {
+            "venom": "0",
+            "poison": "0",
+            "emp": "0.25",
+            "cryo": "0.5",
+            "fire": "0.5",
+            "expl": "0.8"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "y": "1",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "trot",
+                "y": "2",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "3",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "laz",
+                "y": "4",
+                "len": "12",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "5",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "6",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "7"
+            },
+            {
+                "id": "fall",
+                "y": "7",
+                "len": "13"
+            }
+        ]
+    },
+    {
+        "id": "ranger1",
+        "xp": "500",
+        "cat": "3",
+        "parent": "ranger",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "150"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "14",
+            "accel": "1.8",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "180",
+            "damage": "16",
+            "skill": "1.2",
+            "krep": "1",
+            "dexter": "0.8",
+            "aqual": "1",
+            "armor": "25",
+            "marmor": "15",
+            "armorhp": "600",
+            "observ": "6"
+        },
+        "vis": {
+            "blit": "sprRanger1",
+            "sprX": "140"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "och": "60"
+        },
+        "w": [
+            {
+                "id": "robomlau",
+                "f": "1"
+            },
+            {
+                "id": "robogas",
+                "f": "1"
+            },
+            {
+                "id": "glau",
+                "ch": "0.2"
+            },
+            {
+                "id": "lmg",
+                "ch": "0.4"
+            },
+            {
+                "id": "minigun"
+            }
+        ],
+        "n": "Рейнджер-рыцарь"
+    },
+    {
+        "id": "ranger2",
+        "xp": "750",
+        "cat": "3",
+        "parent": "ranger",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "170"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "14",
+            "accel": "1.8",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "210",
+            "damage": "24",
+            "skill": "1.5",
+            "krep": "1",
+            "dexter": "0.8",
+            "aqual": "1",
+            "armor": "20",
+            "marmor": "25",
+            "armorhp": "600",
+            "observ": "8"
+        },
+        "vulner": {
+            "bul": "0.8",
+            "phis": "0.8",
+            "blade": "0.8"
+        },
+        "vis": {
+            "blit": "sprRanger2",
+            "sprX": "140"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "och": "60"
+        },
+        "w": [
+            {
+                "id": "robomlau",
+                "f": "1"
+            },
+            {
+                "id": "robogas",
+                "f": "1"
+            },
+            {
+                "id": "cflamer",
+                "ch": "0.3"
+            },
+            {
+                "id": "gatl",
+                "ch": "0.7"
+            },
+            {
+                "id": "gatp"
+            }
+        ],
+        "n": "Рейнджер-рыцарь"
+    },
+    {
+        "id": "ranger3",
+        "xp": "1000",
+        "cat": "3",
+        "parent": "ranger",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "200"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "14",
+            "accel": "1.8",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "250",
+            "damage": "30",
+            "skill": "1.8",
+            "krep": "1",
+            "dexter": "0.8",
+            "aqual": "1",
+            "armor": "25",
+            "marmor": "25",
+            "armorhp": "600",
+            "observ": "10"
+        },
+        "vulner": {
+            "laser": "0.8",
+            "plasma": "0.8",
+            "spark": "0.8"
+        },
+        "vis": {
+            "blit": "sprRanger3",
+            "sprX": "140"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1",
+            "och": "60"
+        },
+        "w": [
+            {
+                "id": "robomlau",
+                "f": "1"
+            },
+            {
+                "id": "robogas",
+                "f": "1"
+            },
+            {
+                "id": "gatp",
+                "ch": "0.2"
+            },
+            {
+                "id": "hmg",
+                "ch": "0.7"
+            },
+            {
+                "id": "antidrak"
+            }
+        ],
+        "n": "Рейнджер-рыцарь"
+    },
+    {
+        "id": "encl",
+        "fraction": "4",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "30",
+            "levitaccel": "2.5",
+            "damwall": "25"
+        },
+        "comb": {
+            "skill": "1.2",
+            "aqual": "1",
+            "damage": "8",
+            "ear": "1.4"
+        },
+        "vis": {
+            "noise": "600",
+            "replic": "encl",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "rm"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "hero": "encl",
+            "hbonus": "1"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "y": "2",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "fly",
+                "y": "3",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            }
+        ]
+    },
+    {
+        "id": "encl1",
+        "xp": "400",
+        "cat": "3",
+        "parent": "encl",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "50"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "14",
+            "accel": "2.5",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "120",
+            "damage": "16",
+            "skill": "1.6",
+            "krep": "1",
+            "dexter": "1.2",
+            "aqual": "0.5",
+            "armor": "5",
+            "marmor": "5",
+            "armorhp": "200"
+        },
+        "vulner": {
+            "spark": "0.75"
+        },
+        "vis": {
+            "blit": "sprEncl1",
+            "sprX": "130"
+        },
+        "un": {
+            "walker": "1",
+            "sniper": "1"
+        },
+        "w": [
+            {
+                "id": "plar",
+                "ch": "0.2"
+            },
+            {
+                "id": "sparkl",
+                "ch": "0.4"
+            },
+            {
+                "id": "cryo",
+                "ch": "0.1"
+            },
+            {
+                "id": "prism"
+            }
+        ],
+        "n": "Офицер"
+    },
+    {
+        "id": "encl2",
+        "xp": "600",
+        "cat": "3",
+        "parent": "encl",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "70"
+        },
+        "move": {
+            "speed": "6",
+            "jump": "14",
+            "accel": "2.5",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "140",
+            "damage": "16",
+            "skill": "1.6",
+            "krep": "1",
+            "dexter": "1.8",
+            "aqual": "0.9",
+            "armor": "10",
+            "marmor": "15",
+            "armorhp": "400",
+            "observ": "20",
+            "ear": "2.5"
+        },
+        "vulner": {
+            "laser": "0.7",
+            "plasma": "0.85",
+            "venom": "0.5"
+        },
+        "vis": {
+            "blit": "sprEncl2",
+            "sprX": "130"
+        },
+        "snd": {
+            "die": "sr"
+        },
+        "un": {
+            "walker": "1",
+            "enclweap": "1",
+            "stalk": "1000",
+            "sniper": "1"
+        },
+        "w": [
+            {
+                "id": "nova",
+                "ch": "0.2"
+            },
+            {
+                "id": "plam",
+                "ch": "0.3"
+            },
+            {
+                "id": "lassn",
+                "ch": "0.5"
+            },
+            {
+                "id": "grom",
+                "ch": "0.1"
+            },
+            {
+                "id": "plamg"
+            }
+        ],
+        "n": "Разведчик"
+    },
+    {
+        "id": "encl3",
+        "xp": "800",
+        "cat": "3",
+        "parent": "encl",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "80"
+        },
+        "move": {
+            "speed": "5",
+            "jump": "14",
+            "accel": "2.5",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "180",
+            "damage": "40",
+            "tipdam": "1",
+            "skill": "1.8",
+            "krep": "1",
+            "dexter": "1.6",
+            "aqual": "1",
+            "armor": "15",
+            "marmor": "25",
+            "armorhp": "600",
+            "observ": "8"
+        },
+        "vulner": {
+            "laser": "0.5",
+            "plasma": "0.75",
+            "venom": "0.5"
+        },
+        "vis": {
+            "blit": "sprEncl3",
+            "sprX": "130"
+        },
+        "snd": {
+            "die": "sr"
+        },
+        "un": {
+            "walker": "1",
+            "enclweap": "1",
+            "sniper": "1",
+            "grenader": "2"
+        },
+        "w": [
+            {
+                "id": "plamg",
+                "ch": "0.2"
+            },
+            {
+                "id": "gatl",
+                "ch": "0.3"
+            },
+            {
+                "id": "termo",
+                "ch": "0.3"
+            },
+            {
+                "id": "grom",
+                "ch": "0.3"
+            },
+            {
+                "id": "nova"
+            }
+        ],
+        "n": "Штурмовик"
+    },
+    {
+        "id": "encl4",
+        "xp": "1200",
+        "cat": "3",
+        "parent": "encl",
+        "phis": {
+            "sX": "70",
+            "sY": "75",
+            "massa": "80"
+        },
+        "move": {
+            "speed": "6",
+            "jump": "14",
+            "accel": "2.8",
+            "brake": "1"
+        },
+        "comb": {
+            "hp": "220",
+            "damage": "50",
+            "tipdam": "6",
+            "skill": "2",
+            "krep": "1",
+            "dexter": "1.6",
+            "aqual": "1",
+            "armor": "25",
+            "marmor": "25",
+            "armorhp": "600",
+            "observ": "10"
+        },
+        "vulner": {
+            "laser": "0.5",
+            "plasma": "0.75",
+            "venom": "0.5"
+        },
+        "vis": {
+            "blit": "sprEncl4",
+            "sprX": "130"
+        },
+        "snd": {
+            "die": "sr"
+        },
+        "un": {
+            "walker": "1",
+            "enclweap": "1",
+            "sniper": "1",
+            "grenader": "4"
+        },
+        "w": [
+            {
+                "id": "gatl",
+                "ch": "0.3"
+            },
+            {
+                "id": "gatp",
+                "ch": "0.3"
+            },
+            {
+                "id": "rail",
+                "ch": "0.3"
+            },
+            {
+                "id": "grom",
+                "ch": "0.3"
+            },
+            {
+                "id": "quick"
+            }
+        ],
+        "n": "Штурмовик"
+    },
+    {
+        "id": "bossencl",
+        "fraction": "4",
+        "xp": "7000",
+        "cat": "3",
+        "phis": {
+            "sX": "100",
+            "sY": "100",
+            "massa": "250"
+        },
+        "move": {
+            "brake": "0.3",
+            "speed": "15",
+            "accel": "1.5",
+            "jump": "12",
+            "levit_max": "15",
+            "levitaccel": "1.6",
+            "krep": "1"
+        },
+        "comb": {
+            "hp": "1800",
+            "skill": "2",
+            "aqual": "1",
+            "armorhp": "1500",
+            "damage": "45"
+        },
+        "vulner": {
+            "laser": "0.7",
+            "plasma": "0.85",
+            "venom": "0.5"
+        },
+        "vis": {
+            "blit": "sprEnclboss1",
+            "sprX": "130",
+            "sprY": "150",
+            "dkill": "0"
+        },
+        "snd": {
+            "music": "boss_6"
+        },
+        "param": {
+            "overlook": "1",
+            "blood": "1",
+            "pony": "1"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "fly",
+                "y": "1",
+                "len": "8",
+                "rep": "1"
+            }
+        ]
+    },
+    {
+        "id": "monster",
+        "cat": "1"
+    },
+    {
+        "id": "alicorn",
+        "cat": "2",
+        "phis": {
+            "sX": "70",
+            "sY": "100",
+            "sitY": "70",
+            "massa": "110"
+        },
+        "move": {
+            "speed": "3",
+            "run": "10",
+            "accel": "2",
+            "brake": "0.4",
+            "jump": "15",
+            "levit_max": "90",
+            "plav": "0",
+            "levitaccel": "1.2",
+            "damwall": "50"
+        },
+        "comb": {
+            "hp": "200",
+            "damage": "15"
+        },
+        "vis": {
+            "sprX": "150",
+            "sprY": "150",
+            "sprDX": "95",
+            "sprDY": "127",
+            "sex": "w",
+            "noise": "600",
+            "visdam": "3",
+            "sdamage": "50",
+            "stipdam": "9"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "ali"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "hero": "alicorn",
+            "alicorn": "1",
+            "hbonus": "1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "y": "0"
+            },
+            {
+                "id": "walk",
+                "y": "0",
+                "len": "29",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "sit",
+                "y": "4"
+            },
+            {
+                "id": "polz",
+                "y": "4",
+                "len": "29",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "fly",
+                "y": "1",
+                "len": "14",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "3"
+            },
+            {
+                "id": "fall",
+                "y": "3",
+                "len": "13"
+            }
+        ]
+    },
+    {
+        "id": "alicorn1",
+        "fraction": "1",
+        "xp": "500",
+        "cat": "3",
+        "parent": "alicorn",
+        "comb": {
+            "hp": "350",
+            "damage": "18",
+            "observ": "10"
+        },
+        "vulner": {
+            "venom": "0.5",
+            "acid": "0.25",
+            "cryo": "0.5",
+            "plasma": "0.5",
+            "pink": "0"
+        },
+        "vis": {
+            "blit": "sprAlicorn1",
+            "sprX": "150",
+            "sprY": "150",
+            "sprDX": "95",
+            "sprDY": "127"
+        }
+    },
+    {
+        "id": "alicorn2",
+        "fraction": "1",
+        "xp": "500",
+        "cat": "3",
+        "parent": "alicorn",
+        "move": {
+            "levit_max": "30",
+            "levitaccel": "1.5",
+            "damwall": "0"
+        },
+        "comb": {
+            "hp": "250",
+            "damage": "15",
+            "observ": "5"
+        },
+        "vulner": {
+            "venom": "0.5",
+            "acid": "0.25",
+            "laser": "0.5",
+            "spark": "0.5",
+            "pink": "0"
+        },
+        "vis": {
+            "blit": "sprAlicorn2",
+            "sprX": "150",
+            "sprY": "150",
+            "sprDX": "95",
+            "sprDY": "127"
+        }
+    },
+    {
+        "id": "alicorn3",
+        "fraction": "1",
+        "xp": "500",
+        "cat": "3",
+        "parent": "alicorn",
+        "comb": {
+            "hp": "250",
+            "damage": "12",
+            "observ": "5"
+        },
+        "vulner": {
+            "venom": "0.5",
+            "acid": "0.25",
+            "fire": "0.5",
+            "expl": "0.5",
+            "pink": "0"
+        },
+        "vis": {
+            "blit": "sprAlicorn3",
+            "sprX": "150",
+            "sprY": "150",
+            "sprDX": "95",
+            "sprDY": "127"
+        }
+    },
+    {
+        "id": "bossalicorn",
+        "fraction": "1",
+        "xp": "10000",
+        "cat": "3",
+        "phis": {
+            "sX": "100",
+            "sY": "100",
+            "massa": "110"
+        },
+        "move": {
+            "speed": "3",
+            "run": "10",
+            "accel": "2",
+            "brake": "0.4",
+            "jump": "15",
+            "levit_max": "90",
+            "plav": "0",
+            "levitaccel": "1.2",
+            "damwall": "25"
+        },
+        "comb": {
+            "hp": "4500",
+            "damage": "35"
+        },
+        "vulner": {
+            "venom": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprAlicorn4",
+            "sprX": "170",
+            "sprY": "170",
+            "sprDX": "105",
+            "sprDY": "150",
+            "visdam": "3",
+            "sdamage": "70",
+            "stipdam": "9",
+            "dkill": "0"
+        },
+        "snd": {
+            "music": "boss_2"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "1",
+            "alicorn": "1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "y": "0",
+                "len": "20",
+                "rep": "1"
+            },
+            {
+                "id": "fly",
+                "y": "1",
+                "len": "14",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "14"
+            }
+        ],
+        "w": [
+            {
+                "id": "aliblade",
+                "f": "1"
+            },
+            {
+                "id": "alimray",
+                "f": "1"
+            }
+        ]
+    },
+    {
+        "id": "spectre",
+        "fraction": "0",
+        "phis": {
+            "sX": "80",
+            "sY": "80",
+            "massa": "110"
+        },
+        "move": {
+            "speed": "1",
+            "accel": "0.5",
+            "brake": "0.4"
+        },
+        "comb": {
+            "hp": "350",
+            "damage": "1000",
+            "tipdam": "16",
+            "ear": "0",
+            "observ": "200"
+        }
+    },
+    {
+        "id": "hellhound",
+        "fraction": "4",
+        "cat": "2",
+        "phis": {
+            "sX": "70",
+            "sY": "100",
+            "sitY": "70",
+            "massa": "250"
+        },
+        "move": {
+            "speed": "3",
+            "run": "18",
+            "accel": "3",
+            "brake": "0.4",
+            "jump": "18",
+            "levit_max": "30",
+            "plav": "0",
+            "levitaccel": "1.2",
+            "damwall": "100",
+            "porog": "20"
+        },
+        "vis": {
+            "noise": "600",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "1",
+            "hero": "hellhound"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "y": "0"
+            },
+            {
+                "id": "walk",
+                "y": "0",
+                "len": "25",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "sit",
+                "y": "1"
+            },
+            {
+                "id": "polz",
+                "y": "1",
+                "len": "25",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "2",
+                "len": "12",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "3",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            },
+            {
+                "id": "laz",
+                "y": "6",
+                "len": "12",
+                "rep": "1"
+            }
+        ]
+    },
+    {
+        "id": "hellhound1",
+        "xp": "500",
+        "cat": "3",
+        "parent": "hellhound",
+        "comb": {
+            "hp": "300",
+            "damage": "100",
+            "tipdam": "14"
+        },
+        "vis": {
+            "blit": "sprHellhound",
+            "sprX": "200",
+            "sprY": "170",
+            "sprDX": "100",
+            "sprDY": "160"
+        }
+    },
+    {
+        "id": "zombie",
+        "fraction": "1",
+        "cat": "2",
+        "move": {
+            "brake": "0.3",
+            "levit_max": "90",
+            "plav": "0",
+            "levitaccel": "1.2",
+            "damwall": "25"
+        },
+        "vis": {
+            "noise": "600",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "zw"
+        },
+        "param": {
+            "overlook": "0",
+            "blood": "2",
+            "zombie": "1",
+            "hero": "zombie"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "2",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "3",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            },
+            {
+                "id": "dig",
+                "y": "6",
+                "len": "24"
+            },
+            {
+                "id": "walk",
+                "y": "7",
+                "len": "24",
+                "rep": "1"
+            }
+        ],
+        "n": "Общие параметры зомби"
+    },
+    {
+        "id": "zombie0",
+        "cont": "zombie",
+        "xp": "100",
+        "cat": "3",
+        "parent": "zombie",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "40"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "10",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "25"
+        },
+        "comb": {
+            "hp": "50",
+            "damage": "14"
+        },
+        "vulner": {
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie0",
+            "sprX": "120",
+            "sex": "w"
+        },
+        "n": "Дикий гуль"
+    },
+    {
+        "id": "zombie1",
+        "cont": "zombie",
+        "xp": "150",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "1"
+        },
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "40"
+        },
+        "move": {
+            "speed": "2",
+            "run": "13",
+            "jump": "18",
+            "accel": "3",
+            "damwall": "35"
+        },
+        "comb": {
+            "hp": "80",
+            "damage": "15"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie1",
+            "sprX": "120",
+            "sex": "w"
+        },
+        "blit": {
+            "id": "pre",
+            "y": "8",
+            "len": "24"
+        },
+        "n": "Прыгун"
+    },
+    {
+        "id": "zombie2",
+        "cont": "zombie",
+        "xp": "150",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "2"
+        },
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "55"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "12",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "35"
+        },
+        "comb": {
+            "hp": "80",
+            "damage": "18"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie2",
+            "sprX": "120",
+            "sex": "w"
+        },
+        "blit": {
+            "id": "super",
+            "y": "8",
+            "len": "4",
+            "rep": "1"
+        },
+        "n": "Телекинетик"
+    },
+    {
+        "id": "zombie3",
+        "cont": "zombie",
+        "xp": "150",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "3"
+        },
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "10",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "35"
+        },
+        "comb": {
+            "hp": "85",
+            "damage": "15"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie3",
+            "sprX": "120",
+            "sex": "w",
+            "visdam": "3",
+            "sdamage": "15",
+            "stipdam": "7"
+        },
+        "blit": {
+            "id": "pre",
+            "y": "8",
+            "len": "18"
+        },
+        "n": "Ядовитый"
+    },
+    {
+        "id": "zombie4",
+        "xp": "300",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "glow": "1",
+            "ss": "5"
+        },
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "75"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "12",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "40"
+        },
+        "comb": {
+            "hp": "100",
+            "damage": "20",
+            "raddamage": "6"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "laser": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "snd": {
+            "die": "zm"
+        },
+        "vis": {
+            "blit": "sprZombie4",
+            "sprX": "130"
+        },
+        "n": "Светящийся гуль"
+    },
+    {
+        "id": "zombie5",
+        "xp": "450",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "6"
+        },
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "200"
+        },
+        "move": {
+            "speed": "1.6",
+            "run": "11",
+            "jump": "16",
+            "accel": "1",
+            "damwall": "55"
+        },
+        "comb": {
+            "hp": "140",
+            "damage": "25",
+            "armor": "12",
+            "aqual": "0.4",
+            "observ": "3"
+        },
+        "vulner": {
+            "fire": "0.5",
+            "bul": "0.75",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "acid": "0.25",
+            "pink": "0"
+        },
+        "snd": {
+            "die": "zm"
+        },
+        "vis": {
+            "blit": "sprZombie5",
+            "sprX": "130"
+        },
+        "blit": {
+            "id": "super",
+            "y": "1",
+            "len": "17",
+            "rf": "1",
+            "df": "2",
+            "rep": "1"
+        },
+        "n": "Гуль-солдат"
+    },
+    {
+        "id": "zombie6",
+        "xp": "600",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "4"
+        },
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "2",
+            "run": "14",
+            "jump": "18",
+            "accel": "3",
+            "damwall": "55",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "180",
+            "damage": "30",
+            "skin": "3",
+            "observ": "6"
+        },
+        "vulner": {
+            "acid": "0",
+            "bul": "0.75",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0.5",
+            "pink": "0"
+        },
+        "vis": {
+            "blit": "sprZombie6",
+            "sprX": "120",
+            "sex": "w",
+            "visdam": "3",
+            "sdamage": "20",
+            "stipdam": "10"
+        },
+        "blit": {
+            "id": "pre",
+            "y": "8",
+            "len": "18"
+        },
+        "n": "Потрошитель"
+    },
+    {
+        "id": "zombie7",
+        "xp": "450",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "7",
+            "res": "1"
+        },
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "55"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "12",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "50",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "150",
+            "damage": "30",
+            "tipdam": "16"
+        },
+        "param": {
+            "blood": "3"
+        },
+        "vulner": {
+            "bul": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "pink": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie7",
+            "sprX": "120",
+            "sex": "w",
+            "visdam": "3",
+            "sdamage": "15",
+            "stipdam": "16"
+        },
+        "blit": {
+            "id": "super",
+            "y": "8",
+            "len": "4",
+            "rep": "1"
+        }
+    },
+    {
+        "id": "zombie8",
+        "xp": "650",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "8",
+            "res": "1"
+        },
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "95"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "12",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "80"
+        },
+        "comb": {
+            "hp": "200",
+            "damage": "35"
+        },
+        "snd": {
+            "die": "zm"
+        },
+        "param": {
+            "blood": "3"
+        },
+        "vulner": {
+            "bul": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "pink": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie8",
+            "sprX": "130",
+            "visdam": "3",
+            "sdamage": "25",
+            "stipdam": "19"
+        }
+    },
+    {
+        "id": "zombie9",
+        "xp": "1000",
+        "cat": "3",
+        "parent": "zombie",
+        "un": {
+            "ss": "9",
+            "res": "1"
+        },
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "55"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "16",
+            "jump": "18",
+            "accel": "2",
+            "damwall": "65",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "250",
+            "damage": "50",
+            "observ": "6"
+        },
+        "param": {
+            "blood": "3"
+        },
+        "vulner": {
+            "bul": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "pink": "0",
+            "bleed": "0.5",
+            "acid": "0.25"
+        },
+        "vis": {
+            "blit": "sprZombie9",
+            "sprX": "130",
+            "sex": "w"
+        },
+        "blit": {
+            "id": "pre",
+            "y": "8",
+            "len": "24"
+        }
+    },
+    {
+        "id": "bloat",
+        "fraction": "1",
+        "cat": "2",
+        "phis": {
+            "sX": "30",
+            "sY": "30",
+            "massa": "10"
+        },
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "brake": "0.3",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "12",
+            "damage": "8",
+            "tipdam": "14",
+            "vision": "0.8"
+        },
+        "param": {
+            "blood": "2",
+            "trup": "0",
+            "acttrap": "1",
+            "insect": "1"
+        },
+        "vis": {
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "bloat"
+        },
+        "n": "Блотспрайт"
+    },
+    {
+        "id": "bloat0",
+        "xp": "20",
+        "cat": "3",
+        "parent": "bloat",
+        "phis": {
+            "sX": "25",
+            "sY": "25",
+            "massa": "6"
+        },
+        "move": {
+            "speed": "6",
+            "accel": "2",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "8",
+            "dexter": "1.3",
+            "damage": "4",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "bul": "0.5",
+            "fire": "1.25",
+            "laser": "1.25",
+            "plasma": "1.25",
+            "cryo": "1.25"
+        },
+        "vis": {
+            "vclass": "visualBloat0"
+        },
+        "un": {
+            "attch": "0.6",
+            "attr": "600"
+        },
+        "n": "Блотспрайт"
+    },
+    {
+        "id": "bloat1",
+        "xp": "40",
+        "cat": "3",
+        "parent": "bloat",
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "brake": "0.3"
+        },
+        "param": {
+            "hero": "bloat"
+        },
+        "vulner": {
+            "bul": "0.25",
+            "fire": "1.25",
+            "laser": "1.25",
+            "plasma": "1.25",
+            "cryo": "1.25",
+            "acid": "0"
+        },
+        "comb": {
+            "hp": "12",
+            "dexter": "1.3",
+            "damage": "3",
+            "tipdam": "14"
+        },
+        "vis": {
+            "vclass": "visualBloat1",
+            "visdam": "3",
+            "sdamage": "5",
+            "stipdam": "10"
+        },
+        "w": {
+            "id": "bloat",
+            "no": "1"
+        },
+        "phis": null
+    },
+    {
+        "id": "bloat2",
+        "xp": "40",
+        "cat": "3",
+        "parent": "bloat",
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "14",
+            "dexter": "1.3",
+            "damage": "3",
+            "tipdam": "14"
+        },
+        "param": {
+            "hero": "bloat"
+        },
+        "vulner": {
+            "bul": "0.25",
+            "fire": "1.25",
+            "laser": "1.25",
+            "plasma": "1.25",
+            "cryo": "1.25",
+            "venom": "0",
+            "poison": "0"
+        },
+        "vis": {
+            "vclass": "visualBloat2",
+            "visdam": "3",
+            "sdamage": "3",
+            "stipdam": "14"
+        },
+        "w": {
+            "id": "ship",
+            "no": "1"
+        },
+        "phis": null,
+        "n": "Блотспрайт"
+    },
+    {
+        "id": "bloat3",
+        "xp": "60",
+        "cat": "3",
+        "parent": "bloat",
+        "phis": {
+            "sX": "40",
+            "sY": "40",
+            "massa": "15"
+        },
+        "move": {
+            "speed": "4",
+            "accel": "1.2",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "24",
+            "damage": "9",
+            "tipdam": "14",
+            "skin": "5"
+        },
+        "param": {
+            "hero": "bloat"
+        },
+        "vis": {
+            "vclass": "visualBloat3"
+        },
+        "vulner": {
+            "bul": "0.25",
+            "fire": "0.75",
+            "laser": "0.75",
+            "plasma": "0.75",
+            "cryo": "0.75",
+            "phis": "0.75",
+            "blade": "0.75"
+        },
+        "un": {
+            "bulb": "1"
+        },
+        "n": "Толстый Блотспрайт"
+    },
+    {
+        "id": "bloat4",
+        "xp": "60",
+        "cat": "3",
+        "parent": "bloat",
+        "move": {
+            "speed": "7",
+            "run": "18",
+            "accel": "2.5",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "16",
+            "dexter": "1.2",
+            "damage": "9",
+            "tipdam": "14",
+            "skin": "3"
+        },
+        "param": {
+            "hero": "bloat"
+        },
+        "vis": {
+            "vclass": "visualBloat4"
+        },
+        "vulner": {
+            "bul": "0.5"
+        },
+        "un": {
+            "attch": "0.8",
+            "attr": "700"
+        },
+        "phis": null,
+        "n": "Зубастый Блотспрайт"
+    },
+    {
+        "id": "bloat5",
+        "xp": "120",
+        "cat": "3",
+        "parent": "bloat",
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "brake": "0.3"
+        },
+        "param": {
+            "hero": "bloat",
+            "blood": "3"
+        },
+        "vulner": {
+            "bul": "0.25",
+            "pink": "0",
+            "fire": "1.25",
+            "laser": "1.25",
+            "plasma": "1.25",
+            "cryo": "1.25",
+            "acid": "0"
+        },
+        "comb": {
+            "hp": "30",
+            "dexter": "1.3",
+            "damage": "15",
+            "tipdam": "14"
+        },
+        "vis": {
+            "vclass": "visualBloat5",
+            "visdam": "3",
+            "sdamage": "15",
+            "stipdam": "19"
+        },
+        "w": {
+            "id": "pinkbloat",
+            "no": "1"
+        },
+        "phis": null
+    },
+    {
+        "id": "bloat6",
+        "xp": "180",
+        "cat": "3",
+        "parent": "bloat",
+        "move": {
+            "speed": "8",
+            "run": "20",
+            "accel": "2.5",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "36",
+            "dexter": "1.3",
+            "damage": "20",
+            "tipdam": "14",
+            "skin": "6"
+        },
+        "param": {
+            "hero": "bloat",
+            "blood": "3"
+        },
+        "vis": {
+            "vclass": "visualBloat6"
+        },
+        "vulner": {
+            "bul": "0.25",
+            "pink": "0"
+        },
+        "un": {
+            "attch": "1",
+            "attr": "700",
+            "gryz": "1"
+        },
+        "phis": null
+    },
+    {
+        "id": "bloat7",
+        "xp": "50",
+        "phis": {
+            "massa": "10",
+            "sX": "30",
+            "sY": "30"
+        },
+        "move": {
+            "speed": "7",
+            "run": "18",
+            "accel": "2.5",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "25",
+            "dexter": "1.2",
+            "damage": "9",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "acid": "0",
+            "venom": "0",
+            "poison": "0"
+        },
+        "un": {
+            "attch": "0.8",
+            "attr": "700"
+        },
+        "snd": {
+            "music": "boss_2"
+        }
+    },
+    {
+        "id": "bloat8",
+        "xp": "100",
+        "phis": {
+            "massa": "20",
+            "sX": "35",
+            "sY": "35"
+        },
+        "move": {
+            "speed": "7",
+            "run": "15",
+            "accel": "2.5",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "75",
+            "damage": "10",
+            "tipdam": "14",
+            "skin": "2"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "acid": "0",
+            "venom": "0"
+        },
+        "w": {
+            "id": "bloat"
+        },
+        "un": {
+            "chootch": "0.05"
+        },
+        "snd": {
+            "music": "boss_2"
+        }
+    },
+    {
+        "id": "bloat9",
+        "xp": "300",
+        "phis": {
+            "massa": "50",
+            "sX": "40",
+            "sY": "40"
+        },
+        "move": {
+            "speed": "7",
+            "run": "12",
+            "accel": "2.5",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "200",
+            "damage": "12",
+            "tipdam": "14",
+            "skin": "4"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "acid": "0",
+            "venom": "0",
+            "poison": "0"
+        },
+        "w": {
+            "id": "zombivenom"
+        },
+        "un": {
+            "chootch": "0.02"
+        },
+        "snd": {
+            "music": "boss_2"
+        }
+    },
+    {
+        "id": "bloat10",
+        "xp": "1000",
+        "cat": "3",
+        "parent": "bloat",
+        "phis": {
+            "massa": "100",
+            "sX": "50",
+            "sY": "50"
+        },
+        "move": {
+            "speed": "7",
+            "run": "12",
+            "accel": "2.5",
+            "brake": "0.3"
+        },
+        "comb": {
+            "hp": "500",
+            "damage": "18",
+            "tipdam": "14",
+            "skin": "6"
+        },
+        "vulner": {
+            "bul": "0.75",
+            "acid": "0",
+            "venom": "0",
+            "poison": "0"
+        },
+        "vis": {
+            "vclass": "visualBloat10",
+            "dkill": "0"
+        },
+        "w": {
+            "id": "zombiacid",
+            "no": "1"
+        },
+        "un": {
+            "chootch": "0.02"
+        },
+        "snd": {
+            "music": "boss_2"
+        }
+    },
+    {
+        "id": "ebloat",
+        "fraction": "1",
+        "xp": "1000",
+        "cat": "3",
+        "phis": {
+            "sX": "80",
+            "sY": "120",
+            "massa": "500"
+        },
+        "move": {
+            "fixed": "1",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "300",
+            "dexter": "0.5",
+            "damage": "30",
+            "tipdam": "10",
+            "skin": "3"
+        },
+        "param": {
+            "blood": "2",
+            "trup": "0",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "snd": {
+            "die": "nest"
+        },
+        "vis": {
+            "vclass": "visualBloatEmitter",
+            "visdam": "1",
+            "dkill": "1"
+        },
+        "vulner": {
+            "bul": "0.5"
+        },
+        "n": "гнездо"
+    },
+    {
+        "id": "other",
+        "cat": "2"
+    },
+    {
+        "id": "bloodwing",
+        "fraction": "1",
+        "xp": "100",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "25"
+        },
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "brake": "0.3",
+            "float": "-0.3",
+            "damwall": "15",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "40",
+            "dexter": "1.2",
+            "damage": "10",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "fire": "1.25"
+        },
+        "param": {
+            "blood": "1",
+            "monster": "1",
+            "hero": "bloodwing",
+            "acttrap": "1"
+        },
+        "snd": {
+            "die": "bat"
+        },
+        "vis": {
+            "vclass": "visualBloodwing",
+            "visdam": "1"
+        },
+        "n": "Кровокрыл"
+    },
+    {
+        "id": "bloodwing2",
+        "fraction": "1",
+        "xp": "400",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "45"
+        },
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "brake": "0.3",
+            "float": "-0.3",
+            "damwall": "35",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "120",
+            "dexter": "1.2",
+            "damage": "20",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "fire": "1.25"
+        },
+        "param": {
+            "blood": "3",
+            "monster": "1",
+            "hero": "bloodwing",
+            "acttrap": "1"
+        },
+        "snd": {
+            "die": "bat"
+        },
+        "vis": {
+            "vclass": "visualBloodwing2",
+            "visdam": "1"
+        },
+        "n": "Кровокрыл"
+    },
+    {
+        "id": "fish1",
+        "fraction": "1",
+        "xp": "50",
+        "cat": "3",
+        "phis": {
+            "sX": "32",
+            "sY": "32",
+            "massa": "10"
+        },
+        "move": {
+            "speed": "3.2",
+            "accel": "2",
+            "brake": "0.3",
+            "float": "0",
+            "jump": "15",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "20",
+            "dexter": "1.2",
+            "damage": "7",
+            "tipdam": "14",
+            "damwall": "15"
+        },
+        "snd": {
+            "die": "bloat"
+        },
+        "param": {
+            "blood": "1",
+            "monster": "1",
+            "hero": "fish"
+        },
+        "vis": {
+            "vclass": "visualFish1",
+            "visdam": "1"
+        },
+        "n": "Рыба"
+    },
+    {
+        "id": "fish2",
+        "fraction": "1",
+        "xp": "100",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "25"
+        },
+        "move": {
+            "speed": "2.6",
+            "accel": "1.8",
+            "brake": "0.3",
+            "float": "0",
+            "jump": "15",
+            "damwall": "15"
+        },
+        "comb": {
+            "hp": "35",
+            "dexter": "1.2",
+            "damage": "10",
+            "tipdam": "14"
+        },
+        "snd": {
+            "die": "bloat"
+        },
+        "param": {
+            "blood": "1",
+            "monster": "1",
+            "hero": "fish"
+        },
+        "vis": {
+            "vclass": "visualFish2",
+            "visdam": "1"
+        },
+        "n": "Рыба"
+    },
+    {
+        "id": "fish3",
+        "fraction": "1",
+        "xp": "300",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "25"
+        },
+        "move": {
+            "speed": "3.6",
+            "accel": "2",
+            "brake": "0.5",
+            "float": "0",
+            "jump": "15",
+            "damwall": "25"
+        },
+        "comb": {
+            "hp": "100",
+            "dexter": "1.2",
+            "damage": "20",
+            "tipdam": "14"
+        },
+        "snd": {
+            "die": "bloat"
+        },
+        "param": {
+            "monster": "1",
+            "hero": "fish"
+        },
+        "vulner": {
+            "pink": "0"
+        },
+        "vis": {
+            "vclass": "visualFish3",
+            "visdam": "1"
+        }
+    },
+    {
+        "id": "tarakan",
+        "fraction": "1",
+        "xp": "10",
+        "cat": "3",
+        "phis": {
+            "sX": "30",
+            "sY": "15",
+            "massa": "5"
+        },
+        "move": {
+            "speed": "1.2",
+            "run": "4",
+            "accel": "0.5",
+            "jump": "5",
+            "brake": "1",
+            "porog": "0",
+            "levitaccel": "0.5",
+            "levit_max": "60",
+            "damwall": "4"
+        },
+        "comb": {
+            "hp": "8",
+            "damage": "4",
+            "tipdam": "14"
+        },
+        "param": {
+            "blood": "2",
+            "trup": "0",
+            "acttrap": "1",
+            "overlook": "0",
+            "insect": "1"
+        },
+        "vis": {
+            "blit": "sprTarakan",
+            "sprX": "60",
+            "sprY": "30",
+            "sprDX": "27",
+            "sprDY": "27",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "bloat"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "len": "8",
+                "rep": "1"
+            }
+        ],
+        "n": "Радтаракан"
+    },
+    {
+        "id": "rat",
+        "fraction": "1",
+        "xp": "20",
+        "cat": "3",
+        "phis": {
+            "sX": "40",
+            "sY": "15",
+            "massa": "6"
+        },
+        "move": {
+            "speed": "2.5",
+            "run": "6",
+            "accel": "1",
+            "jump": "8",
+            "brake": "1",
+            "levitaccel": "1.5",
+            "levit_max": "50",
+            "porog": "10",
+            "damwall": "5"
+        },
+        "comb": {
+            "hp": "15",
+            "damage": "6",
+            "tipdam": "14"
+        },
+        "param": {
+            "blood": "1",
+            "trup": "0",
+            "acttrap": "1",
+            "overlook": "0",
+            "hero": "rat"
+        },
+        "vis": {
+            "blit": "sprRat",
+            "sprX": "70",
+            "sprY": "30",
+            "sprDX": "43",
+            "sprDY": "27",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "rat"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "len": "9",
+                "ff": "1",
+                "rf": "2",
+                "df": "0.5",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "len": "9",
+                "ff": "1",
+                "rf": "2",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "ff": "10"
+            },
+            {
+                "id": "plav",
+                "len": "9",
+                "ff": "1",
+                "rf": "2",
+                "df": "0.25",
+                "rep": "1"
+            }
+        ],
+        "n": "Крыса"
+    },
+    {
+        "id": "molerat",
+        "fraction": "1",
+        "xp": "60",
+        "cat": "3",
+        "phis": {
+            "sX": "55",
+            "sY": "40",
+            "massa": "45"
+        },
+        "move": {
+            "speed": "2",
+            "run": "8",
+            "accel": "1",
+            "jump": "14",
+            "brake": "0.5",
+            "levitaccel": "0.9",
+            "levit_max": "50",
+            "porog": "10",
+            "damwall": "12"
+        },
+        "comb": {
+            "hp": "34",
+            "damage": "10",
+            "tipdam": "14"
+        },
+        "param": {
+            "blood": "1",
+            "acttrap": "1",
+            "overlook": "0",
+            "monster": "1",
+            "hero": "rat"
+        },
+        "vulner": {
+            "cryo": "0.5"
+        },
+        "vis": {
+            "blit": "sprMolerat",
+            "sprX": "85",
+            "sprY": "58",
+            "sprDX": "46",
+            "sprDY": "49",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "molerat"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "len": "13",
+                "ff": "1",
+                "rf": "2",
+                "df": "0.5",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "len": "13",
+                "ff": "1",
+                "rf": "2",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "1",
+                "len": "10",
+                "df": "0.4"
+            },
+            {
+                "id": "plav",
+                "y": "2",
+                "len": "8",
+                "df": "0.5",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "3",
+                "len": "10"
+            },
+            {
+                "id": "death",
+                "y": "3",
+                "ff": "9"
+            }
+        ],
+        "n": "Кротокрыс"
+    },
+    {
+        "id": "scorp1",
+        "fraction": "1",
+        "cont": "scorp",
+        "xp": "100",
+        "cat": "3",
+        "phis": {
+            "sX": "55",
+            "sY": "39",
+            "massa": "35"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "5",
+            "accel": "0.6",
+            "jump": "10",
+            "brake": "1",
+            "levitaccel": "0.7",
+            "levit_max": "120",
+            "porog": "10",
+            "damwall": "8"
+        },
+        "comb": {
+            "hp": "40",
+            "damage": "7",
+            "skin": "5",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "phis": "0.75",
+            "blade": "0.5",
+            "venom": "0.5",
+            "acid": "0.5",
+            "laser": "0.5"
+        },
+        "param": {
+            "blood": "2",
+            "acttrap": "1",
+            "overlook": "0",
+            "insect": "1",
+            "hero": "scorp"
+        },
+        "vis": {
+            "blit": "sprScorp1",
+            "sprX": "85",
+            "sprY": "58",
+            "sprDX": "38",
+            "sprDY": "56",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "scorp"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "attack",
+                "len": "15",
+                "ff": "1"
+            },
+            {
+                "id": "walk",
+                "y": "1",
+                "len": "18",
+                "rep": "1",
+                "df": "0.5"
+            },
+            {
+                "id": "run",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "2",
+                "ff": "19"
+            }
+        ],
+        "n": "Радскорпион"
+    },
+    {
+        "id": "scorp2",
+        "fraction": "1",
+        "cont": "scorp",
+        "xp": "100",
+        "cat": "3",
+        "phis": {
+            "sX": "55",
+            "sY": "39",
+            "massa": "35"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "8",
+            "accel": "0.8",
+            "jump": "10",
+            "brake": "1",
+            "levitaccel": "1.2",
+            "levit_max": "60",
+            "porog": "10",
+            "damwall": "12"
+        },
+        "comb": {
+            "hp": "60",
+            "damage": "10",
+            "skin": "2",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "phis": "0.75",
+            "blade": "0.5",
+            "venom": "0.5",
+            "acid": "0.5",
+            "laser": "0.5"
+        },
+        "param": {
+            "blood": "2",
+            "acttrap": "1",
+            "overlook": "0",
+            "insect": "1",
+            "hero": "scorp"
+        },
+        "vis": {
+            "blit": "sprScorp2",
+            "sprX": "85",
+            "sprY": "58",
+            "sprDX": "38",
+            "sprDY": "56",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "scorp"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "attack",
+                "len": "15",
+                "ff": "1"
+            },
+            {
+                "id": "walk",
+                "y": "1",
+                "len": "18",
+                "rep": "1",
+                "df": "0.5"
+            },
+            {
+                "id": "run",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "2",
+                "ff": "19"
+            }
+        ],
+        "n": "Радскорпион"
+    },
+    {
+        "id": "scorp3",
+        "fraction": "1",
+        "cont": "scorp",
+        "xp": "300",
+        "cat": "3",
+        "phis": {
+            "sX": "70",
+            "sY": "39",
+            "massa": "65"
+        },
+        "move": {
+            "speed": "1.5",
+            "run": "8",
+            "accel": "0.8",
+            "jump": "10",
+            "brake": "1",
+            "levitaccel": "1.2",
+            "levit_max": "60",
+            "porog": "10",
+            "damwall": "32"
+        },
+        "comb": {
+            "hp": "120",
+            "damage": "32",
+            "skin": "10",
+            "tipdam": "14"
+        },
+        "vulner": {
+            "phis": "0.75",
+            "blade": "0.5",
+            "venom": "0.5",
+            "acid": "0.5",
+            "pink": "0",
+            "laser": "0.5"
+        },
+        "param": {
+            "blood": "3",
+            "acttrap": "1",
+            "overlook": "0",
+            "insect": "1",
+            "hero": "scorp"
+        },
+        "vis": {
+            "blit": "sprScorp3",
+            "sprX": "106",
+            "sprY": "76",
+            "sprDX": "50",
+            "sprDY": "67",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "scorp"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "attack",
+                "len": "15",
+                "ff": "1"
+            },
+            {
+                "id": "walk",
+                "y": "1",
+                "len": "18",
+                "rep": "1",
+                "df": "0.5"
+            },
+            {
+                "id": "run",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "1",
+                "len": "18",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "2",
+                "ff": "19"
+            }
+        ],
+        "n": "Радскорпион"
+    },
+    {
+        "id": "ant",
+        "fraction": "1",
+        "phis": {
+            "sX": "40",
+            "sY": "19",
+            "massa": "7"
+        },
+        "move": {
+            "speed": "4",
+            "run": "8",
+            "accel": "1",
+            "jump": "5",
+            "brake": "1",
+            "porog": "10",
+            "levitaccel": "0.5",
+            "levit_max": "60",
+            "damwall": "4"
+        },
+        "comb": {
+            "hp": "16",
+            "damage": "7",
+            "tipdam": "14"
+        },
+        "param": {
+            "blood": "2",
+            "trup": "0",
+            "acttrap": "1",
+            "overlook": "0",
+            "insect": "1"
+        },
+        "vis": {
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "bloat"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "walk",
+                "len": "14",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "len": "14",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "len": "14",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "plav",
+                "len": "14",
+                "rf": "1",
+                "rep": "1"
+            }
+        ],
+        "n": "Муравей"
+    },
+    {
+        "id": "ant1",
+        "xp": "30",
+        "cat": "3",
+        "parent": "ant",
+        "phis": {
+            "massa": "7"
+        },
+        "comb": {
+            "hp": "16",
+            "damage": "7",
+            "dexter": "1.1",
+            "skin": "2"
+        },
+        "vulner": {
+            "cryo": "1.5"
+        },
+        "vis": {
+            "blit": "sprAnt1",
+            "sprX": "78",
+            "sprY": "32",
+            "sprDX": "34",
+            "sprDY": "30"
+        },
+        "n": "Муравей-рабочий"
+    },
+    {
+        "id": "ant2",
+        "xp": "60",
+        "cat": "3",
+        "parent": "ant",
+        "phis": {
+            "massa": "10"
+        },
+        "comb": {
+            "hp": "32",
+            "damage": "14",
+            "skin": "4"
+        },
+        "vulner": {
+            "cryo": "1.5"
+        },
+        "param": {
+            "hero": "ant"
+        },
+        "vis": {
+            "blit": "sprAnt2",
+            "sprX": "78",
+            "sprY": "32",
+            "sprDX": "34",
+            "sprDY": "30"
+        },
+        "n": "Муравей-солдат"
+    },
+    {
+        "id": "ant3",
+        "xp": "80",
+        "cat": "3",
+        "parent": "ant",
+        "phis": {
+            "massa": "10"
+        },
+        "comb": {
+            "hp": "32",
+            "damage": "7",
+            "skin": "2"
+        },
+        "vulner": {
+            "cryo": "1.5",
+            "fire": "0.25"
+        },
+        "param": {
+            "hero": "ant"
+        },
+        "vis": {
+            "blit": "sprAnt3",
+            "sprX": "78",
+            "sprY": "32",
+            "sprDX": "34",
+            "sprDY": "30",
+            "visdam": "3",
+            "sdamage": "2",
+            "stipdam": "3"
+        },
+        "n": "Огненный муравей"
+    },
+    {
+        "id": "eant",
+        "fraction": "1",
+        "xp": "1000",
+        "cat": "3",
+        "phis": {
+            "sX": "80",
+            "sY": "80",
+            "massa": "500"
+        },
+        "move": {
+            "fixed": "1",
+            "levit": "0"
+        },
+        "comb": {
+            "hp": "300",
+            "dexter": "0.5",
+            "damage": "30",
+            "tipdam": "10",
+            "skin": "10"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "1"
+        },
+        "vis": {
+            "vclass": "visualAntEmitter",
+            "visdam": "1",
+            "dkill": "0"
+        },
+        "snd": {
+            "die": "nest"
+        },
+        "vulner": {
+            "phis": "0.5",
+            "blade": "0.5",
+            "expl": "3"
+        },
+        "n": "муравейник"
+    },
+    {
+        "id": "slime",
+        "fraction": "1",
+        "xp": "50",
+        "cat": "3",
+        "phis": {
+            "sX": "40",
+            "sY": "30",
+            "massa": "15"
+        },
+        "move": {
+            "speed": "1.5",
+            "accel": "0.4",
+            "knocked": "0",
+            "levit_max": "35",
+            "float": "-0.5"
+        },
+        "comb": {
+            "hp": "60",
+            "damage": "6",
+            "tipdam": "10"
+        },
+        "snd": {
+            "die": "slime"
+        },
+        "w": {
+            "id": "slime",
+            "no": "1"
+        },
+        "vis": {
+            "vclass": "visualSlime",
+            "noise": "0",
+            "visdam": "1"
+        },
+        "vulner": {
+            "bul": "0.05",
+            "blade": "0.25",
+            "bleed": "0",
+            "phis": "0.25",
+            "acid": "0",
+            "venom": "0",
+            "poison": "0",
+            "expl": "0.7",
+            "laser": "0.7",
+            "spark": "0.5"
+        },
+        "param": {
+            "blood": "2",
+            "trup": "0",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "n": "Ужасная слизь"
+    },
+    {
+        "id": "cryoslime",
+        "fraction": "1",
+        "xp": "150",
+        "cat": "3",
+        "phis": {
+            "sX": "40",
+            "sY": "30",
+            "massa": "15"
+        },
+        "move": {
+            "speed": "1.3",
+            "accel": "0.4",
+            "knocked": "0",
+            "levit_max": "35",
+            "float": "-0.5"
+        },
+        "comb": {
+            "hp": "120",
+            "damage": "12",
+            "tipdam": "11"
+        },
+        "snd": {
+            "die": "slime"
+        },
+        "w": {
+            "id": "slime",
+            "no": "1"
+        },
+        "vis": {
+            "vclass": "visualCryoSlime",
+            "noise": "0",
+            "visdam": "1",
+            "dkill": "2"
+        },
+        "vulner": {
+            "bul": "0.05",
+            "blade": "0.25",
+            "bleed": "0",
+            "phis": "0.25",
+            "cryo": "0",
+            "venom": "0",
+            "poison": "0",
+            "expl": "0.7",
+            "laser": "0.7",
+            "spark": "0.5"
+        },
+        "param": {
+            "blood": "2",
+            "trup": "0",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "n": "Ужасная слизь"
+    },
+    {
+        "id": "pinkslime",
+        "fraction": "1",
+        "xp": "250",
+        "cat": "3",
+        "phis": {
+            "sX": "40",
+            "sY": "30",
+            "massa": "15"
+        },
+        "move": {
+            "speed": "1.7",
+            "accel": "0.4",
+            "knocked": "0",
+            "levit_max": "35",
+            "float": "-0.5"
+        },
+        "comb": {
+            "hp": "200",
+            "damage": "20",
+            "tipdam": "19"
+        },
+        "snd": {
+            "die": "slime"
+        },
+        "w": {
+            "id": "pinkslime",
+            "no": "1"
+        },
+        "vis": {
+            "vclass": "visualPinkSlime",
+            "noise": "0",
+            "visdam": "1"
+        },
+        "vulner": {
+            "bul": "0.05",
+            "blade": "0.25",
+            "bleed": "0",
+            "phis": "0.25",
+            "pink": "0",
+            "venom": "0",
+            "poison": "0",
+            "expl": "0.7",
+            "laser": "0.7",
+            "spark": "0.5"
+        },
+        "param": {
+            "blood": "3",
+            "trup": "0",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "n": "Ужасная слизь"
+    },
+    {
+        "id": "necros",
+        "fraction": "1",
+        "xp": "850",
+        "cat": "3",
+        "phis": {
+            "sX": "60",
+            "sY": "60",
+            "massa": "15"
+        },
+        "move": {
+            "speed": "4",
+            "accel": "0.5",
+            "knocked": "0",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "400",
+            "dexter": "2",
+            "damage": "80",
+            "tipdam": "16"
+        },
+        "vis": {
+            "blit": "sprNecros",
+            "sprX": "160",
+            "sprY": "160",
+            "sprDX": "80",
+            "sprDY": "120",
+            "visdam": "1"
+        },
+        "vulner": {
+            "bul": "0",
+            "blade": "0",
+            "bleed": "0",
+            "phis": "0",
+            "pink": "0",
+            "venom": "0",
+            "poison": "0",
+            "laser": "0.7",
+            "expl": "0.7",
+            "spark": "0.5",
+            "cryo": "0.2"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "blit": {
+            "id": "stay",
+            "len": "24",
+            "rep": "0"
+        }
+    },
+    {
+        "id": "phoenix",
+        "fraction": "1",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "6"
+        },
+        "move": {
+            "speed": "5",
+            "run": "15",
+            "jump": "12",
+            "accel": "1.5",
+            "float": "-0.5"
+        },
+        "comb": {
+            "hp": "10"
+        },
+        "vulner": {
+            "fire": "0.5",
+            "plasma": "0.5",
+            "laser": "0.75",
+            "expl": "0.25"
+        },
+        "vis": {
+            "blit": "sprPhoenix",
+            "sprX": "121",
+            "sprY": "121",
+            "sprDX": "76",
+            "sprDY": "72"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "fly",
+                "len": "10",
+                "ff": "1",
+                "rf": "2",
+                "rep": "1"
+            }
+        ],
+        "w": {
+            "id": "phoenix",
+            "no": "1"
+        }
+    },
+    {
+        "id": "moon",
+        "fraction": "1",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "6"
+        },
+        "move": {
+            "speed": "7",
+            "run": "15",
+            "accel": "1.5"
+        },
+        "comb": {
+            "hp": "10",
+            "damage": "1",
+            "tipdam": "1"
+        },
+        "vulner": {
+            "necr": "0.5",
+            "pink": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "vis": {
+            "vclass": "visualMoon"
+        }
+    },
+    {
+        "id": "robot",
+        "cat": "1"
+    },
+    {
+        "id": "bigrobot",
+        "cat": "2"
+    },
+    {
+        "id": "robobrain",
+        "fraction": "4",
+        "xp": "150",
+        "cat": "3",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "85"
+        },
+        "move": {
+            "speed": "2",
+            "accel": "2",
+            "jump": "0",
+            "brake": "1",
+            "plav": "0",
+            "levitaccel": "1.2",
+            "damwall": "30",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "60",
+            "armor": "5",
+            "krep": "1",
+            "aqual": "0.75",
+            "armorhp": "120"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "1.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "overlook": "0",
+            "robot": "1",
+            "hero": "robot"
+        },
+        "vis": {
+            "noise": "500",
+            "replic": "robobrain",
+            "vclass": "visualRobobrain",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "expl2"
+        },
+        "w": [
+            {
+                "id": "robolaser",
+                "ch": "0.5"
+            },
+            {
+                "id": "robospark"
+            }
+        ],
+        "n": "Робомозг"
+    },
+    {
+        "id": "protect",
+        "fraction": "4",
+        "xp": "250",
+        "cat": "3",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "160"
+        },
+        "move": {
+            "speed": "2",
+            "accel": "1",
+            "jump": "6",
+            "brake": "1",
+            "plav": "0",
+            "levitaccel": "1.1",
+            "damwall": "40",
+            "levit_max": "60"
+        },
+        "comb": {
+            "hp": "100",
+            "armor": "10",
+            "marmor": "5",
+            "krep": "1",
+            "aqual": "0.8",
+            "armorhp": "250",
+            "observ": "3"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "expl": "0.7",
+            "blade": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "overlook": "0",
+            "robot": "1",
+            "hero": "robot"
+        },
+        "vis": {
+            "blit": "sprProtect",
+            "noise": "500",
+            "sprX": "130",
+            "replic": "protect"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "expl1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "len": "1",
+                "rep": "0"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "walk",
+                "y": "4",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "5",
+                "len": "1"
+            },
+            {
+                "id": "fly",
+                "y": "5",
+                "len": "16",
+                "rf": "8",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "16"
+            },
+            {
+                "id": "death",
+                "y": "3"
+            },
+            {
+                "id": "fall",
+                "y": "3",
+                "len": "11"
+            }
+        ],
+        "w": [
+            {
+                "id": "roboplasma",
+                "ch": "0.3",
+                "dif": "10"
+            },
+            {
+                "id": "robolaser2",
+                "ch": "0.5"
+            },
+            {
+                "id": "robospark2"
+            }
+        ],
+        "n": "Протектопон"
+    },
+    {
+        "id": "gutsy",
+        "fraction": "4",
+        "xp": "450",
+        "cat": "3",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "105"
+        },
+        "move": {
+            "speed": "4",
+            "accel": "1",
+            "jump": "10",
+            "brake": "1",
+            "plav": "0",
+            "float": "-0.3",
+            "levitaccel": "1.6",
+            "damwall": "50",
+            "levit_max": "30"
+        },
+        "comb": {
+            "hp": "140",
+            "armor": "12",
+            "marmor": "10",
+            "krep": "1",
+            "aqual": "0.85",
+            "armorhp": "350",
+            "damage": "18",
+            "tipdam": "1",
+            "observ": "5"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "expl": "0.7",
+            "laser": "0.7",
+            "blade": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "robot": "1",
+            "hero": "gutsy"
+        },
+        "vis": {
+            "blit": "sprGutsy",
+            "noise": "500",
+            "sprX": "130",
+            "replic": "gutsy",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "expl1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "len": "40",
+                "rep": "0"
+            },
+            {
+                "id": "die",
+                "y": "1",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "1",
+                "len": "1"
+            }
+        ],
+        "w": [
+            {
+                "id": "robofire",
+                "f": "1"
+            },
+            {
+                "id": "roboplasma2",
+                "ch": "0.3",
+                "dif": "18"
+            },
+            {
+                "id": "roboplasma"
+            }
+        ],
+        "n": "Храбрец"
+    },
+    {
+        "id": "eqd",
+        "fraction": "4",
+        "xp": "600",
+        "cat": "3",
+        "phis": {
+            "sX": "55",
+            "sY": "70",
+            "massa": "100"
+        },
+        "move": {
+            "speed": "5",
+            "accel": "1.5",
+            "jump": "18",
+            "brake": "1",
+            "plav": "0",
+            "levitaccel": "1.5",
+            "damwall": "50",
+            "levit_max": "60"
+        },
+        "comb": {
+            "hp": "150",
+            "armor": "6",
+            "marmor": "15",
+            "krep": "1",
+            "aqual": "0.8",
+            "armorhp": "400",
+            "observ": "8"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.7",
+            "cryo": "0.5",
+            "laser": "0.7",
+            "plasma": "0.7",
+            "acid": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "overlook": "0",
+            "robot": "1",
+            "hero": "eqd"
+        },
+        "vis": {
+            "blit": "sprEqd1",
+            "noise": "500",
+            "sprX": "120",
+            "replic": "eqd"
+        },
+        "snd": {
+            "music": "combat_1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "len": "1",
+                "rep": "0"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "walk",
+                "y": "6",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "run",
+                "y": "2",
+                "len": "8",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "3",
+                "len": "16",
+                "stab": "1"
+            },
+            {
+                "id": "die",
+                "y": "4",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "5"
+            },
+            {
+                "id": "fall",
+                "y": "5",
+                "len": "13"
+            }
+        ],
+        "w": [
+            {
+                "id": "robonova",
+                "ch": "0.3",
+                "dif": "18"
+            },
+            {
+                "id": "robosparkl",
+                "ch": "0.5"
+            },
+            {
+                "id": "roboplam"
+            }
+        ],
+        "n": "Эквидроид"
+    },
+    {
+        "id": "protect1",
+        "fraction": "4",
+        "cont": "protect",
+        "xp": "500",
+        "cat": "3",
+        "phis": {
+            "sX": "60",
+            "sY": "70",
+            "massa": "240"
+        },
+        "move": {
+            "speed": "3",
+            "accel": "1",
+            "jump": "8",
+            "brake": "1",
+            "plav": "0",
+            "levitaccel": "1.3",
+            "damwall": "50",
+            "levit_max": "60"
+        },
+        "comb": {
+            "hp": "120",
+            "armor": "25",
+            "marmor": "15",
+            "krep": "1",
+            "aqual": "0.9",
+            "armorhp": "450",
+            "observ": "3"
+        },
+        "vulner": {
+            "emp": "0.5",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "expl": "0.7",
+            "blade": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "overlook": "0",
+            "robot": "1",
+            "hero": "robot"
+        },
+        "vis": {
+            "blit": "sprProtect1",
+            "noise": "500",
+            "sprX": "140",
+            "replic": "protect"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "expl1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "len": "1",
+                "rep": "0"
+            },
+            {
+                "id": "trot",
+                "y": "1",
+                "len": "17",
+                "rf": "1",
+                "rep": "1"
+            },
+            {
+                "id": "walk",
+                "y": "4",
+                "len": "24",
+                "rep": "1"
+            },
+            {
+                "id": "jump",
+                "y": "5",
+                "len": "1"
+            },
+            {
+                "id": "fly",
+                "y": "5",
+                "len": "16",
+                "rf": "8",
+                "rep": "1"
+            },
+            {
+                "id": "die",
+                "y": "2",
+                "len": "16"
+            },
+            {
+                "id": "death",
+                "y": "3"
+            },
+            {
+                "id": "fall",
+                "y": "3",
+                "len": "11"
+            }
+        ],
+        "w": [
+            {
+                "id": "robonova",
+                "ch": "0.3"
+            },
+            {
+                "id": "robosparkl",
+                "ch": "0.5"
+            },
+            {
+                "id": "roboplam"
+            }
+        ],
+        "n": "aj-17"
+    },
+    {
+        "id": "gutsy1",
+        "fraction": "4",
+        "cont": "gutsy",
+        "xp": "750",
+        "cat": "3",
+        "phis": {
+            "sX": "60",
+            "sY": "75",
+            "massa": "125"
+        },
+        "move": {
+            "speed": "5",
+            "accel": "2",
+            "jump": "12",
+            "brake": "1",
+            "plav": "0",
+            "float": "-0.3",
+            "levitaccel": "1.6",
+            "damwall": "60",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "240",
+            "armor": "16",
+            "marmor": "16",
+            "krep": "1",
+            "aqual": "0.85",
+            "armorhp": "350",
+            "damage": "36",
+            "tipdam": "1",
+            "observ": "10"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "expl": "0.7",
+            "laser": "0.7",
+            "blade": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "robot": "1",
+            "hero": "robot"
+        },
+        "vis": {
+            "blit": "sprGutsy1",
+            "noise": "500",
+            "sprX": "130",
+            "replic": "gutsy"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "expl1"
+        },
+        "blit": [
+            {
+                "id": "stay",
+                "len": "40",
+                "rep": "0"
+            },
+            {
+                "id": "die",
+                "y": "1",
+                "len": "20"
+            },
+            {
+                "id": "death",
+                "y": "1",
+                "len": "1"
+            }
+        ],
+        "w": {
+            "id": "roboplasma2"
+        },
+        "n": "Защитник"
+    },
+    {
+        "id": "sentinel",
+        "fraction": "4",
+        "xp": "2000",
+        "cat": "3",
+        "phis": {
+            "sX": "110",
+            "sY": "110",
+            "massa": "400"
+        },
+        "move": {
+            "speed": "3",
+            "accel": "1",
+            "jump": "6",
+            "brake": "1",
+            "plav": "0",
+            "levitaccel": "1.1",
+            "damwall": "90",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "360",
+            "armor": "18",
+            "marmor": "6",
+            "krep": "1",
+            "aqual": "0.8",
+            "damage": "25",
+            "dexter": "0.7",
+            "armorhp": "750",
+            "observ": "5"
+        },
+        "vulner": {
+            "emp": "0.75",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "bul": "0.85",
+            "blade": "0.5",
+            "expl": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "overlook": "0",
+            "robot": "1",
+            "hero": "sentinel"
+        },
+        "vis": {
+            "noise": "500",
+            "sprX": "130",
+            "replic": "sentinel",
+            "vclass": "visualSentinel2",
+            "visdam": "1"
+        },
+        "snd": {
+            "music": "combat_1",
+            "die": "expl1"
+        },
+        "w": [
+            {
+                "id": "robomlau",
+                "f": "1"
+            },
+            {
+                "id": "robogatl",
+                "ch": "0.5"
+            },
+            {
+                "id": "robominigun"
+            }
+        ],
+        "n": "Страж"
+    },
+    {
+        "id": "bossultra",
+        "fraction": "4",
+        "xp": "5000",
+        "cat": "3",
+        "phis": {
+            "sX": "100",
+            "sY": "100",
+            "massa": "550"
+        },
+        "move": {
+            "brake": "0.3",
+            "speed": "4.5",
+            "accel": "2.5",
+            "levitaccel": "1",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "3600",
+            "skill": "1.6",
+            "aqual": "1",
+            "armor": "10",
+            "marmor": "10",
+            "armorhp": "3000",
+            "damage": "12",
+            "dexter": "0.5"
+        },
+        "vis": {
+            "noise": "600",
+            "vclass": "visualUltraSentinel2",
+            "replic": "sentinel",
+            "visdam": "1",
+            "dkill": "0"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "snd": {
+            "music": "boss_4"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "1",
+            "robot": "1"
+        },
+        "w": [
+            {
+                "id": "robogatp",
+                "f": "1"
+            },
+            {
+                "id": "robomlau2",
+                "f": "1"
+            },
+            {
+                "id": "robogas",
+                "f": "1"
+            },
+            {
+                "id": "roboplagr",
+                "f": "1"
+            }
+        ]
+    },
+    {
+        "id": "bossdron",
+        "fraction": "4",
+        "xp": "5000",
+        "cat": "3",
+        "phis": {
+            "sX": "90",
+            "sY": "90",
+            "massa": "550"
+        },
+        "move": {
+            "brake": "0.3",
+            "speed": "3.7",
+            "accel": "2.5",
+            "levitaccel": "1",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "5000",
+            "skill": "1.6",
+            "aqual": "1",
+            "armor": "10",
+            "marmor": "10",
+            "armorhp": "3000",
+            "damage": "100",
+            "tipdam": "9",
+            "dexter": "0.5"
+        },
+        "vis": {
+            "noise": "600",
+            "vclass": "visualMegaDron",
+            "replic": "sentinel",
+            "visdam": "1",
+            "dkill": "0"
+        },
+        "vulner": {
+            "emp": "0.5",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "snd": {
+            "music": "boss_3"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "1",
+            "robot": "1"
+        },
+        "w": [
+            {
+                "id": "dronmlau",
+                "f": "1"
+            },
+            {
+                "id": "drongr",
+                "f": "1"
+            }
+        ]
+    },
+    {
+        "id": "smallrobot",
+        "cat": "2"
+    },
+    {
+        "id": "spritebot",
+        "fraction": "4",
+        "xp": "60",
+        "cat": "3",
+        "phis": {
+            "sX": "30",
+            "sY": "40",
+            "massa": "15"
+        },
+        "move": {
+            "speed": "8",
+            "brake": "1",
+            "damwall": "15",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "30",
+            "armor": "3",
+            "aqual": "0.75",
+            "armorhp": "60",
+            "dexter": "1.2",
+            "vision": "0.3",
+            "ear": "0"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "vis": {
+            "vclass": "visualSpriteBot"
+        },
+        "snd": {
+            "die": "expl2"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "cryo": "0.5",
+            "spark": "1.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "n": "Спрайтбот"
+    },
+    {
+        "id": "vortex",
+        "fraction": "2",
+        "xp": "30",
+        "cat": "3",
+        "phis": {
+            "sX": "30",
+            "sY": "30",
+            "massa": "6"
+        },
+        "move": {
+            "speed": "4",
+            "accel": "1.5",
+            "brake": "0.8",
+            "knocked": "1",
+            "damwall": "15",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "15",
+            "armor": "3",
+            "aqual": "0.5",
+            "armorhp": "60",
+            "dexter": "1.5",
+            "damage": "12",
+            "ear": "0",
+            "tipdam": "1",
+            "observ": "5"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "vulner": {
+            "emp": "1",
+            "spark": "1.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "vis": {
+            "vclass": "visualVortex",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "expl2",
+            "run": "vortex"
+        },
+        "n": "Вертушка"
+    },
+    {
+        "id": "roller",
+        "fraction": "4",
+        "xp": "60",
+        "cat": "3",
+        "phis": {
+            "sX": "30",
+            "sY": "30",
+            "massa": "25"
+        },
+        "move": {
+            "speed": "11",
+            "accel": "0.8",
+            "jump": "19",
+            "brake": "0.5",
+            "knocked": "1.5",
+            "levitaccel": "0"
+        },
+        "comb": {
+            "hp": "20",
+            "armor": "20",
+            "marmor": "20",
+            "aqual": "1",
+            "armorhp": "120",
+            "damage": "18",
+            "ear": "0",
+            "tipdam": "9"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "0",
+            "laser": "0.5",
+            "expl": "3",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "snd": {
+            "die": "expl3"
+        },
+        "vis": {
+            "vclass": "visualRoller",
+            "visdam": "1"
+        }
+    },
+    {
+        "id": "msp",
+        "fraction": "4",
+        "xp": "50",
+        "cat": "3",
+        "phis": {
+            "sX": "30",
+            "sY": "30",
+            "massa": "25"
+        },
+        "move": {
+            "speed": "11",
+            "accel": "0.8",
+            "jump": "16",
+            "brake": "0.5",
+            "plav": "0",
+            "damwall": "15",
+            "levitaccel": "0.8",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "14",
+            "armor": "5",
+            "aqual": "1",
+            "armorhp": "50",
+            "damage": "60",
+            "tipdam": "4"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "vulner": {
+            "emp": "0.25",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "expl": "0.1",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "vis": {
+            "vclass": "visualMsp",
+            "visdam": "1"
+        }
+    },
+    {
+        "id": "roller2",
+        "fraction": "4",
+        "xp": "240",
+        "cat": "3",
+        "phis": {
+            "sX": "35",
+            "sY": "35",
+            "massa": "45"
+        },
+        "move": {
+            "speed": "11",
+            "accel": "1",
+            "jump": "21",
+            "brake": "0.5",
+            "knocked": "1.2",
+            "levitaccel": "1.5",
+            "levit_max": "90"
+        },
+        "comb": {
+            "hp": "40",
+            "armor": "20",
+            "marmor": "20",
+            "aqual": "1",
+            "armorhp": "180",
+            "damage": "30",
+            "ear": "0",
+            "tipdam": "9"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "0",
+            "laser": "0.5",
+            "expl": "1.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "snd": {
+            "die": "expl3"
+        },
+        "vis": {
+            "vclass": "visualRoller2",
+            "visdam": "1"
+        }
+    },
+    {
+        "id": "dron1",
+        "fraction": "4",
+        "xp": "250",
+        "cat": "3",
+        "phis": {
+            "sX": "35",
+            "sY": "38",
+            "massa": "35"
+        },
+        "move": {
+            "speed": "4",
+            "accel": "2",
+            "brake": "1",
+            "damwall": "35",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "100",
+            "armor": "15",
+            "aqual": "0.85",
+            "armorhp": "220",
+            "dexter": "1",
+            "damage": "16",
+            "tipdam": "9"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "vis": {
+            "vclass": "visualDron1",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "expl2",
+            "run": "drone"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "laser": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "w": {
+            "id": "dronlaser"
+        },
+        "n": "Дрон"
+    },
+    {
+        "id": "dron2",
+        "fraction": "4",
+        "xp": "250",
+        "cat": "3",
+        "phis": {
+            "sX": "35",
+            "sY": "38",
+            "massa": "35"
+        },
+        "move": {
+            "speed": "6",
+            "accel": "3",
+            "brake": "2",
+            "damwall": "35",
+            "levit_max": "45"
+        },
+        "comb": {
+            "hp": "80",
+            "armor": "10",
+            "aqual": "0.85",
+            "armorhp": "120",
+            "dexter": "1.3",
+            "damage": "24",
+            "tipdam": "9"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "vis": {
+            "vclass": "visualDron2",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "expl2",
+            "run": "drone"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "plasma": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "w": {
+            "id": "dronplasma"
+        },
+        "n": "Дрон"
+    },
+    {
+        "id": "dron3",
+        "fraction": "4",
+        "xp": "300",
+        "cat": "3",
+        "phis": {
+            "sX": "35",
+            "sY": "38",
+            "massa": "35"
+        },
+        "move": {
+            "speed": "8",
+            "accel": "4",
+            "brake": "2",
+            "damwall": "35",
+            "levit_max": "15"
+        },
+        "comb": {
+            "hp": "60",
+            "marmor": "10",
+            "aqual": "0.85",
+            "armorhp": "80",
+            "dexter": "1.6",
+            "damage": "24",
+            "tipdam": "9"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "vis": {
+            "vclass": "visualDron3",
+            "visdam": "1"
+        },
+        "snd": {
+            "die": "expl2",
+            "run": "drone"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "spark": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "w": {
+            "id": "dronpspark"
+        },
+        "n": "Дрон"
+    },
+    {
+        "id": "owl",
+        "fraction": "1",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "6"
+        },
+        "move": {
+            "speed": "5",
+            "run": "15",
+            "jump": "12",
+            "accel": "1.5",
+            "float": "-0.5"
+        },
+        "comb": {
+            "hp": "10"
+        },
+        "param": {
+            "acttrap": "0",
+            "robot": "1"
+        },
+        "vulner": {
+            "fire": "0.5",
+            "bul": "0.75",
+            "laser": "0.75",
+            "expl": "0.25",
+            "venom": "0",
+            "poison": "0",
+            "necro": "0.25"
+        },
+        "vis": {
+            "blit": "sprOwl",
+            "sprX": "61",
+            "sprY": "61",
+            "sprDX": "31",
+            "sprDY": "48"
+        },
+        "blit": [
+            {
+                "id": "stay"
+            },
+            {
+                "id": "fly",
+                "len": "8",
+                "ff": "1",
+                "rf": "2",
+                "rep": "1"
+            }
+        ],
+        "w": {
+            "id": "owllaser"
+        }
+    },
+    {
+        "id": "turret",
+        "cat": "2"
+    },
+    {
+        "id": "turret0",
+        "fraction": "4",
+        "cont": "turret",
+        "xp": "80",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "40",
+            "massafix": "250"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "46",
+            "armor": "5",
+            "krep": "0",
+            "ear": "0",
+            "aqual": "0.85",
+            "armorhp": "120"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "snd": {
+            "die": "expl2"
+        },
+        "vis": {
+            "vclass": "visualTurret0"
+        },
+        "w": [
+            {
+                "id": "turret1"
+            },
+            {
+                "id": "turret2"
+            },
+            {
+                "id": "turret3"
+            },
+            {
+                "id": "turret4"
+            },
+            {
+                "id": "turret5"
+            },
+            {
+                "id": "turret6"
+            },
+            {
+                "id": "turret7"
+            }
+        ]
+    },
+    {
+        "id": "turret1",
+        "fraction": "4",
+        "cont": "turret1",
+        "xp": "150",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "60",
+            "massa": "110",
+            "massafix": "500"
+        },
+        "move": {
+            "knocked": "0.3",
+            "damwall": "25"
+        },
+        "comb": {
+            "hp": "88",
+            "armor": "8",
+            "marmor": "8",
+            "krep": "0",
+            "ear": "0",
+            "aqual": "0.9",
+            "armorhp": "250",
+            "dexter": "0.5"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "snd": {
+            "die": "expl1"
+        },
+        "vis": {
+            "vclass": "visualTurret1"
+        },
+        "w": [
+            {
+                "id": "turret1"
+            },
+            {
+                "id": "turret2"
+            },
+            {
+                "id": "turret3"
+            },
+            {
+                "id": "turret4"
+            },
+            {
+                "id": "turret5"
+            },
+            {
+                "id": "turret6"
+            },
+            {
+                "id": "turret7"
+            }
+        ]
+    },
+    {
+        "id": "turret2",
+        "fraction": "4",
+        "cont": "turret",
+        "xp": "120",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "28",
+            "massa": "40",
+            "massafix": "500"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "52",
+            "armor": "4",
+            "marmor": "4",
+            "krep": "0",
+            "ear": "0",
+            "aqual": "0.8",
+            "armorhp": "120"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "1",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "vis": {
+            "vclass": "visualTurret2"
+        },
+        "snd": {
+            "die": "expl2"
+        },
+        "w": [
+            {
+                "id": "turret1"
+            },
+            {
+                "id": "turret2"
+            },
+            {
+                "id": "turret3"
+            },
+            {
+                "id": "turret4"
+            },
+            {
+                "id": "turret5"
+            },
+            {
+                "id": "turret6"
+            },
+            {
+                "id": "turret7"
+            }
+        ]
+    },
+    {
+        "id": "turret3",
+        "fraction": "4",
+        "cont": "turret1",
+        "xp": "160",
+        "cat": "3",
+        "phis": {
+            "sX": "40",
+            "sY": "70",
+            "massa": "160",
+            "massafix": "1000"
+        },
+        "move": {
+            "knocked": "0.3",
+            "damwall": "35"
+        },
+        "comb": {
+            "hp": "104",
+            "armor": "10",
+            "marmor": "10",
+            "krep": "0",
+            "ear": "0",
+            "aqual": "1",
+            "armorhp": "500",
+            "dexter": "0.5",
+            "damage": "24",
+            "tipdam": "9"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.5",
+            "cryo": "0.5",
+            "spark": "1.25",
+            "expl": "0.5",
+            "acid": "0",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1",
+            "acttrap": "1",
+            "retdam": "1"
+        },
+        "vis": {
+            "vclass": "visualTurret3"
+        },
+        "snd": {
+            "die": "expl3"
+        },
+        "w": [
+            {
+                "id": "turret1"
+            },
+            {
+                "id": "turret2"
+            },
+            {
+                "id": "turret3"
+            },
+            {
+                "id": "turret4"
+            },
+            {
+                "id": "turret5"
+            },
+            {
+                "id": "turret6"
+            },
+            {
+                "id": "turret7"
+            }
+        ]
+    },
+    {
+        "id": "turret4",
+        "fraction": "4",
+        "cont": "turret",
+        "xp": "180",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "120",
+            "massafix": "1000"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "85",
+            "armor": "10",
+            "marmor": "10",
+            "krep": "0",
+            "ear": "0",
+            "aqual": "1",
+            "armorhp": "240"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "snd": {
+            "die": "expl3"
+        },
+        "vis": {
+            "vclass": "visualTurret4"
+        },
+        "w": [
+            {
+                "id": "turret1"
+            },
+            {
+                "id": "turret2"
+            },
+            {
+                "id": "turret3"
+            },
+            {
+                "id": "turret4"
+            },
+            {
+                "id": "turret5"
+            },
+            {
+                "id": "turret6"
+            },
+            {
+                "id": "turret7"
+            }
+        ]
+    },
+    {
+        "id": "turret5",
+        "fraction": "4",
+        "cont": "turret",
+        "xp": "180",
+        "cat": "3",
+        "phis": {
+            "sX": "38",
+            "sY": "38",
+            "massa": "10000",
+            "massafix": "10000"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "1000",
+            "krep": "0",
+            "ear": "0"
+        },
+        "param": {
+            "trup": "0",
+            "overlook": "0",
+            "robot": "1",
+            "acttrap": "1"
+        },
+        "snd": {
+            "die": "expl3",
+            "music": "boss_3"
+        },
+        "vis": {
+            "vclass": "visualTurret5"
+        }
+    },
+    {
+        "id": "mtrap",
+        "phis": {
+            "sX": "20",
+            "sY": "20",
+            "massa": "15"
+        },
+        "move": {
+            "brake": "10",
+            "knocked": "0.1",
+            "damwall": "10"
+        },
+        "vulner": {
+            "fire": "0.1",
+            "cryo": "0.1",
+            "spark": "0.25",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        },
+        "comb": {
+            "hp": "100",
+            "skin": "10",
+            "damage": "24",
+            "tipdam": "14",
+            "dexter": "0.7"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "n": "Капкан"
+    },
+    {
+        "id": "trigcans",
+        "fraction": "2",
+        "phis": {
+            "sX": "40",
+            "sY": "70"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "10",
+            "dexter": "3"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "un": {
+            "skill": "sneak",
+            "res": "noise"
+        },
+        "snd": {
+            "act": "cans"
+        },
+        "n": "Банки"
+    },
+    {
+        "id": "trigridge",
+        "fraction": "2",
+        "phis": {
+            "sX": "20",
+            "sY": "40"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "10",
+            "dexter": "10"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "un": {
+            "skill": "repair",
+            "one": "1",
+            "res": "damgren"
+        },
+        "n": "Растяжка"
+    },
+    {
+        "id": "trigplate",
+        "fraction": "2",
+        "phis": {
+            "sX": "40",
+            "sY": "10"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "100",
+            "dexter": "2"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "un": {
+            "skill": "repair",
+            "plate": "1",
+            "res": "damshot"
+        },
+        "snd": {
+            "act": "button"
+        },
+        "n": "Плита"
+    },
+    {
+        "id": "triglaser",
+        "fraction": "4",
+        "phis": {
+            "sX": "20",
+            "sY": "40"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "100",
+            "dexter": "10"
+        },
+        "param": {
+            "trup": "0",
+            "mech": "1",
+            "acttrap": "0",
+            "robot": "1"
+        },
+        "un": {
+            "skill": "science",
+            "res": "hturret2",
+            "robot": "1"
+        },
+        "snd": {
+            "act": "mine_bip"
+        },
+        "n": "Лазер"
+    },
+    {
+        "id": "damshot",
+        "fraction": "2",
+        "phis": {
+            "sX": "40",
+            "sY": "70"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "30",
+            "dexter": "2"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "un": {
+            "tip": "1",
+            "skill": "repair"
+        },
+        "n": "Пушка"
+    },
+    {
+        "id": "damgren",
+        "fraction": "2",
+        "phis": {
+            "sX": "20",
+            "sY": "20"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "20",
+            "dexter": "3"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "un": {
+            "tip": "2",
+            "skill": "explosives"
+        },
+        "n": "Гранаты"
+    },
+    {
+        "id": "damexpl1",
+        "fraction": "2",
+        "phis": {
+            "sX": "36",
+            "sY": "36"
+        },
+        "move": {
+            "fixed": "1"
+        },
+        "comb": {
+            "hp": "20"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "un": {
+            "tip": "3",
+            "skill": "explosives"
+        },
+        "n": "Взрывчатка"
+    },
+    {
+        "id": "transmitter",
+        "fraction": "1",
+        "phis": {
+            "sX": "30",
+            "sY": "20"
+        },
+        "comb": {
+            "hp": "20",
+            "dexter": "3",
+            "damage": "20",
+            "tipdam": "16"
+        },
+        "param": {
+            "trup": "0",
+            "mech": "1",
+            "acttrap": "0",
+            "robot": "1"
+        },
+        "snd": {
+            "run": "transmitter",
+            "die": "expl3"
+        }
+    },
+    {
+        "id": "mwall",
+        "phis": {
+            "sX": "40",
+            "sY": "120"
+        },
+        "move": {
+            "fixed": "1",
+            "knocked": "0"
+        },
+        "comb": {
+            "hp": "200",
+            "dexter": "0"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "n": "силовое поле"
+    },
+    {
+        "id": "scythe",
+        "phis": {
+            "sX": "60",
+            "sY": "60",
+            "massa": "5"
+        },
+        "move": {
+            "brake": "1",
+            "knocked": "0"
+        },
+        "vulner": {
+            "fire": "0.1"
+        },
+        "comb": {
+            "hp": "40",
+            "damage": "40",
+            "tipdam": "14"
+        },
+        "param": {
+            "trup": "0",
+            "acttrap": "0",
+            "mech": "1"
+        },
+        "n": "Лезвие"
+    },
+    {
+        "id": "thunderhead",
+        "fraction": "4",
+        "phis": {
+            "sX": "6000",
+            "sY": "3000",
+            "massa": "100000"
+        },
+        "move": {
+            "brake": "1",
+            "knocked": "0",
+            "speed": "40"
+        },
+        "comb": {
+            "hp": "200000"
+        },
+        "param": {
+            "mech": "1"
+        }
+    },
+    {
+        "id": "dront",
+        "fraction": "4",
+        "phis": {
+            "sX": "120",
+            "sY": "120",
+            "massa": "1200"
+        },
+        "move": {
+            "speed": "15",
+            "accel": "6",
+            "brake": "3"
+        },
+        "comb": {
+            "hp": "7000",
+            "dexter": "1",
+            "damage": "2000",
+            "tipdam": "9"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1"
+        },
+        "snd": {
+            "die": "expl"
+        },
+        "vulner": {
+            "emp": "1",
+            "fire": "0.75",
+            "laser": "0.5",
+            "cryo": "0.5",
+            "venom": "0",
+            "poison": "0",
+            "bleed": "0"
+        }
+    },
+    {
+        "id": "ttur",
+        "fraction": "4",
+        "phis": {
+            "sX": "90",
+            "sY": "90",
+            "massa": "1000"
+        },
+        "comb": {
+            "hp": "4000",
+            "dexter": "0.5"
+        },
+        "snd": {
+            "die": "expl"
+        },
+        "param": {
+            "trup": "0",
+            "robot": "1"
+        },
+        "vulner": {
+            "blade": "0.7"
+        },
+        "move": null
+    },
+    {
+        "id": "destr1",
+        "phis": {
+            "sX": "160",
+            "sY": "800",
+            "massa": "100000"
+        },
+        "move": {
+            "knocked": "0"
+        },
+        "comb": {
+            "hp": "5000"
+        },
+        "param": {
+            "mech": "1"
+        }
+    }
+]

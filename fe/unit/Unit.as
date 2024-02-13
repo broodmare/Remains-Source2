@@ -103,7 +103,7 @@ package fe.unit
 		public var shitArmor:Number=20;
 		public var vulner:Array;		
 		public var begvulner:Array;
-		public static var begvulners:Array = [];
+		
 		
 		// Evasion, 1 is standard, 0 always hits
 		public var dexter:Number = 1;
@@ -237,12 +237,17 @@ package fe.unit
 		public var noDestr:Boolean=false; //не уничтожать после смерти
 		
 		public var opt:Object;
-		public static var opts:Array=new Array();
 		
-		//фракция
-		public var fraction:int=0, player:Boolean=false;
-		public static const F_PLAYER=100, F_MONSTER=1, F_RAIDER=2, F_ZOMBIE=3, F_ROBOT=4;
-		public var npc:Boolean=false;	//Юнит является NPC-ом и отображается на карте
+		
+		// [Fraction] I assume faction
+		public var fraction:int = 0;
+		public var player:Boolean = false;
+		public static const F_PLAYER = 100;
+		public static const F_MONSTER = 1;
+		public static const F_RAIDER = 2;
+		public static const F_ZOMBIE = 3;
+		public static const F_ROBOT = 4;
+		public var npc:Boolean = false;	// The unit is an NPC and is displayed on the map
 		
 		//видимость юнита для других (маскировка), чем выше показатель, тем с большего расстояния объект виден
 		public var visibility:int=1000, stealthMult:Number=1;	//с какого расстояния становится виден
@@ -334,13 +339,17 @@ package fe.unit
 		
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
-			vulner=new Array();
-			inter=new Interact(this,null,xml,loadObj);
-			inter.active=false;
+			vulner = [];
+			inter = new Interact(this, null, xml, loadObj);
+			inter.active = false;
 			for (var i=0; i<kolVulners; i++) vulner[i]=1;
 			vulner[D_EMP]=0;
-			effects=new Array();
-			sloy=2, prior=1, warn=1;
+			effects = [];
+
+			this.sloy	= 2;	// Property defined in Obj
+			this.prior	= 1;	// Property defined in Obj
+			this.warn	= 1;	// Property defined in Obj
+
 			numbEmit=Emitter.arr["numb"];
 			if (xml)
 			{
@@ -390,185 +399,6 @@ package fe.unit
 			if (sost >= 3 && !postDie) obj.dead = true;
 			if (inter) inter.save(obj);
 			return obj;
-		}
-		
-		public function getXmlParam(mid:String = null)
-		{
-			var setOpts:Boolean=false;
-			if (opts[id]) {
-				opt=opts[id];
-				begvulner=begvulners[id];
-			} else {
-				opt=new Object();
-				opts[id]=opt;
-				begvulner=new Array();
-				begvulners[id]=begvulner;
-				setOpts=true;
-			}
-			var node:XML;
-			var isHero:Boolean=false;
-			if (mid==null) {
-				if (hero>0) isHero=true;
-				mid=id;
-			}
-			
-			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", mid);
-			if (mid && !uniqName) nazv=Res.txt("u",mid);
-			if (node0.@fraction.length()) fraction=node0.@fraction;
-			inter.cont=mid;
-			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
-			if (fraction==F_PLAYER) warn=0;
-			if (node0.@xp.length()) xp=node0.@xp*World.unitXPMult;
-			//физические параметры
-			if (node0.phis.length()) {
-				node=node0.phis[0];
-				if (node.@sX.length()) stayX=objectWidth=node.@sX;
-				if (node.@sY.length()) stayY=objectHeight=node.@sY;
-				if (node.@sitX.length()) sitX=node.@sitX; else sitX=stayX;
-				if (node.@sitY.length()) sitY=node.@sitY; else sitY=stayY/2;
-				if (node.@massa.length()) massaMove=node.@massa/50;
-				if (node.@massafix.length()) massaFix=node.@massafix/50;
-				else massaFix=massaMove;
-			}
-			massa=massaFix;
-			if (massa>=1) destroy=0;
-			//параметры движения
-			if (node0.move.length()) {
-				node=node0.move[0];
-				if (node.@speed.length()) maxSpeed=node.@speed;
-				if (node.@run.length()) runSpeed=node.@run;
-				if (node.@accel.length()) accel=node.@accel;
-				if (node.@jump.length()) jumpdy=node.@jump;
-				if (node.@knocked.length()) knocked=node.@knocked;		//множитель отбрасывания оружием
-				if (node.@plav.length()) plav=(node.@plav>0);			//если =0, юнит не плавает, а ходит по дну
-				if (node.@brake.length()) brake=node.@brake;			//торможение
-				if (node.@levit.length()) levitPoss=(node.@levit>0);	//если =0, юнит нельзя поднимать телекинезом
-				if (node.@levit_max.length()) levit_max=node.@levit_max;//максимальное время левитации
-				if (node.@levitaccel.length()) levitaccel=node.@levitaccel;	//ускорение в поле левитации, определяет возможность врага вырываться из телекинетического захвата
-				if (node.@float.length()) ddyPlav=node.@float;			//значение выталкивающей силы
-				if (node.@porog.length()) porog=node.@porog;			//автоподъём при движении по горизонтали
-				if (node.@fixed.length()) fixed=(node.@fixed>0);		//если =1, юнит является прикреплённым
-				if (node.@damwall.length()) damWall=node.@damwall;		//урон от удара ап стену
-			}
-			//боевые параметры
-			if (node0.comb.length())
-			{
-				node=node0.comb[0];
-				if (node.@hp.length()) hp=maxhp=node.@hp*hpmult;
-				if (fraction!=F_PLAYER && World.w.game.globalDif<=1)
-				{
-					if (World.w.game.globalDif==0) maxhp*=0.4;
-					if (World.w.game.globalDif==1) maxhp*=0.7;
-					hp=maxhp;
-				}
-				if (node.@skin.length()) skin=node.@skin;
-				if (node.@armor.length()) armor=node.@armor;
-				if (node.@marmor.length()) marmor=node.@marmor;
-				if (node.@aqual.length()) armor_qual=node.@aqual;		//качество брони
-				if (node.@armorhp.length()) armor_hp=armor_maxhp=node.@armorhp*hpmult;
-				else armor_hp=armor_maxhp=hp;
-				
-				if (node.@krep.length()) weaponKrep=node.@krep;			//способ держать оружие, 0 - телекинез
-				if (node.@dexter.length()) dexter=node.@dexter;			//уклонение
-				if (node.@damage.length()) dam=node.@damage;			//собственный урон
-				if (node.@tipdam.length()) tipDamage=node.@tipdam;		//тип собственного урона
-				if (node.@skill.length()) weaponSkill=node.@skill;		//владение оружием
-				if (node.@raddamage.length()) radDamage=node.@raddamage;//собственный урон радиацией
-				if (node.@vision.length()) vision=node.@vision;			//зрение
-				if (node.@observ.length()) observ+=node.@observ;		//наблюдательность
-				if (node.@ear.length()) ear=node.@ear;					//слух
-				if (node.@levitatk.length()) levitAttack=node.@levitatk;//атака при левитации
-			}
-			// Vulnerabilities
-			if (node0.vulner.length())
-			{
-				node=node0.vulner[0];
-				if (node.@bul.length()) vulner[D_BUL]=node.@bul;
-				if (node.@blade.length()) vulner[D_BLADE]=node.@blade;
-				if (node.@phis.length()) vulner[D_PHIS]=node.@phis;
-				if (node.@fire.length()) vulner[D_FIRE]=node.@fire;
-				if (node.@expl.length()) vulner[D_EXPL]=node.@expl;
-				if (node.@laser.length()) vulner[D_LASER]=node.@laser;
-				if (node.@plasma.length()) vulner[D_PLASMA]=node.@plasma;
-				if (node.@venom.length()) vulner[D_VENOM]=node.@venom;
-				if (node.@emp.length()) vulner[D_EMP]=node.@emp;
-				if (node.@spark.length()) vulner[D_SPARK]=node.@spark;
-				if (node.@acid.length()) vulner[D_ACID]=node.@acid;
-				if (node.@cryo.length()) vulner[D_CRIO]=node.@cryo;
-				if (node.@poison.length()) vulner[D_POISON]=node.@poison;
-				if (node.@bleed.length()) vulner[D_BLEED]=node.@bleed;
-				if (node.@fang.length()) vulner[D_FANG]=node.@fang;
-				if (node.@pink.length()) vulner[D_PINK]=node.@pink;
-			}
-			// [visual parameters]
-			if (node0.vis.length()) {
-				node=node0.vis[0];
-				if (node.@sex=="w") msex=false;
-				if (node.@blit.length()) {
-					blitId=node.@blit;
-					if (node.@sprX>0) blitX=node.@sprX;
-					if (node.@sprY>0) blitY=node.@sprY;
-					else blitY=node.@sprX;
-					if (node.@sprDX.length()) blitDX=node.@sprDX;
-					if (node.@sprDY.length()) blitDY=node.@sprDY;
-				}
-				if (node.@replic.length()) id_replic=node.@replic;
-				if (node.@noise.length()) noiseRun=node.@noise;
-			}
-			// [sound parameters]
-			if (node0.snd.length()) {
-				node=node0.snd[0];
-				if (node.@music.length()) {
-					sndMusic=node.@music;
-					sndMusicPrior=1;
-				}
-				if (node.@musicp.length()) sndMusicPrior=node.@musicp;
-				if (node.@die.length()) sndDie=node.@die;
-				if (node.@run.length()) sndRun=node.@run;
-			}
-			// [other parameters]
-			if (node0.param.length()) {
-				node=node0.param[0];
-				if (node.@invulner.length()) invulner=(node.@invulner>0);	//полная неуязвимость
-				if (node.@overlook.length()) overLook=(node.@overlook>0);	//может смотреть за спину
-				if (node.@sats.length()) isSats=(node.@sats>0);				//отображать как цель в ЗПС
-				if (node.@acttrap.length()) activateTrap=node.@acttrap;		//юнит активирует ловушки: 0 - никак, 1 - только установленные игроком
-				if (node.@npc.length()) npc=(node.@npc>0);					//отображать на карте как npc
-				if (node.@trup.length()) trup=(node.@trup>0);				//оставлять труп после смерти
-				if (node.@blood.length()) blood=node.@blood;				//кровь
-				if (node.@retdam.length()) retDamage=node.@retdam>0;		//возврат урона
-				if (node.@hero.length()) {
-					mHero=true;						//может быть героем
-					id_name=node.@hero;
-				}
-				if (setOpts) {
-					if (node.@pony.length()) opt.pony=true;					//является пони
-					if (node.@zombie.length()) opt.zombie=true;					//является зомби
-					if (node.@robot.length()) opt.robot=true;					//является роботом
-					if (node.@insect.length()) opt.insect=true;					//является насекомым
-					if (node.@monster.length()) opt.monster=true;					//является насекомым
-					if (node.@alicorn.length()) opt.alicorn=true;					//является аликорном
-					if (node.@mech.length()) {
-						opt.mech=true;					//является механизмом
-						mech=true;
-					}
-					if (node.@hbonus.length()) opt.hbonus=true;					//является пони
-					if (node.@izvrat.length()) opt.izvrat=true;					//является пони
-				}
-			}
-			if (blood==0) vulner[D_BLEED]=0;
-			if (opt) {
-				if (opt.robot || opt.mech) {
-					vulner[D_NECRO]=vulner[D_BLEED]=vulner[D_VENOM]=vulner[D_POISON]=0;
-				}
-			}
-			if (node0.blit.length()) {
-				if (anims==null) anims=new Array();
-				for each(var xbl:XML in node0.blit) {
-					anims[xbl.@id]=new BlitAnim(xbl);
-				}
-			}
-			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
 		}
 		
 		public function getXmlWeapon(dif:int):Weapon {

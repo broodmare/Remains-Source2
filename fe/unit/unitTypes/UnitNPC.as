@@ -51,7 +51,8 @@ package fe.unit.unitTypes
 			} else {
 				id='npc';
 			}
-			getXmlParam();
+			
+			UnitTypeDataLoader.getXmlParam(this);
 			
 			//взять данные об npc
 			if (xml && xml.@npc.length()) {

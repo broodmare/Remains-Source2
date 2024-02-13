@@ -40,7 +40,7 @@ package fe.unit.unitTypes
 			}
 			mat=1;
 			vis=Res.getVis('vis'+id,vismtrap);
-			getXmlParam();
+			getXmlParamRework();
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
 			doop=true;
@@ -117,13 +117,14 @@ package fe.unit.unitTypes
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam();
+		private function getXmlParamRework(mid:String=null):void
+		{
+			UnitTypeDataLoader.getXmlParam(this);
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
-			if (node0.un.length()) {
+			if (node0.un.length())
+			{
 				if (node0.un.@tip.length()) tipDamager=node0.un.@tip;		//требуемый скилл
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
-
 			}
 		}
 		

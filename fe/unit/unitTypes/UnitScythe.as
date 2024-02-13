@@ -29,7 +29,7 @@ package fe.unit.unitTypes
 			vis.osn.alpha=0;
 			vis.vzz.alpha=0;
 			mater=false;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			levitPoss=false;
 			brake=accel/2;
 			doop=true;		//не отслеживает цели

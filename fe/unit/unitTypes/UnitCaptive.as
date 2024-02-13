@@ -18,7 +18,7 @@ package fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id='captive';
 			npc=true;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
 			} else if (xml && xml.@tr.length()) {	//из настроек карты

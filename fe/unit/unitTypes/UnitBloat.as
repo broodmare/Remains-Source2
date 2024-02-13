@@ -35,7 +35,7 @@ package fe.unit.unitTypes
 			vis=new vClass();
 			vis.stop();
 			runSpeed=0;
-			getXmlParam();
+			getXmlParamReworked();
 			if (tr>=7) nazv=Res.txt('u','bloat10');
 			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
 			sitSpeed=maxSpeed*0.5;
@@ -51,11 +51,13 @@ package fe.unit.unitTypes
 			if (currentWeapon) childObjs=new Array(currentWeapon);
 		}
 
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam('bloat');
-			super.getXmlParam();
+		private function getXmlParamReworked():void
+		{
+			UnitTypeDataLoader.getXmlParam(this, 'bloat');
+			UnitTypeDataLoader.getXmlParam(this);
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
-			if (node0.un.length()) {
+			if (node0.un.length())
+			{
 				if (node0.un.@attr.length()) attRasst=node0.un.@attr;		//дистанция атаки
 				if (node0.un.@attch.length()) attCh=node0.un.@attch;				//шанс атаки
 				if (node0.un.@shootch.length()) shootCh=node0.un.@shootch;				//шанс атаки

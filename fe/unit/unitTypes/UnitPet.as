@@ -31,7 +31,7 @@ package fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id = 'phoenix';
 			if (cid != null) id = cid;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon')

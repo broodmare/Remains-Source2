@@ -78,7 +78,7 @@ package fe.unit.unitTypes
 			else if (turrettip==4) vis=new visualTurret4();
 			else if (turrettip==5) vis=new visualTurret5();
 			vis.stop();
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			
 			if (turrettip==5) {
 				invulner=true;

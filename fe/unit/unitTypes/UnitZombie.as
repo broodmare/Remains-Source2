@@ -63,7 +63,7 @@ package fe.unit.unitTypes
 			}
 			if (!(tr>=0)) tr=0;
 			id='zombie'+tr;
-			getXmlParam();
+			getXmlParamReworked();
 			walkSpeed=maxSpeed;
 			knocked2=knocked;
 
@@ -97,9 +97,11 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam('zombie');
-			super.getXmlParam();
+		private function getXmlParamReworked():void
+		{
+			UnitTypeDataLoader.getXmlParam(this, 'zombie');
+			UnitTypeDataLoader.getXmlParam(this);
+
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
 				if (node0.un.@ss.length()) superSilaTip=node0.un.@ss;		//суперсила
@@ -292,6 +294,7 @@ package fe.unit.unitTypes
 				vlight.y=0;
 			}
 		}
+
 		public function vykop() {
 			knocked=knocked2;
 			objectHeight = stayY;
@@ -310,7 +313,8 @@ package fe.unit.unitTypes
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		private function checkJump():Boolean
+		{
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;

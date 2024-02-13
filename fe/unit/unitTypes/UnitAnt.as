@@ -33,7 +33,7 @@ package fe.unit.unitTypes
 			else tr=1;										//случайно по параметру ndif
 
 			id='ant'+tr;
-			getXmlParam();
+			getXmlParamReworked();
 			initBlit();
 			animState='stay';
 			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
@@ -59,9 +59,10 @@ package fe.unit.unitTypes
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam('ant');
-			super.getXmlParam();
+		private function getXmlParamReworked():void
+		{
+			UnitTypeDataLoader.getXmlParam(this, 'ant');
+			UnitTypeDataLoader.getXmlParam(this);
 		}
 
 		public override function alarma(nx:Number=-1,ny:Number=-1) {

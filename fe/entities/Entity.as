@@ -22,8 +22,8 @@ package fe.entities
 		public var sloy:int=0;
 		
 		public var coordinates:Vector2 = new Vector2();
+		
 		//public var moveVector:Vector2 = new Vector2();
-
 		public var dx:Number = 0;
 		public var dy:Number = 0;
 		

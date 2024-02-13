@@ -24,7 +24,7 @@ package fe.unit.unitTypes
 				tr=1;
 			}
 			id='hellhound'+tr;
-			getXmlParam();
+			getXmlParamReworked();
 			vDestroy=1000;
 			walkSpeed=maxSpeed;
 			lazSpeed=runSpeed*0.6;
@@ -33,17 +33,21 @@ package fe.unit.unitTypes
 			aiNapr=storona;
 			sit(true);
 		}
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam('hellhound');
-			super.getXmlParam();
+		private function getXmlParamReworked():void
+		{
+			UnitTypeDataLoader.getXmlParam(this, 'hellhound');
+			UnitTypeDataLoader.getXmlParam(this);
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number)
+		{
 			super.putLoc(nloc,nx,ny);
 			unsit();
 		}
+
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		private function checkJump():Boolean
+		{
 			if (loc.getAbsTile(coordinates.X,coordinates.Y-85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X,coordinates.Y-125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X+40*storona,coordinates.Y-85).phis!=0) return false;

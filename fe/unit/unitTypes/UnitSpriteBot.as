@@ -14,7 +14,7 @@ package fe.unit.unitTypes
 			id='spritebot';
 			vis=new visualSpriteBot();
 			vis.osn.gotoAndStop(1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			maxSpeed+=Math.random()*2-1;
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*1.5;

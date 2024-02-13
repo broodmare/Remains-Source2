@@ -15,7 +15,7 @@ package fe.unit.unitTypes
 			vis=new visualSentinel();
 			vis.stop();
 			vis.osn.gotoAndStop(1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			sitSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;

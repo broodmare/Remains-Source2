@@ -20,7 +20,7 @@ package fe.unit.unitTypes
 			id='transmitter';
 			vis=new visualTransmitter();
 			vis.osn.gotoAndStop(1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			storona=1;
 			if (cid=='box') cep=0;
 			doop=true;		//не отслеживает цели

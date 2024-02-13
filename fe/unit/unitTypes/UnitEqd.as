@@ -8,7 +8,7 @@ package fe.unit.unitTypes
 		{
 			super(cid, ndif, xml, loadObj);
 			id='eqd';
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			sitSpeed=maxSpeed*0.35;
 			runSpeed=maxSpeed*2.5;

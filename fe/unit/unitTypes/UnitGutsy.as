@@ -13,7 +13,7 @@ package fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id='gutsy';
 			if (tr>0) id+=tr;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
 			sitSpeed=maxSpeed*0.8;

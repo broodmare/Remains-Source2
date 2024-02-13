@@ -82,7 +82,7 @@ package fe.unit.unitTypes
 			osn.addChild(moln2);
 			
 			
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			accel=3;
 			walkSpeed=maxSpeed;
 			boss=true;

@@ -21,7 +21,7 @@ package fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id=cid;
 			if (id=='scorp') id += int(Math.random()*2+1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			initBlit();
 			animState='stay';
 			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);

@@ -22,7 +22,7 @@ package fe.unit.unitTypes
 			id='fish'+tr;
 			vis=Res.getVis('visualFish'+tr, visualFish1); 
 			vis.osn.gotoAndStop('stay');
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			maxSpeed+=Math.random()*2-1;
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;

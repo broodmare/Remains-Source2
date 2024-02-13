@@ -18,7 +18,7 @@ package fe.unit.unitTypes
 			vis=Res.getVis('vis'+id,vismtrap);
 			vis.gotoAndStop(1);
 			setVis(false);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			visibility=300;
 			showNumbs=false;
 			doop=true;

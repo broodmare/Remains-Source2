@@ -17,7 +17,7 @@ package fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id='vortex';
 			vis=new visualVortex();
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;
 			isFly=true;

@@ -27,7 +27,7 @@ package fe.unit.unitTypes
 				if (xml.@fix.length()) fixed=true;
 			}
 			id=id+tr;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			if (tr==1) {
 				vis=new visualStolp();
 				boss=true;

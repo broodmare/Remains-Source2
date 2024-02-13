@@ -18,7 +18,7 @@ package fe.unit.unitTypes
 			else id = cid
 			mat=7;
 			vis=Res.getVis('vis'+id,vismwall);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			vulner[D_NECRO]=begvulner[D_NECRO]=1;
 			nazv='';
 			this.levitPoss=false;

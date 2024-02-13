@@ -42,7 +42,7 @@ package fe.unit.unitTypes
 			vis=new visualMsp();
 			vis.stop();
 			
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			
 			mat=1;
 			aiNapr=storona;

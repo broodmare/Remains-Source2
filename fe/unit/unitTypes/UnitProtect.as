@@ -15,7 +15,7 @@ package fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id='protect';
 			if (tr>0) id+=tr;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			sitSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;

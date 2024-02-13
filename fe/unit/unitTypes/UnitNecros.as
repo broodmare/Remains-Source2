@@ -15,7 +15,7 @@ package fe.unit.unitTypes
 		{
 			super(cid, ndif, xml, loadObj);
 			id='necros';
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
 			initBlit();

@@ -17,7 +17,7 @@ package fe.unit.unitTypes
 			id='spectre';
 			vis=new visualSpectre();
 			vis.visible=false;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
 			isFly=true;

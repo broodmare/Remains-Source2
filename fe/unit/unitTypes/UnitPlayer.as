@@ -220,7 +220,7 @@ package fe.unit.unitTypes
 			storona = 1; // Whether the unit is facing left or right.
 			id_replic = 'pip';
 			
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 
 			walkSpeed	= maxSpeed;
 			osnSpeed	= maxSpeed;

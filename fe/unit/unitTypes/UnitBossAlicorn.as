@@ -54,7 +54,7 @@ package fe.unit.unitTypes
 			id='bossalicorn';
 			tr=1;
 			
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			plavSpeed=maxSpeed;
 			boss=true;

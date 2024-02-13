@@ -23,7 +23,7 @@ package fe.unit.unitTypes
 				if (xml.@tr.length()) tr=xml.@tr;
 				if (xml.@fix.length()) fixed=true;
 			}
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			if (tr==1) {
 				vis=new visualTrainArmor();
 				skin=20;

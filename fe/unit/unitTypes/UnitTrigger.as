@@ -30,7 +30,8 @@ package fe.unit.unitTypes
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid==null) {
 				id='triglaser';
@@ -40,7 +41,7 @@ package fe.unit.unitTypes
 			mat=1;
 			vis=Res.getVis('vis'+id,vismtrap);
 			setVis(false);
-			getXmlParam();
+			getXmlParamReworked();
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
 			doop=true;
@@ -63,23 +64,27 @@ package fe.unit.unitTypes
 			setStatus();
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.status=status;
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam();
+		private function getXmlParamReworked(mid:String=null):void
+		{
+			UnitTypeDataLoader.getXmlParam(this);
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
-			if (node0.un.length()) {
+			if (node0.un.length())
+			{
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
 				if (node0.un.@res.length()) res=node0.un.@res;
 				if (node0.un.@one.length()) one=true;		//одноразовая
 				if (node0.un.@plate.length()) trapL=1;		//напольная
 			}
-			if (node0.snd.length()) {
+			if (node0.snd.length())
+			{
 				if (node0.snd.@act.length()) sndAct=node0.snd.@act;
 			}
 		}

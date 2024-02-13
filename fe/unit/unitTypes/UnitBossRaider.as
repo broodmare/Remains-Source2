@@ -28,7 +28,7 @@ package fe.unit.unitTypes
 			if (tr==2) vis=new visualRaiderBoss2();
 			else vis=new visualRaiderBoss();
 			vis.osn.gotoAndStop(1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			plavSpeed=maxSpeed;
 			runSpeed=maxSpeed*6;

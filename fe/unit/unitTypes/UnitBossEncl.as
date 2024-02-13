@@ -26,7 +26,7 @@ package fe.unit.unitTypes
 				tr=xml.@tr;
 			}
 			//взять параметры из xml
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			aiTCh=30;
 			aiVNapr=1;
 			if (tr==1) {

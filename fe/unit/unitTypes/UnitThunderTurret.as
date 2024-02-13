@@ -17,7 +17,7 @@ package  fe.unit.unitTypes
 			super(cid, ndif, xml, loadObj);
 			id='ttur';
 			tr=int(cid);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			vis=new visualTTurret();
 			vis.osn.scaleX=vis.osn.scaleY=3;
 			vis.osn.pole.visible=false;

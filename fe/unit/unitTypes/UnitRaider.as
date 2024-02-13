@@ -69,7 +69,7 @@ package fe.unit.unitTypes
 			id=parentId+tr;
 			
 			//взять параметры из xml
-			getXmlParam();
+			getXmlParamReworked();
 			walkSpeed=maxSpeed;
 			if (walker) walkSpeed=2.5;
 			plavSpeed=maxSpeed;
@@ -151,9 +151,11 @@ package fe.unit.unitTypes
 			if (sndDie=='rm' && !msex) sndDie='rw';
 		}
 		
-		public override function getXmlParam(mid:String=null) {
-			super.getXmlParam(parentId);
-			super.getXmlParam();
+		private function getXmlParamReworked():void
+		{
+			UnitTypeDataLoader.getXmlParam(this, parentId);
+			UnitTypeDataLoader.getXmlParam(this);
+
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.vis.length()) {
 				if (node0.vis.@telecolor.length()) teleColor=node0.vis.@telecolor;
@@ -330,7 +332,8 @@ package fe.unit.unitTypes
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		private function checkJump():Boolean
+		{
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;

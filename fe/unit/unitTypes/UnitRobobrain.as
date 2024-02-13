@@ -9,7 +9,7 @@ package fe.unit.unitTypes
 			vis=new visualRobobrain();
 			vis.stop();
 			vis.osn.gotoAndStop(1);
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
 			sitSpeed=maxSpeed;

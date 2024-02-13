@@ -23,7 +23,7 @@ package fe.unit.unitTypes
 			if (!(tr>0)) tr=1;
 			id='roller';
 			if (tr>=2) id+=tr;
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			if (tr==2) vis=new visualRoller2();
 			else vis=new visualRoller();
 			vis.osn.rotation=Math.random()*360;

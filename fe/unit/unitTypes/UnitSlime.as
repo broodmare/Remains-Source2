@@ -40,7 +40,7 @@ package fe.unit.unitTypes
 				levitPoss=false;
 				setVis(false);
 			}
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			maxSpeed*=(Math.random()*0.3+0.85);
 			accel*=(Math.random()*0.3+0.85);
 			walkSpeed=maxSpeed;

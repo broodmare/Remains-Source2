@@ -36,7 +36,7 @@ package fe.unit.unitTypes
 			}
 			id='dron'+tr;
 			if (tr==100) id='dront';
-			getXmlParam();
+			UnitTypeDataLoader.getXmlParam(this);
 			var vClass:Class=Res.getClass('visualDron'+tr,null,visualBloat1);
 			if (tr==100) vClass=visualMegaDron;
 			vis=new vClass();
