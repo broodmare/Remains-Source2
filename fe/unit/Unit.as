@@ -8,67 +8,22 @@ package fe.unit
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-	
-	import fe.*;
-	import fe.util.Calc;
-
-	import fe.weapon.*;
-	import fe.projectile.Bullet;
-	import fe.loc.*;
-	import fe.serv.*;
-	import fe.graph.Emitter;
 	import flash.media.SoundChannel;
 	import flash.filters.GlowFilter;
+
+	import fe.*;
+	import fe.weapon.*;
+	import fe.loc.*;
+	import fe.serv.*;
+
+	import fe.graph.Emitter;
+	import fe.projectile.Bullet;
+
+	import fe.util.Calc;
+
 	import fe.entities.Obj;
 	import fe.entities.Part;
-	import fe.unit.unitTypes.UnitMWall;
-	import fe.unit.unitTypes.UnitScythe;
-	import fe.unit.unitTypes.UnitThunderTurret;
-	import fe.unit.unitTypes.UnitTrap;
-	import fe.unit.unitTypes.UnitTrigger;
-	import fe.unit.unitTypes.UnitDamager;
-	import fe.unit.unitTypes.UnitRaider;
-	import fe.unit.unitTypes.UnitSlaver;
-	import fe.unit.unitTypes.UnitZebra;
-	import fe.unit.unitTypes.UnitRanger;
-	import fe.unit.unitTypes.UnitEncl;
-	import fe.unit.unitTypes.UnitMerc;
-	import fe.unit.unitTypes.UnitZombie;
-	import fe.unit.unitTypes.UnitAlicorn;
-	import fe.unit.unitTypes.UnitHellhound;
-	import fe.unit.unitTypes.UnitRobobrain;
-	import fe.unit.unitTypes.UnitProtect;
-	import fe.unit.unitTypes.UnitGutsy;
-	import fe.unit.unitTypes.UnitEqd;
-	import fe.unit.unitTypes.UnitSentinel;
-	import fe.unit.unitTypes.UnitTurret;
-	import fe.unit.unitTypes.UnitBat;
-	import fe.unit.unitTypes.UnitFish;
-	import fe.unit.unitTypes.UnitBloat;
-	import fe.unit.unitTypes.UnitSpriteBot;
-	import fe.unit.unitTypes.UnitDron;
-	import fe.unit.unitTypes.UnitVortex;
-	import fe.unit.unitTypes.UnitMonstrik;
-	import fe.unit.unitTypes.UnitAnt;
-	import fe.unit.unitTypes.UnitSlime;
-	import fe.unit.unitTypes.UnitRoller;
-	import fe.unit.unitTypes.UnitNPC;
-	import fe.unit.unitTypes.UnitCaptive;
-	import fe.unit.unitTypes.UnitPonPon;
-	import fe.unit.unitTypes.UnitTrain;
-	import fe.unit.unitTypes.UnitMsp;
-	import fe.unit.unitTypes.UnitTransmitter;
-	import fe.unit.unitTypes.UnitNecros;
-	import fe.unit.unitTypes.UnitSpectre;
-	import fe.unit.unitTypes.UnitBossRaider;
-	import fe.unit.unitTypes.UnitBossAlicorn;
-	import fe.unit.unitTypes.UnitBossUltra;
-	import fe.unit.unitTypes.UnitBossNecr;
-	import fe.unit.unitTypes.UnitBossDron;
-	import fe.unit.unitTypes.UnitBossEncl;
-	import fe.unit.unitTypes.UnitThunderHead;
-	import fe.unit.unitTypes.UnitDestr;
-	import fe.unit.unitTypes.UnitBloatEmitter;
+
 	import fe.unit.unitTypes.UnitPlayer;
 	
 	public class Unit extends Obj
@@ -376,6 +331,7 @@ package fe.unit
 		//dif - [difficulty level for this unit]
 		//xml - [individual parameters taken from the map]
 		//loadObj - [object for loading unit state]
+		
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
 			vulner=new Array();
@@ -426,88 +382,6 @@ package fe.unit
 				disabled=true;
 			}
 			mapxml=xml;
-		}
-		
-		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit
-		{
-			switch (id)
-			{
-				case "mwall":
-					return new UnitMWall(null,0,null,null);
-				break;
-				case "scythe":
-					return new UnitScythe(null,0,null,null);
-				break;
-				case "ttur":
-					return new UnitThunderTurret(ncid,0,null,null);
-				break;
-			}
-
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
-			if (!node)
-			{
-				trace("ERROR: unit: '" + id + "' not found!");
-				return null;
-			}
-			var uc:Class;
-			var cn:String = node.@cl;
-			switch (cn)
-			{
-				case "Mine":			uc = Mine;break;
-				case "UnitTrap":		uc = UnitTrap;break;
-				case "UnitTrigger":		uc = UnitTrigger;break;
-				case "UnitDamager":		uc = UnitDamager;break;
-				case "UnitRaider":		uc = UnitRaider;break;
-				case "UnitSlaver":		uc = UnitSlaver;break;
-				case "UnitZebra":		uc = UnitZebra;break;
-				case "UnitRanger":		uc = UnitRanger;break;
-				case "UnitEncl":		uc = UnitEncl;break;
-				case "UnitMerc":		uc = UnitMerc;break;
-				case "UnitZombie":		uc = UnitZombie;break;
-				case "UnitAlicorn":		uc = UnitAlicorn;break;
-				case "UnitHellhound":	uc = UnitHellhound;break;
-				case "UnitRobobrain":	uc = UnitRobobrain;break;
-				case "UnitProtect":		uc = UnitProtect;break;
-				case "UnitGutsy":		uc = UnitGutsy;break;
-				case "UnitEqd":			uc = UnitEqd;break;
-				case "UnitSentinel":	uc = UnitSentinel;break;
-				case "UnitTurret":		uc = UnitTurret;break;
-				case "UnitBat":			uc = UnitBat;break;
-				case "UnitFish":		uc = UnitFish;break;
-				case "UnitBloat":		uc = UnitBloat;break;
-				case "UnitSpriteBot":	uc = UnitSpriteBot;break;
-				case "UnitDron":		uc = UnitDron;break;
-				case "UnitVortex":		uc = UnitVortex;break;
-				case "UnitMonstrik":	uc = UnitMonstrik;break;
-				case "UnitAnt":			uc = UnitAnt;break;
-				case "UnitSlime":		uc = UnitSlime;break;
-				case "UnitRoller":		uc = UnitRoller;break;
-				case "UnitNPC":			uc = UnitNPC;break;
-				case "UnitCaptive":		uc = UnitCaptive;break;
-				case "UnitPonPon":		uc = UnitPonPon;break;
-				case "UnitTrain":		uc = UnitTrain;break;
-				case "UnitMsp":			uc = UnitMsp;break;
-				case "UnitTransmitter":	uc = UnitTransmitter;break;
-				case "UnitNecros":		uc = UnitNecros;break;
-				case "UnitSpectre":		uc = UnitSpectre;break;
-				case "UnitBossRaider":	uc = UnitBossRaider;break;
-				case "UnitBossAlicorn":	uc = UnitBossAlicorn;break;
-				case "UnitBossUltra":	uc = UnitBossUltra;break;
-				case "UnitBossNecr":	uc = UnitBossNecr;break;
-				case "UnitBossDron":	uc = UnitBossDron;break;
-				case "UnitBossEncl":	uc = UnitBossEncl;break;
-				case "UnitThunderHead":	uc = UnitThunderHead;break;
-				case "UnitDestr":		uc = UnitDestr;break;
-				case "UnitBloatEmitter": uc = UnitBloatEmitter;break;
-			}
-			if (!uc) return null;
-
-			var cid:String = null;	// [Creation ID]
-			if (node.@cid.length()) cid = node.@cid;
-			if (ncid) cid = ncid;
-			var un:Unit=new uc(cid, dif, xml, loadObj);
-			if (xml && xml.@code.length()) un.code = xml.@code;
-			return un;
 		}
 		
 		public override function save():Object
@@ -577,10 +451,12 @@ package fe.unit
 				if (node.@damwall.length()) damWall=node.@damwall;		//урон от удара ап стену
 			}
 			//боевые параметры
-			if (node0.comb.length()) {
+			if (node0.comb.length())
+			{
 				node=node0.comb[0];
 				if (node.@hp.length()) hp=maxhp=node.@hp*hpmult;
-				if (fraction!=F_PLAYER && World.w.game.globalDif<=1) {
+				if (fraction!=F_PLAYER && World.w.game.globalDif<=1)
+				{
 					if (World.w.game.globalDif==0) maxhp*=0.4;
 					if (World.w.game.globalDif==1) maxhp*=0.7;
 					hp=maxhp;
@@ -698,11 +574,13 @@ package fe.unit
 		public function getXmlWeapon(dif:int):Weapon {
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			var weap:Weapon;
-			for each(var n:XML in node0.w) {
+			for each(var n:XML in node0.w)
+			{
 				if (n.@f.length()) continue;
 				if (n.@dif.length() && n.@dif>dif) continue;
-				if (n.@ch.length()==0 || isrnd(n.@ch)) {
-					weap=Weapon.create(this,n.@id);
+				if (n.@ch.length()==0 || isrnd(n.@ch))
+				{
+					weap = Weapon.create(this, n.@id);
 					if (weap) return weap;
 				}
 			}

@@ -20,6 +20,8 @@ package fe.loc
 	import fe.unit.unitTypes.UnitPet;
 	import fe.unit.unitTypes.UnitPhoenix;
 	import fe.unit.unitTypes.UnitTransmitter;
+
+	import fe.unit.unitTypes.UnitTypeFactory;
 	
 	public class Location
 	{
@@ -723,13 +725,14 @@ package fe.loc
 				if (cid) scid=cid;
 				else scid=randomCid(s);
 				if (s=='slmine') s='slime';
-				un=Unit.create(s,locDifLevel,xml,loadObj,scid);
+				un = UnitTypeFactory.create(s, locDifLevel, xml, loadObj, scid);
 			}
 			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
-			if ((s=='' && !homeStable) || un==null) {
+			if ((s=='' && !homeStable) || un==null)
+			{
 				if (cid) scid=cid;
 				else scid=randomCid(tip);
-				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
+				un = UnitTypeFactory.create(tip, locDifLevel, xml, loadObj, scid);
 			}
 			if (un!=null) 
 			{
