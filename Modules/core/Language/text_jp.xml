@@ -400,7 +400,7 @@
 <weapon id='hsword'><n>蹄作りの剣</n>
 	<info>機械の金属パーツを鋭く磨いて棒に括り付けたもの。とても剣と呼べる代物ではない。</info></weapon>
 <weapon id='test'><n>Test</n>
-	<info></info></weapon>
+	<info>MISSING</info></weapon>
 <weapon id='r32'><n>.32口径ピストル</n>
 	<info>昔ながらの拳銃。ダメージが小さく連射性能も悪いためあまり強くない。</info></weapon>
 <weapon id='p9mm' v='0.6'><n>9mmピストル</n>
@@ -2325,7 +2325,7 @@ Music CC-BY License: https://creativecommons.org/licenses/by-nc/4.0/legalcode</i
 <pip id='ad1' v='0.6'><n>第一段階…軽度</n></pip>
 <pip id='ad2' v='0.6'><n>第二段階…中度</n></pip>
 <pip id='ad3' v='0.6'><n>第三段階…重度</n></pip>
-<pip id='addiction' v='0.6'><n></n></pip>
+<pip id='addiction' v='0.6'><n>MISSING</n></pip>
 <pip id='drunk1' v='0.7'><n>ほろ酔い</n></pip>
 <pip id='drunk2' v='0.7'><n>酔っぱらい</n></pip>
 <pip id='drunk3' v='0.7'><n>泥酔</n></pip>
@@ -3074,9 +3074,9 @@ AP：S.A.T.S.で消費するAPの量（括弧内にはオートマチック銃�
 <info id="overMass" st="3" v="0.81"><n>重量過多！所持アイテムが多すぎる</n></info>
 
 <map id='test'><n>Test loc</n>
-	<info></info></map>
+	<info>MISSING</info></map>
 <map id='test2'><n>Test loc 2</n>
-	<info></info></map>
+	<info>MISSING</info></map>
 <map id='begin'><n>工業用トンネル</n>
 	<info>物語の始まりの場所</info></map>
 <map id='surf'><n>地表</n>
@@ -5613,7 +5613,7 @@ AP：S.A.T.S.で消費するAPの量（括弧内にはオートマチック銃�
 	<info>あなたは無人のトンネルの中で目が覚めた。周囲にポニーの気配はなく、何も持っていない。そして、自分が何故ここにいるのかすら思い出せない。トンネルの中を探索して役立つものを集めつつ、地表へと戻る道を探せ。</info></txt>
 <txt id='toExit1'><n>地表への出口に到達する</n></txt>
 <txt id='collectHS'><n>歯車を探せ</n>
-	<info></info></txt>
+	<info>MISSING</info></txt>
 <txt id='collectHS1'><n>見つけた歯車：</n></txt>
 <txt id='storyContact' v='0.7'><n>住民と接触せよ</n>
 	<info>エクエストリアン・ウェイストランドにも平和な町はあるはずだ。これからの任務の拠点となりうる場所を探し、そこに住む住民と接触したまえ。</info></txt>

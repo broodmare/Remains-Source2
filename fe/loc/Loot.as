@@ -208,8 +208,7 @@ package fe.loc
 			}
 		}
 		
-		public override function step():void
-		{
+		public override function step() {
 			if (loc.broom && (auto2 || krit)) {
 				take(true);
 				return;

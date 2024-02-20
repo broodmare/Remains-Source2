@@ -8,23 +8,20 @@ package fe.unit
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-	import flash.media.SoundChannel;
-	import flash.filters.GlowFilter;
-
+	
 	import fe.*;
+	import fe.util.Calc;
+	import fe.util.Vector2;
+
 	import fe.weapon.*;
+	import fe.projectile.Bullet;
 	import fe.loc.*;
 	import fe.serv.*;
-
 	import fe.graph.Emitter;
-	import fe.projectile.Bullet;
-
-	import fe.util.Calc;
-
+	import flash.media.SoundChannel;
+	import flash.filters.GlowFilter;
 	import fe.entities.Obj;
 	import fe.entities.Part;
-
-	import fe.unit.unitTypes.UnitPlayer;
 	
 	public class Unit extends Obj
 	{
@@ -56,10 +53,10 @@ package fe.unit
 		public static var arrIcos:Array;
 		
 		public var id:String;
-		public var mapxml:XML;
-		public var uniqName:Boolean = false;
+		var mapxml:XML;
+		var uniqName:Boolean = false;
 		
-		// Unit"s size (in pixels)
+		// Unit's size (in pixels)
 		public var sitY:Number	= 40;	// While standing
 		public var stayY:Number	= 40;
 		public var sitX:Number	= 40;	// While crouching
@@ -85,7 +82,7 @@ package fe.unit
 		public var critHeal:Number = 0.2;
 		public var shithp:Number = 0;
 
-		public var t_hp:int;
+		var t_hp:int;
 		public var mana:Number = 1000;
 		public var maxmana:Number = 1000;
 		public var dmana:Number=1;
@@ -103,7 +100,7 @@ package fe.unit
 		public var shitArmor:Number=20;
 		public var vulner:Array;		
 		public var begvulner:Array;
-		
+		public static var begvulners:Array = [];
 		
 		// Evasion, 1 is standard, 0 always hits
 		public var dexter:Number = 1;
@@ -120,8 +117,8 @@ package fe.unit
 		public var friendlyExpl:Number=0.25;
 		
 		// Damage
-		public static const kolVulners = 20;
 		public var dam:Number=0;			//урон самого юнита
+		public static const kolVulners=20;
 		public var tipDamage:int=D_PHIS;		//тип урона
 		public var radDamage:Number=0;		//урон радиацией
 		public var retDamage:Boolean=false; //возврат урона от юнита к врагу
@@ -164,7 +161,7 @@ package fe.unit
 		public var throu:Boolean=false, isJump:Boolean=false, turnX:int=0, turnY:int=0, kray:Boolean=false;
 		public var pumpObj:Interact;	//объект на который наткнулся (для открывание дверей мобами)
 		private var namok_t:int=0;
-		public var visDamDY:int=0;
+		var visDamDY:int=0;
 
 
 		//оружие
@@ -185,11 +182,9 @@ package fe.unit
 		public var isShoot:Boolean=false;	//устанавливается оружием в true если был выстрел
 
 		//ии
-		public var aiNapr:int=1; 
-		public var aiVNapr:int=0; //направление, в котором стремиться двигаться ии
-		public var aiTTurn:int=10;
-		public var aiPlav:int=0; 
-		public var aiState:int=0;	//состояние ии 
+		var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
+		var aiTTurn:int=10, aiPlav:int=0; 
+		var aiState:int=0;	//состояние ии 
 		protected var aiTCh:int = Calc.intBetweenZeroAnd(10);	// [AI state change timer], Changed from range of [0-9] to [0-10]
 		protected var aiSpok:int=0, maxSpok:int=30;		// [0 - calm, 1-9 - excited, maxSpok - attacks the target]
 		//координаты и вид цели
@@ -237,17 +232,12 @@ package fe.unit
 		public var noDestr:Boolean=false; //не уничтожать после смерти
 		
 		public var opt:Object;
+		public static var opts:Array=new Array();
 		
-		
-		// [Fraction] I assume faction
-		public var fraction:int = 0;
-		public var player:Boolean = false;
-		public static const F_PLAYER = 100;
-		public static const F_MONSTER = 1;
-		public static const F_RAIDER = 2;
-		public static const F_ZOMBIE = 3;
-		public static const F_ROBOT = 4;
-		public var npc:Boolean = false;	// The unit is an NPC and is displayed on the map
+		//фракция
+		public var fraction:int=0, player:Boolean=false;
+		public static const F_PLAYER=100, F_MONSTER=1, F_RAIDER=2, F_ZOMBIE=3, F_ROBOT=4;
+		public var npc:Boolean=false;	//Юнит является NPC-ом и отображается на карте
 		
 		//видимость юнита для других (маскировка), чем выше показатель, тем с большего расстояния объект виден
 		public var visibility:int=1000, stealthMult:Number=1;	//с какого расстояния становится виден
@@ -274,54 +264,49 @@ package fe.unit
 		public var id_name:String;
 		//реплики
 		public var t_replic:int=Math.random()*100-50;
-		public var id_replic:String="";
+		public var id_replic:String='';
 		
 		//визуальная часть
 		//блиттинг
-		public var blitId:String;		//id битмапа
-		public var animState:String="";
-		public var animState2:String="";
+		var blitId:String;		//id битмапа
+		public var animState:String='',animState2:String='';
 		public var blitData:BitmapData;
-		public var blitX:int=120, blitY:int=120;
-		public var blitDX:int=-1, blitDY:int=-1;
-		public var blitRect:Rectangle;
-		public var blitPoint:Point;
-		public var visData:BitmapData;
-		public var visBmp:Bitmap;
-		public var anims:Array;
+		var blitX:int=120, blitY:int=120;
+		var blitDX:int=-1, blitDY:int=-1;
+		var blitRect:Rectangle;
+		var blitPoint:Point;
+		var visData:BitmapData;
+		var visBmp:Bitmap;
+		var anims:Array;
 		
-		public var ctrans:Boolean=true;	// Color Transform
+		var ctrans:Boolean=true;	//применять цветофильтр
+		//полоска хп
 		public var hpbar:MovieClip;
-		public static var heroTransforms = [ new ColorTransform(1,0.8,0.8,1,64,0,0,0), new ColorTransform(0.8,1,1,1,0,32,64,0), new ColorTransform(1,0.8,1,1,32,0,64,0), new ColorTransform(0.8,1,0.8,1,0,64,0,0) ];
-		
-		// [lethal effects]
-		public var timerDie:int=0;	// [delayed death]
-		public var burn:Desintegr;
-		public var bloodEmit:Emitter;
-		public var numbEmit:Emitter;
-		public var hitPart:Part;
-		public var t_hitPart:int=0;
-		public var hitSumm:Number=0;
-		public var t_mess:int=0;
-
-		// [sounds]
+		public static var heroTransforms=[new ColorTransform(1,0.8,0.8,1,64,0,0,0),new ColorTransform(0.8,1,1,1,0,32,64,0),new ColorTransform(1,0.8,1,1,32,0,64,0),new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
+		//смертельные эффекты
+		var timerDie:int=0;	//отложенная смерть
+		var burn:Desintegr;
+		var bloodEmit:Emitter;
+		var numbEmit:Emitter;
+		var hitPart:Part, t_hitPart:int=0, hitSumm:Number=0, t_mess:int=0;
+		//звуки
 		public var sndMusic:String;
-		public var sndMusicPrior:int=0;
+		var sndMusicPrior:int=0;
 		public var sndDie:String;
 		public var sndRun:String;
 		public var sndRunDist:Number=800;
 		public var sndRunOn:Boolean=false;
-		public var sndVolkoef:Number=1;
+		var sndVolkoef:Number=1;
 
-		// [position]
-		public var mother:Unit;
-		public var kolChild:int = 0;
+		//пложение
+		var mother:Unit;
+		var kolChild:int=0;
 
 		public var scrDie:Script, scrAlarm:Script;
-		public var questId:String;	// [id for collection quest]
+		public var questId:String;	//id для коллекционного квеста
 		
-		public var trig:String;		// [appearance condition]
-		public var trigDis:Boolean=false;	// [disabled by trigger]
+		public var trig:String;		//условие появления
+		public var trigDis:Boolean=false;	//отключён по триггеру
 		
 		public var xp:int = 0;	//опыт
 		
@@ -331,42 +316,31 @@ package fe.unit
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// [Options for creating a unit]
-		//cid - [creation identifier, on the basis of which the real identifier will be determined inside the class constructor]
-		//dif - [difficulty level for this unit]
-		//xml - [individual parameters taken from the map]
-		//loadObj - [object for loading unit state]
-		
-		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
-			vulner = [];
-			inter = new Interact(this, null, xml, loadObj);
-			inter.active = false;
+		//Параметры для создания юнита
+		//cid - идентификатор создания, на основе которого внутри конструктора класса будет определён настоящий идентификатор
+		//dif - уровень сложности для этого юнита
+		//xml - индивидуальные параметры, взятые из карты
+		//loadObj - объект для загрузки состояния юнита
+		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			vulner=new Array();
+			inter=new Interact(this,null,xml,loadObj);
+			inter.active=false;
 			for (var i=0; i<kolVulners; i++) vulner[i]=1;
 			vulner[D_EMP]=0;
-			effects = [];
-
-			this.sloy	= 2;	// Property defined in Obj
-			this.prior	= 1;	// Property defined in Obj
-			this.warn	= 1;	// Property defined in Obj
-
-			numbEmit=Emitter.arr["numb"];
-			if (xml)
-			{
-				if (xml.@turn.length())
-				{
+			effects=new Array();
+			sloy=2, prior=1, warn=1;
+			numbEmit=Emitter.arr['numb'];
+			if (xml) {
+				if (xml.@turn.length()) {
 					if (xml.@turn>0) storona=1;
 					if (xml.@turn<0) storona=-1;
-				}
-				else
-				{
+				} else {
 					storona=isrnd()?1:-1;
 					aiNapr=storona;
 				}
-				if (xml.@name.length())
-				{
+				if (xml.@name.length()) {
 					uniqName=true;
-					nazv=Res.txt("u",xml.@name);
+					nazv=Res.txt('u',xml.@name);
 				}
 				if (xml.@ai.length()) aiTip=xml.@ai;
 				if (xml.@hpmult.length()) hpmult=xml.@hpmult;
@@ -378,8 +352,7 @@ package fe.unit
 				if (xml.@observ.length()) observ=xml.@observ;
 				if (xml.@light.length()) light=true;
 				if (xml.@noagro.length()) noAgro=true;
-				if (xml.@dis.length())
-				{
+				if (xml.@dis.length()) {
 					noAct=true;
 					disabled=true;
 				}
@@ -393,6 +366,88 @@ package fe.unit
 			mapxml=xml;
 		}
 		
+		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit
+		{
+			switch (id)
+			{
+				case 'mwall':
+					return new UnitMWall(null,0,null,null);
+				break;
+				case 'scythe':
+					return new UnitScythe(null,0,null,null);
+				break;
+				case 'ttur':
+					return new UnitThunderTurret(ncid,0,null,null);
+				break;
+			}
+
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
+			if (!node)
+			{
+				trace('ERROR: unit: "' + id + '" not found!');
+				return null;
+			}
+			var uc:Class;
+			var cn:String = node.@cl;
+			switch (cn)
+			{
+				case 'Mine':			uc = Mine;break;
+				case 'UnitTrap':		uc = UnitTrap;break;
+				case 'UnitTrigger':		uc = UnitTrigger;break;
+				case 'UnitDamager':		uc = UnitDamager;break;
+				case 'UnitRaider':		uc = UnitRaider;break;
+				case 'UnitSlaver':		uc = UnitSlaver;break;
+				case 'UnitZebra':		uc = UnitZebra;break;
+				case 'UnitRanger':		uc = UnitRanger;break;
+				case 'UnitEncl':		uc = UnitEncl;break;
+				case 'UnitMerc':		uc = UnitMerc;break;
+				case 'UnitZombie':		uc = UnitZombie;break;
+				case 'UnitAlicorn':		uc = UnitAlicorn;break;
+				case 'UnitHellhound':	uc = UnitHellhound;break;
+				case 'UnitRobobrain':	uc = UnitRobobrain;break;
+				case 'UnitProtect':		uc = UnitProtect;break;
+				case 'UnitGutsy':		uc = UnitGutsy;break;
+				case 'UnitEqd':			uc = UnitEqd;break;
+				case 'UnitSentinel':	uc = UnitSentinel;break;
+				case 'UnitTurret':		uc = UnitTurret;break;
+				case 'UnitBat':			uc = UnitBat;break;
+				case 'UnitFish':		uc = UnitFish;break;
+				case 'UnitBloat':		uc = UnitBloat;break;
+				case 'UnitSpriteBot':	uc = UnitSpriteBot;break;
+				case 'UnitDron':		uc = UnitDron;break;
+				case 'UnitVortex':		uc = UnitVortex;break;
+				case 'UnitMonstrik':	uc = UnitMonstrik;break;
+				case 'UnitAnt':			uc = UnitAnt;break;
+				case 'UnitSlime':		uc = UnitSlime;break;
+				case 'UnitRoller':		uc = UnitRoller;break;
+				case 'UnitNPC':			uc = UnitNPC;break;
+				case 'UnitCaptive':		uc = UnitCaptive;break;
+				case 'UnitPonPon':		uc = UnitPonPon;break;
+				case 'UnitTrain':		uc = UnitTrain;break;
+				case 'UnitMsp':			uc = UnitMsp;break;
+				case 'UnitTransmitter':	uc = UnitTransmitter;break;
+				case 'UnitNecros':		uc = UnitNecros;break;
+				case 'UnitSpectre':		uc = UnitSpectre;break;
+				case 'UnitBossRaider':	uc = UnitBossRaider;break;
+				case 'UnitBossAlicorn':	uc = UnitBossAlicorn;break;
+				case 'UnitBossUltra':	uc = UnitBossUltra;break;
+				case 'UnitBossNecr':	uc = UnitBossNecr;break;
+				case 'UnitBossDron':	uc = UnitBossDron;break;
+				case 'UnitBossEncl':	uc = UnitBossEncl;break;
+				case 'UnitThunderHead':	uc = UnitThunderHead;break;
+				case 'UnitDestr':		uc = UnitDestr;break;
+				case 'UnitBloatEmitter': uc = UnitBloatEmitter;break;
+			}
+			if (!uc) return null;
+
+			var cid:String = null;	// [Creation ID]
+			if (node.@cid.length()) cid = node.@cid;
+			if (ncid) cid = ncid;
+			var un:Unit=new uc(cid, dif, xml, loadObj);
+			if (xml && xml.@code.length()) un.code = xml.@code;
+			return un;
+		}
+		
 		public override function save():Object
 		{
 			var obj:Object = new Object();
@@ -401,16 +456,190 @@ package fe.unit
 			return obj;
 		}
 		
+		public function getXmlParam(mid:String = null)
+		{
+			var setOpts:Boolean=false;
+			if (opts[id]) {
+				opt=opts[id];
+				begvulner=begvulners[id];
+			} else {
+				opt=new Object();
+				opts[id]=opt;
+				begvulner=new Array();
+				begvulners[id]=begvulner;
+				setOpts=true;
+			}
+			var node:XML;
+			var isHero:Boolean=false;
+			if (mid==null) {
+				if (hero>0) isHero=true;
+				mid=id;
+			}
+			
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", mid);
+			if (mid && !uniqName) nazv=Res.txt('u',mid);
+			if (node0.@fraction.length()) fraction=node0.@fraction;
+			inter.cont=mid;
+			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
+			if (fraction==F_PLAYER) warn=0;
+			if (node0.@xp.length()) xp=node0.@xp*World.unitXPMult;
+			//физические параметры
+			if (node0.phis.length()) {
+				node=node0.phis[0];
+				if (node.@sX.length()) stayX=objectWidth=node.@sX;
+				if (node.@sY.length()) stayY=objectHeight=node.@sY;
+				if (node.@sitX.length()) sitX=node.@sitX; else sitX=stayX;
+				if (node.@sitY.length()) sitY=node.@sitY; else sitY=stayY/2;
+				if (node.@massa.length()) massaMove=node.@massa/50;
+				if (node.@massafix.length()) massaFix=node.@massafix/50;
+				else massaFix=massaMove;
+			}
+			massa=massaFix;
+			if (massa>=1) destroy=0;
+			//параметры движения
+			if (node0.move.length()) {
+				node=node0.move[0];
+				if (node.@speed.length()) maxSpeed=node.@speed;
+				if (node.@run.length()) runSpeed=node.@run;
+				if (node.@accel.length()) accel=node.@accel;
+				if (node.@jump.length()) jumpdy=node.@jump;
+				if (node.@knocked.length()) knocked=node.@knocked;		//множитель отбрасывания оружием
+				if (node.@plav.length()) plav=(node.@plav>0);			//если =0, юнит не плавает, а ходит по дну
+				if (node.@brake.length()) brake=node.@brake;			//торможение
+				if (node.@levit.length()) levitPoss=(node.@levit>0);	//если =0, юнит нельзя поднимать телекинезом
+				if (node.@levit_max.length()) levit_max=node.@levit_max;//максимальное время левитации
+				if (node.@levitaccel.length()) levitaccel=node.@levitaccel;	//ускорение в поле левитации, определяет возможность врага вырываться из телекинетического захвата
+				if (node.@float.length()) ddyPlav=node.@float;			//значение выталкивающей силы
+				if (node.@porog.length()) porog=node.@porog;			//автоподъём при движении по горизонтали
+				if (node.@fixed.length()) fixed=(node.@fixed>0);		//если =1, юнит является прикреплённым
+				if (node.@damwall.length()) damWall=node.@damwall;		//урон от удара ап стену
+			}
+			//боевые параметры
+			if (node0.comb.length()) {
+				node=node0.comb[0];
+				if (node.@hp.length()) hp=maxhp=node.@hp*hpmult;
+				if (fraction!=F_PLAYER && World.w.game.globalDif<=1) {
+					if (World.w.game.globalDif==0) maxhp*=0.4;
+					if (World.w.game.globalDif==1) maxhp*=0.7;
+					hp=maxhp;
+				}
+				if (node.@skin.length()) skin=node.@skin;
+				if (node.@armor.length()) armor=node.@armor;
+				if (node.@marmor.length()) marmor=node.@marmor;
+				if (node.@aqual.length()) armor_qual=node.@aqual;		//качество брони
+				if (node.@armorhp.length()) armor_hp=armor_maxhp=node.@armorhp*hpmult;
+				else armor_hp=armor_maxhp=hp;
+				
+				if (node.@krep.length()) weaponKrep=node.@krep;			//способ держать оружие, 0 - телекинез
+				if (node.@dexter.length()) dexter=node.@dexter;			//уклонение
+				if (node.@damage.length()) dam=node.@damage;			//собственный урон
+				if (node.@tipdam.length()) tipDamage=node.@tipdam;		//тип собственного урона
+				if (node.@skill.length()) weaponSkill=node.@skill;		//владение оружием
+				if (node.@raddamage.length()) radDamage=node.@raddamage;//собственный урон радиацией
+				if (node.@vision.length()) vision=node.@vision;			//зрение
+				if (node.@observ.length()) observ+=node.@observ;		//наблюдательность
+				if (node.@ear.length()) ear=node.@ear;					//слух
+				if (node.@levitatk.length()) levitAttack=node.@levitatk;//атака при левитации
+			}
+			//уязвимости
+			if (node0.vulner.length()) {
+				node=node0.vulner[0];
+				if (node.@bul.length()) vulner[D_BUL]=node.@bul;
+				if (node.@blade.length()) vulner[D_BLADE]=node.@blade;
+				if (node.@phis.length()) vulner[D_PHIS]=node.@phis;
+				if (node.@fire.length()) vulner[D_FIRE]=node.@fire;
+				if (node.@expl.length()) vulner[D_EXPL]=node.@expl;
+				if (node.@laser.length()) vulner[D_LASER]=node.@laser;
+				if (node.@plasma.length()) vulner[D_PLASMA]=node.@plasma;
+				if (node.@venom.length()) vulner[D_VENOM]=node.@venom;
+				if (node.@emp.length()) vulner[D_EMP]=node.@emp;
+				if (node.@spark.length()) vulner[D_SPARK]=node.@spark;
+				if (node.@acid.length()) vulner[D_ACID]=node.@acid;
+				if (node.@cryo.length()) vulner[D_CRIO]=node.@cryo;
+				if (node.@poison.length()) vulner[D_POISON]=node.@poison;
+				if (node.@bleed.length()) vulner[D_BLEED]=node.@bleed;
+				if (node.@fang.length()) vulner[D_FANG]=node.@fang;
+				if (node.@pink.length()) vulner[D_PINK]=node.@pink;
+			}
+			//visual parameters
+			if (node0.vis.length()) {
+				node=node0.vis[0];
+				if (node.@sex=='w') msex=false;
+				if (node.@blit.length()) {
+					blitId=node.@blit;
+					if (node.@sprX>0) blitX=node.@sprX;
+					if (node.@sprY>0) blitY=node.@sprY;
+					else blitY=node.@sprX;
+					if (node.@sprDX.length()) blitDX=node.@sprDX;
+					if (node.@sprDY.length()) blitDY=node.@sprDY;
+				}
+				if (node.@replic.length()) id_replic=node.@replic;
+				if (node.@noise.length()) noiseRun=node.@noise;
+			}
+			//звуковые параметры
+			if (node0.snd.length()) {
+				node=node0.snd[0];
+				if (node.@music.length()) {
+					sndMusic=node.@music;
+					sndMusicPrior=1;
+				}
+				if (node.@musicp.length()) sndMusicPrior=node.@musicp;
+				if (node.@die.length()) sndDie=node.@die;
+				if (node.@run.length()) sndRun=node.@run;
+			}
+			//прочие параметры
+			if (node0.param.length()) {
+				node=node0.param[0];
+				if (node.@invulner.length()) invulner=(node.@invulner>0);	//полная неуязвимость
+				if (node.@overlook.length()) overLook=(node.@overlook>0);	//может смотреть за спину
+				if (node.@sats.length()) isSats=(node.@sats>0);				//отображать как цель в ЗПС
+				if (node.@acttrap.length()) activateTrap=node.@acttrap;		//юнит активирует ловушки: 0 - никак, 1 - только установленные игроком
+				if (node.@npc.length()) npc=(node.@npc>0);					//отображать на карте как npc
+				if (node.@trup.length()) trup=(node.@trup>0);				//оставлять труп после смерти
+				if (node.@blood.length()) blood=node.@blood;				//кровь
+				if (node.@retdam.length()) retDamage=node.@retdam>0;		//возврат урона
+				if (node.@hero.length()) {
+					mHero=true;						//может быть героем
+					id_name=node.@hero;
+				}
+				if (setOpts) {
+					if (node.@pony.length()) opt.pony=true;					//является пони
+					if (node.@zombie.length()) opt.zombie=true;					//является зомби
+					if (node.@robot.length()) opt.robot=true;					//является роботом
+					if (node.@insect.length()) opt.insect=true;					//является насекомым
+					if (node.@monster.length()) opt.monster=true;					//является насекомым
+					if (node.@alicorn.length()) opt.alicorn=true;					//является аликорном
+					if (node.@mech.length()) {
+						opt.mech=true;					//является механизмом
+						mech=true;
+					}
+					if (node.@hbonus.length()) opt.hbonus=true;					//является пони
+					if (node.@izvrat.length()) opt.izvrat=true;					//является пони
+				}
+			}
+			if (blood==0) vulner[D_BLEED]=0;
+			if (opt) {
+				if (opt.robot || opt.mech) {
+					vulner[D_NECRO]=vulner[D_BLEED]=vulner[D_VENOM]=vulner[D_POISON]=0;
+				}
+			}
+			if (node0.blit.length()) {
+				if (anims==null) anims=new Array();
+				for each(var xbl:XML in node0.blit) {
+					anims[xbl.@id]=new BlitAnim(xbl);
+				}
+			}
+			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
+		}
+		
 		public function getXmlWeapon(dif:int):Weapon {
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			var weap:Weapon;
-			for each(var n:XML in node0.w)
-			{
+			for each(var n:XML in node0.w) {
 				if (n.@f.length()) continue;
 				if (n.@dif.length() && n.@dif>dif) continue;
-				if (n.@ch.length()==0 || isrnd(n.@ch))
-				{
-					weap = Weapon.create(this, n.@id);
+				if (n.@ch.length()==0 || isrnd(n.@ch)) {
+					weap=Weapon.create(this,n.@id);
 					if (weap) return weap;
 				}
 			}
@@ -419,10 +648,10 @@ package fe.unit
 		
 		public function getName():String
 		{
-			if (World.w.game == null || id_name == null) return "";
+			if (World.w.game == null || id_name == null) return '';
 			var arr:Array = World.w.game.names[id_name];
 			if (arr == null || arr.length == 0) arr = Res.namesArr(id_name); 	//prepare an array of names
-			if (arr == null || arr.length == 0) return "";
+			if (arr == null || arr.length == 0) return '';
 
 			World.w.game.names[id_name] = arr;
 			var n = Calc.intBetweenZeroAnd(arr.length - 1);
@@ -435,7 +664,7 @@ package fe.unit
 		{
 			if (trig)
 			{
-				if (trig == "eco" && (World.w.pers == null || World.w.pers.eco == 0)) return false;
+				if (trig == 'eco' && (World.w.pers == null || World.w.pers.eco == 0)) return false;
 				if (World.w.game.triggers[trig] != 1) return false;
 			}
 			return true;
@@ -472,8 +701,8 @@ package fe.unit
 				if (mapxml.scr.length()) {
 					for each (var xscr in mapxml.scr) {
 						var scr:Script=new Script(xscr,loc.land, this);
-						if (scr.eve=="die" || scr.eve==null) scrDie=scr;
-						if (scr.eve=="alarm") scrAlarm=scr;
+						if (scr.eve=='die' || scr.eve==null) scrDie=scr;
+						if (scr.eve=='alarm') scrAlarm=scr;
 					}
 				}
 				if (mapxml.@scr.length()) scrDie=World.w.game.getScript(mapxml.@scr,this);
@@ -488,7 +717,7 @@ package fe.unit
 			}
 		}
 
-		// [set the mob"s level (the value is added to the level specified via the map, default is 0)]
+		// [set the mob's level (the value is added to the level specified via the map, default is 0)]
 		public function setLevel(nlevel:int=0)
 		{
 			level += nlevel;
@@ -514,14 +743,13 @@ package fe.unit
 		}
 		
 		//сделать героем
-		public function setHero(nhero:int=1):void
-		{
+		public function setHero(nhero:int=1) {
 			if (!mHero) return;
 			if (hero==0) hero=nhero;
 			if (hero>0) {
 				if (!uniqName) {
 					var s=getName();
-					if (s!=null && s!="") nazv=s;
+					if (s!=null && s!='') nazv=s;
 				}
 				xp*=5;
 			}
@@ -597,7 +825,7 @@ package fe.unit
 		public function isNoResBoss():Boolean
 		{
 			var res = false;
-			res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != "base";
+			res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != 'base';
 			return res;
 		}
 
@@ -606,7 +834,7 @@ package fe.unit
 
 		}
 
-		public override function step():void
+		public override function step()
 		{
 			if (disabled || trigDis) return;
 			if (t_emerg>0) {
@@ -666,7 +894,7 @@ package fe.unit
 
 			onCursor = (isVis && !disabled && sost < 4 && leftBound < World.w.celX && rightBound > World.w.celX && topBound < World.w.celY && bottomBound > World.w.celY) ? prior:0;
 
-			for (i in childObjs) if (childObjs[i]) // Here is where it"s called as a string.
+			for (i in childObjs) if (childObjs[i]) // Here is where it's called as a string.
 			{
 				try
 				{
@@ -674,7 +902,7 @@ package fe.unit
 				}
 				catch(err)
 				{
-					trace("ERROR: (00:2) - Child object: '" + childObjs[i].id + "' with parent: '" + id + "' failed to run step()!");
+					trace('ERROR: (00:2) - Child object: "' + childObjs[i].id + '" with parent: "' + id + '" failed to run step()!');
 				}
 			}
 
@@ -1330,23 +1558,23 @@ package fe.unit
 			}
 
 			if (pla!=inWater && (dy>8 || dy<-8 || plaKap)) {
-				Emitter.emit("kap", loc, coordinates.X, coordinates.Y-objectHeight*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:int(Math.abs(dy*massa*2)+1)});
+				Emitter.emit('kap', loc, coordinates.X, coordinates.Y-objectHeight*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:int(Math.abs(dy*massa*2)+1)});
 					
 			}
 			if (pla!=inWater && dy>5)
 			{
-				if (massa>2) sound("fall_water0", 0, dy/10);
-				else if (massa>0.4) sound("fall_water1", 0, dy/10);
-				else if (massa>0.2) sound("fall_water2", 0, dy/10);
-				else sound("fall_item_water", 0, dy/10);
+				if (massa>2) sound('fall_water0', 0, dy/10);
+				else if (massa>0.4) sound('fall_water1', 0, dy/10);
+				else if (massa>0.2) sound('fall_water2', 0, dy/10);
+				else sound('fall_item_water', 0, dy/10);
 			}
-			if (pla!=inWater && dy<-5 && massa>0.4) sound("fall_water2", 0, -dy/10);
-			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit("kap", loc, coordinates.X, coordinates.Y-objectHeight*0.25, {rx:objectWidth});
+			if (pla!=inWater && dy<-5 && massa>0.4) sound('fall_water2', 0, -dy/10);
+			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-objectHeight*0.25, {rx:objectWidth});
 						if (isPlav) {
 				namok_t++;
 				if (namok_t>=100) {
 					namok_t=0;
-					addEffect("namok");
+					addEffect('namok');
 				}
 			}
 			else if (namok_t>0) {
@@ -1434,7 +1662,7 @@ package fe.unit
 		
 		//телепортация
 		public function teleport(nx:Number,ny:Number,eff:int=0) {
-			if (eff>0) Emitter.emit("tele", loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
+			if (eff>0) Emitter.emit('tele', loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
 			setPos(nx,ny);
 			if (currentWeapon) {
 				setWeaponPos(currentWeapon.tip);
@@ -1442,7 +1670,7 @@ package fe.unit
 			}
 			isLaz=0;
 			levit=0;
-			if (eff>0) Emitter.emit("teleport", loc, coordinates.X, coordinates.Y-objectHeight/2);
+			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-objectHeight/2);
 		}
 		
 		// [Tear away from a fixed place] I think this is for grabbing turrets.
@@ -1457,7 +1685,7 @@ package fe.unit
 			var unitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 			for each(var xml in unitList)
 			{
-				if (xml.@cat=="3")
+				if (xml.@cat=='3')
 				{
 					var bmpd:BitmapData;
 					var ok:Boolean=false;
@@ -1519,7 +1747,7 @@ package fe.unit
 			else visBmp.x=-blitX/2;
 			if (blitDY>=0) visBmp.y=-blitDY;
 			else visBmp.y=-blitY+10;
-			animState="stay";
+			animState='stay';
 		}
 		
 		public function blit(blstate:int, blframe:int)
@@ -1551,8 +1779,7 @@ package fe.unit
 			}
 		}
 		
-		public override function remVisual()
-		{
+		public override function remVisual() {
 			super.remVisual();
 			if (hpbar && hpbar.parent) hpbar.parent.removeChild(hpbar);
 			if (childObjs) {
@@ -1572,7 +1799,7 @@ package fe.unit
 
 		}
 		
-		private function sndRunPlay()
+		function sndRunPlay()
 		{
 				if (rasst2<sndRunDist*sndRunDist)
 				{
@@ -1585,8 +1812,7 @@ package fe.unit
 				}
 		}
 		
-		public function newPart(nid:String,kol:int=1,frame:int=0)
-		{
+		function newPart(nid:String,kol:int=1,frame:int=0) {
 			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:kol, frame:frame});
 		}
 
@@ -1652,14 +1878,10 @@ package fe.unit
 			{
 				dy = 0;
 			}
-			if (neujaz > 0) neujaz--;
-			if (shok > 0) shok--;
-			if (oduplenie > 0)
-			{
-				if (opt && opt.izvrat && World.w.pers.socks || noAgro)
-				{
-
-				}
+			if (neujaz>0) neujaz--;
+			if (shok>0) shok--;
+			if (oduplenie>0) {
+				if (opt && opt.izvrat && World.w.pers.socks || noAgro) {}
 				else oduplenie--;
 			}
 			if (noise>0) noise-=20;
@@ -1716,7 +1938,7 @@ package fe.unit
 						damage(Math.sqrt(poison),D_POISON,null,true);
 						poison-=critHeal;
 						if (poison<0) poison=0;
-						Emitter.emit("poison", loc, coordinates.X, coordinates.Y-objectHeight*0.5);
+						Emitter.emit('poison', loc, coordinates.X, coordinates.Y-objectHeight*0.5);
 					}
 					if (inWater && loc.wdam>0) {
 						damage(loc.wdam,loc.wtipdam,null,true);
@@ -1727,16 +1949,16 @@ package fe.unit
 				stun--;
 				if (stun%10==0) {
 					if (opt && opt.robot) {
-						Emitter.emit("discharge", loc, coordinates.X, coordinates.Y-objectHeight*0.5);
-						Emitter.emit("iskr", loc, coordinates.X, coordinates.Y-objectHeight*0.5,{kol:5});
-					} else if (!mech) Emitter.emit("stun", loc, coordinates.X, coordinates.Y-objectHeight*0.75);
+						Emitter.emit('discharge', loc, coordinates.X, coordinates.Y-objectHeight*0.5);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y-objectHeight*0.5,{kol:5});
+					} else if (!mech) Emitter.emit('stun', loc, coordinates.X, coordinates.Y-objectHeight*0.75);
 									}
 			}
 			if (t_hp>0) t_hp--;
 			if (slow>0)
 			{
 				slow--;
-				if (!fixed && slow%10==0 && vis && vis.visible && (dx>3 || dx<-3 || dy>5 || dy<-5)) Emitter.emit("slow", loc, coordinates.X, coordinates.Y-objectHeight*0.25);
+				if (!fixed && slow%10==0 && vis && vis.visible && (dx>3 || dx<-3 || dy>5 || dy<-5)) Emitter.emit('slow', loc, coordinates.X, coordinates.Y-objectHeight*0.25);
 							}
 			if (t_throw>0) t_throw--;
 			//сборный показ цифр урона
@@ -1759,7 +1981,7 @@ package fe.unit
 			{
 				noise_t=30;
 				if (loc && loc.active && !getTileVisi()) {
-					if (!player) Emitter.emit("noise", loc, coordinates.X, coordinates.Y,{rx:40, ry:40, alpha:Math.min(1,n/500)});
+					if (!player) Emitter.emit('noise', loc, coordinates.X, coordinates.Y,{rx:40, ry:40, alpha:Math.min(1,n/500)});
 				}
 			}
 		}
@@ -1768,7 +1990,7 @@ package fe.unit
 //--------------------------------------------------------------------------------------------------------------------
 //				Атака
 
-		// [Attack the target with the body using the unit"s own damage]
+		// [Attack the target with the body using the unit's own damage]
 		public function attKorp(cel:Unit, mult:Number=1):Boolean {
 			if (sost>1 || cel==null || cel.loc!=loc || burn!=null) return false;
 			if (cel.leftBound>rightBound || cel.rightBound<leftBound || cel.topBound>bottomBound || cel.bottomBound<topBound || cel.neujaz>0) return false;
@@ -1829,7 +2051,7 @@ package fe.unit
 //				Effects
 
 		public function addEffect(id:String, val:Number=0, t:int=0, se:Boolean=true):Effect {
-			if (id==null || id=="") return null;
+			if (id==null || id=='') return null;
 			var eff:Effect = new Effect(id, this, val);
 			if (t>0) eff.t=t*World.fps;
 			// [Getting a temporary effect]
@@ -1864,23 +2086,23 @@ package fe.unit
 			}
 		}
 		
-		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
-		{
+		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
 			if (xml==null) return;
 			for each(var sk in xml.sk) {
 				var val:Number, lvl:int;
 				if (sk.@dop.length()) lvl=lvl2;
 				else lvl=lvl1;
 				if (sk.@vd.length()) val=Number(sk.@v0)+lvl*Number(sk.@vd);
-				else if (sk.attribute("v"+lvl).length()) val=Number(sk.attribute("v"+lvl));
+				else if (sk.attribute('v'+lvl).length()) val=Number(sk.attribute('v'+lvl));
 				else val=Number(sk.@v0);
-				if (sk.@tip=="res") vulner[sk.@id]-=val;
+				if (sk.@tip=='res') vulner[sk.@id]-=val;
 				else if (hasOwnProperty(sk.@id)) {
-					if (sk.@ref=="add") this[sk.@id]+=val;
-					else if (sk.@ref=="mult") this[sk.@id]*=val;
+					if (sk.@ref=='add') this[sk.@id]+=val;
+					else if (sk.@ref=='mult') this[sk.@id]*=val;
 					else this[sk.@id]=val;
 				}
 			}
+			
 		}
 
 		public function setEffParams()
@@ -1905,6 +2127,28 @@ package fe.unit
 		
 //--------------------------------------------------------------------------------------------------------------------
 //				Получение урона
+		
+		/*D_BUL=0,		//пули		+
+		D_BLADE=1,		//лезвие	+
+		D_PHIS=2,		//дробящий	+
+		D_FIRE=3,		//огонь		*
+		D_EXPL=4,		//взрыв		+
+		D_LASER=5,		//лазер		*
+		D_PLASMA=6,		//плазма	*
+		D_VENOM=7,		//отравляющие вещества
+		D_EMP=8,		//ЭМП
+		D_SPARK=9,		//молния	*
+		D_ACID=10,		//кислота	*
+		D_CRIO=11,		//холод		*
+		D_POISON=12,	//отравление
+		D_BLEED=13,		//кровотечение
+		D_FANG=14,		//звери		+
+		D_BALE=15,		//пиздец
+		D_NECRO=16,		//некромантия
+		D_PSY=17,		//пси
+		D_ASTRO=18,		//звиздец
+		D_INSIDE=100;	//???*/
+
 
 		//получить урон
 		public function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
@@ -1948,7 +2192,7 @@ package fe.unit
 				if (armor_hp<=0) {	//разрушение брони
 					armor_hp=0;
 					armor_qual=0;
-					mess=Res.guiText("abr");
+					mess=Res.guiText('abr');
 				}
 			}
 			if (dam<0) {
@@ -2026,57 +2270,57 @@ package fe.unit
 				}
 				//электрический и эми урон оглушает роботов
 				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) {
-					mess=Res.guiText("kz");
+					mess=Res.guiText('kz');
 					if (stun<robotKZ) stun=robotKZ;
 				}
 				//взрывы вызывают контузию
 				if (tip==D_EXPL && opt && !opt.robot && !mech && !doop && sost==1 && Math.random()<dam/maxhp) {
-					mess=Res.txt("e","contusion");
-					addEffect("contusion");
+					mess=Res.txt('e','contusion');
+					addEffect('contusion');
 				}
 				if (!tt && demask<200) demask=200;	//При получении урона невидимый объект становится видимым
 				//дополнительные эффекты
 				if (bul && bul.weap) {								
 					if (bul.weap.dopEffect!=null && bul.weap.dopCh>0 && (bul.weap.dopCh>=1 || Math.random()<bul.weap.dopCh)) {
-						if (bul.weap.dopEffect=="igni" && vulner[D_FIRE]>0.1) {
-							addEffect("burning",bul.weap.dopDamage);
-							mess=Res.txt("e","burning");
+						if (bul.weap.dopEffect=='igni' && vulner[D_FIRE]>0.1) {
+							addEffect('burning',bul.weap.dopDamage);
+							mess=Res.txt('e','burning');
 						}
-						if (bul.weap.dopEffect=="ice" && vulner[D_CRIO]>0.1 && !mech) {
-							mess=Res.txt("e","freezing");
-							addEffect("freezing");
+						if (bul.weap.dopEffect=='ice' && vulner[D_CRIO]>0.1 && !mech) {
+							mess=Res.txt('e','freezing');
+							addEffect('freezing');
 						}
-						if (bul.weap.dopEffect=="blind" && vulner[D_LASER]>0.1 && !mech && !doop) {
-							mess=Res.txt("e","blindness");
-							addEffect("blindness");
+						if (bul.weap.dopEffect=='blind' && vulner[D_LASER]>0.1 && !mech && !doop) {
+							mess=Res.txt('e','blindness');
+							addEffect('blindness');
 						}
-						if (bul.weap.dopEffect=="acid" && vulner[D_ACID]>0.1) {
-							mess=Res.txt("e","chemburn");
-							addEffect("chemburn",bul.weap.dopDamage);
+						if (bul.weap.dopEffect=='acid' && vulner[D_ACID]>0.1) {
+							mess=Res.txt('e','chemburn');
+							addEffect('chemburn',bul.weap.dopDamage);
 						}
-						if (bul.weap.dopEffect=="pink" && vulner[D_PINK]>0.1) {
-							mess=Res.txt("e","pinkcloud");
-							addEffect("pinkcloud",bul.weap.dopDamage);
+						if (bul.weap.dopEffect=='pink' && vulner[D_PINK]>0.1) {
+							mess=Res.txt('e','pinkcloud');
+							addEffect('pinkcloud',bul.weap.dopDamage);
 						}
-						if (bul.weap.dopEffect=="poison" && vulner[D_POISON]>0.1) {
-							if (player && poison<=0) World.w.gui.infoText("poison");
+						if (bul.weap.dopEffect=='poison' && vulner[D_POISON]>0.1) {
+							if (player && poison<=0) World.w.gui.infoText('poison');
 							poison+=bul.weap.dopDamage;
 						}
-						if (bul.weap.dopEffect=="cut" && vulner[D_BLEED]>0.1 && !mech) {
-							if (player && cut<=0) World.w.gui.infoText("cut");
+						if (bul.weap.dopEffect=='cut' && vulner[D_BLEED]>0.1 && !mech) {
+							if (player && cut<=0) World.w.gui.infoText('cut');
 							cut+=bul.weap.dopDamage;
 						}
-						if (bul.weap.dopEffect=="stun") {
+						if (bul.weap.dopEffect=='stun') {
 							if (!mech && opt && !opt.robot && Math.random()<dam/maxhp && sost==1) {
 								stun=bul.weap.dopDamage;
-								if (player && stun<=0) World.w.gui.infoText("stun");
-								if (stun>1) mess=Res.guiText("stun");
+								if (player && stun<=0) World.w.gui.infoText('stun');
+								if (stun>1) mess=Res.guiText('stun');
 							}
 						}
 					}
 					if (bul.weap.ammoFire) {
-						addEffect("burning",bul.weap.ammoFire);
-						mess=Res.txt("e","burning");
+						addEffect('burning',bul.weap.ammoFire);
+						mess=Res.txt('e','burning');
 					}
 				}
 				//возврат урона хозяину пули
@@ -2086,9 +2330,9 @@ package fe.unit
 				if (tip==D_INSIDE && dam<5) isShow=false;
 				if (blood>0 && (tip==D_BUL || tip==D_BLADE || tip==D_PHIS || tip==D_BLEED || tip==D_FANG)) {	//кровь
 					if (bloodEmit==null) {
-						if (blood == 1) bloodEmit = Emitter.arr["blood"];
-						if (blood == 2) bloodEmit = Emitter.arr["gblood"];
-						if (blood == 3) bloodEmit = Emitter.arr["pblood"];
+						if (blood == 1) bloodEmit = Emitter.arr['blood'];
+						if (blood == 2) bloodEmit = Emitter.arr['gblood'];
+						if (blood == 3) bloodEmit = Emitter.arr['pblood'];
 					}
 					if (!(player && World.w.alicorn)) {
 						if (bul) {
@@ -2104,13 +2348,13 @@ package fe.unit
 								var st:int=1;
 								if (bul && bul.dx<0) st=-1;
 								if (bul==null && Math.random()<0.5) st=-1;
-								Emitter.emit("bloodexpl"+int(Math.random()*3+1), loc, coordinates.X+80*st+(Math.random()-0.5)*objectWidth*0.5, coordinates.Y-Math.random()*objectHeight*0.5-40,{mirr:(st<0?1:0)});
+								Emitter.emit('bloodexpl'+int(Math.random()*3+1), loc, coordinates.X+80*st+(Math.random()-0.5)*objectWidth*0.5, coordinates.Y-Math.random()*objectHeight*0.5-40,{mirr:(st<0?1:0)});
 							}
 						}
 					}
 				}
 				if (mat==10 && bul) {
-					Emitter.emit("pole2", loc, bul.coordinates.X, bul.coordinates.Y);
+					Emitter.emit('pole2', loc, bul.coordinates.X, bul.coordinates.Y);
 				}
 				if (isShow) {//Показывать урон
 					var vnumb:int=1;
@@ -2130,7 +2374,7 @@ package fe.unit
 							hitPart=numbEmit.cast(loc, castX, castY+visDamDY, {txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
 						} else {
 							if (isCrit==1 || isCrit==3) {
-								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;
+								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;;
 							}
 							hitPart.vis.numb.text=Math.round(hitSumm);
 							hitPart.liv=60;
@@ -2138,7 +2382,7 @@ package fe.unit
 						t_hitPart=10;
 					}
 				}
-				if (hp>0 && !player && isrnd()) replic("dam");
+				if (hp>0 && !player && isrnd()) replic('dam');
 			}
 			else if (World.w.showHit==2) t_hitPart=10
 
@@ -2171,8 +2415,8 @@ package fe.unit
 					if (napr==3) ny = coordinates.Y;
 					if (napr==4) ny = coordinates.Y - objectHeight;
 
-					Emitter.emit("bum", loc, nx, ny);
-					Snd.ps("hit_flesh", coordinates.X, coordinates.Y);
+					Emitter.emit('bum', loc, nx, ny);
+					Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
 				}
 			}
 		}
@@ -2189,7 +2433,7 @@ package fe.unit
 
 			visDetails();
 			if (World.w.showHit>=1) {
-				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:("+"+Math.round(hl)), frame:4, rx:20, ry:20});
+				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
 			}
 		}
 		
@@ -2264,28 +2508,28 @@ package fe.unit
 			if (sc>3) sc=3;
 			if (un.tipDamage == Unit.D_SPARK)
 			{
-				Emitter.emit("moln", loc, coordinates.X, coordinates.Y-objectHeight/2, {celx:un.coordinates.X, cely:(un.coordinates.Y-un.objectHeight/2)});
-				Snd.ps("electro", coordinates.X, coordinates.Y);
+				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2, {celx:un.coordinates.X, cely:(un.coordinates.Y-un.objectHeight/2)});
+				Snd.ps('electro', coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_ACID)
 			{
-				Emitter.emit("buma", loc, (coordinates.X + un.coordinates.X)/2,(coordinates.Y-objectHeight/2+un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
-				Snd.ps("acid",coordinates.X, coordinates.Y);
+				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X)/2,(coordinates.Y-objectHeight/2+un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Snd.ps('acid',coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_NECRO)
 			{
-				Emitter.emit("bumn",loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
-				Snd.ps("hit_necr", coordinates.X, coordinates.Y);
+				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Snd.ps('hit_necr', coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_FANG)
 			{
-				Emitter.emit("bum",loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
-				Snd.ps("fang_hit", coordinates.X, coordinates.Y);
+				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Snd.ps('fang_hit', coordinates.X, coordinates.Y);
 			}
 			else
 			{
-				Emitter.emit("bum", loc, (coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
-				Snd.ps("hit_flesh", coordinates.X, coordinates.Y);
+				Emitter.emit('bum', loc, (coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
 			}
 
 			priorUnit = un;
@@ -2332,7 +2576,7 @@ package fe.unit
 			}
 		}
 		//пробуждение всех вокруг
-		public function budilo(rad:Number=500):void
+		public function budilo(rad:Number=500)
 		{
 			makeNoise(noiseRun*1.2);
 			for each(var un:Unit in loc.units) {
@@ -2375,7 +2619,7 @@ package fe.unit
 			}
 			else if (trup && hp > -maxhp * 2) // [Leave the corpse and it is not destroyed]
 			{	
-				replic("die");
+				replic('die');
 				isFly = false;
 				objectWidth = sitX;
 				objectHeight = sitY;
@@ -2391,7 +2635,7 @@ package fe.unit
 				sost = 3;
 			}
 			else if (trup && blood > 0) {		//есть кровь
-				if (burn==null) sound("trup");
+				if (burn==null) sound('trup');
 				initBurn(4+blood);
 				isFly=false;
 				fraction=0;
@@ -2399,7 +2643,7 @@ package fe.unit
 				porog=0;
 				sost=3;
 			} else if (burn==null) {			//уничтожить
-				if (trup && blood>0) sound("trup");
+				if (trup && blood>0) sound('trup');
 				expl();
 				exterminate();
 			}
@@ -2416,7 +2660,7 @@ package fe.unit
 			{
 				lootIsDrop=true;
 				if (mother) mother.kolChild--;
-				if (hero>0) World.w.gui.infoText("killHero",nazv);
+				if (hero>0) World.w.gui.infoText('killHero',nazv);
 				runScript();
 				dropLoot();
 				incStat();
@@ -2443,15 +2687,15 @@ package fe.unit
 		}
 		
 		//взрыв, кишки или другой эффект после смерти
-		public function expl():void
+		public function expl()
 		{
 			if (blood)
 			{
 				if (bloodEmit == null)
 				{
-					if (blood == 1) bloodEmit = Emitter.arr["blood"];
-					if (blood == 2) bloodEmit = Emitter.arr["gblood"];
-					if (blood == 3) bloodEmit = Emitter.arr["pblood"];
+					if (blood == 1) bloodEmit = Emitter.arr['blood'];
+					if (blood == 2) bloodEmit = Emitter.arr['gblood'];
+					if (blood == 3) bloodEmit = Emitter.arr['pblood'];
 				}
 				bloodEmit.cast(loc, coordinates.X, coordinates.Y,{kol:massa*50, rx:objectWidth/2, ry:objectHeight/2});
 			}
@@ -2459,10 +2703,10 @@ package fe.unit
 		//вызывается в любом случае в момент любого способа смерти, только один раз!
 		public function dropLoot() {
 			if (inter) inter.loot();
-			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, "essence");
+			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, 'essence');
 			//выпадение драгоценного камня
 			if (World.w.pers && World.w.pers.dropTre>0 && xp>0) {
-				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, "gem" + int(Math.random()*3+1));
+				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, 'gem' + int(Math.random()*3+1));
 			}
 		}
 		
@@ -2486,16 +2730,16 @@ package fe.unit
 			}
 			if (wave && loc.prob) loc.prob.checkWave(true);
 			//действие типа уничтожить сколько-то врагов из определённого оружия
-			if (dieWeap!=null && World.w.game.triggers["look_"+dieWeap]>0 && xp>0) {
-				World.w.game.incQuests("kill_"+dieWeap);
+			if (dieWeap!=null && World.w.game.triggers['look_'+dieWeap]>0 && xp>0) {
+				World.w.game.incQuests('kill_'+dieWeap);
 			}
 		}
 
 		//изменить статистику
 		public function incStat(sposob:int=0) {
 			if (World.w.game) {
-				if (World.w.game.triggers["frag_"+id]>0) World.w.game.triggers["frag_"+id]++;
-				else World.w.game.triggers["frag_"+id]=1;
+				if (World.w.game.triggers['frag_'+id]>0) World.w.game.triggers['frag_'+id]++;
+				else World.w.game.triggers['frag_'+id]=1;
 			}
 		}
 		
@@ -2643,7 +2887,7 @@ package fe.unit
 			else
 			{
 				celX = coordinates.X;
-				celY = this.topBoundToCenter;
+				celY = this.topBoundToCenter;;
 				celUnit = null;
 			}
 			celDX = celX - coordinates.X;
@@ -2683,14 +2927,14 @@ package fe.unit
 		public override function command(com:String, val:String=null)
 		{
 			super.command(com,val);
-			if (com=="activate") {
+			if (com=='activate') {
 				noAct=false;
 				disabled=false;
 				setNull(true);
 				addVisual();
-				Emitter.emit("tele",loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
+				Emitter.emit('tele',loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
 			}
-			if (com=="fraction")
+			if (com=='fraction')
 			{
 				fraction=int(val);
 				
@@ -2700,15 +2944,15 @@ package fe.unit
 		}
 
 		public function replic(s:String) {
-			if (sost != 1 || id_replic == "" || !loc.active) return;
+			if (sost != 1 || id_replic == '' || !loc.active) return;
 			var s_replic:String;
 
-			if (s == "dam" && isrnd(0.05)) t_replic = 0;
-			if (s == "die" && isrnd()) t_replic = 0
+			if (s == 'dam' && isrnd(0.05)) t_replic = 0;
+			if (s == 'die' && isrnd()) t_replic = 0
 			
 			if (t_replic <= 0)
 			{
-				if (s == "attack")
+				if (s == 'attack')
 				{
 					t_replic = 50 +  Calc.intBetweenZeroAnd(100); //Changed from range of [0-9] to [0-10]
 				}
@@ -2717,9 +2961,9 @@ package fe.unit
 					t_replic = 110 + Calc.intBetweenZeroAnd(150); //Changed from range of [0-9] to [0-10]
 				}
 				s_replic = Res.repText(id_replic, s, msex);
-				if (s_replic != "" && s_replic != null)
+				if (s_replic != '' && s_replic != null)
 				{
-					Emitter.emit("replic", loc, coordinates.X, coordinates.Y - 110, {txt:s_replic, ry:50});
+					Emitter.emit('replic', loc, coordinates.X, coordinates.Y - 110, {txt:s_replic, ry:50});
 				}
 			}
 		}

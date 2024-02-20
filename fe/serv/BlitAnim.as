@@ -110,8 +110,7 @@ package fe.serv
 			f=firstf;
 		}
 		
-		public function step():void
-		{
+		public function step() {
 			if (stab) return;
 			if (f<firstf+maxf-1) f+=df;
 			else if (replay) f=retf;

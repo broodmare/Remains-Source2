@@ -82,7 +82,7 @@ package fe.serv
 			burnN = 1;
 		}
 		
-		public function step():void
+		public function step()
 		{
 			if (burnN>0 && burnN<=burnTime1)
 			{

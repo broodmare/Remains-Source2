@@ -165,11 +165,13 @@ package fe.serv {
 		}
 		
 		//Генерация лута по заданному ID
-		public static function lootId(nloc:Location, nnx:Number, nny:Number, id:String, kol:int=-1, imp:int=0, cont:Interact=null, broken:Boolean=false) {
-			if (nloc==null) return false;
-			lootBroken=broken;
-			loc=nloc;
-			nx=nnx, ny=nny;
+		public static function lootId(nloc:Location, nnx:Number, nny:Number, id:String, kol:int=-1, imp:int=0, cont:Interact=null, broken:Boolean=false):void
+		{
+			if (nloc == null) return; // NOTE: Change return false to return.
+			lootBroken = broken;
+			loc = nloc;
+			nx = nnx;
+			ny = nny;
 			newLoot(1, '', id, kol, imp, cont);
 		}
 		

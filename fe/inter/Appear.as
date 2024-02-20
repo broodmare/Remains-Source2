@@ -248,16 +248,14 @@ package fe.inter
 		}
 		
 		//события колорпикеров
-		private function changeHandler(event:ColorPickerEvent):void
-		{
+		private function changeHandler(event:ColorPickerEvent):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var myCT:ColorTransform;
 			var nam=myCP.name.substr(5);
 			tek=nam;
 			setColor(nam,myCP.selectedColor);
 		}
-		private function openHandler(event:Event):void
-		{
+		private function openHandler(event:Event):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var nam=myCP.name.substr(5);
 			tek=nam;
@@ -265,16 +263,14 @@ package fe.inter
 		}
 		
 		//вкл/выкл второй цвет
-		private function changeHair1(e:Event):void
-		{
+		private function changeHair1(e:Event):void {
 			visHair1=vis.checkHair1.selected;
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
 		
 		//кнопки выбора вариантов
-		public function chBut(event:MouseEvent)
-		{
+		public function chBut(event:MouseEvent) {
 			var nam:String=(event.currentTarget as flash.display.DisplayObject).name;
 			if (nam=='b1Eye') {
 				fEye--;

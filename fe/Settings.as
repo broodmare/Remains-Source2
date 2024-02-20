@@ -1,8 +1,13 @@
 package fe
 {
+    import flash.events.Event;
+    import flash.events.IOErrorEvent;
+    import flash.net.URLLoader;
+    import flash.net.URLRequest;
+
     public class Settings
     {
-        private static const settingsFileTarget:String = 'Modules/core/Settings.json';
+        private static const settingsDirectory:String = 'Modules/core/';
         public static var settings:Object = {};
 
         // GAME SETTINGS
@@ -12,17 +17,34 @@ package fe
 
         public static function initializeSettings():void
         {
-            // Use the JSONLoader to import settings and handle them with a callback
-            JSONLoader.importFile(settingsFileTarget, handleLoadedSettings);
+            var settingsFileURL:String = settingsDirectory + 'Settings.json'
+
+            var url:URLRequest = new URLRequest(settingsFileURL);
+            var loader:URLLoader = new URLLoader();
+
+            loader.addEventListener(Event.COMPLETE, importSettings);
+            loader.addEventListener(IOErrorEvent.IO_ERROR, errorDebug);
+            loader.load(url);
         }
         
-        private static function handleLoadedSettings(loadedSettings:Object):void
+        private static function importSettings(event:Event):void
         {
-            settings = loadedSettings;
+            var loader:URLLoader = URLLoader(event.target);
+
+            loader.removeEventListener(Event.COMPLETE, importSettings);
+            loader.removeEventListener(IOErrorEvent.IO_ERROR, errorDebug);
+
+            var jsonString:String = loader.data as String;
+            settings = JSON.parse(jsonString);
 
             alwaysFogOfWar = settings.alwaysFogOfWar;
             fogRegenerates = settings.fogRegenerates;
             burningForcesRun = settings.burningForcesRun;
+        }
+
+        private static function errorDebug(event:IOErrorEvent):void
+        {
+            trace("ERROR: Could not load settings! IO Error: " + event.text);
         }
     }
 }

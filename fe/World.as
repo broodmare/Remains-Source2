@@ -3,15 +3,15 @@ package  fe
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
-	import flash.net.URLLoader; 
-	import flash.net.URLRequest; 
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.system.Capabilities;
 	import flash.utils.Timer;
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
-	import flash.desktop.Clipboard;	
+	import flash.desktop.Clipboard;
 	import flash.utils.getTimer;
 	import flash.system.System;
 	
@@ -21,9 +21,10 @@ package  fe
 	import fe.inter.*;
 	import fe.serv.LootGen;
 	import fe.unit.Unit;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	import fe.unit.Invent;
 	import fe.unit.Pers;
+	import fe.weapon.Weapon;
 	
 	public class World
 	{
@@ -279,13 +280,13 @@ package  fe
 			app=new Appear();
 			
 			visual=new Sprite();
-			vgui=new visualGUI();
-			vfon=new MovieClip();
-			vpip=new visPipBuck();
-			vstand=new visualStand();
-			vsats=new MovieClip();
-			vscene=new visualScene();
-			vblack=new visBlack();
+			vgui = new visualGUI();
+			vfon = new MovieClip();
+			vpip = new visPipBuck();
+			vstand = new visualStand();
+			vsats = new MovieClip();
+			vscene = new visualScene();
+			vblack = new visBlack();
 			vblack.cacheAsBitmap=true;
 			vconsol=new visConsol();
 			verror=new visError();
@@ -355,7 +356,7 @@ package  fe
 			{
 				load_log += 'ERROR: Initializing languages failed, using failsafes!.\n';
 
-				langsXML = 
+				langsXML =
 				<all>
 					<lang id='ru' file='text_ru.xml'>Русский</lang>
 					<lang id='en' file='text_en.xml'>English</lang>

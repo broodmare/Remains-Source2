@@ -6,9 +6,10 @@ package fe.weapon
 	import flash.display.Graphics;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.unit.Pers;
 	import fe.projectile.Bullet;
@@ -497,7 +498,7 @@ package fe.weapon
 			}
 		}
 		
-		public override function step():void
+		public override function step()
 		{
 			actions();		//различные действия
 			if (owner) owner.setWeaponPos(tip);

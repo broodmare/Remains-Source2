@@ -6,22 +6,16 @@ package fe.loc
 	import fe.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
-	
+	import fe.unit.Unit;
+	import fe.unit.UnitPlayer;
+	import fe.unit.UnitPhoenix;
+	import fe.unit.UnitTransmitter;
 	import fe.graph.*;
 	import flash.display.BitmapData;
 	import fe.projectile.Bullet;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
-
-	// TODO: Stop using these like this!
-	import fe.unit.Unit;
-	import fe.unit.unitTypes.UnitTurret;
-	import fe.unit.unitTypes.UnitPlayer;
-	import fe.unit.unitTypes.UnitPet;
-	import fe.unit.unitTypes.UnitPhoenix;
-	import fe.unit.unitTypes.UnitTransmitter;
-
-	import fe.unit.unitTypes.UnitTypeFactory;
+	import fe.unit.UnitTurret;
 	
 	public class Location
 	{
@@ -725,14 +719,13 @@ package fe.loc
 				if (cid) scid=cid;
 				else scid=randomCid(s);
 				if (s=='slmine') s='slime';
-				un = UnitTypeFactory.create(s, locDifLevel, xml, loadObj, scid);
+				un=Unit.create(s,locDifLevel,xml,loadObj,scid);
 			}
 			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
-			if ((s=='' && !homeStable) || un==null)
-			{
+			if ((s=='' && !homeStable) || un==null) {
 				if (cid) scid=cid;
 				else scid=randomCid(tip);
-				un = UnitTypeFactory.create(tip, locDifLevel, xml, loadObj, scid);
+				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
 			}
 			if (un!=null) 
 			{
@@ -1299,7 +1292,7 @@ package fe.loc
 		private function isAct(element:*, index:int, arr:Array):Boolean
 		{
 			if (element == null) return false;
-			if (element is UnitPet) return true;
+			if (element is fe.unit.UnitPet) return true;
             return (element.sost < 4);
         }
 		

@@ -1045,7 +1045,7 @@ package {
 				if (bvis==null) bvis=resTex.getObj('back_'+ (xmll.@tid.length()?xmll.@tid:nid) +'_l');
 				if (bvis) {
 					bvis.stop();
-					var frame:int=1;
+					var frame:int;
 					if (xmll.@fr.length()) frame=xmll.@fr;
 					else frame=Math.floor(Math.random()*bvis.totalFrames+1);
 					vobj.bv.addChild(bvis);

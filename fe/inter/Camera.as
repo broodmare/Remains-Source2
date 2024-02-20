@@ -186,7 +186,8 @@ package fe.inter
 			}
 			w.visual.x=w.sats.vis.x=vx+quakeX;
 			w.visual.y=w.sats.vis.y=vy+quakeY;
-			Snd.centrX=X, Snd.centrY=Y;
+			Snd.centrX = X;
+			Snd.centrY = Y;
 			
 			w.celX=(celX-vx)/scaleV;
 			w.celY=(celY-vy)/scaleV;

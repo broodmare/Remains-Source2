@@ -10,7 +10,7 @@ package fe.inter
 	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.weapon.Weapon;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.unit.Invent;
@@ -613,22 +613,18 @@ package fe.inter
 			}
 		}
 		
-		public function setPet()
-		{
-			if (gg.pet)
-			{
-				pet.visible = true;
-
-				if (gg.pet.hp > 0)
-				{
-					pet.hp.visible = true;
-					pet.hp.scaleX = gg.pet.hp / gg.pet.maxhp;
+		
+		public function setPet() {
+			if (gg.pet) {
+				pet.visible=true;
+				if (gg.pet.hp>0) {
+					pet.hp.visible=true;
+					pet.hp.scaleX=gg.pet.hp/gg.pet.maxhp;
+				} else {
+					pet.hp.visible=false;
 				}
-				else pet.hp.visible = false;
-
 				if (gg.noPet>0) pet.txt.text=Math.floor(gg.noPet/World.fps);
 				else pet.txt.text='';
-
 				pet.ico.visible=(gg.noPet==0);
 			} else {
 				pet.visible=false;
@@ -636,15 +632,13 @@ package fe.inter
 			setOtstup();
 		}
 		
-		public function offCelObj()
-		{
+		public function offCelObj() {
 			celObj=World.w.loc.celObj=null;
 			celobj.visible=false;
 			unshowSelector();
 		}
 		
-		public function setTopText(s:String='')
-		{
+		public function setTopText(s:String='') {
 			if (s!='') {
 				vis.toptext.visible=true;
 				var ins:String=Res.txt('g',s,0,true);
@@ -655,8 +649,7 @@ package fe.inter
 			}
 		}
 		
-		public function setEffects()
-		{
+		public function setEffects() {
 			if (!active) return;
 			try {
 			var n:int=0;
@@ -846,8 +839,7 @@ package fe.inter
 			prevObj=celObj;
 		}
 		
-		function dif(lock:int, lockTip:int):String
-		{
+		function dif(lock:int, lockTip:int):String {
 			var pick=World.w.pers.getLockTip(lockTip);
 			var s:String='';
 			if (lock < pick) s=txtSoft; 
@@ -858,8 +850,7 @@ package fe.inter
 			else return '';
 		}
 		
-		function diflock(n:Number):String
-		{
+		function diflock(n:Number):String {
 			var s:String=txtChance+': ';
 			if (n<0.1) s+="<span class = 'warn'>";
 			else if (n<0.3) s+="<span class = 'r3'>";
@@ -896,38 +887,30 @@ package fe.inter
 			else vis.portCel.gotoAndStop(3);
 		}
 		
-		// Messages in the top right corner of the screen
-		public function infoText(id:String, p1 = 0, p2 = null, addlog:Boolean = true)
+		public function infoText(id:String, p1=0, p2=null, addlog:Boolean=true)
 		{
-			trace('infoText called, ID: "' + id + '", p1: "' + p1 + '", p2: "' + p2 + '".');
-			var s:String = Res.txt('f', id);
-			s = s.replace('@1','<b>' + p1 + '</b>');
-			if (p2 != null) s = s.replace('@2', p2);
-			if (s != prevInfoText)
-			{
-				bulbText = s;
-				info.htmlText += bulbText + "<br>";
-				if (addlog) World.w.log += bulbText + "<br>";
-				kolStr++;
-				t_info=150;
-				if (kolStr > 6) remStr();
+			var s:String=Res.txt('f',id);
+			s=s.replace('@1','<b>'+p1+'</b>');
+			if (p2!=null) s=s.replace('@2',p2);
+			if (s!=prevInfoText) {
+				bulbText=s;
+				info.htmlText+=bulbText+"<br>";
+				if (addlog) World.w.log+=bulbText+"<br>";
+				kolStr++, t_info=150;
+				if (kolStr>6) remStr();
 			}
-			prevInfoText = s;
+			prevInfoText=s;
 		}
 		
-		// Messages in the top right corner of the screen to notify the player of current status effects
-		public function infoEffText(id:String)
-		{
-			var s:String=Res.txt('e', id, 2);
-			if (s == null || s == '') return;
-			info.htmlText += (s + "<br>");
-			kolStr++;
-			t_info = 150;
-			if (kolStr > 6) remStr();
+		public function infoEffText(id:String) {
+			var s:String=Res.txt('e',id,2);
+			if (s==null || s=='') return;
+			info.htmlText+=(s+"<br>");
+			kolStr++, t_info=150;
+			if (kolStr>6) remStr();
 		}
 		
-		public function bulb(nx:int, ny:int)
-		{
+		public function bulb(nx:int, ny:int) {
 			if (t_bulb>0) return
 			Emitter.emit('gui',World.w.loc,nx,ny-110,{txt:bulbText, ry:50});
 			t_bulb=20;
@@ -959,19 +942,16 @@ package fe.inter
 		}
 		
 		
-		// [message in the middle of the screen]
-		public function messText(id:String, str:String='', down:Boolean=false, push:Boolean=false, nt_mess=150)
-		{
+		//сообщение посреди экрана
+		public function messText(id:String, str:String='', down:Boolean=false, push:Boolean=false, nt_mess=150) {
 			t_mess=nt_mess;
 			var s:String='';
-			if (id!='' && id+'_'+str!=id_mess)
-			{
+			if (id!='' && id+'_'+str!=id_mess) {
 				if (id!='') s=Res.messText(id);
 				id_mess=id+'_'+str;
 			}
-			if (str != '') s += ' ' + str;
-			if (s != '')
-			{
+			if (str!='') s+=' '+str;
+			if (s!='') {
 				if (push) mess.mess.htmlText+="<br>"+s;
 				else mess.mess.htmlText=s;
 				if (down) mess.y=screenY-50-mess.height;
@@ -979,47 +959,41 @@ package fe.inter
 			}
 		}
 		
-		public function hpBarBoss(n:Number=0)
-		{
+		public function hpBarBoss(n:Number=0) {
 			if (n<=0) vis.hpbarboss.visible=false;
-			else
-			{
+			else {
 				vis.hpbarboss.visible=true;
 				vis.hpbarboss.bar.scaleX=n;
 			}
 		}
 		
-		public function informText(str:String, knop:Boolean=false)
-		{
+		public function informText(str:String, knop:Boolean=false) {
 			if (knop) vis.mouseChildren=vis.mouseEnabled=true;
 			informScript.acts[0].val=str;
 			informScript.acts[0].opt2=knop?2:1;
 			informScript.start();
 		}
 		
-		public function dialog(dial:String)
-		{
+		public function dialog(dial:String) {
 			dialScript.acts[0].val=dial;
 			dialScript.start();
 		}
 		
-		public function showHelp(event:MouseEvent)
-		{
+		public function showHelp(event:MouseEvent) {
 			World.w.ctr.active=false;
 			World.w.ctr.keyPressed=false;
 			if (World.w.loc.prob) informText(World.w.loc.prob.info+'<br><br>'+World.w.loc.prob.help);
 			event.stopPropagation();
 		}
 
-		public function scrollClick(event:MouseEvent)
-		{
+		public function scrollClick(event:MouseEvent) {
 			World.w.ctr.active=false;
 			World.w.ctr.keyPressed=false;
 			event.stopPropagation();
 		}
 		
-		// [display a replica of the dialogue, return false if there is no replica]
-		// [id can be the dialog id in text.xml or a ready-made replica]
+		//вывести реплику диалога, вернуть false, если реплики нет
+		//id может быть id диалога в text.xml или готовой репликой
 		public function dialText(id=null, n:int=-1, down:Boolean=false, wait:Boolean=true):Boolean
 		{
 			if (id == null)
@@ -1149,46 +1123,40 @@ package fe.inter
 			return true;
 		}
 		
-		// [important message, pauses the game]
-		public function impMess(ntitle:String, ntext:String, nico:String = '')
-		{
-			World.w.ctr.active = false;
-			World.w.ctr.keyPressed = false;
+		//важное сообщение, ставит игру на паузу
+		public function impMess(ntitle:String, ntext:String, nico:String='') {
+			World.w.ctr.active=false;
+			World.w.ctr.keyPressed=false;
 			imp.ico.gotoAndStop(1);
-			if (nico != '')
-			{
-				try
-				{
+			if (nico!='') {
+				try {
 					imp.ico.gotoAndStop(nico);
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:54) - Could not display icon: "' + nico + '" for important message: "' + ntitle + '"!');
+					trace('ERROR: (00:34)');
 					imp.ico.gotoAndStop(1);
 				}
 			}
-			imp.title.text = ntitle;
-			imp.txt.y = imp.ico.y + imp.ico.height + 15;
-			imp.txt.htmlText = ntext;
-			imp.visible = true;
+			imp.title.text=ntitle;
+			imp.txt.y=imp.ico.y+imp.ico.height+15;
+			imp.txt.htmlText=ntext;
+			imp.visible=true;
 			Snd.ps('quest');
-			t_bulb = 30;
+			t_bulb=30;
 			gg.stopAnim();
-			guiPause = true;
+			guiPause=true;
 		}
 		
-		public function critHP()
-		{
+		public function critHP() {
 			Snd.ps('lowhp');
-			if (vis.blood)
-			{
+			if (vis.blood) {
 				vis.blood.visible=true;
 				vis.blood.gotoAndPlay(1);
 			}
 		}
 		
-		public function step():void
-		{
+		public function step() {
 			setCelObj();
 			if (kolStr>0 && !dialScript.running) {
 				t_info--;

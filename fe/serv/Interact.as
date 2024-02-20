@@ -8,7 +8,7 @@ package fe.serv
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.projectile.Bullet;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 
 	public class Interact
@@ -317,8 +317,7 @@ package fe.serv
 			obj.sign=sign;
 		}
 		
-		public function step():void
-		{
+		public function step() {
 			if (is_act) act();
 			else is_ready=true;
 			is_act=false;
@@ -1070,12 +1069,11 @@ package fe.serv
 		
 		public function move() {
 			if (isMove && moveSt>0) {
-				var f:Number=0;
+				var f:Number;
 				var pp=moveP;
 				if (dt_move<1) dt_move+=0.1;
 				if (t_move>=0 && t_move<tStay) {	//стоим в начале
 					moveP=false;
-					f=0;
 					if (moveSt==2 || moveSt==3) moveSt=0;
 				} if (t_move>=tStay && t_move<tStay+tMove) { //движемся от начала к концу
 					moveP=true;

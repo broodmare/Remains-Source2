@@ -2,7 +2,7 @@ package fe.serv
 {	
 	import fe.*;
 	import fe.entities.Obj;
-	import fe.unit.unitTypes.UnitNPC;
+	import fe.unit.UnitNPC;
 
 	public class NPC
 	{

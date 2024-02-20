@@ -24,8 +24,7 @@ package fe.loc
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null)
-		{
+		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			id=nid;
 			loc=nloc;
 			sloy=0;
@@ -200,8 +199,7 @@ package fe.loc
 			inter.update();
 		}
 		
-		public override function step():void
-		{
+		public override function step() {
 			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) {

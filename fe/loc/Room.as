@@ -1,8 +1,9 @@
-package fe.loc
-{
+package fe.loc {
 	
-	public class Room //класс шаблона комнаты
-	{
+	//класс шаблона комнаты
+	
+	public class Room {
+		
 		public var xml:XML;
 		public var id:String;
 		public var tip:String;

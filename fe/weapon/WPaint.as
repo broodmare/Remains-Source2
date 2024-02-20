@@ -2,7 +2,7 @@ package fe.weapon
 {
 	import fe.*;
 	import fe.unit.Unit;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	import fe.loc.Tile;
 	
 	public class WPaint extends Weapon

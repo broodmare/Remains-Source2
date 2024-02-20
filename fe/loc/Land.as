@@ -1,7 +1,8 @@
 package fe.loc
 {
 	import fe.*;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.util.Vector2;
+	import fe.unit.UnitPlayer;
 	import flash.display.BitmapData;
 	import fe.serv.Script;
 
@@ -798,12 +799,12 @@ package fe.loc
 					outP.y = Y - 1;
 				break;
 				case 2:
-					outP.x = 0 + objectWidth / 2 + 9;
+					outP.x = objectWidth / 2 + 9;
 					outP.y = Y - 1;
 				break;
 				case 3:
 					outP.x = X;
-					outP.y = 0 + objectHeight + 10;
+					outP.y = objectHeight + 10;
 				break;
 				case 4:
 					outP.x = X;
@@ -944,8 +945,7 @@ package fe.loc
 			return summ;
 		}
 		
-		public function step():void
-		{
+		public function step() {
 			if (!World.w.catPause) {
 				loc.step();
 				if (loc_t>0) {

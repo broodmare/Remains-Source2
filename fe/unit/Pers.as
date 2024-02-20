@@ -3,10 +3,9 @@ package fe.unit
 	import flash.display.MovieClip;
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.loc.CheckPoint;
 	import fe.serv.LootGen;
-
-	import fe.unit.unitTypes.UnitPlayer;
 	
 	public dynamic class Pers
 	{	
@@ -315,8 +314,7 @@ package fe.unit
 			skill_ids	= [];
 			skills		= [];
 			addictions	= [];
-			var ndif:int=2;
-			ndif = World.w.game.globalDif;
+			var ndif = World.w.game.globalDif;
 
 			for each (var sk:XML in cachedSkillList)
 			{

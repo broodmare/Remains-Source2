@@ -66,8 +66,7 @@ package fe.serv
 			}
 		}
 		
-		public function step():void
-		{
+		public function step() {
 			if (tcom>0) tcom--;
 			if (tcom<=0) {
 				if (wait) {

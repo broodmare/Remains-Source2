@@ -7,10 +7,8 @@ package fe.projectile
 	import fe.loc.*;
 	import fe.entities.Obj;
 	import fe.graph.Emitter;
+	import fe.unit.UnitMsp;
 	import fe.weapon.Weapon;
-
-	import fe.unit.unitTypes.UnitMsp;
-	import fe.unit.Mine;
 	
 	public class Bullet extends Obj
 	{	
@@ -109,7 +107,7 @@ package fe.projectile
 			if (addobj) loc.addObj(this);
 		}
 		
-		public override function step():void
+		public override function step()
 		{
 			if (!babah)
 			{
@@ -328,7 +326,7 @@ package fe.projectile
 							popadalo(res);
 							if (weap)
 							{
-								if ((un is Mine || un is UnitMsp) && un.sost > 2) weap.crash(15);
+								if ((un is fe.unit.Mine || un is fe.unit.UnitMsp) && un.sost > 2) weap.crash(15);
 								else if (un.tipDamage == Unit.D_ACID) weap.crash(3);
 								else weap.crash();
 							}

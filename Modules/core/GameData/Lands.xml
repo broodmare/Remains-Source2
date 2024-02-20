@@ -458,7 +458,7 @@
 		<prob id='zaput' level='0' prize='1' tip='1'>
 			<con tip='box' uid='zaputF1'/>
 		</prob>
-		<prob id='talisman' level='0' tip='1' prize='1'><!-- водный талисман -->
+		<prob id='talisman' level='0' tip='1'prize='1'><!-- водный талисман -->
 			<con tip='box' uid='talismanF1'/>
 		</prob>
 		<prob id='podval' level='1' tip='0' prize='1'><!-- Рар -->

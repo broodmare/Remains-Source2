@@ -1,37 +1,17 @@
-package fe.serv
-{
+package fe.serv {
+	
+	//Элемент инвентаря
 	import fe.*;
 	import fe.unit.Invent;
 	
-	public class Item
-	{
-		public static const L_ITEM		= 'item';
-		public static const L_ARMOR		= 'armor';
-		public static const L_WEAPON	= 'weapon';
-		public static const L_UNIQ		= 'uniq';
-		public static const L_SPELL		= 'spell';
-		public static const L_AMMO		= 'a';
-		public static const L_EXPL		= 'e';
-		public static const L_MED		= 'med';
-		public static const L_BOOK		= 'book';
-		public static const L_HIM		= 'him';
-		public static const L_POT		= 'pot';
-		public static const L_FOOD		= 'food';
-		public static const L_SCHEME	= 'scheme';
-		public static const L_PAINT		= 'paint';
-		public static const L_COMPA		= 'compa';
-		public static const L_COMPW		= 'compw';
-		public static const L_COMPE		= 'compe';
-		public static const L_COMPM		= 'compm';
-		public static const L_COMPP		= 'compp';
-		public static const L_SPEC		= 'spec';
-		public static const L_INSTR		= 'instr';
-		public static const L_STUFF		= 'stuff';
-		public static const L_ART		= 'art';
-		public static const L_IMPL		= 'impl';
-		public static const L_KEY		= 'key';
+	public class Item {
 
-		public static var itemTip:Array = ['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key'];
+		public static const L_ITEM='item', 
+			L_ARMOR='armor', L_WEAPON='weapon', L_UNIQ='uniq', L_SPELL='spell', L_AMMO='a', L_EXPL='e',
+			L_MED='med', L_BOOK='book', L_HIM='him', L_POT='pot', L_FOOD='food', L_SCHEME='scheme', L_PAINT='paint',
+			L_COMPA='compa', L_COMPW='compw', L_COMPE='compe',  L_COMPM='compm',  L_COMPP='compp',
+			L_SPEC='spec', L_INSTR='instr', L_STUFF='stuff', L_ART='art', L_IMPL='impl', L_KEY='key';
+		public static var itemTip:Array=['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key']
 		
 		
 		public var tip:String;
@@ -39,25 +19,25 @@ package fe.serv
 		public var base:String='';
 		public var id:String;
 		public var nazv:String;
-		public var mess:String;		// [information window that pauses the game]
-		public var fc:int=-1;		// [popup color]
+		public var mess:String;	//информационное окно, ставящее игру на паузу
+		public var fc:int=-1;	//цвет всплывающего сообщения
 		public var invis:Boolean=false;
 		
 		public var xml:XML;
-		public var kol:int=0;		// Quantity in inventory
-		public var vault:int=0;		// Quantity in storage
-		public var invCat:int=3;	// [inventory category]
-		public var sost:Number=1;	// [loot status]
-		public var multHP:Number=1;	// [HP multiplier]
+		public var kol:int=0;		//количество в инвентаре
+		public var vault:int=0;		//количество в хранилище
+		public var invCat:int=3;	//отдел инвентаря
+		public var sost:Number=1;	//состояние лута
+		public var multHP:Number=1;	//множитель ХП
 		public var variant:int=0;
 		public var mass:Number=0;
 		
-		public var imp:int = 0; //0 - случайно сгенерированный, 1 - заданный, 2 - критичный
+		public var imp:int=0; //0 - случайно сгенерированный, 1 - заданный, 2 - критичный
 		public var cont:Interact;	//родительский контейнер
 		
-		public var nov:int = 0;		// New item
-		public var dat:Number = 0;	//время получения
-		public var bou:int = 0;		//куплено
+		public var nov:int=0;	//новая вещь
+		public var dat:Number=0;	//время получения
+		public var bou:int=0;	//куплено
 		public var shpun:int=0;		//признак, указывающий на то, что скрытое оружие нужно раскрыть
 		public var lvl:int=0;		//уровень персонажа, с которого предмет становится доступен
 		public var barter:int=0;	//уровень навыка, с которого предмет становится доступен
@@ -70,8 +50,8 @@ package fe.serv
 
 		private static var cachedItems:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		
-		// [nkol - number of items or weapon/armor condition 0-1-2]
-		// [if nkol=-1, the quantity is taken from xml]
+		//nkol - количество предметов или состояние оружия/брони 0-1-2
+		//если nkol=-1, количество берётся из xml
 		public function Item(ntip:String, nid:String, nkol:int=-1, unique:int = 0, nxml:XML = null)
 		{
 			variant = unique;
@@ -209,34 +189,25 @@ package fe.serv
 			}
 		}
 		
-		public function getPrice()
-		{
-			if (xml)
-			{
-				if (xml.com.length() && xml.com.@price.length())
-				{
+		public function getPrice() {
+			if (xml) {
+				if (xml.com.length() && xml.com.@price.length()) {
 					price=xml.com[0].@price*sost*multHP*pmult;
-					if (variant>0)
-					{
+					if (variant>0) {
 						if (xml.com[1]) price=xml.com[1].@price*sost*multHP*pmult;
 						else price*=3;
 					}
-				}
-				else price=xml.@price*sost*multHP*pmult;
+				} else price=xml.@price*sost*multHP*pmult;
 			}
 		}
 		
-		public function getMultPrice():Number
-		{
-			if (xml && xml.@price>0 && xml.@sell>0)
-			{
+		public function getMultPrice():Number {
+			if (xml && xml.@price>0 && xml.@sell>0) {
 				return Number(xml.@sell)/Number(xml.@price);
-			}
-			else return 0.1;
+			} else return 0.1;
 		}
 		
-		public function checkAuto(m:Boolean=false):Boolean
-		{
+		public function checkAuto(m:Boolean=false):Boolean {
 			var inv:Invent=World.w.invent;
 			if (tip==L_WEAPON) {
 				var w=inv.weapons[id];
@@ -283,10 +254,8 @@ package fe.serv
 				if (inv.mass[invCat]+mass*kol>World.w.pers['maxm'+invCat]) return false;
 			}
 			if (World.w.vsAmmoAll && tip==L_AMMO) return true;
-			if (World.w.vsAmmoTek && xml && tip==L_AMMO)
-			{
-				for each (w in inv.weapons)
-				{
+			if (World.w.vsAmmoTek && xml && tip==L_AMMO) {
+				for each (w in inv.weapons) {
 					if (w.tip<=3 && (w.respect==0 || w.respect==2) && w.ammoBase!='' && (w.ammoBase==xml.@id || w.ammoBase==xml.@base)) return true;
 				}
 			}
@@ -295,11 +264,11 @@ package fe.serv
 			if (World.w.vsHimAll && tip==L_HIM) return true;
 			if (World.w.vsEqipAll && tip=='equip') return true;
 			if (World.w.vsStuffAll && invCat==3) return true;
-			if (World.w.vsVal && tip == 'valuables') return true;
-			if (World.w.vsBook && (tip == 'book' || tip=='sphera')) return true;
-			if (World.w.vsFood && (tip == 'food' || tip=='eda')) return true;
-			if (World.w.vsComp && (tip == 'stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
-			if (World.w.vsIngr && tip == 'compp') return true;
+			if (World.w.vsVal && tip=='valuables') return true;
+			if (World.w.vsBook && (tip=='book' || tip=='sphera')) return true;
+			if (World.w.vsFood && (tip=='food' || tip=='eda')) return true;
+			if (World.w.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
+			if (World.w.vsIngr && tip=='compp') return true;
 			return false;
 		}
 		
@@ -313,5 +282,7 @@ package fe.serv
 			kol -= bou;
 			bou = 0;
 		}
+		
 	}
+	
 }

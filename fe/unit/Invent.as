@@ -1,14 +1,12 @@
 package fe.unit
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.serv.Item;
 	import fe.serv.LootGen;
 	import fe.serv.Script;
 	import fe.loc.Loot;
-
-	import fe.unit.unitTypes.UnitPlayer;
-	import fe.unit.unitTypes.UnitPet;
 	
 	public class Invent
 	{
@@ -59,9 +57,9 @@ package fe.unit
 
 			
 
-			itemList	= XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
-			armorList	= XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
-			weaponList	= XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
+			itemList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
+			armorList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
+			weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 
 			for each (var node in itemList)
 			{
@@ -72,37 +70,32 @@ package fe.unit
 				if (node.@base.length()) ammos[node.@base]=0;
 			}
 
-			money = items['money'];
-			pin = items['pin'];
-			gel = items['gel'];
-			good = items['good'];
-			items[''] = new Item('', '', 0, 0, <item/>);
-			
-			if (loadObj == null)
-			{
+			money=items['money'];
+			pin=items['pin'];
+			gel=items['gel'];
+			good=items['good'];
+			items['']=new Item('', '', 0, 0, <item/>);
+			if (loadObj==null) {
 				if (opt && opt.propusk) addMin();
 				else addBegin();
+			} else {
+				addLoad(loadObj);
 			}
-			else addLoad(loadObj);
-
-			cItemMax = itemsId.length;
+			cItemMax=itemsId.length;
 		}
 		
-		public function nextItem(n:int=1)
-		{
-			var ci = cItem + n;
-			if (ci >= cItemMax) ci = 0;
-			if (ci < 0) ci = cItemMax - 1;
-			for (var i:int = 0; i < cItemMax; i++)
-			{
-				if (items[itemsId[ci]].kol > 0)
-				{
-					cItem = ci;
+		public function nextItem(n:int=1) {
+			var ci=cItem+n;
+			if (ci>=cItemMax) ci=0;
+			if (ci<0) ci=cItemMax-1;
+			for (var i=0; i<cItemMax; i++) {
+				if (items[itemsId[ci]].kol>0) {
+					cItem=ci;
 					break;
 				}
-				ci += n;
-				if (ci >= cItemMax) ci = 0;
-				if (ci < 0) ci = cItemMax - 1;
+				ci+=n;
+				if (ci>=cItemMax) ci=0;
+				if (ci<0) ci=cItemMax-1;
 			}
 			World.w.gui.setItems();
 		}
@@ -543,7 +536,6 @@ package fe.unit
 				if(!World.w.testLoot) World.w.gui.infoText('take',Res.txt('i','frag')+((n>1)?(' ('+n+')'):''));
 			}
 		}
-
 		public function favItem(id:String, cell:int) {
 			if (gg && (cell==29 || cell==30)) {
 				if (weapons[id]==null || (weapons[id].tip!=4 && weapons[id].tip!=5) || weapons[id].spell) {
@@ -622,206 +614,151 @@ package fe.unit
 			}
 		}
 		
-		// [add to inventory, tr = 1 if the item was purchased, 2 if it was received as a reward]
+		//добавить в инвентарь, tr=1 если вещь была куплена, 2-если была получена в награду
 		public function take(l:Item, tr:int = 0)
 		{
-			trace('Taking item: "' + l.id + '", tr: "' + tr + '". Number in inventory: "' + l.kol + '".');
-			var kol:int = 0;
-			var color:int = -1;
-			try
-			{
-				if (l.tip == Item.L_WEAPON)
-				{
-					trace('Picked up item in category: "L_WEAPON"');
-					var patron = l.xml.a[0];
-					if (tr==0 && patron && patron!='recharg')
-					{
-						kol=Math.floor(Math.random()*itemList.(@id==patron).@kol)+1;
-						items[patron].kol+=kol;
-					}
-					var hp:int;
-					if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
-					else hp=Math.round(l.xml.char[0].@maxhp*l.sost*l.multHP);
-					
-					if (weapons[l.id])
-					{
-						if (weapons[l.id].variant<l.variant) {
-							if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-							updWeapon(l.id,l.variant);
-						}
-						if (weapons[l.id].tip!=5) {
-							repairWeapon(l.id, hp);
-							if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
-						}
-					}
-					else
-					{
+			var kol:int=0;
+			var color:int=-1;
+			try {
+			if (l.tip==Item.L_WEAPON) {
+				var patron=l.xml.a[0];
+				if (tr==0 && patron && patron!='recharg') {
+					kol=Math.floor(Math.random()*itemList.(@id==patron).@kol)+1;
+					items[patron].kol+=kol;
+				}
+				var hp:int;
+				if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
+				else hp=Math.round(l.xml.char[0].@maxhp*l.sost*l.multHP);
+				if (weapons[l.id]) {
+					if (weapons[l.id].variant<l.variant) {
 						if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-						addWeapon(l.id, hp, 0,0, l.variant);
-						takeScript(l.id);
-						if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
+						updWeapon(l.id,l.variant);
 					}
-					if (l.shpun==2) weapons[l.id].respect=0;
-					World.w.gui.setWeapon();
-					World.w.calcMassW=true;
-					color=5;
-				}
-				else if (l.tip == Item.L_ARMOR)
-				{
-					trace('Picked up item in category: "L_ARMOR"');
-					var hp:int=Math.round(l.xml.@hp*l.sost*l.multHP);
-					addArmor(l.id, hp);
-					color=3;
-				}
-				else if (l.tip == Item.L_SPELL)
-				{
-					trace('Picked up item in category: "L_SPELL"');
-					plus(l,tr);
-					World.w.calcMassW=true;
-					color=5;
-				}
-				else if (l.tip == Item.L_SCHEME)
-				{
-					trace('Picked up item in category: "L_SCHEME"');
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-					if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) {
-						addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
+					if (weapons[l.id].tip!=5) {
+						repairWeapon(l.id, hp);
+						if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
 					}
-					if (l.xml && l.xml.@cat=='armor' && armors[l.id.substr(2)]==null) {
-						addArmor(l.id.substr(2), 0xFFFFFF, -1);
-					}
-					color=7;
+				} else {
+					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
+					addWeapon(l.id, hp, 0,0, l.variant);
+					takeScript(l.id);
+					if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
 				}
-				else if (l.tip == Item.L_EXPL)
-				{
-					trace('Picked up item in category: "L_EXPL"');
-					plus(l,tr);
-					if (!weapons[l.id]) addWeapon(l.id);
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
-					color=3;
+				if (l.shpun==2) weapons[l.id].respect=0;
+				World.w.gui.setWeapon();
+				World.w.calcMassW=true;
+				color=5;
+			} else if (l.tip==Item.L_ARMOR) {
+				var hp:int=Math.round(l.xml.@hp*l.sost*l.multHP);
+				addArmor(l.id, hp);
+				color=3;
+			} else if (l.tip==Item.L_SPELL) {
+				plus(l,tr);
+				World.w.calcMassW=true;
+				color=5;
+			} else if (l.tip==Item.L_SCHEME) {
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+				if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) {
+					addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
 				}
-				else if (l.tip == Item.L_AMMO)
-				{
-					trace('Picked up item in category: "L_AMMO"');
-					plus(l, tr);
-					if (tr == 0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo', l.nazv, l.kol);
-					color=3;
+				if (l.xml && l.xml.@cat=='armor' && armors[l.id.substr(2)]==null) {
+					addArmor(l.id.substr(2), 0xFFFFFF, -1);
 				}
-				else if (l.tip == Item.L_MED)
-				{
-					trace('Picked up item in category: "L_MED"');
-					plus(l,tr);
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
-					if (cItem<0) nextItem(1);
-					else World.w.gui.setItems();
-					color=1;
+				color=7;
+			} else if (l.tip==Item.L_EXPL) {
+				plus(l,tr);
+				if (!weapons[l.id]) addWeapon(l.id);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+				color=3;
+			}
+			else if (l.tip==Item.L_AMMO)
+			{
+				plus(l, tr);
+				if (tr == 0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo', l.nazv, l.kol);
+				color=3;
+			}
+			else if (l.tip==Item.L_MED) {
+				plus(l,tr);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
+				if (cItem<0) nextItem(1);
+				else World.w.gui.setItems();
+				color=1;
+			} else if (l.tip==Item.L_BOOK) {
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
+				if (cItem<0) nextItem(1);
+				else World.w.gui.setItems();
+				color=4;
+			} else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) {
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+				gg.pers.setParameters();
+				color=6;
+			} else {
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr==0 && !World.w.testLoot) {
+					if (l.id=='money') World.w.gui.infoText('takeMoney',l.kol);
+					else World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
 				}
-				else if (l.tip == Item.L_BOOK)
-				{
-					trace('Picked up item in category: "L_MED"');
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
-					if (cItem<0) nextItem(1);
-					else World.w.gui.setItems();
-					color=4;
-				}
-				else if (l.tip == Item.L_INSTR || l.tip == Item.L_ART || l.tip == Item.L_IMPL || l.xml && l.xml.sk.length())
-				{
-					trace('Picked up item in category: "L_INSTR", "L_ART", or "L_IMPL"');
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-					gg.pers.setParameters();
-					color=6;
-				}
-				else
-				{
-					trace('Picked up item in misc category');
-					if (items[l.id].kol == 0) takeScript(l.id);
-					plus(l, tr);
-					if (tr == 0 && !World.w.testLoot)
-					{
-						if (l.id == 'money') World.w.gui.infoText('takeMoney', l.kol);
-						else World.w.gui.infoText('take', l.nazv + ((l.kol > 1)?(' (' + l.kol + ')') : ''));
-					}
-
-					if (cItem < 0) nextItem(1);
-					else World.w.gui.setItems();
-					
-					if (l.tip == 'valuables') color = 2;
-					else if (l.tip == Item.L_HIM || l.tip == Item.L_POT) color = 1;
-					else if (l.tip == Item.L_KEY || l.tip == Item.L_SPEC) color = 6;
-					else if (l.tip == 'equip') color = 8;
-					else color = 0;
-				}
-
-				if (tr == 2)
-				{
-					if (l.kol > 1) World.w.gui.infoText('reward', l.nazv, l.kol);
-					else World.w.gui.infoText('reward2', l.nazv);
-				}
+				if (cItem<0) nextItem(1);
+				else World.w.gui.setItems();
 				
-				// [if the object was generated randomly, update the limits]
-				if (tr==0 && l.imp==0 && l.xml.@limit.length())
-				{
-					World.w.game.addLimit(l.xml.@limit,2);
-				}
-				
-				// [pop-up message]
-				if (!World.w.testLoot && (tr == 0 || tr==2))
-				{
-					if (l.fc >= 0) color = l.fc;
-					World.w.gui.floatText(l.nazv + (l.kol > 1 ? (' (' + l.kol + ')') : ''), gg.coordinates.X, gg.coordinates.Y, color);
-				}
-
-				// [information window for important items]
-				if (World.w.helpMess || l.tip == 'art')
-				{
-					if (l.mess != null && !(World.w.game.triggers['mess_' + l.mess] > 0))
-					{
-						World.w.game.triggers['mess_' + l.mess] = 1;
-						World.w.gui.impMess(Res.txt('i', l.mess), Res.txt('i', l.mess, 2),l.mess);
-					}
-				}
-
-				// [if the object is critical, confirm receipt]
-				if (l.imp==2 && l.cont) l.cont.receipt();
-				var res:String=World.w.game.checkQuests(l.id);
-				if (res!=null)
-				{
-					World.w.gui.infoText('collect', res);
+				if (l.tip=='valuables') color=2;
+				else if (l.tip==Item.L_HIM || l.tip==Item.L_POT) color=1;
+				else if (l.tip==Item.L_KEY || l.tip==Item.L_SPEC) color=6;
+				else if (l.tip=='equip') color=8;
+				else color=0;
+			}
+			if (tr==2) {
+				if (l.kol>1) World.w.gui.infoText('reward',l.nazv,l.kol);
+				else World.w.gui.infoText('reward2',l.nazv);
+			}
+			//если объект был сгенерирован случайно, обновить лимиты
+			if (tr==0 && l.imp==0 && l.xml.@limit.length()) {
+				World.w.game.addLimit(l.xml.@limit,2);
+			}
+			//всплывающее сообщение
+			if (!World.w.testLoot && (tr==0 || tr==2)) {
+				if (l.fc>=0) color=l.fc;
+				World.w.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.coordinates.X, gg.coordinates.Y, color);
+			}
+			//информационное окно для важных предметов
+			if (World.w.helpMess || l.tip=='art') {
+				if (l.mess!=null && !(World.w.game.triggers['mess_'+l.mess]>0)) {
+					World.w.game.triggers['mess_'+l.mess]=1;
+					World.w.gui.impMess(Res.txt('i',l.mess),Res.txt('i',l.mess,2),l.mess);
 				}
 			}
-			catch (err)
+			//если объект критичный, подтвердить получение
+			if (l.imp==2 && l.cont) l.cont.receipt();
+			var res:String=World.w.game.checkQuests(l.id);
+			if (res!=null) {
+				World.w.gui.infoText('collect',res);
+			}
+			} catch (err)
 			{
 				trace('ERROR: (00:3)');
-				World.w.showError(err, 'Loot error. tip:' + l.tip + ' id:' + l.id);
+				World.w.showError(err, 'Loot error. tip:'+l.tip+' id:'+l.id);
 			}
-
-			if (World.w.hardInv) mass[l.invCat] += l.mass * l.kol;
-			World.w.calcMass = true;
+			if (World.w.hardInv) mass[l.invCat]+=l.mass*l.kol;
+			World.w.calcMass=true;
 		}
 		
-		private function plus(l:Item, tr:int=0)
-		{
-			if (l.id != 'money')
-			{
-				if (items[l.id].kol == 0) items[l.id].nov = 1;
-				else if (items[l.id].nov == 0) items[l.id].nov = 2;
-				
+		function plus(l:Item, tr:int=0) {
+			if (l.id!='money') {
+				if (items[l.id].kol==0) items[l.id].nov=1;
+				else if (items[l.id].nov==0) items[l.id].nov=2;
 				items[l.id].dat=new Date().getTime();
 			}
-			
-			if (tr == 1)
-			{
+			if (tr==1) {
 				items[l.id].kol+=l.bou;
 				l.trade();
-			}
-			else items[l.id].kol+=l.kol;
-			
+			} else items[l.id].kol+=l.kol;
 			if (l.tip==Item.L_SCHEME || l.tip==Item.L_SPELL) items[l.id].kol=1;
 		}
 		

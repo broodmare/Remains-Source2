@@ -108,7 +108,7 @@ package fe.loc
 			if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
-		public override function step():void
+		public override function step()
 		{
 			if(!loc.active) return;
 			for each (var un:Unit in loc.units)

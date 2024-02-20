@@ -241,7 +241,7 @@ package  fe.entities
 		}
 		
 		public static function setVisible(m:MovieClip) {
-			var h:int=0;
+			var h:int;
 			if (World.w && World.w.pip && World.w.pip.active) h=World.w.pip.hideMane;
 			else h=Appear.hideMane;
 			m.visible=(h==0);

@@ -2,10 +2,11 @@ package fe.projectile
 {
 	import fe.*;
 	import fe.unit.Unit;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	import fe.loc.Box;
+	import fe.entities.Obj;
 	
 	public class PhisBullet extends Bullet
 	{
@@ -35,7 +36,7 @@ package fe.projectile
 			if (vis) vis.visible = true;
 		}
 
-		public override function step():void
+		public override function step()
 		{
 			if (levit) {
 				dy*=0.8; dx*=0.8;

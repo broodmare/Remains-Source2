@@ -244,8 +244,7 @@ package fe.inter {
 			World.w.swfStage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUpEvent);
 		}
 		
-		public function step():void
-		{
+		public function step() {
 			if (kR_t<100) kR_t++;
 			if (kL_t<100) kL_t++;
 			if (kD_t<100) kD_t++;

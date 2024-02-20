@@ -15,14 +15,13 @@ package fe.inter
 	import fe.unit.Pers;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
+	import fe.unit.UnitPlayer;
 	import fe.loc.Quest;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import fe.loc.LandAct;
-	
+	import fe.unit.UnitPet;
 	import fe.unit.Effect;
-	import fe.unit.unitTypes.UnitPlayer;
-	import fe.unit.unitTypes.UnitPet;
 
 	import fe.stubs.visPipInv;
 	
@@ -50,7 +49,7 @@ package fe.inter
 		var kolCats:int=6;
 		var cat:Array=[0,0,0,0,0,0,0];
 		var curTip='';
-		var tips:Array = [[]];
+		var tips:Array=[[]];
 
 		private static var damageTypes:Array = [
 			{type: Unit.D_BUL,		label: 'bullet'},
@@ -657,7 +656,8 @@ package fe.inter
 		protected function infoItem(tip:String, itemID:String, nazv:String, craft:int=0):void
 		{
 			vis.nazv.text=nazv;
-			var s:String = '';
+
+			var s:String;
 			var id:String = itemID;
 
 			if (itemID.indexOf('s_') == 0)
@@ -913,13 +913,10 @@ package fe.inter
 			}
 
 			vis.cats.visible = true;
-			trace('setCats() - ntip: "' + ntip + '"');
 			var ntip:String;
 			for (var i:int = 0; i <= kolCats; i++)
 			{
-				
 				var category:String = 'cat' + i.toString();
-				trace('Setting up category: "' + category + '"');
 
 				ntip = arr[i];
 				if (ntip == null) vis.cats[category].visible = false;
@@ -928,16 +925,8 @@ package fe.inter
 					if (ntip is Array) ntip = ntip[0];
 					vis.cats[category].visible = true;
 
-					try
-					{
-						if (ntip != "")vis.cats[category].ico.gotoAndStop(ntip);
-						else vis.cats[category].ico.gotoAndStop(1);	// Blank box
-					}
-					catch (err)
-					{
-						trace('ERROR: (00:53) - Error while setting filter button icons!');
-					}
-					
+					if (ntip != "")vis.cats[category].ico.gotoAndStop(ntip);
+					else vis.cats[category].ico.gotoAndStop(1);	// Blank box
 				}
 			}
 			selCat(cat[page2]);
@@ -979,10 +968,9 @@ package fe.inter
 		//проверить соответствии категории
 		protected function checkCat(tip:String):Boolean 
 		{
-			if (curTip == '' || curTip == null || curTip == tip) return true;
-			if (curTip is Array)
-			{
-				for each (var t in curTip) if (t == tip) return true;
+			if (curTip=='' || curTip==null || curTip==tip) return true;
+			if (curTip is Array) {
+				for each (var t in curTip) if (t==tip) return true;
 			}
 			return false;
 		}

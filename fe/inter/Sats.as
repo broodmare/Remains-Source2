@@ -14,7 +14,7 @@ package fe.inter
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.weapon.Weapon;
-	import fe.unit.unitTypes.UnitPlayer;
+	import fe.unit.UnitPlayer;
 	
 	public class Sats
 	{
@@ -144,7 +144,7 @@ package fe.inter
 		}
 		
 		// [when on pause]
-		public function step():void
+		public function step()
 		{
 			if (active)
 			{

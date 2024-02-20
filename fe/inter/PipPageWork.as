@@ -6,7 +6,7 @@ package fe.inter
 	import fe.serv.Item;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
-	import fe.unit.unitTypes.UnitPet;
+	import fe.unit.UnitPet;
 
 	import fe.stubs.visPipInvItem;
 	
@@ -54,7 +54,7 @@ package fe.inter
 			if (page2==1) {		//крафт
 				assArr=new Array();
 				statHead.fav.text='';
-				statHead.nazv.text=Res.pipText('work1');
+				statHead.nazv.text=Res.pipText('work1');;
 				statHead.hp.text=Res.pipText('iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';

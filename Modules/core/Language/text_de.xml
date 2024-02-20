@@ -399,7 +399,7 @@ Obwohl heutzutage kein Pony Roboter herstellt, sind viele von ihnen trotz Jahrhu
 <weapon id='hsword'><n>Hufgemachtes Schwert</n>
 	<info>Eigentlich ist es gar kein Schwert, sondern ein geschärftes Metallteil welches an einem Stock befestigt wurde</info></weapon>
 <weapon id='test'><n>Test</n>
-	<info></info></weapon>
+	<info>MISSING</info></weapon>
 <weapon id='r32'><n>.32 Revolver</n>
 	<info>Eine Altmodische und wenig effektive Feuerwaffe, die wenig Schaden verursacht und eine geringe Feuerrate hat</info></weapon>
 <weapon id='p9mm' v='0.6'><n>9-mm Pistole</n>
@@ -2338,7 +2338,7 @@ Nach ein paar Jahren gab es in diesem ganzen Gebiet von Equestria fast kein inte
 <pip id='ad1' v='0.6'><n>1. Stufe - Schwach</n></pip>
 <pip id='ad2' v='0.6'><n>2. Stufe - Mittelmäßig</n></pip>
 <pip id='ad3' v='0.6'><n>3. Stufe - Stark</n></pip>
-<pip id='addiction' v='0.6'><n></n></pip>
+<pip id='addiction' v='0.6'><n>MISSING</n></pip>
 <pip id='drunk1' v='0.7'><n>Leicht schwindlig</n></pip>
 <pip id='drunk2' v='0.7'><n>Betrunken</n></pip>
 <pip id='drunk3' v='0.7'><n>Kater</n></pip>
@@ -3081,9 +3081,9 @@ Du kannst die Anzeige im Spiel jederzeit mit der Taste @1 ändern. Wenn ein Raum
   <info id="overMass" st="3" v="0.81"><n>Überladen! Zu viele Gegenstände</n></info>
 
 <map id='test'><n>Test Protokoll</n>
-	<info></info></map>
+	<info>MISSING</info></map>
 <map id='test2'><n>Test Protokoll 2</n>
-	<info></info></map>
+	<info>MISSING</info></map>
 <map id='begin'><n>Technische Tunnel</n>
 	<info>Beginn deiner Reise</info></map>
 <map id='surf'><n>Oberfläche</n>
@@ -5613,7 +5613,7 @@ Wir werden dich also nicht länger langweilen, damit du weiterspielen kannst!</r
 	<info>Du befindest dich alleine und ohne Ausrüstung in einem verlassenen Hilfstunnel, und das Wichtigste ist: Du hast keine Ahnung, wie du hier gelandet bist. Finde einen Weg zurück an die Oberfläche und versuche in der Zwischenzeit, diesen Ort nach nützlichen Dingen zu durchsuchen.</info></txt>
 <txt id='toExit1'><n>Finde den Ausweg zur Oberfläche</n></txt>
 <txt id='collectHS'><n>Finde alle Zahnräder</n>
-	<info></info></txt>
+	<info>MISSING</info></txt>
 <txt id='collectHS1'><n>Zahnräder gefunden:</n></txt>
 <txt id='storyContact' v='0.7'><n>Den Kontakt herstellen</n>
 	<info>Irgendwo in Equestria sollen friedliche Siedlungen existieren. Sie könnten dir als Basislager für deine Operationen dienen. Finde eine solche Siedlung und stelle den Kontakt zu den einheimischen Ponys her.</info></txt>
