@@ -21,7 +21,7 @@ package fe.inter
 	public class GUI
 	{
 		public var vis:MovieClip;
-		public var active:Boolean=true;
+		public var active:Boolean = true;
 		var weapon:TextField, holder:TextField, ammo:TextField, mana:TextField, celobj:TextField, info:TextField, item:TextField, hp:TextField, vitem:MovieClip, mess:MovieClip, dial:MovieClip, inform:MovieClip, imp:MovieClip, pet:MovieClip, pr_bar:MovieClip, levit_poss:MovieClip, tharrow:MovieClip;
 		var txtTele:String, txtOpen:String, txtChance:String, txtSoft:String, txtHard:String, txtVeryHard:String, txtUnreal:String, txtUndef0:String, txtUndef1:String, txtUndef2:String, txtClose:String, txtHeavy:String;
 		var txtMagia:String, txtArmorMana:String, txtMagiaOver:String, txtH2o:String, txtH2oOver:String, txtStam:String, txtUnlock:String, txtRemine:String, txtUse:String, txtHold:String, txtLock:String, txtZhopa:String, txtEmpty:String, txtDrop:String, txtOd:String;
@@ -40,7 +40,7 @@ package fe.inter
 		var bulbText='';
 		
 		public var style:StyleSheet = new StyleSheet(); 
-		var styleObj:Object = new Object(); 
+		var styleObj:Object = new Object();
 		var kolStr:int=0, t_info:int=0, t_sel:int=0, t_bulb:int=0, t_visibility:int=30, float_dy:int=0;
 		public var t_item:int=200, t_od:int=200;
 		
@@ -191,7 +191,7 @@ package fe.inter
 			dial.txt.styleSheet = style;
 			inform.txt.styleSheet = style;
 			imp.txt.styleSheet = style;
-			veff=new Array();
+			veff=[];
 			for (var i=0; i<kolEff; i++) {
 				veff[i]=vis['eff'+i];
 			}
@@ -214,7 +214,8 @@ package fe.inter
 			vis.visibility.y=ny-50;
 			vis.selector.x=nx/2;
 			vis.selector.y=ny/2;
-			vis.sats.scaleX=nx/100, vis.sats.scaleY=ny/100;
+			vis.sats.scaleX=nx/100;
+			vis.sats.scaleY=ny/100;
 			vis.hpbarboss.x=nx/2;
 			var r=nx-275*2;
 			if (r>500) {
@@ -249,8 +250,8 @@ package fe.inter
 			wSelN=0;
 			var inv:Invent=World.w.invent;
 			inv.getKolAmmos();
-			arr=new Array();
-			arrfav=new Array();
+			arr=[];
+			arrfav=[];
 			if (mode==0) {		//выбор оружия
 				for each(var obj in inv.weapons) {
 					if (obj is Weapon) {
@@ -263,7 +264,7 @@ package fe.inter
 						if (w.ammo!='' && w.ammo!=null) {
 							if (inv.ammos[w.ammoBase]!=null) n.ammo=inv.ammos[w.ammoBase]+w.hold;
 							else if (inv.items[w.ammo]!=null) n.ammo=inv.items[w.ammo].kol+w.hold;
-							if (w.ammoBase!='') n.ammotip=(w.tip!=4)?inv.items[w.ammoBase].nazv:'';
+							if (w.ammoBase!='') n.ammotip=(w.tip == 4) ? '' : inv.items[w.ammoBase].nazv;
 						}
 						if (n.fav>0) arrfav[n.fav]=n;
 						if (w.respect==1 || w.respect==3 || w.spell)  continue;
@@ -277,19 +278,19 @@ package fe.inter
 					if (gg.currentWeapon && arr[i].id==gg.currentWeapon.id) wSelN=i;
 				}
 				for (i=1; i<=World.kolHK*2+7; i++) {
-					if (i==World.kolHK*2+5) {
+					if (i==String(World.kolHK * 2 + 5)) {
 						if (gg.throwWeapon) {
 							w=gg.throwWeapon;
 							n={id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
 							if (w.ammo!='') n.ammo=inv.items[w.ammo].kol;
 						} else continue;
-					} else if (i==World.kolHK*2+6) {
+					} else if (i==String(World.kolHK * 2 + 6)) {
 						if (gg.magicWeapon) {
 							w=gg.magicWeapon;
 							n={id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
 							if (w.ammo!='') n.ammo=inv.items[w.ammo].kol;
 						} else continue;
-					} else if (i==World.kolHK*2+7) {
+					} else if (i==String(World.kolHK * 2 + 7)) {
 						if (gg.currentSpell) {
 							n={id:gg.currentSpell.id, nazv:gg.currentSpell.nazv, fav:i};
 							if (gg.currentSpell.t_culd>0) {
@@ -300,14 +301,17 @@ package fe.inter
 						if (arrfav[i] || inv.fav[i]==null) continue;
 						n={id:inv.fav[i], fav:i};
 						n.nazv=Res.txt('i',n.id);
-						if (!Res.istxt('i',n.id)) {
-							n.nazv=Res.txt('a',n.id);
-						} else if (inv.items[n.id]!=null) {
-							n.ammo=inv.items[n.id].kol;
-						} else {
-							if (inv.items[w.ammoBase]!=null) n.ammo=inv.items[w.ammoBase].kol;
-							else n.ammo=inv.items[w.ammo].kol;
-						}
+						if (Res.istxt('i', n.id)) {
+                            if (inv.items[n.id] == null) {
+								if (inv.items[w.ammoBase] == null) {
+									n.ammo = inv.items[w.ammo].kol;
+								} else n.ammo = inv.items[w.ammoBase].kol;
+							} else {
+								n.ammo = inv.items[n.id].kol;
+							}
+                        } else {
+                            n.nazv = Res.txt('a', n.id);
+                        }
 						if (inv.spells[n.id]!=null) {
 							if (inv.spells[n.id].t_culd>0) {
 								n.ammo=Math.ceil(inv.spells[n.id].t_culd/World.fps)+' '+Res.guiText('sec');
@@ -355,8 +359,9 @@ package fe.inter
 				{
 					mc.visible=true;
 					mc.nazv.text=arrfav[i].nazv;
-					if (arrfav[i].ammo!=null) mc.ammo.text=arrfav[i].ammo;
-					else mc.ammo.text='';
+					if (arrfav[i].ammo == null) {
+                        mc.ammo.text = '';
+                    } else mc.ammo.text = arrfav[i].ammo;
 					if (i<=World.kolHK) mc.fav.text=World.w.ctr.retKey('keyWeapon'+arrfav[i].fav);
 					else if (i<=World.kolHK*2+4) {
 						if (i<=World.kolHK*2) mc.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(arrfav[i].fav-World.kolHK));
@@ -398,8 +403,9 @@ package fe.inter
 				if (selMode==1 && (i==1 || i==7)) mc.visible=false;
 				else mc.visible=true;
 				mc.nazv.text=arr[n].nazv;
-				if (arr[n].ammo!=null) mc.ammo.text=arr[n].ammo;
-				else mc.ammo.text='';
+				if (arr[n].ammo == null) {
+                    mc.ammo.text = '';
+                } else mc.ammo.text = arr[n].ammo;
 				if (arr[n].fav>World.kolHK && arr[n].fav<=World.kolHK*2) mc.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(arr[n].fav-World.kolHK));
 				else if (arr[n].fav>0 && arr[n].fav<=World.kolHK) mc.fav.text=World.w.ctr.retKey('keyWeapon'+arr[n].fav);
 				else mc.fav.text='';
@@ -465,8 +471,9 @@ package fe.inter
 						if (w.hold+k<w.rashod) n=5;
 					}
 					s="<span class = 'r"+n+"'>";
-					if (w.tip!=4) s+=w.hold+'/'+w.holder+' ('+k+')';
-					else s+=k+w.hold;
+					if (w.tip == 4) {
+                        s += k + w.hold;
+                    } else s += w.hold + '/' + w.holder + ' (' + k + ')';
 					s+="</span>";
 					holder.htmlText=s;
 				} else holder.htmlText='';
@@ -480,7 +487,8 @@ package fe.inter
 				var r=Math.round(w.hp/w.maxhp*100);
 				var n='';
 				if (r<=0) {
-					r=0, n=5;
+					r=0;
+					n=5;
 				} else if (r<20) {
 					n=3;
 				} else if (r<50) {
@@ -639,14 +647,14 @@ package fe.inter
 		}
 		
 		public function setTopText(s:String='') {
-			if (s!='') {
-				vis.toptext.visible=true;
-				var ins:String=Res.txt('g',s,0,true);
-				var myPattern:RegExp = /@/g; 
-				vis.toptext.txt.htmlText=ins.replace(myPattern,'\n');
-			} else {
-				vis.toptext.visible=false;
-			}
+			if (s == '') {
+                vis.toptext.visible = false;
+            } else {
+                vis.toptext.visible = true;
+                var ins:String = Res.txt('g', s, 0, true);
+                var myPattern:RegExp = /@/g;
+                vis.toptext.txt.htmlText = ins.replace(myPattern, '\n');
+            }
 		}
 		
 		public function setEffects() {
@@ -681,8 +689,9 @@ package fe.inter
 				} else t2=true;
 				if (n<gg.effects.length && !gg.effects[n].vse) {
 					veff[i].visible=effIsVis=true;
-					if (!gg.effects[n].forever) veff[i].txt.text=Math.floor(gg.effects[n].t/30);
-					else veff[i].txt.text='∞';
+					if (gg.effects[n].forever) {
+                        veff[i].txt.text = '∞';
+                    } else veff[i].txt.text = Math.floor(gg.effects[n].t / 30);
 					try {
 						if (gg.effects[n].tip==3) veff[i].vis.gotoAndStop('food');
 						else veff[i].vis.gotoAndStop(gg.effects[n].id);
@@ -846,8 +855,9 @@ package fe.inter
 			else if (lock > pick+2) s="<span class = 'warn'>"+txtUnreal+"</span>"; 
 			else if (lock > pick+1) s="<span class = 'r3'>"+txtVeryHard+"</span>"; 
 			else if (lock > pick) s="<span class = 'r2'>"+txtHard+"</span>";
-			if (s!='') return '\n ('+s+')';
-			else return '';
+			if (s == '') {
+                return '';
+            } else return '\n (' + s + ')';
 		}
 		
 		function diflock(n:Number):String {
@@ -896,7 +906,8 @@ package fe.inter
 				bulbText=s;
 				info.htmlText+=bulbText+"<br>";
 				if (addlog) World.w.log+=bulbText+"<br>";
-				kolStr++, t_info=150;
+				kolStr++;
+				t_info=150;
 				if (kolStr>6) remStr();
 			}
 			prevInfoText=s;
@@ -906,7 +917,8 @@ package fe.inter
 			var s:String=Res.txt('e',id,2);
 			if (s==null || s=='') return;
 			info.htmlText+=(s+"<br>");
-			kolStr++, t_info=150;
+			kolStr++;
+			t_info=150;
 			if (kolStr>6) remStr();
 		}
 		
@@ -1049,81 +1061,74 @@ package fe.inter
 			}
 
 			s = s.replace(/\[/g, "<span class='yellow'>");
-			s = s.replace(/\]/g, "</span>");
+			s = s.replace(/]/g, "</span>");
 			s = s.replace(/[\b\r\t]/g, '');
 			s = Res.lpName(s);
 
-			if (!reg)
-			{
-				inform.visible = false;
-				dial.portret.gotoAndStop(1);	// Display empty portrait
-				
-				if (xml.@p.length())			// If the string of text has a 'p'ortrait
-				{
-					trace('This section of dialogue has a portrait.');
+			if (reg) {
+                if (reg >= 1) {
+                    dial.visible = false;
+                    if (xml.@push > 0) inform.txt.htmlText += "<br><br>" + s;
+                    else inform.txt.htmlText = s;
+                    inform.txt.scrollV = 0;
+                    inform.lmb.visible = wait;
+                    if (wait) inform.lmb.play();
+                    else inform.lmb.stop();
+                    inform.but0.visible = (reg == 2);
+                    if (inform.scText) inform.scText.visible = false;
+                    if (inform.txt.height < inform.txt.textHeight && inform.scText) {
+                        inform.scText.maxScrollPosition = inform.txt.maxScrollV;
+                        inform.scText.visible = true;
+                    }
 
-					var portraitName:String = xml.@p;
-					if (portraitName.substr(0, 2) == 'lp' && World.w.alicorn)	// Replace the little pip portrait with the helmeted version
-					{
-						portraitName = 'lpa';
-						s = "<span class='crim'>" + s + "</span>";
-					}
+                }
+            } else {
+                inform.visible = false;
+                dial.portret.gotoAndStop(1);	// Display empty portrait
 
-					try
-					{
-						if (portraitHelper == null)
-						{
-							trace('Creating new PortraitHelper!');
-							portraitHelper = new PortraitHelper(vis);
-						}
-						portraitHelper.displayPortrait(portraitName);
-						//dial.portret.gotoAndStop(portraitName);
-					}
-					catch(err)
-					{
-						trace('ERROR: (00:34) - Failed to load portrait: "' + portraitName + '"!');
-						portraitHelper.clearPortrait();
-						//dial.portret.gotoAndStop(1);
-					}
-				}
-				else
-				{
-					trace('This secion of dialogue has no portrait.');
-					if (portraitHelper.currentPortrait != null)
-					{
-						trace('Clearing old portrait in memory for new dialogue.');
-						portraitHelper.clearPortrait();
-					}
-					
-				}
+                if (xml.@p.length())			// If the string of text has a 'p'ortrait
+                {
+                    trace('This section of dialogue has a portrait.');
 
-				if (xml.@push>0) dial.txt.htmlText+="<br>"+s;
-				else dial.txt.htmlText=s;
+                    var portraitName:String = xml.@p;
+                    if (portraitName.substr(0, 2) == 'lp' && World.w.alicorn)	// Replace the little pip portrait with the helmeted version
+                    {
+                        portraitName = 'lpa';
+                        s = "<span class='crim'>" + s + "</span>";
+                    }
 
-				dial.lmb.visible=wait;
-				if (wait) dial.lmb.play();
-				else dial.lmb.stop();
-			}
-			else if (reg >= 1) {
-				dial.visible=false;
-				if (xml.@push>0) inform.txt.htmlText+="<br><br>"+s;
-				else inform.txt.htmlText=s;
-				inform.txt.scrollV=0;
-				inform.lmb.visible=wait;
-				if (wait) inform.lmb.play();
-				else inform.lmb.stop();
-				inform.but0.visible=(reg==2);
-				if (inform.scText) inform.scText.visible=false;
-				if (inform.txt.height<inform.txt.textHeight && inform.scText) {
-					inform.scText.maxScrollPosition=inform.txt.maxScrollV;
-					inform.scText.visible=true;
-				}
+                    try {
+                        if (portraitHelper == null) {
+                            trace('Creating new PortraitHelper!');
+                            portraitHelper = new PortraitHelper(vis);
+                        }
+                        portraitHelper.displayPortrait(portraitName);
+                        //dial.portret.gotoAndStop(portraitName);
+                    } catch (err) {
+                        trace('ERROR: (00:34) - Failed to load portrait: "' + portraitName + '"!');
+                        portraitHelper.clearPortrait();
+                        //dial.portret.gotoAndStop(1);
+                    }
+                } else {
+                    trace('This secion of dialogue has no portrait.');
+                    if (portraitHelper.currentPortrait != null) {
+                        trace('Clearing old portrait in memory for new dialogue.');
+                        portraitHelper.clearPortrait();
+                    }
 
-			}
+                }
+
+                if (xml.@push > 0) dial.txt.htmlText += "<br>" + s;
+                else dial.txt.htmlText = s;
+
+                dial.lmb.visible = wait;
+                if (wait) dial.lmb.play();
+                else dial.lmb.stop();
+            }
 			return true;
 		}
 		
-		//важное сообщение, ставит игру на паузу
+		//Important message, pauses the game
 		public function impMess(ntitle:String, ntext:String, nico:String='') {
 			World.w.ctr.active=false;
 			World.w.ctr.keyPressed=false;
@@ -1134,7 +1139,7 @@ package fe.inter
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:34)');
+					trace('ERROR: (00:52) - Failed trying to display an icon for an important message display!');
 					imp.ico.gotoAndStop(1);
 				}
 			}

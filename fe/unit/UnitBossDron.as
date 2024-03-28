@@ -55,7 +55,7 @@ package fe.unit
 			currentWeapon=Weapon.create(this, 'dronmlau');
 			thWeapon=Weapon.create(this,'drongr');
 			(thWeapon as WThrow).kolAmmo=100000;
-			childObjs=new Array(currentWeapon, thWeapon);
+			childObjs=[currentWeapon, thWeapon];
 			
 			spd=new Object();
 			
@@ -121,7 +121,7 @@ package fe.unit
 				if (sost==2)
 				{
 					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
-					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;;
+					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
 				}
 				else
 				{
@@ -200,7 +200,8 @@ package fe.unit
 				dy = spd.y;
 				
 				if (dist<1000) {
-					dx*=0.8, dy*=0.8;
+					dx*=0.8;
+					dy*=0.8;
 				}
 				attack();
 				emit_t--;

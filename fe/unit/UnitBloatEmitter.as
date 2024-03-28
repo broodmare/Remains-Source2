@@ -10,8 +10,9 @@ package fe.unit
 		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
 			super(cid, ndif, xml, loadObj);
-			if (cid!=null) id=cid;
-			else id='ebloat';
+			if (cid == null) {
+                id = 'ebloat';
+            } else id = cid;
 			if (id=='eant') {
 				vis=new visualAntEmitter();
 				emitId='ant';
@@ -31,7 +32,7 @@ package fe.unit
 					//сбросить эффекты
 					if (effects.length>0) {
 						for each (var eff in effects) eff.unsetEff();
-						effects=new Array();
+						effects=[];
 					}
 					oduplenie=Math.round(World.oduplenie*(Math.random()*0.2+0.9));
 					disabled=false;		//включить

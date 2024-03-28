@@ -17,7 +17,6 @@ package fe.unit
 		public var kolTrs:int=0;		//количество разновидностей
 		public var tr:int=1;
 		var weap:String;
-		private	var headArr:Array;
 		public var walker:Boolean=false;	//имеет анимацию ходьбы
 		public var mostLaz:Boolean=true;	//залезает по лестницам
 		public var flyer:Boolean;		//летает
@@ -62,10 +61,10 @@ package fe.unit
 			}
 			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} 
+			}
 			if (!(tr>0)) tr=1;
 			id=parentId+tr;
-			
+
 			//взять параметры из xml
 			getXmlParam();
 			walkSpeed=maxSpeed;
@@ -76,7 +75,7 @@ package fe.unit
 			runSpeed=maxSpeed*2;
 			plavdy=accel;
 			baseDexter=dexter;
-			
+
 			//дать оружие
 			if (loadObj && loadObj.weap) {
 				if (loadObj.weap!='') currentWeapon=Weapon.create(this,loadObj.weap);
@@ -92,7 +91,7 @@ package fe.unit
 				currentWeapon.hold=currentWeapon.holder;
 				if (currentWeapon.antiprec>0) currentWeapon.damage*=0.8;
 			}
-			
+
 			if (xml && xml.@emit.length()) {
 				kol_emit=xml.@emit;
 			}
@@ -105,13 +104,13 @@ package fe.unit
 				dropWeapon.vis.alpha=0;
 				childObjs.push(dropWeapon);
 			}
-			
+
 			if (currentWeapon && currentWeapon.holder>10 && aiAttackOch==0) aiAttackOch=Math.round(currentWeapon.holder/2);
-			
+
 			initBlit();
 			animState='stay';
 			if (teleColor) teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
-			
+
 			if (aiTip=='stay') stroll=false;
 			if (aiTip=='quiet') {
 				stroll=false;
@@ -128,14 +127,14 @@ package fe.unit
 			}
 
 			weaponLevit();
-			headArr=[{x:100,y:100,r:10}];
+			var headArr:Array = [{x: 100, y: 100, r: 10}];
 			aiNapr=storona;
-			
+
 			if (!currentWeapon || currentWeapon.tip<=1 && weaponKrep==1) attackerType=0;		//атака корпусом
 			else if (currentWeapon.tip==1 && weaponKrep==0) attackerType=1;						//атака холодным оружием 
 			else if (currentWeapon.tip==4) attackerType=3;										//гранаты
 			else attackerType=2;//пальба
-			
+
 			if (attackerType<=0) stalkDist=0;
 			acidDey=0.5;
 			spd=new Object();
@@ -143,12 +142,12 @@ package fe.unit
 
 			if (msex) wPos=BlitAnim.wPosRaider1;
 			else wPos=BlitAnim.wPosRaider2;
-			
+
 			if (!msex) id_name+='_f';
-			
+
 			if (sndDie=='rm' && !msex) sndDie='rw';
 		}
-		
+
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam(parentId);
 			super.getXmlParam();

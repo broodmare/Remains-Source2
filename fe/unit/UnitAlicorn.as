@@ -505,7 +505,7 @@ package fe.unit
 				} else {
 					spd.x = celX - coordinates.X;
 					if (aiState==4) spd.y=200;
-					else spd.y = celY - this.topBoundToCenter;;
+					else spd.y = celY - this.topBoundToCenter;
 					//дематериализоваться
 					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
 						t_nomater++;

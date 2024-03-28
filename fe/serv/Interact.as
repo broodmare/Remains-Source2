@@ -94,12 +94,11 @@ package fe.serv
 		public var scrAct:Script, scrOpen:Script, scrClose:Script, scrTouch:Script;
 		
 		//изменения состояний, которые сохраняются
-		var saveMine:int=0;		//101 - мина обезврежена или бахнула
-		var saveLock:int=0;		//101 - открыто, 102 - заклинило
-		public var saveLoot:int=0;		//1 - лут получен, 2 - лут получен, есть критичный лут
-		var saveOpen:int=0;		//1 - открыто
+		var saveMine:int=0;				// 101 - мина обезврежена или бахнула
+		var saveLock:int=0;				// 101 - открыто, 102 - заклинило
+		public var saveLoot:int=0;		// [1 - loot received, 2 - loot received, there is critical loot]
+		var saveOpen:int=0;				// 1 - открыто
 		var saveExpl:int=0;
-		//var saveTerm:int=0;		//1 - активировано
 		
 		public const maxLockLvl=24;
 		public const maxMechLvl=7;
@@ -213,7 +212,8 @@ package fe.serv
 				
 				if (xml.move.length()) {
 					isMove=true;
-					begX = coordinates.X, begY = coordinates.Y;
+					begX = coordinates.X;
+					begY = coordinates.Y;
 					if (xml.move.@dx.length()) {
 						if (loc && loc.mirror) endX = coordinates.X - xml.move.@dx * tileX;
 						else endX = coordinates.X + xml.move.@dx * tileX;
@@ -357,7 +357,7 @@ package fe.serv
 					switch (action)
 					{
 						case 1:
-							actionText = Res.guiText(!open ? 'open':'close');
+							actionText = Res.guiText(open ? 'close' : 'open');
 						break;
 
 						case 2:
@@ -533,40 +533,44 @@ package fe.serv
 			}
 			if (needSkill && needSkillLvl>unlock) {
 				World.w.gui.infoText('needSkill', Res.txt('e',needSkill), needSkillLvl,false);	//требуется навык
-			} else if (mine>0) {
-					verZhopa=0, verFail=0;
-					if (mine>unlock) verZhopa=(mine-unlock+1)*0.15;
-					verFail=(mine-unlock+2)*0.2;
-					if (Math.random()<verZhopa) {	//критическая неудача
-						setAct('mine',101);
-						if (mineTip==6) World.w.gui.infoText('signalZhopa');	//сигнализация сработала
-						else World.w.gui.infoText('remineZhopa');	//бомба сработала
-						if (fiascoRemine!=null) fiascoRemine();
-						if (at_once>0) {
-							actOsn();
-						}
-						replic('zhopa');
-						update();
-					} else if (Math.random()<verFail) { //неудача	
-						if (mineTip==6) World.w.gui.infoText('signalFail',null,null,false);	//сигнализация не обезврежена
-						else World.w.gui.infoText('remineFail',null,null,false);	//бомба не обезврежена
-						replic('fail');
-					} else {						//успех	
-						setAct('mine',101);
-						if (mineTip==6) World.w.gui.infoText('signalOff');	//сигнализация обезврежена
-						else  World.w.gui.infoText('remine');	//бомба обезврежена
-						if (successRemine!=null) successRemine();
-						if (at_once>0) {
-							actOsn();
-						}
-						replic('success');
-						update();
-					}
-					World.w.gui.bulb(coordinates.X, coordinates.Y);
-					//trace('разминировать',unlock,' неудача',verFail,'жопа',verZhopa);
+			}
+			else if (mine>0) {
+				verZhopa=0;
+				verFail=0;
+                if (mine>unlock) verZhopa=(mine-unlock+1)*0.15;
+                verFail=(mine-unlock+2)*0.2;
+                if (Math.random()<verZhopa) {	//критическая неудача
+                    setAct('mine',101);
+                    if (mineTip==6) World.w.gui.infoText('signalZhopa');	//сигнализация сработала
+                    else World.w.gui.infoText('remineZhopa');	//бомба сработала
+                    if (fiascoRemine!=null) fiascoRemine();
+                    if (at_once>0) {
+                        actOsn();
+                    }
+                    replic('zhopa');
+                    update();
+                }
+				else if (Math.random()<verFail) { //неудача
+                    if (mineTip==6) World.w.gui.infoText('signalFail',null,null,false);	//сигнализация не обезврежена
+                    else World.w.gui.infoText('remineFail',null,null,false);	//бомба не обезврежена
+                    replic('fail');
+                }
+				else {						//успех
+                    setAct('mine',101);
+                    if (mineTip==6) World.w.gui.infoText('signalOff');	//сигнализация обезврежена
+                    else  World.w.gui.infoText('remine');	//бомба обезврежена
+                    if (successRemine!=null) successRemine();
+                    if (at_once>0) {
+                        actOsn();
+                    }
+                    replic('success');
+                    update();
+                }
+				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				unlock=0;
 				is_ready=false;
-			} else if (lock>0 && lockKey && World.w.invent.items[lockKey].kol>0) {
+			}
+			else if (lock>0 && lockKey && World.w.invent.items[lockKey].kol>0) {
 				setAct('lock',101);
 				if (lockTip==1) World.w.gui.infoText('unLockKey');
 				if (lockTip==2) World.w.gui.infoText('unTermLock');
@@ -1150,9 +1154,11 @@ package fe.serv
 			if (Math.random()<0.25) World.w.gg.replic(s);
 		}	
 		
-		//подтвердить получение критичного предмета
-		public function receipt() {
-			saveLoot=1;
+		// [confirm receipt of critical item]
+		public function receipt()
+		{
+			trace("Interact.as/receipt() - Important item, setting saveLoot to \"1\".");
+			saveLoot = 1;
 		}
 		
 		public function loot(impOnly:Boolean=false)

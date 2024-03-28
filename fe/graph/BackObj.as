@@ -90,12 +90,11 @@ package fe.graph
 			{
 				var node:XML;
 				// Check if the node is already cached
-				if (cachedBackObjs[id] != undefined) node = cachedBackObjs[id];
-				else
-				{
+				if (cachedBackObjs[id] == undefined) {
 					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "backs", "id", id);
 					cachedBackObjs[id] = node;
 				}
+				else node = cachedBackObjs[id];
 				return node;
 			}
 		}

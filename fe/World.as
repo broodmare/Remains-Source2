@@ -8,7 +8,6 @@ package  fe
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.system.Capabilities;
-	import flash.utils.Timer;
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
 	import flash.desktop.Clipboard;
@@ -24,14 +23,12 @@ package  fe
 	import fe.unit.UnitPlayer;
 	import fe.unit.Invent;
 	import fe.unit.Pers;
-	import fe.weapon.Weapon;
 	
 	public class World
 	{
 		public static var w:World;
 		
 		public var playerMode:String;	//Режим флеш-плеера
-		public var urle:String;			//адрес, с которого запущена игра
 
 		//Визуальные составляющие
 		public var main:Sprite;			//Главный спрайт игры
@@ -71,7 +68,7 @@ package  fe
 		public var rooms:Array;
 		
 		//Рабочие переменные
-		public var onConsol:Boolean=false;	//Консоль активна
+		public var consoleActive:Boolean = false;	// Console active
 		public var onPause:Boolean=false;	//игра на тестовой паузе
 		public var allStat:int=0; 			//общий статус 0 - игра не началась
 		public var celX:Number;				//координаты курсора в системе отсчёта локации
@@ -98,7 +95,7 @@ package  fe
 		//Настроечные переменные
 		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
 		public var roomsLoad:int = 1;  			//1-загружать из файла карты локаций
-		var langLoad=1;  			//1-загружать из файла
+		private var langLoad=1;  			//1-загружать из файла
 		public var addCheckSP:Boolean=false;			//добавлять скилл-поинты при посещении контрольной точки
 		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
 		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
@@ -177,8 +174,7 @@ package  fe
 		public var textLoaded:Boolean=false;
 		public var textLoadErr:Boolean=false;
 
-		private var loader_lang:URLLoader; 
-		private var request_lang:URLRequest;
+		private var loader_lang:URLLoader;
 
 		public var langsXML:XML;
 		public var textProgressLoad:Number=0;
@@ -202,7 +198,6 @@ package  fe
 		private var saveObj:SharedObject;
 		private var saveArr:Array;
 		public var saveKol:int = 10;
-		private var savePath:String = null;
 		private var t_save:int = 0;
 		public var loaddata:Object;	//данные, загружаемые из файла
 		public var nadv:int=0;
@@ -223,10 +218,7 @@ package  fe
 		public var loadScreen:int=-1;	//загрузочный экран
 		public var autoSaveN:int=0;	//номер ячейки автосейва
 		public var log:String='';
-		
-		//счетчик fps
-		public var tfc:Timer;			
-		private var fc:int=0;
+
 		//var date:Date,
 		private var d1:int;
 		private var d2:int;
@@ -234,13 +226,12 @@ package  fe
 		public var landError:Boolean = false;
 
 
-		public function World(nmain:Sprite, paramObj:Object)
-		{
+		public function World(nmain:Sprite, paramObj:Object) {
 			World.w = this;
 			//техническая часть
 			//Узнать тип плеера и адрес, с которого он запущен
 			playerMode = Capabilities.playerType;
-			
+
 			//файлы
 			soundPath = '';
 			musicPath = 'Music/';
@@ -251,34 +242,34 @@ package  fe
 			langFolder = 'Modules/core/Language/'
 			landPath = 'Rooms/';
 			if (testMode) fileVersion=Math.random()*100000;
-			
+
 			main=nmain;
 			swfStage=main.stage;
 			swfStage.tabChildren=false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
-			
-			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
-			loader_lang = new URLLoader(); 
-			request_lang = new URLRequest(langURL); 
 
-			loader_lang.load(request_lang); 
+			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
+			loader_lang = new URLLoader();
+			var request_lang:URLRequest = new URLRequest(langURL);
+
+			loader_lang.load(request_lang);
 			loader_lang.addEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			
+
 			LootGen.init();
 			Form.setForms();
 			Emitter.init();
 
 
 			// Rooms were initialized here for online players only.
-			
+
 			//создание элементов графики
 			vwait = new visualWait();
 			vwait.cacheAsBitmap=true;
-			
+
 			//настройщик внешности
 			app=new Appear();
-			
+
 			visual=new Sprite();
 			vgui = new visualGUI();
 			vfon = new MovieClip();
@@ -311,15 +302,16 @@ package  fe
 			grafon=new Grafon(visual);
 			cam=new Camera(this);
 			load_log+='Stage 1 Ok\n';
-			
+
 			// FPS Counter (This seems to also be used for other things like measuring load times.)
 			d1 = getTimer();
 			d2 = getTimer();
-			
+
 			//конфиг, сразу загружает настройки звука
+			var savePath:String = null;
 			configObj = SharedObject.getLocal('config', savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
-			
+
 		}
 
 //=============================================================================================================
@@ -367,7 +359,7 @@ package  fe
 			if (configObj.data.language != null) currentLanguage = configObj.data.language; // If user settings exist, overwrite the default language.
 			if (langsXML && langsXML.@defaultLanguage.length()) userDefaultLanguage = langsXML.@defaultLanguage;
 
-			langs = new Array();
+			langs = [];
 			for each (var xl:XML in langsXML.lang)
 			{
 				var obj:Object = {file:xl.@file, nazv:xl[0]};	//Creates an obj with two properties, The file path, eg. 'text_en.xml', and the language name eg. 'English' 
@@ -379,15 +371,12 @@ package  fe
 
 
 			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
-			if (currentLanguage != userDefaultLanguage) 					// If the current language is different from the default, load the user's preferred language as well.
-			{
-				var languageURL:String = langFolder + currentLanguage;
-				tl = new TextLoader(langs[currentLanguage].file);
-			} 
-			else 
-			{
-				tl = tld;													// Otherwise, write the default user language into tl.
-			}
+			if (currentLanguage == userDefaultLanguage) {
+                tl = tld;													// Otherwise, write the default user language into tl.
+            } else {
+                var languageURL:String = langFolder + currentLanguage;
+                tl = new TextLoader(langs[currentLanguage].file);
+            }
 		}
 		
 		//загрузка языка закончена
@@ -415,28 +404,29 @@ package  fe
 		{
 			currentLanguage = nid;
 			textLoadErr = false;
-			if (nid != userDefaultLanguage)	// If the desired language isn't the user's default, create a new textloader for it.
-			{
-				textLoaded = false;
-				tl = new TextLoader(langs[nid].file);
-			}
-			else							// Otherwise, just copy Res.e to Res.d
-			{
-				Res.currentLanguageData = Res.fallbackLanguageData;
-				pip.updateLang();
-			}
+			if (nid == userDefaultLanguage) {
+                Res.currentLanguageData = Res.fallbackLanguageData;
+                pip.updateLang();
+            } else {
+                textLoaded = false;
+                tl = new TextLoader(langs[nid].file);
+            }
 			saveConfig();
 		}
 		
 		public function init2():void
 		{
+
+
 			if (consol) return;
 			if (configObj) lastCom=configObj.data.lastCom;
-			consol=new Consol(vconsol, lastCom);
+			consol = new Consol(vconsol, lastCom);
 			//сейвы и конфиг
-			saveArr=new Array();
-			for (var i:int = 0; i<=saveKol; i++) 
-			{
+			saveArr = [];
+
+			var i:int;
+			for (i = 0; i<=saveKol; i++) {
+				var savePath:String = null;
 				saveArr[i]=SharedObject.getLocal('PFEgame'+i,savePath);
 			}
 			saveObj = saveArr[0];
@@ -491,7 +481,7 @@ package  fe
 			if (!sysCur) Mouse.cursor='arrow';
 			
 			//загрузка карт локаций
-			landData = new Array();
+			landData = [];
 			
 			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
 			for each(var xl in xmlList)
@@ -542,15 +532,6 @@ package  fe
 			}
 			if (allStat==1 && !testMode) pip.onoff(11);
 		}
-		
-		//Вызов консоли
-		public function consolOnOff():void
-		{
-			onConsol=!onConsol;
-			consol.vis.visible=onConsol;
-			if (onConsol) swfStage.focus=consol.vis.input;
-		}
-		
 		
 //=============================================================================================================
 //			Игра
@@ -828,7 +809,7 @@ package  fe
 				}
 				return;
 			}
-			if (!onConsol && !pip.active) swfStage.focus=swfStage;
+			if (!consoleActive && !pip.active) swfStage.focus = swfStage;
 			
 			//Только если игра началась и не на паузе, игровые циклы
 			if (allStat==1 && !onPause) {
@@ -874,7 +855,7 @@ package  fe
 				}
 			}
 			
-			//Если игра началась, и на паузе тоже
+			//If the game has started and is paused too
 			if (allStat>=1) {
 				cam.calc(gg);
 				gui.step();
@@ -914,8 +895,9 @@ package  fe
 				}
 				allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
 				
-				if (consol && consol.visoff) {
-					onConsol=consol.vis.visible=consol.visoff=false;
+				if (consol && consol.consoleIsVisible && !consoleActive) {
+					trace('World.as/step() - Console is visible but not active, hiding!');
+					consol.setConsoleVisiblility(false);
 				}
 			}
 		}

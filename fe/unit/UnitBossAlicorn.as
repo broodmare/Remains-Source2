@@ -178,7 +178,7 @@ package fe.unit
 			if (vis) {
 				if (sost==2) {
 					vis.x = coordinates.X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;;
+					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;
 				} else {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
@@ -310,7 +310,8 @@ package fe.unit
 				t_float+=0.0726;
 				floatX=Math.sin(t_float)*2;
 				floatY=Math.cos(t_float)*2;
-				dx*=0.9, dy*=0.9
+				dx*=0.9;
+				dy*=0.9
 				dx+=floatX;
 				dy+=floatY;
 			}
@@ -326,13 +327,15 @@ package fe.unit
 			}
 			if (aiState>0) {
 				aiNapr=(celX > coordinates.X)?1:-1;
-				if (storona!=aiNapr) {
-					t_turn--;
-					if (t_turn<=0) {
-						storona=aiNapr;
-						t_turn=15;
-					}
-				} else t_turn=15;
+				if (storona == aiNapr) {
+                    t_turn = 15;
+                } else {
+                    t_turn--;
+                    if (t_turn <= 0) {
+                        storona = aiNapr;
+                        t_turn = 15;
+                    }
+                }
 			}
 			attack();
 			

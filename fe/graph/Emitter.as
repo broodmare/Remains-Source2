@@ -14,7 +14,7 @@ package fe.graph
 
 		public static function init()
 		{
-			arr = new Array();
+			arr = [];
 			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "parts", "part");
 
 			for each(var node:XML in xmlList)
@@ -87,7 +87,7 @@ package fe.graph
 		public var maxkol:int=0;
 		public var camscale:Boolean=false;
 		
-		public static var fils:Array=new Array();
+		public static var fils:Array=[];
 		fils['bur']=[new GlowFilter(0xFF7700,1,8,8,1,1)];
 		fils['plav']=[new GlowFilter(0x00FF00,1,8,8,1,1)];
 

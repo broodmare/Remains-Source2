@@ -101,7 +101,8 @@ package fe.unit
 			}
 			else if (cx>-10000 && cy>-10000)
 			{
-				celX=cx, celY=cy;
+				celX=cx;
+				celY=cy;
 			}
 			else
 			{

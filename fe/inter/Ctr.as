@@ -156,17 +156,23 @@ package fe.inter {
 		
 		public function setKeyboard() {
 			if (keyboardMode==0) {
-				KeyboardA=Keyboard.A, KeyboardZ=Keyboard.Z, KeyboardW=Keyboard.W, KeyboardQ=Keyboard.Q;
+				KeyboardA=Keyboard.A;
+				KeyboardZ=Keyboard.Z;
+				KeyboardW=Keyboard.W;
+				KeyboardQ=Keyboard.Q;
 			}
 			if (keyboardMode==1) {
-				KeyboardA=Keyboard.Q, KeyboardZ=Keyboard.W, KeyboardW=Keyboard.Z, KeyboardQ=Keyboard.A;
+				KeyboardA=Keyboard.Q;
+				KeyboardZ=Keyboard.W;
+				KeyboardW=Keyboard.Z;
+				KeyboardQ=Keyboard.A;
 			}
 		}
 		
 		public function Ctr(loadObj=null) {
 			keyNames=new Vector.<String>(256);
 			keyDowns=new Vector.<Boolean>(256);
-			mbNames=new Array();
+			mbNames=[];
 			for (var i=Keyboard.A; i<=Keyboard.Z; i++) {
 				keyNames[i]=String.fromCharCode(65+i-Keyboard.A);
 			}
@@ -259,7 +265,7 @@ package fe.inter {
 		
 		//создать ассоциации между объектами действий и клавиш
 		public function updateKeys() {
-			keys=new Array();
+			keys=[];
 			for each(var obj in keyObj) {
 				if (obj.a1) keys[obj.a1]=obj;
 				if (obj.a2) keys[obj.a2]=obj;
@@ -268,8 +274,8 @@ package fe.inter {
 		
 		//настройки по умолчанию
 		public function gotoDef() {
-			keyObj=new Array();
-			keyIds=new Array();
+			keyObj=[];
+			keyIds=[];
 			for (var i in keyXML.key) {
 				var obj:Object={id:keyXML.key[i].@id};
 				if (keyXML.key[i].@def.length()) obj.a1=keyXML.key[i].@def.toString();
@@ -280,7 +286,7 @@ package fe.inter {
 		}
 		
 		public function save():* {
-			var arr:Array=new Array();
+			var arr:Array=[];
 			for (var i in keyIds) {
 				arr[i]={a1:keyIds[i].a1, a2:keyIds[i].a2};
 			}
@@ -347,8 +353,9 @@ package fe.inter {
 				World.w.gui.showDop=World.w.showFavs && (event.stageY>World.w.swfStage.stageHeight-15);
 			}
 		}
-		public function onMouseDown1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+		public function onMouseDown1(event:MouseEvent):void
+		{
+			if (World.w.consoleActive) return;
 			if (World.w.clickReq==1) {
 				World.w.clickReq=2;
 				return;
@@ -359,10 +366,10 @@ package fe.inter {
 				event.stopPropagation();
 				return;
 			}
-			if (!active) {
-				active=true;
+			if (active) {
+				if (keys['lmb']) this[keys['lmb'].id] = true;
 			} else {
-				if (keys['lmb']) this[keys['lmb'].id]=true;
+				active = true;
 			}
 		}
 		public function onMouseUp1(event:MouseEvent):void {
@@ -372,7 +379,7 @@ package fe.inter {
             //отключение меню
         }
 		public function onRightMouseDown1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+			if (World.w.consoleActive) return;
 			keyPressed=true;
 			keyPressed2=true;
 			if (setkeyOn) {
@@ -386,7 +393,7 @@ package fe.inter {
 			if (keys['rmb']) this[keys['rmb'].id]=false;
 		}
 		public function onMiddleMouseDown1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+			if (World.w.consoleActive) return;
 			if (setkeyOn) {
 				requestOk('mmb');
 				return;
@@ -397,7 +404,7 @@ package fe.inter {
 			if (keys['mmb']) this[keys['mmb'].id]=false;
 		}
 		public function onMouseWheel1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+			if (World.w.consoleActive) return;
 			if (setkeyOn) {
 				if (event.delta<0) requestOk('scrd');
 				if (event.delta>0) requestOk('scru');
@@ -427,7 +434,7 @@ package fe.inter {
 				else if (event.keyCode==Keyboard.TAB || event.keyCode==Keyboard.ESCAPE) requestOk(-1);
 				return;
 			}
-			if (!World.w.onConsol) {
+			if (!World.w.consoleActive) {
 				if (event.keyCode<256 && !keyDowns[event.keyCode]) {
 					if (keys[event.keyCode]) {
 						this[keys[event.keyCode].id]=true;
@@ -460,10 +467,12 @@ package fe.inter {
 					}
 				}
 			}
-			if (event.keyCode==Keyboard.END) {
-				World.w.consolOnOff()
+			if (event.keyCode == Keyboard.END) {
+
+				World.w.consol.setConsoleVisiblility(!World.w.consol.consoleIsVisible);
 			}
 			if (World.w.chitOn && event.keyCode==Keyboard.HOME) {
+				trace("Ctr.as/onKeyboardDownEvent() - HOME pressed, enabling debug mode!");
 				keyTest1=true;
 			}
 			if (event.keyCode==Keyboard.DELETE && World.w.testMode) {
@@ -477,7 +486,7 @@ package fe.inter {
 				if (event.keyCode==Keyboard.INSERT) keyTest2=true;
 			}
 			if (keyFull) {//работает только в обработчике события
-				if (!World.w.onConsol) World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				if (!World.w.consoleActive) World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				keyFull=false;
 			}
 		}

@@ -20,39 +20,35 @@ package fe
 
 	public class MainMenu 
 	{
-		public var version:String='1.0.2';
+		public var version:String = '1.0.2';
 		private var mainMenuMovieClip:MovieClip;
 		public var main:Sprite;
 		private var world:World;
-		public var active:Boolean=true;
-		public var loaded:Boolean=false;
-		private var newGameMode:int=2;
-		private var newGameDif:int=2;
-		private var loadCell:int=-1;
-		private var loadReg:int=0;	//режим окна загрузки, 0 - загрузка, 1 - выбор слота для автосейва
-		private var command:int=0;
-		private var com:String='';
+		public var active:Boolean = true;
+		public var loaded:Boolean = false;
+		private var newGameMode:int = 2;
+		private var newGameDif:int = 2;
+		private var loadCell:int = -1;
+		private var loadReg:int = 0;	//режим окна загрузки, 0 - загрузка, 1 - выбор слота для автосейва
+		private var command:int = 0;
+		private var com:String = '';
 		private var mmp:MovieClip;//для пипбака
 		private var pip:PipBuck;
 		private var displ:Displ;
-		private var animOn:Boolean=true;
-		private var langReload:Boolean=false;
-		
-		private var kolDifs:int=5;
-		private var kolOpts:int=6;
-		
+		private var animOn:Boolean = true;
+		private var langReload:Boolean = false;
+
 		private var butsLang:Array;
 		
 		private var stn:int=0;
 		
 		public var style:StyleSheet = new StyleSheet(); 
-		private var styleObj:Object = new Object(); 
+		private var styleObj:Object = new Object();
 		
 		private var format:TextFormat = new TextFormat();
 		
 		private var file:FileReference = new FileReference();
-		private var ffil:Array;
-		private var arr:Array=new Array();
+		private var arr:Array=[];
 		
 		private var mainTimer:Timer;
 
@@ -254,7 +250,7 @@ package fe
 		
 		private function setLangButtons():void
 		{
-			butsLang=new Array();
+			butsLang=[];
 			if (world.kolLangs>1) 
 			{
 				var i:int = world.kolLangs;
@@ -274,8 +270,7 @@ package fe
 		}
 		
 		//надписи
-		private function setMainLang():void
-		{
+		private function setMainLang():void {
 			setMainButton(mainMenuMovieClip.butContGame,Res.guiText('contgame'));
 			setMainButton(mainMenuMovieClip.butNewGame,Res.guiText('newgame'));
 			setMainButton(mainMenuMovieClip.butLoadGame,Res.guiText('loadgame'));
@@ -293,11 +288,13 @@ package fe
 			mainMenuMovieClip.dialNew.butOk.text.text='OK';
 			mainMenuMovieClip.dialNew.inputName.text=Res.txt('u','littlepip');
 			mainMenuMovieClip.dialNew.maxChars=32;
-			for (var i:int = 0; i<kolDifs; i++) 
+			var kolDifs:int = 5;
+			for (var i:int = 0; i<kolDifs; i++)
 			{
 				mainMenuMovieClip.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
 				mainMenuMovieClip.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
 			}
+			var kolOpts:int = 6;
 			for (i = 1; i<=kolOpts; i++)
 			{
 				mainMenuMovieClip.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
@@ -310,7 +307,7 @@ package fe
 			mainMenuMovieClip.info.visible=(mainMenuMovieClip.info.txt.text.length>0);
 			setScrollInfo();
 		}
-		
+
 		private function setMainButton(but:MovieClip, txt:String):void
 		{
 			but.txt.text=txt;
@@ -359,7 +356,7 @@ package fe
 			mainMenuMovieClip.dialLoad.info.text='';
 			mainMenuMovieClip.dialLoad.nazv.text='';
 			mainMenuMovieClip.dialLoad.pers.visible=false;
-			arr=new Array();
+			arr=[];
 			for (var i:int = 0; i<=world.saveKol; i++) 
 			{
 				var slot:MovieClip=mainMenuMovieClip.dialLoad['slot'+i];
@@ -433,12 +430,11 @@ package fe
 			fe.inter.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mainMenuMovieClip.dialLoad);
 		}
 		
-		private function funLoadFile(event:MouseEvent):void
-		{
-			ffil=[new FileFilter(Res.pipText('gamesaves')+" (*.sav)", "*.sav")];
+		private function funLoadFile(event:MouseEvent):void {
+			var ffil:Array = [new FileFilter(Res.pipText('gamesaves') + " (*.sav)", "*.sav")];
 			file.browse(ffil);
 		}
-		
+
 		private function selectHandler(event:Event):void 
 		{
             file.load();
@@ -460,17 +456,18 @@ package fe
        }		
 		
 		//новая игры
-		private function mainNewOn():void
-		{
+		private function mainNewOn():void {
 			mainMenuMovieClip.dialNew.visible=true;
 			mainMenuMovieClip.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
 			mainMenuMovieClip.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
 			mainMenuMovieClip.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
-			for (var i:int = 0; i<kolDifs; i++) 
+			var kolDifs:int = 5;
+			for (var i:int = 0; i<kolDifs; i++)
 			{
 				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
 				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
+			var kolOpts:int = 6;
 			for (i = 1; i<=kolOpts; i++)
 			{
 				mainMenuMovieClip.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
@@ -487,10 +484,10 @@ package fe
 			mainMenuMovieClip.dialNew.visible=false;
 			if (mainMenuMovieClip.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
 			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
-			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) 
-			{
+			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) {
 				mainMenuMovieClip.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
-				for (var i:int = 0; i<kolDifs; i++) 
+				var kolDifs:int = 5;
+				for (var i:int = 0; i<kolDifs; i++)
 				{
 					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.CLICK, funNewDif);
 					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);

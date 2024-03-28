@@ -12,11 +12,7 @@ package fe.inter
 	
 	public class PipPageWork extends PipPage
 	{
-		
-		private var assId:String=null;
 		private var assArr:Array;
-		
-		private var owlRep:int=100;
 
 		private static var cachedItems:Object = {};
 
@@ -29,8 +25,7 @@ package fe.inter
 		}
 
 		//подготовка страниц
-		override protected function setSubPages():void
-		{
+		override protected function setSubPages():void {
 			if (pip.workTip=='mworklab') pip.workTip='lab';
 			if (pip.workTip=='mworkexpl') pip.workTip='expl';
 			vis.but1.visible=vis.but2.visible=vis.but3.visible=true;
@@ -41,20 +36,20 @@ package fe.inter
 				vis.but2.visible=vis.but3.visible=false;
 				page2=1;
 			}
-			
+
 			vis.bottext.text=Res.pipText('caps')+': '+pip.money;
 			vis.butOk.visible=false;
 			statHead.cat.visible=false;
 			setIco();
-			assId=null;
+			var assId:String = null;
 			var n;
 			statHead.rid.visible=false;
 			statHead.mass.text='';
 			vis.bottext.text='';
 			if (page2==1) {		//крафт
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text='';
-				statHead.nazv.text=Res.pipText('work1');;
+				statHead.nazv.text=Res.pipText('work1');
 				statHead.hp.text=Res.pipText('iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -96,7 +91,7 @@ package fe.inter
 					vis.emptytext.text=Res.pipText('emptycreate');
 					statHead.visible=false;
 				}
-					
+
 			} else if (page2==2) {	//улучшение
 				statHead.fav.text='';
 				statHead.nazv.text='';
@@ -127,7 +122,7 @@ package fe.inter
 					statHead.visible=false;
 				}
 			} else if (page2==3) {	//ремонт
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text='';
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
@@ -137,11 +132,12 @@ package fe.inter
 				if (inv.items['owl'] && inv.items['owl'].kol) {
 					World.w.pers.setRoboowl();
 					if (World.w.pers.owlhpProc<1) {
+						var owlRep:int = 100;
 						n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.w.pers.owlhp*World.w.pers.owlhpProc, maxhp:World.w.pers.owlhp, rep:owlRep/World.w.pers.owlhp};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
-					
+
 				}
 				for each (var w:Weapon in inv.weapons) {
 					if (w==null) continue;
@@ -166,19 +162,17 @@ package fe.inter
 					statHead.visible=false;
 				}
 			}
-			
+
 		}
 
 		public static function getItemInfo(id:String):XML
 		{
 			// Check if the node is already cached
 			var node:XML;
-			if (cachedItems[id] != undefined) node = cachedItems[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-				cachedItems[id] = node;
-			}
+			if (cachedItems[id] == undefined) {
+                node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+                cachedItems[id] = node;
+            } else node = cachedItems[id];
 			return node;
 		}
 		
@@ -208,9 +202,8 @@ package fe.inter
 		
 		
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
-			assId=null;
+		override protected function statInfo(event:MouseEvent):void {
+			var assId:String = null;
 			if (page2==1) {
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text, 1);
 			}
@@ -234,7 +227,7 @@ package fe.inter
 				}
 			}
 		}
-		
+
 		private function showBottext(cid):void
 		{
 			if (inv.items[cid]) {
@@ -294,18 +287,18 @@ package fe.inter
 					var obj=assArr[cid];
 					if (w.tip!=4 && w.respect!=3) return;
 					minusCraftComp(sch);
-					if (w.tip!=4) {
-						w.respect=0;
-						w.hold=w.holder;
-						World.w.gui.infoText('created',cnazv);
-						setStatus();
-					} else {
-						inv.plusItem(w.id,kol);
-						obj.kol=inv.items[w.id].kol;
-						World.w.gui.infoText('created2',cnazv,inv.items[cid].kol);
-						infoItem(ccat,cid,cnazv, 1);
-						setStatItem(event.currentTarget as MovieClip, obj);
-					}
+					if (w.tip == 4) {
+                        inv.plusItem(w.id, kol);
+                        obj.kol = inv.items[w.id].kol;
+                        World.w.gui.infoText('created2', cnazv, inv.items[cid].kol);
+                        infoItem(ccat, cid, cnazv, 1);
+                        setStatItem(event.currentTarget as MovieClip, obj);
+                    } else {
+                        w.respect = 0;
+                        w.hold = w.holder;
+                        World.w.gui.infoText('created', cnazv);
+                        setStatus();
+                    }
 					inv.calcWeaponMass();
 				} else if (ccat==Item.L_ARMOR) {
 					arm=inv.armors[cid];
@@ -394,6 +387,7 @@ package fe.inter
 				} else if (ccat==Item.L_INSTR) {
 					if (inv.checkKol('scrap')) {
 						var owl:UnitPet=gg.pets[cid];
+						var owlRep:int = 100;
 						if (owl.repair(owlRep*gg.pers.repairMult)) {
 							inv.minusItem('scrap');
 							obj.hp=owl.hp;

@@ -8,8 +8,6 @@ package
 	
 	public class MainFE extends MovieClip
 	{
-		private var mainMenu:MainMenu;
-
 		public function MainFE() 
 		{
 			stage.scaleMode = "noScale";
@@ -25,12 +23,11 @@ package
 			var bytesLoaded:uint = loaderInfo.bytesLoaded;
 			var bytesTotal:uint = loaderInfo.bytesTotal;
 
-			if (bytesLoaded >= bytesTotal)
-			{
+			if (bytesLoaded >= bytesTotal) {
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
-				
+
 				this.nextFrame();
-				mainMenu = new MainMenu(this);
+				var mainMenu:fe.MainMenu = new MainMenu(this);
 			}
 		}
 	}

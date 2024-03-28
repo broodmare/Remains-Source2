@@ -232,7 +232,7 @@ package fe.unit
 		public var noDestr:Boolean=false; //не уничтожать после смерти
 		
 		public var opt:Object;
-		public static var opts:Array=new Array();
+		public static var opts:Array=[];
 		
 		//фракция
 		public var fraction:int=0, player:Boolean=false;
@@ -322,13 +322,15 @@ package fe.unit
 		//xml - индивидуальные параметры, взятые из карты
 		//loadObj - объект для загрузки состояния юнита
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			vulner=new Array();
+			vulner=[];
 			inter=new Interact(this,null,xml,loadObj);
 			inter.active=false;
 			for (var i=0; i<kolVulners; i++) vulner[i]=1;
 			vulner[D_EMP]=0;
-			effects=new Array();
-			sloy=2, prior=1, warn=1;
+			effects=[];
+			sloy=2;
+			prior=1;
+			warn=1;
 			numbEmit=Emitter.arr['numb'];
 			if (xml) {
 				if (xml.@turn.length()) {
@@ -465,7 +467,7 @@ package fe.unit
 			} else {
 				opt=new Object();
 				opts[id]=opt;
-				begvulner=new Array();
+				begvulner=[];
 				begvulners[id]=begvulner;
 				setOpts=true;
 			}
@@ -569,7 +571,7 @@ package fe.unit
 					blitId=node.@blit;
 					if (node.@sprX>0) blitX=node.@sprX;
 					if (node.@sprY>0) blitY=node.@sprY;
-					else blitY=node.@sprX;
+					else blitY=node.@sprY; // Changed from SprX to SprY, Not sure why it was X?
 					if (node.@sprDX.length()) blitDX=node.@sprDX;
 					if (node.@sprDY.length()) blitDY=node.@sprDY;
 				}
@@ -624,7 +626,7 @@ package fe.unit
 				}
 			}
 			if (node0.blit.length()) {
-				if (anims==null) anims=new Array();
+				if (anims==null) anims=[];
 				for each(var xbl:XML in node0.blit) {
 					anims[xbl.@id]=new BlitAnim(xbl);
 				}
@@ -803,7 +805,7 @@ package fe.unit
 					//сбросить эффекты
 					if (effects.length>0) {
 						for each (var eff in effects) eff.unsetEff();
-						effects=new Array();
+						effects=[];
 					}
 					stun=cut=poison=0;
 					oduplenie=Math.round(World.oduplenie*(Math.random()*0.2+0.9));
@@ -885,12 +887,10 @@ package fe.unit
 			setVisPos();
 			if (hpbar) setHpbarPos();
 
-			if (!burn) animate();		//анимация
-			else
-			{
-				burn.step();
-				if (burn.vse) exterminate();
-			}
+			if (burn) {
+                burn.step();
+                if (burn.vse) exterminate();
+            } else animate();
 
 			onCursor = (isVis && !disabled && sost < 4 && leftBound < World.w.celX && rightBound > World.w.celX && topBound < World.w.celY && bottomBound > World.w.celY) ? prior:0;
 
@@ -1054,21 +1054,20 @@ package fe.unit
 				var dxdiv:Number = dx / div;
 				var dxNegDiagon:Number = -dxdiv * diagon;
 
-				if (!collisionAll(dxdiv, -dx / div * diagon))
-				{
-					
+				if (collisionAll(dxdiv, -dx / div * diagon)) {
+                    if (dxNegDiagon > 0 && !collisionAll(dxdiv, 0)) {
+                        diagon = 0;
+                    }
+                } else {
 
-					coordinates.X += dxdiv;
-					coordinates.Y -= dxNegDiagon;
-					
-					centerObj();
-					dy = 0;
-					checkDiagon(0);
-				}
-				else if (dxNegDiagon > 0 && !collisionAll(dxdiv, 0))
-				{
-					diagon = 0;
-				}
+
+                    coordinates.X += dxdiv;
+                    coordinates.Y -= dxNegDiagon;
+
+                    centerObj();
+                    dy = 0;
+                    checkDiagon(0);
+                }
 				return;
 			}
 
@@ -1712,7 +1711,7 @@ package fe.unit
 		}
 		
 		public static function initIco(nid:String) {
-			if (arrIcos==null) arrIcos=new Array();
+			if (arrIcos==null) arrIcos=[];
 			if (arrIcos[nid]) return;
 			
 			var xml:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", nid);
@@ -1752,7 +1751,8 @@ package fe.unit
 		
 		public function blit(blstate:int, blframe:int)
 		{
-			blitRect.x=blframe*blitX, blitRect.y=blstate*blitY;
+			blitRect.x=blframe*blitX;
+			blitRect.y=blstate*blitY;
 			visData.copyPixels(blitData,blitRect,blitPoint);
 		}
 		
@@ -1917,11 +1917,10 @@ package fe.unit
 			if (demask>0) demask-=5;
 			if (effects.length>0) {
 				for (var i=0; i<effects.length; i++) {
-					if (!(effects[i] as Effect).vse) (effects[i] as Effect).step();
-					else {
-						effects.splice(i,1);
-						i--;
-					}
+					if ((effects[i] as Effect).vse) {
+                        effects.splice(i, 1);
+                        i--;
+                    } else (effects[i] as Effect).step();
 				}
 			}
 			//урон от воды
@@ -2374,7 +2373,7 @@ package fe.unit
 							hitPart=numbEmit.cast(loc, castX, castY+visDamDY, {txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
 						} else {
 							if (isCrit==1 || isCrit==3) {
-								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;;
+								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;
 							}
 							hitPart.vis.numb.text=Math.round(hitSumm);
 							hitPart.liv=60;
@@ -2492,8 +2491,10 @@ package fe.unit
 			if (un.collisionTip==1) {
 				var ndx=(un.dx*un.massa+dx*massa)/(un.massa+massa);
 				var ndy=(un.dy*un.massa+dy*massa)/(un.massa+massa);
-				dx=(-dx+ndx)*knocked+ndx, dy=(-dy+ndy)*knocked+ndy;
-				un.dx=(-un.dx+ndx)*un.knocked+ndx, un.dy=(-un.dy+ndy)*un.knocked+ndy;
+				dx=(-dx+ndx)*knocked+ndx;
+				dy=(-dy+ndy)*knocked+ndy;
+				un.dx=(-un.dx+ndx)*un.knocked+ndx;
+				un.dy=(-un.dy+ndy)*un.knocked+ndy;
 			}
 			if (un.currentWeapon && un.currentWeapon.tip==1)
 			{
@@ -2543,17 +2544,17 @@ package fe.unit
 				return 1;
 			}
 			neujaz=neujazMax;
-			if (!fixed) {
-				var ndx=(un.dx*un.massa+dx*massa)/(un.massa+massa);
-				var ndy=(un.dy*un.massa+dy*massa)/(un.massa+massa);
-				dx=(-dx+ndx)*knocked+ndx, dy=(-dy+ndy)*knocked+ndy;
-				un.dx=(-un.dx+ndx)*0.25+ndx, un.dy=(-un.dy+ndy)*0.25+ndy;
-			}
-			else
-			{
-				un.dx *= 0.5;
-				un.dy *= 0.5;
-			}
+			if (fixed) {
+                un.dx *= 0.5;
+                un.dy *= 0.5;
+            } else {
+                var ndx = (un.dx * un.massa + dx * massa) / (un.massa + massa);
+                var ndy = (un.dy * un.massa + dy * massa) / (un.massa + massa);
+                dx = (-dx + ndx) * knocked + ndx;
+				dy = (-dy + ndy) * knocked + ndy;
+                un.dx = (-un.dx + ndx) * 0.25 + ndx;
+				un.dy = (-un.dy + ndy) * 0.25 + ndy;
+            }
 			damage(un.massa*(un.vel2-50)*World.boxDamage, D_PHIS);
 			priorUnit=null;
 			return 2;
@@ -2887,7 +2888,7 @@ package fe.unit
 			else
 			{
 				celX = coordinates.X;
-				celY = this.topBoundToCenter;;
+				celY = this.topBoundToCenter;
 				celUnit = null;
 			}
 			celDX = celX - coordinates.X;

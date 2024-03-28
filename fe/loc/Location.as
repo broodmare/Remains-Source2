@@ -2,17 +2,18 @@ package fe.loc
 {
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
+	import flash.display.BitmapData;
+
 
 	import fe.*;
+	import fe.graph.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
+	import fe.projectile.Bullet;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.UnitPhoenix;
 	import fe.unit.UnitTransmitter;
-	import fe.graph.*;
-	import flash.display.BitmapData;
-	import fe.projectile.Bullet;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
 	import fe.unit.UnitTurret;
@@ -412,7 +413,7 @@ package fe.loc
 			
 			
 			//точки появления активных объектов
-			objsT = new Array();
+			objsT = [];
 			for each(var obj:XML in nroom.obj)
 			{
 				var xmll:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", obj.@id);
@@ -1316,12 +1317,10 @@ package fe.loc
 		public function addObj(obj:Entity):void
 		{
 			if (obj.in_chain) return;
-			if (!firstObj) firstObj=obj;
-			else
-			{
-				lastObj.nobj=obj;
-				obj.pobj=lastObj;
-			}
+			if (firstObj) {
+				lastObj.nobj = obj;
+				obj.pobj = lastObj;
+			} else firstObj = obj;
 			obj.nobj=null;
 			lastObj=obj;
 			obj.in_chain=true;
@@ -1565,7 +1564,7 @@ package fe.loc
 		private function recalcWater():void
 		{
 			var rec:Array=recalcTiles;
-			recalcTiles=new Array();
+			recalcTiles=[];
 			isRecalc=false;
 			var t:Tile, tl:Tile, tr:Tile, tt:Tile, tb:Tile;
 			for (var i in rec)

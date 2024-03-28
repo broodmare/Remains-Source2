@@ -8,28 +8,26 @@ package fe.inter
 
 	public class PortraitHelper
     {
-        private static var dialogueBox:MovieClip;
         private static var pictureHolder:MovieClip;
 
         public var currentPortrait:String;
 
-        public function PortraitHelper(guiMC:MovieClip)
-        {
-            dialogueBox = guiMC.getChildByName('dial') as MovieClip;
+        public function PortraitHelper(guiMC:MovieClip) {
+            var dialogueBox:MovieClip = guiMC.getChildByName('dial') as MovieClip;
             pictureHolder = dialogueBox.portret;
         }
 
         public function displayPortrait(imageName:String):void
         {
             
-            if (imageName != currentPortrait) 
-            {
+            if (imageName == currentPortrait) {
+                trace('Ignoring request to render duplicate portrait.');
+            } else {
                 trace('Loading new portrait: "' + imageName + '".');
                 clearPortrait();
                 currentPortrait = imageName;
                 loadImage(imageName);
             }
-            else trace('Ignoring request to render duplicate portrait.');
         }
 
         private static function loadImage(imageName:String):void

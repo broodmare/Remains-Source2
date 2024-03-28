@@ -99,14 +99,16 @@ package fe.inter
 		//показ одного элемента
 		override protected function setStatItem(item:MovieClip, obj:Object):void
 		{
-			if (obj.id!=null) item.id.text=obj.id;
-			else item.id.text='';
+			if (obj.id == null) {
+                item.id.text = '';
+            } else item.id.text = obj.id;
 			item.id.visible=false;
 			item.hpbar.visible=false;
 			item.nazv.text=obj.nazv;
 			item.numb.text=obj.lvl;
-			if (obj.price!=null) item.price.text=Math.round(obj.price);
-			else item.price.text='';
+			if (obj.price == null) {
+                item.price.text = '';
+            } else item.price.text = Math.round(obj.price);
 			if (obj.bar!=null) {
 				item.hpbar.visible=true;
 				item.hpbar.bar.scaleX=obj.bar;
@@ -116,13 +118,13 @@ package fe.inter
 		//информация об элементе
 		override protected function statInfo(event:MouseEvent):void
 		{
-				if (event.currentTarget.id.text!='') {
-					vis.nazv.text=Res.pipText(event.currentTarget.id.text);
-					var s:String=Res.txt('p',event.currentTarget.id.text,1);
-					vis.info.htmlText=s;
-				} else {
-					vis.nazv.text=vis.info.htmlText='';
-				}
+				if (event.currentTarget.id.text == '') {
+                    vis.nazv.text = vis.info.htmlText = '';
+                } else {
+                    vis.nazv.text = Res.pipText(event.currentTarget.id.text);
+                    var s:String = Res.txt('p', event.currentTarget.id.text, 1);
+                    vis.info.htmlText = s;
+                }
 		}
 		
 		override protected function page2Click(event:MouseEvent):void

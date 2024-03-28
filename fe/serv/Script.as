@@ -25,7 +25,7 @@ package fe.serv
 		public function Script(xml:XML, nland:Land=null, nowner:Obj=null, tt:Boolean=false) {
 			land=nland;
 			owner=nowner;
-			acts=new Array();
+			acts=[];
 			if (xml.@eve.length()) eve=xml.@eve;
 			if (xml.@act.length()) analiz(xml);
 			if (xml.s.length()) {
@@ -54,16 +54,19 @@ package fe.serv
 		}
 		
 		//запуск скрипта
-		public function start() {
-			if (acts.length<=0) return;
-			if (!onTimer) {	//всё выполнить сразу
-				for each(var obj:Object in acts) com(obj);
-			} else {
-				ncom=0;
-				com(acts[ncom]);
-				tcom=acts[ncom].t;
-				running=true;
-			}
+		public function start()
+		{
+			trace("Script.as/start() - Starting script!");
+			if (acts.length <= 0) return;
+			if (onTimer) {
+                ncom = 0;
+                com(acts[ncom]);
+                tcom = acts[ncom].t;
+                running = true;
+            }
+			else {	//всё выполнить сразу
+                for each(var obj:Object in acts) com(obj);
+            }
 		}
 		
 		public function step() {
@@ -184,8 +187,8 @@ package fe.serv
 					case 'take':
 						if (obj.n < 0 && World.w.invent.items[obj.val])
 						{
-							World.w.gui.infoText('withdraw',World.w.invent.items[obj.val].nazv, -obj.n);
-							World.w.invent.minusItem(obj.val,-obj.n);
+							World.w.gui.infoText('withdraw', World.w.invent.items[obj.val].nazv, -obj.n);
+							World.w.invent.minusItem(obj.val, -obj.n);
 							World.w.pers.setParameters();
 						}
 						else
@@ -285,8 +288,10 @@ package fe.serv
 					break;
 
 					case 'trigger':
-						if (obj.n!=null) World.w.game.setTrigger(obj.val, obj.n);
-						else World.w.game.setTrigger(obj.val);
+						if (obj.n == null) {
+                            World.w.game.setTrigger(obj.val);
+                        }
+						else World.w.game.setTrigger(obj.val, obj.n);
 					break;
 
 					case 'goto':		//перейти в комнату

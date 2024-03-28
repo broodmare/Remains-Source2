@@ -21,22 +21,25 @@ package fe.inter
 		
 		public var funOk:Function;
 		public var funCancel:Function;
-		
+
+		// These are used by Appear.as
 		public var cFur:uint=0xA3A3A3;
 		public var cHair:uint=0x854609;
 		public var cHair1:uint=0xFFFFFF;
 		public var cEye:uint=0x16F343;
 		public var cMagic:uint=0x00FF00;
-		private var tFur:uint, tHair:uint, tHair1:uint, tEye:uint, tMagic:uint;
+		private var tFur:uint;
+		private var tHair:uint;
+		private var tHair1:uint;
+		private var tEye:uint;
+		private var tMagic:uint;
 
 		public static var trFur:ColorTransform = new ColorTransform(0.8,0.8,0.8);
 		public static var trHair:ColorTransform = new ColorTransform(0xA3/0xFF,0x56/0xFF,0x0B/0xFF);
 		public static var trHair1:ColorTransform = new ColorTransform(1,1,1);
 		public static var trEye:ColorTransform = new ColorTransform(0,0.9,0);
 		public static var trMagic:ColorTransform = new ColorTransform(0,1,0);
-		
-		public static var trBlack:ColorTransform = new ColorTransform(0,0,0,0.2,0,255,100);
-		
+
 		public static var visHair1:Boolean=false;
 		public static var fEye:int=1, maxEye:int=6;
 		public static var fHair:int=1, maxHair:int=5;

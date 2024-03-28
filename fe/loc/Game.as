@@ -67,7 +67,7 @@ package fe.loc
 			obj.dif=globalDif;
 			obj.land=curLandId;
 			World.w.land.saveObjs(objs);	//сохранить массив объектов с id
-			obj.objs=new Array();
+			obj.objs=[];
 			for (var uid in objs) {
 				var obj1=objs[uid];
 				var nobj=new Object();
@@ -76,12 +76,12 @@ package fe.loc
 				}
 				obj.objs[uid]=nobj;
 			}
-			obj.vendors=new Array();
-			obj.npcs=new Array();
-			obj.notes=new Array();
-			obj.quests=new Array();
-			obj.lands=new Array();
-			obj.triggers=new Array();
+			obj.vendors=[];
+			obj.npcs=[];
+			obj.notes=[];
+			obj.quests=[];
+			obj.lands=[];
+			obj.triggers=[];
 			for (var i in vendors) {
 				var v=vendors[i].save();
 				if (v!=null) obj.vendors[i]=v;
@@ -112,15 +112,16 @@ package fe.loc
 		
 		public function init(loadObj:Object=null, opt:Object=null):void {
 			if (loadObj) {
-				if (loadObj.dif!=null) globalDif=loadObj.dif;
-				else globalDif=2;
+				if (loadObj.dif == null) {
+					globalDif = 2;
+				} else globalDif = loadObj.dif;
 				if (loadObj.t_save) t_save=loadObj.t_save;
 			} else {
 				if (opt && opt.dif!=null) globalDif=opt.dif;
 				else globalDif=2;
 				triggers['noreturn']=1;
 			}
-			objs = new Array();
+			objs = [];
 			if (loadObj && loadObj.objs)
 			{
 				for (var uid in loadObj.objs)

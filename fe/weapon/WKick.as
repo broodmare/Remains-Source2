@@ -37,7 +37,7 @@ package fe.weapon
 				b.parrDict=null;
 				b.dist=0;
 				b.damage=damage*World.w.pers.punchDamMult;
-				b.otbros=otbros*World.w.pers.punchDamMult;;
+				b.otbros=otbros*World.w.pers.punchDamMult;
 				b.destroy=destroy;
 				b.probiv=1;
 				var vverh:Boolean=false;

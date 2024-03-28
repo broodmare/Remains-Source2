@@ -1,16 +1,17 @@
-package fe.serv {
+package fe.serv
+{	
 	
-	//Элемент инвентаря
 	import fe.*;
 	import fe.unit.Invent;
 	
-	public class Item {
-
+	public class Item // [Inventory item]
+	{
 		public static const L_ITEM='item', 
 			L_ARMOR='armor', L_WEAPON='weapon', L_UNIQ='uniq', L_SPELL='spell', L_AMMO='a', L_EXPL='e',
 			L_MED='med', L_BOOK='book', L_HIM='him', L_POT='pot', L_FOOD='food', L_SCHEME='scheme', L_PAINT='paint',
 			L_COMPA='compa', L_COMPW='compw', L_COMPE='compe',  L_COMPM='compm',  L_COMPP='compp',
 			L_SPEC='spec', L_INSTR='instr', L_STUFF='stuff', L_ART='art', L_IMPL='impl', L_KEY='key';
+
 		public static var itemTip:Array=['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key']
 		
 		
@@ -33,7 +34,7 @@ package fe.serv {
 		public var mass:Number=0;
 		
 		public var imp:int=0; //0 - случайно сгенерированный, 1 - заданный, 2 - критичный
-		public var cont:Interact;	//родительский контейнер
+		public var cont:Interact;	// [parent container]
 		
 		public var nov:int=0;	//новая вещь
 		public var dat:Number=0;	//время получения
@@ -162,12 +163,10 @@ package fe.serv {
 			{
 				// Check if the node is already cached
 				var node:XML;
-				if (cachedItems[id] != undefined) node = cachedItems[id];
-				else
-				{
-					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", nodeType, "id", id);
-					cachedItems[id] = node;
-				}
+				if (cachedItems[id] == undefined) {
+                    node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", nodeType, "id", id);
+                    cachedItems[id] = node;
+                } else node = cachedItems[id];
 				return node;
 			}
 		}

@@ -41,7 +41,7 @@ package fe.inter
 		//подготовка страниц
 		override protected function setSubPages():void
 		{
-			assArr=new Array();
+			assArr=[];
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
 			statHead.nazv.text=Res.pipText('ii2');
 			statHead.kol.text=Res.pipText('ii7');

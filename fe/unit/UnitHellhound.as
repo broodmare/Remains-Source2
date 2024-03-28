@@ -153,8 +153,9 @@ package fe.unit
 			//скорость
 			maxSpeed=walkSpeed;
 			if (aiState==2 || aiState==3) {
-				if (!isSit) maxSpeed=runSpeed;
-				else maxSpeed=walkSpeed*2;
+				if (isSit) {
+                    maxSpeed = walkSpeed * 2;
+                } else maxSpeed = runSpeed;
 			}
 			
 			if (dx*diagon>0) maxSpeed*=0.5;
@@ -332,7 +333,8 @@ package fe.unit
 					storona=isLaz;
 					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1+objectWidth/2;
 					else coordinates.X=(loc.space[i][j] as Tile).phX2-objectWidth/2;
-					leftBound=coordinates.X-objectWidth/2, rightBound=coordinates.X+objectWidth/2;
+					leftBound=coordinates.X-objectWidth/2;
+					rightBound=coordinates.X+objectWidth/2;
 					stay=false;
 					return true;
 				}

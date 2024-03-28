@@ -27,10 +27,8 @@ package fe.inter
 		private var noAct2:Boolean=false;
 		public var armorID:String;
 		public var hideMane:int=0;
-		private var visX=1200, visY=800;
 		private var page:int=1;
-		private var kolPages:int=5;
-		
+
 		private var pages:Array;
 		public var currentPage:PipPage;
 		
@@ -57,13 +55,10 @@ package fe.inter
 		public var isSaveConf:Boolean=false;
 		
 		public var pipVol:Number=0.25;
-		
-		private var kolRItems:int=15;
 		public var ritems:Array;
 		private var ritemsNazv:Array = ['hp','head','tors','legs','blood','mana','pet','inv1','inv1','caps']
 
-		public function PipBuck(vpip:MovieClip)
-		{
+		public function PipBuck(vpip:MovieClip) {
 			light=true;
 			vis=vpip;
 			vis.visible=false;
@@ -73,6 +68,7 @@ package fe.inter
 				vis.fon.visible=false;
 			}
 			//кнопки
+			var kolPages:int = 5;
 			for (var i:int = 0; i <= kolPages; i++)
 			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
@@ -83,19 +79,19 @@ package fe.inter
 			vis.but0.visible=true;
 			vis.but0.addEventListener(MouseEvent.CLICK,pipClose);
 			vis.but0.text.text=Res.pipText('mainclose');
-			pages = 
-			[
-				null,
-				new PipPageStat(this,'stat'),
-				new PipPageInv(this,'inv'),
-				new PipPageInfo(this,'info'),
-				new PipPageVend(this,'vend'),
-				new PipPageOpt(this,'opt'),
-				new PipPageMed(this,'med'),
-				new PipPageWork(this,'work'),
-				new PipPageApp(this,'app'),
-				new PipPageVault(this,'vault')
-			];
+			pages =
+					[
+						null,
+						new PipPageStat(this,'stat'),
+						new PipPageInv(this,'inv'),
+						new PipPageInfo(this,'info'),
+						new PipPageVend(this,'vend'),
+						new PipPageOpt(this,'opt'),
+						new PipPageMed(this,'med'),
+						new PipPageWork(this,'work'),
+						new PipPageApp(this,'app'),
+						new PipPageVault(this,'vault')
+					];
 			page=kolPages;
 			currentPage=pages[page];
 			vishelp=new visPipHelp();
@@ -114,9 +110,10 @@ package fe.inter
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OVER,massShow);
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OUT,massUnshow);
 			PipPage.setStyle(vis.toptext.txt);
-			
+
 			vis.pr.visible=false;
-			ritems=new Array();
+			ritems=[];
+			var kolRItems:int = 15;
 			for (var j:int = 0; j < kolRItems; j++)
 			{
 				item=new visPipRItem();
@@ -137,11 +134,11 @@ package fe.inter
 			currentPage.setStatus();
 		}
 		
-		public function toNormalMode():void
-		{
+		public function toNormalMode():void {
 			light=false;
 			vis.skin.visible=true;
 			vis.fon.visible=true;
+			var kolPages:int = 5;
 			for (var i:int = 1; i <= kolPages; i++)
 			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
@@ -154,7 +151,7 @@ package fe.inter
 			page=1;
 			allItems();
 		}
-		
+
 		public function pageClick(event:MouseEvent):void
 		{
 			if (World.w.ctr.setkeyOn) return;
@@ -171,8 +168,8 @@ package fe.inter
 			onoff(-1);
 		}
 
-		private function setButtons():void
-		{
+		private function setButtons():void {
+			var kolPages:int = 5;
 			for (var i:int = 0; i <= kolPages; i++)
 			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
@@ -181,7 +178,7 @@ package fe.inter
 				if (i==4 && (page==6 || page==7 || page==8 || page==9)) item.gotoAndStop(2);
 			}
 		}
-		
+
 		public function snd(n:int):void
 		{
 			Snd.ps('pip'+n,-1000,-1000,0,pipVol);
@@ -266,7 +263,9 @@ package fe.inter
 		{
 			if (nx>=1200 && ny>=800) {
 				if (nx>1320) {
+					var visX = 1200;
 					vis.x=(nx-visX)/2-60;
+					var visY = 800;
 					vis.y=(ny-visY)/2;
 				} else {
 					vis.x=vis.y=0;

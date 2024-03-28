@@ -52,8 +52,9 @@ package fe.weapon
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			if (node.vis[0].@lasm>0) lasM=true;
 
-			if (!lasM) visvzz = new visVzz();
-			else visvzz = new MovieClip() 
+			if (lasM) {
+                visvzz = new MovieClip()
+            } else visvzz = new visVzz();
 
 			visvzz.visible=false;
 			visvzz.stop();
@@ -86,7 +87,8 @@ package fe.weapon
 			checkLine=true;
 			b.checkLine=checkLine;
 			rot=-Math.PI/2-(Math.PI/6)*storona;
-			cos0=Math.cos(rot), sin0=Math.sin(rot);
+			cos0=Math.cos(rot);
+			sin0=Math.sin(rot);
 			for (var i:int = 0; i <= kolvzz; i++)
 			{
 				var nx = coordinates.X + cos2 * (mindlina + i * stepdlina) + anim * storona * (mindlina + i * stepdlina);
@@ -250,7 +252,8 @@ package fe.weapon
 							var nx = coordinates.X + cos2 * (mindlina + i * stepdlina);
 							var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 							if (!isPow) b.bindMove(nx,ny, vzz[i].X, vzz[i].Y);
-							vzz[i].X=nx, vzz[i].Y=ny;
+							vzz[i].X=nx;
+							vzz[i].Y=ny;
 						}
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
@@ -263,14 +266,16 @@ package fe.weapon
 					}
 				} else if (mtip==1) {
 					rot=Math.atan2(celY - (owner.coordinates.Y - owner.objectHeight / 2), celX - owner.coordinates.X);
-					cos2=Math.cos(rot), sin2=Math.sin(rot);
+					cos2=Math.cos(rot);
+					sin2=Math.sin(rot);
 					plX=cos2*anim*atDlina;
 					plY=sin2*anim*atDlina;
 					if (t_attack>=rapid_act/2 && t_attack<rapid_act*5/6) {
 						nx = coordinates.X + cos2 * dlina + plX;
 						ny = coordinates.Y + sin2 * dlina + plY;
 						if (!isPow) b.bindMove(nx,ny, vzz[0].X, vzz[0].Y);
-						vzz[0].X=nx, vzz[0].Y=ny;
+						vzz[0].X=nx;
+						vzz[0].Y=ny;
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
 							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
@@ -285,7 +290,8 @@ package fe.weapon
 					cos2 = Math.cos(rot);
 					sin2 = Math.sin(rot);
 					if (t_attack==1) {
-						cos2=Math.cos(rot), sin2=Math.sin(rot);
+						cos2=Math.cos(rot);
+						sin2=Math.sin(rot);
 						b.bindMove(coordinates.X + cos2 * mindlina, coordinates.Y + sin2 * mindlina, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
 						if (lasM) vis.gotoAndStop(3);
 						if (sndShoot!='' && !sndPl) {
@@ -364,7 +370,8 @@ package fe.weapon
 					vzz[i].Y = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 				}
 			} else {
-				cos2=Math.cos(rot), sin2=Math.sin(rot);
+				cos2=Math.cos(rot);
+				sin2=Math.sin(rot);
 				vzz[0].X = coordinates.X + cos2 * (dlina - 0.25 * atDlina);
 				vzz[0].Y = coordinates.Y + sin2 * (dlina - 0.25 * atDlina);
 			}

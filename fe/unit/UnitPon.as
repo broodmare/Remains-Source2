@@ -26,7 +26,7 @@ package fe.unit
 		{
 				if (weaponKrep==0)
 				{			//телекинез
-					if (storona>0 && celX>rightBound || storona<0 && celX<leftBound) weaponX = coordinates.X + objectWidth * 1 * storona;
+					if (storona>0 && celX>rightBound || storona<0 && celX<leftBound) weaponX = coordinates.X + objectWidth * storona;
 					else weaponX = coordinates.X;
 					if (isLaz) weaponX = coordinates.X;
 					if (loc.getTile(int((weaponX + storona * 15) / tileX), int(weaponY / tileY)).phis == 1) weaponX = coordinates.X;

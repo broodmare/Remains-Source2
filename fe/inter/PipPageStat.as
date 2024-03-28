@@ -30,7 +30,7 @@ package fe.inter
 		{
 			isLC=isRC=true;
 			itemClass=visPipStatItem;
-			skills=new Array();
+			skills=[];
 			super(npip, npp);
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK,gotoDef);
@@ -40,24 +40,20 @@ package fe.inter
 		public static function getPerkInfo(id:String):XML
 		{
 			var node:XML;
-			if (cachedPerks[id] != undefined) node = cachedPerks[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
-				cachedPerks[id] = node;
-			}
+			if (cachedPerks[id] == undefined) {
+                node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
+                cachedPerks[id] = node;
+            } else node = cachedPerks[id];
 			return node;
 		}
 
 		public static function getParamInfo(id:String):XML
 		{
 			var node:XML;
-			if (cachedParams[id] != undefined) node = cachedParams[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
-				cachedParams[id] = node;
-			}
+			if (cachedParams[id] == undefined) {
+                node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
+                cachedParams[id] = node;
+            } else node = cachedParams[id];
 			return node;
 		}
 		
@@ -89,11 +85,10 @@ package fe.inter
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
 						var nazv:String = Res.pipText(xml.@id);
-						if (xml.@v!='') nazv='-  '+nazv;
-						else {
-							arr.push({id:xml.@id, nazv:nazv, lvl:''});
-							continue;
-						}
+						if (xml.@v == '') {
+                            arr.push({id: xml.@id, nazv: nazv, lvl: ''});
+                            continue;
+                        } else nazv = '-  ' + nazv;
 						var param;
 						if (xml.@tip=='4') param=gg.vulner[xml.@v];
 						else if (gg.hasOwnProperty(xml.@v)) param=gg[xml.@v];
@@ -261,8 +256,12 @@ package fe.inter
 		//показ одного элемента
 		override protected function setStatItem(item:MovieClip, obj:Object):void
 		{
-			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
-			if (obj.cat!=null) item.cat.text=obj.cat; else item.cat.text='';
+			if (obj.id == null) {
+                item.id.text = '';
+            } else item.id.text = obj.id;
+			if (obj.cat == null) {
+                item.cat.text = '';
+            } else item.cat.text = obj.cat;
 			item.id.visible=false;
 			item.cat.visible=false;
 			item.progress.visible=false;
@@ -307,88 +306,88 @@ package fe.inter
 			var nazv:String=event.currentTarget.nazv.text;
 			if (page2==2 || page2==3 || page2==6) setIco(5,id);
 			else setIco();
-			if (id!='') {
-				if (page2==1) {
-					infoItemId=id;
-					if (id=='diff') {
-						vis.nazv.text=Res.txt('p',id);
-						vis.info.htmlText=Res.txt('g','dif'+World.w.game.globalDif,1);
-					} else {
-						vis.nazv.text=Res.pipText(id);
-						vis.info.htmlText=Res.txt('p',id,1);
-					}
-					vis.info.htmlText+='<br><br>';
-					var xml:XML = getParamInfo(id);
-					if (xml != null && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
-				} else if (page2==5) {
-					infoItemId=id;
-					showBottext();
-					var lvl;
-					if (event.currentTarget.cat.text=='ad') {
-						vis.nazv.text=Res.txt('e',id+'_ad');
-						lvl=0;
-						lvl=int(event.currentTarget.numb.text);
-						if (lvl>0) lvl--;
-						vis.info.htmlText=effStr('eff',id+'_ad',lvl);
-					} else if (id=='phoenix') {
-						vis.nazv.text=nazv;
-						vis.info.htmlText=Res.txt('u','phoenix',1);
-					} else {
-						vis.nazv.text=Res.pipText(id);
-						vis.info.htmlText=Res.txt('p',id,1);
-					}
-					vis.info.htmlText+='<br><br>';
-					if (id.substr(0,8)=='statHead') {
-						lvl=id.substr(8,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_head',lvl);
-					}
-					if (id.substr(0,8)=='statTors') {
-						lvl=id.substr(8,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_tors',lvl);
-					}
-					if (id.substr(0,8)=='statLegs') {
-						lvl=id.substr(8,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_legs',lvl);
-					}
-					if (id.substr(0,9)=='statBlood') {
-						lvl=id.substr(9,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_blood',lvl);
-					}
-					if (id.substr(0,8)=='statMana') {
-						lvl=id.substr(8,1);
-						if (lvl>2) vis.info.htmlText+=effStr('perk','trauma_mana',lvl);
-					}
-					if (id=='hp') vis.info.htmlText+=factor('maxhp');
-					if (id=='radx') vis.info.htmlText+=factor('radX');
-					if (id=='resbleeding') vis.info.htmlText+=factor('13');
-					if (id=='respoison') vis.info.htmlText+=factor('12');
-				} else {
-					vis.nazv.text=nazv;
-					if (page2==4) {
-						if (id=='drunk') {
-							vis.info.htmlText=effStr('eff',id,drunk-1);
-						} else if (nazv==n_food) vis.info.htmlText=Res.txt('e','food',1)+'<br><br>'+effStr('eff',id);
-						else vis.info.htmlText=effStr('eff',id);
-					} else if (page2==2) {
-						if (World.w.alicorn && Res.istxt('e',id+'_al')) {
-							vis.info.htmlText=Res.rainbow(Res.txt('e',id+'_al'));
-							vis.info.htmlText+='<br><br>'+effStr('skill',id+'_al');
-						} else {
-							vis.info.htmlText=effStr('skill',id);
-						}
-					} else if (page2==6) {
-						vis.info.htmlText=effStr('perk',id, 1);
-					} else if (page2==3) {
-						vis.info.htmlText=effStr('perk',id);
-					}
-				}
-			} else {
-				vis.nazv.text=vis.info.htmlText='';
-			}
+			if (id == '') {
+                vis.nazv.text = vis.info.htmlText = '';
+            } else {
+                if (page2 == 1) {
+                    infoItemId = id;
+                    if (id == 'diff') {
+                        vis.nazv.text = Res.txt('p', id);
+                        vis.info.htmlText = Res.txt('g', 'dif' + World.w.game.globalDif, 1);
+                    } else {
+                        vis.nazv.text = Res.pipText(id);
+                        vis.info.htmlText = Res.txt('p', id, 1);
+                    }
+                    vis.info.htmlText += '<br><br>';
+                    var xml:XML = getParamInfo(id);
+                    if (xml != null && xml.@f > 0) vis.info.htmlText += factor(xml.@v);
+                } else if (page2 == 5) {
+                    infoItemId = id;
+                    showBottext();
+                    var lvl;
+                    if (event.currentTarget.cat.text == 'ad') {
+                        vis.nazv.text = Res.txt('e', id + '_ad');
+                        lvl = 0;
+                        lvl = int(event.currentTarget.numb.text);
+                        if (lvl > 0) lvl--;
+                        vis.info.htmlText = effStr('eff', id + '_ad', lvl);
+                    } else if (id == 'phoenix') {
+                        vis.nazv.text = nazv;
+                        vis.info.htmlText = Res.txt('u', 'phoenix', 1);
+                    } else {
+                        vis.nazv.text = Res.pipText(id);
+                        vis.info.htmlText = Res.txt('p', id, 1);
+                    }
+                    vis.info.htmlText += '<br><br>';
+                    if (id.substr(0, 8) == 'statHead') {
+                        lvl = id.substr(8, 1);
+                        if (lvl > 3) lvl = 3;
+                        if (lvl > 0) vis.info.htmlText += effStr('perk', 'trauma_head', lvl);
+                    }
+                    if (id.substr(0, 8) == 'statTors') {
+                        lvl = id.substr(8, 1);
+                        if (lvl > 3) lvl = 3;
+                        if (lvl > 0) vis.info.htmlText += effStr('perk', 'trauma_tors', lvl);
+                    }
+                    if (id.substr(0, 8) == 'statLegs') {
+                        lvl = id.substr(8, 1);
+                        if (lvl > 3) lvl = 3;
+                        if (lvl > 0) vis.info.htmlText += effStr('perk', 'trauma_legs', lvl);
+                    }
+                    if (id.substr(0, 9) == 'statBlood') {
+                        lvl = id.substr(9, 1);
+                        if (lvl > 3) lvl = 3;
+                        if (lvl > 0) vis.info.htmlText += effStr('perk', 'trauma_blood', lvl);
+                    }
+                    if (id.substr(0, 8) == 'statMana') {
+                        lvl = id.substr(8, 1);
+                        if (lvl > 2) vis.info.htmlText += effStr('perk', 'trauma_mana', lvl);
+                    }
+                    if (id == 'hp') vis.info.htmlText += factor('maxhp');
+                    if (id == 'radx') vis.info.htmlText += factor('radX');
+                    if (id == 'resbleeding') vis.info.htmlText += factor('13');
+                    if (id == 'respoison') vis.info.htmlText += factor('12');
+                } else {
+                    vis.nazv.text = nazv;
+                    if (page2 == 4) {
+                        if (id == 'drunk') {
+                            vis.info.htmlText = effStr('eff', id, drunk - 1);
+                        } else if (nazv == n_food) vis.info.htmlText = Res.txt('e', 'food', 1) + '<br><br>' + effStr('eff', id);
+                        else vis.info.htmlText = effStr('eff', id);
+                    } else if (page2 == 2) {
+                        if (World.w.alicorn && Res.istxt('e', id + '_al')) {
+                            vis.info.htmlText = Res.rainbow(Res.txt('e', id + '_al'));
+                            vis.info.htmlText += '<br><br>' + effStr('skill', id + '_al');
+                        } else {
+                            vis.info.htmlText = effStr('skill', id);
+                        }
+                    } else if (page2 == 6) {
+                        vis.info.htmlText = effStr('perk', id, 1);
+                    } else if (page2 == 3) {
+                        vis.info.htmlText = effStr('perk', id);
+                    }
+                }
+            }
 		}
 		
 		private function selSkill(id:String):void

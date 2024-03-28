@@ -271,7 +271,7 @@
 			prevArmor=invent.prevArmor;
 			punchWeapon=new WKick(this,'punch');
 			paintWeapon=new WPaint(this,'paint');
-			childObjs=new Array(currentWeapon,punchWeapon);
+			childObjs=[currentWeapon,punchWeapon];
 			if (invent.fav[29]) {
 				throwWeapon=invent.weapons[invent.fav[29]];
 				throwWeapon.setNull();
@@ -284,7 +284,7 @@
 			}
 			
 			//спутники
-			pets=new Array();
+			pets=[];
 			pet=new UnitPet('phoenix');
 			pet.gg=this;
 			pet.setLevel(pers.level);
@@ -328,7 +328,9 @@
 		}
 		
 		public override function setNull(f:Boolean=false) {
-			topBound = coordinates.Y - objectHeight, bottomBound = coordinates.Y, leftBound = coordinates.X - objectWidth / 2, rightBound = coordinates.X + objectWidth / 2;
+			topBound = coordinates.Y - objectHeight, bottomBound = coordinates.Y;
+			leftBound = coordinates.X - objectWidth / 2;
+			rightBound = coordinates.X + objectWidth / 2;
 			setWeaponPos();
 			if (currentWeapon) currentWeapon.setNull();
 			dropTeleObj();
@@ -767,7 +769,8 @@
 				celY = World.w.celY;
 			}
 			//модификатор точности precMult, только если стрельба не через зпс
-			precMult=pers.allPrecMult, mazil=pers.mazilAdd;
+			precMult=pers.allPrecMult;
+			mazil=pers.mazilAdd;
 			if (sats.que.length==0 && !lurked) {
 				if (pers.runPenalty>0 && (dx>10 || dx<-10 || dy>10 || dy<-10))  precMult*=(1-pers.runPenalty);
 				if (!stay) precMult*=(1-pers.jumpPenalty);
@@ -1088,7 +1091,8 @@
 		
 		public function bindChain(nx:Number, ny:Number):void {
 			addEffect('fetter',0,10,false);
-			fetX=nx, fetY=ny;
+			fetX=nx;
+			fetY=ny;
 		}
 		
 		//включить или выключить левитацию объекта при нажатой клавише левитации
@@ -1359,13 +1363,13 @@
 			//--------------------- различные действия ---------------------------
 			//действие
 			if (ctr.keyAction && rat==0) {
-				if (!teleObj) {
-					if (sats.que.length>0) sats.clearAll();
-					actAction();
-				} else {
-					throwTele();
-					ctr.keyAction=false;
-				}
+				if (teleObj) {
+                    throwTele();
+                    ctr.keyAction = false;
+                } else {
+                    if (sats.que.length > 0) sats.clearAll();
+                    actAction();
+                }
 			} else {
 				actionReady=true;
 				actionObj=null;
@@ -1431,14 +1435,16 @@
 			}
 			for (var i=1; i<=World.kolQS; i++) {
 				if (ctr['keySpell'+i]) {
-					if (invent.fav[World.kolHK*2+i]!=null) {
-						if (sats.que.length>0) sats.clearAll();
-						var sp:Spell=invent.spells[invent.fav[World.kolHK*2+i]];
-						if (sp) {
-							if (!sp.cast(World.w.celX, World.w.celY)) ctr['keySpell'+i]=false;
-							if (!sp.prod) ctr['keySpell'+i]=false;
-						} else ctr['keySpell'+i]=false;
-					} else ctr['keySpell'+i]=false;
+					if (invent.fav[World.kolHK * 2 + i] == null) {
+                        ctr['keySpell' + i] = false;
+                    } else {
+                        if (sats.que.length > 0) sats.clearAll();
+                        var sp:Spell = invent.spells[invent.fav[World.kolHK * 2 + i]];
+                        if (sp) {
+                            if (!sp.cast(World.w.celX, World.w.celY)) ctr['keySpell' + i] = false;
+                            if (!sp.prod) ctr['keySpell' + i] = false;
+                        } else ctr['keySpell' + i] = false;
+                    }
 				}
 			}
 			//спутник
@@ -1982,7 +1988,7 @@
 		private function endAllEffect():void {
 			if (effects.length>0) {
 				for each (var eff in effects) eff.unsetEff();
-				effects=new Array();
+				effects=[];
 			}
 		}
 		
@@ -2237,7 +2243,7 @@
 		//удар хол. оружием достиг цели
 		public override function setWeaponPos(tip:int=0) {
 			if (weaponKrep==0) {			//телекинез
-				if (storona > 0 && celX > rightBound || storona < 0 && celX < leftBound) weaponX = coordinates.X + objectWidth * 1 * storona;
+				if (storona > 0 && celX > rightBound || storona < 0 && celX < leftBound) weaponX = coordinates.X + objectWidth * storona;
 				else weaponX = coordinates.X;
 				if (isLaz) weaponX = coordinates.X;
 				if (loc.getAbsTile(weaponX, weaponY).phis == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).phis == 1) weaponX = coordinates.X;
@@ -2449,17 +2455,17 @@
 		//особая функция брони
 		public function armorAbil() {
 			if (currentArmor==null || currentArmor.abil==null) return;
-			if (!currentArmor.abilActive) {
-				if (currentArmor.dmana_act<currentArmor.mana) {
-					currentArmor.mana-=currentArmor.dmana_act;
-					armorEffect=addEffect(currentArmor.abil);
-					currentArmor.abilActive=true;
-				}
-			} else {
-				if (armorEffect) armorEffect.unsetEff(true, false, true);
-				armorEffect=null;
-				currentArmor.abilActive=false;
-			}
+			if (currentArmor.abilActive) {
+                if (armorEffect) armorEffect.unsetEff(true, false, true);
+                armorEffect = null;
+                currentArmor.abilActive = false;
+            } else {
+                if (currentArmor.dmana_act < currentArmor.mana) {
+                    currentArmor.mana -= currentArmor.dmana_act;
+                    armorEffect = addEffect(currentArmor.abil);
+                    currentArmor.abilActive = true;
+                }
+            }
 		}
 		
 		// [summoning and recalling a companion, f = true - forced]
@@ -2494,21 +2500,18 @@
 			}
 			else
 			{
-				if (!loc.petOn)
-				{
-					World.w.gui.infoText('noPetCall',null,null,false);
-				}
-				else
-				{
-					currentPet = npet;
-					pet = pets[currentPet];
-					childObjs[2] = pet;
-					pet.coordinates.X = coordinates.X;
-					pet.coordinates.Y = coordinates.Y - 20;
-					pet.loc = loc;
-					pet.call();
-					World.w.gui.infoText('petCall',pet.nazv);
-				}
+				if (loc.petOn) {
+                    currentPet = npet;
+                    pet = pets[currentPet];
+                    childObjs[2] = pet;
+                    pet.coordinates.X = coordinates.X;
+                    pet.coordinates.Y = coordinates.Y - 20;
+                    pet.loc = loc;
+                    pet.call();
+                    World.w.gui.infoText('petCall', pet.nazv);
+                } else {
+                    World.w.gui.infoText('noPetCall', null, null, false);
+                }
 			}
 			World.w.gui.setPet();
 		}
@@ -2758,46 +2761,37 @@
 				if (t_work && work=='die')
 				{
 					reloadbar.visible=false;
-					if (!World.w.alicorn)
-					{
-						if (animState!='die')
-						{
-							vis.osn.gotoAndStop('die');
-							animState='die';
-						}
-						if (t_work<170 && t_work>120)
-						{
-							dieFilter.alpha=1-(t_work-120)/50;
-							f_die=true;
-							dieTransform.redOffset=(170-t_work)*2;
-							dieTransform.blueOffset=(170-t_work)*3;
-							vis.osn.transform.colorTransform=dieTransform;
-							Emitter.emit('die_spark', loc, coordinates.X+Math.random()*120-60+20*storona, coordinates.Y);
-						}
-						else if (t_work<120 && t_work>70) vis.osn.alpha=(t_work-70)/50;
-					}
-					else
-					{
-						if (animState!='die')
-						{
-							vis.osn.gotoAndStop('dieali');
-							animState='die';
-						}
-						if (t_work<200 && t_work>140)
-						{
-							f_die=true;
-							dieTransform.redOffset=(200-t_work)*4;
-							dieTransform.blueOffset=(200-t_work);
-							vis.osn.transform.colorTransform=dieTransform;
-							newPart('redray');
-						}
-						if (t_work==140)
-						{
-							newPart('bloodblast');
-							Snd.ps('bale_e');
-							vis.osn.alpha=0;
-						}
-					}
+					if (World.w.alicorn) {
+                        if (animState != 'die') {
+                            vis.osn.gotoAndStop('dieali');
+                            animState = 'die';
+                        }
+                        if (t_work < 200 && t_work > 140) {
+                            f_die = true;
+                            dieTransform.redOffset = (200 - t_work) * 4;
+                            dieTransform.blueOffset = (200 - t_work);
+                            vis.osn.transform.colorTransform = dieTransform;
+                            newPart('redray');
+                        }
+                        if (t_work == 140) {
+                            newPart('bloodblast');
+                            Snd.ps('bale_e');
+                            vis.osn.alpha = 0;
+                        }
+                    } else {
+                        if (animState != 'die') {
+                            vis.osn.gotoAndStop('die');
+                            animState = 'die';
+                        }
+                        if (t_work < 170 && t_work > 120) {
+                            dieFilter.alpha = 1 - (t_work - 120) / 50;
+                            f_die = true;
+                            dieTransform.redOffset = (170 - t_work) * 2;
+                            dieTransform.blueOffset = (170 - t_work) * 3;
+                            vis.osn.transform.colorTransform = dieTransform;
+                            Emitter.emit('die_spark', loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona, coordinates.Y);
+                        } else if (t_work < 120 && t_work > 70) vis.osn.alpha = (t_work - 70) / 50;
+                    }
 					setFilters();
 					otherVisual();
 					return true;
@@ -2875,8 +2869,9 @@
 				if (t_work && work == 'punch') freeAnim = 0;
 				if (t_work && work == 'punch' && animState != 'punch')
 				{
-					if (!ctr.keyRun) vis.osn.gotoAndStop('punch');
-					else vis.osn.gotoAndStop('kick');
+					if (ctr.keyRun) {
+                        vis.osn.gotoAndStop('kick');
+                    } else vis.osn.gotoAndStop('punch');
 					animState = 'punch';
 				}
 				if (t_work==0 && animState=='punch') {
@@ -2980,72 +2975,64 @@
 					else
 					{			//движение
 						freeAnim=0;
-						if (diagon!=0) {
-							if (diagon*storona>0) {
-								if (animState!='trot_up') {
-									animState='trot_up';
-									vis.osn.gotoAndStop('trot_up');
-									vis.osn.body.play();
-								}
-							} else {
-								if (animState!='trot_down') {
-									animState='trot_down';
-									vis.osn.gotoAndStop('trot_down');
-									vis.osn.body.play();
-								}
-							}
-							sndStep(t_walk,1);
-							t_walk++;
-						}
-						else
-						{
-							if (isSit)
-							{
-								if (animState=='roll' && vis.osn.body.currentFrame>=15) {
-									vis.osn.gotoAndStop('polz');
-									animState='polz';
-								}
-								if (animState!='polz' && animState!='roll') {
-									if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
-										vis.osn.gotoAndStop('roll');
-										animState='roll';
-									} else {
-										vis.osn.gotoAndStop('polz');
-										animState='polz';
-									}
-									vis.osn.body.play();
-								}
-							}
-							else if (maxSpeed<5) {
-								sndStep(t_walk,4);
-								t_walk++;
-								if (animState!='walk') {
-									vis.osn.gotoAndStop('walk');
-									vis.osn.body.play();
-									animState='walk';
-								}
-							}
-							else if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
-								sndStep(t_walk,2);
-								t_walk++;
-								if (animState!='run') {
-									vis.osn.gotoAndStop('run');
-									vis.osn.body.play();
-									animState='run';
-								}
-							}
-							else if (dx*storona>0)
-							{
-								sndStep(t_walk,1);
-								t_walk++;
-								if (animState!='trot')
-								{
-									vis.osn.gotoAndStop('trot');
-									vis.osn.body.play();
-									animState='trot';
-								}
-							}
-						}
+						if (diagon == 0) {
+                            if (isSit) {
+                                if (animState == 'roll' && vis.osn.body.currentFrame >= 15) {
+                                    vis.osn.gotoAndStop('polz');
+                                    animState = 'polz';
+                                }
+                                if (animState != 'polz' && animState != 'roll') {
+                                    if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                                        vis.osn.gotoAndStop('roll');
+                                        animState = 'roll';
+                                    } else {
+                                        vis.osn.gotoAndStop('polz');
+                                        animState = 'polz';
+                                    }
+                                    vis.osn.body.play();
+                                }
+                            } else if (maxSpeed < 5) {
+                                sndStep(t_walk, 4);
+                                t_walk++;
+                                if (animState != 'walk') {
+                                    vis.osn.gotoAndStop('walk');
+                                    vis.osn.body.play();
+                                    animState = 'walk';
+                                }
+                            } else if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                                sndStep(t_walk, 2);
+                                t_walk++;
+                                if (animState != 'run') {
+                                    vis.osn.gotoAndStop('run');
+                                    vis.osn.body.play();
+                                    animState = 'run';
+                                }
+                            } else if (dx * storona > 0) {
+                                sndStep(t_walk, 1);
+                                t_walk++;
+                                if (animState != 'trot') {
+                                    vis.osn.gotoAndStop('trot');
+                                    vis.osn.body.play();
+                                    animState = 'trot';
+                                }
+                            }
+                        } else {
+                            if (diagon * storona > 0) {
+                                if (animState != 'trot_up') {
+                                    animState = 'trot_up';
+                                    vis.osn.gotoAndStop('trot_up');
+                                    vis.osn.body.play();
+                                }
+                            } else {
+                                if (animState != 'trot_down') {
+                                    animState = 'trot_down';
+                                    vis.osn.gotoAndStop('trot_down');
+                                    vis.osn.body.play();
+                                }
+                            }
+                            sndStep(t_walk, 1);
+                            t_walk++;
+                        }
 					}
 				//на лестнице
 				}

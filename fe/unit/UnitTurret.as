@@ -171,7 +171,7 @@ package fe.unit
 			catch(err)
 			{
 				trace('ERROR: (00:10)');
-			};
+			}
 		}
 
 		public override function setLevel(nlevel:int=0)

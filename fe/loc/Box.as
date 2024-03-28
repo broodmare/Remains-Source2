@@ -223,12 +223,10 @@ package fe.loc
 			{
 				// Check if the node is already cached
 				var node:XML;
-				if (cachedObjs[id] != undefined) node = cachedObjs[id];
-				else
-				{
+				if (cachedObjs[id] == undefined) {
 					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 					cachedObjs[id] = node;
-				}
+				} else node = cachedObjs[id];
 				return node;
 			}
 		}
@@ -572,9 +570,10 @@ package fe.loc
 		
 		public function run(div:int=1) {
 			//движение
-			var t:Tile;var i:int;
-			
-			
+			var t:Tile;
+			var i:int;
+
+
 			//HORIZONTAL
 				coordinates.X += dx / div;
 				if (coordinates.X - objectWidth / 2 < 0)

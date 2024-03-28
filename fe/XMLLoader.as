@@ -10,7 +10,6 @@
     {
 		public var xmlData:XML;
 		private var fileURL:String;
-		private var loaderURL:URLRequest;
 		private var loader:URLLoader;
 
 		public static const XML_LOADED:String = "xml_Loaded";
@@ -20,13 +19,12 @@
 
 		}
 
-		public function load(url:String):void
-		{
+		public function load(url:String):void {
 			fileURL = url;
 
-			loaderURL = new URLRequest(fileURL);
+			var loaderURL:URLRequest = new URLRequest(fileURL);
 			loader = new URLLoader();
-			
+
 			loader.addEventListener(Event.COMPLETE, loaderFinished);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, loaderFinished);
 			loader.load(loaderURL);

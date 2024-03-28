@@ -45,12 +45,10 @@ package fe.unit
 		{
 			// Check if the node is already cached
 			var node:XML;
-			if (cachedEffects[id] != undefined) node = cachedEffects[id];
-			else
-			{
+			if (cachedEffects[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
 				cachedEffects[id] = node;
-			}
+			} else node = cachedEffects[id];
 			return node;
 		}
 		
@@ -59,7 +57,7 @@ package fe.unit
 			t=1;
 			post=null;
 			postBad=false;
-			del=new Array();
+			del=[];
 			him=0;
 			lvl=1;
 			forever=false;

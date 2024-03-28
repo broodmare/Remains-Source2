@@ -18,8 +18,8 @@ package fe.serv {
 		public var multPrice:Number=1;
 
 		public function Vendor(lvl:int=0, nxml:XML=null, loadObj:Array=null, tip:String='vendor') {
-			buys=new Array();
-			buys2=new Array();
+			buys=[];
+			buys2=[];
 			xml=nxml;
 			var item:Item;
 			if (nxml) {
@@ -139,8 +139,8 @@ package fe.serv {
 			//trace(id,xml);
 			if (xml==null) return;
 			if (id=='random') {
-				buys=new Array();
-				buys2=new Array();
+				buys=[];
+				buys2=[];
 				setRndBuys(100,'random');
 				for (var i in buys) {
 					var uid:String=buys[i].id;
@@ -163,7 +163,7 @@ package fe.serv {
 		
 		public function save():* {
 			if (id==null) return null;
-			var arr:Array=new Array();
+			var arr:Array=[];
 			for each (var b:Item in buys) arr.push(b.save());
 			return arr;
 		}

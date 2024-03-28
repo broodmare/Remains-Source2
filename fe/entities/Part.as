@@ -62,7 +62,8 @@ package fe.entities
 		}
 		
 		public function blit(blframe:int) {
-			blitRect.x=blframe*blitX, blitRect.y=0;
+			blitRect.x=blframe*blitX;
+			blitRect.y=0;
 			visData.copyPixels(blitData,blitRect,blitPoint);
 		}
 		

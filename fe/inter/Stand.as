@@ -212,7 +212,8 @@ package fe.inter
 				item.y=str*180;
 				stolb++;
 				if (stolb>=6) {
-					stolb=0, str++;
+					stolb=0;
+					str++;
 				}
 				item.id.text=arm.@id;
 				item.id.visible=false;

@@ -207,11 +207,14 @@ package fe.unit
 				ay1 = coordinates.Y - 30;
 				ay2 = coordinates.Y - 20;
 			} else if (id=='trigplate') {
-				ax1=leftBound, ax2=rightBound;
+				ax1=leftBound;
+				ax2=rightBound;
 				ay1 = ay2 = coordinates.Y - 1;
 			} else {
-				ax1=leftBound, ax2=rightBound;
-				ay1=topBound, ay2=bottomBound;
+				ax1=leftBound;
+				ax2=rightBound;
+				ay1=topBound;
+				ay2=bottomBound;
 			}
 		}
 		

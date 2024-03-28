@@ -541,104 +541,168 @@ package fe.projectile
 		//визуальный и звуковой эффект от взрыва
 		private function explVis():void
 		{
-			if (weap && weap.visexpl)
-			{
-				if (weap.visexpl=='sparkle')
-				{
-					if (inWater>0)
-					{
+			if (weap) {
+				if (weap.visexpl) {
+					if (weap.visexpl == 'sparkle') {
+						if (inWater > 0) {
+							loc.budilo(coordinates.X, coordinates.Y, 700);
+							Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
+							Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {
+								kol: 30,
+								rx: 100,
+								ry: 100,
+								rdx: 10,
+								rdy: 10
+							});
+							Snd.ps('expl_uw', coordinates.X, coordinates.Y);
+						}
+						else {
+							loc.budilo(coordinates.X, coordinates.Y, 1500);
+							Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
+							Emitter.emit('sparkleexpl', loc, coordinates.X, coordinates.Y);
+							Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+							Snd.ps('bale_e', coordinates.X, coordinates.Y);
+						}
+					}
+					else {
+						loc.budilo(coordinates.X, coordinates.Y, 500);
+						Emitter.emit(weap.visexpl, loc, coordinates.X, coordinates.Y);
+					}
+				}
+				else if (tipDamage == Unit.D_EMP) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
+					Snd.ps('emp_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == Unit.D_CRIO) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol: 16});
+					Snd.ps('cryo_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == Unit.D_PLASMA) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
+					Snd.ps('exppla_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == Unit.D_VENOM) {
+					Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
+					if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == Unit.D_PINK) {
+					Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
+					if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == Unit.D_ACID) {
+					if (expl_t == 0) {
+						Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {kol: Math.floor(Math.random() * 5 + 30)});
+						Snd.ps('acid_e', coordinates.X, coordinates.Y);
+						explLiquid('acid');
+					}
+				}
+				else if (tipDamage == Unit.D_BALE) {
+					loc.budilo(coordinates.X, coordinates.Y, 3000);
+					Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
+					Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
+					Snd.ps('bale_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == Unit.D_EXPL) {
+					if (inWater > 0) {
 						loc.budilo(coordinates.X, coordinates.Y, 700);
 						Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
-						Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {kol:30, rx:100, ry:100, rdx:10, rdy:10});
+						Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {
+							kol: 30,
+							rx: 100,
+							ry: 100,
+							rdx: 10,
+							rdy: 10
+						});
 						Snd.ps('expl_uw', coordinates.X, coordinates.Y);
 					}
-					else
-					{
+					else {
 						loc.budilo(coordinates.X, coordinates.Y, 1500);
 						Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
-						Emitter.emit('sparkleexpl', loc, coordinates.X, coordinates.Y);
-						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y,{kol:16});
-						Snd.ps('bale_e', coordinates.X, coordinates.Y);
+						Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+						Snd.ps('expl_e', coordinates.X, coordinates.Y);
 					}
 				}
-				else
-				{
-					loc.budilo(coordinates.X, coordinates.Y, 500);
-					Emitter.emit(weap.visexpl, loc, coordinates.X, coordinates.Y);
+				else if (tipDamage == Unit.D_FIRE) {
+					if (!(inWater > 0) && expl_t == 0) {
+						loc.budilo(coordinates.X, coordinates.Y, 500);
+						Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+						Snd.ps('fire_e', coordinates.X, coordinates.Y);
+						explLiquid('fire', -33);
+					}
 				}
 			}
-			else if (tipDamage==Unit.D_EMP)
-			{
+			else if (tipDamage == Unit.D_EMP) {
 				loc.budilo(coordinates.X, coordinates.Y, 500);
 				Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
 				Snd.ps('emp_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage==Unit.D_CRIO)
-			{
+			else if (tipDamage == Unit.D_CRIO) {
 				loc.budilo(coordinates.X, coordinates.Y, 500);
 				Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
-				Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol:16});
+				Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol: 16});
 				Snd.ps('cryo_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage==Unit.D_PLASMA)
-			{
+			else if (tipDamage == Unit.D_PLASMA) {
 				loc.budilo(coordinates.X, coordinates.Y, 500);
 				Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
 				Snd.ps('exppla_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage==Unit.D_VENOM)
-			{
+			else if (tipDamage == Unit.D_VENOM) {
 				Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
-				if (expl_t==0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
+				if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage==Unit.D_PINK)
-			{
+			else if (tipDamage == Unit.D_PINK) {
 				Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
-				if (expl_t==0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
+				if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage==Unit.D_ACID)
-			{
-				if (expl_t==0)
-				{
+			else if (tipDamage == Unit.D_ACID) {
+				if (expl_t == 0) {
 					Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
-					Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {kol:Math.floor(Math.random()*5+30)});
+					Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {kol: Math.floor(Math.random() * 5 + 30)});
 					Snd.ps('acid_e', coordinates.X, coordinates.Y);
 					explLiquid('acid');
 				}
 			}
-			else if (tipDamage==Unit.D_BALE)
-			{
+			else if (tipDamage == Unit.D_BALE) {
 				loc.budilo(coordinates.X, coordinates.Y, 3000);
 				Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
 				Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
 				Snd.ps('bale_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage==Unit.D_EXPL)
-			{
-				if (inWater>0)
-				{
+			else if (tipDamage == Unit.D_EXPL) {
+				if (inWater > 0) {
 					loc.budilo(coordinates.X, coordinates.Y, 700);
 					Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
-					Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {kol:30, rx:100, ry:100, rdx:10, rdy:10});
+					Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {
+						kol: 30,
+						rx: 100,
+						ry: 100,
+						rdx: 10,
+						rdy: 10
+					});
 					Snd.ps('expl_uw', coordinates.X, coordinates.Y);
-				}
-				else
-				{
+				} else {
 					loc.budilo(coordinates.X, coordinates.Y, 1500);
 					Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
 					Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
-					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y,{kol:16});
+					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
 					Snd.ps('expl_e', coordinates.X, coordinates.Y);
 				}
 			}
-			else if (tipDamage==Unit.D_FIRE)
-			{
-				if (!(inWater > 0) && expl_t == 0)
-				{
+			else if (tipDamage == Unit.D_FIRE) {
+				if (!(inWater > 0) && expl_t == 0) {
 					loc.budilo(coordinates.X, coordinates.Y, 500);
 					Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);
 					Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
-					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y,{kol:16});
+					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
 					Snd.ps('fire_e', coordinates.X, coordinates.Y);
 					explLiquid('fire', -33);
 				}

@@ -56,7 +56,7 @@ package fe.unit
 			thWeapon=Weapon.create(this,'roboplagr');
 			thWeapon.findCel=false;
 			(thWeapon as WThrow).kolAmmo=100000;
-			childObjs=new Array(currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon);
+			childObjs=[currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon];
 			
 			spd=new Object();
 			aiNapr=storona;
@@ -226,7 +226,8 @@ package fe.unit
 					if (nmp==mp) nmp++;
 					if (nmp>=5) nmp=0;
 					mp=nmp;
-					moveX=movePoints[mp].x*40+20, moveY=movePoints[mp].y*40+40;
+					moveX=movePoints[mp].x*40+20;
+					moveY=movePoints[mp].y*40+40;
 					aiTCh=60;
 					castShit();
 				} else if (aiState==2) {
@@ -268,10 +269,12 @@ package fe.unit
 				dx+=spd.x;
 				dy+=spd.y;
 				if (dist<1000) {
-					dx*=0.8, dy*=0.8;
+					dx*=0.8;
+					dy*=0.8;
 				}
 			} else if (aiState>=2) {
-				dx*=0.7, dy*=0.7;
+				dx*=0.7;
+				dy*=0.7;
 			}
 			if (aiState==2 && aiTCh%5==1) {
 				if (attState==0) Emitter.emit('laser', loc, celX + Math.random()*100-50, celY-Math.random()*50);
@@ -280,13 +283,15 @@ package fe.unit
 			}
 			if (aiState>0 && !(aiState==3 && attState==2)) {
 				aiNapr=(celX > coordinates.X)?1:-1;
-				if (storona!=aiNapr) {
-					t_turn--;
-					if (t_turn<=0) {
-						storona=aiNapr;
-						t_turn=15;
-					}
-				} else t_turn=15;
+				if (storona == aiNapr) {
+                    t_turn = 15;
+                } else {
+                    t_turn--;
+                    if (t_turn <= 0) {
+                        storona = aiNapr;
+                        t_turn = 15;
+                    }
+                }
 			}
 			attack();
 			

@@ -40,7 +40,7 @@ package {
 		var spacex:int=48, spacey:int=25;	//размеры комнаты
 		
 		//пространство блоков
-		var space:Array=new Array();
+		var space:Array=[];
 		//используется для подсчёта того, сколько имеется материалов какого типа
 		var frames:Array=[0,0,0,0,0,0];
 		//массив основных материалов, возвращающий по id параметры:
@@ -48,11 +48,11 @@ package {
 		//frame - номер кадра
 		//list - номер списка
 		//n - номер в списке
-		var fronts:Array=new Array();
+		var fronts:Array=[];
 		//массив дополнительных материалов
-		var backs:Array=new Array();
+		var backs:Array=[];
 		//массив всех объектов
-		var objs:Array=new Array();
+		var objs:Array=[];
 		var optObj:Object=new Object;
 		var options:String='';
 		
@@ -119,7 +119,7 @@ package {
 			ed.objInfo.autoSize='left';
 			ed.objInfo.visible=false;
 			for (var i=0; i<spacex; i++) {
-				space[i]=new Array();
+				space[i]=[];
 				for (var j=0; j<spacey; j++) {
 					var t:edTile=new edTile();
 					var tb:MovieClip=new edTileBack();
@@ -155,7 +155,7 @@ package {
 			loader.addEventListener(Event.COMPLETE, onComplete);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onError);
 			
-			chars=new Array();
+			chars=[];
 			for (i=48; i<58; i++) chars.push(String.fromCharCode(i));
 			for (i=65; i<65+26; i++) chars.push(String.fromCharCode(i));
 			for (i=97; i<97+26; i++) chars.push(String.fromCharCode(i));
@@ -203,7 +203,7 @@ package {
 			update();
 			
 			//создание списков объектов
-			var dp:Array=new Array();
+			var dp:Array=[];
 			dp[1] = new DataProvider();	
 			for (i=2; i<=10; i++) {
 				dp[i] = dp[1];
@@ -306,14 +306,14 @@ package {
 		}
 		//Загрузка завершена, декодировать
 		function onComplete(event:Event):void  { 
-			var loader:URLLoader = event.target as URLLoader; 
-			if (loader != null) { 
+			var loader:URLLoader = event.target as URLLoader;
+			if (loader == null) {
+				trace("loader is not a URLLoader!");
+			} else {
 				allroom = new XML(loader.data);
-				loaded=true;
-				if (inited)	decodeAll();
-			} else { 
-				trace("loader is not a URLLoader!"); 
-			} 
+				loaded = true;
+				if (inited) decodeAll();
+			}
 		}
 		function onError(event:IOErrorEvent):void  { 
 		
@@ -375,7 +375,8 @@ package {
 			encodeCurrent();
 			var nx=Math.floor(event.localX/(spacex*roomsc))+minX-1;
 			var ny=Math.floor(event.localY/(spacey*roomsc))+minY-1;
-			cmapX=nx, cmapY=ny;
+			cmapX=nx;
+			cmapY=ny;
 			cmapZ=zLay;
 			var cr:String='room_'+nx+'_'+ny;
 			if (zLay>0) cr+='_'+zLay;
@@ -529,7 +530,7 @@ package {
 			else  rndMode=true;
 			var dp:DataProvider = new DataProvider();
 			ed.roomsList.dataProvider = dp;
-			arrroom=new Array();
+			arrroom=[];
 			cmapX=cmapY=0;
 			ed.RoomName.text='';
 			var lastS='';
@@ -574,8 +575,14 @@ package {
 				if (ed.worldobj.contains(obj.vis)) ed.worldobj.removeChild(obj.vis);
 				if (ed.worldback.contains(obj.vis)) ed.worldback.removeChild(obj.vis);
 			}
-			objs=new Array();
-			if (s!=null) {
+			objs=[];
+			if (s == null) {
+				try {
+					optObj.xml = new XML(options);
+				} catch (err) {
+					trace('ERROR: (00:4F)');
+				}
+			} else {
 				for each(obj in s.obj) {
 					addObj(obj.@x, obj.@y, obj.@id, obj);
 				}
@@ -583,19 +590,11 @@ package {
 					addObj(obj.@x, obj.@y, obj.@id, obj);
 				}
 				if (s.options.length()) {
-					optObj.xml=s.options[0];
+					optObj.xml = s.options[0];
 				} else {
-					optObj.xml=<options/>;
+					optObj.xml = <options/>;
 				}
-				options=optObj.xml.toXMLString();
-			} else {
-				try {
-					optObj.xml=new XML(options);
-				}
-				catch (err)
-				{
-					trace('ERROR: (00:4F)');
-				}
+				options = optObj.xml.toXMLString();
 			}
 			mActive=false;
 		}
@@ -604,8 +603,11 @@ package {
 		public function drawMap() {
 			if (rndMode) return;
 			mapBmp.fillRect(mapBmp.rect,0xFF000000);
-			minX=0, maxX=0, minY=0, maxY=0;
-			mapArr=new Array();
+			minX=0;
+			maxX=0;
+			minY=0;
+			maxY=0;
+			mapArr=[];
 			for each(var r in arrroom) {
 				var nx:int=r.@x;
 				var ny:int=r.@y;
@@ -615,11 +617,11 @@ package {
 				if (nx>maxX) maxX=nx;
 				if (ny<minY) minY=ny;
 				if (ny>maxY) maxY=ny;
-				if (mapArr[nx]==null) mapArr[nx]=new Array();
-				if (mapArr[nx][ny]!=null) {
-					if (nz==zLay) mapArr[nx][ny].n++;
+				if (mapArr[nx]==null) mapArr[nx]=[];
+				if (mapArr[nx][ny] == null) {
+					if (nz == zLay) mapArr[nx][ny] = {id: r.@name, n: 1};
 				} else {
-					if (nz==zLay) mapArr[nx][ny]={id:r.@name, n:1};
+					if (nz == zLay) mapArr[nx][ny].n++;
 				}
 			}
 			var rc:MovieClip=new vis_rc();
@@ -678,7 +680,8 @@ package {
 			var txt:TextField=new TextField();
 			txt.selectable=false;
 			t.y=txt.y=nnum*25+20;
-			t.x=10,	txt.x=40;
+			t.x=10;
+			txt.x=40;
 			
 			var tip:int=xml.@ed;	//тип материала
 			var id=xml.@id;			//id материала (буква)
@@ -1159,7 +1162,8 @@ package {
 					break;
 				}
 			}
-			onx=nx, ony=ny;
+			onx=nx;
+			ony=ny;
 		}
 		
 		public function showIds() {
@@ -1265,11 +1269,13 @@ package {
 		public function drawRect(erase:Boolean=false, frame:Boolean=false) {
 			if (begx>endx) {
 				var tx=begx;
-				begx=endx, endx=tx;
+				begx=endx;
+				endx=tx;
 			}
 			if (begy>endy) {
 				var ty=begy;
-				begy=endy, endy=ty;
+				begy=endy;
+				endy=ty;
 			}
 			var t:edTile;
 			if (frame) {

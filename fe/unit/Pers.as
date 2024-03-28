@@ -384,7 +384,7 @@ package fe.unit
 				xpNext=xpDelta;
 			}
 			setAllSt();
-			perks=new Array();
+			perks=[];
 			if (loadObj && loadObj.perks) {
 				for (var pid in loadObj.perks) {
 					perks[pid]=loadObj.perks[pid];
@@ -450,89 +450,107 @@ package fe.unit
 		public static function getPerkInfo(id:String):XML
 		{
 			var node:XML;
-			if (cachedPerks[id] != undefined) node = cachedPerks[id]; // Check if the node is already cached
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
-				cachedPerks[id] = node;
-			}
+			if (cachedPerks[id] == undefined) {
+                node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
+                cachedPerks[id] = node;
+            } else node = cachedPerks[id];
 			return node;
 		}
 
 		public static function getSkillInfo(id:String):XML
 		{
 			var node:XML;
-			if (cachedSkills[id] != undefined) node = cachedSkills[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
-				cachedSkills[id] = node;
-			}
+			if (cachedSkills[id] == undefined) {
+                node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
+                cachedSkills[id] = node;
+            } else node = cachedSkills[id];
 			return node;
 		}
 
 		public static function getEffInfo(id:String):XML
 		{
 			var node:XML;
-			if (cachedEffs[id] != undefined) node = cachedEffs[id];
-			else
-			{
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
-				cachedEffs[id] = node;
-			}
+			if (cachedEffs[id] == undefined) {
+                node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
+                cachedEffs[id] = node;
+            } else node = cachedEffs[id];
 			return node;
 		}
 
 		public function setGlobalDif(ndif:int=2) {
 			if (ndif==0) {
-				begHP=200, lvlHP=25;
+				begHP=200;
+				lvlHP=25;
 				organMult=0.2;
 				dieDamage=0;
 				critHeal=0.2;
 				teleMana=0;
-				priceBlood=priceOrgan=0.5, priceRad=1, pricePoison=priceCut=4;
+				priceBlood=priceOrgan=0.5;
+				priceRad=1;
+				pricePoison = 4;
+				priceCut = 4;
 				difCapsMult=1;
 				himBadDif=1;
 				petRes=20;
 			} else if (ndif==1) {
-				begHP=150, lvlHP=25;
+				begHP=150;
+				lvlHP=25;
 				organMult=0.5;
 				dieDamage=0;
 				critHeal=0.2;
 				teleMana=0;
-				priceBlood=priceOrgan=0.5, priceRad=1, pricePoison=priceCut=4;
+				priceBlood = 0.5;
+				priceOrgan = 0.5;
+				priceRad=1;
+				pricePoison = 4;
+				priceCut=4;
 				difCapsMult=1;
 				himBadDif=1;
 				petRes=20;
 			} else if (ndif==2) {
-				begHP=100, lvlHP=20;
+				begHP=100;
+				lvlHP=20;
 				organMult=1;
 				dieDamage=0.15;
 				critHeal=0.2;
 				teleMana=0.5;
-				priceBlood=priceOrgan=0.5, priceRad=1, pricePoison=priceCut=4;
+				priceBlood = 0.5;
+				priceOrgan=0.5;
+				priceRad=1;
+				pricePoison= 4;
+				priceCut=4;
 				difCapsMult=1;
 				himBadDif=1.3;
 				petRes=30;
 			} else if (ndif==3) {
-				begHP=70, lvlHP=15;
+				begHP=70;
+				lvlHP=15;
 				organMult=1;
 				dieDamage=0.25;
 				critHeal=0.1;	//восстановление от критических эффектов
 				teleMana=1;
-				priceBlood=priceOrgan=1, priceRad=1.5,	pricePoison=priceCut=6;
+				priceBlood= 1;
+				priceOrgan=1;
+				priceRad=1.5;
+				pricePoison= 6;
+				priceCut=6;
 				difCapsMult=1;
 				himBadDif=2;
 				petRes=60;
 				neujazMax=20;
 				bonusHealMult=0.75;
 			} else if (ndif==4) {
-				begHP=40, lvlHP=10;
+				begHP=40;
+				lvlHP=10;
 				organMult=1;
 				dieDamage=0.35;
 				critHeal=0.1;	//восстановление от критических эффектов
 				teleMana=1;
-				priceBlood=priceOrgan=1, priceRad=1.5,	pricePoison=priceCut=6;
+				priceBlood=1;
+				priceOrgan=1;
+				priceRad=1.5;
+				pricePoison= 6;
+				priceCut=6;
 				difCapsMult=0.5;
 				himBadDif=2.5;
 				petRes=90;
@@ -662,7 +680,7 @@ package fe.unit
 			for (var i in gg.vulner) gg.vulner[i]=1;
 			gg.vulner[Unit.D_EMP]=0;
 			for (i in weaponSkills) weaponSkills[i]=1;
-			for (i in factor) factor[i]=new Array();
+			for (i in factor) factor[i]=[];
 		}
 		
 		//получение опыта
@@ -818,21 +836,21 @@ package fe.unit
 			var preNumb=skills[id];
 			skills[id]+=numb;
 			var postNumb=skills[id];
-			if (!skillIsPost(id)) {
-				for (var i=preNumb+1; i<=postNumb; i++) {
-					var bonus=getSkBonus(i);
-					if (bonus>0) World.w.gui.infoText('skill',Res.txt('e',id)+'-'+bonus);
-				}
-			} else {
-				if (id=='knowl') {
-					var sklvl=getPostSkLevel(skills[id]);
-					if (sklvl>perkPointExtra) {
-						perkPoint+=sklvl-perkPointExtra;
-						perkPointExtra=sklvl;
-						World.w.gui.infoText('perkPoint');
-					}
-				}
-			}
+			if (skillIsPost(id)) {
+                if (id == 'knowl') {
+                    var sklvl = getPostSkLevel(skills[id]);
+                    if (sklvl > perkPointExtra) {
+                        perkPoint += sklvl - perkPointExtra;
+                        perkPointExtra = sklvl;
+                        World.w.gui.infoText('perkPoint');
+                    }
+                }
+            } else {
+                for (var i = preNumb + 1; i <= postNumb; i++) {
+                    var bonus = getSkBonus(i);
+                    if (bonus > 0) World.w.gui.infoText('skill', Res.txt('e', id) + '-' + bonus);
+                }
+            }
 			if (minus) skillPoint-=numb;
 		}
 		
@@ -911,7 +929,7 @@ package fe.unit
 			while (skillPoint>0 && n>0)
 			{
 				//определить скиллы, доступные для увеличения
-				var dost:Array=new Array();
+				var dost:Array=[];
 				for (var sk in skills) {
 					if (skills[sk]<maxSkLvl && !skillIsPost(sk)) dost.push(sk);
 				}

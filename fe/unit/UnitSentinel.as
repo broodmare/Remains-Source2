@@ -21,7 +21,7 @@ package fe.unit
 			//дать оружие
 			getWeapon(ndif, xml, loadObj);
 			dopWeapon=Weapon.create(this,'robomlau');
-			childObjs=new Array(currentWeapon, dopWeapon);
+			childObjs=[currentWeapon, dopWeapon];
 			if (quiet) id_replic='';
 		}
 		

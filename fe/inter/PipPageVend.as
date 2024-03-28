@@ -23,8 +23,7 @@ package fe.inter
 		private var vend:Vendor;
 		private var npcId:String='';
 		private var assArr:Array;
-		private var npcInter:String='';
-		private var repOwl:int=2;	//цена ремонта совы
+		private var npcInter:String='';	//цена ремонта совы
 		private var inbase:Boolean=false;
 		private var selall:Boolean=true;
 
@@ -102,7 +101,7 @@ package fe.inter
 				return;
 			}
 			if (page2==1) {
-				assArr=new Array();
+				assArr=[];
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				statHead.nazv.text=Res.pipText('iv1');
@@ -154,7 +153,7 @@ package fe.inter
 				vis.butOk.visible=false;
 			} 
 			if (page2==2) {
-				assArr=new Array();
+				assArr=[];
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				vend.kolSell=0;
@@ -199,7 +198,7 @@ package fe.inter
 				setIco();
 			}
 			if (page2==3) {
-				assArr=new Array();
+				assArr=[];
 				setTopText('inforepair');
 				statHead.nazv.text='';
 				statHead.hp.text=Res.pipText('iv2');
@@ -209,10 +208,11 @@ package fe.inter
 				statHead.cat.visible=false;
 				if (inv.items['owl'] && inv.items['owl'].kol) {
 					World.w.pers.setRoboowl();
+					var repOwl:int = 2;
 					n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.w.pers.owlhp*World.w.pers.owlhpProc, maxhp:World.w.pers.owlhp, price:World.w.pers.owlhp*repOwl};
 					arr.push(n);
 					assArr[n.id]=n;
-					
+
 				}
 				for each (var w:Weapon in inv.weapons) {
 					if (w==null) continue;
@@ -507,6 +507,7 @@ package fe.inter
 				var obj;
 				if (event.currentTarget.cat.text==Item.L_INSTR) {
 					var owl:UnitPet=gg.pets[event.currentTarget.id.text];
+					var repOwl:int = 2;
 					var hl:Number=price/repOwl/vend.multPrice;
 					if (hl>owl.maxhp-owl.hp) {
 						hl=(owl.maxhp-owl.hp);

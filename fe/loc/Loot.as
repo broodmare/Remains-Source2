@@ -13,7 +13,9 @@ package fe.loc
 	{
 		public var item:Item;
 
-		const osnRad=50, actRad=250;
+		private const osnRad = 50;
+		private const actRad = 250;
+
 		public var vClass:Class;
 		public var osnova:Box=null;
 		public var vsos:Boolean=false;
@@ -33,20 +35,23 @@ package fe.loc
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true) {
-			loc=nloc;
-			item=nitem;
-			if (loc.cTransform) cTransform=loc.cTransform;
-			sloy=2, prior=3;
+		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true)
+		{
+			loc = nloc;
+			item = nitem;
+			if (loc.cTransform) cTransform = loc.cTransform;
+			sloy = 2;
+			prior =3 ;
 			coordinates.X = nx;
 			coordinates.Y = ny;
 			krit=nkrit;
-			if (nx<tileX) nx=tileX;
-			if (nx>(loc.spaceX-1)*tileX) nx=(loc.spaceX-1)*tileX;
-			if (ny>(loc.spaceY-1)*tileY) ny=(loc.spaceY-1)*tileY;
+			if (nx < tileX) nx = tileX;
+			if (nx > (loc.spaceX - 1) * tileX) nx = (loc.spaceX - 1) * tileX;
+			if (ny > (loc.spaceY - 1) * tileY) ny = (loc.spaceY - 1) * tileY;
 			massa=0.1;
 			nazv=item.nazv;
-			objectWidth=30, objectHeight=20;
+			objectWidth=30;
+			objectHeight=20;
 			if (item.tip==Item.L_WEAPON) {
 				if (item.xml.vis.length() && item.xml.vis.@loot.length()) {
 					vis=new visualItem();
@@ -128,7 +133,8 @@ package fe.loc
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.cacheAsBitmap=true;
-				objectWidth=vis.width, objectHeight=vis.height;
+				objectWidth=vis.width;
+				objectHeight=vis.height;
 			}
 			if (jump) {
 				dx=Math.random()*10-5;

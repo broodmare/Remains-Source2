@@ -11,17 +11,31 @@ package fe.loc
 		
 		public var act:LandAct;					//шаблон, по которому была создана местность
 		
-		public var rnd:Boolean=false;			//true если местность с рандомной генерацией
+		public var rnd:Boolean = false;			//true если местность с рандомной генерацией
 		public var loc:Location;				//текущая локация
 		private var prevloc:Location;			//предыдущая посещённая локация
 		public var locs:Array;					//трёхмераня карта всех локаций
 		public var probs:Array;					//локации испытаний
 		public var listLocs:Array;				//линейный массив локаций
-		public var locX:int, locY:int, locZ:int=0;	//координаты активной локации
-		public var retLocX:int=0, retLocY:int=0, retLocZ:int=0, retX:Number=0, retY:Number=0;	//координаты возврата в основной слой
-		public var prob:String='';				//слой испытания, ''-основной слой
-		public var minLocX:int=0, minLocY:int=0, minLocZ:int=0;	//размер местности
-		public var maxLocX:int=4, maxLocY:int=6, maxLocZ:int=2;	//размер местности
+
+		public var locX:int;
+		public var locY:int;
+		public var locZ:int = 0;				//координаты активной локации
+
+		public var retLocX:int = 0;
+		public var retLocY:int = 0;
+		public var retLocZ:int = 0;
+		public var retX:Number = 0;
+		public var retY:Number = 0;				//координаты возврата в основной слой
+		public var prob:String = '';			//слой испытания, ''-основной слой
+
+		public var minLocX:int = 0;
+		public var minLocY:int = 0;
+		public var minLocZ:int = 0;				//размер местности
+
+		public var maxLocX:int = 4;
+		public var maxLocY:int = 6;
+		public var maxLocZ:int = 2;				//размер местности
 		
 		public var loc_t:int=0;					//таймер
 		static var locN:int=0;					//счётчик переходов
@@ -70,26 +84,30 @@ package fe.loc
 			probIds		= [];
 			probs		= [];
 			prepareRooms();
+
 			if (rnd) {
 				landDifLevel=lvl;	//сложность определяется заданным параметром
 				if (landDifLevel<act.dif) landDifLevel=act.dif;	//если сложность меньше минимальной, установить минимальную
 				maxLocX=act.mLocX;	//размеры берутся из настроек act
 				maxLocY=act.mLocY;
 				buildRandomLand();
-			} else {
+			}
+			else {
 				landDifLevel=act.dif;	//сложность берётся из настроек act
 				if (act.autoLevel) landDifLevel=lvl;
 				maxLocX=maxLocY=1;	//размеры определяются в соотвествии с картой
 				buildSpecifLand();
 			}
-			lootLimit=lvl+3;
+
+			lootLimit = lvl + 3;
 			gameStage=act.gameStage;	//этап сюжета берётся из настроек
 			//прикреплённые скрипты
-			itemScripts=new Array();
+			itemScripts = [];
+
 			for each(var xl in act.xmlland.scr) {
 				if (xl.@eve=='take' && xl.@item.length()) {
-					var scr:Script=new Script(xl,this);
-					itemScripts[xl.@item]=scr;
+					var scr:Script = new Script(xl, this);
+					itemScripts[xl.@item] = scr;
 				}
 			}
 			createMap();
@@ -101,7 +119,7 @@ package fe.loc
 		
 		//перегнать из xml в массив
 		public function prepareRooms() {
-			allRoom=new Array();
+			allRoom = [];
 			for each(var xml in act.allroom.room) {
 				allRoom.push(new Room(xml));
 			}
@@ -113,12 +131,12 @@ package fe.loc
 				locs=null;
 				locs[0];
 			}
-			locs=new Array();
+			locs = [];
 			if (act.conf==0 && act.landStage<=0) maxLocY=3;
 			var loc1:Location, loc2:Location;
 			var opt:Object=new Object();
 			for (var i=minLocX; i<maxLocX; i++) {
-				locs[i]=new Array();
+				locs[i]=[];
 				for (var j=minLocY; j<maxLocY; j++) {
 					opt.mirror=(Math.random()<0.5);
 					opt.water=null;
@@ -138,7 +156,7 @@ package fe.loc
 					if (act.conf==3) {
 						
 					}
-					locs[i][j]=new Array();
+					locs[i][j]=[];
 					if (act.conf==0 && j==0 && !act.visited) { //начальные комнаты
 						opt.mirror=false;
 						loc1=newTipLoc('beg'+i,i,j,opt);	
@@ -171,12 +189,12 @@ package fe.loc
 					} else if (act.conf==4) { //военная база
 						if (i==0) {
 							if (j==0) {
-								if (!(World.w.game.triggers['mbase_visited']>0)) {
-									opt.mirror=false;
-									opt.ramka=8;
-									loc1=newTipLoc('beg0',i,j,opt);
+								if (World.w.game.triggers['mbase_visited'] > 0) {
+									loc1 = newRandomLoc(0, i, j, opt);
 								} else {
-									loc1=newRandomLoc(0,i,j,opt);
+									opt.mirror = false;
+									opt.ramka = 8;
+									loc1 = newTipLoc('beg0', i, j, opt);
 								}
 							} else loc1=newRandomLoc(0,i,j,opt,'vert');
 						} else if (i==maxLocX-1) {
@@ -250,8 +268,8 @@ package fe.loc
 			for (i=minLocX; i<maxLocX; i++) {
 				for (j=minLocY; j<maxLocY; j++) {
 					loc1=locs[i][j][0];
-					loc1.pass_r=new Array();
-					loc1.pass_d=new Array();
+					loc1.pass_r=[];
+					loc1.pass_d=[];
 					if (i<maxLocX-1) {
 						loc2=locs[i+1][j][0];
 						for (var e=0; e<=5; e++) {
@@ -408,10 +426,10 @@ package fe.loc
 				if (room.ry+1>maxLocY) maxLocY=room.ry+1;
 			}
 			//создаём массив
-			locs=new Array();
+			locs=[];
 			for (i=minLocX; i<maxLocX; i++) {
-				locs[i]=new Array();
-				for (j=minLocY; j<maxLocY; j++) locs[i][j]=new Array();
+				locs[i]=[];
+				for (j=minLocY; j<maxLocY; j++) locs[i][j]=[];
 			}
 			//заполняем массив
 			for each(room in allRoom) {
@@ -471,7 +489,7 @@ package fe.loc
 		
 		//Создать дверь и случайную комнату испытаний за ней, вернуть false если подходящих не нашлось
 		public function newRandomProb(nloc:Location, maxlevel:int=100, imp:Boolean=false):Boolean {
-			rndRoom=new Array();
+			rndRoom=[];
 			var impProb;
 			for each(var xml in act.xmlland.prob) {
 				if (probs[xml.@id]==null && World.w.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) {
@@ -493,7 +511,7 @@ package fe.loc
 		
 		//создать новую локацию нужного типа, в заданных координатах
 		public function newTipLoc(ntip:String, nx:int, ny:int, opt:Object=null):Location {
-			rndRoom=new Array();
+			rndRoom=[];
 			for each(var room in allRoom) {
 				if (room.tip==ntip) rndRoom.push(room); 
 			}
@@ -509,7 +527,7 @@ package fe.loc
 		
 		//создать новую случайную локацию, в заданных координатах
 		public function newRandomLoc(maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location {
-			rndRoom=new Array();
+			rndRoom=[];
 			var r1:Room, r2:Room;
 			if (nx>minLocX) r1=locs[nx-1][ny][0].room;
 			if (ny>minLocY) r2=locs[nx][ny-1][0].room;
@@ -720,8 +738,9 @@ package fe.loc
 			var nloc:Location;
 			if (prob!='' && probs[prob]==null)  return false;
 
-			if (prob!='') nloc=probs[prob][locX][locY][locZ];	
-			else nloc=locs[locX][locY][locZ];
+			if (prob == '') {
+				nloc = locs[locX][locY][locZ];
+			} else nloc = probs[prob][locX][locY][locZ];
 			
 			if (loc==nloc) return false;
 			locN++;
@@ -839,12 +858,15 @@ package fe.loc
 				if (retX==0 && retY==0) setGGToSpawnPoint();
 				else gg.setLocPos(retX,retY);
 			} else {
-				retLocX=locX, retLocY=locY, retLocZ=locZ;
+				retLocX=locX;
+				retLocY=locY;
+				retLocZ=locZ;
 				if (nretX<0 || nretY<0) {
 					retX=gg.coordinates.X;
 					retY=gg.coordinates.Y;
 				} else {
-					retX=nretX, retY=nretY;
+					retX=nretX;
+					retY=nretY;
 				}
 				prob = nprob;
 				locX = 0;
@@ -874,22 +896,20 @@ package fe.loc
 				World.w.pers.currentCP=currentCP;
 				currentCP.activate();
 			}
-			if (cp.loc.land!=this) {
-				locX=act.begLocX;
-				locY=act.begLocY;
-				locZ=0;
-				prob='';
-				if (!ativateLoc()) loc.reactivate();
-				setGGToSpawnPoint();
-			}
-			else
-			{
+			if (cp.loc.land == this) {
 				locX = cp.loc.landX;
 				locY = cp.loc.landY;
 				locZ = cp.loc.landZ;
 				prob = cp.loc.landProb;
 				if (!ativateLoc()) loc.reactivate();
-				gg.setLocPos(cp.coordinates.X,cp.coordinates.Y);
+				gg.setLocPos(cp.coordinates.X, cp.coordinates.Y);
+			} else {
+				locX = act.begLocX;
+				locY = act.begLocY;
+				locZ = 0;
+				prob = '';
+				if (!ativateLoc()) loc.reactivate();
+				setGGToSpawnPoint();
 			}
 			gg.dx=3;
 		}

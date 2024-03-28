@@ -38,13 +38,15 @@ package fe.serv
 			burnBmp=new BitmapData(owner.vis.width,owner.vis.height,true,0);
 			var m:Matrix=new Matrix();
 			var rect:Rectangle=owner.vis.getBounds(owner.vis);
-			m.tx=-rect.left, m.ty=-rect.top;
+			m.tx=-rect.left;
+			m.ty=-rect.top;
 			burnBmp.draw(owner.vis,m);
 			
 			owner.vis=new MovieClip();
 			burnBm=new Bitmap(burnBmp);
 			owner.vis.addChild(burnBm);
-			burnBm.x=rect.left, burnBm.y=rect.top;
+			burnBm.x=rect.left;
+			burnBm.y=rect.top;
 			if (burnTip==1) {
 				burnCt=new ColorTransform(1,1,1,1,255/burnTime1,100/burnTime1,0,0);
 				burnPart='burn';
@@ -90,7 +92,7 @@ package fe.serv
 				burnBm.filters=[new GlowFilter(burnGlowColor,burnN/burnTime1,3,3,2,3)];
 			} else if (burnN>burnTime1 && burnN<=burnTime2+burnTime1)  {
 	   			burnBmp.pixelDissolve(burnBmp, burnBmp.rect, new Point(0,0), burnRnd, burnKolPix*(burnN-burnTime1)/burnTime2, 0x00FF0000);
-				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart, owner.loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2, {rx:owner.objectWidth*0.75,rx:owner.objectHeight*0.5}); 
+				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart, owner.loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2, {rx:owner.objectWidth*0.75, ry:owner.objectHeight*0.5});
 			} else if (burnN>=burnTime2+burnTime1) {
 				vse=true;
 }

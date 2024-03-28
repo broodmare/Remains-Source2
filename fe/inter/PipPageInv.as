@@ -59,7 +59,7 @@ package fe.inter
 			inv.calcWeaponMass();
 			if (page2==1) {		//оружие
 				inv.getKolAmmos();
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
@@ -96,9 +96,10 @@ package fe.inter
 							n.hp=Math.round(w.hp/w.maxhp*100)+'%';
 						}
 						if (w.ammo!='' && w.ammo!=null) {
-							if (inv.ammos[w.ammoBase]!=null) n.ammo=inv.ammos[w.ammoBase]+w.hold;
-							else n.ammo=inv.items[w.ammo].kol+w.hold;
-							n.ammotip=(w.tip!=4)?inv.items[w.ammoBase].nazv:'';
+							if (inv.ammos[w.ammoBase] == null) {
+                                n.ammo = inv.items[w.ammo].kol + w.hold;
+                            } else n.ammo = inv.ammos[w.ammoBase] + w.hold;
+							n.ammotip=(w.tip == 4) ? '' : inv.items[w.ammoBase].nazv;
 						}
 						if (w.alicorn) n.nazv=Res.rainbow(n.nazv);
 						arr.push(n);
@@ -129,7 +130,7 @@ package fe.inter
 				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv2',0,true);
 			} else if (page2==3 || page2==4 || page2==5) {	//снаряжение
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii5');
@@ -223,12 +224,12 @@ package fe.inter
 				item.nazv.htmlText=obj.nazv;
 				if (obj.respect==0 && item.fav.text=='') item.fav.text='☩';
 				item.hp.text=(obj.hp==null)?'':obj.hp;
-				if (obj.ammo!=null) {
-					item.ammo.text=obj.ammo;
-					item.ammotip.text=obj.ammotip;
-				} else {
-					item.ammo.text=item.ammotip.text='';
-				}
+				if (obj.ammo == null) {
+                    item.ammo.text = item.ammotip.text = '';
+                } else {
+                    item.ammo.text = obj.ammo;
+                    item.ammotip.text = obj.ammotip;
+                }
 				if (obj.respect==1) item.alpha=0.4;
 				if (obj.avail==false) item.nazv.alpha=0.6;
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
@@ -250,7 +251,7 @@ package fe.inter
 				item.ammo.text='';
 				item.ammotip.text='';
 			} else  {
-				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);;
+				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
 				item.nazv.text=obj.nazv;
 				item.hp.text=obj.kol;
 				if (World.w.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);

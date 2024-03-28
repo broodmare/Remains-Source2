@@ -172,15 +172,17 @@ package fe.loc
 		}
 		
 		public function teleport() {
-			if (!main) {
+			if (main) {
+				if (World.w.game.missionId != 'rbl') World.w.game.gotoLand(World.w.game.missionId);
+			} else {
 				World.w.game.gotoLand(World.w.game.baseId);
 				if (World.w.hardInv && World.w.land.rnd) {
-					used=true;
-					inter.active=false;
-					inter.actionText='';
+					used = true;
+					inter.active = false;
+					inter.actionText = '';
 					vis.fiol.gotoAndStop(1);
 				}
-			} else if (World.w.game.missionId!='rbl') World.w.game.gotoLand(World.w.game.missionId);
+			}
 		}
 		
 		public function areaActivate() {

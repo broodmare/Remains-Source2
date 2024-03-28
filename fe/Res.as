@@ -8,9 +8,6 @@ package fe
 		public static var currentLanguageData:XML; 		// Current localization file eg. 'text_en.xml'
 		public static var fallbackLanguageData:XML;		// Default language that is used a fallback if an error occurs.
 
-		private static var combinedRegExp:RegExp = /\[br\]|\[|\]/g;
-		private static var controlCharsRegExp:RegExp = /[\b\r\t]/g;
-
 		private static const typeDictionary:Object = 
 		{
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
@@ -32,8 +29,7 @@ package fe
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String
 		{
 			if (id == '') return '';
-			try
-			{
+			try {
 				// Reduce redundant dictionary lookups
 				var tipType:String = typeDictionary[tip];
 				var razdType:String = typeDictionary[razd];
@@ -57,21 +53,21 @@ package fe
 					if (tip == 'o') return '';
 					if (razd == 0) return '*' + tipType + '_' + id;
 					return '';
-				}		
+				}
 
 				var xl2:XML = xl1[0];
-				
+
 				if (xl2.@m == '1')	// Strings with profanity
-				{		
+				{
 					var spl:Array = s.split('|');
 					if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
 				}
-				if (razd >= 1 || dop)
-				{
+				if (razd >= 1 || dop) {
 					if (xl2.@s1.length()) s = addKeys(s, xl2);
 					if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
 
 					//Merged all 3 regex searches instead of iterating 3 times per string.
+					var combinedRegExp:RegExp = /\[br]|\[|]/g;
 					s = s.replace(combinedRegExp, function(match:String, ...args):String
 					{
 						switch (match) {
@@ -87,6 +83,7 @@ package fe
 					});
 				}
 
+				var controlCharsRegExp:RegExp = /[\b\r\t]/g;
 				if (dop) s = s.replace(controlCharsRegExp, '');
 				if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
 			}
@@ -168,7 +165,7 @@ package fe
 					} else s = xml.n[0];
 				}
 				s = lpName(s);
-				s = s.replace(/\[br\]/g,'<br>');
+				s = s.replace(/\[br]/g,'<br>');
 				if (xml.@s1.length())
 				{
 					for (var j:int = 1; j <= 5; j++)

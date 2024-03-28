@@ -419,7 +419,8 @@ package fe.unit {
 					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1 + objectWidth / 2;
 					else coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
 
-					leftBound = coordinates.X - objectWidth / 2, rightBound=coordinates.X + objectWidth / 2;
+					leftBound = coordinates.X - objectWidth / 2;
+					rightBound=coordinates.X + objectWidth / 2;
 					stay=false;
 					return true;
 				}

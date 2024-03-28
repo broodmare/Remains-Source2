@@ -1,15 +1,15 @@
 package fe.loc
 {
-	//Класс, описывающий местность и активность игрока по отношению к местности
-	//Содержится в объекте game
 	import fe.*;
-	
+
+	//[Class describing the Land and the player's activity in relation to the Land]
+	//[Contained in the game object]
 	public class LandAct
 	{
 		public var id:String;
-		public var tip:String='';
+		public var tip:String = '';
 		public var land:Land;
-		public var loaded:Boolean=false;
+		public var loaded:Boolean = false;
 		
 		public var xmlland:XML;
 		public var allroom:XML;
@@ -45,7 +45,7 @@ package fe.loc
 		public var postMusic:Boolean=false;		//музыка не пеключается на боевую
 		public var fon:String;				//фон неподвижного задника
 		public var backwall:String;			//фон задней стены
-		public var border:String='A';			//материал бордюра
+		public var border:String='A';		//материал бордюра
 		public var visMult:Number=1;		//видимость
 		public var opacWater:Number=0;		//непрозрачность воды
 		public var darkness:int=0;			//затемнение

@@ -121,11 +121,5 @@ package fe.serv
 			st=false;
 			f=firstf;
 		}
-		
-		public function setStab(n:Number) {
-			if (n<0) n=0;
-			if (n>0.999) n=0.999;
-			f=maxf*n;
-		}
 	}
 }

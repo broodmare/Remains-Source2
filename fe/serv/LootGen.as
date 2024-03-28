@@ -18,13 +18,13 @@ package fe.serv {
 		
 		public static function init():void
 		{
-			arr=new Array();
-			var n:Array = new Array();
+			arr=[];
+			var n:Array = [];
 			n['weapon']=0;
-			arr['weapon']=new Array();
-			arr['magic']=new Array();
-			arr['uniq']=new Array();
-			arr['pers']=new Array();
+			arr['weapon']=[];
+			arr['magic']=[];
+			arr['uniq']=[];
+			arr['pers']=[];
 
 
 			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
@@ -45,7 +45,7 @@ package fe.serv {
 			{
 				if (item.@tip.length()) {
 					if (arr[item.@tip]==null) {
-						arr[item.@tip]=new Array();
+						arr[item.@tip]=[];
 						n[item.@tip]=0;
 					}
 					arr[item.@tip].push({id:item.@id, st:item.@stage, chance:(item.@chance.length()?item.@chance:1), lvl:item.@lvl,  r:(n[item.@tip]+=Number(item.@chance.length()?item.@chance:1))});
@@ -53,7 +53,7 @@ package fe.serv {
 				}
 				if (item.@tip2.length()) {
 					if (arr[item.@tip2]==null) {
-						arr[item.@tip2]=new Array();
+						arr[item.@tip2]=[];
 						n[item.@tip2]=0;
 					}
 					arr[item.@tip2].push({id:item.@id, st:item.@stage, chance:(item.@chance2.length()?item.@chance2:item.@chance), lvl:item.@lvl,  r:(n[item.@tip2]+=Number(item.@chance2.length()?item.@chance2:item.@chance))});
@@ -69,7 +69,7 @@ package fe.serv {
 			var gameStage:int=0
 			if (World.w.land) gameStage=World.w.land.gameStage;
 			if (tip!=Item.L_BOOK && (maxlvl>0 || worth>0 || gameStage>0)) {
-				res=new Array();
+				res=[];
 				for each(var i in a) {
 					if (
 						(gameStage<=0 || i.st==null || i.st<=gameStage) &&		//зависит от этапа сюжета
@@ -181,7 +181,8 @@ package fe.serv {
 			if (nloc==null) return false;
 			lootBroken=broken;
 			loc=nloc;
-			nx=nnx, ny=nny;
+			nx=nnx;
+			ny=nny;
 			is_loot=0;
 			var locdif:Number=Math.min(loc.locDifLevel,20);
 			var kol:int=1;
@@ -385,7 +386,7 @@ package fe.serv {
 				}
 			} else if (cont=='specweap') {
 				kol=Math.floor(Math.random()*4);
-				var vars:Array=new Array();
+				var vars:Array=[];
 				if (World.w.invent.weapons['lsword']==null || World.w.invent.weapons['lsword'].variant==0) vars.push('lsword^1');
 				if (World.w.invent.weapons['antidrak']==null || World.w.invent.weapons['antidrak'].variant==0) vars.push('antidrak^1');
 				if (World.w.invent.weapons['quick']==null || World.w.invent.weapons['quick'].variant==0) vars.push('quick^1');
@@ -407,7 +408,8 @@ package fe.serv {
 			if (nloc==null) return false;
 			lootBroken=false;
 			loc=nloc;
-			nx=nnx, ny=nny;
+			nx=nnx;
+			ny=nny;
 			is_loot=0;
 			//монстры
 			if (cont=='scorp') {

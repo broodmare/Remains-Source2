@@ -27,7 +27,7 @@ package fe.projectile
 		
 		public function trass(gr:Graphics)
 		{
-			sled=new Array();
+			sled=[];
 			X=begx;
 			Y=begy;
 			dx=begdx;
@@ -73,12 +73,10 @@ package fe.projectile
 				t=loc.getAbsTile(X,Y);
 				if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2)
 				{
-					if (!is_skok) vse=true;
-					else
-					{
-						X=t.phX2+1;
-						dx=Math.abs(dx*skok);
-					}
+					if (is_skok) {
+                        X = t.phX2 + 1;
+                        dx = Math.abs(dx * skok);
+                    } else vse = true;
 				}
 			}
 			//движение вправо
@@ -87,12 +85,10 @@ package fe.projectile
 				t=loc.getAbsTile(X,Y);
 				if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2)
 				{
-					if (!is_skok) vse=true;
-					else
-					{
-						X=t.phX1-1;
-						dx=-Math.abs(dx*skok);
-					}
+					if (is_skok) {
+                        X = t.phX1 - 1;
+                        dx = -Math.abs(dx * skok);
+                    } else vse = true;
 				}
 			}
 			if (vse)
@@ -108,12 +104,10 @@ package fe.projectile
 				t=loc.getAbsTile(X,Y);
 				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2)
 				{
-					if (!is_skok) vse=true;
-					else
-					{
-						Y=t.phY2+1;
-						dy=Math.abs(dy*skok);
-					}
+					if (is_skok) {
+                        Y = t.phY2 + 1;
+                        dy = Math.abs(dy * skok);
+                    } else vse = true;
 				}
 			}
 			//движение вниз
@@ -130,20 +124,15 @@ package fe.projectile
 				if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2)
 				{
 					Y=t.phY1-1;
-					if (!is_skok) vse=true;
-					else
-					{
-						if (dy>2)
-						{
-							dy=-Math.abs(dy*skok);
-							dx*=tormoz;
-						}
-						else
-						{
-							dy=0;
-							stay=true;
-						}
-					}
+					if (is_skok) {
+                        if (dy > 2) {
+                            dy = -Math.abs(dy * skok);
+                            dx *= tormoz;
+                        } else {
+                            dy = 0;
+                            stay = true;
+                        }
+                    } else vse = true;
 				}
 			}
 		}

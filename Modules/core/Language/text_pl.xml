@@ -1193,7 +1193,7 @@ Choć obecnie żaden kucyk nie produkuje ich, to wiele nadal funkcjonuje mimo up
 <item id="p10"><n>Nabój 10 mm</n>
 	<info>Powszechnie stosowana amunicja do broni kopytnej, łatwo uzyskiwana na Pustkowiach</info></item>
 <item id="p375" v="0.6"><n>Nabój kalibru 375</n>
-	<info>Pociski pistoletu „H&H Magnum", używane w niektórych rewolwerach i karabinach</info></item>
+	<info>Pociski pistoletu „H&amp;H Magnum", używane w niektórych rewolwerach i karabinach</info></item>
 <item id="p44"><n>Nabój kalibru 44</n>
 	<info>Nabój „Magnum" - cięższa, droższa i rzadsza niż inne amunicje do broni kopytnej </info></item>
 <item id="p32"><n>Nabój kalibru 32</n>
@@ -3182,9 +3182,9 @@ Po kilku latach cały ten obszar Equestrii był prawie całkowicie pozbawiony in
 <pip id="loadfile" v="0.7"><n>Z pliku...</n></pip>
 <pip id="savefile" v="0.7"><n>Do pliku...</n></pip>
 <pip id="gamesaves" v="0.7"><n>Zapisy gry</n></pip>
-<pip id="invupr1" s1="keyWeapon1" s2="keyWeapon12" v="0.8"><n>lpm - wybierz broń &ctrl +lpm lub rpm - ukryj/pokaż &keys do wybrania miejsca (@1-@2) - przydziel</n></pip>
-<pip id="invupr2" s1="keyWeapon1" s2="keyWeapon12" v="0.8"><n>lpm - załóż zbroje &keys do wyboru miejsca (@1-@2) - przydziel</n></pip>
-<pip id="invupr3" s1="keyWeapon1" s2="keyWeapon12" v="0.8"><n>lpm - użyj ekwipunku &keys do wybrania miejsca (@1-@2) - przydziel</n></pip>
+<pip id="invupr1" s1="keyWeapon1" s2="keyWeapon12" v="0.8"><n>lpm - wybierz broń &amp;ctrl +lpm lub rpm - ukryj/pokaż &amp;keys do wybrania miejsca (@1-@2) - przydziel</n></pip>
+<pip id="invupr2" s1="keyWeapon1" s2="keyWeapon12" v="0.8"><n>lpm - załóż zbroje &amp;keys do wyboru miejsca (@1-@2) - przydziel</n></pip>
+<pip id="invupr3" s1="keyWeapon1" s2="keyWeapon12" v="0.8"><n>lpm - użyj ekwipunku &amp;keys do wybrania miejsca (@1-@2) - przydziel</n></pip>
 <pip id="invupr5" v="0.6"><n>lpm - przeładuj</n></pip>
 
   <pip id="vaultupr" v="0.8">
@@ -3195,8 +3195,8 @@ Po kilku latach cały ten obszar Equestrii był prawie całkowicie pozbawiony in
 <pip id="usemed1"><n>lpm - zastosuj odpowiednie leki lub narzędzia</n></pip>
 <pip id="usemed2"><n>lpm - zapłacić za leczenie</n></pip>
 <pip id="inforepair"><n>lpm - napraw</n></pip>
-<pip id="infotrade"><n>lpm - wybierz 1 sztukę &shift +lpm - wybierz wszystko &ctrl +lpm lub ppm - odznacz</n></pip>
-<pip id="infoskills"><n>lpm - zwiększ umiejętność &ctrl +lpm lub ppm - anuluj</n></pip>
+<pip id="infotrade"><n>lpm - wybierz 1 sztukę &amp;shift +lpm - wybierz wszystko &amp;ctrl +lpm lub ppm - odznacz</n></pip>
+<pip id="infoskills"><n>lpm - zwiększ umiejętność &amp;ctrl +lpm lub ppm - anuluj</n></pip>
 <pip id="infoload" v="0.7"><n>lpm - wczytaj gre</n></pip>
 <pip id="infosave"><n>lpm - zapisz gre</n></pip>
 <pip id="infokeys"><n>lpm - zmienić przypisanie klawisza</n></pip>

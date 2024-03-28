@@ -26,8 +26,7 @@ package fe.inter
 		private var setkeyKey;
 		private var nSave:int=-1;
 		private var info:TextField;
-		private var hit1:Boolean, hit2:Boolean;
-		
+
 		private var file:FileReference = new FileReference();
 		private var ffil:Array;
 		
@@ -173,8 +172,9 @@ package fe.inter
 		//показ одного элемента
 		override protected function setStatItem(item:MovieClip, obj:Object):void
 		{
-			if (obj.id!=null) item.id.text=obj.id;
-			else item.id.text='';
+			if (obj.id == null) {
+                item.id.text = '';
+            } else item.id.text = obj.id;
 			item.id.visible=false;
 			item.scr.visible=false;
 			item.check.visible=false;
@@ -184,17 +184,17 @@ package fe.inter
 			if (page2==3 || page2==6) {
 				item.nazv.text=Res.pipText(obj.id);
 				item.ggName.text='';
-				if (obj.numb!=null) {
-					item.numb.text=obj.numb;
-					var scr:ScrollBar=item.scr;
-					scr.visible=true;
-					scr.minScrollPosition=0;
-					scr.maxScrollPosition=100;
-					scr.scrollPosition=obj.numb;
-					if (!scr.hasEventListener(ScrollEvent.SCROLL)) scr.addEventListener(ScrollEvent.SCROLL,optScroll);
-				} else {
-					item.numb.text='';
-				}
+				if (obj.numb == null) {
+                    item.numb.text = '';
+                } else {
+                    item.numb.text = obj.numb;
+                    var scr:ScrollBar = item.scr;
+                    scr.visible = true;
+                    scr.minScrollPosition = 0;
+                    scr.maxScrollPosition = 100;
+                    scr.scrollPosition = obj.numb;
+                    if (!scr.hasEventListener(ScrollEvent.SCROLL)) scr.addEventListener(ScrollEvent.SCROLL, optScroll);
+                }
 				if (obj.check!=null) {
 					item.check.visible=true;
 					var ch:CheckBox=item.check;
@@ -213,7 +213,7 @@ package fe.inter
 				item.nazv.text=obj.nazv;
 				item.numb.text=obj.date;
 				item.ggName.text=obj.gg;
-				if (obj.level) item.ggName.text+=((obj.level!='')?(' ('+obj.level+')'):'');
+				if (obj.level) item.ggName.text+=((obj.level == '') ? '' : (' (' + obj.level + ')'));
 				if (obj.land) item.land.text=obj.land.substr(0,18);
 				if (obj.hard==1) item.nazv.text+=' {!}';
 				if (obj.hard==2) item.nazv.text+=' [†]';
@@ -304,15 +304,14 @@ package fe.inter
 			pip.isSaveConf=true;
 		}
 
-		public function optCheck(event:Event):void
-		{
+		public function optCheck(event:Event):void {
 			var id=event.currentTarget.parent.id.text;
 			var sel:Boolean=(event.target as CheckBox).selected;
 			if (id=='dial_on') World.w.dialOn=sel;
 			if (id=='mat_filter') World.w.matFilter=sel;
 			if (id=='help_mess') World.w.helpMess=sel;
-			hit1=World.w.showHit>0;
-			hit2=World.w.showHit==2;
+			var hit1:Boolean = World.w.showHit > 0;
+			var hit2:Boolean = World.w.showHit == 2;
 			if (id=='show_hit1') hit1=sel;
 			if (id=='show_hit2') hit2=sel;
 			World.w.showHit=hit1?(hit2?2:1):0;
@@ -323,12 +322,12 @@ package fe.inter
 			if (id=='err_show') World.w.errorShowOpt=sel;
 			if (id=='zoom100') {
 				World.w.zoom100=sel;
-				if (!pip.light) {
+				if (pip.light) {
+					if (sel) World.w.cam.isZoom = 0;
+					else World.w.cam.isZoom = 2;
+				} else {
 					if (sel) World.w.cam.setZoom(0);
 					else World.w.cam.setZoom(2);
-				} else {
-					if (sel) World.w.cam.isZoom=0;
-					else World.w.cam.isZoom=2;
 				}
 			}
 			if (page2==6) {
@@ -337,7 +336,7 @@ package fe.inter
 			}
 			pip.isSaveConf=true;
 		}
-		
+
 		override protected function itemClick(event:MouseEvent):void
 		{
 			if (World.w.ctr.setkeyOn) return;

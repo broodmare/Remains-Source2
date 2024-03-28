@@ -1221,8 +1221,9 @@ package fe.weapon
 			s+=pier+'\t';
 			if (tip==5) s+='магия\t'+mana+'\t';
 			else {
-				if (ammo!='') s+=Res.txt('i',ammo)+'\t';
-				else s+='\t';
+				if (ammo == '') {
+                    s += '\t';
+                } else s += Res.txt('i', ammo) + '\t';
 				if (holder>0) {
 					s+=holder;
 					if (rashod>1) s+=' (-'+rashod+')';

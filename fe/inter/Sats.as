@@ -352,7 +352,7 @@ package fe.inter
 					}
 				}
 			}
-			units=new Array();
+			units=[];
 			for each (obj in que) {
 				obj.vis.visible=false;
 			}

@@ -74,12 +74,10 @@ package fe.inter
 		{
 			// Check if the node is already cached
 			var node:XML;
-			if (cachedUnits[id] != undefined) node = cachedUnits[id];
-			else
-			{
+			if (cachedUnits[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 				cachedUnits[id] = node;
-			}
+			} else node = cachedUnits[id];
 			return node;
 		}
 
@@ -174,7 +172,7 @@ package fe.inter
 				pip.vis.butHelp.visible=true;
 				pip.helpText=Res.txt('p','helpWorld',0,true);
 			} else if (page2==4) {	//записи
-				var doparr:Array=new Array();
+				var doparr:Array=[];
 				for each (var note:String in game.notes) 
 				{
 					//TODO: Stop searching Res on your own.
@@ -283,10 +281,11 @@ package fe.inter
 
 				vis.nazv.text = Res.txt('m',l.id);
 				var s:String = Res.txt('m',l.id,1);
-				if (!l.visited) s+="\n\n<span class ='blue'>"+Res.pipText('ls1')+"</span>";									// "Not visited" message
-				else if (l.passed) s+="\n\n<span class ='orange'>"+Res.pipText('ls2')+"</span>";							// "Cleared" message
-				else if (l.tip=='base') s+="\n\n<span class ='orange'>"+Res.pipText('ls4')+"</span>";						// "Base camp" message
-				else if (l.tip=='rnd') s+="\n\n<span class ='yellow'>"+Res.pipText('ls3')+": "+(l.landStage+1)+"</span>";	// "Location level reached" message
+				if (l.visited) {
+					if (l.passed) s += "\n\n<span class ='orange'>" + Res.pipText('ls2') + "</span>";							// "Cleared" message
+					else if (l.tip == 'base') s += "\n\n<span class ='orange'>" + Res.pipText('ls4') + "</span>";						// "Base camp" message
+					else if (l.tip == 'rnd') s += "\n\n<span class ='yellow'>" + Res.pipText('ls3') + ": " + (l.landStage + 1) + "</span>";
+				} else s += "\n\n<span class ='blue'>" + Res.pipText('ls1') + "</span>";	// "Location level reached" message
 				if (l.tip == 'rnd' && l.kolAllProb > 0)																		// "Trials complete x/x" message
 				{
 					if (l.kolClosedProb >= l.kolAllProb)	// If all trials complete, print in green
@@ -330,7 +329,7 @@ package fe.inter
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
 				s=s.replace(/\[/g,"<span class='yellow'>");
-				s=s.replace(/\]/g,"</span>");
+				s=s.replace(/]/g,"</span>");
 				vis.info.htmlText=s;
 			}
 			else if (page2==5)
@@ -433,7 +432,7 @@ package fe.inter
 								catch (err)
 								{
 									trace('ERROR: (00:3B)');
-								};
+								}
 								wk=true;
 							}
 						}

@@ -100,7 +100,7 @@ package fe.unit
 			dopTestOn=true;
 			friendlyExpl=0;
 			
-			turrets=new Array();
+			turrets=[];
 			
 			spd=new Object();
 			
@@ -280,7 +280,8 @@ package fe.unit
 				if (ugol>=360) ugol-=360;
 				isAtt=true;
 			} else if (aiState>=2) {
-				dx*=0.7, dy*=0.7;
+				dx*=0.7;
+				dy*=0.7;
 				if (dx<5 && dx>-5) dx=0;
 				if (dy<5 && dy>-5) dy=0;
 				isAtt=true;

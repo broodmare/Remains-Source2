@@ -267,7 +267,8 @@ package fe.unit {
 				return;
 			}
 			//gotoX=nx, gotoY=ny;
-			flyX=nx, flyY=ny+20;
+			flyX=nx;
+			flyY=ny+20;
 			aiState=3;
 			if (optTurn) storona=(flyX > coordinates.X)? 1:-1;
 			aiTCh=100;

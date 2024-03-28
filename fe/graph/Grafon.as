@@ -100,7 +100,7 @@ package fe.graph
 		//загрузка
 		public var resIsLoad:Boolean=false;
 		public var progressLoad:Number=0;
-		public static var spriteLists:Array=new Array();
+		public static var spriteLists:Array=[];
 		public static var texUrl:Array=['texture.swf','texture1.swf','sprite.swf','sprite1.swf'];
 		public var grLoaders:Array;
 		
@@ -129,7 +129,7 @@ package fe.graph
 			visSats.visible=false;
 			visSats.filters=[new BlurFilter(3,3,1)];
 			
-			visObjs = new Array();
+			visObjs = [];
 			for (var i = 0; i < kolObjs; i++) 
 			{
 				visObjs.push(new Sprite());
@@ -189,7 +189,7 @@ package fe.graph
 			visual.addChild(ramR);
 			visual.addChild(ramL);
 			
-			grLoaders = new Array();
+			grLoaders = [];
 			for (var i in texUrl)
 			{
 				var textureURL:String=texUrl[i];
@@ -322,7 +322,7 @@ package fe.graph
 				resX = loc.spaceX * tileX;
 				resY = loc.spaceY * Tile.tileY;
 				
-				var transpFon:Boolean=nloc.transpFon;;
+				var transpFon:Boolean=nloc.transpFon;
 				if (nloc.backwall=='sky') transpFon=true;
 				
 				World.w.gr_stage=2;
@@ -654,9 +654,10 @@ package fe.graph
 			var floor:Sprite	= new Sprite();
 			var fmaska:Sprite	= new Sprite();
 			
-			if (!material.texture) osn.graphics.beginFill(0x666666);
-			else if (loc.homeStable && material.alttexture != null) osn.graphics.beginBitmapFill(material.alttexture);
-			else osn.graphics.beginBitmapFill(material.texture);
+			if (material.texture) {
+				if (loc.homeStable && material.alttexture != null) osn.graphics.beginBitmapFill(material.alttexture);
+				else osn.graphics.beginBitmapFill(material.texture);
+			} else osn.graphics.beginFill(0x666666);
 
 			osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 
@@ -919,20 +920,29 @@ package fe.graph
 
 				case 15: //плазма
 					if (soft) drC = plasma_soft;
-					else erC=plasma_dyr, drC=plasma_tre;
+					else {
+						erC = plasma_dyr;
+						drC = plasma_tre;
+					}
 
 					bl = 'hardlight';
 				break;
 
 				case 16:
 					if (soft) drC=fire_soft;
-					else erC=plasma_dyr, drC=bluplasma_tre;
+					else {
+						erC = plasma_dyr;
+						drC = bluplasma_tre;
+					}
 					bl = 'hardlight';
 				break;
 
 				case 17:
 					if (soft) drC=fire_soft;
-					else erC=plasma_dyr, drC=pinkplasma_tre;
+					else {
+						erC = plasma_dyr;
+						drC = pinkplasma_tre;
+					}
 					bl = 'hardlight';
 				break;
 
@@ -1053,9 +1063,12 @@ package fe.graph
 			}
 			
 			// Finish up by adjusting the painted area on the canvas.
-			brPoint.x = rx1, brPoint.y = ry1;
-			brRect.left = 0, brRect.right = rx2 - rx1;
-			brRect.top = 0, brRect.bottom = ry2 - ry1;
+			brPoint.x = rx1;
+			brPoint.y = ry1;
+			brRect.left = 0;
+			brRect.right = rx2 - rx1;
+			brRect.top = 0;
+			brRect.bottom = ry2 - ry1;
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
 		

@@ -2,6 +2,8 @@ package fe.unit
 {
 	import fe.*;
 	
+	//NOTES:
+	//BUL=0, BLADE=1, PHIS=2, FIRE=3, EXPL=4, LASER=5, PLASMA=6, VENOM=7, EMP=8, SPARK=9, ACID=10;
 	public class Armor
 	{
 		public var id:String;
@@ -11,7 +13,7 @@ package fe.unit
 		public var clo:int=0;		//броню можно переодевать в любой момент в огран инвентаре
 		public var active:Boolean=false;
 		public var xml:XML;
-		//BUL=0, BLADE=1, PHIS=2, FIRE=3, EXPL=4, LASER=5, PLASMA=6, VENOM=7, EMP=8, SPARK=9, ACID=10;
+		
 		
 		public var lvl:int=0, maxlvl:int=0;
 		public var armor:Number=0, marmor:Number=0, armor_qual:Number=0;		//броня, вероятность того, что она сработает
@@ -73,7 +75,7 @@ package fe.unit
 			if (xml.@fly.length()) ableFly=1;
 			if (xml.@hide.length()) hideMane=xml.@hide;
 			
-			resist=new Array();
+			resist=[];
 			for (var i=0; i<Unit.kolVulners; i++) resist[i]=0;
 			if (tip==1) resist[Unit.D_PINK]=-0.5;
 			if (lvl>=0) getXmlParam(xml.upd[lvl]);

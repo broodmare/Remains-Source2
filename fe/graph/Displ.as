@@ -28,7 +28,7 @@ package fe.graph
 		var disp_t:int=0;
 		
 		var wavKol:int=10;
-		var wavArr:Array=new Array();
+		var wavArr:Array=[];
 		var disX=200, disY=250;
 		var spd:Number=1;
 		
@@ -57,7 +57,8 @@ package fe.graph
 			}
 			v=new visSerost();
 			displStamp.addChild(v);
-			p_x=mm.pistol.x, p_y=mm.pistol.y;
+			p_x=mm.pistol.x;
+			p_y=mm.pistol.y;
 			if (gr) {
 				gr.tuchi.cacheAsBitmap=gr.maska.cacheAsBitmap=true;
 				gr.tuchi.blendMode='screen';

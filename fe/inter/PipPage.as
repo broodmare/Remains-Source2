@@ -47,9 +47,9 @@ package fe.inter
 		var itemTrans:ColorTransform=new ColorTransform(1,1,1);
 		var pp:String;
 		var kolCats:int=6;
-		var cat:Array=[0,0,0,0,0,0,0];
-		var curTip='';
-		var tips:Array=[[]];
+		var cat:Array=[0, 0, 0, 0, 0, 0, 0];
+		var curTip = '';
+		var tips:Array = [[]];
 
 		private static var damageTypes:Array = [
 			{type: Unit.D_BUL,		label: 'bullet'},
@@ -88,7 +88,7 @@ package fe.inter
 			
 			vis.scBar.addEventListener(ScrollEvent.SCROLL,statScroll);
 			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
-			statArr=new Array();
+			statArr=[];
 			var item:MovieClip;
 			for (var i:int = -1; i < maxrows; i++)
 			{
@@ -126,7 +126,7 @@ package fe.inter
 		public static function setStyle(tt:TextField):void
 		{
 			var style:StyleSheet = new StyleSheet(); 
-			var styleObj:Object = new Object(); 
+			var styleObj:Object = new Object();
 			styleObj.color = "#00FF99"; 
 			style.setStyle(".r0", styleObj); 	//по умолчанию зелёный
 			
@@ -200,7 +200,7 @@ package fe.inter
 			vis.nazv.text='';
 			vis.bottext.text='';
 			vis.emptytext.text='';
-			arr=new Array();
+			arr=[];
 			if (flop) scrl=0;
 			if (vis.scText) vis.scText.visible=false;
 			
@@ -905,28 +905,31 @@ package fe.inter
 		// Initialize filter buttons
 		protected function setCats():void
 		{
-			var arr:Array = tips[page2];
-			if (arr == null)
-			{
+			var arr = tips[page2];
+			
+			if (arr == null) {
 				vis.cats.visible = false;
 				return;
 			}
-
+			
 			vis.cats.visible = true;
-			var ntip:String;
-			for (var i:int = 0; i <= kolCats; i++)
-			{
-				var category:String = 'cat' + i.toString();
-
-				ntip = arr[i];
-				if (ntip == null) vis.cats[category].visible = false;
-				else	// Display filter category icons
-				{
-					if (ntip is Array) ntip = ntip[0];
-					vis.cats[category].visible = true;
-
-					if (ntip != "")vis.cats[category].ico.gotoAndStop(ntip);
-					else vis.cats[category].ico.gotoAndStop(1);	// Blank box
+			
+			var ntip;
+			for (var i:int  = 0; i <= kolCats; i++) {
+				ntip=arr[i];
+				if (ntip==null) vis.cats['cat'+i].visible=false;
+				else {
+					if (ntip is Array) ntip=ntip[0];
+					vis.cats['cat'+i].visible=true;
+					// TODO: This is throwing an error, but is using a null ref for pipbuck category filter alignment.
+					try {
+						vis.cats['cat' + i].ico.gotoAndStop(ntip);
+					}
+					catch (err)
+					{
+						trace("PipPage.as/setCats() - " + err);
+						vis.cats['cat' + i].ico.gotoAndStop(1);
+					}
 				}
 			}
 			selCat(cat[page2]);

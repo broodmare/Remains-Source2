@@ -1,350 +1,406 @@
-package fe.inter {
-	
+package fe.inter
+{	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+
 	import fe.*;
 	import fe.unit.Unit;
 	
-	public class Consol {
+	// Debug console class. 
+	// The debug console contains three textboxes. "help", "list1", and "list2" in order from left to right.
+	public class Consol
+	{
+		private var world = World.w;
+
 		public var vis:MovieClip;
 		public var ist:Array;
-		public var istN:int=0;
-		
-		private var help:XML=<chit>
-			<a>all - добавить всё</a>
-			<a>all weapon - добавить всё оружие</a>
-			<a>all armor - добавить всю броню</a>
-			<a>all item - 1000 каждого предмета</a>
-			<a>all ammo - 10000 каждого патрона</a>
-			<a>min - добавить необходимый минимум</a>
-			<a>god - неуязвимость вкл/выкл</a>
-			<a>jump - поменять режим прыжка</a>
-			<a>xp X - добавить X опыта</a>
-			<a>lvl X - установить уровень перса в X</a>
-			<a>sp X - добавить Х скилл-поинтов</a>
-			<a>pp X - добавить Х перк-поинтов</a>
-			<a>money X - установить количество крышек Х</a>
-			<a>weapon ID - получить оружие ID</a>
-			<a>armor ID - получить броню ID</a>
-			<a>item ID X - установить количество вещей ID в Х</a>
-			<a>ammo ID X - установить количество патронов ID в Х</a>
-			<a>skill ID n - установить скилл ID на величину n (0-20)</a>
-			<a>perk ID - получить перк ID</a>
-			<a>eff ID - получить эффект ID</a>
-			<a>res - сброс всех эффектов</a>
-			<a>testeff - все эффекты будут в 10 раз короче</a>
-			<a>testdam - отменяет разброс урона</a>
-			<a>hardinv - вкл/выкл ограниченный инвентарь</a>
-			<a>repair - отремонтировать оружие</a>
-			<a>crack X - повредить оружие на X%</a>
-			<a>break X - повредить броню на X%</a>
-			<a>lim X - установить лимит особого лута в X%</a>
-			<a>heal - полное исцеление</a>
-			<a>mana X - установить ману</a>
-			<a>die - умереть</a>
-			<a>check - вернуться на контрольную точку</a>
-			<a>goto X Y - переместиться в локацию с координатами X Y</a>
-			<a>clear - сброс некоторых переменных</a>
-			<a>map - показать всю карту</a>
-			<a>black - скрыть/показать туман войны</a>
-			<a>enemy - вкл/выкл ИИ</a>
-			<a>fly - можно включать полёт клавишей ~</a>
-			<a>port - телепорт клавишей ~</a>
-			<a>emit X - вызов частицы X клавишей ~</a>
-			<a>refill - пополнить товары у торговцев</a>
-			<a>getroom - зачистить комнату</a>
-			<a>getloc - зачистить локацию</a>
-			<a>dif X - изменить сложность (0-4)</a>
-			<a>st X Y - установить триггер X в значение Y</a>
-			<a>trigger X - получить значение триггера X</a>
-			<a>triggers - получить значение триггеров</a>
-		</chit>;
+		public var istN:int = 0;
 
-		public function Consol(vcons:MovieClip, prev:String=null) {
-			vis=vcons;
-			ist=new Array();
-			if (prev!=null) ist.push(prev);
-			vis.visible=false;
-			vis.input.addEventListener(KeyboardEvent.KEY_DOWN,onKeyboardDownEvent);
-			vis.butEnter.addEventListener(MouseEvent.CLICK,onButEnter);
-			vis.butClose.addEventListener(MouseEvent.CLICK,onButClose);
-			for each(var i in help.a) vis.help.text+=i+'\n';
-			// TODO: Stop searching Res on your own.
-			for each(i in Res.currentLanguageData.weapon) vis.list1.text+=i.@id+' \t'+i.n[0]+'\n';
-			for each(i in Res.currentLanguageData.item) vis.list2.text+=i.@id+' \t'+i.n[0]+'\n';
-			for each(i in Res.currentLanguageData.ammo) vis.list2.text+=i.@id+' \t'+i.n[0]+'\n';
-			vis.help.visible=vis.list1.visible=vis.list2.visible=false;
+		public var consoleIsVisible:Boolean = false;
+		private var textboxesVisible:Boolean = false;
+
+		public function Consol(vcons:MovieClip, prev:String = null)
+		{
+			vis = vcons;
+			ist = [];
+
+			if (prev != null) ist.push(prev);
+
+			vis.input.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDownEvent);
+			vis.butEnter.addEventListener(MouseEvent.CLICK, onButEnter);
+			vis.butClose.addEventListener(MouseEvent.CLICK, onButClose);
+
+			// Build the help command using each node in help.xml
+			// REMOVED BUILDING THE HELP STRING HERE
+
+			// Quick Hack
+			vis.help.text = "Debug Console\n";
+			vis.help.text += "Up/Down - Command history\n";
+			vis.help.text += "Enter - Apply the command\n";
+			vis.help.text += "End or Esc - Close the console\n";
+
+			vis.visible = consoleIsVisible;
+			setTextBoxVisibility(textboxesVisible);
 		}
-		
-		public function onKeyboardDownEvent(event:KeyboardEvent):void {
-			if (event.keyCode==Keyboard.ENTER) {
+
+		// Allow other classes to hide the console.
+		public function setConsoleVisiblility(setState:Boolean):void
+		{
+			vis.visible = setState;
+			consoleIsVisible	= setState;
+
+			trace("Consol.as/setConsoleVisiblility() - Set console visiblity to " + setState.toString());
+
+			if (consoleIsVisible) world.swfStage.focus = vis.input;
+		}
+
+		public function printLine(text:String):void
+		{
+			vis.list2.text += text;
+		}
+
+		public function clearBox(box:int):void
+		{
+			switch (box)
+			{
+				case 0:
+					vis.help.text = "";
+					break;
+				case 1:
+					vis.list1.text = "";
+					break;
+				case 2:
+					vis.lsit2.text = "";
+					break;
+				default:
+					trace("Consol.as/clearBox() - ERROR: Tried to clear unknown box!");
+			}
+		}
+		private function onKeyboardDownEvent(event:KeyboardEvent):void
+		{
+			if (event.keyCode == Keyboard.ENTER) {
 				analis();
 			}
-			if (event.keyCode==Keyboard.END || event.keyCode==Keyboard.ESCAPE) {
-				World.w.consolOnOff();
+
+			if (event.keyCode == Keyboard.END || event.keyCode == Keyboard.ESCAPE) {
+				setConsoleVisiblility(false);
 			}
-			if (event.keyCode==Keyboard.UP) {
-				if (istN>0) istN--;
-				if (istN<ist.length) vis.input.text=ist[istN];
+
+			if (event.keyCode == Keyboard.UP) {
+				if (istN > 0) istN--;
+				if (istN < ist.length) vis.input.text = ist[istN];
 			}
-			if (event.keyCode==Keyboard.DOWN) {
-				if (istN<ist.length) istN++;
-				if (istN<ist.length) vis.input.text=ist[istN];
+
+			if (event.keyCode == Keyboard.DOWN) {
+				if (istN < ist.length) istN++;
+				if (istN < ist.length) vis.input.text = ist[istN];
 			}
+
 			event.stopPropagation();
 		}
-		
-		public function onButEnter(event:MouseEvent):void {
+
+		private function onButEnter(event:MouseEvent):void
+		{
 			analis();
 			event.stopPropagation();
 		}
-		public function onButClose(event:MouseEvent):void {
-			World.w.consolOnOff();
+
+		private function onButClose(event:MouseEvent):void
+		{
+			setConsoleVisiblility(false);
 			event.stopPropagation();
 		}
-		
-		public var visoff=false;
-		
-		function off() {
-			visoff=true;
+
+		private function setTextBoxVisibility(setState:Boolean):void
+		{
+			textboxesVisible = setState;
+			vis.help.visible	= setState;
+			vis.list1.visible	= setState;
+			vis.list2.visible	= setState;
+
+			trace("Consol.as/setTextBoxVisibility() - Set console textbox visiblity to " + setState.toString());
 		}
-		
+
 		private function analis():void
 		{
-			var str:String=vis.input.text;
+			var str:String = vis.input.text;
+			
 			ist.push(str);
-			World.w.lastCom=str;
-			World.w.saveConfig();
-			istN=ist.length;
-			vis.input.text='';
-			var s:Array=str.split(' ');
+			world.lastCom = str;
+			world.saveConfig();
+			istN = ist.length;
+			vis.input.text = "";
+			
+			var s:Array = str.split(" ");
+
+			vis.help.text = "";
+			vis.help.text += "Command: \"" + s[0] + "\"\n"
+
 			switch (s[0]) 
 			{
-				case 'clear':
-					World.w.cam.dblack=0;
-					World.w.gg.controlOn();
-					World.w.gg.vis.visible=true;
-					World.w.vblack.alpha=0;
-					World.w.vblack.visible=false;
-					World.w.t_exit=World.w.t_die=0;
-					World.w.vgui.visible=World.w.vfon.visible=World.w.visual.visible=true;
+				case "clear":
+					world.cam.dblack=0;
+					world.gg.controlOn();
+					world.gg.vis.visible=true;
+					world.vblack.alpha=0;
+					world.vblack.visible=false;
+					world.t_exit=world.t_die=0;
+					world.vgui.visible=world.vfon.visible=world.visual.visible=true;
 					Snd.off=false;
-					World.w.pip.noAct=false;
+					world.pip.noAct=false;
 					break;
-				case 'redraw':
-					World.w.redrawLoc();
+				case "redraw":
+					world.redrawLoc();
 					break;
-				case 'hud':
-					World.w.gui.vis.visible=!World.w.gui.vis.visible;
+				case "hud":
+					world.gui.vis.visible=!world.gui.vis.visible;
 					break;
-				case 'die':
-					World.w.gg.damage(10000,Unit.D_INSIDE);
+				case "die":
+					world.gg.damage(10000,Unit.D_INSIDE);
 					break;
-				case 'hardreset':
-					if (World.w.pers.dead)
+				case "hardreset":
+					if (world.pers.dead)
 					{
-						World.w.pers.dead=false;
-						World.w.t_die=210;
-						World.w.gg.anim('die',true);
-						off();
+						world.pers.dead=false;
+						world.t_die=210;
+						world.gg.anim("die",true);
+						setConsoleVisiblility(false);
 					}
 					break;
-				case 'hardinv':
-					World.w.hardInv=!World.w.hardInv;
+				case "hardinv":
+					world.hardInv=!world.hardInv;
 					break;
-				case 'res_watcher':
-					World.w.game.triggers['observer']=1;
+				case "res_watcher":
+					world.game.triggers["observer"] = 1;
 					break;
-				case 'mqt':
-					World.w.chitOn=!World.w.chitOn;
-					World.w.saveConfig();
-					break;
-				case '?':
-					vis.help.visible=vis.list1.visible=vis.list2.visible=!vis.help.visible;
+				case "mqt":
+					world.chitOn=!world.chitOn;
+					world.saveConfig();
 					break;
 				//TODO: Re-implement check that chitOn == true for commands below this point.
-				case 'hardcore':
-					World.w.pers.hardcore=!World.w.pers.hardcore;
+				case "hardcore":
+					world.pers.hardcore=!world.pers.hardcore;
 					break;
-				case 'testmode':
-					World.w.testMode=!World.w.testMode;
+				case "testmode":
+					world.testMode=!world.testMode;
 					break;
-				case 'dif':
-					World.w.game.globalDif=s[1];
-					if (World.w.game.globalDif<0) World.w.game.globalDif=0;
-					if (World.w.game.globalDif>4) World.w.game.globalDif=4;
-					World.w.pers.setGlobalDif(World.w.game.globalDif);
-					World.w.pers.setParameters();
+				case "dif":
+					world.game.globalDif=s[1];
+					if (world.game.globalDif<0) world.game.globalDif=0;
+					if (world.game.globalDif>4) world.game.globalDif=4;
+					world.pers.setGlobalDif(world.game.globalDif);
+					world.pers.setParameters();
 					break;
-				case 'all':
+				case "all":
 					if (s.length==1)
 					{
-						World.w.invent.addAll();
-						World.w.pers.addSkillPoint(10);
+						world.invent.addAll();
+						world.pers.addSkillPoint(10);
 					}
-					else if (s[1]=='weapon') World.w.invent.addAllWeapon();
-					else if (s[1]=='ammo') World.w.invent.addAllAmmo();
-					else if (s[1]=='item') World.w.invent.addAllItem();
-					else if (s[1]=='armor') World.w.invent.addAllArmor();
-					off();
+					else if (s[1]=="weapon") world.invent.addAllWeapon();
+					else if (s[1]=="ammo") world.invent.addAllAmmo();
+					else if (s[1]=="item") world.invent.addAllItem();
+					else if (s[1]=="armor") world.invent.addAllArmor();
+					setConsoleVisiblility(false);
 					break;
-				case 'min':
-					World.w.invent.addMin();
-					off();
+				case "min":
+					world.invent.addMin();
+					setConsoleVisiblility(false);
 					break;
-				case 'god':
-					World.w.godMode=!World.w.godMode;
+				case "god":
+					world.godMode=!world.godMode;
 					break;
-				case 'lvl':
-				case 'level':
-					World.w.pers.setForcLevel(s[1]);
+				case "lvl":
+				case "level":
+					world.pers.setForcLevel(s[1]);
 					break;
-				case 'xp':
-					World.w.pers.expa(s[1]);
+				case "xp":
+					world.pers.expa(s[1]);
 					break;
-				case 'sp':
-					if (s.length==1) World.w.pers.addSkillPoint();
-					else World.w.pers.addSkillPoint(int(s[1]));
+				case "sp":
+					if (s.length==1) world.pers.addSkillPoint();
+					else world.pers.addSkillPoint(int(s[1]));
 					break;
-				case 'pp':
-					if (s.length==1) World.w.pers.perkPoint++;
-					else  World.w.pers.perkPoint+=int(s[1]);
+				case "pp":
+					if (s.length==1) world.pers.perkPoint++;
+					else  world.pers.perkPoint+=int(s[1]);
 					break;
-				case 'weapon':
-					if (s.length==2) World.w.invent.addWeapon(s[1]);
-					else if (s.length>2) World.w.invent.updWeapon(s[1],1)
+				case "weapon":
+					if (s.length==2) world.invent.addWeapon(s[1]);
+					else if (s.length>2) world.invent.updWeapon(s[1],1)
 					break;
-				case 'remw':
-					if (s.length==2) World.w.invent.remWeapon(s[1]);
+				case "remw":
+					if (s.length==2) world.invent.remWeapon(s[1]);
 					break;
-				case 'armor':
-					if (s.length==2) World.w.invent.addArmor(s[1]);
+				case "armor":
+					if (s.length==2) world.invent.addArmor(s[1]);
 					break;
-				case 'money':
-					if (s.length==2) World.w.invent.items['money'].kol=int(s[1]);
+				case "money":
+					if (s.length==2) world.invent.items["money"].kol=int(s[1]);
 					break;
-				case 'item':
-					if (World.w.invent.items[s[1]]==null) return;
-					if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
-					else if (s.length==2) World.w.invent.items[s[1]].kol++;
-					World.w.game.checkQuests(s[1]);
-					World.w.pers.setParameters();
+				case "item":
+					if (world.invent.items[s[1]]==null) return;
+					if (s.length==3) world.invent.items[s[1]].kol=int(s[2]);
+					else if (s.length==2) world.invent.items[s[1]].kol++;
+					world.game.checkQuests(s[1]);
+					world.pers.setParameters();
 					break;
-				case 'ammo':
-					if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
+				case "ammo":
+					if (s.length==3) world.invent.items[s[1]].kol=int(s[2]);
 					break;
-				case 'perk':
-					if (s.length==2) World.w.pers.addPerk(s[1]);
+				case "perk":
+					if (s.length==2) world.pers.addPerk(s[1]);
 					break;
-				case 'skill':
-					if (s.length==3) World.w.pers.setSkill(s[1], s[2]);
+				case "skill":
+					if (s.length==3) world.pers.setSkill(s[1], s[2]);
 					break;
-				case 'eff':
-					if (s.length==2) World.w.gg.addEffect(s[1]);
+				case "eff":
+					if (s.length==2) world.gg.addEffect(s[1]);
 					break;
-				case 'res':
-					if (World.w.gg.effects.length>0) {
-						for each (var eff in World.w.gg.effects) eff.unsetEff();
+				case "res":
+					if (world.gg.effects.length>0) {
+						for each (var eff in world.gg.effects) eff.unsetEff();
 					}
 					break;
-				case 'repair':
-					World.w.gg.currentWeapon.repair(1000000);
+				case "repair":
+					world.gg.currentWeapon.repair(1000000);
 					break;
-				case 'refill':
-					World.w.game.refillVendors();
+				case "refill":
+					world.game.refillVendors();
 					break;
-				case 'rep':
-					if (s.length==2) World.w.pers.rep=int(s[1]);
+				case "rep":
+					if (s.length==2) world.pers.rep=int(s[1]);
 					break;
-				case 'crack':
-					if (s.length==2 && World.w.gg.currentWeapon) World.w.gg.currentWeapon.hp=Math.round(World.w.gg.currentWeapon.maxhp*Number(s[1])/100);
+				case "crack":
+					if (s.length==2 && world.gg.currentWeapon) world.gg.currentWeapon.hp=Math.round(world.gg.currentWeapon.maxhp*Number(s[1])/100);
 					break;
-				case 'break':
-					if (s.length==2 && World.w.gg.currentArmor) World.w.gg.currentArmor.hp=Math.round(World.w.gg.currentArmor.maxhp*Number(s[1])/100);
+				case "break":
+					if (s.length==2 && world.gg.currentArmor) world.gg.currentArmor.hp=Math.round(world.gg.currentArmor.maxhp*Number(s[1])/100);
 					break;
-				case 'heal':
-					World.w.gg.heal(10000);
+				case "heal":
+					world.gg.heal(10000);
 					break;
-				case 'rad':
-					World.w.gg.rad=s[1];
-					World.w.gui.setAll();
+				case "rad":
+					world.gg.rad=s[1];
+					world.gui.setAll();
 					break;
-				case 'mana':
-					World.w.pers.manaHP=int(s[1]);
-					World.w.pers.setParameters();
+				case "mana":
+					world.pers.manaHP=int(s[1]);
+					world.pers.setParameters();
 					break;
-				case 'check':
-					World.w.land.gotoCheckPoint();
+				case "check":
+					world.land.gotoCheckPoint();
 					break;
-				case 'goto':
-					if (s.length==3) World.w.land.gotoXY(s[1],s[2]);
+				case "goto":
+					if (s.length==3) world.land.gotoXY(s[1],s[2]);
 					break;
-				case 'map':
-					World.w.drawAllMap=!World.w.drawAllMap;
+				case "map":
+					world.drawAllMap=!world.drawAllMap;
 					break;
-				case 'black':
-					World.w.black=!World.w.black;
-					World.w.grafon.visLight.visible=World.w.black && World.w.loc.black;
+				case "black":
+					world.black=!world.black;
+					world.grafon.visLight.visible=world.black && world.loc.black;
 					break;
-				case 'battle':
-					World.w.testBattle=!World.w.testBattle;
+				case "battle":
+					world.testBattle=!world.testBattle;
 					break;
-				case 'testeff':
-					World.w.testEff=!World.w.testEff;
+				case "testeff":
+					world.testEff=!world.testEff;
 					break;
-				case 'testdam':
-					World.w.testDam=!World.w.testDam;
+				case "testdam":
+					world.testDam=!world.testDam;
 					break;
-				case 'enemy':
-					if (World.w.enemyAct==3) World.w.enemyAct=0;
-					else World.w.enemyAct=3;
+				case "enemy":
+					if (world.enemyAct==3) world.enemyAct=0;
+					else world.enemyAct=3;
 					break;
-				case 'lim':
-					if (s.length==2) World.w.land.lootLimit=Number(s[1]);
+				case "lim":
+					if (s.length==2) world.land.lootLimit=Number(s[1]);
 					break;
-				case 'fly':
-				case 'port':
-				case 'emit':
-					World.w.chit=s[0];
-					World.w.chitX=s[1];
+				case "fly":
+				case "port":
+				case "emit":
+					world.chit=s[0];
+					world.chitX=s[1];
 					break;
-				case 'getroom':
-					World.w.testLoot=true;
-					trace('получено опыта', World.w.loc.getAll());
-					World.w.testLoot=false;
+				case "getroom":
+					world.testLoot=true;
+					trace('получено опыта', world.loc.getAll());
+					world.testLoot=false;
 					break;
-				case 'err':
-					World.w.landError=!World.w.landError;
+				case "err":
+					world.landError=!world.landError;
 					break;
-				case 'getloc':
-					World.w.testLoot=true;
-					trace('получено опыта', World.w.land.getAll());
-					World.w.testLoot=false;	
+				case "getloc":
+					world.testLoot=true;
+					trace('получено опыта', world.land.getAll());
+					world.testLoot=false;	
 					break;
-				case 'alicorn':
-					if (World.w.alicorn) World.w.gg.alicornOff();
-					else World.w.gg.alicornOn();
+				case "alicorn":
+					if (world.alicorn) world.gg.alicornOff();
+					else world.gg.alicornOn();
 					break;
-				case 'st':
-					if (s.length==3) World.w.game.triggers[s[1]]=s[2];
+				case "st":
+					if (s.length==3) world.game.triggers[s[1]]=s[2];
 					break;
-				case 'trigger':
-					if (s.length==2) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
+				case "trigger":
+					if (s.length==2) world.gui.infoText("trigger", s[1], world.game.triggers[s[1]]);
 					break;
-				case 'triggers':
-					if (s.length>1) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
+				case "triggers":
+					if (s.length>1) world.gui.infoText("trigger", s[1], world.game.triggers[s[1]]);
 					else {
-						for (var i in World.w.game.triggers)  World.w.gui.infoText('trigger',i,World.w.game.triggers[i]);
+						for (var i in world.game.triggers)  world.gui.infoText("trigger", i, world.game.triggers[i]);
 					}
+					break;
+				case "textboxes":
+					var b:Boolean = !textboxesVisible;
+					setTextBoxVisibility(b);
+					break;
+				case "listWeapons":
+					vis.list1.text = "";
+					for each(i in Res.currentLanguageData.weapon) vis.list1.text += i.@id + " \t" + i.n[0] + "\n";
+					if (!textboxesVisible) setTextBoxVisibility(true);
+					break;
+				case "listAmmo":
+					vis.list1.text = "";
+					for each(i in Res.currentLanguageData.ammo) vis.list1.text += i.@id + " \t" + i.n[0] + "\n";
+					if (!textboxesVisible) setTextBoxVisibility(true);
+					break;
+				case "listItems":
+					vis.list1.text = "";
+					for each(i in Res.currentLanguageData.item) vis.list1.text += i.@id + " \t" + i.n[0] + "\n";
+					if (!textboxesVisible) setTextBoxVisibility(true);
+					break;
+				case "spam":
+					vis.help.text	+= "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+					vis.list1.text	+= "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+					vis.list2.text	+= "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+					if (!textboxesVisible) setTextBoxVisibility(true);
+					break;
+				case "textboxClear":
+					vis.help.text	= "";
+					vis.list1.text	= "";
+					vis.list2.text	= "";
 					break;
 				default:
-					off();
+					//setConsoleVisiblility(false);
+					vis.help.text += "Command: \"" + s[0] + "\ not recognized!\n";
+					trace("Consol.as/analis() - ERROR: Command: \"" + s[0] + "\" not recognized!");
 					break;
 			}
-
-			World.w.gui.setAll();
+			
+			
+			
+			// TODO: What is this for???
+			if (world.gui) {
+				world.gui.setAll();
+			}
+			else {
+				trace("Consol.as/analis() - ERROR! world.gui is null!");
+			}
+			
 		}
 	}
 }

@@ -10,12 +10,12 @@ package fe
 	
 	public class Snd
 	{
-		public static var snd:Array = new Array();
+		public static var snd:Array = [];
 		public static var globalVol = 0.4;		// Used by pipbuckOpt as a string.
 		public static var stepVol = 0.5;		// Used by pipbuckOpt as a string.
 		public static var musicVol = 0.2;		// Used by pipbuckOpt as a string.
 		public static var music:Sound;
-		public static var musics:Array=new Array();
+		public static var musics:Array=[];
 		public static var sndNames:Array = ['mp5'];
 		public static var musicName:String='';
 		public static var onSnd:Boolean=true;
@@ -419,7 +419,7 @@ package fe
 				resSnd.load(urlReq);
 				resSnd.contentLoaderInfo.addEventListener(Event.COMPLETE, resLoaded);  
 			}
-			shumArr=new Array();
+			shumArr=[];
 			inited=true;
 		}
 		
@@ -476,19 +476,21 @@ package fe
 					var id:String = j.@id;
 					if (j.s.length())
 					{
-						snd[id] = new Array();
+						snd[id] = [];
 						for each (var e:XML in j.s)
 						{
 							s = resSounds.getSnd(e.@id);
-							if (s != null) snd[id].push(s);
-							else trace('res sound err '+id+'.'+e.@id);
+							if (s == null) {
+                                trace('res sound err ' + id + '.' + e.@id);
+                            } else snd[id].push(s);
 						}
 					} 
 					else
 					{
 						s = resSounds.getSnd(id);
-						if (s != null) snd[id] = s;
-						else trace('res sound err ' + id);
+						if (s == null) {
+                            trace('res sound err ' + id);
+                        } else snd[id] = s;
 					}
 				}
 			}
