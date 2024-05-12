@@ -203,67 +203,63 @@ package fe.unit
 		}
 		
 		public override function animate() {
-			try {
-				var cframe:int;
-				//поворот
-				if (sost==2 || sost==3) { //сдох
-					if (stay) {
-						if (animState=='fall') {
-						}
-						else if (animState=='death') animState='fall';
-						else animState='die';
+			var cframe:int;
+			//поворот
+			if (sost==2 || sost==3) { //сдох
+				if (stay) {
+					if (animState=='fall') {
 					}
-					else animState='death';
+					else if (animState=='death') animState='fall';
+					else animState='die';
 				}
-				else {
-					if (stay) {
-						if  (dx==0 || aiState==7) {
-							animState='stay';
-						}
-						else if (attackerType==0 && aiAttack || aiState==8) {
-							animState='run';
-							sndStep(anims[animState].f,2);
-						}
-						else if (walker && (aiState<=1 || aiState==4)) {
-							animState='walk';
-							sndStep(anims[animState].f,1);
-						}
-						else {
-							animState='trot';
-							sndStep(anims[animState].f,1);
-						}
+				else animState='death';
+			}
+			else {
+				if (stay) {
+					if  (dx==0 || aiState==7) {
+						animState='stay';
 					}
-					else if (flyer) {
-						if  (isFly) animState='derg';
-						else animState='stay';
+					else if (attackerType==0 && aiAttack || aiState==8) {
+						animState='run';
+						sndStep(anims[animState].f,2);
 					}
-					else if (levit) {
-						animState='derg';
-					}
-					else if (isLaz && mostLaz) {
-						animState='laz';
-						sndStep(anims[animState].f,3);
-					}
-					else if (aiPlav) {
-						animState='plav';
+					else if (walker && (aiState<=1 || aiState==4)) {
+						animState='walk';
+						sndStep(anims[animState].f,1);
 					}
 					else {
-						animState='jump';
-						anims[animState].setStab((dy*0.6+8)/16);
+						animState='trot';
+						sndStep(anims[animState].f,1);
 					}
 				}
-				if (animState!=animState2) {
-					anims[animState].restart();
-					animState2=animState;
+				else if (flyer) {
+					if  (isFly) animState='derg';
+					else animState='stay';
 				}
-				if (!anims[animState].st) {
-					blit(anims[animState].id, anims[animState].f);
+				else if (levit) {
+					animState='derg';
 				}
-				anims[animState].step();
+				else if (isLaz && mostLaz) {
+					animState='laz';
+					sndStep(anims[animState].f,3);
+				}
+				else if (aiPlav) {
+					animState='plav';
+				}
+				else {
+					animState='jump';
+					// Commented out, there is no setStab function
+					//anims[animState].setStab((dy*0.6+8)/16);
+				}
 			}
-			catch (error:Error) {
-				trace("ERROR: (00:56) - animate() failed for unit: \"" + nazv + "\"!");
+			if (animState!=animState2) {
+				anims[animState].restart();
+				animState2=animState;
 			}
+			if (!anims[animState].st) {
+				blit(anims[animState].id, anims[animState].f);
+			}
+			anims[animState].step();
 		}
 		
 		

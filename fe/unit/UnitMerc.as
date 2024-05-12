@@ -122,7 +122,8 @@ package fe.unit {
 					animState='fly';
 				} else {
 					animState='jump';
-					anims[animState].setStab((dy*0.6+8)/16);
+					// Commented out, there is no setStab function
+					//anims[animState].setStab((dy*0.6+8)/16);
 				}
 			}
 			if (animState!=animState2) {

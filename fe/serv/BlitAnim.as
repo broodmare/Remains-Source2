@@ -1,6 +1,6 @@
 package fe.serv
 {
-	//Анимация с помощью спрайт-листов, шаблон	
+	// [Animation using sprite sheets, template]
 	public class BlitAnim
 	{
 
@@ -89,37 +89,37 @@ package fe.serv
 			[{x:89,y:79,r:35},{x:96,y:83,r:20},{x:101,y:86,r:6},{x:106,y:88,r:-9},{x:110,y:89,r:-24},{x:110,y:87,r:-27},{x:109,y:86,r:-31},{x:112,y:92,r:-23},{x:114,y:98,r:-16},{x:116,y:104,r:-8},{x:117,y:110,r:0},{x:118,y:115,r:8},{x:119,y:120,r:16}]
 		];
 
-		public var id:int=0;		//номер строки в спрайт-листе
-		public var firstf:int=0;	//стартовый кадр
-		public var maxf:int=1;		//длительность анимации
-		public var retf:int=0;		//кадр, на который возвращается анимация
-		public var replay:Boolean=false;	//автоматически повторять
-		public var st:Boolean=false;
-		public var stab:Boolean=false;
-		public var f:Number=0;		//текущий кадр
-		public var df:Number=1;		//кадров за такт
+		public var id:int = 0;				// [line number in the sprite sheet]
+		public var firstf:int=0;			// [starting frame]
+		public var maxf:int=1;				// [animation duration] (in frames?)
+		public var retf:int=0;				// [the frame the animation returns to]
+		public var replay:Boolean=false;	// [automatically repeat]
+		public var st:Boolean = false;
+		public var stab:Boolean = false;
+		public var f:Number=0;				// [current frame]
+		public var df:Number=1;				// [frames per tick]
 
 		public function BlitAnim(xml:XML) {
-			if (xml.@y.length()) id=xml.@y;
-			if (xml.@len.length()) maxf=xml.@len;
-			if (xml.@ff.length()) firstf=xml.@ff;
-			if (xml.@rf.length()) retf=xml.@rf;
-			if (xml.@df.length()) df=xml.@df;
-			if (xml.@rep.length()) replay=true ;
-			if (xml.@stab.length()) stab=true ;
-			f=firstf;
+			if (xml.@y.length())	id = xml.@y;
+			if (xml.@len.length())	maxf = xml.@len;
+			if (xml.@ff.length())	firstf = xml.@ff;
+			if (xml.@rf.length())	retf = xml.@rf;
+			if (xml.@df.length())	df = xml.@df;
+			if (xml.@rep.length())	replay = true ;
+			if (xml.@stab.length())	stab = true ;
+			f = firstf;
 		}
 		
 		public function step() {
 			if (stab) return;
-			if (f<firstf+maxf-1) f+=df;
-			else if (replay) f=retf;
-			else st=true;
+			if (f < firstf + maxf - 1) f += df;
+			else if (replay) f = retf;
+			else st = true;
 		}
 		
 		public function restart() {
-			st=false;
-			f=firstf;
+			st = false;
+			f = firstf;
 		}
 	}
 }

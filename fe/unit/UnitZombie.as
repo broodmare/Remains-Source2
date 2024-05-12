@@ -141,87 +141,82 @@ package fe.unit
 		}
 		
 		public override function animate() {
-			try {
-				var cframe:int;
-				if (sost==3 && isRes && t_res<20) {
-					animState='die';
-					blit(anims[animState].id,t_res);
-					for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*10);
-					return;
-				}
-				else if (sost==2 || sost==3) { //сдох
-					if (stay) {
-						if (animState=='fall') {
-						}
-						else if (animState=='death') animState='fall';
-						else animState='die';
+			var cframe:int;
+			if (sost==3 && isRes && t_res<20) {
+				animState='die';
+				blit(anims[animState].id,t_res);
+				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*10);
+				return;
+			}
+			else if (sost==2 || sost==3) { //сдох
+				if (stay) {
+					if (animState=='fall') {
 					}
-					else animState='death';
-					
-					if (vlight && vlight.alpha>0) {
-						vlight.alpha-=0.05;
+					else if (animState=='death') animState='fall';
+					else animState='die';
+				}
+				else animState='death';
+				
+				if (vlight && vlight.alpha>0) {
+					vlight.alpha-=0.05;
+				}
+			}
+			else if (aiState==4 && anims['pre']) {
+				t_ca=0;
+				animState='pre';
+			}
+			else if (aiState==7 && anims['super']) {
+				animState='super';
+			}
+			else if (aiState==5) {
+				vis.visible=false;
+			}
+			else if (aiState==6) {
+				vis.visible=true;
+				animState='dig';
+				if (vlight && vlight.alpha<1) {
+					vlight.alpha+=0.05;
+					vlight.y-=stayY/40;
+				}
+			}
+			else {
+				vis.visible=true;
+				if (stay) {
+					if  (dx<1 && dx>-1) {
+						animState='stay';
 					}
-				}
-				else if (aiState==4 && anims['pre']) {
-					t_ca=0;
-					animState='pre';
-				}
-				else if (aiState==7 && anims['super']) {
-					animState='super';
-				}
-				else if (aiState==5) {
-					vis.visible=false;
-				}
-				else if (aiState==6) {
-					vis.visible=true;
-					animState='dig';
-					if (vlight && vlight.alpha<1) {
-						vlight.alpha+=0.05;
-						vlight.y-=stayY/40;
+					else if (aiState==3) {
+						animState='run';
+						sndStep(anims[animState].f,2);
+					}
+					else if (aiState==2 || dx>6 || dx<-6) {
+						animState='trot';
+						sndStep(anims[animState].f,1);
+					}
+					else {
+						animState='walk';
+						sndStep(anims[animState].f,1);
 					}
 				}
 				else {
-					vis.visible=true;
-					if (stay) {
-						if  (dx<1 && dx>-1) {
-							animState='stay';
-						}
-						else if (aiState==3) {
-							animState='run';
-							sndStep(anims[animState].f,2);
-						}
-						else if (aiState==2 || dx>6 || dx<-6) {
-							animState='trot';
-							sndStep(anims[animState].f,1);
-						}
-						else {
-							animState='walk';
-							sndStep(anims[animState].f,1);
-						}
-					}
-					else {
-						t_ca=0;
-						animState='jump';
-						anims[animState].setStab((dy*0.6+8)/16);
-					}
-					if (vlight && vlight.alpha!=1) {
-						vlight.y=-objectHeight/2;
-						vlight.alpha=1;
-					}
+					t_ca=0;
+					animState='jump';
+					// Commented out, there is no setStab function
+					//anims[animState].setStab((dy*0.6+8)/16);
 				}
-				if (animState!=animState2) {
-					anims[animState].restart();
-					animState2=animState;
+				if (vlight && vlight.alpha!=1) {
+					vlight.y=-objectHeight/2;
+					vlight.alpha=1;
 				}
-				if (!anims[animState].st) {
-					blit(anims[animState].id,anims[animState].f);
-				}
-				anims[animState].step();
 			}
-			catch (error:Error) {
-				trace("ERROR: (00:57) - animate() failed for unit: \"" + nazv + "\"!");
+			if (animState!=animState2) {
+				anims[animState].restart();
+				animState2=animState;
 			}
-			
+			if (!anims[animState].st) {
+				blit(anims[animState].id,anims[animState].f);
+			}
+			anims[animState].step();
 		}
 		
 		

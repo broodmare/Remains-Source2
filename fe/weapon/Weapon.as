@@ -613,9 +613,13 @@ package fe.weapon
 				coordinates.Y = owner.weaponY;
 				rot2 = forceRot;
 			}
+
 			ready = false;
+			
 			var rdrot:Number = drot;
+			
 			if (drot2 > 0 && (t_prep > 0 || t_attack > 0)) rdrot = drot2;
+			
 			if (rdrot == 0) {
 				rot = rot2;
 				ready = true;
@@ -686,7 +690,8 @@ package fe.weapon
 			
 			if (t_prep>0) {
 				t_prep--;
-			} else {
+			}
+			else {
 				kol_shoot=0;
 			}
 			if (t_auto>0) {
@@ -732,35 +737,47 @@ package fe.weapon
 
 		public function attack(waitReady:Boolean = false):Boolean {
 			if (waitReady && !ready) return false;
+			
+			// Weapon is broke, abort
 			if (hp <= 0 && owner == World.w.gg) {
 				World.w.gui.infoText('brokenWeapon', nazv, null, false);
 				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				return false;
 			}
+			
 			if (owner.player && (respect == 1 || alicorn && !World.w.alicorn)) {
-				World.w.gui.infoText('disWeapon',null,null,false);
+				World.w.gui.infoText('disWeapon', null, null, false);
 				return false;
 			}
+			
 			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
 				t_auto = 3;
 				pow++;
 				return true;
 			}
+			
 			skillConf = 1;
+			
 			if (owner.player) {
 				if (!checkAvail()) return false;
 			}
+			
 			if (holder > 0 && hold<rashod) { // [requires recharging]
 				initReload();
 				return false;
 			}
+			
 			weaponAttack();
+			
 			is_attack = true;
+			
 			if (t_prep < prep + 10) t_prep += 2;
+			
 			if (t_prep >= prep && t_attack <= 0 && t_reload <= 0) {
 				if (dkol <= 0) t_attack = rapid;
 				else t_attack = rapid * (dkol + 1);
 				if (holder == 1) initReload();
+			
 			}
 			return true;
 		}
@@ -774,8 +791,8 @@ package fe.weapon
 				initReload();
 				return;
 			}
-			if (hp<maxhp/2) breaking = (maxhp - hp) / maxhp * 2 - 1;
-			else breaking=0;
+			if (hp < maxhp / 2) breaking = (maxhp - hp) / maxhp * 2 - 1;
+			else breaking = 0;
 		}
 		
 		protected function checkAvail():Boolean
@@ -850,10 +867,10 @@ package fe.weapon
 			
 			if (owner) {
 				sk = owner.weaponSkill;
-				if (owner.player) sk=weaponSkill;
+				if (owner.player) sk = weaponSkill;
 			}
 			
-			var r=(Math.random()-0.5)*(deviation*(1+breaking*2)/skillConf/(sk+0.01)+owner.mazil)*3.1415/180*devMult;
+			var r = (Math.random() - 0.5) * (deviation * (1 + breaking * 2) / skillConf / (sk + 0.01) + owner.mazil) * 3.1415 / 180 * devMult;
 			
 			getBulXY();
 			
@@ -886,7 +903,7 @@ package fe.weapon
 				b.rot = rot - rotUp * storona / 50 + r + (i - (kol - 1) / 2) * deviation * 3.1415 / 360;
 			
 				if (grav > 0 || volna) b.vel = speed * speedMult; 
-				else b.vel=speed*speedMult*(Math.random()*0.4+0.8);
+				else b.vel = speed * speedMult * (Math.random() * 0.4 + 0.8);
 				
 				b.dx = Math.cos(b.rot) * b.vel;
 				b.dy = Math.sin(b.rot) * b.vel;
@@ -896,8 +913,8 @@ package fe.weapon
 					b.celX = owner.celX;
 					b.celY = owner.celY;
 				}
-				if (damage>0) b.damage=resultDamage(damage,sk)*ammoDamage;
-				if (damageExpl>0) b.damageExpl=resultDamage(damageExpl,sk);
+				if (damage > 0) b.damage = resultDamage(damage, sk) * ammoDamage;
+				if (damageExpl > 0) b.damageExpl = resultDamage(damageExpl, sk);
 
 				setBullet(b);
 				
@@ -913,31 +930,32 @@ package fe.weapon
 					b.ddy += Math.sin(b.rot) * accel;
 					b.accel=accel;
 				}
-				if (flame>0) {
-					b.flame=flame;
-					if (flame==1) {
-						b.ddy+=-0.8-Math.random()*0.2;
-						b.brakeR=180+Math.random()*40;
-						b.liv=b.brakeR/7;
-					} else if (flame==2) {
-						b.ddy+=-0.2-Math.random()*0.2;
-						b.brakeR=100+Math.random()*40;
-						b.liv=b.brakeR/7;
+				if (flame > 0) {
+					b.flame = flame;
+					if (flame == 1) {
+						b.ddy += -0.8 - Math.random() * 0.2;
+						b.brakeR = 180 + Math.random() * 40;
+						b.liv = b.brakeR / 7;
+					}
+					else if (flame == 2) {
+						b.ddy += -0.2-Math.random() * 0.2;
+						b.brakeR = 100 + Math.random() * 40;
+						b.liv = b.brakeR / 7;
 					}
 				}
 				if (grav) {
-					b.ddy+=World.ddy*grav;
-					b.vRot=true;
+					b.ddy += World.ddy * grav;
+					b.vRot = true;
 				}
 				if (bulAnim) b.vis.play();
 			}
 			if (shell) {
-				emitShell.cast(loc, coordinates.X, coordinates.Y,{dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
+				emitShell.cast(loc, coordinates.X, coordinates.Y, {dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
 			}
 			if (owner.demask<shine) owner.demask=shine;	// [shot visibility]
-			if (noise>0) owner.makeNoise(noise,true);
-			owner.isShoot=true;
-			if (holder>0 && hold>0) {
+			if (noise > 0) owner.makeNoise(noise, true);
+			owner.isShoot = true;
+			if (holder > 0 && hold > 0) {
 				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo == 'batt' || ammo == 'energ' || ammo == 'crystal') && Math.random() < (owner as UnitPlayer).pers.recyc) {
 					// [don't waste ammunition]
 				}

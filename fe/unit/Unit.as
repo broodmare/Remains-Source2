@@ -269,10 +269,13 @@ package fe.unit
 		//визуальная часть
 		//блиттинг
 		var blitId:String;		//id битмапа
-		public var animState:String='',animState2:String='';
+		public var animState:String='';
+		public var animState2:String='';
 		public var blitData:BitmapData;
-		var blitX:int=120, blitY:int=120;
-		var blitDX:int=-1, blitDY:int=-1;
+		var blitX:int=120;
+		var blitY:int=120;
+		var blitDX:int=-1;
+		var blitDY:int=-1;
 		var blitRect:Rectangle;
 		var blitPoint:Point;
 		var visData:BitmapData;
@@ -302,7 +305,8 @@ package fe.unit
 		var mother:Unit;
 		var kolChild:int=0;
 
-		public var scrDie:Script, scrAlarm:Script;
+		public var scrDie:Script;
+		public var scrAlarm:Script;
 		public var questId:String;	//id для коллекционного квеста
 		
 		public var trig:String;		//условие появления
@@ -567,11 +571,16 @@ package fe.unit
 			if (node0.vis.length()) {
 				node=node0.vis[0];
 				if (node.@sex=='w') msex=false;
-				if (node.@blit.length()) {
-					blitId=node.@blit;
-					if (node.@sprX>0) blitX=node.@sprX;
-					if (node.@sprY>0) blitY=node.@sprY;
-					else blitY=node.@sprY; // Changed from SprX to SprY, Not sure why it was X?
+				if (node.@blit.length())
+				{
+					blitId = node.@blit;
+					
+					if (node.@sprX > 0) blitX = node.@sprX;
+					
+					// If there's no indication of unit height, use the width as the height to create a square unit.
+					if (node.@sprY > 0) blitY = node.@sprY;
+					else blitY = blitX;
+
 					if (node.@sprDX.length()) blitDX=node.@sprDX;
 					if (node.@sprDY.length()) blitDY=node.@sprDY;
 				}
@@ -628,7 +637,7 @@ package fe.unit
 			if (node0.blit.length()) {
 				if (anims==null) anims=[];
 				for each(var xbl:XML in node0.blit) {
-					anims[xbl.@id]=new BlitAnim(xbl);
+					anims[xbl.@id] = new BlitAnim(xbl);
 				}
 			}
 			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
@@ -1492,7 +1501,7 @@ package fe.unit
 			else return 1;
 		}
 
-		//поиск лестницы
+		// Search for stairs
 		public function checkStairs(ny:int = -1, nx:int = 0):Boolean
 		{
 
@@ -1733,26 +1742,24 @@ package fe.unit
 		}
 		
 		public function initBlit() {
-			try {
-				blitData=World.w.grafon.getSpriteList(blitId);
-				blitRect = new Rectangle(0, 0, blitX, blitY);
-				blitPoint = new Point(0,0);
-				vis=new MovieClip();
-				var osn=new Sprite();
-				visData = new BitmapData(blitX, blitY, true, 0);
-				visBmp=new Bitmap(visData);
-				vis.addChild(osn);
-				osn.addChild(visBmp);
-				if (blitDX>=0) visBmp.x=-blitDX;
-				else visBmp.x=-blitX/2;
-				if (blitDY>=0) visBmp.y=-blitDY;
-				else visBmp.y=-blitY+10;
-				animState='stay';
-			}
-			catch (err:Error) {
-				trace("ERROR: (00:55) - initBlit failed for unit: \"" + nazv + "\"!");
-			}
 
+			blitData=World.w.grafon.getSpriteList(blitId);
+			blitRect = new Rectangle(0, 0, blitX, blitY);
+			blitPoint = new Point(0,0);
+			vis=new MovieClip();
+			var osn=new Sprite();
+			visData = new BitmapData(blitX, blitY, true, 0);
+			visBmp = new Bitmap(visData);
+			vis.addChild(osn);
+			osn.addChild(visBmp);
+			
+			if (blitDX>=0) visBmp.x=-blitDX;
+			else visBmp.x=-blitX/2;
+			
+			if (blitDY>=0) visBmp.y=-blitDY;
+			else visBmp.y=-blitY+10;
+			
+			animState='stay';
 		}
 		
 		public function blit(blstate:int, blframe:int)

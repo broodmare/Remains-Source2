@@ -484,7 +484,7 @@
 		
 //**************************************************************************************************************************
 //
-//				Действия
+//				[Actions]
 //
 //**************************************************************************************************************************
 
@@ -531,7 +531,7 @@
 					if (t.grav>0) grav=t.grav; else grav=0;
 					if (t.grav<0) dx*=0.8;
 				}
-				//торможение
+				//[Braking]
 				if (isSit) brake1=0.4*brake;
 				if (!stay) {
 					brake1=0.1*brake;
@@ -603,12 +603,13 @@
 
 			inBattle=World.w.t_battle>0 || World.w.testBattle;
 			
-			//захват лута
+			// [loot capture]
 			if (isTake>0) isTake--;
-			//радиация
+			// [radiation]
 			if (noRad) {
-				noRad=false;
-			} else {
+				noRad = false;
+			}
+			else {
 				drad+=loc.rad;
 				if (inWater) drad+=loc.wrad;
 			}
@@ -634,7 +635,7 @@
 				World.w.gui.setHp();
 				drad=-0.0001;
 			}
-			//лечение
+			// [Treatment]
 			if (healhp>0) {
 				healhp-=pers.healMult/5*pers.metaMult;
 				hp+=pers.healMult/5*pers.metaMult;
@@ -657,7 +658,7 @@
 					World.w.gui.setMana();
 				}				
 			}
-			//различные действия
+			// [various actions]
 			if (t_work>0) t_work--;
 			else work='';
 			if (work=='change' && t_work==changeWeaponTime2) {
@@ -666,7 +667,7 @@
 			if (work=='change' && t_work==changeWeaponTime3) {
 				changeWeaponNow(2);
 			}
-			//перейти на нижний слой
+			// [go to the bottom layer]
 			if (work=='lurk' && t_work==10) {
 				if (sloy==2) {
 					if (lurkTip==1) chSloy(0);
@@ -683,7 +684,7 @@
 				if (lurkX - coordinates.X > 3) dx=4;
 				if (lurkX - coordinates.X < -3) dx=-4;
 			}
-			//нычки
+			// [whining]
 			if (lurked) {
 				if (!stay) lurked=false;
 				if (lurkBox && lurkBox.wall==0 && !lurkBox.stay) lurked=false; 
@@ -691,7 +692,7 @@
 			}
 			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) chSloy(2);
 			
-			//рывок
+			// [Dash]
 			f_dash=(dash_t>dash_maxt-20);
 			if (dash_t>0) dash_t--;
 			if (kdash_t>0) {
@@ -700,78 +701,87 @@
 			}
 			f_stealth=(stealthMult<1);
 			
-			//действие над активными объектами
+			// [action on active objects]
 			if (actionObj) {
-				if (actionObj.active==0) {
-					actionObj=null;
-				} else if (t_action>0) {
+				if (actionObj.active == 0) {
+					actionObj = null;
+				}
+				else if (t_action > 0) {
 					t_action--;
-				} else {
-					ctr.keyAction=false;
-					actionObj.is_act=true;
-					actionObj=null;
+				}
+				else {
+					ctr.keyAction = false;
+					actionObj.is_act = true;
+					actionObj = null;
 				}
 			}
-			if (Snd.actionCh!=null && actionObj==null) {
+			if (Snd.actionCh != null && actionObj == null) {
 				Snd.actionCh.stop();
-				Snd.actionCh=null;
+				Snd.actionCh = null;
 			}
 
-			//видимость
-			visibility=2000;
-			if (dx<2 && dx>-2 && dy<2 && dy>-2) visibility=1500;
-			if (dx>10 || dx<-10 || dy>10 || dy<-10) {
-				if (demask<200*pers.visiMult) demask=200*pers.visiMult;
+			// [visibility]
+			visibility = 2000;
+			if (dx < 2 && dx >- 2 && dy < 2 && dy >- 2) visibility = 1500;
+			if (dx > 10 || dx < -10 || dy > 10 || dy < -10) {
+				if (demask < 200 * pers.visiMult) demask = 200 * pers.visiMult;
 			}
-			if (obs>0 && isObs<=0) obs-=minusObs; 
-			if (isObs>=0) isObs--;
-			if (levit>0 && demask<200) demask=200;
-			dexterPlus=0;
-			detecting=80;
-			if (isSit) dexterPlus=pers.sitDexterPlus;
+			if (obs > 0 && isObs <= 0) obs -= minusObs; 
+			if (isObs >= 0) isObs--;
+			if (levit > 0 && demask < 200) demask = 200;
+			dexterPlus = 0;
+			detecting = 80;
+			if (isSit) dexterPlus = pers.sitDexterPlus;
 			if (lurked) {
-				detecting=0;
-				dexterPlus=pers.lurkDexterPlus;
-				visibility*=0.5;
+				detecting = 0;
+				dexterPlus = pers.lurkDexterPlus;
+				visibility *= 0.5;
 			}
-			if (stealthMult<0.5) detecting=0;
+			if (stealthMult < 0.5) detecting = 0;
 
-			//--------------------- оружие ------------------------
-			//если выстрел был выполнен
+			//--------------------- [Weapon] ------------------------
+			// [If the shot was fired]
 			if (currentWeapon && currentWeapon.is_shoot) {
-				if (sats.que.length>0) {
+				if (sats.que.length > 0) {
 					sats.act();
 					World.w.gui.setWeapon();
 				}
-				currentWeapon.is_shoot=false;
+				currentWeapon.is_shoot = false;
 			}
-			if (currentWeapon && currentWeapon.tip!=5 && currentWeapon.vis && currentWeapon.vis.visible) aMagic=50;
-			else aMagic=0;
-			//если есть активные цели
-			if (sats.que.length>0) {
-				if (currentWeapon==null || currentWeapon.noSats || currentWeapon.status()>3) {	//если оружие не готово
-					sats.clearAll();	//очистить очередь
-				} else if (sats.getReady()) {	//если цель ещё не убита
-					sats.que[0].run();			//установить цель
+
+			if (currentWeapon && currentWeapon.tip != 5 && currentWeapon.vis && currentWeapon.vis.visible) aMagic = 50;
+			else aMagic = 0;
+			
+			// [If there are active targets]
+			if (sats.que.length > 0) {
+				if (currentWeapon == null || currentWeapon.noSats || currentWeapon.status() > 3) {	// [if the weapon is not ready]
+					sats.clearAll();	// [Clear queue]
+				}
+				else if (sats.getReady()) {	// [If the target has not yet been killed]
+					sats.que[0].run();			// [Set a goal (target)]
 					celX = sats.que[0].coordinates.X;
 					celY = sats.que[0].coordinates.Y;
-					currentWeapon.attack(true);	//стрелять по готовности
-				} else {			
-					sats.unsetCel(true);	//иначе отменить цель
+					trace("Firing SATS bullet at (" + celX + ", " + celY + ")");
+					currentWeapon.attack(true);	// [Shoot when ready]
 				}
-			} else if (attackForever) {
+				else {			
+					sats.unsetCel(true);	// [Otherwise cancel the target]
+				}
+			}
+			else if (attackForever) {
 				if (isrnd(0.05)) {
-					celX = Math.random()*loc.maxX;
-					celY = Math.random()*loc.maxY;
+					celX = Math.random() * loc.maxX;
+					celY = Math.random() * loc.maxY;
 				}
-			} else {
+			}
+			else {
 				celX = World.w.celX;
 				celY = World.w.celY;
 			}
-			//модификатор точности precMult, только если стрельба не через зпс
-			precMult=pers.allPrecMult;
-			mazil=pers.mazilAdd;
-			if (sats.que.length==0 && !lurked) {
+			// [accuracy modifier precMult, only if shooting is not through the SATS]
+			precMult = pers.allPrecMult;
+			mazil = pers.mazilAdd;
+			if (sats.que.length == 0 && !lurked) {
 				if (pers.runPenalty>0 && (dx>10 || dx<-10 || dy>10 || dy<-10))  precMult*=(1-pers.runPenalty);
 				if (!stay) precMult*=(1-pers.jumpPenalty);
 				if (stay && dx<1 && dx>-1)  precMult*=(1+pers.stayBonus);
@@ -786,12 +796,12 @@
 				magicWeapon.actions();
 				if (magicWeapon.tip==5) magicWeapon.animate();
 			}
-			atkWeapon=0;
-			if (currentWeapon && !currentWeapon.attackPos()) atkWeapon=1;
-			if (throwWeapon && currentWeapon!=throwWeapon && !throwWeapon.attackPos()) atkWeapon=2;
-			if (magicWeapon && currentWeapon!=magicWeapon && !magicWeapon.attackPos()) atkWeapon=3;
+			atkWeapon = 0;
+			if (currentWeapon && !currentWeapon.attackPos()) atkWeapon = 1;
+			if (throwWeapon && currentWeapon!=throwWeapon && !throwWeapon.attackPos()) atkWeapon = 2;
+			if (magicWeapon && currentWeapon!=magicWeapon && !magicWeapon.attackPos()) atkWeapon = 3;
 			
-			//телекинез
+			// [Telekinesis]
 			var derp=15;
 			if (teleObj) {
 				aMagic=50;
@@ -858,11 +868,13 @@
 				if (h2o>0) {
 					h2o-=pers.h2oPlav;
 					if (sost==1 && isrnd(0.1)) Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
-				} else {
+				}
+				else {
 					damage(maxhp/500,D_INSIDE,null,true);
 					if (sost==1 && isrnd())Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
-			} else if (h2o<1000) {
+			}
+			else if (h2o<1000) {
 				h2o+=10;
 				if (h2o>1000) h2o=1000;
 			}
@@ -872,7 +884,8 @@
 				if (stam>0) {
 					if (inBattle) stam-=pers.stamRun*dstam;
 				} else possRun=false;
-			} else if (stam<1000) {
+			}
+			else if (stam<1000) {
 				stam+=pers.stamRes;
 				if (stam>200) possRun=true;
 				if (stam>1000) stam=1000;
@@ -887,13 +900,15 @@
 				if (currentArmor.abilActive) {
 					if (currentArmor.mana>0) {
 						currentArmor.mana-=currentArmor.dmana_use;
-					} else {
+					}
+					else {
 						if (armorEffect) {
 							armorEffect.unsetEff(true,false,true);
 						}
 						currentArmor.abilActive=false;
 					}
-				} else {
+				}
+				else {
 					if (currentArmor.mana<currentArmor.maxmana) {
 						currentArmor.mana+=currentArmor.dmana_res;
 					}
@@ -1172,7 +1187,8 @@
 					norma(p,pers.throwForce);
 					mana-=dm;
 					pers.manaDamage(dm*pers.throwDmanaMult);
-				} else {
+				}
+				else {
 					norma(p,pers.throwForce*mana/dm);
 					pers.manaDamage(mana*pers.throwDmanaMult);
 					mana=0;
@@ -1197,8 +1213,8 @@
 		
 		public function throwForceRelat():Number {
 			if (teleObj) {
-				var dm:Number=teleObj.massa*pers.throwDmagic*pers.allDManaMult;
-				if (dm>mana) return mana/dm;
+				var dm:Number=teleObj.massa * pers.throwDmagic * pers.allDManaMult;
+				if (dm > mana) return mana / dm;
 				else return 1;
 			}
 			return 0;
@@ -1424,7 +1440,7 @@
 					if (magicWeapon.tip==4) ctr.keyMagic=false;
 				} else ctr.keyMagic=false;
 			}
-			//заклинание
+			//[spell]
 			if (ctr.keyDef && rat==0) { 
 				if (sats.que.length>0) sats.clearAll();
 				if (World.w.alicorn) currentSpell=invent.spells['sp_mshit'];
@@ -1447,13 +1463,13 @@
                     }
 				}
 			}
-			//спутник
+			//[satellite] (Pets)
 			if (ctr.keyPet)
 			{ 
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
-						pet.moveto(coordinates.X, coordinates.Y - 40, true);		//отзыв назад
+						pet.moveto(coordinates.X, coordinates.Y - 40, true);		//[review back]
 					}
 					k_pet=0;
 					ctr.keyPet=false;
@@ -1461,7 +1477,7 @@
 			}
 			else
 			{
-				if (k_pet>0) {				//приказ
+				if (k_pet>0) {				//[order]
 					if (pet) {
 						if (loc.celObj && loc.celObj is Unit && (loc.celObj as Unit).fraction!=fraction) pet.atk((loc.celObj as Unit));
 						else pet.moveto(celX,celY);
@@ -1469,7 +1485,7 @@
 				}
 				k_pet=0;
 			}
-			//атака
+			//[атака]
 			if ((ctr.keyAttack || autoAttack) && (!loc.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1)) {
 				if (visSel) {
 					World.w.gui.unshowSelector(1);
@@ -1491,9 +1507,8 @@
 					}
 				}
 			}
-			//перезарядка
+			//[recharge]
 			if (ctr.keyReload && currentWeapon && attackForever<=0) {
-				//return;
 				if (t_reload>=30) {
 					currentWeapon.unloadWeapon();
 					ctr.keyReload=false;
@@ -1504,7 +1519,7 @@
 				if (currentWeapon && t_reload>0 && t_reload<10) currentWeapon.initReload();
 				t_reload=0;
 			}
-			//пинок
+			//[kick]
 			if (ctr.keyPunch && World.w.alicorn) {
 				ctr.keyPunch=false;
 				alicornPort();
@@ -1522,7 +1537,7 @@
 				ctr.keyPunch=false;
 			}
 			if (rat==0) {
-			//смена оружия
+			// [Change weapons]
 				if (t_work<=0 && attackForever<=0) {
 					for (var i=1; i<=World.kolHK; i++) {
 						if (ctr['keyWeapon'+i]) {
@@ -1569,8 +1584,8 @@
 				}
 			}
 			
-			//--------------------- движение ---------------------------
-			//скорость
+			//--------------------- [movement] ---------------------------
+			// [speed]
 			var accel1=accel*pers.accelMult;
 			maxSpeed=walkSpeed;
 			if (stay && ctr.keyAction && maxSpeed>3) {
@@ -1610,7 +1625,7 @@
 			
 			if ((isRun || ctr.keyBeUp)&& jumpNumb==0) porog_jump=10;
 
-			//ускорение
+			// [acceleration]
 			if (!isLaz) {
 				if (keyLeft && !keyRight) {
 					storona=-1;
@@ -1619,32 +1634,36 @@
 					storona=1;
 				}
 			}
-			walk=0;
+			walk = 0;
 			if ((keyLeft && !keyRight || (burningForcesRunOption && runForever > 0)) && storona < 0) {
 				porog=20;
 				isTake=40;
 				if (storona>0 && stay) {
 					storona=-1;
-				} else if (dx>-maxSpeed && (!ctr.keyRun || t_run>3)) {
+				}
+				else if (dx>-maxSpeed && (!ctr.keyRun || t_run>3)) {
 					dx-=accel1;
 					if (dx<-maxSpeed) dx=-maxSpeed;
 				}
 				walk=-1;
 				t_run++;
-			} else if ((!keyLeft && keyRight || (burningForcesRunOption && runForever > 0)) && storona > 0) {
+			}
+			else if ((!keyLeft && keyRight || (burningForcesRunOption && runForever > 0)) && storona > 0) {
 				porog=20;
 				isTake=40;
 				if (storona<0 && stay) {
 					storona=1;
-				} else if (dx<maxSpeed && (!ctr.keyRun || t_run>3)) {
+				}
+				else if (dx<maxSpeed && (!ctr.keyRun || t_run>3)) {
 					dx+=accel1;
 					if (dx>maxSpeed) dx=maxSpeed;
 					
 				}
-				walk=1;
+				walk = 1;
 				t_run++;
-			} else {
-				t_run=0;
+			}
+			else {
+				t_run = 0;
 			}
 			// [Jerk to the side]
 			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==1)) {
@@ -1787,26 +1806,31 @@
 			{
 				porog = 0;
 				if (stay && diagon == 0 && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && rat == 0) {
-					if (checkStairs(2)) {	//проверить лестницу
+					if (checkStairs(2)) {	// [check the stairs]
 						t_stay=0;
 						dy=lazSpeed;
 						throu=true;
-					} else 	if (stayPhis==2 && checkStairs(2,-20*storona)) {	//проверить лестницу
+					}
+					else 	if (stayPhis==2 && checkStairs(2,-20*storona)) {	// [check the stairs]
 							t_stay=0;
 							dy=lazSpeed;
 							throu=true;
-					} else if (stayPhis==2 && checkStairs(2,20*storona)) {	//проверить лестницу
+					}
+					else if (stayPhis==2 && checkStairs(2,20*storona)) {	// [check the stairs]
 							t_stay=0;
 							dy=lazSpeed;
 							throu=true;
-					} else if (stayPhis==1 && downp==1 || stayPhis==2 && downp==5){
+					}
+					else if (stayPhis==1 && downp==1 || stayPhis==2 && downp==5){
 						sit(true);
 					}
-				} else if (isLaz && !noStairs) {
+				}
+				else if (isLaz && !noStairs) {
 					if (checkStairs(2)) {
 						dy=lazSpeed*1.5;
 					}
-				} else if (isPlav) {
+				}
+				else if (isPlav) {
 					dy+=plavdy*pers.speedPlavMult/2;
 				}
 				if (downp<6) downp++;
