@@ -27,9 +27,10 @@ package fe.projectile
 		public var tipBullet:int=0;	//тип пули. 0-обычная, 1-холодное оружие
 		public var rot:Number=0, vel:Number=15, liv:int=100, begx:Number, begy:Number, knockx:Number, knocky:Number;
 		public var ddy:Number=0, ddx:Number=0, accel:Number=0, brakeR:Number=0, vRot:Boolean=false;
-		public var celX:Number=-100000, celY:Number=-100000;
-		public var inWater:int=-1;
-		public var isExpl:Boolean=false;
+		public var celX:Number = -100000;
+		public var celY:Number = -100000;
+		public var inWater:int = -1;
+		public var isExpl:Boolean = false;
 		
 		public var partEmit:Boolean=true;	
 		public var spring:int=1;
@@ -46,20 +47,20 @@ package fe.projectile
 		public var checkLine:Boolean=false;	
 		public var dist:Number=0;
 		
-		public var destroy:Number=0;	//урон блокам
-		public var crack:int=0;			//взлом контейнеров
+		public var destroy:Number = 0;	//урон блокам
+		public var crack:int = 0;			//взлом контейнеров
 		var box:Box;
-		public var tileX:int=-1;
-		public var tileY:int=-1;	//урон блокам для холодного оружия (координаты, на которые указывает курсор)
-		public var damage:Number=0;
-		public var pier:Number=0;		//бронебойность
-		public var armorMult:Number=1;	//модификатор действия брони
-		public var tipDamage:int=0;
-		public var tipDecal:int=0;
-		public var precision:Number=0;	//точность, показывает расстояние, на котором попадание будет 100%, 0 если попадание всегда
-		public var antiprec:Number=0;	//для снайперских винтовок, показывает расстояние, на котором точность начнёт снижаться
-		public var miss:Number=0;		//вероятность безусловного промаха
-		public var desintegr:Number=0;	//вероятность дезинтеграции
+		public var tileX:int = -1;
+		public var tileY:int = -1;	//урон блокам для холодного оружия (координаты, на которые указывает курсор)
+		public var damage:Number = 0;
+		public var pier:Number = 0;		//бронебойность
+		public var armorMult:Number = 1;	//модификатор действия брони
+		public var tipDamage:int = 0;
+		public var tipDecal:int = 0;
+		public var precision:Number = 0;	//[accuracy, shows the distance at which the hit will be 100%, 0 if the hit is always]
+		public var antiprec:Number = 0;	//[for sniper rifles, shows the distance at which accuracy will begin to decrease]
+		public var miss:Number=0;		//[absolute miss probability]
+		public var desintegr:Number=0;	//[probability of disintegration]
 		
 		public var critCh:Number=0;	//шанс крита
 		public var critInvis:Number=0;	//шанс крита для мобов, у которых не установлена цель
@@ -183,41 +184,46 @@ package fe.projectile
 			}
 		}
 		
-		//возвращает собственную вероятность пули на попадание, в зависимости от пройденного расстояния и меткости
+		//[returns the bullet's own probability of hitting, depending on the distance traveled and accuracy]
 		public function accuracy():Number {
-			if (precision==0) return 1;
-			if (antiprec>0 && dist<antiprec) return dist/antiprec*0.75+0.25;
-			return precision/dist;
+			if (precision == 0) return 1;	// If the bullet should always hit, return '1'
+			if (World.w.sats.active) return 1;
+			if (antiprec > 0 && dist < antiprec) return dist / antiprec * 0.75 + 0.25;
+			return precision / dist;
 		}
 		
-		//пуля прилетела в цель
-		//цель.udarBullet возвращает результат res
-		//-1 - промах
+		//[the bullet hit the target]
+		//[target.udarBullet returns res result]
+		//-1 - [miss]
 		public function popadalo(res:int=0) {
-			if (res<0) return;			//не попал
+			if (res < 0) return;			//[missed]
+			
 			if (explRadius) {
 				explosion();
 				if (vis) vis.visible=false;
-			} else if (tipDecal>0 && tipDecal<=6) { //пуля или удар
-				if (res==1 || res==2 || res==5 || res==7) {		//попадание по металлу или бетону
+			}
+			else if (tipDecal>0 && tipDecal<=6) { //[bullet or blow] (Melee impact?)
+				if (res==1 || res==2 || res==5 || res==7) {		// [hitting metal or concrete]
 					if (vis) vis.gotoAndPlay(2);
 					var koliskr:int = int(Math.random()*5+damage/5);
-					if (World.w.alicorn) koliskr*=0.2;
-					if (koliskr>20) koliskr=20;
+					if (World.w.alicorn) koliskr *= 0.2;
+					if (koliskr > 20) koliskr = 20;
 					Emitter.emit('iskr_bul', loc, coordinates.X, coordinates.Y, {dx:-dx/vel*10, dy:-dy/vel*10, kol:koliskr});
 					if (flare!=null && flare!='') Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
-				} else if (res==3 || res==4) {	//попадание по мясу или дереву
-					if (vis && dist<vel) {
-						vis.scaleX=dist/100;
+				}
+				else if (res == 3 || res == 4) {	//[hitting meat or wood]
+					if (vis && dist < vel) {
+						vis.scaleX = dist / 100;
 					}
-				} else {
-					if (vis && dist<vel) vis.visible=false;
+				}
+				else {
+					if (vis && dist<vel) vis.visible = false;
 				}
 			}
-			else if ((flare!=null && flare != '') && res > 0) Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
+			else if ((flare != null && flare != '') && res > 0) Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
 
-			if (liv>4) liv=4;
-			babah=true;
+			if (liv > 4) liv = 4;
+			babah = true;
 		}
 		
 		// [returns false if the object is already in the list of objects with which the bullet has already interacted]

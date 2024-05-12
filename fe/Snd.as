@@ -27,11 +27,15 @@ package fe
 		public static var musicCh:SoundChannel;
 		public static var musicPrevCh:SoundChannel;
 		public static var actionCh:SoundChannel;
-		public static var currentMusicPrior:int=0;
+
+		public static var currentMusicPrior:int = 0;
 		
 		public static var t_hit:int = 0;
 		public static var t_combat:int = 0;
-		public static var centrX:Number = 1000, centrY:Number = 500, widthX:Number = 2000; 
+
+		public static var centrX:Number = 1000;
+		public static var centrY:Number = 500;
+		public static var widthX:Number = 2000; 
 		public static var t_music:int = 0;
 		public static var t_shum:int = 0;
 		private static var inited:Boolean = false;
@@ -499,7 +503,7 @@ package fe
 		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150):void
 		{
 			t_combat = n;
-			if (sndMusicPrior>currentMusicPrior)
+			if (sndMusicPrior > currentMusicPrior)
 			{
 				currentMusicPrior = sndMusicPrior;
 				playMusic(sndMusic);
@@ -510,18 +514,22 @@ package fe
 		public static function playMusic(sndMusic:String=null, rep:int=10000):void
 		{
 			if (!inited) return;
-			if (sndMusic!=null && musicCh && sndMusic==musicName) return;
-			if (sndMusic!=null) musicName=sndMusic;
+			
+			if (sndMusic != null && musicCh && sndMusic == musicName) return;
+			
+			if (sndMusic != null) musicName = sndMusic;
+
 			var trans:SoundTransform = new SoundTransform(musicVol, 0);
+			
 			if (musicCh)
 			{
-				if (musicPrevCh || t_music>0) musicPrevCh.stop();
-				musicPrevCh=musicCh;
-				musicCh=null;
-				t_music=100;
+				if (musicPrevCh || t_music > 0) musicPrevCh.stop();
+				musicPrevCh = musicCh;
+				musicCh = null;
+				t_music = 100;
 			}
-			currentMusicPrior=0;
-			if (onMusic && snd[musicName] && snd[musicName].bytesTotal && snd[musicName].bytesLoaded==snd[musicName].bytesTotal) musicCh=snd[musicName].play(0,rep,trans);
+			currentMusicPrior = 0;
+			if (onMusic && snd[musicName] && snd[musicName].bytesTotal && snd[musicName].bytesLoaded == snd[musicName].bytesTotal) musicCh = snd[musicName].play(0, rep, trans);
 		}
 
 		public static function stopMusic():void
@@ -587,6 +595,7 @@ package fe
 		public static function step():void
 		{
 			if (t_hit>0) t_hit--;
+
 			if (t_music>0 && musicPrevCh)
 			{
 				var trans:SoundTransform;
@@ -601,19 +610,22 @@ package fe
 					musicPrevCh=null;
 					t_music=0;
 				}
-				if (t_combat>0) t_music-=5;
+				if (t_combat>0) t_music -= 5;
 				else t_music--;
 			}
-			if (t_combat>0)
+
+			if (t_combat > 0)
 			{
-				if (t_combat==1)
+				if (t_combat == 1)
 				{
-					currentMusicPrior=0;
+					currentMusicPrior = 0;
 					playMusic(World.w.currentMusic);
 				}
-				if (World.w.pip==null || !World.w.pip.active && !World.w.sats.active) t_combat--;
+				if (World.w.pip == null || !World.w.pip.active && !World.w.sats.active) t_combat--;
 			}
+
 			t_shum--;
+
 			if (t_shum <= 0)
 			{
 				t_shum = 5;

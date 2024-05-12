@@ -10,7 +10,6 @@ package fe.projectile
 	
 	public class PhisBullet extends Bullet
 	{
-		
 		public var brake=2;
 		public var dr:Number=0;
 		public var lip:Boolean=false;

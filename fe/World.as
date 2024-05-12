@@ -794,63 +794,73 @@ package  fe
 			}
 		}
 
-		//главный цикл
+		//Main Loop
 		public function step():void
 		{
 			if (verror.visible) return;
-			//Управление
-			ctr.step();				
-			Snd.step();
-			if (ng_wait>0) {
-				if (ng_wait==1) {
+			
+			ctr.step();	//Player input			
+			Snd.step();	// Sound
+			if (ng_wait > 0) {
+				if (ng_wait == 1) {
 					newGame1();
-				} else if (ng_wait==2) {
+				}
+				else if (ng_wait == 2) {
 					if (clickReq!=1) newGame2();
 				}
 				return;
 			}
 			if (!consoleActive && !pip.active) swfStage.focus = swfStage;
 			
-			//Только если игра началась и не на паузе, игровые циклы
+			// [Only if the game has started and is not paused, game loops]
 			if (allStat==1 && !onPause) {
-				//цикл выхода из местности
-				if (t_exit>0) {
-					if (!(t_exit==17 && clickReq==1)) exitStep();
+				// [exit cycle]
+				if (t_exit > 0) {
+					if (!(t_exit == 17 && clickReq == 1)) exitStep();
 				}
-				//счёт частиц
-				Emitter.kol2=Emitter.kol1;
-				Emitter.kol1=0;
-				//основной цикл !!!!
-				if (t_exit!=17) land.step();
-				//цикл смерти
+				
+				// [Particle counting]
+				Emitter.kol2 = Emitter.kol1;
+				Emitter.kol1 = 0;
+				
+				// [Main loop] !!!!
+				if (t_exit != 17) land.step();
+				
+				// [Cycle of death]
 				if (t_die>0) ggDieStep();
-				//таймер боя
+				
+				// [Battle timer]
 				if (t_battle>0) t_battle--;
+				
 				sats.step2();
-				//если нужен перерасчёт массы
+
+				// [if you need to recalculate the mass]
 				if (calcMass) {
 					invent.calcMass();
-					calcMass=false;
+					calcMass = false;
 				}
 				if (calcMassW) {
 					invent.calcWeaponMass();
-					calcMassW=false;
+					calcMassW = false;
 				}
-				//сохранение
+
+				// [Saving]
 				t_save++;
-				if (t_save>5000 && !testMode && !alicorn) {
+				if (t_save > 5000 && !testMode && !alicorn) {
 					saveGame();
 				}
-				checkLoot=false;
+
+				checkLoot = false;
 			}
 			
-			if (comLoad>=0) {
-				if (comLoad>=100) {
-					if (autoSaveN>0) saveGame();
-					loadGame(comLoad-100);
-				} else {
+			if (comLoad >= 0) {
+				if (comLoad >= 100) {
+					if (autoSaveN > 0) saveGame();
+					loadGame(comLoad - 100);
+				}
+				else {
 					pip.onoff(-1);
-					comLoad+=100;
+					comLoad += 100;
 					setLoadScreen();
 				}
 			}

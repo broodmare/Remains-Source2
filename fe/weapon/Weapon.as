@@ -36,7 +36,9 @@ package fe.weapon
 		public var flare:String;				//вспышка
 		public var visexpl:String;				//взрыв
 		
-		var is_attack:Boolean=false, is_pattack:Boolean=false;	//	нажата ли клавиша атаки
+		var is_attack:Boolean = false;			//	[is the attack key pressed?]
+		var is_pattack:Boolean = false;	
+		
 		public var t_attack:int=0;
 		public var t_prep:int=0;
 		public var t_reload:int=0;
@@ -53,12 +55,11 @@ package fe.weapon
 		public var jammed:Boolean=false;	//заклинило
 		public var kol_shoot:int=0;	//	количество сделанных выстрелов
 		public var ready:Boolean=false; //оружие наведено на цель
-		public var is_shoot:Boolean=false; //выстрел произведён
+		public var is_shoot:Boolean=false; // [shot fired]
 		protected var animated:Boolean=false;
-		//тип крепления
-		public var krep:int=0;
-		//осталось в обойме
-		public var hold:int=0;
+		
+		public var krep:int = 0;		// [fastening type]
+		public var hold:int = 0;		// [left in the clip]
 
 		public var findCel:Boolean=true;	//поворачиваться за целью
 		public var forceRot:Number=0;
@@ -80,7 +81,6 @@ package fe.weapon
 		//категория 
 		public var cat:int=0;
 		//инвентарь
-		//public var fav:int=0;
 		public var respect:int=0;		//отношение 0-новое, 1-скрытое, 2-используемое, 3-схема
 		//необходимый скилл
 		public var skill:int=0;
@@ -92,14 +92,17 @@ package fe.weapon
 		public var alicorn:Boolean=false;	//доступно в режиме аликорна
 		public var rep_eff:Number=1;	//эффективность ремонта набором оружейника
 		
-		public var auto:Boolean=false;	//автоматическая атака
-		public var rapid:int=5;			//тактов на выстрел, 30=1с
-		public var speed:Number=100;	//скорость пули
-		public var volna:Boolean=false;	//если true, то скорость пули не будет рандомной
-		public var deviation:Number=0; 	//угол разлёта
-		public var precision:Number=0;	//точность, показывает расстояние, на котором попадание будет 100%
-		public var antiprec:Number=0;	//для снайперских винтовок, показывает расстояние, на котором точность начнёт снижаться
-		public var dlina:int=50, mindlina:int=50;			//длина холодного оружия
+		public var auto:Boolean = false;	// [automatic attack]
+		public var rapid:int = 5;			// [cycles per shot, 30 = 1s]
+		public var speed:Number = 100;		// [bullet speed]
+		public var volna:Boolean = false;	// [if true, then the bullet speed will not be random]
+		public var deviation:Number = 0; 	// Weapon dispersion
+		public var precision:Number = 0;	// [accuracy, shows the distance at which the hit will be 100%]
+		public var antiprec:Number = 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
+
+		public var dlina:int=50;			// [bladed weapon length]
+		public var mindlina:int=50;			
+		
 		public var mass:int=1;			//занимает место
 		public var drot:Number=0;		//скорость поворота оружия, 0 -мгновенно
 		public var drot2:Number=0;		//скорость поворота оружия при атаке
@@ -117,7 +120,7 @@ package fe.weapon
 		public var critM:Number=0;		//дополнительный крит
 		public var critDamPlus:Number=0;//прибавка к модификатору критического урона
 		public var distExpl:Boolean=false;	//пули взрываются по прошествии времени
-		public var navod:Number=0;		//самонаведение
+		public var navod:Number = 0;		// [homing]
 
 		public var otbros:Number=0;		//отброс
 		public var kol:Number=1;		//количество пуль за 1 выстрел
@@ -187,9 +190,9 @@ package fe.weapon
 		public var ammoMod:int=-1;		//изменение типа урона
 		
 		
-		//ЗПС
-		public var satsQue:int=1;
-		public var satsCons:Number=10;
+		//SATS
+		public var satsQue:int = 1;
+		public var satsCons:Number = 10;
 		public var noSats:Boolean=false;	//не поддерживает
 		public var noPerc:Boolean=false;	//не рассчитывать точность
 		public var noTrass:Boolean=false;	//не трассировать
@@ -297,7 +300,7 @@ package fe.weapon
 			perslvl=node.@perslvl;
 			if (node.@alicorn>0) alicorn=true;
 			
-			//ЗПС
+			//SATS
 			if (node.sats.length()) {
 				if (node.sats[0].@que.length()) satsQue=node.sats[0].@que;
 				if (node.sats[0].@cons.length()) satsCons=node.sats[0].@cons;
@@ -554,16 +557,16 @@ package fe.weapon
 			devMult=1;
 			for each(var wp in weaponPerks) {
 				if (opt[wp]) {
-					if (pers.hasOwnProperty(wp+'Prec')) precMult*=pers[wp+'Prec'];
-					if (pers.hasOwnProperty(wp+'Cons')) consMult*=pers[wp+'Cons'];
-					if (pers.hasOwnProperty(wp+'Dam')) damMult*=pers[wp+'Dam'];
-					if (pers.hasOwnProperty(wp+'Speed')) speedMult*=pers[wp+'Speed'];
-					if (pers.hasOwnProperty(wp+'Det')) damAdd+=pers[wp+'Det'];
-					if (pers.hasOwnProperty(wp+'Pier')) pierAdd+=pers[wp+'Pier'];
-					if (pers.hasOwnProperty(wp+'Critch')) critchAdd+=pers[wp+'Critch'];
-					if (pers.hasOwnProperty(wp+'Knock')) otbrosMult*=pers[wp+'Knock'];
-					if (pers.hasOwnProperty(wp+'Dev')) devMult*=pers[wp+'Dev'];
-					if (pers.hasOwnProperty(wp+'Stun')) {
+					if (pers.hasOwnProperty(wp + 'Prec')) precMult *= pers[wp + 'Prec'];
+					if (pers.hasOwnProperty(wp + 'Cons')) consMult *= pers[wp + 'Cons'];
+					if (pers.hasOwnProperty(wp + 'Dam')) damMult *= pers[wp + 'Dam'];
+					if (pers.hasOwnProperty(wp + 'Speed')) speedMult *= pers[wp + 'Speed'];
+					if (pers.hasOwnProperty(wp + 'Det')) damAdd += pers[wp + 'Det'];
+					if (pers.hasOwnProperty(wp + 'Pier')) pierAdd += pers[wp + 'Pier'];
+					if (pers.hasOwnProperty(wp + 'Critch')) critchAdd += pers[wp + 'Critch'];
+					if (pers.hasOwnProperty(wp + 'Knock')) otbrosMult *= pers[wp + 'Knock'];
+					if (pers.hasOwnProperty(wp + 'Dev')) devMult *= pers[wp + 'Dev'];
+					if (pers.hasOwnProperty(wp + 'Stun')) {
 						dopEffect='stun';
 						dopDamage=pers[wp+'Stun'];
 						dopCh=1;
@@ -659,15 +662,21 @@ package fe.weapon
 			if (t_attack>0) {
 				t_attack--;
 			}
+			
 			if (t_rel>0) t_rel--;
+			
 			if (t_ret>0) {
 				t_ret--;
 			}
+			
 			if (rotUp>5) {
 				rotUp*=0.9;
-			} else if (rotUp>0.5) {
+			}
+			else if (rotUp>0.5) {
 				rotUp-=0.5;
-			} else rotUp=0;
+			}
+			else rotUp=0;
+			
 			if (t_prep>0) {
 				t_prep--;
 			} else {
@@ -675,7 +684,9 @@ package fe.weapon
 			}
 			if (t_auto>0) {
 				t_auto--;
-			} else pow=0;
+			}
+			else pow=0;
+			
 			if (t_shoot>0) t_shoot--;
 			
 			if (sndPrep!='')
@@ -694,6 +705,7 @@ package fe.weapon
 					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep2 + 100);
 				}	//звук остановки
 			}
+			
 			if (recharg && hold<holder && t_attack==0) {
 				t_rech--;
 				if (t_rech<=0) {
@@ -702,8 +714,11 @@ package fe.weapon
 					if (owner.player) World.w.gui.setWeapon();
 				}
 			}
+			
 			if (t_attack==0 && t_reload>0) t_reload--;
+			
 			if (t_reload==Math.round(10*reloadMult)) reloadWeapon();
+			
 			is_pattack=is_attack;
 			is_attack=false;
 		}
@@ -806,7 +821,7 @@ package fe.weapon
 		
 		protected function shoot():Bullet
 		{
-			//осечка
+			// [misfire]
 			if (breaking>0 && owner && owner.player) {
 				var rnd=Math.random();
 				var jm=(owner as UnitPlayer).pers.jammedMult;
@@ -821,59 +836,74 @@ package fe.weapon
 					return null;
 				}
 			}
+
 			if (holder>0 && hold<rashod) return null;
+			
 			var sk=1;
+			
 			if (owner) {
 				sk=owner.weaponSkill;
 				if (owner.player) sk=weaponSkill;
 			}
+			
 			var r=(Math.random()-0.5)*(deviation*(1+breaking*2)/skillConf/(sk+0.01)+owner.mazil)*3.1415/180*devMult;
+			
 			getBulXY();
-			for (var i=0; i<kol; i++) {
+			
+			for (var i = 0; i < kol; i++) {
 				if (navod) {
-					b = new SmartBullet(owner,bulX,bulY,vBullet);
-					(b as SmartBullet).setCel(World.w.gg,navod);
-				} else {
-					b = new Bullet(owner,bulX,bulY,vBullet);
+					b = new SmartBullet(owner, bulX, bulY, vBullet);
+					(b as SmartBullet).setCel(World.w.gg, navod);
 				}
-				b.weap=this;
-				if (b.vis) b.vis.blendMode=bulBlend;
+				else {
+					b = new Bullet(owner, bulX, bulY, vBullet);
+				}
+
+				b.weap = this;
+				
+				if (b.vis) b.vis.blendMode = bulBlend;
 				if (fromWall)
 				{
 					try
 					{
-						if (loc.getAbsTile(bulX,bulY).phis) b.inWall=true;
+						if (loc.getAbsTile(bulX,bulY).phis) b.inWall = true;
 					}
 					catch(err)
 					{ 
 						trace('ERROR: (00:14)');
 					}
 				}
-				if (b.vis && spring==3) b.vis.gotoAndStop(i+1);
-				b.rot=rot-rotUp*storona/50+r+(i-(kol-1)/2)*deviation*3.1415/360;
-				if (grav>0 || volna) b.vel=speed*speedMult; 
+				
+				if (b.vis && spring == 3) b.vis.gotoAndStop(i + 1);
+				
+				b.rot = rot - rotUp * storona / 50 + r + (i - (kol - 1) / 2) * deviation * 3.1415 / 360;
+			
+				if (grav > 0 || volna) b.vel = speed * speedMult; 
 				else b.vel=speed*speedMult*(Math.random()*0.4+0.8);
-				b.dx=Math.cos(b.rot)*b.vel;
-				b.dy=Math.sin(b.rot)*b.vel;
-				b.knockx=b.dx/b.vel;
-				b.knocky=b.dy/b.vel;
+				
+				b.dx = Math.cos(b.rot) * b.vel;
+				b.dy = Math.sin(b.rot) * b.vel;
+				b.knockx = b.dx / b.vel;
+				b.knocky = b.dy / b.vel;
 				if (owner && distExpl) {
-					b.celX=owner.celX;
-					b.celY=owner.celY;
+					b.celX = owner.celX;
+					b.celY = owner.celY;
 				}
 				if (damage>0) b.damage=resultDamage(damage,sk)*ammoDamage;
 				if (damageExpl>0) b.damageExpl=resultDamage(damageExpl,sk);
+
 				setBullet(b);
-				b.miss=1-skillConf;
-				b.ddy=b.ddx=0;
-				if (desintegr) b.desintegr=desintegr;
+				
+				b.miss = 1 - skillConf;
+				b.ddy = b.ddx = 0;
+				if (desintegr) b.desintegr = desintegr;
 				if (owner) {
-					b.precision=resultPrec(owner.precMult,sk);
-					b.antiprec=antiprec;
+					b.precision = resultPrec(owner.precMult, sk);
+					b.antiprec = antiprec;
 				}
 				if (accel) {
-					b.ddx+=Math.cos(b.rot)*accel;
-					b.ddy+=Math.sin(b.rot)*accel;
+					b.ddx += Math.cos(b.rot) * accel;
+					b.ddy += Math.sin(b.rot) * accel;
 					b.accel=accel;
 				}
 				if (flame>0) {
@@ -897,18 +927,17 @@ package fe.weapon
 			if (shell) {
 				emitShell.cast(loc, coordinates.X, coordinates.Y,{dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
 			}
-			if (owner.demask<shine) owner.demask=shine;	//видимость выстрела
+			if (owner.demask<shine) owner.demask=shine;	// [shot visibility]
 			if (noise>0) owner.makeNoise(noise,true);
 			owner.isShoot=true;
 			if (holder>0 && hold>0) {
-				if (owner.player && (owner as UnitPlayer).pers.recyc>0
-					&& (ammo=='batt' || ammo=='energ' || ammo=='crystal')
-					&& Math.random()<(owner as UnitPlayer).pers.recyc) {
-					//не расходовать боезапас
-				} else {
-					hold-=rashod;
-					//восполнение на полигоне
-					if (owner.player && (loc.train) && ammo!='recharg' && ammo!='not') { // || World.w.alicorn
+				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo == 'batt' || ammo == 'energ' || ammo == 'crystal') && Math.random() < (owner as UnitPlayer).pers.recyc) {
+					// [don't waste ammunition]
+				}
+				else {
+					hold -= rashod;
+					// [replenishment at the landfill]
+					if (owner.player && (loc.train) && ammo!='recharg' && ammo!='not') {
 						World.w.invent.items[ammo].kol+=rashod;
 						World.w.invent.mass[2]+=World.w.invent.items[ammo].mass*rashod;
 					}
@@ -928,12 +957,12 @@ package fe.weapon
 				t_shoot=3;
 			}
 			kol_shoot++;
-			t_ret=Math.round(recoil*recoilMult);
-			if (recoil>3 && t_ret<3) t_ret=3;
-			rotUp+=recoilUp*recoilMult;
-			is_shoot=true;
-			if (sndShoot!='' && kol_shoot%sndShoot_n==0) Snd.ps(sndShoot, coordinates.X, coordinates.Y);
-			t_auto=3;
+			t_ret = Math.round(recoil * recoilMult);
+			if (recoil > 3 && t_ret < 3) t_ret = 3;
+			rotUp += recoilUp * recoilMult;
+			is_shoot = true;
+			if (sndShoot != '' && kol_shoot%sndShoot_n == 0) Snd.ps(sndShoot, coordinates.X, coordinates.Y);
+			t_auto = 3;
 			return b;
 		}
 		
@@ -942,11 +971,13 @@ package fe.weapon
 		{
 			return (dam0+damAdd)*damMult*sk*skillPlusDam*(1-breaking*0.3);
 		}
-		//результирующая дальность
+
+		// [resulting range]
 		public function resultPrec(pm:Number=1, sk:Number=1):Number
 		{
 			return precision*precMult*(1+(sk-1)*0.5)*pm*owner.precMultCont;
 		}
+
 		//результирующее время атаки
 		public function resultRapid(rap0:Number, sk:Number=1):Number
 		{
@@ -1224,22 +1255,22 @@ package fe.weapon
 				if (ammo == '') {
                     s += '\t';
                 } else s += Res.txt('i', ammo) + '\t';
-				if (holder>0) {
-					s+=holder;
-					if (rashod>1) s+=' (-'+rashod+')';
+				if (holder > 0) {
+					s += holder;
+					if (rashod > 1) s += ' (-' + rashod + ')';
 				}
-				s+='\t';
+				s += '\t';
 			}
-			s+=satsCons;
-			if (satsQue>1) s+=' [x'+satsQue+']';
-			s+='\t';
-			if (opt && opt.perk) s+=Res.txt('e',opt.perk);
-			s+='\t';
-			if (tip<4) s+=maxhp+'\t';
-			else s+='\t';
-			if (tip==4) s += getWeaponInfo(id).@price + '\t';
-			else if (tip!=5 && variant>0) s+=price*3+'\t';
-			else s+=price+'\t';
+			s += satsCons;
+			if (satsQue > 1) s += ' [x' + satsQue + ']';
+			s += '\t';
+			if (opt && opt.perk) s += Res.txt('e', opt.perk);
+			s += '\t';
+			if (tip < 4) s += maxhp + '\t';
+			else s += '\t';
+			if (tip == 4) s += getWeaponInfo(id).@price + '\t';
+			else if (tip != 5 && variant > 0) s += price * 3 + '\t';
+			else s += price + '\t';
 			return s;
 		}
 	}	
