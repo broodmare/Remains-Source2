@@ -1360,7 +1360,7 @@
 					return;
 				}
 			}
-			//--------------------- различные действия ---------------------------
+			//--------------------- [Various actions] ---------------------------
 			//действие
 			if (ctr.keyAction && rat==0) {
 				if (teleObj) {
@@ -1646,7 +1646,7 @@
 			} else {
 				t_run=0;
 			}
-			//Рывок в сторону
+			// [Jerk to the side]
 			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==1)) {
 				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
 					if (dx<dash) dx=dash;
@@ -1678,11 +1678,11 @@
 				ctr.keyDubLeft=ctr.keyDubRight=ctr.keyDash=false;
 			}
 			
-			//прыг
+			// Jump
 			if (levit==1) levit=0;
 			throu=(ctr.keyJump || !stay)&&ctr.keySit || isPlav || kdash_t>3 || pinok>70;
 			if (stay && !ctr.keyJump || isLaz) {
-				jumpp=maxjumpp;//пока стоим, прыжок заряжен полностью
+				jumpp=maxjumpp;	// [while we are standing, the jump is fully charged]
 				dJump=false;
 				if (isLaz && !keyLeft && !keyRight) jumpp=0;
 				jumpNumb=0;
@@ -1885,7 +1885,7 @@
 		}
 		
 		
-		//смотреть на целевую точку
+		// [look at the target point]
 		public function lineCel(rdx:int=0, rdy:int=0):int
 		{
 			var res = 0;
@@ -2280,7 +2280,7 @@
 		}
 		
 		
-		//Смена оружия по цифровой клавише или идентификатору
+		// [Changing weapons by number key or ID]
 		public function changeWeapon(nid:String, moment:Boolean=false) {
 			var nw;
 			if (sats && sats.que.length>0) sats.clearAll();
@@ -2331,7 +2331,7 @@
 			t_work=changeWeaponTime1;
 		}
 		
-		//непосредственно замена оружия
+		// [Direct replacement of weapons]
 		private function changeWeaponNow(st:int) {
 			vision=1;
 			if (st==1) {
@@ -2358,8 +2358,8 @@
 			World.w.gui.setWeapon();
 		}
 		
-		//вернуть нужное количество боеприпасов из инвентаря, или сколько есть
-		//вернуть -1, если не хватает даже на 1 заряд
+		// [Return the required amount of ammunition from inventory, or as much as you have]
+		// [Return -1 if there is not enough for even 1 charge]
 		public function getInvAmmo(ammoId:String, need:int=1, needmin:int=1, minus:Boolean=false):int {
 			if (invent==null) return -1;
 			if (invent.items[ammoId].kol<needmin) return -1;

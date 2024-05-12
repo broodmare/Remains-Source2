@@ -57,10 +57,10 @@ package fe.projectile
 		public var armorMult:Number = 1;	//модификатор действия брони
 		public var tipDamage:int = 0;
 		public var tipDecal:int = 0;
-		public var precision:Number = 0;	//[accuracy, shows the distance at which the hit will be 100%, 0 if the hit is always]
-		public var antiprec:Number = 0;	//[for sniper rifles, shows the distance at which accuracy will begin to decrease]
-		public var miss:Number=0;		//[absolute miss probability]
-		public var desintegr:Number=0;	//[probability of disintegration]
+		public var precision:Number = 0;	// [accuracy, shows the distance at which the hit will be 100%, 0 if the hit is always]
+		public var antiprec:Number = 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
+		public var miss:Number=0;			// [absolute miss probability]
+		public var desintegr:Number=0;		// [probability of disintegration]
 		
 		public var critCh:Number=0;	//шанс крита
 		public var critInvis:Number=0;	//шанс крита для мобов, у которых не установлена цель
@@ -184,10 +184,9 @@ package fe.projectile
 			}
 		}
 		
-		//[returns the bullet's own probability of hitting, depending on the distance traveled and accuracy]
+		//[Returns the bullet's own probability of hitting, depending on the distance traveled and accuracy]
 		public function accuracy():Number {
 			if (precision == 0) return 1;	// If the bullet should always hit, return '1'
-			if (World.w.sats.active) return 1;
 			if (antiprec > 0 && dist < antiprec) return dist / antiprec * 0.75 + 0.25;
 			return precision / dist;
 		}
@@ -202,7 +201,7 @@ package fe.projectile
 				explosion();
 				if (vis) vis.visible=false;
 			}
-			else if (tipDecal>0 && tipDecal<=6) { //[bullet or blow] (Melee impact?)
+			else if (tipDecal>0 && tipDecal<=6) {				//[bullet or blow] (Melee impact?)
 				if (res==1 || res==2 || res==5 || res==7) {		// [hitting metal or concrete]
 					if (vis) vis.gotoAndPlay(2);
 					var koliskr:int = int(Math.random()*5+damage/5);

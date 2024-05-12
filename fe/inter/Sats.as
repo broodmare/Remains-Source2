@@ -79,18 +79,18 @@ package fe.inter
 					}
 					else
 					{
-						var st=weapon.status();
-						if (st==4) {
+						var st = weapon.status();
+						if (st == 4) {
 							World.w.gui.infoText('noAmmo', '');
-							active=false;
+							active = false;
 						}
-						if (st==5) {
+						if (st == 5) {
 							World.w.gui.infoText('brokenWeapon', '');
-							active=false;
+							active = false;
 						}
-						if (st==6) {
+						if (st == 6) {
 							World.w.gui.infoText('noMana', '');
-							active=false;
+							active = false;
 						}
 					}
 				}
@@ -109,15 +109,16 @@ package fe.inter
 					radius.y = gg.coordinates.Y - gg.objectHeight / 2;
 					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
 				}
-				skillConf=1;
+
+				skillConf = 1;
 				if (World.w.weaponsLevelsOff) {
-					var razn=weapon.lvl-gg.pers.getWeapLevel(weapon.skill);
-					if (razn==1) skillConf=0.8;
-					else if (razn==2) skillConf=0.6;
-					else if (razn>2) {
-						skillConf=0;
+					var razn = weapon.lvl - gg.pers.getWeapLevel(weapon.skill);
+					if (razn == 1) skillConf = 0.8;
+					else if (razn == 2) skillConf = 0.6;
+					else if (razn > 2) {
+						skillConf = 0;
 						World.w.gui.infoText('weaponSkillLevel');
-						active=false;
+						active = false;
 						return;
 					}
 				}
@@ -126,16 +127,16 @@ package fe.inter
 				World.w.grafon.onSats(true);
 				getUnits();
 				World.w.gui.offCelObj();
-				odv=od;
+				odv = od;
 				World.w.gui.setOd();
-				World.w.swfStage.addEventListener(MouseEvent.MOUSE_MOVE,mMove);
+				World.w.swfStage.addEventListener(MouseEvent.MOUSE_MOVE, mMove);
 				World.w.gui.setTopText('infosats');
 			}
 			else
 			{
 				World.w.grafon.onSats(false);
 				offUnits();
-				World.w.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE,mMove);
+				World.w.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE, mMove);
 				World.w.ctr.clearAll();
 				World.w.gui.setTopText('');
 			}
@@ -213,9 +214,9 @@ package fe.inter
 					}
 				}
 			}
-			if (cel==null) cel=new SatsCel(null, World.w.celX,World.w.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
-			weapon.ready=false;
-			odv-=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
+			if (cel == null) cel = new SatsCel(null, World.w.celX, World.w.celY, weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult, weapon.satsQue);
+			weapon.ready = false;
+			odv -= weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult;
 			World.w.gui.setOd();
 			que.push(cel);
 		}
@@ -406,13 +407,14 @@ package fe.inter
 				if (World.w.pers && World.w.pers.modAnalis) {
 					info.text += '\n' + Res.pipText('level') + ': ' + (un.level + 1);
 					info.text += '\n' + Res.pipText('hp') + ': ' + Math.ceil(un.hp) + '/' + Math.ceil(un.maxhp);
-					if (un.skin>0) info.text+='\n'+Res.pipText('skin')+': '+Math.ceil(un.skin);
-					if (un.armor_qual>0 && un.armor>0) info.text+='\n'+Res.pipText('armor')+': '+Math.ceil(un.armor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
-					if (un.armor_qual>0 && un.marmor>0) info.text+='\n'+Res.pipText('marmor')+': '+Math.ceil(un.marmor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
-					if (mc.y<150) info.y=50;
-					else info.y=-un.objectHeight-info.textHeight-20;
+					if (un.skin > 0) info.text += '\n' + Res.pipText('skin') + ': ' + Math.ceil(un.skin);
+					if (un.armor_qual > 0 && un.armor > 0) info.text += '\n' + Res.pipText('armor') + ': ' + Math.ceil(un.armor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
+					if (un.armor_qual > 0 && un.marmor > 0) info.text += '\n' + Res.pipText('marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
+					
+					if (mc.y < 150) info.y = 50;
+					else info.y = -un.objectHeight - info.textHeight - 20;
 				}
-				su.name='su';
+				su.name = 'su';
 				mc.addChild(du);
 				mc.addChild(su);
 				units.push({u:un, v:mc, du:du, p:prec, n:0});

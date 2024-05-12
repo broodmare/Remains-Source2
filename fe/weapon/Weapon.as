@@ -28,13 +28,13 @@ package fe.weapon
 		public var rot:Number;
 		public var bulX:Number=0, bulY:Number=0;
 		
-		//визуал
+		//[visual]
 		public var svis:String, svisv:String;	// [the weapon itself]
 		public var vWeapon:Class;			
 		public var visbul:String;				// [shells]
 		public var vBullet:Class;
-		public var flare:String;				//вспышка
-		public var visexpl:String;				//взрыв
+		public var flare:String;				//[flash]
+		public var visexpl:String;				//[explosion]
 		
 		var is_attack:Boolean = false;			//	[is the attack key pressed?]
 		var is_pattack:Boolean = false;	
@@ -61,10 +61,10 @@ package fe.weapon
 		public var krep:int = 0;		// [fastening type]
 		public var hold:int = 0;		// [left in the clip]
 
-		public var findCel:Boolean=true;	//поворачиваться за целью
-		public var forceRot:Number=0;
-		public var fixRot:int=0;	
-		public var checkLine:Boolean=false;	
+		public var findCel:Boolean = true;	//[turn to target]
+		public var forceRot:Number = 0;
+		public var fixRot:int = 0;	
+		public var checkLine:Boolean = false;	
 
 		public var id:String;
 		public var uniq:Number=-1;			//вероятность появления уникального варианта
@@ -338,7 +338,7 @@ package fe.weapon
 				}
 				catch (err:ReferenceError)
 				{
-					trace('ERROR: (00:11)');
+					trace("ERROR: (00:11)");
 					vBullet = visualBullet;
 				}
 			}
@@ -537,9 +537,9 @@ package fe.weapon
 		
 		public function setPers(gg:UnitPlayer, pers:Pers):void
 		{
-  			weaponSkill=pers.weaponSkills[skill];
-			if (pers.desintegr>0) desintegr=pers.desintegr;
-			if (tip!=5) drotMult=pers.drotMult;
+  			weaponSkill = pers.weaponSkills[skill];
+			if (pers.desintegr > 0) desintegr = pers.desintegr;
+			if (tip != 5) drotMult = pers.drotMult;
 			reloadMult=pers.reloadMult;
 			precMult=pers.allPrecMult;
 			recoilMult=pers.recoilMult;
@@ -573,18 +573,19 @@ package fe.weapon
 					}
 				}
 			}
-			absPierRnd=pers.modTarget;
-			explRadMult=pers.explRadMult;
+			absPierRnd = pers.modTarget;
+			explRadMult = pers.explRadMult;
 		}
 		
 		public function actions():void
 		{
 			var rot2:Number;
-			if (owner==null) return;
+			if (owner == null) return;
 
 			if (coordinates.X < owner.celX) storona = 1;
 			else storona = -1;
 
+			// This turns the weapon to face the curosr and is executed every tick.
 			if (findCel)
 			{
 				if (tip == 5)
@@ -593,7 +594,7 @@ package fe.weapon
 					coordinates.Y = owner.magicY;
 					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
-				else if (krep>0 || !coordinates.X)
+				else if (krep > 0 || !coordinates.X)
 				{
 					coordinates.X = owner.weaponX;
 					coordinates.Y = owner.weaponY;
@@ -610,22 +611,25 @@ package fe.weapon
 			{
 				coordinates.X = owner.weaponX;
 				coordinates.Y = owner.weaponY;
-				rot2=forceRot;
+				rot2 = forceRot;
 			}
-			ready=false;
-			var rdrot:Number=drot;
-			if (drot2>0 && (t_prep>0 || t_attack>0)) rdrot=drot2;
-			if (rdrot==0) {
-				rot=rot2;
-				ready=true;
-			} else {
+			ready = false;
+			var rdrot:Number = drot;
+			if (drot2 > 0 && (t_prep > 0 || t_attack > 0)) rdrot = drot2;
+			if (rdrot == 0) {
+				rot = rot2;
+				ready = true;
+			}
+			else {
 				if (Math.abs(rot-rot2)>Math.PI) {
 					if (Math.abs(rot-rot2)>Math.PI*2-rdrot*drotMult) {
 						rot=rot2;
 						ready=true;
-					} else if (rot>rot2) rot+=rdrot*drotMult;
+					}
+					else if (rot>rot2) rot+=rdrot*drotMult;
 					else rot-=rdrot*drotMult;
-				} else {
+				}
+				else {
 					if (rot2-rot>rdrot*drotMult) rot+=rdrot*drotMult;
 					else if (rot2-rot<-rdrot*drotMult) rot-=rdrot*drotMult;
 					else {
@@ -636,15 +640,18 @@ package fe.weapon
 				if (rot>Math.PI) rot-=Math.PI*2;
 				if (rot<-Math.PI) rot+=Math.PI*2;
 			}
-			if (fixRot==1) {
+			
+			if (fixRot == 1) {
 				if (rot<-Math.PI/6 && rot>-Math.PI/2) rot=-Math.PI/6;
 				if (rot>-Math.PI*5/6 && rot<=-Math.PI/2) rot=-Math.PI*5/6;
 			}
-			if (fixRot==2) {
+			
+			if (fixRot == 2) {
 				if (rot<-Math.PI/6) rot=-Math.PI/6;
 				if (rot>Math.PI/6) rot=Math.PI/6;
 			}
-			if (fixRot==3) {
+			
+			if (fixRot == 3) {
 				if (rot>0 && rot<Math.PI*5/6) rot=Math.PI*5/6;
 				if (rot<=0 && rot>-Math.PI*5/6) rot=-Math.PI*5/6;
 			}
@@ -656,7 +663,7 @@ package fe.weapon
 			}
 			catch (err)
 			{
-				trace('ERROR: (00:12)');
+				trace("ERROR: (00:12)");
 			}
 
 			if (t_attack>0) {
@@ -685,75 +692,75 @@ package fe.weapon
 			if (t_auto>0) {
 				t_auto--;
 			}
-			else pow=0;
+			else pow = 0;
 			
-			if (t_shoot>0) t_shoot--;
+			if (t_shoot > 0) t_shoot--;
 			
 			if (sndPrep!='')
 			{
 				if (!is_pattack && is_attack) {
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, t_prep * 30);
-				}	//звук раскрутки
+				}	// [spin sound]
 				if (snd_t_prep1>0 && is_attack && sndCh!=null && sndCh.position>snd_t_prep2-300)
 				{
 					sndCh.stop();
 					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep1 + 200);
-				}//	звук продолжения
+				}	// [continuation sound]
 				if (snd_t_prep2>0 && is_pattack && !is_attack && t_prep>0 && sndCh!=null && sndCh.position<snd_t_prep2-400)
 				{
 					sndCh.stop();
 					sndCh=Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep2 + 100);
-				}	//звук остановки
+				}	// [stop sound]
 			}
 			
-			if (recharg && hold<holder && t_attack==0) {
+			if (recharg && hold < holder && t_attack == 0) {
 				t_rech--;
-				if (t_rech<=0) {
+				if (t_rech <= 0) {
 					hold++;
-					t_rech=recharg;
+					t_rech = recharg;
 					if (owner.player) World.w.gui.setWeapon();
 				}
 			}
 			
-			if (t_attack==0 && t_reload>0) t_reload--;
+			if (t_attack == 0 && t_reload > 0) t_reload--;
 			
-			if (t_reload==Math.round(10*reloadMult)) reloadWeapon();
+			if (t_reload == Math.round(10 * reloadMult)) reloadWeapon();
 			
-			is_pattack=is_attack;
-			is_attack=false;
+			is_pattack = is_attack;
+			is_attack = false;
 		}
 
-		public function attack(waitReady:Boolean=false):Boolean {
+		public function attack(waitReady:Boolean = false):Boolean {
 			if (waitReady && !ready) return false;
-			if (hp<=0 && owner==World.w.gg) {
-				World.w.gui.infoText('brokenWeapon',nazv,null,false);
+			if (hp <= 0 && owner == World.w.gg) {
+				World.w.gui.infoText('brokenWeapon', nazv, null, false);
 				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				return false;
 			}
-			if (owner.player && (respect==1 || alicorn && !World.w.alicorn)) {
+			if (owner.player && (respect == 1 || alicorn && !World.w.alicorn)) {
 				World.w.gui.infoText('disWeapon',null,null,false);
 				return false;
 			}
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) {
-				t_auto=3;
+			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
+				t_auto = 3;
 				pow++;
 				return true;
 			}
-			skillConf=1;
+			skillConf = 1;
 			if (owner.player) {
 				if (!checkAvail()) return false;
 			}
-			if (holder>0 && hold<rashod) { //требуется перезарядка
+			if (holder > 0 && hold<rashod) { // [requires recharging]
 				initReload();
 				return false;
 			}
 			weaponAttack();
-			is_attack=true;
-			if (t_prep<prep+10) t_prep+=2;
-			if (t_prep>=prep && t_attack<=0 && t_reload<=0) {
-				if (dkol<=0) t_attack=rapid;
-				else t_attack=rapid*(dkol+1);
-				if (holder==1) initReload();
+			is_attack = true;
+			if (t_prep < prep + 10) t_prep += 2;
+			if (t_prep >= prep && t_attack <= 0 && t_reload <= 0) {
+				if (dkol <= 0) t_attack = rapid;
+				else t_attack = rapid * (dkol + 1);
+				if (holder == 1) initReload();
 			}
 			return true;
 		}
@@ -787,10 +794,10 @@ package fe.weapon
 			return true;
 		}
 		
-		//возможность атаки
+		// [Possibility of attack]
 		public function attackPos():Boolean
 		{
-			return t_attack<=0 && t_reload<=0;
+			return t_attack <= 0 && t_reload <= 0;
 		}
 		
 		public function getBulXY():void
@@ -813,7 +820,7 @@ package fe.weapon
 			}
 			catch (err)
 			{
-				trace('ERROR: (00:13)');
+				trace("ERROR: (00:13)");
 				bulX = coordinates.X;
 				bulY = coordinates.Y;
 			}
@@ -821,28 +828,28 @@ package fe.weapon
 		
 		protected function shoot():Bullet
 		{
-			// [misfire]
-			if (breaking>0 && owner && owner.player) {
-				var rnd=Math.random();
-				var jm=(owner as UnitPlayer).pers.jammedMult;
-				if (rnd<breaking/Math.max(20,holder)*jm) {
-					t_ret=2;
-					jammed=true;
+			// [Misfire]
+			if (breaking > 0 && owner && owner.player) {
+				var rnd = Math.random();
+				var jm = (owner as UnitPlayer).pers.jammedMult;
+				if (rnd < breaking / Math.max(20, holder) * jm) {
+					t_ret = 2;
+					jammed = true;
 					return null;
-				} else if (rnd<breaking/5*jm) {
-					t_ret=2;
-					if (rapid>5) World.w.gui.infoText('misfire',null,null,false);
+				} else if (rnd < breaking / 5 * jm) {
+					t_ret = 2;
+					if (rapid > 5) World.w.gui.infoText('misfire', null, null, false);
 					Snd.ps('no_ammo', coordinates.X, coordinates.Y);
 					return null;
 				}
 			}
 
-			if (holder>0 && hold<rashod) return null;
+			if (holder > 0 && hold < rashod) return null;
 			
-			var sk=1;
+			var sk = 1;
 			
 			if (owner) {
-				sk=owner.weaponSkill;
+				sk = owner.weaponSkill;
 				if (owner.player) sk=weaponSkill;
 			}
 			
@@ -870,7 +877,7 @@ package fe.weapon
 					}
 					catch(err)
 					{ 
-						trace('ERROR: (00:14)');
+						trace("ERROR: (00:14)");
 					}
 				}
 				
@@ -952,7 +959,7 @@ package fe.weapon
 				}
 				catch (err)
 				{
-					trace('ERROR: (00:15) - weapon: ' + id + '" held by: "' + owner.id + '" Could not play movieclip "shoot"!');
+					trace("ERROR: (00:15) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"shoot\"!");
 				}
 				t_shoot=3;
 			}
@@ -966,19 +973,19 @@ package fe.weapon
 			return b;
 		}
 		
-		//результирующий урон
+		// [Resulting damage]
 		public function resultDamage(dam0:Number, sk:Number=1):Number
 		{
 			return (dam0+damAdd)*damMult*sk*skillPlusDam*(1-breaking*0.3);
 		}
 
-		// [resulting range]
+		// [Resulting range]
 		public function resultPrec(pm:Number=1, sk:Number=1):Number
 		{
-			return precision*precMult*(1+(sk-1)*0.5)*pm*owner.precMultCont;
+			return precision * precMult * (1 + (sk - 1) * 0.5) * pm * owner.precMultCont;
 		}
 
-		//результирующее время атаки
+		// Resulting attack time
 		public function resultRapid(rap0:Number, sk:Number=1):Number
 		{
 			return rap0;
@@ -1062,16 +1069,16 @@ package fe.weapon
 			}
 		}
 		
-		//установить использующийся тип боеприпасов
+		// [Set the type of ammunition used]
 		public function setAmmo(nammo:String=null, node:XML=null):void
 		{
-			if (nammo!=null) ammo=nammo;
-			if (node==null) {
-				node=World.w.invent.items[ammo].xml;
+			if (nammo != null) ammo = nammo;
+			if (node == null) {
+				node = World.w.invent.items[ammo].xml;
 				if (owner && owner.player && World.w.gui) World.w.gui.setWeapon();
 			}
-			if (node==null) {
-				trace('Неправильный патрон',ammo);
+			if (node == null) {
+				trace("ERROR: (00:50) - Invalid ammo: ", ammo);
 				return;
 			}
 			ammoPier=0;		//бронебойность
@@ -1081,7 +1088,7 @@ package fe.weapon
 			ammoOtbros=1;	//отбрасывание
 			ammoPrec=1;		//точность
 			ammoHP=0;		//прибавка к износу
-			ammoFire=0;	//зажигательный
+			ammoFire=0;		//зажигательный
 			ammoMod=-1;		//изменение типа урона
 			if (node.@pier.length()) ammoPier=node.@pier;
 			if (node.@armor.length()) ammoArmor=node.@armor;
@@ -1106,7 +1113,7 @@ package fe.weapon
 			}
 		}
 		
-		//0-готово к стрельбе, 1-стреляет, 2-пустая обойма, 3-перезаряжается, 4-нет боеприпасов, 5-сломано, 6-нет маны
+		//[0-ready to fire, 1-shooting, 2-empty, 3-reloading, 4-out of ammo, 5-broken, 6-out of mana]
 		public function status():int
 		{
 			if (hp<=0) return 5;
@@ -1121,7 +1128,7 @@ package fe.weapon
 			return 0;
 		}
 		
-		//доступность для использования
+		//[Availability for use]
 		public function avail():int
 		{
 			if (hp<=0) return -2;
@@ -1148,7 +1155,7 @@ package fe.weapon
 			if (!jammed && (holder<=0 || (hold==holder && nammo=='') || recharg>0)) return;
 			if (nammo=='') ammoTarg=ammo;
 			if (owner.player) {
-				//не подходящие боеприпасы
+				// unsuitable ammunition
 				if (nammo!='' && nammo!=ammo)
 				{
 					var am = getAmmoInfo(nammo);
@@ -1179,7 +1186,7 @@ package fe.weapon
 						}
 						catch (err)
 						{
-							trace('ERROR: (00:16) - weapon: ' + id + '" held by: "' + owner.id + '" Could not play movieclip "reload"!');
+							trace("ERROR: (00:16) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"reload\"!");
 						}
 					}
 					if (sndReload!='') Snd.ps(sndReload, coordinates.X, coordinates.Y);
@@ -1209,23 +1216,24 @@ package fe.weapon
 					}
 					catch(err)
 					{
-						trace('ERROR: (00:17) - weapon: ' + id + '" held by: "' + owner.id + '" Could not play movieclip "ready"!');
+						trace("ERROR: (00:17) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"ready\"!");
 					}
 				}
 				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);
 			}
-			if (krep==0) {
+			if (krep == 0) {
 				if (coordinates.X > owner.celX) {
-					vis.scaleX=-1;
-					vis.rotation=rot*180/Math.PI+180+rotUp;
+					vis.scaleX = -1;
+					vis.rotation = rot * 180 / Math.PI + 180 + rotUp;
 				}
 				if (coordinates.X < owner.celX) {
-					vis.scaleX=1;
-					vis.rotation=rot*180/Math.PI-rotUp;
+					vis.scaleX = 1;
+					vis.rotation = rot * 180 / Math.PI - rotUp;
 				}
-			} else {
-				vis.scaleX=owner.storona;
-				vis.rotation=rot*180/Math.PI+90*(1-owner.storona)-rotUp*storona;
+			}
+			else {
+				vis.scaleX = owner.storona;
+				vis.rotation = rot * 180 / Math.PI + 90 * (1 - owner.storona) - rotUp * storona;
 			}
 		}
 		
@@ -1243,13 +1251,13 @@ package fe.weapon
 			if (damage>0) s+=damage;
 			if (kol>1) s+=' [x'+kol+']';
 			if (this.damageExpl>0) s+='('+damageExpl+' взр) ';
-			s+='\t';
-			s+=Number(30/rapid).toFixed(1)+'\t';
-			s+=Number((damage+damageExpl)*kol*30/rapid).toFixed(1)+'\t';
-			s+=Res.pipText('tipdam'+tipDamage)+'\t';
-			s+=Math.round(critCh*100)+'%\t';
-			s+=Math.round(precision/40)+'\t';
-			s+=pier+'\t';
+			s += '\t';
+			s += Number(30/rapid).toFixed(1)+'\t';
+			s += Number((damage+damageExpl)*kol*30/rapid).toFixed(1)+'\t';
+			s += Res.pipText('tipdam'+tipDamage)+'\t';
+			s += Math.round(critCh*100)+'%\t';
+			s += Math.round(precision/40)+'\t';
+			s += pier+'\t';
 			if (tip==5) s+='магия\t'+mana+'\t';
 			else {
 				if (ammo == '') {
