@@ -1733,27 +1733,33 @@ package fe.unit
 		}
 		
 		public function initBlit() {
-			blitData=World.w.grafon.getSpriteList(blitId);
-			blitRect = new Rectangle(0, 0, blitX, blitY);
-			blitPoint = new Point(0,0);
-			vis=new MovieClip();
-			var osn=new Sprite();
-			visData=new BitmapData(blitX,blitY,true,0);
-			visBmp=new Bitmap(visData);
-			vis.addChild(osn);
-			osn.addChild(visBmp);
-			if (blitDX>=0) visBmp.x=-blitDX;
-			else visBmp.x=-blitX/2;
-			if (blitDY>=0) visBmp.y=-blitDY;
-			else visBmp.y=-blitY+10;
-			animState='stay';
+			try {
+				blitData=World.w.grafon.getSpriteList(blitId);
+				blitRect = new Rectangle(0, 0, blitX, blitY);
+				blitPoint = new Point(0,0);
+				vis=new MovieClip();
+				var osn=new Sprite();
+				visData = new BitmapData(blitX, blitY, true, 0);
+				visBmp=new Bitmap(visData);
+				vis.addChild(osn);
+				osn.addChild(visBmp);
+				if (blitDX>=0) visBmp.x=-blitDX;
+				else visBmp.x=-blitX/2;
+				if (blitDY>=0) visBmp.y=-blitDY;
+				else visBmp.y=-blitY+10;
+				animState='stay';
+			}
+			catch (err:Error) {
+				trace("ERROR: (00:55) - initBlit failed for unit: \"" + nazv + "\"!");
+			}
+
 		}
 		
 		public function blit(blstate:int, blframe:int)
 		{
-			blitRect.x=blframe*blitX;
-			blitRect.y=blstate*blitY;
-			visData.copyPixels(blitData,blitRect,blitPoint);
+			blitRect.x = blframe * blitX;
+			blitRect.y = blstate * blitY;
+			visData.copyPixels(blitData, blitRect, blitPoint);
 		}
 		
 		public override function addVisual()

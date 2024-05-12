@@ -979,7 +979,7 @@ package fe.unit
 			if (World.w.land.itemScripts[id]) {
 				World.w.land.itemScripts[id].start();
 			}
-			else trace("ERROR: (00:53) - script ID: \"" + id + "\" not found!");
+			else trace("ERROR: (00:54) - script ID: \"" + id + "\" not found!");
 		}
 		
 		//рассчитать количество патронов по их базе

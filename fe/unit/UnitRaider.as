@@ -203,51 +203,67 @@ package fe.unit
 		}
 		
 		public override function animate() {
-			var cframe:int;
-			//поворот
-			if (sost==2 || sost==3) { //сдох
-				if (stay) {
-					if (animState=='fall') {
-					} else if (animState=='death') animState='fall';
-					else animState='die';
-				} else animState='death';
-			} else {
-				if (stay) {
-					if  (dx==0 || aiState==7) {
-						animState='stay';
-					} else if (attackerType==0 && aiAttack || aiState==8) {
-						animState='run';
-						sndStep(anims[animState].f,2);
-					} else if (walker && (aiState<=1 || aiState==4)) {
-						animState='walk';
-						sndStep(anims[animState].f,1);
-					} else {
-						animState='trot';
-						sndStep(anims[animState].f,1);
+			try {
+				var cframe:int;
+				//поворот
+				if (sost==2 || sost==3) { //сдох
+					if (stay) {
+						if (animState=='fall') {
+						}
+						else if (animState=='death') animState='fall';
+						else animState='die';
 					}
-				} else if (flyer) {
-					if  (isFly) animState='derg';
-					else animState='stay';
-				} else if (levit) {
-					animState='derg';
-				} else if (isLaz && mostLaz) {
-					animState='laz';
-					sndStep(anims[animState].f,3);
-				} else if (aiPlav) {
-					animState='plav';
-				} else {
-					animState='jump';
-					anims[animState].setStab((dy*0.6+8)/16);
+					else animState='death';
 				}
+				else {
+					if (stay) {
+						if  (dx==0 || aiState==7) {
+							animState='stay';
+						}
+						else if (attackerType==0 && aiAttack || aiState==8) {
+							animState='run';
+							sndStep(anims[animState].f,2);
+						}
+						else if (walker && (aiState<=1 || aiState==4)) {
+							animState='walk';
+							sndStep(anims[animState].f,1);
+						}
+						else {
+							animState='trot';
+							sndStep(anims[animState].f,1);
+						}
+					}
+					else if (flyer) {
+						if  (isFly) animState='derg';
+						else animState='stay';
+					}
+					else if (levit) {
+						animState='derg';
+					}
+					else if (isLaz && mostLaz) {
+						animState='laz';
+						sndStep(anims[animState].f,3);
+					}
+					else if (aiPlav) {
+						animState='plav';
+					}
+					else {
+						animState='jump';
+						anims[animState].setStab((dy*0.6+8)/16);
+					}
+				}
+				if (animState!=animState2) {
+					anims[animState].restart();
+					animState2=animState;
+				}
+				if (!anims[animState].st) {
+					blit(anims[animState].id, anims[animState].f);
+				}
+				anims[animState].step();
 			}
-			if (animState!=animState2) {
-				anims[animState].restart();
-				animState2=animState;
+			catch (error:Error) {
+				trace("ERROR: (00:56) - animate() failed for unit: \"" + nazv + "\"!");
 			}
-			if (!anims[animState].st) {
-				blit(anims[animState].id,anims[animState].f);
-			}
-			anims[animState].step();
 		}
 		
 		

@@ -72,12 +72,12 @@ package fe.inter {
 			<key id='keyFull' def={Keyboard.ENTER}/>
 		</keys>;
 		
-		var keyDowns:Vector.<Boolean>;	//нажатость
-		var keyNames:Vector.<String>;	//названия клавиш по кодам
-		var mbNames:Array;	//названия кнопок мыши
-		var keys:Array;		//объекты по кодам клавиш
-		var keyObj:Array;	//объекты по порядку
-		var keyIds:Array;	//объекты по ид действия
+		var keyDowns:Vector.<Boolean>;	// Pressed keys
+		var keyNames:Vector.<String>;	// [key names by codes]
+		var mbNames:Array;				// [mouse button names]
+		var keys:Array;					// [objects by key codes]
+		var keyObj:Array;				// [objects in order]
+		var keyIds:Array;				// [objects by action ID]
 
 		public var keyLeft:Boolean=false;
 		public var keyRight:Boolean=false;
@@ -109,8 +109,17 @@ package fe.inter {
 		public var keyZoom:Boolean=false;
 		public var keyFull:Boolean=false;
 		
-		public var keyItem:Boolean=false,keyPot:Boolean=false,keyMana:Boolean=false,keyItemPrev:Boolean=false,keyItemNext:Boolean=false;
-		public var keyInvent:Boolean=false, keyStatus:Boolean=false, keySkills:Boolean=false, keyMed:Boolean=false, keyMap:Boolean=false, keyQuest:Boolean=false;
+		public var keyItem:Boolean=false;
+		public var keyPot:Boolean=false;
+		public var keyMana:Boolean=false;
+		public var keyItemPrev:Boolean=false;
+		public var keyItemNext:Boolean=false;
+		public var keyInvent:Boolean=false;
+		public var keyStatus:Boolean=false;
+		public var keySkills:Boolean=false;
+		public var keyMed:Boolean=false;
+		public var keyMap:Boolean=false;
+		public var keyQuest:Boolean=false;
 		public var keyWeapon1:Boolean=false;
 		public var keyWeapon2:Boolean=false;
 		public var keyWeapon3:Boolean=false;
@@ -123,11 +132,16 @@ package fe.inter {
 		public var keyWeapon10:Boolean=false;
 		public var keyWeapon11:Boolean=false;
 		public var keyWeapon12:Boolean=false;
-		public var keyScrDown:Boolean=false, keyScrUp:Boolean=false;
+		public var keyScrDown:Boolean=false;
+		public var keyScrUp:Boolean=false;
 		public var rbmDbl:Boolean=false;
 		
-		public var keyDash:Boolean=false, keyArmor:Boolean=false;
-		public var keySpell1:Boolean=false, keySpell2:Boolean=false, keySpell3:Boolean=false, keySpell4:Boolean=false;
+		public var keyDash:Boolean=false;
+		public var keyArmor:Boolean=false;
+		public var keySpell1:Boolean=false;
+		public var keySpell2:Boolean=false;
+		public var keySpell3:Boolean=false;
+		public var keySpell4:Boolean=false;
 		
 		public var keyTest1:Boolean=false;
 		public var keyTest2:Boolean=false;
@@ -135,11 +149,17 @@ package fe.inter {
 		public var keyboardMode:int=0;
 		
 		const dubleT=5;		
-		private var kR_t:int=10, kL_t:int=10, kD_t:int=10, scr_t:int=0;
+		private var kR_t:int=10;
+		private var kL_t:int=10;
+		private var  kD_t:int=10;
+		private var  scr_t:int=0;
 		
 		public var active:Boolean=true;
 		
-		var KeyboardA=Keyboard.A, KeyboardZ=Keyboard.Z, KeyboardW=Keyboard.W, KeyboardQ=Keyboard.Q;
+		private var KeyboardA = Keyboard.A;
+		private var KeyboardZ = Keyboard.Z;
+		private var KeyboardW = Keyboard.W;
+		private var KeyboardQ = Keyboard.Q;
 		
 		
 		public var setkeyOn:Boolean=false;
@@ -263,7 +283,7 @@ package fe.inter {
 			}
 		}
 		
-		//создать ассоциации между объектами действий и клавиш
+		// [create associations between action and key objects]
 		public function updateKeys() {
 			keys=[];
 			for each(var obj in keyObj) {
@@ -272,7 +292,7 @@ package fe.inter {
 			}
 		}
 		
-		//настройки по умолчанию
+		// [default settings]
 		public function gotoDef() {
 			keyObj=[];
 			keyIds=[];
@@ -314,7 +334,7 @@ package fe.inter {
 			}
 		}
 		
-		//Вернуть видимое название клавиши по коду действия
+		// [Return visible key name by action code]
 		public function retKey(id):String {
 			if (keyIds[id]==null) return '?'
 			var key=keyIds[id].a1;
@@ -322,7 +342,6 @@ package fe.inter {
 			if (key==null) return '???';
 			if (key>0 && key<256) return "["+keyNames[key]+"]";
 			else return "["+mbNames[key]+"]";
-			//return "<img src='mouse_"+key+"' hspace='0' vspace='0'>";//width='16' height='16' 
 		}
 		
 		public function permissKey(key:uint):Boolean {
@@ -330,14 +349,14 @@ package fe.inter {
 			return true;
 		}
 		
-		//отправить запрос на смену клавиши, по завершении выполнить функцию fun
+		// [send a request to change the key, upon completion execute the fun function]
 		public function requestKey(fun:Function=null) {
 			setkeyOn=true;
 			setkeyRequest=null;
 			setkeyFun=fun;
 		}
 		
-		//запрос выполнен
+		// [request completed]
 		function requestOk(nkey) {
 			setkeyOn=false;
 			setkeyRequest=nkey;
@@ -376,7 +395,7 @@ package fe.inter {
 			if (keys['lmb']) this[keys['lmb'].id]=false;
 		}
 		private function onRightMouse(event:MouseEvent):void {
-            //отключение меню
+            // [disable menu]
         }
 		public function onRightMouseDown1(event:MouseEvent):void {
 			if (World.w.consoleActive) return;
@@ -386,7 +405,6 @@ package fe.inter {
 				requestOk('rmb');
 				return;
 			}
-			//if (event.clickCount>1) rbmDbl=true;
 			if (keys['rmb']) this[keys['rmb'].id]=true;
 		}
 		public function onRightMouseUp1(event:MouseEvent):void {
@@ -485,7 +503,7 @@ package fe.inter {
 			if (World.w.chitOn) {
 				if (event.keyCode==Keyboard.INSERT) keyTest2=true;
 			}
-			if (keyFull) {//работает только в обработчике события
+			if (keyFull) {// [only works in the event handler]
 				if (!World.w.consoleActive) World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				keyFull=false;
 			}
@@ -500,6 +518,5 @@ package fe.inter {
 				if (keys[event.keyCode].id=='keySit') kD_t=0;
 			}
 		}
-	}
-	
+	}	
 }
