@@ -393,10 +393,10 @@
 					return false;
 				}
 				if (napr==3 || napr==4) {
-					if (laz!=0) {
+					if (laz != 0) {
 						checkStairs();
-						if (!isLaz) checkStairs(1,-tileX*laz);
-						if (!isLaz) checkStairs(1,tileX*laz);
+						if (!isLaz) checkStairs(1, -tileX * laz);
+						if (!isLaz) checkStairs(1,  tileX * laz);
 					}
 				} 
 				if (napr==4) {
@@ -1811,12 +1811,12 @@
 						dy=lazSpeed;
 						throu=true;
 					}
-					else 	if (stayPhis==2 && checkStairs(2,-20*storona)) {	// [check the stairs]
+					else 	if (stayPhis==2 && checkStairs(2, -20 * storona)) {	// [check the stairs]
 							t_stay=0;
 							dy=lazSpeed;
 							throu=true;
 					}
-					else if (stayPhis==2 && checkStairs(2,20*storona)) {	// [check the stairs]
+					else if (stayPhis==2 && checkStairs(2, 20 * storona)) {	// [check the stairs]
 							t_stay=0;
 							dy=lazSpeed;
 							throu=true;

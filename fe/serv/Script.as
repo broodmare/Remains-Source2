@@ -54,9 +54,8 @@ package fe.serv
 		}
 		
 		//запуск скрипта
-		public function start()
-		{
-			trace("Script.as/start() - Starting script!");
+		public function start() {
+			//trace("Script.as/start() - Starting script!");
 			if (acts.length <= 0) return;
 			if (onTimer) {
                 ncom = 0;
@@ -75,18 +74,21 @@ package fe.serv
 				if (wait) {
 					if (World.w.ctr.keyPressed2) {
 						dial_n=10000;
-					} else if (!World.w.ctr.keyPressed) return;
+					}
+					else if (!World.w.ctr.keyPressed) return;
 					if (dial_n<0) {
 						World.w.gui.dialText();
 						wait=false;
-					} else {
+					}
+					else {
 						dial_n++;
 						if (World.w.gui.dialText(actObj.val,dial_n,actObj.opt1>0,true)) {
 							World.w.ctr.active=false;
 							World.w.ctr.keyPressed=false;
 							World.w.gg.levit=0;
 							return;
-						} else {
+						}
+						else {
 							World.w.gui.dialText();
 							World.w.gg.controlOn();
 							wait=false;
@@ -98,7 +100,8 @@ package fe.serv
 				if (ncom>=acts.length) {
 					running=false;
 					World.w.gui.dialText();
-				} else {
+				}
+				else {
 					com(acts[ncom]);
 					tcom=acts[ncom].t;
 				}
@@ -185,15 +188,14 @@ package fe.serv
 					break;
 
 					case 'take':
-						if (obj.n < 0 && World.w.invent.items[obj.val])
-						{
+						trace("Script.as/com() - A script is calling the take function");
+						if (obj.n < 0 && World.w.invent.items[obj.val]) {
 							World.w.gui.infoText('withdraw', World.w.invent.items[obj.val].nazv, -obj.n);
 							World.w.invent.minusItem(obj.val, -obj.n);
 							World.w.pers.setParameters();
 						}
-						else
-						{
-							var item:Item=new Item(null,obj.val,obj.n);
+						else {
+							var item:Item = new Item(null,obj.val,obj.n);
 							World.w.invent.take(item);
 						}
 					break;

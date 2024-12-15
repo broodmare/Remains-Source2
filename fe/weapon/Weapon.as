@@ -193,10 +193,10 @@ package fe.weapon
 		//SATS
 		public var satsQue:int = 1;
 		public var satsCons:Number = 10;
-		public var noSats:Boolean=false;	//не поддерживает
-		public var noPerc:Boolean=false;	//не рассчитывать точность
-		public var noTrass:Boolean=false;	//не трассировать
-		public var satsMelee:Boolean=false;
+		public var noSats:Boolean = false;	// [Do not support]
+		public var noPerc:Boolean = false;	// [Do not calculate accuracy]
+		public var noTrass:Boolean = false;	// [Do not trace]
+		public var satsMelee:Boolean = false;
 		
 		//звуки
 		public var sndShoot:String='';

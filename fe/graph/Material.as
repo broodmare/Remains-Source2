@@ -65,7 +65,7 @@ package fe.graph
 			}
 			catch (err:ReferenceError)
 			{
-				trace("ERROR: (00:4C) - Tile: '" + id + "', Border mask class defined in XML not found; defaulting to null.");
+				//trace("ERROR: (00:4C) - Tile: '" + id + "', Border mask class defined in XML not found; defaulting to null.");
 				borderMask=null;
 			}
 			try
@@ -74,7 +74,7 @@ package fe.graph
 			}
 			catch (err:ReferenceError)
 			{
-				trace("ERROR: (00:4D) - Tile: '" + id + "', Floor mask class defined in XML not found; defaulting to null.");
+				//trace("ERROR: (00:4D) - Tile: '" + id + "', Floor mask class defined in XML not found; defaulting to null.");
 				floorMask=null;
 			}
 			if (p.filter.length()) F = fils[p.filter.@f];

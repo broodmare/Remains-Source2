@@ -9,7 +9,7 @@ package fe.serv {
 
 		//случайные объекты 
 		private static var rndArr:Array;
-		public static var arr:Array;
+		public static var arr:Object;
 				
 		private static var is_loot:int=0;		//был сгенерирован лут
 		private static var loc:Location;				//целевая локация
@@ -18,13 +18,14 @@ package fe.serv {
 		
 		public static function init():void
 		{
-			arr=[];
-			var n:Array = [];
-			n['weapon']=0;
-			arr['weapon']=[];
-			arr['magic']=[];
-			arr['uniq']=[];
-			arr['pers']=[];
+			arr = {};
+			var n:Object = {};
+
+			n['weapon'] = 0;
+			arr['weapon'] = [];
+			arr['magic'] = [];
+			arr['uniq'] = [];
+			arr['pers'] = [];
 
 
 			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
@@ -94,12 +95,13 @@ package fe.serv {
 		//создать рандомный, если id==null, или заданный лут
 		//если запрос превышает лимит, не создавать лут, вернуть false
 		private static function newLoot(rnd:Number, tip:String, id:String=null, kol:int=-1, imp:int=0, cont:Interact=null):Boolean {
-			if (rnd<1 && Math.random()>rnd) return false;
-			var mn:Number=1;
+			trace("LootGen.as/newLoot() - Generating a new item. id: " + id + ", tip: " + tip +", kol: " + kol + ".");
+			if (rnd < 1 && Math.random() > rnd) return false;
+			var mn:Number = 1;
 			if (lootBroken) {
-				mn=0.4;
+				mn = 0.4;
 			}
-			if (tip==Item.L_WEAPON) {
+			if (tip == Item.L_WEAPON) {
 				//Рандомное оружие
 				if (int(id)>0) {
 					id=getRandom(tip,Math.max(1,loc.weaponLevel+(Math.random()*2-1)),int(id));
@@ -124,7 +126,7 @@ package fe.serv {
 					id=getRandom(tip);
 				}
 			}
-			if (id==null) {
+			if (id == null) {
 				trace('Ошибка при генерации лута тип:', tip);
 				return false;
 			}
@@ -158,15 +160,19 @@ package fe.serv {
 				}
 				World.w.game.addLimit(item.xml.@limit,1);
 			}
-			if (World.w.testLoot) World.w.invent.take(item);
-			else new Loot(loc,item,nx,ny,true);
+			if (World.w.testLoot) {
+				trace("LootGen.as/newLoot() - is calling the Invent.as()/take function because World.testLoot is true");
+				World.w.invent.take(item);
+			}
+			else {
+				new Loot(loc, item, nx, ny, true);
+			}
 			is_loot++;
 			return true;
 		}
 		
 		//Генерация лута по заданному ID
-		public static function lootId(nloc:Location, nnx:Number, nny:Number, id:String, kol:int=-1, imp:int=0, cont:Interact=null, broken:Boolean=false):void
-		{
+		public static function lootId(nloc:Location, nnx:Number, nny:Number, id:String, kol:int=-1, imp:int=0, cont:Interact=null, broken:Boolean=false):void {
 			if (nloc == null) return; // NOTE: Change return false to return.
 			lootBroken = broken;
 			loc = nloc;

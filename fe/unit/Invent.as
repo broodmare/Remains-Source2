@@ -26,7 +26,7 @@ package fe.unit
 		public var spells:Array;
 		public var cSpellId:String='';
 		
-		public var items:Array;	//все вещи по id (Item)
+		public var items:Object = {};	//все вещи по id (Item)
 		public var eqip:Array;	//все вещи, относящиеся к экипировке
 		public var ammos:Array;	//количество патронов по базе
 		public var money:Item, pin:Item, gel:Item, good:Item;
@@ -41,14 +41,14 @@ package fe.unit
 		private var armorList:XMLList;
 		private var weaponList:XMLList;
 
-		public function Invent(own:Unit,loadObj:Object=null, opt:Object=null)
+		public function Invent(own:Unit, loadObj:Object = null, opt:Object = null)
 		{
 			owner	= own;
 			weapons	= [];
 			favIds	= [];
 			armors	= [];
 			spells	= [];
-			items	= [];
+			items	= {};
 			eqip	= [];
 			ammos	= [];
 			fav		= [];
@@ -60,28 +60,35 @@ package fe.unit
 			itemList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
 			armorList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 			weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
+			var itemsCount = 0;
 
-			for each (var node in itemList)
-			{
+			for each (var node in itemList) {
 				var item:Item = new Item(node.@tip, node.@id, 0, 0, node);
-				items[node.@id]=item;
+				items[node.@id] = item;
 				if (node.@us>=2) itemsId.push(node.@id);
 				if (item.invCat==1 && item.mass>0 && node.@perk.length()==0) eqip.push(node.@id);
 				if (node.@base.length()) ammos[node.@base]=0;
+				itemsCount++;
 			}
+			trace("itemsCount: " + itemsCount);
 
-			money=items['money'];
-			pin=items['pin'];
-			gel=items['gel'];
-			good=items['good'];
-			items['']=new Item('', '', 0, 0, <item/>);
-			if (loadObj==null) {
-				if (opt && opt.propusk) addMin();
-				else addBegin();
-			} else {
+			money = items['money'];
+			pin = items['pin'];
+			gel = items['gel'];
+			good = items['good'];
+			items[''] = new Item('', '', 0, 0, <item/>);
+			if (loadObj == null) {
+				if (opt && opt.propusk) {
+					addMin();
+				}
+				else {
+					addBegin();
+				}
+			}
+			else {
 				addLoad(loadObj);
 			}
-			cItemMax=itemsId.length;
+			cItemMax = itemsId.length;
 		}
 		
 		public function nextItem(n:int=1) {
@@ -192,22 +199,27 @@ package fe.unit
 					return false;
 				}
 			}
-			if (pot.@heal=='rad' && gg.rad<1) {
+			if (pot.@heal=='rad' && gg.rad < 1) {
 				World.w.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
-			} else if (pot.@heal=='poison' && gg.poison<0.1) {
+			}
+			else if (pot.@heal=='poison' && gg.poison < 0.1) {
 				World.w.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
-			} else if (pot.@heal=='blood' && (gg.pers.inMaxHP-gg.pers.bloodHP<1)) {
+			}
+			else if (pot.@heal=='blood' && (gg.pers.inMaxHP-gg.pers.bloodHP < 1)) {
 				World.w.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
-			} else if (pot.@heal=='organ' && (gg.pers.inMaxHP-gg.pers.headHP<1) && (gg.pers.inMaxHP-gg.pers.torsHP<1) && (gg.pers.inMaxHP-gg.pers.legsHP<1)) {
+			}
+			else if (pot.@heal=='organ' && (gg.pers.inMaxHP-gg.pers.headHP<1) && (gg.pers.inMaxHP-gg.pers.torsHP<1) && (gg.pers.inMaxHP-gg.pers.legsHP<1)) {
 				World.w.gui.infoText('noHeal');
 				return false;
-			} else if (pot.@heal=='mana' && (gg.pers.inMaxMana-gg.pers.manaHP<1)) {
+			}
+			else if (pot.@heal=='mana' && (gg.pers.inMaxMana-gg.pers.manaHP < 1)) {
 				World.w.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
-			} else if (pot.@heal=='pet') {		//лечение феникса
+			}
+			else if (pot.@heal=='pet') {		//лечение феникса
 				pet=gg.pets[pot.@pet];
 				if (pet==null || pet.maxhp-pet.hp<1) {
 					World.w.gui.infoText('noMedic',Res.txt('i',ci));
@@ -228,7 +240,8 @@ package fe.unit
 							if (redAddict>World.w.pers.addictions[ad]) {
 								limAddict-=World.w.pers.addictions[ad];
 								World.w.pers.addictions[ad]=0;
-							} else {
+							}
+							else {
 								limAddict-=redAddict;
 								World.w.pers.addictions[ad]-=redAddict;
 							}
@@ -627,170 +640,162 @@ package fe.unit
 		}
 		
 		// [add to inventory, tr = 1 if the item was purchased, 2 if it was received as a reward]
-		public function take(l:Item, tr:int = 0)
-		{
-			trace("Invent.as/take() - Taking item: \"" + l.id + "\" to inventory. TR: \"" + tr + "\". (1 = purchased, 2 = reward)");
+		public function take(l:Item, tr:int = 0) {
 			var kol:int = 0;
 			var color:int = -1;
-			try {
-				if (l.tip == Item.L_WEAPON) {
-					trace("Invent.as/take() - TYPE: WEAPON");
-					var patron=l.xml.a[0];
-					if (tr==0 && patron && patron!='recharg') {
-						kol=Math.floor(Math.random()*itemList.(@id==patron).@kol)+1;
-						items[patron].kol+=kol;
-					}
-					var hp:int;
-					if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
-					else hp=Math.round(l.xml.char[0].@maxhp*l.sost*l.multHP);
-					if (weapons[l.id]) {
-						if (weapons[l.id].variant<l.variant) {
-							if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-							updWeapon(l.id,l.variant);
-						}
-						if (weapons[l.id].tip!=5) {
-							repairWeapon(l.id, hp);
-							if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
-						}
-					}
-					else {
-						if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-						addWeapon(l.id, hp, 0,0, l.variant);
-						takeScript(l.id);
-						if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
-					}
-					if (l.shpun==2) weapons[l.id].respect=0;
-					World.w.gui.setWeapon();
-					World.w.calcMassW=true;
-					color=5;
+			
+			if (l.tip == Item.L_WEAPON) {
+				var patron = l.xml.a[0];
+				if (tr == 0 && patron && patron != 'recharg') {
+					kol = Math.floor(Math.random() * itemList.(@id == patron).@kol) + 1;
+					items[patron].kol += kol;
 				}
-				else if (l.tip==Item.L_ARMOR) {
-					trace("Invent.as/take() - TYPE: ARMOR");
-					var hp:int=Math.round(l.xml.@hp*l.sost*l.multHP);
-					addArmor(l.id, hp);
-					color=3;
-				}
-				else if (l.tip==Item.L_SPELL) {
-					trace("Invent.as/take() - TYPE: SPELL");
-					plus(l,tr);
-					World.w.calcMassW=true;
-					color=5;
-				}
-				else if (l.tip==Item.L_SCHEME) {
-					trace("Invent.as/take() - TYPE: SCHEME");
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-					if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) {
-						addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
-					}
-					if (l.xml && l.xml.@cat=='armor' && armors[l.id.substr(2)]==null) {
-						addArmor(l.id.substr(2), 0xFFFFFF, -1);
-					}
-					color=7;
-				}
-				else if (l.tip==Item.L_EXPL) {
-					trace("Invent.as/take() - TYPE: EXPLOSIVE");
-					plus(l,tr);
-					if (!weapons[l.id]) addWeapon(l.id);
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
-					color=3;
-				}
-				else if (l.tip==Item.L_AMMO)
-				{
-					trace("Invent.as/take() - TYPE: AMMO");
-					plus(l, tr);
-					if (tr == 0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo', l.nazv, l.kol);
-					color=3;
-				}
-				else if (l.tip==Item.L_MED) {
-					trace("Invent.as/take() - TYPE: MEDICAL");
-					plus(l,tr);
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
-					if (cItem<0) nextItem(1);
-					else World.w.gui.setItems();
-					color=1;
-				}
-				else if (l.tip==Item.L_BOOK) {
-					trace("Invent.as/take() - TYPE: BOOK");
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
-					if (cItem<0) nextItem(1);
-					else World.w.gui.setItems();
-					color=4;
-				}
-				else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) {
-					trace("Invent.as/take() - TYPE: INSTR, ART, IMPL, other????");
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-					gg.pers.setParameters();
-					color=6;
+
+				var hp:int;
+				if (l.variant > 0 && l.xml.char[l.variant].@maxhp.length()) {
+					hp = Math.round(l.xml.char[l.variant].@maxhp * l.sost * l.multHP);
 				}
 				else {
-					trace("Invent.as/take() - TYPE: ELSE");
-					if (items[l.id].kol==0)	takeScript(l.id);
-					plus(l,tr);
-					if (tr==0 && !World.w.testLoot) {
-						if (l.id=='money') World.w.gui.infoText('takeMoney',l.kol);
-						else World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+					hp = Math.round(l.xml.char[0].@maxhp * l.sost * l.multHP);
+				}
+				
+				if (weapons[l.id]) {
+					if (weapons[l.id].variant<l.variant) {
+						if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
+						updWeapon(l.id,l.variant);
 					}
-					if (cItem<0) nextItem(1);
-					else World.w.gui.setItems();
-					
-					if (l.tip=='valuables') color=2;
-					else if (l.tip==Item.L_HIM || l.tip==Item.L_POT) color=1;
-					else if (l.tip==Item.L_KEY || l.tip==Item.L_SPEC) color=6;
-					else if (l.tip=='equip') color=8;
-					else color=0;
-				}
-				if (tr==2) {
-					trace("Invent.as/take() - DOING REWARD ITEM STUFF");
-					if (l.kol>1) World.w.gui.infoText('reward',l.nazv,l.kol);
-					else World.w.gui.infoText('reward2',l.nazv);
-				}
-
-				// [if the object was generated randomly, update the limits]
-				if (tr==0 && l.imp==0 && l.xml.@limit.length()) {
-					trace("Invent.as/take() - RANDOM GEN STUFF");
-					World.w.game.addLimit(l.xml.@limit,2);
-				}
-
-				// [pop-up message]
-				if (!World.w.testLoot && (tr==0 || tr==2)) {
-					trace("Invent.as/take() - POP UP MESSAGE");
-					if (l.fc>=0) color=l.fc;
-					World.w.gui.floatText(l.nazv+(l.kol>1?(" ("+l.kol+")"):""), gg.coordinates.X, gg.coordinates.Y, color);
-				}
-
-				// [information window for important items]
-				if (World.w.helpMess || l.tip=="art") {
-					trace("Invent.as/take() - IMPORTANT POP UP MESSAGE");
-					if (l.mess!=null && !(World.w.game.triggers["mess_"+l.mess]>0)) {
-						World.w.game.triggers["mess_"+l.mess]=1;
-						World.w.gui.impMess(Res.txt("i",l.mess),Res.txt("i",l.mess,2),l.mess);
+					if (weapons[l.id].tip!=5) {
+						repairWeapon(l.id, hp);
+						if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
 					}
 				}
-
-				// [if the object is critical, confirm receipt]
-				if (l.imp == 2 && l.cont) l.cont.receipt();
-				trace("Invent.as/take() - CONFIRM QUEST THING");
-
-
-				var res:String=World.w.game.checkQuests(l.id);
-				if (res != null) {
-					trace("Invent.as/take() - RES STUFF");
-					World.w.gui.infoText("collect",res);
+				else {
+					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
+					addWeapon(l.id, hp, 0,0, l.variant);
+					takeScript(l.id);
+					if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
 				}
+				if (l.shpun==2) weapons[l.id].respect=0;
+				World.w.gui.setWeapon();
+				World.w.calcMassW=true;
+				color=5;
 			}
-			catch (err)
+			else if (l.tip==Item.L_ARMOR) {
+				var hp:int=Math.round(l.xml.@hp*l.sost*l.multHP);
+				addArmor(l.id, hp);
+				color=3;
+			}
+			else if (l.tip==Item.L_SPELL) {
+				plus(l,tr);
+				World.w.calcMassW=true;
+				color=5;
+			}
+			else if (l.tip==Item.L_SCHEME) {
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+				if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) {
+					addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
+				}
+				if (l.xml && l.xml.@cat=='armor' && armors[l.id.substr(2)]==null) {
+					addArmor(l.id.substr(2), 0xFFFFFF, -1);
+				}
+				color=7;
+			}
+			else if (l.tip==Item.L_EXPL) {
+				plus(l,tr);
+				if (!weapons[l.id]) addWeapon(l.id);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+				color=3;
+			}
+			else if (l.tip==Item.L_AMMO)
 			{
-				trace("ERROR: (00:3) - Failed adding item to inventory!");
-				World.w.showError(err, "Loot error. tip:" + l.tip + " id:" + l.id);
+				plus(l, tr);
+				if (tr == 0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo', l.nazv, l.kol);
+				color=3;
+			}
+			else if (l.tip==Item.L_MED) {
+				plus(l,tr);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
+				if (cItem<0) nextItem(1);
+				else World.w.gui.setItems();
+				color=1;
+			}
+			else if (l.tip==Item.L_BOOK) {
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
+				if (cItem<0) nextItem(1);
+				else World.w.gui.setItems();
+				color=4;
+			}
+			else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) {
+				trace("Invent.as/take() - TYPE: INSTR, ART, IMPL, other????");
+				if (items[l.id].kol==0)	takeScript(l.id);
+				plus(l,tr);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+				gg.pers.setParameters();
+				color=6;
+			}
+			else {
+				if (items[l.id].kol == 0) {
+					takeScript(l.id);
+				}
+				// Increment items in inventory
+				plus(l, tr);
+				if (tr == 0 && !World.w.testLoot) {
+					if (l.id == 'money') { 
+						World.w.gui.infoText('takeMoney', l.kol);
+					}
+					else {
+						World.w.gui.infoText('take', l.nazv + ((l.kol > 1) ? (' (' + l.kol + ')') : ''));
+					}
+				}
+
+				if (cItem < 0) {
+					nextItem(1);
+				}
+				else {
+					World.w.gui.setItems();
+				}
+				
+				if (l.tip=='valuables') color=2;
+				else if (l.tip==Item.L_HIM || l.tip==Item.L_POT) color=1;
+				else if (l.tip==Item.L_KEY || l.tip==Item.L_SPEC) color=6;
+				else if (l.tip=='equip') color=8;
+				else color=0;
+			}
+			if (tr==2) {
+				if (l.kol>1) World.w.gui.infoText('reward',l.nazv,l.kol);
+				else World.w.gui.infoText('reward2',l.nazv);
 			}
 
-			trace("Invent.as/take() - DONE ADDING");
+			// [if the object was generated randomly, update the limits]
+			if (tr==0 && l.imp==0 && l.xml.@limit.length()) {
+				World.w.game.addLimit(l.xml.@limit,2);
+			}
+
+			// [pop-up message]
+			if (!World.w.testLoot && (tr==0 || tr==2)) {
+				if (l.fc>=0) color=l.fc;
+				World.w.gui.floatText(l.nazv+(l.kol>1?(" ("+l.kol+")"):""), gg.coordinates.X, gg.coordinates.Y, color);
+			}
+
+			// [information window for important items]
+			if (World.w.helpMess || l.tip=="art") {
+				if (l.mess!=null && !(World.w.game.triggers["mess_"+l.mess]>0)) {
+					World.w.game.triggers["mess_"+l.mess]=1;
+					World.w.gui.impMess(Res.txt("i",l.mess),Res.txt("i",l.mess,2),l.mess);
+				}
+			}
+
+			// [if the object is critical, confirm receipt]
+			if (l.imp == 2 && l.cont) l.cont.receipt();
+
+			var res:String=World.w.game.checkQuests(l.id);
+			if (res != null) {
+				World.w.gui.infoText("collect",res);
+			}
 
 			if (World.w.hardInv) mass[l.invCat] += l.mass * l.kol;
 			World.w.calcMass = true;
@@ -798,11 +803,15 @@ package fe.unit
 		
 		function plus(l:Item, tr:int = 0)
 		{
-			trace("Invent.as/plus() - Item: \"" + l.id + "\"");
+			trace("Invent.as/plus() - Item: " + l.id + ", item.kol: " + l.kol + "tr: " + tr);
 			
 			if (l.id != "money") {
-				if (items[l.id].kol == 0) items[l.id].nov = 1;
-				else if (items[l.id].nov==0) items[l.id].nov = 2;
+				if (items[l.id].kol == 0) {
+					items[l.id].nov = 1;
+				}
+				else if (items[l.id].nov == 0) {
+					items[l.id].nov = 2;
+				}
 				items[l.id].dat = new Date().getTime();
 			}
 			
@@ -810,15 +819,15 @@ package fe.unit
 				items[l.id].kol += l.bou;
 				l.trade();
 			}
+
 			else items[l.id].kol += l.kol;
 			
 			// Don't have mroe than one of each blueprint or spell.
 			if (l.tip==Item.L_SCHEME || l.tip==Item.L_SPELL) items[l.id].kol = 1;
 		}
 		
-		//увеличить количество предметов
-		public function plusItem(ci:String, n:int=1)
-		{
+		// [Increase the number of items] | увеличить количество предметов
+		public function plusItem(ci:String, n:int = 1) {
 			trace("Invent.as/plusItem() - ");
 			if (items[ci] == null) {
 				trace("Invent.as/plusItem() - ERROR: could not increase quantity of item: \"" + ci + "\"!");
@@ -839,7 +848,7 @@ package fe.unit
 		{
 			trace("Invent.as/minusItem() - ");
 			if (items[ci]==null) {
-				trace("Invent.as/minusItem() - Ошибка уменьшения количества", ci);
+				trace("Invent.as/minusItem() - Error while decrementing item count", ci);
 				return;
 			}
 
@@ -869,23 +878,19 @@ package fe.unit
 			if (snd && items[ci].xml && items[ci].xml.@uses.length())	Snd.ps(items[ci].xml.@uses, owner.coordinates.X, owner.coordinates.Y);
 		}
 		
-		public function checkKol(ci:String, n:int=1):Boolean
-		{
-			trace("Invent.as/checkKol() - ");
+		public function checkKol(ci:String, n:int=1):Boolean {
 			if (World.w.loc && World.w.loc.base) {
 				if (items[ci].kol+items[ci].vault>=n) return true;
 				else return false;
 			}
 			else {
-				if (items[ci].kol>=n) return true;
+				if (items[ci].kol >= n) return true;
 				else return false;
 			}
 			return false;
 		}
 		
-		public function calcMass()
-		{
-			trace("Invent.as/calcMass() - ");
+		public function calcMass() {
 			mass[1]=mass[2]=mass[3]=0;
 			for each (var item:Item in items) {
 				mass[item.invCat]+=item.mass*item.kol;
@@ -894,10 +899,9 @@ package fe.unit
 			World.w.pers.invMassParam();
 		}
 		
-		public function calcWeaponMass()
-		{
-			trace("Invent.as/calcweaponMass() - ");
-			massW=massM=0;
+		public function calcWeaponMass() {
+			massW=0;
+			massM=0;
 			for each (var w:Weapon in weapons) {
 				if (w == null) continue;
 				if (w.tip > 0 && w.tip<4 && (w.respect==0 || w.respect==2)) massW+=w.mass;
@@ -908,9 +912,7 @@ package fe.unit
 		}
 		
 		//уничтожение экипировки
-		public function damageItems(dam:Number, destr:Boolean=true)
-		{
-			trace("Invent.as/damageItems() - ");
+		public function damageItems(dam:Number, destr:Boolean=true) {
 			if (!destr && !World.w.loc.base && !World.w.alicorn) dam=5;
 			if (mass[1]<=World.w.pers.maxm1 || dam<=0) return;
 			var kol=dam*(mass[1]-World.w.pers.maxm1)/800;
@@ -935,9 +937,7 @@ package fe.unit
 		
 		
 		//вернуть строковое представление занимаемого места
-		public function retMass(n:int):String
-		{
-			trace("Invent.as/retMass() - ");
+		public function retMass(n:int):String {
 			var txt:String;
 			var cl:String="mass";
 			var m:Number, maxm:Number;
@@ -945,11 +945,13 @@ package fe.unit
 				txt="allmass"+n;
 				m=mass[n];
 				maxm=gg.pers["maxm"+n];
-			} else if (n==4) {
+			}
+			else if (n==4) {
 				txt="allweap";
 				m=massW;
 				maxm=gg.pers.maxmW;
-			} else if (n==5) {
+			}
+			else if (n==5) {
 				txt="allmagic";
 				m=massM;
 				maxm=gg.pers.maxmM;
@@ -959,8 +961,7 @@ package fe.unit
 		}
 		
 		//выкинуть вещи
-		public function drop(nid:String, kol:int=1)
-		{
+		public function drop(nid:String, kol:int=1) {
 			trace("Invent.as/drop() - ");
 			if (World.w.loc.base || World.w.alicorn) {
 				return;
@@ -973,8 +974,7 @@ package fe.unit
 		}
 		
 		// Call attached script
-		public function takeScript(id:String)
-		{
+		public function takeScript(id:String) {
 			trace("Invent.as/takeScript() - Running script ID: \"" + id + "\" attached to item");
 			if (World.w.land.itemScripts[id]) {
 				World.w.land.itemScripts[id].start();
@@ -983,9 +983,7 @@ package fe.unit
 		}
 		
 		//рассчитать количество патронов по их базе
-		public function getKolAmmos()
-		{
-			trace("Invent.as/getKolAmmos() - ");
+		public function getKolAmmos() {
 			for (var s in ammos) ammos[s]=0;
 			for each (var ammo:Item in items) {
 				if (ammo.base!='') ammos[ammo.base]+=ammo.kol;
@@ -993,9 +991,7 @@ package fe.unit
 		}
 		
 		//выкурить косяк
-		private function useRollup():Boolean
-		{
-			trace("Invent.as/useRollup() - ");
+		private function useRollup():Boolean {
 			if (World.w.loc.base) {
                 World.w.pip.onoff(-1);
                 var xml1:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "Scripts", "id", 'smokeRollup');
@@ -1011,8 +1007,7 @@ package fe.unit
 		}
 		
 		// Adds the bare minimum of equipment to the player, default armor, screwdriver, weapon
-		public function addMin() // TODO: Stupid, turn into a script.
-		{
+		public function addMin() { // TODO: Stupid, turn into a script.
 			trace("Invent.as/addMin() - Adding minimup equipment set to player.");
 			try
 			{
@@ -1037,41 +1032,32 @@ package fe.unit
 			}
 			catch(err:Error)
 			{
-				trace("nvent.as/addMin() - Failed!");
+				trace("nvent.as/addMin() - Failed while adding minimum equipment loadout to player!");
 				World.w.showError(err, "Failed while adding minimum equipment loadout to player!");
 			}
-
-
 		}
 
 		// Add only the default armor to the player (used in the beginning of the game)
-		public function addBegin() // TODO: Stupid, turn into a script.
-		{
+		public function addBegin() { // TODO: Stupid, turn into a script.
 			trace("Invent.as/addBegin() - Adding starting armor set to player.");
 			addArmor('pip');
 			cArmorId = 'pip';
 		}
 
-		public function addAllWeapon() // TODO: Stupid, turn into a script.
-		{
-			trace("Invent.as/addAllWeapon() - ");
+		public function addAllWeapon() { // TODO: Stupid, turn into a script.
 			var w;
 			for each (w in LootGen.arr['weapon']) addWeapon(w.id);
 			for each (w in LootGen.arr['e']) addWeapon(w.id);
 			for each (w in LootGen.arr['magic']) addWeapon(w.id);
 		}
 
-		public function addAllAmmo() // TODO: Stupid, turn into a script.
-		{
-			trace("Invent.as/addAllAmmo() - ");
+		public function addAllAmmo() { // TODO: Stupid, turn into a script.
 			var w;
 			for each (w in LootGen.arr['a']) items[w.id].kol=10000;
 			for each (w in LootGen.arr['e']) items[w.id].kol=10000;
 		}
 
-		public function addAllItem() // TODO: Stupid, turn into a script.
-		{
-			trace("Invent.as/addAllItem() - ");
+		public function addAllItem() { // TODO: Stupid, turn into a script.
 			var w;
 			for each (w in LootGen.arr['med']) items[w.id].kol=1000;
 			for each (w in LootGen.arr['compa']) items[w.id].kol=1000;
@@ -1095,9 +1081,7 @@ package fe.unit
 		}
 
 		// TODO: Stupid, turn into a script.
-		public function addAllArmor()
-		{
-			trace("Invent.as/addAllArmor() - ");
+		public function addAllArmor() {
 			for each(var arm in armorList)
 			{
 				addArmor(arm.@id);
@@ -1105,9 +1089,7 @@ package fe.unit
 		}
 		
 		// TODO: Stupid, turn into a script.
-		public function addAll()
-		{
-			trace("Invent.as/addAll() - ");
+		public function addAll() {
 			addAllWeapon();
 			addAllAmmo();
 			addAllItem();
@@ -1115,9 +1097,7 @@ package fe.unit
 		}
 
 		// TODO: Stupid, turn into a script.
-		public function addLoad(obj:Object)
-		{
-			trace("Invent.as/addLoad() - ");
+		public function addLoad(obj:Object) {
 			if (obj == null) return;
 
 			var w;
@@ -1149,8 +1129,7 @@ package fe.unit
 			if (prevArmor == null) prevArmor = '';
 		}
 
-		public function save():Object
-		{
+		public function save():Object {
 			var obj:Object = new Object;
 			obj.weapons = [];
 			obj.armors = [];
@@ -1163,28 +1142,44 @@ package fe.unit
 			for (w in weapons) {
 				if (weapons[w] is Weapon) obj.weapons[w]={id:weapons[w].id, hp:weapons[w].hp, hold:weapons[w].hold, ammo:weapons[w].ammo, respect:weapons[w].respect, variant:weapons[w].variant};
 			}
-
 			for (w in armors) {
 				if (armors[w] is Armor) obj.armors[w]={id:armors[w].id, hp:armors[w].hp, lvl:armors[w].lvl};
 			}
-
 			for (w in fav) {
-				obj.fav[w]=fav[w];
+				obj.fav[w] = fav[w];
 			}
-
 			for (w in items) {
-				if (w!='') {
-					obj.items[w]=items[w].kol;
-					if (items[w].vault>0) obj.vault[w]=items[w].vault;
+				if (w != '') {
+					obj.items[w] = items[w].kol;
+					if (items[w].vault > 0) obj.vault[w] = items[w].vault;
 				}
 			}
 
-			if (gg.currentWeapon) obj.cWeaponId=gg.currentWeapon.id; else obj.cWeaponId='';
-			if (gg.currentArmor) obj.cArmorId=gg.currentArmor.id; else obj.cArmorId='';
-			if (gg.currentAmul) obj.cAmulId=gg.currentAmul.id; else obj.cAmulId='';
-			if (gg.currentSpell) obj.cSpellId=gg.currentSpell.id; else obj.cSpellId='';
-			obj.prevArmor=gg.prevArmor;
-			
+			if (gg.currentWeapon) {
+				obj.cWeaponId = gg.currentWeapon.id;
+			}
+			else {
+				obj.cWeaponId = '';
+			}
+			if (gg.currentArmor) {
+				obj.cArmorId = gg.currentArmor.id;
+			}
+			else {
+				obj.cArmorId = '';
+			}
+			if (gg.currentAmul) {
+				obj.cAmulId = gg.currentAmul.id;
+			}
+			else {
+				obj.cAmulId = '';
+			}
+			if (gg.currentSpell) {
+				obj.cSpellId = gg.currentSpell.id;
+			}
+			else {
+				obj.cSpellId = '';
+			}
+			obj.prevArmor = gg.prevArmor;
 			return obj;
 		}
 	}
