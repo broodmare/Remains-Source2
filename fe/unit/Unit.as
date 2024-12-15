@@ -25,31 +25,32 @@ package fe.unit
 	
 	public class Unit extends Obj
 	{
-		public static const D_BUL:int = 0;		//Bullets	+
-		public static const D_BLADE:int = 1;	//Blade		+
-		public static const D_PHIS:int = 2;		//Blunt		+
-		public static const D_FIRE:int = 3;		//Fire		*
-		public static const D_EXPL:int = 4;		//Explosion	+
-		public static const D_LASER:int = 5;	//Laser		*
-		public static const D_PLASMA:int = 6;	//Plasma	*
-		public static const D_VENOM:int = 7;	//Venom
-		public static const D_EMP:int = 8;		//EMP
-		public static const D_SPARK:int = 9;	//Lightning	*
-		public static const D_ACID:int = 10;	//Acid		*
-		public static const D_CRIO:int = 11;	//Cold		*
-		public static const D_POISON:int = 12;	//Poison
-		public static const D_BLEED:int = 13;	//Bleeding
-		public static const D_FANG:int = 14;	//Beast		+
-		public static const D_BALE:int = 15;	//Balefire
-		public static const D_NECRO:int = 16;	//Necromancy
-		public static const D_PSY:int = 17;		//Psychic
-		public static const D_ASTRO:int = 18;	//???
-		public static const D_PINK:int = 19;	//Pink Cloud
-		public static const D_INSIDE:int = 100;	//???
-		public static const D_FRIEND:int = 101;	//???
+
+		// Ghetto AS3 enums, reference by other classes so these need to stay public
+		public static const D_BUL:int = 0;			//Bullets	+
+		public static const D_BLADE:int = 1;		//Blade		+
+		public static const D_PHIS:int = 2;			//Blunt		+
+		public static const D_FIRE:int = 3;			//Fire		*
+		public static const D_EXPL:int = 4;			//Explosion	+
+		public static const D_LASER:int = 5;		//Laser		*
+		public static const D_PLASMA:int = 6;		//Plasma	*
+		public static const D_VENOM:int = 7;		//Venom
+		public static const D_EMP:int = 8;			//EMP
+		public static const D_SPARK:int = 9;		//Lightning	*
+		public static const D_ACID:int = 10;		//Acid		*
+		public static const D_CRIO:int = 11;		//Cold		*
+		public static const D_POISON:int = 12;		//Poison
+		public static const D_BLEED:int = 13;		//Bleeding
+		public static const D_FANG:int = 14;		//Beast		+
+		public static const D_BALE:int = 15;		//Balefire
+		public static const D_NECRO:int = 16;		//Necromancy
+		public static const D_PSY:int = 17;			//Psychic
+		public static const D_ASTRO:int = 18;		//???
+		public static const D_PINK:int = 19;		//Pink Cloud
+		public static const D_INSIDE:int = 100;		//???
+		public static const D_FRIEND:int = 101;		//???
 		
 		public static var txtMiss:String;
-		
 		public static var arrIcos:Array;
 		
 		public var id:String;
@@ -325,11 +326,15 @@ package fe.unit
 		//dif - уровень сложности для этого юнита
 		//xml - индивидуальные параметры, взятые из карты
 		//loadObj - объект для загрузки состояния юнита
+
+		// Constructor
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			vulner=[];
 			inter=new Interact(this,null,xml,loadObj);
 			inter.active=false;
-			for (var i=0; i<kolVulners; i++) vulner[i]=1;
+			for (var i = 0; i < kolVulners; i++) {
+				vulner[i]=1;
+			}
 			vulner[D_EMP]=0;
 			effects=[];
 			sloy=2;
@@ -340,7 +345,8 @@ package fe.unit
 				if (xml.@turn.length()) {
 					if (xml.@turn>0) storona=1;
 					if (xml.@turn<0) storona=-1;
-				} else {
+				}
+				else {
 					storona=isrnd()?1:-1;
 					aiNapr=storona;
 				}
@@ -1052,37 +1058,34 @@ package fe.unit
 				return;
 			}
 
-			//движение
+			// [Movement] | движение
 			var t:Tile, t2:Tile;
 			var i:int;
 			var newmy:Number = 0;
 			var autoSit:Boolean = false;
 
+			// Movement on stairs
 			if (!throu && stay && diagon && dy >= 0)
 			{
 				var dxdiv:Number = dx / div;
-				var dxNegDiagon:Number = -dxdiv * diagon;
+				var slopeY:Number = (dxdiv * diagon); 
 
-				if (collisionAll(dxdiv, -dx / div * diagon)) {
-                    if (dxNegDiagon > 0 && !collisionAll(dxdiv, 0)) {
-                        diagon = 0;
-                    }
-                } else {
-
-
-                    coordinates.X += dxdiv;
-                    coordinates.Y -= dxNegDiagon;
-
-                    centerObj();
-                    dy = 0;
-                    checkDiagon(0);
-                }
+				if (collisionAll(dxdiv, dxdiv * diagon * -1)) {
+					if (slopeY < 0 && !collisionAll(dxdiv, 0)) {
+						diagon = 0;
+					}
+				}
+				else {
+					coordinates.X += dxdiv;
+					coordinates.Y -= slopeY; // If diagon > 0, this reduces Y, going “up”
+					dy = 0;
+					checkDiagon(0);
+				}
 				return;
 			}
-
 			diagon = 0;
 			
-			//ГОРИЗОНТАЛЬ
+			//HORIZONTAL
 			if (!isLaz)
 			{
 
@@ -1108,7 +1111,7 @@ package fe.unit
 					}
 				}
 				centerObjHorizontally();
-				//движение влево
+				// [Move left]
 				if (dx + osndx < 0)
 				{
 					if (!player && stay && shX1 > 0.5)
@@ -1172,61 +1175,47 @@ package fe.unit
 						}
 					}
 				}
-				//движение вправо
-				if (dx + osndx > 0)
-				{
-					if (!player && stay && shX2 > 0.5)
-					{
+				// [Move right]
+				if (dx + osndx > 0) {
+					if (!player && stay && shX2 > 0.5) {
 						newmy = checkDiagon(-5);
-						if (newmy > 0)
-						{
+						if (newmy > 0) {
 							coordinates.Y = newmy;
 							flattenObj();
 						}
 					}
-					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5))
-					{
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5)) {
 						newmy = checkDiagon(-2, 1);
-						if (newmy > 0)
-						{
+						if (newmy > 0) {
 							coordinates.Y = newmy;
 							flattenObj();
 						}
 					}
-					if (player && isUp && stay && !isSit)
-					{
+					if (player && isUp && stay && !isSit) {
 						t  = loc.space[int(rightBound/tileX)][int(topBound/tileY)];
 						t2 = loc.space[int(rightBound/tileX)][int(topBound/tileY)+1];
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
-						{
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							coordinates.Y  = t2.phY1;
 							bottomBound = t2.phY1;
 							sit(true);
 							autoSit = true;
 						}
 					} 
-					if (mater)
-					{
-						for (i = int(topBound/tileY); i<= int(bottomBound/tileY); i++)
-						{
+					if (mater) {
+						for (i = int(topBound/tileY); i<= int(bottomBound/tileY); i++) {
 							t=loc.space[int(rightBound/tileX)][i];
-							if (collisionTile(t))
-							{
+							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-bottomBound))
-								{
+								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-bottomBound)) {
 									coordinates.Y = t.phY1;
 								}
-								else
-								{
+								else {
 									coordinates.X = t.phX1 - objectWidth / 2;
 									if (t_throw>0 && dx>damWallSpeed && damWall) damageWall(1);
-									if (destroy>0 && destroyWall(t,2))
-									{
+									if (destroy>0 && destroyWall(t,2)) {
 										dx *= 0.75;
 									}
-									else
-									{
+									else {
 										dx = -Math.abs(dx) * elast;
 										turnX = -1;
 										if (t.mat == 1) tykMat = 1;
@@ -1239,16 +1228,14 @@ package fe.unit
 				}
 				flattenObj();
 			}
-			//отталкивание
+			//отталкивание | [Repulsion]
 			
 			
 			//VERTICAL
 			//downward movement
 			newmy = 0;
-			if (dy + osndy > 0)
-			{
-				if (dy > 0)
-				{
+			if (dy + osndy > 0) {
+				if (dy > 0) {
 					stay = false;
 					stayPhis = 0;
 					stayMat = 0;
@@ -1257,24 +1244,20 @@ package fe.unit
 				shX1 = 1;
 				shX2 = 1; //if >0, then you are not completely standing on the floor
 
-				if (levit || plav && isPlav || isFly) // Flying, levitating or swimming
-				{
+				// Flying, levitating or swimming
+				if (levit || plav && isPlav || isFly)  {
 					diagon = 0;
 					coordinates.Y += (dy + osndy) / div;
-					if (coordinates.Y > loc.maxY && !outLoc(3))
-					{
+					if (coordinates.Y > loc.maxY && !outLoc(3)) {
 						coordinates.Y = loc.maxY - 1;
 						dy = 0;
 						turnY = -1;
 					}
 					flattenObj();
-					if (mater)
-					{
-						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
-						{
+					if (mater) {
+						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
 							t = loc.space[i][int(bottomBound/tileY)];
-							if (collisionTile(t))
-							{
+							if (collisionTile(t)) {
 								coordinates.Y = t.phY1;
 								flattenObj();
 								dy = 0;
@@ -1284,12 +1267,10 @@ package fe.unit
 						}
 					}
 				}
-				else // [a fall]
-				{						
-					if (mater)
-					{
-						for (i = int(leftBound/tileX); i<=int(rightBound/tileX); i++)
-						{
+				// [a fall]
+				else  {						
+					if (mater) {
+						for (i = int(leftBound/tileX); i<=int(rightBound/tileX); i++) {
 							t=loc.space[i][int((bottomBound+dy/div)/tileY)];
 							if (collisionTile(t,0,dy/div)) {
 								if (-(leftBound-t.phX1)/objectWidth<shX1) shX1=-(leftBound-t.phX1)/objectWidth;
@@ -1300,11 +1281,12 @@ package fe.unit
 									stayPhis=1;
 									if (t_throw>0 && dy>damWallSpeed && damWall) damageWall(3);
 									if (destroy>0 || massa>=1) destroyWall(t,3);
-								} else if (t.shelf && stayPhis==0) {
+								}
+								else if (t.shelf && stayPhis==0) {
 									stayPhis=2;
 									stayMat=t.mat;
 								}
-								diagon=0;
+								diagon = 0;
 							}
 						}
 					}
@@ -1312,12 +1294,11 @@ package fe.unit
 					if (newmy == 0 && !throu) newmy = checkDiagon(dy / div);
 					if (newmy == 0 && !throu) newmy = checkShelf(dy / div, osndy / div);
 
-					if (newmy) // Bugs!!!!!
+					if (newmy) 
 					{
-						topBound=newmy-objectHeight;
-						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
-						{
-							t=loc.space[i][int((newmy-objectHeight) / tileY)];
+						topBound = newmy - objectHeight;
+						for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
+							t = loc.space[i][int((newmy - objectHeight) / tileY)];
 							if (collisionTile(t)) newmy = 0;
 						}
 					}
@@ -1325,9 +1306,9 @@ package fe.unit
 						coordinates.Y = newmy;
 						topBound = coordinates.Y-objectHeight;
 						bottomBound = coordinates.Y;
-						if (dy>16) makeNoise(noiseRun,true);
-						else if (dy>9) makeNoise(noiseRun/2,true);
-						if (dy>5) sndFall();
+						if (dy > 16) makeNoise(noiseRun,true);
+						else if (dy > 9) makeNoise(noiseRun/2,true);
+						if (dy > 5) sndFall();
 						if (jumpBall>0 && dy>3) {
 							dy=-dy*jumpBall;
 							turnY=-1;
@@ -1339,16 +1320,13 @@ package fe.unit
 		
 						isLaz=0;
 					}
-					else
-					{
+					else {
 						coordinates.Y += dy/div;
 						flattenObj();
 					}
 					
-					if (coordinates.Y > loc.maxY)
-					{
-						if (!outLoc(3))
-						{
+					if (coordinates.Y > loc.maxY) {
+						if (!outLoc(3)) {
 							coordinates.Y = loc.maxY-1;
 							turnY = -1;
 							flattenObj();
@@ -1356,25 +1334,20 @@ package fe.unit
 					}
 				}
 			}
-			//движение вверх
-			if (dy + osndy < 0)
-			{
-				if (dy < 0)
-				{
+			// [Upward movement] | движение вверх
+			if (dy + osndy < 0) {
+				if (dy < 0) {
 					stay = false;
 					diagon = 0;
 				}
-				if (coordinates.Y - objectHeight < 0)
-				{
-					if (!outLoc(4))
-					{
+				if (coordinates.Y - objectHeight < 0) {
+					if (!outLoc(4)) {
 						coordinates.Y = objectHeight - 0.1;
 						dy = 0;
 						turnY = 1;
 					}
 				}
-				if (dy > 0)
-				{
+				if (dy > 0) {
 					newmy=checkShelf(dy/div, osndy/div);
 					if (newmy) {
 						coordinates.Y = newmy;
@@ -1383,8 +1356,7 @@ package fe.unit
 						stay = true;
 					}
 				}
-				else
-				{
+				else {
 					coordinates.Y += (dy + osndy) / div;
 					flattenObj();
 				}
@@ -1408,37 +1380,31 @@ package fe.unit
 					}
 				}
 			} 
-			if (autoSit)
-			{
+			if (autoSit) {
 				autoSit = false;	
 				unsit();
 			}
 		}
 		
-		public function run2(div:int=1)
-		{
+		public function run2(div:int = 1) {
 			coordinates.X += dx / div;
 			coordinates.Y += dy / div;
-			if (coordinates.X - objectWidth / 2 < 0)
-			{
+			if (coordinates.X - objectWidth / 2 < 0) {
 				coordinates.X = objectWidth / 2;
 				dx = Math.abs(dx) * elast;
 				turnX = 1;
 			}
-			if (coordinates.X + objectWidth / 2 >= loc.maxX)
-			{
+			if (coordinates.X + objectWidth / 2 >= loc.maxX) {
 				coordinates.X = loc.maxX - 1 - objectWidth / 2;
 				dx = -Math.abs(dx) * elast;
 				turnX = -1;
 			}
-			if (coordinates.Y - objectHeight < 0)
-			{
+			if (coordinates.Y - objectHeight < 0) {
 				coordinates.Y = objectHeight-0.1;
 				dy = 0;
 				turnY = 1;
 			}
-			if (coordinates.Y > loc.maxY)
-			{
+			if (coordinates.Y > loc.maxY) {
 				coordinates.Y = loc.maxY - 1;
 				dy = 0;
 				turnY = -1;
@@ -1487,15 +1453,15 @@ package fe.unit
 		
 		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int
 		{
-			if (!t || (t.phis == 0 || transT && t.phis == 3) && !t.shelf) return 0;  //[Empty]
+			if (!t || (t.phis == 0 || transT && t.phis == 3) && !t.shelf) {
+				return 0;	//[Empty]
+			}  
 			// Normal tile collision
-			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy >= t.phY2)
-			{
+			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy >= t.phY2) {
 				return 0;
 			}
 			// Shelf collision
-			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (bottomBound - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0))
-			{
+			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (bottomBound - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
 				return 0;
 			}
 			else return 1;
@@ -1504,21 +1470,23 @@ package fe.unit
 		// Search for stairs
 		public function checkStairs(ny:int = -1, nx:int = 0):Boolean
 		{
-
 			var i:int = int((coordinates.X + nx) / tileX);
 			var j:int = int((coordinates.Y + ny) / tileY);
 			if (j >= loc.spaceY) j = loc.spaceY - 1;
-			if (loc.space[i][j].phis >= 1 && !(transT&&loc.space[i][j].phis==3))
-			{
+			if (loc.space[i][j].phis >= 1 && !(transT&&loc.space[i][j].phis==3)) {
 				isLaz = 0;
 				return false;
 			}
-			if ((loc.space[i][j] as Tile).stair)
-			{
-				isLaz=storona=(loc.space[i][j] as Tile).stair;
+			if ((loc.space[i][j] as Tile).stair) {
+				isLaz = (loc.space[i][j] as Tile).stair;
+				storona = (loc.space[i][j] as Tile).stair;
 
-				if (isLaz == -1) coordinates.X = (loc.space[i][j] as Tile).phX1 + objectWidth / 2;
-				else coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
+				if (isLaz == -1) {
+					coordinates.X = (loc.space[i][j] as Tile).phX1 + objectWidth / 2;
+				}
+				else {
+					coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
+				}
 				
 				centerObjHorizontally();
 				stay = false;
@@ -1540,26 +1508,21 @@ package fe.unit
 			// STOP FROM CRASHING
 			if (x < 0 || y < 0) return false;
 
-			if ((loc.space[x][y] as Tile).water > 0)
-			{
+			if ((loc.space[x][y] as Tile).water > 0) {
 				isPlav = true;
 				inWater = true;
-				if (plav)
-				{
+				if (plav) {
 					stay = false;
 					sit(false);
 				}
 			}
-			else
-			{
+			else {
 				var y2:int = int((coordinates.Y - objectHeight * 0.25) / tileY)
 				isPlav = false;
-				if (objectHeight <= tileY)
-				{
+				if (objectHeight <= tileY) {
 					inWater = false;
 				}
-				else if ((loc.space[x][y2] as Tile).water > 0)
-				{
+				else if ((loc.space[x][y2] as Tile).water > 0) {
 					inWater = true;
 				}
 				else inWater = false;
@@ -1615,24 +1578,23 @@ package fe.unit
 		}
 		
 		// [Search for steps]
-		public function checkDiagon(dy:Number, napr:int=0):Number {
+		public function checkDiagon(dy:Number, napr:int = 0):Number {
 			var ddy:Number;
 			var newmy:Number = 0;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + dy);
-			if (diagon==0) {
-				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
+			if (diagon == 0) {
+				if (t.diagon != 0 && (napr==0 || t.diagon==napr)) {
 					ddy = t.getMaxY(coordinates.X);
 					if (ddy < coordinates.Y + dy)
 					{
-						diagon=t.diagon;
-						newmy=ddy;
+						diagon = t.diagon;
+						newmy = ddy;
 					}
 				}
 				else {
-					t=loc.getAbsTile(coordinates.X, coordinates.Y + 40);
-					if (t.diagon!=0 && (napr==0 || t.diagon==napr))
-					{
-						ddy=t.getMaxY(coordinates.X);
+					t = loc.getAbsTile(coordinates.X, coordinates.Y + 40);
+					if (t.diagon != 0 && (napr == 0 || t.diagon == napr)) {
+						ddy = t.getMaxY(coordinates.X);
 						if (ddy < coordinates.Y + dy) {
 							diagon = t.diagon;
 							newmy = ddy;
@@ -1642,14 +1604,12 @@ package fe.unit
 			}
 			else
 			{
-				if (t.diagon != 0 && (napr == 0 || t.diagon == napr))
-				{
+				if (t.diagon != 0 && (napr == 0 || t.diagon == napr)) {
 					ddy = t.getMaxY(coordinates.X);
 					diagon = t.diagon;
 					newmy = ddy;
 				}
-				else
-				{
+				else {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y - 40);
 					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
 						ddy=t.getMaxY(coordinates.X);
@@ -1662,8 +1622,8 @@ package fe.unit
 			if (diagon!=0 && (napr==0 || t.diagon==napr)) {
 				shX1 = 0;
 				shX2 = 0;
-				stayPhis=2;
-				stayMat=t.mat;
+				stayPhis = 2;
+				stayMat = t.mat;
 			}
 			return newmy;
 		}

@@ -264,7 +264,7 @@ package fe.inter
 		
 		// This function calculates hit percentages in SATS. The use of this percentage is currently unknown.
 		// It does not correct gun dispersion or a unit's (dodge chance?) so projectiles will still miss at 100%
-		public function getPrec(un:Unit):Number
+		private function getPrec(un:Unit):Number
 		{
 			var prec:Number = 1;
 			var sk = gg.pers.weaponSkills[weapon.skill];
@@ -287,6 +287,7 @@ package fe.inter
 			}
 			if (prec > 0.95) prec = 0.95;
 			if (prec > skillConf) prec = skillConf;
+
 			return prec;
 		}
 		

@@ -11,20 +11,21 @@ package  fe.unit
 		public var t2:int;
 		
 		public var tr:int;
-		public var liv1:Boolean=false;
-		public var liv2:Boolean=false;
-		public var liv3:Boolean=false;
+		public var liv1:Boolean = false;
+		public var liv2:Boolean = false;
+		public var liv3:Boolean = false;
 		
-		var kolAll:int=6;
-		var kolClosed:int=3;
-		public var opened:Array=[];
+		var kolAll:int = 6;
+		var kolClosed:int = 3;
+		public var opened:Array = [];
 
-		public function Coord(nloc:Location, ntip:String=null) {
-			loc=nloc;
-			tip=ntip;
-			tr=1;
-			t1=100;
-			t2=150;
+		// Constructor
+		public function Coord(nloc:Location, ntip:String = null) {
+			loc = nloc;
+			tip = ntip;
+			tr = 1;
+			t1 = 100;
+			t2 = 150;
 			rndOpened();
 		}
 		
@@ -32,7 +33,7 @@ package  fe.unit
 			for (var i=1;i<=kolAll;i++) {
 				opened[i]=true;
 			}
-			for (i=1;i<=kolClosed;i++) {
+			for (i = 1; i <= kolClosed; i++) {
 				opened[Math.floor(Math.random()*kolAll+1)]=false;
 			}
 		}
