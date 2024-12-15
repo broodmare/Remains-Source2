@@ -17,26 +17,29 @@ package fe.loc
 		private const actRad = 250;
 
 		public var vClass:Class;
-		public var osnova:Box=null;
-		public var vsos:Boolean=false;
-		public var isPlav:Boolean=false;
-		public var takeR:int=osnRad;		//радиус взятия
+		public var osnova:Box = null;
+		public var vsos:Boolean = false;
+		public var isPlav:Boolean = false;
+		public var takeR:int = osnRad;			//[take radius] | радиус взятия
 		
-		private var isTake:Boolean=false;	//взят
-		var actTake:Boolean=false;			//была нажата E
-		public var auto:Boolean=false;		//берётся автоматически
-		public var auto2:Boolean=false;		//берётся автоматически в соответствии с настройками автовзятия
-		public var krit:Boolean=false;		//критически важный
+		private var isTake:Boolean = false;		// [taken] | взят
+		var actTake:Boolean = false;			// ['E' was pressed] | была нажата E
+		public var auto:Boolean = false;		// [берётся автоматически] | берётся автоматически
+		public var auto2:Boolean = false;		// [is taken automatically in accordance with the auto-pickup settings] | берётся автоматически в соответствии с настройками автовзятия
+		public var krit:Boolean = false;		// [Critical item] | критически важный
 		private var dery:int=0;
 		private var ttake:int=30;
 		private var tvsos:int=0;
 		public var sndFall:String='fall_item';
-
+		
+		// Cached tile sizes
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
+		// Constructor
 		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true)
 		{
+			trace("Loot.as/Loot() - Creating new loot with item: " + nitem.id + " kol: " + nitem.kol);
 			loc = nloc;
 			item = nitem;
 			if (loc.cTransform) cTransform = loc.cTransform;
@@ -44,7 +47,7 @@ package fe.loc
 			prior =3 ;
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			krit=nkrit;
+			krit = nkrit;
 			if (nx < tileX) nx = tileX;
 			if (nx > (loc.spaceX - 1) * tileX) nx = (loc.spaceX - 1) * tileX;
 			if (ny > (loc.spaceY - 1) * tileY) ny = (loc.spaceY - 1) * tileY;
@@ -62,7 +65,8 @@ package fe.loc
 					{
 						trace('ERROR: (00:25)');
 					}
-				} else {
+				}
+				else {
 					if (item.variant>0) vClass=Res.getClass('vis'+item.id+'_'+item.variant,'vis'+item.id,visp10mm);
 					else vClass=Res.getClass('vis'+item.id,null,visp10mm);
 					var infIco=new vClass();
@@ -75,7 +79,8 @@ package fe.loc
 				}
 				if (item.variant>0) shine();
 				if (item.xml.snd.@fall.length()) sndFall=item.xml.snd.@fall;
-			} else if (item.tip==Item.L_EXPL) {
+			}
+			else if (item.tip==Item.L_EXPL) {
 				vClass=Res.getClass('vis'+item.id,null,visualAmmo);
 				var infIco=new vClass();
 				infIco.stop();
@@ -84,7 +89,8 @@ package fe.loc
 				vis=new MovieClip();
 				vis.addChild(infIco);
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
-			} else if (item.tip==Item.L_AMMO) {
+			}
+			else if (item.tip==Item.L_AMMO) {
 				vClass=visualAmmo;
 				vis=new vClass();
 				try {
@@ -97,15 +103,14 @@ package fe.loc
 					vis.gotoAndStop(1);
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
-			} else {
+			}
+			else {
 				vClass = visualItem;
 				vis = new vClass();
-				try
-				{
+				try {
 					vis.gotoAndStop(item.id);
 				}
-				catch(err)
-				{
+				catch(err) {
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
@@ -113,8 +118,7 @@ package fe.loc
 					else if (item.tip==Item.L_KEY) vis.gotoAndStop('key');
 					else if (item.tip==Item.L_PAINT) vis.gotoAndStop('paint');
 					else if (item.tip==Item.L_FOOD) vis.gotoAndStop('food');
-					else 
-					{
+					else  {
 						trace('ERROR: (00:53) - ERROR: Could not load sprite for item: "' + item.id +'", using generic!');
 						vis.gotoAndStop(1);
 					}
@@ -137,20 +141,21 @@ package fe.loc
 				objectHeight=vis.height;
 			}
 			if (jump) {
-				dx=Math.random()*10-5;
-				dy=Math.random()*5-10;
+				dx = Math.random() * 10 - 5;
+				dy = Math.random() * 5 - 10;
 			}
-			if (!loc.active) sndFall='';
-			auto=nauto;
-			inter=new Interact(this);
-			inter.active=true;
-			inter.action=100;
-			inter.userAction='take';
-			inter.actFun=toTake;
+			if (!loc.active) sndFall = '';
+			// Configure item magnetization and the take script for it
+			auto = nauto;
+			inter = new Interact(this);
+			inter.active = true;
+			inter.action = 100;
+			inter.userAction = 'take';
+			inter.actFun = toTake;
 			inter.update();
-			levitPoss=true;
+			levitPoss = true;
 			loc.addObj(this);
-			auto2=item.checkAuto();
+			auto2 = item.checkAuto();
 		}
 		
 		public override function addVisual() {
@@ -167,6 +172,7 @@ package fe.loc
 				vis.addChild(sh);
 			}
 		}
+
 		//при нажатии E
 		public function toTake() {
 			item.checkAuto(true);
@@ -174,43 +180,53 @@ package fe.loc
 			ttake=0;
 			takeR=actRad;
 		}
-		//попробовать взять
-		public function take(prinud:Boolean=false) {
+
+		// [try to take] | попробовать взять
+		public function take(prinud:Boolean = false) {
 			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
 			var rx = World.w.gg.coordinates.X - coordinates.X;
 			var ry = World.w.gg.coordinates.Y - World.w.gg.objectHeight / 2 - coordinates.Y;
-			//взять
-			if (prinud || (World.w.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) {
+			// [take] | взять
+			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
-					auto2=item.checkAuto();
+					auto2 = item.checkAuto();
 					if (!auto2) {
-						vsos=actTake=false;
-						tvsos=0;
-						levitPoss=true;
-						takeR=osnRad;
+						vsos = false;
+						actTake = false;
+						tvsos = 0;
+						levitPoss = true;
+						takeR = osnRad;
 						return;
 					}
 				}
-				levitPoss=false;
+				levitPoss = false;
+				// Remove the object from the worldspace
 				loc.remObj(this);
-				if (!isTake) World.w.invent.take(item);
-				isTake=true;
-				onCursor=0;
+				// If the item is not already marked as taken, take it and mark it as taken.
+				if (!isTake) {
+					// Call inventory to add the item to the player inventory
+					trace("Loot.as/take() - is calling the Invent.as()/take function. Item id: " + item.id + ", kol: " + item.kol);
+					World.w.invent.take(item);
+				}
+				isTake = true;
+				onCursor = 0;
 				return;
 			}
-			//притяжение
-			if ((World.w.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) {
-				levitPoss=false;
-				stay=false;
-				vsos=true;
-				dx=rx/5;
-				dy=ry/5;
+			// [attraction] | притяжение
+			if ((World.w.gg.isTake>=20 || actTake) && rx < takeR && rx > -takeR && ry < takeR &&ry > -takeR && tvsos < 45) {
+				levitPoss = false;
+				stay = false;
+				vsos = true;
+				dx = rx / 5;
+				dy = ry / 5;
 				tvsos++;
-			} else {
-				vsos=actTake=false;
-				tvsos=0;
-				levitPoss=true;
-				takeR=osnRad;
+			}
+			else {
+				vsos = false;
+				actTake = false;
+				tvsos = 0;
+				levitPoss = true;
+				takeR = osnRad;
 			}
 		}
 		

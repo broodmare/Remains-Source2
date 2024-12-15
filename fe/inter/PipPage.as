@@ -228,78 +228,63 @@ package fe.inter
 		}
 		
 		//подготовка страниц
-		protected function setSubPages():void
-		{
+		protected function setSubPages():void {
 
 		}
 
 		//определение подсвеченности кнопок
-		protected function setSigns():void
-		{
+		protected function setSigns():void {
 			signs = [0,0,0,0,0,0];
 		}
 		
 		//показ одного элемента
-		protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		protected function setStatItem(item:MovieClip, obj:Object):void {
 
 		}
 		
 		//информация об элементе
-		protected function statInfo(event:MouseEvent):void
-		{
+		protected function statInfo(event:MouseEvent):void {
 
 		}
 		
-		protected function itemClick(event:MouseEvent):void
-		{
+		protected function itemClick(event:MouseEvent):void {
 
 		}
 
-		protected function itemRightClick(event:MouseEvent):void
-		{
+		protected function itemRightClick(event:MouseEvent):void {
 
 		}
 		
 		//показ всех элементов
-		protected function setStatItems(n:int=-1):void
-		{
+		protected function setStatItems(n:int=-1):void {
 			if (n >= 0) scrl = n;
-			for (var i:int = 0; i < statArr.length; i++)
-			{
-				if (i+scrl>=arr.length)
-				{
+			for (var i:int = 0; i < statArr.length; i++) {
+				if (i+scrl>=arr.length) {
 					statArr[i].visible=false;
 				}
-				else
-				{
+				else {
 					statArr[i].visible=true;
 					setStatItem(statArr[i],arr[i+scrl]);
 				}
 			}
 		}
 		
-		protected function setIco(tip:int = 0, id:String = ''):void
-		{
+		protected function setIco(tip:int = 0, id:String = ''):void {
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible = false;
 			vis.skill.visible = false;
 			vis.item.gotoAndStop(1);
 			vis.info.y = vis.ico.y;
-			if (tip == 1) // Weapon
-			{
+			if (tip == 1) { // Weapon 
 				var w:Weapon = pip.arrWeapon[id];
-				if (w.tip == 5)
-				{
+				if (w.tip == 5) {
 					tip = 3;
 					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
 				}
-				else
-				{
+				else {
 					var vWeapon:Class = w.vWeapon;
 					var node:XML = Weapon.getWeaponInfo(id);
-					if (node != null)
-					{
+					if (node != null) {
 						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
 					}
 					if (vWeapon==null) {
@@ -861,11 +846,11 @@ package fe.inter
 			return s;
 		}
 		
-		protected function setTopText(s:String=''):void
-		{
+		protected function setTopText(s:String=''):void {
 			if (s=='') {
 				pip.vis.toptext.visible=false;
-			} else {
+			}
+			else {
 				pip.vis.toptext.visible=true;
 				var ins:String=Res.txt('p',s,0,true);
 				var myPattern:RegExp = /@/g; 
@@ -903,8 +888,7 @@ package fe.inter
 		}
 		
 		// Initialize filter buttons
-		protected function setCats():void
-		{
+		protected function setCats():void {
 			var arr = tips[page2];
 			
 			if (arr == null) {
@@ -915,7 +899,7 @@ package fe.inter
 			vis.cats.visible = true;
 			
 			var ntip;
-			for (var i:int  = 0; i <= kolCats; i++) {
+			for (var i:int  = 0; i < kolCats; i++) {
 				ntip=arr[i];
 				if (ntip==null) vis.cats['cat'+i].visible=false;
 				else {
@@ -937,8 +921,7 @@ package fe.inter
 
 		
 		// selecting an inventory subcategory
-		protected function selCatEvent(event:MouseEvent):void
-		{
+		protected function selCatEvent(event:MouseEvent):void {
 			// Get the 4th letter of the target's name 'cat1, cat2, etc.
 			var n:int = event.currentTarget.name.charCodeAt(3) - 48; // 0 as a character is '48', so 1 would be '49' etc
 			trace('Selecting filter category: "' + n + '".');
@@ -947,21 +930,17 @@ package fe.inter
 		}
 		
 		// What to do when a filter button is clicked
-		protected function selCat(n:int = 0):void
-		{
-			for (var i = 0; i <= kolCats; i++)
-			{
+		protected function selCat(n:int = 0):void {
+			for (var i = 0; i <= kolCats; i++) {
 				vis.cats['cat' + i].fon.gotoAndStop(1);
 			}
 			
 			vis.cats['cat' + n].fon.gotoAndStop(2);
 			
-			try
-			{
+			try {
 				curTip = tips[page2][n];
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:38) - No icon for: "' + n + '"!');
 			}
 			
@@ -969,8 +948,7 @@ package fe.inter
 		}
 		
 		//проверить соответствии категории
-		protected function checkCat(tip:String):Boolean 
-		{
+		protected function checkCat(tip:String):Boolean {
 			if (curTip=='' || curTip==null || curTip==tip) return true;
 			if (curTip is Array) {
 				for each (var t in curTip) if (t==tip) return true;
@@ -978,19 +956,16 @@ package fe.inter
 			return false;
 		}
 		
-		public function statScroll(event:ScrollEvent):void
-		{
+		public function statScroll(event:ScrollEvent):void {
 			setStatItems(event.position);
 		}
 
-		public function onMouseWheel1(event:MouseEvent):void 
-		{
+		public function onMouseWheel1(event:MouseEvent):void {
 			if (World.w.ctr.setkeyOn) return;
 			try {
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
 			}
-			catch(err)
-			{
+			catch(err) {
 				trace('ERROR: (00:39)');
 			}
 			scroll(event.delta);
@@ -1000,13 +975,11 @@ package fe.inter
 			event.stopPropagation();
 		}
 
-		public function scroll(dn:int=0):void
-		{
+		public function scroll(dn:int=0):void {
 
 		}
 
-		public function step():void
-		{
+		public function step():void {
 
 		}
 	}	

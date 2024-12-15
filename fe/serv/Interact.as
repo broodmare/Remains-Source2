@@ -218,8 +218,7 @@ package fe.serv
 						if (loc && loc.mirror) endX = coordinates.X - xml.move.@dx * tileX;
 						else endX = coordinates.X + xml.move.@dx * tileX;
 					}
-					else
-					{
+					else {
 						endX	= coordinates.X;
 						endX2	= coordinates.X;
 					}
