@@ -189,7 +189,7 @@ package  fe.entities
 				else if (World.w.alicorn) aid = 'ali';
 				else aid = Appear.ggArmorId;
 			}
-			if (aid == '' || aid == 'pip') {
+			if (aid == '') {
 				m.gotoAndStop(1);
 				return;
 			}

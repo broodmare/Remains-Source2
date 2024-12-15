@@ -1142,28 +1142,44 @@ package fe.unit
 			for (w in weapons) {
 				if (weapons[w] is Weapon) obj.weapons[w]={id:weapons[w].id, hp:weapons[w].hp, hold:weapons[w].hold, ammo:weapons[w].ammo, respect:weapons[w].respect, variant:weapons[w].variant};
 			}
-
 			for (w in armors) {
 				if (armors[w] is Armor) obj.armors[w]={id:armors[w].id, hp:armors[w].hp, lvl:armors[w].lvl};
 			}
-
 			for (w in fav) {
-				obj.fav[w]=fav[w];
+				obj.fav[w] = fav[w];
 			}
-
 			for (w in items) {
-				if (w!='') {
-					obj.items[w]=items[w].kol;
-					if (items[w].vault>0) obj.vault[w]=items[w].vault;
+				if (w != '') {
+					obj.items[w] = items[w].kol;
+					if (items[w].vault > 0) obj.vault[w] = items[w].vault;
 				}
 			}
 
-			if (gg.currentWeapon) obj.cWeaponId=gg.currentWeapon.id; else obj.cWeaponId='';
-			if (gg.currentArmor) obj.cArmorId=gg.currentArmor.id; else obj.cArmorId='';
-			if (gg.currentAmul) obj.cAmulId=gg.currentAmul.id; else obj.cAmulId='';
-			if (gg.currentSpell) obj.cSpellId=gg.currentSpell.id; else obj.cSpellId='';
-			obj.prevArmor=gg.prevArmor;
-			
+			if (gg.currentWeapon) {
+				obj.cWeaponId = gg.currentWeapon.id;
+			}
+			else {
+				obj.cWeaponId = '';
+			}
+			if (gg.currentArmor) {
+				obj.cArmorId = gg.currentArmor.id;
+			}
+			else {
+				obj.cArmorId = '';
+			}
+			if (gg.currentAmul) {
+				obj.cAmulId = gg.currentAmul.id;
+			}
+			else {
+				obj.cAmulId = '';
+			}
+			if (gg.currentSpell) {
+				obj.cSpellId = gg.currentSpell.id;
+			}
+			else {
+				obj.cSpellId = '';
+			}
+			obj.prevArmor = gg.prevArmor;
 			return obj;
 		}
 	}
