@@ -13,9 +13,9 @@ package fe.unit
 			runSpeed=maxSpeed*2;
 			sitSpeed=maxSpeed;
 			
-			//дать оружие
+			// [Give weapons] | дать оружие
 			getWeapon(ndif, xml, loadObj);
-			if (quiet) id_replic='';
+			if (quiet) id_replic = '';
 		}
 		
 		public override function animate()

@@ -629,7 +629,7 @@ package  fe
 			//войти в текущую местность
 			game.enterToCurLand();//!!!!
 			
-			Snd.off=false;
+			Snd.tempMuted=false;
 			gui.setAll();
 			allStat=1;
 			ng_wait=0;
@@ -652,7 +652,7 @@ package  fe
 			else data=saveArr[nload].data;
 
 			//создать игру
-			Snd.off=true;
+			Snd.tempMuted=true;
 			cam.showOn=false;
 			if (data.hardInv==true) hardInv=true; else hardInv=false;
 			game=new Game();
@@ -686,7 +686,7 @@ package  fe
 			//войти в текущую местность
 			game.enterToCurLand();//!!!!
 			log='';
-			Snd.off=false;
+			Snd.tempMuted=false;
 			gui.setAll();
 			allStat=1;
 		}
@@ -742,7 +742,7 @@ package  fe
 				vblack.alpha=0;
 				cam.dblack=0;
 				setLoadScreen(getLoadScreen());
-				Snd.off=true;
+				Snd.tempMuted=true;
 			}
 			if (t_exit==19) {
 				cur('arrow');
@@ -751,7 +751,7 @@ package  fe
 			if (t_exit==18 && clickReq>0) waitLoadClick();
 			if (t_exit==16) {
 				Mouse.show();
-				Snd.off=false;
+				Snd.tempMuted=false;
 				offLoadScreen();
 				vgui.visible=vfon.visible=visual.visible=true;
 				vblack.alpha=1;

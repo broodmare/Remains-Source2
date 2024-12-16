@@ -83,7 +83,7 @@ package fe.unit
 					else rkoef=1;
 					if (rkoef>upKoef) rkoef=upKoef;
 					if (loc.active) {
-						Snd.pshum(sndRun,rkoef);
+						Snd.pshum(sndRun, rkoef);
 					}
 					if (aiTCh%15==1) Emitter.emit('necronoise',loc, coordinates.X, coordinates.Y-10,{alpha:rkoef});
 										if (!World.w.gg.invulner && aiTCh%30==1) {

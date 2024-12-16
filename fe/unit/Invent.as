@@ -303,7 +303,6 @@ package fe.unit
 			}
 			if (pot.@rad.length()) {
 				gg.drad2+=pot.@rad*1;
-				trace(pot.@rad, gg.drad2)
 			}
 			if (pot.@ad.length()) {
 				var n1:int=pot.@admin;
@@ -328,7 +327,6 @@ package fe.unit
 		}
 		
 		public function useItem(ci:String=null):Boolean {
-			trace("Invent.as/useItem() - ");
 			if (ci==null) {
 				if (cItem<0) return false;
 				if (World.w.gui.t_item<=0) {
@@ -444,7 +442,6 @@ package fe.unit
 		
 		public function useFav(n:int)
 		{
-			trace("Invent.as/useFav() - ");
 			var ci:String=fav[n];
 			if (ci==null) return;
 			var item = weaponList.(@id==ci);
@@ -465,7 +462,6 @@ package fe.unit
 		
 		public function addWeapon(id:String, hp:int = 0xFFFFFF, hold:int = 0, respect:int = 0, nvar:int = 0):Weapon
 		{
-			trace("Invent.as/addWeapon() - ");
 			if (id == null) return null;
 			if (weapons[id])
 			{
@@ -485,7 +481,6 @@ package fe.unit
 		}
 		
 		public function remWeapon(id:String) {
-			trace("Invent.as/remWeapon() - ");
 			if (weapons[id]) {
 				if (weapons[id]==gg.currentWeapon) gg.changeWeapon(id,true);
 				if (weapons[id].hold>0) {
@@ -498,14 +493,12 @@ package fe.unit
 		}
 		
 		public function updWeapon(id:String, nvar:int){
-			trace("Invent.as/updWeapon() - ");
 			if (weapons[id]==null) addWeapon(id);
 			weapons[id].updVariant(nvar);
 		}
 		
 		//показать/скрыть оружие
 		public function respectWeapon(id:String):int {
-			trace("Invent.as/respectWeapon() - ");
 			var w:Weapon=weapons[id];
 			if (w==null) return 2;
 			if (w.respect==0 || w.respect==2) w.respect=1;
@@ -522,7 +515,6 @@ package fe.unit
 		
 		//ремонтировать оружие с помощью набора оружейника или деталей
 		public function repWeapon(w:Weapon, koef:Number=1):Boolean {
-			trace("Invent.as/repWeapon() - ");
 			if (w && w.tip>0 && w.tip<4 && w.rep_eff>0) {
 				if (w.hp<w.maxhp) {
 					var hhp=w.maxhp*gg.pers.repairMult*w.rep_eff*koef;
@@ -541,7 +533,6 @@ package fe.unit
 		}
 		
 		public function repairWeapon(id:String, kol:int) {
-			trace("Invent.as/repairWeapon() - ");
 			if (kol==undefined || isNaN(kol)) return;
 			var hpw=(weapons[id] as Weapon).hp;
 			var rep=Math.round(kol*gg.pers.repairMult);
@@ -558,7 +549,6 @@ package fe.unit
 			}
 		}
 		public function favItem(id:String, cell:int) {
-			trace("Invent.as/favItem() - ");
 			if (gg && (cell==29 || cell==30)) {
 				if (weapons[id]==null || (weapons[id].tip!=4 && weapons[id].tip!=5) || weapons[id].spell) {
 					World.w.gui.infoText('onlyExpl');
@@ -604,7 +594,6 @@ package fe.unit
 		
 		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor
 		{
-			trace("Invent.as/addArmor() - ");
 			if (armors[id]) return null;
 			var node = armorList.(@id==id);
 			if (!node) return null;
@@ -617,7 +606,6 @@ package fe.unit
 		
 		public function addSpell(id:String):Spell
 		{
-			trace("Invent.as/addSpell() - ");
 			if (id == null) return null;
 			if (spells[id]) return spells[id];
 
@@ -632,7 +620,6 @@ package fe.unit
 		
 		public function addAllSpells()
 		{
-			trace("Invent.as/addAllSpells() - ");
 			for each(var sp in itemList.(@tip=='spell'))
 			{
 				addSpell(sp.@id);
@@ -803,7 +790,7 @@ package fe.unit
 		
 		function plus(l:Item, tr:int = 0)
 		{
-			trace("Invent.as/plus() - Item: " + l.id + ", item.kol: " + l.kol + "tr: " + tr);
+			trace("Invent.as/plus() - Item ID: " + l.id + ", kol: " + l.kol + ", tr: " + tr);
 			
 			if (l.id != "money") {
 				if (items[l.id].kol == 0) {
@@ -828,7 +815,6 @@ package fe.unit
 		
 		// [Increase the number of items] | увеличить количество предметов
 		public function plusItem(ci:String, n:int = 1) {
-			trace("Invent.as/plusItem() - ");
 			if (items[ci] == null) {
 				trace("Invent.as/plusItem() - ERROR: could not increase quantity of item: \"" + ci + "\"!");
 				return;
@@ -846,7 +832,6 @@ package fe.unit
 		//уменьшить количество предметов
 		public function minusItem(ci:String, n:int=1, snd:Boolean=true)
 		{
-			trace("Invent.as/minusItem() - ");
 			if (items[ci]==null) {
 				trace("Invent.as/minusItem() - Error while decrementing item count", ci);
 				return;
@@ -962,7 +947,6 @@ package fe.unit
 		
 		//выкинуть вещи
 		public function drop(nid:String, kol:int=1) {
-			trace("Invent.as/drop() - ");
 			if (World.w.loc.base || World.w.alicorn) {
 				return;
 			}

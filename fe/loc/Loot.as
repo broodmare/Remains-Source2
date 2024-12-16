@@ -9,8 +9,8 @@ package fe.loc
 	import fe.serv.Interact;
 	import fe.entities.Obj;
 	
-	public class Loot extends Obj
-	{
+	// This is the object you see in-game when an item is dropped
+	public class Loot extends Obj {
 		public var item:Item;
 
 		private const osnRad = 50;
@@ -20,55 +20,56 @@ package fe.loc
 		public var osnova:Box = null;
 		public var vsos:Boolean = false;
 		public var isPlav:Boolean = false;
-		public var takeR:int = osnRad;			//[take radius] | радиус взятия
+		public var takeR:int = osnRad;			// [take radius] | радиус взятия
 		
 		private var isTake:Boolean = false;		// [taken] | взят
 		var actTake:Boolean = false;			// ['E' was pressed] | была нажата E
 		public var auto:Boolean = false;		// [берётся автоматически] | берётся автоматически
 		public var auto2:Boolean = false;		// [is taken automatically in accordance with the auto-pickup settings] | берётся автоматически в соответствии с настройками автовзятия
 		public var krit:Boolean = false;		// [Critical item] | критически важный
-		private var dery:int=0;
-		private var ttake:int=30;
-		private var tvsos:int=0;
-		public var sndFall:String='fall_item';
+		private var dery:int = 0;
+		private var ttake:int = 30;
+		private var tvsos:int = 0;
+		public var sndFall:String = 'fall_item';
 		
 		// Cached tile sizes
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
-		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true)
+		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true)
 		{
-			trace("Loot.as/Loot() - Creating new loot with item: " + nitem.id + " kol: " + nitem.kol);
+			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
 			loc = nloc;
 			item = nitem;
 			if (loc.cTransform) cTransform = loc.cTransform;
 			sloy = 2;
-			prior =3 ;
+			prior = 3;
 			coordinates.X = nx;
 			coordinates.Y = ny;
 			krit = nkrit;
 			if (nx < tileX) nx = tileX;
 			if (nx > (loc.spaceX - 1) * tileX) nx = (loc.spaceX - 1) * tileX;
 			if (ny > (loc.spaceY - 1) * tileY) ny = (loc.spaceY - 1) * tileY;
-			massa=0.1;
-			nazv=item.nazv;
-			objectWidth=30;
-			objectHeight=20;
-			if (item.tip==Item.L_WEAPON) {
+			massa = 0.1;
+			nazv = item.nazv;
+			objectWidth = 30;
+			objectHeight = 20;
+			// Determine the appropriate sprite for the item
+			if (item.tip == Item.L_WEAPON) {
 				if (item.xml.vis.length() && item.xml.vis.@loot.length()) {
-					vis=new visualItem();
+					vis = new visualItem();
 					try {
 						vis.gotoAndStop(item.xml.vis.@loot);
 					}
-					catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:25)');
 					}
 				}
 				else {
-					if (item.variant>0) vClass=Res.getClass('vis'+item.id+'_'+item.variant,'vis'+item.id,visp10mm);
-					else vClass=Res.getClass('vis'+item.id,null,visp10mm);
+					if (item.variant > 0) vClass = Res.getClass('vis' + item.id + '_' + item.variant, 'vis' + item.id, visp10mm);
+					else vClass = Res.getClass('vis' + item.id, null, visp10mm);
+
 					var infIco=new vClass();
 					infIco.stop();
 					infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
@@ -77,10 +78,10 @@ package fe.loc
 					vis.addChild(infIco);
 					dery=10;
 				}
-				if (item.variant>0) shine();
-				if (item.xml.snd.@fall.length()) sndFall=item.xml.snd.@fall;
+				if (item.variant > 0) shine();
+				if (item.xml.snd.@fall.length()) sndFall = item.xml.snd.@fall;
 			}
-			else if (item.tip==Item.L_EXPL) {
+			else if (item.tip == Item.L_EXPL) {
 				vClass=Res.getClass('vis'+item.id,null,visualAmmo);
 				var infIco=new vClass();
 				infIco.stop();
@@ -90,19 +91,18 @@ package fe.loc
 				vis.addChild(infIco);
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			}
-			else if (item.tip==Item.L_AMMO) {
-				vClass=visualAmmo;
-				vis=new vClass();
+			else if (item.tip == Item.L_AMMO) {
+				vClass = visualAmmo;
+				vis = new vClass();
 				try {
 					if (item.xml.@base.length()) vis.gotoAndStop(item.xml.@base);
 					else vis.gotoAndStop(item.id);
 				}
-				catch(err)
-				{
+				catch(err) {
 					trace('ERROR: (00:26)');
 					vis.gotoAndStop(1);
 				}
-				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
+				if (item.xml.@fall.length()) sndFall = item.xml.@fall;
 			}
 			else {
 				vClass = visualItem;
@@ -133,6 +133,7 @@ package fe.loc
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			} 
+			// If a sprite was found, set up it's size and position
 			if (vClass) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
@@ -140,11 +141,15 @@ package fe.loc
 				objectWidth=vis.width;
 				objectHeight=vis.height;
 			}
+
 			if (jump) {
 				dx = Math.random() * 10 - 5;
 				dy = Math.random() * 5 - 10;
 			}
+			
+			// If the location is not active, don't play a sound
 			if (!loc.active) sndFall = '';
+			
 			// Configure item magnetization and the take script for it
 			auto = nauto;
 			inter = new Interact(this);
@@ -173,12 +178,12 @@ package fe.loc
 			}
 		}
 
-		//при нажатии E
+		// What to do when the player presses 'E' on the item
 		public function toTake() {
 			item.checkAuto(true);
-			actTake=true;
-			ttake=0;
-			takeR=actRad;
+			actTake = true;
+			ttake = 0;
+			takeR = actRad;
 		}
 
 		// [try to take] | попробовать взять
@@ -205,7 +210,7 @@ package fe.loc
 				// If the item is not already marked as taken, take it and mark it as taken.
 				if (!isTake) {
 					// Call inventory to add the item to the player inventory
-					trace("Loot.as/take() - is calling the Invent.as()/take function. Item id: " + item.id + ", kol: " + item.kol);
+					//trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.kol);
 					World.w.invent.take(item);
 				}
 				isTake = true;

@@ -287,8 +287,8 @@ package fe.inter
 			var id=event.currentTarget.parent.id.text;
 			if (id=='opt1_1')
 			{
-				Snd.globalVol=(event.position/100).toFixed(2);
-				Snd.onSnd=Snd.globalVol>0;
+				Snd.globalVol = (event.position/100).toFixed(2);
+				Snd.soundMuted = Snd.globalVol>0;
 				Snd.ps('mine_bip',1000,0);
 			}
 			if (id=='opt1_2')
