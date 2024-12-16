@@ -180,8 +180,6 @@ package  fe
 		public var textProgressLoad:Number=0;
 		
 		//Файлы
-		public var soundPath:String;
-		public var musicPath:String;
 		public var textureURL:String;
 		public var spriteURL:String;
 		public var sprite1URL:String;
@@ -233,8 +231,7 @@ package  fe
 			playerMode = Capabilities.playerType;
 
 			//файлы
-			soundPath = '';
-			musicPath = 'Music/';
+			
 			textureURL = 'texture.swf';
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
@@ -344,8 +341,7 @@ package  fe
 		//создать список языков, инициировать загрузку языков
 		private function initLangs(err:Boolean = false):void
 		{
-			if (err) // Failsafe if lang.xml couldn't be loaded correctly.
-			{
+			if (err) { // Failsafe if lang.xml couldn't be loaded correctly. 
 				load_log += 'ERROR: Initializing languages failed, using failsafes!.\n';
 
 				langsXML =
@@ -360,8 +356,7 @@ package  fe
 			if (langsXML && langsXML.@defaultLanguage.length()) userDefaultLanguage = langsXML.@defaultLanguage;
 
 			langs = [];
-			for each (var xl:XML in langsXML.lang)
-			{
+			for each (var xl:XML in langsXML.lang) {
 				var obj:Object = {file:xl.@file, nazv:xl[0]};	//Creates an obj with two properties, The file path, eg. 'text_en.xml', and the language name eg. 'English' 
 				langs[xl.@id] = obj;							//Adds each object into the langs array under it's id, eg. 'en'
 				kolLangs++;										//Increase the number of languages.
@@ -373,7 +368,8 @@ package  fe
 			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
 			if (currentLanguage == userDefaultLanguage) {
                 tl = tld;													// Otherwise, write the default user language into tl.
-            } else {
+            }
+			else {
                 var languageURL:String = langFolder + currentLanguage;
                 tl = new TextLoader(langs[currentLanguage].file);
             }
@@ -696,16 +692,14 @@ package  fe
 		}
 		
 		//вызов при входе в конкретную местность
-		public function ativateLand(nland:Land):void
-		{
+		public function ativateLand(nland:Land):void {
 			land = nland;
 			grafon.drawFon(vfon, land.act.fon);
 		}
 		
 		//вызов при входе в конкретную локацию
 		//тут графический баг
-		public function ativateLoc(nloc:Location):void
-		{
+		public function ativateLoc(nloc:Location):void {
 			if (loc) loc.out();
 			loc=nloc;
 			grafon.drawLoc(loc);
@@ -721,26 +715,27 @@ package  fe
 			gc();
 		}
 		
-		public function redrawLoc():void
-		{
+		public function redrawLoc():void {
 			grafon.drawLoc(loc);
 			cam.setLoc(loc);
 			gui.setAll();
 		}
 		
-		public function exitLand(fast:Boolean=false):void
-		{
-			if (t_exit>0) return;
+		public function exitLand(fast:Boolean=false):void {
+			if (t_exit > 0) return;
 			gg.controlOff();
 			pip.noAct=true;
 
-			if (fast)	t_exit =  21;
-			else		t_exit = 100;
+			if (fast) {
+				t_exit =  21;
+			}
+			else {
+				t_exit = 100;
+			}
 		}
 		
 		
-		private function exitStep():void
-		{
+		private function exitStep():void {
 			t_exit--;
 			if (t_exit==99) cam.dblack=1.5;
 			if (t_exit==20) {
@@ -769,8 +764,7 @@ package  fe
 			}
 		}
 		
-		private function ggDieStep():void
-		{
+		private function ggDieStep():void {
 			t_die--;
 			if (t_die==200) cam.dblack=2.2;
 			if (t_die==150) {
@@ -795,11 +789,10 @@ package  fe
 		}
 
 		//Main Loop
-		public function step():void
-		{
+		public function step():void {
 			if (verror.visible) return;
 			
-			ctr.step();	//Player input			
+			ctr.step();	// Player input			
 			Snd.step();	// Sound
 			if (ng_wait > 0) {
 				if (ng_wait == 1) {
@@ -915,8 +908,7 @@ package  fe
 //=============================================================================================================
 //			Функции глобального взаимодействия
 //=============================================================================================================
-		public function cur(ncur:String='arrow'):void
-		{
+		public function cur(ncur:String='arrow'):void {
 			if (sysCur) return;
 			if (pip.active || stand.active || comLoad>=0) ncur='arrow';
 			else if (t_battle>0) ncur='combat';
@@ -927,12 +919,11 @@ package  fe
 			}
 		}
 		
-		public function quake(x:Number, y:Number):void
-		{
+		public function quake(x:Number, y:Number):void {
 			if (loc.sky) return;
 			if (quakeCam) {
-				cam.quakeX+=x;
-				cam.quakeY+=y;
+				cam.quakeX += x;
+				cam.quakeY += y;
 				if (cam.quakeX>20) cam.quakeX=20;
 				if (cam.quakeX<-20) cam.quakeX=-20;
 				if (cam.quakeY>20) cam.quakeY=20;
@@ -940,16 +931,14 @@ package  fe
 			}
 		}
 		
-		public function possiblyOut():int
-		{
+		public function possiblyOut():int {
 			if (t_battle>0) return 2;
 			if (loc && loc.t_alarm>0) return 2;
 			if (land.loc_t>120) return 1;
 			return 0;
 		}
 		
-		public function showError(err:Error, dop:String=null):void
-		{
+		public function showError(err:Error, dop:String=null):void {
 			if (!errorShow || !errorShowOpt) return;
 
 			verror.info.text=Res.pipText('error');
@@ -964,16 +953,14 @@ package  fe
 		}
 		
 		//[Action measurement time]
-		public function time___metr(message:String = null):void // TODO: 'S' IS USED A BOTH A STRING AND NUMBER
-		{
+		public function time___metr(message:String = null):void { // TODO: 'S' IS USED A BOTH A STRING AND NUMBER
 			d2 = getTimer();
 			var timeDif:int = d2 - d1;
 			if (message != null) trace(message + ': ' + timeDif.toString());
 			d1 = d2;
 		}
 		
-		public function gc():void
-		{
+		public function gc():void {
 			System.pauseForGCIfCollectionImminent(0.25)	
 		}
 		
@@ -981,8 +968,7 @@ package  fe
 //			Экран загрузки
 //=============================================================================================================
 		//установить экран загрузки
-		public function setLoadScreen(n:int=-1):void
-		{
+		public function setLoadScreen(n:int=-1):void {
 			loadScreen=n;
 			vwait.story.lmb.stop();
 			vwait.story.lmb.visible=false;
@@ -990,44 +976,47 @@ package  fe
 			vwait.visible=true;
 			catPause=false;
 			vwait.progres.text=Res.guiText('loading');
-			if (n<0)
-			{
-				vwait.x=swfStage.stageWidth/2;
-				vwait.y=swfStage.stageHeight/2;
-				vwait.skill.gotoAndStop(Math.floor(Math.random()*vwait.skill.totalFrames+1));
-				vwait.skill.visible=vwait.progres.visible=true;
-				vwait.story.visible=false;
-				clickReq=0;
+			if (n < 0) {
+				vwait.x = swfStage.stageWidth / 2;
+				vwait.y = swfStage.stageHeight / 2;
+				vwait.skill.gotoAndStop(Math.floor(Math.random() * vwait.skill.totalFrames + 1));
+				vwait.skill.visible = true;
+				vwait.progres.visible = true;
+				vwait.story.visible = false;
+				clickReq = 0;
 			} 
 			else
 			{
-				vwait.x=vwait.y=0;
-				vwait.story.visible=true;
-				vwait.skill.visible=vwait.progres.visible=false;
-				if (n==0) vwait.story.txt.htmlText='<i>'+Res.guiText('story')+'</i>';
-				else vwait.story.txt.htmlText='<i>'+'История'+n+'</i>';
+				vwait.x = 0;
+				vwait.y = 0;
+				vwait.story.visible = true;
+				vwait.skill.visible = false;
+				vwait.progres.visible = false;
+				if (n == 0) {
+					vwait.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
+					}
+				else {
+					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
+				}
 				clickReq=1;
 			}
-			vwait.cacheAsBitmap=false;
-			vwait.cacheAsBitmap=true;
+			vwait.cacheAsBitmap = false;
+			vwait.cacheAsBitmap = true;
 		}
 		
 		// [Define which loading screen to show]
-		private function getLoadScreen():int // ONLY SHOWS -1 by default, removed impossible to reach code.
-		{
-			return -1;
+		private function getLoadScreen():int { 
+			return -1; // ONLY SHOWED -1 by default, removed impossible to reach code.
 		}
 		
 		//включить ожидание клика
-		private function waitLoadClick():void
-		{
+		private function waitLoadClick():void {
 			vwait.story.lmb.play();
 			vwait.story.lmb.visible=true;
 		}
 		
 		//убрать экран загрузки
-		private function offLoadScreen():void
-		{
+		private function offLoadScreen():void {
 			vwait.visible=false;
 			vwait.story.visible=false;
 			vwait.skill.visible=vwait.progres.visible=true;
@@ -1037,23 +1026,27 @@ package  fe
 		}
 
 		//показать сцену
-		public function showScene(sc:String, n:int=0):void
-		{
+		public function showScene(sc:String, n:int=0):void {
 			catPause=true;
 			visual.visible=false;
 			gui.allOff();
 			gui.offCelObj();
-			try { vscene.gotoAndStop(sc); } 
-			catch(err)
-			{
+			try {
+				vscene.gotoAndStop(sc);
+			} 
+			catch(err) {
 				trace('ERROR: (00:20)');
 				vscene.gotoAndStop(1);
 			}
 
-			if (n>0) vscene.sc.gotoAndPlay(n);
-			else vscene.sc.gotoAndPlay(1);
+			if (n>0) {
+				vscene.sc.gotoAndPlay(n);
+			}
+			else {
+				vscene.sc.gotoAndPlay(1);
+			}
 
-			vscene.visible=true;
+			vscene.visible = true;
 		}
 		
 		//убрать сцену
@@ -1132,16 +1125,13 @@ package  fe
 			}
 		}
 		
-		public function getSave(n:int):Object
-		{
+		public function getSave(n:int):Object {
 			if (saveArr[n] is SharedObject) return saveArr[n].data;
 			else return null;
 		}
 		
-		public function saveConfig()
-		{
-			try 
-			{
+		public function saveConfig() {
+			try {
 				configObj.data.ctr=ctr.save();
 				configObj.data.snd=Snd.save();
 				configObj.data.language = currentLanguage;
@@ -1175,8 +1165,7 @@ package  fe
 				configObj.data.vsIngr=vsIngr?0:1;
 				configObj.flush();
 			} 
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:21)');
 				showError(err);
 			}
