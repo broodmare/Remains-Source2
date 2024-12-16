@@ -7,9 +7,10 @@ package fe.loc
 	import fe.entities.Obj;
 	
 	public class Game
-	{
-		public var lands:Array;
-		public var probs:Array;
+	{       // Dictionary of level data stored by level.id
+		public var lands:Object;
+                // Dictionary of challenge room data stored by prob.id
+		public var probs:Object;
 		public var vendors:Array;
 		public var npcs:Array;
 		public var curLandId:String='test';
@@ -37,8 +38,8 @@ package fe.loc
 
 		public function Game()
 		{
-			lands		= [];
-			probs		= [];
+			lands		= {};
+			probs		= {};
 			notes		= [];
 			vendors		= [];
 			npcs		= [];
@@ -116,7 +117,8 @@ package fe.loc
 					globalDif = 2;
 				} else globalDif = loadObj.dif;
 				if (loadObj.t_save) t_save=loadObj.t_save;
-			} else {
+			}
+                        else {
 				if (opt && opt.dif!=null) globalDif=opt.dif;
 				else globalDif=2;
 				triggers['noreturn']=1;
