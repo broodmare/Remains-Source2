@@ -311,7 +311,7 @@ package fe
 			} 
 			catch (err:ReferenceError)
 			{
-				trace('ERROR: (00:1C) - Could not retrieve class with ID1: "' + id1 + '".');
+				//trace('ERROR: (00:1C) - Could not retrieve class with ID1: "' + id1 + '".');
 				if (id2 == null) r = def;
 				else
 				{
@@ -321,7 +321,7 @@ package fe
 					}
 					catch (err:ReferenceError)
 					{
-						trace('ERROR: (00:1D) - Could not retrieve class with ID2: "' + id2 + '".');
+						//trace('ERROR: (00:1D) - Could not retrieve class with ID2: "' + id2 + '".');
 						r = def;
 					}
 				}

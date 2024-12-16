@@ -2,8 +2,8 @@ package fe
 {
 	import flash.utils.Dictionary;
 
-    public class XMLDataGrabber
-    {
+    public class XMLDataGrabber {
+        
         private static var data:Dictionary = XMLData.moduleDictionary;
 
         public static function getNodesWithName(module:String, directory:String, fileName:String, nodeName:String):XMLList

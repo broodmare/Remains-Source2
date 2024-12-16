@@ -72,8 +72,8 @@ package fe.serv
 
 		private static var cachedItems:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		
-		//nkol - количество предметов или состояние оружия/брони 0-1-2
-		//если nkol=-1, количество берётся из xml
+		// [nkol -- number of items or weapon/armor condition 0-1-2]
+		// [If nkol=-1, the quantity is taken from xml]
 		public function Item(ntip:String, nid:String, nkol:int=-1, unique:int = 0, nxml:XML = null) {
 			variant = unique;
 
@@ -89,7 +89,7 @@ package fe.serv
 			if (tip == null || tip == '') itemTip(); // Get tip if it's null or empty
 			if (tip == L_UNIQ) tip = L_WEAPON; // All uniques are weapon, change to L_WEAPON
 			
-			//	XML CODE
+			//	If not provided with an XML file for the item, get it
 			if (nxml == null) {
 				var nodeType:String;
 				if (tip == L_ARMOR) nodeType = "armors";	
@@ -107,7 +107,6 @@ package fe.serv
 				wtip = xml.@tip;
 			}
 
-
 			if (tip == L_ARMOR || tip == L_WEAPON) {
 				kol = 1;
 
@@ -118,14 +117,22 @@ package fe.serv
 					if (nkol == 0) sost = 0.05 + Math.random() * 0.15;
 					if (nkol == 1) sost = 0.60 + Math.random() * 0.25;
 				}
-			}			
+			}
+			
+			// If there's a manual item count being passed, use it
 			if (nkol >= 0) {
 				kol = nkol;
 			}
-			else if (kol < 0 && xml) {
-				if (xml.@kol.length()) kol = xml.@kol;
-				else kol = 1;
+			// Otherwise, if this is being called with -1, use data from the XML
+			else if (nkol < 0 && xml) {
+				if (xml.@kol.length()) {
+					kol = xml.@kol;
+				}
+				else {
+					kol = 1;
+				}
 			}
+			
 			if (tip == L_WEAPON || tip == L_EXPL) {
 				if (variant == 0)	{
 					nazv = Res.txt('w', id);

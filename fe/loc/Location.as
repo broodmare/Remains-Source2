@@ -1282,7 +1282,6 @@ package fe.loc
 			visited=true;
 			warning=0;
 			if (prob) prob.over();
-			Snd.resetShum();
 		}
 		
 		public function resetUnits():void

@@ -198,7 +198,7 @@ package  fe.entities
 				m.gotoAndStop(aid);
 			}
 			catch (err) {
-				trace('ERROR: (00:51) - Could not apply armor: "' + aid + '"!');
+				//trace('ERROR: (00:51) - Could not apply armor: "' + aid + '"!');
 				m.gotoAndStop(1);
 			}
 		}

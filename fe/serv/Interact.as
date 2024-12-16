@@ -18,33 +18,34 @@ package fe.serv
 		public var loc:Location;
 		public var coordinates = new Vector2();
 		
-		public var active:Boolean=true;	//объект активен
+		public var active:Boolean=true;	// [Object is active]
 		//действие, отображаемое в GUI
-		public var action:int=0;		//можно выполнить по отношению к нему действие //1 - открыть	2 - использовать	3 - разминировать
+		public var action:int=0;		// [Actions that may be performed -- 1 : open, 2 : use, 3 : clear mines]
 		public var userAction:String;	//заданное действие (id)
 		
 		public var xml:XML;				//индивидуальный параметр, взятый из карты
 			
-		public var cont:String;			//Контейнер для лута
-		public var door:int=0;			//дверь
-		public var knop:int=0;			//кнопка
-		public var expl:int=0;			//бомба
+		public var cont:String;			// This item is a loot container
+		public var door:int=0;			// This item is a door
+		public var knop:int=0;			// This item is a button
+		public var expl:int=0;			// This item is a bomb
 		
-		public var lock:int=0;			//заперто (сложность замка)
-		public var lockTip:int=1;		//тип замка 1 - обычный (взлом), 2 - электронный (хакер), 3 - заминировано, 4 - отключить (ремонт), 5 - починить (ремонт), 0 - нельзя взломать
-		public var lockLevel:int=0;		//уровень замка (требования к уровню скилла)
-		public var lockAtt:int=-100;	//попытки
-		public var lockHP:Number=10;	//ХП замка
-		public var noRuna:Boolean=false;//нельзя использовать руну или отмычку
-		public var low:Number=0;		//вероятность понижения сложности замка в 2 раза
-		public var mine:int=0;			//заминировано
-		public var mineTip:int=3;		//3 - бомба, 6 - сигнализация
-		public var damage:Number=0;		//урон от взрыва
-		public var destroy:Number=0;	//разрушение от взрыва
-		public var explRadius:Number=260;	//радиус от взрыва
-		public var damdis:Number=50;		//удар током
-		public var at_once:int=0;		//1-применить основное действие сразу же после взлома или разминирования, 2-после этого сделать неактивным
-		public var lockKey:String;		//ключ к замку
+		public var lock:int=0;			// This item is locked (int = lock difficulty)
+		public var lockTip:int=1;		// Lock type (0 : Cannot be lockpicked, 1 : Lockpicking, 2 : Hacking, 3 : Mined, 4 : Disable (repair skill), 5 : repair (repair skill))
+		
+		public var lockLevel:int=0;		// Lock level (Skill requirement to unlock)
+		public var lockAtt:int=-100;	// Lockpick attempt count
+		public var lockHP:Number=10;	// Lock HP
+		public var noRuna:Boolean=false;// Whether Runes or Master Keys unlock this lock
+		public var low:Number=0;		// [Probability of reducing the difficulty of the lock by 2 times]
+		public var mine:int=0;			// This lock is mined
+		public var mineTip:int=3;		// Mine type -- 3 : explosive, 6 : alarm
+		public var damage:Number=0;		// Explosion damage (to creatures?)
+		public var destroy:Number=0;	// Explosion damage (to tiles?)
+		public var explRadius:Number=260;	// Explosion radius (in pixels?)
+		public var damdis:Number=50;		// [Electric shock]
+		public var at_once:int=0;		// [1 : apply the main action immediately after hacking or clearing mines, 2 : after that make it inactive]
+		public var lockKey:String;		// Name of the key to this lock (UID or in-game name?)
 		public var cons:String;			//уменьшить количество ключей после успешного применения: 0 - не уменьшать, 1 - использовать ключ сразу, 2 - использовать только если замок нельзя открыть другим способом
 		public var allDif:Number=-1;		//общая сложность замка и бомбы
 		public var xp:int=0;			//опыт за вскрытие
@@ -103,8 +104,8 @@ package fe.serv
 		public const maxLockLvl=24;
 		public const maxMechLvl=7;
 		
-		public static var chanceUnlock:Array=[0.9, 0.75, 0.5, 0.3, 0.15, 0.05, 0.01];
-		public static var chanceUnlock2:Array=[0.95, 0.8, 0.55, 0.35, 0.2, 0.08, 0.03];
+		public static var chanceUnlock:Array  = [0.90, 0.75, 0.50, 0.30, 0.15, 0.05, 0.01];
+		public static var chanceUnlock2:Array = [0.95, 0.80, 0.55, 0.35, 0.20, 0.08, 0.03];
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -343,18 +344,13 @@ package fe.serv
 			}
 		}
 		
-		public function update()
-		{
-			if (userAction && userAction != '')
-			{
+		public function update() {
+			if (userAction && userAction != '') {
 				 actionText = Res.guiText(userAction);
 			}
-			else
-			{
-				if (active && action)
-				{
-					switch (action)
-					{
+			else {
+				if (active && action) {
+					switch (action) {
 						case 1:
 							actionText = Res.guiText(open ? 'close' : 'open');
 						break;
@@ -401,24 +397,19 @@ package fe.serv
 				}
 			}
 			
-			if (mine)
-			{
-				if (mineTip == 6)
-				{
+			if (mine) {
+				if (mineTip == 6) {
 					stateText="<span class = 'r2'>"+Res.guiText('signal')+"</span>";
 					actionText=Res.guiText('shutoff');
 				}
-				else
-				{
+				else {
 					if (owner is Box) stateText="<span class = 'warn'>"+Res.guiText('mined')+"</span>";
 					actionText=Res.guiText('remine');
 				}
 				sndAct = 'rem_act';
 			}
-			else if (lock)
-			{
-				switch (lockTip)
-				{
+			else if (lock) {
+				switch (lockTip) {
 					case 0:
 						stateText = "<span class = 'r2'>" + Res.guiText('lock') + "</span>";
 						actionText = '';
@@ -455,39 +446,34 @@ package fe.serv
 		}
 		
 		//установить состояние
-		public function setAct(a:String, n:int = 0)
-		{
-			if (a == 'mine')
-			{
-				if (n < 100)
-				{
+		public function setAct(a:String, n:int = 0) {
+			if (a == 'mine') {
+				if (n < 100) {
 					mine = n;
 					saveMine = mine;
 				}
-				if (n == 101)
-				{
+				if (n == 101) {
 					mine = 0;
 					saveMine = 101;
 					owner.warn = 0;
 				}
 			}
-			if (a == 'lock')
-			{
-				if (n<100) {
-					lock=n;
-					saveLock=lock;
+			if (a == 'lock') {
+				if (n < 100) {
+					lock = n;
+					saveLock = lock;
 				}
-				if (n==101) {
-					saveLock=101;
-					lock=0;
-					stateText='';
+				if (n == 101) {
+					saveLock = 101;
+					lock = 0;
+					stateText = '';
 				}
-				if (n==102) {
-					saveLock=102;
-					lock=100;
-					if (lockTip==1) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
-					if (lockTip==2) stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
-					if (lockTip==5) stateText="<span class = 'r3'>"+Res.guiText('broken')+"</span>";
+				if (n == 102) {
+					saveLock = 102;
+					lock = 100;
+					if (lockTip == 1) stateText="<span class = 'r3'>" + Res.guiText('zhopa') + "</span>";
+					if (lockTip == 2) stateText="<span class = 'r3'>" + Res.guiText('block') + "</span>";
+					if (lockTip == 5) stateText="<span class = 'r3'>" + Res.guiText('broken') + "</span>";
 				}
 			}
 			if (a=='loot') {
@@ -1162,22 +1148,40 @@ package fe.serv
 		
 		public function loot(impOnly:Boolean=false)
 		{
-			if (loc==null || cont=='empty') return;
+			if (loc == null || cont == 'empty') {
+				return;
+			}
+
 			coordinates.X = owner.coordinates.X;
 			coordinates.Y = owner.coordinates.Y - owner.objectHeight / 2;
-			var kol:int, imp:int;
+
+			var kol:int;
+			var imp:int;
 			var is_loot=false;
 			var imp_loot=1;
+			
 			if (xml && xml.item.length()) {
 				for each(var item:XML in xml.item) {
-					if (impOnly && item.@imp.length()==0) continue;
-					if (item.@kol.length()) kol=item.@kol;
-					else kol=1;
+					
+					if (impOnly && item.@imp.length() == 0) {
+						continue;
+					}
+					
+					if (item.@kol.length()) {
+						kol = item.@kol;
+					}
+					else {
+						kol = 1;
+					}
 					if (item.@imp.length()) {
-						imp=2;
-						imp_loot=2;
-					} else imp=1;
-					LootGen.lootId(loc, coordinates.X, coordinates.Y, item.@id, kol,imp, this, lootBroken);
+						imp = 2;
+						imp_loot = 2;
+					}
+					else {
+						imp = 1;
+					}
+					trace("Interact.as/loot() - Calling LootGen.lootId with ID: " + item.@id + ", kol: " + kol);
+					LootGen.lootId(loc, coordinates.X, coordinates.Y, item.@id, kol, imp, this, lootBroken);
 					is_loot = true;
 				}
 			}

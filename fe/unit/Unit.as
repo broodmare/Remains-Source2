@@ -1781,7 +1781,7 @@ package fe.unit
 					if (sndVolkoef < 0.5) sndVolkoef *= 2;
 					else sndVolkoef = 1;
 
-					Snd.pshum(sndRun,sndVolkoef);
+					Snd.pshum(sndRun, sndVolkoef);
 				}
 		}
 		

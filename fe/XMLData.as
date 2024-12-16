@@ -3,15 +3,14 @@ package fe
 	import flash.utils.Dictionary;
 	import flash.events.Event;
 
-	public class XMLData 
-	{
+	public class XMLData {
+
         private static const moduleDirectory:String = 'Modules/';
         public static var moduleDictionary:Dictionary;
         public static var fileCount:int;
         public static var filesLoaded:int;
 
-        public static function initializeModules():void
-        {
+        public static function initializeModules():void {
             var moduleListURL:String = moduleDirectory + 'Modules.xml'
             var loader:XMLLoader = new XMLLoader();
 			
@@ -19,16 +18,14 @@ package fe
             loader.load(moduleListURL);
 		}
 
-		private static function getAllModuleNames(event:Event):void
-		{
+		private static function getAllModuleNames(event:Event):void {
 			var currentLoader:Object = event.currentTarget;
             currentLoader.removeEventListener(XMLLoader.XML_LOADED, getAllModuleNames);
 
             moduleDictionary = new Dictionary();
 
 			var moduleList:XMLList = currentLoader.xmlData.descendants();
-            for each (var module:XML in moduleList)                             // Create a list of modules
-            {
+            for each (var module:XML in moduleList) { // Create a list of modules
                 var moduleName:String = module.attribute('moduleName')
                 trace('Module: "' + moduleName + '" found.');
                 moduleDictionary[moduleName] = new Dictionary();
@@ -36,8 +33,7 @@ package fe
             }
         }
 
-        private static function loadModuleManifest(moduleName:String):void  // Manifest lists all directories and files
-        {
+        private static function loadModuleManifest(moduleName:String):void { // Manifest lists all directories and files
             var moduleManifestURL:String = moduleDirectory + moduleName + '/Manifest.xml';
             var loader:XMLLoader = new XMLLoader();
 
@@ -46,23 +42,20 @@ package fe
             loader.load(moduleManifestURL);
         }
 
-        private static function loadAllModuleFiles(event:Event):void
-        {
+        private static function loadAllModuleFiles(event:Event):void {
             var currentLoader:Object = event.currentTarget;
             currentLoader.removeEventListener(XMLLoader.XML_LOADED, loadAllModuleFiles);
 
             var moduleManifest:XML = currentLoader.xmlData;
             var moduleName:String = moduleManifest.@moduleName;
 
-            for each (var directory:XML in moduleManifest.directory)    // Create each directory listed in the manifest as a dictionary.
-            {
+            for each (var directory:XML in moduleManifest.directory) { // Create each directory listed in the manifest as a dictionary.
                 var directoryName:String = directory.@directoryName;
                 
                 trace('Creating directory: "' + directoryName + '" for module: "' + moduleName + '".');
                 moduleDictionary[moduleName][directoryName] = new Dictionary();
 
-                for each (var file:XML in directory.file)
-                {
+                for each (var file:XML in directory.file) {
                     fileCount++;
 
                     var fileName:String = file.@fileName;
@@ -76,16 +69,13 @@ package fe
             }
         }
 
-        private static function createFileLoadHandler(moduleName:String, directoryName:String, fileName:String):Function
-        {
-            return function(event:Event):void
-            {
+        private static function createFileLoadHandler(moduleName:String, directoryName:String, fileName:String):Function {
+            return function(event:Event):void {
                 loadModuleFile(event, moduleName, directoryName, fileName);
             };
         }
 
-        private static function loadModuleFile(event:Event, moduleName:String, directoryName:String, fileName:String):void
-        {
+        private static function loadModuleFile(event:Event, moduleName:String, directoryName:String, fileName:String):void {
             var loader:XMLLoader = XMLLoader(event.currentTarget);
             loader.removeEventListener(XMLLoader.XML_LOADED, arguments.callee);
 

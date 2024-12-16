@@ -8,654 +8,369 @@ package fe
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	public class Snd
-	{
-		public static var snd:Array = [];
+	public class Snd {
+		public static var soundMap:Object = {};
+		public static var musicMap:Object = {};
+
+		public static var music:Sound;
+		public static var trackName:String = '';
+
 		public static var globalVol = 0.4;		// Used by pipbuckOpt as a string.
 		public static var stepVol = 0.5;		// Used by pipbuckOpt as a string.
 		public static var musicVol = 0.2;		// Used by pipbuckOpt as a string.
-		public static var music:Sound;
-		public static var musics:Array=[];
+		
+		
 		public static var sndNames:Array = ['mp5'];
-		public static var musicName:String='';
-		public static var onSnd:Boolean=true;
+		
+		public static var soundMuted:Boolean=false;
 		public static var onMusic:Boolean=true;
-			
-		public static var resSnd:Loader;
-		public static var resSounds:*;
 		
 		public static var musicCh:SoundChannel;
 		public static var musicPrevCh:SoundChannel;
 		public static var actionCh:SoundChannel;
 
-		public static var currentMusicPrior:int = 0;
+		public static var currentMusicPriority:int = 0;
 		
-		public static var t_hit:int = 0;
-		public static var t_combat:int = 0;
+		public static var hitTimer:int = 0;
+		public static var combatTimer:int = 0;
 
 		public static var centrX:Number = 1000;
 		public static var centrY:Number = 500;
 		public static var widthX:Number = 2000; 
-		public static var t_music:int = 0;
-		public static var t_shum:int = 0;
-		private static var inited:Boolean = false;
-		public static var off:Boolean = true;
+		public static var musicTimer:int = 0;
+		
+		
+		public static var tempMuted:Boolean = true;
 		
 		public static var shumArr:Array;
+		public static var t_shum:int = 0;
 
-		public static var d:XML=
-		<all>
-			<music>
-				<s id='music_begin'/>
-				<s id='music_strange'/>
-				<s id='music_base'/>
-				<s id='music_surf'/>
-				<s id='music_enc'/>
-				<s id='music_raiders'/>
-				<s id='music_plant_1'/>
-				<s id='music_plant_2'/>
-				<s id='music_sewer_1'/>
-				<s id='music_stable_1'/>
-				<s id='music_stable_2'/>
-				<s id='music_cat_1'/>
-				<s id='music_mane_1'/>
-				<s id='music_mane_2'/>
-				<s id='music_mbase'/>
-				<s id='music_covert'/>
-				<s id='music_minst'/>
-				<s id='music_encl_1'/>
-				<s id='music_encl_2'/>
-				<s id='music_pi'/>
-				<s id='music_workshop'/>
-				<s id='music_hql'/>
-				<s id='music_red'/>
-				<s id='music_fall_1'/>
-				<s id='music_fall_2'/>
-				<s id='music_end'/>
-				<s id='pre_1'/>
-				<s id='combat_1'/>
-				<s id='boss_1'/>
-				<s id='boss_2'/>
-				<s id='boss_3'/>
-				<s id='boss_4'/>
-				<s id='boss_5'/>
-				<s id='boss_6'/>
-			</music>
-			<res id='sound_weapon.swf'>
-				<!-- выстрелы -->
-				<s id='p10mm_s'/>
-				<s id='silen_s'/>
-				<s id='revo_s'/>
-				<s id='p127_s'/>
-				<s id='smg10mm_s'/>
-				<s id='rifle_s'/>
-				<s id='zebr_s'/>
-				<s id='pp127_s'/>
-				<s id='lmg_s'/>
-				<s id='hmg_s'/>
-				<s id='oldshot_s'/>
-				<s id='shotgun_s'/>
-				<s id='saf9_s'/>
-				<s id='pshot_s'/>
-				<s id='hunt_s'/>
-				<s id='winchester_s'/>
-				<s id='brushgun_s'/>
-				<s id='sniper_s'/>
-				<s id='anti_s'/>
-				<s id='antidrak_s'/>
-				<s id='spitfire_s'/>
-				<s id='minigun_s'/>
+		// Moved here from world class
+		private static var soundPath = 'Modules/core/sound/';
+		private static var musicPath = 'Modules/core/sound/music';
 
-				<s id='las_s'/>
-				<s id='plap_s'/>
-				<s id='laser_s'/>
-				<s id='laser2_s'/>
-				<s id='prisma_s'/>
-				<s id='plasma_s'/>
-				<s id='caster_s'/>
-				<s id='spark_s'/>
-				<s id='grom_s'/>
-				<s id='rail_s'/>
-				<s id='gatl_s'/>
-				<s id='arson_s'/>
-				<s id='flamer_s'/>
-				<s id='bfg_s'/>
-				<s id='bfg_p'/>
-				<s id='incin_s'/>
-				<s id='termo_s'/>
-				<s id='pulse_s'/>
-				<s id='cryo_s'/>
-				<s id='quick_s'/>
-				<s id='blaster_s'/>
-				<s id='lasercraft_s'/>
-				<s id='owl_s'/>
+		private static var soundXML:XML;	// XML Containing file names of all songs, weapon noises, creature noises, etc. (Does not have file extension)
+		private static var xmlPath:String = "Modules/core/sounds.xml";
 
-				<s id='railway_s'/>
-				<s id='sawgun_s'/>
-				
-				<s id='glau_s'/>
-				<s id='rocket_s'/>
+		private static var xmlData:XML;
 
-				<!-- перезарядка -->
-				<s id='no_ammo'/>
-				<s id='p10mm_r'/>
-				<s id='revo_r'/>
-				<s id='rifle_r'/>
-				<s id='rifle2_r'/>
-				<s id='sniper_r'/>
-				<s id='shotgun_r'/>
-				<s id='laser_r'/>
-				<s id='flamer_r'/>
-				
-				<!-- холодное оружие -->
-				<s id='m_big'/>
-				<s id='m_med'/>
-				<s id='m_small'/>
-				<s id='lasm_s'/>
-				<s id='lasm_h'/>
-				<s id='pila_s'/>
-				<s id='autoaxe_s'/>
-				<s id='bsaw_s'/>
-				
-				<s id='artfire'>
-					<s id='artfire1'/>
-					<s id='artfire2'/>
-				</s>
-			</res>
-			<res id='sound.swf'>
-				<!-- удары по разным предметам -->
-				<s id='hit_concrete'/>
-				<s id='hit_flesh'/>
-				<s id='hit_blade'/>
-				<s id='hit_bullet'/>
-				<s id='hit_wood'/>
-				<s id='hit_metal'/>
-				<s id='hit_pole'/>
-				<s id='hit_glass'/>
-				<s id='hit_water'/>
-				<s id='hit_necr'/>
-				<s id='break_glass'/>
-				<s id='break_wood'/>
-				<s id='break_metal'/>
-				<s id='electro'/>
-				<s id='acid'/>
-				<s id='fang_hit'>
-					<s id='fang_hit1'/>
-					<s id='fang_hit2'/>
-					<s id='fang_hit3'/>
-				</s>
-				<s id='hit_slime'/>
-				
-				<!-- падение предметов -->
-				<s id='fall_grenade'/>
-				<s id='fall_metal_big'/>
-				<s id='fall_metal_item'/>
-				<s id='fall_metal_small'/>
-				<s id='fall_metal_safe'/>
-				<s id='fall_wood_small'/>
-				<s id='fall_wood_big'/>
-				<s id='fall_item'/>
-				<s id='fall_item_water'/>
-				<s id='fall_hammer'/>
-				<s id='fall_armor'/>
-				<s id='fall_weapon'/>
-				<s id='fall_potion'/>
-				<s id='fall_paper'/>
-				<s id='fall_caps'/>
-				<s id='fall_gem'/>
-				<s id='fall_body'/>
-				<s id='fall_hbody'/>
-				<s id='fall_water0'/>
-				<s id='fall_water1'/>
-				<s id='fall_water2'/>
-				
-				<!-- двери -->
-				<s id='big_door_close'/>
-				<s id='metal_door_close'/>
-				<s id='metal_door_open'/>
-				<s id='wood_door_close'/>
-				<s id='wood_door_open'/>
-				<s id='metal_open'/>
-				<s id='wood_open'/>
-				<s id='small_open'/>
-				<s id='safe_open'/>
-				<s id='pole_off'/>
-				
-				<!-- дезинтеграция -->
-				<s id='desintegr_f'/>
-				<s id='liquid_f'/>
-				<s id='freezing_f'/>
-				<!-- врывчатка -->
-				<s id='expl_e'/>
-				<s id='fire_e'/>
-				<s id='acid_e'/>
-				<s id='gas_e'/>
-				<s id='cryo_e'/>
-				<s id='exppla_e'/>
-				<s id='emp_e'/>
-				<s id='mine_bip'/>
-				<s id='mine_dem'/>
-				<s id='mine_s'/>
-				<s id='dinamit_f'/>
-				<s id='expl_uw'/>
-				<s id='bottle_hit'/>
-				<s id='bale_e'/>
-				<s id='unreal'/>
-				
-				<!-- магия -->
-				<s id='telebul'/>
-				<s id='ice'/>
-				<s id='lightning'/>
-				<s id='mray'/>
-				<s id='mwall'/>
-				<s id='mshit'/>
-				<s id='blast'/>
-				<s id='blade'/>
-				<s id='blade2'/>
-				<s id='crystal'/>
-				<s id='dash'/>
-				<s id='dray'/>
-				<s id='fireball'/>
-				<s id='slow'/>
-				<s id='teleport'/>
-				<s id='wavedef'/>
-				
-				<!-- использование -->
-				<s id='pot_use'/>
-				<s id='lock_act'/>
-				<s id='term_act'/>
-				<s id='rem_act'/>
-				<s id='button'/>
-				<s id='move'/>
-				<s id='alarm'/>
+		private static var startedLoading:Boolean = false;
+		private static var finishedLoading:Boolean = false;
 
-				<!-- интерфейс -->
-				<s id='geiger'>
-					<s id='geiger1'/>
-					<s id='geiger2'/>
-					<s id='geiger3'/>
-				</s>
-				<s id='bonus1'/>
-				<s id='bonus2'/>
-				<s id='levelup'/>
-				<s id='skill'/>
-				<s id='pip1'/>
-				<s id='pip2'/>
-				<s id='pip3'/>
-				<s id='quest'/>
-				<s id='quest_ok'/>
-				<s id='harddie'/>
-				<s id='lowhp'/>
-				<s id='nomagic'/>
-			</res>
-			<res id='sound_unit.swf'>
-				<!-- шаги -->
-				<s id='footstep1'/>
-				<s id='footstep2'/>
-				<s id='footstep3'/>
-				<s id='footstep4'/>
-				<s id='footstep1a'/>
-				<s id='footstep2a'/>
-				<s id='footstep3a'/>
-				<s id='footstep4a'/>
-				<s id='metalstep1'/>
-				<s id='metalstep2'/>
-				<s id='metalstep3'/>
-				<s id='metalstep4'/>
-				<s id='metalstep1a'/>
-				<s id='metalstep2a'/>
-				<s id='metalstep3a'/>
-				<s id='metalstep4a'/>
-				<s id='lazstep1'/>
-				<s id='lazstep2'/>
-				<s id='lazstep3'/>
-				<s id='lazstep4'/>
-				
-				<!-- юниты -->
-				<s id='trup'/>
-				<s id='trap_a'/>
-				<s id='trap_reload'/>
-				<s id='cans'/>
-				<s id='expl1'/>
-				<s id='expl2'/>
-				<s id='expl3'/>
-				<s id='transmitter'/>
-				<s id='vortex'/>
-				<s id='vortex_cut'>
-					<s id='vortex_cut1'/>
-					<s id='vortex_cut2'/>
-					<s id='vortex_cut3'/>
-				</s>
-				<s id='rm'>
-					<s id='rm1'/>
-					<s id='rm2'/>
-					<s id='rm3'/>
-					<s id='rm4'/>
-					<s id='rm5'/>
-					<s id='rm6'/>
-				</s>
-				<s id='rw'>
-					<s id='rw1'/>
-					<s id='rw2'/>
-					<s id='rw3'/>
-					<s id='rw4'/>
-					<s id='rw5'/>
-					<s id='rw6'/>
-				</s>
-				<s id='ali'>
-					<s id='ali1'/>
-					<s id='ali2'/>
-					<s id='ali3'/>
-				</s>
-				<s id='sr'>
-					<s id='sr1'/>
-					<s id='sr2'/>
-					<s id='sr3'/>
-				</s>
-				<s id='zm'>
-					<s id='zm1'/>
-					<s id='zm2'/>
-					<s id='zm3'/>
-				</s>
-				<s id='zw'>
-					<s id='zw1'/>
-					<s id='zw2'/>
-					<s id='zw3'/>
-				</s>
-				<s id='bat'>
-					<s id='bat1'/>
-					<s id='bat2'/>
-				</s>
-				<s id='bloat'>
-					<s id='bloat1'/>
-					<s id='bloat2'/>
-					<s id='bloat3'/>
-					<s id='bloat4'/>
-				</s>
-				<s id='scorp'/>
-				<s id='slime'/>
-				<s id='rat'/>
-				<s id='molerat'/>
-				<s id='nest'/>
-				<s id='drone'/>
-				<s id='zombie_res'/>
-				<s id='al_armor'/>
-			</res>
-
+		// Counters so I can load all files into memory ahead of time
+		private static var totalSoundsToLoad:int = 0;
+		private static var totalSoundsLoaded:int = 0;
 		
-		</all>
-		
-		public static function save():*
-		{
-			var obj:Object=new Object();
-			obj.globalVol=globalVol;
-			obj.stepVol=stepVol;
-			obj.musicVol=musicVol;
-			return obj;
+		public static function pan(x:Number):Number {
+			return (x - 250) / 500;
 		}
-		public static function load(obj:Object):void
-		{
-			if (obj.globalVol != null && !isNaN(obj.globalVol)) globalVol = obj.globalVol;
-			if (obj.stepVol != null && !isNaN(obj.stepVol)) stepVol = obj.stepVol;
-			if (obj.musicVol != null && !isNaN(obj.musicVol)) musicVol = obj.musicVol;
-			if (musicCh) updateMusicVol();
-		}
-		
-		public static function pan(x:Number):Number
-		{
-			return (x-250)/500;
-		}
-		public static function initSnd():void
-		{
-			if (inited || !onSnd) return;
-			var req:URLRequest;
-			var s:Sound;
-			req = new URLRequest(World.w.musicPath+"mainmenu.mp3");
-			s = new Sound(req);
-			s.addEventListener(IOErrorEvent.IO_ERROR, onIOError); 
-			snd['mainmenu']=s;
-			s.addEventListener(Event.COMPLETE, mmLoaded);  
-			for each (var i:XML in d.res)
-			{
-				resSnd = new Loader();
-				var fileSound:String = World.w.soundPath+i.@id;
-				var urlReq:URLRequest = new URLRequest(fileSound);
-				resSnd.load(urlReq);
-				resSnd.contentLoaderInfo.addEventListener(Event.COMPLETE, resLoaded);  
+
+		public static function initSnd():void {
+			
+			// If we're already initialized, in the process of initializing, or all sounds are muted, stop
+			if (finishedLoading || startedLoading || soundMuted) {
+				return;
 			}
-			shumArr=[];
-			inited=true;
+
+			// Load and parse the XML synchronously
+			var xmlLoader:XMLLoader = new XMLLoader();
+			xmlData = xmlLoader.syncLoad(xmlPath);
+
+			// Reset counters before starting
+			totalSoundsToLoad = 0;
+			totalSoundsLoaded = 0;
+
+			// Load the main menu song first
+			var mmSongPath:String = soundPath + "music/" + "mainmenu.mp3";
+			trace("Snd.as/initSnd() - Trying to load MainMenu song from: " + mmSongPath);
+			var req:URLRequest = new URLRequest(mmSongPath);
+			var s:Sound = new Sound();
+			s.addEventListener(Event.COMPLETE, onAnySoundLoaded);
+			s.addEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+			s.load(req);
+			musicMap['mainmenu'] = s;
+			totalSoundsToLoad++;
+
+			// Load all resources from XML
+			for each (var i:XML in xmlData.res) {
+				var folderName:String = i.@id;
+				for each (var sndXML:XML in i.s) {
+					loadSoundResource(folderName, sndXML);
+				}
+			}
+
+			/* Load all music upfront:
+			for each (var j:XML in xmlData.music.s) {
+				var id:String = j.@id;
+				req = new URLRequest(soundPath + "music/" + id + ".mp3");
+				s = new Sound();
+				s.addEventListener(Event.COMPLETE, onAnySoundLoaded);
+				s.addEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+				s.load(req);
+				musicMap[id] = s;
+				totalSoundsToLoad++;
+			}
+			*/
+
+			shumArr = [];
+			startedLoading = true;
+		}
+
+		private static function loadSoundResource(subDir:String, sndXML:XML):void {
+			var soundID:String = sndXML.@id;
+			// Check if this <s> has nested <s>, indicating multiple variations:
+			if (sndXML.s.length() > 0) {
+				// We have multiple sounds under this ID
+				soundMap[soundID] = [];
+				for each (var variant:XML in sndXML.s) {
+					var variantID:String = variant.@id;
+					var variantReq:URLRequest = new URLRequest(soundPath + subDir + "/" + variantID + ".mp3");
+					var variantSound:Sound = new Sound();
+					variantSound.addEventListener(Event.COMPLETE, onAnySoundLoaded);
+					variantSound.addEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+					variantSound.load(variantReq);
+					soundMap[soundID].push(variantSound);
+					totalSoundsToLoad++;
+				}
+			}
+			else {
+				// Single sound
+				var req:URLRequest = new URLRequest(soundPath + subDir + "/" + soundID + ".mp3");
+				var s:Sound = new Sound();
+				s.addEventListener(Event.COMPLETE, onAnySoundLoaded);
+				s.addEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+				s.load(req);
+				soundMap[soundID] = s;
+				totalSoundsToLoad++;
+			}
 		}
 		
-		public static function loadMusic():void
-		{
+		public static function loadMusic():void {
 			var req:URLRequest;
 			var s:Sound;
-			for each (var j:XML in d.music.s)
-			{
+			for each (var j:XML in xmlData.music.s) {
 				var id:String = j.@id;
-				try
-				{
-					req = new URLRequest(World.w.musicPath+id+".mp3");
+				try {
+					req = new URLRequest(soundPath + "music/" + id + ".mp3");
 					s = new Sound(req);
-					s.addEventListener(IOErrorEvent.IO_ERROR, onIOError); 
-					s.addEventListener(Event.COMPLETE, musicLoaded);  
-					snd[id]=s;
+					s.addEventListener(Event.COMPLETE, musicLoaded);
+					s.addEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+					musicMap[id] = s;
 					World.w.musicKol++;
-				} 
-				catch (err)
-				{ 
+				}
+				catch (err:Error) {
 					trace('ERROR: (00:1E) - music load err', req.url);
 				}
 			}
 		}
-		
-		static private function onIOError(event:IOErrorEvent):void 
-		{
 
-		}
-		
-		static private function mmLoaded(event:Event):void
-		{
-			if (musicVol>0) playMusic('mainmenu');
-		}
-		static private function musicLoaded(event:Event):void
-		{
-			World.w.musicLoaded++;
-			event.currentTarget.removeEventListener(Event.COMPLETE, musicLoaded);  
-			event.currentTarget.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
-		}
-		
-		static private function resLoaded(event:Event):void 
-		{
-			var str:String=event.target.url;
-			str = str.substr(str.lastIndexOf('/')+1);
-			resSounds = event.target.content;
-			var s:Sound;
-			var xml:XMLList = d.res.(@id==str);
-			if (xml.length())
-			{
-				for each (var j:XML in xml.s)
-				{
-					var id:String = j.@id;
-					if (j.s.length())
-					{
-						snd[id] = [];
-						for each (var e:XML in j.s)
-						{
-							s = resSounds.getSnd(e.@id);
-							if (s == null) {
-                                trace('res sound err ' + id + '.' + e.@id);
-                            } else snd[id].push(s);
-						}
-					} 
-					else
-					{
-						s = resSounds.getSnd(id);
-						if (s == null) {
-                            trace('res sound err ' + id);
-                        } else snd[id] = s;
-					}
+		private static function onAnySoundLoaded(event:Event):void {
+			event.currentTarget.removeEventListener(Event.COMPLETE, onAnySoundLoaded);
+			event.currentTarget.removeEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+			totalSoundsLoaded++;
+			if (totalSoundsLoaded == totalSoundsToLoad) {
+				trace("All sounds have finished loading!");
+				finishedLoading = true;
+				if (musicVol > 0 && musicMap['mainmenu']) {
+					playMusic('mainmenu');
 				}
 			}
 		}
+
+		private static function onSoundLoadError(e:IOErrorEvent):void {
+			trace("Error loading sound: " + e.text);
+			// Even if there's an error, we should count this as "finished" loading attempt, so that we don't get stuck waiting for a missing file.
+			totalSoundsLoaded++;
+			if (totalSoundsLoaded == totalSoundsToLoad) {
+				finishedLoading = true;
+				trace("All available sounds attempted; some errors occurred.");
+			}
+		}
+
+		static private function musicLoaded(event:Event):void {
+			World.w.musicLoaded++;
+			event.currentTarget.removeEventListener(Event.COMPLETE, musicLoaded);
+			event.currentTarget.removeEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
+		}
 		
-		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150):void
-		{
-			t_combat = n;
-			if (sndMusicPrior > currentMusicPrior)
-			{
-				currentMusicPrior = sndMusicPrior;
-				playMusic(sndMusic);
+		public static function combatMusic(trackName:String, newMusicPriority:int=0, n:int = 150):void {
+			combatTimer = n;
+			if (newMusicPriority > currentMusicPriority) {
+				currentMusicPriority = newMusicPriority;
+				playMusic(trackName);
 			}
 		}
 		
-		
-		public static function playMusic(sndMusic:String=null, rep:int=10000):void
-		{
-			if (!inited) return;
+		public static function playMusic(nextTrackName:String=null, rep:int=10000):void {
+			if (!finishedLoading) {
+				return;
+			}
 			
-			if (sndMusic != null && musicCh && sndMusic == musicName) return;
+			if (nextTrackName != null && musicCh && nextTrackName == trackName) {
+				return;
+			}
 			
-			if (sndMusic != null) musicName = sndMusic;
+			if (nextTrackName != null) {
+				trackName = nextTrackName;
+			}
 
 			var trans:SoundTransform = new SoundTransform(musicVol, 0);
 			
-			if (musicCh)
-			{
-				if (musicPrevCh || t_music > 0) musicPrevCh.stop();
+			if (musicCh) {
+				if (musicPrevCh || musicTimer > 0) musicPrevCh.stop();
 				musicPrevCh = musicCh;
 				musicCh = null;
-				t_music = 100;
+				musicTimer = 100;
 			}
-			currentMusicPrior = 0;
-			if (onMusic && snd[musicName] && snd[musicName].bytesTotal && snd[musicName].bytesLoaded == snd[musicName].bytesTotal) musicCh = snd[musicName].play(0, rep, trans);
+
+			currentMusicPriority = 0;
+
+			if (onMusic && musicMap[trackName] && musicMap[trackName].bytesTotal && musicMap[trackName].bytesLoaded == musicMap[trackName].bytesTotal) {
+				musicCh = musicMap[trackName].play(0, rep, trans);
+			}
 		}
 
-		public static function stopMusic():void
-		{
-			if (!inited || !musicCh) return;
+		public static function stopMusic():void {
+			if (!finishedLoading || !musicCh) { 
+				return;
+			}
 			musicCh.stop();
 		}
 
-		public static function updateMusicVol():void
-		{
-			if (musicCh)
-			{
+		public static function updateMusicVol():void {
+			if (musicCh) {
 				var trans:SoundTransform = new SoundTransform(musicVol, 0);
-				musicCh.soundTransform=trans;
+				musicCh.soundTransform = trans;
 			} 
-			else playMusic();
+			else {
+				playMusic();
+			}
 		}
 		
-		public static function ps(txt:String,nx:Number=-1000,ny:Number=-1000,msec:Number=0,vol:Number=1):SoundChannel
+		public static function ps(soundName:String,nx:Number=-1000,ny:Number=-1000,msec:Number=0,vol:Number=1):SoundChannel
 		{
-			if (!inited || !onSnd || off) return null;
-			if (snd[txt])
-			{
+			if (!finishedLoading || soundMuted || tempMuted) {
+				return null;
+			}
+			
+			if (soundMap[soundName]) {
 				var s:Sound;
-				if (snd[txt] is Array) s = snd[txt][Math.floor(Math.random()*snd[txt].length)];
-				else s = snd[txt] as Sound;
-				if (s.bytesTotal>0 && s.bytesLoaded>=s.bytesTotal)
-				{
-					var pan:Number=(nx-centrX)/widthX;
-					if (nx==-1000) pan=0;
+				if (soundMap[soundName] is Array) {
+					s = soundMap[soundName][Math.floor(Math.random()*soundMap[soundName].length)];
+				}
+				else {
+					s = soundMap[soundName] as Sound;
+				}
+				if (s.bytesTotal>0 && s.bytesLoaded>=s.bytesTotal) {
+					var pan:Number = (nx - centrX) / widthX;
+					if (nx == -1000) {
+						pan = 0;
+					}
 					var trans:SoundTransform = new SoundTransform(vol*globalVol*(Math.random()*0.1+0.9),pan); 
-					return s.play(msec,0,trans);
+					return s.play(msec, 0, trans);
 				}
 			}
 			return null;
 		}
 		
-		public static function pshum(txt:String,vol:Number=1):void
+		public static function pshum(soundName:String, vol:Number=1):void
 		{
-			if (!inited || !onSnd || off) return;
+			if (!finishedLoading || soundMuted || tempMuted) return;
 			var shum:Object;
-			if (shumArr[txt])
-			{
-				shum=shumArr[txt];
-				if (shum.maxVol<vol) shum.maxVol=vol;
+			if (shumArr[soundName]) {
+				shum = shumArr[soundName];
+				if (shum.maxVol < vol) shum.maxVol = vol;
 			}
-			else if (snd[txt])
-			{
-				shum=new Object();
-				shum.txt=txt;
-				shum.curVol=vol;
-				shum.maxVol=vol;
-				shum.pl=false;
-				shumArr[txt]=shum;
+			else if (soundMap[soundName]) {
+				shum = {};
+				shum.soundName = soundName;
+				shum.curVol = vol;
+				shum.maxVol = vol;
+				shum.pl = false;
+				shumArr[soundName] = shum;
 			}
 		}
 		
-		public static function resetShum():void
-		{
+		public static function step():void {
+			if (hitTimer > 0) {
+				hitTimer--;
+			}
 
-		}
-		
-		public static function step():void
-		{
-			if (t_hit>0) t_hit--;
-
-			if (t_music>0 && musicPrevCh)
-			{
+			if (musicTimer>0 && musicPrevCh) {
 				var trans:SoundTransform;
-				if (t_music%10==1)
-				{
-					trans = new SoundTransform(musicVol*t_music/100, 0);
-					musicPrevCh.soundTransform=trans;
+				
+				if (musicTimer % 10 == 1) {
+					trans = new SoundTransform(musicVol * musicTimer / 100, 0);
+					musicPrevCh.soundTransform = trans;
 				}
-				if (t_music<=5)
-				{
+
+				if (musicTimer <= 5) {
 					musicPrevCh.stop();
-					musicPrevCh=null;
-					t_music=0;
+					musicPrevCh = null;
+					musicTimer = 0;
 				}
-				if (t_combat>0) t_music -= 5;
-				else t_music--;
+
+				if (combatTimer > 0) {
+					musicTimer -= 5;
+				}
+				else {
+					musicTimer--;
+				}
 			}
 
-			if (t_combat > 0)
-			{
-				if (t_combat == 1)
-				{
-					currentMusicPrior = 0;
+			if (combatTimer > 0) {
+				if (combatTimer == 1) {
+					currentMusicPriority = 0;
 					playMusic(World.w.currentMusic);
 				}
-				if (World.w.pip == null || !World.w.pip.active && !World.w.sats.active) t_combat--;
-			}
-
-			t_shum--;
-
-			if (t_shum <= 0)
-			{
-				t_shum = 5;
-				for each (var obj:Object in shumArr)
-				{
-					if (obj.curVol!=obj.maxVol)
-					{
-						if (!obj.pl && obj.maxVol>0)
-						{
-							var s:Sound = snd[obj.txt] as Sound;
-							trans = new SoundTransform(obj.maxVol*globalVol,0); 
-							obj.ch=s.play(0,10000,trans);
-							obj.pl=true;
-						} 
-						else if (obj.pl && obj.maxVol<=0 && obj.ch)
-						{
-							obj.ch.stop();
-							obj.pl=false;
-						} 
-						else if (obj.pl && obj.maxVol>0 && obj.ch)
-						{
-							trans = new SoundTransform(obj.maxVol*globalVol,0);
-							obj.ch.soundTransform=trans;
-							obj.curVol=obj.maxVol;
-						}
-					}
-					obj.maxVol-=0.2;
-					if (obj.maxVol<0) obj.maxVol=0;
+				if (World.w.pip == null || !World.w.pip.active && !World.w.sats.active) {
+					combatTimer--;
 				}
 			}
+
+			// Something to do with units?
+			t_shum--;
+			if (t_shum <= 0) {
+				t_shum = 5;
+				for each (var obj:Object in shumArr) {
+					if (obj.curVol! = obj.maxVol) {
+						if (!obj.pl && obj.maxVol>0) {
+							var s:Sound = soundMap[obj.soundName] as Sound;
+							trans = new SoundTransform(obj.maxVol*globalVol,0); 
+							obj.ch = s.play(0, 10000, trans);
+							obj.pl = true;
+						} 
+						else if (obj.pl && obj.maxVol<=0 && obj.ch) {
+							obj.ch.stop();
+							obj.pl = false;
+						} 
+						else if (obj.pl && obj.maxVol > 0 && obj.ch) {
+							trans = new SoundTransform(obj.maxVol * globalVol, 0);
+							obj.ch.soundTransform = trans;
+							obj.curVol = obj.maxVol;
+						}
+					}
+					obj.maxVol -= 0.2;
+					if (obj.maxVol < 0) {
+						obj.maxVol = 0;
+					}
+				}
+			}
+		}
+
+		public static function save():* {
+			var obj:Object = {};
+			obj.globalVol = globalVol;
+			obj.stepVol = stepVol;
+			obj.musicVol = musicVol;
+			return obj;
+		}
+		
+		public static function load(obj:Object):void {
+			if (obj.globalVol != null && !isNaN(obj.globalVol)) globalVol = obj.globalVol;
+			if (obj.stepVol != null && !isNaN(obj.stepVol)) stepVol = obj.stepVol;
+			if (obj.musicVol != null && !isNaN(obj.musicVol)) musicVol = obj.musicVol;
+			if (musicCh) updateMusicVol();
 		}
 	}
 }
