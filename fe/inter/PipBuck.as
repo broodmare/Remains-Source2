@@ -432,12 +432,15 @@ package fe.inter
 			return '';
 		}
 		
-		public function setArmor(id:String):void
-		{
+		public function setArmor(id:String):void {
 			armorID = id;
 			var node:XML = Armor.getArmorInfo(id);
-			hideMane = node.@hide; 
-
+			// Hacky failsafe to avoid crashing if no information is found.
+			if (node == "" || node == null) {
+				hideMane = 0;
+				return;
+			}
+			hideMane = node.@hide;
 		}
 		
 		public function step():void

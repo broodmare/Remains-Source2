@@ -77,15 +77,7 @@ package fe.unit
 			gel = items['gel'];
 			good = items['good'];
 			items[''] = new Item('', '', 0, 0, <item/>);
-			if (loadObj == null) {
-				if (opt && opt.propusk) {
-					addMin();
-				}
-				else {
-					addBegin();
-				}
-			}
-			else {
+			if (loadObj != null) {
 				addLoad(loadObj);
 			}
 			cItemMax = itemsId.length;
@@ -112,15 +104,17 @@ package fe.unit
 			var nhp:Number=0;
 			if (n==1) {
 				nhp=gg.pers.inMaxHP-gg.pers.headHP;
-			} else if (n==2) {
+			}
+			else if (n==2) {
 				nhp=gg.pers.inMaxHP-gg.pers.torsHP;
-			} else if (n==3) {
+			}
+			else if (n==3) {
 				nhp=gg.pers.inMaxHP-gg.pers.legsHP;
-			} else return '';
+			}
+			else return '';
 			var minRazn:Number=10000;
 			var nci:String='';
-			for each (var pot in itemList)
-			{
+			for each (var pot in itemList) {
 				if (pot.@heal=='organ' && items[pot.@id].kol>0 && (pot.@minmed.length()==0 || pot.@minmed<=gg.pers.medic)) {
 					var hhp=0;
 					if (pot.@horgan.length()) hhp=pot.@horgan;
@@ -990,37 +984,6 @@ package fe.unit
             }
 		}
 		
-		// Adds the bare minimum of equipment to the player, default armor, screwdriver, weapon
-		public function addMin() { // TODO: Stupid, turn into a script.
-			trace("Invent.as/addMin() - Adding minimup equipment set to player.");
-			try
-			{
-				addWeapon("r32");
-				addWeapon("rech");
-				addWeapon("mont");
-				addWeapon("bat");
-				cWeaponId = 'r32';
-				
-				addArmor('pip');
-				cArmorId = 'pip';
-				
-				items['p32'].kol = 16;
-				items['money'].kol = 50;
-				items['pot0'].kol = 1;
-				items['pot1'].kol = 1;
-				
-				items['screwdriver'].kol = 1;
-				
-				favItem('mont',1);
-				favItem('r32',2);
-			}
-			catch(err:Error)
-			{
-				trace("nvent.as/addMin() - Failed while adding minimum equipment loadout to player!");
-				World.w.showError(err, "Failed while adding minimum equipment loadout to player!");
-			}
-		}
-
 		// Add only the default armor to the player (used in the beginning of the game)
 		public function addBegin() { // TODO: Stupid, turn into a script.
 			trace("Invent.as/addBegin() - Adding starting armor set to player.");

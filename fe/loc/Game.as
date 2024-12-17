@@ -157,21 +157,22 @@ package fe.loc
 			}
 			npcList = null; // Manual cleanup.
 
-			if (loadObj)
-			{
+			if (loadObj) {
 				for (var i in loadObj.triggers){
 					triggers[i]=loadObj.triggers[i];
 				}
-				for (var i in loadObj.notes) {
-					notes[i]=loadObj.notes[i];
+				for (var j in loadObj.notes) {
+					notes[j]=loadObj.notes[j];
 				}
-				for (var i in loadObj.quests) {
-					addQuest(i,loadObj.quests[i]);
+				for (var k in loadObj.quests) {
+					addQuest(k, loadObj.quests[k]);
 				}
-				for (var i in loadObj.lands) {//!!!!!
-					if (lands[i]) lands[i].load(loadObj.lands[i]);
+				for (var l in loadObj.lands) {//!!!!!
+					if (lands[l]) lands[l].load(loadObj.lands[l]);
 				}
-				if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
+				
+				if (triggers['noreturn'] > 0) mReturn = false; 
+				else mReturn = true;
 			}
 
 			baseId		= 'rbl';
@@ -179,17 +180,23 @@ package fe.loc
 
 			if (loadObj)
 			{
-				curLandId=loadObj.land;
-				if (curLandId!='rbl') missionId=loadObj.land;
+				curLandId = loadObj.land;
+				if (curLandId != 'rbl') missionId=loadObj.land;
 			}
-			else if (opt && opt.propusk==true) triggers['dial_dialCalam2']=1; //пропустить обучение
-			else curLandId = 'begin';					//не пропускать обучение
+			else if (opt && opt.propusk == true) {
+				triggers["dial_dialCalam2"] = 1;	// [Skip training]
+				setTrigger("Quickstart", 1);
+				
+			}
+			else {
+				curLandId = 'begin';				// [Start the tutorial]
+			}
 
-			for each(var q in quests)
-			{
-				if (q!=null && q.state==2 && q.xml.next.length())
-				{
-					for each (var nq in q.xml.next) addQuest(nq.@id);
+			for each(var q in quests) {
+				if (q != null && q.state == 2 && q.xml.next.length()) {
+					for each (var nq in q.xml.next) {
+						addQuest(nq.@id);
+					}
 				}
 			}
 
@@ -198,7 +205,7 @@ package fe.loc
 			addNote('helpGl1');
 			addNote('helpGl2');
 			dBeg=new Date();
-			if (loadObj==null) triggers['nomed']=1;
+			if (loadObj == null) triggers['nomed']=1;
 		}
 		
 		public function changeDif(ndif):Boolean {

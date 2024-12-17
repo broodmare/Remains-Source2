@@ -581,7 +581,7 @@ package  fe
 			} else {
 				data=saveArr[nload].data; //была загрузка из слота
 			}
-			if (ng)	game.init(null,opt); else game.init(data.game);
+			if (ng)	game.init(null, opt); else game.init(data.game);
 			ng_wait=1;
 			time___metr('Game init');
 		}
@@ -628,12 +628,15 @@ package  fe
 			pip.onoff(-1);
 			//войти в текущую местность
 			game.enterToCurLand();//!!!!
-			
-			Snd.tempMuted=false;
+			Snd.tempMuted = false;
 			gui.setAll();
-			allStat=1;
+			allStat = 1;
+			if (game.triggers["Quickstart"] == 1){
+				trace("World.as/newGame2() - Adding quickstart equipment");
+				game.runScript("giveQuickstartItems");
+				game.setTrigger("Quickstart", 0);
+			}
 			ng_wait=0;
-
 		}
 		
 		public function loadGame(nload:int=0):void

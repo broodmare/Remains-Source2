@@ -187,7 +187,6 @@ package fe.serv
 					break;
 
 					case 'take':
-						trace("Script.as/com() - A script is calling the take function");
 						if (obj.n < 0 && World.w.invent.items[obj.val]) {
 							World.w.gui.infoText('withdraw', World.w.invent.items[obj.val].nazv, -obj.n);
 							World.w.invent.minusItem(obj.val, -obj.n);
@@ -199,8 +198,16 @@ package fe.serv
 						}
 					break;
 
+					case 'takeArmor':
+						World.w.invent.addArmor(obj.val);
+					break;
+
+					case 'fav':
+						World.w.invent.favItem(obj.val, obj.n);
+					break;
+
 					case 'armor':
-						World.w.gg.changeArmor(obj.val, true);
+						World.w.pip.setArmor(obj.val);
 					break;
 
 					case 'xp':
