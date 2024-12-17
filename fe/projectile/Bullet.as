@@ -374,9 +374,13 @@ package fe.projectile
 		
 		private function sound(res:int):void
 		{
-			if (weap && weap.sndHit != '') Snd.ps(weap.sndHit, coordinates.X, coordinates.Y);
-			if (tipDecal <= 0 || tipDecal > 6) return;
-			if (Snd.t_hit <= 0)
+			if (weap && weap.sndHit != '') {
+				Snd.ps(weap.sndHit, coordinates.X, coordinates.Y);
+			}
+			if (tipDecal <= 0 || tipDecal > 6) {
+				return;
+			}
+			if (Snd.hitTimer <= 0)
 			{
 				if (res==1) Snd.ps('hit_metal', coordinates.X, coordinates.Y, 0, 0.4);
 				if (res==2 || res==4 || res==6) Snd.ps('hit_concrete', coordinates.X, coordinates.Y, 0, 0.5);
@@ -391,7 +395,7 @@ package fe.projectile
 				}
 				if (res==11) Snd.ps('hit_water', coordinates.X, coordinates.Y, 0, 0.5);
 				if (res==12) Snd.ps('hit_slime', coordinates.X, coordinates.Y, 0, 0.5);		//удары по слизи
-				Snd.t_hit = Math.random() * 3 + 3;
+				Snd.hitTimer = Math.random() * 3 + 3;
 			}
 		}
 		

@@ -148,7 +148,7 @@ package fe.inter
 					world.vblack.visible=false;
 					world.t_exit=world.t_die=0;
 					world.vgui.visible=world.vfon.visible=world.visual.visible=true;
-					Snd.off=false;
+					Snd.tempMuted=false;
 					world.pip.noAct=false;
 					break;
 				case "redraw":

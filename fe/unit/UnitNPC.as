@@ -7,8 +7,7 @@ package fe.unit
 	import fe.serv.NPC;
 	import fe.weapon.Weapon;
 	
-	public class UnitNPC extends UnitPon
-	{
+	public class UnitNPC extends UnitPon {
 		
 		public var targNPC:NPC;
 		public var npcId:String = '';
@@ -26,8 +25,9 @@ package fe.unit
 		public var weap2:String='';
 		var dopWeapon:Weapon;
 		
-		public var zanyato:Boolean=false;	//npc занят боем, не взаимодействует
-		var t_ref:int=0;		//не дать говорить несколько раз подряд
+		public var zanyato:Boolean = false;			// [Npc is busy fighting, does not interact]
+		var t_ref:int=0;							// [stop talking several times in a row]
+		private static var NPC_BARK_COOLDOWN:int = 32;	// How long to wait between NPC barks
 		
 		var t_anim:int=100;
 		var t_float:Number=0;
@@ -160,7 +160,7 @@ package fe.unit
 			if (t_anim > 0) t_anim--;
 			else
 			{
-				t_anim = Math.random()*200+150;
+				t_anim = Math.random() * 200 + 150;
 				var br:int = int(Math.random() * 2 + 1);
 				try
 				{
@@ -168,7 +168,8 @@ package fe.unit
 				}
 				catch (err)
 				{
-					trace('ERROR: (00:A) - NPC: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
+					// TODO: NPCs will spam this error, investigate why 
+					//trace('ERROR: (00:0A) - NPC: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
 				}
 			}
 			if (animFly)
@@ -184,8 +185,8 @@ package fe.unit
 					}
 				}
 				catch(err)
-				{
-					trace('ERROR: (00:B)  - NPC: "' + npcId + '" failed run flying animation!');	
+				{	
+					trace('ERROR: (00:0B)  - NPC: "' + npcId + '" failed run flying animation!');	
 				}
 			}
 		}
@@ -198,13 +199,23 @@ package fe.unit
 		}
 		
 		public function npcFun() {
-			if (zanyato || t_ref>0) return;
-			t_ref=16;
-			if (!noTurn) {
-				if (coordinates.X > World.w.gg.coordinates.X) storona=-1;
-				else storona=1;
+			if (zanyato || t_ref > 0) {
+				return;
 			}
-			if (targNPC) targNPC.activate();
+
+			t_ref = NPC_BARK_COOLDOWN;
+
+			if (!noTurn) {
+				if (coordinates.X > World.w.gg.coordinates.X) {
+					storona = -1;
+				}
+				else {
+					storona = 1;
+				}
+			}
+			if (targNPC) {
+				targNPC.activate();
+			}
 		}
 		
 		public override function command(com:String, val:String=null) {

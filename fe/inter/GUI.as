@@ -377,7 +377,7 @@ package fe.inter
 					}
 					catch (err)
 					{
-						trace('ERROR: (00:2D) - GUI - setFavs() FAILED!');
+						//trace('ERROR: (00:2D) - GUI - setFavs() FAILED!');
 						mc.trol.gotoAndStop(1);
 					}
 				}

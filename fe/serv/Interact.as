@@ -20,7 +20,7 @@ package fe.serv
 		
 		public var active:Boolean=true;	// [Object is active]
 		//действие, отображаемое в GUI
-		public var action:int=0;		// [Actions that may be performed -- 1 : open, 2 : use, 3 : clear mines]
+		public var action:int = 0;		// [Actions that may be performed -- 1 : open, 2 : use, 3 : clear mines]
 		public var userAction:String;	//заданное действие (id)
 		
 		public var xml:XML;				//индивидуальный параметр, взятый из карты
@@ -281,12 +281,10 @@ package fe.serv
 				if (node.@destroy.length()) destroy=node.@destroy;
 				if (node.@radius.length()) explRadius=node.@radius;
 			}
-			if (allact == 'robocell')
-			{
+			if (allact == 'robocell') {
 				fiascoUnlock = robocellFail;
 			}
-			if (allact=='alarm')
-			{
+			if (allact=='alarm') {
 				fiascoRemine = alarm2;
 				if (owner)
 				{
@@ -386,11 +384,13 @@ package fe.serv
 						case 11:
 							actionText = Res.guiText('return'); 
 						break;
+
 						case 12:
 							actionText = Res.guiText('see'); 
 						break;
+
 						default:
-						trace('ERROR: Uknown action: "' + action.toString() + '"!');
+							trace("Interact.as/update() - Object: \"" + xml.@id + "\" has an uknown action ID: " + action.toString());
 							actionText = '';
 						break;
 					}

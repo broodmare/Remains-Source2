@@ -333,10 +333,10 @@ package fe
 			if (t_shum <= 0) {
 				t_shum = 5;
 				for each (var obj:Object in shumArr) {
-					if (obj.curVol! = obj.maxVol) {
-						if (!obj.pl && obj.maxVol>0) {
+					if (obj.curVol != obj.maxVol) {
+						if (!obj.pl && obj.maxVol > 0) {
 							var s:Sound = soundMap[obj.soundName] as Sound;
-							trans = new SoundTransform(obj.maxVol*globalVol,0); 
+							trans = new SoundTransform(obj.maxVol * globalVol, 0); 
 							obj.ch = s.play(0, 10000, trans);
 							obj.pl = true;
 						} 
