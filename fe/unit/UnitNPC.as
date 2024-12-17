@@ -3,6 +3,7 @@ package fe.unit
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Calc;
 	import fe.loc.Tile;
 	import fe.serv.NPC;
 	import fe.weapon.Weapon;
@@ -25,9 +26,9 @@ package fe.unit
 		public var weap2:String='';
 		var dopWeapon:Weapon;
 		
-		public var zanyato:Boolean = false;			// [Npc is busy fighting, does not interact]
-		var t_ref:int=0;							// [stop talking several times in a row]
-		private static var NPC_BARK_COOLDOWN:int = 32;	// How long to wait between NPC barks
+		public var zanyato:Boolean = false;				// [Npc is busy fighting, does not interact]
+		var t_ref:int=0;								// [stop talking several times in a row]
+		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between NPC barks
 		
 		var t_anim:int=100;
 		var t_float:Number=0;
@@ -42,12 +43,13 @@ package fe.unit
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			if (cid!='' && cid!=null) {
 				id=cid;
-			} else {
+			}
+			else {
 				id='npc';
 			}
 			getXmlParam();
@@ -56,14 +58,17 @@ package fe.unit
 			if (xml && xml.@npc.length()) {
 				targNPC=World.w.game.npcs[xml.@npc];
 			}
+
 			if (targNPC) {
 				if (loadObj && loadObj.rep!=null) targNPC.rep=loadObj.rep;	//старый формат сохранения
 				npcId=targNPC.id;
 				npcXML=targNPC.xml;
-			} else {
+			}
+			else {
 				npcId=id;
 				targNPC = new NPC(null,null,id,ndif);
 			}
+			
 			targNPC.inter=inter;
 			targNPC.owner=this;
 			//если есть настройки npc
@@ -80,11 +85,13 @@ package fe.unit
 				if (npcXML.@weap.length()) weap=npcXML.@weap;
 				if (npcXML.@weap2.length()) weap2=npcXML.@weap2;
 				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
-			} else {	//и если нет
+			}
+			else {	//и если нет
 				if (id=='doctor') {
 					visClass=visualDoctor;
 					icoFrame=3;
-				} else {
+				}
+				else {
 					visClass=visualVendor;
 					icoFrame=2;
 				}
@@ -107,14 +114,14 @@ package fe.unit
 				}
 			}
 			//оружие
-			if (weap!='') {
+			if (weap != '') {
 				currentWeapon=Weapon.create(this,weap);
 				currentWeapon.hold=currentWeapon.holder;
 				setCel(null,100,-30);
 				childObjs=[currentWeapon];
 				if (npcXML && npcXML.@dammult.length()) currentWeapon.damage*=npcXML.@dammult;
 			}
-			if (weap2!='') {
+			if (weap2 != '') {
 				dopWeapon=Weapon.create(this,weap2);
 				dopWeapon.hold=dopWeapon.holder;
 				childObjs.push(dopWeapon);
@@ -203,7 +210,8 @@ package fe.unit
 				return;
 			}
 
-			t_ref = NPC_BARK_COOLDOWN;
+			// Mix up how long to wait before talking so NPCs don't talk at the same time
+			t_ref = (Calc.intBetween(1, 5) * NPC_BARK_COOLDOWN);
 
 			if (!noTurn) {
 				if (coordinates.X > World.w.gg.coordinates.X) {
@@ -224,7 +232,8 @@ package fe.unit
 			if (com=='hide') {
 				hide();
 			//проявиться
-			} else if (com=='show') {
+			}
+			else if (com=='show') {
 				isVis=true;
 				vis.visible=true;
 				vis.alpha=0;
@@ -234,7 +243,8 @@ package fe.unit
 				}
 				targNPC.hidden=false;
 			//открыть глаза
-			} else if (com=='openEyes') {
+			}
+			else if (com=='openEyes') {
 				try {
 					vis.osn.gotoAndStop(2);
 				}
@@ -243,18 +253,22 @@ package fe.unit
 					trace('ERROR: (00:C)');
 				}
 			//проверить, нужна ли мигающая подсказка
-			} else if (com=='sign') {
+			}
+			else if (com=='sign') {
 				if (ico.sign) {
 					if (aiTip=='fly') ico.sign.visible=false;
 					else ico.sign.visible=World.w.helpMess;
 				}
 			//попрощаться
-			} else if (com=='replicVse') {
+			}
+			else if (com=='replicVse') {
 				t_replic=0;
 				replic('vse');
-			} else if (com=='rep') {
+			}
+			else if (com=='rep') {
 				targNPC.rep=int(val);
-			} else {
+			}
+			else {
 				var q:Object=new Object;
 				q.com=com;
 				q.val=val;
@@ -269,13 +283,16 @@ package fe.unit
 				t_replic=0;
 				replic(q.val);
 			//проверка статуса
-			} else if (q.com=='check') {
+			}
+			else if (q.com=='check') {
 				if (targNPC) targNPC.check();
 			//сменить тип поведения
-			} else if (q.com=='ai') {
+			}
+			else if (q.com=='ai') {
 				aiTip=q.val;
 			//лететь в точку
-			} else if (q.com=='fly') {
+			}
+			else if (q.com=='fly') {
 				var celF:Array=q.val.split(":");
 				cx=(int(celF[0])+1)*tileX;
 				cy=(int(celF[1]))*tileY;
@@ -283,15 +300,18 @@ package fe.unit
 				dey='fly';
 				wait=1000;
 			//скрыть
-			} else if (q.com=='rem') {
+			}
+			else if (q.com=='rem') {
 				hide();
 			//повернуться
-			} else if (q.com=='turn') {
+			}
+			else if (q.com=='turn') {
 				if (q.val=='0') storona=-storona;
 				else if (q.val=='-1') storona=-1;
 				else storona=1;
 				setVisPos();
-			} else if (q.com=='mater') {
+			}
+			else if (q.com=='mater') {
 				if (q.val=='0') mater=false;
 				else mater=true;
 			}
@@ -310,9 +330,11 @@ package fe.unit
 		}
 		
 		override protected function control():void {
-			if (t_ref>0) t_ref--;
+			if (t_ref > 0) t_ref--;
+
 			if (World.w.gui.dialScript.running) {
-			} else {
+			}
+			else {
 				t_replic--;
 				if (t_replic<=0) {
 					if (!silent) replic('neutral');

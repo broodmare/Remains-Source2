@@ -5,8 +5,7 @@ package fe.graph
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	
-	public class BackObj
-	{
+	public class BackObj {
 		public var id:String;
 		public var X:Number;
 		public var Y:Number;
@@ -25,8 +24,7 @@ package fe.graph
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null)
-		{
+		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
 			id	= nid;
 			X	= nx;
 			Y	= ny;
@@ -36,22 +34,18 @@ package fe.graph
 			var wid=node.@x2*tileX;
 			if (xml && xml.@w.length()) wid=xml.@w*tileX
 			if (!(wid>0)) wid=tileX;
-			if (nloc && nloc.mirror)
-			{
-				if (node.@mirr == '2' && Math.random() < 0.5)
-				{
+			if (nloc && nloc.mirror) {
+				if (node.@mirr == '2' && Math.random() < 0.5) {
 					X = nloc.maxX - X;
 					objectWidth = -1;
 				}
-				else if (node.@mirr == '1')
-				{
+				else if (node.@mirr == '1') {
 					X = nloc.maxX - X;
 					objectWidth = -1;
 				}
 				else X = nloc.maxX - X - wid;
 			}
-			else if (node.@mirr=='2' && Math.random() < 0.5)
-			{
+			else if (node.@mirr=='2' && Math.random() < 0.5) {
 				X = nx + wid;
 				objectWidth = -1;
 			} 
@@ -77,8 +71,7 @@ package fe.graph
 				if (xml.@lon.length() && xml.@lon>1 && node.@lon.length()) frame=node.@lon;
 				if (xml.@lon.length() && xml.@lon<1 && node.@loff.length()) frame=node.@loff;
 			}
-			if (frame>0)
-			{
+			if (frame>0) {
 				if (vis) vis.gotoAndStop(frame);
 				if (erase) erase.gotoAndStop(frame);
 				if (light) light.gotoAndStop(frame);
@@ -86,8 +79,7 @@ package fe.graph
 			if (node.@loff.length()) frameOff=node.@loff;
 			if (node.@lon.length()) frameOn=node.@lon;
 
-			function getBackObjInfo(id:String):XML
-			{
+			function getBackObjInfo(id:String):XML {
 				var node:XML;
 				// Check if the node is already cached
 				if (cachedBackObjs[id] == undefined) {
@@ -99,12 +91,10 @@ package fe.graph
 			}
 		}
 		
-		public function onoff(n:int)
-		{
+		public function onoff(n:int) {
 			if (n>0 && frameOn) frame=frameOn;
 			if (n<0 && frameOff) frame=frameOff;
-			if (frame>0)
-			{
+			if (frame>0) {
 				if (vis) vis.gotoAndStop(frame);
 				if (erase) erase.gotoAndStop(frame);
 				if (light) light.gotoAndStop(frame);

@@ -2,21 +2,16 @@ package fe.util
 {
     public class Calc
     {
-        public static function intBetweenZeroAnd(max:int):int
-		{
-			var number:int = int(Math.random() * (max + 1));
-			return number;
-		}
-		public static function intBetweenOneAnd(max:int):int
-		{
-			var number:int = int(Math.random() * max) + 1;
-			return number;
-		}
-		public static function intBetween(min:int, max:int):int
-		{
+		// Generate a random int between min (inclusive) and max (inclusive)
+		public static function intBetween(min:int, max:int):int {
     		var range:int = max - min + 1;
     		var number:int = int(Math.random() * range) + min;
     		return number;
+		}
+
+		//Generates a random floating-point number between min (inclusive) and max (exclusive).
+		public static function floatBetween(min:Number, max:Number):Number {
+			return Math.random() * (max - min) + min;
 		}
     }
 }

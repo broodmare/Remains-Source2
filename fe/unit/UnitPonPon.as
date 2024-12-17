@@ -3,6 +3,7 @@ package fe.unit
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Calc;
 	
 	public class UnitPonPon extends Unit
 	{
@@ -17,21 +18,26 @@ package fe.unit
 			id='ponpon';
 			npc=true;
 			getXmlParam();
+			
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else {
-				if (cid=='zebra') tr=Math.floor(Math.random()*5+1);
-				if (cid=='stab') tr=Math.floor(Math.random()*33+1);
-				else tr=Math.floor(Math.random()*15+13);
 			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
+				tr=xml.@tr;
+			}
+			else {
+				if (cid == 'zebra') tr = Calc.intBetween(1, 5);
+				if (cid == 'stab') tr = Calc.intBetween(1, 33);
+				else tr = Calc.intBetween(13, 27);
+			}
+			
 			if (cid=='zebra') {
 				if (tr>=4) msex=true;
 				vis=new visualZebPon();
 				if (!uniqName) nazv=Res.txt('u','zebpon');
 				verVis=1;
-			} else if (cid=='stab') {
+			}
+			else if (cid=='stab') {
 				vis=new visualStabPon();
 				if (!uniqName) nazv=Res.txt('u','stabpon');
 				verVis=1;
@@ -39,7 +45,8 @@ package fe.unit
 				if (tr>=17 && tr<=27) msex=true;
 				if (tr>=28) id_replic='child';
 				privet=true;
-			} else {
+			}
+			else {
 				vis=new visualPonPon();
 				if (tr>=9 && tr<=11 || tr>=22) msex=true;
 				else msex=false;
@@ -51,7 +58,8 @@ package fe.unit
 			}
 			vis.osn.pon.gotoAndStop(tr);
 			invulner=true;
-			t_replic=Math.random()*1500;
+			t_replic = Calc.intBetween(0, 1500);
+			t_replic = Math.random()*1500;
 			
 		}
 		
@@ -69,8 +77,7 @@ package fe.unit
 			return obj;
 		}	
 	
-		public override function animate()
-		{
+		public override function animate() {
 			
 		}
 		

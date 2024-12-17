@@ -82,8 +82,7 @@ package fe.unit
 			else getXmlParam(xml.upd[0])
 		}
 
-		public static function getArmorInfo(id:String):XML
-		{
+		public static function getArmorInfo(id:String):XML {
 			if (cachedArmors[id] != undefined) return cachedArmors[id];
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
@@ -131,8 +130,7 @@ package fe.unit
 			if (lvl > 0) nazv += ' - ' + lvl;
 		}
 		
-		public function setArmor():void
-		{
+		public function setArmor():void {
 			if (owner && active) {
 				var koef:Number=1;
 				if (hp<maxhp/2) koef=0.5+hp/maxhp;
@@ -142,40 +140,46 @@ package fe.unit
 			}
 		}
 		
-		public function damage(dam:Number, tip:int):void
-		{
+		public function damage(dam:Number, tip:int):void {
 			if (und) return;
-			if (tip!=Unit.D_VENOM && tip!=Unit.D_EMP && tip!=Unit.D_POISON && tip!=Unit.D_BLEED && tip!=Unit.D_INSIDE) {
-				dam*=1-resist[tip];
-				if (tip==Unit.D_ACID) dam*=2;
-				if (tip==Unit.D_PINK) dam*=3;
-				hp-=dam;
-				if (hp<0) {
-					hp=0;
+			if (tip != Unit.D_VENOM && tip != Unit.D_EMP && tip != Unit.D_POISON && tip != Unit.D_BLEED && tip != Unit.D_INSIDE) {
+				dam *= 1 - resist[tip];
+				if (tip==Unit.D_ACID) dam *= 2;
+				if (tip==Unit.D_PINK) dam *= 3;
+				hp -= dam;
+				// If the armor broke from the damage received, set the HP to 0 and remove the armor from the player
+				if (hp < 0) {
+					hp = 0;
 					World.w.gg.changeArmor('off');
 				}
 			}
 			setArmor();
 		}
 		
-		public function repair(nhp:int):void
-		{
-			hp+=nhp;
-			if (hp>maxhp) hp=maxhp;
+		public function repair(nhp:int):void {
+			hp += nhp;
+			if (hp > maxhp) {
+				hp = maxhp;
+			}
 			setArmor();
 		}
 		
-		public function needComp():int
-		{
+		public function needComp():int {
 			if (xml.upd[lvl+1]) return xml.upd[lvl+1].@kol;
 			else return 0;
 		}
 		
-		public function upgrade():void
-		{
-			if (lvl>=maxlvl) return;
+		public function upgrade():void {
+			if (lvl >= maxlvl) {
+				return;
+			}
+
 			lvl++;
-			for (var i=0; i<Unit.kolVulners; i++) resist[i]=0;
+
+			for (var i:int = 0; i < Unit.kolVulners; i++) {
+				resist[i] = 0;
+			}
+			
 			getXmlParam(xml.upd[lvl]);
 		}	
 	}	

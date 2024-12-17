@@ -19,7 +19,7 @@ package fe.serv
 		public var coordinates = new Vector2();
 		
 		public var active:Boolean=true;	// [Object is active]
-		//действие, отображаемое в GUI
+		// [action displayed in GUI]
 		public var action:int = 0;		// [Actions that may be performed -- 1 : open, 2 : use, 3 : clear mines]
 		public var userAction:String;	//заданное действие (id)
 		
@@ -69,8 +69,10 @@ package fe.serv
 		public var actionText='';
 		public var sndAct='';
 		
-		public var successUnlock:Function, fiascoUnlock:Function;
-		public var successRemine:Function, fiascoRemine:Function;
+		public var successUnlock:Function;
+		public var fiascoUnlock:Function;
+		public var successRemine:Function;
+		public var fiascoRemine:Function;
 		public var actFun:Function;
 		
 		public var area:Area;	//прикреплённая область
@@ -1120,16 +1122,15 @@ package fe.serv
 			}
 		}
 		
-		public function sound(s:String=null)
-		{
-			if (s=='move')
-			{
-				moveCh=Snd.ps('move',coordinates.X, coordinates.Y, 0);
+		public function sound(s:String=null) {
+			if (s == 'move') {
+				moveCh = Snd.ps('move', coordinates.X, coordinates.Y, 0);
 			}
-			else if (s=='stop')
-			{
-				if (moveCh) moveCh.stop();
-				moveCh=Snd.ps('move', coordinates.X, coordinates.Y, 5500);
+			else if (s == 'stop') {
+				if (moveCh) {
+					moveCh.stop();
+				}
+				moveCh = Snd.ps('move', coordinates.X, coordinates.Y, 5500);
 			}
 			else if (sndAct!='') Snd.actionCh = Snd.ps(sndAct, coordinates.X, coordinates.Y);
 			
@@ -1140,14 +1141,12 @@ package fe.serv
 		}	
 		
 		// [confirm receipt of critical item]
-		public function receipt()
-		{
+		public function receipt() {
 			trace("Interact.as/receipt() - Important item, setting saveLoot to \"1\".");
 			saveLoot = 1;
 		}
 		
-		public function loot(impOnly:Boolean=false)
-		{
+		public function loot(impOnly:Boolean=false) {
 			if (loc == null || cont == 'empty') {
 				return;
 			}
@@ -1173,6 +1172,7 @@ package fe.serv
 					else {
 						kol = 1;
 					}
+
 					if (item.@imp.length()) {
 						imp = 2;
 						imp_loot = 2;
@@ -1180,20 +1180,26 @@ package fe.serv
 					else {
 						imp = 1;
 					}
+
 					trace("Interact.as/loot() - Calling LootGen.lootId with ID: " + item.@id + ", kol: " + kol);
 					LootGen.lootId(loc, coordinates.X, coordinates.Y, item.@id, kol, imp, this, lootBroken);
 					is_loot = true;
 				}
 			}
-			if (impOnly) return;
-			if (cont!='' && cont!='empty') {
+
+			if (impOnly) {
+				return;
+			}
+
+			if (cont != '' && cont != 'empty') {
 				if (owner is Unit) {
-					is_loot=LootGen.lootDrop(loc, coordinates.X, coordinates.Y, cont, (owner as Unit).hero) || is_loot;
-				} else {
+					is_loot = LootGen.lootDrop(loc, coordinates.X, coordinates.Y, cont, (owner as Unit).hero) || is_loot;
+				}
+				else {
 					is_loot=LootGen.lootCont(loc, coordinates.X, coordinates.Y, cont, lootBroken, prize? allDif:50) || is_loot;
 					//дать опыт
-					if (!lootBroken && allDif>0 && xp>0) {
-						loc.takeXP(Math.round(xp*(allDif+1)), coordinates.X, coordinates.Y);
+					if (!lootBroken && allDif > 0 && xp > 0) {
+						loc.takeXP(Math.round(xp * (allDif + 1)), coordinates.X, coordinates.Y);
 					}
 				}
 			}

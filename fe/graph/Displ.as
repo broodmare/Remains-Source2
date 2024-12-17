@@ -12,10 +12,13 @@ package fe.graph
 	import fe.stubs.visWav;			// .fla linkage
 	import fe.stubs.visSerost;		// .fla linkage
 	
+	import fe.util.Calc;
+
 	//класс отвечает за анимацию главного меню	
 	public class Displ {
 		
-		var mm:MovieClip, gr:MovieClip;
+		var mm:MovieClip;
+		var gr:MovieClip;
 		
 		var displFilter1:DisplacementMapFilter;
 		var displFilter2:DisplacementMapFilter;
@@ -29,13 +32,15 @@ package fe.graph
 		
 		var wavKol:int=10;
 		var wavArr:Array=[];
-		var disX=200, disY=250;
+		var disX=200;
+		var disY=250;
 		var spd:Number=1;
 		
 		var t_anim:int=0;
 		var t_klip:int=60;
 		var t_groza:int=120;
-		var p_x:Number, p_y:Number;
+		var p_x:Number;
+		var p_y:Number;
 		
 		public function Displ(nmm:MovieClip, ngr:MovieClip=null) {
 			mm=nmm;
@@ -46,12 +51,12 @@ package fe.graph
 			displMatrix.ty=mm.target.y-mm.displ1.y;
 			displFilter1=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,displX,displY,DisplacementMapFilterMode.COLOR);
 			displFilter2=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,0,5,DisplacementMapFilterMode.COLOR);
-			for (var i:int=0; i<wavKol; i++) {
+			for (var i:int = 0; i < wavKol; i++) {
 				var v:MovieClip=new visWav();
-				v.x=Math.random()*disX*2-disX;
-				v.y=Math.random()*disY*2-disY;
-				v.scaleX=Math.random()+2;
-				v.scaleY=3;
+				v.x = Calc.floatBetween(-disX, disX);
+            	v.y = Calc.floatBetween(-disY, disY);
+				v.scaleX = Calc.floatBetween(2, 3);
+				v.scaleY = 3;
 				displStamp.addChild(v);
 				wavArr[i]=v;
 			}
@@ -71,7 +76,7 @@ package fe.graph
 			t_klip--;
 			if (t_klip<=0) {
 				mm.eye.play();
-				t_klip=Math.floor(Math.random()*110+60);
+				t_klip = Calc.intBetween(60, 169);
 			}
 			for (var i:int=0; i<wavKol; i++) {
 				var v:MovieClip=wavArr[i];
@@ -79,9 +84,9 @@ package fe.graph
 				v.y+=(spd+i/2)*0.3;
 				if (v.x<-disX*2) {
 					v.x=disX;
-					v.scaleX=Math.random()+2;
+					v.scaleX = Calc.floatBetween(2, 3);
 					v.scaleY=3;
-					v.alpha=Math.random()*0.5+0.5;
+					v.alpha = Calc.floatBetween(0.5, 1);
 				}
 				if (v.y>disY) v.y=-disY;
 			}
@@ -95,23 +100,24 @@ package fe.graph
 			mm.horn.magic.krug.rotation=90+t_anim*0.67;
 			if (gr) {
 				t_groza--;
-				if (t_groza==0) {
-					gr.x=Math.random()*1800;
-					gr.y=Math.random()*350;
-					gr.scaleX=gr.scaleY=1-gr.y/800;
-					gr.moln.moln.rotation=Math.random()*360;
-					gr.moln.moln.gotoAndStop(Math.floor(Math.random()*gr.moln.moln.totalFrames+1));
-					gr.alpha=1;
-					gr.visible=true;
-					gr.tuchi.x=-200-Math.random()*400
-					gr.tuchi.y=-200-Math.random()*300
-				} else if (t_groza<0) {
-					gr.alpha=Math.min(1,Math.random()*0.5+t_groza/12+0.7);
-					if (t_groza<-6 && Math.random()<0.1) t_groza=-100;
+				if (t_groza == 0) {
+					gr.x = Calc.floatBetween(0, 1800);
+					gr.y = Calc.floatBetween(0, 350);
+					gr.scaleX = gr.scaleY = 1 - gr.y / 800;
+					gr.moln.moln.rotation = Calc.floatBetween(0, 360);
+					gr.moln.moln.gotoAndStop(Calc.intBetween(1, gr.moln.moln.totalFrames));
+					gr.alpha = 1;
+					gr.visible = true;
+					gr.tuchi.x = Calc.floatBetween(-600, -200);
+					gr.tuchi.y = Calc.floatBetween(-500, -200);
 				}
-				if (t_groza<-30) {
-					t_groza=Math.floor(Math.random()*200+100);
-					gr.visible=false;
+				else if (t_groza < 0) {
+					gr.alpha = Math.min(1, Calc.floatBetween(0, 0.5) + t_groza / 12 + 0.7);
+					if (t_groza < -6 && Calc.floatBetween(0, 1) < 0.1) t_groza = -100;
+				}
+				if (t_groza < -30) {
+					t_groza = Calc.intBetween(100, 300);
+					gr.visible = false;
 				}
 			}
 		}

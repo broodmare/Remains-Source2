@@ -186,7 +186,7 @@ package fe.unit
 		var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
 		var aiTTurn:int=10, aiPlav:int=0; 
 		var aiState:int=0;	//состояние ии 
-		protected var aiTCh:int = Calc.intBetweenZeroAnd(10);	// [AI state change timer], Changed from range of [0-9] to [0-10]
+		protected var aiTCh:int = Calc.intBetween(0, 10);	// [AI state change timer], Changed from range of [0-9] to [0-10]
 		protected var aiSpok:int=0, maxSpok:int=30;		// [0 - calm, 1-9 - excited, maxSpok - attacks the target]
 		//координаты и вид цели
 		public var celX:Number=0, celY:Number=0, celDX:Number=0, celDY:Number=0;
@@ -671,7 +671,7 @@ package fe.unit
 			if (arr == null || arr.length == 0) return '';
 
 			World.w.game.names[id_name] = arr;
-			var n = Calc.intBetweenZeroAnd(arr.length - 1);
+			var n = Calc.intBetween(0, arr.length - 1);
 			var s = arr[n];
 			arr.splice(n, 1);
 			return s;
@@ -2928,11 +2928,11 @@ package fe.unit
 			{
 				if (s == 'attack')
 				{
-					t_replic = 50 +  Calc.intBetweenZeroAnd(100); //Changed from range of [0-9] to [0-10]
+					t_replic = 50 +  Calc.intBetween(0, 100); //Changed from range of [0-9] to [0-10]
 				}
 				else 
 				{
-					t_replic = 110 + Calc.intBetweenZeroAnd(150); //Changed from range of [0-9] to [0-10]
+					t_replic = 110 + Calc.intBetween(0, 150); //Changed from range of [0-9] to [0-10]
 				}
 				s_replic = Res.repText(id_replic, s, msex);
 				if (s_replic != '' && s_replic != null)

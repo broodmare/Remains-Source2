@@ -85,7 +85,7 @@ package  fe
 		public var mmArmor:Boolean=false;	//броня в главном меню
 		public var catPause:Boolean=false;	//пауза для показа сцены
 		
-		public var testLoot:Boolean=false;	//тестирование лута и опыта
+		public var testLoot:Boolean=false;	// [Testing loot and experience]
 		public var summxp:int=0;
 		var ccur:String;
 		

@@ -7,6 +7,8 @@ package fe
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+
+	import fe.util.Calc;
 	
 	public class Snd {
 		public static var soundMap:Object = {};
@@ -249,25 +251,38 @@ package fe
 		
 		public static function ps(soundName:String,nx:Number=-1000,ny:Number=-1000,msec:Number=0,vol:Number=1):SoundChannel
 		{
+			// If we're finished loading sounds and not muted
 			if (!finishedLoading || soundMuted || tempMuted) {
 				return null;
 			}
 			
+			// and find an entry in the sound map
 			if (soundMap[soundName]) {
 				var s:Sound;
+				// If the entry is an array of sounds...
 				if (soundMap[soundName] is Array) {
-					s = soundMap[soundName][Math.floor(Math.random()*soundMap[soundName].length)];
+					// Pick one at random to use
+					s = soundMap[soundName][Calc.intBetween(0, soundMap[soundName].length - 1)];
 				}
+				// If it's just one sound, use it
 				else {
 					s = soundMap[soundName] as Sound;
 				}
-				if (s.bytesTotal>0 && s.bytesLoaded>=s.bytesTotal) {
+
+				// Check the sound is properly loaded before trying to do anything with it
+				if (s.bytesTotal > 0 && s.bytesLoaded >= s.bytesTotal) {
+					// Positional audio
 					var pan:Number = (nx - centrX) / widthX;
 					if (nx == -1000) {
 						pan = 0;
 					}
-					var trans:SoundTransform = new SoundTransform(vol*globalVol*(Math.random()*0.1+0.9),pan); 
+					// Create the sound transform
+					var trans:SoundTransform = new SoundTransform(vol * globalVol * Calc.floatBetween(0.9, 1.0), pan);
+					// Play the sound
 					return s.play(msec, 0, trans);
+				}
+				else {
+					trace("Snd.as/ps() - Error: Tried to play a sonud before it was loaded")
 				}
 			}
 			return null;

@@ -108,10 +108,11 @@ package fe.serv
 			}
 		}
 		
-		//выполнение команды
-		private function com(obj:Object):void
-		{
-			if (obj == null) return;
+		// [Command execution]
+		private function com(obj:Object):void {
+			if (obj == null) {
+				return;
+			}
 
 			actObj = obj;
 			if (World.w.gui.vis.dial.visible) World.w.gui.dialText();
@@ -120,18 +121,16 @@ package fe.serv
 			wait = false;
 			dial_n = -1;
 
-			if (obj.targ)
-			{
+			if (obj.targ) {
 				var target:Obj;
 				if (obj.targ == 'this') target = owner;
 				else if (land) target = land.uidObjs[obj.targ];
 				else target = World.w.land.uidObjs[obj.targ];
 				if (target) target.command(obj.act, obj.val);
 			}
-			else
-			{
-				switch (obj.act)
-				{
+			else {
+				switch (obj.act) {
+
 					case 'control off':
 						World.w.gg.controlOff();
 					break;
@@ -195,7 +194,7 @@ package fe.serv
 							World.w.pers.setParameters();
 						}
 						else {
-							var item:Item = new Item(null,obj.val,obj.n);
+							var item:Item = new Item(null, obj.val, obj.n);
 							World.w.invent.take(item);
 						}
 					break;

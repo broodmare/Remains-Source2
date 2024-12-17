@@ -4,25 +4,25 @@ package fe.serv
 	import fe.entities.Obj;
 	import fe.unit.UnitNPC;
 
-	public class NPC
-	{
+	public class NPC {
 
-		public var xml:XML;			//XML из GameData
-		public var id:String='';			//id npc-а
+		public var xml:XML;				//XML из GameData
+		public var id:String = '';		//id npc-а
 		public var vid:String;			//id привязанного торговца
-		public var owner:Obj;				//владелец, физический объект, например юнит
-		public var vendor:Vendor;			//привязанный объект торговца
-		public var inter:Interact;			//интерактив владельца
+		public var owner:Obj;			//владелец, физический объект, например юнит
+		public var vendor:Vendor;		//привязанный объект торговца
+		public var inter:Interact;		//интерактив владельца
 
-		public var hidden:Boolean=false;	//юнит, связанный с npc-ом, будет скрытым
+		public var hidden:Boolean = false;	// [A unit associated with an NPC will be hidden]
 		//сохраняемые состояния
-		public var rep:int=0;
+		public var rep:int = 0;
 		public var zzzGen:Boolean=false;
 		
-		public var npcInter:String='';		//тип взаимодействия
-		//отображаемые около курсора варианты взаимодействия. например, "поговорить". когда диалог есть и когда нет
-		public var userAction1:String, userAction2:String;
-		public var ndial:String;	//диалог, когда нечего больше сказать
+		public var npcInter:String = '';		// [Type of interaction]
+		// Interaction options displayed near the cursor. Eg. "talk". [The second string is for when there is no more dialogue]
+		public var userAction1:String;
+		public var userAction2:String;
+		public var ndial:String;	// [Dialogue when there is nothing more to say]
 		
 		
 		public function NPC(nxml:XML, loadObj:Object=null, nvid:String=null, ndif:int=100) {
@@ -62,7 +62,7 @@ package fe.serv
 		
 		//настройка интеракта, вызывается при подключении к юниту
 		public function setInter() {
-			if (id=='adoc' && rep<=1) inter.t_action=45;
+			if (id == 'adoc' && rep <= 1) inter.t_action = 45;
 		}
 		
 		//функция вызывается при создании юнита
@@ -107,35 +107,44 @@ package fe.serv
 			}
 		}
 		
-		//активировать взаимодействие с npc
+		// [Activate interaction with npc]
 		public function activate() {
-			if (check(true) && npcInter!='patient') return;
-			if (npcInter=='travel') {
-				World.w.pip.travel=true;
-				World.w.pip.onoff(3,3);
-				World.w.pip.travel=true;
-			} else if (npcInter=='doc' || npcInter=='vdoc') {
+			if (check(true) && npcInter != 'patient') {
+				return;
+			}
+
+			if (npcInter == 'travel') {
+				World.w.pip.travel = true;
+				World.w.pip.onoff(3, 3);
+				World.w.pip.travel = true;
+			}
+			else if (npcInter=='doc' || npcInter=='vdoc') {
 				pip(6);
-			} else if (npcInter=='adoc') {
-				if (rep<=1)	{
+			}
+			else if (npcInter=='adoc') {
+				if (rep <= 1)	{
 					repair();
-				} else {
+				}
+				else {
 					pip(6);
 				}
-			} else if (npcInter=='patient') {
+			}
+			else if (npcInter=='patient') {
 				patient();
-			} else if (vendor) {
+			}
+			else if (vendor) {
 				pip(4);
-			} else {
+			}
+			else {
 				if (ndial) World.w.gui.dialog(ndial);
-				else if (owner) owner.command('tell','dial');
+				else if (owner) owner.command('tell', 'dial');
 			}
 		}
 		
 		public function pip(n:int) {
-			World.w.pip.vendor=vendor;
-			World.w.pip.npcId=id;
-			World.w.pip.npcInter=npcInter;
+			World.w.pip.vendor = vendor;
+			World.w.pip.npcId = id;
+			World.w.pip.npcInter = npcInter;
 			World.w.pip.onoff(n);
 			if (owner) owner.command('replicVse');
 		}
