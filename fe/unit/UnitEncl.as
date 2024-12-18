@@ -1,6 +1,7 @@
 package fe.unit {
 	import fe.*;
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	import fe.weapon.Weapon;
 	import fe.weapon.WThrow;
 	import flash.display.MovieClip;
@@ -21,7 +22,7 @@ package fe.unit {
 			durak=false;
 			allLink=true;
 			maxSpok=50;
-			wPos = BlitAnim.getWeaponOffset("wPosEncl1");
+			wPos = AnimationSet.getWeaponOffset("wPosEncl1");
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');
 				(thWeapon as WThrow).kolAmmo=grenader;

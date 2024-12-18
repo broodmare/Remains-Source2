@@ -261,7 +261,7 @@ package fe.graph
 //============================================================================================		
 		
 		public function getObj(textureName:String, n:int = 0):* {
-			trace("Getting resource object: " + textureName + " from GrLoader: " + n);
+			//trace("Getting resource object: " + textureName + " from GrLoader: " + n);
 			if (grLoaders[n] && grLoaders[n].isLoad) {
 				return grLoaders[n].getObj(textureName);
 			}

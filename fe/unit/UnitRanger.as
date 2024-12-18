@@ -1,6 +1,7 @@
 package fe.unit
 {
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	import fe.weapon.Weapon;
 	
 	public class UnitRanger extends UnitRaider
@@ -17,7 +18,7 @@ package fe.unit
 			durak=false;
 			allLink=true;
 			isDropArm=false;
-			wPos = BlitAnim.getWeaponOffset("wPosRanger1");
+			wPos = AnimationSet.getWeaponOffset("wPosRanger1");
 			if (1)
 			{
 				dopWeapon1=Weapon.create(this,'robomlau');

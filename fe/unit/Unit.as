@@ -281,7 +281,8 @@ package fe.unit
 		var blitPoint:Point;
 		var visData:BitmapData;
 		var visBmp:Bitmap;
-		var anims:Array;
+		
+		var anims:Object; // Needs to be object - accessed by string. eg. anims["fly"]
 		
 		var ctrans:Boolean=true;	//применять цветофильтр
 		//полоска хп
@@ -640,17 +641,38 @@ package fe.unit
 					vulner[D_NECRO]=vulner[D_BLEED]=vulner[D_VENOM]=vulner[D_POISON]=0;
 				}
 			}
-			if (node0.blit.length()) {
-				if (anims == null) anims=[];
-				for each(var xbl:XML in node0.blit) {
-					anims[xbl.@id] = new BlitAnim(xbl);
-					// An array of 'blit' objects from the units.xml 
-					// Each blit represents an animation 
-					// A blit has several properties 
-					// an ID : "id", An index : "y", a length in frames : "len",
-					// whether the animation loops: "rep", and (whether the last frame is held, eg. for jumping) : "stab" 
+
+			// LOAD ANIMATION SETS IF APPLICABLE
+			if (node0.@parent.length()) {
+				var parentID:String = node0.@parent;
+				trace("Unit.as/create() - Loading parent animation: " + parentID + " for subclass: " + id);
+				
+				var parentAnims:Object = AnimationSet.loadAnimations(parentID);
+				if (parentAnims != null) {
+					anims = parentAnims;
+				}
+				else {
+					trace("Unit.as/create() - Failed to load parent animations for: " + parentID);
+				}
+				
+				var subclassAnims:Object = AnimationSet.loadAnimations(id);
+				if (subclassAnims != null) {
+					for (var animState:String in subclassAnims) {
+						anims[animState] = subclassAnims[animState]; // Override or add new animations
+						trace("Unit.as/create() - Loaded subclass animation: " + animState + " for: " + id);
+					}
+				}
+				else {
+					trace("Unit.as/create() - No subclass animations to load for: " + id);
 				}
 			}
+			else {
+				// No parent; load animations normally
+				trace("Unit.as/create() - No parent detected for: " + id + ", attempting to load animations"); 
+				anims = AnimationSet.loadAnimations(id);
+			}
+
+
 			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
 		}
 		

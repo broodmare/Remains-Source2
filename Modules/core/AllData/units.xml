@@ -65,17 +65,6 @@
 		<param overlook='0' blood='1' pony='1' hero='raider' hbonus='1' izvrat='1'/>
 		<un dist='500'/>
 		<n>Общие параметры рейдеров</n>
-		<blit id='stay'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='run' y='2' len='8' rep='1'/>
-		<blit id='jump' y='3' len='16' stab='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
-		<blit id='derg' y='6' len='8' rep='1'/>
-		<blit id='plav' y='7' len='24' rep='1'/>
-		<blit id='laz' y='8' len='12' rep='1'/>
-		<blit id='walk' y='9' len='24' rep='1'/>
 	</unit>
 	
 	<unit id='raider1' cont='raider' xp='100' cat='3' parent='raider'>
@@ -208,17 +197,6 @@
 		<vis noise='600' replic='raider' visdam='1'/>
 		<snd music='combat_1' die='rm'/>
 		<param overlook='0' blood='1' pony='1' hero='slaver' hbonus='1' izvrat='1'/>
-		<blit id='stay'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='run' y='2' len='8' rep='1'/>
-		<blit id='jump' y='3' len='16' stab='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
-		<blit id='derg' y='6' len='8' rep='1'/>
-		<blit id='plav' y='7' len='24' rep='1'/>
-		<blit id='laz' y='8' len='12' rep='1'/>
-		<blit id='walk' y='9' len='24' rep='1'/>
 	</unit>
 	
 	<unit id='slaver1' cont='raider' xp='250' cat='3' parent='slaver'>
@@ -316,17 +294,6 @@
 		<vis noise='0' visdam='1'/>
 		<snd music='combat_1' die='rm'/>
 		<param overlook='0' blood='1' pony='1' hero='zebra' hbonus='1'/>
-		<blit id='stay'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='run' y='2' len='8' rep='1'/>
-		<blit id='jump' y='3' len='16' stab='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
-		<blit id='derg' y='6' len='8' rep='1'/>
-		<blit id='plav' y='7' len='24' rep='1'/>
-		<blit id='laz' y='8' len='12' rep='1'/>
-		<blit id='walk' y='9' len='24' rep='1'/>
 	</unit>
 	
 	<unit id='zebra1' cont='raider' xp='300' cat='3' parent='zebra'>
@@ -419,13 +386,6 @@
 		<vis noise='600' replic='merc' visdam='1'/>
 		<snd music='combat_1' die='rm'/>
 		<param overlook='0' blood='1' hero='merc' hbonus='1' izvrat='1'/>
-		<blit id='stay'/>
-		<blit id='walk' y='0' len='25' rf='1' rep='1'/>
-		<blit id='fly' y='1' len='14' rep='1'/>
-		<blit id='jump' y='1' len='14' stab='1'/>
-		<blit id='die' y='2' len='25'/>
-		<blit id='death' y='3'/>
-		<blit id='fall' y='3' len='17'/>
 	</unit>
 	
 	<unit id='merc1' cont='raider' xp='300' cat='3' parent='merc'>
@@ -516,15 +476,6 @@
 		<snd music='combat_1' die='sr'/>
 		<param overlook='0' blood='1' pony='1' hero='ranger' hbonus='1'/>
 		<vulner venom='0' poison='0' emp='0.25' cryo='0.5' fire='0.5' expl='0.8'/>
-		<blit id='stay'/>
-		<blit id='walk' y='1' len='24' rep='1'/>
-		<blit id='trot' y='2' len='17' rf='1' rep='1'/>
-		<blit id='run' y='3' len='8' rep='1'/>
-		<blit id='laz' y='4' len='12' rep='1'/>
-		<blit id='jump' y='5' len='16' stab='1'/>
-		<blit id='die' y='6' len='20'/>
-		<blit id='death' y='7'/>
-		<blit id='fall' y='7' len='13'/>
 	</unit>
 	
 	<unit id='ranger1' xp='500' cat='3' parent='ranger'>
@@ -577,13 +528,6 @@
 		<vis noise='600' replic='encl' visdam='1'/>
 		<snd music='combat_1' die='rm'/>
 		<param overlook='0' blood='1' hero='encl' hbonus='1'/>
-		<blit id='stay'/>
-		<blit id='walk' y='2' len='24' rep='1'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='fly' y='3' len='8' rep='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
 	</unit>
 	
 	<unit id='encl1' xp='400' cat='3' parent='encl'>
@@ -656,8 +600,6 @@
 		<vis blit='sprEnclboss1' sprX='130' sprY='150' dkill='0'/>
 		<snd music='boss_6'/>
 		<param overlook='1' blood='1' pony='1'/>
-		<blit id='stay'/>
-		<blit id='fly' y='1' len='8' rep='1'/>
 	</unit>
 	
 	
@@ -671,14 +613,6 @@
 		<vis sprX='150' sprY='150' sprDX='95' sprDY='127' sex='w' noise='600' visdam='3' sdamage='50' stipdam='9'/>
 		<snd music='combat_1' die='ali'/>
 		<param overlook='0' blood='1' hero='alicorn' alicorn='1' hbonus='1'/>
-		<blit id='stay' y='0'/>
-		<blit id='walk' y='0' len='29' rf='1' rep='1'/>
-		<blit id='sit' y='4'/>
-		<blit id='polz' y='4' len='29' rf='1' rep='1'/>
-		<blit id='fly' y='1' len='14' rep='1'/>
-		<blit id='die' y='2' len='20'/>
-		<blit id='death' y='3'/>
-		<blit id='fall' y='3' len='13'/>
 	</unit>
 	
 	<unit id='alicorn1' fraction='1' xp='500' cat='3' parent='alicorn'>
@@ -708,9 +642,6 @@
 		<vis blit='sprAlicorn4' sprX='170' sprY='170' sprDX='105' sprDY='150' visdam='3' sdamage='70' stipdam='9' dkill='0'/>
 		<snd music='boss_2'/>
 		<param trup='0' overlook='1' alicorn='1'/>
-		<blit id='stay' y='0' len='20' rep='1'/>
-		<blit id='fly' y='1' len='14' rep='1'/>
-		<blit id='die' y='2' len='14'/>
 		<w id='aliblade' f='1'/>
 		<w id='alimray' f='1'/>
 	</unit>
@@ -727,16 +658,6 @@
 		<vis noise='600' visdam='1'/>
 		<snd music='combat_1'/>
 		<param overlook='0' blood='1' hero='hellhound'/>
-		<blit id='stay' y='0'/>
-		<blit id='walk' y='0' len='25' rf='1' rep='1'/>
-		<blit id='sit' y='1'/>
-		<blit id='polz' y='1' len='25' rf='1' rep='1'/>
-		<blit id='run' y='2' len='12' rep='1'/>
-		<blit id='jump' y='3' len='16' stab='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
-		<blit id='laz' y='6' len='12' rep='1'/>
 	</unit>
 	
 	<unit id='hellhound1' xp='500' cat='3' parent='hellhound'>
@@ -751,15 +672,6 @@
 		<snd music='combat_1' die='zw'/>
 		<param overlook='0' blood='2' zombie='1' hero='zombie'/>
 		<n>Общие параметры зомби</n>
-		<blit id='stay'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='run' y='2' len='8' rep='1'/>
-		<blit id='jump' y='3' len='16' stab='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
-		<blit id='dig' y='6' len='24'/>
-		<blit id='walk' y='7' len='24' rep='1'/>
 	</unit>
 	
 	<unit id='zombie0' cont='zombie' xp='100' cat='3' parent='zombie'>
@@ -778,7 +690,6 @@
 		<comb hp='80' damage='15'/>
 		<vulner bul='0.75' venom='0' poison='0' bleed='0.5' acid='0.25'/>
 		<vis blit='sprZombie1' sprX='120' sex='w'/>
-		<blit id='pre' y='8' len='24'/>
 		<n>Прыгун</n>
 	</unit>
 	
@@ -789,7 +700,6 @@
 		<comb hp='80' damage='18'/>
 		<vulner bul='0.75' venom='0' poison='0' bleed='0.5' acid='0.25'/>
 		<vis blit='sprZombie2' sprX='120' sex='w'/>
-		<blit id='super' y='8' len='4' rep='1'/>
 		<n>Телекинетик</n>
 	</unit>
 	
@@ -800,7 +710,6 @@
 		<comb hp='85' damage='15'/>
 		<vulner bul='0.75' venom='0' poison='0' bleed='0.5' acid='0.25'/>
 		<vis blit='sprZombie3' sprX='120' sex='w' visdam='3' sdamage='15' stipdam='7'/>
-		<blit id='pre' y='8' len='18'/>
 		<n>Ядовитый</n>
 	</unit>
 		
@@ -823,7 +732,6 @@
 		<vulner fire='0.5' bul='0.75' venom='0' poison='0' bleed='0.5' acid='0.25' pink='0'/>
 		<snd die='zm'/>
 		<vis blit='sprZombie5' sprX='130'/>
-		<blit id='super' y='1' len='17' rf='1' df='2' rep='1'/>
 		<n>Гуль-солдат</n>
 	</unit>
 	
@@ -834,7 +742,6 @@
 		<comb hp='180' damage='30' skin='3' observ='6'/>
 		<vulner acid='0' bul='0.75' venom='0' poison='0' bleed='0.5' pink='0'/>
 		<vis blit='sprZombie6' sprX='120' sex='w' visdam='3' sdamage='20' stipdam='10'/>
-		<blit id='pre' y='8' len='18'/>
 		<n>Потрошитель</n>
 	</unit>
 		
@@ -846,7 +753,6 @@
 		<param blood='3'/>
 		<vulner bul='0.5' venom='0' poison='0' pink='0' bleed='0.5' acid='0.25'/>
 		<vis blit='sprZombie7' sprX='120' sex='w' visdam='3' sdamage='15' stipdam='16'/>
-		<blit id='super' y='8' len='4' rep='1'/>
 	</unit>
 		
 	<unit id='zombie8' xp='650' cat='3' parent='zombie'>
@@ -868,7 +774,6 @@
 		<param blood='3'/>
 		<vulner bul='0.5' venom='0' poison='0' pink='0' bleed='0.5' acid='0.25'/>
 		<vis blit='sprZombie9' sprX='130' sex='w'/>
-		<blit id='pre' y='8' len='24'/>
 	</unit>
 	
 	<!-- монстры -->
@@ -1068,11 +973,6 @@
 		<vis blit='sprTarakan' sprX='60' sprY='30' sprDX='27' sprDY='27' visdam='1'/>
 		<snd die='bloat'/>
 		<n>Радтаракан</n>
-		<blit id='stay'/>
-		<blit id='walk' len='8' rep='1'/>
-		<blit id='run' len='8' rep='1'/>
-		<blit id='jump' len='8' rep='1'/>
-		<blit id='plav' len='8' rep='1'/>
 	</unit>
 	
 	<unit id='rat' fraction='1' xp='20' cat='3'>
@@ -1083,11 +983,6 @@
 		<vis blit='sprRat' sprX='70' sprY='30' sprDX='43' sprDY='27' visdam='1'/>
 		<snd die='rat'/>
 		<n>Крыса</n>
-		<blit id='stay'/>
-		<blit id='walk' len='9' ff='1' rf='2' df='0.5' rep='1'/>
-		<blit id='run' len='9' ff='1' rf='2' rep='1'/>
-		<blit id='jump' ff='10'/>
-		<blit id='plav' len='9' ff='1' rf='2' df='0.25' rep='1'/>
 	</unit>
 	
 	<unit id='molerat' fraction='1' xp='60' cat='3'>
@@ -1099,13 +994,6 @@
 		<vis blit='sprMolerat' sprX='85' sprY='58' sprDX='46' sprDY='49' visdam='1'/>
 		<snd die='molerat'/>
 		<n>Кротокрыс</n>
-		<blit id='stay'/>
-		<blit id='walk' len='13' ff='1' rf='2' df='0.5' rep='1'/>
-		<blit id='run' len='13' ff='1' rf='2' rep='1'/>
-		<blit id='jump' y='1' len='10' df='0.4'/>
-		<blit id='plav' y='2' len='8' df='0.5' rep='1'/>
-		<blit id='die' y='3' len='10'/>
-		<blit id='death' y='3' ff='9'/>
 	</unit>
 	
 	<unit id='scorp1' fraction='1' cont='scorp' xp='100' cat='3'>
@@ -1117,14 +1005,6 @@
 		<vis blit='sprScorp1' sprX='85' sprY='58' sprDX='38' sprDY='56' visdam='1'/>
 		<snd die='scorp'/>
 		<n>Радскорпион</n>
-		<blit id='stay'/>
-		<blit id='attack' len='15' ff='1'/>
-		<blit id='walk' y='1' len='18' rep='1' df='0.5'/>
-		<blit id='run' y='1' len='18' rep='1'/>
-		<blit id='plav' y='1' len='18' rep='1'/>
-		<blit id='jump' y='1' len='18' rep='1'/>
-		<blit id='die' y='2' len='20'/>
-		<blit id='death' y='2' ff='19'/>
 	</unit>
 		
 	<unit id='scorp2' fraction='1' cont='scorp' xp='100' cat='3'>
@@ -1136,14 +1016,6 @@
 		<vis blit='sprScorp2' sprX='85' sprY='58' sprDX='38' sprDY='56' visdam='1'/>
 		<snd die='scorp'/>
 		<n>Радскорпион</n>
-		<blit id='stay'/>
-		<blit id='attack' len='15' ff='1'/>
-		<blit id='walk' y='1' len='18' rep='1' df='0.5'/>
-		<blit id='run' y='1' len='18' rep='1'/>
-		<blit id='plav' y='1' len='18' rep='1'/>
-		<blit id='jump' y='1' len='18' rep='1'/>
-		<blit id='die' y='2' len='20'/>
-		<blit id='death' y='2' ff='19'/>
 	</unit>
 		
 	<unit id='scorp3' fraction='1' cont='scorp' xp='300' cat='3'>
@@ -1155,14 +1027,6 @@
 		<vis blit='sprScorp3' sprX='106' sprY='76' sprDX='50' sprDY='67' visdam='1'/>
 		<snd die='scorp'/>
 		<n>Радскорпион</n>
-		<blit id='stay'/>
-		<blit id='attack' len='15' ff='1'/>
-		<blit id='walk' y='1' len='18' rep='1' df='0.5'/>
-		<blit id='run' y='1' len='18' rep='1'/>
-		<blit id='plav' y='1' len='18' rep='1'/>
-		<blit id='jump' y='1' len='18' rep='1'/>
-		<blit id='die' y='2' len='20'/>
-		<blit id='death' y='2' ff='19'/>
 	</unit>
 	
 	<unit id='ant' fraction='1'>
@@ -1173,11 +1037,6 @@
 		<n>Муравей</n>
 		<vis visdam='1'/>
 		<snd die='bloat'/>
-		<blit id='stay'/>
-		<blit id='walk' len='14' rf='1' rep='1'/>
-		<blit id='run' len='14' rf='1' rep='1'/>
-		<blit id='jump' len='14' rf='1' rep='1'/>
-		<blit id='plav' len='14' rf='1' rep='1'/>
 	</unit>
 	
 	<unit id='ant1' xp='30' cat='3' parent='ant'>
@@ -1260,7 +1119,6 @@
 		<vis blit='sprNecros' sprX='160' sprY='160' sprDX='80' sprDY='120' visdam='1'/>
 		<vulner bul='0' blade='0' bleed='0' phis='0' pink='0' venom='0' poison='0' laser='0.7' expl='0.7' spark='0.5' cryo='0.2'/>
 		<param trup='0' acttrap='1' retdam='1'/>
-		<blit id='stay' len='24' rep='0'/>
 	</unit>
 	
 	<unit id='phoenix' fraction='1' cat='3'>
@@ -1269,8 +1127,6 @@
 		<comb hp='10'/>
 		<vulner fire='0.5' plasma='0.5' laser='0.75' expl='0.25'/>
 		<vis blit='sprPhoenix' sprX='121' sprY='121' sprDX='76' sprDY='72'/>
-		<blit id='stay'/>
-		<blit id='fly' len='10' ff='1' rf='2' rep='1'/>
 		<w id='phoenix' no='1'/>
 	</unit>
 		
@@ -1310,14 +1166,6 @@
 		<vis blit='sprProtect' noise='500' sprX='130' replic='protect'/>
 		<snd music='combat_1' die='expl1'/>
 		<n>Протектопон</n>
-		<blit id='stay' len='1' rep='0'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='walk' y='4' len='24' rep='1'/>
-		<blit id='jump' y='5' len='1'/>
-		<blit id='fly' y='5' len='16' rf='8' rep='1'/>
-		<blit id='die' y='2' len='16'/>
-		<blit id='death' y='3'/>
-		<blit id='fall' y='3' len='11'/>
 		<w id='roboplasma' ch='0.3' dif='10'/>
 		<w id='robolaser2' ch='0.5'/>
 		<w id='robospark2'/>
@@ -1332,9 +1180,6 @@
 		<vis blit='sprGutsy' noise='500' sprX='130' replic='gutsy' visdam='1'/>
 		<snd music='combat_1' die='expl1'/>
 		<n>Храбрец</n>
-		<blit id='stay' len='40' rep='0'/>
-		<blit id='die' y='1' len='20'/>
-		<blit id='death' y='1' len='1'/>
 		<w id='robofire' f='1'/>
 		<w id='roboplasma2' ch='0.3' dif='18'/>
 		<w id='roboplasma'/>
@@ -1349,14 +1194,6 @@
 		<vis blit='sprEqd1' noise='500' sprX='120' replic='eqd'/>
 		<snd music='combat_1'/>
 		<n>Эквидроид</n>
-		<blit id='stay' len='1' rep='0'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='walk' y='6' len='24' rep='1'/>
-		<blit id='run' y='2' len='8' rep='1'/>
-		<blit id='jump' y='3' len='16' stab='1'/>
-		<blit id='die' y='4' len='20'/>
-		<blit id='death' y='5'/>
-		<blit id='fall' y='5' len='13'/>
 		<w id='robonova' ch='0.3' dif='18'/>
 		<w id='robosparkl' ch='0.5'/>
 		<w id='roboplam'/>
@@ -1371,14 +1208,6 @@
 		<vis blit='sprProtect1' noise='500' sprX='140' replic='protect'/>
 		<snd music='combat_1' die='expl1'/>
 		<n>aj-17</n>
-		<blit id='stay' len='1' rep='0'/>
-		<blit id='trot' y='1' len='17' rf='1' rep='1'/>
-		<blit id='walk' y='4' len='24' rep='1'/>
-		<blit id='jump' y='5' len='1'/>
-		<blit id='fly' y='5' len='16' rf='8' rep='1'/>
-		<blit id='die' y='2' len='16'/>
-		<blit id='death' y='3'/>
-		<blit id='fall' y='3' len='11'/>
 		<w id='robonova' ch='0.3'/>
 		<w id='robosparkl' ch='0.5'/>
 		<w id='roboplam'/>
@@ -1393,9 +1222,6 @@
 		<vis blit='sprGutsy1' noise='500' sprX='130' replic='gutsy'/>
 		<snd music='combat_1' die='expl1'/>
 		<n>Защитник</n>
-		<blit id='stay' len='40' rep='0'/>
-		<blit id='die' y='1' len='20'/>
-		<blit id='death' y='1' len='1'/>
 		<w id='roboplasma2'/>
 	</unit>
 		
@@ -1536,8 +1362,6 @@
 		<param acttrap='0' robot='1'/>
 		<vulner fire='0.5' bul='0.75' laser='0.75' expl='0.25' venom='0' poison='0' necro='0.25'/>
 		<vis blit='sprOwl' sprX='61' sprY='61' sprDX='31' sprDY='48'/>
-		<blit id='stay'/>
-		<blit id='fly' len='8' ff='1' rf='2' rep='1'/>
 		<w id='owllaser'/>
 	</unit>
 	

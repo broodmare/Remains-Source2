@@ -7,6 +7,7 @@ package fe.unit
 	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	import fe.graph.Emitter;
@@ -120,7 +121,7 @@ package fe.unit
 
 			initBlit();
 			animState='stay';
-			wPos = BlitAnim.getWeaponOffset("wPosAlicorn");
+			wPos = AnimationSet.getWeaponOffset("wPosAlicorn");
 			if (tr==3) visshit=new visShit2();
 			else visshit=new visShit();
 			vis.addChild(visshit);

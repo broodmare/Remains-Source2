@@ -2,6 +2,7 @@ package fe.unit
 {
 	import fe.*;
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	import fe.projectile.Bullet;
 	import fe.loc.Tile;
 	
@@ -24,7 +25,7 @@ package fe.unit
 				shine=100;
 			}
 			runSpeed=maxSpeed*3;
-			wPos = BlitAnim.getWeaponOffset("wPosZebra1");
+			wPos = AnimationSet.getWeaponOffset("wPosZebra1");
 		}
 		
 		public override function animate() {

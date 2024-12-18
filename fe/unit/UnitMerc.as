@@ -1,6 +1,8 @@
 package fe.unit {
+	
 	import fe.*;
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	import fe.weapon.Weapon;
 	import fe.weapon.WThrow;
 	import flash.display.MovieClip;
@@ -20,7 +22,7 @@ package fe.unit {
 			tupizna=10;
 			visionMult=1.5;
 			maxSpok=50;
-			wPos = BlitAnim.getWeaponOffset("wPosGriffon1");
+			wPos = AnimationSet.getWeaponOffset("wPosGriffon1");
 			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1);
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');
@@ -110,35 +112,64 @@ package fe.unit {
 					} else if (animState=='death') animState='fall';
 					else animState='die';
 				} else animState='death';
-			} else {
+			}
+			else {
 				if (stay) {
 					if  (dx==0) {
 						animState='stay';
-					} else {
+					}
+					else {
 						animState='walk';
 						if (aiNapr*storona<0) revers=true;
 					}
-				} else if (isFly || aiPlav || levit) {
+				}
+				else if (isFly || aiPlav || levit) {
 					animState='fly';
-				} else {
+				}
+				else {
 					animState='jump';
 					// Commented out, there is no setStab function
 					//anims[animState].setStab((dy*0.6+8)/16);
 				}
 			}
+
 			if (animState!=animState2) {
 				anims[animState].restart();
 				animState2=animState;
 			}
+			
 			if (!anims[animState].st) {
 				if (revers) blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
 				else blit(anims[animState].id,anims[animState].f);
 			}
+			
 			anims[animState].step();
-			//положение руки
-			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-				arm.x = coordinates.X + (obj.x+visBmp.x)*storona;
-				arm.y = coordinates.Y + obj.y+visBmp.y;
+			
+			// Far arm position
+			var animId:int = anims[animState].id;			// 'id' is an integer index (0-3) which corresponds the current animation
+			var frameIndex:int = int(anims[animState].f);	// Current frame of the animation (used to get the correct weapon position from wPos using animId as an index)
+
+			// Validate 'animId' and 'frameIndex' before accessing
+			if (animId >= 0 && animId < wPos.length) {
+				var animFrames:Array = wPos[animId];
+				
+				if (animFrames != null) {
+					if (frameIndex >= 0 && frameIndex < animFrames.length) {
+						var obj:Object = animFrames[frameIndex];
+						arm.x = coordinates.X + (obj.x + visBmp.x) * storona;
+						arm.y = coordinates.Y + obj.y + visBmp.y;
+					}
+					else {
+						trace("UnitMerc.as/animate() - Frame index out of bounds. animId:", animId, " frameIndex:", frameIndex, " total frames:", animFrames.length);
+					}
+				}
+				else {
+					trace("UnitMerc.as/animate() - animFrames is null for animId:", animId);
+				}
+			}
+			else {
+				trace("UnitMerc.as/animate() - animId out of bounds. animId:", animId, " total animIds:", wPos.length);
+			}
 		}
 	}
 }

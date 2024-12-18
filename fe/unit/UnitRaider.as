@@ -6,6 +6,7 @@ package fe.unit
 	import fe.*;
 	import fe.loc.Tile;
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	import fe.serv.LootGen;
 	import fe.projectile.Bullet;
 	
@@ -140,8 +141,8 @@ package fe.unit
 			spd=new Object();
 			tstor=storona;
 
-			if (msex) wPos = BlitAnim.getWeaponOffset("wPosRaider1");
-			else wPos = BlitAnim.getWeaponOffset("wPosRaider2");
+			if (msex) wPos = AnimationSet.getWeaponOffset("wPosRaider1");
+			else wPos = AnimationSet.getWeaponOffset("wPosRaider2");
 
 			if (!msex) id_name+='_f';
 

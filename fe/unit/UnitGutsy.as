@@ -2,6 +2,7 @@ package fe.unit
 {
 	import fe.weapon.Weapon;
 	import fe.serv.BlitAnim;
+	import fe.serv.AnimationSet;
 	
 	public class UnitGutsy extends UnitAIRobot
 	{
@@ -26,7 +27,7 @@ package fe.unit
 			if (currentWeapon) childObjs=[currentWeapon, dopWeapon];
 			
 			if (quiet) id_replic='';
-			wPos = BlitAnim.getWeaponOffset("wPosGutsy");
+			wPos = AnimationSet.getWeaponOffset("wPosGutsy");
 		}
 		
 		public override function forces() {

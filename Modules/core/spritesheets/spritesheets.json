@@ -1,0 +1,837 @@
+{
+	"raider":  {
+		  "stay": {},
+		  "trot": {
+			"y": 1,
+			"len": 17,
+			"rf": 1,
+			"rep": 1
+		  },
+		  "run": {
+			"y": 2,
+			"len": 8,
+			"rep": 1
+		  },
+		  "jump": {
+			"y": 3,
+			"len": 16,
+			"stab": 1
+		  },
+		  "die": {
+			"y": 4,
+			"len": 20
+		  },
+		  "death": {
+			"y": 5
+		  },
+		  "fall": {
+			"y": 5,
+			"len": 13
+		  },
+		  "derg": {
+			"y": 6,
+			"len": 8,
+			"rep": 1
+		  },
+		  "plav": {
+			"y": 7,
+			"len": 24,
+			"rep": 1
+		  },
+		  "laz": {
+			"y": 8,
+			"len": 12,
+			"rep": 1
+		  },
+		  "walk": {
+			"y": 9,
+			"len": 24,
+			"rep": 1
+		  }
+	},
+	
+	"slaver": {
+		"stay": {},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"run": {
+		  "y": 2,
+		  "len": 8,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 3,
+		  "len": 16,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 4,
+		  "len": 20
+		},
+		"death": {
+		  "y": 5
+		},
+		"fall": {
+		  "y": 5,
+		  "len": 13
+		},
+		"derg": {
+		  "y": 6,
+		  "len": 8,
+		  "rep": 1
+		},
+		"plav": {
+		  "y": 7,
+		  "len": 24,
+		  "rep": 1
+		},
+		"laz": {
+		  "y": 8,
+		  "len": 12,
+		  "rep": 1
+		},
+		"walk": {
+		  "y": 9,
+		  "len": 24,
+		  "rep": 1
+		}
+	},
+	
+	"zebra": {
+		"stay": {},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"run": {
+		  "y": 2,
+		  "len": 8,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 3,
+		  "len": 16,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 4,
+		  "len": 20
+		},
+		"death": {
+		  "y": 5
+		},
+		"fall": {
+		  "y": 5,
+		  "len": 13
+		},
+		"derg": {
+		  "y": 6,
+		  "len": 8,
+		  "rep": 1
+		},
+		"plav": {
+		  "y": 7,
+		  "len": 24,
+		  "rep": 1
+		},
+		"laz": {
+		  "y": 8,
+		  "len": 12,
+		  "rep": 1
+		},
+		"walk": {
+		  "y": 9,
+		  "len": 24,
+		  "rep": 1
+		}
+	},
+	
+	"merc": {
+		"stay": {},
+		"walk": {
+		  "y": 0,
+		  "len": 24,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"fly": {
+		  "y": 1,
+		  "len": 14,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 1,
+		  "len": 14,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 24
+		},
+		"death": {
+		  "y": 3
+		},
+		"fall": {
+		  "y": 3,
+		  "len": 17
+		}
+	},
+	
+	"ranger": {
+		"stay": {},
+		"walk": {
+		  "y": 1,
+		  "len": 24,
+		  "rep": 1
+		},
+		"trot": {
+		  "y": 2,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"run": {
+		  "y": 3,
+		  "len": 8,
+		  "rep": 1
+		},
+		"laz": {
+		  "y": 4,
+		  "len": 12,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 5,
+		  "len": 16,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 6,
+		  "len": 20
+		},
+		"death": {
+		  "y": 7
+		},
+		"fall": {
+		  "y": 7,
+		  "len": 13
+		}
+	},
+	
+	"encl": {
+		"stay": {},
+		"walk": {
+		  "y": 2,
+		  "len": 24,
+		  "rep": 1
+		},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"fly": {
+		  "y": 3,
+		  "len": 8,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 4,
+		  "len": 20
+		},
+		"death": {
+		  "y": 5
+		},
+		"fall": {
+		  "y": 5,
+		  "len": 13
+		}
+	},
+	
+	"bossencl": {
+		"stay": {},
+		"fly": {
+		  "y": 1,
+		  "len": 8,
+		  "rep": 1
+		}
+	},
+	
+	"alicorn": {
+		"stay": {
+		  "y": 0
+		},
+		"walk": {
+		  "y": 0,
+		  "len": 29,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"sit": {
+		  "y": 4
+		},
+		"polz": {
+		  "y": 4,
+		  "len": 29,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"fly": {
+		  "y": 1,
+		  "len": 14,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 20
+		},
+		"death": {
+		  "y": 3
+		},
+		"fall": {
+		  "y": 3,
+		  "len": 13
+		}
+	},
+	
+	"hellhound": {
+		"stay": {
+		  "y": 0
+		},
+		"walk": {
+		  "y": 0,
+		  "len": 25,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"sit": {
+		  "y": 1
+		},
+		"polz": {
+		  "y": 1,
+		  "len": 25,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"run": {
+		  "y": 2,
+		  "len": 12,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 3,
+		  "len": 16,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 4,
+		  "len": 20
+		},
+		"death": {
+		  "y": 5
+		},
+		"fall": {
+		  "y": 5,
+		  "len": 13
+		},
+		"laz": {
+		  "y": 6,
+		  "len": 12,
+		  "rep": 1
+		}
+	},
+	
+	"zombie": {
+		"stay": {},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"run": {
+		  "y": 2,
+		  "len": 8,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 3,
+		  "len": 16,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 4,
+		  "len": 20
+		},
+		"death": {
+		  "y": 5
+		},
+		"fall": {
+		  "y": 5,
+		  "len": 13
+		},
+		"dig": {
+		  "y": 6,
+		  "len": 24
+		},
+		"walk": {
+		  "y": 7,
+		  "len": 24,
+		  "rep": 1
+		}
+	},
+	
+	"zombie1": {
+		"pre": {
+		  "y": 8,
+		  "len": 24
+		}
+	},
+	
+	"zombie2": {
+		"super": {
+		  "y": 8,
+		  "len": 4,
+		  "rep": 1
+		}
+	},
+	
+	"zombie3": {
+		"pre": {
+		  "y": 8,
+		  "len": 18
+		}
+	},
+	
+	"zombie5": {
+		"super": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "df": 2,
+		  "rep": 1
+		}
+	},
+	
+	"zombie6": {
+		"pre": {
+		  "y": 8,
+		  "len": 18
+		}
+	},
+	
+	"zombie7": {
+		"super": {
+		  "y": 8,
+		  "len": 4,
+		  "rep": 1
+		}
+	},
+	
+	"zombie9": {
+		"pre": {
+		  "y": 8,
+		  "len": 24
+		}
+	},
+	
+	"tarakan": {
+		"stay": {},
+		"walk": {
+		  "len": 8,
+		  "rep": 1
+		},
+		"run": {
+		  "len": 8,
+		  "rep": 1
+		},
+		"jump": {
+		  "len": 8,
+		  "rep": 1
+		},
+		"plav": {
+		  "len": 8,
+		  "rep": 1
+		}
+	},
+	
+	"rat": {
+		"stay": {},
+		"walk": {
+		  "len": 9,
+		  "ff": 1,
+		  "rf": 2,
+		  "df": 0.5,
+		  "rep": 1
+		},
+		"run": {
+		  "len": 9,
+		  "ff": 1,
+		  "rf": 2,
+		  "rep": 1
+		},
+		"jump": {
+		  "ff": 10
+		},
+		"plav": {
+		  "len": 9,
+		  "ff": 1,
+		  "rf": 2,
+		  "df": 0.25,
+		  "rep": 1
+		}
+	},
+	
+	"molerat": {
+		"stay": {},
+		"walk": {
+		  "len": 13,
+		  "ff": 1,
+		  "rf": 2,
+		  "df": 0.5,
+		  "rep": 1
+		},
+		"run": {
+		  "len": 13,
+		  "ff": 1,
+		  "rf": 2,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 1,
+		  "len": 10,
+		  "df": 0.4
+		},
+		"plav": {
+		  "y": 2,
+		  "len": 8,
+		  "df": 0.5,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 3,
+		  "len": 10
+		},
+		"death": {
+		  "y": 3,
+		  "ff": 9
+		}
+	},
+	
+	"scorp1": {
+		"stay": {},
+		"attack": {
+		  "len": 15,
+		  "ff": 1
+		},
+		"walk": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1,
+		  "df": 0.5
+		},
+		"run": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"plav": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 20
+		},
+		"death": {
+		  "y": 2,
+		  "ff": 19
+		}
+	},
+	
+	
+	"scorp2": {
+		"stay": {},
+		"attack": {
+		  "len": 15,
+		  "ff": 1
+		},
+		"walk": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1,
+		  "df": 0.5
+		},
+		"run": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"plav": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 20
+		},
+		"death": {
+		  "y": 2,
+		  "ff": 19
+		}
+	},
+	
+	"scorp3": {
+		"stay": {},
+		"attack": {
+		  "len": 15,
+		  "ff": 1
+		},
+		"walk": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1,
+		  "df": 0.5
+		},
+		"run": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"plav": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 1,
+		  "len": 18,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 20
+		},
+		"death": {
+		  "y": 2,
+		  "ff": 19
+		}
+	},
+	
+	"ant": {
+		"stay": {},
+		"walk": {
+		  "len": 14,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"run": {
+		  "len": 14,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"jump": {
+		  "len": 14,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"plav": {
+		  "len": 14,
+		  "rf": 1,
+		  "rep": 1
+		}
+	},
+	
+	"necros": {
+		"stay": {
+		  "len": 24,
+		  "rep": 0
+		}
+	},
+	
+	"phoenix": {
+		"stay": {},
+		"fly": {
+		  "len": 10,
+		  "ff": 1,
+		  "rf": 2,
+		  "rep": 1
+		}
+	},
+	
+	"protect": {
+		"stay": {
+		  "len": 1,
+		  "rep": 0
+		},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"walk": {
+		  "y": 4,
+		  "len": 24,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 5,
+		  "len": 1
+		},
+		"fly": {
+		  "y": 5,
+		  "len": 16,
+		  "rf": 8,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 16
+		},
+		"death": {
+		  "y": 3
+		},
+		"fall": {
+		  "y": 3,
+		  "len": 11
+		}
+	},
+	
+	"gutsy": {
+		"stay": {
+		  "len": 40,
+		  "rep": 0
+		},
+		"die": {
+		  "y": 1,
+		  "len": 20
+		},
+		"death": {
+		  "y": 1,
+		  "len": 1
+		}
+	},
+	
+	"eqd": {
+		"stay": {
+		  "len": 1,
+		  "rep": 0
+		},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"walk": {
+		  "y": 6,
+		  "len": 24,
+		  "rep": 1
+		},
+		"run": {
+		  "y": 2,
+		  "len": 8,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 3,
+		  "len": 16,
+		  "stab": 1
+		},
+		"die": {
+		  "y": 4,
+		  "len": 20
+		},
+		"death": {
+		  "y": 5
+		},
+		"fall": {
+		  "y": 5,
+		  "len": 13
+		}
+	},
+	
+	"protect1": {
+		"stay": {
+		  "len": 1,
+		  "rep": 0
+		},
+		"trot": {
+		  "y": 1,
+		  "len": 17,
+		  "rf": 1,
+		  "rep": 1
+		},
+		"walk": {
+		  "y": 4,
+		  "len": 24,
+		  "rep": 1
+		},
+		"jump": {
+		  "y": 5,
+		  "len": 1
+		},
+		"fly": {
+		  "y": 5,
+		  "len": 16,
+		  "rf": 8,
+		  "rep": 1
+		},
+		"die": {
+		  "y": 2,
+		  "len": 16
+		},
+		"death": {
+		  "y": 3
+		},
+		"fall": {
+		  "y": 3,
+		  "len": 11
+		}
+	},
+	
+	"gutsy1": {
+		"stay": {
+		  "len": 40,
+		  "rep": 0
+		},
+		"die": {
+		  "y": 1,
+		  "len": 20
+		},
+		"death": {
+		  "y": 1,
+		  "len": 1
+		}
+	},
+	
+	"owl": {
+		"stay": {},
+		"fly": {
+		  "len": 8,
+		  "ff": 1,
+		  "rf": 2,
+		  "rep": 1
+		}
+	}
+}

@@ -112,7 +112,7 @@ package fe.graph
                 for (var key:String in textureSet) {
                     var imageRelativePath:String = textureDirectory + textureSet[key]; // Note: Grabs the pair here 
                     var imageFile:File = File.applicationDirectory.resolvePath(imageRelativePath);
-                    trace("GrLoader - Loading image: " + imageRelativePath);
+                    //trace("GrLoader - Loading image: " + imageRelativePath);
                     
                     var imageLoader:Loader = new Loader();
                     imageLoaders.push({loader: imageLoader, key: key});
