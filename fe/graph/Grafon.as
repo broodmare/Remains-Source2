@@ -45,11 +45,10 @@ package fe.graph
 		public var visSats:Sprite;
 		public var visFon:MovieClip;
 		
-		var resX:int;		//	screen pixel width
-		var resY:int;		//	screen pixel height
-
-		var kusokX:int=48;	// room tile width
-		var kusokY:int=25;	// room tile height
+		var resX:int;			// Screen pixel width
+		var resY:int;			// Screen pixel height
+		var kusokX:int = 48;	// Room tile width
+		var kusokY:int = 25;	// Room tile height
 		
 		public var frontBmp:BitmapData;
 		var frontBitmap:Bitmap;
@@ -79,7 +78,6 @@ package fe.graph
 		var brRect:Rectangle = new Rectangle(0,0,50,50);
 		var pm:Matrix = new Matrix();
 			
-		
 		var voda = new tileVoda();
 
 		var m:Matrix;
@@ -101,22 +99,21 @@ package fe.graph
 		public var resIsLoad:Boolean=false;
 		public var progressLoad:Number=0;
 		public static var spriteLists:Array=[];
-		public static var texUrl:Array=['texture.swf','texture1.swf','sprite.swf','sprite1.swf'];
+		
+		// Lack of '.swf' indicates loose textures in a folder
+		public static var texUrl:Array = ['texture', 'texture1.swf', 'sprite.swf', 'sprite1.swf'];
 		public var grLoaders:Array;
 		
-		public static const numbMat=0;		//материалы
-		public static const numbFon=0;		//задники
-		public static const numbBack=1;		//декорации
-		public static const numbObj=1;		//объекты
-		public static const numbSprite=2;	//номер, с которого начинаются файлы спрайтов
-
+		public static const numbMat = 0;		//материалы
+		public static const numbFon = 0;		//задники
+		public static const numbBack = 1;		//декорации
+		public static const numbObj = 1;		//объекты
+		public static const numbSprite = 2;	//номер, с которого начинаются файлы спрайтов
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		
-		public function Grafon(nvis:Sprite)
-		{
+		public function Grafon(nvis:Sprite) {
 			visual = nvis;
 
 			visBack = new Sprite();
@@ -130,8 +127,7 @@ package fe.graph
 			visSats.filters=[new BlurFilter(3,3,1)];
 			
 			visObjs = [];
-			for (var i = 0; i < kolObjs; i++) 
-			{
+			for (var i = 0; i < kolObjs; i++) {
 				visObjs.push(new Sprite());
 			}
 			
@@ -189,62 +185,67 @@ package fe.graph
 			visual.addChild(ramR);
 			visual.addChild(ramL);
 			
+			// START LOADING TEXTURES HERE
+
 			grLoaders = [];
-			for (var i in texUrl)
-			{
-				var textureURL:String=texUrl[i];
-				if (World.w.playerMode=='PlugIn')
-				{
-					textureURL+='?u='+World.w.fileVersion;
+			for (var i in texUrl) {
+				var textureURL:String = texUrl[i];
+				// Check if 'textureURL' contains '.swf'
+				if (textureURL.indexOf(".swf") != -1) {
+					grLoaders[i] = new GrLoader(i, textureURL, this, "swf");
 				}
-				grLoaders[i]=new GrLoader(i,textureURL,this);
+				else {
+					grLoaders[i] = new GrLoader(i, textureURL, this, "looseImage");
+				}
+				
 			}
 			createCursors();
 		}
 		
-		public function checkLoaded(n:int):void
-		{
-			if (n==0) {
-				//считывание материалов их xml
+		public function checkLoaded(n:int):void {
+			
+			// 0 is tile and sky textures
+			if (n == 0) {
+				// [Reading their xml materials]
 				arrFront = [];
 				arrBack  = [];
 
 				var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "mats", "mat");
 
-				for each (var p:XML in xmlList)
-				{
-					if (p.@vid.length()==0)
-					{
-						if (p.@ed=='2') arrBack[p.@id]=new Material(p);
-						else arrFront[p.@id]=new Material(p);
+				for each (var p:XML in xmlList) {
+					if (p.@vid.length() == 0) {
+						if (p.@ed == '2') {
+							arrBack[p.@id] = new Material(p);
+						}
+						else {
+							arrFront[p.@id] = new Material(p);
+						}
 					}
 				}
 
 				xmlList = null; // Manual cleanup.
 			}
+
+
 			resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol);
 		}
 		
-		public function allProgress():void
-		{
+		public function allProgress():void {
 			progressLoad = 0;
-			for (var i in grLoaders)
-			{
-				progressLoad+=grLoaders[i].progressLoad;
+			for (var i in grLoaders) {
+				progressLoad += grLoaders[i].progressLoad;
 			}
 			progressLoad /= GrLoader.kol;
 		}
 		
-		private function createCursors():void
-		{
+		private function createCursors():void {
 			createCursor(visCurArrow,'arrow');
-			createCursor(visCurTarget,'target',13,13);
-			createCursor(visCurTarget1,'combat',13,13);
-			createCursor(visCurTarget2,'action',13,13);
+			createCursor(visCurTarget,'target', 13, 13);
+			createCursor(visCurTarget1,'combat', 13, 13);
+			createCursor(visCurTarget2,'action', 13, 13);
  		}
 		
-		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void
-		{
+		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void {
 			var cursorData:Vector.<BitmapData>;
 			var mouseCursorData:MouseCursorData;
 			cursorData=new Vector.<BitmapData>();
@@ -259,36 +260,71 @@ package fe.graph
 //							Начальная прорисовка локации
 //============================================================================================		
 		
-		public function getObj(tex:String, n:int=0):* {
-			return this.grLoaders[n].res.getObj(tex);
+		public function getObj(textureName:String, n:int = 0):* {
+			trace("Getting resource object: " + textureName + " from GrLoader: " + n);
+			if (grLoaders[n] && grLoaders[n].isLoad) {
+				return grLoaders[n].getObj(textureName);
+			}
+			else {
+				trace("GrLoader not loaded or invalid index:", n);
+				return null;
+			}
 		}
 		
 		//показать задний фон
-		public function drawFon(vfon:MovieClip, tex:String):void
-		{
-			if (tex=='' || tex==null) tex='fonDefault';
-			if (visFon && vfon.contains(visFon)) vfon.removeChild(visFon);
-			visFon=getObj(tex);
-			if (visFon) vfon.addChild(visFon);
+		public function drawFon(vfon:MovieClip, tex:String):void {
+		// Set default texture if none provided
+		if (tex == '' || tex == null) {
+			tex = 'fonDefault';
 		}
+		// Remove the existing background if present
+		if (visFon && vfon.contains(visFon)) {
+			vfon.removeChild(visFon);
+		}
+		// Retrieve the sky bitmap
+		var obj:Object = getObj(tex);
 		
-		public function setFonSize(nx:Number, ny:Number):void
-		{
+		if (obj) {
+			// Check if the object is already a MovieClip
+			if (obj is MovieClip) {
+				visFon = obj as MovieClip;
+			}
+			// If it's BitmapData, wrap it inside a Bitmap and then a MovieClip
+			else if (obj is BitmapData) {
+				var bitmap:Bitmap = new Bitmap(obj as BitmapData);
+				var mc:MovieClip = new MovieClip();
+				mc.addChild(bitmap);
+				visFon = mc;
+			}
+			// Optionally handle other types or throw an error
+			else {
+				throw new TypeError("Unsupported object type for visFon");
+			}
+			
+			// Add the MovieClip to the display list
+			vfon.addChild(visFon);
+		}
+		else {
+			trace("Warning: visFon object not found for texture:", tex);
+		}
+	}
+		
+		public function setFonSize(nx:Number, ny:Number):void {
 			if (visFon) {
 				if (nx>rectX && ny>rectY) {
-					visFon.x=visual.x;
-					visFon.y=visual.y;
-					visFon.width=rectX;
-					visFon.height=rectY;
+					visFon.x = visual.x;
+					visFon.y = visual.y;
+					visFon.width = rectX;
+					visFon.height = rectY;
 				}
-				else
-				{
+				else {
 					var koef=visFon.width/visFon.height;
 					visFon.x=visFon.y=0;
 					if (nx>=ny*koef) {
 						visFon.width=nx;
 						visFon.height=nx/koef;
-					} else {
+					}
+					else {
 						visFon.height=ny;
 						visFon.width=ny*koef;
 					}
@@ -296,26 +332,20 @@ package fe.graph
 			}
 		}
 		
-		public function warShadow():void
-		{
-			if (World.w.pers.infravis)
-			{
+		public function warShadow():void {
+			if (World.w.pers.infravis) {
 				visLight.transform.colorTransform = infraTransform;
 				visLight.blendMode = 'multiply';
 			}
-			else
-			{
+			else {
 				visLight.transform.colorTransform = defTransform
 				visLight.blendMode = 'normal';
 			}
 		}
-		var nn:int=0;
 		
 		//прорисовка локации
-		public function drawLoc(nloc:Location):void
-		{
-			try
-			{
+		public function drawLoc(nloc:Location):void {
+			try {
 				World.w.gr_stage=1;
 				loc=nloc;
 				loc.grafon=this;
@@ -422,8 +452,7 @@ package fe.graph
 					try {
 						drawKusok(mat,true);	//передний план
 					}
-					catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:48)');
 						World.w.showError(err,'Ошибка рисования слоя '+mat.id);
 					}
@@ -433,8 +462,7 @@ package fe.graph
 					try {
 						drawKusok(arrBack[e],false);		//задний план
 					}
-					catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:49)');
 						World.w.showError(err,'Ошибка рисования слоя '+arrBack[e].id);
 					}
@@ -459,14 +487,22 @@ package fe.graph
 								if (j<=0) {
 									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
 									backBmp.draw(bo.vis, m, ct, bo.blend, null, true);
-								} else {
+								}
+								else {
 									if (bo.light) {
 										if (darkness2>=0.43) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
 										else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=0.55+darkness2;
-									} else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+									}
+									else {
+										ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+									}
 									backBmp2.draw(bo.vis, m, ct, bo.blend, null, true);
-									if (bo.light) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
-									else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+									if (bo.light) {
+										ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
+									}
+									else {
+										ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+									}
 								}
 							}
 							if (bo.erase) satsBmp.draw(bo.erase, m, null, 'erase', null, true);
@@ -502,7 +538,7 @@ package fe.graph
 				
 				World.w.gr_stage=15;
 				if (transpFon) satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-				backBmp.draw(colorBmp,null,null,'hardlight');
+				backBmp.draw(colorBmp, null, null, 'hardlight');
 				backBmp.draw(shadBmp);
 				if (transpFon) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 				
@@ -528,8 +564,7 @@ package fe.graph
 				if (nloc.cTransform && nloc.cTransformFon) visFon.transform.colorTransform=nloc.cTransformFon;
 				else if (visFon.transform.colorTransform!=defTransform) visFon.transform.colorTransform=defTransform;
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:4A)');
 				World.w.showError(err)
 			}
@@ -541,24 +576,19 @@ package fe.graph
 		}
 		
 		//прорисовка всей карты затемнения
-		public function setLight():void
-		{
+		public function setLight():void {
 			lightBmp.lock();
-			for (var i:int = 1; i < loc.spaceX; i++)
-			{
-				for (var j:int = 1; j < loc.spaceY; j++)
-				{
-					lightBmp.setPixel32(i, j + 1, int((1-loc.space[i][j].visi)*255)*0x1000000);
+			for (var i:int = 1; i < loc.spaceX; i++) {
+				for (var j:int = 1; j < loc.spaceY; j++) {
+					lightBmp.setPixel32(i, j + 1, int((1 - loc.space[i][j].visi) * 255) * 0x1000000);
 				}
 			}
 			lightBmp.unlock();
 		}
 		
 		//добавление всех видимых объектов
-		public function drawAllObjs():void
-		{
-			for (var i = 0; i < kolObjs; i++)
-			{
+		public function drawAllObjs():void {
+			for (var i = 0; i < kolObjs; i++) {
 				var n = visual.getChildIndex(visObjs[i]);
 				visual.removeChild(visObjs[i]);
 				visObjs[i] = new Sprite();
@@ -567,16 +597,14 @@ package fe.graph
 
 			var obj:Entity = loc.firstObj;
 
-			while (obj)
-			{
+			while (obj) {
 				obj.addVisual();
 				obj = obj.nobj;
 			}
 
 			loc.gg.addVisual();
 
-			for (var i in loc.signposts) // WHY IS 'I' BEING REUSED AS A STRING? (Changed to J)
-			{
+			for (var i in loc.signposts) {
 				visObjs[3].addChild(loc.signposts[i]);
 			}
 		}
@@ -593,39 +621,31 @@ package fe.graph
 			if (fill==null) fill=getObj('tBackWall')
 			var osn:Sprite=new Sprite();
 			osn.graphics.beginBitmapFill(fill);
-			if (sposob==0)
-			{
+			if (sposob==0) {
 				osn.graphics.drawRect(0,0,roomPixelWidth,roomPixelHeight);
 			}
-			else if (sposob == 1)
-			{
+			else if (sposob == 1) {
 				osn.graphics.drawRect(0,0,11*tileX-10, roomPixelHeight);
 				osn.graphics.drawRect(37*tileX+10,0,roomPixelWidth, roomPixelHeight);
 			}
-			else if (sposob == 2)
-			{
+			else if (sposob == 2) {
 				osn.graphics.drawRect(0,16*Tile.tileY+10,roomPixelWidth, roomPixelHeight);
 			}
-			else if (sposob == 3)
-			{
+			else if (sposob == 3) {
 				osn.graphics.drawRect(0,24*Tile.tileY+10,roomPixelWidth, roomPixelHeight);
 			}
 			backBmp.draw(osn, m, null, null, null, false);
 		}
 		
-		private function setMovieClipTile(mc:MovieClip, t:Tile, toFront:Boolean):void
-		{
-			if (mc.c1)
-			{
-				if (toFront)
-				{
+		private function setMovieClipTile(mc:MovieClip, t:Tile, toFront:Boolean):void {
+			if (mc.c1) {
+				if (toFront) {
 					mc.c1.gotoAndStop(t.kont1 + 1);
 					mc.c2.gotoAndStop(t.kont2 + 1);
 					mc.c3.gotoAndStop(t.kont3 + 1);
 					mc.c4.gotoAndStop(t.kont4 + 1);
 				}
-				else
-				{
+				else {
 					mc.c1.gotoAndStop(t.pont1 + 1);
 					mc.c2.gotoAndStop(t.pont2 + 1);
 					mc.c3.gotoAndStop(t.pont3 + 1);
@@ -657,21 +677,22 @@ package fe.graph
 			if (material.texture) {
 				if (loc.homeStable && material.alttexture != null) osn.graphics.beginBitmapFill(material.alttexture);
 				else osn.graphics.beginBitmapFill(material.texture);
-			} else osn.graphics.beginFill(0x666666);
+			}
+			else {
+				osn.graphics.beginFill(0x666666);
+			}
 
 			osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 
 			kusok.addChild(osn);
 			kusok.addChild(maska);
-			if (material.border)
-			{
+			if (material.border) {
 				border.graphics.beginBitmapFill(material.border);
 				border.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(border);
 				kusok.addChild(bmaska);
 			}
-			if (material.floor)
-			{
+			if (material.floor) {
 				floor.graphics.beginBitmapFill(material.floor);
 				floor.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(floor);
@@ -680,13 +701,10 @@ package fe.graph
 			
 			var isDraw:Boolean = false;
 			
-			for (var i:int = 0; i < loc.spaceX; i++)
-			{
-				for (var j:int = 0; j < loc.spaceY; j++)
-				{
+			for (var i:int = 0; i < loc.spaceX; i++) {
+				for (var j:int = 0; j < loc.spaceY; j++) {
 					t = loc.getTile(i, j);
-					if (t.front == material.id && (toFront || dop) || t.back == material.id && !toFront)
-					{
+					if (t.front == material.id && (toFront || dop) || t.back == material.id && !toFront) {
 						isDraw = true;
 						mc = new material.textureMask();
 						setMovieClipTile(mc, t, toFront);
@@ -738,36 +756,34 @@ package fe.graph
 //							Время выполнения
 //============================================================================================		
 		
-		public function getSpriteList(id:String, n:int=0):BitmapData
-		{
-			if (spriteLists[id] == null)
-			{
+		public function getSpriteList(id:String, n:int=0):BitmapData {
+			if (spriteLists[id] == null) {
 				if (n > 0) spriteLists[id] = getObj(id, numbSprite + n);
-				else
-				{
+				else {
 					spriteLists[id] = getObj(id, numbSprite);
 					if (spriteLists[id] == null) spriteLists[id] = getObj(id, numbSprite + 1);
 				}
 			}
-			if (spriteLists[id]==null) trace('нет спрайтов', id)
+
+			if (spriteLists[id] == null) {
+				trace('нет спрайтов', id)
+			}
+			
 			return spriteLists[id];
 		}
 		
-		public function drawSats():void
-		{
+		public function drawSats():void {
 			satsBmp.fillRect(satsBmp.rect, 0);
 			satsBmp.draw(visual, new Matrix);
 		}
 		
-		public function onSats(on:Boolean):void
-		{
+		public function onSats(on:Boolean):void {
 			visSats.visible = on;
 			visObjs[2].visible =! on;
 		}
 		
 		//рисование одного блока воды
-		public function drawWater(t:Tile, recurs:Boolean = true):void
-		{
+		public function drawWater(t:Tile, recurs:Boolean = true):void {
 			m=new Matrix();
 			m.tx = t.X * tileX;
 			m.ty = t.Y * Tile.tileY;
@@ -778,43 +794,35 @@ package fe.graph
 			if (recurs) drawWater(loc.getTile(t.X,t.Y+1),false);
 		}
 		
-		public function tileDie(t:Tile,tip:int):void
-		{
+		public function tileDie(t:Tile,tip:int):void {
 			var erC:Class = block_dyr;	// .fla linkage
 			var drC:Class = block_tre;	// .fla linkage
-
+			
 			var nx = (t.X + 0.5) * tileX;
 			var ny = (t.Y + 0.5) * tileY;
 
-			if (t.fake)
-			{
+			if (t.fake) {
 				Emitter.emit('fake', loc, nx, ny);
 				drC = block_bur;	// .fla linkage
 			}
-			else if (t.mat == 7)
-			{
+			else if (t.mat == 7) {
 				Emitter.emit('fake',loc,nx,ny);
 				Emitter.emit('pole',loc,nx,ny,{kol:10, rx:tileX, ry:tileY});
 				erC = TileMask;
 				drC = null;
 			}
-			else if (tip < 10)
-			{
-				if (t.mat == 1)			Emitter.emit('metal',	loc,nx,ny,{kol:6, rx:tileX, ry:tileY})
-				else if (t.mat == 2)	Emitter.emit('kusok',	loc,nx,ny,{kol:6, rx:tileX, ry:tileY})
-				else if (t.mat == 3)	Emitter.emit('schep',	loc,nx,ny,{kol:6, rx:tileX, ry:tileY})
-				else if (t.mat == 4)	Emitter.emit('kusokB',	loc,nx,ny,{kol:6, rx:tileX, ry:tileY})
-				else if (t.mat == 5)	Emitter.emit('steklo',	loc,nx,ny,{kol:6, rx:tileX, ry:tileY})
-				else if (t.mat == 6)	Emitter.emit('kusokD',	loc,nx,ny,{kol:6, rx:tileX, ry:tileY})
+			else if (tip < 10) {
+				var emitEffect:Array = ["null", "metal", "kusok", "schep", "kusokB", "steklo", "kusokD"];
+				if (t.mat >= 1 && t.mat <= 6) {
+					Emitter.emit(emitEffect[t.mat],	loc,nx,ny,{kol:6, rx:tileX, ry:tileY});
+				}
 			}
-			else if (tip >= 15)
-			{
+			else if (tip >= 15) {
 				Emitter.emit('plav',loc,nx,ny);
 				erC=block_plav;		// .fla linkage
 				drC = block_pla;		// .fla linkage
 			}
-			else if (tip >= 11 && tip <= 13)
-			{
+			else if (tip >= 11 && tip <= 13) {
 				Emitter.emit('bur',loc,nx,ny);
 				drC = block_bur;		// .fla linkage
 			}
@@ -964,21 +972,18 @@ package fe.graph
 			decal(erC,drC,nx,ny,sc,rc,bl);
 		}
 		
-		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number=1, rc:Number=0, bl:String='normal'):void
-		{
+		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number=1, rc:Number=0, bl:String='normal'):void {
 			m=new Matrix();
 			if (sc!=1) m.scale(sc,sc);
 			if (rc!=0) m.rotate(rc);
 			m.tx=nx;
 			m.ty=ny;
-			if (erC)
-			{
+			if (erC) {
 				var erase:MovieClip=new erC();
 				if (erase.totalFrames>1) erase.gotoAndStop(Math.floor(Math.random()*erase.totalFrames+1));
 				frontBmp.draw(erase, m, null, 'erase', null, true);
 			}
-			if (drD)
-			{
+			if (drD) {
 				var nagar:MovieClip=new drD();
 				if (nagar.totalFrames>1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
 				nagar.scaleX=nagar.scaleY=sc;
@@ -998,8 +1003,8 @@ package fe.graph
 			}
 		}
 		
-		public function gwall(nx:int, ny:int):void
-		{
+		// Ghost wall spell
+		public function gwall(nx:int, ny:int):void {
 			var m:Matrix = new Matrix();
 			m.tx = nx * tileX;
 			m.ty = ny * tileY;
@@ -1007,19 +1012,16 @@ package fe.graph
 			frontBmp.draw(wall, m);
 		}
 		
-		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void
-		{
+		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void {
 			var padding:int = 25;
 			var br:MovieClip; //brush
 
 			// Determine what brush to use. I moved brush instantiation here was well instead being loaded with the class.
-			if (aero)
-			{
+			if (aero) {
 				if (!pa) pa = new paintaero();
 				br = pa;
 			}
-			else
-			{
+			else {
 				if (!pb) pb = new paintbrush();
 				br = pb;
 			}	
@@ -1074,45 +1076,73 @@ package fe.graph
 		
 		public function specEffect(n:Number = 0):void
 		{
-			switch (n)
-			{
-				case 0:
-					visual.filters = [];
-					visFon.filters = [];
-				break;
+			// Define the filter lookup table for cases 1 through 6
+			const colorMatrixFilters:Array = [
+				// Case 0 (unused)
+				null,
+				// Case 1
+				new ColorMatrixFilter([
+					 2.0, -0.9, -0.1, 0.0, 0.0,
+					-0.4,  1.5, -0.1, 0.0, 0.0,
+					-0.4, -0.9,  2.0, 0.0, 0.0,
+					 0.0,  0.0,  0.0, 1.0, 0.0
+				]),
+				// Case 2
+				new ColorMatrixFilter([
+					-0.574, 1.430,  0.144, 0.0, 0.0,
+					 0.426, 0.430,  0.144, 0.0, 0.0,
+					 0.426, 1.430, -0.856, 0.0, 0.0,
+					 0.000, 0.000,  0.000, 1.0, 0.0
+				]),
+				// Case 3
+				new ColorMatrixFilter([
+					0.0, 1.0,  0.0,   0.0, 0.0,
+					1.0, 0.0,  0.0,   0.0, 0.0,
+					0.0, 0.0, -0.2, 100.0, 0.0,
+					0.0, 0.0,  0.0,   1.0, 0.0
+				]),
+				// Case 4
+				new ColorMatrixFilter([
+					 0.0, -0.5, -0.5, 0.0, 255.0,
+					-0.5,  0.0, -0.5, 0.0, 255.0,
+					-0.5, -0.5,  0.0, 0.0, 255.0,
+					 0.0,  0.0,  0.0, 1.0,   0.0
+				]),
+				// Case 5
+				new ColorMatrixFilter([
+					3.4, 6.70, 0.9, 0.0, -635.0,
+					3.4, 6.75, 0.9, 0.0, -635.0,
+					3.4, 6.70, 0.9, 0.0, -635.0,
+					0.0, 0.00, 0.0, 1.0,    0.0
+				]),
+				// Case 6
+				new ColorMatrixFilter([
+					0.33, 0.33, 0.33, 0.0, 0.0,
+					0.33, 0.33, 0.33, 0.0, 0.0,
+					0.33, 0.33, 0.33, 0.0, 0.0,
+					0.00, 0.00, 0.00, 1.0, 0.0
+				])
+			];
 
-				case 1:
-					visual.filters=[new ColorMatrixFilter([2,-0.9,-0.1,0,0,-0.4,1.5,-0.1,0,0,-0.4,-0.9,2,0,0,0,0,0,1,0])];
-				break;
-
-				case 2:
-					visual.filters=[new ColorMatrixFilter([-0.574,1.43,0.144,0,0,0.426,0.43,0.144,0,0,0.426,1.430,-0.856,0,0,0,0,0,1,0])];
-				break;
-
-				case 3:
-					visual.filters=[new ColorMatrixFilter([0,1,0,0,0,1,0,0,0,0,0,0,-0.2,0,100,0,0,0,1,0])];
-				break;
-
-				case 4:
-					visual.filters=[new ColorMatrixFilter([0,-0.5,-0.5,0,255,-0.5,0,-0.5,0,255,-0.5,-0.5,0,0,255,0,0,0,1,0])];
-				break;
-
-				case 5:
-					visual.filters=[new ColorMatrixFilter([3.4,6.7,0.9,0,-635,3.4,6.75,0.9,0,-635,3.4,6.7,0.9,0,-635,0,0,0,1,0])];
-				break;
-
-				case 6:
-					visual.filters=[new ColorMatrixFilter([0.33,0.33,0.33,0,0,0.33,0.33,0.33,0,0,0.33,0.33,0.33,0,0,0,0,0,1,0])];
-				break;
-
-				default:
-					if (n > 100)
-					{
-						visual.filters = [new BlurFilter(n - 100, n - 100)];
-						visFon.filters = [new BlurFilter(n - 100, n - 100)];
-					}
-					else trace('ERROR: Unknown special effect: "' + n + '"!');
-				break;
+			if (n === 0) {
+				// Case 0: Clear filters
+				visual.filters = [];
+				visFon.filters = [];
+			}
+			else if (n >= 1 && n <= 6) {
+				// Cases 1-6: Apply the corresponding ColorMatrixFilter from the lookup array
+				visual.filters = [colorMatrixFilters[n]];
+			}
+			else if (n > 100) {
+				// Default case for n > 100: Apply BlurFilter
+				var blurAmount:Number = n - 100;
+				var blur:BlurFilter = new BlurFilter(blurAmount, blurAmount);
+				visual.filters = [blur];
+				visFon.filters = [blur];
+			}
+			else {
+				// Handle unknown cases
+				trace('ERROR: Unknown special effect: "' + n + '"!');
 			}
 		}
 	}
