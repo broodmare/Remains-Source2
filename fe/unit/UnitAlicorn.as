@@ -120,7 +120,7 @@ package fe.unit
 
 			initBlit();
 			animState='stay';
-			wPos=BlitAnim.wPosAlicorn;
+			wPos = BlitAnim.getWeaponOffset("wPosAlicorn");
 			if (tr==3) visshit=new visShit2();
 			else visshit=new visShit();
 			vis.addChild(visshit);

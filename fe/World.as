@@ -934,10 +934,21 @@ package  fe
 			}
 		}
 		
+		// Check whether the player is allowed to leave the current room
 		public function possiblyOut():int {
-			if (t_battle>0) return 2;
-			if (loc && loc.t_alarm>0) return 2;
-			if (land.loc_t>120) return 1;
+			// Can't leave during combat
+			if (t_battle > 0) {
+				return 2;
+			}
+			// Can't leave while alarm is going off
+			if (loc && loc.t_alarm > 0) {
+				return 2;
+			}
+			// Too soon to change rooms again
+			if (land.loc_t > 120) {
+				return 1;
+			}
+			// Can leave
 			return 0;
 		}
 		

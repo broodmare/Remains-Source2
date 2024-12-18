@@ -64,7 +64,7 @@ package fe.unit
 			
 			initBlit();
 			animState='stay';
-			wPos=BlitAnim.wPosAlicornBoss;
+			wPos = BlitAnim.getWeaponOffset("wPosAlicornBoss");
 			visshit=new visShit3();
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);

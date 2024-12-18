@@ -620,12 +620,12 @@ package fe.unit
 					id_name=node.@hero;
 				}
 				if (setOpts) {
-					if (node.@pony.length()) opt.pony=true;					//является пони
-					if (node.@zombie.length()) opt.zombie=true;					//является зомби
-					if (node.@robot.length()) opt.robot=true;					//является роботом
-					if (node.@insect.length()) opt.insect=true;					//является насекомым
-					if (node.@monster.length()) opt.monster=true;					//является насекомым
-					if (node.@alicorn.length()) opt.alicorn=true;					//является аликорном
+					if (node.@pony.length()) opt.pony=true;			//является пони
+					if (node.@zombie.length()) opt.zombie=true;		//является зомби
+					if (node.@robot.length()) opt.robot=true;		//является роботом
+					if (node.@insect.length()) opt.insect=true;		//является насекомым
+					if (node.@monster.length()) opt.monster=true;	//является насекомым
+					if (node.@alicorn.length()) opt.alicorn=true;	//является аликорном
 					if (node.@mech.length()) {
 						opt.mech=true;					//является механизмом
 						mech=true;
@@ -641,9 +641,14 @@ package fe.unit
 				}
 			}
 			if (node0.blit.length()) {
-				if (anims==null) anims=[];
+				if (anims == null) anims=[];
 				for each(var xbl:XML in node0.blit) {
 					anims[xbl.@id] = new BlitAnim(xbl);
+					// An array of 'blit' objects from the units.xml 
+					// Each blit represents an animation 
+					// A blit has several properties 
+					// an ID : "id", An index : "y", a length in frames : "len",
+					// whether the animation loops: "rep", and (whether the last frame is held, eg. for jumping) : "stab" 
 				}
 			}
 			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];

@@ -140,8 +140,8 @@ package fe.unit
 			spd=new Object();
 			tstor=storona;
 
-			if (msex) wPos=BlitAnim.wPosRaider1;
-			else wPos=BlitAnim.wPosRaider2;
+			if (msex) wPos = BlitAnim.getWeaponOffset("wPosRaider1");
+			else wPos = BlitAnim.getWeaponOffset("wPosRaider2");
 
 			if (!msex) id_name+='_f';
 

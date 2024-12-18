@@ -20,7 +20,7 @@ package fe.unit {
 			tupizna=10;
 			visionMult=1.5;
 			maxSpok=50;
-			wPos=BlitAnim.wPosGriffon1;
+			wPos = BlitAnim.getWeaponOffset("wPosGriffon1");
 			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1);
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');

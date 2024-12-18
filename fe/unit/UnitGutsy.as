@@ -26,7 +26,7 @@ package fe.unit
 			if (currentWeapon) childObjs=[currentWeapon, dopWeapon];
 			
 			if (quiet) id_replic='';
-			wPos=BlitAnim.wPosGutsy;
+			wPos = BlitAnim.getWeaponOffset("wPosGutsy");
 		}
 		
 		public override function forces() {

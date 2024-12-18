@@ -21,7 +21,7 @@ package fe.unit {
 			durak=false;
 			allLink=true;
 			maxSpok=50;
-			wPos=BlitAnim.wPosEncl1;
+			wPos = BlitAnim.getWeaponOffset("wPosEncl1");
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');
 				(thWeapon as WThrow).kolAmmo=grenader;

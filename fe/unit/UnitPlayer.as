@@ -364,30 +364,32 @@
 		public override function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean
 		{
 			// [Don't let me leave]
-			if (teleObj || actionObj || t_work>0 || isFetter>0 || loc.sky)
-			{
-				trace('Failed to leave room!');
+			if (teleObj || actionObj || t_work > 0 || isFetter > 0 || loc.sky) {
+				trace('UnitPlayer.as/outLoc() - Failed to leave room!');
 				return false;
 			}
 			
 			// [Don't let them leave while they're under attack]
 			var po:int = World.w.possiblyOut();
-			if (po > 0 && !(napr==3 && loc.bezdna) && rat==0) {
-				if (napr==3 && !loc.bezdna) {
-					dy=-jumpdy;
-					dx=maxSpeed*storona;
+			if (po > 0 && !(napr == 3 && loc.bezdna) && rat == 0) {
+				if (napr == 3 && !loc.bezdna) {
+					dy = -jumpdy;
+					dx = maxSpeed * storona;
 				}
-				if (po==2) World.w.gui.infoText('noOutLoc', null, null, false);
-				trace('Failed to leave room, under attack!');
+				if (po == 1) {
+					trace("UnitPlayer.as/outLoc() - Can't leave room: Leaving too quickly");
+				}
+				if (po == 2) {
+					World.w.gui.infoText('noOutLoc', null, null, false);
+				}
 				return false;
 			}
 			
-			var laz=isLaz, lev=levit;
+			var laz = isLaz;
+			var lev = levit;
 			var outP:Object = World.w.land.gotoLoc(napr, portX, portY);
-			if (outP)
-			{
-				if (outP.die) // [Death from falling into the abyss (switch to CT)]
-				{
+			if (outP) {
+				if (outP.die) { // [Death from falling into the abyss (switch to CT)]
 					die(-1);
 					vis.visible=false;
 					return false;

@@ -24,7 +24,7 @@ package fe.unit
 				shine=100;
 			}
 			runSpeed=maxSpeed*3;
-			wPos=BlitAnim.wPosZebra1;
+			wPos = BlitAnim.getWeaponOffset("wPosZebra1");
 		}
 		
 		public override function animate() {

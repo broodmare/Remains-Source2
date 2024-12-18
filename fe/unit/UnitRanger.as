@@ -17,7 +17,7 @@ package fe.unit
 			durak=false;
 			allLink=true;
 			isDropArm=false;
-			wPos=BlitAnim.wPosRanger1;
+			wPos = BlitAnim.getWeaponOffset("wPosRanger1");
 			if (1)
 			{
 				dopWeapon1=Weapon.create(this,'robomlau');
