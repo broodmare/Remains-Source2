@@ -1,7 +1,19 @@
 package fe.serv
 {
 	// [Animation using sprite sheets, template]
-	public class BlitAnim
+        /* id: Likely refers to the identifier for the sprite or animation sequence.
+           firstf: Starting frame index.
+           maxf: Total number of frames in the animation.
+           retf: The frame to return to after the animation completes.
+           replay: Boolean indicating if the animation should loop.
+           stab: Boolean indicating if the animation is stable or should stop.
+           f: Current frame index.
+           df: Frame increment per tick (speed of animation).
+        
+          TODO: un-hardcode these to JSON files
+        */
+
+        public class BlitAnim
 	{
 
 		public static var wPosRaider1:Array = [
