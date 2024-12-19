@@ -26,7 +26,7 @@ package fe.util
             vector[Y] = y;
         }
 
-        public function getCoords():Vector {
+        public function getCoords():Vector.<Number> {
             return vector;
         }
     }
