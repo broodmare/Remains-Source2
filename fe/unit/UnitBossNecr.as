@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.display.MovieClip;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
@@ -13,8 +13,8 @@ package fe.unit
 	import fe.projectile.Bullet;
 	import fe.projectile.MagSymbol;
 	
-	public class UnitBossNecr extends UnitPon
-	{
+	public class UnitBossNecr extends UnitPon {
+
 		public var scrAlarmOn:Boolean=true;
 		public var controlOn:Boolean=true;
 		public var kol_emit=6;
@@ -43,7 +43,8 @@ package fe.unit
 		
 		protected var shadowFilter:DropShadowFilter;
 		protected var ghostFilter:GlowFilter;
-
+		
+		// Constructor
 		public function UnitBossNecr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossnecr';
@@ -67,8 +68,8 @@ package fe.unit
 			shadowFilter=new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
 			ghostFilter=new GlowFilter(0x9999FF,1,6,6,2,3);
 			timerDie=90;
-			if (World.w.game.globalDif==3) summonAtkMult=0.65;
-			if (World.w.game.globalDif==4) summonAtkMult=0.8;
+			if (World.w.game.globalDif==3) summonAtkMult = 0.65;
+			if (World.w.game.globalDif==4) summonAtkMult = 0.8;
 		}
 		
 
@@ -92,44 +93,51 @@ package fe.unit
 					vis.osn.gotoAndStop('die');
 					animState='die';
 				}
-			} else if (sost==2) { 
+			}
+			else if (sost==2) { 
 				if (animState!='die') {
 					newPart('necrblast2');
 					vis.osn.gotoAndStop('die');
 					animState='die';
 				}
-			} else if (aiState==3) {
+			}
+			else if (aiState==3) {
 				if (animState!='cast') {
 					vis.osn.gotoAndStop('cast');
 					animState='cast';
 				}
-			} else if (stay) {
-				if (dx<1 && dx>-1) {
+			}
+			else if (stay) {
+				if (velocity.X < 1 && velocity.X > -1) {
 					if (animState!='stay') {
 						vis.osn.gotoAndStop('stay');
 						animState='stay';
 					}
-				} else if (aiState==1) {
+				}
+				else if (aiState==1) {
 					if (animState!='run') {
 						vis.osn.gotoAndStop('run');
 						animState='run';
 					}
-				} else {
+				}
+				else {
 					if (animState!='trot') {
 						vis.osn.gotoAndStop('trot');
 						animState='trot';
 					}
 				}
-			} else if (levit) {
+			}
+			else if (levit) {
 				if (animState!='derg') {
 					vis.osn.gotoAndStop('derg');
 					animState='derg';
 				}
-			} else {
+			}
+			else {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
-					var cframe=Math.round(16+dy);
+					var cframe=Math.round(16+velocity.Y);
 					if (cframe>32) cframe=32;
 					if (cframe<1) cframe=1;
 					vis.osn.body.gotoAndStop(cframe);
@@ -137,7 +145,8 @@ package fe.unit
 			} 
 			if (superInvis && World.w.pers.infravis==0) {
 				celA=0;
-			} else celA=100;
+			}
+			else celA=100;
 			if (curA>celA) curA-=5;
 			if (curA<celA) curA+=5;
 			vis.alpha=curA/100;
@@ -165,7 +174,7 @@ package fe.unit
 			super.setNull(f);
 			//вернуть в исходную точку
 			if (begX>0 && begY>0) setPos(begX, begY);
-			dx=dy=0;
+			velocity.set(0, 0);
 			if (f) {
 				phase=1;
 				sost=1;
@@ -182,11 +191,11 @@ package fe.unit
 		
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
-				dy=-jumpdy*v;
+				velocity.Y = -jumpdy * v;
 			}
 			if (stay) {
-				if (aiNapr==-1) dx*=0.8;
-				else dx+=storona*accel*2;
+				if (aiNapr==-1) velocity.X *= 0.8;
+				else velocity.X += storona * accel * 2;
 			}
 		}
 		
@@ -201,7 +210,7 @@ package fe.unit
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
-				dx=0;
+				velocity.X = 0;
 				return;
 			}
 			
@@ -221,18 +230,21 @@ package fe.unit
 			if (protculd_t>0) protculd_t--;
 			if (curseculd_t>0) {
 				curseculd_t--;
-			} else {
+			}
+			else {
 				if (phase==2 && isrnd(0.25)) {
 					castCurse(2,0);
 					castCurse(2,4);
 					castCurse(2,8);
 					castCurse(2,12);
 					castCurse(2,16);
-				} else if (isrnd(0.25)) {
+				}
+				else if (isrnd(0.25)) {
 					castCurse(1,0);
 					castCurse(1,10);
 					castCurse(1,20);
-				} else {
+				}
+				else {
 					castCurse();
 				}
 				curseculd_t=Math.floor((Math.random()*1.6+0.2)*timeCurseCuld);
@@ -240,17 +252,19 @@ package fe.unit
 			if (aiState!=3 && aiState!=2) {
 				if (atk_t>0) {
 					atk_t--;
-				} else {
+				}
+				else {
 					atk_n++;
 					if (atk_n%2==0) {
 						if (!isShadow && findCel()) {
 							aiState=2;
 							aiTCh=140;
 							newPart('necrblast3');
-							dx*=0.5;
+							velocity.X *= 0.5;
 							walk=0;
 							resetProtect();
-						} else atk_n++;
+						}
+						else atk_n++;
 					}
 					if (atk_n%2==1) {
 						spawn(atk_n%((phase==1)?6:8));
@@ -272,7 +286,8 @@ package fe.unit
 					if (isrnd(0.8)) aiNapr=(celDX>0)?-1:1;
 					else aiNapr=(celDX>0)?1:-1;
 					storona=aiNapr;
-				} else {
+				}
+				else {
 					if (isrnd(0.5)) aiNapr=(celDX>0)?-1:1;
 					aiState=isrnd(0.7)?1:0;
 					storona=aiNapr;
@@ -304,31 +319,37 @@ package fe.unit
 			}
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (dx>0.5) storona=1; 
-				if (dx<-0.5) storona=-1;
+				if (velocity.X > 0.5) storona=1; 
+				if (velocity.X < -0.5) storona=-1;
 				walk=0;
-			} else if (aiState==1) {
+			}
+			else if (aiState==1) {
 				//определить, куда двигаться
 
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else if (stay || isPlav) {
+					else {
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					}
+				}
+				else if (stay || isPlav) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
 						walk=-1;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
+					}
+					else {
+						if (velocity.X < maxSpeed) velocity.X += accel;
 						walk=1;
 					}
-				} else {
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel/4;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel/4;
+						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
+					}
+					else  if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += accel / 4;
 					}
 				}
 				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0) && isrnd(0.8)) jmp=0.4;
@@ -337,7 +358,8 @@ package fe.unit
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
-					} else {							//попытаться перепрыгнуть, если цель спереди
+					}
+					else {							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
 						if (aiTTurn<0) {
 							aiNapr=storona=turnX;
@@ -351,9 +373,10 @@ package fe.unit
 					jump(jmp);
 					jmp=0;
 				}
-			} else if (aiState==2) {
+			}
+			else if (aiState==2) {
 				celA=100;
-				dx*=0.7;
+				velocity.X *= 0.7;
 				aiNapr=storona=(celDX>0)?1:-1;
 				if (aiTCh<120) currentWeapon.attack();
 			}
@@ -375,7 +398,8 @@ package fe.unit
 				timeCurseCuld=220;
 				dexter=2;
 				blood=0;
-			} else {
+			}
+			else {
 				for each(var un:Unit in loc.units) {
 					if (un.mother==this) un.die();
 				}
@@ -385,22 +409,26 @@ package fe.unit
 		
 		public function castProtect(n:int=0) {
 			protculd_t=timeProtectCuld;
-			newPart('black',20);
+			newPart('black', 20);
+			
 			if (n==0 && prot_n==0) {
 				heal(healHp);
 				this.visDetails();
-			} else if (n==1 || prot_n==1) {
+			}
+			else if (n==1 || prot_n==1) {
 				isShadow=invulner=transp=true;
 				levitPoss=false;
 				setVis();
 				prot_t=timeProtect;
 				atk_t=5;
-			} else {
+			}
+			else {
 				superInvis=true;
 				isVis=false;
 				curA=celA=0;
 				prot_t=timeProtect;
 			}
+			
 			prot_n++;
 			if (prot_n>=3) prot_n=0;
 		}
@@ -434,15 +462,15 @@ package fe.unit
 		}
 
 		public function castCurse(n:int=0, otlozh:int=0) {
-			var nx:Number = loc.gg.coordinates.X + loc.gg.dx*15+(Math.random()-0.5)*50;
-			var ny:Number = loc.gg.coordinates.Y - loc.gg.objectHeight / 2 + loc.gg.dy * 15 + (Math.random() - 0.5) * 30;
-			if (n==2) {
-				nx=loc.gg.coordinates.X+loc.gg.dx*15+(otlozh-8)*20*((int(loc.gg.coordinates.X)%2==0)?1:-1);
-				ny=loc.gg.coordinates.Y-loc.gg.objectHeight/2+loc.gg.dy*15;
+			var nx:Number = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (Math.random()-0.5)*50;
+			var ny:Number = loc.gg.coordinates.Y - loc.gg.objectHeight / 2 + loc.gg.velocity.Y * 15 + (Math.random() - 0.5) * 30;
+			if (n == 2) {
+				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? 1 : -1);
+				ny = loc.gg.coordinates.Y - loc.gg.objectHeight / 2 + loc.gg.velocity.Y * 15;
 			}
-			if (n==1) {
-				nx+=Math.random()*200-100;
-				ny+=Math.random()*100-50;
+			if (n == 1) {
+				nx += Math.random() * 200 - 100;
+				ny += Math.random() * 100 - 50;
 			}
 			if (nx>loc.maxX-100) nx=loc.maxX-100;
 			if (nx<100) nx=100;
@@ -464,7 +492,8 @@ package fe.unit
 			else if (phase==2) {
 				vis.blendMode='screen'
 				vis.filters=[ghostFilter];
-			} else vis.filters=[];
+			}
+			else vis.filters=[];
 		}
 		
 		public override function dropLoot() {

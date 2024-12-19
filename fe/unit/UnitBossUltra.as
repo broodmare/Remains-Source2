@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.display.MovieClip;
 	
 	import fe.*;
@@ -8,7 +8,7 @@ package fe.unit
 	import fe.loc.Location;
 	import fe.graph.Emitter;
 	
-	public class UnitBossUltra extends Unit{
+	public class UnitBossUltra extends Unit {
 		
 		public var tr:int=1;
 		var weap:String;
@@ -23,7 +23,9 @@ package fe.unit
 		var visshit:MovieClip;
 		var usil:Boolean=false;
 
+		// Constructor
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
 			id='bossultra';
 			tr=1;
@@ -192,13 +194,12 @@ package fe.unit
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		override protected function control():void
-		{
+		override protected function control():void {
+
 			//если сдох, то не двигаться
-			if (sost==3) return;
-			if (sost==2) {
-				dx=0;
-				dy=0;
+			if (sost == 3) return;
+			if (sost == 2) {
+				velocity.set(0, 0);
 				return;
 			}
 			
@@ -206,14 +207,17 @@ package fe.unit
 			var jmp:Number=0;
 
 			if (loc.gg.invulner) return;
+			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y-objectHeight;
 				celX = coordinates.X+objectWidth*storona*2;
 				return;
 			}
+			
 			if (t_shit>0) t_shit--;
 			vulner[Unit.D_EMP]=(shithp>0)?0.2:1;	//под считом неуязвимость к emp
 			//таймер смены состояний
+			
 			if (aiTCh>0) aiTCh--;
 			else {
 				aiState++;
@@ -230,7 +234,8 @@ package fe.unit
 					moveY=movePoints[mp].y*40+40;
 					aiTCh=60;
 					castShit();
-				} else if (aiState==2) {
+				}
+				else if (aiState==2) {
 					aiTCh=30;
 					if (attState!=4 && isrnd(0.33)) attState=4;
 					else attState=int(Math.random()*2);
@@ -240,7 +245,8 @@ package fe.unit
 					}
 					if (attState==4) aiTCh=15;
 					if (attState==0) setCel(loc.gg);
-				} else if (aiState==3) {
+				}
+				else if (aiState==3) {
 					replic('attack');
 					if (attState==0) aiTCh=80;
 					else if (attState==2) aiTCh=120;
@@ -248,44 +254,51 @@ package fe.unit
 					else aiTCh=int(Math.random()*100)+150;
 				}
 			}
+			
 			//поиск цели
 			if ((aiState==1 || aiState>1 && attState==1) && aiTCh%10==1) {
 				setCel(loc.gg);
 			}
+			
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y;
+			
 			var dist2:Number=celDX*celDX+celDY*celDY;
 			var dist:Number = (moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
+			
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (dx>0.5) storona=1; 
-				if (dx<-0.5) storona=-1;
+				if (velocity.X > 0.5) storona=1; 
+				if (velocity.X < -0.5) storona=-1;
 				walk=0;
-			} else if (aiState==1) {
+			}
+			else if (aiState==1) {
 				spd.x = moveX - coordinates.X;
 				spd.y = moveY - coordinates.Y;
 				
-				norma(spd,Math.min(accel,accel*dist/10000));
-				dx+=spd.x;
-				dy+=spd.y;
-				if (dist<1000) {
-					dx*=0.8;
-					dy*=0.8;
+				norma(spd,Math.min(accel, accel * dist / 10000));
+				velocity.X += spd.x;
+				velocity.Y += spd.y;
+				if (dist < 1000) {
+					velocity.multiply(0.80);
 				}
-			} else if (aiState>=2) {
-				dx*=0.7;
-				dy*=0.7;
 			}
+			else if (aiState>=2) {
+				velocity.multiply(0.70);
+			}
+			
 			if (aiState==2 && aiTCh%5==1) {
 				if (attState==0) Emitter.emit('laser', loc, celX + Math.random()*100-50, celY-Math.random()*50);
 				if (attState==1) Emitter.emit('plasma', loc, celX + Math.random()*50-25, celY-Math.random()*20);
 				if (attState==4) Emitter.emit('spark', loc, celX + Math.random()*100-50, celY-Math.random()*50);
 			}
+			
 			if (aiState>0 && !(aiState==3 && attState==2)) {
 				aiNapr=(celX > coordinates.X)?1:-1;
 				if (storona == aiNapr) {
                     t_turn = 15;
-                } else {
+                }
+				else {
                     t_turn--;
                     if (t_turn <= 0) {
                         storona = aiNapr;
@@ -311,31 +324,34 @@ package fe.unit
 			}
 		}
 		
-		public function attack()
-		{
+		public function attack() {
 			if (sost!=1) return;
 			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,1);
-			} else if (aiState==3) {							//пальба
+			}
+			else if (aiState==3) {							//пальба
 				if (attState==0) dopWeapon.attack();
 				else if (attState==1) {
 					if (usil) currentWeapon2.attack();
 					else currentWeapon.attack();
-				} else if (attState==4) gasWeapon.attack();
+				}
+				else if (attState==4) gasWeapon.attack();
 				else {
 					thWeapon.forceRot+=0.1;
 					thWeapon.attack();
 				}
-				if ((rasst2<100*100) && isrnd(0.1)) attKorp(celUnit,0.5); //Changed to use rasst2 instead of dist2
+				
+				if ((rasst2 < 10000) && isrnd(0.1)) attKorp(celUnit, 0.5); //Changed to use rasst2 instead of dist2
 			}
 		}
 		
 		public override function command(com:String, val:String=null) {
-			if (com=='off') {
-				walk=0;
-				controlOn=false;
-			} else if (com=='on') {
-				controlOn=true;
+			if (com == 'off') {
+				walk = 0;
+				controlOn = false;
+			}
+			else if (com == 'on') {
+				controlOn = true;
 			}
 		}
 		

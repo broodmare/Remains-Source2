@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
@@ -15,8 +15,7 @@ package fe.unit
 	import fe.loc.Location;
 	import fe.projectile.Bullet;
 	
-	public class UnitBossAlicorn extends UnitPon
-	{
+	public class UnitBossAlicorn extends UnitPon {
 		
 		public var wPos:Array;
 		public var tr:int=1;
@@ -50,7 +49,9 @@ package fe.unit
 		
 		var weaps:Array;
 
+		// Constructor
 		public function UnitBossAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
 			id='bossalicorn';
 			tr=1;
@@ -117,7 +118,8 @@ package fe.unit
 				weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
 				weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 				weaponR=obj.r;
-			} catch (err) {
+			}
+			catch (err) {
 				super.setWeaponPos(tip);
 			}
 		}
@@ -140,39 +142,46 @@ package fe.unit
 
 		public override function animate() {
 			try {
-			var cframe:int;
+				var cframe:int;
 				if (sost==2) { 
 					animState='die';
 					if (!isBlast) {
 						newPart('bloodblast2');
 						isBlast=true;
 					}
-				} else if (isFly) { 
+				}
+				else if (isFly) { 
 					animState='fly';
-				} else {
-					if (stay && (dx>1 || dx<-1)) {
-						animState='walk';
-						sndStep(anims[animState].f,4);
-					} else {
-						animState='stay';
+				}
+				else {
+					if (stay && (velocity.X > 1 || velocity.X < -1)) {
+						animState = 'walk';
+						sndStep(anims[animState].f, 4);
+					}
+					else {
+						animState = 'stay';
 					}
 				}
-			if (animState!=animState2) {
-				anims[animState].restart();
-				animState2=animState;
+				if (animState!=animState2) {
+					anims[animState].restart();
+					animState2=animState;
+				}
+				if (!anims[animState].st) {
+					blit(anims[animState].id,anims[animState].f);
+				}
+				anims[animState].step();
+				//невидимость
+				if (superInvis && World.w.pers.infravis==0) {
+					celA=0;
+				}
+				else celA=100;
+				if (curA>celA) curA-=5;
+				if (curA<celA) curA+=5;
+				vis.alpha=curA/100;
 			}
-			if (!anims[animState].st) {
-				blit(anims[animState].id,anims[animState].f);
+			catch(err) {
+
 			}
-			anims[animState].step();
-			//невидимость
-			if (superInvis && World.w.pers.infravis==0) {
-				celA=0;
-			} else celA=100;
-			if (curA>celA) curA-=5;
-			if (curA<celA) curA+=5;
-			vis.alpha=curA/100;
-			} catch(err) {}
 		}
 		
 		public override function setVisPos() {
@@ -180,7 +189,8 @@ package fe.unit
 				if (sost==2) {
 					vis.x = coordinates.X+(Math.random()-0.5)*(150-timerDie)/15;
 					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;
-				} else {
+				}
+				else {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
 				}
@@ -205,7 +215,7 @@ package fe.unit
 		public override function teleport(nx:Number,ny:Number,eff:int=0) {
 			Emitter.emit('telered',loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
 			setPos(nx,ny);
-			dx=dy=0;
+			velocity.set(0, 0);
 			if (currentWeapon) {
 				setWeaponPos(currentWeapon.tip);
 				currentWeapon.setNull();
@@ -216,6 +226,7 @@ package fe.unit
 			levit=0;
 			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-objectHeight/2);
 		}
+
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
 			var res:int=super.udarBullet(bul, sposob);
@@ -225,13 +236,14 @@ package fe.unit
 
 		var emit_t:int=0;
 		
-		var movePoints:Array=[{x:24,y:5},{x:8,y:7},{x:40,y:7},{x:7,y:11},{x:42,y:11},{x:11,y:15},{x:38,y:15}];
+		var movePoints:Array=[{x:24,y:5}, {x:8,y:7}, {x:40,y:7}, {x:7,y:11}, {x:42,y:11}, {x:11,y:15}, {x:38,y:15}];
 		var mp=3;
 		var moveX:Number=0, moveY:Number=0;
 		var attState:int=0;
 		var t_turn:int=15;
 		var t_shit:int=300;
 		var t_fly:int=3;
+
 		//aiState
 		//0 - стоит на месте
 		//1 - движется
@@ -242,8 +254,7 @@ package fe.unit
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
-				dx=0;
-				dy=0;
+				velocity.set(0, 0);
 				return;
 			}
 			
@@ -308,29 +319,29 @@ package fe.unit
 				else setCel(loc.gg);
 			}
 			if (isFly) {
-				t_float+=0.0726;
-				floatX=Math.sin(t_float)*2;
-				floatY=Math.cos(t_float)*2;
-				dx*=0.9;
-				dy*=0.9
-				dx+=floatX;
-				dy+=floatY;
+				t_float += 0.0726;
+				floatX = Math.sin(t_float) * 2;
+				floatY = Math.cos(t_float) * 2;
+				velocity.multiply(0.90);
+				velocity.X += floatX;
+				velocity.Y += floatY;
 			}
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y;
-			var dist2:Number=celDX*celDX+celDY*celDY;
-			var dist:Number=(moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
+			var dist2:Number = celDX * celDX + celDY * celDY;
+			var dist:Number = (moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			//поведение при различных состояниях
-			if (aiState==0) {
-				if (dx>0.5) storona=1; 
-				if (dx<-0.5) storona=-1;
+			if (aiState == 0) {
+				if (velocity.X > 0.5) storona = 1; 
+				if (velocity.X < -0.5) storona = -1;
 				walk=0;
 			}
 			if (aiState>0) {
 				aiNapr=(celX > coordinates.X)?1:-1;
 				if (storona == aiNapr) {
                     t_turn = 15;
-                } else {
+                }
+				else {
                     t_turn--;
                     if (t_turn <= 0) {
                         storona = aiNapr;
@@ -345,15 +356,16 @@ package fe.unit
 				if (teleObj is Unit) {
 					teleX = coordinates.X + storona * 150;
 					teleY = coordinates.Y - 40;
-				} else {
+				}
+				else {
 					teleX = coordinates.X + storona * 80;
 					teleY = coordinates.Y - 40;
 				} 				
-				if (teleObj.coordinates.X < teleX - derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
-				if (teleObj.coordinates.X > teleX + derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
-				if (teleObj.coordinates.Y < teleY - derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
-				if (teleObj.coordinates.Y > teleY + derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
-				if (teleObj.levit==1) {
+				if (teleObj.coordinates.X < teleX - derp && teleObj.velocity.X < teleSpeed) teleObj.velocity.X += teleAccel;
+				if (teleObj.coordinates.X > teleX + derp && teleObj.velocity.X > -teleSpeed) teleObj.velocity.X -= teleAccel;
+				if (teleObj.coordinates.Y < teleY - derp && teleObj.velocity.Y < teleSpeed) teleObj.velocity.Y += teleAccel;
+				if (teleObj.coordinates.Y > teleY + derp && teleObj.velocity.Y > -teleSpeed) teleObj.velocity.Y -= teleAccel;
+				if (teleObj.levit == 1) {
 					dropTeleObj();
 				}
 			}
@@ -417,22 +429,29 @@ package fe.unit
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number=throwForce;
+				
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
+				
 				if (teleObj.coordinates.X<200 || teleObj.coordinates.X>loc.maxX-200) tspeed*=0.6;
+				
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
-				} else {
+				}
+				else {
 					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.objectHeight / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
 				}
+				
 				if (teleObj is UnitPlayer) {
 					(teleObj as UnitPlayer).damWall=dam/2;
 					(teleObj as UnitPlayer).t_throw=30;
 				}
+				
 				if (teleObj is Box) (teleObj as Box).isThrow=true;
+				
 				norma(p,tspeed);
-				var dm=0;
-				teleObj.dx+=p.x;
-				teleObj.dy+=p.y;
+				var dm = 0;
+				teleObj.velocity.X += p.x;
+				teleObj.velocity.Y += p.y;
 				dropTeleObj();
 			}
 			
@@ -441,8 +460,8 @@ package fe.unit
 		public override function die(sposob:int=0) {
 			superInvis=false;
 			dropTeleObj();
-
 			isBlast=false;
+			
 			if (isShit) {
 				isShit=false;
 				visshit.gotoAndPlay(2);
@@ -456,15 +475,21 @@ package fe.unit
 				sost=1;
 				mat=0;
 				timerDie=90;
-				for (var i=0; i<6; i++) emit(i);
-			} else super.die();
+				for (var i = 0; i < 6; i++) {
+					emit(i);
+				}
+			}
+			else {
+				super.die();
+			}
 		}
 		
 		public override function command(com:String, val:String=null) {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			}
+			else if (com=='on') {
 				controlOn=true;
 			}
 		}

@@ -3,6 +3,7 @@ package fe.graph
 	import flash.filters.GlowFilter;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Part;
 	import fe.loc.Location;
 
@@ -41,8 +42,8 @@ package fe.graph
 				
 				minliv, rliv - lifetime
 				minv, rv - initial speed in random direction
-				rdx, rdy - random speed in x,y direction
-				dx, dy - specified speed in x,y direction
+				rdx, rdy - random speed in x, y direction
+				velocity - specified speed as [X, Y] vector
 				rr - random rotation speed
 				rot='1' - random initial rotation angle
 				grav - degree of gravity
@@ -78,7 +79,11 @@ package fe.graph
 		public var minv:Number=0, rv:Number=0;
 		public var rx:Number=0, ry:Number=0;
 		public var rdx:Number=0, rdy:Number=0, rdr:Number=0;
-		public var dx:Number=0, dy:Number=0;
+
+		public var velocity:Vector2 = new Vector2();
+		//public var dx:Number = 0;
+		//public var dy:Number = 0;
+		
 		public var rot:int=0;
 		public var brake:Number=1;
 		public var grav:Number=0, rgrav:Number=0;
@@ -107,7 +112,7 @@ package fe.graph
 		//kol - количество
 		//rx,ry - случайное отклонение от nx,ny
 		//alpha, scale
-		//dx,dy,dr - начальная скорость
+		//velocity, dr - Initial velocity and rotation
 		//frame - заданный кадр
 		//txt - текст, используемый в текстовых частицах
 		//celx+cely - ориентация
@@ -136,34 +141,42 @@ package fe.graph
 				}
 				
 				p.vClass=visClass;
-				
-				if (minv+rv>0) {
-					var rot2:Number, vel:Number;
-					rot2=Math.random()*Math.PI*2;
-					vel=Math.random()*rv+minv;
-					p.dx=Math.sin(rot2)*vel;
-					p.dy=Math.cos(rot2)*vel;
+				var x:Number;
+				var y:Number;
+
+				if (minv + rv > 0) {
+					var rot2:Number;
+					var vel:Number;
+					rot2 = Math.random() * Math.PI * 2;
+					vel = Math.random() * rv + minv;
+					p.velocity.X = Math.sin(rot2) * vel;
+					p.velocity.Y = Math.cos(rot2) * vel;
 				}
-				if (rdx) p.dx+=(Math.random()-0.5)*rdx;
-				if (rdy) p.dy+=(Math.random()-0.5)*rdy;
-				p.dx+=dx;
-				p.dy+=dy;
+				if (rdx) p.velocity.X += (Math.random()-0.5) * rdx;
+				if (rdy) p.velocity.Y += (Math.random()-0.5) * rdy;
+
+				p.velocity.sumVector(velocity.getVector2())
 				if (rdr) p.dr=(Math.random()-0.5)*rdr;
 				if (rot) p.r=Math.random()*360;
 				if (param) {
 					if (param.rx) p.coordinates.X+=(Math.random()-0.5)*param.rx;
 					if (param.ry) p.coordinates.Y+=(Math.random()-0.5)*param.ry;
-					if (param.dx) p.dx+=param.dx;
-					if (param.dy) p.dy+=param.dy;
+					
+					if (param.velocity) {
+						p.velocity.sumVector(param.velocity);
+					}
+					
 					if (param.dr) p.dr+=param.dr;
-					if (param.md!=null) {
-						p.dx*=param.md;
-						p.dy*=param.md;
+					if (param.md != null) {
+						// I'd prefer multiplying these as vectors
+						p.velocity.X *= param.md;
+						p.velocity.Y *= param.md;
 					}
 					if (param.frame) frame=param.frame;
 					if (param.dframe) dframe=param.dframe;
 					if (param.otklad) otklad=param.otklad;
 				}
+				
 				p.ddy=World.ddy*grav;
 				p.brake=brake;
 				if (rgrav) p.ddy+=World.ddy*rgrav*Math.random();
@@ -171,7 +184,7 @@ package fe.graph
 				p.isAlph=alph;
 				p.isPreAlph=prealph;
 				p.isAnim=anim;
-				p.isMove=(p.dx!=0 || p.dy!=0 || p.ddy!=0);
+				p.isMove=(p.velocity.X != 0 || p.velocity.Y != 0 || p.ddy != 0);
 				p.water=water;
 				if (blitx) p.blitX=blitx;
 				if (blity) p.blitY=blity;

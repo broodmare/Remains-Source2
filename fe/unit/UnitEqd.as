@@ -1,9 +1,10 @@
-package fe.unit
-{
-	public class UnitEqd extends UnitAIRobot
-	{
+package fe.unit {
+
+	public class UnitEqd extends UnitAIRobot {
+
 		var jump_n:int=100;
 		
+		// Constructor
 		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
 			super(cid, ndif, xml, loadObj);
@@ -31,27 +32,35 @@ package fe.unit
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
-					} else if (animState=='death') animState='fall';
+
+					}
+					else if (animState=='death') animState='fall';
 					else animState='die';
-				} else animState='death';
-			} else {
+				}
+				else animState='death';
+			}
+			else {
 				vis.visible=true;
 				if (stay) {
-					if  (dx==0) {
+					if  (velocity.X==0) {
 						animState='stay';
-					} else if (dx<4 && dx>-4) {
+					}
+					else if (velocity.X < 4 && velocity.X > -4) {
 						animState='walk';
 						sndStep(anims[animState].f,4);
 						if (aiNapr*storona<0) revers=true;
-					} else if (dx>9 || dx<-9) {
+					}
+					else if (velocity.X > 9 || velocity.X < -9) {
 						animState='run';
 						sndStep(anims[animState].f,2);
-					} else {
+					}
+					else {
 						animState='trot';
 						sndStep(anims[animState].f,1);
 						if (aiNapr*storona<0) revers=true;
 					}
-				} else {
+				}
+				else {
 					animState='jump';
 					// Commented out, there is no setStab function
 					//anims[animState].setStab((dy*0.6+8)/16);
@@ -72,7 +81,5 @@ package fe.unit
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y-40;
 		}
-
 	}
-	
 }

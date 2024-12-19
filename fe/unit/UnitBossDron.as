@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.display.MovieClip;
 	
 	import fe.weapon.*;
@@ -7,7 +7,7 @@ package fe.unit
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	
-	public class UnitBossDron extends Unit{
+	public class UnitBossDron extends Unit {
 		
 		public var controlOn:Boolean=true;
 		public var kol_emit=5;
@@ -25,7 +25,9 @@ package fe.unit
 		var kolth:int=0;
 		var speedBonus:Number=1;
 
+		// Constructor
 		public function UnitBossDron(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
 			id='bossdron';
 			
@@ -151,13 +153,14 @@ package fe.unit
 		override protected function control():void {
 
 			if (sost==3) return;
+
 			if (sost==2) {
-				dx=0;
-				dy=0;
+				velocity.set(0, 0);
 				return;
 			}
 			
 			if (loc.gg.invulner) return;
+
 			if (World.w.enemyAct<=0) {
 				return;
 			}
@@ -167,12 +170,15 @@ package fe.unit
 			else aiState=0;
 			
 			aiTCh++;
+
 			if (aiState==1 && aiTCh%10==1) {
 				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.2)) setCel(loc.gg.pet);
 				else setCel(loc.gg);
 			}
-			if (World.w.gg.isFly) speedBonus=1.6;
-			else speedBonus=1;
+
+			if (World.w.gg.isFly) speedBonus = 1.6;
+			else speedBonus = 1;
+
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y;
 			storona=(celDX>0)?1:-1;
@@ -182,8 +188,7 @@ package fe.unit
 			if (aiState==0) {
 				walk=0;
 			}
-			else if (aiState==1)
-			{
+			else if (aiState==1) {
 				moveX = loc.gg.coordinates.X;
 				moveY = loc.gg.coordinates.Y;
 				spd.x = moveX - coordinates.X;
@@ -191,17 +196,16 @@ package fe.unit
 				norma(spd,Math.min(accel,accel*dist/1000));
 				
 				maxSpeed=walkSpeed*(2-(hp/maxhp))*(1-Math.sin(aiTCh/12)*0.3)*speedBonus;
-				dx += spd.x;
-				dy += spd.y;
-				spd.x = dx;
-				spd.y = dy;
+				velocity.X += spd.x;
+				velocity.Y += spd.y;
+				spd.x = velocity.X;
+				spd.y = velocity.Y;
 				norma(spd,maxSpeed);
-				dx = spd.x;
-				dy = spd.y;
+				velocity.X = spd.x;
+				velocity.Y = spd.y;
 				
-				if (dist<1000) {
-					dx*=0.8;
-					dy*=0.8;
+				if (dist < 1000) {
+					velocity.multiply(0.80);
 				}
 				attack();
 				emit_t--;

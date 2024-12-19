@@ -1,17 +1,18 @@
-package fe.unit 
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
 	import fe.projectile.Bullet;
 	import fe.loc.Tile;
 	
-	public class UnitZebra extends UnitRaider
-	{
+	public class UnitZebra extends UnitRaider {
+
 		var shine:int=0;
 		var shine2:int=0;
 		var red:Boolean=false;
 		
+		// Constructor
 		public function UnitZebra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			parentId='zebra';
 			kolTrs=5;
@@ -32,9 +33,9 @@ package fe.unit
 			super.animate();
 			if (!red) {
 				//невидимость
-				if (shine<150 && (dx>2 || dx<-2 || dy>2 || dy<-2) && aiTCh%10==5) {
+				if (shine<150 && (velocity.X > 2 || velocity.X < -2 || velocity.Y > 2 || velocity.Y < -2) && aiTCh%10==5) {
 					if (showThis()) {
-						if (dx>10 || dx<-10 || dy>10 || dy<-10) shine+=15;
+						if (velocity.X>10 || velocity.X<-10 || velocity.Y>10 || velocity.Y<-10) shine+=15;
 						else shine+=5;
 						shine2=20;
 						if (attackerType==0 && aiAttack && shine<100) shine=100;

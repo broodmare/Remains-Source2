@@ -20,10 +20,8 @@ package fe.entities
 
 		public var sloy:int=0;
 		
-		public var coordinates:Vector2	= new Vector2();
-
-		public var dx:Number = 0;
-		public var dy:Number = 0;
+		public var coordinates:Vector2 = new Vector2();	// The entity's [X, Y] coordinates stored as a vector
+		public var velocity:Vector2 = new Vector2();	// The entity's [X, Y] movement stored as a vector
 		
 		public function Entity() {
 		}

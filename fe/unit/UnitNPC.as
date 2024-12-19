@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.display.MovieClip;
 	
 	import fe.*;
@@ -365,8 +365,8 @@ package fe.unit
 			if (isFly) {
 				t_float+=0.243;
 				floatY=Math.cos(t_float)*0.5;
-				dx+=floatX;
-				dy+=floatY;
+				velocity.X += floatX;
+				velocity.Y += floatY;
 			}
 			if (celUnit==null) {
 				celX = coordinates.X + storona * 100;
@@ -376,18 +376,17 @@ package fe.unit
 				dvig.x = cx - coordinates.X;
 				dvig.y = cy - coordinates.Y;
 				var dst2=dvig.x*dvig.x+dvig.y*dvig.y;
-				if (dst2<40*40) {
-					dx*=0.85;
-					dy*=0.85;
+				if (dst2 < 1600) {
+					velocity.multiply(0.85);
 					if (dst2<5*5) {
 						dey='';
-						dx=0; dy=0;
+						velocity.set(0, 0);
 						wait=0;
 					}
 				} else {
 					norma(dvig,accel);
-					dx+=dvig.x;
-					dy+=dvig.y;
+					velocity.X += dvig.x;
+					velocity.Y += dvig.y;
 				}
 			}
 			if (aiTip=='agro') {
@@ -406,7 +405,7 @@ package fe.unit
 					ico.visible=true;
 					zanyato=false;
 					celUnit=null;
-					if (isFly && dy<5) dy+=1;
+					if (isFly && velocity.Y < 5) velocity.Y += 1;
 				}
 				if (turnY<0) {
 					isFly=false;

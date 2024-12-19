@@ -729,7 +729,7 @@ package fe.loc
 				ny=loc.spawnPoints[n].y;
 			}
 			gg.setLocPos((nx+1) * tileX, (ny+1) * tileY - 1);
-			gg.dx=3;
+			gg.velocity.X = 3;
 			loc.lighting(gg.coordinates.X, gg.coordinates.Y - 75);
 		}
 		
@@ -911,7 +911,7 @@ package fe.loc
 				if (!ativateLoc()) loc.reactivate();
 				setGGToSpawnPoint();
 			}
-			gg.dx=3;
+			gg.velocity.X = 3;
 		}
 		
 		public function refill() {

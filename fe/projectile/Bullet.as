@@ -4,6 +4,7 @@ package fe.projectile
 
 	import fe.*;
 	import fe.util.Calc;
+	import fe.util.Vector2;
 	import fe.unit.Unit;
 	import fe.loc.*;
 	import fe.entities.Obj;
@@ -111,21 +112,21 @@ package fe.projectile
 		public override function step() {
 			
 			if (!babah) {
-				dy+=ddy;
-				dx+=ddx;
-				if (vRot) rot=Math.atan2(dy,dx);
+				velocity.X += ddy;
+				velocity.Y += ddx;
+				if (vRot) rot=Math.atan2(velocity.Y, velocity.X);
 				if (brakeR && dist>brakeR) {
 					vRot=true;
-					dx*=0.9;
-					dy*=0.9;
-					vel*=0.9;
+					velocity.multiply(0.9);
+					vel *= 0.9;
 				}
-				if (vRot) rot=Math.atan2(dy,dx);
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
-				else
-				{
-					var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-					for (var i:int = 0; (i < div && !babah); i++) run(div);
+				if (vRot) rot = Math.atan2(velocity.Y, velocity.X);
+				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
+				else {
+					var div = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					for (var i:int = 0; (i < div && !babah); i++) {
+						run(div);
+					}
 				}
 			}
 
@@ -188,17 +189,17 @@ package fe.projectile
 			return 'Error bullet '+(owner?owner.nazv:'???')+' '+(weap?weap.nazv:'???');
 		}
 		
-		public override function bindMove(nx:Number,ny:Number, ox:Number=-1, oy:Number=-1)
-		{
+		public override function bindMove(nx:Number,ny:Number, ox:Number=-1, oy:Number=-1) {
 			if (ox >= 0) coordinates.X = ox;
 			if (oy >= 0) coordinates.Y = oy;
-			dx = nx - coordinates.X;
-			dy = ny - coordinates.Y;
-			vel = Math.sqrt(dx*dx+dy*dy);
-			if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+			velocity.subtractVectors(coordinates.getVector2());
+			vel = Math.sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
+			if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
 			else {
-				var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-				for (var i:int = 0; i < div; i++) run(div);
+				var div = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y))/World.maxdelta)+1;
+				for (var i:int = 0; i < div; i++) {
+					run(div);
+				}
 			}
 		}
 		
@@ -225,7 +226,7 @@ package fe.projectile
 					var koliskr:int = Calc.intBetween(0, 5) + int(damage / 5);
 					if (World.w.alicorn) koliskr *= 0.2;
 					if (koliskr > 20) koliskr = 20;
-					Emitter.emit('iskr_bul', loc, coordinates.X, coordinates.Y, {dx:-dx/vel*10, dy:-dy/vel*10, kol:koliskr});
+					Emitter.emit('iskr_bul', loc, coordinates.X, coordinates.Y, {dx:-velocity.X / vel * 10, dy:-velocity.Y / vel * 10, kol:koliskr});
 					if (flare!=null && flare!='') Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
 				}
 				else if (res == 3 || res == 4) {	//[hitting meat or wood]
@@ -266,8 +267,9 @@ package fe.projectile
 
 		public function run(div:int=1):void {
 			dist += vel / div;
-			coordinates.X += dx / div;
-			coordinates.Y += dy / div;
+			var v:Vector2 = new Vector2(velocity.X, velocity.Y);
+			v.divide(div);
+			coordinates.sumVector(v.getVector2());
 			
 			if (loc.sky && (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY)) {
 				popadalo(0);
@@ -276,24 +278,20 @@ package fe.projectile
 				if (!outspace && coordinates.X < 0 || coordinates.X >= loc.spaceX * constTileX || coordinates.Y < 0 || coordinates.Y >= loc.spaceY * constTileY) popadalo(0);
 
 				var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
-				if (t.water > 0)
-				{
-					if (inWater == 0)
-					{
+				if (t.water > 0) {
+					if (inWater == 0) {
 						if (partEmit && (tipDamage==Unit.D_BUL || tipDamage==Unit.D_PHIS || tipDamage==Unit.D_BLADE)) {
 							Emitter.emit('kap', loc, coordinates.X, coordinates.Y,{
-								dx: -dx / vel * 10,
-								dy: -dy / vel * 10,
+								dx: -velocity.X / vel * 10,
+								dy: -velocity.Y / vel * 10,
 								kol: Math.floor(Calc.intBetween(0, 4) + damage / 5)
 							});
 							sound(11);
 							partEmit=false;
 						}
 					}
-					if (tipDamage==Unit.D_FIRE || tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_SPARK || tipDamage==Unit.D_ACID)
-					{
-						if (partEmit)
-						{
+					if (tipDamage==Unit.D_FIRE || tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_SPARK || tipDamage==Unit.D_ACID) {
+						if (partEmit) {
 							Emitter.emit('steam', loc, coordinates.X, coordinates.Y);
 							partEmit=false;
 						}
@@ -301,15 +299,12 @@ package fe.projectile
 					}
 					inWater = 1;
 				}
-				else
-				{
-					if (inWater == 1)
-					{
-						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE))
-						{
+				else {
+					if (inWater == 1) {
+						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE)) {
 							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {
-								dx: dx / vel * 10,
-								dy: dy / vel * 10,
+								dx: velocity.X / vel * 10,
+								dy: velocity.Y / vel * 10,
 								kol: Calc.intBetween(0, 4) + int(damage / 5)
 							});
 							sound(11);
@@ -318,10 +313,8 @@ package fe.projectile
 					}
 					inWater = 0;
 				}
-				if (!tilehit && (tileX < 0 || int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && (t.phis == 1 || t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2)
-				{
-					if (!inWall)
-					{
+				if (!tilehit && (tileX < 0 || int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && (t.phis == 1 || t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
+					if (!inWall) {
 						popadalo(t.mat);
 						sound(t.mat);
 						if (weap) weap.crash();
@@ -345,25 +338,20 @@ package fe.projectile
 
 				if (un.sost == 4 || un.disabled || un.trigDis || un.loc != loc) continue;
 				
-				if ((targetObj || un.fraction != owner.fraction) && coordinates.X >= un.leftBound && coordinates.X <= un.rightBound && coordinates.Y >= un.topBound && coordinates.Y <= un.bottomBound)
-				{
-					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) //проверить досягаемость до объекта
-					{
+				if ((targetObj || un.fraction != owner.fraction) && coordinates.X >= un.leftBound && coordinates.X <= un.rightBound && coordinates.Y >= un.topBound && coordinates.Y <= un.bottomBound) {
+					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) {	//проверить досягаемость до объекта
 						off = true;
 						return;
 					}
 
 					if (un.dopTestOn && !un.dopTest(this)) continue;
 
-					if (udar(un)) //если эта пуля ещё не взаимодействовала с этим объектом
-					{ 
+					if (udar(un)) {	//если эта пуля ещё не взаимодействовала с этим объектом
 						var res = un.udarBullet(this); //попасть по объекту, проверить, не уклонился ли объект
 						sound(res);
-						if (!(probiv > 0 && damage > 0) && res >= 0) //[If the bullet penetrates, let it keep going. Otherwise, destroy the bullet]
-						{
+						if (!(probiv > 0 && damage > 0) && res >= 0) {	//[If the bullet penetrates, let it keep going. Otherwise, destroy the bullet]
 							popadalo(res);
-							if (weap)
-							{
+							if (weap) {
 								if ((un is fe.unit.Mine || un is fe.unit.UnitMsp) && un.sost > 2) weap.crash(15);
 								else if (un.tipDamage == Unit.D_ACID) weap.crash(3);
 								else weap.crash();
@@ -380,8 +368,7 @@ package fe.projectile
 				if (coordinates.X >= box.leftBound && coordinates.X <= box.rightBound && coordinates.Y >= box.topBound && coordinates.Y <= box.bottomBound && udar(box)) {
 					res = box.udarBullet(this, 1);
 					sound(res);
-					if (res>=0)
-					{
+					if (res>=0) {
 						popadalo(res);
 						if (weap) weap.crash();
 					}
@@ -472,10 +459,8 @@ package fe.projectile
 		
 		//поражение всех стен в радиусе
 		private function explDestroy():void {
-			for (var i:int = int((coordinates.X - explRadius) / constTileX); i<= int((coordinates.X + explRadius) / constTileX); i++)
-			{
-				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j<= int((coordinates.Y + explRadius) / constTileY); j++)
-				{
+			for (var i:int = int((coordinates.X - explRadius) / constTileX); i<= int((coordinates.X + explRadius) / constTileX); i++) {
+				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j<= int((coordinates.Y + explRadius) / constTileY); j++) {
 					var tx = coordinates.X - (i + 0.5) * constTileX;
 					var ty = coordinates.Y - (j + 0.5) * constTileY;
 					var ter = tx * tx + ty * ty;
@@ -508,8 +493,7 @@ package fe.projectile
 		}
 		
 		//поражение всех юнитов виртуальными осколками, с учётом защиты от стен
-		private function explBlast():void
-		{
+		private function explBlast():void {
 			var tx;
 			var ty;
 			if (loc != owner.loc) return;
@@ -541,15 +525,14 @@ package fe.projectile
 			var rasst = Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
 			if (rasst < er) {
-				b=new Bullet(owner, coordinates.X, coordinates.Y, null);
+				b = new Bullet(owner, coordinates.X, coordinates.Y, null);
 				b.inWall = inWall;
 				b.vel=er*(1+rasst/er*4)/3;
-				b.dx=tx/rasst*er/3;
-				b.dy=ty/rasst*er/3;
-				b.knockx=b.dx/b.vel;
-				b.knocky=b.dy/b.vel;
-				if (!loc.levitOn)
-				{
+				b.velocity.X = tx / rasst * er / 3;
+				b.velocity.Y = ty / rasst * er / 3;
+				b.knockx = b.velocity.X / b.vel;
+				b.knocky = b.velocity.Y / b.vel;
+				if (!loc.levitOn) {
 					b.knockx = 0;
 					b.knocky = 0;
 				}

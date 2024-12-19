@@ -1,22 +1,30 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	
-	public class UnitBloatEmitter  extends Unit
-	{
+	public class UnitBloatEmitter  extends Unit {
 		
 		var emitId:String='bloat';
 
-		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
+			
 			if (cid == null) {
                 id = 'ebloat';
-            } else id = cid;
+            }
+			else {
+				id = cid;
+			}
+			
 			if (id=='eant') {
 				vis=new visualAntEmitter();
 				emitId='ant';
-			} else vis=new visualBloatEmitter();
+			}
+			else {
+				vis=new visualBloatEmitter();
+			}
+			
 			vis.stop();
 			getXmlParam();
 		}
@@ -57,7 +65,7 @@ package fe.unit
 			}
 		}
 		
-		var emit_t:int=0;
+		var emit_t:int = 0;
 		
 		public override function expl()	{
 			super.expl();
@@ -80,7 +88,8 @@ package fe.unit
 				aiTCh=10;
 				if (findCel()) {
 					aiState=2;
-				} else {
+				}
+				else {
 					aiState=1;		
 				}
 			}

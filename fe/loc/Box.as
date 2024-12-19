@@ -257,20 +257,22 @@ package fe.loc
 				}
 			}
 		}
-		public override function setNull(f:Boolean=false)
-		{
+
+		public override function setNull(f:Boolean=false) {
 			super.setNull(f);
-			if (!dead && invis && f)
-			{
+			if (!dead && invis && f) {
 				invis = false;
+				
 				coordinates.X = begX;
 				coordinates.Y = begY;
-				dx = 0;
-				dy = 0;
+				velocity.set(0, 0);
+
 				topBound = coordinates.Y - objectHeight;
 				bottomBound = coordinates.Y;
-				leftBound = coordinates.X - objectWidth / 2;
-				rightBound = coordinates.X + objectWidth / 2;
+
+				var halfWidth = objectWidth / 2;
+				leftBound = coordinates.X - halfWidth;
+				rightBound = coordinates.X + halfWidth;
 			}
 		}
 		
@@ -280,15 +282,13 @@ package fe.loc
 		}
 		
 		public override function setVisState(s:String) {
-			if ((s=='open' || s=='comein') && sndOpen!='' && !World.w.testLoot) Snd.ps(sndOpen, coordinates.X, coordinates.Y);
-			if (s=='close' && sndClose!='') Snd.ps(sndClose, coordinates.X, coordinates.Y);
-			try
-			{
-				if (s=='comein') vis.gotoAndPlay(s);
+			if ((s == 'open' || s == 'comein') && sndOpen != '' && !World.w.testLoot) Snd.ps(sndOpen, coordinates.X, coordinates.Y);
+			if (s == 'close' && sndClose!='') Snd.ps(sndClose, coordinates.X, coordinates.Y);
+			try {
+				if (s == 'comein') vis.gotoAndPlay(s);
 				else vis.gotoAndStop(s);
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:2B) - Could not set vis state: "' + s + '"!');
 			}
 		}
@@ -339,20 +339,19 @@ package fe.loc
 					}
 				}
 			}
-			if (wall==0 && !(stay && dx==0) && !fixPlav) {
+			if (wall==0 && !(stay && velocity.X == 0) && !fixPlav) {
 				if (wall==0) forces();		//внешние силы, влияющие на ускорение
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
 				else {
-					var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					var div = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y))/World.maxdelta)+1;
 					for (var i = 0; i < div; i++) run(div);
 				}
 				checkWater();
-				if (!fixPlav && !levit && isPlav&&!isPlav2 && dy<2 && dy>-2 && ddyPlav<0) {
-					dy = 0;
-					dx = 0;
+				if (!fixPlav && !levit && isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2 && ddyPlav<0) {
+					velocity.set(0, 0);
 					fixPlav=true;
 				}
-				if (!levit && (dy>5 || dy<-5 || dx>5 || dx<-5)) attDrop();
+				if (!levit && (velocity.Y > 5 || velocity.Y < -5 || velocity.X > 5 || velocity.X < -5)) attDrop();
 				if (vis) runVis();
 				if (inter) {inter.coordinates.X = coordinates.X; inter.coordinates.Y = coordinates.Y;}
 			}
@@ -454,13 +453,15 @@ package fe.loc
 			}
 			if (sposob == 0 && bulChance > 0)
 			{
-				if (Math.random()<bulChance) {
-					var sila=Math.random()*0.4+0.8;
-					sila/=massa;
-					if (sila>3) sila=3;
-					dx+=bul.knockx*bul.otbros*sila;
-					dy+=bul.knocky*bul.otbros*sila;
-					World.w.gg.otbrosTele(bul.otbros*sila);
+				if (Math.random() < bulChance) {
+					var sila = Math.random()*0.4+0.8;
+					sila /= massa;
+					if (sila > 3) sila = 3;
+
+					var n = bul.knockx * bul.otbros * sila;
+					velocity.sum(n);
+
+					World.w.gg.otbrosTele(bul.otbros * sila);
 					return mat;
 				}
 			}
@@ -520,24 +521,21 @@ package fe.loc
 		
 		public function forces() {
 			if (!levit) {
-				if (!isPlav && dy<World.maxdy) dy+=World.ddy;
-				if (isPlav && isPlav2) dy+=World.ddy*ddyPlav;
+				if (!isPlav && velocity.Y < World.maxdy) velocity.Y += World.ddy;
+				if (isPlav && isPlav2) velocity.Y += World.ddy * ddyPlav;
 			}
-			if (isPlav)
-			{
-				dy *= 0.65;
-				dx *= 0.65;
+			if (isPlav) {
+				velocity.multiply(0.65);
 			}
 			else if (levit) {
-				dy *= 0.8; 
-				dx *= 0.8;
+				velocity.multiply(0.8);
 			}
 		}
 		
 		//удар от падения
 		public function attDrop() {
-			vel2=dx*dx+dy*dy;
-			if (vel2<50) return;
+			vel2 = velocity.X * velocity.X + velocity.Y * velocity.Y;
+			if (vel2 < 50) return;
 			for each(var cel:Unit in loc.units) {
 				if (cel==null || fracLevit>0 && cel.fraction==fracLevit) continue;
 				if (cel.sost==4 || cel.neujaz>0 || cel.loc!=loc || cel.leftBound>rightBound || cel.rightBound<leftBound || cel.topBound>bottomBound || cel.bottomBound<topBound) continue;
@@ -554,7 +552,7 @@ package fe.loc
 			if (osnova || wall>0) return true;
 			fixPlav=false;
 			checkWater();
-			if (isPlav&&!isPlav2 && dy<2 && dy>-2) {
+			if (isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2) {
 				fixPlav=true;
 			}
 			for (var i=int(leftBound/tileX); i<=int(rightBound/tileX); i++)
@@ -575,30 +573,25 @@ package fe.loc
 
 
 			//HORIZONTAL
-				coordinates.X += dx / div;
-				if (coordinates.X - objectWidth / 2 < 0)
-				{
+				coordinates.X += velocity.X / div;
+				if (coordinates.X - objectWidth / 2 < 0) {
 					coordinates.X = objectWidth / 2;
-					dx=Math.abs(dx);
+					velocity.X = Math.abs(velocity.X);
 				}
-				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX)
-				{
+				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX) {
 					coordinates.X = loc.spaceX * tileX - 1 - objectWidth / 2;
-					dx = -Math.abs(dx);
+					velocity.X = -Math.abs(velocity.X);
 				}
 				leftBound = coordinates.X - objectWidth / 2;
 				rightBound = coordinates.X + objectWidth / 2;
 				//движение влево
-				if (dx<0)
-				{
-					for (i=int(topBound/tileY); i<=int(bottomBound/tileY); i++)
-					{
+				if (velocity.X < 0) {
+					for (i = int(topBound / tileY); i <= int(bottomBound / tileY); i++) {
 						t = loc.space[int(leftBound / tileX)][i];
-						if (collisionTile(t))
-						{
+						if (collisionTile(t)) {
 								coordinates.X = t.phX2 + objectWidth / 2;
-								if (dx<-10) dx=-dx*0.2;
-								else dx=0;
+								if (velocity.X < -10) velocity.X = -velocity.X * 0.2;
+								else velocity.X = 0;
 								leftBound = coordinates.X - objectWidth / 2;
 								rightBound = coordinates.X + objectWidth / 2;
 							isThrow=false;
@@ -606,13 +599,13 @@ package fe.loc
 					}
 				}
 				//движение вправо
-				if (dx>0) {
+				if (velocity.X > 0) {
 					for (i=int(topBound/tileY); i<=int(bottomBound/tileY); i++) {
 						t=loc.space[int(rightBound/tileX)][i];
 						if (collisionTile(t)) {
 								coordinates.X = t.phX1 - objectWidth / 2;
-								if (dx>10) dx=-dx*0.2;
-								else dx=0;
+								if (velocity.X > 10) velocity.X = -velocity.X * 0.2;
+								else velocity.X = 0;
 								leftBound = coordinates.X - objectWidth / 2;
 								rightBound = coordinates.X + objectWidth / 2;
 							isThrow=false;
@@ -623,19 +616,17 @@ package fe.loc
 			
 			//VERTICAL
 			//движение вниз
-			var newmy:Number=0;
-			if (dy>0)
-			{
-				stay=false;
+			var newmy:Number = 0;
+			if (velocity.Y > 0) {
+				stay = false;
 				for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-					t = loc.space[i][int((bottomBound + dy / div) / tileY)];
-					if (collisionTile(t,0,dy/div))
-					{
+					t = loc.space[i][int((bottomBound + velocity.Y / div) / tileY)];
+					if (collisionTile(t, 0, velocity.Y / div)) {
 						newmy = t.phY1;
 						break;
 					}
 				}
-				if (newmy == 0 && !levit && !isThrow) newmy = checkShelf(dy / div);
+				if (newmy == 0 && !levit && !isThrow) newmy = checkShelf(velocity.Y / div);
 				if (coordinates.Y >= (loc.spaceY - 1) * tileY && !loc.bezdna) newmy = (loc.spaceY - 1) * tileY;
 				if (coordinates.Y >= loc.spaceY * tileY - 1 && loc.bezdna)
 				{
@@ -647,20 +638,20 @@ package fe.loc
 					coordinates.Y = newmy;
 					topBound = coordinates.Y - objectHeight;
 					bottomBound = coordinates.Y;
-					if (loc.active && dy>4 && dy*massa>5) World.w.quake(0,dy*Math.sqrt(massa)/2);
-					if (dy > 5 && sndFall && sndOn) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, dy / 15);
-					if (dy > 5)
+					if (loc.active && velocity.Y > 4 && velocity.Y * massa > 5) World.w.quake(0, velocity.Y * Math.sqrt(massa) / 2);
+					if (velocity.Y > 5 && sndFall && sndOn) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, velocity.Y / 15);
+					if (velocity.Y > 5)
 					{
-						loc.budilo(coordinates.X, coordinates.Y, dy * dy * massa);
+						loc.budilo(coordinates.X, coordinates.Y, velocity.Y * velocity.Y * massa);
 					}
 
-					if (dy<5 || massa>1) dy=0;
-					else dy*=-0.2;
+					if (velocity.Y < 5 || massa > 1) velocity.Y=0;
+					else velocity.Y *= -0.2;
 
-					if (dx>-5 && dx<5) dx=0;
+					if (velocity.X > -5 && velocity.X < 5) velocity.X = 0;
 					else
 					{
-						dx*=0.92;
+						velocity.X *= 0.92;
 						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*objectWidth, coordinates.Y);
 					}
 
@@ -674,16 +665,16 @@ package fe.loc
 				}
 				else
 				{
-					coordinates.Y += dy / div;
+					coordinates.Y += velocity.Y / div;
 					topBound = coordinates.Y - objectHeight;
 					bottomBound = coordinates.Y;
 				}
 			}
 			//движение вверх
-			if (dy<0)
+			if (velocity.Y < 0)
 			{
 				stay = false;
-				coordinates.Y += dy / div;
+				coordinates.Y += velocity.Y / div;
 				topBound = coordinates.Y-objectHeight;
 				bottomBound = coordinates.Y;
 				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
@@ -695,45 +686,41 @@ package fe.loc
 						coordinates.Y = t.phY2 + objectHeight;
 						topBound = coordinates.Y - objectHeight;
 						bottomBound = coordinates.Y;
-						dy = 0;
+						velocity.Y = 0;
 						isThrow=false;
 					}
 				}
 			}
 		}
 		//поиск жидкости
-		public function checkWater():Boolean
-		{
+		public function checkWater():Boolean {
 			var pla = isPlav;
 			isPlav = false;
 			isPlav2 = false;
 
-			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.45) / tileY)] as Tile).water > 0)
-			{
+			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.45) / tileY)] as Tile).water > 0) {
 				isPlav=true;
 			}
-			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.55) / tileY)] as Tile).water > 0)
-			{
+			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.55) / tileY)] as Tile).water > 0) {
 				isPlav2=true;
 			}
 
 
-			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y-objectHeight*0.25+dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
-			if (pla!=isPlav && dy>5) {
-				if (massa>2) sound('fall_water0', 0, dy/10);
-				else if (massa>0.4) sound('fall_water1', 0, dy/10);
-				else if (massa>0.2) sound('fall_water2', 0, dy/10);
-				else sound('fall_item_water', 0, dy/10);
+			if (pla!=isPlav && (velocity.Y > 8 || velocity.Y < -8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y - objectHeight * 0.25 + velocity.Y, {dy:-Math.abs(velocity.Y)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(velocity.Y*massa*2)-5)});
+			if (pla!=isPlav && velocity.Y > 5) {
+				if (massa>2) sound('fall_water0', 0, velocity.Y / 10);
+				else if (massa>0.4) sound('fall_water1', 0, velocity.Y / 10);
+				else if (massa>0.2) sound('fall_water2', 0, velocity.Y / 10);
+				else sound('fall_item_water', 0, velocity.Y / 10);
 			}
 
 			return isPlav;
 		}
 
-		public function checkShelf(dy):Number {
+		public function checkShelf(n:Number):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound+dy>b.topBound)
-				{
+				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound + n > b.topBound) {
 					osnova = b;
 					return b.topBound;
 				}
@@ -741,20 +728,16 @@ package fe.loc
 			return 0;
 		}
 
-		public function collisionAll(gx:Number=0, gy:Number=0):Boolean
-		{
-			for (var i:int = int((leftBound + gx) / tileX); i <= int((rightBound + gx) / tileX); i++)
-			{
-				for (var j:int = int((topBound + gy) / tileY); j <= int((bottomBound + gy) / tileY); j++)
-				{
+		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
+			for (var i:int = int((leftBound + gx) / tileX); i <= int((rightBound + gx) / tileX); i++) {
+				for (var j:int = int((topBound + gy) / tileY); j <= int((bottomBound + gy) / tileY); j++) {
 					if (collisionTile(loc.space[i][j], gx, gy)) return true;
 				}
 			}
 			return false;
 		}
 		
-		public function bindUnit(n:String='-1')
-		{
+		public function bindUnit(n:String='-1') {
 			un = new VirtualUnit(n);
 			copy(un);
 			un.owner = this;
@@ -762,8 +745,7 @@ package fe.loc
 		}
 		
 		//принудительное движение
-		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1)
-		{
+		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
 			super.bindMove(nx,ny);
 			if (this.un) un.bindMove(nx,ny);
 			if (vis) runVis()
@@ -775,16 +757,13 @@ package fe.loc
 			shad.y = coordinates.Y + (wall? 2:6);
 		}
 		
-		public function sound(sid:String, msec:Number=0, vol:Number=1):*
-		{
+		public function sound(sid:String, msec:Number=0, vol:Number=1):* {
 			return Snd.ps(sid, coordinates.X, coordinates.Y, msec, vol);
 		}
 		
-		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int
-		{
+		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int {
 			if (!t || (t.phis==0 || t.phis==3) && !t.shelf) return 0;  //пусто
-			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy>=t.phY2)
-			{
+			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy>=t.phY2) {
 				return 0;
 			}
 			else if ((t.phis==0 || t.phis==3) && t.shelf && (bottomBound>t.phY1 || levit || isThrow)) {  //полка 
@@ -811,11 +790,10 @@ package fe.loc
 			}
 		}
 		
-		public function funGenerator()
-		{
-			inter.active=false;
+		public function funGenerator() {
+			inter.active = false;
 			World.w.gui.infoText('unFixLock');
-			World.w.game.runScript('fixGenerator',this);
+			World.w.game.runScript('fixGenerator', this);
 		}
 	}
 }

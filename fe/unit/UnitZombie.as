@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
@@ -9,8 +9,7 @@ package fe.unit
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
 
-	public class UnitZombie extends UnitPon
-	{
+	public class UnitZombie extends UnitPon {
 
 		public var tr:int=0;
 		
@@ -49,6 +48,7 @@ package fe.unit
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
+		// Constructor
 		public function UnitZombie(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
@@ -133,7 +133,8 @@ package fe.unit
 				if (kop1.phis>0 && kop2.phis>0) {
 					zak=true;
 					zakop();
-				} else {
+				}
+				else {
 					zak=false;
 					if (digger==2) exterminate();
 				}
@@ -182,14 +183,14 @@ package fe.unit
 			else {
 				vis.visible=true;
 				if (stay) {
-					if  (dx<1 && dx>-1) {
+					if  (velocity.X < 1 && velocity.X > -1) {
 						animState='stay';
 					}
 					else if (aiState==3) {
 						animState='run';
 						sndStep(anims[animState].f,2);
 					}
-					else if (aiState==2 || dx>6 || dx<-6) {
+					else if (aiState==2 || velocity.X > 6 || velocity.X < -6) {
 						animState='trot';
 						sndStep(anims[animState].f,1);
 					}
@@ -227,8 +228,11 @@ package fe.unit
 				if (aiState==5) {
 					aiState=6;
 					aiTCh=24;
-				} else if (aiState==6){
-				} else {
+				}
+				else if (aiState==6){
+					
+				}
+				else {
 					aiSpok=maxSpok+10;
 					aiState=3;
 					shok=Math.floor(Math.random()*15+5);
@@ -267,10 +271,11 @@ package fe.unit
 		
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
-				dy=-jumpdy*v;
+				velocity.Y = -jumpdy * v;
 				aiJump=int(30+Math.random()*50);
-			} else if (isPlav) {
-				dy-=plavdy;
+			}
+			else if (isPlav) {
+				velocity.Y -= plavdy;
 			}
 		}
 		
@@ -294,12 +299,15 @@ package fe.unit
 			if (digger==1) {
 				vision=0.75;
 				ear=0.2;
-			} else if (digger==2){
+			}
+			else if (digger==2){
 				vision=0;
 				ear=1.8;
-			} else {
+			}
+			else {
 				vision=ear=0;
 			}
+
 			if (vlight) {
 				vlight.alpha=0;
 				vlight.y=0;
@@ -332,8 +340,8 @@ package fe.unit
 		}
 		
 		public override function destroyWall(t:Tile, napr:int=0):Boolean {
-			if (napr==3 && dy>5 && superQuake && isrnd(0.2)) {
-				quake(dy);
+			if (napr==3 && velocity.Y > 5 && superQuake && isrnd(0.2)) {
+				quake(velocity.Y);
 			}
 			return super.destroyWall(t, napr);
 		}
@@ -489,7 +497,7 @@ package fe.unit
 			maxSpeed=walkSpeed;
 			if (aiState==2) maxSpeed=runSpeed*0.6;
 			if (aiState==3) maxSpeed=runSpeed;
-			if (dx*diagon>0) maxSpeed*=0.5;
+			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
 
 			if (aiState==3 && aiZlo<tZlo+10) aiZlo++;
 			if (superSilaTip>0 && aiZlo>tZlo && (celUnit || aiState==3)) {
@@ -511,16 +519,19 @@ package fe.unit
 			if (aiState==0) {
 				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
-			} else if (aiState==4) {
+			}
+			else if (aiState==4) {
 				if (celDX>40) aiNapr=storona=1;
 				if (celDX<-40) aiNapr=storona=-1;
-			} else if (aiState==1) {
+			}
+			else if (aiState==1) {
 				isLaz=0;
 				//бегаем туда-сюда
 				if (aiNapr==-1) {
-					if (dx>-maxSpeed) dx-=accel;
-				} else {
-					if (dx<maxSpeed) dx+=accel;
+					if (velocity.X > -maxSpeed) velocity.X -= accel;
+				}
+				else {
+					if (velocity.X < maxSpeed) velocity.X += accel;
 				}
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr<0) {
@@ -528,16 +539,20 @@ package fe.unit
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=1;
-					} else turnX=1;
+						}
+						else turnX=1;
+					}
+					else turnX=1;
 				}
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=-1;
-					} else turnX=-1;
+						}
+						else turnX=-1;
+					}
+					else turnX=-1;
 				}
 				//если повернули, то можем остановиться
 				if (stay && turnX!=0) {
@@ -546,7 +561,8 @@ package fe.unit
 					turnX=0;
 				}
 				//в возбуждённом или атакующем состоянии
-			} else if (aiState==2 || aiState==3) {
+			}
+			else if (aiState==2 || aiState==3) {
 				
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
@@ -560,20 +576,23 @@ package fe.unit
 				else throu=false;
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else {
+					else {
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					}
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
+					}
+					else {
+						if (velocity.X < maxSpeed) velocity.X += accel;
 					}
 				}
 				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) {
 					if (aiVNapr<=0 && isrnd(0.5)) jmp=0.5;
-					else if (dx>5 || dx<-5) dx*=0.6;	//притормозить перед ямой
+					else if (velocity.X > 5 || velocity.X < -5) velocity.X *= 0.6;	//притормозить перед ямой
 				}
 				if (turnX!=0) {
 					aiTTurn--;
@@ -712,12 +731,12 @@ package fe.unit
 		function superSila() {
 			super_on=true;
 			if (superSilaTip==1) {
-				if (superX>0 && superY>0 && stay) {
-					var tdx=superX - coordinates.X;
-					var tdy=superY - coordinates.Y;
-					var rasst=Math.sqrt(tdx*tdx+tdy*tdy);
-					dx=tdx/rasst*vJump;
-					dy=tdy/rasst*vJump;
+				if (superX > 0 && superY > 0 && stay) {
+					var tdx = superX - coordinates.X;
+					var tdy = superY - coordinates.Y;
+					var rasst=Math.sqrt(tdx * tdx + tdy * tdy);
+					velocity.X = tdx / rasst * vJump;
+					velocity.Y = tdy / rasst * vJump;
 					tSuper=Math.round(rasst/vJump);
 					if (tSuper>20) tSuper=20;
 					grav=0;
@@ -744,7 +763,8 @@ package fe.unit
 		function superSila2() {
 			if (superSilaTip==1) {
 				grav=0;
-			} else if (superSilaTip==2 || superSilaTip==7) {
+			}
+			else if (superSilaTip==2 || superSilaTip==7) {
 				if (aiTCh==30) {
 					superX = coordinates.X;
 					superY = coordinates.Y;
@@ -757,13 +777,15 @@ package fe.unit
 					tdy=tdy/rasst*teleAccel;
 					teleUnit.isLaz=0;
 					teleUnit.levit=2;
-					if (tdx>0 && teleUnit.dx<teleSpeed || tdx<0 && teleUnit.dx>-teleSpeed) teleUnit.dx+=tdx;
-					if (tdy>0 && teleUnit.dy<teleSpeed || tdy<0 && teleUnit.dy>-teleSpeed) teleUnit.dy+=tdy;
+					if (tdx>0 && teleUnit.velocity.X < teleSpeed || tdx < 0 && teleUnit.velocity.X > -teleSpeed) teleUnit.velocity.X += tdx;
+					if (tdy>0 && teleUnit.velocity.Y < teleSpeed || tdy < 0 && teleUnit.velocity.Y > -teleSpeed) teleUnit.velocity.Y += tdy;
 					if (teleUnit.player) (teleUnit as UnitPlayer).levitFilter2=levitFilter;
 				}
-			} else if (superSilaTip==5) {
+			}
+			else if (superSilaTip==5) {
 				radioactiv-=(radMax-radMin)/tSuper;
-			} else if (superSilaTip==6) {
+			}
+			else if (superSilaTip==6) {
 				if (aiTCh%4==1) quake(12);
 			}
 		}
@@ -774,10 +796,12 @@ package fe.unit
 			if (superSilaTip==1) {
 				maxSpeed=vJump+3;
 				grav=1;
-			} else if (superSilaTip==2 || superSilaTip==7) {
+			}
+			else if (superSilaTip==2 || superSilaTip==7) {
 				if (teleUnit && teleUnit.levit==2) teleUnit.levit=0;
 				teleUnit=null;
-			} else if (superSilaTip==5) {
+			}
+			else if (superSilaTip==5) {
 				radioactiv=radMin;
 				radrad=radradMin
 			}

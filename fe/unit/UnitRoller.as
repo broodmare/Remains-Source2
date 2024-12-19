@@ -1,18 +1,20 @@
-package fe.unit
-{
+package fe.unit {
+	
 	import fe.*;
 	import fe.loc.Tile;
 	
-	public class UnitRoller extends Unit
-	{
+	public class UnitRoller extends Unit {
+
 		var rollDr:Number = 0;
 		var tr:int = 1;
 
 		private static var tileY:int = Tile.tileY;
 
-		public function UnitRoller(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitRoller(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+
 			super(cid, ndif, xml, loadObj);
+			
 			if (cid) tr=int(cid);							//из заданного идентификатора cid
 			else tr=1;
 			
@@ -20,11 +22,16 @@ package fe.unit
 			else if (xml && xml.@tr.length()) tr=xml.@tr;	//из настроек карты
 
 			if (!(tr>0)) tr=1;
+			
 			id='roller';
+			
 			if (tr>=2) id+=tr;
+			
 			getXmlParam();
+			
 			if (tr==2) vis=new visualRoller2();
 			else vis=new visualRoller();
+			
 			vis.osn.rotation=Math.random()*360;
 			vis.osn.stop();
 			maxSpeed+=Math.random()*2-1;
@@ -56,7 +63,8 @@ package fe.unit
 				if (vis.osn.currentFrame!=1) {
 					vis.osn.gotoAndStop(1);
 				}
-			} else {
+			}
+			else {
 				if (rasst2<200*200 && vis.osn.currentFrame==1) {
 					vis.osn.gotoAndStop(2);
 				}
@@ -64,23 +72,26 @@ package fe.unit
 					vis.osn.gotoAndStop(1);
 				}
 			}
-			if (stay || turnY==-1) rollDr=dx*1.5;
-			turnY=0;
-			vis.osn.rotation+=rollDr;
+			if (stay || turnY==-1) rollDr = velocity.X * 1.5;
+			turnY = 0;
+			vis.osn.rotation += rollDr;
 		}
 		
 		public override function setNull(f:Boolean=false) {
 			super.setNull(f);
-			if (f) aiState=aiSpok=0;
+			if (f) {
+				aiState = 0;
+				aiSpok = 0;
+			}
 		}
 		
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
-				dy=-jumpdy*v;
+				velocity.Y = -jumpdy * v;
 			}
 		}
 		
-		var aiVis=0.5;
+		var aiVis = 0.5;
 		
 		var optDistAtt:int=100;
 		var optJumpAtt:Boolean=true;
@@ -90,6 +101,7 @@ package fe.unit
 		//1 - видит цель, катится к ней, атакует
 		
 		override protected function control():void {
+			
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
@@ -118,7 +130,8 @@ package fe.unit
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
-				} else {
+				}
+				else {
 					setCel(null, celX+Math.random()*80-40, celY);
 					if (aiSpok>0) {
 						aiSpok--;
@@ -132,13 +145,15 @@ package fe.unit
 			if (aiState==0) {
 				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
-			} else if (aiState==1) {
+			}
+			else if (aiState==1) {
 				//определить, куда двигаться
 				if (aiTCh%15==1) {
 					if (isrnd(0.9)) {
 						if (celDY>80) throu=true;
 						if (aiVNapr<0 && isrnd()) jmp=Math.random()*0.5+0.5;
-					} else {
+					}
+					else {
 						throu=false;
 						jmp=0;
 					}
@@ -147,15 +162,18 @@ package fe.unit
 				}
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else {
+					else {
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					}
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
+					}
+					else {
+						if (velocity.X < maxSpeed) velocity.X += accel;
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
@@ -182,8 +200,8 @@ package fe.unit
 		}
 		
 		public function attack() {
-			if (celUnit && shok<=0) {	//атака корпусом
-				attKorp(celUnit,1);
+			if (celUnit && shok <= 0) {	//атака корпусом
+				attKorp(celUnit, 1);
 			}
 			jump(0.3);
 		}

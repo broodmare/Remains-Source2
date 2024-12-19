@@ -1,17 +1,15 @@
-package fe.unit
-{
+package fe.unit {
 	
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
-	public class UnitDestr extends Unit
-	{
+	public class UnitDestr extends Unit {
 		
 		var tr:int=1;
 		var t_part:int=10;
 		
-		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='destr';
 			if (cid!=null) tr=int(cid);
@@ -19,7 +17,8 @@ package fe.unit
 				if (xml.@turn.length()) {
 					if (xml.@turn>0) storona=1;
 					if (xml.@turn<0) storona=-1;
-				} else {
+				}
+				else {
 					storona=isrnd()?1:-1;
 				}
 				if (xml.@tr.length()) tr=xml.@tr;
@@ -37,6 +36,7 @@ package fe.unit
 		}
 
 		public override function setLevel(nlevel:int=0) {
+
 		}
 		
 		override protected function control():void {
@@ -46,12 +46,12 @@ package fe.unit
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
 					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*objectHeight);
-				} else {
+				}
+				else {
 					vis.osn.gotoAndStop(2);
 					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*objectHeight);
 				}
 			}
 		}
 	}
-	
 }

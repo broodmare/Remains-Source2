@@ -1,5 +1,7 @@
 package fe.inter
 {
+	import fe.util.Vector2;
+	import fe.util.Calc;
 	import fe.unit.Unit;
 	import fe.World;
 	import fe.Snd;
@@ -12,15 +14,15 @@ package fe.inter
 		public var moved:Boolean;
 		public var screenX:int=1280; //размеры экрана
 		public var screenY:int=800;
-		public var X:int=200; //координаты центра камеры в мире
-		public var Y:int=200;
-		public var vx:int;		//визуальные координаты мира по отношению к экрану
-		public var vy:int, ovy:int;
-		public var maxsx:int=2000;	//размеры локации
-		public var maxsy:int=2000;
-		public var maxvx:int=2000;	//визуальные границы локации
-		public var maxvy:int=2000;
-		public var celX:int;	//координаты курсора мыши относительно экрана
+		public var coord = new Vector2(200, 200); // [Coordinates of the camera center in the world]
+		public var vx:int;				// [Visual coordinates of the world relative to the screen]
+		public var vy:int;
+		public var ovy:int;
+		public var maxsx:int = 2000;	// [Location dimensions]
+		public var maxsy:int = 2000;
+		public var maxvx:int = 2000;	// [Visual boundaries of the location]
+		public var maxvy:int = 2000;
+		public var celX:int;			// [Coordinates of the mouse cursor relative to the screen]
 		public var celY:int;
 		public var camRun:Boolean=false;
 		public var otryv:Number=0;
@@ -54,18 +56,19 @@ package fe.inter
 			quakeY = 0;
 			if (loc.maxX-40<=screenX && loc.maxY-40<=screenY) {
 				moved=false;
-				vx=-maxvx/2;
-				vy=-maxvy/2;
-				w.visual.x=w.sats.vis.x=vx;
-				w.visual.y=w.sats.vis.y=vy;
+				vx = -maxvx / 2;
+				vy = -maxvy / 2;
+				w.visual.x = w.sats.vis.x = vx;
+				w.visual.y = w.sats.vis.y = vy;
 			}
 			else moved = true;
 			setZoom();
 		}
 		
 		public function setKoord(mc:DisplayObject, nx:Number, ny:Number) {
-			mc.x=nx*scaleV+vx;
-			mc.y=ny*scaleV+vy;
+			
+			mc.x = nx * scaleV + vx;
+			mc.y = ny * scaleV + vy;
 		}
 		
 		public function setZoom(turn:int=-1000)
@@ -138,71 +141,85 @@ package fe.inter
 					showX=-1;
 				}
 				if (!camRun) {
-					if (otryv>0) {
-						if (showX >= 0)
-						{
-							X = un.coordinates.X * scaleV + otryv * (showX - screenX / 2) * 1.3;
-							Y = un.coordinates.Y * scaleV + otryv * (showY - screenY / 2) * 1.3;
+					
+					// New [x ,y] vector
+					var v = new Vector.<Number>(2, true); 
+					var x = v[0]; // Shortcuts for readability
+					var y = v[1];
+
+					// Set the x and y value of our new coordinate vector
+					if (otryv > 0) {
+						
+						if (showX >= 0) {
+							x = un.coordinates.X * scaleV + otryv * (showX - screenX / 2) * 1.3;
+							y = un.coordinates.Y * scaleV + otryv * (showY - screenY / 2) * 1.3;
 						}
-						else
-						{
-							X = un.coordinates.X * scaleV + otryv * (celX - screenX / 2);
-							Y = un.coordinates.Y * scaleV + otryv * (celY - screenY / 2);
+						else {
+							x = un.coordinates.X * scaleV + otryv * (celX - screenX / 2);
+							y = un.coordinates.Y * scaleV + otryv * (celY - screenY / 2);
 						}
+						
 					}
 					else
 					{
-						X = un.coordinates.X * scaleV;
+						x = un.coordinates.X * scaleV;
 						if (ovy - un.coordinates.Y * scaleV > 5 && ovy - un.coordinates.Y * scaleV < 50)
 						{
-							Y = ovy-(ovy - un.coordinates.Y * scaleV) / 4;
+							y = ovy-(ovy - un.coordinates.Y * scaleV) / 4;
 						}
-						else Y = un.coordinates.Y * scaleV;
+						else y = un.coordinates.Y * scaleV;
 					}
+					
+					// Update our coordinates
+					coord.setVector(v);
 				}
-				ovy=Y;
-				if (maxvx<0) {
-					vx=-maxvx/2;
-				} else {
-					vx=-X+screenX/2;
-					if (vx>0) vx=0;
-					if (vx<-maxvx) vx=-maxvx;
+				
+				ovy = coord.Y;
+				
+				if (maxvx < 0) {
+					vx = -maxvx / 2;
 				}
-				if (maxvy<0) {
-					vy=-maxvy/2;
-				} else {
-					vy=-Y+screenY/2+100;
-					if (vy>0) vy=0;
-					if (vy<-maxvy) vy=-maxvy;
+				else {
+					vx = -coord.X + screenX / 2;
+					if (vx > 0) vx = 0;
+					if (vx < -maxvx) vx = -maxvx;
+				}
+				
+				if (maxvy < 0) {
+					vy = -maxvy / 2;
+				}
+				else {
+					vy = -coord.Y + screenY / 2 + 100;
+					if (vy > 0) vy = 0;
+					if (vy < -maxvy) vy = -maxvy;
 				}
 			}
-			if (quakeX!=0) {
-				if (Math.random()>0.2) quakeX*=-(Math.random()*0.3+0.5);
+			if (quakeX != 0) {
+				if (Math.random() > 0.2) quakeX *= Calc.floatBetween(-0.5, -0.8);
 				if (quakeX<1 && quakeX>-1) quakeX=0;
 			}
-			if (quakeY!=0) {
-				if (Math.random()>0.2) quakeY*=-(Math.random()*0.3+0.5);
+			if (quakeY != 0) {
+				if (Math.random() > 0.2) quakeY *= Calc.floatBetween(-0.5, -0.8);
 				if (quakeY<1 && quakeY>-1) quakeY=0;
 			}
 			w.visual.x=w.sats.vis.x=vx+quakeX;
 			w.visual.y=w.sats.vis.y=vy+quakeY;
-			Snd.centrX = X;
-			Snd.centrY = Y;
+			Snd.center.setVector(coord.getVector2());
 			
-			w.celX=(celX-vx)/scaleV;
-			w.celY=(celY-vy)/scaleV;
-			if (dblack>0) {
-				w.vblack.visible=true;
-				w.vblack.alpha+=dblack/100;
-				if (w.vblack.alpha>=1) {
-					dblack=0;
+			w.celX = (celX - vx) / scaleV;
+			w.celY = (celY - vy) / scaleV;
+			if (dblack > 0) {
+				w.vblack.visible = true;
+				w.vblack.alpha += dblack / 100;
+				if (w.vblack.alpha >= 1) {
+					dblack = 0;
 				}
 			}
-			if (dblack<0) {
-				w.vblack.alpha+=dblack/100;
-				if (w.vblack.alpha<=0) {
-					dblack=0;
-					w.vblack.visible=false;
+			if (dblack < 0) {
+				w.vblack.alpha += dblack / 100;
+				if (w.vblack.alpha <= 0) {
+					dblack = 0;
+					w.vblack.visible = false;
 				}
 			}
 		}

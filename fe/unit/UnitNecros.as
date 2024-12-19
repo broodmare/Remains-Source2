@@ -5,11 +5,12 @@ package fe.unit {
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	
-	public class UnitNecros extends Unit{
+	public class UnitNecros extends Unit {
 		
 		var spd:Object;
-		var br:Number=0;
+		var br:Number = 0;
 
+		// Constructor
 		public function UnitNecros(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='necros';
@@ -31,25 +32,20 @@ package fe.unit {
 			vulner[D_NECRO]=0;
 		}
 
-		public override function forces()
-		{
-			if (isFly)
-			{
-				if (dx*dx+dy*dy>maxSpeed*maxSpeed || rasst2<100*100)
-				{
-					dx *= 0.8;
-					dy *= 0.8;
+		public override function forces() {
+			if (isFly) {
+				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed || rasst2 < 10000) {
+					velocity.multiply(0.80);
 				}
 				if (aiState!=1) {
-					dx *= 0.8;
-					dy *= 0.8;
+					velocity.multiply(0.80);
 				}
 			} else super.forces();
 		}
 		
 		public override function expl()	{
-			newPart('black',24);
-			isFly=true;
+			newPart('black', 24);
+			isFly = true;
 		}
 		
 		public override function animate() {
@@ -71,9 +67,11 @@ package fe.unit {
 			else {						//смена состояний
 				if (aiSpok==0) {	//перейти в пассивный режим
 					aiState=0;
-				} else if (aiSpok>=maxSpok) {	//агрессивный
+				}
+				else if (aiSpok>=maxSpok) {	//агрессивный
 					aiState=1;
-				} else {
+				}
+				else {
 					aiState=2;
 				}
 				aiTCh=Math.floor(Math.random()*100)+100;
@@ -85,7 +83,8 @@ package fe.unit {
 						celY = coordinates.Y + Math.random() * 200 - 100;
 						if (celY < 0) celX = 200;
 						if (celY > loc.maxY) celY = loc.maxY - 200;
-					} else {
+					}
+					else {
 						celX = coordinates.X;
 						celY = this.topBoundToCenter;
 					}
@@ -97,15 +96,17 @@ package fe.unit {
 					aiSpok=maxSpok+10;
 					aiState=1;
 					storona = (celX > coordinates.X)?1:-1;
-				} else {
+				}
+				else {
 					if (aiSpok>0) aiSpok--;
 				}
 				spd.x = celX - coordinates.X;
 				spd.y = celY - this.topBoundToCenter;
 				norma(spd,aiState==0?accel/2:accel);
 			}
-			dx += spd.x;
-			dy += spd.y;
+
+			velocity.X += spd.x;
+			velocity.Y += spd.y;
 			
 			if (aiState==0) maxSpeed=walkSpeed;
 			else maxSpeed=runSpeed;

@@ -1,12 +1,10 @@
-package fe.unit
-{
+package fe.unit {
 	
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	
-	public class UnitBloat extends Unit
-	{
+	public class UnitBloat extends Unit {
 		
 		public var tr:int;
 		var cDam:Number;
@@ -15,19 +13,24 @@ package fe.unit
 		var isGryz:Boolean=false;
 		var shootCh:Number=0.1;
 		
-		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
+			
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
+			}
+			else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
-			} else {
+			}
+			else {
 				tr = int(Math.random()*5);	//случайно по параметру ndif
 			}
+
 			if (!(tr>=0)) tr=0;
 			id='bloat'+tr;
 			var vClass:Class=Res.getClass('visualBloat'+tr,null,visualBloat1);
@@ -62,11 +65,13 @@ package fe.unit
 				if (node0.un.@gryz.length()) gryz=true;					//грызун
 			}
 		}
+
 		//сделать героем
 		public override function setHero(nhero:int=1) {
 			super.setHero(nhero);
 			if (hero == 1) shootCh = 0.3;
 		}
+
 		public override function setNull(f:Boolean=false) {
 			super.setNull(f);
 			if (f) {
@@ -74,6 +79,7 @@ package fe.unit
 				aiTCh = int(Math.random()*10)+5;
 			}
 		}
+
 		public override function save():Object {
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
@@ -120,23 +126,34 @@ package fe.unit
 		}
 		
 		public override function animate() {
+
 		}
 		
-		var aiDx:Number=0, aiDy:Number=0, aiRasst:Number;
-		var attRasst:int=400, attCh:Number=0.4;
+		var aiDx:Number=0;
+		var aiDy:Number=0;
+		var aiRasst:Number;
+
+		var attRasst:int=400;
+		var attCh:Number=0.4;
 		
 		//состояния
 		//0 - летает
 		//1 - видит цель, стреляет
 		
 		override protected function control():void {
-			if (sost>=3) return;
+
+			if (sost>=3) {
+				return;
+			}
+			
 			if (World.w.enemyAct<=0) {
 				return;
 			}
+			
 			if (stun) {
 				return;
 			}
+
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
 			else {						//смена состояний
 				aiTCh=Math.floor(Math.random()*50)+20;
@@ -148,12 +165,14 @@ package fe.unit
 						aiState=2;
 						aiTCh=20;
 						maxSpeed=runSpeed;
-					} else {
+					}
+					else {
 						aiState=1;
 						maxSpeed=walkSpeed;
 					}
 					storona=(celDX>0)?1:-1;
-				} else {
+				}
+				else {
 					if (isrnd(0.1)) {
 						aiDx=isrnd()?0.7:-0.7;
 						aiDy=isrnd()?0.7:-0.7;
@@ -163,39 +182,47 @@ package fe.unit
 					maxSpeed=sitSpeed
 				}
 			}
+
 			//поиск цели
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				findCel();
 			}
+
 			if (isPlav) {
 				turnY=-1;
 			}
-			if (levit) isGryz=false;
+
+			if (levit) {
+				isGryz=false;
+			}
 	
 			if (turnX) {
 				storona=turnX;
 				aiDx=Math.abs(aiDx)*turnX;
 				turnX=0;
 			}
+
 			if (turnY) {
 				aiDy=Math.abs(aiDy)*turnY;
 				turnY=0;
 			}
-			dx += aiDx * accel + Math.random() * 2 - 1;
-			dy += aiDy * accel + Math.random() * 2 - 1;
+
+			velocity.X += aiDx * accel + Math.random() * 2 - 1;
+			velocity.Y += aiDy * accel + Math.random() * 2 - 1;
 			
 			if (isGryz) {
 				if (celUnit && isMeet(celUnit)) {
 					if ((celUnit.coordinates.X - coordinates.X) * (celUnit.coordinates.X - coordinates.X) + (celUnit.coordinates.Y - coordinates.Y) * (celUnit.coordinates.Y - coordinates.Y) > 10000)
 					{
-						isGryz=false;
+						isGryz = false;
 					}
 					else {
-						dx = celUnit.coordinates.X - coordinates.X;
-						dy = celUnit.coordinates.Y - celUnit.objectHeight / 2 - coordinates.Y + objectHeight / 2;
+						velocity.X = celUnit.coordinates.X - coordinates.X;
+						velocity.Y = celUnit.coordinates.Y - celUnit.objectHeight / 2 - coordinates.Y + objectHeight / 2;
 					}
-				} else {
-					isGryz=false;
+				}
+				else {
+					isGryz = false;
 				}
 			}
 			

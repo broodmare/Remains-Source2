@@ -224,25 +224,34 @@ package fe.unit
 		}
 		
 		//кинетический рывок
-		private function cast_kdash():void
-		{
+		private function cast_kdash():void {
 			if (!owner.loc.levitOn) return;
-			var dx:Number=(cx - owner.coordinates.X);
-			var dy:Number=(cy - owner.coordinates.Y + owner.objectHeight);
-			var rasst:Number = Math.sqrt(dx * dx + dy * dy);
-			var d:Object={x:dx, y:dy};
-			var spd:Number=dam*(1+(power-1)*0.5);
-			var prod:int=15;
-			if (spd>rasst/prod) prod=Math.round(rasst/spd)+1;
-			if (prod<7) prod=7;
-			owner.norma(d,spd);
-			owner.isLaz=0;
-			owner.levit=0;
-			owner.dx+=d.x;
-			owner.dy+=d.y;
+			var v:Vector.<Number> = new Vector.<Number>(2, true);
+			var vX = v[0];
+			var vY = v[1];
+
+			vX = cx - owner.coordinates.X;
+			vY = cy - owner.coordinates.Y + owner.objectHeight;
+
+			var rasst:Number = Math.sqrt(vX * vX + vY * vY);
+			
+			var d:Object = {x:vX, y:vY};
+			var spd:Number = dam * (1 + (power - 1) * 0.5);
+			var prod:int = 15;
+			if (spd > rasst / prod) prod = Math.round(rasst / spd) + 1;
+			if (prod < 7) prod = 7;
+			owner.norma(d, spd);
+			owner.isLaz = 0;
+			owner.levit = 0;
+			
+			owner.velocity.sumVector(v)
+			// Leaving these here in case this isn't a correct replacement
+			//owner.dx += d.x;
+			//owner.dy += d.y;
+			
 			if (player) {
-				gg.kdash_t=prod;
-				gg.t_levitfilter=20;
+				gg.kdash_t = prod;
+				gg.t_levitfilter = 20;
 			}
 		}
 		
@@ -254,19 +263,25 @@ package fe.unit
 			for each(var un:Unit in loc.units)
 			{
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
-				var dx:Number = un.coordinates.X - X;
-				var dy:Number = un.coordinates.Y - un.objectHeight / 2 - Y;
-				var rad2:Number=(dx*dx+dy*dy);
-				if (rad2>rad*rad) continue;
+				
+				var v:Vector2= new Vector2();
+				
+				v.X = un.coordinates.X - X;
+				v.Y = un.coordinates.Y - un.objectHeight / 2 - Y;
+				var rad2:Number=(v.X * v.X + v.Y * v.Y);
+				
+				if (rad2 > rad * rad) continue;
 				rad2=Math.sqrt(rad2);
 				var sila:Number=dam*power*(1-rad2/rad)*(Math.random()*0.4+0.8)*un.knocked/un.massa;
-				if (sila>dam*power) sila=dam*power;
-				un.dx = dx / rad2 * sila;
-				un.dy = dy / rad2 * sila;
+				if (sila > dam * power) sila = dam * power;
+				v.divide(rad2);
+				v.multiply(sila);
+				un.velocity.setVector(v.getVector2())
+				
 				un.stun+=int(Math.random()*power*dam);
 				un.t_throw=30;
 			}
-			if (owner.player) loc.budilo(X,Y,500);
+			if (owner.player) loc.budilo(X, Y, 500);
 			if (loc.active) Emitter.emit('blast',loc,X,Y);
 			
 			if (loc.active) World.w.quake(Math.random()*30-10,Math.random()*10-5);

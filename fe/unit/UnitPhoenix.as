@@ -1,14 +1,14 @@
 package fe.unit {
+
 	import fe.*;
 	import fe.projectile.Bullet;
-	//import fe.serv.Script;
 	
 	public class UnitPhoenix extends Unit {
 		
 		var t_fall:int=0;
-		//var tameScr:Script;
 		static var questOk:Boolean=false;
 		
+		// Constructor
 		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			id='phoenix';
 			getXmlParam();
@@ -74,8 +74,7 @@ package fe.unit {
 			if (World.w.game.triggers['tame']>=5) die();
 		}
 		
-		function tame()
-		{
+		function tame() {
 			if (!questOk) World.w.game.addQuest('tamePhoenix');
 			storona=(coordinates.X > World.w.gg.coordinates.X)? -1:1;
 			if (World.w.invent.items['radcookie'].kol>0) {
@@ -86,29 +85,26 @@ package fe.unit {
 				if (World.w.game.triggers['tame']>=5 && !World.w.game.triggers['pet_phoenix']) {	//приручить
 					if (World.w.game.runScript('tamePhoenix',this)) World.w.game.triggers['pet_phoenix']=1;
 				}
-				else
-				{
+				else {
 					die();
 					World.w.gui.messText('phoenixFeed2', '', coordinates.Y < 300);
 				}
 			}
-			else
-			{
+			else {
 				World.w.gui.messText('phoenixFeed1', '', coordinates.Y < 300);
 			}
-			if (World.w.game)
-			{
-				World.w.game.triggers['frag_'+id]=0;
+			if (World.w.game) {
+				World.w.game.triggers['frag_' + id] = 0;
 			}
 		}
 		
 		override protected function control():void {
 			if (!stay) t_fall++;
-			if (t_fall>=3 || dx>1 || dx<-1) die();
-			if (!questOk && loc.celObj==this) {
-				World.w.game.triggers['frag_'+id]=0;
+			if (t_fall >= 3 || velocity.X > 1 || velocity.X < -1) die();
+			if (!questOk && loc.celObj == this) {
+				World.w.game.triggers['frag_' + id] = 0;
 				World.w.game.addQuest('tamePhoenix');
-				questOk=true;
+				questOk = true;
 			}
 		}
 	}

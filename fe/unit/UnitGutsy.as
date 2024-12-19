@@ -1,19 +1,21 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.weapon.Weapon;
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
 	
-	public class UnitGutsy extends UnitAIRobot
-	{
+	public class UnitGutsy extends UnitAIRobot {
+
 		var dopWeapon:Weapon;
 		public var wPos:Array;
 		
-		public function UnitGutsy(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitGutsy(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='gutsy';
+			
 			if (tr>0) id+=tr;
+			
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
@@ -23,17 +25,20 @@ package fe.unit
 			//дать оружие
 			getWeapon(ndif, xml, loadObj);
 			dopWeapon=Weapon.create(this,'robofire');
+			
 			if (tr==1) dopWeapon.damage*=2;
+			
 			if (currentWeapon) childObjs=[currentWeapon, dopWeapon];
 			
 			if (quiet) id_replic='';
+			
 			wPos = AnimationSet.getWeaponOffset("wPosGutsy");
 		}
 		
 		public override function forces() {
 			super.forces();
-			if (sost<3 && dy>0) {
-				dy*=0.9;
+			if (sost < 3 && velocity.Y > 0) {
+				velocity.Y *= 0.9;
 			}
 		}
 		
@@ -78,11 +83,10 @@ package fe.unit
 		}
 		
 		public override function jump(v:Number=1) {
-			if (dy>-jumpdy) {
-				dy-=jumpdy*v/4;
+			if (velocity.Y > -jumpdy) {
+				velocity.Y -= jumpdy * v / 4;
 			}
 		}
-
 		
 		public override function attack() {
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
@@ -92,7 +96,8 @@ package fe.unit
 					if (aiAttackT>aiAttackOch*0.25) dopWeapon.attack();
 					aiAttackT--;
 				}
-			} else {
+			}
+			else {
 				if (isrnd(0.1)) currentWeapon.attack();	//стрельба одиночными
 			}
 		}

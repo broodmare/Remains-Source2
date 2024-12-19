@@ -1,12 +1,12 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.loc.Tile;
 	import fe.projectile.Bullet;
 	
-	public class UnitAIRobot extends UnitPon
-	{
+	public class UnitAIRobot extends UnitPon {
+
 		public var tr:int=0;
 		var weap:String;
 		var isPort:Boolean=false;
@@ -18,18 +18,24 @@ package fe.unit
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
+		// Constructor
 		public function UnitAIRobot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
+			
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
+			}
+			else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
-			} else {								//случайно по параметру ndif
+			}
+			else {								//случайно по параметру ndif
 				tr=0;
 			}
+
 			if (aiTip=='quiet') {
 				stroll=false;
 				quiet=true;
@@ -220,9 +226,9 @@ package fe.unit
 			} if (aiState==1) {
 				//бегаем туда-сюда
 				if (aiNapr==-1) {
-					if (dx>-maxSpeed) dx-=accel;
+					if (velocity.X>-maxSpeed) velocity.X-=accel;
 				} else {
-					if (dx<maxSpeed) dx+=accel;
+					if (velocity.X<maxSpeed) velocity.X+=accel;
 				}
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.5 && aiNapr<0) {
@@ -262,15 +268,17 @@ package fe.unit
 				else jmp=0;
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
+						if (velocity.X>-maxSpeed) velocity.X-=levitaccel;
 					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X<maxSpeed) velocity.X+=levitaccel;
 					}
-				} else {
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
+						if (velocity.X>-maxSpeed) velocity.X-=accel;
+					}
+					else {
+						if (velocity.X<maxSpeed) velocity.X+=accel;
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
@@ -295,7 +303,8 @@ package fe.unit
 					
 				}
 				pumpObj=null;
-			} else if (aiState==4 || aiState==3) {
+			}
+			else if (aiState==4 || aiState==3) {
 				storona=(celX>coordinates.X)?1:-1;
 			}
 			
@@ -314,11 +323,13 @@ package fe.unit
 					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
 					else nx=cel.coordinates.X+cel.storona*(Math.random()*300+200);
 					ny=cel.coordinates.Y;
-				} else if (i<10 && !rnd) {
+				}
+				else if (i<10 && !rnd) {
 					if (isrnd()) nx=cel.coordinates.X-cel.storona*(Math.random()*800+200);
 					else  nx=cel.coordinates.X+cel.storona*(Math.random()*800+200);
 					ny=cel.coordinates.Y+Math.random()*160-80;
-				} else {
+				}
+				else {
 					nx=Math.random()*loc.maxX;
 					ny=Math.random()*loc.maxY;
 				}
@@ -330,7 +341,7 @@ package fe.unit
 				if (ny>loc.maxY-40) ny=loc.maxY-40;
 				if (!collisionAll(nx-coordinates.X, ny-coordinates.Y)) {
 					teleport(nx,ny,1);
-					dx=dy=0;
+					velocity.set(0, 0);
 					setWeaponPos();
 					if (findCel(true) && celUnit) {
 						aiSpok=0;
@@ -338,7 +349,8 @@ package fe.unit
 						storona=(celX>coordinates.X)?1:-1;
 						aiTCh=int(Math.random()*30)+20;
 						t_port=int(Math.random()*90+150);
-					} else {
+					}
+					else {
 						t_port=int(Math.random()*90+30);
 					}
 					kol_port--;
@@ -350,7 +362,7 @@ package fe.unit
 		//прыжок
 		public function jump(v:Number=1) {
 			if (stay) {		
-				dy=-jumpdy*v;
+				velocity.Y =- jumpdy * v;
 			}
 		}
 		

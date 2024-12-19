@@ -134,12 +134,12 @@ package fe.loc
 		public function attKorp(cel:Unit):Boolean
 		{
 			if (cel==null || cel.neujaz) return false;
-			if (spDam == 1 && !cel.isFly && cel.dy > 8 && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.coordinates.Y <= bottomBound && cel.coordinates.Y >= topBound) //шипы
+			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.coordinates.Y <= bottomBound && cel.coordinates.Y >= topBound) //шипы
 			{		
-				cel.damage(cel.massa*cel.dy/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
+				cel.damage(cel.massa*cel.velocity.Y/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
-			if (spDam==2 && !cel.isFly && (cel.dy + cel.osndy < 0) && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.topBound <= bottomBound && cel.topBound >= topBound) //шипы
+			if (spDam==2 && !cel.isFly && (cel.velocity.Y + cel.osndy < 0) && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.topBound <= bottomBound && cel.topBound >= topBound) //шипы
 			{
 				cel.damage(cel.massa * dam * (1 + loc.locDifLevel * 0.1), tipDamage);
 				cel.neujaz = cel.neujazMax;

@@ -7,6 +7,7 @@ package fe.entities
 	import flash.geom.Point;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.Emitter;
 
 	public class Part  extends Entity
@@ -81,25 +82,27 @@ package fe.entities
 		}
 		
 		public override function step() {
-			if (otklad>0) {
-				vis.visible=false;
+			
+			if (otklad > 0) {
+				vis.visible = false;
 				vis.stop();
 				otklad--;
 				return;
-			} else if (vis.visible==false) {
-				vis.visible=true;
-				if (isAnim>0) vis.play();
+			}
+			else if (!vis.visible) {
+				vis.visible = true;
+				if (isAnim > 0) vis.play();
 			}
 			if (isMove) {
-				this.coordinates.X += dx;
-				this.coordinates.Y += dy;
-				dy += ddy;
+				// Apply velocity
+				this.coordinates.sumVector(velocity.getVector2());
+				velocity.Y += ddy;
 				r += dr;
 				vis.x = this.coordinates.X;
 				vis.y = this.coordinates.Y;
-				vis.rotation=r;
-				dx*=brake;
-				dy*=brake;
+				vis.rotation = r;
+				// Reduce velocity after moving
+				velocity.multiply(brake);
 			}
 			if (isAlph && liv<9) vis.alpha=liv/10;
 			else if (isPreAlph && (mliv-liv<9)) vis.alpha=(mliv-liv)/10;
@@ -109,14 +112,12 @@ package fe.entities
 				blitFrame+=blitDelta;
 				if (blitMFrame>0 && blitFrame>=blitMFrame) blitFrame=0;
 			}
-			if (water>0)
-			{
+			if (water>0) {
 				var voda=loc.getAbsTile(this.coordinates.X, this.coordinates.Y).water;
 				if (water == 2 && voda == 0 || water == 1 && voda > 0) liv = 1;
 			}
 			liv--;
-			if (liv <= 0)
-			{
+			if (liv <= 0) {
 				setNull();
 			}
 			Emitter.kol1++;

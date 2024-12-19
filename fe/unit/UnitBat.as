@@ -1,15 +1,15 @@
-package fe.unit
-{
+package fe.unit {
 	
 	import fe.*;
-	public class UnitBat extends Unit
-	{
+	
+	public class UnitBat extends Unit {
 		
 		var bleedDamage=5;
 		var tr:int=1;
 		
-		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+
 			super(cid, ndif, xml, loadObj);
 			if (cid) tr=int(cid);
 			if (xml && xml.@tr.length()) tr=xml.@tr;
@@ -50,17 +50,20 @@ package fe.unit
 						vis.osn.gotoAndStop('die');
 						animState='die';
 					}
-				} else if (aiState==0) {
+				}
+				else if (aiState==0) {
 					if (animState!='stay') {
 						vis.osn.gotoAndStop('stay');
 						animState='stay';
 					}
-				} else if (aiState==6) {
+				}
+				else if (aiState==6) {
 					if (animState!='attack') {
 						vis.osn.gotoAndStop('attack');
 						animState='attack';
 					}
-				} else {
+				}
+				else {
 					if (animState!='fly') {
 						vis.osn.gotoAndStop('fly');
 						animState='fly';
@@ -76,7 +79,9 @@ package fe.unit
 			}
 		}
 
-		var aiDx:Number=0, aiDy:Number=0, aiRasst:Number;
+		var aiDx:Number = 0;
+		var aiDy:Number = 0;
+		var aiRasst:Number;
 		
 		//состояния
 		//0 - неподвижен
@@ -99,10 +104,12 @@ package fe.unit
 				if (aiState==6) {	
 					aiState=4;
 					aiTCh=Math.floor(Math.random()*100)+100;
-				} else if (aiState==5) {	
+				}
+				else if (aiState==5) {	
 					aiState=6;
 					aiTCh=20;
-				} else if (aiSpok==0) {	//перейти в пассивный режим
+				}
+				else if (aiSpok==0) {	//перейти в пассивный режим
 					if (aiState>1)	{
 						aiState=1;
 						aiDx=isrnd()?0.7:-0.7;
@@ -110,20 +117,24 @@ package fe.unit
 						if (aiDx>0) storona=1; else storona=-1;
 					}
 					aiTCh=10;
-				} else if (aiSpok>=maxSpok) {	//агрессивный
+				}
+				else if (aiSpok>=maxSpok) {	//агрессивный
 					if (aiRasst<380) {
 						if (!isPlav && isrnd()) {
 							aiState=5;
 							aiTCh=20;
-						} else {
+						}
+						else {
 							aiState=4;
 							aiTCh=Math.floor(Math.random()*100)+100;
 						}
-					} else {
+					}
+					else {
 						aiState=(hp<maxhp)?4:3;
 						aiTCh=Math.floor(Math.random()*100)+100;
 					}
-				} else {	//режим поиска
+				}
+				else {	//режим поиска
 					aiState=2;
 					aiTCh=Math.floor(Math.random()*100)+100;
 				}
@@ -133,7 +144,8 @@ package fe.unit
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					if (aiState<5) aiState=(hp<maxhp)?4:3;
-				} else {
+				}
+				else {
 					if (aiSpok>0) aiSpok--;
 				}
 				if (aiState==2 || aiState==3 || aiState==4 || aiState==5) {
@@ -162,9 +174,11 @@ package fe.unit
 				}
 				if (turnY) {
 					if (turnY==1 && aiState==1) {
-						dx=aiDx=0;
-						dy=aiDy=0;
-						aiSpok=aiState=0;
+						velocity.set(0, 0);
+						aiDx = 0;
+						aiDy = 0;
+						aiSpok = 0;
+						aiState = 0;
 					} else {
 						aiDy=Math.abs(aiDy)*turnY;
 					}
@@ -173,18 +187,21 @@ package fe.unit
 			if (aiState==1 || aiState==2 || aiState==3 || aiState==4) {
 				maxSpeed=(aiState==4)?runSpeed:walkSpeed;
 				if (isPlav) {
-					dx+=aiDx*accel*0.3;
-					dy+=aiDy*accel*0.3;
-				} else {
-					dx+=aiDx*accel+Math.random()*2-1;
-					dy+=aiDy*accel+Math.random()*2-1;
+					velocity.X += aiDx * accel * 0.3;
+					velocity.Y += aiDy * accel * 0.3;
 				}
-			} else if (aiState==5) {
-				maxSpeed=0;
-			} else if (aiState==6) {
-				maxSpeed=runSpeed*2.5;
-				dx+=aiDx*accel*3;
-				dy+=aiDy*accel*3;
+				else {
+					velocity.X += aiDx * accel + Math.random() * 2 - 1;
+					velocity.Y += aiDy * accel + Math.random() * 2 - 1;
+				}
+			}
+			else if (aiState==5) {
+				maxSpeed = 0;
+			}
+			else if (aiState==6) {
+				maxSpeed = runSpeed * 2.5;
+				velocity.X += aiDx * accel * 3;
+				velocity.Y += aiDy * accel * 3;
 			}
 			
 			if (World.w.enemyAct>=3) {

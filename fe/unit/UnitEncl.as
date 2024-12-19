@@ -1,4 +1,5 @@
 package fe.unit {
+
 	import fe.*;
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
@@ -7,11 +8,12 @@ package fe.unit {
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
-	public class UnitEncl extends UnitRaider{
+	public class UnitEncl extends UnitRaider {
 		
 		var thWeapon:Weapon;
 		var t_gren:int=Math.round(Math.random()*150+50);
 		
+		// Constructor
 		public function UnitEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			parentId='encl';
 			flyer=true;
@@ -81,24 +83,32 @@ package fe.unit {
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
-					} else if (animState=='death') animState='fall';
+
+					}
+					else if (animState=='death') animState='fall';
 					else animState='die';
-				} else animState='death';
-			} else {
+				}
+				else animState='death';
+			}
+			else {
 				if (stay) {
-					if  (dx==0) {
+					if  (velocity.X==0) {
 						animState='stay';
-					} else if (walker && (aiState<=1 || aiState==4)) {
+					}
+					else if (walker && (aiState<=1 || aiState==4)) {
 						animState='walk';
 						sndStep(anims[animState].f,1);
-					} else {
+					}
+					else {
 						animState='trot';
 						if (aiNapr*storona<0) revers=true;
 						sndStep(anims[animState].f,1);
 					}
-				} else if (isFly || aiPlav || levit) {
+				}
+				else if (isFly || aiPlav || levit) {
 					animState='fly';
-				} else {
+				}
+				else {
 					animState='stay';
 				}
 			}

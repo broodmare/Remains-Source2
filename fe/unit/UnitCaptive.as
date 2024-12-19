@@ -1,44 +1,55 @@
 package fe.unit {
+
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
-//	import fe.serv.Interact;
 	import fe.*;
 	
-	public class UnitCaptive extends Unit{
+	public class UnitCaptive extends Unit {
 		
 		var tr:int=1;
 		var sr:int=0;
 		var statusCapt=0;
 		var novoi:Boolean=false;
 		
+		// Constructor
 		public function UnitCaptive(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='captive';
-			//if (questId==null) questId=id;
 			npc=true;
 			getXmlParam();
+			
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} else {
+			}
+			else {
 				tr=Math.floor(Math.random()*11+1);
 			}
+
 			if (loadObj && loadObj.sr) {			//из загружаемого объекта
 				sr=loadObj.sr;
-			} else if (xml && xml.@sr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@sr.length()) {	//из настроек карты
 				sr=xml.@sr;
 			}
+
 			if (loadObj && loadObj.statusCapt) {			//из загружаемого объекта
 				statusCapt=loadObj.statusCapt;
-			} else if (xml && xml.@st.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@st.length()) {	//из настроек карты
 				statusCapt=xml.@st;
 			}
+			
 			if (tr>=9) msex=true;
 			else msex=false;
+			
 			if (tr==12) novoi=true;
+			
 			if (xml==null || xml.@lock.length()==0) inter.lock=1;
+			
 			inter.active=true;
 			inter.action=1;
 			inter.actFun=free;
@@ -69,6 +80,7 @@ package fe.unit {
 		}	
 	
 		public override function animate() {
+
 		}
 		
 		public override function command(com:String, val:String=null) {
@@ -102,7 +114,5 @@ package fe.unit {
 				t_replic=Math.random()*500+1000;
 			}
 		}
-		
-	
 	}
 }

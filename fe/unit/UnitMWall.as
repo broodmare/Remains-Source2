@@ -3,14 +3,18 @@ package fe.unit {
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
-	public class UnitMWall extends Unit{
+
+	public class UnitMWall extends Unit {
 		
 		var rearm:Boolean=false;
 
+		// Constructor
 		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			if (cid==null) {
 				id='mwall';
-			} else id=cid
+			}
+			else id=cid
+			
 			mat=7;
 			vis=Res.getVis('vis'+id,vismwall);
 			getXmlParam();
@@ -32,6 +36,7 @@ package fe.unit {
 		}
 		
 		public override function visDetails() {
+
 		}
 		
 		override protected function control():void {
@@ -48,7 +53,5 @@ package fe.unit {
 			expl();
 			exterminate();
 		}
-		
 	}
-	
 }

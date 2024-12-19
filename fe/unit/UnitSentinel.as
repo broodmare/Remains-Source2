@@ -1,13 +1,14 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.weapon.Weapon;
 
-	public class UnitSentinel extends UnitAIRobot
-	{
+	public class UnitSentinel extends UnitAIRobot {
+
 		var jump_n:int=100;
 		var dopWeapon:Weapon;
 		var kolRock=6;
 		
+		// Constructor
 		public function UnitSentinel(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='sentinel';
@@ -50,19 +51,20 @@ package fe.unit
 			if (f) kolRock=6;
 		}
 		
-		
 		public override function animate() {
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
 					animState='die';
 				}
-			} else if (stay || jump_n<=0) {
+			}
+			else if (stay || jump_n<=0) {
 				if (animState!='stay') {
 					vis.osn.gotoAndStop('stay');
 					animState='stay';
 				}
-			} else {
+			}
+			else {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
@@ -70,18 +72,24 @@ package fe.unit
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int = 0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y-90;
+			weaponY = coordinates.Y - 90;
 		}
 		
 		public override function jump(v:Number=1) {
-			if (stay) jump_n=90;
-			else jump_n--;
-			if (dy>-jumpdy && jump_n>0) {
-				dy-=jumpdy*v/4;
+			if (stay) {
+				jump_n = 90;
+			}
+			else {
+				jump_n--;
+			}
+			
+			if (velocity.Y > -jumpdy && jump_n > 0) {
+				velocity.Y -= jumpdy * v / 4;
 			}
 		}
+
 		//атака
 		public override function attack() {
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);

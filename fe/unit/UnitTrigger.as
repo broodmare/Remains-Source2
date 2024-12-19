@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Tile;
@@ -8,8 +8,8 @@ package fe.unit
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
-	public class UnitTrigger extends Unit
-	{
+	public class UnitTrigger extends Unit {
+
 		var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
 		var trapT:int=0;	//тип области
 		var ax1:Number, ax2:Number, ay1:Number, ay2:Number;
@@ -29,13 +29,17 @@ package fe.unit
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
+		// Constructor
 		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
+			
 			if (cid==null) {
 				id='triglaser';
-			} else {
+			}
+			else {
 				id=cid;
 			}
+			
 			mat=1;
 			vis=Res.getVis('vis'+id,vismtrap);
 			setVis(false);
@@ -45,11 +49,13 @@ package fe.unit
 			doop=true;
 			sloy=0;
 			noBox=true;
+			
 			if (xml) {
 				if (xml.@allid.length()) allid=xml.@allid;
 				if (xml.@allact.length()) allact=xml.@allact;
 				if (xml.@res.length()) res=xml.@res;
 			}
+			
 			fixed=true;
 			inter = new Interact(this);
 			inter.active=true;
@@ -153,10 +159,12 @@ package fe.unit
 				if (damager) {
 					damager.fraction=fraction;
 				}
-			} else if (res=='damgren' || res=='hturret2') {
+			}
+			else if (res=='damgren' || res=='hturret2') {
 				res='damshot';
 				setDamager();
-			} else {
+			}
+			else {
 				res='damshot';
 				if (isrnd()) {
 					nx=coordinates.X+(3+int(Math.random()*8))*tileX;
@@ -176,7 +184,8 @@ package fe.unit
 			if (status>0) {
 				warn=0;
 				inter.active=false;
-			} else {
+			}
+			else {
 				warn=1;
 				inter.active=true;
 			}
@@ -206,11 +215,13 @@ package fe.unit
 				ax2 = coordinates.X + 5;
 				ay1 = coordinates.Y - 30;
 				ay2 = coordinates.Y - 20;
-			} else if (id=='trigplate') {
+			}
+			else if (id=='trigplate') {
 				ax1=leftBound;
 				ax2=rightBound;
 				ay1 = ay2 = coordinates.Y - 1;
-			} else {
+			}
+			else {
 				ax1=leftBound;
 				ax2=rightBound;
 				ay1=topBound;
@@ -272,7 +283,7 @@ package fe.unit
 			if (act) World.w.gui.infoText('trapActivate')
 		}
 		
-		var aiN:int=Math.floor(Math.random()*5);
+		var aiN:int = Math.floor(Math.random() * 5);
 		
 		override protected function control():void {
 			if (sost>1 || status==2 || one && status==1) return;

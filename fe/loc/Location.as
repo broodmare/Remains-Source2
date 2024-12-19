@@ -6,6 +6,7 @@ package fe.loc
 
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.graph.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
@@ -2147,10 +2148,9 @@ package fe.loc
 			}
 			if (unitCoord && unitCoord.step) unitCoord.step();
 			if (celObj && celObj.onCursor<=0) celObj=null;
-			if (black)
-			{
-				if (gg.dx+gg.osndx>0.5 || gg.dy+gg.osndy>0.5 || gg.dx+gg.osndx<-0.5 || gg.dy+gg.osndy<-0.5 || isRelight || isRebuild) lighting();
-				else if (relight_t>0) lighting2();
+			if (black) {
+				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) lighting();
+				else if (relight_t > 0) lighting2();
 			}
 			isRelight=false;
 			getDist();

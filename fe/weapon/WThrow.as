@@ -1,35 +1,40 @@
-package fe.weapon
-{
+package fe.weapon {
+
 	import flash.display.Graphics;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Mine;
 	import fe.projectile.Bullet;
 	import fe.projectile.PhisBullet;
+	
+	public class WThrow extends Weapon {
+		
+		public var kolAmmo:int = 4;
+		public var detTime:int = 75;
+		var throwTip:int = 0;
+		var radio:Boolean = false;
+		
+		var brake = 2; 
+		var skok:Number = 0.4;
+		var tormoz:Number = 0.6;
+		var bumc:Boolean = false;
 
-	public class WThrow  extends Weapon
-	{
+		public var sndFall:String = '';
 		
-		public var kolAmmo:int=4;
-		public var detTime:int=75;
-		var throwTip:int=0;
-		var radio:Boolean=false;
-		
-		var brake=2, skok:Number=0.4, tormoz:Number=0.6, bumc:Boolean=false;
-		public var sndFall:String='';
-		
-		
-		public function WThrow(own:Unit, nid:String, nvar:int=0)
-		{
-			super(own,nid,nvar);
-			noPerc=true;
-			vBullet=vWeapon;
-			animated=false;
+		// Constructor
+		public function WThrow(own:Unit, nid:String, nvar:int = 0) {
+			super(own, nid, nvar);
+			
+			noPerc = true;
+			vBullet = vWeapon;
+			animated = false;
 			vis.gotoAndStop(1);
-			holder=1;
-			ammo=id;
+			holder = 1;
+			ammo = id;
+			
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
@@ -39,11 +44,10 @@ package fe.weapon
 			if (node.snd.length() && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
 		}
 
-		public override function attack(waitReady:Boolean=false):Boolean
-		{
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0)
-			{
-				t_auto=3;
+		public override function attack(waitReady:Boolean = false):Boolean {
+
+			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) {
+				t_auto = 3;
 				return false;
 			}
 			skillConf=1;
@@ -75,6 +79,7 @@ package fe.weapon
 		private function getVel(rx:Number, ry:Number, sk:Number):Number {
 			return Math.min(speed*sk,Math.sqrt(rx*rx+ry*ry)/10*sk-ry/10*sk)
 		}
+
 		private function getRot(rx:Number, ry:Number, rvel:Number):Number {
 			return -rx/(rvel+0.0001)/100;
 		}
@@ -109,14 +114,15 @@ package fe.weapon
 					un.damage1*=World.w.pers.sapper;
 					un.vulner[Unit.D_EXPL]=un.vulner[Unit.D_PLASMA]=0;
 				}
-			} else {
+			}
+			else {
 				b = new PhisBullet(owner, coordinates.X, coordinates.Y, vBullet);
 				b.weap=this;
 				b.vel=getVel(rasstx, rassty, sk*skillConf);
 				b.rot=rot+r+getRot(rasstx, rassty, b.vel);
 				b.liv=detTime;
-				b.dx=Math.cos(b.rot)*b.vel;
-				b.dy=Math.sin(b.rot)*b.vel;
+				b.velocity.X = Math.cos(b.rot)*b.vel;
+				b.velocity.Y = Math.sin(b.rot)*b.vel;
 				(b as PhisBullet).bumc=bumc;
 				b.damage=(damage+damAdd)*damMult*(1+(sk-1)*0.5);
 				b.damageExpl=(damageExpl)*damMult*(1+(sk-1)*0.5)*skillConf;
@@ -125,7 +131,7 @@ package fe.weapon
 				(b as PhisBullet).tormoz=tormoz;
 				(b as PhisBullet).brake=brake;
 				setBullet(b);
-				(b as PhisBullet).dr=(throwTip==2)?0:b.dx;
+				(b as PhisBullet).dr=(throwTip==2)? 0 : b.velocity.X;
 				(b as PhisBullet).lip=(throwTip==2);
 				b.vis.play();
 				b.critDamMult=1;
@@ -135,24 +141,36 @@ package fe.weapon
 				}
 				loc.newGrenade(b);
 			}
+			
 			owner.isShoot=true;
-			if (sndShoot!='') Snd.ps(sndShoot, coordinates.X, coordinates.Y);
-			is_shoot=true;
-			hold=0;
+			
+			if (sndShoot != '') {
+				Snd.ps(sndShoot, coordinates.X, coordinates.Y);
+			}
+			
+			is_shoot = true;
+			hold = 0;
+			
 			if (owner.player && loc.train) {
 				World.w.invent.items[ammo].kol++;
 				World.w.invent.mass[2]+=World.w.invent.items[ammo].mass;
 			}
+			
 			t_auto=3;
 			return b;
 		}
 		
-		public override function setTrass(gr:Graphics):void
-		{
-			skillConf=1;
-			var razn=lvl-World.w.pers.getWeapLevel(skill);
-			if (razn==1) skillConf=0.75;
-			else if (razn>=2) skillConf=0.5;
+		public override function setTrass(gr:Graphics):void {
+			skillConf = 1;
+			var razn = lvl - World.w.pers.getWeapLevel(skill);
+			
+			if (razn == 1) {
+				skillConf = 0.75;
+			}
+			else if (razn >= 2) {
+				skillConf = 0.5;
+			}
+			
 			var rot3=Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
 			trasser.loc=owner.loc;
 			var rasstx = World.w.celX - coordinates.X;
@@ -164,24 +182,35 @@ package fe.weapon
 			trasser.tormoz=tormoz;
 			trasser.brake=brake;
 			var bvel=0;
-			if (owner.player) bvel=getVel(rasstx, rassty, weaponSkill*skillConf);
-			else bvel=getVel(rasstx, rassty, owner.weaponSkill*skillConf);
-			var	brot=rot3+getRot(rasstx, rassty, bvel);
-			trasser.dx=trasser.begdx=Math.cos(brot)*bvel;
-			trasser.dy=trasser.begdy=Math.sin(brot)*bvel;
-			trasser.liv=detTime;
-			if (throwTip==0 && !bumc) trasser.is_skok=true;
+			
+			if (owner.player) {
+				bvel = getVel(rasstx, rassty, weaponSkill * skillConf);
+			}
+			else {
+				bvel = getVel(rasstx, rassty, owner.weaponSkill * skillConf);
+			}
+			
+			var	brot = rot3 + getRot(rasstx, rassty, bvel);
+			trasser.dx = trasser.begdx = Math.cos(brot) * bvel;
+			trasser.dy = trasser.begdy = Math.sin(brot) * bvel;
+			trasser.liv = detTime;
+			
+			if (throwTip == 0 && !bumc) {
+				trasser.is_skok = true;
+			}
+			
 			trasser.trass(gr);
 		}
 
-		public function getAmmo():Boolean
-		{
+		public function getAmmo():Boolean {
 			if (owner.player) {
-				return (owner as UnitPlayer).getInvAmmo(ammo,1,1,true)>0
-			} else {
-				if (kolAmmo<=0) {
+				return (owner as UnitPlayer).getInvAmmo(ammo, 1, 1, true) > 0
+			}
+			else {
+				if (kolAmmo <= 0) {
 					return false;
-				} else {
+				}
+				else {
 					kolAmmo--
 					return true;
 				}
@@ -189,17 +218,19 @@ package fe.weapon
 			return false;
 		}
 		
-		public override function animate():void
-		{
+		public override function animate():void {
 			super.animate();
-			vis.rotation=0;
-			vis.scaleX=1;
-			if (t_attack>0 || kolAmmo<=0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo)<=0) vis.alpha=0;
-			else vis.alpha=1;
+			vis.rotation = 0;
+			vis.scaleX = 1;
+			if (t_attack > 0 || kolAmmo <= 0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo) <= 0) {
+				vis.alpha = 0;
+			}
+			else {
+				vis.alpha = 1;
+			}
 		}
 		
-		public override function detonator():Boolean
-		{
+		public override function detonator():Boolean {
 			if (radio) {
 				for each (var un:Unit in loc.units) {
 					if ((un is Mine) && un.id==id) {
@@ -207,11 +238,13 @@ package fe.weapon
 					}
 				}				
 				return true;
-			} else return false;
+			}
+			else {
+				return false;
+			}
 		}
 		
-		public override function setNull(f:Boolean=false)
-		{
+		public override function setNull(f:Boolean = false) {
 			super.setNull();
 		}	
 	}	

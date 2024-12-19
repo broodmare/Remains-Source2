@@ -1,18 +1,19 @@
-package fe.unit 
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.loc.Location;
 	
-	public class UnitTransmitter extends Unit
-	{
+	public class UnitTransmitter extends Unit {
+
 		var cDam:Number;
 		var dist:Number=1000, distdam:Number=400;
 		var upKoef:Number=0;
 		var prevKoef:Number=0;
 		var cep:int=-1;
 
+		// Constructor
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
@@ -24,6 +25,7 @@ package fe.unit
 			doop=true;		//не отслеживает цели
 			aiState=1;
 		}
+
 		//поместить созданный юнит в локацию
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
 			if (cep<0 && nloc.getAbsTile(nx, ny+10).phis==0) {
@@ -33,12 +35,14 @@ package fe.unit
 					vis.osn.gotoAndStop(2);
 					vis.osn.rotation=90;
 					fixed=true;
-				} else if (nloc.getAbsTile(nx-40, ny-10).phis) {
+				}
+				else if (nloc.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
 					nx-=(40-objectWidth)/2-1;
 					vis.osn.gotoAndStop(2);
 					fixed=true;
-				} else if (nloc.getAbsTile(nx+40, ny-10).phis) {
+				}
+				else if (nloc.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
 					nx+=(40-objectWidth)/2-1;
 					vis.osn.gotoAndStop(2);
@@ -52,6 +56,7 @@ package fe.unit
 		public override function expl()	{
 			newPart('metal',4);
 		}
+
 		public override function setVisPos() {
 			if (vis) {
 				vis.x = coordinates.X;
@@ -98,5 +103,4 @@ package fe.unit
 			}
 		}
 	}
-	
 }

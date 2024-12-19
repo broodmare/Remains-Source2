@@ -1,15 +1,16 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.serv.LootGen;
 	import fe.serv.BlitAnim;
 
-	public class UnitProtect extends UnitAIRobot
-	{
+	public class UnitProtect extends UnitAIRobot {
+
 		var jump_n:int=100;
 		var jump_m:int=90;
 		
+		// Constructor
 		public function UnitProtect(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='protect';
@@ -48,17 +49,20 @@ package fe.unit
 			} else {
 				vis.visible=true;
 				if (stay) {
-					if  (dx==0) {
+					if  (velocity.X==0) {
 						animState='stay';
-					} else if (dx<3 && dx>-3) {
+					}
+					else if (velocity.X<3 && velocity.X>-3) {
 						animState='walk';
 						sndStep(anims[animState].f,4);
 						if (aiNapr*storona<0) revers=true;
-					} else {
+					}
+					else {
 						animState='trot';
 						sndStep(anims[animState].f,1);
 					}
-				} else {
+				}
+				else {
 					if (jump_n>5) animState='fly';
 					else animState='jump';
 				}
@@ -74,16 +78,16 @@ package fe.unit
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int = 0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y-40;
+			weaponY = coordinates.Y - 40;
 		}
 		
 		public override function jump(v:Number=1) {
 			if (stay) jump_n=jump_m;
 			else jump_n--;
-			if (dy>-jumpdy && jump_n>0) {
-				dy-=jumpdy*v/4;
+			if (velocity.Y > -jumpdy && jump_n > 0) {
+				velocity.Y -= jumpdy * v / 4;
 			}
 		}
 	}

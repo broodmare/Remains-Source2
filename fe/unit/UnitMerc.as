@@ -8,12 +8,13 @@ package fe.unit {
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
-	public class UnitMerc extends UnitRaider{
+	public class UnitMerc extends UnitRaider {
 		
 		var arm:MovieClip;
 		var thWeapon:Weapon;
 		var t_gren:int=Math.round(Math.random()*150+50);
 		
+		// Constructor
 		public function UnitMerc(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			parentId='merc';
 			flyer=true;
@@ -43,16 +44,17 @@ package fe.unit {
 				currentWeapon.recoilUp*=0.25;
 			}
 		}
+
 		public override function remVisual() {
 			super.remVisual();
 			try {
 				World.w.grafon.visObjs[sloy].removeChild(arm);
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:8)');
 			}
 		}
+
 		public override function setVisPos() {
 			if (vis) {
 				vis.x = coordinates.X;
@@ -64,6 +66,7 @@ package fe.unit {
 				arm.scaleX=storona;
 			}
 		}
+		
 		//задать положение оружия
 		public override function setWeaponPos(tip:int=0) {
 			if (arm==null || arm.parent==null) {
@@ -115,7 +118,7 @@ package fe.unit {
 			}
 			else {
 				if (stay) {
-					if  (dx==0) {
+					if  (velocity.X == 0) {
 						animState='stay';
 					}
 					else {

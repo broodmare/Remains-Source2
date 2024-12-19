@@ -5,7 +5,7 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.weapon.WPunch;
 	
-	public class UnitMonstrik extends Unit{
+	public class UnitMonstrik extends Unit {
 
 		var optDistAtt:int=100;
 		var optJumping:Boolean=false;
@@ -15,7 +15,9 @@ package fe.unit {
 
 		private static var tileY:int = Tile.tileY;
 		
+		// Constructor
 		public function UnitMonstrik(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
 			id=cid;
 			if (id=='scorp') id += int(Math.random()*2+1);
@@ -27,32 +29,36 @@ package fe.unit {
 			walkSpeed=maxSpeed;
 			plavdy=accel;
 			
-			
 			if (id=='rat') {
 				optJumping=true;
 			}
+			
 			if (id=='molerat') {
 				optJumping=true;
 			}
+			
 			if (id=='scorp1') {
 				optJumpAtt=false;
 				optAnimAtt=true;
 				currentWeapon=new WPunch(this,'scorppunch');
 				childObjs=new Array(currentWeapon);
 			}
+			
 			if (id=='scorp2') {
 				optJumpAtt=false;
 				optAnimAtt=true;
 				currentWeapon=new WPunch(this,'scorp2punch');
 				childObjs=new Array(currentWeapon);
 			}
+			
 			if (id=='scorp3') {
 				optJumpAtt=false;
 				optAnimAtt=true;
 				currentWeapon=new WPunch(this,'scorp3punch');
 				childObjs=new Array(currentWeapon);
 			}
-			aiNapr=storona;
+			
+			aiNapr = storona;
 		}
 
 		//сделать героем
@@ -81,23 +87,31 @@ package fe.unit {
 		}
 		
 		public override function animate() {
+			
 			var cframe:int;
+			
 			if (trup && (sost==2 || sost==3)) { //сдох
 				if (stay && animState!='death') {
 					animState='die';
-				} else animState='death';
-			} else if (t_punch>0){
+				}
+				else animState='death';
+			}
+			else if (t_punch>0){
 				animState='attack';
 				if (t_punch==15) anims[animState].restart();
-			} else {
+			}
+			else {
 				if (stay) {
-					if  (dx==0) {
-						animState='stay';
-					} else if  (dx>5 || dx<-5) animState='run';
-					else  animState='walk';
-				} else if (aiPlav || levit) {
+					if  (velocity.X == 0) {
+						animState = 'stay';
+					}
+					else if (velocity.X > 5 || velocity.X < -5) animState = 'run';
+					else  animState = 'walk';
+				}
+				else if (aiPlav || levit) {
 					animState='plav';
-				} else {
+				}
+				else {
 					animState='jump';
 				}
 			}
@@ -113,16 +127,16 @@ package fe.unit {
 		
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
-				dy=-jumpdy*v;
-				dx+=storona*accel*5;
+				velocity.Y = -jumpdy * v;
+				velocity.X += storona * accel * 5;
 			}
-			if (!isPlav&&aiPlav) dy=-jumpdy*0.6;	//выпрыгивание из воды
+			if (!isPlav&&aiPlav) velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
 			if (isPlav) {
-				dy-=plavdy;
+				velocity.Y -= plavdy;
 			}
 		}
 		
-		var aiVis=0.5;
+		var aiVis = 0.5;
 		
 		//aiState
 		//0 - стоит на месте
@@ -131,15 +145,18 @@ package fe.unit {
 		//3 - атакует оружием
 		
 		override protected function control():void {
+			
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
+			
 			if (levit) {
 				if (aiState<=1) {
 					aiSpok=maxSpok;
 				}
 				shok=15;
 			}
+			
 			if (stun) {
 				aiState=0; aiTCh=3; walk=0;
 			}
@@ -164,17 +181,20 @@ package fe.unit {
 				if (aiSpok>0) aiState=2;
 				aiTCh = int(Math.random()*50)+40;
 			}
+			
 			//атаковать оружием
 			if (optAnimAtt && aiState==2 && celUnit && celDY<40 && celDY>-80 && celDX<80 && celDX>-80 && isrnd(0.7)) {
 				aiState=3;
 				aiTCh=15;
 			}
+			
 			//поиск цели
 			//trace(aiState)
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
-				} else {
+				}
+				else {
 					setCel(null, celX+Math.random()*80-40, celY);
 					if (aiSpok>0) {
 						aiSpok--;
@@ -189,7 +209,8 @@ package fe.unit {
 				vision=aiVis/2;
 				celY = coordinates.Y - objectHeight;
 				celX = coordinates.X + objectWidth * storona * 2;
-			} else {
+			}
+			else {
 				vision=aiVis;
 			}
 			
@@ -203,22 +224,23 @@ package fe.unit {
 			if (aiState==2) {
 				maxSpeed=runSpeed;
 			}
-			if (dx*diagon>0) maxSpeed*=0.5;
+			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
 			walk=0;
 
-			//if (id=='molerat') trace(maxSpeed,dx, aiState);
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
 				if (isPlav) jump();
-			} if (aiState==1) {
-				if (aiNapr==-1) {
-					if (dx>-maxSpeed) dx-=accel;
-					walk=-1;
-				} else {
-					if (dx<maxSpeed) dx+=accel;
-					walk=1;
+			}
+			if (aiState==1) {
+				if (aiNapr == -1) {
+					if (velocity.X > -maxSpeed) velocity.X -= accel;
+					walk = -1;
+				}
+				else {
+					if (velocity.X < maxSpeed) velocity.X += accel;
+					walk = 1;
 				}
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.5 && aiNapr<0) {
@@ -226,16 +248,20 @@ package fe.unit {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=1;
-					} else turnX=1;
+						}
+						else turnX=1;
+					}
+					else turnX=1;
 				}
 				if (stay && shX2>0.5 && aiNapr>0) {
 					if (optJumping && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=-1;
-					} else turnX=-1;
+						}
+						else turnX=-1;
+					}
+					else turnX=-1;
 				}
 				if (stay && turnX!=0) {
 					aiNapr=storona=turnX;
@@ -250,13 +276,15 @@ package fe.unit {
 					}
 				}
 				//в возбуждённом или атакующем состоянии
-			} else if (aiState==2) {
+			}
+			else if (aiState==2) {
 				//определить, куда двигаться
 				if (aiTCh%10==1) {
 					if (isrnd(0.9)) {
 						if (celDY>80) throu=true;
 						if (optJumping && aiVNapr<0 && isrnd()) jmp=1;
-					} else {
+					}
+					else {
 						throu=false;
 						jmp=0;
 					}
@@ -270,23 +298,28 @@ package fe.unit {
 				}
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else if (stay || isPlav) {
+					else  if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					}
+				}
+				else if (stay || isPlav) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
 						walk=-1;
-					} else if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel;
+					}
+					else if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += accel;
 						walk=1;
 					}
-				} else {
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel/4;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel/4;
+						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
+					}
+					else  if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += accel / 4;
 					}
 				}
 				if (optJumping && stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
@@ -294,7 +327,8 @@ package fe.unit {
 				if (turnX!=0) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
-					} else {							//попытаться перепрыгнуть
+					}
+					else {							//попытаться перепрыгнуть
 						aiTTurn--;
 						if (isrnd(0.03) || turnY>0 || kray) aiTTurn-=10;
 						else jmp=1;
@@ -313,11 +347,12 @@ package fe.unit {
 				if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80) {
 					attack();
 				}
-			} else if (aiState==3) {
+			}
+			else if (aiState==3) {
 				if (t_punch==0) {
 					if (celDY<-40) {
 						jump();
-						dx=walk*1.5;
+						velocity.X = walk * 1.5;
 					}
 					currentWeapon.attack();
 					t_punch=15;

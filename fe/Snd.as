@@ -9,6 +9,7 @@ package fe
 	import flash.events.IOErrorEvent;
 
 	import fe.util.Calc;
+	import fe.util.Vector2;
 	
 	public class Snd {
 		public static var soundMap:Object = {};
@@ -36,8 +37,9 @@ package fe
 		public static var hitTimer:int = 0;
 		public static var combatTimer:int = 0;
 
-		public static var centrX:Number = 1000;
-		public static var centrY:Number = 500;
+		// Center for directional audio purposes, set by the Camera 
+		public static var center:Vector2 = new Vector2(100, 500);
+
 		public static var widthX:Number = 2000; 
 		public static var musicTimer:int = 0;
 		
@@ -272,7 +274,7 @@ package fe
 				// Check the sound is properly loaded before trying to do anything with it
 				if (s.bytesTotal > 0 && s.bytesLoaded >= s.bytesTotal) {
 					// Positional audio
-					var pan:Number = (nx - centrX) / widthX;
+					var pan:Number = (nx - center.X) / widthX;
 					if (nx == -1000) {
 						pan = 0;
 					}

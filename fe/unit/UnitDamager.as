@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Location;
@@ -10,8 +10,8 @@ package fe.unit
 	
 	//механизмы, наносящие урон
 	
-	public class UnitDamager extends Unit
-	{
+	public class UnitDamager extends Unit {
+
 		var tr:String='0';
 		var weap:String;
 		
@@ -29,14 +29,18 @@ package fe.unit
 		var destroyExpl:Number=0;
 		var explRadius:Number=0;
 
+		// Cosntructor
 		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
 			super(cid, ndif, xml, loadObj);
+			
 			if (cid==null) {
 				id='damshot';
-			} else {
+			}
+			else {
 				id=cid;
 			}
+			
 			mat=1;
 			vis=Res.getVis('vis'+id,vismtrap);
 			getXmlParam();
@@ -45,19 +49,24 @@ package fe.unit
 			doop=true;
 			sloy=0;
 			noBox=true;
+			
 			if (loadObj && loadObj.tr!=null) {
 				tr=loadObj.tr;
 			}
+			
 			if (xml) {
 				if (xml.@allid.length()) allid=xml.@allid;
 				if (xml.@tr.length()) tr=xml.@tr;
 			}
+			
 			setWeapon();
+			
 			if (xml) {
 				if (xml.@kolammo.length()) kolammo=xml.@kolammo;
 				if (xml.@och.length()) och=xml.@och;
 				if (xml.@expl.length()) damageExpl=xml.@expl;
 			}
+			
 			fixed=true;
 			inter = new Interact(this);
 			inter.active=true;
@@ -183,8 +192,7 @@ package fe.unit
 			}
 		}
 		
-		public override function expl()
-		{
+		public override function expl() {
 			newPart('metal',3);
 		}
 		
@@ -237,7 +245,8 @@ package fe.unit
 				iExpl();
 				kolammo=0;
 				disarm();
-			} else {
+			}
+			else {
 				status=1;
 				noch=0;
 				setVis(true);
@@ -251,9 +260,10 @@ package fe.unit
 		
 		//не искать цели
 		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
+
 		}
 		
-		var aiN:int=Math.floor(Math.random()*5);
+		var aiN:int = Math.floor(Math.random() * 5);
 		
 		override protected function control():void {
 			if (sost>1 || status==2 || kolammo<=0) return;

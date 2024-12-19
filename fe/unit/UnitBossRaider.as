@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.weapon.*;
@@ -8,7 +8,7 @@ package fe.unit
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
 	
-	public class UnitBossRaider extends UnitPon{
+	public class UnitBossRaider extends UnitPon {
 		
 		public var tr:int=1;
 		var weap:String;
@@ -17,6 +17,7 @@ package fe.unit
 		public var kol_emit=8;
 		public var called:int=0;
 
+		// Constructor
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossraider';
@@ -83,33 +84,38 @@ package fe.unit
 					vis.osn.gotoAndStop('die');
 					animState='die';
 				}
-			} else if (aiState==4 || aiState==6) {
+			}
+			else if (aiState==4 || aiState==6) {
 				if (animState!='bac') {
 					vis.osn.gotoAndStop('bac');
 					animState='bac';
 				}
-			} else if (stay) {
-				if (dx<1 && dx>-1) {
+			}
+			else if (stay) {
+				if (velocity.X < 1 && velocity.X > -1) {
 					if (animState!='stay') {
 						vis.osn.gotoAndStop('stay');
 						animState='stay';
 					}
-				} else if (aiState==1) {
+				}
+				else if (aiState==1) {
 					if (animState!='run') {
 						vis.osn.gotoAndStop('run');
 						animState='run';
 					}
-				} else {
+				}
+				else {
 					if (animState!='trot') {
 						vis.osn.gotoAndStop('trot');
 						animState='trot';
 					}
 				}
-			} else {
+			}
+			else {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
-					var cframe=Math.round(16+dy);
+					var cframe=Math.round(16 + velocity.Y);
 					if (cframe>32) cframe=32;
 					if (cframe<1) cframe=1;
 					vis.osn.body.gotoAndStop(cframe);
@@ -162,7 +168,7 @@ package fe.unit
 			super.setNull(f);
 			//вернуть в исходную точку
 			if (begX>0 && begY>0) setPos(begX, begY);
-			dx=dy=0;
+			velocity.set(0, 0);
 			setWeaponPos();
 			aiState=aiSpok=0;
 		}
@@ -170,12 +176,12 @@ package fe.unit
 		public function jump(v:Number=1) {
 			aiJump=Math.floor(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
-				dy=-jumpdy*v;
-				isLaz=0;
+				velocity.Y = -jumpdy * v;
+				isLaz = 0;
 			}
 			if (stay) {
-				if (aiNapr==-1) dx*=0.8;
-				else dx+=storona*accel*2;
+				if (aiNapr==-1) velocity.X *= 0.8;
+				else velocity.X += storona * accel * 2;
 			}
 		}
 		
@@ -247,10 +253,11 @@ package fe.unit
 			destroy=0;
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (dx>0.5) storona=1; 
-				if (dx<-0.5) storona=-1;
+				if (velocity.X > 0.5) storona=1; 
+				if (velocity.X < -0.5) storona=-1;
 				walk=0;
-			} else if (aiState==1 || (aiState==2 || aiState==3) && Math.abs(celDX)>aiDist) {
+			}
+			else if (aiState==1 || (aiState==2 || aiState==3) && Math.abs(celDX)>aiDist) {
 				destroy=50;
 				if (aiTCh%15==1 && aiState!=6) {
 					if (isrnd(0.5)) {
@@ -261,23 +268,28 @@ package fe.unit
 
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else if (stay || isPlav) {
+					else {
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					}
+				}
+				else if (stay || isPlav) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
 						walk=-1;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
+					}
+					else {
+						if (velocity.X < maxSpeed) velocity.X += accel;
 						walk=1;
 					}
-				} else {
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel/4;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel/4;
+						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
+					}
+					else if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += accel / 4;
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
@@ -287,7 +299,8 @@ package fe.unit
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=int(Math.random()*20)+5;
-					} else {							//попытаться перепрыгнуть, если цель спереди
+					}
+					else {							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
 						if (aiTTurn<0) {
 							aiNapr=storona=turnX;
@@ -301,10 +314,11 @@ package fe.unit
 					jump(jmp);
 					jmp=0;
 				}
-			} else if (aiState==3 || aiState==2) {
+			}
+			else if (aiState==3 || aiState==2) {
 				walk=0;
-				aiNapr=storona=(celX>coordinates.X)?1:-1;
-				if (celDX*celDX+celDY*celDY<200*200) {
+				aiNapr = storona = (celX > coordinates.X)? 1 : -1;
+				if (celDX * celDX + celDY * celDY < 40000) {
 					aiState=1;
 				}
 			}
@@ -314,25 +328,28 @@ package fe.unit
 		}
 		
 		public function attack() {
-			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
-				attKorp(celUnit,(Math.abs(dx-celUnit.dx)>8)?1:0.5);
-			} else if (aiState==3) {							//пальба
+			if (aiState == 1 && celUnit) {	//атака холодным оружием без левитации или корпусом
+				attKorp(celUnit, (Math.abs(velocity.X - celUnit.velocity.X) > 8)? 1 : 0.5);
+			}
+			else if (aiState==3) {							//пальба
 				mazil=10;		//стоя на месте стрельба точнее
 				if (aiAttackOch>0) {										//стрельба очередями
 					if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
 					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
 					aiAttackT--;
 				}
-				if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
-				} else if (aiState==4) {		//тряска
+				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) attKorp(celUnit, 0.5);
+				}
+				else if (aiState==4) {		//тряска
 					if (aiTCh==5) quake();
-				} else if (aiState==5) {		//тряска
+				}
+				else if (aiState==5) {		//тряска
 					if (aiTCh==5 && kol_emit && tr==1) emit();
 				if (celUnit && isrnd(0.02)) {
 					currentWeapon.attack();
 					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) attackerType=0;
 				}
-				if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,(Math.abs(dx)>8)?1:0.5);
+				if ((celDX*celDX+celDY*celDY<10000) && isrnd(0.1)) attKorp(celUnit,(Math.abs(velocity.X) > 8)? 1 : 0.5);
 			}
 		}
 		

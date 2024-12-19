@@ -1,9 +1,9 @@
 package fe.serv
 {
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.loc.Land;
-
 	import fe.unit.Unit;
 	
 	public class Script
@@ -240,9 +240,9 @@ package fe.serv
 					break;
 
 					case 'turn':
-						if (obj.val>0) World.w.gg.storona=1;
+						if (obj.val > 0) World.w.gg.storona = 1;
 						else World.w.gg.storona=-1;
-						World.w.gg.dx+=World.w.gg.storona*3;
+						World.w.gg.velocity.X += World.w.gg.storona * 3;
 					break;
 
 					case 'black':

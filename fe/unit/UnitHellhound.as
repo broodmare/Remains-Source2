@@ -1,28 +1,33 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	
-	public class UnitHellhound extends UnitPon
-	{
+	public class UnitHellhound extends UnitPon {
 		
 		var vDestroy:Number;
 		var nuh:Number=400;
 		
-		public function UnitHellhound(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitHellhound(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+
 			super(cid, ndif, xml, loadObj);
 			var tr:int=1;
+			
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
+			}
+			else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
-			} else {								//случайно по параметру ndif
+			}
+			else {								//случайно по параметру ndif
 				tr=1;
 			}
+			
 			id='hellhound'+tr;
 			getXmlParam();
 			vDestroy=1000;
@@ -33,6 +38,7 @@ package fe.unit
 			aiNapr=storona;
 			sit(true);
 		}
+		
 		public override function getXmlParam(mid:String=null) {
 			super.getXmlParam('hellhound');
 			super.getXmlParam();
@@ -42,6 +48,7 @@ package fe.unit
 			super.putLoc(nloc,nx,ny);
 			unsit();
 		}
+		
 		//проверка возможности прыжка
 		function checkJump():Boolean {
 			if (loc.getAbsTile(coordinates.X,coordinates.Y-85).phis!=0) return false;
@@ -53,11 +60,12 @@ package fe.unit
 		
 		public function jump(v:Number=1) {
 			if (stay || isLaz) {		//прыжок
-				dy=-jumpdy*v;
+				velocity.Y=-jumpdy*v;
 				isLaz=0;
 				aiJump=Math.floor(30+Math.random()*50);
-			} else if (isPlav) {
-				dy-=plavdy;
+			}
+			else if (isPlav) {
+				velocity.Y-=plavdy;
 			}
 		}
 		
@@ -158,12 +166,13 @@ package fe.unit
                 } else maxSpeed = runSpeed;
 			}
 			
-			if (dx*diagon>0) maxSpeed*=0.5;
+			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
 
 			if ((aiState==2 || aiState==3)&& celDY>-80 && celDY<80) {
 				if (hp<=maxhp*0.3) destroy=vDestroy*5;
 				else destroy=vDestroy;
-			} else destroy=0;
+			}
+			else destroy=0;
 
 			
 			//поведение при различных состояниях
@@ -172,16 +181,19 @@ package fe.unit
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
 				isLaz=0;
 				if (isPlav) jump();
-			} else if (aiState==4) {
+			}
+			else if (aiState==4) {
 				if (celDX>40) aiNapr=storona=1;
 				if (celDX<-40) aiNapr=storona=-1;
-			} else if (aiState==1) {
+			}
+			else if (aiState==1) {
 				isLaz=0;
 				//бегаем туда-сюда
 				if (aiNapr==-1) {
-					if (dx>-maxSpeed) dx-=accel;
-				} else {
-					if (dx<maxSpeed) dx+=accel;
+					if (velocity.X>-maxSpeed) velocity.X-=accel;
+				}
+				else {
+					if (velocity.X<maxSpeed) velocity.X+=accel;
 				}
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr<0) {
@@ -197,11 +209,14 @@ package fe.unit
 						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=-1;
-					} else turnX=-1;
+						}
+						else turnX=-1;
+					}
+					else turnX=-1;
 				}
 				//в возбуждённом или атакующем состоянии
-			} else if (aiState==2 || aiState==3) {
+			}
+			else if (aiState==2 || aiState==3) {
 				
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
@@ -215,20 +230,23 @@ package fe.unit
 				else throu=false;
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X>-maxSpeed) velocity.X-=levitaccel;
 					}
-				} else {
+					else {
+						if (velocity.X<maxSpeed) velocity.X+=levitaccel;
+					}
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
+						if (velocity.X>-maxSpeed) velocity.X-=accel;
+					}
+					else {
+						if (velocity.X<maxSpeed) velocity.X+=accel;
 					}
 				}
 				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) {
 					if (aiVNapr<=0 && isrnd(0.5)) jmp=0.5;
-					else if (dx>5 || dx<-5) dx*=0.6;	//притормозить перед ямой
+					else if (velocity.X>5 || velocity.X<-5) velocity.X*=0.6;	//притормозить перед ямой
 				}
 				if (jmp>0) {
 					if (isPlav) jmp*=1.5;
@@ -249,13 +267,13 @@ package fe.unit
 					sit(true);
 					if (celY<coordinates.Y && r_laz<=0) {
 						r_laz=-1;
-						if (dy>-lazSpeed) dy-=lazSpeed/3;
-						else (dy=-lazSpeed);
+						if (velocity.Y>-lazSpeed) velocity.Y-=lazSpeed/3;
+						else (velocity.Y=-lazSpeed);
 						checkStairs();
 					} else if (aiVNapr==1 && r_laz>=0) {
 						r_laz=1;
-						if (dy<lazSpeed) dy+=lazSpeed/3;
-						else (dy=lazSpeed);
+						if (velocity.Y<lazSpeed) velocity.Y+=lazSpeed/3;
+						else (velocity.Y=lazSpeed);
 						checkStairs();
 					} else {
 						isLaz=0;
@@ -357,30 +375,39 @@ package fe.unit
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
-					} else if (animState=='death') animState='fall';
+					}
+					else if (animState=='death') animState='fall';
 					else animState='die';
-				} else animState='death';
-			} else {
+				}
+				else animState='death';
+			}
+			else {
 				if (stay) {
 					if (isSit) {
-						if (stay && (dx>1 || dx<-1)) {
+						if (stay && (velocity.X>1 || velocity.X<-1)) {
 							animState='polz';
-						} else {
+						}
+						else {
 							animState='sit';
 						}
-					} else {
-						if (stay && (dx>6 || dx<-6)) {
+					}
+					else {
+						if (stay && (velocity.X>6 || velocity.X<-6)) {
 							animState='run';
-						} else if (dx>1 || dx<-1) {
+						}
+						else if (velocity.X>1 || velocity.X<-1) {
 							animState='walk';
-						} else {
+						}
+						else {
 							animState='stay';
 						}
 					}
-				} else if (isLaz) {
+				}
+				else if (isLaz) {
 					animState='laz';
 					sndStep(anims[animState].f,3);
-				} else {
+				}
+				else {
 					animState='jump';
 					// Commented out, there is no setStab function
 					//anims[animState].setStab((dy*0.6+8)/16);

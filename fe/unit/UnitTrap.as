@@ -1,12 +1,13 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.serv.Interact;
 
-	public class UnitTrap extends Unit
-	{
+	public class UnitTrap extends Unit {
+
 		var rearm:Boolean=false;
 
+		// Constructor
 		public function UnitTrap(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			if (cid==null) {
 				id='mtrap';
@@ -41,6 +42,7 @@ package fe.unit
 		public override function expl()	{
 			newPart('metal',3);
 		}
+
 		public function setVis(v:Boolean) {
 			isVis=v;
 			levitPoss=v;
@@ -64,6 +66,7 @@ package fe.unit
 				inter.update();
 			}
 		}
+
 		public override function save():Object {
 			var obj:Object=super.save();
 			if (rearm) {
@@ -83,7 +86,7 @@ package fe.unit
 			inter.update();
 		}
 		
-		var aiN:int=Math.floor(Math.random()*5);
+		var aiN:int = Math.floor(Math.random() * 5);
 		
 		override protected function control():void {
 			aiN++;

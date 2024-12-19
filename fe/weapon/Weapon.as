@@ -16,8 +16,7 @@ package fe.weapon
 	import fe.projectile.Trasser;
 	import fe.projectile.SmartBullet;
 
-	public class Weapon extends Obj
-	{
+	public class Weapon extends Obj {
 		
 		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
 		public static var variant2:String = ' - II';
@@ -905,10 +904,10 @@ package fe.weapon
 				if (grav > 0 || volna) b.vel = speed * speedMult; 
 				else b.vel = speed * speedMult * (Math.random() * 0.4 + 0.8);
 				
-				b.dx = Math.cos(b.rot) * b.vel;
-				b.dy = Math.sin(b.rot) * b.vel;
-				b.knockx = b.dx / b.vel;
-				b.knocky = b.dy / b.vel;
+				b.velocity.X = Math.cos(b.rot) * b.vel;
+				b.velocity.Y = Math.sin(b.rot) * b.vel;
+				b.knockx = b.velocity.X / b.vel;
+				b.knocky = b.velocity.Y / b.vel;
 				if (owner && distExpl) {
 					b.celX = owner.celX;
 					b.celY = owner.celY;

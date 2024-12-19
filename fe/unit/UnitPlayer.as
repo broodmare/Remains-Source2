@@ -1,5 +1,5 @@
-﻿package fe.unit
-{
+﻿package fe.unit {
+
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
@@ -21,8 +21,8 @@
 	import fe.stubs.visualPlayer;	// .fla linkage
 	import fe.stubs.reloadBar;		// .fla linkage
 	
-	public class UnitPlayer extends UnitPon
-	{
+	public class UnitPlayer extends UnitPon {
+
 		public var ctr:Ctr;
 		//движение
 		public var maxjumpp:int,jumpNumb:int=0;
@@ -186,10 +186,8 @@
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		private function testFunction():void
-		{
-			if (World.w.chitOn)
-			{
+		private function testFunction():void {
+			if (World.w.chitOn) {
 				World.w.godMode = true;
 				World.w.chit = 'port';
 				World.w.drawAllMap = true;
@@ -199,8 +197,8 @@
 			}
 		}
 		
-		public function UnitPlayer(cid:String=null, ndif:Number=100)
-		{
+		// Constructor
+		public function UnitPlayer(cid:String=null, ndif:Number=100) {
 			player = true;
 			id = 'littlepip';
 			vis = new visualPlayer();
@@ -373,8 +371,8 @@
 			var po:int = World.w.possiblyOut();
 			if (po > 0 && !(napr == 3 && loc.bezdna) && rat == 0) {
 				if (napr == 3 && !loc.bezdna) {
-					dy = -jumpdy;
-					dx = maxSpeed * storona;
+					velocity.Y = -jumpdy;
+					velocity.X = maxSpeed * storona;
 				}
 				if (po == 1) {
 					trace("UnitPlayer.as/outLoc() - Can't leave room: Leaving too quickly");
@@ -394,24 +392,25 @@
 					vis.visible=false;
 					return false;
 				}
-				if (napr==3 || napr==4) {
+				if (napr == 3 || napr == 4) {
 					if (laz != 0) {
 						checkStairs();
 						if (!isLaz) checkStairs(1, -tileX * laz);
 						if (!isLaz) checkStairs(1,  tileX * laz);
 					}
 				} 
-				if (napr==4) {
-					if (!isLaz && !isFly && lev==0) {
-						dy=-jumpdy;
-						dx=maxSpeed*storona;
-					} else if (isFly || lev==1) {
-						dy=-jumpdy;
+				if (napr == 4) {
+					if (!isLaz && !isFly && lev == 0) {
+						velocity.Y= -jumpdy;
+						velocity.X = maxSpeed * storona;
+					}
+					else if (isFly || lev == 1) {
+						velocity.Y = -jumpdy;
 					}
 				}
-				if (napr==5) dx = 3 * storona;
-				if (sats.que.length>0) sats.clearAll();
-				if (levit==1 && !ctr.keyJump) levit=0;
+				if (napr == 5) velocity.X = 3 * storona;
+				if (sats.que.length > 0) sats.clearAll();
+				if (levit == 1 && !ctr.keyJump) levit = 0;
 				return true;
 			}
 
@@ -432,7 +431,8 @@
 				}
 				nloc.units[1]=pet;
 				pet.vis.visible=(nloc.petOn && pet.sost<3);
-			} else {
+			}
+			else {
 				nloc.units[1]=defpet;
 			}
 			loc=nloc;
@@ -467,15 +467,13 @@
 				magicWeapon.addVisual2();
 			}
 		}
-
 		
 		//установить позицию при входе в локацию
 		public function setLocPos(nx:Number,ny:Number) {
 			coordinates.X = nx;
 			coordinates.Y = ny;
 			setNull();
-			if (pet)
-			{
+			if (pet) {
 				pet.coordinates.X = coordinates.X;
 				pet.coordinates.Y = coordinates.Y - 30;
 				if (isSit) pet.coordinates.Y = coordinates.Y;
@@ -494,106 +492,127 @@
 			grav=1;
 			if (kdash_t>0) {
 				if (kdash_t==1) {
-					dx*=0.3;
-					dy*=0.3;
+					velocity.multiply(0.30);
 				}
-			} else if (isLaz!=0) {
-				dy=0;
-				dx*=0.8;
-			} else if (levit) {
-				dy*=0.8;
-				dx*=0.8;
-			} else if (isFly) {
+			}
+			else if (isLaz != 0) {
+				velocity.Y = 0;
+				velocity.X *= 0.8;
+			}
+			else if (levit) {
+				velocity.multiply(0.80);
+			}
+			else if (isFly) {
 				if (ctr.keyRun) {
-					dy*=0.96;
-					dx*=0.96;
-				} else if (t_throw<=0){
-					dy*=0.9;
-					dx*=0.9;
+					velocity.multiply(0.96);
+				}
+				else if (t_throw<=0){
+					velocity.multiply(0.90);
 				}
 				t_fly+=0.1;
 				if (loc.electroDam>0) {
-					dy+=Math.sin(t_fly)*0.7;
-					dx+=storona*Math.cos(t_fly)*0.5;
-				} else {
-					dy+=Math.sin(t_fly)/5;
+					velocity.Y += Math.sin(t_fly)*0.7;
+					velocity.X += storona*Math.cos(t_fly)*0.5;
 				}
-			} else {
-				var brake1=brake;
-				if (inWater && !isPlav) dx*=0.5;
+				else {
+					velocity.Y += Math.sin(t_fly)/5;
+				}
+			}
+			else {
+				var brake1 = brake;
+				
+				if (inWater && !isPlav) velocity.X *= 0.5;
+				
 				if (isPlav) {
-					dy+=World.ddy*ddyPlav;
-					dy*=0.8;
-				} else {
-					var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y - objectHeight / 4);
-					if (t.grav>0 && dy<loc.maxdy*t.grav || t.grav<0 && dy>loc.maxdy*t.grav) {
-						if (dash_t>dash_maxt-11) dy+=World.ddy*t.grav*0.1;
-						else dy+=World.ddy*t.grav;
-					}
-					if (t.grav>0) grav=t.grav; else grav=0;
-					if (t.grav<0) dx*=0.8;
+					velocity.Y += World.ddy * ddyPlav;
+					velocity.Y *= 0.8;
 				}
+				else {
+					var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y - objectHeight / 4);
+					
+					if (t.grav > 0 && velocity.Y < loc.maxdy * t.grav || t.grav < 0 && velocity.Y > loc.maxdy * t.grav) {
+						if (dash_t > dash_maxt - 11) velocity.Y += World.ddy * t.grav * 0.1;
+						else velocity.Y += World.ddy * t.grav;
+					}
+					
+					if (t.grav > 0) {
+						grav = t.grav;
+					}
+					else {
+						grav = 0;
+					}
+					
+					if (t.grav < 0) {
+						velocity.X *= 0.8;
+					}
+				}
+				
 				//[Braking]
 				if (isSit) brake1=0.4*brake;
+				
 				if (!stay) {
 					brake1=0.1*brake;
 				}
+				
 				if (walk<0) {
-					if (dx<-maxSpeed) dx+=brake1;
-				} else if (walk>0) {
-					if (dx>maxSpeed) dx-=brake1;
-				} else {
-					if (dx>-brake1 && dx<brake1) dx=0;
-					else if (dx>0) dx-=brake1;
-					else if (dx<0) dx+=brake1;
+					if (velocity.X < -maxSpeed) velocity.X += brake1;
 				}
+				else if (walk>0) {
+					if (velocity.X > maxSpeed) velocity.X -= brake1;
+				}
+				else {
+					if (velocity.X > -brake1 && velocity.X < brake1) velocity.X = 0;
+					else if (velocity.X > 0) velocity.X -= brake1;
+					else if (velocity.X < 0) velocity.X += brake1;
+				}
+				
 				if (stay) {
-					dx*=tormoz;
+					velocity.X *= tormoz;
 					if (loc.quake && massa<=2) {
 						var pun:Number=(1+(2-massa)/2)*loc.quake;
 						if (pun>10) pun=10;
-						dy=-pun*Math.random();
-						dx+=pun*(Math.random()*2-1);
+						velocity.Y = -pun*Math.random();
+						velocity.X += pun*(Math.random()*2-1);
 					}
 				}
 			}
-			osndx=osndy=0;
+			osndx = 0;
+			osndy = 0;
 			if (stayOsn) {
 				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
 					stay=false;
-				} else {
-					osndx=stayOsn.cdx;
-					osndy=stayOsn.cdy;
+				}
+				else {
+					osndx = stayOsn.cdx;
+					osndy = stayOsn.cdy;
 				}
 			}
-			stayOsn=null;
+			
+			stayOsn = null;
 
 			//Fettered (Chained up)
-			if (isFetter > 0)
-			{
+			if (isFetter > 0) {
 				isLaz = 0;
 				dfx = fetX - coordinates.X;
 				dfy = fetY - coordinates.Y + 30;
 				rfetter = dfx * dfx + dfy * dfy; // Chain-ging this to using squared distance instead of square root for comparisons to save cycles.
-				if (rfetter > isFetter * 2)
-				{
+				
+				if (rfetter > isFetter * 2) {
 					fetX = coordinates.X;
 					fetY = coordinates.Y;
 					dfx		= 0;
 					dfy		= 0;
 					rfetter	= 0;
 				} 
-				if (rfetter > isFetter * 0.95)
-				{
-					if (rfetter > isFetter)
-					{
-						dx += dfx / 20;
-						dy += dfy / 20;
+				
+				if (rfetter > isFetter * 0.95) {
+					if (rfetter > isFetter) {
+						velocity.X += dfx / 20;
+						velocity.Y += dfy / 20;
 					}
-					else
-					{
-						dx += dfx / 20 * (rfetter / isFetter * 20 - 19);
-						dy += dfy / 20 * (rfetter / isFetter * 20 - 19);
+					else {
+						velocity.X += dfx / 20 * (rfetter / isFetter * 20 - 19);
+						velocity.Y += dfy / 20 * (rfetter / isFetter * 20 - 19);
 					}
 				}
 			}
@@ -601,25 +620,29 @@
 		}
 		
 		public override function actions() {
+			
 			super.actions();
 
 			inBattle=World.w.t_battle>0 || World.w.testBattle;
 			
 			// [loot capture]
 			if (isTake>0) isTake--;
+			
 			// [radiation]
 			if (noRad) {
 				noRad = false;
 			}
 			else {
-				drad+=loc.rad;
-				if (inWater) drad+=loc.wrad;
+				drad += loc.rad;
+				if (inWater) drad += loc.wrad;
 			}
-			if (drad2>0) {
-				drad+=drad2;
-				drad2-=0.1;
+			
+			if (drad2 > 0) {
+				drad += drad2;
+				drad2 -= 0.1;
 			}
-			if (drad>0) {
+			
+			if (drad > 0) {
 				if (radX>0 && !invulner && !World.w.godMode) {
 					rad+=drad/30*radX;
 					if (pers.radChild>0 && rad>maxhp*(1-pers.radChild)) rad=maxhp*(1-pers.radChild);
@@ -633,21 +656,25 @@
 				if (drad>0.1 && isrnd (ver)) sound('geiger');
 				if (pet) pet.heal(drad/15,1);
 				drad=0;
-			} else if (drad==0){
-				World.w.gui.setHp();
-				drad=-0.0001;
 			}
+			else if (drad == 0){
+				World.w.gui.setHp();
+				drad =- 0.0001;
+			}
+			
 			// [Treatment]
-			if (healhp>0) {
-				healhp-=pers.healMult/5*pers.metaMult;
-				hp+=pers.healMult/5*pers.metaMult;
-				if (hp>maxhp-rad) hp=maxhp-rad;
+			if (healhp > 0) {
+				healhp -= pers.healMult / 5 * pers.metaMult;
+				hp += pers.healMult / 5 * pers.metaMult;
+				if (hp > maxhp - rad) hp = maxhp - rad;
 				World.w.gui.setHp();
 			}
-			if (pers.regenFew>0 && hp<Math.min(maxhp*pers.regenMax,maxhp-rad) && hp>0) {
-				hp+=pers.regenFew;
+			
+			if (pers.regenFew > 0 && hp < Math.min(maxhp * pers.regenMax, maxhp - rad) && hp > 0) {
+				hp += pers.regenFew;
 				World.w.gui.setHp();
 			}
+			
 			if (World.w.alicorn && sost==1) {
 				if (hp<maxhp) {
 					hp+=pers.alicornHeal;
@@ -660,15 +687,19 @@
 					World.w.gui.setMana();
 				}				
 			}
+			
 			// [various actions]
-			if (t_work>0) t_work--;
-			else work='';
+			if (t_work > 0) t_work--;
+			else work = '';
+			
 			if (work=='change' && t_work==changeWeaponTime2) {
 				changeWeaponNow(1);
 			}
+			
 			if (work=='change' && t_work==changeWeaponTime3) {
 				changeWeaponNow(2);
 			}
+			
 			// [go to the bottom layer]
 			if (work=='lurk' && t_work==10) {
 				if (sloy==2) {
@@ -679,28 +710,35 @@
 					lurkBox.vis.parent.setChildIndex(lurkBox.vis,lurkBox.vis.parent.numChildren-1);
 				}
 			}
+			
 			if (work=='unlurk' && t_work==5) {
 				if (sloy==1 || sloy==0) chSloy(2);
 			}
+			
 			if (work=='lurk') {
-				if (lurkX - coordinates.X > 3) dx=4;
-				if (lurkX - coordinates.X < -3) dx=-4;
+				if (lurkX - coordinates.X > 3) velocity.X = 4;
+				if (lurkX - coordinates.X < -3) velocity.X = -4;
 			}
+			
 			// [whining]
 			if (lurked) {
 				if (!stay) lurked=false;
 				if (lurkBox && lurkBox.wall==0 && !lurkBox.stay) lurked=false; 
 				if (work!='lurk' && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) lurked=false; 
 			}
+			
 			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) chSloy(2);
 			
 			// [Dash]
 			f_dash=(dash_t>dash_maxt-20);
+			
 			if (dash_t>0) dash_t--;
+		
 			if (kdash_t>0) {
 				kdash_t--;
 				stay=false;
 			}
+			
 			f_stealth=(stealthMult<1);
 			
 			// [action on active objects]
@@ -717,6 +755,7 @@
 					actionObj = null;
 				}
 			}
+			
 			if (Snd.actionCh != null && actionObj == null) {
 				Snd.actionCh.stop();
 				Snd.actionCh = null;
@@ -724,21 +763,30 @@
 
 			// [visibility]
 			visibility = 2000;
-			if (dx < 2 && dx >- 2 && dy < 2 && dy >- 2) visibility = 1500;
-			if (dx > 10 || dx < -10 || dy > 10 || dy < -10) {
+			
+			if (velocity.X < 2 && velocity.X >- 2 && velocity.Y < 2 && velocity.Y >- 2) visibility = 1500;
+			
+			if (velocity.X > 10 || velocity.X < -10 || velocity.Y > 10 || velocity.Y < -10) {
 				if (demask < 200 * pers.visiMult) demask = 200 * pers.visiMult;
 			}
+			
 			if (obs > 0 && isObs <= 0) obs -= minusObs; 
+			
 			if (isObs >= 0) isObs--;
+			
 			if (levit > 0 && demask < 200) demask = 200;
+			
 			dexterPlus = 0;
 			detecting = 80;
+			
 			if (isSit) dexterPlus = pers.sitDexterPlus;
+			
 			if (lurked) {
 				detecting = 0;
 				dexterPlus = pers.lurkDexterPlus;
 				visibility *= 0.5;
 			}
+			
 			if (stealthMult < 0.5) detecting = 0;
 
 			//--------------------- [Weapon] ------------------------
@@ -780,13 +828,15 @@
 				celX = World.w.celX;
 				celY = World.w.celY;
 			}
+			
 			// [accuracy modifier precMult, only if shooting is not through the SATS]
 			precMult = pers.allPrecMult;
 			mazil = pers.mazilAdd;
+			
 			if (sats.que.length == 0 && !lurked) {
-				if (pers.runPenalty>0 && (dx>10 || dx<-10 || dy>10 || dy<-10))  precMult*=(1-pers.runPenalty);
+				if (pers.runPenalty>0 && (velocity.X > 10 || velocity.X < -10 || velocity.Y > 10 || velocity.Y < -10))  precMult*=(1-pers.runPenalty);
 				if (!stay) precMult*=(1-pers.jumpPenalty);
-				if (stay && dx<1 && dx>-1)  precMult*=(1+pers.stayBonus);
+				if (stay && velocity.X < 1 && velocity.X > -1)  precMult*=(1+pers.stayBonus);
 				if (currentWeapon && (currentWeapon.storona!=storona)) precMult*=(1-pers.backPenalty);
 			}
 			
@@ -794,13 +844,18 @@
 				throwWeapon.actions();
 				if (throwWeapon.tip==5) throwWeapon.animate();
 			}
+			
 			if (magicWeapon && currentWeapon!=magicWeapon) {
 				magicWeapon.actions();
 				if (magicWeapon.tip==5) magicWeapon.animate();
 			}
+			
 			atkWeapon = 0;
+			
 			if (currentWeapon && !currentWeapon.attackPos()) atkWeapon = 1;
+			
 			if (throwWeapon && currentWeapon!=throwWeapon && !throwWeapon.attackPos()) atkWeapon = 2;
+			
 			if (magicWeapon && currentWeapon!=magicWeapon && !magicWeapon.attackPos()) atkWeapon = 3;
 			
 			// [Telekinesis]
@@ -810,10 +865,10 @@
 				if (teleObj.massa>=1) aMagic=100;
 				if (demask<200) demask=200;
 				if (isTake<10) isTake=40;
-				if (teleObj.coordinates.X<celX-derp && teleObj.dx<teleSpeed) teleObj.dx+=teleAccel;
-				if (teleObj.coordinates.X>celX+derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
-				if (teleObj.coordinates.Y-teleObj.objectHeight/2<celY-derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
-				if (teleObj.coordinates.Y-teleObj.objectHeight/2>celY+derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
+				if (teleObj.coordinates.X < celX - derp && teleObj.velocity.X < teleSpeed) teleObj.velocity.X += teleAccel;
+				if (teleObj.coordinates.X > celX + derp && teleObj.velocity.X > -teleSpeed) teleObj.velocity.X -= teleAccel;
+				if (teleObj.coordinates.Y - teleObj.objectHeight / 2 < celY - derp && teleObj.velocity.Y < teleSpeed) teleObj.velocity.Y += teleAccel;
+				if (teleObj.coordinates.Y - teleObj.objectHeight / 2 > celY + derp && teleObj.velocity.Y > -teleSpeed) teleObj.velocity.Y -= teleAccel;
 				if (teleObj is Unit) {
 					if ((teleObj as Unit).levit_max>0 && (teleObj as Unit).levit_r>(teleObj as Unit).levit_max*pers.unitLevitMult) {
 						teleObj.levitPoss=false;
@@ -821,16 +876,23 @@
 					}
 				}
 			}
+			
 			if (teleObj) {
 				if (loc.celDist>pers.teleDist*1.2 || mana<=0 || !teleObj.levitPoss) dropTeleObj();
 			}
+			
 			if (levit==1) aMagic=100;
+			
 			if (sost>1) aMagic=0;
+			
 			// Double click
 			if (t_dclick>0) t_dclick--;
+			
 			// Weapon/Spell cooldown
 			if (t_culd>0) t_culd--;
+			
 			if (shithp>0) shithp-=0.05;
+			
 			// Mana
 			if (teleObj || levit==1 || cryst) {
 				dmana=0;
@@ -847,18 +909,21 @@
 					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
 				}
 			}
-			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp))
-			{
+			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
 				dmana=-pers.alicornRunMana;
-				if (!loc.sky) Emitter.emit('magrun', loc, coordinates.X, coordinates.Y-objectHeight/2,{dx:(dx*0.5+Math.random()*4-2), dy:(dy*0.5+Math.random()*4-2)});
+				if (!loc.sky) Emitter.emit('magrun', loc, coordinates.X, coordinates.Y-objectHeight/2,{dx:(velocity.X*0.5+Math.random()*4-2), dy:(velocity.Y*0.5+Math.random()*4-2)});
 			}
-			else
-			{
+			else {
 				if (dmana<pers.recManaMin*pers.shtrManaRes) dmana=pers.recManaMin*pers.shtrManaRes;
 				dmana+=pers.recMana*pers.shtrManaRes;
 			}
-			mana+=dmana;
-			if (mana>maxmana) mana=maxmana;
+			
+			mana += dmana;
+			
+			if (mana>maxmana) {
+				mana = maxmana;
+			}
+			
 			if (pers.manaHP<pers.manaMin) {
 				pers.manaHP+=pers.manaHPRes;
 				World.w.gui.setMana();
@@ -882,7 +947,7 @@
 			}
 
 			// Stamina
-			if (isRun && walk && stay && !isSit && (dx!=0)) {
+			if (isRun && walk && stay && !isSit && (velocity.X!=0)) {
 				if (stam>0) {
 					if (inBattle) stam-=pers.stamRun*dstam;
 				} else possRun=false;
@@ -985,23 +1050,18 @@
 			}
 			//урон от блоков
 			if (isStayDam>0) isStayDam--;
-			if (loc.electroDam>0 && isStayDam==0)
-			{
-				if (stay && stayMat==1 || isLaz || inWater || tykMat==1)
-				{
+			if (loc.electroDam>0 && isStayDam==0) {
+				if (stay && stayMat==1 || isLaz || inWater || tykMat==1) {
 					isStayDam = 20;
-					if (tykMat == 1)
-					{
+					if (tykMat == 1) {
 						if (turnX!=0) Emitter.emit('moln', loc,coordinates.X, coordinates.Y-objectHeight/2,{celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
 						else if (turnY==1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:coordinates.X, cely:coordinates.Y - 70});
 						else if (turnY==-1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:coordinates.X, cely:coordinates.Y + 20});
 					}
-					else if (isLaz)
-					{
+					else if (isLaz) {
 						Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
 					}
-					else if (stay)
-					{
+					else if (stay) {
 						Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
 					}
 
@@ -1015,47 +1075,39 @@
 			tykMat = 0;
 
 			//заклинания
-			for each (var sp:Spell in invent.spells)
-			{
+			for each (var sp:Spell in invent.spells) {
 				sp.step();
 			}
 			t_replic--;
 		}
 		
 		//расход магии при ударах по левитируемому ящику
-		public function otbrosTele(knock:Number):void
-		{
+		public function otbrosTele(knock:Number):void {
 			mana -= pers.teleMult * knock * 5;
 		}
 		
 		//активировать заклинание телепорта
-		private function actPort():void
-		{
+		private function actPort():void {
 			if (!loc.portOn) return;
 
-			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99)
-			{
+			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
 				World.w.gui.infoText('overMana', null, null, false);
 				World.w.gui.bulb(coordinates.X, coordinates.Y - 20);
 			}
-			else
-			{
+			else {
 				var nx = Math.round(World.w.celX / tileX) * tileX
 				var ny = Math.round(World.w.celY / tileY + 1) * tileY - 1;
-				if (checkPort())
-				{
+				if (checkPort()) {
 					teleport(nx, ny, 1);
 					sound('teleport');
 					manaSpell(pers.portMagic,pers.portMana);
-					if (loc.electroDam)
-					{
+					if (loc.electroDam) {
 						electroDamage(loc.electroDam);
 						addEffect('burning',40);
 						newPart('iskr',40);
 					}
 					t_culd = int(pers.spellDown * pers.portDown);
-					dx = 0;
-					dy = 0;
+					velocity.set(0, 0);
 				}
 			}
 		}
@@ -1092,8 +1144,7 @@
 		}
 		
 		// [remove the required amount of mana, set the cooldown time]
-		public function manaSpell(dmag:Number, dm:Number):void
-		{
+		public function manaSpell(dmag:Number, dm:Number):void {
 			trace('manaSpell: dmag: (' + dmag + '), dm: (' + dm + ')');
 
 			mana -= dmag * pers.allDManaMult;
@@ -1115,7 +1166,8 @@
 		//включить или выключить левитацию объекта при нажатой клавише левитации
 		private function actTele():void {
 			//двойной клик
-			if (t_dclick>0) {
+			if (t_dclick > 0) {
+
 			}
 			if (t_dclick==0) t_dclick=15;
 			if (teleObj) {
@@ -1124,15 +1176,13 @@
 			}
 			//найти ближайший подходящий объект, если курсор не указывает прямо на цель
 			if (mana<200) return;
-			if (loc.celObj==null)
-			{
+			if (loc.celObj==null) {
 				var dist = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (this.topBoundToCenter - World.w.celY) * (this.topBoundToCenter - World.w.celY);
 				if (dist>pers.teleDist) return;
 				if (!loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, World.w.celX, World.w.celY)) return;
 				var pt:Entity = loc.firstObj;
 				var mindist = 50 * 50;
-				while (pt)
-				{
+				while (pt) {
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
 						dist = (World.w.celX - pt.coordinates.X) * (World.w.celX - pt.coordinates.X) + (World.w.celY - pt.coordinates.Y + (pt as Obj).objectHeight / 2) * (World.w.celY - pt.coordinates.Y + (pt as Obj).objectHeight / 2);
 						if (dist<mindist) {
@@ -1152,8 +1202,7 @@
 					World.w.gui.infoText('noVisible',null,null,false);
 					return;
 				}
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1)
-				{
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1) {
 					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2);
 					return;
 				}
@@ -1203,10 +1252,10 @@
 					(teleObj as Unit).t_throw=45;
 				}
 				World.w.gui.setMana();
-				teleObj.dx+=p.x;
-				teleObj.dy+=p.y;
+				teleObj.velocity.X += p.x;
+				teleObj.velocity.Y += p.y;
 				if (pers.throwForce>0) {
-					Emitter.emit('throw',loc,teleObj.coordinates.X,teleObj.coordinates.Y-teleObj.objectHeight/2,{rotation:Math.atan2(teleObj.dy,teleObj.dx)*180/Math.PI});
+					Emitter.emit('throw',loc,teleObj.coordinates.X,teleObj.coordinates.Y-teleObj.objectHeight/2,{rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X)*180/Math.PI});
 					Snd.ps('dash',teleObj.coordinates.X,teleObj.coordinates.Y);
 				}
 				dropTeleObj();
@@ -1237,72 +1286,65 @@
 		
 		
 		// [Action with the active object while holding down the action key]
-		private function actAction():void
-		{
-			if (actionObj)
-			{
+		private function actAction():void {
+			if (actionObj) {
 				// Object too far away
-				if ((coordinates.X - actionObj.coordinates.X) * (coordinates.X - actionObj.coordinates.X) + (coordinates.Y - actionObj.coordinates.Y) * (coordinates.Y - actionObj.coordinates.Y) > World.w.actionDist)
-				{
+				if ((coordinates.X - actionObj.coordinates.X) * (coordinates.X - actionObj.coordinates.X) + (coordinates.Y - actionObj.coordinates.Y) * (coordinates.Y - actionObj.coordinates.Y) > World.w.actionDist) {
 					actionObj = null;
 				}
 			}
 			// Object within range
-			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist)
-			{
+			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist) {
 				actionReady = false;
-				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == 'comein')) && !loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2, loc.celObj))
-				{
+				
+				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == 'comein')) && !loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2, loc.celObj)) {
 					World.w.gui.infoText('noVisible', null, null, false);
 					return;
 				}
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == 1)
-				{
+				
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == 1) {
 					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2);
 					return;
 				}
-				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action > 0)
-				{
-					if (loc.celObj.inter.needSkill)
-					{
+				
+				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action > 0) {
+					if (loc.celObj.inter.needSkill) {
 						loc.celObj.inter.unlock = pers.getSkillLevel(loc.celObj.inter.needSkill);
 					} 
-					if (loc.celObj.inter.mine > 0) // Trap or Mine
-					{	
+					
+					if (loc.celObj.inter.mine > 0) { // Trap or Mine 
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.mineTip);
 						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.mine, 3);
 						actionObj=loc.celObj.inter;
 					}
-					else if (loc.celObj.inter.lock>0 && loc.celObj.inter.lockKey && invent.items[loc.celObj.inter.lockKey].kol>0) // Open with key
-					{	
+					else if (loc.celObj.inter.lock>0 && loc.celObj.inter.lockKey && invent.items[loc.celObj.inter.lockKey].kol>0) {	// Open with key
 						loc.celObj.inter.unlock=1;
 						t_action=20;
 						actionObj=loc.celObj.inter;
 					}
-					else if (loc.celObj.inter.lock>=100) // Lock is jammed
-					{	
+					else if (loc.celObj.inter.lock>=100) {	// Lock is jammed
 						return;
 					}
-					else if (loc.celObj.inter.lock>0) // Lockpicking
-					{
+					else if (loc.celObj.inter.lock>0) { // Lockpicking
 						if (loc.celObj.inter.lockTip==0) return;
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.lockTip);
 						loc.celObj.inter.master=pers.getLockMaster(loc.celObj.inter.lockTip);
 						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.lock, loc.celObj.inter.lockTip);
 						actionObj=loc.celObj.inter;
 					}
-					else if (loc.celObj.inter.t_action) // Timed action
-					{			
+					else if (loc.celObj.inter.t_action) { // Timed action
 						t_action=loc.celObj.inter.t_action;
 						actionObj=loc.celObj.inter;
 						actionObj.beginAct();
 					}
-					else // [Open immediately]
-					{								
+					else { // [Open immediately]
 						loc.celObj.inter.is_act = true;
 					}
+					
 					mt_action=t_action;
+					
 					if (mt_action<=0) mt_action=1;
+					
 					if (actionObj) actionObj.sound();
 				}
 			}
@@ -1316,11 +1358,9 @@
 			}
 		}
 
-		private function chit():void
-		{
+		private function chit():void {
 			if (World.w.chit == 'fly') isFly =! isFly;
-			if (World.w.chit == 'port')
-			{
+			if (World.w.chit == 'port') {
 				var tx = Math.round(World.w.celX / tileX)*tileX
 				var ty = Math.round(World.w.celY / tileY+1)*tileY-1;
 				if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
@@ -1379,23 +1419,28 @@
 				}
 			}
 			//--------------------- [Various actions] ---------------------------
+			
 			//действие
 			if (ctr.keyAction && rat==0) {
 				if (teleObj) {
                     throwTele();
                     ctr.keyAction = false;
-                } else {
+                }
+				else {
                     if (sats.que.length > 0) sats.clearAll();
                     actAction();
                 }
-			} else {
+			}
+			else {
 				actionReady=true;
 				actionObj=null;
 			}
+			
 			if (ctr.keyCrack && !ctr.keyAction && !loc.base && rat==0) {
 				ctr.keyCrack=false;
 				crackAction();
 			}
+			
 			//телекинез
 			if (ctr.keyTele && !ctr.keyAction && !loc.base && rat==0) {
 				if (!teleReady) {
@@ -1405,7 +1450,8 @@
 					teleReady=true;
 				}
 				if (t_culd<=0 && pers.portPoss && pers.spellsPoss && !World.w.alicorn) t_port++;
-			} else {
+			}
+			else {
 				if (teleReady) {
 					if (t_port>=pers.portTime && pers.portPoss && pers.spellsPoss && loc.portOn) {
 						actPort();
@@ -1414,16 +1460,19 @@
 				}
 				t_port=0;
 			}
+			
 			//полёт
 			if (ctr.keyFly) {
 				chit();
-				ctr.keyFly=false
+				ctr.keyFly = false
 			}
+			
 			//тестовая функция
 			if (ctr.keyTest1) {
 				testFunction();
-				ctr.keyTest1=false;
+				ctr.keyTest1 = false;
 			}
+			
 			//взрывчатка
 			if (ctr.keyGrenad && !loc.base && !ctr.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==2)) {
 				if (sats.que.length>0) sats.clearAll();
@@ -1433,6 +1482,7 @@
 					if (throwWeapon.tip==4) ctr.keyGrenad=false;
 				} else ctr.keyGrenad=false;
 			}
+			
 			//магия
 			if (ctr.keyMagic && !loc.base && !ctr.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==3)) {
 				if (sats.que.length>0) sats.clearAll();
@@ -1442,6 +1492,7 @@
 					if (magicWeapon.tip==4) ctr.keyMagic=false;
 				} else ctr.keyMagic=false;
 			}
+			
 			//[spell]
 			if (ctr.keyDef && rat==0) { 
 				if (sats.que.length>0) sats.clearAll();
@@ -1449,25 +1500,29 @@
 				if (currentSpell) {
 					if (!currentSpell.cast(World.w.celX, World.w.celY)) ctr.keyDef=false;
 					if (!currentSpell.prod) ctr.keyDef=false;
-				} else ctr.keyDef=false;
+				}
+				else ctr.keyDef=false;
 			}
+			
 			for (var i=1; i<=World.kolQS; i++) {
 				if (ctr['keySpell'+i]) {
 					if (invent.fav[World.kolHK * 2 + i] == null) {
                         ctr['keySpell' + i] = false;
-                    } else {
+                    }
+					else {
                         if (sats.que.length > 0) sats.clearAll();
                         var sp:Spell = invent.spells[invent.fav[World.kolHK * 2 + i]];
                         if (sp) {
                             if (!sp.cast(World.w.celX, World.w.celY)) ctr['keySpell' + i] = false;
                             if (!sp.prod) ctr['keySpell' + i] = false;
-                        } else ctr['keySpell' + i] = false;
+                        }
+						else ctr['keySpell' + i] = false;
                     }
 				}
 			}
+			
 			//[satellite] (Pets)
-			if (ctr.keyPet)
-			{ 
+			if (ctr.keyPet) { 
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
@@ -1477,31 +1532,34 @@
 					ctr.keyPet=false;
 				}
 			}
-			else
-			{
+			else {
 				if (k_pet>0) {				//[order]
 					if (pet) {
 						if (loc.celObj && loc.celObj is Unit && (loc.celObj as Unit).fraction!=fraction) pet.atk((loc.celObj as Unit));
 						else pet.moveto(celX,celY);
 					}
 				}
-				k_pet=0;
+				k_pet = 0;
 			}
+			
 			//[атака]
 			if ((ctr.keyAttack || autoAttack) && (!loc.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1)) {
 				if (visSel) {
 					World.w.gui.unshowSelector(1);
 					ctr.keyAttack=false;
-				} else if (ctr.keyTele) {
+				}
+				else if (ctr.keyTele) {
 					ctr.keyTele=false;
 					ctr.keyAttack=false;
 					t_port=0;
 					spellDisact();
-				} else if (currentWeapon && t_work<=0) {
+				}
+				else if (currentWeapon && t_work<=0) {
 					if (sats.que.length>0) {
 						sats.clearAll();
 						ctr.keyAttack=false;
-					} else {
+					}
+					else {
 						weaponSkill=pers.weaponSkills[currentWeapon.skill];
 						if (!currentWeapon.attack()) ctr.keyAttack=false;
 						World.w.gui.setWeapon();
@@ -1509,6 +1567,7 @@
 					}
 				}
 			}
+			
 			//[recharge]
 			if (ctr.keyReload && currentWeapon && attackForever<=0) {
 				if (t_reload>=30) {
@@ -1517,15 +1576,18 @@
 				}
 				if (currentWeapon.detonator()) ctr.keyReload=false;
 				t_reload++;
-			} else {
+			}
+			else {
 				if (currentWeapon && t_reload>0 && t_reload<10) currentWeapon.initReload();
 				t_reload=0;
 			}
+			
 			//[kick]
 			if (ctr.keyPunch && World.w.alicorn) {
 				ctr.keyPunch=false;
 				alicornPort();
 			}
+			
 			if (ctr.keyPunch && !World.w.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !loc.base && !lurked && attackForever<=0 && atkPoss) {
 				(punchWeapon as WKick).kick=ctr.keyRun;
 				punchWeapon.attack();
@@ -1534,10 +1596,12 @@
 				t_work=13;
 				ctr.keyPunch=false;
 			}
+			
 			if (ctr.keyPunch && rat>0) {
 				remEffect('potion_rat');
 				ctr.keyPunch=false;
 			}
+			
 			if (rat==0) {
 			// [Change weapons]
 				if (t_work<=0 && attackForever<=0) {
@@ -1587,78 +1651,93 @@
 			}
 			
 			//--------------------- [movement] ---------------------------
+			
 			// [speed]
-			var accel1=accel*pers.accelMult;
-			maxSpeed=walkSpeed;
-			if (stay && ctr.keyAction && maxSpeed>3) {
-				accel1=accel*0.4;
-				maxSpeed=3;
+			var accel1 = accel * pers.accelMult;
+			maxSpeed = walkSpeed;
+			
+			if (stay && ctr.keyAction && maxSpeed > 3) {
+				accel1 = accel * 0.4;
+				maxSpeed = 3;
 			}
+			
 			if (loc.sky) {
-				maxSpeed*=3;
+				maxSpeed *= 3;
 			}
+			
 			isRun = ((possRun || stam > 200) && ctr.keyRun || (burningForcesRunOption && runForever > 0));
-			if (h2o<=0) isRun=false;
-			if (isRun && stay) maxSpeed=runSpeed;
-			if (isSit && stay) maxSpeed=sitSpeed;
-			if (diagon!=0) maxSpeed=walkSpeed*0.75;
-			if (isPlav) maxSpeed=plavSpeed*pers.speedPlavMult;
-			if (maxSpeed>walkSpeed && currentWeapon && currentWeapon.massa>=0.1 && pers.bigGunsSlow>0) maxSpeed*=(1-currentWeapon.massa*pers.bigGunsSlow);
-			if (!stay) accel1=0.1*accel;
-			if (isPlav) accel1=0.3*accel*pers.speedPlavMult;
+			
+			if (h2o <= 0) isRun = false;
+			if (isRun && stay) maxSpeed = runSpeed;
+			if (isSit && stay) maxSpeed = sitSpeed;
+			if (diagon != 0) maxSpeed = walkSpeed * 0.75;
+			if (isPlav) maxSpeed = plavSpeed * pers.speedPlavMult;
+			if (maxSpeed > walkSpeed && currentWeapon && currentWeapon.massa >= 0.1 && pers.bigGunsSlow > 0) maxSpeed *= (1 - currentWeapon.massa * pers.bigGunsSlow);
+			if (!stay) accel1 = 0.1 * accel;
+			if (isPlav) accel1 = 0.3 * accel * pers.speedPlavMult;
 			if (isFly) {
-				maxSpeed*=1.3;
-				if (World.w.alicorn && ctr.keyRun && mana>20) {
-					accel1=accel;
-					maxSpeed=runSpeed*pers.alicornFlyMult;
-					if (loc.sky) maxSpeed*=2;
-				} else accel1=0.5*accel; 
+				maxSpeed *= 1.3;
+				if (World.w.alicorn && ctr.keyRun && mana > 20) {
+					accel1 = accel;
+					maxSpeed = runSpeed * pers.alicornFlyMult;
+					if (loc.sky) maxSpeed *= 2;
+				}
+				else accel1 = 0.5 * accel; 
 			}
-			if (isLaz) accel1=1.4*accel; 
+			// If on ladder
+			if (isLaz) {
+				accel1 = 1.4 * accel;
+			}
 			if (levit) {
-				maxSpeed=1000;
-				accel1=0.3*accel; 
+				maxSpeed = 1000;
+				accel1 = 0.3 * accel; 
 			}
 			if (cryst) {
 				maxSpeed=sitSpeed;
 			}
+			
 			porog=0;
 			porog_jump=0;
 			
-			if ((isRun || ctr.keyBeUp)&& jumpNumb==0) porog_jump=10;
+			if ((isRun || ctr.keyBeUp)&& jumpNumb==0) {
+				porog_jump=10;
+			}
 
 			// [acceleration]
+			// If not on a ladder
 			if (!isLaz) {
 				if (keyLeft && !keyRight) {
-					storona=-1;
+					storona = -1;
 				}
 				if (!keyLeft && keyRight) {
-					storona=1;
+					storona = 1;
 				}
 			}
+			
 			walk = 0;
+			
 			if ((keyLeft && !keyRight || (burningForcesRunOption && runForever > 0)) && storona < 0) {
-				porog=20;
-				isTake=40;
-				if (storona>0 && stay) {
-					storona=-1;
+				porog = 20;
+				isTake = 40;
+				if (storona > 0 && stay) {
+					storona = -1;
 				}
-				else if (dx>-maxSpeed && (!ctr.keyRun || t_run>3)) {
-					dx-=accel1;
-					if (dx<-maxSpeed) dx=-maxSpeed;
+				else if (velocity.X > -maxSpeed && (!ctr.keyRun || t_run>3)) {
+					velocity.X -= accel1;
+					if (velocity.X < -maxSpeed) velocity.X = -maxSpeed;
 				}
-				walk=-1;
+				walk = -1;
 				t_run++;
 			}
 			else if ((!keyLeft && keyRight || (burningForcesRunOption && runForever > 0)) && storona > 0) {
-				porog=20;
-				isTake=40;
-				if (storona<0 && stay) {
-					storona=1;
+				porog = 20;
+				isTake = 40;
+				if (storona < 0 && stay) {
+					storona = 1;
 				}
-				else if (dx<maxSpeed && (!ctr.keyRun || t_run>3)) {
-					dx+=accel1;
-					if (dx>maxSpeed) dx=maxSpeed;
+				else if (velocity.X < maxSpeed && (!ctr.keyRun || t_run > 3)) {
+					velocity.X += accel1;
+					if (velocity.X > maxSpeed) velocity.X = maxSpeed;
 					
 				}
 				walk = 1;
@@ -1667,12 +1746,13 @@
 			else {
 				t_run = 0;
 			}
+			
 			// [Jerk to the side]
 			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==1)) {
 				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
-					if (dx<dash) dx=dash;
+					if (velocity.X < dash) velocity.X = dash;
 					aJump=2;
-					dy+=dash_dy;
+					velocity.Y+=dash_dy;
 					dash_t=dash_maxt;
 					jumpNumb=2;
 					dJump=false;
@@ -1681,13 +1761,16 @@
 					ctr.keyJump=false;
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
-				ctr.keyDubRight=ctr.keyDubLeft=ctr.keyDash=false;
+				ctr.keyDubRight = false;
+				ctr.keyDubLeft = false;
+				ctr.keyDash = false;
 			}
+			
 			if (ctr.keyDubLeft&&!zaput || ctr.keyDubRight&&zaput || ctr.keyDash&&(storona==-1)) {
 				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
-					if (dx>-dash) dx=-dash;
+					if (velocity.X > -dash) velocity.X = -dash;
 					aJump=2;
-					dy+=dash_dy;
+					velocity.Y+=dash_dy;
 					dash_t=dash_maxt;
 					jumpNumb=2;
 					dJump=false;
@@ -1696,31 +1779,47 @@
 					ctr.keyJump=false;
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
-				ctr.keyDubLeft=ctr.keyDubRight=ctr.keyDash=false;
+				ctr.keyDubLeft = false;
+				ctr.keyDubRight = false;
+				ctr.keyDash = false;
 			}
 			
 			// Jump
-			if (levit==1) levit=0;
-			throu=(ctr.keyJump || !stay)&&ctr.keySit || isPlav || kdash_t>3 || pinok>70;
-			if (stay && !ctr.keyJump || isLaz) {
-				jumpp=maxjumpp;	// [while we are standing, the jump is fully charged]
-				dJump=false;
-				if (isLaz && !keyLeft && !keyRight) jumpp=0;
-				jumpNumb=0;
-				if (dash_t<=0) aJump=0;
-			} else if (!stay && !ctr.keyJump && pers.isDJ && jumpNumb<=1 && loc.levitOn) {
-				jumpp=maxdjumpp;
-				dJump=true;
-			} else if (!ctr.keyJump && jumpNumb==0) jumpNumb=1;
-			if (throu && stayPhis==2) jumpp=0;
-			if (!stay && ctr.keyJump) jumpp--;
-			if (!stay && !ctr.keyJump && !(pers.isDJ && loc.levitOn && jumpNumb<=1)) jumpp=0;
-			if (isPlav && (jumpp<=2 || jumpNumb>1)) {
-				jumpp=5;
-				jumpNumb=1;
-				dJump=false;
+			if (levit == 1) {
+				levit = 0;
 			}
-			dJump2=false;
+			
+			throu = (ctr.keyJump || !stay) && ctr.keySit || isPlav || kdash_t > 3 || pinok > 70;
+			
+			if (stay && !ctr.keyJump || isLaz) {
+				jumpp = maxjumpp;	// [while we are standing, the jump is fully charged]
+				dJump = false;
+				// On ladder and not pressing left or right
+				if (isLaz && !keyLeft && !keyRight) {
+					jumpp = 0;
+				}
+				jumpNumb = 0;
+				if (dash_t <= 0) aJump = 0;
+			}
+			else if (!stay && !ctr.keyJump && pers.isDJ && jumpNumb <= 1 && loc.levitOn) {
+				jumpp = maxdjumpp;
+				dJump = true;
+			}
+			else if (!ctr.keyJump && jumpNumb==0) {
+				jumpNumb = 1;
+			}
+			
+			if (throu && stayPhis == 2) jumpp = 0;
+			if (!stay && ctr.keyJump) jumpp--;
+			if (!stay && !ctr.keyJump && !(pers.isDJ && loc.levitOn && jumpNumb<=1)) jumpp = 0;
+			if (isPlav && (jumpp <= 2 || jumpNumb > 1)) {
+				jumpp = 5;
+				jumpNumb = 1;
+				dJump = false;
+			}
+			
+			dJump2 = false;
+			
 			if (ctr.keyJump && dash_t<dash_maxt-15) {
 				isTake=40;
 				t_stay=0;
@@ -1731,8 +1830,9 @@
 				}
 				if (stay && World.w.hardInv) invent.damageItems(0,false);
 				if (isPlav) {
-					dy-=plavdy*pers.speedPlavMult;
-				} else if (jumpp>0) {
+					velocity.Y -= plavdy * pers.speedPlavMult;
+				}
+				else if (jumpp > 0) {
 					if (isSit) unsit();
 					if (!isSit) {
 						spellDisact();
@@ -1741,160 +1841,182 @@
 							if (loc.sky) isFly=true;
 							t_fly=0;
 							ctr.keyJump=false;
-						} else if (dJump) {		//двойной прыжок
-							dy=-djumpdy*pers.jumpMult;
+						}
+						else if (dJump) {		// [Double jump]
+							velocity.Y = -djumpdy * pers.jumpMult;
 							if (jumpp==maxdjumpp-1) {
 								Emitter.emit('quake', loc, coordinates.X, coordinates.Y);
-								if (keyLeft) dx-=djumpdy*0.5;
-								if (keyRight) dx+=djumpdy*0.5;
-								if (dx>25) dx=25;
-								if (dx<-25) dx=-25;
+								if (keyLeft) velocity.X -= djumpdy * 0.5;
+								if (keyRight) velocity.X += djumpdy * 0.5;
+								if (velocity.X > 25) velocity.X = 25;
+								if (velocity.X < -25) velocity.X = -25;
+								jumpNumb = 3;
+							}
+							
+							dJump2=true;
+							
+							if (jumpp==1 && levitOn && loc.levitOn && !isPlav) {
 								jumpNumb=3;
 							}
-							dJump2=true;
-							if (jumpp==1 && levitOn && loc.levitOn && !isPlav) jumpNumb=3;
-						} else {
-							dy=-jumpdy*pers.jumpMult; //прыжок
 						}
-						aJump=1;
+						else {
+							velocity.Y = -jumpdy * pers.jumpMult; // [Bounce]
+						}
+						aJump = 1;
 					}
-				} else if (pers.ableFly && loc.levitOn && rat==0) {
-					if (isLaz) isLaz=0;
-					isFly=!isFly;
-					t_fly=0;
-					ctr.keyJump=false;
-				} else if (levitOn && loc.levitOn && jumpNumb>(pers.isDJ?2:1) && !isPlav) {	//самолевитация, при втором нажатии
-					if (levit>1) levit--;
+				}
+				else if (pers.ableFly && loc.levitOn && rat == 0) {
+					// Stop climbing ladder
+					if (isLaz) {
+						isLaz = 0;
+					}
+					isFly =! isFly;
+					t_fly = 0;
+					ctr.keyJump = false;
+				}
+				else if (levitOn && loc.levitOn && jumpNumb>(pers.isDJ? 2 : 1) && !isPlav) {	// [Self-levitation, on the second press]
+					if (levit > 1) {
+						levit--;
+					}
 					else {
 						levit=1;
 						fracLevit=fraction;
 					}
-					isFly=false;
+					isFly = false;
 				}
-				if (isLaz || stay) {	//прыжок с лестницы
-					 if (!keyLeft && keyRight && dx<maxSpeed-accel1) dx+=accel1;
-					 if (keyLeft && !keyRight && dx>-maxSpeed+accel1) dx-=accel1;
+				
+				// We're on a ladder and idle
+				if (isLaz || stay) {
+					if (!keyLeft && keyRight && velocity.X < maxSpeed - accel1) {
+						velocity.X += accel1;
+					}
+					if (keyLeft && !keyRight && velocity.X > -maxSpeed + accel1) {
+						velocity.X -= accel1;
+					}
 				}
-				if (levit==1 && mana<=0) {
-					levit=0;
-					jumpNumb=2;
+				
+				if (levit == 1 && mana <= 0) {
+					levit = 0;
+					jumpNumb = 2;
 				}
 			}
 			else isJump = false;
 
-			if (isPlav && ctr.keyBeUp && !ctr.keyJump) dy -= plavdy * pers.speedPlavMult;
+			if (isPlav && ctr.keyBeUp && !ctr.keyJump) {
+				velocity.Y -= plavdy * pers.speedPlavMult;
+			}
 
 			//Self-levitation
-			if (levit)
-			{
-				if (ctr.keyBeUp)
-				{
-					dy -= levidy * 0.7;
+			if (levit) {
+				if (ctr.keyBeUp) {
+					velocity.Y -= levidy * 0.7;
 					levitup = true;
 					t_up = 10;
 				}
 				else levitup = false;
 
-				if (ctr.keySit) dy += levidy;
+				if (ctr.keySit) velocity.Y += levidy;
 			}
+			
 			if (isFly)
 			{
-				if (ctr.keyBeUp) dy -= levidy;
-				if (ctr.keySit) dy += levidy;
+				if (ctr.keyBeUp) velocity.Y -= levidy;
+				if (ctr.keySit) velocity.Y += levidy;
 			}
+			
 			// Swimming
 			// Sit down
-			if (ctr.keySit)
-			{
+			if (ctr.keySit) {
 				porog = 0;
 				if (stay && diagon == 0 && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && rat == 0) {
-					if (checkStairs(2)) {	// [check the stairs]
-						t_stay=0;
-						dy=lazSpeed;
-						throu=true;
+					// Check here for stairs
+					if (checkStairs(2)) {
+						t_stay = 0;
+						velocity.Y = lazSpeed;
+						throu = true;
 					}
-					else 	if (stayPhis==2 && checkStairs(2, -20 * storona)) {	// [check the stairs]
-							t_stay=0;
-							dy=lazSpeed;
-							throu=true;
+					// Check behind us for stairs
+					else if (stayPhis == 2 && checkStairs(2, -20 * storona)) {
+							t_stay = 0;
+							velocity.Y = lazSpeed;
+							throu = true;
 					}
-					else if (stayPhis==2 && checkStairs(2, 20 * storona)) {	// [check the stairs]
-							t_stay=0;
-							dy=lazSpeed;
-							throu=true;
+					// Check in front of us for stairs
+					else if (stayPhis == 2 && checkStairs(2, 20 * storona)) {
+							t_stay = 0;
+							velocity.Y = lazSpeed;
+							throu = true;
 					}
 					else if (stayPhis==1 && downp==1 || stayPhis==2 && downp==5){
 						sit(true);
 					}
 				}
+				// Climbing a ladder and there's stairs
 				else if (isLaz && !noStairs) {
 					if (checkStairs(2)) {
-						dy=lazSpeed*1.5;
+						velocity.Y = lazSpeed * 1.5;
 					}
 				}
 				else if (isPlav) {
-					dy+=plavdy*pers.speedPlavMult/2;
+					velocity.Y += plavdy * pers.speedPlavMult / 2;
 				}
+				
 				if (downp<6) downp++;
 			}
 			else downp = 0;
 
 			//Stand up
-			if (isSit && ctr.keyBeUp && !ctr.keySit && !rat)
-			{
+			if (isSit && ctr.keyBeUp && !ctr.keySit && !rat) {
 				t_up = 10;
 				unsit();
 			}
+			
 			if (isSit && !stay && !rat) unsit();
 
 			// [Raise weapon or hide]
 			weapUp = false;
-			if (stay && ctr.keyBeUp && !rat)
-			{
+			if (stay && ctr.keyBeUp && !rat) {
 				if (isSit) t_up = 10;
 				t_up++;
 				if (t_up > 10) weapUp = true;
 			}
-			else
-			{
-				if (t_up > 0 && t_up <= 7 && !keyLeft && !keyRight && !rat)
-				{
+			else {
+				if (t_up > 0 && t_up <= 7 && !keyLeft && !keyRight && !rat) {
 					lurk();
 				}
 				if (!ctr.keyBeUp) t_up = 0;
 			}
-			//быстро спрыгнуть с балки
-			if (ctr.keyDubSit)
-			{
-				if (stay && stayPhis == 2)
-				{
+			
+			// [Quickly jump off the beam]
+			if (ctr.keyDubSit) {
+				if (stay && stayPhis == 2) {
 					t_stay = 0;
 					throu = true;
-					dy += 10;
+					velocity.Y += 10;
 				}
 				ctr.keyDubSit = false;
 			}
+			
 			if (loc.quake > 5) throu = true;
-			//лезть
-			if (!isSit && !isFly && ctr.keyBeUp && (!burningForcesRunOption || runForever <= 0) && loc.quake <= 5 && !cryst && isFetter <= 0 && !noStairs && pinok < 30 && !rat)
-			{
-				if (checkStairs())
-				{
+			
+			// [Climb stairs]
+			if (!isSit && !isFly && ctr.keyBeUp && (!burningForcesRunOption || runForever <= 0) && loc.quake <= 5 && !cryst && isFetter <= 0 && !noStairs && pinok < 30 && !rat) {
+				if (checkStairs()) {
 					t_stay = 0;
-					dy = -lazSpeed;
+					velocity.Y = -lazSpeed;
 					t_up = 10;
 				}
 			}
-			//перестать лезть
-			if ((burningForcesRunOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5)
-			{
+			
+			
+			if ((burningForcesRunOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5) {
+				// [Stop climbing the ladder]
 				isLaz = 0;
 			}
 
 			isUp = ctr.keyBeUp;
 			
-			if (rat)
-			{
+			if (rat) {
 				isSit = false;
 				objectWidth = ratX;
 				objectHeight = ratY;
@@ -1903,8 +2025,7 @@
 		
 		
 		//определить, видна ли ловушка
-		public function lookInvis(ncel:Unit, visParam:Number=-1):Boolean
-		{
+		public function lookInvis(ncel:Unit, visParam:Number=-1):Boolean {
 			if (visParam == -1) visParam = pers.visiTrap;
 			if (loc != ncel.loc) return false;
 			return look(ncel, false, visParam) > 0;
@@ -1912,19 +2033,16 @@
 		
 		
 		// [look at the target point]
-		public function lineCel(rdx:int=0, rdy:int=0):int
-		{
+		public function lineCel(rdx:int=0, rdy:int=0):int {
 			var res = 0;
 			var ndx = (celX + rdx - coordinates.X);
 			var ndy = (celY + rdy - coordinates.Y + objectHeight / 2);
 			var div = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta) + 1;
-			for (var i = 1; i < div; i++)
-			{
+			for (var i = 1; i < div; i++) {
 				var nx = coordinates.X + ndx * i / div;
 				var ny = this.topBoundToCenter + ndy * i / div;
 				var t:Tile = World.w.loc.getAbsTile(int(nx), int(ny));
-				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2)
-				{
+				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2) {
 					celX = nx;
 					celY = ny;
 					return 0
@@ -1935,34 +2053,27 @@
 		
 		private function lurk():void {
 			lurkTip = 0;
-			if (stay && !isSit && dx < 5 && dx > -5 && stayPhis >= 1 && work == '')
-			{
+			if (stay && !isSit && velocity.X < 5 && velocity.X > -5 && stayPhis >= 1 && work == '') {
 				lurkBox = null;
-				for each (var b:Box in loc.objs)
-				{
-					if (b.lurk > lurkTip && coordinates.X > b.leftBound && coordinates.X < b.rightBound && coordinates.Y - 10 > b.topBound && coordinates.Y - 10 < b.bottomBound)
-					{
+				for each (var b:Box in loc.objs) {
+					if (b.lurk > lurkTip && coordinates.X > b.leftBound && coordinates.X < b.rightBound && coordinates.Y - 10 > b.topBound && coordinates.Y - 10 < b.bottomBound) {
 						lurkTip=b.lurk;
 						lurkBox=b;
 					}
 				}
-				if (lurkBox)
-				{
+				if (lurkBox) {
 					lurkX = coordinates.X;
-					dx = 0;
+					velocity.X = 0;
 					t_work = 20;
 					work = 'lurk';
 					lurked = true;
 
-					if (lurkBox.lurk == 2)
-					{
-						if (coordinates.X > lurkBox.coordinates.X)
-						{
+					if (lurkBox.lurk == 2) {
+						if (coordinates.X > lurkBox.coordinates.X) {
 							storona = 1;
 							lurkX = lurkBox.rightBound - 10;
 						}
-						else
-						{
+						else {
 							storona = -1;
 							lurkX = lurkBox.leftBound + 10;
 						}
@@ -1970,11 +2081,10 @@
 					else lurkX = lurkBox.coordinates.X;
 
 				}
-				else if (loc.getAbsTile(coordinates.X - 20, coordinates.Y - 10).lurk && loc.getAbsTile(coordinates.X + 20, coordinates.Y - 10).lurk)
-				{
+				else if (loc.getAbsTile(coordinates.X - 20, coordinates.Y - 10).lurk && loc.getAbsTile(coordinates.X + 20, coordinates.Y - 10).lurk) {
 					lurkTip = 1;
 					lurkX = Math.round(coordinates.X / tileX) * tileX;
-					dx = 0;
+					velocity.X = 0;
 					t_work = 20;
 					work = 'lurk';
 					lurked = true;
@@ -1983,10 +2093,8 @@
 			}
 		}
 		
-		private function unlurk():void
-		{
-			if (lurked && stay)
-			{
+		private function unlurk():void {
+			if (lurked && stay) {
 				t_work = 10;
 				work = 'unlurk';
 			}
@@ -1998,6 +2106,7 @@
 //				Effects and Skills
 //
 //**************************************************************************************************************************
+		
 		// Установить зависимости
 		public function setAddictions():void {
 			for (var ad in pers.addictions) {
@@ -2056,6 +2165,7 @@
 
 		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true) {
 			if (hl==0) return;
+			
 			if (tip==0) {				//мгновенное лечение
 				if (hl>maxhp-rad-hp) {
 					hl=maxhp-rad-hp;
@@ -2063,30 +2173,37 @@
 				} else {
 					hp+=hl;
 				}
-			} else if (tip==1) {	//лечение зельями
+			}
+			else if (tip==1) {	//лечение зельями
 				healhp+=hl;
-			} else if (tip==2) {	//лечение радиации
+			}
+			else if (tip==2) {	//лечение радиации
 				rad-=hl;
 				if (rad<0) rad=0;
-			} else if (tip==3) {	//порезов
+			}
+			else if (tip==3) {	//порезов
 				cut-=hl;
 				if (cut<0) cut=0;
-			} else if (tip==4) {	//яда
+			}
+			else if (tip==4) {	//яда
 				if (hl>0) {
 					poison-=hl;
 					if (poison<0) poison=0;
-				} else {
+				}
+				else {
 					poison-=hl;
 				}
 			}
-			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
+			
+			if (ismess && (sost==1 || sost==2) && showNumbs && hl > 0.5) {
+				numbEmit.cast(loc, coordinates.X, coordinates.Y - objectHeight / 2, {txt:((tip == 2)? '-' : '+') + Math.round(hl), frame:((tip == 2)? 7 : 4), rx:20, ry:20});
+			}
 			World.w.gui.setHp();
 		}
 		
-		public override function udarUnit(un:Unit, mult:Number=1):Boolean
-		{
+		public override function udarUnit(un:Unit, mult:Number=1):Boolean {
 			if (super.udarUnit(un, mult)) {
-				if (un.radDamage) drad2=un.radDamage;
+				if (un.radDamage) drad2 = un.radDamage;
 				return true;
 			}
 			return false;
@@ -2217,7 +2334,8 @@
 				if (sposob==10) World.w.gui.messText('hardDie2', pers.persName, false, false, 10000);
 				else World.w.gui.messText('hardDie', pers.persName, false, false, 10000);
 				Snd.playMusic('harddie',1);
-			} else {
+			}
+			else {
 				World.w.t_die=300;
 			}
 		}
@@ -2591,7 +2709,8 @@
 			uncallPet(true);
 			changeWeapon('not');
 			isSit=false;
-			isLaz=levit=0;
+			isLaz=0;
+			levit=0;
 			isFly=false;
 			dropTeleObj();
 			actionObj=null;
@@ -2885,41 +3004,39 @@
 				else return false;
 			}
 
-			//###############
-			//##
-			//##	MAIN ANIMATIONS
-			//##
-			//###############
-			function animatePlayerMovement():void
-			{
+//###############
+//##
+//##	MAIN ANIMATIONS
+//##
+//###############
+			function animatePlayerMovement():void {
+				
 				if (t_work && work == 'punch') freeAnim = 0;
-				if (t_work && work == 'punch' && animState != 'punch')
-				{
+				
+				if (t_work && work == 'punch' && animState != 'punch') {
 					if (ctr.keyRun) {
                         vis.osn.gotoAndStop('kick');
-                    } else vis.osn.gotoAndStop('punch');
+                    }
+					else vis.osn.gotoAndStop('punch');
 					animState = 'punch';
 				}
+				
 				if (t_work==0 && animState=='punch') {
 					animState='';
 				}
-				if (stay || t_stay > 0)
-				{
+				
+				if (stay || t_stay > 0) {
 					//Какие-то действия
-					if (animState=='punch' || animState=='kick')
-					{
+					if (animState=='punch' || animState=='kick') {
 					//если не нажаты влево или вправа, или стоим на месте, то СТОИМ
-					} else if  (diagon==0 && (dx<=1 && dx>=-1 && walk!=0 || dx<=4 && dx>=-4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
+					}
+					else if  (diagon==0 && (velocity.X <= 1 && velocity.X >= -1 && walk!=0 || velocity.X <= 4 && velocity.X >= -4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
 						t_walk=0;
-						if (freeAnim == 0 || isSit)
-						{
+						if (freeAnim == 0 || isSit) {
 							freeAnim = 0;
-
-							if (vis.osn.currentFrameLabel != 'stay')		// ANIMATION IS SET TO 'STAY' EVERY FRAME
-							{
+							if (vis.osn.currentFrameLabel != 'stay') {	// ANIMATION IS SET TO 'STAY' EVERY FRAME
 								vis.osn.gotoAndStop('stay');
-								if (vis.osn.currentFrameLabel == 'jump' || vis.osn.currentFrameLabel == 'levit')
-								{
+								if (vis.osn.currentFrameLabel == 'jump' || vis.osn.currentFrameLabel == 'levit') {
 									vis.osn.body.gotoAndPlay('jump');
 								}
 							}
@@ -2927,22 +3044,17 @@
 							cframe = getStayFrame();
 							//если сидим
 							if (isSit) {
-								if (animState=='jump')
-								{
-									if (animState!='downjump')
-									{
+								if (animState=='jump') {
+									if (animState!='downjump') {
 										animState='downjump';
 										vis.osn.body.gotoAndPlay('downjump');
 									}
 								}
-								if (animState!='down' && animState!='downjump')
-								{
-									if (animState=='polz' || cframe!=2)
-									{
+								if (animState!='down' && animState!='downjump') {
+									if (animState=='polz' || cframe!=2) {
 										vis.osn.body.gotoAndStop(cframe);
 									}
-									else if (animState!='roll')
-									{
+									else if (animState!='roll') {
 										vis.osn.body.gotoAndPlay('down');
 									}
 									else vis.osn.body.gotoAndStop('sit');
@@ -2950,10 +3062,8 @@
 								}
 								//если стоим
 							}
-							else
-							{
-								if (animState=='down')
-								{
+							else {
+								if (animState=='down') {
 									vis.osn.body.gotoAndPlay('up');
 									animState='up';
 								}
@@ -2962,27 +3072,28 @@
 									animState='';
 								}
 							}
-							if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) vis.osn.body.gotoAndStop(cframe);
-							if (vis.osn.currentFrameLabel=='stay' && cframe==1)
-							{
-								if (isrnd(0.01))
-								{
+							
+							if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) {
+								vis.osn.body.gotoAndStop(cframe);
+							}
+							
+							if (vis.osn.currentFrameLabel=='stay' && cframe==1) {
+								if (isrnd(0.01)) {
 									freeAnim = int(Math.random() * 3) + 1;
 									vis.osn.gotoAndStop('free' + freeAnim);
 									vis.osn.body.play();
 								}
 							}
 						}
-						else if (vis.osn.body.currentFrame>=49) freeAnim=0;
+						else if (vis.osn.body.currentFrame>=49) {
+							freeAnim=0;
+						}
 					}
-					else if (diagon!=0 && dx==0)
-					{
+					else if (diagon != 0 && velocity.X == 0) {
 						freeAnim=0;
 						t_walk=0;
-						if (diagon*storona>0)
-						{
-							if (animState!='diag_up')
-							{
+						if (diagon*storona>0) {
+							if (animState!='diag_up') {
 								animState='diag_up';
 								vis.osn.gotoAndStop('trot_up');
 								vis.osn.body.gotoAndStop(1);
@@ -2990,16 +3101,14 @@
 						}
 						else
 						{
-							if (animState!='diag_down')
-							{
+							if (animState!='diag_down') {
 								animState='diag_down';
 								vis.osn.gotoAndStop('trot_down');
 								vis.osn.body.gotoAndStop(1);
 							}
 						}
 					}
-					else
-					{			//движение
+					else {			//движение
 						freeAnim=0;
 						if (diagon == 0) {
                             if (isSit) {
@@ -3008,7 +3117,7 @@
                                     animState = 'polz';
                                 }
                                 if (animState != 'polz' && animState != 'roll') {
-                                    if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                                    if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                         vis.osn.gotoAndStop('roll');
                                         animState = 'roll';
                                     } else {
@@ -3017,7 +3126,8 @@
                                     }
                                     vis.osn.body.play();
                                 }
-                            } else if (maxSpeed < 5) {
+                            }
+							else if (maxSpeed < 5) {
                                 sndStep(t_walk, 4);
                                 t_walk++;
                                 if (animState != 'walk') {
@@ -3025,7 +3135,8 @@
                                     vis.osn.body.play();
                                     animState = 'walk';
                                 }
-                            } else if (maxSpeed > walkSpeed * 1.6 && dx * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                            }
+							else if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                 sndStep(t_walk, 2);
                                 t_walk++;
                                 if (animState != 'run') {
@@ -3033,7 +3144,8 @@
                                     vis.osn.body.play();
                                     animState = 'run';
                                 }
-                            } else if (dx * storona > 0) {
+                            }
+							else if (velocity.X * storona > 0) {
                                 sndStep(t_walk, 1);
                                 t_walk++;
                                 if (animState != 'trot') {
@@ -3042,14 +3154,16 @@
                                     animState = 'trot';
                                 }
                             }
-                        } else {
+                        }
+						else {
                             if (diagon * storona > 0) {
                                 if (animState != 'trot_up') {
                                     animState = 'trot_up';
                                     vis.osn.gotoAndStop('trot_up');
                                     vis.osn.body.play();
                                 }
-                            } else {
+                            }
+							else {
                                 if (animState != 'trot_down') {
                                     animState = 'trot_down';
                                     vis.osn.gotoAndStop('trot_down');
@@ -3062,56 +3176,66 @@
 					}
 				//на лестнице
 				}
-				else if (isLaz)
-				{
-					freeAnim=0;
-					if (animState!='laz') {
+				else if (isLaz) {
+					freeAnim = 0;
+					
+					if (animState != 'laz') {
 						vis.osn.gotoAndStop('laz');
-						animState='laz';
+						animState = 'laz';
 					}
-					if (dy==0) vis.osn.body.gotoAndStop(1);
-					else
-					{
-						cframe=vis.osn.body.currentFrame;
-						sndStep(cframe,3);
-						if (dy<0)
-						{
-							if (cframe<=12) vis.osn.body.gotoAndStop(cframe+1);
-							else vis.osn.body.gotoAndStop(2);
+					
+					if (velocity.Y == 0) {
+						vis.osn.body.gotoAndStop(1);
+					}
+					else {
+						cframe = vis.osn.body.currentFrame;
+						sndStep(cframe, 3);
+						if (velocity.Y < 0) {
+							if (cframe <= 12) {
+								vis.osn.body.gotoAndStop(cframe + 1);
+							}
+							else {
+								vis.osn.body.gotoAndStop(2);
+							}
 						}
-						else
-						{
-							if (cframe>=3) vis.osn.body.gotoAndStop(cframe-1);
-							else vis.osn.body.gotoAndStop(13);
+						else {
+							if (cframe >= 3) {
+								vis.osn.body.gotoAndStop(cframe - 1);
+							}
+							else {
+								vis.osn.body.gotoAndStop(13);
+							}
 						}
 					}
 				//плавание
-				} else if (isPlav)
-				{
-					freeAnim=0;
-					vis.osn.rotation=dy*1.5;
-					if (animState!='plav') {
-						animState='plav';
+				}
+				else if (isPlav) {
+					freeAnim = 0;
+					vis.osn.rotation = velocity.Y * 1.5;
+					if (animState != 'plav') {
+						animState = 'plav';
 						vis.osn.gotoAndStop('plav');
 					}
 				//в воздухе
 				}
-				else
-				{
+				else {
 					freeAnim=0;
 					if (animState!='jump' && animState!='levit') {
 						if (aJump>0) {
 							vis.osn.gotoAndStop('jump');
 							animState='jump';
-						} else {
+						}
+						else {
 							vis.osn.gotoAndStop('pinok');
 							animState='pinok';
 						}
 					}
+					
 					if (animState=='pinok' && isFly) {
 						vis.osn.gotoAndStop('jump');
 						animState='jump';
 					}
+					
 					if (levit==1 && animState!='levit') {	//начать левитировать
 						if (aJump>0 && vis.osn.body.currentFrame>=14 && vis.osn.body.currentFrame<=18) {
 							animState='levit';
@@ -3123,24 +3247,29 @@
 							vis.osn.body.gotoAndPlay(51);
 						}
 					}
+					
 					if (levit==0 && animState=='levit') {	//перестать левитировать
 						vis.osn.gotoAndStop('levit');
 						if (vis.osn.body.currentFrame<66) vis.osn.body.gotoAndPlay(67);
 					}
+					
 					if (levit==1 && animState=='levit') {
 						if (vis.osn.body.currentFrame>66) vis.osn.body.gotoAndPlay(17);
-					} else if (animState!='levit') {
-						if (aJump>0) {
-							cframe=Math.round(16+dy);
-							if (cframe>32) cframe=32;
-							if (cframe<1) cframe=1;
-						} else {
-							if (dy>2 && dx>-6 && dx<6) {
-								cframe=Math.round(31+dy);
-								if (cframe<33) cframe=33;
-								if (cframe>42) cframe=42;
-							} else {
-								cframe=Math.round(16+dx*storona);
+					}
+					else if (animState!='levit') {
+						if (aJump > 0) {
+							cframe = Math.round(16 + velocity.Y);
+							if (cframe > 32) cframe = 32;
+							if (cframe < 1) cframe = 1;
+						}
+						else {
+							if (velocity.Y > 2 && velocity.X > -6 && velocity.X < 6) {
+								cframe = Math.round(31 + velocity.Y);
+								if (cframe < 33) cframe = 33;
+								if (cframe > 42) cframe = 42;
+							}
+							else {
+								cframe=Math.round(16 + velocity.X * storona);
 								if (cframe>32) cframe=32;
 								if (cframe<1) cframe=1;
 							}
@@ -3150,50 +3279,56 @@
 				}
 			}
 
-			function animateHead():void
-			{
-				if (vis.osn.body.head.morda)
-				{
+			function animateHead():void {
+				if (vis.osn.body.head.morda) {
 					var drot:int=3;
+					
 					if (lurked) headR=25;
-					else if (headRO-weaponR<=1 && headRO-weaponR>=-1)
-					{
+					else if (headRO-weaponR<=1 && headRO-weaponR>=-1) {
 						t_head--;
 						drot=6;
-						if (t_head <= 0)
-						{
+						if (t_head <= 0) {
 							t_head = int(Math.random() * 100 + 10);
 							headR = Math.random() * 70 - 25;
 						}
 					}
-					else
-					{
+					else {
 						headR = weaponR;
 						t_head = 100;
 					}
+					
 					if (headRA-headR<=1 && headRA-headR>=-1) headRA=headR;
 					else headRA+=(headR-headRA)/drot;
+					
 					if (isNaN(headRA)) headRA=0;
+					
 					if (headRA>55) headRA=55;
+					
 					if (headRA<-35) headRA=-35;
+					
 					vis.osn.body.head.morda.rotation=headRA;
 					headRO=weaponR;
 				}
 			}
 
-			function animateLevitation():void
-			{
-				if (levit>0 && t_levitfilter<=20) t_levitfilter+=2;
-				if (dJump2 && t_levitfilter<=20) t_levitfilter+=10;
-				if (levit==0 && !dJump2 && t_levitfilter>=0) t_levitfilter--;
+			function animateLevitation():void {
+				if (levit > 0 && t_levitfilter <= 20) {
+					t_levitfilter += 2;
+				}
+				
+				if (dJump2 && t_levitfilter <= 20) {
+					t_levitfilter += 10;
+				}
+				
+				if (levit == 0 && !dJump2 && t_levitfilter >= 0) {
+					t_levitfilter--;
+				}
 
-				if (t_levitfilter==0)
-				{
+				if (t_levitfilter==0) {
 					f_levit=false;
 					setFilters();
 				}
-				else if (t_levitfilter>0 && t_levitfilter<=20)
-				{
+				else if (t_levitfilter>0 && t_levitfilter<=20) {
 					levitFilter1.alpha=t_levitfilter/20;
 					levitFilter1.blurX=levitFilter1.blurY=t_levitfilter/4+2;
 					f_levit=true;
@@ -3201,23 +3336,19 @@
 				}
 			}
 
-			function animateDash():void
-			{
-				if (dash_t>=dash_maxt-20)
-				{
+			function animateDash():void {
+				if (dash_t>=dash_maxt-20) {
 					dashFilter.blurX=Math.min(dash_t-dash_maxt+20,10)/2;
 					setFilters();
 				}
 				else dashFilter.blurX=0;
 			}
 
-			function animateEyes():void
-			{
+			function animateEyes():void {
 				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) vis.osn.body.head.morda.eye.gotoAndStop(2);
 				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) vis.osn.body.head.morda.eye.gotoAndStop(1);
 				if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) vis.osn.body.head.morda.eye.gotoAndStop(3);
-				if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2))
-				{
+				if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2)) {
 					vis.osn.body.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
 					if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) vis.osn.body.head.morda.eye.eye.zrak.x=-20;
 					if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) vis.osn.body.head.morda.eye.eye.zrak.x=-11;
@@ -3229,64 +3360,60 @@
 
 //##########################################################################################################
 		
-		public function stopAnim():void
-		{
+		public function stopAnim():void {
 			vis.osn.body.stop();
 		}
 		
-		private function getStayFrame():int
-		{
-			if (shX2 >= 1 && shX2 >= 1) return isSit ? 2:1;  
-			if (storona > 0)
-			{
-				if (isSit)
-				{
+		private function getStayFrame():int {
+			
+			if (shX2 >= 1 && shX2 >= 1) {
+				return isSit? 2 : 1;
+			}
+			
+			if (storona > 0) {
+				if (isSit) {
 					if (shX2 > 0) return 49+Math.round(shX2*10);
 					if (shX1 > 0) return 49+11+Math.round(shX1*10);
 				}
-				else
-				{
+				else {
 					if (shX2 > 0.3) return 27 + Math.round((shX2-0.3)*13);
 					if (shX1 > 0.3) return 27 + 11 + Math.round((shX1-0.3)*13);
 				}
 			}
-			else
-			{
-				if (isSit)
-				{
+			else {
+				if (isSit) {
 					if (shX1 > 0) return 49+Math.round(shX1*10);
 					if (shX2 > 0) return 49+11+Math.round(shX2*10);
 				}
-				else
-				{
+				else {
 					if (shX1 > 0.3) return 27+Math.round((shX1-0.3)*13);
 					if (shX2 > 0.3) return 27+11+Math.round((shX2-0.3)*13);
 				}
 			}
+			
 			return isSit ? 2:1;
 		}
 		
 		
-		private function otherVisual():void
-		{
+		private function otherVisual():void {
 			if (levit != prev_levit) setFilters();
 			prev_levit=levit;
 			
 			// Reload
-			if (currentWeapon && currentWeapon.t_reload>1)
-			{
+			if (currentWeapon && currentWeapon.t_reload>1) {
 				if (!reloadbar.visible) reloadbar.visible=true;
 				reloadbar.gotoAndStop(int(currentWeapon.t_reload/(currentWeapon.reload*currentWeapon.reloadMult)*11)+1)
 				World.w.gui.setHolder();
 			}
-			else if (reloadbar.visible) reloadbar.visible = false;
+			else if (reloadbar.visible) {
+				reloadbar.visible = false;
+			}
 
 			// Hair
 			hair = vis.osn.body.head.morda.hair;
-			if (hair)
-			{
-				if (hairY != -1000)
-				{
+			
+			if (hair) {
+				if (hairY != -1000) {
 					hairDY += ((coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation) - hairY) / 4;
 					hairR += hairDY;
 					hairDY -= hairR/4;
@@ -3303,8 +3430,7 @@
 			}
 
 			// Pip
-			if (vis.scaleX > 0)
-			{
+			if (vis.scaleX > 0) {
 				vis.osn.body.pip1.visible = true;
 				vis.osn.body.pip2.visible = false;
 				if (vis.osn.body.frleg3) {
@@ -3313,37 +3439,32 @@
 					vis.osn.body.pip1.rotation=vis.osn.body.frleg3.rotation;
 				}
 			}
-			else
-			{
+			else {
 				vis.osn.body.pip2.visible = true;
 				vis.osn.body.pip1.visible = false;
-				if (vis.osn.body.flleg3)
-				{
+				if (vis.osn.body.flleg3) {
 					vis.osn.body.pip2.x=vis.osn.body.flleg3.x;
 					vis.osn.body.pip2.y=vis.osn.body.flleg3.y;
 					vis.osn.body.pip2.rotation=vis.osn.body.flleg3.rotation;
 				}
 			}
+			
 			// Magic
 			vis.osn.body.head.morda.magic.alpha=aMC/100;
 			vis.osn.body.head.morda.magic.visible=vis.osn.body.head.morda.magic.alpha>0;
 
 			// Wings
-			if (pers.ableFly)
-			{
+			if (pers.ableFly) {
 				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=true;
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=true;
-				if (World.w.alicorn || currentArmor && currentArmor.ableFly)
-				{
-					try
-					{
-						if (vis.osn.body.rwing.currentFrame!=11) vis.osn.body.rwing.gotoAndStop(11);
-						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
-						vis.osn.body.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
-						vis.osn.body.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
+				if (World.w.alicorn || currentArmor && currentArmor.ableFly) {
+					try {
+						if (vis.osn.body.rwing.currentFrame != 11) vis.osn.body.rwing.gotoAndStop(11);
+						if (vis.osn.body.lwing.currentFrame != 11) vis.osn.body.lwing.gotoAndStop(11);
+						vis.osn.body.rwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.6;
+						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.2;
 					}
-					catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:F)');
 					}
 				}
@@ -3351,32 +3472,29 @@
 					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) vis.osn.body.rwing.gotoAndPlay(2);
 					if (vis.osn.body.lwing && vis.osn.body.lwing.currentFrame==1) vis.osn.body.lwing.gotoAndPlay(2);
 				}
-				else
-				{
+				else {
 					if (vis.osn.body.rwing) vis.osn.body.rwing.gotoAndStop(1);
 					if (vis.osn.body.lwing) vis.osn.body.lwing.gotoAndStop(1);
 				}
 			}
-			else
-			{
-				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=false;
-				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=false;
+			else {
+				if (vis.osn.body.rwing) vis.osn.body.rwing.visible = false;
+				if (vis.osn.body.lwing) vis.osn.body.lwing.visible = false;
 			}
 
 			// Shield
-			if (vis.shit && !vis.shit.visible && shithp > 0)
-			{
+			if (vis.shit && !vis.shit.visible && shithp > 0) {
 				vis.shit.visible = true;
 				vis.shit.gotoAndPlay(1);
 			}
-			if (vis.shit && vis.shit.visible && shithp <= 0)
-			{
+			
+			if (vis.shit && vis.shit.visible && shithp <= 0) {
 				vis.shit.visible = false;
 				vis.shit.gotoAndStop(1);
 			}
+			
 			// Shackles
-			if (isFetter > 0)
-			{
+			if (isFetter > 0) {
 				dfx = fetX - coordinates.X;
 				dfy = fetY - coordinates.Y + 30;
 				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
@@ -3384,11 +3502,12 @@
 				vis.fetter.scaleX = rfetter / 100;
 				vis.fetter.rotation = Math.atan2(dfy, dfx * storona) / Math.PI * 180;
 			}
-			else if (vis.fetter.visible) vis.fetter.visible = false;
+			else if (vis.fetter.visible) {
+				vis.fetter.visible = false;
+			}
 		}
 		
-		public function refreshVis():void
-		{
+		public function refreshVis():void {
 			var dez = vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
@@ -3397,44 +3516,57 @@
 			teleFilter.color=teleColor;
 		}
 		
-		public override function visDetails()
-		{
+		public override function visDetails() {
 			World.w.gui.setHp();
 		}
 		
-		public function showElectroBlock()
-		{
-			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (this.topBoundToCenter + Math.random() * 320-160));
-			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*tileX, (t.Y+0.5)*tileY);
+		public function showElectroBlock() {
+			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (this.topBoundToCenter + Math.random() * 320 - 160));
+			if (t && t.mat==1 && t.hp>0) {
+				Emitter.emit('electro', loc, (t.X + 0.5) * tileX, (t.Y + 0.5) * tileY);
+			}
 		}
 		
-		public override function replic(s:String)
-		{
-			if (sost != 1 || id_replic == '') return;
-			if (t_replic) return;
+		public override function replic(s:String) {
+			
+			if (sost != 1 || id_replic == '') {
+				return;
+			}
+			
+			if (t_replic) {
+				return;
+			}
 			
 			var s_replic:String;
 			t_replic = 75 + Math.random() * 30;
 			s_replic = Res.repText(id_replic, s, false);
-			if (s_replic == prev_replic) s_replic = Res.repText(id_replic, s, false);
 			
-			if (s_replic == prev_replic) return;
+			if (s_replic == prev_replic) {
+				s_replic = Res.repText(id_replic, s, false);
+			}
+			
+			if (s_replic == prev_replic) {
+				return;
+			}
+			
 			prev_replic=s_replic;
-			if (s_replic != '' && s_replic)
-			{
+			
+			if (s_replic != '' && s_replic) {
 				Emitter.emit('replic2', loc, coordinates.X, coordinates.Y - 90,{txt:s_replic, ry:20});
 			}
 		}
 		
-		public override function sndStep(faza:int,tip:int=0)
-		{
-			if (rat) return;
-			super.sndStep(faza,tip);
+		public override function sndStep(faza:int, tip:int = 0) {
+			if (rat) {
+				return;
+			}
+			super.sndStep(faza, tip);
 		}
 
-		protected override function sndFall()
-		{
-			if (rat) return;
+		protected override function sndFall() {
+			if (rat) {
+				return;
+			}
 			super.sndFall();
 		}
 	}

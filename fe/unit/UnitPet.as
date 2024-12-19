@@ -5,7 +5,7 @@ package fe.unit {
 	import fe.graph.Emitter;
 	import fe.loc.Box;
 	
-	public class UnitPet extends Unit{
+	public class UnitPet extends Unit {
 		
 		var spd:Object;
 		var flyX:Number=0, flyY:Number=0, flyDX:Number=0, flyDY:Number=0, flyR:Number, flyBox:Box;	//точка, в которую надо лететь
@@ -25,21 +25,20 @@ package fe.unit {
 		var optUncall:Boolean=false;	//отзыв при смерти
 		var optTurn:Boolean=true;	//поворачиваться
 
-		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+
 			super(cid, ndif, xml, loadObj);
 			id = 'phoenix';
 			if (cid != null) id = cid;
 			getXmlParam();
 			fraction = Unit.F_PLAYER;
 			
-			if (id == 'moon')
-			{
+			if (id == 'moon') {
 				vis = new visualMoon();
 				vis.osn.stop();
 			}
-			else
-			{
+			else {
 				initBlit();
 				animState='fly';
 			}
@@ -54,17 +53,19 @@ package fe.unit {
 			mater=false;
 			activateTrap=0;
 			currentWeapon=getXmlWeapon(ndif);
-			if (currentWeapon) childObjs=new Array(currentWeapon);
-			if (id=='phoenix') {
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+			}
+			if (id == 'phoenix') {
 				optAutores=true;
 				rasstWeap=200;
 			}
-			if (id=='owl') {
+			if (id == 'owl') {
 				optAutores=false;
 				rasstWeap=400;
 				vulner[D_NECRO]=0.2;
 			}
-			if (id=='moon') {
+			if (id == 'moon') {
 				knocked=0;
 				optAutores=false;
 				optSit=false;
@@ -74,14 +75,20 @@ package fe.unit {
 				storona=1;
 				vulner[D_NECRO]=0.5;
 			}
-			transT=true;
-			sost=4;
+			transT = true;
+			sost = 4;
 		}
 
 		public override function expl()	{
-			if (id=='phoenix')	newPart('green_spark',25);
-			if (id=='owl')	newPart('orange_spark',25);
-			if (id=='moon')	newPart('blue_spark',25);
+			if (id == 'phoenix') {
+				newPart('green_spark', 25);
+			}
+			if (id == 'owl') {
+				newPart('orange_spark', 25);
+			}
+			if (id == 'moon') {
+				newPart('blue_spark', 25);
+			}
 		}
 		
 		public override function step() {
@@ -90,26 +97,27 @@ package fe.unit {
 		
 		public override function forces() {
 			if (isFly) {
-				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
-					dx*=0.8;
-					dy*=0.8;
+				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed) {
+					velocity.multiply(0.80);
 				}
 				if (isPlav) {
-					dy*=0.9;
-					dx*=0.9;
-					if (mater) dy+=World.ddy*ddyPlav;
+					velocity.multiply(0.90);
+					if (mater) velocity.Y += World.ddy * ddyPlav;
 				}
-			} else super.forces();
+			}
+			else {
+				super.forces();
+			}
 		}
 		
 		//лечение 0-предметами, 1-радиацией
 		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true) {
-			if (tip==1 && (id!='phoenix' || sost>=3)) return;
-			hp+=hl;
+			if (tip == 1 && (id != 'phoenix' || sost >= 3)) return;
+			hp += hl;
 			if (hp>maxhp) hp=maxhp;
-			if (hl>0) visDetails();
-			if ((tip==0 || hl>=10) && active && ismess) {
-				numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2, {txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
+			if (hl > 0) visDetails();
+			if ((tip == 0 || hl >= 10) && active && ismess) {
+				numbEmit.cast(loc, coordinates.X, coordinates.Y - objectHeight / 2, {txt:'+' + Math.round(hl), frame:4, rx:10, ry:10});
 			}
 		}
 		
@@ -121,37 +129,37 @@ package fe.unit {
 		}
 		
 		//настройка силы спутника
-		public override function setLevel(nlevel:int=1) {
-			level=nlevel-1;
-			var koef=hp/maxhp;
-			if (id=='phoenix') {
+		public override function setLevel(nlevel:int = 1) {
+			level = nlevel - 1;
+			var koef = hp / maxhp;
+
+			if (id == 'phoenix') {
 				maxhp=gg.pers.petHP*(1+level*0.12);
 				dam=gg.pers.petDam*(1+level*0.1);
 				currentWeapon.damage=gg.pers.petDam*(1+level*0.1);
 				skin=gg.pers.petSkin;
 				allVulnerMult=gg.pers.petVulner;
-			} else if (id=='owl') {
+			}
+			else if (id == 'owl') {
 				maxhp=gg.pers.owlHP*(1+level*0.1);
 				dam=gg.pers.owlDam*(1+level*0.1);
 				currentWeapon.damage=gg.pers.owlDam*(1+level*0.1);
 				skin=gg.pers.owlSkin;
 				allVulnerMult=gg.pers.owlVulner;
-			} else if (id=='moon') {
+			}
+			else if (id == 'moon') {
 				maxhp=gg.pers.moonHP*(1+level*0.1)*gg.spellPower;
 				dam=gg.pers.moonDam*(1+level*0.1)*gg.spellPower;
 			}
 			hp=koef*maxhp;
 		}
 		
-		public override function setWeaponPos(tip:int=0)
-		{
-			if (id=='phoenix')
-			{
+		public override function setWeaponPos(tip:int=0) {
+			if (id == 'phoenix') {
 				weaponX = coordinates.X + 15 * storona;
 				weaponY = coordinates.Y - 20;
 			}
-			else
-			{
+			else {
 				weaponX = coordinates.X + 11 * storona;
 				weaponY = coordinates.Y - 18;
 			}
@@ -171,7 +179,8 @@ package fe.unit {
 					vis.osn.gotoAndStop(1);
 					vis.osn.rotation+=3; 
 				}
-			} else {
+			}
+			else {
 				if (aiState==0) animState='stay';
 				else animState='fly';
 				if (animState!=animState2) {
@@ -185,14 +194,14 @@ package fe.unit {
 			}
 			if (hpbar) hpbar.alpha=vis.alpha;
 		}
+
 		public override function visDetails() {
 			super.visDetails();
 			World.w.gui.setPet();
 		}
 		
 		//найти точку следования
-		private function getFlyPoint()
-		{
+		private function getFlyPoint() {
 			var rx:Number=-120;
 			var ry:Number=-80;
 			flyBox=null;
@@ -202,12 +211,9 @@ package fe.unit {
 			if (flyX>loc.maxX-60) flyX=loc.maxX-60;
 			if (flyY<80) flyY=80;
 			if (flyY>loc.maxY-40) flyY=loc.maxY-40;
-			if (optSit)
-			{
-				for each (var b:Box in loc.objs)
-				{
-					if (b.wall==0 && b.stay && !b.invis && b.leftBound<flyX && b.rightBound>flyX && flyY-b.topBound<80 &&  flyY-b.topBound>-40)
-					{
+			if (optSit) {
+				for each (var b:Box in loc.objs) {
+					if (b.wall==0 && b.stay && !b.invis && b.leftBound<flyX && b.rightBound>flyX && flyY-b.topBound<80 &&  flyY-b.topBound>-40) {
 						flyY=b.topBound;
 						flyX=b.coordinates.X;
 						flyBox=b;
@@ -414,7 +420,7 @@ package fe.unit {
 					if (World.w.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
-				if (gg.dx>2 || gg.dx<-2) aiTCh=int(Math.random()*20)+10;
+				if (gg.velocity.X > 2 || gg.velocity.X < -2) aiTCh=int(Math.random()*20)+10;
 				else aiTCh=int(Math.random()*100)+30;
 			}
 			//движение
@@ -422,60 +428,73 @@ package fe.unit {
 				flyDX = flyX - coordinates.X;
 				flyDY = flyY - coordinates.Y;
 				var flyR=Math.sqrt(flyDX*flyDX+flyDY*flyDY);
+				
 				if (aiState==0) {
-					dy=dx=0;
-					spd.x=spd.y=0;
+					velocity.set(0, 0);
+					spd.x = 0;
+					spd.y = 0;
 					if (flyBox && !flyBox.stay) {
 						aiState=1;
 						flyBox=null;
 					}
-				} if (aiState==2) {
+				}
+				
+				if (aiState==2) {
 					if (optTurn) storona=(celX > coordinates.X)? 1:-1;
 					if (flyR>rasstWeap*0.9 || !mater) {
 						spd.x=flyDX;
 						spd.y=flyDY;
 						norma(spd,Math.min(accel*2,accel*flyR/200));
-					} else if (flyR<rasstOut) {	//улетать от цели
+					}
+					else if (flyR<rasstOut) {	//улетать от цели
 						spd.x=-flyDX;
 						spd.y=-flyDY/2-3;
 						norma(spd,accel);
-					} else {
-						dy*=0.85;
-						dx*=0.85;
-						spd.x=spd.y=0;
 					}
-					if (turnX!=0) {
-						dy+=Math.random()*8-4;
-						turnX=0;
+					else {
+						velocity.multiply(0.85);
+						spd.x = 0;
+						spd.y = 0;
 					}
-					if (turnY!=0) {
-						dx+=Math.random()*8-4;
-						turnY=0;
+
+					if (turnX != 0) {
+						velocity.Y += Math.random() * 8 - 4;
+						turnX = 0;
 					}
-				} else if (aiState==5) {
-					spd.x*=0.95;
-					spd.y*=0.95;
-					dx*=0.9;
-					dy*=0.9;
-				} else if (aiState==4) {
-				} else {
-					if (flyR<20 && flyBox && mater) {	//сесть на предмет
-						spd.x=spd.y=0;
-						dx = flyX - coordinates.X;
-						dy = flyY - coordinates.Y;
-						aiState=0;
-					} else if (flyR<100 && mater) {
-						dy*=0.95;
-						dx*=0.95;
-						spd.x=spd.y=0;
-					} else {
-						spd.x=flyDX;
-						spd.y=flyDY;
-						norma(spd,Math.min(accel*2,accel*flyR/200));
+					if (turnY != 0) {
+						velocity.X += Math.random() * 8 - 4;
+						turnY = 0;
 					}
 				}
-				dx+=spd.x;
-				dy+=spd.y;
+				else if (aiState==5) {
+					spd.x*=0.95;
+					spd.y*=0.95;
+					velocity.multiply(0.90);
+				}
+				else if (aiState==4) {
+
+				}
+				else {
+					if (flyR<20 && flyBox && mater) {	//сесть на предмет
+						spd.x = 0;
+						spd.y = 0;
+						velocity.X = flyX - coordinates.X;
+						velocity.Y = flyY - coordinates.Y;
+						aiState = 0;
+					}
+					else if (flyR<100 && mater) {
+						velocity.multiply(0.95);
+						spd.x = 0;
+						spd.y = 0;
+					}
+					else {
+						spd.x = flyDX;
+						spd.y = flyDY;
+						norma(spd, Math.min(accel * 2, accel * flyR / 200));
+					}
+				}
+				velocity.X += spd.x;
+				velocity.Y += spd.y;
 			}
 			if (celUnit && celUnit.fraction==fraction) celUnit=null;
 			//поиск цели
@@ -483,23 +502,25 @@ package fe.unit {
 				if (findCel() || World.w.t_battle>0) {
 					aiState=2;
 				}
-			} if ((aiState==2 || aiState==5) && aiTCh%15==1) {
+			}
+			if ((aiState==2 || aiState==5) && aiTCh%15==1) {
 				if (celUnit && !celUnit.disabled && celUnit.sost<3 && visCelUnit(celUnit)) {	//цель установлена и видна
 					
-				} else if (findCel()) {		//найти новую цель
-					
-				} else {					//успокоиться
+				}
+				else if (findCel()) {		//найти новую цель
+				}
+				else {					//успокоиться
 					if (World.w.t_battle<=0) aiState=1;
 				}
-			} else if (aiState==3) {
+			}
+			else if (aiState==3) {
 				//достиг точки назначения
 				if (flyR<20) {
 					if (World.w.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
 			}
-			if (aiState==2 && flyR<rasstWeap && currentWeapon==null && celUnit)
-			{
+			if (aiState==2 && flyR<rasstWeap && currentWeapon==null && celUnit) {
 				aiState=4;
 				aiTCh=15;
 				spd.x = celUnit.coordinates.X - coordinates.X;
@@ -515,7 +536,8 @@ package fe.unit {
 						aiTCh=15;
 						damage(dam*0.02,Unit.D_INSIDE);
 					}
-				} else aiState=2;
+				}
+				else aiState=2;
 			}
 			
 			if (aiState<=1) maxSpeed=walkSpeed;
@@ -530,6 +552,5 @@ package fe.unit {
 				if (flyR<=rasstWeap && currentWeapon) currentWeapon.attack();
 			}
 		}
-	}
-	
+	}	
 }

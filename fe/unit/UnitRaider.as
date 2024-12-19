@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.filters.GlowFilter;
 	
 	import fe.weapon.*;
@@ -10,8 +10,7 @@ package fe.unit
 	import fe.serv.LootGen;
 	import fe.projectile.Bullet;
 	
-	public class UnitRaider extends UnitPon
-	{
+	public class UnitRaider extends UnitPon {
 		
 		protected var animFrame:int=0;
 		public var parentId:String;
@@ -46,30 +45,48 @@ package fe.unit
 		var spd:Object;
 		var floatX:Number=1, floatY:Number=0;
 		
-		
-		public function UnitRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		// Constructor
+		public function UnitRaider(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
+			
 			super(cid, ndif, xml, loadObj);
+			
 			//определить разновидность tr
-			if (parentId==null) parentId='raider';
-			if (kolTrs==0) kolTrs=9;
-			if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {									//случайно по параметру ndif
-				tr=Math.floor(Math.random()*kolTrs+1);
+			if (parentId == null) {
+				parentId = 'raider';
 			}
+			
+			if (kolTrs == 0) {
+				kolTrs = 9;
+			}
+			
+			if (cid) {						//из заданного идентификатора cid
+				tr = int(cid);
+			}
+			else {									//случайно по параметру ndif
+				tr = Math.floor(Math.random() * kolTrs + 1);
+			}
+			
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
+				tr = loadObj.tr;
 			}
 			else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
+				tr = xml.@tr;
 			}
-			if (!(tr>0)) tr=1;
-			id=parentId+tr;
+			
+			if (!(tr > 0)) {
+				tr = 1;
+			}
+			
+			id = parentId + tr;
 
 			//взять параметры из xml
 			getXmlParam();
 			walkSpeed=maxSpeed;
-			if (walker) walkSpeed=2.5;
+			
+			if (walker) {
+				walkSpeed = 2.5;
+			}
+			
 			plavSpeed=maxSpeed;
 			sitSpeed=maxSpeed*0.5;
 			lazSpeed=maxSpeed*1.1;
@@ -80,13 +97,22 @@ package fe.unit
 			//дать оружие
 			if (loadObj && loadObj.weap) {
 				if (loadObj.weap!='') currentWeapon=Weapon.create(this,loadObj.weap);
-			} else if (xml && xml.@weap.length()) {
+			}
+			else if (xml && xml.@weap.length()) {
 				if (xml.@weap!='') currentWeapon=Weapon.create(this,xml.@weap);
-			} else currentWeapon=getXmlWeapon(ndif);
+			}
+			else {
+				currentWeapon=getXmlWeapon(ndif);
+			}
+			
 			if (currentWeapon) {
 				weap=currentWeapon.id;
 				if (currentWeapon.variant>0) weap+='^'+currentWeapon.variant;
-			} else weap='';
+			}
+			else {
+				weap='';
+			}
+			
 			if (currentWeapon) {
 				childObjs=new Array(currentWeapon);
 				currentWeapon.hold=currentWeapon.holder;
@@ -96,9 +122,11 @@ package fe.unit
 			if (xml && xml.@emit.length()) {
 				kol_emit=xml.@emit;
 			}
+			
 			if (xml && xml.@nodrop.length()) {
 				isDropArm=false;
 			}
+			
 			if (dropW!=null) {
 				dropWeapon=Weapon.create(this,dropW);
 				dropWeapon.vis.visible=false;
@@ -106,22 +134,32 @@ package fe.unit
 				childObjs.push(dropWeapon);
 			}
 
-			if (currentWeapon && currentWeapon.holder>10 && aiAttackOch==0) aiAttackOch=Math.round(currentWeapon.holder/2);
+			if (currentWeapon && currentWeapon.holder>10 && aiAttackOch==0) {
+				aiAttackOch=Math.round(currentWeapon.holder/2);
+			}
 
 			initBlit();
 			animState='stay';
-			if (teleColor) teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
+			
+			if (teleColor) {
+				teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
+			}
 
-			if (aiTip=='stay') stroll=false;
+			if (aiTip=='stay') {
+				stroll=false;
+			}
+			
 			if (aiTip=='quiet') {
 				stroll=false;
 				quiet=true;
 			}
+			
 			if (aiTip=='sniper') {
 				stroll=false;
 				moving=false;
 				weaponSkill=2;
 			}
+			
 			if (xml && xml.@fraction.length()) {
 				fraction=xml.@fraction;
 				if (fraction==F_PLAYER) warn=0;
@@ -136,17 +174,28 @@ package fe.unit
 			else if (currentWeapon.tip==4) attackerType=3;										//гранаты
 			else attackerType=2;//пальба
 
-			if (attackerType<=0) stalkDist=0;
+			if (attackerType<=0) {
+				stalkDist=0;
+			}
+
 			acidDey=0.5;
 			spd=new Object();
 			tstor=storona;
 
-			if (msex) wPos = AnimationSet.getWeaponOffset("wPosRaider1");
-			else wPos = AnimationSet.getWeaponOffset("wPosRaider2");
+			if (msex) {
+				wPos = AnimationSet.getWeaponOffset("wPosRaider1");
+			}
+			else {
+				wPos = AnimationSet.getWeaponOffset("wPosRaider2");
+			}
 
-			if (!msex) id_name+='_f';
+			if (!msex) {
+				id_name+='_f';
+			}
 
-			if (sndDie=='rm' && !msex) sndDie='rw';
+			if (sndDie=='rm' && !msex) {
+				sndDie='rw';
+			}
 		}
 
 		public override function getXmlParam(mid:String=null) {
@@ -217,11 +266,11 @@ package fe.unit
 			}
 			else {
 				if (stay) {
-					if  (dx==0 || aiState==7) {
-						animState='stay';
+					if  (velocity.X == 0 || aiState == 7) {
+						animState = 'stay';
 					}
-					else if (attackerType==0 && aiAttack || aiState==8) {
-						animState='run';
+					else if (attackerType == 0 && aiAttack || aiState == 8) {
+						animState = 'run';
 						sndStep(anims[animState].f,2);
 					}
 					else if (walker && (aiState<=1 || aiState==4)) {
@@ -324,16 +373,20 @@ package fe.unit
 		public function jump(v:Number=1) {
 			aiJump = int(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
-				dy=-jumpdy*v;
+				velocity.Y = -jumpdy * v;
 				isLaz=0;
 			}
 			if (stay) {
-				if (aiNapr==-1) dx*=0.8;
-				else dx+=storona*accel*2;
+				if (aiNapr==-1) {
+					velocity.X *= 0.8;
+				}
+				else {
+					velocity.X += storona * accel * 2;
+				}
 			}
-			if (!isPlav&&aiPlav) dy=-jumpdy*0.6;	//выпрыгивание из воды
+			if (!isPlav&&aiPlav) velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
 			if (isPlav) {
-				dy-=plavdy;
+				velocity.Y -= plavdy;
 			}
 		}
 		
@@ -372,11 +425,13 @@ package fe.unit
 		//7 - готовится атаковать рывком
 		//8 - атакует быстрым рывком
 		
-		override protected function control():void
-		{
+		override protected function control():void {
+			
 			var t:Tile;
+			
 			//если сдох, то не двигаться
 			if (sost==3) return;
+			
 			if (levit) {
 				if (aiState<=1) {
 					shok=45;
@@ -385,12 +440,15 @@ package fe.unit
 				}
 				replic('levit');
 			}
+			
 			if (stun) {
 				aiState=0; aiTCh=3; walk=0;
 			}
 			
 			t_replic--;
+			
 			if (emit_t>0) emit_t--;
+			
 			var jmp:Number=0;
 
 			//разворот
@@ -402,10 +460,13 @@ package fe.unit
 					currentWeapon.rot=Math.atan2(celY-currentWeapon.coordinates.Y, Math.abs(celX-currentWeapon.coordinates.X)*storona);
 				}
 			}
+			
 			if (t_turn>0) t_turn--;
+			
 			dexter=isFly?baseDexter*1.5:baseDexter
 			
 			if (!controlOn) return;
+			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y-objectHeight;
 				celX = coordinates.X+objectWidth*storona*2;
@@ -413,7 +474,9 @@ package fe.unit
 			}
 			
 			if (aiLaz>0) aiLaz--;
+			
 			if (aiJump>0) aiJump--;
+			
 			//таймер смены состояний
 			if (aiTCh>0) aiTCh--;
 			else if (aiState==5) {
@@ -426,10 +489,12 @@ package fe.unit
 				} else {
 					aiState=1;
 				}
-			} else if (aiState==7) {
+			}
+			else if (aiState==7) {
 				aiState=8;
 				aiTCh=35;
-			} else {
+			}
+			else {
 				if (aiSpok==0) {
 					if (aiVKurse && aiState>1) replic('vse');
 					if (stroll)	aiState=Math.floor(Math.random()*2);
@@ -455,6 +520,7 @@ package fe.unit
 				else if (aiState==7) aiTCh=20;
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
+			
 			//поиск цели
 			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
 				if (findCel()) {
@@ -471,31 +537,36 @@ package fe.unit
 							aiState=5;
 							if (attackerType>=2) aiTCh=Math.floor(Math.random()*20+tupizna);
 							else aiTCh=Math.floor(Math.random()*20+tupizna/4);
-						} else {
+						}
+						else {
 							replic('attack');
 							aiSpok=maxSpok+10;
 							if (kol_emit>0 && emit_t<=0) emit();
 						}
 					
 					//услышали
-					} else {
+					}
+					else {
 						replic('ear');
 						aiSpok=maxSpok-1;
 					}
 					if (celUnit==World.w.gg) {
 						aiVKurse=true;
 					}
-				} else if (t_chCel>0) {
+				}
+				else if (t_chCel>0) {
 					t_chCel--;
 					setCel(celUnit2);
-				} else {
+				}
+				else {
 					if (aiSpok%5==1) setCel(null, celX+Math.random()*80-40, celY+Math.random()*80-40);
 					if (aiSpok>0) {
 						aiSpok--;
 					}
 					if (aiVKurse && aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
-					} else if (aiSpok<15 && aiSpok>0) {
+					}
+					else if (aiSpok<15 && aiSpok>0) {
 						aiSpok=0;
 						if (isrnd()) replic((hp>=maxhp)?'nope':'dont');
 					}
@@ -524,13 +595,15 @@ package fe.unit
 						aiState=6;
 						if (gx>30) aiNapr=tstor=-1;
 						if (gx<-30) aiNapr=tstor=1;
-					} else if (attackerType==2) {
+					}
+					else if (attackerType==2) {
 						setCel(loc.gg.teleObj as Mine);
 						aiState=4;
 					} 
 					aiSpok=maxSpok+10;
 					aiTCh=Math.floor(Math.random()*65)+20;
-				} else {
+				}
+				else {
 					aiSpok=8;
 				}
 				replic('tele');
@@ -538,15 +611,30 @@ package fe.unit
 			
 			//направление
 			celDX = celX - coordinates.X;
-			if (stay) celDY = celY - coordinates.Y + objectHeight;
-			if (celDY>40) {aiVNapr=1;		//вниз
-			} else if(celDY<-40) {aiVNapr=-1;	//прыжок
-			} else aiVNapr=0;
-			if (flyer && celDY<-80) isFly=true;
+			
+			if (stay) {
+				celDY = celY - coordinates.Y + objectHeight;
+			}
+			
+			if (celDY>40) {
+				aiVNapr=1;		//вниз
+			}
+			else if(celDY<-40) {
+				aiVNapr=-1;	//прыжок
+			}
+			else {
+				aiVNapr=0;
+			}
+			
+			if (flyer && celDY<-80) {
+				isFly=true;
+			}
 			
 			porog=10;
 			if (moving) throu=(celDY>80);
+			
 			if (celDY>70) porog=0;
+			
 			if (isLaz==0) tstor=aiNapr;
 			
 			//начать полёт при падении
@@ -560,11 +648,13 @@ package fe.unit
 					isFly=true;
 				}
 			}
+			
 			if (isFly) {
 				t_float+=0.0512;
 				floatX=Math.sin(t_float);
 				floatY=Math.cos(t_float)*2;
 			}
+			
 			if (isFly && aiState>1) elast=0.5;
 			else elast=0;
 
@@ -578,7 +668,8 @@ package fe.unit
 				vision = visionMult;
 				celY = coordinates.Y - objectHeight;
 				celX = coordinates.X + objectWidth * storona * 2;
-			} else {
+			}
+			else {
 				vision=1.5*visionMult;
 			}
 			
@@ -591,10 +682,10 @@ package fe.unit
 				maxSpeed=runSpeed;
 				if (attackerType==0 && aiAttack) maxSpeed=runSpeed*1.5;
 			}
-			if (aiState==6) maxSpeed=runSpeed*1.5;
-			if (aiState==7) maxSpeed=0;
-			if (aiState==8) maxSpeed=runSpeed*2.5;
-			if (dx*diagon>0) maxSpeed*=0.5;
+			if (aiState == 6) maxSpeed = runSpeed * 1.5;
+			if (aiState == 7) maxSpeed = 0;
+			if (aiState == 8) maxSpeed = runSpeed * 2.5;
+			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
 			
 			//если землепони с огн.оружием, то можно бежать задом
 			if (aiState==3 && weaponKrep==1 && attackerType==2) {	
@@ -604,54 +695,74 @@ package fe.unit
 			
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (stay && shX1>0.25 && aiNapr<0) turnX=1;
-				if (stay && shX2>0.25 && aiNapr>0) turnX=-1;
+				if (stay && shX1 > 0.25 && aiNapr < 0) turnX = 1;
+				if (stay && shX2 > 0.25 && aiNapr > 0) turnX = -1;
 				if (isPlav) jump();
 				if (!quiet && isrnd(0.001)) replic('neutral');
-				if (dx>0.5) tstor=1; 
-				if (dx<-0.5) tstor=-1;
-				walk=0;
-				isLaz=0;
-				overLook=false;
-			} if (aiState==1) {
-				overLook=false;
+				if (velocity.X > 0.5) tstor = 1; 
+				if (velocity.X < -0.5) tstor = -1;
+				walk = 0;
+				isLaz = 0;
+				overLook = false;
+			}
+			
+			if (aiState == 1) {
+				
+				overLook = false;
+				
 				if (!quiet && isrnd(0.001)) replic('neutral');
+				
 				//бегаем туда-сюда
-				isLaz=0;
+				isLaz = 0;
+				
 				if (isFly) {
 					//приземлиться
-					if (dy<10) dy++;
-					dx*=0.85;
-					if (turnY<0) {
-						isFly=false;
-						turnY=0;
+					if (velocity.Y < 10) {
+						velocity.Y++;
 					}
-				} else {
+					
+					velocity.X *= 0.85;
+					
+					if (turnY < 0) {
+						isFly = false;
+						turnY = 0;
+					}
+				}
+				else {
 					if (moving) {
-						if (aiNapr==-1) {
-							if (dx>-maxSpeed) dx-=accel/3;
-							walk=-1;
-						} else if (aiNapr==1) {
-							if (dx<maxSpeed) dx+=accel/3;
-							walk=1;
+						if (aiNapr == -1) {
+							if (velocity.X > -maxSpeed) {
+								velocity.X -= accel / 3;
+							}
+							walk = -1;
+						}
+						else if (aiNapr == 1) {
+							if (velocity.X < maxSpeed) {
+								velocity.X += accel / 3;
+							}
+							walk = 1;
 						}
 					}
 					//поворачиваем, если впереди некуда бежать
 					if (stay && shX1>0.25 && aiNapr<0) {
 						if (isrnd(0.1)) {
-							t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
+							t = loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
-							} else turnX=1;
-						} else turnX=1;
+							}
+							else turnX = 1;
+						}
+						else turnX = 1;
 					}
-					if (stay && shX2>0.25 && aiNapr>0) {
+					if (stay && shX2 > 0.25 && aiNapr > 0) {
 						if (isrnd(0.1)) {
 							t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
-							} else turnX=-1;
-						} else turnX=-1;
+							}
+							else turnX = -1;
+						}
+						else turnX = -1;
 					}
 					//если повернули, то можем остановиться
 					if (stay && turnX!=0) {
@@ -669,7 +780,8 @@ package fe.unit
 					}
 				}
 				//в возбуждённом или атакующем состоянии
-			} else if (aiState==2 || aiState==3 || aiState==6 || aiState==8) {
+			}
+			else if (aiState==2 || aiState==3 || aiState==6 || aiState==8) {
 				overLook=true;
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;	
@@ -695,17 +807,31 @@ package fe.unit
 				if (isLaz) {
 					if (t_laz<0) t_laz=0;
 					t_laz++;
-					if (celY<coordinates.Y && r_laz<=0) {
+					if (celY < coordinates.Y && r_laz <= 0) {
 						r_laz=-1;
-						if (dy>-lazSpeed) dy-=lazSpeed/3;
-						else (dy=-lazSpeed);
+						if (velocity.Y > -lazSpeed) {
+							velocity.Y -= lazSpeed / 3;
+						}
+						else {
+							velocity.Y = -lazSpeed;
+						}
+						
 						checkStairs();
-					} else if (aiVNapr==1 && r_laz>=0) {
-						r_laz=1;
-						if (dy<lazSpeed) dy+=lazSpeed/3;
-						else (dy=lazSpeed);
+					}
+					else if (aiVNapr == 1 && r_laz >= 0) {
+						
+						r_laz = 1;
+						
+						if (velocity.Y < lazSpeed) {
+							velocity.Y += lazSpeed / 3;
+						}
+						else {
+							velocity.Y = lazSpeed;
+						}
+						
 						checkStairs();
-					} else {
+					}
+					else {
 						isLaz=0;
 						if (t_laz>20 && isrnd(0.7)) jmp=0.8;
 					}
@@ -713,40 +839,54 @@ package fe.unit
 						isLaz=0;
 						turnY=0;
 					}
-				} else {
-					if (t_laz>0) t_laz=0;
+				}
+				else {
+					if (t_laz > 0) {
+						t_laz = 0;
+					}
 					t_laz--;
 					r_laz=0;
 				}
 
 				if (levit) {
-					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+					if (aiNapr == -1) {
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= levitaccel;
+						}
 					}
-				} else if (isFly) {
+					else {
+						if (velocity.X < maxSpeed) {
+							velocity.X += levitaccel;
+						}
+					}
+				}
+				else if (isFly) {
 					if (celUnit && rasst2<stalkDist*stalkDist) {
-						dx*=0.85;
-						dy*=0.85;
-						dx+=floatX;
-						dy+=floatY;
-					} else {
-						spd.x=celX-coordinates.X;
-						spd.y=celY-(coordinates.Y - objectHeight / 2);
+						velocity.multiply(0.85);
+						velocity.X += floatX;
+						velocity.Y += floatY;
+					}
+					else {
+						spd.x = celX - coordinates.X;
+						spd.y = celY-(coordinates.Y - objectHeight / 2);
+						
 						//дематериализоваться
-						if (turnX!=0) {
-							spd.x=0;
-							tstor=turnX;
-							if (celUnit==null) setCel(null,coordinates.X+(Math.random()*100+50)*turnX, celY);
-							turnX=0;
+						if (turnX != 0) {
+							spd.x = 0;
+							tstor = turnX;
+							if (celUnit==null) {
+								setCel(null, coordinates.X + (Math.random() * 100 + 50) * turnX, celY);
+							}
+							turnX = 0;
 						}
-						if (turnY!=0) {
-							spd.y=0;
+						
+						if (turnY != 0) {
+							spd.y = 0;
 						}
-						norma(spd,Math.min(accel,accel*(celDX*celDX+celDY*celDY)/10000));
-						dx+=spd.x+floatX;
-						dy+=spd.y+floatY;
+						
+						norma(spd, Math.min(accel, accel * (celDX * celDX + celDY * celDY) / 10000));
+						velocity.X += spd.x + floatX;
+						velocity.Y += spd.y + floatY;
 					}
 					//приземлиться
 					if (turnY<0) {
@@ -754,31 +894,43 @@ package fe.unit
 							t_landing=0;
 							isFly=false;
 							turnY=0;
-						} else t_landing++;
+						}
+						else t_landing++;
 					}
 					turnX=turnY=t_fall=0;
-				} else if (stay || isPlav) {
-					if (moving || Math.abs(coordinates.X-begX)>20 || Math.abs(coordinates.Y-begY)>20) {
+				}
+				else if (stay || isPlav) {
+					if (moving || Math.abs(coordinates.X - begX) > 20 || Math.abs(coordinates.Y - begY) > 20) {
 						if (aiNapr==-1) {
-							if (dx>-maxSpeed) dx-=accel;
-							walk=-1;
-						} else {
-							if (dx<maxSpeed) dx+=accel;
-							walk=1;
+							if (velocity.X > -maxSpeed) {
+								velocity.X -= accel;
+							}
+							walk = -1;
+						}
+						else {
+							if (velocity.X < maxSpeed) {
+								velocity.X += accel;
+							}
+							walk = 1;
 						}
 					}
-				} else {
+				}
+				else {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel/4;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel/4;
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= accel / 4;
+						}
+					}
+					else  if (aiNapr==1){
+						if (velocity.X < maxSpeed) {
+							velocity.X += accel / 4;
+						}
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
 				if (turnX!=0) {
 					if (pumpObj && pumpObj.door) {		//наткнулся на дверь, открыть
-						if (pumpObj.lock<=0 && pumpObj.active && pumpObj.action==1 && pumpObj.lockTip!=4)
-						{
+						if (pumpObj.lock<=0 && pumpObj.active && pumpObj.action==1 && pumpObj.lockTip!=4) {
 							pumpObj.open = true;
 							trace('Raider opening door.');
 							pumpObj.setDoor();
@@ -787,7 +939,8 @@ package fe.unit
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=tstor=turnX;
 						aiTTurn = int(Math.random()*20)+5;
-					} else {							//попытаться перепрыгнуть, если цель спереди
+					}
+					else {							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
 						if (isrnd(0.1) || turnY>0 || celDY>100 || !checkJump()) aiTTurn-=10;
 						else jmp=1;
@@ -803,20 +956,23 @@ package fe.unit
 					jump(jmp);
 					jmp=0;
 				}
-			} else if (aiState==4) {
+			}
+			else if (aiState==4) {
 				walk=0;
 				aiNapr=tstor=(celX > coordinates.X)?1:-1;
 				if (attackerType==2 && (celDX*celDX+celDY*celDY<200*200)) {
 					if (isrnd(0.6)) {
-						dx=runSpeed*(celDX>0?-1:1)*2;
+						velocity.X = runSpeed * (celDX > 0? -1 : 1) * 2;
 						jump(0.4);
 					}
 					aiState=3;
 				}
-			} else if (aiState==7) {
+			}
+			else if (aiState==7) {
 				walk=0;
 				aiNapr=tstor=(celX > coordinates.X)?1:-1;
 			}
+			
 			pumpObj=null;
 			
 			if (coordinates.Y > loc.spaceY*Tile.tileY-80) throu=false;
@@ -848,13 +1004,15 @@ package fe.unit
 		
 		public function attack() {
 			if ((attackerType==0 || aiState==8) && celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
-				if (attKorp(celUnit,(Math.abs(dx)>8)?1:0.5)) {
+				if (attKorp(celUnit, (Math.abs(velocity.X) > 8)? 1 : 0.5)) {
 					if (aiState==8) aiTCh=5;
 				}
-			} else if (attackerType==1) {		//атака холодным оружием с левитацией
+			}
+			else if (attackerType==1) {		//атака холодным оружием с левитацией
 				if (Math.abs(celDX)<120 && Math.abs(celDY)<currentWeapon.rapid*8 && shok<=0 && isrnd(0.3)) currentWeapon.attack();
 				if (isrnd(0.1)) attKorp(celUnit,0.5);
-			} else if (attackerType==2 && isLaz==0) {							//пальба
+			}
+			else if (attackerType==2 && isLaz==0) {							//пальба
 				if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 				if (levit>0) mazil=25;
 				if (levit>0 && levitAttack<1 && (levitAttack==0 || Math.random()>levitAttack)) return;	//не стрелять при левитации
@@ -865,12 +1023,16 @@ package fe.unit
 					aiAttackT--;
 				}
 				if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
-			} else if (attackerType==3) {		//гранаты
+			}
+			else if (attackerType==3) {		//гранаты
 				if (celUnit && isrnd(0.02)) {
 					currentWeapon.attack();
 					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) attackerType=0;
 				}
-				if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,(Math.abs(dx)>8)?1:0.5);
+				
+				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) {
+					attKorp(celUnit, (Math.abs(velocity.X) > 8)? 1 : 0.5);
+				}
 			}
 		}
 		

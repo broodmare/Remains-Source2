@@ -1,10 +1,10 @@
-package fe.unit
-{
+package fe.unit {
+	
 	import fe.*;
 	import fe.loc.Location;
 
-	public class UnitSlime extends Unit
-	{
+	public class UnitSlime extends Unit {
+
 		var pluh:int=100;
 		var tr:int=0;
 		
@@ -12,11 +12,15 @@ package fe.unit
 		var explDist:Number=80;
 		var isExpl:Boolean=false;
 
+		// Constructor
 		public function UnitSlime(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
+			
 			if (xml && xml.@tr.length()) {
 				tr=xml.@tr;
-			} else if (cid) {
+			}
+			else if (cid) {
 				tr=int(cid);
 			}
 			if (tr>=10) {
@@ -26,18 +30,23 @@ package fe.unit
 			if (tr==1) {
 				id='cryoslime';
 				vis=new visualCryoSlime();
-			} else if (tr==2) {
+			}
+			else if (tr==2) {
 				id='pinkslime';
 				vis=new visualPinkSlime();
-			} else {
+			}
+			else {
 				id='slime';
 				vis=new visualSlime();
 			}
+
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));
+			
 			if (isMine) {
 				levitPoss=false;
 				setVis(false);
 			}
+			
 			getXmlParam();
 			maxSpeed*=(Math.random()*0.3+0.85);
 			accel*=(Math.random()*0.3+0.85);
@@ -99,13 +108,11 @@ package fe.unit
 				celX = un.coordinates.X;
 				celY = un.coordinates.Y - un.objectHeight / 2;
 			}
-			else if (cx>-10000 && cy>-10000)
-			{
-				celX=cx;
-				celY=cy;
+			else if (cx>-10000 && cy>-10000) {
+				celX = cx;
+				celY = cy;
 			}
-			else
-			{
+			else {
 				celX = coordinates.X;
 				celY = this.topBoundToCenter;
 			}
@@ -129,19 +136,21 @@ package fe.unit
 			}
 			aiN++;
 	
-			if (stay && shX1>0.5 && storona<0) turnX=1;
-			if (stay && shX2>0.5 && storona>0) turnX=-1;
+			if (stay && shX1 > 0.5 && storona < 0) turnX =  1;
+			if (stay && shX2 > 0.5 && storona > 0) turnX = -1;
 			if (turnX) {
 				storona=turnX;
 				turnX=0;
 			}
 			if (aiState==0) {
 				if (storona==-1) {
-					if (dx>-maxSpeed) dx-=accel;
-				} else {
-					if (dx<maxSpeed) dx+=accel;
+					if (velocity.X > -maxSpeed) velocity.X -= accel;
 				}
-			} else if (aiState==1) {
+				else {
+					if (velocity.X < maxSpeed) velocity.X += accel;
+				}
+			}
+			else if (aiState==1) {
 				if (aiN%5==0 && loc.getAbsTile(coordinates.X, coordinates.Y - 50).phis==0) {
 					aiState=0;
 					fixed=false;
@@ -152,7 +161,8 @@ package fe.unit
 					currentWeapon.attack();
 					pluh = int(Math.random()*75+40);
 				}
-			} else if (aiState==2) {
+			}
+			else if (aiState==2) {
 				if (oduplenie<=0 && aiN%4==0) {
 					if (loc==World.w.gg.loc && rasst2>0 && rasst2<explDist*explDist) activate();
 				}

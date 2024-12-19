@@ -1,12 +1,10 @@
-package fe.unit
-{
+package fe.unit {
 	
 	import fe.*;
 	import fe.loc.Tile;
 	import fe.loc.Location;
 
-	public class UnitMsp extends Unit
-	{
+	public class UnitMsp extends Unit {
 
 		public var tr:int;
 		var weap:String;
@@ -14,19 +12,25 @@ package fe.unit
 		
 		private var tileY:int = Tile.tileY;
 
-		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+
 			super(cid, ndif, xml, loadObj);
+			
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
+			}
+			else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
-			} else {								//случайно по параметру ndif
+			}
+			else {								//случайно по параметру ndif
 				tr=1;
 			}
+			
 			id = 'msp';
 			
 			vis=new visualMsp();
@@ -46,11 +50,13 @@ package fe.unit
 					cep=1;
 					ny-=40-objectHeight-1
 					fixed=true;
-				} else if (nloc.getAbsTile(nx-40, ny-10).phis) {
+				}
+				else if (nloc.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
 					nx-=(40-objectWidth)/2-1;
 					fixed=true;
-				} else if (nloc.getAbsTile(nx+40, ny-10).phis) {
+				}
+				else if (nloc.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
 					nx+=(40-objectWidth)/2-1;
 					fixed=true;
@@ -66,26 +72,22 @@ package fe.unit
 		
 		public override function setVisPos() {
 			if (vis) {
-				if (cep==0) 
-				{
+				if (cep==0) {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
 					vis.rotation=0;
 				}
-				else if (cep==1)
-				{
+				else if (cep==1) {
 					vis.x = coordinates.X;
 					vis.y = topBound;
 					vis.rotation=180;
 				}
-				else if (cep==3)
-				{
+				else if (cep==3) {
 					vis.x = rightBound;
 					vis.y = this.topBoundToCenter;
 					vis.rotation = -90;
 				}
-				else if (cep==2)
-				{
+				else if (cep==2) {
 					vis.x = leftBound;
 					vis.y = this.topBoundToCenter;
 					vis.rotation = 90;
@@ -101,17 +103,20 @@ package fe.unit
 					vis.osn.gotoAndStop('stay');
 					animState='stay';
 				}
-			} else if (aiState==2 || aiState==4) {
+			}
+			else if (aiState==2 || aiState==4) {
 				if (animState!='wake') {
 					vis.osn.gotoAndStop('wake');
 					animState='wake';
 				}
-			} else if (stay || levit){
+			}
+			else if (stay || levit){
 				if (animState!='walk') {
 					vis.osn.gotoAndStop('walk');
 					animState='walk';
 				}
-			} else {
+			}
+			else {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
@@ -121,13 +126,14 @@ package fe.unit
 		
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
-				dy=-jumpdy*v;
+				velocity.Y =- jumpdy * v;
 			}
-			
 		}
+
 		public override function dropLoot() {
 			explosion(dam,tipDamage,150,0,20,30,9);
 		}
+
 		public override function setLevel(nlevel:int=0) {
 			level+=nlevel;
 			if (level<0) level=0;
@@ -143,8 +149,8 @@ package fe.unit
 		//3 - видит цель, атакует
 		//4 - не видит цель
 		
-		override protected function control():void
-		{
+		override protected function control():void {
+
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -160,14 +166,12 @@ package fe.unit
 
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0)
-			{
+			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - objectHeight;
 				celX = coordinates.X + objectWidth * storona * 2;
 				return;
 			}
-			if (aiState>=3 && cep>0)
-			{
+			if (aiState>=3 && cep>0) {
 				cep=0;
 				fixed=false;
 			}
@@ -180,10 +184,12 @@ package fe.unit
 					if (celDX>40) aiNapr=1;
 					if (celDX<-40) aiNapr=-1;
 					aiState=3;
-				} else {
+				}
+				else {
 					aiState=1;
 				}
-			} else {
+			}
+			else {
 				if (aiSpok<=0) {
 					aiState=1;
 					aiTCh = int(Math.random()*40)+40;
@@ -200,10 +206,12 @@ package fe.unit
 					if (aiState<=1) {
 						aiState=2;
 						aiTCh=int(Math.random()*10)+30;
-					} else if (aiState>=3) {
+					}
+					else if (aiState>=3) {
 						aiState=3;
 					}
-				} else {
+				}
+				else {
 					if (aiSpok>0) {
 						aiSpok--;
 					}
@@ -226,7 +234,8 @@ package fe.unit
 					if (isrnd(0.9)) {
 						if (celDY>80) throu=true;
 						if (aiVNapr<0 && isrnd(0.2)) jmp=1;
-					} else {
+					}
+					else {
 						throu=false;
 						jmp=0;
 					}
@@ -236,17 +245,20 @@ package fe.unit
 				}
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else {
+					else {
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					}
+				}
+				else {
 					if (aiNapr==-1) {
 						walk=-1;
-						if (dx>-maxSpeed) dx-=accel;
-					} else {
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
+					}
+					else {
 						walk=1;
-						if (dx<maxSpeed) dx+=accel;
+						if (velocity.X < maxSpeed) velocity.X += accel;
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;

@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+	
 	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
@@ -19,8 +19,9 @@ package fe.unit
 	//	 6	:	Chunky green
 	//	 7	:	Lightning
 	//	10	:	Chunky plasma
-	public class UnitTurret extends Unit
-	{
+
+	public class UnitTurret extends Unit {
+		
 		public var tr:int;
 		
 		var osnova:Tile;
@@ -43,13 +44,16 @@ package fe.unit
 		private var tileX:int = Tile.tileX;
 		private var tileY:int = Tile.tileY;
 		
-		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+
 			super(cid, ndif, xml, loadObj);
+			
 			// [Define turret type, tr. (Weapon used)]
-			if (loadObj && loadObj.tr) {			// [from the loaded object]
+			if (loadObj && loadObj.tr) { // [from the loaded object]
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	// [from map settings]
+			}
+			else if (xml && xml.@tr.length()) {	// [from map settings]
 				tr=xml.@tr;
 			}
 			else // [randomly by ndif parameter]
@@ -67,14 +71,16 @@ package fe.unit
 			if (cid=='hidden2') hidden=2;
 			if (cid=='combat') turrettip=4;
 			if (cid=='boss') turrettip=5;
-			id='turret'+turrettip;
+			
+			id = 'turret' + turrettip;
 
-			if (turrettip==0) vis=new visualTurret0();
+			if (turrettip == 0) vis=new visualTurret0();
 			else if (turrettip==1) vis=new visualTurret1();
 			else if (turrettip==2) vis=new visualTurret2();
 			else if (turrettip==3) vis=new visualTurret3();
 			else if (turrettip==4) vis=new visualTurret4();
 			else if (turrettip==5) vis=new visualTurret5();
+			
 			vis.stop();
 			getXmlParam();
 			
@@ -82,6 +88,7 @@ package fe.unit
 				invulner=true;
 				absVis=true;
 			}
+			
 			currentWeapon=new Weapon(this,'turret'+tr);
 			childObjs=new Array(currentWeapon);
 			mat=1;
@@ -112,8 +119,7 @@ package fe.unit
 			super.putLoc(nloc,nx,ny);
 			if (mxml) inter=new Interact(this,null,mxml,null);
 			// Turret aiming constraints
-			if (turrettip == 0 || turrettip == 4)
-			{
+			if (turrettip == 0 || turrettip == 4) {
 				currentWeapon.fixRot=1;
 				aRot=[30,150];
 				if (turrettip==4) {
@@ -137,16 +143,13 @@ package fe.unit
 				if (angle=='left') aRot=[135,-135];
 				if (angle=='right') aRot=[45,-45];
 			}
-			else if (turrettip==3)
-			{
-				if (storona>0)
-				{
+			else if (turrettip==3) {
+				if (storona>0) {
 					aRot=[-15, 15];
 					currentWeapon.fixRot=2;
 					vAngle=0;
 				}
-				else
-				{
+				else {
 					aRot=[-165,165]
 					currentWeapon.fixRot=3;
 					vAngle=Math.PI;
@@ -168,14 +171,12 @@ package fe.unit
 			try {
 				vis.osn.puha.gotoAndStop(tr);
 			}
-			catch(err)
-			{
+			catch(err) {
 				trace('ERROR: (00:10)');
 			}
 		}
 
-		public override function setLevel(nlevel:int=0)
-		{
+		public override function setLevel(nlevel:int=0) {
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.2);
@@ -188,26 +189,22 @@ package fe.unit
 			currentWeapon.damage*=(1+level*0.12);
 		}
 		
-		public override function setVisPos()
-		{
+		public override function setVisPos() {
 			vis.x = coordinates.X;
 			vis.y = coordinates.Y;
 		}
 
-		public override function animate()
-		{
+		public override function animate() {
 			if (vis.osn.CurrentFrame != tr) vis.osn.puha.gotoAndStop(tr);
 
 			if (fixed && levit) vis.osn.rotation = Math.random() * 6 - 3;
 			else if (vis.osn.rotation != 0) vis.osn.rotation = 0;
 
-			if (vis.osn.currentFrame == 1)
-			{
+			if (vis.osn.currentFrame == 1) {
 				vis.osn.puha.rotation = radiansToDegrees(currentWeapon.rot); // Rotate the gun of the turret.
 
 				if (vis.osn.light.currentFrame != aiState + 1) vis.osn.light.gotoAndStop(aiState + 1);
-				if (isShoot)
-				{
+				if (isShoot) {
 					isShoot = false;
 					vis.osn.puha.puha.gotoAndPlay(2); 
 				}
@@ -217,23 +214,19 @@ package fe.unit
 
 		}
 
-		private function radiansToDegrees(radians:Number):Number
-		{
+		private function radiansToDegrees(radians:Number):Number {
 			return radians * 180 / Math.PI;
 		}
 
-		public override function setPos(nx:Number,ny:Number)
-		{
+		public override function setPos(nx:Number,ny:Number) {
 			super.setPos(nx,ny);
 			if ((turrettip == 0 || turrettip == 4) && loc && !loc.active) osnova = loc.getAbsTile(coordinates.X, coordinates.Y - 50);
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1)
-		{
+		public override function alarma(nx:Number=-1,ny:Number=-1) {
 			super.alarma(nx, ny);
 			if (turrettip == 3) return;
-			if (sost==1 && !sleep)
-			{
+			if (sost==1 && !sleep) {
 				ear=10;
 				var vK = vKonus;
 				vKonus=0;
@@ -245,14 +238,10 @@ package fe.unit
 			}
 		}
 		
-		public override function setNull(f:Boolean = false)
-		{
+		public override function setNull(f:Boolean = false) {
 			super.setNull(f);
-			if (f && !sleep)
-			{
+			if (f && !sleep) {
 				aiState = hidden? 0 : 1;
-
-
 				if (aiState == 0) vis.osn.gotoAndStop(6);
 				aiTCh = int(Math.random()*10)+5;
 			}
@@ -264,7 +253,8 @@ package fe.unit
 				aiState=0;
 				currentWeapon.forceRot=Math.PI/2;
 				currentWeapon.findCel=false;
-			} else if (sposob==1) {
+			}
+			else if (sposob==1) {
 				reprog=true;
 				if (fraction!=Unit.F_PLAYER && xp>0 && loc) loc.takeXP(xp, coordinates.X, coordinates.Y, true);
 				fraction=Unit.F_PLAYER;
@@ -272,7 +262,8 @@ package fe.unit
 				aiState=1;
 				aiSpok=0;
 				celUnit=null;
-			} else if (sposob==2) {
+			}
+			else if (sposob==2) {
 				reprog=true;
 				fraction=Unit.F_PLAYER;
 				xp=0;
@@ -309,13 +300,11 @@ package fe.unit
 		}
 		
 		//команда скрипта
-		public override function command(com:String, val:String=null)
-		{
+		public override function command(com:String, val:String=null) {
 			if (com == 'shoot') currentWeapon.attack();
 			if (com == 'alarma') alarma();
 			if (com == 'hack') hack();
-			if (com == 'port')
-			{
+			if (com == 'port') {
 				var arr:Array=val.split(':');
 				var nx = (int(arr[0])+0.5) * tileX;
 				var ny = (int(arr[1])+1) * tileY;
@@ -334,7 +323,7 @@ package fe.unit
 						var w:Weapon=bul.weap;
 						if ((coordinates.X - w.coordinates.X) * storona > 25) shitArmor = 0;
 					}
-					else if (bul.dx * storona > 0) shitArmor = 0;
+					else if (bul.velocity.X * storona > 0) shitArmor = 0;
 				}
 			}
 			var ret:Number=super.damage(dam, tip, bul, tt);
@@ -356,7 +345,8 @@ package fe.unit
 			if (priorUnit && isMeet(priorUnit) && priorUnit.sost<3 && priorUnit.hp>0 && !priorUnit.doop) {
 				setCel(priorUnit);
 				return true;
-			} else {
+			}
+			else {
 				for each (var un:Unit in loc.units) {
 					if (un.disabled || un.sost>=3 || un.fraction==fraction || un.doop || un.invis) continue;
 					if (look(un)) {
@@ -389,20 +379,16 @@ package fe.unit
 			if (aiTCh>0) aiTCh--;
 			else if (aiState==2)
 			{
-				if (celUnit)
-				{
+				if (celUnit) {
 					aiSpok=maxSpok+10;
 					aiState=3;
 					budilo(750);
 				}
 				else aiState=1;
 			}
-			else
-			{
-				if (aiSpok<=0)
-				{
-					if (aiState==1 && hidden)
-					{
+			else {
+				if (aiSpok<=0) {
+					if (aiState==1 && hidden) {
 						aiState=0;
 						currentWeapon.forceRot=Math.PI/2;
 					}
@@ -435,10 +421,12 @@ package fe.unit
 						aiState=2;
 						if (celUnit && (celUnit is Mine)) aiTCh=5;
 						else aiTCh=Math.floor(Math.random()*10)+30;
-					} else if (aiState>=3) {
+					}
+					else if (aiState>=3) {
 						aiState=3;
 					}
-				} else {
+				}
+				else {
 					setCel(null, celX+Math.random()*80-40, celY+Math.random()*80-40);
 					if (aiSpok>0) {
 						aiSpok--;
@@ -457,7 +445,8 @@ package fe.unit
 					if (hidden==2) vision=0;
 					isVis=isSats=false;
 					dexter=10;
-				} else if (aiState==1) {
+				}
+				else if (aiState==1) {
 					if (!noTurn) storona=(currentWeapon.rot>-Math.PI/2 && currentWeapon.rot<=Math.PI/2)?1:-1;
 					currentWeapon.findCel=false;
 					currentWeapon.drot=watchDrot;
@@ -465,7 +454,8 @@ package fe.unit
 					vision=1;
 					isVis=isSats=true;
 					dexter=1;
-				} else if (aiState>1) {
+				}
+				else if (aiState>1) {
 					if (!noTurn) storona=(celDX>0)?1:-1;
 					currentWeapon.findCel=true;
 					if (aiState==4) currentWeapon.drot=watchDrot;

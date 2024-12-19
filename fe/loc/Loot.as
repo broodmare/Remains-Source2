@@ -39,7 +39,7 @@ package fe.loc
 		// Constructor
 		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true)
 		{
-			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
+			//trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
 			loc = nloc;
 			item = nitem;
 			if (loc.cTransform) cTransform = loc.cTransform;
@@ -143,8 +143,8 @@ package fe.loc
 			}
 
 			if (jump) {
-				dx = Math.random() * 10 - 5;
-				dy = Math.random() * 5 - 10;
+				velocity.X = Math.random() * 10 - 5;
+				velocity.Y = Math.random() * 5 - 10;
 			}
 			
 			// If the location is not active, don't play a sound
@@ -222,8 +222,8 @@ package fe.loc
 				levitPoss = false;
 				stay = false;
 				vsos = true;
-				dx = rx / 5;
-				dy = ry / 5;
+				velocity.X = rx / 5;
+				velocity.Y = ry / 5;
 				tvsos++;
 			}
 			else {
@@ -246,18 +246,16 @@ package fe.loc
 				osnova=null;
 			}
 			if (!stay) {
-				if (!levit && !vsos && dy<World.maxdy) dy+=World.ddy;
+				if (!levit && !vsos && velocity.Y < World.maxdy) velocity.Y += World.ddy;
 				else if (levit && !isPlav) {
-					dy*=0.8;
-					dx*=0.8;
+					velocity.multiply(0.80);
 				}
 				if (isPlav) {
-					dy*=0.7;
-					dx*=0.7;
+					velocity.multiply(0.70);
 				}
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	run();
 				else {
-					var div = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					var div = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
 					for (var i:int = 0; (i<div && !stay && !isTake); i++) run(div);
 				}
 				checkWater();
@@ -278,109 +276,95 @@ package fe.loc
 			
 			
 			//ГОРИЗОНТАЛЬ
-				coordinates.X += dx / div;
-				if (coordinates.X - objectWidth / 2 < 0)
-				{
+				coordinates.X += velocity.X / div;
+				if (coordinates.X - objectWidth / 2 < 0) {
 					coordinates.X = objectWidth / 2;
-					dx = Math.abs(dx);
+					velocity.X = Math.abs(velocity.X);
 				}
-				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX)
-				{
+
+				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX) {
 					coordinates.X = loc.spaceX * tileX - 1 - objectWidth / 2;
-					dx = -Math.abs(dx);
+					velocity.X = -Math.abs(velocity.X);
 				}
+
 				//движение влево
-				if (dx<0)
-				{
-					t=loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X <= t.phX2 && coordinates.X >= t.phX1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2)
-					{
+				if (velocity.X < 0) {
+					t = loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.phis==1 && coordinates.X <= t.phX2 && coordinates.X >= t.phX1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
 						coordinates.X = t.phX2 + 1;
-						dx = Math.abs(dx);
+						velocity.X = Math.abs(velocity.X);
 					}
 				}
+
 				//движение вправо
-				if (dx>0)
-				{
+				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2)
-					{
+					if (t.phis==1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
 						coordinates.X = t.phX1 - 1;
-						dx = -Math.abs(dx);
+						velocity.X = -Math.abs(velocity.X);
 					}
 				}
 			
 			
 			//ВЕРТИКАЛЬ
 			//движение вверх
-			if (dy<0) {
+			if (velocity.Y < 0) {
 				stay=false;
-				coordinates.Y += dy / div;
+				coordinates.Y += velocity.Y / div;
 				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
-				if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2)
-				{
+				if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
 					coordinates.Y = t.phY2 + 1;
-					dy = 0;
+					velocity.Y = 0;
 				}
 			}
+
 			//движение вниз
 			var newmy:Number=0;
-			if (dy>0)
-			{
+			if (velocity.Y > 0) {
 				stay = false;
-				if (coordinates.Y + dy / div >= loc.spaceY * tileY)
-				{
+				if (coordinates.Y + velocity.Y / div >= loc.spaceY * tileY) {
 					if (auto2) take(true);
-					dx = 0;
+					velocity.X = 0;
 					return;
 				}
-				t = loc.getAbsTile(coordinates.X, coordinates.Y + dy / div);
-				if (t.phis==1 && coordinates.Y + dy / div >= t.phY1 && coordinates.Y <= t.phY2 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 || t.shelf && !levit && !vsos && coordinates.Y + dy / div >= t.phY1 && coordinates.Y <= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2)
-				{
+				t = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y / div);
+				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.phY1 && coordinates.Y <= t.phY2 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.phY1 && coordinates.Y <= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
 					newmy = t.phY1;
 				}
-				if (newmy == 0 && !levit && !vsos) newmy = checkShelf(dy / div);
+				if (newmy == 0 && !levit && !vsos) newmy = checkShelf(velocity.Y / div);
 				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) newmy = (loc.spaceY - 1) * tileY;
-				if (newmy)
-				{
+				if (newmy) {
 					coordinates.Y = newmy - 1;
-					if (!levit)
-					{
-						if (dy>5 && sndFall) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, dy / 15);
+					if (!levit) {
+						if (velocity.Y > 5 && sndFall) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, velocity.Y / 15);
 						stay = true;
-						dy = 0;
-						dx = 0;
+						velocity.Y = 0;
+						velocity.X = 0;
 					}
 				}
-				else
-				{
-					coordinates.Y += dy / div;
+				else {
+					coordinates.Y += velocity.Y / div;
 				}
 			}
 		}
 
-		public override function checkStay()
-		{
+		public override function checkStay() {
 			if (osnova) return true;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
-			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.phY1)
-			{
+			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.phY1) {
 				return true;
 			}
-			else
-			{
+			else {
 				stay = false;
 				return false;
 			}
 		}
 
-		public function checkShelf(dy):Number
-		{
+		public function checkShelf(dy):Number {
 			for (var i in loc.objs) {
 				var b:Box = loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.leftBound || coordinates.X > b.rightBound) && coordinates.Y <= b.topBound && coordinates.Y + dy > b.topBound)
-				{
+				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.leftBound || coordinates.X > b.rightBound) && coordinates.Y <= b.topBound && coordinates.Y + dy > b.topBound) {
 					osnova = b;
 					return b.topBound;
 				}
@@ -392,20 +376,18 @@ package fe.loc
 		{
 			var pla = isPlav;
 			isPlav = false;
-			try
-			{
-				if ((loc.space[int(coordinates.X/tileX)][int(coordinates.Y/tileY)] as Tile).water > 0)
-				{
+			try {
+				if ((loc.space[int(coordinates.X/tileX)][int(coordinates.Y/tileY)] as Tile).water > 0) {
 					isPlav = true;
 				}
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:28)');
 			}
-			if (pla!=isPlav && dy>5) {
-				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
-				Snd.ps('fall_item_water', coordinates.X, coordinates.Y, 0, dy/10);
+
+			if (pla != isPlav && velocity.Y > 5) {
+				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(velocity.Y) * (Math.random() * 0.3 + 0.3), kol:5});
+				Snd.ps('fall_item_water', coordinates.X, coordinates.Y, 0, velocity.Y / 10);
 			}
 			return isPlav;
 		}

@@ -5,7 +5,7 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.weapon.Weapon;
 	
-	public class UnitAnt extends Unit{
+	public class UnitAnt extends Unit {
 
 		public var tr:int;
 		
@@ -20,7 +20,9 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
+		// Constructor
 		public function UnitAnt(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
 			
 			if (loadObj && loadObj.tr) tr=loadObj.tr;		//из загружаемого объекта
@@ -28,7 +30,7 @@ package fe.unit {
 			else if (cid) tr=int(cid);						//из заданного идентификатора cid
 			else tr=1;										//случайно по параметру ndif
 
-			id='ant'+tr;
+			id = 'ant' + tr;
 			getXmlParam();
 			initBlit();
 			animState='stay';
@@ -81,12 +83,14 @@ package fe.unit {
 					vis.scaleX=storona;
 					vis.scaleY=1;
 					vis.rotation=0;
-				} else if (isLaz==1) {
+				}
+				else if (isLaz==1) {
 					vis.x = rightBound;
 					vis.y = this.topBoundToCenter;
 					vis.rotation=-90;
 					vis.scaleX=-vstorona;
-				} else if (isLaz==-1) {
+				}
+				else if (isLaz==-1) {
 					vis.x = leftBound;
 					vis.y = this.topBoundToCenter;
 					vis.rotation=90;
@@ -94,27 +98,34 @@ package fe.unit {
 				}
 			}
 		}
+
 		public override function animate() {
 			var cframe:int;
 			if (trup && (sost==2 || sost==3)) { //сдох
 				if (stay && animState!='death') {
 					animState='die';
 				} else animState='death';
-			} else if (t_punch>0){
+			}
+			else if (t_punch>0){
 				animState='attack';
 				if (t_punch==15) anims[animState].restart();
-			} else {
+			}
+			else {
 				if (stay) {
-					if  (dx==0) {
+					if  (velocity.X == 0) {
 						animState='stay';
-					} else if  (dx>5 || dx<-5) animState='run';
+					}
+					else if  (velocity.X > 5 || velocity.X < -5) animState = 'run';
 					else  animState='walk';
-				} else if (isLaz) {
-					if  (dy>1 || dy<-1) animState='walk';
+				}
+				else if (isLaz) {
+					if  (velocity.Y > 1 || velocity.Y < -1) animState='walk';
 					else  animState='stay';
-				} else if (aiPlav || levit) {
+				}
+				else if (aiPlav || levit) {
 					animState='plav';
-				} else {
+				}
+				else {
 					animState='jump';
 				}
 			}
@@ -130,16 +141,17 @@ package fe.unit {
 		
 		public function jump(v:Number=1) {
 			if (stay) {		//прыжок
-				dy=-jumpdy*v;
-				dx+=storona*accel*5;
+				velocity.Y = -jumpdy * v;
+				velocity.X += storona * accel * 5;
 			}
-			if (!isPlav&&aiPlav) dy=-jumpdy*0.6;	//выпрыгивание из воды
+			if (!isPlav&&aiPlav) velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
 			if (isPlav) {
-				dy-=plavdy;
+				velocity.Y -= plavdy;
 			}
 		}
 		
-		var aiLaz:int=0, aiNeedLaz:int=0;
+		var aiLaz:int=0;
+		var aiNeedLaz:int=0;
 		
 		var aiVis=0.5;
 		
@@ -150,15 +162,19 @@ package fe.unit {
 		//3 - атакует оружием
 		
 		override protected function control():void {
+
 			var t:Tile;
+			
 			//если сдох, то не двигаться
 			if (sost==3) return;
+			
 			if (levit) {
 				if (aiState<=1) {
 					aiSpok=maxSpok;
 				}
 				shok=15;
 			}
+			
 			if (stun) {
 				aiState=0; aiTCh=3; walk=0;
 			}
@@ -166,6 +182,7 @@ package fe.unit {
 			if (t_punch>0) t_punch--;
 
 			var jmp:Number=0;
+			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - objectHeight;
 				celX = coordinates.X + objectWidth * storona * 2;
@@ -188,7 +205,8 @@ package fe.unit {
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
-				} else {
+				}
+				else {
 					setCel(null, celX+Math.random()*80-40, celY);
 					if (aiSpok>0) {
 						aiSpok--;
@@ -201,12 +219,14 @@ package fe.unit {
 					aiState=3;
 				}
 			}
+			
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
 				celY = coordinates.Y - objectHeight;
 				celX = coordinates.X + objectWidth * storona * 2;
-			} else {
+			}
+			else {
 				vision=aiVis;
 			}
 			
@@ -216,16 +236,18 @@ package fe.unit {
 			if (isPlav) aiPlav=5;
 			
 			//скорость
-			maxSpeed=walkSpeed;
+			maxSpeed = walkSpeed;
+			
 			if (aiState==2) {
 				maxSpeed=runSpeed;
 			}
-			if (dx*diagon>0) maxSpeed*=0.5;
-			walk=0;
+			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
+			walk = 0;
 				
 			if (isLaz) {
 				overLook=true;
-			} else {
+			}
+			else {
 				overLook=false;
 				storona=aiNapr;	
 			}
@@ -235,15 +257,18 @@ package fe.unit {
 				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
 				if (isPlav) jump();
 				if (isLaz) {
-					dy=0;
+					velocity.Y = 0;
 					checkStairs();
 				}
-			} if (aiState==1) {
+			}
+
+			if (aiState==1) {
 				if (aiNapr==-1) {
-					if (dx>-maxSpeed) dx-=accel;
+					if (velocity.X > -maxSpeed) velocity.X -= accel;
 					walk=-1;
-				} else {
-					if (dx<maxSpeed) dx+=accel;
+				}
+				else {
+					if (velocity.X < maxSpeed) velocity.X += accel;
 					walk=1;
 				}
 				//поворачиваем, если впереди некуда бежать
@@ -252,16 +277,20 @@ package fe.unit {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=1;
-					} else turnX=1;
+						}
+						else turnX=1;
+					}
+					else turnX=1;
 				}
 				if (stay && shX2>0.5 && aiNapr>0 && isrnd()) {
 					if (optJumping && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
-						} else turnX=-1;
-					} else turnX=-1;
+						}
+						else turnX=-1;
+					}
+					else turnX=-1;
 				}
 				if (stay && turnX!=0) {
 					if (isrnd()) aiNeedLaz=-1;
@@ -276,14 +305,16 @@ package fe.unit {
 				}
 				if (isLaz) {
 					if (aiNeedLaz==-1) {
-						if (dy>-lazSpeed) dy-=lazSpeed/2;
+						if (velocity.Y > -lazSpeed) velocity.Y -= lazSpeed / 2;
 						vstorona=-1;
 						checkStairs();
-					} else if (aiNeedLaz==1) {
-						if (dy<lazSpeed) dy+=lazSpeed/2;
+					}
+					else if (aiNeedLaz==1) {
+						if (velocity.Y < lazSpeed) velocity.Y += lazSpeed / 2;
 						vstorona=1;
 						checkStairs();
-					} else {
+					}
+					else {
 						isLaz=0;
 					}
 					if (turnY!=0) {
@@ -302,13 +333,15 @@ package fe.unit {
 					}
 				}
 				//в возбуждённом или атакующем состоянии
-			} else if (aiState==2) {
+			}
+			else if (aiState==2) {
 				//определить, куда двигаться
 				if (aiTCh%10==1) {
 					if (isrnd(0.9)) {
 						if (celDY>80) throu=true;
 						if (optJumping && aiVNapr<0 && isrnd()) jmp=1;
-					} else {
+					}
+					else {
 						throu=false;
 						jmp=0;
 					}
@@ -317,59 +350,75 @@ package fe.unit {
 						if (celDX<-80) aiNapr=storona=-1;
 					}
 				}
+				
 				if (isPlav && isrnd(0.7)&& celDY<0) {
 					jmp=1;
 				}
+				
 				if (isLaz==0 && aiVNapr==-1) {		//пытаться карабкаться вверх
 					checkStairs();
 				}
+				
 				if (isLaz==0 && aiVNapr==1) {		//пытаться карабкаться вниз
 					checkStairs(2);
 				}
+				
 				if (isLaz) {
 					if (aiVNapr==-1) {
-						if (dy>-lazSpeed) dy-=lazSpeed/2;
+						if (velocity.Y > -lazSpeed) velocity.Y -= lazSpeed / 2;
 						vstorona=-1;
 						checkStairs();
-					} else if (aiVNapr==1) {
-						if (dy<lazSpeed) dy+=lazSpeed/2;
+					}
+					else if (aiVNapr==1) {
+						if (velocity.Y < lazSpeed) velocity.Y += lazSpeed / 2;
 						vstorona=1;
 						checkStairs();
-					} else {
+					}
+					else {
 						isLaz=0;
 					}
+					
 					if (turnY!=0) {
 						isLaz=0;
 						turnY=0;
 					}
 				} 
+				
 				if (levit) {
 					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=levitaccel;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=levitaccel;
+						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
-				} else if (stay || isPlav) {
-					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
-						walk=-1;
-					} else if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel;
-						walk=1;
-					}
-				} else {
-					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel/4;
-					} else  if (aiNapr==1){
-						if (dx<maxSpeed) dx+=accel/4;
+					else if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += levitaccel;
 					}
 				}
+				else if (stay || isPlav) {
+					if (aiNapr==-1) {
+						if (velocity.X > -maxSpeed) velocity.X -= accel;
+						walk=-1;
+					}
+					else if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += accel;
+						walk=1;
+					}
+				}
+				else {
+					if (aiNapr==-1) {
+						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
+					}
+					else  if (aiNapr==1){
+						if (velocity.X < maxSpeed) velocity.X += accel / 4;
+					}
+				}
+				
 				if (optJumping && stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
+				
 				//если наткнулся на препятствие
 				if (turnX!=0) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
-					} else {							//попытаться перепрыгнуть
+					}
+					else {							//попытаться перепрыгнуть
 						aiTTurn--;
 						if (isrnd(0.03) || turnY>0 || kray) aiTTurn-=10;
 						else jmp=1;
@@ -381,61 +430,76 @@ package fe.unit {
 					}
 					turnX=turnY=0;
 				}
+				
 				if (jmp>0) {
 					jump(jmp);
 					jmp=0;
 				}
+				
 				if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<120 && celDY>-120) {
 					attack();
 				}
 			}
+			
 			if (aiState==3) {
 				currentWeapon.attack();
 			}
 			
-			if (coordinates.Y > loc.spaceY * tileY - 80) throu=false;
+			if (coordinates.Y > loc.spaceY * tileY - 80) {
+				throu = false;
+			}
 		}
 		
 		//поиск лестницы
-		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
-		{
+		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
 			try
 			{
 				var i:int = int((coordinates.X + nx) / tileX);
 				var j:int = int((coordinates.Y + ny) / tileY);
-				if (j>=loc.spaceY) j=loc.spaceY-1;
-				if (loc.space[i][j].phis>=1) {
-					isLaz=0;
+				
+				if (j >= loc.spaceY) {
+					j = loc.spaceY - 1;
+				}
+				
+				if (loc.space[i][j].phis >= 1) {
+					isLaz = 0;
 					return false;
 				}
 				if ((loc.space[i][j] as Tile).stair) {
-					isLaz=(loc.space[i][j] as Tile).stair;
-				} else if (loc.getTile(i+storona,j).phis) {
-					isLaz=storona;
-				} else isLaz=0;
-				if (isLaz!=0) {
-					storona=isLaz;
+					isLaz = (loc.space[i][j] as Tile).stair;
+				}
+				else if (loc.getTile(i + storona, j).phis) {
+					isLaz = storona;
+				}
+				else isLaz = 0;
+				
+				if (isLaz != 0) {
+					storona = isLaz;
 
-					if (isLaz==-1) coordinates.X=(loc.space[i][j] as Tile).phX1 + objectWidth / 2;
+					if (isLaz == -1) coordinates.X = (loc.space[i][j] as Tile).phX1 + objectWidth / 2;
 					else coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
 
 					leftBound = coordinates.X - objectWidth / 2;
-					rightBound=coordinates.X + objectWidth / 2;
-					stay=false;
+					rightBound = coordinates.X + objectWidth / 2;
+					stay = false;
 					return true;
 				}
 			}
-			catch (err) { }
+			catch (err) { 
+
+			}
 
 			isLaz=0;
 			return false;
 		}
 		
 		public function attack() {
-			if (celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
-				attKorp(celUnit,1);
+			if (celUnit && shok <= 0) {	//атака холодным оружием без левитации или корпусом
+				attKorp(celUnit, 1);
 			}
-			if (optJumpAtt && isLaz==0) jump(0.5);
+			if (optJumpAtt && isLaz==0) {
+				jump(0.5);
+			}
 		}
 	}
 }

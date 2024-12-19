@@ -1,10 +1,10 @@
-package  fe.unit
-{
+package  fe.unit {
+
 	import fe.*;
 	import fe.weapon.Weapon;
 	
-	public class UnitThunderTurret extends Unit
-	{
+	public class UnitThunderTurret extends Unit {
+
 		public var head:UnitThunderHead;
 		var bindX:Number=0, bindY:Number=0;
 		public var tr:int;
@@ -12,6 +12,7 @@ package  fe.unit
 		var attTurN:int=15;
 		var t_wait:int=0;
 
+		// Constructor
 		public function UnitThunderTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='ttur';
@@ -81,14 +82,13 @@ package  fe.unit
 			newPart('metal',4);
 			newPart('expl');
 		}
+		
 		public override function animate() {
 			if (sost>1) return;
 		}
 
-		public override function setVisPos()
-		{
-			if (vis)
-			{
+		public override function setVisPos() {
+			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				currentWeapon.vis.x = coordinates.X;
@@ -96,8 +96,7 @@ package  fe.unit
 			}
 		}
 
-		public override function makeNoise(n:int, hlup:Boolean=false)
-		{
+		public override function makeNoise(n:int, hlup:Boolean=false) {
 			
 		}
 

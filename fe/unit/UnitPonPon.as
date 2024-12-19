@@ -1,18 +1,19 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.display.MovieClip;
 	
 	import fe.*;
 	import fe.util.Calc;
 	
-	public class UnitPonPon extends Unit
-	{
+	public class UnitPonPon extends Unit {
+		
 		var tr:int=1;
 		var act:Boolean=true;
 		var novoi:Boolean=false;
 		var verVis:Number=0.4;
 		var privet:Boolean=false;
 		
+		// Constructor
 		public function UnitPonPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='ponpon';

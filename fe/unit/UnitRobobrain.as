@@ -1,7 +1,8 @@
-package fe.unit 
-{
-	public class UnitRobobrain extends UnitAIRobot
-	{
+package fe.unit {
+
+	public class UnitRobobrain extends UnitAIRobot {
+
+		// Constructor
 		public function UnitRobobrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='robobrain';
@@ -18,19 +19,20 @@ package fe.unit
 			if (quiet) id_replic = '';
 		}
 		
-		public override function animate()
-		{
+		public override function animate() {
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
 					animState='die';
 				}
-			} else if (aiState==0 || aiState==4) {
+			}
+			else if (aiState==0 || aiState==4) {
 				if (animState!='stay') {
 					vis.osn.gotoAndStop('stay');
 					animState='stay';
 				}
-			} else {
+			}
+			else {
 				if (animState!='walk') {
 					vis.osn.gotoAndStop('walk');
 					animState='walk';
@@ -38,8 +40,7 @@ package fe.unit
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0)
-		{
+		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y-40;
 		}

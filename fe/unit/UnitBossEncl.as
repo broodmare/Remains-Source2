@@ -1,12 +1,12 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.weapon.*;
 	import fe.*;
 	import fe.loc.Location;
 	import fe.serv.LootGen;
 
-	public class UnitBossEncl extends UnitPon
-	{
+	public class UnitBossEncl extends UnitPon {
+
 		public var tr:int=1;
 		var weap:String;
 		public var scrAlarmOn:Boolean=true;
@@ -15,27 +15,35 @@ package fe.unit
 		public var called:int=0;
 		public var coord:Object;
 
+		// constructor
 		public function UnitBossEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
 			super(cid, ndif, xml, loadObj);
+			
 			id='bossencl';
+			
 			if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
 			}
+			
 			//взять параметры из xml
 			getXmlParam();
 			aiTCh=30;
 			aiVNapr=1;
+			
 			if (tr==1) {
 				currentWeapon=Weapon.create(this,'lmg');
 				armor=20;
 				vulner[D_BUL]=vulner[D_PHIS]=vulner[D_BLADE]=0.7;
 			}
+			
 			if (tr==2) {
 				currentWeapon=Weapon.create(this,'quick');
 				marmor=20;
 				vulner[D_LASER]=vulner[D_PLASMA]=vulner[D_SPARK]=0.7;
 				blitId='sprEnclboss2';
 			}
+			
 			if (tr==3) {
 				currentWeapon=Weapon.create(this,'mlau');
 				currentWeapon.speed=12;
@@ -46,14 +54,19 @@ package fe.unit
 				vulner[D_EXPL]=vulner[D_FIRE]=vulner[D_CRIO]=0.7;
 				blitId='sprEnclboss3';
 			}
+			
 			initBlit();
 			animState='fly';
+			
 			if (currentWeapon) weap=currentWeapon.id;
 			else weap='';
+			
 			if (currentWeapon) childObjs=new Array(currentWeapon);
+			
 			if (currentWeapon && currentWeapon.uniq) {
 				currentWeapon.updVariant(1);
 			}
+			
 			isFly=true;
 			aiNapr=storona;
 		}
@@ -64,32 +77,37 @@ package fe.unit
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
-			if (nloc.unitCoord==null) {
-				nloc.unitCoord=new Coord(nloc);
+			super.putLoc(nloc, nx, ny);
+			if (nloc.unitCoord == null) {
+				nloc.unitCoord = new Coord(nloc);
 			}
-			coord=nloc.unitCoord;
-			coord['liv'+tr]=true;
+			coord = nloc.unitCoord;
+			coord['liv' + tr] = true;
 		}
 
 		public override function setLevel(nlevel:int=0) {
 			super.setLevel(nlevel);
-			var dMult=1;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
-			hp=maxhp=hp*dMult;
-			dam*=dMult;
+			var dMult = 1;
+			if (World.w.game.globalDif == 3) {
+				dMult = 1.2;
+			}
+			if (World.w.game.globalDif == 4) {
+				dMult = 1.5;
+			}
+			hp = maxhp = hp * dMult;
+			dam *= dMult;
 			if (currentWeapon) {
 				currentWeapon.damage*=dMult;
 			} 
 		}
 		
 		public override function animate() {
-			var revers:Boolean=false;
+			var revers:Boolean = false;
 			if (isFly) {
-				animState='fly';
-			} else {
-				animState='stay';
+				animState = 'fly';
+			}
+			else {
+				animState = 'stay';
 			}
 			if (animState!=animState2) {
 				anims[animState].restart();
@@ -129,29 +147,30 @@ package fe.unit
 			super.setNull(f);
 			//вернуть в исходную точку
 			if (begX>0 && begY>0) setPos(begX, begY);
-			dx=dy=0;
+			velocity.set(0, 0);
 			setWeaponPos();
-			aiState=aiSpok=0;
+			aiState = 0;
+			aiSpok = 0;
 		}
 		
-		var minY:int=250;
-		var maxY:int=850;
-		var minX:int=1000;
-		var maxX:int=1600;
-		var sinX:Number=Math.random()*10;
-		var sinDX:Number=Math.random()*0.1+0.02;
+		var minY:int = 250;
+		var maxY:int = 850;
+		var minX:int = 1000;
+		var maxX:int = 1600;
+		var sinX:Number = Math.random() * 10;
+		var sinDX:Number = Math.random() * 0.1 + 0.02;
 		
-		var emit_t:int=0;
+		var emit_t:int = 0;
 		
 		//aiState
 		//0 - стоит на месте
 		//1 - летает и атакует
 		//2 - меняет оружие
 		
-		override protected function control():void
-		{
+		override protected function control():void {
 			//если сдох, то не двигаться
 			if (sost==3) return;
+			
 			if (stun) {
 				aiState=0; aiTCh=3; walk=0;
 			}
@@ -159,6 +178,7 @@ package fe.unit
 			t_replic--;
 			
 			if (loc.gg.invulner) return;
+			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - objectHeight;
 				celX = coordinates.X + objectWidth * storona * 2;
@@ -171,6 +191,7 @@ package fe.unit
 				aiState=1;
 				aiTCh=Math.floor(Math.random()*60+150);
 			}
+			
 			//поиск цели
 			if (aiTCh%40==1) {
 				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.4)) setCel(loc.gg.pet);
@@ -183,31 +204,32 @@ package fe.unit
 			destroy=0;
 			//поведение при различных состояниях
 			if (aiState==0) {
-			} else {
-				sinX+=sinDX;
-				if (coordinates.Y<minY && dy<maxSpeed) {
-					dy+=accel;
-					aiVNapr=1;
+			}
+			else {
+				sinX += sinDX;
+				if (coordinates.Y < minY && velocity.Y < maxSpeed) {
+					velocity.Y += accel;
+					aiVNapr = 1;
 				}
-				if (coordinates.Y>maxY && dy>-maxSpeed) {
-					dy-=accel;
-					aiVNapr=-1;
+				if (coordinates.Y > maxY && velocity.Y > -maxSpeed) {
+					velocity.Y -= accel;
+					aiVNapr = -1;
 				}
-				if (coordinates.Y>=minY && coordinates.Y<=maxY) {
-					if (aiVNapr==1 && dy<maxSpeed) dy+=accel;
-					if (aiVNapr==-1 && dy>-maxSpeed) dy-=accel;
+				if (coordinates.Y >= minY && coordinates.Y <= maxY) {
+					if (aiVNapr == 1 && velocity.Y < maxSpeed) velocity.Y += accel;
+					if (aiVNapr == -1 && velocity.Y > -maxSpeed) velocity.Y -= accel;
 				}
-				if (coordinates.X<minX && dx<maxSpeed) {
-					dx+=accel;
+				if (coordinates.X < minX && velocity.X < maxSpeed) {
+					velocity.X += accel;
 				}
-				if (coordinates.X>maxX && dx>-maxSpeed) {
-					dx-=accel;
+				if (coordinates.X > maxX && velocity.X > -maxSpeed) {
+					velocity.X -= accel;
 				}
-				if (coordinates.X>=minX && coordinates.X<=maxX) {
-					dx+=Math.sin(sinX)*accel/2;
+				if (coordinates.X >= minX && coordinates.X <= maxX) {
+					velocity.X += Math.sin(sinX) * accel / 2;
 				}
 			} 
-			if (aiState==1) {
+			if (aiState == 1) {
 				attack();
 			}
 

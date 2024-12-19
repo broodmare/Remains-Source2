@@ -168,8 +168,8 @@ package fe.serv {
 			// Spawn the item
 			var item:Item = new Item(lootType, id, iCount);
 			if (item.xml != null) {
-				trace("LootGen.as/newLoot() - Created new item, XML Data: " + item.xml.toXMLString());
-				trace("LoostGen.as/newLoot() - Item info -- ID: " + item.id + ", name: " + item.nazv  + ", kol: " + item.kol);
+				//trace("LootGen.as/newLoot() - Created new item, XML Data: " + item.xml.toXMLString());
+				//trace("LoostGen.as/newLoot() - Item info -- ID: " + item.id + ", name: " + item.nazv  + ", kol: " + item.kol);
 			}
 			else {
 				trace("LootGen.as/newLoot() - ERROR: Created new item with no XML data");
