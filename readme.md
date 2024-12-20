@@ -1,7 +1,12 @@
 This project is an on-going rewrite of Fallout Equestria: Remains (1.0.2).
-Contributors:
- Woons - Developer
 
+\#####
+
+Contributors:
+
+ Woons - Developer
+ 
+\#####
 
 Goals:
 - Simplify and document the code.
@@ -11,7 +16,7 @@ Goals:
 - Use strongly typed code whenever possible.
 - Allow much easier porting of the code to a different engine.
 
-
+\#####
 
 Implemented features: 
  - Portraits are loaded at runtime from loose images.
@@ -22,7 +27,7 @@ Implemented features:
  - Sound effects loaded at runtime.
  - Weapon sprite offsets loaded at runtime.
 
- 
+\#####
 
 Wip:
  - Load spritesheets and animation data at runtime.
@@ -30,13 +35,13 @@ Wip:
  - Load in-game items/objects at runtime.
  - Add ability to easily create new tiles.
 
- 
+\#####
 
 Bugs:
  - Stairs are broke
  - Audio fails to play frequently
 
- 
+\#####
 
  In-depth rambling: 
 
