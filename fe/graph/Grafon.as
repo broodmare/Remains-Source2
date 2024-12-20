@@ -786,21 +786,29 @@ package fe.graph
 		//рисование одного блока воды
 		public function drawWater(t:Tile, recurs:Boolean = true):void {
 			m=new Matrix();
-			m.tx = t.X * tileX;
-			m.ty = t.Y * Tile.tileY;
-			voda.gotoAndStop(loc.tipWater+1);
-			if (loc.getTile(t.X,t.Y-1).water==0 && loc.getTile(t.X,t.Y-1).phis==0 ) voda.voda.gotoAndStop(2);
-			else voda.voda.gotoAndStop(1);
-			vodaBmp.draw(voda, m, loc.cTransform, (t.water>0)?'normal':'erase', null, false);
-			if (recurs) drawWater(loc.getTile(t.X,t.Y+1),false);
+			m.tx = t.coords.X * tileX;
+			m.ty = t.coords.Y * Tile.tileY;
+			voda.gotoAndStop(loc.tipWater + 1);
+			if (loc.getTile(t.coords.X, t.coords.Y - 1).water == 0 && loc.getTile(t.coords.X, t.coords.Y - 1).phis == 0 ) {
+				voda.voda.gotoAndStop(2);
+			}
+			else {
+				voda.voda.gotoAndStop(1);
+			}
+			
+			vodaBmp.draw(voda, m, loc.cTransform, (t.water > 0)? 'normal' : 'erase', null, false);
+			
+			if (recurs) {
+				drawWater(loc.getTile(t.coords.X, t.coords.Y + 1), false);
+			}
 		}
 		
 		public function tileDie(t:Tile,tip:int):void {
 			var erC:Class = block_dyr;	// .fla linkage
 			var drC:Class = block_tre;	// .fla linkage
 			
-			var nx = (t.X + 0.5) * tileX;
-			var ny = (t.Y + 0.5) * tileY;
+			var nx = (t.coords.X + 0.5) * tileX;
+			var ny = (t.coords.Y + 0.5) * tileY;
 
 			if (t.fake) {
 				Emitter.emit('fake', loc, nx, ny);

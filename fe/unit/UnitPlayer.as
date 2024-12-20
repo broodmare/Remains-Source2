@@ -3522,7 +3522,7 @@
 		public function showElectroBlock() {
 			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (this.topBoundToCenter + Math.random() * 320 - 160));
 			if (t && t.mat==1 && t.hp>0) {
-				Emitter.emit('electro', loc, (t.X + 0.5) * tileX, (t.Y + 0.5) * tileY);
+				Emitter.emit('electro', loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
 			}
 		}
 		

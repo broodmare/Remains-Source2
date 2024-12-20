@@ -285,30 +285,30 @@ package fe.unit
 		}
 		
 		//лунный клинок
-		private function cast_moon():void
-		{
-			if (gg.currentPet != 'moon')
-			{
+		private function cast_moon():void {
+			if (gg.currentPet != 'moon') {
 				gg.pets['moon'].hp = gg.pets['moon'].maxhp;
 				gg.callPet('moon', true);
 			}
-			else if (gg.pet) gg.pet.heal(gg.pet.maxhp);
+			else if (gg.pet) {
+				gg.pet.heal(gg.pet.maxhp);
+			}
 		}
 		
-		public function gwall(nx, ny):void
-		{
+		public function gwall(nx, ny):void {
 			var t:Tile = loc.getAbsTile(nx, ny);
-			if (loc.testTile(t))
-			{
+			
+			if (loc.testTile(t)) {
 				t.phis = 3;
 				t.hp = Math.round(hp * power);
 				t.mat = 7;
 				t.t_ghost = Math.round(dam * power);
-				World.w.grafon.gwall(t.X, t.Y);
+				World.w.grafon.gwall(t.coords.X, t.coords.Y);
 				est=1;
+			
 			}
-			Emitter.emit('gwall',loc,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY);
-					}
+			Emitter.emit('gwall', loc,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY);
+		}
 		
 		private function cast_gwall():void {
 			est=0;
@@ -323,7 +323,8 @@ package fe.unit
 			if (owner && player) {
 				if (gg.pers.bloodHP<=dam*3) {
 					est=0;
-				} else {
+				}
+				else {
 					owner.addEffect('bloodinv');
 					gg.pers.bloodDamage(dam,Unit.D_BLEED);
 					est=1;

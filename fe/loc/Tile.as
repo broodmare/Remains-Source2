@@ -1,19 +1,21 @@
-package  fe.loc
-{
+package  fe.loc {
+
+	import fe.util.Vector2;
 	import fe.entities.Obj;
 	
-	public class Tile
-	{
-		public static var tileX:int = 40;
-		public static var tileY:int = 40;
+	public class Tile {
+
+		public static var tileX:int = 40;	// Size in pixels
+		public static var tileY:int = 40;	// Size in pixels
 		
-		public var X:int, Y:int;
+		public var coords:Vector2;
+		public var phX1:Number,phX2:Number,phY1:Number,phY2:Number;	// TODO: Turn this into a vector
 		
 		public var indestruct:Boolean=false;
 		public var phis:int=0;
 		public var shelf:Boolean=false;
 		public var hp:int=1000, thre:int=0;
-		public var phX1:Number,phX2:Number,phY1:Number,phY2:Number;
+		
 		
 		public var zForm:int=0;
 		public var diagon:int=0;
@@ -57,23 +59,22 @@ package  fe.loc
 		public var door:Box;
 		public var trap:Obj;
 		
-		public function Tile(nx:int,ny:int)
-		{
-			X = nx;
-			Y = ny;
+		public function Tile(nx:Number, ny:Number) {
+			coords = new Vector2(nx, ny);
 
-			phX1 =  X * Tile.tileX;
-			phY1 =  Y * Tile.tileY;
-			phX2 = (X + 1) * Tile.tileX;
-			phY2 = (Y + 1) * Tile.tileY;
+			// I think this is the bounding box for physics?
+			phX1 =  coords.X * Tile.tileX;
+			phY1 =  coords.Y * Tile.tileY;
+			phX2 = (coords.X + 1) * Tile.tileX;
+			phY2 = (coords.Y + 1) * Tile.tileY;
 		}
 		
-		private function inForm(f:Form)
-		{
+		private function inForm(f:Form) {
 			if (f==null) return;
 			if (f.tip==2) {
 				if (f.front) back=f.front;
-			} else {
+			}
+			else {
 				if (f.front) {
 					front=f.front;
 					if (f.rear) fRear=true;
@@ -84,7 +85,8 @@ package  fe.loc
 				if (vid==0)	{
 					vid=f.vid;
 					if (f.rear) vRear=true;
-				} else {
+				}
+				else {
 					vid2=f.vid;
 					if (f.rear) v2Rear=true;
 				}
@@ -104,27 +106,40 @@ package  fe.loc
 		}
 		
 		public function dec(s:String, mirror:Boolean=false) {
-			phis=vid=vid2=diagon=stair=water=0;
+			
+			phis = 0;
+			vid = 0;
+			vid2 = 0;
+			diagon = 0;
+			stair = 0;
+			water = 0;
 			front=back=zad='';
 			shelf=indestruct=false;
 			setZForm(0);
-			var fr:int=s.charCodeAt(0);
+			
+			var fr:int = s.charCodeAt(0);
+			
 			if (fr>64 && fr!=95) {
 				inForm(Form.fForms[s.charAt(0)]);
 			}
+			
 			if (s.length>1) {
 				for (var i=1; i<s.length; i++) {
 					fr = s.charCodeAt(i);
 					var sym:String=s.charAt(i);
 					if (sym=='*') {
 						water=1;
-					} else if (sym==',') {
+					}
+					else if (sym==',') {
 						setZForm(1);
-					} else if (sym==';') {
+					}
+					else if (sym==';') {
 						setZForm(2);
-					} else if (sym==':') {
+					}
+					else if (sym==':') {
 						setZForm(3);
-					} else {
+					}
+					else {
 						if (mirror && Form.oForms[sym].idMirror) inForm(Form.oForms[Form.oForms[sym].idMirror]);
 						else inForm(Form.oForms[sym]);
 					}
@@ -132,7 +147,6 @@ package  fe.loc
 			}
 			if (zForm==0) {
 				if (zad!='') back=zad;
-			} else {
 			}
 		}
 		
@@ -152,11 +166,11 @@ package  fe.loc
 		}
 
 		public function setZForm(n:int) {
-			if (n<0) n=0;
-			if (n>3) n=3;
-			zForm=n;
-			phY1=(Y+zForm/4)*Tile.tileY;
-			if (n>0) opac=0;
+			if (n < 0) n = 0;
+			if (n > 3) n = 3;
+			zForm = n;
+			phY1 = ( coords.Y + zForm / 4) * Tile.tileY;
+			if (n > 0) opac = 0;
 		}
 
 		public function mainFrame(nfront:String='A') {
@@ -171,15 +185,30 @@ package  fe.loc
 		}
 		
 		public function getMaxY(rx:Number):Number {
-			if (diagon==0) return phY1;
-			else if (diagon>0) {
-				if (rx<phX1) return phY2;
-				else if (rx>phX2) return phY1;
-				else return phY2-(phY2-phY1)*((rx-phX1)/(phX2-phX1));
-			} else {
-				if (rx<phX1) return phY1;
-				else if (rx>phX2) return phY2;
-				else return phY2-(phY2-phY1)*((phX2-rx)/(phX2-phX1));
+			if (diagon == 0) {
+				return phY1;
+			}
+			else if (diagon > 0) {
+				if (rx < phX1) {
+					return phY2;
+				}
+				else if (rx>phX2) {
+					return phY1;
+				}
+				else {
+					return phY2 - (phY2 - phY1) * ((rx - phX1) / (phX2 - phX1));
+				}
+			}
+			else {
+				if (rx<phX1) {
+					return phY1;
+				}
+				else if (rx>phX2) {
+					return phY2;
+				}
+				else {
+					return phY2 - (phY2 - phY1) * ((phX2 - rx) / (phX2 - phX1));
+				}
 			}
 		}
 		

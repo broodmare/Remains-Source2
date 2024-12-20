@@ -2109,10 +2109,16 @@ package fe.unit {
 		public function destroyWall(t:Tile, napr:int=0):Boolean {
 			if (isPlav || levit || sost != 1) return false;
 			if (napr == 3 && velocity.Y > 15 && destroy < 50 && massa >= 1) {
-				loc.hitTile(t, 50, (t.X + 0.5) * tileX,(t.Y + 0.5) * tileY, 100);
+				loc.hitTile(t, 50, (t.coords.X + 0.5) * tileX,(t.coords.Y + 0.5) * tileY, 100);
 				if (t.phis == 0) return true;
 			}
-			if (destroy > 0 && (velocity.X > 10 && napr == 2 || velocity.X < -10 && napr == 1 || velocity.Y < -10 && napr == 4  || velocity.Y > 10 && napr == 3)) loc.hitTile(t, destroy, (t.X + 0.5) * tileX, (t.Y + 0.5) * tileY, (napr == 3? 100:9));
+			if (destroy > 0 && (velocity.X > 10 && napr == 2 
+				|| velocity.X < -10 && napr == 1
+				|| velocity.Y < -10 && napr == 4 
+				|| velocity.Y > 10 && napr == 3
+				)) {
+					loc.hitTile(t, destroy, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY, (napr == 3? 100 : 9));
+			}
 			if (t.phis == 0) return true;
 			return false;
 		}
