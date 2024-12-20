@@ -865,28 +865,24 @@ package fe.unit {
 		}
 		
 		// The condition under which the boss does not restore hp
-		public function isNoResBoss():Boolean
-		{
+		public function isNoResBoss():Boolean {
 			var res = false;
 			res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != 'base';
 			return res;
 		}
 
-		protected function control():void
-		{
+		protected function control():void {
 
 		}
 
-		public override function step()
-		{
+		public override function step() {
 			if (disabled || trigDis) return;
 			if (t_emerg>0) {
 				t_emerg--;
 				setVisPos();
 				if (vis)
 				{
-					if (t_emerg > 0)
-					{
+					if (t_emerg > 0) {
 						var tf = t_emerg / (max_emerg + 1);
 						vis.filters = [new GlowFilter(0xAADDFF, tf, tf * 20, tf * 20, 1, 3)];
 						vis.alpha = 1 - tf;
@@ -916,8 +912,7 @@ package fe.unit {
 			else if (bind || Math.abs(velocity.X + osndx)<World.maxdelta && Math.abs(velocity.Y + osndy)<World.maxdelta) {
 				run();
 			}
-			else
-			{
+			else {
 				var div:int = int(Math.max(Math.abs(velocity.X + osndx),Math.abs(velocity.Y + osndy))/World.maxdelta)+1;
 				for (var i = 0; i<div; i++) run(div); // What the fuck, this is being used as a string later.
 			}
@@ -929,18 +924,16 @@ package fe.unit {
 			if (burn) {
                 burn.step();
                 if (burn.vse) exterminate();
-            } else animate();
+            }
+			else animate();
 
 			onCursor = (isVis && !disabled && sost < 4 && leftBound < World.w.celX && rightBound > World.w.celX && topBound < World.w.celY && bottomBound > World.w.celY) ? prior:0;
 
-			for (i in childObjs) if (childObjs[i]) // Here is where it's called as a string.
-			{
-				try
-				{
+			for (i in childObjs) if (childObjs[i]) { // Here is where it's called as a string.
+				try {
 					childObjs[i].step();
 				}
-				catch(err)
-				{
+				catch(err) {
 					trace('ERROR: (00:2) - Child object: "' + childObjs[i].id + '" with parent: "' + id + '" failed to run step()!');
 				}
 			}
@@ -1891,20 +1884,16 @@ package fe.unit {
 			}
 		}
 		
-		public function animate()
-		{
+		public function animate() {
 
 		}
 		
-		protected function sndFall()
-		{
+		protected function sndFall() {
 
 		}
 		
-		function sndRunPlay()
-		{
-				if (rasst2<sndRunDist*sndRunDist)
-				{
+		function sndRunPlay() {
+				if (rasst2<sndRunDist*sndRunDist) {
 					sndVolkoef=(sndRunDist-Math.sqrt(rasst2))/sndRunDist;
 
 					if (sndVolkoef < 0.5) sndVolkoef *= 2;
@@ -1918,10 +1907,8 @@ package fe.unit {
 			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:kol, frame:frame});
 		}
 
-		public function setVisPos()
-		{
-			if (vis)
-			{
+		public function setVisPos() {
+			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.scaleX = storona;
@@ -1934,29 +1921,30 @@ package fe.unit {
 				if (boss) {
 					World.w.gui.hpBarBoss(hp/maxhp);
 					hpbar.visible=false;
-				} else {
+				}
+				else {
 					hpbar.visible=true;
 					if (hp<maxhp) {
 						hpbar.bar.visible=true;
 						hpbar.bar.gotoAndStop(Math.floor((1-hp/maxhp)*20+1));
-					} else hpbar.bar.visible=false;
+					}
+					else hpbar.bar.visible=false;
 					if (armor_qual>0) {
 						hpbar.armor.visible=true;
 						hpbar.armor.gotoAndStop(Math.floor((1-armor_hp/armor_maxhp)*20+1));
-					} else hpbar.armor.visible=false;
+					}
+					else hpbar.armor.visible=false;
 				}
-			} else hpbar.visible=false;
+			}
+			else hpbar.visible=false;
 		}
 		
-		public function setHpbarPos()
-		{
-			if (boss)
-			{
+		public function setHpbarPos() {
+			if (boss) {
 				hpbar.y=60;
 				hpbar.x=World.w.cam.screenX/2;
 			}
-			else
-			{
+			else {
 				hpbar.y = coordinates.Y - stayY - 20;
 				if (hpbar.y < 20) hpbar.y = 20;
 				hpbar.x = coordinates.X;
@@ -1974,8 +1962,7 @@ package fe.unit {
 			if (isNaN(velocity.X)) {
 				velocity.X = 0;
 			}
-			if (isNaN(velocity.Y))
-			{
+			if (isNaN(velocity.Y)) {
 				velocity.Y = 0;
 			}
 			if (neujaz>0) neujaz--;
@@ -2000,7 +1987,8 @@ package fe.unit {
 			if (sost==1) {
 				if (levit) {
 					levit_r++;
-				} else {
+				}
+				else {
 					if (levit_r==1) levitPoss=true;
 					if (levit_r>60) levit_r=60;
 					if (levit_r>0) levit_r--;
@@ -2020,9 +2008,11 @@ package fe.unit {
 					if ((effects[i] as Effect).vse) {
                         effects.splice(i, 1);
                         i--;
-                    } else (effects[i] as Effect).step();
+                    }
+					else (effects[i] as Effect).step();
 				}
 			}
+			
 			//урон от воды
 			//периодические эффекты
 			if (cut>0 || poison>0 || inWater && loc.wdam>0) {
@@ -2054,12 +2044,12 @@ package fe.unit {
 									}
 			}
 			if (t_hp>0) t_hp--;
-			if (slow>0)
-			{
+			if (slow>0) {
 				slow--;
 				if (!fixed && slow%10==0 && vis && vis.visible && (velocity.X > 3 || velocity.X < -3 || velocity.Y > 5 || velocity.Y < -5)) Emitter.emit('slow', loc, coordinates.X, coordinates.Y-objectHeight*0.25);
 							}
 			if (t_throw>0) t_throw--;
+			
 			//сборный показ цифр урона
 			if (World.w.showHit==2) {
 				if (t_hitPart>0) {
@@ -2069,15 +2059,17 @@ package fe.unit {
 					hitPart=null;
 				}
 			}
-			if (t_mess>0) t_mess--;
+			
+			if (t_mess > 0) {
+				t_mess--;
+			}
 		}
 		
 		public function makeNoise(n:int, hlup:Boolean=false)
 		{
 			if (n<=0) return;
 			if (noise<n) noise=n;
-			if (noise_t==0 || hlup && noise_t<=20)
-			{
+			if (noise_t==0 || hlup && noise_t<=20) {
 				noise_t=30;
 				if (loc && loc.active && !getTileVisi()) {
 					if (!player) Emitter.emit('noise', loc, coordinates.X, coordinates.Y,{rx:40, ry:40, alpha:Math.min(1,n/500)});
@@ -2101,26 +2093,22 @@ package fe.unit {
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
 
-		public function setWeaponPos(tip:int=0)
-		{
+		public function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
 			weaponY = this.topBoundToCenter;
 			magicX = coordinates.X;
 			magicY = this.topBoundToCenter;
 		}
 
-		public function setPunchWeaponPos(w:WPunch)
-		{
+		public function setPunchWeaponPos(w:WPunch) {
 			w.coordinates.X = coordinates.X + objectWidth / 3 * storona;
 			w.coordinates.Y = coordinates.Y - objectHeight * 0.75;
 			w.rot = (storona > 0)? 0:Math.PI;
 		}
 		
-		public function destroyWall(t:Tile, napr:int=0):Boolean
-		{
+		public function destroyWall(t:Tile, napr:int=0):Boolean {
 			if (isPlav || levit || sost != 1) return false;
-			if (napr == 3 && velocity.Y > 15 && destroy < 50 && massa >= 1)
-			{
+			if (napr == 3 && velocity.Y > 15 && destroy < 50 && massa >= 1) {
 				loc.hitTile(t, 50, (t.X + 0.5) * tileX,(t.Y + 0.5) * tileY, 100);
 				if (t.phis == 0) return true;
 			}
@@ -2130,13 +2118,18 @@ package fe.unit {
 		}
 		
 		public function explosion(tdam:Number, ttipdam:int=4, trad:Number=200, tkol:int=0, totbros:Number=0, tdestroy:Number=0, tdecal:int=0) {
-			var bul:Bullet=new Bullet(this, coordinates.X, coordinates.Y - 3, null, tkol > 1);
+			
+			var v:Vector2 = new Vector2(coordinates.X, coordinates.Y - 3);
+			var bul:Bullet = new Bullet(this, v, null, tkol > 1);
+			
 			bul.weapId=id;
 			bul.damageExpl=tdam;
 			bul.tipDamage=ttipdam;
 			bul.explKol=tkol;
+			
 			if (tkol>1) bul.explTip=2;
 			else if (ttipdam==10) bul.explTip=3;
+			
 			bul.explRadius=trad;
 			bul.tipDecal=tdecal;
 			bul.otbros=totbros;
@@ -2211,8 +2204,7 @@ package fe.unit {
 			rapidMultCont=1;
 			if (begvulner==null) return;
 			for (var i=0; i<kolVulners; i++) vulner[i]=begvulner[i];
-			if (!player && loc.biom == 5)
-			{
+			if (!player && loc.biom == 5) {
 				vulner[D_PINK]=0;	// [invulnerable to the pink cloud]
 			}
 			for each(var eff:Effect in effects) {

@@ -744,10 +744,16 @@ package fe.loc {
 		}
 		
 		//принудительное движение
-		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
-			super.bindMove(nx,ny);
-			if (this.un) un.bindMove(nx,ny);
-			if (vis) runVis()
+		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
+			super.bindMove(v);
+			
+			if (this.un) {
+				un.bindMove(v);
+			}
+			
+			if (vis) {
+				runVis()
+			}
 		}
 		
 		public function runVis() {

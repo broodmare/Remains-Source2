@@ -10,8 +10,8 @@ package fe.projectile
 		public var cel:Unit;
 		static var p:Object = {x:0, y:0};
 
-		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true) {
-			super(own, nx, ny, visClass);
+		public function SmartBullet(own:Unit, coords:Vector2, visClass:Class=null, addobj:Boolean=true) {
+			super(own, coords, visClass);
 			vRot = true;
 		}
 		

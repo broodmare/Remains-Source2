@@ -3,6 +3,7 @@ package fe.weapon  {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Pers;
@@ -113,7 +114,8 @@ package fe.weapon  {
 			kolvzz = Math.round((dlina - mindlina) / stepdlina);
 			vzz = [];
 			storona = owner.storona;
-			b = new Bullet(own, coordinates.X - (dlina / 2) * storona, coordinates.Y - dlina, null, false);
+			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) ); 
+			b = new Bullet(own, v, null, false);
 			b.weap = this;
 			b.tipBullet = 1;
 			setBullet(b);
@@ -134,8 +136,7 @@ package fe.weapon  {
 			cos0 = Math.cos(rot);
 			sin0 = Math.sin(rot);
 			
-			for (var i:int = 0; i <= kolvzz; i++)
-			{
+			for (var i:int = 0; i <= kolvzz; i++) {
 				var nx = coordinates.X + cos2 * (mindlina + i * stepdlina) + anim * storona * (mindlina + i * stepdlina);
 				var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 				vzz[i] = {X:0, Y:0};
@@ -307,11 +308,10 @@ package fe.weapon  {
 						cos2 = Math.cos(rot);
 						sin2 = Math.sin(rot);
 						for (var i:int = 0; i <= kolvzz; i++) {
-							var nx = coordinates.X + cos2 * (mindlina + i * stepdlina);
-							var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
-							if (!isPow) b.bindMove(nx,ny, vzz[i].X, vzz[i].Y);
-							vzz[i].X=nx;
-							vzz[i].Y=ny;
+							var v:Vector2 = new Vector2( (coordinates.X + cos2 * (mindlina + i * stepdlina)), (coordinates.Y + sin2 * (mindlina + i * stepdlina)) );
+							if (!isPow) b.bindMove(v, vzz[i].X, vzz[i].Y);
+							vzz[i].X = v.X;
+							vzz[i].Y = v.Y;
 						}
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
@@ -331,11 +331,10 @@ package fe.weapon  {
 					plX=cos2*anim*atDlina;
 					plY=sin2*anim*atDlina;
 					if (t_attack>=rapid_act/2 && t_attack<rapid_act*5/6) {
-						nx = coordinates.X + cos2 * dlina + plX;
-						ny = coordinates.Y + sin2 * dlina + plY;
-						if (!isPow) b.bindMove(nx,ny, vzz[0].X, vzz[0].Y);
-						vzz[0].X=nx;
-						vzz[0].Y=ny;
+						var v:Vector2 = new Vector2( (coordinates.X + cos2 * dlina + plX), (coordinates.Y + sin2 * dlina + plY) );
+						if (!isPow) b.bindMove(v, vzz[0].X, vzz[0].Y);
+						vzz[0].X = v.X;
+						vzz[0].Y = v.Y;
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
 							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
@@ -354,7 +353,8 @@ package fe.weapon  {
 					if (t_attack==1) {
 						cos2=Math.cos(rot);
 						sin2=Math.sin(rot);
-						b.bindMove(coordinates.X + cos2 * mindlina, coordinates.Y + sin2 * mindlina, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
+						var v:Vector2 = new Vector2( (coordinates.X + cos2 * mindlina), (coordinates.Y + sin2 * mindlina));
+						b.bindMove(v, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
 						if (lasM) vis.gotoAndStop(3);
 						if (sndShoot!='' && !sndPl) {
 							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);

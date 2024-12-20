@@ -1,5 +1,5 @@
-package fe.inter
-{
+package fe.inter {
+
 	import fe.util.Vector2;
 	import fe.util.Calc;
 	import fe.unit.Unit;
@@ -8,8 +8,8 @@ package fe.inter
 	import fe.loc.Location;
 	import flash.display.DisplayObject;
 	
-	public class Camera
-	{
+	public class Camera {
+
 		public var w:World;
 		public var moved:Boolean;
 		public var screenX:int=1280; //размеры экрана
@@ -38,13 +38,12 @@ package fe.inter
 		public var showX:Number=-1;
 		public var showY:Number=0;
 		
-		public function Camera(nw:World)
-		{
+		// Constructor
+		public function Camera(nw:World) {
 			w = nw;
 		}
 		
-		public function setLoc(loc:Location)
-		{
+		public function setLoc(loc:Location) {
 			if (loc == null) return;
 			screenX = w.swfStage.stageWidth;
 			screenY = w.swfStage.stageHeight;
@@ -142,10 +141,8 @@ package fe.inter
 				}
 				if (!camRun) {
 					
-					// New [x ,y] vector
-					var v = new Vector.<Number>(2, true); 
-					var x = v[0]; // Shortcuts for readability
-					var y = v[1];
+					var x:Number;
+					var y:Number;
 
 					// Set the x and y value of our new coordinate vector
 					if (otryv > 0) {
@@ -158,16 +155,17 @@ package fe.inter
 							x = un.coordinates.X * scaleV + otryv * (celX - screenX / 2);
 							y = un.coordinates.Y * scaleV + otryv * (celY - screenY / 2);
 						}
-						
+						var v:Vector2 = new Vector2(x, y);
 					}
 					else
 					{
 						x = un.coordinates.X * scaleV;
-						if (ovy - un.coordinates.Y * scaleV > 5 && ovy - un.coordinates.Y * scaleV < 50)
-						{
+						if (ovy - un.coordinates.Y * scaleV > 5 && ovy - un.coordinates.Y * scaleV < 50) {
 							y = ovy-(ovy - un.coordinates.Y * scaleV) / 4;
 						}
 						else y = un.coordinates.Y * scaleV;
+
+						var v:Vector2 = new Vector2(x, y);
 					}
 					
 					// Update our coordinates
@@ -204,7 +202,7 @@ package fe.inter
 			}
 			w.visual.x=w.sats.vis.x=vx+quakeX;
 			w.visual.y=w.sats.vis.y=vy+quakeY;
-			Snd.center.setVector(coord.getVector2());
+			Snd.center.setVector(coord);
 			
 			w.celX = (celX - vx) / scaleV;
 			w.celY = (celY - vy) / scaleV;

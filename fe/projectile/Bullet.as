@@ -1,5 +1,5 @@
-package fe.projectile
-{
+package fe.projectile {
+
 	import flash.utils.Dictionary;
 
 	import fe.*;
@@ -13,6 +13,7 @@ package fe.projectile
 	import fe.weapon.Weapon;
 	
 	public class Bullet extends Obj {	
+		
 		//типы реакции на попадание
 		//-1 - промах, пуля летит дальше
 		//0 - попал, пуля исчезла
@@ -82,20 +83,23 @@ package fe.projectile
 		private static var constTileX:int = Tile.tileX;
 		private static var constTileY:int = Tile.tileY;
 
-		public function Bullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true)
-		{
-			if (own==null)
-			{
+		// Constructor
+		public function Bullet(own:Unit, coords:Vector2, visClass:Class=null, addobj:Boolean=true) {
+			
+			if (own==null) {
 				owner=new Unit();
 				loc=World.w.loc;
 			}
-			else
-			{
+			else {
 				owner=own;
 				loc=own.loc;
 			}
-			coordinates.X = begx = nx;
-			coordinates.Y = begy = ny;
+			
+			coordinates.setVector(coords);
+			// TODO: Replace begx/begy with Vector2's
+			begx = coords.X;
+			begy = coords.Y;
+			
 			sloy=2;
 			levitPoss=false;
 			if (visClass) {
@@ -150,8 +154,8 @@ package fe.projectile
 					vis.alpha=liv/4;
 					if (weap) {
 						weap.getBulXY();
-						vis.x = coordinates.X + weap.bulX - begx;
-						vis.y = coordinates.Y + weap.bulY - begy;
+						vis.x = coordinates.X + weap.bulCoords.X - begx;
+						vis.y = coordinates.Y + weap.bulCoords.Y - begy;
 					}
 				}
 			}
@@ -189,7 +193,7 @@ package fe.projectile
 			return 'Error bullet '+(owner?owner.nazv:'???')+' '+(weap?weap.nazv:'???');
 		}
 		
-		public override function bindMove(nx:Number, ny:Number, ox:Number = -1, oy:Number = -1) {
+		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
 			
 			if (ox >= 0) {
 				coordinates.X = ox;
@@ -199,9 +203,7 @@ package fe.projectile
 				coordinates.Y = oy;
 			}
 			
-			velocity.X = nx - coordinates.X;
-			velocity.Y = ny - coordinates.Y;
-
+			velocity.setVector(v.subtractVectors(coordinates));
 			vel = velocity.magnitude();
 			
 			if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
@@ -225,7 +227,7 @@ package fe.projectile
 		//[the bullet hit the target]
 		//[target.udarBullet returns res result]
 		//-1 - [miss]
-		public function popadalo(res:int=0) {
+		public function popadalo(res:int = 0) {
 			if (res < 0) return;			//[missed]
 			
 			if (explRadius) {
@@ -275,13 +277,12 @@ package fe.projectile
 				return true;
 			}
 		}
-		
 
-		public function run(div:int=1):void {
+		public function run(div:int = 1):void {
 			dist += vel / div;
 			var v:Vector2 = new Vector2(velocity.X, velocity.Y);
 			v.divide(div);
-			coordinates.sumVector(v.getVector2());
+			coordinates.sumVectors(v);
 			
 			if (loc.sky && (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY)) {
 				popadalo(0);
@@ -537,7 +538,7 @@ package fe.projectile
 			var rasst = Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
 			if (rasst < er) {
-				b = new Bullet(owner, coordinates.X, coordinates.Y, null);
+				b = new Bullet(owner, coordinates, null);
 				b.inWall = inWall;
 				b.vel=er*(1+rasst/er*4)/3;
 				b.velocity.X = tx / rasst * er / 3;

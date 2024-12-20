@@ -116,7 +116,7 @@ package fe.weapon {
 				}
 			}
 			else {
-				b = new PhisBullet(owner, coordinates.X, coordinates.Y, vBullet);
+				b = new PhisBullet(owner, coordinates, vBullet);
 				b.weap=this;
 				b.vel=getVel(rasstx, rassty, sk*skillConf);
 				b.rot=rot+r+getRot(rasstx, rassty, b.vel);

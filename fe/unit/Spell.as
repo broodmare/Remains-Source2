@@ -163,13 +163,12 @@ package fe.unit
 			cy = ny;
 
 			// [checking the visibility of the target point, if necessary]
-			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy))
-			{
+			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy)) {
 				if (player) World.w.gui.infoText('noVisible', null, null, false);
 				return false;
 			}
 			// [checking and correcting distance]
-			if (dist>0) {
+			if (dist > 0) {
 				var rasst2=(X-cx)*(X-cx)+(Y-cy)*(Y-cy);
 				if (rasst2>dist*dist) {
 					var rasst=Math.sqrt(rasst2);
@@ -181,10 +180,8 @@ package fe.unit
 			// [call the required function]
 			cf();
 
-			if (est == 1)
-			{
-				if (player)
-				{	
+			if (est == 1) {
+				if (player) {	
 					var dmag:Number = magic * gg.pers.warlockDManaMult;
 					var dm:Number = mana * gg.pers.warlockDManaMult;
 					
@@ -193,8 +190,7 @@ package fe.unit
 				}
 				if (snd) Snd.ps(snd, X, Y);
 			}
-			else if (est == 0)
-			{
+			else if (est == 0) {
 				Snd.ps('nomagic');
 				return false;
 			}
@@ -226,16 +222,14 @@ package fe.unit
 		//кинетический рывок
 		private function cast_kdash():void {
 			if (!owner.loc.levitOn) return;
-			var v:Vector.<Number> = new Vector.<Number>(2, true);
-			var vX = v[0];
-			var vY = v[1];
+			var v:Vector2 = new Vector2(v[0], v[1]);
 
-			vX = cx - owner.coordinates.X;
-			vY = cy - owner.coordinates.Y + owner.objectHeight;
+			v.X = cx - owner.coordinates.X;
+			v.Y = cy - owner.coordinates.Y + owner.objectHeight;
 
-			var rasst:Number = Math.sqrt(vX * vX + vY * vY);
+			var rasst:Number = v.magnitude();
 			
-			var d:Object = {x:vX, y:vY};
+			var d:Object = {x:v.X, y:v.Y};
 			var spd:Number = dam * (1 + (power - 1) * 0.5);
 			var prod:int = 15;
 			if (spd > rasst / prod) prod = Math.round(rasst / spd) + 1;
@@ -244,10 +238,8 @@ package fe.unit
 			owner.isLaz = 0;
 			owner.levit = 0;
 			
-			owner.velocity.sumVector(v)
+			owner.velocity.sumVectors(v)
 			// Leaving these here in case this isn't a correct replacement
-			//owner.dx += d.x;
-			//owner.dy += d.y;
 			
 			if (player) {
 				gg.kdash_t = prod;
@@ -264,7 +256,7 @@ package fe.unit
 			{
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
 				
-				var v:Vector2= new Vector2();
+				var v:Vector2 = new Vector2();
 				
 				v.X = un.coordinates.X - X;
 				v.Y = un.coordinates.Y - un.objectHeight / 2 - Y;
@@ -276,7 +268,7 @@ package fe.unit
 				if (sila > dam * power) sila = dam * power;
 				v.divide(rad2);
 				v.multiply(sila);
-				un.velocity.setVector(v.getVector2())
+				un.velocity.setVector(v)
 				
 				un.stun+=int(Math.random()*power*dam);
 				un.t_throw=30;

@@ -1,6 +1,7 @@
 package fe.unit {
 
 	import fe.*;
+	import fe.util.Vector2;
 	import fe.serv.Interact;
 	import fe.loc.Location;
 	import fe.weapon.Weapon;
@@ -233,9 +234,17 @@ package fe.unit {
 				destroyExpl=currentWeapon.destroy;
 				explRadius=currentWeapon.explRadius;
 			}
-			if (currentWeapon) bul=new Bullet(this,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,null,false);
-			else bul=new Bullet(this, coordinates.X, coordinates.Y - 20, null, false);
-			bul.iExpl(damageExpl,destroyExpl,explRadius);
+			
+			if (currentWeapon) {
+				bul = new Bullet(this, currentWeapon.coordinates, null, false);
+			}
+			else {
+				var v:Vector2 = new Vector2(coordinates.X, coordinates.Y);
+				v.Y -= 20; // Apply an offset
+				bul = new Bullet(this, v, null, false);
+			}
+			
+			bul.iExpl(damageExpl, destroyExpl, explRadius);
 		}
 		
 		//активировать

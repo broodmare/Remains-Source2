@@ -23,8 +23,8 @@ package fe.projectile
 		
 		public var sndHit:String='';
 
-		public function PhisBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null) {
-			super(own,nx,ny,visClass);
+		public function PhisBullet(own:Unit, v:Vector2, visClass:Class=null) {
+			super(own, v, visClass);
 			ddy=World.ddy;
 			massa=0.1;
 			warn=1;

@@ -95,7 +95,7 @@ package fe.entities
 			}
 			if (isMove) {
 				// Apply velocity
-				this.coordinates.sumVector(velocity.getVector2());
+				this.coordinates.sumVectors(velocity);
 				velocity.Y += ddy;
 				r += dr;
 				vis.x = this.coordinates.X;

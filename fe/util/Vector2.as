@@ -36,10 +36,11 @@ package fe.util {
             vector[1] = y;
         }
         // Replace the entire vector at once
-        public function setVector(v:Vector.<Number>):void {
-            vector[0] = v[0];
-            vector[1] = v[1];
+        public function setVector(v:Vector2):void {
+            vector[0] = v.X;
+            vector[1] = v.Y;
         }
+
 
         // Adds the passed value to each index of the vector
         public function sum(n:Number):void {
@@ -47,14 +48,15 @@ package fe.util {
             vector[1] += n;
         }
         // Adds the passed vector to the stored vector
-        public function sumVector(v:Vector.<Number>):void {
-            vector[0] += v[0];
-            vector[1] += v[1];
+        public function sumVectors(v:Vector2):void {
+            vector[0] += v.X;
+            vector[1] += v.Y;
         }
         // Subtracts the passed vector from the stored vector
-        public function subtractVectors(v:Vector.<Number>):void {
-            vector[0] -= v[0];
-            vector[1] -= v[1];
+        public function subtractVectors(v:Vector2):Vector2 {
+            vector[0] -= v.X;
+            vector[1] -= v.Y;
+            return this;
         }
 
         // Multiplies the stored vector by the passed vector

@@ -155,7 +155,7 @@ package fe.graph
 				if (rdx) p.velocity.X += (Math.random()-0.5) * rdx;
 				if (rdy) p.velocity.Y += (Math.random()-0.5) * rdy;
 
-				p.velocity.sumVector(velocity.getVector2())
+				p.velocity.sumVectors(velocity)
 				if (rdr) p.dr=(Math.random()-0.5)*rdr;
 				if (rot) p.r=Math.random()*360;
 				if (param) {
@@ -163,7 +163,7 @@ package fe.graph
 					if (param.ry) p.coordinates.Y+=(Math.random()-0.5)*param.ry;
 					
 					if (param.velocity) {
-						p.velocity.sumVector(param.velocity);
+						p.velocity.sumVectors(param.velocity);
 					}
 					
 					if (param.dr) p.dr+=param.dr;

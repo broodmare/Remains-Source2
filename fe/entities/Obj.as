@@ -4,6 +4,7 @@ package  fe.entities
 	import flash.display.MovieClip;
 	import flash.geom.ColorTransform;
 	
+	import fe.util.Vector2;
 	import fe.World;
 	import fe.serv.Interact;
 	import fe.projectile.Bullet;
@@ -147,9 +148,8 @@ package  fe.entities
 		}
 		
 		//принудительное движение
-		public function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
-			coordinates.X = nx;
-			coordinates.Y = ny;
+		public function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
+			coordinates = v;
 			centerObj();
 		}
 		

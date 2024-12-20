@@ -25,7 +25,7 @@ package fe.weapon
 		public var trasser:Trasser;
 		public var owner:Unit;
 		public var rot:Number;
-		public var bulX:Number=0, bulY:Number=0;
+		public var bulCoords:Vector2 = new Vector2(0, 0);
 		
 		//[visual]
 		public var svis:String, svisv:String;	// [the weapon itself]
@@ -811,34 +811,26 @@ package fe.weapon
 		}
 		
 		// [Possibility of attack]
-		public function attackPos():Boolean
-		{
+		public function attackPos():Boolean {
 			return t_attack <= 0 && t_reload <= 0;
 		}
 		
-		public function getBulXY():void
-		{
-			try
-			{
-				if (vis && vis.emit && vis.parent)
-				{
+		public function getBulXY():void {
+			try {
+				if (vis && vis.emit && vis.parent) {
 					var p:Point=new Point(vis.emit.x,vis.emit.y);
 					var p1:Point=vis.localToGlobal(p);
 					p1=vis.parent.globalToLocal(p1);
-					bulX = p1.x;
-					bulY = p1.y;
+					bulCoords.X = p1.x;
+					bulCoords.Y = p1.y;
 				}
-				else
-				{
-					bulX = coordinates.X;
-					bulY = coordinates.Y;
+				else {
+					bulCoords.setVector(coordinates);
 				}
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace("ERROR: (00:13)");
-				bulX = coordinates.X;
-				bulY = coordinates.Y;
+				bulCoords.setVector(coordinates);
 			}
 		}
 		
@@ -875,11 +867,11 @@ package fe.weapon
 			
 			for (var i = 0; i < kol; i++) {
 				if (navod) {
-					b = new SmartBullet(owner, bulX, bulY, vBullet);
+					b = new SmartBullet(owner, bulCoords, vBullet);
 					(b as SmartBullet).setCel(World.w.gg, navod);
 				}
 				else {
-					b = new Bullet(owner, bulX, bulY, vBullet);
+					b = new Bullet(owner, bulCoords, vBullet);
 				}
 
 				b.weap = this;
@@ -889,7 +881,7 @@ package fe.weapon
 				{
 					try
 					{
-						if (loc.getAbsTile(bulX,bulY).phis) b.inWall = true;
+						if (loc.getAbsTile(bulCoords.X, bulCoords.Y).phis) b.inWall = true;
 					}
 					catch(err)
 					{ 

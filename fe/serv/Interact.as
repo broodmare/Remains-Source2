@@ -808,7 +808,7 @@ package fe.serv
 			if (saveExpl) return;
 			var un:Unit=new Unit();
 			un.loc=loc;
-			var bul:Bullet=new Bullet(un,owner.coordinates.X, owner.coordinates.Y,null,false);
+			var bul:Bullet=new Bullet(un, owner.coordinates, null, false);
 			bul.iExpl(damage,destroy,explRadius);
 			setAct('expl',1);
 			if (expl) {
@@ -1084,12 +1084,13 @@ package fe.serv
 					if (moveP) sound('move');
 					else sound('stop');
 				}
-				var nx:Number=begX+(endX-begX)*f;
-				var ny:Number=begY+(endY-begY)*f;
-				owner.bindMove(nx,ny);
-				coordinates.X = nx;
-				coordinates.Y = ny;
-				t_move+=dt_move;
+				
+				var v:Vector2 = new Vector2( (begX + (endX - begX) * f), (begY + (endY - begY) * f) );
+				owner.bindMove(v);
+				coordinates.setVector(v);
+				
+				t_move += dt_move;
+				
 				if (t_move>=(tStay+tMove)*2) t_move=0;
 			}
 		}
