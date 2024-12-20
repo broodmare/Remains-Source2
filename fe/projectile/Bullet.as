@@ -189,14 +189,26 @@ package fe.projectile
 			return 'Error bullet '+(owner?owner.nazv:'???')+' '+(weap?weap.nazv:'???');
 		}
 		
-		public override function bindMove(nx:Number,ny:Number, ox:Number=-1, oy:Number=-1) {
-			if (ox >= 0) coordinates.X = ox;
-			if (oy >= 0) coordinates.Y = oy;
-			velocity.subtractVectors(coordinates.getVector2());
-			vel = Math.sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
-			if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
+		public override function bindMove(nx:Number, ny:Number, ox:Number = -1, oy:Number = -1) {
+			
+			if (ox >= 0) {
+				coordinates.X = ox;
+			}
+			
+			if (oy >= 0) {
+				coordinates.Y = oy;
+			}
+			
+			velocity.X = nx - coordinates.X;
+			velocity.Y = ny - coordinates.Y;
+
+			vel = velocity.magnitude();
+			
+			if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+				run();
+			}
 			else {
-				var div = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y))/World.maxdelta)+1;
+				var div = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
 				for (var i:int = 0; i < div; i++) {
 					run(div);
 				}

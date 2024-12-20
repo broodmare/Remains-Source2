@@ -1,5 +1,5 @@
-package  fe
-{
+package  fe {
+
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
@@ -24,8 +24,8 @@ package  fe
 	import fe.unit.Invent;
 	import fe.unit.Pers;
 	
-	public class World
-	{
+	public class World {
+
 		public static var w:World;
 		
 		public var playerMode:String;	//Режим флеш-плеера
@@ -128,7 +128,7 @@ package  fe
 		public var errorShowOpt:Boolean=true;
 		public var quakeCam:Boolean=true;	//тряска камеры
 		
-		public var vsWeaponNew:Boolean=true;	//автоматически брать новое оружие, если есть место
+		public var vsWeaponNew:Boolean=true;	// [Automatically pick up a new weapon if there is room]
 		public var vsWeaponRep:Boolean=true;	//автоматически брать оружие для ремонта
 		public var vsAmmoAll:Boolean=true;		
 		public var vsAmmoTek:Boolean=true;		
@@ -168,8 +168,8 @@ package  fe
 		public var langs:Array;							// An array of objects representing langauges. Each obj has two properties, 'file' - the filename, and 'nazv' - the full name of each language, eg. 'english'
 		public var kolLangs:int = 0;					// How many language objects are in lang.
 
-		public var tld:TextLoader;	// Default user language
-		public var tl:TextLoader;
+		public var tld:TextLoader;	// Default language
+		public var tl:TextLoader;	// Selected language
 
 		public var textLoaded:Boolean=false;
 		public var textLoadErr:Boolean=false;
@@ -180,12 +180,8 @@ package  fe
 		public var textProgressLoad:Number=0;
 		
 		//Файлы
-		public var textureURL:String;
 		public var spriteURL:String;
 		public var sprite1URL:String;
-		public var musicKol:int=0;
-		public var musicLoaded:int=0;
-		
 		
 		//public var ressoundURL:String;
 		public var langURL:String;
@@ -210,11 +206,11 @@ package  fe
 		public var kolLandsLoaded:int=0;
 		public var allLandsLoaded:Boolean=false;
 		
-		public var comLoad:int=-1;	//команда на загрузку
-		public var clickReq:int=0;	//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
-		public var ng_wait:int=0;	//начало новой игры, ожидание
+		public var comLoad:int=-1;		//команда на загрузку
+		public var clickReq:int=0;		//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
+		public var ng_wait:int=0;		//начало новой игры, ожидание
 		public var loadScreen:int=-1;	//загрузочный экран
-		public var autoSaveN:int=0;	//номер ячейки автосейва
+		public var autoSaveN:int=0;		//номер ячейки автосейва
 		public var log:String='';
 
 		//var date:Date,
@@ -223,26 +219,25 @@ package  fe
 		
 		public var landError:Boolean = false;
 
-
+		// Constructor
 		public function World(nmain:Sprite, paramObj:Object) {
+
 			World.w = this;
 			//техническая часть
 			//Узнать тип плеера и адрес, с которого он запущен
 			playerMode = Capabilities.playerType;
 
 			//файлы
-			
-			textureURL = 'texture.swf';
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
 			langURL = 'Modules/core/Language/lang.xml';
 			langFolder = 'Modules/core/Language/'
 			landPath = 'Rooms/';
-			if (testMode) fileVersion=Math.random()*100000;
 
-			main=nmain;
-			swfStage=main.stage;
-			swfStage.tabChildren=false;
+			// Grab a reference to the stage container
+			main = nmain;
+			swfStage = main.stage;
+			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
 			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
@@ -256,9 +251,6 @@ package  fe
 			LootGen.init();
 			Form.setForms();
 			Emitter.init();
-
-
-			// Rooms were initialized here for online players only.
 
 			//создание элементов графики
 			vwait = new visualWait();
@@ -308,7 +300,6 @@ package  fe
 			var savePath:String = null;
 			configObj = SharedObject.getLocal('config', savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
-
 		}
 
 //=============================================================================================================
@@ -316,8 +307,7 @@ package  fe
 //=============================================================================================================
 		
 		// The list of languages 'lang.xml' loaded successfully.
-		private function onCompleteLoadLang(event:Event):void
-		{
+		private function onCompleteLoadLang(event:Event):void {
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
 
@@ -328,8 +318,7 @@ package  fe
 		}
 		
 		// The list of languages 'lang.xml' did not load successfully.
-		private function onErrorLoadLang(event:IOErrorEvent):void
-		{
+		private function onErrorLoadLang(event:IOErrorEvent):void {
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
 			
@@ -339,11 +328,11 @@ package  fe
         }
 		
 		//создать список языков, инициировать загрузку языков
-		private function initLangs(err:Boolean = false):void
-		{
-			if (err) { // Failsafe if lang.xml couldn't be loaded correctly. 
-				load_log += 'ERROR: Initializing languages failed, using failsafes!.\n';
-
+		private function initLangs(err:Boolean = false):void {
+			// Failsafe default langauges if lang.xml couldn't be loaded correctly. 
+			if (err) { 
+				trace("World.as/initLangs() - Error: Couldn't initialize langauges, using defaults");
+				load_log += 'ERROR: Initializing languages failed, using defaults\n';
 				langsXML =
 				<all>
 					<lang id='ru' file='text_ru.xml'>Русский</lang>
@@ -362,10 +351,13 @@ package  fe
 				kolLangs++;										//Increase the number of languages.
 				
 			}
-			if (langs[currentLanguage] == null) currentLanguage = userDefaultLanguage;
-
+			
+			if (langs[currentLanguage] == null) {
+				currentLanguage = userDefaultLanguage;
+			}
 
 			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
+			
 			if (currentLanguage == userDefaultLanguage) {
                 tl = tld;													// Otherwise, write the default user language into tl.
             }
@@ -375,19 +367,15 @@ package  fe
             }
 		}
 		
-		//загрузка языка закончена
-		public function textsLoadOk():void
-		{
-			if (tl.loaded)
-			{
+		// [Language loading complete]
+		public function textsLoadOk():void {
+			if (tl.loaded) {
 				textLoaded = true;
 				Res.currentLanguageData = tl.xmlData;
 			}
-			if (tl.errLoad)
-			{
+			if (tl.errLoad) {
 				currentLanguage = userDefaultLanguage;
-				if (tld.loaded)
-				{
+				if (tld.loaded) {
 					textLoaded = true;
 					Res.currentLanguageData = tld.xmlData;
 				}
@@ -395,29 +383,27 @@ package  fe
 			}
 		}
 		
-		//выбрать новый язык
-		public function defuxLang(nid:String):void
-		{
+		// [Choose a new language]
+		public function defuxLang(nid:String):void {
 			currentLanguage = nid;
 			textLoadErr = false;
 			if (nid == userDefaultLanguage) {
                 Res.currentLanguageData = Res.fallbackLanguageData;
                 pip.updateLang();
-            } else {
+            }
+			else {
                 textLoaded = false;
                 tl = new TextLoader(langs[nid].file);
             }
 			saveConfig();
 		}
 		
-		public function init2():void
-		{
-
+		public function init2():void {
 
 			if (consol) return;
 			if (configObj) lastCom=configObj.data.lastCom;
 			consol = new Consol(vconsol, lastCom);
-			//сейвы и конфиг
+			// [Saves and config]
 			saveArr = [];
 
 			var i:int;
@@ -438,17 +424,14 @@ package  fe
 			if (configObj.data.showFavs!=null) showFavs=configObj.data.showFavs;
 			if (configObj.data.quakeCam!=null) quakeCam=configObj.data.quakeCam;
 			if (configObj.data.errorShowOpt!=null) errorShowOpt=configObj.data.errorShowOpt;
-			if (configObj.data.app)
-			{
+			if (configObj.data.app) {
 				app.load(configObj.data.app);
 				app.setTransforms();
 			}
 
 			koladv = Res.currentLanguageData.advice[0].a.length();
 
-
-			if (configObj.data.nadv)
-			{
+			if (configObj.data.nadv) {
 				nadv=configObj.data.nadv;
 				configObj.data.nadv++;
 				if (configObj.data.nadv>=koladv) configObj.data.nadv=0;
@@ -476,12 +459,11 @@ package  fe
 			pip=new PipBuck(vpip);
 			if (!sysCur) Mouse.cursor='arrow';
 			
-			//загрузка карт локаций
+			// [Loading location maps]
 			landData = [];
 			
 			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
-			for each(var xl in xmlList)
-			{
+			for each(var xl in xmlList) {
 				if (!testMode && xl.@test>0) continue;
 				var ll:LandLoader=new LandLoader(xl.@id);
 				if (!(xl.@test>0)) kolLands++;
@@ -492,10 +474,8 @@ package  fe
 			load_log+='Stage 2 Ok\n';
 		}
 
-		public function roomsLoadOk():void
-		{
-			if (!roomsLoad)
-			{
+		public function roomsLoadOk():void {
+			if (!roomsLoad) {
 				allLandsLoaded = true;
 				return;
 			}
@@ -504,15 +484,13 @@ package  fe
 		}
 
 		//Пауза и вызов пипбака если потерян фокус
-		public function onDeactivate(event:Event):void
-		{
+		public function onDeactivate(event:Event):void {
 			if (allStat==1) pip.onoff(11);
 			if (allStat>0 && !alicorn) saveGame();
 		}
 		
 		//Пауза и вызов пипбака если изменён размер окна
-		public function resizeScreen():void
-		{
+		public function resizeScreen():void {
 			if (allStat>0) cam.setLoc(loc);
 			if (gui) gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
@@ -520,8 +498,7 @@ package  fe
 			if (stand) stand.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			vblack.width=swfStage.stageWidth;
 			vblack.height=swfStage.stageHeight;
-			if (loadScreen<0)
-			{
+			if (loadScreen<0) {
 				vwait.x=swfStage.stageWidth/2;
 				vwait.y=swfStage.stageHeight/2;
 			}
@@ -529,7 +506,7 @@ package  fe
 		}
 		
 //=============================================================================================================
-//			Игра
+//			Game
 //=============================================================================================================
 		
 		var ng:Boolean;
@@ -537,33 +514,37 @@ package  fe
 		var opt:Object;
 		var newName:String;
 
-		//Начать новую игру или загрузить сейв. Передаётся номер слота или -1 для новой игры
-		//Этап 0 - создать HUD, ЗПС и пипбак
-		//Инициализировать game
-		public function newGame(nload:int=-1, nnewName:String='LP', nopt:Object=null):void
-		{
-			if (testMode && !chitOn)
-			{
-				vwait.progres.text='error';
+		// [Start a new game or load a save. The slot number is transmitted or -1 for a new game]
+		// [Stage 0 - create HUD, ZPS and pipbuck]
+		// [Initialize game]
+		public function newGame(nload:int=-1, nnewName:String='LP', nopt:Object=null):void {
+			if (testMode && !chitOn) {
+				vwait.progres.text = 'error';
 				return;
 			}
+
 			time___metr();
 			allStat=-1;
 			opt=nopt;
 			newName=nnewName;
 			game=new Game();
-			if (!roomsLoad) allLandsLoaded=true;
-			ng=nload<0;
-			if (ng)
-			{
-				if (opt && opt.autoSaveN)
-				{
+			
+			if (!roomsLoad) {
+				allLandsLoaded=true;
+			}
+			
+			ng = nload < 0;
+			
+			if (ng) {
+				if (opt && opt.autoSaveN) {
 					autoSaveN=opt.autoSaveN;
 					saveObj=saveArr[autoSaveN];
 					nload=autoSaveN;
-				} else nload=0;
+				}
+				else nload=0;
 				saveObj.clear();
 			}
+			
 			//создать GUI
 			gui=new GUI(vgui);
 			gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
@@ -577,17 +558,20 @@ package  fe
 			//создать игру
 			if (nload==99) {
 				data=loaddata;	//была загрузка из файла
-			} else {
-				data=saveArr[nload].data; //была загрузка из слота
 			}
-			if (ng)	game.init(null, opt); else game.init(data.game);
+			else {
+				data = saveArr[nload].data; //была загрузка из слота
+			}
+			
+			if (ng)	game.init(null, opt);
+			else game.init(data.game);
+			
 			ng_wait=1;
 			time___metr('Game init');
 		}
 		
 		//этап 1 - создать персонажа и инвентарь
-		public function newGame1():void
-		{
+		public function newGame1():void {
 			if (!ng) app.load(data.app);
 			if (data.hardInv==true) hardInv=true; else hardInv=false;
 			if (opt && opt.hardinv) hardInv=true;
@@ -604,20 +588,18 @@ package  fe
 			invent=new Invent(gg, data.invent, opt);
 			stand=new Stand(vstand,invent);
 			gg.attach();
-			time___metr('Персонаж');
+			time___metr('Character');
 			//номер ячейки автосейва
 			if (!ng) if (data.n!=null) autoSaveN=data.n;
 			Unit.txtMiss=Res.guiText('miss');
 			
 			waitLoadClick();
 			ng_wait=2;
-			time___metr('Местность');
+			time___metr('Terrain');
 		}
 		
 		//этап 2 - создать местность и войти в неё
-		public function newGame2():void
-		{
-
+		public function newGame2():void {
 			//визуальная часть
 			resizeScreen();
 			offLoadScreen();
@@ -638,8 +620,7 @@ package  fe
 			ng_wait=0;
 		}
 		
-		public function loadGame(nload:int=0):void
-		{
+		public function loadGame(nload:int=0):void {
 			time___metr();
 			comLoad=-1;
 			if (loc) loc.out();
@@ -684,7 +665,7 @@ package  fe
 			gui.allOn();
 			t_die=0;
 			t_battle=0;
-			time___metr('Персонаж');
+			time___metr('Character');
 			//войти в текущую местность
 			game.enterToCurLand();//!!!!
 			log='';
@@ -860,7 +841,7 @@ package  fe
 				}
 			}
 			
-			//If the game has started and is paused too
+			//If the game has started, but paused
 			if (allStat>=1) {
 				cam.calc(gg);
 				gui.step();
@@ -910,6 +891,7 @@ package  fe
 //=============================================================================================================
 //			Функции глобального взаимодействия
 //=============================================================================================================
+		
 		public function cur(ncur:String='arrow'):void {
 			if (sysCur) return;
 			if (pip.active || stand.active || comLoad>=0) ncur='arrow';
@@ -965,11 +947,11 @@ package  fe
 			verror.visible=true;
 		}
 		
-		//[Action measurement time]
-		public function time___metr(message:String = null):void { // TODO: 'S' IS USED A BOTH A STRING AND NUMBER
+		// [Action measurement time]
+		public function time___metr(message:String = null):void {
 			d2 = getTimer();
 			var timeDif:int = d2 - d1;
-			if (message != null) trace(message + ': ' + timeDif.toString());
+			if (message != null) trace("time__metr -- " + message + ': ' + timeDif.toString());
 			d1 = d2;
 		}
 		
@@ -980,6 +962,7 @@ package  fe
 //=============================================================================================================
 //			Экран загрузки
 //=============================================================================================================
+		
 		//установить экран загрузки
 		public function setLoadScreen(n:int=-1):void {
 			loadScreen=n;
@@ -1063,8 +1046,7 @@ package  fe
 		}
 		
 		//убрать сцену
-		public function unshowScene():void
-		{
+		public function unshowScene():void {
 			catPause=false;
 			visual.visible=true;
 			gui.allOn();
@@ -1073,35 +1055,31 @@ package  fe
 		}
 		
 		//финальная заставка или gameover
-		public function endgame(n:int=0):void
-		{
+		public function endgame(n:int=0):void {
 			vwait.visible=vfon.visible = false;
 			var s:String;
-			if (n==1)
-			{
+			if (n==1) {
 				showScene('gameover');
 				s=Res.lpName(Res.guiText('end_bad'));
 			} 
-			else if (pers.rep>=pers.repGood)
-			{
+			else if (pers.rep>=pers.repGood) {
 				showScene('endgame');
 				s=Res.lpName(Res.guiText('end_good'));
 				Snd.playMusic('music_fall_2');
 			} 
-			else 
-			{
+			else {
 				showScene('endgame');
 				s=Res.lpName(Res.guiText('end_norm'));
 			}
 
 			vscene.sc.txt.htmlText = s;
-
 		}
+
 //=============================================================================================================
 //			Сейвы и конфиг
 //=============================================================================================================
-		public function saveToObj(data:Object):void
-		{
+		
+		public function saveToObj(data:Object):void {
 			var now:Date = new Date();
 			data.game=game.save();
 			data.pers=pers.save();
@@ -1114,23 +1092,20 @@ package  fe
 			data.est=1;
 		}
 		
-		public function saveGame(n:int=-1):void
-		{
-			if (n==-2)
-			{
+		public function saveGame(n:int=-1):void {
+			if (n==-2) {
 				n=autoSaveN;
 				var save=saveArr[n];
 				saveToObj(save.data);
 				save.flush();
-				trace('Конец');
+				trace('World.as/saveGame() - End');
 				return;
 			}
 			if (t_save<100 && n==-1 && !pers.hardcore) return;
 			if (pip.noAct) return;
 			if (n==-1) n=autoSaveN;
 			var save=saveArr[n];
-			if (save is SharedObject)
-			{
+			if (save is SharedObject) {
 				saveToObj(save.data);
 				var r=save.flush();
 				trace(r);

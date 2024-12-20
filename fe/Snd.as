@@ -57,8 +57,8 @@ package fe {
 		private static var finishedLoading:Boolean = false;
 		private static var totalSoundsToLoad:int = -1;
 		private static var totalSoundsLoaded:int = 0;
-		private static var totalSongsToLoad:int = -1;
-		private static var totalSongsLoaded:int = 0;
+		public static var totalSongsToLoad:int = -1;	// (Accessed by MainMenu)
+		public static var totalSongsLoaded:int = 0;		// (Accessed by MainMenu)
 		private static var startedMainMenuMusic:Boolean = false;
 		
 		public static function initSnd():void {

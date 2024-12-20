@@ -202,6 +202,7 @@ package fe.graph
 			createCursors();
 		}
 		
+		// Checks whether all resources have finished loading
 		public function checkLoaded(n:int):void {
 			
 			// 0 is tile and sky textures

@@ -1,5 +1,5 @@
-package fe 
-{
+package fe {
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.LoaderInfo;
@@ -18,26 +18,27 @@ package fe
 	import fe.stubs.visMainMenu;
 	import fe.stubs.butLang;
 
-	public class MainMenu 
-	{
-		public var version:String = '1.0.2';
+	public class MainMenu {
+
+		public var version:String = '1.1a';
 		private var mainMenuMovieClip:MovieClip;
-		public var main:Sprite;
+		public var main:Sprite;	// The stage everything is contained in
 		private var world:World;
-		public var active:Boolean = true;
+		public var active:Boolean = true;	// The main menu is visible and needs to update
 		public var loaded:Boolean = false;
 		private var newGameMode:int = 2;
 		private var newGameDif:int = 2;
 		private var loadCell:int = -1;
-		private var loadReg:int = 0;	//режим окна загрузки, 0 - загрузка, 1 - выбор слота для автосейва
+		private var loadReg:int = 0;	// [Loading window mode, 0 - loading, 1 - selecting slot for autosave]
 		private var command:int = 0;
 		private var com:String = '';
-		private var mmp:MovieClip;//для пипбака
+		private var mmp:MovieClip; // [For pipbuck]
 		private var pip:PipBuck;
 		private var displ:Displ;
 		private var animOn:Boolean = true;
 		private var langReload:Boolean = false;
 
+		// Buttons for each language option
 		private var butsLang:Array;
 		
 		private var stn:int=0;
@@ -48,37 +49,46 @@ package fe
 		private var format:TextFormat = new TextFormat();
 		
 		private var file:FileReference = new FileReference();
-		private var arr:Array=[];
+		private var saveFiles:Array=[];
 		
 		private var mainTimer:Timer;
 
+		// Loading state flags
 		private var part1Loaded:Boolean = false;
 		private var part2Loaded:Boolean = false;
 
+		// Constructor
 		public function MainMenu(nmain:Sprite) 
 		{
-			trace('LOADING SETTINGS');
+			// Load the settings file and store it in memory
 			Settings.initializeSettings();
-			trace('LOADING XML DATA FROM EXTERNAL SOURCES');
+
+			// Load the game's data files into memory
 			XMLData.initializeModules();
 
+			// Load all music and sounds
+			Snd.initSnd();
+
+			// Save a reference to the stage container
 			main = nmain;
 
+			// Load the main menu moveclip object and hide some of it's children
 			mainMenuMovieClip = new visMainMenu();
-			mainMenuMovieClip.dialLoad.visible=false;
-			mainMenuMovieClip.dialNew.visible=false;
-			mainMenuMovieClip.dialAbout.visible=false;
-
-			main.stage.addEventListener(Event.RESIZE, resizeDisplay); 
-			main.stage.addEventListener(Event.ENTER_FRAME, mainStep);
-			
+			mainMenuMovieClip.dialLoad.visible = false;
+			mainMenuMovieClip.dialNew.visible = false;
+			mainMenuMovieClip.dialAbout.visible = false;
 			showButtons(false);
 
+			// Add a listener for what to do when the window resizes
+			main.stage.addEventListener(Event.RESIZE, resizeDisplay);
+			// Add a listener for what to do every new frame (our main loop)
+			main.stage.addEventListener(Event.ENTER_FRAME, mainStep);
+			
+			// Setup complete, show the main menu
 			mainMenuOn();
 		}
 
-		private function mainMenu2():void
-		{
+		private function mainMenu2():void {
 			trace('ALL XML LOADED, STARTING LOADING PART 2!');
 
 			var paramObj:Object = LoaderInfo(main.root.loaderInfo).parameters;
@@ -87,7 +97,6 @@ package fe
 			
 			mainMenuMovieClip.testtest.visible=world.testMode;
 			mainMenuMovieClip.info.visible=false;
-			Snd.initSnd();
 			setMenuSize();
 			displ = new Displ(mainMenuMovieClip.pipka, mainMenuMovieClip.groza);
 			mainMenuMovieClip.groza.visible=false;
@@ -116,36 +125,39 @@ package fe
 			mainMenuMovieClip.link.l2.styleSheet=style;
 		}
 
-		private function mainMenuOn():void
-		{
+		private function mainMenuOn():void {
 			active = true;
 			menuButtonListeners(true);
 
 			mainMenuMovieClip.adv.addEventListener(MouseEvent.CLICK, funAdv);
 			mainMenuMovieClip.adv.addEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
 			
-			if (!main.contains(mainMenuMovieClip)) main.addChild(mainMenuMovieClip);
+			if (!main.contains(mainMenuMovieClip)) {
+				main.addChild(mainMenuMovieClip);
+			}
+
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
 		}
 
-		private function mainMenuOff():void
-		{
+		private function mainMenuOff():void {
 			active = false;
 			menuButtonListeners(false);
 
 			mainMenuMovieClip.adv.removeEventListener(MouseEvent.CLICK, funAdv);
 			mainMenuMovieClip.adv.removeEventListener(MouseEvent.RIGHT_CLICK, funAdvR);
 
-
 			file.removeEventListener(Event.SELECT, selectHandler);
 			file.removeEventListener(Event.COMPLETE, completeHandler);
+
 			for each(var m:MovieClip in butsLang)  {
 				if (m) m.removeEventListener(MouseEvent.CLICK, funLang);
 			}
+			
 			if (main.contains(mainMenuMovieClip)) {
 				main.removeChild(mainMenuMovieClip);
 			}
+			
 			world.vwait.visible = true;
 			world.vwait.progres.text = Res.guiText('loading');
 		}
@@ -321,8 +333,7 @@ package fe
 			}
 		}
 		
-		private function resizeDisplay(event:Event):void
-		{
+		private function resizeDisplay(event:Event):void {
 			world.resizeScreen();
 			if (active) setMenuSize();
 		}
@@ -336,15 +347,15 @@ package fe
 			mainMenuMovieClip.dialLoad.info.text='';
 			mainMenuMovieClip.dialLoad.nazv.text='';
 			mainMenuMovieClip.dialLoad.pers.visible=false;
-			arr=[];
-			for (var i:int = 0; i<=world.saveKol; i++) {
-				var slot:MovieClip=mainMenuMovieClip.dialLoad['slot'+i];
-				var save:Object=World.w.getSave(i);
-				var obj:Object=fe.inter.PipPageOpt.saveObj(save,i);
-				arr.push(obj);
-				slot.id.text=i;
-				slot.id.visible=false;
-				if (save!=null && save.est!=null) {
+			saveFiles = [];
+			for (var i:int = 0; i <= world.saveKol; i++) {
+				var slot:MovieClip = mainMenuMovieClip.dialLoad['slot' + i];
+				var save:Object = World.w.getSave(i);
+				var obj:Object = fe.inter.PipPageOpt.saveObj(save, i);
+				saveFiles.push(obj);
+				slot.id.text = i;
+				slot.id.visible = false;
+				if (save != null && save.est != null) {
 					slot.nazv.text=(i==0)?Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+i);
 					slot.ggName.text=(save.pers.persName==null)?'-------':save.pers.persName;
 					if (save.pers.level!=null) slot.ggName.text+=' ('+save.pers.level+')';
@@ -362,7 +373,7 @@ package fe
 			}
 			mainMenuMovieClip.dialLoad.butCancel.addEventListener(MouseEvent.CLICK, funLoadCancel);
 			mainMenuMovieClip.dialLoad.butFile.addEventListener(MouseEvent.CLICK, funLoadFile);
-			animOn=false;
+			animOn = false;
 		}
 		
 		private function mainLoadOff():void {
@@ -378,7 +389,7 @@ package fe
 					slot.removeEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
 				}
 			}
-			animOn=true;
+			animOn = true;
 		}
 		
 		private function funLoadCancel(event:MouseEvent):void {
@@ -397,9 +408,8 @@ package fe
 			else com='load';
 		}
 
-		private function funOverSlot(event:MouseEvent):void
-		{
-			fe.inter.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mainMenuMovieClip.dialLoad);
+		private function funOverSlot(event:MouseEvent):void {
+			fe.inter.PipPageOpt.showSaveInfo(saveFiles[event.currentTarget.id.text], mainMenuMovieClip.dialLoad);
 		}
 		
 		private function funLoadFile(event:MouseEvent):void {
@@ -407,24 +417,21 @@ package fe
 			file.browse(ffil);
 		}
 
-		private function selectHandler(event:Event):void 
-		{
+		private function selectHandler(event:Event):void {
             file.load();
         }
 
-		private function completeHandler(event:Event):void 
-		{
-			var obj:Object=file.data.readObject();
-			if (obj && obj.est==1){
-				loadCell=99;
-				world.loaddata=obj;
+		private function completeHandler(event:Event):void {
+			var obj:Object = file.data.readObject();
+			if (obj && obj.est == 1){
+				loadCell = 99;
+				world.loaddata = obj;
 				mainLoadOff();
 				mainMenuOff();
-				command=3;
-				com='load';
+				command = 3;
+				com = 'load';
 				return;
 			}
-
        }		
 		
 		//новая игры
@@ -434,71 +441,62 @@ package fe
 			mainMenuMovieClip.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
 			mainMenuMovieClip.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
 			var kolDifs:int = 5;
-			for (var i:int = 0; i<kolDifs; i++)
-			{
+			for (var i:int = 0; i<kolDifs; i++) {
 				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
 				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
 			var kolOpts:int = 6;
-			for (i = 1; i<=kolOpts; i++)
-			{
+			for (i = 1; i<=kolOpts; i++) {
 				mainMenuMovieClip.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 				mainMenuMovieClip.dialNew['checkOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 			}
 			updNewMode();
 			mainMenuMovieClip.dialNew.pers.gotoAndStop(2);
 			mainMenuMovieClip.dialNew.pers.gotoAndStop(1);
-			animOn=false;
+			animOn = false;
 		}
 
-		private function mainNewOff():void
-		{
+		private function mainNewOff():void {
 			mainMenuMovieClip.dialNew.visible=false;
 			if (mainMenuMovieClip.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
 			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
 			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) {
 				mainMenuMovieClip.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
 				var kolDifs:int = 5;
-				for (var i:int = 0; i<kolDifs; i++)
-				{
+				for (var i:int = 0; i<kolDifs; i++) {
 					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.CLICK, funNewDif);
 					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
 				}
 			}
-			animOn=true;
+			animOn = true;
 		}
 
-		private function funAdv(event:MouseEvent):void
-		{
+		private function funAdv(event:MouseEvent):void {
 			world.nadv++;
 			if (world.nadv>=world.koladv) world.nadv=0;
 			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
 			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
 		}
 
-		private function funAdvR(event:MouseEvent):void
-		{
+		private function funAdvR(event:MouseEvent):void {
 			world.nadv--;
 			if (world.nadv<0) world.nadv=world.koladv-1;
 			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
 			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
 		}
 
-		private function funNewCancel(event:MouseEvent):void
-		{
+		private function funNewCancel(event:MouseEvent):void {
 			mainNewOff();
 		}
+
 		//нажать ОК в окне новой игры
-		private function funNewOk(event:MouseEvent):void
-		{
+		private function funNewOk(event:MouseEvent):void {
 			mainNewOff();
-			if (mainMenuMovieClip.dialNew.checkOpt2.selected) //показать окно выбора слота
-			{
+			if (mainMenuMovieClip.dialNew.checkOpt2.selected) { //показать окно выбора слота
 				loadReg=1;
 				mainLoadOn();
 			} 
-			else 
-			{
+			else {
 				mainMenuOff();
 				loadCell=-1;
 				command=3;
@@ -507,24 +505,21 @@ package fe
 		}
 
 		//включить настройки внешности
-		private function funNewVid(event:MouseEvent):void
-		{
+		private function funNewVid(event:MouseEvent):void {
 			setMenuSize();
 			mainMenuMovieClip.dialNew.visible=false;
 			world.app.attach(mainMenuMovieClip,funVidOk,funVidOk);
 		}
 
 		//принять настройки внешности
-		private function funVidOk():void
-		{
+		private function funVidOk():void {
 			mainMenuMovieClip.dialNew.visible=true;
 			world.app.detach();
 			mainMenuMovieClip.dialNew.pers.gotoAndStop(2);
 			mainMenuMovieClip.dialNew.pers.gotoAndStop(1);
 		}
 
-		private function funNewDif(event:MouseEvent):void
-		{
+		private function funNewDif(event:MouseEvent):void {
 			if (event.currentTarget==mainMenuMovieClip.dialNew.dif0) newGameDif=0;
 			if (event.currentTarget==mainMenuMovieClip.dialNew.dif1) newGameDif=1;
 			if (event.currentTarget==mainMenuMovieClip.dialNew.dif2) newGameDif=2;
@@ -533,8 +528,7 @@ package fe
 			updNewMode();
 		}
 
-		private function updNewMode():void
-		{
+		private function updNewMode():void {
 			mainMenuMovieClip.dialNew.dif0.fon.gotoAndStop(1);
 			mainMenuMovieClip.dialNew.dif1.fon.gotoAndStop(1);
 			mainMenuMovieClip.dialNew.dif2.fon.gotoAndStop(1);
@@ -547,50 +541,42 @@ package fe
 			if (newGameDif==4) mainMenuMovieClip.dialNew.dif4.fon.gotoAndStop(2);
 		}
 
-		private function infoMode(event:MouseEvent):void
-		{
+		private function infoMode(event:MouseEvent):void {
 			mainMenuMovieClip.dialNew.modeinfo.htmlText=event.currentTarget.modeinfo.text;
 		}
 
-		private function infoOpt(event:MouseEvent):void
-		{
+		private function infoOpt(event:MouseEvent):void {
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
 			mainMenuMovieClip.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
 		}
 		
-		private function funOpt():void
-		{
+		private function funOpt():void {
 			mainNewOff();
 			mainLoadOff();
 			world.pip.onoff();
 		}
 
-		private function funLang(event:MouseEvent):void
-		{
+		private function funLang(event:MouseEvent):void {
 			mainMenuMovieClip.loading.text='';
 			var nid:String = event.currentTarget.n.text;
 			if (nid==world.currentLanguage) return;
 			world.defuxLang(nid);
-			if (nid==world.userDefaultLanguage) 
-			{
+			if (nid==world.userDefaultLanguage) {
 				setMainLang();
 			} 
-			else 
-			{
+			else {
 				langReload=true;
 				showButtons(false);
 				mainMenuMovieClip.loading.text='Loading';
 			}
 		}
 		
-		private function showButtons(n:Boolean):void
-		{
+		private function showButtons(n:Boolean):void {
 			mainMenuMovieClip.lang.visible=mainMenuMovieClip.butNewGame.visible=mainMenuMovieClip.butLoadGame.visible=mainMenuMovieClip.butContGame.visible=mainMenuMovieClip.butOpt.visible=mainMenuMovieClip.butAbout.visible=n;
 		}
 		
 		//создатели
-		private function funAbout():void
-		{
+		private function funAbout():void {
 			mainMenuMovieClip.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
 			s+='<br><br>'+Res.guiText('usedmusic')+'<br>';
@@ -603,18 +589,14 @@ package fe
 			mainMenuMovieClip.dialAbout.scroll.maxScrollPosition=mainMenuMovieClip.dialAbout.txt.maxScrollV;
 		}
 
-		private function funAboutOk(event:MouseEvent):void
-		{
+		private function funAboutOk(event:MouseEvent):void {
 			mainMenuMovieClip.dialAbout.visible=false;
 			mainMenuMovieClip.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
-		private function step():void
-		{
-			if (langReload) 
-			{
-				if (world.textLoaded) 
-				{
+		private function step():void {
+			if (langReload) {
+				if (world.textLoaded) {
 					langReload=false;
 					showButtons(true);
 					if (world.textLoadErr) mainMenuMovieClip.loading.text='Language loading error';
@@ -624,23 +606,30 @@ package fe
 				}
 				return;
 			}
-			if (loaded) 
-			{
-				if (animOn && !world.pip.active) displ.anim();
-				if (world.allLandsLoaded && world.textLoaded) 
-				{
-					if (world.musicKol>world.musicLoaded) mainMenuMovieClip.loading.text='Music loading '+world.musicLoaded+'/'+world.musicKol;
-					else mainMenuMovieClip.loading.text='';
+			if (loaded) {
+				// If the MainMenu background is set to animate and the pipbuck isn't active, animate the background
+				if (animOn && !world.pip.active) {
+					displ.anim();
+				}
+				// Green loading text on the top left of the MainMenu
+				if (world.allLandsLoaded && world.textLoaded) {
+					// If we're still loading songs, show the progress
+					if (Snd.totalSongsToLoad > Snd.totalSongsLoaded) {
+						mainMenuMovieClip.loading.text = 'Music loading ' + Snd.totalSongsLoaded + '/' + Snd.totalSongsToLoad;
+					}
+					// Otherwise clear the text to hide this
+					else {
+						mainMenuMovieClip.loading.text = '';
+					}
 				}
 				return;
 			}
-			if (world.grafon.resIsLoad) 
-			{
+			// If all resource packs (.swfs / or loose files) have finished loading
+			if (world.grafon.resIsLoad) {
 				stn++;
-				mainMenuMovieClip.loading.text='Loading '+(Math.floor(stn/30))+'\n';
+				mainMenuMovieClip.loading.text = 'Loading ' + (Math.floor(stn / 30)) + '\n';
 				if (world.textLoaded) world.init2();
-				if (world.allLandsLoaded && world.textLoaded) 
-				{
+				if (world.allLandsLoaded && world.textLoaded) {
 					setLangButtons();
 					setMainLang();
 					loaded=true;
@@ -649,72 +638,68 @@ package fe
 				}
 				mainMenuMovieClip.loading.text+=world.load_log;
 			} 
-			else 
-			{
+			else {
 				mainMenuMovieClip.loading.text='Loading '+Math.round(world.grafon.progressLoad*100)+'%';
 				
 			}
 		}
 		
-		public function log(s:String):void
-		{
+		public function log(s:String):void {
 			mainMenuMovieClip.loading.text+=s+'; ';
 		}
 
-		private function mainStep(event:Event):void 
-		{
-			if (!part1Loaded)
-			{
+		// This is the main loop of the game and runs every frame
+		private function mainStep(event:Event):void {
+			if (!part1Loaded) {
 				if (XMLData.fileCount < 1) return;
-				else if (XMLData.filesLoaded >= XMLData.fileCount)
-				{
+				else if (XMLData.filesLoaded >= XMLData.fileCount) {
 					trace('Finished loading: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
 					part1Loaded = true;
 				}
-				else 
-				{
+				else {
 					trace('Loaded: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
 					return;
 				}
 
 			}
-			if (part1Loaded && !part2Loaded)
-			{
+			if (part1Loaded && !part2Loaded) {
 				part2Loaded = true;
 				mainMenu2();
 			}
 
 			if (active) step();
-			else if (command>0)
-			{
+			else if (command>0) {
 				command--;
-				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=='new') 
-				{
+				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=='new') {
 					world.setLoadScreen(0);
 				}
 				
-				if (command==0) //начать игру !!!!
-				{
+				if (command==0) { //начать игру !!!!
 					var opt:Object;
-					if (com=='new')
-					{
+					if (com=='new') {
 						//propusk - опция 1 - пропуск обучения
 						//hardcore - опция 2
 						//fastxp - опция 3, опыта нужно на 40% меньше
 						//rndpump - опция 4, случайная прокачка
 						//hardskills - давать по 3 sp за уровень
 						//autoSaveN - ячейка автосейва
-						opt={dif:newGameDif,
-							propusk:mainMenuMovieClip.dialNew.checkOpt1.selected,
-							hardcore:mainMenuMovieClip.dialNew.checkOpt2.selected,
-							fastxp:mainMenuMovieClip.dialNew.checkOpt3.selected,
-							rndpump:mainMenuMovieClip.dialNew.checkOpt4.selected,
-							hardskills:mainMenuMovieClip.dialNew.checkOpt5.selected,
-							hardinv:mainMenuMovieClip.dialNew.checkOpt6.selected};
-						if (opt.hardcore) opt.autoSaveN=loadCell;
-						loadCell=-1;
+						opt = {
+								dif:newGameDif,
+								propusk:mainMenuMovieClip.dialNew.checkOpt1.selected,
+								hardcore:mainMenuMovieClip.dialNew.checkOpt2.selected,
+								fastxp:mainMenuMovieClip.dialNew.checkOpt3.selected,
+								rndpump:mainMenuMovieClip.dialNew.checkOpt4.selected,
+								hardskills:mainMenuMovieClip.dialNew.checkOpt5.selected,
+								hardinv:mainMenuMovieClip.dialNew.checkOpt6.selected
+							};
+						
+						if (opt.hardcore) {
+							opt.autoSaveN = loadCell;
+						}
+						
+						loadCell = -1;
 					}
-					world.newGame(loadCell,mainMenuMovieClip.dialNew.inputName.text,opt);
+					world.newGame(loadCell, mainMenuMovieClip.dialNew.inputName.text, opt);
 				}
 			} 
 			else world.step();
