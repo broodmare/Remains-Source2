@@ -40,6 +40,7 @@ Wip:
 Bugs:
  - Stairs are broke
  - Audio fails to play frequently
+ - Beartraps can't be disarmed
 
 \#####
 

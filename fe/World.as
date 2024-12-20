@@ -490,7 +490,6 @@ package  fe
 			xmlList = null; // Manual cleanup
 
 			load_log+='Stage 2 Ok\n';
-			Snd.loadMusic();
 		}
 
 		public function roomsLoadOk():void
@@ -628,7 +627,7 @@ package  fe
 			pip.onoff(-1);
 			//войти в текущую местность
 			game.enterToCurLand();//!!!!
-			Snd.tempMuted = false;
+			Snd.setTempMute(false);
 			gui.setAll();
 			allStat = 1;
 			if (game.triggers["Quickstart"] == 1){
@@ -655,7 +654,7 @@ package  fe
 			else data=saveArr[nload].data;
 
 			//создать игру
-			Snd.tempMuted=true;
+			Snd.setTempMute(true);
 			cam.showOn=false;
 			if (data.hardInv==true) hardInv=true; else hardInv=false;
 			game=new Game();
@@ -689,7 +688,7 @@ package  fe
 			//войти в текущую местность
 			game.enterToCurLand();//!!!!
 			log='';
-			Snd.tempMuted=false;
+			Snd.setTempMute(false);
 			gui.setAll();
 			allStat=1;
 		}
@@ -745,7 +744,7 @@ package  fe
 				vblack.alpha=0;
 				cam.dblack=0;
 				setLoadScreen(getLoadScreen());
-				Snd.tempMuted=true;
+				Snd.setTempMute(true);
 			}
 			if (t_exit==19) {
 				cur('arrow');
@@ -754,7 +753,7 @@ package  fe
 			if (t_exit==18 && clickReq>0) waitLoadClick();
 			if (t_exit==16) {
 				Mouse.show();
-				Snd.tempMuted=false;
+				Snd.setTempMute(false);
 				offLoadScreen();
 				vgui.visible=vfon.visible=visual.visible=true;
 				vblack.alpha=1;

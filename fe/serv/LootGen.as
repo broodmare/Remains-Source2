@@ -112,7 +112,7 @@ package fe.serv {
 		//if the request exceeds the limit, do not create loot, return false
 		private static function newLoot(rnd:Number, lootType:String, id:String = null, itemCount:int = -1, imp:int = 0, cont:Interact = null):Boolean {
 			
-			trace("LootGen.as/newLoot() - Generating a new loot item. Item id: " + id + ", lootType: " + lootType +", (" + itemCount + ")");
+			//trace("LootGen.as/newLoot() - Generating a new loot item. Item id: " + id + ", lootType: " + lootType +", (" + itemCount + ")");
 			if (rnd < 1 && Math.random() > rnd) {
 				return false;
 			}

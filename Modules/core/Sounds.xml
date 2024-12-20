@@ -1,6 +1,6 @@
 <all>
 	<music>
-	<res id='music'>
+		<s id='mainmenu'/>
 		<s id='music_begin'/>
 		<s id='music_strange'/>
 		<s id='music_base'/>
@@ -35,7 +35,6 @@
 		<s id='boss_4'/>
 		<s id='boss_5'/>
 		<s id='boss_6'/>
-		</res>
 	</music>
 	<res id='weapons'>
 		<!-- выстрелы -->

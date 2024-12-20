@@ -1,5 +1,5 @@
-package fe.inter
-{	
+package fe.inter {	
+
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.events.KeyboardEvent;
@@ -10,8 +10,8 @@ package fe.inter
 	
 	// Debug console class. 
 	// The debug console contains three textboxes. "help", "list1", and "list2" in order from left to right.
-	public class Consol
-	{
+	public class Consol {
+
 		private var world = World.w;
 
 		public var vis:MovieClip;
@@ -21,8 +21,8 @@ package fe.inter
 		public var consoleIsVisible:Boolean = false;
 		private var textboxesVisible:Boolean = false;
 
-		public function Consol(vcons:MovieClip, prev:String = null)
-		{
+		// Constructor
+		public function Consol(vcons:MovieClip, prev:String = null) {
 			vis = vcons;
 			ist = [];
 
@@ -46,8 +46,7 @@ package fe.inter
 		}
 
 		// Allow other classes to hide the console.
-		public function setConsoleVisiblility(setState:Boolean):void
-		{
+		public function setConsoleVisiblility(setState:Boolean):void {
 			vis.visible = setState;
 			consoleIsVisible	= setState;
 
@@ -56,15 +55,12 @@ package fe.inter
 			if (consoleIsVisible) world.swfStage.focus = vis.input;
 		}
 
-		public function printLine(text:String):void
-		{
+		public function printLine(text:String):void {
 			vis.list2.text += text;
 		}
 
-		public function clearBox(box:int):void
-		{
-			switch (box)
-			{
+		public function clearBox(box:int):void {
+			switch (box) {
 				case 0:
 					vis.help.text = "";
 					break;
@@ -78,6 +74,7 @@ package fe.inter
 					trace("Consol.as/clearBox() - ERROR: Tried to clear unknown box!");
 			}
 		}
+
 		private function onKeyboardDownEvent(event:KeyboardEvent):void
 		{
 			if (event.keyCode == Keyboard.ENTER) {
@@ -101,20 +98,17 @@ package fe.inter
 			event.stopPropagation();
 		}
 
-		private function onButEnter(event:MouseEvent):void
-		{
+		private function onButEnter(event:MouseEvent):void {
 			analis();
 			event.stopPropagation();
 		}
 
-		private function onButClose(event:MouseEvent):void
-		{
+		private function onButClose(event:MouseEvent):void {
 			setConsoleVisiblility(false);
 			event.stopPropagation();
 		}
 
-		private function setTextBoxVisibility(setState:Boolean):void
-		{
+		private function setTextBoxVisibility(setState:Boolean):void {
 			textboxesVisible = setState;
 			vis.help.visible	= setState;
 			vis.list1.visible	= setState;
@@ -123,8 +117,7 @@ package fe.inter
 			trace("Consol.as/setTextBoxVisibility() - Set console textbox visiblity to " + setState.toString());
 		}
 
-		private function analis():void
-		{
+		private function analis():void {
 			var str:String = vis.input.text;
 			
 			ist.push(str);
@@ -138,8 +131,7 @@ package fe.inter
 			vis.help.text = "";
 			vis.help.text += "Command: \"" + s[0] + "\"\n"
 
-			switch (s[0]) 
-			{
+			switch (s[0])  {
 				case "clear":
 					world.cam.dblack=0;
 					world.gg.controlOn();
@@ -148,7 +140,7 @@ package fe.inter
 					world.vblack.visible=false;
 					world.t_exit=world.t_die=0;
 					world.vgui.visible=world.vfon.visible=world.visual.visible=true;
-					Snd.tempMuted=false;
+					Snd.setTempMute(false);
 					world.pip.noAct=false;
 					break;
 				case "redraw":
@@ -158,11 +150,10 @@ package fe.inter
 					world.gui.vis.visible=!world.gui.vis.visible;
 					break;
 				case "die":
-					world.gg.damage(10000,Unit.D_INSIDE);
+					world.gg.damage(10000, Unit.D_INSIDE);
 					break;
 				case "hardreset":
-					if (world.pers.dead)
-					{
+					if (world.pers.dead) {
 						world.pers.dead=false;
 						world.t_die=210;
 						world.gg.anim("die",true);
@@ -194,8 +185,7 @@ package fe.inter
 					world.pers.setParameters();
 					break;
 				case "all":
-					if (s.length==1)
-					{
+					if (s.length==1) {
 						world.invent.addAll();
 						world.pers.addSkillPoint(10);
 					}
@@ -390,8 +380,6 @@ package fe.inter
 					trace("Consol.as/analis() - ERROR: Command: \"" + s[0] + "\" not recognized!");
 					break;
 			}
-			
-			
 			
 			// TODO: What is this for???
 			if (world.gui) {
