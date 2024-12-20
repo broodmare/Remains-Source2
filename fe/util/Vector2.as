@@ -41,7 +41,6 @@ package fe.util {
             vector[1] = v.Y;
         }
 
-
         // Adds the passed value to each index of the vector
         public function sum(n:Number):void {
             vector[0] += n;
