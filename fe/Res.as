@@ -1,4 +1,4 @@
-upackage fe {
+package fe {
 
 	import flash.utils.getDefinitionByName;
 	import flash.display.MovieClip;
@@ -14,6 +14,12 @@ upackage fe {
 			0:'n', 1:'info', 2:'mess', 3:'help'
 		};
 
+                /*
+                * Checks if a localized text exists for the given tip and id.
+                * It first searches in currentLanguageData, and if not found, it searches in fallbackLanguageData.
+                * @tip  -- What category to search for the string in.
+                * @id   -- The internal name of the string we want to find the localization for.
+                */
 		public static function istxt(tip:String, id:String):Boolean {
 			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
 			if (xmlList.length() == 0) {
@@ -23,6 +29,13 @@ upackage fe {
 			return true;
 		}
 
+                /*
+                * Retrieves and formats the localized text based on the provided parameters.
+                * @tip   -- The type of text, eg. 'w' for 'weapon'
+                * @id    -- Internal name of the string
+                * @razd  -- String variations?
+                * @dop   -- Extra formatting?
+                */
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String {
 			if (id == '') return '';
 			try {
@@ -87,14 +100,22 @@ upackage fe {
 			return s;
 		}
 
+                // TODO: Obsolete, remove 
 		public static function guiText(id:String):String {
 			return txt('g', id);
 		}
 
+                // TODO: Obsolete, remove
 		public static function pipText(id:String):String {
 			return txt('p', id);
 		}
 
+                /*
+                * Retrieves and formats message texts, potentially including multiple lines and speaker names.
+                * @id   -- Internal name of the string
+                * @v    -- Variations?
+                * @imp  -- Displays a message based on it's importance level
+                */
 		public static function messText(id:String, v:int = 0, imp:Boolean = true):String {
 			var s:String = '';
 			try {
@@ -155,12 +176,14 @@ upackage fe {
 			return (s == null) ? '':s;
 		}
 
+                // The advice widget at the bottom of the main menu
 		public static function advText(n:int):String {
 			var xml:XML = currentLanguageData.advice[0]; // Grab the entire advice node with all its child 'a' nodes.
 			var s:String = xml.a[n];
 			return (s == null) ? '':s;
 		}
 
+                // Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
 		public static function repText(id:String, act:String, msex:Boolean=true):String {
 			var xl:XMLList = currentLanguageData.replic[0].rep.(@id==id && @act==act);
 
@@ -180,7 +203,8 @@ upackage fe {
 			s = s.replace('@lp',World.w.pers.persName);
 			return s;
 		}
-		
+
+                // Retrieves an array of names based the ID
 		public static function namesArr(id:String):Array {
 			var xl:XMLList = currentLanguageData.names;
 			if (xl.length()==0) return null;
@@ -191,16 +215,19 @@ upackage fe {
 			for each (var n:XML in xl) arr.push(n.toString());
 			return arr;
 		}
-		
+
+                // Replaces the placeholder @lp with the player's name
 		public static function lpName(s:String):String {
 			return s.replace(/@lp/g,World.w.pers.persName);
 		}
-		
+
+                // Formats a timestamp into a human-readable date string
 		public static function getDate(num:Number):String {
 			var date:Date = new Date(num);
 			return date.fullYear + '.' + (date.month >= 9 ? '':'0') + (date.month + 1) + '.' + (date.date >= 10 ? '':'0') + date.date + '  ' + date.hours + ':' + (date.minutes >= 10 ? '':'0') + date.minutes;
 		}
-		
+
+                // Formats a number to one decimal place
 		public static function numb(n:Number):String {
 			var k:int=Math.round(n*10);
 			if (k%10==0) return (k/10).toString();
@@ -210,8 +237,8 @@ upackage fe {
 			}
 		}
 		
-		//добавить к строке клавиши управления
-		public static function addKeys(s:String,xml:XML):String {
+		//Inserts key representations into a string based on XML attributes.
+		public static function addKeys(s:String, xml:XML):String {
 			if (s==null) return '';
 			for (var i:int = 1; i <= 5; i++) {
 				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
@@ -219,12 +246,12 @@ upackage fe {
 			return s;
 		}
 		
-		//удалить из строки символы /r и /n
+		// Replaces carriage return and newline characters with HTML <br> tags
 		public static function formatText(s:String):String {
 			return s.replace(/\r\n/g,'<br>');
 		}
 		
-		//строковое представление времени игры
+		// Formats game time from milliseconds to HH:MM:SS format
 		public static function gameTime(n:Number):String {
 			var sec:int = Math.round(n/1000);
 			var h:int = int(sec/3600);
@@ -233,6 +260,7 @@ upackage fe {
 			return h.toString()+':'+((m<10)?'0':'')+m+':'+((s<10)?'0':'')+s;
 		}
 
+                // Wraps each character in the input string with a <span> tag assigning it a color from a rainbow sequence
 		public static function rainbow(s:String):String {
 			var n:int = 0;
 			var res:String = '';
@@ -245,8 +273,9 @@ upackage fe {
 			}
 			return res;
 		}
-		
-		public static function getVis(id:String, def:Class=null):MovieClip {
+
+                // Dynamically retrieves a MovieClip class by its name
+		public static function getVis(id:String, def:Class = null):MovieClip {
 			var r:Class;
 			try {
 				r = getDefinitionByName(id) as Class;
@@ -258,8 +287,9 @@ upackage fe {
 			if (r) return new r()
 			else return null;
 		}
-		
-		public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
+
+                // Retrieves a class by its primary ID, backup ID, and/or an optional default
+                public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
 			var r:Class;
 			try {
 				r = getDefinitionByName(id1) as Class;
