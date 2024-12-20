@@ -556,7 +556,7 @@ package fe.loc {
 			}
 			for (var i=int(leftBound/tileX); i<=int(rightBound/tileX); i++)
 			{
-				var t=loc.space[i][int((bottomBound+1)/tileY)];
+				var t = loc.getTile(i, int((bottomBound+1)/tileY));
 				if (collisionTile(t,0,1)) {
 					return true;
 				}
@@ -586,7 +586,7 @@ package fe.loc {
 				//движение влево
 				if (velocity.X < 0) {
 					for (i = int(topBound / tileY); i <= int(bottomBound / tileY); i++) {
-						t = loc.space[int(leftBound / tileX)][i];
+						t = loc.getTile(int(leftBound / tileX), i);
 						if (collisionTile(t)) {
 								coordinates.X = t.phX2 + objectWidth / 2;
 								if (velocity.X < -10) velocity.X = -velocity.X * 0.2;
@@ -600,7 +600,7 @@ package fe.loc {
 				//движение вправо
 				if (velocity.X > 0) {
 					for (i=int(topBound/tileY); i<=int(bottomBound/tileY); i++) {
-						t=loc.space[int(rightBound/tileX)][i];
+						t = loc.getTile(int(rightBound/tileX), i);
 						if (collisionTile(t)) {
 								coordinates.X = t.phX1 - objectWidth / 2;
 								if (velocity.X > 10) velocity.X = -velocity.X * 0.2;
@@ -619,7 +619,7 @@ package fe.loc {
 			if (velocity.Y > 0) {
 				stay = false;
 				for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-					t = loc.space[i][int((bottomBound + velocity.Y / div) / tileY)];
+					t = loc.getTile(i, int((bottomBound + velocity.Y / div) / tileY));
 					if (collisionTile(t, 0, velocity.Y / div)) {
 						newmy = t.phY1;
 						break;
@@ -679,7 +679,7 @@ package fe.loc {
 				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
 				for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
 				{
-					t = loc.space[i][int(topBound/tileY)];
+					t = loc.getTile(i, int(topBound/tileY));
 					if (collisionTile(t))
 					{
 						coordinates.Y = t.phY2 + objectHeight;
@@ -697,11 +697,12 @@ package fe.loc {
 			isPlav = false;
 			isPlav2 = false;
 
-			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.45) / tileY)] as Tile).water > 0) {
-				isPlav=true;
+			var x:int = int(coordinates.X/tileX);
+			if (loc.getTile(x , int((coordinates.Y - objectHeight * 0.45) / tileY)).water > 0) {
+				isPlav = true;
 			}
-			if ((loc.space[int(coordinates.X/tileX)][int((coordinates.Y-objectHeight*0.55) / tileY)] as Tile).water > 0) {
-				isPlav2=true;
+			if (loc.getTile(x , int((coordinates.Y - objectHeight * 0.55) / tileY)).water > 0) {
+				isPlav2 = true;
 			}
 
 
@@ -730,7 +731,7 @@ package fe.loc {
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
 			for (var i:int = int((leftBound + gx) / tileX); i <= int((rightBound + gx) / tileX); i++) {
 				for (var j:int = int((topBound + gy) / tileY); j <= int((bottomBound + gy) / tileY); j++) {
-					if (collisionTile(loc.space[i][j], gx, gy)) return true;
+					if (collisionTile(loc.getTile(i, j), gx, gy)) return true;
 				}
 			}
 			return false;

@@ -346,7 +346,7 @@ package fe.graph
 		
 		//прорисовка локации
 		public function drawLoc(nloc:Location):void {
-			try {
+			//try {
 				World.w.gr_stage=1;
 				loc=nloc;
 				loc.grafon=this;
@@ -411,7 +411,7 @@ package fe.graph
 				World.w.gr_stage=5;
 				for (var i=0; i<loc.spaceX; i++) {
 					for (var j=0; j<loc.spaceY; j++) {
-						t=loc.getTile(i,j);
+						t = loc.getTile(i, j);
 						loc.tileKontur(i,j,t);
 						if (arrFront[t.front]) arrFront[t.front].used=true;
 						if (arrBack[t.back]) arrBack[t.back].used=true;
@@ -564,11 +564,11 @@ package fe.graph
 				
 				if (nloc.cTransform && nloc.cTransformFon) visFon.transform.colorTransform=nloc.cTransformFon;
 				else if (visFon.transform.colorTransform!=defTransform) visFon.transform.colorTransform=defTransform;
-			}
-			catch (err) {
-				trace('ERROR: (00:4A)');
-				World.w.showError(err)
-			}
+			//}
+			//catch (err) {
+			//	trace('ERROR: (00:4A)');
+			//	World.w.showError(err)
+			//}
 			World.w.gr_stage = 19;
 				//активные объекты
 				drawAllObjs();
@@ -581,7 +581,7 @@ package fe.graph
 			lightBmp.lock();
 			for (var i:int = 1; i < loc.spaceX; i++) {
 				for (var j:int = 1; j < loc.spaceY; j++) {
-					lightBmp.setPixel32(i, j + 1, int((1 - loc.space[i][j].visi) * 255) * 0x1000000);
+					lightBmp.setPixel32(i, j + 1, int((1 - loc.getTile(i, j).visi) * 255) * 0x1000000);
 				}
 			}
 			lightBmp.unlock();

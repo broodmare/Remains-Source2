@@ -359,7 +359,7 @@ package fe.unit {
 			for (var i=int((leftBound)/tileX); i<=int((rightBound)/tileX); i++) {
 				for (var j=int((topBound)/tileY); j<=int((bottomBound)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
-					if (collisionTile(loc.space[i][j])) loc.dieTile(loc.space[i][j]);
+					if (collisionTile(loc.getTile(i, j))) loc.dieTile(loc.getTile(i, j));
 				}
 			}
 		}

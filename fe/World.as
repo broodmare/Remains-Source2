@@ -146,8 +146,8 @@ package  fe {
 		//Глобальные константы
 		public var actionDist=200*200;
 
-		public static const cellsX:int = 48;
-		public static const cellsY:int = 25;
+		public static const cellsX:int = 48;	// How many tiles there are in a room (horizontally)
+		public static const cellsY:int = 25;	// How many tiles there are in a room (vertically)
 		public static const fps:int = 30;
 		public static const ddy:int = 1;
 		public static const maxdy:int = 20;
