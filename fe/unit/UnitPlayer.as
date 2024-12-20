@@ -1918,8 +1918,7 @@
 				if (ctr.keySit) velocity.Y += levidy;
 			}
 			
-			if (isFly)
-			{
+			if (isFly) {
 				if (ctr.keyBeUp) velocity.Y -= levidy;
 				if (ctr.keySit) velocity.Y += levidy;
 			}
@@ -1961,7 +1960,7 @@
 					velocity.Y += plavdy * pers.speedPlavMult / 2;
 				}
 				
-				if (downp<6) downp++;
+				if (downp < 6) downp++;
 			}
 			else downp = 0;
 

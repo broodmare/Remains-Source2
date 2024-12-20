@@ -112,8 +112,8 @@ package fe.projectile
 		public override function step() {
 			
 			if (!babah) {
-				velocity.X += ddy;
-				velocity.Y += ddx;
+				velocity.Y += ddy;
+				velocity.X += ddx;
 				if (vRot) rot=Math.atan2(velocity.Y, velocity.X);
 				if (brakeR && dist>brakeR) {
 					vRot=true;

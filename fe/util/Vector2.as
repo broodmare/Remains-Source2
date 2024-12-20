@@ -72,5 +72,16 @@ package fe.util {
             vector[0] /= n;
             vector[1] /= n;
         }
+
+        // Calculates the vector's approximate magnitude (or length) without taking the square root
+        public function magnitudeSquared():Number {
+            var n:Number = vector[0] * vector[0] + vector[1] * vector[1];
+            return n;
+        }
+        // Calculates the vector's exact magnitude (or length) squared
+        public function magnitude():Number {
+            var n:Number = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1]);
+            return n;
+        }
     }
 }

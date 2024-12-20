@@ -1,5 +1,5 @@
-package fe.loc
-{
+package fe.loc {
+
 	import flash.display.MovieClip;
 	
 	import fe.*;
@@ -11,6 +11,7 @@ package fe.loc
 	
 	// This is the object you see in-game when an item is dropped
 	public class Loot extends Obj {
+		
 		public var item:Item;
 
 		private const osnRad = 50;
@@ -361,19 +362,19 @@ package fe.loc
 			}
 		}
 
-		public function checkShelf(dy):Number {
+		public function checkShelf(velocityDown:Number):Number {
 			for (var i in loc.objs) {
 				var b:Box = loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.leftBound || coordinates.X > b.rightBound) && coordinates.Y <= b.topBound && coordinates.Y + dy > b.topBound) {
+				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.leftBound || coordinates.X > b.rightBound) && coordinates.Y <= b.topBound && coordinates.Y + velocityDown > b.topBound) {
 					osnova = b;
 					return b.topBound;
 				}
 			}
 			return 0;
 		}
+		
 		//поиск жидкости
-		public function checkWater():Boolean
-		{
+		public function checkWater():Boolean {
 			var pla = isPlav;
 			isPlav = false;
 			try {

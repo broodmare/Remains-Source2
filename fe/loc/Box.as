@@ -1,5 +1,5 @@
-package fe.loc
-{
+package fe.loc {
+
 	import flash.filters.DropShadowFilter;
 	import flash.display.MovieClip;
 
@@ -15,8 +15,8 @@ package fe.loc
 	import fe.projectile.Bullet;
 	import fe.unit.Mine;
 
-	public class Box extends Obj
-	{
+	public class Box extends Obj {
+
 		public var osnova:Box=null;		//на чём стоит
 		public var shelf:Boolean=true;	//на этом можно стоять
 		public var isPlav:Boolean=false, isPlav2:Boolean=false, fixPlav:Boolean=false;
@@ -76,20 +76,18 @@ package fe.loc
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null)
-		{
+		// Constructor
+		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			loc=nloc;
 			id=nid;
-			if (loc.land.kolAll)
-			{
+			if (loc.land.kolAll) {
 				if (loc.land.kolAll[id]>0) loc.land.kolAll[id]++;
 				else loc.land.kolAll[id]=1;
 			}
 			prior=1;
 			vis=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
 			shad=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
-			if (vis == null)
-			{
+			if (vis == null) {
 				vis  = new visbox0();
 				shad = new visbox0();
 			}
@@ -141,15 +139,13 @@ package fe.loc
 			massa=objectWidth*objectHeight*objectHeight/250000*massaMult;
 			if (node.@massa.length()) massa=node.@massa/50;
 			
-			if (xml && xml.@indestruct.length())
-			{
+			if (xml && xml.@indestruct.length()) {
 				hp=10000;
 				thre=10000;
 			}
 
 			//Door
-			if (node.@door.length())
-			{
+			if (node.@door.length()) {
 				door = node.@door;
 				if (node.@opac.length()) door_opac = node.@opac;
 				initDoor();
@@ -196,7 +192,9 @@ package fe.loc
 				levitPoss=false;
 				stay=true;
 				sloy=0;
-			} else sloy=1;
+			}
+			else sloy=1;
+			
 			if (node.@sloy.length()) sloy=node.@sloy;
 			
 			cTransform=loc.cTransform;
@@ -226,7 +224,8 @@ package fe.loc
 				if (cachedObjs[id] == undefined) {
 					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 					cachedObjs[id] = node;
-				} else node = cachedObjs[id];
+				}
+				else node = cachedObjs[id];
 				return node;
 			}
 		}
@@ -717,10 +716,10 @@ package fe.loc
 			return isPlav;
 		}
 
-		public function checkShelf(n:Number):Number {
+		public function checkShelf(velocityDown:Number):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound + n > b.topBound) {
+				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound + velocityDown > b.topBound) {
 					osnova = b;
 					return b.topBound;
 				}

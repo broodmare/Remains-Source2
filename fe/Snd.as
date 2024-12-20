@@ -22,7 +22,6 @@ package fe
 		public static var stepVol = 0.5;		// Used by pipbuckOpt as a string.
 		public static var musicVol = 0.2;		// Used by pipbuckOpt as a string.
 		
-		
 		public static var sndNames:Array = ['mp5'];
 		
 		public static var soundMuted:Boolean=false;
@@ -38,11 +37,10 @@ package fe
 		public static var combatTimer:int = 0;
 
 		// Center for directional audio purposes, set by the Camera 
-		public static var center:Vector2 = new Vector2(100, 500);
+		public static var center:Vector2 = new Vector2(1000, 500);
 
 		public static var widthX:Number = 2000; 
 		public static var musicTimer:int = 0;
-		
 		
 		public static var tempMuted:Boolean = true;
 		
