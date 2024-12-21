@@ -128,7 +128,7 @@ package fe.projectile
 			var pla = inWater;
 			inWater = 0;
 			try {
-				if ((loc.space[int(coordinates.X / Tile.tileX)][int(coordinates.Y / Tile.tileY)] as Tile).water > 0) {
+				if (loc.getTile(int(coordinates.X / Tile.tileX), int(coordinates.Y / Tile.tileY)).water > 0) {
 					inWater = 1;
 				}
 			}

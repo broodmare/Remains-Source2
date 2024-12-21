@@ -461,12 +461,12 @@ package fe.unit {
 					j = loc.spaceY - 1;
 				}
 				
-				if (loc.space[i][j].phis >= 1) {
+				if (loc.getTile(i, j).phis >= 1) {
 					isLaz = 0;
 					return false;
 				}
-				if ((loc.space[i][j] as Tile).stair) {
-					isLaz = (loc.space[i][j] as Tile).stair;
+				if (loc.getTile(i, j).stair) {
+					isLaz = loc.getTile(i, j).stair;
 				}
 				else if (loc.getTile(i + storona, j).phis) {
 					isLaz = storona;
@@ -476,8 +476,8 @@ package fe.unit {
 				if (isLaz != 0) {
 					storona = isLaz;
 
-					if (isLaz == -1) coordinates.X = (loc.space[i][j] as Tile).phX1 + objectWidth / 2;
-					else coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
+					if (isLaz == -1) coordinates.X = loc.getTile(i, j).phX1 + objectWidth / 2;
+					else coordinates.X = loc.getTile(i, j).phX2 - objectWidth / 2;
 
 					leftBound = coordinates.X - objectWidth / 2;
 					rightBound = coordinates.X + objectWidth / 2;

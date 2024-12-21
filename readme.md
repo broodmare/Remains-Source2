@@ -41,6 +41,7 @@ Bugs:
  - Stairs are broke
  - Audio fails to play frequently
  - Beartraps can't be disarmed
+ - Main menu theme plays for a moment before the game realizes it should be muted.
 
 \#####
 

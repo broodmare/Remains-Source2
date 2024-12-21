@@ -1126,8 +1126,10 @@ package fe.unit {
 					}
 					if (player && isUp && stay && !isSit)
 					{
-						t  = loc.space[int(leftBound/tileX)][int(topBound/tileY)];
-						t2 = loc.space[int(leftBound/tileX)][int(topBound/tileY) + 1];
+						var x:int = int(leftBound / tileX);
+						var y:int = int(topBound/tileY);
+						t = loc.getTile(x, y);
+						t2 = loc.getTile(x, y + 1);
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
 						{
 							coordinates.Y = bottomBound = t2.phY1;
@@ -1137,7 +1139,7 @@ package fe.unit {
 					}
 					if (mater) {
 						for (i = int(topBound/tileY); i <= int(bottomBound/tileY); i++) {
-							t = loc.space[int(leftBound/tileX)][i];
+							t = loc.getTile(int(leftBound/tileX), i);
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
 								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-bottomBound)) {
@@ -1179,8 +1181,11 @@ package fe.unit {
 						}
 					}
 					if (player && isUp && stay && !isSit) {
-						t  = loc.space[int(rightBound/tileX)][int(topBound/tileY)];
-						t2 = loc.space[int(rightBound/tileX)][int(topBound/tileY)+1];
+						var x:int = int(rightBound / tileX);
+						var y:int = int(topBound / tileY);
+						trace("Unit.as/run() - Getting tiles (" + x + ", " + y + ") and (" + x + ", " + (y+1) + ")");
+						t = loc.getTile(x, y);
+						t2 = loc.getTile(x, (y + 1));
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							coordinates.Y  = t2.phY1;
 							bottomBound = t2.phY1;
@@ -1189,8 +1194,8 @@ package fe.unit {
 						}
 					} 
 					if (mater) {
-						for (i = int(topBound/tileY); i<= int(bottomBound/tileY); i++) {
-							t=loc.space[int(rightBound/tileX)][i];
+						for (i = int(topBound / tileY); i <= int(bottomBound / tileY); i++) {
+							t = loc.getTile(int(rightBound / tileX), i);
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
 								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-bottomBound)) {
@@ -1243,7 +1248,7 @@ package fe.unit {
 					flattenObj();
 					if (mater) {
 						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
-							t = loc.space[i][int(bottomBound/tileY)];
+							t = loc.getTile(i, int(bottomBound/tileY));
 							if (collisionTile(t)) {
 								coordinates.Y = t.phY1;
 								flattenObj();
@@ -1258,7 +1263,7 @@ package fe.unit {
 				else  {						
 					if (mater) {
 						for (i = int(leftBound/tileX); i<=int(rightBound/tileX); i++) {
-							t = loc.space[i][int((bottomBound + velocity.Y / div) / tileY)];
+							t = loc.getTile(i, int(bottomBound + velocity.Y / div) / tileY);
 							if (collisionTile(t, 0, velocity.Y / div)) {
 								if (-(leftBound - t.phX1) / objectWidth<shX1) shX1 = -(leftBound - t.phX1) / objectWidth;
 								if ((rightBound - t.phX2) / objectWidth<shX2) shX2 = (rightBound - t.phX2) / objectWidth;
@@ -1284,7 +1289,7 @@ package fe.unit {
 					if (newmy)  {
 						topBound = newmy - objectHeight;
 						for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-							t = loc.space[i][int((newmy - objectHeight) / tileY)];
+							t = loc.getTile(i, int((newmy - objectHeight) / tileY));
 							if (collisionTile(t)) newmy = 0;
 						}
 					}
@@ -1349,7 +1354,7 @@ package fe.unit {
 
 				if (mater) {
 					for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
-						t=loc.space[i][int(topBound/tileY)];
+						t = loc.getTile(i, int(topBound / tileY));
 						if (collisionTile(t)) {
 							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) damageWall(4);
 							if (destroy > 0) destroyWall(t, 4);
@@ -1487,7 +1492,7 @@ package fe.unit {
 			for (var i:int = startI; i <= endI; i++) {
 				for (var j:int = startJ; j <= endJ; j++) {
 					// Directly access the tile since indices are already clamped
-					if (collisionTile(loc.space[i][j], offsetX, offsetY)) {
+					if (collisionTile(loc.getTile(i, j), offsetX, offsetY)) {
 						return true;
 					}
 				}
@@ -1523,21 +1528,21 @@ package fe.unit {
 				j = loc.spaceY - 1;
 			}
 			
-			if (loc.space[i][j].phis >= 1 && !(transT&&loc.space[i][j].phis == 3)) {
+			if (loc.getTile(i, j).phis >= 1 && !(transT&&loc.getTile(i, j).phis == 3)) {
 				isLaz = 0;
 				trace("Unit.as/checkStairs() - No stairs (1)")
 				return false;
 			}
 			
-			if ((loc.space[i][j] as Tile).stair) {
-				isLaz = (loc.space[i][j] as Tile).stair;
-				storona = (loc.space[i][j] as Tile).stair;
+			if ((loc.getTile(i, j)).stair) {
+				isLaz = (loc.getTile(i, j)).stair;
+				storona = (loc.getTile(i, j)).stair;
 
 				if (isLaz == -1) {
-					coordinates.X = (loc.space[i][j] as Tile).phX1 + objectWidth / 2;
+					coordinates.X = (loc.getTile(i, j)).phX1 + objectWidth / 2;
 				}
 				else {
-					coordinates.X = (loc.space[i][j] as Tile).phX2 - objectWidth / 2;
+					coordinates.X = (loc.getTile(i, j)).phX2 - objectWidth / 2;
 				}
 				
 				centerObjHorizontally();	// Center the character on the horizontal axis
@@ -1578,7 +1583,7 @@ package fe.unit {
 			y = clamp(y, 0, maxSpaceY - 1);
 
 			// Retrieve the tile at (x, y)
-			var t:Tile = loc.space[x][y] as Tile;
+			var t:Tile = loc.getTile(x, y);
 
 			// Handle invalid tile access
 			if (t == null) {
@@ -1602,7 +1607,7 @@ package fe.unit {
 				y2 = clamp(y2, 0, maxSpaceY - 1);
 
 				// Retrieve the tile at (x, y2)
-				var t2:Tile = loc.space[x][y2] as Tile;
+				var t2:Tile = loc.getTile(x, y2);
 
 				// Handle invalid tile access
 				if (t2 == null) {

@@ -378,7 +378,7 @@ package fe.loc {
 			var pla = isPlav;
 			isPlav = false;
 			try {
-				if ((loc.space[int(coordinates.X/tileX)][int(coordinates.Y/tileY)] as Tile).water > 0) {
+				if (loc.getTile(int(coordinates.X/tileX) , int(coordinates.Y/tileY)).water > 0) {
 					isPlav = true;
 				}
 			}
