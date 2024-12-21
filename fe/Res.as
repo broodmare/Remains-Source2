@@ -14,12 +14,12 @@ package fe {
 			0:'n', 1:'info', 2:'mess', 3:'help'
 		};
 
-                /*
-                * Checks if a localized text exists for the given tip and id.
-                * It first searches in currentLanguageData, and if not found, it searches in fallbackLanguageData.
-                * @tip  -- What category to search for the string in.
-                * @id   -- The internal name of the string we want to find the localization for.
-                */
+		/*
+		* Checks if a localized text exists for the given tip and id.
+		* It first searches in currentLanguageData, and if not found, it searches in fallbackLanguageData.
+		* @tip  -- What category to search for the string in.
+		* @id   -- The internal name of the string we want to find the localization for.
+		*/
 		public static function istxt(tip:String, id:String):Boolean {
 			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
 			if (xmlList.length() == 0) {
@@ -29,15 +29,18 @@ package fe {
 			return true;
 		}
 
-                /*
-                * Retrieves and formats the localized text based on the provided parameters.
-                * @tip   -- The type of text, eg. 'w' for 'weapon'
-                * @id    -- Internal name of the string
-                * @razd  -- String variations?
-                * @dop   -- Extra formatting?
-                */
+		/*
+		* Retrieves and formats the localized text based on the provided parameters.
+		* @tip   -- The type of text, eg. 'w' for 'weapon'
+		* @id    -- Internal name of the string
+		* @razd  -- String variations?
+		* @dop   -- Extra formatting?
+		*/
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String {
-			if (id == '') return '';
+			if (id == '') {
+				return '';
+			}
+			
 			try {
 				// Reduce redundant dictionary lookups
 				var tipType:String = typeDictionary[tip];
@@ -48,7 +51,7 @@ package fe {
 
 				// Try to get a localized string from currentLanguage or fallbackLanguage
 				for each (var langData in [currentLanguageData, fallbackLanguageData]) {
-					if (!s) // Skip checking fallback if string was found {
+					if (!s) { // Skip checking fallback if string was found 
 						xl1 = langData[tipType].(@id == id);
 						if (xl1.length() > 0) s = xl1[razdType][0];
 					}
@@ -67,6 +70,7 @@ package fe {
 					var spl:Array = s.split('|');
 					if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
 				}
+				
 				if (razd >= 1 || dop) {
 					if (xl2.@s1.length()) s = addKeys(s, xl2);
 					if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
@@ -100,33 +104,37 @@ package fe {
 			return s;
 		}
 
-                // TODO: Obsolete, remove 
+		// TODO: Obsolete, remove 
 		public static function guiText(id:String):String {
 			return txt('g', id);
 		}
 
-                // TODO: Obsolete, remove
+		// TODO: Obsolete, remove
 		public static function pipText(id:String):String {
 			return txt('p', id);
 		}
 
-                /*
-                * Retrieves and formats message texts, potentially including multiple lines and speaker names.
-                * @id   -- Internal name of the string
-                * @v    -- Variations?
-                * @imp  -- Displays a message based on it's importance level
-                */
+		/*
+		* Retrieves and formats message texts, potentially including multiple lines and speaker names.
+		* @id   -- Internal name of the string
+		* @v    -- Variations?
+		* @imp  -- Displays a message based on it's importance level
+		*/
 		public static function messText(id:String, v:int = 0, imp:Boolean = true):String {
 			var s:String = '';
 			try {
 				var xml:XMLList = currentLanguageData.txt.(@id == id);
+				
 				if (xml.length()==0) {
 					xml = fallbackLanguageData.txt.(@id == id);
 				}
+				
 				if (xml.length()==0) return '';
 
 				if (!imp && !(xml.@imp > 0)) return '';
+				
 				var tip:int = xml.@imp;
+				
 				if (v==1) {
 					s = xml.info[0];
 				}
@@ -159,10 +167,14 @@ package fe {
 							else s += s1+'<br>';
 						}
 					}
-                                        else s = xml.n[0];
+					else {
+						s = xml.n[0];
+					}
 				}
+				
 				s = lpName(s);
 				s = s.replace(/\[br]/g,'<br>');
+				
 				if (xml.@s1.length()) {
 					for (var j:int = 1; j <= 5; j++) {
 						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span class='r2'>" + World.w.ctr.retKey(xml.attribute('s' + j)) + "</span>");
@@ -176,14 +188,14 @@ package fe {
 			return (s == null) ? '':s;
 		}
 
-                // The advice widget at the bottom of the main menu
+		// The advice widget at the bottom of the main menu
 		public static function advText(n:int):String {
 			var xml:XML = currentLanguageData.advice[0]; // Grab the entire advice node with all its child 'a' nodes.
 			var s:String = xml.a[n];
 			return (s == null) ? '':s;
 		}
 
-                // Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
+		// Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
 		public static function repText(id:String, act:String, msex:Boolean=true):String {
 			var xl:XMLList = currentLanguageData.replic[0].rep.(@id==id && @act==act);
 
@@ -204,7 +216,7 @@ package fe {
 			return s;
 		}
 
-                // Retrieves an array of names based the ID
+		// Retrieves an array of names based the ID
 		public static function namesArr(id:String):Array {
 			var xl:XMLList = currentLanguageData.names;
 			if (xl.length()==0) return null;
@@ -216,18 +228,18 @@ package fe {
 			return arr;
 		}
 
-                // Replaces the placeholder @lp with the player's name
+		// Replaces the placeholder @lp with the player's name
 		public static function lpName(s:String):String {
 			return s.replace(/@lp/g,World.w.pers.persName);
 		}
 
-                // Formats a timestamp into a human-readable date string
+		// Formats a timestamp into a human-readable date string
 		public static function getDate(num:Number):String {
 			var date:Date = new Date(num);
 			return date.fullYear + '.' + (date.month >= 9 ? '':'0') + (date.month + 1) + '.' + (date.date >= 10 ? '':'0') + date.date + '  ' + date.hours + ':' + (date.minutes >= 10 ? '':'0') + date.minutes;
 		}
 
-                // Formats a number to one decimal place
+		// Formats a number to one decimal place
 		public static function numb(n:Number):String {
 			var k:int=Math.round(n*10);
 			if (k%10==0) return (k/10).toString();
@@ -260,7 +272,7 @@ package fe {
 			return h.toString()+':'+((m<10)?'0':'')+m+':'+((s<10)?'0':'')+s;
 		}
 
-                // Wraps each character in the input string with a <span> tag assigning it a color from a rainbow sequence
+		// Wraps each character in the input string with a <span> tag assigning it a color from a rainbow sequence
 		public static function rainbow(s:String):String {
 			var n:int = 0;
 			var res:String = '';
@@ -274,7 +286,7 @@ package fe {
 			return res;
 		}
 
-                // Dynamically retrieves a MovieClip class by its name
+		// Dynamically retrieves a MovieClip class by its name
 		public static function getVis(id:String, def:Class = null):MovieClip {
 			var r:Class;
 			try {
@@ -284,12 +296,16 @@ package fe {
 				trace('ERROR: (00:1B)');
 				r = def;
 			}
-			if (r) return new r()
-			else return null;
+			if (r) {
+				return new r();
+			}
+			else {
+				return null;
+			}
 		}
 
-                // Retrieves a class by its primary ID, backup ID, and/or an optional default
-                public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
+		// Retrieves a class by its primary ID, backup ID, and/or an optional default
+		public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
 			var r:Class;
 			try {
 				r = getDefinitionByName(id1) as Class;
