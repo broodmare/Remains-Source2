@@ -1,5 +1,5 @@
-﻿package fe
-{
+﻿package fe {
+
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -10,8 +10,8 @@
 	import flash.errors.IOError;
 	import flash.events.IOErrorEvent;
 
-    public class XMLLoader extends EventDispatcher 
-    {
+    public class XMLLoader extends EventDispatcher {
+		
 		public var xmlData:XML;
 		private var fileURL:String;
 		private var loader:URLLoader;
@@ -26,7 +26,7 @@
 		// Asynchronous loading (skips while loading)
 		public function load(url:String):void {
 			fileURL = url;
-			trace("XMLLoader.as/load() - Attempting to load file: " + url);
+			//trace("XMLLoader.as/load() - Attempting to load file: " + url);
 			var loaderURL:URLRequest = new URLRequest(fileURL);
 			loader = new URLLoader();
 
@@ -37,7 +37,7 @@
 
 		// Synchronous loading (waits until this is finished)
 		public function syncLoad(url:String):XML {
-			trace("XMLLoader/syncLoad() - Sync loading file: " + url);
+			//trace("XMLLoader/syncLoad() - Sync loading file: " + url);
 			var file:File = File.applicationDirectory.resolvePath(url);
 			var stream:FileStream = new FileStream();
 			try {
@@ -59,7 +59,7 @@
 			switch (event.type) 
 			{
 				case Event.COMPLETE:
-					trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" loaded!.');
+					//trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" loaded!.');
 					xmlData = new XML(loader.data);
 					dispatchEvent(new Event(XMLLoader.XML_LOADED));
 					break;

@@ -1183,7 +1183,6 @@ package fe.unit {
 					if (player && isUp && stay && !isSit) {
 						var x:int = int(rightBound / tileX);
 						var y:int = int(topBound / tileY);
-						trace("Unit.as/run() - Getting tiles (" + x + ", " + y + ") and (" + x + ", " + (y+1) + ")");
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, (y + 1));
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
@@ -1530,7 +1529,7 @@ package fe.unit {
 			
 			if (loc.getTile(i, j).phis >= 1 && !(transT&&loc.getTile(i, j).phis == 3)) {
 				isLaz = 0;
-				trace("Unit.as/checkStairs() - No stairs (1)")
+				//trace("Unit.as/checkStairs() - No stairs (1)");
 				return false;
 			}
 			
@@ -1548,13 +1547,13 @@ package fe.unit {
 				centerObjHorizontally();	// Center the character on the horizontal axis
 				stay = false;				// Indicate that the character is no standing on the ground
 				sit(false);
-				trace("Unit.as/checkStairs() - Stairs")
+				//trace("Unit.as/checkStairs() - Stairs");
 				return true;
 			}
 
 			// Reset ladder state if no stairs/ladder are found
 			isLaz = 0;
-			trace("Unit.as/checkStairs() - No stairs (2)")
+			//trace("Unit.as/checkStairs() - No stairs (2)");
 			return false; // No stairs detected
 		}
 

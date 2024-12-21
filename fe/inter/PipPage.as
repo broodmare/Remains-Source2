@@ -70,8 +70,7 @@ package fe.inter
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
 
-		public function PipPage(npip:PipBuck, npp:String)
-		{
+		public function PipPage(npip:PipBuck, npp:String) {
 			
 			pip=npip;
 			
@@ -90,8 +89,7 @@ package fe.inter
 			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
 			statArr=[];
 			var item:MovieClip;
-			for (var i:int = -1; i < maxrows; i++)
-			{
+			for (var i:int = -1; i < maxrows; i++) {
 				item=new itemClass(); 
 				item.x=30;
 				item.y=100+i*30;
@@ -101,7 +99,8 @@ package fe.inter
 				if (i<0) {
 					item.back.visible=false;
 					statHead=item;
-				} else {
+				}
+				else {
 					if (isLC) item.addEventListener(MouseEvent.CLICK,itemClick);
 					if (isRC) item.addEventListener(MouseEvent.RIGHT_CLICK,itemRightClick);
 					item.addEventListener(MouseEvent.MOUSE_OVER,statInfo);
@@ -123,8 +122,7 @@ package fe.inter
 			setStyle(vis.bottext);
 		}
 		
-		public static function setStyle(tt:TextField):void
-		{
+		public static function setStyle(tt:TextField):void {
 			var style:StyleSheet = new StyleSheet(); 
 			var styleObj:Object = new Object();
 			styleObj.color = "#00FF99"; 
@@ -154,36 +152,30 @@ package fe.inter
 		}
 		
 		//Print colored text
-		public static function textAsColor(color:String, text:String):String
-		{
+		public static function textAsColor(color:String, text:String):String {
 			return "<span class = " + "'" + color + "'" + ">" + text + "</span>";
 		}
-		public static function numberAsColor(color:String, number:Number):String
-		{
+
+		public static function numberAsColor(color:String, number:Number):String {
 			return "<span class = " + "'" + color + "'" + ">" + number.toString() + "</span>";
 		}
 
-		public function updateLang():void
-		{
-			for (var i:int = 1; i <= 5; i++) 
-			{
+		public function updateLang():void {
+			for (var i:int = 1; i <= 5; i++) {
 				var button:MovieClip = vis.getChildByName('but'+i) as MovieClip;
 				button.text.text = Res.pipText(pp + i);
 			}
 		}
 
-		protected function page2Click(event:MouseEvent):void
-		{
+		protected function page2Click(event:MouseEvent):void {
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
 		}
 		
-		private function setButtons():void
-		{
-			for (var i:int = 1; i <= 5; i++)
-			{
+		private function setButtons():void {
+			for (var i:int = 1; i <= 5; i++) {
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page2==i) item.gotoAndStop(2);
 				else if (signs[i]>0) item.gotoAndStop(signs[i]+2);
@@ -191,8 +183,8 @@ package fe.inter
 			}
 		}
 		
-		public function setStatus(flop:Boolean=true):void
-		{setStatus
+		public function setStatus(flop:Boolean=true):void {
+			setStatus
 			pip.reqKey=false;
 			statHead.id.text='';
 			vis.visible=true;
@@ -214,8 +206,7 @@ package fe.inter
 
 			var sc:ScrollBar=vis.scBar;
 
-			if (arr.length>maxrows) 
-			{
+			if (arr.length>maxrows) {
 				sc.visible=true;
 				sc.minScrollPosition=0
 				sc.maxScrollPosition=arr.length-maxrows;
@@ -295,8 +286,7 @@ package fe.inter
 						infIco.stop();
 						if (infIco.lez) infIco.lez.stop();
 						var r:Number=1;
-						if (node != null && node.vis.length())
-						{
+						if (node != null && node.vis.length()) {
 							if (node.vis.@icomult.length()) r=infIco.scaleX=infIco.scaleY=node.vis.@icomult;
 						}
 						infIco.x=-infIco.getRect(infIco).left*r+140-infIco.width/2;
@@ -325,7 +315,7 @@ package fe.inter
 				}
 				catch(err)
 				{
-					trace('ERROR: (00:35) - invalid icon ID: "' + id + '"!');
+					//trace('ERROR: (00:35) - invalid icon ID: "' + id + '"!');
 					vis.item.gotoAndStop(1);
 					vis.item.visible = false;
 					vis.info.y = vis.ico.y;
@@ -348,10 +338,8 @@ package fe.inter
 		}
 
 		// [add values ​​to text string]
-		public static function addVar(s:String, xml:XML):String
-		{
-			for (var i:int = 1; i <= 5; i++)
-			{
+		public static function addVar(s:String, xml:XML):String {
+			for (var i:int = 1; i <= 5; i++) {
 				if (xml.attribute('s' + i).length())  s=s.replace('#'+i,"<span class='yellow'>"+xml.attribute('s'+i)+"</span>");
 			}
 			return s;
@@ -379,13 +367,16 @@ package fe.inter
 			if (tip=='perk') {
 				lvl=pers.perks[id];
 				if (lvl==null) lvl=0;
-			} else if (tip=='skill') {
+			}
+			else if (tip=='skill') {
 				lvl=pers.getSkLevel(pers.skills[id]);
-			} else if (dp.@him=='2') {
+			}
+			else if (dp.@him=='2') {
 				var ad = pers.addictions[id];
 				if (ad>=pers.ad2) lvl=2;
 				if (ad>=pers.ad3) lvl=3;
-			} else if (dp.@him=='1') lvl=pers.himLevel;
+			}
+			else if (dp.@him=='1') lvl=pers.himLevel;
 			lvl+=dlvl;
 			//вставка в текст числовых значений
 			if (lvl>1 && dp.textvar[lvl-1]) s=addVar(s,dp.textvar[lvl-1]);
@@ -438,8 +429,7 @@ package fe.inter
 		}
 		
 		
-		public static function infoStr(tip:String, id:String):String
-		{
+		public static function infoStr(tip:String, id:String):String {
 			var s:String='';
 			var pip=World.w.pip;
 			var gg=World.w.gg;
@@ -464,7 +454,8 @@ package fe.inter
 					else if (razn>0){
 						if (razn==2) {
 							s+=' (-40% ';
-						} else if (razn==1) {
+						}
+						else if (razn==1) {
 							s+=' (-20% ';
 						}
 						if (w.tip==1) s+=Res.pipText('rapid')
@@ -638,15 +629,13 @@ package fe.inter
 			return s;
 		}
 		
-		protected function infoItem(tip:String, itemID:String, nazv:String, craft:int=0):void
-		{
+		protected function infoItem(tip:String, itemID:String, nazv:String, craft:int=0):void {
 			vis.nazv.text=nazv;
 
 			var s:String;
 			var id:String = itemID;
 
-			if (itemID.indexOf('s_') == 0)
-			{
+			if (itemID.indexOf('s_') == 0) {
 				id = itemID.substr(2);
 				craft = 1;
 				
@@ -655,8 +644,7 @@ package fe.inter
 				else tip = Item.L_ITEM;
 			}
 
-			if (tip == Item.L_WEAPON || tip == Item.L_EXPL)
-			{
+			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) {
 				if (craft > 0) setIco();
 				else setIco(1, id);
 
@@ -664,8 +652,7 @@ package fe.inter
 				if (craft == 1) s += craftInfo(id);
 				if (craft == 2) s += craftInfo(id.substr(0, id.length - 2));
 			}
-			else if (tip == Item.L_ARMOR)
-			{
+			else if (tip == Item.L_ARMOR) {
 				var a:Armor=inv.armors[id];
 				if (a == null) a = pip.arrArmor[id];
 
@@ -686,8 +673,7 @@ package fe.inter
 				}
 				if (craft == 1) s += craftInfo(id);
 			}
-			else if (tip == Item.L_AMMO)
-			{
+			else if (tip == Item.L_AMMO) {
 				var ammo=inv.items[id].xml;
 				if (ammo.@base.length())
 				{
@@ -699,8 +685,7 @@ package fe.inter
 				setIco();
 				s = infoStr(tip, id);
 			}
-			else
-			{
+			else {
 				if (craft > 0) setIco();
 				else setIco(3, id);
 				s = infoStr(tip, id);
@@ -714,15 +699,13 @@ package fe.inter
 
 			if (vis.scText) vis.scText.visible = false;
 
-			if (vis.info.height<vis.info.textHeight && vis.scText)
-			{
+			if (vis.info.height<vis.info.textHeight && vis.scText) {
 				vis.scText.maxScrollPosition = vis.info.maxScrollV;
 				vis.scText.visible = true;
 			}
 		}
 		
-		public function craftInfo(id:String):String
-		{
+		public function craftInfo(id:String):String {
 			var s:String='\n';
 			var cs:String = 's_' + id;
 			var sch = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
@@ -747,8 +730,7 @@ package fe.inter
 			return s;
 		}
 		
-		protected function infoQuest(id:String):String
-		{
+		protected function infoQuest(id:String):String {
 				var q:Quest=World.w.game.quests[id];
 				if (q==null) return '';
 				vis.nazv.text=q.nazv;
@@ -776,12 +758,10 @@ package fe.inter
 				return s;
 		}
 		
-		protected function factor(id:String):String
-		{
+		protected function factor(id:String):String {
 			var s:String='', s1:String;
 			var ok=false;
-			if (World.w.pers.factor[id] is Array)
-			{
+			if (World.w.pers.factor[id] is Array) {
 				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
 				var xml = paramList.(@v==id);
@@ -796,7 +776,8 @@ package fe.inter
 						} else {
 							s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
 						}
-					} else {
+					}
+					else {
 						if (obj.ref=='add' && obj.val==0 || obj.ref=='mult' && obj.val==1) continue;
 						ok=true;
 						if (obj.tip!=null) s1=Res.txt(obj.tip,obj.id);
@@ -810,27 +791,34 @@ package fe.inter
 							if (xml.@tip=='0') {
 								s+=(obj.val>0?'+':'-')+' '+numberAsColor('yellow', Math.abs(obj.val));
 								s+=' = '+textAsColor('yellow', Res.numb(obj.res));
-							} else {
+							}
+							else {
 								s+=(obj.val>0?'+':'-')+' '+textAsColor('yellow', Res.numb(Math.abs(obj.val*100))+'%');
 								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							}
-						} else if (obj.ref=='mult') {
+						}
+						else if (obj.ref=='mult') {
 							if (xml.@tip=='0') {
 								s+='× '+textAsColor('yellow', obj.val)+' = '+textAsColor('yellow', Res.numb(obj.res));
-							} else if (xml.@tip=='3' || xml.@tip=='4') {
+							}
+							else if (xml.@tip=='3' || xml.@tip=='4') {
 								s+='× (1 '+(obj.val<1?'-':'+')+' '+numberAsColor('yellow', Math.abs(Math.round(100-obj.val*100))*0.01)+')';
 								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
-							} else {
+							}
+							else {
 								s+='× '+textAsColor('yellow', obj.val);
 								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							}
-						} else if (obj.ref=='min') {
+						}
+						else if (obj.ref=='min') {
 								s+='- '+textAsColor('yellow', Res.numb(Math.abs(obj.val*100))+'%');
 								s+=' = '+textAsColor('yellow', Res.numb((obj.res)*100)+'%');
-						} else {
+						}
+						else {
 							if (xml.@tip=='0') {
 								s+=textAsColor('yellow', obj.val);
-							} else {
+							}
+							else {
 								s+=textAsColor('yellow', Res.numb(obj.val*100)+'%');
 							}
 						}
@@ -859,8 +847,7 @@ package fe.inter
 		}
 		
 		//проверка квеста на доступность
-		protected function checkQuest(task):Boolean
-		{
+		protected function checkQuest(task):Boolean {
 			//проверка на доступ к местности
 			if (task.@land.length()) {
 				var land:LandAct=World.w.game.lands[task.@land];
@@ -878,8 +865,7 @@ package fe.inter
 			return true;
 		}
 		
-		protected function initCats():void
-		{
+		protected function initCats():void {
 			for (var i:int = 0; i <= kolCats; i++)
 			{
 				vis.cats['cat' + i].addEventListener(MouseEvent.CLICK,selCatEvent);
@@ -899,20 +885,20 @@ package fe.inter
 			vis.cats.visible = true;
 			
 			var ntip;
-			for (var i:int  = 0; i < kolCats; i++) {
-				ntip=arr[i];
-				if (ntip==null) vis.cats['cat'+i].visible=false;
+			for (var i:int  = 1; i <= kolCats; i++) {
+				ntip = arr[i];
+				if (ntip == null || ntip == "") {
+					vis.cats['cat' + i].visible = false;
+				}
 				else {
-					if (ntip is Array) ntip=ntip[0];
-					vis.cats['cat'+i].visible=true;
-					// TODO: This is throwing an error, but is using a null ref for pipbuck category filter alignment.
+					if (ntip is Array) ntip = ntip[0];
+					vis.cats['cat' + i].visible = true;
 					try {
 						vis.cats['cat' + i].ico.gotoAndStop(ntip);
 					}
-					catch (err)
-					{
-						trace("PipPage.as/setCats() - " + err);
-						vis.cats['cat' + i].ico.gotoAndStop(1);
+					catch (err) {
+						trace("PipPage.as/setCats() - " + err + " | ntip: " + ntip);
+						vis.cats['cat' + i].ico.gotoAndStop(1); // Default to frame 1
 					}
 				}
 			}

@@ -181,10 +181,8 @@ package fe {
 		}
 		
 		public static function playMusic(nextTrackName:String = null, rep:int = 10000):void {
-			trace("Snd.as/playMusic() - Playing song: " + nextTrackName);
-			
 			if (nextTrackName != null && musicCh && nextTrackName == trackName) {
-				trace("Snd.as/playMusic() - Error: This song is already playing");
+				trace("Snd.as/playMusic() - Error: Tried to play song: " + nextTrackName + ", but it's already playing");
 				return;
 			}
 			
@@ -206,6 +204,8 @@ package fe {
 			if (onMusic && musicMap[trackName]) {
 				musicCh = musicMap[trackName].play(0, rep, trans);
 			}
+
+			trace("Snd.as/playMusic() - Playing song: " + nextTrackName);
 		}
 
 		public static function stopMusic():void {
