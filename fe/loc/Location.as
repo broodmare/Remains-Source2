@@ -422,8 +422,7 @@ package fe.loc {
 
 				if (xmll.@tip == 'spawnpoint') spawnPoints.push({x:nx, y:ny});
 				else if (xmll.@tip == 'enspawn') addEnSpawn(nx, ny, xmll);
-				else if (xmll.@tip == 'up')
-				{
+				else if (xmll.@tip == 'up') {
 					var n:int = xmll.@tipn;
 					ups[n].push({x:nx, y:ny, xml:obj});
 				}
@@ -1312,10 +1311,6 @@ package fe.loc {
 					space[j * spaceX + i] = new Tile(i, j);
 				}
 			}
-
-			trace("Location.as/initializeSpace() - Room Width (Horizontal Tiles): " + spaceX);
-			trace("Location.as/initializeSpace() - Room Height (Vertical Tiles): " + spaceY);
-			trace("Location.as/initializeSpace() - Total Tiles Generated: " + space.length);
 		}
 
 		// Returns a Tile from a room using (X, Y) coordinates

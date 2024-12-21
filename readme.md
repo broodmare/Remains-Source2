@@ -38,10 +38,11 @@ Wip:
 \#####
 
 Bugs:
- - Stairs are broke
- - Audio fails to play frequently
- - Beartraps can't be disarmed
+ - Stairs are broke unless jumping/falling onto them.
+ - Audio fails to play frequently.
+ - Beartraps can't be disarmed.
  - Main menu theme plays for a moment before the game realizes it should be muted.
+ - Crafting is broke, no recipes are displayed.
 
 \#####
 
