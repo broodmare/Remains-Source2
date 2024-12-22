@@ -1,5 +1,5 @@
-package fe.inter
-{	
+package fe.inter {
+
 	import fe.*;
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
@@ -10,18 +10,29 @@ package fe.inter
 
 	import fe.stubs.visPipInvItem;
 	
-	public class PipPageWork extends PipPage
-	{
+	/* 
+	*	The page displayed when interacting with a crafting table
+	*	sub-categories:
+	*		1 - Create
+	*		2 - Enhance
+	*		3 - Repair
+	*		4 - *disabled*
+	*		5 - *disabled*
+	*/
+	public class PipPageWork extends PipPage {
+		
 		private var assArr:Array;
-
 		private static var cachedItems:Object = {};
 
-		public function PipPageWork(npip:PipBuck, npp:String)
-		{
-			isLC=true;
-			itemClass=visPipInvItem;
-			super(npip,npp);
-			vis.but4.visible=vis.but5.visible=false;
+		// Constructor
+		public function PipPageWork(npip:PipBuck, npp:String) {
+			isLC = true;
+			itemClass = visPipInvItem;
+			super(npip, npp);
+
+			// Set which sub-categories are disabled at the top of the pip-buck
+			vis.but4.visible = false;
+			vis.but5.visible = false;
 		}
 
 		//подготовка страниц
@@ -32,7 +43,8 @@ package fe.inter
 			if (pip.workTip=='mworkbench') {
 				vis.but1.visible=vis.but2.visible=false;
 				page2=3;
-			} else if (pip.workTip=='stove' || pip.workTip=='lab' || pip.workTip=='expl') {
+			}
+			else if (pip.workTip=='stove' || pip.workTip=='lab' || pip.workTip=='expl') {
 				vis.but2.visible=vis.but3.visible=false;
 				page2=1;
 			}
@@ -68,12 +80,14 @@ package fe.inter
 								arr.push(n);
 								assArr[n.id]=n;
 							}
-						} else if (inv.armors[wid]) {
+						}
+						else if (inv.armors[wid]) {
 							if (inv.armors[wid].lvl<0) {
 								n={tip:Item.L_ARMOR, id:wid, nazv:Res.txt('a',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								arr.push(n);
 							}
-						} else {
+						}
+						else {
 							var node1:XML = getItemInfo(wid);
 							if (node1 != null) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
@@ -87,12 +101,14 @@ package fe.inter
 					arr.sortOn(['ok','sort']);
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				}
+				else {
 					vis.emptytext.text=Res.pipText('emptycreate');
 					statHead.visible=false;
 				}
 
-			} else if (page2==2) {	//улучшение
+			}
+			else if (page2==2) {	//улучшение
 				statHead.fav.text='';
 				statHead.nazv.text='';
 				statHead.hp.text='';
@@ -117,11 +133,13 @@ package fe.inter
 					arr.sortOn('sort');
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				}
+				else {
 					vis.emptytext.text=Res.pipText('emptyupgrade');
 					statHead.visible=false;
 				}
-			} else if (page2==3) {	//ремонт
+			}
+			else if (page2==3) {	//ремонт
 				assArr=[];
 				statHead.fav.text='';
 				statHead.nazv.text=Res.pipText('ii2');
@@ -157,7 +175,8 @@ package fe.inter
 				if (arr.length) {
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				}
+				else {
 					vis.emptytext.text=Res.pipText('emptyrep');
 					statHead.visible=false;
 				}
@@ -165,20 +184,19 @@ package fe.inter
 
 		}
 
-		public static function getItemInfo(id:String):XML
-		{
+		public static function getItemInfo(id:String):XML {
 			// Check if the node is already cached
 			var node:XML;
 			if (cachedItems[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
                 cachedItems[id] = node;
-            } else node = cachedItems[id];
+            }
+			else node = cachedItems[id];
 			return node;
 		}
 		
 		//показ одного элемента
-		override protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			item.rid.visible=false;
 			item.id.text=obj.id;
 			item.cat.text=obj.tip;
@@ -192,8 +210,10 @@ package fe.inter
 			if (page2==1) {
 				if (obj.ok>1) item.alpha=0.5;
 				if (obj.kol>0) item.hp.text=obj.kol;
-			} else if (page2==2) {
-			} else if (page2==3) {
+			}
+			else if (page2==2) {
+			}
+			else if (page2==3) {
 				item.hp.text=Math.round(obj.hp/obj.maxhp*1000)/10+'%';
 				item.ammotip.text=Math.round(obj.rep*gg.pers.repairMult*1000)/10+'%';
 			}
@@ -210,7 +230,8 @@ package fe.inter
 			if (page2==2) {
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
 					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text, 2);
-				} else {
+				}
+				else {
 					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text+'^1',event.currentTarget.nazv.text+' - II', 2);
 				}
 			}
@@ -228,18 +249,17 @@ package fe.inter
 			}
 		}
 
-		private function showBottext(cid):void
-		{
+		private function showBottext(cid):void {
 			if (inv.items[cid]) {
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+textAsColor('yellow', inv.items[cid].kol);
 				if (World.w.loc.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+textAsColor('yellow', inv.items[cid].vault)+' '+Res.pipText('invault')+')';
-			} else {
+			}
+			else {
 				vis.bottext.htmlText='';
 			}
 		}
 		
-		private function checkScheme(sch:XML):Boolean
-		{
+		private function checkScheme(sch:XML):Boolean {
 			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
 				World.w.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
@@ -254,28 +274,25 @@ package fe.inter
 		}
 		
 		//вычесть нужное для крафта количество компонентов
-		private function minusCraftComp(sch):void
-		{
-			for each(var c in sch.craft)
-			{
+		private function minusCraftComp(sch):void {
+			for each(var c in sch.craft) {
 				inv.minusItem(c.@id,c.@kol,false);
 			}
 		}
 		
-		override protected function itemClick(event:MouseEvent):void
-		{
-			if (pip.noAct)
-			{
+		override protected function itemClick(event:MouseEvent):void {
+			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			var w:Weapon;
 			var arm:Armor;
 			var cid:String=event.currentTarget.id.text;
 			var ccat:String=event.currentTarget.cat.text;
 			var cnazv:String=event.currentTarget.nazv.text
-			if (page2==1)
-			{
+			
+			if (page2==1) {
 				var string2:String = 's_' + cid;
 				var sch:XML = getItemInfo(string2);
 				var kol:int=1;
@@ -293,28 +310,32 @@ package fe.inter
                         World.w.gui.infoText('created2', cnazv, inv.items[cid].kol);
                         infoItem(ccat, cid, cnazv, 1);
                         setStatItem(event.currentTarget as MovieClip, obj);
-                    } else {
+                    }
+					else {
                         w.respect = 0;
                         w.hold = w.holder;
                         World.w.gui.infoText('created', cnazv);
                         setStatus();
                     }
 					inv.calcWeaponMass();
-				} else if (ccat==Item.L_ARMOR) {
+				}
+				else if (ccat==Item.L_ARMOR) {
 					arm=inv.armors[cid];
 					if (arm.lvl>=0) return;
 					minusCraftComp(sch);
 					arm.lvl=0;
 					World.w.gui.infoText('created3',cnazv);
 					setStatus();
-				} else if (ccat==Item.L_IMPL) {
+				}
+				else if (ccat==Item.L_IMPL) {
 					minusCraftComp(sch);
 					inv.plusItem(cid,1);
 					inv.takeScript(cid);
 					World.w.gui.infoText('created4',cnazv);
 					gg.pers.setParameters();
 					setStatus();
-				} else if (ccat==Item.L_ITEM) {
+				}
+				else if (ccat==Item.L_ITEM) {
 					var obj=assArr[cid];
 					minusCraftComp(sch);
 					inv.plusItem(cid,kol);
@@ -324,7 +345,9 @@ package fe.inter
 					if (inv.items[cid].xml && inv.items[cid].xml.@one=='1') setStatus();
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
+				
 				World.w.game.checkQuests(cid);
+				
 				if (World.w.helpMess && inv.items[cid]) {
 					var lmess:String=inv.items[cid].mess;
 					if (lmess!=null && !(World.w.game.triggers['mess_'+lmess]>0)) {
@@ -333,7 +356,8 @@ package fe.inter
 						pip.onoff(-1);
 					}
 				}
-			} else if (page2==2) {
+			}
+			else if (page2==2) {
 				if (ccat==Item.L_ARMOR) {
 					arm=inv.armors[cid];
 					if (arm==null) return;
@@ -344,10 +368,12 @@ package fe.inter
 						gg.pers.setParameters();
 						World.w.gui.infoText('upArmor');
 						setStatus();
-					} else {
+					}
+					else {
 						World.w.gui.infoText('noMaterials');
 					}
-				} else if (ccat==Item.L_WEAPON) {
+				}
+				else if (ccat==Item.L_WEAPON) {
 					var string3:String = 's_' + cid;
 					var sch:XML = getItemInfo(string3);
 					if (!checkScheme(sch)) return;
@@ -356,7 +382,8 @@ package fe.inter
 					World.w.gui.infoText('created',cnazv+Weapon.variant2);
 					setStatus();
 				}
-			} else if (page2==3) {
+			}
+			else if (page2==3) {
 				var obj=assArr[cid];
 				if (ccat==Item.L_ARMOR) {
 					arm=inv.armors[cid];
@@ -370,10 +397,12 @@ package fe.inter
 						inv.minusItem(cid2);
 						obj.hp=arm.hp;
 						showBottext(cid2);
-					} else {
+					}
+					else {
 						World.w.gui.infoText('noMaterials');
 					}
-				} else if (ccat==Item.L_WEAPON) {
+				}
+				else if (ccat==Item.L_WEAPON) {
 					if (inv.checkKol('frag')) {
 						w=inv.weapons[cid];
 						if (inv.repWeapon(w,0.25)) {
@@ -381,10 +410,12 @@ package fe.inter
 							obj.hp=w.hp;
 							showBottext('frag');
 						}
-					} else {
+					}
+					else {
 						World.w.gui.infoText('noMaterials');
 					}
-				} else if (ccat==Item.L_INSTR) {
+				}
+				else if (ccat==Item.L_INSTR) {
 					if (inv.checkKol('scrap')) {
 						var owl:UnitPet=gg.pets[cid];
 						var owlRep:int = 100;
@@ -393,7 +424,8 @@ package fe.inter
 							obj.hp=owl.hp;
 							showBottext('scrap');
 						}
-					} else {
+					}
+					else {
 						World.w.gui.infoText('noMaterials');
 					}
 				}

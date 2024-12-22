@@ -1,5 +1,5 @@
-package fe.inter
-{
+package fe.inter {
+
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -25,8 +25,8 @@ package fe.inter
 
 	import fe.stubs.visPipInv;
 	
-	public class PipPage
-	{
+	public class PipPage {
+
 		var vis:MovieClip;
 		var arr:Array;
 		var statArr:Array;
@@ -70,12 +70,16 @@ package fe.inter
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
 
+		// Constructor
 		public function PipPage(npip:PipBuck, npp:String) {
 			
-			pip=npip;
+			pip = npip;
+			pp = npp;
+
+			if (pageClass == null) {
+				pageClass = visPipInv;
+			}
 			
-			pp=npp;
-			if (pageClass==null) pageClass=visPipInv;
 			vis=new pageClass();
 			vis.x=165;
 			vis.y=72;
@@ -340,14 +344,13 @@ package fe.inter
 		// [add values ​​to text string]
 		public static function addVar(s:String, xml:XML):String {
 			for (var i:int = 1; i <= 5; i++) {
-				if (xml.attribute('s' + i).length())  s=s.replace('#'+i,"<span class='yellow'>"+xml.attribute('s'+i)+"</span>");
+				if (xml.attribute('s' + i).length())  s = s.replace('#' + i, "<span class='yellow'>" + xml.attribute('s' + i) + "</span>");
 			}
 			return s;
 		}
 		
-		//dlvl=1 если перк не текущий, а выбираемый
-		public static function effStr(tip:String, id:String, dlvl:int=0):String
-		{
+		// [dlvl=1 if the perk is not current, but selectable]
+		public static function effStr(tip:String, id:String, dlvl:int=0):String {
 			var s:String;
 			if (tip=='item') s=Res.txt('i',id,1)
 			else s=Res.txt('e',id,1);
@@ -364,65 +367,92 @@ package fe.inter
 			var lvl = 1;
 			var pers:Pers = World.w.pers;
 
-			if (tip=='perk') {
-				lvl=pers.perks[id];
-				if (lvl==null) lvl=0;
+			if (tip == 'perk') {
+				lvl = pers.perks[id];
+				if (lvl == null) lvl = 0;
 			}
-			else if (tip=='skill') {
-				lvl=pers.getSkLevel(pers.skills[id]);
+			else if (tip == 'skill') {
+				lvl = pers.getSkLevel(pers.skills[id]);
 			}
-			else if (dp.@him=='2') {
+			else if (dp.@him == '2') {
 				var ad = pers.addictions[id];
-				if (ad>=pers.ad2) lvl=2;
-				if (ad>=pers.ad3) lvl=3;
+				if (ad >= pers.ad2) lvl = 2;
+				if (ad >= pers.ad3) lvl = 3;
 			}
-			else if (dp.@him=='1') lvl=pers.himLevel;
-			lvl+=dlvl;
-			//вставка в текст числовых значений
-			if (lvl>1 && dp.textvar[lvl-1]) s=addVar(s,dp.textvar[lvl-1]);
-			else if (dp.textvar.length()) s=addVar(s,dp.textvar[0]);
-			//добавление особых эффектов
-			if (dp.eff.length() && lvl>0) {
+			else if (dp.@him == '1') {
+				lvl = pers.himLevel;
+			}
+			
+			lvl += dlvl;
+			
+			// [Inserting numeric values ​​into text]
+			if (lvl > 1 && dp.textvar[lvl - 1]) s = addVar(s, dp.textvar[lvl - 1]);
+			else if (dp.textvar.length()) s = addVar(s, dp.textvar[0]);
+			
+			// [Adding special effects]
+			if (dp.eff.length() && lvl > 0) {
 				s+='<br>';
 				for each(var eff in dp.eff) {
 					s+='<br>'+(eff.@id.length()?Res.pipText(eff.@id):Res.pipText('refeff'))+': '+textAsColor('yellow', eff.attribute('n'+lvl));
 				}
 			}
-			//добавление эффектов веса
+			
+			// [Adding weight effects]
 			if (World.w.hardInv && dp.sk.length()) {
-				s+='<br>';
+				s += '<br>';
 				for each(var sk in dp.sk) {
-					if (sk.@tip=='m') {
-						var add=textAsColor('lightBlue', '+1');
-						if (sk.@vd>0) add=textAsColor('lightBlue', '+'+sk.@vd)+' '+Res.pipText('perlevel');
-						if (sk.@v1>0) add=textAsColor('lightBlue', '+'+sk.@v1);
+					if (sk.@tip == 'm') {
+						var add = textAsColor('lightBlue', '+1');
+						
+						if (sk.@vd > 0) {
+							add = textAsColor('lightBlue', '+' + sk.@vd) + ' ' + Res.pipText('perlevel');
+						}
+						
+						if (sk.@v1 > 0) {
+							add = textAsColor('lightBlue', '+' + sk.@v1);
+						}
+						
 						s+='<br>'+Res.pipText('add_'+sk.@id)+' '+add;
 					}
 				}
 			}
-			//добавление требований
+			
+			// [Adding requirements]
 			if (dp.req.length()) {
-				s+='<br><br>'+Res.pipText('requir');
+				s += '<br><br>' + Res.pipText('requir');
 				lvl--;
 				for each(var req in dp.req) {
-					var reqlevel:int=1;
-					if (req.@lvl.length()) reqlevel=req.@lvl;
-					if (lvl>0 && req.@dlvl.length()) reqlevel+=lvl*req.@dlvl;
-					var s1:String='<br>';
-					var ok:Boolean=true;
+					
+					var reqlevel:int = 1;
+					
+					if (req.@lvl.length()) reqlevel = req.@lvl;
+					
+					if (lvl > 0 && req.@dlvl.length()) reqlevel += lvl * req.@dlvl;
+					
+					var s1:String = '<br>';
+					var ok:Boolean = true;
+					
 					if (req.@id=='level') {
 						s1+=Res.pipText('level');
 						if (pers.level<reqlevel) ok=false;
-					} else if (req.@id=='guns') {
+					}
+					else if (req.@id=='guns') {
 						s1+=Res.txt('e','smallguns')+' '+Res.pipText('orange')+' '+Res.txt('e','energy');
 						if (pers.getSkLevel(pers.skills['smallguns'])<reqlevel && pers.getSkLevel(pers.skills['energy'])<reqlevel) ok=false;
-					} else {
+					}
+					else {
 						s1+=Res.txt('e',req.@id);
 						if (pers.getSkLevel(pers.skills[req.@id])<reqlevel) ok=false;
 					}
-					s1+=': '+reqlevel;
-					if (ok)	s+=textAsColor('yellow', s1);
-					else s+=textAsColor('red', s1);
+					
+					s1 += ': ' + reqlevel;
+					
+					if (ok)	{
+						s += textAsColor('yellow', s1);
+					}
+					else {
+						s += textAsColor('red', s1);
+					}
 				}
 			}
 			return s;

@@ -1,15 +1,25 @@
-package fe.inter
-{
-	import fe.*;
+package fe.inter {
+
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+
+	import fe.*;
 	import fe.unit.Pers;
 	import fe.serv.Item;
 
 	import fe.stubs.visPipMedItem;
 	
-	public class PipPageMed extends PipPage
-	{
+	/* 
+	*	The healing menu when interacting with doctors
+	*	sub-categories:
+	*		1 - Healing
+	*		2 - Trading
+	*		3 - *disabled*
+	*		4 - *disabled*
+	*		5 - *disabled*
+	*/
+	public class PipPageMed extends PipPage {
+
 		var pers:Pers;
 		var infoItemId:String='';
 		var priceHP:Number=0.5;
@@ -24,25 +34,31 @@ package fe.inter
 		
 		var plata:Item;
 
-		public function PipPageMed(npip:PipBuck, npp:String)
-		{
-			isLC=true;
-			itemClass=visPipMedItem;
-			super(npip,npp);
-			vis.but3.visible=vis.but4.visible=vis.but5.visible=false;
+		// Constructor
+		public function PipPageMed(npip:PipBuck, npp:String) {
+			isLC = true;
+			itemClass = visPipMedItem;
+			super(npip, npp);
+
+			// Set which sub-categories are disabled at the top of the pip-buck
+			vis.but3.visible = false;
+			vis.but4.visible = false;
+			vis.but5.visible = false;
 		}
 
 		//подготовка страниц
-		override protected function setSubPages():void
-		{
+		override protected function setSubPages():void {
 			setIco();
+			
 			if (pip.npcInter=='adoc') {
 				vis.but2.visible=false;
 				plata=inv.gel;
-			} else if (pip.npcInter=='vdoc') {
+			}
+			else if (pip.npcInter=='vdoc') {
 				vis.but2.visible=false;
 				plata=inv.good;
-			} else {
+			}
+			else {
 				vis.but2.visible=true;
 				plata=inv.money;
 			}
@@ -97,18 +113,24 @@ package fe.inter
 		}
 		
 		//показ одного элемента
-		override protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			if (obj.id == null) {
                 item.id.text = '';
-            } else item.id.text = obj.id;
+            }
+			else item.id.text = obj.id;
+			
 			item.id.visible=false;
 			item.hpbar.visible=false;
 			item.nazv.text=obj.nazv;
 			item.numb.text=obj.lvl;
+			
 			if (obj.price == null) {
                 item.price.text = '';
-            } else item.price.text = Math.round(obj.price);
+            }
+			else {
+				item.price.text = Math.round(obj.price);
+			}
+			
 			if (obj.bar!=null) {
 				item.hpbar.visible=true;
 				item.hpbar.bar.scaleX=obj.bar;
@@ -120,15 +142,15 @@ package fe.inter
 		{
 				if (event.currentTarget.id.text == '') {
                     vis.nazv.text = vis.info.htmlText = '';
-                } else {
+                }
+				else {
                     vis.nazv.text = Res.pipText(event.currentTarget.id.text);
                     var s:String = Res.txt('p', event.currentTarget.id.text, 1);
                     vis.info.htmlText = s;
                 }
 		}
 		
-		override protected function page2Click(event:MouseEvent):void
-		{
+		override protected function page2Click(event:MouseEvent):void {
 			if (World.w.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			pip.snd(2);
@@ -137,32 +159,30 @@ package fe.inter
 				pip.onoff(4);
 				pip.currentPage.page2=1;
 				pip.currentPage.setStatus();
-			} else {
+			}
+			else {
 				setStatus();
 			}
 		}
 
-		private function showBottext():void
-		{
+		private function showBottext():void {
 			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+numberAsColor('yellow', plata.kol);
 			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+numberAsColor('yellow', plata.kol);
 			else vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', plata.kol);
 		}
 		
-		override protected function itemClick(event:MouseEvent):void
-		{
-			if (pip.noAct) 
-			{
+		override protected function itemClick(event:MouseEvent):void {
+			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			var cena:Number;
 			var need:String;
 			var mon = plata.kol;
 
 			infoItemId = getSimplifiedItemId(event.currentTarget.id.text);
-			switch (infoItemId) 
-			{
+			switch (infoItemId) {
 				case 'hp':
 					cena = (gg.maxhp - gg.hp - gg.rad) * priceHP;
 					if (cena > plata.kol) cena = plata.kol;
@@ -236,9 +256,12 @@ package fe.inter
 					else gg.pers.heal(cena / priceOrgan, 3);
 					break;
 			}
+			
 			plata.kol -= Math.round(cena);
 
-			if (plata.id == 'money' && plata.kol < mon && pip.vendor) pip.vendor.money += (mon - plata.kol);
+			if (plata.id == 'money' && plata.kol < mon && pip.vendor) {
+				pip.vendor.money += (mon - plata.kol);
+			}
 
 			pip.snd(1);
 			setStatus();
@@ -246,8 +269,7 @@ package fe.inter
 			pip.setRPanel();
 
 			// Helper functions
-			function getSimplifiedItemId(infoItemId:String):String 
-			{
+			function getSimplifiedItemId(infoItemId:String):String {
 				if (infoItemId.indexOf('statBlood') == 0) return 'statBlood';
 				if (infoItemId.indexOf('statMana')  == 0) return 'statMana';
 				if (infoItemId.indexOf('statHead')  == 0) return 'statHead';
@@ -257,8 +279,7 @@ package fe.inter
 				return infoItemId;
 			}
 
-			function healCheckPassed(input:Number):Boolean
-			{
+			function healCheckPassed(input:Number):Boolean {
 				if (input <= 2 && plata.kol <= 0 && gg.pers.level < 6) return true
 				else return false;
 			}

@@ -1,6 +1,6 @@
-package fe.inter
-{
-	//Стенд для оружия, коллекционных вещей и ачивок
+package fe.inter {
+
+	// [Stand for weapons, collectibles and achievements]
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
@@ -8,14 +8,15 @@ package fe.inter
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import flash.geom.Matrix;
+	
 	import fe.*;
 	import fe.unit.Invent;
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	
-	public class Stand
-	{
+	public class Stand {
+		
 		public var active:Boolean=false;
 		
 		var vis:MovieClip;
@@ -67,6 +68,7 @@ package fe.inter
 				buttons[i]=but;
 				but.addEventListener(MouseEvent.CLICK,standBut);
 			}
+			
 			vis.butclose.addEventListener(MouseEvent.CLICK,standClose);
 			vis.butclose.id.visible=false;
 			vis.butclose.text.text=Res.guiText('close');
@@ -106,8 +108,7 @@ package fe.inter
 			var levels:Array=[0,0,0,0,0,0,0];
 			var stolb:int=-1;
 
-			for each (var weap in Weapon.cachedWeaponList.(@tip > 0))
-			{
+			for each (var weap in Weapon.cachedWeaponList.(@tip > 0)) {
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
 					var item=new itemStand();
@@ -133,8 +134,7 @@ package fe.inter
 						try {
 							infIco.gotoAndStop(weap.@id);
 						}
-						catch(err)
-						{
+						catch(err) {
 							trace('ERROR: (00:47)');
 							infIco.stop();
 						}
@@ -142,7 +142,8 @@ package fe.inter
 						item.zad.scaleY=1.35;
 						item.y=40+levels[stolb]*140;
 						if (weap.@spell>0) item.nazv.text=Res.txt('i',weap.@id);
-					} else {
+					}
+					else {
 						var vWeapon:Class=null;
 						if (weap.vis.length() && weap.vis[0].@vico.length()) vWeapon=Res.getClass(weap.vis[0].@vico, null);
 						if (vWeapon==null) {
@@ -204,8 +205,7 @@ package fe.inter
 			var sc:Number=1.5;
 			var aid=Appear.ggArmorId;
 			Appear.transp=true;
-			for each(var arm in Armor.cachedArmorList)
-			{
+			for each(var arm in Armor.cachedArmorList) {
 				if (n==6 && arm.@tip>1 || n==7 && arm.@tip!=3) continue;
 				var item=new itemArt();
 				item.x=80+stolb*160;
@@ -231,15 +231,23 @@ package fe.inter
 					m.ty=-dvis.getRect(dvis).top+1;
 					m.scale(sc,sc);
 					try {
-						dvis.pip1.visible=dvis.sleg1.mark.visible=dvis.sleg2.mark.visible=dvis.head.morda.magic.visible=dvis.head.morda.eye.visible=false;
-					} catch (err) {}
+						dvis.pip1.visible = false;
+						dvis.sleg1.mark.visible = false;
+						dvis.sleg2.mark.visible = false;
+						dvis.head.morda.magic.visible = false; 
+						dvis.head.morda.eye.visible = false;
+					}
+					catch (err) {
+
+					}
 					var bmpd:BitmapData=new BitmapData(sprX,sprY,true,0x00000000);
 					bmpd.draw(dvis,m);
 					var bmp:Bitmap=new Bitmap(bmpd);
 					item.art.addChild(bmp);
 					bmp.x=-bmp.width/2-10;
 					bmp.y=100;
-				} else if (n==7) {
+				}
+				else if (n==7) {
 					item.art.gotoAndStop(arm.@id);
 					item.art.y=100;
 				}
@@ -249,11 +257,14 @@ package fe.inter
 		}
 		
 		private function showMass() {
-			vis.bottext.htmlText='';
+			vis.bottext.htmlText = '';
+			
 			try {
-				if (page<=4) vis.bottext.htmlText=inv.retMass(4);
-				if (page==5) vis.bottext.htmlText=inv.retMass(5);
-			} catch (err) {
+				if (page <= 4) vis.bottext.htmlText = inv.retMass(4);
+				if (page == 5) vis.bottext.htmlText = inv.retMass(5);
+			}
+			catch (err) {
+
 			}
 		}
 		
@@ -267,24 +278,31 @@ package fe.inter
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			vis.toptext.visible=(n<=5);
 
-			for each (var weap in Weapon.cachedWeaponList.(@tip>0))
-			{
+			for each (var weap in Weapon.cachedWeaponList.(@tip>0)) {
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
-					if (weapons[weap.@id]==null) continue;
+					if (weapons[weap.@id]==null) {
+						continue;
+					}
+					
 					if (weap.@spell>0 && (inv.items[weap.@id]==null || inv.items[weap.@id].kol<=0)) {
 						showWeapon(weapons[weap.@id],0,0);
-					} else if (inv.weapons[weap.@id]==null || inv.weapons[weap.@id].respect==3) showWeapon(weapons[weap.@id],0,0)
-					else showWeapon(weapons[weap.@id],inv.weapons[weap.@id].variant+1,inv.weapons[weap.@id].respect);
+					}
+					else if (inv.weapons[weap.@id]==null || inv.weapons[weap.@id].respect==3) {
+						showWeapon(weapons[weap.@id],0,0)
+					}
+					else {
+						showWeapon(weapons[weap.@id],inv.weapons[weap.@id].variant+1,inv.weapons[weap.@id].respect);
+					}
 				}
 			}
 
-			for each(var arm in Armor.cachedArmorList)
-			{
+			for each(var arm in Armor.cachedArmorList) {
 				if (armors[arm.@id]) {
 					if (inv.armors[arm.@id] && inv.armors[arm.@id].lvl>=0) {
 						armors[arm.@id].nazv.visible=true;
 						armors[arm.@id].art.filters=[itemFilter, glowFilter];
-					} else {
+					}
+					else {
 						armors[arm.@id].nazv.visible=false;
 						armors[arm.@id].art.filters=[clearFilter];
 					}
@@ -295,7 +313,8 @@ package fe.inter
 				if (inv.items[ls[i]].kol) {
 					arts[i].nazv.visible=true;
 					arts[i].art.filters=[itemFilter, glowFilter];
-				} else {
+				}
+				else {
 					arts[i].nazv.visible=false;
 					arts[i].art.filters=[clearFilter];
 				}
@@ -312,25 +331,29 @@ package fe.inter
 				item.weapon.visible=true;
 				item.weapon2.visible=false;
 				item.goldstar.visible=false;
-			} else if (n==1) {
+			}
+			else if (n==1) {
 				item.nazv.visible=true;
 				item.nazv2.visible=false;
 				item.weapon.visible=true;
 				item.weapon2.visible=false;
 				item.goldstar.visible=true;
-			} else if (n==2) {
+			}
+			else if (n==2) {
 				item.nazv.visible=false;
 				item.nazv2.visible=true;
 				if (item.dop.text=='2') {
 					item.weapon.visible=false;
 					item.weapon2.visible=true;
-				} else {
+				}
+				else {
 					item.weapon.visible=true;
 					item.weapon2.visible=false;
 				}
 				item.goldstar.gotoAndStop(3);
 				item.goldstar.visible=true;
 			}
+			
 			if (item.nazv.visible || item.nazv2.visible) {
 				if (respect==1) {
 					item.weapon.alpha=0.5;
@@ -338,7 +361,8 @@ package fe.inter
 					item.weapon2.filters=[itemFilter];
 					item.nazv.alpha=0.35;
 					item.nazv2.alpha=0.35;
-				} else {
+				}
+				else {
 					item.weapon.filters=[itemFilter, glowFilter];
 					item.weapon2.filters=[itemFilter, glowFilter];
 					item.nazv.alpha=1;
@@ -349,10 +373,15 @@ package fe.inter
 		}
 		
 		function setButtons() {
-			for (var i=0; i<kolPages; i++) {
-				var item:MovieClip=buttons[i];
-				if (page==i) item.gotoAndStop(2);
-				else item.gotoAndStop(1);
+			for (var i = 0; i < kolPages; i++) {
+				var item:MovieClip = buttons[i];
+				
+				if (page == i) {
+					item.gotoAndStop(2);
+				}
+				else {
+					item.gotoAndStop(1);
+				}
 			}
 		}
 		
@@ -363,36 +392,53 @@ package fe.inter
 			showWeapon(event.currentTarget as MovieClip,-1,resp);
 			if (World.w.hardInv) showMass();
 		}
+
 		public function itemOver(event:MouseEvent) {
 			if (inv.weapons[event.currentTarget.id.text]==null) {
 				return;
 			}
-			if (!event.currentTarget.nazv.visible && !event.currentTarget.nazv2.visible) return;
+			if (!event.currentTarget.nazv.visible && !event.currentTarget.nazv2.visible) {
+				return;
+			}
+			
 			info.nazv.text=event.currentTarget.nazv.visible?event.currentTarget.nazv.text:event.currentTarget.nazv2.text;
+			
 			if (event.currentTarget.nazv2.visible) info.info.htmlText=PipPage.infoStr(Item.L_WEAPON,event.currentTarget.id.text+'^'+inv.weapons[event.currentTarget.id.text].variant);
 			else info.info.htmlText=PipPage.infoStr(Item.L_WEAPON,event.currentTarget.id.text);
+			
 			info.visible=true;
 			info.fon.height=info.info.height+info.info.y+8;
 			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
 			var ny=event.currentTarget.y+event.currentTarget.parent.y-50;
+			
 			if (ny+vis.y+info.height>World.w.cam.screenY-10) ny=World.w.cam.screenY-vis.y-info.height-10;
+			
 			if (nx+vis.x+info.width>World.w.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
+			
 			info.x=nx;
 			info.y=ny;
 		}
+
 		public function itemOver2(event:MouseEvent) {
-			if (!event.currentTarget.nazv.visible) return;
+			if (!event.currentTarget.nazv.visible) {
+				return;
+			}
+			
 			info.nazv.text=event.currentTarget.nazv.text;
 			info.info.htmlText=PipPage.infoStr(Item.L_ARMOR,event.currentTarget.id.text);
 			info.visible=true;
 			info.fon.height=info.info.height+info.info.y+8;
 			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
 			var ny=event.currentTarget.y+event.currentTarget.parent.y+20;
+			
 			if (ny+vis.y+info.height>World.w.cam.screenY-10) ny=World.w.cam.screenY-vis.y-info.height-10;
+			
 			if (nx+vis.x+info.width>World.w.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
+			
 			info.x=nx;
 			info.y=ny;
 		}
+
 		public function itemOut(event:MouseEvent) {
 			info.visible=false;
 		}
@@ -400,14 +446,18 @@ package fe.inter
 		public function onoff(turn:int=0) {
 			if (turn==0) {
 				active=!active;
-			} else if (turn>0) {
+			}
+			else if (turn>0) {
 				active=true;
 				World.w.pip.onoff(-1);
 				World.w.ctr.clearAll();
-			} else {
+			}
+			else {
 				active=false;
 			}
+			
 			vis.visible=active;
+			
 			if (active) {
 				World.w.cur();
 				setButtons();
@@ -427,7 +477,8 @@ package fe.inter
 					item.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
-			} else {
+			}
+			else {
 				for each (var item in weapons) {
 					if (item.hasEventListener(MouseEvent.CLICK)) {
 						item.removeEventListener(MouseEvent.CLICK,itemClick);
@@ -446,17 +497,19 @@ package fe.inter
 			}
 		}
 
-		//коррекция размеров
+		// [Size correction]
 		public function resizeScreen(nx:int, ny:int) {
 			if (nx>=1200 && ny>=800) {
 				vis.x=(nx-visX)/2;
 				vis.y=(ny-visY)/2;
 				vis.scaleX=vis.scaleY=1;
-			} else {
+			}
+			else {
 				vis.x=vis.y=0;
 				if (nx/1200<ny/800) {
 					vis.scaleX=vis.scaleY=nx/1200;
-				} else {
+				}
+				else {
 					vis.scaleX=vis.scaleY=ny/800;
 				}
 			}

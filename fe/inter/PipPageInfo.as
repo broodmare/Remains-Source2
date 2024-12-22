@@ -1,5 +1,5 @@
-package fe.inter
-{
+package fe.inter {
+
 	import fe.*;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
@@ -18,8 +18,16 @@ package fe.inter
 	import fe.stubs.visPipMap;
 	import fe.stubs.visPipWMap;
 	
-	public class PipPageInfo extends PipPage
-	{
+	/* 
+	*	One of the main pip-buck categories
+	*	sub-categories:
+	*		1 - Local Map
+	*		2 - Quests
+	*		3 - World Map
+	*		4 - Notes
+	*		5 - Enemies
+	*/
+	public class PipPageInfo extends PipPage {
 		
 		var visMap:MovieClip;
 		var visWMap:MovieClip;
@@ -39,13 +47,16 @@ package fe.inter
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function PipPageInfo(npip:PipBuck, npp:String)
-		{
+		// Constructor
+		public function PipPageInfo(npip:PipBuck, npp:String) {
+
 			itemClass = visPipQuestItem;
 			pageClass = visPipInfo;
 			isLC = true;
+			
 			super(npip, npp);
-			//объект карты
+			
+			// [Map object]
 			visMap	= new visPipMap();
 			visWMap	= new visPipWMap();
 			vis.addChild(visMap);
@@ -55,8 +66,9 @@ package fe.inter
 			visMap.y=75;
 			visWMap.x=17;
 			visWMap.y=80;
-			//битмап
-			map=new Bitmap();
+			
+			// [Bitmap]
+			map = new Bitmap();
 			visMap.vmap.addChild(map);
 			visMap.vmap.mask=visMap.maska;
 			plTag=visMap.vmap.plTag;
@@ -70,19 +82,21 @@ package fe.inter
 			visMap.butCenter.addEventListener(MouseEvent.CLICK,funCenter);
 		}
 
-		public static function getUnitInfo(id:String):XML
-		{
-			// Check if the node is already cached
+		public static function getUnitInfo(id:String):XML {
+			
 			var node:XML;
 			if (cachedUnits[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 				cachedUnits[id] = node;
-			} else node = cachedUnits[id];
+			}
+			else {
+				node = cachedUnits[id];
+			}
+			
 			return node;
 		}
 
-		override protected function setSubPages():void
-		{
+		override protected function setSubPages():void {
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
 			statHead.visible=false;
@@ -100,13 +114,15 @@ package fe.inter
 			if (page2==1) {		//карта
 				if (World.w.loc.noMap) {
 					vis.emptytext.text=Res.pipText('emptymap');
-				} else {
+				}
+				else {
 					vis.emptytext.text='';
 					map.bitmapData=World.w.land.drawMap();
 					setMapSize();
 					visMap.visible=true;
 				}
-			} else if (page2==2) {	//задания
+			}
+			else if (page2==2) {	//задания
 				for each(var q:Quest in game.quests) {
 					if (q.state>0) {
 						var n:Object={id:q.id, nazv:q.nazv, main:q.main, sort:(q.main?0:1), state:q.state};
@@ -114,15 +130,11 @@ package fe.inter
 					}
 				}
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
-				if (World.w.loc && World.w.loc.base)
-				{
-					for each (var task:XML in cachedTaskList)
-					{
-						if (checkQuest(task))
-						{
+				if (World.w.loc && World.w.loc.base) {
+					for each (var task:XML in cachedTaskList) {
+						if (checkQuest(task)) {
 							var q:Quest = game.quests[task.@id];
-							if (q == null || q.state == 0)
-							{
+							if (q == null || q.state == 0) {
 								vis.butOk.visible = true;
 								vis.butOk.text.text = Res.pipText('alltask');
 								break;
@@ -130,51 +142,72 @@ package fe.inter
 						}
 					}
 				}
-			} else if (page2==3) {	//общая карта
-				vis.nazv.x=vis.info.x=584;
-				vis.nazv.width=287;
-				vis.info.width=332;
+			}
+			else if (page2==3) {	// [General map]
+				
+				vis.nazv.x = 584
+				vis.info.x = 584;
+				vis.nazv.width = 287;
+				vis.info.width = 332;
+				
 				if (pip.travel) setTopText('infotravel');
 				for each (var land:LandAct in game.lands) {
-					if (land.prob) continue;
+					if (land.prob) {
+						continue;
+					}
+					
 					land.calcProbs();
-					var sim:MovieClip=visWMap[land.id];
+					
+					// Populate the map with clickable locations
+					var sim:MovieClip = visWMap[land.id];
 					if (sim) {
-						sim.alpha=1;
+						sim.alpha = 1;
 						sim.zad.gotoAndStop(1);
 						sim.sign.stop();
-						sim.sign.visible=false;
-						sim.visible=false;
+						sim.sign.visible = false;
+						sim.visible = false;
+						
 						if (!sim.hasEventListener(MouseEvent.CLICK)) {
 							sim.addEventListener(MouseEvent.CLICK,itemClick);
 							sim.addEventListener(MouseEvent.MOUSE_OVER,statInfo);
 						}
+						
 						try {
 							sim.sim.gotoAndStop(land.id);
 						}
-						catch (err)
-						{
+						catch (err) {
 							trace('ERROR: (00:3A)');
 							sim.sim.gotoAndStop(1);
 						}
-						if (land.test && !World.w.testMode) continue;
-						if (!game.checkTravel(land.id)) sim.alpha=0.5;
-						if (World.w.testMode && !land.visited && !land.access) sim.alpha=0.3;
+						
+						if (land.test && !World.w.testMode) {
+							continue;
+						}
+						
+						if (!game.checkTravel(land.id)) {
+							sim.alpha = 0.5;
+						}
+						
+						if (World.w.testMode && !land.visited && !land.access) {
+							sim.alpha = 0.3;
+						}
+						
 						if (World.w.helpMess && !land.visited && land.access) {
 							sim.sign.play();
-							sim.sign.visible=true;
+							sim.sign.visible = true;
 						}
-						if (World.w.testMode || land.visited || land.access) sim.visible=true;
+						
+						if (World.w.testMode || land.visited || land.access) sim.visible = true;
 					}
 				}
-				vis.butOk.text.text=Res.pipText('trans');
-				visWMap.visible=true;
-				pip.vis.butHelp.visible=true;
-				pip.helpText=Res.txt('p','helpWorld',0,true);
-			} else if (page2==4) {	//записи
+				vis.butOk.text.text = Res.pipText('trans');
+				visWMap.visible = true;
+				pip.vis.butHelp.visible = true;
+				pip.helpText = Res.txt('p', 'helpWorld', 0, true);
+			}
+			else if (page2==4) {	// [Notes]
 				var doparr:Array=[];
-				for each (var note:String in game.notes) 
-				{
+				for each (var note:String in game.notes) {
 					//TODO: Stop searching Res on your own.
 					var xml=Res.currentLanguageData.txt.(@id==note);
 					
@@ -192,7 +225,8 @@ package fe.inter
 				}
 				arr.reverse();
 				arr=doparr.concat(arr);
-			} else if (page2==5) {	//противники
+			}
+			else if (page2==5) {	// [Enemies]
 				if (Unit.arrIcos==null) Unit.initIcos();
 				var prevObj:Object=null;
 				statHead.visible=true;
@@ -201,14 +235,14 @@ package fe.inter
 				statHead.kol.text=Res.pipText('frag');
 				vis.ico.visible=true;
 
-				for each(var xml in cachedUnitList)
-				{
+				for each(var xml in cachedUnitList) {
 					if (xml && xml.@cat.length()) {
 						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
 						if (xml.@cat=='3' && World.w.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.w.game.triggers['frag_'+xml.@id]);
 						if (xml.@cat=='2') {
 							prevObj=n;
-						} else if (xml.@cat=='3') {
+						}
+						else if (xml.@cat=='3') {
 							if (prevObj && n.kol>=0) {
 								if (prevObj.kol<0) prevObj.kol=0;
 								prevObj.kol+=n.kol;
@@ -219,18 +253,16 @@ package fe.inter
 					}
 				}
 
-				arr=arr.filter(isKol);		//отфильтровать
+				arr=arr.filter(isKol);		// [Filter]
 			}
 		}
 		
-		private function isKol(element:*, index:int, arr:Array):Boolean 
-		{
-            return (element.kol>=0 || element.cat=='1');
+		private function isKol(element:*, index:int, arr:Array):Boolean {
+            return (element.kol >= 0 || element.cat == '1');
         }
 
-		//один эемент списка
-		override protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		// [One list element]
+		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.nazv.text=obj.nazv;
@@ -246,81 +278,96 @@ package fe.inter
 				if (obj.state==2) {
 					item.nazv.alpha=item.mq.alpha=0.4;
 					item.nazv.text+=' ('+Res.pipText('done')+')';
-				} else {
+				}
+				else {
 					item.nazv.alpha=item.mq.alpha=1;
 				}
-			} else if (page2==4) {
+			}
+			else if (page2==4) {
 				item.nazv.x=32;
 				item.nazv.htmlText=obj.nazv.substr((obj.nazv.charAt(0)==' ')?3:0, 60);
 				item.kol.text=obj.nazv;
 				item.mq.visible=true;
 				item.mq.alpha=1;
 				item.mq.gotoAndStop(obj.ico+1);
-			} else if (page2==5) {
+			}
+			else if (page2==5) {
 				item.nazv.x=5;
-				if (obj.cat=='1') item.nazv.htmlText='<b>'+item.nazv.text+'</b>';
-				if (obj.cat=='2') item.nazv.htmlText='      <b>'+item.nazv.text+'</b>';
-				if (obj.cat=='3') item.nazv.htmlText='            '+item.nazv.text;
-				if (obj.kol>0) item.kol.text=obj.kol;
-				item.kol.visible=true;
+				if (obj.cat == '1') item.nazv.htmlText = '<b>' + item.nazv.text + '</b>';
+				if (obj.cat == '2') item.nazv.htmlText = '      <b>'+item.nazv.text + '</b>';
+				if (obj.cat == '3') item.nazv.htmlText = '            ' + item.nazv.text;
+				if (obj.kol > 0) item.kol.text = obj.kol;
+				item.kol.visible = true;
 			}
 		}
+
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
+		override protected function statInfo(event:MouseEvent):void {
 			vis.info.y=vis.ico.y;
 			if (page2==2) {
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
 			}
-			else if (page2 == 3)
-			{
+			else if (page2 == 3) {
 				var l:LandAct = game.lands[event.currentTarget.name];
 
-				if (l == null || l.id == lastLandTooltipDisplayed) return;
+				if (l == null || l.id == lastLandTooltipDisplayed) {
+					return;
+				}
+				
 				lastLandTooltipDisplayed = l.id;
 
 				vis.nazv.text = Res.txt('m',l.id);
 				var s:String = Res.txt('m',l.id,1);
+				
 				if (l.visited) {
 					if (l.passed) s += "\n\n<span class ='orange'>" + Res.pipText('ls2') + "</span>";							// "Cleared" message
 					else if (l.tip == 'base') s += "\n\n<span class ='orange'>" + Res.pipText('ls4') + "</span>";						// "Base camp" message
 					else if (l.tip == 'rnd') s += "\n\n<span class ='yellow'>" + Res.pipText('ls3') + ": " + (l.landStage + 1) + "</span>";
-				} else s += "\n\n<span class ='blue'>" + Res.pipText('ls1') + "</span>";	// "Location level reached" message
-				if (l.tip == 'rnd' && l.kolAllProb > 0)																		// "Trials complete x/x" message
-				{
-					if (l.kolClosedProb >= l.kolAllProb)	// If all trials complete, print in green
-					{
+				}
+				else {
+					s += "\n\n<span class ='blue'>" + Res.pipText('ls1') + "</span>";	// "Location level reached" message
+				}
+				
+				if (l.tip == 'rnd' && l.kolAllProb > 0) {
+					if (l.kolClosedProb >= l.kolAllProb) { // If all trials complete, print in green
 						s += "\n" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
 					}
-					else									// Otherwise, print in yellow
-					{
+					else { // Otherwise, print in yellow
 						s += "\n<span class ='yellow'>" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
 					}
 				}
-				if (l.dif > 0)																							// "Reccomended level" message
-				{
-					if (World.w.pers.level < l.dif)	// Player below reccomended level, highlight red
-					{
+				
+				if (l.dif > 0) { // "Reccomended level" message
+					if (World.w.pers.level < l.dif) { // Player below reccomended level, highlight red
 						trace('Highlighting level requirement. Requirement not met. 	Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
 						s += '\n\n' + "<span class = 'red'>"+ Res.pipText('recLevel') + ' ' + Math.round(l.dif) + "</span>";
 					}
-					else
-					{
+					else {
 						trace('Highlighting level requirement. Requirement met. Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
 						s += '\n\n' + Res.pipText('recLevel') + ' ' + Math.round(l.dif);
 					}
 
 					
 				}
-				if (l.dif>World.w.pers.level) s+='\n\n'+Res.pipText('wrLevel');
-				if (World.w.pers.speedShtr>=3) {
-					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr3'));
-				} else if (World.w.pers.speedShtr==2) {
-					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr2'));
-				} else if (World.w.pers.speedShtr==1) {
-					s+='\n\n'+textAsColor('red', Res.pipText('speedshtr1'));
+				
+				if (l.dif>World.w.pers.level) {
+					s += '\n\n' + Res.pipText('wrLevel');
 				}
-				if (World.w.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
+				
+				if (World.w.pers.speedShtr>=3) {
+					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr3'));
+				}
+				else if (World.w.pers.speedShtr==2) {
+					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr2'));
+				}
+				else if (World.w.pers.speedShtr==1) {
+					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr1'));
+				}
+				
+				if (World.w.pers.speedShtr >= 1) {
+					s += '\n' + Res.pipText('speedshtr0');
+				}
+				
 				vis.info.htmlText=s;
 			}
 			else if (page2==4)
@@ -342,7 +389,11 @@ package fe.inter
 				vis.info.y=vis.ico.y+vis.ico.height+20;
 				vis.ico.x=685-vis.ico.width/2;
 			}
-			if (vis.scText) vis.scText.visible=false;
+			
+			if (vis.scText) {
+				vis.scText.visible = false;
+			}
+			
 			if (vis.info.height<vis.info.textHeight && vis.scText) {
 				vis.scText.scrollPosition=0;
 				vis.scText.maxScrollPosition=vis.info.maxScrollV;
@@ -350,8 +401,7 @@ package fe.inter
 			}
 		}
 		
-		private function getParam(un, pun, cat:String, param:String):*
-		{
+		private function getParam(un, pun, cat:String, param:String):* {
 			if (un.length()==0) return null;
 			if (un[cat].length() && un[cat].attribute(param).length()) return un[cat].attribute(param);
 			if (pun==null || pun.length()==0) return null;
@@ -359,8 +409,7 @@ package fe.inter
 			return null;
 		}
 		
-		private function infoUnit(id:String, kol):String
-		{
+		private function infoUnit(id:String, kol):String {
 			var n:int=0, delta;
 			//юнит
 			var un = getUnitInfo(id);
@@ -421,19 +470,17 @@ package fe.inter
 								if (wk) s+=', ';
 								else s+=Res.pipText('enemy_weap')+': ';
 								s+=textAsColor('blue', Res.txt('w', weap.@id));
-								try
-								{
+								try {
 									var w = Weapon.getWeaponInfo(weap.@id);
 									var dam = 0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
 									s+=' ('+textAsColor('yellow', Res.numb(dam))+')';
 								}
-								catch (err)
-								{
+								catch (err) {
 									trace('ERROR: (00:3B)');
 								}
-								wk=true;
+								wk = true;
 							}
 						}
 						s+='\n';
@@ -466,23 +513,23 @@ package fe.inter
 			return s;
 		}
 		
-		private function vulner(n:int, val:Number):String
-		{
-			return textAsColor('blue', Res.pipText('tipdam'+n))+': '+textAsColor('yellow', Math.round((1-val)*100)+'%   ');
+		private function vulner(n:int, val:Number):String {
+			return textAsColor('blue', Res.pipText('tipdam' + n))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
 		}
 		
-		
-		override protected function itemClick(event:MouseEvent):void
-		{
+		override protected function itemClick(event:MouseEvent):void {
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			if (page2==3 && (pip.travel || World.w.testMode)) {
 				if (targetLand!='' && visWMap[targetLand]) {
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
-				var id=event.currentTarget.name;
+				
+				var id = event.currentTarget.name;
+				
 				if (game.checkTravel(id)) {
 					targetLand=id;
 					setStatItems();
@@ -490,81 +537,68 @@ package fe.inter
 					if (targetLand!='' && visWMap[targetLand]) {
 						visWMap[targetLand].zad.gotoAndStop(2);
 					}
-				} else {
+				}
+				else {
 					vis.butOk.visible=false;
 					World.w.gui.infoText('noTravel');
 				}
+				
 				pip.snd(1);
 			}
 		}
 		
-		private function transOk(event:MouseEvent):void
-		{
-			if (pip.noAct)
-			{
+		private function transOk(event:MouseEvent):void {
+			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.w.testMode))
-			{
-				if (game.lands[targetLand] && game.lands[targetLand].loaded)
-				{
+			if (page2==3 && (pip.travel || World.w.testMode)) {
+				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
 					game.beginMission(targetLand);
 					pip.onoff(-1);
 				}
 			}
-			if (page2==2)
-			{
-
+			if (page2==2) {
 				addAllQuestsToGameClass();
 				setStatus();
 			}
 		}
 
-		private function addAllQuestsToGameClass():void
-		{
-			for each (var task:XML in cachedTaskList)
-			{
+		private function addAllQuestsToGameClass():void {
+			for each (var task:XML in cachedTaskList) {
 				if (task.@man=='1') continue;
-				if (checkQuest(task))
-				{
+				if (checkQuest(task)) {
 					var q:Quest = game.quests[task.@id];
 					if (q == null || q.state==0) game.addQuest(task.@id, null, false, false, false);
 				}
 			}
 		}
 		
-		public function onMouseDown(event:MouseEvent):void
-		{
+		public function onMouseDown(event:MouseEvent):void {
 			visMap.vmap.startDrag();
 		}
 
-		public function onMouseUp(event:MouseEvent):void
-		{
+		public function onMouseUp(event:MouseEvent):void {
 			visMap.vmap.stopDrag();
 			setMapSize();
 		}
 
-		public function funZoomP(event:MouseEvent):void
-		{
+		public function funZoomP(event:MouseEvent):void {
 			mapScale++;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
 
-		public function funZoomM(event:MouseEvent):void
-		{
+		public function funZoomM(event:MouseEvent):void {
 			mapScale--;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
 
-		public function funCenter(event:MouseEvent):void
-		{
+		public function funCenter(event:MouseEvent):void {
 			visMap.vmap.x=visMap.fon.width/2-plTag.x;
 			visMap.vmap.y=visMap.fon.height/2-plTag.y;
 		}
 		
-		private function setMapSize(cx:Number=350, cy:Number=285):void
-		{
+		private function setMapSize(cx:Number=350, cy:Number=285):void {
 			if (mapScale > 6) mapScale = 6;
 			if (mapScale < 1) mapScale = 1;
 
@@ -583,22 +617,19 @@ package fe.inter
 			ms = mapScale;
 		}
 		
-		public override function scroll(dn:int=0):void
-		{
-			if (page2==1)
-			{
+		public override function scroll(dn:int=0):void {
+			if (page2==1) {
 				if (dn>0) mapScale++;
 				if (dn<0) mapScale--;
 				setMapSize(visMap.mouseX, visMap.mouseY);
 			}
 		}
 
-		private function funWMapClick(event:MouseEvent):void
-		{
+		private function funWMapClick(event:MouseEvent):void {
 			trace(event.currentTarget.name);
 		}
-		private function funWMapOver(event:MouseEvent):void
-		{
+
+		private function funWMapOver(event:MouseEvent):void {
 			//trace(event.currentTarget.name);
 		}
 	}

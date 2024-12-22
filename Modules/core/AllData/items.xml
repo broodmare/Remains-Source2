@@ -614,8 +614,8 @@
 	<item id='darkfrag' tip='compp' chance='0' price='600' sell='150' m='5'/>
 	<item id='essence' tip='compp' chance='0' stage='1' price='500' limit='essence' mlim='0.95' m='1'/>
 	
-	<!--       Схемы        -->
-	<!--   Самодельное оружие   -->
+	<!--       Schemes        -->
+	<!--   Homemade weapons   -->
 	<item id='s_hsword' tip='scheme' cat='weapon' work='work' chance='1' stage='1' price='100' skill='repair' lvl='1'>
 		<craft id='strap' kol='1'/>
 		<craft id='fblade' kol='1'/>
@@ -677,7 +677,7 @@
 		<craft id='frag' kol='30'/>
 	</item>
 	
-	<!--   Взрывчатка   -->
+	<!--   Explosives   -->
 	<item id='s_hgren' tip='scheme' cat='weapon' work='expl' chance='1' price='500' skill='explosives' lvl='1'>
 		<craft id='can' kol='1'/>
 		<craft id='detonat' kol='1'/>
@@ -734,7 +734,7 @@
 		<craft id='crystal' kol='100'/>
 	</item>
 	
-	<!--   Модули   -->
+	<!--   Modules   -->
 	<item id='s_mod_metal' tip='scheme' work='work' chance='1' stage='3' price='500' skill='science' lvl='1'>
 		<craft id='impgen' kol='1'/>
 		<craft id='chip' kol='1'/>
@@ -767,7 +767,7 @@
 		<craft id='elcomp' kol='20'/>
 	</item>
 	
-	<!--   Робо-сова   -->
+	<!--   Robo-owl   -->
 	<item id='s_owl' tip='scheme' work='work' chance='0' price='10000' skill='repair' lvl='3'>
 		<craft id='c_owl' kol='1'/>
 		<craft id='tlevit' kol='1'/>
@@ -788,7 +788,7 @@
 		<craft id='elcomp' kol='20'/>
 	</item>
 	
-	<!--   Броня   -->
+	<!--   Armor   -->
 	<item id='s_chitin' tip='scheme' cat='armor' work='work' chance='0' price='1000' skill='repair' lvl='3'>
 		<craft id='chitin_comp' kol='20'/>
 		<craft id='tape' kol='4'/>
@@ -796,7 +796,7 @@
 		<craft id='glue' kol='3'/>
 	</item>
 	
-	<!--   Зелья   -->
+	<!--   Potions   -->
 	<item id='s_potion_stim'	tip='scheme' perk='potmaster' work='lab' chance='3' price='750' skill='survival' lvl='2'>
 		<craft id='ghoulblood' kol='1'/>
 		<craft id='ratliver' kol='3'/>
@@ -854,7 +854,7 @@
 		<craft id='firegland' kol='1'/>
 	</item>
 
-	<!--   Вещества   -->
+	<!--   Drugs   -->
 	<item id='s_ultradash'	tip='scheme' work='lab' chance='0.05' stage='5' price='750' skill='medic' lvl='2'>
 		<craft id='dash' kol='1'/>
 		<craft id='sparklecola' kol='1'/>
@@ -874,7 +874,7 @@
 		<craft id='herbs' kol='5'/>
 	</item>
 	
-	<!--   Элексиры   -->
+	<!--   Potions   -->
 	<item id='s_potion_dskel'	tip='scheme' work='lab' chance='0.6' stage='5' price='1300' skill='survival' lvl='3'>
 		<craft id='acidslime' kol='5'/>
 		<craft id='ratliver' kol='3'/>
@@ -934,7 +934,7 @@
 		<craft id='essence' kol='1'/>
 	</item>
 	
-	<!--   Едьба   -->
+	<!--   Cooking   -->
 	<item id='s_frmeat' tip='scheme' tip2='co' chance2='1' work='stove' chance='0.1' price='100' skill='survival' lvl='0'>
 		<craft id='meat' kol='1'/>
 	</item>
