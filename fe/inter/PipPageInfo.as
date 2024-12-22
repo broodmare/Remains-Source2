@@ -1,11 +1,11 @@
 package fe.inter {
 
-	import fe.*;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 
+	import fe.*;
 	import fe.loc.Tile;
 	import fe.loc.Game;
 	import fe.loc.Quest;

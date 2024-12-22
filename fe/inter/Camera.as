@@ -1,12 +1,13 @@
 package fe.inter {
 
+	import flash.display.DisplayObject;
+
 	import fe.util.Vector2;
 	import fe.util.Calc;
 	import fe.unit.Unit;
 	import fe.World;
 	import fe.Snd;
 	import fe.loc.Location;
-	import flash.display.DisplayObject;
 	
 	public class Camera {
 

@@ -1,11 +1,12 @@
 package fe.inter {
 
+	import flash.display.MovieClip;
+	import flash.events.MouseEvent;
+
 	import fe.*;
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
-	import flash.display.MovieClip;
-	import flash.events.MouseEvent;
 	import fe.unit.UnitPet;
 
 	import fe.stubs.visPipInvItem;

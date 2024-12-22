@@ -7,8 +7,8 @@ package fe.inter {
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
+	import fl.controls.ScrollBar;	// Adobe Animate dependency
+	import fl.events.ScrollEvent;	// Adobe Animate dependency
 
 	import fe.*;
 	import fe.unit.Invent;

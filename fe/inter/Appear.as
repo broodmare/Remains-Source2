@@ -1,15 +1,15 @@
-package fe.inter
-{
+package fe.inter {
+
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 
-	import fl.controls.ColorPicker;
-	import fl.motion.Color;
-	import fl.events.ColorPickerEvent;
-	import fl.events.SliderEvent;
+	import fl.controls.ColorPicker;		// Adobe Animate dependency
+	import fl.motion.Color;				// Adobe Animate dependency
+	import fl.events.ColorPickerEvent;	// Adobe Animate dependency
+	import fl.events.SliderEvent;		// Adobe Animate dependency
 
 	import fe.*;
 	
@@ -145,6 +145,7 @@ package fe.inter
 			if (funOk) funOk();
 			World.w.saveConfig();
 		}
+
 		//нажать кнопку отмена
 		public function buttonCancel(event:MouseEvent):void {
 			load(temp);
@@ -154,6 +155,7 @@ package fe.inter
 			vis.pers.gotoAndStop(1);
 			if (funCancel) funCancel();
 		}
+
 		//нажать кнопку def
 		public function buttonDef(event:MouseEvent):void {
 			load(def);
@@ -164,19 +166,16 @@ package fe.inter
 		}
 		
 		//установить все колорпикеры в соответствие с цветами
-		private function setColors():void
-		{
-			for each(var l in clist)
-			{
+		private function setColors():void {
+			for each(var l in clist) {
 				vis['color'+l].selectedColor=this['c'+l];
 			}
 			vis.checkHair1.selected=visHair1;
 		}
+
 		//преобразовать все цвета в трансформы
-		public function setTransforms():void
-		{
-			for each(var l in clist)
-			{
+		public function setTransforms():void {
+			for each(var l in clist) {
 				colorToTransform(this['c'+l],Appear['tr'+l]);
 			}
 		}
@@ -201,17 +200,14 @@ package fe.inter
 			if (saved==null) saved=save();
 		}
 		
-		public function load(obj:Object):void
-		{
-			if (obj==null)
-			{
+		public function load(obj:Object):void {
+			if (obj==null) {
 				for each(var l in clist) this['c'+l]=this['t'+l];
 				visHair1=false;
 				fEye=1;
 				fHair=1;
 			}
-			else
-			{
+			else {
 				for each(var l in clist) this['c'+l]=obj['c'+l];
 				visHair1=obj.visHair1;
 				fEye=obj.fEye;
@@ -258,6 +254,7 @@ package fe.inter
 			tek=nam;
 			setColor(nam,myCP.selectedColor);
 		}
+
 		private function openHandler(event:Event):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var nam=myCP.name.substr(5);
@@ -296,8 +293,7 @@ package fe.inter
 		}
 		
 		//установить цвет модельки
-		private function setColor(nam:String, c:uint):void
-		{
+		private function setColor(nam:String, c:uint):void {
 			this['c'+nam]=c;
 			colorToTransform(this['c'+nam],Appear['tr'+nam]);
 			vis['color'+nam].selectedColor=c;

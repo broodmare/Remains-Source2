@@ -1,5 +1,5 @@
-package fe.loc
-{
+package fe.loc {
+
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.serv.Script;
@@ -10,8 +10,8 @@ package fe.loc
 	
 	//Активная область
 	
-	public class Area extends Obj
-	{
+	public class Area extends Obj {
+
 		public var enabled:Boolean=true;
 		public var tip:String='gg';	//1 - активируется ГГ
 		
@@ -47,6 +47,7 @@ package fe.loc
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
+		// Constructor
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
 			loc=nloc;
 			if (xml) {
@@ -68,7 +69,8 @@ package fe.loc
 				//визуал
 				if (xml.@vis.length()) {
 					vis=Res.getVis('vis'+xml.@vis,visArea);
-				} if (World.w.showArea) {
+				}
+				if (World.w.showArea) {
 					vis=new visArea();
 				}
 				if (xml.@tip.length()) tip=xml.@tip;
@@ -145,8 +147,7 @@ package fe.loc
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null)
-		{
+		public override function command(com:String, val:String=null) {
 			if (com=='onoff') enabled=!enabled;
 			if (com=='off') enabled=false;
 			if (com=='on') enabled=true;
@@ -155,8 +156,7 @@ package fe.loc
 			if (com=='dam') damTiles(int(val));
 		}
 		
-		public override function step()
-		{
+		public override function step() {
 			if (!enabled || !loc.active || tip=='') return;
 			if (emit) {
 				t_frec+=frec;
@@ -167,14 +167,12 @@ package fe.loc
 				}
 			}
 			activator=null;
-			if (tip=='gg')
-			{
+			if (tip=='gg') {
 				active=areaTest(loc.gg);
 				if (active && noRad) loc.gg.noRad=true;
 				activator=loc.gg;
 			}
-			else
-			{
+			else {
 				active=false;
 				for each(var un:Unit in loc.units)
 				{
@@ -193,21 +191,19 @@ package fe.loc
 			if (active && !preactive && onPort) teleport(activator);
 			if (!active && preactive && out) out();
 			if (active && !preactive && scrOver) {
-				if (trig && uid)
-				{
-					if (World.w.game.triggers[uid]!=1)
-					{
+				if (trig && uid) {
+					if (World.w.game.triggers[uid]!=1) {
 						World.w.game.triggers[uid]=1;
 						scrOver.start();
 					}
-				} else scrOver.start();
+				}
+				else scrOver.start();
 			}
 			if (!active && preactive && scrOut) scrOut.start();
 			preactive=active;
 		}
 		
-		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void
-		{
+		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void {
 			coordinates.X  = x1;
 			leftBound = x1;
 			topBound = y1;
@@ -218,33 +214,26 @@ package fe.loc
 			objectHeight = bottomBound - topBound;
 		}
 		
-		public function setLift():void	// Grav lift effect
-		{
-			for (var i:int = bx; i < bx + rx; i++)
-			{
-				for (var j:int = by - ry + 1; j <= by; j++)
-				{
+		// Grav lift effect
+		public function setLift():void {
+			for (var i:int = bx; i < bx + rx; i++) {
+				for (var j:int = by - ry + 1; j <= by; j++) {
 					loc.getTile(i, j).grav = enabled? lift:1;
 				}
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11):void
-		{
-			for (var i:int = bx; i < bx + rx; i++)
-			{
-				for (var j:int = by - ry + 1; j <= by; j++)
-				{
+		public function damTiles(destroy:int,tipDam:int=11):void {
+			for (var i:int = bx; i < bx + rx; i++) {
+				for (var j:int = by - ry + 1; j <= by; j++) {
 					loc.hitTile(loc.getTile(i, j), destroy, (i + 0.5) * tileY, (j + 0.5) * tileY, tipDam);
 				}
 			}
 		}
 		
-		public function teleport(un:Unit)
-		{
+		public function teleport(un:Unit) {
 			if (!un) return;
-			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.objectWidth, un.objectHeight))
-			{
+			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.objectWidth, un.objectHeight)) {
 				un.teleport((portX + 1) * tileX, (portY + 1) * tileY - 1);
 			}
 		}

@@ -5,7 +5,7 @@ package fe.inter {
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
 
-	import fl.controls.NumericStepper;
+	import fl.controls.NumericStepper;	// Adobe Animate dependency
 
 	import fe.*;
 	import fe.serv.Item;

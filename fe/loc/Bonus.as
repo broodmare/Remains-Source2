@@ -1,16 +1,17 @@
-package fe.loc
-{
+package fe.loc {
+
 	import fe.*;
 	import fe.entities.Obj;
 	
 	//Бонусы, которые подбираются путём контакта с ними
-	public class Bonus extends Obj
-	{
+	public class Bonus extends Obj {
+
 		public var sost:int=1; 	//состояние 0-неактивен, 1-активен, 2-взят
 		public var id:String='';
 		public var val:Number=100;
 		public var liv:int=1000000;
 
+		// Constructor
 		public function Bonus(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			loc = nloc;
 			id = nid;
@@ -20,21 +21,18 @@ package fe.loc
 			if (loadObj) sost = loadObj.sost;
 			levitPoss = false;
 			sloy = 3;
-			if (sost == 1)
-			{
+			if (sost == 1) {
 				if (id == 'heal')	vis = new visualHealBonus();
 				else				vis = new visualBonus();
 			}
-			if (vis)
-			{
+			if (vis) {
 				vis.bonus.cacheAsBitmap = true;
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 			}
 		}
 		
-		private function setSize():void
-		{
+		private function setSize():void {
 			objectWidth = 40;
 			objectHeight = 40;
 
@@ -44,8 +42,7 @@ package fe.loc
 			bottomBound = coordinates.Y + objectHeight / 2;
 		}
 		
-		public override function save():Object
-		{
+		public override function save():Object {
 			var obj:Object = new Object();
 			obj.sost = sost;
 			return obj;
