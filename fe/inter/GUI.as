@@ -1,5 +1,5 @@
-package fe.inter 
-{
+package fe.inter {
+
 	import flash.text.TextField;
 	import flash.display.MovieClip;
 	import flash.text.TextFieldAutoSize;
@@ -18,8 +18,8 @@ package fe.inter
 	import fe.weapon.WPaint;
 	import fe.loc.Tile;
 	
-	public class GUI
-	{
+	public class GUI {
+
 		public var vis:MovieClip;
 		public var active:Boolean = true;
 		var weapon:TextField, holder:TextField, ammo:TextField, mana:TextField, celobj:TextField, info:TextField, item:TextField, hp:TextField, vitem:MovieClip, mess:MovieClip, dial:MovieClip, inform:MovieClip, imp:MovieClip, pet:MovieClip, pr_bar:MovieClip, levit_poss:MovieClip, tharrow:MovieClip;
@@ -66,6 +66,7 @@ package fe.inter
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
+		// Constructor
 		public function GUI(vgui:MovieClip) {
 			vis=vgui;
 			vis.mouseChildren=vis.mouseEnabled=false;

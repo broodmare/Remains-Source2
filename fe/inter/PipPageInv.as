@@ -1,5 +1,5 @@
-package fe.inter
-{
+package fe.inter {
+
 	import fe.*;
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
@@ -9,8 +9,16 @@ package fe.inter
 
 	import fe.stubs.visPipInvItem;
 	
-	public class PipPageInv extends PipPage
-	{
+	/* 
+	*	One of the main pip-buck categories
+	*	sub-categories:
+	*		1 - Weapons
+	*		2 - Armor
+	*		3 - Equipment
+	*		4 - Other
+	*		5 - Ammunition
+	*/
+	public class PipPageInv extends PipPage {
 		
 		var assId:String=null;
 		var assArr:Array;
@@ -21,9 +29,8 @@ package fe.inter
 		var over_t:int;
 		var dat:Number=0;
 		
-
-		public function PipPageInv(npip:PipBuck, npp:String)
-		{
+		// Constructor
+		public function PipPageInv(npip:PipBuck, npp:String) {
 			isLC=isRC=true;
 			itemClass=visPipInvItem;
 			super(npip,npp);
@@ -41,8 +48,7 @@ package fe.inter
 		}
 		
 		//подготовка страниц
-		override protected function setSubPages():void
-		{
+		override protected function setSubPages():void {
 			vis.butOk.visible=false;
 			statHead.cat.visible=false;
 			statHead.rid.visible=false;
@@ -111,7 +117,8 @@ package fe.inter
 				actCurrent='showhidden';
 				if (arr.length) arr.sortOn(['sort1','sort2','sort3','nazv'],[0,0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
-			} else if (page2==2) {	//броня
+			}
+			else if (page2==2) {	//броня
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
@@ -129,7 +136,8 @@ package fe.inter
 				pip.reqKey=true;
 				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv2',0,true);
-			} else if (page2==3 || page2==4 || page2==5) {	//снаряжение
+			}
+			else if (page2==3 || page2==4 || page2==5) {	//снаряжение
 				assArr=[];
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
@@ -170,19 +178,22 @@ package fe.inter
 				if (arr.length) arr.sortOn(['sort','sort2','nazv'],[0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv3',0,true);
 			}
+			
 			pip.helpText=Res.txt('p','helpInv'+page2,0,true);
-			if (arr.length==0) {
+			
+			if (arr.length == 0) {
 				vis.emptytext.text=Res.pipText('emptyinv');
 				statHead.visible=false;
-			} else {
+			}
+			else {
 				vis.emptytext.text='';
 				statHead.visible=true;
 			}
+			
 			showBottext();
 		}
 		
-		private function showBottext():void
-		{
+		private function showBottext():void {
 			vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money);
 			if (World.w.hardInv) {
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
@@ -194,13 +205,13 @@ package fe.inter
 		
 		
 		//показ одного элемента
-		override protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			item.id.text=obj.id;
 			item.id.visible=item.rid.visible=item.cat.visible=false;
 			item.alpha=1;
 			item.nazv.alpha=1;
 			item.mass.text='';
+			
 			if (inv.favIds[obj.id]) {
 				if (inv.favIds[obj.id]==29) item.fav.text=World.w.ctr.retKey('keyGrenad');
 				else if (inv.favIds[obj.id]==30) item.fav.text=World.w.ctr.retKey('keyMagic');
@@ -213,11 +224,11 @@ package fe.inter
 			try {
 				item.trol.gotoAndStop(obj.trol);
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:3C)');
 				item.trol.gotoAndStop(1);
 			}
+			
 			if (page2==1) {
 				item.ramka.visible=(World.w.gg.newWeapon && World.w.gg.newWeapon.id==obj.id) || (World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
@@ -234,7 +245,8 @@ package fe.inter
 				if (obj.avail==false) item.nazv.alpha=0.6;
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
-			} else if (page2==2) {
+			}
+			else if (page2==2) {
 				item.ramka.visible=false;
 				if (World.w.hardInv && !World.w.loc.base && obj.trol=='armor1' && World.w.gg.prevArmor!=obj.id && obj.clo==0) item.alpha=0.4;
 				if (World.w.gg.currentArmor && World.w.gg.currentArmor.id==obj.id) {
@@ -250,7 +262,8 @@ package fe.inter
 				else item.hp.text=obj.hp;
 				item.ammo.text='';
 				item.ammotip.text='';
-			} else  {
+			}
+			else  {
 				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
 				item.nazv.text=obj.nazv;
 				item.hp.text=obj.kol;
@@ -268,8 +281,7 @@ package fe.inter
 		
 		
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
+		override protected function statInfo(event:MouseEvent):void {
 			assId=null;
 			if (page2==1) {
 				assId=event.currentTarget.id.text;
@@ -295,40 +307,32 @@ package fe.inter
 			}
 		}
 		
-		override protected function itemClick(event:MouseEvent):void
-		{
-			if (pip.noAct) 
-			{
+		override protected function itemClick(event:MouseEvent):void {
+			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (event.ctrlKey) 
-			{
+			if (event.ctrlKey) {
 				itemRightClick(event);
 				return;
 			}
 			var ci:String=event.currentTarget.id.text;
-			if (page2==1) 
-			{
+			if (page2==1) {
 				World.w.gg.changeWeapon(ci);
 				selItem=event.currentTarget as MovieClip;
 				setStatus(false);
 				pip.snd(1);
 			} 
-			else if (page2==2)
-			{
+			else if (page2==2) {
 				if (World.w.gg.changeArmor(ci))
 				{
 					setStatus(false);
 				}
 				pip.snd(1);
 			} 
-			else if (page2==3)
-			{
-				if (ci=='retr')
-				{
-					if (World.w.alicorn)
-					{
+			else if (page2==3) {
+				if (ci=='retr') {
+					if (World.w.alicorn) {
 						World.w.gui.infoText('alicornNot',null,null,false);
 						return; // Set as return instead of return false.
 					}
@@ -340,14 +344,12 @@ package fe.inter
 					if (World.w.t_battle>0) {
 						World.w.gui.infoText('noUseCombat',null,null,false);
 					} 
-					else
-					{
+					else {
 						pip.workTip=ci;
 						pip.onoff(7);
 					}
 				} 
-				else
-				{
+				else {
 					World.w.invent.useItem(ci);
 					setStatus(false);
 					World.w.gui.setHp();
@@ -355,10 +357,8 @@ package fe.inter
 				pip.snd(1);
 				over_t=2;
 			}
-			else if (page2==5)
-			{
-				if (gg.invent.weapons[ci])
-				{
+			else if (page2==5) {
+				if (gg.invent.weapons[ci]) {
 					gg.invent.weapons[ci].respect=2;
 					World.w.gg.changeWeapon(ci);
 				} 
@@ -368,15 +368,12 @@ package fe.inter
 			showBottext();
 		}
 		
-		override protected function itemRightClick(event:MouseEvent):void
-		{
-			if (pip.noAct)
-			{
+		override protected function itemRightClick(event:MouseEvent):void {
+			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==1)
-			{
+			if (page2==1) {
 				var obj=assArr[event.currentTarget.id.text];
 				obj.respect=World.w.invent.respectWeapon(event.currentTarget.id.text);
 				setStatItem(event.currentTarget as MovieClip, obj);
@@ -384,8 +381,7 @@ package fe.inter
 				showBottext();
 				pip.snd(1);
 			}
-			if (page2>=3)
-			{
+			if (page2>=3) {
 				if (World.w.loc.base) {
 					World.w.gui.infoText('noDrop1',null,null,false);
 					return;
@@ -396,39 +392,39 @@ package fe.inter
 					else obj.drop++;
 					setStatItem(event.currentTarget as MovieClip, obj);
 					buttonOk('drop');
-				} else {
+				}
+				else {
 					World.w.gui.infoText('noDrop2',null,null,false);
 				}
 			}
 		}
 		
-		public function assignKey(num:int):void
-		{
+		public function assignKey(num:int):void {
 			trace('назначение клавиши',num,assId);
 			pip.snd(1);
 			var temp=assId;
-			if (page2<=3 && assId!=null)
-			{
+			if (page2<=3 && assId!=null) {
 				World.w.invent.favItem(assId, num);
 				setStatus(false);
 			}
 			assId=temp;
 		}
 		
-		private function showH(event:MouseEvent):void
-		{
+		private function showH(event:MouseEvent):void {
 			if (actCurrent=='showhidden') {			//показать скрытое оружие
 				pip.showHidden=!pip.showHidden;
 				setStatus();
 				pip.snd(2);
-			} else if (actCurrent=='retr') {		//Возврат на базу
+			}
+			else if (actCurrent=='retr') {		//Возврат на базу
 				if (inv.items['retr'].kol>0 && World.w.game.triggers['noreturn']!=1) {
 					inv.minusItem('retr');
 					World.w.game.gotoLand(World.w.game.baseId);
 				}
 				vis.butOk.visible=false;
 				pip.onoff(-1);
-			} else if (actCurrent=='drop') {		//выбросить вещи
+			}
+			else if (actCurrent=='drop') {		//выбросить вещи
 				for each (var obj in arr) {
 					if (obj.drop>0) inv.drop(obj.id, obj.drop);
 				}
@@ -437,26 +433,21 @@ package fe.inter
 			}
 		}
 		
-		private function buttonOk(act:String):void
-		{
+		private function buttonOk(act:String):void {
 			vis.butOk.visible=true;
 			vis.butOk.text.text=Res.pipText(act);
 			actCurrent=act;
 		}
 		
 		
-		public override function step():void
-		{
-			if (over_t>0) over_t--;
-			if (over_t==1 && overItem)
-			{
-				try
-				{
-					if (overItem.fav.text=='☩' || overItem.fav.text=='+') overItem.fav.text='';
-					inv.items[overId].nov=0;
+		public override function step():void {
+			if (over_t > 0) over_t--;
+			if (over_t == 1 && overItem) {
+				try {
+					if (overItem.fav.text == '☩' || overItem.fav.text == '+') overItem.fav.text = '';
+					inv.items[overId].nov = 0;
 				}
-				catch (err)
-				{
+				catch (err) {
 					trace('ERROR: (00:3C)');
 				}				
 			}

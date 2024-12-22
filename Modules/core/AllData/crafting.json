@@ -1,0 +1,1168 @@
+[
+	{
+		"id": "",
+		"cat": "",
+		"kol": null,
+		"perk": "",
+		"workbench": "",
+		"chance": null,
+		"chance2": null,
+		"stage": null,
+		"price": null,
+		"skill": "",
+		"skillRequirement": null,
+		"ingredients": {
+			
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_hsword",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 1,
+		"price": 100,
+		"skill": "repair",
+		"skillRequirement": 1,
+		"ingredients": {
+			"strap": 1,
+			"fblade" : 1
+		}
+	},
+	{
+		"id": "s_arson",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 1,
+		"price": 200,
+		"skill": "repair",
+		"skillRequirement": 0,
+		"ingredients": {
+			"tape": 1,
+			"lighter": 1,
+			"aero": 100
+		}
+	},
+	{
+		"id": "s_dartgun",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 1,
+		"price": 200,
+		"skill": "repair",
+		"skillRequirement": 1,
+		"ingredients": {
+			"glue": 1,
+			"gland": 1,
+			"tubing": 2,
+			"frag": 5
+		}
+	},
+	{
+		"id": "s_acidgun",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 3,
+		"price": 300,
+		"skill": "repair",
+		"skillRequirement": 2,
+		"ingredients": {
+			"pulv": 1,
+			"compress": 1,
+			"pbatt": 1,
+			"frag": 10
+		}
+	},
+	{
+		"id": "s_sawgun",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 5,
+		"price": 500,
+		"skill": "repair",
+		"skillRequirement": 3,
+		"ingredients": {
+			"motor": 1,
+			"spring": 4,
+			"pbatt": 3,
+			"frag": 20
+		}
+	},
+	{
+		"id": "s_buckshot",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 5,
+		"price": 700,
+		"skill": "repair",
+		"skillRequirement": 4,
+		"ingredients": {
+			"resscook": 1,
+			"mano": 1,
+			"pbatt":5,
+			"frag": 25
+		}
+	},
+	{
+		"id": "s_railway",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 0.8,
+		"stage": 7,
+		"price": 1000,
+		"skill": "repair",
+		"skillRequirement": 5,
+		"ingredients": {
+			"tlevit": 1,
+			"condens": 2,
+			"magnit": 5,
+			"pbatt": 3,
+			"frag": 30
+		}
+	},
+	{
+		"id": "s_bfg",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 0.5,
+		"stage": 7,
+		"price": 1200,
+		"skill": "science",
+		"skillRequirement": 5,
+		"ingredients": {
+			"fcrystal": 1,
+			"superc": 2,
+			"condens": 5,
+			"elcomp": 15,
+			"frag":30
+		}
+	},
+	{
+		"id": "s_cdagger",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 0,
+		"price": 1000,
+		"skill": "repair",
+		"skillRequirement": 4,
+		"ingredients": {
+			"kogt": 1,
+			"strap": 1,
+			"tape": 1,
+			"glue": 1
+		}
+	},
+	{
+		"id": "s_friend",
+		"cat": "weapon",
+		"workbench": "work",
+		"chance": 0,
+		"price": 1200,
+		"skill": "repair",
+		"skillRequirement": 5,
+		"ingredients": {
+			"hcrystal": 7,
+			"superc": 1,
+			"condens": 1,
+			"elcomp": 20,
+			"frag": 30
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_hgren",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 1,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 1,
+		"ingredients": {
+			"can": 1,
+			"detonat": 1,
+			"powder": 1,
+			"scrap": 5
+		}
+	},
+	{
+		"id": "s_molotov",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 1,
+		"price": 200,
+		"skill": "explosives",
+		"skillRequirement": 1,
+		"ingredients": {
+			"bottle": 1,
+			"fuel": 25
+		}
+	},
+	{
+		"id": "s_hmine",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 1,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 1,
+		"ingredients": {
+			"lunchbox": 1,
+			"sensor": 1,
+			"powder": 1,
+			"scrap": 5
+		}
+	},
+	{
+		"id": "s_acidgr",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 1,
+		"stage": 3,
+		"price": 800,
+		"skill": "explosives",
+		"skillRequirement": 2,
+		"ingredients": {
+			"bottle": 1,
+			"acid": 3
+		}
+	},
+	{
+		"id": "s_dbomb",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0.5,
+		"stage": 3,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 2,
+		"ingredients": {
+			"dinamit": 3,
+			"tape": 1
+		}
+	},
+	{
+		"id": "s_bomb",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0.5,
+		"stage": 3,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 3,
+		"ingredients": {
+			"tnt": 1,
+			"detonat": 1,
+			"timer": 1
+		}
+	},
+	{
+		"id": "s_cryogr",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 3,
+		"ingredients": {
+			"can": 1,
+			"detonat": 1,
+			"pcryo": 5
+		}
+	},
+	{
+		"id": "s_cryomine",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 3,
+		"ingredients": {
+			"lunchbox": 1,
+			"sensor": 1,
+			"pcryo": 5
+		}
+	},
+	{
+		"id": "s_balemine",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0,
+		"price": 1000,
+		"skill": "explosives",
+		"skillRequirement": 5,
+		"ingredients": {
+			"mine": 1,
+			"egg": 1
+		}
+	},
+	{
+		"id": "s_spgren",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0,
+		"price": 500,
+		"skill": "explosives",
+		"skillRequirement": 5,
+		"ingredients": {
+			"can": 1,
+			"radcola": 1,
+			"turp": 1,
+			"app": 1
+		}
+	},
+	{
+		"id": "s_empbomb",
+		"cat": "weapon",
+		"workbench": "expl",
+		"chance": 0,
+		"price": 1000,
+		"skill": "explosives",
+		"skillRequirement": 5,
+		"ingredients": {
+			"condens": 1,
+			"magnit": 1,
+			"impgr": 4,
+			"crystal": 100
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_mod_metal",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 3,
+		"price": 500,
+		"skill": "science",
+		"skillRequirement": 1,
+		"ingredients": {
+			"impgen": 1,
+			"chip": 1,
+			"elcomp": 10
+		}
+	},
+	{
+		"id": "s_mod_analis",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 3,
+		"price": 500,
+		"skill": "science",
+		"skillRequirement": 2,
+		"ingredients": {
+			"uscan": 1,
+			"chip": 1,
+			"elcomp": 15
+		}
+	},
+	{
+		"id": "s_mod_target",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 5,
+		"price": 500,
+		"skill": "science",
+		"skillRequirement": 3,
+		"ingredients": {
+			"tlaser": 1,
+			"chip": 1,
+			"elcomp": 20
+		}
+	},
+	{
+		"id": "s_mod_holo",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 5,
+		"price": 500,
+		"skill": "science",
+		"skillRequirement": 4,
+		"ingredients": {
+			"pcrystal": 1,
+			"chip": 1,
+			"elcomp": 25
+		}
+	},
+	{
+		"id": "s_mod_reanim",
+		"workbench": "work",
+		"chance": 1,
+		"stage": 7,
+		"price": 500,
+		"skill": "science",
+		"skillRequirement": 5,
+		"ingredients": {
+			"tmed": 1,
+			"chip": 1,
+			"elcomp": 30
+		}
+	},
+	{
+		"id": "s_mod_hacker",
+		"workbench": "work",
+		"chance": 0,
+		"price": 500,
+		"skill": "science",
+		"skillRequirement": 3,
+		"ingredients": {
+			"bdpass": 1,
+			"chip": 1,
+			"reboot": 1,
+			"elcomp": 20
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_owl",
+		"workbench": "work",
+		"chance": 0,
+		"price": 10000,
+		"skill": "repair",
+		"skillRequirement": 3,
+		"ingredients": {
+			"c_owl": 1,
+			"tlevit": 1,
+			"chip": 1,
+			"pbatt": 3,
+			"scrap": 30,
+			"elcomp": 20
+		}
+	},
+	{
+		"id": "s_owl_armor",
+		"workbench": "work",
+		"chance": 0,
+		"price": 2000,
+		"skill": "repair",
+		"skillRequirement": 4,
+		"ingredients": {
+			"battle_comp": 5,
+			"magus_comp": 5,
+			"magnit": 1,
+			"scrap": 20
+		}
+	},
+	{
+		"id": "s_owl_weapon",
+		"workbench": "work",
+		"chance": 0,
+		"price": 1500,
+		"skill": "repair",
+		"skillRequirement": 5,
+		"ingredients": {
+			"fcrystal": 1,
+			"superc": 1,
+			"elcomp": 20
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_chitin",
+		"cat": "armor",
+		"workbench": "work",
+		"chance": 0,
+		"price": 1000,
+		"skill": "repair",
+		"skillRequirement": 3,
+		"ingredients": {
+			"chitin_comp": 20,
+			"tape": 4,
+			"strap": 4,
+			"glue": 3
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_potion_stim",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 3,
+		"price": 750,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"ghoulblood": 1,
+			"ratliver": 3,
+			"herbs": 3
+		}
+	},
+	{
+		"id": "s_potion_swim",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 3,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"wingmembrane": 1,
+			"fishfat": 2,
+			"herbs": 3
+		}
+	},
+	{
+		"id": "s_potion_fly",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 1,
+		"stage": 7,
+		"price": 3200,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"wingmembrane": 1,
+			"bloatwing": 4,
+			"herbs": 8
+		}
+	},
+	{
+		"id": "s_potion_shadow",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 0.2,
+		"stage": 5,
+		"price": 1800,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"radslime": 1,
+			"vampfang": 1,
+			"herbs": 5
+		}
+	},
+	{
+		"id": "s_potion_mage",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 1,
+		"stage": 3,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"app": 1,
+			"sparklecola": 1,
+			"herbs": 3
+		}
+	},
+	{
+		"id": "s_potion_infra",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 0.5,
+		"stage": 5,
+		"price": 1600,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"bloateye": 2,
+			"rattail": 2,
+			"herbs": 5
+		}
+	},
+	{
+		"id": "s_potion_pink",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 0,
+		"price": 1000,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"pinkslime": 3,
+			"app": 1,
+			"herbs": 5
+		}
+	},
+	{
+		"id": "s_potion_purif",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 0,
+		"price": 1200,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"dsoul": 1,
+			"mdust": 3,
+			"herbs": 5
+		}
+	},
+	{
+		"id": "s_potion_chance",
+		"perk": "potmaster",
+		"workbench": "lab",
+		"chance": 0,
+		"price": 4000,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"molefat": 3,
+			"dsoul": 1,
+			"whorn": 1,
+			"herbs": 5
+		}
+	},
+	{
+		"id": "s_rollup",
+		"workbench": "lab",
+		"chance": 0.1,
+		"stage": 3,
+		"price": 100,
+		"skill": "survival",
+		"skillRequirement": 0,
+		"ingredients": {
+			"app": 1,
+			"herbs": 5
+		}
+	},
+	{
+		"id": "s_acid",
+		"cat": "item",
+		"kol": 15,
+		"workbench": "lab",
+		"chance": 1,
+		"stage": 3,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"acidslime": 5
+		}
+	},
+	{
+		"id": "s_fuel",
+		"cat": "item",
+		"kol": 100,
+		"workbench": "lab",
+		"chance": 1,
+		"stage": 3,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"firegland": 1
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_ultradash",
+		"workbench": "lab",
+		"chance": 0.05,
+		"stage": 5,
+		"price": 750,
+		"skill": "medic",
+		"skillRequirement": 2,
+		"ingredients": {
+			"dash": 1,
+			"sparklecola": 1,
+			"bloatwing": 1,
+			"herbs": 3
+		}
+	},
+	{
+		"id": "s_stampede",
+		"workbench": "lab",
+		"chance": 0.04,
+		"stage": 5,
+		"price": 1500,
+		"skill": "medic",
+		"skillRequirement": 3,
+		"ingredients": {
+			"medx": 1,
+			"rage": 1,
+			"fishfat": 1,
+			"herbs": 3
+		}
+	},
+	{
+		"id": "s_pmint",
+		"workbench": "lab",
+		"chance": 0.03,
+		"stage": 5,
+		"price": 2500,
+		"skill": "medic",
+		"skillRequirement": 4,
+		"ingredients": {
+			"mint": 1,
+			"mdust": 1,
+			"app": 1,
+			"herbs": 5
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_potion_dskel",
+		"workbench": "lab",
+		"chance": 0.6,
+		"stage": 5,
+		"price": 1300,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"acidslime": 5,
+			"ratliver": 3,
+			"taintextract": 1,
+			"herbs": 10,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_immun",
+		"workbench": "lab",
+		"chance": 1,
+		"stage": 3,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"ghoulblood": 1,
+			"radslime": 3,
+			"hydrablood": 1,
+			"herbs": 10,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_might",
+		"workbench": "lab",
+		"chance": 0.4,
+		"stage": 5,
+		"price": 1700,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"molefat": 5,
+			"vampfang": 3,
+			"stardust": 1,
+			"herbs": 10,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_speed",
+		"workbench": "lab",
+		"chance": 1,
+		"stage": 4,
+		"price": 1000,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"bloatwing": 5,
+			"rattail": 3,
+			"rainbow": 1,
+			"herbs": 10,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_prec",
+		"workbench": "lab",
+		"chance": 0.4,
+		"stage": 7,
+		"price": 2000,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"bloateye": 5,
+			"firegland": 3,
+			"gland": 3,
+			"moonstone": 1,
+			"herbs": 10,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_elements",
+		"workbench": "lab",
+		"chance": 0,
+		"price": 1000,
+		"skill": "magic",
+		"skillRequirement": 3,
+		"ingredients": {
+			"mdust": 5,
+			"firegland": 3,
+			"firecrystal": 1,
+			"herbs": 10,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_dexter",
+		"workbench": "lab",
+		"chance": 0.3,
+		"stage": 7,
+		"price": 5000,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"acidslime": 5,
+			"dsoul": 1,
+			"darkfrag": 1,
+			"herbs": 12,
+			"essence": 1
+		}
+	},
+	{
+		"id": "s_potion_crit",
+		"workbench": "lab",
+		"chance": 0.3,
+		"stage": 8,
+		"price": 2500,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"pinkslime": 5,
+			"mdust": 3,
+			"whorn": 1,
+			"abssalt": 1,
+			"herbs": 12,
+			"essence": 1
+		}
+	},
+	
+	
+	
+	{
+		"id": "s_frmeat",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 100,
+		"skill": "survival",
+		"skillRequirement": 0,
+		"ingredients": {
+			"meat": 1
+		}
+	},
+	{
+		"id": "s_cucsand",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 150,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"bread": 1,
+			"cucumber": 1
+		}
+	},
+	{
+		"id": "s_frpot",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 200,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"potato": 1,
+			"butter": 1
+		}
+	},
+	{
+		"id": "s_oatmeal",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 200,
+		"skill": "survival",
+		"skillRequirement": 1,
+		"ingredients": {
+			"oats": 1,
+			"milk": 1
+		}
+	},
+	{
+		"id": "s_salad",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 300,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"tomato": 1,
+			"cucumber": 1,
+			"cabbage": 1
+		}
+	},
+	{
+		"id": "s_chpasta",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 300,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"pasta": 1,
+			"cheese": 1,
+			"ketchup": 1
+		}
+	},
+	{
+		"id": "s_omelet",
+		"workbench": "stove",
+		"chance": 0.1,
+		"chance2": 1,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"tegg": 2,
+			"mushroom": 1,
+			"crackers": 1
+		}
+	},
+	{
+		"id": "s_butterbr",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 1,
+		"price": 300,
+		"skill": "survival",
+		"skillRequirement": 2,
+		"ingredients": {
+			"bread": 1,
+			"cheese": 1,
+			"butter": 1
+		}
+	},
+	{
+		"id": "s_breakfast",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 1,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"bread": 1,
+			"noodles": 1,
+			"dinner": 1,
+			"sbombs": 1
+		}
+	},
+	{
+		"id": "s_soup",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 1,
+		"price": 500,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"potato": 1,
+			"carrot": 1,
+			"oats": 1,
+			"onion": 1
+		}
+	},
+	{
+		"id": "s_pizza",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 1,
+		"price": 800,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"flour": 1,
+			"tomato": 1,
+			"cheese": 1,
+			"mushroom": 1,
+			"ketchup": 1
+		}
+	},
+	{
+		"id": "s_casser",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 1,
+		"price": 600,
+		"skill": "survival",
+		"skillRequirement": 3,
+		"ingredients": {
+			"potato": 1,
+			"cabbage": 1,
+			"carrot": 1,
+			"cheese": 1
+		}
+	},
+	{
+		"id": "s_ragu",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.8,
+		"price": 1000,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"meat": 1,
+			"potato": 1,
+			"carrot": 1,
+			"onion": 1,
+			"ketchup": 1
+		}
+	},
+	{
+		"id": "s_spsalad",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.8,
+		"price": 1200,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"corn": 1,
+			"apple": 1,
+			"cheese": 1,
+			"cucumber": 1,
+			"nuts": 1
+		}
+	},
+	{
+		"id": "s_patty",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.8,
+		"price": 1200,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"milk": 1,
+			"flour": 1,
+			"tegg": 1,
+			"butter": 1,
+			"cabbage": 1
+		}
+	},
+	{
+		"id": "s_maffin",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.8,
+		"price": 1500,
+		"skill": "survival",
+		"skillRequirement": 4,
+		"ingredients": {
+			"flour": 1,
+			"butter": 1,
+			"sugar": 1,
+			"tegg": 2,
+			"coffee": 1
+		}
+	},
+	{
+		"id": "s_apie",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.5,
+		"price": 2000,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"apple": 3,
+			"milk": 1,
+			"flour": 1,
+			"sugar": 1,
+			"butter": 1,
+			"tegg": 1
+		}
+	},
+	{
+		"id": "s_mpie",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.5,
+		"price": 2000,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"meat": 2,
+			"milk": 1,
+			"onion": 1,
+			"flour": 1,
+			"garlic": 1,
+			"tegg": 1
+		}
+	},
+	{
+		"id": "s_ppie",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.5,
+		"price": 2500,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"firegland": 1,
+			"hooch": 1,
+			"garlic": 1,
+			"flour": 1,
+			"chips": 1,
+			"tegg": 1,
+			"mushroom": 1
+		}
+	},
+	{
+		"id": "s_spie",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.5,
+		"price": 2500,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"honey": 1,
+			"lollipops": 1,
+			"bananas": 1,
+			"halva": 1,
+			"sugar": 1,
+			"flour": 1,
+			"milk": 1
+		}
+	},
+	{
+		"id": "s_borsch",
+		"workbench": "stove",
+		"chance": 0,
+		"chance2": 0.2,
+		"price": 2000,
+		"skill": "survival",
+		"skillRequirement": 5,
+		"ingredients": {
+			"beans": 1,
+			"cabbage": 1,
+			"potato": 1,
+			"carrot": 1,
+			"onion": 1,
+			"tomato": 1,
+			"garlic": 1
+		}
+	}	
+]

@@ -166,8 +166,8 @@ package fe.loc {
 		private var RIGHT_X;
 
 		// Precomputed for inverse multiplication instead of division 
-		private static const INV_TILEX:Number = 1 / 40; // 0.025
-		private static const INV_TILEY:Number = 1 / 40; // 0.025
+		private static var INV_TILEX:Number;
+		private static var INV_TILEY:Number;
 
 		public var maxX:int;
     	public var maxY:int;
@@ -197,6 +197,11 @@ package fe.loc {
 			// Initialize right and bottom bounds based on spaceX and spaceY
 			RIGHT_X = spaceX - 1;
 			BOTTOM_Y = spaceY - 1;
+
+			INV_TILEX = 1 / tileX;
+			INV_TILEY = 1 / tileY;
+
+
 			halfSpaceX = spaceX / 2;
 			halfSpaceY = spaceY / 2;
 

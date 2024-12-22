@@ -1,5 +1,5 @@
-package fe.inter 
-{	
+package fe.inter {
+
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -17,60 +17,79 @@ package fe.inter
 
 	import fe.stubs.visPipBuyItem;
 
-	public class PipPageVend extends PipPage
-	{
+	/* 
+	*	The page displayed when interacting with vendor NPCs
+	*	sub-categories:
+	*		1 - Buy
+	*		2 - Sell
+	*		3 - Repair
+	*		4 - Quests
+	*		5 - *disabled*
+	*/
+	public class PipPageVend extends PipPage {
 		
 		private var vend:Vendor;
-		private var npcId:String='';
+		private var npcId:String = '';
 		private var assArr:Array;
-		private var npcInter:String='';	//цена ремонта совы
-		private var inbase:Boolean=false;
-		private var selall:Boolean=true;
+		private var npcInter:String = '';	//цена ремонта совы
+		private var inbase:Boolean = false;
+		private var selall:Boolean = true;
 
-		public function PipPageVend(npip:PipBuck, npp:String)
-		{
-			isLC=isRC=true;
-			itemClass=visPipBuyItem;
+		// Constructor
+		public function PipPageVend(npip:PipBuck, npp:String) {
+			isLC = true;
+			isRC = true;
+			
+			itemClass = visPipBuyItem;
+			
 			super(npip,npp);
-			vis.but5.visible=false;
+			
+			// Set which sub-categories are disabled at the top of the pip-buck
+			vis.but5.visible = false;
+			
 			vis.butOk.text.text=Res.pipText('transaction');
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			var tf:TextFormat=new TextFormat();
 			tf.color = 0x00FF99; 
 			tf.size = 16; 
-			for (var i=0; i<maxrows; i++) {
-				var item:MovieClip=statArr[i]; 
-				var ns:NumericStepper=item.ns;
+			
+			for (var i = 0; i < maxrows; i++) {
+				var item:MovieClip = statArr[i]; 
+				var ns:NumericStepper = item.ns;
 				ns.addEventListener(MouseEvent.CLICK,nsClick);
 				ns.addEventListener(Event.CHANGE,nsCh);
-				ns.tabEnabled=false;
-				ns.focusRect=false;
+				ns.tabEnabled = false;
+				ns.focusRect = false;
 				ns.setStyle("textFormat", tf);
 			}
-			tips = 
-			[
+			
+			tips = [
 				[],
-				['',
+				[
+					'',
 					[Item.L_WEAPON, Item.L_ARMOR,'spell'],
 					['a','e'],
 					['med','him','pot','food'],
 					['equip','art','book','sphera','spec','key','impl','instr'],
 					['stuff','compa','compw','compe','compm','compp'],
-				'scheme'],
-				['',
+					'scheme'
+				],
+				[
+					'',
 					'valuables',
 					['a','e'],
 					['med','him','pot','equip','food'],
 					'food',
 					['stuff','compa','compw','compe','compm','spec'],
-				'compp']
+					'compp'
+				]
 			];
+			
 			initCats();
 		}
 
 		//подготовка страниц
-		override protected function setSubPages():void
-		{
+		override protected function setSubPages():void {
 			vend=pip.vendor;
 			npcId=pip.npcId;
 			if (vend) {
@@ -112,39 +131,40 @@ package fe.inter
 				for each(var b:Item in vend.buys) {
 					if (b.kol<=0) continue;
 					try {
-					if (b.tip==Item.L_SCHEME && (inv.weapons[b.id.substr(2)]!=null || inv.items[b.id].kol>0)) continue;
-					if (b.tip==Item.L_WEAPON && (inv.weapons[b.id]!=null && inv.weapons[b.id].variant>=b.variant)) continue;
-					if (b.tip==Item.L_ARMOR && inv.armors[b.id]!=null) continue;
-					if (b.tip!=Item.L_WEAPON && b.xml && b.xml.@price.length()==0)  continue;
-					if ((b.tip==Item.L_ART || b.tip==Item.L_IMPL) && inv.items[b.id].kol>0) continue;
-					if (b.lvl>gg.pers.level || b.barter>gg.pers.barterLvl) continue;
-					if (b.trig && World.w.game.triggers[b.trig]!=1) continue;
-					if (b.hardinv && !World.w.hardInv) continue;
-					if (!checkCat(b.tip)) continue;
-					b.getPrice();
-					var mp=b.getMultPrice();
-					if (vend.multPrice>mp) mp=vend.multPrice;
-					var n:Object={tip:b.tip, id:b.id, nazv:b.nazv, sost:b.sost*b.multHP, price:b.price, mp:mp, kol:b.kol, bou:0, sort:Res.pipText(b.tip), barter:b.barter, variant:b.variant};
-					if (b.variant>0) n.rid=b.id+'^'+b.variant;
-					else n.rid=b.id;
-					if (b.nocheap) n.mp=1;
-					if (gg.invent.items[b.id]) n.sost=gg.invent.items[b.id].kol;
-					assArr[n.rid]=n;
-					n.wtip=b.wtip;
-					if (b.xml && b.xml.@tip=='food' && b.xml.@ftip=='1') {
-						n.wtip='drink';
+						if (b.tip==Item.L_SCHEME && (inv.weapons[b.id.substr(2)]!=null || inv.items[b.id].kol>0)) continue;
+						if (b.tip==Item.L_WEAPON && (inv.weapons[b.id]!=null && inv.weapons[b.id].variant>=b.variant)) continue;
+						if (b.tip==Item.L_ARMOR && inv.armors[b.id]!=null) continue;
+						if (b.tip!=Item.L_WEAPON && b.xml && b.xml.@price.length()==0)  continue;
+						if ((b.tip==Item.L_ART || b.tip==Item.L_IMPL) && inv.items[b.id].kol>0) continue;
+						if (b.lvl>gg.pers.level || b.barter>gg.pers.barterLvl) continue;
+						if (b.trig && World.w.game.triggers[b.trig]!=1) continue;
+						if (b.hardinv && !World.w.hardInv) continue;
+						if (!checkCat(b.tip)) continue;
+						b.getPrice();
+						var mp=b.getMultPrice();
+						if (vend.multPrice>mp) mp=vend.multPrice;
+						var n:Object={tip:b.tip, id:b.id, nazv:b.nazv, sost:b.sost*b.multHP, price:b.price, mp:mp, kol:b.kol, bou:0, sort:Res.pipText(b.tip), barter:b.barter, variant:b.variant};
+						if (b.variant>0) n.rid=b.id+'^'+b.variant;
+						else n.rid=b.id;
+						if (b.nocheap) n.mp=1;
+						if (gg.invent.items[b.id]) n.sost=gg.invent.items[b.id].kol;
+						assArr[n.rid]=n;
+						n.wtip=b.wtip;
+						if (b.xml && b.xml.@tip=='food' && b.xml.@ftip=='1') {
+							n.wtip='drink';
+						}
+						arr.push(n);
 					}
-					arr.push(n);
-					} catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:41)');
 					}
 				}
 				if (arr.length) {
-					arr.sortOn(['sort','barter','price'],[0,0,Array.NUMERIC]);
-					vis.emptytext.text='';
-					statHead.visible=true;
-				} else {
+					arr.sortOn(['sort', 'barter', 'price'],[0, 0, Array.NUMERIC]);
+					vis.emptytext.text = '';
+					statHead.visible = true;
+				}
+				else {
 					vis.emptytext.text=Res.pipText('emptybuy');
 					statHead.visible=false;
 				}
@@ -180,21 +200,26 @@ package fe.inter
 						arr.push(n);
 					}
 				}
+				
 				if (arr.length) {
 					arr.sortOn(['sort','wtip','price'],[0,0,Array.NUMERIC]);
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				}
+				else {
 					vis.emptytext.text=Res.pipText('emptysell');
 					statHead.visible=false;
 				}
+				
 				if (inbase) {
 					selall=true;
 					vis.butOk.text.text=Res.pipText('sellall');
 					vis.butOk.visible=true;
-				} else {
+				}
+				else {
 					vis.butOk.visible=false;
 				}
+				
 				setIco();
 			}
 			if (page2==3) {
@@ -235,7 +260,8 @@ package fe.inter
 					arr.sortOn(['price'],[Array.NUMERIC]);
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				}
+				else {
 					vis.emptytext.text=Res.pipText('emptyrep');
 					statHead.visible=false;
 				}
@@ -248,13 +274,19 @@ package fe.inter
 					return;
 				}
 				for each(var task in vend.xml.task) {
-					if (!checkQuest(task)) continue;
+					if (!checkQuest(task)) {
+						continue;
+					}
+
 					n={id:task.@id, state:0, sort:0};
+					
 					if (task.@skill.length()) {
 						n.skill=task.@skill;
 						n.skilln=task.@skilln;
 					}
+					
 					n.nazv=Res.messText(task.@id);
+					
 					if (World.w.game.quests[task.@id]) {
 						var quest:Quest=World.w.game.quests[task.@id];
 						n.state=World.w.game.quests[task.@id].state;
@@ -264,11 +296,13 @@ package fe.inter
 					if (n.state==3 || n.state==4) n.sort=1;
 					if (n.state==1) n.sort=2;
 					if (n.state==2) n.sort=3;
+					
 					arr.push(n);
 				}
 				if (arr.length==0) {
 					vis.emptytext.text=Res.pipText('emptytasks');
-				} else {
+				}
+				else {
 					vis.emptytext.text='';
 					arr.sortOn('sort');
 				}
@@ -277,9 +311,11 @@ package fe.inter
 			showBottext();
 		}
 		
-		override protected function setSigns():void
-		{
-			if (vend==null) return;
+		override protected function setSigns():void {
+			if (vend == null) {
+				return;
+			}
+
 			super.setSigns();
 			if (vis.but4.visible && vend.xml) {
 				for each(var task in vend.xml.task) {
@@ -291,7 +327,8 @@ package fe.inter
 							signs[4]=1;
 							break;
 						}
-					} else {
+					}
+					else {
 						signs[4]=1;
 						break;
 					}
@@ -299,40 +336,43 @@ package fe.inter
 			}
 		}
 		
-		override protected function page2Click(event:MouseEvent):void
-		{
-			if (World.w.ctr.setkeyOn) return;
+		override protected function page2Click(event:MouseEvent):void {
+			if (World.w.ctr.setkeyOn) {
+				return;
+			}
+			
 			page2=int(event.currentTarget.id.text);
 			pip.snd(2);
-			if (page2==3 && npcInter=='doc')
-			{
+			
+			if (page2==3 && npcInter=='doc') {
 				page2=1;
 				pip.onoff(6);
 			}
-			else
-			{
+			else {
 				setStatus();
 			}
 		}
 		
 	
-		private function showBottext():void
-		{
+		private function showBottext():void {
 			if (page2==1 && vend) {
 				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (';
 				if (vend.kolBou>0) vis.bottext.htmlText+='-'+numberAsColor('yellow', Math.ceil(vend.kolBou))+'; ';
 				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(pip.money-vend.kolBou))+' '+Res.pipText('ost')+')';
 			}
+			
 			if (page2==2 && vend) {
 				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (+'+numberAsColor('yellow', Math.floor(vend.kolSell))+')';
 				if (!inbase) vis.bottext.htmlText+='   '+Res.pipText('vcaps')+': '+numberAsColor('yellow', vend.money);
 			}
-			if (page2==3) vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', inv.money.kol);
+			
+			if (page2==3) {
+				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', inv.money.kol);
+			}
 		}
 		
 		//показ одного элемента
-		override protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.cat.visible=false;
@@ -342,14 +382,15 @@ package fe.inter
 			item.nazv.alpha=1;
 			item.price.x=504;
 			item.price.width=58;
+			
 			try {
 				item.trol.gotoAndStop(obj.wtip);
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:42)');
 				item.trol.gotoAndStop(1);
 			}
+			
 			if (page2==1) {
 				item.lvl.visible=true;
 				item.lvl.gotoAndStop(obj.barter+1);
@@ -361,7 +402,8 @@ package fe.inter
 					if (obj.bou==0) item.kol.text=Res.pipText('est');
 					else item.kol.text=Res.pipText('sel');
 					item.price.text=Math.round(obj.price*obj.mp);
-				} else {
+				}
+				else {
 					var ns:NumericStepper=item.ns;
 					ns.visible=true;
 					ns.maximum=obj.kol;
@@ -371,6 +413,7 @@ package fe.inter
 					item.price.text=Math.round(obj.price*obj.mp*10)/10;
 				}
 			} 
+			
 			if (page2==2) {
 				item.cat.text=obj.tip;
 				item.rid.text=obj.id;
@@ -384,6 +427,7 @@ package fe.inter
 				ns.value=obj.bou;
 				item.kol.text=obj.kol-obj.bou;
 			} 
+			
 			if (page2==3) {
 				item.cat.text=obj.tip;
 				item.nazv.text=obj.nazv;
@@ -395,6 +439,7 @@ package fe.inter
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
 			} 
+		
 			if (page2==4) {
 				item.cat.text=obj.state;
 				item.nazv.text=obj.nazv;
@@ -414,11 +459,11 @@ package fe.inter
 		}
 		
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
+		override protected function statInfo(event:MouseEvent):void {
 			if (page2==1 || page2==2 || page2==3) {
 				infoItem(event.currentTarget.cat.text,event.currentTarget.rid.text,event.currentTarget.nazv.text);
 			}
+			
 			if (page2==4) {
 				vis.nazv.text=event.currentTarget.nazv.text;
 				var s:String=infoQuest(event.currentTarget.id.text);
@@ -429,11 +474,11 @@ package fe.inter
 				if (event.currentTarget.cat.text=='4') vis.info.htmlText+="\n\n<span class = 'orange'>"+Res.pipText('actGive')+"</span>";
 				setIco();
 			}
+			
 			event.stopPropagation();
 		}
 		
-		private function selBuy(buy:Object, n:int=1):void
-		{
+		private function selBuy(buy:Object, n:int=1):void {
 			if (selall) vis.butOk.text.text=Res.pipText('transaction');
 			selall=false;
 			if (buy==null || buy.kol-buy.bou<=0) return;
@@ -459,8 +504,7 @@ package fe.inter
 			if (page2==2) vend.kolSell+=buy.price*n;
 		}
 		
-		private function unselBuy(buy:Object, n:int=1):void
-		{
+		private function unselBuy(buy:Object, n:int=1):void {
 			if (buy==null || buy.bou<=0) return;
 			if (buy.bou<n) n=buy.bou;
 			buy.bou-=n;
@@ -468,15 +512,12 @@ package fe.inter
 			if (page2==2) vend.kolSell-=buy.price*n;
 		}
 		
-		private function nsClick(event:MouseEvent):void
-		{
+		private function nsClick(event:MouseEvent):void {
 			event.stopPropagation();
 		}
 
-		private function nsCh(event:Event):void
-		{
-			if (page2==1 || page2==2)
-			{
+		private function nsCh(event:Event):void {
+			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.parent.rid.text];
 				var n=event.currentTarget.value-buy.bou;
 				if (n>0) selBuy(buy, n);
@@ -488,8 +529,7 @@ package fe.inter
 			}
 		}
 		
-		override protected function itemClick(event:MouseEvent):void
-		{
+		override protected function itemClick(event:MouseEvent):void {
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n=1;
@@ -499,12 +539,14 @@ package fe.inter
 				else selBuy(buy, n);
 				setStatItem(event.currentTarget as MovieClip, buy);
 			}
+			
 			if (page2==3) {
 				if (inv.money.kol<=0) return;
 				var price:int=event.currentTarget.price.text;
 				if (price<=0) return;
 				if (price>inv.money.kol) price=inv.money.kol;
 				var obj;
+				
 				if (event.currentTarget.cat.text==Item.L_INSTR) {
 					var owl:UnitPet=gg.pets[event.currentTarget.id.text];
 					var repOwl:int = 2;
@@ -517,6 +559,7 @@ package fe.inter
 					obj=assArr[event.currentTarget.id.text];
 					obj.hp=owl.hp;
 				}
+				
 				if (event.currentTarget.cat.text==Item.L_WEAPON)
 				{
 					var w:Weapon=inv.weapons[event.currentTarget.id.text];
@@ -525,6 +568,7 @@ package fe.inter
 					obj=assArr[event.currentTarget.id.text];
 					obj.hp=w.hp;
 				}
+				
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
 					var a:Armor=inv.armors[event.currentTarget.id.text];
 					var hp:int=Math.ceil(price/a.price*a.maxhp/vend.multPrice/gg.pers.priceRepArmor);
@@ -532,33 +576,38 @@ package fe.inter
 					obj=assArr[event.currentTarget.id.text];
 					obj.hp=a.hp;
 				}
+				
 				inv.money.kol-=price;
 				pip.vendor.money+=price;
 				setStatItem(event.currentTarget as MovieClip, obj);
 				World.w.gui.setWeapon();
 				pip.setRPanel();
 			}
+			
 			if (page2==4) {
 				try {
 					if (World.w.game.quests[event.currentTarget.id.text]) {
 						var quest:Quest=World.w.game.quests[event.currentTarget.id.text];
 						quest.chGive(npcId, true);
 						quest.chReport(npcId, true);
-					} else World.w.game.addQuest(event.currentTarget.id.text);
+					}
+					else {
+						World.w.game.addQuest(event.currentTarget.id.text);
+					}
 				}
-				catch(err)
-				{
+				catch(err) {
 					trace('ERROR: (00:43)');
 				}
+				
 				setStatus(false);
 			}
+			
 			pip.snd(1);
 			showBottext();
 			event.stopPropagation();
 		}
 
-		override protected function itemRightClick(event:MouseEvent):void
-		{
+		override protected function itemRightClick(event:MouseEvent):void {
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n=1;
@@ -566,27 +615,31 @@ package fe.inter
 				unselBuy(buy, n);
 				setStatItem(event.currentTarget as MovieClip, buy);
 			}
+			
 			pip.snd(1);
 			showBottext();
 			event.stopPropagation();
 		}
 		
-		private function transOk(event:MouseEvent):void
-		{
+		private function transOk(event:MouseEvent):void {
 			if (page2==1) {
 				trade(assArr);
 			}
+			
 			if (page2==2) {
 				if (selall) sellAll();
 				else sell(assArr);
 			}
+			
 			pip.setRPanel();
 			pip.snd(3);
 		}
 		
-		public function trade(arr:Array):void
-		{
-			if (vend.kolBou>inv.money.kol) return;
+		public function trade(arr:Array):void {
+			if (vend.kolBou>inv.money.kol) {
+				return;
+			}
+			
 			for each(var buy:Item in vend.buys) {
 				var rid:String=buy.id;
 				if (buy.variant>0) rid+='^'+buy.variant;
@@ -595,6 +648,7 @@ package fe.inter
 					inv.take(buy,1);
 				}
 			}
+			
 			inv.money.kol-=Math.ceil(vend.kolBou);
 			vend.money+=Math.ceil(vend.kolBou);
 			pip.money=inv.money.kol;
@@ -604,15 +658,13 @@ package fe.inter
 			setStatus();
 		}
 		
-		public function sell(arr:Array):void
-		{
-			if (!inbase && Math.ceil(vend.kolSell)>vend.money)
-			{
+		public function sell(arr:Array):void {
+			if (!inbase && Math.ceil(vend.kolSell)>vend.money) {
 				World.w.gui.infoText('noSell');
 				return;
 			}
-			for (var s in inv.items)
-			{
+			
+			for (var s in inv.items) {
 				if (s=='' || inv.items[s].kol<=0) continue;
 				var node=inv.items[s].xml;
 				if (node==null) continue;
@@ -628,6 +680,7 @@ package fe.inter
 					inv.items[s].kol-=arr[s].bou;
 				}
 			}
+			
 			inv.money.kol+=Math.floor(vend.kolSell);
 			vend.money-=Math.ceil(vend.kolSell);
 			pip.money=inv.money.kol;
@@ -635,10 +688,8 @@ package fe.inter
 			setStatus();
 		}
 		
-		public function sellAll():void
-		{
-			for (var s in arr)
-			{
+		public function sellAll():void {
+			for (var s in arr) {
 				if (arr[s].tip=='valuables') {
 					selBuy(arr[s],arr[s].kol-arr[s].bou);
 				}

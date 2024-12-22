@@ -1,15 +1,25 @@
-package fe.inter
-{
-	import fe.*;
-	import fe.unit.Unit;
+package fe.inter {
+
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+
+	import fe.*;
+	import fe.unit.Unit;
 	import fe.unit.Pers;
 
 	import fe.stubs.visPipStatItem;
 	
-	public class PipPageStat extends PipPage
-	{
+	/* 
+	*	One of the main pip-buck categories
+	*	sub-categories:
+	*		1 - Main (Character overview)
+	*		2 - Skills
+	*		3 - Perks
+	*		4 - Effects
+	*		5 - Health
+	*/
+	public class PipPageStat extends PipPage {
+
 		private var pers:Pers;
 		private var skills:Array;
 		private var maxSkLvl:int=20;
@@ -26,29 +36,34 @@ package fe.inter
 		private static var cachedPerks:Object = {};
 		private static var cachedParams:Object = {};
 
-		public function PipPageStat(npip:PipBuck, npp:String)
-		{
-			isLC=isRC=true;
+		// Constructor
+		public function PipPageStat(npip:PipBuck, npp:String) {
+			isLC = true;
+			isRC = true;
+			
 			itemClass=visPipStatItem;
 			skills=[];
 			super(npip, npp);
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK,gotoDef);
-			n_food=Res.txt('e','food');
+			n_food = Res.txt('e','food');
 		}
 
-		public static function getPerkInfo(id:String):XML
-		{
+		public static function getPerkInfo(id:String):XML {
 			var node:XML;
+			
 			if (cachedPerks[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
                 cachedPerks[id] = node;
-            } else node = cachedPerks[id];
+            }
+			else {
+				node = cachedPerks[id];
+			}
+			
 			return node;
 		}
 
-		public static function getParamInfo(id:String):XML
-		{
+		public static function getParamInfo(id:String):XML {
 			var node:XML;
 			if (cachedParams[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
@@ -58,8 +73,7 @@ package fe.inter
 		}
 		
 		//подготовка страниц
-		override protected function setSubPages():void
-		{
+		override protected function setSubPages():void {
 			setIco();
 			pers=World.w.pers;
 			maxSkLvl=Pers.maxSkLvl;
@@ -77,46 +91,57 @@ package fe.inter
 				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 
-				for (var i = 0; i < cachedParamList.length(); i++)
-				{
+				for (var i = 0; i < cachedParamList.length(); i++) {
 					var xml:XML = cachedParamList[i];
-					if (xml.@show > 0)
-					{
+					if (xml.@show > 0) {
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
+						
 						var nazv:String = Res.pipText(xml.@id);
+						
 						if (xml.@v == '') {
                             arr.push({id: xml.@id, nazv: nazv, lvl: ''});
                             continue;
-                        } else nazv = '-  ' + nazv;
+                        }
+						else {
+							nazv = '-  ' + nazv;
+						}
+						
 						var param;
+						
 						if (xml.@tip=='4') param=gg.vulner[xml.@v];
 						else if (gg.hasOwnProperty(xml.@v)) param=gg[xml.@v];
 						else if (gg.pers.hasOwnProperty(xml.@v)) param=gg.pers[xml.@v];
 						else {
-							trace('нет переменной',xml.@v);
+							trace('PipPageStat.as/setSubPages() - Error: No variable ' + xml.@v);
 							continue;
 						}
+					
 						if (xml.@tip=='0') {
 							if (param>0) arr.push({id:xml.@id, nazv:nazv, lvl:Res.numb(param)});
 						}
+					
 						if (xml.@tip=='1') {
 							if (param!=1 || World.w.pers.factor[xml.@v] && World.w.pers.factor[xml.@v].length>1) arr.push({id:xml.@id, nazv:nazv, lvl:((param>=1?'+':'')+Res.numb((param-1)*100)+'%')});
 						}
+						
 						if (xml.@tip=='2') {
 							arr.push({id:xml.@id, nazv:nazv, lvl:(Res.numb(param*100)+'%')});
 						}
+					
 						if (xml.@tip=='3' || xml.@tip=='4') {
 							if (param!=1) arr.push({id:xml.@id, nazv:nazv, lvl:((param<1?'+':'')+Res.numb((1-param)*100)+'%')});
 						}
 					}
 				}
-			} else if (page2==5) {
+			}
+			else if (page2==5) {
 				if (World.w.game.triggers['nomed']>0) {
 					vis.emptytext.text=Res.pipText('emptymed');
 					statHead.visible=false;
 					return;
-				} else {
+				}
+				else {
 					vis.emptytext.text='';
 					statHead.visible=true;
 				}
@@ -149,7 +174,8 @@ package fe.inter
 						arr.push({id:i, nazv:Res.txt('e',i+'_ad'), lvl:Math.round(pers.addictions[i])+'% ('+str+')', cat:'ad'});
 					}
 				}
-			} else if (page2==2) {	
+			}
+			else if (page2==2) {	
 				setTopText('infoskills');
 				skillPoint=pers.skillPoint;
 				statHead.nazv.text=Res.pipText('is1');
@@ -162,7 +188,8 @@ package fe.inter
 					skills[sk.id]=n;
 				}
 				vis.butOk.text.text=Res.pipText('accept');
-			} else if (page2==3) {
+			}
+			else if (page2==3) {
 				perkPoint=pers.perkPoint;
 				statHead.nazv.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
@@ -181,12 +208,14 @@ package fe.inter
 				if (arr.length==0) {
 					vis.emptytext.text=Res.pipText('emptyperk');
 					statHead.visible=false;
-				} else {
+				}
+				else {
 					vis.emptytext.text='';
 					statHead.visible=true;
 					arr.sortOn(['sort','nazv']);
 				}
-			} else if (page2==4) {
+			}
+			else if (page2==4) {
 				statHead.nazv.text=Res.pipText('is3');
 				statHead.numb.text=Res.pipText('is4');
 				statHead.numb.x=500;
@@ -213,17 +242,18 @@ package fe.inter
 				if (arr.length==0) {
 					vis.emptytext.text=Res.pipText('emptyeff');
 					statHead.visible=false;
-				} else {
+				}
+				else {
 					vis.emptytext.text='';
 					statHead.visible=true;
 				}
-			} else if (page2==6) {
+			}
+			else if (page2==6) {
 				perkPoint=pers.perkPoint;
 				statHead.nazv.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
 
-				for each(var dp:XML in cachedPerkList)
-				{
+				for each(var dp:XML in cachedPerkList) {
 					if (dp.@tip==1) {
 						var res:int=pers.perkPoss(dp.@id, dp);
 						if (res<0) continue;
@@ -244,8 +274,7 @@ package fe.inter
 			showBottext();
 		}
 		
-		override protected function setSigns():void
-		{
+		override protected function setSigns():void {
 			super.setSigns();
 			if (pers.skillPoint>0) signs[2]=1;
 			if (pers.perkPoint>0) signs[3]=1;
@@ -254,14 +283,21 @@ package fe.inter
 		}
 		
 		//показ одного элемента
-		override protected function setStatItem(item:MovieClip, obj:Object):void
-		{
+		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			if (obj.id == null) {
                 item.id.text = '';
-            } else item.id.text = obj.id;
+            }
+			else {
+				item.id.text = obj.id;
+			}
+			
 			if (obj.cat == null) {
                 item.cat.text = '';
-            } else item.cat.text = obj.cat;
+            }
+			else {
+				item.cat.text = obj.cat;
+			}
+			
 			item.id.visible=false;
 			item.cat.visible=false;
 			item.progress.visible=false;
@@ -279,7 +315,8 @@ package fe.inter
 					if (sklvl<pers.postSkTab.length) nextN=pers.postSkTab[sklvl];
 					item.numb.text=obj.lvl+ '  (+'+(nextN-obj.lvl)+')\t         '+Res.pipText('level')+': '+sklvl;
 					item.numb.x=215;
-				} else {
+				}
+				else {
 					item.numb.text=pers.getSkLevel(obj.lvl);
 					for (var i=1; i<=maxSkLvl; i++) {
 						if (i<=obj.minlvl) item.progress['p'+i].gotoAndStop(2);
@@ -300,15 +337,15 @@ package fe.inter
 		}
 		
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
+		override protected function statInfo(event:MouseEvent):void {
 			var id:String=event.currentTarget.id.text;
 			var nazv:String=event.currentTarget.nazv.text;
 			if (page2==2 || page2==3 || page2==6) setIco(5,id);
 			else setIco();
 			if (id == '') {
                 vis.nazv.text = vis.info.htmlText = '';
-            } else {
+            }
+			else {
                 if (page2 == 1) {
                     infoItemId = id;
                     if (id == 'diff') {
@@ -321,7 +358,8 @@ package fe.inter
                     vis.info.htmlText += '<br><br>';
                     var xml:XML = getParamInfo(id);
                     if (xml != null && xml.@f > 0) vis.info.htmlText += factor(xml.@v);
-                } else if (page2 == 5) {
+                }
+				else if (page2 == 5) {
                     infoItemId = id;
                     showBottext();
                     var lvl;
@@ -367,53 +405,60 @@ package fe.inter
                     if (id == 'radx') vis.info.htmlText += factor('radX');
                     if (id == 'resbleeding') vis.info.htmlText += factor('13');
                     if (id == 'respoison') vis.info.htmlText += factor('12');
-                } else {
+                }
+				else {
                     vis.nazv.text = nazv;
                     if (page2 == 4) {
                         if (id == 'drunk') {
                             vis.info.htmlText = effStr('eff', id, drunk - 1);
-                        } else if (nazv == n_food) vis.info.htmlText = Res.txt('e', 'food', 1) + '<br><br>' + effStr('eff', id);
-                        else vis.info.htmlText = effStr('eff', id);
-                    } else if (page2 == 2) {
+                        }
+						else if (nazv == n_food) {
+							vis.info.htmlText = Res.txt('e', 'food', 1) + '<br><br>' + effStr('eff', id);
+						}
+                        else {
+							vis.info.htmlText = effStr('eff', id);
+						}
+                    }
+					else if (page2 == 2) {
                         if (World.w.alicorn && Res.istxt('e', id + '_al')) {
                             vis.info.htmlText = Res.rainbow(Res.txt('e', id + '_al'));
                             vis.info.htmlText += '<br><br>' + effStr('skill', id + '_al');
-                        } else {
+                        }
+						else {
                             vis.info.htmlText = effStr('skill', id);
                         }
-                    } else if (page2 == 6) {
+                    }
+					else if (page2 == 6) {
                         vis.info.htmlText = effStr('perk', id, 1);
-                    } else if (page2 == 3) {
+                    }
+					else if (page2 == 3) {
                         vis.info.htmlText = effStr('perk', id);
                     }
                 }
             }
 		}
 		
-		private function selSkill(id:String):void
-		{
+		private function selSkill(id:String):void {
 			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl){
 				if (skillPoint>0) {
 					skills[id].lvl++;
 					skillPoint--;
 					vis.butOk.visible=true;
-				} else {
+				}
+				else {
 					World.w.gui.infoText('noSkillPoint');
 				}
 			}
 		}
 
-		private function unselSkill(id:String):void
-		{
-			if (skills[id].lvl>skills[id].minlvl)
-			{
+		private function unselSkill(id:String):void {
+			if (skills[id].lvl>skills[id].minlvl) {
 				skills[id].lvl--;
 				skillPoint++;
 			}
 		}
 		
-		private function showBottext():void
-		{
+		private function showBottext():void {
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.w.game.gameTime();
 			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+numberAsColor('pink', skillPoint);
@@ -471,38 +516,34 @@ package fe.inter
 			}
 		}
 		
-		override protected function itemClick(event:MouseEvent):void
-		{
-			if (pip.noAct)
-			{
+		override protected function itemClick(event:MouseEvent):void {
+			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==2)
-			{
+			
+			if (page2==2) {
 				var id=event.currentTarget.id.text;
 				if (event.ctrlKey) unselSkill(id);
 				else selSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
 			}
-			if (page2==6)
-			{
-				if (event.currentTarget.alpha>=1)
-				{
+		
+			if (page2==6) {
+				if (event.currentTarget.alpha>=1) {
 					vis.butOk.visible=true;
 					selectedPerk=event.currentTarget.id.text;
 				}
 				pip.snd(1);
 			}
-			if (page2==5 && infoItemId!='')
-			{
+		
+			if (page2==5 && infoItemId!='') {
 				infoItemId=event.currentTarget.id.text;
 				var need:String;
 				var simplifiedID:String = getSimplifiedItemId(infoItemId)
 
-				switch (simplifiedID)
-				{
+				switch (simplifiedID) {
 					case 'hp':
 						inv.usePotion();
 					break;
@@ -544,13 +585,13 @@ package fe.inter
 				pip.snd(1);
 				pip.setRPanel();
 			}
+			
 			showBottext();
 		}
 
 		// Helper function for switch-cases. These strings have nubmers at the end, eg. 'statBlood2' to represent intensity levels.
 		// This removes the trailing number if applicable so the switch-case can do an instant comparison to check for matches.
-		private function getSimplifiedItemId(infoItemId:String):String  
-		{
+		private function getSimplifiedItemId(infoItemId:String):String {
 			if (infoItemId.indexOf('statBlood') == 0) return 'statBlood';
 			if (infoItemId.indexOf('statMana')  == 0) return 'statMana';
 			if (infoItemId.indexOf('statHead')  == 0) return 'statHead';
@@ -561,27 +602,28 @@ package fe.inter
 			return infoItemId;
 		}
 
-		override protected function itemRightClick(event:MouseEvent):void
-		{
+		override protected function itemRightClick(event:MouseEvent):void {
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			if (page2==2) {
 				var id=event.currentTarget.id.text;
 				unselSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
 			}
+			
 			showBottext();
 		}
 
-		private function transOk(event:MouseEvent):void
-		{
+		private function transOk(event:MouseEvent):void {
 			if (pip.noAct) {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			if (page2==2) {
 				var n=0;
 				for (var i in skills) {
@@ -596,25 +638,26 @@ package fe.inter
 				}
 				pip.snd(3);
 				World.w.saveGame();
-			} else if (page2==3) {
+			}
+			else if (page2==3) {
 				page2=6;
 				pip.snd(2);
 				selectedPerk='';
-			} else if (page2==6) {
+			}
+			else if (page2==6) {
 				if (selectedPerk!='' && pers.perkPoint>0) pers.addPerk(selectedPerk,true);
 				page2=3;
 				pip.snd(3);
 				pip.setRPanel();
 				World.w.saveGame();
 			}
+
 			setStatus();
 		}
 
-		private function gotoDef(event:MouseEvent):void
-		{
-			if (page2==6)
-			{
-				page2=3;
+		private function gotoDef(event:MouseEvent):void {
+			if (page2 == 6) {
+				page2 = 3;
 				setStatus();
 				pip.snd(2);
 			}

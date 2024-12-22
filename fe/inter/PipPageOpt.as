@@ -18,6 +18,15 @@ package fe.inter {
 	import fe.stubs.visPipOptItem;
 	import fe.stubs.logText;
 	
+	/* 
+	*	One of the main pip-buck categories
+	*	sub-categories:
+	*		1 - Load
+	*		2 - Save
+	*		3 - Options
+	*		4 - Controls
+	*		5 - Log
+	*/
 	public class PipPageOpt extends PipPage {
 		
 		private var setkeyAction:String;
@@ -48,12 +57,17 @@ package fe.inter {
 
 		//подготовка страниц
 		override protected  function setSubPages():void {
-			info.visible=false;
-			statHead.visible=false;
-			vis.butOk.visible=vis.butDef.visible=false;
-			vis.pers.visible=false;
-			vis.info.y=160;
-			nSave=-1;
+			
+			info.visible = false;
+			statHead.visible = false;
+			
+			vis.butOk.visible = false;
+			vis.butDef.visible = false;
+			vis.pers.visible = false;
+			vis.info.y = 160;
+			
+			nSave = -1;
+			
 			if (page2==3) {
 				statHead.nazv.text=statHead.numb.text='';
 				arr.push({id:'fullscreen'});
@@ -115,7 +129,8 @@ package fe.inter {
 					setTopText('infoload');
 					vis.butOk.text.text=Res.pipText('opt1');
 					vis.butDef.text.text=Res.pipText('loadfile');
-				} else {
+				}
+				else {
 					setTopText('infosave');
 					if (World.w.pers.hardcore) {
 						nSave=World.w.autoSaveN;

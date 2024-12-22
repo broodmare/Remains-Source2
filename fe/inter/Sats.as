@@ -1,5 +1,5 @@
-package fe.inter
-{
+package fe.inter {
+
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;
 	import flash.display.BitmapData;
@@ -16,8 +16,8 @@ package fe.inter
 	import fe.weapon.Weapon;
 	import fe.unit.UnitPlayer;
 	
-	public class Sats
-	{
+	public class Sats {
+
 		public var vis:MovieClip;		
 		public var trasser:MovieClip;	// Line drawn to mouse cursor.
 		public var radius:MovieClip;	// Green circular highlight indicating melee range or explosive damage range.
@@ -36,8 +36,7 @@ package fe.inter
 		public var odd:Number = 0.1;
 		public var limOd:Number = 200;
 		
-		public function Sats(nvis:MovieClip)
-		{
+		public function Sats(nvis:MovieClip) {
 			vis=nvis;
 			vis.visible = false;
 			trasser = new MovieClip();
@@ -49,36 +48,29 @@ package fe.inter
 		}
 
 		//Показать/скрыть
-		public function onoff(turn:int=0)
-		{
+		public function onoff(turn:int=0) {
 			if (turn == 0) active =! active;
 			else if (turn > 0) active = true;
 			else active=false;
 			
-			if (active)
-			{
-				if (World.w.loc.base || World.w.alicorn)
-				{
+			if (active) {
+				if (World.w.loc.base || World.w.alicorn) {
 					active = false;
 					return;
 				}
 
 				gg = World.w.gg;
 				weapon = gg.currentWeapon;
-				if (weapon == null)
-				{
+				if (weapon == null) {
 					World.w.gui.infoText('noSats');
 					active=false;
 				}
-				else
-				{
-					if (weapon.noSats)
-					{
+				else {
+					if (weapon.noSats) {
 						World.w.gui.infoText('noSats');
 						active=false;
 					}
-					else
-					{
+					else {
 						var st = weapon.status();
 						if (st == 4) {
 							World.w.gui.infoText('noAmmo', '');
@@ -96,13 +88,11 @@ package fe.inter
 				}
 			}
 			if (active) {
-				if (weapon.tip > 1)
-				{
+				if (weapon.tip > 1) {
 					trasser.visible = true;
 					trass();
 				}
-				else
-				{
+				else {
 					trasser.visible=false;
 					radius.visible=true;
 					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona;
@@ -111,6 +101,7 @@ package fe.inter
 				}
 
 				skillConf = 1;
+				
 				if (World.w.weaponsLevelsOff) {
 					var razn = weapon.lvl - gg.pers.getWeapLevel(weapon.skill);
 					if (razn == 1) skillConf = 0.8;
@@ -122,7 +113,11 @@ package fe.inter
 						return;
 					}
 				}
-				if (que.length > 0) clearAll();
+				
+				if (que.length > 0) {
+					clearAll();
+				}
+				
 				World.w.grafon.drawSats();
 				World.w.grafon.onSats(true);
 				getUnits();
@@ -140,27 +135,23 @@ package fe.inter
 				World.w.ctr.clearAll();
 				World.w.gui.setTopText('');
 			}
+			
 			vis.visible = active;
 			World.w.gui.setSats(active);
 		}
 		
 		// [when on pause]
-		public function step()
-		{
-			if (active)
-			{
-				if (World.w.ctr.keyAttack)
-				{
+		public function step() {
+			if (active) {
+				if (World.w.ctr.keyAttack) {
 					setCel();
 					World.w.ctr.keyAttack = false;
 				}
-				if (World.w.ctr.keyTele)
-				{
+				if (World.w.ctr.keyTele) {
 					unsetCel();
 					World.w.ctr.keyTele = false;
 				}
-				if (World.w.ctr.keyAction)
-				{
+				if (World.w.ctr.keyAction) {
 					onoff(-1);
 					World.w.ctr.keyAction = false;
 				}
@@ -168,26 +159,26 @@ package fe.inter
 		}
 		
 		// [When not on pause]
-		public function step2():void
-		{
-			if (que.length > 0 && World.w.ctr.keyAttack) clearAll();
+		public function step2():void {
+			if (que.length > 0 && World.w.ctr.keyAttack) {
+				clearAll();
+			}
+			
 			// Not enough action points
-			if (que.length > 0 && weapon.satsCons * weapon.consMult * weapon.consMult / skillConf * gg.pers.satsMult / weapon.satsQue > od)
-			{
+			if (que.length > 0 && weapon.satsCons * weapon.consMult * weapon.consMult / skillConf * gg.pers.satsMult / weapon.satsQue > od) {
 				World.w.gui.infoText('noOd');
 				clearAll();
 			}
+
 			// Queue is finished
-			if (que.length == 0 && od < gg.pers.maxOd)
-			{
+			if (que.length == 0 && od < gg.pers.maxOd) {
 				od += odd;
 				odv = od;
 				World.w.gui.setOd();
 			}
 		}
 		
-		public function clearAll()
-		{
+		public function clearAll() {
 			var n = que.length;
 			for (var i = 0; i < n; i++) {
 				var cel:SatsCel = que.shift();
@@ -197,16 +188,16 @@ package fe.inter
 			World.w.gui.setOd();
 		}
 		
-		public function setCel()
-		{
+		public function setCel() {
 			// Not enough action points
 			if (weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult > odv) {
 				World.w.gui.infoText('noOd');
 				return;
 			}
+			
 			var cel:SatsCel;
-			if (units.length)
-			{
+			
+			if (units.length) {
 				for each (var obj in units) {
 					if (obj.du.filters.length>0) {
 						cel=new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
@@ -214,7 +205,11 @@ package fe.inter
 					}
 				}
 			}
-			if (cel == null) cel = new SatsCel(null, World.w.celX, World.w.celY, weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult, weapon.satsQue);
+			
+			if (cel == null) {
+				cel = new SatsCel(null, World.w.celX, World.w.celY, weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult, weapon.satsQue);
+			}
+			
 			weapon.ready = false;
 			odv -= weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult;
 			World.w.gui.setOd();
@@ -226,12 +221,15 @@ package fe.inter
 				onoff(-1);
 				return;
 			}
+			
 			var cel:SatsCel;
 			
 			if (q) cel = que.shift();
 			else cel = que.pop();
 			
-			if (cel.un) cel.un.n--;
+			if (cel.un) {
+				cel.un.n--;
+			}
 			
 			cel.remove();
 			odv += weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult;
@@ -240,6 +238,7 @@ package fe.inter
 				onoff(-1);
 				odv = od;
 			}
+			
 			World.w.gui.setOd();
 		}
 		
@@ -264,35 +263,39 @@ package fe.inter
 		
 		// This function calculates hit percentages in SATS. The use of this percentage is currently unknown.
 		// It does not correct gun dispersion or a unit's (dodge chance?) so projectiles will still miss at 100%
-		private function getPrec(un:Unit):Number
-		{
+		private function getPrec(un:Unit):Number {
 			var prec:Number = 1;
 			var sk = gg.pers.weaponSkills[weapon.skill];
 			var dx = weapon.coordinates.X - un.coordinates.X;
 			var dy = weapon.coordinates.Y - un.coordinates.Y;
 			var rasst = Math.sqrt(dx * dx + dy * dy);
-			if (weapon.precision > 0)
-			{
+			
+			if (weapon.precision > 0) {
 				prec = weapon.resultPrec(1, sk) / rasst / (un.dexter + 0.1) * skillConf;
 			}
-			if (weapon.antiprec > 0 && rasst < weapon.antiprec)
-			{
+			
+			if (weapon.antiprec > 0 && rasst < weapon.antiprec) {
 				prec = (rasst / weapon.antiprec * 0.75 + 0.25) / (un.dexter + 0.1) * skillConf;
 			}
-			if (weapon.deviation > 0 || gg.mazil > 0)
-			{
+			
+			if (weapon.deviation > 0 || gg.mazil > 0) {
 				var ug1 = Math.atan2(un.objectHeight, rasst) * 180 / Math.PI;
 				var ug2 = (weapon.deviation / (sk + 0.01) + gg.mazil);
 				if (ug2 > ug1) prec = prec * ug1 / ug2;
 			}
-			if (prec > 0.95) prec = 0.95;
-			if (prec > skillConf) prec = skillConf;
+			
+			if (prec > 0.95) {
+				prec = 0.95;
+			}
+			
+			if (prec > skillConf) {
+				prec = skillConf;
+			}
 
 			return prec;
 		}
 		
-		public function drawUnit(un:Unit):MovieClip
-		{
+		public function drawUnit(un:Unit):MovieClip {
 			var satsBmp:BitmapData = new BitmapData(un.vis.width, un.vis.height, true, 0);
 			var m:Matrix = new Matrix();
 			var rect:Rectangle = un.vis.getBounds(un.vis);
@@ -300,11 +303,20 @@ package fe.inter
 			m.ty = -rect.top;
 
 			var hpoff:Boolean = false;
-			if (un.hpbar && un.hpbar.visible) hpoff = true;
-			if (hpoff) un.hpbar.visible = false;
+			
+			if (un.hpbar && un.hpbar.visible) {
+				hpoff = true;
+			}
+			
+			if (hpoff) {
+				un.hpbar.visible = false;
+			}
 			
 			satsBmp.draw(un.vis, m, ct);
-			if (hpoff) un.hpbar.visible = true;
+			
+			if (hpoff) {
+				un.hpbar.visible = true;
+			}
 			
 			var mc:MovieClip = new MovieClip();
 			mc.scaleX = un.vis.scaleX;
@@ -317,35 +329,38 @@ package fe.inter
 			
 			mc.addEventListener(MouseEvent.MOUSE_OVER,mOver);
 			mc.addEventListener(MouseEvent.MOUSE_OUT,mOut);
+			
 			return mc;
 		}
 		
-		public function mOver(event:MouseEvent):void // Mouse-over
-		{
-			if (active && !weapon.noPerc) (event.currentTarget as MovieClip).filters = [fGlow]; // Apply a red highlight to the unit (If the player is not using grenades.)
+		// Mouse-over
+		public function mOver(event:MouseEvent):void {	
+			// Apply a red highlight to the unit (If the player is not using grenades.)
+			if (active && !weapon.noPerc) {
+				(event.currentTarget as MovieClip).filters = [fGlow];
+			}
 			
-			try
-			{
+			try {
 				var su:TextField = (event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible = true;
 			}
-			catch(err)
-			{
+			catch(err) {
 				trace('ERROR: (00:44)');
 			}
 		}
 
-		public function mOut(event:MouseEvent):void // Stop Mouse-over
-		{
-			if (active && !weapon.noPerc) (event.currentTarget as MovieClip).filters = [];	// Remove red highlight by resetting the filters array.
+		// Stop Mouse-over
+		public function mOut(event:MouseEvent):void {	
+			// Remove red highlight by resetting the filters array.
+			if (active && !weapon.noPerc) {
+				(event.currentTarget as MovieClip).filters = [];
+			}
 			
-			try
-			{
+			try {
 				var su:TextField = (event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible = false;
 			}
-			catch(err)
-			{
+			catch(err) {
 				trace('ERROR: (00:45)');
 			}
 		}
@@ -358,29 +373,34 @@ package fe.inter
 						obj.v.removeEventListener(MouseEvent.MOUSE_OVER, mOver);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OUT, mOut);
 					}
-					catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:46)');
 					}
 				}
 			}
+			
 			units = [];
+			
 			for each (obj in que) {
 				obj.vis.visible = false;
 			}
 		}
 		
-		public function getUnits()
-		{
-			for each (var un:Unit in World.w.loc.units)
-			{
-				if (!gg.isMeet(un) || !un.isSats || un.sost>=3 || un.invis) continue;
-				if (weapon.satsMelee)
-				{
-					if (gg.look(un,false,0,gg.pers.meleeR*1.2+100)<=0) continue;
+		public function getUnits() {
+			for each (var un:Unit in World.w.loc.units) {
+				if (!gg.isMeet(un) || !un.isSats || un.sost>=3 || un.invis) {
+					continue;
 				}
-				else 
-				if (gg.look(un) <= 0 || !un.getTileVisi()) continue;
+				
+				if (weapon.satsMelee) {
+					if (gg.look(un,false, 0, gg.pers.meleeR * 1.2 + 100) <= 0) {
+						continue;
+					}
+				}
+				else if (gg.look(un) <= 0 || !un.getTileVisi()) {
+					continue;
+				}
+
 				var mc:MovieClip = new MovieClip();
 				mc.x = un.vis.x;
 				mc.y = un.vis.y;
@@ -412,9 +432,14 @@ package fe.inter
 					if (un.armor_qual > 0 && un.armor > 0) info.text += '\n' + Res.pipText('armor') + ': ' + Math.ceil(un.armor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
 					if (un.armor_qual > 0 && un.marmor > 0) info.text += '\n' + Res.pipText('marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
 					
-					if (mc.y < 150) info.y = 50;
-					else info.y = -un.objectHeight - info.textHeight - 20;
+					if (mc.y < 150) {
+						info.y = 50;
+					}
+					else {
+						info.y = -un.objectHeight - info.textHeight - 20;
+					}
 				}
+				
 				su.name = 'su';
 				mc.addChild(du);
 				mc.addChild(su);
@@ -427,8 +452,12 @@ package fe.inter
 		}
 		
 		public function trass() {
-			if (weapon.noTrass) return;
+			if (weapon.noTrass) {
+				return;
+			}
+			
 			weapon.setTrass(trasser.graphics);
+			
 			if (weapon.explRadius) {
 				radius.visible = true;
 				radius.scaleX = weapon.explRadius / 100;

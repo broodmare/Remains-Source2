@@ -4,9 +4,11 @@ package  fe.loc {
 	import fe.entities.Obj;
 	
 	public class Tile {
+		
+		private static const tileSize = 40; // Size in pixels
 
-		public static var tileX:int = 40;	// Size in pixels
-		public static var tileY:int = 40;	// Size in pixels
+		public static var tileX:int = tileSize;	// TODO: Replace this better with tileSize
+		public static var tileY:int = tileSize;
 		
 		public var coords:Vector2;
 		public var phX1:Number,phX2:Number,phY1:Number,phY2:Number;	// TODO: Turn this into a vector
