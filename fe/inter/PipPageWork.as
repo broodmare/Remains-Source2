@@ -35,50 +35,89 @@ package fe.inter {
 			vis.but5.visible = false;
 		}
 
-		//подготовка страниц
+		// [Preparing pages]
 		override protected function setSubPages():void {
-			if (pip.workTip=='mworklab') pip.workTip='lab';
-			if (pip.workTip=='mworkexpl') pip.workTip='expl';
-			vis.but1.visible=vis.but2.visible=vis.but3.visible=true;
-			if (pip.workTip=='mworkbench') {
-				vis.but1.visible=vis.but2.visible=false;
-				page2=3;
+			
+			trace("PipPageWork.as/setSubPages() - Initializing the workbench interface. Station type: " + pip.workTip);
+
+			// Indicate if we're using a specialized crafting bench, otherwise this value is just "work"
+			if (pip.workTip == 'mworklab') {
+				pip.workTip = 'lab';
 			}
-			else if (pip.workTip=='stove' || pip.workTip=='lab' || pip.workTip=='expl') {
-				vis.but2.visible=vis.but3.visible=false;
-				page2=1;
+			if (pip.workTip == 'mworkexpl') {
+				pip.workTip = 'expl';
+			}
+			
+			 // Enable the sub-category buttons at the top of the pip-buck
+			vis.but1.visible = true;
+			vis.but2.visible = true;
+			vis.but3.visible = true;
+
+			// This workbench can only repair
+			if (pip.workTip=='mworkbench') {
+				vis.but1.visible = false;
+				vis.but2.visible = false;
+				// Set the current page to the "Repair" page
+				page2 = 3;
+			}
+			// These workbenches can only create
+			else if (pip.workTip == 'stove' || pip.workTip == 'lab' || pip.workTip == 'expl') {
+				vis.but2.visible = false;
+				vis.but3.visible = false;
+				// Set the current page to the "Create" page
+				page2 = 1;
 			}
 
-			vis.bottext.text=Res.pipText('caps')+': '+pip.money;
-			vis.butOk.visible=false;
-			statHead.cat.visible=false;
+			vis.bottext.text = Res.pipText('caps') + ': ' + pip.money;
+			vis.butOk.visible = false;
+			statHead.cat.visible = false;
 			setIco();
+			
 			var assId:String = null;
 			var n;
-			statHead.rid.visible=false;
-			statHead.mass.text='';
-			vis.bottext.text='';
-			if (page2==1) {		//крафт
-				assArr=[];
-				statHead.fav.text='';
-				statHead.nazv.text=Res.pipText('work1');
-				statHead.hp.text=Res.pipText('iv6');
-				statHead.ammo.text='';
-				statHead.ammotip.text='';
+			
+			statHead.rid.visible = false;
+			statHead.mass.text = '';
+			vis.bottext.text = '';
+
+			// The "Create" page
+			if (page2 == 1) {
+
+				assArr = [];
+				statHead.fav.text = '';
+				statHead.nazv.text = Res.pipText('work1');
+				statHead.hp.text = Res.pipText('iv6');
+				statHead.ammo.text = '';
+				statHead.ammotip.text = '';
+				
 				for (var s:String in inv.items) {
-					if (s=='' || inv.items[s]==null || inv.items[s].kol<=0) continue;
-					var node=inv.items[s].xml;
-					if (node==null) continue;
-					if (node.@tip=='scheme' && (node.@work.length()==0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {
-						var ok:int=1;
-						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
-						var wid:String=s.substr(2);
+					
+					if (s == '' || inv.items[s] == null || inv.items[s].kol <= 0) {
+						continue;
+					}
+
+					var node = inv.items[s].xml;
+					
+					if (node == null) {
+						trace("PipPageWork.as/setSubPages() - Error: The crafting tab failed to retrieve the XML from an item");
+						continue;
+					}
+					
+					if (node.@tip == 'scheme' && (node.@work.length() == 0 || node.@work == pip.workTip || node.@work == 'expl' && pip.workTip == 'work')) {
+						var ok:int = 1;
+						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill) < node.@lvl) {
+							ok = 2;
+						}
+						
+						// Get the real item ID by removing the first two letters from the id, eg. "s_pizza" turns into "pizza"
+						var wid:String = s.substr(2);
+						
 						if (inv.weapons[wid]) {
-							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) {
-								n={tip:Item.L_WEAPON, id:wid, nazv:Res.txt('w',wid), ok:ok ,sort:node.@skill+node.@lvl};
-								if (inv.items[wid] && inv.items[wid].kol>0) n.kol=inv.items[wid].kol;
+							if (inv.weapons[wid].respect == 3 || inv.weapons[wid].tip == 4) {
+								n = {tip:Item.L_WEAPON, id:wid, nazv:Res.txt('w', wid), ok:ok, sort:node.@skill + node.@lvl};
+								if (inv.items[wid] && inv.items[wid].kol > 0) n.kol = inv.items[wid].kol;
 								arr.push(n);
-								assArr[n.id]=n;
+								assArr[n.id] = n;
 							}
 						}
 						else if (inv.armors[wid]) {
@@ -89,35 +128,45 @@ package fe.inter {
 						}
 						else {
 							var node1:XML = getItemInfo(wid);
-							if (node1 != null) continue;
-							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
-							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
+							
+							if (node1 == null) {
+								trace("PipPageWork.as/setSubPages() - ID: \"" + wid + "\" for schematic: \"" + s + "\" doesn't match any items");
+								continue;
+							}
+							
+							if ((node1.@tip == Item.L_IMPL || node1.@one > 0) && inv.items[wid].kol > 0) {
+								trace("PipPageWork.as/setSubPages() - We've already made this item");
+								continue; // [Only one piece]
+							}	
+							
+							n = {tip:(node1.@tip == Item.L_IMPL? Item.L_IMPL : Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i', wid), ok:ok , sort:node.@skill + node.@lvl};
 							arr.push(n);
-							assArr[n.id]=n;
+							assArr[n.id] = n;
 						}
 					}
 				}
+				
 				if (arr.length) {
-					arr.sortOn(['ok','sort']);
-					vis.emptytext.text='';
-					statHead.visible=true;
+					arr.sortOn(['ok', 'sort']);
+					vis.emptytext.text = '';
+					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text=Res.pipText('emptycreate');
-					statHead.visible=false;
+					vis.emptytext.text = Res.pipText('emptycreate');
+					statHead.visible = false;
 				}
-
 			}
-			else if (page2==2) {	//улучшение
+			// The "Enhance" page
+			else if (page2 == 2) {
 				statHead.fav.text='';
 				statHead.nazv.text='';
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
-				if (gg.pers.maxArmorLvl>0) {
+				if (gg.pers.maxArmorLvl > 0) {
 					for each(var arm:Armor in inv.armors) {
-						if (arm.lvl>=0 && arm.lvl<arm.maxlvl && arm.lvl<gg.pers.maxArmorLvl) {
-							n={tip:Item.L_ARMOR, id:arm.id, nazv:arm.nazv, lvl:arm.lvl, sort:('a'+arm.sort)};
+						if (arm.lvl >= 0 && arm.lvl < arm.maxlvl && arm.lvl < gg.pers.maxArmorLvl) {
+							n = {tip:Item.L_ARMOR, id:arm.id, nazv:arm.nazv, lvl:arm.lvl, sort:('a' + arm.sort)};
 							arr.push(n);
 						}
 					}
@@ -139,14 +188,17 @@ package fe.inter {
 					statHead.visible=false;
 				}
 			}
-			else if (page2==3) {	//ремонт
-				assArr=[];
+			// The "Repair" page
+			else if (page2 == 3) {
+				assArr = [];
+				
 				statHead.fav.text='';
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
 				statHead.ammo.text='';
 				statHead.ammotip.text=Res.pipText('repairto');
 				setTopText('inforepair');
+				
 				if (inv.items['owl'] && inv.items['owl'].kol) {
 					World.w.pers.setRoboowl();
 					if (World.w.pers.owlhpProc<1) {
@@ -157,6 +209,7 @@ package fe.inter {
 					}
 
 				}
+				
 				for each (var w:Weapon in inv.weapons) {
 					if (w==null) continue;
 					if (w.tip!=0 && w.tip!=4 && w.respect!=1 && w.hp<w.maxhp) {
@@ -165,6 +218,7 @@ package fe.inter {
 						assArr[n.id]=n;
 					}
 				}
+				
 				for each (var a:Armor in inv.armors) {
 					if (!a.norep && !a.und && a.hp<a.maxhp) {
 						n={tip:Item.L_ARMOR, id:a.id, nazv:a.nazv, hp:a.hp, maxhp:a.maxhp, rep:1/a.kolComp};
@@ -172,6 +226,7 @@ package fe.inter {
 						assArr[n.id]=n;
 					}
 				}
+				
 				if (arr.length) {
 					vis.emptytext.text='';
 					statHead.visible=true;
@@ -187,11 +242,15 @@ package fe.inter {
 		public static function getItemInfo(id:String):XML {
 			// Check if the node is already cached
 			var node:XML;
+			
 			if (cachedItems[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
                 cachedItems[id] = node;
             }
-			else node = cachedItems[id];
+			else {
+				node = cachedItems[id];
+			}
+			
 			return node;
 		}
 		

@@ -195,7 +195,7 @@ package fe.unit {
 		}
 
 		public override function animate() {
-			if (vis.osn.CurrentFrame != tr) vis.osn.puha.gotoAndStop(tr);
+			if (vis.osn.currentFrame != tr) vis.osn.puha.gotoAndStop(tr);
 
 			if (fixed && levit) vis.osn.rotation = Math.random() * 6 - 3;
 			else if (vis.osn.rotation != 0) vis.osn.rotation = 0;
