@@ -58,7 +58,7 @@ package fe.unit {
 			super.dropLoot();
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (aiState==0) {
 				if (vis.osn.currentFrame!=1) {
 					vis.osn.gotoAndStop(1);
@@ -77,7 +77,7 @@ package fe.unit {
 			vis.osn.rotation += rollDr;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) {
 				aiState = 0;

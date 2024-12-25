@@ -370,18 +370,15 @@ package fe.unit {
 				}
 				if (xml.@die.length()) postDie=true;
 			}
-			if (loadObj && loadObj.dead && !postDie)
-			{
+			if (loadObj && loadObj.dead && !postDie) {
 				sost=4;
 				disabled=true;
 			}
 			mapxml=xml;
 		}
 		
-		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit
-		{
-			switch (id)
-			{
+		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit {
+			switch (id) {
 				case 'mwall':
 					return new UnitMWall(null,0,null,null);
 				break;
@@ -394,15 +391,13 @@ package fe.unit {
 			}
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
-			if (!node)
-			{
+			if (!node) {
 				trace('ERROR: unit: "' + id + '" not found!');
 				return null;
 			}
 			var uc:Class;
 			var cn:String = node.@cl;
-			switch (cn)
-			{
+			switch (cn) {
 				case 'Mine':			uc = Mine;break;
 				case 'UnitTrap':		uc = UnitTrap;break;
 				case 'UnitTrigger':		uc = UnitTrigger;break;
@@ -839,7 +834,7 @@ package fe.unit {
 		}
 		
 		//привести в исходное состояние, если f=true, то вернуть на места
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (boss && isNoResBoss()) f=false;
 			if (sost==1) {
 				if (f) {
@@ -875,7 +870,7 @@ package fe.unit {
 
 		}
 
-		public override function step() {
+		public override function step():void {
 			if (disabled || trigDis) return;
 			if (t_emerg>0) {
 				t_emerg--;
@@ -1828,7 +1823,6 @@ package fe.unit {
 		}
 		
 		public function initBlit() {
-
 			blitData=World.w.grafon.getSpriteList(blitId);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
@@ -1848,15 +1842,13 @@ package fe.unit {
 			animState='stay';
 		}
 		
-		public function blit(blstate:int, blframe:int)
-		{
+		public function blit(blstate:int, blframe:int) {
 			blitRect.x = blframe * blitX;
 			blitRect.y = blstate * blitY;
 			visData.copyPixels(blitData, blitRect, blitPoint);
 		}
 		
-		public override function addVisual()
-		{
+		public override function addVisual():void {
 			if (disabled) return;
 			trigDis=!checkTrig();
 			if (trigDis) return;
@@ -1878,7 +1870,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function remVisual() {
+		public override function remVisual():void {
 			super.remVisual();
 			if (hpbar && hpbar.parent) hpbar.parent.removeChild(hpbar);
 			if (childObjs) {
@@ -1888,7 +1880,7 @@ package fe.unit {
 			}
 		}
 		
-		public function animate() {
+		public function animate():void {
 
 		}
 		
@@ -1896,7 +1888,7 @@ package fe.unit {
 
 		}
 		
-		function sndRunPlay() {
+		private function sndRunPlay() {
 				if (rasst2<sndRunDist*sndRunDist) {
 					sndVolkoef=(sndRunDist-Math.sqrt(rasst2))/sndRunDist;
 
@@ -1907,7 +1899,7 @@ package fe.unit {
 				}
 		}
 		
-		function newPart(nid:String,kol:int=1,frame:int=0) {
+		public function newPart(nid:String,kol:int=1,frame:int=0) {
 			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:kol, frame:frame});
 		}
 
@@ -1955,7 +1947,6 @@ package fe.unit {
 				if (loc && loc.zoom!=1) hpbar.scaleX = hpbar.scaleY = loc.zoom;
 			}
 		}
-		
 		
 		public function sound(sid:String, msec:Number=0, vol:Number=1):SoundChannel {
 			return Snd.ps(sid, coordinates.X, coordinates.Y, msec, vol);
@@ -2188,7 +2179,7 @@ package fe.unit {
 			}
 		}
 		
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
+		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
 			if (xml==null) return;
 			for each(var sk in xml.sk) {
 				var val:Number, lvl:int;

@@ -27,29 +27,30 @@ package fe.inter {
 	
 	public class PipPage {
 
-		var vis:MovieClip;
-		var arr:Array;
-		var statArr:Array;
-		var statHead:MovieClip;
-		var pageClass:Class;
-		var itemClass:Class;
-		var maxrows:int=18;
-		var selItem:MovieClip;
-		var pip:PipBuck;
-		var inv:Invent;
-		var gg:UnitPlayer;
-		var isLC:Boolean=false, isRC:Boolean=false; //реакция на клик
-		var signs:Array=[0,0,0,0,0,0];
-		var page2:int=1;
-		var scrl:int=0;
-		var infIco:MovieClip;
-		var itemFilter:GlowFilter=new GlowFilter(0x00FF88,1,3,3,3,1);
-		var itemTrans:ColorTransform=new ColorTransform(1,1,1);
-		var pp:String;
-		var kolCats:int=6;
-		var cat:Array=[0, 0, 0, 0, 0, 0, 0];
-		var curTip = '';
-		var tips:Array = [[]];
+		public var vis:MovieClip;
+		public var arr:Array;
+		public var statArr:Array;
+		public var statHead:MovieClip;
+		public var pageClass:Class;
+		public var itemClass:Class;
+		public var maxrows:int=18;
+		public var selItem:MovieClip;
+		public var pip:PipBuck;
+		public var inv:Invent;
+		public var gg:UnitPlayer;
+		public var isLC:Boolean=false;
+		public var isRC:Boolean=false; //реакция на клик
+		public var signs:Array=[0, 0, 0, 0, 0, 0];
+		public var page2:int=1;
+		private var scrl:int=0;
+		private var infIco:MovieClip;
+		private var itemFilter:GlowFilter=new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
+		private var itemTrans:ColorTransform=new ColorTransform(1, 1, 1);
+		private var pp:String;
+		private var kolCats:int = 6;
+		private var cat:Array = [0, 0, 0, 0, 0, 0, 0];
+		public var curTip = '';
+		public var tips:Array = [[]];
 
 		private static var damageTypes:Array = [
 			{type: Unit.D_BUL,		label: 'bullet'},
@@ -89,7 +90,7 @@ package fe.inter {
 			if (vis.item) vis.item.visible=false
 			pip.vis.addChild(vis);
 			
-			vis.scBar.addEventListener(ScrollEvent.SCROLL,statScroll);
+			vis.scBar.addEventListener(ScrollEvent.SCROLL,statScroll); // Adobe Animate Dependency
 			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
 			statArr=[];
 			var item:MovieClip;
@@ -111,8 +112,8 @@ package fe.inter {
 					statArr.push(item);
 				}
 			}
-			for (i=1; i<=5; i++) {
-				item=vis.getChildByName('but'+i) as MovieClip;
+			for (i = 1; i <= 5; i++) {
+				item=vis.getChildByName('but' + i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK,page2Click);
 				item.text.text=Res.pipText(pp+i);
 				item.id.text=i;
@@ -208,7 +209,7 @@ package fe.inter {
 			setSubPages();
 			setStatItems(flop?0:-1);
 
-			var sc:ScrollBar=vis.scBar;
+			var sc:ScrollBar = vis.scBar; // Adobe Animate dependency
 
 			if (arr.length>maxrows) {
 				sc.visible=true;
@@ -364,12 +365,12 @@ package fe.inter {
 			if (dp.length()==0) return s;
 			dp=dp[0];
 			//определение текущего уровня
-			var lvl = 1;
+			var lvl:int = 1;
 			var pers:Pers = World.w.pers;
 
 			if (tip == 'perk') {
 				lvl = pers.perks[id];
-				if (lvl == null) lvl = 0;
+				if (lvl < 0) lvl = 0;
 			}
 			else if (tip == 'skill') {
 				lvl = pers.getSkLevel(pers.skills[id]);
@@ -402,7 +403,7 @@ package fe.inter {
 				s += '<br>';
 				for each(var sk in dp.sk) {
 					if (sk.@tip == 'm') {
-						var add = textAsColor('lightBlue', '+1');
+						var add:String = textAsColor('lightBlue', '+1');
 						
 						if (sk.@vd > 0) {
 							add = textAsColor('lightBlue', '+' + sk.@vd) + ' ' + Res.pipText('perlevel');
@@ -461,24 +462,25 @@ package fe.inter {
 		
 		public static function infoStr(tip:String, id:String):String {
 			var s:String='';
-			var pip=World.w.pip;
-			var gg=World.w.gg;
+			var pip:PipBuck = World.w.pip;
+			var gg:UnitPlayer = World.w.gg;
 			var inv:Invent=World.w.invent;
+			
 			if (tip==Item.L_ARMOR && inv.armors[id]==null && pip.arrArmor[id]==null) tip=Item.L_ITEM;
 			if (tip==Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip=Item.L_ITEM;
 			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
-				var w:Weapon=pip.arrWeapon[id];
+				var w:Weapon = pip.arrWeapon[id];
 				if (w==null) return '';
 				w.setPers(gg,gg.pers);
-				var skillConf=1;
-				var razn=w.lvl-gg.pers.getWeapLevel(w.skill);
-				if (razn==1) skillConf=0.75;
-				if (razn>=2) skillConf=0.5;
-				w.skillConf=skillConf;
-				s+=Res.pipText('weapontip')+': '+textAsColor('yellow', Res.pipText('weapontip'+w.skill));
+				var skillConf:int = 1;
+				var razn:int = w.lvl-gg.pers.getWeapLevel(w.skill);
+				if (razn == 1) skillConf = 0.75;
+				if (razn >= 2) skillConf = 0.5;
+				w.skillConf = skillConf;
+				s += Res.pipText('weapontip') + ': ' + textAsColor('yellow', Res.pipText('weapontip' + w.skill));
 				if (w.lvl>0) {
 					s+='\n'+Res.pipText('lvl')+': '+numberAsColor('yellow', w.lvl);
-					s+='\n'+Res.pipText('islvl')+': '+textAsColor('yellow', gg.pers.getWeapLevel(w.skill));
+					s += '\n' + Res.pipText('islvl') + ': ' + textAsColor('yellow', gg.pers.getWeapLevel(w.skill).toString());
 					if (razn>0) s+="<span class = 'red'>";
 					if (w.lvlNoUse && razn>0 || razn>2) s+=' ('+Res.pipText('weapnouse')+')</span>';
 					else if (razn>0){
@@ -496,11 +498,12 @@ package fe.inter {
 				}
 				if (w.perslvl>0) {
 					s+='\n'+Res.pipText('perslvl')+': '+numberAsColor('yellow', w.perslvl);
-					s+='\n'+Res.pipText('isperslvl')+': '+textAsColor('yellow', gg.pers.level);
+					s+='\n'+Res.pipText('isperslvl')+': '+textAsColor('yellow', gg.pers.level.toString());
 					if (gg.pers.level<w.perslvl) s+=textAsColor('red', ' ('+Res.pipText('weapnouse')+')');
 				}
 				s+='\n'+Res.pipText('damage')+': ';
-				var wdam=w.damage, wdamexpl=w.damageExpl;
+				var wdam:Number = w.damage;
+				var wdamexpl:Number = w.damageExpl;
 				if (w.damage>0) {
 					s+=numberAsColor('yellow', Math.round(w.damage*10)/10);
 					wdam=w.resultDamage(w.damage,gg.pers.weaponSkills[w.skill]);
@@ -519,7 +522,7 @@ package fe.inter {
 				}
 				if (w.kol>1) s+=' [x'+w.kol+']';
 				if (w.explKol>1) s+=' [x'+w.explKol+']';
-				var wrapid=w.resultRapid(w.rapid);
+				var wrapid:int = w.resultRapid(w.rapid);
 				if (w.tip!=4) {
 					s+='\n'+Res.pipText('aps')+': '+textAsColor('yellow', Number(World.fps/wrapid).toFixed(1));
 					s+='\n'+Res.pipText('dps')+': '+textAsColor('yellow', Number((wdam+wdamexpl)*w.kol*World.fps/wrapid).toFixed(1));
@@ -547,7 +550,7 @@ package fe.inter {
 				if (w.opt && w.opt.perk) {
 					s+='\n'+Res.pipText('refperk')+': '+textAsColor('pink', Res.txt('e',w.opt.perk));
 				}
-				var sinf=Res.txt('w',id,1);
+				var sinf:String = Res.txt('w', id, 1);
 				if (sinf=='') sinf=Res.txt('w',w.id,1);
 				if (World.w.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
 				if (World.w.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
@@ -582,7 +585,7 @@ package fe.inter {
 				s += '\n\n'+Res.txt('a',id,1);
 			}
 			else if (tip==Item.L_AMMO) {
-				var ammo = inv.items[id].xml;
+				var ammo:XML = inv.items[id].xml;
 				if (Weapon.getWeaponInfo(id) != null)
 				{
 					s = Res.txt('w',id,1);
@@ -607,7 +610,7 @@ package fe.inter {
 			else {
 				var hhp:Number=0;
 				s=Res.txt('i',id,1)+'\n';
-				var pot=inv.items[id].xml;
+				var pot:XML = inv.items[id].xml;
 				tip=pot.@tip;
 				if (tip=='instr' || tip=='impl'|| tip=='art') {
 					s=effStr('item',id)+'\n';
@@ -704,7 +707,7 @@ package fe.inter {
 				if (craft == 1) s += craftInfo(id);
 			}
 			else if (tip == Item.L_AMMO) {
-				var ammo=inv.items[id].xml;
+				var ammo:XML = inv.items[id].xml;
 				if (ammo.@base.length())
 				{
 					vis.nazv.text = Res.txt('i', ammo.@base);
@@ -738,7 +741,7 @@ package fe.inter {
 		public function craftInfo(id:String):String {
 			var s:String='\n';
 			var cs:String = 's_' + id;
-			var sch = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
+			var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
 			var kol:int=1;
 			if (sch.@kol.length()) kol=sch.@kol;
 			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
@@ -749,7 +752,7 @@ package fe.inter {
 				else s+="pink";
 				s+="'>"+Res.txt('e',sch.@skill)+" - "+sch.@lvl+"</span>\n";
 			}
-			for each(var c in sch.craft) {
+			for each(var c:XML in sch.craft) {
 				s+="\n<span class = 'orange'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
 				if (!World.w.loc.base && c.@kol>inv.items[c.@id].kol
 				  || World.w.loc.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
@@ -790,7 +793,7 @@ package fe.inter {
 		
 		protected function factor(id:String):String {
 			var s:String='', s1:String;
-			var ok=false;
+			var ok:Boolean = false;
 			if (World.w.pers.factor[id] is Array) {
 				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
@@ -972,7 +975,7 @@ package fe.inter {
 			return false;
 		}
 		
-		public function statScroll(event:ScrollEvent):void {
+		public function statScroll(event:ScrollEvent):void { // Adobe Animate dependency
 			setStatItems(event.position);
 		}
 

@@ -6,8 +6,8 @@ package fe.unit {
 	
 	public class UnitHellhound extends UnitPon {
 		
-		var vDestroy:Number;
-		var nuh:Number=400;
+		private var vDestroy:Number;
+		private var nuh:Number=400;
 		
 		// Constructor
 		public function UnitHellhound(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -50,7 +50,7 @@ package fe.unit {
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		private function checkJump():Boolean {
 			if (loc.getAbsTile(coordinates.X,coordinates.Y-85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X,coordinates.Y-125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X+40*storona,coordinates.Y-85).phis!=0) return false;
@@ -75,10 +75,10 @@ package fe.unit {
 		//2 - не видит цели, бегает и ищет цель
 		//3 - видит цель, бегает, атакует
 		
-		var aiJump:int=0;
-		var aiLaz:int=0;
-		var t_laz:int=0;	//прошло времени с начала лазения
-		var r_laz:int=0;	//изменений направления лазения
+		private var aiJump:int=0;
+		private var aiLaz:int=0;
+		private var t_laz:int=0;	//прошло времени с начала лазения
+		private var r_laz:int=0;	//изменений направления лазения
 		
 		override protected function control():void {
 			var t:Tile;
@@ -371,7 +371,7 @@ package fe.unit {
 			} else return super.look(ncel, over, visParam, nDist);
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {

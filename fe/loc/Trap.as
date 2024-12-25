@@ -89,58 +89,47 @@ package fe.loc
 			if (node.@bind.length()) spBind=node.@bind;
 		}
 		
-		public override function addVisual()
-		{
-			if (vis)
-			{
+		public override function addVisual():void {
+			if (vis) {
 				World.w.grafon.visObjs[sloy].addChild(vis);
 				if (cTransform) vis.transform.colorTransform = cTransform;
 			}
-			if (vis2)
-			{
+			if (vis2) {
 				World.w.grafon.visObjs[3].addChild(vis2);
 				if (cTransform) vis2.transform.colorTransform=cTransform;
 			}
 		}
-		public override function remVisual()
-		{
+		public override function remVisual():void {
 			super.remVisual();
 			if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
-		public override function step()
-		{
+		public override function step():void {
 			if(!loc.active) return;
-			for each (var un:Unit in loc.units)
-			{
+			for each (var un:Unit in loc.units) {
 				if (!un.activateTrap || un.sost == 4) continue;
 				attKorp(un);
 			}
 		}
 		
-		private function bindTile():void
-		{
+		private function bindTile():void {
 			//прикрепление к полу
 			if (spBind == 1) loc.getAbsTile(coordinates.X, coordinates.Y + 10).trap = this;	
 			//прикрепление к потолку
 			if (spBind == 2) loc.getAbsTile(coordinates.X, coordinates.Y - 50).trap = this;
 		}
 		
-		public override function die(sposob:int = 0)
-		{
+		public override function die(sposob:int = 0) {
 			loc.remObj(this);
 		}
 		
-		public function attKorp(cel:Unit):Boolean
-		{
+		public function attKorp(cel:Unit):Boolean {
 			if (cel==null || cel.neujaz) return false;
-			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.coordinates.Y <= bottomBound && cel.coordinates.Y >= topBound) //шипы
-			{		
+			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.coordinates.Y <= bottomBound && cel.coordinates.Y >= topBound) { //шипы 
 				cel.damage(cel.massa*cel.velocity.Y/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
-			if (spDam==2 && !cel.isFly && (cel.velocity.Y + cel.osndy < 0) && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.topBound <= bottomBound && cel.topBound >= topBound) //шипы
-			{
+			if (spDam==2 && !cel.isFly && (cel.velocity.Y + cel.osndy < 0) && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.topBound <= bottomBound && cel.topBound >= topBound) { //шипы
 				cel.damage(cel.massa * dam * (1 + loc.locDifLevel * 0.1), tipDamage);
 				cel.neujaz = cel.neujazMax;
 			}

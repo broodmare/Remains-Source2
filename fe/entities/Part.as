@@ -37,7 +37,7 @@ package fe.entities
 			
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (visData) visData.dispose();
 			loc.remObj(this);
 			if (maxkol>0) Emitter.kols[maxkol]--;
@@ -81,7 +81,7 @@ package fe.entities
 			vis.rotation=r;
 		}
 		
-		public override function step() {
+		public override function step():void {
 			
 			if (otklad > 0) {
 				vis.visible = false;

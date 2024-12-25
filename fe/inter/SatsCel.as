@@ -8,10 +8,10 @@ package fe.inter {
 
 	public class SatsCel extends Obj {
 
-		var kol:int = 1;
-		var cons:Number;
-		var un:Object;
-		var begined:Boolean = false;
+		private var kol:int = 1;
+		private var cons:Number;
+		public var un:Object;
+		private var begined:Boolean = false;
 
 		// Constructor
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) {
@@ -40,11 +40,11 @@ package fe.inter {
 			addVisual();
 		}
 		
-		public function remove() {
+		public function remove():void {
 			remVisual();
 		}
 		
-		public function run() {
+		public function run():void {
 			if (un) {
 				coordinates.X = un.u.coordinates.X;
 				coordinates.Y = un.u.coordinates.Y - un.u.objectHeight / 2;

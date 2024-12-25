@@ -37,7 +37,7 @@
 
 		var aiN:int = Math.floor(Math.random() * 5);
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			getNapr();
 		}
@@ -52,7 +52,7 @@
 			getNapr();
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			
 			if (dr < 30) {
 				dr += 0.5;

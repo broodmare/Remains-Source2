@@ -36,7 +36,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) {
 				aiState=aiSpok=0;
@@ -44,7 +44,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 				if (sost==2 || sost==3) { //сдох
 					if (animState!='die') {
 						vis.osn.gotoAndStop('die');

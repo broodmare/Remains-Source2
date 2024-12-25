@@ -60,7 +60,7 @@ package fe.unit {
 			return false;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 		}
 		
@@ -72,7 +72,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			br += (velocity.X * 2.5 - br) / 4;
 			vis.osn.rotation = br * storona;
 		}

@@ -29,7 +29,7 @@ package fe.unit {
 			wPos = AnimationSet.getWeaponOffset("wPosZebra1");
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			super.animate();
 			if (!red) {
 				//невидимость

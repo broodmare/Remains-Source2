@@ -244,7 +244,7 @@ package fe.weapon {
 			}
 		}
 		
-		public override function setNull(f:Boolean = false) {
+		public override function setNull(f:Boolean = false):void {
 			super.setNull();
 		}	
 	}	

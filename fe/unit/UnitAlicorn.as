@@ -4,9 +4,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.entities.Obj;
-	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
 	import fe.loc.Tile;
 	import fe.loc.Location;
@@ -20,48 +18,48 @@ package fe.unit {
 		public var tr:int=0;
 		
 		protected var animFrame:int=0;
-		var spd:Object;
+		private var spd:Object;
 		public var wPos:Array;
-		var floatX:Number=1, floatY:Number=0;
-		var resmana=5;
-		var visshit:MovieClip;
-		var shitMaxHp:Number=300;
+		private var floatX:Number=1, floatY:Number=0;
+		private var resmana=5;
+		private var visshit:MovieClip;
+		private var shitMaxHp:Number=300;
 
 		//суперсила
-		var superSilaTip:int=1;	//1-невидимость, 2-телепортация, 3-телепатия
-		var tGotov:int=90, tUsed:int=-500;	//сколько нужно для готовности, сколько будет после готовности
-		var tSuper:int=300;	//продолжительность
-		var tNomater:int=-200;	//отброс готовности при дематриализации
-		var psyWeapon:Weapon;
+		private var superSilaTip:int=1;	//1-невидимость, 2-телепортация, 3-телепатия
+		private var tGotov:int=90, tUsed:int=-500;	//сколько нужно для готовности, сколько будет после готовности
+		private var tSuper:int=300;	//продолжительность
+		private var tNomater:int=-200;	//отброс готовности при дематриализации
+		private var psyWeapon:Weapon;
 		
 		//невидимость
-		var superInvis:Boolean=false;
-		var curA:int=100, celA:int=100;
+		private var superInvis:Boolean=false;
+		private var curA:int=100, celA:int=100;
 		
 		//телекинез
-		var teleObj:Obj;
-		var tTeleThrow:int=60;
-		var tTeleRes:int=600;
-		var throwForce:Number=30;
-		var teleX:Number=0, teleY:Number=0;
-		var teleSpeed:Number=16;
-		var teleAccel:Number=4;
-		var derp:Number=15;
+		private var teleObj:Obj;
+		private var tTeleThrow:int=60;
+		private var tTeleRes:int=600;
+		private var throwForce:Number=30;
+		private var teleX:Number=0, teleY:Number=0;
+		private var teleSpeed:Number=16;
+		private var teleAccel:Number=4;
+		private var derp:Number=15;
 		
-		var tlColor:uint=0x3366FF;
-		var nmColor:uint=0x253B8E;
-		var nomaterFilter:GlowFilter;
+		private var tlColor:uint=0x3366FF;
+		private var nmColor:uint=0x253B8E;
+		private var nomaterFilter:GlowFilter;
 		
-		var blasted:Boolean=false;
-		var osob:Boolean=false;
-		var mblast:Spell;
+		private var blasted:Boolean=false;
+		private var osob:Boolean=false;
+		private var mblast:Spell;
 		
 		public var stroll:Boolean=true;		//патрулирует в спокойном состоянии
 		public var moving:Boolean=true;		//двигается
 		public var quiet:Boolean=false;		//молчит
 		public var pole:Boolean=false;		//не двигается, не реагирует ни на что
 		public var poleId:String='';
-		var t_pole:int=0;
+		private var t_pole:int=0;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -137,8 +135,8 @@ package fe.unit {
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicorn");
 			
-			if (tr==3) visshit=new visShit2();
-			else visshit=new visShit();
+			if (tr==3) visshit = new visShit2();	// SWF Dependency
+			else visshit = new visShit();			// SWF Dependency
 			
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
@@ -202,7 +200,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
@@ -352,7 +350,7 @@ package fe.unit {
 			super.die(sposob);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
 			if (teleObj) dropTeleObj();
@@ -366,19 +364,19 @@ package fe.unit {
 			isFly = true;
 		}
 
-		var optDistAtt:int = 200;
-		var optDistTele:int = 600;
-		var stalkDist:int = 500;
-		var aiAttackT:int = 0;
-		var t_landing:int = 0;
-		var t_float:Number = Math.random();
-		var t_fall:int = 0;
-		var t_nomater:int = 0;
-		var t_shit:int = 90;
-		var t_gotov:int = 0;
-		var t_super:int = 0;
-		var t_tele:int = -100;
-		var t_alarm:int = Math.round(Math.random() * 600 + 1500);
+		private var optDistAtt:int = 200;
+		private var optDistTele:int = 600;
+		private var stalkDist:int = 500;
+		private var aiAttackT:int = 0;
+		private var t_landing:int = 0;
+		private var t_float:Number = Math.random();
+		private var t_fall:int = 0;
+		private var t_nomater:int = 0;
+		private var t_shit:int = 90;
+		private var t_gotov:int = 0;
+		private var t_super:int = 0;
+		private var t_tele:int = -100;
+		private var t_alarm:int = Math.round(Math.random() * 600 + 1500);
 		
 		//aiState
 		//0 - стоит на месте
@@ -741,20 +739,20 @@ package fe.unit {
 			}
 		}
 		
-		function castShit() {
+		private function castShit() {
 			curA=100;
 			shithp=shitMaxHp;
 			t_shit=1000;
 			visDetails();
 		}
 		
-		function castNomater() {
+		private function castNomater() {
 			mater=false;
 			t_nomater=0;
 			t_gotov=tNomater;
 		}
 		
-		function superSila() {
+		private function superSila() {
 			if (superSilaTip == 1) {
 				superInvis = true;
 				isVis = false;
@@ -771,7 +769,7 @@ package fe.unit {
 			t_super = tSuper;
 		}
 		
-		function superSilaVse() {
+		private function superSilaVse() {
 			if (superSilaTip==1) {
 				superInvis=false;
 				isVis=true;
@@ -779,7 +777,7 @@ package fe.unit {
 		}
 		
 		//найти подходящий для телекинеза ящик и поднять его
-		function findBox():Obj {
+		private function findBox():Obj {
 			if (celUnit && isrnd(0.25)) {
 				upTeleObj(celUnit);
 				if (teleObj is UnitPlayer) {
@@ -802,7 +800,7 @@ package fe.unit {
 		}
 		
 		//подянть объект телекинезом
-		function upTeleObj(obj:Obj) {
+		private function upTeleObj(obj:Obj) {
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -825,7 +823,7 @@ package fe.unit {
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		private function throwTele() {
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number = throwForce;

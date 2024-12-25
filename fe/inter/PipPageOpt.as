@@ -287,23 +287,29 @@ package fe.inter {
 			super.updateLang();
 		}
 		
+		// The volume sliders in sound settings
 		public function optScroll(event:ScrollEvent):void {
-			event.currentTarget.parent.numb.text=Math.round(event.position);
-			var id=event.currentTarget.parent.id.text;
-			if (id=='opt1_1') {
-				Snd.globalVol = (event.position/100).toFixed(2);
+			event.currentTarget.parent.numb.text = Math.round(event.position);
+			var id:String = event.currentTarget.parent.id.text;
+			var volume:Number = Math.round((event.position / 100) * 100) / 100; // Rounds to two decimal places
+			
+			if (id == 'opt1_1') {
+				Snd.globalVol = volume;
 				Snd.setGameMuted(Snd.globalVol > 0);
 				Snd.ps('mine_bip',1000,0);
 			}
-			if (id=='opt1_2') {
-				Snd.musicVol=(event.position/100).toFixed(2);
+			
+			if (id == 'opt1_2') {
+				Snd.musicVol = volume;
 				Snd.setMusicOption(Snd.musicVol > 0);
 				Snd.updateMusicVol();
 			}
-			if (id=='opt1_3') {
-				Snd.stepVol=(event.position/100).toFixed(2);
+			
+			if (id == 'opt1_3') {
+				Snd.stepVol = volume;
 			}
-			pip.isSaveConf=true;
+			
+			pip.isSaveConf = true;
 		}
 
 		public function optCheck(event:Event):void {

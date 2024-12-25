@@ -486,8 +486,7 @@ package fe.weapon
 			if (node.@magic.length()) magic=dmagic=node.@magic;
 		}
 		
-		public function updVariant(nvar:int):void
-		{
+		public function updVariant(nvar:int):void {
 			if (uniq<0) return;
 			variant=nvar;
 			if (owner.player && World.w.gg.currentWeapon==this) {
@@ -500,18 +499,17 @@ package fe.weapon
 			}
 		}
 		
-		public override function step()
-		{
+		public override function step():void {
 			actions();		//различные действия
 			if (owner) owner.setWeaponPos(tip);
 			if (vis) animate();		//анимация
 		}
 
-		public override function addVisual()
-		{
+		public override function addVisual():void {
 			if (owner) {
 				loc=owner.loc;
-			} else {
+			}
+			else {
 				loc=World.w.loc;
 			}
 			super.addVisual();
@@ -519,13 +517,12 @@ package fe.weapon
 				vis.transform.colorTransform=owner.cTransform;
 			}
 		}
-		public function addVisual2():void
-		{
+		
+		public function addVisual2():void {
 			if (tip==5 && vis) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 		
-		public override function setNull(f:Boolean=false)
-		{
+		public override function setNull(f:Boolean=false):void {
 			t_attack=t_reload=0;
 			if (owner) {
 				coordinates.X = owner.weaponX;
@@ -534,8 +531,7 @@ package fe.weapon
 			}
 		}
 		
-		public function setPers(gg:UnitPlayer, pers:Pers):void
-		{
+		public function setPers(gg:UnitPlayer, pers:Pers):void {
   			weaponSkill = pers.weaponSkills[skill];
 			if (pers.desintegr > 0) desintegr = pers.desintegr;
 			if (tip != 5) drotMult = pers.drotMult;
@@ -576,8 +572,7 @@ package fe.weapon
 			explRadMult = pers.explRadMult;
 		}
 		
-		public function actions():void
-		{
+		public function actions():void {
 			var rot2:Number;
 			if (owner == null) return;
 
@@ -585,29 +580,24 @@ package fe.weapon
 			else storona = -1;
 
 			// This turns the weapon to face the curosr and is executed every tick.
-			if (findCel)
-			{
-				if (tip == 5)
-				{
+			if (findCel) {
+				if (tip == 5) {
 					coordinates.X = owner.magicX;
 					coordinates.Y = owner.magicY;
 					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
-				else if (krep > 0 || !coordinates.X)
-				{
+				else if (krep > 0 || !coordinates.X) {
 					coordinates.X = owner.weaponX;
 					coordinates.Y = owner.weaponY;
 					rot2=Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X)*owner.storona);
 				}
-				else
-				{
+				else {
 					coordinates.X += (owner.weaponX - coordinates.X) / 5;
 					coordinates.Y += (owner.weaponY - coordinates.Y) / 5;
 					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
 			}
-			else
-			{
+			else {
 				coordinates.X = owner.weaponX;
 				coordinates.Y = owner.weaponY;
 				rot2 = forceRot;
@@ -659,13 +649,11 @@ package fe.weapon
 				if (rot<=0 && rot>-Math.PI*5/6) rot=-Math.PI*5/6;
 			}
 
-			try
-			{
+			try {
 				if (dkol <= 0 && t_attack == rapid) shoot();
 				if (dkol > 0 && t_attack > rapid && t_attack % rapid == 0) shoot();
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace("ERROR: (00:12)");
 			}
 

@@ -4,7 +4,6 @@ package fe {
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
-	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 
@@ -20,9 +19,9 @@ package fe {
 		private static var music:Sound;
 		private static var trackName:String = '';	// The currently playing song
 
-		public static var globalVol = 0.4;			// Used by pipbuckOpt as a string.
-		public static var stepVol = 0.5;			// Used by pipbuckOpt as a string.
-		public static var musicVol = 0.2;			// Used by pipbuckOpt as a string.
+		public static var globalVol:Number = 0.4;
+		public static var stepVol:Number = 0.5;
+		public static var musicVol:Number = 0.2;
 		
 		// Sound state flags
 		private static var soundMuted:Boolean = false;
@@ -48,8 +47,8 @@ package fe {
 
 		// Moved here from world class
 		private static var xmlPath:String = "Modules/core/sounds.xml";	// Manifest of all sounds/songs
-		private static var soundPath = 'Modules/core/sound/';			// Sounds path
-		private static var musicPath = 'Modules/core/sound/music/';		// Songs path
+		private static var soundPath:String = 'Modules/core/sound/';			// Sounds path
+		private static var musicPath:String = 'Modules/core/sound/music/';		// Songs path
 		
 
 		// Loading flags and counters

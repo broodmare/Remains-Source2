@@ -48,9 +48,8 @@ package fe.loc {
 			return obj;
 		}
 		
-		public override function step() {
-			if (liv < 1000000)
-			{
+		public override function step():void {
+			if (liv < 1000000) {
 				liv--;
 				if (!loc.active || liv==0) {
 					liv=0;
@@ -63,16 +62,13 @@ package fe.loc {
 			if (areaTest(loc.gg)) take();
 		}
 		
-		public function take():void
-		{
+		public function take():void {
 			sost = 2;
 			liv = 0;
 			vis.gotoAndPlay(2);
-			if (id == 'xp')
-			{
+			if (id == 'xp') {
 				loc.kolXp--;
-				if (loc.kolXp == 0 && loc.maxXp > 1) //собрали все бонусы
-				{	
+				if (loc.kolXp == 0 && loc.maxXp > 1) { //собрали все бонусы 
 					World.w.pers.expa(loc.unXp * loc.maxXp);
 					if (!loc.detecting && loc.summXp > 0)
 					{
@@ -81,15 +77,13 @@ package fe.loc {
 					}
 					Snd.ps('bonus2');
 				}
-				else
-				{
+				else {
 					World.w.pers.expa(loc.unXp);
 					Snd.ps('bonus1');
 				}
 				
 			}
-			if (id == 'heal')
-			{
+			if (id == 'heal') {
 				World.w.gg.heal(val);
 				Snd.ps('bonus1');
 			}

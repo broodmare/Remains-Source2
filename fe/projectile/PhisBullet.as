@@ -35,7 +35,7 @@ package fe.projectile
 			if (vis) vis.visible = true;
 		}
 
-		public override function step() {
+		public override function step():void {
 
 			if (levit) {
 				velocity.multiply(0.80);
@@ -143,7 +143,7 @@ package fe.projectile
 			return inWater;
 		}
 		
-		public override function popadalo(res:int=0) {
+		public override function popadalo(res:int=0):void {
 			if (res < 0) return;			//не попал
 			velocity.set(0, 0);
 			if (explRadius) {

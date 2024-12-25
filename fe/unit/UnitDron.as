@@ -1,25 +1,24 @@
 package fe.unit {
 	
 	import fe.*;
-	import fe.util.Vector2;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	
 	public class UnitDron extends Unit {
 		
-		var spd:Object;
-		var br:Number=0;
-		var stuk:int=0;
+		private var spd:Object;
+		private var br:Number=0;
+		private var stuk:int=0;
 
 		public var tr:int=1;
-		var weap:String;
-		var atkDist:Number=250;
-		var aiAgr:Boolean=false;
-		var floatX:Number=1, floatY:Number=0;
-		var t_float:Number=Math.random();
-		var atkRasst:Number=0;
+		private var weap:String;
+		private var atkDist:Number=250;
+		private var aiAgr:Boolean=false;
+		private var floatX:Number=1, floatY:Number=0;
+		private var t_float:Number=Math.random();
+		private var atkRasst:Number=0;
 		
-		var t_krut:int=0;	//уклонение от пуль
+		private var t_krut:int=0;	//уклонение от пуль
 
 		// Constructor
 		public function UnitDron(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -44,9 +43,9 @@ package fe.unit {
 			if (tr==100) id='dront';
 			
 			getXmlParam();
-			var vClass:Class=Res.getClass('visualDron'+tr,null,visualBloat1);
+			var vClass:Class=Res.getClass('visualDron'+tr,null,visualBloat1);	// SWF Dependency
 			
-			if (tr==100) vClass=visualMegaDron;
+			if (tr==100) vClass=visualMegaDron;	// SWF Dependency
 			
 			vis=new vClass();
 			walkSpeed=maxSpeed;
@@ -117,7 +116,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			br += (velocity.X * 1.5 - br) / 4;
 			vis.osn.rotation = br * storona;
 			if (celUnit && aiTCh%15==1) {

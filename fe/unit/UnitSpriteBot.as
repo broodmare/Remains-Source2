@@ -36,7 +36,7 @@ package fe.unit {
 			else super.forces();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) {
 				vis.osn.gotoAndStop(1);
@@ -59,7 +59,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 
 		}
 		

@@ -42,8 +42,8 @@ package fe.loc {
 		public var grafon:Grafon;
 		public var space:Vector.<Tile>;	//пространство блоков | One dimensional array of area tiles. instead of a nested [X][Y], indices are [tileXIndex * spaceY + tileYIndex;]
 		public var defaultTile:Tile;			//пустой блок
-		public var units:Array;			//юниты
-		public var ups:Array;			//спавн случайных юнитов
+		public var units:Vector.<Unit>;			//юниты
+		public var ups:Array;			// [Spawn random units]
 		public var objs:Array;			//боксы
 		public var bonuses:Array;		//бонусы
 		public var areas:Array;			//области
@@ -56,7 +56,7 @@ package fe.loc {
 		public var unitCoord;			//объект для координации юнитов
 		
 		//входы и посещение
-		public var spawnPoints:Array;	//точки спавна
+		public var spawnPoints:Array;	//точки спавна | Array of objects containing two Numbers {x, y}
 		public var enspawn:Array;		//точки спавна врагов
 		public var doors:Array;			//проходы в другие локации
 		public var signposts:Array, sign_vis:Boolean=true;		//указатели выхода
@@ -68,7 +68,7 @@ package fe.loc {
 		public var cp:CheckPoint;
 		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
 		public var objsT:Array;				//активные объекты
-		public var recalcTiles:Array;		//пересчитать воду
+		public var recalcTiles:Vector.<Tile>;		//пересчитать воду
 
 		//цепочка выполнения
 		public var firstObj:Entity;
@@ -160,10 +160,10 @@ package fe.loc {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		private const TOP_Y = 0;
-		private var BOTTOM_Y;
-		private const LEFT_X = 0;
-		private var RIGHT_X;
+		private const TOP_Y:int = 0;
+		private var BOTTOM_Y:int;
+		private const LEFT_X:int = 0;
+		private var RIGHT_X:int;
 
 		// Precomputed for inverse multiplication instead of division 
 		private static var INV_TILEX:Number;
@@ -174,8 +174,8 @@ package fe.loc {
 
 		public var spaceX:int;	//размер локации в блоках
 		public var spaceY:int;
-		private var halfSpaceX;
-		private var halfSpaceY;
+		private var halfSpaceX:int;
+		private var halfSpaceY:int;
 
 //**************************************************************************************************************************
 //
@@ -238,7 +238,7 @@ package fe.loc {
 		}
 
 		private function initializeArrays():void {
-			units		= [];
+			units		= new Vector.<Unit>();
 			ups			= [];
 			objs		= [];
 			acts		= [];
@@ -247,7 +247,7 @@ package fe.loc {
 			enspawn		= [];
 			backobjs	= [];
 			signposts	= [];
-			recalcTiles = [];
+			recalcTiles = new Vector.<Tile>();
 			spawnPoints	= [];
 			grenades	= [];
 			bonuses		= [];
@@ -537,9 +537,9 @@ package fe.loc {
 		}
 		
 		// [Add directional signs to neighboring locations]
-		private function addSignPost(xCoord:int, yCoord:int, rotation:int) {
+		private function addSignPost(xCoord:int, yCoord:int, rotation:int):void {
 			var sign:MovieClip;
-			sign = new signPost();
+			sign = new signPost();	// SWF Dependency
 			sign.x = xCoord * tileX;
 			sign.y = yCoord * tileY;
 			sign.rotation = rotation;
@@ -547,7 +547,7 @@ package fe.loc {
 		}
 		
 		//добавить точки спавна врагов 
-		private function addEnSpawn(xCoord:Number, yCoord:Number, xmll:XML=null) {
+		private function addEnSpawn(xCoord:Number, yCoord:Number, xmll:XML=null):void {
 			var obj:Object = new Object();
 			if (xmll) {
 				var size:int = xmll.@size;
@@ -563,7 +563,7 @@ package fe.loc {
 		}
 		
 		// [Add places where containers should not be (near transitions)]
-		private function setNoObj(nx:int, ny:int, dx:int, dy:int) {
+		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void {
 			var i:int;
 			if (dx > 0) for (i = nx; i <= nx + dx; i++) getTile(i, ny).place = false;
 			if (dx < 0) for (i = nx + dx; i <= nx; i++) getTile(i, ny).place = false;
@@ -573,7 +573,7 @@ package fe.loc {
 		
 		
 		// [Main frame, call after making passes]
-		public function mainFrame() {
+		public function mainFrame():void {
 			var border:String = 'A';
 			if (land && land.act) border = land.act.border;
 			for (var j:int = 0; j < spaceX; j++) {
@@ -610,13 +610,13 @@ package fe.loc {
 			}
 		}
 		
-		//создать случайных врагов в точках их появления
+		// [Create random enemies at their spawn points]
 		public function setRandomUnits():void {
 			for (var i:int = 1; i < kolEn.length; i++) {
 				if (kolEn[i] > 0 && ups[i].length) {
-					//убрать точки от проходов
+					// [Remove points from passages]
 					if (noHolesPlace) {
-						for (var j=0; j<ups[i].length; j++) {
+						for (var j:int = 0; j<ups[i].length; j++) {
 							if (!getTile( ups[i][j].x, ups[i][j].y ).place) {
 								ups[i].splice(j, 1);
 								j--;
@@ -624,8 +624,8 @@ package fe.loc {
 						}
 					}
 					if (ups[i].length > 0) {
-						for (j = 0; j < kolEn[i]; j++) {
-							var n = int(Math.random() * ups[i].length);
+						for (var k = 0; k < kolEn[i]; k++) {
+							var n:int = int(Math.random() * ups[i].length);
 							createUnit(tipEn[i], ups[i][n].x, ups[i][n].y, false, ups[i][n].xml);
 							
 							if (ups[i].length <= 1) {
@@ -639,7 +639,7 @@ package fe.loc {
 					}
 				}
 			}
-			//добавить скрытых врагов
+			// [Add hidden enemies]
 			if (kolEnHid > 0 && ups[2].length > 0) {
 				for (j = 0; j < kolEnHid; j++) {
 					n = int(Math.random() * ups[2].length);
@@ -813,8 +813,8 @@ package fe.loc {
 					var nx:int = int(Math.random() * (spaceX - 4) + 2);
 					var ny:int = int(Math.random() * (spaceY - 4) + 2);
 					if (cp) {
-						var dnx = cp.coordinates.X - (nx * tileX + 20);
-						var dny = cp.coordinates.Y - (ny * tileY + 40);
+						var dnx:int = cp.coordinates.X - (nx * tileX + 20);
+						var dny:int = cp.coordinates.Y - (ny * tileY + 40);
 						if (dnx * dnx + dny * dny < 80 * 80) continue;
 					}
 					if (biom==1 && lvl==1 && ny>15) ny=15;
@@ -1137,9 +1137,9 @@ package fe.loc {
 		
 		// [Creating a checkpoint at a random spawn point]
 		public function createCheck(act:Boolean=false):void {
-			if (spawnPoints.length>0) {
-				var sp = spawnPoints[int(Math.random()*spawnPoints.length)];
-				var id = 'checkpoint';
+			if (spawnPoints.length > 0) {
+				var sp:Object = spawnPoints[int(Math.random()*spawnPoints.length)];
+				var id:String = 'checkpoint';
 				if (!act && land.rnd && Math.random()<0.5) {
 					id += int(Math.random()*5+1);
 				}
@@ -1153,7 +1153,7 @@ package fe.loc {
 		// [Creating an exit at a random spawn point]
 		public function createExit(s:String = ''):void {
 			if (spawnPoints.length>0) {
-				var sp = spawnPoints[int(Math.random() * spawnPoints.length)];
+				var sp:Object = spawnPoints[int(Math.random() * spawnPoints.length)];
 				createObj('exit', 'box', sp.x, sp.y, <obj name = 'exit' prob = {land.act.exitProb + s} time = '20' inter = '8' sign = '1'/>);
 				isCheck = true;
 			}
@@ -1162,14 +1162,13 @@ package fe.loc {
 		//создание двери испытаний в случайной точке появления
 		public function createDoorProb(nid:String, nprob:String):Boolean {
 			if (spawnPoints.length > 0) {
-				var sp = spawnPoints[int(Math.random()*spawnPoints.length)];
-				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv = {Res.txt('m', nprob)} time='20' inter='8'/>);
+				var sp:Object = spawnPoints[int(Math.random()*spawnPoints.length)];
+				createObj(nid,'box', sp.x, sp.y, <obj prob = {nprob} nazv = {Res.txt('m', nprob)} time = '20' inter = '8'/>);
 				isCheck=true;
 				return true;
 			}
 			return false;
 		}
-		
 		
 		public function createXpBonuses(kol:int=5):void {
 			if (homeStable || homeAtk) return;
@@ -1249,15 +1248,23 @@ package fe.loc {
 			if (prob) prob.over();
 		}
 		
+		// Create a new list of units by removing an units that are no longer active
 		public function resetUnits():void {
-			units = units.filter(isAct);
+			var filteredUnits:Vector.<Unit> = new Vector.<Unit>();
+			for each (var unit:Unit in units) {
+				if (isAct(unit)) {
+					filteredUnits.push(unit);
+				}
+			}
+			units = filteredUnits;
 		}
 		
-		private function isAct(element:*, index:int, arr:Array):Boolean {
-			if (element == null) return false;
-			if (element is fe.unit.UnitPet) return true;
-            return (element.sost < 4);
-        }
+		// Check if a unit is still active
+		private function isAct(unit:Unit):Boolean {
+			if (unit == null) return false;
+			if (unit is fe.unit.UnitPet) return true;
+			return (unit.sost < 4);
+		}
 		
 		//деактивировать локацию
 		public function out():void {
@@ -1355,9 +1362,9 @@ package fe.loc {
 		}
 
 		public function collisionUnit(X:Number, Y:Number, objectWidth:Number=0, objectHeight:Number=0):Boolean {
-			var leftBound = X - objectWidth / 2;
-			var rightBound = X + objectWidth / 2;
-			var topBound = Y - objectHeight;
+			var leftBound:Number = X - objectWidth / 2;
+			var rightBound:Number = X + objectWidth / 2;
+			var topBound:Number = Y - objectHeight;
 
 			for (var i:int = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
 				for (var j:int = int(topBound / tileY); j <= int(Y / tileY); j++) {
@@ -1530,49 +1537,63 @@ package fe.loc {
 		
 		//физика воды		
 		private function recalcWater():void {
-			var rec:Array=recalcTiles;
-			recalcTiles=[];
-			isRecalc=false;
-			var t:Tile, tl:Tile, tr:Tile, tt:Tile, tb:Tile;
-			for (var i in rec) {
-				t=rec[i];
+			// Copy tiles to be processed
+			var rec:Vector.<Tile> = recalcTiles;
+			// Clear where we were holding them
+			recalcTiles = new Vector.<Tile>();
+			// Mark as not needing updated
+			isRecalc = false;
+			
+			var t:Tile;		// The tile being processed
+			var tl:Tile;	// The tile to the left
+			var tr:Tile;	// The tile to the right
+			var tt:Tile;	// The tile below
+			var tb:Tile;	// The tile above
+			
+			for each (t in rec) {
 				if (t.coords.Y >= waterLevel) continue;
-				if (t.phis!=1) {
+				if (t.phis != 1) {
 					tl = getTile(t.coords.X - 1, t.coords.Y);
 					tr = getTile(t.coords.X + 1, t.coords.Y);
 					tt = getTile(t.coords.X, t.coords.Y - 1);
 					tb = getTile(t.coords.X, t.coords.Y + 1);
-					if ((tb.phis==1 || tb.water==1) && (tr.phis==1 || tr.water==1) && (tl.phis==1 || tl.water==1) && (tl.water==1 || tr.water==1 || tt.water==1)) {
-						t.water=1;
+					
+					if ((tb.phis == 1 || tb.water == 1) && 
+						(tr.phis == 1 || tr.water == 1) && 
+						(tl.phis == 1 || tl.water == 1) && 
+						(tl.water == 1 || tr.water == 1 || tt.water == 1)) {
+						
+						t.water = 1;
 						if (active) grafon.drawWater(t);
-					} 
+					}
 					else {
-						if (tl.water>0 && t.phis!=1) {
-							tl.water=0;
+						if (tl.water > 0 && t.phis != 1) {
+							tl.water = 0;
 							recalcTiles.push(tl);
 							if (active) grafon.drawWater(tl);
-							isRecalc=true;
+							isRecalc = true;
 						}
-						if (tr.water>0 && t.phis!=1) {
-							tr.water=0;
+						if (tr.water > 0 && t.phis != 1) {
+							tr.water = 0;
 							recalcTiles.push(tr);
 							if (active) grafon.drawWater(tr);
-							isRecalc=true;
+							isRecalc = true;
 						}
-						if (tt.water>0 && t.phis!=1) {
-							tt.water=0;
+						if (tt.water > 0 && t.phis != 1) {
+							tt.water = 0;
 							recalcTiles.push(tt);
 							if (active) grafon.drawWater(tt);
-							isRecalc=true;
+							isRecalc = true;
 						}
 					}
-					t.recalc=false;
+					t.recalc = false;
 				}
 			}
+			
 			var obj:Entity = firstObj;
 			while (obj) {
 				if (obj is Obj) (obj as Obj).checkStay();
-				obj=obj.nobj;
+				obj = obj.nobj;
 			}
 		}
 		
@@ -1681,11 +1702,11 @@ package fe.loc {
 		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null):void {
 			var r2:Number = rad * rad * earMult * earMult;
 
-			for each(var un in units) {
+			for each(var un:Unit in units) {
 				if (un && un != owner && un.sost == 1 && !un.unres) {
-					var dx = un.coordinates.X - nx;
-					var dy = un.coordinates.Y - ny;
-					var delta = rad / 2;
+					var dx:Number = un.coordinates.X - nx;
+					var dy:Number = un.coordinates.Y - ny;
+					var delta:Number = rad / 2;
 					if (delta > 400) delta = 400;
 					if (dx * dx + dy * dy < r2 * un.ear * un.ear) un.alarma(nx+(Math.random()-0.5)*delta,ny+(Math.random()-0.5)*delta);
 				}
@@ -1694,14 +1715,14 @@ package fe.loc {
 		
 		public function electroCheck():void {
 			electroDam = 0;
-			for each (var obj in objs) {
+			for each (var obj:Obj in objs) {
 				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
 			}
 		}
 		
 		//активировать все ячейки роботов
 		public function robocellActivate():void {
-			for each(var un in objs) {
+			for each(var un in objs) { // 'un' is being called as a Box
 				if (un.inter && un.inter.allact=='robocell') un.inter.genRobot();
 			}
 		}
@@ -1806,7 +1827,7 @@ package fe.loc {
 		
 		//обработать призрачные стены
 		private function gwalls():void {
-			var est = false;
+			var est:Boolean = false;
 			var t:Tile
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {
@@ -1991,7 +2012,7 @@ package fe.loc {
 		
 		// [Behind the scenes processing]
 		public function stepInvis():void {
-			var numb=0;
+			var numb:int = 0;
 			var obj:Entity = firstObj;
 			if (warning > 0) warning--;
 			while (obj) {
@@ -2020,7 +2041,7 @@ package fe.loc {
 			gg.step();
 			if (prob) prob.step();
 			//пройтись по всей цепочке объектов
-			var numb=0;
+			var numb:int = 0;
 			var obj:Entity = firstObj;
 			if (warning>0) warning--;
 			while (obj) {
@@ -2038,7 +2059,11 @@ package fe.loc {
 					break;
 				}
 			}
-			if (unitCoord && unitCoord.step) unitCoord.step();
+			
+			if (unitCoord && unitCoord.step) {
+				unitCoord.step();
+			}
+			
 			if (celObj && celObj.onCursor<=0) celObj=null;
 			if (black) {
 				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) lighting();

@@ -164,7 +164,7 @@ package fe.loc {
 			auto2 = item.checkAuto();
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			super.addVisual();
 			if (vis && cTransform) {
 				if (item.tip!='art') vis.transform.colorTransform=cTransform;
@@ -236,7 +236,7 @@ package fe.loc {
 			}
 		}
 		
-		public override function step() {
+		public override function step():void {
 			if (loc.broom && (auto2 || krit)) {
 				take(true);
 				return;
@@ -350,7 +350,7 @@ package fe.loc {
 			}
 		}
 
-		public override function checkStay() {
+		public override function checkStay():Boolean {
 			if (osnova) return true;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
 			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.phY1) {

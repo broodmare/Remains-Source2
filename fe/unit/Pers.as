@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.display.MovieClip;
 
 	import fe.*;
@@ -7,8 +7,9 @@ package fe.unit
 	import fe.loc.CheckPoint;
 	import fe.serv.LootGen;
 	
-	public dynamic class Pers
-	{	
+	// TODO: A dynamic class allows adding new properties at runtime, but that's obviously bad. Redo this
+	public dynamic class Pers {
+		
 		public var gg:UnitPlayer;
 		public var persName:String='LP';
 
@@ -492,7 +493,8 @@ package fe.unit
 				difCapsMult=1;
 				himBadDif=1;
 				petRes=20;
-			} else if (ndif==1) {
+			}
+			else if (ndif==1) {
 				begHP=150;
 				lvlHP=25;
 				organMult=0.5;
@@ -507,7 +509,8 @@ package fe.unit
 				difCapsMult=1;
 				himBadDif=1;
 				petRes=20;
-			} else if (ndif==2) {
+			}
+			else if (ndif==2) {
 				begHP=100;
 				lvlHP=20;
 				organMult=1;
@@ -522,7 +525,8 @@ package fe.unit
 				difCapsMult=1;
 				himBadDif=1.3;
 				petRes=30;
-			} else if (ndif==3) {
+			}
+			else if (ndif==3) {
 				begHP=70;
 				lvlHP=15;
 				organMult=1;
@@ -539,7 +543,8 @@ package fe.unit
 				petRes=60;
 				neujazMax=20;
 				bonusHealMult=0.75;
-			} else if (ndif==4) {
+			}
+			else if (ndif==4) {
 				begHP=40;
 				lvlHP=10;
 				organMult=1;
@@ -705,8 +710,7 @@ package fe.unit
 		}
 		
 		//вернуть уровень навыка в зависимости от вложенных очков
-		public function getSkLevel(n:int):int
-		{
+		public function getSkLevel(n:int):int {
 			if (n>=20) return 5;
 			if (n>=14) return 4;
 			if (n>=9) return 3;
@@ -715,10 +719,8 @@ package fe.unit
 			return 0;
 		}
 
-		public function getSkBonus(n:int):int
-		{
-			switch (n)
-			{
+		public function getSkBonus(n:int):int {
+			switch (n) {
 				case 20:
 					return 5;
 				case 14:
@@ -734,12 +736,14 @@ package fe.unit
 			}
 		}
 		
-		//пост-скиллы
+		// [post-skills]
 		public var postSkTab:Array=[5,11,18,26,35,45,56,68,82,100];
+		
 		public function skillIsPost(id:String):Boolean {
 			if (id=='attack' || id=='defense' || id=='knowl') return true;
 			return false;
 		}
+
 		public function getPostSkLevel(n:int):int {
 			if (n<postSkTab[0]) return 0;
 			var res=0;
@@ -749,11 +753,9 @@ package fe.unit
 			return res;
 		}
 		
-		//вернуть уровень, соответствующий параметру skill оружия
-		public function getWeapLevel(skill:int):int
-		{
-			switch(skill)
-			{
+		// [Return the level corresponding to the skill parameter of the weapon]
+		public function getWeapLevel(skill:int):int {
+			switch(skill) {
 				case 1:
 					return getSkLevel(skills['melee']);
 				case 2:
@@ -779,9 +781,8 @@ package fe.unit
 			return getSkLevel(skills[sk]);
 		}
 		
-		//принудительно установить уровень перса
-		public function setForcLevel(lvl:int)
-		{
+		// [Force set character level]
+		public function setForcLevel(lvl:int) {
 			level=lvl;
 			xpPrev=xpCur=xpProgress(lvl-1);
 			xpNext=xpProgress(lvl);
@@ -845,7 +846,8 @@ package fe.unit
                         World.w.gui.infoText('perkPoint');
                     }
                 }
-            } else {
+            }
+			else {
                 for (var i = preNumb + 1; i <= postNumb; i++) {
                     var bonus = getSkBonus(i);
                     if (bonus > 0) World.w.gui.infoText('skill', Res.txt('e', id) + '-' + bonus);
@@ -863,7 +865,8 @@ package fe.unit
 				setParameters();
 				World.w.gui.setAll();
 				return true;
-			} else {
+			}
+			else {
 				var n=Math.floor(Math.random()*3);
 				if (n==0) id='attack';
 				else if (n==1) id='defense';
@@ -883,8 +886,7 @@ package fe.unit
 		}
 		
 		//установить уровень скилла принудительно
-		public function setSkill(id:String, n:int)
-		{
+		public function setSkill(id:String, n:int) {
 			if (n<0) n=0;
 			if (n>maxSkLvl) n=maxSkLvl;
 			if (skills[id]) skills[id]=n;
@@ -892,28 +894,25 @@ package fe.unit
 			World.w.gui.setAll();
 		}
 		
-		public function addPerk(id:String, minus:Boolean=false):void
-		{
+		public function addPerk(id:String, minus:Boolean=false):void {
 			var perkNode:XML = getPerkInfo(id)
 			var maxlvl:int = perkNode.@lvl;
 			perkNode = null;
 
 			if (!(maxlvl>0)) maxlvl=1;
-			if (perks[id])
-			{
-				if (perks[id]<maxlvl)
-				{
+			if (perks[id]) {
+				if (perks[id]<maxlvl) {
 					perks[id]++;
 					World.w.gui.infoText('perk',Res.txt('e',id)+'-'+perks[id]);
 					Snd.ps('skill');
 				}
-				else
-				{
+				else {
 					World.w.gui.infoText('noPerk');
 					return;
 				}
-			} else {
-				//нужного перка нет, добавить
+			}
+			else {
+				// [I don't have the required perk, add it]
 				perks[id]=1;
 				World.w.gui.infoText('perk',Res.txt('e',id));
 				Snd.ps('skill');
@@ -922,12 +921,10 @@ package fe.unit
 			setParameters();
 		}
 		
-		//рандомная прокачка
-		function autoPump()
-		{
+		// [Random leveling]
+		private function autoPump() {
 			var n:int=1000;
-			while (skillPoint>0 && n>0)
-			{
+			while (skillPoint>0 && n>0) {
 				//определить скиллы, доступные для увеличения
 				var dost:Array=[];
 				for (var sk in skills) {
@@ -950,12 +947,10 @@ package fe.unit
 				n--;
 			}
 			n=100;
-			while (perkPoint>0 && n>0)
-			{
+			while (perkPoint>0 && n>0) {
 				dost = [];
 
-				for each(var dp:XML in cachedPerkList)
-				{
+				for each(var dp:XML in cachedPerkList) {
 					if (dp.@tip==1) {
 						var res:int=perkPoss(dp.@id, dp);
 						if (res==1) dost.push(dp.@id);
@@ -969,10 +964,8 @@ package fe.unit
 			}
 		}
 		
-		//вернуть -1 если перк уже вкачан по максимуму, вернуть 0 если не выполнены условия, вернуть 1 если условия выполнены
-		public function perkPoss(nid:String, dp:XML=null):int
-		{
-			
+		// [Return -1 if the perk is already maxed out, return 0 if the conditions are not met, return 1 if the conditions are met]
+		public function perkPoss(nid:String, dp:XML=null):int {
 			if (dp==null) dp = getPerkInfo(nid);
 			if (dp==null) return -1;
 			var numb=perks[nid];
@@ -988,9 +981,11 @@ package fe.unit
 					if (numb>0 && req.@dlvl.length()) reqlevel+=numb*req.@dlvl;
 					if (req.@id=='level') {
 						if (level<reqlevel) ok=0;
-					} else if (req.@id=='guns') {
+					}
+					else if (req.@id=='guns') {
 						if (getSkLevel(skills['smallguns'])<reqlevel && getSkLevel(skills['energy'])<reqlevel) ok=0;
-					} else {
+					}
+					else {
 						if (getSkLevel(skills[req.@id])<reqlevel) ok=0;
 					}
 				}
@@ -998,40 +993,46 @@ package fe.unit
 			return ok;
 		}
 		
-		//lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
+		// [lvl1-level of main parameters, lvl2-level of additional parameters with tag dop=1] | lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
+		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
 			for each(var sk in xml.sk) {
 				var val:Number, lvl:int, val0:Number=0;
 				if (sk.@dop.length()) lvl=lvl2;
 				else lvl=lvl1;
+				
 				//исходное значение
 				if (sk.@v0.length()) val0=Number(sk.@v0);
 				else if (sk.@ref=='add' || sk.@tip=='res') val0=0;
 				else if (sk.@ref=='mult') val0=1;
+				
 				//устанавливаемое значение
 				if (lvl==0) val=val0;
 				else if (sk.@vd.length()) val=val0+lvl*Number(sk.@vd);
 				else if (sk.attribute('v'+lvl).length()) val=Number(sk.attribute('v'+lvl));
 				else val=Number(sk.@v1);
+				
 				//установить значение
-				if (sk.@tip=='weap') weaponSkills[sk.@id]=val;		//оружейное умение
+				if (sk.@tip=='weap') weaponSkills[sk.@id]=val; //оружейное умение
 				else if (sk.@tip=='res') {
 					gg.vulner[sk.@id]-=val;	//сопротивление
 					setFactor(sk.@id, xml.@id, 'min', val, gg.vulner[sk.@id]);
-				} else if (sk.@tip=='m') this[sk.@id]+=val;			//максимум веса
-				else if (gg.hasOwnProperty(sk.@id)) {				//переменная юнита
+				}
+				else if (sk.@tip=='m') this[sk.@id]+=val; //максимум веса
+				else if (gg.hasOwnProperty(sk.@id)) { //переменная юнита
 					setBegFactor(sk.@id,gg[sk.@id]);
 					if (sk.@ref=='add') gg[sk.@id]+=val;
 					else if (sk.@ref=='mult') gg[sk.@id]*=val;
 					else gg[sk.@id]=val;
 					setFactor(sk.@id, xml.@id, sk.@ref, val, gg[sk.@id]);
-				} else if (this.hasOwnProperty(sk.@id)) {											//переменная перса
+				}
+				else if (this.hasOwnProperty(sk.@id)) { //переменная перса
 					setBegFactor(sk.@id,this[sk.@id]);
 					if (sk.@ref=='add') this[sk.@id]+=val;
 					else if (sk.@ref=='mult') this[sk.@id]*=val;
 					else this[sk.@id]=val;
 					setFactor(sk.@id, xml.@id, sk.@ref, val, this[sk.@id]);
-				} else {
+				}
+				else {
 					if (sk.@ref=='add') this[sk.@id]+=val;
 					else if (sk.@ref=='mult') this[sk.@id]*=val;
 					else this[sk.@id]=val;
@@ -1039,15 +1040,16 @@ package fe.unit
 			}
 		}
 		
-		function setBegFactor(id:String, res) {
+		private function setBegFactor(id:String, res) {
 			if ((factor[id] is Array) && factor[id].length==0) factor[id].push({id:'beg', res:res});
 		}
-		function setFactor(id:String, fact:String, ref:String, val, res, tip=null) {
+
+		private function setFactor(id:String, fact:String, ref:String, val, res, tip=null) {
 			if (ref=='add' && val==0 || ref=='mult' && val==1) return;
 			if (factor[id] is Array) factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
 		}
 		
-		function setAllSt() {
+		private function setAllSt() {
 			headSt=4-Math.ceil(headHP/inMaxHP*4);
 			torsSt=4-Math.ceil(torsHP/inMaxHP*4);
 			legsSt=4-Math.ceil(legsHP/inMaxHP*4);
@@ -1068,14 +1070,16 @@ package fe.unit
 			}
 		}
 		
-		function trauma(st:int, organ:int) {
+		private function trauma(st:int, organ:int) {
 			if (st>4) st=4;
 			if (organ==3 && st==4) st=3;
 			if (organ==4) {
 				if (st>0) World.w.gui.infoText('blood'+st, persName);
-			} else if (organ==5) {
+			}
+			else if (organ==5) {
 				if (st>1) World.w.gui.infoText('tmana'+st);
-			} else {
+			}
+			else {
 				if (st>0) World.w.gui.infoText('trauma'+st, persName);
 			}
 		}
@@ -1101,7 +1105,8 @@ package fe.unit
 				headSt=4-Math.ceil(headHP/inMaxHP*4);
 				if (sst!=headSt) setParameters();
 				if (headSt>sst) trauma(headSt,1);
-			} else if (rnd<0.6 || tip==Unit.D_POISON || tip==Unit.D_VENOM) {
+			}
+			else if (rnd<0.6 || tip==Unit.D_POISON || tip==Unit.D_VENOM) {
 				sst=4-Math.ceil(torsHP/inMaxHP*4);
 				torsHP-=dam;
 				if (torsHP<torsMin) torsHP=torsMin;
@@ -1112,7 +1117,8 @@ package fe.unit
 				torsSt=4-Math.ceil(torsHP/inMaxHP*4);
 				if (sst!=torsSt) setParameters();
 				if (torsSt>sst) trauma(torsSt,2);
-			} else {
+			}
+			else {
 				sst=4-Math.ceil(legsHP/inMaxHP*4);
 				legsHP-=dam;
 				if (legsHP<legsMin) legsHP=legsMin;
@@ -1154,8 +1160,7 @@ package fe.unit
 			}
 		}
 		
-		public function manaDamage(dam:Number)
-		{
+		public function manaDamage(dam:Number) {
 			//Mana usage debug
 			//var damOut:Number = Number(dam.toFixed(3));
 			//var message:String = (damOut > 0) ? 'Draining mana (' + damOut + ')' : 'Draining mana (~0.0001)';
@@ -1240,7 +1245,7 @@ package fe.unit
 			if (manaHP>inMaxMana) manaHP=inMaxMana;
 		}
 		
-		function traumaParameters() {
+		private function traumaParameters() {
 			if (headSt>0) setSkillParam(xml_head, Math.min(headSt,3));
 			if (torsSt>0) setSkillParam(xml_tors, Math.min(torsSt,3));
 			if (legsSt>0) setSkillParam(xml_legs, Math.min(legsSt,3));

@@ -40,7 +40,7 @@ package fe.loc {
 		public var invis:Boolean = false;
 		public var light:Boolean = false;	//убрать туман войны в этой точке
 		public var door_opac:Number=1;
-		var massaMult:Number=1;
+		private var massaMult:Number=1;
 		
 		public var molnDam:Number=0;	//удар разрядом
 		public var molnPeriod:int=60;
@@ -88,8 +88,8 @@ package fe.loc {
 			vis=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
 			shad=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
 			if (vis == null) {
-				vis  = new visbox0();
-				shad = new visbox0();
+				vis = new visbox0();	// SWF Dependency
+				shad = new visbox0();	// SWF Dependency
 			}
 			vis.stop();
 			shad.gotoAndStop(vis.currentFrame);
@@ -140,33 +140,33 @@ package fe.loc {
 			if (node.@massa.length()) massa=node.@massa/50;
 			
 			if (xml && xml.@indestruct.length()) {
-				hp=10000;
-				thre=10000;
+				hp = 10000;
+				thre = 10000;
 			}
 
-			//Door
+			// Door
 			if (node.@door.length()) {
 				door = node.@door;
 				if (node.@opac.length()) door_opac = node.@opac;
 				initDoor();
 			}
-			//интерактивность
+			// [Interactivity]
 			if (node.@inter.length() || (xml && (xml.@inter.length() || xml.scr.length() || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
 			if (inter && inter.cont!='' && inter.cont!='empty' && inter.lock && inter.lockTip<=1) bulPlayer=true;
 			
-			//индивидуальные параметры из xml карты
+			// [Individual parameters from xml card]
 			if (xml) {
 				if (xml.@name.length()) nazv=Res.txt('o',xml.@name);	//название
 				//прикреплённые скрипты
 				if (xml.scr.length()) {
 					for each (var xscr in xml.scr) {
-						var scr:Script=new Script(xscr,loc.land);
-						if (inter && scr.eve==null) inter.scrAct=scr;
-						if (inter && scr.eve=='open') inter.scrOpen=scr;
-						if (inter && scr.eve=='close') inter.scrClose=scr;
-						if (inter && scr.eve=='touch') inter.scrTouch=scr;
-						if (scr.eve=='die') scrDie=scr;
-						scr.owner=this;
+						var scr:Script = new Script(xscr,loc.land);
+						if (inter && scr.eve == null) inter.scrAct=scr;
+						if (inter && scr.eve == 'open') inter.scrOpen=scr;
+						if (inter && scr.eve == 'close') inter.scrClose=scr;
+						if (inter && scr.eve == 'touch') inter.scrTouch=scr;
+						if (scr.eve=='die') scrDie = scr;
+						scr.owner = this;
 					}
 				}
 				if (xml.@scr.length()) inter.scrAct=World.w.game.getScript(xml.@scr,this);
@@ -188,17 +188,16 @@ package fe.loc {
 				if (xml.@radrad.length()) radrad=xml.@radrad;
 			}
 			
-			if (wall>0) {
-				levitPoss=false;
-				stay=true;
-				sloy=0;
+			if (wall > 0) {
+				levitPoss = false;
+				stay = true;
+				sloy = 0;
 			}
-			else sloy=1;
+			else sloy = 1;
 			
-			if (node.@sloy.length()) sloy=node.@sloy;
+			if (node.@sloy.length()) sloy = node.@sloy;
 			
 			cTransform=loc.cTransform;
-			
 			
 			vis.cacheAsBitmap=true;
 			vis.x = shad.x = coordinates.X;
@@ -214,11 +213,12 @@ package fe.loc {
 				prior=3;
 			}
 			
-			if (loadObj && loadObj.dead) die(-1);		//если объект был уничтожен
+			if (loadObj && loadObj.dead) {	// [If the object was destroyed]
+				die(-1);
+			}
 			
 
-			function getObjInfo(id:String):XML
-			{
+			function getObjInfo(id:String):XML {
 				// Check if the node is already cached
 				var node:XML;
 				if (cachedObjs[id] == undefined) {
@@ -239,14 +239,14 @@ package fe.loc {
 		
 		public override function command(com:String, val:String=null) {
 			super.command(com,val);
-			if (com=='die') {
-				hp=0;
+			if (com == 'die') {
+				hp = 0;
 				die();
 			}
 			if (inter) inter.command(com,val);
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			if (invis) return;
 			if (vis && loc && loc.active) {
 				if (shad) World.w.grafon.visObjs[0].addChild(shad);
@@ -257,7 +257,7 @@ package fe.loc {
 			}
 		}
 
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (!dead && invis && f) {
 				invis = false;
@@ -269,13 +269,13 @@ package fe.loc {
 				topBound = coordinates.Y - objectHeight;
 				bottomBound = coordinates.Y;
 
-				var halfWidth = objectWidth / 2;
+				var halfWidth:Number = objectWidth / 2;
 				leftBound = coordinates.X - halfWidth;
 				rightBound = coordinates.X + halfWidth;
 			}
 		}
 		
-		public override function remVisual() {
+		public override function remVisual():void {
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 			if (shad && shad.parent) shad.parent.removeChild(shad);
 		}
@@ -292,7 +292,7 @@ package fe.loc {
 			}
 		}
 		
-		public override function step() {
+		public override function step():void {
 			if (dead && invis) {
 				onCursor=0;
 				return;
@@ -360,13 +360,10 @@ package fe.loc {
 			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
 		}
 		
-		public function initDoor()
-		{
+		public function initDoor() {
 			tiles = [];
-			for (var i:int = int(leftBound / tileX + 0.5); i <= int(rightBound / tileX - 0.5); i++)
-			{
-				for (var j:int = int(topBound / tileY + 0.5); j <= int(bottomBound / tileY - 0.5); j++)
-				{
+			for (var i:int = int(leftBound / tileX + 0.5); i <= int(rightBound / tileX - 0.5); i++) {
+				for (var j:int = int(topBound / tileY + 0.5); j <= int(bottomBound / tileY - 0.5); j++) {
 					var t:Tile = loc.getTile(i, j);
 					t.front = '';
 					t.phis = phis;
@@ -381,48 +378,39 @@ package fe.loc {
 		}
 
 		// This is for opening and closing doors inside of rooms, NOT for traveling to new rooms.
-		public function setDoor(state:Boolean)
-		{
-			for (var i in tiles)
-			{
-				(tiles[i] as Tile).phis = (state? 0:phis);
-				(tiles[i] as Tile).opac = (state? 0:door_opac);
+		public function setDoor(state:Boolean) {
+			for (var i in tiles) {
+				(tiles[i] as Tile).phis = (state? 0 : phis);
+				(tiles[i] as Tile).opac = (state? 0 : door_opac);
 			}
 
 			setVisState(state? 'open':'close');
 			
-			if (state && World.w.loc)
-			{
+			if (state && World.w.loc) {
 				World.w.loc.isRelight = true;
 				World.w.loc.isRebuild = true;
 			}
 		}
 
 		// Check if doorway is clear
-		public function attDoor():Boolean
-		{
-			for each (var cel in loc.units)
-			{
+		public function attDoor():Boolean {
+			for each (var cel in loc.units) {
 				if (cel == null || (cel as Unit).sost == 4) continue;
 				if (cel is fe.unit.UnitMWall) continue;
-				if (cel is fe.unit.Mine && !(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
-				{
+				if (cel is fe.unit.Mine && !(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound)) {
 					cel.fixed = true;
 					trace('Mine activated by door!');
 					(cel as fe.unit.Mine).activate();
 					continue;
 				}
-				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
-				{
+				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound)) {
 					trace('Door blocked by unit!');
 					return true;
 				}
 			}
-			for each (cel in loc.objs)
-			{
+			for each (cel in loc.objs) {
 				if ((cel as Box).wall > 0) continue;
-				if (!(cel.coordinates.X - cel.objectWidth / 2 >= rightBound || cel.coordinates.X + cel.objectWidth / 2 <= leftBound || cel.coordinates.Y - cel.objectHeight >= bottomBound || cel.coordinates.Y <= topBound))
-				{
+				if (!(cel.coordinates.X - cel.objectWidth / 2 >= rightBound || cel.coordinates.X + cel.objectWidth / 2 <= leftBound || cel.coordinates.Y - cel.objectHeight >= bottomBound || cel.coordinates.Y <= topBound)) {
 					trace('Door blocked by box!');
 					return true;
 				}
@@ -430,13 +418,10 @@ package fe.loc {
 			return false;
 		}
 		
-		public function attMoln()
-		{
-			for each (var cel in loc.units)
-			{
+		public function attMoln() {
+			for each (var cel in loc.units) {
 				if (cel == null || (cel as Unit).sost == 4) continue;
-				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound))
-				{
+				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound)) {
 					cel.udarBox(this);
 				}
 			}
@@ -444,20 +429,18 @@ package fe.loc {
 		
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
-			if (sposob==1)
-			{
+			if (sposob==1) {
 				if (!bulPlayer) return -1;
 				damage(bul.destroy);
 				return mat;
 			}
-			if (sposob == 0 && bulChance > 0)
-			{
+			if (sposob == 0 && bulChance > 0) {
 				if (Math.random() < bulChance) {
-					var sila = Math.random()*0.4+0.8;
+					var sila:Number = Math.random()*0.4+0.8;
 					sila /= massa;
 					if (sila > 3) sila = 3;
 
-					var n = bul.knockx * bul.otbros * sila;
+					var n:Number = bul.knockx * bul.otbros * sila;
 					velocity.sum(n);
 
 					World.w.gg.otbrosTele(bul.otbros * sila);
@@ -469,15 +452,15 @@ package fe.loc {
 		
 		public function damage(dam:Number) {
 			dam-=thre;
-			if (dam>0) hp-=dam;
-			if (hp<=0) die();
+			if (dam > 0) hp -= dam;
+			if (hp <= 0) die();
 		}
 		
 		public override function die(sposob:int=0) {
 			if (dead) return;
 			if (inter && inter.prize) return;
-			dead=true;
-			if (door>0) {
+			dead = true;
+			if (door > 0) {
 				for (var i in tiles) {
 					(tiles[i] as Tile).opac=0;
 					(tiles[i] as Tile).phis=0;
@@ -502,12 +485,14 @@ package fe.loc {
 				}
 				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - objectHeight / 2, noiseDie);
 				if (inter) inter.sign=0;
-			} else if (un) {
+			}
+			else if (un) {
 				invis=true;
 				un.disabled=true;
 				un.sost=4;
 				if (vis) remVisual();
-			} else {
+			}
+			else {
 				if (inter && inter.cont) {
 					inter.dieCont();
 				}
@@ -531,7 +516,7 @@ package fe.loc {
 			}
 		}
 		
-		//удар от падения
+		// [Fall impact]
 		public function attDrop() {
 			vel2 = velocity.X * velocity.X + velocity.Y * velocity.Y;
 			if (vel2 < 50) return;
@@ -547,21 +532,21 @@ package fe.loc {
 			}
 		}
 		
-		public override function checkStay() {
-			if (osnova || wall>0) return true;
-			fixPlav=false;
+		public override function checkStay():Boolean {
+			if (osnova || wall > 0) return true;
+			fixPlav = false;
 			checkWater();
 			if (isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2) {
-				fixPlav=true;
+				fixPlav = true;
 			}
-			for (var i=int(leftBound/tileX); i<=int(rightBound/tileX); i++)
+			for (var i:int = int(leftBound/tileX); i<=int(rightBound/tileX); i++)
 			{
-				var t = loc.getTile(i, int((bottomBound+1)/tileY));
+				var t:Tile = loc.getTile(i, int((bottomBound+1)/tileY));
 				if (collisionTile(t,0,1)) {
 					return true;
 				}
 			}
-			stay=false;
+			stay = false;
 			return false;
 		}
 		
@@ -569,7 +554,6 @@ package fe.loc {
 			//движение
 			var t:Tile;
 			var i:int;
-
 
 			//HORIZONTAL
 				coordinates.X += velocity.X / div;
@@ -627,8 +611,7 @@ package fe.loc {
 				}
 				if (newmy == 0 && !levit && !isThrow) newmy = checkShelf(velocity.Y / div);
 				if (coordinates.Y >= (loc.spaceY - 1) * tileY && !loc.bezdna) newmy = (loc.spaceY - 1) * tileY;
-				if (coordinates.Y >= loc.spaceY * tileY - 1 && loc.bezdna)
-				{
+				if (coordinates.Y >= loc.spaceY * tileY - 1 && loc.bezdna) {
 					invis = true;
 					if (vis) remVisual();
 				}
@@ -648,8 +631,7 @@ package fe.loc {
 					else velocity.Y *= -0.2;
 
 					if (velocity.X > -5 && velocity.X < 5) velocity.X = 0;
-					else
-					{
+					else {
 						velocity.X *= 0.92;
 						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*objectWidth, coordinates.Y);
 					}
@@ -662,26 +644,22 @@ package fe.loc {
 
 					sndOn=true;
 				}
-				else
-				{
+				else {
 					coordinates.Y += velocity.Y / div;
 					topBound = coordinates.Y - objectHeight;
 					bottomBound = coordinates.Y;
 				}
 			}
 			//движение вверх
-			if (velocity.Y < 0)
-			{
+			if (velocity.Y < 0) {
 				stay = false;
 				coordinates.Y += velocity.Y / div;
 				topBound = coordinates.Y-objectHeight;
 				bottomBound = coordinates.Y;
 				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
-				for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++)
-				{
+				for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
 					t = loc.getTile(i, int(topBound/tileY));
-					if (collisionTile(t))
-					{
+					if (collisionTile(t)) {
 						coordinates.Y = t.phY2 + objectHeight;
 						topBound = coordinates.Y - objectHeight;
 						bottomBound = coordinates.Y;
@@ -691,6 +669,7 @@ package fe.loc {
 				}
 			}
 		}
+
 		//поиск жидкости
 		public function checkWater():Boolean {
 			var pla = isPlav;
@@ -719,7 +698,7 @@ package fe.loc {
 
 		public function checkShelf(velocityDown:Number):Number {
 			for (var i in loc.objs) {
-				var b:Box=loc.objs[i] as Box;
+				var b:Box = loc.objs[i] as Box;
 				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound + velocityDown > b.topBound) {
 					osnova = b;
 					return b.topBound;
@@ -737,7 +716,7 @@ package fe.loc {
 			return false;
 		}
 		
-		public function bindUnit(n:String='-1') {
+		public function bindUnit(n:String='-1'):void {
 			un = new VirtualUnit(n);
 			copy(un);
 			un.owner = this;
@@ -753,11 +732,11 @@ package fe.loc {
 			}
 			
 			if (vis) {
-				runVis()
+				runVis();
 			}
 		}
 		
-		public function runVis() {
+		public function runVis():void {
 			vis.x = shad.x = coordinates.X;
 			vis.y = coordinates.Y;
 			shad.y = coordinates.Y + (wall? 2:6);
@@ -780,23 +759,23 @@ package fe.loc {
 		
 		//особые функции
 		
-		function initFun(fun:String) {
-			if (fun=='generator') {
-				if (inter==null) inter=new Interact(this);
-				inter.action=100;
-				inter.active=true;
-				inter.cont=null;
-				inter.knop=1;
-				inter.t_action=45;
-				inter.needSkill='repair';
-				inter.needSkillLvl=4;
-				inter.userAction='repair'; 
-				inter.actFun=funGenerator;
+		private function initFun(fun:String):void {
+			if (fun == 'generator') {
+				if (inter == null) inter = new Interact(this);
+				inter.action = 100;
+				inter.active = true;
+				inter.cont = null;
+				inter.knop = 1;
+				inter.t_action = 45;
+				inter.needSkill = 'repair';
+				inter.needSkillLvl = 4;
+				inter.userAction = 'repair'; 
+				inter.actFun = funGenerator;
 				inter.update();
 			}
 		}
 		
-		public function funGenerator() {
+		public function funGenerator():void {
 			inter.active = false;
 			World.w.gui.infoText('unFixLock');
 			World.w.game.runScript('fixGenerator', this);

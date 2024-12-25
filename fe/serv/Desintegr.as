@@ -1,5 +1,5 @@
-package fe.serv
-{
+package fe.serv {
+
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;
 	import flash.display.BitmapData;
@@ -14,8 +14,9 @@ package fe.serv
 	import fe.entities.Obj;
 	import fe.graph.Emitter;
 	
-	public class Desintegr	// Handles disintegration effect for units
-	{
+	// Constructor
+	public class Desintegr { // Handles disintegration effect for units
+	
 		public var owner:Obj;
 		
 		var burnBmp:BitmapData;
@@ -90,10 +91,8 @@ package fe.serv
 			burnN = 1;
 		}
 		
-		public function step()
-		{
-			if (burnN>0 && burnN<=burnTime1)
-			{
+		public function step():void {
+			if (burnN>0 && burnN<=burnTime1) {
 				burnBmp.colorTransform(burnBmp.rect,burnCt);
 				burnBm.filters=[new GlowFilter(burnGlowColor,burnN/burnTime1,3,3,2,3)];
 			}

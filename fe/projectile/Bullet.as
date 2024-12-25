@@ -113,7 +113,7 @@ package fe.projectile {
 			if (addobj) loc.addObj(this);
 		}
 		
-		public override function step() {
+		public override function step():void {
 			
 			if (!babah) {
 				velocity.Y += ddy;
@@ -184,7 +184,7 @@ package fe.projectile {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			loc.remObj(this);
 		}
 		
@@ -227,7 +227,7 @@ package fe.projectile {
 		//[the bullet hit the target]
 		//[target.udarBullet returns res result]
 		//-1 - [miss]
-		public function popadalo(res:int = 0) {
+		public function popadalo(res:int = 0):void {
 			if (res < 0) return;			//[missed]
 			
 			if (explRadius) {

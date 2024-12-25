@@ -4,7 +4,6 @@ package fe.inter {
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
-	import flash.text.StyleSheet;
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import flash.geom.Matrix;
@@ -17,56 +16,57 @@ package fe.inter {
 	
 	public class Stand {
 		
-		public var active:Boolean=false;
+		public var active:Boolean = false;
 		
-		var vis:MovieClip;
-		var visX=1200, visY=800;
-		var pages:Array;
-		var buttons:Array;
-		var weapons:Array;
-		var arts:Array;
-		var armors:Array;
+		private var vis:MovieClip;
+		private var visX:int = 1200;
+		private var visY:int = 800;
+		private var pages:Vector.<MovieClip>;
+		private var buttons:Vector.<MovieClip>;
+		private var weapons:Array;
+		private var arts:Array;
+		private var armors:Array;
 		public var inv:Invent;
 		
-		var kolPages:int=9;
-		var kolLevels:int=6;
-		var page:int=0;
+		private var kolPages:int=9;
+		private var kolLevels:int=6;
+		private var page:int=0;
 		
-		var ls=['stat_aj','stat_tw','stat_fl','stat_rr','stat_rd','stat_pp'];
+		private var ls:Array = ['stat_aj','stat_tw','stat_fl','stat_rr','stat_rd','stat_pp'];
 		
-		var itemFilter:GlowFilter=new GlowFilter(0x00FF99,1,3,3,4,1,false,false);
-		var clearFilter:GlowFilter=new GlowFilter(0x00FF99,1,3,3,1,1,false,true);
-		var glowFilter:GlowFilter=new GlowFilter(0x00FF99,1,10,6,2,3);
+		private var itemFilter:GlowFilter = new GlowFilter(0x00FF99, 1, 3, 3, 4, 1, false, false);
+		private var clearFilter:GlowFilter = new GlowFilter(0x00FF99, 1, 3, 3, 1, 1, false, true);
+		private var glowFilter:GlowFilter = new GlowFilter(0x00FF99, 1, 10, 6, 2, 3);
 		
-		var info:MovieClip;
+		private var info:MovieClip;
 		
+		// Constructor
 		public function Stand(vstand:MovieClip, ninv:Invent) {
-			vis =vstand;
-			inv =ninv;
-			pages	= [];
-			buttons	= [];
+			vis = vstand;
+			inv = ninv;
+			pages	= new Vector.<MovieClip>(kolPages, true);
+			buttons	= new Vector.<MovieClip>(kolPages, true);
 			weapons	= [];
 			armors	= [];
 			arts	= [];
 
-			for (var i=0; i<kolPages; i++) {
-				var page:MovieClip=new MovieClip();
-				page.x=200;
-				page.visible=false;
+			for (var i:int = 0; i < kolPages; i++) {
+				var page:MovieClip = new MovieClip();
+				page.x = 200;
+				page.visible = false;
 				vis.addChild(page);
-				pages[i]=page;
-				
-				var but:MovieClip=new butStand();
-				but.id.text=i;
-				but.id.visible=false;
-				but.ico.gotoAndStop(i+2);
-				but.text.text=Res.guiText('stand'+i);
-				but.y=25+75*i;
-				but.x=20;
+				pages[i] = page;
+				var but:MovieClip = new butStand(); // SWF Dependency
+				but.id.text = i;
+				but.id.visible = false;
+				but.ico.gotoAndStop(i + 2);
+				but.text.text = Res.guiText('stand' + i);
+				but.y = 25 + 75 * i;
+				but.x = 20;
 				but.stop();
 				vis.addChild(but);
-				buttons[i]=but;
-				but.addEventListener(MouseEvent.CLICK,standBut);
+				buttons[i] = but;
+				but.addEventListener(MouseEvent.CLICK, standBut);
 			}
 			
 			vis.butclose.addEventListener(MouseEvent.CLICK,standClose);
@@ -83,7 +83,7 @@ package fe.inter {
 			createArmorList(7);
 			createArtList(8);
 			showWeaponList(0);
-			info = new visualStandInfo();
+			info = new visualStandInfo(); // SWF Dependency
 			vis.addChild(info);
 			info.visible=false;
 			PipPage.setStyle(info.info);
@@ -94,24 +94,24 @@ package fe.inter {
 			vis.bottext.htmlText='';
 		}
 		
-		public function standClose(event:MouseEvent) {
+		public function standClose(event:MouseEvent):void {
 			onoff(-1);
 		}
 		
-		public function standBut(event:MouseEvent) {
+		public function standBut(event:MouseEvent):void {
 			page=event.currentTarget.id.text;
 			setButtons();
 			showWeaponList(page);
 		}
 		
-		private function createWeaponLists(n:int) {
+		private function createWeaponLists(n:int):void {
 			var levels:Array=[0,0,0,0,0,0,0];
 			var stolb:int=-1;
 
-			for each (var weap in Weapon.cachedWeaponList.(@tip > 0)) {
+			for each (var weap:XML in Weapon.cachedWeaponList.(@tip > 0)) {
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
-					var item=new itemStand();
+					var item:MovieClip = new itemStand();  // SWF Dependency
 					if (weap.@tip==5) {
 						stolb++;
 						if (stolb>=kolLevels) stolb=0;
@@ -130,7 +130,7 @@ package fe.inter {
 					var infIco:MovieClip;
 					var r:Number=1;
 					if (weap.@tip==5) {	//заклинание
-						infIco=new itemIco();
+						infIco = new itemIco();  // SWF Dependency
 						try {
 							infIco.gotoAndStop(weap.@id);
 						}
@@ -167,47 +167,47 @@ package fe.inter {
 						
 						item.dop.text='1';	//есть уникальный вариант
 						item.goldstar.gotoAndStop(2);
-						vWeapon=Res.getClass('vis'+weap.@id+'_1', null);
-						if (vWeapon!=null) {
-							infIco=new vWeapon();
-							infIco.x=-infIco.getRect(infIco).left*r-infIco.width/2;
-							infIco.y=-infIco.height-infIco.getRect(infIco).top;
+						vWeapon=Res.getClass('vis' + weap.@id + '_1', null);
+						if (vWeapon != null) {
+							infIco = new vWeapon();
+							infIco.x = -infIco.getRect(infIco).left * r - infIco.width / 2;
+							infIco.y = -infIco.height - infIco.getRect(infIco).top;
 							infIco.stop();
 							if (infIco.lez) infIco.lez.stop();
 							item.weapon2.addChild(infIco);
-							item.dop.text='2'; //есть уникальный вариант со своей картинкой
+							item.dop.text = '2'; //есть уникальный вариант со своей картинкой
 						}
 					}
 					pages[n].addChild(item);
-					weapons[weap.@id]=item;
+					weapons[weap.@id] = item;
 				}
 			}
 		}
 		
-		private function createArtList(n:int) {
-			for (var stolb=0; stolb<6; stolb++) {
-				var item=new itemArt();
-				item.x=80+stolb*160;
-				item.y=40;
+		private function createArtList(n:int):void {
+			for (var stolb:int = 0; stolb < 6; stolb++) {
+				var item:MovieClip = new itemArt();  // SWF Dependency
+				item.x = 80 + stolb * 160;
+				item.y = 40;
 				item.art.gotoAndStop(ls[stolb]);
-				item.nazv.text=Res.txt('i',ls[stolb]);
-				item.id.text=ls[stolb];
-				item.id.visible=false;
+				item.nazv.text=Res.txt('i', ls[stolb]);
+				item.id.text = ls[stolb];
+				item.id.visible = false;
 				pages[n].addChild(item);
-				arts[stolb]=item;
+				arts[stolb] = item;
 			}
 		}
 		
-		private function createArmorList(n:int) {
+		private function createArmorList(n:int):void {
 			var stolb:int=0;
 			var str:int=0;
-			var dvis:MovieClip=new visBodyStay();
+			var dvis:MovieClip=new visBodyStay();  // SWF Dependency
 			var sc:Number=1.5;
-			var aid=Appear.ggArmorId;
+			var aid:String = Appear.ggArmorId;
 			Appear.transp=true;
-			for each(var arm in Armor.cachedArmorList) {
+			for each(var arm:XML in Armor.cachedArmorList) {
 				if (n==6 && arm.@tip>1 || n==7 && arm.@tip!=3) continue;
-				var item=new itemArt();
+				var item:MovieClip = new itemArt();  // SWF Dependency
 				item.x=80+stolb*160;
 				item.y=str*180;
 				stolb++;
@@ -256,7 +256,7 @@ package fe.inter {
 			World.w.armorWork='';
 		}
 		
-		private function showMass() {
+		private function showMass():void {
 			vis.bottext.htmlText = '';
 			
 			try {
@@ -268,17 +268,18 @@ package fe.inter {
 			}
 		}
 		
-		private function showWeaponList(n:int) {
-			for (var i=0; i<kolPages; i++) {
-				pages[i].visible=false;
+		private function showWeaponList(n:int):void {
+			for (var i:int = 0; i < kolPages; i++) {
+				pages[i].visible = false;
 			}
+
 			if (World.w.hardInv) showMass();
 			pages[n].visible=true;
 			if (n<5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			vis.toptext.visible=(n<=5);
 
-			for each (var weap in Weapon.cachedWeaponList.(@tip>0)) {
+			for each (var weap:XML in Weapon.cachedWeaponList.(@tip>0)) {
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) {
 					if (weapons[weap.@id]==null) {
 						continue;
@@ -296,7 +297,7 @@ package fe.inter {
 				}
 			}
 
-			for each(var arm in Armor.cachedArmorList) {
+			for each(var arm:XML in Armor.cachedArmorList) {
 				if (armors[arm.@id]) {
 					if (inv.armors[arm.@id] && inv.armors[arm.@id].lvl>=0) {
 						armors[arm.@id].nazv.visible=true;
@@ -309,21 +310,21 @@ package fe.inter {
 				}
 			}
 			
-			for (var i in ls) {
-				if (inv.items[ls[i]].kol) {
-					arts[i].nazv.visible=true;
-					arts[i].art.filters=[itemFilter, glowFilter];
+			for (var s:String in ls) {
+				if (inv.items[ls[s]].kol) {
+					arts[s].nazv.visible = true;
+					arts[s].art.filters = [itemFilter, glowFilter];
 				}
 				else {
-					arts[i].nazv.visible=false;
-					arts[i].art.filters=[clearFilter];
+					arts[s].nazv.visible = false;
+					arts[s].art.filters = [clearFilter];
 				}
 			}
 		}
 		
 		//n - 0-нет, 1-обычное, 2-уникальное
 		//respect - 0-новое, 1-скрытое, 2-используемое, 3-схема
-		private function showWeapon(item:MovieClip, n:int, respect:int) {
+		private function showWeapon(item:MovieClip, n:int, respect:int):void {
 			if (n==0) {
 				item.weapon.filters=[clearFilter, glowFilter];
 				item.weapon2.filters=[clearFilter, glowFilter];
@@ -372,8 +373,8 @@ package fe.inter {
 			}
 		}
 		
-		function setButtons() {
-			for (var i = 0; i < kolPages; i++) {
+		private function setButtons():void {
+			for (var i:int = 0; i < kolPages; i++) {
 				var item:MovieClip = buttons[i];
 				
 				if (page == i) {
@@ -385,15 +386,15 @@ package fe.inter {
 			}
 		}
 		
-		public function itemClick(event:MouseEvent) {
-			var id=event.currentTarget.id.text;
+		public function itemClick(event:MouseEvent):void {
+			var id:String = event.currentTarget.id.text;
 			if (inv.weapons[id]==null || inv.weapons[id].respect==3) return;
-			var resp=inv.respectWeapon(id);
+			var resp:int = inv.respectWeapon(id);
 			showWeapon(event.currentTarget as MovieClip,-1,resp);
 			if (World.w.hardInv) showMass();
 		}
 
-		public function itemOver(event:MouseEvent) {
+		public function itemOver(event:MouseEvent):void {
 			if (inv.weapons[event.currentTarget.id.text]==null) {
 				return;
 			}
@@ -408,8 +409,8 @@ package fe.inter {
 			
 			info.visible=true;
 			info.fon.height=info.info.height+info.info.y+8;
-			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
-			var ny=event.currentTarget.y+event.currentTarget.parent.y-50;
+			var nx:int = event.currentTarget.x+event.currentTarget.parent.x+80;
+			var ny:int = event.currentTarget.y+event.currentTarget.parent.y-50;
 			
 			if (ny+vis.y+info.height>World.w.cam.screenY-10) ny=World.w.cam.screenY-vis.y-info.height-10;
 			
@@ -419,7 +420,7 @@ package fe.inter {
 			info.y=ny;
 		}
 
-		public function itemOver2(event:MouseEvent) {
+		public function itemOver2(event:MouseEvent):void {
 			if (!event.currentTarget.nazv.visible) {
 				return;
 			}
@@ -428,8 +429,8 @@ package fe.inter {
 			info.info.htmlText=PipPage.infoStr(Item.L_ARMOR,event.currentTarget.id.text);
 			info.visible=true;
 			info.fon.height=info.info.height+info.info.y+8;
-			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
-			var ny=event.currentTarget.y+event.currentTarget.parent.y+20;
+			var nx:int = event.currentTarget.x+event.currentTarget.parent.x+80;
+			var ny:int = event.currentTarget.y+event.currentTarget.parent.y+20;
 			
 			if (ny+vis.y+info.height>World.w.cam.screenY-10) ny=World.w.cam.screenY-vis.y-info.height-10;
 			
@@ -439,11 +440,11 @@ package fe.inter {
 			info.y=ny;
 		}
 
-		public function itemOut(event:MouseEvent) {
+		public function itemOut(event:MouseEvent):void {
 			info.visible=false;
 		}
 		
-		public function onoff(turn:int=0) {
+		public function onoff(turn:int=0):void {
 			if (turn==0) {
 				active=!active;
 			}
@@ -462,35 +463,35 @@ package fe.inter {
 				World.w.cur();
 				setButtons();
 				showWeaponList(page);
-				for each (var item in weapons) {
+				for each (var item:MovieClip in weapons) {
 					if (!item.hasEventListener(MouseEvent.CLICK)) {
 						item.addEventListener(MouseEvent.CLICK,itemClick);
 						item.addEventListener(MouseEvent.MOUSE_OVER,itemOver);
 						item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 					}
 				}
-				for each (var item in armors) {
+				for each (var item:MovieClip in armors) {
 					item.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
-				for each (var item in arts) {
+				for each (var item:MovieClip in arts) {
 					item.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
 			}
 			else {
-				for each (var item in weapons) {
+				for each (var item:MovieClip in weapons) {
 					if (item.hasEventListener(MouseEvent.CLICK)) {
 						item.removeEventListener(MouseEvent.CLICK,itemClick);
 						item.removeEventListener(MouseEvent.MOUSE_OVER,itemOver);
 						item.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 					}
 				}
-				for each (var item in armors) {
+				for each (var item:MovieClip in armors) {
 					item.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
-				for each (var item in arts) {
+				for each (var item:MovieClip in arts) {
 					item.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
@@ -498,19 +499,21 @@ package fe.inter {
 		}
 
 		// [Size correction]
-		public function resizeScreen(nx:int, ny:int) {
-			if (nx>=1200 && ny>=800) {
-				vis.x=(nx-visX)/2;
-				vis.y=(ny-visY)/2;
-				vis.scaleX=vis.scaleY=1;
+		public function resizeScreen(nx:int, ny:int):void {
+			if (nx >= 1200 && ny >= 800) {
+				vis.x = (nx - visX) / 2;
+				vis.y = (ny - visY) / 2;
+				vis.scaleX = 1;
+				vis.scaleY = 1;
 			}
 			else {
-				vis.x=vis.y=0;
-				if (nx/1200<ny/800) {
-					vis.scaleX=vis.scaleY=nx/1200;
+				vis.x = 0;
+				vis.y = 0;
+				if (nx / 1200 < ny / 800) {
+					vis.scaleX = vis.scaleY = nx / 1200;
 				}
 				else {
-					vis.scaleX=vis.scaleY=ny/800;
+					vis.scaleX = vis.scaleY = ny / 800;
 				}
 			}
 		}

@@ -1,23 +1,23 @@
-package fe.loc
-{
+package fe.loc {
+
 	import flash.display.MovieClip;
 	
 	import fe.*;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	
-	public class CheckPoint extends Obj
-	{
+	public class CheckPoint extends Obj {
+
 		public var id:String;
 		public var vis2:MovieClip;
 		
-		public var active=0;
+		public var active:int = 0;
 		public var teleOn:Boolean=false;
 		public var used:Boolean=false;
 		public var main:Boolean=false;
 		public var hide:Boolean=false;
 		
-		var locked:Boolean=false;
+		private var locked:Boolean=false;
 		
 		public var area:Area;
 
@@ -46,7 +46,7 @@ package fe.loc
 			bottomBound = coordinates.Y;
 			coordinates.X  = nx;
 			coordinates.Y  = ny;
-			var vClass:Class=Res.getClass('vischeckpoint', null, vischeckpoint);
+			var vClass:Class = Res.getClass('vischeckpoint', null, vischeckpoint); // SWF Dependency
 			vis=new vClass();
 			vis.x = coordinates.X;
 			vis.y = coordinates.Y;
@@ -107,7 +107,7 @@ package fe.loc
 			}
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			if (vis && !hide) {
 				World.w.grafon.visObjs[sloy].addChild(vis);
 				if (cTransform) {
@@ -115,7 +115,7 @@ package fe.loc
 				}
 			}
 		}
-		public override function remVisual() {
+		public override function remVisual():void {
 			super.remVisual();
 		}
 		
@@ -133,7 +133,7 @@ package fe.loc
 		}
 		
 		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
-		public function activate(first:Boolean=false) {
+		public function activate(first:Boolean=false):void {
 			if (inter.lock>0 || inter.mine>0) return;
 			if (active==2) {
 				return;
@@ -171,10 +171,11 @@ package fe.loc
 			World.w.saveGame();
 		}
 		
-		public function teleport() {
+		public function teleport():void {
 			if (main) {
 				if (World.w.game.missionId != 'rbl') World.w.game.gotoLand(World.w.game.missionId);
-			} else {
+			}
+			else {
 				World.w.game.gotoLand(World.w.game.baseId);
 				if (World.w.hardInv && World.w.land.rnd) {
 					used = true;
@@ -185,11 +186,11 @@ package fe.loc
 			}
 		}
 		
-		public function areaActivate() {
+		public function areaActivate():void {
 			if (active==0) activate();
 		}
 		
-		public function deactivate() {
+		public function deactivate():void {
 			if (main) return;
 			inter.active=!hide;
 			active=1;
@@ -201,7 +202,7 @@ package fe.loc
 			inter.update();
 		}
 		
-		public override function step() {
+		public override function step():void {
 			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) {

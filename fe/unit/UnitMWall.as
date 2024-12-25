@@ -30,7 +30,7 @@ package fe.unit {
 			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:12,rx:objectWidth, ry:objectHeight});
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			if (disabled) return;
 			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
@@ -45,7 +45,7 @@ package fe.unit {
 			if (hp<=0) exterminate();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			exterminate();
 		}		
 		

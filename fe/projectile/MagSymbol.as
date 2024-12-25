@@ -1,12 +1,11 @@
-package fe.projectile
-{
+package fe.projectile {
+
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.entities.Obj;
 	import fe.graph.Emitter;
 	
-	public class MagSymbol extends Obj // MAGIC SYMBOL
-	{
+	public class MagSymbol extends Obj { // MAGIC SYMBOL
 		
 		protected var vse:Boolean=false;
 		
@@ -14,13 +13,14 @@ package fe.projectile
 		public var spellId:String;
 		public var rad:Number=100;
 		public var liv:int=20;
-
-		public function MagSymbol(own:Unit, spell:String, nx:Number, ny:Number, otlozh:int=0)
-		{
+		
+		// Constructor
+		public function MagSymbol(own:Unit, spell:String, nx:Number, ny:Number, otlozh:int=0) {
 			if (own==null) {
 				owner=new Unit();
 				loc=World.w.loc;
-			} else {
+			}
+			else {
 				owner=own;
 				loc=own.loc;
 			}
@@ -31,21 +31,18 @@ package fe.projectile
 			loc.addObj(this);
 		}
 		
-		public override function step()
-		{
+		public override function step():void {
 			if (liv==20) Emitter.emit('magsymbol', loc, coordinates.X, coordinates.Y);
 			liv--;
 			if (liv==1) spellCast();
 			if (liv<=0) loc.remObj(this);
 		}
 		
-		public override function setNull(f:Boolean=false)
-		{
+		public override function setNull(f:Boolean=false):void {
 			loc.remObj(this);
 		}
 		
-		public function spellCast()
-		{
+		public function spellCast():void {
 			var cel:Unit=World.w.gg;
 			if (cel.loc==loc && !cel.invulner && cel.sost<=2) {
 				if (getRasst2(cel)<rad*rad) {
@@ -54,8 +51,7 @@ package fe.projectile
 			}
 		}
 		
-		public override function err():String
-		{
+		public override function err():String {
 			if (loc) loc.remObj(this);
 			return null;
 		}

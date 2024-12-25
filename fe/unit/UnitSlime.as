@@ -62,7 +62,7 @@ package fe.unit {
 
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			oduplenie=World.oduplenie/2;
 		}

@@ -6,7 +6,7 @@ package fe.unit {
 	
 	public class UnitGutsy extends UnitAIRobot {
 
-		var dopWeapon:Weapon;
+		private var dopWeapon:Weapon;
 		public var wPos:Array;
 		
 		// Constructor
@@ -49,14 +49,14 @@ package fe.unit {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			var cframe:int;
 			if (sost==3) { //сдох
 				if (stay) {

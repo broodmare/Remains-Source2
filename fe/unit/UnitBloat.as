@@ -72,7 +72,7 @@ package fe.unit {
 			if (hero == 1) shootCh = 0.3;
 		}
 
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) {
 				aiState=0;
@@ -125,7 +125,7 @@ package fe.unit {
 			super.incStat(sposob);
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 
 		}
 		

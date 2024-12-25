@@ -52,7 +52,7 @@ package fe.unit
 			return node;
 		}
 		
-		function getXmlParam()
+		private function getXmlParam()
 		{
 			t=1;
 			post=null;
@@ -297,8 +297,7 @@ package fe.unit
 			}
 		}
 		
-		public function step()
-		{
+		public function step():void {
 			if (t%30==0) {
 				secEffect();
 			}

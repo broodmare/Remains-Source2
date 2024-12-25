@@ -64,7 +64,7 @@ package fe.unit {
 			
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (f) act=Math.random()<verVis;
 			super.setNull(f);
 			vis.visible=act;
@@ -78,7 +78,7 @@ package fe.unit {
 			return obj;
 		}	
 	
-		public override function animate() {
+		public override function animate():void {
 			
 		}
 		

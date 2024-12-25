@@ -720,7 +720,7 @@ package fe.serv {
 			if (isrnd()) World.w.gg.replic(s);
 		}	
 		
-		protected static function isrnd(n:Number=0.5):Boolean {
+		private static function isrnd(n:Number = 0.5):Boolean {
 			return Math.random() < n;
 		}
 	}

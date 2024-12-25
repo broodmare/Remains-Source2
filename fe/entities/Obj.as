@@ -1,6 +1,6 @@
-package  fe.entities
-{
-	//Базовый класс для объектов, взаимодействующих с игроком или миром
+package  fe.entities {
+	
+	// [Base class for objects that interact with the player or the world]
 	import flash.display.MovieClip;
 	import flash.geom.ColorTransform;
 	
@@ -11,10 +11,11 @@ package  fe.entities
 	import fe.inter.Appear;
 	
 	public class Obj extends Entity {
+		
 		public var code:String;		// [Individual code]
 		public var uid:String;		// [Unique identifier used for script access to the object]
 		
-		public var prior:Number = 1;
+		public var prior:Number = 1;			// Priority?
 
 		public var objectWidth:Number = 10;		// Sprite Width
 		public var objectHeight:Number = 10;	// Sprite Height
@@ -23,18 +24,18 @@ package  fe.entities
 		public var rasst2:Number=0;				// Distance to player squared
 		public var massa:Number=1;
 		public var levit:int=0;
-		public var levitPoss:Boolean=true;		//возможность перемещать с помощью левитации
-		public var fracLevit:int=0;				//был левитирован
-		public var radioactiv:Number=0;			//радиоактивность
-		public var radrad:Number=250;			//радиус радиоактивности
-		public var radtip:int=0;				//0 - радиация, 1 - яд, 2 - розовое облако, 3 - смерть
-		public var warn:int=0;					//цвет вспл. подсказки
+		public var levitPoss:Boolean=true;		// [ability to move using levitation]
+		public var fracLevit:int=0;				// [was levitated]
+		public var radioactiv:Number=0;			// [Radioactivity]
+		public var radrad:Number=250;			// [Radius of radioactivity]
+		public var radtip:int=0;				// [0 - Radiation, 1 - Poison, 2 - Pink Cloud, 3 - Death]
+		public var warn:int=0;					// [Float color tips]
 		
 		public var nazv:String = '';			// Name
 		
-		public var inter:Interact;
+		public var inter:Interact;				// Player interaction script 
 		
-		// Boundaries of an object
+		// Bounding box
 		public var topBound:Number;
 		public var bottomBound:Number;
 		public var leftBound:Number;
@@ -86,7 +87,7 @@ package  fe.entities
 			return objectHeight / 2;
 		}
 
-		public override function remVisual() {
+		public override function remVisual():void {
 			super.remVisual(); 
 			onCursor=0;
 		}
@@ -95,18 +96,18 @@ package  fe.entities
 
 		}
 		
-		public function die(sposob:int=0) {
+		public function die(sposob:int = 0) {
 
 		}
 		
-		public function checkStay() {
-
+		public function checkStay():Boolean {
+			return false;
 		}
 		
 		public function getRasst2(obj:Obj=null):Number {
 			if (obj == null) obj = World.w.gg;
-			var nx = obj.coordinates.X - coordinates.X;
-			var ny = obj.coordinates.Y - obj.objectHeight / 2 - coordinates.Y + objectHeight / 2;
+			var nx:Number = obj.coordinates.X - coordinates.X;
+			var ny:Number = obj.coordinates.Y - obj.objectHeight / 2 - coordinates.Y + objectHeight / 2;
 			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.objectHeight * 0.75 - coordinates.Y + objectHeight / 2;
 			rasst2 = nx * nx + ny * ny;
 			if (isNaN(rasst2)) rasst2 = -1;
@@ -117,37 +118,41 @@ package  fe.entities
 			return null;
 		}
 		
-		//команда скрипта
-		public function command(com:String, val:String=null) {
-			if (com == 'show')
-			{
+		//Interpret a script command
+		public function command(com:String, val:String = null) {
+			if (com == 'show') {
 				World.w.cam.showOn	= true;
 				World.w.cam.showX	= coordinates.X;
 				World.w.cam.showY	= coordinates.Y;
 			}
 		}
 		
-		//воздействие на гг
+		// If the object and the player are in the same location, and the object is radioactive, and the player is within the radioactive radius,
+		// deal radiation damage to the player 
 		public function ggModum() {
-			if (loc==World.w.gg.loc && radioactiv && rasst2>=0 && rasst2<radrad*radrad) {
-				World.w.gg.raddamage((radrad-Math.sqrt(rasst2))/radrad,radioactiv,radtip);
+			if (loc == World.w.gg.loc && radioactiv && rasst2 >= 0 && rasst2 < radrad * radrad) {
+				World.w.gg.raddamage((radrad - Math.sqrt(rasst2)) / radrad, radioactiv, radtip);
 			}
 		}
 		
+		// Remove the object and return an error message
 		public override function err():String {
-			if (loc) loc.remObj(this);
-			return 'Error obj '+nazv;
+			if (loc) {
+				loc.remObj(this);
+			}
+			return 'Error obj ' + nazv;
 		}
 		
-		public function norma(p:Object,mr:Number) {
-			if (p.x*p.x+p.y*p.y>mr*mr) {
-				var nr=Math.sqrt(p.x*p.x+p.y*p.y);
+		// A “normalize” method that caps the length of vector p to mr. If p is longer than mr, it scales it down to exactly mr
+		public function norma(p:Object, mr:Number) {
+			if (p.x * p.x + p.y * p.y > mr * mr) {
+				var nr = Math.sqrt(p.x * p.x + p.y * p.y);
 				p.x *= mr / nr;
 				p.y *= mr / nr;
 			}
 		}
 		
-		//принудительное движение
+		// Change the object’s position a given location and then re-center the bounding box.
 		public function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
 			coordinates = v;
 			centerObj();
@@ -165,23 +170,23 @@ package  fe.entities
 			un.storona = storona;
 		}
 		
-		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
-		public function udarBullet(bul:Bullet, sposob:int=0):int {
+		// [Check if a bullet hit the object]
+		public function udarBullet(bul:Bullet, sposob:int = 0):int {
 			return -1;
 		}
 		
-		//проверка пересечения с другим объектом
+		//  A bounding-box collision check between this object and another obj. Returns true if they overlap, false otherwise.
 		public function areaTest(obj:Obj):Boolean {
 			if (obj == null || obj.leftBound >= rightBound || obj.rightBound <= leftBound || obj.topBound >= bottomBound || obj.bottomBound <= topBound) return false;
 			else return true;
 		}
 		
+		// Triggers when the (player? object?) leaves a location. 
 		public function locout() {
 
 		}
 		
-		public static function setArmor(m:MovieClip)
-		{
+		public static function setArmor(m:MovieClip) {
 			var aid:String = '';
 			if (World.w) {
 				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat == 0) aid = World.w.pip.armorID;
@@ -203,6 +208,7 @@ package  fe.entities
 			}
 		}
 		
+		// Set the head of the player to something
 		public static function setMorda(m:MovieClip, c:int) {
 			if (World.w && World.w.gg) m.gotoAndStop(World.w.gg.mordaN);
 			else m.gotoAndStop(1);
@@ -219,7 +225,8 @@ package  fe.entities
 				if (Appear.visHair1) {
 					m.visible=true;
 					m.transform.colorTransform=Appear.trHair1;
-				} else m.visible=false;
+				}
+				else m.visible=false;
 			}
 			if (c==3) m.transform.colorTransform=Appear.trEye;
 			if (c==4) m.transform.colorTransform=Appear.trMagic;
@@ -228,15 +235,15 @@ package  fe.entities
 		public static function setVisible(m:MovieClip) {
 			var h:int;
 			if (World.w && World.w.pip && World.w.pip.active) h=World.w.pip.hideMane;
-			else h=Appear.hideMane;
-			m.visible=(h==0);
+			else h = Appear.hideMane;
+			m.visible = (h==0);
 		}
 		
-		public static function setEye(m:MovieClip) {
+		public static function setEye(m:MovieClip) {	// SWF Depenency (Called by SWF)
 			m.gotoAndStop(Appear.fEye);
 		}
 
-		public static function setHair(m:MovieClip) {
+		public static function setHair(m:MovieClip) {	// SWF Dependency (Called by SWF)
 			m.gotoAndStop(Appear.fHair);
 		}
 	}

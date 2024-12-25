@@ -87,7 +87,7 @@ package fe.unit {
 			} 
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
@@ -169,7 +169,7 @@ package fe.unit {
 			return td;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (isNoResBoss()) f=false;
 			super.setNull(f);
 			//вернуть в исходную точку

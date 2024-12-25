@@ -7,23 +7,23 @@ package fe.unit {
 	
 	public class UnitPet extends Unit {
 		
-		var spd:Object;
-		var flyX:Number=0, flyY:Number=0, flyDX:Number=0, flyDY:Number=0, flyR:Number, flyBox:Box;	//точка, в которую надо лететь
-		var iskr:Emitter;
-		var gg:UnitPlayer;
+		private var spd:Object;
+		private var flyX:Number=0, flyY:Number=0, flyDX:Number=0, flyDY:Number=0, flyR:Number, flyBox:Box;	//точка, в которую надо лететь
+		private var iskr:Emitter;
+		public var gg:UnitPlayer;
 		public var active:Boolean=false;
-		var rasstGG:Number=200;		//дистанция до ГГ, больше которой включается следование
-		var rasstUnmat:Number=400;		//дистанция до ГГ, больше которой включается нематериальность
-		var rasstVisEn:Number=800;	//максимальная дистанция атаки
-		var rasstWeap:Number=200;	//дистанция атаки
-		var rasstOut:Number=100;	//дистанция отлёта
-		var tempUnmat:Boolean=false;
+		private var rasstGG:Number=200;		//дистанция до ГГ, больше которой включается следование
+		private var rasstUnmat:Number=400;		//дистанция до ГГ, больше которой включается нематериальность
+		private var rasstVisEn:Number=800;	//максимальная дистанция атаки
+		private var rasstWeap:Number=200;	//дистанция атаки
+		private var rasstOut:Number=100;	//дистанция отлёта
+		private var tempUnmat:Boolean=false;
 		
-		var optEnW:Boolean=true;	//энергетическое оружие
-		var optSit:Boolean=true;	//садиться на ящики
-		var optAutores:Boolean=true;	//автовозрождение
-		var optUncall:Boolean=false;	//отзыв при смерти
-		var optTurn:Boolean=true;	//поворачиваться
+		private var optEnW:Boolean=true;	//энергетическое оружие
+		private var optSit:Boolean=true;	//садиться на ящики
+		public var optAutores:Boolean=true;	//автовозрождение
+		private var optUncall:Boolean=false;	//отзыв при смерти
+		private var optTurn:Boolean=true;	//поворачиваться
 
 		// Constructor
 		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -35,7 +35,7 @@ package fe.unit {
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon') {
-				vis = new visualMoon();
+				vis = new visualMoon();	// SWF Dependency
 				vis.osn.stop();
 			}
 			else {
@@ -91,7 +91,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function step() {
+		public override function step():void {
 			if (World.w.loc.petOn) super.step();
 		}
 		
@@ -121,7 +121,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			aiState=1;
 			getFlyPoint();
@@ -167,7 +167,7 @@ package fe.unit {
 			magicY = weaponY;
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (oduplenie>30) vis.alpha=0;
 			else if (oduplenie>0) vis.alpha=1-oduplenie/30;
 			else vis.alpha=1;
@@ -237,8 +237,7 @@ package fe.unit {
 			flyY = gg.coordinates.Y - 1;
 		}
 		
-		function visCelUnit(un:Unit):Boolean
-		{
+		private function visCelUnit(un:Unit):Boolean {
 			return loc.isLine(coordinates.X, coordinates.Y - 30, un.coordinates.X, un.coordinates.Y - un.objectHeight / 2);
 		}
 		
@@ -427,7 +426,7 @@ package fe.unit {
 			if (isFly) {
 				flyDX = flyX - coordinates.X;
 				flyDY = flyY - coordinates.Y;
-				var flyR=Math.sqrt(flyDX*flyDX+flyDY*flyDY);
+				var flyR:Number = Math.sqrt(flyDX*flyDX+flyDY*flyDY);
 				
 				if (aiState==0) {
 					velocity.set(0, 0);

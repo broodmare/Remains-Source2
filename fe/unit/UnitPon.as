@@ -3,7 +3,6 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 
 	import fe.Snd;
-	import fe.World;
 	import fe.loc.Tile;
 	
 	public class UnitPon extends Unit {
@@ -53,7 +52,7 @@ package fe.unit {
 			if (loc==null || !loc.active) return;
 			var nstep:int;
 			var nleg:int;
-			var sst='footstep';
+			var sst:String = 'footstep';
 			if (mat==1) sst='metalstep';
 			if (tip==0) {
 				nleg=Math.floor(Math.random()*4)+1;
@@ -92,16 +91,16 @@ package fe.unit {
 				else if (nstep==21) nleg=3;
 				else return;
 			}
-			var rnd=isrnd()?'a':'';
+			var rnd:String = isrnd()? 'a' : '';
 			if (stayMat==1) sst='metalstep';
 			Snd.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, (footstepVol-volMinus)*Snd.stepVol);
 		}
 		
 		protected override function sndFall() {
 			if (loc==null || !loc.active) return;
-			var rnd=isrnd()?'a':'';
+			var rnd:String = isrnd()? 'a' : '';
 			var nleg:int;
-			var sst='footstep';
+			var sst:String = 'footstep';
 			if (stayMat==1) sst='metalstep';
 			nleg = int(Math.random()*4)+1;
 			Snd.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, footstepVol - volMinus);

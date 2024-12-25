@@ -141,7 +141,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			var cframe:int;
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
@@ -260,7 +260,7 @@ package fe.unit {
 			volMinus=rasst/8000;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
 			if (sost==1 && zak) {

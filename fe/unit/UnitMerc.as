@@ -10,9 +10,9 @@ package fe.unit {
 	
 	public class UnitMerc extends UnitRaider {
 		
-		var arm:MovieClip;
-		var thWeapon:Weapon;
-		var t_gren:int=Math.round(Math.random()*150+50);
+		private var arm:MovieClip;
+		private var thWeapon:Weapon;
+		private var t_gren:int=Math.round(Math.random()*150+50);
 		
 		// Constructor
 		public function UnitMerc(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -24,7 +24,7 @@ package fe.unit {
 			visionMult=1.5;
 			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosGriffon1");
-			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1);
+			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1); // SWF Dependency
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');
 				(thWeapon as WThrow).kolAmmo=grenader;
@@ -32,7 +32,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			if (disabled) return;
 			trigDis=!checkTrig();
 			if (trigDis) return;
@@ -45,7 +45,7 @@ package fe.unit {
 			}
 		}
 
-		public override function remVisual() {
+		public override function remVisual():void {
 			super.remVisual();
 			try {
 				World.w.grafon.visObjs[sloy].removeChild(arm);
@@ -87,7 +87,7 @@ package fe.unit {
 			super.dropLoot();
 		}
 		
-		public override function attack() {
+		public override function attack():void {
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
 			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
@@ -105,7 +105,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			var revers:Boolean=false;
 			//поворот
 			if (sost==2 || sost==3) { //сдох

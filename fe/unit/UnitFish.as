@@ -25,7 +25,7 @@ package fe.unit {
 			}
 
 			id='fish'+tr;
-			vis=Res.getVis('visualFish'+tr, visualFish1); 
+			vis=Res.getVis('visualFish'+tr, visualFish1);	// SWF Dependency
 			vis.osn.gotoAndStop('stay');
 			getXmlParam();
 			maxSpeed+=Math.random()*2-1;
@@ -46,7 +46,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) {
 				aiState=aiSpok=0;
@@ -54,7 +54,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 				if (sost==2 || sost==3) { //сдох
 					if (animState!='die') {
 						vis.osn.gotoAndStop('die');
@@ -106,9 +106,9 @@ package fe.unit {
 			}
 		}
 
-		var aiDx:Number = 0;
-		var aiDy:Number = 0;
-		var aiRasst:Number;
+		private var aiDx:Number = 0;
+		private var aiDy:Number = 0;
+		private var aiRasst:Number;
 		
 		//состояния
 		//0 - неподвижен

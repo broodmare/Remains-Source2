@@ -83,7 +83,7 @@ package  fe.unit {
 			newPart('expl');
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost>1) return;
 		}
 

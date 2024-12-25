@@ -147,12 +147,12 @@ package fe.weapon  {
 			}
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			super.addVisual();
 			if (visvzz) World.w.grafon.visObjs[sloy].addChild(visvzz);
 		}
 		
-		public override function remVisual() {
+		public override function remVisual():void {
 			super.remVisual();
 			if (visvzz && visvzz.parent) visvzz.parent.removeChild(visvzz);
 		}

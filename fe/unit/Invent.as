@@ -782,7 +782,7 @@ package fe.unit
 			World.w.calcMass = true;
 		}
 		
-		function plus(l:Item, tr:int = 0)
+		private function plus(l:Item, tr:int = 0)
 		{
 			trace("Invent.as/plus() - Item ID: " + l.id + ", kol: " + l.kol + ", tr: " + tr);
 			

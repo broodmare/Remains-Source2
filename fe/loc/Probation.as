@@ -201,7 +201,7 @@ package fe.loc {
 			t_wave=beg_t;
 		}
 		
-		function createWave() {
+		private function createWave():void {
 			nspawn=0;
 			var w:XML=xml.wave[nwave];
 			if (w==null) return;
@@ -232,10 +232,9 @@ package fe.loc {
 					un.disabled=true;
 				}
 			}
-			
 		}
 		
-		public function step() {
+		public function step():void {
 			if (onWave) {
 				if (t_wave>0) t_wave--;
 				if (t_wave==1 && nwave<maxwave) createWave();
@@ -244,5 +243,4 @@ package fe.loc {
 		}
 		
 	}
-	
 }

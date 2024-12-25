@@ -1,5 +1,5 @@
-package fe.entities
-{
+package fe.entities {
+	
 	//Базовый класс для всех объектов
 	import flash.display.MovieClip;
 
@@ -7,8 +7,8 @@ package fe.entities
 	import fe.util.Vector2;
 	import fe.loc.Location;
 	
-	public class Entity
-	{
+	public class Entity {
+
 		public var vis:MovieClip; // Movieclip that holds the entity's sprite
 
 		public var loc:Location;	// What room the entity is currently in
@@ -26,15 +26,16 @@ package fe.entities
 		public function Entity() {
 		}
 
-		public function addVisual() {
+		public function addVisual():void {
 			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 
-		public function remVisual() {
+		public function remVisual():void {
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 		}
 
-		public function setNull(f:Boolean=false) {
+		public function setNull(f:Boolean=false):void {
+
 		}
 		
 		public function err():String {
@@ -42,10 +43,8 @@ package fe.entities
 			return null;
 		}
 		
-		public function step()
-		{
+		public function step():void {
 
 		}
-
 	}
 }

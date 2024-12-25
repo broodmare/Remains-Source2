@@ -1,5 +1,5 @@
-package fe.serv
-{
+package fe.serv {
+
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -35,7 +35,7 @@ package fe.serv
 			f = firstf;
 		}
 
-		public function step() {
+		public function step():void {
 			if (stab) return;
 			if (f < firstf + maxf - 1) f += df;
 			else if (replay) f = retf;

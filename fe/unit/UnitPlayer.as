@@ -325,7 +325,7 @@
 			else pers.setParameters();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			topBound = coordinates.Y - objectHeight, bottomBound = coordinates.Y;
 			leftBound = coordinates.X - objectWidth / 2;
 			rightBound = coordinates.X + objectWidth / 2;
@@ -458,7 +458,7 @@
 			vis.svet.visible=loc.sky;
 		}
 		
-		public override function addVisual() {
+		public override function addVisual():void {
 			super.addVisual();
 			if (throwWeapon) {
 				throwWeapon.addVisual2();
@@ -2866,8 +2866,7 @@
 //		//  11		:	Plav (Swim)
 //		//  12		:	Punch
 
-		public override function animate()
-		{
+		public override function animate():void {
 			if (animOff) return;
 			vis.osn.y = 0;
 			vis.osn.rotation = 0;
@@ -2900,10 +2899,8 @@
 			//##	ALTERNATE ANIMATIONS (These will stop the animation function early, which is why they return bools)
 			//##
 			//###############
-			function animatePlayerDeath():Boolean
-			{
-				if (t_work && work=='die')
-				{
+			function animatePlayerDeath():Boolean {
+				if (t_work && work=='die') {
 					reloadbar.visible=false;
 					if (World.w.alicorn) {
                         if (animState != 'die') {
@@ -2922,7 +2919,8 @@
                             Snd.ps('bale_e');
                             vis.osn.alpha = 0;
                         }
-                    } else {
+                    }
+					else {
                         if (animState != 'die') {
                             vis.osn.gotoAndStop('die');
                             animState = 'die';
@@ -2943,12 +2941,9 @@
 				else return false;
 			}
 
-			function startLurking():Boolean
-			{
-				if (t_work && work == 'lurk')
-				{
-					if (animState != 'lurk')
-					{
+			function startLurking():Boolean {
+				if (t_work && work == 'lurk') {
+					if (animState != 'lurk') {
 						vis.osn.gotoAndStop('lurk' + lurkTip);
 						vis.osn.body.gotoAndPlay(1);
 						animState = 'lurk';
@@ -2960,12 +2955,9 @@
 				else return false;
 			}
 
-			function stopLurking():Boolean
-			{
-				if (t_work && work=='unlurk')
-				{
-					if (animState!='unlurk')
-					{
+			function stopLurking():Boolean {
+				if (t_work && work=='unlurk') {
+					if (animState!='unlurk') {
 						vis.osn.body.gotoAndPlay('un');
 						animState = 'unlurk';
 
@@ -2977,10 +2969,8 @@
 				else return false;
 			}
 
-			function continueLurking():Boolean
-			{
-				if (lurked)
-				{
+			function continueLurking():Boolean {
+				if (lurked) {
 					vis.osn.body.head.morda.eye.gotoAndStop(1);
 					otherVisual();
 					return true;
@@ -2988,12 +2978,9 @@
 				else return false;
 			}
 
-			function animateResurrect():Boolean
-			{
-				if (t_work && work=='res')
-				{
-					if (animState!='res')
-					{
+			function animateResurrect():Boolean {
+				if (t_work && work=='res') {
+					if (animState!='res') {
 						vis.osn.gotoAndStop('res');
 						animState='res';
 					}
@@ -3119,7 +3106,8 @@
                                     if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                         vis.osn.gotoAndStop('roll');
                                         animState = 'roll';
-                                    } else {
+                                    }
+									else {
                                         vis.osn.gotoAndStop('polz');
                                         animState = 'polz';
                                     }

@@ -109,7 +109,7 @@ package fe.unit {
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
 			}
@@ -130,7 +130,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		public override function animate() {
+		public override function animate():void {
 			thWeapon.vis.visible=false;
 			//щит
 			if (visshit && !visshit.visible && shithp>0) {

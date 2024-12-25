@@ -87,7 +87,7 @@ package  fe {
 		
 		public var testLoot:Boolean=false;	// [Testing loot and experience]
 		public var summxp:int=0;
-		var ccur:String;
+		private var ccur:String;
 		
 		public var currentMusic:String='';
 		
@@ -95,7 +95,7 @@ package  fe {
 		//Настроечные переменные
 		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
 		public var roomsLoad:int = 1;  			//1-загружать из файла карты локаций
-		private var langLoad=1;  			//1-загружать из файла
+		private var langLoad:int = 1;  			//1-загружать из файла
 		public var addCheckSP:Boolean=false;			//добавлять скилл-поинты при посещении контрольной точки
 		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
 		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
@@ -144,7 +144,7 @@ package  fe {
 		public var vsIngr:Boolean=true;		
 		
 		//Глобальные константы
-		public var actionDist=200*200;
+		public var actionDist:int = 40000;
 
 		public static const cellsX:int = 48;	// How many tiles there are in a room (horizontally)
 		public static const cellsY:int = 25;	// How many tiles there are in a room (vertically)
@@ -160,7 +160,7 @@ package  fe {
 		public static const kolQS:int = 4;			//количество быстрых заклинаний
 			
 		
-		public static const boxDamage:int = 0.2;		//мультипликатор силы удара ящиками
+		public static const boxDamage:Number = 0.2;		//мультипликатор силы удара ящиками
 		
 		//Загрузка текстов
 		public var currentLanguage:String = 'en';		// Two letter language id, eg. 'en'
@@ -253,23 +253,22 @@ package  fe {
 			Emitter.init();
 
 			//создание элементов графики
-			vwait = new visualWait();
+			vwait = new visualWait();	// SWF Dependency
 			vwait.cacheAsBitmap=true;
 
 			//настройщик внешности
-			app=new Appear();
-
-			visual=new Sprite();
-			vgui = new visualGUI();
+			app = new Appear();
+			visual = new Sprite();
+			vgui = new visualGUI();		// SWF Dependency
 			vfon = new MovieClip();
-			vpip = new visPipBuck();
-			vstand = new visualStand();
+			vpip = new visPipBuck();	// SWF Dependency
+			vstand = new visualStand();	// SWF Dependency
 			vsats = new MovieClip();
-			vscene = new visualScene();
-			vblack = new visBlack();
-			vblack.cacheAsBitmap=true;
-			vconsol=new visConsol();
-			verror=new visError();
+			vscene = new visualScene();	// SWF Dependency
+			vblack = new visBlack();	// SWF Dependency
+			vblack.cacheAsBitmap = true;
+			vconsol=new visConsol();	// SWF Dependency
+			verror=new visError();		// SWF Dependency
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
 			vscene.stop();
@@ -463,7 +462,7 @@ package  fe {
 			landData = [];
 			
 			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
-			for each(var xl in xmlList) {
+			for each(var xl:XML in xmlList) {
 				if (!testMode && xl.@test>0) continue;
 				var ll:LandLoader=new LandLoader(xl.@id);
 				if (!(xl.@test>0)) kolLands++;
@@ -509,10 +508,10 @@ package  fe {
 //			Game
 //=============================================================================================================
 		
-		var ng:Boolean;
-		var data:Object;
-		var opt:Object;
-		var newName:String;
+		private var ng:Boolean;
+		private var data:Object;
+		private var opt:Object;
+		private var newName:String;
 
 		// [Start a new game or load a save. The slot number is transmitted or -1 for a new game]
 		// [Stage 0 - create HUD, ZPS and pipbuck]
@@ -899,7 +898,7 @@ package  fe {
 			if (ncur!=ccur) {
 				Mouse.cursor = ncur;
 				Mouse.show();
-				ccur=ncur;
+				ccur = ncur;
 			}
 		}
 		

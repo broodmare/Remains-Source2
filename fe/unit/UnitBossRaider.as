@@ -78,7 +78,7 @@ package fe.unit {
 			} 
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
@@ -164,7 +164,7 @@ package fe.unit {
 			kol_emit--;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			//вернуть в исходную точку
 			if (begX>0 && begY>0) setPos(begX, begY);

@@ -94,8 +94,8 @@ package fe.inter  {
 						new PipPageVault(this,'vault')
 					];
 			
-			page=kolPages;
-			currentPage=pages[page];
+			page = kolPages;
+			currentPage = pages[page];
 			vishelp=new visPipHelp();
 			vishelp.x=168;
 			vishelp.y=138;
@@ -273,12 +273,12 @@ package fe.inter  {
 		
 		//коррекция размеров
 		public function resizeScreen(nx:int, ny:int):void {
-			if (nx>=1200 && ny>=800) {
-				if (nx>1320) {
-					var visX = 1200;
-					vis.x=(nx-visX)/2-60;
-					var visY = 800;
-					vis.y=(ny-visY)/2;
+			if (nx >= 1200 && ny >= 800) {
+				if (nx > 1320) {
+					var visX:int = 1200;
+					var visY:int = 800;
+					vis.x = (nx - visX) / 2 - 60;
+					vis.y = (ny - visY) / 2;
 				}
 				else {
 					vis.x=vis.y=0;
@@ -436,7 +436,7 @@ package fe.inter  {
 			ritem3(14,inv.mass[3],pers.maxm3,World.w.hardInv);
 		}
 		
-		private function ritem1(n:int, hp:Number, maxhp:Number, usl=true):void {
+		private function ritem1(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
 			ritems[n].visible=usl;
 			if (usl) {
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp);
@@ -446,7 +446,7 @@ package fe.inter  {
 			}
 		}
 
-		private function ritem2(n:int, hp:Number, maxhp:Number, usl=true):void {
+		private function ritem2(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
 			ritems[n].visible=usl;
 			if (usl) {
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp/maxhp*100)+"%</span>";
@@ -456,7 +456,7 @@ package fe.inter  {
 			}
 		}
 
-		private function ritem3(n:int, hp:Number, maxhp:Number, usl=true):void {
+		private function ritem3(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
 			ritems[n].visible = usl;
 
 			if (usl) ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";

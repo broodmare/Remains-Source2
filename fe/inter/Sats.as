@@ -28,8 +28,8 @@ package fe.inter {
 		public var skillConf:Number=1;			//[modifier, depends on the level of the skill, 1 is normal, 0.75 is a skill 1 level lower, 0.5 is a skill 2 levels lower]
 		public var units:Array;
 		public var ct:ColorTransform = new ColorTransform(1, 1, 1, 1, 0, 100, 0, 0);
-		var fGlow:GlowFilter = new GlowFilter(0xFF0000, 1, 3, 3, 4, 1);
-		var fShad:GlowFilter = new GlowFilter(0x000000, 1, 3, 3, 3, 1);
+		private var fGlow:GlowFilter = new GlowFilter(0xFF0000, 1, 3, 3, 4, 1);
+		private var fShad:GlowFilter = new GlowFilter(0x000000, 1, 3, 3, 3, 1);
 		
 		public var od:Number = 80;	// [Real ods]
 		public var odv:Number = 80;	// [Virtual ods]
@@ -40,7 +40,7 @@ package fe.inter {
 			vis=nvis;
 			vis.visible = false;
 			trasser = new MovieClip();
-			radius = new satsRadius();
+			radius = new satsRadius();	// SWF Dependency
 			vis.addChild(trasser);
 			vis.addChild(radius);
 			que = [];
@@ -48,7 +48,7 @@ package fe.inter {
 		}
 
 		//Показать/скрыть
-		public function onoff(turn:int=0) {
+		public function onoff(turn:int=0):void {
 			if (turn == 0) active =! active;
 			else if (turn > 0) active = true;
 			else active=false;
@@ -71,15 +71,18 @@ package fe.inter {
 						active=false;
 					}
 					else {
-						var st = weapon.status();
+						var st:int = weapon.status();
+						// Out of ammo
 						if (st == 4) {
 							World.w.gui.infoText('noAmmo', '');
 							active = false;
 						}
+						// Weapon broken
 						if (st == 5) {
 							World.w.gui.infoText('brokenWeapon', '');
 							active = false;
 						}
+						// Not enough magic
 						if (st == 6) {
 							World.w.gui.infoText('noMana', '');
 							active = false;
@@ -103,7 +106,7 @@ package fe.inter {
 				skillConf = 1;
 				
 				if (World.w.weaponsLevelsOff) {
-					var razn = weapon.lvl - gg.pers.getWeapLevel(weapon.skill);
+					var razn:int = weapon.lvl - gg.pers.getWeapLevel(weapon.skill);
 					if (razn == 1) skillConf = 0.8;
 					else if (razn == 2) skillConf = 0.6;
 					else if (razn > 2) {
@@ -141,7 +144,7 @@ package fe.inter {
 		}
 		
 		// [when on pause]
-		public function step() {
+		public function step():void {
 			if (active) {
 				if (World.w.ctr.keyAttack) {
 					setCel();
@@ -178,9 +181,9 @@ package fe.inter {
 			}
 		}
 		
-		public function clearAll() {
-			var n = que.length;
-			for (var i = 0; i < n; i++) {
+		public function clearAll():void {
+			var n:int = que.length;
+			for (var i:int = 0; i < n; i++) {
 				var cel:SatsCel = que.shift();
 				cel.remove();
 			}
@@ -188,7 +191,7 @@ package fe.inter {
 			World.w.gui.setOd();
 		}
 		
-		public function setCel() {
+		public function setCel():void {
 			// Not enough action points
 			if (weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult > odv) {
 				World.w.gui.infoText('noOd');
@@ -200,7 +203,7 @@ package fe.inter {
 			if (units.length) {
 				for each (var obj in units) {
 					if (obj.du.filters.length>0) {
-						cel=new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
+						cel = new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 						break;
 					}
 				}
@@ -216,7 +219,7 @@ package fe.inter {
 			que.push(cel);
 		}
 
-		public function unsetCel(q:Boolean=false) {
+		public function unsetCel(q:Boolean=false):void {
 			if (que.length == 0) {
 				onoff(-1);
 				return;
@@ -248,7 +251,7 @@ package fe.inter {
 		}
 		
 		// [Action completed]
-		public function act() {
+		public function act():void {
 			od -= que[0].cons;
 			World.w.gui.setOd();
 			if (que[0].kol > 1 && weapon.status() <= 1) {
@@ -265,10 +268,10 @@ package fe.inter {
 		// It does not correct gun dispersion or a unit's (dodge chance?) so projectiles will still miss at 100%
 		private function getPrec(un:Unit):Number {
 			var prec:Number = 1;
-			var sk = gg.pers.weaponSkills[weapon.skill];
-			var dx = weapon.coordinates.X - un.coordinates.X;
-			var dy = weapon.coordinates.Y - un.coordinates.Y;
-			var rasst = Math.sqrt(dx * dx + dy * dy);
+			var sk:int = gg.pers.weaponSkills[weapon.skill];
+			var dx:Number = weapon.coordinates.X - un.coordinates.X;
+			var dy:Number = weapon.coordinates.Y - un.coordinates.Y;
+			var rasst:Number = Math.sqrt(dx * dx + dy * dy);
 			
 			if (weapon.precision > 0) {
 				prec = weapon.resultPrec(1, sk) / rasst / (un.dexter + 0.1) * skillConf;
@@ -279,8 +282,8 @@ package fe.inter {
 			}
 			
 			if (weapon.deviation > 0 || gg.mazil > 0) {
-				var ug1 = Math.atan2(un.objectHeight, rasst) * 180 / Math.PI;
-				var ug2 = (weapon.deviation / (sk + 0.01) + gg.mazil);
+				var ug1:Number = Math.atan2(un.objectHeight, rasst) * 180 / Math.PI;
+				var ug2:Number = (weapon.deviation / (sk + 0.01) + gg.mazil);
 				if (ug2 > ug1) prec = prec * ug1 / ug2;
 			}
 			
@@ -365,7 +368,7 @@ package fe.inter {
 			}
 		}
 		
-		public function offUnits() {
+		public function offUnits():void {
 			if (units && units.length) {
 				for each (var obj in units) {
 					try {
@@ -386,7 +389,7 @@ package fe.inter {
 			}
 		}
 		
-		public function getUnits() {
+		public function getUnits():void {
 			for each (var un:Unit in World.w.loc.units) {
 				if (!gg.isMeet(un) || !un.isSats || un.sost>=3 || un.invis) {
 					continue;
@@ -406,7 +409,7 @@ package fe.inter {
 				mc.y = un.vis.y;
 				vis.addChild(mc);
 				var du:MovieClip = drawUnit(un);
-				var su:MovieClip = new satsUnit();
+				var su:MovieClip = new satsUnit(); // SWF Dependency
 				su.filters = [fShad];
 				su.scaleX = 1 / World.w.cam.scaleV;
 				su.scaleY = 1 / World.w.cam.scaleV;
@@ -451,7 +454,7 @@ package fe.inter {
 			trass();
 		}
 		
-		public function trass() {
+		public function trass():void {
 			if (weapon.noTrass) {
 				return;
 			}

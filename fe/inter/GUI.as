@@ -1162,7 +1162,7 @@ package fe.inter {
 			}
 		}
 		
-		public function step() {
+		public function step():void {
 			setCelObj();
 			if (kolStr>0 && !dialScript.running) {
 				t_info--;

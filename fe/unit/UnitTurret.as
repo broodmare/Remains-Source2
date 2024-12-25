@@ -194,7 +194,7 @@ package fe.unit {
 			vis.y = coordinates.Y;
 		}
 
-		public override function animate() {
+		public override function animate():void {
 			if (vis.osn.currentFrame != tr) vis.osn.puha.gotoAndStop(tr);
 
 			if (fixed && levit) vis.osn.rotation = Math.random() * 6 - 3;
@@ -238,7 +238,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setNull(f:Boolean = false) {
+		public override function setNull(f:Boolean = false):void {
 			super.setNull(f);
 			if (f && !sleep) {
 				aiState = hidden? 0 : 1;

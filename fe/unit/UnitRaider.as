@@ -16,7 +16,7 @@ package fe.unit {
 		public var parentId:String;
 		public var kolTrs:int=0;		//количество разновидностей
 		public var tr:int=1;
-		var weap:String;
+		private var weap:String;
 		public var walker:Boolean=false;	//имеет анимацию ходьбы
 		public var mostLaz:Boolean=true;	//залезает по лестницам
 		public var flyer:Boolean;		//летает
@@ -36,14 +36,14 @@ package fe.unit {
 		public var dash:Boolean=false;	//выполняет атаку рывком
 		public var scrAlarmOn:Boolean=true;
 		public var controlOn:Boolean=true;
-		var visionMult:Number=1;
-		var baseDexter:Number=1;
+		protected var visionMult:Number=1;
+		private var baseDexter:Number=1;
 		
 		public var dropW:String;
 		public var dropWeapon:Weapon;
 
-		var spd:Object;
-		var floatX:Number=1, floatY:Number=0;
+		private var spd:Object;
+		private var floatX:Number=1, floatY:Number=0;
 		
 		// Constructor
 		public function UnitRaider(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
@@ -252,7 +252,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			var cframe:int;
 			//поворот
 			if (sost==2 || sost==3) { //сдох
@@ -349,7 +349,7 @@ package fe.unit {
 			}
 		}
 
-		function emit() {
+		private function emit() {
 			var un:Unit=loc.createUnit('vortex', coordinates.X, this.topBoundToCenter,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
@@ -365,7 +365,7 @@ package fe.unit {
 			volMinus=rasst/8000;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
 		}
@@ -391,7 +391,7 @@ package fe.unit {
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		private function checkJump():Boolean {
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
@@ -399,20 +399,21 @@ package fe.unit {
 			return true;
 		}
 		
-		var aiLaz:int=0, aiJump:int=0;	
-		var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
-		var aiAttackT:int=0, aiAttackOch:int=0;	//стрельба очередью
-		var aiDist:int=1000; //минимальная дистанция
-		var stalkDist:int=500;	//дистанция преследования в полёте
-		var aiVKurse:Boolean=false;
-		var celUnit2:Unit, t_chCel:int=0;
-		var emit_t:int=0;
-		var t_laz:int=0;	//прошло времени с начала лазения
-		var r_laz:int=0;	//изменений направления лазения
-		var t_landing:int=0, t_float:Number=Math.random(), t_fall:int=0, t_turn:int=0;
-		var tstor:int=1;
-		var plusObservOk:Boolean=false;
-		var plusObserv:int=0;
+		private var aiLaz:int=0;
+		private var aiJump:int=0;	
+		protected var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
+		protected var aiAttackT:int=0, aiAttackOch:int=0;	//стрельба очередью
+		private var aiDist:int=1000; //минимальная дистанция
+		private var stalkDist:int=500;	//дистанция преследования в полёте
+		private var aiVKurse:Boolean=false;
+		private var celUnit2:Unit, t_chCel:int=0;
+		private var emit_t:int=0;
+		private var t_laz:int=0;	//прошло времени с начала лазения
+		private var r_laz:int=0;	//изменений направления лазения
+		private var t_landing:int=0, t_float:Number=Math.random(), t_fall:int=0, t_turn:int=0;
+		private var tstor:int=1;
+		private var plusObservOk:Boolean=false;
+		protected var plusObserv:int=0;
 		
 		//aiState
 		//0 - стоит на месте
@@ -1002,7 +1003,7 @@ package fe.unit {
 			super.replic(s);
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if ((attackerType==0 || aiState==8) && celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
 				if (attKorp(celUnit, (Math.abs(velocity.X) > 8)? 1 : 0.5)) {
 					if (aiState==8) aiTCh=5;

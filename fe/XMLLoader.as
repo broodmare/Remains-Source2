@@ -1,4 +1,4 @@
-﻿package fe {
+package fe {
 
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;

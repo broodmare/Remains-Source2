@@ -1,14 +1,11 @@
 package fe.unit {
 	
 	import fe.*;
-	import fe.projectile.Bullet;
-	import fe.graph.Emitter;
-	import fe.loc.Tile;
 	
 	public class UnitNecros extends Unit {
 		
-		var spd:Object;
-		var br:Number = 0;
+		private var spd:Object;
+		private var br:Number = 0;
 
 		// Constructor
 		public function UnitNecros(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -48,7 +45,7 @@ package fe.unit {
 			isFly = true;
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			vis.scaleX=1;
 			blit(anims[animState].id,Math.floor(anims[animState].f));
 			anims['stay'].step();

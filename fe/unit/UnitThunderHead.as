@@ -162,7 +162,7 @@ package fe.unit {
 			setUgolPos();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (sost == 1 && dopWeapon) {
 				dopWeapon.setNull();
 			}
@@ -340,7 +340,7 @@ package fe.unit {
 		}
 		
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost>1 && t_die<150) {
 				t_die++;
 				vzdrzhne(t_die)

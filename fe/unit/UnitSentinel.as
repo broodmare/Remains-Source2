@@ -43,7 +43,7 @@ package fe.unit {
 			newPart('metal',12);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
@@ -51,7 +51,7 @@ package fe.unit {
 			if (f) kolRock=6;
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');

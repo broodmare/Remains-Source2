@@ -124,7 +124,7 @@ package fe.unit
 			if (nlevel>10) damage1*=(1+(nlevel-10)*0.1);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			oduplenie=World.oduplenie/2;
 		}

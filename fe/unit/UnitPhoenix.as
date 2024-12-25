@@ -5,8 +5,8 @@ package fe.unit {
 	
 	public class UnitPhoenix extends Unit {
 		
-		var t_fall:int=0;
-		static var questOk:Boolean=false;
+		private var t_fall:int=0;
+		private static var questOk:Boolean=false;
 		
 		// Constructor
 		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -47,7 +47,7 @@ package fe.unit {
 			newPart('green_spark',25);
 		}
 
-		public override function animate() {
+		public override function animate():void {
 			if (aiState==0) animState='stay';
 			else animState='fly';
 			if (animState!=animState2) {
@@ -70,11 +70,11 @@ package fe.unit {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (World.w.game.triggers['tame']>=5) die();
 		}
 		
-		function tame() {
+		private function tame() {
 			if (!questOk) World.w.game.addQuest('tamePhoenix');
 			storona=(coordinates.X > World.w.gg.coordinates.X)? -1:1;
 			if (World.w.invent.items['radcookie'].kol>0) {

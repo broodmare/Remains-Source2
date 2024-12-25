@@ -34,7 +34,7 @@ package fe.unit {
 			vis.y = coordinates.Y;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (sost==1) {
 				if (f) {
 					//сбросить эффекты

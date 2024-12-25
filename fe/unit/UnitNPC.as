@@ -141,7 +141,7 @@ package fe.unit {
 			setInter();
 		}
 
-		public override function addVisual() {
+		public override function addVisual():void {
 			super.addVisual();
 			if (targNPC) {
 				targNPC.refresh();
@@ -162,7 +162,7 @@ package fe.unit {
 			inter.update();
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (t_anim > 0) t_anim--;
 			else

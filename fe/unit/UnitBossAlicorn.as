@@ -133,14 +133,14 @@ package fe.unit {
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false):void {
 			if (!isNoResBoss()) isShit=true;
 			super.setNull(f);
 			if (teleObj) dropTeleObj();
 			aiState=aiSpok=0;
 		}
 
-		public override function animate() {
+		public override function animate():void {
 			try {
 				var cframe:int;
 				if (sost==2) { 

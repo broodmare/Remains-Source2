@@ -19,7 +19,7 @@ package fe.unit {
 			if (quiet) id_replic = '';
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');

@@ -96,7 +96,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function animate() {
+		public override function animate():void {
 			vis.gotoAndStop(aiState);
 			if (aiState==0 || aiState==1) { //сдох
 				if (animState!='stay') {

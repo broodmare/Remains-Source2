@@ -79,7 +79,7 @@ package fe.unit {
 			return obj;
 		}	
 	
-		public override function animate() {
+		public override function animate():void {
 
 		}
 		

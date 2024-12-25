@@ -1,5 +1,5 @@
-package fe.projectile
-{
+package fe.projectile {
+
 	import fe.util.Vector2;
 	import fe.unit.Unit;
 	
@@ -20,7 +20,7 @@ package fe.projectile
 			manevr = man;
 		}
 		
-		public override function step() {
+		public override function step():void {
 			if (!babah && cel && manevr>0) {
 				p.x = cel.coordinates.X - coordinates.X;
 				p.y = (cel.topBound + cel.bottomBound) / 2 - coordinates.Y;
