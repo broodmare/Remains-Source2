@@ -74,8 +74,8 @@ package fe.unit {
 			osn.x = -osn.width / 2;
 			osn.y = -osn.height / 2;
 			
-			moln1 = new ThunderHeadMoln();
-			moln2 = new ThunderHeadMoln();
+			moln1 = new ThunderHeadMoln();	// .SWF Dependency
+			moln2 = new ThunderHeadMoln();	// .SWF Dependency
 			
 			moln1.blendMode=moln2.blendMode='screen';
 			moln1.alpha = 0;
@@ -169,7 +169,7 @@ package fe.unit {
 			super.setNull(f);
 		}
 
-		function createTurret(n:int, bindX:Number, bindY:Number, rot:int = 0, mega:Boolean = false) {
+		private function createTurret(n:int, bindX:Number, bindY:Number, rot:int = 0, mega:Boolean = false) {
 			var un:Unit = loc.createUnit('ttur', 0, 0, true, null, n.toString());
 			(un as UnitThunderTurret).head = this;
 			(un as UnitThunderTurret).bindX = bindX * 3;
@@ -194,13 +194,13 @@ package fe.unit {
 		}
 		
 		public override function run(div:int=1) {
-			leftBound = coordinates.X - objectWidth / 2 + 300 * 3;
-			rightBound = leftBound + 1370 * 3;
-			topBound = this.topBoundToCenter + 170 * 3;
-			bottomBound = topBound + 580 * 3;
+			this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth + 300 * 3;
+			this.boundingBox.right = this.boundingBox.left + 1370 * 3;
+			this.boundingBox.top = this.boundingBox.top + 170 * 3;
+			this.boundingBox.bottom = this.boundingBox.top + 580 * 3;
 		}
 		
-		function setUgolPos() {
+		private function setUgolPos() {
 			var def:Number = Math.sin(ugol / 45 * Math.PI);
 			var dif:Number = Math.sin(ugol / 90 * Math.PI);
 			var ugol2:Number = -def * 12 + ugol;
@@ -395,7 +395,7 @@ package fe.unit {
 			}
 		}
 		
-		function emit() {
+		private function emit() {
 			var nx:Number = coordinates.X;
 			var ny:Number = coordinates.Y;
 			if (nx < 200) nx = 200;

@@ -40,9 +40,9 @@ Wip:
 Bugs:
  - Stairs are broke unless jumping/falling onto them.
  - Audio fails to play frequently.
- - Beartraps can't be disarmed.
+ - Can't disarm traps.
  - Main menu theme plays for a moment before the game realizes it should be muted.
- - Wall turrets are spawning, falling straight down, then repeating
+ - Can't exit stages
 
 \#####
 

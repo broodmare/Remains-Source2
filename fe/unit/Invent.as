@@ -257,7 +257,7 @@ package fe.unit
 			if (pot.@hhplong.length()) hhplong=pot.@hhplong*gg.pers.healMult;
 			gg.heal(hhp,0,false);
 			gg.heal(hhplong,1,false);
-			if (hhp+hhplong>0) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.objectHeight/2, {txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
+			if (hhp+hhplong>0) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.boundingBox.halfHeight, {txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
 			if (pot.@hrad.length()) gg.heal(pot.@hrad*gg.pers.healMult,2);
 			if (pot.@hpoison.length()) gg.heal(pot.@hpoison, 4, false);
 			if (pot.@hcut.length()) gg.heal(pot.@hcut, 3, false);
@@ -947,7 +947,7 @@ package fe.unit
 			if (kol>items[nid].kol) kol=items[nid].kol;
 			if (kol<=0) return;
 			var item:Item=new Item(null,nid,kol);
-			var loot:Loot=new Loot(World.w.loc, item, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight / 2, true, false, false);
+			var loot:Loot=new Loot(World.w.loc, item, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, true, false, false);
 			minusItem(nid,kol,false);
 		}
 		

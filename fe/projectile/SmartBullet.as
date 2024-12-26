@@ -1,12 +1,13 @@
 package fe.projectile {
 
 	import fe.util.Vector2;
+	import fe.entities.BoundingBox;
 	import fe.unit.Unit;
 	
 	public class SmartBullet  extends Bullet {
 		
 		public var manevr:Number = 3;
-		public var maxVel = 150;
+		public var maxVel:int = 150;
 		public var cel:Unit;
 		static var p:Object = {x:0, y:0};
 
@@ -23,7 +24,7 @@ package fe.projectile {
 		public override function step():void {
 			if (!babah && cel && manevr>0) {
 				p.x = cel.coordinates.X - coordinates.X;
-				p.y = (cel.topBound + cel.bottomBound) / 2 - coordinates.Y;
+				p.y = (cel.boundingBox.top + cel.boundingBox.bottom) / 2 - coordinates.Y;
 				norma(p,manevr);
 				p.x += velocity.X;
 				p.y += velocity.Y;

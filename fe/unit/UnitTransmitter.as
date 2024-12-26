@@ -38,13 +38,13 @@ package fe.unit {
 				}
 				else if (nloc.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
-					nx-=(40-objectWidth)/2-1;
+					nx -= (40 - this.boundingBox.width) / 2 - 1;
 					vis.osn.gotoAndStop(2);
 					fixed=true;
 				}
-				else if (nloc.getAbsTile(nx+40, ny-10).phis) {
+				else if (nloc.getAbsTile(nx + 40, ny - 10).phis) {
 					cep=3;
-					nx+=(40-objectWidth)/2-1;
+					nx += (40 - this.boundingBox.width) / 2 - 1;
 					vis.osn.gotoAndStop(2);
 					vis.osn.scaleX=-1;
 					fixed=true;
@@ -54,7 +54,7 @@ package fe.unit {
 		}
 
 		public override function expl()	{
-			newPart('metal',4);
+			newPart('metal', 4);
 		}
 
 		public override function setVisPos() {
@@ -83,7 +83,7 @@ package fe.unit {
 				upKoef+=0.05;
 				if (rasst2<dist*dist) {
 					rasst=Math.sqrt(rasst2);
-					var rkoef=(dist-rasst)/dist;
+					var rkoef:Number = (dist-rasst)/dist;
 					if (rkoef<0.5) rkoef*=2;
 					else rkoef=1;
 					if (rkoef>upKoef) rkoef=upKoef;

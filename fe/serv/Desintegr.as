@@ -98,7 +98,7 @@ package fe.serv {
 			}
 			else if (burnN>burnTime1 && burnN<=burnTime2+burnTime1)  {
 	   			burnBmp.pixelDissolve(burnBmp, burnBmp.rect, new Point(0,0), burnRnd, burnKolPix*(burnN-burnTime1)/burnTime2, 0x00FF0000);
-				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart, owner.loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2, {rx:owner.objectWidth*0.75, ry:owner.objectHeight*0.5});
+				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart, owner.loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, {rx:owner.boundingBox.width*0.75, ry:owner.boundingBox.height*0.5});
 			}
 			else if (burnN>=burnTime2+burnTime1) {
 				vse=true;

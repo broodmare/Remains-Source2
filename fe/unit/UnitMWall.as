@@ -27,7 +27,7 @@ package fe.unit {
 		}
 
 		public override function expl()	{
-			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:12,rx:objectWidth, ry:objectHeight});
+			Emitter.emit('pole', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
 		}
 		
 		public override function addVisual():void {

@@ -166,7 +166,7 @@ package fe.weapon  {
 		public function lineCel():int {
 			var res=0;
 			var bx:Number = owner.coordinates.X;
-			var by:Number = owner.coordinates.Y - owner.objectHeight * 0.75;
+			var by:Number = owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
 			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
@@ -325,7 +325,7 @@ package fe.weapon  {
 					}
 				}
 				else if (mtip==1) {
-					rot=Math.atan2(celY - (owner.coordinates.Y - owner.objectHeight / 2), celX - owner.coordinates.X);
+					rot=Math.atan2(celY - (owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
 					cos2=Math.cos(rot);
 					sin2=Math.sin(rot);
 					plX=cos2*anim*atDlina;
@@ -347,7 +347,7 @@ package fe.weapon  {
 					}
 				}
 				else if (mtip==2) {
-					rot=Math.atan2(celY - (owner.coordinates.Y - owner.objectHeight / 2), celX - owner.coordinates.X);
+					rot=Math.atan2(celY - (owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
 					cos2 = Math.cos(rot);
 					sin2 = Math.sin(rot);
 					if (t_attack==1) {
@@ -376,7 +376,7 @@ package fe.weapon  {
 					rot=-Math.PI/2-Math.PI/6*storona;
 				}
 				else {
-					rot=Math.atan2(celY-(owner.coordinates.Y - owner.objectHeight / 2), celX - owner.coordinates.X);
+					rot=Math.atan2(celY-(owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
 				}
 			}
 			

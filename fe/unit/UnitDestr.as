@@ -3,10 +3,11 @@ package fe.unit {
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
+
 	public class UnitDestr extends Unit {
 		
-		var tr:int=1;
-		var t_part:int=10;
+		private var tr:int=1;
+		private var t_part:int=10;
 		
 		// Constructor
 		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -27,7 +28,7 @@ package fe.unit {
 			id=id+tr;
 			getXmlParam();
 			if (tr==1) {
-				vis=new visualStolp();
+				vis=new visualStolp();	// .SWF Dependency
 				boss=true;
 				noDestr=true;
 			}
@@ -45,11 +46,11 @@ package fe.unit {
 				if (t_part==0) t_part=10;
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
-					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*objectHeight);
+					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * this.boundingBox.height);
 				}
 				else {
 					vis.osn.gotoAndStop(2);
-					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*objectHeight);
+					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * this.boundingBox.height);
 				}
 			}
 		}

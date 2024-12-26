@@ -7,11 +7,11 @@ package fe.unit {
 	
 	public class UnitMonstrik extends Unit {
 
-		var optDistAtt:int=100;
-		var optJumping:Boolean=false;
-		var optJumpAtt:Boolean=true;
-		var optAnimAtt:Boolean=false;
-		var t_punch:int=0;
+		private var optDistAtt:int=100;
+		private var optJumping:Boolean=false;
+		private var optJumpAtt:Boolean=true;
+		private var optAnimAtt:Boolean=false;
+		private var t_punch:int=0;
 
 		private static var tileY:int = Tile.tileY;
 		
@@ -165,9 +165,9 @@ package fe.unit {
 
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+			if (World.w.enemyAct <= 0) {
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -207,8 +207,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			}
 			else {
 				vision=aiVis;

@@ -1375,7 +1375,13 @@
 		<param trup='0' overlook='0' robot='1' acttrap='1'/>
 		<snd die='expl2'/>
 		<vis vclass='visualTurret0'/>
-		<w id='turret1'/><w id='turret2'/><w id='turret3'/><w id='turret4'/><w id='turret5'/><w id='turret6'/><w id='turret7'/>
+		<w id='turretWep1'/>
+		<w id='turretWep2'/>
+		<w id='turretWep3'/>
+		<w id='turretWep4'/>
+		<w id='turretWep5'/>
+		<w id='turretWep6'/>
+		<w id='turretWep7'/>
 	</unit>
 	
 	<unit id='turret1' fraction='4' cont='turret1' xp='150' cat='3'>
@@ -1386,7 +1392,13 @@
 		<param trup='0' overlook='0' robot='1' acttrap='1'/>
 		<snd die='expl1'/>
 		<vis vclass='visualTurret1'/>
-		<w id='turret1'/><w id='turret2'/><w id='turret3'/><w id='turret4'/><w id='turret5'/><w id='turret6'/><w id='turret7'/>
+		<w id='turretWep1'/>
+		<w id='turretWep2'/>
+		<w id='turretWep3'/>
+		<w id='turretWep4'/>
+		<w id='turretWep5'/>
+		<w id='turretWep6'/>
+		<w id='turretWep7'/>
 	</unit>
 	
 	<unit id='turret2' fraction='4' cont='turret' xp='120' cat='3'>
@@ -1397,7 +1409,13 @@
 		<param trup='0' overlook='1' robot='1' acttrap='1'/>
 		<vis vclass='visualTurret2'/>
 		<snd die='expl2'/>
-		<w id='turret1'/><w id='turret2'/><w id='turret3'/><w id='turret4'/><w id='turret5'/><w id='turret6'/><w id='turret7'/>
+		<w id='turretWep1'/>
+		<w id='turretWep2'/>
+		<w id='turretWep3'/>
+		<w id='turretWep4'/>
+		<w id='turretWep5'/>
+		<w id='turretWep6'/>
+		<w id='turretWep7'/>
 	</unit>
 	
 	<unit id='turret3' fraction='4' cont='turret1' xp='160' cat='3'>
@@ -1408,7 +1426,13 @@
 		<param trup='0' robot='1' acttrap='1' retdam='1'/>
 		<vis vclass='visualTurret3'/>
 		<snd die='expl3'/>
-		<w id='turret1'/><w id='turret2'/><w id='turret3'/><w id='turret4'/><w id='turret5'/><w id='turret6'/><w id='turret7'/>
+		<w id='turretWep1'/>
+		<w id='turretWep2'/>
+		<w id='turretWep3'/>
+		<w id='turretWep4'/>
+		<w id='turretWep5'/>
+		<w id='turretWep6'/>
+		<w id='turretWep7'/>
 	</unit>
 	
 	<unit id='turret4' fraction='4' cont='turret' xp='180' cat='3'>
@@ -1419,7 +1443,13 @@
 		<param trup='0' overlook='0' robot='1' acttrap='1'/>
 		<snd die='expl3'/>
 		<vis vclass='visualTurret4'/>
-		<w id='turret1'/><w id='turret2'/><w id='turret3'/><w id='turret4'/><w id='turret5'/><w id='turret6'/><w id='turret7'/>
+		<w id='turretWep1'/>
+		<w id='turretWep2'/>
+		<w id='turretWep3'/>
+		<w id='turretWep4'/>
+		<w id='turretWep5'/>
+		<w id='turretWep6'/>
+		<w id='turretWep7'/>
 	</unit>
 	
 	<unit id='turret5' fraction='4' cont='turret' xp='180' cat='3'>

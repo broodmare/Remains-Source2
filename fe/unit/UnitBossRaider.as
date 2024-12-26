@@ -125,7 +125,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y - objectHeight * 0.58;
+			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
 		
 		public override function dropLoot() {
@@ -156,8 +156,8 @@ package fe.unit {
 			return td;
 		}
 
-		function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, this.topBoundToCenter, true);
+		private function emit() {
+			var un:Unit=loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -213,8 +213,8 @@ package fe.unit {
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -235,7 +235,7 @@ package fe.unit {
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			if (stay) celDY = celY - coordinates.Y + objectHeight;
+			if (stay) celDY = celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -353,7 +353,7 @@ package fe.unit {
 			}
 		}
 		
-		function quake() {
+		private function quake() {
 			loc.earthQuake(40);
 			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
 		}

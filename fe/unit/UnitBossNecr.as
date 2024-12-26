@@ -154,7 +154,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
-			weaponY = coordinates.Y-objectHeight*0.58;
+			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
@@ -218,8 +218,8 @@ package fe.unit {
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-objectHeight;
-				celX = coordinates.X+objectWidth*storona*2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			if (levit && protculd_t<=0) castProtect(1);
@@ -306,7 +306,7 @@ package fe.unit {
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 			//поворот от игрока
 			if (aiTCh%10==1 && aiState==1 && celDY<80 && celDY>-80) {
 				if (celDX<0 && celDX>-400) aiNapr=storona=1;
@@ -433,7 +433,7 @@ package fe.unit {
 			if (prot_n>=3) prot_n=0;
 		}
 		
-		function spawn(n:int=0) {
+		private function spawn(n:int=0) {
 			if (kolChild>=kol_emit) return;
 			loc.resetUnits();
 			for (var i=0; i<3; i++) {
@@ -463,10 +463,10 @@ package fe.unit {
 
 		public function castCurse(n:int=0, otlozh:int=0) {
 			var nx:Number = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (Math.random()-0.5)*50;
-			var ny:Number = loc.gg.coordinates.Y - loc.gg.objectHeight / 2 + loc.gg.velocity.Y * 15 + (Math.random() - 0.5) * 30;
+			var ny:Number = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15 + (Math.random() - 0.5) * 30;
 			if (n == 2) {
 				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? 1 : -1);
-				ny = loc.gg.coordinates.Y - loc.gg.objectHeight / 2 + loc.gg.velocity.Y * 15;
+				ny = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15;
 			}
 			if (n == 1) {
 				nx += Math.random() * 200 - 100;

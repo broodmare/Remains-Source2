@@ -100,8 +100,8 @@ package fe.unit {
 			var jmp:Number=0;
 
 			if (World.w.enemyAct<=0) {
-				celY=coordinates.Y-objectHeight;
-				celX=coordinates.X+objectWidth*storona*2;
+				celY=coordinates.Y - this.boundingBox.height;
+				celX=coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			if (aiLaz>0) aiLaz--;
@@ -141,8 +141,8 @@ package fe.unit {
 				if (isSit) unsit();
 			}
 			//направление
-			celDX=celX-coordinates.X;
-			celDY=celY-coordinates.Y+objectHeight;
+			celDX = celX - coordinates.X;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -152,8 +152,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY=coordinates.Y-objectHeight;
-				celX=coordinates.X+objectWidth*storona*2;
+				celY=coordinates.Y - this.boundingBox.height;
+				celX=coordinates.X + this.boundingBox.width * storona * 2;
 			} else {
 				vision=1;
 			}
@@ -292,13 +292,13 @@ package fe.unit {
 			if (stay && aiState>0) {
 				//пригнуться
 				if (turnX==-1) {
-					if (loc.getAbsTile(rightBound+2,topBound).phis && loc.getAbsTile(rightBound+2,topBound+40).phis==0 && loc.getAbsTile(rightBound+2,topBound+80).phis==0) {
+					if (loc.getAbsTile(this.boundingBox.right + 2,this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.right+2,this.boundingBox.top+40).phis==0 && loc.getAbsTile(this.boundingBox.right+2,this.boundingBox.top+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
 				}
 				if (turnX==1) {
-					if (loc.getAbsTile(leftBound-2,topBound).phis && loc.getAbsTile(leftBound-2,topBound+40).phis==0 && loc.getAbsTile(leftBound-2,topBound+80).phis==0) {
+					if (loc.getAbsTile(this.boundingBox.left-2,this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.left-2,this.boundingBox.top+40).phis==0 && loc.getAbsTile(this.boundingBox.left-2,this.boundingBox.top+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
@@ -331,10 +331,8 @@ package fe.unit {
 			
 		}
 		//поиск лестницы
-		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
-		{
-			try
-			{
+		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
+			try {
 				var i:int = int((coordinates.X + nx) / Tile.tileX);
 				var j:int = int((coordinates.Y + ny) / Tile.tileY);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
@@ -349,16 +347,14 @@ package fe.unit {
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) coordinates.X=loc.getTile(i, j).phX1+objectWidth/2;
-					else coordinates.X=loc.getTile(i, j).phX2-objectWidth/2;
-					leftBound=coordinates.X-objectWidth/2;
-					rightBound=coordinates.X+objectWidth/2;
+					if (isLaz==-1) coordinates.X=loc.getTile(i, j).phX1 + this.boundingBox.halfWidth;
+					else coordinates.X=loc.getTile(i, j).phX2 - this.boundingBox.halfWidth;
+					this.boundingBox.center(coordinates);
 					stay=false;
 					return true;
 				}
 			}
-			catch (err) 
-			{
+			catch (err) {
 				trace('ERROR: (00:7)');
 			}
 			isLaz=0;

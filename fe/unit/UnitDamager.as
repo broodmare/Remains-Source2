@@ -8,6 +8,7 @@ package fe.unit {
 	import fe.serv.LootGen;
 	import fe.weapon.WThrow;
 	import fe.projectile.Bullet;
+	import fe.entities.BoundingBox;
 	
 	//механизмы, наносящие урон
 	
@@ -43,7 +44,7 @@ package fe.unit {
 			}
 			
 			mat=1;
-			vis=Res.getVis('vis'+id,vismtrap);
+			vis=Res.getVis('vis'+id,vismtrap);	// .SWF Dependency
 			getXmlParam();
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
@@ -81,7 +82,7 @@ package fe.unit {
 			setStatus();
 		}
 		
-		function setWeapon() {
+		private function setWeapon() {
 			if (tipDamager==1) {
 				if (tr=='0') tr=Math.floor(Math.random()*5+1).toString();
 				if (tr=='1') weap='lshot';
@@ -165,13 +166,13 @@ package fe.unit {
 				else if (tipDamager==1)
 				{
 					celX = coordinates.X + 200 * storona;
-					celY = this.topBoundToCenter;
+					celY = this.boundingBox.top;
 					currentWeapon.rot=(storona<0)?Math.PI:0;
 				}
 			}
 		}
 
-		function setStatus() {
+		private function setStatus() {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -198,7 +199,7 @@ package fe.unit {
 		}
 		
 		//обезвредить
-		function disarm()
+		private function disarm()
 		{
 			if (tipDamager == 1)
 			{
@@ -227,7 +228,7 @@ package fe.unit {
 			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,'frag',1);
 		}
 		
-		function iExpl() {
+		private function iExpl() {
 			var bul:Bullet;
 			if (tipDamager==2) {
 				damageExpl=currentWeapon.damageExpl*kolammo;
@@ -248,7 +249,7 @@ package fe.unit {
 		}
 		
 		//активировать
-		function activate() {
+		public function activate() {
 			if (status!=0 || sost>1) return;
 			if (tipDamager==3) {
 				iExpl();

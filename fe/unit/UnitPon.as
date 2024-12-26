@@ -23,20 +23,20 @@ package fe.unit {
 		//положение оружия
 		public override function setWeaponPos(tip:int=0) {
 				if (weaponKrep==0) { //телекинез
-					if (storona>0 && celX>rightBound || storona<0 && celX<leftBound) weaponX = coordinates.X + objectWidth * storona;
+					if (storona>0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) weaponX = coordinates.X + this.boundingBox.width * storona;
 					else weaponX = coordinates.X;
 					if (isLaz) weaponX = coordinates.X;
 					if (loc.getTile(int((weaponX + storona * 15) / tileX), int(weaponY / tileY)).phis == 1) weaponX = coordinates.X;
-					if (tip==1) weaponY = coordinates.Y - objectHeight * 0.4;
-					else weaponY = coordinates.Y - objectHeight * 0.7;
+					if (tip==1) weaponY = coordinates.Y - this.boundingBox.height * 0.4;
+					else weaponY = coordinates.Y - this.boundingBox.height * 0.7;
 				}
 				else if (tip==1 || tip==2 || tip==4) {	 //в зубах	
 					weaponX = coordinates.X;
-					weaponY = coordinates.Y - objectHeight * 0.5;
+					weaponY = coordinates.Y - this.boundingBox.height * 0.5;
 				}
 				else { //сбоку
 					weaponX = coordinates.X;
-					weaponY = coordinates.Y - objectHeight * 0.5;
+					weaponY = coordinates.Y - this.boundingBox.height * 0.5;
 				}
 		}
 		

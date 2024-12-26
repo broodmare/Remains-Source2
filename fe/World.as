@@ -63,8 +63,8 @@ package  fe {
 		public var app:Appear;			//настройки внешности персонажа
 		
 		//Компоненты локаций
-		public var land:Land;		//текущая местность
-		public var loc:Location;	//текущая локация
+		public var land:Land;		// [Current land]
+		public var loc:Location;	// [Current location]
 		public var rooms:Array;
 		
 		//Рабочие переменные
@@ -143,7 +143,7 @@ package  fe {
 		public var vsComp:Boolean=true;		
 		public var vsIngr:Boolean=true;		
 		
-		//Глобальные константы
+		// Global Constants
 		public var actionDist:int = 40000;
 
 		public static const cellsX:int = 48;	// How many tiles there are in a room (horizontally)

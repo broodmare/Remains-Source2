@@ -2208,7 +2208,7 @@
 		<ammo holder='30' reload='60'/>
 	</weapon1>
 	
-	<weapon id='turret1' tip='0'>
+	<weapon id='turretWep1' tip='0'>
 		<char damage='6.5' rapid='3' prec='10' knock='3' destroy='10'/>
 		<phis speed='200' deviation='8'/>
 		<vis tipdec='1' vweap='viswturret'/> 
@@ -2216,7 +2216,7 @@
 		<ammo holder='100' reload='60'/>
 	</weapon>
 	
-	<weapon id='turret2' tip='0'>
+	<weapon id='turretWep2' tip='0'>
 		<char damage='8' rapid='10' prec='12' tipdam='5' knock='0' destroy='30'/>
 		<phis speed='2000' deviation='5'/>
 		<dop effect='blind' ch='0.05'/>
@@ -2225,7 +2225,7 @@
 		<ammo holder='12' reload='60'/>
 	</weapon>
 	
-	<weapon id='turret3' tip='0'>
+	<weapon id='turretWep3' tip='0'>
 		<char damage='26' rapid='40' prec='8' tipdam='6' knock='10' destroy='100'/>
 		<phis speed='50' deviation='8'/>
 		<vis tipdec='15' vweap='viswturret' vbul='plasma'/> 
@@ -2233,7 +2233,7 @@
 		<ammo holder='12' reload='60'/>
 	</weapon>
 	
-	<weapon id='turret4' tip='0'>
+	<weapon id='turretWep4' tip='0'>
 		<char damage='50' rapid='30' prec='11' tipdam='3' knock='0' destroy='50'/>
 		<phis speed='2000' deviation='5'/>
 		<vis vbul='termo' vweap='viswturret' tipdec='11' flare='laser' spring='2'/> 
@@ -2242,7 +2242,7 @@
 		<ammo holder='15' reload='60'/>
 	</weapon>
 	
-	<weapon id='turret5' tip='0'>
+	<weapon id='turretWep5' tip='0'>
 		<char damage='15' rapid='3' prec='16' tipdam='5' destroy='30'/>
 		<phis speed='2000' deviation='3'/>
 		<vis tipdec='12' vbul='laser1' spring='2' flare='plasma2' vweap='viswturret'/> 
@@ -2251,7 +2251,7 @@
 		<ammo holder='20' reload='60'/>
 	</weapon>
 	
-	<weapon id='turret6' tip='0'>
+	<weapon id='turretWep6' tip='0'>
 		<char damage='11' rapid='2' prec='12' knock='5' pier='15' destroy='10'/>
 		<phis speed='200' drot2='6' deviation='5'/>
 		<vis tipdec='2' vweap='viswturret'/> 
@@ -2259,7 +2259,7 @@
 		<ammo holder='90' reload='60'/>
 	</weapon>
 	
-	<weapon id='turret7' tip='0'>
+	<weapon id='turretWep7' tip='0'>
 		<char damage='60' rapid='25' prec='20' tipdam='9' crit='2' knock='0' destroy='50'/>
 		<phis speed='2000' deviation='2'/>
 		<vis vbul='laser3' vweap='viswturret' tipdec='12' spring='2'/> 
@@ -2268,7 +2268,7 @@
 		<dop probiv='1'/>
 	</weapon>
 	
-	<weapon id='turret10' tip='0'>
+	<weapon id='turretWep10' tip='0'>
 		<char damage='25' rapid='3' prec='0' tipdam='18' knock='5' destroy='10'/>
 		<phis speed='200' deviation='3'/>
 		<ammo holder='30' reload='55'/>

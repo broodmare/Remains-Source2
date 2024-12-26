@@ -692,16 +692,14 @@ package fe.unit {
 		public function expa(dxp:int, nx:Number=-1, ny:Number=-1) {
 			if (dxp<=0) return;
 			xpCur+=dxp;
-			if (nx < 0 || ny < 0)
-			{
+			if (nx < 0 || ny < 0) {
 				nx = gg.coordinates.X;
-				ny = gg.coordinates.Y - gg.objectHeight;
+				ny = gg.boundingBox.bottom;
 			}
 			if (World.w.testLoot) {
 				World.w.summxp+=dxp;
 			} 
-			else
-			{
+			else {
 				gg.numbEmit.cast(gg.loc, nx, ny, {txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
 
@@ -745,10 +743,10 @@ package fe.unit {
 		}
 
 		public function getPostSkLevel(n:int):int {
-			if (n<postSkTab[0]) return 0;
-			var res=0;
-			for (var i=0; i<postSkTab.length; i++) {
-				if (n>=postSkTab[i]) res=i+1;
+			if (n < postSkTab[0]) return 0;
+			var res:int = 0;
+			for (var i:int = 0; i < postSkTab.length; i++) {
+				if (n >= postSkTab[i]) res = i + 1;
 			}
 			return res;
 		}
@@ -1219,7 +1217,7 @@ package fe.unit {
 				if (sst!=bloodSt) setParameters();
 			}
 			if (tip==6) {
-				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.objectHeight/2, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
+				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.boundingBox.halfHeight, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
 				var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;

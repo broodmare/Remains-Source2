@@ -6,7 +6,7 @@ package fe.loc {
 
 
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.entities.BoundingBox;
 	import fe.graph.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
@@ -44,18 +44,18 @@ package fe.loc {
 		public var defaultTile:Tile;			//пустой блок
 		public var units:Vector.<Unit>;			//юниты
 		public var ups:Array;			// [Spawn random units]
-		public var objs:Array;			//боксы
+		public var objs:Array;			// [Boxes]
 		public var bonuses:Array;		//бонусы
 		public var areas:Array;			//области
 		public var acts:Array;			//активные объекты (отображаемые на карте)
 		public var saves:Array;			//объекты, подлежащие сохранению
 		public var backobjs:Array;		//фоновые объекты
-		public var grenades:Array;		//активные гранаты
+		public var grenades:Array;		// [Active grenades]
 		public var gg:UnitPlayer;
 		public var celObj:Obj, celDist:Number=-1;	//целевой объект и расстояние до него
-		public var unitCoord;			//объект для координации юнитов
+		public var unitCoord;			// [object for unit coordination]
 		
-		//входы и посещение
+		// [Entrances and visiting]
 		public var spawnPoints:Array;	//точки спавна | Array of objects containing two Numbers {x, y}
 		public var enspawn:Array;		//точки спавна врагов
 		public var doors:Array;			//проходы в другие локации
@@ -64,11 +64,11 @@ package fe.loc {
 		public var active:Boolean=false;		//активна в данный момент
 		public var visited:Boolean=false;		//посещена
 		
-		//служебные
+		// [Serivce]
 		public var cp:CheckPoint;
 		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
-		public var objsT:Array;				//активные объекты
-		public var recalcTiles:Vector.<Tile>;		//пересчитать воду
+		public var objsT:Array;						// [Active objects]
+		public var recalcTiles:Vector.<Tile>;		// [Count the water]
 
 		//цепочка выполнения
 		public var firstObj:Entity;
@@ -128,10 +128,10 @@ package fe.loc {
 		public var electroDam:Number=0;
 		public var trus:Number=0;				//постоянная тряска
 		
-		//враги
+		// [Enemies]
 		public var tipEnemy:int=-1;				//тип случайных врагов
 		public var kolEn:Array=[0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
-		private var tipEn:Array = ['','enl1','enl2','enf1','enc1','lov'];
+		private var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
 		public var tipSpawn:String='enl2';
 		public var kolEnSpawn:int=0;		//может заспавнится обычных врагов
 		public var tileSpawn:Number=0;		//спавн при разрушении блоков
@@ -142,12 +142,12 @@ package fe.loc {
 		public var t_alarm:int=0;			//счётчик сигнализации
 		public var t_alarmsp:int=0;			//счётчик спавна врагов
 		
-		//бонусы и опыт
+		// [Bonuses and experience]
 		public var kolXp:int=0, maxXp:int=0;
 		public var unXp:int=100;
 		public var summXp:int=0;
 		
-		//Уровень сложности
+		// [Difficulty level]
 		public var locDifLevel:Number=0;
 		public var biom:int=0;
 		public var locksLevel:Number=0;		//уровень замков 0-25
@@ -172,7 +172,7 @@ package fe.loc {
 		public var maxX:int;
     	public var maxY:int;
 
-		public var spaceX:int;	//размер локации в блоках
+		public var spaceX:int;	// [Location size in tiles]
 		public var spaceY:int;
 		private var halfSpaceX:int;
 		private var halfSpaceY:int;
@@ -708,7 +708,7 @@ package fe.loc {
 					un.putLoc(this,nx,ny);
 				}
 				else {
-					var size:int = Math.floor((un.objectWidth-1)/40)+1;
+					var size:int = Math.floor((un.boundingBox.width - 1) / 40)+1;
 					un.putLoc(this,(nx+0.5*size)*tileX,(ny+1)*tileY-1);
 				}
 				if (active) {
@@ -743,9 +743,9 @@ package fe.loc {
 		//создать феникса, сидящего на ящике
 		private function createPhoenix(box:Box):Boolean {
 			if (box.wall || !box.shelf) return false;
-			if (collisionUnit(box.coordinates.X,box.topBound-1,38,38)) return false;
+			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 38, 38)) return false;
 			var un:Unit=new UnitPhoenix();
-			un.putLoc(this, box.coordinates.X, box.topBound-1);
+			un.putLoc(this, box.coordinates.X, box.boundingBox.top-1);
 			addObj(un);
 			units.push(un);
 			kol_phoenix++;
@@ -756,10 +756,10 @@ package fe.loc {
 		private function createTransmitter(box:Box):Boolean {
 			if (box.wall || !box.shelf) return false;
 			if (land.rnd && Math.random()<0.5) return false;
-			if (collisionUnit(box.coordinates.X, box.topBound-1,30,20)) return false;
+			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 30, 20)) return false;
 			var un:Unit=new UnitTransmitter('box');
 			un.setLevel(enemyLevel);
-			un.putLoc(this,box.coordinates.X,box.topBound-1);
+			un.putLoc(this, box.coordinates.X, box.boundingBox.top - 1);
 			addObj(un);
 			units.push(un);
 			return true;
@@ -775,7 +775,7 @@ package fe.loc {
 				if (nsur==null) return;
 			}
 			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this,item,box.coordinates.X, box.coordinates.Y-box.objectHeight-3,false,false,false);
+			var l:Loot=new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
 			if (base) {
 				l.inter.active=false;
 				l.levitPoss=false;
@@ -1616,7 +1616,7 @@ package fe.loc {
 		
 		// [drawing the map] (Mini-map in the pipbuck)
 		public function drawMap(m:BitmapData) {
-			var vid:Number=1;
+			var vid:Number = 1;
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {
 					var color:uint = 0x003323;
@@ -1666,10 +1666,10 @@ package fe.loc {
 			var startXIndex:int = (landX - land.minLocX) * worldCellsX;
 			var startYIndex:int = (landY - land.minLocY) * worldCellsY;
 
-			var xStart:int	= startXIndex + int(obj.leftBound / tileX + 0.5);
-			var xEnd:int	= startXIndex + int(obj.rightBound / tileX - 0.5);
-			var yStart:int	= startYIndex + int(obj.topBound / tileY + 0.4);
-			var yEnd:int	= startYIndex + int(obj.bottomBound / tileY - 0.5);
+			var xStart:int	= startXIndex + int(obj.boundingBox.left / tileX + 0.5);
+			var xEnd:int	= startXIndex + int(obj.boundingBox.right / tileX - 0.5);
+			var yStart:int	= startYIndex + int(obj.boundingBox.top / tileY + 0.4);
+			var yEnd:int	= startYIndex + int(obj.boundingBox.bottom / tileY - 0.5);
 
 			for (var i:int = xStart; i <= xEnd; i++) {
 				for (var j:int = yStart; j <= yEnd; j++) {
@@ -1853,7 +1853,7 @@ package fe.loc {
 		public function lightAll():void {
 			for each (var cell:Object in objs) {
 				if (cell.light) {
-					var adjustedY:Number = cell.coordinates.Y - cell.objectHeight / 2;
+					var adjustedY:Number = cell.coordinates.Y - cell.boundingBox.halfHeight;
 
 					lighting(cell.coordinates.X - 10, adjustedY);
 					lighting(cell.coordinates.X, adjustedY);
@@ -1874,7 +1874,7 @@ package fe.loc {
 
 			if (nx == -10000) {
 				nx = gg.coordinates.X + gg.storona * 12;
-				ny = gg.topBound + gg.stayY * 0.247;
+				ny = gg.boundingBox.top + gg.boundingBox.standingHeight * 0.247;
 			}
 
 			relight_t = 10;
@@ -2064,12 +2064,12 @@ package fe.loc {
 				unitCoord.step();
 			}
 			
-			if (celObj && celObj.onCursor<=0) celObj=null;
+			if (celObj && celObj.onCursor <= 0) celObj = null;
 			if (black) {
 				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) lighting();
 				else if (relight_t > 0) lighting2();
 			}
-			isRelight=false;
+			isRelight = false;
 			getDist();
 			//если нужно, пересчитать пространство
 			if (isRebuild) rebuild();
@@ -2087,11 +2087,15 @@ package fe.loc {
 			//трясучка
 			if (quake > 0) quake--;
 			if (trus > 0) World.w.quake(trus / 2, trus);
+
+			// Bounding-box debugging (Draws each objects bounding box)
+			grafon.drawDebugLayer();
+    		
 		}
 		
 		// [Kill all enemies and open all containers]
 		public function getAll():int {
-			World.w.summxp=0;
+			World.w.summxp = 0;
 			World.w.pers.expa(unXp*9);
 			for each (var un:Unit in units) {
 				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);

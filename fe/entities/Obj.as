@@ -16,9 +16,7 @@ package  fe.entities {
 		public var uid:String;		// [Unique identifier used for script access to the object]
 		
 		public var prior:Number = 1;			// Priority?
-
-		public var objectWidth:Number = 10;		// Sprite Width
-		public var objectHeight:Number = 10;	// Sprite Height
+		
 		public var storona:int = 1;				// Sprite Facing (Left/Right)
 
 		public var rasst2:Number=0;				// Distance to player squared
@@ -36,60 +34,22 @@ package  fe.entities {
 		public var inter:Interact;				// Player interaction script 
 		
 		// Bounding box
-		public var topBound:Number;
-		public var bottomBound:Number;
-		public var leftBound:Number;
-		public var rightBound:Number;
-
+		public var boundingBox:BoundingBox;
 		
 		public var onCursor:Number=0;
 		//цветовой фильтр
 		
-		public static var nullTransfom:ColorTransform=new ColorTransform();
-		public var cTransform:ColorTransform=nullTransfom;
+		public static var nullTransfom:ColorTransform = new ColorTransform();
+		public var cTransform:ColorTransform = nullTransfom;
 		
 		// Constructor
 		public function Obj() {
-			
+			boundingBox = new BoundingBox(this.coordinates);
 		}
-
-
-		public function centerObj():void {
-			topBound	= coordinates.Y - objectHeight;
-            bottomBound	= coordinates.Y;
-            leftBound	= coordinates.X - objectWidth / 2;
-            rightBound	= coordinates.X + objectWidth / 2;
-        }
-
-		public function centerObjHorizontally():void {
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-		}
-
-		public function flattenObj():void {
-			topBound = coordinates.Y - objectHeight;
-			bottomBound = coordinates.Y;
-		}
-
-		public function get leftBoundToCenter():Number {
-			return coordinates.X + objectWidth / 2;
-		}
-		public function get rightBoundToCenter():Number {
-			return coordinates.X - objectWidth / 2;
-		}
-		public function get topBoundToCenter():Number {
-			return coordinates.Y - this.halfHeight;
-		}
-		public function get bottomBoundToCenter():Number {
-			return coordinates.Y + this.halfHeight;
-		}
-		public function get halfHeight():Number {
-			return objectHeight / 2;
-		}
-
+		
 		public override function remVisual():void {
 			super.remVisual(); 
-			onCursor=0;
+			onCursor = 0;
 		}
 		
 		public function setVisState(s:String) {
@@ -107,8 +67,8 @@ package  fe.entities {
 		public function getRasst2(obj:Obj=null):Number {
 			if (obj == null) obj = World.w.gg;
 			var nx:Number = obj.coordinates.X - coordinates.X;
-			var ny:Number = obj.coordinates.Y - obj.objectHeight / 2 - coordinates.Y + objectHeight / 2;
-			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.objectHeight * 0.75 - coordinates.Y + objectHeight / 2;
+			var ny:Number = obj.coordinates.Y - obj.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight
+			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.boundingBox.height * 0.75 - coordinates.Y + this.boundingBox.halfHeight;
 			rasst2 = nx * nx + ny * ny;
 			if (isNaN(rasst2)) rasst2 = -1;
 			return rasst2;
@@ -155,30 +115,19 @@ package  fe.entities {
 		// Change the object’s position a given location and then re-center the bounding box.
 		public function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
 			coordinates = v;
-			centerObj();
+			boundingBox.center(v);
 		}
 		
 		//копирование состояния в другой объект
 		public function copy(un:Obj) {
 			un.coordinates = coordinates;
-			un.objectWidth = objectWidth; 
-			un.objectHeight = objectHeight;
-			un.topBound = topBound;
-			un.bottomBound = bottomBound;
-			un.leftBound = leftBound;
-			un.rightBound = rightBound;
+			un.boundingBox = boundingBox;
 			un.storona = storona;
 		}
 		
 		// [Check if a bullet hit the object]
 		public function udarBullet(bul:Bullet, sposob:int = 0):int {
 			return -1;
-		}
-		
-		//  A bounding-box collision check between this object and another obj. Returns true if they overlap, false otherwise.
-		public function areaTest(obj:Obj):Boolean {
-			if (obj == null || obj.leftBound >= rightBound || obj.rightBound <= leftBound || obj.topBound >= bottomBound || obj.bottomBound <= topBound) return false;
-			else return true;
 		}
 		
 		// Triggers when the (player? object?) leaves a location. 

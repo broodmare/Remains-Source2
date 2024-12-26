@@ -71,9 +71,9 @@ package fe.unit {
 			animState='stay';
 			
 			if (glowTip>0) {
-				vlight=new visZombieLight();
+				vlight=new visZombieLight();	// .SWF Dependency
 				vis.addChild(vlight);
-				vlight.y = -objectHeight / 2;
+				vlight.y = -this.boundingBox.halfHeight;
 				vlight.blendMode='screen';
 				vlight.cacheAsBitmap=true;
 			}
@@ -115,7 +115,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X + storona * 30;
-			weaponY = coordinates.Y - objectHeight * 0.8;
+			weaponY = coordinates.Y - this.boundingBox.height * 0.8;
 		}
 		
 		public override function save():Object {
@@ -146,7 +146,7 @@ package fe.unit {
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
 				blit(anims[animState].id,t_res);
-				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5)*objectWidth, coordinates.Y-Math.random()*10);
+				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * 10);
 				return;
 			}
 			else if (sost==2 || sost==3) { //сдох
@@ -177,7 +177,7 @@ package fe.unit {
 				animState='dig';
 				if (vlight && vlight.alpha<1) {
 					vlight.alpha+=0.05;
-					vlight.y-=stayY/40;
+					vlight.y -= this.boundingBox.standingHeight / 40;
 				}
 			}
 			else {
@@ -205,9 +205,9 @@ package fe.unit {
 					// Commented out, there is no setStab function
 					//anims[animState].setStab((dy*0.6+8)/16);
 				}
-				if (vlight && vlight.alpha!=1) {
-					vlight.y=-objectHeight/2;
-					vlight.alpha=1;
+				if (vlight && vlight.alpha != 1) {
+					vlight.y = -this.boundingBox.halfHeight;
+					vlight.alpha = 1;
 				}
 			}
 			if (animState!=animState2) {
@@ -288,8 +288,8 @@ package fe.unit {
 		public function zakop() {
 			knocked=0;
 			aiState=5;
-			objectHeight=0;
-			topBound=bottomBound;
+			this.boundingBox.height = 0;
+			this.boundingBox.flatten(coordinates);
 			overLook=true;
 			levitPoss=false;
 			activateTrap=0;
@@ -315,8 +315,8 @@ package fe.unit {
 		}
 		public function vykop() {
 			knocked=knocked2;
-			objectHeight = stayY;
-			topBound = coordinates.Y - objectHeight;
+			this.boundingBox.height = this.boundingBox.standingHeight;
+			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 			aiState=3;
 			aiSpok=maxSpok+10;
 			overLook=false;
@@ -331,7 +331,7 @@ package fe.unit {
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		private function checkJump():Boolean {
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
@@ -346,25 +346,25 @@ package fe.unit {
 			return super.destroyWall(t, napr);
 		}
 		
-		function resurrect() {
+		private function resurrect() {
 			hp=maxhp;
 			sost=1;
-			objectHeight = stayY;
-			topBound = coordinates.Y - objectHeight;
+			this.boundingBox.height = this.boundingBox.standingHeight;
+			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 			fraction=Unit.F_MONSTER;
 			t_res=tIsRes;
 			tZlo=120;
 			aiTCh=30;
 			transT=false;
-			for (var i=int((leftBound)/tileX); i<=int((rightBound)/tileX); i++) {
-				for (var j=int((topBound)/tileY); j<=int((bottomBound)/tileY); j++) {
+			for (var i=int((this.boundingBox.left)/tileX); i<=int((this.boundingBox.right)/tileX); i++) {
+				for (var j=int((this.boundingBox.top)/tileY); j<=int((this.boundingBox.bottom)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.getTile(i, j))) loc.dieTile(loc.getTile(i, j));
 				}
 			}
 		}
 		
-		function quake(n:Number) {
+		private function quake(n:Number) {
 			loc.budilo(coordinates.X, coordinates.Y, 500);
 			loc.earthQuake(n*superQuake);
 			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
@@ -408,8 +408,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -475,7 +475,7 @@ package fe.unit {
 			}
 			//направление
 			celDX=celX - coordinates.X;
-			celDY=celY - coordinates.Y + objectHeight;
+			celDY=celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -485,8 +485,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			} else {
 				vision=1;
 			}
@@ -623,7 +623,7 @@ package fe.unit {
 			} 
 		}
 		
-		function setSuper() {
+		private function setSuper() {
 			if (superSilaTip==1) {	//суперпрыжок
 				tPrepSuper=30;
 				tSuper=20;
@@ -694,11 +694,11 @@ package fe.unit {
 			}
 		}
 		
-		function findSuper() {
+		private function findSuper() {
 			superX=-1;
 			var nx:int = int(celX/tileX);
 			var ny:int = int((celY+40)/tileY);
-			if (superSilaTip==1) superY=ny*tileY+tileY+objectHeight;
+			if (superSilaTip==1) superY = ny * tileY + tileY + this.boundingBox.height;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 			if (coordinates.Y-celY>120) {
 				if (loc.getTile(nx,ny).phis==0) {
@@ -728,7 +728,7 @@ package fe.unit {
 		}
 		
 		//суперсила в начальный момент
-		function superSila() {
+		private function superSila() {
 			super_on=true;
 			if (superSilaTip==1) {
 				if (superX > 0 && superY > 0 && stay) {
@@ -753,14 +753,14 @@ package fe.unit {
 						if (rasst<radrad) un.heal(radHeal*(radrad-rasst)/radrad);
 					}
 				}
-				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y-objectHeight/2);
+				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight);
 			} else if (superSilaTip==6) {
 				loc.budilo(coordinates.X, coordinates.Y, 1000);
 			}
 		}
 		
 		//суперсила в действии
-		function superSila2() {
+		private function superSila2() {
 			if (superSilaTip==1) {
 				grav=0;
 			}
@@ -791,7 +791,7 @@ package fe.unit {
 		}
 		
 		//суперсила в конце
-		function superSilaVse() {
+		private function superSilaVse() {
 			super_on=false;
 			if (superSilaTip==1) {
 				maxSpeed=vJump+3;

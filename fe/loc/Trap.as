@@ -1,16 +1,17 @@
-package fe.loc
-{
+package fe.loc {
+
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.loc.Tile;
 
 	import fe.stubs.vistrapspikes
 	
-	public class Trap extends Obj
-	{
+	public class Trap extends Obj {
+
 		public var id:String;
 		public var vis2:MovieClip;
 
@@ -26,8 +27,8 @@ package fe.loc
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		public function Trap(loc:Location, id:String, X:int = 0, Y:int = 0)
-		{
+		public function Trap(loc:Location, id:String, X:int = 0, Y:int = 0) {
+
 			this.loc = loc;
 			this.id = id;
 			this.coordinates.X = X;
@@ -39,26 +40,24 @@ package fe.loc
 			var vClass2:Class = Res.getClass('vistrap' + id + '2', null, null);
 			vis  = new vClass();
 			vis2 = new vClass2();
-			var n1 = int(Math.random() * vis.totalFrames) + 1;
-			var n2 = int(Math.random() * vis.totalFrames) + 1;
+			var n1:int = int(Math.random() * vis.totalFrames) + 1;
+			var n2:int = int(Math.random() * vis.totalFrames) + 1;
 			levitPoss = false;
 			vis.gotoAndStop(n1);
 			vis2.gotoAndStop(n2);
 			getXmlParam()
 			if (!anim) vis.cacheAsBitmap = true;
 			if (vis2 && !anim) vis2.cacheAsBitmap = true;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
+			this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
+			this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
 			
-			if (floor)
-			{
-				topBound = coordinates.Y - objectHeight; 
-				bottomBound = coordinates.Y;
+			if (floor) {
+				this.boundingBox.top = coordinates.Y - this.boundingBox.height; 
+				this.boundingBox.bottom = coordinates.Y;
 			}
-			else
-			{
-				topBound = coordinates.Y - tileY;
-				bottomBound = topBound + objectHeight;
+			else {
+				this.boundingBox.top = coordinates.Y - tileY;
+				this.boundingBox.bottom = this.boundingBox.top + this.boundingBox.height;
 			}
 
 			vis.x  = coordinates.X;
@@ -70,16 +69,15 @@ package fe.loc
 			bindTile();
 		}
 		
-		public function getXmlParam()
-		{
+		public function getXmlParam() {
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			nazv=Res.txt('u',id);
 
-			if (node.@sX>0) objectWidth = node.@sX;
-			else objectWidth = node.@size * tileX;
+			if (node.@sX>0) this.boundingBox.width = node.@sX;
+			else this.boundingBox.width = node.@size * tileX;
 			
-			if (node.@sY>0) objectHeight=node.@sY;
-			else objectHeight = node.@wid * tileY;
+			if (node.@sY > 0) this.boundingBox.height = node.@sY;
+			else this.boundingBox.height = node.@wid * tileY;
 			
 			dam=node.@damage;
 			if (node.@tipdam.length()) tipDamage=node.@tipdam;
@@ -125,11 +123,11 @@ package fe.loc
 		
 		public function attKorp(cel:Unit):Boolean {
 			if (cel==null || cel.neujaz) return false;
-			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.coordinates.Y <= bottomBound && cel.coordinates.Y >= topBound) { //шипы 
+			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && cel.coordinates.X <= this.boundingBox.right && cel.coordinates.X >= this.boundingBox.left && cel.coordinates.Y <= this.boundingBox.bottom && cel.coordinates.Y >= this.boundingBox.top) { //шипы 
 				cel.damage(cel.massa*cel.velocity.Y/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
-			if (spDam==2 && !cel.isFly && (cel.velocity.Y + cel.osndy < 0) && cel.coordinates.X <= rightBound && cel.coordinates.X >= leftBound && cel.topBound <= bottomBound && cel.topBound >= topBound) { //шипы
+			if (spDam==2 && !cel.isFly && (cel.velocity.Y + cel.osndy < 0) && cel.coordinates.X <= this.boundingBox.right && cel.coordinates.X >= this.boundingBox.left && cel.boundingBox.top <= this.boundingBox.bottom && cel.boundingBox.top >= this.boundingBox.top) { //шипы
 				cel.damage(cel.massa * dam * (1 + loc.locDifLevel * 0.1), tipDamage);
 				cel.neujaz = cel.neujazMax;
 			}

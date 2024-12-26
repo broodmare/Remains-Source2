@@ -1,6 +1,6 @@
 package fe.entities {
 	
-	//Базовый класс для всех объектов
+	// [Base class for all objects]
 	import flash.display.MovieClip;
 
 	import fe.World;
@@ -24,6 +24,7 @@ package fe.entities {
 		public var velocity:Vector2 = new Vector2();	// The entity's [X, Y] movement stored as a vector
 		
 		public function Entity() {
+
 		}
 
 		public function addVisual():void {

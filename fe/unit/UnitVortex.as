@@ -121,7 +121,7 @@ package fe.unit {
 					else
 					{
 						celX = coordinates.X;
-						celY = this.topBoundToCenter;
+						celY = this.boundingBox.top;
 					}
 				}
 			}
@@ -137,7 +137,7 @@ package fe.unit {
 					if (aiSpok > 0) aiSpok--;
 				}
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.topBoundToCenter;
+				spd.y = celY - this.boundingBox.top;
 				norma(spd, aiState == 0? accel / 2 : accel);
 				velocity.X += spd.x;
 				velocity.Y += spd.y;

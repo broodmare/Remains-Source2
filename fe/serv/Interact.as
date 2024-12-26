@@ -330,7 +330,7 @@ package fe.serv
 			if (t_budilo>0) {
 				if (t_budilo%30==0) {
 					loc.budilo(owner.coordinates.X, owner.coordinates.Y,1500);
-					Emitter.emit('laser2',loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight+20);
+					Emitter.emit('laser2',loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.height + 20);
 					Snd.ps('alarm', coordinates.X, coordinates.Y);
 				}
 				t_budilo--;
@@ -338,7 +338,7 @@ package fe.serv
 			if (sign>0) {
 				if (t_sign<=0) {
 					t_sign=30;
-					if (World.w.helpMess) Emitter.emit('sign' + sign, loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2);
+					if (World.w.helpMess) Emitter.emit('sign' + sign, loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight);
 				}
 				t_sign--;
 			}
@@ -392,7 +392,7 @@ package fe.serv
 						break;
 
 						default:
-							trace("Interact.as/update() - Object: \"" + xml.@id + "\" has an uknown action ID: " + action.toString());
+							//trace("Interact.as/update() - Object: \"" + xml.@id + "\" has an uknown action ID: " + action.toString());
 							actionText = '';
 						break;
 					}
@@ -713,7 +713,7 @@ package fe.serv
 				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	{
 					World.w.invent.minusItem(cons);
 					World.w.gui.infoText('usedCons', Res.txt('i',cons));
-					if (cons=='empbomb') Emitter.emit('impexpl', loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2);
+					if (cons=='empbomb') Emitter.emit('impexpl', loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight);
 				} else {
 					World.w.gui.infoText('needCons', Res.txt('i',cons),null,false);
 					return;
@@ -818,7 +818,7 @@ package fe.serv
 		
 		//неудачная попытка взлома силового поля - удар током
 		public function discharge() {
-			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.coordinates.X,owner.coordinates.Y-owner.objectHeight / 2);
+			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.coordinates.X,owner.coordinates.Y-owner.boundingBox.halfHeight);
 			damdis+=50;
 			if (damdis>500) damdis=500;
 		}
@@ -975,11 +975,11 @@ package fe.serv
 		}
 		
 		public function shine() {
-			Emitter.emit('unlock', loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2, {kol:10, rx:owner.objectWidth, ry:owner.objectHeight, dframe:6});
+			Emitter.emit('unlock', loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, {kol:10, rx:owner.boundingBox.width, ry:owner.boundingBox.height, dframe:6});
 		}
 		
 		public function signal(n:String) {
-			Emitter.emit(n, loc, owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2, {kol:6, rx:owner.objectWidth/2, ry:owner.objectHeight*0.8});
+			Emitter.emit(n, loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, {kol:6, rx:owner.boundingBox.halfWidth, ry:owner.boundingBox.height*0.8});
 		}
 		
 		
@@ -1153,7 +1153,7 @@ package fe.serv
 			}
 
 			coordinates.X = owner.coordinates.X;
-			coordinates.Y = owner.coordinates.Y - owner.objectHeight / 2;
+			coordinates.Y = owner.boundingBox.bottom;
 
 			var kol:int;
 			var imp:int;

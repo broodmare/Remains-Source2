@@ -136,8 +136,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-objectHeight;
-				celX = coordinates.X+objectWidth*storona*2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -190,7 +190,7 @@ package fe.unit {
 					if (aiSpok>0) {
 						aiSpok--;
 					} else {
-						setCel(null, coordinates.X + storona * 100, coordinates.Y - objectHeight * 0.75);
+						setCel(null, coordinates.X + storona * 100, coordinates.Y - this.boundingBox.height * 0.75);
 					}
 					if (aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
@@ -200,7 +200,7 @@ package fe.unit {
 			
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -335,10 +335,10 @@ package fe.unit {
 				}
 				nx=Math.round(nx/tileX)*tileX
 				ny=Math.ceil(ny/tileY)*tileY-1;
-				if (nx<objectWidth) nx=objectWidth;
-				if (ny<objectHeight+40) ny=objectHeight+40;
-				if (nx>loc.maxX-objectWidth) nx=loc.maxX-objectWidth;
-				if (ny>loc.maxY-40) ny=loc.maxY-40;
+				if (nx < this.boundingBox.width) nx = this.boundingBox.width;
+				if (ny < this.boundingBox.height + 40) ny = this.boundingBox.height + 40;
+				if (nx > loc.maxX - this.boundingBox.width) nx = loc.maxX - this.boundingBox.width;
+				if (ny > loc.maxY - 40) ny = loc.maxY - 40;
 				if (!collisionAll(nx-coordinates.X, ny-coordinates.Y)) {
 					teleport(nx,ny,1);
 					velocity.set(0, 0);

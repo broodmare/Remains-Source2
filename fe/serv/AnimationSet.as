@@ -67,18 +67,18 @@ package fe.serv
                     if (hasProperties) {
                         // Store the animation by name (eg. "Fly")
                         blitAnims[animation] = new BlitAnim(animData);
-                        trace("AnimationSet.as/loadAnimations - Loaded animation: " + animation + " for creature " + creatureID);
+                        //trace("AnimationSet.as/loadAnimations - Loaded animation: " + animation + " for creature " + creatureID);
                     }
                     else {
                         // Add a default BlitAnim with no animation
                         blitAnims[animation] = new BlitAnim({});
-                        trace("AnimationSet.as/loadAnimations - Added default animation for: " + animation + " in creature " + creatureID);
+                        //trace("AnimationSet.as/loadAnimations - Added default animation for: " + animation + " in creature " + creatureID);
                     }
                 }
-                trace("AnimationSet.as/loadAnimations - All animations for '" + creatureID + "' loaded successfully");
+                //trace("AnimationSet.as/loadAnimations - All animations for '" + creatureID + "' loaded successfully");
             }
             else {
-                trace("AnimationSet.as/loadAnimations - Creature ID not found: " + creatureID);
+                //trace("AnimationSet.as/loadAnimations - Creature ID not found: " + creatureID);
             }
 
             return blitAnims;

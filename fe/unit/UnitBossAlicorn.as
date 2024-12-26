@@ -198,7 +198,7 @@ package fe.unit {
 			}
 		}
 		
-		function emit(n:int=-1) {
+		private function emit(n:int=-1) {
 			var un:Unit=loc.createUnit('scythe',Math.random()*1600+160,Math.random()*500+100,true);
 			un.fraction=fraction;
 			un.dam*=(1+level*0.1);
@@ -213,7 +213,7 @@ package fe.unit {
 		
 		//телепортация
 		public override function teleport(nx:Number,ny:Number,eff:int=0) {
-			Emitter.emit('telered',loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
+			Emitter.emit('telered',loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight,{rx:this.boundingBox.width, ry:this.boundingBox.height, kol:30});
 			setPos(nx,ny);
 			velocity.set(0, 0);
 			if (currentWeapon) {
@@ -224,7 +224,7 @@ package fe.unit {
 			if (t.phis || t.shelf) isFly=false;
 			else isFly=true;
 			levit=0;
-			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y-objectHeight/2);
+			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight);
 		}
 
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
@@ -263,8 +263,8 @@ package fe.unit {
 			
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			if (t_shit>0) t_shit--;
@@ -381,7 +381,7 @@ package fe.unit {
 		}
 		
 		//найти подходящий для телекинеза ящик и поднять его
-		function findBox():Obj {
+		private function findBox():Obj {
 			if (celUnit && isrnd(0.5)) {
 				upTeleObj(celUnit);
 				if (teleObj is UnitPlayer) {
@@ -393,7 +393,7 @@ package fe.unit {
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(coordinates.X, this.topBoundToCenter, b.coordinates.X, b.topBoundToCenter)) {
+					if (loc.isLine(coordinates.X, this.boundingBox.top, b.coordinates.X, b.boundingBox.top)) {
 						upTeleObj(b);
 						return b;
 					}
@@ -402,7 +402,7 @@ package fe.unit {
 			return null;
 		}
 		//подянть объект телекинезом
-		function upTeleObj(obj:Obj) {
+		private function upTeleObj(obj:Obj) {
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -425,7 +425,7 @@ package fe.unit {
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		private function throwTele() {
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number=throwForce;
@@ -438,7 +438,7 @@ package fe.unit {
 					p={x:100*storona, y:-30};
 				}
 				else {
-					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.objectHeight / 2)-Math.abs(celX-teleObj.coordinates.X)/4)};
+					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight)-Math.abs(celX-teleObj.coordinates.X)/4)};
 				}
 				
 				if (teleObj is UnitPlayer) {
@@ -470,7 +470,7 @@ package fe.unit {
 				aiTCh=10;
 				blood=1;
 				bloodEmit=Emitter.arr['blood'];
-				bloodEmit.cast(loc, coordinates.X, coordinates.Y-50,{kol:100, rx:objectWidth/2, ry:objectHeight/2});
+				bloodEmit.cast(loc, coordinates.X, coordinates.Y-50,{kol:100, rx:this.boundingBox.halfWidth, ry:this.boundingBox.halfHeight});
 				visDetails();
 				sost=1;
 				mat=0;

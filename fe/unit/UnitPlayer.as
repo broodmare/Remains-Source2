@@ -1,4 +1,4 @@
-﻿package fe.unit {
+package fe.unit {
 
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
@@ -229,7 +229,7 @@
 			levidy = accel * 0.25;	// Levitation speed.
 			if (World.w.alicorn) levidy = accel * 0.5;
 			hp=maxhp;
-			reloadbar.y=-objectHeight-10;
+			reloadbar.y = -this.boundingBox.height-10;
 			
 			weaponKrep=0;	//0 - левитация оружия, 1 - держать
 			
@@ -326,9 +326,7 @@
 		}
 		
 		public override function setNull(f:Boolean=false):void {
-			topBound = coordinates.Y - objectHeight, bottomBound = coordinates.Y;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
+			boundingBox.center(coordinates);
 			setWeaponPos();
 			if (currentWeapon) currentWeapon.setNull();
 			dropTeleObj();
@@ -528,7 +526,7 @@
 					velocity.Y *= 0.8;
 				}
 				else {
-					var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y - objectHeight / 4);
+					var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y - this.boundingBox.height / 4);
 					
 					if (t.grav > 0 && velocity.Y < loc.maxdy * t.grav || t.grav < 0 && velocity.Y > loc.maxdy * t.grav) {
 						if (dash_t > dash_maxt - 11) velocity.Y += World.ddy * t.grav * 0.1;
@@ -867,8 +865,8 @@
 				if (isTake<10) isTake=40;
 				if (teleObj.coordinates.X < celX - derp && teleObj.velocity.X < teleSpeed) teleObj.velocity.X += teleAccel;
 				if (teleObj.coordinates.X > celX + derp && teleObj.velocity.X > -teleSpeed) teleObj.velocity.X -= teleAccel;
-				if (teleObj.coordinates.Y - teleObj.objectHeight / 2 < celY - derp && teleObj.velocity.Y < teleSpeed) teleObj.velocity.Y += teleAccel;
-				if (teleObj.coordinates.Y - teleObj.objectHeight / 2 > celY + derp && teleObj.velocity.Y > -teleSpeed) teleObj.velocity.Y -= teleAccel;
+				if (teleObj.coordinates.Y - teleObj.boundingBox.halfHeight < celY - derp && teleObj.velocity.Y < teleSpeed) teleObj.velocity.Y += teleAccel;
+				if (teleObj.coordinates.Y - teleObj.boundingBox.halfHeight > celY + derp && teleObj.velocity.Y > -teleSpeed) teleObj.velocity.Y -= teleAccel;
 				if (teleObj is Unit) {
 					if ((teleObj as Unit).levit_max>0 && (teleObj as Unit).levit_r>(teleObj as Unit).levit_max*pers.unitLevitMult) {
 						teleObj.levitPoss=false;
@@ -911,7 +909,7 @@
 			}
 			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
 				dmana=-pers.alicornRunMana;
-				if (!loc.sky) Emitter.emit('magrun', loc, coordinates.X, coordinates.Y-objectHeight/2,{dx:(velocity.X*0.5+Math.random()*4-2), dy:(velocity.Y*0.5+Math.random()*4-2)});
+				if (!loc.sky) Emitter.emit('magrun', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {dx:(velocity.X*0.5+Math.random()*4-2), dy:(velocity.Y*0.5+Math.random()*4-2)});
 			}
 			else {
 				if (dmana<pers.recManaMin*pers.shtrManaRes) dmana=pers.recManaMin*pers.shtrManaRes;
@@ -1054,15 +1052,15 @@
 				if (stay && stayMat==1 || isLaz || inWater || tykMat==1) {
 					isStayDam = 20;
 					if (tykMat == 1) {
-						if (turnX!=0) Emitter.emit('moln', loc,coordinates.X, coordinates.Y-objectHeight/2,{celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
-						else if (turnY==1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:coordinates.X, cely:coordinates.Y - 70});
-						else if (turnY==-1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:coordinates.X, cely:coordinates.Y + 20});
+						if (turnX!=0) Emitter.emit('moln', loc,coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
+						else if (turnY==1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y - 70});
+						else if (turnY==-1) Emitter.emit('moln', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y + 20});
 					}
 					else if (isLaz) {
-						Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
+						Emitter.emit('moln', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
 					}
 					else if (stay) {
-						Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
+						Emitter.emit('moln', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
 					}
 
 					electroDamage();
@@ -1124,7 +1122,7 @@
 			}
 			var tx=Math.round(World.w.celX/tileX)*tileX
 			var ty=Math.round(World.w.celY/tileY+1)*tileY-1;
-			if (loc.sky || !loc.collisionUnit(tx,ty,stayX,stayY))	{
+			if (loc.sky || !loc.collisionUnit(tx, ty, this.boundingBox.standingWidth, this.boundingBox.standingHeight))	{
 				teleport(tx, ty, 1);
 				if (teleObj) dropTeleObj();
 				mana-=pers.alicornPortMana;
@@ -1139,7 +1137,7 @@
 			var nx=Math.round(World.w.celX/tileX)*tileX
 			var ny=Math.round(World.w.celY/tileY+1)*tileY-1;
 			var t:Tile=loc.getAbsTile(World.w.celX,World.w.celY);
-			if (t.visi>=0.8 && !loc.collisionUnit(nx, ny,stayX,stayY)) return true;
+			if (t.visi>=0.8 && !loc.collisionUnit(nx, ny, this.boundingBox.standingWidth, this.boundingBox.standingHeight)) return true;
 			return false;
 		}
 		
@@ -1177,14 +1175,14 @@
 			//найти ближайший подходящий объект, если курсор не указывает прямо на цель
 			if (mana<200) return;
 			if (loc.celObj==null) {
-				var dist = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (this.topBoundToCenter - World.w.celY) * (this.topBoundToCenter - World.w.celY);
+				var dist = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (this.boundingBox.top - World.w.celY) * (this.boundingBox.top - World.w.celY);
 				if (dist>pers.teleDist) return;
-				if (!loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, World.w.celX, World.w.celY)) return;
+				if (!loc.isLine(coordinates.X, coordinates.Y - this.boundingBox.height * 0.75, World.w.celX, World.w.celY)) return;
 				var pt:Entity = loc.firstObj;
 				var mindist = 50 * 50;
 				while (pt) {
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
-						dist = (World.w.celX - pt.coordinates.X) * (World.w.celX - pt.coordinates.X) + (World.w.celY - pt.coordinates.Y + (pt as Obj).objectHeight / 2) * (World.w.celY - pt.coordinates.Y + (pt as Obj).objectHeight / 2);
+						dist = (World.w.celX - pt.coordinates.X) * (World.w.celX - pt.coordinates.X) + (World.w.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight) * (World.w.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight);
 						if (dist<mindist) {
 							loc.celObj=(pt as Obj);
 							mindist=dist;
@@ -1198,12 +1196,12 @@
 				}
 			}
 			if (loc.celObj && loc.celObj.levitPoss && loc.celObj.onCursor && loc.celDist<=pers.teleDist && loc.celObj.massa<=pers.maxTeleMassa){
-				if ((pers.telemaster==0 || !loc.portOn) && !loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2)) {
+				if ((pers.telemaster==0 || !loc.portOn) && !loc.isLine(coordinates.X, coordinates.Y - this.boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight)) {
 					World.w.gui.infoText('noVisible',null,null,false);
 					return;
 				}
 				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1) {
-					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2);
+					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight);
 					return;
 				}
 				teleObj=loc.celObj;
@@ -1231,7 +1229,7 @@
 					dropTeleObj();
 					return;
 				}
-				var p:Object = {x:(teleObj.coordinates.X - coordinates.X), y:(teleObj.coordinates.Y - teleObj.objectHeight / 2 - coordinates.Y + objectHeight / 2 - 10)}
+				var p:Object = {x:(teleObj.coordinates.X - coordinates.X), y:(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight - 10)}
 				var dm=0
 				if (pers.throwForce>0) dm=teleObj.massa*pers.throwDmagic*pers.allDManaMult;
 				if (dm<=mana) {
@@ -1255,7 +1253,7 @@
 				teleObj.velocity.X += p.x;
 				teleObj.velocity.Y += p.y;
 				if (pers.throwForce>0) {
-					Emitter.emit('throw',loc,teleObj.coordinates.X,teleObj.coordinates.Y-teleObj.objectHeight/2,{rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X)*180/Math.PI});
+					Emitter.emit('throw',loc,teleObj.coordinates.X,teleObj.coordinates.Y-teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X)*180/Math.PI});
 					Snd.ps('dash',teleObj.coordinates.X,teleObj.coordinates.Y);
 				}
 				dropTeleObj();
@@ -1297,13 +1295,13 @@
 			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist) {
 				actionReady = false;
 				
-				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == 'comein')) && !loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2, loc.celObj)) {
+				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == 'comein')) && !loc.isLine(coordinates.X, coordinates.Y - this.boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight, loc.celObj)) {
 					World.w.gui.infoText('noVisible', null, null, false);
 					return;
 				}
 				
 				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == 1) {
-					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.objectHeight / 2);
+					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight);
 					return;
 				}
 				
@@ -1363,7 +1361,7 @@
 			if (World.w.chit == 'port') {
 				var tx = Math.round(World.w.celX / tileX)*tileX
 				var ty = Math.round(World.w.celY / tileY+1)*tileY-1;
-				if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
+				if (!loc.collisionUnit(tx, ty, this.boundingBox.standingWidth, this.boundingBox.standingHeight))	teleport(tx, ty);
 			}
 			if (World.w.chit=='emit') {
 				Emitter.emit(World.w.chitX, loc, World.w.celX, World.w.celY);
@@ -2017,8 +2015,8 @@
 			
 			if (rat) {
 				isSit = false;
-				objectWidth = ratX;
-				objectHeight = ratY;
+				this.boundingBox.width = ratX;
+				this.boundingBox.height = ratY;
 			}
 		}
 		
@@ -2035,11 +2033,11 @@
 		public function lineCel(rdx:int=0, rdy:int=0):int {
 			var res = 0;
 			var ndx = (celX + rdx - coordinates.X);
-			var ndy = (celY + rdy - coordinates.Y + objectHeight / 2);
+			var ndy = (celY + rdy - coordinates.Y + this.boundingBox.halfHeight);
 			var div = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta) + 1;
 			for (var i = 1; i < div; i++) {
 				var nx = coordinates.X + ndx * i / div;
-				var ny = this.topBoundToCenter + ndy * i / div;
+				var ny = this.boundingBox.top + ndy * i / div;
 				var t:Tile = World.w.loc.getAbsTile(int(nx), int(ny));
 				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2) {
 					celX = nx;
@@ -2055,7 +2053,7 @@
 			if (stay && !isSit && velocity.X < 5 && velocity.X > -5 && stayPhis >= 1 && work == '') {
 				lurkBox = null;
 				for each (var b:Box in loc.objs) {
-					if (b.lurk > lurkTip && coordinates.X > b.leftBound && coordinates.X < b.rightBound && coordinates.Y - 10 > b.topBound && coordinates.Y - 10 < b.bottomBound) {
+					if (b.lurk > lurkTip && coordinates.X > b.boundingBox.left && coordinates.X < b.boundingBox.right && coordinates.Y - 10 > b.boundingBox.top && coordinates.Y - 10 < b.boundingBox.bottom) {
 						lurkTip=b.lurk;
 						lurkBox=b;
 					}
@@ -2070,11 +2068,11 @@
 					if (lurkBox.lurk == 2) {
 						if (coordinates.X > lurkBox.coordinates.X) {
 							storona = 1;
-							lurkX = lurkBox.rightBound - 10;
+							lurkX = lurkBox.boundingBox.right - 10;
 						}
 						else {
 							storona = -1;
-							lurkX = lurkBox.leftBound + 10;
+							lurkX = lurkBox.boundingBox.left + 10;
 						}
 					}
 					else lurkX = lurkBox.coordinates.X;
@@ -2195,7 +2193,7 @@
 			}
 			
 			if (ismess && (sost==1 || sost==2) && showNumbs && hl > 0.5) {
-				numbEmit.cast(loc, coordinates.X, coordinates.Y - objectHeight / 2, {txt:((tip == 2)? '-' : '+') + Math.round(hl), frame:((tip == 2)? 7 : 4), rx:20, ry:20});
+				numbEmit.cast(loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {txt:((tip == 2)? '-' : '+') + Math.round(hl), frame:((tip == 2)? 7 : 4), rx:20, ry:20});
 			}
 			World.w.gui.setHp();
 		}
@@ -2281,12 +2279,12 @@
 				pinok=90;
 			}
 			Snd.ps('electro', coordinates.X, coordinates.Y);
-			if (nx!=null && ny!=null) Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2,{celx:nx, cely:ny});
+			if (nx!=null && ny!=null) Emitter.emit('moln', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {celx:nx, cely:ny});
 		}
 		
 		public override function udarBox(un:Box):int {
 			var res:int=super.udarBox(un);
-			if (res==2 && loc.electroDam && un.mat==1) electroDamage(loc.electroDam, un.coordinates.X, un.coordinates.Y - un.objectHeight / 2);
+			if (res==2 && loc.electroDam && un.mat==1) electroDamage(loc.electroDam, un.coordinates.X, un.coordinates.Y - un.boundingBox.halfHeight);
 			return res;
 		}
 		
@@ -2386,13 +2384,13 @@
 		//удар хол. оружием достиг цели
 		public override function setWeaponPos(tip:int=0) {
 			if (weaponKrep==0) {			//телекинез
-				if (storona > 0 && celX > rightBound || storona < 0 && celX < leftBound) weaponX = coordinates.X + objectWidth * storona;
+				if (storona > 0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) weaponX = coordinates.X + this.boundingBox.width * storona;
 				else weaponX = coordinates.X;
 				if (isLaz) weaponX = coordinates.X;
 				if (loc.getAbsTile(weaponX, weaponY).phis == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).phis == 1) weaponX = coordinates.X;
 				
-				if (tip == 1) weaponY = coordinates.Y - objectHeight * 0.4;
-				else weaponY = coordinates.Y - objectHeight * 0.7;
+				if (tip == 1) weaponY = coordinates.Y - this.boundingBox.height * 0.4;
+				else weaponY = coordinates.Y - this.boundingBox.height * 0.7;
 				
 				if (stay && weapUp) {
 					if (loc.getTile(int(weaponX/tileX), int((weaponY-40)/tileY)).phis!=1) weaponY-=40;
@@ -2401,7 +2399,7 @@
 			
 			if (work=='change' && t_work>changeWeaponTime3 && tip!=5) {
 					weaponX = coordinates.X;
-					weaponY = coordinates.Y - objectHeight * 0.5;
+					weaponY = coordinates.Y - this.boundingBox.height * 0.5;
 			}
 			try {
 				var p:Point=new Point(vis.osn.body.head.morda.konec.x,vis.osn.body.head.morda.konec.y);
@@ -2418,7 +2416,7 @@
 			{
 				trace('ERROR: (00:E)');
 				magicX = coordinates.X;
-				magicY = this.topBoundToCenter;
+				magicY = this.boundingBox.top;
 			}
 		}
 		
@@ -2590,8 +2588,8 @@
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch) {
-			w.coordinates.X = coordinates.X + objectWidth / 3*((celX > coordinates.X)?1:-1);
-			w.coordinates.Y = this.topBoundToCenter;
+			w.coordinates.X = coordinates.X + this.boundingBox.width * ((celX > coordinates.X)?1:-1);
+			w.coordinates.Y = this.boundingBox.top;
 			w.rot = (celX > coordinates.X)? 0:Math.PI;
 		}
 		
@@ -2713,46 +2711,38 @@
 			isFly=false;
 			dropTeleObj();
 			actionObj=null;
-			objectWidth = ratX;
-			objectHeight = ratY;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight;
+			this.boundingBox.width = ratX;
+			this.boundingBox.height = ratY;
+			this.boundingBox.centerHorizontally(coordinates);
+			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 			vis.osn.visible=false;
 			vis.rat.visible=true;
 			newPart('black',30);
 			rat=1;
 		}
 
-		public function ratOff():Boolean
-		{
-			objectWidth = stayX;
-			objectHeight = stayY;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight;
+		public function ratOff():Boolean {
+			this.boundingBox.width = this.boundingBox.standingWidth;
+			this.boundingBox.height = this.boundingBox.standingHeight;
+			this.boundingBox.centerHorizontally(coordinates);
+			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 			if (collisionAll()) {
 				if (collisionAll(15)) {
 					if (collisionAll(-15)) {
-						objectWidth=ratX;
-						objectHeight=ratY;
-						leftBound = coordinates.X - objectWidth / 2;
-						rightBound = coordinates.X + objectWidth / 2;
-						topBound = coordinates.Y - objectHeight;
+						this.boundingBox.width = ratX;
+						this.boundingBox.height = ratY;
+						this.boundingBox.centerHorizontally(coordinates);
+						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 						return false;
 					}
-					else
-					{
+					else {
 						coordinates.X -= 15;
-						leftBound = coordinates.X - objectWidth / 2;
-						rightBound = coordinates.X + objectWidth / 2;
+						this.boundingBox.centerHorizontally(coordinates);
 					}
 				}
-				else
-				{
+				else {
 					coordinates.X += 15;
-					leftBound = coordinates.X - objectWidth / 2;
-					rightBound = coordinates.X + objectWidth / 2;
+					this.boundingBox.centerHorizontally(coordinates);
 				}
 			}
 			vis.osn.visible=true;
@@ -2769,10 +2759,8 @@
 //
 //**************************************************************************************************************************
 		
-		public function anim(dey:String = null, ok:Boolean = false)
-		{
-			if (dey == null || dey == '')
-			{
+		public function anim(dey:String = null, ok:Boolean = false) {
+			if (dey == null || dey == '') {
 				animOff=false;
 				return;
 			}
@@ -2782,8 +2770,7 @@
 				animOff = true;
 				vis.osn.body.gotoAndStop(f);
 			} 
-			else
-			{
+			else {
 				animOff = false;
 				work = dey;
 				t_work = f;
@@ -2800,8 +2787,7 @@
 		
 		public function setFilters():void {
 			var arr:Array = [];
-			if (f_levit)
-			{
+			if (f_levit) {
 				if (levit>=1 && fracLevit!=fraction && levitFilter2) arr = [levitFilter2];
 				else if (levit==1 && fracLevit==fraction || dJump && levit<2) arr = [levitFilter1];
 
@@ -3508,7 +3494,7 @@
 		}
 		
 		public function showElectroBlock() {
-			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (this.topBoundToCenter + Math.random() * 320 - 160));
+			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (this.boundingBox.top + Math.random() * 320 - 160));
 			if (t && t.mat==1 && t.hp>0) {
 				Emitter.emit('electro', loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
 			}

@@ -346,7 +346,7 @@ package fe.unit {
 			}
 			visBmp.filters=[];
 			loc.land.aliAlarm=true;
-			sitY=30;
+			this.boundingBox.crouchingHeight = 30;
 			super.die(sposob);
 		}
 		
@@ -501,7 +501,7 @@ package fe.unit {
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -512,8 +512,8 @@ package fe.unit {
 			if (aiSpok==0) {
 				vision=0.7;
 				if (loc && loc.land.aliAlarm) vision=1.5;
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			}
 			else {
 				t_gotov++;
@@ -542,13 +542,13 @@ package fe.unit {
 					}
 					//пригнуться
 					if (turnX==-1) {
-						if (loc.getAbsTile(rightBound+2,topBound).phis && loc.getAbsTile(rightBound+2,topBound+40).phis==0 && loc.getAbsTile(rightBound+2,topBound+80).phis==0) {
+						if (loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top + 40).phis==0 && loc.getAbsTile(this.boundingBox.right + 2,this.boundingBox.top + 80).phis==0) {
 							sit(true);
 							turnX=0;
 						}
 					}
 					if (turnX==1) {
-						if (loc.getAbsTile(leftBound-2,topBound).phis && loc.getAbsTile(leftBound-2,topBound+40).phis==0 && loc.getAbsTile(leftBound-2,topBound+80).phis==0) {
+						if (loc.getAbsTile(this.boundingBox.left - 2, this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 40).phis==0 && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 80).phis==0) {
 							sit(true);
 							turnX=0;
 						}
@@ -570,7 +570,7 @@ package fe.unit {
 					spd.x = celX - coordinates.X;
 					
 					if (aiState==4) spd.y=200;
-					else spd.y = celY - this.topBoundToCenter;
+					else spd.y = celY - this.boundingBox.top;
 					
 					//дематериализоваться
 					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
@@ -789,7 +789,7 @@ package fe.unit {
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(coordinates.X, this.topBoundToCenter, b.coordinates.X, b.topBoundToCenter))
+					if (loc.isLine(coordinates.X, this.boundingBox.top, b.coordinates.X, b.boundingBox.top))
 					{
 						upTeleObj(b);
 						return b;
@@ -836,7 +836,7 @@ package fe.unit {
 					p = {x:100 * storona, y:-30};
 				}
 				else {
-					p = {x:(celX - teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.objectHeight / 2) - Math.abs(celX - teleObj.coordinates.X) / 4)};
+					p = {x:(celX - teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight) - Math.abs(celX - teleObj.coordinates.X) / 4)};
 				}
 				
 				if (teleObj is UnitPlayer) {
@@ -887,16 +887,16 @@ package fe.unit {
 				nx = Math.round(nx / tileX) * tileX
 				ny = Math.ceil(ny / tileY) * tileY - 1;
 				
-				if (nx < objectWidth) {
-					nx = objectWidth;
+				if (nx < this.boundingBox.width) {
+					nx = this.boundingBox.width;
 				}
 				
-				if (ny < objectHeight + 40) {
-					ny = objectHeight + 40;
+				if (ny < this.boundingBox.height + 40) {
+					ny = this.boundingBox.height + 40;
 				}
 				
-				if (nx > loc.maxX - objectWidth) {
-					nx = loc.maxX - objectWidth;
+				if (nx > loc.maxX - this.boundingBox.width) {
+					nx = loc.maxX - this.boundingBox.width;
 				}
 				
 				if (ny > loc.maxY - 40) {

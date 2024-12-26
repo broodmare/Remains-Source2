@@ -267,7 +267,7 @@ package fe.unit
 				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
 			}
 			if (id=='namok') {
-				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.objectHeight*0.25,{md:0.1});
+				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.boundingBox.height*0.25,{md:0.1});
 			}
 			if (id=='hydra' && owner.sost==1) {
 				owner.heal(val);
@@ -288,7 +288,7 @@ package fe.unit
 		}
 		public function stepEffect() {
 			if (id=='burning') {
-				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2);
+				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.boundingBox.bottom);
 			}
 			if (id == 'sacrifice' && t == 5)
 			{

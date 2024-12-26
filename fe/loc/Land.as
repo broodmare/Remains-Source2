@@ -775,7 +775,7 @@ package fe.loc
 		//переход между локациями
 		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object
 		{
-			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.objectWidth, objectHeight:Number=gg.objectHeight;
+			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.boundingBox.width, objectHeight:Number=gg.boundingBox.height;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
 
 			switch (napr)
@@ -947,7 +947,7 @@ package fe.loc
 				}
 			}
 			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.coordinates.X;
-			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.coordinates.Y - gg.objectHeight / 2;
+			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.boundingBox.bottom;
 			return map;
 		}
 		

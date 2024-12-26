@@ -22,8 +22,8 @@ package fe.loc {
 			levitPoss = false;
 			sloy = 3;
 			if (sost == 1) {
-				if (id == 'heal')	vis = new visualHealBonus();
-				else				vis = new visualBonus();
+				if (id == 'heal')	vis = new visualHealBonus();	// .SWF Dependency
+				else				vis = new visualBonus();		// .SWF Dependency
 			}
 			if (vis) {
 				vis.bonus.cacheAsBitmap = true;
@@ -33,13 +33,10 @@ package fe.loc {
 		}
 		
 		private function setSize():void {
-			objectWidth = 40;
-			objectHeight = 40;
+			this.boundingBox.width = 40;
+			this.boundingBox.height = 40;
 
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight / 2;
-			bottomBound = coordinates.Y + objectHeight / 2;
+			this.boundingBox.center(coordinates);
 		}
 		
 		public override function save():Object {
@@ -59,7 +56,7 @@ package fe.loc {
 			}
 			if (liv<-25) loc.remObj(this);
 			if (sost!=1 || !loc.active) return;
-			if (areaTest(loc.gg)) take();
+			if (this.boundingBox.intersects(loc.gg.boundingBox)) take();
 		}
 		
 		public function take():void {

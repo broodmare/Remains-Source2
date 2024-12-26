@@ -5,6 +5,7 @@ package fe.loc {
 
 	import fe.*;
 	import fe.util.Vector2;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
@@ -99,14 +100,11 @@ package fe.loc {
 			
 			coordinates.X = begX = nx; 
 			coordinates.Y = begY = ny;
-			objectWidth = vis.width;
-			objectHeight = vis.height;
-			if (node.@scx.length()) objectWidth = node.@scx;
-			if (node.@scy.length()) objectHeight = node.@scy;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight;
-			bottomBound = coordinates.Y;
+			this.boundingBox.width = vis.width;
+			this.boundingBox.height = vis.height;
+			if (node.@scx.length()) this.boundingBox.width = node.@scx;
+			if (node.@scy.length()) this.boundingBox.height = node.@scy;
+			this.boundingBox.center(coordinates);
 			
 			
 			if (node.@mat.length()) mat=node.@mat;
@@ -133,10 +131,10 @@ package fe.loc {
 			if (node.@nazv.length()) nazv=Res.txt('o',node.@nazv);
 			else nazv=Res.txt('o',id);
 			if (node.@explcrack.length()) explcrack=true;
-			if (objectWidth<40 || wall>0) shelf=false;
+			if (this.boundingBox.width < 40 || wall > 0) shelf=false;
 			if (node.@shelf.length()) shelf=true;
 			if (node.@massaMult.length()) massaMult=node.@massaMult;
-			massa=objectWidth*objectHeight*objectHeight/250000*massaMult;
+			massa = this.boundingBox.width * this.boundingBox.height * this.boundingBox.height / 250000 * massaMult;
 			if (node.@massa.length()) massa=node.@massa/50;
 			
 			if (xml && xml.@indestruct.length()) {
@@ -203,7 +201,7 @@ package fe.loc {
 			vis.x = shad.x = coordinates.X;
 			vis.y = coordinates.Y;
 			shad.y = coordinates.Y + (wall?2:6);
-			prior +=1 / (objectWidth * objectHeight);
+			prior +=1 / (this.boundingBox.width * this.boundingBox.height);
 			if (node.@actdam.length()) {
 				if (xml && xml.@tipdam.length())  bindUnit(xml.@tipdam);
 				else bindUnit();
@@ -266,12 +264,19 @@ package fe.loc {
 				coordinates.Y = begY;
 				velocity.set(0, 0);
 
-				topBound = coordinates.Y - objectHeight;
-				bottomBound = coordinates.Y;
+				
+				var l:Number;
+				var r:Number;
+				var t:Number;
+				var b:Number;
 
-				var halfWidth:Number = objectWidth / 2;
-				leftBound = coordinates.X - halfWidth;
-				rightBound = coordinates.X + halfWidth;
+				t = coordinates.Y - this.boundingBox.height;
+				b = coordinates.Y;
+
+				l = coordinates.X - this.boundingBox.halfWidth;
+				b = coordinates.X + this.boundingBox.halfWidth;
+
+				boundingBox.setBounds(l, r, t, b);
 			}
 		}
 		
@@ -330,10 +335,7 @@ package fe.loc {
 					{
 						coordinates.X += osnova.cdx;
 						coordinates.Y += osnova.cdy;
-						leftBound = coordinates.X - objectWidth / 2;
-						rightBound = coordinates.X + objectWidth / 2;
-						topBound = coordinates.Y - objectHeight;
-						bottomBound = coordinates.Y;
+						boundingBox.center(coordinates);
 						if (vis) runVis()
 					}
 				}
@@ -357,13 +359,13 @@ package fe.loc {
 			cdx = coordinates.X - stX;
 			cdy = coordinates.Y - stY;
 			if (t_throw>0) t_throw--;
-			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
+			onCursor = (this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY) ? prior : 0;
 		}
 		
 		public function initDoor() {
 			tiles = [];
-			for (var i:int = int(leftBound / tileX + 0.5); i <= int(rightBound / tileX - 0.5); i++) {
-				for (var j:int = int(topBound / tileY + 0.5); j <= int(bottomBound / tileY - 0.5); j++) {
+			for (var i:int = int(this.boundingBox.left / tileX + 0.5); i <= int(this.boundingBox.right / tileX - 0.5); i++) {
+				for (var j:int = int(this.boundingBox.top / tileY + 0.5); j <= int(this.boundingBox.bottom / tileY - 0.5); j++) {
 					var t:Tile = loc.getTile(i, j);
 					t.front = '';
 					t.phis = phis;
@@ -394,34 +396,52 @@ package fe.loc {
 
 		// Check if doorway is clear
 		public function attDoor():Boolean {
+			// First check units
 			for each (var cel in loc.units) {
-				if (cel == null || (cel as Unit).sost == 4) continue;
-				if (cel is fe.unit.UnitMWall) continue;
-				if (cel is fe.unit.Mine && !(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound)) {
-					cel.fixed = true;
-					trace('Mine activated by door!');
-					(cel as fe.unit.Mine).activate();
-					continue;
-				}
-				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound)) {
-					trace('Door blocked by unit!');
+				if (!cel || (cel as Unit).sost == 4) continue;  // Skip nulls or "dead" units
+				if (cel is fe.unit.UnitMWall) continue;         // Skip walls
+
+				// If the unit has its own boundingBox, use intersects:
+				if (cel.boundingBox && cel.boundingBox.intersects(this.boundingBox)) {
+					// Special logic for Mine
+					if (cel is fe.unit.Mine) {
+						cel.fixed = true;
+						trace("Mine activated by door!");
+						(cel as fe.unit.Mine).activate();
+						continue; 
+					}
+					// Otherwise it's a blocking unit
+					trace("Door blocked by unit!");
 					return true;
 				}
 			}
-			for each (cel in loc.objs) {
-				if ((cel as Box).wall > 0) continue;
-				if (!(cel.coordinates.X - cel.objectWidth / 2 >= rightBound || cel.coordinates.X + cel.objectWidth / 2 <= leftBound || cel.coordinates.Y - cel.objectHeight >= bottomBound || cel.coordinates.Y <= topBound)) {
-					trace('Door blocked by box!');
+
+			// Now check objects (boxes) that may not have a built-in bounding box
+			for each (var obj in loc.objs) {
+				// If it's actually a Box with a "wall" property
+				if ((obj as Box).wall > 0) continue;  // skip “wall” boxes
+
+				// If it has no boundingBox, create one on the fly
+				var boxBB:BoundingBox = new BoundingBox(new Vector2(obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight));
+				boxBB.width = obj.boundingBox.width;
+				boxBB.height = obj.boundingBox.height;
+
+				if (boxBB.intersects(this.boundingBox)) {
+					trace("Door blocked by box!");
 					return true;
 				}
 			}
+
+			// If we get here, door is not blocked
 			return false;
 		}
 		
-		public function attMoln() {
+		public function attMoln():void {
 			for each (var cel in loc.units) {
-				if (cel == null || (cel as Unit).sost == 4) continue;
-				if (!(cel.leftBound >= rightBound || cel.rightBound <= leftBound || cel.topBound >= bottomBound || cel.bottomBound <= topBound)) {
+				if (!cel || (cel as Unit).sost == 4) continue; // Skip null or "dead"
+
+				if (cel.boundingBox && cel.boundingBox.intersects(this.boundingBox)) {
+					// If there is a collision, call "udarBox"
 					cel.udarBox(this);
 				}
 			}
@@ -480,10 +500,10 @@ package fe.loc {
 					if (mat==3) kus='schep';
 					if (mat==5) kus='steklo';
 					if (mat==7) kus='pole';
-					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:12,rx:objectWidth, ry:objectHeight});
+					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight, {kol:12,rx: this.boundingBox.width, ry:this.boundingBox.height});
 					if (sndDie!='') Snd.ps(sndDie, coordinates.X, coordinates.Y);
 				}
-				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - objectHeight / 2, noiseDie);
+				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - this.boundingBox.halfHeight, noiseDie);
 				if (inter) inter.sign=0;
 			}
 			else if (un) {
@@ -517,21 +537,38 @@ package fe.loc {
 		}
 		
 		// [Fall impact]
-		public function attDrop() {
-			vel2 = velocity.X * velocity.X + velocity.Y * velocity.Y;
+		public function attDrop():void {
+			// Compute the squared velocity
+			var vel2:Number = velocity.X * velocity.X + velocity.Y * velocity.Y;
 			if (vel2 < 50) return;
-			for each(var cel:Unit in loc.units) {
-				if (cel==null || fracLevit>0 && cel.fraction==fracLevit) continue;
-				if (cel.sost==4 || cel.neujaz>0 || cel.loc!=loc || cel.leftBound>rightBound || cel.rightBound<leftBound || cel.topBound>bottomBound || cel.bottomBound<topBound) continue;
-				if (t_throw>0) {
-					cel.neujaz=12;
-					continue;
+
+			// Loop over all units
+			for each (var cel:Unit in loc.units) {
+				// Skip null
+				if (!cel) continue;
+
+				// Skip if it’s in the same faction when fracLevit > 0
+				if (fracLevit > 0 && cel.fraction == fracLevit) continue;
+
+				// Skip if dead (sost == 4), can’t be attacked (neujaz > 0), or not in the same location
+				if (cel.sost == 4 || cel.neujaz > 0 || cel.loc != loc) continue;
+
+				// Use the built-in intersection check
+				if (cel.boundingBox && cel.boundingBox.intersects(this.boundingBox)) {
+					// If thrown recently (t_throw > 0), set neujaz & skip
+					if (t_throw > 0) {
+						cel.neujaz = 12;
+						continue;
+					}
+
+					// Otherwise, deal damage
+					cel.udarBox(this);
+					isThrow = false;
 				}
-				cel.udarBox(this);
-				isThrow=false;
 			}
 		}
 		
+		// Check if standing on ground
 		public override function checkStay():Boolean {
 			if (osnova || wall > 0) return true;
 			fixPlav = false;
@@ -539,10 +576,9 @@ package fe.loc {
 			if (isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2) {
 				fixPlav = true;
 			}
-			for (var i:int = int(leftBound/tileX); i<=int(rightBound/tileX); i++)
-			{
-				var t:Tile = loc.getTile(i, int((bottomBound+1)/tileY));
-				if (collisionTile(t,0,1)) {
+			for (var i:int = int(this.boundingBox.left / tileX); i<=int(this.boundingBox.right / tileX); i++) {
+				var t:Tile = loc.getTile(i, int((this.boundingBox.bottom + 1) / tileY));
+				if (collisionTile(t, 0, 1)) {
 					return true;
 				}
 			}
@@ -557,40 +593,40 @@ package fe.loc {
 
 			//HORIZONTAL
 				coordinates.X += velocity.X / div;
-				if (coordinates.X - objectWidth / 2 < 0) {
-					coordinates.X = objectWidth / 2;
+				if (coordinates.X - this.boundingBox.halfWidth < 0) {
+					coordinates.X = this.boundingBox.halfWidth;
 					velocity.X = Math.abs(velocity.X);
 				}
-				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX) {
-					coordinates.X = loc.spaceX * tileX - 1 - objectWidth / 2;
+				if (coordinates.X + this.boundingBox.halfWidth >= loc.spaceX * tileX) {
+					coordinates.X = loc.spaceX * tileX - 1 - this.boundingBox.halfWidth;
 					velocity.X = -Math.abs(velocity.X);
 				}
-				leftBound = coordinates.X - objectWidth / 2;
-				rightBound = coordinates.X + objectWidth / 2;
+				this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
+				this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
 				//движение влево
 				if (velocity.X < 0) {
-					for (i = int(topBound / tileY); i <= int(bottomBound / tileY); i++) {
-						t = loc.getTile(int(leftBound / tileX), i);
+					for (i = int(this.boundingBox.top / tileY); i <= int(this.boundingBox.bottom / tileY); i++) {
+						t = loc.getTile(int(this.boundingBox.left / tileX), i);
 						if (collisionTile(t)) {
-								coordinates.X = t.phX2 + objectWidth / 2;
+								coordinates.X = t.phX2 + this.boundingBox.halfWidth;
 								if (velocity.X < -10) velocity.X = -velocity.X * 0.2;
 								else velocity.X = 0;
-								leftBound = coordinates.X - objectWidth / 2;
-								rightBound = coordinates.X + objectWidth / 2;
+								this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
+								this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
 							isThrow=false;
 						}
 					}
 				}
 				//движение вправо
 				if (velocity.X > 0) {
-					for (i=int(topBound/tileY); i<=int(bottomBound/tileY); i++) {
-						t = loc.getTile(int(rightBound/tileX), i);
+					for (i=int(this.boundingBox.top/tileY); i<=int(this.boundingBox.bottom/tileY); i++) {
+						t = loc.getTile(int(this.boundingBox.right/tileX), i);
 						if (collisionTile(t)) {
-								coordinates.X = t.phX1 - objectWidth / 2;
+								coordinates.X = t.phX1 - this.boundingBox.halfWidth;
 								if (velocity.X > 10) velocity.X = -velocity.X * 0.2;
 								else velocity.X = 0;
-								leftBound = coordinates.X - objectWidth / 2;
-								rightBound = coordinates.X + objectWidth / 2;
+								this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
+								this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
 							isThrow=false;
 						}
 					}
@@ -602,8 +638,8 @@ package fe.loc {
 			var newmy:Number = 0;
 			if (velocity.Y > 0) {
 				stay = false;
-				for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-					t = loc.getTile(i, int((bottomBound + velocity.Y / div) / tileY));
+				for (i = int(this.boundingBox.left / tileX); i <= int(this.boundingBox.right / tileX); i++) {
+					t = loc.getTile(i, int((this.boundingBox.bottom + velocity.Y / div) / tileY));
 					if (collisionTile(t, 0, velocity.Y / div)) {
 						newmy = t.phY1;
 						break;
@@ -618,8 +654,8 @@ package fe.loc {
 				if (newmy)
 				{
 					coordinates.Y = newmy;
-					topBound = coordinates.Y - objectHeight;
-					bottomBound = coordinates.Y;
+					this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+					this.boundingBox.bottom = coordinates.Y;
 					if (loc.active && velocity.Y > 4 && velocity.Y * massa > 5) World.w.quake(0, velocity.Y * Math.sqrt(massa) / 2);
 					if (velocity.Y > 5 && sndFall && sndOn) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, velocity.Y / 15);
 					if (velocity.Y > 5)
@@ -633,7 +669,7 @@ package fe.loc {
 					if (velocity.X > -5 && velocity.X < 5) velocity.X = 0;
 					else {
 						velocity.X *= 0.92;
-						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*objectWidth, coordinates.Y);
+						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*this.boundingBox.width, coordinates.Y);
 					}
 
 					if (!levit && (!isPlav || ddyPlav>0)) {
@@ -646,23 +682,23 @@ package fe.loc {
 				}
 				else {
 					coordinates.Y += velocity.Y / div;
-					topBound = coordinates.Y - objectHeight;
-					bottomBound = coordinates.Y;
+					this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+					this.boundingBox.bottom = coordinates.Y;
 				}
 			}
 			//движение вверх
 			if (velocity.Y < 0) {
 				stay = false;
 				coordinates.Y += velocity.Y / div;
-				topBound = coordinates.Y-objectHeight;
-				bottomBound = coordinates.Y;
-				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
-				for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
-					t = loc.getTile(i, int(topBound/tileY));
+				this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+				this.boundingBox.bottom = coordinates.Y;
+				if (coordinates.Y - this.boundingBox.height < 0) coordinates.Y = this.boundingBox.height;
+				for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
+					t = loc.getTile(i, int(this.boundingBox.top/tileY));
 					if (collisionTile(t)) {
-						coordinates.Y = t.phY2 + objectHeight;
-						topBound = coordinates.Y - objectHeight;
-						bottomBound = coordinates.Y;
+						coordinates.Y = t.phY2 + this.boundingBox.height;
+						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+						this.boundingBox.bottom = coordinates.Y;
 						velocity.Y = 0;
 						isThrow=false;
 					}
@@ -677,15 +713,15 @@ package fe.loc {
 			isPlav2 = false;
 
 			var x:int = int(coordinates.X/tileX);
-			if (loc.getTile(x , int((coordinates.Y - objectHeight * 0.45) / tileY)).water > 0) {
+			if (loc.getTile(x , int((coordinates.Y - this.boundingBox.height * 0.45) / tileY)).water > 0) {
 				isPlav = true;
 			}
-			if (loc.getTile(x , int((coordinates.Y - objectHeight * 0.55) / tileY)).water > 0) {
+			if (loc.getTile(x , int((coordinates.Y - this.boundingBox.height * 0.55) / tileY)).water > 0) {
 				isPlav2 = true;
 			}
 
 
-			if (pla!=isPlav && (velocity.Y > 8 || velocity.Y < -8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y - objectHeight * 0.25 + velocity.Y, {dy:-Math.abs(velocity.Y)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(velocity.Y*massa*2)-5)});
+			if (pla!=isPlav && (velocity.Y > 8 || velocity.Y < -8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y - this.boundingBox.height * 0.25 + velocity.Y, {dy:-Math.abs(velocity.Y)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(velocity.Y*massa*2)-5)});
 			if (pla!=isPlav && velocity.Y > 5) {
 				if (massa>2) sound('fall_water0', 0, velocity.Y / 10);
 				else if (massa>0.4) sound('fall_water1', 0, velocity.Y / 10);
@@ -697,20 +733,37 @@ package fe.loc {
 		}
 
 		public function checkShelf(velocityDown:Number):Number {
+			// Use this entity's bounding box
 			for (var i in loc.objs) {
 				var b:Box = loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && !(coordinates.X<b.leftBound || coordinates.X > b.rightBound) && bottomBound<=b.topBound && bottomBound + velocityDown > b.topBound) {
-					osnova = b;
-					return b.topBound;
+				if (!b.invis && b.stay && b.shelf) {
+					// Check X range by comparing our centerX to b's boundingBox.left/right
+					if ( !( coordinates.X < b.boundingBox.left ||
+							coordinates.X > b.boundingBox.right ) &&
+							// Check Y range by comparing bottom to b's top
+							this.boundingBox.bottom <= b.boundingBox.top &&
+							(this.boundingBox.bottom + velocityDown) > b.boundingBox.top )
+						{
+						osnova = b;
+						return b.boundingBox.top;
+					}
 				}
 			}
 			return 0;
 		}
 
-		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
-			for (var i:int = int((leftBound + gx) / tileX); i <= int((rightBound + gx) / tileX); i++) {
-				for (var j:int = int((topBound + gy) / tileY); j <= int((bottomBound + gy) / tileY); j++) {
-					if (collisionTile(loc.getTile(i, j), gx, gy)) return true;
+		public function collisionAll(gx:Number = 0, gy:Number = 0):Boolean {
+			// Use boundingBox properties for iteration
+			var leftIndex:int   = int((this.boundingBox.left   + gx) / tileX);
+			var rightIndex:int  = int((this.boundingBox.right  + gx) / tileX);
+			var topIndex:int    = int((this.boundingBox.top    + gy) / tileY);
+			var bottomIndex:int = int((this.boundingBox.bottom + gy) / tileY);
+
+			for (var i:int = leftIndex; i <= rightIndex; i++) {
+				for (var j:int = topIndex; j <= bottomIndex; j++) {
+					if (collisionTile(loc.getTile(i, j), gx, gy)) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -746,15 +799,39 @@ package fe.loc {
 			return Snd.ps(sid, coordinates.X, coordinates.Y, msec, vol);
 		}
 		
-		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int {
-			if (!t || (t.phis==0 || t.phis==3) && !t.shelf) return 0;  //пусто
-			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy>=t.phY2) {
+		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int {
+			// If the tile is non-existent or effectively “empty,” just return 0.
+			if (!t || ((t.phis == 0 || t.phis == 3) && !t.shelf)) {
 				return 0;
 			}
-			else if ((t.phis==0 || t.phis==3) && t.shelf && (bottomBound>t.phY1 || levit || isThrow)) {  //полка 
+
+			// Cache shifted bounding box edges (for clarity/efficiency).
+			// These represent where our bounding box will be after applying (gx, gy).
+			var newLeft:Number   = this.boundingBox.left   + gx;
+			var newRight:Number  = this.boundingBox.right  + gx;
+			var newTop:Number    = this.boundingBox.top    + gy;
+			var newBottom:Number = this.boundingBox.bottom + gy;
+
+			// Compare against the tile’s “physical” boundaries.
+			// If we are completely to the left, right, above, or below the tile, no collision.
+			if (newRight   <= t.phX1 ||
+				newLeft    >= t.phX2 || 
+				newBottom  <= t.phY1 ||
+				newTop     >= t.phY2) 
+			{
 				return 0;
 			}
-			else return 1;
+
+			// If it's a shelf-type tile (phis == 0 or 3), and our bottom is already below the tile’s top edge
+			// (or if we’re levitating or being thrown), then we also skip collision.
+			if ((t.phis == 0 || t.phis == 3) && t.shelf &&
+				(this.boundingBox.bottom > t.phY1 || levit || isThrow)) 
+			{
+				return 0;
+			}
+
+			// Otherwise, collision is valid.
+			return 1;
 		}
 		
 		//особые функции

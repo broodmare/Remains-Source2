@@ -7,11 +7,12 @@ package fe.projectile
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	import fe.loc.Box;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	
 	public class PhisBullet extends Bullet {
 
-		public var brake=2;
+		public var brake:int = 2;
 		public var dr:Number=0;
 		public var lip:Boolean=false;
 		public var prilip:Boolean=false;
@@ -30,8 +31,8 @@ package fe.projectile
 			warn=1;
 			levitPoss=true;
 			inWater=0;
-			objectWidth = 30;
-			objectHeight = 30;
+			this.boundingBox.width = 30;
+			this.boundingBox.height = 30;
 			if (vis) vis.visible = true;
 		}
 
@@ -62,8 +63,8 @@ package fe.projectile
 			if (!babah && !prilip) {
 				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	run();
 				else {
-					var div = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y))/World.maxdelta)+1;
-					for (var i = 0; (i < div && !babah); i++) run(div);
+					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					for (var i:int = 0; (i < div && !babah); i++) run(div);
 				}
 			}
 
@@ -108,12 +109,12 @@ package fe.projectile
 				loc.remGrenade(this);
 			}
 
-			onCursor = (liv > 5 && coordinates.X - objectWidth / 2 < World.w.celX && coordinates.X + objectWidth / 2 > World.w.celX && coordinates.Y - objectHeight / 2 < World.w.celY && coordinates.Y + objectHeight / 2 > World.w.celY)? 3:0;
+			onCursor = (liv > 5 && coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.halfHeight < World.w.celY && coordinates.Y + this.boundingBox.halfHeight > World.w.celY)? 3:0;
 		}
 		
 		private function sensor():Boolean {
 			for each (var un:Unit in loc.units) {
-				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.leftBound && coordinates.X <= un.rightBound && coordinates.Y >= un.topBound && coordinates.Y <= un.bottomBound && un.sost < 3) {
+				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.boundingBox.bottom && coordinates.X <= un.boundingBox.right && coordinates.Y >= un.boundingBox.top && coordinates.Y <= un.boundingBox.bottom && un.sost < 3) {
 					explosion();
 					onCursor=0;
 					vse=true;
@@ -158,7 +159,7 @@ package fe.projectile
 			var t:Tile;
 			coordinates.X += velocity.X / div;
 			if (lip) {
-				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && coordinates.X >= loc.celObj.leftBound && coordinates.X <= loc.celObj.rightBound && coordinates.Y >= loc.celObj.topBound && coordinates.Y <= loc.celObj.bottomBound) {
+				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && coordinates.X >= loc.celObj.boundingBox.left && coordinates.X <= loc.celObj.boundingBox.right && coordinates.Y >= loc.celObj.boundingBox.top && coordinates.Y <= loc.celObj.boundingBox.bottom) {
 					targetObj=loc.celObj;
 					prilip=true;
 					return;

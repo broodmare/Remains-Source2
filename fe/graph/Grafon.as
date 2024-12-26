@@ -1,5 +1,5 @@
-package fe.graph
-{
+package fe.graph {
+
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.Bitmap;
@@ -30,8 +30,11 @@ package fe.graph
 	import fe.stubs.tileGwall;
 	import fe.stubs.tileFront;
 
-	public class Grafon
-	{
+	public class Grafon {
+		
+		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
+		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
+
 		public var loc:Location;
 
 		public var visual:Sprite;
@@ -113,18 +116,24 @@ package fe.graph
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
+		// Constructor
 		public function Grafon(nvis:Sprite) {
 			visual = nvis;
 
 			visBack = new Sprite();
 			visBack2 = new Sprite();
 			visVoda = new Sprite();
-			visVoda.alpha=0.6;
+			visVoda.alpha = 0.6;
 			visFront = new Sprite();
 			visLight = new Sprite();
 			visSats = new Sprite();
 			visSats.visible=false;
 			visSats.filters=[new BlurFilter(3,3,1)];
+
+			debug = new DebugLayer();
+			visBoundingBoxes = new Sprite();	// Layer to draw all bounding boxes on
+			visBoundingBoxes.mouseEnabled = false; // Prevent bounding boxes from blocking mouse events
+			visBoundingBoxes.mouseChildren = false;
 			
 			visObjs = [];
 			for (var i = 0; i < kolObjs; i++) {
@@ -143,6 +152,7 @@ package fe.graph
 			visual.addChild(visObjs[4]);	//8
 			visual.addChild(visSats);		//9
 			visual.addChild(visObjs[5]);	//10
+			
 			visLight.x = -tileX / 2;
 			visLight.y = -tileX / 2 - Tile.tileY;
 			visLight.scaleX = tileX;
@@ -240,10 +250,10 @@ package fe.graph
 		}
 		
 		private function createCursors():void {
-			createCursor(visCurArrow,'arrow');
-			createCursor(visCurTarget,'target', 13, 13);
-			createCursor(visCurTarget1,'combat', 13, 13);
-			createCursor(visCurTarget2,'action', 13, 13);
+			createCursor(visCurArrow,'arrow');				// .SWF Dependency
+			createCursor(visCurTarget,'target', 13, 13);	// .SWF Dependency
+			createCursor(visCurTarget1,'combat', 13, 13);	// .SWF Dependency
+			createCursor(visCurTarget2,'action', 13, 13);	// .SWF Dependency
  		}
 		
 		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void {
@@ -261,6 +271,11 @@ package fe.graph
 //							Начальная прорисовка локации
 //============================================================================================		
 		
+		public function drawDebugLayer():void {
+			// Ensure the bounding boxes container exists
+			visual.addChild(debug.drawAllBoundingBoxes());
+		}
+
 		public function getObj(textureName:String, n:int = 0):* {
 			//trace("Getting resource object: " + textureName + " from GrLoader: " + n);
 			if (grLoaders[n] && grLoaders[n].isLoad) {
@@ -409,7 +424,7 @@ package fe.graph
 				
 				var gret:int=0;
 				World.w.gr_stage=5;
-				for (var i=0; i<loc.spaceX; i++) {
+				for (var i:int = 0; i<loc.spaceX; i++) {
 					for (var j=0; j<loc.spaceY; j++) {
 						t = loc.getTile(i, j);
 						loc.tileKontur(i,j,t);
@@ -570,8 +585,8 @@ package fe.graph
 			//	World.w.showError(err)
 			//}
 			World.w.gr_stage = 19;
-				//активные объекты
-				drawAllObjs();
+			// [Active objects]
+			drawAllObjs();
 
 			World.w.gr_stage = 0;
 		}
@@ -611,8 +626,7 @@ package fe.graph
 		}
 		
 		//заполнение заднего плана текстурой
-		public function drawBackWall(tex:String, sposob:int = 0):void
-		{
+		public function drawBackWall(tex:String, sposob:int = 0):void {
 			var roomPixelWidth:int	= kusokX * tileX;
 			var roomPixelHeight:int	= kusokY * Tile.tileY
 

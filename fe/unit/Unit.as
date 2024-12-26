@@ -21,6 +21,7 @@ package fe.unit {
 	import flash.media.SoundChannel;
 	import flash.filters.GlowFilter;
 	import fe.entities.Obj;
+	import fe.entities.BoundingBox;
 	import fe.entities.Part;
 	
 	public class Unit extends Obj {
@@ -55,12 +56,6 @@ package fe.unit {
 		public var id:String;
 		var mapxml:XML;
 		var uniqName:Boolean = false;
-		
-		// Unit's size (in pixels)
-		public var sitY:Number	= 40;	// While standing
-		public var stayY:Number	= 40;
-		public var sitX:Number	= 40;	// While crouching
-		public var stayX:Number	= 40;
 
 		// Starting coordinates
 		public var begX:Number = -1;
@@ -463,40 +458,42 @@ package fe.unit {
 			return obj;
 		}
 		
-		public function getXmlParam(mid:String = null)
-		{
+		public function getXmlParam(mid:String = null) {
 			var setOpts:Boolean=false;
+			
 			if (opts[id]) {
 				opt=opts[id];
 				begvulner=begvulners[id];
-			} else {
+			}
+			else {
 				opt=new Object();
 				opts[id]=opt;
 				begvulner=[];
 				begvulners[id]=begvulner;
 				setOpts=true;
 			}
+			
 			var node:XML;
 			var isHero:Boolean=false;
+			
 			if (mid==null) {
 				if (hero>0) isHero=true;
 				mid=id;
 			}
-			
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", mid);
-			if (mid && !uniqName) nazv=Res.txt('u',mid);
+			if (mid && !uniqName) nazv=Res.txt('u', mid);
 			if (node0.@fraction.length()) fraction=node0.@fraction;
 			inter.cont=mid;
 			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
 			if (fraction==F_PLAYER) warn=0;
 			if (node0.@xp.length()) xp=node0.@xp*World.unitXPMult;
-			//физические параметры
+			// [Physical parameters]
 			if (node0.phis.length()) {
-				node=node0.phis[0];
-				if (node.@sX.length()) stayX=objectWidth=node.@sX;
-				if (node.@sY.length()) stayY=objectHeight=node.@sY;
-				if (node.@sitX.length()) sitX=node.@sitX; else sitX=stayX;
-				if (node.@sitY.length()) sitY=node.@sitY; else sitY=stayY/2;
+				node = node0.phis[0];
+				if (node.@sX.length()) this.boundingBox.width = this.boundingBox.standingWidth = node.@sX;
+				if (node.@sY.length()) this.boundingBox.height = this.boundingBox.standingHeight = node.@sY;
+				if (node.@sitX.length()) this.boundingBox.crouchingWidth = node.@sitX; else this.boundingBox.crouchingWidth = this.boundingBox.standingHeight;
+				if (node.@sitY.length()) this.boundingBox.crouchingHeight = node.@sitY; else this.boundingBox.crouchingHeight = this.boundingBox.standingHeight * 0.5;
 				if (node.@massa.length()) massaMove=node.@massa/50;
 				if (node.@massafix.length()) massaFix=node.@massafix/50;
 				else massaFix=massaMove;
@@ -639,7 +636,7 @@ package fe.unit {
 			// LOAD ANIMATION SETS IF APPLICABLE
 			if (node0.@parent.length()) {
 				var parentID:String = node0.@parent;
-				trace("Unit.as/create() - Loading parent animation: " + parentID + " for subclass: " + id);
+				//trace("Unit.as/create() - Loading parent animation: " + parentID + " for subclass: " + id);
 				
 				var parentAnims:Object = AnimationSet.loadAnimations(parentID);
 				if (parentAnims != null) {
@@ -653,7 +650,7 @@ package fe.unit {
 				if (subclassAnims != null) {
 					for (var animState:String in subclassAnims) {
 						anims[animState] = subclassAnims[animState]; // Override or add new animations
-						trace("Unit.as/create() - Loaded subclass animation: " + animState + " for: " + id);
+						//trace("Unit.as/create() - Loaded subclass animation: " + animState + " for: " + id);
 					}
 				}
 				else {
@@ -662,7 +659,7 @@ package fe.unit {
 			}
 			else {
 				// No parent; load animations normally
-				trace("Unit.as/create() - No parent detected for: " + id + ", attempting to load animations"); 
+				//trace("Unit.as/create() - No parent detected for: " + id + ", attempting to load animations"); 
 				anims = AnimationSet.loadAnimations(id);
 			}
 
@@ -716,10 +713,10 @@ package fe.unit {
 				storona=-storona;
 				aiNapr=storona;
 			}
-			setPos(nx,ny);
+			setPos(nx, ny);
 			if (collisionAll()) {
 				if (!collisionAll(-tileX)) {
-					setPos(nx-tileX,ny);
+					setPos(nx - tileX, ny);
 				}
 			}
 			if (inter) inter.loc=nloc;
@@ -922,7 +919,8 @@ package fe.unit {
             }
 			else animate();
 
-			onCursor = (isVis && !disabled && sost < 4 && leftBound < World.w.celX && rightBound > World.w.celX && topBound < World.w.celY && bottomBound > World.w.celY) ? prior:0;
+			// TODO: Replace with boundingBox check
+			onCursor = (isVis && !disabled && sost < 4 && this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY) ? prior:0;
 
 			for (i in childObjs) if (childObjs[i]) { // Here is where it's called as a string.
 				try {
@@ -941,7 +939,7 @@ package fe.unit {
 		public function setPos(nx:Number, ny:Number) {
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			centerObj();
+			this.boundingBox.center(coordinates);
 			setCel();
 		}
 		
@@ -997,7 +995,7 @@ package fe.unit {
 			else {
 				if (inWater) velocity.X *= 0.5;
 				if (!levit && !isLaz) {
-					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - objectHeight / 4);
+					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - this.boundingBox.height * 0.25);
 					if (t.grav > 0 && velocity.Y < World.maxdy * t.grav || t.grav < 0 && velocity.Y > World.maxdy * t.grav) velocity.Y += World.ddy * t.grav * grav;
 				}
 				if (stay) {
@@ -1083,25 +1081,25 @@ package fe.unit {
 			if (!isLaz) {
 
 				coordinates.X += (velocity.X + osndx) / div;
-				if (coordinates.X - objectWidth / 2 < 0) {
+				if (coordinates.X - this.boundingBox.halfWidth < 0) {
 					if (!outLoc(1)) {
-						coordinates.X = objectWidth / 2;
+						coordinates.X = this.boundingBox.halfWidth;
 						velocity.X = Math.abs(velocity.X) * elast;
 						turnX = 1;
 						kray = true;
 					}
 				}
-				if (coordinates.X + objectWidth / 2 >= loc.maxX)
+				if (coordinates.X + this.boundingBox.halfWidth >= loc.maxX)
 				{
 					if (!outLoc(2))
 					{
-						coordinates.X = loc.maxX - 1 - objectWidth / 2;
+						coordinates.X = loc.maxX - 1 - this.boundingBox.halfWidth;
 						velocity.X = -Math.abs(velocity.X) * elast;
 						turnX = -1;
 						kray = true;
 					}
 				}
-				centerObjHorizontally();
+				this.boundingBox.centerHorizontally(coordinates);
 				
 				// [Move left]
 				if (velocity.X + osndx < 0) {
@@ -1109,39 +1107,38 @@ package fe.unit {
 						newmy = checkDiagon(-5);
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							flattenObj();
+							this.boundingBox.flatten(coordinates);
 						}
 					}
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1 > 0.5)) {
 						newmy=checkDiagon(-2, -1);
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							flattenObj();
+							this.boundingBox.flatten(coordinates);
 						}
 					}
-					if (player && isUp && stay && !isSit)
-					{
-						var x:int = int(leftBound / tileX);
-						var y:int = int(topBound/tileY);
+					if (player && isUp && stay && !isSit) {
+						var x:int = int(this.boundingBox.left / tileX);
+						var y:int = int(this.boundingBox.top / tileY);
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, y + 1);
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0)
-						{
-							coordinates.Y = bottomBound = t2.phY1;
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+							coordinates.Y = t2.phY1;
+							this.boundingBox.bottom = t2.phY1;
 							sit(true);
 							autoSit = true;
 						}
 					}
 					if (mater) {
-						for (i = int(topBound/tileY); i <= int(bottomBound/tileY); i++) {
-							t = loc.getTile(int(leftBound/tileX), i);
+						for (i = int(this.boundingBox.top/tileY); i <= int(this.boundingBox.bottom/tileY); i++) {
+							t = loc.getTile(int(this.boundingBox.left/tileX), i);
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-bottomBound)) {
+								if (this.boundingBox.bottom-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-this.boundingBox.bottom)) {
 									coordinates.Y = t.phY1;
 								}
 								else {
-									coordinates.X = t.phX2 + objectWidth / 2;
+									coordinates.X = t.phX2 + this.boundingBox.halfWidth;
 									if (t_throw > 0 && velocity.X < -damWallSpeed && damWall) damageWall(2);
 
 									if (destroy > 0 && destroyWall(t, 1)) {
@@ -1151,7 +1148,7 @@ package fe.unit {
 										velocity.X = Math.abs(velocity.X) * elast;
 										turnX = 1;
 										if (t.mat == 1) tykMat = 1;
-										centerObjHorizontally();
+										this.boundingBox.centerHorizontally(coordinates);
 									}
 								}
 							}
@@ -1165,38 +1162,38 @@ package fe.unit {
 						newmy = checkDiagon(-5);
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							flattenObj();
+							this.boundingBox.flatten(coordinates);
 						}
 					}
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5)) {
 						newmy = checkDiagon(-2, 1);
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							flattenObj();
+							this.boundingBox.flatten(coordinates);
 						}
 					}
 					if (player && isUp && stay && !isSit) {
-						var x:int = int(rightBound / tileX);
-						var y:int = int(topBound / tileY);
+						var x:int = int(this.boundingBox.right / tileX);
+						var y:int = int(this.boundingBox.top / tileY);
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, (y + 1));
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							coordinates.Y  = t2.phY1;
-							bottomBound = t2.phY1;
+							this.boundingBox.bottom = t2.phY1;
 							sit(true);
 							autoSit = true;
 						}
 					} 
 					if (mater) {
-						for (i = int(topBound / tileY); i <= int(bottomBound / tileY); i++) {
-							t = loc.getTile(int(rightBound / tileX), i);
+						for (i = int(this.boundingBox.top / tileY); i <= int(this.boundingBox.bottom / tileY); i++) {
+							t = loc.getTile(int(this.boundingBox.right / tileX), i);
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (bottomBound-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-bottomBound)) {
+								if (this.boundingBox.bottom-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-this.boundingBox.bottom)) {
 									coordinates.Y = t.phY1;
 								}
 								else {
-									coordinates.X = t.phX1 - objectWidth / 2;
+									coordinates.X = t.phX1 - this.boundingBox.halfWidth;
 									if (t_throw > 0 && velocity.X > damWallSpeed && damWall) damageWall(1);
 									if (destroy > 0 && destroyWall(t, 2)) {
 										velocity.X *= 0.75;
@@ -1205,14 +1202,14 @@ package fe.unit {
 										velocity.X = -Math.abs(velocity.X) * elast;
 										turnX = -1;
 										if (t.mat == 1) tykMat = 1;
-										centerObjHorizontally();
+										this.boundingBox.centerHorizontally(coordinates);
 									}
 								}
 							}
 						}
 					}
 				}
-				flattenObj();
+				this.boundingBox.flatten(coordinates);
 			}
 			//отталкивание | [Repulsion]
 			
@@ -1239,13 +1236,13 @@ package fe.unit {
 						velocity.Y = 0;
 						turnY = -1;
 					}
-					flattenObj();
+					this.boundingBox.flatten(coordinates);
 					if (mater) {
-						for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
-							t = loc.getTile(i, int(bottomBound/tileY));
+						for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
+							t = loc.getTile(i, int(this.boundingBox.bottom/tileY));
 							if (collisionTile(t)) {
 								coordinates.Y = t.phY1;
-								flattenObj();
+								this.boundingBox.flatten(coordinates);
 								velocity.Y = 0;
 								turnY = -1;
 								if (t.mat == 1) tykMat = 1;
@@ -1256,11 +1253,11 @@ package fe.unit {
 				// [a fall]
 				else  {						
 					if (mater) {
-						for (i = int(leftBound/tileX); i<=int(rightBound/tileX); i++) {
-							t = loc.getTile(i, int(bottomBound + velocity.Y / div) / tileY);
+						for (i = int(this.boundingBox.left/tileX); i<=int(this.boundingBox.right/tileX); i++) {
+							t = loc.getTile(i, int(this.boundingBox.bottom + velocity.Y / div) / tileY);
 							if (collisionTile(t, 0, velocity.Y / div)) {
-								if (-(leftBound - t.phX1) / objectWidth<shX1) shX1 = -(leftBound - t.phX1) / objectWidth;
-								if ((rightBound - t.phX2) / objectWidth<shX2) shX2 = (rightBound - t.phX2) / objectWidth;
+								if (-(this.boundingBox.left - t.phX1) / this.boundingBox.width < shX1) shX1 = -(this.boundingBox.left - t.phX1) / this.boundingBox.width;
+								if ((this.boundingBox.right - t.phX2) / this.boundingBox.width < shX2) shX2 = (this.boundingBox.right - t.phX2) / this.boundingBox.width;
 								newmy = t.phY1;
 								if (t.mat > 0) stayMat = t.mat;
 								if (t.phis >= 1 && !(transT && t.phis == 3)) {
@@ -1281,16 +1278,16 @@ package fe.unit {
 					if (newmy == 0 && !throu) newmy = checkShelf(velocity.Y / div, osndy / div);
 
 					if (newmy)  {
-						topBound = newmy - objectHeight;
-						for (i = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-							t = loc.getTile(i, int((newmy - objectHeight) / tileY));
+						this.boundingBox.top = newmy - this.boundingBox.height;
+						for (i = int(this.boundingBox.left / tileX); i <= int(this.boundingBox.right / tileX); i++) {
+							t = loc.getTile(i, int((newmy - this.boundingBox.height) / tileY));
 							if (collisionTile(t)) newmy = 0;
 						}
 					}
 					if (newmy) {
 						coordinates.Y = newmy;
-						topBound = coordinates.Y-objectHeight;
-						bottomBound = coordinates.Y;
+						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+						this.boundingBox.bottom = coordinates.Y;
 						if (velocity.Y > 16) makeNoise(noiseRun, true);
 						else if (velocity.Y > 9) makeNoise(noiseRun / 2, true);
 						if (velocity.Y > 5) sndFall();
@@ -1307,14 +1304,14 @@ package fe.unit {
 					}
 					else {
 						coordinates.Y += velocity.Y / div;
-						flattenObj();
+						this.boundingBox.flatten(coordinates);
 					}
 					
 					if (coordinates.Y > loc.maxY) {
 						if (!outLoc(3)) {
 							coordinates.Y = loc.maxY-1;
 							turnY = -1;
-							flattenObj();
+							this.boundingBox.flatten(coordinates);
 						}
 					}
 				}
@@ -1325,9 +1322,9 @@ package fe.unit {
 					stay = false;
 					diagon = 0;
 				}
-				if (coordinates.Y - objectHeight < 0) {
+				if (coordinates.Y - this.boundingBox.height < 0) {
 					if (!outLoc(4)) {
-						coordinates.Y = objectHeight - 0.1;
+						coordinates.Y = this.boundingBox.height - 0.1;
 						velocity.Y = 0;
 						turnY = 1;
 					}
@@ -1336,24 +1333,24 @@ package fe.unit {
 					newmy = checkShelf(velocity.Y / div, osndy / div);
 					if (newmy) {
 						coordinates.Y = newmy;
-						flattenObj();
+						this.boundingBox.flatten(coordinates);
 						velocity.Y = 0;
 						stay = true;
 					}
 				}
 				else {
 					coordinates.Y += (velocity.Y + osndy) / div;
-					flattenObj();
+					this.boundingBox.flatten(coordinates);
 				}
 
 				if (mater) {
-					for (i = int(leftBound/tileX); i <= int(rightBound/tileX); i++) {
-						t = loc.getTile(i, int(topBound / tileY));
+					for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
+						t = loc.getTile(i, int(this.boundingBox.top / tileY));
 						if (collisionTile(t)) {
 							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) damageWall(4);
 							if (destroy > 0) destroyWall(t, 4);
-							coordinates.Y = t.phY2 + objectHeight;
-							flattenObj();
+							coordinates.Y = t.phY2 + this.boundingBox.height;
+							this.boundingBox.flatten(coordinates);
 							velocity.Y = 0;
 							turnY = 1;
 							if (t.mat == 1) tykMat = 1;
@@ -1386,8 +1383,8 @@ package fe.unit {
 			coordinates.Y += velocity.Y * reciprocalDiv;
 
 			// Precompute half dimensions
-			var halfWidth:Number = objectWidth / 2;
-			var halfHeight:Number = objectHeight / 2;
+			var halfWidth:Number = this.boundingBox.halfWidth;
+			var halfHeight:Number = this.boundingBox.halfHeight;
 
 			// Cache map boundaries
 			var maxX:Number = loc.maxX;
@@ -1406,8 +1403,8 @@ package fe.unit {
 			}
 
 			// Handle Y-axis boundaries
-			if (coordinates.Y - objectHeight < 0) {
-				coordinates.Y = objectHeight - MIN_Y_POSITION;
+			if (coordinates.Y - this.boundingBox.height < 0) {
+				coordinates.Y = this.boundingBox.height - MIN_Y_POSITION;
 				velocity.Y = 0;
 				turnY = 1;
 			}
@@ -1418,7 +1415,7 @@ package fe.unit {
 			}
 
 			// Center the object after movement and boundary adjustments
-			centerObj();
+			this.boundingBox.center(coordinates);
 		}
 		
 		// Crouch
@@ -1434,19 +1431,19 @@ package fe.unit {
 			
 			// Adjust dimensions for crouching
 			if (isSit) {
-				objectWidth = sitX;
-				objectHeight = sitY;
+				this.boundingBox.width = this.boundingBox.crouchingWidth;
+				this.boundingBox.height = this.boundingBox.crouchingHeight;
 			}
 			// Adjust dimensions for standing
 			else {
-				objectWidth = stayX;
-				objectHeight = stayY;
+				this.boundingBox.width = this.boundingBox.standingWidth;
+				this.boundingBox.height = this.boundingBox.standingHeight;
 			}
 			
 			// Re-center the character horizontally after dimension change
-			centerObjHorizontally();
+			this.boundingBox.centerHorizontally(coordinates);
 			// Update the top boundary based on the new height
-			topBound = coordinates.Y - objectHeight;
+			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 		}
 		
 		// Stand up
@@ -1476,11 +1473,11 @@ package fe.unit {
 			var maxSpaceY:int = loc.spaceY;
 
 			// Precompute tile index ranges and clamp them to map boundaries
-			var startI:int = Math.max(int((leftBound + offsetX) * invTileX), 0);
-			var endI:int = Math.min(int((rightBound + offsetX) * invTileX), maxSpaceX - 1);
+			var startI:int = Math.max(int((this.boundingBox.left + offsetX) * invTileX), 0);
+			var endI:int = Math.min(int((this.boundingBox.right + offsetX) * invTileX), maxSpaceX - 1);
 
-			var startJ:int = Math.max(int((topBound + offsetY) * invTileY), 0);
-			var endJ:int = Math.min(int((bottomBound + offsetY) * invTileY), maxSpaceY - 1);
+			var startJ:int = Math.max(int((this.boundingBox.top + offsetY) * invTileY), 0);
+			var endJ:int = Math.min(int((this.boundingBox.bottom + offsetY) * invTileY), maxSpaceY - 1);
 
 			// Iterate over the relevant tiles to check for collisions with the unit's bounding box
 			for (var i:int = startI; i <= endI; i++) {
@@ -1500,11 +1497,11 @@ package fe.unit {
 				return 0;	//[Empty]
 			}  
 			// Normal tile collision
-			if (rightBound + gx <= t.phX1 || leftBound + gx >= t.phX2 || bottomBound + gy <= t.phY1 || topBound + gy >= t.phY2) {
+			if (this.boundingBox.right + gx <= t.phX1 || this.boundingBox.left + gx >= t.phX2 || this.boundingBox.bottom + gy <= t.phY1 || this.boundingBox.top + gy >= t.phY2) {
 				return 0;
 			}
 			// Shelf collision
-			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (bottomBound - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
+			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (this.boundingBox.bottom - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
 				return 0;
 			}
 			else {
@@ -1533,13 +1530,13 @@ package fe.unit {
 				storona = (loc.getTile(i, j)).stair;
 
 				if (isLaz == -1) {
-					coordinates.X = (loc.getTile(i, j)).phX1 + objectWidth / 2;
+					coordinates.X = (loc.getTile(i, j)).phX1 + this.boundingBox.halfWidth;
 				}
 				else {
-					coordinates.X = (loc.getTile(i, j)).phX2 - objectWidth / 2;
+					coordinates.X = (loc.getTile(i, j)).phX2 - this.boundingBox.halfWidth;
 				}
 				
-				centerObjHorizontally();	// Center the character on the horizontal axis
+				this.boundingBox.centerHorizontally(coordinates);	// Center the character on the horizontal axis
 				stay = false;				// Indicate that the character is no standing on the ground
 				sit(false);
 				//trace("Unit.as/checkStairs() - Stairs");
@@ -1565,8 +1562,8 @@ package fe.unit {
 			var maxSpaceY:int = loc.spaceY;
 
 			// Precompute adjusted Y coordinates based on object height
-			var adjustedYTop:Number = coordinates.Y - objectHeight * HEIGHT_MULTIPLIER_TOP;
-			var adjustedYBottom:Number = coordinates.Y - objectHeight * HEIGHT_MULTIPLIER_BOTTOM;
+			var adjustedYTop:Number = coordinates.Y - this.boundingBox.height * HEIGHT_MULTIPLIER_TOP;
+			var adjustedYBottom:Number = coordinates.Y - this.boundingBox.height * HEIGHT_MULTIPLIER_BOTTOM;
 
 			// Calculate tile indices for the top position
 			var x:int = Math.floor(coordinates.X / tileX);
@@ -1611,7 +1608,7 @@ package fe.unit {
 
 				// Update water state based on the bottom tile
 				isPlav = false;
-				if (objectHeight <= tileY) {
+				if (this.boundingBox.height <= tileY) {
 					inWater = false;
 				}
 				else if (t2.water > 0) {
@@ -1625,7 +1622,7 @@ package fe.unit {
 			// Handle events when water state changes
 			if (wasInWater != inWater) {
 				if (Math.abs(velocity.Y) > 8 || plaKap) {
-					Emitter.emit('kap', loc, coordinates.X, coordinates.Y - objectHeight * HEIGHT_MULTIPLIER_BOTTOM + velocity.Y, {
+					Emitter.emit('kap', loc, coordinates.X, coordinates.Y - this.boundingBox.height * HEIGHT_MULTIPLIER_BOTTOM + velocity.Y, {
 						dy: -Math.abs(velocity.Y) * (Math.random() * 0.3 + 0.3),
 						kol: int(Math.abs(velocity.Y * massa * 2) + 1)
 					});
@@ -1642,7 +1639,7 @@ package fe.unit {
 
 			// Emit water splash if moving horizontally while in water
 			if (inWater && !isPlav && Math.abs(velocity.X) > 3) {
-				Emitter.emit('kap', loc, coordinates.X, coordinates.Y - objectHeight * HEIGHT_MULTIPLIER_BOTTOM, { rx: objectWidth });
+				Emitter.emit('kap', loc, coordinates.X, coordinates.Y - this.boundingBox.height * HEIGHT_MULTIPLIER_BOTTOM, { rx: this.boundingBox.width });
 			}
 
 			// Handle the 'namok' effect when swimming
@@ -1687,18 +1684,19 @@ package fe.unit {
 		public function checkShelf(pdy:Number, pdy2:Number = 0):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.shelf && !b.levit && !(rightBound<b.leftBound || leftBound>b.rightBound) && bottomBound+pdy2<=b.topBound && bottomBound+pdy+pdy2>b.topBound) {
-					shX1=shX2=1;
-					if (-(leftBound-b.leftBound)/objectWidth<shX1) shX1=-(leftBound-b.leftBound)/objectWidth;
-					if ((rightBound-b.rightBound)/objectWidth<shX2) shX2=(rightBound-b.rightBound)/objectWidth;
-					stayMat=b.mat;
-					stayPhis=2;
-					stayOsn=b;
+				if (!b.invis && b.shelf && !b.levit && !(this.boundingBox.right < b.boundingBox.left || this.boundingBox.left > b.boundingBox.right) && this.boundingBox.bottom + pdy2 <= b.boundingBox.top && this.boundingBox.bottom + pdy + pdy2 > b.boundingBox.top) {
+					shX1 = 1;
+					shX2 = 1;
+					if (-(this.boundingBox.left - b.boundingBox.left) / this.boundingBox.width < shX1) shX1 = -(this.boundingBox.left - b.boundingBox.left) / this.boundingBox.width;
+					if ((this.boundingBox.right - b.boundingBox.right) / this.boundingBox.width < shX2) shX2 = (this.boundingBox.right - b.boundingBox.right) / this.boundingBox.width;
+					stayMat = b.mat;
+					stayPhis = 2;
+					stayOsn = b;
 					if (!b.stay) {
 						b.velocity.Y += velocity.Y * massa / (massa + b.massa);
 						b.fixPlav=false;
 					}
-					return b.topBound;
+					return b.boundingBox.top;
 				}
 			}
 			return 0;
@@ -1756,7 +1754,7 @@ package fe.unit {
 		
 		//телепортация
 		public function teleport(nx:Number,ny:Number,eff:int=0) {
-			if (eff>0) Emitter.emit('tele', loc, coordinates.X, coordinates.Y - objectHeight / 2,{rx:objectWidth, ry:objectHeight, kol:30});
+			if (eff>0) Emitter.emit('tele', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {rx:this.boundingBox.width, ry:this.boundingBox.height, kol:30});
 			setPos(nx, ny);
 			if (currentWeapon) {
 				setWeaponPos(currentWeapon.tip);
@@ -1764,7 +1762,7 @@ package fe.unit {
 			}
 			isLaz=0;
 			levit=0;
-			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y - objectHeight / 2);
+			if (eff>0) Emitter.emit('teleport', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight);
 		}
 		
 		// [Tear away from a fixed place] I think this is for grabbing turrets.
@@ -1854,7 +1852,7 @@ package fe.unit {
 			if (trigDis) return;
 			super.addVisual();
 			if (!player && !hpbar && vis) {
-				hpbar=new hpBar();
+				hpbar=new hpBar();	// .SWF Dependency
 				if (hero<=0) hpbar.goldstar.visible=false;
 				if (invis) hpbar.visible=false;
 				visDetails();
@@ -1900,7 +1898,7 @@ package fe.unit {
 		}
 		
 		public function newPart(nid:String,kol:int=1,frame:int=0) {
-			Emitter.emit(nid, loc, coordinates.X, coordinates.Y-objectHeight/2, {kol:kol, frame:frame});
+			Emitter.emit(nid, loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:kol, frame:frame});
 		}
 
 		public function setVisPos() {
@@ -1941,7 +1939,7 @@ package fe.unit {
 				hpbar.x=World.w.cam.screenX/2;
 			}
 			else {
-				hpbar.y = coordinates.Y - stayY - 20;
+				hpbar.y = coordinates.Y - this.boundingBox.standingHeight - 20;
 				if (hpbar.y < 20) hpbar.y = 20;
 				hpbar.x = coordinates.X;
 				if (loc && loc.zoom!=1) hpbar.scaleX = hpbar.scaleY = loc.zoom;
@@ -1975,8 +1973,8 @@ package fe.unit {
 			if (isFly && (velocity.X > 3 || velocity.X < -3 || velocity.Y > 3 || velocity.Y < -3))  makeNoise(noiseRun / 2);
 			
 			//положение глаз
-			eyeX = coordinates.X + objectWidth * 0.25 * storona;
-			eyeY = coordinates.Y - objectHeight * 0.75;
+			eyeX = coordinates.X + this.boundingBox.width * 0.25 * storona;
+			eyeY = coordinates.Y - this.boundingBox.height * 0.75;
 			
 			//левитация
 			if (sost==1) {
@@ -2022,7 +2020,7 @@ package fe.unit {
 						damage(Math.sqrt(poison),D_POISON,null,true);
 						poison-=critHeal;
 						if (poison<0) poison=0;
-						Emitter.emit('poison', loc, coordinates.X, coordinates.Y-objectHeight*0.5);
+						Emitter.emit('poison', loc, coordinates.X, coordinates.Y - this.boundingBox.height * 0.5);
 					}
 					if (inWater && loc.wdam>0) {
 						damage(loc.wdam,loc.wtipdam,null,true);
@@ -2033,15 +2031,15 @@ package fe.unit {
 				stun--;
 				if (stun%10==0) {
 					if (opt && opt.robot) {
-						Emitter.emit('discharge', loc, coordinates.X, coordinates.Y-objectHeight*0.5);
-						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y-objectHeight*0.5,{kol:5});
-					} else if (!mech) Emitter.emit('stun', loc, coordinates.X, coordinates.Y-objectHeight*0.75);
+						Emitter.emit('discharge', loc, coordinates.X, coordinates.Y - this.boundingBox.height*0.5);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y - this.boundingBox.height*0.5,{kol:5});
+					} else if (!mech) Emitter.emit('stun', loc, coordinates.X, coordinates.Y - this.boundingBox.height*0.75);
 									}
 			}
 			if (t_hp>0) t_hp--;
 			if (slow>0) {
 				slow--;
-				if (!fixed && slow%10==0 && vis && vis.visible && (velocity.X > 3 || velocity.X < -3 || velocity.Y > 5 || velocity.Y < -5)) Emitter.emit('slow', loc, coordinates.X, coordinates.Y-objectHeight*0.25);
+				if (!fixed && slow%10==0 && vis && vis.visible && (velocity.X > 3 || velocity.X < -3 || velocity.Y > 5 || velocity.Y < -5)) Emitter.emit('slow', loc, coordinates.X, coordinates.Y-this.boundingBox.height*0.25);
 							}
 			if (t_throw>0) t_throw--;
 			
@@ -2079,7 +2077,7 @@ package fe.unit {
 		// [Attack the target with the body using the unit's own damage]
 		public function attKorp(cel:Unit, mult:Number=1):Boolean {
 			if (sost>1 || cel==null || cel.loc!=loc || burn!=null) return false;
-			if (cel.leftBound>rightBound || cel.rightBound<leftBound || cel.topBound>bottomBound || cel.bottomBound<topBound || cel.neujaz>0) return false;
+			if (cel.boundingBox.left > this.boundingBox.right || cel.boundingBox.right < this.boundingBox.left || cel.boundingBox.top > this.boundingBox.bottom || cel.boundingBox.bottom < boundingBox.top || cel.neujaz > 0) return false;
 			return cel.udarUnit(this, mult);
 		}
 
@@ -2090,14 +2088,14 @@ package fe.unit {
 
 		public function setWeaponPos(tip:int=0) {
 			weaponX = coordinates.X;
-			weaponY = this.topBoundToCenter;
+			weaponY = this.boundingBox.top;
 			magicX = coordinates.X;
-			magicY = this.topBoundToCenter;
+			magicY = this.boundingBox.top;
 		}
 
 		public function setPunchWeaponPos(w:WPunch) {
-			w.coordinates.X = coordinates.X + objectWidth / 3 * storona;
-			w.coordinates.Y = coordinates.Y - objectHeight * 0.75;
+			w.coordinates.X = coordinates.X + this.boundingBox.width / 3 * storona;
+			w.coordinates.Y = coordinates.Y - this.boundingBox.height * 0.75;
 			w.rot = (storona > 0)? 0:Math.PI;
 		}
 		
@@ -2430,7 +2428,7 @@ package fe.unit {
 						if (bul) {
 							bloodEmit.cast(loc, bul.coordinates.X, bul.coordinates.Y, {dx:bul.velocity.X / bul.vel * 5, dy:bul.velocity.Y / bul.vel * 5, kol:int(Math.random()*5+dam/5)});
 						} else {
-							bloodEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:int(dam/3)});
+							bloodEmit.cast(loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight,{kol:int(dam/3)});
 						}
 						if (blood==1 && tip!=D_BLEED && massa>0.2) {
 							var ver=Math.random();
@@ -2440,7 +2438,7 @@ package fe.unit {
 								var st:int=1;
 								if (bul && bul.velocity.X < 0) st=-1;
 								if (bul==null && Math.random()<0.5) st=-1;
-								Emitter.emit('bloodexpl'+int(Math.random()*3+1), loc, coordinates.X+80*st+(Math.random()-0.5)*objectWidth*0.5, coordinates.Y-Math.random()*objectHeight*0.5-40,{mirr:(st<0?1:0)});
+								Emitter.emit('bloodexpl'+int(Math.random()*3+1), loc, coordinates.X+80*st+(Math.random()-0.5) * this.boundingBox.width * 0.5, coordinates.Y-Math.random()*this.boundingBox.height * 0.5 - 40, {mirr:(st<0?1:0)});
 							}
 						}
 					}
@@ -2451,7 +2449,7 @@ package fe.unit {
 				if (isShow) {//Показывать урон
 					var vnumb:int=1;
 					var castX:Number = coordinates.X;
-					var castY:Number = this.topBoundToCenter;
+					var castY:Number = this.boundingBox.top;
 					if (bul) {castX = bul.coordinates.X; castY = bul.coordinates.Y;}
 					if (player || isCrit>=2) vnumb=2;
 					if (tt) vnumb=3;
@@ -2481,7 +2479,7 @@ package fe.unit {
 			visDetails();
 			if (World.w.showHit>=1 && t_mess<=0) {
 				if (hp>0 && mess) {
-					numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:mess, frame:5, rx:20, ry:20});
+					numbEmit.cast(loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight,{txt:mess, frame:5, rx:20, ry:20});
 					t_mess=45;
 				}
 			}
@@ -2498,12 +2496,12 @@ package fe.unit {
 				if (Math.random()<dam/maxhp) stun=damWallStun;
 				if (napr>0) {
 					var nx:Number = coordinates.X;
-					var ny:Number = this.topBoundToCenter;
+					var ny:Number = this.boundingBox.top;
 
-					if (napr==1) nx = coordinates.X + objectWidth / 2;
-					if (napr==2) nx = coordinates.X - objectWidth / 2;
+					if (napr==1) nx = coordinates.X + this.boundingBox.halfWidth;
+					if (napr==2) nx = coordinates.X - this.boundingBox.halfWidth;
 					if (napr==3) ny = coordinates.Y;
-					if (napr==4) ny = coordinates.Y - objectHeight;
+					if (napr==4) ny = coordinates.Y - this.boundingBox.height;
 
 					Emitter.emit('bum', loc, nx, ny);
 					Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
@@ -2522,7 +2520,7 @@ package fe.unit {
 
 			visDetails();
 			if (World.w.showHit>=1) {
-				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
+				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
 			}
 		}
 		
@@ -2560,7 +2558,7 @@ package fe.unit {
 				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) {
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc,coordinates.X, coordinates.Y-objectHeight/2+visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc,coordinates.X, coordinates.Y-this.boundingBox.halfHeight+visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				return -1;
 			}
@@ -2573,7 +2571,7 @@ package fe.unit {
 			if (dodge-un.undodge>0 && isrnd(dodge-un.undodge)) {
 				if (World.w.showHit>=1)
 				{
-					numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
+					numbEmit.cast(loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
 					return false;
 				}
 			}
@@ -2596,23 +2594,23 @@ package fe.unit {
 			if (sc<0.5) sc=0.5;
 			if (sc>3) sc=3;
 			if (un.tipDamage == Unit.D_SPARK) {
-				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-objectHeight/2, {celx:un.coordinates.X, cely:(un.coordinates.Y-un.objectHeight/2)});
+				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight, {celx:un.coordinates.X, cely:(un.coordinates.Y - un.boundingBox.halfHeight)});
 				Snd.ps('electro', coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_ACID) {
-				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X)/2,(coordinates.Y-objectHeight/2+un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X)/2,(coordinates.Y - this.boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight)/2,{scale:sc});
 				Snd.ps('acid',coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_NECRO) {
-				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y - this.boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight)/2,{scale:sc});
 				Snd.ps('hit_necr', coordinates.X, coordinates.Y);
 			}
 			else if (un.tipDamage == Unit.D_FANG) {
-				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X)/2, (coordinates.Y - this.boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight)/2,{scale:sc});
 				Snd.ps('fang_hit', coordinates.X, coordinates.Y);
 			}
 			else {
-				Emitter.emit('bum', loc, (coordinates.X + un.coordinates.X)/2, (coordinates.Y-objectHeight/2 + un.coordinates.Y-un.objectHeight/2)/2,{scale:sc});
+				Emitter.emit('bum', loc, (coordinates.X + un.coordinates.X)/2, (coordinates.Y - this.boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight)/2,{scale:sc});
 				Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
 			}
 
@@ -2706,13 +2704,12 @@ package fe.unit {
 			{	
 				replic('die');
 				isFly = false;
-				objectWidth = sitX;
-				objectHeight = sitY;
+				this.boundingBox.width = this.boundingBox.crouchingWidth;
+				this.boundingBox.height = this.boundingBox.crouchingHeight;
 				
 				// Flatten the obj and make it wider since the body is stretched out on the floor
-				flattenObj();
-				leftBound = coordinates.X - objectWidth / 2;
-				rightBound = coordinates.X + objectWidth / 2;
+				this.boundingBox.flatten(coordinates);
+				this.boundingBox.centerHorizontally(coordinates);
 
 				fraction = 0;
 				throu = false;
@@ -2747,8 +2744,7 @@ package fe.unit {
 				World.w.t_battle = 30;
 			}
 			
-			if (!lootIsDrop && (!isRes || sost==4 || burn))
-			{
+			if (!lootIsDrop && (!isRes || sost==4 || burn)) {
 				lootIsDrop=true;
 				if (mother) mother.kolChild--;
 				if (hero>0) World.w.gui.infoText('killHero',nazv);
@@ -2760,9 +2756,8 @@ package fe.unit {
 					xp = 0;
 				}
 				if (loc.prob) loc.prob.check();
-				if (opt && opt.hbonus)
-				{
-					loc.createHealBonus(coordinates.X, this.topBoundToCenter);
+				if (opt && opt.hbonus) {
+					loc.createHealBonus(coordinates.X, this.boundingBox.top);
 				}
 			}
 		}
@@ -2784,17 +2779,17 @@ package fe.unit {
 					if (blood == 2) bloodEmit = Emitter.arr['gblood'];
 					if (blood == 3) bloodEmit = Emitter.arr['pblood'];
 				}
-				bloodEmit.cast(loc, coordinates.X, coordinates.Y,{kol:massa*50, rx:objectWidth/2, ry:objectHeight/2});
+				bloodEmit.cast(loc, coordinates.X, coordinates.Y,{kol:massa*50, rx:this.boundingBox.halfWidth, ry:this.boundingBox.halfHeight});
 			}
 		}
 
 		//вызывается в любом случае в момент любого способа смерти, только один раз!
 		public function dropLoot() {
 			if (inter) inter.loot();
-			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, 'essence');
+			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, this.boundingBox.top, 'essence');
 			//выпадение драгоценного камня
 			if (World.w.pers && World.w.pers.dropTre>0 && xp>0) {
-				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,coordinates.X, this.topBoundToCenter, 'gem' + int(Math.random()*3+1));
+				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,coordinates.X, this.boundingBox.top, 'gem' + int(Math.random()*3+1));
 			}
 		}
 		
@@ -2843,23 +2838,27 @@ package fe.unit {
 		// Whether the unit is covered by the fog of war, true if not
 		public function getTileVisi(r:Number=0.3):Boolean
 		{
-			return (loc.getAbsTile(coordinates.X, this.topBoundToCenter).visi > r);
+			return (loc.getAbsTile(coordinates.X, this.boundingBox.top).visi > r);
 		}
 		
 		//слушать другого юнита
-		public function listen(ncel:Unit):Number
-		{
-			var noi = ncel.noise*ear*loc.earMult;	//радиус слышимости издаваемого звука
+		public function listen(ncel:Unit):Number {
+			var noi:Number = ncel.noise * ear * loc.earMult; // Hearing radius based on noise
 			if (noi <= 0) return 0;
-			var r2:Number;		//расстояние до объекта в квадрате
-			if (ncel.player) r2=rasst2;
-			else
-			{
-				var nx = ncel.coordinates.X - coordinates.X;
-				var ny = ncel.topBoundToCenter - this.bottomBoundToCenter;
+
+			var r2:Number; // Distance squared
+			if (ncel.player) {
+				r2 = rasst2;
+			}
+			else {
+				var nx:Number = ncel.coordinates.X - this.coordinates.X;
+				var ny:Number = ncel.boundingBox.top - this.boundingBox.bottom;
 				r2 = nx * nx + ny * ny;
 			}
-			if (noi*noi>r2) return (1-r2/(noi*noi))*4;
+
+			if (noi * noi > r2) {
+				return (1 - r2 / (noi * noi)) * 4;
+			}
 			return 0;
 		}
 
@@ -2877,7 +2876,7 @@ package fe.unit {
 
 			// Calculate relative position once
 			var cx:Number = ncel.coordinates.X - eyeX;
-			var cy:Number = ncel.coordinates.Y - ncel.objectHeight * 0.6 - eyeY;
+			var cy:Number = ncel.coordinates.Y - ncel.boundingBox.halfHeight * 0.6 - eyeY;
 
 			// Calculate squared distance once to avoid repeated calculations
 			var r2:Number = cx * cx + cy * cy;
@@ -2916,8 +2915,8 @@ package fe.unit {
 			var div:int = int(Math.max(Math.abs(cx), Math.abs(cy)) * maxDeltaInv) + 1;
 			var startIdx:int = mater ? 1 : 4;
 			var step:Number = 1 / div;
-			var baseX:Number = coordinates.X + objectWidth * 0.25 * storona;
-			var baseY:Number = coordinates.Y - objectHeight * 0.75;
+			var baseX:Number = coordinates.X + this.boundingBox.width * 0.25 * storona;
+			var baseY:Number = coordinates.Y - this.boundingBox.height * 0.75;
 			
 			for (var i:int = startIdx; i < div; i++) {
 				var nx:Number = baseX + cx * i * step;
@@ -2989,16 +2988,16 @@ package fe.unit {
 			return false;
 		}
 
-		//установить цель на юнит или на точку
+		// [Set a target to a unit or point]
 		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
-				celX = un.coordinates.X + un.objectWidth / 4 * un.storona;
-				celY = un.topBoundToCenter;
+				celX = un.coordinates.X + un.boundingBox.width / 4 * un.storona;
+				celY = un.boundingBox.top;
 				celUnit = un;
 				if (un.player) {
 					World.w.t_battle = World.battleNoOut;
 					World.w.cur();
-					loc.detecting=true;
+					loc.detecting = true;
 					if (sndMusic && !loc.postMusic) Snd.combatMusic(sndMusic, sndMusicPrior, boss? 10000:150);
 				}
 			}
@@ -3009,20 +3008,20 @@ package fe.unit {
 			}
 			else {
 				celX = coordinates.X;
-				celY = this.topBoundToCenter;
+				celY = this.boundingBox.top;
 				celUnit = null;
 			}
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 		}
 		
 		public function findGrenades():Boolean {
 			for (var i = 0; i < 10; i++) {
 				if (loc.grenades[i]==null) continue;
 				var gx:Number = loc.grenades[i].coordinates.X - coordinates.X;
-				var gy:Number = loc.grenades[i].coordinates.Y - this.bottomBoundToCenter;
-				if (gx*gx+gy*gy<400*400) { //граната есть
-					if (loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.grenades[i].coordinates.X, loc.grenades[i].coordinates.Y)) {
+				var gy:Number = loc.grenades[i].coordinates.Y - this.boundingBox.top;
+				if (gx * gx + gy * gy < 400 * 400) { //граната есть
+					if (loc.isLine(coordinates.X, coordinates.Y - this.boundingBox.height * 0.75, loc.grenades[i].coordinates.X, loc.grenades[i].coordinates.Y)) {
 						acelX = loc.grenades[i].coordinates.X;
 						acelY = loc.grenades[i].coordinates.Y;
 						return true;
@@ -3036,8 +3035,8 @@ package fe.unit {
 			if (isMeet(loc.gg) && loc.gg.teleObj) {
 				var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
 				if (!overLook && gx*storona<0) return false;
-				var gy:Number = loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.halfHeight - coordinates.Y + this.halfHeight;
-				if (gx*gx+gy*gy<vision*vision*1000*1000 && loc.isLine(coordinates.X, coordinates.Y - objectHeight * 0.75, loc.gg.teleObj.coordinates.X, loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.halfHeight)) return true;
+				var gy:Number = loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight;
+				if (gx*gx+gy*gy<vision*vision*1000*1000 && loc.isLine(coordinates.X, coordinates.Y - this.boundingBox.height * 0.75, loc.gg.teleObj.coordinates.X, loc.gg.teleObj.coordinates.Y - loc.gg.teleObj.boundingBox.halfHeight)) return true;
 			}
 			return false;
 		}
@@ -3049,7 +3048,7 @@ package fe.unit {
 				disabled=false;
 				setNull(true);
 				addVisual();
-				Emitter.emit('tele',loc, coordinates.X, coordinates.Y-objectHeight/2,{rx:objectWidth, ry:objectHeight, kol:30});
+				Emitter.emit('tele',loc, coordinates.X, this.boundingBox.bottom, {rx:this.boundingBox.width, ry:this.boundingBox.height, kol:30});
 			}
 			if (com=='fraction') {
 				fraction=int(val);

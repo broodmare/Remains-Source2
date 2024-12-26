@@ -57,21 +57,21 @@ package fe.loc {
 				if (mirror) {
 					bx=loc.spaceX-bx-rx;
 				}
-				objectWidth = rx * tileX;
-				coordinates.X  = bx * tileX;
-				leftBound = bx * tileX;
-				coordinates.Y  = by * tileY + tileY;
-				bottomBound = by * tileY + tileY;
-				rightBound = leftBound + objectWidth;
+				this.boundingBox.width = rx * tileX;
+				this.coordinates.X  = bx * tileX;
+				this.boundingBox.left = bx * tileX;
+				this.coordinates.Y  = by * tileY + tileY;
+				this.boundingBox.bottom = by * tileY + tileY;
+				this.boundingBox.right = this.boundingBox.left + this.boundingBox.width;
 				if (xml.@h.length()) ry=xml.@h;
-				objectHeight=ry*tileY;
-				topBound=bottomBound-objectHeight;
+				this.boundingBox.height = ry * tileY;
+				this.boundingBox.top = this.boundingBox.bottom - this.boundingBox.height
 				//визуал
 				if (xml.@vis.length()) {
-					vis=Res.getVis('vis'+xml.@vis,visArea);
+					vis=Res.getVis('vis'+xml.@vis,visArea);	// .SWF Dependency
 				}
 				if (World.w.showArea) {
-					vis=new visArea();
+					vis=new visArea();	// .SWF Dependency
 				}
 				if (xml.@tip.length()) tip=xml.@tip;
 				if (xml.@mess.length()) mess=xml.@mess;
@@ -134,8 +134,8 @@ package fe.loc {
 				if (vis.totalFrames<=1) vis.cacheAsBitmap=true;
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.scaleX = objectWidth / 100;
-				vis.scaleY = objectHeight / 100;
+				vis.scaleX = this.boundingBox.width / 100;
+				vis.scaleY = this.boundingBox.height / 100;
 				vis.alpha=enabled?1:0.1;
 				vis.blendMode='screen';
 			}
@@ -163,12 +163,12 @@ package fe.loc {
 				if (t_frec>1) {
 					var kol:int=int(t_frec);
 					t_frec-=kol;
-					emit.cast(loc,(leftBound+rightBound)/2,(topBound+bottomBound)/2,{rx:objectWidth, ry:objectHeight, kol:kol});
+					emit.cast(loc,(this.boundingBox.left + this.boundingBox.right)/2,(this.boundingBox.bottom)/2,{rx:this.boundingBox.width, ry:this.boundingBox.height, kol:kol});
 				}
 			}
 			activator=null;
 			if (tip=='gg') {
-				active=areaTest(loc.gg);
+				active = this.boundingBox.intersects(loc.gg.boundingBox);
 				if (active && noRad) loc.gg.noRad=true;
 				activator=loc.gg;
 			}
@@ -176,7 +176,7 @@ package fe.loc {
 				active=false;
 				for each(var un:Unit in loc.units)
 				{
-					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un))
+					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && this.boundingBox.intersects(un.boundingBox))
 					{
 						active=true;
 						activator=un;
@@ -205,13 +205,13 @@ package fe.loc {
 		
 		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void {
 			coordinates.X  = x1;
-			leftBound = x1;
-			topBound = y1;
-			rightBound = x2;
+			this.boundingBox.left = x1;
+			this.boundingBox.top = y1;
+			this.boundingBox.right = x2;
 			coordinates.Y  = y2;
-			bottomBound = y2;
-			objectWidth = rightBound - leftBound;
-			objectHeight = bottomBound - topBound;
+			this.boundingBox.bottom = y2;
+			this.boundingBox.width = this.boundingBox.right - this.boundingBox.left;
+			this.boundingBox.height = this.boundingBox.bottom - this.boundingBox.top;
 		}
 		
 		// Grav lift effect
@@ -233,7 +233,7 @@ package fe.loc {
 		
 		public function teleport(un:Unit) {
 			if (!un) return;
-			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.objectWidth, un.objectHeight)) {
+			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.boundingBox.width, un.boundingBox.height)) {
 				un.teleport((portX + 1) * tileX, (portY + 1) * tileY - 1);
 			}
 		}

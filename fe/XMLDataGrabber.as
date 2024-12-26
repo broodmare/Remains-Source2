@@ -15,7 +15,13 @@ package fe  {
         public static function getNodeWithAttributeThatMatches(module:String, directory:String, fileName:String, attributeName:String, attributeKey:String):XML {
             const file:XML = getFileFromModuleDictionary(module, directory, fileName);
             const nodeList:XMLList = file..*.(attribute(attributeName) == attributeKey);
-            return nodeList.length() > 0 ? nodeList[0] : null;
+            
+            if (nodeList.length()) {
+                return nodeList[0];
+            }
+            else {
+                return null;
+            }
         }
 
         public static function getNodeFromAllWithAttributeThatMatches(module:String, directory:String, fileName:String, attributeName:String, attributeKey:String):XML {
