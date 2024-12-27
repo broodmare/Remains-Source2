@@ -73,7 +73,7 @@ package fe.unit {
 		}
 		
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
@@ -152,7 +152,7 @@ package fe.unit {
 			vis.alpha=curA/100;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
@@ -189,7 +189,7 @@ package fe.unit {
 			aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void  {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 			}
@@ -383,7 +383,7 @@ package fe.unit {
 			
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			resetProtect();
 			if (phase==1) {
 				phase=2;
@@ -496,7 +496,7 @@ package fe.unit {
 			else vis.filters=[];
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('necrblast');
 			Snd.ps('unreal');
 			super.dropLoot();

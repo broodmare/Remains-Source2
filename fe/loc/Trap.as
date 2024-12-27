@@ -69,7 +69,7 @@ package fe.loc {
 			bindTile();
 		}
 		
-		public function getXmlParam() {
+		public function getXmlParam():void {
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 			nazv=Res.txt('u', id);
 
@@ -121,7 +121,7 @@ package fe.loc {
 			}
 		}
 		
-		public override function die(sposob:int = 0) {
+		public override function die(sposob:int = 0):void {
 			loc.remObj(this);
 		}
 		

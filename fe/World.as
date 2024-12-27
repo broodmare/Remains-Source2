@@ -7,7 +7,7 @@ package  fe {
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.system.Capabilities;
+	
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
 	import flash.desktop.Clipboard;
@@ -27,12 +27,12 @@ package  fe {
 	public class World {
 
 		public static var w:World;
-		
-		public var playerMode:String;	//Режим флеш-плеера
 
 		//Визуальные составляющие
 		public var main:Sprite;			//Главный спрайт игры
-		public var swfStage:Stage;	
+		public var swfStage:Stage;
+
+		public var languageManager:LanguageManager; // Handles loading and storing languages
 		
 		public var vwait:MovieClip;		//Картинка с надписью ЗАГРУЗКА
 		public var vfon:MovieClip;		//Неподвижный задник
@@ -90,7 +90,6 @@ package  fe {
 		private var ccur:String;
 		
 		public var currentMusic:String='';
-		
 		
 		//Настроечные переменные
 		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
@@ -153,39 +152,17 @@ package  fe {
 		public static const maxdy:int = 20;
 		public static const maxwaterdy:int = 20;
 		public static const maxdelta:int = 9;
-		public static const oduplenie:int = 100;
+		public static const detectionDelay:int = 100;	// Default grace period before an enemy spots the player
 		public static const battleNoOut:int = 120;
 		public static const unitXPMult:Number = 2;
 		public static const kolHK:int = 12;			//количество горячих клавиш
 		public static const kolQS:int = 4;			//количество быстрых заклинаний
-			
 		
 		public static const boxDamage:Number = 0.2;		//мультипликатор силы удара ящиками
-		
-		//Загрузка текстов
-		public var currentLanguage:String = 'en';		// Two letter language id, eg. 'en'
-		public var userDefaultLanguage:String = 'ru';	// Two letter language id, eg. 'ru'
-		public var langs:Array;							// An array of objects representing langauges. Each obj has two properties, 'file' - the filename, and 'nazv' - the full name of each language, eg. 'english'
-		public var kolLangs:int = 0;					// How many language objects are in lang.
-
-		public var tld:TextLoader;	// Default language
-		public var tl:TextLoader;	// Selected language
-
-		public var textLoaded:Boolean=false;
-		public var textLoadErr:Boolean=false;
-
-		private var loader_lang:URLLoader;
-
-		public var langsXML:XML;
-		public var textProgressLoad:Number=0;
 		
 		//Файлы
 		public var spriteURL:String;
 		public var sprite1URL:String;
-		
-		//public var ressoundURL:String;
-		public var langURL:String;
-		public var langFolder:String;
 		
 		//загрузка, сейвы, конфиг
 		public var configObj:SharedObject;
@@ -222,16 +199,12 @@ package  fe {
 		// Constructor
 		public function World(nmain:Sprite, paramObj:Object) {
 
-			World.w = this;
-			//техническая часть
-			//Узнать тип плеера и адрес, с которого он запущен
-			playerMode = Capabilities.playerType;
+			World.w = this;	// Store a publically accessable reference to itself
 
 			//файлы
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
-			langURL = 'Modules/core/Language/lang.xml';
-			langFolder = 'Modules/core/Language/'
+			
 			landPath = 'Rooms/';
 
 			// Grab a reference to the stage container
@@ -239,14 +212,6 @@ package  fe {
 			swfStage = main.stage;
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
-
-			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
-			loader_lang = new URLLoader();
-			var request_lang:URLRequest = new URLRequest(langURL);
-
-			loader_lang.load(request_lang);
-			loader_lang.addEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
 
 			LootGen.init();
 			Form.setForms();
@@ -299,103 +264,14 @@ package  fe {
 			var savePath:String = null;
 			configObj = SharedObject.getLocal('config', savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
+
+			// Initialize the languageManager and load the current localization into memory
+			languageManager = new LanguageManager(this);
 		}
 
 //=============================================================================================================
-//			Техническая часть
+//			[Technical part]
 //=============================================================================================================
-		
-		// The list of languages 'lang.xml' loaded successfully.
-		private function onCompleteLoadLang(event:Event):void {
-			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-
-			langsXML = new XML(loader_lang.data);
-			initLangs(false);
-			
-			load_log += 'Language file loading: ' + langURL + ' Ok\n';
-		}
-		
-		// The list of languages 'lang.xml' did not load successfully.
-		private function onErrorLoadLang(event:IOErrorEvent):void {
-			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			
-			initLangs(true);
-			
-			load_log += 'ERROR: Could not load language: ' + langURL + '.\n';
-        }
-		
-		//создать список языков, инициировать загрузку языков
-		private function initLangs(err:Boolean = false):void {
-			// Failsafe default langauges if lang.xml couldn't be loaded correctly. 
-			if (err) { 
-				trace("World.as/initLangs() - Error: Couldn't initialize langauges, using defaults");
-				load_log += 'ERROR: Initializing languages failed, using defaults\n';
-				langsXML =
-				<all>
-					<lang id='ru' file='text_ru.xml'>Русский</lang>
-					<lang id='en' file='text_en.xml'>English</lang>
-				</all>;
-			}
-
-			currentLanguage = Capabilities.language; // Try to detect default langauge for the user.
-			if (configObj.data.language != null) currentLanguage = configObj.data.language; // If user settings exist, overwrite the default language.
-			if (langsXML && langsXML.@defaultLanguage.length()) userDefaultLanguage = langsXML.@defaultLanguage;
-
-			langs = [];
-			for each (var xl:XML in langsXML.lang) {
-				var obj:Object = {file:xl.@file, nazv:xl[0]};	//Creates an obj with two properties, The file path, eg. 'text_en.xml', and the language name eg. 'English' 
-				langs[xl.@id] = obj;							//Adds each object into the langs array under it's id, eg. 'en'
-				kolLangs++;										//Increase the number of languages.
-				
-			}
-			
-			if (langs[currentLanguage] == null) {
-				currentLanguage = userDefaultLanguage;
-			}
-
-			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
-			
-			if (currentLanguage == userDefaultLanguage) {
-                tl = tld;													// Otherwise, write the default user language into tl.
-            }
-			else {
-                var languageURL:String = langFolder + currentLanguage;
-                tl = new TextLoader(langs[currentLanguage].file);
-            }
-		}
-		
-		// [Language loading complete]
-		public function textsLoadOk():void {
-			if (tl.loaded) {
-				textLoaded = true;
-				Res.currentLanguageData = tl.xmlData;
-			}
-			if (tl.errLoad) {
-				currentLanguage = userDefaultLanguage;
-				if (tld.loaded) {
-					textLoaded = true;
-					Res.currentLanguageData = tld.xmlData;
-				}
-				textLoadErr = true;
-			}
-		}
-		
-		// [Choose a new language]
-		public function defuxLang(nid:String):void {
-			currentLanguage = nid;
-			textLoadErr = false;
-			if (nid == userDefaultLanguage) {
-                Res.currentLanguageData = Res.fallbackLanguageData;
-                pip.updateLang();
-            }
-			else {
-                textLoaded = false;
-                tl = new TextLoader(langs[nid].file);
-            }
-			saveConfig();
-		}
 		
 		public function init2():void {
 
@@ -590,7 +466,7 @@ package  fe {
 			time___metr('Character');
 			//номер ячейки автосейва
 			if (!ng) if (data.n!=null) autoSaveN=data.n;
-			Unit.txtMiss=Res.guiText('miss');
+			Unit.txtMiss = Res.guiText('miss');
 			
 			waitLoadClick();
 			ng_wait=2;
@@ -980,8 +856,7 @@ package  fe {
 				vwait.story.visible = false;
 				clickReq = 0;
 			} 
-			else
-			{
+			else {
 				vwait.x = 0;
 				vwait.y = 0;
 				vwait.story.visible = true;
@@ -989,7 +864,7 @@ package  fe {
 				vwait.progres.visible = false;
 				if (n == 0) {
 					vwait.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
-					}
+				}
 				else {
 					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
 				}
@@ -1121,7 +996,7 @@ package  fe {
 			try {
 				configObj.data.ctr=ctr.save();
 				configObj.data.snd=Snd.save();
-				configObj.data.language = currentLanguage;
+				configObj.data.language = languageManager.currentLanguage;
 				configObj.data.chit=(chitOn?1:0);
 				configObj.data.dialon=dialOn;
 				configObj.data.zoom100=zoom100;

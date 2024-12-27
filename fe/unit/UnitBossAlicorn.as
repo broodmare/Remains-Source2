@@ -89,7 +89,7 @@ package fe.unit {
 			timerDie=90;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -105,14 +105,14 @@ package fe.unit {
 			} 
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('bloodblast');
 			Snd.ps('bale_e');
-			currentWeapon.vis.visible=false;
+			currentWeapon.vis.visible = false;
 			super.dropLoot();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			try {
 				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 				weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
@@ -124,7 +124,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('blood',100);
 		}
 		
@@ -202,7 +202,7 @@ package fe.unit {
 			var un:Unit=loc.createUnit('scythe',Math.random()*1600+160,Math.random()*500+100,true);
 			un.fraction=fraction;
 			un.dam*=(1+level*0.1);
-			un.oduplenie=0;
+			un.detectionDelay = 0;
 			if (n>=0) {
 				un.bind=this;
 				un.maxhp*=8;
@@ -457,7 +457,7 @@ package fe.unit {
 			
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			superInvis=false;
 			dropTeleObj();
 			isBlast=false;

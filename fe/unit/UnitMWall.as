@@ -26,7 +26,7 @@ package fe.unit {
 			transT=true;
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			Emitter.emit('pole', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
 		}
 		
@@ -35,7 +35,7 @@ package fe.unit {
 			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 		
-		public override function visDetails() {
+		public override function visDetails():void {
 
 		}
 		
@@ -49,7 +49,7 @@ package fe.unit {
 			exterminate();
 		}		
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			expl();
 			exterminate();
 		}

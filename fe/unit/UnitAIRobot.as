@@ -8,12 +8,16 @@ package fe.unit {
 	public class UnitAIRobot extends UnitPon {
 
 		public var tr:int=0;
-		var weap:String;
-		var isPort:Boolean=false;
+
+		private var weap:String;
 		public var stroll:Boolean=true;		//патрулирует в спокойном состоянии
 		public var quiet:Boolean=false;		//молчит
-		var t_port:int=0;
-		var kol_port:int=5;
+		private var t_port:int=0;
+		private var kol_port:int=5;
+
+		protected var isPort:Boolean=false;
+		protected var aiAttackT:int=80, aiAttackOch:int=100;	//стрельба очередью
+		protected var aiDist:int=1000; //минимальная дистанция
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -49,7 +53,7 @@ package fe.unit {
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				kol_port=20;
@@ -77,7 +81,7 @@ package fe.unit {
 			return obj;
 		}	
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
@@ -94,7 +98,7 @@ package fe.unit {
 			loc.robocellActivate();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx, ny);
 				aiSpok=maxSpok+10;
@@ -102,11 +106,7 @@ package fe.unit {
 				shok = int(Math.random()*15+5);
 			}
 		}
-		
 
-		var aiAttackT:int=80, aiAttackOch:int=100;	//стрельба очередью
-		var aiDist:int=1000; //минимальная дистанция
-		
 		//aiState
 		//0 - стоит на месте
 		//1 - ходит туда-сюда
@@ -115,8 +115,7 @@ package fe.unit {
 		//4 - стоит на месте и стреляет
 		//5 - увидел цель, тупит какое-то время
 		
-		override protected function control():void
-		{
+		override protected function control():void {
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -151,7 +150,8 @@ package fe.unit {
 				} else {
 					aiState=1;
 				}
-			} else {
+			}
+			else {
 				if (aiSpok==0) {
 					if (aiState>1) replic('vse');
 					if (stroll)	aiState=Math.floor(Math.random()*2);
@@ -181,15 +181,18 @@ package fe.unit {
 							aiSpok=maxSpok+10;
 						}
 					//услышали
-					} else {
+					}
+					else {
 						replic('ear');
 						aiSpok=maxSpok-1;
 					}
-				} else {
+				}
+				else {
 					if (aiSpok%5==1) setCel(null, celX+Math.random()*80-40, celY+Math.random()*80-40);
 					if (aiSpok>0) {
 						aiSpok--;
-					} else {
+					}
+					else {
 						setCel(null, coordinates.X + storona * 100, coordinates.Y - this.boundingBox.height * 0.75);
 					}
 					if (aiSpok<maxSpok && aiSpok>0) {
@@ -318,13 +321,13 @@ package fe.unit {
 			var cel:Unit=World.w.gg;
 			var nx:Number=0;
 			var ny:Number=0;
-			for (var i=1; i<=20; i++) {
+			for (var i:int = 1; i <= 20; i++) {
 				if (i<5 && !rnd) {
 					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
 					else nx=cel.coordinates.X+cel.storona*(Math.random()*300+200);
 					ny=cel.coordinates.Y;
 				}
-				else if (i<10 && !rnd) {
+				else if (i < 10 && !rnd) {
 					if (isrnd()) nx=cel.coordinates.X-cel.storona*(Math.random()*800+200);
 					else  nx=cel.coordinates.X+cel.storona*(Math.random()*800+200);
 					ny=cel.coordinates.Y+Math.random()*160-80;
@@ -333,8 +336,8 @@ package fe.unit {
 					nx=Math.random()*loc.maxX;
 					ny=Math.random()*loc.maxY;
 				}
-				nx=Math.round(nx/tileX)*tileX
-				ny=Math.ceil(ny/tileY)*tileY-1;
+				nx = Math.round(nx/tileX)*tileX
+				ny = Math.ceil(ny/tileY)*tileY-1;
 				if (nx < this.boundingBox.width) nx = this.boundingBox.width;
 				if (ny < this.boundingBox.height + 40) ny = this.boundingBox.height + 40;
 				if (nx > loc.maxX - this.boundingBox.width) nx = loc.maxX - this.boundingBox.width;
@@ -360,14 +363,14 @@ package fe.unit {
 		}
 		
 		//прыжок
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		
 				velocity.Y =- jumpdy * v;
 			}
 		}
 		
 		//атака
-		public function attack() {
+		public function attack():void  {
 			if (aiAttackOch==0 && shok<=0 && isrnd(0.1)) currentWeapon.attack();	//стрельба одиночными
 			if (aiAttackOch>0) {										//стрельба очередями
 				if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);

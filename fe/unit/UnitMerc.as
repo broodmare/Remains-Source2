@@ -68,22 +68,22 @@ package fe.unit {
 		}
 		
 		//задать положение оружия
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			if (arm==null || arm.parent==null) {
 				super.setWeaponPos(tip);
 				return;
 			}
 			var p:Point, p1:Point;
-			p=new Point(arm.emit.x,arm.emit.y);
-			p1=arm.localToGlobal(p);
-			p1=vis.parent.globalToLocal(p1);
+			p = new Point(arm.emit.x, arm.emit.y);
+			p1 = arm.localToGlobal(p);
+			p1 = vis.parent.globalToLocal(p1);
 			weaponX=p1.x;
 			weaponY=p1.y;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			budilo(2000);
-			arm.visible=false;
+			arm.visible = false;
 			super.dropLoot();
 		}
 		

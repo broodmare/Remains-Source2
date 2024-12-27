@@ -56,7 +56,7 @@ package  fe.entities {
 
 		}
 		
-		public function die(sposob:int = 0) {
+		public function die(sposob:int = 0):void {
 
 		}
 		

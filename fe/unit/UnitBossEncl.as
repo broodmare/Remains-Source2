@@ -71,7 +71,7 @@ package fe.unit {
 			aiNapr=storona;
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			super.die(3);
 			coord['liv'+tr]=false;
 		}
@@ -85,7 +85,7 @@ package fe.unit {
 			coord['liv' + tr] = true;
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var dMult = 1;
 			if (World.w.game.globalDif == 3) {
@@ -120,12 +120,12 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
 			if (currentWeapon) {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
@@ -136,10 +136,10 @@ package fe.unit {
 		}
 
 		private function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
-			un.fraction=fraction;
-			un.oduplenie=0;
-			emit_t=500;
+			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
+			un.fraction = fraction;
+			un.detectionDelay = 0;
+			emit_t = 500;
 			kol_emit--;
 		}
 		

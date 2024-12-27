@@ -249,17 +249,19 @@ package fe {
 		}
 		
 		private function setLangButtons():void {
-			butsLang=[];
-			if (world.kolLangs>1) {
-				var i:int = world.kolLangs;
-				for each(var l:XML in world.langsXML.lang) {
-					i--;
-					var m:MovieClip=new butLang();
-					butsLang[i]=m;
-					m.lang.text=l[0];
-					m.y=-i*40;
-					m.n.text=l.@id;
-					m.n.visible=false;
+			butsLang = [];
+			var languageManager:LanguageManager = world.languageManager; // Access the LanguageManager instance
+
+			if (languageManager.languages.length > 1) {
+				// Loop through the languages array
+				for (var i:int = 0; i < languageManager.languages.length; i++) {
+					var lang:Object = languageManager.languages[i];
+					var m:MovieClip = new butLang(); // .SWF Dependency
+					butsLang[i] = m;
+					m.lang.text = lang.name; // Use the language name from JSON
+					m.y = -i * 40;
+					m.n.text = lang.id; // Use the language ID
+					m.n.visible = false;
 					m.addEventListener(MouseEvent.CLICK, funLang);
 					mainMenuMovieClip.lang.addChild(m);
 				}
@@ -556,37 +558,40 @@ package fe {
 			world.pip.onoff();
 		}
 
+		// Function to change the language of the game after clicking a language button
 		private function funLang(event:MouseEvent):void {
-			mainMenuMovieClip.loading.text='';
+			mainMenuMovieClip.loading.text = '';
 			var nid:String = event.currentTarget.n.text;
-			if (nid==world.currentLanguage) return;
-			world.defuxLang(nid);
-			if (nid==world.userDefaultLanguage) {
-				setMainLang();
-			} 
-			else {
-				langReload=true;
-				showButtons(false);
-				mainMenuMovieClip.loading.text='Loading';
+			if (nid == world.languageManager.currentLanguage) {
+				return;
 			}
+			world.languageManager.changeLanguage(nid);
+			langReload = true;
+			showButtons(false);
+			mainMenuMovieClip.loading.text = 'Loading';
 		}
 		
 		private function showButtons(n:Boolean):void {
-			mainMenuMovieClip.lang.visible=mainMenuMovieClip.butNewGame.visible=mainMenuMovieClip.butLoadGame.visible=mainMenuMovieClip.butContGame.visible=mainMenuMovieClip.butOpt.visible=mainMenuMovieClip.butAbout.visible=n;
+			mainMenuMovieClip.lang.visible = n;
+			mainMenuMovieClip.butNewGame.visible = n;
+			mainMenuMovieClip.butLoadGame.visible = n;
+			mainMenuMovieClip.butContGame.visible = n;
+			mainMenuMovieClip.butOpt.visible = n;
+			mainMenuMovieClip.butAbout.visible = n;
 		}
 		
 		//создатели
 		private function funAbout():void {
-			mainMenuMovieClip.dialAbout.title.text=Res.guiText('about');
-			var s:String=Res.formatText(Res.txt('g','about',1));
-			s+='<br><br>'+Res.guiText('usedmusic')+'<br>';
-			s+="<br><span class='music'>"+Res.formatText(Res.currentLanguageData.gui.(@id=='usedmusic').info[0])+"</span>"
-			s+="<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
-			mainMenuMovieClip.dialAbout.txt.styleSheet=style;
-			mainMenuMovieClip.dialAbout.txt.htmlText=s;
-			mainMenuMovieClip.dialAbout.visible=true;
+			mainMenuMovieClip.dialAbout.title.text = Res.guiText('about');
+			var s:String = Res.formatText(Res.txt('g', 'about', 1));
+			s += '<br><br>' + Res.guiText('usedmusic') + '<br>';
+			s += "<br><span class='music'>" + Res.formatText(Res.currentLanguageData.gui.(@id == 'usedmusic').info[0]) + "</span>"
+			s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
+			mainMenuMovieClip.dialAbout.txt.styleSheet = style;
+			mainMenuMovieClip.dialAbout.txt.htmlText = s;
+			mainMenuMovieClip.dialAbout.visible = true;
 			mainMenuMovieClip.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
-			mainMenuMovieClip.dialAbout.scroll.maxScrollPosition=mainMenuMovieClip.dialAbout.txt.maxScrollV;
+			mainMenuMovieClip.dialAbout.scroll.maxScrollPosition = mainMenuMovieClip.dialAbout.txt.maxScrollV;
 		}
 
 		private function funAboutOk(event:MouseEvent):void {
@@ -596,14 +601,11 @@ package fe {
 		
 		private function step():void {
 			if (langReload) {
-				if (world.textLoaded) {
-					langReload=false;
-					showButtons(true);
-					if (world.textLoadErr) mainMenuMovieClip.loading.text='Language loading error';
-					else mainMenuMovieClip.loading.text='';
-					world.pip.updateLang();
-					setMainLang();
-				}
+				langReload = false;
+				showButtons(true);
+				mainMenuMovieClip.loading.text = '';
+				world.pip.updateLang();
+				setMainLang();
 				return;
 			}
 			if (loaded) {
@@ -612,7 +614,7 @@ package fe {
 					displ.anim();
 				}
 				// Green loading text on the top left of the MainMenu
-				if (world.allLandsLoaded && world.textLoaded) {
+				if (world.allLandsLoaded) {
 					// If we're still loading songs, show the progress
 					if (Snd.totalSongsToLoad > Snd.totalSongsLoaded) {
 						mainMenuMovieClip.loading.text = 'Music loading ' + Snd.totalSongsLoaded + '/' + Snd.totalSongsToLoad;
@@ -628,14 +630,16 @@ package fe {
 			if (world.grafon.resIsLoad) {
 				stn++;
 				mainMenuMovieClip.loading.text = 'Loading ' + (Math.floor(stn / 30)) + '\n';
-				if (world.textLoaded) world.init2();
-				if (world.allLandsLoaded && world.textLoaded) {
+				world.init2();
+				
+				if (world.allLandsLoaded) {
 					setLangButtons();
 					setMainLang();
 					loaded=true;
 					showButtons(true);
 					return;
 				}
+				
 				mainMenuMovieClip.loading.text+=world.load_log;
 			} 
 			else {

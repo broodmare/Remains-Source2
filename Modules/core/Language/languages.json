@@ -1,0 +1,37 @@
+[
+	{
+		"id": "en",
+		"name": "English",
+		"file": "text_en.xml"
+	},
+	{
+		"id": "ru",
+		"name": "Русский",
+		"file": "text_ru.xml"
+	},
+	{
+		"id": "zh",
+		"name": "中文",
+		"file": "text_zh.xml"
+	},
+	{
+		"id": "pl",
+		"name": "Polski",
+		"file": "text_pl.xml"
+	},
+	{
+		"id": "de",
+		"name": "Deutsch",
+		"file": "text_de.xml"
+	},
+	{
+		"id": "es",
+		"name": "Español",
+		"file": "text_es.xml"
+	},
+	{
+		"id": "jp",
+		"name": "日本語",
+		"file": "text_jp.xml"
+	}
+]

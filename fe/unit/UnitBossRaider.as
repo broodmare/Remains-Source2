@@ -65,7 +65,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
@@ -123,12 +123,12 @@ package fe.unit {
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
 			if (currentWeapon) {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
@@ -157,10 +157,10 @@ package fe.unit {
 		}
 
 		private function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
-			un.fraction=fraction;
-			un.oduplenie=0;
-			emit_t=500;
+			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
+			un.fraction = fraction;
+			un.detectionDelay = 0;
+			emit_t = 500;
 			kol_emit--;
 		}
 		
@@ -173,7 +173,7 @@ package fe.unit {
 			aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void  {
 			aiJump=Math.floor(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
 				velocity.Y = -jumpdy * v;
@@ -186,13 +186,13 @@ package fe.unit {
 		}
 		
 
-		var aiLaz:int=0, aiJump:int=0;	
-		var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
-		var aiAttackT:int=0, aiAttackOch:int=12;	//стрельба очередью
-		var aiDist:int; 
-		var aiVKurse:Boolean=false;
-		var celUnit2:Unit, t_chCel:int=0;
-		var emit_t:int=0;
+		private var aiLaz:int=0, aiJump:int=0;	
+		private var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
+		private var aiAttackT:int=0, aiAttackOch:int=12;	//стрельба очередью
+		private var aiDist:int; 
+		private var aiVKurse:Boolean=false;
+		private var celUnit2:Unit, t_chCel:int=0;
+		private var emit_t:int=0;
 		
 		//aiState
 		//0 - стоит на месте

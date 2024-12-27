@@ -66,14 +66,14 @@ package fe.unit {
 			timerDie=150;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('baleblast');
 			Snd.ps('bale_e');
-			currentWeapon.vis.visible=false;
+			currentWeapon.vis.visible = false;
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -100,7 +100,7 @@ package fe.unit {
 			} 
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',22);
 		}
 		
@@ -166,16 +166,16 @@ package fe.unit {
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = vis.x;
 			weaponY = vis.y - 110;
 		}
 		
 		private function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
-			un.fraction=fraction;
-			un.oduplenie=0;
-			emit_t=500;
+			var un:Unit = loc.createUnit('vortex', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
+			un.fraction = fraction;
+			un.detectionDelay = 0;
+			emit_t = 500;
 			kol_emit--;
 		}
 		

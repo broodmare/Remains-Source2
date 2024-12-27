@@ -127,7 +127,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
@@ -137,7 +137,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
@@ -195,7 +195,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl() {
+		public override function expl():void {
 			newPart('metal',3);
 		}
 		
@@ -223,7 +223,7 @@ package fe.unit {
 		}
 		
 		//взорвать при нанесении урона
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
 			if ((tipDamager==2 || tipDamager==3) && kolammo>0) iExpl();
 			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,'frag',1);

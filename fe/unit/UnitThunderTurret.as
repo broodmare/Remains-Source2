@@ -66,7 +66,7 @@ package  fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			if (World.w.game.globalDif==3) {
 				hp=maxhp=hp*1.5;
 			}
@@ -75,7 +75,7 @@ package  fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			head.dieTurret();
 			newPart('metal',4);
 			newPart('expl');
@@ -94,7 +94,7 @@ package  fe.unit {
 			}
 		}
 
-		public override function makeNoise(n:int, hlup:Boolean=false) {
+		public override function makeNoise(n:int, hlup:Boolean=false):void {
 			
 		}
 

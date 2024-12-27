@@ -65,7 +65,7 @@ package fe.unit {
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
-			oduplenie=World.oduplenie/2;
+			detectionDelay = World.detectionDelay * 0.5;
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
@@ -164,7 +164,7 @@ package fe.unit {
 				}
 			}
 			else if (aiState==2) {
-				if (oduplenie<=0 && aiN%4==0) {
+				if (detectionDelay <= 0 && aiN % 4 == 0) {
 					if (loc==World.w.gg.loc && rasst2>0 && rasst2<explDist*explDist) activate();
 				}
 				if (aiN%10==0 && !isVis) {
@@ -176,7 +176,7 @@ package fe.unit {
 			}
 			
 			//атака
-			if (World.w.enemyAct>=3 && oduplenie<=0) {
+			if (World.w.enemyAct >= 3 && detectionDelay <= 0) {
 				if (aiN%5==0) {
 					for each (var un:Unit in loc.units) {
 						if (un.activateTrap<2 && !un.player || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;

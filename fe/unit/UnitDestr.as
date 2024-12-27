@@ -36,7 +36,7 @@ package fe.unit {
 			mat=1;
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 
 		}
 		

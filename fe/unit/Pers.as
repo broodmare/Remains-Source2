@@ -1130,7 +1130,7 @@ package fe.unit {
 			}
 		}
 		
-		public function die() {
+		public function die():void {
 			gg.poison=0;
 			gg.cut=0;
 			World.w.gui.messText('gameover');

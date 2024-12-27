@@ -170,19 +170,19 @@ package fe.unit {
 			mblast=new Spell(this,'sp_blast');
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('alicorn');
 			super.getXmlParam();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
 			weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			currentWeapon.damage*=(1+level*0.05);
 			shitMaxHp*=(1+level*0.1);
@@ -300,7 +300,7 @@ package fe.unit {
 			}
 		}
 		
-		public function telepat() {
+		public function telepat():void {
 			for each(var un:Unit in loc.units) {
 				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres && un.celUnit==null) {
 					un.setCel(celUnit);
@@ -321,7 +321,7 @@ package fe.unit {
 			return super.damage(dam,tip,bul,tt);
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiState=3;
@@ -334,7 +334,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			superSilaVse();
 			dropTeleObj();
 			budilo();
@@ -357,7 +357,7 @@ package fe.unit {
 			blasted=false;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (!isFly) {
 				velocity.Y =- jumpdy * v;
 			}
@@ -739,20 +739,20 @@ package fe.unit {
 			}
 		}
 		
-		private function castShit() {
+		private function castShit():void {
 			curA=100;
 			shithp=shitMaxHp;
 			t_shit=1000;
 			visDetails();
 		}
 		
-		private function castNomater() {
+		private function castNomater():void {
 			mater=false;
 			t_nomater=0;
 			t_gotov=tNomater;
 		}
 		
-		private function superSila() {
+		private function superSila():void {
 			if (superSilaTip == 1) {
 				superInvis = true;
 				isVis = false;
@@ -769,7 +769,7 @@ package fe.unit {
 			t_super = tSuper;
 		}
 		
-		private function superSilaVse() {
+		private function superSilaVse():void {
 			if (superSilaTip==1) {
 				superInvis=false;
 				isVis=true;
@@ -800,7 +800,7 @@ package fe.unit {
 		}
 		
 		//подянть объект телекинезом
-		private function upTeleObj(obj:Obj) {
+		private function upTeleObj(obj:Obj):void {
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -812,7 +812,7 @@ package fe.unit {
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void {
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -823,7 +823,7 @@ package fe.unit {
 		}
 		
 		//бросок телекинезом
-		private function throwTele() {
+		private function throwTele():void {
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number = throwForce;
@@ -849,18 +849,17 @@ package fe.unit {
 				}
 				
 				norma(p, tspeed);
-				var dm = 0;
 				teleObj.velocity.X += p.x;
 				teleObj.velocity.Y += p.y;
 				dropTeleObj();
 			}
 		}
 		
-		public function actPort(rnd:Boolean=false) {
+		public function actPort(rnd:Boolean=false):void {
 			var cel:Unit = World.w.gg;
 			var nx:Number = 0;
 			var ny:Number = 0;
-			for (var i = 1; i <= 20; i++) {
+			for (var i:int = 1; i <= 20; i++) {
 				if (i < 5 && !rnd) {
 					if (isrnd(0.7)) {
 						nx = cel.coordinates.X - cel.storona * (Math.random() * 300 + 200);
@@ -916,7 +915,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function visDetails() {
+		public override function visDetails():void {
 			if (hpbar==null) {
 				return;
 			}

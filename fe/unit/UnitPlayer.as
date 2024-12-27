@@ -476,7 +476,7 @@ package fe.unit {
 				pet.coordinates.Y = coordinates.Y - 30;
 				if (isSit) pet.coordinates.Y = coordinates.Y;
 				pet.setNull();
-				pet.oduplenie = 60;
+				pet.detectionDelay = 60;
 			}
 		}
 		
@@ -486,7 +486,7 @@ package fe.unit {
 //
 //**************************************************************************************************************************
 
-		public override function forces() {
+		public override function forces():void {
 			grav=1;
 			if (kdash_t>0) {
 				if (kdash_t==1) {
@@ -574,8 +574,10 @@ package fe.unit {
 					}
 				}
 			}
+			
 			osndx = 0;
 			osndy = 0;
+			
 			if (stayOsn) {
 				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
 					stay=false;
@@ -614,7 +616,9 @@ package fe.unit {
 					}
 				}
 			}
-			else rfetter = 0;
+			else {
+				rfetter = 0;
+			}
 		}
 		
 		public override function actions() {
@@ -2290,7 +2294,7 @@ package fe.unit {
 		}
 		
 
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			//реанимация
 			if (sost>1 || World.w.godMode && sposob>=0) return;
 			if (sposob>=0) {
@@ -2383,11 +2387,13 @@ package fe.unit {
 //
 //**************************************************************************************************************************
 		//удар хол. оружием достиг цели
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			if (weaponKrep==0) {			//телекинез
 				if (storona > 0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) weaponX = coordinates.X + this.boundingBox.width * storona;
 				else weaponX = coordinates.X;
+				
 				if (isLaz) weaponX = coordinates.X;
+				
 				if (loc.getAbsTile(weaponX, weaponY).phis == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).phis == 1) weaponX = coordinates.X;
 				
 				if (tip == 1) weaponY = coordinates.Y - this.boundingBox.height * 0.4;
@@ -2396,12 +2402,16 @@ package fe.unit {
 				if (stay && weapUp) {
 					if (loc.getTile(int(weaponX/tileX), int((weaponY-40)/tileY)).phis!=1) weaponY-=40;
 				}
-			} else super.setWeaponPos(tip);
+			}
+			else {
+				super.setWeaponPos(tip);
+			}
 			
 			if (work=='change' && t_work>changeWeaponTime3 && tip!=5) {
 					weaponX = coordinates.X;
 					weaponY = coordinates.Y - this.boundingBox.height * 0.5;
 			}
+			
 			try {
 				var p:Point=new Point(vis.osn.body.head.morda.konec.x,vis.osn.body.head.morda.konec.y);
 				p=vis.osn.body.head.morda.localToGlobal(p);
@@ -2413,8 +2423,7 @@ package fe.unit {
 					else magicY = coordinates.Y - 75;
 				}
 			}
-			catch (err)
-			{
+			catch (err) {
 				trace('ERROR: (00:E)');
 				magicX = coordinates.X;
 				magicY = this.boundingBox.top;
@@ -3490,7 +3499,7 @@ package fe.unit {
 			teleFilter.color=teleColor;
 		}
 		
-		public override function visDetails() {
+		public override function visDetails():void {
 			World.w.gui.setHp();
 		}
 		

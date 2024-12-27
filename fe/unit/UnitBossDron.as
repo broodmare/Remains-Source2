@@ -64,13 +64,13 @@ package fe.unit {
 			timerDie=150;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('baleblast');
 			Snd.ps('bale_e');
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -85,7 +85,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',22);
 		}
 		
@@ -140,7 +140,7 @@ package fe.unit {
 			un.inter.cont='';
 			un.mother=this;
 			un.sndMusic=null;
-			un.oduplenie=0;
+			un.detectionDelay = 0;
 			kolChild++;
 			emit_t=500;
 		}

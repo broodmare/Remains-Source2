@@ -212,7 +212,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			if (World.w.game.globalDif == 3) {
 				kol_emit = 3;
 				max_emit = 18;
@@ -377,7 +377,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function makeNoise(n:int, hlup:Boolean = false) {
+		public override function makeNoise(n:int, hlup:Boolean = false):void {
 
 		}
 		
@@ -407,7 +407,7 @@ package fe.unit {
 			un.inter.cont = '';
 			un.mother = this;
 			un.sndMusic = null;
-			un.oduplenie = 0;
+			un.detectionDelay = 0;
 			kol_emit++;
 		}
 		

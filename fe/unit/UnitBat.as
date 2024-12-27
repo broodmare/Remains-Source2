@@ -28,7 +28,7 @@ package fe.unit {
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
@@ -70,7 +70,7 @@ package fe.unit {
 					}
 				}
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);
 			if (sost==1 && aiState<=1) {
 				aiSpok=maxSpok-1;

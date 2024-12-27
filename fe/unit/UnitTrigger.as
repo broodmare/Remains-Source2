@@ -79,7 +79,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
@@ -100,7 +100,7 @@ package fe.unit {
 			if (allid==null || allid=='') setDamager();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
@@ -198,7 +198,7 @@ package fe.unit {
 			inter.update();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			super.die(sposob);
 			if (status==0) activate();
 		}
@@ -209,7 +209,7 @@ package fe.unit {
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',3);
 		}
 		

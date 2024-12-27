@@ -18,15 +18,15 @@ package fe {
             filesLoaded = 0;
 
             var moduleListURL:String = MODULE_DIRECTORY + 'Modules.xml';
-            var loader:XMLLoader = new XMLLoader();
+            var loader:TextLoader = new TextLoader();
             
-            loader.addEventListener(XMLLoader.XML_LOADED, getAllModuleNames);
+            loader.addEventListener(TextLoader.TEXT_LOADED, getAllModuleNames);
             loader.load(moduleListURL);
         }
 
         private static function getAllModuleNames(event:Event):void {
-            var currentLoader:XMLLoader = XMLLoader(event.currentTarget);
-            currentLoader.removeEventListener(XMLLoader.XML_LOADED, getAllModuleNames);
+            var currentLoader:TextLoader = TextLoader(event.currentTarget);
+            currentLoader.removeEventListener(TextLoader.TEXT_LOADED, getAllModuleNames);
 
             var moduleList:XMLList = currentLoader.xmlData.descendants("module");
             for each (var module:XML in moduleList) { // Specify 'module' descendants
@@ -39,16 +39,16 @@ package fe {
 
         private static function loadModuleManifest(moduleName:String):void { // Manifest lists all directories and files
             var moduleManifestURL:String = MODULE_DIRECTORY + moduleName + '/Manifest.xml';
-            var loader:XMLLoader = new XMLLoader();
+            var loader:TextLoader = new TextLoader();
 
             if (DEBUG) trace('Loading manifest for module: "' + moduleName + '" from: "' + moduleManifestURL + '".');
-            loader.addEventListener(XMLLoader.XML_LOADED, loadAllModuleFiles);
+            loader.addEventListener(TextLoader.TEXT_LOADED, loadAllModuleFiles);
             loader.load(moduleManifestURL);
         }
 
         private static function loadAllModuleFiles(event:Event):void {
-            var currentLoader:XMLLoader = XMLLoader(event.currentTarget);
-            currentLoader.removeEventListener(XMLLoader.XML_LOADED, loadAllModuleFiles);
+            var currentLoader:TextLoader = TextLoader(event.currentTarget);
+            currentLoader.removeEventListener(TextLoader.TEXT_LOADED, loadAllModuleFiles);
 
             var moduleManifest:XML = currentLoader.xmlData;
             var moduleName:String = moduleManifest.@moduleName;
@@ -64,7 +64,7 @@ package fe {
 
                     var fileName:String = file.@fileName;
                     var filePath:String = MODULE_DIRECTORY + moduleName + '/' + directoryName + '/' + fileName + '.xml';
-                    var fileLoader:XMLLoader = new XMLLoader();
+                    var fileLoader:TextLoader = new TextLoader();
 
                     if (DEBUG) trace('Attempting to load file: "' + filePath + '".');
                     
@@ -76,15 +76,15 @@ package fe {
                     };
 
                     // Use a single handler for all file loads
-                    fileLoader.addEventListener(XMLLoader.XML_LOADED, handleFileLoaded);
+                    fileLoader.addEventListener(TextLoader.TEXT_LOADED, handleFileLoaded);
                     fileLoader.load(filePath);
                 }
             }
         }
 
         private static function handleFileLoaded(event:Event):void {
-            var loader:XMLLoader = XMLLoader(event.currentTarget);
-            loader.removeEventListener(XMLLoader.XML_LOADED, handleFileLoaded);
+            var loader:TextLoader = TextLoader(event.currentTarget);
+            loader.removeEventListener(TextLoader.TEXT_LOADED, handleFileLoaded);
 
             var metadata:Object = loaderMetadata[loader];
             delete loaderMetadata[loader]; // Clean up the metadata mapping

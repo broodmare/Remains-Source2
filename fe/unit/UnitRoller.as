@@ -44,7 +44,7 @@ package fe.unit {
 			storona=1;
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
@@ -54,8 +54,8 @@ package fe.unit {
 			vis.y = this.boundingBox.getCenter(coordinates);
 		}
 		
-		public override function dropLoot() {
-			if (tr==2) explosion(dam*4,Unit.D_PLASMA,150,0,20,30,9);
+		public override function dropLoot():void {
+			if (tr == 2) explosion(dam * 4, Unit.D_PLASMA, 150, 0, 20, 30, 9);
 			super.dropLoot();
 		}
 		
@@ -86,7 +86,7 @@ package fe.unit {
 			}
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 			}

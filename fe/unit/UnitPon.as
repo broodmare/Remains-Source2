@@ -21,7 +21,7 @@ package fe.unit {
 		}
 
 		//положение оружия
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 				if (weaponKrep==0) { //телекинез
 					if (storona>0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) weaponX = coordinates.X + this.boundingBox.width * storona;
 					else weaponX = coordinates.X;

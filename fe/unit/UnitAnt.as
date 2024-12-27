@@ -49,19 +49,19 @@ package fe.unit {
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				skin+=4;
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('ant');
 			super.getXmlParam();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
@@ -71,7 +71,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			super.expl();
 		}
 		

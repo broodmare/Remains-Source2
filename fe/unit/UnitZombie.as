@@ -89,14 +89,14 @@ package fe.unit {
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				tZlo=Math.round(tZlo*0.6);
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('zombie');
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
@@ -107,13 +107,13 @@ package fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			radMax*=(1+0.05*level);
 			radHeal*=(1+level*0.16);
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X + storona * 30;
 			weaponY = coordinates.Y - this.boundingBox.height * 0.8;
 		}
@@ -125,7 +125,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		public override function setPos(nx:Number,ny:Number) {
+		public override function setPos(nx:Number,ny:Number):void {
 			super.setPos(nx,ny);
 			if (digger && loc && !loc.active) {
 				kop1 = loc.getAbsTile(coordinates.X - 10, coordinates.Y + 10);
@@ -221,7 +221,7 @@ package fe.unit {
 		}
 		
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (digger==3) return;
 			if (sost==1 && (aiState<=1 || aiState==5)) {
 				super.alarma(nx,ny);
@@ -240,7 +240,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			superSilaVse();
 			super.die(sposob);
 		}
@@ -269,7 +269,7 @@ package fe.unit {
 			visDetails();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 				aiJump=int(30+Math.random()*50);
@@ -807,9 +807,9 @@ package fe.unit {
 			}
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
-			if (superSilaTip==8) explosion(dam*0.4,19,150,15);
+			if (superSilaTip == 8) explosion(dam * 0.4, 19, 150, 15);
 		}
 	}
 }

@@ -70,8 +70,8 @@ package fe {
 			}
 
 			// Load and parse the XML synchronously
-			var xmlLoader:XMLLoader = new XMLLoader();
-			var xmlData:XML = xmlLoader.syncLoad(xmlPath);
+			var textLoader:TextLoader = new TextLoader();
+			var xmlData:XML = textLoader.syncLoad(xmlPath);
 
 			totalSongsToLoad = 0;
 			

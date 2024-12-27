@@ -88,12 +88,12 @@ package fe.unit {
 			return obj;
 		}	
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function forces() {
+		public override function forces():void {
 			if (isFly) {
 				if (t_throw<=0 && velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed) {
 					spd.x = velocity.X;
@@ -102,13 +102,17 @@ package fe.unit {
 					velocity.X = spd.x;
 					velocity.Y = spd.y;
 				}
+				
 				if (isPlav) {
 					velocity.multiply(0.90);
 				}
-			} else super.forces();
+			}
+			else {
+				super.forces();
+			}
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);
 			if (sost==1) {
 				aiState=2;
@@ -129,7 +133,7 @@ package fe.unit {
 			else vis.dis.visible=false;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = this.boundingBox.top;
 			if (tr>=100) {

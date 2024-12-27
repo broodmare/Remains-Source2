@@ -476,7 +476,7 @@ package fe.loc {
 			if (hp <= 0) die();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			if (dead) return;
 			if (inter && inter.prize) return;
 			dead = true;
@@ -523,11 +523,12 @@ package fe.loc {
 		}
 		
 		
-		public function forces() {
+		public function forces():void {
 			if (!levit) {
 				if (!isPlav && velocity.Y < World.maxdy) velocity.Y += World.ddy;
 				if (isPlav && isPlav2) velocity.Y += World.ddy * ddyPlav;
 			}
+			
 			if (isPlav) {
 				velocity.multiply(0.65);
 			}

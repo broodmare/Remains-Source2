@@ -6,7 +6,6 @@ package fe {
 	public class Res {
 
 		public static var currentLanguageData:XML; 		// Current localization file eg. 'text_en.xml'
-		public static var fallbackLanguageData:XML;		// Default language that is used a fallback if an error occurs.
 
 		private static const typeDictionary:Object = {
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
@@ -16,15 +15,13 @@ package fe {
 
 		/*
 		* Checks if a localized text exists for the given tip and id.
-		* It first searches in currentLanguageData, and if not found, it searches in fallbackLanguageData.
 		* @tip  -- What category to search for the string in.
 		* @id   -- The internal name of the string we want to find the localization for.
 		*/
 		public static function istxt(tip:String, id:String):Boolean {
 			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
 			if (xmlList.length() == 0) {
-				xmlList = fallbackLanguageData[typeDictionary[tip]].(@id == id); // If no matching nodes are found, check fallbackLanguageData.
-				if (xmlList.length() == 0) return false; // If there's still no matching nodes, return false.
+				return false; // If there's no matching nodes, return false.
 			}
 			return true;
 		}
@@ -50,7 +47,7 @@ package fe {
 				var xl1:XMLList; // XML List of all returned nodes for the type[id].
 
 				// Try to get a localized string from currentLanguage or fallbackLanguage
-				for each (var langData in [currentLanguageData, fallbackLanguageData]) {
+				for each (var langData in currentLanguageData) {
 					if (!s) { // Skip checking fallback if string was found 
 						xl1 = langData[tipType].(@id == id);
 						if (xl1.length() > 0) s = xl1[razdType][0];
@@ -124,10 +121,6 @@ package fe {
 			var s:String = '';
 			try {
 				var xml:XMLList = currentLanguageData.txt.(@id == id);
-				
-				if (xml.length()==0) {
-					xml = fallbackLanguageData.txt.(@id == id);
-				}
 				
 				if (xml.length()==0) return '';
 

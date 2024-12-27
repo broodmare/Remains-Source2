@@ -92,7 +92,7 @@ package fe.unit
 		}
 
 		
-		public function getXmlParam(node:XML) {
+		public function getXmlParam(node:XML):void {
 			if (node.@armor.length()) armor=(node.@armor);
 			if (node.@marmor.length()) marmor=(node.@marmor);
 			if (node.@qual.length()) armor_qual=(node.@qual);

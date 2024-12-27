@@ -39,7 +39,7 @@ package fe.unit {
 			sit(true);
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('hellhound');
 			super.getXmlParam();
 		}

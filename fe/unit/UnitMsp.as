@@ -66,7 +66,7 @@ package fe.unit {
 			super.putLoc(nloc, nx, ny);
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
@@ -125,17 +125,17 @@ package fe.unit {
 			} 
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y =- jumpdy * v;
 			}
 		}
 
-		public override function dropLoot() {
-			explosion(dam,tipDamage,150,0,20,30,9);
+		public override function dropLoot():void {
+			explosion(dam, tipDamage, 150, 0, 20, 30, 9);
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.12);

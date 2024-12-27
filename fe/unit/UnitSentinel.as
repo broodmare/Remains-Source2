@@ -4,15 +4,15 @@ package fe.unit {
 
 	public class UnitSentinel extends UnitAIRobot {
 
-		var jump_n:int=100;
-		var dopWeapon:Weapon;
-		var kolRock=6;
+		private var jump_n:int=100;
+		private var dopWeapon:Weapon;
+		private var kolRock=6;
 		
 		// Constructor
 		public function UnitSentinel(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			id='sentinel';
-			vis=new visualSentinel();
+			id = 'sentinel';
+			vis = new visualSentinel(); // .SWF Dependency
 			vis.stop();
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
@@ -26,20 +26,20 @@ package fe.unit {
 			if (quiet) id_replic='';
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('expl');
-			currentWeapon.vis.visible=false;
+			currentWeapon.vis.visible = false;
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			if (dopWeapon && dopWeapon.tip==0) {
 				dopWeapon.damage*=(1+level*0.1);
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',12);
 		}
 		
@@ -72,12 +72,12 @@ package fe.unit {
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int = 0) {
+		public override function setWeaponPos(tip:int = 0):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y - 90;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1):void {
 			if (stay) {
 				jump_n = 90;
 			}
@@ -91,7 +91,7 @@ package fe.unit {
 		}
 
 		//атака
-		public override function attack() {
+		public override function attack():void {
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
 			currentWeapon.attack();
 			if (celUnit && !(celDX<160 && celDX>-160 && celDY<80 && celDY>-80)) dopWeapon.attack();

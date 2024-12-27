@@ -179,7 +179,7 @@ package fe.unit {
 			}
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.2);
@@ -221,12 +221,12 @@ package fe.unit {
 			return radians * 180 / Math.PI;
 		}
 
-		public override function setPos(nx:Number,ny:Number) {
+		public override function setPos(nx:Number,ny:Number):void {
 			super.setPos(nx,ny);
 			if ((turrettip == 0 || turrettip == 4) && loc && !loc.active) osnova = loc.getAbsTile(coordinates.X, coordinates.Y - 50);
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx, ny);
 			if (turrettip == 3) return;
 			if (sost==1 && !sleep) {
@@ -274,12 +274,12 @@ package fe.unit {
 			warn=0;
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			if (turrettip==0 || turrettip==4) weaponY = coordinates.Y - 12;
 			else if (turrettip==1) weaponY = coordinates.Y - 60;
@@ -343,7 +343,7 @@ package fe.unit {
 				return true;
 			}
 			if (!reprog) return super.findCel(over);
-			if (oduplenie>0) return false;
+			if (detectionDelay > 0) return false;
 			var ncel:Unit;
 			if (priorUnit && isMeet(priorUnit) && priorUnit.sost<3 && priorUnit.hp>0 && !priorUnit.doop) {
 				setCel(priorUnit);
@@ -370,7 +370,7 @@ package fe.unit {
 		//4 - не видит цель
 		
 		override protected function control():void {
-			if (levit && !reprog || !stay && !fixed && oduplenie<=0) {
+			if (levit && !reprog || !stay && !fixed && detectionDelay <= 0) {
 				if (aiState<=1 && !sleep) {
 					aiState=3;
 				}
@@ -472,7 +472,7 @@ package fe.unit {
 			if (World.w.enemyAct>=3 && aiState==3 && !stun) {
 				currentWeapon.attack();
 			}
-			if (World.w.enemyAct>=3 && celUnit && dam>0 && oduplenie<=0) {	//атака корпусом
+			if (World.w.enemyAct >= 3 && celUnit && dam>0 && detectionDelay <= 0) {	//атака корпусом
 				attKorp(celUnit, 1);
 			}
 		}

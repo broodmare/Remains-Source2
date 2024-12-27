@@ -33,7 +33,7 @@ package fe.unit {
 			ctrans = false;
 		}
 
-		public override function forces() {
+		public override function forces():void {
 			if (isFly) {
 				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed) {
 					velocity.multiply(0.80);

@@ -62,14 +62,14 @@ package fe.unit {
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				hp=maxhp=maxhp*2;
 			}
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
@@ -79,7 +79,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			super.expl();
 			if (id=='tarakan') {
 				newPart('shmatok',2,1);
@@ -125,7 +125,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 				velocity.X += storona * accel * 5;

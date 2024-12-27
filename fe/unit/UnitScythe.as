@@ -42,8 +42,8 @@ package fe.unit {
 			getNapr();
 		}
 		
-		public override function forces() {
-
+		public override function forces():void {
+			// No forces since this flies around freely
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {

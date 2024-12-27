@@ -1025,7 +1025,6 @@ package fe.inter {
 				trace('Playing dialogue: "' + id +'".');
 
 				xml = Res.currentLanguageData.txt.(@id==id);
-				if (xml.length()==0) xml=Res.fallbackLanguageData.txt.(@id==id);
 				if (xml.length()==0) return false;
 				xml=xml.n[0];
 				if (xml.length()==0) return false;

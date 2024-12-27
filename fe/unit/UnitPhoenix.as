@@ -33,7 +33,7 @@ package fe.unit {
 			return 1;
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			if (hpbar) hpbar.visible=false;
 			expl();
 			exterminate();
@@ -43,7 +43,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('green_spark',25);
 		}
 
@@ -65,7 +65,7 @@ package fe.unit {
 				die();
 				var pet:UnitPet=World.w.gg.pets['phoenix'];
 				World.w.gg.callPet('phoenix');
-				pet.oduplenie=0;
+				pet.detectionDelay = 0;
 				pet.setPos(coordinates.X, coordinates.Y);
 			}
 		}

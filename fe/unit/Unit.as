@@ -113,7 +113,7 @@ package fe.unit {
 		
 		// Damage
 		public var dam:Number=0;			//урон самого юнита
-		public static const kolVulners=20;
+		public static const kolVulners:int = 20;
 		public var tipDamage:int=D_PHIS;		//тип урона
 		public var radDamage:Number=0;		//урон радиацией
 		public var retDamage:Boolean=false; //возврат урона от юнита к врагу
@@ -137,7 +137,7 @@ package fe.unit {
 		public var jumpdy:Number=15, plavdy:Number=1, levidy:Number=1, elast:Number=0, jumpBall:Number=0;
 		public var ddyPlav:Number=1; //выталкивающая сила
 		public var osndx:Number=0, osndy:Number=0;
-		public var levit_max=0; //максимальное время левитации, если 0, то левитация не ограничена
+		public var levit_max:int = 0; //максимальное время левитации, если 0, то левитация не ограничена
 		public var levit_r:int=0;		//сколько времени объект был левитирован
 		public var grav:Number=1;
 		public var slow:int=0;			//внешнее замедление
@@ -200,8 +200,8 @@ package fe.unit {
 		public var neujaz:int=0, neujazMax:int=20;
 		public var disabled:Boolean=false;
 		public var noAct:Boolean=false;	//неактивен, может быть включён командой
-		public var oduplenie:int=100;
-		public var lootIsDrop=false;	//выпадал ли уже лут
+		public var detectionDelay:int = 100;
+		public var lootIsDrop:Boolean = false;	//выпадал ли уже лут
 		public var aiTip:String;
 		public var t_emerg:int=0, max_emerg:int=0;
 		public var wave:int=0;	//враг принадлежит к волне
@@ -233,7 +233,7 @@ package fe.unit {
 		
 		//фракция
 		public var fraction:int=0, player:Boolean=false;
-		public static const F_PLAYER=100, F_MONSTER=1, F_RAIDER=2, F_ZOMBIE=3, F_ROBOT=4;
+		public static const F_PLAYER:int = 100, F_MONSTER:int = 1, F_RAIDER:int = 2, F_ZOMBIE:int = 3, F_ROBOT:int = 4;
 		public var npc:Boolean=false;	//Юнит является NPC-ом и отображается на карте
 		
 		//видимость юнита для других (маскировка), чем выше показатель, тем с большего расстояния объект виден
@@ -460,7 +460,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public function getXmlParam(mid:String = null) {
+		public function getXmlParam(mid:String = null):void {
 			var setOpts:Boolean=false;
 			
 			if (opts[id]) {
@@ -666,7 +666,7 @@ package fe.unit {
 			}
 
 
-			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
+			if (setOpts) for (var i:int = 0; i<kolVulners; i++) begvulner[i]=vulner[i];
 		}
 		
 		public function getXmlWeapon(dif:int):Weapon {
@@ -683,8 +683,7 @@ package fe.unit {
 			return null;
 		}
 		
-		public function getName():String
-		{
+		public function getName():String {
 			if (World.w.game == null || id_name == null) return '';
 			var arr:Array = World.w.game.names[id_name];
 			if (arr == null || arr.length == 0) arr = Res.namesArr(id_name); 	//prepare an array of names
@@ -697,10 +696,8 @@ package fe.unit {
 			return s;
 		}
 		
-		public function checkTrig():Boolean
-		{
-			if (trig)
-			{
+		public function checkTrig():Boolean {
+			if (trig) {
 				if (trig == 'eco' && (World.w.pers == null || World.w.pers.eco == 0)) return false;
 				if (World.w.game.triggers[trig] != 1) return false;
 			}
@@ -755,8 +752,7 @@ package fe.unit {
 		}
 
 		// [set the mob's level (the value is added to the level specified via the map, default is 0)]
-		public function setLevel(nlevel:int=0)
-		{
+		public function setLevel(nlevel:int=0):void {
 			level += nlevel;
 			if (level < 0) level = 0;
 			hp = maxhp = hp * (1 + level * 0.11);
@@ -768,24 +764,22 @@ package fe.unit {
 			skin*=(1+level*0.05);
 			armor_hp=armor_maxhp=armor_hp*(1+level*0.1);
 			observ += Math.min(nlevel*0.6, 15) * (0.9 + Math.random()*0.2);
-			if (currentWeapon && currentWeapon.tip==0)
-			{
+			if (currentWeapon && currentWeapon.tip==0) {
 				currentWeapon.damage*=(1+level*0.07);
 			}
-			else
-			{
+			else {
 				weaponSkill *= (1 + level * 0.035);
 			}
 			damWall *= (1 + level * 0.04);
 		}
 		
 		//сделать героем
-		public function setHero(nhero:int=1) {
+		public function setHero(nhero:int=1):void {
 			if (!mHero) return;
 			if (hero==0) hero=nhero;
 			if (hero>0) {
 				if (!uniqName) {
-					var s=getName();
+					var s:String = getName();
 					if (s!=null && s!='') nazv=s;
 				}
 				xp*=5;
@@ -808,22 +802,19 @@ package fe.unit {
 			setHeroVulners();
 		}
 		
-		public function setHeroVulners()
-		{
+		public function setHeroVulners():void {
 			vulner[D_EMP]	*= 0.80;
 			vulner[D_BALE]	*= 0.70;
 			vulner[D_NECRO]	*= 0.70;
 			vulner[D_ASTRO]	*= 0.70;
 
-			if (hero == 2)
-			{
+			if (hero == 2) {
 				vulner[D_BUL]		*= 0.50;
 				vulner[D_PHIS]		*= 0.65;
 				vulner[D_BLADE]		*= 0.65;
 				vulner[D_EXPL]		*= 0.75;
 			}
-			if (hero == 3)
-			{
+			if (hero == 3) {
 				vulner[D_LASER]		*= 0.60;
 				vulner[D_PLASMA]	*= 0.50;
 				vulner[D_EMP]		*= 0.75;
@@ -843,7 +834,7 @@ package fe.unit {
 						effects=[];
 					}
 					stun=cut=poison=0;
-					oduplenie=Math.round(World.oduplenie*(Math.random()*0.2+0.9));
+					detectionDelay = Math.round(World.detectionDelay * (Math.random() * 0.2 + 0.9));
 					if (!noAct) disabled=false;		//включить
 					hp=maxhp;			//восстановить хп
 					armor_hp=armor_maxhp;
@@ -860,7 +851,7 @@ package fe.unit {
 		
 		// The condition under which the boss does not restore hp
 		public function isNoResBoss():Boolean {
-			var res = false;
+			var res:Boolean = false;
 			res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != 'base';
 			return res;
 		}
@@ -874,15 +865,13 @@ package fe.unit {
 			if (t_emerg>0) {
 				t_emerg--;
 				setVisPos();
-				if (vis)
-				{
+				if (vis) {
 					if (t_emerg > 0) {
 						var tf = t_emerg / (max_emerg + 1);
 						vis.filters = [new GlowFilter(0xAADDFF, tf, tf * 20, tf * 20, 1, 3)];
 						vis.alpha = 1 - tf;
 					}
-					else
-					{
+					else {
 						vis.filters = [];
 						vis.alpha = 1;
 					}
@@ -908,7 +897,7 @@ package fe.unit {
 			}
 			else {
 				var div:int = int(Math.max(Math.abs(velocity.X + osndx),Math.abs(velocity.Y + osndy))/World.maxdelta)+1;
-				for (var i = 0; i<div; i++) run(div); // What the fuck, this is being used as a string later.
+				for (var i = 0; i < div; i++) run(div); // What the fuck, this is being used as a string later.
 			}
 			checkWater();
 			actions();		//различные действия
@@ -938,7 +927,7 @@ package fe.unit {
 		}
 		
 		// Move unit to coordinates
-		public function setPos(nx:Number, ny:Number) {
+		public function setPos(nx:Number, ny:Number):void {
 			coordinates.X = nx;
 			coordinates.Y = ny;
 			this.boundingBox.center(coordinates);
@@ -975,7 +964,7 @@ package fe.unit {
 		}
 
 		// [Current forces]
-		public function forces() {
+		public function forces():void {
 			if (levit) {
 				velocity.multiply(0.80);
 				isLaz = 0;
@@ -1021,19 +1010,19 @@ package fe.unit {
 					}
 				}
 			}
+			
 			if (slow) {
 				velocity.multiply(0.75);
 			}
+			
 			osndx = 0;
 			osndy = 0;
-			if (stayOsn)
-			{
-				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10)
-				{
+			
+			if (stayOsn) {
+				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
 					stay = false;
 				}
-				else
-				{
+				else {
 					osndx = stayOsn.cdx;
 					osndy = stayOsn.cdy;
 				}
@@ -1911,7 +1900,7 @@ package fe.unit {
 			}
 		}
 
-		public function visDetails() {
+		public function visDetails():void {
 			if (hpbar==null) return;
 			if ((hp<maxhp || armor_qual>0 && armor_hp<armor_maxhp || hero>0) && hp>0 && !invis || boss) {
 				if (boss) {
@@ -1962,9 +1951,14 @@ package fe.unit {
 			}
 			if (neujaz>0) neujaz--;
 			if (shok>0) shok--;
-			if (oduplenie>0) {
-				if (opt && opt.izvrat && World.w.pers.socks || noAgro) {}
-				else oduplenie--;
+			if (detectionDelay > 0) {
+				if (opt && opt.izvrat && World.w.pers.socks || noAgro) {
+					// Do nothing
+				}
+				else {
+					// Start noticing player
+					detectionDelay--;
+				}
 			}
 			if (noise>0) noise-=20;
 			if (noise_t>0) noise_t--;
@@ -1999,7 +1993,7 @@ package fe.unit {
 			
 			if (demask>0) demask-=5;
 			if (effects.length>0) {
-				for (var i=0; i<effects.length; i++) {
+				for (var i:int = 0; i < effects.length; i++) {
 					if ((effects[i] as Effect).vse) {
                         effects.splice(i, 1);
                         i--;
@@ -2060,8 +2054,7 @@ package fe.unit {
 			}
 		}
 		
-		public function makeNoise(n:int, hlup:Boolean=false)
-		{
+		public function makeNoise(n:int, hlup:Boolean=false):void {
 			if (n<=0) return;
 			if (noise<n) noise=n;
 			if (noise_t==0 || hlup && noise_t<=20) {
@@ -2084,11 +2077,11 @@ package fe.unit {
 		}
 
 		// [the blow reached the target]
-		public function crash(b:Bullet) {
+		public function crash(b:Bullet):void {
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
 
-		public function setWeaponPos(tip:int=0) {
+		public function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = this.boundingBox.top;
 			magicX = coordinates.X;
@@ -2243,15 +2236,13 @@ package fe.unit {
 
 
 		//получить урон
-		public function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
-		{
+		public function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
 			if (invulner) return 0;
 			if (sost==1) dieWeap=null;
-			if (tip<kolVulners) dam*=vulner[tip];			// Vulnerabilities
+			if (tip<kolVulners) dam*=vulner[tip];	// Vulnerabilities
 			var isCrit:int=0;
 			var isShow:Boolean=false;
-			if (bul) // Critical damage
-			{					
+			if (bul) {	// Critical damage
 				// [Damage to certain types]
 				if (bul.owner && bul.owner.player && opt) {
 					if (opt.pony) dam*=(bul.owner as UnitPlayer).pers.damPony;
@@ -2464,7 +2455,8 @@ package fe.unit {
 						hitSumm+=dam;
 						if (hitPart==null) {
 							hitPart=numbEmit.cast(loc, castX, castY+visDamDY, {txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
-						} else {
+						}
+						else {
 							if (isCrit==1 || isCrit==3) {
 								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;
 							}
@@ -2496,7 +2488,7 @@ package fe.unit {
 				var dam = Math.sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y) / damWallSpeed * damWall;
 				damage(dam,D_PHIS);
 				if (Math.random()<dam/maxhp) stun=damWallStun;
-				if (napr>0) {
+				if (napr > 0) {
 					var nx:Number = coordinates.X;
 					var ny:Number = this.boundingBox.top;
 
@@ -2568,16 +2560,17 @@ package fe.unit {
 
 		//удар юнита юнитом
 		public function udarUnit(un:Unit, mult:Number=1):Boolean {
-			if (neujaz>0) return false;
-			neujaz=neujazMax;
+			if (neujaz > 0) return false;
+			neujaz = neujazMax;
 			if (dodge-un.undodge>0 && isrnd(dodge-un.undodge)) {
-				if (World.w.showHit>=1)
-				{
+				if (World.w.showHit>=1) {
 					numbEmit.cast(loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
 					return false;
 				}
 			}
+			
 			var sila = Math.random()*0.4+0.8;
+			
 			if (un.collisionTip == 1) {
 				var ndx = (un.velocity.X * un.massa + velocity.X * massa) / (un.massa + massa);
 				var ndy = (un.velocity.Y * un.massa + velocity.Y * massa) / (un.massa + massa); // Corrected to use velocity.Y instead of velocity.X for ndy calculation
@@ -2586,15 +2579,20 @@ package fe.unit {
 				un.velocity.X = (-un.velocity.X + ndx) * un.knocked + ndx;
 				un.velocity.Y = (-un.velocity.Y + ndy) * un.knocked + ndy;
 			}
+			
 			if (un.currentWeapon && un.currentWeapon.tip==1) {
 				damage((un.currentWeapon.damage*0.5+un.dam)*sila*mult, un.currentWeapon.tipDamage)
 			}
 			else {
 				damage((un.dam)*sila*mult, un.tipDamage);
 			}
+			
 			var sc:Number=(un.dam*sila*mult)/20;
+			
 			if (sc<0.5) sc=0.5;
+			
 			if (sc>3) sc=3;
+			
 			if (un.tipDamage == Unit.D_SPARK) {
 				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight, {celx:un.coordinates.X, cely:(un.coordinates.Y - un.boundingBox.halfHeight)});
 				Snd.ps('electro', coordinates.X, coordinates.Y);
@@ -2617,8 +2615,10 @@ package fe.unit {
 			}
 
 			priorUnit = un;
+			
 			return true;
 		}
+		
 		//удар падающим предметом
 		public function udarBox(un:Box):int {
 			if (neujaz>0 || noBox || un.loc!=loc) return 0;
@@ -2646,18 +2646,18 @@ package fe.unit {
 		//эффект отбрасывания пулей
 		public function otbros(bul:Bullet) {
 			if (invulner) return;
-			var sila=Math.random()*0.4+0.8;
-			sila*=knocked/massa;
+			var sila:Number = Math.random() * 0.4 + 0.8;
+			sila *= knocked / massa;
 			if (sila > 3) sila = 3;
 			velocity.X += bul.knockx * bul.otbros * sila;
 			velocity.Y += bul.knocky * bul.otbros * sila;
 		}
 		
-		//активация из пассивного режима
-		public function alarma(nx:Number=-1,ny:Number=-1) {
-			oduplenie=0;
-			if (nx>0 && ny>0 && celUnit==null) {
-				setCel(null,nx,ny);
+		// [Activation from passive mode]
+		public function alarma(nx:Number = -1,ny:Number = -1):void {
+			detectionDelay = 0;	// Player is seen, remove the grace period
+			if (nx > 0 && ny > 0 && celUnit == null) {
+				setCel(null, nx, ny);
 			}
 		}
 
@@ -2684,7 +2684,7 @@ package fe.unit {
 
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			if (hpbar) hpbar.visible=false;
 			if (boss) {
 				World.w.gui.hpBarBoss();
@@ -2774,7 +2774,7 @@ package fe.unit {
 		}
 		
 		//взрыв, кишки или другой эффект после смерти
-		public function expl() {
+		public function expl():void  {
 			if (blood) {
 				if (bloodEmit == null) {
 					if (blood == 1) bloodEmit = Emitter.arr['blood'];
@@ -2786,7 +2786,7 @@ package fe.unit {
 		}
 
 		//вызывается в любом случае в момент любого способа смерти, только один раз!
-		public function dropLoot() {
+		public function dropLoot():void {
 			if (inter) inter.loot();
 			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,coordinates.X, this.boundingBox.top, 'essence');
 			//выпадение драгоценного камня
@@ -2952,7 +2952,7 @@ package fe.unit {
 
 		// [Get target for AI]
 		public function findCel(over:Boolean=false):Boolean {
-			if (oduplenie > 0) return false;
+			if (detectionDelay > 0) return false;
 			var ncel:Unit;
 			if (priorUnit && isMeet(priorUnit) && priorUnit.fraction!=fraction && priorUnit.sost<3 && priorUnit.hp>-priorUnit.maxhp && (!priorUnit.doop || priorUnit.levit)) ncel=priorUnit;
 			else if (isMeet(loc.gg) && !loc.gg.invulner && fraction!=F_PLAYER) ncel=loc.gg;

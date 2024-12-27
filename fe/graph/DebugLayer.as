@@ -185,7 +185,7 @@ package fe.graph {
 
 		private function debugDrawBoundingBoxesForShelfs(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item:Tile in list) {
+			for each (var item in list) {
 				// If the item is "a stair", skip it
 				if (!item.hasOwnProperty("shelf") || !item.shelf) {
 					continue;
@@ -207,7 +207,7 @@ package fe.graph {
 
 		private function debugDrawBoundingBoxesForStairs(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item:Tile in list) {
+			for each (var item in list) {
 				// If the item is not a stair, skip it
 				if (!item.hasOwnProperty("stair") || item.stair == 0) {
 					continue;
@@ -229,7 +229,7 @@ package fe.graph {
 
 		private function debugDrawBoundingBoxesForDiags(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item:Tile in list) {
+			for each (var item in list) {
 				// If the item is not a diagon, skip it
 				if (!item.hasOwnProperty("diagon") || item.diagon == 0) {
 					continue;

@@ -47,7 +47,7 @@ package fe.unit {
 			return 0;
 		}
 
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			exterminate();
 		}
 	}

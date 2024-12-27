@@ -42,7 +42,7 @@ package fe.unit {
 						for each (var eff in effects) eff.unsetEff();
 						effects=[];
 					}
-					oduplenie=Math.round(World.oduplenie*(Math.random()*0.2+0.9));
+					detectionDelay = Math.round(World.detectionDelay * (Math.random() * 0.2 + 0.9));
 					disabled=false;		//включить
 				}
 			}
@@ -67,15 +67,15 @@ package fe.unit {
 		
 		var emit_t:int = 0;
 		
-		public override function expl()	{
+		public override function expl():void {
 			super.expl();
 			if (emitId=='ant') newPart('schep',16,2);
 			else newPart('shmatok',16,2);
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
-			for (var i=0; i<5; i++) emit();
+			for (var i:int = 0; i < 5; i++) emit();
 		}
 		
 		override protected function control():void {

@@ -53,7 +53,7 @@ package fe.unit {
 			super.putLoc(nloc, nx, ny);
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal', 4);
 		}
 
@@ -79,7 +79,7 @@ package fe.unit {
 				return;
 			}
 			aiTCh++;
-			if (aiState==1 && oduplenie<=0 && aiTCh%3==1 && loc==World.w.gg.loc) {
+			if (aiState==1 && detectionDelay <= 0 && aiTCh%3==1 && loc==World.w.gg.loc) {
 				upKoef+=0.05;
 				if (rasst2<dist*dist) {
 					rasst=Math.sqrt(rasst2);
