@@ -59,80 +59,74 @@ package fe.projectile
 			}
 		}
 		
-		public function run(div:int=1)
-		{
+		public function run(div:int=1) {
 			if (vse) return;
 			var t:Tile;
 			X += dx / div;
-			if (X < 0 || X >= loc.spaceX * tileX)
-			{
+			if (X < 0 || X >= loc.spaceX * tileX) {
 				vse=true;
 				return;
 			}
 			if (dx<0) {
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2)
-				{
+				if (t.phis==1 && X <= t.boundingBox.right && X >= t.boundingBox.left && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom) {
 					if (is_skok) {
-                        X = t.phX2 + 1;
+                        X = t.boundingBox.bottom + 1;
                         dx = Math.abs(dx * skok);
-                    } else vse = true;
+                    }
+					else vse = true;
 				}
 			}
 			//движение вправо
-			if (dx>0)
-			{
+			if (dx>0) {
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2)
-				{
+				if (t.phis == 1 && X >= t.boundingBox.left && X <= t.boundingBox.right && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom) {
 					if (is_skok) {
-                        X = t.phX1 - 1;
+                        X = t.boundingBox.left - 1;
                         dx = -Math.abs(dx * skok);
-                    } else vse = true;
+                    }
+					else vse = true;
 				}
 			}
-			if (vse)
-			{
+			if (vse) {
 				Y+=dy/div;
 				return;
 			}
 			//ВЕРТИКАЛЬ
 			//движение вверх
-			if (dy<0)
-			{
+			if (dy<0) {
 				Y+=dy/div;
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2)
-				{
+				if (t.phis == 1 && Y <= t.boundingBox.bottom && Y >= t.boundingBox.top && X >= t.boundingBox.left && X <= t.boundingBox.right) {
 					if (is_skok) {
-                        Y = t.phY2 + 1;
+                        Y = t.boundingBox.bottom + 1;
                         dy = Math.abs(dy * skok);
-                    } else vse = true;
+                    }
+					else vse = true;
 				}
 			}
 			//движение вниз
 			var newmy:Number=0;
-			if (dy > 0)
-			{
+			if (dy > 0) {
 				Y += dy / div;
-				if (Y >= loc.spaceY * tileY)
-				{
+				if (Y >= loc.spaceY * tileY) {
 					vse=true;
 					return;
 				}
-				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2)
-				{
-					Y=t.phY1-1;
+				t = loc.getAbsTile(X, Y);
+				if (t.phis == 1 && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom && X >= t.boundingBox.left && X <= t.boundingBox.right) {
+					Y = t.boundingBox.top - 1;
 					if (is_skok) {
                         if (dy > 2) {
                             dy = -Math.abs(dy * skok);
                             dx *= tormoz;
-                        } else {
+                        }
+						else {
                             dy = 0;
                             stay = true;
                         }
-                    } else vse = true;
+                    }
+					else vse = true;
 				}
 			}
 		}

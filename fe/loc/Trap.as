@@ -18,11 +18,11 @@ package fe.loc {
 		public var dam:Number=0;
 		public var tipDamage:int=0;
 		
-		public var spDam:int = 1;		//способ нанесения урона
-		public var spBind:int = 1;	//способ прикрепления
+		public var spDam:int = 1;	// [Method of dealing damage]
+		public var spBind:int = 1;	// [Attachment method]
 		public var floor:Boolean = false;
 		
-		var anim:Boolean = false;
+		private var anim:Boolean = false;
 		
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -71,9 +71,9 @@ package fe.loc {
 		
 		public function getXmlParam() {
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
-			nazv=Res.txt('u',id);
+			nazv=Res.txt('u', id);
 
-			if (node.@sX>0) this.boundingBox.width = node.@sX;
+			if (node.@sX > 0) this.boundingBox.width = node.@sX;
 			else this.boundingBox.width = node.@size * tileX;
 			
 			if (node.@sY > 0) this.boundingBox.height = node.@sY;
@@ -94,7 +94,7 @@ package fe.loc {
 			}
 			if (vis2) {
 				World.w.grafon.visObjs[3].addChild(vis2);
-				if (cTransform) vis2.transform.colorTransform=cTransform;
+				if (cTransform) vis2.transform.colorTransform = cTransform;
 			}
 		}
 		public override function remVisual():void {
@@ -111,10 +111,14 @@ package fe.loc {
 		}
 		
 		private function bindTile():void {
-			//прикрепление к полу
-			if (spBind == 1) loc.getAbsTile(coordinates.X, coordinates.Y + 10).trap = this;	
-			//прикрепление к потолку
-			if (spBind == 2) loc.getAbsTile(coordinates.X, coordinates.Y - 50).trap = this;
+			// [Attachment to the floor]
+			if (spBind == 1) {
+				loc.getAbsTile(coordinates.X, coordinates.Y + 10).trap = this;
+			}
+			// [Attachment to the ceiling]
+			if (spBind == 2) {
+				loc.getAbsTile(coordinates.X, coordinates.Y - 50).trap = this;
+			}
 		}
 		
 		public override function die(sposob:int = 0) {

@@ -127,6 +127,8 @@ package fe.loc {
 		public var itemsTip:String;				//особый тип лута
 		public var electroDam:Number=0;
 		public var trus:Number=0;				//постоянная тряска
+
+		private var lightingUpdates:int = 0;	// How many times to update the lighting
 		
 		// [Enemies]
 		public var tipEnemy:int=-1;				//тип случайных врагов
@@ -1281,7 +1283,7 @@ package fe.loc {
 //
 //**************************************************************************************************************************
 		
-		//добавить любой объект в цепочку обработки
+		// [Add any object to the processing chain] (Bullets, )
 		public function addObj(obj:Entity):void {
 			if (obj.in_chain) return;
 			if (firstObj) {
@@ -1289,9 +1291,9 @@ package fe.loc {
 				obj.pobj = lastObj;
 			}
 			else firstObj = obj;
-			obj.nobj=null;
-			lastObj=obj;
-			obj.in_chain=true;
+			obj.nobj = null;
+			lastObj = obj;
+			obj.in_chain = true;
 			if (active) obj.addVisual();
 		}
 		
@@ -1305,8 +1307,8 @@ package fe.loc {
 			if (obj.pobj) obj.pobj.nobj = obj.nobj;
 			else firstObj = obj.nobj;
 
-			obj.in_chain=false;
-			obj.nobj=obj.pobj=null;
+			obj.in_chain = false;
+			obj.nobj = obj.pobj = null;
 			obj.remVisual();
 		}
 		
@@ -1391,7 +1393,7 @@ package fe.loc {
 
 				var t:Tile = World.w.loc.getAbsTile(int(currentX), int(currentY));
 
-				if (t.phis == 1 && currentX >= t.phX1 && currentX <= t.phX2 && currentY >= t.phY1 && currentY <= t.phY2) {
+				if (t.phis == 1 && currentX >= t.boundingBox.left && currentX <= t.boundingBox.right && currentY >= t.boundingBox.top && currentY <= t.boundingBox.bottom) {
 					if (obj == null || t.door != obj) {
 						return false;
 					}
@@ -2065,12 +2067,20 @@ package fe.loc {
 			}
 			
 			if (celObj && celObj.onCursor <= 0) celObj = null;
+			
 			if (black) {
-				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) lighting();
-				else if (relight_t > 0) lighting2();
+				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) {
+					lighting(); // Normal lighting update when we move the player / LOS
+				}
+				else if (relight_t > 0) {
+					lighting2();
+				}
 			}
+			
 			isRelight = false;
+			
 			getDist();
+			
 			//если нужно, пересчитать пространство
 			if (isRebuild) rebuild();
 			if (isRecalc) recalcWater();
@@ -2090,7 +2100,6 @@ package fe.loc {
 
 			// Bounding-box debugging (Draws each objects bounding box)
 			grafon.drawDebugLayer();
-    		
 		}
 		
 		// [Kill all enemies and open all containers]
@@ -2152,7 +2161,7 @@ package fe.loc {
 		}
 		
 		//сохранить все объекты
-		public function saveObjs(arr:Array) {
+		public function saveObjs(arr:Array):void {
 			for each (var obj:Obj in saves) {
 				if (obj.code) {
 					arr[obj.code] = obj.save();

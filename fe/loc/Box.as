@@ -608,7 +608,7 @@ package fe.loc {
 					for (i = int(this.boundingBox.top / tileY); i <= int(this.boundingBox.bottom / tileY); i++) {
 						t = loc.getTile(int(this.boundingBox.left / tileX), i);
 						if (collisionTile(t)) {
-								coordinates.X = t.phX2 + this.boundingBox.halfWidth;
+								coordinates.X = t.boundingBox.right + this.boundingBox.halfWidth;
 								if (velocity.X < -10) velocity.X = -velocity.X * 0.2;
 								else velocity.X = 0;
 								this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
@@ -622,7 +622,7 @@ package fe.loc {
 					for (i=int(this.boundingBox.top/tileY); i<=int(this.boundingBox.bottom/tileY); i++) {
 						t = loc.getTile(int(this.boundingBox.right/tileX), i);
 						if (collisionTile(t)) {
-								coordinates.X = t.phX1 - this.boundingBox.halfWidth;
+								coordinates.X = t.boundingBox.left - this.boundingBox.halfWidth;
 								if (velocity.X > 10) velocity.X = -velocity.X * 0.2;
 								else velocity.X = 0;
 								this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
@@ -641,7 +641,7 @@ package fe.loc {
 				for (i = int(this.boundingBox.left / tileX); i <= int(this.boundingBox.right / tileX); i++) {
 					t = loc.getTile(i, int((this.boundingBox.bottom + velocity.Y / div) / tileY));
 					if (collisionTile(t, 0, velocity.Y / div)) {
-						newmy = t.phY1;
+						newmy = t.boundingBox.top;
 						break;
 					}
 				}
@@ -696,7 +696,7 @@ package fe.loc {
 				for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
 					t = loc.getTile(i, int(this.boundingBox.top/tileY));
 					if (collisionTile(t)) {
-						coordinates.Y = t.phY2 + this.boundingBox.height;
+						coordinates.Y = t.boundingBox.bottom + this.boundingBox.height;
 						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
 						this.boundingBox.bottom = coordinates.Y;
 						velocity.Y = 0;
@@ -708,7 +708,7 @@ package fe.loc {
 
 		//поиск жидкости
 		public function checkWater():Boolean {
-			var pla = isPlav;
+			var pla:Boolean = isPlav;
 			isPlav = false;
 			isPlav2 = false;
 
@@ -814,10 +814,10 @@ package fe.loc {
 
 			// Compare against the tile’s “physical” boundaries.
 			// If we are completely to the left, right, above, or below the tile, no collision.
-			if (newRight   <= t.phX1 ||
-				newLeft    >= t.phX2 || 
-				newBottom  <= t.phY1 ||
-				newTop     >= t.phY2) 
+			if (newRight   <= t.boundingBox.left ||
+				newLeft    >= t.boundingBox.right || 
+				newBottom  <= t.boundingBox.top ||
+				newTop     >= t.boundingBox.bottom) 
 			{
 				return 0;
 			}
@@ -825,7 +825,7 @@ package fe.loc {
 			// If it's a shelf-type tile (phis == 0 or 3), and our bottom is already below the tile’s top edge
 			// (or if we’re levitating or being thrown), then we also skip collision.
 			if ((t.phis == 0 || t.phis == 3) && t.shelf &&
-				(this.boundingBox.bottom > t.phY1 || levit || isThrow)) 
+				(this.boundingBox.bottom > t.boundingBox.top || levit || isThrow)) 
 			{
 				return 0;
 			}

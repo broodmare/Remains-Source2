@@ -12,41 +12,41 @@ package fe.weapon  {
 	
 	public class WClub extends Weapon {
 
-		var anim:Number=0;
-		var rapid_act:Number=10;	//актуальная скорость атаки
+		private var anim:Number=0;
+		private var rapid_act:Number=10;	// [Current attack speed]
 		
 		// Todo: Whatever this is can probably be a struct/class
-		var sin0:Number;
-		var cos0:Number;
-		var sin1:Number;
-		var cos1:Number;
-		var sin2:Number;
-		var cos2:Number;
+		private var sin0:Number;
+		private var cos0:Number;
+		private var sin1:Number;
+		private var cos1:Number;
+		private var sin2:Number;
+		private var cos2:Number;
 		
-		var vzz:Array;
-		var kolvzz:int=0;
-		var visvzz:MovieClip;	//шлейф за оружием
-		var stepdlina:int=10;
-		var del:Object={x:0, y:0};
-		var lasM:Boolean=false;
-		var mtip:int=0;		//тип холодного оружия
+		private var vzz:Array;
+		private var kolvzz:int=0;
+		private var visvzz:MovieClip;	// [Trail behind the weapon]
+		private var stepdlina:int=10;
+		private var del:Object={x:0, y:0};
+		private var lasM:Boolean=false;
+		private var mtip:int=0;		//тип холодного оружия
 		
-		var powerMult:Number=1;
-		var curDam:Number=0;
-		var combo:int=0;
-		var t_combo:int=0;
-		var sndPl:Boolean=false;
+		private var powerMult:Number=1;
+		private var curDam:Number=0;
+		private var combo:int=0;
+		private var t_combo:int=0;
+		private var sndPl:Boolean=false;
 		
-		var blumR:Number=0;
-		var plX:Number=0, plY:Number=0;
-		var atDlina:Number=100;
-		var celRX:Number=0, celRY:Number=0;
+		private var blumR:Number=0;
+		private var plX:Number=0, plY:Number=0;
+		private var atDlina:Number=100;
+		private var celRX:Number=0, celRY:Number=0;
 
-		var celX:Number, celY:Number;
-		var meleeR:Number=1;	//радиус действия телекинеза
-		var levitRun:Number=10;	//скорость перемещения телекинезом
+		private var celX:Number, celY:Number;
+		private var meleeR:Number=1;	// [Telekinesis range]
+		private var levitRun:Number=10;	// [Telekinetic movement speed]
 		
-		var rapidMult:Number=1;
+		private var rapidMult:Number=1;
 		public var quakeX:Number=0;
 		public var quakeY:Number=0;
 		
@@ -69,12 +69,12 @@ package fe.weapon  {
                 visvzz = new MovieClip()
             }
 			else {
-				visvzz = new visVzz();
+				visvzz = new visVzz();	// .SWF Dependency
 			}
 
-			visvzz.visible=false;
+			visvzz.visible = false;
 			visvzz.stop();
-			super(own,id,nvar);
+			super(own, id, nvar);
 			vis.stop();
 			speed=15;
 			satsMelee=noTrass=true;
@@ -102,7 +102,7 @@ package fe.weapon  {
 				combinat = true;
 			}
 			
-			var n1 = dlina / 100;
+			var n1:Number = dlina / 100;
 			visvzz.scaleX = n1;
 			visvzz.scaleY = n1;
 			visvzz.alpha = 10 / rapid;
@@ -137,8 +137,8 @@ package fe.weapon  {
 			sin0 = Math.sin(rot);
 			
 			for (var i:int = 0; i <= kolvzz; i++) {
-				var nx = coordinates.X + cos2 * (mindlina + i * stepdlina) + anim * storona * (mindlina + i * stepdlina);
-				var ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
+				var nx:Number = coordinates.X + cos2 * (mindlina + i * stepdlina) + anim * storona * (mindlina + i * stepdlina);
+				var ny:Number = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 				vzz[i] = {X:0, Y:0};
 			}
 			
@@ -164,17 +164,16 @@ package fe.weapon  {
 		}
 		
 		public function lineCel():int {
-			var res=0;
 			var bx:Number = owner.coordinates.X;
 			var by:Number = owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
-			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
+			var div:int = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
 			for (var i:int = 1; i < div; i++) {
 				celX = bx + ndx * i / div;
 				celY = by + ndy * i / div;
 				var t:Tile=World.w.loc.getAbsTile(int(celX),int(celY));
-				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) {
+				if (t.phis==1 && celX>=t.boundingBox.left && celX<=t.boundingBox.right && celY>=t.boundingBox.top && celY<=t.boundingBox.bottom) {
 					return 0
 				}
 			}
@@ -183,7 +182,7 @@ package fe.weapon  {
 		
 		public override function actions():void {
 			
-			var ds = 40 * owner.storona;
+			var ds:Number = 40 * owner.storona;
 			meleeR = World.w.pers.meleeR;
 			
 			if (loc && loc.sky) {
@@ -248,8 +247,8 @@ package fe.weapon  {
 				ready=true;
 			}
 			else {
-				var tx = celX - coordinates.X;
-				var ty = celY - coordinates.Y;
+				var tx:Number = celX - coordinates.X;
+				var ty:Number = celY - coordinates.Y;
 				if (mtip!=0) {
 					tx = celRX - coordinates.X;
 					ty = celRY - coordinates.Y;
@@ -308,10 +307,10 @@ package fe.weapon  {
 						cos2 = Math.cos(rot);
 						sin2 = Math.sin(rot);
 						for (var i:int = 0; i <= kolvzz; i++) {
-							var v:Vector2 = new Vector2( (coordinates.X + cos2 * (mindlina + i * stepdlina)), (coordinates.Y + sin2 * (mindlina + i * stepdlina)) );
-							if (!isPow) b.bindMove(v, vzz[i].X, vzz[i].Y);
-							vzz[i].X = v.X;
-							vzz[i].Y = v.Y;
+							var v1:Vector2 = new Vector2( (coordinates.X + cos2 * (mindlina + i * stepdlina)), (coordinates.Y + sin2 * (mindlina + i * stepdlina)) );
+							if (!isPow) b.bindMove(v1, vzz[i].X, vzz[i].Y);
+							vzz[i].X = v1.X;
+							vzz[i].Y = v1.Y;
 						}
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
@@ -331,10 +330,10 @@ package fe.weapon  {
 					plX=cos2*anim*atDlina;
 					plY=sin2*anim*atDlina;
 					if (t_attack>=rapid_act/2 && t_attack<rapid_act*5/6) {
-						var v:Vector2 = new Vector2( (coordinates.X + cos2 * dlina + plX), (coordinates.Y + sin2 * dlina + plY) );
-						if (!isPow) b.bindMove(v, vzz[0].X, vzz[0].Y);
-						vzz[0].X = v.X;
-						vzz[0].Y = v.Y;
+						var v2:Vector2 = new Vector2( (coordinates.X + cos2 * dlina + plX), (coordinates.Y + sin2 * dlina + plY) );
+						if (!isPow) b.bindMove(v2, vzz[0].X, vzz[0].Y);
+						vzz[0].X = v2.X;
+						vzz[0].Y = v2.Y;
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) {
 							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
@@ -353,8 +352,8 @@ package fe.weapon  {
 					if (t_attack==1) {
 						cos2=Math.cos(rot);
 						sin2=Math.sin(rot);
-						var v:Vector2 = new Vector2( (coordinates.X + cos2 * mindlina), (coordinates.Y + sin2 * mindlina));
-						b.bindMove(v, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
+						var v3:Vector2 = new Vector2( (coordinates.X + cos2 * mindlina), (coordinates.Y + sin2 * mindlina));
+						b.bindMove(v3, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
 						if (lasM) vis.gotoAndStop(3);
 						if (sndShoot!='' && !sndPl) {
 							Snd.ps(sndShoot, coordinates.X, coordinates.Y, 0, Math.random()*0.5+0.5);
@@ -429,10 +428,10 @@ package fe.weapon  {
 		}
 
 		protected override function shoot():Bullet {
-			var sk=1;
+			var sk:int = 1;
 			if (owner) {
-				sk=owner.weaponSkill;
-				if (owner.player) sk=weaponSkill;
+				sk = owner.weaponSkill;
+				if (owner.player) sk = weaponSkill;
 			}
 			
 			if (hp < maxhp / 2) {
@@ -455,7 +454,7 @@ package fe.weapon  {
 			
 			if (mtip==0) {
 				sin2=sin0; cos2=cos0;
-				for (var i = 0; i <= kolvzz; i++) {
+				for (var i:int = 0; i <= kolvzz; i++) {
 					vzz[i].X = coordinates.X + cos2 * (mindlina + i * stepdlina);
 					vzz[i].Y = coordinates.Y + sin2 * (mindlina + i * stepdlina);
 				}
@@ -475,14 +474,14 @@ package fe.weapon  {
 				b.inWater=1;
 			}
 			
-			if (mtip==0) {
-				b.tileX=int(owner.celX/tileX);
-				b.tileY=int(owner.celY/tileY);
+			if (mtip == 0) {
+				b.tileX = int(owner.celX / tileX);
+				b.tileY = int(owner.celY / tileY);
 			}
 			
-			if (mtip==2) {
-				quakeX=Math.random()*otbros;
-				quakeY=Math.random()*otbros;
+			if (mtip == 2) {
+				quakeX = Math.random() * otbros;
+				quakeY = Math.random() * otbros;
 			}
 			
 			if (holder > 0 && hold > 0) {
@@ -492,7 +491,7 @@ package fe.weapon  {
 				}
 			}
 			
-			t_auto=3;
+			t_auto = 3;
 			return b;
 		}
 
@@ -559,20 +558,19 @@ package fe.weapon  {
 		}
 		
 		public override function animate():void {
-			if (quakeX!=0) {
-				quakeX*=(Math.random()*0.3+0.5);
-				if (quakeX<1 && quakeX>-1) quakeX=0;
+			if (quakeX != 0) {
+				quakeX *= (Math.random()*0.3+0.5);
+				if (quakeX < 1 && quakeX > -1) quakeX = 0;
 			}
 			
-			if (quakeY!=0) {
-				quakeY*=(Math.random()*0.3+0.5);
-				if (quakeY<1 && quakeY>-1) quakeY=0;
+			if (quakeY != 0) {
+				quakeY *= (Math.random() * 0.3 + 0.5);
+				if (quakeY < 1 && quakeY > -1) quakeY = 0;
 			}
 			
 			vis.y = coordinates.Y + plY + quakeY;
 			
-			if (krep==0)
-			{
+			if (krep == 0) {
 				vis.x = coordinates.X + plX + quakeX;
 				vis.scaleY = storona;
 				vis.rotation = rot * 180 / Math.PI + blumR;
@@ -581,8 +579,7 @@ package fe.weapon  {
 				visvzz.rotation=vis.rotation;
 				visvzz.scaleY=dlina/100*storona;
 			}
-			else
-			{
+			else {
 				vis.x = coordinates.X;
 				vis.scaleY=owner.storona;
 				vis.rotation=90*owner.storona-90+owner.weaponR*owner.storona;

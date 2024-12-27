@@ -126,7 +126,7 @@ package fe.projectile
 		
 		//поиск жидкости
 		public function checkWater():int {
-			var pla = inWater;
+			var pla:int = inWater;
 			inWater = 0;
 			try {
 				if (loc.getTile(int(coordinates.X / Tile.tileX), int(coordinates.Y / Tile.tileY)).water > 0) {
@@ -179,12 +179,12 @@ package fe.projectile
 				}
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X <= t.phX2 && coordinates.X >= t.phX1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
+					if (t.phis==1 && coordinates.X <= t.boundingBox.right && coordinates.X >= t.boundingBox.left && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
 						if (sndHit != '') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
 							popadalo();
 						}
-						coordinates.X = t.phX2 + 1;
+						coordinates.X = t.boundingBox.right + 1;
 						velocity.X = Math.abs(velocity.X * skok);
 						if (lip) prilip = true;
 					}
@@ -192,12 +192,12 @@ package fe.projectile
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis == 1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
+					if (t.phis == 1 && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
 							popadalo();
 						}
-						coordinates.X = t.phX1 - 1;
+						coordinates.X = t.boundingBox.left - 1;
 						velocity.X = -Math.abs(velocity.X * skok);
 						if (lip) prilip = true;
 					}
@@ -208,12 +208,12 @@ package fe.projectile
 					stay=false;
 					coordinates.Y += velocity.Y / div;
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
+					if (t.phis==1 && coordinates.Y <= t.boundingBox.bottom && coordinates.Y >= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 						if (bumc) {
 							popadalo();
 						}
-						coordinates.Y = t.phY2 + 1;
+						coordinates.Y = t.boundingBox.bottom + 1;
 						velocity.Y = Math.abs(velocity.Y * skok);
 						if (lip) prilip=true;
 					}
@@ -228,12 +228,12 @@ package fe.projectile
 						return;
 					}
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
+					if (t.phis==1 && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
 						if (bumc) {
 							if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 							popadalo();
 						}
-						coordinates.Y = t.phY1 - 1;
+						coordinates.Y = t.boundingBox.top - 1;
 						if (lip) prilip=true;
 						if (velocity.Y > 2) {
 							velocity.Y = -Math.abs(velocity.Y * skok);

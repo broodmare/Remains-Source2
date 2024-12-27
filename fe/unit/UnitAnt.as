@@ -139,7 +139,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 				velocity.X += storona * accel * 5;
@@ -150,10 +150,10 @@ package fe.unit {
 			}
 		}
 		
-		var aiLaz:int=0;
-		var aiNeedLaz:int=0;
+		private var aiLaz:int=0;
+		private var aiNeedLaz:int=0;
 		
-		var aiVis=0.5;
+		private var aiVis=0.5;
 		
 		//aiState
 		//0 - стоит на месте
@@ -476,8 +476,8 @@ package fe.unit {
 				if (isLaz != 0) {
 					storona = isLaz;
 
-					if (isLaz == -1) coordinates.X = loc.getTile(i, j).phX1 + this.boundingBox.halfWidth;
-					else coordinates.X = loc.getTile(i, j).phX2 - this.boundingBox.halfWidth;
+					if (isLaz == -1) coordinates.X = loc.getTile(i, j).boundingBox.left + this.boundingBox.halfWidth;
+					else coordinates.X = loc.getTile(i, j).boundingBox.right - this.boundingBox.halfWidth;
 
 					this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
 					this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
@@ -493,7 +493,7 @@ package fe.unit {
 			return false;
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (celUnit && shok <= 0) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit, 1);
 			}

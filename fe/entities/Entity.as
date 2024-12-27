@@ -12,8 +12,8 @@ package fe.entities {
 		public var vis:MovieClip; // Movieclip that holds the entity's sprite
 
 		public var loc:Location;	// What room the entity is currently in
-		public var nobj:Entity
-		public var pobj:Entity;		// Next Obj in processing chain, Previous Obj in processing chain
+		public var nobj:Entity		// Next Obj in processing chain
+		public var pobj:Entity;		// Previous Obj in processing chain
 		public var in_chain:Boolean=false;
 		
 		public var stay:Boolean=false;

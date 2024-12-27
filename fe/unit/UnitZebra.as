@@ -8,9 +8,9 @@ package fe.unit {
 	
 	public class UnitZebra extends UnitRaider {
 
-		var shine:int=0;
-		var shine2:int=0;
-		var red:Boolean=false;
+		private var shine:int=0;
+		private var shine2:int=0;
+		private var red:Boolean=false;
 		
 		// Constructor
 		public function UnitZebra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -65,21 +65,21 @@ package fe.unit {
 		}
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
-			if (bul && bul.owner && bul.owner.fraction==4) return super.damage(dam*0.3,tip,bul,tt);	//получать меньше урона от СР
-			return super.damage(dam,tip,bul,tt);
+			if (bul && bul.owner && bul.owner.fraction == 4) return super.damage(dam * 0.3, tip, bul, tt);	// [Take less damage from CP]
+			return super.damage(dam, tip, bul, tt);
 		}
 		
 		public function showThis():Boolean {
 			//проверить линию взгляда
-			var cx = -(coordinates.X - World.w.gg.eyeX);
-			var cy = -(coordinates.Y - this.boundingBox.height * 0.6 - World.w.gg.eyeY);
+			var cx:Number = -(coordinates.X - World.w.gg.eyeX);
+			var cy:Number = -(coordinates.Y - this.boundingBox.height * 0.6 - World.w.gg.eyeY);
 			if (cx*cx+cy*cy>1000*1000) return false;
-			var div = int(Math.max(Math.abs(cy),Math.abs(cy))/World.maxdelta)+1;
-			for (var i=1; i<div; i++) {
-				var nx = coordinates.X + cx*i/div;
-				var ny = coordinates.Y - this.boundingBox.height * 0.6 + cy * i / div;
+			var div:int = int(Math.max(Math.abs(cy),Math.abs(cy))/World.maxdelta)+1;
+			for (var i:int = 1; i < div; i++) {
+				var nx:Number = coordinates.X + cx*i/div;
+				var ny:Number = coordinates.Y - this.boundingBox.height * 0.6 + cy * i / div;
 				var t:Tile=World.w.loc.getTile(int(nx/Tile.tileX), int(ny/Tile.tileY));
-				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
+				if (t.phis==1 && nx>=t.boundingBox.left && nx<=t.boundingBox.right && ny>=t.boundingBox.top && ny<=t.boundingBox.bottom) {
 					return false;
 				}
 			}

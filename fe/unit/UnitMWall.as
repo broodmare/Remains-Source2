@@ -6,16 +6,16 @@ package fe.unit {
 
 	public class UnitMWall extends Unit {
 		
-		var rearm:Boolean=false;
+		private var rearm:Boolean=false;
 
 		// Constructor
 		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			if (cid==null) {
 				id='mwall';
 			}
-			else id=cid
+			else id = cid
 			
-			mat=7;
+			mat = 7;
 			vis=Res.getVis('vis'+id,vismwall);
 			getXmlParam();
 			vulner[D_NECRO]=begvulner[D_NECRO]=1;

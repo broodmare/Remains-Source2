@@ -164,7 +164,6 @@ package fe.serv {
 			if (itemCount == -1 && lootType == Item.L_UNIQ) {
 				iCount = 1;
 			}
-			trace("iCount: " + iCount);
 			// Spawn the item
 			var item:Item = new Item(lootType, id, iCount);
 			if (item.xml != null) {

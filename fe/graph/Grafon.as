@@ -727,8 +727,8 @@ package fe.graph {
 						mc.y = (j + 0.5) * tileY;
 						maska.addChild(mc);
 						if (t.zForm && toFront) {
-							mc.scaleY=(t.phY2-t.phY1)/tileY;
-							mc.y=(t.phY2+t.phY1)/2;
+							mc.scaleY = (t.boundingBox.bottom - t.boundingBox.top) / tileY;
+							mc.y=(t.boundingBox.bottom + t.boundingBox.top) / 2;
 						}							
 						if (material.borderMask) {
 							mc=new material.borderMask();
@@ -737,15 +737,15 @@ package fe.graph {
 							mc.y=(j+0.5)*tileY;
 							bmaska.addChild(mc);
 							if (t.zForm && toFront) {
-								mc.scaleY=(t.phY2-t.phY1)/tileY;
-								mc.y=(t.phY2+t.phY1)/2;
+								mc.scaleY = (t.boundingBox.bottom - t.boundingBox.top) / tileY;
+								mc.y = (t.boundingBox.bottom + t.boundingBox.top) / 2;
 							}							
 						}
 						if (material.floorMask) {
 							mc=new material.floorMask();
 							if (mc.c1) {
-								mc.c1.gotoAndStop(t.kont1+1);
-								mc.c2.gotoAndStop(t.kont2+1);
+								mc.c1.gotoAndStop(t.kont1 + 1);
+								mc.c2.gotoAndStop(t.kont2 + 1);
 							}
 							fmaska.addChild(mc);
 							mc.x=(i+0.5)*tileX;

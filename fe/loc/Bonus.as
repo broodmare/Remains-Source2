@@ -28,7 +28,7 @@ package fe.loc {
 			if (vis) {
 				vis.bonus.cacheAsBitmap = true;
 				vis.x = coordinates.X;
-				vis.y = coordinates.Y;
+				vis.y = this.boundingBox.getCenter(coordinates);
 			}
 		}
 		

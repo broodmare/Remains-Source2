@@ -4,11 +4,27 @@ package fe.graph {
 	import flash.display.Sprite;
 
     import fe.World;
+	import fe.graph.BackObj;
+	import fe.loc.Box;
+	import fe.unit.Unit;
     import fe.entities.BoundingBox;
+	import fe.projectile.Bullet;
 
     public class DebugLayer {
 
         private var spriteContainer:Sprite; // Main sprite container
+		
+		// Units and Objects
+		private var drawObjectBoundingBoxes:Boolean = false;
+		private var drawUnitBoundingBoxes:Boolean = false;
+		private var drawPlayerBoundingBoxes:Boolean = false;
+
+		private var drawChainBoundingBoxes:Boolean = false; // Processing chain for the current loc
+
+		// Tiles
+		private var drawShelfBoundingBoxes:Boolean = false;
+		private var drawDiagBoundingBoxes:Boolean = false;
+		private var drawStairBoundingBoxes:Boolean = false;
 
         // Constructor
         public function DebugLayer() {
@@ -22,20 +38,83 @@ package fe.graph {
 				spriteContainer.removeChildAt(0);
 			}
 
-			//debugDrawBoundingBoxesForShelfs(spriteContainer, World.w.loc.space, 0x32AA32);
-			//debugDrawBoundingBoxesForDiags(spriteContainer, World.w.loc.space, 0x64FFFF);
-			//debugDrawBoundingBoxesForStairs(spriteContainer, World.w.loc.space, 0x00FF64);
+			if (drawShelfBoundingBoxes) {
+				debugDrawBoundingBoxesForShelfs(spriteContainer, World.w.loc.space, 0x32AA32);
+			}
 
-			// Draw all object bounding boxes (in blue) 
-			//debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.objs, 0x6464FF);
+			if (drawDiagBoundingBoxes) {
+				debugDrawBoundingBoxesForDiags(spriteContainer, World.w.loc.space, 0x64FFFF);
+			}
 
-			// Draw all unit bounding boxes (in red)
-			debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.units, 0xFF0000);
+			if (drawStairBoundingBoxes) {
+				debugDrawBoundingBoxesForStairs(spriteContainer, World.w.loc.space, 0x00FF64);
+			}
+
+			// Draw all object bounding boxes (in blue)
+			if (drawObjectBoundingBoxes) {
+				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.objs, 0x6464FF);
+			}
+
+			// Draw unit bounding box (in red)
+			if (drawUnitBoundingBoxes) {
+				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.units, 0xFF0000);
+			}
+			
 			// Draw player bounding box (in red)
-			debugDrawBoundingBoxForObject(spriteContainer, World.w.loc.gg, 0xFF0000);
+			if (drawPlayerBoundingBoxes) {
+				debugDrawBoundingBoxForObjects(spriteContainer, World.w.loc.gg, 0xFF0000);
+			}
+
+			if (drawChainBoundingBoxes) {
+				debugDrawBoundingBoxesForChain(spriteContainer, 0xFFAA32);
+			}
 
 			// Return the finished debug layer
 			return spriteContainer;
+		}
+
+		private function debugDrawBoundingBoxesForChain(container:Sprite, color:uint):void {
+			var current = World.w.loc.firstObj;
+			while (current != null) {
+
+				 // Skip classes
+				if (current is BackObj || current is Box || current is Unit) {
+					current = current.nobj;
+					continue;
+				}
+
+				// Draw bounding box if available
+				if ("boundingBox" in current && current.boundingBox != null) {
+					var bb:BoundingBox = current.boundingBox;
+					
+					var shape:Shape = new Shape();
+					shape.graphics.lineStyle(1, color, 1); // 1-pixel wide line, 100% alpha
+					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.endFill();
+					
+					container.addChild(shape);
+				}
+
+				// If the current object is a Bullet, draw a circle at its coordinates
+				if (current is Bullet) {
+					var bullet:Bullet = current as Bullet;
+					var bulletShape:Shape = new Shape();
+					bulletShape.graphics.lineStyle(1, 0xFF0000, 1); // Red circle outline
+					bulletShape.graphics.beginFill(0xFF0000, 1); // Red fill
+					bulletShape.graphics.drawCircle(bullet.coordinates.X, bullet.coordinates.Y, 5); // Radius of 5
+					bulletShape.graphics.endFill();
+					
+					container.addChild(bulletShape);
+				}
+
+				// Check if this is the last object
+				if (current == World.w.loc.lastObj) {
+					break; // Stop the loop if this is the last object in the location's processing chain
+				}
+
+				// Otherwise, move on to the next entity in the chain
+				current = current.nobj;
+			}
 		}
 		
 		private function debugDrawBoundingBoxesForList(container:Sprite, list:*, color:uint):void {
@@ -61,7 +140,7 @@ package fe.graph {
 			}
 		}
 
-		private function debugDrawBoundingBoxForObject(container:Sprite, object:*, color:uint):void {
+		private function debugDrawBoundingBoxForObjects(container:Sprite, object:*, color:uint):void {
 			
 			// Check if the item has an 'active' property and if it's active
 			if (object.hasOwnProperty("active") && !object.active) {
@@ -89,20 +168,13 @@ package fe.graph {
 					continue;
 				}
 				
-				// Here we rely on X1, X2, Y1, Y2 existing (instead of item.boundingBox)
-				// Optionally, check if these properties exist:
-				if (item.hasOwnProperty("phX1") && item.hasOwnProperty("phX2") && 
-					item.hasOwnProperty("phY1") && item.hasOwnProperty("phY2")) {
+				if (item.boundingBox) {
+					var bb:BoundingBox = item.boundingBox;
 					
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
-					shape.graphics.lineStyle(1, color, 1); 
-					shape.graphics.drawRect(
-						item.phX1,					// left
-						item.phY1,					// top
-						item.phX2 - item.phX1,		// width
-						item.phY2 - item.phY1		// height
-					);
+					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
+					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -113,26 +185,19 @@ package fe.graph {
 
 		private function debugDrawBoundingBoxesForShelfs(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Tile in list) {
 				// If the item is "a stair", skip it
 				if (!item.hasOwnProperty("shelf") || !item.shelf) {
 					continue;
 				}
 				
-				// Here we rely on X1, X2, Y1, Y2 existing (instead of item.boundingBox)
-				// Optionally, check if these properties exist:
-				if (item.hasOwnProperty("phX1") && item.hasOwnProperty("phX2") && 
-					item.hasOwnProperty("phY1") && item.hasOwnProperty("phY2")) {
+				if (item.boundingBox) {
+					var bb:BoundingBox = item.boundingBox;
 					
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
-					shape.graphics.lineStyle(1, color, 1); 
-					shape.graphics.drawRect(
-						item.phX1,					// left
-						item.phY1,					// top
-						item.phX2 - item.phX1,		// width
-						item.phY2 - item.phY1		// height
-					);
+					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
+					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -142,26 +207,19 @@ package fe.graph {
 
 		private function debugDrawBoundingBoxesForStairs(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Tile in list) {
 				// If the item is not a stair, skip it
 				if (!item.hasOwnProperty("stair") || item.stair == 0) {
 					continue;
 				}
 				
-				// Here we rely on X1, X2, Y1, Y2 existing (instead of item.boundingBox)
-				// Optionally, check if these properties exist:
-				if (item.hasOwnProperty("phX1") && item.hasOwnProperty("phX2") && 
-					item.hasOwnProperty("phY1") && item.hasOwnProperty("phY2")) {
+				if (item.boundingBox) {
+					var bb:BoundingBox = item.boundingBox;
 					
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
-					shape.graphics.lineStyle(1, color, 1); 
-					shape.graphics.drawRect(
-						item.phX1,					// left
-						item.phY1,					// top
-						item.phX2 - item.phX1,		// width
-						item.phY2 - item.phY1		// height
-					);
+					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
+					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -171,26 +229,19 @@ package fe.graph {
 
 		private function debugDrawBoundingBoxesForDiags(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Tile in list) {
 				// If the item is not a diagon, skip it
 				if (!item.hasOwnProperty("diagon") || item.diagon == 0) {
 					continue;
 				}
 				
-				// Here we rely on X1, X2, Y1, Y2 existing (instead of item.boundingBox)
-				// Optionally, check if these properties exist:
-				if (item.hasOwnProperty("phX1") && item.hasOwnProperty("phX2") && 
-					item.hasOwnProperty("phY1") && item.hasOwnProperty("phY2")) {
+				if (item.boundingBox) {
+					var bb:BoundingBox = item.boundingBox;
 					
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
-					shape.graphics.lineStyle(1, color, 1); 
-					shape.graphics.drawRect(
-						item.phX1,					// left
-						item.phY1,					// top
-						item.phX2 - item.phX1,		// width
-						item.phY2 - item.phY1		// height
-					);
+					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
+					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);

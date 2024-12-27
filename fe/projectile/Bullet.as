@@ -13,7 +13,7 @@ package fe.projectile {
 	import fe.weapon.Weapon;
 	
 	public class Bullet extends Obj {	
-		
+
 		//типы реакции на попадание
 		//-1 - промах, пуля летит дальше
 		//0 - попал, пуля исчезла
@@ -40,7 +40,7 @@ package fe.projectile {
 		public var flare:String;
 		public var outspace:Boolean=false;
 		
-		public var otbros=0;
+		public var otbros = 0;
 		public var probiv:Number = 0;
 		public var parrDict:Dictionary;	// List of objects the bullet has already interacted with.
 		
@@ -86,13 +86,13 @@ package fe.projectile {
 		// Constructor
 		public function Bullet(own:Unit, coords:Vector2, visClass:Class=null, addobj:Boolean=true) {
 			
-			if (own==null) {
-				owner=new Unit();
-				loc=World.w.loc;
+			if (own == null) {
+				owner = new Unit();
+				loc = World.w.loc;
 			}
 			else {
-				owner=own;
-				loc=own.loc;
+				owner = own;
+				loc = own.loc;
 			}
 			
 			coordinates.setVector(coords);
@@ -100,16 +100,18 @@ package fe.projectile {
 			begx = coords.X;
 			begy = coords.Y;
 			
-			sloy=2;
-			levitPoss=false;
+			sloy = 2;
+			levitPoss = false;
 			if (visClass) {
 				if (World.w.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;	// .SWF Dependency
 				vis=new visClass();
 				vis.stop();
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.visible=false;
+				vis.visible = false;
 			}
+
+			// Adds itself to the location's processing chain for updates
 			if (addobj) loc.addObj(this);
 		}
 		
@@ -338,8 +340,8 @@ package fe.projectile {
 				if (!tilehit 
 				&& (tileX < 0 || (int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY)) 
 				&& ((t.phis == 1) || (t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY)) 
-				&& coordinates.X >= t.phX1 && coordinates.X <= t.phX2 
-				&& coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) 
+				&& coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right 
+				&& coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) 
 				{
 					if (!inWall) {
 						popadalo(t.mat);
@@ -418,7 +420,7 @@ package fe.projectile {
 				
 				// *** Changed from manual boundary checks to boundingBox call ***
 				if (box.boundingBox.intersectsCoordinate(coordinates) && udar(box)) {
-					var res:int = box.udarBullet(this, 1);
+					res = box.udarBullet(this, 1);
 					sound(res);
 					if (res >= 0) {
 						popadalo(res);
@@ -482,7 +484,7 @@ package fe.projectile {
 			inWall = false;
 			isExpl = true;
 			levitPoss=false;
-			if (t && t.phis && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) inWall = true;
+			if (t && t.phis && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) inWall = true;
 			if (targetObj && destroy > 0 && (targetObj is Box)) (targetObj as Box).damage(destroy);
 
 			if (explKol<=0) explRun();
@@ -511,14 +513,13 @@ package fe.projectile {
 			explVis();
 		}
 		
-		
 		//поражение всех стен в радиусе
 		private function explDestroy():void {
 			for (var i:int = int((coordinates.X - explRadius) / constTileX); i<= int((coordinates.X + explRadius) / constTileX); i++) {
 				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j<= int((coordinates.Y + explRadius) / constTileY); j++) {
-					var tx = coordinates.X - (i + 0.5) * constTileX;
-					var ty = coordinates.Y - (j + 0.5) * constTileY;
-					var ter = tx * tx + ty * ty;
+					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
+					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
+					var ter:Number = tx * tx + ty * ty;
 					if (ter < explRadius * explRadius) loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
 				}
 			}
@@ -529,10 +530,10 @@ package fe.projectile {
 			for each(var un:Unit in loc.units) {
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;// || (un is VirtualUnit)
 				if (explTip==3 && !un.stay) continue; 
-				var tx = un.coordinates.X - coordinates.X;
-				var ty = un.boundingBox.bottom - coordinates.Y;
-				var rasst = Math.sqrt(tx*tx+ty*ty);
-				var dam = damageExpl * Calc.floatBetween(0.7, 1.3);
+				var tx:Number = un.coordinates.X - coordinates.X;
+				var ty:Number = un.boundingBox.bottom - coordinates.Y;
+				var rasst:Number = Math.sqrt(tx*tx+ty*ty);
+				var dam:Number = damageExpl * Calc.floatBetween(0.7, 1.3);
 				//дружественный огонь врагов
 				if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
 					dam*=0.25;
@@ -549,13 +550,11 @@ package fe.projectile {
 		
 		//поражение всех юнитов виртуальными осколками, с учётом защиты от стен
 		private function explBlast():void {
-			var tx;
-			var ty;
 			if (loc != owner.loc) return;
 			for each(var un:Unit in loc.units) {
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
-				var tx = un.coordinates.X - coordinates.X;
-				var ty = un.boundingBox.bottom - coordinates.Y;
+				var tx:Number = un.coordinates.X - coordinates.X;
+				var ty:Number = un.boundingBox.bottom - coordinates.Y;
 				var b:Bullet=explBullet(tx, ty, explRadius + un.boundingBox.width);
 				if (b) {
 					b.targetObj=un;
@@ -565,8 +564,8 @@ package fe.projectile {
 					}
 					//огонь по себе
 					if (un.player) {
-						if (weap && weap.owner.fraction==Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
-						var p={x:b.knockx, y:b.knocky};
+						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
+						var p:Object = {x:b.knockx, y:b.knocky};
 						norma(p, 10);
 						b.knockx = p.x;
 						b.knocky = p.y;
@@ -577,7 +576,7 @@ package fe.projectile {
 		
 		//создать осколок
 		private function explBullet(tx:Number, ty:Number, er:Number):Bullet {
-			var rasst = Math.sqrt(tx*tx+ty*ty);
+			var rasst:Number = Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
 			if (rasst < er) {
 				b = new Bullet(owner, coordinates, null);
@@ -787,9 +786,9 @@ package fe.projectile {
 		private function explLiquid(liq:String, ndy:int=0) {
 			for (var i:int = int((coordinates.X - explRadius) / constTileX); i <= int((coordinates.X + explRadius) / constTileX); i++) {
 				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j <= int((coordinates.Y + explRadius) / constTileY); j++) {
-					var tx = coordinates.X - (i + 0.5) * constTileX;
-					var ty = coordinates.Y - (j + 0.5) * constTileY;
-					var ter = tx * tx + ty * ty;
+					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
+					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
+					var ter:Number = tx * tx + ty * ty;
 					if (ter < explRadius * explRadius) {
 						var t:Tile = loc.getTile(i, j);
 						if (j > 1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i, j - 1).phis == 0)) {
@@ -797,7 +796,7 @@ package fe.projectile {
 								liq,
 								loc,
 								(i + 0.5) * constTileX + Calc.floatBetween(-2, 2),
-								t.phY1 + ndy
+								t.boundingBox.top + ndy
 							);
 						}
 					}

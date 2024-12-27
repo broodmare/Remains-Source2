@@ -174,7 +174,7 @@ package fe.loc {
 		
 		private function shine() {
 			if (vis) {
-				var sh:MovieClip=new lootShine();
+				var sh:MovieClip=new lootShine();	// .SWF Dependency
 				sh.blendMode='hardlight';
 				vis.addChild(sh);
 			}
@@ -191,8 +191,8 @@ package fe.loc {
 		// [try to take] | попробовать взять
 		public function take(prinud:Boolean = false) {
 			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
-			var rx = World.w.gg.coordinates.X - coordinates.X;
-			var ry = World.w.gg.coordinates.Y - World.w.gg.boundingBox.halfHeight - coordinates.Y;
+			var rx:Number = World.w.gg.coordinates.X - coordinates.X;
+			var ry:Number = World.w.gg.coordinates.Y - World.w.gg.boundingBox.halfHeight - coordinates.Y;
 			// [take] | взять
 			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
@@ -292,8 +292,8 @@ package fe.loc {
 				//движение влево
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X <= t.phX2 && coordinates.X >= t.phX1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
-						coordinates.X = t.phX2 + 1;
+					if (t.phis==1 && coordinates.X <= t.boundingBox.right && coordinates.X >= t.boundingBox.left && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+						coordinates.X = t.boundingBox.right + 1;
 						velocity.X = Math.abs(velocity.X);
 					}
 				}
@@ -301,8 +301,8 @@ package fe.loc {
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
-						coordinates.X = t.phX1 - 1;
+					if (t.phis==1 && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+						coordinates.X = t.boundingBox.left - 1;
 						velocity.X = -Math.abs(velocity.X);
 					}
 				}
@@ -315,8 +315,8 @@ package fe.loc {
 				coordinates.Y += velocity.Y / div;
 				if (coordinates.Y - this.boundingBox.height < 0) coordinates.Y = this.boundingBox.height;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
-				if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
-					coordinates.Y = t.phY2 + 1;
+				if (t.phis==1 && coordinates.Y <= t.boundingBox.bottom && coordinates.Y >= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+					coordinates.Y = t.boundingBox.bottom + 1;
 					velocity.Y = 0;
 				}
 			}
@@ -331,8 +331,8 @@ package fe.loc {
 					return;
 				}
 				t = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y / div);
-				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.phY1 && coordinates.Y <= t.phY2 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.phY1 && coordinates.Y <= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
-					newmy = t.phY1;
+				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+					newmy = t.boundingBox.top;
 				}
 				if (newmy == 0 && !levit && !vsos) newmy = checkShelf(velocity.Y / div);
 				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) newmy = (loc.spaceY - 1) * tileY;
@@ -354,7 +354,7 @@ package fe.loc {
 		public override function checkStay():Boolean {
 			if (osnova) return true;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
-			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.phY1) {
+			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.boundingBox.top) {
 				return true;
 			}
 			else {

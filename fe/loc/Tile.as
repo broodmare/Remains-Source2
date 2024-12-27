@@ -1,19 +1,19 @@
 package  fe.loc {
 
 	import fe.util.Vector2;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	
 	public class Tile {
 		
-		private static const tileSize:int = 40; // Size in pixels
-
+		private static var tileSize:int = 40; // Size in pixels
 		public static var tileX:int = tileSize;	// TODO: Replace this better with tileSize
 		public static var tileY:int = tileSize;
 		
 		public var coords:Vector2;
 
 		// Bounding box
-		public var phX1:Number,phX2:Number,phY1:Number,phY2:Number;
+		public var boundingBox:BoundingBox;
 		
 		public var indestruct:Boolean=false;
 		public var phis:int=0;
@@ -63,17 +63,19 @@ package  fe.loc {
 		public var door:Box;
 		public var trap:Obj;
 		
+		// Constructor
 		public function Tile(nx:Number, ny:Number) {
 			coords = new Vector2(nx, ny);
-
-			// I think this is the bounding box for physics?
-			phX1 =  coords.X * Tile.tileX;
-			phY1 =  coords.Y * Tile.tileY;
-			phX2 = (coords.X + 1) * Tile.tileX;
-			phY2 = (coords.Y + 1) * Tile.tileY;
+			boundingBox = new BoundingBox(coords);
+			
+			var l:Number = coords.X * tileSize;
+			var r:Number = (coords.X + 1) * tileSize;
+			var t:Number = coords.Y * tileSize;
+			var b:Number = (coords.Y + 1) * tileSize;
+			boundingBox.setBounds(l, r, t, b);
 		}
 		
-		private function inForm(f:Form) {
+		private function inForm(f:Form):void {
 			if (f==null) return;
 			if (f.tip==2) {
 				if (f.front) back=f.front;
@@ -109,7 +111,7 @@ package  fe.loc {
 			if (phis>0) opac=1;
 		}
 		
-		public function dec(s:String, mirror:Boolean=false) {
+		public function dec(s:String, mirror:Boolean=false):void {
 			
 			phis = 0;
 			vid = 0;
@@ -128,7 +130,7 @@ package  fe.loc {
 			}
 			
 			if (s.length>1) {
-				for (var i=1; i<s.length; i++) {
+				for (var i:int = 1; i<s.length; i++) {
 					fr = s.charCodeAt(i);
 					var sym:String=s.charAt(i);
 					if (sym=='*') {
@@ -169,15 +171,15 @@ package  fe.loc {
 			return visi;
 		}
 
-		public function setZForm(n:int) {
+		public function setZForm(n:int):void {
 			if (n < 0) n = 0;
 			if (n > 3) n = 3;
 			zForm = n;
-			phY1 = ( coords.Y + zForm / 4) * Tile.tileY;
+			boundingBox.top = ( coords.Y + zForm / 4) * tileSize;
 			if (n > 0) opac = 0;
 		}
 
-		public function mainFrame(nfront:String='A') {
+		public function mainFrame(nfront:String='A'):void {
 			phis=1;
 			vid=vid2=diagon=stair=0;
 			mat=Form.fForms[nfront].mat;
@@ -190,28 +192,28 @@ package  fe.loc {
 		
 		public function getMaxY(rx:Number):Number {
 			if (diagon == 0) {
-				return phY1;
+				return boundingBox.top;
 			}
 			else if (diagon > 0) {
-				if (rx < phX1) {
-					return phY2;
+				if (rx < boundingBox.left) {
+					return boundingBox.bottom;
 				}
-				else if (rx>phX2) {
-					return phY1;
+				else if (rx > boundingBox.right) {
+					return boundingBox.top;
 				}
 				else {
-					return phY2 - (phY2 - phY1) * ((rx - phX1) / (phX2 - phX1));
+					return boundingBox.bottom - (boundingBox.bottom - boundingBox.top) * ((rx - boundingBox.left) / (boundingBox.right - boundingBox.left));
 				}
 			}
 			else {
-				if (rx<phX1) {
-					return phY1;
+				if (rx < boundingBox.left) {
+					return boundingBox.top;
 				}
-				else if (rx>phX2) {
-					return phY2;
+				else if (rx > boundingBox.right) {
+					return boundingBox.bottom;
 				}
 				else {
-					return phY2 - (phY2 - phY1) * ((phX2 - rx) / (phX2 - phX1));
+					return boundingBox.bottom - (boundingBox.bottom - boundingBox.top) * ((boundingBox.right - rx) / (boundingBox.right - boundingBox.left));
 				}
 			}
 		}
@@ -224,7 +226,7 @@ package  fe.loc {
 		}
 		
 		//уничтожить блок
-		public function die() {
+		public function die():void {
 			if (phis!=3) front='';
 			phis=0;
 			opac=0;

@@ -10,15 +10,15 @@ package fe.unit {
 	import fe.projectile.Bullet;
 	import fe.entities.BoundingBox;
 	
-	//механизмы, наносящие урон
+	// [Mechanisms that cause damage]
 	
 	public class UnitDamager extends Unit {
 
 		var tr:String='0';
 		var weap:String;
 		
-		var tipDamager:int=1;	//1 - пушка, 2 взрывчатка
-		var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
+		var tipDamager:int=1;	// [1 - Guns, 2 Explosives]
+		var status:int=0;	// [0 - Armed, 1 - Activated, 2 - Disabled]
 		var needSkill:String='repair';
 		var isAct:Boolean=false;
 		var allid:String;
@@ -176,7 +176,8 @@ package fe.unit {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
-			} else {
+			}
+			else {
 				warn=1;
 				inter.active=true;
 			}

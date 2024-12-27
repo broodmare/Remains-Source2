@@ -18,7 +18,7 @@ package fe.weapon {
 
 	public class Weapon extends Obj {
 		
-		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
+		public static var weaponPerks:Array = ['pistol', 'shot', 'commando', 'rifle', 'perf', 'laser', 'plasma', 'pyro', 'acute', 'stunning']
 		public static var variant2:String = ' - II';
 		
 		public var b:Bullet;
@@ -316,27 +316,23 @@ package fe.weapon {
 				if (variant>0) getVisParam(node.vis[variant]);
 			}
 			if (tip>0 || svisv) {
-				vWeapon=Res.getClass(svisv, svis, visp10mm);
+				vWeapon=Res.getClass(svisv, svis, visp10mm);	// .SWF Dependency
 				vis=new vWeapon();
 			}
 			if (owner && owner.weaponKrep>0) krep=owner.weaponKrep;
 			if (vis && vis.totalFrames>1) animated=true;
 			if (flare==null) flare=visbul;
-			if (visbul)
-			{ 
-				try
-				{
+			if (visbul) { 
+				try {
 					vBullet = getDefinitionByName('visbul' + visbul) as Class;
 				}
-				catch (err:ReferenceError)
-				{
+				catch (err:ReferenceError) {
 					trace("ERROR: (00:11)");
-					vBullet = visualBullet;
+					vBullet = visualBullet;	// .SWF Dependency
 				}
 			}
-			else
-			{
-				vBullet = visualBullet;
+			else {
+				vBullet = visualBullet;	// .SWF Dependency
 			}
 			
 			//звуки
@@ -360,8 +356,7 @@ package fe.weapon {
 				if (variant>0) getDopParam(node.dop[variant]);
 			}
 			//боеприпасы
-			if (node.a.length())
-			{
+			if (node.a.length()) {
 				ammo = ammoBase = node.a[0];
 				var ammoNode = getAmmoInfo(ammo);
 				setAmmo(ammo,ammoNode);
@@ -528,7 +523,7 @@ package fe.weapon {
 			consMult=1;
 			damMult=pers.allDamMult;
 			if (skill==2 || skill==3 || skill==4) damMult*=pers.gunsDamMult;
-			var razn=lvl-pers.getWeapLevel(skill);
+			var razn:int = lvl-pers.getWeapLevel(skill);
 			if (razn<0) skillPlusDam=1-razn*0.1;
 			else skillPlusDam=1;
 			speedMult=1;
@@ -769,7 +764,7 @@ package fe.weapon {
 		}
 		
 		protected function checkAvail():Boolean {
-			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+			var razn:int = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.8;
 			else if (razn==2) skillConf=0.6;
 			else if (razn>2) {
@@ -791,9 +786,9 @@ package fe.weapon {
 		public function getBulXY():void {
 			try {
 				if (vis && vis.emit && vis.parent) {
-					var p:Point=new Point(vis.emit.x,vis.emit.y);
-					var p1:Point=vis.localToGlobal(p);
-					p1=vis.parent.globalToLocal(p1);
+					var p:Point = new Point(vis.emit.x, vis.emit.y);
+					var p1:Point = vis.localToGlobal(p);
+					p1 = vis.parent.globalToLocal(p1);
 					bulCoords.X = p1.x;
 					bulCoords.Y = p1.y;
 				}
@@ -811,7 +806,7 @@ package fe.weapon {
 			// [Misfire]
 			if (breaking > 0 && owner && owner.player) {
 				var rnd:Number = Math.random();
-				var jm = (owner as UnitPlayer).pers.jammedMult;
+				var jm:Number = (owner as UnitPlayer).pers.jammedMult;
 				if (rnd < breaking / Math.max(20, holder) * jm) {
 					t_ret = 2;
 					jammed = true;
@@ -965,7 +960,7 @@ package fe.weapon {
 		}
 		
 		public function setTrass(gr:Graphics):void {
-			var rot3=Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+			var rot3:Number = Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
 			trasser.loc = owner.loc;
 			trasser.X = trasser.begx = coordinates.X;
 			trasser.Y = trasser.begy = coordinates.Y;
@@ -983,7 +978,6 @@ package fe.weapon {
 			if (checkLine) return owner.loc.isLine(coordinates.X, coordinates.Y, cx, cy);
 			return true;
 		}
-		
 		
 		protected function setBullet(bul:Bullet):void {
 			bul.tipDamage=tipDamage;
@@ -1099,7 +1093,7 @@ package fe.weapon {
 		public function avail():int {
 			if (hp<=0) return -2;
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) return -1; 
-			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+			var razn:int = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (World.w.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) return -1;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && World.w.invent.items[ammo].kol<rashod) return 0;
 			return 1;
@@ -1143,12 +1137,10 @@ package fe.weapon {
 				if (reload>0) {
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) {
-						try
-						{
+						try {
 							vis.gotoAndPlay('reload');
 						}
-						catch (err)
-						{
+						catch (err) {
 							trace("ERROR: (00:16) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"reload\"!");
 						}
 					}

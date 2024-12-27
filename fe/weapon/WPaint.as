@@ -33,7 +33,7 @@ package fe.weapon {
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
 				var t:Tile=World.w.loc.getAbsTile(int(celX), int(celY));
-				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) {
+				if (t.phis==1 && celX>=t.boundingBox.left && celX<=t.boundingBox.right && celY>=t.boundingBox.top && celY<=t.boundingBox.bottom) {
 					return 0
 				}
 			}

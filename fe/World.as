@@ -1094,7 +1094,7 @@ package  fe {
 		public function saveGame(n:int=-1):void {
 			if (n==-2) {
 				n=autoSaveN;
-				var save=saveArr[n];
+				var save = saveArr[n];
 				saveToObj(save.data);
 				save.flush();
 				trace('World.as/saveGame() - End');
@@ -1103,10 +1103,10 @@ package  fe {
 			if (t_save<100 && n==-1 && !pers.hardcore) return;
 			if (pip.noAct) return;
 			if (n==-1) n=autoSaveN;
-			var save=saveArr[n];
+			var save = saveArr[n];
 			if (save is SharedObject) {
 				saveToObj(save.data);
-				var r=save.flush();
+				var r = save.flush();
 				trace(r);
 				if (n==0) t_save=0;
 			}
@@ -1117,7 +1117,7 @@ package  fe {
 			else return null;
 		}
 		
-		public function saveConfig() {
+		public function saveConfig():void {
 			try {
 				configObj.data.ctr=ctr.save();
 				configObj.data.snd=Snd.save();

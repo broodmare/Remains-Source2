@@ -58,7 +58,7 @@ package fe.unit {
 			return true;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay || isLaz) {		//прыжок
 				velocity.Y=-jumpdy*v;
 				isLaz=0;
@@ -347,8 +347,8 @@ package fe.unit {
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) coordinates.X=loc.getTile(i, j).phX1 + this.boundingBox.halfWidth;
-					else coordinates.X=loc.getTile(i, j).phX2 - this.boundingBox.halfWidth;
+					if (isLaz==-1) coordinates.X=loc.getTile(i, j).boundingBox.left + this.boundingBox.halfWidth;
+					else coordinates.X=loc.getTile(i, j).boundingBox.right - this.boundingBox.halfWidth;
 					this.boundingBox.center(coordinates);
 					stay=false;
 					return true;

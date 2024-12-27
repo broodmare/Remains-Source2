@@ -1,13 +1,12 @@
-package fe.loc
-{
+package fe.loc {
+
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.unit.UnitPlayer;
 	import flash.display.BitmapData;
 	import fe.serv.Script;
 
-	public class Land
-	{
+	public class Land {
 		
 		public var act:LandAct;					//шаблон, по которому была создана местность
 		
@@ -38,7 +37,7 @@ package fe.loc
 		public var maxLocZ:int = 2;				//размер местности
 		
 		public var loc_t:int=0;					//таймер
-		static var locN:int=0;					//счётчик переходов
+		public static var locN:int = 0;			//счётчик переходов
 		
 		public var gg:UnitPlayer;
 		public var ggX:Number=0, ggY:Number=0;	//координаты гг в местности
@@ -54,26 +53,25 @@ package fe.loc
 		public var summXp:int=0;
 		public var isRefill:Boolean=false;		//было восполнение товаров
 		
-		var allRoom:Array;		//массив всех комнат, взятый из xml
-		var rndRoom:Array;		//массив, использующийся для рандомной генерации
-		public var kolAll:Array;		//количество каждого вида объекта
+		private var allRoom:Array;				//массив всех комнат, взятый из xml
+		private var rndRoom:Array;				//массив, использующийся для рандомной генерации
+		public var kolAll:Array;				//количество каждого вида объекта
 		
-		public var uidObjs:Array;		//все объекты, имеющие uid
-		public var scripts:Array;		//массив скриптов, имеющих время выполнения
-		public var itemScripts:Array;	//массив скриптов, привязанных к взятию объектов
+		public var uidObjs:Array;				//все объекты, имеющие uid
+		public var scripts:Array;				//массив скриптов, имеющих время выполнения
+		public var itemScripts:Array;			//массив скриптов, привязанных к взятию объектов
 		
 		public var kol_phoenix:int=0;
-		public var aliAlarm:Boolean=false;	//тревога среди аликорнов
+		public var aliAlarm:Boolean=false;		//тревога среди аликорнов
 		
-		public var probIds:Array;		//имеющиеся комнаты испытаний
-		var impProb:int=-1;				//важная комната испытаний
+		public var probIds:Array;				//имеющиеся комнаты испытаний
+		private var impProb:int=-1;				//важная комната испытаний
 
 		private var tileX:int = Tile.tileX;
 		private var tileY:int = Tile.tileY;
 
 		//lvl - уровень перса-1
-		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int)
-		{
+		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
 			gg=ngg;
 			act=nact;
 			rnd=act.rnd;
@@ -663,21 +661,19 @@ package fe.loc
 			}
 		}
 		
-		public function createMap():void
-		{
+		public function createMap():void {
 			map = new BitmapData(World.cellsX * (maxLocX - minLocX), World.cellsY * (maxLocY - minLocY), true, 0);
 		}
 		
 //==============================================================================================================================		
-//				*** Использование ***
+//				*** [Usage] ***
 //==============================================================================================================================		
 		
-		//войти в местность
-		public function enterLand(first:Boolean=false, coord:String=null) {
+		// [Enter the area]
+		public function enterLand(first:Boolean=false, coord:String=null):void {
 			act.visited=true;
 			loc = null;
-			if (coord != null)
-			{
+			if (coord != null) {
 				var narr:Array=coord.split(':');
 
 				if (narr.length>=1) locX=narr[0];
@@ -691,14 +687,12 @@ package fe.loc
 				ativateLoc();
 				setGGToSpawnPoint();
 			}
-			else if (currentCP && !first)
-			{
+			else if (currentCP && !first) {
 				World.w.pers.currentCP=currentCP;
 				gotoCheckPoint();
 				currentCP.activate();
 			}
-			else
-			{
+			else {
 				locX = act.begLocX;
 				locY = act.begLocY;
 				locZ = 0;
@@ -708,11 +702,11 @@ package fe.loc
 			}
 		}
 		
-		public function saveObjs(arr:Array) {
+		public function saveObjs(arr:Array):void {
 			if (rnd) return;
-			for (var i=minLocX; i<maxLocX; i++) {
-				for (var j=minLocY; j<maxLocY; j++) {
-					for (var e=minLocZ; e<maxLocZ; e++) {
+			for (var i:int = minLocX; i < maxLocX; i++) {
+				for (var j:int = minLocY; j<maxLocY; j++) {
+					for (var e:int = minLocZ; e < maxLocZ; e++) {
 						if (locs[i][j][e]==null) continue;
 						locs[i][j][e].saveObjs(arr);
 					}
@@ -720,27 +714,30 @@ package fe.loc
 			}
 		}
 		
-		//переместить гг в точку спавна
-		public function setGGToSpawnPoint() {
+		// [Move gg to spawn point]
+		public function setGGToSpawnPoint():void {
 			var nx:int=3, ny:int=3;
 			if (loc.spawnPoints.length>0) {
-				var n=Math.floor(Math.random()*loc.spawnPoints.length);
-				nx=loc.spawnPoints[n].x;
-				ny=loc.spawnPoints[n].y;
+				var n:int = Math.floor(Math.random()*loc.spawnPoints.length);
+				nx = loc.spawnPoints[n].x;
+				ny = loc.spawnPoints[n].y;
 			}
 			gg.setLocPos((nx+1) * tileX, (ny+1) * tileY - 1);
 			gg.velocity.X = 3;
 			loc.lighting(gg.coordinates.X, gg.coordinates.Y - 75);
 		}
 		
-		//сделать активной локацию с текущими координатами
+		// [Make the location with current coordinates active]
 		public function ativateLoc():Boolean {
 			var nloc:Location;
 			if (prob!='' && probs[prob]==null)  return false;
 
 			if (prob == '') {
 				nloc = locs[locX][locY][locZ];
-			} else nloc = probs[prob][locX][locY][locZ];
+			}
+			else {
+				nloc = probs[prob][locX][locY][locZ];
+			}
 			
 			if (loc==nloc) return false;
 			locN++;
@@ -758,7 +755,7 @@ package fe.loc
 			return true;
 		}
 		
-		//перейти в локацию x,y
+		// [Go to location x,y]
 		public function gotoXY(nx:int,ny:int) {
 			if (nx<minLocX) nx=minLocX;
 			if (nx>=maxLocX) nx=maxLocX-1;
@@ -772,14 +769,12 @@ package fe.loc
 		}
 		
 		
-		//переход между локациями
-		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object
-		{
+		// [Transition between locations]
+		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
 			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.boundingBox.width, objectHeight:Number=gg.boundingBox.height;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
 
-			switch (napr)
-			{
+			switch (napr) {
 				case 1:
 					newX--;
 				break;
@@ -808,11 +803,11 @@ package fe.loc
 				if (napr==3) return {die:true};
 				return null;
 			}
+			
 			var newLoc:Location=locs[newX][newY][newZ];
 			var outP:Object = new Object();
 
-			switch (napr)
-			{
+			switch (napr) {
 				case 1:
 					outP.x = newLoc.maxX - objectWidth / 2 - 9;
 					outP.y = Y - 1;
@@ -847,8 +842,8 @@ package fe.loc
 			return outP;
 		}
 		
-		//перейти на слой испытаний nprob, или вернуться на основной слой, если параметр не задан
-		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) {
+		// [Go to the nprob test layer, or return to the main layer if the parameter is not specified]
+		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1):void {
 			if (nprob=='') {
 				prob='';
 				locX = retLocX;
@@ -857,14 +852,16 @@ package fe.loc
 				ativateLoc();
 				if (retX==0 && retY==0) setGGToSpawnPoint();
 				else gg.setLocPos(retX,retY);
-			} else {
+			}
+			else {
 				retLocX=locX;
 				retLocY=locY;
 				retLocZ=locZ;
 				if (nretX<0 || nretY<0) {
 					retX=gg.coordinates.X;
 					retY=gg.coordinates.Y;
-				} else {
+				}
+				else {
 					retX=nretX;
 					retY=nretY;
 				}
@@ -875,8 +872,7 @@ package fe.loc
 				if (ativateLoc()) {
 					setGGToSpawnPoint();
 				}
-				else
-				{
+				else {
 					prob = '';
 					locX = retLocX;
 					locY = retLocY;
@@ -885,7 +881,7 @@ package fe.loc
 			}
 		}
 		
-		public function gotoCheckPoint() {
+		public function gotoCheckPoint():void {
 			var cp:CheckPoint=World.w.pers.currentCP;
 			if (cp==null) {
 				gg.setNull();
@@ -914,22 +910,23 @@ package fe.loc
 			gg.velocity.X = 3;
 		}
 		
-		public function refill() {
+		public function refill():void {
 			if (isRefill) return;
-			if (summXp*10>allXp || !rnd) {
+			if (summXp * 10 > allXp || !rnd) {
 				World.w.game.refillVendors();
-				isRefill=true;
-			} else {
-				trace('опыта получено: ',summXp,allXp);
+				isRefill = true;
+			}
+			else {
+				trace('опыта получено: ', summXp, allXp);
 			}
 		}
 		
-		public function artBabah() {
+		public function artBabah():void {
 			Snd.ps('artfire');
 			World.w.quake(10,3);
 		}
 		
-		public function artStep() {
+		public function artStep():void {
 			art_t--;
 			if (art_t<=0) {
 				art_t=int(Math.random()*1000+20);
@@ -941,8 +938,8 @@ package fe.loc
 		
 		public function drawMap():BitmapData {
 			map.fillRect(map.rect,0x00000000);
-			for (var i=minLocX; i<maxLocX; i++) {
-				for (var j=minLocY; j<maxLocY; j++) {
+			for (var i:int = minLocX; i < maxLocX; i++) {
+				for (var j:int = minLocY; j < maxLocY; j++) {
 					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
@@ -951,14 +948,14 @@ package fe.loc
 			return map;
 		}
 		
-		//убить всех врагов и открыть все контейнеры
+		// [Kill all enemies and open all containers]
 		public function getAll():int {
 			var summ:int=0;
-			for (var i=minLocX; i<maxLocX; i++) {
-				for (var j=minLocY; j<maxLocY; j++) {
-					for (var e=minLocZ; e<maxLocZ; e++) {
-						if (locs[i][j][e]==null) continue;
-						summ+=locs[i][j][e].getAll();
+			for (var i:int = minLocX; i < maxLocX; i++) {
+				for (var j:int = minLocY; j < maxLocY; j++) {
+					for (var e:int = minLocZ; e < maxLocZ; e++) {
+						if (locs[i][j][e] == null) continue;
+						summ += locs[i][j][e].getAll();
 					}
 				}
 			}

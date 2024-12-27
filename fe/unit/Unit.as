@@ -187,9 +187,11 @@ package fe.unit {
 
 		public var acelX:Number=0, acelY:Number=0;	// [anti-target]
 		
+		// Vision varaibles
 		public var celUnit:Unit;	//кто является целью
 		public var priorUnit:Unit;	//кто является врагом
 		public var eyeX:Number=-1000, eyeY:Number=-1000;	//точка зрения
+
 		
 		//состояния
 		public var sost:int=1;  //1-живой	2-в отключке    3-сдох    4-уничтожен и больше не обрабатывается
@@ -246,7 +248,7 @@ package fe.unit {
 		
 		//видимость других юнитов
 		public var observ:Number=0;			//наблюдательность
-		public var vision:Number=1;			//множитель зрения
+		public var vision:Number=1;			// [Vision multiplier]
 		public var ear:Number=1;			//множитель слуха
 		public var unres:Boolean=false;		//не реагировать на звуки
 		public var vAngle:Number=0;			//конус зрения
@@ -1123,8 +1125,8 @@ package fe.unit {
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, y + 1);
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
-							coordinates.Y = t2.phY1;
-							this.boundingBox.bottom = t2.phY1;
+							coordinates.Y = t2.boundingBox.top;
+							this.boundingBox.bottom = t2.boundingBox.top;
 							sit(true);
 							autoSit = true;
 						}
@@ -1134,11 +1136,11 @@ package fe.unit {
 							t = loc.getTile(int(this.boundingBox.left/tileX), i);
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (this.boundingBox.bottom-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-this.boundingBox.bottom)) {
-									coordinates.Y = t.phY1;
+								if (this.boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(-20,t.boundingBox.top-this.boundingBox.bottom)) {
+									coordinates.Y = t.boundingBox.top;
 								}
 								else {
-									coordinates.X = t.phX2 + this.boundingBox.halfWidth;
+									coordinates.X = t.boundingBox.right + this.boundingBox.halfWidth;
 									if (t_throw > 0 && velocity.X < -damWallSpeed && damWall) damageWall(2);
 
 									if (destroy > 0 && destroyWall(t, 1)) {
@@ -1178,8 +1180,8 @@ package fe.unit {
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, (y + 1));
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
-							coordinates.Y  = t2.phY1;
-							this.boundingBox.bottom = t2.phY1;
+							coordinates.Y  = t2.boundingBox.top;
+							this.boundingBox.bottom = t2.boundingBox.top;
 							sit(true);
 							autoSit = true;
 						}
@@ -1189,11 +1191,11 @@ package fe.unit {
 							t = loc.getTile(int(this.boundingBox.right / tileX), i);
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (this.boundingBox.bottom-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-this.boundingBox.bottom)) {
-									coordinates.Y = t.phY1;
+								if (this.boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(20,t.boundingBox.top-this.boundingBox.bottom)) {
+									coordinates.Y = t.boundingBox.top;
 								}
 								else {
-									coordinates.X = t.phX1 - this.boundingBox.halfWidth;
+									coordinates.X = t.boundingBox.left - this.boundingBox.halfWidth;
 									if (t_throw > 0 && velocity.X > damWallSpeed && damWall) damageWall(1);
 									if (destroy > 0 && destroyWall(t, 2)) {
 										velocity.X *= 0.75;
@@ -1241,7 +1243,7 @@ package fe.unit {
 						for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
 							t = loc.getTile(i, int(this.boundingBox.bottom/tileY));
 							if (collisionTile(t)) {
-								coordinates.Y = t.phY1;
+								coordinates.Y = t.boundingBox.top;
 								this.boundingBox.flatten(coordinates);
 								velocity.Y = 0;
 								turnY = -1;
@@ -1256,9 +1258,9 @@ package fe.unit {
 						for (i = int(this.boundingBox.left/tileX); i<=int(this.boundingBox.right/tileX); i++) {
 							t = loc.getTile(i, int(this.boundingBox.bottom + velocity.Y / div) / tileY);
 							if (collisionTile(t, 0, velocity.Y / div)) {
-								if (-(this.boundingBox.left - t.phX1) / this.boundingBox.width < shX1) shX1 = -(this.boundingBox.left - t.phX1) / this.boundingBox.width;
-								if ((this.boundingBox.right - t.phX2) / this.boundingBox.width < shX2) shX2 = (this.boundingBox.right - t.phX2) / this.boundingBox.width;
-								newmy = t.phY1;
+								if (-(this.boundingBox.left - t.boundingBox.left) / this.boundingBox.width < shX1) shX1 = -(this.boundingBox.left - t.boundingBox.left) / this.boundingBox.width;
+								if ((this.boundingBox.right - t.boundingBox.right) / this.boundingBox.width < shX2) shX2 = (this.boundingBox.right - t.boundingBox.right) / this.boundingBox.width;
+								newmy = t.boundingBox.top;
 								if (t.mat > 0) stayMat = t.mat;
 								if (t.phis >= 1 && !(transT && t.phis == 3)) {
 									stayPhis = 1;
@@ -1349,7 +1351,7 @@ package fe.unit {
 						if (collisionTile(t)) {
 							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) damageWall(4);
 							if (destroy > 0) destroyWall(t, 4);
-							coordinates.Y = t.phY2 + this.boundingBox.height;
+							coordinates.Y = t.boundingBox.bottom + this.boundingBox.height;
 							this.boundingBox.flatten(coordinates);
 							velocity.Y = 0;
 							turnY = 1;
@@ -1497,11 +1499,11 @@ package fe.unit {
 				return 0;	//[Empty]
 			}  
 			// Normal tile collision
-			if (this.boundingBox.right + gx <= t.phX1 || this.boundingBox.left + gx >= t.phX2 || this.boundingBox.bottom + gy <= t.phY1 || this.boundingBox.top + gy >= t.phY2) {
+			if (this.boundingBox.right + gx <= t.boundingBox.left || this.boundingBox.left + gx >= t.boundingBox.right || this.boundingBox.bottom + gy <= t.boundingBox.top || this.boundingBox.top + gy >= t.boundingBox.bottom) {
 				return 0;
 			}
 			// Shelf collision
-			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (this.boundingBox.bottom - (stay? porog:porog_jump) > t.phY1 || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
+			else if ((t.phis == 0 || transT&&t.phis == 3) && t.shelf && (this.boundingBox.bottom - (stay? porog:porog_jump) > t.boundingBox.top || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
 				return 0;
 			}
 			else {
@@ -1530,10 +1532,10 @@ package fe.unit {
 				storona = (loc.getTile(i, j)).stair;
 
 				if (isLaz == -1) {
-					coordinates.X = (loc.getTile(i, j)).phX1 + this.boundingBox.halfWidth;
+					coordinates.X = (loc.getTile(i, j)).boundingBox.left + this.boundingBox.halfWidth;
 				}
 				else {
-					coordinates.X = (loc.getTile(i, j)).phX2 - this.boundingBox.halfWidth;
+					coordinates.X = (loc.getTile(i, j)).boundingBox.right - this.boundingBox.halfWidth;
 				}
 				
 				this.boundingBox.centerHorizontally(coordinates);	// Center the character on the horizontal axis
@@ -2830,14 +2832,12 @@ package fe.unit {
 //				Служебные ф-и для ИИ
 
 		//возможность взаимодействия с юнитом
-		public function isMeet(un:Unit):Boolean
-		{
+		public function isMeet(un:Unit):Boolean {
 			return un!=null && loc==un.loc && !un.disabled && !un.trigDis && un.sost!=4 && un!=this;
 		}
 
 		// Whether the unit is covered by the fog of war, true if not
-		public function getTileVisi(r:Number=0.3):Boolean
-		{
+		public function getTileVisi(r:Number=0.3):Boolean {
 			return (loc.getAbsTile(coordinates.X, this.boundingBox.top).visi > r);
 		}
 		
@@ -2925,7 +2925,7 @@ package fe.unit {
 				var tileYIdx:int = int(ny / tileY);
 				var t:Tile = World.w.loc.getTile(tileXIdx, tileYIdx);
 				
-				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2) {
+				if (t.phis == 1 && nx >= t.boundingBox.left && nx <= t.boundingBox.right && ny >= t.boundingBox.top && ny <= t.boundingBox.bottom) {
 					return 0;
 				}
 			}
@@ -2950,21 +2950,21 @@ package fe.unit {
 			return angle;
 		}
 
-		//получить цель для ИИ
+		// [Get target for AI]
 		public function findCel(over:Boolean=false):Boolean {
-			if (oduplenie>0) return false;
+			if (oduplenie > 0) return false;
 			var ncel:Unit;
 			if (priorUnit && isMeet(priorUnit) && priorUnit.fraction!=fraction && priorUnit.sost<3 && priorUnit.hp>-priorUnit.maxhp && (!priorUnit.doop || priorUnit.levit)) ncel=priorUnit;
 			else if (isMeet(loc.gg) && !loc.gg.invulner && fraction!=F_PLAYER) ncel=loc.gg;
 			else return false;
 			if (ncel.player) {
-				var res1:Number=listen(ncel);
+				var res1:Number = listen(ncel);
 				if (res1) {
 					(ncel as UnitPlayer).observation(res1);
 				}
-				var res2:Number=look(ncel,overLook || over);
-				if (res2>0) {
-					(ncel as UnitPlayer).observation(res2,observ);
+				var res2:Number = look(ncel,overLook || over);
+				if (res2 > 0) {
+					(ncel as UnitPlayer).observation(res2, observ);
 					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs) {
 						setCel(ncel);
 						return true;
@@ -3016,7 +3016,7 @@ package fe.unit {
 		}
 		
 		public function findGrenades():Boolean {
-			for (var i = 0; i < 10; i++) {
+			for (var i:int = 0; i < 10; i++) {
 				if (loc.grenades[i]==null) continue;
 				var gx:Number = loc.grenades[i].coordinates.X - coordinates.X;
 				var gy:Number = loc.grenades[i].coordinates.Y - this.boundingBox.top;

@@ -43,6 +43,7 @@ Bugs:
  - Can't disarm traps.
  - Main menu theme plays for a moment before the game realizes it should be muted.
  - Can't exit stages
+ - Staying still and crouching next to a wall will make you fall through the floor
 
 \#####
 

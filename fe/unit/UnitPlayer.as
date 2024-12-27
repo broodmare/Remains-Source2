@@ -2039,7 +2039,7 @@ package fe.unit {
 				var nx = coordinates.X + ndx * i / div;
 				var ny = this.boundingBox.top + ndy * i / div;
 				var t:Tile = World.w.loc.getAbsTile(int(nx), int(ny));
-				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2) {
+				if (t.phis == 1 && nx >= t.boundingBox.left && nx <= t.boundingBox.right && ny >= t.boundingBox.top && ny <= t.boundingBox.bottom) {
 					celX = nx;
 					celY = ny;
 					return 0
@@ -2141,12 +2141,13 @@ package fe.unit {
 		//nlook - базовое значение, на которое увеличивается obs, зависит от расстояния до врага и параметров видимости
 		//nobs - наблюдательность врага. если она не передаётся, то рассчёт соотношения скрытности героя и наблюдательности врага не производится
 		public function observation(nlook:Number, nobs:Number=-1000):Boolean {
-			var nsneak=sneak-demask/20;
-			if (nsneak<0) nsneak=0;
-			if (nobs>-1000) {
+			var nsneak:Number = sneak - demask / 20;
+			if (nsneak < 0) nsneak = 0;
+			if (nobs > -1000) {
 				if (nobs>nsneak) {
 					nlook*=(1+(nobs-nsneak)*0.2);
-				} else if (nobs<nsneak) {
+				}
+				else if (nobs<nsneak) {
 					nlook/=(1-(nobs-nsneak)*0.3);
 				}
 			}
