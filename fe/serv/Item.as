@@ -233,7 +233,6 @@ package fe.serv {
 				}
 			}
 			
-
 			cachedItems[id] = node;	// Cache the item
 			return;
 		}
