@@ -52,6 +52,8 @@ package fe.inter {
 		public var curTip = '';
 		public var tips:Array = [[]];
 
+		public static var infoCache:Object = {}; // Global cache for item descriptions
+
 		private static var damageTypes:Array = [
 			{type: Unit.D_BUL,		label: 'bullet'},
 			{type: Unit.D_EXPL,		label: 'expl'},
@@ -173,8 +175,10 @@ package fe.inter {
 		}
 
 		protected function page2Click(event:MouseEvent):void {
-			if (World.w.ctr.setkeyOn) return;
-			page2=int(event.currentTarget.id.text);
+			if (World.w.ctr.setkeyOn) {
+				return;
+			}
+			page2 = int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
 		}
@@ -461,6 +465,14 @@ package fe.inter {
 		
 		
 		public static function infoStr(tip:String, id:String):String {
+			// Generate a unique cache key
+			var cacheKey:String = tip + ":" + id;
+
+			// Check if the value is already cached
+			if (infoCache[cacheKey] != null) {
+				return infoCache[cacheKey];
+			}
+			
 			var s:String='';
 			var pip:PipBuck = World.w.pip;
 			var gg:UnitPlayer = World.w.gg;
@@ -556,8 +568,7 @@ package fe.inter {
 				if (World.w.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				s+='\n\n'+sinf;
 			}
-			else if (tip==Item.L_ARMOR)
-			{
+			else if (tip==Item.L_ARMOR) {
 				var a:Armor = inv.armors[id];
 				if (a == null) a = pip.arrArmor[id];
 
@@ -586,12 +597,10 @@ package fe.inter {
 			}
 			else if (tip==Item.L_AMMO) {
 				var ammo:XML = inv.items[id].xml;
-				if (Weapon.getWeaponInfo(id) != null)
-				{
+				if (Weapon.getWeaponInfo(id) != null) {
 					s = Res.txt('w',id,1);
 				}
-				else if (ammo.@base.length())
-				{
+				else if (ammo.@base.length()) {
 					s=Res.txt('i',ammo.@base,1);
 					if (ammo.@mod>0) {
 						s+='\n\n'+Res.txt('p','ammomod_'+ammo.@mod,1);
@@ -615,8 +624,7 @@ package fe.inter {
 				if (tip=='instr' || tip=='impl'|| tip=='art') {
 					s=effStr('item',id)+'\n';
 				}
-				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him')
-				{
+				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') {
 					if (pot.@hhp.length() || pot.@hhplong.length())
 					s+='\n'+Res.pipText('healhp')+': '+numberAsColor('yellow', Math.round(pot.@hhp*World.w.pers.healMult));
 					if (pot.@hhplong.length()) s+='+'+numberAsColor('yellow', Math.round(pot.@hhplong*World.w.pers.healMult));
@@ -633,8 +641,7 @@ package fe.inter {
 					if (pot.@perk.length()) s+='\n'+textAsColor('pink', Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
-				if (tip=='book')
-				{
+				if (tip=='book') {
 					if (World.w.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+textAsColor('pink', Res.txt('e',id));
 				}
 				if (tip=='spell') {
@@ -659,11 +666,14 @@ package fe.inter {
 				if (World.w.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				if (pot.@sell>0) s+='\n'+Res.pipText('sell')+": "+textAsColor('yellow', pot.@sell);
 			}
+
+			// Cache the result before returning
+			infoCache[cacheKey] = s;
 			return s;
 		}
 		
 		protected function infoItem(tip:String, itemID:String, nazv:String, craft:int=0):void {
-			vis.nazv.text=nazv;
+			vis.nazv.text = nazv;
 
 			var s:String;
 			var id:String = itemID;

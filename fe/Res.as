@@ -7,6 +7,9 @@ package fe {
 
 		public static var currentLanguageData:XML; 		// Current localization file eg. 'text_en.xml'
 
+		private static var cachedIsTxt:Object	= {};
+		private static var cachedTxt:Object	= {};
+
 		private static const typeDictionary:Object = {
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
 			'e':'eff', 'f':'info', 'p':'pip', 'k':'key', 'g':'gui', 'm':'map',
@@ -19,10 +22,15 @@ package fe {
 		* @id   -- The internal name of the string we want to find the localization for.
 		*/
 		public static function istxt(tip:String, id:String):Boolean {
+			var key:String = tip + id;
+			if (cachedIsTxt[key]) {
+				return true;
+			}
 			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
 			if (xmlList.length() == 0) {
 				return false; // If there's no matching nodes, return false.
 			}
+			cachedIsTxt[key] = true;
 			return true;
 		}
 
@@ -38,6 +46,12 @@ package fe {
 				return '';
 			}
 			
+			// Return if already cached
+			var key:String = tip + id;
+			if (cachedTxt[key]) {
+				return cachedTxt[key];
+			}
+
 			try {
 				// Reduce redundant dictionary lookups
 				var tipType:String = typeDictionary[tip];
@@ -98,6 +112,7 @@ package fe {
 				return s;
 			}
 
+			cachedTxt[key] = s; // Store this formatted string
 			return s;
 		}
 

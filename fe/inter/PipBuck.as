@@ -242,7 +242,7 @@ package fe.inter  {
 					noAct2=noAct;
 					noAct=true;
 				}
-				World.w.gc();
+				World.w.gc();	// Garbage collection if required
 			}
 			else {
 				if (isSaveConf) {

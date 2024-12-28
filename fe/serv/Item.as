@@ -1,40 +1,39 @@
-package fe.serv
-{	
+package fe.serv {	
 	
 	import fe.*;
 	import fe.unit.Invent;
 	
-	public class Item // [Inventory item]
-	{
-		// Ghetto AS3 enumeration
-		public static const L_ITEM = 'item';
-		public static const L_ARMOR = 'armor';
-		public static const L_WEAPON = 'weapon';
-		public static const L_UNIQ = 'uniq';
-		public static const L_SPELL = 'spell';
-		public static const L_AMMO = 'a';
-		public static const L_EXPL = 'e';
-		public static const L_MED = 'med';
-		public static const L_BOOK = 'book';
-		public static const L_HIM = 'him';
-		public static const L_POT = 'pot';
-		public static const L_FOOD = 'food';
-		public static const L_SCHEME = 'scheme';
-		public static const L_PAINT = 'paint';
-		public static const L_COMPA = 'compa';
-		public static const L_COMPW = 'compw';
-		public static const L_COMPE = 'compe';
-		public static const L_COMPM = 'compm';
-		public static const L_COMPP = 'compp';
-		public static const L_SPEC = 'spec';
-		public static const L_INSTR = 'instr';
-		public static const L_STUFF = 'stuff';
-		public static const L_ART = 'art';
-		public static const L_IMPL = 'impl';
-		public static const L_KEY = 'key';
-
-		public static var itemTip:Array=['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key']
+	
+	public class Item {	// [Inventory item]
 		
+		// Ghetto AS3 enumeration
+		public static const L_ITEM:String = 'item';
+		public static const L_ARMOR:String = 'armor';
+		public static const L_WEAPON:String = 'weapon';
+		public static const L_UNIQ:String = 'uniq';
+		public static const L_SPELL:String = 'spell';
+		public static const L_AMMO:String = 'a';
+		public static const L_EXPL:String = 'e';
+		public static const L_MED:String = 'med';
+		public static const L_BOOK:String = 'book';
+		public static const L_HIM:String = 'him';
+		public static const L_POT:String = 'pot';
+		public static const L_FOOD:String = 'food';
+		public static const L_SCHEME:String = 'scheme';
+		public static const L_PAINT:String = 'paint';
+		public static const L_COMPA:String = 'compa';
+		public static const L_COMPW:String = 'compw';
+		public static const L_COMPE:String = 'compe';
+		public static const L_COMPM:String = 'compm';
+		public static const L_COMPP:String = 'compp';
+		public static const L_SPEC:String = 'spec';
+		public static const L_INSTR:String = 'instr';
+		public static const L_STUFF:String = 'stuff';
+		public static const L_ART:String = 'art';
+		public static const L_IMPL:String = 'impl';
+		public static const L_KEY:String = 'key';
+
+		public static var itemTip:Array=['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key'];
 		
 		public var tip:String;
 		public var wtip:String='';
@@ -45,7 +44,7 @@ package fe.serv
 		public var fc:int=-1;	//цвет всплывающего сообщения
 		public var invis:Boolean=false;
 		
-		public var xml:XML;
+		public var xml;
 		public var kol:int=0;		//количество в инвентаре
 		public var vault:int=0;		//количество в хранилище
 		public var invCat:int=3;	//отдел инвентаря
@@ -74,6 +73,7 @@ package fe.serv
 		
 		// [nkol -- number of items or weapon/armor condition 0-1-2]
 		// [If nkol=-1, the quantity is taken from xml]
+		// Constructor
 		public function Item(ntip:String, nid:String, nkol:int=-1, unique:int = 0, nxml:XML = null) {
 			variant = unique;
 
@@ -86,26 +86,16 @@ package fe.serv
 
 			//	TYPE
 			tip = ntip;
-			if (tip == null || tip == '') itemTip(); // Get tip if it's null or empty
-			if (tip == L_UNIQ) tip = L_WEAPON; // All uniques are weapon, change to L_WEAPON
-			
-			//	If not provided with an XML file for the item, get it
-			if (nxml == null) {
-				var nodeType:String;
-				if (tip == L_ARMOR) nodeType = "armors";	
-				else if (tip == L_WEAPON) nodeType = "weapons";
-				else nodeType = "items";
+			xml = nxml;
 
-				var l:XML = getItemInfo(nodeType, id);
-				if (l != null) {
-					xml = l;
-					wtip = xml.@tip;
-				}
+			// If we're missing either the tip or XML, try to load the info
+			if (tip == null || tip == '' || nxml == null) {
+				getItemInfo();
 			}
-			else {
-				xml = nxml;
-				wtip = xml.@tip;
-			}
+			
+			if (tip == L_UNIQ) tip = L_WEAPON; // All uniques are weapon, change to L_WEAPON
+
+			wtip = xml.@tip;
 
 			if (tip == L_ARMOR || tip == L_WEAPON) {
 				kol = 1;
@@ -150,7 +140,7 @@ package fe.serv
 					wtip = 'w5';
 				}
 				else {
-					wtip = 'w' + l.@skill;
+					wtip = 'w' + xml.@skill;
 				}
 			}
 			else if (tip == L_ARMOR) {
@@ -200,33 +190,55 @@ package fe.serv
 				if (xml.@m.length())		mass = xml.@m;
 			}
 
-			function getItemInfo(nodeType:String, id:String):XML {
-				// Check if the node is already cached
-				var node:XML;
-				if (cachedItems[id] == undefined) {
-                    node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", nodeType, "id", id);
-                    cachedItems[id] = node;
-                }
-				else node = cachedItems[id];
-				return node;
-			}
 		}
 
-		public function itemTip() {
+		// Set the item's XML and Tip properties
+		private function getItemInfo():void {
+			// Check if the node is already cached
+			if (cachedItems[id] != null) {
+				if (xml == null) {
+					trace(cachedItems[id]);
+					xml = cachedItems[id].xml;
+				}
+				if (tip == null) {
+					tip = cachedItems[id].tip;
+				}
+				return;
+			}
+			
+			var node;
+
+			// We don't have the XML
+			if (tip != null) {
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", tip, "id", id);
+				if (node != null ) {
+					xml = node;
+					tip = node.@tip;
+
+					cachedItems[id] = node;	// Cache the item
+					return;
+				}
+			}
+
+			// We still don't have the XML OR the Item Type
 			var categories:Array = ["items", "weapons", "armors"];
 			var tips:Array = [L_ITEM, L_WEAPON, L_ARMOR];
 			
 			for (var i:int = 0; i < categories.length; i++) {
-				var l:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", categories[i], "id", id);
-				if (l != null) {
-					xml = l;
+				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", categories[i], "id", id);
+				if (node != null) {	// We found the item 
+					xml = node;
 					tip = (categories[i] == "items" && xml.@tip.length()) ? xml.@tip : tips[i];
 					break;
 				}
 			}
+			
+
+			cachedItems[id] = node;	// Cache the item
+			return;
 		}
 		
-		public function getPrice() {
+		public function getPrice():void {
 			if (xml) {
 				if (xml.com.length() && xml.com.@price.length()) {
 					price=xml.com[0].@price*sost*multHP*pmult;
@@ -253,11 +265,12 @@ package fe.serv
 		public function checkAuto(m:Boolean=false):Boolean {
 			var inv:Invent=World.w.invent;
 			if (tip==L_WEAPON) {
-				var w=inv.weapons[id];
-				if (w!=null && (World.w.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
-					if (w.hp<=w.maxhp && (w.respect==0 || w.respect==2 || !World.w.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
+				var w = inv.weapons[id];
+				if (w != null && (World.w.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
+					if (w.hp <= w.maxhp && (w.respect==0 || w.respect==2 || !World.w.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
 						return true;
-					} else if (m && World.w.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
+					}
+					else if (m && World.w.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
 						shpun=2;
 					}
 					return false; 
@@ -276,7 +289,8 @@ package fe.serv
 						if (xml.@tip==5) {
 							if (inv.massM<=World.w.pers.maxmM-mass) {
 								return true;
-							} else {
+							}
+							else {
 								if (m) World.w.gui.infoText('fullMagic');
 								return false;
 							}
@@ -319,7 +333,7 @@ package fe.serv
 			return {tip:tip, id:id, kol:kol, sost:sost, barter:barter, lvl:lvl, trig:trig,variant:variant};
 		}
 		
-		public function trade() {
+		public function trade():void {
 			kol -= bou;
 			bou = 0;
 		}

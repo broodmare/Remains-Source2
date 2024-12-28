@@ -91,7 +91,7 @@ package  fe {
 		
 		public var currentMusic:String='';
 		
-		//Настроечные переменные
+		// [Settings Variables]
 		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
 		public var roomsLoad:int = 1;  			//1-загружать из файла карты локаций
 		private var langLoad:int = 1;  			//1-загружать из файла
@@ -99,36 +99,40 @@ package  fe {
 		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
 		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
 		public var black:Boolean=true;				//отображать туман войны
-		public var testMode:Boolean=false;			//Тестовый режим
+		
+		// Debug variables
+		public var testMode:Boolean=false;				// [Test mode]
 		public var chitOn:Boolean=false;
-		public var chit:String='', chitX:String=null;	//текущий чит
-		public var showArea:Boolean=false;	//показывать активные области
-		public var godMode:Boolean=false;				//неуязвимость
-		public var showAddInfo:Boolean=false;		//показывать доп. информацию
-		public var testBattle:Boolean=false;		//выносливость будет расходоваться вне боя
-		public var testEff:Boolean=false;		//эффекты будут в 10 раз короче
-		public var testDam:Boolean=false;		//отменяет разброс урона
-		public var hardInv:Boolean=false;		//ограниченный инвентарь
-		public var alicorn:Boolean=false;
-		public var maxParts:int=100;			//максимум частиц
+		public var chit:String='', chitX:String=null;	// [Current cheat]
+		public var showArea:Boolean=false;				// [Show active areas]
+		public var godMode:Boolean=false;				// Invulnerability
+		public var showAddInfo:Boolean=false;			// [Show additional information]
+		public var testBattle:Boolean=false;			// [Stamina will be consumed outside of combat]
+		public var testEff:Boolean=false;				// [Effects will be 10 times shorter]
+		public var testDam:Boolean=false;				// [Cancels damage spread]
 		
-		public var zoom100:Boolean=false;		//масштаб 100%
-		public var dialOn:Boolean=true;		//показывать диалоги с нпс
-		public var showHit:int=2;			//показывать урон
-		public var matFilter:Boolean=true;	//мат фильтр
-		public var helpMess:Boolean=true;	//обучающие сообщения
+		// Game settings
+		public var hardInv:Boolean = false;			// [Limited inventory]
+		public var alicorn:Boolean = false;
+		public var maxParts:int=100;			// [Maximum particles]
 		
-		public var shineObjs:Boolean=false;	//свечение объектов
-		public var sysCur:Boolean=false;	//системный курсор
-		public var hintKeys:Boolean=true;	//подсказка про клавиши
-		public var hintTele:Boolean=true;	//подсказка про клавиши
-		public var showFavs:Boolean=true;	//показывать доп инфу когда курсор наверху экрана
+		public var zoom100:Boolean=false;	// [Scale 100%]
+		public var dialOn:Boolean=true;		// [Show dialogues with NPCs]
+		public var showHit:int=2;			// Show damage number pop-ups
+		public var matFilter:Boolean=true;	// [Mat filter]
+		public var helpMess:Boolean=true;	// [Educational messages]
+		
+		public var shineObjs:Boolean=false;	// [Glow of objects]
+		public var sysCur:Boolean=false;	// [System cursor]
+		public var hintKeys:Boolean=true;	// Pop-up hints for interactables, eg. (Press "e" to open)
+		public var hintTele:Boolean=true;	// Pop-up hints for things you can levitate, eg. (Press "q" to levitate)
+		public var showFavs:Boolean=true;	// [Show additional information when the cursor is at the top of the screen]
 		public var errorShow:Boolean=true;
 		public var errorShowOpt:Boolean=true;
-		public var quakeCam:Boolean=true;	//тряска камеры
+		public var quakeCam:Boolean=true;	// [Camera shaking]
 		
 		public var vsWeaponNew:Boolean=true;	// [Automatically pick up a new weapon if there is room]
-		public var vsWeaponRep:Boolean=true;	//автоматически брать оружие для ремонта
+		public var vsWeaponRep:Boolean=true;	// [automatically pick up weapons for repairs]
 		public var vsAmmoAll:Boolean=true;		
 		public var vsAmmoTek:Boolean=true;		
 		public var vsExplAll:Boolean=true;		
@@ -158,13 +162,13 @@ package  fe {
 		public static const kolHK:int = 12;			//количество горячих клавиш
 		public static const kolQS:int = 4;			//количество быстрых заклинаний
 		
-		public static const boxDamage:Number = 0.2;		//мультипликатор силы удара ящиками
+		public static const boxDamage:Number = 0.2;		// [Box impact force multiplier]
 		
 		//Файлы
 		public var spriteURL:String;
 		public var sprite1URL:String;
 		
-		//загрузка, сейвы, конфиг
+		// [Loading, saves, config]
 		public var configObj:SharedObject;
 		private var saveObj:SharedObject;
 		private var saveArr:Array;
@@ -175,13 +179,13 @@ package  fe {
 		public var koladv:int = 10;	//номер совета
 		public var load_log:String='';
 		
-		//карты местностей
+		// [Location maps]
 		public var landPath:String;
-		public var fileVersion:int=2;		//изменить это число для сброса кэша
+		public var fileVersion:int=2;		// [Change this number to reset the cache]
 		public var landData:Array;
-		public var kolLands:int=0;
-		public var kolLandsLoaded:int=0;
-		public var allLandsLoaded:Boolean=false;
+		public var kolLands:int = 0;
+		public var kolLandsLoaded:int = 0;
+		public var allLandsLoaded:Boolean = false;
 		
 		public var comLoad:int=-1;		//команда на загрузку
 		public var clickReq:int=0;		//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
@@ -190,7 +194,6 @@ package  fe {
 		public var autoSaveN:int=0;		//номер ячейки автосейва
 		public var log:String='';
 
-		//var date:Date,
 		private var d1:int;
 		private var d2:int;
 		
@@ -234,6 +237,7 @@ package  fe {
 			vblack.cacheAsBitmap = true;
 			vconsol=new visConsol();	// SWF Dependency
 			verror=new visError();		// SWF Dependency
+			
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
 			vscene.stop();
@@ -555,22 +559,22 @@ package  fe {
 			grafon.drawFon(vfon, land.act.fon);
 		}
 		
-		//вызов при входе в конкретную локацию
-		//тут графический баг
+		// [Call when entering a specific location]
+		// [There's a graphical bug here]
 		public function ativateLoc(nloc:Location):void {
 			if (loc) loc.out();
-			loc=nloc;
+			loc = nloc;
 			grafon.drawLoc(loc);
 			cam.setLoc(loc);
 			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
 			gui.setAll();
-			currentMusic=loc.sndMusic;
+			currentMusic = loc.sndMusic;
 			Snd.playMusic(currentMusic);
 			gui.hpBarBoss();
-			if (t_die<=0) World.w.gg.controlOn();
+			if (t_die <= 0) World.w.gg.controlOn();
 			gui.dialText();
 			pers.invMassParam();
-			gc();
+			gc();	// Run garbage collection if required
 		}
 		
 		public function redrawLoc():void {
@@ -831,7 +835,7 @@ package  fe {
 		}
 		
 		public function gc():void {
-			System.pauseForGCIfCollectionImminent(0.25)	
+			System.pauseForGCIfCollectionImminent(0.25);
 		}
 		
 //=============================================================================================================

@@ -227,7 +227,9 @@ package fe.weapon {
 			
 			getXmlParam();
 			setNull();
-			if (!own.player) auto = true;
+			if (!own.player) {
+				auto = true;
+			}
 		}
 		
 		public static function create(owner:Unit, id:String, nvar:int=0):Weapon {
@@ -250,20 +252,29 @@ package fe.weapon {
 		}
 
 		public static function getWeaponInfo(id:String):XML {
-			if (cachedWeapons[id] != undefined) return cachedWeapons[id];
+			// Check cached weapons first
+			if (cachedWeapons[id]) {
+				return cachedWeapons[id];
+			}
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
-			if (node) cachedWeapons[id] = node;
+			if (node) {
+				cachedWeapons[id] = node;
+			}
 
 			return node;
 		}
 
 		public static function getAmmoInfo(id:String):XML {
-			var node:XML;
-			if (cachedAmmo[id] != undefined) return cachedAmmo[id];
+			// Check cached weapons first
+			if (cachedAmmo[id] != undefined) {
+				return cachedAmmo[id];
+			}
 
-			node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-			if (node) cachedAmmo[id] = node;
+			var node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+			if (node) {
+				cachedAmmo[id] = node;
+			}
 
 			return node;
 		}

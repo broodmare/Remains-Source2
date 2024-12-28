@@ -1,5 +1,5 @@
-package fe.serv
-{
+package fe.serv {
+
 	import flash.media.SoundChannel;
 
 	import fe.*;
@@ -11,12 +11,12 @@ package fe.serv
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 
-	public class Interact
-	{
+	public class Interact {
+
 		var inited:Boolean=false;
 		public var owner:Obj;
 		public var loc:Location;
-		public var coordinates = new Vector2();
+		public var coordinates:Vector2 = new Vector2();
 		
 		public var active:Boolean=true;	// [Object is active]
 		// [action displayed in GUI]
@@ -65,9 +65,9 @@ package fe.serv
 		public var unlock:int=0;		//способность к взлому
 		public var master:int=0;		//мастерство взлома
 		
-		public var stateText='';
-		public var actionText='';
-		public var sndAct='';
+		public var stateText:String = '';
+		public var actionText:String = '';
+		public var sndAct:String = '';
 		
 		public var successUnlock:Function;
 		public var fiascoUnlock:Function;
@@ -78,7 +78,7 @@ package fe.serv
 		public var area:Area;	//прикреплённая область
 		
 		public var sign:int=0;	//указатель
-		var t_sign:int=0;
+		var t_sign:int = 0;
 		
 		public var isMove:Boolean=false;		//есть движение
 		var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	//координаты начальной и конечной точки
@@ -97,14 +97,14 @@ package fe.serv
 		public var scrAct:Script, scrOpen:Script, scrClose:Script, scrTouch:Script;
 		
 		//изменения состояний, которые сохраняются
-		var saveMine:int=0;				// 101 - мина обезврежена или бахнула
-		var saveLock:int=0;				// 101 - открыто, 102 - заклинило
-		public var saveLoot:int=0;		// [1 - loot received, 2 - loot received, there is critical loot]
-		var saveOpen:int=0;				// 1 - открыто
-		var saveExpl:int=0;
+		var saveMine:int = 0;				// 101 - мина обезврежена или бахнула
+		var saveLock:int = 0;				// 101 - открыто, 102 - заклинило
+		public var saveLoot:int = 0;		// [1 - loot received, 2 - loot received, there is critical loot]
+		var saveOpen:int = 0;				// 1 - открыто
+		var saveExpl:int = 0;
 		
-		public const maxLockLvl=24;
-		public const maxMechLvl=7;
+		public const maxLockLvl:int = 24;
+		public const maxMechLvl:int = 7;
 		
 		public static var chanceUnlock:Array  = [0.90, 0.75, 0.50, 0.30, 0.15, 0.05, 0.01];
 		public static var chanceUnlock2:Array = [0.95, 0.80, 0.55, 0.35, 0.20, 0.08, 0.03];
@@ -119,7 +119,7 @@ package fe.serv
 			coordinates.X = own.coordinates.X;
 			coordinates.Y = own.coordinates.Y;
 			xml = nxml;
-			var rnd=true;
+			var rnd:Boolean = true;
 			if (xml && xml.@set.length()) rnd=false;	//если задано свойство set='1', не будет случайных параметров
 			//тип замка
 			if (node && node.@locktip.length()) lockTip=node.@locktip;
@@ -139,7 +139,8 @@ package fe.serv
 							}
 						}
 						if (Math.random()<lk-Math.floor(lk)) lock+=1;
-					} else {		//заданный замок
+					}
+					else {		//заданный замок
 						lock=Math.floor(lk);
 					}
 				}
@@ -152,9 +153,11 @@ package fe.serv
 					if (rnd) {
 						if (node.@minech.length()) {
 							if (Math.random()<Number(node.@minech))	mine=Math.floor(Math.random()*(Number(node.@mine)+Math.random()*loc.mechLevel+1));
-						} else mine=Math.floor(Number(node.@mine)+Math.random()*loc.mechLevel);
+						}
+						else mine=Math.floor(Number(node.@mine)+Math.random()*loc.mechLevel);
 						if (mine>=2 && Math.random()<0.25) mine--;
-					} else {
+					}
+					else {
 						mine=node.@mine;
 					}
 					if (node.@minetip.length()) mineTip=node.@minetip;
@@ -260,7 +263,8 @@ package fe.serv
 						if (lockLevel>5) lockLevel=5;
 					}
 					if (!difSet) allDif=lock+lockLevel*2;
-				} else {
+				}
+				else {
 					if (lock>maxMechLvl) lock=maxMechLvl;
 					if (!difSet) allDif=lock*3;
 				}
@@ -306,7 +310,7 @@ package fe.serv
 			inited=true;
 		}
 		
-		public function save(obj:Object) {
+		public function save(obj:Object):void {
 			obj.lock=saveLock;
 			obj.lockLevel=lockLevel;
 			obj.mine=saveMine;
@@ -344,7 +348,7 @@ package fe.serv
 			}
 		}
 		
-		public function update() {
+		public function update():void {
 			if (userAction && userAction != '') {
 				 actionText = Res.guiText(userAction);
 			}
@@ -510,8 +514,9 @@ package fe.serv
 		}
 		
 		//произвести действие
-		public function act() {
-			var verZhopa=0, verFail=0;
+		public function act():void {
+			var verZhopa:int = 0;
+			var verFail:int = 0;
 			if (action==0) return;
 			if (scrTouch) {
 				scrTouch.start();
@@ -603,7 +608,8 @@ package fe.serv
 									World.w.invent.minusItem('pin');
 									pinCrack=true;
 								}
-							} else lockDam1+=2;
+							}
+							else lockDam1+=2;
 							lockDam=(lockDam1+Math.random()*lockDam2)*World.w.pers.lockAtt;
 							lockHP-=lockDam;
 							if (lockHP<=0) {		//Замок заклинило
@@ -611,44 +617,53 @@ package fe.serv
 								World.w.gui.infoText('unLockZhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
 								replic('zhopa');
-							} else if (pinCrack) {
+							}
+							else if (pinCrack) {
 								World.w.gui.infoText('unLockFailP', null,null,false);	//замок не открыт, заколка сломана
 								replic('fail');
-							} else if (lockHP>100) {
+							}
+							else if (lockHP>100) {
 								World.w.gui.infoText('unLockFailA', null,null,false);	//замок не открыт, попробуйте ещё
-							} else {
+							}
+							else {
 								World.w.gui.infoText('unLockFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
-						} else if (lockTip==2) {
+						}
+						else if (lockTip==2) {
 							if (lockAtt==-100) lockAtt=World.w.pers.hackAtt;
 							lockAtt--;
 							if (lockAtt>10) World.w.gui.infoText('unTermLockFail2',null,null,false);	//терминал не взломан
 							else if (lockAtt>1) {
 								World.w.gui.infoText('unTermLockFail',lockAtt,null,false);	//терминал не взломан
 								replic('fail');
-							} else if (lockAtt==1) {
+							}
+							else if (lockAtt==1) {
 								World.w.gui.infoText('unTermLockFail1',null,null,false);	//терминал не взломан
 								replic('fail');
-							} else {					//терминал блокирован
+							}
+							else {					//терминал блокирован
 								setAct('lock',102);
 								replic('zhopa');
 								World.w.gui.infoText('unLockBlock');
 								if (fiascoUnlock!=null) fiascoUnlock();
 							}
-						} else if (lockTip==4) {		//отключение с помощью навыка ремонт
-							var lockDam=(lockDam1+Math.random()*lockDam2);
+						}
+						else if (lockTip==4) {		//отключение с помощью навыка ремонт
+							var lockDam:Number = (lockDam1+Math.random()*lockDam2);
 							lockHP-=lockDam;
 							if (lockHP<=0) {		//Удар током
 								discharge();
 								World.w.gui.infoText('unRepZhopa',null,null,false);
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
-							} else {
+							}
+							else {
 								World.w.gui.infoText('unRepFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
-						} else if (lockTip==5) {		//ремонт механизма
+						}
+						else if (lockTip==5) {		//ремонт механизма
 							lockDam=(lockDam1+Math.random()*lockDam2);
 							lockHP-=lockDam;
 							if (lockHP<=0) {		//Замок заклинило
@@ -656,12 +671,14 @@ package fe.serv
 								World.w.gui.infoText('unFixZhopa');
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
-							} else {
+							}
+							else {
 								World.w.gui.infoText('unFixFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
 						}
-					} else {						//успех	//замок открыт
+					}
+					else {						//успех	//замок открыт
 						setAct('lock',101);
 						if (lockTip==1) {
 							World.w.gui.infoText('unLock');
@@ -688,13 +705,15 @@ package fe.serv
 						update();
 					}
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
-				} else {
+				}
+				else {
 					World.w.gui.infoText('noPoss',null,null,false);
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 				}
 				unlock=0;
 				is_ready=false;
-			} else if (is_ready) {
+			}
+			else if (is_ready) {
 				actOsn();
 			}
 			is_ready=false;
@@ -708,7 +727,7 @@ package fe.serv
 		}
 		
 		//произвести основное действие
-		public function actOsn() {
+		public function actOsn():void {
 			if (cons) {
 				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	{
 					World.w.invent.minusItem(cons);
@@ -745,7 +764,7 @@ package fe.serv
 		}
 		
 		//сломать контейнер
-		public function dieCont() {
+		public function dieCont():void {
 			lootBroken=true;
 			if (cont!=null) {
 				loot();
@@ -761,7 +780,7 @@ package fe.serv
 			update();
 		}
 		
-		public function load(obj:Object) {
+		public function load(obj:Object):void {
 			if (obj==null) return;
 			if (obj.lock!=null) {
 				setAct('lock',obj.lock);
@@ -792,10 +811,8 @@ package fe.serv
 			}
 		}
 
-		public function setDoor()
-		{
-			if (inited && !open && (owner as Box).attDoor())
-			{
+		public function setDoor():void {
+			if (inited && !open && (owner as Box).attDoor()) {
 				open = true;
 				if (t_autoClose <= 0) World.w.gui.infoText('noClose', null, null, false);
 				return;
@@ -804,7 +821,7 @@ package fe.serv
 		}
 		
 		//неудачная попытка разминирования - взрыв
-		public function explosion() {
+		public function explosion():void {
 			if (saveExpl) return;
 			var un:Unit=new Unit();
 			un.loc=loc;
@@ -817,14 +834,14 @@ package fe.serv
 		}
 		
 		//неудачная попытка взлома силового поля - удар током
-		public function discharge() {
+		public function discharge():void {
 			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.coordinates.X,owner.coordinates.Y-owner.boundingBox.halfHeight);
 			damdis+=50;
 			if (damdis>500) damdis=500;
 		}
 		
 		//неудачная отключить сигнализацию - тревога
-		public function alarm() {
+		public function alarm():void {
 			if (saveExpl) return;
 			t_budilo=240;
 			setAct('expl',1);
@@ -833,7 +850,7 @@ package fe.serv
 		}
 		
 		//неудачная попытка отключить кнопку тревоги
-		public function alarm2() {
+		public function alarm2():void {
 			if (allact!='alarm') return;
 			t_budilo=240;
 			loc.signal();
@@ -845,12 +862,12 @@ package fe.serv
 		}
 		
 		//неудачная попытка взлома ячейки робота - тревога
-		public function robocellFail() {
+		public function robocellFail():void {
 			loc.robocellActivate();
 		}
 		
 		//создать робота
-		public function genRobot() {
+		public function genRobot():void {
 			if (allact!='robocell') return;
 			loc.createUnit('robot', coordinates.X, coordinates.Y, true, null, null, 30);
 			allact='';
@@ -862,17 +879,17 @@ package fe.serv
 			if (mineTip==6 && mine>0) return 1;
 			if (noRuna || lock==0) return 0;
 			if (gg.invent==null || mine>0) return 0;
-			var pick=gg.pers.getLockTip(lockTip);
-			var master=gg.pers.getLockMaster(lockTip)
+			var pick:int = gg.pers.getLockTip(lockTip);
+			var master:int = gg.pers.getLockMaster(lockTip)
 			if (lockTip==1 && gg.invent.items['runa'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			if (lockTip==2 && gg.invent.items['reboot'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			return 0;
 		}
 
-		public function useRuna(gg:UnitPlayer) {
+		public function useRuna(gg:UnitPlayer):void {
 			if (mineTip==6 && mine>0) {
 				if (fiascoRemine!=null) fiascoRemine();
-				setAct('mine',101);
+				setAct('mine', 101);
 				if (at_once>0) {
 					actOsn();
 				}
@@ -894,20 +911,21 @@ package fe.serv
 			}
 		}
 		
-		public function off() {
+		public function off():void {
 				stateText='';
 				active=false;
 				lock=0;
 		}
 		
-		public function allAct() {
+		public function allAct():void {
 			if (prob!=null) {
 				if (World.w.possiblyOut()==2) {
 					World.w.gui.infoText('noOutLoc',null,null,false);
 					return;
 				}
 				loc.land.gotoProb(prob, owner.coordinates.X, owner.coordinates.Y);
-			} else if (allact=='probreturn') {
+			}
+			else if (allact=='probreturn') {
 				if (loc.landProb!='') {
 					if (World.w.possiblyOut()==2) {
 						World.w.gui.infoText('noOutLoc',null,null,false);
@@ -915,33 +933,35 @@ package fe.serv
 					}
 					loc.land.gotoProb('', owner.coordinates.X, owner.coordinates.Y);
 				}
-			} else if (allact=='hack_robot') {
+			}
+			else if (allact=='hack_robot') {
 				World.w.gui.infoText('term1Act');
 				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				for each (var un:Unit in owner.loc.units) un.hack(World.w.pers.security);				
-			} else if (allact=='hack_lock') {
+			}
+			else if (allact=='hack_lock') {
 				World.w.gui.infoText('term2Act');
 				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				for each (var obj:Obj in owner.loc.objs) {
 					if (obj.inter) obj.inter.command('hack');
 				}
-			} else if (allact=='prob_help') {
+			}
+			else if (allact=='prob_help') {
 				if (loc.prob) loc.prob.showHelp();
-			} else if (allact=='electro_check') {
+			}
+			else if (allact=='electro_check') {
 				loc.electroCheck();
 				if (loc.electroDam<=0) World.w.gui.infoText('electroOff',null,null,true);
 				else World.w.gui.infoText('electroOn',null,null,true);
 			} 
-			else if (allact == 'comein')
-			{
+			else if (allact == 'comein') {
 				trace('Interacting with door at coordinates: (' + coordinates.X + ', ' + coordinates.Y + ')');
 		 		World.w.gg.outLoc(5, coordinates.X, coordinates.Y);
 			}
 			else if (allact=='bind') {
 				World.w.gg.bindChain(coordinates.X, coordinates.Y - 20);
 			}
-			else if (allact=='work' || allact=='lab' || allact=='stove')
-			{
+			else if (allact=='work' || allact=='lab' || allact=='stove') {
 				World.w.pip.workTip=allact;
 				World.w.pip.onoff(7);
 			}
@@ -952,39 +972,44 @@ package fe.serv
 				World.w.pip.travel=true;
 				World.w.pip.onoff(3,3);
 				World.w.pip.travel=true;
-			} else if (allact=='stand') {
+			}
+			else if (allact=='stand') {
 				World.w.stand.onoff(1);
-			} else if (allact=='exit') {
+			}
+			else if (allact=='exit') {
 				World.w.game.gotoNextLevel();
-			} else if (allact=='robocell') {
+			}
+			else if (allact=='robocell') {
 				World.w.gui.infoText('robocellOff');
 				setAct('open',1);
-			} else if (allact=='alarm') {
+			}
+			else if (allact=='alarm') {
 				World.w.gui.infoText('alarmOff');
 				setAct('open',1);
-			} else if (allact=='vault') {
+			}
+			else if (allact=='vault') {
 				World.w.pip.onoff(9);
-			} else owner.loc.allAct(owner,allact,allid);
+			}
+			else owner.loc.allAct(owner,allact,allid);
 		}
 		
 		//начало продолжительного действия над объектом
-		public function beginAct() {
+		public function beginAct():void {
 			if (allact=='comein') {
 				owner.setVisState('comein');
 			}
 		}
 		
-		public function shine() {
+		public function shine():void {
 			Emitter.emit('unlock', loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, {kol:10, rx:owner.boundingBox.width, ry:owner.boundingBox.height, dframe:6});
 		}
 		
-		public function signal(n:String) {
+		public function signal(n:String):void {
 			Emitter.emit(n, loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, {kol:6, rx:owner.boundingBox.halfWidth, ry:owner.boundingBox.height*0.8});
 		}
 		
 		
-		public function command(com:String, val:String=null)
-		{
+		public function command(com:String, val:String=null):void {
 			if (com=='hack' && is_hack) {
 				active=true;
 				setAct('mine',101);
@@ -1004,20 +1029,25 @@ package fe.serv
 				open=true;
 				setAct('open',1);
 				t_autoClose=autoClose;
-				if (allact && val!='13')	allAct();
+				if (allact && val!='13') {
+					allAct();
+				}
 			}
 			if (com=='close') {
 				open=false;
 				setAct('open',0);
 				if (open) t_autoClose=150;
-				if (allact && val!='13')	allAct();
+				if (allact && val!='13') {
+					allAct();
+				}
 			}
 			if (com=='dam') {
 				if (expl) explosion();
 				else if (knop && action==0) {
 					setAct('open',1);
 					if (loc.prob) loc.prob.check();
-				} else actOsn();
+				}
+				else actOsn();
 			}
 			if (com=='swap') {
 				open=!open;
@@ -1058,7 +1088,7 @@ package fe.serv
 			}
 		}
 		
-		public function move() {
+		public function move():void {
 			if (isMove && moveSt>0) {
 				var f:Number;
 				var pp=moveP;
@@ -1095,7 +1125,7 @@ package fe.serv
 			}
 		}
 		
-		public function moveTo(n:int) {
+		public function moveTo(n:int):void {
 			moveSt=n;
 			if (n==1) {
 				if (t_move>=0 && t_move<tStay) { //стоим в начале
@@ -1123,7 +1153,7 @@ package fe.serv
 			}
 		}
 		
-		public function sound(s:String=null) {
+		public function sound(s:String=null):void {
 			if (s == 'move') {
 				moveCh = Snd.ps('move', coordinates.X, coordinates.Y, 0);
 			}
@@ -1137,17 +1167,19 @@ package fe.serv
 			
 		}
 		
-		function replic(s:String) {
-			if (Math.random()<0.25) World.w.gg.replic(s);
+		private function replic(s:String):void {
+			if (Math.random() < 0.25) {
+				World.w.gg.replic(s);
+			}
 		}	
 		
 		// [confirm receipt of critical item]
-		public function receipt() {
+		public function receipt():void {
 			trace("Interact.as/receipt() - Important item, setting saveLoot to \"1\".");
 			saveLoot = 1;
 		}
 		
-		public function loot(impOnly:Boolean=false) {
+		public function loot(impOnly:Boolean=false):void {
 			if (loc == null || cont == 'empty') {
 				return;
 			}
@@ -1157,8 +1189,8 @@ package fe.serv
 
 			var kol:int;
 			var imp:int;
-			var is_loot=false;
-			var imp_loot=1;
+			var is_loot:Boolean = false;
+			var imp_loot:int = 1;
 			
 			if (xml && xml.item.length()) {
 				for each(var item:XML in xml.item) {

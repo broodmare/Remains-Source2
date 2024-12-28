@@ -15,8 +15,7 @@ package fe.serv {
 		private static var ny:Number;
 		private static var lootBroken:Boolean = false;
 		
-		public static function init():void
-		{
+		public static function init():void {
 			arr = [];
 			var n:Array = [];
 
@@ -270,18 +269,18 @@ package fe.serv {
 			}
 			else if (cont=='bomb') {
 				itemCount=3;
-				for (var i = 0; i < itemCount; i++) newLoot(1, Item.L_EXPL, 'dinamit');
+				for (var i:int = 0; i < itemCount; i++) newLoot(1, Item.L_EXPL, 'dinamit');
 			}
 			else if (cont=='expl') {
 				itemCount=Math.floor(Math.random()*4-1);
-				for (var i=0; i<=itemCount; i++) newLoot(1, Item.L_EXPL);
+				for (var j:int = 0; j<=itemCount; j++) newLoot(1, Item.L_EXPL);
 				newLoot(0.5, Item.L_COMPE);
 				if (World.w.pers.freel) newLoot(0.5,Item.L_EXPL);
 			}
 			else if (cont=='bigexpl') {
 				itemCount=Math.floor(Math.random()*4+2);
-				for (var i=0; i<=itemCount; i++) newLoot(1, Item.L_EXPL);
-				if (World.w.pers.freel) newLoot(0.5,Item.L_EXPL);
+				for (var k:int = 0; k <= itemCount; k++) newLoot(1, Item.L_EXPL);
+				if (World.w.pers.freel) newLoot(0.5, Item.L_EXPL);
 				newLoot(0.5, Item.L_COMPE);
 			}
 			else if (cont=='wbattle') {
@@ -345,7 +344,8 @@ package fe.serv {
 				if (Math.random()<0.25) {
 					if (Math.random()<0.6) loc.createUnit('tarakan',nx,ny,true);
 					else loc.createUnit('rat',nx,ny,true);
-				} else {
+				}
+				else {
 					itemCount=Math.floor(Math.random()*2);
 					if (World.w.pers.barahlo) itemCount+=2;
 					for (i=0; i<=itemCount; i++) newLoot(1, Item.L_STUFF);
@@ -360,7 +360,8 @@ package fe.serv {
 					if (Math.random()<0.4) loc.createUnit('tarakan',nx,ny,true);
 					else if (Math.random()<0.5) loc.createUnit('rat',nx,ny,true);
 					else loc.createUnit('bloat',nx,ny,true);
-				} else {
+				}
+				else {
 					itemCount=Math.floor(Math.random()*2);
 					for (i=0; i<=itemCount; i++) newLoot(1, Item.L_FOOD);
 					newLoot(0.3, Item.L_COMPP, 'herbs',Math.floor(Math.random()*6+1));
@@ -371,7 +372,8 @@ package fe.serv {
 				if (Math.random()<0.25) {
 					if (Math.random()<0.6) loc.createUnit('tarakan',nx,ny,true);
 					else loc.createUnit('rat',nx,ny,true);
-				} else {
+				}
+				else {
 					newLoot(0.8, Item.L_FOOD);
 					newLoot(0.5, Item.L_STUFF);
 					newLoot(0.2, Item.L_COMPP, 'herbs',Math.floor(Math.random()*6+1));
@@ -443,7 +445,7 @@ package fe.serv {
 			}
 			else if (cont=='cryo') {
 				itemCount=Math.floor(Math.random()*3);
-				for (var i=0; i<=itemCount; i++) newLoot(1, Item.L_ITEM,'pcryo');
+				for (var j:int = 0; j<=itemCount; j++) newLoot(1, Item.L_ITEM,'pcryo');
 				newLoot(0.5, Item.L_ITEM, 'gel');
 			}
 			else if (cont=='chest') {
@@ -460,7 +462,9 @@ package fe.serv {
 			}
 			else if (cont=='safe') {
 				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
-					for (i=0; i<4; i++) loc.createUnit('bloat',nx,ny,true);
+					for (var k = 0; k<4; k++) {
+						loc.createUnit('bloat', nx, ny, true);
+					}
 				}
 				else {
 					newLoot(lockDifficulty/100, Item.L_UNIQ);
@@ -715,7 +719,7 @@ package fe.serv {
 			return is_loot>0;
 		}
 		
-		public static function replic(s:String) {
+		public static function replic(s:String):void {
 			if (isrnd()) World.w.gg.replic(s);
 		}	
 		

@@ -127,8 +127,6 @@ package fe.loc {
 		public var itemsTip:String;				//особый тип лута
 		public var electroDam:Number=0;
 		public var trus:Number=0;				//постоянная тряска
-
-		private var lightingUpdates:int = 0;	// How many times to update the lighting
 		
 		// [Enemies]
 		public var tipEnemy:int=-1;				//тип случайных врагов
@@ -178,6 +176,7 @@ package fe.loc {
 		public var spaceY:int;
 		private var halfSpaceX:int;
 		private var halfSpaceY:int;
+		private var spaceLength:int;
 
 //**************************************************************************************************************************
 //
@@ -1325,6 +1324,9 @@ package fe.loc {
 					space[j * spaceX + i] = new Tile(i, j);
 				}
 			}
+
+			// Precompute space length
+			spaceLength = space.length;
 		}
 
 		// Returns a Tile from a room using (X, Y) coordinates
@@ -1342,7 +1344,6 @@ package fe.loc {
 			return space[index];
 		}
 
-		// Changed Math.floor calls to int
 		public function getAbsTile(nx:int, ny:int):Tile {
 			// Cache for speed
 			const mX:int = maxX;
@@ -1364,17 +1365,37 @@ package fe.loc {
 		}
 
 		public function collisionUnit(X:Number, Y:Number, objectWidth:Number=0, objectHeight:Number=0):Boolean {
-			var leftBound:Number = X - objectWidth / 2;
-			var rightBound:Number = X + objectWidth / 2;
-			var topBound:Number = Y - objectHeight;
+			// Precompute bounds
+			var halfWidth:Number = objectWidth / 2;
+			var leftBound:int = Math.floor((X - halfWidth) / tileX);
+			var rightBound:int = Math.floor((X + halfWidth) / tileX);
+			var topBound:int = Math.floor((Y - objectHeight) / tileY);
+			var bottomBound:int = Math.floor(Y / tileY);
 
-			for (var i:int = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-				for (var j:int = int(topBound / tileY); j <= int(Y / tileY); j++) {
-					if (i < LEFT_X || i >= spaceX || j < TOP_Y || j >= spaceY) continue;
-					if (getTile(i, j).phis > 0) return true;
+			// Clamp bounds to valid tile indices
+			var startI:int = Math.max(leftBound, LEFT_X);
+			var endI:int = Math.min(rightBound, spaceX - 1);
+			var startJ:int = Math.max(topBound, TOP_Y);
+			var endJ:int = Math.min(bottomBound, spaceY - 1);
+
+			// Iterate over tiles
+			for (var i:int = startI; i <= endI; i++) {
+				var indexBase:int = i;
+				for (var j:int = startJ; j <= endJ; j++) {
+					var index:int = j * spaceX + i;
+
+					// Bounds check to prevent out-of-range access
+					if (index < 0 || index >= spaceLength) continue;
+
+					var tile:Tile = space[index];
+
+					if (tile.phis > 0) {
+						return true; // Collision detected
+					}
 				}
 			}
-			return false;
+
+			return false; // No collision detected
 		}
 
 		// [try to lay a line. obj - the door to be ignored]
@@ -1883,6 +1904,7 @@ package fe.loc {
 
 			var dist1Squared:int = dist1 * dist1;
 			var dist2Squared:int = dist2 * dist2;
+			var invDistDiff:Number = 1 / (dist2Squared - dist1Squared);
 
 			var tileXCache:int = tileX;
 			var tileYCache:int = tileY;
@@ -1891,19 +1913,30 @@ package fe.loc {
 			var opacWaterCache:Number = opacWater;
 			var waterThreshold:int = 0;
 
-			grafon.lightBmp.lock();
+			var mX:int = maxX;
+			var mY:int = maxY;
+			var invTileX:Number = INV_TILEX;
+			var invTileY:Number = INV_TILEY;
 
+			var iTileXArray:Vector.<int> = new Vector.<int>(spaceXCache, true);
 			for (var i:int = 1; i < spaceXCache; i++) {
-				var iTileX:int = i * tileXCache;
+				iTileXArray[i] = i * tileXCache;
+			}
+
+			for (i = 1; i < spaceXCache; i++) {
+				var currentITileX:int = iTileXArray[i];
 				for (var j:int = 1; j < spaceYCache; j++) {
-					var currentTile:Tile = getTile(i, j);
+					var index:int = j * spaceX + i;
+					if (index < 0 || index >= space.length) continue;
+
+					var currentTile:Tile = space[index];
 					var n1:Number = currentTile.visi;
 
 					if (!retDark && n1 >= 1) continue;
 
-					var dx:int = iTileX - nx;
+					var dx:int = currentITileX - nx;
 					var dy:int = j * tileYCache - ny;
-					var rasst:int = (dx * dx) + (dy * dy);
+					var rasst:int = dx * dx + dy * dy;
 
 					if (rasst >= dist2Squared) {
 						if (retDark && currentTile.t_visi > 0) {
@@ -1913,7 +1946,8 @@ package fe.loc {
 						continue;
 					}
 
-					var n2:Number = (rasst <= dist1Squared) ? 1 : (dist2Squared - rasst) / (dist2Squared - dist1Squared);
+					var n2:Number = (rasst <= dist1Squared) ? 1 : (dist2Squared - rasst) * invDistDiff;
+					n2 = (n2 > 1) ? 1 : n2;
 
 					if (rasst <= dist2Squared) {
 						var dex:Number, dey:Number, maxe:int;
@@ -1949,7 +1983,17 @@ package fe.loc {
 						}
 
 						for (var e:int = 1; e <= maxe; e++) {
-							var t:Tile = getAbsTile(nx + e * dex, ny + e * dey);
+							var absNx:int = nx + e * dex;
+							var absNy:int = ny + e * dey;
+							if (absNx < 0 || absNx >= mX || absNy < 0 || absNy >= mY) {
+								continue;
+							}
+							var tileXIdx:int = int(absNx * invTileX);
+							var tileYIdx:int = int(absNy * invTileY);
+							var absIndex:int = tileYIdx * spaceX + tileXIdx;
+							if (absIndex < 0 || absIndex >= space.length) continue;
+
+							var t:Tile = space[absIndex];
 							var opac:Number = (opacWaterCache > 0 && t.water > waterThreshold && opacWaterCache > t.opac) ? opacWaterCache : t.opac;
 
 							if (opac > 0) {
@@ -1962,8 +2006,6 @@ package fe.loc {
 						}
 					}
 
-					n2 = (n2 > 1) ? 1 : n2;
-
 					if (n2 > n1 + 0.01) {
 						currentTile.t_visi = n2;
 						changePixelOpacity(currentTile, i, j);
@@ -1974,8 +2016,6 @@ package fe.loc {
 					}
 				}
 			}
-
-			grafon.lightBmp.unlock();
 		}
 		
 		public function lighting2():void {

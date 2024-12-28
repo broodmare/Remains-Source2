@@ -44,6 +44,7 @@ package fe.inter {
 		private static var cachedUnits:Object = {};
 		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
 		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
+		
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
@@ -339,11 +340,11 @@ package fe.inter {
 				
 				if (l.dif > 0) { // "Reccomended level" message
 					if (World.w.pers.level < l.dif) { // Player below reccomended level, highlight red
-						trace('Highlighting level requirement. Requirement not met. 	Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
+						//trace('Highlighting level requirement. Requirement not met. 	Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
 						s += '\n\n' + "<span class = 'red'>"+ Res.pipText('recLevel') + ' ' + Math.round(l.dif) + "</span>";
 					}
 					else {
-						trace('Highlighting level requirement. Requirement met. Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
+						//trace('Highlighting level requirement. Requirement met. Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
 						s += '\n\n' + Res.pipText('recLevel') + ' ' + Math.round(l.dif);
 					}
 
