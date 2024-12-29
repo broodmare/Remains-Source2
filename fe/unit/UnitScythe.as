@@ -1,4 +1,4 @@
-﻿package fe.unit {
+package fe.unit {
 
 	import fe.*;
 	import fe.loc.Location;
@@ -23,7 +23,7 @@
 		public function UnitScythe (cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			id = 'scythe';
-			vis = new visualScythe();
+			vis = new visualScythe();	// .SWF Dependency
 			vis.gotoAndPlay(Math.floor(Math.random() * vis.totalFrames + 1));
 			vis.osn.alpha = 0;
 			vis.vzz.alpha = 0;
@@ -42,8 +42,8 @@
 			getNapr();
 		}
 		
-		public override function forces() {
-
+		public override function forces():void {
+			// No forces since this flies around freely
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
@@ -84,7 +84,7 @@
 		public override function run(div:int=1) {
 			if (bind) {
 				coordinates.X = bind.coordinates.X - Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
-				coordinates.Y = bind.coordinates.Y - bind.objectHeight / 2 - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
+				coordinates.Y = bind.coordinates.Y - bind.boundingBox.halfHeight - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
 			}
 			else {
 				coordinates.X += velocity.X / div;
@@ -93,10 +93,7 @@
 					die();
 				}
 			}
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight;
-			bottomBound = coordinates.Y;
+			this.boundingBox.center(coordinates);
 		}
 		
 		override protected function control():void {

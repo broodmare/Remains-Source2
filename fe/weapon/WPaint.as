@@ -1,32 +1,31 @@
-package fe.weapon 
-{
+package fe.weapon {
+
 	import fe.*;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.loc.Tile;
 	
-	public class WPaint extends Weapon
-	{
-		var del:Object={x:0, y:0};
-		var celX:Number, celY:Number;
-		var pX:Number=-1, pY:Number=-1;
+	public class WPaint extends Weapon {
+
+		private var del:Object={x:0, y:0};
+		private var celX:Number, celY:Number;
+		private var pX:Number=-1, pY:Number=-1;
 		
 		public var color:int=1;
 		public var paintId:String='p_black';
 		public var paintNazv:String='';
 
-		public function WPaint(own:Unit, id:String, nvar:int=0)
-		{
-			super(own, id,nvar);
-			vWeapon=visualpaint;
-			vis=new vWeapon();
+		// Constructor
+		public function WPaint(own:Unit, id:String, nvar:int=0) {
+			super(own, id, nvar);
+			vWeapon = visualpaint;	// .SWF Dependency
+			vis = new vWeapon();
 		}
 		
-		public function lineCel():int
-		{
+		public function lineCel():int {
 			var res=0;
 			var bx:Number=owner.coordinates.X;
-			var by:Number=owner.coordinates.Y - owner.objectHeight * 0.75;
+			var by:Number=owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number = (celX - bx);
 			var ndy:Number = (celY - by);
 			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
@@ -34,15 +33,14 @@ package fe.weapon
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
 				var t:Tile=World.w.loc.getAbsTile(int(celX), int(celY));
-				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) {
+				if (t.phis==1 && celX>=t.boundingBox.left && celX<=t.boundingBox.right && celY>=t.boundingBox.top && celY<=t.boundingBox.bottom) {
 					return 0
 				}
 			}
 			return 1;
 		}
 		
-		public override function actions():void
-		{
+		public override function actions():void {
 			var ds=40*owner.storona;
 			if (owner.player) {
 				celX=owner.celX;
@@ -68,21 +66,18 @@ package fe.weapon
 			}
 		}
 		
-		public override function attack(waitReady:Boolean=false):Boolean
-		{
+		public override function attack(waitReady:Boolean=false):Boolean {
 			World.w.grafon.paint(pX, pY, coordinates.X, coordinates.Y,World.w.ctr.keyRun);
 			return true;
 		}
 
-		public function setPaint(npaint:String, ncolor:uint, nblend:String)
-		{
+		public function setPaint(npaint:String, ncolor:uint, nblend:String) {
 			paintId=npaint;
 			paintNazv=Res.txt('i',paintId);
 			World.w.grafon.brTrans.color=ncolor
 		}
 		
-		public override function animate():void
-		{
+		public override function animate():void {
 			if (vis) {
 				vis.y = coordinates.Y;
 				vis.x = coordinates.X;

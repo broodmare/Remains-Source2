@@ -38,7 +38,7 @@ package fe.unit {
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
@@ -91,7 +91,7 @@ package fe.unit {
 					vis.osn.rotation = velocity.Y * 4;
 				}
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);
 			if (sost==1 && aiState<=1) {
 				aiSpok=maxSpok-1;
@@ -99,7 +99,7 @@ package fe.unit {
 				budilo(250);
 			}
 		}
-		public function jump() {
+		public function jump():void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * Math.random();
 				velocity.X = jumpdy * (Math.random() - 0.5) * 0.5;
@@ -188,9 +188,9 @@ package fe.unit {
 					if (aiSpok>0) aiSpok--;
 				}
 				if (aiState==2 || aiState==3 || aiState==4 || aiState==5) {
-					if (celX != coordinates.X || celY != this.topBoundToCenter) {
+					if (celX != coordinates.X || celY != this.boundingBox.top) {
 						aiDx = celX - coordinates.X;
-						aiDy = celY - this.topBoundToCenter;
+						aiDy = celY - this.boundingBox.top;
 					}
 					if (aiDx>0) storona=1; else storona=-1;
 					aiRasst=Math.sqrt(aiDx*aiDx+aiDy*aiDy)+0.00001;

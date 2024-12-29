@@ -31,9 +31,9 @@ package fe.unit {
 			tr=1;
 			
 			//взять параметры из xml
-			vis=new visualUltraSentinel();
+			vis=new visualUltraSentinel();	// .SWF Dependency
 			vis.osn.gotoAndStop(1);
-			visshit=new visShit();
+			visshit=new visShit();			// .SWF Dependency
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible=false;
@@ -66,14 +66,14 @@ package fe.unit {
 			timerDie=150;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('baleblast');
 			Snd.ps('bale_e');
-			currentWeapon.vis.visible=false;
+			currentWeapon.vis.visible = false;
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -100,7 +100,7 @@ package fe.unit {
 			} 
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',22);
 		}
 		
@@ -166,28 +166,28 @@ package fe.unit {
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = vis.x;
 			weaponY = vis.y - 110;
 		}
 		
-		function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, coordinates.Y - objectHeight / 2, true);
-			un.fraction=fraction;
-			un.oduplenie=0;
-			emit_t=500;
+		private function emit() {
+			var un:Unit = loc.createUnit('vortex', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
+			un.fraction = fraction;
+			un.detectionDelay = 0;
+			emit_t = 500;
 			kol_emit--;
 		}
 		
 
-		var emit_t:int=0;
+		private var emit_t:int=0;
 		
-		var movePoints:Array=[{x:10,y:7},{x:37,y:7},{x:24,y:13},{x:7,y:18},{x:40,y:18}];
-		var mp=3;
-		var moveX:Number=0, moveY:Number=0;
-		var attState:int=0;
-		var t_turn:int=15;
-		var t_shit:int=300
+		private var movePoints:Array=[{x:10,y:7},{x:37,y:7},{x:24,y:13},{x:7,y:18},{x:40,y:18}];
+		private var mp=3;
+		private var moveX:Number=0, moveY:Number=0;
+		private var attState:int=0;
+		private var t_turn:int=15;
+		private var t_shit:int=300
 		//aiState
 		//0 - стоит на месте
 		//1 - движется
@@ -209,8 +209,8 @@ package fe.unit {
 			if (loc.gg.invulner) return;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-objectHeight;
-				celX = coordinates.X+objectWidth*storona*2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			

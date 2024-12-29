@@ -29,7 +29,7 @@ package fe.unit {
 			vulner[D_NECRO]=0;
 		}
 
-		public override function forces() {
+		public override function forces():void {
 			if (isFly) {
 				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed || rasst2 < 10000) {
 					velocity.multiply(0.80);
@@ -37,10 +37,13 @@ package fe.unit {
 				if (aiState!=1) {
 					velocity.multiply(0.80);
 				}
-			} else super.forces();
+			}
+			else {
+				super.forces();
+			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('black', 24);
 			isFly = true;
 		}
@@ -83,7 +86,7 @@ package fe.unit {
 					}
 					else {
 						celX = coordinates.X;
-						celY = this.topBoundToCenter;
+						celY = this.boundingBox.top;
 					}
 				}
 			}
@@ -98,7 +101,7 @@ package fe.unit {
 					if (aiSpok>0) aiSpok--;
 				}
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.topBoundToCenter;
+				spd.y = celY - this.boundingBox.top;
 				norma(spd,aiState==0?accel/2:accel);
 			}
 

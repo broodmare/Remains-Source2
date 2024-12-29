@@ -88,12 +88,12 @@ package fe.unit {
 			return obj;
 		}	
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function forces() {
+		public override function forces():void {
 			if (isFly) {
 				if (t_throw<=0 && velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed) {
 					spd.x = velocity.X;
@@ -102,13 +102,17 @@ package fe.unit {
 					velocity.X = spd.x;
 					velocity.Y = spd.y;
 				}
+				
 				if (isPlav) {
 					velocity.multiply(0.90);
 				}
-			} else super.forces();
+			}
+			else {
+				super.forces();
+			}
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);
 			if (sost==1) {
 				aiState=2;
@@ -129,9 +133,9 @@ package fe.unit {
 			else vis.dis.visible=false;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
-			weaponY = this.topBoundToCenter;
+			weaponY = this.boundingBox.top;
 			if (tr>=100) {
 				weaponY+=40;
 			}
@@ -165,7 +169,7 @@ package fe.unit {
 				aiTCh=Math.floor(Math.random()*100)+100;
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					celX = coordinates.X + (Math.random()*300+400)*(isrnd()?1:-1);
-					celY = this.topBoundToCenter;
+					celY = this.boundingBox.top;
 				}
 			}
 			//поиск цели
@@ -184,7 +188,7 @@ package fe.unit {
 				}
 				atkRasst=celDX*celDX+celDY*celDY;
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.topBoundToCenter;
+				spd.y = celY - this.boundingBox.top;
 				norma(spd,aiState==0?accel/2:accel);
 				if (aiState == 3) {
 					velocity.X -= spd.x;
@@ -254,7 +258,7 @@ package fe.unit {
 				if (World.w.showHit == 1 || World.w.showHit == 2 && t_hitPart == 0) {
 					visDamDY -= 15;
 					t_hitPart = 10;
-					if (sost < 3 && isVis && !invulner && bul.flame == 0) numbEmit.cast(loc, coordinates.X, coordinates.Y-objectHeight / 2 + visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost < 3 && isVis && !invulner && bul.flame == 0) numbEmit.cast(loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight + visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				t_krut = 45;
 				return -1;

@@ -225,7 +225,7 @@ package fe.unit
 			var v:Vector2 = new Vector2(v[0], v[1]);
 
 			v.X = cx - owner.coordinates.X;
-			v.Y = cy - owner.coordinates.Y + owner.objectHeight;
+			v.Y = cy - owner.coordinates.Y + owner.boundingBox.height;
 
 			var rasst:Number = v.magnitude();
 			
@@ -258,8 +258,8 @@ package fe.unit
 				
 				var v:Vector2 = new Vector2();
 				
-				v.X = un.coordinates.X - X;
-				v.Y = un.coordinates.Y - un.objectHeight / 2 - Y;
+				v.X = X - un.coordinates.X;
+				v.Y = Y - un.boundingBox.bottom;
 				var rad2:Number=(v.X * v.X + v.Y * v.Y);
 				
 				if (rad2 > rad * rad) continue;

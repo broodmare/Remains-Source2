@@ -1025,7 +1025,6 @@ package fe.inter {
 				trace('Playing dialogue: "' + id +'".');
 
 				xml = Res.currentLanguageData.txt.(@id==id);
-				if (xml.length()==0) xml=Res.fallbackLanguageData.txt.(@id==id);
 				if (xml.length()==0) return false;
 				xml=xml.n[0];
 				if (xml.length()==0) return false;
@@ -1218,8 +1217,8 @@ package fe.inter {
 			if (gg.teleObj && gg.pers.throwForce>0 && gg.teleObj.massa>0.1) {
 				tharrow.visible=true;
 				var ndx = gg.teleObj.coordinates.X - gg.coordinates.X
-				var ndy = gg.teleObj.coordinates.Y - gg.teleObj.objectHeight / 2 - gg.coordinates.Y + gg.objectHeight / 2 - 10;
-				World.w.cam.setKoord(tharrow, World.w.gg.teleObj.coordinates.X, World.w.gg.teleObj.coordinates.Y - World.w.gg.teleObj.objectHeight / 2);
+				var ndy = gg.teleObj.coordinates.Y - gg.teleObj.boundingBox.halfHeight - gg.coordinates.Y + gg.boundingBox.halfHeight - 10;
+				World.w.cam.setKoord(tharrow, World.w.gg.teleObj.coordinates.X, World.w.gg.teleObj.coordinates.Y - World.w.gg.teleObj.boundingBox.halfHeight);
 				tharrow.rotation = Math.atan2(ndy, ndx) / Math.PI * 180;
 				var alph:Number = gg.throwForceRelat();
 				tharrow.alpha=alph;

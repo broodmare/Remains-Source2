@@ -1,6 +1,6 @@
 package fe.entities {
 	
-	//Базовый класс для всех объектов
+	// [Base class for all objects]
 	import flash.display.MovieClip;
 
 	import fe.World;
@@ -12,8 +12,8 @@ package fe.entities {
 		public var vis:MovieClip; // Movieclip that holds the entity's sprite
 
 		public var loc:Location;	// What room the entity is currently in
-		public var nobj:Entity
-		public var pobj:Entity;		// Next Obj in processing chain, Previous Obj in processing chain
+		public var nobj:Entity		// Next Obj in processing chain
+		public var pobj:Entity;		// Previous Obj in processing chain
 		public var in_chain:Boolean=false;
 		
 		public var stay:Boolean=false;
@@ -24,6 +24,7 @@ package fe.entities {
 		public var velocity:Vector2 = new Vector2();	// The entity's [X, Y] movement stored as a vector
 		
 		public function Entity() {
+
 		}
 
 		public function addVisual():void {

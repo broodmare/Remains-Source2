@@ -1,77 +1,89 @@
-package fe
-{
+package fe {
+
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.errors.IOError;
 	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
-	
-	public class TextLoader {
-		public var id:String;
-		public var n:int = 0;
-		
-		private var defaultLanguage:Boolean = false; // Indicates if the language being loaded is used as the fall-back default language.
-		private var filepath:String;
 
-		private var loader_text:URLLoader; 
-		public var progressLoad:Number = 0;
+    public class TextLoader extends EventDispatcher {
 		
-		public var loaded:Boolean  = false;
-		public var errLoad:Boolean = false;
-		
-		public var xmlData:XML;
-		
-		public function TextLoader(filePath:String, isDefault:Boolean = false) {
-			defaultLanguage = isDefault;
-			filepath = 'Modules/core/Language/' + filePath;
+		public var xmlData:XML;			// Holds data for async loading
+		private var fileURL:String;		// The path of the file
+		private var loader:URLLoader;	// Built-in Flash loader 
 
-			loader_text = new URLLoader();
-			var request:URLRequest = new URLRequest(filepath);
-			
-			loader_text.addEventListener(Event.COMPLETE, onCompleteLoadText);
-			loader_text.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
-			loader_text.addEventListener(ProgressEvent.PROGRESS, funProgress);
-			
-			World.w.load_log += 'Attempting to load language file from: ' + filepath + '.\n';
+		public static const TEXT_LOADED:String = "text_Loaded";
 
-			loader_text.load(request); 
+		// Constructor
+		public function TextLoader() {
+
 		}
 
-		private function onCompleteLoadText(event:Event):void
-		{
-			loader_text.removeEventListener(Event.COMPLETE, onCompleteLoadText);
-			loader_text.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
-			loader_text.removeEventListener(ProgressEvent.PROGRESS, funProgress);
+		// Asynchronous loading (skips while loading)
+		public function load(url:String):void {
+			fileURL = url;
+			var loaderURL:URLRequest = new URLRequest(fileURL);
+			loader = new URLLoader();
 
-			loaded = true;
-			World.w.load_log += filepath + ' loaded\n';
+			loader.addEventListener(Event.COMPLETE, loaderFinished);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loaderFinished);
+			loader.load(loaderURL);
+		}
+
+		// Synchronous loading (waits until this is finished)
+		public function syncLoad(url:String):* {
+			var file:File = File.applicationDirectory.resolvePath(url);
+			var stream:FileStream = new FileStream();
 			try {
-				xmlData = new XML(loader_text.data);
-				if (defaultLanguage) Res.fallbackLanguageData = xmlData; // IF THIS LANGAUGE IS THE DEFAULT, COPY IT TO res.fallbackLanguage TO USE AS A FALLBACK.
-				loaded = true;
-			} 
-			catch(err) {
-				trace('ERROR: (00:1F)');
-				World.w.load_log += 'Text file error ' + filepath + '\n';
-				errLoad = true;
+				// Open the local file synchronously for reading, then parse the entire file into a string
+				stream.open(file, FileMode.READ);
+				var fileData:String = stream.readUTFBytes(stream.bytesAvailable);
+
+				 // Determine the file type
+				if (endsWith(url.toLowerCase(), ".xml")) {
+					return new XML(fileData); // Parse and return XML data
+				}
+				else if (endsWith(url.toLowerCase(), ".json")) {
+					return JSON.parse(fileData); // Parse and return JSON data
+				}
+				else {
+					trace("TextLoader/syncLoad() - Unsupported file type: " + url);
+				}
+			}
+			catch (error:Error) {
+				trace("TextLoader/syncLoad() - Error loading file: " + file.nativePath + " Error: " + error.message)
+			}
+			finally {
+				stream.close();
 			}
 
-			World.w.textsLoadOk();
+			return null; // Failsafe
 		}
-		
-		private function onErrorLoadText(event:IOErrorEvent):void {
-			loader_text.removeEventListener(Event.COMPLETE, onCompleteLoadText);
-			loader_text.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
-			loader_text.removeEventListener(ProgressEvent.PROGRESS, funProgress);
 
-			errLoad = true;
-			World.w.load_log += filepath + ' failed to load.\n';
-			World.w.textsLoadOk();
+		private function endsWith(str:String, suffix:String):Boolean {
+            if (str == null || suffix == null) {
+                return false;
+            }
+            return str.lastIndexOf(suffix) == (str.length - suffix.length);
         }
-		
-		private function funProgress(event:ProgressEvent):void {
-			progressLoad = event.bytesLoaded / event.bytesTotal;
-			World.w.textProgressLoad = progressLoad;
-        }	
-	}	
+
+		private function loaderFinished(event:Event):void {
+			event.target.removeEventListener(Event.COMPLETE, loaderFinished);
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderFinished);
+			switch (event.type) {
+				case Event.COMPLETE:
+					xmlData = new XML(loader.data);
+					dispatchEvent(new Event(TextLoader.TEXT_LOADED));
+					break;
+				
+				case IOErrorEvent.IO_ERROR:
+					trace('TextLoader.as/loaderFinished() - File: "' + fileURL + '" failed to load! IO_ERROR.');
+					break;
+			}
+		}
+	}
 }

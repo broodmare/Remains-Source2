@@ -1,5 +1,5 @@
-package fe.weapon
-{	
+package fe.weapon {
+
 	import flash.geom.Point;
 	import flash.utils.*;
 	import flash.media.SoundChannel;
@@ -18,7 +18,7 @@ package fe.weapon
 
 	public class Weapon extends Obj {
 		
-		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
+		public static var weaponPerks:Array = ['pistol', 'shot', 'commando', 'rifle', 'perf', 'laser', 'plasma', 'pyro', 'acute', 'stunning']
 		public static var variant2:String = ' - II';
 		
 		public var b:Bullet;
@@ -35,8 +35,8 @@ package fe.weapon
 		public var flare:String;				//[flash]
 		public var visexpl:String;				//[explosion]
 		
-		var is_attack:Boolean = false;			//	[is the attack key pressed?]
-		var is_pattack:Boolean = false;	
+		public var is_attack:Boolean = false;			//	[is the attack key pressed?]
+		public var is_pattack:Boolean = false;	
 		
 		public var t_attack:int=0;
 		public var t_prep:int=0;
@@ -49,8 +49,8 @@ package fe.weapon
 		public var skillConf:Number=1;			//модификатор, зависит от соответствия уровня скилла, 1 - норм, 0.8 - скилл на 1 уровень ниже, 0.6 - скилл на 2 уровня ниже
 		public var skillPlusDam:Number=1;		//усиление оружия низких уровней;
 		public var weaponSkill:Number=1;	//умение для гг
-		var t_ret:int=0;
-		var rotUp:Number=0;
+		private var t_ret:int=0;
+		private var rotUp:Number=0;
 		public var jammed:Boolean=false;	//заклинило
 		public var kol_shoot:int=0;	//	количество сделанных выстрелов
 		public var ready:Boolean=false; //оружие наведено на цель
@@ -151,7 +151,7 @@ package fe.weapon
 		public var shell:Boolean=false;	//выбрасывает гильзу
 		public var fromWall:Boolean=false;	//стрелять из стены
 		public var bulBlend:String='screen';
-		var emitShell:Emitter=Emitter.arr['gilza'];
+		private var emitShell:Emitter=Emitter.arr['gilza'];
 		
 		//дополнительные эффекты
 		public var dopEffect:String;		//эффект
@@ -189,7 +189,7 @@ package fe.weapon
 		public var ammoMod:int=-1;		//изменение типа урона
 		
 		
-		//SATS
+		// SATS
 		public var satsQue:int = 1;
 		public var satsCons:Number = 10;
 		public var noSats:Boolean = false;	// [Do not support]
@@ -197,7 +197,7 @@ package fe.weapon
 		public var noTrass:Boolean = false;	// [Do not trace]
 		public var satsMelee:Boolean = false;
 		
-		//звуки
+		// Sounds
 		public var sndShoot:String='';
 		public var sndShoot_n:int=1;
 		public var sndReload:String='';
@@ -205,19 +205,18 @@ package fe.weapon
 		public var sndHit:String='';
 		public var snd_t_prep1:int=0;
 		public var snd_t_prep2:int=0;
-		var sndCh:SoundChannel;
+		public var sndCh:SoundChannel;
 		
 		public var hp:int, maxhp:int=100;
 		public var price:int=0;
-		var breaking:Number=0;
+		public var breaking:Number=0;
 
 		public static var cachedWeaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 
 		private static var cachedWeapons:Object	= {}; // Save object nodes that have been used before to avoid parsing XML for lots of objects.
 		private static var cachedAmmo:Object	= {};
 
-		public function Weapon(own:Unit, nid:String, nvar:int=0)
-		{
+		public function Weapon(own:Unit, nid:String, nvar:int=0) {
 			sloy=2;
 			owner=own;
 			id=nid;
@@ -228,13 +227,13 @@ package fe.weapon
 			
 			getXmlParam();
 			setNull();
-			if (!own.player) auto = true;
+			if (!own.player) {
+				auto = true;
+			}
 		}
 		
-		public static function create(owner:Unit, id:String, nvar:int=0):Weapon
-		{
-			if (id.charAt(id.length-2)=='^')
-			{
+		public static function create(owner:Unit, id:String, nvar:int=0):Weapon {
+			if (id.charAt(id.length-2)=='^') {
 				id=id.substr(0,id.length-2);
 				nvar=1;
 			}
@@ -252,34 +251,39 @@ package fe.weapon
 			return w;
 		}
 
-		public static function getWeaponInfo(id:String):XML
-		{
-			if (cachedWeapons[id] != undefined) return cachedWeapons[id];
+		public static function getWeaponInfo(id:String):XML {
+			// Check cached weapons first
+			if (cachedWeapons[id]) {
+				return cachedWeapons[id];
+			}
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
-			if (node) cachedWeapons[id] = node;
+			if (node) {
+				cachedWeapons[id] = node;
+			}
 
 			return node;
 		}
 
-		public static function getAmmoInfo(id:String):XML
-		{
-			var node:XML;
-			if (cachedAmmo[id] != undefined) return cachedAmmo[id];
+		public static function getAmmoInfo(id:String):XML {
+			// Check cached weapons first
+			if (cachedAmmo[id] != undefined) {
+				return cachedAmmo[id];
+			}
 
-			node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-			if (node) cachedAmmo[id] = node;
+			var node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+			if (node) {
+				cachedAmmo[id] = node;
+			}
 
 			return node;
 		}
 		
-		public override function err():String
-		{
+		public override function err():String {
 			return 'Error weapon '+nazv+':'+(owner?owner.nazv:'????');
 		}
 		
-		public function getXmlParam():void
-		{
+		public function getXmlParam():void {
 			//общие характеристики
 			var node:XML = getWeaponInfo(id);
 			
@@ -323,27 +327,23 @@ package fe.weapon
 				if (variant>0) getVisParam(node.vis[variant]);
 			}
 			if (tip>0 || svisv) {
-				vWeapon=Res.getClass(svisv, svis, visp10mm);
+				vWeapon=Res.getClass(svisv, svis, visp10mm);	// .SWF Dependency
 				vis=new vWeapon();
 			}
 			if (owner && owner.weaponKrep>0) krep=owner.weaponKrep;
 			if (vis && vis.totalFrames>1) animated=true;
 			if (flare==null) flare=visbul;
-			if (visbul)
-			{ 
-				try
-				{
+			if (visbul) { 
+				try {
 					vBullet = getDefinitionByName('visbul' + visbul) as Class;
 				}
-				catch (err:ReferenceError)
-				{
+				catch (err:ReferenceError) {
 					trace("ERROR: (00:11)");
-					vBullet = visualBullet;
+					vBullet = visualBullet;	// .SWF Dependency
 				}
 			}
-			else
-			{
-				vBullet = visualBullet;
+			else {
+				vBullet = visualBullet;	// .SWF Dependency
 			}
 			
 			//звуки
@@ -367,8 +367,7 @@ package fe.weapon
 				if (variant>0) getDopParam(node.dop[variant]);
 			}
 			//боеприпасы
-			if (node.a.length())
-			{
+			if (node.a.length()) {
 				ammo = ammoBase = node.a[0];
 				var ammoNode = getAmmoInfo(ammo);
 				setAmmo(ammo,ammoNode);
@@ -389,8 +388,7 @@ package fe.weapon
 			}
 		}
 		
-		protected function getVisParam(node:XML):void
-		{
+		protected function getVisParam(node:XML):void {
 			if (node==null) return;
 			if (node.@vweap.length()>0) svisv=node.@vweap;
 			if (node.@tipdec.length()) tipDecal=node.@tipdec;
@@ -404,8 +402,7 @@ package fe.weapon
 			if (node.@flare.length()) flare=node.@flare;
 		}
 		
-		protected function getSndParam(node:XML):void
-		{
+		protected function getSndParam(node:XML):void {
 			if (node==null) return;
 			if (node.@shoot.length()) sndShoot=node.@shoot;
 			if (node.@shoot_n.length()) sndShoot_n=node.@shoot_n;
@@ -417,8 +414,7 @@ package fe.weapon
 			if (node.@noise.length()) noise=node.@noise;
 		}
 		
-		protected function getDopParam(node:XML):void
-		{
+		protected function getDopParam(node:XML):void {
 			if (node==null) return;
 			if (node.@vision.length()) visionMult=node.@vision;
 			if (node.@effect.length()) dopEffect=node.@effect;
@@ -427,8 +423,7 @@ package fe.weapon
 			if (node.@probiv.length()) probiv=node.@probiv;
 		}
 		
-		protected function getPhisParam(node:XML):void
-		{
+		protected function getPhisParam(node:XML):void {
 			if (node==null) return;
 			if (node.@massa>0) massa=node.@massa/50;
 			else massa=0;
@@ -447,8 +442,7 @@ package fe.weapon
 			if (node.@volna.length()) volna=true;
 		}
 		
-		protected function getCharParam(node:XML):void
-		{
+		protected function getCharParam(node:XML):void {
 			if (node==null) return;
 			if (node.@maxhp.length()) maxhp=node.@maxhp;
 			if (node.@damage.length()) damage=node.@damage;
@@ -475,8 +469,7 @@ package fe.weapon
 			if (node.@auto.length()) auto=(node.@auto!='0');
 		}
 		
-		protected function getAmmoParam(node:XML):void
-		{
+		protected function getAmmoParam(node:XML):void {
 			if (node==null) return;
 			if (node.@holder.length()) holder=node.@holder;
 			if (node.@rashod.length()) rashod=node.@rashod;
@@ -500,7 +493,7 @@ package fe.weapon
 		}
 		
 		public override function step():void {
-			actions();		//различные действия
+			actions();		// [Various actions]
 			if (owner) owner.setWeaponPos(tip);
 			if (vis) animate();		//анимация
 		}
@@ -541,7 +534,7 @@ package fe.weapon
 			consMult=1;
 			damMult=pers.allDamMult;
 			if (skill==2 || skill==3 || skill==4) damMult*=pers.gunsDamMult;
-			var razn=lvl-pers.getWeapLevel(skill);
+			var razn:int = lvl-pers.getWeapLevel(skill);
 			if (razn<0) skillPlusDam=1-razn*0.1;
 			else skillPlusDam=1;
 			speedMult=1;
@@ -769,8 +762,7 @@ package fe.weapon
 			return true;
 		}
 		
-		protected function weaponAttack():void
-		{
+		protected function weaponAttack():void {
 			if (jammed) {
 				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.w.gui.infoText('weaponCircuit',null,null,false);
 				else World.w.gui.infoText('weaponJammed',null,null,false);
@@ -782,9 +774,8 @@ package fe.weapon
 			else breaking = 0;
 		}
 		
-		protected function checkAvail():Boolean
-		{
-			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+		protected function checkAvail():Boolean {
+			var razn:int = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.8;
 			else if (razn==2) skillConf=0.6;
 			else if (razn>2) {
@@ -806,9 +797,9 @@ package fe.weapon
 		public function getBulXY():void {
 			try {
 				if (vis && vis.emit && vis.parent) {
-					var p:Point=new Point(vis.emit.x,vis.emit.y);
-					var p1:Point=vis.localToGlobal(p);
-					p1=vis.parent.globalToLocal(p1);
+					var p:Point = new Point(vis.emit.x, vis.emit.y);
+					var p1:Point = vis.localToGlobal(p);
+					p1 = vis.parent.globalToLocal(p1);
 					bulCoords.X = p1.x;
 					bulCoords.Y = p1.y;
 				}
@@ -822,17 +813,17 @@ package fe.weapon
 			}
 		}
 		
-		protected function shoot():Bullet
-		{
+		protected function shoot():Bullet {
 			// [Misfire]
 			if (breaking > 0 && owner && owner.player) {
-				var rnd = Math.random();
-				var jm = (owner as UnitPlayer).pers.jammedMult;
+				var rnd:Number = Math.random();
+				var jm:Number = (owner as UnitPlayer).pers.jammedMult;
 				if (rnd < breaking / Math.max(20, holder) * jm) {
 					t_ret = 2;
 					jammed = true;
 					return null;
-				} else if (rnd < breaking / 5 * jm) {
+				}
+				else if (rnd < breaking / 5 * jm) {
 					t_ret = 2;
 					if (rapid > 5) World.w.gui.infoText('misfire', null, null, false);
 					Snd.ps('no_ammo', coordinates.X, coordinates.Y);
@@ -842,18 +833,18 @@ package fe.weapon
 
 			if (holder > 0 && hold < rashod) return null;
 			
-			var sk = 1;
+			var sk:int = 1;
 			
 			if (owner) {
 				sk = owner.weaponSkill;
 				if (owner.player) sk = weaponSkill;
 			}
 			
-			var r = (Math.random() - 0.5) * (deviation * (1 + breaking * 2) / skillConf / (sk + 0.01) + owner.mazil) * 3.1415 / 180 * devMult;
+			var r:Number = (Math.random() - 0.5) * (deviation * (1 + breaking * 2) / skillConf / (sk + 0.01) + owner.mazil) * 3.1415 / 180 * devMult;
 			
 			getBulXY();
 			
-			for (var i = 0; i < kol; i++) {
+			for (var i:int = 0; i < kol; i++) {
 				if (navod) {
 					b = new SmartBullet(owner, bulCoords, vBullet);
 					(b as SmartBullet).setCel(World.w.gg, navod);
@@ -865,14 +856,11 @@ package fe.weapon
 				b.weap = this;
 				
 				if (b.vis) b.vis.blendMode = bulBlend;
-				if (fromWall)
-				{
-					try
-					{
+				if (fromWall) {
+					try {
 						if (loc.getAbsTile(bulCoords.X, bulCoords.Y).phis) b.inWall = true;
 					}
-					catch(err)
-					{ 
+					catch(err) { 
 						trace("ERROR: (00:14)");
 					}
 				}
@@ -948,14 +936,11 @@ package fe.weapon
 				}
 			}
 			if (owner.player && tip<4 && tip!=0 && !(loc.train || World.w.alicorn)) hp-=(1+ammoHP);
-			if (animated && t_shoot<=1)
-			{
-				try
-				{
+			if (animated && t_shoot<=1) {
+				try {
 					vis.gotoAndPlay('shoot');
 				}
-				catch (err)
-				{
+				catch (err) {
 					trace("ERROR: (00:15) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"shoot\"!");
 				}
 				t_shoot=3;
@@ -971,26 +956,22 @@ package fe.weapon
 		}
 		
 		// [Resulting damage]
-		public function resultDamage(dam0:Number, sk:Number=1):Number
-		{
+		public function resultDamage(dam0:Number, sk:Number=1):Number {
 			return (dam0+damAdd)*damMult*sk*skillPlusDam*(1-breaking*0.3);
 		}
 
 		// [Resulting range]
-		public function resultPrec(pm:Number=1, sk:Number=1):Number
-		{
+		public function resultPrec(pm:Number=1, sk:Number=1):Number {
 			return precision * precMult * (1 + (sk - 1) * 0.5) * pm * owner.precMultCont;
 		}
 
 		// Resulting attack time
-		public function resultRapid(rap0:Number, sk:Number=1):Number
-		{
+		public function resultRapid(rap0:Number, sk:Number=1):Number {
 			return rap0;
 		}
 		
-		public function setTrass(gr:Graphics):void
-		{
-			var rot3=Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+		public function setTrass(gr:Graphics):void {
+			var rot3:Number = Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
 			trasser.loc = owner.loc;
 			trasser.X = trasser.begx = coordinates.X;
 			trasser.Y = trasser.begy = coordinates.Y;
@@ -1004,15 +985,12 @@ package fe.weapon
 			trasser.trass(gr);
 		}
 		
-		public function isLine(cx:Number, cy:Number):Boolean
-		{
+		public function isLine(cx:Number, cy:Number):Boolean {
 			if (checkLine) return owner.loc.isLine(coordinates.X, coordinates.Y, cx, cy);
 			return true;
 		}
 		
-		
-		protected function setBullet(bul:Bullet):void
-		{
+		protected function setBullet(bul:Bullet):void {
 			bul.tipDamage=tipDamage;
 			bul.tipDecal=tipDecal;
 			bul.otbros=otbros*otbrosMult*ammoOtbros;
@@ -1042,8 +1020,7 @@ package fe.weapon
 			if (absPierRnd>0 && Math.random()<absPierRnd*critCh) bul.pier=1000;
 		}
 		
-		public function reloadWeapon():void
-		{
+		public function reloadWeapon():void {
 			jammed=false;
 			if (ammo=='recharg') return;
 			if (owner && owner.player && ammo!='not') {
@@ -1060,15 +1037,15 @@ package fe.weapon
 				hold+=kol;
 				World.w.invent.items[ammo].kol-=kol;
 				World.w.invent.mass[2]-=World.w.invent.items[ammo].mass*kol;
-			} else {
+			}
+			else {
 				if (ammoTarg!=ammo) setAmmo(ammoTarg);
 				hold=holder;
 			}
 		}
 		
 		// [Set the type of ammunition used]
-		public function setAmmo(nammo:String=null, node:XML=null):void
-		{
+		public function setAmmo(nammo:String=null, node:XML=null):void {
 			if (nammo != null) ammo = nammo;
 			if (node == null) {
 				node = World.w.invent.items[ammo].xml;
@@ -1099,8 +1076,7 @@ package fe.weapon
 		}
 		
 		//разрядить
-		public function unloadWeapon():void
-		{
+		public function unloadWeapon():void {
 			if (owner && owner.player && holder && hold && ammo!='' && ammo!='recharg' && ammo!='not') {
 				World.w.gui.infoText('unloadWeapon',nazv,null,false);
 				(owner as UnitPlayer).invent.items[ammo].kol+=hold;
@@ -1111,8 +1087,7 @@ package fe.weapon
 		}
 		
 		//[0-ready to fire, 1-shooting, 2-empty, 3-reloading, 4-out of ammo, 5-broken, 6-out of mana]
-		public function status():int
-		{
+		public function status():int {
 			if (hp<=0) return 5;
 			if (jammed) return 2;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && hold<rashod) {
@@ -1126,29 +1101,25 @@ package fe.weapon
 		}
 		
 		//[Availability for use]
-		public function avail():int
-		{
+		public function avail():int {
 			if (hp<=0) return -2;
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) return -1; 
-			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+			var razn:int = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (World.w.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) return -1;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && World.w.invent.items[ammo].kol<rashod) return 0;
 			return 1;
 		}
 		
-		public function repair(nhp:int):void
-		{
+		public function repair(nhp:int):void {
 			hp+=nhp;
 			if (hp>maxhp) hp=maxhp;
 		}
 		
-		public function crash(dam:int=1):void
-		{
+		public function crash(dam:int=1):void {
 			
 		}
 
-		public function initReload(nammo:String=''):void
-		{
+		public function initReload(nammo:String=''):void {
 			if (!jammed && (holder<=0 || (hold==holder && nammo=='') || recharg>0)) return;
 			if (nammo=='') ammoTarg=ammo;
 			if (owner.player) {
@@ -1177,12 +1148,10 @@ package fe.weapon
 				if (reload>0) {
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) {
-						try
-						{
+						try {
 							vis.gotoAndPlay('reload');
 						}
-						catch (err)
-						{
+						catch (err) {
 							trace("ERROR: (00:16) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"reload\"!");
 						}
 					}
@@ -1191,13 +1160,11 @@ package fe.weapon
 			}
 		}
 
-		public function detonator():Boolean
-		{
+		public function detonator():Boolean {
 			return false;
 		}
 
-		public function animate():void
-		{
+		public function animate():void {
 			if (!vis) return;
 			vis.x = coordinates.X - t_ret * vis.scaleX * 2;
 			vis.y = coordinates.Y;
@@ -1205,14 +1172,11 @@ package fe.weapon
 				if (t_prep<prep && t_prep>1) {
 					vis.gotoAndStop(t_prep);
 				}
-				if (t_prep >= prep)
-				{
-					try
-					{
+				if (t_prep >= prep) {
+					try {
 						if (tip != 0) vis.gotoAndStop('ready'); // Don't try to animate internal weapons
 					}
-					catch(err)
-					{
+					catch(err) {
 						trace("ERROR: (00:17) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"ready\"!");
 					}
 				}
@@ -1234,8 +1198,7 @@ package fe.weapon
 			}
 		}
 		
-		public function write():String
-		{
+		public function write():String {
 			var s:String='';
 			s+=id;
 			if (variant>0) s+='^'+variant;

@@ -2,15 +2,16 @@ package fe.unit {
 	
 	import fe.*;
 	import fe.loc.Location;
+	import fe.entities.BoundingBox;
 
 	public class UnitSlime extends Unit {
 
-		var pluh:int=100;
-		var tr:int=0;
+		private var pluh:int = 100;
+		private var tr:int = 0;
 		
-		var isMine:Boolean=false;
-		var explDist:Number=80;
-		var isExpl:Boolean=false;
+		private var isMine:Boolean=false;
+		private var explDist:Number=80;
+		private var isExpl:Boolean=false;
 
 		// Constructor
 		public function UnitSlime(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -29,15 +30,15 @@ package fe.unit {
 			}
 			if (tr==1) {
 				id='cryoslime';
-				vis=new visualCryoSlime();
+				vis=new visualCryoSlime();	// .SWF Dependency
 			}
 			else if (tr==2) {
 				id='pinkslime';
-				vis=new visualPinkSlime();
+				vis=new visualPinkSlime();	// .SWF Dependency
 			}
 			else {
 				id='slime';
-				vis=new visualSlime();
+				vis=new visualSlime();		// .SWF Dependency
 			}
 
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));
@@ -60,11 +61,11 @@ package fe.unit {
 			visibility=300;
 		}
 
-		var aiN:int=Math.floor(Math.random()*5);
+		private var aiN:int=Math.floor(Math.random()*5);
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
-			oduplenie=World.oduplenie/2;
+			detectionDelay = World.detectionDelay * 0.5;
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
@@ -106,7 +107,7 @@ package fe.unit {
 		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
 				celX = un.coordinates.X;
-				celY = un.coordinates.Y - un.objectHeight / 2;
+				celY = un.coordinates.Y - un.boundingBox.halfHeight;
 			}
 			else if (cx>-10000 && cy>-10000) {
 				celX = cx;
@@ -114,10 +115,10 @@ package fe.unit {
 			}
 			else {
 				celX = coordinates.X;
-				celY = this.topBoundToCenter;
+				celY = this.boundingBox.top;
 			}
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 		}
 		
 		public function activate() {
@@ -163,7 +164,7 @@ package fe.unit {
 				}
 			}
 			else if (aiState==2) {
-				if (oduplenie<=0 && aiN%4==0) {
+				if (detectionDelay <= 0 && aiN % 4 == 0) {
 					if (loc==World.w.gg.loc && rasst2>0 && rasst2<explDist*explDist) activate();
 				}
 				if (aiN%10==0 && !isVis) {
@@ -175,7 +176,7 @@ package fe.unit {
 			}
 			
 			//атака
-			if (World.w.enemyAct>=3 && oduplenie<=0) {
+			if (World.w.enemyAct >= 3 && detectionDelay <= 0) {
 				if (aiN%5==0) {
 					for each (var un:Unit in loc.units) {
 						if (un.activateTrap<2 && !un.player || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;

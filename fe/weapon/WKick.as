@@ -13,13 +13,13 @@ package fe.weapon  {
 		
 		// Constructor
 		public function WKick(own:Unit, id:String, nvar:int=0) {
-			super(own, id,nvar);
-			vBullet=visualPunch;
+			super(own, id, nvar);
+			vBullet = visualPunch;
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(own, v, null, false);
 			b.weap=this;
-			dopCh=0;
-			dopEffect='stun';
+			dopCh = 0;
+			dopEffect = 'stun';
 			setBullet(b);
 		}
 		

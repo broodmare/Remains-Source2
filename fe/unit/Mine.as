@@ -55,8 +55,8 @@ package fe.unit
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
 			nazv=Res.txt('w',id);
-			objectWidth=node.@sX;
-			objectHeight=node.@sY;
+			this.boundingBox.width = node.@sX;
+			this.boundingBox.height = node.@sY;
 			
 			if (node.snd.@dem.length()) sndDem=node.snd.@dem;
 			if (node.snd.@sens.length()) sndSens=node.snd.@sens;
@@ -119,14 +119,14 @@ package fe.unit
 			if (loc.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			if (nlevel>10) damage1*=(1+(nlevel-10)*0.1);
 		}
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
-			oduplenie=World.oduplenie/2;
+			detectionDelay = World.detectionDelay * 0.5;
 		}
 
 		public override function save():Object {
@@ -143,7 +143,7 @@ package fe.unit
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			explosion(damage1,tipDamage,explRadius,0,otbros1,wdestroy,tipDecal);
 		}
 		
@@ -165,13 +165,13 @@ package fe.unit
 			vis.play();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			super.die(0);
 		}
 		
 		override protected function control():void {
 			aiN++;
-			if (levit || !stay && !fixed && oduplenie<=0 || !stay && fraction==F_PLAYER) {
+			if (levit || !stay && !fixed && detectionDelay <= 0 || !stay && fraction==F_PLAYER) {
 				massa=0.06;
 			}
 			if (reloadTime>0) {
@@ -181,7 +181,7 @@ package fe.unit
 			}
 			inter.coordinates.X = coordinates.X;
 			inter.coordinates.Y = coordinates.Y;
-			if (aiState==1 && oduplenie<=0 && sens>0) { //взведена, поиск целей
+			if (aiState==1 && detectionDelay <= 0 && sens>0) { //взведена, поиск целей
 				if (aiN%4==0) {
 					for each (var un:Unit in loc.units) {
 						if (un==null || un.activateTrap==0 || un.activateTrap==1 && fraction!=Unit.F_PLAYER && un.fraction!=Unit.F_PLAYER || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;

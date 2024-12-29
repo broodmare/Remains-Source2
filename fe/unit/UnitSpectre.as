@@ -6,15 +6,15 @@ package fe.unit {
 	
 	public class UnitSpectre extends Unit {
 		
-		var spd:Object;
-		var br:Number=0;
-		var iskr:Emitter;
+		private var spd:Object;
+		private var br:Number=0;
+		private var iskr:Emitter;
 
 		// Constructor
 		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='spectre';
-			vis=new visualSpectre();
+			vis=new visualSpectre();	// .SWF Dependency
 			vis.visible=false;
 			getXmlParam();
 			walkSpeed = maxSpeed;
@@ -33,7 +33,7 @@ package fe.unit {
 			ctrans = false;
 		}
 
-		public override function forces() {
+		public override function forces():void {
 			if (isFly) {
 				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed) {
 					velocity.multiply(0.80);
@@ -88,14 +88,14 @@ package fe.unit {
 				}
 				else {
 					celX = World.w.gg.coordinates.X
-					celY = World.w.gg.coordinates.Y - World.w.gg.objectHeight / 2;
+					celY = World.w.gg.coordinates.Y - World.w.gg.boundingBox.halfHeight;
 				}
 				storona = (celX > coordinates.X)? 1:-1;
 			}
 			
 			if (aiState==1 && World.w.gg.loc==loc) {
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.topBoundToCenter;
+				spd.y = celY - this.boundingBox.top;
 				norma(spd,accel);
 				velocity.X += spd.x;
 				velocity.Y += spd.y;

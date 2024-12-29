@@ -115,8 +115,7 @@ package fe.loc {
 			}
 
 			// TODO: Stop searching Res on your own.
-			var node=Res.currentLanguageData.txt.(@id==pid);
-			if (node.length()==0) node=Res.fallbackLanguageData.txt.(@id==pid);
+			var node = Res.currentLanguageData.txt.(@id==pid);
 			
 			if (node.length()) {
 				node=node[0]

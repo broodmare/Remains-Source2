@@ -7,6 +7,7 @@ package fe.loc {
 	import fe.graph.Emitter;
 	import fe.serv.Item;
 	import fe.serv.Interact;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	
 	// This is the object you see in-game when an item is dropped
@@ -14,8 +15,8 @@ package fe.loc {
 		
 		public var item:Item;
 
-		private const osnRad = 50;
-		private const actRad = 250;
+		private const osnRad:int = 50;
+		private const actRad:int = 250;
 
 		public var vClass:Class;
 		public var osnova:Box = null;
@@ -38,8 +39,8 @@ package fe.loc {
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
-		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true)
-		{
+		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
+			
 			//trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
 			loc = nloc;
 			item = nitem;
@@ -54,12 +55,12 @@ package fe.loc {
 			if (ny > (loc.spaceY - 1) * tileY) ny = (loc.spaceY - 1) * tileY;
 			massa = 0.1;
 			nazv = item.nazv;
-			objectWidth = 30;
-			objectHeight = 20;
+			this.boundingBox.width = 30;
+			this.boundingBox.height = 20;
 			// Determine the appropriate sprite for the item
 			if (item.tip == Item.L_WEAPON) {
 				if (item.xml.vis.length() && item.xml.vis.@loot.length()) {
-					vis = new visualItem();
+					vis = new visualItem();	// .SWF Dependency
 					try {
 						vis.gotoAndStop(item.xml.vis.@loot);
 					}
@@ -68,8 +69,8 @@ package fe.loc {
 					}
 				}
 				else {
-					if (item.variant > 0) vClass = Res.getClass('vis' + item.id + '_' + item.variant, 'vis' + item.id, visp10mm);
-					else vClass = Res.getClass('vis' + item.id, null, visp10mm);
+					if (item.variant > 0) vClass = Res.getClass('vis' + item.id + '_' + item.variant, 'vis' + item.id, visp10mm);	// .SWF Dependency
+					else vClass = Res.getClass('vis' + item.id, null, visp10mm);	// .SWF Dependency
 
 					var infIco=new vClass();
 					infIco.stop();
@@ -83,8 +84,8 @@ package fe.loc {
 				if (item.xml.snd.@fall.length()) sndFall = item.xml.snd.@fall;
 			}
 			else if (item.tip == Item.L_EXPL) {
-				vClass=Res.getClass('vis'+item.id,null,visualAmmo);
-				var infIco=new vClass();
+				vClass = Res.getClass('vis' + item.id, null, visualAmmo);	// .SWF Dependency
+				var infIco = new vClass();
 				infIco.stop();
 				infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
 				infIco.y=-infIco.height-infIco.getRect(infIco).top;
@@ -139,8 +140,8 @@ package fe.loc {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.cacheAsBitmap=true;
-				objectWidth=vis.width;
-				objectHeight=vis.height;
+				this.boundingBox.width = vis.width;
+				this.boundingBox.height = vis.height;
 			}
 
 			if (jump) {
@@ -171,9 +172,9 @@ package fe.loc {
 			}
 		}
 		
-		function shine() {
+		private function shine() {
 			if (vis) {
-				var sh:MovieClip=new lootShine();
+				var sh:MovieClip=new lootShine();	// .SWF Dependency
 				sh.blendMode='hardlight';
 				vis.addChild(sh);
 			}
@@ -190,8 +191,8 @@ package fe.loc {
 		// [try to take] | попробовать взять
 		public function take(prinud:Boolean = false) {
 			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
-			var rx = World.w.gg.coordinates.X - coordinates.X;
-			var ry = World.w.gg.coordinates.Y - World.w.gg.objectHeight / 2 - coordinates.Y;
+			var rx:Number = World.w.gg.coordinates.X - coordinates.X;
+			var ry:Number = World.w.gg.coordinates.Y - World.w.gg.boundingBox.halfHeight - coordinates.Y;
 			// [take] | взять
 			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
@@ -266,7 +267,7 @@ package fe.loc {
 				}
 			}
 			if (inter) inter.step();
-			onCursor=(coordinates.X - objectWidth / 2 < World.w.celX && coordinates.X + objectWidth / 2 > World.w.celX && coordinates.Y - objectHeight<World.w.celY && coordinates.Y > World.w.celY)? prior:0;
+			onCursor=(coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
 			if (World.w.checkLoot) auto2=item.checkAuto();
 			if (auto && auto2 || actTake) take();
 		}
@@ -278,21 +279,21 @@ package fe.loc {
 			
 			//ГОРИЗОНТАЛЬ
 				coordinates.X += velocity.X / div;
-				if (coordinates.X - objectWidth / 2 < 0) {
-					coordinates.X = objectWidth / 2;
+				if (coordinates.X - this.boundingBox.halfWidth < 0) {
+					coordinates.X = this.boundingBox.halfWidth;
 					velocity.X = Math.abs(velocity.X);
 				}
 
-				if (coordinates.X + objectWidth / 2 >= loc.spaceX * tileX) {
-					coordinates.X = loc.spaceX * tileX - 1 - objectWidth / 2;
+				if (coordinates.X + this.boundingBox.halfWidth >= loc.spaceX * tileX) {
+					coordinates.X = loc.spaceX * tileX - 1 - this.boundingBox.halfWidth;
 					velocity.X = -Math.abs(velocity.X);
 				}
 
 				//движение влево
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X <= t.phX2 && coordinates.X >= t.phX1 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
-						coordinates.X = t.phX2 + 1;
+					if (t.phis==1 && coordinates.X <= t.boundingBox.right && coordinates.X >= t.boundingBox.left && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+						coordinates.X = t.boundingBox.right + 1;
 						velocity.X = Math.abs(velocity.X);
 					}
 				}
@@ -300,8 +301,8 @@ package fe.loc {
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
-						coordinates.X = t.phX1 - 1;
+					if (t.phis==1 && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+						coordinates.X = t.boundingBox.left - 1;
 						velocity.X = -Math.abs(velocity.X);
 					}
 				}
@@ -312,10 +313,10 @@ package fe.loc {
 			if (velocity.Y < 0) {
 				stay=false;
 				coordinates.Y += velocity.Y / div;
-				if (coordinates.Y - objectHeight < 0) coordinates.Y = objectHeight;
+				if (coordinates.Y - this.boundingBox.height < 0) coordinates.Y = this.boundingBox.height;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
-				if (t.phis==1 && coordinates.Y <= t.phY2 && coordinates.Y >= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
-					coordinates.Y = t.phY2 + 1;
+				if (t.phis==1 && coordinates.Y <= t.boundingBox.bottom && coordinates.Y >= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+					coordinates.Y = t.boundingBox.bottom + 1;
 					velocity.Y = 0;
 				}
 			}
@@ -330,8 +331,8 @@ package fe.loc {
 					return;
 				}
 				t = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y / div);
-				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.phY1 && coordinates.Y <= t.phY2 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.phY1 && coordinates.Y <= t.phY1 && coordinates.X >= t.phX1 && coordinates.X <= t.phX2) {
-					newmy = t.phY1;
+				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+					newmy = t.boundingBox.top;
 				}
 				if (newmy == 0 && !levit && !vsos) newmy = checkShelf(velocity.Y / div);
 				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) newmy = (loc.spaceY - 1) * tileY;
@@ -353,7 +354,7 @@ package fe.loc {
 		public override function checkStay():Boolean {
 			if (osnova) return true;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
-			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.phY1) {
+			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.boundingBox.top) {
 				return true;
 			}
 			else {
@@ -365,9 +366,9 @@ package fe.loc {
 		public function checkShelf(velocityDown:Number):Number {
 			for (var i in loc.objs) {
 				var b:Box = loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.leftBound || coordinates.X > b.rightBound) && coordinates.Y <= b.topBound && coordinates.Y + velocityDown > b.topBound) {
+				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.boundingBox.left || coordinates.X > b.boundingBox.right) && coordinates.Y <= b.boundingBox.top && coordinates.Y + velocityDown > b.boundingBox.top) {
 					osnova = b;
-					return b.topBound;
+					return b.boundingBox.top;
 				}
 			}
 			return 0;

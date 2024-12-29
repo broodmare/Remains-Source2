@@ -33,7 +33,7 @@ package fe.unit {
 
 			if (!(tr>=0)) tr=0;
 			id='bloat'+tr;
-			var vClass:Class=Res.getClass('visualBloat'+tr,null,visualBloat1);
+			var vClass:Class=Res.getClass('visualBloat'+tr,null,visualBloat1);	// .SWF Dependency
 			vis=new vClass();
 			vis.stop();
 			runSpeed=0;
@@ -53,7 +53,7 @@ package fe.unit {
 			if (currentWeapon) childObjs=new Array(currentWeapon);
 		}
 
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('bloat');
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
@@ -67,7 +67,7 @@ package fe.unit {
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero == 1) shootCh = 0.3;
 		}
@@ -92,16 +92,16 @@ package fe.unit {
 			super.otbros(bul);
 		}
 		
-		function emit() {
+		private function emit() {
 			var un:Unit=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, '0');
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('shmatok',4,2);
 			newPart('bloat_kap',int(Math.random()*3+4));
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
 			var un:Unit
 			if (tr>=8) {
@@ -129,12 +129,12 @@ package fe.unit {
 
 		}
 		
-		var aiDx:Number=0;
-		var aiDy:Number=0;
-		var aiRasst:Number;
+		private var aiDx:Number=0;
+		private var aiDy:Number=0;
+		private var aiRasst:Number;
 
-		var attRasst:int=400;
-		var attCh:Number=0.4;
+		private var attRasst:int=400;
+		private var attCh:Number=0.4;
 		
 		//состояния
 		//0 - летает
@@ -218,7 +218,7 @@ package fe.unit {
 					}
 					else {
 						velocity.X = celUnit.coordinates.X - coordinates.X;
-						velocity.Y = celUnit.coordinates.Y - celUnit.objectHeight / 2 - coordinates.Y + objectHeight / 2;
+						velocity.Y = celUnit.coordinates.Y - celUnit.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight;
 					}
 				}
 				else {

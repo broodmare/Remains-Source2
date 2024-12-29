@@ -170,19 +170,19 @@ package fe.unit {
 			mblast=new Spell(this,'sp_blast');
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('alicorn');
 			super.getXmlParam();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
 			weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			currentWeapon.damage*=(1+level*0.05);
 			shitMaxHp*=(1+level*0.1);
@@ -300,7 +300,7 @@ package fe.unit {
 			}
 		}
 		
-		public function telepat() {
+		public function telepat():void {
 			for each(var un:Unit in loc.units) {
 				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres && un.celUnit==null) {
 					un.setCel(celUnit);
@@ -321,7 +321,7 @@ package fe.unit {
 			return super.damage(dam,tip,bul,tt);
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiState=3;
@@ -334,7 +334,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			superSilaVse();
 			dropTeleObj();
 			budilo();
@@ -346,7 +346,7 @@ package fe.unit {
 			}
 			visBmp.filters=[];
 			loc.land.aliAlarm=true;
-			sitY=30;
+			this.boundingBox.crouchingHeight = 30;
 			super.die(sposob);
 		}
 		
@@ -357,7 +357,7 @@ package fe.unit {
 			blasted=false;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (!isFly) {
 				velocity.Y =- jumpdy * v;
 			}
@@ -501,7 +501,7 @@ package fe.unit {
 			}
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -512,8 +512,8 @@ package fe.unit {
 			if (aiSpok==0) {
 				vision=0.7;
 				if (loc && loc.land.aliAlarm) vision=1.5;
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			}
 			else {
 				t_gotov++;
@@ -542,13 +542,13 @@ package fe.unit {
 					}
 					//пригнуться
 					if (turnX==-1) {
-						if (loc.getAbsTile(rightBound+2,topBound).phis && loc.getAbsTile(rightBound+2,topBound+40).phis==0 && loc.getAbsTile(rightBound+2,topBound+80).phis==0) {
+						if (loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top + 40).phis==0 && loc.getAbsTile(this.boundingBox.right + 2,this.boundingBox.top + 80).phis==0) {
 							sit(true);
 							turnX=0;
 						}
 					}
 					if (turnX==1) {
-						if (loc.getAbsTile(leftBound-2,topBound).phis && loc.getAbsTile(leftBound-2,topBound+40).phis==0 && loc.getAbsTile(leftBound-2,topBound+80).phis==0) {
+						if (loc.getAbsTile(this.boundingBox.left - 2, this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 40).phis==0 && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 80).phis==0) {
 							sit(true);
 							turnX=0;
 						}
@@ -570,7 +570,7 @@ package fe.unit {
 					spd.x = celX - coordinates.X;
 					
 					if (aiState==4) spd.y=200;
-					else spd.y = celY - this.topBoundToCenter;
+					else spd.y = celY - this.boundingBox.top;
 					
 					//дематериализоваться
 					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
@@ -739,20 +739,20 @@ package fe.unit {
 			}
 		}
 		
-		private function castShit() {
+		private function castShit():void {
 			curA=100;
 			shithp=shitMaxHp;
 			t_shit=1000;
 			visDetails();
 		}
 		
-		private function castNomater() {
+		private function castNomater():void {
 			mater=false;
 			t_nomater=0;
 			t_gotov=tNomater;
 		}
 		
-		private function superSila() {
+		private function superSila():void {
 			if (superSilaTip == 1) {
 				superInvis = true;
 				isVis = false;
@@ -769,7 +769,7 @@ package fe.unit {
 			t_super = tSuper;
 		}
 		
-		private function superSilaVse() {
+		private function superSilaVse():void {
 			if (superSilaTip==1) {
 				superInvis=false;
 				isVis=true;
@@ -789,7 +789,7 @@ package fe.unit {
 			for each (var b:Box in loc.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(coordinates.X, this.topBoundToCenter, b.coordinates.X, b.topBoundToCenter))
+					if (loc.isLine(coordinates.X, this.boundingBox.top, b.coordinates.X, b.boundingBox.top))
 					{
 						upTeleObj(b);
 						return b;
@@ -800,7 +800,7 @@ package fe.unit {
 		}
 		
 		//подянть объект телекинезом
-		private function upTeleObj(obj:Obj) {
+		private function upTeleObj(obj:Obj):void {
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -812,7 +812,7 @@ package fe.unit {
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void {
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -823,7 +823,7 @@ package fe.unit {
 		}
 		
 		//бросок телекинезом
-		private function throwTele() {
+		private function throwTele():void {
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number = throwForce;
@@ -836,7 +836,7 @@ package fe.unit {
 					p = {x:100 * storona, y:-30};
 				}
 				else {
-					p = {x:(celX - teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.objectHeight / 2) - Math.abs(celX - teleObj.coordinates.X) / 4)};
+					p = {x:(celX - teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight) - Math.abs(celX - teleObj.coordinates.X) / 4)};
 				}
 				
 				if (teleObj is UnitPlayer) {
@@ -849,18 +849,17 @@ package fe.unit {
 				}
 				
 				norma(p, tspeed);
-				var dm = 0;
 				teleObj.velocity.X += p.x;
 				teleObj.velocity.Y += p.y;
 				dropTeleObj();
 			}
 		}
 		
-		public function actPort(rnd:Boolean=false) {
+		public function actPort(rnd:Boolean=false):void {
 			var cel:Unit = World.w.gg;
 			var nx:Number = 0;
 			var ny:Number = 0;
-			for (var i = 1; i <= 20; i++) {
+			for (var i:int = 1; i <= 20; i++) {
 				if (i < 5 && !rnd) {
 					if (isrnd(0.7)) {
 						nx = cel.coordinates.X - cel.storona * (Math.random() * 300 + 200);
@@ -887,16 +886,16 @@ package fe.unit {
 				nx = Math.round(nx / tileX) * tileX
 				ny = Math.ceil(ny / tileY) * tileY - 1;
 				
-				if (nx < objectWidth) {
-					nx = objectWidth;
+				if (nx < this.boundingBox.width) {
+					nx = this.boundingBox.width;
 				}
 				
-				if (ny < objectHeight + 40) {
-					ny = objectHeight + 40;
+				if (ny < this.boundingBox.height + 40) {
+					ny = this.boundingBox.height + 40;
 				}
 				
-				if (nx > loc.maxX - objectWidth) {
-					nx = loc.maxX - objectWidth;
+				if (nx > loc.maxX - this.boundingBox.width) {
+					nx = loc.maxX - this.boundingBox.width;
 				}
 				
 				if (ny > loc.maxY - 40) {
@@ -916,7 +915,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function visDetails() {
+		public override function visDetails():void {
 			if (hpbar==null) {
 				return;
 			}

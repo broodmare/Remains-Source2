@@ -3,6 +3,7 @@ package fe.unit {
 	import fe.*;
 	import fe.loc.Tile;
 	import fe.loc.Location;
+	import fe.entities.BoundingBox;
 
 	public class UnitMsp extends Unit {
 
@@ -48,24 +49,24 @@ package fe.unit {
 			if (nloc.getAbsTile(nx, ny+10).phis==0) {
 				if (nloc.getAbsTile(nx, ny-50).phis) {
 					cep=1;
-					ny-=40-objectHeight-1
+					ny-=40-this.boundingBox.height-1
 					fixed=true;
 				}
 				else if (nloc.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
-					nx-=(40-objectWidth)/2-1;
+					nx-=(40-this.boundingBox.width)/2-1;
 					fixed=true;
 				}
 				else if (nloc.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
-					nx+=(40-objectWidth)/2-1;
+					nx+=(40-this.boundingBox.width)/2-1;
 					fixed=true;
 				}
 			}
 			super.putLoc(nloc, nx, ny);
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
@@ -79,17 +80,17 @@ package fe.unit {
 				}
 				else if (cep==1) {
 					vis.x = coordinates.X;
-					vis.y = topBound;
+					vis.y = this.boundingBox.top;
 					vis.rotation=180;
 				}
 				else if (cep==3) {
-					vis.x = rightBound;
-					vis.y = this.topBoundToCenter;
+					vis.x = this.boundingBox.right;
+					vis.y = this.boundingBox.top;
 					vis.rotation = -90;
 				}
 				else if (cep==2) {
-					vis.x = leftBound;
-					vis.y = this.topBoundToCenter;
+					vis.x = this.boundingBox.left;
+					vis.y = this.boundingBox.top;
 					vis.rotation = 90;
 				}
 				vis.scaleX = storona;
@@ -124,17 +125,17 @@ package fe.unit {
 			} 
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y =- jumpdy * v;
 			}
 		}
 
-		public override function dropLoot() {
-			explosion(dam,tipDamage,150,0,20,30,9);
+		public override function dropLoot():void {
+			explosion(dam, tipDamage, 150, 0, 20, 30, 9);
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.12);
@@ -167,8 +168,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			if (aiState>=3 && cep>0) {
@@ -222,7 +223,7 @@ package fe.unit {
 			
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + objectHeight;
+			celDY = celY - coordinates.Y + this.boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -278,7 +279,7 @@ package fe.unit {
 				}
 				if (celUnit)
 				{
-					if ((coordinates.X - celUnit.coordinates.X) * (coordinates.X - celUnit.coordinates.X) + (coordinates.Y - celUnit.coordinates.Y + celUnit.objectHeight / 2) * (coordinates.Y - celUnit.coordinates.Y + celUnit.objectHeight / 2) < 100 * 100) die();
+					if ((coordinates.X - celUnit.coordinates.X) * (coordinates.X - celUnit.coordinates.X) + (coordinates.Y - celUnit.coordinates.Y + celUnit.boundingBox.halfHeight) * (coordinates.Y - celUnit.coordinates.Y + celUnit.boundingBox.halfHeight) < 100 * 100) die();
 				}
 				pumpObj=null;
 			}

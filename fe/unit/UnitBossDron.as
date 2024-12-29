@@ -11,19 +11,19 @@ package fe.unit {
 		
 		public var controlOn:Boolean=true;
 		public var kol_emit=5;
-		var spd:Object;
-		var dopWeapon:Weapon;
-		var thWeapon:Weapon;
-		var shitMaxHp:Number=500;
-		var visshit:MovieClip;
+		private var spd:Object;
+		private var dopWeapon:Weapon;
+		private var thWeapon:Weapon;
+		private var shitMaxHp:Number=500;
+		private var visshit:MovieClip;
 		
-		var emit_t:int=120;
+		private var emit_t:int=120;
 		
-		var moveX:Number=0, moveY:Number=0;
-		var t_atk:int=100;
-		var t_shit:int=300;
-		var kolth:int=0;
-		var speedBonus:Number=1;
+		private var moveX:Number=0, moveY:Number=0;
+		private var t_atk:int=100;
+		private var t_shit:int=300;
+		private var kolth:int=0;
+		private var speedBonus:Number=1;
 
 		// Constructor
 		public function UnitBossDron(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -64,13 +64,13 @@ package fe.unit {
 			timerDie=150;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			newPart('baleblast');
 			Snd.ps('bale_e');
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -85,7 +85,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',22);
 		}
 		
@@ -133,14 +133,14 @@ package fe.unit {
 			}
 		}
 		
-		function emit() {
+		private function emit() {
 			if (kolChild>=kol_emit) return;
-			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - objectHeight / 2, true);
+			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
 			un.fraction=fraction;
 			un.inter.cont='';
 			un.mother=this;
 			un.sndMusic=null;
-			un.oduplenie=0;
+			un.detectionDelay = 0;
 			kolChild++;
 			emit_t=500;
 		}
@@ -213,7 +213,7 @@ package fe.unit {
 			}
 		}
 		
-		function castShit() {
+		private function castShit() {
 			if (shithp<=0 && t_shit<=0 && (World.w.game.globalDif==4 || World.w.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;
 				t_shit=1000;

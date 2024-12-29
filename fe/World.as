@@ -7,7 +7,7 @@ package  fe {
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.system.Capabilities;
+	
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
 	import flash.desktop.Clipboard;
@@ -27,12 +27,12 @@ package  fe {
 	public class World {
 
 		public static var w:World;
-		
-		public var playerMode:String;	//Режим флеш-плеера
 
 		//Визуальные составляющие
 		public var main:Sprite;			//Главный спрайт игры
-		public var swfStage:Stage;	
+		public var swfStage:Stage;
+
+		public var languageManager:LanguageManager; // Handles loading and storing languages
 		
 		public var vwait:MovieClip;		//Картинка с надписью ЗАГРУЗКА
 		public var vfon:MovieClip;		//Неподвижный задник
@@ -63,8 +63,8 @@ package  fe {
 		public var app:Appear;			//настройки внешности персонажа
 		
 		//Компоненты локаций
-		public var land:Land;		//текущая местность
-		public var loc:Location;	//текущая локация
+		public var land:Land;		// [Current land]
+		public var loc:Location;	// [Current location]
 		public var rooms:Array;
 		
 		//Рабочие переменные
@@ -91,8 +91,7 @@ package  fe {
 		
 		public var currentMusic:String='';
 		
-		
-		//Настроечные переменные
+		// [Settings Variables]
 		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
 		public var roomsLoad:int = 1;  			//1-загружать из файла карты локаций
 		private var langLoad:int = 1;  			//1-загружать из файла
@@ -100,36 +99,40 @@ package  fe {
 		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
 		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
 		public var black:Boolean=true;				//отображать туман войны
-		public var testMode:Boolean=false;			//Тестовый режим
+		
+		// Debug variables
+		public var testMode:Boolean=false;				// [Test mode]
 		public var chitOn:Boolean=false;
-		public var chit:String='', chitX:String=null;	//текущий чит
-		public var showArea:Boolean=false;	//показывать активные области
-		public var godMode:Boolean=false;				//неуязвимость
-		public var showAddInfo:Boolean=false;		//показывать доп. информацию
-		public var testBattle:Boolean=false;		//выносливость будет расходоваться вне боя
-		public var testEff:Boolean=false;		//эффекты будут в 10 раз короче
-		public var testDam:Boolean=false;		//отменяет разброс урона
-		public var hardInv:Boolean=false;		//ограниченный инвентарь
-		public var alicorn:Boolean=false;
-		public var maxParts:int=100;			//максимум частиц
+		public var chit:String='', chitX:String=null;	// [Current cheat]
+		public var showArea:Boolean=false;				// [Show active areas]
+		public var godMode:Boolean=false;				// Invulnerability
+		public var showAddInfo:Boolean=false;			// [Show additional information]
+		public var testBattle:Boolean=false;			// [Stamina will be consumed outside of combat]
+		public var testEff:Boolean=false;				// [Effects will be 10 times shorter]
+		public var testDam:Boolean=false;				// [Cancels damage spread]
 		
-		public var zoom100:Boolean=false;		//масштаб 100%
-		public var dialOn:Boolean=true;		//показывать диалоги с нпс
-		public var showHit:int=2;			//показывать урон
-		public var matFilter:Boolean=true;	//мат фильтр
-		public var helpMess:Boolean=true;	//обучающие сообщения
+		// Game settings
+		public var hardInv:Boolean = false;			// [Limited inventory]
+		public var alicorn:Boolean = false;
+		public var maxParts:int=100;			// [Maximum particles]
 		
-		public var shineObjs:Boolean=false;	//свечение объектов
-		public var sysCur:Boolean=false;	//системный курсор
-		public var hintKeys:Boolean=true;	//подсказка про клавиши
-		public var hintTele:Boolean=true;	//подсказка про клавиши
-		public var showFavs:Boolean=true;	//показывать доп инфу когда курсор наверху экрана
+		public var zoom100:Boolean=false;	// [Scale 100%]
+		public var dialOn:Boolean=true;		// [Show dialogues with NPCs]
+		public var showHit:int=2;			// Show damage number pop-ups
+		public var matFilter:Boolean=true;	// [Mat filter]
+		public var helpMess:Boolean=true;	// [Educational messages]
+		
+		public var shineObjs:Boolean=false;	// [Glow of objects]
+		public var sysCur:Boolean=false;	// [System cursor]
+		public var hintKeys:Boolean=true;	// Pop-up hints for interactables, eg. (Press "e" to open)
+		public var hintTele:Boolean=true;	// Pop-up hints for things you can levitate, eg. (Press "q" to levitate)
+		public var showFavs:Boolean=true;	// [Show additional information when the cursor is at the top of the screen]
 		public var errorShow:Boolean=true;
 		public var errorShowOpt:Boolean=true;
-		public var quakeCam:Boolean=true;	//тряска камеры
+		public var quakeCam:Boolean=true;	// [Camera shaking]
 		
 		public var vsWeaponNew:Boolean=true;	// [Automatically pick up a new weapon if there is room]
-		public var vsWeaponRep:Boolean=true;	//автоматически брать оружие для ремонта
+		public var vsWeaponRep:Boolean=true;	// [automatically pick up weapons for repairs]
 		public var vsAmmoAll:Boolean=true;		
 		public var vsAmmoTek:Boolean=true;		
 		public var vsExplAll:Boolean=true;		
@@ -143,7 +146,7 @@ package  fe {
 		public var vsComp:Boolean=true;		
 		public var vsIngr:Boolean=true;		
 		
-		//Глобальные константы
+		// Global Constants
 		public var actionDist:int = 40000;
 
 		public static const cellsX:int = 48;	// How many tiles there are in a room (horizontally)
@@ -153,41 +156,19 @@ package  fe {
 		public static const maxdy:int = 20;
 		public static const maxwaterdy:int = 20;
 		public static const maxdelta:int = 9;
-		public static const oduplenie:int = 100;
+		public static const detectionDelay:int = 100;	// Default grace period before an enemy spots the player
 		public static const battleNoOut:int = 120;
 		public static const unitXPMult:Number = 2;
 		public static const kolHK:int = 12;			//количество горячих клавиш
 		public static const kolQS:int = 4;			//количество быстрых заклинаний
-			
 		
-		public static const boxDamage:Number = 0.2;		//мультипликатор силы удара ящиками
-		
-		//Загрузка текстов
-		public var currentLanguage:String = 'en';		// Two letter language id, eg. 'en'
-		public var userDefaultLanguage:String = 'ru';	// Two letter language id, eg. 'ru'
-		public var langs:Array;							// An array of objects representing langauges. Each obj has two properties, 'file' - the filename, and 'nazv' - the full name of each language, eg. 'english'
-		public var kolLangs:int = 0;					// How many language objects are in lang.
-
-		public var tld:TextLoader;	// Default language
-		public var tl:TextLoader;	// Selected language
-
-		public var textLoaded:Boolean=false;
-		public var textLoadErr:Boolean=false;
-
-		private var loader_lang:URLLoader;
-
-		public var langsXML:XML;
-		public var textProgressLoad:Number=0;
+		public static const boxDamage:Number = 0.2;		// [Box impact force multiplier]
 		
 		//Файлы
 		public var spriteURL:String;
 		public var sprite1URL:String;
 		
-		//public var ressoundURL:String;
-		public var langURL:String;
-		public var langFolder:String;
-		
-		//загрузка, сейвы, конфиг
+		// [Loading, saves, config]
 		public var configObj:SharedObject;
 		private var saveObj:SharedObject;
 		private var saveArr:Array;
@@ -198,13 +179,13 @@ package  fe {
 		public var koladv:int = 10;	//номер совета
 		public var load_log:String='';
 		
-		//карты местностей
+		// [Location maps]
 		public var landPath:String;
-		public var fileVersion:int=2;		//изменить это число для сброса кэша
+		public var fileVersion:int=2;		// [Change this number to reset the cache]
 		public var landData:Array;
-		public var kolLands:int=0;
-		public var kolLandsLoaded:int=0;
-		public var allLandsLoaded:Boolean=false;
+		public var kolLands:int = 0;
+		public var kolLandsLoaded:int = 0;
+		public var allLandsLoaded:Boolean = false;
 		
 		public var comLoad:int=-1;		//команда на загрузку
 		public var clickReq:int=0;		//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
@@ -213,7 +194,6 @@ package  fe {
 		public var autoSaveN:int=0;		//номер ячейки автосейва
 		public var log:String='';
 
-		//var date:Date,
 		private var d1:int;
 		private var d2:int;
 		
@@ -222,16 +202,12 @@ package  fe {
 		// Constructor
 		public function World(nmain:Sprite, paramObj:Object) {
 
-			World.w = this;
-			//техническая часть
-			//Узнать тип плеера и адрес, с которого он запущен
-			playerMode = Capabilities.playerType;
+			World.w = this;	// Store a publically accessable reference to itself
 
 			//файлы
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
-			langURL = 'Modules/core/Language/lang.xml';
-			langFolder = 'Modules/core/Language/'
+			
 			landPath = 'Rooms/';
 
 			// Grab a reference to the stage container
@@ -239,14 +215,6 @@ package  fe {
 			swfStage = main.stage;
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
-
-			// STEP 1 LOAD THE LIST OF LANGAUGES FROM 'lang.xml'
-			loader_lang = new URLLoader();
-			var request_lang:URLRequest = new URLRequest(langURL);
-
-			loader_lang.load(request_lang);
-			loader_lang.addEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
 
 			LootGen.init();
 			Form.setForms();
@@ -269,6 +237,7 @@ package  fe {
 			vblack.cacheAsBitmap = true;
 			vconsol=new visConsol();	// SWF Dependency
 			verror=new visError();		// SWF Dependency
+			
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
 			vscene.stop();
@@ -299,103 +268,14 @@ package  fe {
 			var savePath:String = null;
 			configObj = SharedObject.getLocal('config', savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
+
+			// Initialize the languageManager and load the current localization into memory
+			languageManager = new LanguageManager(this);
 		}
 
 //=============================================================================================================
-//			Техническая часть
+//			[Technical part]
 //=============================================================================================================
-		
-		// The list of languages 'lang.xml' loaded successfully.
-		private function onCompleteLoadLang(event:Event):void {
-			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-
-			langsXML = new XML(loader_lang.data);
-			initLangs(false);
-			
-			load_log += 'Language file loading: ' + langURL + ' Ok\n';
-		}
-		
-		// The list of languages 'lang.xml' did not load successfully.
-		private function onErrorLoadLang(event:IOErrorEvent):void {
-			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			
-			initLangs(true);
-			
-			load_log += 'ERROR: Could not load language: ' + langURL + '.\n';
-        }
-		
-		//создать список языков, инициировать загрузку языков
-		private function initLangs(err:Boolean = false):void {
-			// Failsafe default langauges if lang.xml couldn't be loaded correctly. 
-			if (err) { 
-				trace("World.as/initLangs() - Error: Couldn't initialize langauges, using defaults");
-				load_log += 'ERROR: Initializing languages failed, using defaults\n';
-				langsXML =
-				<all>
-					<lang id='ru' file='text_ru.xml'>Русский</lang>
-					<lang id='en' file='text_en.xml'>English</lang>
-				</all>;
-			}
-
-			currentLanguage = Capabilities.language; // Try to detect default langauge for the user.
-			if (configObj.data.language != null) currentLanguage = configObj.data.language; // If user settings exist, overwrite the default language.
-			if (langsXML && langsXML.@defaultLanguage.length()) userDefaultLanguage = langsXML.@defaultLanguage;
-
-			langs = [];
-			for each (var xl:XML in langsXML.lang) {
-				var obj:Object = {file:xl.@file, nazv:xl[0]};	//Creates an obj with two properties, The file path, eg. 'text_en.xml', and the language name eg. 'English' 
-				langs[xl.@id] = obj;							//Adds each object into the langs array under it's id, eg. 'en'
-				kolLangs++;										//Increase the number of languages.
-				
-			}
-			
-			if (langs[currentLanguage] == null) {
-				currentLanguage = userDefaultLanguage;
-			}
-
-			tld = new TextLoader(langs[userDefaultLanguage].file, true);	// Create a new textloader and pass it the file path of the default langauge.
-			
-			if (currentLanguage == userDefaultLanguage) {
-                tl = tld;													// Otherwise, write the default user language into tl.
-            }
-			else {
-                var languageURL:String = langFolder + currentLanguage;
-                tl = new TextLoader(langs[currentLanguage].file);
-            }
-		}
-		
-		// [Language loading complete]
-		public function textsLoadOk():void {
-			if (tl.loaded) {
-				textLoaded = true;
-				Res.currentLanguageData = tl.xmlData;
-			}
-			if (tl.errLoad) {
-				currentLanguage = userDefaultLanguage;
-				if (tld.loaded) {
-					textLoaded = true;
-					Res.currentLanguageData = tld.xmlData;
-				}
-				textLoadErr = true;
-			}
-		}
-		
-		// [Choose a new language]
-		public function defuxLang(nid:String):void {
-			currentLanguage = nid;
-			textLoadErr = false;
-			if (nid == userDefaultLanguage) {
-                Res.currentLanguageData = Res.fallbackLanguageData;
-                pip.updateLang();
-            }
-			else {
-                textLoaded = false;
-                tl = new TextLoader(langs[nid].file);
-            }
-			saveConfig();
-		}
 		
 		public function init2():void {
 
@@ -590,7 +470,7 @@ package  fe {
 			time___metr('Character');
 			//номер ячейки автосейва
 			if (!ng) if (data.n!=null) autoSaveN=data.n;
-			Unit.txtMiss=Res.guiText('miss');
+			Unit.txtMiss = Res.guiText('miss');
 			
 			waitLoadClick();
 			ng_wait=2;
@@ -679,22 +559,22 @@ package  fe {
 			grafon.drawFon(vfon, land.act.fon);
 		}
 		
-		//вызов при входе в конкретную локацию
-		//тут графический баг
+		// [Call when entering a specific location]
+		// [There's a graphical bug here]
 		public function ativateLoc(nloc:Location):void {
 			if (loc) loc.out();
-			loc=nloc;
+			loc = nloc;
 			grafon.drawLoc(loc);
 			cam.setLoc(loc);
 			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
 			gui.setAll();
-			currentMusic=loc.sndMusic;
+			currentMusic = loc.sndMusic;
 			Snd.playMusic(currentMusic);
 			gui.hpBarBoss();
-			if (t_die<=0) World.w.gg.controlOn();
+			if (t_die <= 0) World.w.gg.controlOn();
 			gui.dialText();
 			pers.invMassParam();
-			gc();
+			gc();	// Run garbage collection if required
 		}
 		
 		public function redrawLoc():void {
@@ -955,7 +835,7 @@ package  fe {
 		}
 		
 		public function gc():void {
-			System.pauseForGCIfCollectionImminent(0.25)	
+			System.pauseForGCIfCollectionImminent(0.25);
 		}
 		
 //=============================================================================================================
@@ -980,8 +860,7 @@ package  fe {
 				vwait.story.visible = false;
 				clickReq = 0;
 			} 
-			else
-			{
+			else {
 				vwait.x = 0;
 				vwait.y = 0;
 				vwait.story.visible = true;
@@ -989,7 +868,7 @@ package  fe {
 				vwait.progres.visible = false;
 				if (n == 0) {
 					vwait.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
-					}
+				}
 				else {
 					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
 				}
@@ -1094,7 +973,7 @@ package  fe {
 		public function saveGame(n:int=-1):void {
 			if (n==-2) {
 				n=autoSaveN;
-				var save=saveArr[n];
+				var save = saveArr[n];
 				saveToObj(save.data);
 				save.flush();
 				trace('World.as/saveGame() - End');
@@ -1103,10 +982,10 @@ package  fe {
 			if (t_save<100 && n==-1 && !pers.hardcore) return;
 			if (pip.noAct) return;
 			if (n==-1) n=autoSaveN;
-			var save=saveArr[n];
+			var save = saveArr[n];
 			if (save is SharedObject) {
 				saveToObj(save.data);
-				var r=save.flush();
+				var r = save.flush();
 				trace(r);
 				if (n==0) t_save=0;
 			}
@@ -1117,11 +996,11 @@ package  fe {
 			else return null;
 		}
 		
-		public function saveConfig() {
+		public function saveConfig():void {
 			try {
 				configObj.data.ctr=ctr.save();
 				configObj.data.snd=Snd.save();
-				configObj.data.language = currentLanguage;
+				configObj.data.language = languageManager.currentLanguage;
 				configObj.data.chit=(chitOn?1:0);
 				configObj.data.dialon=dialOn;
 				configObj.data.zoom100=zoom100;

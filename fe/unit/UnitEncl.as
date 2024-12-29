@@ -48,7 +48,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			if (currentWeapon) {
 				currentWeapon.damage *= 1.25;

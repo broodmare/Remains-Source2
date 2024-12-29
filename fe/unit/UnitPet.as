@@ -3,6 +3,7 @@ package fe.unit {
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
+	import fe.entities.BoundingBox;
 	import fe.loc.Box;
 	
 	public class UnitPet extends Unit {
@@ -35,7 +36,7 @@ package fe.unit {
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon') {
-				vis = new visualMoon();	// SWF Dependency
+				vis = new visualMoon();	// .SWF Dependency
 				vis.osn.stop();
 			}
 			else {
@@ -79,7 +80,7 @@ package fe.unit {
 			sost = 4;
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			if (id == 'phoenix') {
 				newPart('green_spark', 25);
 			}
@@ -95,7 +96,7 @@ package fe.unit {
 			if (World.w.loc.petOn) super.step();
 		}
 		
-		public override function forces() {
+		public override function forces():void {
 			if (isFly) {
 				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed) {
 					velocity.multiply(0.80);
@@ -117,7 +118,7 @@ package fe.unit {
 			if (hp>maxhp) hp=maxhp;
 			if (hl > 0) visDetails();
 			if ((tip == 0 || hl >= 10) && active && ismess) {
-				numbEmit.cast(loc, coordinates.X, coordinates.Y - objectHeight / 2, {txt:'+' + Math.round(hl), frame:4, rx:10, ry:10});
+				numbEmit.cast(loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {txt:'+' + Math.round(hl), frame:4, rx:10, ry:10});
 			}
 		}
 		
@@ -129,7 +130,7 @@ package fe.unit {
 		}
 		
 		//настройка силы спутника
-		public override function setLevel(nlevel:int = 1) {
+		public override function setLevel(nlevel:int = 1):void {
 			level = nlevel - 1;
 			var koef = hp / maxhp;
 
@@ -154,7 +155,7 @@ package fe.unit {
 			hp=koef*maxhp;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			if (id == 'phoenix') {
 				weaponX = coordinates.X + 15 * storona;
 				weaponY = coordinates.Y - 20;
@@ -168,8 +169,8 @@ package fe.unit {
 		}
 		
 		public override function animate():void {
-			if (oduplenie>30) vis.alpha=0;
-			else if (oduplenie>0) vis.alpha=1-oduplenie/30;
+			if (detectionDelay > 30) vis.alpha = 0;
+			else if (detectionDelay > 0) vis.alpha = 1 - detectionDelay / 30;
 			else vis.alpha=1;
 			if (id=='moon') {
 				if (aiState==4 || aiState==5 || aiState==2) {
@@ -195,7 +196,7 @@ package fe.unit {
 			if (hpbar) hpbar.alpha=vis.alpha;
 		}
 
-		public override function visDetails() {
+		public override function visDetails():void {
 			super.visDetails();
 			World.w.gui.setPet();
 		}
@@ -213,15 +214,15 @@ package fe.unit {
 			if (flyY>loc.maxY-40) flyY=loc.maxY-40;
 			if (optSit) {
 				for each (var b:Box in loc.objs) {
-					if (b.wall==0 && b.stay && !b.invis && b.leftBound<flyX && b.rightBound>flyX && flyY-b.topBound<80 &&  flyY-b.topBound>-40) {
-						flyY=b.topBound;
-						flyX=b.coordinates.X;
-						flyBox=b;
+					if (b.wall == 0 && b.stay && !b.invis && b.boundingBox.left<flyX && b.boundingBox.right>flyX && flyY-b.boundingBox.top<80 &&  flyY-b.boundingBox.top>-40) {
+						flyY = b.boundingBox.top;
+						flyX = b.coordinates.X;
+						flyBox = b;
 						break;
 					}
 				}
 			}
-			if (!loc.collisionUnit(flyX,flyY,objectWidth,objectHeight)) return;
+			if (!loc.collisionUnit(flyX, flyY, this.boundingBox.width, this.boundingBox.height)) return;
 			flyX = int(flyX / 40) * 40 + 20; // Weird math is grid alignment
 			flyY = int(flyY / 40) * 40 + 39;
 			if (loc.getAbsTile(flyX,flyY).phis == 0) return;
@@ -238,7 +239,7 @@ package fe.unit {
 		}
 		
 		private function visCelUnit(un:Unit):Boolean {
-			return loc.isLine(coordinates.X, coordinates.Y - 30, un.coordinates.X, un.coordinates.Y - un.objectHeight / 2);
+			return loc.isLine(coordinates.X, coordinates.Y - 30, un.coordinates.X, un.coordinates.Y - un.boundingBox.halfHeight);
 		}
 		
 		public override function findCel(over:Boolean=false):Boolean {
@@ -249,9 +250,9 @@ package fe.unit {
 				if (un is UnitTurret && un.aiState<=1) continue;
 				var tx = un.coordinates.X - coordinates.X;
 				var ty = un.coordinates.Y - coordinates.Y;
-				if (tx*tx+ty*ty>rasstVisEn*rasstVisEn) continue;	//если расстояние больше расстояния атаки, игнорировать
+				if (tx * tx + ty * ty > rasstVisEn * rasstVisEn) continue;	//если расстояние больше расстояния атаки, игнорировать
 				if (optEnW && un.isPlav) continue;	//если враг под водой, игнорировать 
-				if (currentWeapon && currentWeapon.damage*un.vulner[currentWeapon.tipDamage]<(optEnW?un.marmor:un.armor)+un.skin+1-currentWeapon.pier) continue;	//если оружие не наносит урона, игнорировать
+				if (currentWeapon && currentWeapon.damage * un.vulner[currentWeapon.tipDamage] < (optEnW?un.marmor:un.armor)+un.skin+1-currentWeapon.pier) continue;	//если оружие не наносит урона, игнорировать
 				if (visCelUnit(un)) {
 					setCel(un);
 					return true;
@@ -262,9 +263,8 @@ package fe.unit {
 		}
 		
 		//приказ двигаться
-		public function moveto(nx:Number, ny:Number, unmat:Boolean=false)
-		{
-			if (sost==4 || oduplenie>0) return;
+		public function moveto(nx:Number, ny:Number, unmat:Boolean=false) {
+			if (sost==4 || detectionDelay > 0) return;
 			tempUnmat=unmat;
 			flyBox=null;
 			if (!loc.base && loc.getAbsTile(nx,ny).visi<0.5) {
@@ -292,8 +292,8 @@ package fe.unit {
 		public function call() {
 			active=true;
 			if (hp<=0 && !optAutores) return;
-			if (sost==4 && optAutores) resurrect();
-			oduplenie=60;
+			if (sost == 4 && optAutores) resurrect();
+			detectionDelay = 60;
 			vis.alpha=0;
 			vis.visible=true;
 			aiState=1;
@@ -314,7 +314,7 @@ package fe.unit {
 			remVisual();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			if (sost>=3) return;
 			if (optAutores)	World.w.gui.infoText('petDie', nazv, World.w.pers.petRes);
 			else World.w.gui.infoText('petDie2',nazv);
@@ -343,7 +343,7 @@ package fe.unit {
 			visDetails();
 			coordinates.X = gg.coordinates.X;
 			coordinates.Y = gg.coordinates.Y - 20;
-			oduplenie=60;
+			detectionDelay = 60;
 			vis.alpha=0;
 			cut=0;
 			poison=0;
@@ -366,7 +366,7 @@ package fe.unit {
 					visDetails();
 					coordinates.X = gg.coordinates.X;
 					coordinates.Y = gg.coordinates.Y - 20;
-					oduplenie = 60;
+					detectionDelay = 60;
 					vis.alpha = 0;
 					cut=0;
 					poison=0;
@@ -497,7 +497,7 @@ package fe.unit {
 			}
 			if (celUnit && celUnit.fraction==fraction) celUnit=null;
 			//поиск цели
-			if (aiState<=1 && aiTCh%30==1 && oduplenie<=0) {
+			if (aiState<=1 && aiTCh%30==1 && detectionDelay <= 0) {
 				if (findCel() || World.w.t_battle>0) {
 					aiState=2;
 				}
@@ -523,7 +523,7 @@ package fe.unit {
 				aiState=4;
 				aiTCh=15;
 				spd.x = celUnit.coordinates.X - coordinates.X;
-				spd.y = celUnit.coordinates.Y - celUnit.objectHeight / 2 - coordinates.Y + objectHeight / 2;
+				spd.y = celUnit.coordinates.Y - celUnit.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight;
 				norma(spd, runSpeed);
 			}
 			if (aiState==4) {
@@ -545,7 +545,7 @@ package fe.unit {
 			//атака
 			if (aiState==2 && celUnit && !isPlav) {
 				celX = celUnit.coordinates.X;
-				celY = celUnit.coordinates.Y - celUnit.objectHeight / 2;
+				celY = celUnit.coordinates.Y - celUnit.boundingBox.halfHeight;
 				flyX = celUnit.coordinates.X;
 				flyY = celUnit.coordinates.Y - 80;
 				if (flyR<=rasstWeap && currentWeapon) currentWeapon.attack();

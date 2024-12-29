@@ -14,13 +14,13 @@ package fe.weapon {
 		
 		public var kolAmmo:int = 4;
 		public var detTime:int = 75;
-		var throwTip:int = 0;
-		var radio:Boolean = false;
+		private var throwTip:int = 0;
+		private var radio:Boolean = false;
 		
-		var brake = 2; 
-		var skok:Number = 0.4;
-		var tormoz:Number = 0.6;
-		var bumc:Boolean = false;
+		private var brake:int = 2; 
+		private var skok:Number = 0.4;
+		private var tormoz:Number = 0.6;
+		private var bumc:Boolean = false;
 
 		public var sndFall:String = '';
 		
@@ -59,8 +59,8 @@ package fe.weapon {
 						return false;
 					}
 				} else {
-					var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
-					if (razn==1) skillConf=0.75;
+					var razn:int = lvl - (owner as UnitPlayer).pers.getWeapLevel(skill);
+					if (razn == 1) skillConf=0.75;
 					else if (razn==2) skillConf=0.5;
 					else if (razn>2) {
 						World.w.gui.infoText('weaponSkillLevel');
@@ -85,14 +85,14 @@ package fe.weapon {
 		}
 		
 		protected override function shoot():Bullet {
-			var sk=1;
+			var sk:int = 1;
 			if (owner) {
 				sk=owner.weaponSkill;
 				if (owner.player) sk=weaponSkill;
 			}
-			var r=(Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
-			var rasstx = owner.celX - coordinates.X;
-			var rassty = owner.celY - coordinates.Y;
+			var r:Number = (Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
+			var rasstx:Number = owner.celX - coordinates.X;
+			var rassty:Number = owner.celY - coordinates.Y;
 			if (throwTip==1) {
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
@@ -127,9 +127,9 @@ package fe.weapon {
 				b.damage=(damage+damAdd)*damMult*(1+(sk-1)*0.5);
 				b.damageExpl=(damageExpl)*damMult*(1+(sk-1)*0.5)*skillConf;
 				b.nazv=nazv;
-				(b as PhisBullet).skok=skok;
-				(b as PhisBullet).tormoz=tormoz;
-				(b as PhisBullet).brake=brake;
+				(b as PhisBullet).skok = skok;
+				(b as PhisBullet).tormoz = tormoz;
+				(b as PhisBullet).brake = brake;
 				setBullet(b);
 				(b as PhisBullet).dr=(throwTip==2)? 0 : b.velocity.X;
 				(b as PhisBullet).lip=(throwTip==2);
@@ -162,7 +162,7 @@ package fe.weapon {
 		
 		public override function setTrass(gr:Graphics):void {
 			skillConf = 1;
-			var razn = lvl - World.w.pers.getWeapLevel(skill);
+			var razn:int = lvl - World.w.pers.getWeapLevel(skill);
 			
 			if (razn == 1) {
 				skillConf = 0.75;
@@ -171,17 +171,17 @@ package fe.weapon {
 				skillConf = 0.5;
 			}
 			
-			var rot3=Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+			var rot3:Number = Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
 			trasser.loc=owner.loc;
-			var rasstx = World.w.celX - coordinates.X;
-			var rassty = World.w.celY - coordinates.Y;
+			var rasstx:Number = World.w.celX - coordinates.X;
+			var rassty:Number = World.w.celY - coordinates.Y;
 			trasser.X = trasser.begx = coordinates.X;
 			trasser.Y = trasser.begy = coordinates.Y;
 			trasser.ddy=World.ddy;
 			trasser.skok=skok;
 			trasser.tormoz=tormoz;
 			trasser.brake=brake;
-			var bvel=0;
+			var bvel:Number = 0;
 			
 			if (owner.player) {
 				bvel = getVel(rasstx, rassty, weaponSkill * skillConf);
@@ -190,7 +190,7 @@ package fe.weapon {
 				bvel = getVel(rasstx, rassty, owner.weaponSkill * skillConf);
 			}
 			
-			var	brot = rot3 + getRot(rasstx, rassty, bvel);
+			var	brot:Number = rot3 + getRot(rasstx, rassty, bvel);
 			trasser.dx = trasser.begdx = Math.cos(brot) * bvel;
 			trasser.dy = trasser.begdy = Math.sin(brot) * bvel;
 			trasser.liv = detTime;

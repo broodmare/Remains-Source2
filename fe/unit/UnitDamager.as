@@ -8,16 +8,17 @@ package fe.unit {
 	import fe.serv.LootGen;
 	import fe.weapon.WThrow;
 	import fe.projectile.Bullet;
+	import fe.entities.BoundingBox;
 	
-	//механизмы, наносящие урон
+	// [Mechanisms that cause damage]
 	
 	public class UnitDamager extends Unit {
 
 		var tr:String='0';
 		var weap:String;
 		
-		var tipDamager:int=1;	//1 - пушка, 2 взрывчатка
-		var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
+		var tipDamager:int=1;	// [1 - Guns, 2 Explosives]
+		var status:int=0;	// [0 - Armed, 1 - Activated, 2 - Disabled]
 		var needSkill:String='repair';
 		var isAct:Boolean=false;
 		var allid:String;
@@ -43,7 +44,7 @@ package fe.unit {
 			}
 			
 			mat=1;
-			vis=Res.getVis('vis'+id,vismtrap);
+			vis=Res.getVis('vis'+id,vismtrap);	// .SWF Dependency
 			getXmlParam();
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
@@ -81,7 +82,7 @@ package fe.unit {
 			setStatus();
 		}
 		
-		function setWeapon() {
+		private function setWeapon() {
 			if (tipDamager==1) {
 				if (tr=='0') tr=Math.floor(Math.random()*5+1).toString();
 				if (tr=='1') weap='lshot';
@@ -126,7 +127,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
@@ -136,7 +137,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
@@ -165,17 +166,18 @@ package fe.unit {
 				else if (tipDamager==1)
 				{
 					celX = coordinates.X + 200 * storona;
-					celY = this.topBoundToCenter;
+					celY = this.boundingBox.top;
 					currentWeapon.rot=(storona<0)?Math.PI:0;
 				}
 			}
 		}
 
-		function setStatus() {
+		private function setStatus() {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
-			} else {
+			}
+			else {
 				warn=1;
 				inter.active=true;
 			}
@@ -193,12 +195,12 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl() {
+		public override function expl():void {
 			newPart('metal',3);
 		}
 		
 		//обезвредить
-		function disarm()
+		private function disarm()
 		{
 			if (tipDamager == 1)
 			{
@@ -221,13 +223,13 @@ package fe.unit {
 		}
 		
 		//взорвать при нанесении урона
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
 			if ((tipDamager==2 || tipDamager==3) && kolammo>0) iExpl();
 			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,'frag',1);
 		}
 		
-		function iExpl() {
+		private function iExpl() {
 			var bul:Bullet;
 			if (tipDamager==2) {
 				damageExpl=currentWeapon.damageExpl*kolammo;
@@ -248,7 +250,7 @@ package fe.unit {
 		}
 		
 		//активировать
-		function activate() {
+		public function activate() {
 			if (status!=0 || sost>1) return;
 			if (tipDamager==3) {
 				iExpl();

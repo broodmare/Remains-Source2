@@ -2,6 +2,7 @@ package  fe.unit {
 
 	import fe.*;
 	import fe.weapon.Weapon;
+	import fe.entities.BoundingBox;
 	
 	public class UnitThunderTurret extends Unit {
 
@@ -18,7 +19,7 @@ package  fe.unit {
 			id='ttur';
 			tr=int(cid);
 			getXmlParam();
-			vis=new visualTTurret();
+			vis = new visualTTurret();	// .SWF Dependency
 			vis.osn.scaleX=vis.osn.scaleY=3;
 			vis.osn.pole.visible=false;
 			mater=false;
@@ -42,10 +43,7 @@ package  fe.unit {
 				coordinates.X = head.coordinates.X + bindX;
 				coordinates.Y = head.coordinates.Y + bindY;
 			}
-			topBound = coordinates.Y - objectHeight;
-			bottomBound = coordinates.Y;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
+			this.boundingBox.center(coordinates);
 			setVisPos();
 		}
 		
@@ -68,7 +66,7 @@ package  fe.unit {
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			if (World.w.game.globalDif==3) {
 				hp=maxhp=hp*1.5;
 			}
@@ -77,7 +75,7 @@ package  fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			head.dieTurret();
 			newPart('metal',4);
 			newPart('expl');
@@ -92,11 +90,11 @@ package  fe.unit {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				currentWeapon.vis.x = coordinates.X;
-				currentWeapon.vis.y = this.topBoundToCenter;
+				currentWeapon.vis.y = this.boundingBox.top;
 			}
 		}
 
-		public override function makeNoise(n:int, hlup:Boolean=false) {
+		public override function makeNoise(n:int, hlup:Boolean=false):void {
 			
 		}
 

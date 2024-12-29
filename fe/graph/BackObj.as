@@ -1,11 +1,12 @@
-package fe.graph
-{
+package fe.graph {
+
 	import flash.display.MovieClip;
 	import fe.*;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	
 	public class BackObj {
+		
 		public var id:String;
 		public var X:Number;
 		public var Y:Number;
@@ -18,7 +19,7 @@ package fe.graph
 		public var blend:String='normal';
 		public var alpha:Number=1;
 		public var sloy:int=0;
-		public var er:Boolean=false;	//стирание
+		public var er:Boolean=false;	// [Erasure]
 
 		private static var cachedBackObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		private static var tileX:int = Tile.tileX;

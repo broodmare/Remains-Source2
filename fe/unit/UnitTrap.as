@@ -39,7 +39,7 @@ package fe.unit {
 			inter.update();
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',3);
 		}
 

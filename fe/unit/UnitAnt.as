@@ -9,13 +9,13 @@ package fe.unit {
 
 		public var tr:int;
 		
-		var optDistAtt:int=100;
-		var optJumping:Boolean=false;
-		var optJumpAtt:Boolean=true;
-		var optAnimAtt:Boolean=false;
-		var t_punch:int=0;
+		private var optDistAtt:int=100;
+		private var optJumping:Boolean=false;
+		private var optJumpAtt:Boolean=true;
+		private var optAnimAtt:Boolean=false;
+		private var t_punch:int=0;
 		
-		var vstorona:int=0;
+		private var vstorona:int=0;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -49,19 +49,19 @@ package fe.unit {
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				skin+=4;
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam('ant');
 			super.getXmlParam();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
@@ -71,7 +71,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			super.expl();
 		}
 		
@@ -85,14 +85,14 @@ package fe.unit {
 					vis.rotation=0;
 				}
 				else if (isLaz==1) {
-					vis.x = rightBound;
-					vis.y = this.topBoundToCenter;
+					vis.x = this.boundingBox.right;
+					vis.y = this.boundingBox.top;
 					vis.rotation=-90;
 					vis.scaleX=-vstorona;
 				}
 				else if (isLaz==-1) {
-					vis.x = leftBound;
-					vis.y = this.topBoundToCenter;
+					vis.x = this.boundingBox.left;
+					vis.y = this.boundingBox.top;
 					vis.rotation=90;
 					vis.scaleX=vstorona;
 				}
@@ -139,7 +139,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 				velocity.X += storona * accel * 5;
@@ -150,10 +150,10 @@ package fe.unit {
 			}
 		}
 		
-		var aiLaz:int=0;
-		var aiNeedLaz:int=0;
+		private var aiLaz:int=0;
+		private var aiNeedLaz:int=0;
 		
-		var aiVis=0.5;
+		private var aiVis=0.5;
 		
 		//aiState
 		//0 - стоит на месте
@@ -184,8 +184,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -223,8 +223,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=aiVis/2;
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			}
 			else {
 				vision=aiVis;
@@ -476,11 +476,11 @@ package fe.unit {
 				if (isLaz != 0) {
 					storona = isLaz;
 
-					if (isLaz == -1) coordinates.X = loc.getTile(i, j).phX1 + objectWidth / 2;
-					else coordinates.X = loc.getTile(i, j).phX2 - objectWidth / 2;
+					if (isLaz == -1) coordinates.X = loc.getTile(i, j).boundingBox.left + this.boundingBox.halfWidth;
+					else coordinates.X = loc.getTile(i, j).boundingBox.right - this.boundingBox.halfWidth;
 
-					leftBound = coordinates.X - objectWidth / 2;
-					rightBound = coordinates.X + objectWidth / 2;
+					this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
+					this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
 					stay = false;
 					return true;
 				}
@@ -493,7 +493,7 @@ package fe.unit {
 			return false;
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (celUnit && shok <= 0) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit, 1);
 			}

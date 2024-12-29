@@ -4,27 +4,31 @@ package fe.unit {
 	import fe.serv.Interact;
 	import fe.loc.Tile;
 	import fe.loc.Location;
+	import fe.util.Vector2;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
 	public class UnitTrigger extends Unit {
 
-		var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
-		var trapT:int=0;	//тип области
-		var ax1:Number, ax2:Number, ay1:Number, ay2:Number;
-		var trapL:int=2;	//1 - нажимная плита, 2 - обычная
-		var needSkill:String='repair';
-		var isAct:Boolean=false;
-		var one:Boolean=false;	//одноразовая
-		var allid:String;
-		var allact:String;
-		var vNoise:int=1200;
+		private var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
+		private var trapT:int=0;	//тип области
+
+		private var triggerBounds:BoundingBox;
 		
-		var res:String='';
-		var damager:Unit;
+		private var trapL:int=2;	//1 - нажимная плита, 2 - обычная
+		private var needSkill:String='repair';
+		private var isAct:Boolean=false;
+		private var one:Boolean=false;	//одноразовая
+		private var allid:String;
+		private var allact:String;
+		private var vNoise:int=1200;
 		
-		var sndAct:String;
+		private var res:String='';
+		private var damager:Unit;
+		
+		private var sndAct:String;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -41,7 +45,7 @@ package fe.unit {
 			}
 			
 			mat=1;
-			vis=Res.getVis('vis'+id,vismtrap);
+			vis=Res.getVis('vis'+id, vismtrap);	// .SWF Dependency
 			setVis(false);
 			getXmlParam();
 			visibility=300;
@@ -75,7 +79,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			if (node0.un.length()) {
@@ -96,7 +100,7 @@ package fe.unit {
 			if (allid==null || allid=='') setDamager();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
@@ -116,7 +120,8 @@ package fe.unit {
 				ny = coordinates.Y + 2 * tileY;
 				res='expl1';
 				ok=true;
-			} else for (var i=1; i<=10; i++) {
+			}
+			else for (var i=1; i<=10; i++) {
 				if (res=='damgren' || res=='hturret2') {
 					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).phis) {
 						if (i==1) break;
@@ -180,7 +185,7 @@ package fe.unit {
 			}
 		}
 
-		function setStatus() {
+		private function setStatus() {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -193,7 +198,7 @@ package fe.unit {
 			inter.update();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			super.die(sposob);
 			if (status==0) activate();
 		}
@@ -204,56 +209,61 @@ package fe.unit {
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',3);
 		}
 		
-		//установить границы активации
-		function setArea() {
+		// [Set activation boundaries]
+		private function setArea() {
+			var bb:BoundingBox = new BoundingBox(coordinates);
+			var l:Number;
+			var r:Number;
+			var t:Number;
+			var b:Number;
+			
 			if (id=='trigridge' || id=='triglaser') {
-				ax1 = coordinates.X - 5
-				ax2 = coordinates.X + 5;
-				ay1 = coordinates.Y - 30;
-				ay2 = coordinates.Y - 20;
+				l = coordinates.X - 5
+				r = coordinates.X + 5;
+				t = coordinates.Y - 30;
+				b = coordinates.Y - 20;
+				
 			}
 			else if (id=='trigplate') {
-				ax1=leftBound;
-				ax2=rightBound;
-				ay1 = ay2 = coordinates.Y - 1;
+				l = bb.left;
+				r = bb.right;
+				t = coordinates.Y - 1;
+				b = coordinates.Y - 1;
 			}
 			else {
-				ax1=leftBound;
-				ax2=rightBound;
-				ay1=topBound;
-				ay2=bottomBound;
+				l = bb.left;
+				r = bb.right;
+				t = bb.top;
+				b = bb.bottom;
 			}
-		}
-		
-		//проверить активацию
-		public override function areaTest(obj:Obj):Boolean {
-			if (obj==null || obj.leftBound>=ax2 || obj.rightBound<=ax1 || obj.topBound>=ay2 || obj.bottomBound<=ay1) return false;
-			else return true;
+
+			bb.setBounds(l, r, t, b);
+			this.triggerBounds = bb;
 		}
 		
 		//обезвредить
-		function disarm() {
+		private function disarm():void {
 			status=2;
 			setStatus();
 			World.w.gui.infoText('trapDisarm')
 		}
 		
 		//реактивировать
-		function rearm() {
+		private function rearm():void {
 			status=0;
 			setStatus();
 		}
 		
 		//активировать
-		function activate() {
+		private function activate():void {
 			if (status!=0) return;
 			setVis(true);
 			status=1;
-			var act=false;
+			var act:Boolean = false;
 			if (allact=='spawn') {
 				loc.enemySpawn(true,true);
 				return;
@@ -283,7 +293,7 @@ package fe.unit {
 			if (act) World.w.gui.infoText('trapActivate')
 		}
 		
-		var aiN:int = Math.floor(Math.random() * 5);
+		private var aiN:int = Math.floor(Math.random() * 5);
 		
 		override protected function control():void {
 			if (sost>1 || status==2 || one && status==1) return;
@@ -293,7 +303,7 @@ package fe.unit {
 				for each (var un:Unit in loc.units) {
 					if (un.activateTrap==0 || un.fraction==fraction || !isMeet(un)) continue;
 					if (trapL<2 && (un.massa<0.5 || un.activateTrap<=1 || !un.stay)) continue;
-					if (areaTest(un)) act=true;
+					if (this.triggerBounds != null && this.triggerBounds.intersects(un.boundingBox)) act = true;
 				}
 				if (!isAct && act) activate();
 				if (isAct && !act && !one) rearm();

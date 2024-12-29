@@ -2,7 +2,7 @@ package fe.unit {
 
 	public class UnitEqd extends UnitAIRobot {
 
-		var jump_n:int=100;
+		private var jump_n:int=100;
 		
 		// Constructor
 		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
@@ -19,11 +19,11 @@ package fe.unit {
 			getWeapon(ndif, xml, loadObj);
 			if (quiet) id_replic='';
 			
-			isPort=true;
+			isPort = true;
 		}
 		
-		public override function dropLoot() {
-			currentWeapon.vis.visible=false;
+		public override function dropLoot():void {
+			currentWeapon.vis.visible = false;
 			super.dropLoot();
 		}
 		
@@ -77,7 +77,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y-40;
 		}

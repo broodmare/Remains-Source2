@@ -1,5 +1,5 @@
-package fe.graph
-{
+package fe.graph {
+
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.Bitmap;
@@ -30,8 +30,11 @@ package fe.graph
 	import fe.stubs.tileGwall;
 	import fe.stubs.tileFront;
 
-	public class Grafon
-	{
+	public class Grafon {
+		
+		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
+		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
+
 		public var loc:Location;
 
 		public var visual:Sprite;
@@ -113,18 +116,24 @@ package fe.graph
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
+		// Constructor
 		public function Grafon(nvis:Sprite) {
 			visual = nvis;
 
 			visBack = new Sprite();
 			visBack2 = new Sprite();
 			visVoda = new Sprite();
-			visVoda.alpha=0.6;
+			visVoda.alpha = 0.6;
 			visFront = new Sprite();
 			visLight = new Sprite();
 			visSats = new Sprite();
 			visSats.visible=false;
 			visSats.filters=[new BlurFilter(3,3,1)];
+
+			debug = new DebugLayer();
+			visBoundingBoxes = new Sprite();	// Layer to draw all bounding boxes on
+			visBoundingBoxes.mouseEnabled = false; // Prevent bounding boxes from blocking mouse events
+			visBoundingBoxes.mouseChildren = false;
 			
 			visObjs = [];
 			for (var i = 0; i < kolObjs; i++) {
@@ -143,6 +152,7 @@ package fe.graph
 			visual.addChild(visObjs[4]);	//8
 			visual.addChild(visSats);		//9
 			visual.addChild(visObjs[5]);	//10
+			
 			visLight.x = -tileX / 2;
 			visLight.y = -tileX / 2 - Tile.tileY;
 			visLight.scaleX = tileX;
@@ -240,10 +250,10 @@ package fe.graph
 		}
 		
 		private function createCursors():void {
-			createCursor(visCurArrow,'arrow');
-			createCursor(visCurTarget,'target', 13, 13);
-			createCursor(visCurTarget1,'combat', 13, 13);
-			createCursor(visCurTarget2,'action', 13, 13);
+			createCursor(visCurArrow,'arrow');				// .SWF Dependency
+			createCursor(visCurTarget,'target', 13, 13);	// .SWF Dependency
+			createCursor(visCurTarget1,'combat', 13, 13);	// .SWF Dependency
+			createCursor(visCurTarget2,'action', 13, 13);	// .SWF Dependency
  		}
 		
 		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void {
@@ -261,6 +271,11 @@ package fe.graph
 //							Начальная прорисовка локации
 //============================================================================================		
 		
+		public function drawDebugLayer():void {
+			// Ensure the bounding boxes container exists
+			visual.addChild(debug.drawAllBoundingBoxes());
+		}
+
 		public function getObj(textureName:String, n:int = 0):* {
 			//trace("Getting resource object: " + textureName + " from GrLoader: " + n);
 			if (grLoaders[n] && grLoaders[n].isLoad) {
@@ -346,232 +361,215 @@ package fe.graph
 		
 		//прорисовка локации
 		public function drawLoc(nloc:Location):void {
-			//try {
-				World.w.gr_stage=1;
-				loc=nloc;
-				loc.grafon=this;
-				resX = loc.spaceX * tileX;
-				resY = loc.spaceY * Tile.tileY;
-				
-				var transpFon:Boolean=nloc.transpFon;
-				if (nloc.backwall=='sky') transpFon=true;
-				
-				World.w.gr_stage=2;
-				//рамки
-				ramT.x=ramB.x=-50;
-				ramR.y=ramL.y=0;
-				ramT.y=0;
-				ramL.x=0;
-				ramB.y=loc.maxY-1;
-				ramR.x=loc.maxX-1;
-				ramT.scaleX=ramB.scaleX=loc.maxX/100+1;
-				ramT.scaleY=ramB.scaleY=2;
-				ramR.scaleY=ramL.scaleY=loc.maxY/100;
-				ramR.scaleX=ramL.scaleX=2;
+			World.w.gr_stage=1;
+			loc=nloc;
+			loc.grafon=this;
+			resX = loc.spaceX * tileX;
+			resY = loc.spaceY * Tile.tileY;
 			
-				World.w.gr_stage=3;		//где-то тут
-				frontBmp.lock();
-				backBmp.lock();
-				backBmp2.lock();
-				vodaBmp.lock();
-				
-				frontBmp.fillRect(allRect,0);
-				backBmp.fillRect(allRect,0);
-				backBmp2.fillRect(allRect,0);
-				vodaBmp.fillRect(allRect,0);
-				satsBmp.fillRect(allRect,0);
-				
-				lightBmp.fillRect(lightRect,0xFF000000);
-				setLight();
-				visLight.visible=loc.black&&World.w.black;
-				warShadow();
-				
-				var darkness:int=0xAA+loc.darkness;
-				if (darkness>0xFF) darkness=0xFF;
-				if (darkness<0) darkness=0;
-				colorBmp.fillRect(allRect,darkness*0x1000000);
-				shadBmp.fillRect(allRect,0xFFFFFFFF);
+			var transpFon:Boolean=nloc.transpFon;
+			if (nloc.backwall=='sky') transpFon=true;
+			
+			World.w.gr_stage=2;
+			//рамки
+			ramT.x=ramB.x=-50;
+			ramR.y=ramL.y=0;
+			ramT.y=0;
+			ramL.x=0;
+			ramB.y=loc.maxY-1;
+			ramR.x=loc.maxX-1;
+			ramT.scaleX=ramB.scaleX=loc.maxX/100+1;
+			ramT.scaleY=ramB.scaleY=2;
+			ramR.scaleY=ramL.scaleY=loc.maxY/100;
+			ramR.scaleX=ramL.scaleX=2;
+		
+			World.w.gr_stage=3;		// [somewhere here] (I assume this means whatever graphical bug)
+			frontBmp.lock();
+			backBmp.lock();
+			backBmp2.lock();
+			vodaBmp.lock();
+			
+			frontBmp.fillRect(allRect,0);
+			backBmp.fillRect(allRect,0);
+			backBmp2.fillRect(allRect,0);
+			vodaBmp.fillRect(allRect,0);
+			satsBmp.fillRect(allRect,0);
+			
+			lightBmp.fillRect(lightRect,0xFF000000);
+			setLight();
+			visLight.visible=loc.black&&World.w.black;
+			warShadow();
+			
+			var darkness:int=0xAA+loc.darkness;
+			if (darkness>0xFF) darkness=0xFF;
+			if (darkness<0) darkness=0;
+			colorBmp.fillRect(allRect,darkness*0x1000000);
+			shadBmp.fillRect(allRect,0xFFFFFFFF);
 
-				World.w.gr_stage=4;
+			World.w.gr_stage=4;
 
-				m = new Matrix();
-				var tile:MovieClip;
-				var t:Tile;
-				var front:Sprite	= new Sprite();	//отпечаток на битмапе переднего плана
-				var back:Sprite		= new Sprite();	//отпечаток на битмапе задника
-				var back2:Sprite	= new Sprite();	//отпечаток на битмапе задника
-				var voda:Sprite		= new Sprite();	//отпечаток на битмапе воды
-				
-				//отключить все материалы
-				var mat:Material;
-				for each (mat in arrFront) mat.used=false;
-				for each (mat in arrBack) mat.used=false;
-				
-				var gret:int=0;
-				World.w.gr_stage=5;
-				for (var i=0; i<loc.spaceX; i++) {
-					for (var j=0; j<loc.spaceY; j++) {
-						t = loc.getTile(i, j);
-						loc.tileKontur(i,j,t);
-						if (arrFront[t.front]) arrFront[t.front].used=true;
-						if (arrBack[t.back]) arrBack[t.back].used=true;
-						if (t.vid>0) {				//объекты, имеющие vid
-							tile=new tileFront();
-							tile.gotoAndStop(t.vid);
-							if (t.vRear) back2.addChild(tile);
-							else front.addChild(tile);
-							tile.x = i * tileX;
-							tile.y = j * Tile.tileY;
-						}
-						if (t.vid2>0) {				//объекты, имеющие vid2
-							tile=new tileFront();
-							tile.gotoAndStop(t.vid2);
-							if (t.v2Rear) back2.addChild(tile);
-							else front.addChild(tile);
-							tile.x = i * tileX;
-							tile.y = j * Tile.tileY;
-						}
-						if (t.water) {				//вода
-							tile=new tileVoda();
-							tile.gotoAndStop(loc.tipWater+1);
-							if (loc.getTile(i,j-1).water==0 && loc.getTile(i,j-1).phis==0) tile.voda.gotoAndStop(2);
-							tile.x = i * tileX;
-							tile.y = j * Tile.tileY;
-							voda.addChild(tile);
-						}
+			m = new Matrix();
+			var tile:MovieClip;
+			var t:Tile;
+			var front:Sprite	= new Sprite();	//отпечаток на битмапе переднего плана
+			var back:Sprite		= new Sprite();	//отпечаток на битмапе задника
+			var back2:Sprite	= new Sprite();	//отпечаток на битмапе задника
+			var voda:Sprite		= new Sprite();	//отпечаток на битмапе воды
+			
+			//отключить все материалы
+			var mat:Material;
+			for each (mat in arrFront) mat.used=false;
+			for each (mat in arrBack) mat.used=false;
+			
+			var gret:int=0;
+			World.w.gr_stage=5;
+			for (var i:int = 0; i<loc.spaceX; i++) {
+				for (var j=0; j<loc.spaceY; j++) {
+					t = loc.getTile(i, j);
+					loc.tileKontur(i,j,t);
+					if (arrFront[t.front]) arrFront[t.front].used=true;
+					if (arrBack[t.back]) arrBack[t.back].used=true;
+					if (t.vid > 0) {				// [Objects with vid]
+						tile=new tileFront();
+						tile.gotoAndStop(t.vid);
+						if (t.vRear) back2.addChild(tile);
+						else front.addChild(tile);
+						tile.x = i * tileX;
+						tile.y = j * Tile.tileY;
+					}
+					if (t.vid2 > 0) {				// [Objects with vid2]
+						tile=new tileFront();
+						tile.gotoAndStop(t.vid2);
+						if (t.v2Rear) back2.addChild(tile);
+						else front.addChild(tile);
+						tile.x = i * tileX;
+						tile.y = j * Tile.tileY;
+					}
+					if (t.water) {				// [Water]
+						tile=new tileVoda();
+						tile.gotoAndStop(loc.tipWater+1);
+						if (loc.getTile(i,j-1).water==0 && loc.getTile(i,j-1).phis==0) tile.voda.gotoAndStop(2);
+						tile.x = i * tileX;
+						tile.y = j * Tile.tileY;
+						voda.addChild(tile);
 					}
 				}
-				World.w.gr_stage=6;
-				vodaBmp.draw(voda, new Matrix, null, null, null, false);
-				frontBmp.draw(front, new Matrix, null, null, null, false);
-				
-				
-				World.w.gr_stage=7;
-				drawBackWall(nloc.backwall, nloc.backform);							//задняя стена
-				World.w.gr_stage=8;
-				for each (mat in arrFront) {
-					try {
-						drawKusok(mat,true);	//передний план
-					}
-					catch (err) {
-						trace('ERROR: (00:48)');
-						World.w.showError(err,'Ошибка рисования слоя '+mat.id);
-					}
-				}
-				World.w.gr_stage=9;
-				for (var e in arrBack) {
-					try {
-						drawKusok(arrBack[e],false);		//задний план
-					}
-					catch (err) {
-						trace('ERROR: (00:49)');
-						World.w.showError(err,'Ошибка рисования слоя '+arrBack[e].id);
-					}
-				}
-				World.w.gr_stage=10;
-				satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-				var darkness2=1-(255-darkness)/150;
-				//объекты заднего плана
-				var ct:ColorTransform=new ColorTransform();
+			}
+			World.w.gr_stage=6;
+			vodaBmp.draw(voda, new Matrix, null, null, null, false);
+			frontBmp.draw(front, new Matrix, null, null, null, false);
+			
+			
+			World.w.gr_stage=7;
+			drawBackWall(nloc.backwall, nloc.backform);	// [Back wall]
+			
+			World.w.gr_stage=8;
+			for each (mat in arrFront) {
+				drawKusok(mat, true);	// [Foreground]
+			}
+			World.w.gr_stage=9;
+			for each (mat in arrBack) {
+				drawKusok(mat, false);	// [Background]
+			}
+			World.w.gr_stage=10;
+			satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			var darkness2 = 1 - (255-darkness) / 150;
+			// [Background objects]
+			var ct:ColorTransform = new ColorTransform();
 
-				World.w.gr_stage=11;
-				for (j=-2; j<=3; j++) {
-					if (j==-1) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-					for each(var bo:BackObj in loc.backobjs) {	
-						if (bo.sloy==j && !bo.er || j==-2 && bo.er) {
-							m=new Matrix();
-							m.scale(bo.objectWidth, bo.objectHeight);
-							m.tx=bo.X;
-							m.ty=bo.Y;
-							ct.alphaMultiplier=bo.alpha;
-							if (bo.vis) {
-								if (j<=0) {
-									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
-									backBmp.draw(bo.vis, m, ct, bo.blend, null, true);
+			World.w.gr_stage=11;
+			for (j=-2; j<=3; j++) {
+				if (j==-1) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+				for each(var bo:BackObj in loc.backobjs) {	
+					if (bo.sloy==j && !bo.er || j==-2 && bo.er) {
+						m=new Matrix();
+						m.scale(bo.objectWidth, bo.objectHeight);
+						m.tx=bo.X;
+						m.ty=bo.Y;
+						ct.alphaMultiplier=bo.alpha;
+						if (bo.vis) {
+							if (j<=0) {
+								ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
+								backBmp.draw(bo.vis, m, ct, bo.blend, null, true);
+							}
+							else {
+								if (bo.light) {
+									if (darkness2>=0.43) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
+									else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=0.55+darkness2;
 								}
 								else {
-									if (bo.light) {
-										if (darkness2>=0.43) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
-										else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=0.55+darkness2;
-									}
-									else {
-										ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
-									}
-									backBmp2.draw(bo.vis, m, ct, bo.blend, null, true);
-									if (bo.light) {
-										ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
-									}
-									else {
-										ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
-									}
+									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+								}
+								backBmp2.draw(bo.vis, m, ct, bo.blend, null, true);
+								if (bo.light) {
+									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
+								}
+								else {
+									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
 								}
 							}
-							if (bo.erase) satsBmp.draw(bo.erase, m, null, 'erase', null, true);
-							if (bo.light) colorBmp.draw(bo.light, m, ct, 'normal', null, true);
 						}
+						if (bo.erase) satsBmp.draw(bo.erase, m, null, 'erase', null, true);
+						if (bo.light) colorBmp.draw(bo.light, m, ct, 'normal', null, true);
 					}
 				}
+			}
 
-				World.w.gr_stage=12;
-				m=new Matrix();
-				if (nloc.cTransform) {
-					frontBmp.colorTransform(frontBmp.rect,nloc.cTransform);
-					vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
-				}
-				shadBmp.applyFilter(frontBmp,frontBmp.rect,new Point(0,0),dsFilter);
+			World.w.gr_stage=12;
+			m=new Matrix();
+			if (nloc.cTransform) {
+				frontBmp.colorTransform(frontBmp.rect,nloc.cTransform);
+				vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
+			}
+			shadBmp.applyFilter(frontBmp,frontBmp.rect,new Point(0,0),dsFilter);
 
-				World.w.gr_stage=13;
-				//затемнение заднего плана
-				if (nloc.cTransform) {
-					backBmp.colorTransform(backBmp.rect,nloc.cTransform);
-					ct=new ColorTransform();
-					darkness2=1+(170-darkness)/33;
-					ct.concat(nloc.cTransform);
-					if (darkness2>1) {
-						ct.redMultiplier*=darkness2;
-						ct.greenMultiplier*=darkness2;
-						ct.blueMultiplier*=darkness2;
-					}
-					backBmp2.colorTransform(backBmp2.rect,ct);
+			World.w.gr_stage=13;
+			// [Darkening the background]
+			if (nloc.cTransform) {
+				backBmp.colorTransform(backBmp.rect,nloc.cTransform);
+				ct=new ColorTransform();
+				darkness2=1+(170-darkness)/33;
+				ct.concat(nloc.cTransform);
+				if (darkness2>1) {
+					ct.redMultiplier*=darkness2;
+					ct.greenMultiplier*=darkness2;
+					ct.blueMultiplier*=darkness2;
 				}
-				World.w.gr_stage=14;
-				backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
-				
-				World.w.gr_stage=15;
-				if (transpFon) satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-				backBmp.draw(colorBmp, null, null, 'hardlight');
-				backBmp.draw(shadBmp);
-				if (transpFon) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-				
-				//розовое облако
-				World.w.gr_stage=16;
-				if (loc.gas>0) {
-					m=new Matrix();
-					m.ty=520;
-					backBmp2.draw(getObj('back_pink_t',numbBack),m,new ColorTransform(1,1,1,0.3));
-				}
-				
-				World.w.gr_stage=17;
-				for each (mat in arrFront) drawKusok(mat,false,true);	//добавление на задний план текстур переднего плана, таких как балки
-				backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
-				
-				
-				World.w.gr_stage=18;
-				frontBmp.unlock();
-				backBmp.unlock();
-				backBmp2.unlock();
-				vodaBmp.unlock();
-				
-				if (nloc.cTransform && nloc.cTransformFon) visFon.transform.colorTransform=nloc.cTransformFon;
-				else if (visFon.transform.colorTransform!=defTransform) visFon.transform.colorTransform=defTransform;
-			//}
-			//catch (err) {
-			//	trace('ERROR: (00:4A)');
-			//	World.w.showError(err)
-			//}
+				backBmp2.colorTransform(backBmp2.rect,ct);
+			}
+			World.w.gr_stage=14;
+			backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
+			
+			World.w.gr_stage=15;
+			if (transpFon) satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			backBmp.draw(colorBmp, null, null, 'hardlight');
+			backBmp.draw(shadBmp);
+			if (transpFon) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			
+			// [Pink cloud]
+			World.w.gr_stage = 16;
+			if (loc.gas > 0) {
+				m = new Matrix();
+				m.ty=520;
+				backBmp2.draw(getObj('back_pink_t',numbBack),m,new ColorTransform(1,1,1,0.3));
+			}
+			
+			World.w.gr_stage=17;
+			for each (mat in arrFront) drawKusok(mat,false,true);	//добавление на задний план текстур переднего плана, таких как балки
+			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
+			
+			
+			World.w.gr_stage=18;
+			frontBmp.unlock();
+			backBmp.unlock();
+			backBmp2.unlock();
+			vodaBmp.unlock();
+			
+			if (nloc.cTransform && nloc.cTransformFon) visFon.transform.colorTransform=nloc.cTransformFon;
+			else if (visFon.transform.colorTransform!=defTransform) visFon.transform.colorTransform=defTransform;
 			World.w.gr_stage = 19;
-				//активные объекты
-				drawAllObjs();
+			// [Active objects]
+			drawAllObjs();
 
 			World.w.gr_stage = 0;
 		}
@@ -611,8 +609,7 @@ package fe.graph
 		}
 		
 		//заполнение заднего плана текстурой
-		public function drawBackWall(tex:String, sposob:int = 0):void
-		{
+		public function drawBackWall(tex:String, sposob:int = 0):void {
 			var roomPixelWidth:int	= kusokX * tileX;
 			var roomPixelHeight:int	= kusokY * Tile.tileY
 
@@ -713,8 +710,8 @@ package fe.graph
 						mc.y = (j + 0.5) * tileY;
 						maska.addChild(mc);
 						if (t.zForm && toFront) {
-							mc.scaleY=(t.phY2-t.phY1)/tileY;
-							mc.y=(t.phY2+t.phY1)/2;
+							mc.scaleY = (t.boundingBox.bottom - t.boundingBox.top) / tileY;
+							mc.y=(t.boundingBox.bottom + t.boundingBox.top) / 2;
 						}							
 						if (material.borderMask) {
 							mc=new material.borderMask();
@@ -723,15 +720,15 @@ package fe.graph
 							mc.y=(j+0.5)*tileY;
 							bmaska.addChild(mc);
 							if (t.zForm && toFront) {
-								mc.scaleY=(t.phY2-t.phY1)/tileY;
-								mc.y=(t.phY2+t.phY1)/2;
+								mc.scaleY = (t.boundingBox.bottom - t.boundingBox.top) / tileY;
+								mc.y = (t.boundingBox.bottom + t.boundingBox.top) / 2;
 							}							
 						}
 						if (material.floorMask) {
 							mc=new material.floorMask();
 							if (mc.c1) {
-								mc.c1.gotoAndStop(t.kont1+1);
-								mc.c2.gotoAndStop(t.kont2+1);
+								mc.c1.gotoAndStop(t.kont1 + 1);
+								mc.c2.gotoAndStop(t.kont2 + 1);
 							}
 							fmaska.addChild(mc);
 							mc.x=(i+0.5)*tileX;

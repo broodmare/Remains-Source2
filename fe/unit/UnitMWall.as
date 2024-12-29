@@ -6,16 +6,16 @@ package fe.unit {
 
 	public class UnitMWall extends Unit {
 		
-		var rearm:Boolean=false;
+		private var rearm:Boolean=false;
 
 		// Constructor
 		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			if (cid==null) {
 				id='mwall';
 			}
-			else id=cid
+			else id = cid
 			
-			mat=7;
+			mat = 7;
 			vis=Res.getVis('vis'+id,vismwall);
 			getXmlParam();
 			vulner[D_NECRO]=begvulner[D_NECRO]=1;
@@ -26,8 +26,8 @@ package fe.unit {
 			transT=true;
 		}
 
-		public override function expl()	{
-			Emitter.emit('pole', loc, coordinates.X, coordinates.Y-objectHeight/2,{kol:12,rx:objectWidth, ry:objectHeight});
+		public override function expl():void {
+			Emitter.emit('pole', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
 		}
 		
 		public override function addVisual():void {
@@ -35,7 +35,7 @@ package fe.unit {
 			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 		
-		public override function visDetails() {
+		public override function visDetails():void {
 
 		}
 		
@@ -49,7 +49,7 @@ package fe.unit {
 			exterminate();
 		}		
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0):void {
 			expl();
 			exterminate();
 		}

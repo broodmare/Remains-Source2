@@ -40,7 +40,7 @@ package fe.unit {
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y-40;
 		}

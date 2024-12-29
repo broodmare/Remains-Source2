@@ -35,14 +35,15 @@ package fe.unit {
 			wPos = AnimationSet.getWeaponOffset("wPosGutsy");
 		}
 		
-		public override function forces() {
+		public override function forces():void {
 			super.forces();
+			
 			if (sost < 3 && velocity.Y > 0) {
 				velocity.Y *= 0.9;
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			if (dopWeapon && dopWeapon.tip==0) {
 				dopWeapon.damage*=(1+level*0.12);
@@ -75,20 +76,20 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 			weaponX = coordinates.X + (obj.x+visBmp.x)*storona;
 			weaponY = coordinates.Y + obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1):void {
 			if (velocity.Y > -jumpdy) {
 				velocity.Y -= jumpdy * v / 4;
 			}
 		}
 		
-		public override function attack() {
+		public override function attack():void {
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
 			if (celDX<300 && celDX>-300 && celDY<300 && celDY>-300 || aiAttackT>0) {
 				if (aiAttackOch>0) {										//стрельба очередями

@@ -30,8 +30,7 @@ package fe.unit
 
 		public var vse:Boolean=false;		//действие окончено
 
-		public function Effect(nid:String, own:Unit=null, nval:Number=0)
-		{
+		public function Effect(nid:String, own:Unit=null, nval:Number=0) {
 			if (own == null) owner = World.w.gg;
 			else owner = own;
 
@@ -41,8 +40,7 @@ package fe.unit
 			getXmlParam();
 		}
 		
-		public static function getEffectInfo(id:String):XML
-		{
+		public static function getEffectInfo(id:String):XML {
 			// Check if the node is already cached
 			var node:XML;
 			if (cachedEffects[id] == undefined) {
@@ -52,8 +50,7 @@ package fe.unit
 			return node;
 		}
 		
-		private function getXmlParam()
-		{
+		private function getXmlParam():void {
 			t=1;
 			post=null;
 			postBad=false;
@@ -267,7 +264,7 @@ package fe.unit
 				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
 			}
 			if (id=='namok') {
-				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.objectHeight*0.25,{md:0.1});
+				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.boundingBox.height*0.25,{md:0.1});
 			}
 			if (id=='hydra' && owner.sost==1) {
 				owner.heal(val);
@@ -288,7 +285,7 @@ package fe.unit
 		}
 		public function stepEffect() {
 			if (id=='burning') {
-				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.coordinates.Y - owner.objectHeight/2);
+				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.boundingBox.bottom);
 			}
 			if (id == 'sacrifice' && t == 5)
 			{

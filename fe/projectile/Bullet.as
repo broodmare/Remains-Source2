@@ -13,7 +13,7 @@ package fe.projectile {
 	import fe.weapon.Weapon;
 	
 	public class Bullet extends Obj {	
-		
+
 		//типы реакции на попадание
 		//-1 - промах, пуля летит дальше
 		//0 - попал, пуля исчезла
@@ -40,7 +40,7 @@ package fe.projectile {
 		public var flare:String;
 		public var outspace:Boolean=false;
 		
-		public var otbros=0;
+		public var otbros = 0;
 		public var probiv:Number = 0;
 		public var parrDict:Dictionary;	// List of objects the bullet has already interacted with.
 		
@@ -86,13 +86,13 @@ package fe.projectile {
 		// Constructor
 		public function Bullet(own:Unit, coords:Vector2, visClass:Class=null, addobj:Boolean=true) {
 			
-			if (own==null) {
-				owner=new Unit();
-				loc=World.w.loc;
+			if (own == null) {
+				owner = new Unit();
+				loc = World.w.loc;
 			}
 			else {
-				owner=own;
-				loc=own.loc;
+				owner = own;
+				loc = own.loc;
 			}
 			
 			coordinates.setVector(coords);
@@ -100,16 +100,18 @@ package fe.projectile {
 			begx = coords.X;
 			begy = coords.Y;
 			
-			sloy=2;
-			levitPoss=false;
+			sloy = 2;
+			levitPoss = false;
 			if (visClass) {
-				if (World.w.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;
+				if (World.w.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;	// .SWF Dependency
 				vis=new visClass();
 				vis.stop();
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.visible=false;
+				vis.visible = false;
 			}
+
+			// Adds itself to the location's processing chain for updates
 			if (addobj) loc.addObj(this);
 		}
 		
@@ -284,29 +286,36 @@ package fe.projectile {
 			v.divide(div);
 			coordinates.sumVectors(v);
 			
+			// Checking if the bullet is out of bounds in sky
 			if (loc.sky && (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY)) {
 				popadalo(0);
 			}
 			else {
-				if (!outspace && coordinates.X < 0 || coordinates.X >= loc.spaceX * constTileX || coordinates.Y < 0 || coordinates.Y >= loc.spaceY * constTileY) popadalo(0);
+				// Checking out of space boundaries
+				if (!outspace && (coordinates.X < 0 || coordinates.X >= loc.spaceX * constTileX 
+							|| coordinates.Y < 0 || coordinates.Y >= loc.spaceY * constTileY)) {
+					popadalo(0);
+				}
 
 				var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
 				if (t.water > 0) {
 					if (inWater == 0) {
-						if (partEmit && (tipDamage==Unit.D_BUL || tipDamage==Unit.D_PHIS || tipDamage==Unit.D_BLADE)) {
-							Emitter.emit('kap', loc, coordinates.X, coordinates.Y,{
+						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE)) {
+							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {
 								dx: -velocity.X / vel * 10,
 								dy: -velocity.Y / vel * 10,
 								kol: Math.floor(Calc.intBetween(0, 4) + damage / 5)
 							});
 							sound(11);
-							partEmit=false;
+							partEmit = false;
 						}
 					}
-					if (tipDamage==Unit.D_FIRE || tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_SPARK || tipDamage==Unit.D_ACID) {
+					if (tipDamage == Unit.D_FIRE || tipDamage == Unit.D_LASER || tipDamage == Unit.D_PLASMA 
+					|| tipDamage == Unit.D_SPARK || tipDamage == Unit.D_ACID) 
+					{
 						if (partEmit) {
 							Emitter.emit('steam', loc, coordinates.X, coordinates.Y);
-							partEmit=false;
+							partEmit = false;
 						}
 						popadalo(0);
 					}
@@ -326,7 +335,14 @@ package fe.projectile {
 					}
 					inWater = 0;
 				}
-				if (!tilehit && (tileX < 0 || int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && (t.phis == 1 || t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY) && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) {
+				
+				// Checking collision with a tile if relevant
+				if (!tilehit 
+				&& (tileX < 0 || (int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY)) 
+				&& ((t.phis == 1) || (t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY)) 
+				&& coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right 
+				&& coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) 
+				{
 					if (!inWall) {
 						popadalo(t.mat);
 						sound(t.mat);
@@ -336,13 +352,19 @@ package fe.projectile {
 						tilehit = true;
 					}
 				}
-				else inWall = false;
+				else {
+					inWall = false;
+				}
 			}
 
 			if (off) {
 				return;
 			}
 
+			// -------------------------------------------------------------
+			// For each Unit in the location, use boundingBox.intersectsCoordinate
+			// instead of manual left/right/top/bottom checks.
+			// -------------------------------------------------------------
 			for each(var un:Unit in loc.units) {
 				if (targetObj) {
 					if (targetObj is Unit) un = targetObj as Unit;
@@ -351,23 +373,37 @@ package fe.projectile {
 
 				if (un.sost == 4 || un.disabled || un.trigDis || un.loc != loc) continue;
 				
-				if ((targetObj || un.fraction != owner.fraction) && coordinates.X >= un.leftBound && coordinates.X <= un.rightBound && coordinates.Y >= un.topBound && coordinates.Y <= un.bottomBound) {
-					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) {	//проверить досягаемость до объекта
+				// *** Changed from manual boundary checks to boundingBox call ***
+				if ((targetObj || un.fraction != owner.fraction) 
+					&& un.boundingBox.intersectsCoordinate(coordinates)) 
+				{
+					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) {
+						// Bullet can’t reach the object
 						off = true;
 						return;
 					}
 
 					if (un.dopTestOn && !un.dopTest(this)) continue;
 
-					if (udar(un)) {	//если эта пуля ещё не взаимодействовала с этим объектом
-						var res = un.udarBullet(this); //попасть по объекту, проверить, не уклонился ли объект
+					// If the bullet has not interacted with this object yet
+					if (udar(un)) {
+						var res:int = un.udarBullet(this); 
 						sound(res);
-						if (!(probiv > 0 && damage > 0) && res >= 0) {	//[If the bullet penetrates, let it keep going. Otherwise, destroy the bullet]
+
+						// If the bullet does not penetrate, or if it should be destroyed
+						if (!(probiv > 0 && damage > 0) && res >= 0) {
 							popadalo(res);
 							if (weap) {
-								if ((un is fe.unit.Mine || un is fe.unit.UnitMsp) && un.sost > 2) weap.crash(15);
-								else if (un.tipDamage == Unit.D_ACID) weap.crash(3);
-								else weap.crash();
+								// Crash weapon in special cases
+								if ((un is fe.unit.Mine || un is fe.unit.UnitMsp) && un.sost > 2) {
+									weap.crash(15);
+								}
+								else if (un.tipDamage == Unit.D_ACID) {
+									weap.crash(3);
+								}
+								else {
+									weap.crash();
+								}
 							}
 							break;
 						}
@@ -376,12 +412,17 @@ package fe.projectile {
 				if (targetObj) break;
 			}
 			
-			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) {//взлом контейнера
+			// -------------------------------------------------------------
+			// Same idea for Box boundingBox checks:
+			// -------------------------------------------------------------
+			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) {
 				box = loc.celObj as Box;
-				if (coordinates.X >= box.leftBound && coordinates.X <= box.rightBound && coordinates.Y >= box.topBound && coordinates.Y <= box.bottomBound && udar(box)) {
+				
+				// *** Changed from manual boundary checks to boundingBox call ***
+				if (box.boundingBox.intersectsCoordinate(coordinates) && udar(box)) {
 					res = box.udarBullet(this, 1);
 					sound(res);
-					if (res>=0) {
+					if (res >= 0) {
 						popadalo(res);
 						if (weap) weap.crash();
 					}
@@ -389,10 +430,12 @@ package fe.projectile {
 				}
 			}
 			
-			if (World.w.gg.loc==loc && World.w.gg.teleObj && (World.w.gg.teleObj is Box) && owner!=World.w.gg) {
-				box=World.w.gg.teleObj as Box;
-				if (coordinates.X >= box.leftBound && coordinates.X <= box.rightBound && coordinates.Y >= box.topBound && coordinates.Y <= box.bottomBound && udar(box)) {
-					res = box.udarBullet(this,0);
+			if (World.w.gg.loc == loc && World.w.gg.teleObj && (World.w.gg.teleObj is Box) && owner != World.w.gg) {
+				box = World.w.gg.teleObj as Box;
+				
+				// *** Changed from manual boundary checks to boundingBox call ***
+				if (box.boundingBox.intersectsCoordinate(coordinates) && udar(box)) {
+					res = box.udarBullet(this, 0);
 					sound(res);
 
 					if (res >= 0) {
@@ -401,10 +444,11 @@ package fe.projectile {
 				}
 			}
 
-			if (celX >- 10000 && celY >- 10000 && explRadius > 0) {
-				if (Math.abs(celX - coordinates.X) < 50 && Math.abs(celY - coordinates.Y) < 200 && Math.random() < 0.3) popadalo(100);
+			if (celX > -10000 && celY > -10000 && explRadius > 0) {
+				if (Math.abs(celX - coordinates.X) < 50 && Math.abs(celY - coordinates.Y) < 200 && Math.random() < 0.3) {
+					popadalo(100);
+				}
 			}
-			
 		}
 		
 		private function sound(res:int):void {
@@ -440,7 +484,7 @@ package fe.projectile {
 			inWall = false;
 			isExpl = true;
 			levitPoss=false;
-			if (t && t.phis && coordinates.X >= t.phX1 && coordinates.X <= t.phX2 && coordinates.Y >= t.phY1 && coordinates.Y <= t.phY2) inWall = true;
+			if (t && t.phis && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) inWall = true;
 			if (targetObj && destroy > 0 && (targetObj is Box)) (targetObj as Box).damage(destroy);
 
 			if (explKol<=0) explRun();
@@ -469,14 +513,13 @@ package fe.projectile {
 			explVis();
 		}
 		
-		
 		//поражение всех стен в радиусе
 		private function explDestroy():void {
 			for (var i:int = int((coordinates.X - explRadius) / constTileX); i<= int((coordinates.X + explRadius) / constTileX); i++) {
 				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j<= int((coordinates.Y + explRadius) / constTileY); j++) {
-					var tx = coordinates.X - (i + 0.5) * constTileX;
-					var ty = coordinates.Y - (j + 0.5) * constTileY;
-					var ter = tx * tx + ty * ty;
+					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
+					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
+					var ter:Number = tx * tx + ty * ty;
 					if (ter < explRadius * explRadius) loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
 				}
 			}
@@ -487,10 +530,10 @@ package fe.projectile {
 			for each(var un:Unit in loc.units) {
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;// || (un is VirtualUnit)
 				if (explTip==3 && !un.stay) continue; 
-				var tx = un.coordinates.X - coordinates.X;
-				var ty = un.coordinates.Y - un.objectHeight / 2 - coordinates.Y;
-				var rasst = Math.sqrt(tx*tx+ty*ty);
-				var dam = damageExpl * Calc.floatBetween(0.7, 1.3);
+				var tx:Number = un.coordinates.X - coordinates.X;
+				var ty:Number = un.boundingBox.bottom - coordinates.Y;
+				var rasst:Number = Math.sqrt(tx*tx+ty*ty);
+				var dam:Number = damageExpl * Calc.floatBetween(0.7, 1.3);
 				//дружественный огонь врагов
 				if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
 					dam*=0.25;
@@ -507,14 +550,12 @@ package fe.projectile {
 		
 		//поражение всех юнитов виртуальными осколками, с учётом защиты от стен
 		private function explBlast():void {
-			var tx;
-			var ty;
 			if (loc != owner.loc) return;
 			for each(var un:Unit in loc.units) {
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
-				var tx = un.coordinates.X - coordinates.X;
-				var ty = un.coordinates.Y - un.objectHeight / 2 - coordinates.Y;
-				var b:Bullet=explBullet(tx, ty, explRadius + un.objectWidth);
+				var tx:Number = un.coordinates.X - coordinates.X;
+				var ty:Number = un.boundingBox.bottom - coordinates.Y;
+				var b:Bullet=explBullet(tx, ty, explRadius + un.boundingBox.width);
 				if (b) {
 					b.targetObj=un;
 					//дружественный огонь врагов
@@ -523,8 +564,8 @@ package fe.projectile {
 					}
 					//огонь по себе
 					if (un.player) {
-						if (weap && weap.owner.fraction==Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
-						var p={x:b.knockx, y:b.knocky};
+						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
+						var p:Object = {x:b.knockx, y:b.knocky};
 						norma(p, 10);
 						b.knockx = p.x;
 						b.knocky = p.y;
@@ -535,7 +576,7 @@ package fe.projectile {
 		
 		//создать осколок
 		private function explBullet(tx:Number, ty:Number, er:Number):Bullet {
-			var rasst = Math.sqrt(tx*tx+ty*ty);
+			var rasst:Number = Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
 			if (rasst < er) {
 				b = new Bullet(owner, coordinates, null);
@@ -745,9 +786,9 @@ package fe.projectile {
 		private function explLiquid(liq:String, ndy:int=0) {
 			for (var i:int = int((coordinates.X - explRadius) / constTileX); i <= int((coordinates.X + explRadius) / constTileX); i++) {
 				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j <= int((coordinates.Y + explRadius) / constTileY); j++) {
-					var tx = coordinates.X - (i + 0.5) * constTileX;
-					var ty = coordinates.Y - (j + 0.5) * constTileY;
-					var ter = tx * tx + ty * ty;
+					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
+					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
+					var ter:Number = tx * tx + ty * ty;
 					if (ter < explRadius * explRadius) {
 						var t:Tile = loc.getTile(i, j);
 						if (j > 1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i, j - 1).phis == 0)) {
@@ -755,7 +796,7 @@ package fe.projectile {
 								liq,
 								loc,
 								(i + 0.5) * constTileX + Calc.floatBetween(-2, 2),
-								t.phY1 + ndy
+								t.boundingBox.top + ndy
 							);
 						}
 					}

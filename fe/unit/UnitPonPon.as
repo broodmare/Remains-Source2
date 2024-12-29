@@ -34,12 +34,12 @@ package fe.unit {
 			
 			if (cid=='zebra') {
 				if (tr>=4) msex=true;
-				vis=new visualZebPon();
+				vis=new visualZebPon();		// .SWF Dependency
 				if (!uniqName) nazv=Res.txt('u','zebpon');
 				verVis=1;
 			}
 			else if (cid=='stab') {
-				vis=new visualStabPon();
+				vis=new visualStabPon();	// .SWF Dependency
 				if (!uniqName) nazv=Res.txt('u','stabpon');
 				verVis=1;
 				id_replic='stabpon';
@@ -48,7 +48,7 @@ package fe.unit {
 				privet=true;
 			}
 			else {
-				vis=new visualPonPon();
+				vis=new visualPonPon();		// .SWF Dependency
 				if (tr>=9 && tr<=11 || tr>=22) msex=true;
 				else msex=false;
 				if (tr==12) novoi=true;

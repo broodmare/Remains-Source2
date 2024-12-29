@@ -198,7 +198,7 @@ package fe.unit {
 			}
 		}
 
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam(parentId);
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
@@ -225,7 +225,7 @@ package fe.unit {
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
 				if (currentWeapon && currentWeapon.uniq>0 && isrnd(currentWeapon.uniq/2)) {
@@ -242,7 +242,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			super.setWeaponPos(tip);
 			if (!enclWeap && (tip==1 || tip==2 || tip==4)) {
 				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
@@ -313,7 +313,7 @@ package fe.unit {
 		}
 		
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok+10;
@@ -327,7 +327,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot():void {
 			super.dropLoot();
 			if (currentWeapon) {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
@@ -350,10 +350,10 @@ package fe.unit {
 		}
 
 		private function emit() {
-			var un:Unit=loc.createUnit('vortex', coordinates.X, this.topBoundToCenter,true);
-			un.fraction=fraction;
-			un.oduplenie=0;
-			emit_t=300;
+			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
+			un.fraction = fraction;
+			un.detectionDelay = 0;
+			emit_t = 300;
 			kol_emit--;
 		}
 		
@@ -370,7 +370,7 @@ package fe.unit {
 			if (f) aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			aiJump = int(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
 				velocity.Y = -jumpdy * v;
@@ -469,8 +469,8 @@ package fe.unit {
 			if (!controlOn) return;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y-objectHeight;
-				celX = coordinates.X+objectWidth*storona*2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -590,7 +590,7 @@ package fe.unit {
 			if (aiTCh%30==1 && !levit && findLevit() && celUnit!=loc.gg) {
 				if (loc.gg.teleObj && (loc.gg.teleObj is Mine)) {
 					var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
-					var gy:Number=loc.gg.teleObj.coordinates.Y - coordinates.Y + objectHeight / 2;
+					var gy:Number=loc.gg.teleObj.coordinates.Y - coordinates.Y + this.boundingBox.halfHeight;
 					alarma();
 					if (gx*gx+gy*gy<400*400) {
 						aiState=6;
@@ -614,7 +614,7 @@ package fe.unit {
 			celDX = celX - coordinates.X;
 			
 			if (stay) {
-				celDY = celY - coordinates.Y + objectHeight;
+				celDY = celY - coordinates.Y + this.boundingBox.height;
 			}
 			
 			if (celDY>40) {
@@ -667,8 +667,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision = visionMult;
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			}
 			else {
 				vision=1.5*visionMult;
@@ -869,7 +869,7 @@ package fe.unit {
 					}
 					else {
 						spd.x = celX - coordinates.X;
-						spd.y = celY-(coordinates.Y - objectHeight / 2);
+						spd.y = celY-(coordinates.Y - this.boundingBox.halfHeight);
 						
 						//дематериализоваться
 						if (turnX != 0) {

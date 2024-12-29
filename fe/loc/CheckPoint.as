@@ -36,17 +36,15 @@ package fe.loc {
 			
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			objectWidth = node.@size * tileX;
-			objectHeight = node.@wid * tileY;
+			this.boundingBox.width = node.@size * tileX;
+			this.boundingBox.height = node.@wid * tileY;
 			nazv=Res.txt('o','checkpoint');
 			
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight;
-			bottomBound = coordinates.Y;
+			this.boundingBox.center(coordinates);
+
 			coordinates.X  = nx;
 			coordinates.Y  = ny;
-			var vClass:Class = Res.getClass('vischeckpoint', null, vischeckpoint); // SWF Dependency
+			var vClass:Class = Res.getClass('vischeckpoint', null, vischeckpoint); // .SWF Dependency
 			vis=new vClass();
 			vis.x = coordinates.X;
 			vis.y = coordinates.Y;
@@ -56,10 +54,7 @@ package fe.loc {
 				locked=true;
 			}
 			else vis.lock.visible=false;
-			leftBound = coordinates.X - objectWidth / 2;
-			rightBound = coordinates.X + objectWidth / 2;
-			topBound = coordinates.Y - objectHeight;
-			bottomBound = coordinates.Y;
+			this.boundingBox.center(coordinates);
 			cTransform=loc.cTransform;
 			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).shelf = true;
 			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).shelf = true;
@@ -72,7 +67,7 @@ package fe.loc {
 			inter.action=100;
 			
 			area=new Area(loc);
-			area.setSize(leftBound,topBound,rightBound,bottomBound);
+			area.setSize(this.boundingBox.left, this.boundingBox.top, this.boundingBox.right, this.boundingBox.bottom);
 			area.over=areaActivate;
 			
 			if (xml && xml.@main.length()) main=true;
@@ -203,7 +198,7 @@ package fe.loc {
 		}
 		
 		public override function step():void {
-			onCursor=(leftBound<World.w.celX && rightBound>World.w.celX && topBound<World.w.celY && bottomBound>World.w.celY)?prior:0;
+			onCursor=(this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) {
 				if (World.w.game.missionId && World.w.game.lands[World.w.game.missionId] && World.w.game.lands[World.w.game.missionId].tip!='base') inter.active=true;

@@ -24,22 +24,22 @@ package fe.unit {
 		
 		public var tr:int;
 		
-		var osnova:Tile;
+		private var osnova:Tile;
 		
-		var turrettip:int=0;
-		var hidden:int=0;	//1 - является срытой, 2 - скрыта и не реагирует пока не получит команду
-		var sleep:Boolean=false;	//отключена
-		var reprog:Boolean=false;	//перенастроена
+		private var turrettip:int=0;
+		private var hidden:int=0;	//1 - является срытой, 2 - скрыта и не реагирует пока не получит команду
+		private var sleep:Boolean=false;	//отключена
+		private var reprog:Boolean=false;	//перенастроена
 		
-		var actDrot:Number=0.1;
-		var noTurn:Boolean=false;
-		var absVis:Boolean=false;
-		var watchDrot:Number=0.015;
-		var period:int=120;
-		var aRot:Array;		//массив углов поворота
-		var nRot:int=0;		//и текущий элемент массива
-		var mxml:XML;
-		var angle:String;
+		private var actDrot:Number=0.1;
+		private var noTurn:Boolean=false;
+		private var absVis:Boolean=false;
+		private var watchDrot:Number=0.015;
+		private var period:int=120;
+		private var aRot:Array;		//массив углов поворота
+		private var nRot:int=0;		//и текущий элемент массива
+		private var mxml:XML;
+		private var angle:String;
 
 		private var tileX:int = Tile.tileX;
 		private var tileY:int = Tile.tileY;
@@ -49,15 +49,16 @@ package fe.unit {
 
 			super(cid, ndif, xml, loadObj);
 			
+			
+
 			// [Define turret type, tr. (Weapon used)]
 			if (loadObj && loadObj.tr) { // [from the loaded object]
-				tr=loadObj.tr;
+				tr = loadObj.tr;
 			}
 			else if (xml && xml.@tr.length()) {	// [from map settings]
-				tr=xml.@tr;
+				tr = xml.@tr;
 			}
-			else // [randomly by ndif parameter]
-			{								
+			else { // [randomly by ndif parameter]
 				if (ndif < 10)		tr = int(Math.random() * 3 + 1);
 				else if (ndif < 15)	tr = int(Math.random() * 5 + 1);
 				else				tr = int(Math.random() * 7 + 1);
@@ -74,34 +75,34 @@ package fe.unit {
 			
 			id = 'turret' + turrettip;
 
-			if (turrettip == 0) vis=new visualTurret0();
-			else if (turrettip==1) vis=new visualTurret1();
-			else if (turrettip==2) vis=new visualTurret2();
-			else if (turrettip==3) vis=new visualTurret3();
-			else if (turrettip==4) vis=new visualTurret4();
-			else if (turrettip==5) vis=new visualTurret5();
+			if (turrettip == 0)		vis = new visualTurret0();		// .SWF Dependency
+			else if (turrettip==1)	vis = new visualTurret1();		// .SWF Dependency
+			else if (turrettip==2)	vis = new visualTurret2();		// .SWF Dependency
+			else if (turrettip==3)	vis = new visualTurret3();		// .SWF Dependency
+			else if (turrettip==4)	vis = new visualTurret4();		// .SWF Dependency
+			else if (turrettip==5)	vis = new visualTurret5();		// .SWF Dependency
 			
 			vis.stop();
 			getXmlParam();
 			
-			if (turrettip==5) {
-				invulner=true;
-				absVis=true;
+			if (turrettip == 5) {
+				invulner = true;
+				absVis = true;
 			}
 			
-			currentWeapon=new Weapon(this,'turret'+tr);
-			childObjs=new Array(currentWeapon);
-			mat=1;
+			currentWeapon = new Weapon(this, 'turretWep' + tr);
+			childObjs = new Array(currentWeapon);
+			mat = 1;
 			currentWeapon.rot=currentWeapon.forceRot;
 			currentWeapon.auto=true;
 			currentWeapon.hold=currentWeapon.holder;
 
-			if (xml && xml.move.length()) mxml=xml;
-			if (xml && xml.@vis.length()) angle=xml.@vis;
-			if (xml && xml.@fraction.length()) fraction=xml.@fraction;
-			if (xml && xml.@hidden.length()) hidden=xml.@hidden;
-			if (turrettip!=3) acidDey=1;
-			if (fraction==F_PLAYER) warn=0;
+			if (xml && xml.move.length()) mxml = xml;
+			if (xml && xml.vis.@vclass.length()) angle = xml.vis.@vclass;
+			if (xml && xml.@fraction.length()) fraction = xml.@fraction;
+			if (xml && xml.@hidden.length()) hidden = xml.@hidden;
+			if (turrettip != 3) acidDey = 1;
+			if (fraction == F_PLAYER) warn = 0;
 			if (loadObj && loadObj.off) hack(0);
 			if (loadObj && loadObj.reprog) hack(1);
 		}
@@ -116,41 +117,41 @@ package fe.unit {
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
-			if (mxml) inter=new Interact(this,null,mxml,null);
+			super.putLoc(nloc, nx, ny);
+			if (mxml) inter = new Interact(this, null, mxml, null);
 			// Turret aiming constraints
 			if (turrettip == 0 || turrettip == 4) {
-				currentWeapon.fixRot=1;
-				aRot=[30,150];
-				if (turrettip==4) {
-					period=80;
-					watchDrot=0.05;
+				currentWeapon.fixRot = 1;
+				aRot = [30, 150];
+				if (turrettip == 4) {
+					period = 80;
+					watchDrot = 0.05;
 				}
 			}
 			else if (turrettip==1){
-				aRot=[-15,-165];
-				watchDrot=0.1;
+				aRot = [-15, -165];
+				watchDrot = 0.1;
 			}
-			else if (turrettip==2 || turrettip==5){
-				aRot=[45,135,-135,-45];
+			else if (turrettip == 2 || turrettip == 5){
+				aRot = [45, 135, -135, -45];
 				vKonus=Math.PI/2;
 				if (loc.mirror) {
 					if (angle=='left') angle='right';
 					else if (angle=='right') angle='left';
 				}
-				if (angle=='down') aRot=[45,135];
-				if (angle=='up') aRot=[-45,-135];
-				if (angle=='left') aRot=[135,-135];
-				if (angle=='right') aRot=[45,-45];
+				if (angle == 'down')  aRot = [ 45,  135];
+				if (angle == 'up')    aRot = [-45, -135];
+				if (angle == 'left')  aRot = [135, -135];
+				if (angle == 'right') aRot = [ 45,  -45];
 			}
 			else if (turrettip==3) {
 				if (storona>0) {
-					aRot=[-15, 15];
+					aRot = [-15, 15];
 					currentWeapon.fixRot=2;
 					vAngle=0;
 				}
 				else {
-					aRot=[-165,165]
+					aRot=[-165, 165]
 					currentWeapon.fixRot=3;
 					vAngle=Math.PI;
 				}
@@ -159,10 +160,12 @@ package fe.unit {
 				noTurn=true;
 				vis.osn.t1.scaleX=vis.osn.t2.scaleX=vis.osn.t3.scaleX=storona;
 			}
+			
 			nRot = int(Math.random()*aRot.length);
 			currentWeapon.rot=currentWeapon.forceRot=aRot[nRot];
 			currentWeapon.findCel=false;
 			aiState=1;
+			
 			if (hidden>0) {
 				currentWeapon.rot=currentWeapon.forceRot=Math.PI/2;
 				aiState=0;
@@ -176,7 +179,7 @@ package fe.unit {
 			}
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0):void {
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.2);
@@ -218,12 +221,12 @@ package fe.unit {
 			return radians * 180 / Math.PI;
 		}
 
-		public override function setPos(nx:Number,ny:Number) {
+		public override function setPos(nx:Number,ny:Number):void {
 			super.setPos(nx,ny);
 			if ((turrettip == 0 || turrettip == 4) && loc && !loc.active) osnova = loc.getAbsTile(coordinates.X, coordinates.Y - 50);
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx, ny);
 			if (turrettip == 3) return;
 			if (sost==1 && !sleep) {
@@ -271,12 +274,12 @@ package fe.unit {
 			warn=0;
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0):void {
 			weaponX = coordinates.X;
 			if (turrettip==0 || turrettip==4) weaponY = coordinates.Y - 12;
 			else if (turrettip==1) weaponY = coordinates.Y - 60;
@@ -284,7 +287,7 @@ package fe.unit {
 			else if (turrettip==3) weaponY = coordinates.Y - 55;
 		}
 		
-		//оторвать от фиксированного места
+		// [Tear away from a fixed place]
 		public override function otryv() {
 			if (turrettip==5) return;
 			if (turrettip==0 || turrettip==2 || turrettip==4) {
@@ -340,7 +343,7 @@ package fe.unit {
 				return true;
 			}
 			if (!reprog) return super.findCel(over);
-			if (oduplenie>0) return false;
+			if (detectionDelay > 0) return false;
 			var ncel:Unit;
 			if (priorUnit && isMeet(priorUnit) && priorUnit.sost<3 && priorUnit.hp>0 && !priorUnit.doop) {
 				setCel(priorUnit);
@@ -367,7 +370,7 @@ package fe.unit {
 		//4 - не видит цель
 		
 		override protected function control():void {
-			if (levit && !reprog || !stay && !fixed && oduplenie<=0) {
+			if (levit && !reprog || !stay && !fixed && detectionDelay <= 0) {
 				if (aiState<=1 && !sleep) {
 					aiState=3;
 				}
@@ -377,8 +380,7 @@ package fe.unit {
 				return;
 			}
 			if (aiTCh>0) aiTCh--;
-			else if (aiState==2)
-			{
+			else if (aiState==2) {
 				if (celUnit) {
 					aiSpok=maxSpok+10;
 					aiState=3;
@@ -470,8 +472,8 @@ package fe.unit {
 			if (World.w.enemyAct>=3 && aiState==3 && !stun) {
 				currentWeapon.attack();
 			}
-			if (World.w.enemyAct>=3 && celUnit && dam>0 && oduplenie<=0) {	//атака корпусом
-				attKorp(celUnit,1);
+			if (World.w.enemyAct >= 3 && celUnit && dam>0 && detectionDelay <= 0) {	//атака корпусом
+				attKorp(celUnit, 1);
 			}
 		}
 	}

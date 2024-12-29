@@ -6,7 +6,7 @@ package fe.loc {
 
 
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.entities.BoundingBox;
 	import fe.graph.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
@@ -44,18 +44,18 @@ package fe.loc {
 		public var defaultTile:Tile;			//пустой блок
 		public var units:Vector.<Unit>;			//юниты
 		public var ups:Array;			// [Spawn random units]
-		public var objs:Array;			//боксы
+		public var objs:Array;			// [Boxes]
 		public var bonuses:Array;		//бонусы
 		public var areas:Array;			//области
 		public var acts:Array;			//активные объекты (отображаемые на карте)
 		public var saves:Array;			//объекты, подлежащие сохранению
 		public var backobjs:Array;		//фоновые объекты
-		public var grenades:Array;		//активные гранаты
+		public var grenades:Array;		// [Active grenades]
 		public var gg:UnitPlayer;
 		public var celObj:Obj, celDist:Number=-1;	//целевой объект и расстояние до него
-		public var unitCoord;			//объект для координации юнитов
+		public var unitCoord;			// [object for unit coordination]
 		
-		//входы и посещение
+		// [Entrances and visiting]
 		public var spawnPoints:Array;	//точки спавна | Array of objects containing two Numbers {x, y}
 		public var enspawn:Array;		//точки спавна врагов
 		public var doors:Array;			//проходы в другие локации
@@ -64,11 +64,11 @@ package fe.loc {
 		public var active:Boolean=false;		//активна в данный момент
 		public var visited:Boolean=false;		//посещена
 		
-		//служебные
+		// [Serivce]
 		public var cp:CheckPoint;
 		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
-		public var objsT:Array;				//активные объекты
-		public var recalcTiles:Vector.<Tile>;		//пересчитать воду
+		public var objsT:Array;						// [Active objects]
+		public var recalcTiles:Vector.<Tile>;		// [Count the water]
 
 		//цепочка выполнения
 		public var firstObj:Entity;
@@ -128,10 +128,10 @@ package fe.loc {
 		public var electroDam:Number=0;
 		public var trus:Number=0;				//постоянная тряска
 		
-		//враги
+		// [Enemies]
 		public var tipEnemy:int=-1;				//тип случайных врагов
 		public var kolEn:Array=[0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
-		private var tipEn:Array = ['','enl1','enl2','enf1','enc1','lov'];
+		private var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
 		public var tipSpawn:String='enl2';
 		public var kolEnSpawn:int=0;		//может заспавнится обычных врагов
 		public var tileSpawn:Number=0;		//спавн при разрушении блоков
@@ -142,12 +142,12 @@ package fe.loc {
 		public var t_alarm:int=0;			//счётчик сигнализации
 		public var t_alarmsp:int=0;			//счётчик спавна врагов
 		
-		//бонусы и опыт
+		// [Bonuses and experience]
 		public var kolXp:int=0, maxXp:int=0;
 		public var unXp:int=100;
 		public var summXp:int=0;
 		
-		//Уровень сложности
+		// [Difficulty level]
 		public var locDifLevel:Number=0;
 		public var biom:int=0;
 		public var locksLevel:Number=0;		//уровень замков 0-25
@@ -172,10 +172,11 @@ package fe.loc {
 		public var maxX:int;
     	public var maxY:int;
 
-		public var spaceX:int;	//размер локации в блоках
+		public var spaceX:int;	// [Location size in tiles]
 		public var spaceY:int;
 		private var halfSpaceX:int;
 		private var halfSpaceY:int;
+		private var spaceLength:int;
 
 //**************************************************************************************************************************
 //
@@ -708,7 +709,7 @@ package fe.loc {
 					un.putLoc(this,nx,ny);
 				}
 				else {
-					var size:int = Math.floor((un.objectWidth-1)/40)+1;
+					var size:int = Math.floor((un.boundingBox.width - 1) / 40)+1;
 					un.putLoc(this,(nx+0.5*size)*tileX,(ny+1)*tileY-1);
 				}
 				if (active) {
@@ -743,9 +744,9 @@ package fe.loc {
 		//создать феникса, сидящего на ящике
 		private function createPhoenix(box:Box):Boolean {
 			if (box.wall || !box.shelf) return false;
-			if (collisionUnit(box.coordinates.X,box.topBound-1,38,38)) return false;
+			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 38, 38)) return false;
 			var un:Unit=new UnitPhoenix();
-			un.putLoc(this, box.coordinates.X, box.topBound-1);
+			un.putLoc(this, box.coordinates.X, box.boundingBox.top-1);
 			addObj(un);
 			units.push(un);
 			kol_phoenix++;
@@ -756,10 +757,10 @@ package fe.loc {
 		private function createTransmitter(box:Box):Boolean {
 			if (box.wall || !box.shelf) return false;
 			if (land.rnd && Math.random()<0.5) return false;
-			if (collisionUnit(box.coordinates.X, box.topBound-1,30,20)) return false;
+			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 30, 20)) return false;
 			var un:Unit=new UnitTransmitter('box');
 			un.setLevel(enemyLevel);
-			un.putLoc(this,box.coordinates.X,box.topBound-1);
+			un.putLoc(this, box.coordinates.X, box.boundingBox.top - 1);
 			addObj(un);
 			units.push(un);
 			return true;
@@ -775,7 +776,7 @@ package fe.loc {
 				if (nsur==null) return;
 			}
 			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this,item,box.coordinates.X, box.coordinates.Y-box.objectHeight-3,false,false,false);
+			var l:Loot=new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
 			if (base) {
 				l.inter.active=false;
 				l.levitPoss=false;
@@ -1281,7 +1282,7 @@ package fe.loc {
 //
 //**************************************************************************************************************************
 		
-		//добавить любой объект в цепочку обработки
+		// [Add any object to the processing chain] (Bullets, )
 		public function addObj(obj:Entity):void {
 			if (obj.in_chain) return;
 			if (firstObj) {
@@ -1289,9 +1290,9 @@ package fe.loc {
 				obj.pobj = lastObj;
 			}
 			else firstObj = obj;
-			obj.nobj=null;
-			lastObj=obj;
-			obj.in_chain=true;
+			obj.nobj = null;
+			lastObj = obj;
+			obj.in_chain = true;
 			if (active) obj.addVisual();
 		}
 		
@@ -1305,8 +1306,8 @@ package fe.loc {
 			if (obj.pobj) obj.pobj.nobj = obj.nobj;
 			else firstObj = obj.nobj;
 
-			obj.in_chain=false;
-			obj.nobj=obj.pobj=null;
+			obj.in_chain = false;
+			obj.nobj = obj.pobj = null;
 			obj.remVisual();
 		}
 		
@@ -1323,6 +1324,9 @@ package fe.loc {
 					space[j * spaceX + i] = new Tile(i, j);
 				}
 			}
+
+			// Precompute space length
+			spaceLength = space.length;
 		}
 
 		// Returns a Tile from a room using (X, Y) coordinates
@@ -1340,7 +1344,6 @@ package fe.loc {
 			return space[index];
 		}
 
-		// Changed Math.floor calls to int
 		public function getAbsTile(nx:int, ny:int):Tile {
 			// Cache for speed
 			const mX:int = maxX;
@@ -1362,17 +1365,37 @@ package fe.loc {
 		}
 
 		public function collisionUnit(X:Number, Y:Number, objectWidth:Number=0, objectHeight:Number=0):Boolean {
-			var leftBound:Number = X - objectWidth / 2;
-			var rightBound:Number = X + objectWidth / 2;
-			var topBound:Number = Y - objectHeight;
+			// Precompute bounds
+			var halfWidth:Number = objectWidth / 2;
+			var leftBound:int = Math.floor((X - halfWidth) / tileX);
+			var rightBound:int = Math.floor((X + halfWidth) / tileX);
+			var topBound:int = Math.floor((Y - objectHeight) / tileY);
+			var bottomBound:int = Math.floor(Y / tileY);
 
-			for (var i:int = int(leftBound / tileX); i <= int(rightBound / tileX); i++) {
-				for (var j:int = int(topBound / tileY); j <= int(Y / tileY); j++) {
-					if (i < LEFT_X || i >= spaceX || j < TOP_Y || j >= spaceY) continue;
-					if (getTile(i, j).phis > 0) return true;
+			// Clamp bounds to valid tile indices
+			var startI:int = Math.max(leftBound, LEFT_X);
+			var endI:int = Math.min(rightBound, spaceX - 1);
+			var startJ:int = Math.max(topBound, TOP_Y);
+			var endJ:int = Math.min(bottomBound, spaceY - 1);
+
+			// Iterate over tiles
+			for (var i:int = startI; i <= endI; i++) {
+				var indexBase:int = i;
+				for (var j:int = startJ; j <= endJ; j++) {
+					var index:int = j * spaceX + i;
+
+					// Bounds check to prevent out-of-range access
+					if (index < 0 || index >= spaceLength) continue;
+
+					var tile:Tile = space[index];
+
+					if (tile.phis > 0) {
+						return true; // Collision detected
+					}
 				}
 			}
-			return false;
+
+			return false; // No collision detected
 		}
 
 		// [try to lay a line. obj - the door to be ignored]
@@ -1391,7 +1414,7 @@ package fe.loc {
 
 				var t:Tile = World.w.loc.getAbsTile(int(currentX), int(currentY));
 
-				if (t.phis == 1 && currentX >= t.phX1 && currentX <= t.phX2 && currentY >= t.phY1 && currentY <= t.phY2) {
+				if (t.phis == 1 && currentX >= t.boundingBox.left && currentX <= t.boundingBox.right && currentY >= t.boundingBox.top && currentY <= t.boundingBox.bottom) {
 					if (obj == null || t.door != obj) {
 						return false;
 					}
@@ -1616,7 +1639,7 @@ package fe.loc {
 		
 		// [drawing the map] (Mini-map in the pipbuck)
 		public function drawMap(m:BitmapData) {
-			var vid:Number=1;
+			var vid:Number = 1;
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {
 					var color:uint = 0x003323;
@@ -1666,10 +1689,10 @@ package fe.loc {
 			var startXIndex:int = (landX - land.minLocX) * worldCellsX;
 			var startYIndex:int = (landY - land.minLocY) * worldCellsY;
 
-			var xStart:int	= startXIndex + int(obj.leftBound / tileX + 0.5);
-			var xEnd:int	= startXIndex + int(obj.rightBound / tileX - 0.5);
-			var yStart:int	= startYIndex + int(obj.topBound / tileY + 0.4);
-			var yEnd:int	= startYIndex + int(obj.bottomBound / tileY - 0.5);
+			var xStart:int	= startXIndex + int(obj.boundingBox.left / tileX + 0.5);
+			var xEnd:int	= startXIndex + int(obj.boundingBox.right / tileX - 0.5);
+			var yStart:int	= startYIndex + int(obj.boundingBox.top / tileY + 0.4);
+			var yEnd:int	= startYIndex + int(obj.boundingBox.bottom / tileY - 0.5);
 
 			for (var i:int = xStart; i <= xEnd; i++) {
 				for (var j:int = yStart; j <= yEnd; j++) {
@@ -1853,7 +1876,7 @@ package fe.loc {
 		public function lightAll():void {
 			for each (var cell:Object in objs) {
 				if (cell.light) {
-					var adjustedY:Number = cell.coordinates.Y - cell.objectHeight / 2;
+					var adjustedY:Number = cell.coordinates.Y - cell.boundingBox.halfHeight;
 
 					lighting(cell.coordinates.X - 10, adjustedY);
 					lighting(cell.coordinates.X, adjustedY);
@@ -1874,13 +1897,14 @@ package fe.loc {
 
 			if (nx == -10000) {
 				nx = gg.coordinates.X + gg.storona * 12;
-				ny = gg.topBound + gg.stayY * 0.247;
+				ny = gg.boundingBox.top + gg.boundingBox.standingHeight * 0.247;
 			}
 
 			relight_t = 10;
 
 			var dist1Squared:int = dist1 * dist1;
 			var dist2Squared:int = dist2 * dist2;
+			var invDistDiff:Number = 1 / (dist2Squared - dist1Squared);
 
 			var tileXCache:int = tileX;
 			var tileYCache:int = tileY;
@@ -1889,19 +1913,30 @@ package fe.loc {
 			var opacWaterCache:Number = opacWater;
 			var waterThreshold:int = 0;
 
-			grafon.lightBmp.lock();
+			var mX:int = maxX;
+			var mY:int = maxY;
+			var invTileX:Number = INV_TILEX;
+			var invTileY:Number = INV_TILEY;
 
+			var iTileXArray:Vector.<int> = new Vector.<int>(spaceXCache, true);
 			for (var i:int = 1; i < spaceXCache; i++) {
-				var iTileX:int = i * tileXCache;
+				iTileXArray[i] = i * tileXCache;
+			}
+
+			for (i = 1; i < spaceXCache; i++) {
+				var currentITileX:int = iTileXArray[i];
 				for (var j:int = 1; j < spaceYCache; j++) {
-					var currentTile:Tile = getTile(i, j);
+					var index:int = j * spaceX + i;
+					if (index < 0 || index >= space.length) continue;
+
+					var currentTile:Tile = space[index];
 					var n1:Number = currentTile.visi;
 
 					if (!retDark && n1 >= 1) continue;
 
-					var dx:int = iTileX - nx;
+					var dx:int = currentITileX - nx;
 					var dy:int = j * tileYCache - ny;
-					var rasst:int = (dx * dx) + (dy * dy);
+					var rasst:int = dx * dx + dy * dy;
 
 					if (rasst >= dist2Squared) {
 						if (retDark && currentTile.t_visi > 0) {
@@ -1911,7 +1946,8 @@ package fe.loc {
 						continue;
 					}
 
-					var n2:Number = (rasst <= dist1Squared) ? 1 : (dist2Squared - rasst) / (dist2Squared - dist1Squared);
+					var n2:Number = (rasst <= dist1Squared) ? 1 : (dist2Squared - rasst) * invDistDiff;
+					n2 = (n2 > 1) ? 1 : n2;
 
 					if (rasst <= dist2Squared) {
 						var dex:Number, dey:Number, maxe:int;
@@ -1947,7 +1983,17 @@ package fe.loc {
 						}
 
 						for (var e:int = 1; e <= maxe; e++) {
-							var t:Tile = getAbsTile(nx + e * dex, ny + e * dey);
+							var absNx:int = nx + e * dex;
+							var absNy:int = ny + e * dey;
+							if (absNx < 0 || absNx >= mX || absNy < 0 || absNy >= mY) {
+								continue;
+							}
+							var tileXIdx:int = int(absNx * invTileX);
+							var tileYIdx:int = int(absNy * invTileY);
+							var absIndex:int = tileYIdx * spaceX + tileXIdx;
+							if (absIndex < 0 || absIndex >= space.length) continue;
+
+							var t:Tile = space[absIndex];
 							var opac:Number = (opacWaterCache > 0 && t.water > waterThreshold && opacWaterCache > t.opac) ? opacWaterCache : t.opac;
 
 							if (opac > 0) {
@@ -1960,8 +2006,6 @@ package fe.loc {
 						}
 					}
 
-					n2 = (n2 > 1) ? 1 : n2;
-
 					if (n2 > n1 + 0.01) {
 						currentTile.t_visi = n2;
 						changePixelOpacity(currentTile, i, j);
@@ -1972,8 +2016,6 @@ package fe.loc {
 					}
 				}
 			}
-
-			grafon.lightBmp.unlock();
 		}
 		
 		public function lighting2():void {
@@ -2064,13 +2106,21 @@ package fe.loc {
 				unitCoord.step();
 			}
 			
-			if (celObj && celObj.onCursor<=0) celObj=null;
+			if (celObj && celObj.onCursor <= 0) celObj = null;
+			
 			if (black) {
-				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) lighting();
-				else if (relight_t > 0) lighting2();
+				if (gg.velocity.X + gg.osndx > 0.5 || gg.velocity.Y + gg.osndy > 0.5 || gg.velocity.X + gg.osndx < -0.5 || gg.velocity.Y + gg.osndy < -0.5 || isRelight || isRebuild) {
+					lighting(); // Normal lighting update when we move the player / LOS
+				}
+				else if (relight_t > 0) {
+					lighting2();
+				}
 			}
-			isRelight=false;
+			
+			isRelight = false;
+			
 			getDist();
+			
 			//если нужно, пересчитать пространство
 			if (isRebuild) rebuild();
 			if (isRecalc) recalcWater();
@@ -2087,11 +2137,14 @@ package fe.loc {
 			//трясучка
 			if (quake > 0) quake--;
 			if (trus > 0) World.w.quake(trus / 2, trus);
+
+			// Bounding-box debugging (Draws each objects bounding box)
+			grafon.drawDebugLayer();
 		}
 		
 		// [Kill all enemies and open all containers]
 		public function getAll():int {
-			World.w.summxp=0;
+			World.w.summxp = 0;
 			World.w.pers.expa(unXp*9);
 			for each (var un:Unit in units) {
 				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
@@ -2148,7 +2201,7 @@ package fe.loc {
 		}
 		
 		//сохранить все объекты
-		public function saveObjs(arr:Array) {
+		public function saveObjs(arr:Array):void {
 			for each (var obj:Obj in saves) {
 				if (obj.code) {
 					arr[obj.code] = obj.save();

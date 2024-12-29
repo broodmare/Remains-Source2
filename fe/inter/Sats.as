@@ -99,7 +99,7 @@ package fe.inter {
 					trasser.visible=false;
 					radius.visible=true;
 					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona;
-					radius.y = gg.coordinates.Y - gg.objectHeight / 2;
+					radius.y = gg.coordinates.Y - gg.boundingBox.halfHeight;
 					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
 				}
 
@@ -282,7 +282,7 @@ package fe.inter {
 			}
 			
 			if (weapon.deviation > 0 || gg.mazil > 0) {
-				var ug1:Number = Math.atan2(un.objectHeight, rasst) * 180 / Math.PI;
+				var ug1:Number = Math.atan2(un.boundingBox.height, rasst) * 180 / Math.PI;
 				var ug2:Number = (weapon.deviation / (sk + 0.01) + gg.mazil);
 				if (ug2 > ug1) prec = prec * ug1 / ug2;
 			}
@@ -439,7 +439,7 @@ package fe.inter {
 						info.y = 50;
 					}
 					else {
-						info.y = -un.objectHeight - info.textHeight - 20;
+						info.y = -un.boundingBox.height - info.textHeight - 20;
 					}
 				}
 				

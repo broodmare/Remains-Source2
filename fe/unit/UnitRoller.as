@@ -2,11 +2,12 @@ package fe.unit {
 	
 	import fe.*;
 	import fe.loc.Tile;
+	import fe.entities.BoundingBox;
 	
 	public class UnitRoller extends Unit {
 
-		var rollDr:Number = 0;
-		var tr:int = 1;
+		private var rollDr:Number = 0;
+		private var tr:int = 1;
 
 		private static var tileY:int = Tile.tileY;
 
@@ -29,8 +30,8 @@ package fe.unit {
 			
 			getXmlParam();
 			
-			if (tr==2) vis=new visualRoller2();
-			else vis=new visualRoller();
+			if (tr==2) vis=new visualRoller2();	// .SWF Dependency
+			else vis=new visualRoller();		// .SWF Dependency
 			
 			vis.osn.rotation=Math.random()*360;
 			vis.osn.stop();
@@ -43,18 +44,18 @@ package fe.unit {
 			storona=1;
 		}
 
-		public override function expl()	{
+		public override function expl():void {
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
 		public override function setVisPos() {
 			vis.x = coordinates.X;
-			vis.y = this.topBoundToCenter;
+			vis.y = this.boundingBox.getCenter(coordinates);
 		}
 		
-		public override function dropLoot() {
-			if (tr==2) explosion(dam*4,Unit.D_PLASMA,150,0,20,30,9);
+		public override function dropLoot():void {
+			if (tr == 2) explosion(dam * 4, Unit.D_PLASMA, 150, 0, 20, 30, 9);
 			super.dropLoot();
 		}
 		
@@ -85,16 +86,16 @@ package fe.unit {
 			}
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 			}
 		}
 		
-		var aiVis = 0.5;
+		private var aiVis = 0.5;
 		
-		var optDistAtt:int=100;
-		var optJumpAtt:Boolean=true;
+		private var optDistAtt:int=100;
+		private var optJumpAtt:Boolean=true;
 		
 		//aiState
 		//0 - стоит на месте
@@ -108,9 +109,9 @@ package fe.unit {
 
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - objectHeight;
-				celX = coordinates.X + objectWidth * storona * 2;
+			if (World.w.enemyAct <= 0) {
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			if (isPlav) {
