@@ -35,39 +35,40 @@ package fe.serv {
 
 		public static var itemTip:Array=['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key'];
 		
-		public var tip:String;
-		public var wtip:String='';
-		public var base:String='';
-		public var id:String;
-		public var nazv:String;
-		public var mess:String;	//информационное окно, ставящее игру на паузу
-		public var fc:int=-1;	//цвет всплывающего сообщения
-		public var invis:Boolean=false;
+		public var tip:String;					// Item type
+		public var wtip:String='';				// weapon type (0 - internal, 1 - melee, 2 - small (pistols), 3 - large (rifles and more), 4 - throwing, 5 - magic
+		public var base:String='';				// Base version of an item, eg. "p32" and it's variant "p32_1"
+		public var id:String;					// Internal item ID
+		public var nazv:String;					// Item name
+		public var mess:String;					// [Information window that pauses the game]
+		public var fc:int=-1;					// [Popup color]
+		public var invis:Boolean = false;		// 
 		
 		public var xml;
-		public var kol:int=0;		//количество в инвентаре
-		public var vault:int=0;		//количество в хранилище
-		public var invCat:int=3;	//отдел инвентаря
-		public var sost:Number=1;	//состояние лута
-		public var multHP:Number=1;	//множитель ХП
-		public var variant:int=0;
-		public var mass:Number=0;
 		
-		public var imp:int=0; //0 - случайно сгенерированный, 1 - заданный, 2 - критичный
-		public var cont:Interact;	// [parent container]
+		public var kol:int = 0;					// Quantity in the player's inventory
+		public var vault:int = 0;				// Quantity in storage
+		public var invCat:int = 3;				// What iventory page this items goes into on your pip-buck
+		public var sost:Number = 1;				// [Loot status]
+		public var multHP:Number = 1;			// [HP multiplier]
+		public var variant:int = 0;				// Weapon variant (Eg. Weapon2 becomes ID:Weapon, Variant:2)
+		public var mass:Number = 0;				// Item weight
 		
-		public var nov:int=0;	//новая вещь
-		public var dat:Number=0;	//время получения
-		public var bou:int=0;	//куплено
-		public var shpun:int=0;		//признак, указывающий на то, что скрытое оружие нужно раскрыть
-		public var lvl:int=0;		//уровень персонажа, с которого предмет становится доступен
-		public var barter:int=0;	//уровень навыка, с которого предмет становится доступен
-		public var trig:String;		//триггер, который должен быть установлен, чтобы предмет стал доступен
-		public var price:Number=0;
-		public var pmult:Number=1;
-		public var noref:Boolean=false;	//не восполнять
-		public var nocheap:Boolean=false;	//не уменьшать цену
-		public var hardinv:Boolean=false;	//только при ограниченном инвентаре
+		public var imp:int=0;					// [0 - randomly generated, 1 - specified, 2 - critical]
+		public var cont:Interact;				// [parent container]
+		
+		public var nov:int = 0;					// [New thing]
+		public var dat:Number = 0;				// [When item was acquired]
+		public var bou:int = 0;					// [Purchased (used by vendors)]
+		public var shpun:int = 0;				// [A sign indicating that a concealed weapon needs to be revealed]
+		public var lvl:int = 0;					// [Character level from which the item becomes available]
+		public var barter:int = 0;				// [The skill level at which the item becomes available]
+		public var trig:String;					// [Trigger that must be set for the item to become available]
+		public var price:Number = 0;
+		public var pmult:Number = 1;
+		public var noref:Boolean = false;		// [Do not replenish]
+		public var nocheap:Boolean = false;		// [Don't reduce the price]
+		public var hardinv:Boolean = false;		// [only with limited inventory]
 
 		private static var cachedItems:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		
@@ -78,11 +79,14 @@ package fe.serv {
 			variant = unique;
 
 			//	ID
+			// If an item has a caret, remove the caret and use the following number as a variant ID, eg. "Weapon^2" -> ID:Weapon, Variant:2
 			if (nid.charAt(nid.length - 2) == '^') {
 				variant = int(nid.charAt(nid.length - 1));
 				id = nid.substr(0, nid.length - 2);
 			}
-			else id = nid;
+			else {
+				id = nid;
+			}
 
 			//	TYPE
 			tip = ntip;
@@ -93,7 +97,10 @@ package fe.serv {
 				getItemInfo();
 			}
 			
-			if (tip == L_UNIQ) tip = L_WEAPON; // All uniques are weapon, change to L_WEAPON
+			// All uniques are weapon, change to L_WEAPON
+			if (tip == L_UNIQ) {
+				tip = L_WEAPON;
+			}
 
 			wtip = xml.@tip;
 
@@ -124,11 +131,12 @@ package fe.serv {
 			}
 			
 			if (tip == L_WEAPON || tip == L_EXPL) {
+				// If the weapon isn't a variant, get the localized string
 				if (variant == 0)	{
 					nazv = Res.txt('w', id);
 				}
-				else
-				{
+				// If the weapon IS a variant, re-append the "^1" (or whatever number) to the ID for the look-up
+				else {
 					if (Res.istxt('w', id + '^' + variant)) {
 						nazv = Res.txt('w', id + '^' + variant);
 					}
@@ -161,9 +169,11 @@ package fe.serv {
 				nazv = Res.txt('i', id);
 			}
 
-			if (tip==L_ITEM && xml && xml.@tip.length()) tip=xml.@tip;
-			if (tip==L_SCHEME && !Res.istxt('i',id))
-			{
+			if (tip==L_ITEM && xml && xml.@tip.length()) {
+				tip=xml.@tip;
+			}
+			
+			if (tip==L_SCHEME && !Res.istxt('i',id)) {
 				var wid:String=id.substr(2);
 				if (xml.@work == 'work') {
 					nazv = Res.pipText('scheme1') + ' «' + Res.txt('i', wid) + '»';
@@ -197,7 +207,6 @@ package fe.serv {
 			// Check if the node is already cached
 			if (cachedItems[id] != null) {
 				if (xml == null) {
-					trace(cachedItems[id]);
 					xml = cachedItems[id].xml;
 				}
 				if (tip == null) {
@@ -206,7 +215,7 @@ package fe.serv {
 				return;
 			}
 			
-			var node;
+			var node;	// Items are too fucked up right now to strongly type this
 
 			// We don't have the XML
 			if (tip != null) {
@@ -253,8 +262,8 @@ package fe.serv {
 		}
 		
 		public function getMultPrice():Number {
-			if (xml && xml.@price>0 && xml.@sell>0) {
-				return Number(xml.@sell)/Number(xml.@price);
+			if (xml && xml.@price>0 && xml.@sell > 0) {
+				return Number(xml.@sell) / Number(xml.@price);
 			}
 			else {
 				return 0.1;
@@ -276,7 +285,7 @@ package fe.serv {
 				}
 				if (w==null && World.w.vsWeaponNew) {	//если включен автоподбор нового и оружия ещё нет
 					if (World.w.hardInv) {		//если инвентарь ограниченный, то проверять вес
-						if (mass==0) return true;
+						if (mass == 0) return true;
 						if (xml.@tip<=3) {
 							if (inv.massW<=World.w.pers.maxmW-mass) {
 								return true;

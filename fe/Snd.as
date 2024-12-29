@@ -25,7 +25,6 @@ package fe {
 		
 		// Sound state flags
 		private static var soundMuted:Boolean = false;
-		private static var onMusic:Boolean = true;
 		private static var tempMuted:Boolean = true;
 		
 		private static var musicCh:SoundChannel;		// ..
@@ -42,15 +41,13 @@ package fe {
 		private static var combatTimer:int = 0;
 		private static var shumTimer:int = 0;
 		
-		private static var shumArr:Array;
-		
+		private static var shumArr:Array = [];
 
 		// Moved here from world class
-		private static var xmlPath:String = "Modules/core/sounds.xml";	// Manifest of all sounds/songs
-		private static var soundPath:String = 'Modules/core/sound/';			// Sounds path
-		private static var musicPath:String = 'Modules/core/sound/music/';		// Songs path
+		private static var xmlPath:String	= "Modules/core/sounds.xml";	// Manifest of all sounds/songs
+		private static var soundPath:String	= 'Modules/core/sound/';			// Sounds path
+		private static var musicPath:String	= 'Modules/core/sound/music/';		// Songs path
 		
-
 		// Loading flags and counters
 		private static var startedLoading:Boolean = false;
 		private static var finishedLoading:Boolean = false;
@@ -60,9 +57,12 @@ package fe {
 		public static var totalSongsLoaded:int = 0;		// (Accessed by MainMenu)
 		private static var startedMainMenuMusic:Boolean = false;
 		
-		public static function initSnd():void {
-			
-			trace("Sound.as/initSnd() - Initializing sound");
+		public static function initSnd(configObj:Object):void {
+			trace("Snd.as/initSnd() - Initializing sound");
+
+			if (configObj.data.snd) {
+				load(configObj);
+			}
 
 			// If we're already initialized, in the process of initializing, or all sounds are muted, stop
 			if (finishedLoading || startedLoading || soundMuted) {
@@ -89,7 +89,7 @@ package fe {
 					loadSoundResource(folderName, sndXML);
 				}
 			}
-			shumArr = [];
+
 			startedLoading = true;
 		}
 
@@ -164,7 +164,7 @@ package fe {
 					finishedLoading = true;
 					trace("All sounds are finished loading: Sounds: (" + totalSoundsToLoad + "/" + totalSoundsLoaded + ") Songs: (" + totalSongsToLoad + "/" + totalSongsLoaded + ")");
 				
-					if (musicMap['mainmenu'] && musicVol > 0) {
+					if (musicMap['mainmenu']) {
 						playMusic('mainmenu');
 					}
 				}
@@ -200,7 +200,7 @@ package fe {
 
 			currentMusicPriority = 0;
 
-			if (onMusic && musicMap[trackName]) {
+			if (musicMap[trackName]) {
 				musicCh = musicMap[trackName].play(0, rep, trans);
 			}
 
@@ -238,13 +238,6 @@ package fe {
 		}
 		public static function getTempMute():Boolean {
 			return tempMuted;
-		}
-		public static function setMusicOption(b:Boolean):void {
-			b? trace("Snd.as/onMusic() - Music enabled") : trace("Snd.as/onMusic() - Music disabled");
-			onMusic = b;
-		}
-		public static function getMusicOption():Boolean {
-			return onMusic;
 		}
 		
 		public static function ps(soundName:String,nx:Number=-1000,ny:Number=-1000,msec:Number=0,vol:Number=1):SoundChannel {
@@ -384,9 +377,9 @@ package fe {
 		}
 		
 		public static function load(obj:Object):void {
-			if (obj.globalVol != null && !isNaN(obj.globalVol)) globalVol = obj.globalVol;
-			if (obj.stepVol != null && !isNaN(obj.stepVol)) stepVol = obj.stepVol;
-			if (obj.musicVol != null && !isNaN(obj.musicVol)) musicVol = obj.musicVol;
+			if (obj.data.snd.globalVol != null && !isNaN(obj.data.snd.globalVol)) globalVol = obj.data.snd.globalVol;
+			if (obj.data.snd.stepVol != null && !isNaN(obj.data.snd.stepVol)) stepVol = obj.data.snd.stepVol;
+			if (obj.data.snd.musicVol != null && !isNaN(obj.data.snd.musicVol)) musicVol = obj.data.snd.musicVol;
 			if (musicCh) updateMusicVol();
 		}
 	}

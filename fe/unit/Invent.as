@@ -1,5 +1,5 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.weapon.*;
@@ -8,149 +8,179 @@ package fe.unit
 	import fe.serv.Script;
 	import fe.loc.Loot;
 	
-	public class Invent
-	{
+	public class Invent {
+
+		private var itemManager:ItemManager; // Reference to the ItemManager
 		public var gg:UnitPlayer;
 		public var owner:Unit;
 		
-		public var weapons:Array;
-		public var fav:Array;		//массив избранного по номеру ячейки
-		public var favIds:Array;	//массив избранного по id предмета
-		public var cWeaponId:String='';
-		
-		public var armors:Array;
-		public var cArmorId:String='';
-		public var cAmulId:String='';
-		public var prevArmor:String='';
-		
-		public var spells:Array;
-		public var cSpellId:String='';
-		
-		public var items:Object = {};	//все вещи по id (Item)
-		public var eqip:Array;	//все вещи, относящиеся к экипировке
-		public var ammos:Array;	//количество патронов по базе
-		public var money:Item, pin:Item, gel:Item, good:Item;
-		public var itemsId:Array;
-		public var cItem:int=-1, cItemMax:int;
-		
-		public var mass:Array=[0, 0, 0, 0];
-		public var massW:int=0;
-		public var massM:int=0;
+		// The player's inventory
+		public var items:Object		= {};	// Dictionary of ???
+		public var eqip:Object		= {};	// Dictionary of all eqip items (Consumables, Eg. Potion, stimpak, etc.) stored by ID
+		public var armors:Object	= {};	// Dictionary of all Armor objects stored by id
+		public var weapons:Object	= {};	// Dictionary of all Weapon objects stored by id
+		public var ammos:Object		= {};	// Dictionary of all Ammunition objects stored by id
+		public var spells:Object	= {};	// Dictionary of all Spell objects stored by id
 
-		private var itemList:XMLList;	// Pre-load these lists and keep them in memory instead of costly lookups all the time.
-		private var armorList:XMLList;
-		private var weaponList:XMLList;
+		public var fav:Array		= [];	// [Array of favorites by cell number]
+		public var favIds:Array		= [];	// [Array of favorites by item id]
+		
+		public var cWeaponId:String;	// Current weapon equipped (ID)
+		public var cSpellId:String;		// Current spell equipped (ID)
+		public var cArmorId:String;		// Current armor equipped (ID)
+		public var prevArmor:String;	// Previous armor equipped (ID)
+		public var cAmulId:String;		// Current amulet equipped (ID)
+		
+		public var money:Item;	// Cached item (Not sure why)
+		public var pin:Item;	// Cached item (Not sure why)
+		public var gel:Item;	// Cached item (Not sure why)
+		public var good:Item;	// Cached item (Not sure why)
+		
+		public var itemsId:Array = [];
+		public var cItem:int=-1;
+		public var cItemMax:int;
+		
+		public var mass:Array = [0, 0, 0, 0];
+		public var massW:int = 0;
+		public var massM:int = 0;
 
-		public function Invent(own:Unit, loadObj:Object = null, opt:Object = null)
-		{
-			owner	= own;
-			weapons	= [];
-			favIds	= [];
-			armors	= [];
-			spells	= [];
-			items	= {};
-			eqip	= [];
-			ammos	= [];
-			fav		= [];
-			
-			itemsId = [];
+		private static var itemList:XMLList;
+		private static var armorList:XMLList;
 
-			
+		public function Invent(manager:ItemManager, own:Unit, loadObj:Object = null, opt:Object = null) {
+			itemManager = manager;
+			owner = own;
 
+			// Cache all items, armors, and weapons
 			itemList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
 			armorList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
-			weaponList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			var itemsCount = 0;
-
+			
 			for each (var node in itemList) {
 				var item:Item = new Item(node.@tip, node.@id, 0, 0, node);
 				items[node.@id] = item;
-				if (node.@us>=2) itemsId.push(node.@id);
-				if (item.invCat==1 && item.mass>0 && node.@perk.length()==0) eqip.push(node.@id);
-				if (node.@base.length()) ammos[node.@base]=0;
-				itemsCount++;
+				
+				if (node.@us >= 2) {
+					itemsId.push(node.@id);
+				}
+				
+				if (item.invCat == 1 && item.mass > 0 && node.@perk.length() == 0) {
+					eqip[node.@id];
+				}
+				
+				if (node.@base.length()) {
+					ammos[node.@base] = 0;
+				}
 			}
-			trace("itemsCount: " + itemsCount);
 
+			// Cache references for these items
 			money = items['money'];
 			pin = items['pin'];
 			gel = items['gel'];
 			good = items['good'];
-			items[''] = new Item('', '', 0, 0, <item/>);
+			
+			// Create a blank item and store it as ""
+			items[""] = new Item("", "", 0, 0, <item/>);	
+			
+			// If we were passed an object with the player's saved inventory, load it
 			if (loadObj != null) {
 				addLoad(loadObj);
 			}
+			
 			cItemMax = itemsId.length;
 		}
 		
-		public function nextItem(n:int=1) {
-			var ci=cItem+n;
-			if (ci>=cItemMax) ci=0;
-			if (ci<0) ci=cItemMax-1;
-			for (var i=0; i<cItemMax; i++) {
-				if (items[itemsId[ci]].kol>0) {
-					cItem=ci;
+		public function nextItem(n:int = 1) {
+			var ci = cItem + n;
+			
+			if (ci >= cItemMax) ci = 0;
+			
+			if (ci < 0) ci = cItemMax - 1;
+			
+			for (var i:int = 0; i < cItemMax; i++) {
+				if (items[itemsId[ci]].kol > 0) {
+					cItem = ci;
 					break;
 				}
-				ci+=n;
-				if (ci>=cItemMax) ci=0;
-				if (ci<0) ci=cItemMax-1;
+				
+				ci += n;
+				
+				if (ci >= cItemMax) {
+					ci = 0;
+				}
+				
+				if (ci < 0) {
+					ci = cItemMax - 1;
+				}
 			}
+			
 			World.w.gui.setItems();
 		}
 		
-		//выбрать подходящий мед. прибор
-		public function getMed(n:int):String {	//$$$
+		// [choose the right honey. device (potion?)]
+		public function getMed(n:int):String {
 			var nhp:Number=0;
-			if (n==1) {
-				nhp=gg.pers.inMaxHP-gg.pers.headHP;
+			if (n == 1) {
+				nhp = gg.pers.inMaxHP - gg.pers.headHP;
 			}
-			else if (n==2) {
-				nhp=gg.pers.inMaxHP-gg.pers.torsHP;
+			else if (n == 2) {
+				nhp = gg.pers.inMaxHP - gg.pers.torsHP;
 			}
-			else if (n==3) {
-				nhp=gg.pers.inMaxHP-gg.pers.legsHP;
+			else if (n == 3) {
+				nhp = gg.pers.inMaxHP - gg.pers.legsHP;
 			}
-			else return '';
-			var minRazn:Number=10000;
-			var nci:String='';
-			for each (var pot in itemList) {
-				if (pot.@heal=='organ' && items[pot.@id].kol>0 && (pot.@minmed.length()==0 || pot.@minmed<=gg.pers.medic)) {
-					var hhp=0;
-					if (pot.@horgan.length()) hhp=pot.@horgan;
-					var razn=Math.abs(hhp-nhp+25);
-					if (razn<minRazn) {
-						minRazn=razn;
-						nci=pot.@id;
+			else {
+				return "";
+			}
+			
+			var minRazn:Number = 10000;
+			var nci:String = "";
+			
+			for each (var pot:XML in itemList) {
+				if (pot.@heal == 'organ' && items[pot.@id].kol > 0 && (pot.@minmed.length() == 0 || pot.@minmed <= gg.pers.medic)) {
+					var hhp:int = 0;
+					if (pot.@horgan.length()) hhp = pot.@horgan;
+					var razn:int = Math.abs(hhp - nhp + 25);
+					if (razn < minRazn) {
+						minRazn = razn;
+						nci = pot.@id;
 					}
 				}
 			}
+			
 			return nci;
 		}
 		
 		public function usePotion(ci:String=null, norgan:int=0):Boolean {
-			var hhp:Number=0, hhplong:Number=0;
+			var hhp:Number = 0; 
+			var hhplong:Number = 0;
 			var pot;
 			var pet:UnitPet;
 			var need1=gg.maxhp-gg.hp-gg.rad;	//нужда с учётом фактического здоровья
 			var need2=need1-gg.healhp;			//нужда с учётом принятых зелий
-			if (ci!=null && ci!='mana' && items[ci].kol<=0) return false;
+			
+			if (ci!=null && ci!='mana' && items[ci].kol<=0) {
+				return false;
+			}
+			
 			if (ci==null && need2<1) {
 				World.w.gui.infoText('noHeal');
 				if (gg.rad>1) World.w.gui.infoText('useAntirad');
 				return false;
 			}
-			if (ci==null) {	//применить наиболее подходящее зелье
-				var minRazn:Number=10000;
-				var nci:String='';
+			
+			if (ci == null) {	//применить наиболее подходящее зелье
+				var minRazn:Number = 10000;
+				var nci:String = '';
 				for each (pot in itemList) {
 					if (pot.@heal=='hp' && items[pot.@id].kol>0) {
 						hhp=0;
 						if (pot.@hhp.length()) hhp+=pot.@hhp*gg.pers.healMult;
 						if (pot.@hhplong.length()) hhp+=pot.@hhplong*gg.pers.healMult;
-						var razn=Math.abs(hhp-need2);
-						if (razn<minRazn) {
-							minRazn=razn;
+						
+						var razn = Math.abs(hhp-need2);
+						
+						if (razn < minRazn) {
+							minRazn = razn;
 							nci=pot.@id;
 						}
 					}
@@ -158,13 +188,21 @@ package fe.unit
 				if (nci=='') {	//нет подходящего
 					World.w.gui.infoText('noSuitablePot');
 					return false;
-				} else ci=nci;
+				}
+				else {
+					ci = nci;
+				}
 			}
-			if (ci=='mana') {	//применить наиболее подходящее зелье маны
+			if (ci == 'mana') {	//применить наиболее подходящее зелье маны
 				var minRazn:Number=10000;
 				need1=gg.pers.inMaxMana-gg.pers.manaHP;
-				if (need1<1) return false;
+				
+				if (need1 < 1) {
+					return false;
+				}
+				
 				var nci:String='';
+				
 				for each (pot in itemList) {
 					if (pot.@heal=='mana' && items[pot.@id].kol>0) {
 						hhp=0;
@@ -176,16 +214,24 @@ package fe.unit
 						}
 					}
 				}
-				if (nci=='') {	//нет подходящего
+				
+				if (nci == "") {	//нет подходящего
 					World.w.gui.infoText('noSuitablePot');
 					return false;
-				} else ci=nci;
+				}
+				else {
+					ci = nci;
+				}
 			}
 			if (ci=='potion_swim') {
 				gg.h2o=1000;
 			}
+			
 			pot = itemList.(@id==ci);
-			if (pot.length()==0) return false;
+			
+			if (pot.length()==0) {
+				return false;
+			}
 			
 			if (World.w.alicorn) {
 				if (pot.@tip=='pot' || pot.@tip=='him' || pot.@tip=='food') {
@@ -193,6 +239,7 @@ package fe.unit
 					return false;
 				}
 			}
+			
 			if (pot.@heal=='rad' && gg.rad < 1) {
 				World.w.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
@@ -220,11 +267,13 @@ package fe.unit
 					return false;
 				}
 			}
+			
 			//проверить соответствие уровню навыка
 			if (pot.@minmed.length() && pot.@minmed>gg.pers.medic) {
 				 World.w.gui.infoText('needSkill',Res.txt('e','medic'),pot.@minmed);
 				  return false;
 			}
+			
 			if (pot.@heal=='detoxin') {
 				var limAddict:int=pot.@detox;
 				for (var j=0; j<5; j++) {
@@ -252,19 +301,32 @@ package fe.unit
 				gg.setAddictions();
 				gg.pers.setParameters();
 			}
+			
 			hhp=hhplong=0;
+			
 			if (pot.@hhp.length()) hhp=pot.@hhp*gg.pers.healMult;
+			
 			if (pot.@hhplong.length()) hhplong=pot.@hhplong*gg.pers.healMult;
+			
 			gg.heal(hhp,0,false);
 			gg.heal(hhplong,1,false);
+			
 			if (hhp+hhplong>0) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.boundingBox.halfHeight, {txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
+			
 			if (pot.@hrad.length()) gg.heal(pot.@hrad*gg.pers.healMult,2);
+			
 			if (pot.@hpoison.length()) gg.heal(pot.@hpoison, 4, false);
+			
 			if (pot.@hcut.length()) gg.heal(pot.@hcut, 3, false);
+			
 			if (pot.@horgan.length()) gg.pers.heal(pot.@horgan,norgan);
+			
 			if (pot.@horgans.length()) gg.pers.heal(pot.@horgans,4);
+			
 			if (pot.@hblood.length()) gg.pers.heal(pot.@hblood,5);
+			
 			if (pot.@hmana.length()) gg.pers.heal(pot.@hmana, 6);
+			
 			if (pot.@hpurif.length()) {
 				for each(var eff:Effect in owner.effects) {
 					if (eff.tip==4) {
@@ -275,13 +337,16 @@ package fe.unit
 				World.w.game.triggers['curse']=0;
 				gg.pers.setParameters();
 			}
+			
 			if (pot.@hpet.length()) {
 				pet=gg.pets[pot.@pet];
 				pet.heal(pot.@hpet, 0);
 			}
+			
 			if (pot.@perk.length()) {
 				gg.pers.addPerk(pot.@perk);
 			}
+			
 			if (pot.@effect.length()) {
 				var eff:Effect=gg.addEffect(pot.@effect);
 				if (pot.@tip=='him') {
@@ -292,12 +357,15 @@ package fe.unit
 					eff.t*=gg.pers.himTimeMult;
 				}
 			}
+			
 			if (pot.@alc.length()) {
 				gg.addEffect('drunk',0,pot.@alc*10);
 			}
+			
 			if (pot.@rad.length()) {
 				gg.drad2+=pot.@rad*1;
 			}
+			
 			if (pot.@ad.length()) {
 				var n1:int=pot.@admin;
 				var n2:int=pot.@admax;
@@ -310,23 +378,35 @@ package fe.unit
 				else if (prev<gg.pers.ad2 && prev+n>=gg.pers.ad2) World.w.gui.infoText('addiction2',Res.txt('i',ci));
 				else if (prev<gg.pers.ad1 && prev+n>=gg.pers.ad1) World.w.gui.infoText('addiction1',Res.txt('i',ci));
 			}
+			
 			if (pot.@tip=='food') {
 				if (pot.@ftip=='1') World.w.gui.infoText('usedfood2',Res.txt('i',ci));
 				else World.w.gui.infoText('usedfood',Res.txt('i',ci));
-			} else if (pot.@heal=='organ') World.w.gui.infoText('usedheal',Res.txt('i',ci));
-			else World.w.gui.infoText('heal',Res.txt('i',ci));
+			}
+			else if (pot.@heal=='organ') {
+				World.w.gui.infoText('usedheal',Res.txt('i',ci));
+			}
+			else {
+				World.w.gui.infoText('heal',Res.txt('i',ci));
+			}
+			
 			if (pot.@inf>0) return true;
+			
 			minusItem(ci);
+			
 			return true;
 		}
 		
 		public function useItem(ci:String=null):Boolean {
 			if (ci==null) {
-				if (cItem<0) return false;
-				if (World.w.gui.t_item<=0) {
+				if (cItem < 0) {
+					return false;
+				}
+				if (World.w.gui.t_item <= 0) {
 					World.w.gui.setItems();
 					return false;
-				} else {
+				}
+				else {
 					ci=itemsId[cItem];
 				}
 			}
@@ -343,12 +423,12 @@ package fe.unit
 			var item=items[ci].xml;
 			if (item==null) return false;
 			var tip:String=item.@tip;
-			if (item.@paint.length()) { //краска
+			if (item.@paint.length()) { // [Paint]
 				gg.changePaintWeapon(item.@id,item.@paint,item.@blend);
 				World.w.gui.infoText('inUse',items[ci].nazv);
 				return true;
 			}
-			if (item.@text.length()) { //документ
+			if (item.@text.length()) { // [Document]
 				if (World.w.t_battle>0) {
 					World.w.gui.infoText('noUseCombat',null,null,false);
 					return false;
@@ -362,9 +442,11 @@ package fe.unit
 			}
 			if (ci=='rollup') {
 				if (!useRollup()) return false;
-			} else if (tip=='med' || tip=='him' || tip=='pot') {
+			}
+			else if (tip=='med' || tip=='him' || tip=='pot') {
 				return (usePotion(ci));
-			} else if (tip=='food') {
+			}
+			else if (tip=='food') {
 				if (World.w.alicorn) {
 					World.w.gui.infoText('alicornNot',null,null,false);
 					return false;
@@ -374,14 +456,16 @@ package fe.unit
 					return false;
 				}
 				return (usePotion(ci));
-			} else if (tip=='spell') {
+			}
+			else if (tip=='spell') {
 				if (World.w.alicorn) {
 					World.w.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
 				gg.changeSpell(ci);
 				return false;
-			} else if (tip=='book') {
+			}
+			else if (tip=='book') {
 				if (World.w.t_battle>0) {
 					World.w.gui.infoText('noUseCombat',null,null,false);
 					return false;
@@ -396,7 +480,8 @@ package fe.unit
 					gg.pers.upSkill(ci);
 				}
 				items['lbook'].kol++;
-			} else if (ci=='sphera') {
+			}
+			else if (ci=='sphera') {
 				if (World.w.t_battle>0) {
 					World.w.gui.infoText('noUseCombat',null,null,false);
 					return false;
@@ -406,83 +491,136 @@ package fe.unit
 					return false;
 				}
 				gg.pers.addSkillPoint(1, true);
-			} else if (ci=='runa' || ci=='reboot') {
+			}
+			else if (ci=='runa' || ci=='reboot') {
 				return false;
-			} else if (ci=='rep') {
+			}
+			else if (ci=='rep') {
 				if (!repWeapon(gg.currentWeapon)) return false;
-			} else if (ci=='stealth') {
+			}
+			else if (ci=='stealth') {
 				if (World.w.alicorn) {
 					World.w.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
 				gg.addEffect('stealth');
-			} else if (item.@pet.length()) {
+			}
+			else if (item.@pet.length()) {
 				if (World.w.alicorn) {
 					World.w.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
 				gg.callPet(item.@pet);
 				return true;
-			} else if (item.@chdif.length()) {	//карта судьбы
+			}
+			else if (item.@chdif.length()) {	// [Fate card]
 				if (!World.w.game.changeDif(item.@chdif)) return false;
 				World.w.gui.infoText('changeDif',Res.guiText('dif'+item.@chdif));
-			} else return false;
+			}
+			else {
+				return false;
+			}
+			
 			minusItem(ci);
-			if (ci==itemsId[cItem] && World.w.gui.t_item>0) World.w.gui.setItems();
-			World.w.calcMass=true;
+			
+			if (ci == itemsId[cItem] && World.w.gui.t_item > 0) {
+				World.w.gui.setItems();
+			}
+			
+			World.w.calcMass = true;
+			
 			return true;
 		}
 		
-		
-		public function useFav(n:int)
-		{
-			var ci:String=fav[n];
-			if (ci==null) return;
-			var item = weaponList.(@id==ci);
-			if (item.length()) {
+		public function useFav(n:int):void {
+			// This function is called with an integer (assumed 1-9) and that's used as an index to get the ID of the item for that number
+			var ci:String = fav[n];
+			
+			// Index returned nothing, abort
+			if (ci == null) {
+				return;
+			}
+			
+			var ID:String;
+
+			// Check the weaponlist for the ID we retrieved
+			ID = itemManager.getWeapon(ci).id;
+			if (ID) {
 				gg.changeWeapon(ci);
 				return;
 			}
-			item = armorList.(@id==ci);
-			if (item.length()) {
+			
+			// We didn't find it, check the armorList for the ID
+			ID = armorList.(@id == ci);
+			if (ID) {
 				gg.changeArmor(ci);
 				return;
 			}
-			item = itemList.(@id==ci);
-			if (item.length()) {
+			
+			// We still didn't find it, check the itemList for the ID
+			ID = itemList.(@id == ci);
+			if (ID) {
 				useItem(ci);
+			}
+			else {
+				trace("Invent.as/useFav() - Tried to use favorite item: " + ci);
 			}
 		}
 		
-		public function addWeapon(id:String, hp:int = 0xFFFFFF, hold:int = 0, respect:int = 0, nvar:int = 0):Weapon
-		{
-			if (id == null) return null;
-			if (weapons[id])
-			{
+		public function addWeapon(id:String, hp:int = 0xFFFFFF, hold:int = 0, respect:int = 0, nvar:int = 0):Weapon {
+			if (id == null) {
+				return null;
+			}
+			
+			if (weapons[id]) {
 				weapons[id].repair(hp);
 				return weapons[id];
 			}
 
 			var w:Weapon = Weapon.create(owner, id, nvar);
-			if (w == null) return null;
-			if (w.tip == 5 || hp == 0xFFFFFF) w.hp = w.maxhp;
-			else w.hp=hp;
-			if (hold>0) w.hold=hold;
-			if (w.tip==4 && respect==3) respect=0;
-			w.respect=respect;
-			weapons[id]=w;
+
+			if (w == null) {
+				return null;
+			}
+			
+			if (w.tip == 5 || hp == 0xFFFFFF) {
+				w.hp = w.maxhp;
+			}
+			else {
+				w.hp=hp;
+			}
+			
+			if (hold > 0) {
+				w.hold = hold;
+			}
+
+			if (w.tip == 4 && respect == 3) {
+				respect=0;
+			}
+			
+			w.respect = respect;
+			weapons[id] = w;
+			
 			return w;
 		}
 		
 		public function remWeapon(id:String) {
 			if (weapons[id]) {
-				if (weapons[id]==gg.currentWeapon) gg.changeWeapon(id,true);
-				if (weapons[id].hold>0) {
-					items[weapons[id].ammo].kol+=weapons[id].hold;
-					weapons[id].hold=0;
+				if (weapons[id] == gg.currentWeapon) {
+					gg.changeWeapon(id, true);
 				}
-				if (items['s_'+id] && items['s_'+id].kol>0) weapons[id].respect=3;
-				else weapons[id]=null;
+				
+				if (weapons[id].hold > 0) {
+					items[weapons[id].ammo].kol += weapons[id].hold;
+					weapons[id].hold = 0;
+				}
+				
+				if (items['s_' + id] && items['s_' + id].kol > 0) {
+					weapons[id].respect = 3;
+				}
+				else {
+					weapons[id] = null;
+				}
 			}
 		}
 		
@@ -515,11 +653,13 @@ package fe.unit
 					w.repair(hhp);
 					World.w.gui.infoText('repairWeapon',w.nazv,Math.round(w.hp/w.maxhp*100));
 					World.w.gui.setWeapon();
-				} else {
+				}
+				else {
 					World.w.gui.infoText('noRepair');
 					return false;
 				}
-			} else {
+			}
+			else {
 				World.w.gui.infoText('noRepair2');
 				return false;
 			}
@@ -542,6 +682,7 @@ package fe.unit
 				if(!World.w.testLoot) World.w.gui.infoText('take',Res.txt('i','frag')+((n>1)?(' ('+n+')'):''));
 			}
 		}
+
 		public function favItem(id:String, cell:int) {
 			if (gg && (cell==29 || cell==30)) {
 				if (weapons[id]==null || (weapons[id].tip!=4 && weapons[id].tip!=5) || weapons[id].spell) {
@@ -586,22 +727,38 @@ package fe.unit
 			}
 		}
 		
-		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor
-		{
-			if (armors[id]) return null;
-			var node = armorList.(@id==id);
-			if (!node) return null;
-			var w:Armor=new Armor(id, nlvl);
-			w.hp=hp;
-			if (w.hp>w.maxhp) w.hp=w.maxhp;
-			armors[id]=w;
+		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor {
+			if (armors[id]) {
+				return null;
+			}
+			
+			var node = armorList.(@id == id);
+			
+			if (!node) {
+				return null;
+			}
+			
+			var w:Armor = new Armor(id, nlvl);
+			
+			w.hp = hp;
+			
+			if (w.hp > w.maxhp) {
+				w.hp = w.maxhp;
+			}
+			
+			armors[id] = w;
+			
 			return w;
 		}
 		
-		public function addSpell(id:String):Spell
-		{
-			if (id == null) return null;
-			if (spells[id]) return spells[id];
+		public function addSpell(id:String):Spell {
+			if (id == null) {
+				return null;
+			}
+
+			if (spells[id]) {
+				return spells[id];
+			}
 
 			var sp:Spell = new Spell(owner, id);
 			if (sp == null) return null;
@@ -612,10 +769,9 @@ package fe.unit
 			return sp;
 		}
 		
-		public function addAllSpells()
-		{
-			for each(var sp in itemList.(@tip=='spell'))
-			{
+		// Initializes the list of spells
+		public function addAllSpells() {
+			for each(var sp in itemList.(@tip == 'spell')) {
 				addSpell(sp.@id);
 			}
 		}
@@ -641,13 +797,13 @@ package fe.unit
 				}
 				
 				if (weapons[l.id]) {
-					if (weapons[l.id].variant<l.variant) {
-						if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-						updWeapon(l.id,l.variant);
+					if (weapons[l.id].variant < l.variant) {
+						if (tr == 0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon', l.nazv, Math.round(l.sost * l.multHP * 100));
+						updWeapon(l.id, l.variant);
 					}
-					if (weapons[l.id].tip!=5) {
+					if (weapons[l.id].tip != 5) {
 						repairWeapon(l.id, hp);
-						if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
+						if (!World.w.testLoot) World.w.gui.infoText('repairWeapon', weapons[l.id].nazv, Math.round(weapons[l.id].hp / weapons[l.id].maxhp * 100));
 					}
 				}
 				else {
@@ -696,30 +852,47 @@ package fe.unit
 				color=3;
 			}
 			else if (l.tip==Item.L_MED) {
-				plus(l,tr);
+				plus(l, tr);
+				
 				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
-				if (cItem<0) nextItem(1);
-				else World.w.gui.setItems();
-				color=1;
+				
+				if (cItem < 0) {
+					nextItem(1);
+				}
+				else {
+					World.w.gui.setItems();
+				}
+				
+				color = 1;
 			}
 			else if (l.tip==Item.L_BOOK) {
-				if (items[l.id].kol==0)	takeScript(l.id);
-				plus(l,tr);
-				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
-				if (cItem<0) nextItem(1);
-				else World.w.gui.setItems();
-				color=4;
+				if (items[l.id].kol == 0) {
+					takeScript(l.id);
+				}
+				
+				plus(l, tr);
+				
+				if (tr <= 1 && !World.w.testLoot) World.w.gui.infoText('takeBook', l.nazv);
+				
+				if (cItem < 0) {
+					nextItem(1);
+				}
+				else {
+					World.w.gui.setItems();
+				}
+				
+				color = 4;
 			}
 			else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) {
 				trace("Invent.as/take() - TYPE: INSTR, ART, IMPL, other????");
 				if (items[l.id].kol==0)	takeScript(l.id);
 				plus(l,tr);
-				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take', l.nazv);
 				gg.pers.setParameters();
 				color=6;
 			}
 			else {
-				if (items[l.id].kol == 0) {
+				if (!items[l.id] || items[l.id].kol == 0) {
 					takeScript(l.id);
 				}
 				// Increment items in inventory
@@ -746,24 +919,27 @@ package fe.unit
 				else if (l.tip=='equip') color=8;
 				else color=0;
 			}
-			if (tr==2) {
-				if (l.kol>1) World.w.gui.infoText('reward',l.nazv,l.kol);
-				else World.w.gui.infoText('reward2',l.nazv);
+			if (tr == 2) {
+				if (l.kol>1) World.w.gui.infoText('reward', l.nazv, l.kol);
+				else World.w.gui.infoText('reward2', l.nazv);
 			}
 
 			// [if the object was generated randomly, update the limits]
-			if (tr==0 && l.imp==0 && l.xml.@limit.length()) {
-				World.w.game.addLimit(l.xml.@limit,2);
+			if (tr == 0 && l.imp == 0 && l.xml.@limit.length()) {
+				World.w.game.addLimit(l.xml.@limit, 2);
 			}
 
 			// [pop-up message]
-			if (!World.w.testLoot && (tr==0 || tr==2)) {
-				if (l.fc>=0) color=l.fc;
-				World.w.gui.floatText(l.nazv+(l.kol>1?(" ("+l.kol+")"):""), gg.coordinates.X, gg.coordinates.Y, color);
+			if (!World.w.testLoot && (tr == 0 || tr == 2)) {
+				if (l.fc >= 0) {
+					color = l.fc;
+				}
+				
+				World.w.gui.floatText(l.nazv + (l.kol > 1? (" (" + l.kol + ")") : ""), gg.coordinates.X, gg.coordinates.Y, color);
 			}
 
 			// [information window for important items]
-			if (World.w.helpMess || l.tip=="art") {
+			if (World.w.helpMess || l.tip == "art") {
 				if (l.mess!=null && !(World.w.game.triggers["mess_"+l.mess]>0)) {
 					World.w.game.triggers["mess_"+l.mess]=1;
 					World.w.gui.impMess(Res.txt("i",l.mess),Res.txt("i",l.mess,2),l.mess);
@@ -782,8 +958,7 @@ package fe.unit
 			World.w.calcMass = true;
 		}
 		
-		private function plus(l:Item, tr:int = 0)
-		{
+		private function plus(l:Item, tr:int = 0) {
 			trace("Invent.as/plus() - Item ID: " + l.id + ", kol: " + l.kol + ", tr: " + tr);
 			
 			if (l.id != "money") {
@@ -803,8 +978,10 @@ package fe.unit
 
 			else items[l.id].kol += l.kol;
 			
-			// Don't have mroe than one of each blueprint or spell.
-			if (l.tip==Item.L_SCHEME || l.tip==Item.L_SPELL) items[l.id].kol = 1;
+			// Don't have more than one of each blueprint or spell.
+			if (l.tip==Item.L_SCHEME || l.tip==Item.L_SPELL) {
+				items[l.id].kol = 1;
+			}
 		}
 		
 		// [Increase the number of items] | увеличить количество предметов
@@ -815,17 +992,21 @@ package fe.unit
 			}
 			
 			if (ci != "money") {
-				if (items[ci].kol == 0) items[ci].nov = 1;
-				else if (items[ci].nov==0) items[ci].nov = 2;
-				items[ci].dat=new Date().getTime();
+				if (items[ci].kol == 0) {
+					items[ci].nov = 1;
+				}
+				else if (items[ci].nov == 0) {
+					items[ci].nov = 2;
+				}
+				
+				items[ci].dat = new Date().getTime();
 			}
 
 			items[ci].kol += n;
 		}
 		
-		//уменьшить количество предметов
-		public function minusItem(ci:String, n:int=1, snd:Boolean=true)
-		{
+		// [Reduce the number of items]
+		public function minusItem(ci:String, n:int=1, snd:Boolean=true) {
 			if (items[ci]==null) {
 				trace("Invent.as/minusItem() - Error while decrementing item count", ci);
 				return;
@@ -840,8 +1021,7 @@ package fe.unit
 				if (items[ci].vault<0) items[ci].vault=0;
 			}
 
-			if (items[ci].kol == 0)
-			{
+			if (items[ci].kol == 0) {
 				nextItem(1);
 			}
 
@@ -850,11 +1030,12 @@ package fe.unit
 					cItem=-1;
 				}
 			}
-			catch(err)
-			{
+			catch(err) {
 				trace("ERROR: (00:5)");
 			}
-			if (snd && items[ci].xml && items[ci].xml.@uses.length())	Snd.ps(items[ci].xml.@uses, owner.coordinates.X, owner.coordinates.Y);
+			if (snd && items[ci].xml && items[ci].xml.@uses.length()) {
+				Snd.ps(items[ci].xml.@uses, owner.coordinates.X, owner.coordinates.Y);
+			}
 		}
 		
 		public function checkKol(ci:String, n:int=1):Boolean {
@@ -890,7 +1071,7 @@ package fe.unit
 			World.w.pers.invMassParam();
 		}
 		
-		//уничтожение экипировки
+		// [Destruction of equipment]
 		public function damageItems(dam:Number, destr:Boolean=true) {
 			if (!destr && !World.w.loc.base && !World.w.alicorn) dam=5;
 			if (mass[1]<=World.w.pers.maxm1 || dam<=0) return;
@@ -903,7 +1084,8 @@ package fe.unit
 						if (destr) {
 							minusItem(nid,kol,false);
 							World.w.gui.infoText("itemDestr",items[nid].nazv, kol);
-						} else {
+						}
+						else {
 							drop(nid,kol);
 							World.w.gui.infoText("itemLose",items[nid].nazv, kol);
 						}
@@ -915,7 +1097,7 @@ package fe.unit
 		}
 		
 		
-		//вернуть строковое представление занимаемого места
+		// [Return a string representation of the occupied space]
 		public function retMass(n:int):String {
 			var txt:String;
 			var cl:String="mass";
@@ -935,20 +1117,30 @@ package fe.unit
 				m=massM;
 				maxm=gg.pers.maxmM;
 			}
+			
 			if (m>maxm) cl="red";
+			
 			return Res.pipText(txt) + ": <span class = \'" + cl + "\'>" + Res.numb(m) + "/" + Math.round(maxm) + "</span>";
 		}
 		
-		//выкинуть вещи
+		// Drop items from inventory
 		public function drop(nid:String, kol:int=1) {
 			if (World.w.loc.base || World.w.alicorn) {
 				return;
 			}
-			if (kol>items[nid].kol) kol=items[nid].kol;
-			if (kol<=0) return;
-			var item:Item=new Item(null,nid,kol);
-			var loot:Loot=new Loot(World.w.loc, item, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, true, false, false);
-			minusItem(nid,kol,false);
+
+			if (kol > items[nid].kol) {
+				kol = items[nid].kol;
+			}
+			
+			if (kol <= 0) {
+				return;
+			}
+			
+			var item:Item = new Item(null, nid, kol);
+			var loot:Loot = new Loot(World.w.loc, item, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight, true, false, false);
+			
+			minusItem(nid, kol, false);
 		}
 		
 		// Call attached script
@@ -957,10 +1149,12 @@ package fe.unit
 			if (World.w.land.itemScripts[id]) {
 				World.w.land.itemScripts[id].start();
 			}
-			else trace("ERROR: (00:54) - script ID: \"" + id + "\" not found!");
+			else {
+				trace("ERROR: (00:54) - script ID: \"" + id + "\" not found!");
+			}
 		}
 		
-		//рассчитать количество патронов по их базе
+		// [Calculate the number of cartridges based on their base]
 		public function getKolAmmos() {
 			for (var s in ammos) ammos[s]=0;
 			for each (var ammo:Item in items) {
@@ -968,7 +1162,7 @@ package fe.unit
 			}
 		}
 		
-		//выкурить косяк
+		// [Smoke a joint]
 		private function useRollup():Boolean {
 			if (World.w.loc.base) {
                 World.w.pip.onoff(-1);
@@ -1029,8 +1223,7 @@ package fe.unit
 
 		// TODO: Stupid, turn into a script.
 		public function addAllArmor() {
-			for each(var arm in armorList)
-			{
+			for each(var arm in armorList) {
 				addArmor(arm.@id);
 			}
 		}
@@ -1126,7 +1319,9 @@ package fe.unit
 			else {
 				obj.cSpellId = '';
 			}
+			
 			obj.prevArmor = gg.prevArmor;
+			
 			return obj;
 		}
 	}

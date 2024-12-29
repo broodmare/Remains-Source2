@@ -3,6 +3,7 @@ package fe {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.LoaderInfo;
+	import flash.net.SharedObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
@@ -20,46 +21,49 @@ package fe {
 
 	public class MainMenu {
 
+		public var main:Sprite;				// A reference to the Flash Container everything is contained in
+
+		// MainMenu variables
 		public var version:String = '1.1a';
-		private var mainMenuMovieClip:MovieClip;
-		public var main:Sprite;	// The stage everything is contained in
-		private var world:World;
 		public var active:Boolean = true;	// The main menu is visible and needs to update
 		public var loaded:Boolean = false;
-		private var newGameMode:int = 2;
-		private var newGameDif:int = 2;
-		private var loadCell:int = -1;
-		private var loadReg:int = 0;	// [Loading window mode, 0 - loading, 1 - selecting slot for autosave]
-		private var command:int = 0;
-		private var com:String = '';
-		private var mmp:MovieClip; // [For pipbuck]
-		private var pip:PipBuck;
-		private var displ:Displ;
 		private var animOn:Boolean = true;
 		private var langReload:Boolean = false;
-
-		// Buttons for each language option
-		private var butsLang:Array;
-		
+		private var butsLang:Array;		// Buttons for each language option
 		private var stn:int=0;
-		
+		// Text formatting
 		public var style:StyleSheet = new StyleSheet(); 
 		private var styleObj:Object = new Object();
-		
 		private var format:TextFormat = new TextFormat();
-		
+		// Saving/Loading
 		private var file:FileReference = new FileReference();
 		private var saveFiles:Array=[];
-		
-		private var mainTimer:Timer;
-
 		// Loading state flags
 		private var part1Loaded:Boolean = false;
 		private var part2Loaded:Boolean = false;
 
+		// Main menu resources
+		private var mainMenuMovieClip:MovieClip;
+
+		// Game data
+		private var userSettings:Object;	// An object containing the user's imported settings
+		private var world:World;
+		private var newGameMode:int = 2;
+		private var newGameDif:int = 2;
+		private var loadCell:int = -1;
+		private var loadReg:int = 0;		// [Loading window mode, 0 - loading, 1 - selecting slot for autosave]
+		private var command:int = 0;
+		private var com:String = '';
+		
+
+		private var mmp:MovieClip; // [For pipbuck]
+		private var pip:PipBuck;
+		private var displ:Displ;
+
 		// Constructor
-		public function MainMenu(nmain:Sprite) 
-		{
+		public function MainMenu(nmain:Sprite) {
+			// Load the user's in-game settings
+			userSettings = SharedObject.getLocal('config', null);
 			// Load the settings file and store it in memory
 			Settings.initializeSettings();
 
@@ -67,7 +71,7 @@ package fe {
 			XMLData.initializeModules();
 
 			// Load all music and sounds
-			Snd.initSnd();
+			Snd.initSnd(userSettings);
 
 			// Save a reference to the stage container
 			main = nmain;
@@ -91,8 +95,7 @@ package fe {
 		private function mainMenu2():void {
 			trace('ALL XML LOADED, STARTING LOADING PART 2!');
 
-			var paramObj:Object = LoaderInfo(main.root.loaderInfo).parameters;
-			world = new World(main, paramObj);
+			world = new World(main, userSettings);
 			world.mainMenuClass = this;
 			
 			mainMenuMovieClip.testtest.visible=world.testMode;

@@ -7,7 +7,6 @@ package  fe {
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
 	import flash.desktop.Clipboard;
@@ -26,7 +25,8 @@ package  fe {
 	
 	public class World {
 
-		public static var w:World;
+		public static var w:World;		// Publically Accessible variable to this instance
+		private var itemManager:ItemManager;	// Stores all items
 
 		//Визуальные составляющие
 		public var main:Sprite;			//Главный спрайт игры
@@ -89,62 +89,63 @@ package  fe {
 		public var summxp:int=0;
 		private var ccur:String;
 		
-		public var currentMusic:String='';
+		public var currentMusic:String = '';
 		
 		// [Settings Variables]
-		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
-		public var roomsLoad:int = 1;  			//1-загружать из файла карты локаций
-		private var langLoad:int = 1;  			//1-загружать из файла
-		public var addCheckSP:Boolean=false;			//добавлять скилл-поинты при посещении контрольной точки
+		public var enemyAct:int=3;					//активность врагов, должно быть 3. Если 0, враги будут не активны
+		public var roomsLoad:int = 1;				//1-загружать из файла карты локаций
+		private var langLoad:int = 1;				//1-загружать из файла
+		public var addCheckSP:Boolean=false;		//добавлять скилл-поинты при посещении контрольной точки
 		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
 		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
 		public var black:Boolean=true;				//отображать туман войны
 		
 		// Debug variables
-		public var testMode:Boolean=false;				// [Test mode]
-		public var chitOn:Boolean=false;
-		public var chit:String='', chitX:String=null;	// [Current cheat]
-		public var showArea:Boolean=false;				// [Show active areas]
-		public var godMode:Boolean=false;				// Invulnerability
-		public var showAddInfo:Boolean=false;			// [Show additional information]
-		public var testBattle:Boolean=false;			// [Stamina will be consumed outside of combat]
-		public var testEff:Boolean=false;				// [Effects will be 10 times shorter]
-		public var testDam:Boolean=false;				// [Cancels damage spread]
+		public var testMode:Boolean = false;	// [Test mode]
+		public var chitOn:Boolean = false;		//
+		public var chit:String = '';			// [Current cheat]
+		public var chitX:String = null;			//
+		public var showArea:Boolean = false;	// [Show active areas]
+		public var godMode:Boolean = false;		// Invulnerability
+		public var showAddInfo:Boolean = false;	// [Show additional information]
+		public var testBattle:Boolean = false;	// [Stamina will be consumed outside of combat]
+		public var testEff:Boolean = false;		// [Effects will be 10 times shorter]
+		public var testDam:Boolean = false;		// [Cancels damage spread]
 		
 		// Game settings
-		public var hardInv:Boolean = false;			// [Limited inventory]
-		public var alicorn:Boolean = false;
+		public var hardInv:Boolean = false;		// [Limited inventory]
+		public var alicorn:Boolean = false;		//
 		public var maxParts:int=100;			// [Maximum particles]
 		
-		public var zoom100:Boolean=false;	// [Scale 100%]
-		public var dialOn:Boolean=true;		// [Show dialogues with NPCs]
-		public var showHit:int=2;			// Show damage number pop-ups
-		public var matFilter:Boolean=true;	// [Mat filter]
-		public var helpMess:Boolean=true;	// [Educational messages]
+		public var zoom100:Boolean=false;		// [Scale 100%]
+		public var dialOn:Boolean=true;			// [Show dialogues with NPCs]
+		public var showHit:int=2;				// Show damage number pop-ups
+		public var matFilter:Boolean=true;		// [Mat filter]
+		public var helpMess:Boolean=true;		// [Educational messages]
 		
-		public var shineObjs:Boolean=false;	// [Glow of objects]
-		public var sysCur:Boolean=false;	// [System cursor]
-		public var hintKeys:Boolean=true;	// Pop-up hints for interactables, eg. (Press "e" to open)
-		public var hintTele:Boolean=true;	// Pop-up hints for things you can levitate, eg. (Press "q" to levitate)
-		public var showFavs:Boolean=true;	// [Show additional information when the cursor is at the top of the screen]
-		public var errorShow:Boolean=true;
-		public var errorShowOpt:Boolean=true;
-		public var quakeCam:Boolean=true;	// [Camera shaking]
+		public var shineObjs:Boolean=false;		// [Glow of objects]
+		public var sysCur:Boolean=false;		// [System cursor]
+		public var hintKeys:Boolean=true;		// Pop-up hints for interactables, eg. (Press "e" to open)
+		public var hintTele:Boolean=true;		// Pop-up hints for things you can levitate, eg. (Press "q" to levitate)
+		public var showFavs:Boolean=true;		// [Show additional information when the cursor is at the top of the screen]
+		public var errorShow:Boolean=true;		//
+		public var errorShowOpt:Boolean=true;	//
+		public var quakeCam:Boolean=true;		// [Camera shaking]
 		
 		public var vsWeaponNew:Boolean=true;	// [Automatically pick up a new weapon if there is room]
 		public var vsWeaponRep:Boolean=true;	// [automatically pick up weapons for repairs]
-		public var vsAmmoAll:Boolean=true;		
-		public var vsAmmoTek:Boolean=true;		
-		public var vsExplAll:Boolean=true;		
-		public var vsMedAll:Boolean=true;		
-		public var vsHimAll:Boolean=true;		
-		public var vsEqipAll:Boolean=true;		
-		public var vsStuffAll:Boolean=true;		
-		public var vsVal:Boolean=true;		
-		public var vsBook:Boolean=true;		
-		public var vsFood:Boolean=true;		
-		public var vsComp:Boolean=true;		
-		public var vsIngr:Boolean=true;		
+		public var vsAmmoAll:Boolean=true;		//
+		public var vsAmmoTek:Boolean=true;		//
+		public var vsExplAll:Boolean=true;		//
+		public var vsMedAll:Boolean=true;		//
+		public var vsHimAll:Boolean=true;		//
+		public var vsEqipAll:Boolean=true;		//
+		public var vsStuffAll:Boolean=true;		//
+		public var vsVal:Boolean=true;			//
+		public var vsBook:Boolean=true;			//
+		public var vsFood:Boolean=true;			//
+		public var vsComp:Boolean=true;			//
+		public var vsIngr:Boolean=true;			//
 		
 		// Global Constants
 		public var actionDist:int = 40000;
@@ -169,7 +170,7 @@ package  fe {
 		public var sprite1URL:String;
 		
 		// [Loading, saves, config]
-		public var configObj:SharedObject;
+		public var configObj:Object;	 	// The user's stored settings
 		private var saveObj:SharedObject;
 		private var saveArr:Array;
 		public var saveKol:int = 10;
@@ -200,21 +201,22 @@ package  fe {
 		public var landError:Boolean = false;
 
 		// Constructor
-		public function World(nmain:Sprite, paramObj:Object) {
+		public function World(nmain:Sprite, cfgObj:Object) {
 
-			World.w = this;	// Store a publically accessable reference to itself
+			World.w = this;			// Store a publically accessable reference to itself
+			main = nmain;			// Store the passed reference to the Flash Container
+			configObj = cfgObj;		// The user's stored settings
 
 			//файлы
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
-			
 			landPath = 'Rooms/';
 
-			// Grab a reference to the stage container
-			main = nmain;
-			swfStage = main.stage;
+			swfStage = main.stage;	// Grab a reference to the stage container
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
+
+			itemManager = new ItemManager();
 
 			LootGen.init();
 			Form.setForms();
@@ -222,7 +224,7 @@ package  fe {
 
 			//создание элементов графики
 			vwait = new visualWait();	// SWF Dependency
-			vwait.cacheAsBitmap=true;
+			vwait.cacheAsBitmap = true;
 
 			//настройщик внешности
 			app = new Appear();
@@ -235,8 +237,8 @@ package  fe {
 			vscene = new visualScene();	// SWF Dependency
 			vblack = new visBlack();	// SWF Dependency
 			vblack.cacheAsBitmap = true;
-			vconsol=new visConsol();	// SWF Dependency
-			verror=new visError();		// SWF Dependency
+			vconsol = new visConsol();	// SWF Dependency
+			verror = new visError();	// SWF Dependency
 			
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
@@ -256,18 +258,13 @@ package  fe {
 			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function():void {verror.visible=false;});
 			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function():void {errorShow=false; verror.visible=false;});
 			vstand.visible=false;
-			grafon=new Grafon(visual);
-			cam=new Camera(this);
+			grafon = new Grafon(visual);
+			cam = new Camera(this);
 			load_log+='Stage 1 Ok\n';
 
 			// FPS Counter (This seems to also be used for other things like measuring load times.)
 			d1 = getTimer();
 			d2 = getTimer();
-
-			//конфиг, сразу загружает настройки звука
-			var savePath:String = null;
-			configObj = SharedObject.getLocal('config', savePath);
-			if (configObj.data.snd) Snd.load(configObj.data.snd);
 
 			// Initialize the languageManager and load the current localization into memory
 			languageManager = new LanguageManager(this);
@@ -280,7 +277,7 @@ package  fe {
 		public function init2():void {
 
 			if (consol) return;
-			if (configObj) lastCom=configObj.data.lastCom;
+			if (configObj) lastCom = configObj.data.lastCom;
 			consol = new Consol(vconsol, lastCom);
 			// [Saves and config]
 			saveArr = [];
@@ -435,54 +432,82 @@ package  fe {
 			time___metr('Interface');
 			
 			//создать игру
-			if (nload==99) {
+			if (nload == 99) {
 				data=loaddata;	//была загрузка из файла
 			}
 			else {
 				data = saveArr[nload].data; //была загрузка из слота
 			}
 			
-			if (ng)	game.init(null, opt);
-			else game.init(data.game);
+			if (ng)	{
+				game.init(null, opt);
+			}
+			else {
+				game.init(data.game);
+			}
 			
-			ng_wait=1;
+			ng_wait = 1;
 			time___metr('Game init');
 		}
 		
-		//этап 1 - создать персонажа и инвентарь
+		// [Stage 1 - Create a character and inventory]
 		public function newGame1():void {
-			if (!ng) app.load(data.app);
-			if (data.hardInv==true) hardInv=true; else hardInv=false;
-			if (opt && opt.hardinv) hardInv=true;
-			//создать персонажа
-			pers=new Pers(data.pers, opt);
-			if (ng) pers.persName=newName;
-			//создать юнит ГГ
-			gg=new UnitPlayer();
-			gg.ctr=ctr;
-			gg.sats=sats;
-			sats.gg=gg;
-			gui.gg=gg;
-			//создат инвентарь
-			invent=new Invent(gg, data.invent, opt);
-			stand=new Stand(vstand,invent);
+			if (!ng) {
+				app.load(data.app);
+			}
+			
+			if (data.hardInv == true) {
+				hardInv = true;
+			}
+			else {
+				hardInv = false;
+			}
+			
+			if (opt && opt.hardinv) {
+				hardInv = true;
+			}
+			
+			// [Create a character]
+			pers = new Pers(data.pers, opt);
+			
+			if (ng) {
+				pers.persName = newName;
+			}
+			
+			// [Create a Player Unit]
+			gg = new UnitPlayer();
+			gg.ctr = ctr;
+			gg.sats = sats;
+			sats.gg = gg;
+			gui.gg = gg;
+			
+			// [Create inventory]
+			invent = new Invent(itemManager, gg, data.invent, opt);
+			stand = new Stand(vstand, invent);
 			gg.attach();
+			
 			time___metr('Character');
-			//номер ячейки автосейва
-			if (!ng) if (data.n!=null) autoSaveN=data.n;
+			
+			// [Autosave cell number]
+			if (!ng && data.n != null) {
+				autoSaveN = data.n;
+			}
+			
 			Unit.txtMiss = Res.guiText('miss');
 			
 			waitLoadClick();
-			ng_wait=2;
+			ng_wait = 2;
 			time___metr('Terrain');
 		}
 		
-		//этап 2 - создать местность и войти в неё
+		// [Stage 2 - Create a terrain and enter it]
 		public function newGame2():void {
 			//визуальная часть
 			resizeScreen();
 			offLoadScreen();
-			vgui.visible=vfon.visible=visual.visible=true;
+			vgui.visible = true;
+			vfon.visible = true;
+			visual.visible = true;
 			vblack.alpha=1;
 			cam.dblack=-10;
 			pip.onoff(-1);
@@ -496,15 +521,19 @@ package  fe {
 				game.runScript("giveQuickstartItems");
 				game.setTrigger("Quickstart", 0);
 			}
-			ng_wait=0;
+			ng_wait = 0;
 		}
 		
 		public function loadGame(nload:int=0):void {
 			time___metr();
-			comLoad=-1;
-			if (loc) loc.out();
-			land=null;
-			loc=null;
+			comLoad = -1;
+			
+			if (loc) {
+				loc.out();
+			}
+			
+			land = null;
+			loc = null;
 
 			cur('arrow');
 
@@ -515,24 +544,39 @@ package  fe {
 
 			//создать игру
 			Snd.setTempMute(true);
-			cam.showOn=false;
-			if (data.hardInv==true) hardInv=true; else hardInv=false;
+			
+			cam.showOn = false;
+			
+			if (data.hardInv == true) {
+				hardInv = true;
+			}
+			else {
+				hardInv = false;
+			}
+			
 			game=new Game();
+			
 			game.init(data.game);
 			app.load(data.app);
+			
 			//создать персонажа
-			pers=new Pers(data.pers);
+			pers = new Pers(data.pers);
+			
 			//создать юнит ГГ
-			gg=new UnitPlayer();
+			gg = new UnitPlayer();
 			gg.ctr=ctr;
 			gg.sats=sats;
 			sats.gg=gg;
 			gui.gg=gg;
+			
 			//создат инвентарь
-			invent=new Invent(gg, data.invent);
+			invent = new Invent(itemManager, gg, data.invent);
+			
 			if (stand) stand.inv=invent;
-			else stand=new Stand(vstand,invent);
+			else stand=new Stand(vstand, invent);
+			
 			gg.attach();
+			
 			//номер ячейки автосейва
 			if (data.n!=null) autoSaveN=data.n;
 			
@@ -571,7 +615,7 @@ package  fe {
 			currentMusic = loc.sndMusic;
 			Snd.playMusic(currentMusic);
 			gui.hpBarBoss();
-			if (t_die <= 0) World.w.gg.controlOn();
+			if (t_die <= 0) this.gg.controlOn();
 			gui.dialText();
 			pers.invMassParam();
 			gc();	// Run garbage collection if required
@@ -768,14 +812,22 @@ package  fe {
 		}
 
 //=============================================================================================================
-//			Функции глобального взаимодействия
+//			[Global Interaction Features]
 //=============================================================================================================
 		
-		public function cur(ncur:String='arrow'):void {
-			if (sysCur) return;
-			if (pip.active || stand.active || comLoad>=0) ncur='arrow';
-			else if (t_battle>0) ncur='combat';
-			if (ncur!=ccur) {
+		public function cur(ncur:String = 'arrow'):void {
+			if (sysCur) {
+				return;
+			}
+			
+			if (pip.active || stand.active || comLoad >= 0) {
+				ncur = 'arrow';
+			}
+			else if (t_battle > 0) {
+				ncur = 'combat';
+			}
+			
+			if (ncur != ccur) {
 				Mouse.cursor = ncur;
 				Mouse.show();
 				ccur = ncur;
@@ -783,14 +835,18 @@ package  fe {
 		}
 		
 		public function quake(x:Number, y:Number):void {
-			if (loc.sky) return;
+			if (loc.sky) {
+				return;
+			}
+
 			if (quakeCam) {
 				cam.quakeX += x;
 				cam.quakeY += y;
-				if (cam.quakeX>20) cam.quakeX=20;
-				if (cam.quakeX<-20) cam.quakeX=-20;
-				if (cam.quakeY>20) cam.quakeY=20;
-				if (cam.quakeY<-20) cam.quakeY=-20;
+				// Clamp camera shaking
+				if (cam.quakeX >  20) cam.quakeX =  20;
+				if (cam.quakeX < -20) cam.quakeX = -20;
+				if (cam.quakeY >  20) cam.quakeY =  20;
+				if (cam.quakeY < -20) cam.quakeY = -20;
 			}
 		}
 		
@@ -812,8 +868,11 @@ package  fe {
 			return 0;
 		}
 		
-		public function showError(err:Error, dop:String=null):void {
-			if (!errorShow || !errorShowOpt) return;
+		// Error message that displays during gameplay
+		public function showError(err:Error, dop:String = null):void {
+			if (!errorShow || !errorShowOpt) {
+				return;
+			}
 
 			verror.info.text=Res.pipText('error');
 			verror.butClose.text.text=Res.pipText('err_close');
@@ -835,7 +894,7 @@ package  fe {
 		}
 		
 		public function gc():void {
-			System.pauseForGCIfCollectionImminent(0.25);
+			//System.pauseForGCIfCollectionImminent(0.25);	// The game is actively running, no need to spend extra time waiting
 		}
 		
 //=============================================================================================================
@@ -896,7 +955,7 @@ package  fe {
 			vwait.skill.visible=vwait.progres.visible=true;
 			vwait.story.lmb.stop();
 			vwait.story.lmb.visible=false;
-			clickReq=0;
+			clickReq = 0;
 		}
 
 		//показать сцену

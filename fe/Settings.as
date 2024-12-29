@@ -1,50 +1,28 @@
-package fe
-{
-    import flash.events.Event;
-    import flash.events.IOErrorEvent;
-    import flash.net.URLLoader;
-    import flash.net.URLRequest;
+package fe {
 
-    public class Settings
-    {
+    public class Settings {
+
         private static const settingsDirectory:String = 'Modules/core/';
         public static var settings:Object = {};
 
-        // GAME SETTINGS
+        // CONSTANT GAME SETTINGS -- These probably won't change (but can!) during gameplay
         public static var alwaysFogOfWar:Boolean;
         public static var fogRegenerates:Boolean;
         public static var burningForcesRun:Boolean;
 
-        public static function initializeSettings():void
-        {
-            var settingsFileURL:String = settingsDirectory + 'Settings.json'
+        // VARIABLE GAME SETTINGS -- These can and will change depending on user actions/saved settings
 
-            var url:URLRequest = new URLRequest(settingsFileURL);
-            var loader:URLLoader = new URLLoader();
+        public static function initializeSettings():void {
+            
+            // Load the settings file as a JSON object
+            var path:String = settingsDirectory + 'Settings.json'
+            var loader = new TextLoader();
+            settings = loader.syncLoad(path);
 
-            loader.addEventListener(Event.COMPLETE, importSettings);
-            loader.addEventListener(IOErrorEvent.IO_ERROR, errorDebug);
-            loader.load(url);
-        }
-        
-        private static function importSettings(event:Event):void
-        {
-            var loader:URLLoader = URLLoader(event.target);
-
-            loader.removeEventListener(Event.COMPLETE, importSettings);
-            loader.removeEventListener(IOErrorEvent.IO_ERROR, errorDebug);
-
-            var jsonString:String = loader.data as String;
-            settings = JSON.parse(jsonString);
-
+            // Use the variables from the JSON object to initialize the settings
             alwaysFogOfWar = settings.alwaysFogOfWar;
             fogRegenerates = settings.fogRegenerates;
             burningForcesRun = settings.burningForcesRun;
-        }
-
-        private static function errorDebug(event:IOErrorEvent):void
-        {
-            trace("ERROR: Could not load settings! IO Error: " + event.text);
         }
     }
 }

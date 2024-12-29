@@ -911,9 +911,12 @@ package fe.loc {
 		}
 		
 		public function refill():void {
-			if (isRefill) return;
+			if (isRefill) {
+				return;
+			}
+
 			if (summXp * 10 > allXp || !rnd) {
-				World.w.game.refillVendors();
+				World.w.game.vendorManager.refillAllVendors();
 				isRefill = true;
 			}
 			else {

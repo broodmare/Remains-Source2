@@ -1,24 +1,5 @@
 [
 	{
-		"id": "",
-		"cat": "",
-		"kol": null,
-		"perk": "",
-		"workbench": "",
-		"chance": null,
-		"chance2": null,
-		"stage": null,
-		"price": null,
-		"skill": "",
-		"skillRequirement": null,
-		"ingredients": {
-			
-		}
-	},
-	
-	
-	
-	{
 		"id": "s_hsword",
 		"cat": "weapon",
 		"workbench": "work",

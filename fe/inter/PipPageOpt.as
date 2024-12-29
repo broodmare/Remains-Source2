@@ -296,12 +296,11 @@ package fe.inter {
 			if (id == 'opt1_1') {
 				Snd.globalVol = volume;
 				Snd.setGameMuted(Snd.globalVol > 0);
-				Snd.ps('mine_bip',1000,0);
+				Snd.ps('mine_bip', 1000, 0);
 			}
 			
 			if (id == 'opt1_2') {
 				Snd.musicVol = volume;
-				Snd.setMusicOption(Snd.musicVol > 0);
 				Snd.updateMusicVol();
 			}
 			

@@ -5,53 +5,58 @@ package fe.unit {
 	import fe.*;
 	import fe.util.Calc;
 	import fe.loc.Tile;
-	import fe.serv.NPC;
+	import fe.serv.Npc;
 	import fe.weapon.Weapon;
 	
 	public class UnitNPC extends UnitPon {
 		
-		public var targNPC:NPC;
+		public var targNPC:Npc;
 		public var npcId:String = '';
 		public var npcXML:XML;
 		
 		public var visClass:Class;
 		public var ico:MovieClip;
-		public var icoFrame:int=1;
-		public var noTurn:Boolean=false;	//не поворачиваться при разговоре
-		public var silent:Boolean=false;	//не трындеть в обычном состоянии
-		public var showSign:Boolean=false;	//показывать мигающий указатель
+		public var icoFrame:int = 1;
+		public var noTurn:Boolean = false;	//не поворачиваться при разговоре
+		public var silent:Boolean = false;	//не трындеть в обычном состоянии
+		public var showSign:Boolean = false;	//показывать мигающий указатель
 		
 		public var animFly:Boolean=false;
 		public var weap:String='';
 		public var weap2:String='';
-		var dopWeapon:Weapon;
+		private var dopWeapon:Weapon;
 		
 		public var zanyato:Boolean = false;				// [Npc is busy fighting, does not interact]
-		var t_ref:int=0;								// [stop talking several times in a row]
-		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between NPC barks
+		private var t_ref:int=0;						// [stop talking several times in a row]
+		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between barks
 		
-		var t_anim:int=100;
-		var t_float:Number=0;
-		var floatX:Number=0, floatY:Number=0;
+		private var t_anim:int=100;
+		private var t_float:Number=0;
+		private var floatX:Number=0;
+		private var floatY:Number=0;
 		
-		var que:Array = [];
-		var wait:int=0;
-		var dey:String='';
-		var cx:Number=-1, cy:Number=-1;
-		var dvig:Object=new Object;
+		private var que:Array = [];
+		private var wait:int = 0;
+		private var dey:String = '';
+		private var cx:Number = -1;
+		private var cy:Number = -1;
+		private var dvig:Object = {};
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
 		// Constructor
-		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			super(cid, ndif, xml, loadObj);
-			if (cid!='' && cid!=null) {
-				id=cid;
+		public function UnitNPC(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
+			
+			super(cid, ndif, xml, loadObj); // UnitPon Constructor
+			
+			if (cid != '' && cid != null) {
+				id = cid;
 			}
 			else {
-				id='npc';
+				id = 'npc';
 			}
+			
 			getXmlParam();
 			
 			//взять данные об npc
@@ -60,22 +65,24 @@ package fe.unit {
 			}
 
 			if (targNPC) {
-				if (loadObj && loadObj.rep!=null) targNPC.rep=loadObj.rep;	//старый формат сохранения
-				npcId=targNPC.id;
-				npcXML=targNPC.xml;
+				if (loadObj && loadObj.rep != null) targNPC.rep = loadObj.rep;	//старый формат сохранения
+				npcId = targNPC.id;
+				npcXML = targNPC.xml;
 			}
 			else {
-				npcId=id;
-				targNPC = new NPC(null,null,id,ndif);
+				npcId = id;
+				targNPC = new Npc(null, null, id, ndif);
 			}
 			
-			targNPC.inter=inter;
-			targNPC.owner=this;
+			targNPC.inter = inter;
+			targNPC.owner = this;
+			
 			//если есть настройки npc
 			if (npcXML) {
 				if (npcXML.@vis.length()) {
-					visClass=Res.getClass('visual'+npcXML.@vis, npcXML.@vis, visualVendor);
-				} else visClass=visualVendor;
+					visClass = Res.getClass('visual'+npcXML.@vis, npcXML.@vis, visualVendor);	// .SWF Dependency
+				}
+				else visClass=visualVendor;		// .SWF Dependency
 				if (npcXML.@noturn.length()) noTurn=true;
 				if (npcXML.@ico.length()) icoFrame=npcXML.@ico;
 				if (Res.istxt('u',npcId)) nazv=Res.txt('u',npcId);
@@ -87,28 +94,31 @@ package fe.unit {
 				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
 			}
 			else {	//и если нет
-				if (id=='doctor') {
-					visClass=visualDoctor;
-					icoFrame=3;
+				if (id == 'doctor') {
+					visClass = visualDoctor;	// .SWF Dependency
+					icoFrame = 3;
 				}
 				else {
-					visClass=visualVendor;
-					icoFrame=2;
+					visClass = visualVendor;	// .SWF Dependency
+					icoFrame = 2;
 				}
 			}
 			
 			//внешний вид
-			vis=new visClass();
-			ico=new visNPCIco();
-			ico.y=-140;
+			vis = new visClass();			// .SWF Dependency
+			ico = new visNPCIco();			// .SWF Dependency
+			ico.y = -140;
 			vis.addChild(ico);
-			if (vis==null) vis=new visualVendor();
+			
+			if (vis == null) {
+				vis = new visualVendor();	// .SWF Dependency
+			}	
+			
 			if (vis.osn) {
 				try {
 					vis.osn.gotoAndStop('stay');
 				}
-				catch(err)
-				{
+				catch(err) {
 					trace('ERROR: (00:9)');
 					vis.osn.gotoAndStop(1);
 				}
@@ -121,6 +131,7 @@ package fe.unit {
 				childObjs=[currentWeapon];
 				if (npcXML && npcXML.@dammult.length()) currentWeapon.damage*=npcXML.@dammult;
 			}
+			
 			if (weap2 != '') {
 				dopWeapon=Weapon.create(this,weap2);
 				dopWeapon.hold=dopWeapon.holder;
@@ -137,6 +148,7 @@ package fe.unit {
 				if (xml.@hide.length()) hide();
 				if (xml.@ai.length()) aiTip=xml.@ai;
 			}
+			
 			targNPC.init();
 			setInter();
 		}
@@ -162,25 +174,20 @@ package fe.unit {
 			inter.update();
 		}
 		
-		public override function animate():void
-		{
+		public override function animate():void {
 			if (t_anim > 0) t_anim--;
-			else
-			{
+			else {
 				t_anim = Math.random() * 200 + 150;
 				var br:int = int(Math.random() * 2 + 1);
-				try
-				{
+				try {
 					vis.osn.gotoAndPlay('move' + br);
 				}
-				catch (err)
-				{
+				catch (err) {
 					// TODO: NPCs will spam this error, investigate why 
-					//trace('ERROR: (00:0A) - NPC: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
+					//trace('ERROR: (00:0A) - Npc: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
 				}
 			}
-			if (animFly)
-			{
+			if (animFly) {
 				try {
 					if (isFly && animState!='fly') {
 						vis.osn.gotoAndStop('fly');
@@ -191,14 +198,13 @@ package fe.unit {
 						animState = 'stay';
 					}
 				}
-				catch(err)
-				{	
-					trace('ERROR: (00:0B)  - NPC: "' + npcId + '" failed run flying animation!');	
+				catch(err) {	
+					trace('ERROR: (00:0B)  - Npc: "' + npcId + '" failed run flying animation!');	
 				}
 			}
 		}
 		
-		function hide() {
+		private function hide() {
 			inter.active=false;
 			isVis=false;
 			if (vis) vis.visible=false;
@@ -248,8 +254,7 @@ package fe.unit {
 				try {
 					vis.osn.gotoAndStop(2);
 				}
-				catch (err)
-				{
+				catch (err) {
 					trace('ERROR: (00:C)');
 				}
 			//проверить, нужна ли мигающая подсказка
@@ -277,7 +282,7 @@ package fe.unit {
 		}
 		
 		//команды, выполняющиеся в очереди
-		function analiz(q) {
+		private function analiz(q) {
 			//реплика
 			if (q.com=='tell') {
 				t_replic=0;
@@ -333,6 +338,7 @@ package fe.unit {
 			if (t_ref > 0) t_ref--;
 
 			if (World.w.gui.dialScript.running) {
+				// Do nothing
 			}
 			else {
 				t_replic--;
@@ -345,8 +351,7 @@ package fe.unit {
 					try {
 						vis.osn.gotoAndStop(1);
 					}
-					catch (err)
-					{
+					catch (err) {
 						trace('ERROR: (00:D)');
 					}
 				}
@@ -398,10 +403,12 @@ package fe.unit {
 					if (dopWeapon) dopWeapon.attack();
 					ico.visible=false;
 					zanyato=true;
-				} else if (loc.active && findCel()) {
+				}
+				else if (loc.active && findCel()) {
 					ico.visible=false;
 					zanyato=true;
-				} else {
+				}
+				else {
 					ico.visible=true;
 					zanyato=false;
 					celUnit=null;

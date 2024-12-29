@@ -87,22 +87,40 @@ package fe.inter {
 			vis.x=165;
 			vis.y=72;
 			vis.visible=false;
-			if (vis.pers) vis.pers.visible=false
-			if (vis.skill) vis.skill.visible=false;
-			if (vis.item) vis.item.visible=false
+			
+			if (vis.pers) {
+				vis.pers.visible = false
+			}
+			
+			if (vis.skill) {
+				vis.skill.visible = false;
+			}
+			
+			if (vis.item) {
+				vis.item.visible = false
+			}
+			
 			pip.vis.addChild(vis);
 			
-			vis.scBar.addEventListener(ScrollEvent.SCROLL,statScroll); // Adobe Animate Dependency
-			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
-			statArr=[];
+			vis.scBar.addEventListener(ScrollEvent.SCROLL, statScroll); // Adobe Animate Dependency
+			vis.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel1);
+			statArr = [];
+			
 			var item:MovieClip;
+			
 			for (var i:int = -1; i < maxrows; i++) {
-				item=new itemClass(); 
-				item.x=30;
-				item.y=100+i*30;
-				if (item.nazv) setStyle(item.nazv);
+				item = new itemClass(); 
+				item.x = 30;
+				item.y = 100 + i * 30;
+				
+				if (item.nazv) {
+					setStyle(item.nazv);
+				}
+				
 				vis.addChild(item);
+				
 				if (item.ramka) item.ramka.visible=false;
+				
 				if (i<0) {
 					item.back.visible=false;
 					statHead=item;
@@ -114,16 +132,21 @@ package fe.inter {
 					statArr.push(item);
 				}
 			}
-			for (i = 1; i <= 5; i++) {
-				item=vis.getChildByName('but' + i) as MovieClip;
-				item.addEventListener(MouseEvent.CLICK,page2Click);
-				item.text.text=Res.pipText(pp+i);
-				item.id.text=i;
-				item.id.visible=false;
+			
+			for (var j:int = 1; j <= 5; j++) {
+				item = vis.getChildByName('but' + j) as MovieClip;
+				item.addEventListener(MouseEvent.CLICK, page2Click);
+				item.text.text = Res.pipText(pp + j);
+				item.id.text = j;
+				item.id.visible = false;
 			}
+			
 			vis.butOk.visible=false;
 			vis.butDef.visible=false;
-			if (vis.cats) vis.cats.visible=false;
+			
+			if (vis.cats) {
+				vis.cats.visible = false;
+			}
 			
 			setStyle(vis.info);
 			setStyle(vis.bottext);
@@ -174,43 +197,74 @@ package fe.inter {
 			}
 		}
 
+		// Clicking on one of the sub-categories at the top of the page
 		protected function page2Click(event:MouseEvent):void {
 			if (World.w.ctr.setkeyOn) {
 				return;
 			}
-			page2 = int(event.currentTarget.id.text);
+
+			var clickedPage:int = int(event.currentTarget.id.text);
+			trace("PipPage.as/page2Click() - Current page2: " + page2 + ", Clicked page: " + clickedPage);
+
+			// Check if the clicked subcategory is the same as the current one
+			if (clickedPage == page2) {
+				trace("PipPage.as/page2Click() - Selected the same sub-category, aborting");
+				pip.snd(2);    // Play the button press sound anyway
+				return;
+			}
+
+			// Update the current subcategory
+			page2 = clickedPage;
+			trace("PipPage.as/page2Click() - Changing page2 to: " + page2);
+
 			setStatus();
 			pip.snd(2);
 		}
 		
 		private function setButtons():void {
 			for (var i:int = 1; i <= 5; i++) {
-				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
-				if (page2==i) item.gotoAndStop(2);
-				else if (signs[i]>0) item.gotoAndStop(signs[i]+2);
-				else item.gotoAndStop(1);
+				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
+				
+				if (page2 == i) {
+					item.gotoAndStop(2);
+				}
+				else if (signs[i] > 0) {
+					item.gotoAndStop(signs[i] + 2);
+				}
+				else {
+					item.gotoAndStop(1);
+				}
 			}
 		}
 		
 		public function setStatus(flop:Boolean=true):void {
-			setStatus
-			pip.reqKey=false;
-			statHead.id.text='';
-			vis.visible=true;
-			vis.info.text='';
-			vis.nazv.text='';
-			vis.bottext.text='';
-			vis.emptytext.text='';
-			arr=[];
-			if (flop) scrl=0;
-			if (vis.scText) vis.scText.visible=false;
+			trace("PipPage.as/setStatus() - ");
+			pip.reqKey = false;
+			statHead.id.text = '';
+			vis.visible = true;
+			vis.info.text = '';
+			vis.nazv.text = '';
+			vis.bottext.text = '';
+			vis.emptytext.text = '';
+			arr = [];
 			
-			gg=pip.gg;
-			inv=pip.inv;
-			pip.vis.toptext.visible=false;
-			pip.vis.butHelp.visible=pip.vis.butMass.visible=false;
-			pip.vishelp.visible=false;
+			if (flop) {
+				scrl = 0;
+			}
+			
+			if (vis.scText) {
+				vis.scText.visible = false;
+			}
+			
+			gg = pip.gg;
+			inv = pip.inv;
+			pip.vis.toptext.visible = false;
+			pip.vis.butHelp.visible = false;
+			pip.vis.butMass.visible = false;
+			pip.vishelp.visible = false;
+			
 			setSubPages();
+			
 			setStatItems(flop?0:-1);
 
 			var sc:ScrollBar = vis.scBar; // Adobe Animate dependency
@@ -889,30 +943,42 @@ package fe.inter {
 			}
 		}
 		
-		//проверка квеста на доступность
-		protected function checkQuest(task):Boolean {
-			//проверка на доступ к местности
-			if (task.@land.length()) {
-				var land:LandAct=World.w.game.lands[task.@land];
-				if (land==null) return false;
-				if (!land.access && !land.visited && World.w.pers.level<land.dif) return false;
+		// [Checking the quest for availability]
+		protected function checkQuest(task:Object):Boolean {
+			// [Land access check]
+			if (task.land) {
+				var land:LandAct = World.w.game.lands[task.land];
+				
+				if (land == null) {
+					return false;
+				}
+				
+				if (!land.access && !land.visited && World.w.pers.level < land.dif) {
+					return false;
+				}
 			}
-			//проверка триггера
-			if (task.@trigger.length()) {
-				if (World.w.game.triggers[task.@trigger]!=1) return false;
+			
+			// [Trigger check]
+			if (task.trigger) {
+				if (World.w.game.triggers[task.trigger] != 1) {
+					return false;
+				}
 			}
-			//проверка скилла
-			if (task.@skill.length() && task.@skilln.length()) {
-				if (World.w.pers.skills[task.@skill]<task.@skilln) return false;
+			
+			// [Skill check]
+			if (task.skill && task.skilln) {
+				if (World.w.pers.skills[task.skill] < task.skilln) {
+					return false;
+				}
 			}
 			return true;
 		}
 		
 		protected function initCats():void {
-			for (var i:int = 0; i <= kolCats; i++)
-			{
+			for (var i:int = 0; i <= kolCats; i++) {
 				vis.cats['cat' + i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
+			
 			selCat();
 		}
 		
@@ -928,8 +994,10 @@ package fe.inter {
 			vis.cats.visible = true;
 			
 			var ntip;
+			
 			for (var i:int  = 1; i <= kolCats; i++) {
 				ntip = arr[i];
+				
 				if (ntip == null || ntip == "") {
 					vis.cats['cat' + i].visible = false;
 				}
@@ -945,6 +1013,7 @@ package fe.inter {
 					}
 				}
 			}
+			
 			selCat(cat[page2]);
 		}
 
@@ -1010,6 +1079,11 @@ package fe.inter {
 
 		public function step():void {
 
+		}
+
+		private function crash():void {
+			var obj:Object = null;
+			trace(obj.someProperty); // Crashes with a null reference error
 		}
 	}	
 }

@@ -1,0 +1,2616 @@
+[
+    {
+        "id": "nope"
+    },
+    {
+        "id": "random"
+    },
+    {
+        "id": "vendor_bar",
+        "buys": [
+            {
+                "id": "sparklecola",
+                "kol": 20
+            },
+            {
+                "id": "radcola",
+                "kol": 5,
+                "barter": 3
+            },
+            {
+                "id": "sars",
+                "kol": 20
+            },
+            {
+                "id": "coffee",
+                "kol": 5
+            },
+            {
+                "id": "beer",
+                "kol": 20
+            },
+            {
+                "id": "braga",
+                "kol": 20
+            },
+            {
+                "id": "cordial",
+                "kol": 10
+            },
+            {
+                "id": "schnapps",
+                "kol": 10
+            },
+            {
+                "id": "hooch",
+                "kol": 10
+            },
+            {
+                "id": "spirt",
+                "kol": 5,
+                "barter": 2
+            }
+        ],
+        "tasks": [
+            {
+                "id": "collectAlc"
+            }
+        ]
+    },
+    {
+        "id": "vendor_weapon",
+        "buys": [
+            {
+                "id": "p10s",
+                "kol": 1
+            },
+            {
+                "id": "plap",
+                "kol": 1
+            },
+            {
+                "id": "revo",
+                "kol": 1
+            },
+            {
+                "id": "p308c",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "smg10",
+                "kol": 1
+            },
+            {
+                "id": "carbine",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "sparkl",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "shotgun",
+                "kol": 1
+            },
+            {
+                "id": "prism",
+                "kol": 1,
+                "lvl": 4
+            },
+            {
+                "id": "hunt",
+                "kol": 1
+            },
+            {
+                "id": "winchester",
+                "kol": 1,
+                "barter": 1
+            },
+            {
+                "id": "rechr",
+                "kol": 1
+            },
+            {
+                "id": "lasr",
+                "kol": 1
+            },
+            {
+                "id": "plar",
+                "kol": 1,
+                "lvl": 8
+            },
+            {
+                "id": "sniper",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "lassn",
+                "kol": 1,
+                "lvl": 8
+            },
+            {
+                "id": "flamer",
+                "kol": 1
+            },
+            {
+                "id": "incin",
+                "kol": 1,
+                "lvl": 8,
+                "barter": 2
+            },
+            {
+                "id": "shotgun^1",
+                "kol": 2,
+                "lvl": 10
+            },
+            {
+                "id": "sniper^1",
+                "kol": 2,
+                "lvl": 10
+            },
+            {
+                "id": "plap^1",
+                "kol": 2,
+                "lvl": 6
+            },
+            {
+                "id": "plar^1",
+                "kol": 2,
+                "lvl": 11,
+                "barter": 2
+            },
+            {
+                "id": "lassn^1",
+                "kol": 2,
+                "lvl": 11
+            },
+            {
+                "id": "p127mm",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "plamg",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "pp127mm",
+                "kol": 2,
+                "lvl": 10
+            },
+            {
+                "id": "plam",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "minigun",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "termo",
+                "kol": 2,
+                "lvl": 12
+            },
+            {
+                "id": "brushgun",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "nova",
+                "kol": 1,
+                "lvl": 13,
+                "barter": 3
+            },
+            {
+                "id": "saf9",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "zebr",
+                "kol": 1,
+                "lvl": 13,
+                "barter": 3
+            },
+            {
+                "id": "plamg^1",
+                "kol": 2,
+                "lvl": 14,
+                "barter": 4
+            },
+            {
+                "id": "plam^1",
+                "kol": 2,
+                "lvl": 12,
+                "barter": 3
+            },
+            {
+                "id": "gatl",
+                "kol": 2,
+                "lvl": 14,
+                "barter": 3
+            },
+            {
+                "id": "psc",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "pshot",
+                "kol": 1,
+                "lvl": 16,
+                "barter": 3
+            },
+            {
+                "id": "lmg",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "grom",
+                "kol": 1,
+                "lvl": 17
+            },
+            {
+                "id": "anti",
+                "kol": 2,
+                "lvl": 16
+            },
+            {
+                "id": "pshot^1",
+                "kol": 2,
+                "lvl": 18,
+                "barter": 5
+            },
+            {
+                "id": "autor",
+                "kol": 1,
+                "lvl": 15,
+                "barter": 3
+            },
+            {
+                "id": "quick",
+                "kol": 2,
+                "lvl": 15,
+                "barter": 4
+            },
+            {
+                "id": "rail",
+                "kol": 2,
+                "lvl": 16,
+                "barter": 3
+            },
+            {
+                "id": "amul_sniper",
+                "kol": 1,
+                "lvl": 22,
+                "noref": 1
+            },
+            {
+                "id": "bag1",
+                "kol": 1,
+                "lvl": 12,
+                "noref": 1,
+                "hardinv": 1
+            },
+            {
+                "id": "p32",
+                "kol": 200
+            },
+            {
+                "id": "p32_1",
+                "kol": 50
+            },
+            {
+                "id": "p32_2",
+                "kol": 60
+            },
+            {
+                "id": "p20",
+                "kol": 300
+            },
+            {
+                "id": "p12",
+                "kol": 120
+            },
+            {
+                "id": "p12_3",
+                "kol": 30,
+                "lvl": 8
+            },
+            {
+                "id": "p12_4",
+                "kol": 30,
+                "lvl": 8,
+                "barter": 1
+            },
+            {
+                "id": "p12_5",
+                "kol": 30,
+                "lvl": 8,
+                "barter": 3
+            },
+            {
+                "id": "p9",
+                "kol": 300
+            },
+            {
+                "id": "p10",
+                "kol": 300
+            },
+            {
+                "id": "p10_1",
+                "kol": 80
+            },
+            {
+                "id": "p375",
+                "kol": 140
+            },
+            {
+                "id": "p375_1",
+                "kol": 40
+            },
+            {
+                "id": "p375_2",
+                "kol": 30
+            },
+            {
+                "id": "p44",
+                "kol": 150
+            },
+            {
+                "id": "p44_1",
+                "kol": 30,
+                "barter": 1
+            },
+            {
+                "id": "p44_2",
+                "kol": 40
+            },
+            {
+                "id": "p127",
+                "kol": 160,
+                "lvl": 7
+            },
+            {
+                "id": "p127_2",
+                "kol": 30,
+                "lvl": 7
+            },
+            {
+                "id": "p308",
+                "kol": 80,
+                "lvl": 8
+            },
+            {
+                "id": "p308_1",
+                "kol": 20,
+                "lvl": 8,
+                "barter": 2
+            },
+            {
+                "id": "p308_2",
+                "kol": 30,
+                "lvl": 8,
+                "barter": 1
+            },
+            {
+                "id": "p50mg",
+                "kol": 25,
+                "lvl": 15
+            },
+            {
+                "id": "p50mg_1",
+                "kol": 10,
+                "lvl": 13,
+                "barter": 5
+            },
+            {
+                "id": "p556",
+                "kol": 1300
+            },
+            {
+                "id": "p556_1",
+                "kol": 200
+            },
+            {
+                "id": "p556_2",
+                "kol": 150
+            },
+            {
+                "id": "p556_5",
+                "kol": 100,
+                "barter": 3
+            },
+            {
+                "id": "p5",
+                "kol": 2500
+            },
+            {
+                "id": "batt",
+                "kol": 800
+            },
+            {
+                "id": "batt_6",
+                "kol": 300
+            },
+            {
+                "id": "energ",
+                "kol": 1000
+            },
+            {
+                "id": "energ_6",
+                "kol": 400
+            },
+            {
+                "id": "crystal",
+                "kol": 1000,
+                "lvl": 14
+            },
+            {
+                "id": "fuel",
+                "kol": 2000
+            },
+            {
+                "id": "fuel_7",
+                "kol": 400,
+                "barter": 1
+            }
+        ],
+        "tasks": [
+            {
+                "id": "killBloats"
+            },
+            {
+                "id": "killLucerne",
+                "land": "raiders"
+            },
+            {
+                "id": "collectFcrystal",
+                "land": "random_stable"
+            },
+            {
+                "id": "retPistol",
+                "land": "random_mane"
+            },
+            {
+                "id": "collectBlaster",
+                "land": "random_mane"
+            }
+        ]
+    },
+    {
+        "id": "vendor_expl",
+        "buys": [
+            {
+                "id": "glau1",
+                "kol": 1
+            },
+            {
+                "id": "glau",
+                "kol": 1,
+                "lvl": 8
+            },
+            {
+                "id": "mlau",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "aglau",
+                "kol": 2,
+                "lvl": 15
+            },
+            {
+                "id": "bel",
+                "kol": 1,
+                "lvl": 15,
+                "barter": 5
+            },
+            {
+                "id": "dinamit",
+                "kol": 25
+            },
+            {
+                "id": "grenade",
+                "kol": 25
+            },
+            {
+                "id": "gasgr",
+                "kol": 25,
+                "barter": 2
+            },
+            {
+                "id": "plagr",
+                "kol": 20,
+                "lvl": 5
+            },
+            {
+                "id": "impgr",
+                "kol": 10,
+                "lvl": 5
+            },
+            {
+                "id": "molotov",
+                "kol": 20
+            },
+            {
+                "id": "fgren",
+                "kol": 25
+            },
+            {
+                "id": "hmine",
+                "kol": 25
+            },
+            {
+                "id": "mine",
+                "kol": 10
+            },
+            {
+                "id": "plamine",
+                "kol": 10,
+                "barter": 1
+            },
+            {
+                "id": "impmine",
+                "kol": 10,
+                "barter": 2
+            },
+            {
+                "id": "dbomb",
+                "kol": 10
+            },
+            {
+                "id": "bomb",
+                "kol": 5,
+                "lvl": 8
+            },
+            {
+                "id": "x37",
+                "kol": 5,
+                "lvl": 10,
+                "barter": 2
+            },
+            {
+                "id": "exc4",
+                "kol": 3,
+                "lvl": 12
+            },
+            {
+                "id": "s_molotov",
+                "kol": 1
+            },
+            {
+                "id": "s_hmine",
+                "kol": 1
+            },
+            {
+                "id": "s_hgren",
+                "kol": 1
+            },
+            {
+                "id": "s_acidgr",
+                "kol": 1,
+                "barter": 1
+            },
+            {
+                "id": "s_dbomb",
+                "kol": 1,
+                "barter": 2
+            },
+            {
+                "id": "s_bomb",
+                "kol": 1,
+                "barter": 3
+            },
+            {
+                "id": "gren40",
+                "kol": 35
+            },
+            {
+                "id": "gren40_8",
+                "kol": 10,
+                "lvl": 7
+            },
+            {
+                "id": "gren40_9",
+                "kol": 7,
+                "lvl": 7,
+                "barter": 2
+            },
+            {
+                "id": "rocket",
+                "kol": 10,
+                "lvl": 8
+            },
+            {
+                "id": "egg",
+                "kol": 5,
+                "lvl": 12,
+                "barter": 5
+            },
+            {
+                "id": "balemine",
+                "kol": 4,
+                "barter": 5,
+                "lvl": 18
+            },
+            {
+                "id": "detonat",
+                "kol": 10
+            },
+            {
+                "id": "sensor",
+                "kol": 10
+            },
+            {
+                "id": "powder",
+                "kol": 15
+            },
+            {
+                "id": "timer",
+                "kol": 5
+            },
+            {
+                "id": "turp",
+                "kol": 5
+            },
+            {
+                "id": "tnt",
+                "kol": 5
+            },
+            {
+                "id": "glau^1",
+                "kol": 2,
+                "barter": 4
+            },
+            {
+                "id": "mworkexpl",
+                "kol": 1,
+                "lvl": 5,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "pcryo",
+                "kol": 50,
+                "trigger": "test_cryo"
+            },
+            {
+                "id": "cryogr",
+                "kol": 10,
+                "lvl": 12,
+                "trigger": "test_cryo"
+            },
+            {
+                "id": "cryomine",
+                "kol": 10,
+                "lvl": 12,
+                "trigger": "test_cryo"
+            }
+        ],
+        "tasks": [
+            {
+                "id": "collectNitro"
+            },
+            {
+                "id": "collectSmoke"
+            },
+            {
+                "id": "killAnthills"
+            },
+            {
+                "id": "testCryo",
+                "skill": "explosives",
+                "skilln": 9,
+                "land": "random_stable"
+            },
+            {
+                "id": "collectSpgren",
+                "skill": "explosives",
+                "skilln": 14,
+                "land": "random_mane"
+            }
+        ]
+    },
+    {
+        "id": "vendor_medic",
+        "buys": [
+            {
+                "id": "pot1",
+                "kol": 25
+            },
+            {
+                "id": "pot2",
+                "kol": 15
+            },
+            {
+                "id": "pot3",
+                "kol": 10
+            },
+            {
+                "id": "antiradin",
+                "kol": 15
+            },
+            {
+                "id": "pot0",
+                "kol": 20
+            },
+            {
+                "id": "antidote",
+                "kol": 10
+            },
+            {
+                "id": "radx",
+                "kol": 5
+            },
+            {
+                "id": "firstaid",
+                "kol": 5
+            },
+            {
+                "id": "doctor",
+                "kol": 3
+            },
+            {
+                "id": "surgeon",
+                "kol": 2
+            },
+            {
+                "id": "bloodpak",
+                "kol": 5
+            },
+            {
+                "id": "dash",
+                "kol": 5
+            },
+            {
+                "id": "rage",
+                "kol": 6
+            },
+            {
+                "id": "buck",
+                "kol": 8
+            },
+            {
+                "id": "medx",
+                "kol": 10
+            },
+            {
+                "id": "hydra",
+                "kol": 5,
+                "barter": 4
+            },
+            {
+                "id": "mint",
+                "kol": 5,
+                "barter": 2
+            },
+            {
+                "id": "stampede",
+                "kol": 5,
+                "barter": 3
+            },
+            {
+                "id": "pmint",
+                "kol": 5,
+                "barter": 5
+            },
+            {
+                "id": "detoxin",
+                "kol": 5
+            },
+            {
+                "id": "stethoscope",
+                "kol": 1,
+                "lvl": 10,
+                "noref": 1
+            },
+            {
+                "id": "impl_skin",
+                "kol": 1,
+                "lvl": 9,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "impl_regen",
+                "kol": 1,
+                "lvl": 15,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "impl_mrech",
+                "kol": 1,
+                "lvl": 12,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "impl_intel",
+                "kol": 1,
+                "lvl": 20,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "potHP",
+                "kol": 1,
+                "barter": 5,
+                "noref": 1
+            },
+            {
+                "id": "vaccine",
+                "kol": 1,
+                "nocheap": 1,
+                "noref": 1,
+                "trigger": "patient_tr1"
+            }
+        ],
+        "tasks": [
+            {
+                "id": "repairAutoDoc"
+            },
+            {
+                "id": "collectFishfat",
+                "land": "raiders"
+            },
+            {
+                "id": "collectTmed",
+                "land": "random_stable"
+            },
+            {
+                "id": "collectRecipes"
+            }
+        ]
+    },
+    {
+        "id": "vendor_armor",
+        "buys": [
+            {
+                "id": "kombu",
+                "kol": 1
+            },
+            {
+                "id": "antirad",
+                "kol": 1
+            },
+            {
+                "id": "antihim",
+                "kol": 1
+            },
+            {
+                "id": "tre",
+                "kol": 2,
+                "barter": 5
+            },
+            {
+                "id": "skin",
+                "kol": 2,
+                "lvl": 5
+            },
+            {
+                "id": "metal",
+                "kol": 2,
+                "lvl": 5
+            },
+            {
+                "id": "intel",
+                "kol": 2,
+                "lvl": 8
+            },
+            {
+                "id": "sapper",
+                "kol": 2,
+                "lvl": 10,
+                "trigger": "pro_armor"
+            },
+            {
+                "id": "battle",
+                "kol": 2,
+                "lvl": 12
+            },
+            {
+                "id": "polic",
+                "kol": 2,
+                "lvl": 12
+            },
+            {
+                "id": "magus",
+                "kol": 2,
+                "lvl": 12
+            },
+            {
+                "id": "astealth",
+                "kol": 2,
+                "lvl": 15
+            },
+            {
+                "id": "assault",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "spec",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "moon",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "power",
+                "kol": 2,
+                "lvl": 20,
+                "trigger": "power_armor",
+                "pmult": 0.4
+            },
+            {
+                "id": "amul_war",
+                "kol": 1,
+                "lvl": 22,
+                "noref": 1
+            },
+            {
+                "id": "s_chitin",
+                "kol": 1,
+                "nocheap": 1,
+                "lvl": 5,
+                "barter": 1
+            },
+            {
+                "id": "kombu_comp",
+                "kol": 6
+            },
+            {
+                "id": "antirad_comp",
+                "kol": 3
+            },
+            {
+                "id": "antihim_comp",
+                "kol": 3
+            },
+            {
+                "id": "skin_comp",
+                "kol": 4,
+                "lvl": 5
+            },
+            {
+                "id": "metal_comp",
+                "kol": 3,
+                "lvl": 5
+            },
+            {
+                "id": "intel_comp",
+                "kol": 3,
+                "lvl": 8
+            },
+            {
+                "id": "battle_comp",
+                "kol": 5,
+                "lvl": 11
+            },
+            {
+                "id": "polic_comp",
+                "kol": 5,
+                "lvl": 8
+            },
+            {
+                "id": "magus_comp",
+                "kol": 5,
+                "lvl": 11
+            }
+        ],
+        "tasks": [
+            {
+                "id": "findProArmor"
+            },
+            {
+                "id": "killMadfox"
+            },
+            {
+                "id": "collectPaintsA"
+            },
+            {
+                "id": "collectPaintsB",
+                "trigger": "colors1",
+                "land": "random_stable"
+            },
+            {
+                "id": "collectPaintsC",
+                "trigger": "colors2",
+                "land": "random_mane"
+            },
+            {
+                "id": "collectPowerArmor",
+                "land": "random_mbase"
+            }
+        ]
+    },
+    {
+        "id": "vendor_mech",
+        "buys": [
+            {
+                "id": "mont",
+                "kol": 1
+            },
+            {
+                "id": "mach",
+                "kol": 1,
+                "lvl": 3
+            },
+            {
+                "id": "hammer",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "spear",
+                "kol": 1
+            },
+            {
+                "id": "axe",
+                "kol": 1,
+                "lvl": 8
+            },
+            {
+                "id": "zsword",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "sword",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "elsword",
+                "kol": 1,
+                "lvl": 12,
+                "barter": 2
+            },
+            {
+                "id": "tlance",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "ripper",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "autoaxe",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "bsaw",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "sledge",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "lsword",
+                "kol": 2,
+                "lvl": 17
+            },
+            {
+                "id": "mspear",
+                "kol": 2,
+                "lvl": 15
+            },
+            {
+                "id": "cknife^1",
+                "kol": 2,
+                "lvl": 10
+            },
+            {
+                "id": "ripper^1",
+                "kol": 2,
+                "lvl": 12
+            },
+            {
+                "id": "mont^1",
+                "kol": 2,
+                "lvl": 10,
+                "barter": 2
+            },
+            {
+                "id": "hammer^1",
+                "kol": 2,
+                "lvl": 14,
+                "barter": 3
+            },
+            {
+                "id": "sword^1",
+                "kol": 2,
+                "lvl": 16,
+                "barter": 5
+            },
+            {
+                "id": "mspear^1",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "amul_berserk",
+                "kol": 1,
+                "lvl": 22,
+                "noref": 1
+            },
+            {
+                "id": "s_hsword",
+                "kol": 1
+            },
+            {
+                "id": "s_arson",
+                "kol": 1
+            },
+            {
+                "id": "s_dartgun",
+                "kol": 1,
+                "lvl": 3
+            },
+            {
+                "id": "s_acidgun",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "s_sawgun",
+                "kol": 1,
+                "lvl": 9
+            },
+            {
+                "id": "s_buckshot",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "s_railway",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "s_bfg",
+                "kol": 1,
+                "lvl": 12,
+                "barter": 5
+            },
+            {
+                "id": "s_mod_metal",
+                "kol": 1,
+                "lvl": 5
+            },
+            {
+                "id": "s_mod_analis",
+                "kol": 1,
+                "lvl": 8
+            },
+            {
+                "id": "s_mod_target",
+                "kol": 1,
+                "lvl": 11
+            },
+            {
+                "id": "s_mod_holo",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "s_mod_reanim",
+                "kol": 1,
+                "lvl": 17
+            },
+            {
+                "id": "s_cdagger",
+                "kol": 1,
+                "lvl": 20
+            },
+            {
+                "id": "aero",
+                "kol": 400
+            },
+            {
+                "id": "dart",
+                "kol": 50
+            },
+            {
+                "id": "acid",
+                "kol": 30
+            },
+            {
+                "id": "saw",
+                "kol": 30
+            },
+            {
+                "id": "spikenail",
+                "kol": 100
+            },
+            {
+                "id": "runa",
+                "kol": 4
+            },
+            {
+                "id": "reboot",
+                "kol": 4
+            },
+            {
+                "id": "pin",
+                "kol": 10
+            },
+            {
+                "id": "stealth",
+                "kol": 5
+            },
+            {
+                "id": "rep",
+                "kol": 6,
+                "barter": 3,
+                "nocheap": 1
+            },
+            {
+                "id": "strap",
+                "kol": 3,
+                "lvl": 9
+            },
+            {
+                "id": "tape",
+                "kol": 3,
+                "lvl": 9
+            },
+            {
+                "id": "glue",
+                "kol": 3,
+                "lvl": 9
+            },
+            {
+                "id": "tubing",
+                "kol": 3,
+                "lvl": 10
+            },
+            {
+                "id": "pulv",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "compress",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "motor",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "spring",
+                "kol": 2,
+                "lvl": 13
+            },
+            {
+                "id": "resscook",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "mano",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "tlevit",
+                "kol": 1,
+                "lvl": 18
+            },
+            {
+                "id": "superc",
+                "kol": 1,
+                "lvl": 18
+            },
+            {
+                "id": "condens",
+                "kol": 5,
+                "lvl": 20
+            },
+            {
+                "id": "magnit",
+                "kol": 5,
+                "lvl": 20
+            },
+            {
+                "id": "elcomp",
+                "kol": 30
+            },
+            {
+                "id": "pbatt",
+                "kol": 1
+            },
+            {
+                "id": "screwdriver",
+                "kol": 1,
+                "noref": 1
+            },
+            {
+                "id": "titansd",
+                "kol": 1,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "mworkbench",
+                "kol": 1,
+                "lvl": 5,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "s_owl",
+                "kol": 1,
+                "lvl": 20,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "c_owl",
+                "kol": 1,
+                "lvl": 20,
+                "noref": 1,
+                "nocheap": 1
+            }
+        ],
+        "tasks": [
+            {
+                "id": "collectScrew"
+            },
+            {
+                "id": "collectTools"
+            },
+            {
+                "id": "collectFans"
+            },
+            {
+                "id": "collectMolefat"
+            },
+            {
+                "id": "collectCol2"
+            },
+            {
+                "id": "collectData",
+                "land": "random_stable",
+                "skill": "science",
+                "skilln": 9
+            }
+        ]
+    },
+    {
+        "id": "vendor_mage",
+        "buys": [
+            {
+                "id": "telebul",
+                "kol": 2
+            },
+            {
+                "id": "mbul",
+                "kol": 2
+            },
+            {
+                "id": "ice",
+                "kol": 2,
+                "lvl": 4
+            },
+            {
+                "id": "dragon",
+                "kol": 2,
+                "lvl": 6
+            },
+            {
+                "id": "blades",
+                "kol": 2,
+                "lvl": 8
+            },
+            {
+                "id": "mbul^1",
+                "kol": 2,
+                "lvl": 9
+            },
+            {
+                "id": "lightning",
+                "kol": 2,
+                "lvl": 10
+            },
+            {
+                "id": "ice^1",
+                "kol": 2,
+                "lvl": 11
+            },
+            {
+                "id": "fireball",
+                "kol": 2,
+                "lvl": 12
+            },
+            {
+                "id": "dragon^1",
+                "kol": 2,
+                "lvl": 13
+            },
+            {
+                "id": "mray",
+                "kol": 2,
+                "lvl": 14
+            },
+            {
+                "id": "blades^1",
+                "kol": 2,
+                "lvl": 15
+            },
+            {
+                "id": "defwave",
+                "kol": 2,
+                "lvl": 16
+            },
+            {
+                "id": "lightning^1",
+                "kol": 2,
+                "lvl": 17
+            },
+            {
+                "id": "eclipse",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "fireball^1",
+                "kol": 2,
+                "lvl": 19
+            },
+            {
+                "id": "dray",
+                "kol": 2,
+                "lvl": 20
+            },
+            {
+                "id": "mray^1",
+                "kol": 2,
+                "lvl": 21
+            },
+            {
+                "id": "udar",
+                "kol": 2,
+                "lvl": 22
+            },
+            {
+                "id": "defwave^1",
+                "kol": 2,
+                "lvl": 23
+            },
+            {
+                "id": "skybolt",
+                "kol": 2,
+                "lvl": 24
+            },
+            {
+                "id": "eclipse^1",
+                "kol": 2,
+                "lvl": 25
+            },
+            {
+                "id": "sp_slow",
+                "kol": 1,
+                "lvl": 3,
+                "noref": 1
+            },
+            {
+                "id": "sp_mwall",
+                "kol": 1,
+                "lvl": 6,
+                "noref": 1
+            },
+            {
+                "id": "sp_blast",
+                "kol": 1,
+                "lvl": 9,
+                "noref": 1
+            },
+            {
+                "id": "sp_cryst",
+                "kol": 1,
+                "lvl": 12,
+                "noref": 1
+            },
+            {
+                "id": "sp_kdash",
+                "kol": 1,
+                "lvl": 15,
+                "noref": 1
+            },
+            {
+                "id": "sp_mshit",
+                "kol": 1,
+                "lvl": 18,
+                "noref": 1
+            },
+            {
+                "id": "sp_gwall",
+                "kol": 1,
+                "lvl": 21,
+                "noref": 1
+            },
+            {
+                "id": "sp_invulner",
+                "kol": 1,
+                "lvl": 24,
+                "noref": 1
+            },
+            {
+                "id": "amul_spark",
+                "kol": 2,
+                "lvl": 13,
+                "noref": 1
+            },
+            {
+                "id": "amul_mage",
+                "kol": 1,
+                "lvl": 22,
+                "noref": 1
+            },
+            {
+                "id": "potm1",
+                "kol": 45
+            },
+            {
+                "id": "potm2",
+                "kol": 25
+            },
+            {
+                "id": "potm3",
+                "kol": 15
+            },
+            {
+                "id": "potion_consc",
+                "kol": 1,
+                "lvl": 12,
+                "noref": 1,
+                "hardinv": 1
+            },
+            {
+                "id": "potion_mage",
+                "kol": 5,
+                "barter": 2
+            },
+            {
+                "id": "potion_shadow",
+                "kol": 4,
+                "barter": 4
+            },
+            {
+                "id": "potion_infra",
+                "kol": 3,
+                "barter": 3
+            },
+            {
+                "id": "potion_fly",
+                "kol": 2,
+                "barter": 5
+            },
+            {
+                "id": "herbs",
+                "kol": 100
+            },
+            {
+                "id": "sphera",
+                "kol": 1,
+                "barter": 5,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "s_potion_mage",
+                "kol": 1,
+                "lvl": 4
+            },
+            {
+                "id": "s_potion_swim",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "s_potion_stim",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "s_potion_infra",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "s_potion_shadow",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "s_potion_fly",
+                "kol": 1,
+                "lvl": 16
+            },
+            {
+                "id": "s_potion_immun",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "s_potion_speed",
+                "kol": 1,
+                "lvl": 9
+            },
+            {
+                "id": "s_potion_dskel",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "s_potion_might",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "s_potion_prec",
+                "kol": 1,
+                "lvl": 18
+            },
+            {
+                "id": "taintextract",
+                "kol": 1,
+                "barter": 3,
+                "noref": 1
+            },
+            {
+                "id": "hydrablood",
+                "kol": 1,
+                "barter": 4,
+                "noref": 1
+            },
+            {
+                "id": "rainbow",
+                "kol": 1,
+                "barter": 5,
+                "noref": 1
+            },
+            {
+                "id": "stardust",
+                "kol": 1,
+                "barter": 5,
+                "noref": 1
+            },
+            {
+                "id": "moonstone",
+                "kol": 1,
+                "barter": 5,
+                "noref": 1
+            },
+            {
+                "id": "retr",
+                "kol": 5
+            },
+            {
+                "id": "mworklab",
+                "kol": 1,
+                "lvl": 5,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "tal_star",
+                "kol": 1,
+                "lvl": 25,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "tal_moon",
+                "kol": 1,
+                "lvl": 30,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "tal_sun",
+                "kol": 1,
+                "lvl": 35,
+                "noref": 1,
+                "nocheap": 1
+            },
+            {
+                "id": "tal_ether",
+                "kol": 1,
+                "lvl": 40,
+                "noref": 1,
+                "nocheap": 1
+            }
+        ],
+        "tasks": [
+            {
+                "id": "collectBooks"
+            },
+            {
+                "id": "collectGems",
+                "land": "random_stable"
+            },
+            {
+                "id": "collectDust",
+                "land": "random_mane"
+            }
+        ]
+    },
+    {
+        "id": "vendor_cook",
+        "buys": [
+            {
+                "id": "meat",
+                "kol": 5
+            },
+            {
+                "id": "bread",
+                "kol": 12
+            },
+            {
+                "id": "oats",
+                "kol": 10
+            },
+            {
+                "id": "milk",
+                "kol": 5
+            },
+            {
+                "id": "butter",
+                "kol": 3
+            },
+            {
+                "id": "potato",
+                "kol": 10
+            },
+            {
+                "id": "cucumber",
+                "kol": 10
+            },
+            {
+                "id": "tomato",
+                "kol": 10,
+                "lvl": 3
+            },
+            {
+                "id": "cabbage",
+                "kol": 10,
+                "lvl": 3
+            },
+            {
+                "id": "mushroom",
+                "kol": 5,
+                "lvl": 5
+            },
+            {
+                "id": "cheese",
+                "kol": 3,
+                "lvl": 5
+            },
+            {
+                "id": "flour",
+                "kol": 3,
+                "lvl": 8
+            },
+            {
+                "id": "tegg",
+                "kol": 10,
+                "lvl": 8
+            },
+            {
+                "id": "carrot",
+                "kol": 3,
+                "lvl": 8
+            },
+            {
+                "id": "onion",
+                "kol": 3,
+                "lvl": 8
+            },
+            {
+                "id": "apple",
+                "kol": 3,
+                "lvl": 12
+            },
+            {
+                "id": "sugar",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "garlic",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "chips",
+                "kol": 3,
+                "lvl": 15,
+                "barter": 3
+            },
+            {
+                "id": "bananas",
+                "kol": 2,
+                "lvl": 15,
+                "barter": 4
+            },
+            {
+                "id": "honey",
+                "kol": 1,
+                "lvl": 15,
+                "barter": 4
+            },
+            {
+                "id": "frpot",
+                "kol": 1
+            },
+            {
+                "id": "oatmeal",
+                "kol": 1
+            },
+            {
+                "id": "cucsand",
+                "kol": 1
+            },
+            {
+                "id": "salad",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "chpasta",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "omelet",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "butterbr",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "soup",
+                "kol": 1,
+                "lvl": 11
+            },
+            {
+                "id": "casser",
+                "kol": 1,
+                "lvl": 11
+            },
+            {
+                "id": "pizza",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "ragu",
+                "kol": 1,
+                "lvl": 17
+            },
+            {
+                "id": "spsalad",
+                "kol": 1,
+                "lvl": 18
+            },
+            {
+                "id": "patty",
+                "kol": 1,
+                "lvl": 19
+            },
+            {
+                "id": "maffin",
+                "kol": 1,
+                "lvl": 20
+            },
+            {
+                "id": "s_frmeat",
+                "kol": 1,
+                "noref": 1
+            },
+            {
+                "id": "s_cucsand",
+                "kol": 1,
+                "lvl": 3,
+                "noref": 1
+            },
+            {
+                "id": "s_frpot",
+                "kol": 1,
+                "lvl": 3,
+                "noref": 1
+            },
+            {
+                "id": "s_oatmeal",
+                "kol": 1,
+                "lvl": 3,
+                "barter": 1,
+                "noref": 1
+            },
+            {
+                "id": "s_salad",
+                "kol": 1,
+                "lvl": 3,
+                "barter": 1,
+                "noref": 1
+            },
+            {
+                "id": "s_chpasta",
+                "kol": 1,
+                "lvl": 5,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "s_omelet",
+                "kol": 1,
+                "lvl": 6,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "s_butterbr",
+                "kol": 1,
+                "lvl": 7,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "s_breakfast",
+                "kol": 1,
+                "lvl": 8,
+                "barter": 1,
+                "noref": 1
+            },
+            {
+                "id": "s_soup",
+                "kol": 1,
+                "lvl": 8,
+                "barter": 1,
+                "noref": 1
+            },
+            {
+                "id": "s_pizza",
+                "kol": 1,
+                "lvl": 12,
+                "barter": 3,
+                "noref": 1
+            },
+            {
+                "id": "s_casser",
+                "kol": 1,
+                "lvl": 10,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "s_ragu",
+                "kol": 1,
+                "lvl": 11,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "s_spsalad",
+                "kol": 1,
+                "lvl": 14,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "s_patty",
+                "kol": 1,
+                "lvl": 13,
+                "barter": 3,
+                "noref": 1
+            },
+            {
+                "id": "s_maffin",
+                "kol": 1,
+                "lvl": 15,
+                "barter": 4,
+                "noref": 1
+            }
+        ]
+    },
+    {
+        "id": "vendor_zebr",
+        "buys": [
+            {
+                "id": "elsword^1",
+                "kol": 2,
+                "lvl": 10,
+                "barter": 3
+            },
+            {
+                "id": "amul_sneak",
+                "kol": 1,
+                "lvl": 13,
+                "noref": 1
+            },
+            {
+                "id": "amul_adept",
+                "kol": 1,
+                "lvl": 22,
+                "noref": 1
+            },
+            {
+                "id": "potion_purif",
+                "kol": 10
+            },
+            {
+                "id": "herbs",
+                "kol": 200
+            },
+            {
+                "id": "taintextract",
+                "kol": 1,
+                "noref": 1
+            },
+            {
+                "id": "hydrablood",
+                "kol": 1,
+                "noref": 1
+            },
+            {
+                "id": "rainbow",
+                "kol": 1,
+                "barter": 1,
+                "noref": 1
+            },
+            {
+                "id": "stardust",
+                "kol": 1,
+                "barter": 2,
+                "noref": 1
+            },
+            {
+                "id": "moonstone",
+                "kol": 1,
+                "barter": 3,
+                "noref": 1
+            },
+            {
+                "id": "firecrystal",
+                "kol": 1,
+                "barter": 4,
+                "noref": 1
+            },
+            {
+                "id": "essence",
+                "kol": 1,
+                "barter": 5,
+                "noref": 1
+            },
+            {
+                "id": "spirt",
+                "kol": 5
+            },
+            {
+                "id": "firegland",
+                "kol": 3
+            },
+            {
+                "id": "mdust",
+                "kol": 4
+            },
+            {
+                "id": "vampfang",
+                "kol": 2
+            },
+            {
+                "id": "ghoulblood",
+                "kol": 5
+            },
+            {
+                "id": "wingmembrane",
+                "kol": 3
+            },
+            {
+                "id": "mint",
+                "kol": 5,
+                "barter": 1
+            },
+            {
+                "id": "stampede",
+                "kol": 5,
+                "barter": 2
+            },
+            {
+                "id": "pmint",
+                "kol": 5,
+                "barter": 3
+            },
+            {
+                "id": "potm1",
+                "kol": 10
+            },
+            {
+                "id": "potm2",
+                "kol": 20
+            },
+            {
+                "id": "potm3",
+                "kol": 25
+            },
+            {
+                "id": "zebmine",
+                "kol": 20,
+                "trigger": "encounter_post"
+            },
+            {
+                "id": "s_potion_mage",
+                "kol": 1,
+                "lvl": 4
+            },
+            {
+                "id": "s_potion_swim",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "s_potion_stim",
+                "kol": 1,
+                "lvl": 7
+            },
+            {
+                "id": "s_potion_infra",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "s_potion_shadow",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "s_potion_fly",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "s_potion_immun",
+                "kol": 1,
+                "lvl": 6
+            },
+            {
+                "id": "s_potion_speed",
+                "kol": 1,
+                "lvl": 9
+            },
+            {
+                "id": "s_potion_dskel",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "s_potion_might",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "s_potion_purif",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "s_potion_prec",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "s_potion_dexter",
+                "kol": 1,
+                "lvl": 26
+            },
+            {
+                "id": "s_potion_crit",
+                "kol": 1,
+                "lvl": 20
+            },
+            {
+                "id": "s_apie",
+                "kol": 1,
+                "lvl": 12
+            },
+            {
+                "id": "s_mpie",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "s_ppie",
+                "kol": 1,
+                "lvl": 16
+            },
+            {
+                "id": "s_spie",
+                "kol": 1,
+                "lvl": 18
+            },
+            {
+                "id": "s_borsch",
+                "kol": 1,
+                "lvl": 20
+            },
+            {
+                "id": "potion_consc",
+                "kol": 1,
+                "lvl": 12,
+                "noref": 1,
+                "hardinv": 1
+            }
+        ],
+        "tasks": [
+            {
+                "id": "collectCanter",
+                "man": 1
+            },
+            {
+                "id": "collectTalisman",
+                "man": 1
+            }
+        ]
+    },
+    {
+        "id": "vendor_sr",
+        "buys": [
+            {
+                "id": "minigun^1",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "plamg^1",
+                "kol": 2,
+                "lvl": 20
+            },
+            {
+                "id": "plam^1",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "psc",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "cflamer",
+                "kol": 1,
+                "lvl": 14
+            },
+            {
+                "id": "pshot",
+                "kol": 1,
+                "lvl": 15
+            },
+            {
+                "id": "rail",
+                "kol": 2,
+                "lvl": 16
+            },
+            {
+                "id": "lmg",
+                "kol": 1,
+                "lvl": 13
+            },
+            {
+                "id": "grom",
+                "kol": 1,
+                "lvl": 16
+            },
+            {
+                "id": "anti",
+                "kol": 2,
+                "lvl": 16
+            },
+            {
+                "id": "gatl",
+                "kol": 2,
+                "lvl": 16
+            },
+            {
+                "id": "gatp",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "autor",
+                "kol": 1,
+                "lvl": 17
+            },
+            {
+                "id": "hmg",
+                "kol": 2,
+                "lvl": 17
+            },
+            {
+                "id": "quick",
+                "kol": 2,
+                "lvl": 18
+            },
+            {
+                "id": "grom^1",
+                "kol": 2,
+                "lvl": 23
+            },
+            {
+                "id": "cflamer^1",
+                "kol": 2,
+                "lvl": 20,
+                "barter": 4
+            },
+            {
+                "id": "anti^1",
+                "kol": 2,
+                "lvl": 20
+            },
+            {
+                "id": "mlau",
+                "kol": 1,
+                "lvl": 10
+            },
+            {
+                "id": "aglau",
+                "kol": 2,
+                "lvl": 14
+            },
+            {
+                "id": "bel",
+                "kol": 1,
+                "lvl": 20
+            },
+            {
+                "id": "sword^1",
+                "kol": 2,
+                "lvl": 20
+            },
+            {
+                "id": "p12",
+                "kol": 50
+            },
+            {
+                "id": "p12_3",
+                "kol": 30,
+                "barter": 4
+            },
+            {
+                "id": "p12_4",
+                "kol": 30,
+                "barter": 5
+            },
+            {
+                "id": "p12_5",
+                "kol": 30,
+                "barter": 5
+            },
+            {
+                "id": "p127",
+                "kol": 140
+            },
+            {
+                "id": "p127_2",
+                "kol": 30,
+                "barter": 4
+            },
+            {
+                "id": "p308",
+                "kol": 50
+            },
+            {
+                "id": "p308_1",
+                "kol": 20,
+                "barter": 3
+            },
+            {
+                "id": "p308_2",
+                "kol": 30,
+                "barter": 4
+            },
+            {
+                "id": "p50mg",
+                "kol": 60
+            },
+            {
+                "id": "p50mg_1",
+                "kol": 15,
+                "barter": 4
+            },
+            {
+                "id": "p50mg_4",
+                "kol": 15,
+                "barter": 5
+            },
+            {
+                "id": "p556",
+                "kol": 400
+            },
+            {
+                "id": "p556_1",
+                "kol": 100,
+                "barter": 3
+            },
+            {
+                "id": "p556_2",
+                "kol": 80,
+                "barter": 3
+            },
+            {
+                "id": "p556_5",
+                "kol": 50,
+                "barter": 4
+            },
+            {
+                "id": "p5",
+                "kol": 2500
+            },
+            {
+                "id": "p5_1",
+                "kol": 400
+            },
+            {
+                "id": "energ",
+                "kol": 500
+            },
+            {
+                "id": "energ_6",
+                "kol": 200,
+                "barter": 3
+            },
+            {
+                "id": "crystal",
+                "kol": 1500
+            },
+            {
+                "id": "crystal_6",
+                "kol": 500,
+                "barter": 4
+            },
+            {
+                "id": "fuel",
+                "kol": 2500
+            },
+            {
+                "id": "fuel_7",
+                "kol": 400,
+                "barter": 4
+            },
+            {
+                "id": "p145",
+                "kol": 40
+            },
+            {
+                "id": "gren40",
+                "kol": 40
+            },
+            {
+                "id": "gren40_8",
+                "kol": 20,
+                "barter": 2
+            },
+            {
+                "id": "gren40_9",
+                "kol": 10,
+                "barter": 4
+            },
+            {
+                "id": "rocket",
+                "kol": 30
+            },
+            {
+                "id": "empbomb",
+                "kol": 5
+            },
+            {
+                "id": "s_empbomb",
+                "kol": 1
+            },
+            {
+                "id": "bag2",
+                "kol": 1,
+                "lvl": 12,
+                "noref": 1,
+                "hardinv": 1
+            }
+        ],
+        "tasks": [
+            {
+                "id": "hydroPon",
+                "man": 1
+            },
+            {
+                "id": "collectDatast",
+                "man": 1
+            },
+            {
+                "id": "collectMotiv",
+                "man": 1
+            },
+            {
+                "id": "collectBbatt",
+                "man": 1,
+                "land": "bunker"
+            },
+            {
+                "id": "enclArmor",
+                "man": 1,
+                "land": "bunker"
+            },
+            {
+                "id": "collectTech",
+                "man": 1,
+                "land": "bunker"
+            }
+        ]
+    },
+    {
+        "id": "vendor_maps",
+        "buys": [
+            {
+                "id": "card0",
+                "kol": 3,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "card1",
+                "kol": 3,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "card2",
+                "kol": 3,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "card3",
+                "kol": 3,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "card4",
+                "kol": 3,
+                "nocheap": 1,
+                "noref": 1
+            },
+            {
+                "id": "key_rar",
+                "kol": 1,
+                "barter": 4,
+                "noref": 1
+            }
+        ]
+    }
+]

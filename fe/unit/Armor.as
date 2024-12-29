@@ -1,11 +1,11 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	
 	//NOTES:
 	//BUL=0, BLADE=1, PHIS=2, FIRE=3, EXPL=4, LASER=5, PLASMA=6, VENOM=7, EMP=8, SPARK=9, ACID=10;
-	public class Armor
-	{
+	public class Armor {
+
 		public var id:String;
 		public var nazv:String;
 		public var owner:Unit;
@@ -13,7 +13,6 @@ package fe.unit
 		public var clo:int=0;		//броню можно переодевать в любой момент в огран инвентаре
 		public var active:Boolean=false;
 		public var xml:XML;
-		
 		
 		public var lvl:int=0, maxlvl:int=0;
 		public var armor:Number=0, marmor:Number=0, armor_qual:Number=0;		//броня, вероятность того, что она сработает
@@ -38,21 +37,22 @@ package fe.unit
 		public var dmana_res:Number=0;	//восстановление маны
 		public var abilActive:Boolean=false;	//функция активна
 		
-		public var und:Boolean=false;	//не ломается
-		public var norep:Boolean=false;	//не ремонтируется на верстаке
-		public var hp:int=100, maxhp:int=100;
+		public var und:Boolean = false;	//не ломается
+		public var norep:Boolean = false;	//не ремонтируется на верстаке
+		public var hp:int = 100;
+		public var maxhp:int = 100;
 		public var idComp:String;
-		public var kolComp:int=1;		//сколько пластин надо для ремонта
-		public var price:int=0;
-		public var sort:int=0;
-		public var hideMane:int=0;
+		public var kolComp:int = 1;		//сколько пластин надо для ремонта
+		public var price:int = 0;
+		public var sort:int = 0;
+		public var hideMane:int = 0;
 
 		public static var cachedArmorList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "armors", "armor");
 		private static var cachedArmors:Object = {};
 		
 		public function Armor(nid:String, nlvl:int=0) {
-			id=nid;
-			lvl=nlvl;
+			id = nid;
+			lvl = nlvl;
 			xml = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "armors", "id", id);
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@clo.length()) clo=xml.@clo;
@@ -76,7 +76,7 @@ package fe.unit
 			if (xml.@hide.length()) hideMane=xml.@hide;
 			
 			resist=[];
-			for (var i=0; i<Unit.kolVulners; i++) resist[i]=0;
+			for (var i:int = 0; i < Unit.kolVulners; i++) resist[i] = 0;
 			if (tip==1) resist[Unit.D_PINK]=-0.5;
 			if (lvl>=0) getXmlParam(xml.upd[lvl]);
 			else getXmlParam(xml.upd[0])
