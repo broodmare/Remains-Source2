@@ -42,8 +42,8 @@ package fe.inter {
 		private static var lastLandTooltipDisplayed:String;
 
 		private static var cachedUnits:Object = {};
-		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
-		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
+		private static var cachedTaskList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
+		private static var cachedUnitList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 		
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -85,7 +85,7 @@ package fe.inter {
 
 		public static function getUnitInfo(id:String):XML {
 			
-			var node:XML;
+			var node;
 			if (cachedUnits[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 				cachedUnits[id] = node;
@@ -132,7 +132,7 @@ package fe.inter {
 				}
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
 				if (World.w.loc && World.w.loc.base) {
-					for each (var task:XML in cachedTaskList) {
+					for each (var task in cachedTaskList) {
 						if (checkQuest(task)) {
 							var q:Quest = game.quests[task.@id];
 							if (q == null || q.state == 0) {
@@ -566,7 +566,7 @@ package fe.inter {
 		}
 
 		private function addAllQuestsToGameClass():void {
-			for each (var task:XML in cachedTaskList) {
+			for each (var task in cachedTaskList) {
 				if (task.@man=='1') continue;
 				if (checkQuest(task)) {
 					var q:Quest = game.quests[task.@id];

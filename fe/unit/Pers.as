@@ -28,7 +28,7 @@ package fe.unit {
 		public var xpCPadd:int=300;
 		
 		public var rep:int=0;	//репутация
-		var rep1:int=10, rep2:int=20, rep3:int=35, rep4:int=50;
+		private var rep1:int=10, rep2:int=20, rep3:int=35, rep4:int=50;
 		public var repGood:int=70;	//репутация для хорошей концовки
 		
 		public static var maxSkLvl:int=20;
@@ -97,8 +97,8 @@ package fe.unit {
 		public var h2oPlav:Number=1;
 		public var stamRun:Number=1;
 		public var stamRes:Number=2;
-		public var stamDash=40;		//мультипликатор расхода выносливости на рывок
-		public var stamJump=20;		//мультипликатор расхода выносливости на прыжок
+		public var stamDash:int = 40;		//мультипликатор расхода выносливости на рывок
+		public var stamJump:int = 20;		//мультипликатор расхода выносливости на прыжок
 
 		public var weaponSkills:Array=[1,1,1,1,1,1,1,1];
 		//melee
@@ -203,7 +203,7 @@ package fe.unit {
 		public var damAlicorn:Number=1;
 		
 		//движение
-		
+
 		public var isDJ:int=0; //двойной прыжок		//возможность
 		public var allSpeedMult:Number=1;
 		public var runSpeedMult:Number=1;
@@ -263,7 +263,6 @@ package fe.unit {
 		public var portTime:int=25;
 		public var portMagic:Number=950;
 		public var portMana:Number=25;
-		
 
 		// (PET) Phoenix stats
 		public var petHP:Number=50;
@@ -281,8 +280,6 @@ package fe.unit {
 		// (PET) Moon Blade stats
 		public var moonHP:Number=70;
 		public var moonDam:Number=15;
-		
-
 
 		public var alicornHeal:Number=2;
 		public var alicornManaHeal:Number=0.1;
@@ -303,26 +300,27 @@ package fe.unit {
 		public var factor:Array;
 
 		private static var cachedSkillList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "skills", "skill");
-		private static var cachedParamList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
-		private static var cachedPerkList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
+		private static var cachedParamList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+		private static var cachedPerkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
 		
 		private static var cachedPerks:Object = {};
 		private static var cachedSkills:Object = {};
 		private static var cachedEffs:Object = {};
 		
-		public function Pers(loadObj:Object=null, opt:Object=null)
-		{
+		// Constructor
+		public function Pers(loadObj:Object=null, opt:Object=null) {
 			skill_ids	= [];
 			skills		= [];
 			addictions	= [];
-			var ndif = World.w.game.globalDif;
+			
+			var ndif:int = World.w.game.globalDif;
 
-			for each (var sk:XML in cachedSkillList)
-			{
+			for each (var sk:XML in cachedSkillList) {
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
 				if (loadObj == null || loadObj.skills[sk.@id] == null) skills[sk.@id] = 0;
 				else skills[sk.@id] = loadObj.skills[sk.@id];
 			}
+			
 			//сложность игры
 			setGlobalDif(ndif);
 			
@@ -370,14 +368,15 @@ package fe.unit {
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
 				currentPet=loadObj.pet;
 				if (loadObj.addictions) {
-					for (var ad in loadObj.addictions) {
+					for (var ad:String in loadObj.addictions) {
 						addictions[ad]=loadObj.addictions[ad];
 					}
 				}
 				if (loadObj.rep) rep=loadObj.rep;
 				World.w.alicorn=false;
 				if (loadObj.alicorn) World.w.alicorn=loadObj.alicorn;
-			} else if (opt) {
+			}
+			else if (opt) {
 				if (opt.hardcore) hardcore=true;
 				if (opt.fastxp) xpDelta=3000;
 				if (opt.rndpump) rndpump=true;
@@ -387,7 +386,7 @@ package fe.unit {
 			setAllSt();
 			perks=[];
 			if (loadObj && loadObj.perks) {
-				for (var pid in loadObj.perks) {
+				for (var pid:String in loadObj.perks) {
 					perks[pid]=loadObj.perks[pid];
 				}
 			}
@@ -396,25 +395,23 @@ package fe.unit {
 
 			factor = [];
 
-			for each (var param in cachedParamList)
-			{
+			for each (var param in cachedParamList) {
 				if (param.@f>0 && param.@v.length() && param.@v!='') factor[param.@v] = [];
 			}
 		}
 		
-		public function save():Object
-		{
+		public function save():Object {
 			var obj:Object	= {};
 			obj.skills		= [];
 			obj.perks		= [];
 			obj.addictions	= [];
-			for (var sk in skills) obj.skills[sk]=skills[sk];
-			for (var pid in perks)
-			{
+			for (var sk:String in skills) {
+				obj.skills[sk]=skills[sk];
+			}
+			for (var pid:String in perks) {
 				obj.perks[pid]=perks[pid];
 			}
-			for (var ad in addictions)
-			{
+			for (var ad:String in addictions) {
 				obj.addictions[ad]=addictions[ad];
 			}
 			obj.dead=dead;
@@ -478,7 +475,7 @@ package fe.unit {
 			return node;
 		}
 
-		public function setGlobalDif(ndif:int=2) {
+		public function setGlobalDif(ndif:int=2):void {
 			if (ndif==0) {
 				begHP=200;
 				lvlHP=25;
@@ -564,7 +561,7 @@ package fe.unit {
 			}
 		}
 		
-		public function defaultParams() {
+		public function defaultParams():void {
 			//параметры по умолчанию
 			gg.maxhp=begHP;
 			gg.critHeal=critHeal;
@@ -682,20 +679,34 @@ package fe.unit {
 			alicornRunMana=5;
 			
 			//сопротивления и оружейные скиллы
-			for (var i in gg.vulner) gg.vulner[i]=1;
+			for (var i:String in gg.vulner) {
+				gg.vulner[i] = 1;
+			}
+			
 			gg.vulner[Unit.D_EMP]=0;
-			for (i in weaponSkills) weaponSkills[i]=1;
-			for (i in factor) factor[i]=[];
+			
+			for (var j:String in weaponSkills) {
+				weaponSkills[j] = 1;
+			}
+			
+			for (var k:String in factor) {
+				factor[k] = [];
+			}
 		}
 		
 		//получение опыта
-		public function expa(dxp:int, nx:Number=-1, ny:Number=-1) {
-			if (dxp<=0) return;
-			xpCur+=dxp;
+		public function expa(dxp:int, nx:Number=-1, ny:Number=-1):void {
+			if (dxp<=0) {
+				return;
+			}
+			
+			xpCur += dxp;
+			
 			if (nx < 0 || ny < 0) {
 				nx = gg.coordinates.X;
 				ny = gg.boundingBox.bottom;
 			}
+			
 			if (World.w.testLoot) {
 				World.w.summxp+=dxp;
 			} 
@@ -704,6 +715,7 @@ package fe.unit {
 			}
 
 			if (xpCur>=xpNext) upLevel();
+			
 			World.w.gui.setXp();
 		}
 		
@@ -780,13 +792,13 @@ package fe.unit {
 		}
 		
 		// [Force set character level]
-		public function setForcLevel(lvl:int) {
+		public function setForcLevel(lvl:int):void {
 			level=lvl;
 			xpPrev=xpCur=xpProgress(lvl-1);
 			xpNext=xpProgress(lvl);
 		}
 		
-		public function upLevel() {
+		public function upLevel():void {
 			xpPrev=xpProgress(level);
 			level++;
 			World.w.gui.messText('levelUp', ' '+level);
@@ -812,7 +824,7 @@ package fe.unit {
 		}
 		
 		//принудительно установить количество опыта для сейва старой версии
-		public function recalcXP() {
+		public function recalcXP():void {
 			if (xpVer==0) {
 				var razn:int=xpProgress(level-1)-xpProgress06(level-1);
 				xpCur+=razn;
@@ -820,7 +832,7 @@ package fe.unit {
 		}
 		
 		//добавить скиллпоинты, если dop==true, не повышать левел
-		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true) {
+		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true):void {
 			skillPoint+=numb;
 			if (numb==1) World.w.gui.infoText('skillPoint');
 			else World.w.gui.infoText('skillPoints',numb);
@@ -829,12 +841,12 @@ package fe.unit {
 		}
 		
 		//поднять скилл
-		public function addSkill(id:String, numb:int, minus:Boolean=false) {
+		public function addSkill(id:String, numb:int, minus:Boolean=false):void {
 			if (minus && numb>skillPoint) numb=skillPoint;
 			if (numb<=0) return;
-			var preNumb=skills[id];
-			skills[id]+=numb;
-			var postNumb=skills[id];
+			var preNumb = skills[id];
+			skills[id] += numb;
+			var postNumb = skills[id];
 			if (skillIsPost(id)) {
                 if (id == 'knowl') {
                     var sklvl = getPostSkLevel(skills[id]);
@@ -884,7 +896,7 @@ package fe.unit {
 		}
 		
 		//установить уровень скилла принудительно
-		public function setSkill(id:String, n:int) {
+		public function setSkill(id:String, n:int):void {
 			if (n<0) n=0;
 			if (n>maxSkLvl) n=maxSkLvl;
 			if (skills[id]) skills[id]=n;
@@ -920,7 +932,7 @@ package fe.unit {
 		}
 		
 		// [Random leveling]
-		private function autoPump() {
+		private function autoPump():void {
 			var n:int=1000;
 			while (skillPoint>0 && n>0) {
 				//определить скиллы, доступные для увеличения
@@ -992,7 +1004,7 @@ package fe.unit {
 		}
 		
 		// [lvl1-level of main parameters, lvl2-level of additional parameters with tag dop=1] | lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
-		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
+		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void {
 			for each(var sk in xml.sk) {
 				var val:Number, lvl:int, val0:Number=0;
 				if (sk.@dop.length()) lvl=lvl2;
@@ -1038,24 +1050,24 @@ package fe.unit {
 			}
 		}
 		
-		private function setBegFactor(id:String, res) {
+		private function setBegFactor(id:String, res):void {
 			if ((factor[id] is Array) && factor[id].length==0) factor[id].push({id:'beg', res:res});
 		}
 
-		private function setFactor(id:String, fact:String, ref:String, val, res, tip=null) {
+		private function setFactor(id:String, fact:String, ref:String, val, res, tip=null):void {
 			if (ref=='add' && val==0 || ref=='mult' && val==1) return;
 			if (factor[id] is Array) factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
 		}
 		
-		private function setAllSt() {
-			headSt=4-Math.ceil(headHP/inMaxHP*4);
-			torsSt=4-Math.ceil(torsHP/inMaxHP*4);
-			legsSt=4-Math.ceil(legsHP/inMaxHP*4);
-			bloodSt=4-Math.ceil(bloodHP/inMaxHP*4);
-			manaSt=4-Math.ceil(manaHP/inMaxMana*4);
+		private function setAllSt():void {
+			headSt	= 4 - Math.ceil(headHP	/ inMaxHP * 4);
+			torsSt	= 4 - Math.ceil(torsHP	/ inMaxHP * 4);
+			legsSt	= 4 - Math.ceil(legsHP	/ inMaxHP * 4);
+			bloodSt	= 4 - Math.ceil(bloodHP	/ inMaxHP * 4);
+			manaSt	= 4 - Math.ceil(manaHP	/ inMaxMana * 4);
 		}
 		
-		public function setPonpon(mc:MovieClip) {
+		public function setPonpon(mc:MovieClip):void {
 			mc.tors.gotoAndStop(torsSt+1);
 			mc.head.gotoAndStop(headSt+1);
 			mc.legs.gotoAndStop(legsSt+1);
@@ -1063,12 +1075,12 @@ package fe.unit {
 			mc.blood.gotoAndStop(bloodSt+1);
 			mc.armor.gotoAndStop(1);
 			if (gg.currentArmor) {
-				var armorSt=4-Math.ceil(gg.currentArmor.hp/gg.currentArmor.maxhp*4);
+				var armorSt:int = 4 - Math.ceil(gg.currentArmor.hp/gg.currentArmor.maxhp*4);
 				mc.armor.gotoAndStop(armorSt+1);
 			}
 		}
 		
-		private function trauma(st:int, organ:int) {
+		private function trauma(st:int, organ:int):void {
 			if (st>4) st=4;
 			if (organ==3 && st==4) st=3;
 			if (organ==4) {
@@ -1082,14 +1094,14 @@ package fe.unit {
 			}
 		}
 		
-		public function damage(dam:Number, tip:int, isDie:Boolean=false) {
+		public function damage(dam:Number, tip:int, isDie:Boolean=false):void {
 			if (isDie) dam=dieDamage*inMaxHP;
 			if (dam<=0 || tip==Unit.D_INSIDE || tip==Unit.D_BLEED) return;
 			if (tip==Unit.D_NECRO) dam*=0.1;
 			dam*=organMult;
 			dam*=organMultPot;
 			if (radChild>0) dam*=(gg.maxhp-gg.rad)/gg.maxhp;
-			var rnd=Math.random();
+			var rnd:Number = Math.random();
 			var sst:int;
 			if (rnd<0.2) {
 				if (!isDie) dam*=2;
@@ -1138,7 +1150,7 @@ package fe.unit {
 			else gg.sost=3;
 		}
 		
-		public function bloodDamage(dam:Number, tip:int) {
+		public function bloodDamage(dam:Number, tip:int):void {
 			if (dam<=0) return;
 			dam*=3;
 			if (tip==Unit.D_BLEED || tip==Unit.D_BLADE || tip==Unit.D_BUL || tip==Unit.D_FANG) {
@@ -1158,12 +1170,7 @@ package fe.unit {
 			}
 		}
 		
-		public function manaDamage(dam:Number) {
-			//Mana usage debug
-			//var damOut:Number = Number(dam.toFixed(3));
-			//var message:String = (damOut > 0) ? 'Draining mana (' + damOut + ')' : 'Draining mana (~0.0001)';
-			//trace(message);
-			
+		public function manaDamage(dam:Number):void {
 			if (dam <= 0) return;
 			if (gg.loc.train) return;
 			var sst:int = 4 - Math.ceil(manaHP / inMaxMana * 4);
@@ -1180,7 +1187,7 @@ package fe.unit {
 		}
 		
 		//исцеление 0-самого повреждённого места, 1-голова, 2-корпус, 3-ноги, 4-всё, 5-кровь, 6-мана
-		public function heal(hhp:Number, tip:int) {
+		public function heal(hhp:Number, tip:int):void {
 			var sst:int;
 			if (hhp==0) return;
 			if (tip==0) {
@@ -1218,16 +1225,16 @@ package fe.unit {
 			}
 			if (tip==6) {
 				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.boundingBox.halfHeight, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
-				var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
+				var sst2:int=4-Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
 				manaSt=4-Math.ceil(manaHP/inMaxMana*4);
-				if (sst!=manaSt) setParameters();
+				if (sst2!=manaSt) setParameters();
 				World.w.gui.setMana();
 			}
 		}
 		
-		public function healAll() {
+		public function healAll():void {
 			headHP=inMaxHP;
 			torsHP=inMaxHP;
 			legsHP=inMaxHP;
@@ -1235,7 +1242,7 @@ package fe.unit {
 			manaHP=inMaxMana;
 		}
 		
-		public function checkHP() {
+		public function checkHP():void {
 			if (headHP>inMaxHP) headHP=inMaxHP;
 			if (torsHP>inMaxHP) torsHP=inMaxHP;
 			if (legsHP>inMaxHP) legsHP=inMaxHP;
@@ -1243,7 +1250,7 @@ package fe.unit {
 			if (manaHP>inMaxMana) manaHP=inMaxMana;
 		}
 		
-		private function traumaParameters() {
+		private function traumaParameters():void {
 			if (headSt>0) setSkillParam(xml_head, Math.min(headSt,3));
 			if (torsSt>0) setSkillParam(xml_tors, Math.min(torsSt,3));
 			if (legsSt>0) setSkillParam(xml_legs, Math.min(legsSt,3));
@@ -1256,7 +1263,7 @@ package fe.unit {
 			}
 		}
 
-		public function armorParameters(arm:Armor) {
+		public function armorParameters(arm:Armor):void {
 			if (arm.dexter!=0) {
 				setBegFactor('dexter',gg.dexter);
 				gg.dexter+=arm.dexter;
@@ -1306,7 +1313,7 @@ package fe.unit {
 		}
 		
 		//вычислить и установить штрафы на перегрузку
-		public function invMassParam() {
+		public function invMassParam():void {
 			var inv:Invent=World.w.invent;
 			maxSpeed=100;
 			accelMult=1;
@@ -1359,14 +1366,14 @@ package fe.unit {
 		//инструменты и артефакты
 		//восст. хп
 		
-		public function setParameters() {
+		public function setParameters():void {
 			//запомнить процент ХП
-			var procHP=gg.hp/gg.maxhp;
-			var procHead=headHP/inMaxHP;
-			var procTors=torsHP/inMaxHP;
-			var procLegs=legsHP/inMaxHP;
-			var procBlood=bloodHP/inMaxHP;
-			var procMana=manaHP/inMaxMana;
+			var procHP:Number		= gg.hp		/ gg.maxhp;
+			var procHead:Number		= headHP	/ inMaxHP;
+			var procTors:Number		= torsHP	/ inMaxHP;
+			var procLegs:Number		= legsHP	/ inMaxHP;
+			var procBlood:Number	= bloodHP	/ inMaxHP;
+			var procMana:Number		= manaHP	/ inMaxMana;
 			//параметры по умолчанию
 			defaultParams();
 
@@ -1459,7 +1466,7 @@ package fe.unit {
 			invMassParam();
 		}
 		
-		public function setInvParameters(inv:Invent) {
+		public function setInvParameters(inv:Invent):void {
 			if (inv==null) return;
 			
 			for each (var w in LootGen.arr['pers']) {
@@ -1477,10 +1484,8 @@ package fe.unit {
 			}
 		}
 		//определить уровень требуемого скилла		
-		public function getLockTip(lockTip:int):int
-		{
-			switch (lockTip)
-			{
+		public function getLockTip(lockTip:int):int {
+			switch (lockTip) {
 				case 1:
 					if (possLockPick>0) return lockPick;
 					else return -100;
@@ -1511,7 +1516,7 @@ package fe.unit {
 			else return 100;
 		}
 		
-		public function setRoboowl() {
+		public function setRoboowl():void {
 			owlhp=0;
 			owlhpProc=1;
 			if (gg.pets['owl']) {
@@ -1524,13 +1529,12 @@ package fe.unit {
 		//определить необходимое для действия время
 		public function getLockPickTime(lock:int, lockTip:int):int
 		{
-			var pick = getLockTip(lockTip);
+			var pick:int = getLockTip(lockTip);
 			if (lock < pick) return lockPickTime * 0.6;
 			return lockPickTime;
 		}
 		
-		public function repTex():String
-		{
+		public function repTex():String {
 			if (rep>=repGood) return Res.pipText('reputmax');
 			if (rep>=rep4) return Res.pipText('reput4');
 			if (rep>=rep3) return Res.pipText('reput3');

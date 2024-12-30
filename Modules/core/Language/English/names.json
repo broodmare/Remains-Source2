@@ -1,0 +1,204 @@
+{
+  "name": [
+    {
+      "id": "raider",
+      "names": [
+        "Pooptooth", "Fixer", "Chef", "Killjoy", "Artist", "Butcher", "Dolt", "Creep", "Immortan Joe",
+        "Garl Death-Hoof", "Papa Khan", "Cook-Cook", "Lag-Bolt", "Wirt", "Lug-Nut", "One-eyed", "Brick",
+        "Rooster", "Blain"
+      ]
+    },
+    {
+      "id": "raider_f",
+      "names": [
+        "Fury", "Jaw", "Two shakes", "Spear", "Crunch", "Strike", "Alya", "Daddy", "Needle",
+        "Big Balls", "Beast", "Fiend", "Jinx", "Junkie", "Freaky", "Sledgehammer", "Grabby", "Stray cat",
+        "Mincer"
+      ]
+    },
+    {
+      "id": "slaver",
+      "names": [
+        "One-Eared", "Hammer", "Burdock", "Cager", "Sawed-Off", "Cracker", "Eulogy", "Forty", "Grouse",
+        "Hunter Wirt", "Winter Rain", "Sharp Claw", "Foal Lover", "Champion", "Hard Hoof", "Angel Eyes",
+        "Lecturer", "Brain", "Lead", "Silent Bob", "Dumpling", "Carbine"
+      ]
+    },
+    {
+      "id": "slaver_f",
+      "names": [
+        "Cutie", "Natal", "Sister", "Cutter", "Mistress", "Riven Glass", "Psycho", "Midnight Crow",
+        "Sly Tail", "Berserker", "Goody", "Trapped Hoof", "Lame", "Hangpony", "Executor", "Dumbbell",
+        "Steel butterfly", "Contra", "Orgasm", "Grave"
+      ]
+    },
+    {
+      "id": "zebra",
+      "names": [
+        "Mchezaji", "Tesserarius Mtumishi", "Kiongozi", "Signifer Shujah", "Blessed", "Blood Guard", 
+        "Reborn", "Immunis Msafiri", "Kushindva", "Collector", "Vexillarius Mnyama", "Msaidizi", 
+        "Messenger", "Ka'rta Tor", "Gra'tua Cuun"
+      ]
+    },
+    {
+      "id": "zebra_f",
+      "names": [
+        "Decurion Mvokozi", "Draconarius Mtumva", "Kir'am", "Initiate", "Shadow Star", "Vindicator",
+        "Silence", "Binti", "Sentinel", "Evocatus Mvunadji", "Seer", "Dha Werda", "Mpangadji",
+        "Hasira", "Triarius Ushindi"
+      ]
+    },
+    {
+      "id": "merc",
+      "names": [
+        "Jack Sparrow", "Captain Jack Sparrow", "Gambler", "Scar", "Elusive Joe", "Reginald", 
+        "Lucky", "Gaffer", "Duke", "Chris Sharpbeak", "Kyle Snapper", "Widowmaker", "Ugly Tuco",
+        "Richard Buckbeak", "Blabberbeak"
+      ]
+    },
+    {
+      "id": "merc_f",
+      "names": [
+        "Huntress", "Mommy", "Whistle", "Black Betty", "Bull`s Eye", "Vanessa Grimfeathers",
+        "Regiment Girl", "Glutton", "Mousy", "Rachel Clearsight", "Machine Gun", "Jitters", 
+        "Klepto", "Grasshopper", "Prankster Carol"
+      ]
+    },
+    {
+      "id": "ranger",
+      "names": [
+        "Steel Forehead", "Cold Stream", "Blazing Light", "Riven Emerald", "Ranger Wirt",
+        "Draw of Fate", "Old Grump", "Chaplain", "Blondie", "Outcast Renderer", "Crimson Hoof",
+        "Silver Skull", "Blood Raven", "Lamenter", "Rainbow Warrior", "Red Commissar", 
+        "Steel Flank", "Silver Rose Knight", "Adamant", "Orthodox", "Stonewall High",
+        "Sir Copperhead", "Leonhart"
+      ]
+    },
+    {
+      "id": "encl",
+      "names": [
+        "Lieutenant Summer Leaf", "Lightning Strike", "Immolate", "Sergeant Thunder",
+        "Major Suffer", "Instructor Harsh Lesson", "Crimson Flight", "Aide-de-camp Fair Play",
+        "Rainbow Blaze", "Red Baron", "Morning Breeze", "Sunstrider", "Windrunner",
+        "Veteran Swift Dash", "Hero of Enclave", "Captain Brig", "Hawkeye", "Hypersonic"
+      ]
+    },
+    {
+      "id": "alicorn",
+      "names": [
+        "Nightbringer", "Shadowsun", "Daybreaker", "Winged Shadow", "Dalliah the Doomsayer",
+        "Mother of Darkness", "Night`s Chill", "Starchild", "Conqueress", "Painbringer",
+        "Angel of Death", "The Whisper in Darkness", "Cold Dawn", "Willbreaker", "Mistress",
+        "Keeper of Secrets", "Erynia", "Lady of Twilight", "Death from Above", "Black Flame"
+      ]
+    },
+    {
+      "id": "hellhound",
+      "names": [
+        "Fluffykins", "Wild Grabber", "War Hound", "Grimbark", "Ravager", "Death Fang",
+        "Elder", "Beater", "Greyhound", "Good Boy", "Family Guard", "Little Claw", "Balto", 
+        "Air Bud"
+      ]
+    },
+    {
+      "id": "zombie",
+      "names": [
+        "Lemongrass", "Gourd", "Tuff Root", "Lord of the Flies", "Plaguebearer", 
+        "SCP-049-2", "Cursed Soul", "Patchwerk", "Thornbush", "Flesh Golem", "Walker",
+        "Warm Stone", "The Ghoul", "Penitent", "Helios", "King of the Dump", "Oozing",
+        "Radio-active", "Great Unclean One"
+      ]
+    },
+    {
+      "id": "zombie_f",
+      "names": [
+        "Soft Stone", "White Rose", "Carrion", "Tree Hugger", "Curse of Hardwood", 
+        "Patient Zero", "Lady of Decay", "Dry Weed", "Fear", "Rotten", "Terror",
+        "Living Picture", "Shadow Around the Corner", "Weeping Angel", "Grieving",
+        "Scourge", "Plague Carcass", "Old Witch", "Restless"
+      ]
+    },
+    {
+      "id": "bloat",
+      "names": [
+        "Buzz", "Little One", "Big D", "Hornet", "Cricket", "Lesser Devourer", "Fly Lord", 
+        "Meat Eater", "Suckerfly", "Bandit", "Baloon", "Rocket", "Flying Bastard", "Bombardier", 
+        "Queen of the Swarm", "Parasitic Entity", "Stinger", "Fruit Fly"
+      ]
+    },
+    {
+      "id": "bloodwing",
+      "names": [
+        "Bloodletter", "Zubat", "Golbat", "Crobat", "Rhamphorhynchus", "Wyvern",
+        "Zebrian free-tailed bat", "Stranglehold", "Bloodthirster", "Gargoyle", 
+        "Very Bold Birdy", "Dr. Acula", "Big Pedro", "Coagulator", "Razor", "Critter"
+      ]
+    },
+    {
+      "id": "fish",
+      "names": [
+        "Lord of the Depths", "Nemo", "Oscar", "Shaggy", "Torpedo", "Swordfish",
+        "Veteran", "Slick", "Jaws", "Flounder", "Saw", "Typhoon 941", "Ax", 
+        "Puffer", "Anglerfish", "Terror from the Deep"
+      ]
+    },
+    {
+      "id": "rat",
+      "names": [
+        "Putrid", "Rattata", "Mutant", "SCP-731-2", "Bone Eater", "Jerry",
+        "Star Swirl the Bearded", "Fat Sam", "Predator", "Rat King", 
+        "I am just a mouse, keep walking", "Experiment Gone Wrong", "Suicide Mickey",
+        "Brain", "Scabbers", "Hunger for Cheese", "Gnawing in the Dark"
+      ]
+    },
+    {
+      "id": "scorp",
+      "names": [
+        "Klaus", "Digger", "Old One Eye", "Cracker", "Juggernaut", "Patriarch",
+        "Earthshaker", "Mac Gargan", "Spider-Slayer", "Tank", "Slaughterer",
+        "Wall Breaker", "Kunai"
+      ]
+    },
+    {
+      "id": "ant",
+      "names": [
+        "Antz", "Flik", "Kingpin", "Ram", "Bulldog", "Mandibulas",
+        "Terrible Pony Eater", "Dismemberer", "Little Evil", "Screech", 
+        "Rockbreaker"
+      ]
+    },
+    {
+      "id": "robot",
+      "names": [
+        "Bending Rodriguez", "HK-74", "T-3", "\"Prime\" Prototype", "\"No Fate\"",
+        "Centuria", "C3E3", "Test Unit A-15", "\"Raptor\"", "NS-5", 
+        "Nestor-10", "Damaged Prototype", "Broken toaster", "Eraser", 
+        "Assault Unit R-7", "Calculon", "Optimus", "Megatron", "Calculator", "100111010011"
+      ]
+    },
+    {
+      "id": "gutsy",
+      "names": [
+        "Captain Equestria", "Private Joker", "Fortunate Son", "Colonel Bill",
+        "Phil, the Equestrian Hero", "Sergeant Hartman", "Johnny Rico", 
+        "Rookie", "Jay Marbo", "Lieutenant Dan", "Lance-Corporal Ryan",
+        "Wardaddy Collier"
+      ]
+    },
+    {
+      "id": "eqd",
+      "names": [
+        "Pinkie", "Cupcake", "Siri", "Lemonade", "Ice Cream", "Sponge Cake",
+        "Glitter", "Roach", "Cortana", "SHODAN", "Wi-Fu", "XJ-9"
+      ]
+    },
+    {
+      "id": "sentinel",
+      "names": [
+        "Emperor", "Anubis", "Tyrant", "Treader", "Warlord", "Overlord",
+        "Bastion", "Doomguard", "Dominus Pattern Knight", "Purifier", 
+        "Decimator", "Indomitus", "Ferrum Infernus", "Despoiler", "Galahad"
+      ]
+    }
+  ]
+}

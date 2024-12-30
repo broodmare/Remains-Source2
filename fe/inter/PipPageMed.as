@@ -20,19 +20,19 @@ package fe.inter {
 	*/
 	public class PipPageMed extends PipPage {
 
-		var pers:Pers;
-		var infoItemId:String='';
-		var priceHP:Number=0.5;
-		var priceBlood:Number=0.5;
-		var priceRad:Number=1;
-		var priceOrgan:Number=0.5;
-		var priceCut:Number=4;
-		var pricePoison:Number=4;
-		var priceMana:Number=1;
-		var raz:int=200;
-		var razMana:int=100;
+		private var pers:Pers;
+		private var infoItemId:String='';
+		private var priceHP:Number=0.5;
+		private var priceBlood:Number=0.5;
+		private var priceRad:Number=1;
+		private var priceOrgan:Number=0.5;
+		private var priceCut:Number=4;
+		private var pricePoison:Number=4;
+		private var priceMana:Number=1;
+		private var raz:int=200;
+		private var razMana:int=100;
 		
-		var plata:Item;
+		private var plata:Item;
 
 		// Constructor
 		public function PipPageMed(npip:PipBuck, npp:String) {

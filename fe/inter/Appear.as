@@ -14,8 +14,8 @@ package fe.inter {
 	import fe.*;
 	
 	//Настройки внешнего вида персонажа
-	public class Appear
-	{
+	public class Appear {
+
 		public var vis:MovieClip;
 		private var col:Color = new Color;
 		
@@ -55,12 +55,12 @@ package fe.inter {
 		private var def:Object;
 		public var loadObj:Object;
 		
-		
 		public var saved:Object;
 
+		// Constructor
 		public function Appear() {
-			vis=new dialVid();
-			for each(var l in clist) this['t'+l]=this['c'+l];
+			vis=new dialVid();	// .SWF Dependency
+			for each(var l:String in clist) this['t'+l]=this['c'+l];
 			def=save();
 			setColors();
 			setTransforms();
@@ -70,14 +70,14 @@ package fe.inter {
 		//надписи
 		public function setLang():void {
 			vis.butOk.text.text='OK';
-			vis.butCancel.text.text=Res.guiText('cancel');
+			vis.butCancel.text.text=Res.txt("g", 'cancel');
 			vis.butDef.text.text=Res.pipText('default');
-			vis.title.text=Res.guiText('butvid');
-			vis.tFur.text=Res.guiText('vidfur');
-			vis.tHair.text=Res.guiText('vidhair');
-			vis.tHair1.text=Res.guiText('vidhair1');
-			vis.tEye.text=Res.guiText('videye');
-			vis.tMagic.text=Res.guiText('vidmagic');
+			vis.title.text=Res.txt("g", 'butvid');
+			vis.tFur.text=Res.txt("g", 'vidfur');
+			vis.tHair.text=Res.txt("g", 'vidhair');
+			vis.tHair1.text=Res.txt("g", 'vidhair1');
+			vis.tEye.text=Res.txt("g", 'videye');
+			vis.tMagic.text=Res.txt("g", 'vidmagic');
 		}
 		
 		//присоединить диалоговое окно
@@ -92,6 +92,7 @@ package fe.inter {
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
+
 		//отсоединить диалоговое окно
 		public function detach():void {
 			if (vis.parent) vis.parent.removeChild(vis);
@@ -108,10 +109,12 @@ package fe.inter {
 			vis.butOk.addEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.addEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.addEventListener(MouseEvent.CLICK, buttonDef);
-			for each(var l in clist) {
-				vis['color'+l].addEventListener(ColorPickerEvent.CHANGE, changeHandler);
-				vis['color'+l].addEventListener(Event.OPEN, openHandler);
+			
+			for each(var l:String in clist) {
+				vis['color' + l].addEventListener(ColorPickerEvent.CHANGE, changeHandler);
+				vis['color' + l].addEventListener(Event.OPEN, openHandler);
 			}
+			
 			vis.slRed.addEventListener(SliderEvent.THUMB_DRAG, chColor);
 			vis.slGreen.addEventListener(SliderEvent.THUMB_DRAG, chColor);
 			vis.slBlue.addEventListener(SliderEvent.THUMB_DRAG, chColor);
@@ -121,15 +124,19 @@ package fe.inter {
 			vis.b1Hair.addEventListener(MouseEvent.CLICK, chBut);
 			vis.b2Hair.addEventListener(MouseEvent.CLICK, chBut);
 		}
+		
 		public function funcOff():void {
 			if (!vis.butOk.hasEventListener(MouseEvent.CLICK)) return;
+			
 			vis.butOk.removeEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.removeEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.removeEventListener(MouseEvent.CLICK, buttonDef);
-			for each(var l in clist) {
-				vis['color'+l].removeEventListener(ColorPickerEvent.CHANGE, changeHandler);
-				vis['color'+l].removeEventListener(Event.OPEN, openHandler);
+			
+			for each(var l:String in clist) {
+				vis['color' + l].removeEventListener(ColorPickerEvent.CHANGE, changeHandler);
+				vis['color' + l].removeEventListener(Event.OPEN, openHandler);
 			}
+			
 			vis.slRed.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
 			vis.slGreen.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
 			vis.slBlue.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
@@ -167,7 +174,7 @@ package fe.inter {
 		
 		//установить все колорпикеры в соответствие с цветами
 		private function setColors():void {
-			for each(var l in clist) {
+			for each(var l:String in clist) {
 				vis['color'+l].selectedColor=this['c'+l];
 			}
 			vis.checkHair1.selected=visHair1;
@@ -175,7 +182,7 @@ package fe.inter {
 
 		//преобразовать все цвета в трансформы
 		public function setTransforms():void {
-			for each(var l in clist) {
+			for each(var l:String in clist) {
 				colorToTransform(this['c'+l],Appear['tr'+l]);
 			}
 		}
@@ -185,9 +192,9 @@ package fe.inter {
 			if (saved!=null) {
 				load(saved);
 			}
-			var obj:Object=new Object;
-			for each(var l in clist) {
-				obj['c'+l]=this['c'+l];
+			var obj:Object = new Object;
+			for each(var l:String in clist) {
+				obj['c' + l] = this['c' + l];
 			}
 			obj.visHair1=visHair1;
 			obj.fEye=fEye;
@@ -201,18 +208,19 @@ package fe.inter {
 		}
 		
 		public function load(obj:Object):void {
-			if (obj==null) {
-				for each(var l in clist) this['c'+l]=this['t'+l];
-				visHair1=false;
-				fEye=1;
-				fHair=1;
+			if (obj == null) {
+				for each(var l:String in clist) this['c' + l] = this['t' + l];
+					visHair1 = false;
+					fEye = 1;
+					fHair = 1;
 			}
 			else {
-				for each(var l in clist) this['c'+l]=obj['c'+l];
-				visHair1=obj.visHair1;
-				fEye=obj.fEye;
-				fHair=obj.fHair;
+				for each(var m:String in clist) this['c' + m] = obj['c' + m];
+					visHair1 = obj.visHair1;
+					fEye = obj.fEye;
+					fHair = obj.fHair;
 			}
+			
 			setTransforms();
 		}
 		
@@ -232,9 +240,9 @@ package fe.inter {
 		
 		//надписи
 		private function setRGB():void {
-			vis.nRed.text='R:'+col.redOffset;
-			vis.nGreen.text='G:'+col.greenOffset;
-			vis.nBlue.text='B:'+col.blueOffset;
+			vis.nRed.text	= 'R:' + col.redOffset;
+			vis.nGreen.text	= 'G:' + col.greenOffset;
+			vis.nBlue.text	= 'B:' + col.blueOffset;
 		}
 		
 		//событие ползунков
@@ -243,23 +251,23 @@ package fe.inter {
 			col.greenOffset=vis.slGreen.value;
 			col.blueOffset=vis.slBlue.value;
 			setRGB();
-			setColor(tek,col.color);
+			setColor(tek, col.color);
 		}
 		
 		//события колорпикеров
 		private function changeHandler(event:ColorPickerEvent):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var myCT:ColorTransform;
-			var nam=myCP.name.substr(5);
-			tek=nam;
+			var nam:String = myCP.name.substr(5);
+			tek = nam;
 			setColor(nam,myCP.selectedColor);
 		}
 
 		private function openHandler(event:Event):void {
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
-			var nam=myCP.name.substr(5);
-			tek=nam;
-			setColor(nam,myCP.selectedColor);
+			var nam:String = myCP.name.substr(5);
+			tek = nam;
+			setColor(nam, myCP.selectedColor);
 		}
 		
 		//вкл/выкл второй цвет
@@ -270,8 +278,8 @@ package fe.inter {
 		}
 		
 		//кнопки выбора вариантов
-		public function chBut(event:MouseEvent) {
-			var nam:String=(event.currentTarget as flash.display.DisplayObject).name;
+		public function chBut(event:MouseEvent):void {
+			var nam:String = (event.currentTarget as flash.display.DisplayObject).name;
 			if (nam=='b1Eye') {
 				fEye--;
 				if (fEye<=0) fEye=maxEye;

@@ -16,7 +16,7 @@ package fe {
             
             // Load the settings file as a JSON object
             var path:String = settingsDirectory + 'Settings.json'
-            var loader = new TextLoader();
+            var loader:TextLoader = new TextLoader();
             settings = loader.syncLoad(path);
 
             // Use the variables from the JSON object to initialize the settings

@@ -1,0 +1,171 @@
+<key id="keyLeft">
+    <n>Left</n>
+  </key>
+  <key id="keyRight">
+    <n>Right</n>
+  </key>
+  <key id="keySit">
+    <n>Down</n>
+  </key>
+  <key id="keyBeUp">
+    <n>Up</n>
+  </key>
+  <key id="keyJump">
+    <n>Jump, levitation</n>
+  </key>
+  <key id="keyRun">
+    <n>Running</n>
+  </key>
+  <key id="keyAttack">
+    <n>Attack</n>
+  </key>
+  <key id="keyPunch">
+    <n>Kick</n>
+  </key>
+  <key id="keyReload">
+    <n>Reload</n>
+  </key>
+  <key id="keyGrenad">
+    <n>Throw explosives</n>
+  </key>
+  <key id="keyMagic">
+    <n>Attacking spell</n>
+  </key>
+  <key id="keyDef">
+    <n>Defensive spell</n>
+  </key>
+  <key id="keyPet" v="0.6">
+    <n>Companion</n>
+  </key>
+  <key id="keyTele">
+    <n>Telekinesis</n>
+  </key>
+  <key id="keyAction">
+    <n>Action</n>
+  </key>
+  <key id="keyCrack">
+    <n>Secondary action</n>
+  </key>
+  <key id="keyPip">
+    <n>PipBuck</n>
+  </key>
+  <key id="keyInvent">
+    <n>Inventory</n>
+  </key>
+  <key id="keyStatus">
+    <n>Status</n>
+  </key>
+  <key id="keySkills">
+    <n>Skills</n>
+  </key>
+  <key id="keyMed">
+    <n>Health condition</n>
+  </key>
+  <key id="keyMap">
+    <n>Map</n>
+  </key>
+  <key id="keyQuest">
+    <n>Quests</n>
+  </key>
+  <key id="keySats">
+    <n>S.A.T.S.</n>
+  </key>
+  <key id="keyItem">
+    <n>Use item</n>
+  </key>
+  <key id="keyPot">
+    <n>Heal</n>
+  </key>
+  <key id="keyMana" v="0.71">
+    <n>Quick magic potion</n>
+  </key>
+  <key id="keyItemNext">
+    <n>Next item</n>
+  </key>
+  <key id="keyItemPrev">
+    <n>Previous item</n>
+  </key>
+  <key id="keyScrDown">
+    <n>Next weapon</n>
+  </key>
+  <key id="keyScrUp">
+    <n>Previous weapon</n>
+  </key>
+  <key id="keyWeapon1">
+    <n>Slot 1</n>
+  </key>
+  <key id="keyWeapon2">
+    <n>Slot 2</n>
+  </key>
+  <key id="keyWeapon3">
+    <n>Slot 3</n>
+  </key>
+  <key id="keyWeapon4">
+    <n>Slot 4</n>
+  </key>
+  <key id="keyWeapon5">
+    <n>Slot 5</n>
+  </key>
+  <key id="keyWeapon6">
+    <n>Slot 6</n>
+  </key>
+  <key id="keyWeapon7">
+    <n>Slot 7</n>
+  </key>
+  <key id="keyWeapon8">
+    <n>Slot 8</n>
+  </key>
+  <key id="keyWeapon9">
+    <n>Slot 9</n>
+  </key>
+  <key id="keyWeapon10">
+    <n>Slot 10</n>
+  </key>
+  <key id="keyWeapon11" v="0.6">
+    <n>Slot 11</n>
+  </key>
+  <key id="keyWeapon12" v="0.6">
+    <n>Slot 12</n>
+  </key>
+  <key id="lmb">
+    <n>lmb</n>
+  </key>
+  <key id="rmb">
+    <n>rmb</n>
+  </key>
+  <key id="mmb">
+    <n>mmb</n>
+  </key>
+  <key id="scrd">
+    <n>scroll down</n>
+  </key>
+  <key id="scru">
+    <n>scroll up</n>
+  </key>
+  <key id="keyLook">
+    <n>Move camera</n>
+  </key>
+  <key id="keyZoom">
+    <n>Zoom</n>
+  </key>
+  <key id="keyFull">
+    <n>Fullscreen mode</n>
+  </key>
+  <key id="keyDash" v="0.8">
+    <n>Dash</n>
+  </key>
+  <key id="keyArmor" v="0.8">
+    <n>Armor ability</n>
+  </key>
+  <key id="keySpell1" v="0.8">
+    <n>Quick spell 1</n>
+  </key>
+  <key id="keySpell2" v="0.8">
+    <n>Quick spell 2</n>
+  </key>
+  <key id="keySpell3" v="0.8">
+    <n>Quick spell 3</n>
+  </key>
+  <key id="keySpell4" v="0.8">
+    <n>Quick spell 4</n>
+  </key>

@@ -1,0 +1,439 @@
+<gui id="newgame">
+    <n>New game</n>
+  </gui>
+  <gui id="contgame">
+    <n>Continue</n>
+  </gui>
+  <gui id="loadgame">
+    <n>Load game</n>
+  </gui>
+  <gui id="select_slot" v="0.6">
+    <n>Choose a slot for auto-saving</n>
+  </gui>
+  <gui id="options">
+    <n>Options</n>
+  </gui>
+  <gui id="about" v="0.6">
+    <n>Credits</n>
+    <info>[Empalu] - concept, programming, graphics.
+[DipFanken] - graphics, locations design.
+[Mihasik] - English localization.
+[Apple_Snack], [GreyGazer], [Shadow_Of_History] - participation in development.
+The game is based on the "Fallout: Equestria" story by [kkat].
+This game is a non-commercial project and is distributed free of charge.</info>
+  </gui>
+  <gui id="usedmusic" v="0.8">
+    <n>Music:</n>
+    <info>Kai Engel — Embracing The Sunrise, Sunset, Without Redemption;
+Gothic Storm — You are not alone;
+Ars Sonor — Runsten;
+Parvus Decree — Latter Days, A Quiet Place;
+Andrea Parker — After Dark;
+Sergey Cheremisinov — Morning City, Lucerna, Destroyer (changed);
+Matt Harris — Strange Stuff;
+Aphex Twin — Come To Daddy;
+Jingle Punks — Back of the Room Hang, Flying Free;
+CoreX — Dark Ambient Demo Project;
+Evgeny Bardyuzha — Dynamic;
+Ilya Marfin — Now or never;
+Dmitriy Diomores — Ghost City;
+Atrium Carceri — Heart Of The Metropolis;
+Keosz — Unite;
+Shane Ivers — Gladiatores et Circenses;
+Scott Buckley — Ascension Red;
+Darren curtis — Danger around the corner;
+Alexandr Zhelanov — Metal Echos;
+Keys of Moon — Courage and willpower (fragment);
+Juhani Junkala — Epic Boss Battle;
+Music CC-BY License: https://creativecommons.org/licenses/by-nc/4.0/legalcode</info>
+  </gui>
+  <gui id='inform' v='0.81'>
+    <n>Useful information and links:</n>
+    <info>
+      <a href='http://foe.ucoz.org/main.html'>Game website</a>
+      <a href='http://foe.ucoz.org/remains.html'>The latest version of the game</a>
+      <a href='https://fallout-equestria-remains.fandom.com/ru/wiki/Fallout_Equestria:_Remains_%D0%B2%D0%B8%D0%BA%D0%B8'>Game Wiki in Russian</a>
+      <a href='https://fallout-equestria-remains.fandom.com/wiki/Fallout_Equestria:_Remains_Wiki'>Game Wiki in English</a>
+      <a href='https://discord.gg/qWYAbsp'>Discord Server</a>
+      <a href='https://www.deviantart.com/empalu'>Author DeviantArt page</a>
+    </info>
+  </gui>
+  <gui id="version">
+    <n>Version</n>
+  </gui>
+  <gui id="cancel">
+    <n>Cancel</n>
+  </gui>
+  <gui id="inputname">
+    <n>Enter your character`s name</n>
+  </gui>
+  <gui id="loadwarn">
+    <n>Attention! Autosave slot will be overwritten</n>
+  </gui>
+  <gui id="setkeyinfo">
+    <n>Press a key or a mouse button to assign an action. Press TAB or ESC to cancel. Press DEL to clear</n>
+  </gui>
+  <gui id="dif0" v="0.6">
+    <n>Very easy</n>
+    <info>In a very easy mode you don`t have much to worry about.
+You start playing, having 200 health points, +25 per level.
+Enemies` health is decreased by 60%.
+Your character almost never receives traumas.
+Returning to checkpoint doesn`t cause additional penalties.
+Enemies can`t hear very well</info>
+  </gui>
+  <gui id="dif1" v="0.6">
+    <n>Easy</n>
+    <info>Easy mode is intended for beginners.
+You start playing, having 150 health points, +25 per level.
+Enemies` health is decreased by 30%.
+Telekinesis and self-levitation don`t consume magical power.
+Your character receives twice fewer traumas.
+Returning to checkpoint doesn`t cause additional penalties.
+Enemies can`t hear very well</info>
+  </gui>
+  <gui id="dif2" v="0.6">
+    <n>Normal</n>
+    <info>Normal difficulty is intended for more experienced players.
+You start playing with 100 health points, +20 per level.
+Your character receives additional traumas if faints and is returned to the checkpoint.
+The difficulty is more or less balanced</info>
+  </gui>
+  <gui id="dif3" v="0.6">
+    <n>Hard</n>
+    <info>On high difficulty you have to act very carefully to survive.
+You start playing with 70 health points, +15 per level.
+Your character gets even more traumas when faints and is returned to the checkpoint.
+Doctor`s care costs more. Bleeding and poisoning last twice longer.
+Teleportation to the base camp from checkpoints is not available.
+Enemies are generally stronger</info>
+  </gui>
+  <gui id="dif4" v="0.6">
+    <n>Super-hard</n>
+    <info>Super-hard mode is designed for fans of the toughest hardcore.
+You start the game with 40 health points, +10 per level.
+The character will get serious injuries if loses consciousness and is returned to the control point.
+You will find much fewer caps and bits in containers.
+Enemies are even stronger</info>
+  </gui>
+  <gui id="hardopt" v="0.8">
+    <n>Difficulty options</n>
+  </gui>
+  <gui id="opt1" v="0.7">
+    <n>Skip training</n>
+    <info>You will immediately find yourself in the base camp, the training location will be unavailable
+Do not choose this option if you play the version 0.7 for the first time and do not wish to miss some important points in the story!</info>
+  </gui>
+  <gui id="opt2" v="0.6">
+    <n>We live once</n>
+    <info>Restoration at checkpoints and returning to the base after receiving dangerous injuries will be disabled.
+The death of the character is final.
+The game is stored in a single selected slot</info>
+  </gui>
+  <gui id="opt3" v="0.6">
+    <n>Faster level ups</n>
+    <info>Level up requires 40% less experience points</info>
+  </gui>
+  <gui id="opt4" v="0.6">
+    <n>Random skills</n>
+    <info>On level up, skills and perks will be selected randomly.
+Test your survival abilities with what is brought to you by chance</info>
+  </gui>
+  <gui id="opt5" v="0.7">
+    <n>Slow learner</n>
+    <info>You will only receive 3 skill points per level instead of 5 points.
+Increasing all skill levels to the maximum will be much more difficult.
+You will have to choose more carefully which skills you need in the first place</info>
+  </gui>
+  <gui id="opt6" v="0.81">
+    <n>Limited inventory</n>
+    <info>In the limited inventory mode most items have weight.
+You will be able to carry and use a limited number of items and weapons.
+This mode is recommended only for experienced players who are playing not the first time</info>
+  </gui>
+  <gui id="butvid" v="0.6">
+    <n>Customize appearance</n>
+  </gui>
+  <gui id="vidfur" v="0.6">
+    <n>Hide color</n>
+  </gui>
+  <gui id="vidhair" v="0.6">
+    <n>Primary mane color</n>
+  </gui>
+  <gui id="vidhair1" v="0.6">
+    <n>Secondary mane color</n>
+  </gui>
+  <gui id="videye" v="0.6">
+    <n>Eyes color and shape</n>
+  </gui>
+  <gui id="vidmagic" v="0.6">
+    <n>Magical aura color</n>
+  </gui>
+  <gui id="story" v="0.7">
+    <n>Once upon a time, in the magical land of Equestria...
+... there came an era when the ideals of friendship gave way to envy, selfishness, greed and cruelty. The Great War for natural resources broke out, in which there were no winners. A magical spark struck by pony hooves quickly raged out of control and turned into flames that engulfed whole continents. Dragon fire and black magic, turned into destructive weapons, almost ended all life on the planet. Soil, water and air became poisoned from radiation, cities were destroyed, civilizations collapsed. Both ponies and their enemies were almost wiped off the face of the earth. Apocalypse, predicted by insane prophets, whom almost no one believed until the last day, finally has come...
+... But it was not the end yet. Many ponies survived, some - hiding in the huge underground shelters-stables, others - somehow adapting to new conditions. Apocalypse was just a prologue for another bloody chapter of pony history. On the scorched and poisoned Wasteland, violence and cruelty became not just permissible - now they were means of survival...
+... Since that day, the last day of the former Equestria, about two hundred years have passed...</n>
+  </gui>
+  <gui id="end_good" v="0.8">
+    <n>The defeat of the Enclave forces near Stable Pi and the loss of one of the Thunderheads came as a shock to the Pegasus community. Trying to save the situation and restore its reputation, the Enclave conducted several new attacks on the surface, but none of them succeeded. The combined forces of the new union successfully fended the Enclave forces off in every battle, achieving successes that would not be possible for the scattered settlements they were before. Finally, along with the information spreading among civilians about the surface pony civilization, this led to complete discrediting of the Grand Pegasus Enclave leadership. The unrest that began in society grew into an open revolt and an attempt to overthrow the current government. The civil war between the generals guilty of war crimes and the rest of the society and army was swift and bloody, and the surviving outcasts were forced to flee to the surface. Dwelling in several previously abandoned bases and camps, they no longer pose mortal danger neither to pegasi nor to surface inhabitants, becoming just one of the Wasteland threats awaiting eradication.
+Despite the terrible damage and heavy losses, inhabitants of Stable Pi were able to survive and adapt to a new world. It became possible mostly due to the help and protection from Prancing Pony residents and the SteelHooves rangers. The Stable residents paid their debt with technology and rare resources. Medical equipment and supplies, food reserves, pre-war plant seeds helped Prancing Pony and Covertsign residents to enter a new age of growth and development. Soon, the so-called "aid exchange" grew into close cooperation and trade, which turned these settlements into islands of prosperity in the harsh emptiness of the Wasteland.
+When the war ended, Covertsign zebras were finally able to experience the feeling they have been missing for many years - security. Led by Askari and with Velvet Remedy`s help settlers overcame hunger, disease and poverty. And though the Equestrian Wasteland still threatens them with raiders, slavers and dangerous predators, the Legion exiles were no longer afraid of the all-seeing eye of their vengeful brethren. Destruction of the regional headquarters and defeat in the war against SteelHooves ruined Caesar`s ambitious plans of conquering these lands, and the Chosen by Fate was forced to turn his gaze to places less difficult to conquer. The removal of the Legion and Enclave threats meant that the time of peace for Covertsign has finally come.
+The Prancing Pony Camp has been the largest peaceful settlement in these lands even before @lp was sent to the surface. Now, with new allies and technologies, it began looking like a real city, similar to the pre-war villages in a number of settlers. Many ponies headed here searching for a peaceful life, and even some natives of Stable and Covertsign moved to live in a growing camp. Calamity, who became the main negotiator in affairs between the allied settlements, also made considerable efforts for the prosperity of his home. The inhabitants of the Prancing Pony could sleep peacefully, knowing that they were guarded not only by guns of patrols, but also by their close friendship with the Steel Rangers. Covertsign zebras, natural-born scouts, always warned them ahead about possible threats, and scientists and technicians from Stable Pi provided the Prancing Pony with the latest automatic turret system. And as the camp received support from the allies, it always helped them in return.
+After eliminating the Enclave threat, SteelHooves devoted himself to the protection and security of his new allies. In return, SteelHooves rangers received regular supply shipments from the “Prancing Pony", and the brotherhood archives became filled with secrets of the Stable Pi scientists. Needed so badly after a long and exhausting war, new recruits joined the ranks, many of which previously fought side by side with knights in the war against Enclave. And though these lands were still full of dangers, hope began warming the heart of the old pony. The hope that the Wasteland era will not be the final chapter of pony history, and that sprouts of the new society will manage to grow into something like the old Equestria was.
+Even though he always had much to do in other places, the Watcher never forgot about a new corner of peace in the Wasteland. Not only because he considered himself obligated to preserve it, but also because here he hoped to find ponies suitable for his mysterious purpose. But he always paid special attention to the one which, after a while, he began calling his friend. The Watcher and @lp have helped each other many times, both during the war with the Enclave and after it.
+And though @lp might never admit this, and perhaps she has`t even thought about it, it was her who became the catalyst for all those events that happened to others. Not only through the fulfillment of the Mentor`s mission and not only by its influence on the political situation in the region. Like a shooting star, she went through the lives of many ponies, changing them and bringing them into motion. If not for the desire to help her home in return to all her previous support, the inhabitants of the "Prancing Pony" would never have given so much effort in restoring Stable Pi. If not for her example of reckless courage, Covertsign zebras would never have found the strength to stop living underground. Had it not been for the hope, raised by her determination to confront all the horrors and depravities of the Wasteland, SteelHooves would not have seized on a ghostly chance to recover Equestria`s past.
+However, @lp herself did not feel any pride in her actions. In an effort to help her friends and atone for guilt, however real or imaginary, for all the bloodshed that happened with her participation, she tirelessly fought the Enclave, and after the victory she began fighting lesser threats. Perhaps @lp thought it was a thing she could do the best. Perhaps she was simply uncomfortable living a peaceful life. However, it was clear that @lp learned many of the Wasteland lessons. And the first of them was that one should never forget what distinguishes ponies from monsters.
+Compassion.</n>
+  </gui>
+  <gui id="end_norm" v="0.8">
+    <n>The combined forces of the Prancing Pony, the SteelHooves Rangers, and Covertsign zebras were able to defend Stable Pi by defeating the common enemy. @lp may have contributed the most to the destruction of the pegasus air citadel. However, this alliance was not destined to survive for long: the greatly weakened yet still mortally dangerous, Enclave recognized new enemies and launched military operations against them. Without a unifying core capable of maintaining nascent confidence in each other, the inhabitants of the united settlements preferred to concentrate their forces for defending themselves, and this ultimately worked in enemy`s favor. After such a terrible defeat from the surface savages, the Enclave lost trust and authority in the eyes of the civilian population and needed good news. The good news came from a series of victories over the SteelHooves Rangers, who were forced to defend themselves both from the pegasi and the remnants of Coldsight`s forces at the same time. Lacking support from outside, SteelHooves dispersed his forces to retain territory, and the destruction of their part by quick and merciless raids became an occasion that allowed the Enclave to boast its victory and maintain its position at the helm of the Pegasus society, fighting a protracted war against the surface, still merciless, but no longer so large-scale and costly for the tired and embittered society.
+As the war continued, the inhabitants of Stable Pi were abandoned by their recent allies, who were more worried about their own survival. Only their former comrades, the "Chosen Ones" Velvet Remedy and @lp, stayed to help, but their strength was not enough. After restoring a semblance of a former life, the new Stable leadership decided to shut their doors once again. But this time they will be ready to attack first anyone who dares to endanger their way of life. And Stable Pi ponies will never allow themselves trusting the Wasteland savages again.
+Covertsign was perhaps the luckiest of all: their small settlement was hard to spot, and their former allies, the "Prancing Pony" camp and SteelHooves Rangers, were the goals of much higher priority for the Enclave. Using their long-practiced skills of hidden existence, they successfully avoided the unnecessary attention of the enemy. However, their life certainly did not get better, despite all the efforts that Velvet made to save the zebras.
+A constant threat from the sky forced the “Prancing Pony” camp to live in a state of siege. Its inhabitants never part with weapons, defense systems are maintained in perfect condition, and healthy sleep has been forgotten as a luxury of old times. To make things harder, the pegasi used tactics of starving the inhabitants out, with small hunting groups searching and destroying everypony trying to get food and ammunition for the camp using the old-fashioned method of expeditions to the pre-war ruins. Nevertheless, the resilience and resourcefulness of the camp residents allowed them to keep the Enclave threat out, and Calamity, who became the defense leader, constantly made attempts to counterattack the enemy.
+After losing a significant portion of his forces first in the battle for Stable Pi and then during the Enclave raids, SteelHooves was forced to order the give up most of the territory controlled by his rangers, focusing on defending key objects located in the vicinity of each other. It gave his enemies a break, and the remaining Coldsight forces seized the opportunity. Reorganized under the leadership of the new commander, Sacred Flame, they went on a large-scale offensive. From that moment on, SteelHooves had to forget about defeating them, returning to a grueling positional war.
+Despite all the efforts, the Watcher made to preserve the union of settlements, it suffered one defeat after another. When it became apparent that the nascent sprout of trust and mutual assistance had finally perished, he focused his efforts on helping other ponies, unknown here, and forces in other parts of Equestria. However, he did not forget about the two Stable Pi dwellers, whom he had noticed earlier. Both @lp and Velvet Remedy stay in touch with the Watcher, whom he helps cope with ordeals of the Wasteland, torn by brutal and meaningless wars.
+@lp did everything she could, trying to help the settlements fight the Enclave. Having made an invaluable contribution to the defense of each of her allies, she often fearlessly threw herself on the front line. However, the collapse of such a bright but short-lived union fell heavily on her heart. The hope that, as Calamity predicted, her example would form the basis of friendship between the settlements, had died, as well as the hope of saving ponies from many deaths in the war against the pegasi. Under a burden of realization of her being powerless to stop the massacre that began through her fault and to help her home, the soul of @lp gradually plunged into depression and despair. However, she is not so easy to break. Full of grim determination and bitterness, @lp continues fighting enemies, be it a pegasus, a slaver or a ranger. And nopony, even herself, can say why: in the name of redemption or in order to quench the flames growing inside her, flames of anger for this cruel, unjust and hopeless world.</n>
+  </gui>
+  <gui id="end_bad" v="0.8">
+    <n>Despite her unwavering courage and the power of the armor created by Stable Pi scientists, @lp fell in an unequal battle against the Enclave soldiers. Her death in the battle for Stable Pi determined the outcome of the entire war. Without her help in battle with Thunderhead, the allies did not have enough strength to take over the air citadel, and they all were destroyed by the overwhelming firepower of the pegasi.
+But this meant more than just losing Stable Pi. The retaliatory operation "Nemisis" provoked by the destruction of the research facility went ravaging through the surface of the Wasteland, destroying all noticeable islands of a newly emerging civilization. The "Prancing Pony" was turned to ashes, bases and fortresses of SteelHooves rangers after fierce but short-lived resistance fell one after another. All other major settlements within several hundred miles around also suffered from the ruthless anger of the Grand Pegasus Enclave, and their inhabitants died without even understanding what caused this act of revenge. When the pegasi returned behind the clouds, there was no pony left in the Wasteland who could rally the survivors, and the weak and scattered groups of ponies were torn apart one after another by raiders, slavers and creatures worse than them.
+After a few years this entire area of ​​Equestria was almost completely devoid of intelligent life. Except for pegasi, whose research missions continued to study and plunder pre-war bases and warehouses, nopony else lived in these places...</n>
+  </gui>
+  <gui id="loading">
+    <n>Loading...</n>
+  </gui>
+  <gui id="tele">
+    <n>levitate</n>
+  </gui>
+  <gui id="miss">
+    <n>miss</n>
+  </gui>
+  <gui id="open">
+    <n>open</n>
+  </gui>
+  <gui id="close">
+    <n>close</n>
+  </gui>
+  <gui id="unlock">
+    <n>lockpick</n>
+  </gui>
+  <gui id="termunlock">
+    <n>hacking</n>
+  </gui>
+  <gui id="remine">
+    <n>disarm</n>
+  </gui>
+  <gui id="use">
+    <n>use</n>
+  </gui>
+  <gui id="comein">
+    <n>enter</n>
+  </gui>
+  <gui id="trade">
+    <n>trade</n>
+  </gui>
+  <gui id="therapy">
+    <n>healing</n>
+  </gui>
+  <gui id="dial" v="0.6">
+    <n>speak</n>
+  </gui>
+  <gui id="repair" v="0.6">
+    <n>repair</n>
+  </gui>
+  <gui id="take" v="0.6">
+    <n>take</n>
+  </gui>
+  <gui id="see" v="0.7">
+    <n>inspect</n>
+  </gui>
+  <gui id="activate">
+    <n>activate</n>
+  </gui>
+  <gui id="actalarm" v="0.6">
+    <n>activate alarm</n>
+  </gui>
+  <gui id="beginm">
+    <n>travel to location</n>
+  </gui>
+  <gui id="return" v="0.6">
+    <n>return</n>
+  </gui>
+  <gui id="returnb">
+    <n>return to base</n>
+  </gui>
+  <gui id="returnm">
+    <n>return to location</n>
+  </gui>
+  <gui id="exit" v="0.7">
+    <n>go to next level</n>
+  </gui>
+  <gui id="shutoff">
+    <n>shut down</n>
+  </gui>
+  <gui id="disarm">
+    <n>disarm</n>
+  </gui>
+  <gui id="rearm">
+    <n>reload</n>
+  </gui>
+  <gui id="fixup">
+    <n>repair</n>
+  </gui>
+  <gui id="press">
+    <n>press</n>
+  </gui>
+  <gui id="runa">
+    <n>use the rune</n>
+  </gui>
+  <gui id="reboot" v="0.6">
+    <n>use an electronic lockpick</n>
+  </gui>
+  <gui id="usekey">
+    <n>use a key</n>
+  </gui>
+  <gui id="required" v="0.7">
+    <n>required</n>
+  </gui>
+  <gui id="tame" v="0.6">
+    <n>feed</n>
+  </gui>
+  <gui id="signal">
+    <n>alarm</n>
+  </gui>
+  <gui id="mined">
+    <n>mined</n>
+  </gui>
+  <gui id="lock">
+    <n>locked</n>
+  </gui>
+  <gui id="termlock">
+    <n>locked</n>
+  </gui>
+  <gui id="zhopa">
+    <n>jammed</n>
+  </gui>
+  <gui id="disabled">
+    <n>disabled</n>
+  </gui>
+  <gui id="block">
+    <n>blocked</n>
+  </gui>
+  <gui id="empty">
+    <n>empty</n>
+  </gui>
+  <gui id="drop">
+    <n>drop</n>
+  </gui>
+  <gui id="hold">
+    <n>hold</n>
+  </gui>
+  <gui id="heavy">
+    <n>It`s heavy!</n>
+  </gui>
+  <gui id="chance">
+    <n>Success chance</n>
+  </gui>
+  <gui id="undef0">
+    <n>cannot unlock</n>
+  </gui>
+  <gui id="undef1">
+    <n>unknown lock type</n>
+  </gui>
+  <gui id="undef2">
+    <n>unknown protection system</n>
+  </gui>
+  <gui id="soft">
+    <n>easy</n>
+  </gui>
+  <gui id="hard">
+    <n>hard</n>
+  </gui>
+  <gui id="veryhard">
+    <n>very hard</n>
+  </gui>
+  <gui id="unreal">
+    <n>unreal</n>
+  </gui>
+  <gui id="magia">
+    <n>Magic</n>
+  </gui>
+  <gui id="armormana">
+    <n>Armor power</n>
+  </gui>
+  <gui id="magiaover">
+    <n>Overload!</n>
+  </gui>
+  <gui id="h2o">
+    <n>Oxygen</n>
+  </gui>
+  <gui id="h2over">
+    <n>You are suffocating!</n>
+  </gui>
+  <gui id="stam">
+    <n>Stamina</n>
+  </gui>
+  <gui id="broken">
+    <n>broken</n>
+  </gui>
+  <gui id="infosats" s1="keyAttack" s2="keyTele" s3="keyAction" s4="keySats" v="0.8">
+    <n>@1 - select the target@@2 - cancel selection, exit@@3 or @4 - accept</n>
+  </gui>
+  <gui id="stand0">
+    <n>Melee weapons</n>
+  </gui>
+  <gui id="stand1">
+    <n>Firearms</n>
+  </gui>
+  <gui id="stand2">
+    <n>Magical energy</n>
+  </gui>
+  <gui id="stand3">
+    <n>Explosives</n>
+  </gui>
+  <gui id="stand4">
+    <n>Other weapons</n>
+  </gui>
+  <gui id="stand5" v="0.8">
+    <n>Magic</n>
+  </gui>
+  <gui id="stand6" v="0.8">
+    <n>Armor</n>
+  </gui>
+  <gui id="stand7" v="0.8">
+    <n>Amulets</n>
+  </gui>
+  <gui id="stand8" v="0.8">
+    <n>Artifacts</n>
+  </gui>
+  <gui id="abr" v="0.6">
+    <n>Armor broken</n>
+  </gui>
+  <gui id="kz" v="0.6">
+    <n>Short circuit</n>
+  </gui>
+  <gui id="stun" v="0.6">
+    <n>Stun</n>
+  </gui>
+  <gui id="help" v="0.6">
+    <n>Show hint</n>
+  </gui>
+  <gui id="restr_levit" v="0.6">
+    <n>Self levitation and flight are disabled</n>
+  </gui>
+  <gui id="restr_port" v="0.6">
+    <n>Teleportation disabled</n>
+  </gui>
+  <gui id="restr_des" v="0.6">
+    <n>Destruction of walls disabled</n>
+  </gui>
+  <gui id="need_help" v="0.6">
+    <n>The hints contain direct instructions on how to pass the trial. You can use these if you cannot figure out how to solve them.</n>
+  </gui>
+  <gui id="sec" v="0.8">
+    <n>s</n>
+  </gui>
+  <gui id="ready" v="0.8">
+    <n>ready</n>
+  </gui>

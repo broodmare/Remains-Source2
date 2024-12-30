@@ -539,11 +539,10 @@ package fe.inter {
 			item.price.x = 504;
 			item.price.width = 58;
 			
-			try {
+			if (obj.wtip) {
 				item.trol.gotoAndStop(obj.wtip);
 			}
-			catch (err) {
-				trace('ERROR: (00:42)');
+			else {
 				item.trol.gotoAndStop(1);
 			}
 			
@@ -577,7 +576,7 @@ package fe.inter {
 				}
 			} 
 			
-			if (page2==2) {
+			if (page2 == 2) {
 				item.cat.text=obj.tip;
 				item.rid.text=obj.id;
 				item.nazv.text=obj.nazv;
@@ -640,8 +639,9 @@ package fe.inter {
 				vis.nazv.text = event.currentTarget.nazv.text;
 				
 				var s:String = infoQuest(event.currentTarget.id.text);
-				if (s=='') vis.info.htmlText=Res.messText(event.currentTarget.id.text,1);
-				else vis.info.htmlText=s;
+				
+				if (s == '') vis.info.htmlText=Res.messText(event.currentTarget.id.text, 1);
+				else vis.info.htmlText = s;
 				
 				if (event.currentTarget.cat.text == '0') {
 					vis.info.htmlText += "\n\n<span class = 'orange'>" + Res.pipText('actTake') + "</span>";
@@ -761,14 +761,14 @@ package fe.inter {
 		override protected function itemClick(event:MouseEvent):void {
 			if (page2 == 1 || page2 == 2) {
 				var buy:Object = assArr[event.currentTarget.rid.text];
-				var n = 1;
+				var n:int = 1;
 				
 				if (event.shiftKey) {
-					n=buy.kol-buy.bou;
+					n = buy.kol - buy.bou;
 				}
 				
 				if (event.shiftKey && event.ctrlKey) {
-					n=buy.bou;
+					n = buy.bou;
 				}
 				
 				if (event.ctrlKey) {
@@ -783,8 +783,8 @@ package fe.inter {
 			
 			if (page2==3) {
 				if (inv.money.kol<=0) return;
-				var price:int=event.currentTarget.price.text;
-				if (price<=0) return;
+				var price:int = event.currentTarget.price.text;
+				if (price <= 0) return;
 				if (price>inv.money.kol) price=inv.money.kol;
 				var obj;
 				

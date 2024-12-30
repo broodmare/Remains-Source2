@@ -1,5 +1,5 @@
-package fe.graph
-{
+package fe.graph {
+
 	import flash.display.MovieClip;
     import flash.display.BitmapData;
     import flash.display.BitmapDataChannel;
@@ -17,30 +17,30 @@ package fe.graph
 	//класс отвечает за анимацию главного меню	
 	public class Displ {
 		
-		var mm:MovieClip;
-		var gr:MovieClip;
+		private var mm:MovieClip;
+		private var gr:MovieClip;
 		
-		var displFilter1:DisplacementMapFilter;
-		var displFilter2:DisplacementMapFilter;
-		var displBmpd:BitmapData;
-		var displStamp:MovieClip;
-		var displPoint:Point=new Point(0,0);
-		var displMatrix:Matrix=new Matrix();
-		var displX:Number=10;
-		var displY:Number=15;
-		var disp_t:int=0;
+		private var displFilter1:DisplacementMapFilter;
+		private var displFilter2:DisplacementMapFilter;
+		private var displBmpd:BitmapData;
+		private var displStamp:MovieClip;
+		private var displPoint:Point=new Point(0,0);
+		private var displMatrix:Matrix=new Matrix();
+		private var displX:Number=10;
+		private var displY:Number=15;
+		private var disp_t:int=0;
 		
-		var wavKol:int=10;
-		var wavArr:Array=[];
-		var disX=200;
-		var disY=250;
-		var spd:Number=1;
+		private var wavKol:int=10;
+		private var wavArr:Array=[];
+		private var disX = 200;
+		private var disY = 250;
+		private var spd:Number=1;
 		
-		var t_anim:int=0;
-		var t_klip:int=60;
-		var t_groza:int=120;
-		var p_x:Number;
-		var p_y:Number;
+		private var t_anim:int=0;
+		private var t_klip:int=60;
+		private var t_groza:int=120;
+		private var p_x:Number;
+		private var p_y:Number;
 		
 		public function Displ(nmm:MovieClip, ngr:MovieClip=null) {
 			mm=nmm;
@@ -71,7 +71,7 @@ package fe.graph
 			}
 		}
 		
-		public function anim() {
+		public function anim():void {
 			t_anim++;
 			t_klip--;
 			if (t_klip<=0) {

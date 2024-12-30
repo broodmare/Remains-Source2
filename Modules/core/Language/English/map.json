@@ -1,0 +1,538 @@
+{
+    "map": [
+        {
+            "Key": "test",
+            "String": "Test loc",
+            "Description": ""
+        },
+        {
+            "Key": "test2",
+            "String": "Test loc 2",
+            "Description": ""
+        },
+        {
+            "Key": "begin",
+            "String": "Technical tunnels",
+            "Description": "Beginning of your journey"
+        },
+        {
+            "Key": "surf",
+            "String": "Surface",
+            "Description": "Equestrian Wasteland, harsh and cruel"
+        },
+        {
+            "Key": "raiders1",
+            "String": "Raiders` den",
+            "Description": "Ruins, occupied by a large raiders gang"
+        },
+        {
+            "Key": "raiders",
+            "String": "Falls Springs",
+            "Description": "A small settlement in which the slavers are based. Here is the entrance to the stable 88"
+        },
+        {
+            "Key": "rbl",
+            "String": "\"Prancing pony\" camp",
+            "Description": "One of those rare safe places where you can rest, treat your wounds and replenish supplies"
+        },
+        {
+            "Key": "random_plant",
+            "String": "Factory",
+            "Description": "A partly destroyed \"ManeTec\" factory complex, occupied by raiders. Apart from them you should watch out for automatic defense systems and occasional monsters"
+        },
+        {
+            "Key": "nio",
+            "String": "Department of special research",
+            "Description": "The brain center of the ManeTec factory, where research and development was previously conducted. The central maneframe is somewhere here"
+        },
+        {
+            "Key": "random_sewer",
+            "String": "Sewers",
+            "Description": "Sewage tunnels, filled with sludge, toxic and radioactive waste. It is a lair for various monsters, and wild ghouls pose a significant threat. Many passages and rooms are flooded"
+        },
+        {
+            "Key": "random_stable",
+            "String": "Abandoned stable",
+            "Description": "Its population died many years ago, and those who remained turned into wild ghouls. Security robots and turrets are especially dangerous there"
+        },
+        {
+            "Key": "core",
+            "String": "The core of the stable 88",
+            "Description": "Here are the overmare office, the main security office, the main server and the reactor core, which gives energy to the whole stable"
+        },
+        {
+            "Key": "garages",
+            "String": "Hankey Garages",
+            "Description": "Meeting place according to the Mentor instructions"
+        },
+        {
+            "Key": "random_mane",
+            "String": "Manehattan ruins",
+            "Description": "There are many dangers in the ruins of Manehattan. Here you can often encounter squads of slavers and mercenaries. Also, some time ago reports started coming about groups of the Goddess`s alicorns appearing there"
+        },
+        {
+            "Key": "random_mbase",
+            "String": "Military base",
+            "Description": "A military base in the past, now - base of the Steel Rangers"
+        },
+        {
+            "Key": "random_canter",
+            "String": "Canterlot ruins",
+            "Description": "The former capital of Equestria. Now filled with the deadly Pink Cloud and inhabited by various monsters"
+        },
+        {
+            "Key": "mtn",
+            "String": "M.A.S. tower",
+            "Description": "A tall, but heavily destroyed skyscraper, in the past - one of the regional offices of the Ministry of Arcane Sciences"
+        },
+        {
+            "Key": "labirint",
+            "String": "Maze",
+            "Description": "Find the way out of the maze. Tip: to get into narrow passages at the height of one block, press [W] + [A] or [W] + [D]",
+            "Help": "You will easily find the right path by using an infra-vision potion"
+        },
+        {
+            "Key": "slimes",
+            "String": "Slime kingdom",
+            "Description": "Get to the end without stepping on slime. Tip: use a chemical protection suit to minimize acid damage"
+        },
+        {
+            "Key": "radioactive",
+            "String": "Gamma radiation",
+            "Description": "Get through the radioactive zone without dying. Tip: use all available means of radiation protection",
+            "Help": "For jumping in the horizontal direction use dash move [Shift] + [A], [A] or [Shift] + [D], [D]"
+        },
+        {
+            "Key": "doors",
+            "String": "Combination lock",
+            "Description": "Pressing the appropriate buttons, open all the armored doors",
+            "Help": "Only one combination opens all the doors. The hint number is written on the wall behind the box. This number in binary form is the correct code"
+        },
+        {
+            "Key": "lift",
+            "String": "Fall",
+            "Description": "Overcome the lift from the working anti-gravity elevator. You need to get the sufficient falling speed",
+            "Help": "The third teleport is hidden under the floor"
+        },
+        {
+            "Key": "buttons1",
+            "String": "Shooting buttons",
+            "Description": "Activate all the red buttons by shooting them",
+            "Help": "To press the lower button, use a grenade together with telekinesis"
+        },
+        {
+            "Key": "buttons2",
+            "String": "Two sides",
+            "Description": "Activate two buttons on the sides of the room simultaneously",
+            "Help": "To prevent the automatic door from closing place something in the doorway"
+        },
+        {
+            "Key": "buttons3",
+            "String": "Throwing grenades",
+            "Description": "By throwing explosives accurately, press all the red buttons. Tip: use S.A.T.S. for better aim. To throw a grenade farther, learn \"explosives\" skill. You can adjust the force of the throw by changing cursor position",
+            "Help": "To press the nearest button use telekinesis with a dynamite stick. To press the farthest button use S.A.T.S. and choose the correct trajectory of the throw. You will need the \"explosive\" skill of 3rd level at least"
+        },
+        {
+            "Key": "buttons4",
+            "String": "Battle rainbow",
+            "Description": "You need to press all buttons. Each button responds to one particular type of damage",
+            "Help": "Laser, fire, electricity, acid, plasma, frost"
+        },
+        {
+            "Key": "tower1",
+            "String": "Falling tower",
+            "Description": "Use boxes to get to the passage at the top",
+            "Help": "Build an inclined tower by placing one box on the edge of the other. After fulfilling the trial, pull out the box at the bottom. Physics!"
+        },
+        {
+            "Key": "tower2",
+            "String": "Cargo transportation",
+            "Description": "Use equipment in the room to get to the passage at the top. Do not fall down!",
+            "Help": "Build the tower of boxes on the moving platform. If you drop anything into the pit, exit the room and try again"
+        },
+        {
+            "Key": "zaput",
+            "String": "Confusion",
+            "Description": "Jump on platforms and ladders to get to the top within the allotted time. Too easy? Then do the same with the \"left\" and \"right\" reversed!"
+        },
+        {
+            "Key": "digger",
+            "String": "Excavation",
+            "Description": "There is a safe somewhere. Find it!",
+            "Help": "There are lots of treasures underground - use a sledgehammer or dynamite to get them. Beware, the ground vibration attracts monsters"
+        },
+        {
+            "Key": "sliv",
+            "String": "Sink",
+            "Description": "Do you like swimming in radioactive water? Well, you`ll have to, there is no other way",
+            "Help": "Drain water by punching out the plugs. Use an anti-radiation suit"
+        },
+        {
+            "Key": "speed",
+            "String": "Speed",
+            "Description": "You need to press the button here, then run to the other side before the door closes. It`s simple, just don`t run out of time",
+            "Help": "Water at the lower level will slow you down, get rid of it. Use chemicals to run faster and jump higher"
+        },
+        {
+            "Key": "bloat_breeding",
+            "String": "Bloatsprites nursery",
+            "Description": "Destroy all bloatsprites` nests",
+            "Help": "Bloatsprites are vulnerable to magical energy weapons. Destroy nests as quickly as possible, or they will produce more and more new bloatsprites"
+        },
+        {
+            "Key": "ant_breeding",
+            "String": "Ant tunnels",
+            "Description": "Destroy all ant nests",
+            "Help": "Ant nests are most vulnerable to explosions"
+        },
+        {
+            "Key": "director",
+            "String": "Cabinet of the factory CEO",
+            "Description": "Get valuable items from the safe"
+        },
+        {
+            "Key": "data",
+            "String": "Data room",
+            "Description": "Data storage and server room. Entrance is authorized only for the overmare, the technical service officer and the sysadmin. Attention! On intrusion, security systems open fire without warning"
+        },
+        {
+            "Key": "floating",
+            "String": "Flooded tunnels",
+            "Description": "Can you hold your breath for a long time, navigate through muddy water, fix mechanisms? If not, you shall not pass here"
+        },
+        {
+            "Key": "platform",
+            "String": "Moving platforms",
+            "Description": "Using moving platforms, get to the safe"
+        },
+        {
+            "Key": "lasertag",
+            "String": "Laser traps",
+            "Description": "Avoid laser traps, disarm them or force your way through",
+            "Help": "Laser sensors react only on hostile targets. Like you. They can be disabled having a sufficient level of the \"Science\" skill"
+        },
+        {
+            "Key": "turrets",
+            "String": "Danger zone",
+            "Description": "Get through the passage guarded by turrets",
+            "Help": "There is a detonator behind a fragile wall, opening path to the pool with water. Water will protect you from energy weapons"
+        },
+        {
+            "Key": "robots",
+            "String": "Robots",
+            "Description": ""
+        },
+        {
+            "Key": "lair",
+            "String": "Raiders",
+            "Description": ""
+        },
+        {
+            "Key": "sentinels",
+            "String": "Sentinels",
+            "Description": ""
+        },
+        {
+            "Key": "zombies",
+            "String": "Zombies",
+            "Description": ""
+        },
+        {
+            "Key": "pit",
+            "String": "Pit",
+            "Description": ""
+        },
+        {
+            "Key": "scorpions",
+            "String": "Scorpion pit",
+            "Description": ""
+        },
+        {
+            "Key": "raiders1",
+            "String": "Raiders` den",
+            "Description": ""
+        },
+        {
+            "Key": "slavers",
+            "String": "Slavers` den",
+            "Description": ""
+        },
+        {
+            "Key": "bloatking",
+            "String": "Bloatsprite king",
+            "Description": ""
+        },
+        {
+            "Key": "grav",
+            "String": "Gravitational anomaly",
+            "Description": "Defeat enemies under lunar gravity conditions"
+        },
+        {
+            "Key": "buttons5",
+            "String": "Radio tower",
+            "Description": "Make it so that all buttons become activated",
+            "Help": "Use the X-37 radio mines"
+        },
+        {
+            "Key": "tech",
+            "String": "Technical department",
+            "Description": "Find the passage through the labyrinth of technical compartments"
+        },
+        {
+            "Key": "away",
+            "String": "Surprise",
+            "Description": ""
+        },
+        {
+            "Key": "blaster",
+            "String": "Danger",
+            "Description": ""
+        },
+        {
+            "Key": "bossraider",
+            "String": "Raiders leader (boss)",
+            "Description": ""
+        },
+        {
+            "Key": "bossultra",
+            "String": "Ultra-sentinel (boss)",
+            "Description": ""
+        },
+        {
+            "Key": "bossalicorn",
+            "String": "Alicorn (boss)",
+            "Description": ""
+        },
+        {
+            "Key": "bossraider1",
+            "String": "Boss of the factory",
+            "Description": ""
+        },
+        {
+            "Key": "bossraider2",
+            "String": "Boss of the slavers camp",
+            "Description": ""
+        },
+        {
+            "Key": "bossultra1",
+            "String": "Boss of the abandoned stable",
+            "Description": ""
+        },
+        {
+            "Key": "bossalicorn1",
+            "String": "Boss of the Manehattan ruins",
+            "Description": ""
+        },
+        {
+            "Key": "generator",
+            "String": "Generator room",
+            "Description": ""
+        },
+        {
+            "Key": "biblio",
+            "String": "Library",
+            "Description": ""
+        },
+        {
+            "Key": "barahlo",
+            "String": "Dark and dangerous cellar",
+            "Description": "Do not open this door, death awaits you inside"
+        },
+        {
+            "Key": "podval",
+            "String": "A mysterious cellar",
+            "Description": ""
+        },
+        {
+            "Key": "telekin",
+            "String": "Weird place",
+            "Description": ""
+        },
+        {
+            "Key": "camp",
+            "String": "Camp",
+            "Description": ""
+        },
+        {
+            "Key": "griff",
+            "String": "Prison camp",
+            "Description": ""
+        },
+        {
+            "Key": "way",
+            "String": "Somewhere along the way to Canterlot...",
+            "Description": ""
+        },
+        {
+            "Key": "covert",
+            "String": "Covertsign",
+            "Description": "A small settlement sheltering a small group of zebras"
+        },
+        {
+            "Key": "src",
+            "String": "Water treatment plant",
+            "Description": "A small building where a temporary camp was arranged by Steel Rangers under the command of SteelHooves"
+        },
+        {
+            "Key": "minst",
+            "String": "Ministry of Image",
+            "Description": "The main office of one of the ministries of the Great War epoch - the Ministry of Image"
+        },
+        {
+            "Key": "bunker",
+            "String": "Bunker",
+            "Description": "Storage bunker of Steel Rangers. Protected better than any other object in the region. Trying to get in here is a real madness"
+        },
+        {
+            "Key": "sttech",
+            "String": "Stable-Tech office, service entrance",
+            "Description": ""
+        },
+        {
+            "Key": "talisman",
+            "String": "Alicorns` lair",
+            "Description": ""
+        },
+        {
+            "Key": "w_raiders",
+            "String": "Battle for the Factory",
+            "Description": "Fight several waves of opponents, coming one after another. The time for the destruction of each wave is limited. Try not to die in the process, otherwise you`ll have to start again"
+        },
+        {
+            "Key": "w_zombie",
+            "String": "Battle for the Sewers",
+            "Description": ""
+        },
+        {
+            "Key": "w_robots",
+            "String": "Battle for the Stable",
+            "Description": ""
+        },
+        {
+            "Key": "w_grif",
+            "String": "Battle for Manehattan",
+            "Description": ""
+        },
+        {
+            "Key": "w_necros",
+            "String": "Battle for Canterlot",
+            "Description": ""
+        },
+        {
+            "Key": "bossnecr1",
+            "String": "Boss of Canterlot",
+            "Description": ""
+        },
+        {
+            "Key": "bossdron1",
+            "String": "Boss of the Military base",
+            "Description": ""
+        },
+        {
+            "Key": "buttons6",
+            "String": "Rapid shooter",
+            "Description": "Make all 6 buttons glowing at simultaneously. Shoot very quickly and accurately!",
+            "Help": "Use Little Macintosh and S.A.T.S."
+        },
+        {
+            "Key": "sphera",
+            "String": "Dark spheres",
+            "Description": "Use dark spheres to get to the end of the room. You can interact with them like with buttons"
+        },
+        {
+            "Key": "jump",
+            "String": "Jumping",
+            "Description": ""
+        },
+        {
+            "Key": "random_encl",
+            "String": "Enclave base",
+            "Description": "A large building built by the Enclave on top of the mountain. The Enclave did not make any attempts to contact Wasteland inhabitants and, judging by the number of troops at the base, it is unlikely that they came with peaceful intentions"
+        },
+        {
+            "Key": "post",
+            "String": "Enclave outpost",
+            "Description": "The gates to the main base"
+        },
+        {
+            "Key": "comm",
+            "String": "Command post",
+            "Description": "The command post located at the very top, above the cloud barrier. The base commander must be here"
+        },
+        {
+            "Key": "workshop",
+            "String": "Gun workshop",
+            "Description": "The workshop used to produce large-caliber guns. Due to the powerful and still functioning security system this place still hasn`t been pillaged"
+        },
+        {
+            "Key": "hql",
+            "String": "Legion headquarters",
+            "Description": "The well-disguised temporary headquarters of the Zebra Legion. According to the good old zebra tradition, path towards it is probably protected with whole lots of mines and traps"
+        },
+        {
+            "Key": "buttons7",
+            "String": "Moving targets",
+            "Description": "Make all six moving targets light up at the same time"
+        },
+        {
+            "Key": "electro",
+            "String": "Electric fence",
+            "Description": "Do not touch metal floor, stairs, beams and doors until the electric fence is turned off.."
+        },
+        {
+            "Key": "moln",
+            "String": "Lightnings",
+            "Description": "Pass through electrical discharges"
+        },
+        {
+            "Key": "hounds",
+            "String": "Kennels",
+            "Description": ""
+        },
+        {
+            "Key": "dressing",
+            "String": "Locker room",
+            "Description": ""
+        },
+        {
+            "Key": "w_encl",
+            "String": "Battle of the Enclave Base",
+            "Description": ""
+        },
+        {
+            "Key": "bossencl",
+            "String": "Boss of the Enclave Base",
+            "Description": ""
+        },
+        {
+            "Key": "stable_pi",
+            "String": "Stable Pi",
+            "Description": "A completely autonomous secret shelter built at the beginning of the war and designed to save the best Equestrian scientists and engineers. Your home"
+        },
+        {
+            "Key": "art",
+            "String": "Fort Rocks",
+            "Description": "One of the most impregnable fortresses of Equestria. It has powerful artillery and anti-air defense systems"
+        },
+        {
+            "Key": "stable_pi_atk",
+            "String": "Stable Pi",
+            "Description": ""
+        },
+        {
+            "Key": "stable_pi_surf",
+            "String": "Stable Pi entrance",
+            "Description": ""
+        },
+        {
+            "Key": "thunder",
+            "String": "Thunderhead",
+            "Description": ""
+        },
+        {
+            "Key": "grave",
+            "String": "Somewhere near Stable Pi",
+            "Description": ""
+        }
+    ]
+}

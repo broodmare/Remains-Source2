@@ -15,12 +15,13 @@ package fe.graph {
     import flash.ui.MouseCursorData;
     import flash.ui.Mouse;
 	
-	import fl.motion.Color;
+	import fl.motion.Color;	// Adobe Animate dependency
 
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.loc.*;
 	import fe.entities.Entity;
+	import fe.entities.BoundingBox;
 	
 	// .fla linkages
 	import fe.stubs.tileVoda;		
@@ -41,62 +42,62 @@ package fe.graph {
 		public var visBack:Sprite;
 		public var visBack2:Sprite;
 		public var visObjs:Array;
-		const kolObjs=6;
+		private const kolObjs:int = 6;
 		public var visVoda:Sprite;
 		public var visFront:Sprite;
 		public var visLight:Sprite;
 		public var visSats:Sprite;
 		public var visFon:MovieClip;
 		
-		var resX:int;			// Screen pixel width
-		var resY:int;			// Screen pixel height
-		var kusokX:int = 48;	// Room tile width
-		var kusokY:int = 25;	// Room tile height
+		private var resX:int;			// Screen pixel width
+		private var resY:int;			// Screen pixel height
+		private var kusokX:int = 48;	// Room tile width
+		private var kusokY:int = 25;	// Room tile height
 		
 		public var frontBmp:BitmapData;
-		var frontBitmap:Bitmap;
-		var vodaBmp:BitmapData;
-		var vodaBitmap:Bitmap;
-		var backBmp:BitmapData;
-		var backBitmap:Bitmap;
-		var backBmp2:BitmapData;
-		var backBitmap2:Bitmap;
+		private var frontBitmap:Bitmap;
+		private var vodaBmp:BitmapData;
+		private var vodaBitmap:Bitmap;
+		private var backBmp:BitmapData;
+		private var backBitmap:Bitmap;
+		private var backBmp2:BitmapData;
+		private var backBitmap2:Bitmap;
 		public var lightBmp:BitmapData;
-		var lightBitmap:Bitmap;
+		private var lightBitmap:Bitmap;
 		public var satsBmp:BitmapData;
-		var satsBitmap:Bitmap;
-		var shadBmp:BitmapData;
-		var colorBmp:BitmapData;
-		var dsFilter:DropShadowFilter=new DropShadowFilter(7,90,0,0.75,16,16,1,3,false,false,true);
-		var infraTransform:ColorTransform=new ColorTransform(1,1,1,1,100);
-		var defTransform:ColorTransform=new ColorTransform();
+		private var satsBitmap:Bitmap;
+		private var shadBmp:BitmapData;
+		private var colorBmp:BitmapData;
+		private var dsFilter:DropShadowFilter=new DropShadowFilter(7,90,0,0.75,16,16,1,3,false,false,true);
+		private var infraTransform:ColorTransform=new ColorTransform(1,1,1,1,100);
+		private var defTransform:ColorTransform=new ColorTransform();
 		
 		public var pa:MovieClip;
 		public var pb:MovieClip;
 
 		public var brTrans:ColorTransform = new ColorTransform();
 		public var brColor:Color = new Color();		// Adobe Animate dependency.
-		var brData:BitmapData = new BitmapData(100, 100, false, 0x0);
-		var brPoint:Point = new Point(0, 0);
-		var brRect:Rectangle = new Rectangle(0,0,50,50);
-		var pm:Matrix = new Matrix();
+		private var brData:BitmapData = new BitmapData(100, 100, false, 0x0);
+		private var brPoint:Point = new Point(0, 0);
+		private var brRect:Rectangle = new Rectangle(0,0,50,50);
+		private var pm:Matrix = new Matrix();
 			
-		var voda = new tileVoda();
+		private var voda:MovieClip = new tileVoda();
 
-		var m:Matrix;
+		private var m:Matrix;
 		
 		//рамки
 		public var ramT:MovieClip, ramB:MovieClip;
 		public var ramL:MovieClip, ramR:MovieClip;
 		
-		var arrFront:Array;
-		var arrBack:Array;
+		private var arrFront:Array;
+		private var arrBack:Array;
 		
-		var rectX:int=1920, rectY:int=1000;
-		var allRect:Rectangle=new Rectangle(0,0,rectX,rectY);
+		private var rectX:int=1920, rectY:int=1000;
+		private var allRect:Rectangle=new Rectangle(0,0,rectX,rectY);
 		
-		var lightX:int=49, lightY:int=28;
-		var lightRect:Rectangle=new Rectangle(0,0,lightX,lightY);
+		private var lightX:int=49, lightY:int=28;
+		private var lightRect:Rectangle=new Rectangle(0,0,lightX,lightY);
 		
 		//загрузка
 		public var resIsLoad:Boolean=false;
@@ -107,11 +108,11 @@ package fe.graph {
 		public static var texUrl:Array = ['texture', 'texture1.swf', 'sprite.swf', 'sprite1.swf'];
 		public var grLoaders:Array;
 		
-		public static const numbMat = 0;		//материалы
-		public static const numbFon = 0;		//задники
-		public static const numbBack = 1;		//декорации
-		public static const numbObj = 1;		//объекты
-		public static const numbSprite = 2;	//номер, с которого начинаются файлы спрайтов
+		public static const numbMat:int = 0;		//материалы
+		public static const numbFon:int = 0;		//задники
+		public static const numbBack:int = 1;		//декорации
+		public static const numbObj:int= 1;		//объекты
+		public static const numbSprite:int = 2;	//номер, с которого начинаются файлы спрайтов
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -136,7 +137,7 @@ package fe.graph {
 			visBoundingBoxes.mouseChildren = false;
 			
 			visObjs = [];
-			for (var i = 0; i < kolObjs; i++) {
+			for (var i:int = 0; i < kolObjs; i++) {
 				visObjs.push(new Sprite());
 			}
 			
@@ -198,16 +199,15 @@ package fe.graph {
 			// START LOADING TEXTURES HERE
 
 			grLoaders = [];
-			for (var i in texUrl) {
-				var textureURL:String = texUrl[i];
+			for (var j:int = 0; j < texUrl.length; j++) {
+				var textureURL:String = texUrl[j];
 				// Check if 'textureURL' contains '.swf'
 				if (textureURL.indexOf(".swf") != -1) {
-					grLoaders[i] = new GrLoader(i, textureURL, this, "swf");
+					grLoaders[j] = new GrLoader(j, textureURL, this, "swf");
 				}
 				else {
-					grLoaders[i] = new GrLoader(i, textureURL, this, "looseImage");
+					grLoaders[j] = new GrLoader(j, textureURL, this, "looseImage");
 				}
-				
 			}
 			createCursors();
 		}
@@ -243,8 +243,8 @@ package fe.graph {
 		
 		public function allProgress():void {
 			progressLoad = 0;
-			for (var i in grLoaders) {
-				progressLoad += grLoaders[i].progressLoad;
+			for (var loader:String in grLoaders) {
+				progressLoad += grLoaders[loader].progressLoad;
 			}
 			progressLoad /= GrLoader.kol;
 		}
@@ -334,8 +334,9 @@ package fe.graph {
 					visFon.height = rectY;
 				}
 				else {
-					var koef=visFon.width/visFon.height;
-					visFon.x=visFon.y=0;
+					var koef:int = visFon.width / visFon.height;
+					visFon.x = 0;
+					visFon.y = 0;
 					if (nx>=ny*koef) {
 						visFon.width=nx;
 						visFon.height=nx/koef;
@@ -423,8 +424,8 @@ package fe.graph {
 			
 			var gret:int=0;
 			World.w.gr_stage=5;
-			for (var i:int = 0; i<loc.spaceX; i++) {
-				for (var j=0; j<loc.spaceY; j++) {
+			for (var i:int = 0; i < loc.spaceX; i++) {
+				for (var j:int = 0; j < loc.spaceY; j++) {
 					t = loc.getTile(i, j);
 					loc.tileKontur(i,j,t);
 					if (arrFront[t.front]) arrFront[t.front].used=true;
@@ -473,7 +474,7 @@ package fe.graph {
 			}
 			World.w.gr_stage=10;
 			satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-			var darkness2 = 1 - (255-darkness) / 150;
+			var darkness2:Number = 1 - (255 - darkness) / 150;
 			// [Background objects]
 			var ct:ColorTransform = new ColorTransform();
 
@@ -555,7 +556,9 @@ package fe.graph {
 			}
 			
 			World.w.gr_stage=17;
-			for each (mat in arrFront) drawKusok(mat,false,true);	//добавление на задний план текстур переднего плана, таких как балки
+			for each (mat in arrFront) {
+				drawKusok(mat,false,true); // [Adding foreground textures such as beams to the background]
+			}
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
 			
@@ -587,8 +590,8 @@ package fe.graph {
 		
 		//добавление всех видимых объектов
 		public function drawAllObjs():void {
-			for (var i = 0; i < kolObjs; i++) {
-				var n = visual.getChildIndex(visObjs[i]);
+			for (var i:int = 0; i < kolObjs; i++) {
+				var n:int = visual.getChildIndex(visObjs[i]);
 				visual.removeChild(visObjs[i]);
 				visObjs[i] = new Sprite();
 				visual.addChildAt(visObjs[i], n);
@@ -603,35 +606,56 @@ package fe.graph {
 
 			loc.gg.addVisual();
 
-			for (var i in loc.signposts) {
-				visObjs[3].addChild(loc.signposts[i]);
+			for (var j:String in loc.signposts) {
+				visObjs[3].addChild(loc.signposts[j]);
 			}
 		}
 		
-		//заполнение заднего плана текстурой
 		public function drawBackWall(tex:String, sposob:int = 0):void {
-			var roomPixelWidth:int	= kusokX * tileX;
-			var roomPixelHeight:int	= kusokY * Tile.tileY
+			// Cache frequently accessed properties
+			var localKusokX:int = kusokX;
+			var localTileX:int = tileX;
+			var localKusokY:int = kusokY;
+			var localTileY:int = Tile.tileY;
 
-			if (tex=='sky') return;
-			m=new Matrix();
-			var fill:BitmapData=getObj(tex);
-			if (fill==null) fill=getObj('tBackWall')
-			var osn:Sprite=new Sprite();
+			var roomPixelWidth:int    = localKusokX * localTileX;
+			var roomPixelHeight:int   = localKusokY * localTileY;
+
+			if (tex == 'sky') return;
+
+			m = new Matrix();
+
+			// Cache the result of getObj('tBackWall') to avoid multiple calls
+			var defaultTex:String = 'tBackWall';
+			var fill:BitmapData = getObj(tex) || getObj(defaultTex);
+
+			var osn:Sprite = new Sprite();
 			osn.graphics.beginBitmapFill(fill);
-			if (sposob==0) {
-				osn.graphics.drawRect(0,0,roomPixelWidth,roomPixelHeight);
+
+			// Precompute rectangle dimensions based on 'sposob'
+			switch(sposob) {
+				case 0:
+					osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
+					break;
+				case 1:
+					var rect1Width:int = 11 * localTileX - 10;
+					var rect2X:int = 37 * localTileX + 10;
+					osn.graphics.drawRect(0, 0, rect1Width, roomPixelHeight);
+					osn.graphics.drawRect(rect2X, 0, roomPixelWidth - rect2X, roomPixelHeight);
+					break;
+				case 2:
+					var rectY2:int = 16 * localTileY + 10;
+					osn.graphics.drawRect(0, rectY2, roomPixelWidth, roomPixelHeight - rectY2);
+					break;
+				case 3:
+					var rectY3:int = 24 * localTileY + 10;
+					osn.graphics.drawRect(0, rectY3, roomPixelWidth, roomPixelHeight - rectY3);
+					break;
+				default:
+					// Handle unexpected 'sposob' values gracefully
+					osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 			}
-			else if (sposob == 1) {
-				osn.graphics.drawRect(0,0,11*tileX-10, roomPixelHeight);
-				osn.graphics.drawRect(37*tileX+10,0,roomPixelWidth, roomPixelHeight);
-			}
-			else if (sposob == 2) {
-				osn.graphics.drawRect(0,16*Tile.tileY+10,roomPixelWidth, roomPixelHeight);
-			}
-			else if (sposob == 3) {
-				osn.graphics.drawRect(0,24*Tile.tileY+10,roomPixelWidth, roomPixelHeight);
-			}
+
 			backBmp.draw(osn, m, null, null, null, false);
 		}
 		
@@ -652,29 +676,50 @@ package fe.graph {
 			}
 		}
 		
-		//рисование текстурных материалов
-		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean = false):void
-		{
+		// [Drawing texture materials]
+		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean = false):void {
+    
 			var roomPixelWidth:int = kusokX * tileX;
 			var roomPixelHeight:int = kusokY * tileY;
 
 			if (!material.used) return;
 			if (material.rear == toFront) return;
 			
+			// Cache frequently accessed properties
+			var spaceX:int = loc.spaceX;
+			var spaceY:int = loc.spaceY;
+			var currentTileX:int = tileX;
+			var currentTileY:int = tileY;
+			var altTexture:BitmapData = material.alttexture;
+			var texture:BitmapData = material.texture;
+			var borderTexture:BitmapData = material.border;
+			var floorTexture:BitmapData = material.floor;
+			var borderMaskClass:Class = material.borderMask;
+			var floorMaskClass:Class = material.floorMask;
+			var filters:Array = material.F;
+			var homeStable:Boolean = loc.homeStable;
+
+			var halfTileX:Number = 0.5 * currentTileX;
+			var halfTileY:Number = 0.5 * currentTileY;
+
+			var hasBorderMask:Boolean = (borderMaskClass != null);
+			var hasFloorMask:Boolean = (floorMaskClass != null);
+			
 			var t:Tile;
 			var mc:MovieClip;
 
-			var kusok:Sprite	= new Sprite();	
-			var osn:Sprite		= new Sprite();
-			var maska:Sprite	= new Sprite();
-			var border:Sprite	= new Sprite();
-			var bmaska:Sprite	= new Sprite();
-			var floor:Sprite	= new Sprite();
-			var fmaska:Sprite	= new Sprite();
+			var kusok:Sprite    = new Sprite();    
+			var osn:Sprite      = new Sprite();
+			var maska:Sprite    = new Sprite();
+			var border:Sprite   = new Sprite();
+			var bmaska:Sprite   = new Sprite();
+			var floor:Sprite    = new Sprite();
+			var fmaska:Sprite   = new Sprite();
 			
-			if (material.texture) {
-				if (loc.homeStable && material.alttexture != null) osn.graphics.beginBitmapFill(material.alttexture);
-				else osn.graphics.beginBitmapFill(material.texture);
+			// Use cached textures
+			if (texture) {
+				if (homeStable && altTexture != null) osn.graphics.beginBitmapFill(altTexture);
+				else osn.graphics.beginBitmapFill(texture);
 			}
 			else {
 				osn.graphics.beginFill(0x666666);
@@ -684,14 +729,14 @@ package fe.graph {
 
 			kusok.addChild(osn);
 			kusok.addChild(maska);
-			if (material.border) {
-				border.graphics.beginBitmapFill(material.border);
+			if (borderTexture) {
+				border.graphics.beginBitmapFill(borderTexture);
 				border.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(border);
 				kusok.addChild(bmaska);
 			}
-			if (material.floor) {
-				floor.graphics.beginBitmapFill(material.floor);
+			if (floorTexture) {
+				floor.graphics.beginBitmapFill(floorTexture);
 				floor.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(floor);
 				kusok.addChild(fmaska);
@@ -699,40 +744,47 @@ package fe.graph {
 			
 			var isDraw:Boolean = false;
 			
-			for (var i:int = 0; i < loc.spaceX; i++) {
-				for (var j:int = 0; j < loc.spaceY; j++) {
+			// Cache loop variables
+			for (var i:int = 0; i < spaceX; i++) {
+				for (var j:int = 0; j < spaceY; j++) {
 					t = loc.getTile(i, j);
-					if (t.front == material.id && (toFront || dop) || t.back == material.id && !toFront) {
+					// Cache tile properties
+					var tFront:String = t.front;
+					var tBack:String = t.back;
+					var tZForm:int = t.zForm;
+					var tBoundingBox:BoundingBox = t.boundingBox;
+					
+					if ((tFront == material.id && (toFront || dop)) || (tBack == material.id && !toFront)) {
 						isDraw = true;
 						mc = new material.textureMask();
 						setMovieClipTile(mc, t, toFront);
-						mc.x = (i + 0.5) * tileX;
-						mc.y = (j + 0.5) * tileY;
+						mc.x = (i + 0.5) * currentTileX;
+						mc.y = (j + 0.5) * currentTileY;
 						maska.addChild(mc);
-						if (t.zForm && toFront) {
-							mc.scaleY = (t.boundingBox.bottom - t.boundingBox.top) / tileY;
-							mc.y=(t.boundingBox.bottom + t.boundingBox.top) / 2;
-						}							
-						if (material.borderMask) {
-							mc=new material.borderMask();
-							setMovieClipTile(mc,t,toFront);
-							mc.x=(i+0.5)*tileX;
-							mc.y=(j+0.5)*tileY;
+						if (tZForm && toFront) {
+							mc.scaleY = (tBoundingBox.bottom - tBoundingBox.top) / currentTileY;
+							mc.y = (tBoundingBox.bottom + tBoundingBox.top) / 2;
+						}                            
+						if (hasBorderMask) {
+							mc = new borderMaskClass();
+							setMovieClipTile(mc, t, toFront);
+							mc.x = (i + 0.5) * currentTileX;
+							mc.y = (j + 0.5) * currentTileY;
 							bmaska.addChild(mc);
-							if (t.zForm && toFront) {
-								mc.scaleY = (t.boundingBox.bottom - t.boundingBox.top) / tileY;
-								mc.y = (t.boundingBox.bottom + t.boundingBox.top) / 2;
-							}							
+							if (tZForm && toFront) {
+								mc.scaleY = (tBoundingBox.bottom - tBoundingBox.top) / currentTileY;
+								mc.y = (tBoundingBox.bottom + tBoundingBox.top) / 2;
+							}                            
 						}
-						if (material.floorMask) {
-							mc=new material.floorMask();
+						if (hasFloorMask) {
+							mc = new floorMaskClass();
 							if (mc.c1) {
 								mc.c1.gotoAndStop(t.kont1 + 1);
 								mc.c2.gotoAndStop(t.kont2 + 1);
 							}
 							fmaska.addChild(mc);
-							mc.x=(i+0.5)*tileX;
-							mc.y=(j+0.5+t.zForm/4)*tileY;
+							mc.x = (i + 0.5) * currentTileX;
+							mc.y = (j + 0.5 + tZForm / 4) * currentTileY;
 						}
 					}
 				}
@@ -742,9 +794,24 @@ package fe.graph {
 
 			m.tx = 0;
 			m.ty = 0;
-			osn.cacheAsBitmap=maska.cacheAsBitmap=border.cacheAsBitmap=bmaska.cacheAsBitmap=floor.cacheAsBitmap=fmaska.cacheAsBitmap=true;
-			osn.mask=maska; border.mask=bmaska; floor.mask=fmaska;
-			if (material.F) kusok.filters = material.F;
+			
+			// Cache setting as Bitmap
+			osn.cacheAsBitmap = true;
+			maska.cacheAsBitmap = true;
+			border.cacheAsBitmap = true;
+			bmaska.cacheAsBitmap = true;
+			floor.cacheAsBitmap = true;
+			fmaska.cacheAsBitmap = true;
+			
+			// Set masks
+			osn.mask = maska;
+			border.mask = bmaska;
+			floor.mask = fmaska;
+			
+			// Apply filters if any
+			if (filters) kusok.filters = filters;
+			
+			// Draw to appropriate bitmap
 			if (toFront) frontBmp.draw(kusok, m, null, null, null, false);
 			else if (dop) backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
 			else backBmp.draw(kusok, m, null, null, null, false); 
@@ -804,8 +871,8 @@ package fe.graph {
 			var erC:Class = block_dyr;	// .fla linkage
 			var drC:Class = block_tre;	// .fla linkage
 			
-			var nx = (t.coords.X + 0.5) * tileX;
-			var ny = (t.coords.Y + 0.5) * tileY;
+			var nx:Number = (t.coords.X + 0.5) * tileX;
+			var ny:Number = (t.coords.Y + 0.5) * tileY;
 
 			if (t.fake) {
 				Emitter.emit('fake', loc, nx, ny);
@@ -843,18 +910,18 @@ package fe.graph {
 			var drC:Class;
 			var bl:String = 'normal';
 			var centr:Boolean = false;
-			var sc = Math.random() * 0.5 + 0.5;
-			var rc = Math.random() * 360
+			var sc:Number = Math.random() * 0.5 + 0.5;
+			var rc:Number = Math.random() * 360
 
 			if (tip == 0 || mat == 0) return;
 
 			switch (mat)
 			{
 				case 1:	//металл
-					if (tip >= 1 && tip <= 6) drC = bullet_metal;
+					if (tip >= 1 && tip <= 6) drC = bullet_metal;	// .fla Linkage
 					else if (tip==9) //взрыв
 					{		
-						if (!soft && Math.random()*0.5<ver) drC=metal_tre;
+						if (!soft && Math.random()*0.5<ver) drC=metal_tre;	// .fla Linkage
 						centr=true;
 					}
 				break;
@@ -864,7 +931,7 @@ package fe.graph {
 				case 6:
 					if (tip>=1 && tip<=3) //пули
 					{					
-						if (tip>1 && Math.random()>0.5) erC=bullet_dyr;
+						if (tip>1 && Math.random()>0.5) erC=bullet_dyr;	// .fla Linkage
 						drC=bullet_tre;
 						if (tip==2) sc+=0.5;
 						if (tip==3) sc+=1;
@@ -877,7 +944,7 @@ package fe.graph {
 					}
 					else if (tip==9) //взрыв
 					{
-						if (!soft && Math.random()*0.5<ver) drC=expl_tre;
+						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .fla Linkage
 						centr=true;
 					}
 
@@ -891,21 +958,21 @@ package fe.graph {
 				case 3: //дерево
 					if (tip>=1 && tip<=3) //пули
 					{
-						erC=bullet_dyr;
-						drC=bullet_wood;
+						erC=bullet_dyr;		// .fla Linkage
+						drC=bullet_wood;	// .fla Linkage
 						rc=0;
 						if (tip==2) sc+=0.5;
 						if (tip==3) sc+=1;
 					}
 					else if (tip>=4 && tip<=6) //удары
 					{
-						if (!soft) drC=punch_tre;
+						if (!soft) drC=punch_tre;	// .fla Linkage
 						if (tip==5) sc+=0.5;
 						if (tip==6) sc+=1;
 					}
 					else if (tip==9) //взрыв
 					{
-						if (!soft && Math.random()*0.5<ver) drC=expl_tre;
+						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .fla Linkage
 						centr=true;
 					}
 
@@ -920,53 +987,53 @@ package fe.graph {
 				break;
 
 				case 11:
-					if (Math.random() < 0.1) drC=fire_soft;
+					if (Math.random() < 0.1) drC=fire_soft;		// .fla Linkage
 				break;
 
 				case 12: //лазеры
 				case 13:
-					if (soft && Math.random()*0.2>ver) drC=fire_soft;
-					else drC=laser_tre;
+					if (soft && Math.random()*0.2>ver) drC=fire_soft;	// .fla Linkage
+					else drC=laser_tre;				// .fla Linkage
 
 					if (tip == 13) sc *= 0.6;
 					bl='hardlight';
 				break;
 
 				case 15: //плазма
-					if (soft) drC = plasma_soft;
+					if (soft) drC = plasma_soft;	// .fla Linkage
 					else {
-						erC = plasma_dyr;
-						drC = plasma_tre;
+						erC = plasma_dyr;			// .fla Linkage
+						drC = plasma_tre;			// .fla Linkage
 					}
 
 					bl = 'hardlight';
 				break;
 
 				case 16:
-					if (soft) drC=fire_soft;
+					if (soft) drC=fire_soft;		// .fla Linkage
 					else {
-						erC = plasma_dyr;
-						drC = bluplasma_tre;
+						erC = plasma_dyr;			// .fla Linkage
+						drC = bluplasma_tre;		// .fla Linkage
 					}
 					bl = 'hardlight';
 				break;
 
 				case 17:
-					if (soft) drC=fire_soft;
+					if (soft) drC=fire_soft;		// .fla Linkage
 					else {
-						erC = plasma_dyr;
-						drC = pinkplasma_tre;
+						erC = plasma_dyr;			// .fla Linkage
+						drC = pinkplasma_tre;		// .fla Linkage
 					}
 					bl = 'hardlight';
 				break;
 
 				case 18:
-					drC = cryo_soft;
+					drC = cryo_soft;				// .fla Linkage
 					bl = 'hardlight';
 				break;
 
 				case 19: //взрыв
-					if (!soft && Math.random() * 0.5 < ver) drC=plaexpl_tre;
+					if (!soft && Math.random() * 0.5 < ver) drC=plaexpl_tre;	// .fla Linkage
 					centr=true;
 				break;
 
@@ -994,11 +1061,13 @@ package fe.graph {
 				if (nagar.totalFrames>1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
 				nagar.scaleX=nagar.scaleY=sc;
 				nagar.rotation=rc;
-				var dyrx=Math.round(nagar.width/2+2)*2, dyry=Math.round(nagar.height/2+2)*2;
+				var dyrx:int = Math.round(nagar.width/2+2)*2;
+				var dyry:int = Math.round(nagar.height/2+2)*2;
 				var res2:BitmapData = new BitmapData(dyrx, dyry, false, 0x0);
-				var rdx=0, rdy=0;
-				if (nx-dyrx/2<0) rdx=-(nx-dyrx/2);
-				if (ny-dyry/2<0) rdy=-(ny-dyry/2);
+				var rdx:int = 0;
+				var rdy:int = 0;
+				if (nx-dyrx/2<0) rdx = -(nx - dyrx/2);
+				if (ny-dyry/2<0) rdy = -(ny - dyry/2);
 				var rect:Rectangle = new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
 				var pt:Point = new Point(0, 0);
 				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
@@ -1060,7 +1129,7 @@ package fe.graph {
 			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
 			
 			// Paint along the line, step by step.
-			for (var i = 1; i <= kol; i++)
+			for (var i:int = 1; i <= kol; i++)
 			{
 				// Calculate the next point to paint.
 				pm.tx = nx1 + dx * i;

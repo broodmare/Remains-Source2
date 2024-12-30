@@ -25,8 +25,8 @@ package  fe {
 	
 	public class World {
 
-		public static var w:World;		// Publically Accessible variable to this instance
-		private var itemManager:ItemManager;	// Stores all items
+		public static var w:World;					// Publically Accessible variable to this instance
+		private static var itemManager:ItemManager;	// Stores all items
 
 		//Визуальные составляющие
 		public var main:Sprite;			//Главный спрайт игры
@@ -493,7 +493,7 @@ package  fe {
 				autoSaveN = data.n;
 			}
 			
-			Unit.txtMiss = Res.guiText('miss');
+			Unit.txtMiss = Res.txt("g", 'miss');
 			
 			waitLoadClick();
 			ng_wait = 2;
@@ -909,7 +909,7 @@ package  fe {
 			vgui.visible=vfon.visible=visual.visible=vscene.visible=false;
 			vwait.visible=true;
 			catPause=false;
-			vwait.progres.text=Res.guiText('loading');
+			vwait.progres.text=Res.txt("g", 'loading');
 			if (n < 0) {
 				vwait.x = swfStage.stageWidth / 2;
 				vwait.y = swfStage.stageHeight / 2;
@@ -926,7 +926,7 @@ package  fe {
 				vwait.skill.visible = false;
 				vwait.progres.visible = false;
 				if (n == 0) {
-					vwait.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
+					vwait.story.txt.htmlText = '<i>' + Res.txt("g", 'story') + '</i>';
 				}
 				else {
 					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
@@ -997,16 +997,16 @@ package  fe {
 			var s:String;
 			if (n==1) {
 				showScene('gameover');
-				s=Res.lpName(Res.guiText('end_bad'));
+				s=Res.lpName(Res.txt("g", 'end_bad'));
 			} 
 			else if (pers.rep>=pers.repGood) {
 				showScene('endgame');
-				s=Res.lpName(Res.guiText('end_good'));
+				s=Res.lpName(Res.txt("g", 'end_good'));
 				Snd.playMusic('music_fall_2');
 			} 
 			else {
 				showScene('endgame');
-				s=Res.lpName(Res.guiText('end_norm'));
+				s=Res.lpName(Res.txt("g", 'end_norm'));
 			}
 
 			vscene.sc.txt.htmlText = s;

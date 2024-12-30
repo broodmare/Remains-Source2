@@ -158,32 +158,32 @@ package fe.inter {
 			vis.portCel.visible = false;
 			
 			// Set localized text
-			txtTele =		Res.guiText('tele');
-			txtOpen =		Res.guiText('open');
-			txtSoft =		Res.guiText('soft');
-			txtHard =		Res.guiText('hard');
-			txtVeryHard =	Res.guiText('veryhard');
-			txtUnreal =		Res.guiText('unreal');
-			txtUndef0 =		Res.guiText('undef0');
-			txtUndef1 =		Res.guiText('undef1');
-			txtUndef2 =		Res.guiText('undef2');
-			txtClose =		Res.guiText('close');
-			txtUnlock =		Res.guiText('unlock');
-			txtRemine =		Res.guiText('remine');
-			txtUse =		Res.guiText('use');
-			txtLock =		Res.guiText('lock');
-			txtZhopa =		Res.guiText('zhopa');
-			txtEmpty =		Res.guiText('empty');
-			txtDrop =		Res.guiText('drop');
-			txtHold =		Res.guiText('hold');
-			txtHeavy =		Res.guiText('heavy');
-			txtMagia =		Res.guiText('magia');
-			txtArmorMana =	Res.guiText('armormana');
-			txtChance =		Res.guiText('chance');
-			txtMagiaOver =	Res.guiText('magiaover');
-			txtH2o =		Res.guiText('h2o');
-			txtH2oOver =	Res.guiText('h2over');
-			txtStam =		Res.guiText('stam');
+			txtTele =		Res.txt("g", 'tele');
+			txtOpen =		Res.txt("g", 'open');
+			txtSoft =		Res.txt("g", 'soft');
+			txtHard =		Res.txt("g", 'hard');
+			txtVeryHard =	Res.txt("g", 'veryhard');
+			txtUnreal =		Res.txt("g", 'unreal');
+			txtUndef0 =		Res.txt("g", 'undef0');
+			txtUndef1 =		Res.txt("g", 'undef1');
+			txtUndef2 =		Res.txt("g", 'undef2');
+			txtClose =		Res.txt("g", 'close');
+			txtUnlock =		Res.txt("g", 'unlock');
+			txtRemine =		Res.txt("g", 'remine');
+			txtUse =		Res.txt("g", 'use');
+			txtLock =		Res.txt("g", 'lock');
+			txtZhopa =		Res.txt("g", 'zhopa');
+			txtEmpty =		Res.txt("g", 'empty');
+			txtDrop =		Res.txt("g", 'drop');
+			txtHold =		Res.txt("g", 'hold');
+			txtHeavy =		Res.txt("g", 'heavy');
+			txtMagia =		Res.txt("g", 'magia');
+			txtArmorMana =	Res.txt("g", 'armormana');
+			txtChance =		Res.txt("g", 'chance');
+			txtMagiaOver =	Res.txt("g", 'magiaover');
+			txtH2o =		Res.txt("g", 'h2o');
+			txtH2oOver =	Res.txt("g", 'h2over');
+			txtStam =		Res.txt("g", 'stam');
 			txtOd =			Res.pipText('ap');
 			
 			vis.odBar.txt.text=txtOd;
@@ -212,7 +212,7 @@ package fe.inter {
 			informScript=new Script(<scr act="inform" val="id"/>);
 			dialScript=new Script(<scr act="dialog" val="id"/>);
 			vis.inform.but0.addEventListener(MouseEvent.MOUSE_DOWN,showHelp);
-			vis.inform.but0.text.text=Res.guiText('help');
+			vis.inform.but0.text.text=Res.txt("g", 'help');
 			vis.blood.visible=false;
 			vis.blood.stop();
 		}
@@ -319,8 +319,8 @@ package fe.inter {
 						if (gg.currentSpell) {
 							n={id:gg.currentSpell.id, nazv:gg.currentSpell.nazv, fav:i};
 							if (gg.currentSpell.t_culd>0) {
-								n.ammo=Math.ceil(gg.currentSpell.t_culd/World.fps)+' '+Res.guiText('sec');
-							} else n.ammo=Res.guiText('ready')
+								n.ammo=Math.ceil(gg.currentSpell.t_culd/World.fps)+' '+Res.txt("g", 'sec');
+							} else n.ammo=Res.txt("g", 'ready')
 						} else continue;
 					} else {
 						if (arrfav[i] || inv.fav[i]==null) continue;
@@ -339,8 +339,8 @@ package fe.inter {
                         }
 						if (inv.spells[n.id]!=null) {
 							if (inv.spells[n.id].t_culd>0) {
-								n.ammo=Math.ceil(inv.spells[n.id].t_culd/World.fps)+' '+Res.guiText('sec');
-							} else n.ammo=Res.guiText('ready')
+								n.ammo=Math.ceil(inv.spells[n.id].t_culd/World.fps)+' '+Res.txt("g", 'sec');
+							} else n.ammo=Res.txt("g", 'ready')
 						}
 					}
 					arrfav[i]=n;
@@ -920,11 +920,11 @@ package fe.inter {
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
 							if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
-							s+=Res.guiText('usekey');
+							s+=Res.txt("g", 'usekey');
 						//заперто, нужен ключ, но его нет
 						}
 						else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
-							s+="\n(<span class = 'r5'>"+Res.guiText('required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
+							s+="\n(<span class = 'r5'>"+Res.txt("g", 'required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
 						//заклинило
 						}
 						else if (celObj.inter.mine==0 && celObj.inter.lock>0 && celObj.inter.lockTip==0) {	//невскрываемый замок
@@ -953,7 +953,7 @@ package fe.inter {
 							//заколки
 							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.w.invent && World.w.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.w.invent.pin.kol+"</span>}";
 							
-							if (celObj.inter.cons) s+='\n('+Res.guiText('required')+': '+Res.txt('i',celObj.inter.cons)+')';
+							if (celObj.inter.cons) s+='\n('+Res.txt("g", 'required')+': '+Res.txt('i',celObj.inter.cons)+')';
 						}
 					}
 					else {
@@ -973,13 +973,13 @@ package fe.inter {
 					acts="\n<span class = 'r3'>";
 					if (World.w.hintKeys) acts+=World.w.ctr.retKey('keyCrack')+' - ';
 					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
-						s+=acts+Res.guiText('actalarm')+"</span>";
+						s+=acts+Res.txt("g", 'actalarm')+"</span>";
 					}
 					else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.guiText('runa')+"</span>";
+						s+=acts+Res.txt("g", 'runa')+"</span>";
 					}
 					else if (celObj.inter.lockTip==2 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.guiText('reboot')+"</span>";
+						s+=acts+Res.txt("g", 'reboot')+"</span>";
 					}
 				}
 				

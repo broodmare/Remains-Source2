@@ -19,17 +19,17 @@ package fe.serv {
 	
 		public var owner:Obj;
 		
-		var burnBmp:BitmapData;
-		var burnBm:Bitmap;
-		var burnN:int=0;
-		var burnTip:int=0;
-		var burnPart:String;
-		var burnGlowColor:uint;
-		var burnCt:ColorTransform;
-		var burnRnd:int=Math.random() * int.MAX_VALUE;
-		var burnKolPix:int;
-		var burnTime1:int=10;
-		var burnTime2:int=30;
+		private var burnBmp:BitmapData;
+		private var burnBm:Bitmap;
+		private var burnN:int=0;
+		private var burnTip:int=0;
+		private var burnPart:String;
+		private var burnGlowColor:uint;
+		private var burnCt:ColorTransform;
+		private var burnRnd:int=Math.random() * int.MAX_VALUE;
+		private var burnKolPix:int;
+		private var burnTime1:int=10;
+		private var burnTime2:int=30;
 		
 		public var vse:Boolean=false;
 

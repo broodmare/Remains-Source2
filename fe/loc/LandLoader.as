@@ -12,8 +12,8 @@ package fe.loc {
 		public var id:String;
 		
 		public var roomsFile:String;
-		var loader_rooms:URLLoader; 
-		var request:URLRequest;
+		private var loader_rooms:URLLoader; 
+		private var request:URLRequest;
 		
 		public var test:Boolean=false;
 		public var loaded:Boolean=false;
@@ -30,20 +30,12 @@ package fe.loc {
 			test = (roomNode.@test > 0);
 
 			//источник шаблонов локаций
-			if (World.w.roomsLoad)
-			{
+			if (World.w.roomsLoad) {
 				loader_rooms = new URLLoader();
-				var roomsURL=World.w.landPath+roomsFile+".xml";
+				var roomsURL:String = World.w.landPath+roomsFile+".xml";
 				request = new URLRequest(roomsURL); 
-				try {
-					loader_rooms.load(request); 
-				}
-				catch(err) {
-					trace('ERROR: (00:2A)');
-					errLoad=true;
-					trace('no load '+roomsFile);
-					World.w.load_log+='Load error '+roomsFile+'\n';
-				}
+				loader_rooms.load(request); 
+				
 				loader_rooms.addEventListener(Event.COMPLETE, onCompleteLoadRooms); 
 				loader_rooms.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
 			}
@@ -56,6 +48,9 @@ package fe.loc {
 		}
 
 		private function onCompleteLoadRooms(event:Event):void {
+			var loader:URLLoader = URLLoader(event.currentTarget);
+            loader.removeEventListener(Event.COMPLETE, onCompleteLoadRooms); 
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
 			loaded=true;
 			World.w.load_log+='Land '+roomsFile+' loaded\n';
 			allroom = new XML(loader_rooms.data);
@@ -63,6 +58,9 @@ package fe.loc {
 		}
 		
 		private function ioErrorHandler(event:IOErrorEvent):void {
+			var loader:URLLoader = URLLoader(event.currentTarget);
+			loader.removeEventListener(Event.COMPLETE, onCompleteLoadRooms); 
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
 			World.w.load_log+='IOerror '+roomsFile+'\n';
         }
 	}

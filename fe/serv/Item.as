@@ -59,7 +59,7 @@ package fe.serv {
 		
 		public var nov:int = 0;					// [New thing]
 		public var dat:Number = 0;				// [When item was acquired]
-		public var bou:int = 0;					// [Purchased (used by vendors)]
+		public var bou:int = 0;					// How many of an item we just bought
 		public var shpun:int = 0;				// [A sign indicating that a concealed weapon needs to be revealed]
 		public var lvl:int = 0;					// [Character level from which the item becomes available]
 		public var barter:int = 0;				// [The skill level at which the item becomes available]
@@ -343,7 +343,7 @@ package fe.serv {
 		
 		public function trade():void {
 			kol -= bou;
-			bou = 0;
+			bou = 0;	// How many of an item we just bought
 		}
 	}
 }

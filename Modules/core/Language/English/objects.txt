@@ -1,0 +1,282 @@
+<obj id="box">
+    <n>Crate</n>
+  </obj>
+  <obj id="woodbox">
+    <n>Wooden crate</n>
+  </obj>
+  <obj id="mcrate1">
+    <n>Crate</n>
+  </obj>
+  <obj id="mcrate2">
+    <n>Metal crate</n>
+  </obj>
+  <obj id="mcrate3">
+    <n>Metal box</n>
+  </obj>
+  <obj id="mcrate4">
+    <n>Very heavy box</n>
+  </obj>
+  <obj id="mcrate5" v="0.7">
+    <n>Heavy box</n>
+  </obj>
+  <obj id="bigbox">
+    <n>Heavy crate</n>
+  </obj>
+  <obj id="bigbox2">
+    <n>Cargo container</n>
+  </obj>
+  <obj id="radbarrel">
+    <n>Radioactive waste</n>
+  </obj>
+  <obj id="radbigbarrel">
+    <n>Huge waste barrel</n>
+  </obj>
+  <obj id="chest">
+    <n>Chest</n>
+  </obj>
+  <obj id="basechest" v="0.7">
+    <n>Chest</n>
+  </obj>
+  <obj id="enclchest" v="0.7">
+    <n>Chest</n>
+  </obj>
+  <obj id="enclcase" v="0.7">
+    <n>Enclave case</n>
+  </obj>
+  <obj id="wallcab">
+    <n>Cabinet</n>
+  </obj>
+  <obj id="safe">
+    <n>Safe</n>
+  </obj>
+  <obj id="wallsafe">
+    <n>Wall safe</n>
+  </obj>
+  <obj id="case">
+    <n>Box</n>
+  </obj>
+  <obj id="ammobox">
+    <n>Ammunition box</n>
+  </obj>
+  <obj id="explbox">
+    <n>Explosives crate</n>
+  </obj>
+  <obj id="bigexpl" v="0.6">
+    <n>Big explosives crate</n>
+  </obj>
+  <obj id="weapbox">
+    <n>Gun cabinet</n>
+  </obj>
+  <obj id="weapcase">
+    <n>Gun case</n>
+  </obj>
+  <obj id="bookcase">
+    <n>Bookshelf</n>
+  </obj>
+  <obj id="fridge">
+    <n>Fridge</n>
+  </obj>
+  <obj id="cup">
+    <n>Cupboard</n>
+  </obj>
+  <obj id="locker">
+    <n>Lockers</n>
+  </obj>
+  <obj id="tumba1">
+    <n>Nightstand</n>
+  </obj>
+  <obj id="tumba2">
+    <n>Metal nightstand</n>
+  </obj>
+  <obj id="ccup">
+    <n>Kitchen table</n>
+  </obj>
+  <obj id="wcup">
+    <n>Kitchen cabinet</n>
+  </obj>
+  <obj id="tap">
+    <n>Sink</n>
+  </obj>
+  <obj id="stove">
+    <n>Stove</n>
+  </obj>
+  <obj id="couch">
+    <n>Couch</n>
+  </obj>
+  <obj id="bed">
+    <n>Bed</n>
+  </obj>
+  <obj id="table">
+    <n>Desk</n>
+  </obj>
+  <obj id="table1">
+    <n>Wooden table</n>
+  </obj>
+  <obj id="table2">
+    <n>Metal table</n>
+  </obj>
+  <obj id="table3">
+    <n>Magical orb</n>
+  </obj>
+  <obj id="table4" v="0.7">
+    <n>Steel table</n>
+  </obj>
+  <obj id="longtable" v="0.7">
+    <n>Long table</n>
+  </obj>
+  <obj id="filecab">
+    <n>Filing cabinet</n>
+  </obj>
+  <obj id="medbox">
+    <n>Medical supplies</n>
+  </obj>
+  <obj id="bigmed">
+    <n>Cabinet with medicines</n>
+  </obj>
+  <obj id="instr1">
+    <n>Tool cabinet</n>
+  </obj>
+  <obj id="trash">
+    <n>Trash can</n>
+  </obj>
+  <obj id="instr2">
+    <n>Tools rack</n>
+  </obj>
+  <obj id="term">
+    <n>Terminal</n>
+  </obj>
+  <obj id="term1">
+    <n>Security terminal</n>
+  </obj>
+  <obj id="term2">
+    <n>Access terminal</n>
+  </obj>
+  <obj id="term3">
+    <n>Info terminal</n>
+  </obj>
+  <obj id="termh" v="0.6">
+    <n>Aid terminal</n>
+  </obj>
+  <obj id="knop">
+    <n>Button</n>
+  </obj>
+  <obj id="detonator">
+    <n>Detonator</n>
+  </obj>
+  <obj id="robocell">
+    <n>Robocell</n>
+  </obj>
+  <obj id="alarm">
+    <n>Alarm button</n>
+  </obj>
+  <obj id="work">
+    <n>Workbench</n>
+  </obj>
+  <obj id="himlab">
+    <n>Laboratory bench</n>
+  </obj>
+  <obj id="wmap">
+    <n>Wasteland map</n>
+  </obj>
+  <obj id="stand">
+    <n>Weapons rack</n>
+  </obj>
+  <obj id="p_luna" v="0.6">
+    <n>Princess Luna portrait</n>
+  </obj>
+  <obj id="cryocap" v="0.6">
+    <n>Cryocapsule</n>
+  </obj>
+  <obj id="vault" v="0.8">
+    <n>Vault</n>
+  </obj>
+  <obj id="door1">
+    <n>Wooden door</n>
+  </obj>
+  <obj id="door1a">
+    <n>Reinforced door</n>
+  </obj>
+  <obj id="door1b">
+    <n>Sturdy door</n>
+  </obj>
+  <obj id="door2">
+    <n>Iron door</n>
+  </obj>
+  <obj id="door2a">
+    <n>Iron door</n>
+  </obj>
+  <obj id="stdoor">
+    <n>Stable door</n>
+  </obj>
+  <obj id="door3">
+    <n>Armored door</n>
+  </obj>
+  <obj id="door4">
+    <n>Force field</n>
+  </obj>
+  <obj id="basedoor" v="0.7">
+    <n>Barracks door</n>
+  </obj>
+  <obj id="encldoor" v="0.7">
+    <n>Base door</n>
+  </obj>
+  <obj id="enclpole" v="0.7">
+    <n>Force field</n>
+  </obj>
+  <obj id="hatch1">
+    <n>Trapdoor</n>
+  </obj>
+  <obj id="hatch2">
+    <n>Iron trapdoor</n>
+  </obj>
+  <obj id="indoor1">
+    <n>Wooden door</n>
+  </obj>
+  <obj id="indoor2">
+    <n>Reinforced door</n>
+  </obj>
+  <obj id="instdoor">
+    <n>Stable door</n>
+  </obj>
+  <obj id="inbasedoor" v="0.7">
+    <n>Barracks door</n>
+  </obj>
+  <obj id="inencldoor" v="0.7">
+    <n>Base door</n>
+  </obj>
+  <obj id="exit" v="0.7">
+    <n>Exit from the level</n>
+  </obj>
+  <obj id="indoor3">
+    <n>Ventilation</n>
+  </obj>
+  <obj id="indoor4">
+    <n>Sturdy door</n>
+  </obj>
+  <obj id="generat" v="0.7">
+    <n>Generator</n>
+  </obj>
+  <obj id="checkpoint">
+    <n>Checkpoint</n>
+  </obj>
+  <obj id="bossroom" v="0.7">
+    <n>Boss room</n>
+  </obj>
+  <obj id="brspr" v="0.7">
+    <n>Sprite-bot remains</n>
+  </obj>
+  <obj id="dsph" v="0.7">
+    <n>Dark sphere</n>
+  </obj>
+  <obj id="elpanel" v="0.8">
+    <n>Terminal for electric fence</n>
+  </obj>
+  <obj id="door_st2" v="0.8">
+    <n>Stable exit</n>
+  </obj>
+  <obj id="door_st1" v="0.8">
+    <n>Stable entrance</n>
+  </obj>
+  <obj id="tomb" v="0.8">
+    <n>Tomb</n>
+  </obj>

@@ -162,7 +162,7 @@ package fe {
 			}
 			
 			world.vwait.visible = true;
-			world.vwait.progres.text = Res.guiText('loading');
+			world.vwait.progres.text = Res.txt("g", 'loading');
 		}
 
 		private function menuButtonListeners(setState:Boolean):void {
@@ -178,8 +178,7 @@ package fe {
 
 			function funButtonPress(event:MouseEvent):void {
 				trace('MainMenu.as/funButtonPress() - "' + event.currentTarget.name + '" pressed.');
-				switch(event.currentTarget.name)
-				{
+				switch(event.currentTarget.name) {
 					case "butContGame":
 						funContGame();
 					break;
@@ -273,45 +272,52 @@ package fe {
 		
 		//надписи
 		private function setMainLang():void {
-			setMainButton(mainMenuMovieClip.butContGame,Res.guiText('contgame'));
-			setMainButton(mainMenuMovieClip.butNewGame,Res.guiText('newgame'));
-			setMainButton(mainMenuMovieClip.butLoadGame,Res.guiText('loadgame'));
-			setMainButton(mainMenuMovieClip.butOpt,Res.guiText('options'));
-			setMainButton(mainMenuMovieClip.butAbout,Res.guiText('about'));
-			mainMenuMovieClip.dialNew.title.text=Res.guiText('newgame');
-			mainMenuMovieClip.dialLoad.title.text=Res.guiText('loadgame');
-			mainMenuMovieClip.dialLoad.title2.text=Res.guiText('select_slot');
-			mainMenuMovieClip.version.htmlText='<b>'+Res.guiText('version')+' '+version+'</b>';
-			mainMenuMovieClip.dialLoad.butCancel.text.text=mainMenuMovieClip.dialNew.butCancel.text.text=Res.guiText('cancel');
-			mainMenuMovieClip.dialLoad.butFile.text.text=Res.pipText('loadfile');
-			mainMenuMovieClip.dialLoad.warn.text=mainMenuMovieClip.dialNew.warn.text=Res.guiText('loadwarn');
-			mainMenuMovieClip.dialNew.infoName.text=Res.guiText('inputname');
-			mainMenuMovieClip.dialNew.hardOpt.text=Res.guiText('hardopt');
-			mainMenuMovieClip.dialNew.butOk.text.text='OK';
-			mainMenuMovieClip.dialNew.inputName.text=Res.txt('u','littlepip');
-			mainMenuMovieClip.dialNew.maxChars=32;
+			trace("MainMenu.as/setMainLang() - Setting up MainMenu language");
+			
+			// The main menu buttons on the left
+			setMainButton(mainMenuMovieClip.butContGame, Res.txt("g", 'contgame'));
+			setMainButton(mainMenuMovieClip.butNewGame, Res.txt("g", 'newgame'));
+			setMainButton(mainMenuMovieClip.butLoadGame, Res.txt("g", 'loadgame'));
+			setMainButton(mainMenuMovieClip.butOpt, Res.txt("g", 'options'));
+			setMainButton(mainMenuMovieClip.butAbout, Res.txt("g", 'about'));
+			
+			mainMenuMovieClip.dialNew.title.text = Res.txt("g", 'newgame');
+			mainMenuMovieClip.dialLoad.title.text = Res.txt("g", 'loadgame');
+			mainMenuMovieClip.dialLoad.title2.text = Res.txt("g", 'select_slot');
+			mainMenuMovieClip.version.htmlText='<b>' + Res.txt("g", 'version') + ' ' + version + '</b>';
+			mainMenuMovieClip.dialLoad.butCancel.text.text = mainMenuMovieClip.dialNew.butCancel.text.text = Res.txt("g", 'cancel');
+			mainMenuMovieClip.dialLoad.butFile.text.text = Res.pipText('loadfile');
+			mainMenuMovieClip.dialLoad.warn.text = mainMenuMovieClip.dialNew.warn.text = Res.txt("g", 'loadwarn');
+			mainMenuMovieClip.dialNew.infoName.text = Res.txt("g", 'inputname');
+			mainMenuMovieClip.dialNew.hardOpt.text = Res.txt("g", 'hardopt');
+			mainMenuMovieClip.dialNew.butOk.text.text = 'OK';
+			mainMenuMovieClip.dialNew.inputName.text = Res.txt('u','littlepip');
+			mainMenuMovieClip.dialNew.maxChars = 32;
+			
 			var kolDifs:int = 5;
-			for (var i:int = 0; i<kolDifs; i++) {
-				mainMenuMovieClip.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
-				mainMenuMovieClip.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
+			for (var i:int = 0; i < kolDifs; i++) {
+				mainMenuMovieClip.dialNew['dif' + i].mode.text = Res.txt("g", 'dif' + i);
+				mainMenuMovieClip.dialNew['dif' + i].modeinfo.text = Res.formatText(Res.txt('g', 'dif' + i, 1));
 			}
+			
 			var kolOpts:int = 6;
 			for (i = 1; i<=kolOpts; i++) {
-				mainMenuMovieClip.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
+				mainMenuMovieClip.dialNew['infoOpt'+i].text=Res.txt("g", 'opt'+i);
 			}
-			mainMenuMovieClip.dialNew.butVid.mode.text=Res.guiText('butvid');
+			
+			mainMenuMovieClip.dialNew.butVid.mode.text=Res.txt("g", 'butvid');
 			if (world.app) world.app.setLang();
 			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
 			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
-			mainMenuMovieClip.info.txt.htmlText=Res.txt('g','inform')+'<br>'+Res.txt('g','inform',1);
+			mainMenuMovieClip.info.txt.htmlText = Res.txt('g','inform') + '<br>' + Res.txt('g','inform', 1);
 			mainMenuMovieClip.info.visible=(mainMenuMovieClip.info.txt.text.length>0);
 			setScrollInfo();
 		}
 
 		private function setMainButton(but:MovieClip, txt:String):void {
-			but.txt.text=txt;
-			but.glow.text=txt;
-			but.txt.visible=(but.glow.textWidth<1)
+			but.txt.text = txt;
+			but.glow.text = txt;
+			but.txt.visible = (but.glow.textWidth < 1)
 		}
 		
 		private function setMenuSize():void {
@@ -563,15 +569,17 @@ package fe {
 
 		// Function to change the language of the game after clicking a language button
 		private function funLang(event:MouseEvent):void {
-			mainMenuMovieClip.loading.text = '';
+			mainMenuMovieClip.loading.text = "";
 			var nid:String = event.currentTarget.n.text;
+			
 			if (nid == world.languageManager.currentLanguage) {
 				return;
 			}
-			world.languageManager.changeLanguage(nid);
-			langReload = true;
+			
 			showButtons(false);
 			mainMenuMovieClip.loading.text = 'Loading';
+			world.languageManager.changeLanguage(nid);
+			langReload = true;
 		}
 		
 		private function showButtons(n:Boolean):void {
@@ -585,9 +593,9 @@ package fe {
 		
 		//создатели
 		private function funAbout():void {
-			mainMenuMovieClip.dialAbout.title.text = Res.guiText('about');
+			mainMenuMovieClip.dialAbout.title.text = Res.txt("g", 'about');
 			var s:String = Res.formatText(Res.txt('g', 'about', 1));
-			s += '<br><br>' + Res.guiText('usedmusic') + '<br>';
+			s += '<br><br>' + Res.txt("g", 'usedmusic') + '<br>';
 			s += "<br><span class='music'>" + Res.formatText(Res.currentLanguageData.gui.(@id == 'usedmusic').info[0]) + "</span>"
 			s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
 			mainMenuMovieClip.dialAbout.txt.styleSheet = style;
@@ -605,10 +613,10 @@ package fe {
 		private function step():void {
 			if (langReload) {
 				langReload = false;
-				showButtons(true);
-				mainMenuMovieClip.loading.text = '';
+				mainMenuMovieClip.loading.text = "";
 				world.pip.updateLang();
 				setMainLang();
+				showButtons(true);
 				return;
 			}
 			if (loaded) {
@@ -638,7 +646,7 @@ package fe {
 				if (world.allLandsLoaded) {
 					setLangButtons();
 					setMainLang();
-					loaded=true;
+					loaded = true;
 					showButtons(true);
 					return;
 				}
@@ -652,7 +660,7 @@ package fe {
 		}
 		
 		public function log(s:String):void {
-			mainMenuMovieClip.loading.text+=s+'; ';
+			mainMenuMovieClip.loading.text += s + '; ';
 		}
 
 		// This is the main loop of the game and runs every frame

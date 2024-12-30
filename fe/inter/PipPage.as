@@ -49,7 +49,7 @@ package fe.inter {
 		private var pp:String;
 		private var kolCats:int = 6;
 		private var cat:Array = [0, 0, 0, 0, 0, 0, 0];
-		public var curTip = '';
+		public var curTip:String = '';
 		public var tips:Array = [[]];
 
 		public static var infoCache:Object = {}; // Global cache for item descriptions
@@ -238,7 +238,6 @@ package fe.inter {
 		}
 		
 		public function setStatus(flop:Boolean=true):void {
-			trace("PipPage.as/setStatus() - ");
 			pip.reqKey = false;
 			statHead.id.text = '';
 			vis.visible = true;
@@ -337,7 +336,7 @@ package fe.inter {
 				}
 				else {
 					var vWeapon:Class = w.vWeapon;
-					var node:XML = Weapon.getWeaponInfo(id);
+					var node = Weapon.getWeaponInfo(id);
 					if (node != null) {
 						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
 					}
@@ -416,7 +415,7 @@ package fe.inter {
 			if (id.substr(-3)=='_ad') id=id.substr(0,id.length-3);
 
 			var typeName:String = tip + 's';
-			var dp = Effect.getEffectInfo(id);
+			var dp = Effect.getEffectInfo(id);	// XML / XMLList 
 
 			if (dp == null) return s;
 			dp = dp.(@id==id);
@@ -434,7 +433,7 @@ package fe.inter {
 				lvl = pers.getSkLevel(pers.skills[id]);
 			}
 			else if (dp.@him == '2') {
-				var ad = pers.addictions[id];
+				var ad:int = pers.addictions[id];
 				if (ad >= pers.ad2) lvl = 2;
 				if (ad >= pers.ad3) lvl = 3;
 			}
@@ -650,7 +649,7 @@ package fe.inter {
 				s += '\n\n'+Res.txt('a',id,1);
 			}
 			else if (tip==Item.L_AMMO) {
-				var ammo:XML = inv.items[id].xml;
+				var ammo = inv.items[id].xml;
 				if (Weapon.getWeaponInfo(id) != null) {
 					s = Res.txt('w',id,1);
 				}
@@ -673,7 +672,7 @@ package fe.inter {
 			else {
 				var hhp:Number=0;
 				s=Res.txt('i',id,1)+'\n';
-				var pot:XML = inv.items[id].xml;
+				var pot = inv.items[id].xml;
 				tip=pot.@tip;
 				if (tip=='instr' || tip=='impl'|| tip=='art') {
 					s=effStr('item',id)+'\n';
@@ -700,7 +699,7 @@ package fe.inter {
 				}
 				if (tip=='spell') {
 					s+='\n'+Res.pipText('dmana2')+': '+textAsColor('yellow', pot.@mana)+' ('+numberAsColor('yellow', Math.round(pot.@mana*World.w.pers.allDManaMult))+')';
-					s+='\n'+Res.pipText('culd')+': '+textAsColor('yellow', pot.@culd+Res.guiText('sec'))+' ('+textAsColor('yellow', Math.round(pot.@culd*World.w.pers.spellDown)+Res.guiText('sec'))+')';
+					s+='\n'+Res.pipText('culd')+': '+textAsColor('yellow', pot.@culd+Res.txt("g", 'sec'))+' ('+textAsColor('yellow', Math.round(pot.@culd*World.w.pers.spellDown)+Res.txt("g", 'sec'))+')';
 					s+='\n'+Res.pipText('is1')+': '+textAsColor('pink', (pot.@tele>0)?Res.txt('e','tele'):Res.txt('e','magic'));
 				}
 				if (id=='rep') {
@@ -771,7 +770,7 @@ package fe.inter {
 				if (craft == 1) s += craftInfo(id);
 			}
 			else if (tip == Item.L_AMMO) {
-				var ammo:XML = inv.items[id].xml;
+				var ammo = inv.items[id].xml;
 				if (ammo.@base.length())
 				{
 					vis.nazv.text = Res.txt('i', ammo.@base);
@@ -805,7 +804,7 @@ package fe.inter {
 		public function craftInfo(id:String):String {
 			var s:String='\n';
 			var cs:String = 's_' + id;
-			var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
+			var sch = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
 			var kol:int=1;
 			if (sch.@kol.length()) kol=sch.@kol;
 			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
@@ -816,7 +815,7 @@ package fe.inter {
 				else s+="pink";
 				s+="'>"+Res.txt('e',sch.@skill)+" - "+sch.@lvl+"</span>\n";
 			}
-			for each(var c:XML in sch.craft) {
+			for each(var c in sch.craft) {
 				s+="\n<span class = 'orange'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
 				if (!World.w.loc.base && c.@kol>inv.items[c.@id].kol
 				  || World.w.loc.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
@@ -859,31 +858,40 @@ package fe.inter {
 			var s:String='', s1:String;
 			var ok:Boolean = false;
 			if (World.w.pers.factor[id] is Array) {
-				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+				var paramList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
-				var xml = paramList.(@v==id);
+				var xml = paramList.(@v==id);	// XML / XMLLIST
 				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', '100%')+'\n';
 				for each (var obj in World.w.pers.factor[id]) {
 					if (obj.id=='beg') {
 						if (xml.@nobeg>0) continue;
 						if (xml.@tip=='0') {
-							if (obj.res!=0) s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res))+'\n';
-						} else if (xml.@tip=='3') {
-							s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
-						} else {
-							s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
+							if (obj.res != 0) s += '- ' + Res.pipText('begval') + ': ' + textAsColor('yellow', Res.numb(obj.res)) + '\n';
+						}
+						else if (xml.@tip == '3') {
+							s += '- ' + Res.pipText('begvulner') + ': ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%') + '\n';
+						}
+						else {
+							s += '- ' + Res.pipText('begval') + ': ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%') + '\n';
 						}
 					}
 					else {
 						if (obj.ref=='add' && obj.val==0 || obj.ref=='mult' && obj.val==1) continue;
-						ok=true;
+						
+						ok = true;
+						
 						if (obj.tip!=null) s1=Res.txt(obj.tip,obj.id);
 						else if (Res.istxt('e',obj.id)) s1=Res.txt('e',obj.id);
 						else if (Res.istxt('i',obj.id)) s1=Res.txt('i',obj.id);
 						else if (Res.istxt('a',obj.id)) s1=Res.txt('a',obj.id);
 						else s1='???';
-						if (s1.substr(0,6)=='*eff_f') s1=Res.txt('e','food');
-						s+='- '+s1+': ';
+						
+						if (s1.substr(0, 6) == '*eff_f') {
+							s1 = Res.txt('e', 'food');
+						}
+						
+						s += '- ' + s1 + ': ';
+						
 						if (obj.ref=='add') {
 							if (xml.@tip=='0') {
 								s+=(obj.val>0?'+':'-')+' '+numberAsColor('yellow', Math.abs(obj.val));

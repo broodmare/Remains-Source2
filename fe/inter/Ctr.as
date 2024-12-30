@@ -437,7 +437,7 @@ package fe.inter {
 			}
 			catch(err)
 			{
-				trace('ERROR: (00:2C)');
+				trace('Ctr.as/onMouseWheel() - ERROR: (00:2C)');
 			}
 			if (event.delta<0 && keys['scrd']) this[keys['scrd'].id]=true;
 			if (event.delta>0 && keys['scru']) this[keys['scru'].id]=true;

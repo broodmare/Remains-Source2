@@ -23,14 +23,19 @@ package fe {
 		*/
 		public static function istxt(tip:String, id:String):Boolean {
 			var key:String = tip + id;
+			
 			if (cachedIsTxt[key]) {
 				return true;
 			}
+			
 			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
+			
 			if (xmlList.length() == 0) {
 				return false; // If there's no matching nodes, return false.
 			}
+			
 			cachedIsTxt[key] = true;
+			
 			return true;
 		}
 
@@ -52,75 +57,64 @@ package fe {
 				return cachedTxt[key];
 			}
 
-			try {
-				// Reduce redundant dictionary lookups
-				var tipType:String = typeDictionary[tip];
-				var razdType:String = typeDictionary[razd];
+			// Reduce redundant dictionary lookups
+			var tipType:String = typeDictionary[tip];
+			var razdType:String = typeDictionary[razd];
 
-				var s:String;	// String representation of localized text.
-				var xl1:XMLList; // XML List of all returned nodes for the type[id].
+			var s:String;	// String representation of localized text.
+			var xl1:XMLList; // XML List of all returned nodes for the type[id].
 
-				// Try to get a localized string from currentLanguage or fallbackLanguage
-				for each (var langData in currentLanguageData) {
-					if (!s) { // Skip checking fallback if string was found 
-						xl1 = langData[tipType].(@id == id);
-						if (xl1.length() > 0) s = xl1[razdType][0];
+			// Try to get a localized string from currentLanguage or fallbackLanguage
+			for each (var langData in currentLanguageData) {
+				if (!s) { // Skip checking fallback if string was found 
+					xl1 = langData[tipType].(@id == id);
+					if (xl1.length() > 0) s = xl1[razdType][0];
+				}
+			}
+
+			// Handle cases where no data was found
+			if (!s) {
+				if (tip == 'o') return '';
+				if (razd == 0) return '*' + tipType + '_' + id;
+				return '';
+			}
+
+			var xl2:XML = xl1[0];
+
+			if (xl2.@m == '1') { // Strings with profanity
+				var spl:Array = s.split('|');
+				if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
+			}
+			
+			if (razd >= 1 || dop) {
+				if (xl2.@s1.length()) s = addKeys(s, xl2);
+				if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
+
+				//Merged all 3 regex searches instead of iterating 3 times per string.
+				var combinedRegExp:RegExp = /\[br]|\[|]/g;
+				s = s.replace(combinedRegExp, function(match:String, ...args):String {
+					switch (match) {
+						case "[br]":
+							return "<br>";
+						case "[":
+							return "<span class='yellow'>";
+						case "]":
+							return "</span>";
+						default:
+							return ''; // Needed for compile, shouldn't ever actually get here
 					}
-				}
-
-				// Handle cases where no data was found
-				if (!s) {
-					if (tip == 'o') return '';
-					if (razd == 0) return '*' + tipType + '_' + id;
-					return '';
-				}
-
-				var xl2:XML = xl1[0];
-
-				if (xl2.@m == '1') { // Strings with profanity
-					var spl:Array = s.split('|');
-					if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
-				}
-				
-				if (razd >= 1 || dop) {
-					if (xl2.@s1.length()) s = addKeys(s, xl2);
-					if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
-
-					//Merged all 3 regex searches instead of iterating 3 times per string.
-					var combinedRegExp:RegExp = /\[br]|\[|]/g;
-					s = s.replace(combinedRegExp, function(match:String, ...args):String {
-						switch (match) {
-							case "[br]":
-								return "<br>";
-							case "[":
-								return "<span class='yellow'>";
-							case "]":
-								return "</span>";
-							default:
-								return ''; // Needed for compile, shouldn't ever actually get here
-						}
-					});
-				}
-
-				var controlCharsRegExp:RegExp = /[\b\r\t]/g;
-				if (dop) s = s.replace(controlCharsRegExp, '');
-				if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
+				});
 			}
-			catch(err:Error) {
-				trace('ERROR: (00:19) - Could not get localization for "' + typeDictionary[tip] + '(' + id + ')"!');
-				s = '';
-				return s;
-			}
+
+			var controlCharsRegExp:RegExp = /[\b\r\t]/g;
+			if (dop) s = s.replace(controlCharsRegExp, '');
+			if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
+
 
 			cachedTxt[key] = s; // Store this formatted string
 			return s;
 		}
-
-		// TODO: Obsolete, remove 
-		public static function guiText(id:String):String {
-			return txt('g', id);
-		}
-
+		
 		// TODO: Obsolete, remove
 		public static function pipText(id:String):String {
 			return txt('p', id);
@@ -129,69 +123,63 @@ package fe {
 		/*
 		* Retrieves and formats message texts, potentially including multiple lines and speaker names.
 		* @id   -- Internal name of the string
-		* @v    -- Variations?
+		* @v    -- Returns either the localized string or it's information, eg.  v=0: "Telekensis" v=1: "The 'Telekinesis' skill determines your ability to move.."
 		* @imp  -- Displays a message based on it's importance level
 		*/
-		public static function messText(id:String, v:int = 0, imp:Boolean = true):String {
+		public static function messText(id:String, v:int = 1, imp:Boolean = true):String {
 			var s:String = '';
-			try {
-				var xml:XMLList = currentLanguageData.txt.(@id == id);
-				
-				if (xml.length()==0) return '';
+			var xml:XMLList = currentLanguageData.txt.(@id == id);
+			
+			if (xml.length()==0) return '';
 
-				if (!imp && !(xml.@imp > 0)) return '';
-				
-				var tip:int = xml.@imp;
-				
-				if (v==1) {
-					s = xml.info[0];
+			if (!imp && !(xml.@imp > 0)) return '';
+			
+			var tip:int = xml.@imp;
+			
+			if (v==1) {
+				s = xml.info[0];
+			}
+			else {
+				if (xml.n[0].r.length()) {
+					for each (var node:XML in xml.n[0].r) {
+						var s1:String=node.toString();
+						if (node.@m.length()) {
+							var sar:Array=s1.split('|');
+							if (sar) {
+								if (World.w.matFilter && sar.length>1) s1=sar[1];
+								else s1 = sar[0];
+							}
+						}
+						if (node.@s1.length()) {
+							for (var i:int = 1; i <= 5; i++) {
+								if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yellow'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
+							}
+						}
+						s1=s1.replace(/[\b\r\t]/g,'');
+						if (tip==1) {
+							if (node.@p.length()==0) s+="<span class='dark'>"+s1+"</span>"+'<br>';
+							else {
+								//TODO: Figure out how to declare this without breaking notes.
+								var pers = node.@p;
+								if (pers.indexOf("lp") == 0) s += "<span class='light'>" + ' - ' + s1 + "</span>" + '<br>';
+								else s += ' - ' + s1 + '<br>';
+							}
+						} 
+						else s += s1+'<br>';
+					}
 				}
 				else {
-					if (xml.n[0].r.length()) {
-						for each (var node:XML in xml.n[0].r) {
-							var s1:String=node.toString();
-							if (node.@m.length()) {
-								var sar:Array=s1.split('|');
-								if (sar) {
-									if (World.w.matFilter && sar.length>1) s1=sar[1];
-									else s1 = sar[0];
-								}
-							}
-							if (node.@s1.length()) {
-								for (var i:int = 1; i <= 5; i++) {
-									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yellow'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
-								}
-							}
-							s1=s1.replace(/[\b\r\t]/g,'');
-							if (tip==1) {
-								if (node.@p.length()==0) s+="<span class='dark'>"+s1+"</span>"+'<br>';
-								else {
-									//TODO: Figure out how to declare this without breaking notes.
-									var pers = node.@p;
-									if (pers.indexOf("lp") == 0) s += "<span class='light'>" + ' - ' + s1 + "</span>" + '<br>';
-									else s += ' - ' + s1 + '<br>';
-								}
-							} 
-							else s += s1+'<br>';
-						}
-					}
-					else {
-						s = xml.n[0];
-					}
-				}
-				
-				s = lpName(s);
-				s = s.replace(/\[br]/g,'<br>');
-				
-				if (xml.@s1.length()) {
-					for (var j:int = 1; j <= 5; j++) {
-						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span class='r2'>" + World.w.ctr.retKey(xml.attribute('s' + j)) + "</span>");
-					}
+					s = xml.n[0];
 				}
 			}
-			catch (err) {
-				trace('ERROR: (00:1A)');
-				return 'err: ' + id;
+			
+			s = lpName(s);
+			s = s.replace(/\[br]/g,'<br>');
+			
+			if (xml.@s1.length()) {
+				for (var j:int = 1; j <= 5; j++) {
+					if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span class='r2'>" + World.w.ctr.retKey(xml.attribute('s' + j)) + "</span>");
+				}
 			}
 			return (s == null) ? '':s;
 		}
@@ -212,7 +200,7 @@ package fe {
 			var n:int = xl.length();
 			if (n == 0) return '';
 			var num:int = Math.floor(Math.random() * n);
-			if (World.w.matFilter && xl[num].@m.length()) return '';
+			
 			var s:String = xl[num];
 			var n1:int = s.indexOf('#');
 			if (n1>=0) {
@@ -320,7 +308,9 @@ package fe {
 			} 
 			catch (err:ReferenceError) {
 				//trace('ERROR: (00:1C) - Could not retrieve class with ID1: "' + id1 + '".');
-				if (id2 == null) r = def;
+				if (id2 == null) {
+					r = def;
+				}
 				else {
 					try {
 						r = getDefinitionByName(id2) as Class;

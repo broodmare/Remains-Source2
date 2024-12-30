@@ -25,7 +25,7 @@ package fe.loc {
 		public var takeR:int = osnRad;			// [take radius] | радиус взятия
 		
 		private var isTake:Boolean = false;		// [taken] | взят
-		var actTake:Boolean = false;			// ['E' was pressed] | была нажата E
+		private var actTake:Boolean = false;	// ['E' was pressed] | была нажата E
 		public var auto:Boolean = false;		// [берётся автоматически] | берётся автоматически
 		public var auto2:Boolean = false;		// [is taken automatically in accordance with the auto-pickup settings] | берётся автоматически в соответствии с настройками автовзятия
 		public var krit:Boolean = false;		// [Critical item] | критически важный
@@ -41,7 +41,7 @@ package fe.loc {
 		// Constructor
 		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
 			
-			//trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
+			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
 			loc = nloc;
 			item = nitem;
 			if (loc.cTransform) cTransform = loc.cTransform;
@@ -72,7 +72,7 @@ package fe.loc {
 					if (item.variant > 0) vClass = Res.getClass('vis' + item.id + '_' + item.variant, 'vis' + item.id, visp10mm);	// .SWF Dependency
 					else vClass = Res.getClass('vis' + item.id, null, visp10mm);	// .SWF Dependency
 
-					var infIco=new vClass();
+					var infIco = new vClass();
 					infIco.stop();
 					infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
 					infIco.y=-infIco.height-infIco.getRect(infIco).top+10;
@@ -94,7 +94,7 @@ package fe.loc {
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			}
 			else if (item.tip == Item.L_AMMO) {
-				vClass = visualAmmo;
+				vClass = visualAmmo;	// .SWF Dependency
 				vis = new vClass();
 				try {
 					if (item.xml.@base.length()) vis.gotoAndStop(item.xml.@base);
@@ -107,7 +107,7 @@ package fe.loc {
 				if (item.xml.@fall.length()) sndFall = item.xml.@fall;
 			}
 			else {
-				vClass = visualItem;
+				vClass = visualItem;	// .SWF Dependency
 				vis = new vClass();
 				try {
 					vis.gotoAndStop(item.id);
@@ -139,7 +139,7 @@ package fe.loc {
 			if (vClass) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.cacheAsBitmap=true;
+				vis.cacheAsBitmap = true;
 				this.boundingBox.width = vis.width;
 				this.boundingBox.height = vis.height;
 			}
@@ -150,14 +150,16 @@ package fe.loc {
 			}
 			
 			// If the location is not active, don't play a sound
-			if (!loc.active) sndFall = '';
+			if (!loc.active) {
+				sndFall = "";
+			}
 			
 			// Configure item magnetization and the take script for it
 			auto = nauto;
 			inter = new Interact(this);
 			inter.active = true;
 			inter.action = 100;
-			inter.userAction = 'take';
+			inter.userAction = "take";
 			inter.actFun = toTake;
 			inter.update();
 			levitPoss = true;
@@ -172,28 +174,32 @@ package fe.loc {
 			}
 		}
 		
-		private function shine() {
+		private function shine():void {
 			if (vis) {
-				var sh:MovieClip=new lootShine();	// .SWF Dependency
-				sh.blendMode='hardlight';
+				var sh:MovieClip = new lootShine();	// .SWF Dependency
+				sh.blendMode = "hardlight";
 				vis.addChild(sh);
 			}
 		}
 
 		// What to do when the player presses 'E' on the item
-		public function toTake() {
+		public function toTake():void {
 			item.checkAuto(true);
 			actTake = true;
 			ttake = 0;
 			takeR = actRad;
 		}
 
-		// [try to take] | попробовать взять
-		public function take(prinud:Boolean = false) {
-			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
+		// [Try to take]
+		public function take(prinud:Boolean = false):void {
+			if ((ttake > 0 || World.w.gg.loc != loc || World.w.gg.rat > 0) && !prinud) {
+				return;
+			}
+			
 			var rx:Number = World.w.gg.coordinates.X - coordinates.X;
 			var ry:Number = World.w.gg.coordinates.Y - World.w.gg.boundingBox.halfHeight - coordinates.Y;
-			// [take] | взять
+			
+			// [Take]
 			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
 					auto2 = item.checkAuto();
@@ -206,19 +212,25 @@ package fe.loc {
 						return;
 					}
 				}
+				
 				levitPoss = false;
+				
 				// Remove the object from the worldspace
 				loc.remObj(this);
+				
 				// If the item is not already marked as taken, take it and mark it as taken.
 				if (!isTake) {
 					// Call inventory to add the item to the player inventory
-					//trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.kol);
+					trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.kol);
 					World.w.invent.take(item);
 				}
+				
 				isTake = true;
 				onCursor = 0;
+				
 				return;
 			}
+			
 			// [attraction] | притяжение
 			if ((World.w.gg.isTake>=20 || actTake) && rx < takeR && rx > -takeR && ry < takeR &&ry > -takeR && tvsos < 45) {
 				levitPoss = false;
@@ -242,40 +254,62 @@ package fe.loc {
 				take(true);
 				return;
 			}
-			if (ttake>0) ttake--;
+			
+			if (ttake > 0) {
+				ttake--;
+			}
+			
 			if (stay && osnova && !osnova.stay) {
 				stay=false;
 				osnova=null;
 			}
+			
 			if (!stay) {
 				if (!levit && !vsos && velocity.Y < World.maxdy) velocity.Y += World.ddy;
 				else if (levit && !isPlav) {
 					velocity.multiply(0.80);
 				}
+				
 				if (isPlav) {
 					velocity.multiply(0.70);
 				}
-				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	run();
+				
+				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+					run();
+				}
 				else {
-					var div = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
 					for (var i:int = 0; (i<div && !stay && !isTake); i++) run(div);
 				}
+				
 				checkWater();
+				
 				if (vis) {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y - dery;
 				}
 			}
-			if (inter) inter.step();
-			onCursor=(coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
-			if (World.w.checkLoot) auto2=item.checkAuto();
-			if (auto && auto2 || actTake) take();
+			
+			if (inter) {
+				inter.step();
+			}
+			
+			// AABB collision
+			onCursor = (coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
+			
+			if (World.w.checkLoot) {
+				auto2 = item.checkAuto();
+			}
+			
+			if (auto && auto2 || actTake) {
+				take();
+			}
 		}
 		
-		public function run(div:int=1) {
+		public function run(div:int = 1):void {
 			//движение
-			var t:Tile;var i:int;
-			
+			var t:Tile;
+			var i:int;
 			
 			//ГОРИЗОНТАЛЬ
 				coordinates.X += velocity.X / div;

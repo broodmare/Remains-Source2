@@ -1,0 +1,1609 @@
+<item id="s_hsword">
+    <n>Schematics for a hoofmade sword</n>
+  </item>
+  <item id="s_arson">
+    <n>Schematics for the "Igniter"</n>
+  </item>
+  <item id="s_dartgun">
+    <n>Schematics for the "Dart gun"</n>
+  </item>
+  <item id="s_acidgun">
+    <n>Schematics for the acid gun</n>
+  </item>
+  <item id="s_sawgun">
+    <n>Schematics for the Saw blade launcher.</n>
+  </item>
+  <item id="s_buckshot">
+    <n>Schematics for a buckshot gun</n>
+  </item>
+  <item id="s_railway">
+    <n>Schematics for a railway rifle</n>
+  </item>
+  <item id="s_bfg">
+    <n>Schematics for the "Big Frickin Gun"</n>
+  </item>
+  <item id="dinamit">
+    <n>Dynamite</n>
+  </item>
+  <item id="s_hgren">
+    <n>Schematics for a hoofmade grenade</n>
+  </item>
+  <item id="s_acidgr">
+    <n>Recipe for acid bomb</n>
+  </item>
+  <item id="s_cryogr" v="0.6">
+    <n>Schematics for the cryogrenade</n>
+  </item>
+  <item id="s_molotov">
+    <n>Recipe for an incendiary cocktail</n>
+  </item>
+  <item id="s_spgren" v="0.6">
+    <n>Schematics for Sparkle-grenade</n>
+  </item>
+  <item id="s_hmine">
+    <n>Schematics for the hoofmade mine.</n>
+  </item>
+  <item id="s_cryomine" v="0.6">
+    <n>Schematics for the cryomine</n>
+  </item>
+  <item id="s_balemine" v="0.6">
+    <n>Schematics for the balefire mine</n>
+  </item>
+  <item id="s_dbomb">
+    <n>Instructions for handling dynamite</n>
+  </item>
+  <item id="s_bomb">
+    <n>Schematics for a hoofmade bomb</n>
+  </item>
+  <item id="s_cdagger" v="0.8">
+    <n>Schematics for the claw dagger</n>
+  </item>
+  <item id="s_friend" v="0.8">
+    <n>Schematics for the "Friendship cannon"</n>
+  </item>
+  <item id="s_empbomb" v="0.8">
+    <n>Schematics for a pulse bomb</n>
+  </item>
+  <item id="p9" v="0.6">
+    <n>9 mm round</n>
+    <info>A low-power pistol ammo, quite cheap because of its low efficiency</info>
+  </item>
+  <item id="p10">
+    <n>10 mm round</n>
+    <info>Widely-used handgun ammo, easily obtained in the Wasteland</info>
+  </item>
+  <item id="p375" v="0.6">
+    <n>Round cal. 375</n>
+    <info>Pistol rounds "HnH Magnum", used in some revolvers and rifles</info>
+  </item>
+  <item id="p44">
+    <n>Round cal. 44</n>
+    <info>"Magnum" rounds - heavier, more expensive and rare than other handgun ammunition</info>
+  </item>
+  <item id="p32">
+    <n>Round cal. 32</n>
+    <info>Handgun ammo produced in large quantities long before the War</info>
+  </item>
+  <item id="p308">
+    <n>Round cal. 308</n>
+    <info>Common sniper rifle rounds</info>
+  </item>
+  <item id="p127">
+    <n>12,7-mm round</n>
+    <info>Great and powerful handgun rounds, very effective, but rare and expensive</info>
+  </item>
+  <item id="p50mg">
+    <n>Round cal. 50 MG</n>
+    <info>Large-caliber bullet with a steel tip - one of the most rare, expensive and effective kinds</info>
+  </item>
+  <item id="p556">
+    <n>5,56-mm round</n>
+    <info>Common assault rifle rounds, widely-used by both armies during the War</info>
+  </item>
+  <item id="p5">
+    <n>5-mm round</n>
+    <info>Small-caliber rounds used in high fire-rate weapons, when quantity means more than quality</info>
+  </item>
+  <item id="p20">
+    <n>Round cal. 20</n>
+    <info>Ammunition that contains buckshot instead of bullets, used for shotguns</info>
+  </item>
+  <item id="p12">
+    <n>Round cal. 12</n>
+    <info>A modern and more effective shotgun shell</info>
+  </item>
+  <item id="p145" v="0.6">
+    <n>14,4-mm round</n>
+    <info>A very large caliber ammo designed for heavy machine guns</info>
+  </item>
+  <item id="fuel">
+    <n>Fuel</n>
+    <info>Flammable liquid used in flamethrowers</info>
+  </item>
+  <item id="batt">
+    <n>Battery</n>
+    <info>Compact Spark-battery of medium power used in magical energy weaponry</info>
+  </item>
+  <item id="energ">
+    <n>Spark-battery</n>
+    <info>Standard Spark-battery used in most models of magical energy weapons</info>
+  </item>
+  <item id="crystal">
+    <n>Crystal battery</n>
+    <info>Energy cell of increased power based on rare crystals. Used as a power supply in the deadliest magical energy weapons</info>
+  </item>
+  <item id="recharg">
+    <n>Charge</n>
+  </item>
+  <item id="not" v="0.8">
+    <n>Infinite ammo</n>
+  </item>
+  <item id="gren40">
+    <n>40-mm shell</n>
+    <info>A small explosive projectile for use in grenade launchers</info>
+  </item>
+  <item id="rocket">
+    <n>Rocket</n>
+    <info>A self-propelled projectile for use in rocket launchers</info>
+  </item>
+  <item id="egg">
+    <n>Balefire egg</n>
+    <info>A magical projectile, resembling an egg. Destructive energy, hidden deep inside, is expressed on a surface merely by elusive flickering of lights</info>
+  </item>
+  <item id="aero">
+    <n>Aerosol</n>
+    <info>A cylinder of liquid propane and isobutane - highly flammable gases</info>
+  </item>
+  <item id="dart">
+    <n>Dart</n>
+    <info>A common attribute for a darts game</info>
+  </item>
+  <item id="saw">
+    <n>Circular saw</n>
+    <info>A circular saw of stainless steel with sharp teeth</info>
+  </item>
+  <item id="mine" v="0.6">
+    <n>Fragmentation mine</n>
+  </item>
+  <item id="acid">
+    <n>Acid</n>
+    <info>A plastic bottle with concentrated acid</info>
+  </item>
+  <item id="spikenail">
+    <n>Railway spike</n>
+    <info>A heavy iron thing, used to attach sleepers to rails</info>
+  </item>
+  <item id="pcryo" v="0.6">
+    <n>Cryo-cell</n>
+    <info>If the alchemical compounds contained in this small cell react, this would cause an instant drop in their temperature to the almost absolute zero</info>
+  </item>
+  <item id="bcell" v="0.6">
+    <n>Energy cell</n>
+    <info>A battery used for a star blaster, many times more powerful than usual batteries</info>
+  </item>
+  <item id="s_chitin">
+    <n>Schematics for the chitinous armor</n>
+  </item>
+  <item id="money">
+    <n>Bag with caps</n>
+    <info>Bottle caps used as money</info>
+  </item>
+  <item id="gel" v="0.6">
+    <n>Biogel</n>
+    <info>The substance used by Auto-Doc as an expendable material for treating injuries and wounds</info>
+  </item>
+  <item id="good" v="0.7">
+    <n>Kindness</n>
+  </item>
+  <item id="pot0">
+    <n>Charmed bandage</n>
+    <info>Suitable for treatment of scratches and cuts and also stops bleeding</info>
+  </item>
+  <item id="pot1">
+    <n>Healing potion</n>
+    <info>Intended for treatment of light injuries. Treatment effect takes some time</info>
+  </item>
+  <item id="pot2">
+    <n>Large healing Potion</n>
+    <info>Intended for treatment of injuries of medium severity. Treatment effect takes some time</info>
+  </item>
+  <item id="pot3">
+    <n>Extra-strong healing potion</n>
+    <info>Intended for treatment of severe injuries. Treatment effect takes some time</info>
+  </item>
+  <item id="potm1">
+    <n>Magic potion</n>
+    <info>Restores magical power and heals magical burnout and exhaustion</info>
+  </item>
+  <item id="potm2" v="0.7">
+    <n>Large magic potion</n>
+    <info>Restores magical power and heals magical burnout and exhaustion</info>
+  </item>
+  <item id="potm3" v="0.7">
+    <n>Super-large magic potion</n>
+    <info>Restores magical power and heals magical burnout and exhaustion</info>
+  </item>
+  <item id="antiradin">
+    <n>RadAway</n>
+    <info>Clears body of magical radiation</info>
+  </item>
+  <item id="antidote">
+    <n>Antidote</n>
+    <info>Instantly neutralizes effects of any kind of toxins and increases poison resistance for a short time</info>
+  </item>
+  <item id="potHP">
+    <n>Potion of life</n>
+    <info>Permanently increases maximum health</info>
+    <mess v="0.7">This is not an ordinary healing potion, but a potent elixir that can permanently fortify your health. Drink it without hesitation</mess>
+  </item>
+  <item id="potMP" v="0.6">
+    <n>Potion of spirit</n>
+    <info>Permanently increases the maximum of magical power</info>
+  </item>
+  <item id="stealth">
+    <n>StealthBuck</n>
+    <info>Portable techno-magical device developed by the Ministry of Arcane Sciences with support from the Ministry of Image, capable to make his owner invisible for a short period of time</info>
+  </item>
+  <item id="rep">
+    <n>Weapon repair kit</n>
+    <info>Can be used to repair almost any weapon. Using this, you can repair an equipped weapon by some degree depending on the weapon class and your repair skill</info>
+  </item>
+  <item id="mworkbench" v="0.6">
+    <n>A portable workbench</n>
+    <info>Using a portable bench you can repair your weapons and armor on a march, just like using a regular workbench</info>
+  </item>
+  <item id="mworkexpl" v="0.6">
+    <n>Demopony`s field kit</n>
+    <info>Contains all the necessary equipment for creating explosives on a march</info>
+  </item>
+  <item id="mworklab" v="0.6">
+    <n>Field lab</n>
+    <info>Contains all the necessary equipment for preparing potions and chemicals in the field</info>
+  </item>
+  <item id="whistle" v="0.6">
+    <n>Whistle</n>
+    <info>Needed to call or dismiss a tamed phoenix</info>
+  </item>
+  <item id="owl" v="0.7">
+    <n>Robo-owl</n>
+    <info>A small security robot that can also serve as a personal assistant or secretary. Has a fairly powerful laser weapon. Can be used as a companion</info>
+    <mess>You assembled a [robo-owl], and now it can be your companion. Activate it through the inventory - the [equipment] section. There you can see the robo-owl condition and its stats. If the robo-owl is damaged in combat, you can repair it in the same way as any weapon or armor</mess>
+  </item>
+  <item id="s_owl" v="0.7">
+    <n>Robo-owl schematics</n>
+  </item>
+  <item id="sphera">
+    <n>Memory orb</n>
+    <info>This magical item contains recorded memories of other creatures. Using it brings you an additional skill point</info>
+    <mess v="0.7">You have found a memory orb - a magical repository of memories that contains important information, someone`s valuable experience, or just moments of the past that someone wanted to save. Using it, you will get an additional skill point</mess>
+  </item>
+  <item id="book" v="0.7">
+    <n>An interesting book</n>
+    <mess>You have found a book in good condition, containing useful knowledge. Be sure to read it - from books you can learn a lot of useful things, thereby increasing one of your skills</mess>
+  </item>
+  <item id="firstaid">
+    <n>First aid kit</n>
+    <info>Collection of medical supplies necessary to treat light wounds and injuries. Basic medical skills are required to use this item</info>
+  </item>
+  <item id="doctor">
+    <n>Doctor`s bag</n>
+    <info>A set of medical instruments needed for mending fractured bones and other serious injuries. Advanced medical skills are required to use this item</info>
+  </item>
+  <item id="surgeon">
+    <n>Military surgeon`s bag</n>
+    <info>Contains complex medical tools and healing spells for treating the most severe wounds. One can literally bring somepony back to life with this, providing he has the most advanced medical skills and lots of experience</info>
+  </item>
+  <item id="bloodpak">
+    <n>Blood pack</n>
+    <info>A pack of artificial blood, compatible with blood of any pony race</info>
+  </item>
+  <item id="radx">
+    <n>Rad-X</n>
+    <info>A substance in capsules of yellow and red colors, temporarily increasing radiation resistance. Recommended when working in places with high magical radiation background. Use one capsule per individual</info>
+  </item>
+  <item id="mint">
+    <n>Mint-als</n>
+    <info>Drugs in a form of peppermint-flavored candy. Temporarily gives you a boost to intelligence and clear thinking, and also sharpens your senses, but has reverse, negative after effects</info>
+  </item>
+  <item id="pmint">
+    <n>Party-time Mint-als</n>
+    <info>Improved version of Mint-als, giving much more prominent effect. Incredibly boosts brain capabilities and sharpness of perception. Effect doesn`t add up with that of common Mint-als</info>
+  </item>
+  <item id="dash">
+    <n>Dash</n>
+    <info>A powerful military stimulator, that gives you a feeling of time being slowed down. Increases speed and gives additional action points in S.A.T.S.</info>
+  </item>
+  <item id="ultradash" v="0.6">
+    <n>Ultra-dash</n>
+    <info>An advanced version of the dash, makes user fast as a lightning. True, there is some probability of sudden death from a heart attack. Does not add up with the effect of an ordinary dash</info>
+  </item>
+  <item id="rage">
+    <n>Rage</n>
+    <info>A drug developed and manufactured during the Great War in order to increase soldiers` courage and aggressiveness. Makes user feel unstoppable rage, resulting in higher amount of damage being caused</info>
+  </item>
+  <item id="medx">
+    <n>Med-X</n>
+    <info>A potent pain-killer for intravenous injection. For a short time makes you completely mute to pain, which is sometimes used to increase soldiers` effectiveness in combat</info>
+  </item>
+  <item id="stampede">
+    <n>Stampede</n>
+    <info>A drug that combines effects of Rage and Med-X. It makes one feel unstoppable rage while simultaneously suppressing any pain and self-protection instinct, making him or her very dangerous and deadly. Not compatible with common Rage or Med-X</info>
+  </item>
+  <item id="buck">
+    <n>Buck</n>
+    <info>Steroid drug in form of green pills, used to increase physical strength and endurance. Starts working immediately, although only for a short period of time</info>
+  </item>
+  <item id="hydra">
+    <n>Hydra</n>
+    <info>Healing potion of unmatched effectiveness, formulated with essence of an actual hydra. Speeds up living tissue regeneration by up to a hundred times, mending any injuries, but it is also dangerous because of possible mutagenic side effects</info>
+  </item>
+  <item id="detoxin">
+    <n>Detoxin</n>
+    <info>Rare and valuable medicine used to treat chemical addiction. Instantly removes all drug effects, both positive and negative, and also neutralizes poison</info>
+  </item>
+  <item id="potion_stim">
+    <n>Super-stimulation potion</n>
+    <info>Instantly restores health. Even though it is capable of saving life in a critical condition, it is very toxic</info>
+  </item>
+  <item id="potion_fly">
+    <n>Potion of flight</n>
+    <info>This potion gives you wings, thus making you able to fly. The effect is temporary</info>
+  </item>
+  <item id="potion_shadow">
+    <n>Potion of shadows</n>
+    <info>Drinking the potion will turn you into a shadow. While in this form, it is hard to see or cause damage to you, but you won`t be able to fight as well. Also, it seems that it weakens unicorns` telekinesis ability</info>
+  </item>
+  <item id="potion_mage">
+    <n>Wizardry potion</n>
+    <info>The potion reduces magical energy consumption for telekinesis and different spells, increasing their power, and also speeds up energy restoration</info>
+  </item>
+  <item id="potion_infra">
+    <n>Infra-vision potion</n>
+    <info>For a short period of time allows you seeing through walls and also to see things that are hidden or concealed with magic</info>
+  </item>
+  <item id="potion_swim" v="0.6">
+    <n>Diver`s potion</n>
+    <info>For five minutes allows you to breathe underwater and swim much faster</info>
+  </item>
+  <item id="potion_pink" v="0.7">
+    <n>Pink potion</n>
+    <info>This potion somewhat protects you from the harmful effects of the Pink Cloud</info>
+  </item>
+  <item id="potion_chance" v="0.7">
+    <n>Potion of the Last Chance</n>
+    <info>If during its action you are dealt a death blow, you gain absolute protection for 5 seconds and partially restore your health. Absolute protection does not save from poison and bleeding</info>
+  </item>
+  <item id="rollup" v="0.6">
+    <n>Joint of magic weed</n>
+    <info>Smokable. The effect is unpredictable!</info>
+  </item>
+  <item id="potion_dskel">
+    <n>Potion of fortitude</n>
+    <info>This potion makes your bones sturdy and capable to endure heavy load. Permanent effect</info>
+  </item>
+  <item id="potion_immun">
+    <n>Immunity potion</n>
+    <info>Drinking this improves your ability to resist different negative factors, such as poisoning, bleeding and radiation. Permanent effect</info>
+  </item>
+  <item id="potion_might">
+    <n>Potion of might</n>
+    <info>This potion improves your reflexes and increases aggression. You can deal more damage with melee weapons. Permanent effect</info>
+  </item>
+  <item id="potion_speed">
+    <n>Potion of vivacity</n>
+    <info>This potion increases running speed and stamina capacity. In other words you can run faster and longer. Permanent effect</info>
+  </item>
+  <item id="potion_prec">
+    <n>Potion of concentration</n>
+    <info>This potion fortifies your nervous system and sharpens sight, which improves your shooting accuracy. Permanent effect</info>
+  </item>
+  <item id="potion_dexter" v="0.7">
+    <n>Elixir of Intuition</n>
+    <info>This potion gives you an ability to anticipate the near future to some extent, and thus evade enemy bullets. Permanent effect</info>
+  </item>
+  <item id="potion_crit" v="0.7">
+    <n>Elixir of Fortune</n>
+    <info>It is hard to say what exactly this potion does and how it works, but with it your hits will cause critical damage more often. Permanent effect</info>
+  </item>
+  <item id="potion_elements" v="0.6">
+    <n>Elemental potion</n>
+    <info>A potion invented by unicorns in the distant past. Strengthens magician`s connection to natural forces and increases power of his spells</info>
+  </item>
+  <item id="potion_purif" v="0.7">
+    <n>Potion of purification</n>
+    <info>Purifies from curses</info>
+  </item>
+  <item id="sparklecola">
+    <n>Sparkle-cola</n>
+    <info>The most popular alcohol-free fizzy beverage with carrot flavor. Speeds up restoration of magical energy</info>
+  </item>
+  <item id="sars" v="0.7">
+    <n>Sunrise Sarsaparilla</n>
+    <info>Non-alcoholic fizzy drink produced before the War. Restores health</info>
+  </item>
+  <item id="radcookie" v="0.6">
+    <n>Radioactive cookies</n>
+    <info>It is extremely not recommended eating this thing. But perhaps there is somepony who might like it</info>
+  </item>
+  <item id="radcola" v="0.6">
+    <n>Sparkle-Cola RAD</n>
+    <info>A rare kind of Sparkle-Cola, which contains radioactive substances. Has a radish taste and glows in the dark</info>
+  </item>
+  <item id="coffee" v="0.7">
+    <n>Coffee</n>
+    <info>Tasty and healthy drink with a light stimulating effect</info>
+  </item>
+  <item id="milk" v="0.7">
+    <n>Milk</n>
+    <info>Fresh brahmin milk, removes radiation</info>
+  </item>
+  <item id="beer" v="0.7">
+    <n>Beer</n>
+    <info>Low-alcoholic beverage made from local oats. The taste is not so great</info>
+  </item>
+  <item id="braga" v="0.7">
+    <n>Home brew</n>
+    <info>Low-alcohol beverage from potatoes. The taste leaves much to be desired</info>
+  </item>
+  <item id="cordial" v="0.7">
+    <n>Liqueur</n>
+    <info>Alcoholic drink of medium strength from local fruits, or whatever is now used instead of them. Pretty pleasant to the taste</info>
+  </item>
+  <item id="schnapps" v="0.7">
+    <n>Schnapps</n>
+    <info>A fairly strong alcoholic beverage obtained by distillation</info>
+  </item>
+  <item id="hooch" v="0.7">
+    <n>Moonshine</n>
+    <info>An hard draft with a scent of fusel oil. For those who simply want to get wasted</info>
+  </item>
+  <item id="spirt" v="0.7">
+    <n>Alcohol</n>
+    <info>Almost pure alcohol, rare and quite expensive</info>
+  </item>
+  <item id="alc1" v="0.7">
+    <n>Apple cider "Old farm"</n>
+    <info>Cider of the highest quality with a delicate taste and aroma</info>
+  </item>
+  <item id="alc2" v="0.7">
+    <n>Apple wine "Pink sunset"</n>
+    <info>Rare rose wine for real esthetes</info>
+  </item>
+  <item id="alc3" v="0.7">
+    <n>Apple liquor "Summer flavors"</n>
+    <info>In addition to apples, the composition of this liqueur includes a dozen different kinds of fruits</info>
+  </item>
+  <item id="alc4" v="0.7">
+    <n>Apple Whiskey "Wild Pegasus"</n>
+    <info>A popular brand of whiskey before the War, currently 200-year-old!</info>
+  </item>
+  <item id="alc5" v="0.7">
+    <n>Apple vodka "Crystal"</n>
+    <info>Vodka of elite quality, worth a lot of money before the War. Purified with magic crystals!</info>
+  </item>
+  <item id="alc6" v="0.7">
+    <n>Granny Smith`s Apple bitter</n>
+    <info>They say that over the passed time this tincture has acquired an absolutely unique taste</info>
+  </item>
+  <item id="alc7" v="0.7">
+    <n>Apple balsam "The gift of nature"</n>
+    <info>"Healing" liqueur made from apples, 24 kinds of herbs and medical alcohol</info>
+  </item>
+  <item id="noodles" v="0.7">
+    <n>Instant noodles</n>
+    <info>You can pour in hot water, or just eat it dry</info>
+  </item>
+  <item id="pasta" v="0.7">
+    <n>Pasta</n>
+    <info>You can cook something with it, or just chew it as it is</info>
+  </item>
+  <item id="corn" v="0.7">
+    <n>Canned corn</n>
+    <info>Pretty tasty, sweet and nutritious</info>
+  </item>
+  <item id="dinner" v="0.7">
+    <n>Ready-made lunch</n>
+    <info>An incomprehensible gray mass with even more incomprehensible bits of something, perhaps dried vegetables</info>
+  </item>
+  <item id="beans" v="0.7">
+    <n>Canned beans</n>
+    <info>Food rich in vegetable protein</info>
+  </item>
+  <item id="bread" v="0.7">
+    <n>Bread</n>
+    <info>Relatively fresh bread, baked no more than a week ago</info>
+  </item>
+  <item id="oats" v="0.7">
+    <n>Oats</n>
+    <info>You can eat it as is, but it`s better when cooked</info>
+  </item>
+  <item id="chips" v="0.7">
+    <n>Chips</n>
+    <info>Pre-war potato chips with the taste of spicy horseradish</info>
+  </item>
+  <item id="crackers" v="0.7">
+    <n>Squirrel bits</n>
+    <info>Crackers with the taste of sorrel, so dry that one could use them to make sparks for a bonfire</info>
+  </item>
+  <item id="nuts" v="0.7">
+    <n>Nuts</n>
+    <info>A mixture of nuts in a bag, who knows how preserved from pre-war times</info>
+  </item>
+  <item id="sbombs" v="0.7">
+    <n>Sugar bombs</n>
+    <info>Sweet corn flakes shaped like air bombs</info>
+  </item>
+  <item id="lollipops" v="0.7">
+    <n>Lollipops</n>
+    <info>Pre-war delicacy, delicious sweet and sour sweets</info>
+  </item>
+  <item id="bananas" v="0.7">
+    <n>Dried bananas</n>
+    <info>Delicacy from the land of zebras</info>
+  </item>
+  <item id="halva" v="0.7">
+    <n>Halva</n>
+    <info>Sweet mass made of ground peanuts</info>
+  </item>
+  <item id="honey" v="0.7">
+    <n>Honey</n>
+    <info>Honey can be stored for hundreds of years, but fresh honey is lost, probably, forever</info>
+  </item>
+  <item id="apple" v="0.7">
+    <n>Apple</n>
+    <info>A real apple grown on the surface</info>
+  </item>
+  <item id="mushroom" v="0.7">
+    <n>Cave Mushroom</n>
+    <info>Mushroom of questionable edibility</info>
+  </item>
+  <item id="carrot" v="0.7">
+    <n>Carrot</n>
+    <info>Sweet and crisp root</info>
+  </item>
+  <item id="onion" v="0.7">
+    <n>Onion</n>
+    <info>Bitter vegetable, used in many dishes</info>
+  </item>
+  <item id="tomato" v="0.7">
+    <n>Tomato</n>
+    <info>Delicious vegetable of a slightly sour taste</info>
+  </item>
+  <item id="cucumber" v="0.7">
+    <n>Cucumber</n>
+    <info>Green watery vegetable</info>
+  </item>
+  <item id="cabbage" v="0.7">
+    <n>Cabbage</n>
+    <info>Juicy and fibrous vegetable</info>
+  </item>
+  <item id="butter" v="0.7">
+    <n>Butter</n>
+    <info>Fresh butter from a local farm</info>
+  </item>
+  <item id="cheese" v="0.7">
+    <n>Cheese</n>
+    <info>Fresh cheese, looks and smells good</info>
+  </item>
+  <item id="tegg" v="0.7">
+    <n>Egg</n>
+    <info>Looks more like an egg of some reptile than bird</info>
+  </item>
+  <item id="meat" v="0.7">
+    <n>Meat</n>
+    <info>It is not recommended to eat raw meat</info>
+  </item>
+  <item id="potato" v="0.7">
+    <n>Potato</n>
+    <info>Nutritious tubers, usually used in cooked form</info>
+  </item>
+  <item id="flour" v="0.7">
+    <n>Flour</n>
+    <info>The main ingredient of any pastry</info>
+  </item>
+  <item id="garlic" v="0.7">
+    <n>Garlic</n>
+    <info>A very spicy and odorous vegetable, used as a seasoning and as a chemical weapon</info>
+  </item>
+  <item id="sugar" v="0.7">
+    <n>Sugar</n>
+    <info>Sugar is no longer produced, so its strategic reserves are very valuable</info>
+  </item>
+  <item id="ketchup" v="0.7">
+    <n>Ketchup</n>
+    <info>Tomato sauce with many spices and preservatives</info>
+  </item>
+  <item id="frmeat" v="0.7">
+    <n>Roasted meat</n>
+    <info>It is said that meat increases aggression</info>
+  </item>
+  <item id="cucsand" v="0.7">
+    <n>Cucumber sandwich</n>
+    <info>Simple snack</info>
+  </item>
+  <item id="frpot" v="0.7">
+    <n>Fried potatoes</n>
+    <info>Simple yet delicious dinner</info>
+  </item>
+  <item id="oatmeal" v="0.7">
+    <n>Oatmeal</n>
+    <info>Simple but nutritious and healthy food</info>
+  </item>
+  <item id="salad" v="0.7">
+    <n>Vegetable salad</n>
+    <info>It is important not to simply cut and mix vegetables, but to do it in a correct order</info>
+  </item>
+  <item id="chpasta" v="0.7">
+    <n>Pasta with cheese</n>
+    <info>Very nourishing and delicious lunch</info>
+  </item>
+  <item id="omelet" v="0.7">
+    <n>Wasteland omelet</n>
+    <info>The traditional food of Wasteland wanderers. Any eggs are suitable for making it</info>
+  </item>
+  <item id="butterbr" v="0.7">
+    <n>Cheese sandwiches</n>
+    <info>Common humble breakfast</info>
+  </item>
+  <item id="breakfast" v="0.7">
+    <n>Caravan breakfast</n>
+    <info>The main principle of this dish is to mix everything in one pan and cook it</info>
+  </item>
+  <item id="soup" v="0.7">
+    <n>Soup</n>
+    <info>While this dish may look simple, its preparation has a lot of nuances</info>
+  </item>
+  <item id="pizza" v="0.7">
+    <n>Pizza</n>
+    <info>By the Wasteland standards this is a rich dish</info>
+  </item>
+  <item id="casser" v="0.7">
+    <n>Casserole</n>
+    <info>A very tasty vegetable casserole with crispy cheese crust</info>
+  </item>
+  <item id="ragu" v="0.7">
+    <n>Meat stew</n>
+    <info>This recipe was invented after the war, when meat began to be consumed in large quantities</info>
+  </item>
+  <item id="spsalad" v="0.7">
+    <n>Special salad</n>
+    <info>Mixing, at the first glance, incompatible ingredients, we get a completely unexpected taste</info>
+  </item>
+  <item id="patty" v="0.7">
+    <n>Cabbage pies</n>
+    <info>An old, well known in the past recipe for hoofmade pies</info>
+  </item>
+  <item id="maffin" v="0.7">
+    <n>Muffins</n>
+    <info>Everypony`s favorite tea time pastries</info>
+  </item>
+  <item id="apie" v="0.7">
+    <n>Apple pie</n>
+    <info>Nowadays it is not so easy to get the right ingredients for the traditional apple pie. But it`s totally worth it</info>
+  </item>
+  <item id="mpie" v="0.7">
+    <n>Meat pie</n>
+    <info>The filling of this pie consists of meat and vegetables. It is very nutritious, and if you eat it for breakfast, you are sated until evening</info>
+  </item>
+  <item id="spie" v="0.7">
+    <n>Sweet pie</n>
+    <info>This pie includes almost everything sweet that can be found it the Wasteland. Extreme dose of sugar</info>
+  </item>
+  <item id="ppie" v="0.7">
+    <n>Spicy cake</n>
+    <info>A cake with a very strange filling, for true lovers of Wasteland culinary</info>
+  </item>
+  <item id="borsch" v="0.7">
+    <n>Borscht</n>
+    <info>A type of soup of a very complex composition. Only an experienced chef can cook it properly</info>
+  </item>
+  <item id="bit">
+    <n>Pre-war bits</n>
+    <info>Pre-War bits, not widely used these days, but can be exchanged for caps</info>
+  </item>
+  <item id="gem1">
+    <n>Emerald</n>
+    <info>Gems are still valued highly these days. You can sell it for a good price</info>
+  </item>
+  <item id="gem2">
+    <n>Sapphire</n>
+    <info>Gems are still valued highly these days. You can sell it for a good price</info>
+  </item>
+  <item id="gem3">
+    <n>Ruby</n>
+    <info>Gems are still valued highly these days. You can sell it for a good price</info>
+  </item>
+  <item id="data">
+    <n>Data disc</n>
+    <info>Information downloaded from the terminal contains long forgotten secrets of the past. You can sell it for a good price</info>
+  </item>
+  <item id="disc">
+    <n>Disc with valuable data</n>
+    <info>Data on pre-war technologies is on high demand among certain communities</info>
+  </item>
+  <item id="datast">
+    <n>Disc of the Min. of Image</n>
+    <info>This disc contains information about the development of the StealthBuck M2. Perhaps Steel Rangers will find it interesting</info>
+  </item>
+  <item id="lbook">
+    <n>Pre-War book</n>
+    <info>Undamaged pre-war books - a true rarity nowadays. Most merchants will gladly pay for them</info>
+  </item>
+  <item id="runa" s1="keyCrack" v="0.8">
+    <n>Burglar rune</n>
+    <info>The burglar rune can open any lock, even a stuck one. Single use. To activate, hover cursor over a door or container with a tough lock and press @1</info>
+  </item>
+  <item id="retr" v="0.6">
+    <n>Rune of return</n>
+    <info>The rune of return teleports you to the base camp from anywhere (confirm action by pressing the button). You can return to the nearest MAS terminal. One-time use</info>
+  </item>
+  <item id="reboot" s1="keyCrack" v="0.8">
+    <n>Electronic lock pick</n>
+    <info>A single use device used to do a deep reboot of the terminal resetting all passwords. It was hard to get even before the War, not to mention now. To use, hover over a secure terminal and press @1</info>
+  </item>
+  <item id="repair">
+    <n>Toaster repair</n>
+    <info>Despite its name, this book can tell you not only about fixing toasters, but actually about repairing anything - from household equipment to modern weapons</info>
+  </item>
+  <item id="medic">
+    <n>Medicine - is fun!</n>
+    <info>In this book you can find interesting and fun facts about medicine, first aid, treating wounds and even basics of surgery</info>
+  </item>
+  <item id="lockpick">
+    <n>Breaking-in and infiltrating</n>
+    <info>This book has detailed and well-illustrated descriptions of locks of different types and much advice on how to break them. An author definitely must`ve had problems with the law</info>
+  </item>
+  <item id="science">
+    <n>Young hacker</n>
+    <info>A children`s guide, in which author introduces young readers to the basics of information technology, and also shares different less known facts about terminals and other electronic systems</info>
+  </item>
+  <item id="explosives">
+    <n>Fireworks for parties</n>
+    <info>A book sponsored by the Ministry of Morale. It contains guidelines for safe handling of explosive materials used in fireworks and some other devices</info>
+  </item>
+  <item id="smallguns">
+    <n>Ammo-nation</n>
+    <info>Monthly illustrated catalog of firearms. It has detailed information on latest technical achievements and fashion trends in this industry</info>
+  </item>
+  <item id="melee">
+    <n>Hack and slash</n>
+    <info>A book on history of melee weapons. From ancient spears and blades to modern magical energy swords</info>
+  </item>
+  <item id="energy">
+    <n>Magic guarding our Home</n>
+    <info>A book about the latest trends on everything concerning development and application of magical energy weapons. Although useful information is quite diluted with pompous speeches and propaganda</info>
+  </item>
+  <item id="sneak">
+    <n>Become a shadow. Self-guide.</n>
+    <info>A guide for beginner spies and scouts. Despite that the author was obviously a paranoid psycho, the book contains some useful information</info>
+  </item>
+  <item id="barter">
+    <n>Why pay more?</n>
+    <info>This book teaches how to communicate with traders of all sorts, how to barter and get discounts and also recognize some common tricks and ruses</info>
+  </item>
+  <item id="tele">
+    <n>Telekinesis for dummies</n>
+    <info>A guide for young unicorns, that is supposed to help them develop their telekinetic strength</info>
+  </item>
+  <item id="survival">
+    <n>The Wasteland Survival Guide</n>
+    <info>This book was written after the War. It tells about different dangers of the Wasteland and ways to deal with them. The author - Ditzy Doo</info>
+  </item>
+  <item id="magic">
+    <n>Magical arts</n>
+    <info>One of many pre-war books, dedicated to unicorn magic. Far from being very clever and scientifically accurate, it still has colorful pictures and lots of practical advice</info>
+  </item>
+  <item id="book_alicorn" v="0.6">
+    <n>The mysterious power of alicorns</n>
+    <info>Although this book tells about true alicorns, such as the princess Celestia, the knowledge contained in it might help you against the Goddesses alicorns</info>
+  </item>
+  <item id="diary" v="0.7">
+    <n>Velvet Remedy diary</n>
+    <info>Contains many records of ghoul studies</info>
+  </item>
+  <item id="sl_note1" v="0.7">
+    <n>Note</n>
+    <info>A piece of paper found on Butch, the head of the slavers` guards</info>
+  </item>
+  <item id="sl_note2" v="0.7">
+    <n>Slaver`s notes</n>
+    <info>Belonged to Sharp Shooter, the leader of a slavers gang</info>
+  </item>
+  <item id="merc_note1" v="0.7">
+    <n>Griffin`s note</n>
+    <info>A note found on one of the griffins in the prison camp</info>
+  </item>
+  <item id="col1" v="0.8">
+    <n>Cogwheel</n>
+    <info>Just a souvenir</info>
+  </item>
+  <item id="col2" v="0.7">
+    <n>The Cyberpony magazine</n>
+    <info>The magazine, issued before the War by a society that promoted the idea of ​​turning ponies into cyborgs. It lasted only one year, after which it was banned for moral and ethical reasons</info>
+  </item>
+  <item id="pro_armor" v="0.6">
+    <n>Armor blueprints</n>
+    <info>A pack of drawings for some unusual armor. Only specialists can understand them</info>
+  </item>
+  <item id="super_sapphire" v="0.8">
+    <n>Ice sapphire</n>
+    <info>A huge sapphire spreading a frosty aura</info>
+  </item>
+  <item id="super_ruby" v="0.8">
+    <n>Fire ruby</n>
+    <info>A huge ruby ​​shining with fiery light and radiating heat</info>
+  </item>
+  <item id="super_emerald" v="0.8">
+    <n>Marine emerald</n>
+    <info>A huge emerald, for some reason always wet and smelling like the sea</info>
+  </item>
+  <item id="tool_calipers" v="0.6">
+    <n>Calipers</n>
+    <info>The device for precise measurements of size</info>
+  </item>
+  <item id="tool_boltcutter" v="0.6">
+    <n>Hydraulic bolt cutter</n>
+    <info>Can cut even a thick iron bar</info>
+  </item>
+  <item id="tool_oscilloscope" v="0.6">
+    <n>Oscilloscope</n>
+    <info>A complex device for analyzing parameters of an electrical signal</info>
+  </item>
+  <item id="box_screw" v="0.6">
+    <n>Box of new screws</n>
+    <info>A whole box of brand-new bolts and screws of all sizes. A dream of any mechanic</info>
+  </item>
+  <item id="box_nut" v="0.6">
+    <n>Box of new nuts</n>
+    <info>A whole box of brand-new nuts and washers of all sizes. A dream of any mechanic</info>
+  </item>
+  <item id="book_cm" v="0.6">
+    <n>"Celestial Mechanics"</n>
+    <info>A book telling about movements of celestial bodies</info>
+  </item>
+  <item id="glycerol" v="0.8">
+    <n>Glycerol canister</n>
+    <info>A plastic canister containing a clear viscous liquid. With the necessary knowledge you can turn it into explosive nitroglycerin</info>
+  </item>
+  <item id="data_eqd" v="0.8">
+    <n>Equidroid Data disc</n>
+    <info>This disk contains schematics, wiring diagrams and other information useful for figuring out how equidroids work. Although, frankly, it`s unlikely for one to be able to understand at least some of this without being a certified robotics engineer</info>
+  </item>
+  <item id="cigars" v="0.6">
+    <n>Smuggled cigars</n>
+    <info>A box of cigars illegally imported from the zebra country. Excellent smokes</info>
+  </item>
+  <item id="tpipe" v="0.6">
+    <n>Smoking pipe</n>
+    <info>Excellent pipe of cherry wood. Smoky Pit will be glad to get it</info>
+  </item>
+  <item id="bong" v="0.6">
+    <n>Bong</n>
+    <info>A device for heavy smokers. Perhaps Smoky Pit will like it?</info>
+  </item>
+  <item id="tabak" v="0.6">
+    <n>A pack of tobacco</n>
+    <info>Leaf tobacco for smoking pipes. Perfectly preserved, Smoky Pit will gladly pay for it</info>
+  </item>
+  <item id="vaccine" v="0.7">
+    <n>Vaccine for the dust fever</n>
+    <info>The only known cure for this disease</info>
+  </item>
+  <item id="wtal" v="0.7">
+    <n>Water talisman</n>
+    <info>A magical device that cleans water of chemical impurities, microbes and radiation</info>
+  </item>
+  <item id="bbatt" v="0.7">
+    <n>Balefire-battery</n>
+    <info>A compact device that uses Balefire technology to produce an almost unlimited amount of energy</info>
+  </item>
+  <item id="secret_doc" v="0.8">
+    <n>Secret documents of the Legion</n>
+    <info>The document is titled "ኽዤዌቇሕችነዥሚኆ፧" - whatever this means. Unfortunately, you don`t speak the zebra language and won`t be able to read this</info>
+  </item>
+  <item id="tal_star" v="0.7">
+    <n>Stellar talisman</n>
+    <info>A powerful talisman, which will serve only an experienced warrior. Increases damage from any weapon by #1</info>
+  </item>
+  <item id="tal_moon" v="0.7">
+    <n>Lunar talisman</n>
+    <info>A powerful talisman possessing powers that only a true hero can handle. Increases damage from any weapon by #1</info>
+  </item>
+  <item id="tal_sun" v="0.7">
+    <n>Solar talisman</n>
+    <info>A great talisman, giving its power only to the chosen ones. Increases damage from any weapon by #1</info>
+  </item>
+  <item id="tal_ether" v="0.7">
+    <n>Ether talisman</n>
+    <info>A legendary talisman worthy of only the best of the best. Increases damage from any weapon by #1</info>
+  </item>
+  <item id="screwdriver">
+    <n>Screwdriver</n>
+    <info>Screwdriver is required for lock picking. You will also require pins. If you lack them, you can try to open the lock anyway, but the probability for the lock to get jammed will be much higher</info>
+    <mess v="0.7">A screwdriver! Quite a useful tool. It can help you open simple locks. Try it on some locked chest. If the lock doesn`t yield on the first try - don`t worry, just try again!</mess>
+  </item>
+  <item id="pin">
+    <n>Bobby pin</n>
+    <info>Pins are useful for lock picking. They are used to probe and move springs inside a lock with less risk of breaking and jamming it than if using brutal force. In case of failure, you might break the pin, but you will be able to try again using another one</info>
+  </item>
+  <item id="titansd" v="0.8">
+    <n>Titanium screwdriver</n>
+    <info>A premium screwdriver made from the sturdiest titanium alloy should help unscrew even the most rusty bolts. You will also find it useful for opening locks, and your lockpicking skill will increase by #1</info>
+  </item>
+  <item id="stethoscope" v="0.8">
+    <n>Stethoscope</n>
+    <info>A medical device designed to hear sounds coming from internal organs... or the sounds the lock makes during lockpicking. Increases your level of lockpicking by #1</info>
+  </item>
+  <item id="strickle" v="0.8">
+    <n>Diamond whetstone</n>
+    <info>A very useful tool for sharpening weapons. Just always carry it with you and it will increase damage of your piercing and cutting weapons by #1</info>
+  </item>
+  <item id="binoc" v="0.7">
+    <n>Binoculars</n>
+    <info>Old binoculars with scratched lenses, a gift from Calamity</info>
+  </item>
+  <item id="empbomb" v="0.7">
+    <n>Pulse bomb</n>
+    <info>Helps enter the Steel Rangers bunker. One-time use</info>
+  </item>
+  <item id="card0" v="0.7">
+    <n>"Fool" destiny card</n>
+    <info>Allows changing the game difficulty to "very easy" for a single time</info>
+  </item>
+  <item id="card1" v="0.7">
+    <n>"Hermit" destiny card</n>
+    <info>Allows changing the game difficulty to "easy" for a single time</info>
+  </item>
+  <item id="card2" v="0.7">
+    <n>"Mage" destiny card</n>
+    <info>Allows changing the game difficulty to "normal" for a single time</info>
+  </item>
+  <item id="card3" v="0.7">
+    <n>"Emperor" destiny card</n>
+    <info>Allows changing the game difficulty to "hard" for a single time</info>
+  </item>
+  <item id="card4" v="0.7">
+    <n>"Death" destiny card</n>
+    <info>Allows changing the game difficulty to "super-hard" for a single time</info>
+  </item>
+  <item id="p_black" v="0.6">
+    <n>Black paint</n>
+  </item>
+  <item id="p_white" v="0.6">
+    <n>White paint</n>
+  </item>
+  <item id="p_gray" v="0.6">
+    <n>Grey paint</n>
+  </item>
+  <item id="p_blue" v="0.6">
+    <n>Blue paint</n>
+  </item>
+  <item id="p_red" v="0.6">
+    <n>Red paint</n>
+  </item>
+  <item id="p_green" v="0.6">
+    <n>Green paint</n>
+  </item>
+  <item id="p_yellow" v="0.6">
+    <n>Yellow paint</n>
+  </item>
+  <item id="p_purple" v="0.6">
+    <n>Purple paint</n>
+  </item>
+  <item id="p_orange" v="0.6">
+    <n>Orange paint</n>
+  </item>
+  <item id="p_brown" v="0.6">
+    <n>Brown paint</n>
+  </item>
+  <item id="p_lblue" v="0.6">
+    <n>Light blue paint</n>
+  </item>
+  <item id="p_dgreen" v="0.6">
+    <n>Dark green paint</n>
+  </item>
+  <item id="p_cyan" v="0.6">
+    <n>Cyan paint</n>
+  </item>
+  <item id="p_pink" v="0.6">
+    <n>Pink paint</n>
+  </item>
+  <item id="p_khaki" v="0.6">
+    <n>Khaki paint</n>
+  </item>
+  <item id="p_crimson" v="0.6">
+    <n>Crimson paint</n>
+  </item>
+  <item id="p_lime" v="0.6">
+    <n>Lime paint</n>
+  </item>
+  <item id="p_burgundy" v="0.6">
+    <n>Burgundy paint</n>
+  </item>
+  <item id="p_fire" v="0.6">
+    <n>Fiery paint</n>
+  </item>
+  <item id="p_beige" v="0.6">
+    <n>Beige paint</n>
+  </item>
+  <item id="key_raiders" v="0.7">
+    <n>Slavers` key</n>
+    <info>Opens various locks in the slavers` den</info>
+  </item>
+  <item id="key_sewer" v="0.7">
+    <n>Security access key</n>
+    <info>Gives access to the ManeTec Department of Special Research</info>
+  </item>
+  <item id="key_cat" v="0.7">
+    <n>Overmare`s key</n>
+    <info>Gives access to the overmare office of stable 88</info>
+  </item>
+  <item id="key_gruz" v="0.7">
+    <n>Alicorn key</n>
+    <info>The key taken from a very strong alicorn in Manehattan, the Blood Moon</info>
+  </item>
+  <item id="key_necr" v="0.7">
+    <n>Necromancer`s key</n>
+    <info>The key belonging to the necromancer zebra Mchawi</info>
+  </item>
+  <item id="key_ranger" v="0.7">
+    <n>Steel Rangers` key</n>
+    <info>The key that was kept by Elder Coldsight</info>
+  </item>
+  <item id="key_tumba" v="0.6">
+    <n>Utility room key</n>
+    <info>Oak Stalwort`s key</info>
+  </item>
+  <item id="key_rar" v="0.7">
+    <n>The extremely valuable key</n>
+    <info>The key to some cellar in Canterlot that, according to rumors, is full of treasures. At least you hope so, and that the key is worth it</info>
+  </item>
+  <item id="key_zebra" v="0.7">
+    <n>Centurion Key</n>
+    <info>A key found at the Legion`s headquarters</info>
+  </item>
+  <item id="key_encl" v="0.7">
+    <n>Colonel`s Key</n>
+    <info>Key received from the commander of the Enclave base</info>
+  </item>
+  <item id="mont" v="0.7">
+    <n>Crowbar</n>
+    <mess>A crowbar is a universal tool. It can be used both as a weapon and for breaking various objects. With it, you can attack enemies, break open doors and break through fragile walls. You can also crack open chests and other containers when lock picking with a screwdriver fails. Both loot from the container and the crowbar itself will receive damage</mess>
+  </item>
+  <item id="rech" v="0.7">
+    <n>Magical energy weapon</n>
+    <mess>The self-recharging pistol is a lucky prize. It belongs to a variety of magical energy weapons that does not require batteries. Its charge restores with time by itself</mess>
+  </item>
+  <item id="r32" v="0.7">
+    <n>Firearms</n>
+    <mess s1="keyReload">Firearms are weapons that use various types of cartridges for firing. Press @1 to reload</mess>
+  </item>
+  <item id="telebul" v="0.7">
+    <n>Attacking spell</n>
+    <mess s1="keyMagic">You found a book that describes the telekinetic bullet spell. To use, equip it the same way as an ordinary weapon. The spell does not require ammunition but consumes your magical power. Also, the attacking spell can be used simultaneously with any other weapon by pressing the @1 key</mess>
+  </item>
+  <item id="spell" v="0.8">
+    <n>Protective spell</n>
+    <mess s1="keyDef">To use a protective spell first equip it from your inventory (section [Weapons] or [Equipment]). After that, you can apply it by pressing the @1 key. You can also assign a protective spell to one of the quick spell slots</mess>
+  </item>
+  <item id="impl" v="0.7">
+    <n>Implant</n>
+    <mess>The implant is installed and activated. No additional actions required</mess>
+  </item>
+  <item id="mod" v="0.7">
+    <n>PipBuck module</n>
+    <mess>The module is connected to the PipBuck and activated. No additional actions required</mess>
+  </item>
+  <item id="impl_skin">
+    <n>Subdermal Armor</n>
+    <info>A secret technology developed as a part of "Cyber-pony" project. Implant reinforces skin with polymer tissue, that raises damage threshold by #1. Implantation cost is included in retail price</info>
+  </item>
+  <item id="impl_regen" v="0.8">
+    <n>Regeneration module</n>
+    <info>A complex and expensive implant that combines advanced magic and nanotechnology. Automatically restores the user`s health by #1 units per second, without requiring additional resources, but no more than #2 of the maximum health</info>
+  </item>
+  <item id="impl_mrech">
+    <n>Magic keeper</n>
+    <info>The implant created specifically for war mages. Never lets your magical power reach zero, protects from burnout</info>
+  </item>
+  <item id="impl_intel" v="0.6">
+    <n>Logical processor</n>
+    <info>A small chip that connects directly to the brain. Improves memory, helps to do mathematical calculations, improves the accuracy of telekinesis. In general, this leads to an increase of Lockpicking skill by #1 and Science by #2</info>
+  </item>
+  <item id="mod_metal">
+    <n>Metal detector</n>
+    <info>A simple device, connectable to PipBuck. Set for detection of small metal items, it allows you finding lost caps and ammo in the most unexpected places</info>
+  </item>
+  <item id="mod_analis">
+    <n>Tactical analyzer</n>
+    <info>An advanced module for PipBuck, allows scanning enemies to define strong and weak points. In S.A.T.S. you will see exact information about your enemies` health and armor</info>
+  </item>
+  <item id="mod_target">
+    <n>Targeting module</n>
+    <info>A complex device, connectable to PipBuck. During battle defines enemies` weak points not covered by armor and marks them with a laser point. You have a chance to attack in the weak spot, completely ignoring any armor. The chance is higher when using rifles and pistols</info>
+  </item>
+  <item id="mod_holo">
+    <n>Holographic module</n>
+    <info>A complex techno-magical module for PipBuck, employing illusion magic. Acts as an active camouflage system, making it harder detecting you. In battle it creates illusive noise, distracting enemy`s aim. Increases Stealth and evasion bonus by #1</info>
+  </item>
+  <item id="mod_reanim">
+    <n>Reanimation module</n>
+    <info>An addition to medical PipBuck module. It constantly monitors your health, automatically applying medical spells in mortal danger, allowing the owner to survive and keep conscience even when seriously wounded. However it takes a long time to recharge after each use</info>
+  </item>
+  <item id="mod_hacker" v="0.6">
+    <n>Hacker`s module</n>
+    <info>A complex module for PipBuck allowing you to partially automate the picking of a password. Increases your skill for hacking terminals by #1</info>
+  </item>
+  <item id="owl_weapon" v="0.7">
+    <n>Enhanced robo-owl laser</n>
+    <info>Improved laser for a robo-owl, increasing damage by about one third</info>
+  </item>
+  <item id="owl_armor" v="0.7">
+    <n>Robo-owl active defense</n>
+    <info>Strengthened body for the robo-owl, increasing its survivability</info>
+  </item>
+  <item id="c_owl" v="0.7">
+    <n>Robo-owl case</n>
+    <info>Just an empty case without any filling</info>
+  </item>
+  <item id="kogit" v="0.7">
+    <n>Quantum cogitator</n>
+    <info>A small but very powerful processor. Currently connected to your PipBuck, which increases your level of lockpicking and terminal hacking by #1, as well as the number of APs in S.A.T.S. mode by #2</info>
+    <mess>In your hooves you hold a masterpiece of the former Equestria technology. A very compact processor a thousand times more superior to the conventional one. Using your knowledge of a PipBuck technician, you connect the cogitator to your PipBuck. Of course, this cannot reveal the whole potential of this technological miracle, but still, with it, your PipBuck starts to work faster and better. Your skill level for opening locks and hacking terminals, as well as the number of APs in the S.A.T.S. mode, are increased</mess>
+  </item>
+  <item id="mod_trans" v="0.8">
+    <n>Transistor module</n>
+    <info>An extension module for PipBuck increasing its computing power. Increases your level of lockpicking and hacking by #1, as well as the amount of AP in S.A.T.S. by #2</info>
+  </item>
+  <item id="stat_tw" v="0.7">
+    <n>Twilight Sparkle figurine</n>
+    <info>Be Smart! Increases damage from combat spells by #1, also increases the chance of successful lockpicking and terminal hacking</info>
+    <mess>You find a figurine of a young lavender unicorn with a crimson and lilac stripes in a dark blue mane and with a cutie mark shaped like a magic star. ["Be Smart!"] - reads the golden inscription at the base of the statuette. You immediately feel an unusual clarity of thought, and your magical power has clearly increased</mess>
+  </item>
+  <item id="stat_pp" v="0.7">
+    <n>Pinkie Pie figurine</n>
+    <info>Awareness! It was under "E"! Increases accuracy and stealth by #1</info>
+    <mess>A beautifully preserved statuette of a bright pink pony, with a mane that looks like cotton candy, just radiating an aura of unrestrained happiness and fun. The inscription at the base is a bit strange: [`Awareness! It was under "E"!`] You are surprised to note that all your feelings magically sharpened</mess>
+  </item>
+  <item id="stat_aj" v="0.7">
+    <n>Applejack figurine</n>
+    <info>Be Strong! Increases damage from melee weapons by #1, damage from hoof attacks by #2, and health by #3</info>
+    <mess>You find a statue of an orange earth pony with a yellow mane and tail, depicted at the moment when her hind hooves hit the air. It is engraved with the inscription "Be Strong!". Amazingly, now you really feel much stronger</mess>
+  </item>
+  <item id="stat_rd" v="0.7">
+    <n>Rainbow Dash figurine</n>
+    <info>Be Awesome! Increases damage of all firearms by #1, and the speed of running and swimming by #2</info>
+    <mess>A statuette of a sky-blue pegasus, with rainbow mane and tail. She is depicted in a proud pose, with straightened wings and a grin on her face. You see the inscription on the base ["Be awesome!"], and immediately feel... much cooler! In every way</mess>
+  </item>
+  <item id="stat_fl" v="0.7">
+    <n>Fluttershy figurine</n>
+    <info>Be Pleasant! Reduces the prices of merchants by #1 and increases the effectiveness of healing potions by #2</info>
+    <mess>A statuette of a yellow pegasus, untouched by time, smiling very sweetly from beneath her pink mane with a gentle look in her eyes. The inscription at the base reads "Be Pleasant!" - and indeed you feel inside the power not to kill, but to heal and save lives</mess>
+  </item>
+  <item id="stat_rr" v="0.7">
+    <n>Rarity figurine</n>
+    <info>Be Unwavering! Increases the damage threshold by #1, reduces consumption of stamina and magical power by #2</info>
+    <mess>A statuette of an amazingly beautiful white unicorn with a carefully combed purple mane. With all its appearance, it radiates confidence and firmness, like diamonds on her cutie mark, and these qualities are immediately transmitted to you. The inscription at the base reads: ["Be Unwavering!"]</mess>
+  </item>
+  <item id="amul_al" v="0.7">
+    <n>Alicorn Amulet</n>
+    <info>An ancient and mysterious relic, increasing the magical power of the owner but enslaving his mind. Under no circumstances should you wear this amulet around your neck! Although just laying in your bag, it still strengthens your battle spells by #1 and decreases magic consumption by #2</info>
+    <mess>Alicorn Amulet! An ancient and mysterious relic, increasing the magical power of the owner but enslaving his mind. You feel a strong desire to immediately put the amulet around your neck, but, realizing the danger of such a rash act, simply put it in your bag. And still, even just being near, the amulet increases your magical power</mess>
+  </item>
+  <item id="blackbook" v="0.7">
+    <n>Black book</n>
+    <info>The ancient tome written by mighty zebra shamans and containing their forbidden knowledge. But it is not just the dark spells and terrible rituals described in the book that are of interest. The book itself is also an extraordinarily powerful artifact, protecting its owner from black magic and giving the ability to absorb the vital energy from enemies</info>
+    <mess>The black book! A tome, written in ancient times by mighty zebra alchemists, containing their forbidden knowledge. You would really like to know what secrets are hidden in this book, but it is written in an unfamiliar language. And perhaps, this is for the best.
+Having the book with you, you get some protection from black magic, as well as an ability to absorb the vital energy of ponies, zebras, griffins, and alicorns you kill</mess>
+  </item>
+  <item id="sp_mwall">
+    <n>Magical barrier</n>
+    <info>This spell enables you to summon a magical barrier in a specific location, absorbing enemy bullets and magical spells. The barrier has limited endurance and time of existence, after which it dissipates. Importantly, it lets your bullets and missiles come through</info>
+  </item>
+  <item id="sp_mshit">
+    <n>Magical shield</n>
+    <info>This spell surrounds you with a protective field, increasing your armor stats. It protects from any external damage, however strong blows, armor-piercing bullets and explosions can overwhelm the shield and cause a somewhat reduced damage. It has limited endurance and existence time</info>
+  </item>
+  <item id="sp_blast">
+    <n>Kinetic blast</n>
+    <info>This spell releases all your telekinetic power in one mighty impulse. All enemies around you get knocked back with enormous force and might even get stunned. It is very useful when you are surrounded</info>
+  </item>
+  <item id="sp_kdash" v="0.6">
+    <n>Kinetic dash</n>
+    <info>This spell uses your telekinetic powers to give you a powerful directed impulse. Can be used for evading attacks in combat or getting to hard-to-reach places</info>
+  </item>
+  <item id="sp_slow" v="0.6">
+    <n>Distortion field</n>
+    <info>This spell surrounds you with a magic field that slows movements of any hostile objects. Improving "Magic" skill increases a radius of the field</info>
+  </item>
+  <item id="sp_cryst" v="0.6">
+    <n>Crystal shield</n>
+    <info>This spell creates a shell around you that looks like a crystal. It absorbs any external damage, consuming magical energy instead of health. To use it, hold down the spell key</info>
+  </item>
+  <item id="sp_moon" v="0.7">
+    <n>Moonblade</n>
+    <info>The spell summons a spirit moonblade, fighting on your side</info>
+  </item>
+  <item id="sp_gwall" v="0.8">
+    <n>Ghost wall</n>
+    <info>Allows you to create a ghost wall impassable for your enemies. The wall has a certain limit of durability and lifetime. It is fully permeable for all inanimate objects, like bullets and shells, and for its creator. The wall cannot be created in doorways and on staircases</info>
+  </item>
+  <item id="sp_invulner" v="0.8">
+    <n>Blood shield</n>
+    <info>The spell uses some of your blood to create an impenetrable magic shield for a few seconds. It gives complete invulnerability to any external damage and can save you at the most critical moment at the cost of some blood loss. It won`t work if you don`t have enough blood</info>
+  </item>
+  <item id="kombu_comp">
+    <n>Reinforced fabric</n>
+    <info>Durable material made of several layers of thick fabric with interlayers of polymer fiber for better ballistic protection. Used for manufacturing light body armor</info>
+  </item>
+  <item id="antirad_comp">
+    <n>Radiation-resistant fabric</n>
+    <info>A material enriched with metallic fiber, able to reflect radiation</info>
+  </item>
+  <item id="antihim_comp">
+    <n>Rubberized fabric</n>
+    <info>A rubber-saturated material, impenetrable for liquid and gaseous substances. Protects well in the aggressive environment</info>
+  </item>
+  <item id="skin_comp">
+    <n>Tanned leather</n>
+    <info>Firm pieces of chemically hardened leather, can be used to enhance and repair leather armor</info>
+  </item>
+  <item id="metal_comp">
+    <n>Metal plate</n>
+    <info>Hard and shiny metal plate, that not just any bullet can break through. Can be used to repair and enhance metal armor</info>
+  </item>
+  <item id="battle_comp">
+    <n>Armored plate</n>
+    <info>A plate made of ceramics and complex polymers. Very firm and light, it is used in a modern combat armor</info>
+  </item>
+  <item id="magus_comp">
+    <n>Enchanted plate</n>
+    <info>A plate of indistinct material, greatly enhanced by magic. Used in a magic armor</info>
+  </item>
+  <item id="chitin_comp">
+    <n>Chitinous plate</n>
+    <info>A fragment of a thick and sturdy chitinous shell. With enough skill you can make a decent armor</info>
+  </item>
+  <item id="intel_comp">
+    <n>Camouflage plate</n>
+    <info>A plate of composite materials with a special textured surface. Used to repair or improve scout armor</info>
+  </item>
+  <item id="power_comp" v="0.7">
+    <n>Power armor fragment</n>
+    <info>A fragment of one of the greatest achievements of equestrian science and technology. Perhaps, if you collect enough of these parts, you can build a complete set of armor</info>
+  </item>
+  <item id="polic_comp" v="0.8">
+    <n>Aramid fabric</n>
+    <info>Aramid is stronger than steel and five times lighter. A multilayer fabric of this material can stop a pistol bullet and is quite fireproof</info>
+  </item>
+  <item id="strap">
+    <n>Leather belt</n>
+    <info>Still looks like new</info>
+  </item>
+  <item id="fblade">
+    <n>Fan blade</n>
+    <info>A bit rusty, but quite sturdy and sharp</info>
+  </item>
+  <item id="tubing">
+    <n>Rubber band</n>
+    <info>Even after all those years it is still elastic</info>
+  </item>
+  <item id="tape">
+    <n>Duct tape</n>
+    <info>Essential in any household</info>
+  </item>
+  <item id="lighter">
+    <n>Lighter</n>
+    <info>Indispensable accessory of any smoker</info>
+  </item>
+  <item id="bottle">
+    <n>Empty bottle</n>
+    <info>An empty bottle of Sparkle-cola, or of some other beverage</info>
+  </item>
+  <item id="can">
+    <n>Tin can</n>
+    <info>A container for canned food</info>
+  </item>
+  <item id="scrap">
+    <n>Scrap metal</n>
+    <info>Just a pile of metal parts, good for nothing</info>
+  </item>
+  <item id="detonat">
+    <n>Detonator</n>
+    <info>A small detonator used in grenades</info>
+  </item>
+  <item id="powder">
+    <n>Gunpowder</n>
+    <info>Ordinary gunpowder</info>
+  </item>
+  <item id="sensor">
+    <n>Sensor</n>
+    <info>A small sensory module, reacts on proximity of specified objects</info>
+  </item>
+  <item id="lunchbox">
+    <n>Lunchbox</n>
+    <info>An ordinary lunchbox from "Stable-Tec"</info>
+  </item>
+  <item id="timer">
+    <n>Timer</n>
+    <info>A kitchen timer shaped as a half of an apple</info>
+  </item>
+  <item id="pulv">
+    <n>Paint Gun</n>
+    <info>A mechanism for spraying paint</info>
+  </item>
+  <item id="tnt">
+    <n>Trinitrotoluene</n>
+    <info>A substance in shape of yellow crystals, a base for powerful explosives</info>
+  </item>
+  <item id="spring">
+    <n>Spring</n>
+    <info>An elastic part of some device</info>
+  </item>
+  <item id="motor">
+    <n>Electric motor</n>
+    <info>Electric motor from a broken circular saw</info>
+  </item>
+  <item id="glue">
+    <n>Wonderglue</n>
+    <info>Can glue anything to any surface of any material for good</info>
+  </item>
+  <item id="turp" v="0.6">
+    <n>Turpentine</n>
+    <info>Organic solvent, obtained from the resin of coniferous trees. Toxic and flammable</info>
+  </item>
+  <item id="frag">
+    <n>Weapon fragments</n>
+    <info>Different details that can be used for repair or assembly of new weapons</info>
+  </item>
+  <item id="pbatt">
+    <n>Industrial battery</n>
+    <info>A Spark-battery used for powering up machinery and equipment. Heavy and not very powerful, yet very long-lasting</info>
+  </item>
+  <item id="compress">
+    <n>Piston compressor</n>
+    <info>A simple device for air compression</info>
+  </item>
+  <item id="resscook">
+    <n>Pressure cooker</n>
+    <info>A hermetically sealed pan for cooking at high temperature</info>
+  </item>
+  <item id="mano">
+    <n>Manometer</n>
+    <info>A device, measuring pressure, equipped with a safety valve</info>
+  </item>
+  <item id="magnit">
+    <n>Electromagnet</n>
+    <info>A very powerful one, can hold stuff 200 fold heavier than itself</info>
+  </item>
+  <item id="tlevit">
+    <n>Levitation talisman</n>
+    <info>A compact magical device, allowing holding small items in air</info>
+  </item>
+  <item id="fcrystal">
+    <n>Focusing crystal</n>
+    <info>A large and very pure crystal, used in heavy magical energy machinery for focusing energy flows</info>
+  </item>
+  <item id="superc">
+    <n>Superconductor</n>
+    <info>It has zero electrical resistance</info>
+  </item>
+  <item id="condens">
+    <n>Capacitor</n>
+    <info>An element of high capacitance, capable of producing high discharge</info>
+  </item>
+  <item id="bdpass" v="0.6">
+    <n>Passwords database</n>
+    <info>A memory module containing 300,000 most used passwords. It can be used to create a device that would help hacking terminals</info>
+  </item>
+  <item id="fan" v="0.6">
+    <n>Fan</n>
+    <info>Old desktop fan, long broken and non-functional</info>
+  </item>
+  <item id="lamp" v="0.6">
+    <n>Lamp</n>
+    <info>Old desk lamp, long broken and non-functional</info>
+  </item>
+  <item id="kofe" v="0.6">
+    <n>Coffee maker</n>
+    <info>Old coffee maker, long broken and non-functional</info>
+  </item>
+  <item id="elcomp">
+    <n>Electronic elements</n>
+    <info>All sorts of transistors, resistors, diodes, microschemes and other parts</info>
+  </item>
+  <item id="chip">
+    <n>Multipurpose chip</n>
+    <info>Electronic chip, that can be reprogrammed using necessary equipment and skill</info>
+  </item>
+  <item id="impgen">
+    <n>Impulse generator</n>
+    <info>A compact device for generating radio signals of certain frequency and amplitude</info>
+  </item>
+  <item id="uscan">
+    <n>Ultrasonic scanner</n>
+    <info>Device for scanning surroundings using ultrasonic signals</info>
+  </item>
+  <item id="tlaser">
+    <n>Laser pointer</n>
+    <info>A low-power laser, that can be used in an automatic target designator</info>
+  </item>
+  <item id="pcrystal">
+    <n>Photochromic crystal</n>
+    <info>Crystal of complex internal structure, refracting and modifying light</info>
+  </item>
+  <item id="tmed">
+    <n>Medical talisman</n>
+    <info>A complex magical device, capable of supporting patient`s life even when he is one hoof in the grave. Can restart a stopped heart</info>
+  </item>
+  <item id="motiv" v="0.7">
+    <n>Motivator RX-47</n>
+    <info>Block controlling movement of a robot</info>
+  </item>
+  <item id="gland">
+    <n>Poisonous gland</n>
+    <info>Full of very dangerous poison</info>
+  </item>
+  <item id="acidslime">
+    <n>Acidic goo</n>
+    <info>Can be obtained from acidic slime</info>
+  </item>
+  <item id="ghoulblood">
+    <n>Ghoul`s blood</n>
+    <info>A muddy brownish liquid, that substitutes ghouls blood</info>
+  </item>
+  <item id="radslime">
+    <n>Radioactive goo</n>
+    <info>Glows in the dark with ominous poisonous-green light</info>
+  </item>
+  <item id="wingmembrane">
+    <n>Wing membrane</n>
+    <info>Wing membrane of a huge bloodwing</info>
+  </item>
+  <item id="vampfang">
+    <n>Vampire fang</n>
+    <info>A fang of a bloodwing, containing liquid, preventing blood from coagulating</info>
+  </item>
+  <item id="bloatwing">
+    <n>Bloatsprite wing</n>
+    <info>Resembles an ordinary insect wing, but of enormous size</info>
+  </item>
+  <item id="bloateye">
+    <n>Bloatsprite eye</n>
+    <info>Faceted eye, sparkling with all colors of the rainbow</info>
+  </item>
+  <item id="ratliver">
+    <n>Rat liver</n>
+    <info>Eww gross!</info>
+  </item>
+  <item id="rattail">
+    <n>Rat tail</n>
+    <info>Looks like a giant worm</info>
+  </item>
+  <item id="molefat">
+    <n>Monster`s fat</n>
+    <info>In a desperate case can be a substitute for machine oil</info>
+  </item>
+  <item id="fishfat" v="0.6">
+    <n>Fish oil</n>
+    <info>Some ponies consider this smelly substance good for health</info>
+  </item>
+  <item id="firegland">
+    <n>Flame gland</n>
+    <info>Gives some creatures the ability to breathe fire. You can feel a powerful magic contained inside</info>
+  </item>
+  <item id="herbs">
+    <n>Magical herbs</n>
+    <info>All sorts of plants having magical properties, necessary for most potions. It is hard to find them in the Wasteland, although some zebra earn their living by gathering these for sale</info>
+  </item>
+  <item id="app">
+    <n>Pink powder</n>
+    <info>A multipurpose remedy for every life situation, used in hundreds recipes</info>
+  </item>
+  <item id="mdust" v="0.6">
+    <n>Magic dust</n>
+    <info>Crystallized magical essence</info>
+  </item>
+  <item id="pinkslime" v="0.7">
+    <n>Pink slime</n>
+    <info>Slime which absorbed the concentrated Pink cloud</info>
+  </item>
+  <item id="dsoul" v="0.7">
+    <n>Dark soul</n>
+    <info>Ephemeral substance left after destruction of a necrosprites swarm</info>
+  </item>
+  <item id="whorn" v="0.7">
+    <n>Horn of the Witch</n>
+    <info>A horn of a very strong Canterlot ghoul</info>
+  </item>
+  <item id="taintextract">
+    <n>Taint extract</n>
+    <info>A substance of magical nature. On contact with a living material it causes horrible mutations, but in precisely selected doses and in combination with other reagents may cause advantageous alterations</info>
+  </item>
+  <item id="hydrablood">
+    <n>Hydra`s blood</n>
+    <info>An incredibly potent magical reagent. When properly used, it helps to wake up hidden potential of the body</info>
+  </item>
+  <item id="rainbow">
+    <n>A liquid rainbow</n>
+    <info>Pretty versicolored liquid with a horrible taste. Has prominent magical properties</info>
+  </item>
+  <item id="stardust">
+    <n>Star dust</n>
+    <info>Sparkling silvery dust, that might be found in places of meteorite landing</info>
+  </item>
+  <item id="moonstone">
+    <n>Moonstone</n>
+    <info>A rare opaque mineral of blue-white color. According to beliefs, it has a connection to ancient mystical forces</info>
+  </item>
+  <item id="essence">
+    <n>Mysterious essence</n>
+    <info>Actually, nopony knows what it is exactly, but not a single really powerful potion is possible without it</info>
+  </item>
+  <item id="firecrystal" v="0.6">
+    <n>Fiery crystal</n>
+    <info>An orange crystal resembling a tongue of flame. And even warm to the touch</info>
+  </item>
+  <item id="abssalt" v="0.7">
+    <n>Absolute salt</n>
+    <info>Very rare alchemical reagent</info>
+  </item>
+  <item id="darkfrag" v="0.7">
+    <n>Dark Shard</n>
+    <info>It appears to be materialized dark magic</info>
+  </item>
+  <item id="impgr" v="0.7">
+    <n>Pulse grenade</n>
+  </item>
+  <item id="kogt" v="0.8">
+    <n>Hellhound Claw</n>
+    <info>A particularly long and sharp claw once belonging to a large hellhound. You can use it to make a weapon or sell it for a good price</info>
+  </item>
+  <item id="bag1" v="0.8">
+    <n>Ammo pouch</n>
+    <info>A pouch made of thick tarpaulin of a special design by Brass Buckshot. With this you can carry more ammo, batteries or explosives without any loss of mobility</info>
+  </item>
+  <item id="bag2" v="0.8">
+    <n>Large Ammo Pouch</n>
+    <info>A durable synthetic fabric pouch designed by Steel Rangers specialists. With this you can carry more ammo, batteries or explosives without constraining your movements</info>
+  </item>
+  <item id="potion_consc" v="0.8">
+    <n>Elixir of mind expansion</n>
+    <info>An incredibly rare elixir, the recipe of which seems to be lost forever. Enhances the magical talent making unicorns capable of holding more spells in memory at the same time. The effect is permanent</info>
+  </item>
+  <item id="hcrystal" v="0.8">
+    <n>Harmony crystal</n>
+    <info>A blue crystal of irregular shape. Its purpose is unknown</info>
+  </item>
+  <item id="tech1" v="0.8">
+    <n>Magnetic resonance horsgregator</n>
+    <info>Makes horsgregation using magnetic resonance - you don`t have to be a scientist to understand that</info>
+  </item>
+  <item id="tech2" v="0.8">
+    <n>Ultra-quadruponificator</n>
+    <info>Much more powerful than common quadruponificator. A real breakthrough in a world of quadruponification!</info>
+  </item>
+  <item id="tech3" v="0.8">
+    <n>Baryon neighralyzer</n>
+    <info>Neighralyzes whatever you want and any way you like - this device has so much better capabilities compared to its analogues</info>
+  </item>
+  <item id="tech4" v="0.8">
+    <n>Superluminescent quasistabilitron</n>
+    <info>It can glow in different colors or rectify electric current - depending on the state of the quantum field</info>
+  </item>
+  <item id="tech5" v="0.8">
+    <n>Hyperbeam twilifuser</n>
+    <info>The most important thing to remember when working with this device - where that plug goes into. Incorrect plugging may cause dire consequences</info>
+  </item>
+  <item id="enclarmor" v="0.8">
+    <n>Enclave Power Armor</n>
+    <info>Power armor for pegasi. You will not be able to wear it properly without some modifications</info>
+  </item>
+  <item id="lp_item" v="0.8">
+    <n>Dictionary of foul language</n>
+    <info>Dear Reader! If you hold this opus in your hooves, that means that you have decided to take the first step in mastering the subtle art of foul language. The ability to swear firmly and ornately is actually an important and essential part of intelligent speech, and there is absolutely nothing shameful in it if used properly. In most cases, simply adding a dirty word to your speech is not enough to impress audience and fully express your feelings, and many improve their skills of conveying emotions colorfully throughout entire life. Sadly, our dictionary will unlikely be enough to raise you to the level of real maestros of this art, because the truly masterful swearing should come intuitively and from your very heart. But thanks to this book, you can definitely get a starting point that will guide you in further improving your talents in this field</info>
+  </item>
+  <item id="potion_rat" v="0.8">
+    <n>Potion of transformation</n>
+    <info>Turns you into a small animal for a short time. This potion is so powerful that it`s enough to take just the smallest sip, hence you can use it many times</info>
+  </item>

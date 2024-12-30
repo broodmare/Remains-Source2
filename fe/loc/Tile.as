@@ -32,7 +32,9 @@ package  fe.loc {
 		public var recalc:Boolean=false;
 		
 		public var vid:int=0, vid2:int=0; 
-		public var front:String='', back:String='', zad:String='';
+		public var front:String = '';
+		public var back:String = '';
+		public var zad:String = '';
 		public var fRear:Boolean=false, vRear:Boolean=false, v2Rear:Boolean=false;
 		
 		public var visi:Number=0, t_visi:Number=0;

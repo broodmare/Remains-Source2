@@ -30,8 +30,8 @@ package fe.inter {
 		private var n_food:String;
 		private var drunk:int = 0;
 
-		private static var cachedPerkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
-		private static var cachedParamList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+		private static var cachedPerkList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
+		private static var cachedParamList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
 		private static var cachedPerks:Object = {};
 		private static var cachedParams:Object = {};
@@ -50,7 +50,7 @@ package fe.inter {
 		}
 
 		public static function getPerkInfo(id:String):XML {
-			var node:XML;
+			var node;
 			
 			if (cachedPerks[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
@@ -64,11 +64,14 @@ package fe.inter {
 		}
 
 		public static function getParamInfo(id:String):XML {
-			var node:XML;
+			var node;
 			if (cachedParams[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
                 cachedParams[id] = node;
-            } else node = cachedParams[id];
+            }
+			else {
+				node = cachedParams[id];
+			}
 			return node;
 		}
 		
@@ -87,12 +90,12 @@ package fe.inter {
 				arr.push({nazv:Res.pipText('name'), lvl:gg.pers.persName});
 				arr.push({nazv:Res.pipText('level'), lvl:gg.pers.level});
 				arr.push({nazv:Res.pipText('expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
-				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.guiText('dif'+World.w.game.globalDif)});
+				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.txt("g", 'dif'+World.w.game.globalDif)});
 				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 
 				for (var i = 0; i < cachedParamList.length(); i++) {
-					var xml:XML = cachedParamList[i];
+					var xml = cachedParamList[i];
 					if (xml.@show > 0) {
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
@@ -195,7 +198,7 @@ package fe.inter {
 				statHead.numb.text=Res.pipText('is2');
 				for (var pid in pers.perks) {
 					var maxlvl=1;
-					var xperk:XML = getPerkInfo(pid);
+					var xperk = getPerkInfo(pid);
 					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
 					var n:Object={id:pid, nazv:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
@@ -253,7 +256,7 @@ package fe.inter {
 				statHead.nazv.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
 
-				for each(var dp:XML in cachedPerkList) {
+				for each(var dp in cachedPerkList) {
 					if (dp.@tip==1) {
 						var res:int=pers.perkPoss(dp.@id, dp);
 						if (res<0) continue;
@@ -268,7 +271,7 @@ package fe.inter {
 
 				arr.sortOn(['sort','nazv']);
 				vis.butOk.text.text=Res.pipText('accept');
-				vis.butDef.text.text=Res.guiText('cancel');
+				vis.butDef.text.text=Res.txt("g", 'cancel');
 				vis.butDef.visible=true;
 			}
 			showBottext();
@@ -356,7 +359,7 @@ package fe.inter {
                         vis.info.htmlText = Res.txt('p', id, 1);
                     }
                     vis.info.htmlText += '<br><br>';
-                    var xml:XML = getParamInfo(id);
+                    var xml = getParamInfo(id);
                     if (xml != null && xml.@f > 0) vis.info.htmlText += factor(xml.@v);
                 }
 				else if (page2 == 5) {

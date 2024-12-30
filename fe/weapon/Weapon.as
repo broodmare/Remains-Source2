@@ -131,9 +131,9 @@ package fe.weapon {
 		public var recoilMult:int=1;	//множитель отдачи
 		public var desintegr:Number=0;	//вероятность дезинтеграции
 		
-		public var holder:int=0;		//обойма
-		public var ammoBase:String='';	//базовый тип боеприпасов
-		public var ammo:String='';		//текущий тип боеприпасов
+		public var holder:int=0;		// [Holder (??)]
+		public var ammoBase:String='';	// [Basic type of ammunition]
+		public var ammo:String='';		// [Current ammunition type]
 		public var ammoTarg:String='';	//тип боеприпасов на замену
 		public var reload:int=0;		//тактов на перезарядку, 30=1с
 		public var recharg:int=0;		//тактов на подзарядку, если она имеется, 0 если нет
@@ -271,7 +271,7 @@ package fe.weapon {
 				return cachedAmmo[id];
 			}
 
-			var node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
 			if (node) {
 				cachedAmmo[id] = node;
 			}
@@ -369,7 +369,7 @@ package fe.weapon {
 			//боеприпасы
 			if (node.a.length()) {
 				ammo = ammoBase = node.a[0];
-				var ammoNode = getAmmoInfo(ammo);
+				var ammoNode:XML = getAmmoInfo(ammo);
 				setAmmo(ammo,ammoNode);
 			}
 			
@@ -543,7 +543,7 @@ package fe.weapon {
 			critchAdd=0;
 			otbrosMult=1;
 			devMult=1;
-			for each(var wp in weaponPerks) {
+			for each(var wp:String in weaponPerks) {
 				if (opt[wp]) {
 					if (pers.hasOwnProperty(wp + 'Prec')) precMult *= pers[wp + 'Prec'];
 					if (pers.hasOwnProperty(wp + 'Cons')) consMult *= pers[wp + 'Cons'];
@@ -1126,7 +1126,7 @@ package fe.weapon {
 				// unsuitable ammunition
 				if (nammo!='' && nammo!=ammo)
 				{
-					var am = getAmmoInfo(nammo);
+					var am:XML = getAmmoInfo(nammo);
 					if (am.length()==0) return;
 					if (am.@base!=ammoBase) {
 						World.w.gui.infoText('imprAmmo',World.w.invent.items[nammo].nazv,null,false);

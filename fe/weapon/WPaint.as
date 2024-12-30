@@ -23,15 +23,15 @@ package fe.weapon {
 		}
 		
 		public function lineCel():int {
-			var res=0;
+			var res:int = 0;
 			var bx:Number=owner.coordinates.X;
 			var by:Number=owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number = (celX - bx);
 			var ndy:Number = (celY - by);
-			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			for (var i=1; i<div; i++) {
-				celX=bx+ndx*i/div;
-				celY=by+ndy*i/div;
+			var div:Number = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
+			for (var i:int = 1; i < div; i++) {
+				celX = bx + ndx * i / div;
+				celY = by + ndy * i / div;
 				var t:Tile=World.w.loc.getAbsTile(int(celX), int(celY));
 				if (t.phis==1 && celX>=t.boundingBox.left && celX<=t.boundingBox.right && celY>=t.boundingBox.top && celY<=t.boundingBox.bottom) {
 					return 0
@@ -41,7 +41,7 @@ package fe.weapon {
 		}
 		
 		public override function actions():void {
-			var ds=40*owner.storona;
+			var ds:int = 40 * owner.storona;
 			if (owner.player) {
 				celX=owner.celX;
 				celY=owner.celY;
@@ -51,8 +51,8 @@ package fe.weapon {
 				norma(del,600);
 				ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
 				
-				var tx=celX - coordinates.X;
-				var ty=celY - coordinates.Y;
+				var tx:Number = celX - coordinates.X;
+				var ty:Number = celY - coordinates.Y;
 				ready=((tx*tx+ty*ty)<100);
 				del.x=((owner.coordinates.X + ds + del.x) - coordinates.X) / 2;
 				del.y=((owner.weaponY + del.y) - coordinates.Y) / 2;
@@ -71,7 +71,7 @@ package fe.weapon {
 			return true;
 		}
 
-		public function setPaint(npaint:String, ncolor:uint, nblend:String) {
+		public function setPaint(npaint:String, ncolor:uint, nblend:String):void {
 			paintId=npaint;
 			paintNazv=Res.txt('i',paintId);
 			World.w.grafon.brTrans.color=ncolor

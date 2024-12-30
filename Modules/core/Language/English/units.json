@@ -1,0 +1,882 @@
+{
+  "units": [
+    {
+      "Key": "littlepip",
+      "String": "Littlepip"
+    },
+    {
+      "Key": "vendor",
+      "String": "Merchant"
+    },
+    {
+      "Key": "doctor",
+      "String": "Doctor"
+    },
+    {
+      "Key": "calam",
+      "String": "Stranger"
+    },
+    {
+      "Key": "calam2",
+      "String": "Calamity"
+    },
+    {
+      "Key": "velvet",
+      "String": "Velvet Remedy"
+    },
+    {
+      "Key": "steel",
+      "String": "Steelhooves"
+    },
+    {
+      "Key": "vendor_bar",
+      "String": "Daiquiri"
+    },
+    {
+      "Key": "vendor_mech",
+      "String": "Winry"
+    },
+    {
+      "Key": "vendor_armor",
+      "String": "Oak Stalwart"
+    },
+    {
+      "Key": "vendor_mage",
+      "String": "Dusty Nebula"
+    },
+    {
+      "Key": "vendor_expl",
+      "String": "Smoky Pit"
+    },
+    {
+      "Key": "vendor_weapon",
+      "String": "Brass Buckshot"
+    },
+    {
+      "Key": "vendor_medic",
+      "String": "Doc Sepsis"
+    },
+    {
+      "Key": "vendor_cook",
+      "String": "Holly Shine"
+    },
+    {
+      "Key": "vendor_maps",
+      "String": "Dip Fanken"
+    },
+    {
+      "Key": "vendor_zebr",
+      "String": "Zambezi"
+    },
+    {
+      "Key": "vendor_sr",
+      "String": "Scribe Amaranth"
+    },
+    {
+      "Key": "patient",
+      "String": "Zira"
+    },
+    {
+      "Key": "askari",
+      "String": "Askari"
+    },
+    {
+      "Key": "madfox",
+      "String": "Mad Fox"
+    },
+    {
+      "Key": "lucerne",
+      "String": "Lucerne"
+    },
+    {
+      "Key": "rubanok",
+      "String": "Chopper"
+    },
+    {
+      "Key": "exterm",
+      "String": "Exterminatus"
+    },
+    {
+      "Key": "davilka",
+      "String": "Masher"
+    },
+    {
+      "Key": "sweet",
+      "String": "Sweetie Cake"
+    },
+    {
+      "Key": "bibl",
+      "String": "Librarian"
+    },
+    {
+      "Key": "overseer",
+      "String": "Overseer"
+    },
+    {
+      "Key": "buch",
+      "String": "Butch"
+    },
+    {
+      "Key": "sharp",
+      "String": "Sharp Shooter"
+    },
+    {
+      "Key": "mchavi",
+      "String": "Mchawi"
+    },
+    {
+      "Key": "cold",
+      "String": "Elder Coldsight"
+    },
+    {
+      "Key": "autodoc",
+      "String": "AutoDoc"
+    },
+    {
+      "Key": "mainframe",
+      "String": "Factory maneframe"
+    },
+    {
+      "Key": "mainframe2",
+      "String": "Stable maneframe"
+    },
+    {
+      "Key": "comm",
+      "String": "Communication unit"
+    },
+    {
+      "Key": "mentor",
+      "String": "Mentor"
+    },
+    {
+      "Key": "watcher",
+      "String": "Watcher"
+    },
+    {
+      "Key": "zeb1",
+      "String": "Mwimbaji"
+    },
+    {
+      "Key": "zeb2",
+      "String": "Wingu"
+    },
+    {
+      "Key": "zeb3",
+      "String": "Mshauri"
+    },
+    {
+      "Key": "zeb4",
+      "String": "Kijito"
+    },
+    {
+      "Key": "centurion",
+      "String": "Centurion Upanga"
+    },
+    {
+      "Key": "stormspear",
+      "String": "Stormspear"
+    },
+    {
+      "Key": "stormblade",
+      "String": "Stormblade"
+    },
+    {
+      "Key": "stormhammer",
+      "String": "Stormhammer"
+    },
+    {
+      "Key": "colonel",
+      "String": "Colonel Windflow"
+    },
+    {
+      "Key": "sc1",
+      "String": "Transistor"
+    },
+    {
+      "Key": "sc2",
+      "String": "Lime Fizzy"
+    },
+    {
+      "Key": "sc3",
+      "String": "Heartrose"
+    },
+    {
+      "Key": "sc4",
+      "String": "Professor Brownie"
+    },
+    {
+      "Key": "phoenix",
+      "String": "Balefire Phoenix",
+      "Description": "A phoenix, mutated from radiation and adapted to live in the Wasteland. Despite the attractive appearance, it can be quite dangerous because of his ability to breathe radioactive flames.\nA balefire phoenix is not aggressive to those, whose souls still maintain some good and mercy in them. It can be tamed, then it becomes your friend and companion"
+    },
+    {
+      "Key": "owl",
+      "String": "Robo-owl",
+      "Description": "A small security robot that can also serve as a personal assistant or secretary. Has a pretty powerful laser weapon"
+    },
+    {
+      "Key": "pony",
+      "String": "Ponies, zebras and griffins",
+      "Description": "Pony - a dominant species of sentient beings inhabiting Equestria. They`re divided into three races: unicorns, pegasi, and earth ponies. Each race has its advantages and disadvantages. Unicorns have a gift of telekinesis, and with special training can master various magical spells, pegasi can fly, and earth ponies are the most strong, endurant and tenacious of all. Currently, you can meet many unicorns and earth ponies in the Wasteland. Pegasi on the other hoof are rarely encountered, as most of them live in their cloud cities and don`t descend to the ground.\nZebras - residents of a distant country, the main enemies of the ponies in the Great War. At present, their descendants quite often can be found in Equestria, and, despite the centuries past, the old enmity has not yet been forgotten. Zebras do not have magical powers like unicorns but can use witchcraft, curses, potions, and amulets, and some still remember the ancient art of necromancy.\nGriffins are not so numerous in Equestria, and most of them serve as mercenaries. Physically they are stronger than ponies, and have the ability to fly, but do not own any magical powers"
+    },
+    {
+      "Key": "raider",
+      "String": "Raiders",
+      "Description": "Raiders are bandits, earth ponies, and unicorns, living on robbery, plunder and brute force.\nThis is a real scourge of the Wasteland, who gathered the worst traits and vices. Raiders, as a rule, are extremely aggressive, cruel, greedy, mean, and often simply insane. They always look dirty, ragged and scarred.\nRaiders often get into packs or even large gangs, ruled by the leaders. They arrange dens in abandoned buildings, convenient for raiding settlements or robbing commercial caravans and occasional travelers. Anyone invading their territory will be immediately attacked. They are usually poorly armed with melee weapons or old and weathered firearms, and their armor is made from various garbage"
+    },
+    {
+      "Key": "raider1",
+      "String": "Raider-sadist",
+      "Description": "Psychos and maniacs, enjoying more than anything to mock and torture their victims. In battle rely on cold steel or on their own hooves and thick forehead. Because of the dumb habit of \"decorating\" their dwellings with fragments of decaying corpses, they are constantly sick with various diseases"
+    },
+    {
+      "Key": "raider2",
+      "String": "Raider-rogue",
+      "Description": "Considered as trash even by the raiders` standards. They are always dressed in rags, armed with some pieces of garbage, and their health is undermined by the abundant use of alcohol and drugs"
+    },
+    {
+      "Key": "raider3",
+      "String": "Metalhead raider",
+      "Description": "Raiders from the Metalheads gang love surrounding themselves with various pieces of metal, which themselves they call \"armor\". Because of this, they are heavy and slow, but they are also quite well protected from hits and bullets. They use cold steel or rely on spikes that decorate their armor"
+    },
+    {
+      "Key": "raider4",
+      "String": "Raider-pervert",
+      "Description": "The gang of Lechers is a collection of all known vices. They are spiteful, greedy, lascivious - in a word, rare scumbags. They prefer big and heavy melee weapons"
+    },
+    {
+      "Key": "raider5",
+      "String": "Raider-rebel",
+      "Description": "The Rebels raiders value freedom more than anything in the world. This, in their understanding, is expressed in the ability to freely rob and rape anypony wherever they please. Armed with light firearms, like pistols"
+    },
+    {
+      "Key": "raider6",
+      "String": "Raider-executioner",
+      "Description": "Conscience of the Executioners gang is heavy with many settlements, ruined and destroyed to the last inhabitant. These are ruthless killers who kill not for any selfish purpose, just for the hell of it. Often armed with shotguns, which makes them particularly dangerous at close range"
+    },
+    {
+      "Key": "raider7",
+      "String": "Raider-master",
+      "Description": "Masters are the most dangerous, organized and well-equipped raider gang. By raiders standards, they have good armor and weapons, and what`s more, they know how to use them"
+    },
+    {
+      "Key": "raider8",
+      "String": "Raider-scorcher",
+      "Description": "The Scorchers gang is notorious for their unhealthy thirst for fire. In combat they use flamethrowers and incendiary weapons, and themselves feel almost no pain from burns"
+    },
+    {
+      "Key": "raider9",
+      "String": "Raider-bomber",
+      "Description": "Bombers are simply obsessed with explosives. They wander around hung with grenades, and never miss a single opportunity to use them. This makes them, probably, more dangerous for their fellow raiders than for enemies"
+    },
+    {
+      "Key": "bossraider",
+      "String": "Raider leader",
+      "Description": "The leaders are almost always the biggest, the most powerful and the most cruel of the raiders"
+    },
+    {
+      "Key": "slaver",
+      "String": "Slavers",
+      "Description": "Bandits, whose main game is capturing and subsequently selling their victims as slaves. While being almost as cruel and immoral as raiders, slavers, however, are much more \"civilized.\" Their gangs are numerous and well-organized, they have competent leaders, a clear hierarchy and distribution of responsibilities. Slavers know their cruel craft quite well, and they use much better weapons and armor than raiders. All this makes them way more dangerous opponents"
+    },
+    {
+      "Key": "slaver1",
+      "String": "Herdspony",
+      "Description": "Herdsponies occupy the lowest level of hierarchy in slavers gangs. Their duty is mainly transporting and escorting slaves to further trade destinations. They are usually armed with cold weapons, and their armor, in accordance with their low status, is of rather poor quality"
+    },
+    {
+      "Key": "slaver2",
+      "String": "Catcher",
+      "Description": "The duty of catchers is tracking down and capturing new slaves. Most slaves come from raiders, nomads, and travelers, but often catchers attack peaceful settlements, taking all strong and healthy residents and killing all the others. They are armed with various weapons and are quite dangerous for a lonely traveler"
+    },
+    {
+      "Key": "slaver3",
+      "String": "Warden",
+      "Description": "The duties of the wardens include looking after slaves, preventing them from escaping, maintaining order and execution of punishments (the last usually is performed with special enthusiasm). Often accompany hunters in their raids. Armed with firearms and represent a considerable danger in combat"
+    },
+    {
+      "Key": "slaver4",
+      "String": "Guard",
+      "Description": "Guards is the primary force of slavers. They serve as cover and support troops in raids, and protect camps from external threats. They also look after other slavers, brutally dealing with troublemakers. Armed with a variety of weapons and have a good armor"
+    },
+    {
+      "Key": "slaver5",
+      "String": "Elite guard",
+      "Description": "Elite guards are real professionals - strong, experienced and well-equipped. They usually protect gang leaders or participate in the most risky raids. Extremely dangerous"
+    },
+    {
+      "Key": "slaver6",
+      "String": "Leader",
+      "Description": "Usually, the leaders are chosen from the most cunning, fortunate and merciless slavers. They often command large groups of catchers, herdsponies and wardens, whom they lead to hunt for their live goods"
+    },
+    {
+      "Key": "merc",
+      "String": "Mercenaries",
+      "Description": "Mercenaries, also known as \"Talons\", is a semi-military organization, which mostly consists of griffins. It includes many independent fractions, each with its own leader. Although some mercenaries have their own code of honor, most of them are common scoundrels who are only interested in money and not limited by any morality. They undertake any work whether it`s contract killing, kidnapping or slave trade, and show no pity for their victims. Mercenaries have, as a rule, much better weapons than other Wasteland inhabitants"
+    },
+    {
+      "Key": "merc1",
+      "String": "Griffin-scout",
+      "Description": "Talons scouts always come in front of the main forces. Their task is to observe the situation, gather information and find targets. Scouts, as a rule, are weakly armed and only wear light armor"
+    },
+    {
+      "Key": "merc2",
+      "String": "Griffin-assaulter",
+      "Description": "The main strike force of the Talons troops. Their task is to be in the battle`s forefront. For this purpose they have good armor and weapons like shotguns and assault rifles"
+    },
+    {
+      "Key": "merc3",
+      "String": "Griffin-gunner",
+      "Description": "The task of machine gunners is providing fire support with heavy weapons. They prefer larger guns, wearing which means to sacrifice armor"
+    },
+    {
+      "Key": "merc4",
+      "String": "Griffin-sharpshooter",
+      "Description": "Snipers try to keep distance and eliminate targets from afar. They are often armed with large-caliber rifles, posing a considerable threat"
+    },
+    {
+      "Key": "merc5",
+      "String": "Elite Talon",
+      "Description": "The most experienced Talon fighters. They wear combat armor and use the best of modern weapons, which they can handle perfectly. Additional danger is represented by blades fastened to the wings"
+    },
+    {
+      "Key": "zebra",
+      "String": "Legion",
+      "Description": "It seems that not all zebras know that the Great War ended two hundred years ago. Recently, the zebra military organization, known as the Legion, began gaining strength. The goals of its leaders are still unknown, but it is clear to everyone that nothing good can be expected of them. Zebras have excellent skills of stealth, they are masters of disguise, ambush, and deadly in close combat"
+    },
+    {
+      "Key": "zebra1",
+      "String": "Zebra-spy",
+      "Description": "Nopony knows what the Legion spies are looking for in these parts - zebras never negotiate with anyone. They always act secretly and stealthily, but in case of detection they rush into battle with unseen fury"
+    },
+    {
+      "Key": "zebra2",
+      "String": "Zebra-saboteur",
+      "Description": "Legion`s saboteurs secretly penetrate various destroyed buildings in the Wasteland carrying a good supply of explosives. What for? Nopony knows, but hardly with good intentions"
+    },
+    {
+      "Key": "zebra3",
+      "String": "Zebra-assassin",
+      "Description": "Enchanted cloak of the assassin makes him almost completely invisible. Nothing will give out his presence until the fatal shot from a sniper rifle"
+    },
+    {
+      "Key": "zebra4",
+      "String": "Zebra-fighter",
+      "Description": "Well-trained and armed fighters of the Legion are good at striking quickly and then retreating, dissolving into darkness of the night"
+    },
+    {
+      "Key": "zebra5",
+      "String": "Legion Officer",
+      "Description": "Legion officers usually wear traditional robes and armor. They aren`t very bulletproof, but their appearance increases morale of the legion soldiers"
+    },
+    {
+      "Key": "bossnecr",
+      "String": "Necromancer",
+      "Description": "Zebra-necromancers are powerful sorcerers, in no way inferior to the best unicorn magicians. But, unlike them, necromancers no longer rely on attacking magic, but rather on dark spells and summons of various creatures and spirits"
+    },
+    {
+      "Key": "ranger",
+      "String": "Steel Rangers",
+      "Description": "One of the most powerful factions of postwar Equestria. Steel Rangers - a closed paramilitary organization, consisting of earth ponies and unicorns, proclaiming its goal to find and preserve pre-war technology. Characterized by aggressiveness, intolerance to strangers and generally contemptuous attitude to other inhabitants of the Wasteland, whom they simply call \"savages\". They own many rare technologies, do not respect any guns smaller than a minigun, and are particularly famous for their power armor - the legacy of the Ministry of Wartime Technology. Power armor, powerful weapons, combat robots, and perverted morals only a little better than raiders` - all this makes the Steel Rangers ones of the most dangerous opponents you will face"
+    },
+    {
+      "Key": "ranger1",
+      "String": "Knight",
+      "Description": "Knights are the main force of Steel Rangers, the lowest rank in their military hierarchy. They are organized into divisions commanded by Crusaders or into larger formations"
+    },
+    {
+      "Key": "ranger2",
+      "String": "Crusader",
+      "Description": "Crusaders are junior officers, roughly analogous to sergeants of the regular Equestrian army, who lead small detachments of eight steel rangers and carry out orders from higher commanders"
+    },
+    {
+      "Key": "ranger3",
+      "String": "Paladin",
+      "Description": "Paladins are junior officers, commanding large divisions of twenty-four Steel Rangers. They report directly to the Senior Paladins"
+    },
+    {
+      "Key": "encl",
+      "String": "Grand Pegasus Enclave",
+      "Description": "The pegasi military organization that emerged from the remnants of the former Equestrian air forces, once giving air support to other ponies during the War. Shortly before the War`s end pegasi leaders refused to battle with zebras any longer and shut the sky with cloud barrier, separating themselves from the rest of ponykind. Commanding officers of Enclave regard the Wasteland inhabitants as a threat to pegasi society and their own position as rulers. Currently the Enclave possesses the most advanced technologies in all of Equestria including battle airships, the latest generation of magical energy weapons and power armor specially designed for pegasi"
+    },
+    {
+      "Key": "encl1",
+      "String": "Enclave officer",
+      "Description": "Enclave officers are rarely encountered outside fortified areas, military bases or airships. They do not wear power armor and therefore are relatively weak opponents"
+    },
+    {
+      "Key": "encl2",
+      "String": "Enclave scout",
+      "Description": "Enclave scouts often move at the front of a main force. They wear light power armor which leaves their wings unprotected but instead is equipped with a whole bunch of locators built into the helmet, allowing detection of even well-disguised enemies"
+    },
+    {
+      "Key": "encl3",
+      "String": "Enclave stormtrooper",
+      "Description": "Stormtroopers usually operate in groups of three pegasi called \"wings\". Their power armor can withstand significant damage, has built-in magical energy cannons and a \"scorpion tail\" for close combat"
+    },
+    {
+      "Key": "encl4",
+      "String": "Elite stormtrooper",
+      "Description": "Elite stormtroopers are the pride of the Enclave army. They wear improved power armor, which perfectly protects against any damage, and use especially deadly magical energy weapons"
+    },
+    {
+      "Key": "bossencl",
+      "String": "Wing of Ravagers",
+      "Description": "A special squad consisting of three pegasi. Takes orders only from the Commander-in-Chief of the Enclave personally"
+    },
+    {
+      "Key": "monster",
+      "String": "Monsters",
+      "Description": "Post-war Equestria is inhabited by hordes of diverse monsters, beasts and mutants. Some of them appeared under the influence of radiation, taint or various magical curses, while others were created artificially"
+    },
+    {
+      "Key": "zombie",
+      "String": "Ghouls",
+      "Description": "Ghouls are ponies that mutated under the influence of radiation. The ones that represent danger are so-called feral ghouls - those who lost their mind and turned into bloodthirsty zombies"
+    },
+    {
+      "Key": "zombie0",
+      "String": "Feral ghoul",
+      "Description": "Common feral ghouls can be found in plenty in the Wastelands. As a rule, they live in desolate and abandoned places, such as ruins and sewage tunnels, and especially prefer places with radioactive contamination"
+    },
+    {
+      "Key": "zombie1",
+      "String": "Rushing ghoul",
+      "Description": "Mutation in this kind of ghouls did not diminish their strength and speed - on the contrary, it even increased them. Also, they developed an ability to jump with huge height and distance"
+    },
+    {
+      "Key": "zombie2",
+      "String": "Hungry ghoul",
+      "Description": "Unicorn ghouls, whose ability for telekinesis only got stronger after mutation. You should watch out for their telekinetic grip"
+    },
+    {
+      "Key": "zombie3",
+      "String": "Raging ghoul",
+      "Description": "The vital activity products of this kind of ghouls represents a real collection of diverse toxic substances. When attacking, they can release clouds of toxic gas"
+    },
+    {
+      "Key": "zombie4",
+      "String": "Glowing ghoul",
+      "Description": "This ghoul glows because of the overwhelming magical radiation stored in it. Getting hit, you risk not only taking physical damage but a dose of radiation as well. They are also able to create bursts of radiation, restoring health of other ghouls nearby"
+    },
+    {
+      "Key": "zombie5",
+      "String": "Soldier ghoul",
+      "Description": "Earth pony soldier turned into a ghoul. It still wears remnants of armor, and its physical strength has incredibly increased after mutation. Just by stomping hooves on the ground, he can make a small earthquake"
+    },
+    {
+      "Key": "zombie6",
+      "String": "Ripper ghoul",
+      "Description": "A mutation of this ghoul went further compared to its relatives. Its strength, speed, and aggression has increased multiple times, sharp spines appeared on the body, and in addition, it acquired an ability to spit acid. As a result, it became one of the most dangerous mutants in the Wasteland"
+    },
+    {
+      "Key": "zombie7",
+      "String": "Canterlot ghoul",
+      "Description": "There is a specific kind of wild ghouls roaming the ruins of Canterlot that appeared not because of radiation but under influence of the pink cloud. They are especially dangerous because they can not be killed by ordinary bullets, as after \"death\" they revive. To kill these ghouls for good they must be burned or disintegrated. In addition, unicorn ghouls are able to use attack spells"
+    },
+    {
+      "Key": "zombie8",
+      "String": "Bloated ghoul",
+      "Description": "The pink cloud penetrated so deeply into the dead flesh of these ghouls that it became their very essence. Now they are able to generate it at will"
+    },
+    {
+      "Key": "zombie9",
+      "String": "Canterlot witch",
+      "Description": "Probably the most dangerous of existing ghouls. It is notorious for incredible strength, speed and vitality. She attacks with black magic, from which no armor can protect"
+    },
+    {
+      "Key": "alicorn",
+      "String": "Alicorns",
+      "Description": "Alicorns are creatures transformed by the Goddess from ordinary ponies using the Impelled Metamorphosis Potion. They have a larger size than other ponies, huge wings and a long horn. They possess a wide range of abilities: they can fly, communicate using of telepathy, they excel at telekinesis, as well as combat and defensive spells. All together, this makes them ones of the most dangerous enemies"
+    },
+    {
+      "Key": "alicorn1",
+      "String": "Blue alicorn",
+      "Description": "In addition to all other abilities, blue alicorns can use an invisibility spell. Hiding their presence for a while, they can insidiously attack from an ambush. They are also the most tenacious of alicorns"
+    },
+    {
+      "Key": "alicorn2",
+      "String": "Purple alicorn",
+      "Description": "Purple alicorns possess powerful telekinesis, and in addition to all other abilities, are able to teleport themselves. Teleportation helps them evade enemy attacks or persistently pursue their target"
+    },
+    {
+      "Key": "alicorn3",
+      "String": "Green alicorn",
+      "Description": "Green alicorns can create extra-strong magic shields, and in addition to all other abilities, have a powerful gift for telepathy. With its help they can influence opponent`s mind, disorienting it or creating dreadful visions"
+    },
+    {
+      "Key": "bossalicorn",
+      "String": "Blood Moon",
+      "Description": "A strange alicorn of black and red colors. It seems that she somehow combined special powers of all three types of alicorns, which made her an extremely dangerous opponent"
+    },
+    {
+      "Key": "scythe",
+      "String": "Ghost blade"
+    },
+    {
+      "Key": "hellhound",
+      "String": "Hellhounds",
+      "Description": "Mutated descendants of diamond dogs, intelligent, but aggressive towards ponies and extremely dangerous. They have natural weapons - teeth and huge, sharp and strong claws on the front legs which can easily cut through metal and stone. They also have a good scent and can easily smell a hidden or even invisible enemy from close enough distance"
+    },
+    {
+      "Key": "hellhound1",
+      "String": "Enclave Hellhound",
+      "Description": "The Enclave found a way to suppress will of Hellhounds using special helmets and transmitters, subduing them and thus turning these creatures into weapons. Because mind-controlling devices affect their brain, the Enclave Hellhounds lose a significant part of their wits, but not their strength, speed and ferocity"
+    },
+    {
+      "Key": "bloat",
+      "String": "Bloatsprites",
+      "Description": "Bloatsprites are, apparently, parasprites, mutated under influence of taint or radiation. Acquiring new dangerous features, they have not lost their ability for intensive reproduction, thus their numbers in the Equestrian Wasteland are very high"
+    },
+    {
+      "Key": "other",
+      "String": "Others"
+    },
+    {
+      "Key": "bloodwing",
+      "String": "Bloodwing",
+      "Description": "Mutilated and increased in size vampire bats. Usually settle in empty and abandoned buildings, caves, under bridges and overpasses. Persistent in pursuit of their victims"
+    },
+    {
+      "Key": "bloodwing2",
+      "String": "Canterlot bat",
+      "Description": "The Canterlot subspecies of bloodwings, adapted to a pink cloud and much more terrifying"
+    },
+    {
+      "Key": "fish1",
+      "String": "Piranha",
+      "Description": "A predatory mutant fish living in sewers. Fast, agile and its bites are one hell of a pain"
+    },
+    {
+      "Key": "fish2",
+      "String": "Wolffish",
+      "Description": "A predatory mutant fish living in sewers. It has powerful jaws and huge teeth and is not so easy to kill underwater"
+    },
+    {
+      "Key": "fish3",
+      "String": "Zombie-fish",
+      "Description": "Monster fish, living in the pink waters of Canterlot"
+    },
+    {
+      "Key": "bloat0",
+      "String": "Young bloatsprite",
+      "Description": "This small creature is rather annoying than dangerous"
+    },
+    {
+      "Key": "bloat1",
+      "String": "Acid bloatsprite",
+      "Description": "Bloatsprite spitting corrosive acid"
+    },
+    {
+      "Key": "bloat2",
+      "String": "Poisonous bloatsprite",
+      "Description": "Bloatsprite shooting poisonous spikes"
+    },
+    {
+      "Key": "bloat3",
+      "String": "Greater bloatsprite",
+      "Description": "Very large bloatsprite with a thick shell"
+    },
+    {
+      "Key": "bloat4",
+      "String": "Snappy bloatsprite",
+      "Description": "Bloatsprite armed with razor-sharp teeth. This species is much more dangerous than others"
+    },
+    {
+      "Key": "bloat5",
+      "String": "Pink bloatsprite",
+      "Description": "This bloatsprite all soaked in a pink cloud and got the ability to spit its concentrate"
+    },
+    {
+      "Key": "bloat6",
+      "String": "Nightmare bloatsprite",
+      "Description": "A horrible and vile offspring of the pink cloud with sharp teeth. It is able to literally bite into its victim"
+    },
+    {
+      "Key": "bloat10",
+      "String": "Bloatsprite king",
+      "Description": "An unusual and very dangerous specimen of bloatsprite, huge like a barrel and incredibly tenacious"
+    },
+    {
+      "Key": "ebloat",
+      "String": "Bloatsprite nest",
+      "Description": "A disgusting, pulsating, mucus-draining thing producing more and more new bloatsprites until destroyed. They say this might also be a bloatsprite, but monstrously mutated and grown to gigantic proportions"
+    },
+    {
+      "Key": "tarakan",
+      "String": "Radroach",
+      "Description": "A common cockroach, mutated under the influence of radiation and increased in size. Not dangerous, but still capable of biting"
+    },
+    {
+      "Key": "rat",
+      "String": "Rat",
+      "Description": "It looks like an ordinary rat, only carnivorous and aggressive. Lives absolutely everywhere, as normal rats do"
+    },
+    {
+      "Key": "molerat",
+      "String": "Mole rat",
+      "Description": "A mutated hybrid between a rat and a mole, quite large, with sharp teeth and nasty temper"
+    },
+    {
+      "Key": "scorp1",
+      "String": "Radscorpion",
+      "Description": "Mutant scorpion of impressive size with a strong chitinous shell and a deadly sting. It is extremely not recommended approaching it"
+    },
+    {
+      "Key": "scorp2",
+      "String": "Bloody radscorpion",
+      "Description": "It looks like a normal radscorpion, but instead of poison, injects enzyme that prevents blood coagulation so that its victim can easily die from blood loss"
+    },
+    {
+      "Key": "scorp3",
+      "String": "Horrible scorpio",
+      "Description": "A scorpio, turned under the influence of the pink cloud into an eerie monster. Bigger and much more dangerous than ordinary radscorpions"
+    },
+    {
+      "Key": "ant1",
+      "String": "Worker ant",
+      "Description": "Giant mutated ant, biting very painfully"
+    },
+    {
+      "Key": "ant2",
+      "String": "Soldier ant",
+      "Description": "This mutant ant has really giant jaws, so that its bites are a problem for anypony"
+    },
+    {
+      "Key": "ant3",
+      "String": "Fire ant",
+      "Description": "Mutant ant having a fire-making gland and capable of breathing fire"
+    },
+    {
+      "Key": "eant",
+      "String": "Ant nest",
+      "Description": "One of many exits of an underground ant colony. Unless destroyed, the ants will come out again and again in an endless stream"
+    },
+    {
+      "Key": "slime",
+      "String": "Awful slime",
+      "Description": "It is not known for certain what is the nature and origin of these strange creeping formations. It was hypothesized that this mucus is actually a colony of microorganisms that mutated under influence of taint. It is dangerous, as it contains corrosive acids and other unpleasant chemicals, but fortunately does not attack anypony, so it`s enough just avoiding stepping on it"
+    },
+    {
+      "Key": "cryoslime",
+      "String": "Cryoslime",
+      "Description": "A very unusual creeping mucus, striking everyone stepping on it with deadly cold"
+    },
+    {
+      "Key": "pinkslime",
+      "String": "Pink slime",
+      "Description": "Creeping mucus, full of necromantic magic of the pink cloud. Under no circumstances should you touch it"
+    },
+    {
+      "Key": "necros",
+      "String": "Swarm of necrosprites",
+      "Description": "Little can be said about the origin of this strange and frightening entity, except that it is a product of necromancy. Necrosprites freely pass through walls and physical attacks do them no harm"
+    },
+    {
+      "Key": "spectre",
+      "String": "The phantom of death"
+    },
+    {
+      "Key": "robot",
+      "String": "Robots",
+      "Description": "Robots are the product of technological revolution, one that Equestria experienced during the years before the Great War. They represent a combination of the most advanced earth pony technology and unicorn magic and were created for performing variable tasks - from housekeeping to property protection. During the War, combat models were also developed to be used in military operations.\nAlthough no pony produces robots nowadays, many of them are still functional despite centuries past. Mostly, these are combat and security robots that continue to execute built-in programs and are ready to bring all their power down upon any intruder entering their domain"
+    },
+    {
+      "Key": "turret",
+      "String": "Turrets",
+      "Description": "Turrets are stationary robots designed to protect various objects. They have powerful weapons such as machine guns and magical energy weapons and they open fire on any violator stepping into their range. Typically, turrets are controlled by a common security system and can be disabled or reconfigured through the appropriate terminals"
+    },
+    {
+      "Key": "turret0",
+      "String": "Ceiling turret",
+      "Description": "These turrets are mounted on the ceiling. They are fairly compact, but poorly protected from damage, and can be destroyed by breaking the mounts. There are concealed versions that come out only in combat mode"
+    },
+    {
+      "Key": "turret1",
+      "String": "Ground turret",
+      "Description": "Ground turrets are mounted on the floor, they are well fortified and have a strong armor protecting them from bullets"
+    },
+    {
+      "Key": "turret2",
+      "String": "Wall turret",
+      "Description": "Wall turrets are attached directly to the wall or mounted on a special rail, along which they can move from one end to the other. Their barrel can turn 360 degrees"
+    },
+    {
+      "Key": "turret3",
+      "String": "Armored turret",
+      "Description": "This turret is mounted on a heavy, sturdy base and is protected by armored plates and a powerful force field effectively counteracting both mechanical and magical energy impact"
+    },
+    {
+      "Key": "turret4",
+      "String": "Battle turrets",
+      "Description": "Improved ceiling turrets. Unlike the rather flimsy conventional models, these are designed to protect military objects, and therefore have a reinforced body and strong armor"
+    },
+    {
+      "Key": "bigrobot",
+      "String": "Large robots",
+      "Description": "Class of pony size or even larger robots. Are designed for performing various tasks including military operations. Typically, such robots have advanced artificial intelligence, a strong metal casing, and magical energy weapons, especially powerful in combat models"
+    },
+    {
+      "Key": "robobrain",
+      "String": "Robobrain",
+      "Description": "One of the first serial models of multifunctional robots, in which a central processor is replaced with a real living brain, placed in a glass tank. It has two hose-like manipulators designed to perform various actions, caterpillar tracks and weak armament, like electric discharger or laser. In general, this model has many disadvantages and is hardly suitable for combat. Robobrains are rather sluggish, clumsy, dull and do not pose much threat"
+    },
+    {
+      "Key": "protect",
+      "String": "Ponytron",
+      "Description": "A common model of a security robot that looks like a pony. It can perform such functions as defending its owners, protecting property and military objects, maintaining order and enforcing the law and so on. For this purpose, they have strong armor and medium-power weapons. Some sluggishness is partly compensated by the built-in levitation device, allowing the robot soaring in the air for some time and moving to higher grounds. Despite the fact that their owners died centuries ago, the ponytrones continue patrolling the entrusted objects and do not tolerate any intruders"
+    },
+    {
+      "Key": "gutsy",
+      "String": "Mister Gutsy",
+      "Description": "Military modification of the household robot \"Mr. Handy\", equipped with a whole arsenal of all kinds of weapons. There is a plasma gun for long range, a flamethrower for close one and a circular saw for direct contact with the enemy. For movement the robot uses levitation magic, allowing it to continuously soaring above the ground. During the War, these robots were actively used on the battlefields, and now there are not many of them left. Unfortunately, their electronic brains have long been bungled, and now they no longer distinguish friends from enemies"
+    },
+    {
+      "Key": "eqd",
+      "String": "Equidroid",
+      "Description": "Equidroids, the gem of former Equestrian technology, were created shortly before the apocalypse. The first models were quite peaceful, but almost immediately there appeared combat modifications equipped with the latest weapons, energy barrier and even some spells. They did not participate in battles because of their exceptional complexity and high cost, but served rich and influential persons as guards and assistants, looking and behaving almost like living ponies. Now the surviving equidroids seem to have lost the last remnants of their electronic intelligence and pose a considerable danger"
+    },
+    {
+      "Key": "protect1",
+      "String": "AJ-17",
+      "Description": "Modified security robot, much cooler than usual. Equipped with heavy weapons and armor, an improved mechanism of levitation, as well as a special electromagnet circuit that protects the robot from pulse weapons"
+    },
+    {
+      "Key": "gutsy1",
+      "String": "Mr. Vigilant",
+      "Description": "Modified for the needs of the Steel Rangers \"Mr. Gutsy\", equipped with more sophisticated weapons"
+    },
+    {
+      "Key": "sentinel",
+      "String": "Sentinel",
+      "Description": "The combat robot, created by Robronco during the War, designed to protect the most important military, state and private facilities, as well to be on the front lines in combat operations. It is a real tank, much larger than a pony, moving on four wheels. It is well-armored and equipped with several types of heavy warfare, such as rapid-fire machine guns, missile launchers, and magical energy guns. Extremely dangerous in battle"
+    },
+    {
+      "Key": "bossultra",
+      "String": "Ultra-sentinel",
+      "Description": "The larger and more dangerous version of the Sentinel and, what`s more, a flying one. Ultra-sentinel is equipped with heavy armor, a magic shield, a plasma minigun, and a compact multiple rocket launcher. A battle with such an opponent is a serious trial for anypony"
+    },
+    {
+      "Key": "bossdron",
+      "String": "Bombardier",
+      "Description": "A combat drone greatly increased in size, a real flying tank. Usually protects the most important objects belonging to the Steel Rangers"
+    },
+    {
+      "Key": "smallrobot",
+      "String": "Small robots",
+      "Description": "Compact robots designed to perform certain tasks, do not have advanced AI and work solely on the program there were built with"
+    },
+    {
+      "Key": "spritebot",
+      "String": "Sprite-bot",
+      "Description": "A small flying robot, developed by the Ministry of Morale. Sprite bots were used as mobile transmitters, constantly broadcasting patriotic radio channel, while at the same time engaged in secret surveillance of citizens. Today sprite bots can still be found in plenty in the Wastelands. They usually do not represent danger, except when they are controlled by security systems of old closed strategic objects. In this case, they can try attacking the interloper using low-power weapons"
+    },
+    {
+      "Key": "vortex",
+      "String": "Vortex",
+      "Description": "Flying scout robot used to observe a situation and collect data during combat. It can both act autonomously or be controlled via a radio interface, transferring an image from robot`s camera directly to the operator`s visor. It can also be used in combat directly - its propeller`s blades are made of durable alloy and sharpened, making them quite suitable as a cutting weapon"
+    },
+    {
+      "Key": "roller",
+      "String": "Roller",
+      "Description": "Small security robots that resemble a metal globe. When a hostile object appears in their detection range, they begin rolling towards it, aiming to strike and shock with a powerful electric discharge. They can jump high and bounce from the walls"
+    },
+    {
+      "Key": "roller2",
+      "String": "Enclave Roller",
+      "Description": "An improved roller equipped with its own plasma mini-reactor that gives it more power and explosiveness. In combination with high mobility and an exceptionally strong body it poses a considerable threat"
+    },
+    {
+      "Key": "msp",
+      "String": "Spider-mine",
+      "Description": "Robot-bomb, apparently created by zebras. Unlike common mines, these do not wait for the enemy to step on them, but try getting closer themselves. They must never be allowed to come close - once they approach the target, they immediately explode"
+    },
+    {
+      "Key": "dron1",
+      "String": "Security drone",
+      "Description": "A small but quite dangerous flying robot. Has a durable composite case, active electric protection and a fairly powerful laser weapon. It is used to protect military and civilian facilities of special importance"
+    },
+    {
+      "Key": "dron2",
+      "String": "Combat drone",
+      "Description": "Modified security drone, not so sturdy, but much faster and mobile. Armed with a high-voltage discharger and a plasma generator. Designed to accompany and support military units"
+    },
+    {
+      "Key": "dron3",
+      "String": "Enclave drone",
+      "Description": "Lightweight high-speed drone, often used by Enclave stormtroopers in combat. Thanks to its high maneuverability and advanced behavioral algorithms it can evade melee weapons, slow projectiles and even bullets"
+    },
+    {
+      "Key": "mtrap",
+      "String": "Trap"
+    },
+    {
+      "Key": "trigcans",
+      "String": "Can trail alarm"
+    },
+    {
+      "Key": "trigridge",
+      "String": "Tripwire"
+    },
+    {
+      "Key": "trigplate",
+      "String": "Pressure plate"
+    },
+    {
+      "Key": "triglaser",
+      "String": "Laser sensor"
+    },
+    {
+      "Key": "damgren",
+      "String": "Grenade bouquet"
+    },
+    {
+      "Key": "damshot",
+      "String": "Armed gun"
+    },
+    {
+      "Key": "transmitter",
+      "String": "Transmitter"
+    },
+    {
+      "Key": "damexpl1",
+      "String": "Installed explosives"
+    },
+    {
+      "Key": "training",
+      "String": "Training dummy"
+    },
+    {
+      "Key": "captive",
+      "String": "Captive in a cage"
+    },
+    {
+      "Key": "cage",
+      "String": "Empty cage"
+    },
+    {
+      "Key": "ponpon",
+      "String": "Pony"
+    },
+    {
+      "Key": "zebpon",
+      "String": "Zebra"
+    },
+    {
+      "Key": "moon",
+      "String": "Lunar blade"
+    },
+    {
+      "Key": "turret5",
+      "String": "Magic turret"
+    },
+    {
+      "Key": "stabpon",
+      "String": "Stable dweller"
+    },
+    {
+      "Key": "destr1",
+      "String": "Thunderhead reactor"
+    }
+  ]
+}

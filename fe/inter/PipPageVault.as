@@ -150,7 +150,7 @@ package fe.inter {
 		}
 		
 		private function chKol(mc, n:int=0):void {
-			var obj=assArr[mc.id.text]
+			var obj = assArr[mc.id.text]
 			var item:Item=inv.items[mc.id.text];
 			
 			if (item==null || obj==null) return;
@@ -165,7 +165,7 @@ package fe.inter {
 			item.kol-=n;
 			obj.kol=item.kol;
 			obj.vault=item.vault;
-			var dmass=n*item.mass;
+			var dmass:Number = n * item.mass;
 			inv.mass[item.invCat]-=dmass;
 			showBottext();
 			pip.setRPanel();
@@ -233,7 +233,7 @@ package fe.inter {
 		}
 
 		private function sbrosHlam():void {
-			for (var s in arr) {
+			for (var s:String in arr) {
 				if (arr[s].tip != 'food' && arr[s].tip != 'book' && arr[s].tip != 'sphera' && arr[s].tip != 'valuables' && !arr[s].keep) {
 					var item:Item = inv.items[arr[s].id];
 					
@@ -247,7 +247,7 @@ package fe.inter {
 						}
 					}
 					
-					var dmass = item.kol * item.mass;
+					var dmass:Number = item.kol * item.mass;
 					item.vault += item.kol;
 					item.kol = 0;
 					inv.mass[item.invCat] -= dmass;

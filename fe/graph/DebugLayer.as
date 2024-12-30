@@ -19,7 +19,7 @@ package fe.graph {
 		private var drawUnitBoundingBoxes:Boolean = false;
 		private var drawPlayerBoundingBoxes:Boolean = false;
 
-		private var drawChainBoundingBoxes:Boolean = false; // Processing chain for the current loc
+		private var drawChainBoundingBoxes:Boolean = false; // Processing chain for the current loc (Bullets, Triggers, ..)
 
 		// Tiles
 		private var drawShelfBoundingBoxes:Boolean = false;
@@ -74,7 +74,7 @@ package fe.graph {
 		}
 
 		private function debugDrawBoundingBoxesForChain(container:Sprite, color:uint):void {
-			var current = World.w.loc.firstObj;
+			var current:Object = World.w.loc.firstObj;
 			while (current != null) {
 
 				 // Skip classes

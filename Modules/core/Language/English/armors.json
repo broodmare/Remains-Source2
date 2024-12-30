@@ -1,0 +1,179 @@
+{
+  "armor": [
+    {
+      "key": "pip",
+      "string": "Stable jumpsuit",
+      "description": "Common clothing worn by all stable dwellers"
+    },
+    {
+      "key": "kombu",
+      "string": "Strengthened jumpsuit",
+      "description": "Stable jumpsuit strengthened with armor plates. It gives little protection, but it's better than nothing"
+    },
+    {
+      "key": "antirad",
+      "string": "Anti-Radiation suit",
+      "description": "Suit for use in areas with high background radiation. It has built-in air filters. It also allows breathing underwater"
+    },
+    {
+      "key": "antihim",
+      "string": "chemical protection suit",
+      "description": "Rubber suit, designed for use in the aggressive environment. Usually gives you full protection against any toxic and corrosive substances, but this one seems to have some dried-up seals in several places, so now the protection is not perfect. Also allows breathing underwater"
+    },
+    {
+      "key": "skin",
+      "string": "Leather armor",
+      "description": "Armor sewn with thick hides of Wasteland monsters. It gives good protection against most types of damage, especially against flames, but does not stop bullets very well"
+    },
+    {
+      "key": "metal",
+      "string": "Metal armor",
+      "description": "Hoofmade armor, consisting of roughly fastened metal plates. Although it protects well against bullets, it is very heavy and constrains movements"
+    },
+    {
+      "key": "battle",
+      "string": "Combat armor",
+      "description": "Armor of excellent quality based on plates of complex polymers and ceramics. Designed to provide the good ballistic protection, while having relatively low weight and not constraining movements of the user"
+    },
+    {
+      "key": "assault",
+      "string": "Stormtrooper armor",
+      "description": "Improved combat armor designed especially for elite stormtroopers. Provides the best protection among all armor types, except power armor"
+    },
+    {
+      "key": "magus",
+      "string": "Magic armor",
+      "description": "Special armor, charmed to counteract effects of magical energy. Provides little protection against bullets and normal physical attacks"
+    },
+    {
+      "key": "moon",
+      "string": "Moon armor",
+      "description": "An armor designed especially for battle mages. Built-in talismans not only protect from magical energy impact, but also increase your own spell power"
+    },
+    {
+      "key": "chitin",
+      "string": "Chitinous armor",
+      "description": "A light and sturdy armor made of thick chitinous radscorpion shells. Can be greatly improved by experienced hooves. Gives a good protection against physical attacks, protects against monster fangs, but poorly protects against bullets and magic"
+    },
+    {
+      "key": "intel",
+      "string": "Scout armor",
+      "description": "A light armor designed for scouts and saboteurs. Its camouflage color allows you to merge with terrain and act stealthily. It also confuses enemies during battle, preventing them from taking steady aim"
+    },
+    {
+      "key": "astealth",
+      "string": "Stealth Armor Prototype",
+      "description": "Unique armor with integrated active camouflage system. This system is similar in principle to the StealthBuck, but can be used an unlimited number of times, just taking some time to recharge. Press @1 or @2 to activate"
+    },
+    {
+      "key": "sapper",
+      "string": "Sapper's Armor",
+      "description": "Heavy but sturdy armor, equipped with a special amortizing lining, a refractory outer layer and a closed helmet. Excellent protection against hits, fire and explosions"
+    },
+    {
+      "key": "tre",
+      "string": "Treasure hunter's clothes",
+      "description": "While you are wearing these clothes, each enemy you kill may drop a precious stone (the stronger the opponent, the more likely)"
+    },
+    {
+      "key": "socks",
+      "string": "Socks",
+      "description": "As long as you wear this \"costume\" raiders, slavers, and mercenaries will not attack you unless you provoke them"
+    },
+    {
+      "key": "power",
+      "string": "Power armor",
+      "description": "This power armor was created based on the armor of the Steel Rangers, though with multiple modifications and simplifications - the helmet was converted for use by a unicorn, some armored plates removed, most of the internal mechanisms are missing. It has impressive protective qualities, but heavy weight greatly limits mobility"
+    },
+    {
+      "key": "polic",
+      "string": "Police armor",
+      "description": "Armor for law enforcement officers, designed almost at the very end of the War from military combat armor. The armor plates in it are replaced by multilayer aramid fiber"
+    },
+    {
+      "key": "spec",
+      "string": "Special Forces Armor",
+      "description": "Multipurpose armor for special forces operatives. Provides protection from a wide range of damage types, suitable for any situation"
+    },
+    {
+      "key": "encl",
+      "string": "Enclave armor",
+      "description": "Modified power armor of the Pegasus Enclave. It is much lighter compared to the Steel Rangers' power armor and designed to protect more against magic than against physical damage"
+    },
+    {
+      "key": "ali",
+      "string": "\"Eclipse\" Armor",
+      "description": "The exoskeleton is all that remains of the Alicorn's Armor. It no longer gives magical enhancements, but is still quite light and sturdy, and most importantly - it allows you to fly!"
+    },
+    {
+      "key": "amul_bul",
+      "string": "Soldier's amulet",
+      "description": "An amulet made from a soldier's dog tag, which has a deep dent from the bullet. Apparently, the dog tag stopped the bullet, thereby saving the life of its owner"
+    },
+    {
+      "key": "amul_phis",
+      "string": "Mechanic's amulet",
+      "description": "An amulet, skillfully made from a variety of wires, screws and gears, making a fascinating composition"
+    },
+    {
+      "key": "amul_expl",
+      "string": "Sapper's amulet",
+      "description": "An amulet made from a non-triggered detonator of an anti-personnel mine, endowed with almost imperceptible magic"
+    },
+    {
+      "key": "amul_fang",
+      "string": "Amulet of a savage",
+      "description": "An amulet made of a canine of some large predator and decorated with feathers. Its magic should protect against wild beasts and monsters"
+    },
+    {
+      "key": "amul_fire",
+      "string": "Amulet of a firewalker",
+      "description": "A magical amulet made of fiery agate. Helps resist heat and fire"
+    },
+    {
+      "key": "amul_mage",
+      "string": "Wizard's amulet",
+      "description": "A powerful amulet created by a great wizard. Protects owner from hostile magic"
+    },
+    {
+      "key": "amul_sneak",
+      "string": "Shadow's amulet",
+      "description": "Amulet created by zebras with their mysterious and sinister magic. Improves stealth and evasion of the owner"
+    },
+    {
+      "key": "amul_spark",
+      "string": "Amulet of the Lightning Lord",
+      "description": "Amulet designed for Pegasi dealing with thunderclouds. Very good protection against lightnings"
+    },
+    {
+      "key": "amul_dark",
+      "string": "Warlock's Amulet",
+      "description": "Amulet of polished bone, protecting from black magic"
+    },
+    {
+      "key": "amul_energ",
+      "string": "The initiate's amulet",
+      "description": "Amulet made of a shiny metal plate with the sign of the Steel Rangers"
+    },
+    {
+      "key": "amul_war",
+      "string": "Warrior's amulet",
+      "description": "This amulet has seen many great battles. Its mysterious power protects owner from physical damage"
+    },
+    {
+      "key": "amul_sniper",
+      "string": "Sniper's amulet",
+      "description": "An amulet made from a cracked optical sight lens, definitely possessing some kind of magic"
+    },
+    {
+      "key": "amul_berserk",
+      "string": "Berserker's amulet",
+      "description": "A wooden amulet covered with elaborate carvings and stained with dried blood. Inscription on the back side says \"What is dead may never die\""
+    },
+    {
+      "key": "amul_adept",
+      "string": "Adept's amulet",
+      "description": "A fragment of a dark crystal with a faint spark of magic glowing deep inside"
+    }
+  ]
+}

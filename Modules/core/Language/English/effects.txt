@@ -1,0 +1,769 @@
+<eff id="tele" v="0.7">
+    <n>Telekinesis</n>
+    <info>The "Telekinesis" skill determines your ability to move various objects with magic, and can also serve as a support for a jump in the air. [br]- With every skill point invested, the magical power consumption for telekinesis and "Double Jump" decreases. [br]- With each skill level your telekinetic power increase, in particular, you can lift heavier items, and it will be harder for enemies to escape from your telekinetic grip</info>
+  </eff>
+  <eff id="melee">
+    <n>Melee weapons</n>
+    <info>Skill "Melee weapons" determines combat effectiveness with any melee weapon. [br]- Each invested skill point increases damage by #1.[br]- Each skill level allows using more advanced weapons. Insufficient skill level decreases attack speed and increases action points consumption in S.A.T.S.</info>
+  </eff>
+  <eff id="smallguns">
+    <n>Firearms</n>
+    <info>Skill "Firearms" determines your ability to handle pistols, rifles, shotguns and, a minigun. [br]- Each invested skill point increases damage and accuracy of these weapons by #1.[br]- Each skill level allows using more advanced weapons. Insufficient skill level will make you miss more often</info>
+  </eff>
+  <eff id="energy">
+    <n>Energy weapons</n>
+    <info>Skill "Energy weapons" determines your ability to handle different laser, plasma or pulse weapons and a flamethrower. [br]- Each invested skill point increases damage and accuracy of these weapons by #1.[br]- Each skill level allows using more advanced weapons. Insufficient skill level will make you miss more often</info>
+  </eff>
+  <eff id="explosives">
+    <n>Explosives</n>
+    <info>Skill "Explosives" determines your ability to work with everything that is capable of exploding. [br]- Each invested skill point increases the damage of your explosives by #1, also increases throwing distance for grenades.[br]- Each skill level allows using and creating more advanced explosives, improves success rate at defusing and helps you detect enemy mines from a longer distance</info>
+  </eff>
+  <eff id="magic">
+    <n>Magic</n>
+    <info>Skill "Magic" determines your knowledge of magical arts, directly affecting power of your spells, both offensive and defensive. [br]- Each invested skill point increases damage of your offensive spells by #1, and defensive - by #2.[br]- Each skill level decreases cooldown time for all spells</info>
+  </eff>
+  <eff id="repair">
+    <n>Repair</n>
+    <info>Skill "Repair" helps you keep your weapons and armor in good condition, and using mechanisms of all sorts. [br]- Each invested skill point increases the effectiveness of repairs by #1 (with base value of #2) and increases damage for the crafted weapon by #3.[br]- Each skill level enables you creating advanced weapons, also repairing or shutting down more complex mechanisms</info>
+  </eff>
+  <eff id="medic">
+    <n>Medicine</n>
+    <info>Skill "Medicine" directly affects your health and ability to heal yourself without medic`s help. [br]- Each invested skill point increases the effectiveness of healing potions and other medication by #1 (with base value of #2).[br]- Each skill level increases your maximal health and enables you to operate special medical instrumentation</info>
+  </eff>
+  <eff id="lockpick">
+    <n>Lockpicking</n>
+    <info>Skill "Lockpicking" allows you to open mechanical locks. [br]- Each invested skill point increases probability to open a lock and decreases chance of jamming. [br]- Each skill level allows you to pick locks of more sophisticated design</info>
+  </eff>
+  <eff id="science">
+    <n>Science</n>
+    <info>Skill "Science" represents your knowledge in different scientific fields, particularly those about electronics and information technology. [br]- Each invested skill point increases the chance of successful hacking of electronic locks and protected terminals.[br]- Each skill level enables you breaking through more advanced defense systems, and using additional PipBuck features by applying special extension modules</info>
+  </eff>
+  <eff id="sneak">
+    <n>Sneak</n>
+    <info>The "Sneak" skill allows you to move unnoticed by enemies or to attack them from ambush, suddenly and deadly. [br]- Each invested skill point makes you harder to be noticed or heard. [br]- With each skill level a chance to deal critical damage to an enemy who hasn`t seen you is increased by #1. It also helps you to shut down alarm systems</info>
+  </eff>
+  <eff id="barter">
+    <n>Barter</n>
+    <info>Skill "Barter" helps you to negotiate with all sorts of merchants in the Wasteland to get better goods and services for a lower price. [br]- Each invested skill point decreases prices for purchasing and repairs by #1. [br]- Each skill level expands the selection of merchants` goods and allows you to access some exclusive deals, that can`t be found anywhere else</info>
+  </eff>
+  <eff id="survival">
+    <n>Survival</n>
+    <info>This skill represents ancient knowledge almost forgotten by ponies but mastered and perfected by zebras. With this knowledge, you will survive where others would perish. [br]- Each invested skill point increases your resistance to any damage by #1.[br]- Each skill level increases your damage threshold by #2 and enables you to prepare magical potions by zebras` recipes</info>
+  </eff>
+  <eff id="attack" v="0.7">
+    <n>Attack</n>
+    <info>With each level of this skill the damage of any weapon is increased by #1</info>
+  </eff>
+  <eff id="defense" v="0.71">
+    <n>Defense</n>
+    <info>With each level your resistance to any damage increases by #1</info>
+  </eff>
+  <eff id="knowl" v="0.7">
+    <n>Knowledge</n>
+    <info>With each level of this skill, you gain an additional ability for each level up</info>
+  </eff>
+  <eff id="alicorn" v="0.8">
+    <n>Alicorn Armor</n>
+  </eff>
+  <eff id="tele_al" s1="keyRun" v="0.8">
+    <n>Rainbow wings</n>
+    <info>Alicorn Armor is equipped with magical wings that allow flying. You can accelerate in flight by holding the @1 key (consumes magic). The "Telekinesis" skill level determines maximum flight speed, as well as the magic consumption rate</info>
+  </eff>
+  <eff id="repair_al" v="0.8">
+    <n>Titanium armor</n>
+    <info>The outer shell of Alicorn Armor is made of magically reinforced titanium alloy plates. Your damage threshold increases depending on the "Repair" skill level</info>
+  </eff>
+  <eff id="medic_al" v="0.8">
+    <n>Healing power</n>
+    <info>The Alicorn Armor`s medical systems constantly restore health of the wearer. The health recovery rate depends on the level of the "Medicine" skill</info>
+  </eff>
+  <eff id="lockpick_al" s1="keyPunch" v="0.8">
+    <n>Light speed​</n>
+    <info>The Alicorn Armor has a built-in instant teleportation spell. You can use instant teleportation using the @1 key, the magic consumption rate depends on the "Lockpick" skill level</info>
+  </eff>
+  <eff id="science_al" s1="keyDef" v="0.8">
+    <n>Void shield</n>
+    <info>The Alicorn Armor is equipped with a powerful shield generator. You can activate the magical shield by pressing @1 key. The strength of the shield depends on the "Science" skill level</info>
+  </eff>
+  <eff id="sneak_al" v="0.8">
+    <n>Shadow veil</n>
+    <info>The holographic systems of the Alicorn Armor obscures enemies` targeting, preventing them from hitting you. Additional dodging bonus depend on the "Sneak" skill level</info>
+  </eff>
+  <eff id="barter_al" v="0.8">
+    <n>Active defense</n>
+    <info>The inner lining of the Alicorn Armor is made of the "smart" plastic that is normally elastic but instantly hardens when damaged. Resistance to any external damage depends on the "Barter" skill level</info>
+  </eff>
+  <eff id="selflevit" s1="keyJump" s2="keyBeUp" s3="keyLeft" s4="keySit" s5="keyRight" v="0.7">
+    <n>Self-levitation</n>
+    <info>You can levitate yourself using magical power. To do this, press and hold @1 while being in the air. Press the @2@3@4@5 movement keys to move sideways, down or up. Moving upwards consumes more magical power.
+At the second level of this ability the consumption of magic will decrease, and the time and range of flight increase</info>
+  </eff>
+  <eff id="jump">
+    <n>Jumper</n>
+    <info>"It`s not very far, just move your little rump. You can make it if you try with a hop, skip and jump!" Now you can jump half a meter higher!</info>
+  </eff>
+  <eff id="lightstep" v="0.7">
+    <n>Light step</n>
+    <info>You are always watchful and careful. You never activate a trap or a pressure plate, and enemy mines are triggered with a delay</info>
+  </eff>
+  <eff id="babah">
+    <n>Explosions fan</n>
+    <info>Even though you like to explode stuff, you don`t forget about safety. Any explosion causes you less damage</info>
+  </eff>
+  <eff id="antifire">
+    <n>Fire resistance</n>
+    <info>Fire inflicts less damage to you. Also decreases a chance for you to be set on fire</info>
+  </eff>
+  <eff id="dexter">
+    <n>Bullet Dodger</n>
+    <info>Enemies will have a hard time trying to hit you. Your evasion bonus increased</info>
+  </eff>
+  <eff id="oak">
+    <n>Iron skin</n>
+    <info>Trainings with melee weapons gave great results. Now you are harder to get wounded with sharp items. Resistance to cutting damage increased</info>
+  </eff>
+  <eff id="stonewall">
+    <n>Stone wall</n>
+    <info>You got so used to being hit with heavy stuff, now it just tickles. Resistance to blunt weapons increased</info>
+  </eff>
+  <eff id="reinforced">
+    <n>Armored hide</n>
+    <info>You lost count of bullets being shot at you. This made you tougher, your bullet resistance is permanently increased</info>
+  </eff>
+  <eff id="bigsize">
+    <n>Size matters</n>
+    <info>You are a fan of veery big guns! You got so used to them that you barely notice their weight</info>
+  </eff>
+  <eff id="fastreload">
+    <n>Quick reload</n>
+    <info>You reload weapons twice quicker than before. It is a great advantage - less chance to get killed while you desperately try to reload</info>
+  </eff>
+  <eff id="fortune">
+    <n>Treasure hunter</n>
+    <info>You have a habit of searching through every trash can on your way, hence you always find more caps and pre-war bits</info>
+  </eff>
+  <eff id="infiltrator">
+    <n>Infiltrator</n>
+    <info>You learned to be more careful when picking locks. In case of failure, pin break twice less often, and lock is damaged #1 less</info>
+  </eff>
+  <eff id="coolhacker">
+    <n>Cool hacker</n>
+    <info>You are such a cool hacker, that even security systems provide you with additional attempts for picking a password (#1 instead of #2)!</info>
+  </eff>
+  <eff id="metabol">
+    <n>Rapid metabolism</n>
+    <info>Your body adsorbs and converts chemicals much faster than average, therefore healing potions become #1 more effective and restore health #2 times faster</info>
+  </eff>
+  <eff id="action">
+    <n>Action pony</n>
+    <info>You never stay put, always rushing somewhere. You get #1 action points extra (to #2 initial points) in S.A.T.S. for every level of this ability</info>
+  </eff>
+  <eff id="entomolog">
+    <n>Entomologist</n>
+    <info>You always showed interest to insects, spiders, and other arthropods, and you learned their weaknesses. You cause #1 more damage to radscorpions, radroaches, bloatsprites and similar creatures</info>
+  </eff>
+  <eff id="anatomy">
+    <n>Military anatomy</n>
+    <info>You know pony anatomy so well, that you always aim at vital organs. You cause #1 more damage to raiders and other equine enemies</info>
+  </eff>
+  <eff id="robot">
+    <n>Applied robotics</n>
+    <info>You know schematics for any robot by heart, and always aim at their weak points. You cause #1 more damage to robots and turrets</info>
+  </eff>
+  <eff id="purifier">
+    <n>Purifier</n>
+    <info>You believe that the Wasteland must be cleansed of monsters and mutated beasts. You cause #1 more damage to feral ghouls and mutants</info>
+  </eff>
+  <eff id="rungun">
+    <n>Run and Gun</n>
+    <info v="0.8">You have learned to shoot accurately even while running or from an unsteady position. The accuracy penalty for shooting while running is reduced to #1 (with base penalty value #2), and the penalty for shooting while jumping or while climbing stairs has been reduced to #3 (base penalty value #4). Does not affect shooting with S.A.T.S.</info>
+  </eff>
+  <eff id="composure">
+    <n>Cold blooded</n>
+    <info v="0.8">You keep calm during a fight and prefer systematic shooting or a tactical retreat to rushing headlong into battle. Accuracy bonus when firing while standing still is increased to #1 (#2 by default), and accuracy loss from shooting behind your back is decreased tp #3 (#4 by default). Only affects shooting without using S.A.T.S.</info>
+  </eff>
+  <eff id="mathlogic">
+    <n>Math logic</n>
+    <info v="0.8">You calibrated your PipBuck so that now any attack in S.A.T.S. consumes #1 less action points, and on the second level of ability - #2 less</info>
+  </eff>
+  <eff id="critch">
+    <n>Soldier`s luck</n>
+    <info>Good luck always follows you on a battlefield. Your critical damage chance is increased by #1 for every level of this perk</info>
+  </eff>
+  <eff id="critdam">
+    <n>Deadly criticals</n>
+    <info>When you get lucky on a battlefield, your enemy can sure feel the difference! You get +#1 to critical damage with any weapon</info>
+  </eff>
+  <eff id="pistol">
+    <n>Duelist</n>
+    <info>You are not a fan of big and heavy weapons. Your choice - pistols and revolvers, and you sure know how to use them. All your handguns (including automatic) get accuracy bonus, and they consume #1 less action points in S.A.T.S.</info>
+  </eff>
+  <eff id="shot">
+    <n>Crazy farmer</n>
+    <info>Your favorite weapon - a shotgun, with that you are ready to protect yourself and your property either from raiders, bandits or a darn army of dragons! All your shotguns get armor piercing and increased knockback effects</info>
+  </eff>
+  <eff id="commando">
+    <n>Commando</n>
+    <info>You are absolutely sure that there is no weapon better than an assault rifle. And you sure know how to get the best from it. Your assault rifles and a minigun cause more damage by 2 points per each bullet</info>
+  </eff>
+  <eff id="rifle" v="0.8">
+    <n>One shot</n>
+    <info>You are a great shooter, for whom every bullet counts. All your hunting and sniper rifles get a critical hit bonus</info>
+  </eff>
+  <eff id="laser">
+    <n>Laser show</n>
+    <info>Laser weapons are your favorites. You know how to handle it so that it causes 15% more damage</info>
+  </eff>
+  <eff id="plasma">
+    <n>Plasma greetings</n>
+    <info>You love to turn enemies into puddles of slime with plasma weapons. You even learned to deal with its drawbacks, so that now your plasma weapons are more accurate, and plasma reaches target #1 faster</info>
+  </eff>
+  <eff id="pyro">
+    <n>Pyromaniac</n>
+    <info>You love to set things on fire since you were little, your favorite smell is of petroleum, and your favorite hobby - watch enemies turn into ashes. Any weapon causing fire damage (including grenades) becomes more powerful</info>
+  </eff>
+  <eff id="desintegr">
+    <n>Disintegration</n>
+    <info>All your laser and plasma weapons get a #1 chance to disintegrate target - that is to completely annihilate it with a single shot (the weapon becomes about #2 cooler), providing that the target has no more health left than 10 times the weapon`s damage</info>
+  </eff>
+  <eff id="remont">
+    <n>Weapon maintenance</n>
+    <info>You always clean and oil your weapons, and in return they never let you down in a critical moment. A probability that a worn weapon misfires is decreased #1 times, even though its damage and accuracy still decrease</info>
+  </eff>
+  <eff id="envir">
+    <n>Adaptive metabolism</n>
+    <info>Surprisingly, you adapted well to life in the toxic and irradiated Wasteland. You get a bonus to radiation resistance, and also to resistance against toxic and corrosive substances</info>
+  </eff>
+  <eff id="wild">
+    <n>Roamer of the wild plains</n>
+    <info>You learned to survive among wild animals and monsters. You get a bonus to protection against bites and scratches, stings and spikes and so on, and suffer less from wounds and poisoning</info>
+  </eff>
+  <eff id="uparmor">
+    <n>Armor enhancement</n>
+    <info>You know how to improve your armor and make it fit perfectly, thus increasing its battle qualities. To do this you require workbench and proper materials. The second level of this perk allows you to further enhance your armor for one more time</info>
+  </eff>
+  <eff id="telemaster">
+    <n>Master of telekinesis</n>
+    <info>The range of your telekinetic grasp is increased. Also, now you can lift and perform other telekinetic actions with objects that are out of your sight</info>
+  </eff>
+  <eff id="sparepart">
+    <n>Scavenger</n>
+    <info>You throw nothing away. To that extent, that it is hard to enter your room without breaking legs. On the other hoof, you get additional weapon fragments each time you find a weapon that you already have, and also find more useful (in your personal opinion) garbage</info>
+  </eff>
+  <eff id="grenader" s1="keyRun">
+    <n>Grenader</n>
+    <info>You learned to supply all grenades with an advanced sensor, so that now they explode right after hitting an enemy! (To use ordinary grenades, hold @1 when throwing)</info>
+  </eff>
+  <eff id="acute">
+    <n>Piercing strike</n>
+    <info>Any armor has weak spots and you know it very well. Any stubbing-cutting weapon (like knives, swords, axes and spears) gets additional armor-piercing effect</info>
+  </eff>
+  <eff id="stunning">
+    <n>Stunning strike</n>
+    <info>Any blunt weapon (like a bat, a crowbar or a sledgehammer) gets a chance to stun enemy for #1 seconds. Its knockback effect is also increased</info>
+  </eff>
+  <eff id="telethrow" s1="keyAction">
+    <n>Zero point magical field manipulator</n>
+    <info>Not only you are able to move objects with telekinesis, but also you can make them plummet through the air! To do that, press @1 when levitating an object. You can try to hit an enemy with a heady box or smash him against a wall. The second level of this perk allows you to throw objects even faster and further. Keep in mind - pushing heavy objects rapidly burns your magical power</info>
+  </eff>
+  <eff id="spell_port" s1="keyTele" s2="keyAttack">
+    <n>Teleportation</n>
+    <info>You receive an ability to instantly move between places. To use it press and hold @1 while the spell charges, then release to perform teleportation. To cancel already charged spell press @2. You must see the point of arrival. Consumes quite a lot of magical energy</info>
+  </eff>
+  <eff id="potmaster">
+    <n>Alchemist</n>
+    <info>Countless hours spent with a cauldron, a retort, and a boiling cube brought their fruits! Now, when making potions, you receive two bottles of potion instead of one, consuming the same amount of ingredients. Does not work on permanent effect potions</info>
+  </eff>
+  <eff id="powerkick" v="0.8">
+    <n>Mighty kick</n>
+    <info>Damage from your bare-hoof kicks is increased by #1. Now you can break sturdy and reinforced doors with your hind legs and stun enemies for a short period of time</info>
+  </eff>
+  <eff id="radchild" v="0.6">
+    <n>Child of radiation</n>
+    <info>Radiation does not kill you, but only makes you stronger. The higher your radiation level, the fewer injuries you get. Also, radiation can not reduce your health by more than 80%</info>
+  </eff>
+  <eff id="security" v="0.6">
+    <n>Security expert</n>
+    <info>You understand automatic security systems like none other. From any terminal controlling the turrets, you can not just simply turn them off, but reconfigure them so that they begin attacking your opponents. Meanwhile, you get all experience from the turret`s kills</info>
+  </eff>
+  <eff id="zona" v="0.6">
+    <n>Danger zone</n>
+    <info>The blast radius for any explosives you use increases by #1</info>
+  </eff>
+  <eff id="sapper" v="0.6">
+    <n>Expert sapper</n>
+    <info>When it comes to mines and minefields, you have no equal. The mines you install are #1 more powerful, and in addition, your mines do not detonate from nearby explosions</info>
+  </eff>
+  <eff id="mmaster" v="0.6">
+    <n>Melee master</n>
+    <info>You have mastered the cold steel to perfections. The attack speed of any melee weapon (except chainsaw and similar) is increased by #1</info>
+  </eff>
+  <eff id="warlock" v="0.6">
+    <n>Battle mage</n>
+    <info>You are so used to using attack magic in battles, that it almost does not tire you. With each level of this ability, you spend less magical energy on combat spells</info>
+  </eff>
+  <eff id="friendly" v="0.6">
+    <n>Friendly Fire</n>
+    <info>You always know how to throw a grenade or shoot a grenade launcher so that you are not personally affected by the explosion. With this ability, you receive only 25% of the damage from your own explosives, including its special varieties</info>
+  </eff>
+  <eff id="longtime" v="0.6">
+    <n>Long-term effect</n>
+    <info>Your medical knowledge helps you use combat chemistry properly. Now it works for you #1 times longer</info>
+  </eff>
+  <eff id="fightstim" v="0.6">
+    <n>Combat stimulators</n>
+    <info>You have studied medicine well and you know how to turn yourself into a death machine with help of the chemicals. Effects from substances such as Mint-als, Buck, Dash, Rage, Med-X, are amplified. At the same time, the chances of getting addicted to them are reduced #1 times</info>
+  </eff>
+  <eff id="econom" v="0.6">
+    <n>Wastelands economics</n>
+    <info>Your talents as an economist contribute to the development of trade. All traders start importing more ammunition, medicine and other popular goods. Also, a traveling trader with rare goods begins visiting the "Prancing Pony" camp</info>
+  </eff>
+  <eff id="empathy" v="0.6">
+    <n>Empathy</n>
+    <info>A special psychological connection with your companion gives him new strength. With each level of this ability, the defense and attack of your companion significantly increases</info>
+  </eff>
+  <eff id="stamina" v="0.7">
+    <n>Stamina</n>
+    <info>Life in the harsh conditions of the wasteland increased your endurance. Now in combat you can run and jump longer without experiencing fatigue. Stamina consumption for running and jumping during battle is reduced by #1</info>
+  </eff>
+  <eff id="hardness" v="0.7">
+    <n>Hard grip</n>
+    <info>You learned to hold the weapon with telekinesis so that there is less impact from recoil. Now you can sustain burst fire longer without fear of losing a target. This also increases the accuracy of assault rifles</info>
+  </eff>
+  <eff id="perf" v="0.7">
+    <n>Perforator</n>
+    <info>Let`s make some holes in `em! Your heavy machine guns receive additional armor-piercing properties, and their bullet spread is decreased #1 times</info>
+  </eff>
+  <eff id="diel" v="0.7">
+    <n>Dielectric</n>
+    <info>Due to some features of your organism, electricity and lightning cause you 20% less damage</info>
+  </eff>
+  <eff id="recyc" v="0.7">
+    <n>Recycling</n>
+    <info>You optimized all your weapons that use various batteries to consume less energy. With a #1 probability each shot from such a weapon will be free of charge, that is, it will not consume the battery charge</info>
+  </eff>
+  <eff id="freel" v="0.7">
+    <n>Scrounger</n>
+    <info>You are always a little more lucky than other hunters for valuable junk. You will find more cartridges and explosives in containers</info>
+  </eff>
+  <eff id="durable" v="0.7">
+    <n>Reliable armor</n>
+    <info>Due to the fact that you always carefully look after your armor, it serves you #1 longer. That allows saving considerably on its repair</info>
+  </eff>
+  <!--Other Perks-->
+  <eff id="levitation" v="0.7">
+    <n>Double jump</n>
+    <info>With help of your telekinesis, you can jump once in mid-air. The height of this second jump depends on the skill level of "Telekinesis"</info>
+  </eff>
+  <eff id="dead">
+    <n>ERS User</n>
+    <info>You almost died, but got saved by MAS Emergency Rescue System</info>
+  </eff>
+  <eff id="life">
+    <n>Lifegiver</n>
+    <info>Your health became stronger! (+#1 per ability level)</info>
+  </eff>
+  <eff id="spirit" v="0.6">
+    <n>Mighty spirit</n>
+    <info>Your magical power reserve is increased! (+#1 per ability level)</info>
+  </eff>
+  <eff id="potion_dskel">
+    <n>Diamond skeleton</n>
+    <info>Zebra potion fortified your bones. Now you get #1 fewer injuries with each level of this ability</info>
+  </eff>
+  <eff id="potion_immun">
+    <n>Strong immunity</n>
+    <info>Zebra potion improved natural defense systems of your body. You get +#1 resistance to poisoning, bleeding and radiation for each level of this ability</info>
+  </eff>
+  <eff id="potion_might">
+    <n>Might of Earth</n>
+    <info>Zebra potion improved your reflexes and increased aggression. You deal #1 more melee damage for each level of this ability</info>
+  </eff>
+  <eff id="potion_speed">
+    <n>Wind walk</n>
+    <info>Zebra potion strengthened your muscles and increased stamina capacity. You receive +#1 to running speed and fatigue resistance for each level of this ability</info>
+  </eff>
+  <eff id="potion_prec">
+    <n>Hawk eye</n>
+    <info>Zebra potion augmented your nervous system and sharpened your sight. It increases shooting accuracy #1 per each level of this ability</info>
+  </eff>
+  <eff id="potion_dexter" v="0.7">
+    <n>Intuition</n>
+    <info>Zebra potion strengthened your intuition. You gain +#1 to evasion bonus for each level of this ability</info>
+  </eff>
+  <eff id="potion_crit" v="0.7">
+    <n>Critical luck</n>
+    <info>Zebra potion enhanced your luck. You gain +#1 to chance of critical hit for each level of this ability</info>
+  </eff>
+  <eff id="potion_elements" v="0.6">
+    <n>Ardent spirit</n>
+    <info>A magical potion strengthened the connection between you and the elemental forces of nature. Your attack spells power is increased by #1 for each level of this ability</info>
+  </eff>
+  <eff id="dam_zombie" v="0.7">
+    <n>Zombie Exterminator</n>
+    <info>You`ve learned a lot about the anatomy of ghouls, and therefore inflict them #1 more damage</info>
+  </eff>
+  <eff id="dam_alicorn" v="0.6">
+    <n>Enemy of the Unity</n>
+    <info>You learned something special about fighting with alicorns. Now you deal them #1 more damage</info>
+  </eff>
+  <eff id="potion_consc" v="0.8">
+    <n>Expanded mind</n>
+    <info>You can memorize more spells</info>
+  </eff>
+  <!--Effects-->
+  <eff id="burning" st="5">
+    <n>Burning</n>
+    <info>You`re burning! You need to jump into water to stop it</info>
+    <mess>Aahh, fire! I`m burning, burning!!!</mess>
+  </eff>
+  <eff id="chemburn" st="5">
+    <n>Chemical burn</n>
+    <info>You got splashed with some corrosive substance, and now it corrupts your armor and burns your hide</info>
+    <mess>Ah! This stuff burns!</mess>
+  </eff>
+  <eff id="stealth">
+    <n>Stealth mode</n>
+    <info>You are in stealth-mode</info>
+    <mess>Stealth-Buck activated</mess>
+  </eff>
+  <eff id="stealth_armor">
+    <n>Stealth mode</n>
+    <info>You are in stealth-mode</info>
+    <mess>Stealth armor camouflage system activated</mess>
+  </eff>
+  <eff id="disorient" st="5" v="0.6">
+    <n>Disorientation</n>
+    <info>The concepts "right" and "left" for you temporarily changed places</info>
+    <mess>You fell under the telepathic attack!</mess>
+  </eff>
+  <eff id="horror" st="5" v="0.6">
+    <n>Panic</n>
+    <info>You can`t control yourself and try to flee to someplace else</info>
+    <mess>You fell under the telepathic attack!</mess>
+  </eff>
+  <eff id="vote" st="5" v="0.6">
+    <n>Voices in your head</n>
+    <info>These voices in your head do not stop... and they order you to kill!</info>
+    <mess>You fell under the telepathic attack!</mess>
+  </eff>
+  <eff id="freezing" v="0.8">
+    <n>Frozen</n>
+    <info>Frozen creatures are vulnerable to bullets, strikes and explosions, and their speed decreases by #1. Their fire resistance, on the other hoof, is increased</info>
+  </eff>
+  <eff id="blindness" st="5" v="0.8">
+    <n>Blind</n>
+    <info>It became almost impossible to aim properly. Accuracy reduced by #1</info>
+    <mess>Right in the eye!</mess>
+  </eff>
+  <eff id="contusion" st="5" v="0.8">
+    <n>Contusion</n>
+    <info>You were hit hard by a blast wave. You have reduced speed (-#1), accuracy (-#2) and melee attack speed (-#3), and increased magic energy consumption by #4</info>
+    <mess>You got a concussion!</mess>
+  </eff>
+  <eff id="namok">
+    <n>Soaking wet</n>
+    <info>You recently swum or got into a heavy rain. In any case, your fire resistance is temporarily increased, but resistance to frost and electricity is decreased</info>
+  </eff>
+  <eff id="inhibitor" v="0.6">
+    <n>Distortion field</n>
+    <info>The movement of all nearby enemies is slowed down</info>
+  </eff>
+  <eff id="reanim">
+    <n>Reanimation</n>
+    <info>Reanimation module has recently been used and now is recharging</info>
+  </eff>
+  <eff id="antidote" v="0.8">
+    <n>Antidote effect</n>
+    <info>You have recently taken an antidote, your resistance to poisons is temporarily increased by #1</info>
+  </eff>
+  <eff id="radx" v="0.8">
+    <n>Rad-X effect</n>
+    <info>Radiation resistance increased by #1</info>
+  </eff>
+  <eff id="mint">
+    <n>Mint-als effect</n>
+    <info>Your intelligence, sight and hearing are improved, and with them - ability to pick locks (+#1), hack terminals (+#2) and use explosives (+#3)</info>
+  </eff>
+  <eff id="pmint">
+    <n>Party-Time Mint-als effect</n>
+    <info>Your intelligence, sight and hearing are improved, and with them - ability to pick locks (+#1), hack terminals (+#2) and use explosives (+#3)</info>
+  </eff>
+  <eff id="post_mint">
+    <n>Mint-als after effect</n>
+    <info>You`ve got post Mint-als after effects, meaning that you temporarily got dumber, with hearing and sight impaired. You lockpicking decreased by #1 and hacking decreased by #2</info>
+  </eff>
+  <eff id="post_mint_ad" v="0.6">
+    <n>Mint-als addiction</n>
+    <info>When you are not under the influence of mint-als, you completely lose the sharpness of perception and clarity of thinking, and with them the ability to break locks (-#1) and hack terminals (-#2)</info>
+  </eff>
+  <eff id="dash">
+    <n>Dash effect</n>
+    <info>Your speed and jump height are increased by #1 and #2 action points were added</info>
+  </eff>
+  <eff id="ultradash" v="0.6">
+    <n>Ultra-dash effect</n>
+    <info>Your speed and jump height are greatly increased (+#1) and #2 action points were added</info>
+  </eff>
+  <eff id="post_dash">
+    <n>Dash after effect</n>
+    <info>You`re slow as hay!</info>
+  </eff>
+  <eff id="post_dash_ad" v="0.6">
+    <n>Dash addiction</n>
+    <info>You are so used to Dash that without it you crawl like a snail. You lose #2 action points, and your speed is reduced by #1</info>
+  </eff>
+  <eff id="rage">
+    <n>Rage effect</n>
+    <info>You are in a chemical rage state. Damage by any weapon in increased by #1</info>
+  </eff>
+  <eff id="post_rage">
+    <n>Rage after effect</n>
+    <info>A feeling of deep apathy took over, you don`t want to fight anymore. Damage by any weapon in decreased by #1</info>
+  </eff>
+  <eff id="post_rage_ad" v="0.6">
+    <n>Rage addiction</n>
+    <info>Your abuse of Rage has led to the fact that without it you can no longer normally fight. Damage from any of your attacks is reduced by #1</info>
+  </eff>
+  <eff id="medx">
+    <n>Med-X effect</n>
+    <info>You are temporarily mute to pain, any damage to you is decreased by #1</info>
+  </eff>
+  <eff id="post_medx">
+    <n>Med-X after effect</n>
+    <info>After pain-killer effect wears off, you feel pain much sharper than before</info>
+  </eff>
+  <eff id="post_medx_ad" v="0.6">
+    <n>Med-X addiction</n>
+    <info>Your addiction to Med-X-y made your sensitivity to pain increase. Any damage you get is increased by #1 for each level of addiction</info>
+  </eff>
+  <eff id="buck">
+    <n>Buck effect</n>
+    <info>Your strength and endurance are temporarily increased. Health increased by #1, stamina consumption for running decreased by #2, damage threshold +#3, kick strength +#4</info>
+  </eff>
+  <eff id="post_buck">
+    <n>Buck after effect</n>
+    <info>You feel overwhelming weakness and sleepiness. Health decreased by #1, stamina consumption for running increased by #2</info>
+  </eff>
+  <eff id="post_buck_ad" v="0.6">
+    <n>Buck addiction</n>
+    <info>When you are not under the influence of Buck, your health is decreased by #1. Also, running takes #2 more stamina</info>
+  </eff>
+  <eff id="stampede">
+    <n>Stampede effect</n>
+    <info>You are temporarily mute to pain, your damage resistance is increased by #2, and the damage of any of your weapons is increased by #1</info>
+  </eff>
+  <eff id="post_stampede">
+    <n>Stampede after effect</n>
+    <info>You have a deep depression, and everything hurts. The damage of any weapon is reduced by #1, and your resistance to damage is reduced by #2</info>
+  </eff>
+  <eff id="post_stampede_ad" v="0.6">
+    <n>Stampede addiction</n>
+    <info>Without a regular dose of Stampede, you are in a constant depression. The damage of any weapon is reduced by #1, and your resistance to damage is reduced by #2</info>
+  </eff>
+  <eff id="hydra">
+    <n>Regeneration boost</n>
+    <info>Your health is being restored, and traumas and internal injuries are being magically mended</info>
+  </eff>
+  <eff id="post_hydra">
+    <n>Hydra after effect</n>
+    <info>While your organism recovers after shock caused by Hydra, healing potions have #1 effectiveness</info>
+  </eff>
+  <eff id="potion_fly">
+    <n>Potion of flight</n>
+    <info>You can fly!</info>
+  </eff>
+  <eff id="potion_shadow">
+    <n>Potion of shadows</n>
+    <info>You became a shadow. Enemies can not hurt you, but you can`t fight as well</info>
+  </eff>
+  <eff id="potion_mage" v="0.8">
+    <n>Wizardry potion</n>
+    <info>Reduced consumption and faster recovery of magical energy by #1, and increased spell power by #2</info>
+  </eff>
+  <eff id="potion_infra">
+    <n>Infra-vision potion</n>
+    <info>Your sight is magically augmented</info>
+  </eff>
+  <eff id="potion_swim" v="0.6">
+    <n>Diver`s potion</n>
+    <info>You can breathe underwater and swim faster</info>
+  </eff>
+  <eff id="potion_pink" v="0.8">
+    <n>Pink potion</n>
+    <info>Resistance to the Pink Cloud in all its forms is increased</info>
+  </eff>
+  <eff id="potion_chance" v="0.7">
+    <n>Potion of the Last Chance</n>
+    <info>Allows you once to avoid death</info>
+  </eff>
+  <eff id="post_chance" v="0.7">
+    <n>Absolute protection</n>
+    <info>No external influence can cause you any damage</info>
+  </eff>
+  <eff id="potion_rat" s1="keyPunch" v="0.8">
+    <n>Transformation</n>
+    <info>You have become a desman. In this form you are able to climb into very narrow passages. To return to your original form press @1. Attention! Make sure there is enough space!</info>
+  </eff>
+  <eff id="curse" st="5" v="0.7">
+    <n>Curse</n>
+    <info>You`ve been touched by dark and powerful magic. Healing potions will not heal you until the curse is lifted. Pay a visit to the nearest practicing magician</info>
+    <mess>You`ve been cursed!</mess>
+  </eff>
+  <eff id="stupor" st="5" v="0.7">
+    <n>Stupor</n>
+    <info>Your speed and jumping height are significantly reduced, and you are completely deprived of stamina</info>
+    <mess>Curse of stupor</mess>
+  </eff>
+  <eff id="weak" st="5" v="0.7">
+    <n>Weakness</n>
+    <info>Your magic has temporarily weakened, therefore your accuracy, damage from melee weapons and magic decreased, as well as strength of the telekinetic throw</info>
+    <mess>Curse of weakness</mess>
+  </eff>
+  <eff id="sacrifice" st="5" v="0.8">
+    <n>Sacrifice</n>
+    <info>The moment this effect wears off you will receive damage equal to #1 of your maximum health</info>
+    <mess>The curse of the sacrifice</mess>
+  </eff>
+  <eff id="relat" st="5" v="0.8">
+    <n>Pain connection</n>
+    <info>You receive #1 of the damage you deal to enemies</info>
+    <mess>Curse of pain</mess>
+  </eff>
+  <eff id="fetter" st="5" v="0.7">
+    <n>Shackles</n>
+    <info>The magical chain binds you to the point where you were at the moment the curse was cast, and does not allow you to leave it</info>
+    <mess>Curse of shackles</mess>
+  </eff>
+  <eff id="pinkcloud" st="5" v="0.7">
+    <n>Poisoning by the Pink Cloud</n>
+    <info>The toxin of the Pink Cloud got into your blood and now slowly kills you from inside</info>
+    <mess>Pink Cloud poisoning</mess>
+  </eff>
+  <eff id="antil" st="5" v="0.7">
+    <n>Anti-life</n>
+    <info>Healing potions have no effect on you</info>
+    <mess>Curse of anti-life</mess>
+  </eff>
+  <eff id="bloodinv" v="0.8">
+    <n>Blood shield</n>
+    <info>Complete invulnerability to any external damage</info>
+  </eff>
+  <eff id="trauma_head" v="0.8">
+    <n>Head injuries</n>
+    <info>Accuracy reduced by #1, melee attack speed reduced by #2, magic consumption increased by #3</info>
+  </eff>
+  <eff id="trauma_tors" v="0.8">
+    <n>Body injuries</n>
+    <info>Maximum health reduced by #1, stamina recovery reduced by #3, stamina consumption for running and jumping increased by #2</info>
+  </eff>
+  <eff id="trauma_legs" v="0.8">
+    <n>Leg injuries</n>
+    <info>Running speed reduced by #1, walking speed reduced by #2</info>
+  </eff>
+  <eff id="trauma_blood" v="0.8">
+    <n>Blood loss</n>
+    <info>Resistance to any external damage reduced by #1, damage of your weapons reduced by #2</info>
+  </eff>
+  <eff id="trauma_mana" v="0.8">
+    <n>Magical exhaustion</n>
+    <info>Maximum weight you can lift by telekinesis is reduced by #1, combat spells damage reduced by #2</info>
+  </eff>
+  <eff id="noArmor" v="0.8">
+    <n>No armor</n>
+  </eff>
+  <!--Food-->
+  <eff id="drunk" st="5" v="0.7">
+    <n>Drunkenness</n>
+    <info>You got a serious doze of alcohol. Your protection and damage from melee weapons are increased, but accuracy and reaction are impaired, and magic consumption increased. 
+Damage resistance #1, melee damage #2, accuracy #3, evasion bonus #4, magic consumption #5</info>
+  </eff>
+  <eff id="coffee" v="0.8">
+    <n>Caffeine effect</n>
+    <info>Thanks to the stimulating effect of coffee, your ability to open locks (+#1) and hack terminals (+#2) has been increased</info>
+  </eff>
+  <eff id="food" st="5" v="0.7">
+    <n>Effect of food</n>
+    <info>You ate something, and this temporarily improved your characteristics. At the same time, only one food effect can be active. The effect of other food will replace the current one</info>
+  </eff>
+  <eff id="f_hp" v="0.7">
+    <info>Health increased by #1</info>
+  </eff>
+  <eff id="f_speed" v="0.7">
+    <info>Speed ​​and stamina increased by #1</info>
+  </eff>
+  <eff id="f_prec" v="0.7">
+    <info>Accuracy increased by #1</info>
+  </eff>
+  <eff id="f_melee" v="0.7">
+    <info>Damage by melee weapons increased by #1</info>
+  </eff>
+  <eff id="f_mana" v="0.7">
+    <info>Magic power consumption reduced by #1</info>
+  </eff>
+  <eff id="f_od" v="0.7">
+    <info>Added #1 action points</info>
+  </eff>
+  <eff id="f_vulner" v="0.7">
+    <info>Resistance to all types of damage increased by #1</info>
+  </eff>
+  <eff id="f_cucsand" v="0.7">
+    <info>Health increased by #1, resistance to physical attacks increased by #2</info>
+  </eff>
+  <eff id="f_frpot" v="0.7">
+    <info>Speed ​​and stamina increased by #1, added #2 action points</info>
+  </eff>
+  <eff id="f_oatmeal" v="0.7">
+    <info>Health increased by #1, resistance to poison and radiation increased by #2</info>
+  </eff>
+  <eff id="f_salad" v="0.7">
+    <info>The overall speed, running speed, stamina are increased by #1 and evasion in melee and ranged combat are increased by #2</info>
+  </eff>
+  <eff id="f_chpasta" v="0.7">
+    <info>Health increased by #1, resistance to all types of external damage increased by #2</info>
+  </eff>
+  <eff id="f_omelet" v="0.7">
+    <info>Damage from combat spells increased by #1, magic consumption reduced by #2</info>
+  </eff>
+  <eff id="f_butterbr" v="0.7">
+    <info>The damage threshold is increased by #1, resistance to all types of external damage is increased by #2</info>
+  </eff>
+  <eff id="f_breakfast" v="0.7">
+    <info>Health increased by #1</info>
+  </eff>
+  <eff id="f_soup" v="0.7">
+    <info>Evasion in melee and ranged combat increased by #1</info>
+  </eff>
+  <eff id="f_pizza" v="0.7">
+    <info>Critical hit chance increased by #1, critical damage increased by #2</info>
+  </eff>
+  <eff id="f_casser" v="0.7">
+    <info>Stealth is increased by #1, produced noise is reduced by #2 times</info>
+  </eff>
+  <eff id="f_ragu" v="0.7">
+    <info>Damage and attack speed of melee weapons increased by #1, and power of a hoof kick - by #2</info>
+  </eff>
+  <eff id="f_spsalad" v="0.7">
+    <info>The damage from combat spells is increased by #1, the strength of the telekinetic throw is increased by #2</info>
+  </eff>
+  <eff id="f_patty" v="0.7">
+    <info>Health is increased by #1, lightning resistance is increased by #2, resistance to enemy telekinesis is significantly increased</info>
+  </eff>
+  <eff id="f_maffin" v="0.7">
+    <info>The ability to crack open all kinds of locks and hack terminals is increased by #1, to repair and defuse bombs is increased by #2</info>
+  </eff>
+  <eff id="f_apie" v="0.7">
+    <info>Health is increased by #1, the power of healing potions is increased by #2, and they act faster</info>
+  </eff>
+  <eff id="f_mpie" v="0.7">
+    <info>Damage from all weapons and magic increased by #1</info>
+  </eff>
+  <eff id="f_ppie" v="0.7">
+    <info>Damage from firearms and energy weapons increased by #1, recharge speed increased by #2 times</info>
+  </eff>
+  <eff id="f_spie" v="0.7">
+    <info>Accuracy is increasedd by #1, attack speed with melee weapons by #2, critical hit chance by #3</info>
+  </eff>
+  <eff id="f_borsch" v="0.7">
+    <info>Resistance to all types of external damage increased by #1, the power of protective spells increased by #2 of their original power</info>
+  </eff>

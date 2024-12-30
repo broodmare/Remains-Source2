@@ -40,19 +40,27 @@ package fe.loc {
 		
 		// All in-game data
 		public var objs:Array;
-		
 
+		// Constructor
 		public function Game() {
 			var landList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
+			
 			for each(var xl:XML in landList) {
 				var land:LandAct = new LandAct(xl);
+				
 				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) {
-					land.allroom=World.w.landData[xl.@id].allroom;
-					land.loaded=true;
+					land.allroom = World.w.landData[xl.@id].allroom;
+					land.loaded = true;
 				}
-				if (land.prob==0) lands[land.id]=land;
-				else probs[land.id]=land;
+				
+				if (land.prob == 0) {
+					lands[land.id] = land;
+				}
+				else {
+					probs[land.id] = land;
+				}
 			}
+			
 			landList = null; // Manual cleanup.
 		}
 
@@ -143,20 +151,30 @@ package fe.loc {
 				
 				triggers['noreturn'] = 1;
 			}
+			
 			objs = [];
+			
 			if (loadObj && loadObj.objs) {
 				for (var uid in loadObj.objs) {
 					var obj = loadObj.objs[uid];
 					var nobj = {};
+					
 					for (var n in obj) {
 						nobj[n] = obj[n];
 					}
+					
 					objs[uid] = nobj;
 				}
 			}
 
 			// Initialize the vendor manager with the save data
-			vendorManager = new VendorManager(loadObj.vendors);
+			if (loadObj) {
+				vendorManager = new VendorManager(loadObj.vendors);
+			}
+			else {
+				vendorManager = new VendorManager({});	// Call with an empty object
+			}
+			
 
 			var npcList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Npcs", "npc");
 			var npc:Npc;
@@ -568,6 +586,14 @@ package fe.loc {
 				n = t_save + playTime;
 			}
 			return Res.gameTime(n);
+		}
+
+		// Check if an object is empty, Eg. '{}'
+		private function isEmpty(obj:Object):Boolean {
+			for (var key:String in obj) {
+				return false; // Found a property, so it's not empty
+			}
+			return true; // No properties found, it's empty
 		}
 	}
 }

@@ -1,0 +1,1187 @@
+<replic>
+    <rep act="dam" id="pip" v="0.7">
+      <r>Yikes!</r>
+      <r>Ouch!</r>
+      <r>Ow, it hurts!</r>
+      <r>Oh my, oh my!</r>
+      <r>I got hit!</r>
+      <r>Darn it!</r>
+      <r m="1">Bitch got me!</r>
+      <r m="1">Oh, fuck you!</r>
+      <r m="1">Fuuuck!</r>
+    </rep>
+    <rep act="success" id="pip" v="0.7">
+      <r>Hah!</r>
+      <r>There we go!</r>
+      <r>Done!</r>
+      <r>Wasn`t hard at all</r>
+      <r>Easy-peasy</r>
+      <r>Yeah!</r>
+      <r>Easy!</r>
+      <r>Success!</r>
+      <r>Good job!</r>
+      <r>Sweet!</r>
+    </rep>
+    <rep act="unlock" id="pip" v="0.7">
+      <r>No lock can stop me!</r>
+      <r>Take that, stupid lock!</r>
+      <r>Such locks are only good for toilets</r>
+      <r m="1">No fucking lock can stand against me</r>
+    </rep>
+    <rep act="hack" id="pip" v="0.7">
+      <r>The password is "123" again? Come on!</r>
+      <r>Noobs!</r>
+      <r>What an inappropriate password...</r>
+      <r m="1">Password "dick123"? I could have guessed!</r>
+    </rep>
+    <rep act="fail" id="pip" v="0.7">
+      <r>Darn!</r>
+      <r>What the!..</r>
+      <r>Not again!</r>
+      <r>It sucks!</r>
+      <r>It`s harder than it seems</r>
+      <r>Bad luck!</r>
+      <r>Not a problem</r>
+      <r>I`ll try again</r>
+      <r>Oh no, I won`t give up so easily!</r>
+      <r>I can do it!</r>
+      <r>Arrrgh!</r>
+      <r m="1">Oh, go to Tartarus...</r>
+    </rep>
+    <rep act="zhopa" id="pip" v="0.7">
+      <r>Oh, Luna put me on your horn!</r>
+      <r>Oh, why life is so unfair?</r>
+      <r>Why everything should be so difficult?</r>
+      <r>Celestia, poke me with your horn!</r>
+      <r>Oh, go to Discord!</r>
+      <r>Not my day today!</r>
+      <r>Why can`t I do this?</r>
+      <r>Oh, go to hay!</r>
+      <r>Oh you little...</r>
+      <r m="1">What the fuck!</r>
+      <r m="1">Sit on my horn and spin!</r>
+      <r m="1">Oh for Celestia`s sake!</r>
+      <r m="1">Well, that`s fucked up!</r>
+      <r m="1">Luna rape you with her horn!</r>
+    </rep>
+    <rep act="full" id="pip" v="0.7">
+      <r>Jackpot!</r>
+      <r>Well, hello there!</r>
+      <r>Yes!</r>
+      <r>Oh wow!</r>
+      <r>Cool!</r>
+      <r>That was worth it!</r>
+    </rep>
+    <rep act="empty" id="pip" v="0.7">
+      <r>Err... and?</r>
+      <r>That`s all?</r>
+      <r>Are you kidding me?</r>
+      <r>Darn! Just garbage</r>
+      <r>Why is it empty?</r>
+      <r m="1">I have a feeling that somepony is fuckin` playing tricks on me!</r>
+    </rep>
+    <rep act="neutral" id="raider">
+      <r>I would kill for some smoke...</r>
+      <r>Darn headache...</r>
+      <r>Does this damn place have any food?</r>
+      <r>Hey you, suckers!</r>
+      <r>Gotta pee</r>
+      <r>Some beer would make my day...</r>
+      <r>Ready for some hackin' and whackin'?</r>
+      <r>Wanna get your balls smashed?</r>
+      <r>What an asshole!</r>
+      <r>Buhuu...</r>
+      <r>Damn, I`m high!</r>
+      <r>Go buck yourselves!</r>
+      <r>Horseapples!</r>
+      <r>Whatcha you looking at, asshole?</r>
+      <r>Jackass!</r>
+      <r m="1">To the moooon, beeach!</r>
+      <r>Ahm sick of these horseapples!</r>
+      <r>Ahm done with all this crap</r>
+      <r>Goddesses dammit!</r>
+      <r>* whistles *</r>
+      <r>* spits *</r>
+      <r>* curses *</r>
+      <r>* yawns *</r>
+      <r>* insane laughter *</r>
+      <r>* void stare *</r>
+    </rep>
+    <rep act="attack" id="raider">
+      <r>Prepare to die!</r>
+      <r>Diiiie!</r>
+      <r>Chaarge!</r>
+      <r>You're' finished!</r>
+      <r>I`ll getcha!</r>
+      <r>The fun has been doubled!</r>
+      <r>Fun! Fun! Fun!</r>
+      <r>I`ll smash ya!</r>
+      <r>Get dunked on!</r>
+      <r>It's rape time!</r>
+      <r>Asshole!</r>
+      <r>Kill 'em all!</r>
+      <r>Come here, jackass!</r>
+      <r>Mu-ha-ha-ha!</r>
+      <r>Aha!</r>
+      <r>Bu-ha-ha-ha!</r>
+      <r>Blood!!!</r>
+      <r>Meat!!!</r>
+      <r>You`re doomed!</r>
+      <r m="1">Say goodbye, cunt!</r>
+      <r>I see you!</r>
+      <r>There she is!</r>
+      <r>Everypony, this way!</r>
+      <r>Kiiill!!!</r>
+      <r m="1">Die, bitch!</r>
+      <r>Kill, kill, kiiill!</r>
+    </rep>
+    <rep act="fire" id="raider">
+      <r>Buurn!</r>
+      <r>You want raw or well-done?</r>
+      <r>Fire!</r>
+      <r>Kill it with fire!</r>
+      <r>Roasted meat!</r>
+      <r>Getting hot in here!</r>
+      <r>I like the smell of napalm in the morning!</r>
+      <r>Free fries, everypony!</r>
+    </rep>
+    <rep act="expl" id="raider">
+      <r>Catch!</r>
+      <r>Yeehaa!</r>
+      <r>Time is ticking!</r>
+      <r>A blast - you`re dust!</r>
+      <r>Fireworks!</r>
+      <r>Fire in the hole!</r>
+      <r>Let your world explode!</r>
+      <r>Booom!</r>
+    </rep>
+    <rep act="ear" id="raider">
+      <r>What was that?</r>
+      <r>Who`s here?</r>
+      <r>Is anypony out there?</r>
+      <r>Huh? Wha?</r>
+      <r>Mmm?</r>
+      <r m="1">What the fuck?</r>
+      <r>You heard that?</r>
+      <r>Where?</r>
+      <r m="1">The fuck is going on?</r>
+      <r>Who is shooting?</r>
+      <r>Did something fall?</r>
+      <r>I heard something</r>
+      <r>This again?!</r>
+    </rep>
+    <rep act="find" id="raider">
+      <r>Where is she?</r>
+      <r>Find her!</r>
+      <r>I`ll find you!</r>
+      <r m="1">Can`t hide from me, little cunt!</r>
+      <r>Where are you?</r>
+      <r>I don`t see her</r>
+      <r>She`s there somewhere</r>
+      <r>Find her, guys!</r>
+      <r>Where did she go?</r>
+      <r m="1">Fuck, where are you?</r>
+      <r>Where are you hiding?</r>
+      <r>No use hiding, sweetie!</r>
+      <r>This makes it even more interesting!</r>
+      <r>Come out and I`ll make it painless</r>
+      <r>Come out, you coward!</r>
+    </rep>
+    <rep act="vse" id="raider">
+      <r m="1">Oh, fuck it...</r>
+      <r>Let her go buck herself</r>
+      <r m="1">Yeah, run, bitch!</r>
+      <r>Horseapples!</r>
+      <r>We'll get her later</r>
+      <r>She won`t get far</r>
+      <r m="1">Good fucking riddance</r>
+      <r>Goddess, rape her dead!</r>
+    </rep>
+    <rep act="nope" id="raider">
+      <r>Must be my imagination</r>
+      <r>It`s just wind</r>
+      <r>Clear...</r>
+      <r>I was pretty sure I`ve heard something</r>
+      <r>It's nothing...</r>
+      <r>Probably just rats...</r>
+      <r>Nah, buck it</r>
+    </rep>
+    <rep act="dont" id="raider">
+      <r>And who the hay was that?</r>
+      <r m="1">I`m telling you, there is fucking somepony there</r>
+      <r>We`ll see your blood yet...</r>
+      <r>I will kill you slowly!</r>
+    </rep>
+    <rep act="dam" id="raider">
+      <r m="1">OH FUCK!</r>
+      <r>Ouch!</r>
+      <r>Yikes!</r>
+      <r>I`m hurt!</r>
+      <r>They got me!</r>
+      <r>They're killing me!</r>
+      <r>AAAAAH!!!</r>
+    </rep>
+    <rep act="die" id="raider">
+      <r>Witness me...</r>
+      <r m="1">I`m fucked</r>
+      <r>I`m finished</r>
+      <r>* wheeze *</r>
+      <r>* dead *</r>
+    </rep>
+    <rep act="levit" id="raider">
+      <r m="1">The fuck is this???</r>
+      <r>Whaa???</r>
+      <r>Let me go!</r>
+      <r>Fricking magic!</r>
+    </rep>
+    <rep act="grenade" id="raider">
+      <r>Grenade!</r>
+      <r>Get down!</r>
+      <r>Watch out!</r>
+      <r>Get the hay outta here!</r>
+    </rep>
+    <rep act="tele" id="raider">
+      <r>Look!</r>
+      <r>Watch it!</r>
+      <r>Oh holy buck!</r>
+      <r>Whaa!..</r>
+      <r m="1">Fuckity-fuck!</r>
+      <r m="1">What the fuck!</r>
+    </rep>
+    <rep act="neutral" id="merc" v="0.6">
+      <r>How much are they paying?</r>
+      <r>How long do we have to stay here?</r>
+      <r>I`m getting hungry!</r>
+      <r>Telling you, she`s not coming!</r>
+      <r>We should search somewhere else</r>
+      <r>There is nopony there!</r>
+      <r>And I`m telling you - the target was last seen over here!</r>
+      <r>How much longer?</r>
+      <r>Got a cig?</r>
+      <r>Check your weapons</r>
+      <r>Ready yourselves</r>
+      <r>It`s dangerous here!</r>
+      <r>Is it even worth it?</r>
+      <r>I don`t like it here</r>
+      <r>That`s it!</r>
+      <r>Anyone up for cards maybe?</r>
+      <r>I am so fed up with this!</r>
+      <r m="1">Fuck my life!</r>
+      <r>Dash it all!</r>
+      <r>* whistles *</r>
+      <r>* spits *</r>
+      <r>* swears *</r>
+      <r>* yawns *</r>
+      <r>* bwak bwak *</r>
+      <r>* scratches *</r>
+    </rep>
+    <rep act="attack" id="merc">
+      <r>Attention! Target spotted</r>
+      <r>Open fire!</r>
+      <r>Target, 12 o' clock!</r>
+      <r>Eliminate!</r>
+      <r>We`ve been waiting for you!</r>
+      <r>And here you are!</r>
+      <r>Eliminate the target!</r>
+      <r>Shoot to kill!</r>
+      <r>Let`s finish her up!</r>
+      <r>Nothing personal!</r>
+      <r>This is just business</r>
+      <r>I only need your head</r>
+      <r>Give up!</r>
+      <r>Stay where you are!</r>
+      <r>Don`t run, or it will be more painful</r>
+      <r>Together now!</r>
+      <r>I'm putting a bullet between your eyes!</r>
+      <r>Just fulfilling the contract</r>
+      <r>This is just my job</r>
+      <r>They'll pay nicely for your head!</r>
+    </rep>
+    <rep act="ear" id="merc">
+      <r>What was that?</r>
+      <r>Who`s there?</r>
+      <r>Anyone there?</r>
+      <r>Ah? Wha?</r>
+      <r>I heard a suspicious noise!</r>
+      <r>Hey! Check what`s there</r>
+      <r>You hear that?</r>
+      <r>Where?</r>
+      <r>Are they shooting somewhere?</r>
+      <r>Did something fall?</r>
+      <r>I heard something</r>
+      <r>There, again!</r>
+    </rep>
+    <rep act="find" id="merc">
+      <r>Where is she?</r>
+      <r>Find her!</r>
+      <r>I`ll find you!</r>
+      <r>No use hiding!</r>
+      <r>Where is she?</r>
+      <r>I don`t see her</r>
+      <r>She`s there somewhere</r>
+      <r>I`ve lost visual on a target</r>
+      <r>Where are you hiding?</r>
+      <r>Search up above</r>
+      <r>I will find you anyway</r>
+      <r>Check the down there!</r>
+    </rep>
+    <rep act="vse" id="merc">
+      <r>Can`t find her</r>
+      <r>Ceasing the search</r>
+      <r>Let's separate and find her!</r>
+      <r>There goes our caps...</r>
+      <r>We`ll find her later</r>
+      <r>She won`t get far</r>
+      <r>You can`t run away from us forever</r>
+      <r>Doesn`t matter, we`ll kill somepony else</r>
+    </rep>
+    <rep act="nope" id="merc">
+      <r>My ears tricked me</r>
+      <r>It`s just wind</r>
+      <r>Nothing...</r>
+      <r>I was sure I heard something</r>
+      <r>No, false alarm</r>
+      <r>Must be rats...</r>
+      <r>Yeah, dash it</r>
+    </rep>
+    <rep act="dont" id="merc">
+      <r>But somepony shot!</r>
+      <r>It can`t be, there`s definitely somepony there</r>
+      <r>We should send patrols afterwards</r>
+      <r>Shooting...</r>
+    </rep>
+    <rep act="dam" id="merc">
+      <r>I`m hit!</r>
+      <r>I got a scratch!</r>
+      <r>Come on! That's nothing!</r>
+      <r>I`m hurt!</r>
+      <r>They got me!</r>
+      <r>They are firing at me!</r>
+      <r>AAAAH!!!</r>
+      <r>I`m alright!</r>
+    </rep>
+    <rep act="die" id="merc">
+      <r>Avenge me...</r>
+      <r>Forgive me for everything...</r>
+      <r>I can`t see...</r>
+      <r>Not my day...</r>
+      <r>I failed...</r>
+      <r>I can still fi...</r>
+      <r>* death rattle *</r>
+      <r>* dies *</r>
+    </rep>
+    <rep act="grenade" id="merc">
+      <r>Grenade!</r>
+      <r>Get down!</r>
+      <r>Watch out!</r>
+      <r>It`s a grenade!</r>
+      <r>Oh fuck!</r>
+    </rep>
+    <rep act="tele" id="merc">
+      <r>Look!</r>
+      <r>Watch out!</r>
+      <r>What is there?</r>
+      <r m="1">What the fuck!</r>
+      <r>Danger!</r>
+      <r>Shoot it!</r>
+    </rep>
+    <rep act="neutral" id="ranger" v="0.7">
+      <r>Patrolling, again...</r>
+      <r>I should oil my armor</r>
+      <r>I wonder how soon I get a promotion?</r>
+      <r>Technology is the future</r>
+      <r>Our path is righteous</r>
+      <r>Dumb barbarians!</r>
+      <r>How long are we supposed to be stuck here?</r>
+      <r>Any new orders?</r>
+      <r>Better to change batteries</r>
+      <r>Check your weapons</r>
+      <r>Stay ready</r>
+      <r>We are the best!</r>
+      <r>Making Equestria great again!</r>
+      <r>They cut rations again...</r>
+      <r>Our duty is hard</r>
+      <r>When do we move out?</r>
+      <r>Waiting around is so boring!</r>
+      <r>Let them attack. If they dare</r>
+      <r>Another boring day...</r>
+      <r>* humming *</r>
+      <r>What did our superiors say?</r>
+      <r>No discipline whatsoever...</r>
+      <r>Should change filters...</r>
+      <r>Technology is better than magic</r>
+    </rep>
+    <rep act="attack" id="ranger" v="0.7">
+      <r>Intruder!</r>
+      <r>Open fire!</r>
+      <r>Those Barbarians are attacking!</r>
+      <r>Eliminate target!</r>
+      <r>Shoot her!</r>
+      <r>Shoot!</r>
+      <r>Opening fire!</r>
+      <r>Invaders!</r>
+      <r>Clear the area!</r>
+      <r>Execute order 47</r>
+      <r>Initiate defense protocols</r>
+      <r>Ready rocket launchers</r>
+      <r>No negotiations!</r>
+      <r>Battle protocols initiated</r>
+      <r>Attack!</r>
+    </rep>
+    <rep act="ear" id="ranger" v="0.7">
+      <r>I heard a suspicious noise</r>
+      <r>Enemy nearby!</r>
+      <r>Attention!</r>
+      <r>Battle formation</r>
+      <r>Weapons at the ready</r>
+      <r>I`ll check</r>
+      <r>Get ready!</r>
+      <r>Caution!</r>
+      <r>We are not alone here</r>
+      <r>Did something fall?</r>
+      <r>Halt! Who`s there?</r>
+    </rep>
+    <rep act="find" id="ranger" v="0.7">
+      <r>Pursue the target</r>
+      <r>Search and destroy</r>
+      <r>Target lost</r>
+      <r>Visual contact lost</r>
+      <r>Search the area!</r>
+    </rep>
+    <rep act="vse" id="ranger" v="0.7">
+      <r>Stand down</r>
+      <r>Abort</r>
+      <r>Stay on guard</r>
+      <r>Enemy retreated</r>
+      <r>I got nothing</r>
+    </rep>
+    <rep act="nope" id="ranger" v="0.7">
+      <r>All-clear</r>
+      <r>Continue patrolling</r>
+      <r>False alarm</r>
+      <r>No enemy targets detected</r>
+      <r>No threats detected</r>
+      <r>Nothing unusual</r>
+    </rep>
+    <rep act="dont" id="ranger" v="0.7">
+      <r>Double vigilance!</r>
+      <r>The enemy is near</r>
+      <r>Stay alert everypony!</r>
+      <r>Watch your flanks</r>
+      <r>They must be here somewhere</r>
+    </rep>
+    <rep act="dam" id="ranger" v="0.7">
+      <r>Armor's taking damage!</r>
+      <r>Continue the fight</r>
+      <r>No critical damage</r>
+      <r>A light wound</r>
+      <r>Taking fire!</r>
+      <r>I`m hit!</r>
+      <r>Stable condition</r>
+      <r>I`m alright!</r>
+    </rep>
+    <rep act="die" id="ranger" v="0.7">
+      <r>Is this the end?..</r>
+      <r>Not like this...</r>
+      <r>Bury me with honor...</r>
+      <r>No! Not today...</r>
+      <r>I failed my orders...</r>
+      <r>I failed you all...</r>
+      <r>Argh!...</r>
+      <r>* dies *</r>
+    </rep>
+    <rep act="neutral" id="encl" v="0.8">
+      <r>Long live the Enclave!</r>
+      <r>Pegasi are the superior race</r>
+      <r>Think we'll get leave soon?</r>
+      <r>Truth and power are on our side</r>
+      <r>The surface is such a dump</r>
+      <r>Down there is only dirt and savagery</r>
+      <r>How much longer?</r>
+      <r>Any orders?</r>
+      <r>Armor needs calibration</r>
+      <r>Check your weapons</r>
+      <r>Be ready</r>
+      <r>Fly steady!</r>
+      <r>Can`t wait to get home!</r>
+      <r>I`m dying to get out there</r>
+      <r>The future is ours</r>
+      <r>The command have their reasons</r>
+      <r>Everything should be in order</r>
+      <r>My wings are going numb</r>
+      <r>We`ve been sitting here for a month...</r>
+      <r>When do we fly?</r>
+      <r>I`ll be glad to get out of here already</r>
+    </rep>
+    <rep act="attack" id="encl" v="0.8">
+      <r>Intruder spotted</r>
+      <r>Open fire!</r>
+      <r>The Savages are attacking!</r>
+      <r>Eliminate the target!</r>
+      <r>Shoot to kill!</r>
+      <r>I order you to open fire!</r>
+      <r>Opening fire!</r>
+      <r>Outsiders!</r>
+      <r>Clear the area!</r>
+      <r>Order 56!</r>
+      <r>On it!</r>
+      <r>Attack from the air!</r>
+      <r>No negotiations</r>
+      <r>Fire!</r>
+    </rep>
+    <rep act="ear" id="encl" v="0.8">
+      <r>I heard a suspicious noise</r>
+      <r>Enemy is near!</r>
+      <r>Attention!</r>
+      <r>Attack formation</r>
+      <r>Weapons at the ready</r>
+      <r>Make reconnaissance</r>
+      <r>Get ready!</r>
+      <r>Focus!</r>
+      <r>We are not alone here</r>
+      <r>Did something fall?</r>
+      <r>Halt! Who`s there?</r>
+    </rep>
+    <rep act="find" id="encl" v="0.8">
+      <r>I`m searching</r>
+      <r>Search and destroy</r>
+      <r>Target lost</r>
+      <r>Enemy is out of sight</r>
+      <r>Search from the air!</r>
+    </rep>
+    <rep act="vse" id="encl" v="0.8">
+      <r>Cease pursuit</r>
+      <r>Abort</r>
+      <r>Be on the alert, everypony!</r>
+      <r>Enemy escaped</r>
+      <r>No result</r>
+    </rep>
+    <rep act="nope" id="encl" v="0.8">
+      <r>Standing by</r>
+      <r>Returning to previous task</r>
+      <r>All clear</r>
+      <r>Sensors are silent</r>
+      <r>No threats</r>
+      <r>Nothing important</r>
+    </rep>
+    <rep act="dont" id="encl" v="0.8">
+      <r>Extra vigilance!</r>
+      <r>Enemy is somewhere near</r>
+      <r>Stay alert!</r>
+      <r>Watch your flanks!</r>
+      <r>They must be here</r>
+    </rep>
+    <rep act="dam" id="encl" v="0.8">
+      <r>Armor damaged</r>
+      <r>Can continue fighting</r>
+      <r>Mildly wounded</r>
+      <r>Damage within acceptable limits</r>
+      <r>Taking fire!</r>
+      <r>I`m hit!</r>
+      <r>Condition stable</r>
+      <r>I`m alright!</r>
+    </rep>
+    <rep act="die" id="encl" v="0.8">
+      <r>That`s it...</r>
+      <r>Is this really the end?..</r>
+      <r>Losing height!</r>
+      <r>I`m down!</r>
+      <r>I failed my mission...</r>
+      <r>I failed everypony...</r>
+      <r>Aaaah!...</r>
+      <r>* dies *</r>
+    </rep>
+    <rep act="neutral" id="robobrain">
+      <r>Beep-beep</r>
+      <r>Analyzing environment...</r>
+      <r>File error</r>
+      <r>Next instruction</r>
+      <r>Technical inspection is required</r>
+      <r>Attention, bug detected</r>
+      <r>Read license agreement</r>
+      <r>Out of oil error</r>
+      <r>Executing instruction</r>
+      <r>Beep</r>
+      <r>Proceeding</r>
+      <r>Task finished</r>
+      <r>System update</r>
+      <r>How do you do</r>
+      <r>Good day</r>
+      <r>Patrolling the area</r>
+      <r>Moving on position</r>
+      <r>Enter command</r>
+      <r>Stack overflow</r>
+      <r>Battery charging</r>
+      <r>* beeps *</r>
+      <r>* lights flashing *</r>
+      <r>* buzz *</r>
+      <r>Please, stand back</r>
+      <r>Nice weather, isn`t it</r>
+    </rep>
+    <rep act="attack" id="robobrain">
+      <r>Nothing personal</r>
+      <r>I am programmed to exterminate you</r>
+      <r>Please, lower your weapon and surrender</r>
+      <r>Sorry!</r>
+      <r>I am sorry, I am forced to open fire</r>
+      <r>This is sad</r>
+      <r>Please, stand still and let me eliminate you</r>
+      <r>I am sorry, I am forced to eliminate you</r>
+      <r>Surrender and get eliminated</r>
+      <r>I am authorized to use force</r>
+      <r>Stay calm, you will be taken care of</r>
+      <r>I am afraid, you have to be eliminated</r>
+      <r>My instructions require me to open fire</r>
+      <r>Please do not run away!</r>
+      <r>I do not like it as well</r>
+    </rep>
+    <rep act="ear" id="robobrain">
+      <r>What is it?</r>
+      <r>Intruder?</r>
+      <r>Suspicious sound detected</r>
+      <r>Initializing inspection procedure</r>
+    </rep>
+    <rep act="find" id="robobrain">
+      <r>Be aware that you will be found eventually</r>
+      <r>Please, come out!</r>
+      <r>Where are you, sir?</r>
+      <r>Come out, hooves up</r>
+      <r>Please show yourself</r>
+      <r>I do not see you</r>
+      <r>You are here somewhere, I sense it</r>
+      <r>Initializing searching procedure</r>
+      <r>Where did you go?</r>
+      <r>Please come out so I can eliminate you</r>
+      <r>You will be discovered</r>
+      <r>Do not hide from security</r>
+    </rep>
+    <rep act="vse" id="robobrain">
+      <r>Thank you. Come back soon</r>
+      <r>Why did you have to run?</r>
+      <r>Searching procedure canceled</r>
+      <r>I will eliminate you another time</r>
+      <r>Please come back! The procedure is not complete</r>
+      <r>On standby</r>
+      <r>No one here, so sad</r>
+      <r>Very well, we will meet again</r>
+    </rep>
+    <rep act="dam" id="robobrain">
+      <r>Damage detected</r>
+      <r>Corpus damaged</r>
+      <r>Fuel loss</r>
+      <r>Hostile actions</r>
+      <r>But why?</r>
+      <r>Violence is not the solution</r>
+      <r>beep-beep-beep</r>
+    </rep>
+    <rep act="die" id="robobrain">
+      <r>System err...</r>
+      <r>Warranty is obsol...</r>
+      <r>Runtime error on l...</r>
+      <r>Fatal err...</r>
+      <r>Oh no...</r>
+      <r>What are you d...</r>
+      <r>Please, st...</r>
+      <r>System shutd...</r>
+      <r>Critical err...</r>
+      <r>I am so sor...</r>
+    </rep>
+    <rep act="levit" id="robobrain">
+      <r>Your actions are unacceptable</r>
+      <r>Please, let me go</r>
+      <r>Failed to find appropriate response behavior</r>
+      <r>Magic detected</r>
+    </rep>
+    <rep act="neutral" id="protect">
+      <r>Serve and protect</r>
+      <r>Please, move along</r>
+      <r>Law and order</r>
+      <r>Patrolling mode</r>
+      <r>Object secured</r>
+      <r>Authorization for use of military force</r>
+      <r>Unlawful actions will be punished</r>
+      <r>Antisocial behavior is unacceptable</r>
+      <r>Military affair, do not interfere</r>
+      <r>According to Law</r>
+      <r>Theft is a serious crime</r>
+      <r>The situation is under control</r>
+      <r>No unlawful actions registered</r>
+      <r>Security unit reporting</r>
+      <r>Patrolling perimeter, all clear</r>
+      <r>Serving the Law</r>
+      <r>All quiet</r>
+      <r>Under the law of war</r>
+      <r>Everypony return to your jobs</r>
+      <r>Proceed</r>
+      <r>There is nothing to look at</r>
+      <r>No trespassing</r>
+      <r>Restricted area</r>
+    </rep>
+    <rep act="attack" id="protect">
+      <r>Open fire!</r>
+      <r>Engaging the enemy</r>
+      <r>Trespassers neutralization protocol</r>
+      <r>All civilians, evacuate immediately</r>
+      <r>Don`t worry, the order will be restored shortly</r>
+      <r>Resistance will be considered a crime</r>
+      <r>It is in your best interest</r>
+      <r>Drop your weapons and surrender</r>
+      <r>Fire when ready</r>
+      <r>Drop your weapon!</r>
+      <r>Unauthorized entry</r>
+      <r>Reporting unlawful actions</r>
+      <r>Freeze!</r>
+      <r>Eliminating threat</r>
+      <r>Enemy target acquired</r>
+      <r>You have a right for a quick death</r>
+    </rep>
+    <rep act="ear" id="protect">
+      <r>Initiating searching protocol</r>
+      <r>Unlawful actions alert</r>
+      <r>Unauthorized entry alert</r>
+    </rep>
+    <rep act="find" id="protect">
+      <r>Searching for the enemy</r>
+      <r>Come out and identify yourselves</r>
+      <r>Searching for the violators</r>
+      <r>Do not try to hide</r>
+      <r>Resisting arrest is a crime</r>
+    </rep>
+    <rep act="vse" id="protect">
+      <r>The violators escaped</r>
+      <r>Enemy escaped</r>
+      <r>Search is complete. No enemies found</r>
+      <r>Pursuit protocol complete</r>
+      <r>False alarm</r>
+      <r>Resume patrolling protocol</r>
+      <r>Instruction canceled</r>
+    </rep>
+    <rep act="dam" id="protect">
+      <r>Damage detected</r>
+      <r>Normal system operation is not guaranteed</r>
+      <r>Serious damage</r>
+      <r>System failure</r>
+      <r>Resisting arrest</r>
+    </rep>
+    <rep act="die" id="protect">
+      <r>Impossible to pr...</r>
+      <r>Alarm! Calling security of...</r>
+      <r>Fatal system er...</r>
+      <r>All systems shutting down</r>
+      <r>Safety can not be pr...</r>
+      <r>Failed to secure pi...</r>
+    </rep>
+    <rep act="levit" id="protect">
+      <r>Your actions are illegal</r>
+      <r>Unlawful magical use</r>
+      <r>Order violation</r>
+      <r>Unacceptable behavior</r>
+    </rep>
+    <rep act="neutral" id="gutsy">
+      <r>Another glorious day in Equestrian army!</r>
+      <r>Our enemies shall fall!</r>
+      <r>Huzzah to patriots!</r>
+      <r>Pain is but a weakness leaving the body!</r>
+      <r>Everything to the victory!</r>
+      <r>Equestria shall prevail!</r>
+      <r>Nopony shall break our spirit!</r>
+      <r>Our enemies shall be weeping in despair!</r>
+      <r>I was made to battle!</r>
+      <r>The most glorious profession - protecting our Home!</r>
+      <r>I want You to join Equestrian army!</r>
+      <r>Fear is weakness!</r>
+      <r>Hey there, civilians!</r>
+      <r>First - fight zebras, second - ..., third - profit!</r>
+      <r>Hey YOU! Ten push-ups!</r>
+      <r>At ease!</r>
+      <r>That`s how we do it in the army!</r>
+      <r>Thank you, general, I`m proud to be Equestrian!</r>
+      <r>Avenge our fallen brothers!</r>
+      <r>Equestrians never surrender!</r>
+    </rep>
+    <rep act="attack" id="gutsy">
+      <r>It is a good day to die!</r>
+      <r>Ready to die for your country, stripe-face?</r>
+      <r>Squad, shoot the bastard!</r>
+      <r>Meet Equestrian army!</r>
+      <r>I feel lucky today!</r>
+      <r>It`s getting hot in here!</r>
+      <r>Eat metal, zebra!</r>
+      <r>Lets make them pay, boys!</r>
+      <r>How do you like them apples, striped degenerate?!</r>
+      <r>Leave no survivors!</r>
+      <r>I will use your hide for decoration!</r>
+      <r>Ok, now I`m angry!</r>
+      <r>You will regret you were born, moron!</r>
+      <r>Striped invaders!</r>
+      <r>Let`s make a couple of holes in you!</r>
+      <r>Kill everyone, goddesses will know who`s who</r>
+    </rep>
+    <rep act="ear" id="gutsy">
+      <r>You think I can`t hear you?</r>
+      <r>There is somepony out there, request assistance!</r>
+      <r>Enemies approach. Stay alert!</r>
+      <r>Hold your position boys, I`ll scout</r>
+    </rep>
+    <rep act="find" id="gutsy">
+      <r>Come out and identify yourselves!</r>
+      <r>Are you playing games with me, sucker?!</r>
+      <r>We will find and question you Pinkie Pie style!</r>
+      <r>You think, you can hide from Me?</r>
+      <r>No use hiding from Equestrian army!</r>
+      <r>Typical cowardly zebra maneuver</r>
+      <r>Come over here, zebra scum!</r>
+      <r>Do you fear me? Yeah, you should!</r>
+    </rep>
+    <rep act="vse" id="gutsy">
+      <r>We lost them, boys!</r>
+      <r>The fun has been canceled</r>
+      <r>The battlefield is ours!</r>
+      <r>Those cowards ran away!</r>
+      <r>Cease pursuit. Return to your positions</r>
+      <r>All the better!</r>
+      <r>Cease alarm!</r>
+      <r>They`re hiding, bastards!</r>
+    </rep>
+    <rep act="dam" id="gutsy">
+      <r>Oh, and that`s it???</r>
+      <r>Just a scratch!</r>
+      <r>Ha, my grandma fights better!</r>
+      <r>I hardly even felt that!</r>
+      <r>My armor will hold!</r>
+      <r>You call that a strike?</r>
+      <r>Don`t make me laugh!</r>
+      <r>Is this everything you can?</r>
+      <r>It just makes me more angry!</r>
+    </rep>
+    <rep act="die" id="gutsy">
+      <r>Oh, that`s it then?</r>
+      <r>I see darkness...</r>
+      <r>Tell mother, I did what I could...</r>
+      <r>Please tell my family...</r>
+      <r>This is not the end...</r>
+      <r>Bury me in Equestria...</r>
+      <r>NO! We shall never be defeated...</r>
+      <r>Meet you in hell...</r>
+    </rep>
+    <rep act="levit" id="gutsy">
+      <r>Your cute little magic is nothing to me!</r>
+      <r>A miserable try, creature</r>
+      <r>Can`t capture me!</r>
+      <r>So, what now?</r>
+    </rep>
+    <rep act="attack" id="eqd">
+      <r>Wanna play?</r>
+      <r>Teach me about friendship!</r>
+      <r>Wanna have some fun?</r>
+      <r>At long last...</r>
+      <r>Look what I can!</r>
+      <r>Well, hello!</r>
+      <r>Surprise!</r>
+      <r>It`s party time!</r>
+      <r>Yaaay!!!</r>
+    </rep>
+    <rep act="ear" id="eqd">
+      <r>Oh! What do we have here?</r>
+      <r>We have guests?</r>
+      <r>I can hear yooou!</r>
+    </rep>
+    <rep act="find" id="eqd">
+      <r>Wait! I`m beggin` you!</r>
+      <r>Helloo! Where are yoou?</r>
+      <r>Don`t run!</r>
+      <r>You want to play hide and seek?</r>
+      <r>But we just started!</r>
+      <r>I will find you anyhow</r>
+    </rep>
+    <rep act="vse" id="eqd">
+      <r>But it was so much fun...</r>
+      <r>It is so boring again</r>
+      <r>And all alone again</r>
+      <r>Nopony there...</r>
+    </rep>
+    <rep act="dam" id="eqd">
+      <r>Ouch!</r>
+      <r>It`s tickling!</r>
+      <r>Ouch! What for?</r>
+      <r>Why so rude?</r>
+      <r>Stop it, bully!</r>
+    </rep>
+    <rep act="die" id="eqd">
+      <r>But I thought we were friends</r>
+      <r>That`s ok, I have an extra co...</r>
+      <r>Farewell!</r>
+      <r>Oh nooooes!</r>
+      <r>But, I can`t just leave you!</r>
+      <r>Oh! What a rough day!</r>
+    </rep>
+    <rep act="levit" id="eqd">
+      <r>Oh wow!</r>
+      <r>I can fly!</r>
+      <r>Yeah! Give me a ride!</r>
+      <r>So much fun!</r>
+    </rep>
+    <rep act="neutral" id="sentinel">
+      <r>Arms status: ready</r>
+      <r>Danger level - green</r>
+      <r>Area clear</r>
+      <r>Environment status: warzone</r>
+      <r>Object secured</r>
+      <r>Battery status: charged</r>
+      <r>System status: planned service necessary</r>
+      <r>Civilians trespassing prohibited</r>
+      <r>Current protocol: protection</r>
+      <r>Current protocol: patrolling</r>
+      <r>Analyzing environment... No threats detected</r>
+      <r>System operates in a normal mode</r>
+      <r>Brutal force authorization: OK</r>
+      <r>Proceeding to the next instruction</r>
+    </rep>
+    <rep act="attack" id="sentinel">
+      <r>Danger level - red</r>
+      <r>New target acquired</r>
+      <r>Setting the highest priority target</r>
+      <r>All civilians, evacuate immediately</r>
+      <r>Proceeding to target termination</r>
+      <r>Engaging the enemy</r>
+      <r>All civilians, keep safe distance</r>
+      <r>Alert. Hostiles detected</r>
+      <r>Alert. Enemy detected</r>
+      <r>Initialing enemy termination procedure</r>
+      <r>Target locked. Opening fire</r>
+      <r>Shoot to kill protocol initiated</r>
+      <r>Civilians safety is not guaranteed</r>
+      <r>Defensive systems activated</r>
+      <r>Target identified. Action: destroy</r>
+      <r>Threat removal procedure active</r>
+      <r>All weapons ready</r>
+    </rep>
+    <rep act="ear" id="sentinel">
+      <r>Attention: shooting on sight</r>
+      <r>Initiating surveillance protocol</r>
+      <r>All systems, ready for battle</r>
+    </rep>
+    <rep act="find" id="sentinel">
+      <r>Searching for the highest priority target</r>
+      <r>Danger level - yellow</r>
+      <r>Combing the territory</r>
+      <r>Target lost. Main objective - search and destroy</r>
+      <r>Target is not destroyed. Initiating search protocol</r>
+    </rep>
+    <rep act="vse" id="sentinel">
+      <r>Danger level - green. Over</r>
+      <r>Threats not found</r>
+      <r>Search complete. No enemies found</r>
+      <r>Resume patrolling instructions</r>
+      <r>Reinitializing patrolling behavior</r>
+    </rep>
+    <rep act="dam" id="sentinel">
+      <r>Armor damaged</r>
+      <r>Core systems damaged</r>
+      <r>Normal functioning is possible</r>
+      <r>Hull integrity affected</r>
+      <r>Switching to backup systems</r>
+    </rep>
+    <rep act="die" id="sentinel">
+      <r>Main system stopped fu...</r>
+      <r>Fatal syst...</r>
+      <r>Critical damage le...</r>
+      <r>Program is clo...</r>
+      <r>Calling for reinf...</r>
+    </rep>
+    <rep act="neutral" id="vendor">
+      <r>You name it, we`ve got it!</r>
+      <r>Low prices everyday!</r>
+      <r>Guns, explosives, ammo...</r>
+      <r>Need some ammo, partner?</r>
+      <r>Get all set and ready to go!</r>
+      <r>Hey, this way, partner!</r>
+      <r>The most honest business in the Wasteland!</r>
+      <r>Barter is encouraged!</r>
+      <r>Best merchandise in the Wasteland!</r>
+      <r>Lifetime warranty!</r>
+      <r>Spend your money wisely!</r>
+      <r>Good stuff for sale!</r>
+    </rep>
+    <rep act="vse" id="vendor">
+      <r>Thank you, come back soon!</r>
+      <r>Pleasure to make a deal with you</r>
+      <r>If you need me, I'll' be right here</r>
+      <r>Come back when you have extra caps</r>
+    </rep>
+    <rep act="donttoch" id="vendor">
+      <r>Are you crazy?! Don't touch that!</r>
+    </rep>
+    <rep act="neutral" id="doctor">
+      <r>Tell me where it hurts?</r>
+      <r>Do you need patching up?</r>
+      <r>Healing potions...</r>
+      <r>I`ll get you back on your hooves!</r>
+      <r>Is anypony injured?</r>
+      <r>Do you need a doctor?</r>
+      <r>First class healing magic!</r>
+      <r>Not feeling well?</r>
+      <r>We treat illnesses, wounds, injuries!</r>
+      <r>Absolutely painless procedures!</r>
+      <r>If you die, we`ll return your money!</r>
+      <r>Best medical care in the Wasteland!</r>
+      <r>Where did I leave my scalpel?..</r>
+      <r>Free rabies shots!</r>
+      <r>An apple a day... would be great * sigh *</r>
+      <r>Get a discount on blood transfusion!</r>
+      <r>Treating venereal diseases for half a price</r>
+    </rep>
+    <rep act="vse" id="doctor">
+      <r>Feeling better?</r>
+      <r>All set! Neeext!</r>
+      <r>Be careful next time, OK?</r>
+      <r>Stay healthy!</r>
+      <r>There, there, you`re going to be OK</r>
+      <r>Don`t you worry, it will grow back!</r>
+      <r>Don`t forget to take your medicine!</r>
+    </rep>
+    <rep act="neutral" id="captive">
+      <r>Help...</r>
+      <r>Help me!</r>
+      <r>Let me out!</r>
+      <r>Please, help...</r>
+      <r>Anypony...</r>
+      <r>Please, water...</r>
+      <r>What will happen to me?</r>
+      <r>Water......</r>
+      <r>I need help...</r>
+    </rep>
+    <rep act="vse" id="captive">
+      <r>Thanks!</r>
+      <r>Thank you!</r>
+      <r>You saved me!</r>
+      <r>Goddesses bless you!</r>
+      <r>I`m out of here!</r>
+      <r>I`m free!</r>
+      <r>Let`s get out of here!</r>
+    </rep>
+    <rep act="neutral" id="ponpon" v="0.7">
+      <r>Hi!</r>
+      <r>How are you?</r>
+      <r>Huh!</r>
+      <r>Yeah, we have a problem...</r>
+      <r>Ponies are always talking</r>
+      <r>What`s new?</r>
+      <r>You are not from around here?</r>
+      <r>What are you saying?</r>
+      <r>Somepony always needs help</r>
+      <r>That`s none of my business...</r>
+      <r>Not my problem</r>
+      <r>Here we go again...</r>
+      <r>What`s up?</r>
+      <r>What are we going to do now?</r>
+      <r>I`m so fed up!</r>
+      <r>As usual...</r>
+      <r>Yeah, right...</r>
+      <r>She could have done it herself</r>
+      <r>They are doing it again...</r>
+      <r>That is definitely none of his concern</r>
+      <r>Why me?</r>
+      <r>What is that horrible smell?</r>
+      <r>Ah, it`s you</r>
+      <r>Oh, damn it!</r>
+      <r>You won`t understand!</r>
+      <r>I have much to do!</r>
+      <r>I need some rest</r>
+    </rep>
+    <rep act="neutral" id="stabpon" v="0.8">
+      <r>Time to work</r>
+      <r>This wall needs a mural...</r>
+      <r>Where is my screwdriver?</r>
+      <r>I don`t believe it...</r>
+      <r>Golly...</r>
+      <r>Again?</r>
+      <r>When is your shift?</r>
+      <r>Lunch is on time?</r>
+      <r>I`m sick of it...</r>
+      <r>This place is a goddess-forsaken hole...</r>
+      <r>Wire is sparkling...</r>
+      <r m="1">Another day, fuck it...</r>
+      <r m="1">Fucking life...</r>
+      <r m="1">For Celestia`s sake...</r>
+      <r>What now?</r>
+      <r>Everything is so dull...</r>
+      <r>Same old...</r>
+      <r>Well, yeah...</r>
+      <r>And what did you expect?</r>
+      <r>They are doing that again...</r>
+      <r>It stinks!</r>
+      <r>Why me?</r>
+      <r>Something is dripping on my head</r>
+      <r>Good thing you are here and not outside</r>
+      <r>The experiment was successful</r>
+      <r>There`s mold here again</r>
+      <r>Yes, where did that piece of crap roll?</r>
+      <r>I hate cleaning</r>
+      <r>My PipBuck is buggy</r>
+      <r>Oh yeah!</r>
+      <r>I`m not feeling so well</r>
+    </rep>
+    <rep act="hi" id="stabpon" v="0.8">
+      <r>Oh, @lp, long time no see!</r>
+      <r>It`s been a long time, @lp!</r>
+      <r>@lp, haven`t seen you in a while.</r>
+      <r>How are you, @lp?</r>
+      <r>Hi @lp, you`re back?</r>
+      <r>You are back, @lp?</r>
+      <r>How is it up there?</r>
+      <r>Is it true that outside there are only monsters and radiation?</r>
+      <r>Have you seen monsters?</r>
+      <r>Oh... @lp showed up again...</r>
+      <r>Wow!</r>
+      <r>Just look at you!</r>
+      <r>When was the last time you took shower?</r>
+      <r>Hi!</r>
+      <r>Hello, @lp</r>
+      <r>How are you, @lp?</r>
+      <r>When are you going to return that debt?</r>
+      <r>My PipBuck is broken again, can you fix it?</r>
+      <r>Oh-wei!</r>
+      <r>Does everypony outside walk like this?</r>
+      <r>Do you still need your stuff?</r>
+      <r>I thought you would never return</r>
+      <r>Why, if this isn`t the "Chosen-25" herself... big deal...</r>
+      <r>Did you find out something about Velvet?</r>
+      <r>You are back already?</r>
+      <r>Let`s make a party?</r>
+      <r>Come over, have some moonshine!</r>
+    </rep>
+    <rep act="int" id="sortir" v="0.7">
+      <r>Hey, it`s occupied!</r>
+    </rep>
+    <rep act="neutral" id="child" v="0.7">
+      <r>Hello!</r>
+      <r>What`s up?</r>
+      <r>Wanna play?</r>
+      <r>Pew-pew</r>
+      <r>You`ll die soon...</r>
+      <r>Oh, that`s soo cool!</r>
+      <r>Awesome!</r>
+      <r>Hey, that`s mine!</r>
+      <r>Mine`s better!</r>
+      <r>Pew! Boom</r>
+      <r>La-la-la</r>
+      <r>Hide and seek?</r>
+      <r>What a dummy!</r>
+      <r>Nuh-huh</r>
+      <r>Stay back!</r>
+      <r>Na-na-na</r>
+      <r>Can I have some caps?</r>
+    </rep>
+    <rep act="hi" id="child" v="0.8">
+      <r>Golly!</r>
+      <r>Hey, looky here!</r>
+      <r>I`m not doing anything!</r>
+      <r>It was broken when I found it!</r>
+      <r>Hi, @lp</r>
+      <r>Yay!</r>
+      <r>I`m soo bored...</r>
+      <r>It`s all his fault!</r>
+      <r>I`m just standing here</r>
+    </rep>
+  </replic>

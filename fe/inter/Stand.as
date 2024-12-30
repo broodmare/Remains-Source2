@@ -60,7 +60,7 @@ package fe.inter {
 				but.id.text = i;
 				but.id.visible = false;
 				but.ico.gotoAndStop(i + 2);
-				but.text.text = Res.guiText('stand' + i);
+				but.text.text = Res.txt("g", 'stand' + i);
 				but.y = 25 + 75 * i;
 				but.x = 20;
 				but.stop();
@@ -71,7 +71,7 @@ package fe.inter {
 			
 			vis.butclose.addEventListener(MouseEvent.CLICK,standClose);
 			vis.butclose.id.visible=false;
-			vis.butclose.text.text=Res.guiText('close');
+			vis.butclose.text.text=Res.txt("g", 'close');
 			resizeScreen(1200,800);
 			createWeaponLists(0);
 			createWeaponLists(1);
@@ -457,8 +457,10 @@ package fe.inter {
 				active=false;
 			}
 			
-			vis.visible=active;
+			vis.visible = active;
 			
+
+
 			if (active) {
 				World.w.cur();
 				setButtons();
@@ -470,30 +472,30 @@ package fe.inter {
 						item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 					}
 				}
-				for each (var item:MovieClip in armors) {
-					item.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
-					item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
+				for each (var item1:MovieClip in armors) {
+					item1.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
+					item1.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
-				for each (var item:MovieClip in arts) {
-					item.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
-					item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
+				for each (var item2:MovieClip in arts) {
+					item2.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
+					item2.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
 			}
 			else {
-				for each (var item:MovieClip in weapons) {
-					if (item.hasEventListener(MouseEvent.CLICK)) {
-						item.removeEventListener(MouseEvent.CLICK,itemClick);
-						item.removeEventListener(MouseEvent.MOUSE_OVER,itemOver);
-						item.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
+				for each (var item3:MovieClip in weapons) {
+					if (item3.hasEventListener(MouseEvent.CLICK)) {
+						item3.removeEventListener(MouseEvent.CLICK,itemClick);
+						item3.removeEventListener(MouseEvent.MOUSE_OVER,itemOver);
+						item3.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 					}
 				}
-				for each (var item:MovieClip in armors) {
-					item.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
-					item.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
+				for each (var item4:MovieClip in armors) {
+					item4.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
+					item4.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
-				for each (var item:MovieClip in arts) {
-					item.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
-					item.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
+				for each (var item5:MovieClip in arts) {
+					item5.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
+					item5.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
 			}
 		}

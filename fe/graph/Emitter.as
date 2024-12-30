@@ -1,5 +1,5 @@
-package fe.graph
-{
+package fe.graph {
+
 	import flash.filters.GlowFilter;
 	
 	import fe.*;
@@ -7,14 +7,13 @@ package fe.graph
 	import fe.entities.Part;
 	import fe.loc.Location;
 
-	public class Emitter
-	{
+	public class Emitter {
+
 		public static var arr:Array;
 		public static var kols:Array=[0,0,0,0,0,0];
 		public static var kol1:int=0, kol2:int=0;
 
-		public static function init()
-		{
+		public static function init():void {
 			arr = [];
 			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "parts", "part");
 
@@ -28,10 +27,11 @@ package fe.graph
 		}
 		
 		//заданный эмиттер создаёт частицу
-		public static function emit(nid:String, loc:Location, nx:Number, ny:Number, param:Object=null) {
-			var em:Emitter=arr[nid];
+		public static function emit(nid:String, loc:Location, nx:Number, ny:Number, param:Object=null):void {
+			var em:Emitter = arr[nid];
+			
 			if (em) em.cast(loc,nx,ny,param);
-			else trace ('Нет частицы '+nid);
+			else trace ('Нет частицы ' + nid);
 		}
 		/*
 				Частицы
@@ -52,7 +52,7 @@ package fe.graph
 		
 		public var vis:String;
 		public var visClass:Class;
-		public var sloy=3;
+		public var sloy:int = 3;
 		
 		public var imp:int=0;	//1 - является важной
 		
@@ -81,8 +81,6 @@ package fe.graph
 		public var rdx:Number=0, rdy:Number=0, rdr:Number=0;
 
 		public var velocity:Vector2 = new Vector2();
-		//public var dx:Number = 0;
-		//public var dy:Number = 0;
 		
 		public var rot:int=0;
 		public var brake:Number=1;
@@ -97,11 +95,11 @@ package fe.graph
 		fils['plav']=[new GlowFilter(0x00FF00,1,8,8,1,1)];
 
 		public function Emitter(xml:XML) {
-			for (var i in xml.attributes()) {
-				var att:String=xml.attributes()[i].name();
+			for each (var attr:XML in xml.attributes()) {
+				var att:String = attr.name();
 				if (this.hasOwnProperty(att)) {
-					if (this[att] is Boolean) this[att]=true;
-					else this[att]=xml.attributes()[i];
+					if (this[att] is Boolean) this[att] = true;
+					else this[att] = attr;
 				}
 			}
 			if (vis) visClass=Res.getClass(vis);
@@ -125,7 +123,7 @@ package fe.graph
 			if (kol>50) kol=50;
 			frame=dframe=0;
 			var p:Part;
-			for (var i=1; i<=kol; i++) {
+			for (var i:int = 1; i <= kol; i++) {
 				if (maxkol>0 && kols[maxkol]>=12) return p;
 				p=new Part();
 				p.loc=loc;
@@ -210,10 +208,10 @@ package fe.graph
 					if (ctrans) p.vis.transform.colorTransform=loc.cTransform;
 					if (filter && Emitter.fils[filter]) p.vis.filters=Emitter.fils[filter];
 					if (param && param.celx!=null && param.cely!=null && p.vis.len) {
-						var gx=param.celx-p.coordinates.X;
-						var gy=param.cely-p.coordinates.Y;
-						var gr=Math.sqrt(gx*gx+gy*gy);
-						var gu=Math.atan2(gy,gx)*180/Math.PI;
+						var gx:Number = param.celx-p.coordinates.X;
+						var gy:Number = param.cely-p.coordinates.Y;
+						var gr:Number = Math.sqrt(gx*gx+gy*gy);
+						var gu:Number = Math.atan2(gy,gx)*180/Math.PI;
 						p.vis.len.scaleX=gr/p.vis.len.width;
 						p.vis.len.rotation=gu;
 						if (p.vis.fl) {

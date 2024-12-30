@@ -1,13 +1,13 @@
-package fe.serv
-{
+package fe.serv {
+	
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.loc.Land;
 	import fe.unit.Unit;
 	
-	public class Script
-	{
+	public class Script {
+
 		var land:Land;
 		public var owner:Obj;
 		
@@ -35,7 +35,7 @@ package fe.serv
 			if (land && onTimer) land.scripts.push(this);
 		}
 		
-		function analiz(xml:XML) {
+		private function analiz(xml:XML) {
 			var act:String, targ:String, val:String, t:int=0, n:String='-1', opt1:int=0, opt2:int=0;
 			if (xml.@act.length()) {		//команда
 				act=xml.@act;

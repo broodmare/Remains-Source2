@@ -1,0 +1,492 @@
+<info id="noPoss" st="2">
+    <n>Can do nothing here without instruments</n>
+  </info>
+  <info id="itsEmpty" st="0">
+    <n>It is empty!</n>
+  </info>
+  <info id="unLock" st="2">
+    <n>Lock successfully opened</n>
+  </info>
+  <info id="unLockKey" st="2">
+    <n>Opened with the key</n>
+  </info>
+  <info id="unFixPart" st="2">
+    <n>Consuming material for repair</n>
+  </info>
+  <info id="unRepLock" st="2">
+    <n>Force field is shut down</n>
+  </info>
+  <info id="useRuna" st="2">
+    <n>Burglar`s rune used</n>
+  </info>
+  <info id="useReboot" st="2" v="0.6">
+    <n>Electronic lockpick used</n>
+  </info>
+  <info id="unTermLock" st="2">
+    <n>Accessed</n>
+  </info>
+  <info id="unFixLock" st="2">
+    <n>Fixed</n>
+  </info>
+  <info id="unLockFail" st="3">
+    <n>Failed to open the lock</n>
+  </info>
+  <info id="unLockFailP" st="3">
+    <n>Failed to open the lock. A pin broke</n>
+  </info>
+  <info id="unLockFailA" st="3">
+    <n>Failed to open the lock. Try again</n>
+  </info>
+  <info id="unRepFail" st="3">
+    <n>Failed to disable</n>
+  </info>
+  <info id="unFixFail" st="3">
+    <n>Failed to repair</n>
+  </info>
+  <info id="unTermLockFail" st="3">
+    <n>Hacking failed. Attempts remaining: @1</n>
+  </info>
+  <info id="unTermLockFail1" st="3">
+    <n>Hacking failed. The last attempt left</n>
+  </info>
+  <info id="unTermLockFail2" st="3">
+    <n>Hacking failed. Try again</n>
+  </info>
+  <info id="unLockZhopa" st="3">
+    <n>Lock jammed!</n>
+  </info>
+  <info id="unRepZhopa" st="5">
+    <n>You got electric shock</n>
+  </info>
+  <info id="unLockBlock" st="3">
+    <n>System is blocked!</n>
+  </info>
+  <info id="unFixZhopa" st="3">
+    <n>Broken for good</n>
+  </info>
+  <info id="needSkill" st="3">
+    <n>Required skill @1-@2</n>
+  </info>
+  <info id="remine" st="2">
+    <n>Explosive device disarmed</n>
+  </info>
+  <info id="remineFail" st="3">
+    <n>Failed to disarm an explosive device</n>
+  </info>
+  <info id="remineZhopa" st="5">
+    <n>Bomb exploded!</n>
+  </info>
+  <info id="signalOff" st="2">
+    <n>Alarm turned off</n>
+  </info>
+  <info id="signalFail" st="3">
+    <n>Failed to turn alarm off</n>
+  </info>
+  <info id="signalZhopa" st="3">
+    <n>Alarm goes off!</n>
+  </info>
+  <info id="trapActivate" st="3" v="0.6">
+    <n>Trap activated</n>
+  </info>
+  <info id="trapDisarm" st="2" v="0.6">
+    <n>Trap disarmed</n>
+  </info>
+  <info id="inUse" v="0.6">
+    <n>@1 is in use</n>
+  </info>
+  <info id="takeWeapon">
+    <n>Found weapon @1 (condition @2%)</n>
+  </info>
+  <info id="takeAmmo">
+    <n>Found ammunition @1 (@2 units)</n>
+  </info>
+  <info id="takeMed">
+    <n>Found medicine @1</n>
+  </info>
+  <info id="takeBook">
+    <n>Found a book @1</n>
+  </info>
+  <info id="take">
+    <n>Found: @1</n>
+  </info>
+  <info id="reward" v="0.6">
+    <n>Items found: @1 (@2 pcs)</n>
+  </info>
+  <info id="reward2" v="0.6">
+    <n>Item acquired: @1</n>
+  </info>
+  <info id="withdraw" v="0.6">
+    <n>Items removed: @1 (@2 pcs)</n>
+  </info>
+  <info id="required" st="2" v="0.6">
+    <n>Items required: @1 (@2 pcs)</n>
+  </info>
+  <info id="takeMoney">
+    <n>Found caps (@1 pcs)</n>
+  </info>
+  <info id="heal" st="1">
+    <n>Medicine applied @1</n>
+  </info>
+  <info id="usedheal" st="1">
+    <n>@1 applied</n>
+  </info>
+  <info id="usedfood" st="1">
+    <n>@1 eaten</n>
+  </info>
+  <info id="usedfood2" st="1">
+    <n>@1 drunk</n>
+  </info>
+  <info id="noHeal" st="0">
+    <n>Healing is not required</n>
+  </info>
+  <info id="noMedic" st="0">
+    <n>@1 is not required</n>
+  </info>
+  <info id="noSuitablePot" st="0">
+    <n>No medication</n>
+  </info>
+  <info id="useAntirad" st="0">
+    <n>To clean radiation away use RadAway</n>
+  </info>
+  <info id="usedSpell" st="1">
+    <n>Using spell @1</n>
+  </info>
+  <info id="noClose" st="0">
+    <n>Something is preventing the door from closing!</n>
+  </info>
+  <info id="noChArmor" st="3">
+    <n>You can not change clothes during the fight!</n>
+  </info>
+  <info id="noChArmor2" st="3" v="0.8">
+    <n>You can only change your armor at the base camp</n>
+  </info>
+  <info id="noUseCombat" st="3">
+    <n>You can not use this during the fight!</n>
+  </info>
+  <info id="noAct" st="3">
+    <n>The PipBuck is currently unavailable</n>
+  </info>
+  <info id="repairWeapon" st="2">
+    <n>@1 repaired (condition @2%)</n>
+  </info>
+  <info id="noRepair" st="0">
+    <n>Repair is not required</n>
+  </info>
+  <info id="noRepair2" st="0">
+    <n>This weapon can not be repaired</n>
+  </info>
+  <info id="noAmmo" st="3">
+    <n>Ammunition @1 missing</n>
+  </info>
+  <info id="imprAmmo" st="3" v="0.6">
+    <n>Ammunition @1 cannot be used with this weapon</n>
+  </info>
+  <info id="brokenWeapon" st="3">
+    <n>Weapon @1 is broken</n>
+  </info>
+  <info id="reloadWeapon" st="2">
+    <n>@1 reload</n>
+  </info>
+  <info id="unloadWeapon" st="2" v="0.6">
+    <n>Weapon @1 is empty</n>
+  </info>
+  <info id="perk" st="4">
+    <n>Received perk @1</n>
+  </info>
+  <info id="skill" st="4">
+    <n>Received skill @1</n>
+  </info>
+  <info id="skillPoint" st="4">
+    <n>A skill point received</n>
+  </info>
+  <info id="sneakBonus" st="4">
+    <n>Sneak bonus</n>
+  </info>
+  <info id="skillPoints" st="4">
+    <n>Skill points received: @1</n>
+  </info>
+  <info id="perkPoint" st="4">
+    <n>New perks available</n>
+  </info>
+  <info id="skillUp" st="4">
+    <n>Skill @1 improved</n>
+  </info>
+  <info id="noSkill" st="0">
+    <n>Nothing interesting...</n>
+  </info>
+  <info id="noPerk" st="0">
+    <n>No effect...</n>
+  </info>
+  <info id="endEffect" st="0">
+    <n>Effect @1 passed</n>
+  </info>
+  <info id="endFoodEffect" st="0" v="0.7">
+    <n>Effect from the food has passed</n>
+  </info>
+  <info id="noVisible" st="0">
+    <n>The object is out of sight</n>
+  </info>
+  <info id="loc">
+    <n>Moving to @1</n>
+  </info>
+  <info id="noOutLoc" st="3">
+    <n>You can not leave the room while being attacked</n>
+  </info>
+  <info id="term1Act">
+    <n>Security systems are disabled</n>
+  </info>
+  <info id="term2Act">
+    <n>Locks opened</n>
+  </info>
+  <info id="robocellOff">
+    <n>Robocell powered down</n>
+  </info>
+  <info id="alarmOff">
+    <n>Alarm shut off</n>
+  </info>
+  <info id="noSats" st="3">
+    <n>The weapon is not supported by S.A.T.S.</n>
+  </info>
+  <info id="noOd" st="2">
+    <n>Not enough action points</n>
+  </info>
+  <info id="zoom0">
+    <n>Zoom 100%</n>
+  </info>
+  <info id="zoom1">
+    <n>Zoom 1</n>
+  </info>
+  <info id="zoom2">
+    <n>Zoom 2</n>
+  </info>
+  <info id="noMoney" st="3">
+    <n>Need @1 caps more</n>
+  </info>
+  <info id="noSkillPoint" st="3">
+    <n>Not enough skill points</n>
+  </info>
+  <info id="misfire" st="3">
+    <n>Misfire!</n>
+  </info>
+  <info id="weaponJammed" st="3">
+    <n>Weapon jammed</n>
+  </info>
+  <info id="spellCuld" st="9" v="0.8">
+    <n>Spell recharge - @1 sec</n>
+  </info>
+  <info id="overMana" st="9" v="0.8">
+    <n>Magic burnout</n>
+  </info>
+  <info id="noMana" st="3">
+    <n>Not enough magical power</n>
+  </info>
+  <info id="noSpells" st="3">
+    <n>Unable to use spells</n>
+  </info>
+  <info id="weaponCircuit" st="3">
+    <n>Short-circuit in the battery</n>
+  </info>
+  <info id="weaponSkillLevel" st="3">
+    <n>Your weapon skill is not sufficient</n>
+  </info>
+  <info id="persLevel" st="3">
+    <n>Insufficient character level</n>
+  </info>
+  <info id="upArmor" st="2">
+    <n>Armor enhanced</n>
+  </info>
+  <info id="brokenArmor" st="3">
+    <n>Armor damaged</n>
+  </info>
+  <info id="created" st="2">
+    <n>Weapon @1 created</n>
+  </info>
+  <info id="created2" st="2">
+    <n>Item @1 created. You have total - @2</n>
+  </info>
+  <info id="created3" st="2">
+    <n>@1 created</n>
+  </info>
+  <info id="created4" st="2">
+    <n>Augmentation @1 installed</n>
+  </info>
+  <info id="noMaterials" st="3">
+    <n>Lacking required materials</n>
+  </info>
+  <info id="SaveGame">
+    <n>Game saved</n>
+  </info>
+  <info id="noSaveGame" st="5">
+    <n>Saving Error</n>
+  </info>
+  <info id="noLoadGame" st="5" v="0.7">
+    <n>Loading error</n>
+  </info>
+  <info id="checkPoint">
+    <n>Checkpoint</n>
+  </info>
+  <info id="addTask" st="6">
+    <n>New mission added: @1</n>
+  </info>
+  <info id="addTask2" st="6" v="0.7">
+    <n>Added a new stage of the mission: "@1"</n>
+  </info>
+  <info id="doneTask" st="6">
+    <n>Mission "@1" complete</n>
+  </info>
+  <info id="doneStage" st="6" v="0.7">
+    <n>Stage of the mission "@1" complete</n>
+  </info>
+  <info id="collect" st="6" v="0.7">
+    <n>@1</n>
+  </info>
+  <info id="trauma1" st="5">
+    <n>Attention! A minor injury acquired</n>
+  </info>
+  <info id="trauma2" st="5">
+    <n>Attention! A serious injury acquired. Ask doctor for medical assistance</n>
+  </info>
+  <info id="trauma3" st="5">
+    <n>Attention! Multiple injuries detected. Critical medical condition. Immediate hospitalization is required</n>
+  </info>
+  <info id="trauma4" st="5">
+    <n>Injuries incompatible with life. Rest in peace, @1</n>
+  </info>
+  <info id="blood1" st="5">
+    <n>Attention! A minor blood loss</n>
+  </info>
+  <info id="blood2" st="5">
+    <n>Attention! Serious blood loss</n>
+  </info>
+  <info id="blood3" st="5">
+    <n>Attention! You are dying from blood loss. Critical medical condition</n>
+  </info>
+  <info id="blood4" st="5">
+    <n>User died from blood loss. Rest in peace, @1</n>
+  </info>
+  <info id="tmana2" st="3">
+    <n>You have a small magical exhaustion</n>
+  </info>
+  <info id="tmana3" st="3">
+    <n>Attention! You have a serious magical exhaustion</n>
+  </info>
+  <info id="tmana4" st="5">
+    <n>Attention! Your magical power is depleted. Further magical use is impossible</n>
+  </info>
+  <info id="poison" st="5">
+    <n>Attention! You are poisoned!</n>
+  </info>
+  <info id="cut" st="5">
+    <n>Attention! You are bleeding!</n>
+  </info>
+  <info id="addiction1" st="3" v="0.6">
+    <n>You got slightly addicted to @1</n>
+  </info>
+  <info id="addiction2" st="3" v="0.6">
+    <n>Your addiction to @1 increased to a medium level</n>
+  </info>
+  <info id="addiction3" st="3" v="0.6">
+    <n>You are completely addicted to @1</n>
+  </info>
+  <info id="petCall" v="0.6">
+    <n>Companion summoned: @1</n>
+  </info>
+  <info id="petRecall" v="0.6">
+    <n>Companion dismissed: @1</n>
+  </info>
+  <info id="petNot" st="3" v="0.6">
+    <n>The companion in being reborn</n>
+  </info>
+  <info id="petNot2" st="0" v="0.6">
+    <n>Action unavailable</n>
+  </info>
+  <info id="petNot3" st="3" v="0.7">
+    <n>Robo-owl needs repair</n>
+  </info>
+  <info id="petDie" st="3" v="0.6">
+    <n>@1 dies. Time for revival - @2 seconds</n>
+  </info>
+  <info id="petDie2" st="3" v="0.7">
+    <n>@1 breaks down</n>
+  </info>
+  <info id="petRes" v="0.6">
+    <n>@1 returns to you</n>
+  </info>
+  <info id="noPetCall" st="3" v="0.6">
+    <n>Can`t summon a companion in here</n>
+  </info>
+  <info id="noPetFollow" st="3" v="0.6">
+    <n>Your companion won`t follow you there</n>
+  </info>
+  <info id="closeProb" st="6" v="0.6">
+    <n>Trial "@1" completed</n>
+  </info>
+  <info id="noBase" st="0" v="0.6">
+    <n>This must be done in a safe place</n>
+  </info>
+  <info id="refill" v="0.6">
+    <n>Merchants have new products for sale</n>
+  </info>
+  <info id="trigger" v="0.6">
+    <n>Trigger [@1] = @2</n>
+  </info>
+  <info id="changeDif" st="4" v="0.7">
+    <n>Game difficulty changed: "@1"</n>
+  </info>
+  <info id="needCons" st="3" v="0.7">
+    <n>Item required: @1</n>
+  </info>
+  <info id="usedCons" st="3" v="0.7">
+    <n>Item used: @1</n>
+  </info>
+  <info id="onlyExpl" st="0" v="0.8">
+    <n>Can assign explosives or spells only</n>
+  </info>
+  <info id="onlySpell" st="0" v="0.8">
+    <n>Only for defensive spells</n>
+  </info>
+  <info id="disSpell" st="0" v="0.8">
+    <n>Spell unavailable</n>
+  </info>
+  <info id="disWeapon" st="0" v="0.8">
+    <n>Weapon unavailable</n>
+  </info>
+  <info id="noDrop1" st="0" v="0.8">
+    <n>Do not litter in the base camp, use the storage instead</n>
+  </info>
+  <info id="noDrop2" st="0" v="0.8">
+    <n>It is better to keep this item</n>
+  </info>
+  <info id="noSell" st="3" v="0.8">
+    <n>The merchant does not have enough caps to pay for your goods</n>
+  </info>
+  <info id="fullWeap" st="3" v="0.8">
+    <n>Not enough weapon slots</n>
+  </info>
+  <info id="fullMagic" st="3" v="0.8">
+    <n>Not enough spell slots</n>
+  </info>
+  <info id="itemDestr" st="5" v="0.8">
+    <n>The equipment destroyed (@1, @2pcs)</n>
+  </info>
+  <info id="itemLose" st="3" v="0.8">
+    <n>Items fell out of the bag (@1, @2pcs)</n>
+  </info>
+  <info id="killHero" st="2" v="0.8">
+    <n>Unique enemy defeated: @1</n>
+  </info>
+  <info id="electroOff" v="0.8">
+    <n>Electric fence disabled</n>
+  </info>
+  <info id="electroOn" st="3" v="0.8">
+    <n>Electric fence active</n>
+  </info>
+  <info id="alicornNot" st="0" v="0.8">
+    <n>Not available with Alicorn mode active</n>
+  </info>
+  <info id="noTravel" st="3" v="0.8">
+    <n>You don`t have time for this</n>
+  </info>
+  <info id="overMass" st="3" v="0.81">
+    <n>Overload! Too many items</n>
+  </info>

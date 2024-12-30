@@ -54,8 +54,8 @@ package fe.unit {
 		public static var arrIcos:Array;
 		
 		public var id:String;
-		var mapxml:XML;
-		var uniqName:Boolean = false;
+		private var mapxml:XML;
+		public var uniqName:Boolean = false;
 
 		// Starting coordinates
 		public var begX:Number = -1;
@@ -77,7 +77,7 @@ package fe.unit {
 		public var critHeal:Number = 0.2;
 		public var shithp:Number = 0;
 
-		var t_hp:int;
+		private var t_hp:int;
 		public var mana:Number = 1000;
 		public var maxmana:Number = 1000;
 		public var dmana:Number=1;
@@ -156,7 +156,7 @@ package fe.unit {
 		public var throu:Boolean=false, isJump:Boolean=false, turnX:int=0, turnY:int=0, kray:Boolean=false;
 		public var pumpObj:Interact;	//объект на который наткнулся (для открывание дверей мобами)
 		private var namok_t:int=0;
-		var visDamDY:int=0;
+		public var visDamDY:int=0;
 
 
 		//оружие
@@ -177,9 +177,9 @@ package fe.unit {
 		public var isShoot:Boolean=false;	//устанавливается оружием в true если был выстрел
 
 		//ии
-		var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
-		var aiTTurn:int=10, aiPlav:int=0; 
-		var aiState:int=0;	//состояние ии 
+		public var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
+		public var aiTTurn:int=10, aiPlav:int=0; 
+		public var aiState:int=0;	//состояние ии 
 		protected var aiTCh:int = Calc.intBetween(0, 10);	// [AI state change timer], Changed from range of [0-9] to [0-10]
 		protected var aiSpok:int=0, maxSpok:int=30;		// [0 - calm, 1-9 - excited, maxSpok - attacks the target]
 		//координаты и вид цели
@@ -265,43 +265,45 @@ package fe.unit {
 		
 		//визуальная часть
 		//блиттинг
-		var blitId:String;		//id битмапа
+		public var blitId:String;		//id битмапа
 		public var animState:String='';
 		public var animState2:String='';
 		public var blitData:BitmapData;
-		var blitX:int=120;
-		var blitY:int=120;
-		var blitDX:int=-1;
-		var blitDY:int=-1;
-		var blitRect:Rectangle;
-		var blitPoint:Point;
-		var visData:BitmapData;
-		var visBmp:Bitmap;
+		private var blitX:int=120;
+		private var blitY:int=120;
+		private var blitDX:int=-1;
+		private var blitDY:int=-1;
+		private var blitRect:Rectangle;
+		private var blitPoint:Point;
+		private var visData:BitmapData;
+		public var visBmp:Bitmap;
 		
-		var anims:Object; // Needs to be object - accessed by string. eg. anims["fly"]
+		public var anims:Object; // Needs to be object - accessed by string. eg. anims["fly"]
 		
-		var ctrans:Boolean=true;	//применять цветофильтр
+		public var ctrans:Boolean = true;	//применять цветофильтр
 		//полоска хп
 		public var hpbar:MovieClip;
-		public static var heroTransforms=[new ColorTransform(1,0.8,0.8,1,64,0,0,0),new ColorTransform(0.8,1,1,1,0,32,64,0),new ColorTransform(1,0.8,1,1,32,0,64,0),new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
+		public static var heroTransforms:Array = [new ColorTransform(1,0.8,0.8,1,64,0,0,0),new ColorTransform(0.8,1,1,1,0,32,64,0),new ColorTransform(1,0.8,1,1,32,0,64,0),new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
+		
 		//смертельные эффекты
-		var timerDie:int=0;	//отложенная смерть
-		var burn:Desintegr;
-		var bloodEmit:Emitter;
-		var numbEmit:Emitter;
-		var hitPart:Part, t_hitPart:int=0, hitSumm:Number=0, t_mess:int=0;
+		public var timerDie:int=0;	//отложенная смерть
+		public var burn:Desintegr;
+		public var bloodEmit:Emitter;
+		public var numbEmit:Emitter;
+		public var hitPart:Part, t_hitPart:int=0, hitSumm:Number=0, t_mess:int=0;
+		
 		//звуки
 		public var sndMusic:String;
-		var sndMusicPrior:int=0;
+		private var sndMusicPrior:int=0;
 		public var sndDie:String;
 		public var sndRun:String;
 		public var sndRunDist:Number=800;
 		public var sndRunOn:Boolean=false;
-		var sndVolkoef:Number=1;
+		public var sndVolkoef:Number=1;
 
 		//пложение
-		var mother:Unit;
-		var kolChild:int=0;
+		public var mother:Unit;
+		public var kolChild:int=0;
 
 		public var scrDie:Script;
 		public var scrAlarm:Script;
@@ -312,8 +314,8 @@ package fe.unit {
 		
 		public var xp:int = 0;	//опыт
 		
-		static const robotKZ = 75;
-		static const damWallStun = 45;
+		private static const robotKZ = 75;
+		private static const damWallStun = 45;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -2275,7 +2277,7 @@ package fe.unit {
 				if (armor_hp<=0) {	//разрушение брони
 					armor_hp=0;
 					armor_qual=0;
-					mess=Res.guiText('abr');
+					mess=Res.txt("g", 'abr');
 				}
 			}
 			if (dam<0) {
@@ -2353,7 +2355,7 @@ package fe.unit {
 				}
 				//электрический и эми урон оглушает роботов
 				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) {
-					mess=Res.guiText('kz');
+					mess=Res.txt("g", 'kz');
 					if (stun<robotKZ) stun=robotKZ;
 				}
 				//взрывы вызывают контузию
@@ -2397,7 +2399,7 @@ package fe.unit {
 							if (!mech && opt && !opt.robot && Math.random()<dam/maxhp && sost==1) {
 								stun=bul.weap.dopDamage;
 								if (player && stun<=0) World.w.gui.infoText('stun');
-								if (stun>1) mess=Res.guiText('stun');
+								if (stun>1) mess=Res.txt("g", 'stun');
 							}
 						}
 					}

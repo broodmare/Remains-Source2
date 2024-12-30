@@ -103,11 +103,12 @@ package fe.loc {
 			itemScripts = [];
 
 			for each(var xl in act.xmlland.scr) {
-				if (xl.@eve=='take' && xl.@item.length()) {
+				if (xl.@eve == 'take' && xl.@item.length()) {
 					var scr:Script = new Script(xl, this);
 					itemScripts[xl.@item] = scr;
 				}
 			}
+			
 			createMap();
 		}
 		
@@ -116,306 +117,455 @@ package fe.loc {
 //==============================================================================================================================		
 		
 		//перегнать из xml в массив
-		public function prepareRooms() {
+		public function prepareRooms():void {
 			allRoom = [];
 			for each(var xml in act.allroom.room) {
 				allRoom.push(new Room(xml));
 			}
 		}
 		
-		
-		public function buildRandomLand() {
+		public function buildRandomLand():void {
 			if (World.w.landError) {
-				locs=null;
-				locs[0];
+				locs = null;
+				locs[0]; // Intentionally trigger an error??
 			}
+
 			locs = [];
-			if (act.conf==0 && act.landStage<=0) maxLocY=3;
-			var loc1:Location, loc2:Location;
-			var opt:Object=new Object();
-			for (var i=minLocX; i<maxLocX; i++) {
-				locs[i]=[];
-				for (var j=minLocY; j<maxLocY; j++) {
-					opt.mirror=(Math.random()<0.5);
-					opt.water=null;
-					opt.ramka=null;
-					opt.backform=0;
-					opt.transpFon=false;
-					//Затопленные комнаты
-					if (act.conf==2) {
-						if (j==1) opt.water=17;
-						if (j>1) opt.water=0;
+
+			if (act.conf == 0 && act.landStage <= 0) {
+				maxLocY = 3;
+			}
+
+			var loc1:Location;
+			var loc2:Location;
+			var opt:Object = {};
+
+			// Helper function to configure water based on conf and j
+			function configureWater(conf:int, j:int):void {
+				switch(conf) {
+					case 2:
+						opt.water = (j == 1) ? 17 : (j > 1 ? 0 : null);
+						break;
+					case 5:
+						opt.water = (j == 2) ? 21 : (j > 2 ? 0 : null);
+						break;
+					default:
+						opt.water = null;
+				}
+			}
+
+			// Initialize locations
+			for (var i:int = minLocX; i < maxLocX; i++) {
+				locs[i] = [];
+				for (var j:int = minLocY; j < maxLocY; j++) {
+					// Reset options
+					opt.mirror = (Math.random() < 0.5);
+					opt.water = null;
+					opt.ramka = null;
+					opt.backform = 0;
+					opt.transpFon = false;
+
+					configureWater(act.conf, j);
+
+					// Additional configuration based on conf
+					switch(act.conf) {
+						case 0:	// Basically one big OR statement for all of these
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+						case 5:
+						case 7:
+						case 10:
+						case 11:
+							// Handled in the location creation below
+							break;
+						default:
+							// Default case if needed
+							break;
 					}
-					if (act.conf==5) {
-						if (j==2) opt.water=21;
-						if (j>2) opt.water=0;
-					}
-					//здания
-					if (act.conf==3) {
-						
-					}
-					locs[i][j]=[];
-					if (act.conf==0 && j==0 && !act.visited) { //начальные комнаты
-						opt.mirror=false;
-						loc1=newTipLoc('beg'+i,i,j,opt);	
-					} else if ((act.conf==2 || act.conf==1 || act.conf==5) && j==0 && i==0 && !act.visited) { //начальные комнаты
-						opt.mirror=false;
-						if (act.conf==5) {
-							opt.ramka=3;
-							opt.backform=3;
-							opt.transpFon=true;
+
+					locs[i][j] = [];
+
+					// Determine initial rooms
+					if ((act.conf == 0 && j == 0 && !act.visited) ||
+						((act.conf == 1 || act.conf == 2 || act.conf == 5) && j == 0 && i == 0 && !act.visited)) {
+						opt.mirror = false;
+						if (act.conf == 5) {
+							opt.ramka = 3;
+							opt.backform = 3;
+							opt.transpFon = true;
 						}
-						loc1=newTipLoc('beg0',i,j,opt);	
-					} else if (act.conf==3) { //мейнхеттен
-						opt.transpFon=true;
-						if (i==2) {
-							if (j==0) {
-								opt.ramka=7;
-								loc1=newTipLoc('passroof',i,j,opt);
-							} else {
-								opt.ramka=5;
-								loc1=newRandomLoc(act.landStage,i,j,opt,'pass');
-							}
-							loc1.bezdna=true;
-						} else if (j==0) {
-							opt.ramka=6;
-							loc1=newRandomLoc(act.landStage,i,j,opt,'roof');
-						} else {
-							loc1=newRandomLoc(act.landStage,i,j,opt);
-							if (i>2 && loc1.backwall=='tWindows') loc1.backwall='tWindows2';
-						}
-					} else if (act.conf==4) { //военная база
-						if (i==0) {
-							if (j==0) {
-								if (World.w.game.triggers['mbase_visited'] > 0) {
+						loc1 = newTipLoc('beg' + ((act.conf == 0) ? i : '0'), i, j, opt);
+					}
+					else {
+						switch(act.conf) {
+							case 3: // Manehattan
+								opt.transpFon = true;
+								if (i == 2) {
+									if (j == 0) {
+										opt.ramka = 7;
+										loc1 = newTipLoc('passroof', i, j, opt);
+									}
+									else {
+										opt.ramka = 5;
+										loc1 = newRandomLoc(act.landStage, i, j, opt, 'pass');
+									}
+									loc1.bezdna = true;
+								}
+								else if (j == 0) {
+									opt.ramka = 6;
+									loc1 = newRandomLoc(act.landStage, i, j, opt, 'roof');
+								}
+								else {
+									loc1 = newRandomLoc(act.landStage, i, j, opt);
+									if (i > 2 && loc1.backwall == 'tWindows') {
+										loc1.backwall = 'tWindows2';
+									}
+								}
+								break;
+							case 4: // Military Base
+								if (i == 0) {
+									if (j == 0) {
+										if (World.w.game.triggers['mbase_visited'] > 0) {
+											loc1 = newRandomLoc(0, i, j, opt);
+										}
+										else {
+											opt.mirror = false;
+											opt.ramka = 8;
+											loc1 = newTipLoc('beg0', i, j, opt);
+										}
+									}
+									else {
+										loc1 = newRandomLoc(0, i, j, opt, 'vert');
+									}
+								}
+								else if (i == maxLocX - 1) {
+									if (j == maxLocY - 1) {
+										opt.mirror = false;
+										loc1 = newTipLoc('end', i, j, opt);
+									}
+									else {
+										loc1 = newRandomLoc(0, i, j, opt, 'vert');
+									}
+								}
+								else {
 									loc1 = newRandomLoc(0, i, j, opt);
-								} else {
+								}
+								break;
+							case 5: // Canterlot
+								if (j == 0) {
+									opt.ramka = 3;
+									opt.backform = 3;
+									opt.transpFon = true;
+									loc1 = newRandomLoc(act.landStage, i, j, opt, 'surf');
+									loc1.visMult = 2;
+								}
+								else {
+									loc1 = newRandomLoc(act.landStage, i, j, opt);
+								}
+								loc1.gas = 1;
+								break;
+							case 7: // Bunker
+								if (i == 0) {
+									if (j == 0) {
+										opt.mirror = false;
+										loc1 = newTipLoc('beg1', i, j, opt);
+									}
+									else {
+										loc1 = newRandomLoc(1, i, j, opt, 'vert');
+									}
+								}
+								else if (i == maxLocX - 1) {
+									if (j == maxLocY - 1) {
+										opt.mirror = false;
+										loc1 = newTipLoc('end1', i, j, opt);
+									}
+									else {
+										loc1 = newRandomLoc(1, i, j, opt, 'vert');
+									}
+								}
+								else {
+									loc1 = newRandomLoc(1, i, j, opt);
+								}
+								break;
+							case 10: // Pi Stable
+								opt.home = true;
+								if (i == act.begLocX && j == act.begLocY) {
 									opt.mirror = false;
-									opt.ramka = 8;
 									loc1 = newTipLoc('beg0', i, j, opt);
 								}
-							} else loc1=newRandomLoc(0,i,j,opt,'vert');
-						} else if (i==maxLocX-1) {
-							if (j==maxLocY-1) {
-								opt.mirror=false;
-								loc1=newTipLoc('end',i,j,opt);
-							} else loc1=newRandomLoc(0,i,j,opt,'vert');
-						} else loc1=newRandomLoc(0,i,j,opt);
-					} else if (act.conf==7) { //бункер
-						if (i==0) {
-							if (j==0) {
-								opt.mirror=false;
-								loc1=newTipLoc('beg1',i,j,opt);
-							} else loc1=newRandomLoc(1,i,j,opt,'vert');
-						} else if (i==maxLocX-1) {
-							if (j==maxLocY-1) {
-								opt.mirror=false;
-								loc1=newTipLoc('end1',i,j,opt);
-							} else loc1=newRandomLoc(1,i,j,opt,'vert');
-						} else loc1=newRandomLoc(1,i,j,opt);
-					} else if (act.conf==5) { //кантерлот
-						if (j==0) {
-							opt.ramka=3;
-							opt.backform=3;
-							opt.transpFon=true;
-							loc1=newRandomLoc(act.landStage,i,j,opt,'surf');
-							loc1.visMult=2;
-						} else {
-							loc1=newRandomLoc(act.landStage,i,j,opt);
+								else if (i == 1 && j == 1) {
+									opt.mirror = false;
+									loc1 = newTipLoc('roof', i, j, opt);
+								}
+								else {
+									loc1 = newRandomLoc(10, i, j, opt);
+								}
+								break;
+							case 11: // Attacked Pi Stable
+								opt.atk = true;
+								if (i == 5 && j == 0) {
+									opt.mirror = false;
+									loc1 = newTipLoc('pass', i, j, opt);
+								}
+								else {
+									loc1 = newRandomLoc(act.landStage, i, j, opt);
+								}
+								break;
+							default: // Default case
+								loc1 = newRandomLoc(act.landStage, i, j, opt);
+								break;
 						}
-						loc1.gas=1;
-					} else if (act.conf==10) { //стойло пи
-						opt.home=true;
-						if (i==act.begLocX && j==act.begLocY) {
-							opt.mirror=false;
-							loc1=newTipLoc('beg0',i,j,opt);
-						} else if (i==1 && j==1) {
-							opt.mirror=false;
-							loc1=newTipLoc('roof',i,j,opt);
-						} else {
-							loc1=newRandomLoc(10,i,j,opt);
-						}
-					} else if (act.conf==11) { //стойло пи атакованное
-						opt.atk=true;
-						if (i==5 && j==0) {
-							opt.mirror=false;
-							loc1=newTipLoc('pass',i,j,opt);
-						} else {
-							loc1=newRandomLoc(act.landStage,i,j,opt);
-						}
-					} else {
-						loc1=newRandomLoc(act.landStage,i,j,opt);
 					}
-					//добавить комнату второго слоя
-					locs[i][j][0]=loc1;
-					if (loc1.room.back!=null) {	
-						loc2=null;
+
+					locs[i][j][0] = loc1;
+
+					// Add second layer if applicable
+					if (loc1.room.back != null) {	
+						loc2 = null;
 						for each(var room:Room in allRoom) {
-							if (room.id==loc1.room.back) {
-								loc2=newLoc(room,i,j,1,opt);
-								loc2.tipEnemy=loc1.tipEnemy;
-								locs[i][j][1]=loc2;
-								loc2.noMap=true;
+							if (room.id == loc1.room.back) {
+								loc2 = newLoc(room, i, j, 1, opt);
+								loc2.tipEnemy = loc1.tipEnemy;
+								locs[i][j][1] = loc2;
+								loc2.noMap = true;
 								break;
 							}
 						}
 					}
 				}
 			}
-			//определяем возможные проходы
-			for (i=minLocX; i<maxLocX; i++) {
-				for (j=minLocY; j<maxLocY; j++) {
-					loc1=locs[i][j][0];
-					loc1.pass_r=[];
-					loc1.pass_d=[];
-					if (i<maxLocX-1) {
-						loc2=locs[i+1][j][0];
-						for (var e=0; e<=5; e++) {
-							var hole:int=Math.min(loc1.doors[e],loc2.doors[e+11]);
-							if (hole>=2) {
-								loc1.pass_r.push({n:e, fak:hole});
+
+			// Determine possible passages
+			for (i = minLocX; i < maxLocX; i++) {
+				for (j = minLocY; j < maxLocY; j++) {
+					loc1 = locs[i][j][0];
+					loc1.pass_r = [];
+					loc1.pass_d = [];
+
+					// Right passages
+					if (i < maxLocX - 1) {
+						loc2 = locs[i + 1][j][0];
+						for (var e:int = 0; e <= 5; e++) {
+							var hole:int = Math.min(loc1.doors[e], loc2.doors[e + 11]);
+							if (hole >= 2) {
+								loc1.pass_r.push({n: e, fak: hole});
 							}
 						}
 					}
-					if (j<maxLocY-1) {
-						loc2=locs[i][j+1][0];
-						for (e=6; e<=11; e++) {
-							hole=Math.min(loc1.doors[e],loc2.doors[e+11]);
-							if (hole>=2) {
-								loc1.pass_d.push({n:e, fak:hole});
+
+					// Down passages
+					if (j < maxLocY - 1) {
+						loc2 = locs[i][j + 1][0];
+						for (var f:int = 6; f <= 11; f++) {
+							hole = Math.min(loc1.doors[f], loc2.doors[f + 11]);
+							if (hole >= 2) {
+								loc1.pass_d.push({n: f, fak: hole});
 							}
 						}
 					}
 				}
 			}
-			//проделываем проходы, выбирая случайный из возможных
-			for (i=minLocX; i<maxLocX; i++) {
-				for (j=minLocY; j<maxLocY; j++) {
-					loc1=locs[i][j][0];
-					if (i<maxLocX-1) {
-						if (loc1.pass_r.length) {
-							loc2=locs[i+1][j][0];
-							for (e=0; e<=2; e++) {
-								var n=int(Math.random()*loc1.pass_r.length);
-								loc1.setDoor(loc1.pass_r[n].n,loc1.pass_r[n].fak);
-								loc2.setDoor(loc1.pass_r[n].n+11,loc1.pass_r[n].fak);
-							}
+
+			// Create passages by selecting randomly from possible options
+			for (i = minLocX; i < maxLocX; i++) {
+				for (j = minLocY; j < maxLocY; j++) {
+					loc1 = locs[i][j][0];
+
+					// Right passage
+					if (i < maxLocX - 1 && loc1.pass_r.length > 0) {
+						loc2 = locs[i + 1][j][0];
+						for (e = 0; e <= 2; e++) {
+							var n:int = int(Math.random() * loc1.pass_r.length);
+							var selectedPass:Object = loc1.pass_r[n];
+							loc1.setDoor(selectedPass.n, selectedPass.fak);
+							loc2.setDoor(selectedPass.n + 11, selectedPass.fak);
 						}
 					}
-					if (j<maxLocY-1) {
-						if (loc1.pass_d.length) {
-							loc2=locs[i][j+1][0];
-							n=int(Math.random()*loc1.pass_d.length);
-							loc1.setDoor(loc1.pass_d[n].n,loc1.pass_d[n].fak);
-							loc2.setDoor(loc1.pass_d[n].n+11,loc1.pass_d[n].fak);
-						}
+
+					// Down passage
+					if (j < maxLocY - 1 && loc1.pass_d.length > 0) {
+						loc2 = locs[i][j + 1][0];
+						n = int(Math.random() * loc1.pass_d.length);
+						selectedPass = loc1.pass_d[n];
+						loc1.setDoor(selectedPass.n, selectedPass.fak);
+						loc2.setDoor(selectedPass.n + 11, selectedPass.fak);
 					}
+
 					loc1.mainFrame();
 				}
 			}
-			//лагерь в канализации
-			if (act.conf==2) newRandomProb(locs[3][0][0], act.landStage, true);
-			//лагерь в мейнхеттене
-			if (act.conf==3 && act.landStage>=1) newRandomProb(locs[1][4][0], act.landStage, true);
-			//расставить объекты
-			for (j=maxLocY-1; j>=minLocY; j--) {
-				for (i=minLocX; i<maxLocX; i++) {
-					var isBonuses=true;
-					locs[i][j][0].setObjects();
-					//Создание контрольных точек
-					//Создание точек выхода
-					//конфигурация завода и стойла
-					if (act.conf==0 || act.conf==1) {	
-						if ((i+j)%2==0) {
-							if (j==maxLocY-1) {
-								if (act.conf==0 && act.landStage>=2 || act.conf==1 && act.landStage>=1) {
-									locs[i][j][0].createExit('1');						//Точки выхода на нижнем уровне
-								} else {
-									locs[i][j][0].createExit();						//Точки выхода на нижнем уровне
+
+			// Special camp placements
+			if (act.conf == 2) {
+				newRandomProb(locs[3][0][0], act.landStage, true);
+			}
+			if (act.conf == 3 && act.landStage >= 1) {
+				newRandomProb(locs[1][4][0], act.landStage, true);
+			}
+
+			// Place objects and bonuses
+			for (j = maxLocY - 1; j >= minLocY; j--) {
+				for (i = minLocX; i < maxLocX; i++) {
+					var isBonuses:Boolean = true;
+					loc1 = locs[i][j][0];
+					loc1.setObjects();
+
+					// Configuration based on act.conf
+					switch(act.conf) {
+						case 0:
+						case 1:
+							if ((i + j) % 2 == 0) {
+								if (j == maxLocY - 1) {
+									if ((act.conf == 0 && act.landStage >= 2) || (act.conf == 1 && act.landStage >= 1)) {
+										loc1.createExit('1'); // Exit points on lower level
+									}
+									else {
+										loc1.createExit(); // Default exit points
+									}
 								}
-							} else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);	//контрольные точки 
-						} else {
-							if (j==maxLocY-1) newRandomProb(locs[i][j][0], act.landStage, true);
-							else if (Math.random()<0.3) newRandomProb(locs[i][j][0], act.landStage, false);
-						}
-					}
-					//конфигурация канализации и кантерлота
-					if (act.conf==2 || act.conf==5) {	//Точки выхода крайние справа
-						if (i!=0 || j!=0) locs[i][j][0].createClouds(j);
-						if (act.conf==2 && i==maxLocX-1) locs[i][j][0].createExit();
-						if (act.conf==5 && i==maxLocX-1 && j==0) {
-							if (act.landStage>=1) locs[i][j][0].createExit('1');
-							else locs[i][j][0].createExit();
-						} else if ((i+j)%2==0) {
-							if (act.conf==2 && j<2 && i<maxLocX-1 || act.conf==5 && (i==0 || j>0)) locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
-						}
-						if (act.conf==2 && j>1) locs[i][j][0].petOn=false;
-						if ((j>1 && i<maxLocX-1) || (act.conf==2 && i<maxLocX-1 && Math.random()<0.25)) {
-							if ((i+j)%2==1) newRandomProb(locs[i][j][0], act.landStage, false);
-						}
-					}
-					//конфигурация мейнхеттена
-					if (act.conf==3 && i!=2) {	//Точки выхода на верхнем уровне
-						if ((i+j)%2==0) {
-							if (j==0) {
-								if (act.landStage>=1) locs[i][j][0].createExit('1');
-								else locs[i][j][0].createExit();
-							} else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY); 
-						} else {
-							if (j==0) newRandomProb(locs[i][j][0], act.landStage, true);
-							else if (j!=4 && Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
-						}	
-					}
-					//конфигурация военной базы
-					if (act.conf==4) {
-						if (i==act.begLocX && j==act.begLocY || i==3) {
-							locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
-							if (i==act.begLocX && j==act.begLocY) isBonuses=false;
-						}
-					}
-					//конфигурация бункера
-					if (act.conf==7) {
-						if (i==act.begLocX && j==act.begLocY) {
-							locs[i][j][0].createCheck(true);
-							isBonuses=false;
-						}
-					}
-					//конфигурация базы анклава
-					if (act.conf==6) {
-						opt.transpFon=true;
-						if (j==0) {
-							if (i==0 || i==2) {
-								if (act.landStage>=1) locs[i][j][0].createExit('1');
-								else locs[i][j][0].createExit();
+								else { // Checkpoints
+									loc1.createCheck(i == act.begLocX && j == act.begLocY);
+								}
 							}
-							if (i==1) newRandomProb(locs[i][j][0], act.landStage, true);
-						} else if (i==act.begLocX && j==act.begLocY || i==((7-j)%3)) {
-							locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
-						} else if (Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
+							else {
+								if (j == maxLocY - 1) {
+									newRandomProb(loc1, act.landStage, true);
+								}
+								else if (Math.random() < 0.3) {
+									newRandomProb(loc1, act.landStage, false);
+								}
+							}
+							break;
+
+						case 2:
+						case 5:
+							// Exit points on the far right
+							if (i != 0 || j != 0) {
+								loc1.createClouds(j);
+							}
+
+							if (act.conf == 2 && i == maxLocX - 1) {
+								loc1.createExit();
+							}
+
+							if (act.conf == 5 && i == maxLocX - 1 && j == 0) {
+								loc1.createExit((act.landStage >= 1) ? '1' : undefined);
+							}
+							else if ((i + j) % 2 == 0) {
+								if ((act.conf == 2 && j < 2 && i < maxLocX - 1) || 
+									(act.conf == 5 && (i == 0 || j > 0))) {
+									loc1.createCheck(i == act.begLocX && j == act.begLocY);
+								}
+							}
+
+							if (act.conf == 2 && j > 1) {
+								loc1.petOn = false;
+							}
+
+							if (((j > 1 && i < maxLocX - 1) || 
+								(act.conf == 2 && i < maxLocX - 1 && Math.random() < 0.25)) && 
+								(i + j) % 2 == 1) {
+								newRandomProb(loc1, act.landStage, false);
+							}
+							break;
+
+						case 3: // Mainhattan
+							if (i != 2) {
+								if ((i + j) % 2 == 0) {
+									if (j == 0) {
+										loc1.createExit((act.landStage >= 1) ? '1' : undefined);
+									}
+									else {
+										loc1.createCheck(i == act.begLocX && j == act.begLocY);
+									}
+								}
+								else {
+									if (j == 0) {
+										newRandomProb(loc1, act.landStage, true);
+									}
+									else if (j != 4 && Math.random() < 0.25) {
+										newRandomProb(loc1, act.landStage, false);
+									}
+								}
+							}
+							break;
+
+						case 4: // Military Base
+							if ((i == act.begLocX && j == act.begLocY) || i == 3) {
+								loc1.createCheck(i == act.begLocX && j == act.begLocY);
+								if (i == act.begLocX && j == act.begLocY) {
+									isBonuses = false;
+								}
+							}
+							break;
+
+						case 6: // Enclave Base
+							opt.transpFon = true;
+							if (j == 0) {
+								if (i == 0 || i == 2) {
+									loc1.createExit((act.landStage >= 1) ? '1' : undefined);
+								}
+								if (i == 1) {
+									newRandomProb(loc1, act.landStage, true);
+								}
+							}
+							else if (i == act.begLocX && j == act.begLocY || i == ((7 - j) % 3)) {
+								loc1.createCheck(i == act.begLocX && j == act.begLocY);
+							}
+							else if (Math.random() < 0.25) {
+								newRandomProb(loc1, act.landStage, false);
+							}
+							break;
+
+						case 7: // Bunker
+							if (i == act.begLocX && j == act.begLocY) {
+								loc1.createCheck(true);
+								isBonuses = false;
+							}
+							break;
+
+						case 10:
+						case 11: // Pi Stall and Attacked Pi Stall
+							if (i == act.begLocX && j == act.begLocY) {
+								loc1.createCheck(true);
+							}
+							break;
+
+						default:
+							// Handle other configurations if necessary
+							break;
 					}
-					
-					//конфигурация стойла пи
-					if (act.conf==10 || act.conf==11) {
-						if (i==act.begLocX && j==act.begLocY) {
-							locs[i][j][0].createCheck(true);
-						}
-					}
-					locs[i][j][0].preStep();
+
+					loc1.preStep();
+
+					// Handle second layer location
 					if (locs[i][j][1]) {
-						locs[i][j][1].mainFrame();
-						locs[i][j][1].setObjects();
-						locs[i][j][1].preStep();
+						var loc2Layer:Location = locs[i][j][1];
+						loc2Layer.mainFrame();
+						loc2Layer.setObjects();
+						loc2Layer.preStep();
 					}
-					if (isBonuses) locs[i][j][0].createXpBonuses(5);
-					allXp+=locs[i][j][0].summXp;
+
+					if (isBonuses) {
+						loc1.createXpBonuses(5);
+					}
+
+					allXp += loc1.summXp;
 				}
 			}
+
 			buildProbs();
 		}
 		
 		public function buildSpecifLand() {
-			var i,j,e;
-			var loc1:Location, loc2:Location;
+			var i;
+			var j;
+			var e;
+			var loc1:Location;
+			var loc2:Location;
+
 			//определяем фактические размеры
 			for each(var room:Room in allRoom) {
 				if (room.rx<minLocX) minLocX=room.rx;
@@ -423,17 +573,21 @@ package fe.loc {
 				if (room.rx+1>maxLocX) maxLocX=room.rx+1;
 				if (room.ry+1>maxLocY) maxLocY=room.ry+1;
 			}
+			
 			//создаём массив
 			locs=[];
+			
 			for (i=minLocX; i<maxLocX; i++) {
 				locs[i]=[];
 				for (j=minLocY; j<maxLocY; j++) locs[i][j]=[];
 			}
+			
 			//заполняем массив
 			for each(room in allRoom) {
 				loc1=newLoc(room,room.rx,room.ry,room.rz);
 				locs[room.rx][room.ry][room.rz]=loc1;
 			}
+			
 			//расставить объекты
 			for (i=minLocX; i<maxLocX; i++) {
 				for (j=minLocY; j<maxLocY; j++) {
@@ -444,6 +598,7 @@ package fe.loc {
 					}
 				}
 			}
+			
 			buildProbs();
 		}
 		
@@ -461,8 +616,10 @@ package fe.loc {
 		//создать слой испытаний, вернуть false если слой уже есть
 		public function buildProb(nprob:String):Boolean {
 			if (probs[nprob]!=null) return false;
+			
 			//создать одиночную комнату
 			var arrr:XML=World.w.game.probs['prob'].allroom;
+			
 			for each(var xml in arrr.room) {
 				if (xml.@name == nprob)
 				{
@@ -472,16 +629,20 @@ package fe.loc {
 					loc.noMap = true;
 					
 					var xmll:XML = XMLDataGrabber.getNodeByNameWithAttributeThatMatches("core", "GameData", "Lands", "prob", "id", nprob);
+					
 					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
+					
 					//добавить дверь для выхода
 					if (loc.spawnPoints.length) {
 						loc.createObj('doorout','box',loc.spawnPoints[0].x,loc.spawnPoints[0].y,<obj prob='' uid='begin'/>);
 					}
+					
 					probs[nprob]=[[[loc]]];
 					listLocs.push(loc);
 					break;
 				}
 			}
+			
 			return true;
 		}
 		
@@ -489,20 +650,28 @@ package fe.loc {
 		public function newRandomProb(nloc:Location, maxlevel:int=100, imp:Boolean=false):Boolean {
 			rndRoom=[];
 			var impProb;
+			
 			for each(var xml in act.xmlland.prob) {
 				if (probs[xml.@id]==null && World.w.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) {
 					rndRoom.push(xml.@id);
 					if (xml.@imp.length()) impProb=xml.@id;
 				}
 			}
+			
 			if (rndRoom.length==0) return false;
+			
 			var pid:String, did:String='doorprob';
+			
 			if (imp && impProb) pid=impProb;
 			else if (rndRoom.length==1) pid=rndRoom[0];
 			else pid=rndRoom[Math.floor(Math.random()*rndRoom.length)];
+			
 			if (act.xmlland.prob.(@id==pid).@tip=='2') did='doorboss';
+			
 			if (!nloc.createDoorProb(did,pid)) return false;
+			
 			buildProb(pid);
+			
 			return true;
 		}
 		
@@ -510,16 +679,21 @@ package fe.loc {
 		//создать новую локацию нужного типа, в заданных координатах
 		public function newTipLoc(ntip:String, nx:int, ny:int, opt:Object=null):Location {
 			rndRoom=[];
+			
 			for each(var room in allRoom) {
 				if (room.tip==ntip) rndRoom.push(room); 
 			}
+			
 			if (rndRoom.length>0) {
 				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			} else {
+			}
+			else {
 				room=allRoom[Math.floor(Math.random()*allRoom.length)];
 				trace('нет локации '+ntip);
 			}
+			
 			room.kol--;
+			
 			return newLoc(room, nx, ny, 0, opt);
 		}
 		
@@ -543,7 +717,8 @@ package fe.loc {
 			}
 			if (rndRoom.length>0) {
 				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			} else {
+			}
+			else {
 				//массив всех комнат, подходящих для рандома
 				for each(room in allRoom) {
 					if (room.rnd) {
@@ -561,59 +736,76 @@ package fe.loc {
 		//создать новую локацию по заданному Room-шаблону, в заданных координатах
 		public function newLoc(room:Room, nx:int, ny:int, nz:int=0, opt:Object=null):Location {
 			var loc:Location=new Location(this, room.xml, rnd, opt);
+			
 			loc.biom=act.biom;
 			loc.room=room;
 			loc.landX=nx;
 			loc.landY=ny;
 			loc.landZ=nz;
 			loc.id='loc'+nx+'_'+ny;
-			if (nz>0) loc.id+='_'+nz;
+			
+			if (nz >0 ) loc.id += '_'+nz;
+			
 			loc.unXp=act.xp;
 			
 			//Задать градиент сложности
 			var deep:Number=0;
+			
 			if (rnd) {
 				if (act.conf==0) deep=ny/2;	
 				if (act.conf==1) deep=ny;
 				if (act.conf==2) deep=ny*2.5;
 			}
-			setLocDif(loc,deep);
 			
+			setLocDif(loc, deep);
 			loc.addPlayer(gg);
+			
 			return loc;
 		}
 		
 		//установка сложности локации, в зависимости от уровня персонажа и градиена сложности
-		private function setLocDif(loc:Location, deep:Number):void
-		{
+		private function setLocDif(loc:Location, deep:Number):void {
 			var ml:Number=landDifLevel+deep;
 			loc.locDifLevel=ml;
 			loc.locksLevel=ml*0.7;	//уровень замков
 			loc.mechLevel=ml/4;		//уровень мин и механизмов
 			loc.weaponLevel=1+ml/4;	//уровень попадающегося оружия
 			loc.enemyLevel=ml;		//уровень врагов
+			
 			//влияние настроек сложности
 			if (World.w.game.globalDif<2) loc.earMult*=0.5;
+			
 			if (World.w.game.globalDif>2) loc.enemyLevel+=(World.w.game.globalDif-2)*2;	//уровень врагов в зависимости от сложности
+			
 			//тип врагов
 			if (act.biom==0 && Math.random()<0.25) loc.tipEnemy=1;
+			
 			if (loc.tipEnemy<0) loc.tipEnemy=Math.floor(Math.random()*3);
+			
 			if (act.biom==1) loc.tipEnemy=0;
+			
 			if (act.biom==2 && loc.tipEnemy==1 && Math.random()<ml/20) loc.tipEnemy=3;	//работорговцы
+			
 			if (act.biom==3) {
 				loc.tipEnemy=Math.floor(Math.random()*3)+3;			//4-наёмники, 5-аликорны
 			}
+			
 			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	//зебры
+			
 			if (act.biom==4) loc.tipEnemy=7;	//стальные+роботы
+			
 			if (act.biom==5) {
 				if (Math.random()<0.3) loc.tipEnemy=5;
 				else loc.tipEnemy=8;	//розовые
 			}
+			
 			if (act.biom==6) {
 				if (Math.random()>0.3) loc.tipEnemy=9;	//анклав
 				else loc.tipEnemy=10;//гончие
 			}
+			
 			if (act.biom==11) loc.tipEnemy=11; //анклав и гончие
+			
 			//количество врагов
 			//тип, мин, макс, случайное увеличение
 			if (ml<4) {
@@ -627,7 +819,8 @@ package fe.loc {
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,1,2);
 				}
 				loc.kolEnHid=0;
-			} else if (ml<10) {
+			}
+			else if (ml<10) {
 				loc.setKolEn(1,3,6,2);
 				if (Math.random()<0.15) loc.setKolEn(2,1,1,0);
 				else if (loc.tipEnemy==6) loc.setKolEn(2,2,3,0);
@@ -639,7 +832,8 @@ package fe.loc {
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,2,3);
 				}
 				loc.kolEnHid=Math.floor(Math.random()*3);
-			} else {
+			}
+			else {
 				loc.setKolEn(1,4,6,2);
 				if (Math.random()<0.15) loc.setKolEn(2,1,2,0);
 				else if (loc.tipEnemy==6) loc.setKolEn(2,3,4,0);
@@ -653,9 +847,11 @@ package fe.loc {
 				}
 				loc.kolEnHid=Math.floor(Math.random()*4);
 			}
+			
 			if (loc.tipEnemy==5 || loc.tipEnemy==10) {
 				loc.setKolEn(2,1,3,1);
 			}
+			
 			if (act.biom==11) {
 				loc.setKolEn(2,5,8,0);
 			}
@@ -717,11 +913,13 @@ package fe.loc {
 		// [Move gg to spawn point]
 		public function setGGToSpawnPoint():void {
 			var nx:int=3, ny:int=3;
+			
 			if (loc.spawnPoints.length>0) {
 				var n:int = Math.floor(Math.random()*loc.spawnPoints.length);
 				nx = loc.spawnPoints[n].x;
 				ny = loc.spawnPoints[n].y;
 			}
+			
 			gg.setLocPos((nx+1) * tileX, (ny+1) * tileY - 1);
 			gg.velocity.X = 3;
 			loc.lighting(gg.coordinates.X, gg.coordinates.Y - 75);
@@ -730,6 +928,7 @@ package fe.loc {
 		// [Make the location with current coordinates active]
 		public function ativateLoc():Boolean {
 			var nloc:Location;
+			
 			if (prob!='' && probs[prob]==null)  return false;
 
 			if (prob == '') {
@@ -739,19 +938,25 @@ package fe.loc {
 				nloc = probs[prob][locX][locY][locZ];
 			}
 			
-			if (loc==nloc) return false;
+			if (loc==nloc) {
+				return false;
+			}
+			
 			locN++;
 			prevloc=loc;
 			loc=nloc;
 			gg.inLoc(loc);
 			loc.reactivate(locN);
 			World.w.ativateLoc(loc);
+			
 			if (loc.sky) {
-				gg.isFly=true;
-				gg.stay=false;
+				gg.isFly = true;
+				gg.stay = false;
 				World.w.cam.setZoom(2);
 			}
+			
 			loc.lightAll();
+			
 			return true;
 		}
 		
@@ -767,7 +972,6 @@ package fe.loc {
 			ativateLoc();
 			setGGToSpawnPoint();
 		}
-		
 		
 		// [Transition between locations]
 		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
@@ -799,6 +1003,7 @@ package fe.loc {
 				if (napr==3) return {die:true};
 				return null;
 			}
+			
 			if (prob!='' && (probs[prob][newX]==null || probs[prob][newX][newY]==null || probs[prob][newX][newY][newZ]==null)) {
 				if (napr==3) return {die:true};
 				return null;
@@ -830,7 +1035,10 @@ package fe.loc {
 				break;
 			}
 
-			if (newLoc.collisionUnit(outP.x, outP.y, objectWidth - 4, objectHeight)) return null;
+			if (newLoc.collisionUnit(outP.x, outP.y, objectWidth - 4, objectHeight)) {
+				return null;
+			}
+			
 			loc_t = 150;
 			
 			locX = newX;
@@ -839,24 +1047,28 @@ package fe.loc {
 
 			ativateLoc();
 			gg.setLocPos(outP.x, outP.y);
+			
 			return outP;
 		}
 		
 		// [Go to the nprob test layer, or return to the main layer if the parameter is not specified]
 		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1):void {
-			if (nprob=='') {
-				prob='';
+			if (nprob == "") {
+				prob = "";
 				locX = retLocX;
 				locY = retLocY;
 				locZ = retLocZ;
+				
 				ativateLoc();
+				
 				if (retX==0 && retY==0) setGGToSpawnPoint();
 				else gg.setLocPos(retX,retY);
 			}
 			else {
-				retLocX=locX;
-				retLocY=locY;
-				retLocZ=locZ;
+				retLocX = locX;
+				retLocY = locY;
+				retLocZ = locZ;
+				
 				if (nretX<0 || nretY<0) {
 					retX=gg.coordinates.X;
 					retY=gg.coordinates.Y;
@@ -865,10 +1077,12 @@ package fe.loc {
 					retX=nretX;
 					retY=nretY;
 				}
+				
 				prob = nprob;
 				locX = 0;
 				locY = 0;
 				locZ = 0;
+				
 				if (ativateLoc()) {
 					setGGToSpawnPoint();
 				}
@@ -883,15 +1097,18 @@ package fe.loc {
 		
 		public function gotoCheckPoint():void {
 			var cp:CheckPoint=World.w.pers.currentCP;
+			
 			if (cp==null) {
 				gg.setNull();
 				return;
 			}
+			
 			if (cp.loc.land!=this && currentCP)	{
 				cp=currentCP;
 				World.w.pers.currentCP=currentCP;
 				currentCP.activate();
 			}
+			
 			if (cp.loc.land == this) {
 				locX = cp.loc.landX;
 				locY = cp.loc.landY;
@@ -899,7 +1116,8 @@ package fe.loc {
 				prob = cp.loc.landProb;
 				if (!ativateLoc()) loc.reactivate();
 				gg.setLocPos(cp.coordinates.X, cp.coordinates.Y);
-			} else {
+			}
+			else {
 				locX = act.begLocX;
 				locY = act.begLocY;
 				locZ = 0;
@@ -907,6 +1125,7 @@ package fe.loc {
 				if (!ativateLoc()) loc.reactivate();
 				setGGToSpawnPoint();
 			}
+			
 			gg.velocity.X = 3;
 		}
 		

@@ -13,7 +13,7 @@ package fe.serv {
 
 	public class Interact {
 
-		var inited:Boolean=false;
+		private var inited:Boolean = false;
 		public var owner:Obj;
 		public var loc:Location;
 		public var coordinates:Vector2 = new Vector2();
@@ -78,30 +78,30 @@ package fe.serv {
 		public var area:Area;	//прикреплённая область
 		
 		public var sign:int=0;	//указатель
-		var t_sign:int = 0;
+		private var t_sign:int = 0;
 		
 		public var isMove:Boolean=false;		//есть движение
-		var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	//координаты начальной и конечной точки
-		var t_move:Number=0, dt_move:Number=1;		//таймер
+		private var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	//координаты начальной и конечной точки
+		private var t_move:Number=0, dt_move:Number=1;		//таймер
 		public var tStay:int=10, tMove:int=100;		//время стоять и время двигаться
 		public var moveSt:int=0;					//режим движения 0-стоять, 1-из начала в конец, 2-из конца в начало, 3-из одного конца в другой, 4-непрерывно
-		var moveP:Boolean=false;					//если true, то в этот момент есть движение, если false, то стои
+		private var moveP:Boolean=false;					//если true, то в этот момент есть движение, если false, то стои
 		public var moveCh:SoundChannel;
 		
-		var lootBroken:Boolean=false;
+		private var lootBroken:Boolean=false;
 		
 		public var autoClose:int=0;
-		var t_autoClose:int=0;
-		var t_budilo:int=0;
+		private var t_autoClose:int=0;
+		private var t_budilo:int=0;
 		
 		public var scrAct:Script, scrOpen:Script, scrClose:Script, scrTouch:Script;
 		
 		//изменения состояний, которые сохраняются
-		var saveMine:int = 0;				// 101 - мина обезврежена или бахнула
-		var saveLock:int = 0;				// 101 - открыто, 102 - заклинило
+		private var saveMine:int = 0;				// 101 - мина обезврежена или бахнула
+		private var saveLock:int = 0;				// 101 - открыто, 102 - заклинило
 		public var saveLoot:int = 0;		// [1 - loot received, 2 - loot received, there is critical loot]
-		var saveOpen:int = 0;				// 1 - открыто
-		var saveExpl:int = 0;
+		private var saveOpen:int = 0;				// 1 - открыто
+		private var saveExpl:int = 0;
 		
 		public const maxLockLvl:int = 24;
 		public const maxMechLvl:int = 7;
@@ -350,49 +350,49 @@ package fe.serv {
 		
 		public function update():void {
 			if (userAction && userAction != '') {
-				 actionText = Res.guiText(userAction);
+				 actionText = Res.txt("g", userAction);
 			}
 			else {
 				if (active && action) {
 					switch (action) {
 						case 1:
-							actionText = Res.guiText(open ? 'close' : 'open');
+							actionText = Res.txt("g", open ? 'close' : 'open');
 						break;
 
 						case 2:
-							actionText = Res.guiText('use'); 
+							actionText = Res.txt("g", 'use'); 
 						break;
 
 						case 3:
-							actionText = Res.guiText('remine'); 
+							actionText = Res.txt("g", 'remine'); 
 						break;
 
 						case 4:
-							actionText = Res.guiText('press'); 
+							actionText = Res.txt("g", 'press'); 
 						break;
 
 						case 5:
-							actionText = Res.guiText('shutoff'); 
+							actionText = Res.txt("g", 'shutoff'); 
 						break;
 
 						case 8:
-							actionText = Res.guiText('comein'); 
+							actionText = Res.txt("g", 'comein'); 
 						break;
 
 						case 9:
-							actionText = Res.guiText('exit'); 
+							actionText = Res.txt("g", 'exit'); 
 						break;
 
 						case 10:
-							actionText = Res.guiText('beginm'); 
+							actionText = Res.txt("g", 'beginm'); 
 						break;
 
 						case 11:
-							actionText = Res.guiText('return'); 
+							actionText = Res.txt("g", 'return'); 
 						break;
 
 						case 12:
-							actionText = Res.guiText('see'); 
+							actionText = Res.txt("g", 'see'); 
 						break;
 
 						default:
@@ -405,54 +405,54 @@ package fe.serv {
 			
 			if (mine) {
 				if (mineTip == 6) {
-					stateText="<span class = 'r2'>"+Res.guiText('signal')+"</span>";
-					actionText=Res.guiText('shutoff');
+					stateText="<span class = 'r2'>"+Res.txt("g", 'signal')+"</span>";
+					actionText=Res.txt("g", 'shutoff');
 				}
 				else {
-					if (owner is Box) stateText="<span class = 'warn'>"+Res.guiText('mined')+"</span>";
-					actionText=Res.guiText('remine');
+					if (owner is Box) stateText="<span class = 'warn'>"+Res.txt("g", 'mined')+"</span>";
+					actionText=Res.txt("g", 'remine');
 				}
 				sndAct = 'rem_act';
 			}
 			else if (lock) {
 				switch (lockTip) {
 					case 0:
-						stateText = "<span class = 'r2'>" + Res.guiText('lock') + "</span>";
+						stateText = "<span class = 'r2'>" + Res.txt("g", 'lock') + "</span>";
 						actionText = '';
 						sndAct = 'lock_act';
 					break;
 
 					case 1:
-						if (lock >= 100) stateText = "<span class = 'r3'>" + Res.guiText('zhopa') + "</span>";
-						else stateText = "<span class = 'r2'>" + Res.guiText('lock') + "</span>";
-						actionText = Res.guiText('unlock');
+						if (lock >= 100) stateText = "<span class = 'r3'>" + Res.txt("g", 'zhopa') + "</span>";
+						else stateText = "<span class = 'r2'>" + Res.txt("g", 'lock') + "</span>";
+						actionText = Res.txt("g", 'unlock');
 						sndAct = 'lock_act';
 					break;
 
 					case 2:
-						if (lock >= 100) stateText = "<span class = 'r3'>" + Res.guiText('block') + "</span>";
-						else stateText = "<span class = 'r2'>" + Res.guiText('termlock') + "</span>";
-						actionText = Res.guiText('termunlock'); 
+						if (lock >= 100) stateText = "<span class = 'r3'>" + Res.txt("g", 'block') + "</span>";
+						else stateText = "<span class = 'r2'>" + Res.txt("g", 'termlock') + "</span>";
+						actionText = Res.txt("g", 'termunlock'); 
 						sndAct = 'term_act';
 					break;
 
 					case 4:
-						actionText = Res.guiText('shutoff');
+						actionText = Res.txt("g", 'shutoff');
 						sndAct = 'rem_act';
 					break;
 
 					case 5:
-						actionText = Res.guiText('fixup');
+						actionText = Res.txt("g", 'fixup');
 						sndAct = 'rem_act';
 					break;
 				}
 			}
-			else if (cont == 'empty') stateText = "<span class = 'r0'>" + Res.guiText('empty') + "</span>";
+			else if (cont == 'empty') stateText = "<span class = 'r0'>" + Res.txt("g", 'empty') + "</span>";
 			else stateText = '';
 		}
 		
 		//установить состояние
-		public function setAct(a:String, n:int = 0) {
+		public function setAct(a:String, n:int = 0):void {
 			if (a == 'mine') {
 				if (n < 100) {
 					mine = n;
@@ -477,9 +477,9 @@ package fe.serv {
 				if (n == 102) {
 					saveLock = 102;
 					lock = 100;
-					if (lockTip == 1) stateText="<span class = 'r3'>" + Res.guiText('zhopa') + "</span>";
-					if (lockTip == 2) stateText="<span class = 'r3'>" + Res.guiText('block') + "</span>";
-					if (lockTip == 5) stateText="<span class = 'r3'>" + Res.guiText('broken') + "</span>";
+					if (lockTip == 1) stateText="<span class = 'r3'>" + Res.txt("g", 'zhopa') + "</span>";
+					if (lockTip == 2) stateText="<span class = 'r3'>" + Res.txt("g", 'block') + "</span>";
+					if (lockTip == 5) stateText="<span class = 'r3'>" + Res.txt("g", 'broken') + "</span>";
 				}
 			}
 			if (a=='loot') {
@@ -650,8 +650,8 @@ package fe.serv {
 							}
 						}
 						else if (lockTip==4) {		//отключение с помощью навыка ремонт
-							var lockDam:Number = (lockDam1+Math.random()*lockDam2);
-							lockHP-=lockDam;
+							var lockDam3:Number = (lockDam1+Math.random()*lockDam2);
+							lockHP-=lockDam3;
 							if (lockHP<=0) {		//Удар током
 								discharge();
 								World.w.gui.infoText('unRepZhopa',null,null,false);
@@ -1091,7 +1091,7 @@ package fe.serv {
 		public function move():void {
 			if (isMove && moveSt>0) {
 				var f:Number;
-				var pp=moveP;
+				var pp:Boolean = moveP;
 				if (dt_move<1) dt_move+=0.1;
 				if (t_move>=0 && t_move<tStay) {	//стоим в начале
 					moveP=false;

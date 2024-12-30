@@ -43,8 +43,8 @@ package fe.loc {
 		public var outScript:Script;
 		public var closeScript:Script;
 		
-		var beg_t:int=90;
-		var next_t:int=300;
+		private var beg_t:int = 90;
+		private var next_t:int = 300;
 
 		public function Probation(nxml:XML, nloc:Location) {
 			xml=nxml;
@@ -53,9 +53,9 @@ package fe.loc {
 			nazv=Res.txt('m',id);
 			info='<b>'+nazv+'</b><br><br>'+Res.txt('m',id,1)+'<br>';
 			if (Res.txt('m',id,3)!='') help="<span class = 'r3'>"+Res.txt('m',id,3)+"</span>";
-			if (!loc.levitOn) info+='<br>'+Res.guiText('restr_levit');
-			if (!loc.portOn) info+='<br>'+Res.guiText('restr_port');
-			if (!loc.destroyOn) info+='<br>'+Res.guiText('restr_des');
+			if (!loc.levitOn) info+='<br>'+Res.txt("g", 'restr_levit');
+			if (!loc.portOn) info+='<br>'+Res.txt("g", 'restr_port');
+			if (!loc.destroyOn) info+='<br>'+Res.txt("g", 'restr_des');
 			if (xml.@prize.length()) prizeActive=true;
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@close.length()) isClose=true;
@@ -91,7 +91,7 @@ package fe.loc {
 		}
 		
 		//проверить все условия закрытия
-		function checkAllCon():Boolean {
+		private function checkAllCon():Boolean {
 			for each (var node in xml.con) {
 				if ((node.@tip=='box' || node.@tip.length()==0) && node.@uid.length()) { //проверка боксов на открытость
 					for each (var b:Box in loc.objs) {
@@ -109,7 +109,7 @@ package fe.loc {
 		}
 		
 		//испытание пройдено
-		public function closeProb() {
+		public function closeProb():void {
 			closed=true;
 			active=false;
 			if (World.w.game.triggers['prob_'+id]==null) World.w.game.triggers['prob_'+id]=1;
@@ -131,7 +131,7 @@ package fe.loc {
 		}
 		
 		//войти в комнату
-		public function over() {
+		public function over():void {
 			World.w.gui.messText('', nazv, World.w.gg.coordinates.Y < 300);
 			if (!closed) defaultProb();
 			if (inScript) {
@@ -140,31 +140,33 @@ package fe.loc {
 			if (isClose) activateProb();
 			loc.broom=false;
 		}
+
 		//выйти из комнаты
-		public function out() {
+		public function out():void {
 			if (closed) {
 				loc.openAllPrize();
 				loc.broom=true;
-			} else {
+			}
+			else {
 				if (outScript) outScript.start();
 				if (onWave) resetWave();
 			}
 		}
 		
-		public function showHelp() {
+		public function showHelp():void {
 			var isHelp=(help!='');
-			World.w.gui.informText(info+(isHelp?('<br><br>'+Res.guiText('need_help')):''),isHelp);
+			World.w.gui.informText(info+(isHelp?('<br><br>'+Res.txt("g", 'need_help')):''),isHelp);
 		}
 		
 		//активировать испытание
-		public function activateProb() {
+		public function activateProb():void {
 			if (closed || active || !loc.active) return;
 			active=true;
 			doorsOnOff(-1);
 		}
 		
 		//вернуть испытание в исходное состояние
-		public function defaultProb() {
+		public function defaultProb():void {
 			active=false;
 			doorsOnOff(0);
 			/*for each (var un:Unit in loc.units) {
@@ -174,7 +176,7 @@ package fe.loc {
 		}
 
 		//-1 - отключить все выходы, 0 - отключить все выходы, кроме основного, 1-включить все выходы
-		function doorsOnOff(turn:int) {
+		private function doorsOnOff(turn:int) {
 			for each (var b:Box in loc.objs) {
 				if (b.id=='doorout') {
 					if (!b.vis.visible && turn==1 || b.vis.visible && turn==-1) {
@@ -192,7 +194,7 @@ package fe.loc {
 			}
 		}
 		
-		public function beginWave() {
+		public function beginWave():void {
 			if (onWave) return;
 			doorsOnOff(-1);
 			onWave=true;
@@ -215,7 +217,7 @@ package fe.loc {
 		}
 		
 		//проверка выполняется при убийстве врага
-		public function checkWave(inc:Boolean=false) {
+		public function checkWave(inc:Boolean=false):void {
 			if (inc) killEn++;
 			if (killEn>=kolEn) {
 				checkAllCon();
@@ -224,8 +226,8 @@ package fe.loc {
 			}
 		}
 		
-		function resetWave() {
-			onWave=false;
+		private function resetWave():void {
+			onWave = false;
 			for each (var un:Unit in loc.units) {
 				if (un.wave) {
 					un.sost=4;

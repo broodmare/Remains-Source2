@@ -21,14 +21,14 @@ package fe.inter {
 	*/
 	public class PipPageInv extends PipPage {
 		
-		var assId:String=null;
-		var assArr:Array;
-		var actCurrent:String='';
+		private var assId:String=null;
+		private var assArr:Array;
+		private var actCurrent:String='';
 		
-		var overId:String;
-		var overItem:Object;
-		var over_t:int;
-		var dat:Number=0;
+		private var overId:String;
+		private var overItem:Object;
+		private var over_t:int;
+		private var dat:Number=0;
 		
 		// Constructor
 		public function PipPageInv(npip:PipBuck, npp:String) {
@@ -76,39 +76,62 @@ package fe.inter {
 				for each(var obj in inv.weapons) {
 					if (obj is Weapon) {
 						var w:Weapon=obj as Weapon;
+						
 						if (w.respect==3) continue;
+						
 						if (w.spell && World.w.alicorn) continue;
+						
 						if (w.spell && (inv.items[w.id]==null || inv.items[w.id].kol<=0)) continue;
+						
 						w.setPers(gg, gg.pers);
+						
 						if (w.respect==1) {	//скрытый
 							if (!World.w.hardInv || World.w.loc.base || World.w.loc.train) vis.butOk.visible=true;
 							if (!pip.showHidden) continue;
 						}
+						
 						if (w.alicorn && !World.w.alicorn) continue;
-						var trol:String='w'+w.skill;
-						if (trol=='w7') trol='w6';
+						
+						var trol:String = 'w' + w.skill;
+						
+						if (trol == 'w7') trol = 'w6';
+						
 						if (curTip!='' && curTip!=null && curTip!=trol) continue;	//категория
+						
 						var avail:Boolean=true;
+						
 						if (w.avail()<=-1) avail=false;
-						var n:Object={tip:'w', id:w.id, nazv:w.nazv, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
+						
+						var n:Object = {tip:'w', id:w.id, nazv:w.nazv, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
+						
 						n.sort1=1;
+						
 						if (!avail) n.sort1=2;
+						
 						if (n.respect==1) n.sort1=3;
+						
 						n.sort3=w.lvl;
 						n.sort2=w.skill;
+						
 						if (w.tip==5) n.sort3=w.perslvl;
+						
 						if (w.spell) n.sort3=900+w.perslvl;
+						
 						n.sort3=int(n.sort3);
+						
 						if (w.tip<4) {
 							n.hp=Math.round(w.hp/w.maxhp*100)+'%';
 						}
+						
 						if (w.ammo!='' && w.ammo!=null) {
 							if (inv.ammos[w.ammoBase] == null) {
                                 n.ammo = inv.items[w.ammo].kol + w.hold;
                             } else n.ammo = inv.ammos[w.ammoBase] + w.hold;
 							n.ammotip=(w.tip == 4) ? '' : inv.items[w.ammoBase].nazv;
 						}
+						
 						if (w.alicorn) n.nazv=Res.rainbow(n.nazv);
+						
 						arr.push(n);
 						assArr[n.id]=n;
 					}
@@ -148,7 +171,7 @@ package fe.inter {
 				if (World.w.hardInv) statHead.mass.text=Res.pipText('ii8');
 				for (s in inv.items) {
 					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) continue;
-					var node:XML=inv.items[s].xml;
+					var node = inv.items[s].xml;
 					if (node==null) continue;
 					
 					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) inv.items[s].nov=0;

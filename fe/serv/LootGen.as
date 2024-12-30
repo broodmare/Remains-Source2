@@ -462,7 +462,7 @@ package fe.serv {
 			}
 			else if (cont=='safe') {
 				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
-					for (var k = 0; k<4; k++) {
+					for (var k:int = 0; k < 4; k++) {
 						loc.createUnit('bloat', nx, ny, true);
 					}
 				}

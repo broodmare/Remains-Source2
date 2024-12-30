@@ -166,7 +166,7 @@ package fe.inter {
 				obj.land=Res.txt('m',save.game.land);
 				obj.level=(save.pers.level==null)?'':save.pers.level;
 				obj.date=(save.date==null)?'-------':Res.getDate(save.date);
-				obj.dif=Res.guiText('dif'+save.game.dif);
+				obj.dif=Res.txt("g", 'dif'+save.game.dif);
 				obj.app=save.app;
 				obj.armor=save.invent.cArmorId;
 				if (save.pers.dead) obj.hard=2;
@@ -247,7 +247,7 @@ package fe.inter {
 		//показать окно назначения клавиши
 		private function showSetKey():void {
 			pip.vissetkey.visible=true;
-			pip.vissetkey.txt.htmlText=Res.guiText('setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
+			pip.vissetkey.txt.htmlText=Res.txt("g", 'setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
 			World.w.ctr.requestKey(unshowSetKey);
 		}
 		
@@ -480,11 +480,11 @@ package fe.inter {
 				vis.info.htmlText+=obj.land+'\n';
 				vis.info.htmlText+='\n';
 				vis.info.htmlText+=Res.pipText('diff')+': '+textAsColor('yellow', obj.dif)+'\n';
-				if (obj.hard==1) vis.info.htmlText+=Res.guiText('opt2')+'\n';
+				if (obj.hard==1) vis.info.htmlText+=Res.txt("g", 'opt2')+'\n';
 				if (obj.hard==2) vis.info.htmlText+=textAsColor('red', Res.pipText('dead'))+'\n';
-				if (obj.hardInv==1) vis.info.htmlText+=Res.guiText('opt6')+'\n';
-				if (obj.rndpump==1) vis.info.htmlText+=Res.guiText('opt4')+'\n';
-				if (obj.ver) vis.info.htmlText+=Res.guiText('version')+': '+textAsColor('yellow', obj.ver)+'\n';
+				if (obj.hardInv==1) vis.info.htmlText+=Res.txt("g", 'opt6')+'\n';
+				if (obj.rndpump==1) vis.info.htmlText+=Res.txt("g", 'opt4')+'\n';
+				if (obj.ver) vis.info.htmlText+=Res.txt("g", 'version')+': '+textAsColor('yellow', obj.ver)+'\n';
 				vis.info.htmlText+=Res.pipText('tgame')+': '+textAsColor('yellow', obj.time)+'\n';
 				vis.info.htmlText+=Res.pipText('saved')+': '+textAsColor('yellow', obj.date)+'\n';
 			} 

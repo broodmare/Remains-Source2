@@ -57,15 +57,19 @@ package fe.loc {
 			xml=nxml;
 			id=xml.@id;
 			var pid:String;
+			
 			if (npar==null)	{
 				pid=id;
-			} else {
+			}
+			else {
 				par=npar;
 				sub=true;
 				pid=par.id+id;
 			}
+			
 			state=1;
 			nsub=nnsub;
+			
 			if (loadObj) {
 				state=loadObj.state;
 				est=loadObj.est;
@@ -155,7 +159,7 @@ package fe.loc {
 		}
 		
 		//проверить, если cid совпадает с collect, увеличить est
-		public function inc(cid:String, kol:int=1) {
+		public function inc(cid:String, kol:int=1):void {
 			if (cid==collect) est+=kol;
 			if (!sub) {
 				for each (var q:Quest in subs) {
@@ -165,7 +169,7 @@ package fe.loc {
 		}
 		
 		//выдать начальные предметы
-		public function deposit() {
+		public function deposit():void {
 			if (xml.deposit.length()) {
 				for each(var rew in xml.deposit) {
 					if (rew.@id.length()) {
@@ -231,7 +235,7 @@ package fe.loc {
 		}
 		
 		//проверить на возможность отдать предметы
-		public function chGive(npc:String, us:Boolean=false) {
+		public function chGive(npc:String, us:Boolean=false):Boolean {
 			if (sub) {
 				if (give==null) return false;
 				if (collect) {
@@ -254,7 +258,7 @@ package fe.loc {
 				}
 				return false;
 			} else {
-				var ok=false;
+				var ok:Boolean = false;
 				for each (var q:Quest in subs) {
 					if (q.chGive(npc,us)) ok=true;
 				}
@@ -283,7 +287,7 @@ package fe.loc {
 		}
 		
 		//проверить все этапы, если все закрыты, то закрыть основной
-		public function isClosed() {
+		public function isClosed():void {
 			var cl:Boolean=true;
 			for each (var q:Quest in subs) {
 				if (q.state<2) cl=false;
@@ -291,7 +295,7 @@ package fe.loc {
 			if (cl) close();
 		}
 		
-		public function isResult() {
+		public function isResult():void {
 			for (var i=0; i<subs.length; i++) {
 				if (subs[i].result) {
 					var cl:Boolean=true;
@@ -299,13 +303,12 @@ package fe.loc {
 						if (subs[j].state<2) cl=false;
 					}
 					if (cl) subs[i].invis=false;
-					//trace(subs[i].nazv, cl);
 				}
 			}
 		}
 		
 		//закрыть этап
-		public function closeSub(sid:String) {
+		public function closeSub(sid:String):void {
 			if (state==2 || sid==null || sid=='' || subsId[sid]==null) return;
 			subsId[sid].close();
 			if (result) isResult();
@@ -313,13 +316,13 @@ package fe.loc {
 		}
 		
 		//показать скрытый этап
-		public function showSub(sid:String) {
+		public function showSub(sid:String):void {
 			if (sid==null || sid=='' || subsId[sid]==null) return;
 			subsId[sid].invis=false;
 		}
 		
 		//закрыть квест
-		public function close() {
+		public function close():void {
 			if (state==2) return;
 			state=2;
 			//изъять квестовые вещи

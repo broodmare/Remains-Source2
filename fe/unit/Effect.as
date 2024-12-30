@@ -1,13 +1,13 @@
-package fe.unit
-{
+package fe.unit {
+
 	import flash.geom.ColorTransform;
 	
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 
-	public class Effect
-	{
+	public class Effect {
+
 		public var owner:Unit;
 		public var id:String;
 		public var tip:int=0;
@@ -23,8 +23,8 @@ package fe.unit
 		public var him:int=0;					//эффект вызван химией, 1-положительный, 2-отрицательный																						
 		public var ad:Boolean=false;			//зависимость от химии
 		public var post:String;
-		var postBad:Boolean=false;
-		var del:Array;
+		private var postBad:Boolean=false;
+		private var del:Array;
 		
 		private static var cachedEffects:Object = {};
 
@@ -86,7 +86,7 @@ package fe.unit
 			}
 		}
 		
-		public function setEff() {
+		public function setEff():void {
 			if (del.length) {
 				for each(var ndel in del) {
 					for each(var eff:Effect in owner.effects) {
@@ -140,9 +140,9 @@ package fe.unit
 		}
 		
 		//проверить уровень эффекта
-		public function checkT() {
+		public function checkT():void {
 			if (lvl1>0) {
-				var plvl=lvl;
+				var plvl:int = lvl;
 				lvl=1;
 				if (t/30>lvl1) lvl=2;
 				if (t/30>lvl2) lvl=3;
@@ -154,7 +154,7 @@ package fe.unit
 			}
 		}
 		
-		public function visEff() {
+		public function visEff():void {
 			if (id=='potion_shadow' && player) {
 				(owner as UnitPlayer).f_shad=true;
 				(owner as UnitPlayer).setFilters();
@@ -172,11 +172,12 @@ package fe.unit
 			}
 		}
 		
-		public function unsetEff(onPost:Boolean=true, inf:Boolean=true, setParam:Boolean=true) {
+		public function unsetEff(onPost:Boolean=true, inf:Boolean=true, setParam:Boolean=true):void {
 			if (id=='potion_rat') {
 				if ((owner as UnitPlayer).ratOff()) {
 					if ((owner as UnitPlayer).retPet!='') (owner as UnitPlayer).callPet((owner as UnitPlayer).retPet,true);
-				} else {
+				}
+				else {
 					if (t<20) t=29;
 					return;
 				}
@@ -241,7 +242,7 @@ package fe.unit
 			}
 		}
 		
-		public function secEffect() {
+		public function secEffect():void {
 			checkT();
 			if (id=='burning') {
 				if (owner.isPlav) t=1;
@@ -258,7 +259,7 @@ package fe.unit
 			}
 			if (id=='chemburn') {
 				owner.damage(val,Unit.D_ACID,null,true);
-}
+			}
 			if (id=='drunk' && lvl>3) {
 				owner.damage(val,Unit.D_POISON,null,true);
 				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
@@ -281,14 +282,14 @@ package fe.unit
 			}
 			if (id=='fetter') {
 				Emitter.emit('slow',owner.loc,(owner as UnitPlayer).fetX,(owner as UnitPlayer).fetY);
-							}
+			}
 		}
-		public function stepEffect() {
+
+		public function stepEffect():void {
 			if (id=='burning') {
 				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.boundingBox.bottom);
 			}
-			if (id == 'sacrifice' && t == 5)
-			{
+			if (id == 'sacrifice' && t == 5) {
 				owner.damage(owner.maxhp * 0.5, Unit.D_INSIDE);
 				owner.newPart('blood', 50);
 			}

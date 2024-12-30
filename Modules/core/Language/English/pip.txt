@@ -1,0 +1,1431 @@
+<pip id="main0">
+    <n>Close [TAB]</n>
+  </pip>
+  <pip id="mainclose">
+    <n>Close</n>
+  </pip>
+  <pip id="main1">
+    <n>Status</n>
+  </pip>
+  <pip id="main2">
+    <n>Inventory</n>
+  </pip>
+  <pip id="main3">
+    <n>Information</n>
+  </pip>
+  <pip id="main4">
+    <n>Trading</n>
+  </pip>
+  <pip id="main5">
+    <n>Settings</n>
+  </pip>
+  <pip id="main6">
+    <n>Healing</n>
+  </pip>
+  <pip id="main7">
+    <n>Craft</n>
+  </pip>
+  <pip id="main8" v="0.6">
+    <n>Appearance</n>
+  </pip>
+  <pip id="main9" v="0.8">
+    <n>Storage</n>
+  </pip>
+  <pip id="stat1">
+    <n>Main</n>
+  </pip>
+  <pip id="stat2">
+    <n>Skills</n>
+  </pip>
+  <pip id="stat3">
+    <n>Perks</n>
+  </pip>
+  <pip id="stat4">
+    <n>Effects</n>
+  </pip>
+  <pip id="stat5">
+    <n>Health</n>
+  </pip>
+  <pip id="tgame">
+    <n>Play time</n>
+  </pip>
+  <pip id="name">
+    <n>Name</n>
+  </pip>
+  <pip id="level">
+    <n>Level</n>
+  </pip>
+  <pip id="expa">
+    <n>Experience</n>
+  </pip>
+  <pip id="diff">
+    <n>Difficulty level</n>
+  </pip>
+  <pip id="hp">
+    <n>Health</n>
+    <info>Your general health state. Defines how much damage you can take before you lose consciousness and get returned to a check-point</info>
+  </pip>
+  <pip id="rad">
+    <n>Radiation</n>
+    <info>Magical radiation sickness decreases your maximum health. RadAway can purge your body of radiation</info>
+  </pip>
+  <pip id="poison">
+    <n>Poison</n>
+    <info>Amount of poison in your body. You will lose health until you take an antidote or the poison wears off</info>
+  </pip>
+  <pip id="cut">
+    <n>Open wounds</n>
+    <info>Open wounds will cause you to lose blood. Use bandages to stop the bleeding immediately</info>
+  </pip>
+  <pip id="organism" v="0.71">
+    <n>Body condition</n>
+    <info>Shows your internal injuries separately for the head, body, and limbs. These cannot be treated with potions, you will need to be treated by a qualified medic or attempt it yourself with special equipment. Head injuries cause penalties for accuracy, attack speed, and magic. Bodily injuries reduce endurance, and leg injuries reduce movement speed. Serious blood loss will lower your ability to inflict or resist damage</info>
+  </pip>
+  <pip id="head">
+    <n>Head</n>
+  </pip>
+  <pip id="statHead0">
+    <n>Condition: perfect</n>
+    <info>Your head is okay</info>
+  </pip>
+  <pip id="statHead1">
+    <n>Condition: OK</n>
+    <info>Diagnosis: a few bruises, scratches, and a black eye - nothing to worry about</info>
+  </pip>
+  <pip id="statHead2">
+    <n>Condition: poor</n>
+    <info>Diagnosis: a mild traumatic brain injury. May cause headaches, dizziness, and nausea. It`s hard to think straight, use magic or aim weapons. Consult your doctor at the first opportunity</info>
+  </pip>
+  <pip id="statHead3">
+    <n>Condition: horrible</n>
+    <info>Diagnosis: a severe skull and brain injury. Sight and hearing are impaired. Possible memory loss, hallucinations, and inadequate reaction to external stimuli. Your magic limit is decreased. Visit a doctor as soon as possible</info>
+  </pip>
+  <pip id="tors">
+    <n>Body</n>
+  </pip>
+  <pip id="statTors0">
+    <n>Condition: perfect</n>
+    <info>You feel in good shape and ready to go</info>
+  </pip>
+  <pip id="statTors1">
+    <n>Condition: OK</n>
+    <info>Diagnosis: a couple of bruises, burns, and cuts. Please, be more careful</info>
+  </pip>
+  <pip id="statTors2">
+    <n>Condition: poor</n>
+    <info>Diagnosis: one or more ribs are broken, some inner organs are slightly damaged. Your stamina is decreased and it hurts to breathe. A good rest in bed is recommended</info>
+  </pip>
+  <pip id="statTors3">
+    <n>Condition: horrible</n>
+    <info>Diagnosis: multiple rib fractures, internal injuries, and spinal damage suspected. Danger of heart failure. A life threatening condition, immediate hospitalization is required</info>
+  </pip>
+  <pip id="legs">
+    <n>Legs</n>
+  </pip>
+  <pip id="statLegs0">
+    <n>Condition: perfect</n>
+    <info>All four hooves look and feel alright</info>
+  </pip>
+  <pip id="statLegs1">
+    <n>Condition: OK</n>
+    <info>Diagnosis: a sprained ankle. Don`t step on this leg at least for a week</info>
+  </pip>
+  <pip id="statLegs2">
+    <n>Condition: poor</n>
+    <info>Diagnosis: at least one leg is broken, others have multiple minor injuries. You can not run and jump as usual in this condition. It is highly recommended mending the fractured bone, fix the broken leg and avoid any physical activities</info>
+  </pip>
+  <pip id="statLegs3">
+    <n>Condition: horrible</n>
+    <info>Diagnosis: multiple open fractures, ankle ligament rupture, a knee shot. It is surprising that you can move at all in this condition. Immediately contact the nearest Ministry of Peace office</info>
+  </pip>
+  <pip id="blood">
+    <n>Blood</n>
+  </pip>
+  <pip id="statBlood0">
+    <n>Condition: perfect</n>
+    <info>No blood loss</info>
+  </pip>
+  <pip id="statBlood1">
+    <n>Condition: OK</n>
+    <info>Diagnosis: you've lost some blood. A good rest and staying well fed will bring you back to normal</info>
+  </pip>
+  <pip id="statBlood2">
+    <n>Condition: poor</n>
+    <info>Diagnosis: you are suffering from severe blood loss. Possible muscle weakness, dizziness, loss of consciousness. A blood transfusion is recommended</info>
+  </pip>
+  <pip id="statBlood3">
+    <n>Condition: horrible</n>
+    <info>Diagnosis: you are dying from blood loss. Take immediate action before it`s too late</info>
+  </pip>
+  <pip id="mana">
+    <n>Mana</n>
+  </pip>
+  <pip id="statMana0">
+    <n>Condition: perfect</n>
+    <info>Your magical reserves are full</info>
+  </pip>
+  <pip id="statMana1">
+    <n>Condition: OK</n>
+    <info>You are tired a little, but your magical reserves are still okay</info>
+  </pip>
+  <pip id="statMana2">
+    <n>Condition: poor</n>
+    <info>You need some magical restoration. Spells and telekinesis are starting to become weaker</info>
+  </pip>
+  <pip id="statMana3">
+    <n>Condition: horrible</n>
+    <info>You are nearing your limit for magic. Spells and telekinesis are considerably weakened. Avoid using any further magic to avoid magical burnout</info>
+  </pip>
+  <pip id="statMana4">
+    <n>Condition: burnout</n>
+    <info>Your magical power is depleted. You can hardly even lift small objects, let alone cast any spells</info>
+  </pip>
+  <pip id="ad0" v="0.6">
+    <n>no addiction</n>
+  </pip>
+  <pip id="ad1" v="0.6">
+    <n>1st level - weak</n>
+  </pip>
+  <pip id="ad2" v="0.6">
+    <n>2nd level - medium</n>
+  </pip>
+  <pip id="ad3" v="0.6">
+    <n>3rd level - strong</n>
+  </pip>
+  <pip id="drunk1" v="0.7">
+    <n>tipsy</n>
+  </pip>
+  <pip id="drunk2" v="0.7">
+    <n>Drunk</n>
+  </pip>
+  <pip id="drunk3" v="0.7">
+    <n>Wasted</n>
+  </pip>
+  <pip id="drunk4" v="0.7">
+    <n>Alcohol poisoning</n>
+  </pip>
+  <pip id="alcohol" v="0.7">
+    <n>Alcohol</n>
+  </pip>
+  <pip id="hp">
+    <n>HP</n>
+  </pip>
+  <pip id="skin">
+    <n>Damage threshold</n>
+    <info>This value is subtracted from any damage you take (except from prolonged effects - for example, it doesn`t reduce damage from burning, bleeding, or poisoning)</info>
+  </pip>
+  <pip id="armor">
+    <n>Armor</n>
+    <info>The amount of physical damage you take is reduced by the armor level value, that is if bullet or melee weapon hit your armor. Affects only physical damage such as from bullets, melee weapons, blast damage etc. It depends on type and condition of the armor you wear. If condition drops below 50%, protection decreases</info>
+  </pip>
+  <pip id="marmor">
+    <n>Magic protection</n>
+    <info>This value is subtracted from magical energy damage, if magical beam or projectile hit armor. Affects only magical damage such as fire, laser, plasma, lightning, or frost. Depends on type and condition of the armor you wear. If condition drops below 50%, protection decreases</info>
+  </pip>
+  <pip id="aqual">
+    <n>Armor coverage</n>
+    <info>This value shows how much body surface is covered by your armor. In fact, it is a probability that a strike or a projectile hits your armor, in which case damage will be reduced, or an uncovered body part. Depends on type and condition of the armor you wear. If condition drops below 50%, protection decreases</info>
+  </pip>
+  <pip id="dexter" v="0.8">
+    <n>Evasion</n>
+    <info>The higher this indicator is, the more often enemies with long-range weapons miss. The probability of hitting you is divided by the absolute value of evasion. For example, the "+ 20%" bonus means that the probability of hitting you is divided by 1.2</info>
+  </pip>
+  <pip id="sneak" v="0.8">
+    <n>Stealth</n>
+    <info>The higher this indicator is, the harder it is for enemies to see you, and the more time it will take them to discover you. Does not account for a StealthBuck effect</info>
+  </pip>
+  <pip id="allresist">
+    <n>External damage resistance</n>
+    <info v="0.8">Only for external damage. Does not protect against health reduction resulting from poisoning, bleeding and other internal damage</info>
+  </pip>
+  <pip id="alldamage" v="0.71">
+    <n>Damage</n>
+    <info>Bonus to damage from any of your weapons and spells</info>
+  </pip>
+  <pip id="meleedamage" v="0.71">
+    <n>Melee weapons damage</n>
+    <info>Bonus to damage of melee weapons</info>
+  </pip>
+  <pip id="spelldamage" v="0.71">
+    <n>Combat spells damage</n>
+    <info>Bonus to damage of combat spells</info>
+  </pip>
+  <pip id="gunsdamage" v="0.8">
+    <n>Ranged weapons damage</n>
+    <info>Bonus to damage of firearms and magical energy weapons</info>
+  </pip>
+  <pip id="bullet">
+    <n>Kinetic resistance</n>
+  </pip>
+  <pip id="blade">
+    <n>Sharp resistance</n>
+  </pip>
+  <pip id="phis">
+    <n>Bashing resistance</n>
+  </pip>
+  <pip id="fang">
+    <n>Animal damage resistance</n>
+  </pip>
+  <pip id="expl">
+    <n>Explosives resistance</n>
+  </pip>
+  <pip id="fire">
+    <n>Fire resistance</n>
+  </pip>
+  <pip id="laser">
+    <n>Laser resistance</n>
+  </pip>
+  <pip id="plasma">
+    <n>Plasma resistance</n>
+  </pip>
+  <pip id="acid">
+    <n>Acid resistance</n>
+  </pip>
+  <pip id="spark">
+    <n>Electrical resistance</n>
+  </pip>
+  <pip id="crio">
+    <n>Frost resistance</n>
+  </pip>
+  <pip id="pink" v="0.7">
+    <n>Pink Cloud resistance</n>
+  </pip>
+  <pip id="necro" v="0.7">
+    <n>Black magic resistance</n>
+  </pip>
+  <pip id="venom">
+    <n>Toxic gas resistance</n>
+  </pip>
+  <pip id="respoison">
+    <n>Poison resistance</n>
+    <info>Suppresses health damage caused by venom in your body</info>
+  </pip>
+  <pip id="radx">
+    <n>Radiation resistance</n>
+  </pip>
+  <pip id="resbleeding">
+    <n>Bleeding resistance</n>
+    <info>Suppresses blood loss caused by open wounds</info>
+  </pip>
+  <pip id="reput" v="0.6">
+    <n>Reputation</n>
+    <info v="0.8">Reputation depends on the number of side quests you complete. Completing simple missions gives one point of reputation, more important, hard and dangerous ones give more</info>
+  </pip>
+  <pip id="reput0" v="0.8">
+    <n>Mysterious stranger</n>
+  </pip>
+  <pip id="reput1" v="0.8">
+    <n>Novice mercenary</n>
+  </pip>
+  <pip id="reput2" v="0.8">
+    <n>Reliable partner</n>
+  </pip>
+  <pip id="reput3" v="0.8">
+    <n>Trusty assistant</n>
+  </pip>
+  <pip id="reput4" v="0.8">
+    <n>Close friend</n>
+  </pip>
+  <pip id="reputmax" v="0.8">
+    <n>Inspiring example</n>
+  </pip>
+  <pip id="skillpoint">
+    <n>Available skill points</n>
+  </pip>
+  <pip id="perkpoint">
+    <n>Available perks</n>
+  </pip>
+  <pip id="requir">
+    <n>Requirements:</n>
+  </pip>
+  <pip id="accept">
+    <n>Accept</n>
+  </pip>
+  <pip id="choose">
+    <n>Choose</n>
+  </pip>
+  <pip id="chooseperk">
+    <n>Choose a new perk</n>
+  </pip>
+  <pip id="default">
+    <n>Default</n>
+  </pip>
+  <pip id="or">
+    <n>or</n>
+  </pip>
+  <pip id="is1">
+    <n>skill</n>
+  </pip>
+  <pip id="is2">
+    <n>level</n>
+  </pip>
+  <pip id="is3">
+    <n>effect</n>
+  </pip>
+  <pip id="is4">
+    <n>time, s</n>
+  </pip>
+  <pip id="is5">
+    <n>perk</n>
+  </pip>
+  <pip id="inv1">
+    <n>Weapons</n>
+  </pip>
+  <pip id="inv2">
+    <n>Armor</n>
+  </pip>
+  <pip id="inv3">
+    <n>Equipment</n>
+  </pip>
+  <pip id="inv4">
+    <n>Other</n>
+  </pip>
+  <pip id="inv5">
+    <n>Ammunition</n>
+  </pip>
+  <pip id="ii1">
+    <n>key</n>
+  </pip>
+  <pip id="ii2">
+    <n>name</n>
+  </pip>
+  <pip id="ii3">
+    <n>condition</n>
+  </pip>
+  <pip id="ii4">
+    <n>ammunition</n>
+  </pip>
+  <pip id="ii5">
+    <n>quantity</n>
+  </pip>
+  <pip id="ii6">
+    <n>category</n>
+  </pip>
+  <pip id="ii7" v="0.8">
+    <n>you / storage</n>
+  </pip>
+  <pip id="ii8" v="0.8">
+    <n>weight</n>
+  </pip>
+  <pip id="ii9" v="0.8">
+    <n>total</n>
+  </pip>
+  <pip id="a">
+    <n>A ammunition</n>
+  </pip>
+  <pip id="e">
+    <n>E explosive</n>
+  </pip>
+  <pip id="spell">
+    <n>A Spell</n>
+  </pip>
+  <pip id="med">
+    <n>B Medicine</n>
+  </pip>
+  <pip id="pot">
+    <n>C Magic potion</n>
+  </pip>
+  <pip id="him">
+    <n>D Chemicals</n>
+  </pip>
+  <pip id="equip">
+    <n>E Equipment</n>
+  </pip>
+  <pip id="book">
+    <n>F Book</n>
+  </pip>
+  <pip id="sphera">
+    <n>F Memory orb</n>
+  </pip>
+  <pip id="note" v="0.7">
+    <n>G Document</n>
+  </pip>
+  <pip id="valuables">
+    <n>F Valuables</n>
+  </pip>
+  <pip id="spec" v="0.7">
+    <n>I Quest item</n>
+  </pip>
+  <pip id="instr">
+    <n>G Tool</n>
+  </pip>
+  <pip id="art">
+    <n>H Artifact</n>
+  </pip>
+  <pip id="stuff">
+    <n>J Stuff</n>
+  </pip>
+  <pip id="compp">
+    <n>J Ingredient</n>
+  </pip>
+  <pip id="scheme">
+    <n>K Scheme</n>
+  </pip>
+  <pip id="impl">
+    <n>L Augmentation</n>
+  </pip>
+  <pip id="key" v="0.7">
+    <n>M Key</n>
+  </pip>
+  <pip id="food">
+    <n>N Food</n>
+  </pip>
+  <pip id="paint" v="0.6">
+    <n>Q paint</n>
+    <info>Paint sprays are used to paint on the walls. Hold Shift to use airbrush mode. Attention! All murals are temporary and disappear when you leave the room</info>
+  </pip>
+  <pip id="money">
+    <n>Z Money</n>
+  </pip>
+  <pip id="new">
+    <n>new</n>
+  </pip>
+  <pip id="weapontip">
+    <n>Type of weapon</n>
+  </pip>
+  <pip id="weapontip1">
+    <n>melee</n>
+  </pip>
+  <pip id="weapontip2">
+    <n>firearms</n>
+  </pip>
+  <pip id="weapontip3">
+    <n>hoofmade</n>
+  </pip>
+  <pip id="weapontip4">
+    <n>magical energy</n>
+  </pip>
+  <pip id="weapontip5">
+    <n>explosive</n>
+  </pip>
+  <pip id="weapontip6">
+    <n>spell</n>
+  </pip>
+  <pip id="weapontip7" v="0.8">
+    <n>telekinesis</n>
+  </pip>
+  <pip id="lvl">
+    <n>Required skill level</n>
+  </pip>
+  <pip id="islvl">
+    <n>Your skill</n>
+  </pip>
+  <pip id="perslvl">
+    <n>Required level</n>
+  </pip>
+  <pip id="isperslvl">
+    <n>Your level</n>
+  </pip>
+  <pip id="damage">
+    <n>Damage</n>
+  </pip>
+  <pip id="aps">
+    <n>Attacks per second</n>
+  </pip>
+  <pip id="dps">
+    <n>Damage per second</n>
+  </pip>
+  <pip id="prec">
+    <n>Range</n>
+  </pip>
+  <pip id="holder">
+    <n>Magazine</n>
+  </pip>
+  <pip id="rashod">
+    <n>per shot</n>
+  </pip>
+  <pip id="effect">
+    <n>Efficiency</n>
+  </pip>
+  <pip id="dmana">
+    <n>Magic consumption per attack</n>
+  </pip>
+  <pip id="dmana2" v="0.8">
+    <n>Magical consumption per use</n>
+  </pip>
+  <pip id="culd" v="0.8">
+    <n>Recharge time</n>
+  </pip>
+  <pip id="tipdam">
+    <n>Damage type</n>
+  </pip>
+  <pip id="tipdam0">
+    <n>bullet</n>
+  </pip>
+  <pip id="tipdam1">
+    <n>blade</n>
+  </pip>
+  <pip id="critch">
+    <n>Critical damage chance</n>
+  </pip>
+  <pip id="tipdam2">
+    <n>blunt</n>
+  </pip>
+  <pip id="tipdam3">
+    <n>fire</n>
+  </pip>
+  <pip id="tipdam4">
+    <n>explosion</n>
+  </pip>
+  <pip id="tipdam5">
+    <n>laser</n>
+  </pip>
+  <pip id="tipdam6">
+    <n>plasma</n>
+  </pip>
+  <pip id="tipdam7">
+    <n>poison</n>
+  </pip>
+  <pip id="tipdam8">
+    <n>EMP</n>
+  </pip>
+  <pip id="tipdam9">
+    <n>lightning</n>
+  </pip>
+  <pip id="tipdam10">
+    <n>acid</n>
+  </pip>
+  <pip id="tipdam11">
+    <n>freezing</n>
+  </pip>
+  <pip id="tipdam14" v="0.8">
+    <n>natural weapon</n>
+  </pip>
+  <pip id="tipdam15">
+    <n>balefire</n>
+  </pip>
+  <pip id="tipdam16" v="0.6">
+    <n>death</n>
+  </pip>
+  <pip id="tipdam18" v="0.6">
+    <n>stellar blaze</n>
+  </pip>
+  <pip id="tipdam19" v="0.7">
+    <n>pink cloud</n>
+  </pip>
+  <pip id="tipdam101" v="0.8">
+    <n>kindness rays</n>
+  </pip>
+  <pip id="ap">
+    <n>AP</n>
+  </pip>
+  <pip id="ammomod_0" v="0.6">
+    <n>standard</n>
+  </pip>
+  <pip id="ammomod_1" v="0.6">
+    <n>armor-piercing</n>
+    <info>Armor-piercing round has a special bullet with a hard core and a soft shell, designed to pierce armor. However, such bullets are less effective against unprotected targets and have a weaker stopping action</info>
+  </pip>
+  <pip id="ammomod_2" v="0.6">
+    <n>expansive</n>
+    <info>The expansive round has a bullet that deforms when it hits a soft environment, such as the victim`s body. Such bullets do more damage to unprotected targets, but at the same time they are very bad at penetrating armor, therefore are not effective against armored targets</info>
+  </pip>
+  <pip id="ammomod_3" v="0.6">
+    <n>armor-piercing</n>
+    <info>In this ammo, 5 arrow-shaped bullets are used instead of the usual shot, good for penetrating armor but having a weaker stopping action</info>
+  </pip>
+  <pip id="ammomod_4" v="0.6">
+    <n>incendiary</n>
+    <info>A cartridge that has a magically enchanted bullet that ignites the target on impact</info>
+  </pip>
+  <pip id="ammomod_5" v="0.6">
+    <n>magical</n>
+    <info>A cartridge that allows exploiting magical energy technologies with common firearms. When hitting a target, the bullet from such a cartridge turns into a ball of plasma</info>
+  </pip>
+  <pip id="ammomod_6" v="0.6">
+    <n>enhanced charge</n>
+    <info>A battery of increased power. Improves damage and gives weapons ability to burn armor, but a weapon wears out more quickly</info>
+  </pip>
+  <pip id="ammomod_7" v="0.6">
+    <n>optimized</n>
+    <info>Fuel with special additives that significantly increase the combustion temperature</info>
+  </pip>
+  <pip id="ammomod_8" v="0.6">
+    <n>plasma</n>
+    <info>A more powerful magical energy model of grenades</info>
+  </pip>
+  <pip id="ammomod_9" v="0.6">
+    <n>pulse</n>
+    <info>Grenade with a pulse charge, designed for fighting against robots</info>
+  </pip>
+  <pip id="am_1" v="0.6">
+    <n>ap</n>
+  </pip>
+  <pip id="am_2" v="0.6">
+    <n>exp</n>
+  </pip>
+  <pip id="am_3" v="0.6">
+    <n>ap</n>
+  </pip>
+  <pip id="am_4" v="0.6">
+    <n>inc</n>
+  </pip>
+  <pip id="am_5" v="0.6">
+    <n>mag</n>
+  </pip>
+  <pip id="am_6" v="0.6">
+    <n>enh</n>
+  </pip>
+  <pip id="am_7" v="0.6">
+    <n>opt</n>
+  </pip>
+  <pip id="am_8" v="0.6">
+    <n>plas</n>
+  </pip>
+  <pip id="am_9" v="0.6">
+    <n>pul</n>
+  </pip>
+  <pip id="tarmor" v="0.6">
+    <n>Target armor</n>
+  </pip>
+  <pip id="det" v="0.6">
+    <n>Weapon wear out x2</n>
+  </pip>
+  <pip id="rapid">
+    <n>attack speed</n>
+  </pip>
+  <pip id="precision">
+    <n>accuracy</n>
+  </pip>
+  <pip id="distance">
+    <n>to range and damage</n>
+  </pip>
+  <pip id="weapnouse">
+    <n>can not use</n>
+  </pip>
+  <pip id="expldam">
+    <n>area damage</n>
+  </pip>
+  <pip id="destroy">
+    <n>Destroys walls</n>
+  </pip>
+  <pip id="pier">
+    <n>Armor piercing</n>
+  </pip>
+  <pip id="healhp">
+    <n>Restore health</n>
+  </pip>
+  <pip id="healmana">
+    <n>Restore magical power</n>
+  </pip>
+  <pip id="healorgan">
+    <n>Restore body part</n>
+  </pip>
+  <pip id="healorgans">
+    <n>Heal any injuries</n>
+  </pip>
+  <pip id="healblood">
+    <n>Reduce blood loss</n>
+  </pip>
+  <pip id="healrad">
+    <n>Cleanse radiation</n>
+  </pip>
+  <pip id="healpoison">
+    <n>Cleanse poison</n>
+  </pip>
+  <pip id="healcut">
+    <n>Treat wounds</n>
+  </pip>
+  <pip id="healpotions">
+    <n>Healing potions available</n>
+  </pip>
+  <pip id="refperk">
+    <n>Perk</n>
+  </pip>
+  <pip id="refeff" v="0.7">
+    <n>Effect</n>
+  </pip>
+  <pip id="showhidden">
+    <n>Show hidden</n>
+  </pip>
+  <pip id="retr" v="0.6">
+    <n>Return to base</n>
+  </pip>
+  <pip id="info1">
+    <n>Map</n>
+  </pip>
+  <pip id="info2">
+    <n>Quests</n>
+  </pip>
+  <pip id="info3">
+    <n>World</n>
+  </pip>
+  <pip id="info4" v="0.6">
+    <n>Notes</n>
+  </pip>
+  <pip id="info5" v="0.6">
+    <n>Enemies</n>
+  </pip>
+  <pip id="trans">
+    <n>Travel</n>
+  </pip>
+  <pip id="recLevel">
+    <n>Recommended level:</n>
+  </pip>
+  <pip id="wrLevel" v="0.7">
+    <n>You are below the recommended level for this area</n>
+  </pip>
+  <pip id="alltask" v="0.7">
+    <n>Take all tasks</n>
+  </pip>
+  <pip id="kolProb" v="0.71">
+    <n>Trials complete</n>
+  </pip>
+  <pip id="done">
+    <n>done</n>
+  </pip>
+  <pip id="nn" v="0.6">
+    <n>more</n>
+  </pip>
+  <pip id="frag" v="0.6">
+    <n>destroyed</n>
+  </pip>
+  <pip id="vend1">
+    <n>Buy</n>
+  </pip>
+  <pip id="vend2">
+    <n>Sell</n>
+  </pip>
+  <pip id="vend3">
+    <n>Repair</n>
+  </pip>
+  <pip id="vend4" v="0.6">
+    <n>Quests</n>
+  </pip>
+  <pip id="iv1">
+    <n>goods</n>
+  </pip>
+  <pip id="iv2">
+    <n>condition</n>
+  </pip>
+  <pip id="iv3">
+    <n>price</n>
+  </pip>
+  <pip id="iv4">
+    <n>available</n>
+  </pip>
+  <pip id="iv5">
+    <n>repair cost</n>
+  </pip>
+  <pip id="iv6" v="0.7">
+    <n>you have</n>
+  </pip>
+  <pip id="caps">
+    <n>Caps</n>
+  </pip>
+  <pip id="est">
+    <n>yes</n>
+  </pip>
+  <pip id="sel">
+    <n>selected</n>
+  </pip>
+  <pip id="ost">
+    <n>left</n>
+  </pip>
+  <pip id="transaction">
+    <n>Accept</n>
+  </pip>
+  <pip id="sellall" v="0.8">
+    <n>Sell valuables</n>
+  </pip>
+  <pip id="medprice">
+    <n>Healing cost</n>
+  </pip>
+  <pip id="med1">
+    <n>Healing</n>
+  </pip>
+  <pip id="med2">
+    <n>Trading</n>
+  </pip>
+  <pip id="work1">
+    <n>Create</n>
+  </pip>
+  <pip id="work2">
+    <n>Enhance</n>
+  </pip>
+  <pip id="work3">
+    <n>Repair</n>
+  </pip>
+  <pip id="crekol">
+    <n>will be created</n>
+  </pip>
+  <pip id="recipe">
+    <n>Recipe</n>
+  </pip>
+  <pip id="scheme1">
+    <n>Scheme</n>
+  </pip>
+  <pip id="repairto">
+    <n>repair by</n>
+  </pip>
+  <pip id="perform" v="0.6">
+    <n>in progress</n>
+  </pip>
+  <pip id="surr" v="0.6">
+    <n>all ready</n>
+  </pip>
+  <pip id="progress" v="0.6">
+    <n>some progress</n>
+  </pip>
+  <pip id="ls1" v="0.7">
+    <n>Not visited</n>
+  </pip>
+  <pip id="ls2" v="0.7">
+    <n>Cleared</n>
+  </pip>
+  <pip id="ls3" v="0.7">
+    <n>Location level reached</n>
+  </pip>
+  <pip id="ls4" v="0.7">
+    <n>Base camp</n>
+  </pip>
+  <pip id="actTake" v="0.6">
+    <n>Press to accept the mission</n>
+  </pip>
+  <pip id="actSurr" v="0.6">
+    <n>Press to finish the quest and claim your reward</n>
+  </pip>
+  <pip id="actGive" v="0.6">
+    <n>Press to give items</n>
+  </pip>
+  <pip id="resists" v="0.6">
+    <n>Resistances</n>
+  </pip>
+  <pip id="opt3" v="0.7">
+    <n>Options</n>
+  </pip>
+  <pip id="opt4" v="0.7">
+    <n>Control</n>
+  </pip>
+  <pip id="opt5" v="0.7">
+    <n>Log</n>
+  </pip>
+  <pip id="opt1" v="0.7">
+    <n>Load</n>
+  </pip>
+  <pip id="opt2" v="0.7">
+    <n>Save</n>
+  </pip>
+  <pip id="fullscreen" v="0.7">
+    <n>Full screen mode</n>
+    <info>Toggle fullscreen mode</info>
+  </pip>
+  <pip id="opt1_1">
+    <n>Sound volume</n>
+  </pip>
+  <pip id="opt1_2">
+    <n>Music volume</n>
+  </pip>
+  <pip id="opt1_3">
+    <n>Hoofstep volume</n>
+  </pip>
+  <pip id="help_mess" v="0.7">
+    <n>Training messages</n>
+    <info>Disable hints</info>
+  </pip>
+  <pip id="dial_on" v="0.7">
+    <n>Show dialogues</n>
+    <info>Disables all dialogue segments</info>
+  </pip>
+  <pip id="show_hit1" v="0.7">
+    <n>Show damage</n>
+    <info>Toggle damage popups</info>
+  </pip>
+  <pip id="show_hit2" v="0.7">
+    <n>Show damage as single number</n>
+    <info>Total damage will be shown as a single number instead of multiple number popups</info>
+  </pip>
+  <pip id="mat_filter" v="0.7">
+    <n>Censor obscene language</n>
+    <info>Disables most swearing by NPCs</info>
+  </pip>
+  <pip id="sys_cur" v="0.8">
+    <n>System cursor</n>
+    <info>Toggle default system cursor (Requires restart)</info>
+  </pip>
+  <pip id="hint_tele" v="0.8">
+    <n>Telekinesis hints</n>
+    <info>Toggle telekenesis hint popups</info>
+  </pip>
+  <pip id="show_favs" v="0.8">
+    <n>Hotkeys info</n>
+    <info>Show information about the assigned hotkeys when the cursor is at the bottom of the screen</info>
+  </pip>
+  <pip id='err_show' v='0.81'>
+    <n>Display error messages</n>
+    <info>Toggle error message windows</info>
+  </pip>
+  <pip id="saveslot">
+    <n>Slot</n>
+  </pip>
+  <pip id="autoslot">
+    <n>Autosave</n>
+  </pip>
+  <pip id="freeslot">
+    <n>Empty slot</n>
+  </pip>
+  <pip id="loadfile" v="0.7">
+    <n>From a file</n>
+  </pip>
+  <pip id="savefile" v="0.7">
+    <n>Into a file</n>
+  </pip>
+  <pip id="gamesaves" v="0.7">
+    <n>Game saves</n>
+  </pip>
+  <pip id="invupr1" s1="keyWeapon1" s2="keyWeapon12" v="0.8">
+    <n>[click] - select weapon@[right click] - in storage / take back@slot selection keys (@1- @2) - assign</n>
+  </pip>
+  <pip id="invupr2" s1="keyWeapon1" s2="keyWeapon12" v="0.8">
+    <n>[click] - put on armor@slot selection keys (@1- @2) - assign</n>
+  </pip>
+  <pip id="invupr3" s1="keyWeapon1" s2="keyWeapon12" v="0.8">
+    <n>[click] - use equipment@[right click] - discard (with [shift] - everything)@slot selection keys (@1- @2) - assign</n>
+  </pip>
+  <pip id="invupr5" v="0.6">
+    <n>[click] - reload</n>
+  </pip>
+  <pip id="vaultupr" v="0.8">
+    <n>[click] - put everything into storage@[right click] - pick everything from the storage</n>
+  </pip>
+  <pip id="infotravel">
+    <n>[click] - chose destination point</n>
+  </pip>
+  <pip id="usemed1">
+    <n>[click] - use appropriate medicine or instruments</n>
+  </pip>
+  <pip id="usemed2">
+    <n>[click] - pay for treatment</n>
+  </pip>
+  <pip id="inforepair">
+    <n>[click] - repair</n>
+  </pip>
+  <pip id="infotrade">
+    <n>[click] - select 1 unit of product@[right click] - cancel selection@hold [shift] - select all</n>
+  </pip>
+  <pip id="infoskills">
+    <n>[click] - increase skill@[right click] - cancel</n>
+  </pip>
+  <pip id="infoload" v="0.7">
+    <n>[click] - load game</n>
+  </pip>
+  <pip id="infosave">
+    <n>[click] - save game</n>
+  </pip>
+  <pip id="infokeys">
+    <n>[click] - reassign key</n>
+  </pip>
+  <pip id="infotasks" v="0.6">
+    <n>[click] - take a quest</n>
+  </pip>
+  <pip id="infostand" v="0.8">
+    <n>[click] - leave a weapon in storage or take it back</n>
+  </pip>
+  <pip id="infostand2" v="0.8">
+    <n>[click] - discard a spell or acquire it again</n>
+  </pip>
+  <pip id="emptyinv">
+    <n>No items in this category</n>
+  </pip>
+  <pip id="emptyperk">
+    <n>No perks added yet</n>
+  </pip>
+  <pip id="emptyeff">
+    <n>No active effects</n>
+  </pip>
+  <pip id="emptymed">
+    <n>Attention! The medical module is damaged. Health monitoring functional is limited. Please visit a certified PipBuck technician for service</n>
+  </pip>
+  <pip id="emptybuy">
+    <n>This merchant has nothing to sell</n>
+  </pip>
+  <pip id="emptysell">
+    <n>You have nothing valuable for sale</n>
+  </pip>
+  <pip id="emptyrep">
+    <n>Nothing to repair</n>
+  </pip>
+  <pip id="emptycreate">
+    <n>No schematics or recipes available</n>
+  </pip>
+  <pip id="emptyupgrade">
+    <n>Nothing to upgrade</n>
+  </pip>
+  <pip id="emptymap">
+    <n>The map is unavailable</n>
+  </pip>
+  <pip id="emptytasks" v="0.6">
+    <n>No quests yet</n>
+  </pip>
+  <pip id="piperror" v="0.8">
+    <n>Attention! System failure</n>
+    <info>Error 0-4570-7f45-a420-ff98 (System error, contact administrator)
+The likely cause of the failure is an effect of an electromagnetic pulse on the PipBuck systems.
+Checking the subsystems and modules:
+• User Status - Not Available
+• Medical module - not available
+• Inventory sorter - not available
+• Cartographic module - not available
+• Targeting spell - not available
+• User Interface - Disabled
+• The operating system kernel - not responding
+Attention! Reboot required
+System reboot in progress, please wait .......</info>
+  </pip>
+  <pip id="helpInv1" s1="keyRun" s2="keyGrenad" s3="keyMagic" s4="keyGrenad" s5="keyMagic" v="0.8">
+    <n>This is a list of all your weapons and magic. New weapons are indicated by the [☩] symbol.
+Use [left mouse button] to equip the weapon. You can also use [mouse scroll] to change weapons in the game without opening inventory.
+Use [right mouse button] to remove weapons you are not going to use from the list, or to add them back to the list.
+Hover over a list item and press [slot selection key] ([1] - [0], [-], [=]) to assign a weapon to the quick access slot, or to cancel the assignment. By pressing the same key in the game, you can quickly equip this weapon.
+You can also press the [slot selection key] together with the @1 key. Thus, the number of available slots increases from 12 to 24.
+Hover over a grenade, mine, or attack spell and press @2 or @3 to designate them as additional weapons. Thus you will be able to use them together with the main weapon at any time using these keys. If no additional weapon is assigned, pressing the @4 key will use the last selected explosive, and the @5 key will activate the last selected combat spell.
+In addition, you can assign a defensive spell to the quick spell slot using one of the [quick spell keys] (see control settings). By pressing the same key in game you can immediately apply the selected spell without having to equip it.
+The right side of the screen shows weapon characteristics.
+Damage: basic weapon damage (in parentheses is the actual damage that depends on your characteristics, in square brackets is the number of pellets for shotguns)
+Damage per second: damage per second based on your characteristics (in brackets - approximate damage per second based on the time for reloading)
+AP: action points for a shot at S.A.T.S. (in parentheses - the number of shots per burst shot in S.A.T.S. for automatic weapons)
+Range: the distance in blocks at which the weapon will be guaranteed to hit the target. In reality this value is relative and depends on the weapon mastery skill and other factors
+</n>
+  </pip>
+  <pip id="helpInv2" s1="keyRun" v="0.8">
+    <n>This is a list of your armor and amulets.
+Use [left mouse button] to put on or take off your armor.
+Hover over an item and press [slot selection key] ([1] - [0], [-], [=]) to assign the item to a quick access slot, or to cancel the assignment. By pressing the same key in game, you can quickly put on this armor, unless you are being attacked. You can also use the [slot selection key] together with the @1 key
+</n>
+  </pip>
+  <pip id="helpInv3" s1="keyRun" s2="keyDef" v="0.8">
+    <n>This is a list of your equipment, which includes all items that you can use: protective spells, medicines, chemicals, potions, food, tools, books, spray cans.
+Use [left mouse button] to apply an item or equip a protective spell if you have one (this spell can be used in game using the @2 key).
+Hover over an item and press [slot selection key] ([1] - [0], [-], [=]) to assign this item to the quick access slot, or to cancel the assignment. By pressing the same key in game you can apply this item without opening inventory. You can also use the [slot selection key] together with the @1 key.
+In addition, you can assign a protective spell to a quick spell slot using one of the [quick spell keys] (see control settings). By pressing the same key in the game, you can immediately apply the selected spell without having to equip it first.
+New items are indicated by [☩]. Items which quantity has recently increased are indicated by the [+] symbol.
+</n>
+  </pip>
+  <pip id="helpInv4" v="0.8">
+    <n>This is a list of all the other things you have, such as valuable items, artifacts, quest items, schematics, components and other junk. These things are either used automatically or are useless and can be sold to merchants
+</n>
+  </pip>
+  <pip id="helpInv5" s1="keyRun" v="0.8">
+    <n>This is a list of all your ammunition and explosives. Ammunition suitable for the currently used weapon is located at the top of the list.
+Use [left mouse button] to load the weapon with the necessary type of ammunition. You can also use [mouse scroll] along with the @1 key to change ammunition directly in game without opening inventory
+</n>
+  </pip>
+  <pip id="massInv0" v="0.8">
+    <n>In limited inventory mode, most items have weight. All your items are divided into categories, the weights for which are calculated separately</n>
+  </pip>
+  <pip id="massInv1" v="0.8">
+    <n>[Weapons]
+You can take with you and use a limited number of weapons determined by the number of [weapon slots]. Knives and pistols occupy one cell, rifles, shotguns etc. - two, and large-sized weapons - three. Grenades and mines can be used without restrictions. All other weapons are only available at the base camp.
+Use [right mouse click] to discard a specific weapon and free the slots it occupies. The weapon will be hidden, will not occupy the weapon slots and you won`t be able to use it. You can still find the same weapon on a mission, or you can take it back when you return to the base camp using PipBuck or the weapon stand.
+You can carry more weapons than you have weapon slots for, but it will slow you down. With a slight overload you will not be able to run and dash, with more overload you will only be able to trot, and finally, you won`t be able to move at all. It will not affect movement speed in the base camp, but you won`t be able to go anywhere else until you reduce weight.
+[Magic]
+You can use a limited number of attacking or defensive spells, all others will be unavailable. Each spell occupies one [magic slot], otherwise the principle is the same as for weapons.
+Each extra spell will reduce the magic recovery speed by 25%</n>
+  </pip>
+  <pip id="massInv2" v="0.8">
+    <n>[Armor]
+You can take only one set of armor on a mission, the rest will remain in the base camp, except for protective suits and clothing. On a mission you can change into protective suits and clothing or back into the same armor any time.
+Amulets can be changed at any time</n>
+  </pip>
+  <pip id="massInv3" v="0.8">
+    <n>[Equipment]
+This includes valuable and fragile items that you may need at any time (even in battle), which is why the inventory sorter puts them in a separate bag: medicine, potions, battle chemicals, StealthBucks, repair kits, runes. Each item has an arbitrary [weight] characteristic, which shows the space it occupies in the inventory.
+If you take more items than the bag can carry, they might break when you take damage or simply fall out of the bag.
+[Ammunition]
+This includes all rounds, batteries and explosives. Due to the dangerous nature of these items and the need for quick access to reload weapons, the inventory sorter puts them in ammo pouches. They cannot be mixed with other items.
+[Stuff]
+Most of the other contents of your bags are sorted to the "stuff" category. This includes everything that should not necessarily be close at hoof, regardless of commercial value: food and drinks, books, memory orbs, items for sale, weapon components, armor plates, potion ingredients. Drinks and food can be consumed at any time, but you will have to return to base camp to read books and view memory balls, as those activities require time and a safe place.
+Ammunition and stuff taken above limit will slow you down just like weapons. Overloads from inventory items of different categories do stack.
+[Miscellaneous]
+All items which weight is not taken into account. Quest objects, keys, tools (like a screwdriver), PipBuck implants and modules, artifacts, schematics, spray cans. They don`t take inventory space and cannot be laid out or discarded</n>
+  </pip>
+  <pip id='helpWorld' v='0.81'>
+    <n>This is a world map, it displays all locations that you can visit. Locations can be of the following types:
+[Base camps] - these are places where you don`t have to fight, instead you can trade, heal and take missions.
+[Normal locations] - you can walk through and clear them once, enemies and items will not respawn in them. After completing the main objectives in such locations, they are marked as "completed". But you can return to them at any time to open the remaining containers or find secrets.
+[Generated locations] can be passed and cleared many times in order to earn experience and collect valuable items. Each time you enter them, they will have new structures, enemies will respawn, and the containers will be untouched and full of various items. Also generated locations have special [trial rooms]. For completing the trials you will be rewarded with valuable items, and many [quest items] can also be found there.
+Most generated locations have [levels]. At higher levels you will meet new interesting places, enemies and trials, as well as passages to new locations. To move to the next level, you must go to the end of the location and enter the door with the [Exit] sign. In most cases, you will have to go through at least 2 or 3 levels deep for advancing further in the story. Also, clearing at least 25% of enemies replenishes the assortment of goods available at merchants in base camps.
+You can go to any available location from the base camp using the wall map or the map in your PipBuck. If you teleport to the base camp from a generated location, use [MAS terminal] for returning to the previous location. If you try returning through the map, the location will be generated anew.
+Remember, if you save the game while being in a generated location, then after loading you will find yourself in the base camp! Its current configuration will be lost, only the maximum level of location reached and the completed trials are saved</n>
+  </pip>
+  <pip id='helpSave' v='0.81'>
+   <n>You can save the game in slots (10 slots + autosave slot) or into a file.
+Saving the game to a file can be used to create backup copies of your saves or to transfer saves between different versions of the game. To save to a file use the [To file] button on the [Save] tab, and for loading use the [From file] button on the [Load] tab and select file location and name.
+
+[Attention! Important!]
+Various disk cleanup programs might delete saves from slots! If you are using such a program, make a backup copy of the game save by using [To file] button.
+It is also recommended that you save the game to a file periodically just in case</n>
+  </pip>
+  <pip id="err_close" v="0.8">
+    <n>Continue</n>
+  </pip>
+  <pip id="err_dont_show" v="0.8">
+    <n>Ignore</n>
+  </pip>
+  <pip id="err_copy_to_clipboard" v="0.8">
+    <n>Copy error text to clipboard</n>
+  </pip>
+  <pip id="error" v="0.8">
+    <n>An error occurred</n>
+  </pip>
+  <pip id="vault1" v="0.8">
+    <n>Equipment</n>
+  </pip>
+  <pip id="vault2" v="0.8">
+    <n>Ammunition</n>
+  </pip>
+  <pip id="vault3" v="0.8">
+    <n>Stuff</n>
+  </pip>
+  <pip id="mass" v="0.8">
+    <n>Item weight</n>
+  </pip>
+  <pip id="mass2" v="0.8">
+    <n>Takes weapon slots</n>
+  </pip>
+  <pip id="sell" v="0.8">
+    <n>Sell value</n>
+  </pip>
+  <pip id="needskill" v="0.8">
+    <n>Required skill</n>
+  </pip>
+  <pip id="allmass1" v="0.8">
+    <n>Total equipment weight</n>
+  </pip>
+  <pip id="allmass2" v="0.8">
+    <n>Total ammunition weight</n>
+  </pip>
+  <pip id="allmass3" v="0.8">
+    <n>Total weight of stuff</n>
+  </pip>
+  <pip id="allweap" v="0.8">
+    <n>Weapon slots</n>
+  </pip>
+  <pip id="allmagic" v="0.8">
+    <n>Spell slots</n>
+  </pip>
+  <pip id="invault" v="0.8">
+    <n>in storage</n>
+  </pip>
+  <pip id="drop" v="0.8">
+    <n>drop</n>
+  </pip>
+  <pip id="vcaps" v="0.8">
+    <n>Merchant has caps</n>
+  </pip>
+  <pip id="skillup" v="0.8">
+    <n>Increases skill</n>
+  </pip>
+  <pip id="autotake" v="0.8">
+    <n>Auto item pickup</n>
+    <info>Click to choose which items should be picked up automatically</info>
+  </pip>
+  <pip id="vsWeaponNew" v="0.8">
+    <n>New weapons</n>
+    <info>Automatically pick up new weapons if there are free slots for them</info>
+  </pip>
+  <pip id="vsWeaponRep" v="0.8">
+    <n>Weapons for repair</n>
+    <info>Automatically pick up a weapon if you have same weapon that needs repair</info>
+  </pip>
+  <pip id="vsAmmoAll" v="0.8">
+    <n>All ammunition</n>
+    <info>Automatically pick up any ammunition providing there is enough space in the "Ammunition" section</info>
+  </pip>
+  <pip id="vsAmmoTek" v="0.8">
+    <n>Matching ammunition</n>
+    <info>Automatically pick up ammunition that matches weapons you have with you providing there is enough space in the "Ammunition" section</info>
+  </pip>
+  <pip id="vsExplAll" v="0.8">
+    <n>Explosives</n>
+    <info>Automatically pick up grenades, mines and bombs providing there is enough space in the "Ammunition" section</info>
+  </pip>
+  <pip id="vsMedAll" v="0.8">
+    <n>Medicine and Potions</n>
+    <info>Automatically collect all potions and medications providing there is enough space in the "Equipment" section</info>
+  </pip>
+  <pip id="vsHimAll" v="0.8">
+    <n>Chemicals</n>
+    <info>Automatically collect all chemicals providing there is enough space in the "Equipment" section</info>
+  </pip>
+  <pip id="vsEqipAll" v="0.8">
+    <n>Other equipment</n>
+    <info>Automatically collect StealthBucks, repair kits, runes and similar items providing there is enough space in the "Equipment" section</info>
+  </pip>
+  <pip id="vsStuffAll" v="0.8">
+    <n>All stuff</n>
+    <info>Automatically collect all non equipment or ammunition items providing there is enough space in the "Stuff" section</info>
+  </pip>
+  <pip id="vsVal" v="0.8">
+    <n>- Valuables</n>
+    <info>Gems, disks, pre-war books - all that can be sold to merchants</info>
+  </pip>
+  <pip id="vsBook" v="0.8">
+    <n>- Skill items</n>
+    <info>Educational books and memory orbs</info>
+  </pip>
+  <pip id="vsFood" v="0.8">
+    <n>- Food</n>
+    <info>Any food and beverages</info>
+  </pip>
+  <pip id="vsComp" v="0.8">
+    <n>- Components</n>
+    <info>Components for weapons, armor, explosives and electronic devices. Everything you need to work on a workbench</info>
+  </pip>
+  <pip id="vsIngr" v="0.8">
+    <n>- Ingredients</n>
+    <info>Alchemical ingredients, herbs, monster body parts. All that is useful for potions</info>
+  </pip>
+  <pip id="speedshtr0" v="0.8">
+    <n>Leave some of the weapons at the weapon stand and put unnecessary items into the storage</n>
+  </pip>
+  <pip id="speedshtr1" v="0.8">
+    <n>You are overloaded with heavy items. In this state you will not be able to run and dash</n>
+  </pip>
+  <pip id="speedshtr2" v="0.8">
+    <n>You are heavily overloaded with items. In this state you may only trot and can barely jump</n>
+  </pip>
+  <pip id="speedshtr3" v="0.8">
+    <n>You are so overloaded with heavy stuff that you can`t make a single step</n>
+  </pip>
+  <pip id="pet" v="0.8">
+    <n>Companion</n>
+  </pip>
+  <pip id="add_maxmW" v="0.8">
+    <n>Weapon slots</n>
+  </pip>
+  <pip id="add_maxmM" v="0.8">
+    <n>Spell slots</n>
+  </pip>
+  <pip id="add_maxm1" v="0.8">
+    <n>Maximum equipment</n>
+  </pip>
+  <pip id="add_maxm2" v="0.8">
+    <n>Maximum ammunition</n>
+  </pip>
+  <pip id="add_maxm3" v="0.8">
+    <n>Maximum stuff</n>
+  </pip>
+  <pip id="perlevel" v="0.8">
+    <n>per skill level</n>
+  </pip>
+  <pip id="teledist" v="0.8">
+    <n>Telekinesis distance</n>
+  </pip>
+  <pip id="stun" v="0.8">
+    <n>Stun</n>
+  </pip>
+  <pip id="knock" v="0.8">
+    <n>Knockback</n>
+  </pip>
+  <pip id="recoil" v="0.8">
+    <n>Recoil</n>
+  </pip>
+  <pip id="begval" v="0.8">
+    <n>Initial value</n>
+  </pip>
+  <pip id="begvulner" v="0.8">
+    <n>Initial vulnerability</n>
+  </pip>
+  <pip id="factor" v="0.8">
+    <n>Influencing factors</n>
+  </pip>
+  <pip id="result" v="0.8">
+    <n>Result</n>
+  </pip>
+  <pip id="param_atk" v="0.8">
+    <n>Attack parameters</n>
+  </pip>
+  <pip id="param_def" v="0.8">
+    <n>Defense parameters</n>
+  </pip>
+  <pip id="param_oth" v="0.8">
+    <n>Other parameters</n>
+  </pip>
+  <pip id="dam_melee" v="0.8">
+    <n>Melee damage</n>
+  </pip>
+  <pip id="dam_shoot" v="0.8">
+    <n>Ranged attack damage</n>
+  </pip>
+  <pip id="observ" v="0.8">
+    <n>Alertness</n>
+  </pip>
+  <pip id="weapskill" v="0.8">
+    <n>Weapon mastery</n>
+  </pip>
+  <pip id="enemy_weap" v="0.8">
+    <n>Weapon</n>
+  </pip>
+  <pip id="reload" v="0.8">
+    <n>Reload time</n>
+    <info>Affects reloading time of any weapon using ammo or batteries</info>
+  </pip>
+  <pip id="allprec" v="0.8">
+    <n>General accuracy</n>
+    <info>Hit chance multiplier for any ranged weapon and attack spells</info>
+  </pip>
+  <pip id="punchdamage" v="0.8">
+    <n>Kick power</n>
+    <info>Hoof impact multiplier</info>
+  </pip>
+  <pip id="meleerapid" v="0.8">
+    <n>Melee attack Speed</n>
+    <info>Affects any melee weapon except those having their own motor (like a chain saw and auto axe)</info>
+  </pip>
+  <pip id="healeff" v="0.8">
+    <n>Treatment efficiency</n>
+    <info>The effectiveness of medications such as healing potions and RadAways</info>
+  </pip>
+  <pip id="allspeed" v="0.8">
+    <n>Movement speed</n>
+    <info>The general speed of movement. It can be affected with some factors such as freezing, concussion, alcohol intoxication or overburdening</info>
+  </pip>
+  <pip id="runspeed" v="0.8">
+    <n>Running speed</n>
+    <info>Shows how much galloping is faster than trotting</info>
+  </pip>
+  <pip id="stamrun" v="0.8">
+    <n>Stamina consumption</n>
+    <info>Stamina consumption for running, jumping and dashing</info>
+  </pip>
+  <pip id="lockpick" v="0.8">
+    <n>Lock opening level</n>
+    <info>Primarily determined by the "Lockpicking" skill, although some items and effects can also change this parameter</info>
+  </pip>
+  <pip id="hacker" v="0.8">
+    <n>Terminal hacking Level</n>
+    <info>Primarily determined by the "Science" skill, but some items and effects can also change this parameter</info>
+  </pip>
+  <pip id="alldmana" v="0.8">
+    <n>General magic consumption</n>
+    <info>Consumption of magic for all magical actions including telekinesis, attacking and defensive spells</info>
+  </pip>
+  <pip id="wmana" v="0.8">
+    <n>Magic consumption on attack spells</n>
+    <info>Separate parameter for attacking spells only. It is multiplied with the "General magic consumption" parameter</info>
+  </pip>
+  <pip id="od" v="0.8">
+    <n>Action points</n>
+    <info>The number of action points for attacks with any weapon in S.A.T.S.</info>
+  </pip>
+  <pip id="saved" v="0.8">
+    <n>Saved</n>
+  </pip>
+  <pip id="dead" v="0.8">
+    <n>Character perished</n>
+  </pip>
+  <pip id="zoom100" s1="keyZoom" s2="keyLook" v="0.8">
+    <n>Zoom 100%</n>
+    <info>Enabling this option will set the zoom to 100% at the beginning of the game. If left disabled, the scale will be set to fit the entire room on the screen.
+Enable this option if your monitor has a resolution of FullHD (1920x1080) or more.
+For lower resolution, disabling this option is recommended for reducing the load on the processor and improving performance.	
+You can always change zoom in game using the @1 key. And if a room does not fit the entire screen, you can move the camera while holding @2</info>
+  </pip>
+  <pip id="quake" v="0.8">
+    <n>Camera shaking</n>
+    <info>The camera will shake after explosions and strong blows</info>
+  </pip>
+  <pip id="tovault" v="0.81">
+    <n>Lay out unnecessary items</n>
+  </pip>

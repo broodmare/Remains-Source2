@@ -14,7 +14,7 @@ package fe.weapon  {
 		// Constructor
 		public function WKick(own:Unit, id:String, nvar:int=0) {
 			super(own, id, nvar);
-			vBullet = visualPunch;
+			vBullet = visualPunch;	// .SWF Dependency
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(own, v, null, false);
 			b.weap=this;
@@ -78,14 +78,14 @@ package fe.weapon  {
 						b.bindMove(v0, coordinates.X + storona * 20, coordinates.Y - 50);
 					}
 					
-					var v1:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - 30));
-					var v2:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - i * 10));
+					var v3:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - 30));
+					var v4:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - i * 10));
 					
-					b.bindMove(v1, coordinates.X + storona * 20, coordinates.Y - 30);
+					b.bindMove(v3, coordinates.X + storona * 20, coordinates.Y - 30);
 					
-					for (var i=1; i<=5; i++) {
-						if (i!=3 && !(vverh && i==5)) {
-							b.bindMove(v2, coordinates.X + storona * 20, coordinates.Y - i * 10);
+					for (var i:int = 1; i <= 5; i++) {
+						if (i != 3 && !(vverh && i == 5)) {
+							b.bindMove(v4, coordinates.X + storona * 20, coordinates.Y - i * 10);
 						}
 					}
 					Snd.ps('m_med', coordinates.X, coordinates.Y, 0, Math.random()*0.2+0.1);

@@ -21,41 +21,48 @@ package fe {
 			var path:String; 
 			var itemsObject:Object = {};	
 			
+			var loadedWeapons:int = 0;
 			// Load all weapons into memory
 			path = directory + weaponsFileName;
-			trace("ItemManager.as/Constructor() - Loading weapon json file from " + path);
 			itemsObject = loader.syncLoad(path);
 			for each (var weapon:Object in itemsObject) {
 				_weapons[weapon.id] = weapon;
+				loadedWeapons++;
 			}
 
+			var loadedArmors:int = 0;
 			// Load all armors into memory
 			path = directory + armorsFileName;
-			trace("ItemManager.as/Constructor() - Loading armor json file from " + path);
 			itemsObject = loader.syncLoad(path);
 			for each (var armor:Object in itemsObject) {
 				_armors[armor.id] = armor;
+				loadedArmors++;
 			}
 
+			var loadedItems:int = 0;
 			// Load all items into memory
 			path = directory + itemsFileName;
-			trace("ItemManager.as/Constructor() - Loading item json file from " + path);
 			itemsObject = loader.syncLoad(path);
 			for each (var item:Object in itemsObject) {
 				_items[item.id] = item;
+				loadedItems++;
 			}
 
+			var loadedSchematics:int = 0;
 			// Load all schematics into memory
 			path = directory + schematicsFileName;
-			trace("ItemManager.as/Constructor() - Loading schematics json file from " + path);
 			itemsObject = loader.syncLoad(path);
 			for each (var schematic:Object in itemsObject) {
 				_schematics[schematic.id] = schematic;
+				loadedSchematics++;
 			}
+
+			trace("ItemManager.as/Constructor() - Loaded " + loadedWeapons + " weapons, " + loadedArmors + " armors, " + loadedItems + " items, and " + loadedSchematics + " schematics");
 		}
 
 		public function getWeapon(id:String):Object {
 			if (_weapons[id]) {
+				trace("ItemManager.as/getWeapon() - Getting weapon: " + id);
 				return _weapons[id];
 			}
 			else {
@@ -66,6 +73,7 @@ package fe {
 
 		public function getArmor(id:String):Object {
 			if (_armors[id]) {
+				trace("ItemManager.as/getArmor() - Getting armor: " + id);
 				return _armors[id];
 			}
 			else {
@@ -76,6 +84,7 @@ package fe {
 
 		public function getItem(id:String):Object {
 			if (_items[id]) {
+				trace("ItemManager.as/getItem() - Getting item: " + id);
 				return _items[id];
 			}
 			else {
@@ -86,6 +95,7 @@ package fe {
 
 		public function getSchematic(id:String):Object {
 			if (_schematics[id]) {
+				trace("ItemManager.as/getSchematic() - Getting schematic: " + id);
 				return _schematics[id];
 			}
 			else {
