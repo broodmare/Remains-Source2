@@ -2,7 +2,7 @@
 	{
 		"id": "en",
 		"name": "English",
-		"file": "text_en.xml"
+		"file": "text_en.json"
 	},
 	{
 		"id": "ru",

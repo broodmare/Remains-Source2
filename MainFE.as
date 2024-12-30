@@ -8,6 +8,8 @@ package {
 	
 	public class MainFE extends MovieClip {
 		
+		var mainMenu:fe.MainMenu;
+
 		// Constructor
 		public function MainFE() {
 			stage.scaleMode = "noScale";
@@ -26,7 +28,7 @@ package {
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 
 				this.nextFrame();
-				var mainMenu:fe.MainMenu = new MainMenu(this);
+				mainMenu = new MainMenu(this);
 			}
 		}
 	}

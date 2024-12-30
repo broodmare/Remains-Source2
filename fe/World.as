@@ -25,15 +25,15 @@ package  fe {
 	
 	public class World {
 
-		public static var w:World;					// Publically Accessible variable to this instance
+		public static var w:World;					// Publically Accessible reference to this instance of World
 		private static var itemManager:ItemManager;	// Stores all items
+		
 
 		//Визуальные составляющие
 		public var main:Sprite;			//Главный спрайт игры
 		public var swfStage:Stage;
+		public var languageManager:LanguageManager;	// Publically Accessible reference to the langauge manager
 
-		public var languageManager:LanguageManager; // Handles loading and storing languages
-		
 		public var vwait:MovieClip;		//Картинка с надписью ЗАГРУЗКА
 		public var vfon:MovieClip;		//Неподвижный задник
 		public var visual:Sprite;		//активная область
@@ -175,9 +175,9 @@ package  fe {
 		private var saveArr:Array;
 		public var saveKol:int = 10;
 		private var t_save:int = 0;
-		public var loaddata:Object;	//данные, загружаемые из файла
+		public var loaddata:Object;			//данные, загружаемые из файла
 		public var nadv:int=0;
-		public var koladv:int = 10;	//номер совета
+		public var koladv:int;				// How many advice snippets are loaded
 		public var load_log:String='';
 		
 		// [Location maps]
@@ -201,11 +201,12 @@ package  fe {
 		public var landError:Boolean = false;
 
 		// Constructor
-		public function World(nmain:Sprite, cfgObj:Object) {
+		public function World(nmain:Sprite, cfgObj:Object, langManager:LanguageManager) {
 
 			World.w = this;			// Store a publically accessable reference to itself
 			main = nmain;			// Store the passed reference to the Flash Container
 			configObj = cfgObj;		// The user's stored settings
+			languageManager = langManager;	// Store the passed reference to the language manager
 
 			//файлы
 			spriteURL = 'sprite.swf';
@@ -265,9 +266,6 @@ package  fe {
 			// FPS Counter (This seems to also be used for other things like measuring load times.)
 			d1 = getTimer();
 			d2 = getTimer();
-
-			// Initialize the languageManager and load the current localization into memory
-			languageManager = new LanguageManager(this);
 		}
 
 //=============================================================================================================
@@ -305,14 +303,19 @@ package  fe {
 				app.setTransforms();
 			}
 
-			koladv = Res.currentLanguageData.advice[0].a.length();
+			koladv = languageManager.data.advice.length;
+			trace("Length is: " + koladv);
 
 			if (configObj.data.nadv) {
-				nadv=configObj.data.nadv;
+				nadv = configObj.data.nadv;
 				configObj.data.nadv++;
-				if (configObj.data.nadv>=koladv) configObj.data.nadv=0;
+				if (configObj.data.nadv >= koladv) {
+					configObj.data.nadv = 0;
+				}
 			}
-			else configObj.data.nadv=1;
+			else {
+				configObj.data.nadv = 1;
+			}
 
 			if (configObj.data.chit>0) chitOn=true;
 			

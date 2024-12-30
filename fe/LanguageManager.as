@@ -1,23 +1,18 @@
 package fe {
 
 	import flash.system.Capabilities;
-	import flash.net.URLLoader;
 
 	public class LanguageManager {
-
-		private var world:World;     // Hold a reference to the World class
 
 		private var langFolder:String;
 		private var languagesFilePath:String;
 
 		private var _languages:Array;			// Array of objects representing each langauge. Eg. [ {"id":"en", "name":"english", "file":"text_en.xml" }, ... ]
 		private var _currentLanguage:String;	// Two letter language id, eg. 'en'
-		private var _languageData:XML;			// The loaded XML file for the current language
+		private var _languageData:Object;		// The localization data for the current language
 
 		// Constructor
-		public function LanguageManager(w:World) {
-
-			world = w; // Save a reference to the world that owns this instance
+		public function LanguageManager(configObj:Object) {
 
 			langFolder = "Modules/core/language/";
 			languagesFilePath = "languages.json";
@@ -28,14 +23,13 @@ package fe {
 			var loader:TextLoader = new TextLoader();
 			
 			var langs:* = loader.syncLoad(path);
-
 			_languages = langs as Array;
 
 			// Step 2: Detect the default user language and previous user language if applicable
 			_currentLanguage = Capabilities.language; // Try to detect default langauge for the user.
 
-			if (world.configObj.data.language != null) {
-			    _currentLanguage = world.configObj.data.language; // If user settings exist, overwrite the default language.
+			if (configObj.data.language != null) {
+			    _currentLanguage = configObj.data.language; // If user settings exist, overwrite the default language.
 			}
 
 			if (_currentLanguage == "") {
@@ -65,16 +59,16 @@ package fe {
 			// Load the file at that specified path
 			var loader:TextLoader = new TextLoader();
 			_languageData = loader.syncLoad(path);
-			Res.currentLanguageData = _languageData;
 		}
 
+		// TODO: BROKE -- MOVE THIS SO SETTINGS CAN BE SAVED
         // Publically accessable method to change the language
 		public function changeLanguage(id:String):void {
 			trace("LanguageManager.as/changeLanguage() - Changing langauge to: " + id);
 			_currentLanguage = id;
 			loadLanguage(id);
-			world.saveConfig();
-			world.pip.updateLang();
+			//world.saveConfig();
+			//world.pip.updateLang();
 		}
 
 		public function get languages():Array {
@@ -92,7 +86,7 @@ package fe {
 			return _currentLanguage;
 		}
 
-		public function get languageData():XML {
+		public function get data():Object {
 			return _languageData;
 		}
     }

@@ -5,10 +5,7 @@ package fe {
  
 	public class Res {
 
-		public static var currentLanguageData:XML; 		// Current localization file eg. 'text_en.xml'
-
-		private static var cachedIsTxt:Object	= {};
-		private static var cachedTxt:Object	= {};
+		public static var currentLanguageData:Object; 		// Loaded localization file	eg. 'text_en.json'
 
 		private static const typeDictionary:Object = {
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
@@ -24,17 +21,11 @@ package fe {
 		public static function istxt(tip:String, id:String):Boolean {
 			var key:String = tip + id;
 			
-			if (cachedIsTxt[key]) {
-				return true;
-			}
-			
-			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageData for matching nodes.
+			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageDataXML for matching nodes.
 			
 			if (xmlList.length() == 0) {
 				return false; // If there's no matching nodes, return false.
 			}
-			
-			cachedIsTxt[key] = true;
 			
 			return true;
 		}
@@ -53,9 +44,6 @@ package fe {
 			
 			// Return if already cached
 			var key:String = tip + id;
-			if (cachedTxt[key]) {
-				return cachedTxt[key];
-			}
 
 			// Reduce redundant dictionary lookups
 			var tipType:String = typeDictionary[tip];
@@ -110,8 +98,6 @@ package fe {
 			if (dop) s = s.replace(controlCharsRegExp, '');
 			if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
 
-
-			cachedTxt[key] = s; // Store this formatted string
 			return s;
 		}
 		
@@ -183,15 +169,8 @@ package fe {
 			}
 			return (s == null) ? '':s;
 		}
-
-		// The advice widget at the bottom of the main menu
-		public static function advText(n:int):String {
-			var xml:XML = currentLanguageData.advice[0]; // Grab the entire advice node with all its child 'a' nodes.
-			var s:String = xml.a[n];
-			return (s == null) ? '':s;
-		}
-
-		// Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
+		
+		// Unit Reply text? Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
 		public static function repText(id:String, act:String, msex:Boolean=true):String {
 			var xl:XMLList = currentLanguageData.replic[0].rep.(@id==id && @act==act);
 
