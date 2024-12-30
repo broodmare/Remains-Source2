@@ -1170,8 +1170,8 @@ package fe.inter {
 			event.stopPropagation();
 		}
 		
-		//вывести реплику диалога, вернуть false, если реплики нет
-		//id может быть id диалога в text.xml или готовой репликой
+		// [Display a replica of the dialogue, return false if there is no replica]
+		// [id can be the dialog id in text.xml or a ready-made replica]
 		public function dialText(id=null, n:int=-1, down:Boolean=false, wait:Boolean=true):Boolean {
 			if (id == null) {
 				dial.visible = false;
@@ -1235,7 +1235,7 @@ package fe.inter {
 				}
 			}
 
-			for (var i = 1; i <= 5; i++) {
+			for (var i:int = 1; i <= 5; i++) {
 				if (xml.attribute('s' + i).length())  {
 					s = s.replace('@' + i, "<span class='imp'>" + World.w.ctr.retKey(xml.attribute('s' + i)) + "</span>");
 				}
@@ -1434,8 +1434,8 @@ package fe.inter {
 			
 			if (gg.teleObj && gg.pers.throwForce>0 && gg.teleObj.massa>0.1) {
 				tharrow.visible=true;
-				var ndx = gg.teleObj.coordinates.X - gg.coordinates.X
-				var ndy = gg.teleObj.coordinates.Y - gg.teleObj.boundingBox.halfHeight - gg.coordinates.Y + gg.boundingBox.halfHeight - 10;
+				var ndx:Number = gg.teleObj.coordinates.X - gg.coordinates.X
+				var ndy:Number = gg.teleObj.coordinates.Y - gg.teleObj.boundingBox.halfHeight - gg.coordinates.Y + gg.boundingBox.halfHeight - 10;
 				World.w.cam.setKoord(tharrow, World.w.gg.teleObj.coordinates.X, World.w.gg.teleObj.coordinates.Y - World.w.gg.teleObj.boundingBox.halfHeight);
 				tharrow.rotation = Math.atan2(ndy, ndx) / Math.PI * 180;
 				var alph:Number = gg.throwForceRelat();
@@ -1453,7 +1453,7 @@ package fe.inter {
 			vis.fav.visible=vis.status.visible=(showFav || showDop)&&!World.w.sats.active && !World.w.catPause;
 		}
 		
-		public function setSats(turn:Boolean) {
+		public function setSats(turn:Boolean):void {
 			vis.sats.visible=turn && active;
 		}
 	}

@@ -11,8 +11,12 @@ package fe {
 		private var _currentLanguage:String;	// Two letter language id, eg. 'en'
 		private var _languageData:Object;		// The localization data for the current language
 
+		public static var reference:LanguageManager;	// Publically accessable reference to this instance of the language manager
+
 		// Constructor
 		public function LanguageManager(configObj:Object) {
+			
+			reference = this;
 
 			langFolder = "Modules/core/language/";
 			languagesFilePath = "languages.json";

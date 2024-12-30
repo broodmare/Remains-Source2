@@ -2,6 +2,8 @@ package fe {
 
 	public class ItemManager {
 		
+		public static var reference:ItemManager; // Public reference to this instance of an item manager
+
 		private static const directory:String = "Modules/core/AllData/";
 		private static const weaponsFileName:String = "weapons.json";
 		private static const armorsFileName:String = "armors.json";
@@ -15,6 +17,8 @@ package fe {
 
 		public function ItemManager() {
 			trace("ItemManager.as/Constructor() - Initializing ItemManager");
+
+			reference = this;
 
 			// Declaring these here so I can re-use it for each item type
 			var loader:TextLoader = new TextLoader();
@@ -60,6 +64,14 @@ package fe {
 			trace("ItemManager.as/Constructor() - Loaded " + loadedWeapons + " weapons, " + loadedArmors + " armors, " + loadedItems + " items, and " + loadedSchematics + " schematics");
 		}
 
+		public function get weapons():Object {
+			return _weapons;
+		}
+
+		public function get armors():Object {
+			return _armors;
+		}
+		
 		public function getWeapon(id:String):Object {
 			if (_weapons[id]) {
 				trace("ItemManager.as/getWeapon() - Getting weapon: " + id);

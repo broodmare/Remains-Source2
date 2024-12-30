@@ -582,7 +582,8 @@ package fe.unit {
 				return weapons[id];
 			}
 
-			var w:Weapon = Weapon.create(owner, id, nvar);
+			var wData = ItemManager.reference.weapons[id];
+			var w:Weapon = Weapon.create(owner, wData);
 
 			if (w == null) {
 				return null;

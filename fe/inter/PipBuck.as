@@ -18,8 +18,12 @@ package fe.inter  {
 	
 	public class PipBuck {
 
+		public var vis:MovieClip; 				// Reference to the movieclip used for the pipbuck
+		private var language:LanguageManager;	// Reference to the localization class
+		private var itemManager:ItemManager;	// Reference to the item manager class
+
 		public var light:Boolean=false;		//простая версия
-		public var vis:MovieClip; 		//property to store the page's GUI (MovieClip).
+		
 		public var vissetkey:MovieClip;
 		public var vishelp:MovieClip;
 		public var active:Boolean=false;
@@ -62,10 +66,13 @@ package fe.inter  {
 		public function PipBuck(vpip:MovieClip) {
 			light = true;
 			vis = vpip;
+			language = LanguageManager.reference;	// Store a reference to the language manager instance
+			itemManager = ItemManager.reference;	// Store a reference to the item manager instance
+
 			vis.visible = false;
 			if (light) {
-				vis.skin.visible=false;
-				vis.fon.visible=false;
+				vis.skin.visible = false;
+				vis.fon.visible  = false;
 			}
 			
 			//кнопки
@@ -140,9 +147,10 @@ package fe.inter  {
 		}
 		
 		public function toNormalMode():void {
-			light=false;
-			vis.skin.visible=true;
-			vis.fon.visible=true;
+			light = false;
+			vis.skin.visible = true;
+			vis.fon.visible = true;
+			
 			var kolPages:int = 5;
 			for (var i:int = 1; i <= kolPages; i++) {
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
@@ -151,8 +159,9 @@ package fe.inter  {
 				item.id.text=i;
 				item.visible=true;
 			}
-			vis.but0.text.text=Res.pipText('main0');
-			page=1;
+			
+			vis.but0.text.text = language.data.pip.main0.string;
+			page = 1;
 			allItems();
 		}
 
@@ -428,24 +437,26 @@ package fe.inter  {
 		}
 		
 		public function allItems():void {
+			trace("PipBuck.as/allItems() - Initializing all items");
+			
 			arrWeapon = [];
 			arrArmor  = [];
-			var owner:Unit = new Unit();
-			var w:Weapon;
-			var a:Armor;
+			
+			var owner:Unit = new Unit();	// Dummy owner unit
 
-			for each (var weap:XML in Weapon.cachedWeaponList.(@tip > 0)) {
-				w = Weapon.create(owner, weap.@id, 0);
-				arrWeapon[weap.@id] = w;
-				if (weap.char.length() > 1) {
-					w = Weapon.create(owner, weap.@id, 1);
-					arrWeapon[weap.@id+'^'+1]=w;
+			for each (var weap:Object in itemManager.weapons) {
+				var w:Weapon;
+				if (weap.tip > 0) { 
+					trace("PipBuck/allItems() - Weapon: " + weap.id);
+					w = Weapon.create(owner, weap);
+					arrWeapon[weap.id] = w;
 				}
 			}
 
-			for each (var armor:XML in Armor.cachedArmorList) {
-				a = new Armor(armor.@id);
-				arrArmor[armor.@id] = a;
+			for each (var armor:Object in itemManager.armors) {
+				trace("PipBuck/allItems() - Armor: " + armor.id);
+				var a:Armor = new Armor(armor.id);
+				arrArmor[armor.id] = a;
 			}
 		}
 		

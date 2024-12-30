@@ -6513,7 +6513,7 @@
             "string": "Thunderhead reactor"
         }
     },
-    "weapons": {
+    "weapon": {
         "mont": {
             "string": "Crowbar",
             "description": "Covered with peeling red paint, scratches and some sticky yuck. Quite handy for breaking into common doors, lockers and cabinets. Useless against armored doors and safes"

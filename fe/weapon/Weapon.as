@@ -125,7 +125,7 @@ package fe.weapon {
 		public var kol:Number=1;		//количество пуль за 1 выстрел
 		public var dkol:Number=0;		//стрельба очередями
 		public var rashod:Number=1;		//зарядов за 1 выстрел
-		public var opt:Object;		//опции
+		public var opt:Object = {};		//опции
 		public var recoil:int=0;		//отдача назад
 		public var recoilUp:int=0;		//отдача вверх
 		public var recoilMult:int=1;	//множитель отдачи
@@ -216,37 +216,50 @@ package fe.weapon {
 		private static var cachedWeapons:Object	= {}; // Save object nodes that have been used before to avoid parsing XML for lots of objects.
 		private static var cachedAmmo:Object	= {};
 
-		public function Weapon(own:Unit, nid:String, nvar:int=0) {
-			sloy=2;
-			owner=own;
-			id=nid;
-			variant=nvar;
-			opt = new Object();
+		public function Weapon(own:Unit, nid:String, nvar:int = 0) {
+			sloy = 2;
+			owner = own;
+			id = nid;
+			variant = nvar;
 			
 			trasser = new Trasser();
 			
-			getXmlParam();
+			getWeaponData();
+
 			setNull();
 			if (!own.player) {
 				auto = true;
 			}
 		}
 		
-		public static function create(owner:Unit, id:String, nvar:int=0):Weapon {
-			if (id.charAt(id.length-2)=='^') {
-				id=id.substr(0,id.length-2);
-				nvar=1;
+		// Decide what kind of weapon it is and call the appropriate constructor
+		public static function create(owner:Unit, data:Object):Weapon {
+			// Ends in ^1 (Weapon variant)
+			var wepID:String = data.id;
+			if (wepID.lastIndexOf("^1") == wepID.length - 2) {
+				var nvar = 1;
 			}
 
-			var node:XML = getWeaponInfo(id);
 			var w:Weapon;
 
-			if (node.@tip==1) w = new WClub(owner,id,nvar);
-			else if (node.@tip==12) w = new WPaint(owner,id,nvar);
-			else if (node.@tip==4) w = new WThrow(owner,id,nvar);
-			else if (node.@tip==5) w = new WMagic(owner,id,nvar);
-			else if (node.@punch>0) w = new WPunch(owner,id,nvar);	
-			else w=new Weapon(owner,id,nvar);
+			if (data.tip == 1) {
+				w = new WClub(owner, wepID, nvar);
+			}
+			else if (data.tip == 12) {
+				w = new WPaint(owner, wepID, nvar);
+			}
+			else if (data.tip == 4) {
+				w = new WThrow(owner, wepID, nvar);
+			}
+			else if (data.tip == 5) {
+				w = new WMagic(owner, wepID, nvar);
+			}
+			else if (data.punch > 0) {
+				w = new WPunch(owner, wepID, nvar);
+			}
+			else {
+				w = new Weapon(owner, wepID, nvar);
+			}
 			
 			return w;
 		}
@@ -283,56 +296,104 @@ package fe.weapon {
 			return 'Error weapon '+nazv+':'+(owner?owner.nazv:'????');
 		}
 		
-		public function getXmlParam():void {
-			//общие характеристики
-			var node:XML = getWeaponInfo(id);
+
+		// This is the main function that parses weapon data to create a Weapon instance
+		public function getWeaponData():void {
+			// [General characteristics]
 			
-			if (node.@tip.length()) tip=node.@tip;
-			if (variant==0)	nazv=Res.txt('w',id);
-			else {
-				if (Res.istxt('w',id+'^'+variant)) nazv=Res.txt('w',id+'^'+variant);
-				else nazv=Res.txt('w',id)+variant2;
+			var data:Object = ItemManager.reference.weapons[id];
+			
+			if ("tip" in data) {
+				tip = data.tip;
 			}
-			cat=node.@cat;
-			skill=node.@skill;
-			if (node.@perk.length()) {
-				opt.perk=node.@perk;
-				opt[node.@perk]=true;
+			
+			nazv = LanguageManager.reference.data.weapon.id;
+
+			
+			cat = data.cat;
+			skill = data.skill;
+			
+			if ("perk" in data) {
+				opt.perk = data.perk;
+				opt[data.perk] = true;
 			}
-			lvl=node.@lvl;
-			perslvl=node.@perslvl;
-			if (node.@alicorn>0) alicorn=true;
+			
+			lvl = data.lvl;
+			perslvl = data.perslvl;
+			
+			if (data.alicorn > 0) {
+				alicorn = true;
+			}
 			
 			//SATS
-			if (node.sats.length()) {
-				if (node.sats[0].@que.length()) satsQue=node.sats[0].@que;
-				if (node.sats[0].@cons.length()) satsCons=node.sats[0].@cons;
-				if (node.sats[0].@no.length()) noSats=true;
-				if (node.sats[0].@noperc.length()) noPerc=true;
+			if ("que" in data) {
+				satsQue = data.que;
 			}
+			if ("cons" in data) {
+				satsCons = data.cons;
+			}
+			if ("noSATS" in data) {
+				noSats = data.noSATS;
+			}
+			if ("noperc" in data) {
+				noPerc = data.noperc;
+			}
+			
 			//цена и ремонт
-			if (node.com.length()) {
-				if (node.com[0].@rep.length()) rep_eff=node.com[0].@rep;
-				if (node.com[0].@price.length()) price=node.com[0].@price;
-				if (node.com[0].@uniq.length()) uniq=node.com[0].@uniq;
-				if (variant>0 && node.com[variant] && node.com[variant].@price.length()) price=node.com[variant].@price;
+			if ("rep" in data) {
+				rep_eff = data.rep;
 			}
-			//визуал
-			svis='vis'+id;
-			if (tip==0) svisv=null; 
-			else if (variant>0) svisv=svis+'_'+variant;
-			else svisv=svis;
-			if (node.vis.length()) {
-				getVisParam(node.vis[0])
-				if (variant>0) getVisParam(node.vis[variant]);
+			if ("price" in data) {
+				price = data.price;
 			}
-			if (tip>0 || svisv) {
-				vWeapon=Res.getClass(svisv, svis, visp10mm);	// .SWF Dependency
-				vis=new vWeapon();
+			if ("uniq" in data) {
+				uniq = data.uniq;
 			}
-			if (owner && owner.weaponKrep>0) krep=owner.weaponKrep;
-			if (vis && vis.totalFrames>1) animated=true;
-			if (flare==null) flare=visbul;
+			
+			// [Visual]
+			svis = 'vis' + id;
+			
+			if (tip == 0) {
+				svisv = null;
+			}
+			else if (variant > 0) {
+				svisv = svis + '_' + variant;
+			}
+			else {
+				svisv = svis;
+			}
+			
+			// Any "vis" properties
+			if ("tipdec" in data || "vbul" in data || "flare" in data || "spring" in data || "shell" in data || "bulanim" in data || "phisbul" in data || "shine" in data || "icomult" in data) {
+					if (node.@vweap.length()>0) svisv=node.@vweap;
+					if (node.@tipdec.length()) tipDecal=node.@tipdec;
+					if (node.@shell.length()) shell=true;
+					if (node.@spring.length()) spring=node.@spring;
+					if (node.@bulanim.length()) bulAnim=true;
+					if (node.@phisbul.length()) bulBlend='normal';
+					if (node.@visexpl.length()) visexpl=node.@visexpl;
+					if (node.@shine.length()) shine=node.@shine;
+					if (node.@vbul.length()) visbul=node.@vbul;
+					if (node.@flare.length()) flare=node.@flare;
+			}
+			
+			if (tip > 0 || svisv) {
+				vWeapon = Res.getClass(svisv, svis, visp10mm);	// .SWF Dependency
+				vis = new vWeapon();
+			}
+			
+			if (owner && owner.weaponKrep > 0) {
+				krep = owner.weaponKrep;
+			}
+			
+			if (vis && vis.totalFrames > 1) {
+				animated = true;
+			}
+			
+			if (flare == null) {
+				flare = visbul;
+			}
+			
 			if (visbul) { 
 				try {
 					vBullet = getDefinitionByName('visbul' + visbul) as Class;
@@ -347,103 +408,65 @@ package fe.weapon {
 			}
 			
 			//звуки
-			if (node.snd.length()) {
-				getSndParam(node.snd[0])
-				if (variant>0) getSndParam(node.snd[variant]);
+			if ("snd" in data) {
+				if (node.@shoot.length()) sndShoot=node.@shoot;
+				if (node.@shoot_n.length()) sndShoot_n=node.@shoot_n;
+				if (node.@reload.length()) sndReload=node.@reload;
+				if (node.@hit.length()) sndHit=node.@hit;
+				if (node.@prep.length()) sndPrep=node.@prep;
+				if (node.@t1.length()) snd_t_prep1=node.@t1;
+				if (node.@t2.length()) snd_t_prep2=node.@t2;
+				if (node.@noise.length()) noise=node.@noise;
 			}
+			
 			//Физические параметры
-			if (node.phis.length()) {
-				getPhisParam(node.phis[0])
-				if (variant>0) getPhisParam(node.phis[variant]);
+			if ("phis" in data) {
+				if (node.@massa>0) massa=node.@massa/50;
+				else massa=0;
+				if (node.@m.length()) mass=node.@m;
+				if (node.@drot.length()) drot=(node.@drot*Math.PI/180);
+				if (node.@drot2.length()) drot2=(node.@drot2*Math.PI/180);
+				if (node.@recoil.length()) recoil=node.@recoil;
+				if (node.@speed.length()) speed=node.@speed;
+				if (node.@deviation.length()) deviation=node.@deviation;
+				if (node.@flame.length()) flame=node.@flame;
+				if (node.@grav.length()) grav=node.@grav;
+				if (owner && owner.fraction!=Unit.F_PLAYER && node.@grav2.length()) grav=node.@grav2;
+				if (node.@accel.length()) accel=node.@accel;
+				if (node.@navod.length()) navod=node.@navod;
+				if (node.@distexpl.length()) distExpl=true;
+				if (node.@volna.length()) volna=true;
 			}
+			
 			//боеприпасы
-			if (node.ammo.length()) {
-				getAmmoParam(node.ammo[0])
-				if (variant>0) getAmmoParam(node.ammo[variant]);
+			if ("ammo" in data) {
+				if (node.@holder.length()) holder=node.@holder;
+				if (node.@rashod.length()) rashod=node.@rashod;
+				if (node.@reload.length()) reload=node.@reload;
+				if (node.@recharg.length()) recharg=node.@recharg;
+				if (node.@mana.length()) mana=dmana=node.@mana;
+				if (node.@magic.length()) magic=dmagic=node.@magic;
 			}
+			
 			//Дополнительные эффекты
-			if (node.dop.length()) {
-				getDopParam(node.dop[0])
-				if (variant>0) getDopParam(node.dop[variant]);
+			if ("dop" in data) {
+				if (node.@vision.length()) visionMult=node.@vision;
+				if (node.@effect.length()) dopEffect=node.@effect;
+				if (node.@damage.length()) dopDamage=node.@damage;
+				if (node.@ch.length()) dopCh=node.@ch;
+				if (node.@probiv.length()) probiv=node.@probiv;
 			}
-			//боеприпасы
-			if (node.a.length()) {
-				ammo = ammoBase = node.a[0];
+			
+			// [ammunition]
+			if ("a" in data) {
+				ammo = data.a;
+				ammoBase = data.a;
+				
 				var ammoNode:XML = getAmmoInfo(ammo);
 				setAmmo(ammo,ammoNode);
 			}
 			
-			//боевые характеристики
-			getCharParam(node.char[0]);
-			if (variant>0) getCharParam(node.char[variant]);
-			
-			recoilUp=recoil/2;
-			if (owner && !owner.player) recoilUp*=0.2;
-			t_rech=recharg;
-			if (recharg) hold=holder;
-			hp=maxhp;
-			if (owner && owner.player) {
-				if (tipDamage==Unit.D_BUL) critDamPlus+=0.2;
-				if (tipDamage==Unit.D_PLASMA) critDamPlus-=0.2;
-			}
-		}
-		
-		protected function getVisParam(node:XML):void {
-			if (node==null) return;
-			if (node.@vweap.length()>0) svisv=node.@vweap;
-			if (node.@tipdec.length()) tipDecal=node.@tipdec;
-			if (node.@shell.length()) shell=true;
-			if (node.@spring.length()) spring=node.@spring;
-			if (node.@bulanim.length()) bulAnim=true;
-			if (node.@phisbul.length()) bulBlend='normal';
-			if (node.@visexpl.length()) visexpl=node.@visexpl;
-			if (node.@shine.length()) shine=node.@shine;
-			if (node.@vbul.length()) visbul=node.@vbul;
-			if (node.@flare.length()) flare=node.@flare;
-		}
-		
-		protected function getSndParam(node:XML):void {
-			if (node==null) return;
-			if (node.@shoot.length()) sndShoot=node.@shoot;
-			if (node.@shoot_n.length()) sndShoot_n=node.@shoot_n;
-			if (node.@reload.length()) sndReload=node.@reload;
-			if (node.@hit.length()) sndHit=node.@hit;
-			if (node.@prep.length()) sndPrep=node.@prep;
-			if (node.@t1.length()) snd_t_prep1=node.@t1;
-			if (node.@t2.length()) snd_t_prep2=node.@t2;
-			if (node.@noise.length()) noise=node.@noise;
-		}
-		
-		protected function getDopParam(node:XML):void {
-			if (node==null) return;
-			if (node.@vision.length()) visionMult=node.@vision;
-			if (node.@effect.length()) dopEffect=node.@effect;
-			if (node.@damage.length()) dopDamage=node.@damage;
-			if (node.@ch.length()) dopCh=node.@ch;
-			if (node.@probiv.length()) probiv=node.@probiv;
-		}
-		
-		protected function getPhisParam(node:XML):void {
-			if (node==null) return;
-			if (node.@massa>0) massa=node.@massa/50;
-			else massa=0;
-			if (node.@m.length()) mass=node.@m;
-			if (node.@drot.length()) drot=(node.@drot*Math.PI/180);
-			if (node.@drot2.length()) drot2=(node.@drot2*Math.PI/180);
-			if (node.@recoil.length()) recoil=node.@recoil;
-			if (node.@speed.length()) speed=node.@speed;
-			if (node.@deviation.length()) deviation=node.@deviation;
-			if (node.@flame.length()) flame=node.@flame;
-			if (node.@grav.length()) grav=node.@grav;
-			if (owner && owner.fraction!=Unit.F_PLAYER && node.@grav2.length()) grav=node.@grav2;
-			if (node.@accel.length()) accel=node.@accel;
-			if (node.@navod.length()) navod=node.@navod;
-			if (node.@distexpl.length()) distExpl=true;
-			if (node.@volna.length()) volna=true;
-		}
-		
-		protected function getCharParam(node:XML):void {
-			if (node==null) return;
+			// [Combat characteristics]
 			if (node.@maxhp.length()) maxhp=node.@maxhp;
 			if (node.@damage.length()) damage=node.@damage;
 			if (node.@damexpl.length()) damageExpl=node.@damexpl;
@@ -465,28 +488,35 @@ package fe.weapon {
 			if (node.@expltip.length()) explTip=node.@expltip;
 			if (node.@explkol.length()) explKol=node.@explkol;
 			if (node.@prep.length()) prep=node.@prep;
-			auto=(rapid<=6);
+			auto = (rapid <= 6);
 			if (node.@auto.length()) auto=(node.@auto!='0');
-		}
-		
-		protected function getAmmoParam(node:XML):void {
-			if (node==null) return;
-			if (node.@holder.length()) holder=node.@holder;
-			if (node.@rashod.length()) rashod=node.@rashod;
-			if (node.@reload.length()) reload=node.@reload;
-			if (node.@recharg.length()) recharg=node.@recharg;
-			if (node.@mana.length()) mana=dmana=node.@mana;
-			if (node.@magic.length()) magic=dmagic=node.@magic;
+			recoilUp = recoil / 2;
+			if (owner && !owner.player) {
+				recoilUp *= 0.2;
+			}
+			t_rech = recharg;
+			if (recharg) {
+				hold = holder;
+			}
+			hp = maxhp;
+			if (owner && owner.player) {
+				if (tipDamage == Unit.D_BUL) {
+					critDamPlus += 0.2;
+				}
+				if (tipDamage == Unit.D_PLASMA) {
+					critDamPlus -= 0.2;
+				}
+			}
 		}
 		
 		public function updVariant(nvar:int):void {
-			if (uniq<0) return;
-			variant=nvar;
-			if (owner.player && World.w.gg.currentWeapon==this) {
+			if (uniq < 0) return;
+			variant = nvar;
+			if (owner.player && World.w.gg.currentWeapon == this) {
 				remVisual();
 			}
-			getXmlParam();			
-			if (owner.player && World.w.gg.currentWeapon==this) {
+			getWeaponData();			
+			if (owner.player && World.w.gg.currentWeapon == this) {
 				addVisual();
 				World.w.gg.weaponLevit();
 			}
