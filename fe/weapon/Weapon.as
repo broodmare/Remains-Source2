@@ -144,16 +144,16 @@ package fe.weapon {
 		public var magic:Number=100, dmagic:Number=100;	//расход магии
 		public var mana:Number=100, dmana:Number=100;	//расход маны
 
-		public var noise:int=0;				//звук выстрела
-		public var shine:int=500;			//вспышка от выстрела
-		public var tipDecal:int=0;			//тип оставляемых следов		
-		public var bulAnim:Boolean=false;	//анимировать снаряд
-		public var spring:int=1;			//растягивание
-		public var flame:int=0;				//снаряд ведёт себя как огонь
-		public var grav:Number=0;			//снаряд движется по параболе
-		public var accel:Number=0;			//снаряд движется с ускорением
-		public var shell:Boolean=false;		//выбрасывает гильзу
-		public var fromWall:Boolean=false;	//стрелять из стены
+		public var noise:int=0;					//звук выстрела
+		public var shine:int=500;				//вспышка от выстрела
+		public var tipDecal:int=0;				//тип оставляемых следов		
+		public var bulAnim:Boolean = false;		//анимировать снаряд
+		public var spring:int=1;				//растягивание
+		public var flame:int=0;					//снаряд ведёт себя как огонь
+		public var grav:Number=0;				//снаряд движется по параболе
+		public var accel:Number=0;				//снаряд движется с ускорением
+		public var shell:Boolean = false;		//выбрасывает гильзу
+		public var fromWall:Boolean = false;	//стрелять из стены
 		public var bulBlend:String='screen';
 		private var emitShell:Emitter=Emitter.arr['gilza'];
 		
@@ -203,7 +203,6 @@ package fe.weapon {
 		
 		// Sounds
 		public var sndShoot:String='';
-		public var sndShoot_n:int=1;
 		public var sndReload:String='';
 		public var sndPrep:String='';
 		public var sndHit:String='';
@@ -328,33 +327,33 @@ package fe.weapon {
 			lvl = data.lvl;
 			perslvl = data.perslvl;
 			
-			if (data.alicorn > 0) {
-				alicorn = true;
+			if ("alicorn" in data) {
+				alicorn = data.alicorn;
 			}
 			
 			//SATS
-			if ("que" in data) {
-				satsQue = data.que;
+			if ("sats_que" in data) {
+				satsQue = data.sats_que;
 			}
-			if ("cons" in data) {
-				satsCons = data.cons;
+			if ("sats_cons" in data) {
+				satsCons = data.sats_cons;
 			}
-			if ("noSATS" in data) {
-				noSats = data.noSATS;
+			if ("sats_noSats" in data) {
+				noSats = data.sats_noSats;
 			}
-			if ("noperc" in data) {
-				noPerc = data.noperc;
+			if ("sats_noperc" in data) {
+				noPerc = data.sats_noperc;
 			}
 			
 			// [Price and repair]
-			if ("rep" in data) {
-				rep_eff = data.rep;
+			if ("com_rep" in data) {
+				rep_eff = data.com_rep;
 			}
-			if ("price" in data) {
-				price = data.price;
+			if ("com_price" in data) {
+				price = data.com_price;
 			}
-			if ("uniq" in data) {
-				uniq = data.uniq;
+			if ("com_uniq" in data) {
+				uniq = data.com_uniq;
 			}
 			
 			// [Visual]
@@ -371,35 +370,35 @@ package fe.weapon {
 			}
 			
 			// "vis" properties
-			if ("vweap" in data ) {
-				svisv = data.vweap;
+			if ("vis_vweap" in data ) {
+				svisv = data.vis_vweap;		// String
 			}
-			if ("tipdec" in data ) {
-				tipDecal = data.tipdec;
+			if ("vis_tipdec" in data ) {
+				tipDecal = data.vis_tipdec;	// Int
 			}
-			if ("shell" in data ) {
-				shell = data.shell;
+			if ("vis_shell" in data ) {
+				shell = data.vis_shell;		// Boolean
 			}
-			if ("spring" in data ) {
-				spring = data.spring;
+			if ("vis_spring" in data ) {
+				spring = data.vis_spring;	// Int
 			}
-			if ("bulanim" in data ) {
-				bulAnim = data.bulanim;
+			if ("vis_bulanim" in data ) {
+				bulAnim = data.vis_bulanim;	// Boolean
 			}
-			if ("phisbul" in data ) {
-				bulBlend = "normal";
+			if ("vis_phisbul" in data ) {
+				bulBlend = "normal";		// String | Custom string here! Don't change this
 			}
-			if ("visexpl" in data ) {
-				visexpl = data.visexpl;
+			if ("vis_visexpl" in data ) {
+				visexpl = data.vis_visexpl;	// String
 			}
-			if ("shine" in data ) {
-				shine = data.shine;
+			if ("vis_shine" in data ) {
+				shine = data.vis_shine;		// Int
 			}
-			if ("vbul" in data ) {
-				visbul = data.vbul;
+			if ("vis_vbul" in data ) {
+				visbul = data.vis_vbul;		// String
 			}
-			if ("vbul" in data ) {
-				flare = data.flare;
+			if ("vis_flare" in data ) {
+				flare = data.vis_flare;			// String
 			}
 
 			if (tip > 0 || svisv) {
@@ -433,192 +432,191 @@ package fe.weapon {
 			}
 			
 			// Sounds
-			if ("shoot" in data ) {
-				sndShoot = data.shoot;
+			if ("snd_shoot" in data ) {
+				sndShoot = data.snd_shoot;		// String
 			}
-			if ("shoot_n" in data ) {
-				sndShoot_n = data.shoot_n;
+			if ("snd_reload" in data ) {
+				sndReload = data.snd_reload;	// String
 			}
-			if ("reload" in data ) {
-				sndReload = data.reload;
+			if ("snd_hit" in data ) {
+				sndHit = data.snd_hit;			// String
 			}
-			if ("hit" in data ) {
-				sndHit = data.hit;
+			if ("snd_prep" in data ) {
+				sndPrep = data.snd_prep;		// String
 			}
-			if ("prep" in data ) {
-				sndPrep = data.prep;
+			if ("snd_t1" in data ) {
+				snd_t_prep1 = data.snd_t1;		// Int
 			}
-			if ("t1" in data ) {
-				snd_t_prep1 = data.t1;
+			if ("snd_t2" in data ) {
+				snd_t_prep2 = data.snd_t2;		// Int
 			}
-			if ("t2" in data ) {
-				snd_t_prep2 = data.t2;
-			}
-			if ("noise" in data ) {
-				noise = data.noise;
+			if ("snd_noise" in data ) {
+				noise = data.snd_noise;			// Int
 			}
 
 			
 			// [Physical parameters]
-			if ("massa" in data  && data.massa > 0) {
-				massa = data.massa / 50
+			if ("phis_massa" in data) {
+				massa = data.phis_massa / 50
 			}
 			else {
 				massa = 0;
 			}
-			if ("m" in data ) {
-				mass = data.m;
+			if ("phis_m" in data ) {
+				mass = data.phis_m;				// Int
 			}
-			if ("drot" in data ) {
-				drot = data.drot * Math.PI / 180;
+			if ("phis_drot" in data ) {
+				drot = data.phis_drot * Math.PI / 180;
 			}
-			if ("drot2" in data ) {
-				drot2 = data.drot2 * Math.PI / 180;
+			if ("phis_drot2" in data ) {
+				drot2 = data.phis_drot2 * Math.PI / 180;
 			}
-			if ("recoil" in data ) {
-				recoil = data.recoil;
+			if ("phis_recoil" in data ) {
+				recoil = data.phis_recoil;
 			}
-			if ("speed" in data ) {
-				speed = data.speed;
+			if ("phis_speed" in data ) {
+				speed = data.phis_speed;
 			}
-			if ("deviation" in data ) {
-				deviation = data.deviation;
+			if ("phis_deviation" in data ) {
+				deviation = data.phis_deviation;
 			}
-			if ("flame" in data ) {
-				flame = data.flame;
+			if ("phis_flame" in data ) {
+				flame = data.phis_flame;
 			}
-			if ("grav" in data ) {
-				grav = data.grav;
+			if ("phis_grav" in data ) {
+				grav = data.phis_grav;
 			}
-			if ("grav2" in data && owner && owner.fraction != Unit.F_PLAYER) {
-				grav = data.grav2;
+			if ("phis_grav2" in data && owner && owner.fraction != Unit.F_PLAYER) {
+				grav = data.phis_grav2;
 			}
-			if ("accel" in data ) {
-				accel = data.accel;
+			if ("phis_accel" in data ) {
+				accel = data.phis_accel;
 			}
-			if ("navod" in data ) {
-				navod = data.navod;
+			if ("phis_navod" in data ) {
+				navod = data.phis_navod;
 			}
-			if ("distexpl" in data ) {
-				distExpl = data.distexpl;
+			if ("phis_distexpl" in data ) {
+				distExpl = data.phis_distexpl;
 			}
-			if ("volna" in data ) {
-				volna = data.volna;
+			if ("phis_volna" in data ) {
+				volna = data.phis_volna;
 			}
 
 			
 			// Ammunition
-			if ("holder" in data ) {
-				holder = data.holder;
+			if ("ammo_holder" in data ) {
+				holder = data.ammo_holder;
 			}
-			if ("rashod" in data ) {
-				rashod = data.rashod;
+			if ("ammo_rashod" in data ) {
+				rashod = data.ammo_rashod;
 			}
-			if ("reload" in data ) {
-				reload = data.reload;
+			if ("ammo_reload" in data ) {
+				reload = data.ammo_reload;
 			}
-			if ("recharg" in data ) {
-				recharg = data.recharg;
+			if ("ammo_recharg" in data ) {
+				recharg = data.ammo_recharg;
 			}
-			if ("mana" in data ) {
-				mana = data.mana;
-				dmana = data.mana;
+			if ("ammo_mana" in data ) {
+				mana = data.ammo_mana;
+				dmana = data.ammo_mana;
 			}
-			if ("magic" in data ) {
-				magic = data.magic;
-				dmagic = data.magic;
+			if ("ammo_magic" in data ) {
+				magic = data.ammo_magic;
+				dmagic = data.ammo_magic;
 			}
 
 			
 			// [Additional effects (was called 'dop')]
-			if ("vision" in data ) {
-				visionMult = data.vision;
+			if ("dop_vision" in data ) {
+				visionMult = data.dop_vision;
 			}
-			if ("effect" in data ) {
-				dopEffect = data.effect;
+			if ("dop_effect" in data ) {
+				dopEffect = data.dop_effect;
 			}
-			if ("damage" in data ) {
-				dopDamage = data.damage;
+			if ("dop_damage" in data ) {
+				dopDamage = data.dop_damage;
 			}
-			if ("ch" in data ) {
-				dopCh = data.ch;
+			if ("dop_ch" in data ) {
+				dopCh = data.dop_ch;
 			}
-			if ("probiv" in data ) {
-				probiv = data.probiv;
+			if ("dop_probiv" in data ) {
+				probiv = data.dop_probiv;
 			}
 			
 			// [ammunition (was called 'a')]
-			if ("a" in data) {
-				ammo = data.a;
-				ammoBase = data.a;
+			if ("ammo_base" in data) {
+				ammo = data.ammo_base;
+				ammoBase = data.ammo_base;
 				
 				var ammoNode:XML = getAmmoInfo(ammo);
-				setAmmo(ammo,ammoNode);		// Calls XML info from items.xml
+				setAmmo(ammo, ammoNode);		// Calls XML info from items.xml
 			}
 			
 			// [Combat characteristics]
-			if ("maxhp" in data ) {
-				maxhp = data.maxhp;
+			if ("char_maxhp" in data ) {
+				maxhp = data.char_maxhp;
 			}
-			if ("damage" in data ) {
-				damage = data.damage;
+			if ("char_damage" in data ) {
+				damage = data.char_damage;
 			}
-			if ("damexpl" in data ) {
-				damageExpl = data.damexpl;
+			if ("char_damexpl" in data ) {
+				damageExpl = data.char_damexpl;
 			}
-			if ("rapid" in data ) {
-				rapid = data.rapid;
+			if ("char_rapid" in data ) {
+				rapid = data.char_rapid;
 			}
-			if ("pier" in data ) {
-				pier = data.pier;
+			if ("char_pier" in data ) {
+				pier = data.char_pier;
 			}
-			if ("crit" in data ) {
-				critM = data.crit - 1;
-				critCh = 0.1 * data.crit;
+			if ("char_crit" in data ) {
+				critM = data.char_crit - 1;
+				critCh = 0.1 * data.char_crit;
 			}
-			if ("critdam" in data ) {
-				critDamPlus = data.critdam;
+			if ("char_critdam" in data ) {
+				critDamPlus = data.char_critdam;
 			}
-			if ("knock" in data ) {
-				otbros = data.knock;
+			if ("char_knock" in data ) {
+				otbros = data.char_knock;
 			}
-			if ("tipdam" in data ) {
-				tipDamage = data.tipdam;
+			if ("char_tipdam" in data ) {
+				tipDamage = data.char_tipdam;
 			}
-			if ("prec" in data ) {
-				precision = data.prec * 40;
+			if ("char_prec" in data ) {
+				precision = data.char_prec * 40;
 			}
-			if ("antiprec" in data ) {
-				antiprec = data.antiprec * 40;
+			if ("char_antiprec" in data ) {
+				antiprec = data.char_antiprec * 40;
 			}
-			if ("destroy" in data ) {
-				destroy = data.destroy;
+			if ("char_destroy" in data ) {
+				destroy = data.char_destroy;
 			}
-			if ("kol" in data ) {
-				kol = data.kol;
+			if ("char_kol" in data ) {
+				kol = data.char_kol;
 			}
-			if ("dkol" in data ) {
-				dkol = data.dkol;
+			if ("char_dkol" in data ) {
+				dkol = data.char_dkol;
 			}
-			if ("expl" in data ) {
-				explRadius = data.expl;
+			if ("char_expl" in data ) {
+				explRadius = data.char_expl;
 			}
-			if ("expltip" in data ) {
-				explTip = data.expltip;
+			if ("char_expltip" in data ) {
+				explTip = data.char_expltip;
 			}
-			if ("explkol" in data ) {
-				explKol = data.explkol;
+			if ("char_explkol" in data ) {
+				explKol = data.char_explkol;
 			}
-			if ("prep" in data ) {
-				prep = data.prep;
+			if ("char_prep" in data ) {
+				prep = data.char_prep;
 			}
 
 			auto = (rapid <= 6);
 			
-			if ("auto" in data ) {
-				auto = (data.auto != '0');// True or false
+			if ("char_auto" in data ) {
+				auto = data.char_auto;	// Boolean
 			}
 			
+			// End of accessing data
+
 			recoilUp = recoil / 2;
 			
 			if (owner && !owner.player) {
@@ -1239,9 +1237,11 @@ package fe.weapon {
 			rotUp += recoilUp * recoilMult;
 			is_shoot = true;
 			
+			/*	'sndShoot_n' / 'shoot_n' member was never used, not sure what this was for
 			if (sndShoot != '' && kol_shoot%sndShoot_n == 0) {
 				Snd.ps(sndShoot, coordinates.X, coordinates.Y);
 			}
+			*/
 			
 			t_auto = 3;
 			
