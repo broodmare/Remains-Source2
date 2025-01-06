@@ -6,6 +6,8 @@ package fe.serv {
 	
 	public class LootGen {
 
+		private static var itemManager:ItemManager;
+
 		// [Random objects]
 		public static var arr:Array;
 				
@@ -16,6 +18,11 @@ package fe.serv {
 		private static var lootBroken:Boolean = false;
 		
 		public static function init():void {
+			// Get a reference to the item manager if needed
+			if (!itemManager) {
+				itemManager = ItemManager.reference;
+			}
+			
 			arr = [];
 			var n:Array = [];
 
@@ -31,6 +38,7 @@ package fe.serv {
 				arr['weapon'].push({id:weap.@id, st:weap.com.@stage, chance:weap.com.@chance, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['weapon']+=Number(weap.com.@chance))});
 				if (weap.com.@uniq.length()) arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
 			}
+			
 			for each (weap in weaponList.(@tip==5)) {
 				arr['magic'].push({id:weap.@id, st:0, chance:0, worth:0, lvl:0, r:0});
 			}
@@ -159,23 +167,19 @@ package fe.serv {
 			if (itemCount != -1) {
 				iCount = itemCount;
 			}	
+			
 			// If no amount of items was specified or it's a unique item, spawn 1 of the item
 			if (itemCount == -1 && lootType == Item.L_UNIQ) {
 				iCount = 1;
 			}
+			
 			// Spawn the item
-			var item:Item = new Item(lootType, id, iCount);
-			if (item.xml != null) {
-				//trace("LootGen.as/newLoot() - Created new item, XML Data: " + item.xml.toXMLString());
-				//trace("LoostGen.as/newLoot() - Item info -- ID: " + item.id + ", name: " + item.nazv  + ", kol: " + item.kol);
-			}
-			else {
-				trace("LootGen.as/newLoot() - ERROR: Created new item with no XML data");
-			}
+			var item:Item = new Item(id, iCount);
 
 			if (lootType == 'eda') {
 				item.tip = 'food';
 			}
+			
 			if (lootType == 'co') {
 				item.tip = 'scheme';
 				var wid:String = id.substr(2);
@@ -190,31 +194,50 @@ package fe.serv {
 			if (item.id == 'money') {	//множитель крышек
 				item.kol *= (World.w.pers.capsMult * World.w.pers.difCapsMult);
 			}	
+			
 			if (item.id == 'bit') {		//множитель крышек
 				item.kol *= (World.w.pers.bitsMult * World.w.pers.difCapsMult);
 			}	
+			
 			if (lootBroken && (item.id == 'money' || item.id == 'bit')) {
 				item.kol *= 0.5;
 			}
+			
 			if (lootBroken && (item.tip == Item.L_AMMO || item.tip == Item.L_EXPL) && Math.random() < 0.5) {
 				return false;
 			
 			}
+			
+			var itemData = itemManager.getItem(id);
+
 			// [Check limits]
-			if (imp == 0 && item.xml.@limit.length()) {
-				var lim:int = World.w.game.getLimit(item.xml.@limit);
+			if (imp == 0 && "limit" in itemData) {
+				var lim:int = World.w.game.getLimit(itemData.limit);
 				var itemLimit:Number = World.w.land.lootLimit;
-				if (item.xml.@mlim.length()) itemLimit *= item.xml.@mlim;
-				if (item.xml.@maxlim.length() && lim >= item.xml.@maxlim) {
-					if (!World.w.testLoot) trace("Maximum loot amount reached for item: " + id + ", amount: " + lim);
+				
+				if ("mlim" in itemData) {
+					itemLimit *= itemData.mlim;
+				}
+				
+				if ("maxlim" in itemData && lim >= itemData.maxlim) {
+					if (!World.w.testLoot) {
+						trace("Maximum loot amount reached for item: " + id + ", amount: " + lim);
+					}
+					
 					return false;
 				}
+				
 				if (lim >= itemLimit) {
-					if (!World.w.testLoot) trace("Maximum loot amount reached for item: " + id + ", amount: " + itemLimit);
+					if (!World.w.testLoot) {
+						trace("Maximum loot amount reached for item: " + id + ", amount: " + itemLimit);
+					}
+					
 					return false;
 				}
-				World.w.game.addLimit(item.xml.@limit,1);
+				
+				World.w.game.addLimit(itemData.limit, 1);
 			}
+			
 			if (World.w.testLoot) {
 				trace("LootGen.as/newLoot() - is calling the Invent.as()/take function because World.testLoot is true");
 				World.w.invent.take(item);
@@ -222,7 +245,9 @@ package fe.serv {
 			else {
 				new Loot(loc, item, nx, ny, true);
 			}
+			
 			is_loot++;
+			
 			return true;
 		}
 		
@@ -301,9 +326,12 @@ package fe.serv {
 					if (Math.random()<0.5) newLoot(1, Item.L_WEAPON,'5',1);
 					else newLoot(1, Item.L_WEAPON,'4',1);
 				}
+				
 				newLoot(0.5,Item.L_EXPL,'',Math.floor(Math.random()*4));
 				newLoot(0.5,Item.L_AMMO,'',Math.floor(Math.random()*4));
+				
 				if (World.w.pers.freel) newLoot(0.5,Item.L_AMMO);
+				
 				if (World.w.pers.barahlo) newLoot(0.5, Item.L_COMPA, 'intel_comp');
 			}
 			else if (cont=='robocell') {
@@ -311,32 +339,42 @@ package fe.serv {
 			}
 			else if (cont=='instr') {
 				newLoot(0.1, Item.L_ITEM,'pin',Math.floor(Math.random()*5+1)); 
-				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) newLoot(0.5, Item.L_ITEM,'rep');
+				
+				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) {
+					newLoot(0.5, Item.L_ITEM,'rep');
+				}
+				
 				newLoot(0.85, Item.L_COMPA);
 				newLoot(0.7, Item.L_COMPW);
 				newLoot(0.1, Item.L_COMPE);
 				newLoot(0.5, Item.L_COMPM);
 				newLoot(0.5, Item.L_PAINT);
+				
 				if (World.w.pers.barahlo) {
 					newLoot(0.85, Item.L_COMPA);
-					newLoot(0.7, Item.L_COMPW);
-					newLoot(0.1, Item.L_COMPE);
-					newLoot(0.1, Item.L_COMPE);
-					newLoot(0.5, Item.L_COMPA);
+					newLoot(0.70, Item.L_COMPW);
+					newLoot(0.10, Item.L_COMPE);
+					newLoot(0.10, Item.L_COMPE);
+					newLoot(0.50, Item.L_COMPA);
 				}
 			}
 			else if (cont=='instr2') {
 				newLoot(0.1, Item.L_ITEM,'pin',Math.floor(Math.random()*5+1)); 
-				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) newLoot(0.5, Item.L_ITEM,'rep');
+				
+				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) {
+					newLoot(0.5, Item.L_ITEM,'rep');
+				}
+				
 				newLoot(0.75, Item.L_COMPA);
 				newLoot(0.4, Item.L_COMPW);
 				newLoot(0.5, Item.L_COMPM);
 				newLoot(0.2, Item.L_PAINT);
+				
 				if (World.w.pers.barahlo) {
 					newLoot(0.75, Item.L_COMPA);
-					newLoot(0.4, Item.L_COMPW);
-					newLoot(0.1, Item.L_COMPE);
-					newLoot(0.5, Item.L_COMPA);
+					newLoot(0.40, Item.L_COMPW);
+					newLoot(0.10, Item.L_COMPE);
+					newLoot(0.50, Item.L_COMPA);
 				}
 			}
 			else if (cont=='trash') {

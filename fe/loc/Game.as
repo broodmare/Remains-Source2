@@ -10,6 +10,7 @@ package fe.loc {
 		
 		// Managers
 		public var vendorManager:VendorManager;
+		public var itemManager:ItemManager;
 
 		// Level information
 		public var globalDif:int = 2			// [Global difficulty level]
@@ -295,7 +296,7 @@ package fe.loc {
 						n = World.w.pers.level - 1;
 					}
 				}
-				curLand.land = new Land(World.w.gg, curLand, n);
+				curLand.land = new Land(itemManager, World.w.gg, curLand, n);
 			}
 
 			World.w.time___metr('Creating level');

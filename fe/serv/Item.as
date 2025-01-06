@@ -6,6 +6,8 @@ package fe.serv {
 	
 	public class Item {	// [Inventory item]
 		
+		private static var itemManager:ItemManager;
+
 		// Ghetto AS3 enumeration
 		public static const L_ITEM:String = 'item';
 		public static const L_ARMOR:String = 'armor';
@@ -36,22 +38,20 @@ package fe.serv {
 		public static var itemTip:Array=['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key'];
 		
 		public var tip:String;					// Item type
-		public var wtip:String='';				// weapon type (0 - internal, 1 - melee, 2 - small (pistols), 3 - large (rifles and more), 4 - throwing, 5 - magic
-		public var base:String='';				// Base version of an item, eg. "p32" and it's variant "p32_1"
+		public var wtip:String = "";			// weapon type (0 - internal, 1 - melee, 2 - small (pistols), 3 - large (rifles and more), 4 - throwing, 5 - magic
+		public var base:String = "";			// Base version of an item, eg. "p32" and it's variant "p32_1"
 		public var id:String;					// Internal item ID
 		public var nazv:String;					// Item name
 		public var mess:String;					// [Information window that pauses the game]
-		public var fc:int=-1;					// [Popup color]
+		public var fc:int = -1;					// [Popup color]
 		public var invis:Boolean = false;		// 
-		
-		public var xml;
 		
 		public var kol:int = 0;					// Quantity in the player's inventory
 		public var vault:int = 0;				// Quantity in storage
 		public var invCat:int = 3;				// What iventory page this items goes into on your pip-buck
 		public var sost:Number = 1;				// [Loot status]
 		public var multHP:Number = 1;			// [HP multiplier]
-		public var variant:int = 0;				// Weapon variant (Eg. Weapon2 becomes ID:Weapon, Variant:2)
+		public var variant:Boolean = false;		// This is a unique weapon variant
 		public var mass:Number = 0;				// Item weight
 		
 		public var imp:int=0;					// [0 - randomly generated, 1 - specified, 2 - critical]
@@ -70,49 +70,57 @@ package fe.serv {
 		public var nocheap:Boolean = false;		// [Don't reduce the price]
 		public var hardinv:Boolean = false;		// [only with limited inventory]
 
-		private static var cachedItems:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
+		private var data:Object;				// The objects properties in JSON format
 		
 		// [nkol -- number of items or weapon/armor condition 0-1-2]
-		// [If nkol=-1, the quantity is taken from xml]
+		// [If nkol=-1, the quantity is taken from xml] 
+		
 		// Constructor
-		public function Item(ntip:String, nid:String, nkol:int=-1, unique:int = 0, nxml:XML = null) {
-			variant = unique;
-
-			//	ID
-			// If an item has a caret, remove the caret and use the following number as a variant ID, eg. "Weapon^2" -> ID:Weapon, Variant:2
-			if (nid.charAt(nid.length - 2) == '^') {
-				variant = int(nid.charAt(nid.length - 1));
-				id = nid.substr(0, nid.length - 2);
+		public function Item(itemID:String, nkol:int = -1) {
+			// Grab a reference to the item manager if needed
+			if (!itemManager) {
+				itemManager = ItemManager.reference;
 			}
-			else {
-				id = nid;
+			
+			// Set the ID
+			id = itemID;
+
+			// Get the data for the item
+			data = itemManager.getItem(id);
+			
+			if ("uniqueVariant" in data) {
+				variant = data.uniqueVariant;
 			}
 
 			//	TYPE
-			tip = ntip;
-			xml = nxml;
-
-			// If we're missing either the tip or XML, try to load the info
-			if (tip == null || tip == '' || nxml == null) {
-				getItemInfo();
-			}
+			tip = data.tip;
 			
-			// All uniques are weapon, change to L_WEAPON
+			// All uniques are weapons, change to L_WEAPON (????? When/where would this get set?)
 			if (tip == L_UNIQ) {
 				tip = L_WEAPON;
 			}
 
-			wtip = xml.@tip;
-
+			// Get the weapon type if applicable
+			if ("wtip" in data) {
+				wtip = data.tip;
+			}
+			
+			// Only create one of something if it's a weapon or armor (???? Again, when/where is this getting set?)
 			if (tip == L_ARMOR || tip == L_WEAPON) {
 				kol = 1;
 
-				if (tip == L_ARMOR && xml && xml.@tip == '3') {
+				// If this is an amulet
+				if (tip == L_ARMOR && data.tip == '3') {
 					sost = 1;
 				}
+				// Otherwise
 				else {
-					if (nkol == 0) sost = 0.05 + Math.random() * 0.15;
-					if (nkol == 1) sost = 0.60 + Math.random() * 0.25;
+					if (nkol == 0) {
+						sost = 0.05 + Math.random() * 0.15;
+					}
+					if (nkol == 1) {
+						sost = 0.60 + Math.random() * 0.25;
+					}
 				}
 			}
 			
@@ -120,186 +128,177 @@ package fe.serv {
 			if (nkol >= 0) {
 				kol = nkol;
 			}
-			// Otherwise, if this is being called with -1, use data from the XML
-			else if (nkol < 0 && xml) {
-				if (xml.@kol.length()) {
-					kol = xml.@kol;
-				}
-				else {
-					kol = 1;
-				}
+			// Otherwise, if this is being called with -1, use data
+			else if (nkol < 0 && "kol" in data) {
+				kol = data.kol
+			}
+			// or if we still can't find a quantity in data, just use '1'
+			else {
+				kol = 1;
 			}
 			
 			if (tip == L_WEAPON || tip == L_EXPL) {
-				// If the weapon isn't a variant, get the localized string
-				if (variant == 0)	{
-					nazv = Res.txt('w', id);
-				}
-				// If the weapon IS a variant, re-append the "^1" (or whatever number) to the ID for the look-up
-				else {
-					if (Res.istxt('w', id + '^' + variant)) {
-						nazv = Res.txt('w', id + '^' + variant);
-					}
-					else {
-						nazv = Res.txt('w', id) + ' - II';
-					}
-				}
+				// Get the localized name of the weapon
+				nazv = Res.txt('w', id);
+				
 				if (tip == L_EXPL) {
 					wtip = 'w5';
 				}
 				else {
-					wtip = 'w' + xml.@skill;
+					wtip = 'w' + data.skill;
 				}
 			}
 			else if (tip == L_ARMOR) {
-				nazv=Res.txt('a', id);
-				if (xml && xml.@tip.length()) {
-					wtip = 'armor' + xml.@tip;
+				// Get the localized name of the armor
+				nazv = Res.txt('a', id);
+				
+				// Set the armor type?
+				if ("tip" in data) {
+					wtip = 'armor' + data.tip;
 				}
 				else {
 					wtip = 'armor1';
 				}
 			}
-			else if (xml && xml.@base.length()) {
-				base=xml.@base;
-				nazv=Res.txt('i',base);
-				if (xml.@mod.length()) nazv+=' ('+Res.pipText('am_'+xml.@mod)+')';
+			else if ("ammo_base" in data) {
+				// Ammo variant naming
+				base = data.ammo_base;
+				nazv = Res.txt('i', base);
+				
+				// Get the localizeed name of the ammo variant
+				if ("mod" in data) {
+					nazv += ' (' + Res.pipText('am_' + data.mod) + ')';
+				}
 			}
 			else {
 				nazv = Res.txt('i', id);
 			}
 
-			if (tip==L_ITEM && xml && xml.@tip.length()) {
-				tip=xml.@tip;
+			if (tip == L_ITEM && "tip" in data) {
+				tip = data.tip;
 			}
 			
-			if (tip==L_SCHEME && !Res.istxt('i',id)) {
-				var wid:String=id.substr(2);
-				if (xml.@work == 'work') {
-					nazv = Res.pipText('scheme1') + ' «' + Res.txt('i', wid) + '»';
-				}
-				else {
-					nazv = Res.pipText('recipe') + ' «' + Res.txt('i', wid) + '»';
-				}
+			// If it's a schematic
+			if (tip == L_SCHEME) {
+				// Remove the first two letters of the id, eg. "s_dartgun" -> "dartgun"
+				var wid:String = id.substr(2);
+
+				// Get a formatted localized name based on the workbench type required ("Scheme «xyz»" or "Recipe «xyz»")
+				var prefix:String = (data.work == "work") ? Res.pipText("scheme1") : Res.pipText("recipe");
+				nazv = prefix + " «" + Res.txt('i', wid) + "»";
 			}
+			
+			// Set the item category
 			if (tip == L_AMMO || tip == L_EXPL) {
 				invCat = 2;
 			}
-			if (xml && xml.@us > 0 && tip != L_FOOD && tip != 'eda' && tip != L_BOOK) {
+			
+			// Set the item category
+			if ("us" in data && tip != L_FOOD && tip != "eda" && tip != L_BOOK) {
 				invCat = 1;
 			}
-			if (tip == L_WEAPON && xml) { 
-				if (xml.@tip != 4) mass = 1;
-				if (xml.phis.length() && xml.phis.@m.length()) mass = xml.phis.@m;
-			}
-			if (xml) {
-				if (xml.@invcat.length())	invCat = xml.@invcat;
-				if (xml.@invis.length())	invis = true;
-				if (xml.@fc.length())		fc = xml.@fc;
-				if (xml.@mess.length())		mess = xml.@mess;
-				if (xml.@m.length())		mass = xml.@m;
-			}
-
-		}
-
-		// Set the item's XML and Tip properties
-		private function getItemInfo():void {
-			// Check if the node is already cached
-			if (cachedItems[id] != null) {
-				if (xml == null) {
-					xml = cachedItems[id].xml;
-				}
-				if (tip == null) {
-					tip = cachedItems[id].tip;
-				}
-				return;
-			}
 			
-			var node;	// Items are too fucked up right now to strongly type this
-
-			// We don't have the XML
-			if (tip != null) {
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", tip, "id", id);
-				if (node != null ) {
-					xml = node;
-					tip = node.@tip;
-
-					cachedItems[id] = node;	// Cache the item
-					return;
+			// Set the item category
+			if (tip == L_WEAPON) { 
+				if (data.tip != 4) {
+					mass = 1;
 				}
-			}
-
-			// We still don't have the XML OR the Item Type
-			var categories:Array = ["items", "weapons", "armors"];
-			var tips:Array = [L_ITEM, L_WEAPON, L_ARMOR];
-			
-			for (var i:int = 0; i < categories.length; i++) {
-				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", categories[i], "id", id);
-				if (node != null) {	// We found the item 
-					xml = node;
-					tip = (categories[i] == "items" && xml.@tip.length()) ? xml.@tip : tips[i];
-					break;
+				if ("phis_m" in data) {
+					mass = data.phis_m;
 				}
 			}
 			
-			cachedItems[id] = node;	// Cache the item
-			return;
+			if ("invcat" in data) {
+				invCat = data.invcat;
+			}
+			
+			if ("invis" in data) {
+				invis = true;
+			}
+			
+			if ("fc" in data) {
+				fc = data.fc;
+			}
+			
+			if ("mess" in data) {
+				mess = data.mess;
+			}
+			
+			if ("m" in data) {
+				mass = data.m;
+			}
+
 		}
 		
 		public function getPrice():void {
-			if (xml) {
-				if (xml.com.length() && xml.com.@price.length()) {
-					price=xml.com[0].@price*sost*multHP*pmult;
-					if (variant>0) {
-						if (xml.com[1]) price=xml.com[1].@price*sost*multHP*pmult;
-						else price*=3;
-					}
-				}
-				else {
-					price = xml.@price * sost * multHP * pmult;
-				}
+
+			if ("com_price" in data) {
+				price = data.com_price * sost * multHP * pmult;
 			}
+			else {
+				price = data.price * sost * multHP * pmult;
+			}
+
 		}
 		
 		public function getMultPrice():Number {
-			if (xml && xml.@price>0 && xml.@sell > 0) {
-				return Number(xml.@sell) / Number(xml.@price);
+			if ("price" in data && "sell" in data) {
+				return data.sell / data.price;
 			}
 			else {
-				return 0.1;
+				return 0.10;
 			}
 		}
 		
-		public function checkAuto(m:Boolean=false):Boolean {
-			var inv:Invent=World.w.invent;
-			if (tip==L_WEAPON) {
+		public function checkAuto(m:Boolean = false):Boolean {
+			// Get the player inventory
+			var inv:Invent = World.w.invent;
+			
+			if (tip == L_WEAPON) {
 				var w = inv.weapons[id];
-				if (w != null && (World.w.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
-					if (w.hp <= w.maxhp && (w.respect==0 || w.respect==2 || !World.w.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
+				
+				// [If auto selection for repair or forced call is enabled]
+				if (w != null && (World.w.vsWeaponRep || m)) {
+					// [Pick up automatically if there is a weapon, it is faulty and (it is selected or the inventory is infinite)]
+					if (w.hp <= w.maxhp && (w.respect==0 || w.respect==2 || !World.w.hardInv)) {	
 						return true;
 					}
-					else if (m && World.w.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
+					// [If there was a forced taking with the final inventory, then activate the taken weapon]
+					else if (m && World.w.hardInv) {
 						shpun=2;
 					}
 					return false; 
 				}
-				if (w==null && World.w.vsWeaponNew) {	//если включен автоподбор нового и оружия ещё нет
-					if (World.w.hardInv) {		//если инвентарь ограниченный, то проверять вес
-						if (mass == 0) return true;
-						if (xml.@tip<=3) {
-							if (inv.massW<=World.w.pers.maxmW-mass) {
-								return true;
-							} else {
-								if (m) World.w.gui.infoText('fullWeap');
-								return false;
-							}
+				
+				// [if auto-selection of new ones is enabled and there are no weapons yet]
+				if (w == null && World.w.vsWeaponNew) {
+					// [If inventory is limited, then check the weight]
+					if (World.w.hardInv) {
+						// The item is weightless, pick the item up
+						if (mass == 0) {
+							return true;
 						}
-						if (xml.@tip==5) {
-							if (inv.massM<=World.w.pers.maxmM-mass) {
+						if (data.tip <= 3) {
+							// There is enough room in inventory, pick the item up
+							if (inv.massW <= World.w.pers.maxmW - mass) {
 								return true;
 							}
 							else {
-								if (m) World.w.gui.infoText('fullMagic');
+								if (m) {
+									World.w.gui.infoText('fullWeap');
+								}
+								return false;
+							}
+						}
+						if (data.tip == 5) {
+							// There is enough room in inventory, pick the item up
+							if (inv.massM <= World.w.pers.maxmM - mass) {
+								return true;
+							}
+							else {
+								if (m) {
+									World.w.gui.infoText('fullMagic');
+								}
 								return false;
 							}
 						}
@@ -309,36 +308,87 @@ package fe.serv {
 				}
 				return false;
 			}
-			if (tip==L_SPELL) {
-				if (inv.massM>=World.w.pers.maxmM) World.w.gui.infoText('fullMagic');
+			
+			if (tip == L_SPELL) {
+				if (inv.massM >= World.w.pers.maxmM) {
+					World.w.gui.infoText('fullMagic');
+				}
 				return true;
 			}
-			if (tip==L_ARMOR) return true;
-			if (mass==0) return true;
-			if (World.w.hardInv) {
-				if (inv.mass[invCat]+mass*kol>World.w.pers['maxm'+invCat]) return false;
+			
+			// Always pick up armor
+			if (tip == L_ARMOR) {
+				return true;
 			}
-			if (World.w.vsAmmoAll && tip==L_AMMO) return true;
-			if (World.w.vsAmmoTek && xml && tip==L_AMMO) {
-				for each (w in inv.weapons) {
-					if (w.tip<=3 && (w.respect==0 || w.respect==2) && w.ammoBase!='' && (w.ammoBase==xml.@id || w.ammoBase==xml.@base)) return true;
+			
+			// Always pick up weightless items
+			if (mass == 0) {
+				return true;
+			}
+			
+			if (World.w.hardInv) {
+				if (inv.mass[invCat] + mass * kol > World.w.pers['maxm' + invCat]) {
+					return false;
 				}
 			}
-			if (World.w.vsExplAll && tip==L_EXPL) return true;
-			if (World.w.vsMedAll && (tip==L_MED || tip==L_POT)) return true;
-			if (World.w.vsHimAll && tip==L_HIM) return true;
-			if (World.w.vsEqipAll && tip=='equip') return true;
-			if (World.w.vsStuffAll && invCat==3) return true;
-			if (World.w.vsVal && tip=='valuables') return true;
-			if (World.w.vsBook && (tip=='book' || tip=='sphera')) return true;
-			if (World.w.vsFood && (tip=='food' || tip=='eda')) return true;
-			if (World.w.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
-			if (World.w.vsIngr && tip=='compp') return true;
+			
+			if (World.w.vsAmmoAll && tip == L_AMMO) {
+				return true;
+			}
+			
+			if (World.w.vsAmmoTek && tip == L_AMMO) {
+				for each (w in inv.weapons) {
+					if (w.tip <= 3 && (w.respect == 0 || w.respect == 2) && w.ammoBase != "" && (w.ammoBase == data.id || w.ammoBase == data.base)) {
+						return true;
+					}
+				}
+			}
+			
+			if (World.w.vsExplAll && tip == L_EXPL) {
+				return true;
+			}
+			
+			if (World.w.vsMedAll && (tip == L_MED || tip == L_POT)) {
+				return true;
+			}
+			
+			if (World.w.vsHimAll && tip == L_HIM) {
+				return true;
+			}
+			
+			if (World.w.vsEqipAll && tip == 'equip') {
+				return true;
+			}
+			
+			if (World.w.vsStuffAll && invCat == 3) {
+				return true;
+			}
+			
+			if (World.w.vsVal && tip == 'valuables') {
+				return true;
+			}
+			
+			if (World.w.vsBook && (tip == 'book' || tip == 'sphera')) {
+				return true;
+			}
+			
+			if (World.w.vsFood && (tip == 'food' || tip == 'eda')) {
+				return true;
+			}
+			
+			if (World.w.vsComp && (tip == 'stuff' || tip == 'compa' || tip == 'compw' || tip == 'compe' || tip == 'compm')) {
+				return true;
+			}
+			
+			if (World.w.vsIngr && tip == 'compp') {
+				return true;
+			}
+			
 			return false;
 		}
 		
 		public function save():Object {
-			return {tip:tip, id:id, kol:kol, sost:sost, barter:barter, lvl:lvl, trig:trig,variant:variant};
+			return {tip:tip, id:id, kol:kol, sost:sost, barter:barter, lvl:lvl, trig:trig, variant:variant};
 		}
 		
 		public function trade():void {

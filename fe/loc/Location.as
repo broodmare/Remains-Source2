@@ -21,6 +21,7 @@ package fe.loc {
 	
 	public class Location {
 
+		private var itemManager:ItemManager;	// Reference to the item manager
 		public var land:Land;
 		
 		public var id:String;
@@ -190,9 +191,10 @@ package fe.loc {
 // первый этап - создать и построить по карте из xml
 
 		// Constructor
-		public function Location(land:Land, room:XML, rnd:Boolean, opt:Object=null) {
+		public function Location(land:Land, iManager:ItemManager, room:XML, rnd:Boolean, opt:Object=null) {
 			this.land = land;
-			
+			itemManager = iManager;
+
 			spaceX = World.cellsX;	// Room width in tiles
 			spaceY = World.cellsY;	// Room height in tiles
 
@@ -767,20 +769,37 @@ package fe.loc {
 			return true;
 		}
 		
-		//создать предмет, стоящий на ящике
-		private function createSur(box:Box, nsur:String=null):void {
-			if (nsur==null) {
-				if (Math.random()>0.25) return;
-				if (biom==0) nsur='fan';
-				if (biom==2) nsur='lamp';
-				if (biom==3) nsur='kofe';
-				if (nsur==null) return;
+		// [Create an item standing on a box]
+		private function createSur(box:Box, itemID:String = null):void {
+			// If it's not specified what item to put on a box, generate one
+			if (itemID == null) {
+				if (Math.random() > 0.25) {
+					return;
+				}
+
+				if (biom == 0) {
+					itemID = 'fan';
+				}
+				else if (biom == 2) {
+					itemID = 'lamp';
+				}
+				else if (biom == 3) {
+					itemID = 'kofe';
+				}
+				else {
+					return;
+				}
 			}
-			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
+			
+			// Create the item
+			var item:Item = new Item(itemID, 1);
+			// Use the item to create a visible loot item
+			var l:Loot = new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
+			
+			// If we're at the base, don't let the player interact with them
 			if (base) {
-				l.inter.active=false;
-				l.levitPoss=false;
+				l.inter.active = false;
+				l.levitPoss = false;
 			}
 		}
 		

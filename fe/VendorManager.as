@@ -74,7 +74,7 @@ package fe {
 					// Create a new item for each object the vendor trades
 					for each (var obj1:Object in vendorLists[id].buys) {
 						// Create the item, set the amount for sale, and if it's a variant
-						var item:Item = new Item(null, obj1.id, obj1.kol, obj1.variant);	
+						var item:Item = new Item(obj1.id, obj1.kol);	
 						// Add it to the array of items this vender trades
 						vendor.buys.push(item);
 						// If the item is a variant, restore it's original name, eg. "Shotgun^1"
@@ -110,7 +110,7 @@ package fe {
 							existingItem.sost = obj.sost;
 						}
 						else {
-							var newItem:Item = new Item(null, obj.id, obj.kol, obj.variant);
+							var newItem:Item = new Item(obj.id, obj.kol);
 							vendor.buys.push(newItem);
 							vendor.buys2[uniqueId] = newItem;
 						}
@@ -171,7 +171,7 @@ package fe {
 			for (var i:int = 0; i < num; i++) {
 				if (i < num2 && id != 'doctor') {
 					cid = LootGen.getRandom(Item.L_WEAPON, 1 + lvl / 4);
-					item = new Item(Item.L_WEAPON, cid, 1)
+					item = new Item(cid, 1)
 					
 					if (vendor.buys2[cid] == null) {
 						if (Math.random() < 0.2) {
@@ -215,7 +215,7 @@ package fe {
 						continue;
 					}
 					
-					item = new Item(itemTip, cid);
+					item = new Item(cid);
 					
 					if (vendor.buys2[cid] == null) {
 						if (Math.random() < 0.3) {
@@ -256,31 +256,31 @@ package fe {
 					vendor.buys2 = {};
 					setRndBuys(100, 'random');
 					
-					for each (var item:Item in vendor.buys) {
-						var uid:String = item.id;
-						if (item.variant > 0) {
-							uid += '^' + item.variant;
+					for each (var item1:Item in vendor.buys) {
+						var uid:String = item1.id;
+						if (item1.variant > 0) {
+							uid += '^' + item1.variant;
 						}
-						vendor.buys2[uid] = item;
+						vendor.buys2[uid] = item1;
 					}
 					return;
 				} 
 				
-				for each(var item:Item in vendor.buys) {
-					if (item.noref || item.tip == Item.L_ARMOR || item.tip == Item.L_WEAPON || 
-						item.tip == Item.L_SCHEME || item.tip == Item.L_UNIQ || item.tip == Item.L_IMPL) {
+				for each(var item2:Item in vendor.buys) {
+					if (item2.noref || item2.tip == Item.L_ARMOR || item2.tip == Item.L_WEAPON || 
+						item2.tip == Item.L_SCHEME || item2.tip == Item.L_UNIQ || item2.tip == Item.L_IMPL) {
 						continue;
 					}
 					
-					var buyData:Object = findBuyData(vendorData, item.id);
+					var buyData:Object = findBuyData(vendorData, item2.id);
 					if (buyData == null || !buyData.hasOwnProperty("n")) {
 						continue;
 					}
 					
 					var lim:int = Math.ceil(buyData.n * World.w.pers.limitBuys);
 					
-					if (item.kol < lim) {
-						item.kol = Math.min(lim, item.kol + Math.ceil(0.25 * lim));
+					if (item2.kol < lim) {
+						item2.kol = Math.min(lim, item2.kol + Math.ceil(0.25 * lim));
 					}
 				}
 			}

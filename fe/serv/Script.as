@@ -26,37 +26,51 @@ package fe.serv {
 			land=nland;
 			owner=nowner;
 			acts=[];
+			
 			if (xml.@eve.length()) eve=xml.@eve;
+			
 			if (xml.@act.length()) analiz(xml);
+			
 			if (xml.s.length()) {
 				for each(var s:XML in xml.s) analiz(s);
 			}
+			
 			if (tt) onTimer=true;
+			
 			if (land && onTimer) land.scripts.push(this);
 		}
 		
 		private function analiz(xml:XML) {
 			var act:String, targ:String, val:String, t:int=0, n:String='-1', opt1:int=0, opt2:int=0;
+			
 			if (xml.@act.length()) {		//команда
 				act=xml.@act;
 				if (act=='dial' || act=='dialog' || act=='inform' || act=='landlevel') onTimer=true;
 			}
+			
 			if (xml.@targ.length()) targ=xml.@targ;		//цель 
+			
 			if (xml.@val.length()) val=xml.@val;		//значение
+			
 			if (xml.@t.length()) {						//задержка в сек.
 				t=Math.round(xml.@t*World.fps);
 				if (t>0) onTimer=true;
 			}
+			
 			if (xml.@n.length()) n=xml.@n;		//опция
+			
 			if (xml.@opt1.length()) opt1=xml.@opt1;		//опция
+			
 			if (xml.@opt2.length()) opt2=xml.@opt2;		//опция
+			
 			if (act) acts.push({act:act, targ:targ, val:val, t:t, n:n, opt1:opt1, opt2:opt2});
 		}
 		
 		//запуск скрипта
-		public function start() {
+		public function start():void {
 			//trace("Script.as/start() - Starting script!");
 			if (acts.length <= 0) return;
+			
 			if (onTimer) {
                 ncom = 0;
                 com(acts[ncom]);
@@ -64,24 +78,29 @@ package fe.serv {
                 running = true;
             }
 			else {	//всё выполнить сразу
-                for each(var obj:Object in acts) com(obj);
+                for each(var obj:Object in acts) {
+					com(obj);
+				}
             }
 		}
 		
 		public function step():void {
 			if (tcom>0) tcom--;
+			
 			if (tcom<=0) {
 				if (wait) {
 					if (World.w.ctr.keyPressed2) {
 						dial_n=10000;
 					}
 					else if (!World.w.ctr.keyPressed) return;
+					
 					if (dial_n<0) {
 						World.w.gui.dialText();
 						wait=false;
 					}
 					else {
 						dial_n++;
+						
 						if (World.w.gui.dialText(actObj.val,dial_n,actObj.opt1>0,true)) {
 							World.w.ctr.active=false;
 							World.w.ctr.keyPressed=false;
@@ -94,9 +113,12 @@ package fe.serv {
 							wait=false;
 						}
 					}
+					
 					World.w.ctr.keyPressed=World.w.ctr.keyPressed2=false;
 				}
+				
 				ncom++;
+				
 				if (ncom>=acts.length) {
 					running=false;
 					World.w.gui.dialText();
@@ -115,7 +137,11 @@ package fe.serv {
 			}
 
 			actObj = obj;
-			if (World.w.gui.vis.dial.visible) World.w.gui.dialText();
+			
+			if (World.w.gui.vis.dial.visible) {
+				World.w.gui.dialText();
+			}
+			
 			World.w.ctr.keyPressed = false;
 			World.w.ctr.keyPressed2 = false;
 			wait = false;
@@ -123,10 +149,18 @@ package fe.serv {
 
 			if (obj.targ) {
 				var target:Obj;
-				if (obj.targ == 'this') target = owner;
-				else if (land) target = land.uidObjs[obj.targ];
-				else target = World.w.land.uidObjs[obj.targ];
-				if (target) target.command(obj.act, obj.val);
+				
+				if (obj.targ == 'this') {
+					target = owner;
+				}
+				else if (land) {
+					target = land.uidObjs[obj.targ];
+				}
+				else {
+					target = World.w.land.uidObjs[obj.targ];
+				}
+				
+				if (target) {target.command(obj.act, obj.val);}
 			}
 			else {
 				switch (obj.act) {
@@ -150,8 +184,7 @@ package fe.serv {
 					break;
 
 					case 'dialog':
-						if (World.w.dialOn)
-						{
+						if (World.w.dialOn) {
 							World.w.gg.controlOff();
 							wait=true;
 							dial_n=0;
@@ -171,8 +204,7 @@ package fe.serv {
 					break;
 
 					case 'landlevel':
-						if (World.w.dialOn && World.w.game.lands[actObj.val])
-						{
+						if (World.w.dialOn && World.w.game.lands[actObj.val]) {
 							World.w.gg.controlOff();
 							wait=true;
 							World.w.ctr.active=false;
@@ -193,7 +225,7 @@ package fe.serv {
 							World.w.pers.setParameters();
 						}
 						else {
-							var item:Item = new Item(null, obj.val, obj.n);
+							var item:Item = new Item(obj.val, obj.n);
 							World.w.invent.take(item);
 						}
 					break;
@@ -240,14 +272,23 @@ package fe.serv {
 					break;
 
 					case 'turn':
-						if (obj.val > 0) World.w.gg.storona = 1;
-						else World.w.gg.storona=-1;
+						if (obj.val > 0) {
+							World.w.gg.storona  = 1;
+						}
+						else {
+							World.w.gg.storona = -1;
+						}
+						
 						World.w.gg.velocity.X += World.w.gg.storona * 3;
 					break;
 
 					case 'black':
 						World.w.cam.dblack = 0;
-						if (obj.val > 0)World.w.vblack.visible = true;
+						
+						if (obj.val > 0) {
+							World.w.vblack.visible = true;
+						}
+						
 						World.w.vblack.alpha = obj.val;
 					break;
 

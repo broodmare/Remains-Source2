@@ -70,8 +70,9 @@ package fe.weapon {
 		public var checkLine:Boolean = false;	
 
 		public var id:String;
-		public var uniq:Number = -1;			//вероятность появления уникального варианта
-		public var variant:int = 0;				//уникальное оружие
+		public var uniq:Number = -1;			// [Probability of a unique variant appearing]
+		public var variant:Boolean = false;		// CHANGED TO BOOL | The numerical ID of a variant. Assumed 0 is base weapon and in the game it would normally not increment past 1
+												// This number is usually used as a index to reference nodes, eg. "Char[1]" to get the variants stats
 		
 		//характеристики
 		//тип оружия
@@ -80,20 +81,20 @@ package fe.weapon {
 		//2 - лёгкое огнестрельное
 		//3 - тяжёлое
 		//4 - взрывчатка
-		public var tip:int=0;
+		public var tip:int = 0;
 		//категория 
-		public var cat:int=0;
+		public var cat:int = 0;
 		//инвентарь
-		public var respect:int=0;			//отношение 0-новое, 1-скрытое, 2-используемое, 3-схема
+		public var respect:int = 0;			//отношение 0-новое, 1-скрытое, 2-используемое, 3-схема
 		//необходимый скилл
-		public var skill:int=0;
+		public var skill:int = 0;
 		//уровень скилла
-		public var lvl:int=0;
-		public var lvlNoUse:Boolean=false;	//запретить использовать если навык не достаточен
-		public var perslvl:int=0;
-		public var spell:Boolean=false;		//является защитным заклинанием
-		public var alicorn:Boolean=false;	//доступно в режиме аликорна
-		public var rep_eff:Number=1;		//эффективность ремонта набором оружейника
+		public var lvl:int = 0;
+		public var lvlNoUse:Boolean = false;	//запретить использовать если навык не достаточен
+		public var perslvl:int = 0;
+		public var spell:Boolean = false;	//является защитным заклинанием
+		public var alicorn:Boolean = false;	//доступно в режиме аликорна
+		public var rep_eff:Number = 1;		//эффективность ремонта набором оружейника
 		
 		public var auto:Boolean = false;	// [automatic attack]
 		public var rapid:int = 5;			// [cycles per shot, 30 = 1s]
@@ -220,7 +221,7 @@ package fe.weapon {
 		private static var cachedAmmo:Object	= {};
 
 		// Constructor
-		public function Weapon(own:Unit, nid:String, nvar:int = 0) {
+		public function Weapon(own:Unit, nid:String, nvar:Boolean = false) {
 			
 			sloy = 2;
 			owner = own;
@@ -303,7 +304,7 @@ package fe.weapon {
 		}
 		
 
-		// This is the main function that parses weapon data to create a Weapon instance
+		// This is the main function that parses weapon data to create a Weapon instance or update the weapon to a variant
 		public function getWeaponData():void {
 			// [General characteristics]
 			
@@ -362,8 +363,8 @@ package fe.weapon {
 			if (tip == 0) {
 				svisv = null;
 			}
-			else if (variant > 0) {
-				svisv = svis + '_' + variant;
+			else if (variant) {
+				svisv = svis + '_' + "1";	// TODO: This is broke from changing the variant from 1 to a bool
 			}
 			else {
 				svisv = svis;
@@ -641,13 +642,22 @@ package fe.weapon {
 			}
 		}
 		
-		public function updVariant(nvar:int):void {
-			if (uniq < 0) return;
+		// update this weapon and it's stats to the variant using the variant ID provided
+		public function updVariant(nvar:Boolean):void {
+			if (uniq < 0) {
+				return;
+			}
+			
+			// update this weapon variant
 			variant = nvar;
+			
+			// Remove the old movieclip(?) object for this weapon 
 			if (owner.player && World.w.gg.currentWeapon == this) {
 				remVisual();
 			}
+
 			getWeaponData();			
+			
 			if (owner.player && World.w.gg.currentWeapon == this) {
 				addVisual();
 				World.w.gg.weaponLevit();
@@ -662,19 +672,23 @@ package fe.weapon {
 
 		public override function addVisual():void {
 			if (owner) {
-				loc=owner.loc;
+				loc = owner.loc;
 			}
 			else {
-				loc=World.w.loc;
+				loc = World.w.loc;
 			}
-			super.addVisual();
-			if (owner && tip!=5 && owner.cTransform) {
-				vis.transform.colorTransform=owner.cTransform;
+			
+			super.addVisual();	// Obj.addVisual()
+			
+			if (owner && tip != 5 && owner.cTransform) {
+				vis.transform.colorTransform = owner.cTransform;
 			}
 		}
 		
 		public function addVisual2():void {
-			if (tip==5 && vis) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (tip == 5 && vis) {
+				World.w.grafon.visObjs[sloy].addChild(vis);
+			}
 		}
 		
 		public override function setNull(f:Boolean=false):void {
@@ -688,16 +702,23 @@ package fe.weapon {
 		
 		public function setPers(gg:UnitPlayer, pers:Pers):void {
   			weaponSkill = pers.weaponSkills[skill];
-			if (pers.desintegr > 0) desintegr = pers.desintegr;
-			if (tip != 5) drotMult = pers.drotMult;
+			
+			if (pers.desintegr > 0) {
+				desintegr = pers.desintegr;
+			}
+			
+			if (tip != 5) {
+				drotMult = pers.drotMult;
+			}
+			
 			reloadMult=pers.reloadMult;
 			precMult=pers.allPrecMult;
 			recoilMult=pers.recoilMult;
 			consMult=1;
 			damMult=pers.allDamMult;
 			
-			if (skill==2 || skill==3 || skill==4) {
-				damMult*=pers.gunsDamMult;
+			if (skill == 2 || skill == 3 || skill == 4) {
+				damMult *= pers.gunsDamMult;
 			}
 			
 			var razn:int = lvl - pers.getWeapLevel(skill);

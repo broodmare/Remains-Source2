@@ -9,7 +9,7 @@ package fe.unit {
 		public var id:String;
 		public var nazv:String;
 		public var owner:Unit;
-		public var tip:int=1;		//1 - броня, 3 - амулет
+		public var tip:int=1;		// [1 - Armor, 3 - Amulet]
 		public var clo:int=0;		//броню можно переодевать в любой момент в огран инвентаре
 		public var active:Boolean=false;
 		public var xml:XML;

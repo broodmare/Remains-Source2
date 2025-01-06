@@ -12,30 +12,30 @@ package fe.loc {
 		public var info:String;
 		public var empl:String;
 		
-		public var main:Boolean=false;	//главный квест
-		public var sub:Boolean=false;	//этап квеста
-		public var nsub:int=0;			//номер этапа
-		public var subs:Array;			//массив этапов 
-		public var subsId:Array;			//массив этапов по id
-		public var par:Quest;			//главный квест по отношению к подквесту
-		public var auto:Boolean=true;	//квест автматически берётся если закрыт один из этапов, установить в false чтобы квест добавлялся как скрытый
+		public var main:Boolean = false;		//главный квест
+		public var sub:Boolean = false;			//этап квеста
+		public var nsub:int = 0;				//номер этапа
+		public var subs:Array;					//массив этапов 
+		public var subsId:Array;				//массив этапов по id
+		public var par:Quest;					//главный квест по отношению к подквесту
+		public var auto:Boolean = true;			//квест автматически берётся если закрыт один из этапов, установить в false чтобы квест добавлялся как скрытый
 		
-		public var isCheck:Boolean=false;
-		public var nn:Boolean=false;	//не обязательно
-		public var collect:String;		//собрать предметы
-		public var colTip:int=0;		//тип коллекционного предмета. 0-обычный, 1-оружие
-		public var isDel:Boolean=false;	//изъять предмет после закрытия квеста
-		public var give:String;			//кому отдать
-		public var est:int=0;
-		public var kol:int=1;
-		public var canBeUse:Boolean=false;	//подквест закроется если количество будет достигнуто, и больше уже не откроется
-		public var gived:int=0;			//сколько было отдано
-		public var pay:int=0;			//плата за каждый принесённый предмет
-		public var prevRes:String='';	//предыдущий реузльтат проверки
+		public var isCheck:Boolean = false;		// 
+		public var nn:Boolean = false;			//не обязательно
+		public var collect:String;				//собрать предметы
+		public var colTip:int = 0;				//тип коллекционного предмета. 0-обычный, 1-оружие
+		public var isDel:Boolean = false;		//изъять предмет после закрытия квеста
+		public var give:String;					//кому отдать
+		public var est:int = 0;
+		public var kol:int = 1;
+		public var canBeUse:Boolean = false;	//подквест закроется если количество будет достигнуто, и больше уже не откроется
+		public var gived:int = 0;				//сколько было отдано
+		public var pay:int = 0;					//плата за каждый принесённый предмет
+		public var prevRes:String = "";			//предыдущий реузльтат проверки
 		
-		public var hidden:Boolean=false;//описание скрыто
-		public var invis:Boolean=false;//пункт квеста не отображается
-		public var result:Boolean=false;//открывается, если выполнены все предыдущие пункты
+		public var hidden:Boolean = false;		//описание скрыто
+		public var invis:Boolean = false;		//пункт квеста не отображается
+		public var result:Boolean = false;		//открывается, если выполнены все предыдущие пункты
 		
 		public var report:String;
 		
@@ -54,17 +54,17 @@ package fe.loc {
 		public var sort:int=0;
 
 		public function Quest(nxml:XML, loadObj:Object=null, npar:Quest=null, nnsub:int=0) {
-			xml=nxml;
-			id=xml.@id;
+			xml = nxml;
+			id = xml.@id;
 			var pid:String;
 			
-			if (npar==null)	{
-				pid=id;
+			if (npar == null)	{
+				pid = id;
 			}
 			else {
-				par=npar;
-				sub=true;
-				pid=par.id+id;
+				par = npar;
+				sub = true;
+				pid = par.id + id;
 			}
 			
 			state=1;
@@ -173,14 +173,25 @@ package fe.loc {
 			if (xml.deposit.length()) {
 				for each(var rew in xml.deposit) {
 					if (rew.@id.length()) {
+						
 						var item:Item;
-						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
-						else item=new Item('', rew.@id);
-						World.w.invent.take(item,2);
+						if (rew.@kol.length()) {
+							item = new Item(rew.@id, rew.@kol);
+						}
+						else {
+							item = new Item(rew.@id);
+						}
+						
+						World.w.invent.take(item, 2);
 					}
+					
 					if (rew.@trigger.length()) {
-						if (rew.@set.length()) World.w.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.w.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) {
+							World.w.game.triggers[rew.@trigger] = rew.@set.toString();
+						}
+						else {
+							World.w.game.triggers[rew.@trigger] = 1;
+						}
 					}
 				}
 			}
@@ -191,23 +202,40 @@ package fe.loc {
 		public function check(cid:String=null):String {
 			var res:String;
 			if (sub) {
-				if (collect && colTip==0 && gived<kol) {
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol+gived;
-					if (est>kol) est=kol;
+				if (collect && colTip == 0 && gived < kol) {
+					
+					if (World.w.invent.items[collect]) {
+						est=World.w.invent.items[collect].kol+gived;
+					}
+					
+					if (est>kol) {
+						est=kol;
+					}
+					
 					if (give==null) {
 						if (est>=kol) {
 							state=2;
 							if (par.result) par.isResult();
-						} else if (canBeUse) {
+						}
+						else if (canBeUse) {
 							if (state<2) state=1;
 							else est=kol;
-						} else state=1;
-					} else {
-						
+						}
+						else state=1;
 					}
-					if (cid!=null && collect==cid) res=nazv+' '+est+'/'+kol;
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol;
+					else {
+						// Do nothing	
+					}
+					
+					if (cid!=null && collect==cid) {
+						res=nazv+' '+est+'/'+kol;
+					}
+					
+					if (World.w.invent.items[collect]) {
+						est=World.w.invent.items[collect].kol;
+					}
 				}
+				
 				if (collect && colTip==1) {
 					if (World.w.invent.weapons[collect]!=null && World.w.invent.weapons[collect].respect!=3) {
 						state=2;
@@ -215,22 +243,32 @@ package fe.loc {
 					}
 					if (cid!=null && collect==cid) res=nazv;
 				}
-			} else {
-				if (state==2) return null;
+			}
+			else {
+				if (state==2) {
+					return null;
+				}
+				
 				var cl:Boolean=true;
 				var res2:String;
+				
 				for each (var q:Quest in subs) {
 					res2=q.check(cid);
 					if (res2!=null) res=res2;
 					if (q.state<2 && !q.nn) cl=false;
 				}
-				if (cl) close();
+				
+				if (cl) {
+					close();
+				}
 			}
-			//trace(res,prevRes)
-			if (res==prevRes || res==null) {
+
+			if (res == prevRes || res == null) {
 				return null;
 			}
-			prevRes=res;
+			
+			prevRes = res;
+			
 			return res;
 		}
 		
@@ -257,135 +295,210 @@ package fe.loc {
 					}
 				}
 				return false;
-			} else {
+			}
+			else {
 				var ok:Boolean = false;
+				
 				for each (var q:Quest in subs) {
-					if (q.chGive(npc,us)) ok=true;
+					if (q.chGive(npc, us)) {
+						ok = true;
+					}
 				}
+				
 				check(null);
+				
 				return ok;
 			}
 		}
 		
 		public function chReport(npc:String, us:Boolean=false):Boolean {
 			if (!sub) {
-				var cl:Boolean=true;
+				var cl:Boolean = true;
 				var rep:Quest;
+				
 				for each (var q:Quest in subs) {
-					if (q.report && q.report==npc) {
-						rep=q;
-					} else if (q.state<2 && !q.nn) cl=false;
+					if (q.report && q.report == npc) {
+						rep = q;
+					}
+					else if (q.state < 2 && !q.nn) {
+						cl = false;
+					}
 				}
+				
 				if (cl && rep) {
-					if (!us) return true;
+					if (!us) {
+						return true;
+					}
+					
 					rep.close();
 					check(null);
+					
 					return true;
 				}
 			}
+			
 			return false;
 		}
 		
 		//проверить все этапы, если все закрыты, то закрыть основной
 		public function isClosed():void {
-			var cl:Boolean=true;
+			var cl:Boolean = true;
+			
 			for each (var q:Quest in subs) {
-				if (q.state<2) cl=false;
+				if (q.state < 2) {
+					cl = false;
+				}
 			}
-			if (cl) close();
+			
+			if (cl) {
+				close();
+			}
 		}
 		
 		public function isResult():void {
-			for (var i=0; i<subs.length; i++) {
+			var cl:Boolean = true;
+
+			for (var i:int = 0; i < subs.length; i++) {
 				if (subs[i].result) {
-					var cl:Boolean=true;
-					for (var j=i-1; j>=0; j--) {
-						if (subs[j].state<2) cl=false;
+					for (var j = i - 1; j >= 0; j--) {
+						if (subs[j].state < 2) {
+							cl = false;
+						}
 					}
-					if (cl) subs[i].invis=false;
+					
+					if (cl) {
+						subs[i].invis = false;
+					}
+
+					// Reset cl for the next loop
+					cl = true;
 				}
 			}
 		}
 		
 		//закрыть этап
 		public function closeSub(sid:String):void {
-			if (state==2 || sid==null || sid=='' || subsId[sid]==null) return;
+			if (state == 2 || sid == null || sid == "" || subsId[sid] == null) {
+				return;
+			}
+			
 			subsId[sid].close();
-			if (result) isResult();
-			if (state==1) isClosed();
+			
+			if (result) {
+				isResult();
+			}
+			
+			if (state == 1) {
+				isClosed();
+			}
 		}
 		
-		//показать скрытый этап
+		// [Show hidden stage]
 		public function showSub(sid:String):void {
-			if (sid==null || sid=='' || subsId[sid]==null) return;
-			subsId[sid].invis=false;
+			if (sid == null || sid == "" || subsId[sid] == null) {
+				return;
+			}
+			
+			subsId[sid].invis = false;
 		}
 		
-		//закрыть квест
+		// [Close the quest]
 		public function close():void {
-			if (state==2) return;
-			state=2;
-			//изъять квестовые вещи
+			
+			// Already closed
+			if (state == 2) {
+				return;
+			}
+			
+			state = 2;
+			
+			// [Remove quest items]
 			if (!sub) {
 				for each (var q:Quest in subs) {
 					if (q.isDel) {
-						if (q.colTip==0) {
+						if (q.colTip == 0) {
 							World.w.invent.minusItem(q.collect, q.kol);
 							try {
 								World.w.gui.infoText('withdraw',World.w.invent.items[q.collect].nazv, q.kol);
 							}
-							catch (err)
-							{
+							catch (err) {
 								trace('ERROR: (00:23)');
 							}
 						}
 						else if (q.colTip==1) {
-							try
-							{
+							try {
 								World.w.gui.infoText('withdraw',World.w.invent.weapons[q.collect].nazv, 1);
 							}
-							catch (err)
-							{
+							catch (err) {
 								trace('ERROR: (00:24)');
 							}
+							
 							World.w.invent.remWeapon(q.collect);
 						}
 					}
 				}
 			}
-			//выдать награды
-			if (sp) World.w.pers.addSkillPoint(sp);
-			if (xp) World.w.pers.expa(xp);
-			if (rep) World.w.pers.rep+=rep;
-			if (trigger) World.w.game.triggers[trigger]=triggerSet;
+			
+			// [Issue awards]
+			if (sp) {
+				World.w.pers.addSkillPoint(sp);
+			}
+			
+			if (xp) {
+				World.w.pers.expa(xp);
+			}
+			
+			if (rep) {
+				World.w.pers.rep += rep;
+			}
+			
+			if (trigger) {
+				World.w.game.triggers[trigger] = triggerSet;
+			}
+			
 			if (xml.reward.length()) {
 				for each(var rew in xml.reward) {
 					if (rew.@id.length()) {
 						var item:Item;
-						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
-						else item=new Item('', rew.@id);
-						World.w.invent.take(item,2);
+						
+						if (rew.@kol.length()) {
+							item = new Item(rew.@id, rew.@kol);
+						}
+						else {
+							item = new Item(rew.@id);
+						}
+						
+						World.w.invent.take(item, 2);
 					}
+					
 					if (rew.@trigger.length()) {
-						if (rew.@set.length()) World.w.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.w.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) {
+							World.w.game.triggers[rew.@trigger] = rew.@set.toString();
+						}
+						else {
+							World.w.game.triggers[rew.@trigger] = 1;
+						}
 					}
 				}
 			}
+			
 			//сообщение и звук
 			if (sub) {
                 World.w.gui.infoText('doneStage', nazv);
-            } else {
+            }
+			else {
                 World.w.gui.infoText('doneTask', nazv);
                 Snd.ps('quest_ok');
             }
+			
 			//завершающий диалог
 			if (endDial && World.w.dialOn) {
 				World.w.pip.onoff(-1);
 				World.w.gui.dialog(endDial);
 			}
+			
 			//завершающий скрипт
-			if (endScript!=null) {
+			if (endScript != null) {
 				World.w.game.runScript(endScript);
 			}
 		}

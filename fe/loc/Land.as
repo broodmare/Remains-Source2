@@ -8,6 +8,7 @@ package fe.loc {
 
 	public class Land {
 		
+		private var itemManager:ItemManager;	// Reference to the itemManager
 		public var act:LandAct;					//шаблон, по которому была создана местность
 		
 		public var rnd:Boolean = false;			//true если местность с рандомной генерацией
@@ -71,9 +72,10 @@ package fe.loc {
 		private var tileY:int = Tile.tileY;
 
 		//lvl - уровень перса-1
-		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
-			gg=ngg;
-			act=nact;
+		public function Land(iManag:ItemManager, ngg:UnitPlayer, nact:LandAct, lvl:int) {
+			itemManager = iManag;
+			gg = ngg;
+			act = nact;
 			rnd=act.rnd;
 			uidObjs		= [];
 			scripts		= [];
@@ -733,28 +735,30 @@ package fe.loc {
 		}
 		
 		
-		//создать новую локацию по заданному Room-шаблону, в заданных координатах
-		public function newLoc(room:Room, nx:int, ny:int, nz:int=0, opt:Object=null):Location {
-			var loc:Location=new Location(this, room.xml, rnd, opt);
+		// [Create a new location according to a given Room template, in given coordinates]
+		public function newLoc(room:Room, nx:int, ny:int, nz:int = 0, opt:Object = null):Location {
+			var loc:Location = new Location(this, itemManager, room.xml, rnd, opt);
 			
-			loc.biom=act.biom;
-			loc.room=room;
-			loc.landX=nx;
-			loc.landY=ny;
-			loc.landZ=nz;
-			loc.id='loc'+nx+'_'+ny;
+			loc.biom = act.biom;
+			loc.room = room;
+			loc.landX = nx;
+			loc.landY = ny;
+			loc.landZ = nz;
+			loc.id = "loc" + nx + "_" + ny;
 			
-			if (nz >0 ) loc.id += '_'+nz;
+			if (nz > 0) {
+				loc.id += "_" + nz;
+			}
 			
-			loc.unXp=act.xp;
+			loc.unXp = act.xp;
 			
-			//Задать градиент сложности
-			var deep:Number=0;
+			// [Set difficulty gradient]
+			var deep:Number = 0;
 			
 			if (rnd) {
-				if (act.conf==0) deep=ny/2;	
-				if (act.conf==1) deep=ny;
-				if (act.conf==2) deep=ny*2.5;
+				if (act.conf == 0) deep = ny / 2;	
+				if (act.conf == 1) deep = ny;
+				if (act.conf == 2) deep = ny * 2.5;
 			}
 			
 			setLocDif(loc, deep);
@@ -765,12 +769,13 @@ package fe.loc {
 		
 		//установка сложности локации, в зависимости от уровня персонажа и градиена сложности
 		private function setLocDif(loc:Location, deep:Number):void {
-			var ml:Number=landDifLevel+deep;
-			loc.locDifLevel=ml;
-			loc.locksLevel=ml*0.7;	//уровень замков
-			loc.mechLevel=ml/4;		//уровень мин и механизмов
-			loc.weaponLevel=1+ml/4;	//уровень попадающегося оружия
-			loc.enemyLevel=ml;		//уровень врагов
+			var ml:Number = landDifLevel + deep;
+			
+			loc.locDifLevel = ml;
+			loc.locksLevel = ml * 0.7;		//уровень замков
+			loc.mechLevel = ml / 4;			//уровень мин и механизмов
+			loc.weaponLevel = 1 + ml / 4;	//уровень попадающегося оружия
+			loc.enemyLevel = ml;			//уровень врагов
 			
 			//влияние настроек сложности
 			if (World.w.game.globalDif<2) loc.earMult*=0.5;

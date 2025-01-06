@@ -71,6 +71,10 @@ package fe {
 		public function get armors():Object {
 			return _armors;
 		}
+
+		public function get items():Object {
+			return _items;
+		}
 		
 		public function getWeapon(id:String):Object {
 			if (_weapons[id]) {
