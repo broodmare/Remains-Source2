@@ -8,7 +8,7 @@ package {
 	
 	public class MainFE extends MovieClip {
 		
-		var mainMenu:fe.MainMenu;
+		private var mainMenu:fe.MainMenu;
 
 		// Constructor
 		public function MainFE() {
