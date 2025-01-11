@@ -227,6 +227,798 @@
             "description": "A fragment of a dark crystal with a faint spark of magic glowing deep inside"
         }
     },
+	"quest": {
+		"test": {
+			"string": "test"
+		},
+		"test1": {
+			"string": "Complete part 1"
+		},
+		"test2": {
+			"string": "Complete part 2"
+		},
+		"test3": {
+			"string": "Complete part 3"
+		},
+		"toExit": {
+			"string": "To exit"
+		},
+		"toExit1": {
+			"string": "Get to the exit to surface"
+		},
+		"collectHS": {
+			"string": "Find all cogwheels"
+		},
+		"collectHS1": {
+			"string": "Cogwheels found:"
+		},
+		"storyContact": {
+			"string": "Contact locals"
+		},
+		"storyContact1": {
+			"string": "Reach the nearest settlement"
+		},
+		"storyContact2": {
+			"string": "Gather information"
+		},
+		"storyFind": {
+			"string": "Chosen-24"
+		},
+		"storyFind1": {
+			"string": "Obtain any information about the \"Chosen-24\""
+		},
+		"storyFind2": {
+			"string": "Explore the camp in the sewers"
+		},
+		"storyFind3": {
+			"string": "Save \"Chosen-24\" from slavers"
+		},
+		"storyFind4": {
+			"string": "Find \"Chosen-24\""
+		},
+		"storyMain": {
+			"string": "Chasing the rainbow"
+		},
+		"storyMain1": {
+			"string": "Find out the location of the ManeTec factory"
+		},
+		"storyMain2": {
+			"string": "Find and study maps of the factory"
+		},
+		"storyMain3": {
+			"string": "Get the security key"
+		},
+		"storyMain4": {
+			"string": "Enter the department of special research"
+		},
+		"storyMain5": {
+			"string": "Connect your PipBuck to the central maneframe"
+		},
+		"storyStable": {
+			"string": "The Quantum Cogitator"
+		},
+		"storyStable1": {
+			"string": "Ask Daiquiri about the location of Falls Springs"
+		},
+		"storyStable2": {
+			"string": "Enter the Stable 88"
+		},
+		"storyStable3": {
+			"string": "Find the Quantum Cogitator"
+		},
+		"storyStable4": {
+			"string": "Report to the Mentor about your success"
+		},
+		"freeCaptive": {
+			"string": "Rescue captives"
+		},
+		"freeCaptive1": {
+			"string": "Captives rescued:"
+		},
+		"storyMeet": {
+			"string": "Meeting"
+		},
+		"storyMeet1": {
+			"string": "Come to the meeting place"
+		},
+		"storyMeet2": {
+			"string": "Give the quantum cogitator to the sprite-bot"
+		},
+		"storyMeet3": {
+			"string": "Inspect the remains of the sprite-bot"
+		},
+		"storyMane": {
+			"string": "Alicorn Amulet"
+		},
+		"storyMane1": {
+			"string": "Ask Daiquiri about the road to Manehattan"
+		},
+		"storyMane2": {
+			"string": "Rise to the roof of one of the still standing skyscrapers and look around"
+		},
+		"storyMane3": {
+			"string": "Get to the entrance to the M.A.S. tower"
+		},
+		"storyMane4": {
+			"string": "Meet with the leader of alicorns"
+		},
+		"storyMane5": {
+			"string": "Find the Alicorn Amulet"
+		},
+		"storyCanter": {
+			"string": "The Black Book"
+		},
+		"storyCanter1": {
+			"string": "Ask Calamity the directions to Canterlot"
+		},
+		"storyCanter2": {
+			"string": "Travel to Canterlot"
+		},
+		"storyCanter3": {
+			"string": "Locate the Black Book"
+		},
+		"storyCanter4": {
+			"string": "Get the Black Book"
+		},
+		"storyHome": {
+			"string": "Way back home"
+		},
+		"storyHome1": {
+			"string": "Attempt contacting the Mentor through the communication unit"
+		},
+		"storyHome2": {
+			"string": "Find some other way"
+		},
+		"storyHome3": {
+			"string": "Deal with the Enclave threat"
+		},
+		"storyHome4": {
+			"string": "Talk to Velvet and Watcher"
+		},
+		"storyHome5": {
+			"string": "Ask Watcher about the way home"
+		},
+		"storyHome6": {
+			"string": "Return to Stable Pi"
+		},
+		"storyRanger": {
+			"string": "Steel Rangers"
+		},
+		"storyRanger1": {
+			"string": "Talk to SteelHooves in his camp"
+		},
+		"storyRanger8": {
+			"string": "Find out about the new armor from Oak Stalwart"
+		},
+		"storyRanger2": {
+			"string": "Enter the base of the Steel Rangers"
+		},
+		"storyRanger3": {
+			"string": "Eliminate Coldsight"
+		},
+		"storyRanger4": {
+			"string": "Report to SteelHooves"
+		},
+		"storyRanger5": {
+			"string": "Warn citizens of \"Prancing Pony\" about the danger"
+		},
+		"storyRanger6": {
+			"string": "Talk to Oak Stalwart"
+		},
+		"storyRanger7": {
+			"string": "Warn citizens of Covertsign about the danger"
+		},
+		"storyHelpCamp": {
+			"string": "Aiding the \"Prancing Pony\""
+		},
+		"storyHelpCamp1": {
+			"string": "Talk with Oak about the mission"
+		},
+		"storyHelpCamp2": {
+			"string": "Find and explore the Mane-Tech gun workshop"
+		},
+		"storyHelpCamp3": {
+			"string": "Tell Oak what you found"
+		},
+		"storyHelpCovert": {
+			"string": "Aiding Covertsign"
+		},
+		"storyHelpCovert1": {
+			"string": "Wait for the community council to gather"
+		},
+		"storyHelpCovert2": {
+			"string": "Visit the community council"
+		},
+		"storyHelpCovert3": {
+			"string": "Ask Steelhoves about the location of the regional Legion headquarters"
+		},
+		"storyHelpCovert4": {
+			"string": "Infiltrate the regional Legion headquarters"
+		},
+		"storyHelpCovert5": {
+			"string": "Get rid of the centurion"
+		},
+		"storyHelpCovert6": {
+			"string": "Find secret documents"
+		},
+		"storyHelpCovert7": {
+			"string": "Tell Askari about your success"
+		},
+		"storyHelpCovert8": {
+			"string": "Check on Velvet"
+		},
+		"storyEncl": {
+			"string": "Shadow of the Enclave"
+		},
+		"storyEncl1": {
+			"string": "Visit the Enclave base and try to negotiate"
+		},
+		"storyEncl2": {
+			"string": "Reach the command center"
+		},
+		"storyEncl3": {
+			"string": "Interrogate the base commander"
+		},
+		"storyStorm": {
+			"string": "The storm is coming"
+		},
+		"storyStorm1": {
+			"string": "Tell Velvet about the latest events"
+		},
+		"storyStorm2": {
+			"string": "Meet SteelHooves at the water treatment plant"
+		},
+		"storyStorm3": {
+			"string": "Infiltrate the Fort Rocks"
+		},
+		"storyStorm4": {
+			"string": "Power off artillery guns"
+		},
+		"storyStorm5": {
+			"string": "Talk to SteelHooves"
+		},
+		"storyFbattle": {
+			"string": "The last battle"
+		},
+		"storyFbattle1": {
+			"string": "Return to Stable Pi and find Mentor"
+		},
+		"storyFbattle2": {
+			"string": "Get the \"Alicorn Armor\""
+		},
+		"storyFbattle3": {
+			"string": "Stop the invasion"
+		},
+		"storyFbattle4": {
+			"string": "Destroy Thunderhead"
+		},
+		"storyFbattle5": {
+			"string": "Survive"
+		},
+		"tamePhoenix": {
+			"string": "Make friends with a balefire phoenix"
+		},
+		"tamePhoenix1": {
+			"string": "Offer radioactive cookies:"
+		},
+		"tamePhoenix2": {
+			"string": "Talk"
+		},
+		"patientHeal": {
+			"string": "Cure a sick zebra"
+		},
+		"patientHeal1": {
+			"string": "Determine the diagnosis"
+		},
+		"patientHeal2": {
+			"string": "Get the vaccine from dusty fever"
+		},
+		"patientHeal3": {
+			"string": "Give vaccine to Zira"
+		},
+		"patientHeal4": {
+			"string": "Come after some time and ask Velvet about the patient"
+		},
+		"bunkerRaid": {
+			"string": "Bunker"
+		},
+		"bunkerRaid1": {
+			"string": "Talk to Amaranth about the bunker"
+		},
+		"bunkerRaid2": {
+			"string": "Enter the bunker"
+		},
+		"bunkerRaid3": {
+			"string": "Get to the storage"
+		},
+		"findProArmor": {
+			"string": "Find armor schematics"
+		},
+		"findProArmor1": {
+			"string": "Get armor schematics from the CEO`s safe"
+		},
+		"findProArmor2": {
+			"string": "Bring back the schematics and get a reward"
+		},
+		"collectPowerArmor": {
+			"string": "Power armor"
+		},
+		"collectPowerArmor1": {
+			"string": "Get fragments of power armor"
+		},
+		"collectPowerArmor2": {
+			"string": "Give Oak Stalwart the materials for the armor and wait for the completion of the work"
+		},
+		"killMadfox": {
+			"string": "Kill Mad Fox"
+		},
+		"killMadfox1": {
+			"string": "Kill Mad Fox"
+		},
+		"killMadfox2": {
+			"string": "Get a reward from Oak Stalwart"
+		},
+		"collectPaintsA": {
+			"string": "Get the paint"
+		},
+		"collectPaintsA1": {
+			"string": "Red"
+		},
+		"collectPaintsA2": {
+			"string": "Green"
+		},
+		"collectPaintsA3": {
+			"string": "Blue"
+		},
+		"collectPaintsA4": {
+			"string": "Yellow"
+		},
+		"collectPaintsA5": {
+			"string": "White"
+		},
+		"collectPaintsA6": {
+			"string": "Bring back all the paint and get a reward"
+		},
+		"collectPaintsB": {
+			"string": "Get the paint - 2"
+		},
+		"collectPaintsB1": {
+			"string": "Grey"
+		},
+		"collectPaintsB2": {
+			"string": "Purple"
+		},
+		"collectPaintsB3": {
+			"string": "Orange"
+		},
+		"collectPaintsB4": {
+			"string": "Brown"
+		},
+		"collectPaintsB5": {
+			"string": "Light blue"
+		},
+		"collectPaintsB6": {
+			"string": "Khaki"
+		},
+		"collectPaintsB7": {
+			"string": "Dark green"
+		},
+		"collectPaintsB8": {
+			"string": "Bring back all the paint and get a reward"
+		},
+		"collectPaintsC": {
+			"string": "Get the paint - 3"
+		},
+		"collectPaintsC1": {
+			"string": "Cyan"
+		},
+		"collectPaintsC2": {
+			"string": "Pink"
+		},
+		"collectPaintsC3": {
+			"string": "Burgundy"
+		},
+		"collectPaintsC4": {
+			"string": "Crimson"
+		},
+		"collectPaintsC5": {
+			"string": "Lime"
+		},
+		"collectPaintsC6": {
+			"string": "Fiery"
+		},
+		"collectPaintsC7": {
+			"string": "Beige"
+		},
+		"collectPaintsC8": {
+			"string": "Bring back all the paint and get a reward"
+		},
+		"killBloats": {
+			"string": "Destroy bloatsprites` lair"
+		},
+		"killBloats1": {
+			"string": "Find a lair of bloatsprites"
+		},
+		"killBloats2": {
+			"string": "Destroy the nests"
+		},
+		"killBloats3": {
+			"string": "Get a reward from Brass Buckshot"
+		},
+		"collectFcrystal": {
+			"string": "Find a new focusing crystal"
+		},
+		"collectFcrystal1": {
+			"string": "Find a focusing crystal"
+		},
+		"collectFcrystal2": {
+			"string": "Bring Brass the crystal and get a reward"
+		},
+		"retPistol": {
+			"string": "Return the pistol"
+		},
+		"retPistol1": {
+			"string": "Find the pistol named \"Loyalty\""
+		},
+		"retPistol2": {
+			"string": "Return the pistol to its owner"
+		},
+		"collectBlaster": {
+			"string": "Star blaster"
+		},
+		"collectBlaster1": {
+			"string": "Find a Star blaster"
+		},
+		"collectBlaster2": {
+			"string": "Show Brass Buckshot the Star blaster"
+		},
+		"killLucerne": {
+			"string": "Kill Lucerne"
+		},
+		"killLucerne1": {
+			"string": "Kill Lucerne"
+		},
+		"killLucerne2": {
+			"string": "Get a reward from Brass Buckshot"
+		},
+		"collectNitro": {
+			"string": "Help with dynamite production"
+		},
+		"collectNitro1": {
+			"string": "Find or prepare some more acid"
+		},
+		"collectNitro2": {
+			"string": "Find a canister of glycerine"
+		},
+		"collectNitro3": {
+			"string": "Give components to Smoky Pit and get a reward"
+		},
+		"killAnthills": {
+			"string": "Destroy the ant nests"
+		},
+		"killAnthills1": {
+			"string": "Nests destroyed"
+		},
+		"killAnthills2": {
+			"string": "Get a reward from Smoky Pit"
+		},
+		"testCryo": {
+			"string": "Cryotechnology"
+		},
+		"testCryo1": {
+			"string": "Obtain cryo-cells from the laboratory in an abandoned stable"
+		},
+		"testCryo2": {
+			"string": "Create a cryogrenade"
+		},
+		"testCryo3": {
+			"string": "Create a cryomine"
+		},
+		"testCryo4": {
+			"string": "Destroy enemies with a cryogrenade"
+		},
+		"testCryo5": {
+			"string": "Destroy enemies with a cryomine"
+		},
+		"testCryo6": {
+			"string": "Report to Smoky Pit about test results"
+		},
+		"collectSpgren": {
+			"string": "Find schematics of a doomsday grenade"
+		},
+		"collectSpgren1": {
+			"string": "Find schematics for the sparkle-grenade"
+		},
+		"collectSpgren2": {
+			"string": "Share a copy of the schematics with Smoky Pit and get rewarded"
+		},
+		"collectSmoke": {
+			"string": "Smoking accessories"
+		},
+		"collectSmoke1": {
+			"string": "Joint of magic weed"
+		},
+		"collectSmoke2": {
+			"string": "Leaf tobacco"
+		},
+		"collectSmoke3": {
+			"string": "Bong"
+		},
+		"collectSmoke4": {
+			"string": "Smoking pipe"
+		},
+		"collectSmoke5": {
+			"string": "Smuggled cigars"
+		},
+		"repairAutoDoc": {
+			"string": "Fix AutoDoc"
+		},
+		"repairAutoDoc1": {
+			"string": "Repair the AutoDoc"
+		},
+		"repairAutoDoc2": {
+			"string": "Report to Doc Sepsis and get a reward"
+		},
+		"collectFishfat": {
+			"string": "Collect 20 portions of fish oil"
+		},
+		"collectFishfat1": {
+			"string": "Collect fish oil"
+		},
+		"collectFishfat2": {
+			"string": "Bring fish oil and get a reward"
+		},
+		"collectTmed": {
+			"string": "Find a working medical talisman"
+		},
+		"collectTmed1": {
+			"string": "Find a medical talisman"
+		},
+		"collectTmed2": {
+			"string": "Bring Doc the talisman and get a reward"
+		},
+		"collectRecipes": {
+			"string": "Obtain recipes for potent drugs"
+		},
+		"collectRecipes1": {
+			"string": "Find a recipe of Ultra-Dash"
+		},
+		"collectRecipes2": {
+			"string": "Find a recipe of Stampede"
+		},
+		"collectRecipes3": {
+			"string": "Find a recipe of Party-Time Mint-als"
+		},
+		"collectRecipes4": {
+			"string": "Give copies of the recipes to Doc and get a reward"
+		},
+		"collectTools": {
+			"string": "Find tools"
+		},
+		"collectTools1": {
+			"string": "Bring calipers"
+		},
+		"collectTools2": {
+			"string": "Bring a hydraulic bolt cutter"
+		},
+		"collectTools3": {
+			"string": "Bring an oscilloscope"
+		},
+		"collectMolefat": {
+			"string": "Looking for mole rat fat"
+		},
+		"collectMolefat1": {
+			"string": "Bring the obtained fat"
+		},
+		"collectCol2": {
+			"string": "\"Cyberpony\" Magazine"
+		},
+		"collectCol21": {
+			"string": "Bring found magazines"
+		},
+		"collectFans": {
+			"string": "Collect old electronic devices"
+		},
+		"collectFans1": {
+			"string": "Fans"
+		},
+		"collectFans2": {
+			"string": "Desktop lamps"
+		},
+		"collectFans3": {
+			"string": "Coffee machines"
+		},
+		"collectFans4": {
+			"string": "Bring all obtained stuff to Winry"
+		},
+		"collectScrew": {
+			"string": "Screws and nuts"
+		},
+		"collectScrew1": {
+			"string": "Find a box of new screws"
+		},
+		"collectScrew2": {
+			"string": "Find a box of new nuts"
+		},
+		"collectScrew3": {
+			"string": "Bring everything to Winry and get a reward"
+		},
+		"collectData": {
+			"string": "Value of information"
+		},
+		"collectData1": {
+			"string": "Find the data room"
+		},
+		"collectData2": {
+			"string": "Find the password database"
+		},
+		"collectData3": {
+			"string": "Construct the hacker`s module"
+		},
+		"collectData4": {
+			"string": "Hack the main server and download data on equidroids"
+		},
+		"collectData5": {
+			"string": "Bring the data disc to Winry and get a reward"
+		},
+		"collectGems": {
+			"string": "Collect precious stones"
+		},
+		"collectGems1": {
+			"string": "Get emeralds"
+		},
+		"collectGems2": {
+			"string": "Get sapphires"
+		},
+		"collectGems3": {
+			"string": "Get rubies"
+		},
+		"collectGems4": {
+			"string": "Find a rare marine emerald"
+		},
+		"collectGems5": {
+			"string": "Find a rare ice sapphire"
+		},
+		"collectGems6": {
+			"string": "Find a rare fire ruby"
+		},
+		"collectGems7": {
+			"string": "Bring all the stones to Dusty Nebula and get a reward"
+		},
+		"collectBooks": {
+			"string": "Library"
+		},
+		"collectBooks1": {
+			"string": "Bring pre-war books"
+		},
+		"collectBooks2": {
+			"string": "Find all five volumes of the \"Celestial Mechanics\""
+		},
+		"collectBooks3": {
+			"string": "Talk to Dusty about the reward"
+		},
+		"collectDust": {
+			"string": "Collect Potion Ingredients"
+		},
+		"collectDust1": {
+			"string": "Collect magic dust"
+		},
+		"collectDust2": {
+			"string": "Find fiery crystals"
+		},
+		"collectDust3": {
+			"string": "Give Dusty the ingredients and get the recipe"
+		},
+		"collectAlc": {
+			"string": "Rare alcohol"
+		},
+		"collectAlc1": {
+			"string": "Apple cider \"Old farm\""
+		},
+		"collectAlc2": {
+			"string": "Apple wine \"Pink sunset\""
+		},
+		"collectAlc3": {
+			"string": "Apple liquor \"Summer flavors\""
+		},
+		"collectAlc4": {
+			"string": "Apple Whiskey \"Wild Pegasus\""
+		},
+		"collectAlc5": {
+			"string": "Apple vodka \"Crystal\""
+		},
+		"collectAlc6": {
+			"string": "Granny Smith`s Apple bitters"
+		},
+		"collectAlc7": {
+			"string": "Apple balsam \"The gift of nature\""
+		},
+		"hydroPon": {
+			"string": "Hydroponics"
+		},
+		"hydroPon1": {
+			"string": "Locate the Canterlot Stable-Tec office"
+		},
+		"hydroPon2": {
+			"string": "Download data on hydroponic farms"
+		},
+		"hydroPon3": {
+			"string": "Give the data to scribe Amaranth and receive the reward"
+		},
+		"collectCanter": {
+			"string": "Canterlot Alchemy"
+		},
+		"collectCanter1": {
+			"string": "Pink slime"
+		},
+		"collectCanter2": {
+			"string": "Dark soul"
+		},
+		"collectCanter3": {
+			"string": "Horn of the Witch"
+		},
+		"collectCanter4": {
+			"string": "Bring everything to Zambezi and get collect your reward"
+		},
+		"collectTalisman": {
+			"string": "Water talisman"
+		},
+		"collectTalisman1": {
+			"string": "Get the water talisman"
+		},
+		"collectTalisman2": {
+			"string": "Give Zambezi the water talisman and get a reward"
+		},
+		"collectDatast": {
+			"string": "Data on the stealth-buck M2"
+		},
+		"collectDatast1": {
+			"string": "Retrieve data about the stealth-buck M2"
+		},
+		"collectMotiv": {
+			"string": "Motivators RX-47"
+		},
+		"collectMotiv1": {
+			"string": "Collect motivators"
+		},
+		"collectBbatt": {
+			"string": "Balefire-battery"
+		},
+		"collectBbatt1": {
+			"string": "Get the balefire-battery"
+		},
+		"collectBbatt2": {
+			"string": "Exchange the balefire-battery for a reward"
+		},
+		"collectTech": {
+			"string": "Technologies of the future"
+		},
+		"collectTech1": {
+			"string": "Magnetic resonance horsgregator"
+		},
+		"collectTech2": {
+			"string": "Ultra-quadruponificator"
+		},
+		"collectTech3": {
+			"string": "Baryon neighralyzer"
+		},
+		"collectTech4": {
+			"string": "Superluminescent quasistabilitron"
+		},
+		"collectTech5": {
+			"string": "Hyperbeam twilifuser"
+		},
+		"enclArmor": {
+			"string": "Enclave armor"
+		},
+		"enclArmor1": {
+			"string": "Find Intact Enclave Power Armor"
+		},
+		"enclArmor2": {
+			"string": "Bring armor to Amaranth"
+		}
+		
+	},
     "effect": {
         "tele": {
             "string": "Telekinesis",

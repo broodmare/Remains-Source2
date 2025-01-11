@@ -279,37 +279,37 @@ package fe {
 			trace("MainMenu.as/setMainLang() - Setting up MainMenu language");
 			
 			// The main menu buttons on the left
-			setMainButton(mainMenuMovieClip.butContGame, localText("gui", "contgame"));
-			setMainButton(mainMenuMovieClip.butLoadGame, localText("gui", "loadgame"));
-			setMainButton(mainMenuMovieClip.butNewGame, localText("gui", "newgame"));
-			setMainButton(mainMenuMovieClip.butOpt, localText("gui", "options"));
-			setMainButton(mainMenuMovieClip.butAbout, localText("gui", "about"));
+			setMainButton(mainMenuMovieClip.butContGame, language.localText("gui", "contgame"));
+			setMainButton(mainMenuMovieClip.butLoadGame, language.localText("gui", "loadgame"));
+			setMainButton(mainMenuMovieClip.butNewGame, language.localText("gui", "newgame"));
+			setMainButton(mainMenuMovieClip.butOpt, language.localText("gui", "options"));
+			setMainButton(mainMenuMovieClip.butAbout, language.localText("gui", "about"));
 			
-			mainMenuMovieClip.dialNew.title.text = localText("gui", "newgame");
-			mainMenuMovieClip.dialLoad.title.text = localText("gui", "loadgame");
-			mainMenuMovieClip.dialLoad.title2.text = localText("gui", "select_slot");
-			mainMenuMovieClip.version.htmlText='<b>' + localText("gui", "version") + ' ' + version + '</b>';
-			mainMenuMovieClip.dialLoad.butCancel.text.text = mainMenuMovieClip.dialNew.butCancel.text.text = localText("gui", "cancel");
-			mainMenuMovieClip.dialLoad.butFile.text.text = localText("pip", "loadfile");
-			mainMenuMovieClip.dialLoad.warn.text = mainMenuMovieClip.dialNew.warn.text = localText("gui", "loadwarn");
-			mainMenuMovieClip.dialNew.infoName.text = localText("gui", "inputname");
-			mainMenuMovieClip.dialNew.hardOpt.text = localText("gui", "hardopt");
+			mainMenuMovieClip.dialNew.title.text = language.localText("gui", "newgame");
+			mainMenuMovieClip.dialLoad.title.text = language.localText("gui", "loadgame");
+			mainMenuMovieClip.dialLoad.title2.text = language.localText("gui", "select_slot");
+			mainMenuMovieClip.version.htmlText='<b>' + language.localText("gui", "version") + ' ' + version + '</b>';
+			mainMenuMovieClip.dialLoad.butCancel.text.text = mainMenuMovieClip.dialNew.butCancel.text.text = language.localText("gui", "cancel");
+			mainMenuMovieClip.dialLoad.butFile.text.text = language.localText("pip", "loadfile");
+			mainMenuMovieClip.dialLoad.warn.text = mainMenuMovieClip.dialNew.warn.text = language.localText("gui", "loadwarn");
+			mainMenuMovieClip.dialNew.infoName.text = language.localText("gui", "inputname");
+			mainMenuMovieClip.dialNew.hardOpt.text = language.localText("gui", "hardopt");
 			mainMenuMovieClip.dialNew.butOk.text.text = 'OK';
-			mainMenuMovieClip.dialNew.inputName.text = localText("unit", "littlepip");
+			mainMenuMovieClip.dialNew.inputName.text = language.localText("unit", "littlepip");
 			mainMenuMovieClip.dialNew.maxChars = 32;
 			
 			var kolDifs:int = 5;
 			for (var i:int = 0; i < kolDifs; i++) {
-				mainMenuMovieClip.dialNew["dif" + i].mode.text = localText("gui", "dif" + i);
-				mainMenuMovieClip.dialNew["dif" + i].modeinfo.text = Res.formatText(localDesc("gui", "dif" + i));
+				mainMenuMovieClip.dialNew["dif" + i].mode.text = language.localText("gui", "dif" + i);
+				mainMenuMovieClip.dialNew["dif" + i].modeinfo.text = Res.formatText(language.localDesc("gui", "dif" + i));
 			}
 			
 			var kolOpts:int = 6;
 			for (i = 1; i <= kolOpts; i++) {
-				mainMenuMovieClip.dialNew["infoOpt" + i].text = localText("gui", "opt" + i);
+				mainMenuMovieClip.dialNew["infoOpt" + i].text = language.localText("gui", "opt" + i);
 			}
 			
-			mainMenuMovieClip.dialNew.butVid.mode.text = localText("gui", "butvid");
+			mainMenuMovieClip.dialNew.butVid.mode.text = language.localText("gui", "butvid");
 			
 			if (world.app) {
 				world.app.setLang();
@@ -320,27 +320,6 @@ package fe {
 			funInform();
 			mainMenuMovieClip.info.visible=(mainMenuMovieClip.info.txt.text.length>0);
 			setScrollInfo();
-		}
-
-		// Helper function that gets the localized string from the LanguageManager using the passed category and id
-		// This still looks/works about the same as the old Res.txt function, until I can flatten the localization JSON using completely unique IDs
-		// Once the JSON isn't nest, get rid of this helper function and call the IDs directly
-		private function localText(cat:String, id:String):String {
-			var s:String = language.data[cat][id].string;
-			if (s == null || s.length == 0) {
-				trace("Error: Couldn't find localized string: (" + cat + ": " + id + ")");
-				return id;	// use the internal ID instead of being blank
-			}
-			return s;
-		}
-		// Ditto, just grabs the description instead of the string
-		private function localDesc(cat:String, id:String):String {
-			var s:String = language.data[cat][id].description;
-			if (s == null || s.length == 0) {
-				trace("Error: Couldn't find localized description: (" + cat + ": " + id + ")");
-				return "Missing description: " + id;	// Return warning text
-			}
-			return s;
 		}
 
 		// Update the information links on the left of the main menu
@@ -423,16 +402,16 @@ package fe {
 				slot.id.visible = false;
 				
 				if (save != null && save.est != null) {
-					slot.nazv.text=(i==0) ? localText("pip", "autoslot") : (localText("pip", "saveslot") + ' ' + i);
+					slot.nazv.text=(i==0) ? language.localText("pip", "autoslot") : (language.localText("pip", "saveslot") + ' ' + i);
 					slot.ggName.text=(save.pers.persName==null)?'-------':save.pers.persName;
 					if (save.pers.level!=null) slot.ggName.text+=' ('+save.pers.level+')';
 					if (save.pers.dead) slot.nazv.text+=' [†]';
 					else if (save.pers.hardcore) slot.nazv.text+=' {!}';
 					slot.date.text=(save.date==null)? '-------' : Res.getDate(save.date);
-					slot.land.text=(save.date==null)? '' : localText("map", save.game.land).substr(0, 18);
+					slot.land.text=(save.date==null)? '' : language.localText("map", save.game.land).substr(0, 18);
 				} 
 				else {
-					slot.nazv.text = localText("pip", "freeslot");
+					slot.nazv.text = language.localText("pip", "freeslot");
 					slot.ggName.text = "";
 					slot.land.text	 = "";
 					slot.date.text   = "";
@@ -494,7 +473,7 @@ package fe {
 		}
 		
 		private function funLoadFile(event:MouseEvent):void {
-			var ffil:Array = [new FileFilter(localText("pip", "gamesaves") + " (*.sav)", "*.sav")];
+			var ffil:Array = [new FileFilter(language.localText("pip", "gamesaves") + " (*.sav)", "*.sav")];
 			file.browse(ffil);
 		}
 
@@ -641,7 +620,7 @@ package fe {
 
 		private function infoOpt(event:MouseEvent):void {
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
-			mainMenuMovieClip.dialNew.modeinfo.htmlText = Res.formatText(localDesc("gui", "opt" + n));
+			mainMenuMovieClip.dialNew.modeinfo.htmlText = Res.formatText(language.localDesc("gui", "opt" + n));
 		}
 		
 		private function funOpt():void {
@@ -707,7 +686,7 @@ package fe {
 		}
 
 		private function funAboutOk(event:MouseEvent):void {
-			mainMenuMovieClip.dialAbout.visible=false;
+			mainMenuMovieClip.dialAbout.visible = false;
 			mainMenuMovieClip.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
@@ -739,7 +718,7 @@ package fe {
 				return;
 			}
 			// If all resource packs (.swfs / or loose files) have finished loading
-			if (world.grafon.resIsLoad) {
+			if (world.grafon.resIsLoad && language.data != null) {
 				stn++;
 				mainMenuMovieClip.loading.text = 'Loading ' + (Math.floor(stn / 30)) + '\n';
 				world.init2();
@@ -752,10 +731,10 @@ package fe {
 					return;
 				}
 				
-				mainMenuMovieClip.loading.text+=world.load_log;
+				mainMenuMovieClip.loading.text += world.load_log;
 			} 
 			else {
-				mainMenuMovieClip.loading.text='Loading '+Math.round(world.grafon.progressLoad*100)+'%';
+				mainMenuMovieClip.loading.text = 'Loading ' + Math.round(world.grafon.progressLoad * 100) + '%';
 				
 			}
 		}

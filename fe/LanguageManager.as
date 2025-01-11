@@ -93,5 +93,63 @@ package fe {
 		public function get data():Object {
 			return _languageData;
 		}
+
+		// Helper function that gets the localized string from the LanguageManager using the passed category and id
+		// This still looks/works about the same as the old Res.txt function, until I can flatten the localization JSON using completely unique IDs
+		// Once the JSON isn't nested, get rid of this helper function and call the IDs directly
+		public function localText(category:String, id:String):String {
+			var s:String = "";
+
+			// Check if _languageData exists and has the specified category
+			if (_languageData && _languageData.hasOwnProperty(category)) {
+				var categoryData:Object = _languageData[category];
+
+				// Check if the category contains the specified ID
+				if (categoryData.hasOwnProperty(id)) {
+					var entry:Object = categoryData[id];
+
+					// Check if the entry has a 'string' property
+					if (entry && entry.hasOwnProperty("string")) {
+						s = entry.string;
+					}
+				}
+			}
+
+			// Validate the retrieved string
+			if (s == null || s.length == 0) {
+				trace("Error: Couldn't find localized string: (" + category + ": " + id + ")");
+				s = id; // Fallback to the internal ID if string is missing
+			}
+
+			return s;
+		}
+		
+		// Ditto, just grabs the description instead of the string
+		public function localDesc(category:String, id:String):String {
+			var s:String = "";
+
+			// Check if _languageData exists and has the specified category
+			if (_languageData && _languageData.hasOwnProperty(category)) {
+				var categoryData:Object = _languageData[category];
+
+				// Check if the category contains the specified ID
+				if (categoryData.hasOwnProperty(id)) {
+					var entry:Object = categoryData[id];
+
+					// Check if the entry has a 'description' property
+					if (entry && entry.hasOwnProperty("description")) {
+						s = entry.description;
+					}
+				}
+			}
+
+			// Validate the retrieved description
+			if (s == null || s.length == 0) {
+				trace("Error: Couldn't find localized description: (" + category + ": " + id + ")");
+				s = "Missing description: " + id; // Fallback message if description is missing
+			}
+
+			return s;
+		}
     }
 }

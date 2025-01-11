@@ -77,23 +77,26 @@ package fe.unit {
 			targNPC.inter = inter;
 			targNPC.owner = this;
 			
-			//если есть настройки npc
+			// [If there are npc settings]
 			if (npcXML) {
 				if (npcXML.@vis.length()) {
-					visClass = Res.getClass('visual'+npcXML.@vis, npcXML.@vis, visualVendor);	// .SWF Dependency
+					visClass = Res.getClass('visual' + npcXML.@vis, npcXML.@vis, visualVendor);	// .SWF Dependency
 				}
-				else visClass=visualVendor;		// .SWF Dependency
+				else {
+					visClass = visualVendor;	// .SWF Dependency
+				}
+				
 				if (npcXML.@noturn.length()) noTurn=true;
 				if (npcXML.@ico.length()) icoFrame=npcXML.@ico;
-				if (Res.istxt('u',npcId)) nazv=Res.txt('u',npcId);
-				if (npcXML.@name.length()) nazv=Res.txt('u',npcXML.@name);
+				nazv = LanguageManager.reference.localText("unit", npcId);
+				if (npcXML.@name.length()) nazv = LanguageManager.reference.localText("unit", npcXML.@name);
 				if (npcXML.@replic.length()) id_replic=npcXML.@replic;
 				if (npcXML.@silent.length()) silent=true;
 				if (npcXML.@weap.length()) weap=npcXML.@weap;
 				if (npcXML.@weap2.length()) weap2=npcXML.@weap2;
 				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
 			}
-			else {	//и если нет
+			else {	// [And if not]
 				if (id == 'doctor') {
 					visClass = visualDoctor;	// .SWF Dependency
 					icoFrame = 3;
@@ -104,7 +107,7 @@ package fe.unit {
 				}
 			}
 			
-			//внешний вид
+			// [Appearance]
 			vis = new visClass();			// .SWF Dependency
 			ico = new visNPCIco();			// .SWF Dependency
 			ico.y = -140;
@@ -123,30 +126,42 @@ package fe.unit {
 					vis.osn.gotoAndStop(1);
 				}
 			}
-			//оружие
-			if (weap != '') {
-				currentWeapon=Weapon.create(this,weap);
-				currentWeapon.hold=currentWeapon.holder;
-				setCel(null,100,-30);
-				childObjs=[currentWeapon];
-				if (npcXML && npcXML.@dammult.length()) currentWeapon.damage*=npcXML.@dammult;
+			// [Weapon]
+			var weapData:Object;
+			if (weap != "") {
+				weapData = ItemManager.reference.getWeapon(weap);
+				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon.hold = currentWeapon.holder;
+				setCel(null, 100, -30);
+				childObjs = [currentWeapon];
+				
+				if (npcXML && npcXML.@dammult.length()) {
+					currentWeapon.damage *= npcXML.@dammult;
+				}
 			}
 			
-			if (weap2 != '') {
-				dopWeapon=Weapon.create(this,weap2);
-				dopWeapon.hold=dopWeapon.holder;
+			if (weap2 != "") {
+				weapData = ItemManager.reference.getWeapon(weap2);
+				dopWeapon = Weapon.create(this, weapData);
+				dopWeapon.hold = dopWeapon.holder;
 				childObjs.push(dopWeapon);
 			}
 			
-			//настройки из XML карты
+			// [Settings from XML map]
 			if (xml) {
 				if (xml.@fly.length()) {
-					animFly=true;
-					aiTip='fly';
-					isFly=true;
+					animFly = true;
+					aiTip = 'fly';
+					isFly = true;
 				}
-				if (xml.@hide.length()) hide();
-				if (xml.@ai.length()) aiTip=xml.@ai;
+				
+				if (xml.@hide.length()) {
+					hide();
+				}
+				
+				if (xml.@ai.length()) {
+					aiTip = xml.@ai;
+				}
 			}
 			
 			targNPC.init();
@@ -155,30 +170,43 @@ package fe.unit {
 
 		public override function addVisual():void {
 			super.addVisual();
+			
 			if (targNPC) {
 				targNPC.refresh();
 				targNPC.check();
-				isVis=!targNPC.hidden;
+				isVis =! targNPC.hidden;
 			}
+			
 			vis.visible=isVis;
-			if (currentWeapon) currentWeapon.vis.visible=isVis;
-			inter.active=isVis;
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = isVis;
+			}
+			
+			inter.active = isVis;
 		}
 		
 		public function setInter() {
-			inter.action=100;
-			inter.active=true;
-			inter.cont=null;
-			inter.actFun=npcFun;
-			if (targNPC) targNPC.setInter();
+			inter.action = 100;
+			inter.active = true;
+			inter.cont = null;
+			inter.actFun = npcFun;
+			
+			if (targNPC) {
+				targNPC.setInter();
+			}
+			
 			inter.update();
 		}
 		
 		public override function animate():void {
-			if (t_anim > 0) t_anim--;
+			if (t_anim > 0) {
+				t_anim--;
+			}
 			else {
 				t_anim = Math.random() * 200 + 150;
 				var br:int = int(Math.random() * 2 + 1);
+				
 				try {
 					vis.osn.gotoAndPlay('move' + br);
 				}
@@ -187,13 +215,15 @@ package fe.unit {
 					//trace('ERROR: (00:0A) - Npc: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
 				}
 			}
+			
 			if (animFly) {
 				try {
-					if (isFly && animState!='fly') {
+					if (isFly && animState != 'fly') {
 						vis.osn.gotoAndStop('fly');
 						animState = 'fly';
 					}
-					if (!isFly && animState!='stay') {
+					
+					if (!isFly && animState != 'stay') {
 						vis.osn.gotoAndStop('stay');
 						animState = 'stay';
 					}
@@ -204,11 +234,17 @@ package fe.unit {
 			}
 		}
 		
-		private function hide() {
-			inter.active=false;
-			isVis=false;
-			if (vis) vis.visible=false;
-			if (currentWeapon) currentWeapon.vis.visible=false;
+		private function hide():void {
+			inter.active = false;
+			isVis = false;
+			
+			if (vis) {
+				vis.visible = false;
+			}
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = false;
+			}
 		}
 		
 		public function npcFun() {
@@ -227,6 +263,7 @@ package fe.unit {
 					storona = 1;
 				}
 			}
+			
 			if (targNPC) {
 				targNPC.activate();
 			}
@@ -234,6 +271,7 @@ package fe.unit {
 		
 		public override function command(com:String, val:String=null) {
 			super.command(com,val);
+			
 			//скрыть
 			if (com=='hide') {
 				hide();

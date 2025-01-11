@@ -62,9 +62,9 @@ package fe {
 
 			// Handle cases where no data was found
 			if (!s) {
-				if (tip == 'o') return '';
-				if (razd == 0) return '*' + tipType + '_' + id;
-				return '';
+				if (tip == "o") return "";
+				if (razd == 0) return "*" + tipType + "_" + id;
+				return "";
 			}
 
 			var xl2:XML = xl1[0];

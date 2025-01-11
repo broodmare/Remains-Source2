@@ -70,7 +70,7 @@ package fe.serv {
 		public var nocheap:Boolean = false;		// [Don't reduce the price]
 		public var hardinv:Boolean = false;		// [only with limited inventory]
 
-		private var data:Object;				// The objects properties in JSON format
+		private var _data:Object;				// The objects properties in JSON format
 		
 		// [nkol -- number of items or weapon/armor condition 0-1-2]
 		// [If nkol=-1, the quantity is taken from xml] 
@@ -86,14 +86,28 @@ package fe.serv {
 			id = itemID;
 
 			// Get the data for the item
-			data = itemManager.getItem(id);
+			_data = itemManager.getItem(id);
 			
-			if ("uniqueVariant" in data) {
-				variant = data.uniqueVariant;
+			// TODO: This is so stupid
+			if (isEmpty(_data)) {
+				_data = itemManager.getWeapon(id);
+			}
+			
+			if (isEmpty(_data)) {
+				_data = itemManager.getArmor(id);
+			}
+			
+			if (isEmpty(_data)) {
+				_data = itemManager.getSchematic(id);
+			}
+
+			
+			if ("uniqueVariant" in _data) {
+				variant = _data.uniqueVariant;
 			}
 
 			//	TYPE
-			tip = data.tip;
+			tip = _data.tip;
 			
 			// All uniques are weapons, change to L_WEAPON (????? When/where would this get set?)
 			if (tip == L_UNIQ) {
@@ -101,8 +115,8 @@ package fe.serv {
 			}
 
 			// Get the weapon type if applicable
-			if ("wtip" in data) {
-				wtip = data.tip;
+			if ("wtip" in _data) {
+				wtip = _data.tip;
 			}
 			
 			// Only create one of something if it's a weapon or armor (???? Again, when/where is this getting set?)
@@ -110,7 +124,7 @@ package fe.serv {
 				kol = 1;
 
 				// If this is an amulet
-				if (tip == L_ARMOR && data.tip == '3') {
+				if (tip == L_ARMOR && _data.tip == '3') {
 					sost = 1;
 				}
 				// Otherwise
@@ -129,8 +143,8 @@ package fe.serv {
 				kol = nkol;
 			}
 			// Otherwise, if this is being called with -1, use data
-			else if (nkol < 0 && "kol" in data) {
-				kol = data.kol
+			else if (nkol < 0 && "kol" in _data) {
+				kol = _data.kol
 			}
 			// or if we still can't find a quantity in data, just use '1'
 			else {
@@ -145,7 +159,7 @@ package fe.serv {
 					wtip = 'w5';
 				}
 				else {
-					wtip = 'w' + data.skill;
+					wtip = 'w' + _data.skill;
 				}
 			}
 			else if (tip == L_ARMOR) {
@@ -153,29 +167,29 @@ package fe.serv {
 				nazv = Res.txt('a', id);
 				
 				// Set the armor type?
-				if ("tip" in data) {
-					wtip = 'armor' + data.tip;
+				if ("tip" in _data) {
+					wtip = 'armor' + _data.tip;
 				}
 				else {
 					wtip = 'armor1';
 				}
 			}
-			else if ("ammo_base" in data) {
+			else if ("ammo_base" in _data) {
 				// Ammo variant naming
-				base = data.ammo_base;
+				base = _data.ammo_base;
 				nazv = Res.txt('i', base);
 				
 				// Get the localizeed name of the ammo variant
-				if ("mod" in data) {
-					nazv += ' (' + Res.pipText('am_' + data.mod) + ')';
+				if ("mod" in _data) {
+					nazv += ' (' + Res.pipText('am_' + _data.mod) + ')';
 				}
 			}
 			else {
 				nazv = Res.txt('i', id);
 			}
 
-			if (tip == L_ITEM && "tip" in data) {
-				tip = data.tip;
+			if (tip == L_ITEM && "tip" in _data) {
+				tip = _data.tip;
 			}
 			
 			// If it's a schematic
@@ -184,7 +198,7 @@ package fe.serv {
 				var wid:String = id.substr(2);
 
 				// Get a formatted localized name based on the workbench type required ("Scheme «xyz»" or "Recipe «xyz»")
-				var prefix:String = (data.work == "work") ? Res.pipText("scheme1") : Res.pipText("recipe");
+				var prefix:String = (_data.work == "work") ? Res.pipText("scheme1") : Res.pipText("recipe");
 				nazv = prefix + " «" + Res.txt('i', wid) + "»";
 			}
 			
@@ -194,56 +208,60 @@ package fe.serv {
 			}
 			
 			// Set the item category
-			if ("us" in data && tip != L_FOOD && tip != "eda" && tip != L_BOOK) {
+			if ("us" in _data && tip != L_FOOD && tip != "eda" && tip != L_BOOK) {
 				invCat = 1;
 			}
 			
 			// Set the item category
 			if (tip == L_WEAPON) { 
-				if (data.tip != 4) {
+				if (_data.tip != 4) {
 					mass = 1;
 				}
-				if ("phis_m" in data) {
-					mass = data.phis_m;
+				if ("phis_m" in _data) {
+					mass = _data.phis_m;
 				}
 			}
 			
-			if ("invcat" in data) {
-				invCat = data.invcat;
+			if ("invcat" in _data) {
+				invCat = _data.invcat;
 			}
 			
-			if ("invis" in data) {
+			if ("invis" in _data) {
 				invis = true;
 			}
 			
-			if ("fc" in data) {
-				fc = data.fc;
+			if ("fc" in _data) {
+				fc = _data.fc;
 			}
 			
-			if ("mess" in data) {
-				mess = data.mess;
+			if ("mess" in _data) {
+				mess = _data.mess;
 			}
 			
-			if ("m" in data) {
-				mass = data.m;
+			if ("m" in _data) {
+				mass = _data.m;
 			}
 
+		}
+
+		public function get data():Object {
+			return _data;
 		}
 		
 		public function getPrice():void {
 
-			if ("com_price" in data) {
-				price = data.com_price * sost * multHP * pmult;
+			if ("com_price" in _data) {
+				price = _data.com_price * sost * multHP * pmult;
 			}
 			else {
-				price = data.price * sost * multHP * pmult;
+				price = _data.price * sost * multHP * pmult;
 			}
 
 		}
 		
 		public function getMultPrice():Number {
-			if ("price" in data && "sell" in data) {
-				return data.sell / data.price;
+			if ("price" in _data && "sell" in _data) {
+				return _data.sell / _data.price;
 			}
 			else {
 				return 0.10;
@@ -278,7 +296,7 @@ package fe.serv {
 						if (mass == 0) {
 							return true;
 						}
-						if (data.tip <= 3) {
+						if (_data.tip <= 3) {
 							// There is enough room in inventory, pick the item up
 							if (inv.massW <= World.w.pers.maxmW - mass) {
 								return true;
@@ -290,7 +308,7 @@ package fe.serv {
 								return false;
 							}
 						}
-						if (data.tip == 5) {
+						if (_data.tip == 5) {
 							// There is enough room in inventory, pick the item up
 							if (inv.massM <= World.w.pers.maxmM - mass) {
 								return true;
@@ -394,6 +412,14 @@ package fe.serv {
 		public function trade():void {
 			kol -= bou;
 			bou = 0;	// How many of an item we just bought
+		}
+
+		// Check if an object is empty, Eg. '{}'
+		private function isEmpty(obj:Object):Boolean {
+			for (var key:String in obj) {
+				return false; // Found a property, so it's not empty
+			}
+			return true; // No properties found, it's empty
 		}
 	}
 }

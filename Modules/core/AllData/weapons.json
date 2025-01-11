@@ -147,8 +147,8 @@
         "char_destroy": 80,
         "char_auto": true
     },
-    "montVariant1": {
-        "id": "montVariant1",
+    "mont^1": {
+        "id": "mont^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -222,7 +222,7 @@
         "char_tipdam": 1,
         "char_knock": 10,
         "char_destroy": 20,
-        "char_pow": 1,
+        "char_pow": true,
         "phis_massa": 7,
         "phis_m": 2,
         "phis_minlong": 40,
@@ -269,10 +269,10 @@
         "char_tipdam": 1,
         "char_knock": 5,
         "char_destroy": 10,
-        "char_pow": 1
+        "char_pow": true
     },
-    "spearVariant1": {
-        "id": "spearVariant1",
+    "spear^1": {
+        "id": "spear^1",
         "tip": 1,
         "mtip": 1,
         "cat": 1,
@@ -299,7 +299,7 @@
         "char_tipdam": 1,
         "char_knock": 5,
         "char_destroy": 10,
-        "char_pow": 1,
+        "char_pow": true,
         "dop_effect": "poison",
         "dop_damage": 4,
         "dop_ch": 0.5,
@@ -335,10 +335,10 @@
         "char_tipdam": 1,
         "char_knock": 5,
         "char_destroy": 10,
-        "char_combo": 1
+        "char_combo": true
     },
-    "machVariant1": {
-        "id": "machVariant1",
+    "mach^1": {
+        "id": "mach^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -367,7 +367,7 @@
         "char_tipdam": 1,
         "char_knock": 10,
         "char_destroy": 10,
-        "char_combo": 1,
+        "char_combo": true,
         "uniqueVariant": true
     },
     "zknife": {
@@ -403,8 +403,8 @@
         "dop_damage": 2,
         "dop_ch": 0.2
     },
-    "zknifeVariant1": {
-        "id": "zknifeVariant1",
+    "zknife^1": {
+        "id": "zknife^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -469,8 +469,8 @@
         "char_destroy": 10,
         "char_auto": true
     },
-    "cknifeVariant1": {
-        "id": "cknifeVariant1",
+    "cknife^1": {
+        "id": "cknife^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -572,7 +572,7 @@
         "char_tipdam": 2,
         "char_knock": 10,
         "char_destroy": 80,
-        "char_pow": 1,
+        "char_pow": true,
         "phis_massa": 7,
         "phis_m": 2,
         "phis_minlong": 40,
@@ -649,8 +649,8 @@
         "char_knock": 5,
         "char_destroy": 10
     },
-    "zswordVariant1": {
-        "id": "zswordVariant1",
+    "zsword^1": {
+        "id": "zsword^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -695,7 +695,7 @@
         "phis_minlong": 30,
         "phis_long": 80,
         "vis_tipdec": 5,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "snd_prep": "pila_s",
         "snd_t1": 800,
         "snd_t2": 4000,
@@ -723,8 +723,8 @@
         "char_knock": 2,
         "char_destroy": 10
     },
-    "ripperVariant1": {
-        "id": "ripperVariant1",
+    "ripper^1": {
+        "id": "ripper^1",
         "tip": 1,
         "mtip": 2,
         "cat": 1,
@@ -735,7 +735,7 @@
         "phis_minlong": 30,
         "phis_long": 80,
         "vis_tipdec": 5,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "snd_prep": "pila_s",
         "snd_t1": 800,
         "snd_t2": 4000,
@@ -777,7 +777,7 @@
         "char_tipdam": 1,
         "char_knock": 12,
         "char_destroy": 80,
-        "char_pow": 1,
+        "char_pow": true,
         "phis_massa": 10,
         "phis_m": 2,
         "phis_minlong": 50,
@@ -824,10 +824,10 @@
         "char_tipdam": 2,
         "char_knock": 15,
         "char_destroy": 350,
-        "char_pow": 1
+        "char_pow": true
     },
-    "hammerVariant1": {
-        "id": "hammerVariant1",
+    "hammer^1": {
+        "id": "hammer^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -855,7 +855,7 @@
         "char_tipdam": 2,
         "char_knock": 15,
         "char_destroy": 350,
-        "char_pow": 1,
+        "char_pow": true,
         "uniqueVariant": true
     },
     "tlance": {
@@ -871,7 +871,7 @@
         "char_tipdam": 3,
         "char_knock": 5,
         "char_destroy": 200,
-        "char_pow": 1,
+        "char_pow": true,
         "phis_massa": 6,
         "phis_m": 2,
         "phis_long": 60,
@@ -901,7 +901,7 @@
         "phis_minlong": 30,
         "phis_long": 75,
         "vis_tipdec": 4,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "spark",
         "snd_shoot": "lasm_s",
         "snd_hit": "hit_pole",
@@ -922,8 +922,8 @@
         "char_knock": 5,
         "char_destroy": 10
     },
-    "elswordVariant1": {
-        "id": "elswordVariant1",
+    "elsword^1": {
+        "id": "elsword^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -933,7 +933,7 @@
         "phis_minlong": 30,
         "phis_long": 75,
         "vis_tipdec": 4,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "spark",
         "snd_shoot": "lasm_s",
         "snd_hit": "hit_pole",
@@ -975,7 +975,7 @@
         "phis_minlong": 30,
         "phis_long": 70,
         "vis_tipdec": 5,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "snd_prep": "autoaxe_s",
         "snd_t1": 300,
         "snd_t2": 1450,
@@ -1024,13 +1024,13 @@
         "char_tipdam": 6,
         "char_knock": 5,
         "char_destroy": 300,
-        "char_pow": 1,
+        "char_pow": true,
         "vis_tipdec": 15,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "plasma"
     },
-    "mspearVariant1": {
-        "id": "mspearVariant1",
+    "mspear^1": {
+        "id": "mspear^1",
         "tip": 1,
         "mtip": 1,
         "cat": 1,
@@ -1056,9 +1056,9 @@
         "char_tipdam": 6,
         "char_knock": 5,
         "char_destroy": 500,
-        "char_pow": 1,
+        "char_pow": true,
         "vis_tipdec": 16,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "plasma1",
         "uniqueVariant": true
     },
@@ -1095,8 +1095,8 @@
         "dop_damage": 6,
         "dop_ch": 0.5
     },
-    "swordVariant1": {
-        "id": "swordVariant1",
+    "sword^1": {
+        "id": "sword^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -1141,7 +1141,7 @@
         "phis_minlong": 30,
         "phis_long": 80,
         "vis_tipdec": 12,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "bum",
         "snd_shoot": "lasm_s",
         "snd_hit": "lasm_h",
@@ -1161,8 +1161,8 @@
         "char_knock": 2,
         "char_destroy": 250
     },
-    "lswordVariant1": {
-        "id": "lswordVariant1",
+    "lsword^1": {
+        "id": "lsword^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -1172,7 +1172,7 @@
         "phis_minlong": 30,
         "phis_long": 80,
         "vis_tipdec": 12,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "bum",
         "snd_shoot": "lasm_s",
         "snd_hit": "lasm_h",
@@ -1212,7 +1212,7 @@
         "phis_minlong": 10,
         "phis_long": 60,
         "vis_tipdec": 5,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "snd_prep": "bsaw_s",
         "snd_t1": 800,
         "snd_t2": 3000,
@@ -1263,10 +1263,10 @@
         "char_tipdam": 2,
         "char_knock": 25,
         "char_destroy": 500,
-        "char_pow": 1
+        "char_pow": true
     },
-    "sledgeVariant1": {
-        "id": "sledgeVariant1",
+    "sledge^1": {
+        "id": "sledge^1",
         "tip": 1,
         "cat": 1,
         "skill": 1,
@@ -1294,7 +1294,7 @@
         "char_tipdam": 2,
         "char_knock": 28,
         "char_destroy": 500,
-        "char_pow": 1,
+        "char_pow": true,
         "uniqueVariant": true
     },
     "kosa": {
@@ -1310,13 +1310,13 @@
         "char_tipdam": 16,
         "char_knock": 1,
         "char_destroy": 10,
-        "char_pow": 1,
+        "char_pow": true,
         "phis_massa": 6,
         "phis_m": 3,
         "phis_minlong": 70,
         "phis_long": 80,
         "vis_tipdec": 12,
-        "vis_lasm": 1,
+        "vis_lasm": true,
         "vis_flare": "bumn",
         "snd_shoot": "m_big",
         "snd_hit": "hit_necr",
@@ -1455,8 +1455,8 @@
         "char_knock": 4,
         "char_destroy": 10
     },
-    "p10mmVariant1": {
-        "id": "p10mmVariant1",
+    "p10mm^1": {
+        "id": "p10mm^1",
         "tip": 2,
         "cat": 2,
         "skill": 2,
@@ -1555,8 +1555,8 @@
         "phis_recoil": 10,
         "phis_massa": 2
     },
-    "revoVariant1": {
-        "id": "revoVariant1",
+    "revo^1": {
+        "id": "revo^1",
         "tip": 2,
         "cat": 2,
         "skill": 2,
@@ -1654,8 +1654,8 @@
         "char_knock": 18,
         "char_destroy": 30
     },
-    "p127mmVariant1": {
-        "id": "p127mmVariant1",
+    "p127mm^1": {
+        "id": "p127mm^1",
         "tip": 2,
         "cat": 2,
         "skill": 2,
@@ -1722,8 +1722,8 @@
         "char_knock": 20,
         "char_destroy": 30
     },
-    "pscVariant1": {
-        "id": "pscVariant1",
+    "psc^1": {
+        "id": "psc^1",
         "tip": 2,
         "cat": 2,
         "skill": 2,
@@ -1901,8 +1901,8 @@
         "ammo_rashod": 1,
         "ammo_reload": 45
     },
-    "laspVariant1": {
-        "id": "laspVariant1",
+    "lasp^1": {
+        "id": "lasp^1",
         "tip": 2,
         "cat": 2,
         "skill": 4,
@@ -1974,8 +1974,8 @@
         "ammo_rashod": 4,
         "ammo_reload": 45
     },
-    "plapVariant1": {
-        "id": "plapVariant1",
+    "plap^1": {
+        "id": "plap^1",
         "tip": 2,
         "cat": 2,
         "skill": 4,
@@ -2082,7 +2082,7 @@
         "skill": 2,
         "lvl": 3,
         "perk": "pistol",
-        "nostand": 1,
+        "nostand": true,
         "char_maxhp": 600,
         "char_damage": 26,
         "char_rapid": 9,
@@ -2208,8 +2208,8 @@
         "char_knock": 6,
         "char_destroy": 10
     },
-    "pp127mmVariant1": {
-        "id": "pp127mmVariant1",
+    "pp127mm^1": {
+        "id": "pp127mm^1",
         "tip": 3,
         "cat": 3,
         "skill": 2,
@@ -2278,8 +2278,8 @@
         "char_knock": 3,
         "char_destroy": 10
     },
-    "assrVariant1": {
-        "id": "assrVariant1",
+    "assr^1": {
+        "id": "assr^1",
         "tip": 3,
         "cat": 3,
         "skill": 2,
@@ -2351,8 +2351,8 @@
         "ammo_holder": 32,
         "ammo_reload": 40
     },
-    "carbineVariant1": {
-        "id": "carbineVariant1",
+    "carbine^1": {
+        "id": "carbine^1",
         "tip": 3,
         "cat": 3,
         "skill": 2,
@@ -2431,8 +2431,8 @@
         "dop_ch": 1,
         "dop_vision": 2
     },
-    "zebrVariant1": {
-        "id": "zebrVariant1",
+    "zebr^1": {
+        "id": "zebr^1",
         "tip": 3,
         "cat": 3,
         "skill": 2,
@@ -2510,8 +2510,8 @@
         "char_knock": 3,
         "char_destroy": 10
     },
-    "lmgVariant1": {
-        "id": "lmgVariant1",
+    "lmg^1": {
+        "id": "lmg^1",
         "tip": 3,
         "cat": 3,
         "skill": 2,
@@ -2623,8 +2623,8 @@
         "ammo_rashod": 4,
         "ammo_reload": 45
     },
-    "sparklVariant1": {
-        "id": "sparklVariant1",
+    "sparkl^1": {
+        "id": "sparkl^1",
         "tip": 3,
         "cat": 3,
         "skill": 4,
@@ -2703,8 +2703,8 @@
         "char_knock": 2,
         "char_destroy": 150
     },
-    "plamgVariant1": {
-        "id": "plamgVariant1",
+    "plamg^1": {
+        "id": "plamg^1",
         "tip": 3,
         "cat": 3,
         "skill": 4,
@@ -2784,8 +2784,8 @@
         "ammo_rashod": 8,
         "ammo_reload": 45
     },
-    "novaVariant1": {
-        "id": "novaVariant1",
+    "nova^1": {
+        "id": "nova^1",
         "tip": 3,
         "cat": 3,
         "skill": 4,
@@ -2865,8 +2865,8 @@
         "ammo_rashod": 4,
         "ammo_reload": 45
     },
-    "quickVariant1": {
-        "id": "quickVariant1",
+    "quick^1": {
+        "id": "quick^1",
         "tip": 3,
         "cat": 3,
         "skill": 4,
@@ -2940,8 +2940,8 @@
         "char_knock": 3,
         "char_destroy": 10
     },
-    "oldshotVariant1": {
-        "id": "oldshotVariant1",
+    "oldshot^1": {
+        "id": "oldshot^1",
         "tip": 2,
         "cat": 4,
         "skill": 2,
@@ -3046,8 +3046,8 @@
         "char_destroy": 10,
         "char_auto": true
     },
-    "shotgunVariant1": {
-        "id": "shotgunVariant1",
+    "shotgun^1": {
+        "id": "shotgun^1",
         "tip": 2,
         "cat": 4,
         "skill": 2,
@@ -3120,8 +3120,8 @@
         "ammo_holder": 8,
         "ammo_reload": 45
     },
-    "saf9Variant1": {
-        "id": "saf9Variant1",
+    "saf9^1": {
+        "id": "saf9^1",
         "tip": 2,
         "cat": 4,
         "skill": 2,
@@ -3195,8 +3195,8 @@
         "ammo_holder": 12,
         "ammo_reload": 60
     },
-    "pshotVariant1": {
-        "id": "pshotVariant1",
+    "pshot^1": {
+        "id": "pshot^1",
         "tip": 3,
         "cat": 4,
         "skill": 2,
@@ -3274,8 +3274,8 @@
         "char_tipdam": 5,
         "char_destroy": 20
     },
-    "prismVariant1": {
-        "id": "prismVariant1",
+    "prism^1": {
+        "id": "prism^1",
         "tip": 3,
         "cat": 4,
         "skill": 4,
@@ -3394,8 +3394,8 @@
         "ammo_rashod": 25,
         "ammo_reload": 60
     },
-    "plamVariant1": {
-        "id": "plamVariant1",
+    "plam^1": {
+        "id": "plam^1",
         "tip": 3,
         "cat": 4,
         "skill": 4,
@@ -3469,8 +3469,8 @@
         "char_knock": 5,
         "char_destroy": 10
     },
-    "oldrVariant1": {
-        "id": "oldrVariant1",
+    "oldr^1": {
+        "id": "oldr^1",
         "tip": 3,
         "cat": 5,
         "skill": 2,
@@ -3577,8 +3577,8 @@
         "char_knock": 12,
         "char_destroy": 10
     },
-    "winchesterVariant1": {
-        "id": "winchesterVariant1",
+    "winchester^1": {
+        "id": "winchester^1",
         "tip": 3,
         "cat": 5,
         "skill": 2,
@@ -3652,8 +3652,8 @@
         "char_knock": 18,
         "char_destroy": 30
     },
-    "brushgunVariant1": {
-        "id": "brushgunVariant1",
+    "brushgun^1": {
+        "id": "brushgun^1",
         "tip": 3,
         "cat": 5,
         "skill": 2,
@@ -3767,8 +3767,8 @@
         "ammo_rashod": 4,
         "ammo_reload": 40
     },
-    "lasrVariant1": {
-        "id": "lasrVariant1",
+    "lasr^1": {
+        "id": "lasr^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -3849,8 +3849,8 @@
         "ammo_rashod": 10,
         "ammo_reload": 60
     },
-    "plarVariant1": {
-        "id": "plarVariant1",
+    "plar^1": {
+        "id": "plar^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -3924,8 +3924,8 @@
         "ammo_rashod": 20,
         "ammo_reload": 60
     },
-    "pulserVariant1": {
-        "id": "pulserVariant1",
+    "pulser^1": {
+        "id": "pulser^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -4001,8 +4001,8 @@
         "ammo_rashod": 15,
         "ammo_reload": 60
     },
-    "termoVariant1": {
-        "id": "termoVariant1",
+    "termo^1": {
+        "id": "termo^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -4084,8 +4084,8 @@
         "ammo_rashod": 8,
         "ammo_reload": 75
     },
-    "railVariant1": {
-        "id": "railVariant1",
+    "rail^1": {
+        "id": "rail^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -4166,8 +4166,8 @@
         "ammo_holder": 5,
         "ammo_reload": 60
     },
-    "sniperVariant1": {
-        "id": "sniperVariant1",
+    "sniper^1": {
+        "id": "sniper^1",
         "tip": 3,
         "cat": 7,
         "skill": 2,
@@ -4252,8 +4252,8 @@
         "char_tipdam": 5,
         "char_destroy": 50
     },
-    "lassnVariant1": {
-        "id": "lassnVariant1",
+    "lassn^1": {
+        "id": "lassn^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -4339,8 +4339,8 @@
         "char_tipdam": 9,
         "char_destroy": 300
     },
-    "gromVariant1": {
-        "id": "gromVariant1",
+    "grom^1": {
+        "id": "grom^1",
         "tip": 3,
         "cat": 7,
         "skill": 4,
@@ -4422,8 +4422,8 @@
         "snd_reload": "sniper_r",
         "snd_noise": 1200
     },
-    "antiVariant1": {
-        "id": "antiVariant1",
+    "anti^1": {
+        "id": "anti^1",
         "tip": 3,
         "cat": 7,
         "skill": 2,
@@ -4504,8 +4504,8 @@
         "char_prep": 32,
         "char_destroy": 10
     },
-    "minigunVariant1": {
-        "id": "minigunVariant1",
+    "minigun^1": {
+        "id": "minigun^1",
         "tip": 3,
         "cat": 8,
         "skill": 2,
@@ -4616,8 +4616,8 @@
         "char_knock": 8,
         "char_destroy": 50
     },
-    "antidrakVariant1": {
-        "id": "antidrakVariant1",
+    "antidrak^1": {
+        "id": "antidrak^1",
         "tip": 3,
         "cat": 8,
         "skill": 2,
@@ -4696,8 +4696,8 @@
         "ammo_rashod": 2,
         "ammo_reload": 60
     },
-    "gatlVariant1": {
-        "id": "gatlVariant1",
+    "gatl^1": {
+        "id": "gatl^1",
         "tip": 3,
         "cat": 8,
         "skill": 4,
@@ -4781,8 +4781,8 @@
         "phis_massa": 20,
         "phis_m": 3
     },
-    "gatpVariant1": {
-        "id": "gatpVariant1",
+    "gatp^1": {
+        "id": "gatp^1",
         "tip": 3,
         "cat": 5,
         "skill": 4,
@@ -4868,8 +4868,8 @@
         "phis_massa": 10,
         "phis_m": 2
     },
-    "flamerVariant1": {
-        "id": "flamerVariant1",
+    "flamer^1": {
+        "id": "flamer^1",
         "tip": 3,
         "cat": 8,
         "skill": 4,
@@ -5006,8 +5006,8 @@
         "dop_damage": 15,
         "dop_ch": 0.2
     },
-    "cflamerVariant1": {
-        "id": "cflamerVariant1",
+    "cflamer^1": {
+        "id": "cflamer^1",
         "tip": 3,
         "cat": 8,
         "skill": 4,
@@ -5139,8 +5139,8 @@
         "char_tipdam": 3,
         "char_destroy": 3
     },
-    "arsonVariant1": {
-        "id": "arsonVariant1",
+    "arson^1": {
+        "id": "arson^1",
         "tip": 2,
         "cat": 2,
         "skill": 3,
@@ -5215,8 +5215,8 @@
         "dop_damage": 10,
         "dop_ch": 1
     },
-    "dartgunVariant1": {
-        "id": "dartgunVariant1",
+    "dartgun^1": {
+        "id": "dartgun^1",
         "tip": 2,
         "cat": 2,
         "skill": 3,
@@ -5285,8 +5285,8 @@
         "char_knock": 0,
         "char_destroy": 10
     },
-    "acidgunVariant1": {
-        "id": "acidgunVariant1",
+    "acidgun^1": {
+        "id": "acidgun^1",
         "tip": 2,
         "cat": 4,
         "skill": 3,
@@ -5358,8 +5358,8 @@
         "char_knock": 16,
         "char_destroy": 40
     },
-    "sawgunVariant1": {
-        "id": "sawgunVariant1",
+    "sawgun^1": {
+        "id": "sawgun^1",
         "tip": 3,
         "cat": 5,
         "skill": 3,
@@ -5432,8 +5432,8 @@
         "char_knock": 10,
         "char_destroy": 10
     },
-    "buckshotVariant1": {
-        "id": "buckshotVariant1",
+    "buckshot^1": {
+        "id": "buckshot^1",
         "tip": 3,
         "cat": 4,
         "skill": 3,
@@ -5503,8 +5503,8 @@
         "char_destroy": 50,
         "char_auto": true
     },
-    "railwayVariant1": {
-        "id": "railwayVariant1",
+    "railway^1": {
+        "id": "railway^1",
         "tip": 3,
         "cat": 3,
         "skill": 3,
@@ -5580,8 +5580,8 @@
         "char_tipdam": 101,
         "char_dkol": 5
     },
-    "friendVariant1": {
-        "id": "friendVariant1",
+    "friend^1": {
+        "id": "friend^1",
         "tip": 3,
         "cat": 3,
         "skill": 3,
@@ -5703,8 +5703,8 @@
         "ammo_holder": 6,
         "ammo_reload": 60
     },
-    "glauVariant1": {
-        "id": "glauVariant1",
+    "glau^1": {
+        "id": "glau^1",
         "tip": 3,
         "cat": 6,
         "skill": 5,
@@ -5832,8 +5832,8 @@
         "phis_massa": 20,
         "phis_m": 3
     },
-    "mlauVariant1": {
-        "id": "mlauVariant1",
+    "mlau^1": {
+        "id": "mlau^1",
         "tip": 3,
         "cat": 6,
         "skill": 5,
@@ -5919,8 +5919,8 @@
         "ammo_holder": 1,
         "ammo_reload": 60
     },
-    "belVariant1": {
-        "id": "belVariant1",
+    "bel^1": {
+        "id": "bel^1",
         "tip": 3,
         "cat": 6,
         "skill": 5,
@@ -6539,8 +6539,8 @@
         "com_stage": 1,
         "com_uniq": 0
     },
-    "mbulVariant1": {
-        "id": "mbulVariant1",
+    "mbul^1": {
+        "id": "mbul^1",
         "tip": 5,
         "cat": 2,
         "skill": 6,
@@ -6596,8 +6596,8 @@
         "com_stage": 1,
         "com_uniq": 0
     },
-    "iceVariant1": {
-        "id": "iceVariant1",
+    "ice^1": {
+        "id": "ice^1",
         "tip": 5,
         "cat": 2,
         "skill": 6,
@@ -6661,8 +6661,8 @@
         "com_stage": 1,
         "com_uniq": 0
     },
-    "dragonVariant1": {
-        "id": "dragonVariant1",
+    "dragon^1": {
+        "id": "dragon^1",
         "tip": 5,
         "cat": 2,
         "skill": 6,
@@ -6726,8 +6726,8 @@
         "com_stage": 1,
         "com_uniq": 0
     },
-    "bladesVariant1": {
-        "id": "bladesVariant1",
+    "blades^1": {
+        "id": "blades^1",
         "tip": 5,
         "cat": 2,
         "skill": 6,
@@ -6782,8 +6782,8 @@
         "com_stage": 2,
         "com_uniq": 0
     },
-    "lightningVariant1": {
-        "id": "lightningVariant1",
+    "lightning^1": {
+        "id": "lightning^1",
         "tip": 5,
         "cat": 2,
         "skill": 6,
@@ -6843,8 +6843,8 @@
         "com_stage": 3,
         "com_uniq": 0
     },
-    "fireballVariant1": {
-        "id": "fireballVariant1",
+    "fireball^1": {
+        "id": "fireball^1",
         "tip": 5,
         "cat": 6,
         "skill": 6,
@@ -6909,8 +6909,8 @@
         "com_stage": 3,
         "com_uniq": 0
     },
-    "mrayVariant1": {
-        "id": "mrayVariant1",
+    "mray^1": {
+        "id": "mray^1",
         "tip": 5,
         "cat": 5,
         "skill": 6,
@@ -6970,8 +6970,8 @@
         "com_stage": 2,
         "com_uniq": 0
     },
-    "defwaveVariant1": {
-        "id": "defwaveVariant1",
+    "defwave^1": {
+        "id": "defwave^1",
         "tip": 5,
         "cat": 2,
         "skill": 6,
@@ -7031,8 +7031,8 @@
         "com_stage": 3,
         "com_uniq": 0
     },
-    "eclipseVariant1": {
-        "id": "eclipseVariant1",
+    "eclipse^1": {
+        "id": "eclipse^1",
         "tip": 5,
         "cat": 6,
         "skill": 6,
@@ -7149,7 +7149,7 @@
         "cat": 2,
         "skill": 2,
         "lvl": 0,
-        "nostand": 1,
+        "nostand": true,
         "char_maxhp": 200000,
         "char_damage": 1000,
         "char_tipdam": 0,
@@ -7181,7 +7181,7 @@
         "cat": 1,
         "skill": 1,
         "lvl": 5,
-        "nostand": 1,
+        "nostand": true,
         "alicorn": true,
         "char_maxhp": 1000,
         "char_damage": 60,
@@ -7206,7 +7206,7 @@
         "cat": 3,
         "skill": 2,
         "lvl": 5,
-        "nostand": 1,
+        "nostand": true,
         "alicorn": true,
         "char_maxhp": 100000,
         "char_damage": 11,
@@ -7236,7 +7236,7 @@
         "cat": 3,
         "skill": 4,
         "lvl": 5,
-        "nostand": 1,
+        "nostand": true,
         "alicorn": true,
         "char_maxhp": 100000,
         "char_damage": 16,
@@ -7268,7 +7268,7 @@
         "cat": 6,
         "skill": 5,
         "lvl": 5,
-        "nostand": 1,
+        "nostand": true,
         "alicorn": true,
         "char_maxhp": 100000,
         "char_damage": 0,
@@ -7309,7 +7309,7 @@
         "cat": 2,
         "skill": 6,
         "perslvl": 28,
-        "nostand": 1,
+        "nostand": true,
         "alicorn": true,
         "char_damage": 38,
         "char_rapid": 8,
@@ -7356,63 +7356,63 @@
         "tip": 5,
         "skill": 6,
         "perslvl": 3,
-        "spell": 1
+        "spell": true
     },
     "sp_mwall": {
         "id": "sp_mwall",
         "tip": 5,
         "skill": 6,
         "perslvl": 6,
-        "spell": 1
+        "spell": true
     },
     "sp_blast": {
         "id": "sp_blast",
         "tip": 5,
         "skill": 7,
         "perslvl": 9,
-        "spell": 1
+        "spell": true
     },
     "sp_cryst": {
         "id": "sp_cryst",
         "tip": 5,
         "skill": 6,
         "perslvl": 12,
-        "spell": 1
+        "spell": true
     },
     "sp_kdash": {
         "id": "sp_kdash",
         "tip": 5,
         "skill": 7,
         "perslvl": 15,
-        "spell": 1
+        "spell": true
     },
     "sp_mshit": {
         "id": "sp_mshit",
         "tip": 5,
         "skill": 6,
         "perslvl": 18,
-        "spell": 1
+        "spell": true
     },
     "sp_moon": {
         "id": "sp_moon",
         "tip": 5,
         "skill": 6,
         "perslvl": 20,
-        "spell": 1
+        "spell": true
     },
     "sp_gwall": {
         "id": "sp_gwall",
         "tip": 5,
         "skill": 6,
         "perslvl": 21,
-        "spell": 1
+        "spell": true
     },
     "sp_invulner": {
         "id": "sp_invulner",
         "tip": 5,
         "skill": 6,
         "perslvl": 24,
-        "spell": 1
+        "spell": true
     },
     "necrbullet": {
         "id": "necrbullet",

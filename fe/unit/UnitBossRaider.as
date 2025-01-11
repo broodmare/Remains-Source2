@@ -20,48 +20,73 @@ package fe.unit {
 		// Constructor
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			id='bossraider';
+			id = "bossraider";
+			
 			if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
+				tr = xml.@tr;
 			}
+			
 			//взять параметры из xml
-			if (tr==2) vis=new visualRaiderBoss2();
-			else vis=new visualRaiderBoss();
+			if (tr == 2) {
+				vis = new visualRaiderBoss2();
+			}
+			else {
+				vis = new visualRaiderBoss();
+			}
+			
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
-			walkSpeed=maxSpeed;
-			plavSpeed=maxSpeed;
-			runSpeed=maxSpeed*6;
-			plavdy=accel;
-			porog=45;
-			boss=true;
-			aiTCh=80;
+			
+			walkSpeed = maxSpeed;
+			plavSpeed = maxSpeed;
+			runSpeed = maxSpeed * 6;
+			plavdy = accel;
+			porog = 45;
+			boss = true;
+			aiTCh = 80;
 			
 			//дать оружие
-			if (tr==1) {
-				currentWeapon=Weapon.create(this,'carbine');
-				aiDist=2000;
+			var weapData:Object;
+			if (tr == 1) {
+				weapData = ItemManager.reference.getWeapon("carbine");
+				currentWeapon = Weapon.create(this, weapData);
+				aiDist = 2000;
 			}
-			if (tr==2) {
-				currentWeapon=Weapon.create(this,'flamer');
-				aiDist=500;
+			else if (tr == 2) {
+				weapData = ItemManager.reference.getWeapon("flamer");
+				currentWeapon = Weapon.create(this, weapData);
+				aiDist = 500;
 			}
-			if (currentWeapon) weap=currentWeapon.id;
-			else weap='';
-			if (currentWeapon) childObjs=new Array(currentWeapon);
+			
+			if (currentWeapon) {
+				weap = currentWeapon.id;
+			}
+			else {
+				weap = "";
+			}
+			
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+			}
+			
 			if (currentWeapon && currentWeapon.uniq) {
 				currentWeapon.updVariant(1);
 			}
 			
-			aiNapr=storona;
+			aiNapr = storona;
 		}
 		
 
 		public override function save():Object {
-			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
-			obj.tr=tr;
-			obj.weap=weap;
+			var obj:Object = super.save();
+			
+			if (obj == null) {
+				obj = new Object();
+			}
+			
+			obj.tr = tr;
+			obj.weap = weap;
+			
 			return obj;
 		}
 		
@@ -69,10 +94,13 @@ package fe.unit {
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
+			
 			if (World.w.game.globalDif==3) dMult=1.2;
 			if (World.w.game.globalDif==4) dMult=1.5;
+			
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
+			
 			if (currentWeapon) {
 				currentWeapon.damage*=dMult;
 			} 

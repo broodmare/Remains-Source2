@@ -44,28 +44,45 @@ package fe.loc {
 			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
 			loc = nloc;
 			item = nitem;
-			if (loc.cTransform) cTransform = loc.cTransform;
+			
+			if (loc.cTransform) {
+				cTransform = loc.cTransform;
+			}
+			
 			sloy = 2;
 			prior = 3;
 			coordinates.X = nx;
 			coordinates.Y = ny;
 			krit = nkrit;
-			if (nx < tileX) nx = tileX;
-			if (nx > (loc.spaceX - 1) * tileX) nx = (loc.spaceX - 1) * tileX;
-			if (ny > (loc.spaceY - 1) * tileY) ny = (loc.spaceY - 1) * tileY;
+			
+			if (nx < tileX) {
+				nx = tileX;
+			}
+			
+			if (nx > (loc.spaceX - 1) * tileX) {
+				nx = (loc.spaceX - 1) * tileX;
+			}
+			
+			if (ny > (loc.spaceY - 1) * tileY) {
+				ny = (loc.spaceY - 1) * tileY;
+			}
+			
 			massa = 0.1;
 			nazv = item.nazv;
 			this.boundingBox.width = 30;
 			this.boundingBox.height = 20;
+			
 			// Determine the appropriate sprite for the item
 			if (item.tip == Item.L_WEAPON) {
-				if (item.xml.vis.length() && item.xml.vis.@loot.length()) {
+				if ("vis" in item.data && "loot" in item.data) {
 					vis = new visualItem();	// .SWF Dependency
-					try {
-						vis.gotoAndStop(item.xml.vis.@loot);
-					}
-					catch (err) {
-						trace('ERROR: (00:25)');
+					if ("vis_loot" in item.data) {
+						try {
+							vis.gotoAndStop(item.data.vis_loot);
+						}
+						catch (err) {
+							trace('ERROR: (00:25)');
+						}
 					}
 				}
 				else {
@@ -74,66 +91,86 @@ package fe.loc {
 
 					var infIco = new vClass();
 					infIco.stop();
-					infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
-					infIco.y=-infIco.height-infIco.getRect(infIco).top+10;
-					vis=new MovieClip();
+					infIco.x = -infIco.getRect(infIco).left - infIco.width / 2;
+					infIco.y = -infIco.height - infIco.getRect(infIco).top + 10;
+					vis = new MovieClip();
 					vis.addChild(infIco);
-					dery=10;
+					dery = 10;
 				}
-				if (item.variant > 0) shine();
-				if (item.xml.snd.@fall.length()) sndFall = item.xml.snd.@fall;
+				
+				if (item.variant > 0) {
+					shine();
+				}
+				
+				if ("fall" in item.data) {
+					sndFall = item.data.fall;
+				}
 			}
 			else if (item.tip == Item.L_EXPL) {
 				vClass = Res.getClass('vis' + item.id, null, visualAmmo);	// .SWF Dependency
 				var infIco = new vClass();
 				infIco.stop();
-				infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
-				infIco.y=-infIco.height-infIco.getRect(infIco).top;
-				vis=new MovieClip();
+				infIco.x = -infIco.getRect(infIco).left - infIco.width / 2;
+				infIco.y = -infIco.height - infIco.getRect(infIco).top;
+				vis = new MovieClip();
 				vis.addChild(infIco);
-				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
+				if ("fall" in item.data) {
+					sndFall = item.data.fall;
+				}
 			}
 			else if (item.tip == Item.L_AMMO) {
 				vClass = visualAmmo;	// .SWF Dependency
 				vis = new vClass();
 				try {
-					if (item.xml.@base.length()) vis.gotoAndStop(item.xml.@base);
-					else vis.gotoAndStop(item.id);
+					if ("base" in item.data) {
+						vis.gotoAndStop(item.data.base);
+					}
+					else {
+						vis.gotoAndStop(item.id);
+					}
 				}
 				catch(err) {
 					trace('ERROR: (00:26)');
 					vis.gotoAndStop(1);
 				}
-				if (item.xml.@fall.length()) sndFall = item.xml.@fall;
+				if ("fall" in item.data) {
+					sndFall = item.data.fall;
+				}
 			}
 			else {
 				vClass = visualItem;	// .SWF Dependency
 				vis = new vClass();
+				
 				try {
 					vis.gotoAndStop(item.id);
 				}
 				catch(err) {
-					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
-					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
-					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
-					else if (item.tip==Item.L_COMPP) vis.gotoAndStop('compp');
-					else if (item.tip==Item.L_KEY) vis.gotoAndStop('key');
-					else if (item.tip==Item.L_PAINT) vis.gotoAndStop('paint');
-					else if (item.tip==Item.L_FOOD) vis.gotoAndStop('food');
+					if (item.tip == Item.L_COMPA) vis.gotoAndStop('compa');
+					else if (item.tip == Item.L_COMPW) vis.gotoAndStop('compw');
+					else if (item.tip == Item.L_COMPE) vis.gotoAndStop('compe');
+					else if (item.tip == Item.L_COMPP) vis.gotoAndStop('compp');
+					else if (item.tip == Item.L_KEY) vis.gotoAndStop('key');
+					else if (item.tip == Item.L_PAINT) vis.gotoAndStop('paint');
+					else if (item.tip == Item.L_FOOD) vis.gotoAndStop('food');
 					else  {
 						trace('ERROR: (00:53) - ERROR: Could not load sprite for item: "' + item.id +'", using generic!');
 						vis.gotoAndStop(1);
 					}
 				}
-				if (item.tip==Item.L_SCHEME) {
-					sndFall='fall_paper';
+				
+				if (item.tip == Item.L_SCHEME) {
+					sndFall = 'fall_paper';
 					vis.gotoAndStop('scheme');
 				}
-				if (item.tip==Item.L_BOOK) {
-					nazv='"'+nazv+'"';
-					sndFall='fall_paper';
+				
+				if (item.tip == Item.L_BOOK) {
+					nazv = '"' + nazv + '"';
+					sndFall = 'fall_paper';
 				}
-				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
+				
+				if ("fall" in item.data) {
+					sndFall = item.data.fall;
+				}
 			} 
 			// If a sprite was found, set up it's size and position
 			if (vClass) {
@@ -359,17 +396,30 @@ package fe.loc {
 			var newmy:Number=0;
 			if (velocity.Y > 0) {
 				stay = false;
+				
 				if (coordinates.Y + velocity.Y / div >= loc.spaceY * tileY) {
-					if (auto2) take(true);
+					if (auto2) {
+						take(true);
+					}
+					
 					velocity.X = 0;
 					return;
 				}
+				
 				t = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y / div);
+				
 				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
 					newmy = t.boundingBox.top;
 				}
-				if (newmy == 0 && !levit && !vsos) newmy = checkShelf(velocity.Y / div);
-				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) newmy = (loc.spaceY - 1) * tileY;
+				
+				if (newmy == 0 && !levit && !vsos) {
+					newmy = checkShelf(velocity.Y / div);
+				}
+				
+				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) {
+					newmy = (loc.spaceY - 1) * tileY;
+				}
+				
 				if (newmy) {
 					coordinates.Y = newmy - 1;
 					if (!levit) {
@@ -386,8 +436,12 @@ package fe.loc {
 		}
 
 		public override function checkStay():Boolean {
-			if (osnova) return true;
+			if (osnova) {
+				return true;
+			}
+			
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
+			
 			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.boundingBox.top) {
 				return true;
 			}
@@ -408,10 +462,11 @@ package fe.loc {
 			return 0;
 		}
 		
-		//поиск жидкости
+		// [Liquid search]
 		public function checkWater():Boolean {
-			var pla = isPlav;
+			var pla:Boolean = isPlav;
 			isPlav = false;
+			
 			try {
 				if (loc.getTile(int(coordinates.X/tileX) , int(coordinates.Y/tileY)).water > 0) {
 					isPlav = true;
@@ -425,6 +480,7 @@ package fe.loc {
 				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(velocity.Y) * (Math.random() * 0.3 + 0.3), kol:5});
 				Snd.ps('fall_item_water', coordinates.X, coordinates.Y, 0, velocity.Y / 10);
 			}
+			
 			return isPlav;
 		}
 	}

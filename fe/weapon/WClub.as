@@ -50,8 +50,8 @@ package fe.weapon  {
 		public var quakeX:Number=0;
 		public var quakeY:Number=0;
 		
-		public var powerfull:Boolean=false;	//можно усиливать удар
-		public var combinat:Boolean=false;	//каждый 4й удар усиленный
+		public var powerfull:Boolean = false;	// [You can strengthen the blow]
+		public var combinat:Boolean = false;	// [Every 4th blow is reinforced]
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -59,10 +59,10 @@ package fe.weapon  {
 		// Constructor
 		public function WClub(own:Unit, id:String, nvar:int = 0) {
 			
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
+			var data:Object = ItemManager.reference.getWeapon(id);
 			
-			if (node.vis[0].@lasm > 0) {
-				lasM = true;
+			if ("vis_lasm" in data) {
+				lasM = data.vis_lasm;
 			}
 
 			if (lasM) {
@@ -76,30 +76,31 @@ package fe.weapon  {
 			visvzz.stop();
 			super(own, id, nvar);
 			vis.stop();
-			speed=15;
-			satsMelee=noTrass=true;
+			speed = 15;
+			satsMelee = true;
+			noTrass = true;
 			
-			if (node.@mtip.length()) {
-				mtip = node.@mtip;
+			if ("mtip" in data) {
+				mtip = data.mtip;
 			}
 			
-			if (node.phis[0].@long > 0) {
-				dlina = node.phis[0].@long;
+			if ("phis_long" in data) {
+				dlina = data.phis_long;
 			}
 			
-			if (node.phis[0].@minlong > 0) {
-				mindlina = node.phis[0].@minlong;
+			if ("phis_minlong" in data) {
+				mindlina = data.phis_minlong;
 			}
 			else {
 				mindlina = dlina;
 			}
 			
-			if (node.char[0].@pow.length()) {
-				powerfull = true;
+			if ("char_pow" in data) {
+				powerfull = data.char_pow;
 			}
 			
-			if (node.char[0].@combo.length()) {
-				combinat = true;
+			if ("char_combo" in data) {
+				combinat = data.char_combo;
 			}
 			
 			var n1:Number = dlina / 100;
@@ -126,8 +127,8 @@ package fe.weapon  {
 			b.velocity.set(0, 0);
 			b.vel = 0;
 			
-			if (node.@crack.length()) {
-				b.crack = node.@crack;
+			if ("crack" in data) {
+				b.crack = data.crack;
 			}
 			
 			checkLine = true;

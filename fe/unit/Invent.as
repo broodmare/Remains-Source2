@@ -55,7 +55,7 @@ package fe.unit {
 			// Cache all items, armors, and weapons
 			
 			for each (var i in itemManager.items) {
-				var item:Item = new Item(i, 0);
+				var item:Item = new Item(i.id, 0);
 				items[item.id] = item;
 				
 				if ("us" in i && i.us >= 2) {
@@ -818,8 +818,12 @@ package fe.unit {
 		
 		// Initializes the list of spells
 		public function addAllSpells():void {
-			for each(var sp:XML in itemList.(@tip == 'spell')) {
-				addSpell(sp.@id);
+			for each(var sp in ItemManager.reference.items) {
+				if ("tip" in sp && sp.tip == "spell") {
+					trace("Invent.addAllSpells() - Adding spell: " + sp.id);
+					addSpell(sp.id);
+				}
+				
 			}
 		}
 		
@@ -832,7 +836,8 @@ package fe.unit {
 			
 			var kol:int = 0;
 			var color:int = -1;
-			var itemData:Object = itemManager.getItem(l.id);
+			var s:String = l.id;
+			var itemData:Object = itemManager.getItem(s);
 
 			// Item is a weapon
 			if (l.tip == Item.L_WEAPON) {

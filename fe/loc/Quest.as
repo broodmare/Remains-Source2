@@ -12,30 +12,30 @@ package fe.loc {
 		public var info:String;
 		public var empl:String;
 		
-		public var main:Boolean = false;		//главный квест
-		public var sub:Boolean = false;			//этап квеста
-		public var nsub:int = 0;				//номер этапа
-		public var subs:Array;					//массив этапов 
-		public var subsId:Array;				//массив этапов по id
-		public var par:Quest;					//главный квест по отношению к подквесту
-		public var auto:Boolean = true;			//квест автматически берётся если закрыт один из этапов, установить в false чтобы квест добавлялся как скрытый
+		public var main:Boolean = false;		// [Main quest]
+		public var sub:Boolean = false;			// [Quest stage]
+		public var nsub:int = 0;				// [Stage number]
+		public var subs:Array;					// [Array of stages]
+		public var subsId:Array;				// [Array of stages by id]
+		public var par:Quest;					// [Main quest in relation to subquest]
+		public var auto:Boolean = true;			// [The quest is automatically taken if one of the stages is closed, set to false so that the quest is added as hidden]
 		
 		public var isCheck:Boolean = false;		// 
-		public var nn:Boolean = false;			//не обязательно
-		public var collect:String;				//собрать предметы
-		public var colTip:int = 0;				//тип коллекционного предмета. 0-обычный, 1-оружие
-		public var isDel:Boolean = false;		//изъять предмет после закрытия квеста
-		public var give:String;					//кому отдать
+		public var nn:Boolean = false;			// Optional (quest?/stage?)
+		public var collect:String;				// [Collect items]
+		public var colTip:int = 0;				// [Type of collectible. 0-regular, 1-weapon]
+		public var isDel:Boolean = false;		// [Retrieve the item after completing the quest]
+		public var give:String;					// [Who to give it to]
 		public var est:int = 0;
 		public var kol:int = 1;
-		public var canBeUse:Boolean = false;	//подквест закроется если количество будет достигнуто, и больше уже не откроется
-		public var gived:int = 0;				//сколько было отдано
-		public var pay:int = 0;					//плата за каждый принесённый предмет
-		public var prevRes:String = "";			//предыдущий реузльтат проверки
+		public var canBeUse:Boolean = false;	// [The subquest will close if the quantity is reached and will not open again]
+		public var gived:int = 0;				// [How much was given]
+		public var pay:int = 0;					// [Fee for each item brought]
+		public var prevRes:String = "";			// [Previous test result]
 		
-		public var hidden:Boolean = false;		//описание скрыто
-		public var invis:Boolean = false;		//пункт квеста не отображается
-		public var result:Boolean = false;		//открывается, если выполнены все предыдущие пункты
+		public var hidden:Boolean = false;		// [Description hidden]
+		public var invis:Boolean = false;		// [Quest item is not displayed]
+		public var result:Boolean = false;		// [Opens if all previous steps have been completed]
 		
 		public var report:String;
 		
@@ -43,21 +43,29 @@ package fe.loc {
 		public var endDial:String;
 		public var endScript:String;
 		
-		public var state:int=0;			//состояние 0 - не активен, 1 - активен, 2 - выполнен
-		public var sp:int=0;			//награда в скилл-поинтах
-		public var xp:int=0;			//награда в опыте
-		public var rep:int=0;			//награда в репутации
+		public var state:int=0;			// [State 0 - not active, 1 - active, 2 - completed]
 		
-		public var trigger:String;		//установить триггер, когда квест будет выполнен
-		public var triggerSet:String;	//значение устанавливаемого триггера
+		// TODO: Ideally this should be done through scripts
+		public var sp:int = 0;			// [Reward in skill points]
+		public var xp:int = 0;			// [Reward in experience]
+		public var rep:int = 0;			// [Reward in reputation]
 		
-		public var sort:int=0;
+		public var trigger:String;		// [Set a trigger when the quest is completed]
+		public var triggerSet:String;	// [Value of the trigger being set]
+		
+		public var sort:int = 0;
 
-		public function Quest(nxml:XML, loadObj:Object=null, npar:Quest=null, nnsub:int=0) {
+		public function Quest(nxml:XML, loadObj:Object = null, npar:Quest = null, nnsub:int = 0) {
+			
 			xml = nxml;
 			id = xml.@id;
+
+			trace("Quest.as/Constructor() - Creating quest:" + id);
+
 			var pid:String;
 			
+
+
 			if (npar == null)	{
 				pid = id;
 			}
@@ -67,13 +75,15 @@ package fe.loc {
 				pid = par.id + id;
 			}
 			
-			state=1;
-			nsub=nnsub;
+			state = 1;
+			nsub = nnsub;
 			
 			if (loadObj) {
-				state=loadObj.state;
-				est=loadObj.est;
-				if (loadObj.gived) gived=loadObj.gived;
+				state = loadObj.state;
+				est = loadObj.est;
+				if (loadObj.gived) {
+					gived = loadObj.gived;
+				}
 			}
 			
 			if (xml.@empl.length()) empl=xml.@empl;
@@ -102,6 +112,7 @@ package fe.loc {
 			if (xml.@invis.length()) invis=true;
 			if (xml.@result.length()) {
 				result=true;
+				
 				if (par) par.result=true;
 			}
 			
@@ -112,35 +123,45 @@ package fe.loc {
 				trigger=xml.@trigger;
 				if (xml.@triggerset.length()) triggerSet=xml.@triggerset;
 				else triggerSet='1';
+				
 				if (state==2 && World.w.game.triggers[trigger]==null) World.w.game.triggers[trigger]=triggerSet;
 			}
-			if (loadObj && loadObj.invis!=undefined) {
-				invis=loadObj.invis;
+			if (loadObj && loadObj.invis != undefined) {
+				invis = loadObj.invis;
+			}
+			
+			// Get the localized name of the quest
+			trace("Quest.as/Constructor() - Getting localized name for quest:" + pid);
+			nazv = LanguageManager.reference.localText("quest", pid)
+			// Failsafe
+			if (nazv == "") {
+				nazv = '[' + id + ']';
 			}
 
-			// TODO: Stop searching Res on your own.
-			var node = Res.currentLanguageData.txt.(@id==pid);
-			
-			if (node.length()) {
-				node=node[0]
-				nazv=node.n[0];
-				if (nazv==null) nazv='['+id+']';
-			} else {
-				nazv='['+id+']';
-			}
+			// Get the description of the quest			
 			if (!sub) {
-				if (node && node.info.length())	info=node.info[0];
-				else info='---';
-				//if (info==null) info=node.info[0];
-				main=xml.@main.length()>0;
-				subs=[];
-				subsId=[];
-				nnsub=1;
+				trace("Quest.as/Constructor() - Getting localized description for quest:" + pid);
+				info = LanguageManager.reference.localDesc("quest", pid)
+				// Failsafe
+				if (info = "")	{
+					info = '---';
+				}
+
+				main = xml.@main.length() > 0;
+				subs = [];
+				subsId = [];
+				nnsub = 1;
+				
+				var sl:Object;
 				for each(var sxml:XML in xml.q) {
-					var sl:Object;
-					if (loadObj) sl=loadObj.subs[sxml.@id];
-					var q:Quest=new Quest(sxml,sl,this,nnsub);
-					subsId[q.id]=q;
+					sl = {};
+					
+					if (loadObj) {
+						sl = loadObj.subs[sxml.@id];
+					}
+					
+					var q:Quest = new Quest(sxml, sl, this, nnsub);
+					subsId[q.id] = q;
 					subs.push(q);
 					nnsub++;
 				}
@@ -148,27 +169,32 @@ package fe.loc {
 		}
 		
 		public function save():Object {
-			var obj:Object={id:id, state:state, est:est, gived:gived, invis:invis};
+			var obj:Object = {id:id, state:state, est:est, gived:gived, invis:invis};
 			if (!sub) {
-				obj.subs=[];
+				obj.subs = [];
+				
 				for each(var q:Quest in subs) {
-					obj.subs[q.id]=q.save();
+					obj.subs[q.id] = q.save();
 				}
 			}
+			
 			return obj;
 		}
 		
-		//проверить, если cid совпадает с collect, увеличить est
+		// [Check if cid matches collect, increase est]
 		public function inc(cid:String, kol:int=1):void {
-			if (cid==collect) est+=kol;
+			if (cid == collect) {
+				est += kol;
+			}
+			
 			if (!sub) {
 				for each (var q:Quest in subs) {
-					q.inc(cid,kol);
+					q.inc(cid, kol);
 				}
 			}
 		}
 		
-		//выдать начальные предметы
+		// [Give out starting items]
 		public function deposit():void {
 			if (xml.deposit.length()) {
 				for each(var rew in xml.deposit) {
@@ -197,8 +223,8 @@ package fe.loc {
 			}
 		}
 		
-		//проверка на соответствие условию, если всё соотвествует, то закрыть
-		//вернуть выводимый результат
+		// [Check for compliance with the condition, if everything meets the requirements, then close]
+		// [Return output result]
 		public function check(cid:String=null):String {
 			var res:String;
 			if (sub) {
@@ -215,7 +241,9 @@ package fe.loc {
 					if (give==null) {
 						if (est>=kol) {
 							state=2;
-							if (par.result) par.isResult();
+							if (par.result) {
+								par.isResult();
+							}
 						}
 						else if (canBeUse) {
 							if (state<2) state=1;
@@ -238,10 +266,16 @@ package fe.loc {
 				
 				if (collect && colTip==1) {
 					if (World.w.invent.weapons[collect]!=null && World.w.invent.weapons[collect].respect!=3) {
-						state=2;
-						if (par.result) par.isResult();
+						state = 2;
+						
+						if (par.result) {
+							par.isResult();
+						}
 					}
-					if (cid!=null && collect==cid) res=nazv;
+					
+					if (cid != null && collect == cid) {
+						res = nazv;
+					}
 				}
 			}
 			else {
@@ -253,9 +287,15 @@ package fe.loc {
 				var res2:String;
 				
 				for each (var q:Quest in subs) {
-					res2=q.check(cid);
-					if (res2!=null) res=res2;
-					if (q.state<2 && !q.nn) cl=false;
+					res2 = q.check(cid);
+					
+					if (res2 != null) {
+						res = res2;
+					}
+					
+					if (q.state < 2 && !q.nn) {
+						cl = false;
+					}
 				}
 				
 				if (cl) {
@@ -272,28 +312,44 @@ package fe.loc {
 			return res;
 		}
 		
-		//проверить на возможность отдать предметы
+		// [Check for the possibility of giving away items]
 		public function chGive(npc:String, us:Boolean=false):Boolean {
 			if (sub) {
-				if (give==null) return false;
+				if (give == null) {
+					return false;
+				}
+				
 				if (collect) {
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol;
-					if (est>0 && (kol-gived)>0) {
-						if (est>kol-gived) est=kol-gived;
-						if (us) {
-							World.w.invent.minusItem(collect,est);
-							gived+=est;
-							if (pay>0) {
-								World.w.invent.money.kol+=est*pay;
-								World.w.gui.infoText('reward',Res.txt('i','money'),est*pay);
-							}
-							World.w.gui.infoText('withdraw',World.w.invent.items[collect].nazv, est);
-							est=0;
-							if (gived>=kol) close();
+					if (World.w.invent.items[collect]) {
+						est = World.w.invent.items[collect].kol;
+					}
+					
+					if (est > 0 && (kol - gived) > 0) {
+						if (est > kol - gived) {
+							est = kol - gived;
 						}
+						
+						if (us) {
+							World.w.invent.minusItem(collect, est);
+							gived += est;
+							
+							if (pay > 0) {
+								World.w.invent.money.kol += est * pay;
+								World.w.gui.infoText('reward', Res.txt('i','money'), est * pay);
+							}
+							
+							World.w.gui.infoText('withdraw', World.w.invent.items[collect].nazv, est);
+							est = 0;
+							
+							if (gived >= kol) {
+								close();
+							}
+						}
+						
 						return true;
 					}
 				}
+				
 				return false;
 			}
 			else {
@@ -340,7 +396,7 @@ package fe.loc {
 			return false;
 		}
 		
-		//проверить все этапы, если все закрыты, то закрыть основной
+		// [Check all stages, if all are closed, then close the main one]
 		public function isClosed():void {
 			var cl:Boolean = true;
 			
@@ -376,7 +432,7 @@ package fe.loc {
 			}
 		}
 		
-		//закрыть этап
+		// [Close the stage]
 		public function closeSub(sid:String):void {
 			if (state == 2 || sid == null || sid == "" || subsId[sid] == null) {
 				return;
@@ -482,7 +538,7 @@ package fe.loc {
 				}
 			}
 			
-			//сообщение и звук
+			// [Message and sound]
 			if (sub) {
                 World.w.gui.infoText('doneStage', nazv);
             }
@@ -491,13 +547,13 @@ package fe.loc {
                 Snd.ps('quest_ok');
             }
 			
-			//завершающий диалог
+			// [Final dialogue]
 			if (endDial && World.w.dialOn) {
 				World.w.pip.onoff(-1);
 				World.w.gui.dialog(endDial);
 			}
 			
-			//завершающий скрипт
+			// [Finishing script]
 			if (endScript != null) {
 				World.w.game.runScript(endScript);
 			}

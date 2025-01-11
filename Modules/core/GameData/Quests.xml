@@ -1,20 +1,20 @@
 <Quests>
 	<!-- ============================================== КВЕСТЫ ============================================== 
-	main='1' - квест основной сюжетной линии
-	xp - награда в опыте
-	sp - добавить скилл-поинты
-	rep - добавить репутацию
+	main='1' - main storyline quest
+	xp - reward in experience
+	sp - add skill points
+	rep - add reputation
 	
-	invis='1' - подквест остаётся невидимым, пока его не откроют
-	result='1' - подквест открывается автоматически когда выполнены все предыдущие пункты
-	nn='1' - не обязательный подквест
-	hidden='1' - пункт квеста будет заменён на ????
-	collect='key_sewer' kol='1' - предмет и количество для сборки, сборка автоматически закрывает пункт
-		 del='1' - предметы будут удалены при закрытии квеста
+	invis='1' - the subquest remains invisible until it is revealed
+	result='1' - the subquest opens automatically when all previous steps are completed
+	nn='1' - optional subquest
+	hidden='1' - The quest item will be replaced with ????
+	collect='key_sewer' kol='1' - item and quantity to be assembled, assembly automatically closes the item
+		 del='1' - items will be removed when the quest is completed
 	
-	next - квест, который автоматом будет выдан при загрузке игры, если квест закрыт
-	deposit - дать при взятии (активации) квеста
-	reward - дать при закрытии квеста 
+	next - a quest that will be automatically given when loading the game if the quest is closed
+	deposit - give when taking (activating) a quest
+	reward - give when completing the quest 
 	===================================================================================================  -->
 
 	<quest id='test' sp='3' main='1'>

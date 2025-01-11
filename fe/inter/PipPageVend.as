@@ -157,33 +157,36 @@ package fe.inter {
 				statHead.cat.visible = false;
 				
 				for each(var b:Item in vendor.buys) {
-					if (b.kol <= 0) continue;
+					if (b.kol <= 0) {
+						continue;
+					}
+					
 					try {
-						if (b.tip==Item.L_SCHEME && (inv.weapons[b.id.substr(2)] != null || inv.items[b.id].kol > 0)) {
+						if (b.tip == Item.L_SCHEME && (inv.weapons[b.id.substr(2)] != null || inv.items[b.id].kol > 0)) {
 							continue;
 						}
 						
-						if (b.tip==Item.L_WEAPON && (inv.weapons[b.id]!=null && inv.weapons[b.id].variant>=b.variant)) {
+						if (b.tip == Item.L_WEAPON && (inv.weapons[b.id] != null && inv.weapons[b.id].variant >= b.variant)) {
 							continue;
 						}
 						
-						if (b.tip==Item.L_ARMOR && inv.armors[b.id]!=null) {
+						if (b.tip == Item.L_ARMOR && inv.armors[b.id] != null) {
 							continue;
 						}
 						
-						if (b.tip!=Item.L_WEAPON && b.xml && b.xml.@price.length()==0)  {
+						if (b.tip != Item.L_WEAPON && !("price" in b.data))  {
 							continue;
 						}
 						
-						if ((b.tip==Item.L_ART || b.tip==Item.L_IMPL) && inv.items[b.id].kol>0) {
+						if ((b.tip == Item.L_ART || b.tip == Item.L_IMPL) && inv.items[b.id].kol > 0) {
 							continue;
 						}
 						
-						if (b.lvl>gg.pers.level || b.barter>gg.pers.barterLvl) {
+						if (b.lvl > gg.pers.level || b.barter > gg.pers.barterLvl) {
 							continue;
 						}
 						
-						if (b.trig && World.w.game.triggers[b.trig]!=1) {
+						if (b.trig && World.w.game.triggers[b.trig] != 1) {
 							continue;
 						}
 						
@@ -217,13 +220,6 @@ package fe.inter {
 							variant: b.variant
 						};
 						
-						if (b.variant > 0) {
-							n.rid = b.id + '^' + b.variant;
-						}
-						else {
-							n.rid = b.id;
-						}
-						
 						if (b.nocheap) {
 							n.mp = 1;
 						}
@@ -235,8 +231,8 @@ package fe.inter {
 						assArr[n.rid] = n;
 						n.wtip = b.wtip;
 						
-						if (b.xml && b.xml.@tip == 'food' && b.xml.@ftip == '1') {
-							n.wtip = 'drink';
+						if (b.data.tip == "food" && b.data.ftip == 1) {
+							n.wtip = "drink";
 						}
 						
 						arr.push(n);
@@ -248,7 +244,7 @@ package fe.inter {
 				
 				if (arr.length) {
 					arr.sortOn(['sort', 'barter', 'price'], [0, 0, Array.NUMERIC]);
-					vis.emptytext.text = '';
+					vis.emptytext.text = "";
 					statHead.visible = true;
 				}
 				else {
@@ -262,69 +258,66 @@ package fe.inter {
 			// Sell items page
 			if (page2 == 2) {
 				trace("PipPageVend.as/setSubPages() - Initializing Sell menu");
-				assArr=[];
-				pip.money=inv.money.kol;
+				assArr = [];
+				pip.money = inv.money.kol;
 				setTopText('infotrade');
-				vendor.kolSell=0;
-				statHead.nazv.text=Res.pipText('iv1');
-				statHead.hp.text='';
-				statHead.price.text=Res.pipText('iv3');
-				statHead.kol.text=Res.pipText('iv6');
-				statHead.cat.visible=false;
+				vendor.kolSell = 0;
+				statHead.nazv.text = Res.pipText('iv1');
+				statHead.hp.text = "";
+				statHead.price.text = Res.pipText('iv3');
+				statHead.kol.text = Res.pipText('iv6');
+				statHead.cat.visible = false;
 				for (var s in inv.items) {
 					
-					if (s == "" || inv.items[s].kol<=0) {
+					if (s == "" || inv.items[s].kol <= 0) {
 						continue;
 					}
 					
-					var node = inv.items[s].xml;
+					var data = inv.items[s].data;
 					
-					if (node == null) {
-						continue;
-					}
-					if (node.@sell > 0) {
-						if (!checkCat(node.@tip)) {
+					if (data.sell > 0) {
+						if (!checkCat(data.tip)) {
 							continue;
 						}
-						var n={tip:inv.items[s].tip, id:s, nazv:inv.items[s].nazv, kol:inv.items[s].kol, bou:0, sort:'b'};
+						var n = {tip:inv.items[s].tip, id:s, nazv:inv.items[s].nazv, kol:inv.items[s].kol, bou:0, sort:'b'};
 						
-						if (inv.weapons[s]!=null) {
-							n.nazv=Res.txt('w',s);
+						if (inv.weapons[s] != null) {
+							n.nazv = Res.txt('w', s);
 						}
 						
-						n.price=node.@sell;
-						n.wtip=node.@tip;
+						n.price = data.sell;
+						n.wtip = data.tip;
 						
-						if (node.@tip=='food' && node.@ftip=='1') {
-							n.wtip='drink';
+						if (data.tip == 'food' && data.ftip == 1) {
+							n.wtip = 'drink';
 						}
 						
-						if (n.wtip=='valuables') {
-							n.sort='a';
+						if (n.wtip == 'valuables') {
+							n.sort = 'a';
 						}
 						
-						assArr[n.id]=n;
+						assArr[n.id] = n;
 						arr.push(n);
 					}
 				}
 				
 				if (arr.length) {
-					arr.sortOn(['sort','wtip','price'],[0,0,Array.NUMERIC]);
-					vis.emptytext.text='';
-					statHead.visible=true;
+					arr.sortOn(['sort', 'wtip', 'price'], [0, 0, Array.NUMERIC]);
+					vis.emptytext.text = "";
+					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text=Res.pipText('emptysell');
-					statHead.visible=false;
+					vis.emptytext.text = Res.pipText('emptysell');
+					statHead.visible = false;
 				}
 				
 				if (inbase) {
-					selall=true;
-					vis.butOk.text.text=Res.pipText('sellall');
-					vis.butOk.visible=true;
+					selall = true;
+					vis.butOk.text.text = Res.pipText('sellall');
+					vis.butOk.visible = true;
 				}
 				else {
-					vis.butOk.visible=false;
+					vis.butOk.visible = false;
 				}
 				
 				setIco();
@@ -906,37 +899,42 @@ package fe.inter {
 			}
 			
 			for (var s in inv.items) {
-				if (s=='' || inv.items[s].kol<=0) continue;
-				var node=inv.items[s].xml;
-				if (node==null) continue;
+				if (s == "" || inv.items[s].kol <= 0) {
+					continue;
+				}
+				
+				var data = inv.items[s].data;
+				
 				if (arr[s] && arr[s].bou>0) {
 					var buy:Item=vendor.buys2[s];
-					if (buy==null) {
-						buy=new Item(null,s,0);
-						buy.kol=0;
+					
+					if (buy == null) {
+						buy = new Item(s, 0);
+						buy.kol = 0;
 						vendor.buys.push(buy);
-						vendor.buys2[s]=buy;
+						vendor.buys2[s] = buy;
 					}
-					buy.kol+=arr[s].bou;
-					inv.items[s].kol-=arr[s].bou;
+					buy.kol += arr[s].bou;
+					inv.items[s].kol -= arr[s].bou;
 				}
 			}
 			
-			inv.money.kol+=Math.floor(vendor.kolSell);
-			vendor.money-=Math.ceil(vendor.kolSell);
-			pip.money=inv.money.kol;
-			vendor.kolSell=0;
+			inv.money.kol += Math.floor(vendor.kolSell);
+			vendor.money -= Math.ceil(vendor.kolSell);
+			pip.money = inv.money.kol;
+			vendor.kolSell = 0;
 			setStatus();
 		}
 		
 		public function sellAll():void {
 			for (var s in arr) {
-				if (arr[s].tip=='valuables') {
-					selBuy(arr[s],arr[s].kol-arr[s].bou);
+				if (arr[s].tip == 'valuables') {
+					selBuy(arr[s], arr[s].kol - arr[s].bou);
 				}
 			}
-			vis.butOk.text.text=Res.pipText('transaction');
-			selall=false;
+			
+			vis.butOk.text.text = Res.pipText('transaction');
+			selall = false;
 			showBottext();
 			setStatItems();
 		}
@@ -946,6 +944,7 @@ package fe.inter {
 			for (var key:String in obj) {
 				return false; // Found a property, so it's not empty
 			}
+			
 			return true; // No properties found, it's empty
 		}
 	}	

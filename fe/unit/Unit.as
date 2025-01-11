@@ -328,18 +328,21 @@ package fe.unit {
 
 		// Constructor
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			vulner=[];
-			inter=new Interact(this,null,xml,loadObj);
-			inter.active=false;
-			for (var i = 0; i < kolVulners; i++) {
-				vulner[i]=1;
+			vulner = [];
+			inter = new Interact(this, null, xml, loadObj);
+			inter.active = false;
+			
+			for (var i:int = 0; i < kolVulners; i++) {
+				vulner[i] = 1;
 			}
-			vulner[D_EMP]=0;
-			effects=[];
-			sloy=2;
-			prior=1;
-			warn=1;
-			numbEmit=Emitter.arr['numb'];
+			
+			vulner[D_EMP] = 0;
+			effects = [];
+			sloy = 2;
+			prior = 1;
+			warn = 1;
+			numbEmit = Emitter.arr['numb'];
+			
 			if (xml) {
 				if (xml.@turn.length()) {
 					if (xml.@turn>0) storona=1;
@@ -672,37 +675,69 @@ package fe.unit {
 		}
 		
 		public function getXmlWeapon(dif:int):Weapon {
+			// Get the unit info
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			
+			// Create the internal weapon(s) for this unit
 			var weap:Weapon;
+			var weapData:Object;
+
 			for each(var n:XML in node0.w) {
-				if (n.@f.length()) continue;
-				if (n.@dif.length() && n.@dif>dif) continue;
-				if (n.@ch.length()==0 || isrnd(n.@ch)) {
-					weap=Weapon.create(this,n.@id);
-					if (weap) return weap;
+				if (n.@f.length()) {
+					continue;
+				}
+				
+				if (n.@dif.length() && n.@dif > dif) {
+					continue;
+				}
+				
+				if (n.@ch.length() == 0 || isrnd(n.@ch)) {
+					
+					weapData = ItemManager.reference.getWeapon(n.@id);
+					weap = Weapon.create(this, weapData);
+					
+					if (weap) {
+						return weap;
+					}
 				}
 			}
 			return null;
 		}
 		
 		public function getName():String {
-			if (World.w.game == null || id_name == null) return '';
+			if (World.w.game == null || id_name == null) {
+				return "";
+			}
+			
 			var arr:Array = World.w.game.names[id_name];
-			if (arr == null || arr.length == 0) arr = Res.namesArr(id_name); 	//prepare an array of names
-			if (arr == null || arr.length == 0) return '';
+			
+			if (arr == null || arr.length == 0) {
+				arr = Res.namesArr(id_name);	//prepare an array of names
+			}
+			
+			if (arr == null || arr.length == 0) {
+				return '';
+			}
 
 			World.w.game.names[id_name] = arr;
 			var n = Calc.intBetween(0, arr.length - 1);
 			var s = arr[n];
 			arr.splice(n, 1);
+			
 			return s;
 		}
 		
 		public function checkTrig():Boolean {
 			if (trig) {
-				if (trig == 'eco' && (World.w.pers == null || World.w.pers.eco == 0)) return false;
-				if (World.w.game.triggers[trig] != 1) return false;
+				if (trig == 'eco' && (World.w.pers == null || World.w.pers.eco == 0)) {
+					return false;
+				}
+				
+				if (World.w.game.triggers[trig] != 1) {
+					return false;
+				}
 			}
+			
 			return true;
 		}
 		

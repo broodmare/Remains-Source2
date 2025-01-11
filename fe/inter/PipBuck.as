@@ -447,14 +447,12 @@ package fe.inter  {
 			for each (var weap:Object in itemManager.weapons) {
 				var w:Weapon;
 				if (weap.tip > 0) { 
-					trace("PipBuck/allItems() - Weapon: " + weap.id);
 					w = Weapon.create(owner, weap);
 					arrWeapon[weap.id] = w;
 				}
 			}
 
 			for each (var armor:Object in itemManager.armors) {
-				trace("PipBuck/allItems() - Armor: " + armor.id);
 				var a:Armor = new Armor(armor.id);
 				arrArmor[armor.id] = a;
 			}

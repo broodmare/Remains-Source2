@@ -77,8 +77,14 @@ package fe {
 		}
 		
 		public function getWeapon(id:String):Object {
+			// Crash for debugging if passed an object 
+			if (id == "[object Object]") {
+				var obj:Object = null;
+				trace(obj.someProperty); // Crashes with a null reference error
+			}
+			
 			if (_weapons[id]) {
-				trace("ItemManager.as/getWeapon() - Getting weapon: " + id);
+				//trace("ItemManager.as/getWeapon() - Getting weapon: " + id);
 				return _weapons[id];
 			}
 			else {
@@ -88,8 +94,14 @@ package fe {
 		}
 
 		public function getArmor(id:String):Object {
+			// Crash for debugging if passed an object 
+			if (id == "[object Object]") {
+				var obj:Object = null;
+				trace(obj.someProperty); // Crashes with a null reference error
+			}
+			
 			if (_armors[id]) {
-				trace("ItemManager.as/getArmor() - Getting armor: " + id);
+				//trace("ItemManager.as/getArmor() - Getting armor: " + id);
 				return _armors[id];
 			}
 			else {
@@ -99,8 +111,14 @@ package fe {
 		}
 
 		public function getItem(id:String):Object {
+			// Crash for debugging if passed an object 
+			if (id == "[object Object]") {
+				var obj:Object = null;
+				trace(obj.someProperty); // Crashes with a null reference error
+			}
+			
 			if (_items[id]) {
-				trace("ItemManager.as/getItem() - Getting item: " + id);
+				//trace("ItemManager.as/getItem() - Getting item: " + id);
 				return _items[id];
 			}
 			else {
@@ -110,8 +128,14 @@ package fe {
 		}
 
 		public function getSchematic(id:String):Object {
+			// Crash for debugging if passed an object 
+			if (id == "[object Object]") {
+				var obj:Object = null;
+				trace(obj.someProperty); // Crashes with a null reference error
+			}
+			
 			if (_schematics[id]) {
-				trace("ItemManager.as/getSchematic() - Getting schematic: " + id);
+				//trace("ItemManager.as/getSchematic() - Getting schematic: " + id);
 				return _schematics[id];
 			}
 			else {
