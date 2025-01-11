@@ -14,26 +14,27 @@ package fe.unit {
 	
 	public class UnitDamager extends Unit {
 
-		var tr:String='0';
-		var weap:String;
+		private var tr:String = "0";
+		private var weap:String;
 		
-		var tipDamager:int=1;	// [1 - Guns, 2 Explosives]
-		var status:int=0;	// [0 - Armed, 1 - Activated, 2 - Disabled]
-		var needSkill:String='repair';
-		var isAct:Boolean=false;
-		var allid:String;
+		private var tipDamager:int = 1;				// [1 - Guns, 2 Explosives]
+		private var status:int = 0;					// [0 - Armed, 1 - Activated, 2 - Disabled]
+		private var needSkill:String = "repair";
+		private var isAct:Boolean = false;
+		public var allid:String;
 		
-		var och:int=20;
-		var noch:int=0;
-		var kolammo:int=100;
+		private var och:int = 20;
+		private var noch:int = 0;
+		private var kolammo:int = 100;
 		
-		var damageExpl:Number=0;
-		var destroyExpl:Number=0;
-		var explRadius:Number=0;
+		private var damageExpl:Number = 0;
+		private var destroyExpl:Number = 0;
+		private var explRadius:Number = 0;
+
+		private var aiN:int = Math.floor(Math.random() * 5);
 
 		// Cosntructor
-		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
-		{
+		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			
 			if (cid==null) {
@@ -44,7 +45,7 @@ package fe.unit {
 			}
 			
 			mat=1;
-			vis=Res.getVis('vis'+id,vismtrap);	// .SWF Dependency
+			vis=Res.getVis('vis' + id, vismtrap);	// .SWF Dependency
 			getXmlParam();
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
@@ -82,7 +83,7 @@ package fe.unit {
 			setStatus();
 		}
 		
-		private function setWeapon() {
+		private function setWeapon():void {
 			if (tipDamager==1) {
 				if (tr=='0') tr=Math.floor(Math.random()*5+1).toString();
 				if (tr=='1') weap='lshot';
@@ -92,17 +93,20 @@ package fe.unit {
 				else if (tr=='5') weap='flamer';
 				else weap=tr;
 			}
+			
 			if (tipDamager==2) {
 				if (tr=='0') weap='hgren';
 				else weap=tr;
 				kolammo=och=3;
 			}
+			
 			if (tipDamager==3) {
 				damageExpl=250;
 				destroyExpl=1000;
 				explRadius=200;
 				kolammo=1;
 			}
+			
 			if (tipDamager==1 || tipDamager==2) {
 				currentWeapon=Weapon.create(this,weap);
 				if (currentWeapon==null) currentWeapon=Weapon.create(this,'lshot');
@@ -149,12 +153,14 @@ package fe.unit {
 			}
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
+			
 			if (loc.mirror) {
 				storona=-storona;
 				aiNapr=storona;
 			}
+			
 			if (currentWeapon) {
 				if (tipDamager==2) {
 					celX = coordinates.X;
@@ -172,7 +178,7 @@ package fe.unit {
 			}
 		}
 
-		private function setStatus() {
+		private function setStatus():void {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -181,14 +187,16 @@ package fe.unit {
 				warn=1;
 				inter.active=true;
 			}
+			
 			vis.gotoAndStop(status+1);
 			inter.update();
 		}
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean):void {
 			isVis=v;
 			vis.visible=v;
 			vis.alpha = v? 1:0.1;
+			
 			if (currentWeapon) {
 				currentWeapon.vis.visible = v;
 				currentWeapon.vis.alpha = v? 1:0.1;
@@ -200,8 +208,7 @@ package fe.unit {
 		}
 		
 		//обезвредить
-		private function disarm()
-		{
+		private function disarm():void {
 			if (tipDamager == 1)
 			{
 				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, 'frag', 1);
@@ -217,6 +224,7 @@ package fe.unit {
 			{
 				LootGen.lootCont(loc, coordinates.X, coordinates.Y - 20,'bomb');
 			}
+			
 			sost=4;
 			disabled=true;
 			loc.remObj(this);
@@ -229,8 +237,9 @@ package fe.unit {
 			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,'frag',1);
 		}
 		
-		private function iExpl() {
+		private function iExpl():void {
 			var bul:Bullet;
+			
 			if (tipDamager==2) {
 				damageExpl=currentWeapon.damageExpl*kolammo;
 				destroyExpl=currentWeapon.destroy;
@@ -250,8 +259,9 @@ package fe.unit {
 		}
 		
 		//активировать
-		public function activate() {
+		public function activate():void {
 			if (status!=0 || sost>1) return;
+			
 			if (tipDamager==3) {
 				iExpl();
 				kolammo=0;
@@ -265,39 +275,46 @@ package fe.unit {
 		}
 		
 		//команда
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='dam') activate();
 		}
 		
 		//не искать цели
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
+		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void {
 
 		}
-		
-		var aiN:int = Math.floor(Math.random() * 5);
-		
+
 		override protected function control():void {
 			if (sost>1 || status==2 || kolammo<=0) return;
+			
 			aiN++;
+			
 			if (isShoot) {
 				noch++;
 				kolammo--;
+				
 				if (noch>=och) {
 					status=0;
 				}
+				
 				if (kolammo<=0) {
 					disarm();
 				}
+				
 				isShoot=false;
 			}
+			
 			if (status==1) {
 				if (tipDamager==2) {
 					celX = coordinates.X + Math.random() * 80 - 40;
 				}
+				
 				if (currentWeapon) currentWeapon.attack();
 			}
+			
 			if (aiN%10==0 && !isVis) {
 				isVis=World.w.gg.lookInvis(this);
+				
 				if (isVis) {
 					setVis(true);
 				}

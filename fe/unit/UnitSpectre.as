@@ -51,7 +51,7 @@ package fe.unit {
 			return -1;
 		}
 		
-		public override function command(com:String, val:String = null) {
+		public override function command(com:String, val:String = null):void {
 			if (com == 'show') {
 				vis.visible = true;
 				loc.lighting(coordinates.X, coordinates.Y);

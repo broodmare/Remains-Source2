@@ -45,7 +45,9 @@ package fe.unit {
 			getXmlParam();
 			var vClass:Class=Res.getClass('visualDron'+tr,null,visualBloat1);	// SWF Dependency
 			
-			if (tr==100) vClass=visualMegaDron;	// SWF Dependency
+			if (tr == 100) {
+				vClass = visualMegaDron;	// SWF Dependency
+			}
 			
 			vis=new vClass();
 			walkSpeed=maxSpeed;
@@ -56,10 +58,11 @@ package fe.unit {
 			elast=0.6;
 			spd=new Object();
 			
-			if (tr==100) {
-				vis.osn.scaleX=vis.osn.scaleY=1.5;
-				aiAgr=true;
-				nazv="";
+			if (tr == 100) {
+				vis.osn.scaleX = 1.5;
+				vis.osn.scaleY = 1.5;
+				aiAgr = true;
+				nazv = "";
 			}
 
 			if (tr==2) aiAgr=true;
@@ -148,13 +151,17 @@ package fe.unit {
 		
 		override protected function control():void {
 			if (sost>=3) return;
+			
 			if (World.w.enemyAct<=0) {
 				return;
 			}
+			
 			if (stun) {
 				return;
 			}
+			
 			if (t_krut>0) t_krut--;
+			
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
 			else {						//смена состояний
 				if (aiSpok==0) {	//перейти в пассивный режим
@@ -166,7 +173,9 @@ package fe.unit {
 				else {
 					aiState=2;
 				}
-				aiTCh=Math.floor(Math.random()*100)+100;
+				
+				aiTCh = Math.floor(Math.random()*100)+100;
+				
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					celX = coordinates.X + (Math.random()*300+400)*(isrnd()?1:-1);
 					celY = this.boundingBox.top;
@@ -186,10 +195,12 @@ package fe.unit {
 						if (aiSpok%10==1) setCel(null, celX+Math.random()*80-40, celY+Math.random()*80-40);
 					}
 				}
+				
 				atkRasst=celDX*celDX+celDY*celDY;
 				spd.x = celX - coordinates.X;
 				spd.y = celY - this.boundingBox.top;
 				norma(spd,aiState==0?accel/2:accel);
+				
 				if (aiState == 3) {
 					velocity.X -= spd.x;
 					velocity.Y -= spd.y;

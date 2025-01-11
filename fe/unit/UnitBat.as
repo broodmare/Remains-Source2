@@ -4,8 +4,8 @@ package fe.unit {
 	
 	public class UnitBat extends Unit {
 		
-		var bleedDamage=5;
-		var tr:int=1;
+		private var bleedDamage=5;
+		private var tr:int=1;
 		
 		// Constructor
 		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {

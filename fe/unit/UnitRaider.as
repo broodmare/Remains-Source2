@@ -44,6 +44,22 @@ package fe.unit {
 
 		private var spd:Object;
 		private var floatX:Number=1, floatY:Number=0;
+
+		private var aiLaz:int=0;
+		private var aiJump:int=0;	
+		protected var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
+		protected var aiAttackT:int=0, aiAttackOch:int=0;	//стрельба очередью
+		private var aiDist:int=1000; //минимальная дистанция
+		private var stalkDist:int=500;	//дистанция преследования в полёте
+		private var aiVKurse:Boolean=false;
+		private var celUnit2:Unit, t_chCel:int=0;
+		private var emit_t:int=0;
+		private var t_laz:int=0;	//прошло времени с начала лазения
+		private var r_laz:int=0;	//изменений направления лазения
+		private var t_landing:int=0, t_float:Number=Math.random(), t_fall:int=0, t_turn:int=0;
+		private var tstor:int=1;
+		private var plusObservOk:Boolean=false;
+		protected var plusObserv:int=0;
 		
 		// Constructor
 		public function UnitRaider(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
@@ -349,7 +365,7 @@ package fe.unit {
 			}
 		}
 
-		private function emit() {
+		private function emit():void {
 			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;
@@ -357,25 +373,31 @@ package fe.unit {
 			kol_emit--;
 		}
 		
-		public override function actions() {
+		public override function actions():void {
 			super.actions();
+			
 			if (aiPlav>0) aiPlav--;
+			
 			if (isPlav) aiPlav=10;
+			
 			rasst=Math.sqrt(rasst2);
 			volMinus=rasst/8000;
 		}
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
+			
 			if (f) aiState=aiSpok=0;
 		}
 		
 		public function jump(v:Number=1):void {
 			aiJump = int(30+Math.random()*50);
+			
 			if (stay || isLaz) {		//прыжок
 				velocity.Y = -jumpdy * v;
 				isLaz=0;
 			}
+			
 			if (stay) {
 				if (aiNapr==-1) {
 					velocity.X *= 0.8;
@@ -384,7 +406,9 @@ package fe.unit {
 					velocity.X += storona * accel * 2;
 				}
 			}
+			
 			if (!isPlav&&aiPlav) velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
+			
 			if (isPlav) {
 				velocity.Y -= plavdy;
 			}
@@ -396,25 +420,10 @@ package fe.unit {
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).phis!=0) return false;
+			
 			return true;
 		}
-		
-		private var aiLaz:int=0;
-		private var aiJump:int=0;	
-		protected var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
-		protected var aiAttackT:int=0, aiAttackOch:int=0;	//стрельба очередью
-		private var aiDist:int=1000; //минимальная дистанция
-		private var stalkDist:int=500;	//дистанция преследования в полёте
-		private var aiVKurse:Boolean=false;
-		private var celUnit2:Unit, t_chCel:int=0;
-		private var emit_t:int=0;
-		private var t_laz:int=0;	//прошло времени с начала лазения
-		private var r_laz:int=0;	//изменений направления лазения
-		private var t_landing:int=0, t_float:Number=Math.random(), t_fall:int=0, t_turn:int=0;
-		private var tstor:int=1;
-		private var plusObservOk:Boolean=false;
-		protected var plusObserv:int=0;
-		
+
 		//aiState
 		//0 - стоит на месте
 		//1 - ходит туда-сюда
@@ -455,8 +464,10 @@ package fe.unit {
 			//разворот
 			if (storona!=tstor && t_turn<=0) {
 				storona=tstor;
+				
 				if (stay) t_turn=5;
 				else t_turn=30;
+				
 				if (currentWeapon && currentWeapon.drot>0) {
 					currentWeapon.rot=Math.atan2(celY-currentWeapon.coordinates.Y, Math.abs(celX-currentWeapon.coordinates.X)*storona);
 				}
@@ -502,20 +513,27 @@ package fe.unit {
 					else aiState=0;
 					areaTestTip='';
 				}
+				
 				if (aiSpok>0) aiState=2;
+				
 				if (aiSpok>=maxSpok) {
 					if (aiState!=3 && aiState!=4) {
 						if (allLink) budilo(2000);
 						else budilo();
 					}
+					
 					if (attackerType==2 && aiSpok>=maxSpok+8 && (celDX*celDX+celDY*celDY<aiDist*aiDist)) aiState=isrnd(0.3)?3:4;
 					else aiState=3;
+					
 					if (dash && isrnd(0.3) && celUnit) {
 						aiState=7;
 					}
+					
 					if (!moving) aiState=4;
+					
 					if (aiState==4) isLaz=0;
 				}
+				
 				if (aiState<=1) aiTCh=Math.floor(Math.random()*50)+40;
 				else if (attackerType==1 && aiState==4) aiTCh=Math.floor(Math.random()*10)+10;
 				else if (aiState==7) aiTCh=20;
@@ -529,11 +547,13 @@ package fe.unit {
 					if (celUnit) {
 						celUnit2=celUnit;
 						t_chCel=6;
+						
 						if (scrAlarmOn && scrAlarm) {
 							scrAlarm.start();
 							scrAlarmOn=false;
 							return;
 						}
+						
 						if (aiState<=1) {	//увидел, удивился, тупит
 							aiState=5;
 							if (attackerType>=2) aiTCh=Math.floor(Math.random()*20+tupizna);
@@ -551,6 +571,7 @@ package fe.unit {
 						replic('ear');
 						aiSpok=maxSpok-1;
 					}
+					
 					if (celUnit==World.w.gg) {
 						aiVKurse=true;
 					}
@@ -561,9 +582,11 @@ package fe.unit {
 				}
 				else {
 					if (aiSpok%5==1) setCel(null, celX+Math.random()*80-40, celY+Math.random()*80-40);
+					
 					if (aiSpok>0) {
 						aiSpok--;
 					}
+					
 					if (aiVKurse && aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
 					}
@@ -645,6 +668,7 @@ package fe.unit {
 					t_fall++;
 					if (t_fall>6) isFly=true;
 				}
+				
 				if (isPlav) {
 					isFly=true;
 				}
@@ -989,17 +1013,20 @@ package fe.unit {
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
 			scrAlarmOn=false;
+			
 			if (sost==1) {
 				if (aiState<=1) budilo();
 			}
+			
 			return super.damage(dam, tip, bul,tt);
 		}
 		
-		public override function replic(s:String) {
+		public override function replic(s:String):void {
 			if (t_replic<=0 && s=='attack') {
 				if (tr==8 && isrnd(0.3)) s='fire';
 				if (tr==9 && isrnd(0.3)) s='expl';
 			}
+			
 			super.replic(s);
 		}
 		
@@ -1037,7 +1064,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
 			if (com=='turn') {
 				if (val=='0') storona=-storona;
@@ -1049,7 +1076,8 @@ package fe.unit {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			}
+			else if (com=='on') {
 				controlOn=true;
 			}
 		}

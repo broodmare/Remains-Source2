@@ -10,7 +10,7 @@ package fe.unit {
 	public class UnitBossDron extends Unit {
 		
 		public var controlOn:Boolean=true;
-		public var kol_emit=5;
+		public var kol_emit:int = 5;
 		private var spd:Object;
 		private var dopWeapon:Weapon;
 		private var thWeapon:Weapon;
@@ -32,9 +32,9 @@ package fe.unit {
 			id='bossdron';
 			
 			//взять параметры из xml
-			vis=new visualMegaDron();
+			vis=new visualMegaDron();	// .SWF Dependency
 			vis.osn.gotoAndStop(1);
-			visshit=new visShit();
+			visshit=new visShit();		// .SWF Dependency
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible=false;
@@ -72,8 +72,8 @@ package fe.unit {
 		
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
-			var wMult=(1+level*0.07);
-			var dMult=1;
+			var wMult:Number = (1+level*0.07);
+			var dMult:Number = 1;
 			if (World.w.game.globalDif==3) dMult=1.2;
 			if (World.w.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
@@ -118,23 +118,22 @@ package fe.unit {
 			}
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
-				if (sost==2)
-				{
+				if (sost==2) {
 					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
 					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
 				}
-				else
-				{
+				else {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
 				}
 			}
 		}
 		
-		private function emit() {
+		private function emit():void {
 			if (kolChild>=kol_emit) return;
+			
 			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
 			un.fraction=fraction;
 			un.inter.cont='';
@@ -184,6 +183,7 @@ package fe.unit {
 			storona=(celDX>0)?1:-1;
 			var dist2:Number=celDX*celDX+celDY*celDY;
 			var dist:Number=(moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
+			
 			//поведение при различных состояниях
 			if (aiState==0) {
 				walk=0;
@@ -207,20 +207,22 @@ package fe.unit {
 				if (dist < 1000) {
 					velocity.multiply(0.80);
 				}
+				
 				attack();
 				emit_t--;
+				
 				if (emit_t<=0) emit();
 			}
 		}
 		
-		private function castShit() {
+		private function castShit():void {
 			if (shithp<=0 && t_shit<=0 && (World.w.game.globalDif==4 || World.w.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;
 				t_shit=1000;
 			}
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (sost!=1) return;
 			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,1);
@@ -240,11 +242,12 @@ package fe.unit {
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			}
+			else if (com=='on') {
 				controlOn=true;
 			}
 		}

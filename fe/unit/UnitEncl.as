@@ -7,7 +7,7 @@ package fe.unit {
 	public class UnitEncl extends UnitRaider {
 		
 		private var thWeapon:Weapon;
-		private var t_gren:int=Math.round(Math.random()*150+50);
+		private var t_gren:int = Math.round(Math.random() * 150 + 50);
 		
 		// Constructor
 		public function UnitEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {

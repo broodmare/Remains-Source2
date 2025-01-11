@@ -34,49 +34,50 @@ package fe.projectile {
 		public var inWater:int = -1;
 		public var isExpl:Boolean = false;
 		
-		public var partEmit:Boolean=true;	
-		public var spring:int=1;
-		public var flame:int=0;
+		public var partEmit:Boolean = true;	
+		public var spring:int = 1;
+		public var flame:int = 0;
 		public var flare:String;
-		public var outspace:Boolean=false;
+		public var outspace:Boolean = false;
 		
-		public var otbros = 0;
+		public var otbros:int = 0;
 		public var probiv:Number = 0;
 		public var parrDict:Dictionary;	// List of objects the bullet has already interacted with.
 		
-		public var babah:Boolean=false, tilehit:Boolean=false;
-		public var off:Boolean=false;	//отключить урон по юнитам
-		public var checkLine:Boolean=false;	
-		public var dist:Number=0;
+		public var babah:Boolean = false;
+		public var tilehit:Boolean = false;
+		public var off:Boolean = false;	//отключить урон по юнитам
+		public var checkLine:Boolean = false;	
+		public var dist:Number = 0;
 		
-		public var destroy:Number = 0;	//урон блокам
+		public var destroy:Number = 0;		//урон блокам
 		public var crack:int = 0;			//взлом контейнеров
-		var box:Box;
+		private var box:Box;
 		public var tileX:int = -1;
-		public var tileY:int = -1;	//урон блокам для холодного оружия (координаты, на которые указывает курсор)
+		public var tileY:int = -1;			//урон блокам для холодного оружия (координаты, на которые указывает курсор)
 		public var damage:Number = 0;
-		public var pier:Number = 0;		//бронебойность
+		public var pier:Number = 0;			//бронебойность
 		public var armorMult:Number = 1;	//модификатор действия брони
 		public var tipDamage:int = 0;
 		public var tipDecal:int = 0;
 		public var precision:Number = 0;	// [accuracy, shows the distance at which the hit will be 100%, 0 if the hit is always]
 		public var antiprec:Number = 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
-		public var miss:Number=0;			// [absolute miss probability]
-		public var desintegr:Number=0;		// [probability of disintegration]
+		public var miss:Number = 0;			// [absolute miss probability]
+		public var desintegr:Number = 0;	// [probability of disintegration]
 		
-		public var critCh:Number=0;	//шанс крита
-		public var critInvis:Number=0;	//шанс крита для мобов, у которых не установлена цель
-		public var critDamMult:Number=1;	//множитель критического урона
-		public var critM:Number=0;	//дополнительный крит
+		public var critCh:Number = 0;		//шанс крита
+		public var critInvis:Number = 0;	//шанс крита для мобов, у которых не установлена цель
+		public var critDamMult:Number = 1;	//множитель критического урона
+		public var critM:Number = 0;		//дополнительный крит
 		
-		public var explTip:int=1;		//тип взрыва, 1-обычный, 2-облако газа, 3-забрызгивание
-		public var explKol:int=0;		//количество взрывов, интервал 1с, 0 - мгновенный взрыв
-		public var explPeriod:int=10;
-		public var damageExpl:Number=0;	//урон по площади
-		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
-		public var targetObj:Obj;		//объект назначения
-		public var inWall:Boolean=false;
-		var expl_t:int=0;
+		public var explTip:int = 1;			//тип взрыва, 1-обычный, 2-облако газа, 3-забрызгивание
+		public var explKol:int = 0;			//количество взрывов, интервал 1с, 0 - мгновенный взрыв
+		public var explPeriod:int = 10;
+		public var damageExpl:Number = 0;	//урон по площади
+		public var explRadius:Number = 0;	//радиус взрыва, если 0, то взрыва нет
+		public var targetObj:Obj;			//объект назначения
+		public var inWall:Boolean = false;
+		public var expl_t:int = 0;
 		
 		public var retDam:Boolean=false;	//возврат урона
 
@@ -102,9 +103,13 @@ package fe.projectile {
 			
 			sloy = 2;
 			levitPoss = false;
+			
 			if (visClass) {
-				if (World.w.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;	// .SWF Dependency
-				vis=new visClass();
+				if (World.w.alicorn && own.player && visClass == visualBullet) {
+					visClass = visualRainbow;	// .SWF Dependency
+				}
+				
+				vis = new visClass();
 				vis.stop();
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
@@ -112,7 +117,9 @@ package fe.projectile {
 			}
 
 			// Adds itself to the location's processing chain for updates
-			if (addobj) loc.addObj(this);
+			if (addobj) {
+				loc.addObj(this);
+			}
 		}
 		
 		public override function step():void {
@@ -120,16 +127,21 @@ package fe.projectile {
 			if (!babah) {
 				velocity.Y += ddy;
 				velocity.X += ddx;
+				
 				if (vRot) rot=Math.atan2(velocity.Y, velocity.X);
+				
 				if (brakeR && dist>brakeR) {
 					vRot=true;
 					velocity.multiply(0.9);
 					vel *= 0.9;
 				}
+				
 				if (vRot) rot = Math.atan2(velocity.Y, velocity.X);
+				
 				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
 				else {
-					var div = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					
 					for (var i:int = 0; (i < div && !babah); i++) {
 						run(div);
 					}
@@ -195,7 +207,7 @@ package fe.projectile {
 			return 'Error bullet '+(owner?owner.nazv:'???')+' '+(weap?weap.nazv:'???');
 		}
 		
-		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
+		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
 			
 			if (ox >= 0) {
 				coordinates.X = ox;
@@ -212,7 +224,7 @@ package fe.projectile {
 				run();
 			}
 			else {
-				var div = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+				var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
 				for (var i:int = 0; i < div; i++) {
 					run(div);
 				}
@@ -578,6 +590,7 @@ package fe.projectile {
 		private function explBullet(tx:Number, ty:Number, er:Number):Bullet {
 			var rasst:Number = Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
+			
 			if (rasst < er) {
 				b = new Bullet(owner, coordinates, null);
 				b.inWall = inWall;
@@ -586,12 +599,16 @@ package fe.projectile {
 				b.velocity.Y = ty / rasst * er / 3;
 				b.knockx = b.velocity.X / b.vel;
 				b.knocky = b.velocity.Y / b.vel;
+				
 				if (!loc.levitOn) {
 					b.knockx = 0;
 					b.knocky = 0;
 				}
+				
 				b.damage=damageExpl;
+				
 				if (rasst>er*0.5) b.damage*=(2-rasst*2/er);
+				
 				b.otbros=otbros;
 				b.pier=pier;
 				b.weapId=weapId;
@@ -603,6 +620,7 @@ package fe.projectile {
 				b.critDamMult=critDamMult;
 				b.critInvis=critInvis;
 			}
+			
 			return b;
 		}
 		
@@ -783,14 +801,16 @@ package fe.projectile {
 			}
 		}
 
-		private function explLiquid(liq:String, ndy:int=0) {
+		private function explLiquid(liq:String, ndy:int = 0):void {
 			for (var i:int = int((coordinates.X - explRadius) / constTileX); i <= int((coordinates.X + explRadius) / constTileX); i++) {
 				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j <= int((coordinates.Y + explRadius) / constTileY); j++) {
 					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
 					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
 					var ter:Number = tx * tx + ty * ty;
+					
 					if (ter < explRadius * explRadius) {
 						var t:Tile = loc.getTile(i, j);
+						
 						if (j > 1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i, j - 1).phis == 0)) {
 							Emitter.emit(
 								liq,

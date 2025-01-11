@@ -147,7 +147,7 @@ package fe.loc {
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='onoff') enabled=!enabled;
 			if (com=='off') enabled=false;
 			if (com=='on') enabled=true;
@@ -231,8 +231,9 @@ package fe.loc {
 			}
 		}
 		
-		public function teleport(un:Unit) {
+		public function teleport(un:Unit):void {
 			if (!un) return;
+			
 			if (!loc.collisionUnit((portX + 1) * tileX, (portY + 1) * tileY - 1, un.boundingBox.width, un.boundingBox.height)) {
 				un.teleport((portX + 1) * tileX, (portY + 1) * tileY - 1);
 			}

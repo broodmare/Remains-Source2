@@ -20,8 +20,9 @@ package fe.unit {
 		protected var animFrame:int=0;
 		private var spd:Object;
 		public var wPos:Array;
-		private var floatX:Number=1, floatY:Number=0;
-		private var resmana=5;
+		private var floatX:Number = 1;
+		private var floatY:Number=0;
+		private var resmana:int = 5;
 		private var visshit:MovieClip;
 		private var shitMaxHp:Number=300;
 
@@ -83,16 +84,18 @@ package fe.unit {
 				tr=Math.floor(Math.random()*7);
 			}
 			
-			if (!(tr>=0)) tr=Math.floor(Math.random()*3+1);
+			if (!(tr>=0)) {
+				tr=Math.floor(Math.random()*3+1);
+			}
 			
-			id='alicorn'+tr;
+			id = 'alicorn' + tr;
 			getXmlParam();
 			
-			currentWeapon=Weapon.create(this,'alilight');
+			currentWeapon = Weapon.create(this,'alilight');
 			
 			if (currentWeapon) {
-				childObjs=new Array(currentWeapon);
-				currentWeapon.fromWall=true;
+				childObjs = new Array(currentWeapon);
+				currentWeapon.fromWall = true;
 			}
 			
 			shitArmor=25;
@@ -188,7 +191,7 @@ package fe.unit {
 			shitMaxHp*=(1+level*0.1);
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
 			unsit();
 		}
@@ -288,11 +291,12 @@ package fe.unit {
 			if (mater && visBmp.filters.length>0) visBmp.filters=[];
 		}
 		
-		public override function budilo(rad:Number=500) {
+		public override function budilo(rad:Number=500):void {
 			if (celUnit==null) {
 				celX = coordinates.X;
 				celY = coordinates.Y;
 			}
+			
 			for each(var un:Unit in loc.units) {
 				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres) {
 					un.alarma(celX,celY);

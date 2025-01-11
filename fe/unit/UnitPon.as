@@ -40,7 +40,7 @@ package fe.unit {
 				}
 		}
 		
-		public function weaponLevit() {
+		public function weaponLevit():void {
 			if (!currentWeapon || !teleFilter) return;
 			if (weaponKrep==0 && currentWeapon.tip!=5) {
 				if (currentWeapon.vis.kor) currentWeapon.vis.kor.filters=[teleFilter];
@@ -48,7 +48,7 @@ package fe.unit {
 			} 
 		}
 		
-		public function sndStep(faza:int,tip:int=0) {
+		public function sndStep(faza:int,tip:int=0):void {
 			if (loc==null || !loc.active) return;
 			var nstep:int;
 			var nleg:int;
@@ -96,7 +96,7 @@ package fe.unit {
 			Snd.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, (footstepVol-volMinus)*Snd.stepVol);
 		}
 		
-		protected override function sndFall() {
+		protected override function sndFall():void {
 			if (loc==null || !loc.active) return;
 			var rnd:String = isrnd()? 'a' : '';
 			var nleg:int;
@@ -108,7 +108,7 @@ package fe.unit {
 			Snd.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, footstepVol - volMinus);
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
 		}
 	}

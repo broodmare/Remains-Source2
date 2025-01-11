@@ -7,11 +7,11 @@ package fe.unit {
 	public class UnitBloat extends Unit {
 		
 		public var tr:int;
-		var cDam:Number;
-		var isEmit:Boolean=false;
-		var gryz:Boolean=false;
-		var isGryz:Boolean=false;
-		var shootCh:Number=0.1;
+		private var cDam:Number;
+		private var isEmit:Boolean=false;
+		private var gryz:Boolean=false;
+		private var isGryz:Boolean=false;
+		private var shootCh:Number=0.1;
 		
 		// Constructor
 		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -87,12 +87,12 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function otbros(bul:Bullet) {
+		public override function otbros(bul:Bullet):void {
 			if (bul && bul.knockx!=0 || bul.knocky!=0) isGryz=false;
 			super.otbros(bul);
 		}
 		
-		private function emit() {
+		private function emit():void {
 			var un:Unit=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, '0');
 		}
 		
@@ -120,7 +120,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function incStat(sposob:int=0) {
+		public override function incStat(sposob:int=0):void {
 			if (tr>=7 && tr<10) return;
 			super.incStat(sposob);
 		}
@@ -229,7 +229,7 @@ package fe.unit {
 			//атака
 			if (World.w.enemyAct>=3 && celUnit && shok<=0) {
 				if (aiState==1 && currentWeapon) if (isrnd(shootCh)) currentWeapon.attack();
-				var atk=attKorp(celUnit);
+				var atk = attKorp(celUnit);
 				if (atk && gryz) isGryz=true;
 			}
 		}

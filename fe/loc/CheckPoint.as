@@ -123,7 +123,7 @@ package fe.loc {
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			activate();
 		}
 		

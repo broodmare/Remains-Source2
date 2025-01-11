@@ -1,6 +1,5 @@
 package fe.entities {
 	
-	// [Base class for all objects]
 	import flash.display.MovieClip;
 
 	import fe.World;
@@ -17,12 +16,12 @@ package fe.entities {
 		public var in_chain:Boolean=false;
 		
 		public var stay:Boolean=false;
-
 		public var sloy:int=0;
 		
 		public var coordinates:Vector2 = new Vector2();	// The entity's [X, Y] coordinates stored as a vector
 		public var velocity:Vector2 = new Vector2();	// The entity's [X, Y] movement stored as a vector
 		
+		// Constructor
 		public function Entity() {
 
 		}
@@ -40,7 +39,9 @@ package fe.entities {
 		}
 		
 		public function err():String {
-			if (loc) loc.remObj(this);
+			if (loc) {
+				loc.remObj(this);
+			}
 			return null;
 		}
 		

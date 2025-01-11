@@ -10,12 +10,12 @@ package fe.unit {
 	
 	public class UnitBossRaider extends UnitPon {
 		
-		public var tr:int=1;
-		var weap:String;
-		public var scrAlarmOn:Boolean=true;
-		public var controlOn:Boolean=true;
-		public var kol_emit=8;
-		public var called:int=0;
+		public var tr:int = 1;
+		private var weap:String;
+		public var scrAlarmOn:Boolean = true;
+		public var controlOn:Boolean = true;
+		public var kol_emit:int = 8;
+		public var called:int = 0;
 
 		// Constructor
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -28,10 +28,10 @@ package fe.unit {
 			
 			//взять параметры из xml
 			if (tr == 2) {
-				vis = new visualRaiderBoss2();
+				vis = new visualRaiderBoss2();	// .SWF Dependency
 			}
 			else {
-				vis = new visualRaiderBoss();
+				vis = new visualRaiderBoss();	// .SWF Dependency
 			}
 			
 			vis.osn.gotoAndStop(1);
@@ -92,8 +92,8 @@ package fe.unit {
 		
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
-			var wMult=(1+level*0.08);
-			var dMult=1;
+			var wMult:Number = (1+level*0.08);
+			var dMult:Number = 1;
 			
 			if (World.w.game.globalDif==3) dMult=1.2;
 			if (World.w.game.globalDif==4) dMult=1.5;
@@ -143,7 +143,7 @@ package fe.unit {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
-					var cframe=Math.round(16 + velocity.Y);
+					var cframe:int = Math.round(16 + velocity.Y);
 					if (cframe>32) cframe=32;
 					if (cframe<1) cframe=1;
 					vis.osn.body.gotoAndStop(cframe);
@@ -355,42 +355,50 @@ package fe.unit {
 
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (aiState == 1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit, (Math.abs(velocity.X - celUnit.velocity.X) > 8)? 1 : 0.5);
 			}
 			else if (aiState==3) {							//пальба
 				mazil=10;		//стоя на месте стрельба точнее
+				
 				if (aiAttackOch>0) {										//стрельба очередями
 					if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
+					
 					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
+					
 					aiAttackT--;
 				}
+				
 				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) attKorp(celUnit, 0.5);
-				}
-				else if (aiState==4) {		//тряска
-					if (aiTCh==5) quake();
-				}
-				else if (aiState==5) {		//тряска
-					if (aiTCh==5 && kol_emit && tr==1) emit();
+			}
+			else if (aiState==4) {		//тряска
+				if (aiTCh==5) quake();
+			}
+			else if (aiState==5) {		//тряска
+				if (aiTCh==5 && kol_emit && tr==1) emit();
+				
 				if (celUnit && isrnd(0.02)) {
 					currentWeapon.attack();
+					
 					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) attackerType=0;
 				}
+				
 				if ((celDX*celDX+celDY*celDY<10000) && isrnd(0.1)) attKorp(celUnit,(Math.abs(velocity.X) > 8)? 1 : 0.5);
 			}
 		}
 		
-		private function quake() {
+		private function quake():void {
 			loc.earthQuake(40);
 			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			}
+			else if (com=='on') {
 				controlOn=true;
 			}
 		}

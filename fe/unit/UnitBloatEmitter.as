@@ -4,7 +4,8 @@ package fe.unit {
 	
 	public class UnitBloatEmitter  extends Unit {
 		
-		var emitId:String='bloat';
+		private var emitId:String = "bloat";
+		private var emit_t:int = 0;
 
 		// Constructor
 		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -18,18 +19,18 @@ package fe.unit {
 			}
 			
 			if (id=='eant') {
-				vis=new visualAntEmitter();
+				vis=new visualAntEmitter();		// .SWF Dependency
 				emitId='ant';
 			}
 			else {
-				vis=new visualBloatEmitter();
+				vis=new visualBloatEmitter();	// .SWF Dependency
 			}
 			
 			vis.stop();
 			getXmlParam();
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			vis.x = coordinates.X;
 			vis.y = coordinates.Y;
 		}
@@ -48,7 +49,7 @@ package fe.unit {
 			}
 		}
 		
-		function emit(d:Boolean=false) {
+		private function emit(d:Boolean=false):void {
 			var un:Unit;
 			var emitTr:String='0';
 			if (emitId=='bloat') {
@@ -64,8 +65,6 @@ package fe.unit {
 				un.mother=this;
 			}
 		}
-		
-		var emit_t:int = 0;
 		
 		public override function expl():void {
 			super.expl();

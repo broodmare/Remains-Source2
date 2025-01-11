@@ -7,13 +7,13 @@ package fe.unit {
 	public class UnitHellhound extends UnitPon {
 		
 		private var vDestroy:Number;
-		private var nuh:Number=400;
+		private var nuh:Number = 400;
 		
 		// Constructor
 		public function UnitHellhound(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 
 			super(cid, ndif, xml, loadObj);
-			var tr:int=1;
+			var tr:int = 1;
 			
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
@@ -40,12 +40,12 @@ package fe.unit {
 		}
 		
 		public override function getXmlParam(mid:String=null):void {
-			super.getXmlParam('hellhound');
-			super.getXmlParam();
+			super.getXmlParam("hellhound");	// Get the base 'Hellhound' stats
+			super.getXmlParam();			// Create the variant, for example by copying new stats from 'Hellhound3'
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
+			super.putLoc(nloc, nx, ny);
 			unsit();
 		}
 		
@@ -55,6 +55,7 @@ package fe.unit {
 			if (loc.getAbsTile(coordinates.X,coordinates.Y-125).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X+40*storona,coordinates.Y-85).phis!=0) return false;
 			if (loc.getAbsTile(coordinates.X+40*storona,coordinates.Y-125).phis!=0) return false;
+			
 			return true;
 		}
 		
@@ -91,6 +92,7 @@ package fe.unit {
 					aiState=3;
 					budilo();
 				}
+				
 				shok=15;
 			}
 			if (stun) {
@@ -217,17 +219,19 @@ package fe.unit {
 				//в возбуждённом или атакующем состоянии
 			}
 			else if (aiState==2 || aiState==3) {
-				
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
+				
 				if (aiTCh%15==1) {
 					if (isrnd(0.8)) {
 						if (celDX>100) aiNapr=storona=1;
 						if (celDX<-100) aiNapr=storona=-1;
 					}
 				}
+				
 				if (celDY>80) throu=true;
 				else throu=false;
+				
 				if (levit) {
 					if (aiNapr==-1) {
 						if (velocity.X>-maxSpeed) velocity.X-=levitaccel;
@@ -244,23 +248,28 @@ package fe.unit {
 						if (velocity.X<maxSpeed) velocity.X+=accel;
 					}
 				}
+				
 				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) {
 					if (aiVNapr<=0 && isrnd(0.5)) jmp=0.5;
 					else if (velocity.X>5 || velocity.X<-5) velocity.X*=0.6;	//притормозить перед ямой
 				}
+				
 				if (jmp>0) {
 					if (isPlav) jmp*=1.5;
 					jump(jmp);
 					jmp=0;
 				}
+				
 				if (isLaz==0 && aiVNapr==-1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вверх
 					checkStairs();
 					if (isLaz && isLaz!=0) aiLaz=30;
 				}
+				
 				if (isLaz==0 && aiVNapr==1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вниз
 					checkStairs(2);
 					if (isLaz && isLaz!=0) aiLaz=30;
 				}
+				
 				if (isLaz) {
 					if (t_laz<0) t_laz=0;
 					t_laz++;
@@ -270,20 +279,24 @@ package fe.unit {
 						if (velocity.Y>-lazSpeed) velocity.Y-=lazSpeed/3;
 						else (velocity.Y=-lazSpeed);
 						checkStairs();
-					} else if (aiVNapr==1 && r_laz>=0) {
+					}
+					else if (aiVNapr==1 && r_laz>=0) {
 						r_laz=1;
 						if (velocity.Y<lazSpeed) velocity.Y+=lazSpeed/3;
 						else (velocity.Y=lazSpeed);
 						checkStairs();
-					} else {
+					}
+					else {
 						isLaz=0;
 						if (t_laz>20 && isrnd(0.7)) jmp=0.8;
 					}
+					
 					if (turnY!=0) {
 						isLaz=0;
 						turnY=0;
 					}
-				} else {
+				}
+				else {
 					if (t_laz>0) t_laz=0;
 					t_laz--;
 					r_laz=0;
@@ -297,54 +310,75 @@ package fe.unit {
 						turnX=0;
 					}
 				}
+				
 				if (turnX==1) {
 					if (loc.getAbsTile(this.boundingBox.left-2,this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.left-2,this.boundingBox.top+40).phis==0 && loc.getAbsTile(this.boundingBox.left-2,this.boundingBox.top+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
 				}
+				
 				if (turnX!=0) {
 					if (aiState==1) {
 						if (isrnd(0.1)) aiState=0;
 						aiNapr=storona=turnX;
 						turnX=0;
-					} else {
+					}
+					else {
 						aiTTurn--;
+						
 						if (isrnd(0.03) || turnY>0) aiTTurn-=10;
 						else if (isrnd(0.5) && checkJump()) jmp=1;
 						else aiTTurn-=10;
+						
 						if (aiTTurn<0 && stay) {
 							aiNapr=storona=turnX;
 							aiTTurn=Math.floor(Math.random()*20)+5;
 						}
-						turnX=turnY=0;
+						
+						turnX = 0;
+						turnY = 0;
 					}
 				}
 			}
-			pumpObj=null;
 			
-			if (coordinates.Y>loc.spaceY*Tile.tileY-80) throu=false;
+			pumpObj = null;
+			
+			if (coordinates.Y>loc.spaceY*Tile.tileY-80) {
+				throu=false;
+			}
 			
 			if (celUnit && celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && aiState>1) {
 				attKorp(celUnit,(shok<=0?1:0.5));
 			} 
 			
 		}
+		
 		//поиск лестницы
 		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
 			try {
 				var i:int = int((coordinates.X + nx) / Tile.tileX);
 				var j:int = int((coordinates.Y + ny) / Tile.tileY);
-				if (j>=loc.spaceY) j=loc.spaceY-1;
+				
+				if (j>=loc.spaceY) {
+					j=loc.spaceY-1;
+				}
+				
 				if (loc.getTile(i, j).phis>=1) {
 					isLaz=0;
 					return false;
 				}
+				
 				if (loc.getTile(i, j).stair) {
 					isLaz=loc.getTile(i, j).stair;
-				} else if (loc.getTile(i+storona,j).phis) {
+				}
+				else if (loc.getTile(i+storona,j).phis) {
 					isLaz=storona;
-				} else isLaz=0;
+				}
+				else {
+					isLaz=0;
+				}
+				
 				if (isLaz!=0) {
 					storona=isLaz;
 					if (isLaz==-1) coordinates.X=loc.getTile(i, j).boundingBox.left + this.boundingBox.halfWidth;
@@ -357,14 +391,19 @@ package fe.unit {
 			catch (err) {
 				trace('ERROR: (00:7)');
 			}
-			isLaz=0;
+			
+			isLaz = 0;
+			
 			return false;
 		}
 		
 		public override function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number {
 			if (ncel.player && rasst2<nuh*nuh) {
 				return 20;
-			} else return super.look(ncel, over, visParam, nDist);
+			}
+			else {
+				return super.look(ncel, over, visParam, nDist);
+			}
 		}
 		
 		public override function animate():void {
@@ -409,13 +448,16 @@ package fe.unit {
 					//anims[animState].setStab((dy*0.6+8)/16);
 				}
 			}
+			
 			if (animState!=animState2) {
 				anims[animState].restart();
 				animState2=animState;
 			}
+			
 			if (!anims[animState].st) {
 				blit(anims[animState].id,anims[animState].f);
 			}
+			
 			anims[animState].step();
 		}
 	}

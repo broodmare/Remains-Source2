@@ -27,7 +27,7 @@ package fe.unit {
 		}
 
 		//поместить созданный юнит в локацию
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			if (cep<0 && nloc.getAbsTile(nx, ny+10).phis==0) {
 				if (nloc.getAbsTile(nx, ny-50).phis) {
 					cep=1;
@@ -57,14 +57,14 @@ package fe.unit {
 			newPart('metal', 4);
 		}
 
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 			}
 		}
 		
-		public override function locout()	{
+		public override function locout():void	{
 			super.locout();
 			upKoef=0;
 		}

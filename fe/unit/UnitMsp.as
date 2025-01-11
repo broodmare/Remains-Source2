@@ -45,7 +45,7 @@ package fe.unit {
 		}
 
 		//поместить созданный юнит в локацию
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			if (nloc.getAbsTile(nx, ny+10).phis==0) {
 				if (nloc.getAbsTile(nx, ny-50).phis) {
 					cep=1;
@@ -71,7 +71,7 @@ package fe.unit {
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				if (cep==0) {
 					vis.x = coordinates.X;

@@ -1658,7 +1658,7 @@ package fe.loc {
 		}
 		
 		// [drawing the map] (Mini-map in the pipbuck)
-		public function drawMap(m:BitmapData) {
+		public function drawMap(m:BitmapData):void {
 			var vid:Number = 1;
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {

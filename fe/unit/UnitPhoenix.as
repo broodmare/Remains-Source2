@@ -60,7 +60,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='tame') {
 				die();
 				var pet:UnitPet=World.w.gg.pets['phoenix'];
@@ -74,9 +74,13 @@ package fe.unit {
 			if (World.w.game.triggers['tame']>=5) die();
 		}
 		
-		private function tame() {
-			if (!questOk) World.w.game.addQuest('tamePhoenix');
-			storona=(coordinates.X > World.w.gg.coordinates.X)? -1:1;
+		private function tame():void {
+			if (!questOk) {
+				World.w.game.addQuest("tamePhoenix");
+			}
+			
+			storona = (coordinates.X > World.w.gg.coordinates.X) ? -1 : 1;
+			
 			if (World.w.invent.items['radcookie'].kol>0) {
 				World.w.game.incQuests('tame_ph');
 				World.w.invent.minusItem('radcookie');
@@ -93,14 +97,21 @@ package fe.unit {
 			else {
 				World.w.gui.messText('phoenixFeed1', '', coordinates.Y < 300);
 			}
+			
 			if (World.w.game) {
-				World.w.game.triggers['frag_' + id] = 0;
+				World.w.game.triggers["frag_" + id] = 0;
 			}
 		}
 		
 		override protected function control():void {
-			if (!stay) t_fall++;
-			if (t_fall >= 3 || velocity.X > 1 || velocity.X < -1) die();
+			if (!stay) {
+				t_fall++;
+			}
+			
+			if (t_fall >= 3 || velocity.X > 1 || velocity.X < -1) {
+				die();
+			}
+			
 			if (!questOk && loc.celObj == this) {
 				World.w.game.triggers['frag_' + id] = 0;
 				World.w.game.addQuest('tamePhoenix');

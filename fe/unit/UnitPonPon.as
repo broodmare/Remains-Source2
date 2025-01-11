@@ -7,11 +7,11 @@ package fe.unit {
 	
 	public class UnitPonPon extends Unit {
 		
-		var tr:int=1;
-		var act:Boolean=true;
-		var novoi:Boolean=false;
-		var verVis:Number=0.4;
-		var privet:Boolean=false;
+		private var tr:int=1;
+		private var act:Boolean=true;
+		private var novoi:Boolean=false;
+		private var verVis:Number=0.4;
+		private var privet:Boolean=false;
 		
 		// Constructor
 		public function UnitPonPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -82,8 +82,9 @@ package fe.unit {
 			
 		}
 		
-		public override function command(com:String, val:String=null) {
-			super.command(com,val);
+		public override function command(com:String, val:String=null):void {
+			super.command(com, val);
+			
 			if (com=='tell' && act) {
 				t_replic=0;
 				replic(val);			
@@ -95,8 +96,8 @@ package fe.unit {
 			t_replic--;
 			if (loc!=World.w.loc) return;
 			if (privet && t_replic%60==3) {
-				var nx = World.w.gg.coordinates.X - coordinates.X;
-				var ny = World.w.gg.coordinates.Y - coordinates.Y;
+				var nx:Number = World.w.gg.coordinates.X - coordinates.X;
+				var ny:Number = World.w.gg.coordinates.Y - coordinates.Y;
 				if (Math.abs(nx)<200 && Math.abs(ny)<60) {
 					t_replic=0;
 					replic('hi');

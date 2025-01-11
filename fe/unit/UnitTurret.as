@@ -116,7 +116,7 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc, nx, ny);
 			if (mxml) inter = new Interact(this, null, mxml, null);
 			// Turret aiming constraints
@@ -192,7 +192,7 @@ package fe.unit {
 			currentWeapon.damage*=(1+level*0.12);
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			vis.x = coordinates.X;
 			vis.y = coordinates.Y;
 		}
@@ -250,7 +250,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function hack(sposob:int=0) {
+		public override function hack(sposob:int=0):void {
 			if (sposob==0) {
 				sleep=true;
 				aiState=0;
@@ -288,8 +288,9 @@ package fe.unit {
 		}
 		
 		// [Tear away from a fixed place]
-		public override function otryv() {
+		public override function otryv():void {
 			if (turrettip==5) return;
+			
 			if (turrettip==0 || turrettip==2 || turrettip==4) {
 				newPart('iskr_bul',20);
 				sleep=true;
@@ -299,14 +300,18 @@ package fe.unit {
 				if (xp>0) loc.takeXP(xp, coordinates.X, coordinates.Y, true);
 				xp=0;
 			}
+			
 			fixed=false;
 		}
 		
 		//команда скрипта
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com == 'shoot') currentWeapon.attack();
+			
 			if (com == 'alarma') alarma();
+			
 			if (com == 'hack') hack();
+			
 			if (com == 'port') {
 				var arr:Array=val.split(':');
 				var nx = (int(arr[0])+0.5) * tileX;
@@ -329,11 +334,14 @@ package fe.unit {
 					else if (bul.velocity.X * storona > 0) shitArmor = 0;
 				}
 			}
+			
 			var ret:Number=super.damage(dam, tip, bul, tt);
+			
 			if (turrettip==3) {
 				shithp=0;
 				shitArmor=0;
 			}
+			
 			return ret;
 		}
 		
@@ -342,9 +350,13 @@ package fe.unit {
 				setCel(World.w.gg);
 				return true;
 			}
+			
 			if (!reprog) return super.findCel(over);
+			
 			if (detectionDelay > 0) return false;
+			
 			var ncel:Unit;
+			
 			if (priorUnit && isMeet(priorUnit) && priorUnit.sost<3 && priorUnit.hp>0 && !priorUnit.doop) {
 				setCel(priorUnit);
 				return true;
@@ -358,7 +370,10 @@ package fe.unit {
 					}
 				}
 			}
-			celUnit=priorUnit=null;
+			
+			celUnit = null;
+			priorUnit = null;
+			
 			return false;
 		}
 		
@@ -375,10 +390,13 @@ package fe.unit {
 					aiState=3;
 				}
 			}
+			
 			levitPoss=!hidden;
+			
 			if (World.w.enemyAct<=0 || sleep) {
 				return;
 			}
+			
 			if (aiTCh>0) aiTCh--;
 			else if (aiState==2) {
 				if (celUnit) {
@@ -408,6 +426,7 @@ package fe.unit {
 				if (aiSpok>0) aiState=4;
 				if (aiSpok>=maxSpok) aiState=3;
 			}
+			
 			//поиск цели, мина
 			if (!reprog && aiTCh%15==1 && findLevit() && celUnit!=loc.gg) {
 				if (loc.gg.teleObj && (loc.gg.teleObj is Mine)) {
@@ -415,6 +434,7 @@ package fe.unit {
 					aiSpok=maxSpok+10;
 				}
 			}
+			
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (!noTurn) vAngle=currentWeapon.rot;
 				if (osnova && osnova.phis==0) die();
@@ -468,10 +488,12 @@ package fe.unit {
 					dexter=1;
 				}
 			}
+			
 			//атака
 			if (World.w.enemyAct>=3 && aiState==3 && !stun) {
 				currentWeapon.attack();
 			}
+			
 			if (World.w.enemyAct >= 3 && celUnit && dam>0 && detectionDelay <= 0) {	//атака корпусом
 				attKorp(celUnit, 1);
 			}

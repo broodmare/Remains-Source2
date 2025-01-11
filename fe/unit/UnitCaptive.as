@@ -7,10 +7,10 @@ package fe.unit {
 	
 	public class UnitCaptive extends Unit {
 		
-		var tr:int=1;
-		var sr:int=0;
-		var statusCapt=0;
-		var novoi:Boolean=false;
+		private var tr:int=1;
+		private var sr:int=0;
+		private var statusCapt=0;
+		private var novoi:Boolean=false;
 		
 		// Constructor
 		public function UnitCaptive(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -54,9 +54,10 @@ package fe.unit {
 			inter.action=1;
 			inter.actFun=free;
 			inter.update();
-			vis=new visualCaptive();
+			vis=new visualCaptive();	// .SWF Dependency
 			vis.osn.pon.gotoAndStop(tr);
 			vis.osn.cage.gotoAndStop(sr+1);
+			
 			if (statusCapt>0) {
 				vis.osn.gotoAndStop('opened');
 				inter.active=false;
@@ -65,6 +66,7 @@ package fe.unit {
 				npc=false;
 				fraction=0;
 			}
+			
 			invulner=true;
 			t_replic=Math.random()*1500;
 			
@@ -83,15 +85,18 @@ package fe.unit {
 
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			inter.command(com,val);
 		}
 		
-		public function free() {
+		public function free():void {
 			if (statusCapt>0) return;
+			
 			sound('metal_door_open');
 			t_replic=0;
+			
 			if (!novoi) replic('vse');
+			
 			vis.osn.gotoAndPlay('open');
 			inter.active=false;
 			id='cage';
@@ -99,10 +104,12 @@ package fe.unit {
 			npc=false;
 			loc.takeXP(500, World.w.gg.coordinates.X, World.w.gg.coordinates.Y - 100, true);
 			fraction=0;
+			
 			if (questId) {
 				if (loc.land.itemScripts[questId]) loc.land.itemScripts[questId].start();
 				World.w.game.incQuests(questId);
 			}
+			
 			statusCapt=1;
 		}
 		

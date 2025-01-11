@@ -17,33 +17,42 @@ package fe.unit {
 		protected var digger:int=0;		//нужно ли закапываться, 0-не нужно, 1-закопаться просто, 2-закопаться конкретно, 3-закопаться навсегда
 		protected var kop1:Tile, kop2:Tile;
 		
-		var superX:Number=0, superY:Number=0;
+		private var superX:Number=0, superY:Number=0;
 
 		protected var zak:Boolean=false;
 		
 		//свечение
-		var glowTip:int=0;
-		var vlight:MovieClip;
+		private var glowTip:int=0;
+		private var vlight:MovieClip;
 		
-		var knocked2:Number;
+		private var knocked2:Number;
 		
-		//суперсила
-		var superSilaTip:int=0;	//1-высокий прыжок, 2-телекинез, 3-ядовитый снаряд, 4-кислотный снаряд, 5-вспышка радиации, 6-трясучка,
-								//7-телекинез+магия, 8-розовое облако
-		var tZlo:int=120;		//время накопления силы
-		var tPrepSuper:int=30;	//время подготовки суперсилы
-		var tSuper:int=75;		//время использования суперсилы
-		var vJump:int=30, teleAccel:Number=2, teleSpeed:Number=10, teleUnit:Unit, vDestroy:Number=20;
-		var radMin:int=0, radMax:int=0, radradMin:int=200, radradMax:int=800, radHeal:Number=30;
-		var superQuake:Number=0;
-		var super_on:Boolean=false;
+		/* суперсила
+		** 1-высокий прыжок, 2-телекинез, 3-ядовитый снаряд
+		** 4-кислотный снаряд, 5-вспышка радиации, 6-трясучка
+		** 7-телекинез+магия, 8-розовое облако
+		*/
+		private var superSilaTip:int=0;
 		
-		var tIsRes:int=300;//750;
-		var t_res:int=tIsRes;
+		private var tZlo:int=120;		//время накопления силы
+		private var tPrepSuper:int=30;	//время подготовки суперсилы
+		private var tSuper:int=75;		//время использования суперсилы
+		private var vJump:int=30, teleAccel:Number=2, teleSpeed:Number=10, teleUnit:Unit, vDestroy:Number=20;
+		private var radMin:int=0, radMax:int=0, radradMin:int=200, radradMax:int=800, radHeal:Number=30;
+		private var superQuake:Number=0;
+		private var super_on:Boolean=false;
 		
-		var t_ca:int=0;	//смена анимации
+		private var tIsRes:int=300;//750;
+		private var t_res:int=tIsRes;
+		
+		private var t_ca:int=0;	//смена анимации
 		
 		protected var levitFilter:GlowFilter;
+
+		private var aiJump:int=0;
+		private var aiZlo:int=0;
+		
+		private var optDistAtt:int=200;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -54,14 +63,21 @@ package fe.unit {
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
+			}
+			else if (cid) {						//из заданного идентификатора cid
 				tr=int(cid);
-			} else {								//случайно по параметру ndif
+			}
+			else {								//случайно по параметру ndif
 				tr=Math.floor(Math.random()*7);
 			}
-			if (!(tr>=0)) tr=0;
+			
+			if (!(tr>=0)) {
+				tr=0;
+			}
+			
 			id='zombie'+tr;
 			getXmlParam();
 			walkSpeed=maxSpeed;
@@ -83,14 +99,19 @@ package fe.unit {
 			
 			if (xml && xml.@dig.length()) digger=xml.@dig;
 			else digger=isrnd(Math.min(ndif/20+0.25,0.75))?1:0;
+			
 			aiNapr=storona;
-			if (!msex) id_name+='_f';
+			
+			if (!msex) {
+				id_name+='_f';
+			}
 			
 		}
 		
 		//сделать героем
 		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
+			
 			if (hero==1) {
 				tZlo=Math.round(tZlo*0.6);
 			}
@@ -100,6 +121,7 @@ package fe.unit {
 			super.getXmlParam('zombie');
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			
 			if (node0.un.length()) {
 				if (node0.un.@ss.length()) superSilaTip=node0.un.@ss;		//суперсила
 				if (node0.un.@glow.length()) glowTip=node0.un.@glow;		//свечение
@@ -147,11 +169,13 @@ package fe.unit {
 				animState='die';
 				blit(anims[animState].id,t_res);
 				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * 10);
+				
 				return;
 			}
 			else if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
+						// Do nothing
 					}
 					else if (animState=='death') animState='fall';
 					else animState='die';
@@ -202,8 +226,6 @@ package fe.unit {
 				else {
 					t_ca=0;
 					animState='jump';
-					// Commented out, there is no setStab function
-					//anims[animState].setStab((dy*0.6+8)/16);
 				}
 				if (vlight && vlight.alpha != 1) {
 					vlight.y = -this.boundingBox.halfHeight;
@@ -219,7 +241,6 @@ package fe.unit {
 			}
 			anims[animState].step();
 		}
-		
 		
 		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			if (digger==3) return;
@@ -246,7 +267,7 @@ package fe.unit {
 		}
 
 		// [script command]
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (digger>=2) {
 				digger=1;
 				aiState=6;
@@ -254,7 +275,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function actions() {
+		public override function actions():void {
 			super.actions();
 			rasst=Math.sqrt(rasst2);
 			volMinus=rasst/8000;
@@ -279,13 +300,13 @@ package fe.unit {
 			}
 		}
 		
-		public override function initBurn(sposob:int) {
+		public override function initBurn(sposob:int):void {
 			if (burn!=null) return;
 			if (vlight) vlight.visible=false;
 			super.initBurn(sposob);
 		}
 		
-		public function zakop() {
+		public function zakop():void {
 			knocked=0;
 			aiState=5;
 			this.boundingBox.height = 0;
@@ -296,6 +317,7 @@ package fe.unit {
 			stealthMult=0;
 			invis=true;
 			fixed=true;
+			
 			if (digger==1) {
 				vision=0.75;
 				ear=0.2;
@@ -313,7 +335,7 @@ package fe.unit {
 				vlight.y=0;
 			}
 		}
-		public function vykop() {
+		public function vykop():void {
 			knocked=knocked2;
 			this.boundingBox.height = this.boundingBox.standingHeight;
 			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
@@ -346,7 +368,7 @@ package fe.unit {
 			return super.destroyWall(t, napr);
 		}
 		
-		private function resurrect() {
+		private function resurrect():void {
 			hp=maxhp;
 			sost=1;
 			this.boundingBox.height = this.boundingBox.standingHeight;
@@ -356,25 +378,22 @@ package fe.unit {
 			tZlo=120;
 			aiTCh=30;
 			transT=false;
-			for (var i=int((this.boundingBox.left)/tileX); i<=int((this.boundingBox.right)/tileX); i++) {
-				for (var j=int((this.boundingBox.top)/tileY); j<=int((this.boundingBox.bottom)/tileY); j++) {
+			
+			for (var i:int = int((this.boundingBox.left)/tileX); i<=int((this.boundingBox.right)/tileX); i++) {
+				for (var j:int = int((this.boundingBox.top)/tileY); j<=int((this.boundingBox.bottom)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
+					
 					if (collisionTile(loc.getTile(i, j))) loc.dieTile(loc.getTile(i, j));
 				}
 			}
 		}
 		
-		private function quake(n:Number) {
+		private function quake(n:Number):void {
 			loc.budilo(coordinates.X, coordinates.Y, 500);
 			loc.earthQuake(n*superQuake);
 			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
 		}
-		
-		var aiJump:int=0;
-		var aiZlo:int=0;
-		
-		var optDistAtt:int=200;
-		
+
 		//aiState
 		//0 - стоит на месте
 		//1 - ходит туда-сюда
@@ -384,7 +403,6 @@ package fe.unit {
 		//5 - закопался
 		//6 - выкапывается
 		//7 - спецприём
-		
 		override protected function control():void {
 			var t:Tile;
 			//если сдох, то не двигаться
@@ -596,34 +614,48 @@ package fe.unit {
 				}
 				if (turnX!=0) {
 					aiTTurn--;
+					
 					if (isrnd(0.03) || turnY>0) aiTTurn-=10;
 					else if (isrnd(0.5) && checkJump()) jmp=1;
 					else aiTTurn-=10;
+					
 					if (aiTTurn<0 && stay) {
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
 					}
-					turnX=turnY=0;
+					
+					turnX = 0;
+					turnY = 0;
 				}
 				if (jmp>0) {
-					if (isPlav) jmp*=1.5;
+					if (isPlav) {
+						jmp*=1.5;
+					}
+					
 					jump(jmp);
-					jmp=0;
+					jmp = 0;
 				}
 			}
 			pumpObj=null;
 			
-			if (coordinates.Y>loc.spaceY*tileY-80) throu=false;
+			if (coordinates.Y>loc.spaceY*tileY-80) {
+				throu=false;
+			}
 			
 			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
 				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
-					if (aiZlo>80) aiZlo-=25;
+					if (aiZlo>80) {
+						aiZlo-=25;
+					}
 				}
-				if (superSilaTip==7 && isrnd(0.1)) currentWeapon.attack();
+				
+				if (superSilaTip==7 && isrnd(0.1)) {
+					currentWeapon.attack();
+				}
 			} 
 		}
 		
-		private function setSuper() {
+		private function setSuper():void {
 			if (superSilaTip==1) {	//суперпрыжок
 				tPrepSuper=30;
 				tSuper=20;
@@ -694,7 +726,7 @@ package fe.unit {
 			}
 		}
 		
-		private function findSuper() {
+		private function findSuper():void {
 			superX=-1;
 			var nx:int = int(celX/tileX);
 			var ny:int = int((celY+40)/tileY);
@@ -728,39 +760,47 @@ package fe.unit {
 		}
 		
 		//суперсила в начальный момент
-		private function superSila() {
+		private function superSila():void {
 			super_on=true;
 			if (superSilaTip==1) {
 				if (superX > 0 && superY > 0 && stay) {
-					var tdx = superX - coordinates.X;
-					var tdy = superY - coordinates.Y;
-					var rasst=Math.sqrt(tdx * tdx + tdy * tdy);
+					var tdx:Number = superX - coordinates.X;
+					var tdy:Number = superY - coordinates.Y;
+					var rasst:Number = Math.sqrt(tdx * tdx + tdy * tdy);
 					velocity.X = tdx / rasst * vJump;
 					velocity.Y = tdy / rasst * vJump;
-					tSuper=Math.round(rasst/vJump);
-					if (tSuper>20) tSuper=20;
-					grav=0;
+					tSuper = Math.round(rasst/vJump);
+					
+					if (tSuper > 20) {
+						tSuper = 20;
+					}
+					
+					grav = 0;
 				}
-			} else if (superSilaTip==2 || superSilaTip==7) {
-			} else if (superSilaTip==3 || superSilaTip==4 || superSilaTip==8) {
+			}
+			else if (superSilaTip==2 || superSilaTip==7) {
+			}
+			else if (superSilaTip==3 || superSilaTip==4 || superSilaTip==8) {
 				currentWeapon.attack();
-			} else if (superSilaTip==5) {
+			}
+			else if (superSilaTip==5) {
 				radioactiv=radMax;
 				radrad=radradMax;
 				for each (var un:Unit in loc.units) {
 					if (un is UnitZombie && un.sost==1) {
-						var rasst=Math.sqrt((un.coordinates.X - coordinates.X)*(un.coordinates.X - coordinates.X)+(un.coordinates.Y - coordinates.Y)*(un.coordinates.Y - coordinates.Y));
-						if (rasst<radrad) un.heal(radHeal*(radrad-rasst)/radrad);
+						var rasst1:Number = Math.sqrt((un.coordinates.X - coordinates.X)*(un.coordinates.X - coordinates.X)+(un.coordinates.Y - coordinates.Y)*(un.coordinates.Y - coordinates.Y));
+						if (rasst1 < radrad) un.heal(radHeal * (radrad - rasst1) / radrad);
 					}
 				}
 				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight);
-			} else if (superSilaTip==6) {
+			}
+			else if (superSilaTip==6) {
 				loc.budilo(coordinates.X, coordinates.Y, 1000);
 			}
 		}
 		
 		//суперсила в действии
-		private function superSila2() {
+		private function superSila2():void {
 			if (superSilaTip==1) {
 				grav=0;
 			}
@@ -770,9 +810,9 @@ package fe.unit {
 					superY = coordinates.Y;
 				}
 				if (teleUnit && teleUnit.levit!=1) {
-					var tdx = superX - teleUnit.coordinates.X;
-					var tdy = superY - teleUnit.coordinates.Y;
-					var rasst=Math.sqrt(tdx*tdx+tdy*tdy);
+					var tdx:Number = superX - teleUnit.coordinates.X;
+					var tdy:Number = superY - teleUnit.coordinates.Y;
+					var rasst:Number = Math.sqrt(tdx*tdx+tdy*tdy);
 					tdx=tdx/rasst*teleAccel;
 					tdy=tdy/rasst*teleAccel;
 					teleUnit.isLaz=0;
@@ -791,7 +831,7 @@ package fe.unit {
 		}
 		
 		//суперсила в конце
-		private function superSilaVse() {
+		private function superSilaVse():void {
 			super_on=false;
 			if (superSilaTip==1) {
 				maxSpeed=vJump+3;

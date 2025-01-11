@@ -24,7 +24,7 @@ package fe.unit {
 			visionMult=1.5;
 			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosGriffon1");
-			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1); // SWF Dependency
+			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1); // .SWF Dependency
 			if (grenader>0) {
 				thWeapon=Weapon.create(this,'mercgr');
 				(thWeapon as WThrow).kolAmmo=grenader;
@@ -55,12 +55,13 @@ package fe.unit {
 			}
 		}
 
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.scaleX=storona;
 			}
+			
 			if (arm) {
 				if (currentWeapon) arm.rotation=currentWeapon.rot*180/Math.PI+90*(1-storona);
 				arm.scaleX=storona;
@@ -73,6 +74,7 @@ package fe.unit {
 				super.setWeaponPos(tip);
 				return;
 			}
+			
 			var p:Point, p1:Point;
 			p = new Point(arm.emit.x, arm.emit.y);
 			p1 = arm.localToGlobal(p);
@@ -89,13 +91,19 @@ package fe.unit {
 		
 		public override function attack():void {
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
+			
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
+			
 			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
 				if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
 				if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
 				aiAttackT--;
 			}
-			if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
+			
+			if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) {
+				attKorp(celUnit, 0.5);
+			}
+			
 			if (thWeapon) {
 				t_gren--;
 				if (t_gren<=0) {
@@ -109,12 +117,24 @@ package fe.unit {
 			var revers:Boolean=false;
 			//поворот
 			if (sost==2 || sost==3) { //сдох
-				if (arm) arm.visible=false;
+				if (arm) {
+					arm.visible = false;
+				}
+				
 				if (stay) {
-					if (animState=='fall') {
-					} else if (animState=='death') animState='fall';
-					else animState='die';
-				} else animState='death';
+					if (animState == 'fall') {
+						// Do nothing
+					}
+					else if (animState == 'death') {
+						animState = 'fall';
+					}
+					else {
+						animState = 'die';
+					}
+				}
+				else {
+					animState = 'death';
+				}
 			}
 			else {
 				if (stay) {
@@ -122,8 +142,10 @@ package fe.unit {
 						animState='stay';
 					}
 					else {
-						animState='walk';
-						if (aiNapr*storona<0) revers=true;
+						animState = 'walk';
+						if (aiNapr * storona < 0) {
+							revers = true;
+						}
 					}
 				}
 				else if (isFly || aiPlav || levit) {
@@ -131,8 +153,6 @@ package fe.unit {
 				}
 				else {
 					animState='jump';
-					// Commented out, there is no setStab function
-					//anims[animState].setStab((dy*0.6+8)/16);
 				}
 			}
 

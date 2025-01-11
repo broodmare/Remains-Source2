@@ -76,7 +76,7 @@ package fe.unit {
 			coord['liv'+tr]=false;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc, nx, ny);
 			if (nloc.unitCoord == null) {
 				nloc.unitCoord = new Coord(nloc);
@@ -235,14 +235,14 @@ package fe.unit {
 
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit);
 				if (coord.tr==tr && coord.t1>45) currentWeapon.attack();
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

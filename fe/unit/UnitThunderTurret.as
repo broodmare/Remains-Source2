@@ -7,11 +7,12 @@ package  fe.unit {
 	public class UnitThunderTurret extends Unit {
 
 		public var head:UnitThunderHead;
-		var bindX:Number=0, bindY:Number=0;
+		public var bindX:Number = 0;
+		public var bindY:Number = 0;
 		public var tr:int;
 		
-		var attTurN:int=15;
-		var t_wait:int=0;
+		private var attTurN:int=15;
+		private var t_wait:int=0;
 
 		// Constructor
 		public function UnitThunderTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -32,17 +33,18 @@ package  fe.unit {
 			t_wait=Math.round(Math.random()*100);
 		}
 		
-		public function mega() {
+		public function mega():void {
 			vis.osn.pole.visible=true;
 			invulner=true;
 			hp=maxhp=maxhp*10;
 		}
 		
-		public override function run(div:int=1) {
+		public override function run(div:int=1):void {
 			if (head) {
 				coordinates.X = head.coordinates.X + bindX;
 				coordinates.Y = head.coordinates.Y + bindY;
 			}
+			
 			this.boundingBox.center(coordinates);
 			setVisPos();
 		}
@@ -85,7 +87,7 @@ package  fe.unit {
 			if (sost>1) return;
 		}
 
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
@@ -98,7 +100,7 @@ package  fe.unit {
 			
 		}
 
-		public override function setHpbarPos() {
+		public override function setHpbarPos():void {
 			hpbar.y = coordinates.Y - 140;
 			hpbar.x = coordinates.X;
 			if (loc && loc.zoom!=1) hpbar.scaleX=hpbar.scaleY=loc.zoom;

@@ -9,6 +9,10 @@ package fe.unit {
 		private var rollDr:Number = 0;
 		private var tr:int = 1;
 
+		private var aiVis:Number = 0.5;
+		private var optDistAtt:int=100;
+		private var optJumpAtt:Boolean=true;
+
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
@@ -49,7 +53,7 @@ package fe.unit {
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			vis.x = coordinates.X;
 			vis.y = this.boundingBox.getCenter(coordinates);
 		}
@@ -91,16 +95,10 @@ package fe.unit {
 				velocity.Y = -jumpdy * v;
 			}
 		}
-		
-		private var aiVis = 0.5;
-		
-		private var optDistAtt:int=100;
-		private var optJumpAtt:Boolean=true;
-		
+
 		//aiState
 		//0 - стоит на месте
 		//1 - видит цель, катится к ней, атакует
-		
 		override protected function control():void {
 			
 			var t:Tile;
@@ -200,7 +198,7 @@ package fe.unit {
 			if (coordinates.Y > loc.spaceY * tileY - 80) throu=false;
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (celUnit && shok <= 0) {	//атака корпусом
 				attKorp(celUnit, 1);
 			}

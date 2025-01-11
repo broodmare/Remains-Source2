@@ -235,7 +235,7 @@ package fe.loc {
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
 			if (com == 'die') {
 				hp = 0;
@@ -285,9 +285,11 @@ package fe.loc {
 			if (shad && shad.parent) shad.parent.removeChild(shad);
 		}
 		
-		public override function setVisState(s:String) {
+		public override function setVisState(s:String):void {
 			if ((s == 'open' || s == 'comein') && sndOpen != '' && !World.w.testLoot) Snd.ps(sndOpen, coordinates.X, coordinates.Y);
+			
 			if (s == 'close' && sndClose!='') Snd.ps(sndClose, coordinates.X, coordinates.Y);
+			
 			try {
 				if (s == 'comein') vis.gotoAndPlay(s);
 				else vis.gotoAndStop(s);
@@ -344,8 +346,10 @@ package fe.loc {
 				if (wall==0) forces();		//внешние силы, влияющие на ускорение
 				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
 				else {
-					var div = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y))/World.maxdelta)+1;
-					for (var i = 0; i < div; i++) run(div);
+					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y))/World.maxdelta)+1;
+					for (var i:int = 0; i < div; i++) {
+						run(div);
+					}
 				}
 				checkWater();
 				if (!fixPlav && !levit && isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2 && ddyPlav<0) {
@@ -362,7 +366,7 @@ package fe.loc {
 			onCursor = (this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY) ? prior : 0;
 		}
 		
-		public function initDoor() {
+		public function initDoor():void {
 			tiles = [];
 			for (var i:int = int(this.boundingBox.left / tileX + 0.5); i <= int(this.boundingBox.right / tileX - 0.5); i++) {
 				for (var j:int = int(this.boundingBox.top / tileY + 0.5); j <= int(this.boundingBox.bottom / tileY - 0.5); j++) {
@@ -380,7 +384,7 @@ package fe.loc {
 		}
 
 		// This is for opening and closing doors inside of rooms, NOT for traveling to new rooms.
-		public function setDoor(state:Boolean) {
+		public function setDoor(state:Boolean):void {
 			for (var i in tiles) {
 				(tiles[i] as Tile).phis = (state? 0 : phis);
 				(tiles[i] as Tile).opac = (state? 0 : door_opac);
@@ -470,9 +474,11 @@ package fe.loc {
 			return -1;
 		}
 		
-		public function damage(dam:Number) {
+		public function damage(dam:Number):void {
 			dam-=thre;
+			
 			if (dam > 0) hp -= dam;
+			
 			if (hp <= 0) die();
 		}
 		
@@ -486,22 +492,44 @@ package fe.loc {
 					(tiles[i] as Tile).phis=0;
 					(tiles[i] as Tile).hp=0;
 				}
+				
 				setVisState('die');
+				
 				if (inter) {
 					if (inter.mine>0) {
 						if (inter.fiascoRemine != null) inter.fiascoRemine();
 					}
 					inter.off();
 				}
-				if (sposob>=0 && sposob<10) {
-					var kus='iskr';
-					if (mat==1) kus='metal';
-					if (mat==2) kus='kusok';
-					if (mat==3) kus='schep';
-					if (mat==5) kus='steklo';
-					if (mat==7) kus='pole';
+				
+				if (sposob >= 0 && sposob < 10) {
+					var kus:String = 'iskr';
+					switch (mat) {
+						case 1:
+							kus = 'metal';
+							break;
+						case 2:
+							kus = 'kusok';
+							break;
+						case 3:
+							kus = 'schep';
+							break;
+						case 5:
+							kus = 'steklo';
+							break;
+						case 7:
+							kus = 'pole';
+							break;
+						default:
+							kus = 'iskr';
+							break;
+					}
+					
 					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight, {kol:12,rx: this.boundingBox.width, ry:this.boundingBox.height});
-					if (sndDie!='') Snd.ps(sndDie, coordinates.X, coordinates.Y);
+					
+					if (sndDie != "") {
+						Snd.ps(sndDie, coordinates.X, coordinates.Y);
+					}
 				}
 				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - this.boundingBox.halfHeight, noiseDie);
 				if (inter) inter.sign=0;
@@ -519,7 +547,10 @@ package fe.loc {
 				bulPlayer=false;
 				bulChance*=0.25;
 			}
-			if (scrDie && sposob>=0) scrDie.start();
+			
+			if (scrDie && sposob >= 0) {
+				scrDie.start();
+			}
 		}
 		
 		
@@ -571,23 +602,30 @@ package fe.loc {
 		
 		// Check if standing on ground
 		public override function checkStay():Boolean {
-			if (osnova || wall > 0) return true;
+			if (osnova || wall > 0) {
+				return true;
+			}
+			
 			fixPlav = false;
 			checkWater();
+			
 			if (isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2) {
 				fixPlav = true;
 			}
+			
 			for (var i:int = int(this.boundingBox.left / tileX); i<=int(this.boundingBox.right / tileX); i++) {
 				var t:Tile = loc.getTile(i, int((this.boundingBox.bottom + 1) / tileY));
 				if (collisionTile(t, 0, 1)) {
 					return true;
 				}
 			}
+			
 			stay = false;
+			
 			return false;
 		}
 		
-		public function run(div:int=1) {
+		public function run(div:int=1):void {
 			//движение
 			var t:Tile;
 			var i:int;
@@ -778,7 +816,7 @@ package fe.loc {
 		}
 		
 		//принудительное движение
-		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
+		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
 			super.bindMove(v);
 			
 			if (this.un) {

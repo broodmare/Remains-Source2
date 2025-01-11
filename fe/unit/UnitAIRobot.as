@@ -93,7 +93,7 @@ package fe.unit {
 			return super.damage(dam, tip, bul,tt);
 		}
 				
-		public override function budilo(rad:Number=500) {
+		public override function budilo(rad:Number=500):void {
 			super.budilo(rad);
 			loc.robocellActivate();
 		}

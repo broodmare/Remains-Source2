@@ -269,7 +269,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
 			
 			//скрыть
@@ -320,7 +320,7 @@ package fe.unit {
 		}
 		
 		//команды, выполняющиеся в очереди
-		private function analiz(q) {
+		private function analiz(q):void {
 			//реплика
 			if (q.com=='tell') {
 				t_replic=0;

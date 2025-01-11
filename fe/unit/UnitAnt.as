@@ -75,7 +75,7 @@ package fe.unit {
 			super.expl();
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				if (isLaz==0) {
 					vis.x = coordinates.X;

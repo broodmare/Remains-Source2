@@ -10,60 +10,74 @@ package fe.unit {
 	
 	public class UnitBossUltra extends Unit {
 		
-		public var tr:int=1;
-		var weap:String;
-		public var scrAlarmOn:Boolean=true;
-		public var controlOn:Boolean=true;
-		public var kol_emit=3;
-		var spd:Object;
-		public var called:Boolean=false;
-		var dopWeapon, gasWeapon, currentWeapon2:Weapon;
-		var thWeapon:Weapon;
-		var shitMaxHp:Number=500;
-		var visshit:MovieClip;
-		var usil:Boolean=false;
+		public var tr:int = 1;
+		private var weap:String;
+		public var scrAlarmOn:Boolean = true;
+		public var controlOn:Boolean = true;
+		public var kol_emit:int = 3;
+		private var spd:Object;
+		public var called:Boolean = false;
+		
+		// Weapons
+		private var dopWeapon:Weapon;
+		private var gasWeapon:Weapon;
+		private var currentWeapon2:Weapon;
+		private var thWeapon:Weapon;
+		
+		private var shitMaxHp:Number = 500;
+		private var visshit:MovieClip;
+		private var usil:Boolean = false;
+
+		private var emit_t:int = 0;
+		private var movePoints:Array = [{x:10, y:7}, {x:37, y:7}, {x:24, y:13}, {x:7, y:18}, {x:40, y:18}];
+		private var mp = 3;
+		private var moveX:Number = 0;
+		private var moveY:Number = 0;
+		private var attState:int = 0;
+		private var t_turn:int = 15;
+		private var t_shit:int = 300
 
 		// Constructor
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);
-			id='bossultra';
-			tr=1;
+			id = 'bossultra';
+			tr = 1;
 			
-			//взять параметры из xml
-			vis=new visualUltraSentinel();	// .SWF Dependency
+			// [Take parameters from xml]
+			vis = new visualUltraSentinel();	// .SWF Dependency
 			vis.osn.gotoAndStop(1);
-			visshit=new visShit();			// .SWF Dependency
+			
+			visshit = new visShit();			// .SWF Dependency
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
-			visshit.visible=false;
+			visshit.visible = false;
 			visshit.y=-70;
 			visshit.scaleX=visshit.scaleY=1.7;
 			
 			getXmlParam();
-			walkSpeed=maxSpeed;
-			plavSpeed=maxSpeed;
-			boss=true;
-			isFly=true;
-			aiTCh=80;
 			
-			shitArmor=15;
+			walkSpeed = maxSpeed;
+			plavSpeed = maxSpeed;
+			boss = true;
+			isFly = true;
+			aiTCh = 80;
+			shitArmor = 15;
 			
-			//дать оружие
-			currentWeapon=Weapon.create(this, 'robogatp');
-			currentWeapon2=Weapon.create(this, 'robogatp2');
-			currentWeapon2.vis.visible=false;
-			dopWeapon=Weapon.create(this,'robomlau2');
-			gasWeapon=Weapon.create(this,'robogas');
-			thWeapon=Weapon.create(this,'roboplagr');
-			thWeapon.findCel=false;
-			(thWeapon as WThrow).kolAmmo=100000;
-			childObjs=[currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon];
+			// [Give weapons]
+			currentWeapon  = Weapon.create(this, 'robogatp');
+			currentWeapon2 = Weapon.create(this, 'robogatp2');
+			currentWeapon2.vis.visible = false;
+			dopWeapon = Weapon.create(this,'robomlau2');
+			gasWeapon = Weapon.create(this,'robogas');
+			thWeapon = Weapon.create(this,'roboplagr');
+			thWeapon.findCel = false;
+			(thWeapon as WThrow).kolAmmo = 100000;
+			childObjs = [currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon];
 			
-			spd=new Object();
-			aiNapr=storona;
-			
-			timerDie=150;
+			spd = new Object();
+			aiNapr = storona;
+			timerDie = 150;
 		}
 		
 		public override function dropLoot():void {
@@ -73,96 +87,121 @@ package fe.unit {
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0):void {
+		public override function setLevel(nlevel:int = 0):void {
 			super.setLevel(nlevel);
-			var wMult=(1+level*0.07);
-			var dMult=1;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
-			hp=maxhp=hp*dMult;
-			shitMaxHp*=(1+level*0.12)*dMult;
-			dam*=dMult;
+			
+			var wMult:Number = (1 + level * 0.07);
+			var dMult:Number = 1;
+			
+			if (World.w.game.globalDif == 3) {
+				dMult = 1.2;
+			}
+			else if (World.w.game.globalDif == 4) {
+				dMult = 1.5;
+			}
+			
+			hp = maxhp = hp * dMult;
+			shitMaxHp *= (1 + level * 0.12) * dMult;
+			dam *= dMult;
+			
 			if (dopWeapon) {
-				dopWeapon.damageExpl*=wMult*dMult;
-				dopWeapon.damage*=wMult*dMult;
+				dopWeapon.damageExpl *= wMult * dMult;
+				dopWeapon.damage *= wMult * dMult;
 			}
+			
 			if (gasWeapon) {
-				gasWeapon.damageExpl*=wMult*dMult;
-				gasWeapon.damage*=wMult*dMult;
+				gasWeapon.damageExpl *= wMult * dMult;
+				gasWeapon.damage *= wMult * dMult;
 			}
+			
 			if (thWeapon) {
-				thWeapon.damageExpl*=wMult*dMult;
-				thWeapon.damage*=wMult*dMult;
+				thWeapon.damageExpl *= wMult * dMult;
+				thWeapon.damage *= wMult * dMult;
 			}
+			
 			if (currentWeapon) {
-				currentWeapon.damage*=dMult;
-				currentWeapon2.damage*=dMult;
+				currentWeapon.damage *= dMult;
+				currentWeapon2.damage *= dMult;
 			} 
 		}
 		
 		public override function expl():void {
-			newPart('metal',22);
+			newPart("metal", 22);
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
 		public override function setNull(f:Boolean=false):void {
 			if (sost==1) {
-				if (dopWeapon) dopWeapon.setNull();
+				if (dopWeapon) {
+					dopWeapon.setNull();
+				}
 			}
+			
 			super.setNull(f);
-			aiState=aiSpok=0;
-			if (hp>maxhp/2) {
-				usil=false;
-				currentWeapon.vis.visible=true;
-				currentWeapon2.vis.visible=false;
+			
+			aiState = 0;
+			aiSpok = 0;
+			
+			if (hp > maxhp / 2) {
+				usil = false;
+				currentWeapon.vis.visible = true;
+				currentWeapon2.vis.visible = false;
 			}
 		}
 
 		public override function save():Object {
-			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
-			obj.tr=tr;
-			obj.weap=weap;
+			var obj:Object = super.save();
+			
+			if (obj == null) {
+				obj = new Object();
+			}
+			
+			obj.tr = tr;
+			obj.weap = weap;
+			
 			return obj;
 		}	
 		
 		public override function animate():void {
-			thWeapon.vis.visible=false;
-			//щит
-			if (visshit && !visshit.visible && shithp>0) {
-				visshit.visible=true;
+			thWeapon.vis.visible = false;
+			
+			// [Shield]
+			if (visshit && !visshit.visible && shithp > 0) {
+				visshit.visible = true;
 				visshit.gotoAndPlay(1);
 			}
-			if (visshit && visshit.visible && shithp<=0) {
-				visshit.visible=false;
+			
+			if (visshit && visshit.visible && shithp <= 0) {
+				visshit.visible = false;
 				visshit.gotoAndStop(1);
-				Emitter.emit('pole', loc, coordinates.X, coordinates.Y-50,{kol:12,rx:100, ry:100});
+				Emitter.emit('pole', loc, coordinates.X, coordinates.Y - 50, {kol:12, rx:100, ry:100});
 			}
-			if (sost==2) {
-				if (isrnd(0.3-timerDie/500)) {
-					Emitter.emit('expl', loc, coordinates.X+Math.random()*120-60, coordinates.Y-Math.random()*120);
+			
+			if (sost == 2) {
+				if (isrnd(0.3 - timerDie / 500)) {
+					Emitter.emit('expl', loc, coordinates.X + Math.random() * 120 - 60, coordinates.Y - Math.random() * 120);
 					newPart('metal');
 					Snd.ps('expl_e');
 				}
 			}
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
-				if (sost==2) {
+				if (sost == 2) {
 					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
 					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
 				}
-				else
-				{
+				else {
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
 				}
-				vis.scaleX=storona;
+				
+				vis.scaleX = storona;
 			}
 		}
 		
@@ -171,54 +210,54 @@ package fe.unit {
 			weaponY = vis.y - 110;
 		}
 		
-		private function emit() {
+		private function emit():void {
 			var un:Unit = loc.createUnit('vortex', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;
 			emit_t = 500;
 			kol_emit--;
 		}
-		
 
-		private var emit_t:int=0;
-		
-		private var movePoints:Array=[{x:10,y:7},{x:37,y:7},{x:24,y:13},{x:7,y:18},{x:40,y:18}];
-		private var mp=3;
-		private var moveX:Number=0, moveY:Number=0;
-		private var attState:int=0;
-		private var t_turn:int=15;
-		private var t_shit:int=300
 		//aiState
-		//0 - стоит на месте
-		//1 - движется
-		//2 - готовится выполнить действие
-		//3 - выполняет действие
-		
+		//0 - [Stands still]
+		//1 - [Moves]
+		//2 - [Preparing to perform an action]
+		//3 - [Performs an action]
 		override protected function control():void {
 
-			//если сдох, то не двигаться
-			if (sost == 3) return;
+			// [If you're dead, don't move]
+			if (sost == 3) {
+				return;
+			}
+			
 			if (sost == 2) {
 				velocity.set(0, 0);
 				return;
 			}
 			
 			t_replic--;
-			var jmp:Number=0;
+			var jmp:Number = 0;
 
-			if (loc.gg.invulner) return;
+			if (loc.gg.invulner) {
+				return;
+			}
 			
-			if (World.w.enemyAct<=0) {
+			if (World.w.enemyAct <= 0) {
 				celY = coordinates.Y - this.boundingBox.height;
 				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
 			
-			if (t_shit>0) t_shit--;
-			vulner[Unit.D_EMP]=(shithp>0)?0.2:1;	//под считом неуязвимость к emp
-			//таймер смены состояний
+			if (t_shit > 0) {
+				t_shit--;
+			}
+
+			vulner[Unit.D_EMP] = (shithp > 0) ? 0.2 : 1;	// [Considered invulnerable to emp]
 			
-			if (aiTCh>0) aiTCh--;
+			// [State change timer]
+			if (aiTCh > 0) {
+				aiTCh--;
+			}
 			else {
 				aiState++;
 				if (aiState>3) {
@@ -293,59 +332,75 @@ package fe.unit {
 				if (attState==4) Emitter.emit('spark', loc, celX + Math.random()*100-50, celY-Math.random()*50);
 			}
 			
-			if (aiState>0 && !(aiState==3 && attState==2)) {
-				aiNapr=(celX > coordinates.X)?1:-1;
+			if (aiState > 0 && !(aiState == 3 && attState == 2)) {
+				aiNapr = (celX > coordinates.X) ? 1 : -1;
+				
 				if (storona == aiNapr) {
                     t_turn = 15;
                 }
 				else {
                     t_turn--;
-                    if (t_turn <= 0) {
+                	
+					if (t_turn <= 0) {
                         storona = aiNapr;
                         t_turn = 15;
                     }
                 }
 			}
+			
 			attack();
 			
-			if (!usil && hp<maxhp/2) {
-				usil=true;
-				shithp=shitMaxHp*4;
-				t_shit=2000;
-				currentWeapon.vis.visible=false;
-				currentWeapon2.vis.visible=true;
+			if (!usil && hp < maxhp / 2) {
+				usil = true;
+				shithp = shitMaxHp * 4;
+				t_shit = 2000;
+				currentWeapon.vis.visible = false;
+				currentWeapon2.vis.visible = true;
 			}
 		}
 		
-		function castShit() {
-			if (shithp<=0 && t_shit<=0 && (World.w.game.globalDif==4 || World.w.game.globalDif==3 && hp<maxhp/2)) {
-				shithp=shitMaxHp;
-				t_shit=1000;
+		private function castShit():void {
+			if (shithp <= 0 && t_shit <= 0 && (World.w.game.globalDif == 4 || World.w.game.globalDif == 3 && hp < maxhp / 2)) {
+				shithp = shitMaxHp;
+				t_shit = 1000;
 			}
 		}
 		
-		public function attack() {
-			if (sost!=1) return;
-			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
-				attKorp(celUnit,1);
+		public function attack():void {
+			if (sost != 1) {
+				return;
 			}
-			else if (aiState==3) {							//пальба
-				if (attState==0) dopWeapon.attack();
-				else if (attState==1) {
-					if (usil) currentWeapon2.attack();
-					else currentWeapon.attack();
+			
+			if (aiState==1 && celUnit) {	// [Attack with a melee weapon without levitation or with the body]
+				attKorp(celUnit, 1);
+			}
+			else if (aiState == 3) {							// [Firing]
+				if (attState == 0) {
+					dopWeapon.attack();
 				}
-				else if (attState==4) gasWeapon.attack();
+				else if (attState == 1) {
+					if (usil) {
+						currentWeapon2.attack();
+					}
+					else {
+						currentWeapon.attack();
+					}
+				}
+				else if (attState == 4) {
+					gasWeapon.attack();
+				}
 				else {
-					thWeapon.forceRot+=0.1;
+					thWeapon.forceRot += 0.1;
 					thWeapon.attack();
 				}
 				
-				if ((rasst2 < 10000) && isrnd(0.1)) attKorp(celUnit, 0.5); //Changed to use rasst2 instead of dist2
+				if (rasst2 < 10000 && isrnd(0.1)) {	//Changed to use rasst2 instead of dist2
+					attKorp(celUnit, 0.5);
+				}
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com == 'off') {
 				walk = 0;
 				controlOn = false;

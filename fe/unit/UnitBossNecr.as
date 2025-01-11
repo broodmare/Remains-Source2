@@ -15,9 +15,9 @@ package fe.unit {
 	
 	public class UnitBossNecr extends UnitPon {
 
-		public var scrAlarmOn:Boolean=true;
-		public var controlOn:Boolean=true;
-		public var kol_emit=6;
+		public var scrAlarmOn:Boolean = true;
+		public var controlOn:Boolean = true;
+		public var kol_emit:int = 6;
 		public var called:int=0;
 		public var timeProtectCuld:int=600;
 		public var timeAttackCuld:int=350;
@@ -26,20 +26,20 @@ package fe.unit {
 		
 		public var phase:int=1;
 		
-		var atk_t:int=150, throu_t:int=0;
-		var atk_n:int=-1, prot_n:int=1;
-		var protculd_t:int=timeProtectCuld/3;
-		var curseculd_t:int=timeCurseCuld/2;
-		var prot_t:int=0;
-		var healHp:Number=100;
-		var summonAtkMult=0.5;
+		private var atk_t:int=150, throu_t:int=0;
+		private var atk_n:int=-1, prot_n:int=1;
+		private var protculd_t:int=timeProtectCuld/3;
+		private var curseculd_t:int=timeCurseCuld/2;
+		private var prot_t:int=0;
+		private var healHp:Number=100;
+		private var summonAtkMult=0.5;
 		
-		var isShadow:Boolean=false;
+		private var isShadow:Boolean=false;
 		//невидимость
-		var superInvis:Boolean=false;
-		var curA:int=100, celA:int=100;
+		private var superInvis:Boolean=false;
+		private var curA:int=100, celA:int=100;
 		
-		var curses:Array=['stupor','weak','pinkcloud','relat','fetter','sacrifice','sacrifice','antil','antil'];
+		private var curses:Array=['stupor','weak','pinkcloud','relat','fetter','sacrifice','sacrifice','antil','antil'];
 		
 		protected var shadowFilter:DropShadowFilter;
 		protected var ghostFilter:GlowFilter;
@@ -48,7 +48,7 @@ package fe.unit {
 		public function UnitBossNecr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossnecr';
-			vis=new visualNecrBoss();
+			vis=new visualNecrBoss();	// .SWF Dependency
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			walkSpeed=maxSpeed;
@@ -75,8 +75,8 @@ package fe.unit {
 
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
-			var wMult=(1+level*0.08);
-			var dMult=1;
+			var wMult:Number = (1+level*0.08);
+			var dMult:Number = 1;
 			healHp=maxhp/10;
 			if (World.w.game.globalDif==3) dMult=1.2;
 			if (World.w.game.globalDif==4) dMult=1.5;
@@ -137,7 +137,7 @@ package fe.unit {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
-					var cframe=Math.round(16+velocity.Y);
+					var cframe:int = Math.round(16+velocity.Y);
 					if (cframe>32) cframe=32;
 					if (cframe<1) cframe=1;
 					vis.osn.body.gotoAndStop(cframe);
@@ -407,7 +407,7 @@ package fe.unit {
 			}
 		}
 		
-		public function castProtect(n:int=0) {
+		public function castProtect(n:int=0):void {
 			protculd_t=timeProtectCuld;
 			newPart('black', 20);
 			
@@ -433,10 +433,10 @@ package fe.unit {
 			if (prot_n>=3) prot_n=0;
 		}
 		
-		private function spawn(n:int=0) {
+		private function spawn(n:int=0):void {
 			if (kolChild>=kol_emit) return;
 			loc.resetUnits();
-			for (var i=0; i<3; i++) {
+			for (var i:int = 0; i < 3; i++) {
 				var xmlun:XML;
 				if (n==1) xmlun=<un id='zombie' tr='7' hpmult='0.85'/>;
 				else if (n==3) xmlun=<un id='zombie' tr='8' hpmult='0.75'/>;
@@ -461,32 +461,39 @@ package fe.unit {
 			}
 		}
 
-		public function castCurse(n:int=0, otlozh:int=0) {
+		public function castCurse(n:int=0, otlozh:int=0):void {
 			var nx:Number = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (Math.random()-0.5)*50;
 			var ny:Number = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15 + (Math.random() - 0.5) * 30;
+			
 			if (n == 2) {
 				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? 1 : -1);
 				ny = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15;
 			}
+			
 			if (n == 1) {
 				nx += Math.random() * 200 - 100;
 				ny += Math.random() * 100 - 50;
 			}
+			
 			if (nx>loc.maxX-100) nx=loc.maxX-100;
+			
 			if (nx<100) nx=100;
+			
 			if (ny>loc.maxY-100) ny=loc.maxY-100;
+			
 			if (ny<100) ny=100;
+			
 			var ms:MagSymbol=new MagSymbol(this,curses[int(Math.random()*(phase==2?9:5))],nx,ny,otlozh);
 		}
 		
-		public function resetProtect() {
+		public function resetProtect():void {
 			superInvis=false;
 			isVis=levitPoss=true;
 			isShadow=invulner=transp=false;
 			setVis();
 		}
 		
-		public function setVis() {
+		public function setVis():void {
 			vis.blendMode='normal';
 			if (isShadow) vis.filters=[shadowFilter];
 			else if (phase==2) {
@@ -502,7 +509,7 @@ package fe.unit {
 			super.dropLoot();
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

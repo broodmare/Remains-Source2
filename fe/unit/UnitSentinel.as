@@ -6,7 +6,7 @@ package fe.unit {
 
 		private var jump_n:int=100;
 		private var dopWeapon:Weapon;
-		private var kolRock=6;
+		private var kolRock:int = 6;
 		
 		// Constructor
 		public function UnitSentinel(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
