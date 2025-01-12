@@ -23,7 +23,12 @@ package fe.unit {
 	
 	public class UnitPlayer extends UnitPon {
 
-		public var ctr:Ctr;
+		// Really important stuff
+		public var ctr:Ctr;				// Movement controller
+		public var pers:Pers;			// Player stats
+		public var invent:Inventory;	// Player inventory
+		public var sats:Sats;			// Player SATS
+
 		//движение
 		public var maxjumpp:int,jumpNumb:int=0;
 		public var jumpp:int=0, downp:int=0;
@@ -39,19 +44,20 @@ package fe.unit {
 		public var levitOn:int=0;
 		
 		//Telekensis variables
-		public var teleObj:Obj;
+		public var teleObj:Obj;				// The object we're moving(?)
 		public var teleSqrtMassa:Number;
 		public var teleSpeed:Number = 8;
 		public var teleAccel:Number = 1;
 		public var maxTeleDist:int = 200;
-		
 		public var levitup:Boolean=false;
 		
 		//действия
-		public var ggControl:Boolean=true;	//Управление ГГ включено
+		public var ggControl:Boolean = true;	// Player control enabled
 		public var actionObj:Interact;
-		public var t_action:int=0, mt_action:int=20;
-		public var work:String='', t_work:int=0;
+		public var t_action:int=0;
+		public var mt_action:int=20;
+		public var work:String='';
+		public var t_work:int=0;
 		private var actionReady:Boolean=true;
 		private var t_stay:int=3;
 		private var t_walk:int=3;
@@ -71,7 +77,7 @@ package fe.unit {
 		
 		//двойной прыжок
 		public var dJump:Boolean=false;		//второй прыжок активен
-		public var dJump2:Boolean=false;		//второй прыжок активен
+		public var dJump2:Boolean=false;	//второй прыжок активен
 		public var djumpdy:Number=5;		//сила
 		public var maxdjumpp:int=10;		//продолжительность
 		
@@ -95,7 +101,8 @@ package fe.unit {
 		public var t_port:int=0;
 		public var t_culd:int=0;
 		private var teleReady:Boolean=true;
-		public var t_cryst:int=0, cryst:Boolean=false;
+		public var t_cryst:int=0;
+		public var cryst:Boolean=false;
 		
 		//видимость
 		public var sneak:Number=0;			//скрытность
@@ -112,35 +119,38 @@ package fe.unit {
 		private var lurkX:Number = 0;
 		private var lurkBox:Box;
 		
-		//инвентарь и оружие
-		public var sats:Sats;
-		public var invent:Invent;
+		// Inventory and Weapons
 		public var isTake:int=0;
-		public var changeWeaponTime1:int=30, changeWeaponTime2:int=20, changeWeaponTime3:int=10;
-		private var t_reload:int=0;		//удерживание кнопки перезарядки
+		public var changeWeaponTime1:int=30;
+		public var changeWeaponTime2:int=20;
+		public var changeWeaponTime3:int=10;
+		private var t_reload:int=0;			// [Holding the recharge button]
+		
 		public var punchWeapon:Weapon;
 		public var throwWeapon:Weapon;
 		public var magicWeapon:Weapon;
 		public var paintWeapon:Weapon;
 		public var newWeapon:Weapon;
 		public var currentArmor:Armor;
-		public var prevArmor:String='';
 		public var armorEffect:Effect;
 		public var currentAmul:Armor;
-		public var atkPoss:int=1;			//возможность атаковать  в принципе (запрещает зелье тени)
-		public var attackForever:int=0;		//неконтролируемая атака
-		public var autoAttack:int=0;
-		public var atkWeapon:int=0;		//какое оружие атакует в данный момент 1-осн, 2-метательное, 3-магия
+		// Moved from Invent
+		public var cWeaponId:String;	// Current weapon equipped (ID)
+		public var cSpellId:String;		// Current spell equipped (ID)
+		public var cArmorId:String;		// Current armor equipped (ID)
+		public var prevArmor:String;	// Previous armor equipped (ID)
+		public var cAmulId:String;		// Current amulet equipped (ID)
+
+		public var atkPoss:int = 1;			// [The ability to attack in principle (prohibits the shadow potion)]
+		public var attackForever:int = 0;	// [Uncontrolled attack]
+		public var autoAttack:int = 0;
+		public var atkWeapon:int = 0;		// [What weapon is attacking at the moment 1-basic, 2-throwing, 3-magic]
 		
-		public var eyeMind:int=0;	//взгляд некроманта
-		
-		//отключение пипбака
-		public var pipOff:int=0;
+		public var eyeMind:int = 0;		// [Necromancer's gaze]
+
+		public var pipOff:int=0;		// [Disabling pipbuck]
 		
 		public var rad:Number=0, drad:Number=0, drad2:Number=0, radX:Number=1, healhp:Number=0;
-		
-		//персонаж
-		public var pers:Pers;
 		
 		//сопровождение
 		public var pet:UnitPet;
@@ -183,6 +193,7 @@ package fe.unit {
 		public var visSel:Boolean=false; //селектор оружия
 		public var animOff:Boolean=false;
 
+		// Cache
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
@@ -253,12 +264,10 @@ package fe.unit {
 		}
 		
 		public function attach() {
-			invent=World.w.invent;
-			invent.gg=this;
-			invent.owner=this;
-			invent.addAllSpells();
-			pers=World.w.pers;
-			pers.gg=this;
+			invent = new Inventory();
+			//invent.addAllSpells(); TODO: DISABLED FOR ITEM REWORK
+			pers = World.w.pers;
+			pers.gg = this;
 			
 			hp=maxhp=pers.begHP;
 			
@@ -1318,10 +1327,10 @@ package fe.unit {
 			}
 		}
 		
-		//бросок телекинезом
+		// [Telekinetic throw]
 		private function throwTele():void {
 			if (teleObj) {
-				if (pers.spellsPoss<=0) {
+				if (pers.spellsPoss <= 0) {
 					dropTeleObj();
 					return;
 				}
@@ -1329,35 +1338,37 @@ package fe.unit {
 				var p:Object = {x:(teleObj.coordinates.X - coordinates.X), y:(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight - 10)}
 				var dm:Number = 0
 				
-				if (pers.throwForce>0) dm=teleObj.massa*pers.throwDmagic*pers.allDManaMult;
+				if (pers.throwForce > 0) {
+					dm = teleObj.massa * pers.throwDmagic * pers.allDManaMult;
+				}
 				
-				if (dm<=mana) {
-					norma(p,pers.throwForce);
-					mana-=dm;
-					pers.manaDamage(dm*pers.throwDmanaMult);
+				if (dm <= mana) {
+					norma(p, pers.throwForce);
+					mana -= dm;
+					pers.manaDamage(dm * pers.throwDmanaMult);
 				}
 				else {
-					norma(p,pers.throwForce*mana/dm);
-					pers.manaDamage(mana*pers.throwDmanaMult);
-					mana=0;
+					norma(p, pers.throwForce * mana / dm);
+					pers.manaDamage(mana * pers.throwDmanaMult);
+					mana = 0;
 				}
 				
 				if (teleObj is Box) {
-					(teleObj as Box).isThrow=true;
-					(teleObj as Box).t_throw=2;
+					(teleObj as Box).isThrow = true;
+					(teleObj as Box).t_throw = 2;
 				}
 				
 				if (teleObj is Unit) {
-					(teleObj as Unit).t_throw=45;
+					(teleObj as Unit).t_throw = 45;
 				}
 				
 				World.w.gui.setMana();
 				teleObj.velocity.X += p.x;
 				teleObj.velocity.Y += p.y;
 				
-				if (pers.throwForce>0) {
-					Emitter.emit('throw',loc,teleObj.coordinates.X,teleObj.coordinates.Y-teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X)*180/Math.PI});
-					Snd.ps('dash',teleObj.coordinates.X,teleObj.coordinates.Y);
+				if (pers.throwForce > 0) {
+					Emitter.emit('throw', loc,teleObj.coordinates.X, teleObj.coordinates.Y - teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X)*180/Math.PI});
+					Snd.ps('dash', teleObj.coordinates.X, teleObj.coordinates.Y);
 				}
 				
 				dropTeleObj();
@@ -1377,15 +1388,18 @@ package fe.unit {
 		public function dropTeleObj():void {
 			if (teleObj) {
 				if (teleObj.vis) {
-					teleObj.vis.filters=[];
-					if (teleObj.cTransform) teleObj.vis.transform.colorTransform=teleObj.cTransform;
+					teleObj.vis.filters = [];
+					
+					if (teleObj.cTransform) {
+						teleObj.vis.transform.colorTransform = teleObj.cTransform;
+					}
 				}
-				teleObj.levit=0;
-				teleObj=null;
+				
+				teleObj.levit = 0;
+				teleObj = null;
 				World.w.gui.setMana();
 			}
 		}
-		
 		
 		// [Action with the active object while holding down the action key]
 		private function actAction():void {
@@ -1461,13 +1475,20 @@ package fe.unit {
 		}
 
 		private function chit():void {
-			if (World.w.chit == 'fly') isFly =! isFly;
-			if (World.w.chit == 'port') {
-				var tx = Math.round(World.w.celX / tileX)*tileX
-				var ty = Math.round(World.w.celY / tileY+1)*tileY-1;
-				if (!loc.collisionUnit(tx, ty, this.boundingBox.standingWidth, this.boundingBox.standingHeight))	teleport(tx, ty);
+			if (World.w.chit == 'fly') {
+				isFly =! isFly;
 			}
-			if (World.w.chit=='emit') {
+
+			if (World.w.chit == 'port') {
+				var tx:int = Math.round(World.w.celX / tileX) * tileX
+				var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+				
+				if (!loc.collisionUnit(tx, ty, this.boundingBox.standingWidth, this.boundingBox.standingHeight)) {
+					teleport(tx, ty);
+				}
+			}
+
+			if (World.w.chit == 'emit') {
 				Emitter.emit(World.w.chitX, loc, World.w.celX, World.w.celY);
 			}
 		}
@@ -1475,14 +1496,18 @@ package fe.unit {
 		//включить неуязвимость, отключить управление
 		public function controlOff():void {
 			ctr.clearAll();
-			ggControl=false;
+			ggControl = false;
 			dropTeleObj();
-			actionObj=null;
-			invulner=true;
-			isRun=false;
-			walk=0;
-			if (currentWeapon) currentWeapon.vis.visible=false;
-			World.w.pip.noAct=true;
+			actionObj = null;
+			invulner = true;
+			isRun = false;
+			walk = 0;
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = false;
+			}
+			
+			World.w.pip.noAct = true;
 		}
 		
 		//вернуть обычный режим

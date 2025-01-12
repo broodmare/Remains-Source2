@@ -69,7 +69,7 @@ package fe.inter {
 				page2 = 1;
 			}
 
-			vis.bottext.text = Res.pipText('caps') + ': ' + pip.money;
+			vis.bottext.text = LanguageManager.reference.localText("pip", 'caps') + ': ' + pip.money;
 			vis.butOk.visible = false;
 			statHead.cat.visible = false;
 			setIco();
@@ -86,8 +86,8 @@ package fe.inter {
 
 				assArr = [];
 				statHead.fav.text = '';
-				statHead.nazv.text = Res.pipText('work1');
-				statHead.hp.text = Res.pipText('iv6');
+				statHead.nazv.text = LanguageManager.reference.localText("pip", 'work1');
+				statHead.hp.text = LanguageManager.reference.localText("pip", 'iv6');
 				statHead.ammo.text = '';
 				statHead.ammotip.text = '';
 				
@@ -153,7 +153,7 @@ package fe.inter {
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = Res.pipText('emptycreate');
+					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptycreate');
 					statHead.visible = false;
 				}
 			}
@@ -185,7 +185,7 @@ package fe.inter {
 					statHead.visible=true;
 				}
 				else {
-					vis.emptytext.text=Res.pipText('emptyupgrade');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptyupgrade');
 					statHead.visible=false;
 				}
 			}
@@ -194,10 +194,10 @@ package fe.inter {
 				assArr = [];
 				
 				statHead.fav.text='';
-				statHead.nazv.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii3');
+				statHead.nazv.text=LanguageManager.reference.localText("pip", 'ii2');
+				statHead.hp.text=LanguageManager.reference.localText("pip", 'ii3');
 				statHead.ammo.text='';
-				statHead.ammotip.text=Res.pipText('repairto');
+				statHead.ammotip.text=LanguageManager.reference.localText("pip", 'repairto');
 				setTopText('inforepair');
 				
 				if (inv.items['owl'] && inv.items['owl'].kol) {
@@ -233,7 +233,7 @@ package fe.inter {
 					statHead.visible=true;
 				}
 				else {
-					vis.emptytext.text=Res.pipText('emptyrep');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptyrep');
 					statHead.visible=false;
 				}
 			}
@@ -312,7 +312,7 @@ package fe.inter {
 		private function showBottext(cid):void {
 			if (inv.items[cid]) {
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+textAsColor('yellow', inv.items[cid].kol);
-				if (World.w.loc.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+textAsColor('yellow', inv.items[cid].vault)+' '+Res.pipText('invault')+')';
+				if (World.w.loc.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+textAsColor('yellow', inv.items[cid].vault)+' '+LanguageManager.reference.localText("pip", 'invault')+')';
 			}
 			else {
 				vis.bottext.htmlText='';

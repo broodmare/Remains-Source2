@@ -47,7 +47,7 @@ package fe.inter {
 			// Set which sub-categories are disabled at the top of the pip-buck
 			vis.but5.visible = false;
 			
-			vis.butOk.text.text=Res.pipText('transaction');
+			vis.butOk.text.text=LanguageManager.reference.localText("pip", 'transaction');
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			var tf:TextFormat=new TextFormat();
 			tf.color = 0x00FF99; 
@@ -118,11 +118,11 @@ package fe.inter {
 			}
 			
 			if (npcInter == 'vr') {
-				vis.but3.text.text = Res.pipText('vend3');	// Button text = "Repair"
+				vis.but3.text.text = LanguageManager.reference.localText("pip", 'vend3');	// Button text = "Repair"
 			}
 			
 			if (npcInter == 'doc') {
-				vis.but3.text.text = Res.pipText('med1');	// Button text = "Healing"
+				vis.but3.text.text = LanguageManager.reference.localText("pip", 'med1');	// Button text = "Healing"
 			}
 			
 			if (npcInter == 'v') {
@@ -150,10 +150,10 @@ package fe.inter {
 				assArr = [];
 				pip.money = inv.money.kol;
 				setTopText('infotrade');
-				statHead.nazv.text = Res.pipText('iv1');
-				statHead.hp.text = Res.pipText('iv2') + ' / ' + Res.pipText('iv6');
-				statHead.price.text = Res.pipText('iv3');
-				statHead.kol.text = Res.pipText('iv4');
+				statHead.nazv.text = LanguageManager.reference.localText("pip", 'iv1');
+				statHead.hp.text = LanguageManager.reference.localText("pip", 'iv2') + ' / ' + LanguageManager.reference.localText("pip", 'iv6');
+				statHead.price.text = LanguageManager.reference.localText("pip", 'iv3');
+				statHead.kol.text = LanguageManager.reference.localText("pip", 'iv4');
 				statHead.cat.visible = false;
 				
 				for each(var b:Item in vendor.buys) {
@@ -215,7 +215,7 @@ package fe.inter {
 							mp: mp,
 							kol: b.kol,
 							bou: 0,
-							sort: Res.pipText(b.tip),
+							sort: LanguageManager.reference.localText("pip", b.tip),
 							barter: b.barter,
 							variant: b.variant
 						};
@@ -248,11 +248,11 @@ package fe.inter {
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = Res.pipText('emptybuy');
+					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptybuy');
 					statHead.visible = false;
 				}
 
-				vis.butOk.text.text = Res.pipText('transaction');
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'transaction');
 				vis.butOk.visible = false;
 			}
 			// Sell items page
@@ -262,10 +262,10 @@ package fe.inter {
 				pip.money = inv.money.kol;
 				setTopText('infotrade');
 				vendor.kolSell = 0;
-				statHead.nazv.text = Res.pipText('iv1');
+				statHead.nazv.text = LanguageManager.reference.localText("pip", 'iv1');
 				statHead.hp.text = "";
-				statHead.price.text = Res.pipText('iv3');
-				statHead.kol.text = Res.pipText('iv6');
+				statHead.price.text = LanguageManager.reference.localText("pip", 'iv3');
+				statHead.kol.text = LanguageManager.reference.localText("pip", 'iv6');
 				statHead.cat.visible = false;
 				for (var s in inv.items) {
 					
@@ -307,13 +307,13 @@ package fe.inter {
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = Res.pipText('emptysell');
+					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptysell');
 					statHead.visible = false;
 				}
 				
 				if (inbase) {
 					selall = true;
-					vis.butOk.text.text = Res.pipText('sellall');
+					vis.butOk.text.text = LanguageManager.reference.localText("pip", 'sellall');
 					vis.butOk.visible = true;
 				}
 				else {
@@ -328,8 +328,8 @@ package fe.inter {
 				assArr = [];
 				setTopText('inforepair');
 				statHead.nazv.text = "";
-				statHead.hp.text = Res.pipText('iv2');
-				statHead.price.text = Res.pipText('iv5');
+				statHead.hp.text = LanguageManager.reference.localText("pip", 'iv2');
+				statHead.price.text = LanguageManager.reference.localText("pip", 'iv5');
 				statHead.kol.text = '';
 				statHead.price.x = 450;
 				statHead.cat.visible = false;
@@ -371,7 +371,7 @@ package fe.inter {
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = Res.pipText('emptyrep');
+					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptyrep');
 					statHead.visible = false;
 				}
 				
@@ -387,7 +387,7 @@ package fe.inter {
 				}
 
 				if (isEmpty(vendor.vendorData) || vendor.vendorData.tasks == undefined) {
-					vis.emptytext.text = Res.pipText("emptytasks");
+					vis.emptytext.text = LanguageManager.reference.localText("pip", "emptytasks");
 					return;
 				}
 				
@@ -434,7 +434,7 @@ package fe.inter {
 				}
 				
 				if (arr.length == 0) {
-					vis.emptytext.text = Res.pipText("emptytasks");
+					vis.emptytext.text = LanguageManager.reference.localText("pip", "emptytasks");
 				}
 				else {
 					vis.emptytext.text = "";
@@ -505,18 +505,18 @@ package fe.inter {
 	
 		private function showBottext():void {
 			if (page2==1 && vendor) {
-				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (';
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', pip.money)+' (';
 				if (vendor.kolBou>0) vis.bottext.htmlText+='-'+numberAsColor('yellow', Math.ceil(vendor.kolBou))+'; ';
-				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(pip.money-vendor.kolBou))+' '+Res.pipText('ost')+')';
+				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(pip.money-vendor.kolBou))+' '+LanguageManager.reference.localText("pip", 'ost')+')';
 			}
 			
 			if (page2==2 && vendor) {
-				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money)+' (+'+numberAsColor('yellow', Math.floor(vendor.kolSell))+')';
-				if (!inbase) vis.bottext.htmlText+='   '+Res.pipText('vcaps')+': '+numberAsColor('yellow', vendor.money);
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', pip.money)+' (+'+numberAsColor('yellow', Math.floor(vendor.kolSell))+')';
+				if (!inbase) vis.bottext.htmlText+='   '+LanguageManager.reference.localText("pip", 'vcaps')+': '+numberAsColor('yellow', vendor.money);
 			}
 			
 			if (page2==3) {
-				vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', inv.money.kol);
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', inv.money.kol);
 			}
 		}
 		
@@ -542,7 +542,7 @@ package fe.inter {
 			if (page2 == 1) {
 				item.lvl.visible = true;
 				item.lvl.gotoAndStop(obj.barter + 1);
-				item.rid.text = obj.rid;
+				item.rid.text = obj.id;
 				item.cat.text = obj.tip;
 				item.nazv.text = obj.nazv;
 				
@@ -550,10 +550,10 @@ package fe.inter {
 					item.hp.text = Math.round(obj.sost * 100) + '%';
 					
 					if (obj.bou == 0) {
-						item.kol.text = Res.pipText('est');
+						item.kol.text = LanguageManager.reference.localText("pip", 'est');
 					}
 					else {
-						item.kol.text = Res.pipText('sel');
+						item.kol.text = LanguageManager.reference.localText("pip", 'sel');
 					}
 					
 					item.price.text = Math.round(obj.price * obj.mp);
@@ -611,13 +611,13 @@ package fe.inter {
 				item.price.text='';
 				item.price.x=400;
 				item.price.width=158;
-				if (obj.state==1) item.price.text=Res.pipText('perform');
+				if (obj.state==1) item.price.text=LanguageManager.reference.localText("pip", 'perform');
 				if (obj.state==2) {
-					item.price.text=Res.pipText('done');
+					item.price.text=LanguageManager.reference.localText("pip", 'done');
 					item.nazv.alpha=0.5;
 				}
-				if (obj.state==3) item.price.text=Res.pipText('surr');
-				if (obj.state==4) item.price.text=Res.pipText('progress');
+				if (obj.state==3) item.price.text=LanguageManager.reference.localText("pip", 'surr');
+				if (obj.state==4) item.price.text=LanguageManager.reference.localText("pip", 'progress');
 				item.kol.text='';
 			}
 		}
@@ -637,15 +637,15 @@ package fe.inter {
 				else vis.info.htmlText = s;
 				
 				if (event.currentTarget.cat.text == '0') {
-					vis.info.htmlText += "\n\n<span class = 'orange'>" + Res.pipText('actTake') + "</span>";
+					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", 'actTake') + "</span>";
 				}
 				
 				if (event.currentTarget.cat.text == '3') {
-					vis.info.htmlText += "\n\n<span class = 'orange'>" + Res.pipText('actSurr') + "</span>";
+					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", 'actSurr') + "</span>";
 				}
 				
 				if (event.currentTarget.cat.text == '4') {
-					vis.info.htmlText += "\n\n<span class = 'orange'>" + Res.pipText('actGive') + "</span>";
+					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", 'actGive') + "</span>";
 				}
 				
 				setIco();
@@ -656,7 +656,7 @@ package fe.inter {
 		
 		private function selBuy(buy:Object, n:int=1):void {
 			if (selall) {
-				vis.butOk.text.text = Res.pipText('transaction');
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'transaction');
 			}
 			
 			selall = false;
@@ -933,7 +933,7 @@ package fe.inter {
 				}
 			}
 			
-			vis.butOk.text.text = Res.pipText('transaction');
+			vis.butOk.text.text = LanguageManager.reference.localText("pip", 'transaction');
 			selall = false;
 			showBottext();
 			setStatItems();

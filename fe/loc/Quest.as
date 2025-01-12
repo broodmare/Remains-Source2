@@ -59,12 +59,8 @@ package fe.loc {
 			
 			xml = nxml;
 			id = xml.@id;
-
-			trace("Quest.as/Constructor() - Creating quest:" + id);
-
-			var pid:String;
 			
-
+			var pid:String;
 
 			if (npar == null)	{
 				pid = id;
@@ -131,7 +127,6 @@ package fe.loc {
 			}
 			
 			// Get the localized name of the quest
-			trace("Quest.as/Constructor() - Getting localized name for quest:" + pid);
 			nazv = LanguageManager.reference.localText("quest", pid)
 			// Failsafe
 			if (nazv == "") {
@@ -140,7 +135,6 @@ package fe.loc {
 
 			// Get the description of the quest			
 			if (!sub) {
-				trace("Quest.as/Constructor() - Getting localized description for quest:" + pid);
 				info = LanguageManager.reference.localDesc("quest", pid)
 				// Failsafe
 				if (info = "")	{

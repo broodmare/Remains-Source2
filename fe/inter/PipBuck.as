@@ -4,7 +4,7 @@ package fe.inter  {
 	import flash.events.MouseEvent;
 	
 	import fe.*;
-	import fe.unit.Invent;
+	import fe.unit.Inventory;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
 	import fe.unit.UnitPlayer;
@@ -22,7 +22,7 @@ package fe.inter  {
 		private var language:LanguageManager;	// Reference to the localization class
 		private var itemManager:ItemManager;	// Reference to the item manager class
 
-		public var light:Boolean=false;		//простая версия
+		public var light:Boolean = false;		// [Simple version]
 		
 		public var vissetkey:MovieClip;
 		public var vishelp:MovieClip;
@@ -36,9 +36,7 @@ package fe.inter  {
 		private var pages:Array;
 		public var currentPage:PipPage;
 		
-		public var inv:Invent;
-		public var gg:UnitPlayer;
-		public var money:int=0;
+		
 		
 		public var helpText:String='';
 		public var massText:String='';
@@ -86,7 +84,7 @@ package fe.inter  {
 			
 			vis.but0.visible=true;
 			vis.but0.addEventListener(MouseEvent.CLICK,pipClose);
-			vis.but0.text.text=Res.pipText('mainclose');
+			vis.but0.text.text=LanguageManager.reference.localText("pip", 'mainclose');
 			pages = [
 						null,
 						new PipPageStat(this, 'stat'),
@@ -141,8 +139,12 @@ package fe.inter  {
 		}
 		
 		public function updateLang():void {
-			vis.but0.text.text = Res.pipText('mainclose');
-			for each(var p in pages) if (p is PipPage) p.updateLang();
+			vis.but0.text.text = LanguageManager.reference.localText("pip", 'mainclose');
+			
+			for each(var p in pages) if (p is PipPage) {
+				p.updateLang();
+			}
+			
 			currentPage.setStatus();
 		}
 		
@@ -155,7 +157,7 @@ package fe.inter  {
 			for (var i:int = 1; i <= kolPages; i++) {
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK,pageClick);
-				item.text.text=Res.pipText('main'+i);
+				item.text.text=LanguageManager.reference.localText("pip", 'main'+i);
 				item.id.text=i;
 				item.visible=true;
 			}
@@ -251,7 +253,7 @@ package fe.inter  {
 			
 			if (turn == 4 || (turn >= 6 && turn <= 9)) {
 				vis.but4.id.text = turn;
-				vis.but4.text.text = Res.pipText('main' + turn);
+				vis.but4.text.text = LanguageManager.reference.localText("pip", 'main' + turn);
 				vis.but4.visible = true;
 			}
 			
@@ -368,7 +370,7 @@ package fe.inter  {
 				currentPage.vis.visible=false;
 				vis.toptext.visible=false;
 				vis.pipError.visible=true;
-				vis.pipError.nazv.text=Res.pipText('piperror');
+				vis.pipError.nazv.text=LanguageManager.reference.localText("pip", 'piperror');
 				var s:String=Res.txt('p','piperror',1);
 				vis.pipError.info.text=s.replace(/[\b\r\t]/g,'');
 			}
@@ -380,9 +382,6 @@ package fe.inter  {
 		// [Display mode]
 		public function setPage(subcategory:int = 0):void {
 			if (!light) {
-				gg = World.w.gg;
-				inv = World.w.invent;
-				money = inv.money.kol;
 				if (vendor) {
 					vendor.multPrice = World.w.pers.barterMult;
 				}
@@ -465,6 +464,7 @@ package fe.inter  {
 
 			var gg:UnitPlayer = World.w.gg;
 			var pers:Pers = World.w.pers;
+			
 			ritem1(0, gg.hp, gg.maxhp);
 			ritem1(1, pers.headHP, pers.inMaxHP, !World.w.game.triggers['nomed']);
 			ritem1(2, pers.torsHP, pers.inMaxHP, !World.w.game.triggers['nomed']);
@@ -493,50 +493,57 @@ package fe.inter  {
 				ritem1(8, 0, 0, false);
 			}
 			
-			ritems[9].txt.htmlText = "<span class = 'yellow'>" + gg.invent.money.kol + "</span>"
-			ritem3(10, inv.massW, pers.maxmW,World.w.hardInv);
-			ritem3(11, inv.massM, pers.maxmM,World.w.hardInv);
-			ritem3(12, inv.mass[1], pers.maxm1,World.w.hardInv);
-			ritem3(13, inv.mass[2], pers.maxm2,World.w.hardInv);
-			ritem3(14, inv.mass[3], pers.maxm3,World.w.hardInv);
+			ritems[9].txt.htmlText = "<span class='yellow'>" + String(gg.invent.getQuantity("money")) + "</span>";
+			
+			ritem3(10, gg.invent.massW,		pers.maxmW, World.w.hardInv);
+			ritem3(11, gg.invent.massM,		pers.maxmM, World.w.hardInv);
+			ritem3(12, gg.invent.mass[1],	pers.maxm1, World.w.hardInv);
+			ritem3(13, gg.invent.mass[2],	pers.maxm2, World.w.hardInv);
+			ritem3(14, gg.invent.mass[3],	pers.maxm3, World.w.hardInv);
 		}
 		
 		private function ritem1(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
-			ritems[n].visible=usl;
+			ritems[n].visible = usl;
+
 			if (usl) {
-				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp);
+				ritems[n].txt.htmlText="<span class = '" + med(hp, maxhp) + "'>" + Math.round(hp) + "</span>" + ' / ' + Math.round(maxhp);
 			}
 			else {
-				ritems[n].txt.htmlText='';
+				ritems[n].txt.htmlText = "";
 			}
 		}
 
 		private function ritem2(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
-			ritems[n].visible=usl;
+			ritems[n].visible = usl;
+			
 			if (usl) {
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp/maxhp*100)+"%</span>";
 			}
 			else {
-				ritems[n].txt.htmlText='';
+				ritems[n].txt.htmlText = "";
 			}
 		}
 
 		private function ritem3(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
 			ritems[n].visible = usl;
 
-			if (usl) ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
-			else ritems[n].txt.htmlText='';
+			if (usl) {
+				ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
+			}
+			else {
+				ritems[n].txt.htmlText = "";
+			}
 		}
 		
 		private function med(hp:Number, maxhp:Number):String {
 			if (hp < maxhp * 0.25) {
-				return 'red';
+				return "red";
 			}
 			else if (hp < maxhp * 0.5) {
-				return 'orange';
+				return "orange";
 			}
 			
-			return '';
+			return "";
 		}
 		
 		public function setArmor(id:String):void {

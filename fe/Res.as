@@ -5,7 +5,10 @@ package fe {
  
 	public class Res {
 
-		public static var currentLanguageData:Object; 		// Loaded localization file	eg. 'text_en.json'
+		private static var _currentLanguageData:XML;
+		private static var istxtCache:Object = {};
+		private static var txtCache:Object = {};
+		private static var loaded:Boolean = false;
 
 		private static const typeDictionary:Object = {
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
@@ -13,20 +16,40 @@ package fe {
 			0:'n', 1:'info', 2:'mess', 3:'help'
 		};
 
-		/*
-		* Checks if a localized text exists for the given tip and id.
-		* @tip  -- What category to search for the string in.
-		* @id   -- The internal name of the string we want to find the localization for.
-		*/
+		// I want to replace all the XML stuff anyway, so I'm just hardcoding a lazy-loader
+		private static function loadXML():void {
+			trace("Res.as/loadXML() - Initializing XML language data");
+			var path:String = "Modules/core/language/text_en.xml";
+			var loader:TextLoader = new TextLoader();
+			_currentLanguageData = loader.syncLoad(path);
+			loaded = true;
+		}
+
+		public static function get currentLanguageData():XML {
+			return _currentLanguageData;
+		}
+
+		// Check if a string has a localization
 		public static function istxt(tip:String, id:String):Boolean {
-			var key:String = tip + id;
+			if (!loaded) {
+				loadXML();
+			}
 			
-			var xmlList:XMLList = currentLanguageData[typeDictionary[tip]].(@id == id); // Check currentLanguageDataXML for matching nodes.
+			// Check previously cached lookups
+			var key:String = tip + id;
+			if (istxtCache[key]) {
+				return istxtCache[key];
+			}
+			
+			// Not cached before, do the slow XML lookup and store the answer
+			var xmlList:XMLList = _currentLanguageData[typeDictionary[tip]].(@id == id); // Check _currentLanguageData for matching nodes.
 			
 			if (xmlList.length() == 0) {
+				istxtCache[key] = false;
 				return false; // If there's no matching nodes, return false.
 			}
 			
+			istxtCache[key] = true;
 			return true;
 		}
 
@@ -38,12 +61,15 @@ package fe {
 		* @dop   -- Extra formatting?
 		*/
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String {
-			if (id == '') {
-				return '';
+			if (!loaded) {
+				loadXML();
 			}
 			
-			// Return if already cached
+			// Return the formatted string if it's already cached
 			var key:String = tip + id;
+			if (txtCache[key]) {
+				return txtCache[key];
+			}
 
 			// Reduce redundant dictionary lookups
 			var tipType:String = typeDictionary[tip];
@@ -52,11 +78,13 @@ package fe {
 			var s:String;	// String representation of localized text.
 			var xl1:XMLList; // XML List of all returned nodes for the type[id].
 
-			// Try to get a localized string from currentLanguage or fallbackLanguage
-			for each (var langData in currentLanguageData) {
+			// Try to get a localized string from _currentLanguageData
+			for each (var langData in _currentLanguageData) {
 				if (!s) { // Skip checking fallback if string was found 
 					xl1 = langData[tipType].(@id == id);
-					if (xl1.length() > 0) s = xl1[razdType][0];
+					if (xl1.length() > 0) {
+						s = xl1[razdType][0];
+					}
 				}
 			}
 
@@ -68,11 +96,6 @@ package fe {
 			}
 
 			var xl2:XML = xl1[0];
-
-			if (xl2.@m == '1') { // Strings with profanity
-				var spl:Array = s.split('|');
-				if (spl.length >= 2) s = spl[World.w.matFilter ? 1:0];
-			}
 			
 			if (razd >= 1 || dop) {
 				if (xl2.@s1.length()) s = addKeys(s, xl2);
@@ -89,21 +112,23 @@ package fe {
 						case "]":
 							return "</span>";
 						default:
-							return ''; // Needed for compile, shouldn't ever actually get here
+							return ""; // Needed for compile, shouldn't ever actually get here
 					}
 				});
 			}
 
 			var controlCharsRegExp:RegExp = /[\b\r\t]/g;
-			if (dop) s = s.replace(controlCharsRegExp, '');
-			if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
+			
+			if (dop) {
+				s = s.replace(controlCharsRegExp, '');
+			}
+			
+			if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) {
+				s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
+			}
 
+			txtCache[key] = s; // Cache the formatted string
 			return s;
-		}
-		
-		// TODO: Obsolete, remove
-		public static function pipText(id:String):String {
-			return txt('p', id);
 		}
 
 		/*
@@ -113,12 +138,16 @@ package fe {
 		* @imp  -- Displays a message based on it's importance level
 		*/
 		public static function messText(id:String, v:int = 1, imp:Boolean = true):String {
-			var s:String = '';
-			var xml:XMLList = currentLanguageData.txt.(@id == id);
+			var s:String = "";
+			var xml:XMLList = _currentLanguageData.txt.(@id == id);
 			
-			if (xml.length()==0) return '';
+			if (xml.length() == 0) {
+				return "";
+			}
 
-			if (!imp && !(xml.@imp > 0)) return '';
+			if (!imp && !(xml.@imp > 0)) {
+				return "";
+			}
 			
 			var tip:int = xml.@imp;
 			
@@ -129,24 +158,30 @@ package fe {
 				if (xml.n[0].r.length()) {
 					for each (var node:XML in xml.n[0].r) {
 						var s1:String=node.toString();
+						
 						if (node.@m.length()) {
 							var sar:Array=s1.split('|');
+							
 							if (sar) {
 								if (World.w.matFilter && sar.length>1) s1=sar[1];
 								else s1 = sar[0];
 							}
 						}
+						
 						if (node.@s1.length()) {
 							for (var i:int = 1; i <= 5; i++) {
 								if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yellow'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
 							}
 						}
-						s1=s1.replace(/[\b\r\t]/g,'');
+						
+						s1 = s1.replace(/[\b\r\t]/g,'');
+						
 						if (tip==1) {
 							if (node.@p.length()==0) s+="<span class='dark'>"+s1+"</span>"+'<br>';
 							else {
 								//TODO: Figure out how to declare this without breaking notes.
 								var pers = node.@p;
+								
 								if (pers.indexOf("lp") == 0) s += "<span class='light'>" + ' - ' + s1 + "</span>" + '<br>';
 								else s += ' - ' + s1 + '<br>';
 							}
@@ -167,39 +202,61 @@ package fe {
 					if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span class='r2'>" + World.w.ctr.retKey(xml.attribute('s' + j)) + "</span>");
 				}
 			}
-			return (s == null) ? '':s;
+			
+			return (s == null) ? "" : s;
 		}
 		
 		// Unit Reply text? Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
 		public static function repText(id:String, act:String, msex:Boolean=true):String {
-			var xl:XMLList = currentLanguageData.replic[0].rep.(@id==id && @act==act);
+			var xl:XMLList = _currentLanguageData.replic[0].rep.(@id==id && @act==act);
 
-			if (xl.length()==0) return '';
+			if (xl.length() == 0) {
+				return "";
+			}
+			
 			xl = xl[0].r;
-			var n:int = xl.length();
-			if (n == 0) return '';
-			var num:int = Math.floor(Math.random() * n);
+			
+			if (xl.length() == 0) {
+				return "";
+			}
+			
+			var num:int = Math.floor(Math.random() * xl.length());
 			
 			var s:String = xl[num];
 			var n1:int = s.indexOf('#');
-			if (n1>=0) {
+			
+			if (n1 >= 0) {
 				var n2:int = s.lastIndexOf('#');
-				var ss:String=s.substring(n1+1,n2);
-				s=s.substring(0,n1)+ss.split('|')[msex?0:1]+s.substring(n2+1);
+				var ss:String = s.substring(n1 + 1, n2);
+				s = s.substring(0, n1) + ss.split('|')[msex ? 0 : 1] + s.substring(n2 + 1);
 			}
-			s = s.replace('@lp',World.w.pers.persName);
+			
+			s = s.replace('@lp', World.w.pers.persName);
+			
 			return s;
 		}
 
 		// Retrieves an array of names based the ID
 		public static function namesArr(id:String):Array {
-			var xl:XMLList = currentLanguageData.names;
-			if (xl.length()==0) return null;
-			xl=xl[0].name.(@id==id);
-			if (xl.length()==0) return null;
-			xl=xl[0].r;
+			var xl:XMLList = _currentLanguageData.names;
+			
+			if (xl.length()==0) {
+				return null;
+			}
+			
+			xl = xl[0].name.(@id==id);
+
+			if (xl.length()==0) {
+				return null;
+			}
+			
+			xl = xl[0].r;
+			
 			var arr:Array = [];
-			for each (var n:XML in xl) arr.push(n.toString());
+			for each (var n:XML in xl) {
+				arr.push(n.toString());
+			}
+			
 			return arr;
 		}
 
@@ -216,20 +273,32 @@ package fe {
 
 		// Formats a number to one decimal place
 		public static function numb(n:Number):String {
-			var k:int=Math.round(n*10);
-			if (k%10==0) return (k/10).toString();
+			var k:int = Math.round(n * 10);
+			
+			if (k%10 == 0) {
+				return (k / 10).toString();
+			}
 			else {
-				if (n<0) return Math.ceil(k/10)+'.'+Math.abs(k%10);					
+				if (n < 0) {
+					return Math.ceil(k / 10) + "." + Math.abs(k%10);
+				}				
+				
 				return int(k/10)+'.'+(k%10);
 			}
 		}
 		
 		//Inserts key representations into a string based on XML attributes.
 		public static function addKeys(s:String, xml:XML):String {
-			if (s==null) return '';
-			for (var i:int = 1; i <= 5; i++) {
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+			if (s == null) {
+				return "";
 			}
+			
+			for (var i:int = 1; i <= 5; i++) {
+				if (xml.attribute('s'+i).length())  {
+					s = s.replace('@' + i, "<span class='imp'>" + World.w.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+				}
+			}
+			
 			return s;
 		}
 		
@@ -244,6 +313,7 @@ package fe {
 			var h:int = int(sec/3600);
 			var m:int = int((sec-h*3600)/60);
 			var s:int = sec%60;
+			
 			return h.toString()+':'+((m<10)?'0':'')+m+':'+((s<10)?'0':'')+s;
 		}
 
@@ -258,12 +328,14 @@ package fe {
 				n++;
 				if (n >= 6) n = 0;
 			}
+			
 			return res;
 		}
 
 		// Dynamically retrieves a MovieClip class by its name
 		public static function getVis(id:String, def:Class = null):MovieClip {
 			var r:Class;
+			
 			try {
 				r = getDefinitionByName(id) as Class;
 			}
@@ -271,6 +343,7 @@ package fe {
 				trace('ERROR: (00:1B)');
 				r = def;
 			}
+			
 			if (r) {
 				return new r();
 			}
@@ -282,6 +355,7 @@ package fe {
 		// Retrieves a class by its primary ID, backup ID, and/or an optional default
 		public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
 			var r:Class;
+			
 			try {
 				r = getDefinitionByName(id1) as Class;
 			} 
@@ -300,6 +374,7 @@ package fe {
 					}
 				}
 			}
+			
 			return r;
 		}
 	}	

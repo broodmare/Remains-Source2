@@ -34,9 +34,15 @@ package fe.serv {
 
 			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
 			for each (var weap in weaponList.(@tip > 0 && @tip < 4)) {
-				if (weap.com.length()==0) continue;
+				if (weap.com.length()==0) {
+					continue;
+				}
+				
 				arr['weapon'].push({id:weap.@id, st:weap.com.@stage, chance:weap.com.@chance, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['weapon']+=Number(weap.com.@chance))});
-				if (weap.com.@uniq.length()) arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
+				
+				if (weap.com.@uniq.length()) {
+					arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
+				}
 			}
 			
 			for each (weap in weaponList.(@tip==5)) {
@@ -51,8 +57,13 @@ package fe.serv {
 						arr[item.@tip] = [];
 						n[item.@tip] = 0;
 					}
+					
 					arr[item.@tip].push({id:item.@id, st:item.@stage, chance:(item.@chance.length()?item.@chance:1), lvl:item.@lvl,  r:(n[item.@tip]+=Number(item.@chance.length()?item.@chance:1))});
-					if (item.@tip=='art' || item.@tip=='impl' || item.sk.length()) arr['pers'].push(item.@id);	//признак предметов, изменяющих характеристики перса
+					
+					// [a sign of items that change the characteristics of a character]
+					if (item.@tip=='art' || item.@tip=='impl' || item.sk.length()) {
+						arr['pers'].push(item.@id);
+					}
 				}
 				if (item.@tip2.length()) {
 					if (arr[item.@tip2] == null) {
@@ -84,9 +95,9 @@ package fe.serv {
 			if (lootType != Item.L_BOOK && (maxlvl > 0 || worth > 0 || gameStage > 0)) {
 				for each(var i in a) {
 					if (
-						(gameStage <= 0 || i.st == null || i.st <= gameStage) &&	//зависит от этапа сюжета
-						(maxlvl == -100 || i.lvl == null || i.lvl <= maxlvl) &&		//максимальный уровень, зависит от сложности
-						(worth == -100 || i.worth == null || worth == i.worth)		//тип предмета, зависит от типа контейнера
+						(gameStage <= 0 || i.st == null || i.st <= gameStage) &&	// [Depends on the stage of the plot]
+						(maxlvl == -100 || i.lvl == null || i.lvl <= maxlvl) &&		// [Maximum level, depends on difficulty]
+						(worth == -100 || i.worth == null || worth == i.worth)		// [Item type, depends on container type]
 					) {
 						res.push({id:i.id, r:(n += Number(i.chance))});
 					}
@@ -183,7 +194,7 @@ package fe.serv {
 			if (lootType == 'co') {
 				item.tip = 'scheme';
 				var wid:String = id.substr(2);
-				item.nazv = Res.pipText('recipe') + ' «' + Res.txt('i', wid) + '»';
+				item.nazv = LanguageManager.reference.localText("pip", 'recipe') + ' «' + Res.txt('i', wid) + '»';
 			}
 
 			item.multHP = mn;
@@ -754,7 +765,8 @@ package fe.serv {
 			else if (lootTable=='vortex' || lootTable=='spritebot' || lootTable=='roller') {
 				newLoot(0.2, Item.L_ITEM, 'scrap');
 			}
-			return is_loot>0;
+			
+			return is_loot > 0;
 		}
 		
 		public static function replic(s:String):void {

@@ -457,11 +457,17 @@ package fe.unit {
 			return un;
 		}
 		
-		public override function save():Object
-		{
+		public override function save():Object {
 			var obj:Object = new Object();
-			if (sost >= 3 && !postDie) obj.dead = true;
-			if (inter) inter.save(obj);
+			
+			if (sost >= 3 && !postDie) {
+				obj.dead = true;
+			}
+			
+			if (inter) {
+				inter.save(obj);
+			}
+
 			return obj;
 		}
 		

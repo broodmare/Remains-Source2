@@ -71,7 +71,7 @@ package fe.inter {
 		public function setLang():void {
 			vis.butOk.text.text='OK';
 			vis.butCancel.text.text=Res.txt("g", 'cancel');
-			vis.butDef.text.text=Res.pipText('default');
+			vis.butDef.text.text=LanguageManager.reference.localText("pip", 'default');
 			vis.title.text=Res.txt("g", 'butvid');
 			vis.tFur.text=Res.txt("g", 'vidfur');
 			vis.tHair.text=Res.txt("g", 'vidhair');

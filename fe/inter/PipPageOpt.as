@@ -110,9 +110,9 @@ package fe.inter {
 					obj={id:key.id, nazv:Res.txt('k',key.id), a1:key.a1, a2:key.a2};
 					arr.push(obj);
 				}
-				vis.butOk.text.text=Res.pipText('accept');
+				vis.butOk.text.text=LanguageManager.reference.localText("pip", 'accept');
 				vis.butDef.visible=true;
-				vis.butDef.text.text=Res.pipText('default');
+				vis.butDef.text.text=LanguageManager.reference.localText("pip", 'default');
 			}
 			if (page2==5) {
 				if (pip.light) return;
@@ -127,8 +127,8 @@ package fe.inter {
 				World.w.app.saveOst();
 				if (page2==1) {
 					setTopText('infoload');
-					vis.butOk.text.text=Res.pipText('opt1');
-					vis.butDef.text.text=Res.pipText('loadfile');
+					vis.butOk.text.text=LanguageManager.reference.localText("pip", 'opt1');
+					vis.butDef.text.text=LanguageManager.reference.localText("pip", 'loadfile');
 				}
 				else {
 					setTopText('infosave');
@@ -136,9 +136,9 @@ package fe.inter {
 						nSave=World.w.autoSaveN;
 						vis.butOk.visible=true;
 					}
-					vis.butOk.text.text=Res.pipText('opt2');
+					vis.butOk.text.text=LanguageManager.reference.localText("pip", 'opt2');
 					if (gg.pers.hardcore) vis.butDef.visible=false;
-					vis.butDef.text.text=Res.pipText('savefile');
+					vis.butDef.text.text=LanguageManager.reference.localText("pip", 'savefile');
 				}
 				for (var i=0; i<=World.w.saveKol; i++) {
 					var save:Object=World.w.getSave(i);
@@ -156,12 +156,12 @@ package fe.inter {
 		public static function saveObj(save:Object, n):Object {
 			var obj:Object={id:n};
 			if (save==null || save.est==null) {
-				obj.nazv=Res.pipText('freeslot');
+				obj.nazv=LanguageManager.reference.localText("pip", 'freeslot');
 				obj.gg='';
 				obj.date='';
 			} 
 			else {
-				obj.nazv=(n==0)?Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+n);
+				obj.nazv=(n==0)?LanguageManager.reference.localText("pip", 'autoslot'):(LanguageManager.reference.localText("pip", 'saveslot')+' '+n);
 				obj.gg=(save.pers.persName==null)?'-------':save.pers.persName;
 				obj.land=Res.txt('m',save.game.land);
 				obj.level=(save.pers.level==null)?'':save.pers.level;
@@ -192,7 +192,7 @@ package fe.inter {
 			item.ramka.visible=false;
 			item.land.text='';
 			if (page2==3 || page2==6) {
-				item.nazv.text=Res.pipText(obj.id);
+				item.nazv.text=LanguageManager.reference.localText("pip", obj.id);
 				item.ggName.text='';
 				if (obj.numb == null) {
                     item.numb.text = '';
@@ -282,8 +282,8 @@ package fe.inter {
 		}
 
 		override public function updateLang():void {
-			vis.butOk.text.text=Res.pipText('accept');
-			vis.butDef.text.text=Res.pipText('default');
+			vis.butOk.text.text=LanguageManager.reference.localText("pip", 'accept');
+			vis.butDef.text.text=LanguageManager.reference.localText("pip", 'default');
 			super.updateLang();
 		}
 		
@@ -441,7 +441,7 @@ package fe.inter {
 				setStatus();
 			}
 			else if (page2==1) {
-				ffil=[new FileFilter(Res.pipText('gamesaves')+" (*.sav)", "*.sav")];
+				ffil=[new FileFilter(LanguageManager.reference.localText("pip", 'gamesaves')+" (*.sav)", "*.sav")];
 				file.browse(ffil);
 			}
 			else if (page2==2) {
@@ -476,17 +476,17 @@ package fe.inter {
 				vis.pers.head.morda.magic.visible=false;
 				vis.pers.visible=true;
 				vis.info.y=vis.pers.y+25;
-				vis.info.htmlText+=Res.pipText('level')+': '+textAsColor('yellow', obj.level)+'\n';
+				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'level')+': '+textAsColor('yellow', obj.level)+'\n';
 				vis.info.htmlText+=obj.land+'\n';
 				vis.info.htmlText+='\n';
-				vis.info.htmlText+=Res.pipText('diff')+': '+textAsColor('yellow', obj.dif)+'\n';
+				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'diff')+': '+textAsColor('yellow', obj.dif)+'\n';
 				if (obj.hard==1) vis.info.htmlText+=Res.txt("g", 'opt2')+'\n';
-				if (obj.hard==2) vis.info.htmlText+=textAsColor('red', Res.pipText('dead'))+'\n';
+				if (obj.hard==2) vis.info.htmlText+=textAsColor('red', LanguageManager.reference.localText("pip", 'dead'))+'\n';
 				if (obj.hardInv==1) vis.info.htmlText+=Res.txt("g", 'opt6')+'\n';
 				if (obj.rndpump==1) vis.info.htmlText+=Res.txt("g", 'opt4')+'\n';
 				if (obj.ver) vis.info.htmlText+=Res.txt("g", 'version')+': '+textAsColor('yellow', obj.ver)+'\n';
-				vis.info.htmlText+=Res.pipText('tgame')+': '+textAsColor('yellow', obj.time)+'\n';
-				vis.info.htmlText+=Res.pipText('saved')+': '+textAsColor('yellow', obj.date)+'\n';
+				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'tgame')+': '+textAsColor('yellow', obj.time)+'\n';
+				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'saved')+': '+textAsColor('yellow', obj.date)+'\n';
 			} 
 			else {
 				vis.nazv.text='';

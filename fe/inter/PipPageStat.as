@@ -87,11 +87,11 @@ package fe.inter {
 			drunk=0;
 			if (page2==1) {
 				statHead.nazv.text=statHead.numb.text='';
-				arr.push({nazv:Res.pipText('name'), lvl:gg.pers.persName});
-				arr.push({nazv:Res.pipText('level'), lvl:gg.pers.level});
-				arr.push({nazv:Res.pipText('expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
-				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.txt("g", 'dif'+World.w.game.globalDif)});
-				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
+				arr.push({nazv:LanguageManager.reference.localText("pip", 'name'), lvl:gg.pers.persName});
+				arr.push({nazv:LanguageManager.reference.localText("pip", 'level'), lvl:gg.pers.level});
+				arr.push({nazv:LanguageManager.reference.localText("pip", 'expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
+				arr.push({id:'diff', nazv:LanguageManager.reference.localText("pip", 'diff'), lvl:Res.txt("g", 'dif'+World.w.game.globalDif)});
+				arr.push({id:'reput', nazv:LanguageManager.reference.localText("pip", 'reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 
 				for (var i = 0; i < cachedParamList.length(); i++) {
@@ -100,7 +100,7 @@ package fe.inter {
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
 						
-						var nazv:String = Res.pipText(xml.@id);
+						var nazv:String = LanguageManager.reference.localText("pip", xml.@id);
 						
 						if (xml.@v == '') {
                             arr.push({id: xml.@id, nazv: nazv, lvl: ''});
@@ -140,7 +140,7 @@ package fe.inter {
 			}
 			else if (page2==5) {
 				if (World.w.game.triggers['nomed']>0) {
-					vis.emptytext.text=Res.pipText('emptymed');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptymed');
 					statHead.visible=false;
 					return;
 				}
@@ -151,29 +151,29 @@ package fe.inter {
 				gg.pers.checkHP();
 				setTopText('usemed1');
 				statHead.nazv.text=statHead.numb.text='';
-				arr.push({id:'hp', nazv:Res.pipText('hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp)});
-				arr.push({id:'organism', nazv:Res.pipText('organism')+':', lvl:''});
-				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+Res.pipText('head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP)});
-				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+Res.pipText('tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP)});
-				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+Res.pipText('legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP)});
-				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+Res.pipText('blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP)});
-				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+Res.pipText('mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana)});
-				arr.push({id:'rad', nazv:Res.pipText('rad'), lvl:Math.round(gg.rad)});
-				arr.push({id:'radx', nazv:Res.pipText('radx'), lvl:Math.round((1-gg.radX)*100)+'%'});
-				arr.push({id:'cut', nazv:Res.pipText('cut'), lvl:Math.round(gg.cut*10)/10});
-				arr.push({id:'resbleeding', nazv:Res.pipText('resbleeding'), lvl:Math.round((1-gg.vulner[Unit.D_BLEED])*100)+'%'});
-				arr.push({id:'poison', nazv:Res.pipText('poison'), lvl:Math.round(gg.poison*10)/10});
-				arr.push({id:'respoison', nazv:Res.pipText('respoison'), lvl:Math.round((1-gg.vulner[Unit.D_POISON])*100)+'%'});
+				arr.push({id:'hp', nazv:LanguageManager.reference.localText("pip", 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp)});
+				arr.push({id:'organism', nazv:LanguageManager.reference.localText("pip", 'organism')+':', lvl:''});
+				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+LanguageManager.reference.localText("pip", 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP)});
+				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+LanguageManager.reference.localText("pip", 'tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP)});
+				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+LanguageManager.reference.localText("pip", 'legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP)});
+				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+LanguageManager.reference.localText("pip", 'blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP)});
+				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+LanguageManager.reference.localText("pip", 'mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana)});
+				arr.push({id:'rad', nazv:LanguageManager.reference.localText("pip", 'rad'), lvl:Math.round(gg.rad)});
+				arr.push({id:'radx', nazv:LanguageManager.reference.localText("pip", 'radx'), lvl:Math.round((1-gg.radX)*100)+'%'});
+				arr.push({id:'cut', nazv:LanguageManager.reference.localText("pip", 'cut'), lvl:Math.round(gg.cut*10)/10});
+				arr.push({id:'resbleeding', nazv:LanguageManager.reference.localText("pip", 'resbleeding'), lvl:Math.round((1-gg.vulner[Unit.D_BLEED])*100)+'%'});
+				arr.push({id:'poison', nazv:LanguageManager.reference.localText("pip", 'poison'), lvl:Math.round(gg.poison*10)/10});
+				arr.push({id:'respoison', nazv:LanguageManager.reference.localText("pip", 'respoison'), lvl:Math.round((1-gg.vulner[Unit.D_POISON])*100)+'%'});
 				if (gg.pets['phoenix'] && World.w.game.triggers['pet_phoenix']) {
 					arr.push({id:'phoenix', nazv:gg.pets['phoenix'].nazv, lvl:Math.round(gg.pets['phoenix'].hp)+'/'+Math.round(gg.pets['phoenix'].maxhp)});
 				}
 				for (var i in pers.addictions) {
 					if (pers.addictions[i]>0) {
 						var str:String='';
-						if (pers.addictions[i]>=pers.ad3) str=Res.pipText('ad3');
-						else if (pers.addictions[i]>=pers.ad2) str=Res.pipText('ad2');
-						else if (pers.addictions[i]>=pers.ad1) str=Res.pipText('ad1');
-						else str=Res.pipText('ad0');
+						if (pers.addictions[i]>=pers.ad3) str=LanguageManager.reference.localText("pip", 'ad3');
+						else if (pers.addictions[i]>=pers.ad2) str=LanguageManager.reference.localText("pip", 'ad2');
+						else if (pers.addictions[i]>=pers.ad1) str=LanguageManager.reference.localText("pip", 'ad1');
+						else str=LanguageManager.reference.localText("pip", 'ad0');
 						arr.push({id:i, nazv:Res.txt('e',i+'_ad'), lvl:Math.round(pers.addictions[i])+'% ('+str+')', cat:'ad'});
 					}
 				}
@@ -181,8 +181,8 @@ package fe.inter {
 			else if (page2==2) {	
 				setTopText('infoskills');
 				skillPoint=pers.skillPoint;
-				statHead.nazv.text=Res.pipText('is1');
-				statHead.numb.text=Res.pipText('is2');
+				statHead.nazv.text=LanguageManager.reference.localText("pip", 'is1');
+				statHead.numb.text=LanguageManager.reference.localText("pip", 'is2');
 				for each(var sk in pers.skill_ids) {
 					if (pers.level<Pers.postPersLevel && sk.post>0) continue;
 					var numb=pers.skills[sk.id];
@@ -190,12 +190,12 @@ package fe.inter {
 					arr.push(n);
 					skills[sk.id]=n;
 				}
-				vis.butOk.text.text=Res.pipText('accept');
+				vis.butOk.text.text=LanguageManager.reference.localText("pip", 'accept');
 			}
 			else if (page2==3) {
 				perkPoint=pers.perkPoint;
-				statHead.nazv.text=Res.pipText('is5');
-				statHead.numb.text=Res.pipText('is2');
+				statHead.nazv.text=LanguageManager.reference.localText("pip", 'is5');
+				statHead.numb.text=LanguageManager.reference.localText("pip", 'is2');
 				for (var pid in pers.perks) {
 					var maxlvl=1;
 					var xperk = getPerkInfo(pid);
@@ -205,11 +205,11 @@ package fe.inter {
 					arr.push(n);
 				}
 				if (perkPoint) {
-					vis.butOk.text.text=Res.pipText('choose');
+					vis.butOk.text.text=LanguageManager.reference.localText("pip", 'choose');
 					vis.butOk.visible=true;
 				}
 				if (arr.length==0) {
-					vis.emptytext.text=Res.pipText('emptyperk');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptyperk');
 					statHead.visible=false;
 				}
 				else {
@@ -219,8 +219,8 @@ package fe.inter {
 				}
 			}
 			else if (page2==4) {
-				statHead.nazv.text=Res.pipText('is3');
-				statHead.numb.text=Res.pipText('is4');
+				statHead.nazv.text=LanguageManager.reference.localText("pip", 'is3');
+				statHead.numb.text=LanguageManager.reference.localText("pip", 'is4');
 				statHead.numb.x=500;
 				for (var sk in gg.effects) {
 					var ef=gg.effects[sk];
@@ -228,12 +228,12 @@ package fe.inter {
 					if (ef.ad) {
 						var str=Res.txt('e',ef.id+'_ad');
 						if (str!='') {
-							n.nazv=str+' ('+Res.pipText('ad'+ef.lvl)+')';
+							n.nazv=str+' ('+LanguageManager.reference.localText("pip", 'ad'+ef.lvl)+')';
 							n.id+='_ad';
 						}
 					}
 					if (ef.id=='drunk') {
-						n.nazv=Res.pipText('drunk'+ef.lvl);
+						n.nazv=LanguageManager.reference.localText("pip", 'drunk'+ef.lvl);
 						drunk=ef.lvl;
 					}
 					if (!ef.forever) n.lvl=Math.round(ef.t/30);
@@ -243,7 +243,7 @@ package fe.inter {
 					arr.push(n);
 				}
 				if (arr.length==0) {
-					vis.emptytext.text=Res.pipText('emptyeff');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptyeff');
 					statHead.visible=false;
 				}
 				else {
@@ -253,8 +253,8 @@ package fe.inter {
 			}
 			else if (page2==6) {
 				perkPoint=pers.perkPoint;
-				statHead.nazv.text=Res.pipText('is5');
-				statHead.numb.text=Res.pipText('is2');
+				statHead.nazv.text=LanguageManager.reference.localText("pip", 'is5');
+				statHead.numb.text=LanguageManager.reference.localText("pip", 'is2');
 
 				for each(var dp in cachedPerkList) {
 					if (dp.@tip==1) {
@@ -270,7 +270,7 @@ package fe.inter {
 				}
 
 				arr.sortOn(['sort','nazv']);
-				vis.butOk.text.text=Res.pipText('accept');
+				vis.butOk.text.text=LanguageManager.reference.localText("pip", 'accept');
 				vis.butDef.text.text=Res.txt("g", 'cancel');
 				vis.butDef.visible=true;
 			}
@@ -316,7 +316,7 @@ package fe.inter {
 					var sklvl=pers.getPostSkLevel(obj.lvl);
 					var nextN=100;
 					if (sklvl<pers.postSkTab.length) nextN=pers.postSkTab[sklvl];
-					item.numb.text=obj.lvl+ '  (+'+(nextN-obj.lvl)+')\t         '+Res.pipText('level')+': '+sklvl;
+					item.numb.text=obj.lvl+ '  (+'+(nextN-obj.lvl)+')\t         '+LanguageManager.reference.localText("pip", 'level')+': '+sklvl;
 					item.numb.x=215;
 				}
 				else {
@@ -355,7 +355,7 @@ package fe.inter {
                         vis.nazv.text = Res.txt('p', id);
                         vis.info.htmlText = Res.txt('g', 'dif' + World.w.game.globalDif, 1);
                     } else {
-                        vis.nazv.text = Res.pipText(id);
+                        vis.nazv.text = LanguageManager.reference.localText("pip", id);
                         vis.info.htmlText = Res.txt('p', id, 1);
                     }
                     vis.info.htmlText += '<br><br>';
@@ -376,7 +376,7 @@ package fe.inter {
                         vis.nazv.text = nazv;
                         vis.info.htmlText = Res.txt('u', 'phoenix', 1);
                     } else {
-                        vis.nazv.text = Res.pipText(id);
+                        vis.nazv.text = LanguageManager.reference.localText("pip", id);
                         vis.info.htmlText = Res.txt('p', id, 1);
                     }
                     vis.info.htmlText += '<br><br>';
@@ -463,11 +463,11 @@ package fe.inter {
 		
 		private function showBottext():void {
 			vis.bottext.text='';
-			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.w.game.gameTime();
-			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+numberAsColor('pink', skillPoint);
-			if (page2==3) vis.bottext.htmlText=Res.pipText('perkpoint')+': '+numberAsColor('pink', perkPoint);
+			if (page2==1) vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'tgame')+': '+World.w.game.gameTime();
+			if (page2==2) vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'skillpoint')+': '+numberAsColor('pink', skillPoint);
+			if (page2==3) vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'perkpoint')+': '+numberAsColor('pink', perkPoint);
 			if (page2==6) {
-				if (selectedPerk=='') vis.bottext.htmlText=Res.pipText('chooseperk');
+				if (selectedPerk=='') vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'chooseperk');
 				else vis.bottext.htmlText=textAsColor('pink', Res.txt('e',selectedPerk));
 			}
 			if (page2==5 && infoItemId!='') 

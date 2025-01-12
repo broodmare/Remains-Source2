@@ -208,8 +208,8 @@ package fe.serv {
 							World.w.gg.controlOff();
 							wait=true;
 							World.w.ctr.active=false;
-							var str = Res.txt('m',actObj.val) + "\n" + Res.pipText('recLevel') + ': [' + World.w.game.lands[actObj.val].dif + "]\n" + Res.pipText('isperslvl') + ': [' + World.w.pers.level + ']';
-							if (World.w.game.lands[actObj.val].dif>World.w.pers.level) str += '\n\n' + Res.pipText('wrLevel');
+							var str = Res.txt('m',actObj.val) + "\n" + LanguageManager.reference.localText("pip", 'recLevel') + ': [' + World.w.game.lands[actObj.val].dif + "]\n" + LanguageManager.reference.localText("pip", 'isperslvl') + ': [' + World.w.pers.level + ']';
+							if (World.w.game.lands[actObj.val].dif>World.w.pers.level) str += '\n\n' + LanguageManager.reference.localText("pip", 'wrLevel');
 							World.w.gui.dialText(<r mod='1'>{str}</r>,0,false,true);
 						}
 					break;

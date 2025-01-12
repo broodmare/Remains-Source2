@@ -21,20 +21,23 @@ package fe.inter {
 	*/
 	public class PipPageInv extends PipPage {
 		
-		private var assId:String=null;
+		private var assId:String = null;
 		private var assArr:Array;
-		private var actCurrent:String='';
+		private var actCurrent:String = "";
 		
 		private var overId:String;
 		private var overItem:Object;
 		private var over_t:int;
-		private var dat:Number=0;
+		private var dat:Number = 0;
 		
 		// Constructor
 		public function PipPageInv(npip:PipBuck, npp:String) {
-			isLC=isRC=true;
-			itemClass=visPipInvItem;
-			super(npip,npp);
+			isLC = true;
+			isRC = true;
+			itemClass = visPipInvItem;
+			
+			super(npip, npp);
+			
 			vis.butOk.addEventListener(MouseEvent.CLICK,showH);
 			// FILTERS - each array is a subcategory in the inventory, each index in the array is the filter.
 			tips = [
@@ -45,180 +48,297 @@ package fe.inter {
 				['',['valuables','money'],['spec','key'],['impl','art','instr','equip'],['stuff','compa','compw','compe','compm'],['compp','food'],'scheme'],
 				['','a','e']
 			];
+			
 			initCats();
 		}
 		
-		//подготовка страниц
+		// [Preparing pages]
 		override protected function setSubPages():void {
-			vis.butOk.visible=false;
-			statHead.cat.visible=false;
-			statHead.rid.visible=false;
-			pip.vis.butHelp.visible=true;
-			pip.vis.butMass.visible=World.w.hardInv;
+			vis.butOk.visible = false;
+			statHead.cat.visible = false;
+			statHead.rid.visible = false;
+			pip.vis.butHelp.visible = true;
+			pip.vis.butMass.visible = World.w.hardInv;
+			
 			setIco();
 			setCats();
-			assId=null;
-			dat=new Date().getTime();
-			if (page2!=4) {
-				setTopText('invupr'+page2);
+			
+			assId = null;
+			dat = new Date().getTime();
+			
+			if (page2 != 4) {
+				setTopText("invupr" + page2);
 			}
+			
 			inv.calcMass();
 			inv.calcWeaponMass();
-			if (page2==1) {		//оружие
+			
+			// Weapons page
+			if (page2 == 1) {
 				inv.getKolAmmos();
-				assArr=[];
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii3');
+				assArr = [];
+				
+				statHead.fav.text = LanguageManager.reference.localText("pip", 'ii1');
+				statHead.nazv.text = LanguageManager.reference.localText("pip", 'ii2');
+				statHead.hp.text = LanguageManager.reference.localText("pip", 'ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
-				statHead.ammotip.text=Res.pipText('ii4');
+				statHead.ammotip.text = LanguageManager.reference.localText("pip", 'ii4');
+				
 				for each(var obj in inv.weapons) {
 					if (obj is Weapon) {
-						var w:Weapon=obj as Weapon;
+						var w:Weapon = obj as Weapon;
 						
-						if (w.respect==3) continue;
+						if (w.respect == 3) {
+							continue;
+						}
 						
-						if (w.spell && World.w.alicorn) continue;
+						if (w.spell && World.w.alicorn) {
+							continue;
+						}
 						
-						if (w.spell && (inv.items[w.id]==null || inv.items[w.id].kol<=0)) continue;
+						if (w.spell && (inv.items[w.id] == null || inv.items[w.id].kol <= 0)) {
+							continue;
+						}
 						
 						w.setPers(gg, gg.pers);
 						
-						if (w.respect==1) {	//скрытый
-							if (!World.w.hardInv || World.w.loc.base || World.w.loc.train) vis.butOk.visible=true;
-							if (!pip.showHidden) continue;
+						// [Hidden]
+						if (w.respect==1) {	
+							if (!World.w.hardInv || World.w.loc.base || World.w.loc.train) {
+								vis.butOk.visible = true;
+							}
+							
+							if (!pip.showHidden) {
+								continue;
+							}
 						}
 						
-						if (w.alicorn && !World.w.alicorn) continue;
+						if (w.alicorn && !World.w.alicorn) {
+							continue;
+						}
 						
 						var trol:String = 'w' + w.skill;
 						
-						if (trol == 'w7') trol = 'w6';
+						if (trol == 'w7') {
+							trol = 'w6';
+						}
 						
-						if (curTip!='' && curTip!=null && curTip!=trol) continue;	//категория
+						// [Category]
+						if (curTip != "" && curTip != null && curTip != trol) {
+							continue;
+						}
 						
-						var avail:Boolean=true;
+						var avail:Boolean = true;
 						
-						if (w.avail()<=-1) avail=false;
+						if (w.avail() <= -1) {
+							avail = false;
+						}
 						
 						var n:Object = {tip:'w', id:w.id, nazv:w.nazv, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
 						
-						n.sort1=1;
+						n.sort1 = 1;
 						
-						if (!avail) n.sort1=2;
-						
-						if (n.respect==1) n.sort1=3;
-						
-						n.sort3=w.lvl;
-						n.sort2=w.skill;
-						
-						if (w.tip==5) n.sort3=w.perslvl;
-						
-						if (w.spell) n.sort3=900+w.perslvl;
-						
-						n.sort3=int(n.sort3);
-						
-						if (w.tip<4) {
-							n.hp=Math.round(w.hp/w.maxhp*100)+'%';
+						if (!avail) {
+							n.sort1 = 2;
 						}
 						
-						if (w.ammo!='' && w.ammo!=null) {
+						if (n.respect==1) {
+							n.sort1 = 3;
+						}
+						
+						n.sort3 = w.lvl;
+						n.sort2 = w.skill;
+						
+						if (w.tip == 5) {
+							n.sort3 = w.perslvl;
+						}
+						
+						if (w.spell) {
+							n.sort3 = 900 + w.perslvl;
+						}
+						
+						n.sort3 = int(n.sort3);
+						
+						if (w.tip < 4) {
+							n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
+						}
+						
+						if (w.ammo != "" && w.ammo != null) {
 							if (inv.ammos[w.ammoBase] == null) {
                                 n.ammo = inv.items[w.ammo].kol + w.hold;
-                            } else n.ammo = inv.ammos[w.ammoBase] + w.hold;
-							n.ammotip=(w.tip == 4) ? '' : inv.items[w.ammoBase].nazv;
+                            }
+							else {
+								n.ammo = inv.ammos[w.ammoBase] + w.hold;
+							}
+							
+							n.ammotip=(w.tip == 4) ? "" : inv.items[w.ammoBase].nazv;
 						}
 						
-						if (w.alicorn) n.nazv=Res.rainbow(n.nazv);
+						if (w.alicorn) {
+							n.nazv = Res.rainbow(n.nazv);
+						}
 						
 						arr.push(n);
-						assArr[n.id]=n;
+						assArr[n.id] = n;
 					}
 				}
-				pip.reqKey=true;
-				vis.butOk.text.text=Res.pipText('showhidden');
-				actCurrent='showhidden';
-				if (arr.length) arr.sortOn(['sort1','sort2','sort3','nazv'],[0,0,Array.NUMERIC,0]);
-				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
+				
+				pip.reqKey = true;
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'showhidden');
+				actCurrent = 'showhidden';
+				
+				if (arr.length) {
+					arr.sortOn(['sort1', 'sort2', 'sort3', 'nazv'], [0, 0, Array.NUMERIC, 0]);
+				}
+				
+				pip.massText = Res.txt('p', 'massInv0', 0, true) + '<br><br>' + Res.txt('p', 'massInv1', 0, true);
 			}
-			else if (page2==2) {	//броня
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii3');
-				statHead.ammo.text='';
-				statHead.mass.text='';
-				statHead.ammotip.text='';
+			// Armor page
+			else if (page2==2) {
+				statHead.fav.text		= LanguageManager.reference.localText("pip", 'ii1');
+				statHead.nazv.text		= LanguageManager.reference.localText("pip", 'ii2');
+				statHead.hp.text		= LanguageManager.reference.localText("pip", 'ii3');
+				statHead.ammo.text		= "";
+				statHead.mass.text		= "";
+				statHead.ammotip.text	= "";
+				
 				for (var s in inv.armors) {
-					if (s=='') continue;
-					var arm:Armor=inv.armors[s];
-					if (arm.lvl<0) continue;
-					if (curTip!='' && curTip!=null && curTip!='armor'+arm.tip) continue;	//категория
+					if (s == "") {
+						continue;
+					}
+					
+					var arm:Armor = inv.armors[s];
+					
+					if (arm.lvl < 0) {
+						continue;
+					}
+					
+					//категория
+					if (curTip != "" && curTip != null && curTip != "armor" + arm.tip) {
+						continue;
+					}	
+					
 					n={id:s, nazv:arm.nazv, clo:arm.clo, hp:Math.round(arm.hp/arm.maxhp*100)+'%', sort:arm.sort, trol:'armor'+arm.tip};
 					arr.push(n);
 				}
-				pip.reqKey=true;
-				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
-				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv2',0,true);
+				
+				pip.reqKey = true;
+				
+				if (arr.length) {
+					arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
+				}
+				
+				pip.massText = Res.txt('p', 'massInv0', 0, true) + '<br><br>' + Res.txt('p', 'massInv2', 0, true);
 			}
 			else if (page2==3 || page2==4 || page2==5) {	//снаряжение
-				assArr=[];
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii5');
-				statHead.ammotip.text=Res.pipText('ii6');
-				statHead.ammo.text='';
-				if (World.w.hardInv) statHead.mass.text=Res.pipText('ii8');
+				assArr = [];
+				statHead.fav.text		= LanguageManager.reference.localText("pip", 'ii1');
+				statHead.nazv.text		= LanguageManager.reference.localText("pip", 'ii2');
+				statHead.hp.text		= LanguageManager.reference.localText("pip", 'ii5');
+				statHead.ammotip.text	= LanguageManager.reference.localText("pip", 'ii6');
+				statHead.ammo.text		= "";
+				
+				if (World.w.hardInv) {
+					statHead.mass.text	= LanguageManager.reference.localText("pip", 'ii8');
+				}
+				
 				for (s in inv.items) {
-					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) continue;
-					var node = inv.items[s].xml;
-					if (node==null) continue;
+					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) {
+						continue;
+					}
 					
-					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) inv.items[s].nov=0;
-					if (inv.items[s].nov==2 && (dat-inv.items[s].dat)>1000*60*5) inv.items[s].nov=0;
-					if (!checkCat(node.@tip)) continue;
-					var itemTip=0;
-					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
-					else if (node.@us>0) itemTip=1;
+					var node = inv.items[s].xml;
+					
+					if (node==null) {
+						continue;
+					}
+					
+					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) {
+						inv.items[s].nov=0;
+					}
+					
+					if (inv.items[s].nov==2 && (dat-inv.items[s].dat)>1000*60*5) {
+						inv.items[s].nov=0;
+					}
+					
+					if (!checkCat(node.@tip)) {
+						continue;
+					}
+					
+					var itemTip = 0;
+					if (node.@tip == "a" || node.@tip == "e") {
+						itemTip = 2;
+					}
+					else if (node.@us > 0) {
+						itemTip = 1;
+					}
+					
 					if ((itemTip==1 && page2==3) || (itemTip==0 && page2==4) || (itemTip==2 && page2==5)) {
 						var tcat:String;
-						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
-						else tcat=Res.pipText('stuff');
-						n={tip:node.@tip, id:s, nazv:((node.@tip=='e')?Res.txt('w',s):inv.items[s].nazv), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
-						if (node.@tip=='valuables') n.price=node.@price;
-						if (node.@tip=='food' && node.@ftip=='1') {
-							n.trol='drink';
+						
+						if (Res.istxt('p',node.@tip)) {
+							tcat = LanguageManager.reference.localText("pip", node.@tip);
 						}
-						if (node.@tip=='spell' && inv.weapons[s] && inv.weapons[s].respect==1) continue;	//скрытое заклинание
-						n.sort=n.cat;
-						n.sort2=node.@sort.length()?node.@sort:0;
-						//патроны к текущему оружию вперёд
-						if (page2==5 && gg.currentWeapon && gg.currentWeapon.tip<4 && (gg.currentWeapon.ammoBase==node.@base || gg.currentWeapon.ammoBase==node.@id)) n.sort='0'+n.sort;
+						else {
+							tcat = LanguageManager.reference.localText("pip", 'stuff');
+						}
+						
+						n = {tip:node.@tip, id:s, nazv:((node.@tip == 'e') ? LanguageManager.reference.localText("weapon", s) : inv.items[s].nazv), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
+						
+						if (node.@tip == 'valuables') {
+							n.price = node.@price;
+						}
+						
+						if (node.@tip == 'food' && node.@ftip == '1') {
+							n.trol = 'drink';
+						}
+						
+						// [Hidden spell]
+						if (node.@tip == 'spell' && inv.weapons[s] && inv.weapons[s].respect==1) {
+							continue;
+						}
+						
+						n.sort = n.cat;
+						n.sort2 = node.@sort.length() ? node.@sort : 0;
+						
+						// [Cartridges for current weapon forward]
+						if (page2 == 5 && gg.currentWeapon && gg.currentWeapon.tip < 4 && (gg.currentWeapon.ammoBase == node.@base || gg.currentWeapon.ammoBase == node.@id)) {
+							n.sort = "0" + n.sort;
+						}
+						
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 				}
-				if (page2==3) pip.reqKey=true;
-				if (arr.length) arr.sortOn(['sort','sort2','nazv'],[0,Array.NUMERIC,0]);
+				
+				if (page2 == 3) {
+					pip.reqKey = true;
+				}
+				
+				if (arr.length) {
+					arr.sortOn(['sort', 'sort2', 'nazv'], [0, Array.NUMERIC, 0]);
+				}
+				
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv3',0,true);
 			}
 			
 			pip.helpText=Res.txt('p','helpInv'+page2,0,true);
 			
 			if (arr.length == 0) {
-				vis.emptytext.text=Res.pipText('emptyinv');
-				statHead.visible=false;
+				vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptyinv');
+				statHead.visible = false;
 			}
 			else {
-				vis.emptytext.text='';
-				statHead.visible=true;
+				vis.emptytext.text = "";
+				statHead.visible = true;
 			}
 			
 			showBottext();
 		}
 		
 		private function showBottext():void {
-			vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', pip.money);
+			vis.bottext.htmlText = LanguageManager.reference.localText("pip", 'caps') + ': ' + numberAsColor('yellow', pip.money);
 			if (World.w.hardInv) {
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
 				else if (page2==3) vis.bottext.htmlText+='    '+inv.retMass(1);
@@ -226,7 +346,6 @@ package fe.inter {
 				else if (page2==5) vis.bottext.htmlText+='    '+inv.retMass(2);
 			}
 		}
-		
 		
 		//показ одного элемента
 		override protected function setStatItem(item:MovieClip, obj:Object):void {
@@ -243,7 +362,9 @@ package fe.inter {
 				else if (inv.favIds[obj.id]>World.kolHK) item.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(inv.favIds[obj.id]-World.kolHK));
 				else item.fav.text=World.w.ctr.retKey('keyWeapon'+inv.favIds[obj.id]);
 			}
-			else item.fav.text='';
+			else {
+				item.fav.text = "";
+			}
 
 			try {
 				item.trol.gotoAndStop(obj.trol);
@@ -261,7 +382,8 @@ package fe.inter {
 				item.hp.text=(obj.hp==null)?'':obj.hp;
 				if (obj.ammo == null) {
                     item.ammo.text = item.ammotip.text = '';
-                } else {
+                }
+				else {
                     item.ammo.text = obj.ammo;
                     item.ammotip.text = obj.ammotip;
                 }
@@ -291,15 +413,23 @@ package fe.inter {
 				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
 				item.nazv.text=obj.nazv;
 				item.hp.text=obj.kol;
+				
 				if (World.w.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);
+				
 				if (obj.price && obj.tip=='valuables') item.ammo.text=obj.price;
 				else item.ammo.text='';
+				
 				if (item.fav.text=='') {
 					if (inv.items[obj.id].nov==1) item.fav.text='☩';
 					if (inv.items[obj.id].nov==2) item.fav.text='+';
 				}
-				if (obj.drop>0) item.ammotip.text=Res.pipText('drop')+': '+obj.drop;
-				else item.ammotip.text=obj.cat.substring(2);
+				
+				if (obj.drop > 0) {
+					item.ammotip.text = LanguageManager.reference.localText("pip", 'drop') + ': ' + obj.drop;
+				}
+				else {
+					item.ammotip.text = obj.cat.substring(2);
+				}
 			}
 		}
 		
@@ -336,11 +466,14 @@ package fe.inter {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			if (event.ctrlKey) {
 				itemRightClick(event);
 				return;
 			}
+			
 			var ci:String=event.currentTarget.id.text;
+			
 			if (page2==1) {
 				World.w.gg.changeWeapon(ci);
 				selItem=event.currentTarget as MovieClip;
@@ -348,8 +481,7 @@ package fe.inter {
 				pip.snd(1);
 			} 
 			else if (page2==2) {
-				if (World.w.gg.changeArmor(ci))
-				{
+				if (World.w.gg.changeArmor(ci)) {
 					setStatus(false);
 				}
 				pip.snd(1);
@@ -388,6 +520,7 @@ package fe.inter {
 				} 
 				else if (gg.currentWeapon && gg.currentWeapon.tip<=3 && gg.currentWeapon.holder>0) gg.currentWeapon.initReload(ci);
 			}
+			
 			pip.setRPanel();
 			showBottext();
 		}
@@ -397,6 +530,7 @@ package fe.inter {
 				World.w.gui.infoText('noAct');
 				return;
 			}
+			
 			if (page2==1) {
 				var obj=assArr[event.currentTarget.id.text];
 				obj.respect=World.w.invent.respectWeapon(event.currentTarget.id.text);
@@ -405,15 +539,23 @@ package fe.inter {
 				showBottext();
 				pip.snd(1);
 			}
+			
 			if (page2>=3) {
 				if (World.w.loc.base) {
 					World.w.gui.infoText('noDrop1',null,null,false);
 					return;
 				}
+				
 				var obj=assArr[event.currentTarget.id.text];
+				
 				if (obj.mass>0 && obj.tip!='book' && obj.tip!='sphera') {
-					if (event.shiftKey) obj.drop=obj.kol;
-					else obj.drop++;
+					if (event.shiftKey) {
+						obj.drop=obj.kol;
+					}
+					else {
+						obj.drop++;
+					}
+					
 					setStatItem(event.currentTarget as MovieClip, obj);
 					buttonOk('drop');
 				}
@@ -424,48 +566,59 @@ package fe.inter {
 		}
 		
 		public function assignKey(num:int):void {
-			trace('назначение клавиши',num,assId);
 			pip.snd(1);
-			var temp=assId;
+			var temp = assId;
+			
 			if (page2<=3 && assId!=null) {
 				World.w.invent.favItem(assId, num);
 				setStatus(false);
 			}
-			assId=temp;
+			
+			assId = temp;
 		}
 		
 		private function showH(event:MouseEvent):void {
-			if (actCurrent=='showhidden') {			//показать скрытое оружие
+			//показать скрытое оружие
+			if (actCurrent == 'showhidden') {
 				pip.showHidden=!pip.showHidden;
 				setStatus();
 				pip.snd(2);
 			}
-			else if (actCurrent=='retr') {		//Возврат на базу
+			//Возврат на базу
+			else if (actCurrent == 'retr') {
 				if (inv.items['retr'].kol>0 && World.w.game.triggers['noreturn']!=1) {
 					inv.minusItem('retr');
 					World.w.game.gotoLand(World.w.game.baseId);
 				}
+				
 				vis.butOk.visible=false;
 				pip.onoff(-1);
 			}
-			else if (actCurrent=='drop') {		//выбросить вещи
+			//выбросить вещи
+			else if (actCurrent == 'drop') {		
 				for each (var obj in arr) {
-					if (obj.drop>0) inv.drop(obj.id, obj.drop);
+					if (obj.drop>0) {
+						inv.drop(obj.id, obj.drop);
+					}
 				}
+				
 				vis.butOk.visible=false;
 				pip.onoff(-1);
 			}
 		}
 		
 		private function buttonOk(act:String):void {
-			vis.butOk.visible=true;
-			vis.butOk.text.text=Res.pipText(act);
-			actCurrent=act;
+			vis.butOk.visible = true;
+			vis.butOk.text.text = LanguageManager.reference.localText("pip", act);
+			actCurrent = act;
 		}
 		
 		
 		public override function step():void {
-			if (over_t > 0) over_t--;
+			if (over_t > 0) {
+				over_t--;
+			}
+			
 			if (over_t == 1 && overItem) {
 				try {
 					if (overItem.fav.text == '☩' || overItem.fav.text == '+') overItem.fav.text = '';

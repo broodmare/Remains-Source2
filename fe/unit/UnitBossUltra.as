@@ -30,7 +30,7 @@ package fe.unit {
 
 		private var emit_t:int = 0;
 		private var movePoints:Array = [{x:10, y:7}, {x:37, y:7}, {x:24, y:13}, {x:7, y:18}, {x:40, y:18}];
-		private var mp = 3;
+		private var mp:int = 3;
 		private var moveX:Number = 0;
 		private var moveY:Number = 0;
 		private var attState:int = 0;
@@ -64,15 +64,27 @@ package fe.unit {
 			aiTCh = 80;
 			shitArmor = 15;
 			
+			
 			// [Give weapons]
-			currentWeapon  = Weapon.create(this, 'robogatp');
-			currentWeapon2 = Weapon.create(this, 'robogatp2');
+			var weapData:Object;
+			weapData = ItemManager.reference.getWeapon("robogatp");
+			currentWeapon = Weapon.create(this, weapData);
+
+			weapData = ItemManager.reference.getWeapon("robogatp2");
+			currentWeapon2 = Weapon.create(this, weapData);
 			currentWeapon2.vis.visible = false;
-			dopWeapon = Weapon.create(this,'robomlau2');
-			gasWeapon = Weapon.create(this,'robogas');
-			thWeapon = Weapon.create(this,'roboplagr');
+
+			weapData = ItemManager.reference.getWeapon("robomlau2");
+			dopWeapon = Weapon.create(this, weapData);
+			
+			weapData = ItemManager.reference.getWeapon("robogas");
+			gasWeapon = Weapon.create(this, weapData);
+			
+			weapData = ItemManager.reference.getWeapon("roboplagr");
+			thWeapon = Weapon.create(this, weapData);
 			thWeapon.findCel = false;
 			(thWeapon as WThrow).kolAmmo = 100000;
+			
 			childObjs = [currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon];
 			
 			spd = new Object();
@@ -265,7 +277,7 @@ package fe.unit {
 					else aiState=1;
 				}
 				if (aiState==1) {	//выбор точки перемещения
-					var nmp=int(Math.random()*5);
+					var nmp:int = int(Math.random() * 5);
 					if (nmp==mp) nmp++;
 					if (nmp>=5) nmp=0;
 					mp=nmp;

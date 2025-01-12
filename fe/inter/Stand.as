@@ -9,7 +9,7 @@ package fe.inter {
 	import flash.geom.Matrix;
 	
 	import fe.*;
-	import fe.unit.Invent;
+	import fe.unit.Inventory;
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
@@ -26,7 +26,7 @@ package fe.inter {
 		private var weapons:Array;
 		private var arts:Array;
 		private var armors:Array;
-		public var inv:Invent;
+		public var inv:Inventory;
 		
 		private var kolPages:int=9;
 		private var kolLevels:int=6;
@@ -41,7 +41,7 @@ package fe.inter {
 		private var info:MovieClip;
 		
 		// Constructor
-		public function Stand(vstand:MovieClip, ninv:Invent) {
+		public function Stand(vstand:MovieClip, ninv:Inventory) {
 			vis = vstand;
 			inv = ninv;
 			pages	= new Vector.<MovieClip>(kolPages, true);
@@ -56,7 +56,7 @@ package fe.inter {
 				page.visible = false;
 				vis.addChild(page);
 				pages[i] = page;
-				var but:MovieClip = new butStand(); // SWF Dependency
+				var but:MovieClip = new butStand(); // .SWF Dependency
 				but.id.text = i;
 				but.id.visible = false;
 				but.ico.gotoAndStop(i + 2);

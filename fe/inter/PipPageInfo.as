@@ -114,7 +114,7 @@ package fe.inter {
 			game=World.w.game;
 			if (page2==1) {		//карта
 				if (World.w.loc.noMap) {
-					vis.emptytext.text=Res.pipText('emptymap');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptymap');
 				}
 				else {
 					vis.emptytext.text='';
@@ -137,7 +137,7 @@ package fe.inter {
 							var q:Quest = game.quests[task.@id];
 							if (q == null || q.state == 0) {
 								vis.butOk.visible = true;
-								vis.butOk.text.text = Res.pipText('alltask');
+								vis.butOk.text.text = LanguageManager.reference.localText("pip", 'alltask');
 								break;
 							}
 						}
@@ -201,7 +201,7 @@ package fe.inter {
 						if (World.w.testMode || land.visited || land.access) sim.visible = true;
 					}
 				}
-				vis.butOk.text.text = Res.pipText('trans');
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'trans');
 				visWMap.visible = true;
 				pip.vis.butHelp.visible = true;
 				pip.helpText = Res.txt('p', 'helpWorld', 0, true);
@@ -233,7 +233,7 @@ package fe.inter {
 				statHead.visible=true;
 				statHead.nazv.text='';
 				statHead.mq.visible=false;
-				statHead.kol.text=Res.pipText('frag');
+				statHead.kol.text=LanguageManager.reference.localText("pip", 'frag');
 				vis.ico.visible=true;
 
 				for each(var xml in cachedUnitList) {
@@ -278,7 +278,7 @@ package fe.inter {
 				item.mq.gotoAndStop(1);
 				if (obj.state==2) {
 					item.nazv.alpha=item.mq.alpha=0.4;
-					item.nazv.text+=' ('+Res.pipText('done')+')';
+					item.nazv.text+=' ('+LanguageManager.reference.localText("pip", 'done')+')';
 				}
 				else {
 					item.nazv.alpha=item.mq.alpha=1;
@@ -321,52 +321,52 @@ package fe.inter {
 				var s:String = Res.txt('m',l.id,1);
 				
 				if (l.visited) {
-					if (l.passed) s += "\n\n<span class ='orange'>" + Res.pipText('ls2') + "</span>";							// "Cleared" message
-					else if (l.tip == 'base') s += "\n\n<span class ='orange'>" + Res.pipText('ls4') + "</span>";						// "Base camp" message
-					else if (l.tip == 'rnd') s += "\n\n<span class ='yellow'>" + Res.pipText('ls3') + ": " + (l.landStage + 1) + "</span>";
+					if (l.passed) s += "\n\n<span class ='orange'>" + LanguageManager.reference.localText("pip", 'ls2') + "</span>";							// "Cleared" message
+					else if (l.tip == 'base') s += "\n\n<span class ='orange'>" + LanguageManager.reference.localText("pip", 'ls4') + "</span>";						// "Base camp" message
+					else if (l.tip == 'rnd') s += "\n\n<span class ='yellow'>" + LanguageManager.reference.localText("pip", 'ls3') + ": " + (l.landStage + 1) + "</span>";
 				}
 				else {
-					s += "\n\n<span class ='blue'>" + Res.pipText('ls1') + "</span>";	// "Location level reached" message
+					s += "\n\n<span class ='blue'>" + LanguageManager.reference.localText("pip", 'ls1') + "</span>";	// "Location level reached" message
 				}
 				
 				if (l.tip == 'rnd' && l.kolAllProb > 0) {
 					if (l.kolClosedProb >= l.kolAllProb) { // If all trials complete, print in green
-						s += "\n" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
+						s += "\n" + LanguageManager.reference.localText("pip", 'kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
 					}
 					else { // Otherwise, print in yellow
-						s += "\n<span class ='yellow'>" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
+						s += "\n<span class ='yellow'>" + LanguageManager.reference.localText("pip", 'kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
 					}
 				}
 				
 				if (l.dif > 0) { // "Reccomended level" message
 					if (World.w.pers.level < l.dif) { // Player below reccomended level, highlight red
 						//trace('Highlighting level requirement. Requirement not met. 	Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
-						s += '\n\n' + "<span class = 'red'>"+ Res.pipText('recLevel') + ' ' + Math.round(l.dif) + "</span>";
+						s += '\n\n' + "<span class = 'red'>"+ LanguageManager.reference.localText("pip", 'recLevel') + ' ' + Math.round(l.dif) + "</span>";
 					}
 					else {
 						//trace('Highlighting level requirement. Requirement met. Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
-						s += '\n\n' + Res.pipText('recLevel') + ' ' + Math.round(l.dif);
+						s += '\n\n' + LanguageManager.reference.localText("pip", 'recLevel') + ' ' + Math.round(l.dif);
 					}
 
 					
 				}
 				
 				if (l.dif>World.w.pers.level) {
-					s += '\n\n' + Res.pipText('wrLevel');
+					s += '\n\n' + LanguageManager.reference.localText("pip", 'wrLevel');
 				}
 				
 				if (World.w.pers.speedShtr>=3) {
-					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr3'));
+					s += '\n\n' + textAsColor('red', LanguageManager.reference.localText("pip", 'speedshtr3'));
 				}
 				else if (World.w.pers.speedShtr==2) {
-					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr2'));
+					s += '\n\n' + textAsColor('red', LanguageManager.reference.localText("pip", 'speedshtr2'));
 				}
 				else if (World.w.pers.speedShtr==1) {
-					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr1'));
+					s += '\n\n' + textAsColor('red', LanguageManager.reference.localText("pip", 'speedshtr1'));
 				}
 				
 				if (World.w.pers.speedShtr >= 1) {
-					s += '\n' + Res.pipText('speedshtr0');
+					s += '\n' + LanguageManager.reference.localText("pip", 'speedshtr0');
 				}
 				
 				vis.info.htmlText=s;
@@ -444,24 +444,24 @@ package fe.inter {
 				var node=un.comb[0];
 				if (n>=1) {
 					//ХП
-					s+=Res.pipText('hp')+': '+textAsColor('yellow', v_hp)+'\n';
+					s+=LanguageManager.reference.localText("pip", 'hp')+': '+textAsColor('yellow', v_hp)+'\n';
 					//порог урона и броня
-					if (v_skin) 	s+=Res.pipText('skin')+': '+textAsColor('yellow', v_skin)+'\n';
+					if (v_skin) 	s+=LanguageManager.reference.localText("pip", 'skin')+': '+textAsColor('yellow', v_skin)+'\n';
 					if (v_aqual) {
-						if (v_armor) 	s+=Res.pipText('armor')+': '+textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=Res.pipText('marmor')+': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=LanguageManager.reference.localText("pip", 'armor')+': '+textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
+						if (v_marmor) 	s+=LanguageManager.reference.localText("pip", 'marmor')+': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
 				if (n>=2) {
 					if ((v_visdam==1 || v_visdam==3) && v_damage) {
-						s+=Res.pipText('dam_melee')+': ';
-						if (v_tipdam) s+=textAsColor('blue', Res.pipText('tipdam'+v_tipdam)); else s+=textAsColor('blue', Res.pipText('tipdam2'));
+						s+=LanguageManager.reference.localText("pip", 'dam_melee')+': ';
+						if (v_tipdam) s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_tipdam)); else s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam2'));
 						s+=' ('+textAsColor('yellow', v_damage)+')\n'
 					}
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) {
-						s+=Res.pipText('dam_shoot')+': ';
-						if (v_stipdam) s+=textAsColor('blue', Res.pipText('tipdam'+v_stipdam)); else s+=textAsColor('blue', Res.pipText('tipdam0'));
+						s+=LanguageManager.reference.localText("pip", 'dam_shoot')+': ';
+						if (v_stipdam) s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_stipdam)); else s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam0'));
 						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
 					}
 					if (un.w.length()) {
@@ -469,7 +469,7 @@ package fe.inter {
 						for each (var weap in un.w) {
 							if (!(weap.@no>0)) {
 								if (wk) s+=', ';
-								else s+=Res.pipText('enemy_weap')+': ';
+								else s+=LanguageManager.reference.localText("pip", 'enemy_weap')+': ';
 								s+=textAsColor('blue', Res.txt('w', weap.@id));
 								try {
 									var w = Weapon.getWeaponInfo(weap.@id);
@@ -489,14 +489,14 @@ package fe.inter {
 				}
 				//уклонение
 				if (n>=3) {
-					if (v_dexter!=null) 	s+=Res.pipText('dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=Res.pipText('observ')+': '+textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=Res.pipText('weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
+					if (v_dexter!=null) 	s+=LanguageManager.reference.localText("pip", 'dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=LanguageManager.reference.localText("pip", 'observ')+': '+textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
+					if (v_skill!=null) 	s+=LanguageManager.reference.localText("pip", 'weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
 			//сопротивления
 			if (n>=3 && un.vulner.length()) {
-				s+=Res.pipText('resists')+': ';
+				s+=LanguageManager.reference.localText("pip", 'resists')+': ';
 				node=un.vulner[0];
 				if (node.@emp.length()) 	s+=vulner(Unit.D_EMP,node.@emp);
 				if (node.@bul.length()) 	s+=vulner(Unit.D_BUL,node.@bul);
@@ -515,7 +515,7 @@ package fe.inter {
 		}
 		
 		private function vulner(n:int, val:Number):String {
-			return textAsColor('blue', Res.pipText('tipdam' + n))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
+			return textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam' + n))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
 		}
 		
 		override protected function itemClick(event:MouseEvent):void {

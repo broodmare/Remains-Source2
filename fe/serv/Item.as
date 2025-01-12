@@ -46,8 +46,6 @@ package fe.serv {
 		public var fc:int = -1;					// [Popup color]
 		public var invis:Boolean = false;		// 
 		
-		public var kol:int = 0;					// Quantity in the player's inventory
-		public var vault:int = 0;				// Quantity in storage
 		public var invCat:int = 3;				// What iventory page this items goes into on your pip-buck
 		public var sost:Number = 1;				// [Loot status]
 		public var multHP:Number = 1;			// [HP multiplier]
@@ -181,7 +179,7 @@ package fe.serv {
 				
 				// Get the localizeed name of the ammo variant
 				if ("mod" in _data) {
-					nazv += ' (' + Res.pipText('am_' + _data.mod) + ')';
+					nazv += ' (' + LanguageManager.reference.localText("pip", 'am_' + _data.mod) + ')';
 				}
 			}
 			else {
@@ -198,7 +196,7 @@ package fe.serv {
 				var wid:String = id.substr(2);
 
 				// Get a formatted localized name based on the workbench type required ("Scheme «xyz»" or "Recipe «xyz»")
-				var prefix:String = (_data.work == "work") ? Res.pipText("scheme1") : Res.pipText("recipe");
+				var prefix:String = (_data.work == "work") ? LanguageManager.reference.localText("pip", "scheme1") : LanguageManager.reference.localText("pip", "recipe");
 				nazv = prefix + " «" + Res.txt('i', wid) + "»";
 			}
 			

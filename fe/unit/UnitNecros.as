@@ -34,6 +34,7 @@ package fe.unit {
 				if (velocity.X * velocity.X + velocity.Y * velocity.Y > maxSpeed * maxSpeed || rasst2 < 10000) {
 					velocity.multiply(0.80);
 				}
+				
 				if (aiState!=1) {
 					velocity.multiply(0.80);
 				}
@@ -60,9 +61,11 @@ package fe.unit {
 		
 		override protected function control():void {
 			if (sost>=3) return;
+			
 			if (World.w.enemyAct<=0) {
 				return;
 			}
+			
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
 			else {						//смена состояний
 				if (aiSpok==0) {	//перейти в пассивный режим
@@ -74,7 +77,9 @@ package fe.unit {
 				else {
 					aiState=2;
 				}
+				
 				aiTCh=Math.floor(Math.random()*100)+100;
+				
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					if (aiTip!='stay' && isrnd()) {
 						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? 1:-1);
@@ -90,6 +95,7 @@ package fe.unit {
 					}
 				}
 			}
+			
 			//поиск цели
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
@@ -100,6 +106,7 @@ package fe.unit {
 				else {
 					if (aiSpok>0) aiSpok--;
 				}
+				
 				spd.x = celX - coordinates.X;
 				spd.y = celY - this.boundingBox.top;
 				norma(spd,aiState==0?accel/2:accel);

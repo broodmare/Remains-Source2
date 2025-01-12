@@ -60,11 +60,11 @@ package fe.inter {
 			statHead.ns.visible = false;
 			statHead.id.visible = false;
 			statHead.cat.visible = false;
-			statHead.nazv.text = Res.pipText('ii2');
-			statHead.kol.text = Res.pipText('ii7');
+			statHead.nazv.text = LanguageManager.reference.localText("pip", 'ii2');
+			statHead.kol.text = LanguageManager.reference.localText("pip", 'ii7');
 			statHead.kol.width = 170;
-			statHead.mass.text  = World.w.hardInv ? Res.pipText('ii8') : "";
-			statHead.mass2.text = World.w.hardInv ? Res.pipText('ii9') : "";
+			statHead.mass.text  = World.w.hardInv ? LanguageManager.reference.localText("pip", 'ii8') : "";
+			statHead.mass2.text = World.w.hardInv ? LanguageManager.reference.localText("pip", 'ii9') : "";
 			setTopText('vaultupr');
 			vis.butOk.visible = false;
 			
@@ -78,10 +78,10 @@ package fe.inter {
 					var tcat:String;
 					
 					if (Res.istxt('p', node.@tip)) {
-						tcat = Res.pipText(node.@tip);
+						tcat = LanguageManager.reference.localText("pip", node.@tip);
 					}
 					else {
-						tcat = Res.pipText('stuff');
+						tcat = LanguageManager.reference.localText("pip", 'stuff');
 					}
 					
 					var n = {tip:node.@tip, id:s, nazv:((node.@tip == 'e') ? Res.txt('w', s):inv.items[s].nazv), kol:inv.items[s].kol, vault:inv.items[s].vault, mass : inv.items[s].mass, cat:tcat, trol:node.@tip};
@@ -110,7 +110,7 @@ package fe.inter {
 			}
 			
 			if (page2 == 2 || page2 == 3) {
-				vis.butOk.text.text = Res.pipText('tovault');
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'tovault');
 				vis.butOk.visible = true;
 			}
 				

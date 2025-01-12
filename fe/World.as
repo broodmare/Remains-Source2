@@ -1,4 +1,4 @@
-package  fe {
+package fe {
 
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
@@ -20,16 +20,17 @@ package  fe {
 	import fe.serv.LootGen;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
-	import fe.unit.Invent;
+	import fe.unit.Inventory;
+	import fe.unit.Favorites;
 	import fe.unit.Pers;
 	
 	public class World {
 
 		public static var w:World;					// Publically Accessible reference to this instance of World
-		private static var itemManager:ItemManager;	// Stores all items
+		private static var itemManager:ItemManager;	// Stores all item data
 		
 
-		//Визуальные составляющие
+		// Visual components
 		public var main:Sprite;			//Главный спрайт игры
 		public var swfStage:Stage;
 		public var languageManager:LanguageManager;	// Publically Accessible reference to the langauge manager
@@ -46,50 +47,55 @@ package  fe {
 		public var verror:MovieClip;	//окно ошибки
 		public var vconsol:MovieClip;	//Консоль
 	
-		//Все главные компоненты
+		// All main components
 		public var mainMenuClass:MainMenu;
-		public var cam:Camera;			//камера
-		public var ctr:Ctr;				//управление
-		public var consol:Consol;		//консоль
-		public var game:Game;			//Игра
-		public var gg:UnitPlayer;		//Юнит ГГ
-		public var pers:Pers;			//Персонаж
-		public var invent:Invent;		//Инвентарь
-		public var gui:GUI;				//GUI
-		public var grafon:Grafon;		//Графика
-		public var pip:PipBuck;			//Пипбак
-		public var stand:Stand;			//Стенд
-		public var sats:Sats;			//ЗПС
-		public var app:Appear;			//настройки внешности персонажа
+		public var cam:Camera;			// Camera
+		public var ctr:Ctr;				// Input controller
+		public var consol:Consol;		// Command console
+		public var game:Game;			// Game container
+		public var gg:UnitPlayer;		// Player unit
+		public var pers:Pers;			// Player stats
+		public var invent:Inventory;	// Player inventory
+		public var vault:Inventory;		// Global storage for the player
+		public var favorites:Favorites;	// Inventory hotkeys
+		public var gui:GUI;				// GUI
+		public var grafon:Grafon;		// Renderer
+		public var pip:PipBuck;			// Pipbuck (Menus)
+		public var stand:Stand;			// Item stand 
+		public var sats:Sats;			// SATS
+		public var app:Appear;			// Appearance customizer
 		
-		//Компоненты локаций
+		// Location components
 		public var land:Land;		// [Current land]
 		public var loc:Location;	// [Current location]
 		public var rooms:Array;
 		
-		//Рабочие переменные
+		// Operating Variables
 		public var consoleActive:Boolean = false;	// Console active
-		public var onPause:Boolean=false;	//игра на тестовой паузе
-		public var allStat:int=0; 			//общий статус 0 - игра не началась
-		public var celX:Number;				//координаты курсора в системе отсчёта локации
+		public var onPause:Boolean=false;			// Game is paused
+		public var allStat:int=0;					// [General status 0 - game has not started]
+		public var celX:Number;						// [Cursor coordinates in the location reference system]
 		public var celY:Number;
-		public var t_battle:int=0;			//идёт бой или нет
-		public var t_die:int=0;				//гг сдох
-		public var t_exit:int=0;			//выход из местности
-		public var gr_stage:int=0;			//стадия прорисовки локации
-		public var checkLoot:Boolean=false;	//пересчитать автозабирание лута
-		public var calcMass:Boolean=false;	//пересчитать массу
-		public var calcMassW:Boolean=false;	//пересчитать массу оружия
-		public var lastCom:String=null;
-		public var armorWork:String='';		//временное отображение брони
-		public var mmArmor:Boolean=false;	//броня в главном меню
-		public var catPause:Boolean=false;	//пауза для показа сцены
+		public var t_battle:int=0;					// Battle timer
+		public var t_die:int=0;						// If the player is dead
+		public var t_exit:int=0;					// [Exit from the area]
+		public var gr_stage:int=0;					// Current stage of Grafon while rendering 
+		public var checkLoot:Boolean=false;			// [Recalculate auto loot pickup]
 		
-		public var testLoot:Boolean=false;	// [Testing loot and experience]
+		// Update player inventory weight
+		public var calcMass:Boolean = false;		// [Recalculate mass]
+		public var calcMassW:Boolean = false;		// [Recalculate the mass of weapons]
+		
+		public var lastCom:String=null;
+		public var armorWork:String='';				// [Temporary display of armor]
+		public var mmArmor:Boolean=false;			// [Armor in the main menu]
+		public var catPause:Boolean=false;			// [Pause for scene]
+		
+		public var testLoot:Boolean=false;			// [Testing loot and experience]
 		public var summxp:int=0;
 		private var ccur:String;
 		
-		public var currentMusic:String = '';
+		public var currentMusic:String = "";
 		
 		// [Settings Variables]
 		public var enemyAct:int=3;					//активность врагов, должно быть 3. Если 0, враги будут не активны
@@ -175,7 +181,7 @@ package  fe {
 		private var saveArr:Array;
 		public var saveKol:int = 10;
 		private var t_save:int = 0;
-		public var loaddata:Object;			//данные, загружаемые из файла
+		public var loaddata:Object;			// [Data loaded from file]
 		public var nadv:int=0;
 		public var koladv:int;				// How many advice snippets are loaded
 		public var load_log:String='';
@@ -195,6 +201,7 @@ package  fe {
 		public var autoSaveN:int=0;		//номер ячейки автосейва
 		public var log:String='';
 
+		// Used for the timer to measure in-game processes
 		private var d1:int;
 		private var d2:int;
 		
@@ -304,8 +311,7 @@ package  fe {
 			}
 
 			koladv = languageManager.data.advice.length;
-			trace("Length is: " + koladv);
-
+			
 			if (configObj.data.nadv) {
 				nadv = configObj.data.nadv;
 				configObj.data.nadv++;
@@ -434,12 +440,12 @@ package  fe {
 			sats=new Sats(vsats);
 			time___metr('Interface');
 			
-			//создать игру
+			// [Create a game]
 			if (nload == 99) {
-				data=loaddata;	//была загрузка из файла
+				data=loaddata;	// [was loading from a file]
 			}
 			else {
-				data = saveArr[nload].data; //была загрузка из слота
+				data = saveArr[nload].data; // [there was loading from the slot]
 			}
 			
 			if (ng)	{
@@ -483,11 +489,11 @@ package  fe {
 			gg.sats = sats;
 			sats.gg = gg;
 			gui.gg = gg;
-			
+
 			// [Create inventory]
-			invent = new Invent(itemManager, gg, data.invent, opt);
-			stand = new Stand(vstand, invent);
 			gg.attach();
+			invent = gg.invent;
+			stand = new Stand(vstand, invent);
 			
 			time___metr('Character');
 			
@@ -514,20 +520,22 @@ package  fe {
 			vblack.alpha=1;
 			cam.dblack=-10;
 			pip.onoff(-1);
-			//войти в текущую местность
+			// [Enter the current area]
 			game.enterToCurLand();//!!!!
 			Snd.setTempMute(false);
 			gui.setAll();
 			allStat = 1;
+			
 			if (game.triggers["Quickstart"] == 1){
 				trace("World.as/newGame2() - Adding quickstart equipment");
 				game.runScript("giveQuickstartItems");
 				game.setTrigger("Quickstart", 0);
 			}
+			
 			ng_wait = 0;
 		}
 		
-		public function loadGame(nload:int=0):void {
+		public function loadGame(nload:int = 0):void {
 			time___metr();
 			comLoad = -1;
 			
@@ -540,12 +548,16 @@ package  fe {
 
 			cur('arrow');
 
-			//объект загрузки
+			// Attempt to load saved data
 			var data:Object;
-			if (nload==99) data=loaddata;
-			else data=saveArr[nload].data;
+			if (nload == 99) {
+				data = loaddata;
+			}
+			else {
+				data = saveArr[nload].data;
+			}
 
-			//создать игру
+			// [Create a game]
 			Snd.setTempMute(true);
 			
 			cam.showOn = false;
@@ -557,50 +569,63 @@ package  fe {
 				hardInv = false;
 			}
 			
-			game=new Game();
+			game = new Game();
 			
 			game.init(data.game);
 			app.load(data.app);
 			
-			//создать персонажа
+			// [Create a character]
 			pers = new Pers(data.pers);
 			
-			//создать юнит ГГ
+			// Create a new player unit
 			gg = new UnitPlayer();
-			gg.ctr=ctr;
-			gg.sats=sats;
-			sats.gg=gg;
-			gui.gg=gg;
+			gg.ctr = ctr;
+			gg.sats = sats;
+			sats.gg = gg;
+			gui.gg = gg;
 			
-			//создат инвентарь
-			invent = new Invent(itemManager, gg, data.invent);
-			
-			if (stand) stand.inv=invent;
-			else stand=new Stand(vstand, invent);
-			
+			// Create inventory and load saved inventory
 			gg.attach();
+			invent.loadInventory(data);
 			
-			//номер ячейки автосейва
-			if (data.n!=null) autoSaveN=data.n;
+			if (stand) {
+				stand.inv = invent;
+			}
+			else {
+				stand = new Stand(vstand, invent);
+			}
+			
+			// [Autosave cell number]
+			if (data.n != null) {
+				autoSaveN = data.n;
+			}
 			
 			offLoadScreen();
-			vgui.visible=vfon.visible=visual.visible=true;
-			vblack.alpha=1;
-			cam.dblack=-10;
+			vgui.visible = true;
+			vfon.visible = true;
+			visual.visible = true;
+			vblack.alpha = 1;
+			cam.dblack = -10;
+			
 			pip.onoff(-1);
 			gui.allOn();
+			
 			t_die=0;
 			t_battle=0;
 			time___metr('Character');
-			//войти в текущую местность
-			game.enterToCurLand();//!!!!
-			log='';
+			
+			// [Enter the current area]
+			game.enterToCurLand();		//!!!!
+			
+			log = "";
+			
 			Snd.setTempMute(false);
 			gui.setAll();
-			allStat=1;
+			
+			allStat = 1;
 		}
 		
-		//вызов при входе в конкретную местность
+		// [Call upon entering a specific area]
 		public function ativateLand(nland:Land):void {
 			land = nland;
 			grafon.drawFon(vfon, land.act.fon);
@@ -618,7 +643,11 @@ package  fe {
 			currentMusic = loc.sndMusic;
 			Snd.playMusic(currentMusic);
 			gui.hpBarBoss();
-			if (t_die <= 0) this.gg.controlOn();
+			
+			if (t_die <= 0) {
+				this.gg.controlOn();
+			}
+			
 			gui.dialText();
 			pers.invMassParam();
 			gc();	// Run garbage collection if required
@@ -646,73 +675,105 @@ package  fe {
 		
 		private function exitStep():void {
 			t_exit--;
-			if (t_exit==99) cam.dblack=1.5;
-			if (t_exit==20) {
-				vblack.alpha=0;
-				cam.dblack=0;
+			
+			if (t_exit == 99) {
+				cam.dblack = 1.5;
+			}
+			
+			if (t_exit == 20) {
+				vblack.alpha = 0;
+				cam.dblack = 0;
 				setLoadScreen(getLoadScreen());
 				Snd.setTempMute(true);
 			}
-			if (t_exit==19) {
+			
+			if (t_exit == 19) {
 				cur('arrow');
 				game.enterToCurLand();
 			}
-			if (t_exit==18 && clickReq>0) waitLoadClick();
-			if (t_exit==16) {
+			
+			if (t_exit == 18 && clickReq > 0) {
+				waitLoadClick();
+			}
+			
+			if (t_exit == 16) {
 				Mouse.show();
 				Snd.setTempMute(false);
 				offLoadScreen();
-				vgui.visible=vfon.visible=visual.visible=true;
-				vblack.alpha=1;
-				cam.dblack=-10;
+				vgui.visible = true;
+				vfon.visible = true;
+				visual.visible = true;
+				vblack.alpha = 1;
+				cam.dblack = -10;
 				gg.controlOn();
-				pip.noAct=false;
+				pip.noAct = false;
 			}
-			if (t_exit==1) {
+			
+			if (t_exit == 1) {
 				gui.allOn();
 			}
 		}
 		
 		private function ggDieStep():void {
 			t_die--;
-			if (t_die==200) cam.dblack=2.2;
-			if (t_die==150) {
+			
+			if (t_die == 200) {
+				cam.dblack = 2.2;
+			}
+			
+			if (t_die == 150) {
 				if (alicorn) {
 					game.runScript('gameover');
-					t_die=0;
-				} else {
-					if (gg.sost==3) {
-						game.curLandId=game.baseId;
+					t_die = 0;
+				}
+				else {
+					if (gg.sost == 3) {
+						game.curLandId = game.baseId;
 						game.enterToCurLand();
-					} else {
+					}
+					else {
 						land.gotoCheckPoint();
 					}
-					cam.dblack=-4;
-					gg.vis.visible=true;
+					
+					cam.dblack = -4;
+					gg.vis.visible = true;
 				}
 			}
-			if (t_die==100) gg.resurect();
-			if (t_die==1) {
+			
+			if (t_die == 100) {
+				gg.resurect();
+			}
+			
+			if (t_die == 1) {
 				gg.controlOn();
 			}
 		}
 
 		//Main Loop
 		public function step():void {
-			if (verror.visible) return;
+			
+			if (verror.visible) {
+				return;
+			}
 			
 			ctr.step();	// Player input			
 			Snd.step();	// Sound
+			
 			if (ng_wait > 0) {
 				if (ng_wait == 1) {
 					newGame1();
 				}
 				else if (ng_wait == 2) {
-					if (clickReq!=1) newGame2();
+					if (clickReq != 1) {
+						newGame2();
+					}
 				}
 				return;
 			}
-			if (!consoleActive && !pip.active) swfStage.focus = swfStage;
+			
+			if (!consoleActive && !pip.active) {
+				swfStage.focus = swfStage;
+			}
 			
 			// [Only if the game has started and is not paused, game loops]
 			if (allStat==1 && !onPause) {
@@ -738,11 +799,11 @@ package  fe {
 
 				// [if you need to recalculate the mass]
 				if (calcMass) {
-					invent.calcMass();
+					ItemInteraction.calcMass(invent);
 					calcMass = false;
 				}
 				if (calcMassW) {
-					invent.calcWeaponMass();
+					ItemInteraction.calcWeaponMass(invent);
 					calcMassW = false;
 				}
 
@@ -773,39 +834,50 @@ package  fe {
 				gui.step();
 				pip.step();
 				sats.step();
+				
 				if (ctr.keyPip) {
 					if (!sats.active) pip.onoff();
 					ctr.keyPip=false;
 				}
+				
 				if (ctr.keyInvent) {
 					if (!sats.active) pip.onoff(2);
 					ctr.keyInvent=false;
 				}
+				
 				if (ctr.keyStatus) {
 					if (!sats.active) pip.onoff(1,1);
 					ctr.keyStatus=false;
 				}
+				
 				if (ctr.keySkills) {
 					if (!sats.active) pip.onoff(1,2);
 					ctr.keySkills=false;
 				}
+				
 				if (ctr.keyMed) {
 					if (!sats.active) pip.onoff(1,5);
 					ctr.keyMed=false;
 				}
+				
 				if (ctr.keyMap) {
 					if (!sats.active) pip.onoff(3,1);
 					ctr.keyMap=false;
 				}
+				
 				if (ctr.keyQuest) {
 					if (!sats.active) pip.onoff(3,2);
 					ctr.keyQuest=false;
 				}
+				
 				if (ctr.keySats) {
-					if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
-					ctr.keySats=false;
+					if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) {
+						sats.onoff();
+					}
+					ctr.keySats = false;
 				}
-				allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
+				
+				allStat = (pip.active || sats.active || stand.active || gui.guiPause) ? 2 : 1;
 				
 				if (consol && consol.consoleIsVisible && !consoleActive) {
 					trace('World.as/step() - Console is visible but not active, hiding!');
@@ -877,34 +949,42 @@ package  fe {
 				return;
 			}
 
-			verror.info.text=Res.pipText('error');
-			verror.butClose.text.text=Res.pipText('err_close');
-			verror.butForever.text.text=Res.pipText('err_dont_show');
-			verror.butCopy.text.text=Res.pipText('err_copy_to_clipboard');
+			verror.info.text=LanguageManager.reference.localText("pip", 'error');
+			verror.butClose.text.text=LanguageManager.reference.localText("pip", 'err_close');
+			verror.butForever.text.text=LanguageManager.reference.localText("pip", 'err_dont_show');
+			verror.butCopy.text.text=LanguageManager.reference.localText("pip", 'err_copy_to_clipboard');
 
 			verror.txt.text=err.message+'\n'+err.getStackTrace();
 			verror.txt.text+='\n'+'gr_stage: '+gr_stage;
-			if (dop!=null) verror.txt.text+='\n'+dop;
-			verror.visible=true;
+			
+			if (dop != null) {
+				verror.txt.text += '\n' + dop;
+			}
+			
+			verror.visible = true;
 		}
 		
 		// [Action measurement time]
 		public function time___metr(message:String = null):void {
 			d2 = getTimer();
 			var timeDif:int = d2 - d1;
-			if (message != null) trace("time__metr -- " + message + ': ' + timeDif.toString());
+			
+			if (message != null) {
+				trace("time__metr -- " + message + ': ' + timeDif.toString());
+			}
+			
 			d1 = d2;
 		}
 		
 		public function gc():void {
-			//System.pauseForGCIfCollectionImminent(0.25);	// The game is actively running, no need to spend extra time waiting
+			System.pauseForGCIfCollectionImminent(0.25);
 		}
 		
 //=============================================================================================================
-//			Экран загрузки
+//			Loading screen
 //=============================================================================================================
 		
-		//установить экран загрузки
+		// [Set loading screen]
 		public function setLoadScreen(n:int=-1):void {
 			loadScreen=n;
 			vwait.story.lmb.stop();
@@ -913,6 +993,7 @@ package  fe {
 			vwait.visible=true;
 			catPause=false;
 			vwait.progres.text=Res.txt("g", 'loading');
+			
 			if (n < 0) {
 				vwait.x = swfStage.stageWidth / 2;
 				vwait.y = swfStage.stageHeight / 2;
@@ -928,14 +1009,17 @@ package  fe {
 				vwait.story.visible = true;
 				vwait.skill.visible = false;
 				vwait.progres.visible = false;
+				
 				if (n == 0) {
 					vwait.story.txt.htmlText = '<i>' + Res.txt("g", 'story') + '</i>';
 				}
 				else {
 					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
 				}
-				clickReq=1;
+				
+				clickReq = 1;
 			}
+			
 			vwait.cacheAsBitmap = false;
 			vwait.cacheAsBitmap = true;
 		}
@@ -1016,46 +1100,63 @@ package  fe {
 		}
 
 //=============================================================================================================
-//			Сейвы и конфиг
+//			Saves and config
 //=============================================================================================================
 		
 		public function saveToObj(data:Object):void {
 			var now:Date = new Date();
-			data.game=game.save();
-			data.pers=pers.save();
-			data.invent=invent.save();
-			data.app=app.save();
-			data.date=now.time;
-			data.n=autoSaveN;
-			data.hardInv=hardInv;
+			data.game = game.save();
+			data.pers = pers.save();
+			data.invent = invent.getAllItems();
+			data.app = app.save();
+			data.date = now.time;
+			data.n = autoSaveN;
+			data.hardInv = hardInv;
 			data.ver = mainMenuClass.version;
-			data.est=1;
+			data.est = 1;
 		}
 		
 		public function saveGame(n:int=-1):void {
-			if (n==-2) {
-				n=autoSaveN;
+			if (n == -2) {
+				n = autoSaveN;
 				var save = saveArr[n];
 				saveToObj(save.data);
-				save.flush();
+				save.flush();	// Save SharedObject to disk
 				trace('World.as/saveGame() - End');
 				return;
 			}
-			if (t_save<100 && n==-1 && !pers.hardcore) return;
-			if (pip.noAct) return;
-			if (n==-1) n=autoSaveN;
+			
+			if (t_save<100 && n==-1 && !pers.hardcore) {
+				return;
+			}
+			
+			if (pip.noAct) {
+				return;
+			}
+			
+			if (n == -1) {
+				n = autoSaveN;
+			}
+			
 			var save = saveArr[n];
+			
 			if (save is SharedObject) {
 				saveToObj(save.data);
-				var r = save.flush();
-				trace(r);
-				if (n==0) t_save=0;
+				var r = save.flush();	// Save SharedObject to disk
+				trace("World.as/saveGame() - Saving: " + r);
+				if (n == 0) {
+					t_save = 0;
+				}
 			}
 		}
 		
 		public function getSave(n:int):Object {
-			if (saveArr[n] is SharedObject) return saveArr[n].data;
-			else return null;
+			if (saveArr[n] is SharedObject) {
+				return saveArr[n].data;
+			}
+			else {
+				return null;
+			}
 		}
 		
 		public function saveConfig():void {
@@ -1075,7 +1176,10 @@ package  fe {
 				configObj.data.quakeCam=quakeCam;
 				configObj.data.errorShowOpt=errorShowOpt;
 				configObj.data.app=app.save();
-				if (lastCom!=null) configObj.data.lastCom=lastCom;
+				
+				if (lastCom != null) {
+					configObj.data.lastCom = lastCom;
+				}
 					
 				configObj.data.vsWeaponNew=vsWeaponNew?0:1;
 				configObj.data.vsWeaponRep=vsWeaponRep?0:1;

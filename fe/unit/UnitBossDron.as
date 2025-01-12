@@ -54,14 +54,19 @@ package fe.unit {
 			collisionTip=0;
 			
 			//дать оружие
-			currentWeapon=Weapon.create(this, 'dronmlau');
-			thWeapon=Weapon.create(this,'drongr');
+			var weapData:Object;
+			weapData = ItemManager.reference.getWeapon("dronmlau");
+			currentWeapon = Weapon.create(this, weapData);
+			
+			weapData = ItemManager.reference.getWeapon("drongr");
+			thWeapon = Weapon.create(this, weapData);
 			(thWeapon as WThrow).kolAmmo=100000;
-			childObjs=[currentWeapon, thWeapon];
 			
-			spd=new Object();
+			childObjs = [currentWeapon, thWeapon];
 			
-			timerDie=150;
+			spd = new Object();
+			
+			timerDie = 150;
 		}
 		
 		public override function dropLoot():void {
@@ -74,11 +79,18 @@ package fe.unit {
 			super.setLevel(nlevel);
 			var wMult:Number = (1+level*0.07);
 			var dMult:Number = 1;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
+			
+			if (World.w.game.globalDif == 3) {
+				dMult = 1.20;
+			}
+			else if (World.w.game.globalDif == 4) {
+				dMult = 1.50;
+			}
+			
 			hp=maxhp=hp*dMult;
 			shitMaxHp*=(1+level*0.12)*dMult;
 			dam*=dMult;
+			
 			if (thWeapon) {
 				thWeapon.damageExpl*=wMult*dMult;
 				thWeapon.damage*=wMult*dMult;
@@ -86,13 +98,16 @@ package fe.unit {
 		}
 		
 		public override function expl():void {
-			newPart('metal',22);
+			newPart('metal', 22);
 		}
 		
 		public override function setNull(f:Boolean=false):void {
 			if (sost==1) {
-				if (dopWeapon) dopWeapon.setNull();
+				if (dopWeapon) {
+					dopWeapon.setNull();
+				}
 			}
+			
 			super.setNull(f);
 		}
 
@@ -132,7 +147,9 @@ package fe.unit {
 		}
 		
 		private function emit():void {
-			if (kolChild>=kol_emit) return;
+			if (kolChild>=kol_emit) {
+				return;
+			}
 			
 			var un:Unit = loc.createUnit('dron', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
 			un.fraction=fraction;

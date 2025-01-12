@@ -184,7 +184,7 @@ package fe.inter {
 			txtH2o =		Res.txt("g", 'h2o');
 			txtH2oOver =	Res.txt("g", 'h2over');
 			txtStam =		Res.txt("g", 'stam');
-			txtOd =			Res.pipText('ap');
+			txtOd =			LanguageManager.reference.localText("pip", 'ap');
 			
 			vis.odBar.txt.text=txtOd;
 			vis.selector.visible=false;
@@ -551,7 +551,7 @@ package fe.inter {
 			}
 		}
 		
-		public function setWeapon() {
+		public function setWeapon():void {
 			if (gg.currentWeapon) {
 				var s:String;
 				var w:Weapon=gg.currentWeapon;
@@ -579,10 +579,11 @@ package fe.inter {
 				ammo.text='';
 				weapon.htmlText='';
 			}
+			
 			setHolder();
 		}
 		
-		public function setOd() {
+		public function setOd():void {
 			if (gg.currentWeapon==null || gg.currentWeapon.noSats) vis.odBar.visible=false;
 			else vis.odBar.visible=active;
 			t_od=200;
@@ -590,7 +591,7 @@ package fe.inter {
 			vis.odBar.bar2.scaleX=World.w.sats.od/50;
 		}
 		
-		public function setItems(turn:int = 0) {
+		public function setItems(turn:int = 0):void {
 			if (turn < 0) {
 				vitem.visible=item.visible = false;
 				vitem.gotoAndStop(1);
@@ -622,7 +623,7 @@ package fe.inter {
 			
 			setOtstup();
 		}
-		public function setHp() {
+		public function setHp():void {
 			if (gg.hp>0) {
 				vis.hpBar.hp.scaleX=gg.hp/gg.maxhp;
 				vis.hpBar.healhp.scaleX=Math.min(1,(gg.hp+gg.healhp)/gg.maxhp);
@@ -645,7 +646,7 @@ package fe.inter {
 			}
 		}
 		
-		public function setVisibility() {
+		public function setVisibility():void {
 			if (World.w.pip.active || !gg.showObsInd || gg.obs<3) {
 				vis.visibility.visible=false;
 			}
@@ -656,7 +657,7 @@ package fe.inter {
 			}
 		}
 		
-		public function setMana() {
+		public function setMana():void {
 			if (gg.mana<10) mana.text=txtMagiaOver;
 			else if (gg.mana<995 || gg.t_culd>0 || gg.currentSpell && gg.currentSpell.t_culd>0) mana.text=txtMagia+' '+Math.round(gg.mana/10)+'%';
 			else mana.text='';

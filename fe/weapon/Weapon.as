@@ -548,9 +548,8 @@ package fe.weapon {
 			if ("ammo_base" in data) {
 				ammo = data.ammo_base;
 				ammoBase = data.ammo_base;
-				
-				var ammoNode:XML = getAmmoInfo(ammo);
-				setAmmo(ammo, ammoNode);		// Calls XML info from items.xml
+
+				setAmmo(ammo);
 			}
 			
 			// [Combat characteristics]
@@ -1387,42 +1386,52 @@ package fe.weapon {
 		}
 		
 		// [Set the type of ammunition used]
-		public function setAmmo(nammo:String=null, node:XML=null):void {
-			if (nammo != null) {
-				ammo = nammo;
+		public function setAmmo(nammo:String = null):void {
+			ammo = nammo;
+
+			if (owner && owner.player && World.w.gui) {
+				World.w.gui.setWeapon();
 			}
 			
-			if (node == null) {
-				node = World.w.invent.items[ammo].xml;
-				if (owner && owner.player && World.w.gui) {
-					World.w.gui.setWeapon();
-				}
-			}
-			
-			if (node == null) {
-				trace("ERROR: (00:50) - Invalid ammo: ", ammo);
-				return;
-			}
-			
-			ammoPier = 0;		//бронебойность
-			ammoArmor = 1;		//модификатор брони цели
-			ammoDamage = 1;		//урон
+			ammoPier = 0;		// [Armor-piercing]
+			ammoArmor = 1;		// [Target's armor modifier]
+			ammoDamage = 1;		// [Damage]
 			ammoProbiv = 0;
-			ammoOtbros = 1;		//отбрасывание
-			ammoPrec = 1;		//точность
-			ammoHP = 0;			//прибавка к износу
-			ammoFire = 0;		//зажигательный
-			ammoMod = -1;		//изменение типа урона
+			ammoOtbros = 1;		// [Discarding]
+			ammoPrec = 1;		// [Accuracy]
+			ammoHP = 0;			// [Increase in wear]
+			ammoFire = 0;		// [Incendiary]
+			ammoMod = -1;		// [Change damage type]
 			
-			if (node.@pier.length()) ammoPier = node.@pier;
-			if (node.@armor.length()) ammoArmor = node.@armor;
-			if (node.@damage.length()) ammoDamage = node.@damage;
-			if (node.@probiv.length()) ammoProbiv = node.@probiv;
-			if (node.@knock.length()) ammoOtbros = node.@knock;
-			if (node.@prec.length()) ammoPrec = node.@prec;
-			if (node.@det.length()) ammoHP = node.@det;
-			if (node.@fire.length()) ammoFire = node.@fire;
-			if (node.@tipdam.length()) ammoMod = node.@tipdam;
+			var ammoData:Object = ItemManager.reference.getItem(nammo);
+			
+			if ("pier" in ammoData) {
+				ammoPier = ammoData.pier;
+			}
+			if ("armor" in ammoData) {
+				ammoArmor = ammoData.armor;
+			}
+			if ("damage" in ammoData) {
+				ammoDamage = ammoData.damage;
+			}
+			if ("probiv" in ammoData) {
+				ammoProbiv = ammoData.probiv;
+			}
+			if ("knock" in ammoData) {
+				ammoOtbros = ammoData.knock;
+			}
+			if ("prec" in ammoData) {
+				ammoPrec = ammoData.prec;
+			}
+			if ("det" in ammoData) {
+				ammoHP = ammoData.det;
+			}
+			if ("fire" in ammoData) {
+				ammoFire = ammoData.fire;
+			}
+			if ("tipdam" in ammoData) {
+				ammoMod = ammoData.tipdam;
+			}
 		}
 		
 		//разрядить
@@ -1649,7 +1658,7 @@ package fe.weapon {
 			s += '\t';
 			s += Number(30 / rapid).toFixed(1) + '\t';
 			s += Number((damage + damageExpl) * kol * 30 / rapid).toFixed(1) + '\t';
-			s += Res.pipText('tipdam' + tipDamage) + '\t';
+			s += LanguageManager.reference.localText("pip", 'tipdam' + tipDamage) + '\t';
 			s += Math.round(critCh * 100) + '%\t';
 			s += Math.round(precision / 40) + '\t';
 			s += pier + '\t';

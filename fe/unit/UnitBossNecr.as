@@ -32,7 +32,7 @@ package fe.unit {
 		private var curseculd_t:int=timeCurseCuld/2;
 		private var prot_t:int=0;
 		private var healHp:Number=100;
-		private var summonAtkMult=0.5;
+		private var summonAtkMult:Number=0.5;
 		
 		private var isShadow:Boolean=false;
 		//невидимость
@@ -59,17 +59,28 @@ package fe.unit {
 			boss=true;
 			aiTCh=80;
 			destroy=110;
+			
 			//дать оружие
-			currentWeapon=Weapon.create(this,'necrbullet');
-			if (currentWeapon) childObjs=new Array(currentWeapon);
+			var weapData:Object = ItemManager.reference.getWeapon("necrbullet");
+			currentWeapon = Weapon.create(this, weapData);
+			
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+			}
+			
 			areaTestTip='en';
 			aiNapr=storona;
 			
 			shadowFilter=new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
 			ghostFilter=new GlowFilter(0x9999FF,1,6,6,2,3);
 			timerDie=90;
-			if (World.w.game.globalDif==3) summonAtkMult = 0.65;
-			if (World.w.game.globalDif==4) summonAtkMult = 0.8;
+			
+			if (World.w.game.globalDif==3) {
+				summonAtkMult = 0.65;
+			}
+			else if (World.w.game.globalDif==4) {
+				summonAtkMult = 0.80;
+			}
 		}
 		
 

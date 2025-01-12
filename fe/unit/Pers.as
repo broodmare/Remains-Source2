@@ -445,8 +445,7 @@ package fe.unit {
 			return obj;
 		}
 
-		public static function getPerkInfo(id:String):XML
-		{
+		public static function getPerkInfo(id:String):XML {
 			var node:XML;
 			if (cachedPerks[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
@@ -455,8 +454,7 @@ package fe.unit {
 			return node;
 		}
 
-		public static function getSkillInfo(id:String):XML
-		{
+		public static function getSkillInfo(id:String):XML {
 			var node:XML;
 			if (cachedSkills[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
@@ -465,13 +463,17 @@ package fe.unit {
 			return node;
 		}
 
-		public static function getEffInfo(id:String):XML
-		{
+		public static function getEffInfo(id:String):XML {
 			var node:XML;
+			
 			if (cachedEffs[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
                 cachedEffs[id] = node;
-            } else node = cachedEffs[id];
+            }
+			else {
+				node = cachedEffs[id];
+			}
+
 			return node;
 		}
 
@@ -714,7 +716,9 @@ package fe.unit {
 				gg.numbEmit.cast(gg.loc, nx, ny, {txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
 
-			if (xpCur>=xpNext) upLevel();
+			if (xpCur>=xpNext) {
+				upLevel();
+			}
 			
 			World.w.gui.setXp();
 		}
@@ -750,16 +754,26 @@ package fe.unit {
 		public var postSkTab:Array=[5,11,18,26,35,45,56,68,82,100];
 		
 		public function skillIsPost(id:String):Boolean {
-			if (id=='attack' || id=='defense' || id=='knowl') return true;
+			if (id=='attack' || id=='defense' || id=='knowl') {
+				return true;
+			}
+
 			return false;
 		}
 
 		public function getPostSkLevel(n:int):int {
-			if (n < postSkTab[0]) return 0;
-			var res:int = 0;
-			for (var i:int = 0; i < postSkTab.length; i++) {
-				if (n >= postSkTab[i]) res = i + 1;
+			if (n < postSkTab[0]) {
+				return 0;
 			}
+			
+			var res:int = 0;
+			
+			for (var i:int = 0; i < postSkTab.length; i++) {
+				if (n >= postSkTab[i]) {
+					res = i + 1;
+				}
+			}
+			
 			return res;
 		}
 		
@@ -787,7 +801,10 @@ package fe.unit {
 
 		//вернуть уровень скилла по его названию
 		public function getSkillLevel(sk:String):int {
-			if (skills[sk]==undefined) return 0;
+			if (skills[sk] == undefined) {
+				return 0;
+			}
+			
 			return getSkLevel(skills[sk]);
 		}
 		
@@ -818,6 +835,7 @@ package fe.unit {
 			if (lvl>10) mn=(lvl-10)/30+1;
 			return Math.round(xpDelta*(lvl)*(lvl+1)/2*mn*mn/1000)*1000;
 		}
+		
 		//формула из версии 0.6
 		public function xpProgress06(lvl:int):int {
 			return xpDelta*(lvl)*(lvl+1)/2;
@@ -842,11 +860,18 @@ package fe.unit {
 		
 		//поднять скилл
 		public function addSkill(id:String, numb:int, minus:Boolean=false):void {
-			if (minus && numb>skillPoint) numb=skillPoint;
-			if (numb<=0) return;
+			if (minus && numb > skillPoint) {
+				numb = skillPoint;
+			}
+			
+			if (numb <= 0) {
+				return;
+			}
+			
 			var preNumb = skills[id];
 			skills[id] += numb;
 			var postNumb = skills[id];
+			
 			if (skillIsPost(id)) {
                 if (id == 'knowl') {
                     var sklvl = getPostSkLevel(skills[id]);
@@ -863,10 +888,13 @@ package fe.unit {
                     if (bonus > 0) World.w.gui.infoText('skill', Res.txt('e', id) + '-' + bonus);
                 }
             }
-			if (minus) skillPoint-=numb;
+			
+			if (minus) {
+				skillPoint -= numb;
+			}
 		}
 		
-		//поднять скилл на 1 (книгой), вернуть false если поднимать некуда
+		// [Raise a skill by 1 (with a book), return false if there is nowhere to raise it]
 		public function upSkill(id:String):Boolean {
 			if (skills[id]<maxSkLvl) {
 				World.w.gui.infoText('skillUp',Res.txt('e',id));
@@ -874,13 +902,22 @@ package fe.unit {
 				addSkill(id,1);
 				setParameters();
 				World.w.gui.setAll();
+				
 				return true;
 			}
 			else {
 				var n=Math.floor(Math.random()*3);
-				if (n==0) id='attack';
-				else if (n==1) id='defense';
-				else id='knowl';
+				
+				if (n==0) {
+					id='attack';
+				}
+				else if (n==1) {
+					id='defense';
+				}
+				else {
+					id='knowl';
+				}
+				
 				if (skills[id]<maxPostSkLvl) {
 					World.w.gui.infoText('skillUp',Res.txt('e',id));
 					Snd.ps('skill');
@@ -888,18 +925,26 @@ package fe.unit {
 					setParameters();
 					World.w.gui.setAll();
 					return true;
-				} else {
+				}
+				else {
 					World.w.gui.infoText('noSkill');
 					return false;
 				}
 			}
 		}
 		
-		//установить уровень скилла принудительно
+		// [Set skill level forcibly]
 		public function setSkill(id:String, n:int):void {
-			if (n<0) n=0;
-			if (n>maxSkLvl) n=maxSkLvl;
-			if (skills[id]) skills[id]=n;
+			if (n < 0) {
+				n = 0;
+			}
+			if (n > maxSkLvl) {
+				n = maxSkLvl;
+			}
+			if (skills[id]) {
+				skills[id] = n;
+			}
+			
 			setParameters();
 			World.w.gui.setAll();
 		}
@@ -909,7 +954,10 @@ package fe.unit {
 			var maxlvl:int = perkNode.@lvl;
 			perkNode = null;
 
-			if (!(maxlvl>0)) maxlvl=1;
+			if (!(maxlvl>0)) {
+				maxlvl=1;
+			}
+
 			if (perks[id]) {
 				if (perks[id]<maxlvl) {
 					perks[id]++;
@@ -927,7 +975,11 @@ package fe.unit {
 				World.w.gui.infoText('perk',Res.txt('e',id));
 				Snd.ps('skill');
 			}
-			if (minus) perkPoint--;
+
+			if (minus) {
+				perkPoint--;
+			}
+
 			setParameters();
 		}
 		
@@ -937,37 +989,58 @@ package fe.unit {
 			while (skillPoint>0 && n>0) {
 				//определить скиллы, доступные для увеличения
 				var dost:Array=[];
+				
 				for (var sk in skills) {
 					if (skills[sk]<maxSkLvl && !skillIsPost(sk)) dost.push(sk);
 				}
+				
 				//если уже все прокачаны, вкачать дополнительные
 				if (dost.length==0 || level>=postPersLevel && Math.random()<0.2) {
 					for (var sk in skills) {
 						if (skillIsPost(sk) && skills[sk]<maxPostSkLvl) dost.push(sk);
 					}
-					if (dost.length==0) break;
+					
+					if (dost.length==0) {
+						break;
+					}
 				}
+				
 				sk=dost[Math.floor(Math.random()*dost.length)];
 				//определить, на сколько поднимать
 				var kol:int=(Math.random()<0.5)?2:1;
+				
 				if (Math.random()<0.15) kol=3;
-				if (skillIsPost(sk)) kol=Math.min(skillPoint,kol,maxPostSkLvl-skills[sk]);
-				else kol=Math.min(skillPoint,kol,maxSkLvl-skills[sk]);
+				
+				if (skillIsPost(sk)) {
+					kol=Math.min(skillPoint,kol,maxPostSkLvl-skills[sk]);
+				}
+				else {
+					kol=Math.min(skillPoint,kol,maxSkLvl-skills[sk]);
+				}
+				
 				addSkill(sk,kol,true);
 				n--;
 			}
+			
 			n=100;
+			
 			while (perkPoint>0 && n>0) {
 				dost = [];
 
 				for each(var dp:XML in cachedPerkList) {
 					if (dp.@tip==1) {
 						var res:int=perkPoss(dp.@id, dp);
-						if (res==1) dost.push(dp.@id);
+						
+						if (res==1) {
+							dost.push(dp.@id);
+						}
 					}
 				}
 
-				if (dost.length==0) break;
+				if (dost.length==0) {
+					break;
+				}
+
 				sk=dost[Math.floor(Math.random()*dost.length)];
 				addPerk(sk,true);
 				n--;
@@ -976,19 +1049,40 @@ package fe.unit {
 		
 		// [Return -1 if the perk is already maxed out, return 0 if the conditions are not met, return 1 if the conditions are met]
 		public function perkPoss(nid:String, dp:XML=null):int {
-			if (dp==null) dp = getPerkInfo(nid);
-			if (dp==null) return -1;
+			if (dp==null) {
+				dp = getPerkInfo(nid);
+			}
+
+			if (dp==null) {
+				return -1;
+			}
+			
 			var numb=perks[nid];
-			if (numb==null) numb=0;
+			
+			if (numb==null) {
+				numb=0;
+			}
+			
 			var maxlvl=1;
-			if (dp.@lvl.length()) maxlvl=dp.@lvl;
-			if (numb>=maxlvl) return -1;
+			
+			if (dp.@lvl.length()) {
+				maxlvl=dp.@lvl;
+			}
+			
+			if (numb>=maxlvl) {
+				return -1;
+			}
+			
 			var ok:int=1;
+			
 			if (dp.req.length()) {
 				for each(var req in dp.req) {
 					var reqlevel:int=1;
+					
 					if (req.@lvl.length()) reqlevel=req.@lvl;
+					
 					if (numb>0 && req.@dlvl.length()) reqlevel+=numb*req.@dlvl;
+					
 					if (req.@id=='level') {
 						if (level<reqlevel) ok=0;
 					}
@@ -1000,6 +1094,7 @@ package fe.unit {
 					}
 				}
 			}
+			
 			return ok;
 		}
 		
@@ -1234,12 +1329,13 @@ package fe.unit {
 			}
 		}
 		
+		// TODO: Should be a script
 		public function healAll():void {
-			headHP=inMaxHP;
-			torsHP=inMaxHP;
-			legsHP=inMaxHP;
-			bloodHP=inMaxHP;
-			manaHP=inMaxMana;
+			headHP = inMaxHP;
+			torsHP = inMaxHP;
+			legsHP = inMaxHP;
+			bloodHP = inMaxHP;
+			manaHP = inMaxMana;
 		}
 		
 		public function checkHP():void {
@@ -1251,13 +1347,30 @@ package fe.unit {
 		}
 		
 		private function traumaParameters():void {
-			if (headSt>0) setSkillParam(xml_head, Math.min(headSt,3));
-			if (torsSt>0) setSkillParam(xml_tors, Math.min(torsSt,3));
-			if (legsSt>0) setSkillParam(xml_legs, Math.min(legsSt,3));
-			if (bloodSt>0) setSkillParam(xml_blood, Math.min(bloodSt,3));
-			if (manaSt>0) setSkillParam(xml_mana, manaSt);
+			if (headSt>0) {
+				setSkillParam(xml_head, Math.min(headSt,3));
+			}
+			
+			if (torsSt>0) {
+				setSkillParam(xml_tors, Math.min(torsSt,3));
+			}
+			
+			if (legsSt>0) {
+				setSkillParam(xml_legs, Math.min(legsSt,3));
+			}
+			
+			if (bloodSt>0) {
+				setSkillParam(xml_blood, Math.min(bloodSt,3));
+			}
+			
+			if (manaSt>0) {
+				setSkillParam(xml_mana, manaSt);}
+			
 			if (manaSt>=4) {
-				if (teleMana>0) gg.levitOn=0;
+				if (teleMana>0) {
+					gg.levitOn=0;
+				}
+				
 				isDJ=0;
 				spellsPoss=0;
 			}
@@ -1270,31 +1383,39 @@ package fe.unit {
 				gg.dodgePlus+=arm.dexter;
 				setFactor('dexter', arm.id, 'add', arm.dexter, gg.dexter, 'a');
 			}
+			
 			if (arm.crit!=0) {
 				gg.critCh+=arm.crit;
 			}
+			
 			gg.showObsInd=gg.showObsInd || arm.showObsInd;
+			
 			if (arm.sneak!=1) {
 				setBegFactor('visiMult',visiMult);
 				visiMult*=(1-arm.sneak);
 				setFactor('visiMult', arm.id, 'mult', (1-arm.sneak), visiMult, 'a');
 			}
+			
 			if (arm.radVul!=1) {
 				setBegFactor('radX',gg.radX);
 				gg.radX*=arm.radVul;
 				setFactor('radX', arm.id, 'mult', arm.radVul, gg.radX, 'a');
 			}
-			h2oPlav*=arm.h2oMult;
+			
+			h2oPlav *= arm.h2oMult;
+			
 			if (arm.meleeMult!=1) {
 				setBegFactor('meleeDamMult',meleeDamMult);
 				meleeDamMult*=arm.meleeMult;
 				setFactor('meleeDamMult', arm.id, 'mult', arm.meleeMult, meleeDamMult, 'a');
 			}
+			
 			if (arm.gunsMult!=1) {
 				setBegFactor('gunsDamMult',gunsDamMult);
 				gunsDamMult*=arm.gunsMult;
 				setFactor('gunsDamMult', arm.id, 'mult', arm.gunsMult, gunsDamMult, 'a');
 			}
+			
 			if (arm.magicMult!=1) {
 				setBegFactor('throwForce',throwForce);
 				setBegFactor('spellsDamMult',spellsDamMult);
@@ -1303,18 +1424,26 @@ package fe.unit {
 				setFactor('throwForce', arm.id, 'mult', arm.magicMult, throwForce, 'a');
 				setFactor('spellsDamMult', arm.id, 'mult', arm.magicMult, spellsDamMult, 'a');
 			}
-			dropTre+=arm.tre;
-			if (arm.ableFly) ableFly=1;
+			
+			dropTre += arm.tre;
+			
+			if (arm.ableFly) {
+				ableFly=1;
+			}
+			
 			for (var i=0; i<Unit.kolVulners; i++) {
 				gg.vulner[i]*=(1 - arm.resist[i]);
 				setFactor(i, arm.id, 'mult', (1 - arm.resist[i]), gg.vulner[i], 'a');
 			}
-			if (arm.id=='socks') socks=true;
+			
+			if (arm.id=='socks') {
+				socks=true;
+			}
 		}
 		
 		//вычислить и установить штрафы на перегрузку
 		public function invMassParam():void {
-			var inv:Invent=World.w.invent;
+			var inv:Inventory = World.w.invent;
 			maxSpeed=100;
 			accelMult=1;
 			speedShtr=0;
@@ -1337,7 +1466,8 @@ package fe.unit {
 					gg.noStairs=true;
 					World.w.gui.infoText('overMass');
 					World.w.gui.bulb(gg.coordinates.X, gg.coordinates.Y-100);
-				} else if (speedShtr==2) {
+				}
+				else if (speedShtr==2) {
 					maxSpeed=3.5;
 					accelMult=0.5;
 					jumpMult=0.5;
@@ -1414,25 +1544,27 @@ package fe.unit {
 			}
 			//броня и защиты
 			if (gg.rat>0) {
-			} else if (!World.w.alicorn) {
+			}
+			else if (!World.w.alicorn) {
 				if (gg.currentArmor) {
 					gg.currentArmor.setArmor();
 					armorParameters(gg.currentArmor)
-				} else {
+				}
+				else {
 					setBegFactor('dexter',gg.dexter);
 					gg.dexter+=dexterNoArmor;
 					gg.dodgePlus+=dexterNoArmor;
 					setFactor('dexter', 'noArmor', 'add', dexterNoArmor, gg.dexter, 'e');
 				}
+				
 				if (gg.currentAmul) armorParameters(gg.currentAmul);
+				
 				//параметры от предметов из инвентаря
 				if (gg.invent) setInvParameters(gg.invent);
 			}
-			else
-			{
+			else {
 				xml = getEffInfo('alicorn');
 				setSkillParam(xml, 1);
-				
 				setBegFactor('skin',gg.skin);
 				gg.skin+=alicornSkin;
 				setFactor('skin', 'alicorn', 'add', alicornSkin, gg.skin, 'e');
@@ -1466,29 +1598,30 @@ package fe.unit {
 			invMassParam();
 		}
 		
-		public function setInvParameters(inv:Invent):void {
-			if (inv==null) return;
-			
-			for each (var w in LootGen.arr['pers']) {
+		public function setInvParameters(inv:Inventory):void {
+			for each (var w in LootGen.arr["pers"]) {
 				if (inv.items[w].kol>0) {
-					if (inv.items[w].xml && inv.items[w].xml.sk.length())
-					{
+					if (inv.items[w].xml && inv.items[w].xml.sk.length()) {
 						setSkillParam(inv.items[w].xml, 1);	
 					}
-					else
-					{
+					else {
 						var xml = getEffInfo(w);
 						if (xml.length()) setSkillParam(xml[0], 1);
 					}
 				}
 			}
 		}
-		//определить уровень требуемого скилла		
+
+		// [Determine the required skill level]
 		public function getLockTip(lockTip:int):int {
 			switch (lockTip) {
 				case 1:
-					if (possLockPick>0) return lockPick;
-					else return -100;
+					if (possLockPick > 0) {
+						return lockPick;
+					}
+					else {
+						return -100;
+					}
 				case 2:
 					return hacker;
 				case 3:
@@ -1508,17 +1641,23 @@ package fe.unit {
 			else return true;
 		}
 		
-		//определить уровень мастерства для взлома замка
-		public function getLockMaster(lockTip:int):int
-		{
-			if (lockTip == 1) return unlockMaster;
-			else if (lockTip == 2) return hackerMaster;
-			else return 100;
+		// [Determine the skill level for picking a lock]
+		public function getLockMaster(lockTip:int):int {
+			if (lockTip == 1) {
+				return unlockMaster;
+			}
+			else if (lockTip == 2) {
+				return hackerMaster;
+			}
+			else {
+				return 100;
+			}
 		}
 		
 		public function setRoboowl():void {
-			owlhp=0;
-			owlhpProc=1;
+			owlhp = 0;
+			owlhpProc = 1;
+			
 			if (gg.pets['owl']) {
 				gg.pets['owl'].setLevel(level);
 				owlhp=gg.pets['owl'].maxhp;
@@ -1526,21 +1665,21 @@ package fe.unit {
 			}
 		}
 		
-		//определить необходимое для действия время
-		public function getLockPickTime(lock:int, lockTip:int):int
-		{
+		// [Determine the time required for action]
+		public function getLockPickTime(lock:int, lockTip:int):int {
 			var pick:int = getLockTip(lockTip);
 			if (lock < pick) return lockPickTime * 0.6;
 			return lockPickTime;
 		}
 		
 		public function repTex():String {
-			if (rep>=repGood) return Res.pipText('reputmax');
-			if (rep>=rep4) return Res.pipText('reput4');
-			if (rep>=rep3) return Res.pipText('reput3');
-			if (rep>=rep2) return Res.pipText('reput2');
-			if (rep>=rep1) return Res.pipText('reput1');
-			return Res.pipText('reput0');
+			if (rep>=repGood) return LanguageManager.reference.localText("pip", 'reputmax');
+			if (rep>=rep4) return LanguageManager.reference.localText("pip", 'reput4');
+			if (rep>=rep3) return LanguageManager.reference.localText("pip", 'reput3');
+			if (rep>=rep2) return LanguageManager.reference.localText("pip", 'reput2');
+			if (rep>=rep1) return LanguageManager.reference.localText("pip", 'reput1');
+			
+			return LanguageManager.reference.localText("pip", 'reput0');
 		}
 	}
 }

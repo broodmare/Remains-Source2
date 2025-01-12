@@ -51,7 +51,7 @@ package fe.unit {
 
 		private var emit_t:int=0;
 		private var movePoints:Array=[{x:24,y:5}, {x:8,y:7}, {x:40,y:7}, {x:7,y:11}, {x:42,y:11}, {x:11,y:15}, {x:38,y:15}];
-		private var mp=3;
+		private var mp:int = 3;
 		private var moveX:Number=0, moveY:Number=0;
 		private var attState:int=0;
 		private var t_turn:int=15;
@@ -76,26 +76,40 @@ package fe.unit {
 			initBlit();
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicornBoss");
-			visshit=new visShit3();		// .SWF Dependency
+			visshit = new visShit3();		// .SWF Dependency
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.y=-50;
 			visshit.scaleX=visshit.scaleY=1.5;
 			
-			//дать оружие
-			weaps=[Weapon.create(this, 'alilight2'), Weapon.create(this,'aliblade'), Weapon.create(this,'alipsy2'), Weapon.create(this,'alimray')]
-			currentWeapon=weaps[0];
-			childObjs=weaps;
+			//Instantiate the alicorn's weapon array and add each entry
+			weaps = [];
+			var weapData:Object;
 			
-			spd=new Object();
-			aiNapr=storona;
-			teleFilter=new GlowFilter(0xFF0000,1,6,6,1,3);
+			weapData = ItemManager.reference.getWeapon("alilight2");
+			weaps[0] = Weapon.create(this, weapData);
+
+			weapData = ItemManager.reference.getWeapon("aliblade");
+			weaps[1] = Weapon.create(this, weapData);
+
+			weapData = ItemManager.reference.getWeapon("alipsy2");
+			weaps[2] = Weapon.create(this, weapData);
+
+			weapData = ItemManager.reference.getWeapon("alimray");
+			weaps[3] = Weapon.create(this, weapData);
 			
-			blood=0;
-			bloodEmit=Emitter.arr['pole'];
-			mat=1;
-			this.knocked=0;
-			timerDie=90;
+			currentWeapon = weaps[0];
+			childObjs = weaps;
+			
+			spd = new Object();
+			aiNapr = storona;
+			teleFilter = new GlowFilter(0xFF0000,1,6,6,1,3);
+			
+			blood = 0;
+			bloodEmit = Emitter.arr['pole'];
+			mat = 1;
+			this.knocked = 0;
+			timerDie = 90;
 		}
 		
 		public override function setLevel(nlevel:int=0):void {
@@ -127,6 +141,7 @@ package fe.unit {
 			newPart('bloodblast');
 			Snd.ps('bale_e');
 			currentWeapon.vis.visible = false;
+			
 			super.dropLoot();
 		}
 		
