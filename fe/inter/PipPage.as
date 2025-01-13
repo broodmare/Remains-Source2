@@ -789,8 +789,8 @@ package fe.inter {
 				}
 
 				// Print all armor bonuses if they exist
-				if (a.armor_qual > 0) {
-					s += localize("pip", "aqual") + ": " + textAsColor("yellow", Math.round(a.armor_qual * 100) + "%");
+				if (a.armorQual > 0) {
+					s += localize("pip", "aqual") + ": " + textAsColor("yellow", Math.round(a.armorQual * 100) + "%");
 				}
 				if (a.armor > 0) {
 					s += "\n" + localize("pip", "armor") + ": " + numberAsColor("yellow", Math.round(a.armor));

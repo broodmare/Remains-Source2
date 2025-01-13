@@ -25,30 +25,6 @@ package fe.unit {
 	import fe.entities.Part;
 	
 	public class Unit extends Obj {
-
-		// Ghetto AS3 enums, reference by other classes so these need to stay public
-		public static const D_BUL:int = 0;			//Bullets	+
-		public static const D_BLADE:int = 1;		//Blade		+
-		public static const D_PHIS:int = 2;			//Blunt		+
-		public static const D_FIRE:int = 3;			//Fire		*
-		public static const D_EXPL:int = 4;			//Explosion	+
-		public static const D_LASER:int = 5;		//Laser		*
-		public static const D_PLASMA:int = 6;		//Plasma	*
-		public static const D_VENOM:int = 7;		//Venom
-		public static const D_EMP:int = 8;			//EMP
-		public static const D_SPARK:int = 9;		//Lightning	*
-		public static const D_ACID:int = 10;		//Acid		*
-		public static const D_CRIO:int = 11;		//Cold		*
-		public static const D_POISON:int = 12;		//Poison
-		public static const D_BLEED:int = 13;		//Bleeding
-		public static const D_FANG:int = 14;		//Beast		+
-		public static const D_BALE:int = 15;		//Balefire
-		public static const D_NECRO:int = 16;		//Necromancy
-		public static const D_PSY:int = 17;			//Psychic
-		public static const D_ASTRO:int = 18;		//???
-		public static const D_PINK:int = 19;		//Pink Cloud
-		public static const D_INSIDE:int = 100;		//???
-		public static const D_FRIEND:int = 101;		//???
 		
 		public static var txtMiss:String;
 		public static var arrIcos:Array;
@@ -60,41 +36,47 @@ package fe.unit {
 		// Starting coordinates
 		public var begX:Number = -1;
 		public var begY:Number = -1;
-		
-		// Distance to player
-		public var rasst:Number = 0;
+
+		public var rasst:Number = 0;			// Distance to player
 		
 		public var level:int = 0;
-		public var hero:int = 0;
+		public var hero:int = 0;				// This unit is a unique (tougher) variant 
 		public var boss:Boolean = false;
 
 		// Health
-		public var maxhp:Number = 100;
-		public var hpmult:Number = 1;
-		public var hp:Number = 100;
-		public var cut:Number = 0;	// Wounds (For bleed status?)
-		public var poison:Number = 0;	// Poison (For poison status?)
+		public var maxhp:Number = 100;			// Maximum Hitpoints
+		public var hp:Number = 100;				// Current Hitpoints
+		public var hpmult:Number = 1;			// Hitpoints multiplier
+		public var cut:Number = 0;				// Wounds (For bleed status?)
+		public var poison:Number = 0;			// Poison (For poison status?)
 		public var critHeal:Number = 0.2;
 		public var shithp:Number = 0;
 
 		private var t_hp:int;
 		public var mana:Number = 1000;
 		public var maxmana:Number = 1000;
-		public var dmana:Number=1;
+		public var dmana:Number = 1;
 		
 		// Armor and [vulnerabilities]
-		public var invulner:Boolean=false;
-		public var allVulnerMult:Number=1;
-		public var skin:Number=0;			// [Skin, armor, probability that it will work]
-		public var armor:Number=0;
-		public var marmor:Number=0;
-		public var armor_hp:Number=0;
-		public var armor_maxhp:Number=0;
-		public var armor_qual:Number=0;
-		
+		public var invulner:Boolean = false;
+		public var allVulnerMult:Number = 1;
+		public var skin:Number = 0;			// [Skin, armor, probability that it will work]
+		public var armor_hp:Number = 0;
+		public var armor_maxhp:Number = 0;
 		public var shitArmor:Number=20;
+
+		// NEW VULNERABILITIES/RESISTANCES
+		public var armor:Number		= 0.00;
+		public var marmor:Number	= 0.00;
+		public var armorQual:Number	= 0.00;
+		public var typeResist:Resistances;	// This replaces 'armor', 'marmor', and 'armorQual'
+		
+		// OLD VULNERABILITIES
+		public var opt:Object;				// Unit variant's stats and resistances (vulnerabilities)
+		public static var opts:Array = [];	// All unit variants
 		public var vulner:Array;		
 		public var begvulner:Array;
+		public static const kolVulners:int = 20;
 		public static var begvulners:Array = [];
 		
 		// Evasion, 1 is standard, 0 always hits
@@ -113,7 +95,6 @@ package fe.unit {
 		
 		// Damage
 		public var dam:Number=0;			//урон самого юнита
-		public static const kolVulners:int = 20;
 		public var tipDamage:int=D_PHIS;		//тип урона
 		public var radDamage:Number=0;		//урон радиацией
 		public var retDamage:Boolean=false; //возврат урона от юнита к врагу
@@ -158,7 +139,6 @@ package fe.unit {
 		private var namok_t:int=0;
 		public var visDamDY:int=0;
 
-
 		//оружие
 		public var currentWeapon:Weapon;
 		public var weaponSkill:Number=1;		//владение оружием
@@ -191,7 +171,6 @@ package fe.unit {
 		public var celUnit:Unit;	//кто является целью
 		public var priorUnit:Unit;	//кто является врагом
 		public var eyeX:Number=-1000, eyeY:Number=-1000;	//точка зрения
-
 		
 		//состояния
 		public var sost:int=1;  //1-живой	2-в отключке    3-сдох    4-уничтожен и больше не обрабатывается
@@ -227,9 +206,6 @@ package fe.unit {
 		public var isRes:Boolean=false;	//восстаёт после смерти
 		public var mech:Boolean=false;	//механизм
 		public var noDestr:Boolean=false; //не уничтожать после смерти
-		
-		public var opt:Object;
-		public static var opts:Array=[];
 		
 		//фракция
 		public var fraction:int=0, player:Boolean=false;
@@ -543,7 +519,7 @@ package fe.unit {
 				if (node.@skin.length()) skin=node.@skin;
 				if (node.@armor.length()) armor=node.@armor;
 				if (node.@marmor.length()) marmor=node.@marmor;
-				if (node.@aqual.length()) armor_qual=node.@aqual;		//качество брони
+				if (node.@aqual.length()) armorQual=node.@aqual;		//качество брони
 				if (node.@armorhp.length()) armor_hp=armor_maxhp=node.@armorhp*hpmult;
 				else armor_hp=armor_maxhp=hp;
 				
@@ -1969,7 +1945,7 @@ package fe.unit {
 
 		public function visDetails():void {
 			if (hpbar==null) return;
-			if ((hp<maxhp || armor_qual>0 && armor_hp<armor_maxhp || hero>0) && hp>0 && !invis || boss) {
+			if ((hp<maxhp || armorQual>0 && armor_hp<armor_maxhp || hero>0) && hp>0 && !invis || boss) {
 				if (boss) {
 					World.w.gui.hpBarBoss(hp/maxhp);
 					hpbar.visible=false;
@@ -1981,7 +1957,7 @@ package fe.unit {
 						hpbar.bar.gotoAndStop(Math.floor((1-hp/maxhp)*20+1));
 					}
 					else hpbar.bar.visible=false;
-					if (armor_qual>0) {
+					if (armorQual>0) {
 						hpbar.armor.visible=true;
 						hpbar.armor.gotoAndStop(Math.floor((1-armor_hp/armor_maxhp)*20+1));
 					}
@@ -2351,7 +2327,7 @@ package fe.unit {
 				
 				if (armor_hp<=0) {	//разрушение брони
 					armor_hp=0;
-					armor_qual=0;
+					armorQual=0;
 					mess=Res.txt("g", 'abr');
 				}
 			}
@@ -2363,11 +2339,11 @@ package fe.unit {
 			if (!tt) {
 				if (tip==D_BUL || tip==D_BLADE || tip==D_EXPL || tip==D_PHIS || tip==D_FANG || tip==D_ACID) {
 					armor2=skin;
-					if (armor_qual>0 && isrnd(armor_qual)) armor2+=armor;
+					if (armorQual>0 && isrnd(armorQual)) armor2+=armor;
 				}
 				if (tip==D_FIRE || tip==D_LASER || tip==D_PLASMA || tip==D_SPARK || tip==D_CRIO || tip==D_ASTRO) {
 					armor2=skin;
-					if (armor_qual>0 && isrnd(armor_qual)) armor2+=marmor;
+					if (armorQual>0 && isrnd(armorQual)) armor2+=marmor;
 				}
 				if (shithp>0) {
 					shithp-=dam;

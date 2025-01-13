@@ -26,10 +26,13 @@ package fe {
 	
 	public class World {
 
-		public static var w:World;					// Publically Accessible reference to this instance of World
-		private static var itemManager:ItemManager;	// Stores all item data
+		public static var w:World;							// Publically Accessible reference to this instance of World
 		
-
+		// Managers for in-game items
+		private static var itemManager:ItemManager;			// Stores all simple item data
+		private static var armorManager:ArmorManager;		// Stores all armor set data and Armors
+		private static var weaponManager:WeaponManager;		// Stores all weapon data and Weapons
+		
 		// Visual components
 		public var main:Sprite;			//Главный спрайт игры
 		public var swfStage:Stage;
@@ -225,6 +228,8 @@ package fe {
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
 			itemManager = new ItemManager();
+			armorManager = new ArmorManager();
+			weaponManager = new WeaponManager();
 
 			LootGen.init();
 			Form.setForms();

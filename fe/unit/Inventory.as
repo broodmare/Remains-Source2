@@ -2,19 +2,10 @@ package fe.unit {
 
 	import flash.utils.Dictionary;
 	
-	/*
-	**	This is probably a bit overkill, but the inventory stores everything as simple objects: { "id": "internalID", "quantity": 0 }
-	**	The '_inventory' Vector does two things; It ensures type safety so ONLY the correct object format can be stored, and inventory is stored as contiguous memory.
-	**	The '_inventoryMap' is the save each InventoryItem's index in the Vector using it's 'id' as a Key. This is so we don't ever have to iterate through _inventory.
-	**	in theory this should be the best performance for a potentially large inventories as far as ActionScript 3 goes.
-	** 	
-	**	The drawback to this is that this is only good for simple items, not anything that dynamically changes (Weapons, Armor, Etc.)
-	**		- woons
-	*/
 	public class Inventory {
 		
-		private var _inventory:Vector.<InventoryItem>;	// Vector to store InventoryItem instances
-		private var _inventoryMap:Dictionary;			// Dictionary to map id to InventoryItem for quick access
+		private var _inventory:Vector.<InventoryItem>;	// Vector that stores a contigious collection of <InventoryItem> references for fast iteration
+		private var _inventoryMap:Dictionary;			// Dictionary to map each InventoryItem.id to it's reference (Key-Pair)
 
 		
 		public var mass:Array = [0, 0, 0, 0];	// Seperate weight totals for each item category

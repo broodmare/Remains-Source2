@@ -432,8 +432,8 @@ package fe.inter {
 					info.text += '\n' + LanguageManager.reference.localText("pip", 'level') + ': ' + (un.level + 1);
 					info.text += '\n' + LanguageManager.reference.localText("pip", 'hp') + ': ' + Math.ceil(un.hp) + '/' + Math.ceil(un.maxhp);
 					if (un.skin > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'skin') + ': ' + Math.ceil(un.skin);
-					if (un.armor_qual > 0 && un.armor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'armor') + ': ' + Math.ceil(un.armor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
-					if (un.armor_qual > 0 && un.marmor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
+					if (un.armorQual > 0 && un.armor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'armor') + ': ' + Math.ceil(un.armor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
+					if (un.armorQual > 0 && un.marmor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
 					
 					if (mc.y < 150) {
 						info.y = 50;
