@@ -33,6 +33,22 @@ package fe {
 			_armorData = loader.syncLoad(_armorPath);
 		}
 
+		public function armorData(id:String):Object {
+			if (id in _armorData) {
+				return _armorData[id];
+			}
+
+			return {};
+		}
+		
+		public function armor(id:String):Armor {
+			if (id in _armors) {
+				return _armors[id];
+			}
+
+			return null;
+		}
+
 		private function initializeAllArmors():void {
 
 			// Initialize and store a base version of each armor set

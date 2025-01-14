@@ -2,7 +2,6 @@ package fe.serv {
 	
 	import fe.*;
 	import fe.TextLoader;
-	import fe.unit.Invent;
 	import fe.unit.Unit;
 
 	public class Vendor {

@@ -1,7 +1,7 @@
 {
     "armature": {
         "id": "armature",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 0,
@@ -28,7 +28,7 @@
     },
     "bat": {
         "id": "bat",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 0,
@@ -55,7 +55,7 @@
     },
     "hsword": {
         "id": "hsword",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 0,
@@ -86,7 +86,7 @@
     },
     "knife": {
         "id": "knife",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 0,
@@ -118,7 +118,7 @@
     },
     "mont": {
         "id": "mont",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 1,
@@ -149,7 +149,7 @@
     },
     "mont^1": {
         "id": "mont^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 1,
@@ -177,11 +177,11 @@
         "char_knock": 5,
         "char_destroy": 150,
         "char_auto": true,
-        "uniqueVariant": true
+        "variant": true
     },
     "chopper": {
         "id": "chopper",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 1,
@@ -211,7 +211,7 @@
     },
     "shovel": {
         "id": "shovel",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 1,
@@ -243,7 +243,7 @@
     },
     "spear": {
         "id": "spear",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 1,
         "cat": 1,
         "skill": 1,
@@ -273,7 +273,7 @@
     },
     "spear^1": {
         "id": "spear^1",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 1,
         "cat": 1,
         "skill": 1,
@@ -303,11 +303,11 @@
         "dop_effect": "poison",
         "dop_damage": 4,
         "dop_ch": 0.5,
-        "uniqueVariant": true
+        "variant": true
     },
     "mach": {
         "id": "mach",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 2,
@@ -339,7 +339,7 @@
     },
     "mach^1": {
         "id": "mach^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 2,
@@ -368,11 +368,11 @@
         "char_knock": 10,
         "char_destroy": 10,
         "char_combo": true,
-        "uniqueVariant": true
+        "variant": true
     },
     "zknife": {
         "id": "zknife",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 1,
@@ -405,7 +405,7 @@
     },
     "zknife^1": {
         "id": "zknife^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 1,
@@ -435,11 +435,11 @@
         "dop_effect": "cut",
         "dop_damage": 4,
         "dop_ch": 0.5,
-        "uniqueVariant": true
+        "variant": true
     },
     "cknife": {
         "id": "cknife",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 2,
@@ -471,7 +471,7 @@
     },
     "cknife^1": {
         "id": "cknife^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 2,
@@ -500,11 +500,11 @@
         "char_knock": 2,
         "char_destroy": 10,
         "char_auto": true,
-        "uniqueVariant": true
+        "variant": true
     },
     "edagger": {
         "id": "edagger",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 3,
@@ -532,7 +532,7 @@
     },
     "cdagger": {
         "id": "cdagger",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 4,
@@ -561,7 +561,7 @@
     },
     "mace": {
         "id": "mace",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 2,
@@ -591,7 +591,7 @@
     },
     "pipe": {
         "id": "pipe",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 3,
@@ -618,7 +618,7 @@
     },
     "zsword": {
         "id": "zsword",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 3,
@@ -651,7 +651,7 @@
     },
     "zsword^1": {
         "id": "zsword^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 3,
@@ -681,11 +681,11 @@
         "char_tipdam": 1,
         "char_knock": 5,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "ripper": {
         "id": "ripper",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 2,
         "cat": 1,
         "skill": 1,
@@ -725,7 +725,7 @@
     },
     "ripper^1": {
         "id": "ripper^1",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 2,
         "cat": 1,
         "skill": 1,
@@ -762,11 +762,11 @@
         "char_knock": 2,
         "char_destroy": 10,
         "char_pier": 15,
-        "uniqueVariant": true
+        "variant": true
     },
     "axe": {
         "id": "axe",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 3,
@@ -797,7 +797,7 @@
     },
     "hammer": {
         "id": "hammer",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 4,
@@ -828,7 +828,7 @@
     },
     "hammer^1": {
         "id": "hammer^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 4,
@@ -856,11 +856,11 @@
         "char_knock": 15,
         "char_destroy": 350,
         "char_pow": true,
-        "uniqueVariant": true
+        "variant": true
     },
     "tlance": {
         "id": "tlance",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 1,
         "cat": 1,
         "skill": 1,
@@ -892,7 +892,7 @@
     },
     "elsword": {
         "id": "elsword",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 4,
@@ -924,7 +924,7 @@
     },
     "elsword^1": {
         "id": "elsword^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 4,
@@ -953,11 +953,11 @@
         "char_tipdam": 9,
         "char_knock": 5,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "autoaxe": {
         "id": "autoaxe",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 2,
         "cat": 1,
         "skill": 1,
@@ -999,7 +999,7 @@
     },
     "mspear": {
         "id": "mspear",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 1,
         "cat": 1,
         "skill": 1,
@@ -1031,7 +1031,7 @@
     },
     "mspear^1": {
         "id": "mspear^1",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 1,
         "cat": 1,
         "skill": 1,
@@ -1060,11 +1060,11 @@
         "vis_tipdec": 16,
         "vis_lasm": true,
         "vis_flare": "plasma1",
-        "uniqueVariant": true
+        "variant": true
     },
     "sword": {
         "id": "sword",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1097,7 +1097,7 @@
     },
     "sword^1": {
         "id": "sword^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1128,11 +1128,11 @@
         "dop_damage": 10,
         "dop_ch": 0.5,
         "char_pier": 25,
-        "uniqueVariant": true
+        "variant": true
     },
     "lsword": {
         "id": "lsword",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1163,7 +1163,7 @@
     },
     "lsword^1": {
         "id": "lsword^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1191,11 +1191,11 @@
         "char_tipdam": 5,
         "char_knock": 2,
         "char_destroy": 250,
-        "uniqueVariant": true
+        "variant": true
     },
     "bsaw": {
         "id": "bsaw",
-        "tip": 1,
+        "tip": "melee",
         "mtip": 2,
         "cat": 1,
         "skill": 1,
@@ -1236,7 +1236,7 @@
     },
     "sledge": {
         "id": "sledge",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1267,7 +1267,7 @@
     },
     "sledge^1": {
         "id": "sledge^1",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1295,11 +1295,11 @@
         "char_knock": 28,
         "char_destroy": 500,
         "char_pow": true,
-        "uniqueVariant": true
+        "variant": true
     },
     "kosa": {
         "id": "kosa",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,
@@ -1487,7 +1487,7 @@
         "char_prec": 10,
         "char_knock": 4,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "p10s": {
         "id": "p10s",
@@ -1587,7 +1587,7 @@
         "phis_deviation": 1.5,
         "phis_recoil": 10,
         "phis_massa": 2,
-        "uniqueVariant": true
+        "variant": true
     },
     "p308c": {
         "id": "p308c",
@@ -1686,7 +1686,7 @@
         "char_crit": 2,
         "char_knock": 26,
         "char_destroy": 150,
-        "uniqueVariant": true
+        "variant": true
     },
     "psc": {
         "id": "psc",
@@ -1755,7 +1755,7 @@
         "char_crit": 2,
         "char_knock": 20,
         "char_destroy": 30,
-        "uniqueVariant": true
+        "variant": true
     },
     "shok": {
         "id": "shok",
@@ -1938,7 +1938,7 @@
         "ammo_holder": 30,
         "ammo_rashod": 1,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "plap": {
         "id": "plap",
@@ -2007,7 +2007,7 @@
         "ammo_holder": 60,
         "ammo_rashod": 3,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "pulsep": {
         "id": "pulsep",
@@ -2241,7 +2241,7 @@
         "char_prec": 9,
         "char_knock": 6,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "assr": {
         "id": "assr",
@@ -2312,7 +2312,7 @@
         "char_prec": 11,
         "char_knock": 5,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "carbine": {
         "id": "carbine",
@@ -2387,7 +2387,7 @@
         "ammo_base": "p556",
         "ammo_holder": 40,
         "ammo_reload": 30,
-        "uniqueVariant": true
+        "variant": true
     },
     "zebr": {
         "id": "zebr",
@@ -2472,7 +2472,7 @@
         "dop_damage": 24,
         "dop_ch": 1,
         "dop_vision": 2,
-        "uniqueVariant": true
+        "variant": true
     },
     "lmg": {
         "id": "lmg",
@@ -2545,7 +2545,7 @@
         "char_prec": 14,
         "char_knock": 3,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "autor": {
         "id": "autor",
@@ -2663,7 +2663,7 @@
         "ammo_holder": 160,
         "ammo_rashod": 4,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "plamg": {
         "id": "plamg",
@@ -2741,7 +2741,7 @@
         "char_knock": 2,
         "char_destroy": 150,
         "char_pier": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "nova": {
         "id": "nova",
@@ -2824,7 +2824,7 @@
         "ammo_holder": 320,
         "ammo_rashod": 8,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "quick": {
         "id": "quick",
@@ -2903,7 +2903,7 @@
         "ammo_holder": 200,
         "ammo_rashod": 4,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "oldshot": {
         "id": "oldshot",
@@ -2974,7 +2974,7 @@
         "char_prec": 7,
         "char_knock": 3,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "lshot": {
         "id": "lshot",
@@ -3081,7 +3081,7 @@
         "char_knock": 3,
         "char_destroy": 10,
         "char_auto": true,
-        "uniqueVariant": true
+        "variant": true
     },
     "saf9": {
         "id": "saf9",
@@ -3156,7 +3156,7 @@
         "ammo_base": "p12",
         "ammo_holder": 12,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "pshot": {
         "id": "pshot",
@@ -3231,7 +3231,7 @@
         "ammo_base": "p12",
         "ammo_holder": 12,
         "ammo_reload": 30,
-        "uniqueVariant": true
+        "variant": true
     },
     "prism": {
         "id": "prism",
@@ -3315,7 +3315,7 @@
         "char_tipdam": 5,
         "char_destroy": 20,
         "char_knock": 5,
-        "uniqueVariant": true
+        "variant": true
     },
     "cryo": {
         "id": "cryo",
@@ -3432,7 +3432,7 @@
         "ammo_rashod": 25,
         "ammo_reload": 60,
         "vis_flare": "laser",
-        "uniqueVariant": true
+        "variant": true
     },
     "oldr": {
         "id": "oldr",
@@ -3503,7 +3503,7 @@
         "char_crit": 1.5,
         "char_knock": 5,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "hunt": {
         "id": "hunt",
@@ -3613,7 +3613,7 @@
         "char_crit": 1.5,
         "char_knock": 12,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "brushgun": {
         "id": "brushgun",
@@ -3688,7 +3688,7 @@
         "char_crit": 1.5,
         "char_knock": 22,
         "char_destroy": 30,
-        "uniqueVariant": true
+        "variant": true
     },
     "rechr": {
         "id": "rechr",
@@ -3808,7 +3808,7 @@
         "ammo_holder": 120,
         "ammo_rashod": 4,
         "ammo_reload": 40,
-        "uniqueVariant": true
+        "variant": true
     },
     "plar": {
         "id": "plar",
@@ -3887,7 +3887,7 @@
         "ammo_holder": 120,
         "ammo_rashod": 8,
         "ammo_reload": 60,
-        "uniqueVariant": true
+        "variant": true
     },
     "pulser": {
         "id": "pulser",
@@ -3958,7 +3958,7 @@
         "ammo_holder": 300,
         "ammo_rashod": 20,
         "ammo_reload": 60,
-        "uniqueVariant": true
+        "variant": true
     },
     "termo": {
         "id": "termo",
@@ -4041,7 +4041,7 @@
         "ammo_holder": 90,
         "ammo_rashod": 15,
         "ammo_reload": 60,
-        "uniqueVariant": true
+        "variant": true
     },
     "rail": {
         "id": "rail",
@@ -4124,7 +4124,7 @@
         "ammo_holder": 105,
         "ammo_rashod": 7,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "sniper": {
         "id": "sniper",
@@ -4205,7 +4205,7 @@
         "ammo_base": "p308",
         "ammo_holder": 8,
         "ammo_reload": 45,
-        "uniqueVariant": true
+        "variant": true
     },
     "lassn": {
         "id": "lassn",
@@ -4296,7 +4296,7 @@
         "char_critdam": 0.5,
         "char_tipdam": 5,
         "char_destroy": 50,
-        "uniqueVariant": true
+        "variant": true
     },
     "grom": {
         "id": "grom",
@@ -4380,7 +4380,7 @@
         "char_tipdam": 9,
         "char_destroy": 300,
         "char_pier": 20,
-        "uniqueVariant": true
+        "variant": true
     },
     "anti": {
         "id": "anti",
@@ -4462,7 +4462,7 @@
         "snd_reload": "sniper_r",
         "snd_noise": 2200,
         "char_pier": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "minigun": {
         "id": "minigun",
@@ -4543,7 +4543,7 @@
         "char_knock": 3,
         "char_prep": 32,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "hmg": {
         "id": "hmg",
@@ -4651,7 +4651,7 @@
         "char_prec": 15,
         "char_knock": 9,
         "char_destroy": 50,
-        "uniqueVariant": true
+        "variant": true
     },
     "gatl": {
         "id": "gatl",
@@ -4738,7 +4738,7 @@
         "ammo_holder": 600,
         "ammo_rashod": 2,
         "ammo_reload": 60,
-        "uniqueVariant": true
+        "variant": true
     },
     "gatp": {
         "id": "gatp",
@@ -4821,7 +4821,7 @@
         "phis_recoil": 2,
         "phis_massa": 20,
         "phis_m": 3,
-        "uniqueVariant": true
+        "variant": true
     },
     "flamer": {
         "id": "flamer",
@@ -4912,7 +4912,7 @@
         "phis_flame": 1,
         "phis_massa": 10,
         "phis_m": 2,
-        "uniqueVariant": true
+        "variant": true
     },
     "incin": {
         "id": "incin",
@@ -5053,7 +5053,7 @@
         "dop_effect": "igni",
         "dop_damage": 25,
         "dop_ch": 0.2,
-        "uniqueVariant": true
+        "variant": true
     },
     "bfg": {
         "id": "bfg",
@@ -5178,7 +5178,7 @@
         "char_crit": 0,
         "char_tipdam": 3,
         "char_destroy": 3,
-        "uniqueVariant": true
+        "variant": true
     },
     "dartgun": {
         "id": "dartgun",
@@ -5249,7 +5249,7 @@
         "dop_effect": "poison",
         "dop_damage": 16,
         "dop_ch": 1,
-        "uniqueVariant": true
+        "variant": true
     },
     "acidgun": {
         "id": "acidgun",
@@ -5318,7 +5318,7 @@
         "char_tipdam": 10,
         "char_knock": 0,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "sawgun": {
         "id": "sawgun",
@@ -5396,7 +5396,7 @@
         "char_knock": 16,
         "char_destroy": 40,
         "char_pier": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "buckshot": {
         "id": "buckshot",
@@ -5465,7 +5465,7 @@
         "char_prec": 6,
         "char_knock": 10,
         "char_destroy": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "railway": {
         "id": "railway",
@@ -5539,7 +5539,7 @@
         "char_destroy": 50,
         "char_auto": true,
         "char_pier": 10,
-        "uniqueVariant": true
+        "variant": true
     },
     "friend": {
         "id": "friend",
@@ -5618,7 +5618,7 @@
         "char_destroy": 50,
         "char_tipdam": 101,
         "char_dkol": 5,
-        "uniqueVariant": true
+        "variant": true
     },
     "glau1": {
         "id": "glau1",
@@ -5744,7 +5744,7 @@
         "ammo_base": "gren40",
         "ammo_holder": 10,
         "ammo_reload": 60,
-        "uniqueVariant": true
+        "variant": true
     },
     "aglau": {
         "id": "aglau",
@@ -5875,7 +5875,7 @@
         "phis_recoil": 10,
         "phis_massa": 20,
         "phis_m": 3,
-        "uniqueVariant": true
+        "variant": true
     },
     "bel": {
         "id": "bel",
@@ -5960,7 +5960,7 @@
         "ammo_base": "egg",
         "ammo_holder": 1,
         "ammo_reload": 30,
-        "uniqueVariant": true
+        "variant": true
     },
     "dinamit": {
         "id": "dinamit",
@@ -6566,7 +6566,7 @@
         "com_chance": 0,
         "com_stage": 1,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "ice": {
         "id": "ice",
@@ -6623,7 +6623,7 @@
         "com_chance": 0,
         "com_stage": 1,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "dragon": {
         "id": "dragon",
@@ -6696,7 +6696,7 @@
         "com_chance": 0,
         "com_stage": 1,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "blades": {
         "id": "blades",
@@ -6753,7 +6753,7 @@
         "com_chance": 0,
         "com_stage": 1,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "lightning": {
         "id": "lightning",
@@ -6808,7 +6808,7 @@
         "com_chance": 0,
         "com_stage": 2,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "fireball": {
         "id": "fireball",
@@ -6875,7 +6875,7 @@
         "com_chance": 0,
         "com_stage": 3,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "mray": {
         "id": "mray",
@@ -6940,7 +6940,7 @@
         "com_chance": 0,
         "com_stage": 3,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "defwave": {
         "id": "defwave",
@@ -6997,7 +6997,7 @@
         "com_chance": 0,
         "com_stage": 2,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "eclipse": {
         "id": "eclipse",
@@ -7062,7 +7062,7 @@
         "com_chance": 0,
         "com_stage": 3,
         "com_uniq": 0,
-        "uniqueVariant": true
+        "variant": true
     },
     "dray": {
         "id": "dray",
@@ -7177,7 +7177,7 @@
     },
     "a_melee": {
         "id": "a_melee",
-        "tip": 1,
+        "tip": "melee",
         "cat": 1,
         "skill": 1,
         "lvl": 5,

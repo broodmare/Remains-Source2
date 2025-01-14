@@ -1189,60 +1189,115 @@ package fe.unit {
 			}
 		}
 		
-		public function damage(dam:Number, tip:int, isDie:Boolean=false):void {
-			if (isDie) dam=dieDamage*inMaxHP;
-			if (dam<=0 || tip==Unit.D_INSIDE || tip==Unit.D_BLEED) return;
-			if (tip==Unit.D_NECRO) dam*=0.1;
-			dam*=organMult;
-			dam*=organMultPot;
-			if (radChild>0) dam*=(gg.maxhp-gg.rad)/gg.maxhp;
+		public function damage(dam:Number, tip:String, isDie:Boolean = false):void {
+			if (isDie) {
+				dam = dieDamage * inMaxHP;
+			}
+
+			if (dam <= 0 || tip == Unit.D_INSIDE || tip == Unit.D_BLEED) {
+				return;
+			}
+
+			if (tip == Unit.D_NECRO) {
+				dam *= 0.1;
+			}
+
+			dam *= organMult;
+			dam *= organMultPot;
+			
+			if (radChild > 0) {
+				dam *= (gg.maxhp - gg.rad) / gg.maxhp;
+			}
+			
 			var rnd:Number = Math.random();
 			var sst:int;
-			if (rnd<0.2) {
-				if (!isDie) dam*=2;
-				sst=4-Math.ceil(headHP/inMaxHP*4);
-				headHP-=dam;
-				if (headHP<headMin) headHP=headMin;
-				if (headHP<=0) {
-					headHP=1;
+			
+			if (rnd < 0.2) {
+				if (!isDie) {
+					dam *= 2;
+				}
+
+				sst = 4 - Math.ceil(headHP / inMaxHP * 4);
+				headHP -= dam;
+
+				if (headHP < headMin) {
+					headHP = headMin;
+				}
+
+				if (headHP <= 0) {
+					headHP = 1;
 					die();
 				}
-				headSt=4-Math.ceil(headHP/inMaxHP*4);
-				if (sst!=headSt) setParameters();
-				if (headSt>sst) trauma(headSt,1);
+
+				headSt = 4 - Math.ceil(headHP / inMaxHP * 4);
+
+				if (sst != headSt) {
+					setParameters();
+				}
+
+				if (headSt > sst) {
+					trauma(headSt, 1);
+				}
 			}
-			else if (rnd<0.6 || tip==Unit.D_POISON || tip==Unit.D_VENOM) {
-				sst=4-Math.ceil(torsHP/inMaxHP*4);
-				torsHP-=dam;
-				if (torsHP<torsMin) torsHP=torsMin;
-				if (torsHP<=0) {
-					torsHP=1;
+			else if (rnd < 0.6 || tip == Unit.D_POISON || tip == Unit.D_VENOM) {
+				sst = 4 - Math.ceil(torsHP / inMaxHP * 4);
+				torsHP -= dam;
+				
+				if (torsHP < torsMin) {
+					torsHP = torsMin;
+				}
+				
+				if (torsHP <= 0) {
+					torsHP = 1;
 					die();
 				}
-				torsSt=4-Math.ceil(torsHP/inMaxHP*4);
-				if (sst!=torsSt) setParameters();
-				if (torsSt>sst) trauma(torsSt,2);
+				
+				torsSt = 4 - Math.ceil(torsHP / inMaxHP * 4);
+				
+				if (sst != torsSt) {
+					setParameters();
+				}
+				
+				if (torsSt > sst) {
+					trauma(torsSt, 2);
+				}
 			}
 			else {
-				sst=4-Math.ceil(legsHP/inMaxHP*4);
-				legsHP-=dam;
-				if (legsHP<legsMin) legsHP=legsMin;
-				if (legsHP<=0) {
-					legsHP=1;
+				sst = 4 - Math.ceil(legsHP / inMaxHP * 4);
+				legsHP -= dam;
+				
+				if (legsHP < legsMin) {
+					legsHP = legsMin;
+				}
+				
+				if (legsHP <= 0) {
+					legsHP = 1;
 					die();
 				}
-				legsSt=4-Math.ceil(legsHP/inMaxHP*4);
-				if (sst!=legsSt) setParameters();
-				if (legsSt>sst) trauma(legsSt,3);
+				
+				legsSt = 4 - Math.ceil(legsHP / inMaxHP * 4);
+				
+				if (sst != legsSt) {
+					setParameters();
+				}
+				
+				if (legsSt > sst) {
+					trauma(legsSt, 3);
+				}
 			}
 		}
 		
 		public function die():void {
-			gg.poison=0;
-			gg.cut=0;
-			World.w.gui.messText('gameover');
-			if (gg.sost==1) gg.die(10);
-			else gg.sost=3;
+			gg.poison = 0;
+			gg.cut = 0;
+			World.w.gui.messText("gameover");
+
+			if (gg.sost == 1) {
+				gg.die(10);
+			}
+			else {
+				gg.sost = 3;
+			}
 		}
 		
 		public function bloodDamage(dam:Number, tip:int):void {

@@ -18,655 +18,224 @@ package fe.weapon {
 
 	public class Weapon extends Obj {
 		
-		public static var weaponPerks:Array = ['pistol', 'shot', 'commando', 'rifle', 'perf', 'laser', 'plasma', 'pyro', 'acute', 'stunning']
-		public static var variant2:String = ' - II';
+		public static var weaponPerks:Array		= ['pistol', 'shot', 'commando', 'rifle', 'perf', 'laser', 'plasma', 'pyro', 'acute', 'stunning']
+		public static var variant2:String		= ' - II';
 		
 		public var b:Bullet;
 		public var trasser:Trasser;
-		public var owner:Unit;
+		public var owner:Unit;	// TODO: REMOVE
 		public var rot:Number;
 		public var bulCoords:Vector2 = new Vector2(0, 0);
 		
 		//[visual]
 		public var svis:String;
-		public var svisv:String;				// [The weapon itself]
+		public var svisv:String;					// [The weapon itself]
 		
 		public var vWeapon:Class;			
-		public var visbul:String;				// [Shells]
+		public var visbul:String;					// [Shells]
 		public var vBullet:Class;
-		public var flare:String;				// [Flash]
-		public var visexpl:String;				// [Explosion]
+		public var flare:String;					// [Flash]
+		public var visexpl:String;					// [Explosion]
 		
-		public var is_attack:Boolean = false;	// [If the attack key pressed]
-		public var is_pattack:Boolean = false;	
+		public var is_attack:Boolean	= false;	// [If the attack key pressed]
+		public var is_pattack:Boolean	= false;	
 		
 		// Timers
-		public var t_attack:int = 0;
-		public var t_prep:int = 0;
-		public var t_reload:int = 0;
-		public var t_rech:int = 0;
-		public var t_rel:int = 0;				//время перезарядки для оружия, не имеющего магазина
-		public var t_shoot:int = 0;				//время после выстрела
-		public var t_auto:int = 0;
+		public var t_attack:int			= 0;
+		public var t_prep:int			= 0;
+		public var t_reload:int			= 0;
+		public var t_rech:int			= 0;
+		public var t_rel:int			= 0;		// [Reload time for weapons without a magazine]
+		public var t_shoot:int			= 0;		// [Time after shot]
+		public var t_auto:int			= 0;
 		
-		public var pow:int = 0;					//усиление атаки
-		public var skillConf:Number = 1;		//модификатор, зависит от соответствия уровня скилла, 1 - норм, 0.8 - скилл на 1 уровень ниже, 0.6 - скилл на 2 уровня ниже
-		public var skillPlusDam:Number = 1;		//усиление оружия низких уровней;
-		public var weaponSkill:Number = 1;		//умение для гг
-		private var t_ret:int = 0;
-		private var rotUp:Number = 0;
-		public var jammed:Boolean = false;		//заклинило
-		public var kol_shoot:int = 0;			//количество сделанных выстрелов
-		public var ready:Boolean = false;		//оружие наведено на цель
-		public var is_shoot:Boolean = false;	// [shot fired]
-		protected var animated:Boolean = false;
+		public var pow:int				= 0;		//усиление атаки
+		public var skillConf:Number		= 1.00;		//модификатор, зависит от соответствия уровня скилла, 1 - норм, 0.8 - скилл на 1 уровень ниже, 0.6 - скилл на 2 уровня ниже
+		public var skillPlusDam:Number	= 1.00;		//усиление оружия низких уровней;
+		public var weaponSkill:Number	= 1.00;		//умение для гг
+		private var t_ret:int			= 0;
+		private var rotUp:Number		= 0.00;
+		public var jammed:Boolean		= false;	//заклинило
+		public var kol_shoot:int		= 0;		//количество сделанных выстрелов
+		public var ready:Boolean		= false;	//оружие наведено на цель
+		public var is_shoot:Boolean		= false;	// [shot fired]
+		protected var animated:Boolean	= false;
 		
-		public var krep:int = 0;				// [fastening type]
-		public var hold:int = 0;				// [left in the clip]
+		public var krep:int	= 0;					// [fastening type]
+		public var hold:int	= 0;					// [left in the clip]
 
-		public var findCel:Boolean = true;		// [turn to target]
-		public var forceRot:Number = 0;
-		public var fixRot:int = 0;	
-		public var checkLine:Boolean = false;	
+		public var findCel:Boolean		= true;		// [turn to target]
+		public var forceRot:Number		= 0.00;
+		public var fixRot:int			= 0;	
+		public var checkLine:Boolean	= false;	
 
 		public var id:String;
-		public var uniq:Number = -1;			// [Probability of a unique variant appearing]
-		public var variant:Boolean = false;		// CHANGED TO BOOL | The numerical ID of a variant. Assumed 0 is base weapon and in the game it would normally not increment past 1
-												// This number is usually used as a index to reference nodes, eg. "Char[1]" to get the variants stats
+		public var uniq:Number			= -1.00;	// [Probability of a unique variant appearing]
+		public var variant:Boolean		= false;	// This weapon is a unique version of a base weapon
 		
-		//характеристики
-		//тип оружия
-		//0 - внутреннее
-		//1 - холодное
-		//2 - лёгкое огнестрельное
-		//3 - тяжёлое
-		//4 - взрывчатка
+		// [Characteristics]
+		// [Weapon type]
+		//0 - [Internal]
+		//1 - [Cryo(?)]
+		//2 - [Light guns]
+		//3 - [Heavy gun]
+		//4 - [Explosives]
 		public var tip:int = 0;
+
 		//категория 
 		public var cat:int = 0;
-		//инвентарь
-		public var respect:int = 0;			//отношение 0-новое, 1-скрытое, 2-используемое, 3-схема
-		//необходимый скилл
+		
+		// [Inventory]
+		public var respect:int = 0;			// [Relation 0 - new, 1 - hidden, 2 - used, 3 - scheme]
+		
+		// [Required skill]
 		public var skill:int = 0;
-		//уровень скилла
-		public var lvl:int = 0;
-		public var lvlNoUse:Boolean = false;	//запретить использовать если навык не достаточен
-		public var perslvl:int = 0;
-		public var spell:Boolean = false;	//является защитным заклинанием
-		public var alicorn:Boolean = false;	//доступно в режиме аликорна
-		public var rep_eff:Number = 1;		//эффективность ремонта набором оружейника
 		
-		public var auto:Boolean = false;	// [automatic attack]
-		public var rapid:int = 5;			// [cycles per shot, 30 = 1s]
-		public var speed:Number = 100;		// [bullet speed]
-		public var volna:Boolean = false;	// [if true, then the bullet speed will not be random]
-		public var deviation:Number = 0; 	// Weapon dispersion
-		public var precision:Number = 0;	// [accuracy, shows the distance at which the hit will be 100%]
-		public var antiprec:Number = 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
+		// [Skill level]
+		public var lvl:int				= 0;
+		public var lvlNoUse:Boolean		= false;	// [Prohibit use if skill is not sufficient]
+		public var perslvl:int			= 0;
+		public var spell:Boolean		= false;	// [Is a protective spell]
+		public var alicorn:Boolean		= false;	// [Available in alicorn mode]
+		public var rep_eff:Number		= 1.00;		// [Repair efficiency with a gunsmith's kit]
+		
+		public var auto:Boolean			= false;	// [automatic attack]
+		public var rapid:int			= 5;		// [cycles per shot, 30 = 1s]
+		public var speed:Number			= 100.00;	// [bullet speed]
+		public var volna:Boolean		= false;	// [if true, then the bullet speed will not be random]
+		public var deviation:Number		= 0;		// Weapon dispersion
+		public var precision:Number		= 0;		// [accuracy, shows the distance at which the hit will be 100%]
+		public var antiprec:Number		= 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
 
-		public var dlina:int=50;			// [bladed weapon length]
-		public var mindlina:int=50;			
+		public var dlina:int			= 50;		// [Bladed weapon length]
+		public var mindlina:int			= 50;			
 		
-		public var mass:int=1;			//занимает место
-		public var drot:Number=0;		//скорость поворота оружия, 0 -мгновенно
-		public var drot2:Number=0;		//скорость поворота оружия при атаке
-		public var prep:int=0;			//тактов на раскрутку
+		public var mass:int				= 1;		// [Takes place (uses inventory space?)]
+		public var drot:Number			= 0.00;		// [weapon rotation speed, 0 - instant]
+		public var drot2:Number			= 0.00;		// [weapon rotation speed when attacking]
+		public var prep:int				= 0;		// [cycles for promotion]
 		
-		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
-		public var explTip:int=1;		//тип взрыва, 1-обычный, 2-облако газа
-		public var explKol:int=0;		//количество взрывов, интервал 1с, 0 - мгновенный взрыв
-		public var destroy:Number=10;	//урон блокам
-		public var damage:Number=0;		//урон юнитам
-		public var damageExpl:Number=0;	//урон по площади
-		public var tipDamage:int=0;		//тип урона
-		public var pier:Number=0;		//бронебойность
-		public var critCh:Number=0.1;	//вероятность крита
-		public var critM:Number=0;		//дополнительный крит
-		public var critDamPlus:Number=0;//прибавка к модификатору критического урона
-		public var distExpl:Boolean=false;	//пули взрываются по прошествии времени
-		public var navod:Number = 0;		// [homing]
+		public var explRadius:Number	= 0.00;		// [Explosion radius, if 0, then there is no explosion]
+		public var explTip:int			= 1;		// [Explosion type, 1-normal, 2-gas cloud]
+		public var explKol:int			= 0;		// [Number of explosions, interval 1s, 0 - instant explosion]
+		public var destroy:Number		= 10.00;	// [Block damage]
+		public var damage:Number		= 0.00;		// [Damage to units]
+		public var damageExpl:Number	= 0.00;		// [Area damage]
+		public var tipDamage:int		= 0;		// [Damage type]
+		public var pier:Number			= 0.00;		// [armor-piercing]
+		public var critCh:Number		= 0.10;		// [crit chance]
+		public var critM:Number			= 0.00;		// [extra crit]
+		public var critDamPlus:Number	= 0.00;		// [Increase to critical damage modifier]
+		public var distExpl:Boolean		= false;	// [bullets explode as time passes]
+		public var navod:Number			= 0.00;		// [homing]
 
-		public var otbros:Number=0;		//отброс
-		public var kol:Number=1;		//количество пуль за 1 выстрел
-		public var dkol:Number=0;		//стрельба очередями
-		public var rashod:Number=1;		//зарядов за 1 выстрел
-		public var opt:Object = {};		//опции
-		public var recoil:int=0;		//отдача назад
-		public var recoilUp:int=0;		//отдача вверх
-		public var recoilMult:int=1;	//множитель отдачи
-		public var desintegr:Number=0;	//вероятность дезинтеграции
+		public var otbros:Number		= 0.00;		// [garbage]
+		public var kol:int				= 1;		// [number of bullets per shot]
+		public var dkol:int				= 0;		// [burst shooting]
+		public var rashod:int			= 1;		// [charges per shot]
+		public var opt:Object			= {};		// [options]
+		public var recoil:int			= 0;		// [recoil back]
+		public var recoilUp:int			= 0;		// [recoil up]
+		public var recoilMult:int		= 1;		// [recoil multiplier]
+		public var desintegr:Number		= 0.00;		// [probability of disintegration]
 		
-		public var holder:int=0;		// [Holder (??)]
-		public var ammoBase:String='';	// [Basic type of ammunition]
-		public var ammo:String='';		// [Current ammunition type]
-		public var ammoTarg:String='';	//тип боеприпасов на замену
-		public var reload:int=0;		//тактов на перезарядку, 30=1с
-		public var recharg:int=0;		//тактов на подзарядку, если она имеется, 0 если нет
-		public var magic:Number=100, dmagic:Number=100;	//расход магии
-		public var mana:Number=100, dmana:Number=100;	//расход маны
+		public var holder:int			= 0;		// Rounds in the magazine
+		public var ammoBase:String		= "";		// ID of the weapon's default ammo
+		public var ammo:String			= "";		// ID o fthe weapon's current ammo
+		public var ammoTarg:String		= "";		// [Type of ammunition to replace]
+		public var reload:int			= 0;		// [reload cycles, 30 = 1s]
+		public var recharg:int			= 0;		// [cycles for recharging if applicable, 0 if not]
+		public var magic:Number			= 100.00;
+		public var dmagic:Number		= 100.00;	// [magic consumption]
+		public var mana:Number			= 100.00;
+		public var dmana:Number			= 100.00;	// [mana consumption]
 
-		public var noise:int=0;					//звук выстрела
-		public var shine:int=500;				//вспышка от выстрела
-		public var tipDecal:int=0;				//тип оставляемых следов		
-		public var bulAnim:Boolean = false;		//анимировать снаряд
-		public var spring:int=1;				//растягивание
-		public var flame:int=0;					//снаряд ведёт себя как огонь
-		public var grav:Number=0;				//снаряд движется по параболе
-		public var accel:Number=0;				//снаряд движется с ускорением
-		public var shell:Boolean = false;		//выбрасывает гильзу
-		public var fromWall:Boolean = false;	//стрелять из стены
-		public var bulBlend:String='screen';
-		private var emitShell:Emitter=Emitter.arr['gilza'];
+		public var noise:int			= 0;		// [sound of a gunshot]
+		public var shine:int			= 500;		// [flash from a shot]
+		public var tipDecal:int			= 0;		// [type of traces left (Bullet hole/scorch marks)]
+		public var bulAnim:Boolean		=  false;	// [animate the projectile]
+		public var spring:int			= 1;		// [stretching]
+		public var flame:int			= 0;		// [the projectile behaves like fire]
+		public var grav:Number			= 0.00;		// [the projectile moves in a parabola]
+		public var accel:Number			= 0.00;		// [the projectile moves with acceleration]
+		public var shell:Boolean		=  false;	// [throws out the cartridge case]
+		public var fromWall:Boolean		=  false;	// [shoot from the wall]
+		public var bulBlend:String		= "screen";
+		private var emitShell:Emitter	= Emitter.arr["gilza"];
 		
-		//дополнительные эффекты
-		public var dopEffect:String;		//эффект
-		public var dopDamage:Number=0;		//урон
-		public var dopCh:Number=1;			//шанс
-		public var probiv:Number=0;
-		public var visionMult:Number=1;		//множитель видимости для пользователя
+		// [additional effects] (usually called 'DOP')
+		public var dopEffect:String;				// [Effect]
+		public var dopDamage:Number		= 0.00;		// [Damage]
+		public var dopCh:Number			= 1.00;		// [Chance]
+		public var probiv:Number		= 0.00;
+		public var visionMult:Number	= 1.00;		// [user visibility multiplier]
 		
-		//модификаторы
-		public var drotMult:Number=1;
-		public var reloadMult:Number=1;
+		// [Modifiers]
+		public var drotMult:Number		= 1.00;
+		public var reloadMult:Number	= 1.00;
 		
-		public var precMult:Number=1;
-		public var consMult:Number=1;
-		public var damMult:Number=1;
-		public var damAdd:Number=0;
-		public var pierAdd:Number=0;
-		public var critchAdd:Number=0;
-		public var speedMult:Number=1;
-		public var otbrosMult:Number=1;
-		public var explRadMult:Number=1;
-		public var devMult:Number=1;
+		public var precMult:Number		= 1.00;
+		public var consMult:Number		= 1.00;
+		public var damMult:Number		= 1.00;
+		public var damAdd:Number		= 0.00;
+		public var pierAdd:Number		= 0.00;
+		public var critchAdd:Number		= 0.00;
+		public var speedMult:Number		= 1.00;
+		public var otbrosMult:Number	= 1.00;
+		public var explRadMult:Number	= 1.00;
+		public var devMult:Number		= 1.00;
 		
-		public var absPierRnd:Number=0;
+		public var absPierRnd:Number	= 0.00;
 		
-		//модификаторы патрона
-		public var ammoPier:Number=0;	//бронебойность
-		public var ammoArmor:Number=1;	//модификатор брони цели
-		public var ammoDamage:Number=1;	//урон
-		public var ammoProbiv:Number=0;	//пробивание цели насквозь
-		public var ammoOtbros:Number=1;	//отбрасывание
-		public var ammoPrec:Number=1;	//точность
-		public var ammoHP:int=0;		//прибавка к износу
-		public var ammoFire:Number=0;	//зажигательный
-		public var ammoMod:int=-1;		//изменение типа урона
+		// [Cartridge modifiers]
+		public var ammoPier:Number		= 0.00;	// [armor-piercing]
+		public var ammoArmor:Number		= 1.00;	// [target's armor modifier]
+		public var ammoDamage:Number	= 1.00;	// [damage]
+		public var ammoProbiv:Number	= 0.00;	// [punching through the target]
+		public var ammoOtbros:Number	= 1.00;	// [discarding]
+		public var ammoPrec:Number		= 1.00;	// [precision]
+		public var ammoHP:int			= 0;	// [increase in wear]
+		public var ammoFire:Number		= 0.00;	// [incendiary]
+		public var ammoMod:int			= -1;	// [change damage type]
 		
 		
 		// SATS
-		public var satsQue:int = 1;
-		public var satsCons:Number = 10;
-		public var noSats:Boolean = false;	// [Do not support]
-		public var noPerc:Boolean = false;	// [Do not calculate accuracy]
-		public var noTrass:Boolean = false;	// [Do not trace]
-		public var satsMelee:Boolean = false;
+		public var satsQue:int			= 1;
+		public var satsCons:Number		= 10.00;
+		public var noSats:Boolean		= false;	// [Do not support]
+		public var noPerc:Boolean		= false;	// [Do not calculate accuracy]
+		public var noTrass:Boolean		= false;	// [Do not trace]
+		public var satsMelee:Boolean	= false;
 		
 		// Sounds
-		public var sndShoot:String='';
-		public var sndReload:String='';
-		public var sndPrep:String='';
-		public var sndHit:String='';
-		public var snd_t_prep1:int=0;
-		public var snd_t_prep2:int=0;
+		public var sndShoot:String		= "";
+		public var sndReload:String		= "";
+		public var sndPrep:String		= "";
+		public var sndHit:String		= "";
+		public var snd_t_prep1:int		= 0;
+		public var snd_t_prep2:int		= 0;
 		public var sndCh:SoundChannel;
 		
-		public var hp:int, maxhp:int=100;
-		public var price:int=0;
-		public var breaking:Number=0;
-
-		public static var cachedWeaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-
-		private static var cachedWeapons:Object	= {}; // Save object nodes that have been used before to avoid parsing XML for lots of objects.
-		private static var cachedAmmo:Object	= {};
+		public var hp:int;
+		public var maxhp:int			= 100;
+		public var price:int			= 0;
+		public var breaking:Number		= 0.00;
 
 		// Constructor
-		public function Weapon(own:Unit, nid:String, nvar:Boolean = false) {
+		public function Weapon() {
 			
-			sloy = 2;
-			owner = own;
-			id = nid;
-			variant = nvar;
-			trasser = new Trasser();
-			
-			getWeaponData();
-			setNull();
-			
-			if (!own.player) {
-				auto = true;
-			}
-		}
-		
-		// Decide what kind of weapon it is and call the appropriate constructor
-		public static function create(owner:Unit, data:Object):Weapon {
-			
-			var w:Weapon;
-			var wepID:String = data.id;
-			var nvar:int = 0;
-			
-			// Ends in '^1' (It's a weapon variant)
-			if (wepID.lastIndexOf("^1") == wepID.length - 2) {
-				nvar = 1;
-			}
-
-			if (data.tip == 1) {
-				w = new WClub(owner, wepID, nvar);
-			}
-			else if (data.tip == 12) {
-				w = new WPaint(owner, wepID, nvar);
-			}
-			else if (data.tip == 4) {
-				w = new WThrow(owner, wepID, nvar);
-			}
-			else if (data.tip == 5) {
-				w = new WMagic(owner, wepID, nvar);
-			}
-			else if (data.punch > 0) {
-				w = new WPunch(owner, wepID, nvar);
-			}
-			else {
-				w = new Weapon(owner, wepID, nvar);
-			}
-			
-			return w;
-		}
-
-		public static function getWeaponInfo(id:String):XML {
-			// Check cached weapons first
-			if (cachedWeapons[id]) {
-				return cachedWeapons[id];
-			}
-
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "weapons", "id", id);
-			if (node) {
-				cachedWeapons[id] = node;
-			}
-
-			return node;
-		}
-
-		public static function getAmmoInfo(id:String):XML {
-			// Check cached weapons first
-			if (cachedAmmo[id] != undefined) {
-				return cachedAmmo[id];
-			}
-
-			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
-			if (node) {
-				cachedAmmo[id] = node;
-			}
-
-			return node;
-		}
-		
-		public override function err():String {
-			return 'Error weapon '+nazv+':'+(owner?owner.nazv:'????');
-		}
-		
-
-		// This is the main function that parses weapon data to create a Weapon instance or update the weapon to a variant
-		public function getWeaponData():void {
-			// [General characteristics]
-			
-			var data:Object = ItemManager.reference.weapons[id];
-			
-			if ("tip" in data) {
-				tip = data.tip;
-			}
-			
-			nazv = LanguageManager.reference.data.weapon.id;
-
-			
-			cat = data.cat;
-			skill = data.skill;
-			
-			if ("perk" in data) {
-				opt.perk = data.perk;
-				opt[data.perk] = true;
-			}
-			
-			lvl = data.lvl;
-			perslvl = data.perslvl;
-			
-			if ("alicorn" in data) {
-				alicorn = data.alicorn;
-			}
-			
-			//SATS
-			if ("sats_que" in data) {
-				satsQue = data.sats_que;
-			}
-			if ("sats_cons" in data) {
-				satsCons = data.sats_cons;
-			}
-			if ("sats_noSats" in data) {
-				noSats = data.sats_noSats;
-			}
-			if ("sats_noperc" in data) {
-				noPerc = data.sats_noperc;
-			}
-			
-			// [Price and repair]
-			if ("com_rep" in data) {
-				rep_eff = data.com_rep;
-			}
-			if ("com_price" in data) {
-				price = data.com_price;
-			}
-			if ("com_uniq" in data) {
-				uniq = data.com_uniq;
-			}
-			
-			// [Visual]
-			svis = 'vis' + id;
-			
-			if (tip == 0) {
-				svisv = null;
-			}
-			else if (variant) {
-				svisv = svis + '_' + "1";	// TODO: This is broke from changing the variant from 1 to a bool
-			}
-			else {
-				svisv = svis;
-			}
-			
-			// "vis" properties
-			if ("vis_vweap" in data ) {
-				svisv = data.vis_vweap;		// String
-			}
-			if ("vis_tipdec" in data ) {
-				tipDecal = data.vis_tipdec;	// Int
-			}
-			if ("vis_shell" in data ) {
-				shell = data.vis_shell;		// Boolean
-			}
-			if ("vis_spring" in data ) {
-				spring = data.vis_spring;	// Int
-			}
-			if ("vis_bulanim" in data ) {
-				bulAnim = data.vis_bulanim;	// Boolean
-			}
-			if ("vis_phisbul" in data ) {
-				bulBlend = "normal";		// String | Custom string here! Don't change this
-			}
-			if ("vis_visexpl" in data ) {
-				visexpl = data.vis_visexpl;	// String
-			}
-			if ("vis_shine" in data ) {
-				shine = data.vis_shine;		// Int
-			}
-			if ("vis_vbul" in data ) {
-				visbul = data.vis_vbul;		// String
-			}
-			if ("vis_flare" in data ) {
-				flare = data.vis_flare;			// String
-			}
-
-			if (tip > 0 || svisv) {
-				vWeapon = Res.getClass(svisv, svis, visp10mm);	// .SWF Dependency
-				vis = new vWeapon();
-			}
-			
-			if (owner && owner.weaponKrep > 0) {
-				krep = owner.weaponKrep;
-			}
-			
-			if (vis && vis.totalFrames > 1) {
-				animated = true;
-			}
-			
-			if (flare == null) {
-				flare = visbul;
-			}
-			
-			if (visbul) { 
-				try {
-					vBullet = getDefinitionByName('visbul' + visbul) as Class;
-				}
-				catch (err:ReferenceError) {
-					trace("ERROR: (00:11)");
-					vBullet = visualBullet;	// .SWF Dependency
-				}
-			}
-			else {
-				vBullet = visualBullet;	// .SWF Dependency
-			}
-			
-			// Sounds
-			if ("snd_shoot" in data ) {
-				sndShoot = data.snd_shoot;		// String
-			}
-			if ("snd_reload" in data ) {
-				sndReload = data.snd_reload;	// String
-			}
-			if ("snd_hit" in data ) {
-				sndHit = data.snd_hit;			// String
-			}
-			if ("snd_prep" in data ) {
-				sndPrep = data.snd_prep;		// String
-			}
-			if ("snd_t1" in data ) {
-				snd_t_prep1 = data.snd_t1;		// Int
-			}
-			if ("snd_t2" in data ) {
-				snd_t_prep2 = data.snd_t2;		// Int
-			}
-			if ("snd_noise" in data ) {
-				noise = data.snd_noise;			// Int
-			}
-
-			
-			// [Physical parameters]
-			if ("phis_massa" in data) {
-				massa = data.phis_massa / 50
-			}
-			else {
-				massa = 0;
-			}
-			if ("phis_m" in data ) {
-				mass = data.phis_m;				// Int
-			}
-			if ("phis_drot" in data ) {
-				drot = data.phis_drot * Math.PI / 180;
-			}
-			if ("phis_drot2" in data ) {
-				drot2 = data.phis_drot2 * Math.PI / 180;
-			}
-			if ("phis_recoil" in data ) {
-				recoil = data.phis_recoil;
-			}
-			if ("phis_speed" in data ) {
-				speed = data.phis_speed;
-			}
-			if ("phis_deviation" in data ) {
-				deviation = data.phis_deviation;
-			}
-			if ("phis_flame" in data ) {
-				flame = data.phis_flame;
-			}
-			if ("phis_grav" in data ) {
-				grav = data.phis_grav;
-			}
-			if ("phis_grav2" in data && owner && owner.fraction != Unit.F_PLAYER) {
-				grav = data.phis_grav2;
-			}
-			if ("phis_accel" in data ) {
-				accel = data.phis_accel;
-			}
-			if ("phis_navod" in data ) {
-				navod = data.phis_navod;
-			}
-			if ("phis_distexpl" in data ) {
-				distExpl = data.phis_distexpl;
-			}
-			if ("phis_volna" in data ) {
-				volna = data.phis_volna;
-			}
-
-			
-			// Ammunition
-			if ("ammo_holder" in data ) {
-				holder = data.ammo_holder;
-			}
-			if ("ammo_rashod" in data ) {
-				rashod = data.ammo_rashod;
-			}
-			if ("ammo_reload" in data ) {
-				reload = data.ammo_reload;
-			}
-			if ("ammo_recharg" in data ) {
-				recharg = data.ammo_recharg;
-			}
-			if ("ammo_mana" in data ) {
-				mana = data.ammo_mana;
-				dmana = data.ammo_mana;
-			}
-			if ("ammo_magic" in data ) {
-				magic = data.ammo_magic;
-				dmagic = data.ammo_magic;
-			}
-
-			
-			// [Additional effects (was called 'dop')]
-			if ("dop_vision" in data ) {
-				visionMult = data.dop_vision;
-			}
-			if ("dop_effect" in data ) {
-				dopEffect = data.dop_effect;
-			}
-			if ("dop_damage" in data ) {
-				dopDamage = data.dop_damage;
-			}
-			if ("dop_ch" in data ) {
-				dopCh = data.dop_ch;
-			}
-			if ("dop_probiv" in data ) {
-				probiv = data.dop_probiv;
-			}
-			
-			// [ammunition (was called 'a')]
-			if ("ammo_base" in data) {
-				ammo = data.ammo_base;
-				ammoBase = data.ammo_base;
-
-				setAmmo(ammo);
-			}
-			
-			// [Combat characteristics]
-			if ("char_maxhp" in data ) {
-				maxhp = data.char_maxhp;
-			}
-			if ("char_damage" in data ) {
-				damage = data.char_damage;
-			}
-			if ("char_damexpl" in data ) {
-				damageExpl = data.char_damexpl;
-			}
-			if ("char_rapid" in data ) {
-				rapid = data.char_rapid;
-			}
-			if ("char_pier" in data ) {
-				pier = data.char_pier;
-			}
-			if ("char_crit" in data ) {
-				critM = data.char_crit - 1;
-				critCh = 0.1 * data.char_crit;
-			}
-			if ("char_critdam" in data ) {
-				critDamPlus = data.char_critdam;
-			}
-			if ("char_knock" in data ) {
-				otbros = data.char_knock;
-			}
-			if ("char_tipdam" in data ) {
-				tipDamage = data.char_tipdam;
-			}
-			if ("char_prec" in data ) {
-				precision = data.char_prec * 40;
-			}
-			if ("char_antiprec" in data ) {
-				antiprec = data.char_antiprec * 40;
-			}
-			if ("char_destroy" in data ) {
-				destroy = data.char_destroy;
-			}
-			if ("char_kol" in data ) {
-				kol = data.char_kol;
-			}
-			if ("char_dkol" in data ) {
-				dkol = data.char_dkol;
-			}
-			if ("char_expl" in data ) {
-				explRadius = data.char_expl;
-			}
-			if ("char_expltip" in data ) {
-				explTip = data.char_expltip;
-			}
-			if ("char_explkol" in data ) {
-				explKol = data.char_explkol;
-			}
-			if ("char_prep" in data ) {
-				prep = data.char_prep;
-			}
-
-			auto = (rapid <= 6);
-			
-			if ("char_auto" in data ) {
-				auto = data.char_auto;	// Boolean
-			}
-			
-			// End of accessing data
-
-			recoilUp = recoil / 2;
-			
-			if (owner && !owner.player) {
-				recoilUp *= 0.2;
-			}
-			
-			t_rech = recharg;
-			
-			if (recharg) {
-				hold = holder;
-			}
-			
-			hp = maxhp;
-			
-			if (owner && owner.player) {
-				if (tipDamage == Unit.D_BUL) {
-					critDamPlus += 0.2;
-				}
-				if (tipDamage == Unit.D_PLASMA) {
-					critDamPlus -= 0.2;
-				}
-			}
-		}
-		
-		// update this weapon and it's stats to the variant using the variant ID provided
-		public function updVariant(nvar:Boolean):void {
-			if (uniq < 0) {
-				return;
-			}
-			
-			// update this weapon variant
-			variant = nvar;
-			
-			// Remove the old movieclip(?) object for this weapon 
-			if (owner.player && World.w.gg.currentWeapon == this) {
-				remVisual();
-			}
-
-			getWeaponData();			
-			
-			if (owner.player && World.w.gg.currentWeapon == this) {
-				addVisual();
-				World.w.gg.weaponLevit();
-			}
 		}
 		
 		public override function step():void {
-			actions();		// [Various actions]
-			if (owner) owner.setWeaponPos(tip);
-			if (vis) animate();		//анимация
+			actions();
+			
+			if (owner) {
+				owner.setWeaponPos(tip);
+			}
+			
+			if (vis) {
+				animate();
+			}
 		}
 
 		public override function addVisual():void {
@@ -690,14 +259,14 @@ package fe.weapon {
 			}
 		}
 		
-		public override function setNull(f:Boolean=false):void {
-			t_attack=t_reload=0;
+
+		/*public override function setNull(f:Boolean = false):void {
 			if (owner) {
 				coordinates.X = owner.weaponX;
 				coordinates.Y = owner.weaponY;
 				animate();
 			}
-		}
+		}*/
 		
 		public function setPers(gg:UnitPlayer, pers:Pers):void {
   			weaponSkill = pers.weaponSkills[skill];
@@ -710,11 +279,11 @@ package fe.weapon {
 				drotMult = pers.drotMult;
 			}
 			
-			reloadMult=pers.reloadMult;
-			precMult=pers.allPrecMult;
-			recoilMult=pers.recoilMult;
-			consMult=1;
-			damMult=pers.allDamMult;
+			reloadMult = pers.reloadMult;
+			precMult = pers.allPrecMult;
+			recoilMult = pers.recoilMult;
+			consMult = 1;
+			damMult = pers.allDamMult;
 			
 			if (skill == 2 || skill == 3 || skill == 4) {
 				damMult *= pers.gunsDamMult;
@@ -722,18 +291,18 @@ package fe.weapon {
 			
 			var razn:int = lvl - pers.getWeapLevel(skill);
 			if (razn < 0) {
-				skillPlusDam = 1 - razn * 0.1;
+				skillPlusDam = 1.00 - razn * 0.10;
 			}
 			else {
-				skillPlusDam = 1;
+				skillPlusDam = 1.00;
 			}
 			
-			speedMult = 1;
-			damAdd = 0;
-			pierAdd = 0;
-			critchAdd = 0;
-			otbrosMult = 1;
-			devMult = 1;
+			speedMult	= 1.00;
+			damAdd		= 0.00;
+			pierAdd		= 0.00;
+			critchAdd	= 0.00;
+			otbrosMult	= 1.00;
+			devMult		= 1.00;
 			
 			for each(var wp:String in weaponPerks) {
 				if (opt[wp]) {
@@ -749,7 +318,7 @@ package fe.weapon {
 					if (pers.hasOwnProperty(wp + 'Stun')) {
 						dopEffect = 'stun';
 						dopDamage = pers[wp + 'Stun'];
-						dopCh = 1;
+						dopCh = 1.00;
 					}
 				}
 			}
@@ -776,17 +345,17 @@ package fe.weapon {
 				if (tip == 5) {
 					coordinates.X = owner.magicX;
 					coordinates.Y = owner.magicY;
-					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
+					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
 				else if (krep > 0 || !coordinates.X) {
 					coordinates.X = owner.weaponX;
 					coordinates.Y = owner.weaponY;
-					rot2=Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X)*owner.storona);
+					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X)*owner.storona);
 				}
 				else {
 					coordinates.X += (owner.weaponX - coordinates.X) / 5;
 					coordinates.Y += (owner.weaponY - coordinates.Y) / 5;
-					rot2=Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
+					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
 			}
 			else {
@@ -957,7 +526,9 @@ package fe.weapon {
 		}
 
 		public function attack(waitReady:Boolean = false):Boolean {
-			if (waitReady && !ready) return false;
+			if (waitReady && !ready) {
+				return false;
+			}
 			
 			// Weapon is broke, abort
 			if (hp <= 0 && owner == World.w.gg) {
@@ -977,13 +548,13 @@ package fe.weapon {
 				return true;
 			}
 			
-			skillConf = 1;
+			skillConf = 1.00;
 			
-			if (owner.player) {
-				if (!checkAvail()) return false;
+			if (owner.player && !checkAvail()) {
+				return false;
 			}
 			
-			if (holder > 0 && hold<rashod) { // [requires recharging]
+			if (holder > 0 && hold < rashod) { // [requires recharging]
 				initReload();
 				return false;
 			}
@@ -992,20 +563,30 @@ package fe.weapon {
 			
 			is_attack = true;
 			
-			if (t_prep < prep + 10) t_prep += 2;
+			if (t_prep < prep + 10) {
+				t_prep += 2;
+			}
 			
 			if (t_prep >= prep && t_attack <= 0 && t_reload <= 0) {
-				if (dkol <= 0) t_attack = rapid;
-				else t_attack = rapid * (dkol + 1);
-				if (holder == 1) initReload();
+				if (dkol <= 0) {
+					t_attack = rapid;
+				}
+				else {
+					t_attack = rapid * (dkol + 1);
+				}
+
+				if (holder == 1) {
+					initReload();
+				}
 			
 			}
+			
 			return true;
 		}
 		
 		protected function weaponAttack():void {
 			if (jammed) {
-				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) {
+				if (tipDamage == "laser" || tipDamage == "plasma" || tipDamage == "emp" || tipDamage == "electric") {
 					World.w.gui.infoText('weaponCircuit', null, null, false);
 				}
 				else {
@@ -1018,11 +599,11 @@ package fe.weapon {
 				return;
 			}
 			
-			if (hp < maxhp / 2) {
+			if (hp < maxhp * 0.50) {
 				breaking = (maxhp - hp) / maxhp * 2 - 1;
 			}
 			else {
-				breaking = 0;
+				breaking = 0.00;
 			}
 		}
 		
@@ -1077,6 +658,7 @@ package fe.weapon {
 			if (breaking > 0 && owner && owner.player) {
 				var rnd:Number = Math.random();
 				var jm:Number = (owner as UnitPlayer).pers.jammedMult;
+				
 				if (rnd < breaking / Math.max(20, holder) * jm) {
 					t_ret = 2;
 					jammed = true;
@@ -1084,7 +666,11 @@ package fe.weapon {
 				}
 				else if (rnd < breaking / 5 * jm) {
 					t_ret = 2;
-					if (rapid > 5) World.w.gui.infoText('misfire', null, null, false);
+					
+					if (rapid > 5) {
+						World.w.gui.infoText('misfire', null, null, false);
+					}
+					
 					Snd.ps('no_ammo', coordinates.X, coordinates.Y);
 					return null;
 				}
@@ -1098,7 +684,10 @@ package fe.weapon {
 			
 			if (owner) {
 				sk = owner.weaponSkill;
-				if (owner.player) sk = weaponSkill;
+				
+				if (owner.player) {
+					sk = weaponSkill;
+				}
 			}
 			
 			var r:Number = (Math.random() - 0.5) * (deviation * (1 + breaking * 2) / skillConf / (sk + 0.01) + owner.mazil) * 3.1415 / 180 * devMult;
@@ -1200,7 +789,9 @@ package fe.weapon {
 					b.vRot = true;
 				}
 				
-				if (bulAnim) b.vis.play();
+				if (bulAnim) {
+					b.vis.play();
+				}
 			}
 			
 			if (shell) {
@@ -1257,12 +848,6 @@ package fe.weapon {
 			rotUp += recoilUp * recoilMult;
 			is_shoot = true;
 			
-			/*	'sndShoot_n' / 'shoot_n' member was never used, not sure what this was for
-			if (sndShoot != '' && kol_shoot%sndShoot_n == 0) {
-				Snd.ps(sndShoot, coordinates.X, coordinates.Y);
-			}
-			*/
-			
 			t_auto = 3;
 			
 			return b;
@@ -1274,12 +859,12 @@ package fe.weapon {
 		}
 
 		// [Resulting range]
-		public function resultPrec(pm:Number=1, sk:Number=1):Number {
+		public function resultPrec(pm:Number = 1, sk:Number = 1):Number {
 			return precision * precMult * (1 + (sk - 1) * 0.5) * pm * owner.precMultCont;
 		}
 
 		// Resulting attack time
-		public function resultRapid(rap0:Number, sk:Number=1):Number {
+		public function resultRapid(rap0:Number, sk:Number = 1):Number {
 			return rap0;
 		}
 		
@@ -1330,6 +915,7 @@ package fe.weapon {
 			
 			if (ammoMod >= 0) {
 				bul.tipDamage = ammoMod;
+				
 				if (ammoMod == 8) {
 					bul.destroy = 0;
 					bul.otbros = 0;
@@ -1393,15 +979,15 @@ package fe.weapon {
 				World.w.gui.setWeapon();
 			}
 			
-			ammoPier = 0;		// [Armor-piercing]
-			ammoArmor = 1;		// [Target's armor modifier]
-			ammoDamage = 1;		// [Damage]
-			ammoProbiv = 0;
-			ammoOtbros = 1;		// [Discarding]
-			ammoPrec = 1;		// [Accuracy]
-			ammoHP = 0;			// [Increase in wear]
-			ammoFire = 0;		// [Incendiary]
-			ammoMod = -1;		// [Change damage type]
+			ammoPier	=  0.00;		// [Armor-piercing]
+			ammoArmor	=  1.00;		// [Target's armor modifier]
+			ammoDamage	=  1.00;		// [Damage]
+			ammoProbiv	=  0.00;
+			ammoOtbros	=  1.00;		// [Discarding]
+			ammoPrec	=  1.00;		// [Accuracy]
+			ammoHP		=  0.00;		// [Increase in wear]
+			ammoFire	=  0.00;		// [Incendiary]
+			ammoMod		= -1.00;		// [Change damage type]
 			
 			var ammoData:Object = ItemManager.reference.getItem(nammo);
 			
@@ -1434,9 +1020,8 @@ package fe.weapon {
 			}
 		}
 		
-		//разрядить
 		public function unloadWeapon():void {
-			if (owner && owner.player && holder && hold && ammo!='' && ammo!='recharg' && ammo!='not') {
+			if (owner && owner.player && holder && hold && ammo!='' && ammo != "recharg" && ammo != "not") {
 				World.w.gui.infoText('unloadWeapon', nazv, null, false);
 				(owner as UnitPlayer).invent.items[ammo].kol += hold;
 				World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;

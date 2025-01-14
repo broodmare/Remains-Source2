@@ -300,6 +300,7 @@ package fe {
 			for (var key:String in obj) {
 				return false; // Found a property, so it's not empty
 			}
+			
 			return true; // No properties found, it's empty
 		}
 

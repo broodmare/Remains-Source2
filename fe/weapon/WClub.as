@@ -57,9 +57,9 @@ package fe.weapon  {
 		private static var tileY:int = Tile.tileY;
 		
 		// Constructor
-		public function WClub(own:Unit, id:String, nvar:int = 0) {
+		public function WClub(id:String) {
 			
-			var data:Object = ItemManager.reference.getWeapon(id);
+			var data:Object = WeaponManager.reference.weaponData(id);
 			
 			if ("vis_lasm" in data) {
 				lasM = data.vis_lasm;

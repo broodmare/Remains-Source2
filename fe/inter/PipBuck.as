@@ -26,39 +26,35 @@ package fe.inter  {
 		
 		public var vissetkey:MovieClip;
 		public var vishelp:MovieClip;
-		public var active:Boolean=false;
-		public var noAct:Boolean=false;
-		private var noAct2:Boolean=false;
-		public var armorID:String;
-		public var hideMane:int=0;
-		private var page:int = 1;
+		
+		public var active:Boolean		= false;
+		public var noAct:Boolean		= false;
+		private var noAct2:Boolean		= false;
+		public var armorID:String;					// ID of the currently worn armor
+		public var hideMane:int			= 0;		// If the current armor hides the player's mane
+		private var page:int			= 1;		// Current interface the PipBuck is using, (Inventory, Trade, Options, Medical, Etc.)
 
 		private var pages:Array;
 		public var currentPage:PipPage;
 		
+		public var helpText:String		= "";
+		public var massText:String		= "";
 		
+		public  var showHidden:Boolean	= false;
+		public var reqKey:Boolean		= false;	// [Request to assign a key]
 		
-		public var helpText:String='';
-		public var massText:String='';
+		// [These variables set depending on which object or NPC called the interface]
+		public var vendor:Vendor;					// [associated merchant]
+		public var npcInter:String		= "";		// [type of interaction of the associated NPC]
+		public var npcId:String			= "";		// [ID of the associated NPC]
+		public var workTip:String		= "work";	// [type of associated crafting station]
+		public var travel:Boolean		= false;	// [you can use the transition between locations]
 		
-		public  var showHidden:Boolean=false;
-		public var reqKey:Boolean=false;		//запрос на назначение клавиши
+		public var isSaveConf:Boolean	= false;
 		
-		public var arrWeapon:Array;
-		public var arrArmor:Array;
-		
-		//переменные, устанавливаемые в зависимости от того, какой объект или нпс вызвал интерфейс
-		public var vendor:Vendor;			//связанный торговец
-		public var npcInter:String='';		//тип взаимодействия связанного нпс-а
-		public var npcId:String='';			//id связанного нпс-а
-		public var workTip:String='work';	//тип связанной крафт-станции
-		public var travel:Boolean=false;	//можно использовать переход между локациями
-		
-		public var isSaveConf:Boolean=false;
-		
-		public var pipVol:Number=0.25;
+		public var pipVol:Number		= 0.25;
 		public var ritems:Array;
-		private var ritemsNazv:Array = ['hp','head','tors','legs','blood','mana','pet','inv1','inv1','caps']
+		private var ritemsNazv:Array	= ['hp', 'head', 'tors', 'legs', 'blood', 'mana', 'pet', 'inv1', 'inv1', 'caps']
 
 		// Constructor
 		public function PipBuck(vpip:MovieClip) {
@@ -68,6 +64,7 @@ package fe.inter  {
 			itemManager = ItemManager.reference;	// Store a reference to the item manager instance
 
 			vis.visible = false;
+			
 			if (light) {
 				vis.skin.visible = false;
 				vis.fon.visible  = false;
@@ -164,7 +161,6 @@ package fe.inter  {
 			
 			vis.but0.text.text = language.data.pip.main0.string;
 			page = 1;
-			allItems();
 		}
 
 		public function pageClick(event:MouseEvent):void {
@@ -418,43 +414,21 @@ package fe.inter  {
 		}
 		
 		public function helpShow(event:MouseEvent):void {
-			vishelp.txt.htmlText=helpText;
-			vishelp.visible=true;
+			vishelp.txt.htmlText = helpText;
+			vishelp.visible = true;
 		}
 
 		public function helpUnshow(event:MouseEvent):void {
-			vishelp.visible=false;
+			vishelp.visible = false;
 		}
 
 		public function massShow(event:MouseEvent):void {
-			vishelp.txt.htmlText=massText;
-			vishelp.visible=true;
+			vishelp.txt.htmlText = massText;
+			vishelp.visible = true;
 		}
 
 		public function massUnshow(event:MouseEvent):void {
-			vishelp.visible=false;
-		}
-		
-		public function allItems():void {
-			trace("PipBuck.as/allItems() - Initializing all items");
-			
-			arrWeapon = [];
-			arrArmor  = [];
-			
-			var owner:Unit = new Unit();	// Dummy owner unit
-
-			for each (var weap:Object in itemManager.weapons) {
-				var w:Weapon;
-				if (weap.tip > 0) { 
-					w = Weapon.create(owner, weap);
-					arrWeapon[weap.id] = w;
-				}
-			}
-
-			for each (var armor:Object in itemManager.armors) {
-				var a:Armor = new Armor(armor.id);
-				arrArmor[armor.id] = a;
-			}
+			vishelp.visible = false;
 		}
 		
 		public function setRPanel():void {
@@ -547,20 +521,14 @@ package fe.inter  {
 		}
 		
 		public function setArmor(id:String):void {
-			armorID = id;
-			var node:XML = Armor.getArmorInfo(id);
-			
-			// Hacky failsafe to avoid crashing if no information is found.
-			if (node == "" || node == null) {
-				hideMane = 0;
-				return;
-			}
-			
-			hideMane = node.@hide;
+			armorID	 = id;
+			hideMane = ArmorManager.reference.armorData(id).hideMane;
 		}
 		
 		public function step():void {
-			if (currentPage) currentPage.step();
+			if (currentPage) {
+				currentPage.step();
+			}
 		}
 	}	
 }
