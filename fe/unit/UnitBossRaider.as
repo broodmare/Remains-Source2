@@ -172,7 +172,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			var td:Number=super.damage(dam, tip, bul,tt);
 			if (tr==2 && World.w.game.globalDif>1) {
 				var tc:int=Math.floor((maxhp-hp)/maxhp*4);

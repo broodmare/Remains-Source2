@@ -86,10 +86,11 @@ package fe.unit {
 			newPart('miniexpl');
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			if (sost==1) {
 				if (aiState<=1) budilo();
 			}
+			
 			return super.damage(dam, tip, bul,tt);
 		}
 				

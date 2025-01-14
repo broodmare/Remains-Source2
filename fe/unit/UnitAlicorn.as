@@ -312,7 +312,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			if (tr==1 && osob && !blasted && bul && bul.weap && bul.weap.tip==1 && aiState<=1) {
 				mblast.cast(coordinates.X, coordinates.Y);
 				blasted=true;

@@ -168,7 +168,7 @@ package fe.unit {
 			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			var td:Number=super.damage(dam, tip, bul,tt);
 			if (aiState==0) aiState=1;
 			if (protculd_t<=0 && td>0 && aiState!=3 && aiState!=2) {

@@ -2424,7 +2424,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			if (bul && bul.weap && bul.weap.dopEffect=='psy') {
 				if (isrnd(0.33)) addEffect('horror');
 				else if (isrnd()) addEffect('vote');

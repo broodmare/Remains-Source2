@@ -55,7 +55,7 @@ package fe.unit {
 			// Manually add each resistance property as the Number 0.00
 			_typeResist["pierce"]		= 0.00;		// Formerly   0 | D_BUL 
 			_typeResist["cut"]			= 0.00;		// Formerly   1 | D_BLADE
-			_typeResist["physic"]		= 0.00;		// Formerly   2 | D_PHIS
+			_typeResist["blunt"]		= 0.00;		// Formerly   2 | D_PHIS
 			_typeResist["fire"]			= 0.00;		// Formerly   3 | D_FIRE
 			_typeResist["explosive"]	= 0.00;		// Formerly   4 | D_EXPL
 			_typeResist["laser"]		= 0.00;		// Formerly   5 | D_LASER

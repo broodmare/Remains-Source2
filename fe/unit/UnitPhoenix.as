@@ -28,7 +28,7 @@ package fe.unit {
 			inter.actFun=tame;
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			die();
 			return 1;
 		}
