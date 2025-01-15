@@ -6,7 +6,7 @@ package fe.unit {
 		public var id:String;
 		public var quantity:int;
 		
-		public function InventoryItem(s:String = "", n:int = 0) {
+		public function InventoryItem(s:String = "", n:int = 1) {
 			id = s;
 			quantity = n;
 		}

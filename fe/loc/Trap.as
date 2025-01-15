@@ -16,7 +16,7 @@ package fe.loc {
 		public var vis2:MovieClip;
 
 		public var dam:Number=0;
-		public var tipDamage:int=0;
+		public var tipDamage:String = "pierce";
 		
 		public var spDam:int = 1;	// [Method of dealing damage]
 		public var spBind:int = 1;	// [Attachment method]

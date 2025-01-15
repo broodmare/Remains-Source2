@@ -135,7 +135,7 @@ package fe.unit {
 			radHeal*=(1+level*0.16);
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X + storona * 30;
 			weaponY = coordinates.Y - this.boundingBox.height * 0.8;
 		}

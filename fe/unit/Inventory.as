@@ -7,6 +7,7 @@ package fe.unit {
 		private var _inventory:Vector.<InventoryItem>;	// Vector that stores a contigious collection of <InventoryItem> references for fast iteration
 		private var _inventoryMap:Dictionary;			// Dictionary to map each InventoryItem.id to it's reference (Key-Pair)
 
+		private var _equipment:Equipment;
 		
 		public var mass:Array = [0, 0, 0, 0];	// Seperate weight totals for each item category
 		public var massW:int = 0;				// 
@@ -16,6 +17,36 @@ package fe.unit {
 		public function Inventory() {
 			_inventory = new Vector.<InventoryItem>();
 			_inventoryMap = new Dictionary();
+			
+			_equipment = new Equipment();
+		}
+
+		public function get equipment():Equipment {
+			return _equipment;
+		}
+
+		// Increases the quantity of an existing item or adds a new item if it doesn't already exist.
+		public function setQuantity(id:String, n:int):void {
+
+			var item:InventoryItem = _inventoryMap[id];
+			if (item) {
+				item.quantity = n;
+			}
+			else {
+				// Don't bother adding the item to the inventory if the result is negative
+				if (n > 0) {
+					item = new InventoryItem(id, n);
+					_inventory.push(item);
+					_inventoryMap[id] = item;
+				}
+			}
+
+			// If the result is 0 or less quantity, remove the item
+			if (item) {
+				if (item.quantity <= 0) {
+					removeItem(id);
+				}
+			}
 		}
 
 		// Increases the quantity of an existing item or adds a new item if it doesn't already exist.

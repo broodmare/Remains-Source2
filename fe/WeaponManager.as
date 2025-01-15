@@ -1,5 +1,6 @@
 package fe {
 
+	import flash.utils.getDefinitionByName;
 	import flash.utils.Dictionary;
 
 	import fe.weapon.Weapon;
@@ -53,6 +54,11 @@ package fe {
 			}
 
 			return null;
+		}
+
+		// Return a list of references to ALL intialized weapons
+		public function get weapons():Vector.<Weapon> {
+			return _weapons;
 		}
 
 		/* Former weapon codes
@@ -176,7 +182,7 @@ package fe {
 
 				if (weapon.tip != "punch" || weapon.svisv) {
 					weapon.vWeapon = Res.getClass(weapon.svisv, weapon.svis, visp10mm);	// .SWF Dependency
-					weapon.vis = new vWeapon();
+					weapon.vis = new (weapon.vWeapon)();								// .SWF Dependency
 				}
 				
 				/*if (owner && owner.weaponKrep > 0) {
@@ -197,11 +203,11 @@ package fe {
 					}
 					catch (err:ReferenceError) {
 						trace("ERROR: (00:11)");
-						weapon.vBullet = visualBullet;		// .SWF Dependency
+						//weapon.vBullet = visualBullet;		// .SWF Dependency
 					}
 				}
 				else {
-					weapon.vBullet = weapon.visualBullet;	// .SWF Dependency
+					//weapon.vBullet = visualBullet;	// .SWF Dependency
 				}
 				
 				// Sounds
@@ -320,7 +326,7 @@ package fe {
 					weapon.ammo = data.ammo_base;
 					weapon.ammoBase = data.ammo_base;
 
-					setAmmo(ammo);
+					// setAmmo(ammo);                                 TODO: MOVE THIS OVER FROM WEAPONS.AS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 				}
 				
 				// [Combat characteristics]

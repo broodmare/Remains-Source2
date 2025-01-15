@@ -4,6 +4,7 @@ package fe.unit {
 
 		// Resistances
 		private var _typeResist:Object = {};		// Specific damage type resistances
+		private var _resistTypes:Array;            // Array to store resistance type names
 
 		// Constructor
 		public function Resistances() {
@@ -52,6 +53,14 @@ package fe.unit {
 			// Set the resistances as an empty object
 			_typeResist = {};
 
+			// Store all the resistance type names
+			_resistTypes = [
+                "pierce", "cut", "blunt", "fire", "explosive", "laser", "plasma",
+                "venom", "emp", "electric", "acid", "cold", "poison", "bleed",
+                "bite", "balefire", "necro", "psychic", "astro", "pinkCloud",
+                "inside", "friend"
+            ];
+
 			// Manually add each resistance property as the Number 0.00
 			_typeResist["pierce"]		= 0.00;		// Formerly   0 | D_BUL 
 			_typeResist["cut"]			= 0.00;		// Formerly   1 | D_BLADE
@@ -75,6 +84,17 @@ package fe.unit {
 			_typeResist["pinkCloud"]	= 0.00;		// Formerly  19 | D_PINK
 			_typeResist["inside"]		= 0.00;		// Formerly 100 | D_INSIDE
 			_typeResist["friend"]		= 0.00;		// Formerly 101 | D_FRIEND
+		}
+
+		// Return all resistance names
+		public function getAllResistanceTypes():Array {
+			var keys:Array = [];
+			
+			for (var key:String in _typeResist) {
+				keys.push(key);
+			}
+			
+			return keys;
 		}
 	}
 }

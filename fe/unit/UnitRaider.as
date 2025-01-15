@@ -258,7 +258,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			super.setWeaponPos(tip);
 			if (!enclWeap && (tip==1 || tip==2 || tip==4)) {
 				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];

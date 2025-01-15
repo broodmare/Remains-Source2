@@ -1,13 +1,13 @@
-package fe.unit
-{
+package fe.unit {
+
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 
-	public class Spell
-	{	
+	public class Spell {
+
 		public var owner:Unit;
 		public var gg:UnitPlayer;
 		public var loc:Location;
@@ -45,13 +45,12 @@ package fe.unit
 
 		private static var cachedItems:Object = {};
 
-		public function Spell(own:Unit, nid:String)
-		{
+		public function Spell(own:Unit, nid:String) {
+
 			id = nid;
 			owner = own;
 
-			if (owner && owner.player)
-			{
+			if (owner && owner.player) {
 				player = true;
 				gg = owner as UnitPlayer;
 			}
@@ -83,8 +82,7 @@ package fe.unit
 			if (id == 'sp_invulner')	cf = cast_invulner;
 		}
 
-		public static function getItemInfo(id:String):XML
-		{
+		public static function getItemInfo(id:String):XML {
 			if (cachedItems[id] != undefined) return cachedItems[id];
 
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", id);
@@ -93,53 +91,66 @@ package fe.unit
 			return node;
 		}
 		
-		public function step():void
-		{
+		public function step():void {
 			if (t_culd > 0) t_culd--;
 		}
 		
 		public function cast(nx:Number=0, ny:Number=0):Boolean
 		{
 			// [checking the possibility of magic and the presence of mana]
-			if (cf==null) return false;
+			if (cf == null) {
+				return false;
+			}
 			
-			if (player)
-			{
-				if (World.w.alicorn && id!='sp_mshit') return false;
-				if (gg.rat>0) return false;
-				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) {
+			if (player) {
+				if (World.w.alicorn && id!='sp_mshit') {
+					return false;
+				}
+				
+				if (gg.rat>0) {
+					return false;
+				}
+				
+				if (gg.invent.equipment.hasEquipment(id) && gg.invent.equipment.getWeapon(id).respect == 1) {
 					World.w.gui.infoText('disSpell',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
+				
 				if (World.w.pers.spellsPoss==0 || atk && !gg.atkPoss) {
 					World.w.gui.infoText('noSpells',null,null,false);
 					Snd.ps('nomagic');
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 					return false;
 				}
-				if (t_culd > 0)
-				{
-					if (!active)
-					{
-						if (culd >= 100)
-						{
+				
+				if (t_culd > 0) {
+					if (!active) {
+						if (culd >= 100) {
 							World.w.gui.infoText('spellCuld', Math.ceil(t_culd / World.fps), null, false);
 							World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y - 20);
 						}
+						
 						Snd.ps('nomagic');
 					}
+					
 					return false;
 				}
-				dmagic=magic*World.w.pers.allDManaMult;
-				dmana=mana*World.w.pers.allDManaMult;
-				if (dmagic>999) dmagic=999;
+				
+				dmagic	= magic * World.w.pers.allDManaMult;
+				dmana	= mana  * World.w.pers.allDManaMult;
+				
+				if (dmagic > 999) {
+					dmagic = 999;
+				}
+				
 				if (owner.mana<dmagic) {
 					World.w.gui.infoText('overMana',null,null,false);
 					Snd.ps('nomagic');
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y-20);
 					return false;
 				}
+				
 				if (dmana>World.w.pers.manaHP) {
 					World.w.gui.infoText('noMana',null,null,false);
 					Snd.ps('nomagic');
@@ -148,8 +159,7 @@ package fe.unit
 			}
 
 			// [source coordinates]
-			if (owner)
-			{
+			if (owner) {
 				X = owner.magicX;
 				Y = owner.magicY;
 				loc = owner.loc;
@@ -169,13 +179,15 @@ package fe.unit
 			}
 			// [checking and correcting distance]
 			if (dist > 0) {
-				var rasst2=(X-cx)*(X-cx)+(Y-cy)*(Y-cy);
-				if (rasst2>dist*dist) {
-					var rasst=Math.sqrt(rasst2);
-					cx=X-(X-cx)*dist/rasst;
-					cy=Y-(Y-cy)*dist/rasst;
+				var rasst2 = (X - cx) * (X - cx) + (Y - cy) * (Y - cy);
+				
+				if (rasst2 > dist * dist) {
+					var rasst = Math.sqrt(rasst2);
+					cx = X - (X - cx) * dist / rasst;
+					cy = Y - (Y - cy) * dist / rasst;
 				}
 			}
+			
 			// [remove mana]
 			// [call the required function]
 			cf();
@@ -188,12 +200,16 @@ package fe.unit
 					gg.manaSpell(dmag, dm);
 					t_culd = Math.round(culd * gg.pers.spellDown);
 				}
-				if (snd) Snd.ps(snd, X, Y);
+				
+				if (snd) {
+					Snd.ps(snd, X, Y);
+				}
 			}
 			else if (est == 0) {
 				Snd.ps('nomagic');
 				return false;
 			}
+			
 			return true;
 		}
 		
@@ -252,8 +268,7 @@ package fe.unit
 			if (loc==null) return;
 			X = owner.coordinates.X;
 			Y = owner.coordinates.Y;
-			for each(var un:Unit in loc.units)
-			{
+			for each(var un:Unit in loc.units) {
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
 				
 				var v:Vector2 = new Vector2();
@@ -307,15 +322,19 @@ package fe.unit
 				est=1;
 			
 			}
+			
 			Emitter.emit('gwall', loc,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY);
 		}
 		
 		private function cast_gwall():void {
-			est=0;
-			gwall(cx,cy-40);				
-			gwall(cx,cy);				
-			gwall(cx,cy+40);				
-			if (est>0) loc.t_gwall=World.fps;
+			est = 0;
+			gwall(cx, cy - 40);				
+			gwall(cx, cy);				
+			gwall(cx, cy + 40);				
+			
+			if (est>0) {
+				loc.t_gwall=World.fps;
+			}
 		}
 		
 		//замедляющее поле

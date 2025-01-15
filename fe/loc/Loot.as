@@ -9,39 +9,40 @@ package fe.loc {
 	import fe.serv.Interact;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
+	import fe.unit.InventoryItem;
 	
 	// This is the object you see in-game when an item is dropped
 	public class Loot extends Obj {
 		
-		public var item:Item;
+		public var item:InventoryItem;
 
 		private const osnRad:int = 50;
 		private const actRad:int = 250;
 
 		public var vClass:Class;
-		public var osnova:Box = null;
-		public var vsos:Boolean = false;
-		public var isPlav:Boolean = false;
-		public var takeR:int = osnRad;			// [take radius] | радиус взятия
+		public var osnova:Box			= null;
+		public var vsos:Boolean			= false;
+		public var isPlav:Boolean		= false;
+		public var takeR:int			= osnRad;		// [take radius] | радиус взятия
 		
-		private var isTake:Boolean = false;		// [taken] | взят
-		private var actTake:Boolean = false;	// ['E' was pressed] | была нажата E
-		public var auto:Boolean = false;		// [берётся автоматически] | берётся автоматически
-		public var auto2:Boolean = false;		// [is taken automatically in accordance with the auto-pickup settings] | берётся автоматически в соответствии с настройками автовзятия
-		public var krit:Boolean = false;		// [Critical item] | критически важный
-		private var dery:int = 0;
-		private var ttake:int = 30;
-		private var tvsos:int = 0;
-		public var sndFall:String = 'fall_item';
+		private var isTake:Boolean		= false;		// [taken] | взят
+		private var actTake:Boolean		= false;		// ['E' was pressed] | была нажата E
+		public var auto:Boolean			= false;		// [берётся автоматически] | берётся автоматически
+		public var auto2:Boolean		= false;		// [is taken automatically in accordance with the auto-pickup settings] | берётся автоматически в соответствии с настройками автовзятия
+		public var krit:Boolean			= false;		// [Critical item] | критически важный
+		private var dery:int			=  0;
+		private var ttake:int			= 30;
+		private var tvsos:int			=  0;
+		public var sndFall:String		= "fall_item";
 		
 		// Cached tile sizes
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
-		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
+		public function Loot(nloc:Location, nitem:InventoryItem, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
 			
-			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.kol);
+			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.quantity);
 			loc = nloc;
 			item = nitem;
 			
@@ -67,18 +68,22 @@ package fe.loc {
 				ny = (loc.spaceY - 1) * tileY;
 			}
 			
+			var data:Object = ItemManager.reference.getItem(item.id)
+
 			massa = 0.1;
-			nazv = item.nazv;
+			nazv = data.nazv;
 			this.boundingBox.width = 30;
 			this.boundingBox.height = 20;
+
+			
 			
 			// Determine the appropriate sprite for the item
-			if (item.tip == Item.L_WEAPON) {
-				if ("vis" in item.data && "loot" in item.data) {
+			if (data.tip == Item.L_WEAPON) {
+				if ("vis" in data && "loot" in data) {
 					vis = new visualItem();	// .SWF Dependency
-					if ("vis_loot" in item.data) {
+					if ("vis_loot" in data) {
 						try {
-							vis.gotoAndStop(item.data.vis_loot);
+							vis.gotoAndStop(data.vis_loot);
 						}
 						catch (err) {
 							trace('ERROR: (00:25)');
@@ -86,27 +91,31 @@ package fe.loc {
 					}
 				}
 				else {
-					if (item.variant > 0) vClass = Res.getClass('vis' + item.id + '_' + item.variant, 'vis' + item.id, visp10mm);	// .SWF Dependency
-					else vClass = Res.getClass('vis' + item.id, null, visp10mm);	// .SWF Dependency
+					if (data.variant) {
+						vClass = Res.getClass('vis' + item.id + '_' + data.variant, 'vis' + item.id, visp10mm);	// .SWF Dependency
+					}
+					else {
+						vClass = Res.getClass('vis' + item.id, null, visp10mm);	// .SWF Dependency
+					}
 
 					var infIco = new vClass();
 					infIco.stop();
-					infIco.x = -infIco.getRect(infIco).left - infIco.width / 2;
+					infIco.x = -infIco.getRect(infIco).left - infIco.width * 0.50;
 					infIco.y = -infIco.height - infIco.getRect(infIco).top + 10;
 					vis = new MovieClip();
 					vis.addChild(infIco);
 					dery = 10;
 				}
 				
-				if (item.variant > 0) {
+				if (data.variant) {
 					shine();
 				}
 				
-				if ("fall" in item.data) {
-					sndFall = item.data.fall;
+				if ("fall" in data) {
+					sndFall = data.fall;
 				}
 			}
-			else if (item.tip == Item.L_EXPL) {
+			else if (data.tip == Item.L_EXPL) {
 				vClass = Res.getClass('vis' + item.id, null, visualAmmo);	// .SWF Dependency
 				var infIco = new vClass();
 				infIco.stop();
@@ -114,16 +123,16 @@ package fe.loc {
 				infIco.y = -infIco.height - infIco.getRect(infIco).top;
 				vis = new MovieClip();
 				vis.addChild(infIco);
-				if ("fall" in item.data) {
-					sndFall = item.data.fall;
+				if ("fall" in data) {
+					sndFall = data.fall;
 				}
 			}
-			else if (item.tip == Item.L_AMMO) {
+			else if (data.tip == Item.L_AMMO) {
 				vClass = visualAmmo;	// .SWF Dependency
 				vis = new vClass();
 				try {
-					if ("base" in item.data) {
-						vis.gotoAndStop(item.data.base);
+					if ("base" in data) {
+						vis.gotoAndStop(data.base);
 					}
 					else {
 						vis.gotoAndStop(item.id);
@@ -133,8 +142,8 @@ package fe.loc {
 					trace('ERROR: (00:26)');
 					vis.gotoAndStop(1);
 				}
-				if ("fall" in item.data) {
-					sndFall = item.data.fall;
+				if ("fall" in data) {
+					sndFall = data.fall;
 				}
 			}
 			else {
@@ -145,31 +154,31 @@ package fe.loc {
 					vis.gotoAndStop(item.id);
 				}
 				catch(err) {
-					if (item.tip == Item.L_COMPA) vis.gotoAndStop('compa');
-					else if (item.tip == Item.L_COMPW) vis.gotoAndStop('compw');
-					else if (item.tip == Item.L_COMPE) vis.gotoAndStop('compe');
-					else if (item.tip == Item.L_COMPP) vis.gotoAndStop('compp');
-					else if (item.tip == Item.L_KEY) vis.gotoAndStop('key');
-					else if (item.tip == Item.L_PAINT) vis.gotoAndStop('paint');
-					else if (item.tip == Item.L_FOOD) vis.gotoAndStop('food');
+					if (data.tip == Item.L_COMPA) vis.gotoAndStop('compa');
+					else if (data.tip == Item.L_COMPW) vis.gotoAndStop('compw');
+					else if (data.tip == Item.L_COMPE) vis.gotoAndStop('compe');
+					else if (data.tip == Item.L_COMPP) vis.gotoAndStop('compp');
+					else if (data.tip == Item.L_KEY) vis.gotoAndStop('key');
+					else if (data.tip == Item.L_PAINT) vis.gotoAndStop('paint');
+					else if (data.tip == Item.L_FOOD) vis.gotoAndStop('food');
 					else  {
 						trace('ERROR: (00:53) - ERROR: Could not load sprite for item: "' + item.id +'", using generic!');
 						vis.gotoAndStop(1);
 					}
 				}
 				
-				if (item.tip == Item.L_SCHEME) {
+				if (data.tip == Item.L_SCHEME) {
 					sndFall = 'fall_paper';
 					vis.gotoAndStop('scheme');
 				}
 				
-				if (item.tip == Item.L_BOOK) {
+				if (data.tip == Item.L_BOOK) {
 					nazv = '"' + nazv + '"';
 					sndFall = 'fall_paper';
 				}
 				
-				if ("fall" in item.data) {
-					sndFall = item.data.fall;
+				if ("fall" in data) {
+					sndFall = data.fall;
 				}
 			} 
 			// If a sprite was found, set up it's size and position
@@ -201,13 +210,15 @@ package fe.loc {
 			inter.update();
 			levitPoss = true;
 			loc.addObj(this);
-			auto2 = item.checkAuto();
+			// auto2 = item.checkAuto(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 		}
 		
 		public override function addVisual():void {
 			super.addVisual();
 			if (vis && cTransform) {
-				if (item.tip!='art') vis.transform.colorTransform=cTransform;
+				if (ItemManager.reference.getItem(item.id).tip != 'art') {
+					vis.transform.colorTransform=cTransform;
+				}
 			}
 		}
 		
@@ -221,7 +232,7 @@ package fe.loc {
 
 		// What to do when the player presses 'E' on the item
 		public function toTake():void {
-			item.checkAuto(true);
+			//item.checkAuto(true);		// FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			actTake = true;
 			ttake = 0;
 			takeR = actRad;
@@ -239,6 +250,7 @@ package fe.loc {
 			// [Take]
 			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
+					/*
 					auto2 = item.checkAuto();
 					if (!auto2) {
 						vsos = false;
@@ -248,6 +260,7 @@ package fe.loc {
 						takeR = osnRad;
 						return;
 					}
+					*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 				
 				levitPoss = false;
@@ -258,8 +271,8 @@ package fe.loc {
 				// If the item is not already marked as taken, take it and mark it as taken.
 				if (!isTake) {
 					// Call inventory to add the item to the player inventory
-					trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.kol);
-					World.w.invent.take(item);
+					trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.quantity);
+					// World.w.invent.take(item); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 				
 				isTake = true;
@@ -335,7 +348,7 @@ package fe.loc {
 			onCursor = (coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
 			
 			if (World.w.checkLoot) {
-				auto2 = item.checkAuto();
+				// auto2 = item.checkAuto(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			}
 			
 			if (auto && auto2 || actTake) {

@@ -119,7 +119,7 @@ package fe.unit {
 		
 		// Damage
 		public var dam:Number				= 0.00;		//урон самого юнита
-		public var tipDamage:int			= D_PHIS;	//тип урона
+		public var tipDamage:String			= D_PHIS;	//тип урона
 		public var radDamage:Number			= 0.00;		//урон радиацией
 		public var retDamage:Boolean		= false;	//возврат урона от юнита к врагу
 		public var relat:Number				= 0.00;		//обратный возврат урона, от врага к юниту
@@ -777,9 +777,6 @@ package fe.unit {
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 			
 			// Create the internal weapon(s) for this unit
-			var weap:Weapon;
-			var weapData:Object;
-
 			for each(var n:XML in node0.w) {
 				if (n.@f.length()) {
 					continue;
@@ -790,15 +787,10 @@ package fe.unit {
 				}
 				
 				if (n.@ch.length() == 0 || isrnd(n.@ch)) {
-					
-					weapData = ItemManager.reference.getWeapon(n.@id);
-					weap = Weapon.create(this, weapData);
-					
-					if (weap) {
-						return weap;
-					}
+					return WeaponManager.reference.weapon(n.@id);	// THIS IS PROBABLY WRONG, IT SHOULD BE CLONING NEW WEAPONS FOR EACH UNIT HERE!!! FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 			}
+			
 			return null;
 		}
 		
@@ -938,7 +930,7 @@ package fe.unit {
 			armor_hp = armor_maxhp = armor_hp * (1 + level * 0.1);
 			observ += Math.min(nlevel * 0.6, 15) * (0.9 + Math.random() * 0.2);
 			
-			if (currentWeapon && currentWeapon.tip == 0) {
+			if (currentWeapon && currentWeapon.tip == "internal") {
 				currentWeapon.damage *= (1 + level * 0.07);
 			}
 			else {
@@ -2559,7 +2551,7 @@ package fe.unit {
 						Emitter.emit('poison', loc, coordinates.X, coordinates.Y - this.boundingBox.height * 0.5);
 					}
 					
-					if (inWater && loc.wdam>0) {
+					if (inWater && loc.wdam > 0) {
 						damage(loc.wdam, loc.wtipdam, null, true);
 					}
 				}
@@ -2654,7 +2646,7 @@ package fe.unit {
 			}
 		}
 
-		public function setWeaponPos(tip:int=0):void {
+		public function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
 			weaponY = this.boundingBox.top;
 			magicX = coordinates.X;
@@ -2695,7 +2687,7 @@ package fe.unit {
 			return false;
 		}
 		
-		public function explosion(tdam:Number, ttipdam:int = 4, trad:Number = 200, tkol:int = 0, totbros:Number = 0, tdestroy:Number = 0, tdecal:int = 0):void {
+		public function explosion(tdam:Number, ttipdam:String = "explosive", trad:Number = 200, tkol:int = 0, totbros:Number = 0, tdestroy:Number = 0, tdecal:int = 0):void {
 			
 			var v:Vector2 = new Vector2(coordinates.X, coordinates.Y - 3);
 			var bul:Bullet = new Bullet(this, v, null, tkol > 1);
@@ -2708,7 +2700,7 @@ package fe.unit {
 			if (tkol > 1) {
 				bul.explTip = 2;
 			}
-			else if (ttipdam == 10) {
+			else if (ttipdam == "acid") {
 				bul.explTip = 3;
 			}
 			
@@ -2867,7 +2859,7 @@ package fe.unit {
 				dieWeap = null;
 			}
 			
-			if (tip < kolVulners) {
+			if (vulner[tip] != null) {
 				dam *= vulner[tip];	// Vulnerabilities
 			}
 			
@@ -3453,7 +3445,7 @@ package fe.unit {
 				un.velocity.Y = (-un.velocity.Y + ndy) * un.knocked + ndy;
 			}
 			
-			if (un.currentWeapon && un.currentWeapon.tip==1) {
+			if (un.currentWeapon && un.currentWeapon.tip == "cryo") {
 				damage((un.currentWeapon.damage*0.5+un.dam)*sila*mult, un.currentWeapon.tipDamage)
 			}
 			else {

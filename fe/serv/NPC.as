@@ -3,6 +3,7 @@ package fe.serv {
 	import fe.*;
 	import fe.entities.Obj;
 	import fe.unit.UnitNPC;
+	import fe.unit.InventoryItem;
 
 	public class Npc {
 
@@ -269,16 +270,21 @@ package fe.serv {
 					if (us) {
 						if (dial.scr.length()) {
 							var scr:Script=new Script(dial.scr[0],World.w.land,owner,true);
+							
 							if (World.w.dialOn) {
 								var did:String=dial.@id;
 								scr.acts.unshift({act:'dialog', val:did, t:0, n:-1, opt1:0, opt2:0, targ:""});
 							}
+							
 							scr.acts.push({act:'trigger', val:('dial_'+dial.@id), t:0, n:1, opt1:0, opt2:0, targ:""});
 							scr.acts.push({act:'checkall', val:0, t:0, n:1, opt1:0, opt2:0, targ:""});
 							scr.start();
 						}
 						else {
-							if (World.w.dialOn) World.w.gui.dialog(dial.@id);
+							if (World.w.dialOn) {
+								World.w.gui.dialog(dial.@id);
+							}
+
 							World.w.game.setTrigger('dial_'+dial.@id);
 
 						}
@@ -286,16 +292,7 @@ package fe.serv {
 						if (dial.reward.length()) {
 							for each(var rew in dial.reward) {
 								if (rew.@id.length()) {
-									var item:Item;
-									
-									if (rew.@kol.length()) {
-										item = new Item(rew.@id, rew.@kol);
-									}
-									else {
-										item = new Item(rew.@id);
-									}
-									
-									World.w.invent.take(item, 2);
+										World.w.invent.increaseQuantity(rew.@id, rew.@kol);
 								}
 							}
 						}
@@ -307,8 +304,12 @@ package fe.serv {
 						check();
 					}
 					else {
-						if (dial.@imp.length()) setStatus(2);
-						else setStatus(1);
+						if (dial.@imp.length()) {
+							setStatus(2);
+						}
+						else {
+							setStatus(1);
+						}
 					}
 					
 					return true;
@@ -409,17 +410,17 @@ package fe.serv {
 				ok = true;
 				
 				for each(var node in xml.rep) {
-					if (World.w.invent.items[node.@id] && World.w.invent.items[node.@id].kol < node.@kol) {
-						World.w.gui.infoText('required', World.w.invent.items[node.@id].nazv, node.@kol - World.w.invent.items[node.@id].kol);
+					if (World.w.invent.getQuantity(node.@id) < node.@kol) {
+						World.w.gui.infoText('required', ItemManager.reference.getItem(node.@id).nazv, node.@kol - World.w.invent.getQuantity(node.@id));
 						ok = false;
 					}
 				}
 				
 				if (ok) {
 					for each(node in xml.rep) {
-						if (World.w.invent.items[node.@id]) {
-							World.w.invent.minusItem(node.@id, node.@kol);
-							World.w.gui.infoText('withdraw', World.w.invent.items[node.@id].nazv, node.@kol);
+						if (World.w.invent.hasItem(node.@id)) {
+							World.w.invent.decreaseQuantity(node.@id, node.@kol);
+							World.w.gui.infoText('withdraw', ItemManager.reference.getItem(node.@id).nazv, node.@kol);
 						}
 					}
 					World.w.gui.dialog('rblAutoDocR4');
@@ -462,8 +463,8 @@ package fe.serv {
 				}
 			}
 			else if (rep == 1) { //после осмотра
-				if (World.w.invent.items[xml.@needitem] && World.w.invent.items[xml.@needitem].kol>0) {	//есть лекарство
-					World.w.invent.minusItem(xml.@needitem, 1);
+				if (World.w.invent.getQuantity(xml.@needitem) > 0) {	//есть лекарство
+					World.w.invent.decreaseQuantity(xml.@needitem, 1);
 					rep = 2;
 					World.w.gui.dialog('dialPatient5');
 					World.w.game.triggers['patient_tr2'] = 'wait';

@@ -150,7 +150,7 @@ package fe.inter {
 						n.sort3 = w.lvl;
 						n.sort2 = w.skill;
 						
-						if (w.tip == 5) {
+						if (w.tip == "magic") {
 							n.sort3 = w.perslvl;
 						}
 						
@@ -160,7 +160,7 @@ package fe.inter {
 						
 						n.sort3 = int(n.sort3);
 						
-						if (w.tip < 4) {
+						if (w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun") {
 							n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
 						}
 						
@@ -172,7 +172,7 @@ package fe.inter {
 								n.ammo = inv.ammos[w.ammoBase] + w.hold;
 							}
 							
-							n.ammotip=(w.tip == 4) ? "" : inv.items[w.ammoBase].nazv;
+							n.ammotip=(w.tip == "explosives") ? "" : inv.items[w.ammoBase].nazv;
 						}
 						
 						if (w.alicorn) {
@@ -338,7 +338,7 @@ package fe.inter {
 		}
 		
 		private function showBottext():void {
-			vis.bottext.htmlText = LanguageManager.reference.localText("pip", 'caps') + ': ' + numberAsColor('yellow', pip.money);
+			vis.bottext.htmlText = LanguageManager.reference.localText("pip", 'caps') + ': ' + numberAsColor('yellow', World.w.invent.getQuantity("money"));
 			if (World.w.hardInv) {
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
 				else if (page2==3) vis.bottext.htmlText+='    '+inv.retMass(1);
@@ -506,7 +506,7 @@ package fe.inter {
 					}
 				} 
 				else {
-					World.w.invent.useItem(ci);
+					//World.w.invent.useItem(ci);	// FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 					setStatus(false);
 					World.w.gui.setHp();
 				}
@@ -533,7 +533,7 @@ package fe.inter {
 			
 			if (page2==1) {
 				var obj=assArr[event.currentTarget.id.text];
-				obj.respect=World.w.invent.respectWeapon(event.currentTarget.id.text);
+				// obj.respect=World.w.invent.respectWeapon(event.currentTarget.id.text); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				setStatItem(event.currentTarget as MovieClip, obj);
 				pip.setRPanel();
 				showBottext();
@@ -570,7 +570,7 @@ package fe.inter {
 			var temp = assId;
 			
 			if (page2<=3 && assId!=null) {
-				World.w.invent.favItem(assId, num);
+				// World.w.invent.favItem(assId, num); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				setStatus(false);
 			}
 			

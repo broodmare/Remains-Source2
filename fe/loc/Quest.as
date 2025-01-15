@@ -137,7 +137,7 @@ package fe.loc {
 			if (!sub) {
 				info = LanguageManager.reference.localDesc("quest", pid)
 				// Failsafe
-				if (info = "")	{
+				if (info == "")	{
 					info = '---';
 				}
 
@@ -193,16 +193,7 @@ package fe.loc {
 			if (xml.deposit.length()) {
 				for each(var rew in xml.deposit) {
 					if (rew.@id.length()) {
-						
-						var item:Item;
-						if (rew.@kol.length()) {
-							item = new Item(rew.@id, rew.@kol);
-						}
-						else {
-							item = new Item(rew.@id);
-						}
-						
-						World.w.invent.take(item, 2);
+						World.w.invent.increaseQuantity(rew.@id, rew.@kol);
 					}
 					
 					if (rew.@trigger.length()) {
@@ -219,47 +210,54 @@ package fe.loc {
 		
 		// [Check for compliance with the condition, if everything meets the requirements, then close]
 		// [Return output result]
-		public function check(cid:String=null):String {
+		public function check(cid:String = null):String {
 			var res:String;
 			if (sub) {
 				if (collect && colTip == 0 && gived < kol) {
 					
-					if (World.w.invent.items[collect]) {
-						est=World.w.invent.items[collect].kol+gived;
+					if (World.w.invent.hasItem(collect)) {
+						est = World.w.invent.getQuantity(collect) + gived;
 					}
 					
-					if (est>kol) {
-						est=kol;
+					if (est > kol) {
+						est = kol;
 					}
 					
-					if (give==null) {
-						if (est>=kol) {
-							state=2;
+					if (give == null) {
+						if (est >= kol) {
+							state = 2;
+							
 							if (par.result) {
 								par.isResult();
 							}
 						}
 						else if (canBeUse) {
-							if (state<2) state=1;
-							else est=kol;
+							if (state < 2) {
+								state = 1;
+							}
+							else {
+								est = kol;
+							}
 						}
-						else state=1;
+						else {
+							state = 1;
+						}
 					}
 					else {
 						// Do nothing	
 					}
 					
-					if (cid!=null && collect==cid) {
-						res=nazv+' '+est+'/'+kol;
+					if (cid != null && collect == cid) {
+						res = nazv + ' ' + est + '/' + kol;
 					}
 					
-					if (World.w.invent.items[collect]) {
-						est=World.w.invent.items[collect].kol;
+					if (World.w.invent.hasItem(collect)) {
+						est = World.w.invent.getQuantity(collect);
 					}
 				}
 				
 				if (collect && colTip==1) {
-					if (World.w.invent.weapons[collect]!=null && World.w.invent.weapons[collect].respect!=3) {
+					if (World.w.invent.equipment.hasEquipment(collect) && World.w.invent.equipment.getWeapon(collect).respect != 3) {
 						state = 2;
 						
 						if (par.result) {
@@ -273,11 +271,11 @@ package fe.loc {
 				}
 			}
 			else {
-				if (state==2) {
+				if (state == 2) {
 					return null;
 				}
 				
-				var cl:Boolean=true;
+				var cl:Boolean = true;
 				var res2:String;
 				
 				for each (var q:Quest in subs) {
@@ -314,8 +312,8 @@ package fe.loc {
 				}
 				
 				if (collect) {
-					if (World.w.invent.items[collect]) {
-						est = World.w.invent.items[collect].kol;
+					if (World.w.invent.hasItem(collect)) {
+						est = World.w.invent.getQuantity(collect);
 					}
 					
 					if (est > 0 && (kol - gived) > 0) {
@@ -324,15 +322,15 @@ package fe.loc {
 						}
 						
 						if (us) {
-							World.w.invent.minusItem(collect, est);
+							World.w.invent.decreaseQuantity(collect, est);
 							gived += est;
 							
 							if (pay > 0) {
-								World.w.invent.money.kol += est * pay;
+								World.w.invent.increaseQuantity("money", (est * pay));
 								World.w.gui.infoText('reward', Res.txt('i','money'), est * pay);
 							}
 							
-							World.w.gui.infoText('withdraw', World.w.invent.items[collect].nazv, est);
+							World.w.gui.infoText('withdraw', ItemManager.reference.getItem(collect).nazv, est);
 							est = 0;
 							
 							if (gived >= kol) {
@@ -410,7 +408,7 @@ package fe.loc {
 
 			for (var i:int = 0; i < subs.length; i++) {
 				if (subs[i].result) {
-					for (var j = i - 1; j >= 0; j--) {
+					for (var j:int = i - 1; j >= 0; j--) {
 						if (subs[j].state < 2) {
 							cl = false;
 						}
@@ -467,23 +465,23 @@ package fe.loc {
 				for each (var q:Quest in subs) {
 					if (q.isDel) {
 						if (q.colTip == 0) {
-							World.w.invent.minusItem(q.collect, q.kol);
+							World.w.invent.decreaseQuantity(q.collect, q.kol);
 							try {
-								World.w.gui.infoText('withdraw',World.w.invent.items[q.collect].nazv, q.kol);
+								World.w.gui.infoText('withdraw', ItemManager.reference.getItem(q.collect).nazv, q.kol);
 							}
 							catch (err) {
 								trace('ERROR: (00:23)');
 							}
 						}
-						else if (q.colTip==1) {
+						else if (q.colTip == 1) {
 							try {
-								World.w.gui.infoText('withdraw',World.w.invent.weapons[q.collect].nazv, 1);
+								World.w.gui.infoText('withdraw', ItemManager.reference.getItem(q.collect).nazv, 1);
 							}
 							catch (err) {
 								trace('ERROR: (00:24)');
 							}
 							
-							World.w.invent.remWeapon(q.collect);
+							World.w.invent.equipment.deleteWeapon(q.collect);
 						}
 					}
 				}
@@ -509,16 +507,7 @@ package fe.loc {
 			if (xml.reward.length()) {
 				for each(var rew in xml.reward) {
 					if (rew.@id.length()) {
-						var item:Item;
-						
-						if (rew.@kol.length()) {
-							item = new Item(rew.@id, rew.@kol);
-						}
-						else {
-							item = new Item(rew.@id);
-						}
-						
-						World.w.invent.take(item, 2);
+						World.w.invent.increaseQuantity(rew.@id, rew.@kol);
 					}
 					
 					if (rew.@trigger.length()) {

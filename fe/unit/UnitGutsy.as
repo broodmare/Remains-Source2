@@ -76,7 +76,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 			weaponX = coordinates.X + (obj.x+visBmp.x)*storona;
 			weaponY = coordinates.Y + obj.y+visBmp.y;

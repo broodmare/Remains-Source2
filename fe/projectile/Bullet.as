@@ -58,7 +58,7 @@ package fe.projectile {
 		public var damage:Number = 0;
 		public var pier:Number = 0;			//бронебойность
 		public var armorMult:Number = 1;	//модификатор действия брони
-		public var tipDamage:int = 0;
+		public var tipDamage:String = "";
 		public var tipDecal:int = 0;
 		public var precision:Number = 0;	// [accuracy, shows the distance at which the hit will be 100%, 0 if the hit is always]
 		public var antiprec:Number = 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]

@@ -49,6 +49,11 @@ package fe {
 			return null;
 		}
 
+		// Returns an array of references to ALL armor sets
+		public function get armors():Vector.<Armor> {
+			return _armors;
+		}
+
 		private function initializeAllArmors():void {
 
 			// Initialize and store a base version of each armor set
@@ -315,7 +320,7 @@ package fe {
 		}
 
 		// Returns an entire new deep copy of a set of armor, NOT just the reference
-		public static function cloneArmor(id:String):Armor {
+		public function cloneArmor(id:String):Armor {
 			if (_armorMap[id] == null) {
 				throw new ArgumentError("Could not clone armor set: " + id);
 			}

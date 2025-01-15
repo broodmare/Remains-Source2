@@ -11,6 +11,7 @@ package fe.inter {
 	import fe.entities.Obj;
 	import fe.weapon.Weapon;
 	import fe.unit.UnitPlayer;
+	import fe.unit.Inventory;
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.serv.Script;
@@ -21,48 +22,58 @@ package fe.inter {
 
 		public var vis:MovieClip;
 		public var active:Boolean = true;
+		
 		private var weapon:TextField, holder:TextField, ammo:TextField, mana:TextField, celobj:TextField, info:TextField, item:TextField, hp:TextField, vitem:MovieClip, mess:MovieClip, imp:MovieClip, pet:MovieClip, pr_bar:MovieClip, levit_poss:MovieClip, tharrow:MovieClip;
 		public var dial:MovieClip, inform:MovieClip;
 		private var txtTele:String, txtOpen:String, txtChance:String, txtSoft:String, txtHard:String, txtVeryHard:String, txtUnreal:String, txtUndef0:String, txtUndef1:String, txtUndef2:String, txtClose:String, txtHeavy:String;
 		private var txtMagia:String, txtArmorMana:String, txtMagiaOver:String, txtH2o:String, txtH2oOver:String, txtStam:String, txtUnlock:String, txtRemine:String, txtUse:String, txtHold:String, txtLock:String, txtZhopa:String, txtEmpty:String, txtDrop:String, txtOd:String;
+		
 		public var gg:UnitPlayer;
 		public var celObj:Obj, prevObj:Obj, t_show:int=0;
 		
-		public var guiPause:Boolean = false;
-		public var showDop:Boolean = false;	// [show additional information when the cursor is at the bottom of the screen]
-		public var showFav:Boolean = false;	// [show additional information when the selector is called]
+		public var guiPause:Boolean		= false;
+		public var showDop:Boolean		= false;	// [show additional information when the cursor is at the bottom of the screen]
+		public var showFav:Boolean		= false;	// [show additional information when the selector is called]
 		
-		private var arr:Array;				// [weapon array for selector]
-		private var arrfav:Array;			// [weapon array with hotkeys]
-		private var wSelN:int = 0;
-		private var selMode:int = 0;
+		private var arr:Array;						// [weapon array for selector]
+		private var arrfav:Array;					// [weapon array with hotkeys]
+		private var wSelN:int			= 0;
+		private var selMode:int			= 0;
 		
 		private var prevInfoText:String;
 		private var bulbText:String;
 		
 		public var style:StyleSheet = new StyleSheet(); 
 		private var styleObj:Object = new Object();
-		private var kolStr:int=0, t_info:int=0, t_sel:int=0, t_bulb:int=0, t_visibility:int=30, float_dy:int=0;
-		public var t_item:int=200, t_od:int=200;
 		
-		private var screenX:int=1200, screenY:int=800;
-		
-		public var t_mess:int=0;
-		private var a_mess:Number=0;
-		private var id_mess:String='';
-		private var s_mess:String='';
-		
-		public var infoAlpha:Number = 1;
-		private var realAlpha:Number = 1;
-		
-		private var kolEff:int = 12;
-		private var veff:Array;
-		private var effIsVis:Boolean = false;
-		
-		private var informScript:Script;
-		public var dialScript:Script;
+		private var kolStr:int			=    0;
+		private var t_info:int			=    0;
+		private var t_sel:int			=    0;
+		private var t_bulb:int			=    0;
+		private var t_visibility:int	=   30;
+		private var float_dy:int		=    0;
 
-		private static var portraitHelper:PortraitHelper;
+		public var t_item:int			=  200;
+		public var t_od:int				=  200;
+		
+		private var screenX:int			= 1200;
+		private var screenY:int			=  800;
+		
+		public var t_mess:int			=    0;
+		private var a_mess:Number		=    0.00;
+		private var id_mess:String		= "";
+		private var s_mess:String		= "";
+		
+		public var infoAlpha:Number		=    1.00;
+		private var realAlpha:Number	=    1.00;
+		
+		private var kolEff:int			=   12;
+		private var veff:Array;
+		private var effIsVis:Boolean	= false;
+		
+		private static var portraitHelper:PortraitHelper;	// Handles showing portraits listed in dialogue
+		private var informScript:Script;					// 
+		public var dialScript:Script;						// 
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -70,7 +81,8 @@ package fe.inter {
 		// Constructor
 		public function GUI(vgui:MovieClip) {
 			vis=vgui;
-			vis.mouseChildren=vis.mouseEnabled=false;
+			vis.mouseChildren = false;
+			vis.mouseEnabled = false;
 			
 			styleObj.color = "#00FF99"; 
 			style.setStyle(".r", styleObj); 	//по умолчанию зелёный
@@ -141,106 +153,115 @@ package fe.inter {
 			celobj.styleSheet = style;
 			
 			// Store references for differnt parts of the GUI
-			item =			vis.textItem.getChildByName('kolItem') as TextField;
-			mana =			vis.textMana.getChildByName('mana') as TextField;
-			hp =			vis.getChildByName('hp') as TextField;
-			vitem =			vis.getChildByName('vItem') as MovieClip;
-			mess =			vis.getChildByName('mess') as MovieClip;
-			dial =			vis.getChildByName('dial') as MovieClip;
-			inform =		vis.getChildByName('inform') as MovieClip;
-			imp =			vis.getChildByName('imp') as MovieClip;
-			pet =			vis.getChildByName('hpPet') as MovieClip;
-			pr_bar =		vis.getChildByName('pr_bar') as MovieClip;
-			levit_poss =	vis.getChildByName('levit_poss') as MovieClip;
-			tharrow =		vis.getChildByName('tharrow') as MovieClip;
+			item 		= vis.textItem.getChildByName('kolItem') as TextField;
+			mana 		= vis.textMana.getChildByName('mana') as TextField;
+			hp 			= vis.getChildByName('hp') as TextField;
+			vitem 		= vis.getChildByName('vItem') as MovieClip;
+			mess 		= vis.getChildByName('mess') as MovieClip;
+			dial 		= vis.getChildByName('dial') as MovieClip;
+			inform 		= vis.getChildByName('inform') as MovieClip;
+			imp 		= vis.getChildByName('imp') as MovieClip;
+			pet 		= vis.getChildByName('hpPet') as MovieClip;
+			pr_bar 		= vis.getChildByName('pr_bar') as MovieClip;
+			levit_poss 	= vis.getChildByName('levit_poss') as MovieClip;
+			tharrow 	= vis.getChildByName('tharrow') as MovieClip;
 			
 			vis.portCel.gotoAndStop(1);
 			vis.portCel.visible = false;
 			
 			// Set localized text
-			txtTele =		Res.txt("g", 'tele');
-			txtOpen =		Res.txt("g", 'open');
-			txtSoft =		Res.txt("g", 'soft');
-			txtHard =		Res.txt("g", 'hard');
-			txtVeryHard =	Res.txt("g", 'veryhard');
-			txtUnreal =		Res.txt("g", 'unreal');
-			txtUndef0 =		Res.txt("g", 'undef0');
-			txtUndef1 =		Res.txt("g", 'undef1');
-			txtUndef2 =		Res.txt("g", 'undef2');
-			txtClose =		Res.txt("g", 'close');
-			txtUnlock =		Res.txt("g", 'unlock');
-			txtRemine =		Res.txt("g", 'remine');
-			txtUse =		Res.txt("g", 'use');
-			txtLock =		Res.txt("g", 'lock');
-			txtZhopa =		Res.txt("g", 'zhopa');
-			txtEmpty =		Res.txt("g", 'empty');
-			txtDrop =		Res.txt("g", 'drop');
-			txtHold =		Res.txt("g", 'hold');
-			txtHeavy =		Res.txt("g", 'heavy');
-			txtMagia =		Res.txt("g", 'magia');
-			txtArmorMana =	Res.txt("g", 'armormana');
-			txtChance =		Res.txt("g", 'chance');
-			txtMagiaOver =	Res.txt("g", 'magiaover');
-			txtH2o =		Res.txt("g", 'h2o');
-			txtH2oOver =	Res.txt("g", 'h2over');
-			txtStam =		Res.txt("g", 'stam');
-			txtOd =			LanguageManager.reference.localText("pip", 'ap');
+			var localize:Function = LanguageManager.reference.localText;
+
+			txtTele			= localize("g", 'tele');
+			txtOpen			= localize("g", 'open');
+			txtSoft			= localize("g", 'soft');
+			txtHard			= localize("g", 'hard');
+			txtVeryHard		= localize("g", 'veryhard');
+			txtUnreal		= localize("g", 'unreal');
+			txtUndef0		= localize("g", 'undef0');
+			txtUndef1		= localize("g", 'undef1');
+			txtUndef2		= localize("g", 'undef2');
+			txtClose		= localize("g", 'close');
+			txtUnlock		= localize("g", 'unlock');
+			txtRemine		= localize("g", 'remine');
+			txtUse			= localize("g", 'use');
+			txtLock			= localize("g", 'lock');
+			txtZhopa		= localize("g", 'zhopa');
+			txtEmpty		= localize("g", 'empty');
+			txtDrop			= localize("g", 'drop');
+			txtHold			= localize("g", 'hold');
+			txtHeavy		= localize("g", 'heavy');
+			txtMagia		= localize("g", 'magia');
+			txtArmorMana	= localize("g", 'armormana');
+			txtChance		= localize("g", 'chance');
+			txtMagiaOver	= localize("g", 'magiaover');
+			txtH2o			= localize("g", 'h2o');
+			txtH2oOver		= localize("g", 'h2over');
+			txtStam			= localize("g", 'stam');
+			txtOd			= localize("pip", 'ap');
 			
-			vis.odBar.txt.text=txtOd;
-			vis.selector.visible=false;
-			vis.fav.visible=false;
-			vis.status.visible=false;
-			vis.hpbarboss.visible=false;
-			mess.alpha=0;
-			mess.visible=false;
-			mess.mess.styleSheet = style;
-			mess.mess.autoSize=TextFieldAutoSize.CENTER;
-			dial.visible=false;
-			inform.visible=false;
-			imp.visible=false;
-			levit_poss.visible=false;
-			tharrow.visible=false;
-			dial.txt.styleSheet = style;
-			inform.txt.styleSheet = style;
-			imp.txt.styleSheet = style;
-			veff = [];
+			vis.odBar.txt.text		= txtOd;
+			vis.selector.visible	= false;
+			vis.fav.visible			= false;
+			vis.status.visible		= false;
+			vis.hpbarboss.visible	= false;
+			
+			mess.alpha				= 0;
+			mess.visible			= false;
+			mess.mess.styleSheet	= style;
+			mess.mess.autoSize		= TextFieldAutoSize.CENTER;
+			
+			dial.visible			= false;
+			inform.visible			= false;
+			imp.visible				= false;
+			levit_poss.visible		= false;
+			tharrow.visible			= false;
+
+			dial.txt.styleSheet		= style;
+			inform.txt.styleSheet	= style;
+			imp.txt.styleSheet		= style;
+
+			veff					= [];
 			
 			for (var i:int = 0; i < kolEff; i++) {
 				veff[i] = vis['eff' + i];
 			}
 			
-			informScript=new Script(<scr act="inform" val="id"/>);
-			dialScript=new Script(<scr act="dialog" val="id"/>);
+			informScript = new Script(<scr act="inform" val="id"/>);
+			dialScript = new Script(<scr act="dialog" val="id"/>);
+			
 			vis.inform.but0.addEventListener(MouseEvent.MOUSE_DOWN,showHelp);
-			vis.inform.but0.text.text=Res.txt("g", 'help');
-			vis.blood.visible=false;
+			
+			vis.inform.but0.text.text = localize("g", 'help');
+			vis.blood.visible = false;
 			vis.blood.stop();
 		}
 		
 		public function resizeScreen(nx:int, ny:int):void {
 			screenX = nx;
-			screenY = ny;
-			vis.textWeapon.y=ny-20;
-			vis.info.x=nx-20;
-			vis.odBar.x=nx-10;
-			vis.odBar.y=ny-10;
-			vis.visibility.x=nx-10;
-			vis.visibility.y=ny-50;
-			vis.selector.x=nx/2;
-			vis.selector.y=ny/2;
-			vis.sats.scaleX=nx/100;
-			vis.sats.scaleY=ny/100;
-			vis.hpbarboss.x=nx/2;
+			screenY	= ny;
+
+			vis.textWeapon.y	= ny - 20;
+			vis.info.x			= nx - 20;
+			vis.odBar.x			= nx - 10;
+			vis.odBar.y			= ny - 10;
+			vis.visibility.x	= nx - 10;
+			vis.visibility.y	= ny - 50;
+			vis.selector.x		= nx * 0.50;
+			vis.selector.y		= ny * 0.50;
+			vis.sats.scaleX		= nx * 0.01;
+			vis.sats.scaleY		= ny * 0.01;
+			vis.hpbarboss.x		= nx * 0.50;
 			
 			var r = nx - 275 * 2;
 			
-			if (r>500) {
-				mess.x=275;
-				mess.mess.width=nx-275*2;
+			if (r > 500) {
+				mess.x = 275;
+				mess.mess.width = nx - 275 * 2;
 			}
 			else {
-				mess.mess.width=500;
-				mess.x=(nx-500)/2;
+				mess.mess.width = 500;
+				mess.x = (nx - 500) * 0.50;
 			}
 			
 			if (screenX < 1200) {
@@ -249,106 +270,145 @@ package fe.inter {
 			}
 			else {
 				dial.scaleX = dial.scaleY = 1;
-				dial.x = (screenX - 1200) / 2;
+				dial.x = (screenX - 1200) * 0.50;
 			}
 			
-			inform.x = Math.round(screenX / 2);
-			imp.x = Math.round(screenX / 2);
-			imp.y = Math.round(screenY / 2 - 50);
+			inform.x	= Math.round(screenX * 0.50);
+			imp.x		= Math.round(screenX * 0.50);
+			imp.y		= Math.round(screenY * 0.50 - 50);
 		}
 		
 		public function showSelector(turn:int=0, mode:int=0):void {
+			trace("Game.as/showSelector - SHOW SELECTOR COMMENTED OUT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA NOTICE ME ")
+			/*
 			if (turn != 0) {
 				t_sel = 60;
 			}
 			
 			if (vis.selector.visible) {
-				wSelN+=turn;
-				if (wSelN<0) wSelN+=arr.length;
-				if (wSelN>=arr.length) wSelN-=arr.length;
+				wSelN += turn;
+				
+				if (wSelN < 0) {
+					wSelN += arr.length;
+				}
+				
+				if (wSelN >= arr.length) {
+					wSelN -= arr.length;
+				}
+				
 				setSelector();
+				
 				return;
 			}
 			
-			selMode=mode;
-			wSelN=0;
-			var inv:Invent = World.w.invent;
+			selMode = mode;
+			wSelN = 0;
+			var inv:Inventory = World.w.invent;
 			inv.getKolAmmos();
 			arr = [];
 			arrfav = [];
 			
-			if (mode == 0) {		//выбор оружия
+			if (mode == 0) {		// [weapon selection]
 				for each(var obj in inv.weapons) {
 					if (obj is Weapon) {
-						var w:Weapon=obj as Weapon;
-						var n:Object={id:w.id, nazv:w.nazv, skill:w.skill, sort1:w.skill, sort2:w.lvl};
+						var w:Weapon = obj as Weapon;
+						var n:Object = {id:w.id, nazv:w.nazv, skill:w.skill, sort1:w.skill, sort2:w.lvl};
 						
-						if (inv.favIds[w.id]) n.fav=inv.favIds[w.id];
-						
-						if (w.tip<4) {
-							n.hp=Math.round(w.hp/w.maxhp*100)+'%';
+						if (inv.favIds[w.id]) {
+							n.fav = inv.favIds[w.id];
 						}
 						
-						if (w.ammo!='' && w.ammo!=null) {
-							if (inv.ammos[w.ammoBase]!=null) n.ammo=inv.ammos[w.ammoBase]+w.hold;
-							else if (inv.items[w.ammo]!=null) n.ammo=inv.items[w.ammo].kol+w.hold;
-							if (w.ammoBase!='') n.ammotip=(w.tip == 4) ? '' : inv.items[w.ammoBase].nazv;
+						if (w.tip != "explosives" && w.tip != "magic") {
+							n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
 						}
 						
-						if (n.fav>0) arrfav[n.fav]=n;
+						if (w.ammo != "" && w.ammo != null) {
+							if (inv.ammos[w.ammoBase] != null) {
+								n.ammo = inv.ammos[w.ammoBase] + w.hold;
+							}
+							else if (inv.items[w.ammo] != null) {
+								n.ammo = inv.items[w.ammo].kol + w.hold;
+							}
+							if (w.ammoBase != "") {
+								n.ammotip = (w.tip == "explosives") ? "" : inv.items[w.ammoBase].nazv;
+							}
+						}
 						
-						if (w.respect==1 || w.respect==3 || w.spell)  continue;
+						if (n.fav > 0) {
+							arrfav[n.fav] = n;
+						}
 						
-						if (w.avail()<=0 && w!=gg.currentWeapon) continue;
+						if (w.respect == 1 || w.respect == 3 || w.spell) {
+							continue;
+						}
 						
-						if (w.alicorn && !World.w.alicorn) continue;
+						if (w.avail() <= 0 && w != gg.currentWeapon) {
+							continue;
+						}
+						
+						if (w.alicorn && !World.w.alicorn) {
+							continue;
+						}
 						
 						arr.push(n);
 					}
 				}
 				
-				if (arr.length>1) arr.sortOn(['sort1','sort2'],[Array.NUMERIC,Array.NUMERIC]);
+				if (arr.length > 1) {
+					arr.sortOn(['sort1', 'sort2'], [Array.NUMERIC, Array.NUMERIC]);
+				}
 				
 				for (var i in arr) {
 					if (gg.currentWeapon && arr[i].id==gg.currentWeapon.id) wSelN=i;
 				}
 				
-				for (i=1; i<=World.kolHK*2+7; i++) {
-					if (i==String(World.kolHK * 2 + 5)) {
+				for (i = 1; i <= World.kolHK * 2 + 7; i++) {
+					if (i == String(World.kolHK * 2 + 5)) {
 						if (gg.throwWeapon) {
-							w=gg.throwWeapon;
-							n={id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
+							w = gg.throwWeapon;
+							n = {id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
 							
-							if (w.ammo!='') n.ammo=inv.items[w.ammo].kol;
+							if (w.ammo != "") {
+								n.ammo = inv.items[w.ammo].kol;
+							}
 						}
 						else {
 							continue;
 						}
 					}
-					else if (i==String(World.kolHK * 2 + 6)) {
+					else if (i == String(World.kolHK * 2 + 6)) {
 						if (gg.magicWeapon) {
-							w=gg.magicWeapon;
-							n={id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
+							w = gg.magicWeapon;
+							n = {id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
 							
-							if (w.ammo!='') n.ammo=inv.items[w.ammo].kol;
+							if (w.ammo != "") {
+								n.ammo = inv.items[w.ammo].kol;
+							}
 						}
 						else continue;
 					}
-					else if (i==String(World.kolHK * 2 + 7)) {
+					else if (i == String(World.kolHK * 2 + 7)) {
 						if (gg.currentSpell) {
-							n={id:gg.currentSpell.id, nazv:gg.currentSpell.nazv, fav:i};
+							n = {id:gg.currentSpell.id, nazv:gg.currentSpell.nazv, fav:i};
+							
 							if (gg.currentSpell.t_culd>0) {
 								n.ammo=Math.ceil(gg.currentSpell.t_culd/World.fps)+' '+Res.txt("g", 'sec');
 							}
-							else n.ammo=Res.txt("g", 'ready')
+							else {
+								n.ammo = Res.txt("g", 'ready');
+							}
 						}
-						else continue;
+						else {
+							continue;
+						}
 					}
 					else {
-						if (arrfav[i] || inv.fav[i]==null) continue;
+						if (arrfav[i] || inv.fav[i] == null) {
+							continue;
+						}
 						
-						n={id:inv.fav[i], fav:i};
-						n.nazv=Res.txt('i',n.id);
+						n = {id:inv.fav[i], fav:i};
+						n.nazv = Res.txt('i', n.id);
 						
 						if (Res.istxt('i', n.id)) {
                             if (inv.items[n.id] == null) {
@@ -365,66 +425,76 @@ package fe.inter {
                             n.nazv = Res.txt('a', n.id);
                         }
 						
-						if (inv.spells[n.id]!=null) {
-							if (inv.spells[n.id].t_culd>0) {
-								n.ammo=Math.ceil(inv.spells[n.id].t_culd/World.fps)+' '+Res.txt("g", 'sec');
+						if (inv.spells[n.id] != null) {
+							if (inv.spells[n.id].t_culd > 0) {
+								n.ammo = Math.ceil(inv.spells[n.id].t_culd / World.fps) + ' ' + Res.txt("g", 'sec');
 							}
-							else n.ammo=Res.txt("g", 'ready')
+							else {
+								n.ammo=Res.txt("g", 'ready');
+							}
 						}
 					}
 					
-					arrfav[i]=n;
+					arrfav[i] = n;
 				}
-				if (arr.length>1 || turn==0) {
-					if (turn!=0) {
-						showFav=true;
-						vis.selector.visible=true;
-						gg.visSel=true;
+				if (arr.length > 1 || turn == 0) {
+					if (turn != 0) {
+						showFav = true;
+						vis.selector.visible = true;
+						gg.visSel = true;
 						setSelector();
 					}
+					
 					setFavs();
 					setStatus();
 				}
+				
 				gg.pers.setPonpon(vis.status.pon);
 			}
-			else {		//выбор патронов
-				if (gg.currentWeapon==null || gg.currentWeapon.holder<=0 || gg.currentWeapon.ammoBase=='' || gg.currentWeapon.recharg>0 || gg.currentWeapon.alicorn || gg.currentWeapon.tip>=4) return;
+			else {		// Ammo selection
+				if (gg.currentWeapon == null || gg.currentWeapon.holder <= 0 || gg.currentWeapon.ammoBase == "" || gg.currentWeapon.recharg > 0 || gg.currentWeapon.alicorn || gg.currentWeapon.tip == "explosives" || gg.currentWeapon.tip == "magic") {
+					return;
+				}
+
 				for each(var obj in inv.items) {
-					if (obj && obj.base==gg.currentWeapon.ammoBase) {
+					if (obj && obj.base == gg.currentWeapon.ammoBase) {
 						var n:Object = {id:obj.id, nazv:obj.nazv, ammo:obj.kol};
 						arr.push(n);
 					}
 				}
 				
-				if (arr.length>1) {
+				if (arr.length > 1) {
 					for (var i in arr) {
-						if (gg.currentWeapon.ammo==arr[i].id) {
+						if (gg.currentWeapon.ammo == arr[i].id) {
 							wSelN = i;
 						}
 					}
-					vis.selector.visible=true;
-					gg.visSel=true;
+					
+					vis.selector.visible = true;
+					gg.visSel = true;
 					setSelector();
 				}
 			}
+			*/
 		}
 		
 		public function setFavs():void {
 			for (var i:int = 1; i <= World.kolHK * 2 + 7; i++) {
 				var mc:MovieClip = vis.fav.getChildByName('s' + i);
+				
 				if (arrfav[i]) {
-					mc.visible=true;
-					mc.nazv.text=arrfav[i].nazv;
+					mc.visible = true;
+					mc.nazv.text = arrfav[i].nazv;
 					
 					if (arrfav[i].ammo == null) {
-                        mc.ammo.text = '';
+                        mc.ammo.text = "";
                     }
 					else {
 						mc.ammo.text = arrfav[i].ammo;
 					}
 					
-					if (i<=World.kolHK) {
-						mc.fav.text=World.w.ctr.retKey('keyWeapon'+arrfav[i].fav);
+					if (i <= World.kolHK) {
+						mc.fav.text = World.w.ctr.retKey('keyWeapon' + arrfav[i].fav);
 					}
 					else if (i<=World.kolHK*2+4) {
 						if (i<=World.kolHK*2) {
@@ -453,16 +523,18 @@ package fe.inter {
 						mc.trol.gotoAndStop(1);
 					}
 				}
-				else
-				{
+				else {
 					mc.visible = false;
 				}
 			}
 		}
 		
 		public function setStatus():void {
-			if (World.w.game && World.w.game.triggers['nomed']) return;
-			vis.status.visible=active;
+			if (World.w.game && World.w.game.triggers['nomed']) {
+				return;
+			}
+			
+			vis.status.visible = active;
 		}
 		
 		public function setSelector():void {
@@ -481,21 +553,33 @@ package fe.inter {
 			}
 			
 			for (var i:int = 1; i <= 7; i++) {
-				var mc:MovieClip=vis.selector.getChildByName('s'+i);
+				var mc:MovieClip=vis.selector.getChildByName('s' + i);
 				
-				if (selMode==1 && (i==1 || i==7)) mc.visible=false;
-				else mc.visible=true;
+				if (selMode == 1 && (i == 1 || i == 7)) {
+					mc.visible = false;
+				}
+				else {
+					mc.visible = true;
+				}
 				
-				mc.nazv.text=arr[n].nazv;
+				mc.nazv.text = arr[n].nazv;
 				
 				if (arr[n].ammo == null) {
-                    mc.ammo.text = '';
+                    mc.ammo.text = "";
                 }
-				else mc.ammo.text = arr[n].ammo;
+				else {
+					mc.ammo.text = arr[n].ammo;
+				}
 				
-				if (arr[n].fav>World.kolHK && arr[n].fav<=World.kolHK*2) mc.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(arr[n].fav-World.kolHK));
-				else if (arr[n].fav>0 && arr[n].fav<=World.kolHK) mc.fav.text=World.w.ctr.retKey('keyWeapon'+arr[n].fav);
-				else mc.fav.text='';
+				if (arr[n].fav > World.kolHK && arr[n].fav <= World.kolHK * 2) {
+					mc.fav.text = '^' + World.w.ctr.retKey('keyWeapon' + (arr[n].fav - World.kolHK));
+				}
+				else if (arr[n].fav > 0 && arr[n].fav <= World.kolHK) {
+					mc.fav.text = World.w.ctr.retKey('keyWeapon' + arr[n].fav);
+				}
+				else {
+					mc.fav.text = "";
+				}
 				
 				try {
 					mc.trol.gotoAndStop('w' + arr[n].skill);
@@ -514,15 +598,21 @@ package fe.inter {
 		}
 		
 		public function unshowSelector(res:int=0):void {
-			t_sel=0;
-			vis.selector.visible=gg.visSel=false;
-			showFav=false;
-			vis.status.visible=false;
+			t_sel = 0;
+			vis.selector.visible = false;
+			gg.visSel = false;
+			showFav = false;
+			vis.status.visible = false;
 			
 			try {
-				if (res>0) {
-					if (selMode==0 && (gg.currentWeapon==null || arr[wSelN].id!=gg.currentWeapon.id)) gg.changeWeapon(arr[wSelN].id);
-					if (selMode==1 && gg.currentWeapon && gg.currentWeapon.ammo!=arr[wSelN].id) gg.currentWeapon.initReload(arr[wSelN].id);
+				if (res > 0) {
+					if (selMode == 0 && (gg.currentWeapon == null || arr[wSelN].id != gg.currentWeapon.id)) {
+						gg.changeWeapon(arr[wSelN].id);
+					}
+					
+					if (selMode == 1 && gg.currentWeapon && gg.currentWeapon.ammo != arr[wSelN].id) {
+						gg.currentWeapon.initReload(arr[wSelN].id);
+					}
 				}
 			}
 			catch(err) {
@@ -535,15 +625,32 @@ package fe.inter {
 		}
 		
 		public function allOff():void {
-			active=false;
-			vis.hpBar.visible=vis.hp.visible=vis.manaBar.visible=vis.xpBar.visible=vis.textItem.visible=vis.textWeapon.visible=active;
-			vis.odBar.visible=vis.hpPet.visible=vis.vItem.visible=vis.textMana.visible=active;
-			vis.eff0.visible=vis.eff1.visible=vis.eff2.visible=vis.eff3.visible=vis.eff4.visible=vis.eff5.visible=active;
-			vis.hpbarboss.visible=active;
+			active					= false;
+			
+			vis.hpBar.visible		= false;
+			vis.hp.visible			= false;
+			vis.manaBar.visible		= false;
+			vis.xpBar.visible		= false;
+			vis.textItem.visible	= false;
+			vis.textWeapon.visible	= false;
+
+			vis.odBar.visible		= false;
+			vis.hpPet.visible		= false;
+			vis.vItem.visible		= false;
+			vis.textMana.visible	= false;
+
+			vis.eff0.visible		= false;
+			vis.eff1.visible		= false;
+			vis.eff2.visible		= false;
+			vis.eff3.visible		= false;
+			vis.eff4.visible		= false;
+			vis.eff5.visible		= false;
+			
+			vis.hpbarboss.visible	= false;
 		}
 
 		public function allOn():void {
-			active = true;
+			active					= true;
 			
 			vis.hpBar.visible		= true;
 			vis.hp.visible			= true;
@@ -565,15 +672,21 @@ package fe.inter {
 					var k:int = World.w.invent.getQuantity(w.ammo);
 					var s:String;
 					
-					if (w.tip != 4) {
-						if (w.hold < w.holder / 4) n = 2;
-						if (w.hold < w.rashod) n = 3;
-						if (w.hold + k < w.rashod) n = 5;
+					if (w.tip != "explosives") {
+						if (w.hold < w.holder / 4) {
+							n = "2";
+						}
+						if (w.hold < w.rashod) {
+							n = "3";
+						}
+						if (w.hold + k < w.rashod) {
+							n = "5";
+						}
 					}
 					
 					s = "<span class = 'r" + n + "'>";
 					
-					if (w.tip == 4) {
+					if (w.tip == "explosives") {
                         s += k + w.hold;
                     }
 					else {
@@ -601,22 +714,22 @@ package fe.inter {
 				
 				if (r <= 0) {
 					r = 0;
-					n = 5;
+					n = "5";
 				}
 				else if (r < 20) {
-					n = 3;
+					n = "3";
 				}
 				else if (r < 50) {
-					n = 2;
+					n = "2";
 				}
 				
 				if (w.avail() == -1) {
-					n = 5;
+					n = "5";
 				}
 				
 				s = "<span class = 'r" + n + "'>" + w.nazv;
 				
-				if (w.tip != 0 && w.tip < 4) {
+				if (w.tip != "internal" && w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun") {
 					s += ' (' + r + '%)';
 				}
 				
@@ -624,7 +737,7 @@ package fe.inter {
 				weapon.htmlText = s;
 				vis.textWeapon.x = 20 + weapon.textWidth;
 			
-				if (w.ammo != "" && w.tip != 4) {
+				if (w.ammo != "" && w.tip != "explosives") {
 					ammo.text = ItemManager.reference.getItem(w.ammo).nazv;
 				}
 				else if (w.id == "paint") {
@@ -657,13 +770,14 @@ package fe.inter {
 		
 		public function setItems(turn:int = 0):void {
 			if (turn < 0) {
-				vitem.visible=item.visible = false;
+				vitem.visible = false;
+				item.visible = false;
 				vitem.gotoAndStop(1);
 				item.text = "";
 				return;
 			}
 			
-			if (World.w.invent.cItem < 0) {
+			if (World.w.gg.cItem == "") {
 				vitem.visible = false;
 				item.visible = false;
 				vitem.gotoAndStop(1);
@@ -671,43 +785,53 @@ package fe.inter {
 			}
 			else {
 				t_item = 200;
-				var ci:String = World.w.invent.itemsId[World.w.invent.cItem];
+				var ci:String = World.w.invent.getItem[World.w.gg.cItem].id;
 				vitem.visible = active;
 				item.visible = active;
 				try {
 					vitem.gotoAndStop(ci);
 				}
-				catch(err)
-				{
+				catch(err) {
 					trace('ERROR: (00:30)');
 					vitem.gotoAndStop(1);
 				}
-				item.text = Res.txt('i', ci) + ' (' + World.w.invent.items[ci].kol + ')';
+				
+				item.text = Res.txt('i', ci) + ' (' + World.w.invent.getQuantity(ci) + ')';
 			}
 			
 			setOtstup();
 		}
 		
 		public function setHp():void {
-			if (gg.hp>0) {
-				vis.hpBar.hp.scaleX=gg.hp/gg.maxhp;
-				vis.hpBar.healhp.scaleX=Math.min(1,(gg.hp+gg.healhp)/gg.maxhp);
-				if (gg.rad<=gg.maxhp) vis.hpBar.rad.scaleX=gg.rad/gg.maxhp;
-				hp.text=Math.ceil(gg.hp)+'/'+Math.ceil(gg.maxhp);
-				if (gg.hp/gg.maxhp<0.2 && vis.hpBar.hp.currentFrame==1) vis.hpBar.hp.gotoAndPlay(2);
-				if (gg.hp/gg.maxhp>=0.2 && vis.hpBar.hp.currentFrame!=1) vis.hpBar.hp.gotoAndStop(1);
+			if (gg.hp > 0) {
+				vis.hpBar.hp.scaleX = gg.hp / gg.maxhp;
+				vis.hpBar.healhp.scaleX = Math.min(1, (gg.hp + gg.healhp) / gg.maxhp);
+				
+				if (gg.rad <= gg.maxhp) {
+					vis.hpBar.rad.scaleX = gg.rad / gg.maxhp;
+				}
+				
+				hp.text = Math.ceil(gg.hp) + '/' + Math.ceil(gg.maxhp);
+				
+				if (gg.hp / gg.maxhp < 0.2 && vis.hpBar.hp.currentFrame == 1) {
+					vis.hpBar.hp.gotoAndPlay(2);
+				}
+				
+				if (gg.hp / gg.maxhp >= 0.2 && vis.hpBar.hp.currentFrame != 1) {
+					vis.hpBar.hp.gotoAndStop(1);
+				}
 			}
 			else {
-				vis.hpBar.hp.scaleX=0;
-				vis.hpBar.healhp.scaleX=0;
-				hp.text='';
+				vis.hpBar.hp.scaleX = 0;
+				vis.hpBar.healhp.scaleX = 0;
+				hp.text = "";
 			}
 			
-			if (gg.drad>1){
-				vis.hpBar.drad.alpha=1;
+			if (gg.drad > 1){
+				vis.hpBar.drad.alpha = 1;
 			}
 			else {
-				vis.hpBar.drad.alpha=gg.drad;
+				vis.hpBar.drad.alpha = gg.drad;
 			}
 		}
 		
@@ -723,64 +847,95 @@ package fe.inter {
 		}
 		
 		public function setMana():void {
-			if (gg.mana<10) mana.text=txtMagiaOver;
-			else if (gg.mana<995 || gg.t_culd>0 || gg.currentSpell && gg.currentSpell.t_culd>0) mana.text=txtMagia+' '+Math.round(gg.mana/10)+'%';
-			else mana.text='';
-			
-			vis.manaBar.mana.scaleX=gg.pers.manaHP/gg.pers.inMaxMana;
-			
-			if (gg.teleObj && gg.teleObj.massa>0.1) mana.appendText(' '+Math.round(gg.teleObj.massa*50)+'kg');
-			
-			if (gg.dmana<-5) mana.appendText(' ('+txtHeavy+')');
-			
-			if (gg.h2o<500) {
-				if (mana.text!='') mana.text+='\n';
-				if (gg.h2o<10) mana.text+=txtH2oOver;
-				else mana.text+=txtH2o+' '+Math.round(gg.h2o/10)+'%';
+			if (gg.mana < 10) {
+				mana.text = txtMagiaOver;
+			}
+			else if (gg.mana < 995 || gg.t_culd > 0 || gg.currentSpell && gg.currentSpell.t_culd > 0) {
+				mana.text = txtMagia + " " + Math.round(gg.mana * 0.10) + "%";
+			}
+			else {
+				mana.text = "";
 			}
 			
-			if (gg.stam<500 || World.w.testBattle && gg.stam<980) {
-				if (mana.text!='') mana.text+='\n';
-				if (gg.stam<10) mana.text+=txtStam+' 0%';
-				else mana.text+=txtStam+' '+Math.round(gg.stam/10)+'%';
+			vis.manaBar.mana.scaleX = gg.pers.manaHP / gg.pers.inMaxMana;
+			
+			if (gg.teleObj && gg.teleObj.massa > 0.1) {
+				mana.appendText(" " + Math.round(gg.teleObj.massa * 50) + "kg");
 			}
 			
-			if (gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana) {
-				if (mana.text!='') mana.text+='\n';
-				mana.text+=txtArmorMana+' '+Math.round(gg.currentArmor.mana/gg.currentArmor.maxmana*100)+'%';
+			if (gg.dmana < -5) {
+				mana.appendText(" (" + txtHeavy + ")");
 			}
 			
-			if (gg.t_culd>0 || gg.currentSpell && gg.currentSpell.t_culd>0) mana.alpha=0.6;
-			else mana.alpha=1;
+			if (gg.h2o < 500) {
+				if (mana.text != "") {
+					mana.text += "\n";
+				}
+				
+				if (gg.h2o < 10) {
+					mana.text += txtH2oOver;
+				}
+				else {
+					mana.text += txtH2o + " " + Math.round(gg.h2o * 0.10) + "%";
+				}
+			}
+			
+			if (gg.stam < 500 || World.w.testBattle && gg.stam < 980) {
+				if (mana.text != "") {
+					mana.text += "\n";
+				}
+				
+				if (gg.stam < 10) {
+					mana.text += txtStam + " 0%";
+				}
+				else {
+					mana.text += txtStam + " " + Math.round(gg.stam * 0.10) + "%";
+				}
+			}
+			
+			if (gg.currentArmor && gg.currentArmor.mana < gg.currentArmor.maxmana) {
+				if (mana.text != "") {
+					mana.text += "\n";
+				}
+				
+				mana.text += txtArmorMana + " " + Math.round(gg.currentArmor.mana / gg.currentArmor.maxmana * 100) + "%";
+			}
+			
+			if (gg.t_culd > 0 || gg.currentSpell && gg.currentSpell.t_culd > 0) {
+				mana.alpha = 0.6;
+			}
+			else {
+				mana.alpha = 1;
+			}
 			
 			setOtstup();
 		}
 		
 		public function setXp():void {
-			var prun:Number=(gg.pers.xpCur-gg.pers.xpPrev)/(gg.pers.xpNext-gg.pers.xpPrev)
-			vis.xpBar.xp.scaleX=prun;
+			var prun:Number = (gg.pers.xpCur - gg.pers.xpPrev) / (gg.pers.xpNext - gg.pers.xpPrev)
+			vis.xpBar.xp.scaleX = prun;
 		}
 		
 		private function setOtstup():void {
 			if (pet.visible) {
-				vitem.y=70+30;
-				vis.textItem.y=58+30;
+				vitem.y = 70 + 30;
+				vis.textItem.y = 58 + 30;
 			}
 			else {
-				vitem.y=70;
-				vis.textItem.y=58;
+				vitem.y = 70;
+				vis.textItem.y = 58;
 			}
 			if (vitem.visible) {
-				vis.textMana.y=vis.textItem.y+35;
+				vis.textMana.y = vis.textItem.y + 35;
 			}
 			else {
-				vis.textMana.y=vis.textItem.y;
+				vis.textMana.y = vis.textItem.y;
 			}
 		}
 		
 		public function setPet():void {
 			if (gg.pet) {
-				pet.visible=true;
+				pet.visible = true;
 				
 				if (gg.pet.hp>0) {
 					pet.hp.visible=true;
@@ -811,7 +966,8 @@ package fe.inter {
 		public function setTopText(s:String=''):void {
 			if (s == '') {
                 vis.toptext.visible = false;
-            } else {
+            }
+			else {
                 vis.toptext.visible = true;
                 var ins:String = Res.txt('g', s, 0, true);
                 var myPattern:RegExp = /@/g;
@@ -983,10 +1139,14 @@ package fe.inter {
 					World.w.cur('action');
 					if (!World.w.loc.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
 						//заперто и имеется ключ
-						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
-							s+='\n';
-							if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
-							s+=Res.txt("g", 'usekey');
+						if (celObj.inter.mine <= 0 && celObj.inter.lock > 0 && celObj.inter.lockKey && gg.invent.getQuantity(celObj.inter.lockKey) > 0) {
+							s += '\n';
+							
+							if (World.w.hintKeys) {
+								s+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
+							}
+							
+							s += Res.txt("g", 'usekey');
 						//заперто, нужен ключ, но его нет
 						}
 						else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
@@ -998,8 +1158,13 @@ package fe.inter {
 						}
 						else if (celObj.inter.actionText!='') {
 							var acts:String ='\n';
-							if (World.w.hintKeys) acts+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
+							
+							if (World.w.hintKeys) {
+								acts+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
+							}
+							
 							acts+=celObj.inter.actionText;
+							
 							if (celObj.inter.mine>0) {			//есть минирование
 								s+=acts+dif(celObj.inter.mine, celObj.inter.mineTip);		
 							}
@@ -1017,53 +1182,68 @@ package fe.inter {
 							}
 							
 							//заколки
-							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.w.invent && World.w.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.w.invent.pin.kol+"</span>}";
+							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.w.invent.getQuantity("pin") > 0) {
+								s += " {<span class = 'r2'>" + World.w.invent.getQuantity("pin") + "</span>}";
+							}
 							
-							if (celObj.inter.cons) s+='\n('+Res.txt("g", 'required')+': '+Res.txt('i',celObj.inter.cons)+')';
+							if (celObj.inter.cons) {
+								s += '\n(' + Res.txt("g", 'required') + ': ' + Res.txt('i', celObj.inter.cons) + ')';
+							}
 						}
 					}
 					else {
-						s+='\n';
-						if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' - ';
-						s+=celObj.inter.actionText;
+						s += '\n';
+						
+						if (World.w.hintKeys) {
+							s+=World.w.ctr.retKey('keyAction')+' - ';
+						}
+						
+						s += celObj.inter.actionText;
 					}
 				}
-				else if (celObj.warn>0)  {
+				else if (celObj.warn > 0)  {
 					World.w.cur('combat');
 				}
 				else {
 					World.w.cur('target');
 				}
 				
-				if (celObj.inter && World.w.loc.celDist<=World.w.actionDist) {
-					acts="\n<span class = 'r3'>";
-					if (World.w.hintKeys) acts+=World.w.ctr.retKey('keyCrack')+' - ';
-					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
-						s+=acts+Res.txt("g", 'actalarm')+"</span>";
+				if (celObj.inter && World.w.loc.celDist <= World.w.actionDist) {
+					acts = "\n<span class = 'r3'>";
+					
+					if (World.w.hintKeys) {
+						acts += World.w.ctr.retKey('keyCrack') + ' - ';
 					}
-					else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.txt("g", 'runa')+"</span>";
+					
+					if (celObj.inter.mineTip == 6 && celObj.inter.mine > 0) {
+						s += acts + Res.txt("g", 'actalarm') + "</span>";
 					}
-					else if (celObj.inter.lockTip==2 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.txt("g", 'reboot')+"</span>";
+					else if (celObj.inter.lockTip == 1 && celObj.inter.needRuna(gg)) {
+						s += acts + Res.txt("g", 'runa') + "</span>";
+					}
+					else if (celObj.inter.lockTip == 2 && celObj.inter.needRuna(gg)) {
+						s += acts + Res.txt("g", 'reboot') + "</span>";
 					}
 				}
 				
-				if (gg.showObsInd && (celObj is Unit) && (celObj as Unit).fraction!=Unit.F_PLAYER && !(celObj as Unit).doop && (celObj as Unit).observ>gg.sneak+1) {
-					s+=" <span class = 'r1'>(ʘ)</span>";
+				if (gg.showObsInd && (celObj is Unit) && (celObj as Unit).fraction != Unit.F_PLAYER && !(celObj as Unit).doop && (celObj as Unit).observ > gg.sneak + 1) {
+					s += " <span class = 'r1'>(ʘ)</span>";
 				}
 				
-				celobj.htmlText=s;
+				celobj.htmlText = s;
 				World.w.cam.setKoord(celobj, celObj.coordinates.X, celObj.coordinates.Y);
 			}
 			else {
-				celobj.visible=false;
+				celobj.visible = false;
 				World.w.cur('target');
 			}
 			
 			if (celobj.visible) {
-				celobj.x-=celobj.width/2;
-				if (celobj.y>World.w.cam.screenY-40-celobj.height) celobj.y=pr_bar.y=World.w.cam.screenY-40-celobj.height;
+				celobj.x -= celobj.width * 0.50;
+				
+				if (celobj.y > World.w.cam.screenY - 40 - celobj.height) {
+					celobj.y = pr_bar.y = World.w.cam.screenY - 40 - celobj.height;
+				}
 			}
 			
 			prevObj=celObj;
@@ -1130,18 +1310,22 @@ package fe.inter {
 			vis.portCel.visible=true;
 			var nx:int = Math.round(World.w.celX / tileX) * tileX;
 			var ny:int = Math.round(World.w.celY / tileY) * tileY;
-			World.w.cam.setKoord(vis.portCel,nx,ny);
+			World.w.cam.setKoord(vis.portCel, nx, ny);
 			
 			if (gg.checkPort()) {
-				if (gg.t_port<gg.pers.portTime) vis.portCel.gotoAndStop(1);
-				else vis.portCel.gotoAndStop(2);
+				if (gg.t_port < gg.pers.portTime) {
+					vis.portCel.gotoAndStop(1);
+				}
+				else {
+					vis.portCel.gotoAndStop(2);
+				}
 			}
 			else {
 				vis.portCel.gotoAndStop(3);
 			}
 		}
 		
-		public function infoText(id:String, p1=0, p2=null, addlog:Boolean=true):void {
+		public function infoText(id:String, p1 = 0, p2 = null, addlog:Boolean = true):void {
 			var s:String = Res.txt('f', id);
 			s = s.replace('@1', '<b>' + p1 + '</b>');
 			
@@ -1179,24 +1363,46 @@ package fe.inter {
 		public function floatText(txt:String, nx:int, ny:int, n:int=-1):void {
 			var bulbText:String = txt;
 
-			if (n >= 0) bulbText="<span class = 'r" + n + "'>" + txt + "</span>";
+			if (n >= 0) {
+				bulbText="<span class = 'r" + n + "'>" + txt + "</span>";
+			}
 
-			if (t_bulb<=0) float_dy=0;
-			else float_dy -= 20;
+			if (t_bulb<=0) {
+				float_dy=0;
+			}
+			else {
+				float_dy -= 20;
+			}
 			
 			ny=ny-80+float_dy;
-			if (ny<40) ny-=100;
-			if (nx<50) nx=50;
-			if (nx>World.w.loc.maxX-50) nx=World.w.loc.maxX-50;
+			
+			if (ny<40) {
+				ny-=100;
+			}
+			
+			if (nx<50) {
+				nx=50;
+			}
+			
+			if (nx>World.w.loc.maxX-50) {
+				nx=World.w.loc.maxX-50;
+			}
+			
 			Emitter.emit('take',World.w.loc,nx,ny,{txt:bulbText});
-			t_bulb=10;
+			t_bulb = 10;
 		}
 		
 		public function remStr():void {
-			if (kolStr <= 1) info.htmlText = '';
-			else info.htmlText = info.htmlText.substr(info.htmlText.search('<br>') + 4);
+			if (kolStr <= 1) {
+				info.htmlText = "";
+			}
+			else {
+				info.htmlText = info.htmlText.substr(info.htmlText.search("<br>") + 4);
+			}
 
-			if (kolStr>0) kolStr--;
+			if (kolStr > 0) {
+				kolStr--;
+			}
 		}
 		
 		

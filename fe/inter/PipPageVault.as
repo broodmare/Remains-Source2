@@ -10,6 +10,8 @@ package fe.inter {
 	import fe.*;
 	import fe.serv.Item;
 	import fe.weapon.Weapon;
+	import fe.unit.Inventory;
+	import fe.unit.InventoryItem;
 
 	import fe.stubs.visPipVaultItem;
 	
@@ -159,26 +161,40 @@ package fe.inter {
 			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text);
 		}
 		
-		private function chKol(mc, n:int=0):void {
-			var obj = assArr[mc.id.text]
-			var item:Item = inv.items[mc.id.text];
+		private function chKol(mc, n:int = 0):void {
+			var obj = assArr[mc.id.text];
+			var id:String = mc.id.text;
+			var data:Object = ItemManager.reference.getItem(id);
 			
-			if (item == null || obj == null) {
+			if (id == "" || obj == null) {
 				return;
 			}
 			
-			n = n - item.vault;
+			var inv:Inventory = World.w.invent;
+			var vault:Inventory = World.w.vault;
+
+			var invQty:int = inv.getQuantity(id);
+			var vaultQty:int = vault.getQuantity(id);
 			
-			if (n>item.kol) n=item.kol;
+			n = n - vaultQty;
 			
-			if (n<-item.vault) n=-item.vault;
+			if (n > invQty) {
+				n = invQty;
+			}
 			
-			item.vault+=n;
-			item.kol-=n;
-			obj.kol=item.kol;
-			obj.vault=item.vault;
-			var dmass:Number = n * item.mass;
-			inv.mass[item.invCat]-=dmass;
+			if (n < -vaultQty) {
+				n = -vaultQty;
+			}
+			
+			vault.increaseQuantity(id, n);
+			inv.decreaseQuantity(id, n);
+
+			obj.kol = inv.getQuantity(id);
+			obj.vault = vault.getQuantity(id);
+			
+			var dmass:Number = n * data.mass;
+			inv.mass[data.invCat] -= dmass;
+			
 			showBottext();
 			pip.setRPanel();
 			
@@ -190,9 +206,9 @@ package fe.inter {
 					mc.nazv.alpha = 1;
 				}
 				
-				mc.kol.text=obj.kol;
-				mc.ns.value=obj.vault;
-				mc.mass2.text = World.w.hardInv? Res.numb(obj.mass * obj.kol) : '';
+				mc.kol.text = obj.kol;
+				mc.ns.value = obj.vault;
+				mc.mass2.text = World.w.hardInv ? Res.numb(obj.mass * obj.kol) : "";
 			}
 		}
 		
@@ -239,7 +255,7 @@ package fe.inter {
 				}
 				
 				if (weap.respect == 0 || weap.respect == 2) {
-					if (weap.tip == 4 && ab == weap.id) {
+					if (weap.tip == "explosives" && ab == weap.id) {
 						return true;
 					}
 					if (ab == weap.ammoBase) {
@@ -257,22 +273,24 @@ package fe.inter {
 			
 			for (var s:String in arr) {
 				if (arr[s].tip != 'food' && arr[s].tip != 'book' && arr[s].tip != 'sphera' && arr[s].tip != 'valuables' && !arr[s].keep) {
-					var item:Item = inv.items[arr[s].id];
+					var item:InventoryItem = inv.getItem(arr[s].id);
+					var data:Object = ItemManager.reference.getItem(item.id)
 					
-					if (item == null) {
-						continue;
-					}
-					
+					/*
 					if (arr[s].tip == 'a' || arr[s].tip == 'e' || arr[s].tip == 'compw') {
 						if (checkAmmo(item)) {
 							continue
 						}
 					}
-					
-					dmass = item.kol * item.mass;
-					item.vault += item.kol;
-					item.kol = 0;
-					inv.mass[item.invCat] -= dmass;
+					*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME
+
+					var inv:Inventory = World.w.invent;
+					var vault:Inventory = World.w.vault;
+
+					dmass = inv.getQuantity(item.id) * data.mass;
+					vault.increaseQuantity(item.id, item.quantity);
+					inv.setQuantity(item.id, 0);
+					inv.mass[data.invCat] -= dmass;
 					dmass = 0;
 				}
 			}

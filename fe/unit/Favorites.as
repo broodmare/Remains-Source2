@@ -7,12 +7,15 @@ package fe.unit {
 
 		// Constructor
 		public function Favorites(saveDataObject:Object = null) {
+			/*
 			if (saveDataObject != null) {
 				loadFavorites(saveDataObject);
 			}
+			*/
 		}
 
 		public function useFav(n:int):void {
+			/*
 			// This function is called with an integer (assumed 1-9) and that's used as an index to get the ID of the item for that number
 			var ci:String = fav[n];
 			
@@ -45,9 +48,11 @@ package fe.unit {
 			else {
 				trace("Favorites.as/useFav() - Tried to use favorite item: " + ci);
 			}
+			*/
 		}
 
 		public function favItem(id:String, cell:int):void {
+			/*
 			if (gg && (cell==29 || cell==30)) {
 				if (weapons[id]==null || (weapons[id].tip!=4 && weapons[id].tip!=5) || weapons[id].spell) {
 					World.w.gui.infoText('onlyExpl');
@@ -84,7 +89,7 @@ package fe.unit {
 			}
 			
 			if (cell<29 && cell>=25) {
-				if (itemManager.getItem(id).tip != "spell") {
+				if (itemManager.getItem(id).tip != "magic") {
 					World.w.gui.infoText('onlySpell');
 					return;
 				}
@@ -105,9 +110,12 @@ package fe.unit {
 				fav[cell] = id;
 				favIds[id] = cell;
 			}
+
+			*/
 		}
 
 		public function save():Object {
+				/*
 				var obj:Object = new Object;
 				obj.fav = [];
 
@@ -118,13 +126,17 @@ package fe.unit {
 				}
 				
 				return obj;
+				*/
+				return {};
 		}
 		
-		function addLoad(saveData:Object):void {
+		public function addLoad(saveData:Object):void {
+			/*
 			// Restore the player's favorites
 			for (w in saveData.fav) {
 				favItem(saveData.fav[w], w);
 			}
+			*/
 		}
 	}
 }

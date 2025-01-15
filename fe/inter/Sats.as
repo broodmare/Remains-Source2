@@ -25,19 +25,19 @@ package fe.inter {
 		public var que:Array;
 		public var weapon:Weapon;
 		public var gg:UnitPlayer;
-		public var skillConf:Number=1;			//[modifier, depends on the level of the skill, 1 is normal, 0.75 is a skill 1 level lower, 0.5 is a skill 2 levels lower]
+		public var skillConf:Number = 1.00;			//[modifier, depends on the level of the skill, 1 is normal, 0.75 is a skill 1 level lower, 0.5 is a skill 2 levels lower]
 		public var units:Array;
 		public var ct:ColorTransform = new ColorTransform(1, 1, 1, 1, 0, 100, 0, 0);
 		private var fGlow:GlowFilter = new GlowFilter(0xFF0000, 1, 3, 3, 4, 1);
 		private var fShad:GlowFilter = new GlowFilter(0x000000, 1, 3, 3, 3, 1);
 		
-		public var od:Number = 80;	// [Real ods]
-		public var odv:Number = 80;	// [Virtual ods]
-		public var odd:Number = 0.1;
-		public var limOd:Number = 200;
+		public var od:Number			=  80.00;	// [Real ods]
+		public var odv:Number			=  80.00;	// [Virtual ods]
+		public var odd:Number			=   0.10;
+		public var limOd:Number			= 200.00;
 		
 		public function Sats(nvis:MovieClip) {
-			vis=nvis;
+			vis = nvis;
 			vis.visible = false;
 			trasser = new MovieClip();
 			radius = new satsRadius();	// SWF Dependency
@@ -49,9 +49,15 @@ package fe.inter {
 
 		//Показать/скрыть
 		public function onoff(turn:int=0):void {
-			if (turn == 0) active =! active;
-			else if (turn > 0) active = true;
-			else active=false;
+			if (turn == 0) {
+				active =! active;
+			}
+			else if (turn > 0) {
+				active = true;
+			}
+			else {
+				active = false;
+			}
 			
 			if (active) {
 				if (World.w.loc.base || World.w.alicorn) {
@@ -63,12 +69,12 @@ package fe.inter {
 				weapon = gg.currentWeapon;
 				if (weapon == null) {
 					World.w.gui.infoText('noSats');
-					active=false;
+					active = false;
 				}
 				else {
 					if (weapon.noSats) {
 						World.w.gui.infoText('noSats');
-						active=false;
+						active = false;
 					}
 					else {
 						var st:int = weapon.status();
@@ -91,16 +97,16 @@ package fe.inter {
 				}
 			}
 			if (active) {
-				if (weapon.tip > 1) {
+				if (weapon.tip != "internal" && weapon.tip != "cryo") {
 					trasser.visible = true;
 					trass();
 				}
 				else {
-					trasser.visible=false;
-					radius.visible=true;
+					trasser.visible = false;
+					radius.visible = true;
 					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona;
 					radius.y = gg.coordinates.Y - gg.boundingBox.halfHeight;
-					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
+					radius.scaleX = radius.scaleY = gg.pers.meleeR / 100;
 				}
 
 				skillConf = 1;
@@ -432,8 +438,8 @@ package fe.inter {
 					info.text += '\n' + LanguageManager.reference.localText("pip", 'level') + ': ' + (un.level + 1);
 					info.text += '\n' + LanguageManager.reference.localText("pip", 'hp') + ': ' + Math.ceil(un.hp) + '/' + Math.ceil(un.maxhp);
 					if (un.skin > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'skin') + ': ' + Math.ceil(un.skin);
-					if (un.armorQual > 0 && un.armor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'armor') + ': ' + Math.ceil(un.armor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
-					if (un.armorQual > 0 && un.marmor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armor_qual * 100) + '%)';
+					if (un.armorQual > 0 && un.armor > 0)  info.text += '\n' + LanguageManager.reference.localText("pip",  'armor') + ': ' + Math.ceil(un.armor  + un.skin) + ' (' + Math.round(un.armorQual * 100) + '%)';
+					if (un.armorQual > 0 && un.marmor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armorQual * 100) + '%)';
 					
 					if (mc.y < 150) {
 						info.y = 50;
@@ -443,7 +449,7 @@ package fe.inter {
 					}
 				}
 				
-				su.name = 'su';
+				su.name = "su";
 				mc.addChild(du);
 				mc.addChild(su);
 				units.push({u:un, v:mc, du:du, p:prec, n:0});

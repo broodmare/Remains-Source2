@@ -155,7 +155,7 @@ package fe.unit {
 			hp=koef*maxhp;
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			if (id == 'phoenix') {
 				weaponX = coordinates.X + 15 * storona;
 				weaponY = coordinates.Y - 20;

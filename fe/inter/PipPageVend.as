@@ -10,6 +10,7 @@ package fe.inter {
 	import fe.*;
 	import fe.unit.Armor;
 	import fe.unit.UnitPet;
+	import fe.unit.InventoryItem;
 	import fe.serv.Item;
 	import fe.serv.Vendor;
 	import fe.weapon.Weapon;
@@ -28,12 +29,12 @@ package fe.inter {
 	*/
 	public class PipPageVend extends PipPage {
 		
-		private var npcId:String = '';
+		private var npcId:String		= "";
 		private var vendor:Vendor;
 		private var assArr:Array;
-		private var npcInter:String = '';	//цена ремонта совы
-		private var inbase:Boolean = false;
-		private var selall:Boolean = true;
+		private var npcInter:String		= "";	//цена ремонта совы
+		private var inbase:Boolean		= false;
+		private var selall:Boolean		= true;
 
 		// Constructor
 		public function PipPageVend(npip:PipBuck, npp:String) {
@@ -148,7 +149,6 @@ package fe.inter {
 			if (page2 == 1) {
 				trace("PipPageVend.as/setSubPages() - Initializing Buy menu");
 				assArr = [];
-				pip.money = inv.money.kol;
 				setTopText('infotrade');
 				statHead.nazv.text = LanguageManager.reference.localText("pip", 'iv1');
 				statHead.hp.text = LanguageManager.reference.localText("pip", 'iv2') + ' / ' + LanguageManager.reference.localText("pip", 'iv6');
@@ -156,82 +156,94 @@ package fe.inter {
 				statHead.kol.text = LanguageManager.reference.localText("pip", 'iv4');
 				statHead.cat.visible = false;
 				
-				for each(var b:Item in vendor.buys) {
-					if (b.kol <= 0) {
+				for each(var b:InventoryItem in vendor.buys) {
+					if (b.quantity <= 0) {
 						continue;
 					}
 					
 					try {
-						if (b.tip == Item.L_SCHEME && (inv.weapons[b.id.substr(2)] != null || inv.items[b.id].kol > 0)) {
+
+						data = ItemManager.reference.getItem(b.id);
+
+						// Remove the first two characters of the string 
+						if (data.tip == Item.L_SCHEME && (inv.weapons[data.id.substr(2)] != null || inv.items[b.id].quantity > 0)) {
 							continue;
 						}
 						
-						if (b.tip == Item.L_WEAPON && (inv.weapons[b.id] != null && inv.weapons[b.id].variant >= b.variant)) {
+						// We have the weapon and the weapon variant
+						if (data.tip == Item.L_WEAPON && (inv.equipment.hasEquipment(b.id) && inv.equipment.getWeapon(b.id).variant)) {
 							continue;
 						}
 						
-						if (b.tip == Item.L_ARMOR && inv.armors[b.id] != null) {
+						// Armor we already have
+						if (data.tip == Item.L_ARMOR && inv.equipment.hasEquipment(b.id)) {
 							continue;
 						}
 						
-						if (b.tip != Item.L_WEAPON && !("price" in b.data))  {
+						// Not a weapon and has no price
+						if (data.tip != Item.L_WEAPON && !("price" in data))  {
 							continue;
 						}
 						
-						if ((b.tip == Item.L_ART || b.tip == Item.L_IMPL) && inv.items[b.id].kol > 0) {
+						// Art or Implant we already have
+						if ((data.tip == Item.L_ART || data.tip == Item.L_IMPL) && inv.getQuantity(b.id) > 0) {
 							continue;
 						}
 						
-						if (b.lvl > gg.pers.level || b.barter > gg.pers.barterLvl) {
+						// Character level or barter level too low
+						if (data.lvl > gg.pers.level || data.barter > gg.pers.barterLvl) {
 							continue;
 						}
 						
-						if (b.trig && World.w.game.triggers[b.trig] != 1) {
+						// Haven't hit the required trigger
+						if (data.trig && World.w.game.triggers[data.trig] != 1) {
 							continue;
 						}
 						
-						if (b.hardinv && !World.w.hardInv) {
+						// Item is hardinv and the world isn't (??)
+						if (data.hardinv && !World.w.hardInv) {
 							continue;
 						}
 						
-						if (!checkCat(b.tip)) {
+						if (!checkCat(data.tip)) {
 							continue;
 						}
 						
-						b.getPrice();
+						/*
+						data.getPrice();
 						
-						var mp:Number = b.getMultPrice();
+						var mp:Number = data.getMultPrice();
 						
 						if (vendor.multPrice > mp) {
 							mp = vendor.multPrice;
 						}
-						
+						*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+
 						var n:Object = {
-							tip: b.tip,
-							id: b.id,
-							nazv: b.nazv,
-							sost: b.sost * b.multHP,
-							price: b.price,
-							mp: mp,
-							kol: b.kol,
+							tip: data.tip,
+							id: data.id,
+							nazv: data.nazv,
+							sost: data.sost * data.multHP,
+							price: data.price,
+							//mp: mp,
 							bou: 0,
-							sort: LanguageManager.reference.localText("pip", b.tip),
-							barter: b.barter,
-							variant: b.variant
+							sort: LanguageManager.reference.localText("pip", data.tip),
+							barter: data.barter,
+							variant: data.variant
 						};
 						
-						if (b.nocheap) {
+						if (data.nocheap) {
 							n.mp = 1;
 						}
 						
-						if (gg.invent.items[b.id]) {
-							n.sost = gg.invent.items[b.id].kol;
+						if (gg.invent.hasItem(b.id)) {
+							n.sost = gg.invent.getQuantity(b.id);
 						}
 						
 						assArr[n.rid] = n;
-						n.wtip = b.wtip;
+						n.wtip = data.wtip;
 						
-						if (b.data.tip == "food" && b.data.ftip == 1) {
+						if (data.tip == "food" && data.ftip == 1) {
 							n.wtip = "drink";
 						}
 						
@@ -259,7 +271,6 @@ package fe.inter {
 			if (page2 == 2) {
 				trace("PipPageVend.as/setSubPages() - Initializing Sell menu");
 				assArr = [];
-				pip.money = inv.money.kol;
 				setTopText('infotrade');
 				vendor.kolSell = 0;
 				statHead.nazv.text = LanguageManager.reference.localText("pip", 'iv1');
@@ -273,13 +284,13 @@ package fe.inter {
 						continue;
 					}
 					
-					var data = inv.items[s].data;
+					var data = ItemManager.reference.getItem(s);
 					
 					if (data.sell > 0) {
 						if (!checkCat(data.tip)) {
 							continue;
 						}
-						var n = {tip:inv.items[s].tip, id:s, nazv:inv.items[s].nazv, kol:inv.items[s].kol, bou:0, sort:'b'};
+						var n:Object = {tip:inv.items[s].tip, id:s, nazv:inv.items[s].nazv, kol:inv.items[s].kol, bou:0, sort:'b'};
 						
 						if (inv.weapons[s] != null) {
 							n.nazv = Res.txt('w', s);
@@ -348,7 +359,7 @@ package fe.inter {
 						continue;
 					}
 					
-					if (w.tip != 0 && w.tip != 4 && w.respect != 1 && w.hp < w.maxhp) {
+					if (w.tip != "internal" && w.tip != "explosives" && w.respect != 1 && w.hp < w.maxhp) {
 						n = {tip:Item.L_WEAPON, id:w.id, nazv:w.nazv, hp:w.hp, maxhp:w.maxhp, price:w.price, variant:w.variant};
 						n.wtip = 'w' + w.skill;
 						arr.push(n);
@@ -505,13 +516,17 @@ package fe.inter {
 	
 		private function showBottext():void {
 			if (page2==1 && vendor) {
-				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', pip.money)+' (';
-				if (vendor.kolBou>0) vis.bottext.htmlText+='-'+numberAsColor('yellow', Math.ceil(vendor.kolBou))+'; ';
-				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(pip.money-vendor.kolBou))+' '+LanguageManager.reference.localText("pip", 'ost')+')';
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', inv.getQuantity("money"))+' (';
+				
+				if (vendor.kolBou>0) {
+					vis.bottext.htmlText+='-'+numberAsColor('yellow', Math.ceil(vendor.kolBou))+'; ';
+				}
+				
+				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(inv.getQuantity("money") - vendor.kolBou))+' '+LanguageManager.reference.localText("pip", 'ost')+')';
 			}
 			
 			if (page2==2 && vendor) {
-				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', pip.money)+' (+'+numberAsColor('yellow', Math.floor(vendor.kolSell))+')';
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', inv.getQuantity("money"))+' (+'+numberAsColor('yellow', Math.floor(vendor.kolSell))+')';
 				if (!inbase) vis.bottext.htmlText+='   '+LanguageManager.reference.localText("pip", 'vcaps')+': '+numberAsColor('yellow', vendor.money);
 			}
 			
@@ -689,10 +704,10 @@ package fe.inter {
 				n = buy.kol - buy.bou;
 			}
 			
-			if (page2 == 1 && Math.round(buy.price * buy.mp * n)>pip.money - vendor.kolBou) {//!!!
-				n = Math.floor((pip.money - vendor.kolBou) / (buy.price * buy.mp));
+			if (page2 == 1 && Math.round(buy.price * buy.mp * n) > inv.getQuantity("money") - vendor.kolBou) {//!!!
+				n = Math.floor((inv.getQuantity("money") - vendor.kolBou) / (buy.price * buy.mp));
 				if (n <= 0) {
-					World.w.gui.infoText('noMoney', Math.round(buy.price * buy.mp - (pip.money - vendor.kolBou)));
+					World.w.gui.infoText('noMoney', Math.round(buy.price * buy.mp - (inv.getQuantity("money") - vendor.kolBou)));
 					return;
 				}
 			}
@@ -775,10 +790,20 @@ package fe.inter {
 			}
 			
 			if (page2==3) {
-				if (inv.money.kol<=0) return;
+				if (inv.getQuantity("money") <= 0) {
+					return;
+				}
+
 				var price:int = event.currentTarget.price.text;
-				if (price <= 0) return;
-				if (price>inv.money.kol) price=inv.money.kol;
+				
+				if (price <= 0) {
+					return;
+				}
+				
+				if (price > inv.getQuantity("money")) {
+					price = inv.getQuantity("money");
+				}
+				
 				var obj;
 				
 				if (event.currentTarget.cat.text==Item.L_INSTR) {
@@ -794,24 +819,25 @@ package fe.inter {
 					obj.hp=owl.hp;
 				}
 				
-				if (event.currentTarget.cat.text==Item.L_WEAPON)
-				{
-					var w:Weapon=inv.weapons[event.currentTarget.id.text];
-					var hp:int=Math.ceil(price/w.price*w.maxhp/vendor.multPrice);
-					w.repair(hp);
-					obj=assArr[event.currentTarget.id.text];
-					obj.hp=w.hp;
+				if (event.currentTarget.cat.text==Item.L_WEAPON) {
+					var w:Weapon = inv.weapons[event.currentTarget.id.text];
+					var hp1:int = Math.ceil(price/w.price*w.maxhp/vendor.multPrice);
+					w.repair(hp1);
+					
+					obj = assArr[event.currentTarget.id.text];
+					obj.hp = w.hp;
 				}
 				
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
-					var a:Armor=inv.armors[event.currentTarget.id.text];
-					var hp:int=Math.ceil(price/a.price*a.maxhp/vendor.multPrice/gg.pers.priceRepArmor);
-					a.repair(hp);
-					obj=assArr[event.currentTarget.id.text];
-					obj.hp=a.hp;
+					var a:Armor = inv.armors[event.currentTarget.id.text];
+					var hp2:int = Math.ceil(price / a.price * a.maxhp / vendor.multPrice / gg.pers.priceRepArmor);
+					ArmorManager.reference.repair(a, hp2);
+					
+					obj = assArr[event.currentTarget.id.text];
+					obj.hp = a.hp;
 				}
 				
-				inv.money.kol-=price;
+				inv.decreaseQuantity("money", price);
 				pip.vendor.money+=price;
 				setStatItem(event.currentTarget as MovieClip, obj);
 				World.w.gui.setWeapon();
@@ -844,7 +870,7 @@ package fe.inter {
 		override protected function itemRightClick(event:MouseEvent):void {
 			if (page2==1 || page2==2) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
-				var n=1;
+				var n:int = 1;
 				if (event.shiftKey) n=10;
 				unselBuy(buy, n);
 				setStatItem(event.currentTarget as MovieClip, buy);
@@ -870,7 +896,7 @@ package fe.inter {
 		}
 		
 		public function trade(arr:Array):void {
-			if (vendor.kolBou>inv.money.kol) {
+			if (vendor.kolBou > inv.getQuantity("money")) {
 				return;
 			}
 			
@@ -883,9 +909,8 @@ package fe.inter {
 				}
 			}
 			
-			inv.money.kol-=Math.ceil(vendor.kolBou);
-			vendor.money+=Math.ceil(vendor.kolBou);
-			pip.money=inv.money.kol;
+			inv.decreaseQuantity("money", Math.ceil(vendor.kolBou));
+			vendor.money += Math.ceil(vendor.kolBou);
 			vendor.kolBou=0;
 			inv.calcMass();
 			inv.calcWeaponMass();
@@ -903,25 +928,23 @@ package fe.inter {
 					continue;
 				}
 				
-				var data = inv.items[s].data;
+				var data:Object = ItemManager.reference.getItem(s);
 				
 				if (arr[s] && arr[s].bou>0) {
-					var buy:Item=vendor.buys2[s];
+					var buy:InventoryItem = vendor.buys2[s];
 					
 					if (buy == null) {
-						buy = new Item(s, 0);
-						buy.kol = 0;
+						buy = new InventoryItem(s, 0);
 						vendor.buys.push(buy);
 						vendor.buys2[s] = buy;
 					}
-					buy.kol += arr[s].bou;
+					buy.quantity += arr[s].bou;
 					inv.items[s].kol -= arr[s].bou;
 				}
 			}
 			
-			inv.money.kol += Math.floor(vendor.kolSell);
+			inv.increaseQuantity("money", Math.floor(vendor.kolSell));
 			vendor.money -= Math.ceil(vendor.kolSell);
-			pip.money = inv.money.kol;
 			vendor.kolSell = 0;
 			setStatus();
 		}

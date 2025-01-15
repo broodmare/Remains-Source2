@@ -29,15 +29,15 @@ package fe.inter {
 	*/
 	public class PipPageInfo extends PipPage {
 		
-		var visMap:MovieClip;
-		var visWMap:MovieClip;
+		private var visMap:MovieClip;
+		private var visWMap:MovieClip;
 		public var map:Bitmap;
 		public var mbmp:BitmapData;
-		var visPageX=850, visPageY=540;
-		var mapScale:Number=2, ms:Number=2;
-		var plTag:MovieClip;
-		var targetLand:String='';
-		var game:Game;
+		private var visPageX=850, visPageY=540;
+		private var mapScale:Number=2, ms:Number=2;
+		private var plTag:MovieClip;
+		private var targetLand:String='';
+		private var game:Game;
 
 		private static var lastLandTooltipDisplayed:String;
 
@@ -410,38 +410,48 @@ package fe.inter {
 			return null;
 		}
 		
-		private function infoUnit(id:String, kol):String {
-			var n:int=0, delta;
+		private function infoUnit(id:String, kol:int):String {
+			var n:int = 0;
+
 			//юнит
 			var un = getUnitInfo(id);
-			if (un.length()==0 || un.@cat!='3') return '';
+
+			if (un.length()==0 || un.@cat!='3') {
+				return '';
+			}
+			
 			//родитель
 			var pun;
+			
 			if (un.@parent.length()) pun = getUnitInfo(un.@parent);
 			//дельта
-			delta=getParam(un,pun,'vis','dkill');
+			
+			var delta=getParam(un,pun,'vis','dkill');
 			if (delta==null) delta=5;
+			
 			if (delta<=0) n=10;
 			else n = Math.floor(int(kol)/delta);
 
 			
-			var v_hp=getParam(un,pun,'comb','hp');
-			var v_skin=getParam(un,pun,'comb','skin');
-			var v_aqual=getParam(un,pun,'comb','aqual');
-			var v_armor=getParam(un,pun,'comb','armor');
-			var v_marmor=getParam(un,pun,'comb','marmor');
-			var v_dexter=getParam(un,pun,'comb','dexter');
-			var v_skill=getParam(un,pun,'comb','skill');
-			var v_observ=getParam(un,pun,'comb','observ');
-			var v_visdam=getParam(un,pun,'vis','visdam');
-			var v_damage=getParam(un,pun,'comb','damage');
-			var v_tipdam=getParam(un,pun,'comb','tipdam');
-			var v_sdamage=getParam(un,pun,'vis','sdamage');
-			var v_stipdam=getParam(un,pun,'vis','stipdam');
+			var v_hp		= getParam(un, pun, 'comb', 'hp');
+			var v_skin		= getParam(un, pun, 'comb', 'skin');
+			var v_aqual		= getParam(un, pun, 'comb', 'aqual');
+			var v_armor		= getParam(un, pun, 'comb', 'armor');
+			var v_marmor	= getParam(un, pun, 'comb', 'marmor');
+			var v_dexter	= getParam(un, pun, 'comb', 'dexter');
+			var v_skill		= getParam(un, pun, 'comb', 'skill');
+			var v_observ	= getParam(un, pun, 'comb', 'observ');
+			var v_visdam	= getParam(un, pun, 'vis',  'visdam');
+			var v_damage	= getParam(un, pun, 'comb', 'damage');
+			var v_tipdam	= getParam(un, pun, 'comb', 'tipdam');
+			var v_sdamage	= getParam(un, pun, 'vis',  'sdamage');
+			var v_stipdam	= getParam(un, pun, 'vis',  'stipdam');
 			
-			var s:String='\n';
+			var s:String = "\n";
+			
 			if (un.comb.length()) {
 				var node=un.comb[0];
+				
 				if (n>=1) {
 					//ХП
 					s+=LanguageManager.reference.localText("pip", 'hp')+': '+textAsColor('yellow', v_hp)+'\n';
@@ -453,40 +463,73 @@ package fe.inter {
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
+				
 				if (n>=2) {
 					if ((v_visdam==1 || v_visdam==3) && v_damage) {
 						s+=LanguageManager.reference.localText("pip", 'dam_melee')+': ';
-						if (v_tipdam) s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_tipdam)); else s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam2'));
+						
+						if (v_tipdam) {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_tipdam));
+						}
+						else {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam2'));
+						}
+						
 						s+=' ('+textAsColor('yellow', v_damage)+')\n'
 					}
+					
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) {
 						s+=LanguageManager.reference.localText("pip", 'dam_shoot')+': ';
-						if (v_stipdam) s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_stipdam)); else s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam0'));
+						
+						if (v_stipdam) {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_stipdam));
+						}
+						else {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam0'));
+						}
+						
 						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
 					}
+					
 					if (un.w.length()) {
-						var wk:Boolean=false;
+						var wk:Boolean = false;
 						for each (var weap in un.w) {
-							if (!(weap.@no>0)) {
-								if (wk) s+=', ';
-								else s+=LanguageManager.reference.localText("pip", 'enemy_weap')+': ';
-								s+=textAsColor('blue', Res.txt('w', weap.@id));
+							if (!(weap.@no > 0)) {
+								if (wk) {
+									s += ', ';
+								}
+								else {
+									s += LanguageManager.reference.localText("pip", 'enemy_weap') + ': ';
+								}
+								
+								s += textAsColor('blue', Res.txt('w', weap.@id));
+								
 								try {
-									var w = Weapon.getWeaponInfo(weap.@id);
-									var dam = 0;
-									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
-									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
-									s+=' ('+textAsColor('yellow', Res.numb(dam))+')';
+									var w:Weapon = WeaponManager.reference.weapon(weap.@id);
+									var dam:Number = 0;
+									
+									if (w.damage > 0) {
+										dam += Number(w.damage);
+									}
+									
+									if (w.damageExpl > 0) {
+										dam += Number(w.damageExpl);
+									}
+									
+									s += ' (' + textAsColor('yellow', Res.numb(dam)) + ')';
 								}
 								catch (err) {
 									trace('ERROR: (00:3B)');
 								}
+								
 								wk = true;
 							}
 						}
-						s+='\n';
+						
+						s += "\n";
 					}
 				}
+				
 				//уклонение
 				if (n>=3) {
 					if (v_dexter!=null) 	s+=LanguageManager.reference.localText("pip", 'dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
@@ -494,22 +537,24 @@ package fe.inter {
 					if (v_skill!=null) 	s+=LanguageManager.reference.localText("pip", 'weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
+			
 			//сопротивления
 			if (n>=3 && un.vulner.length()) {
-				s+=LanguageManager.reference.localText("pip", 'resists')+': ';
-				node=un.vulner[0];
-				if (node.@emp.length()) 	s+=vulner(Unit.D_EMP,node.@emp);
-				if (node.@bul.length()) 	s+=vulner(Unit.D_BUL,node.@bul);
-				if (node.@blade.length()) 	s+=vulner(Unit.D_BLADE,node.@blade);
-				if (node.@phis.length()) 	s+=vulner(Unit.D_PHIS,node.@phis);
-				if (node.@expl.length()) 	s+=vulner(Unit.D_EXPL,node.@expl);
-				if (node.@laser.length()) 	s+=vulner(Unit.D_LASER,node.@laser);
-				if (node.@plasma.length()) 	s+=vulner(Unit.D_PLASMA,node.@plasma);
-				if (node.@fire.length()) 	s+=vulner(Unit.D_FIRE,node.@fire);
-				if (node.@cryo.length()) 	s+=vulner(Unit.D_CRIO,node.@cryo);
-				if (node.@spark.length()) 	s+=vulner(Unit.D_SPARK,node.@spark);
-				if (node.@venom.length()) 	s+=vulner(Unit.D_VENOM,node.@venom);
-				if (node.@acid.length()) 	s+=vulner(Unit.D_ACID,node.@acid);
+				s += LanguageManager.reference.localText("pip", 'resists')+': ';
+				node = un.vulner[0];
+				
+				if (node.@bul.length()) 	s += vulner(0,  node.@bul);
+				if (node.@blade.length()) 	s += vulner(1,  node.@blade);
+				if (node.@phis.length()) 	s += vulner(2,  node.@phis);
+				if (node.@fire.length()) 	s += vulner(3,  node.@fire);
+				if (node.@expl.length()) 	s += vulner(4,  node.@expl);
+				if (node.@laser.length()) 	s += vulner(5,  node.@laser);
+				if (node.@plasma.length()) 	s += vulner(6,  node.@plasma);
+				if (node.@venom.length()) 	s += vulner(7,  node.@venom);
+				if (node.@emp.length()) 	s += vulner(8,  node.@emp);
+				if (node.@spark.length()) 	s += vulner(9,  node.@spark);
+				if (node.@acid.length()) 	s += vulner(10, node.@acid);
+				if (node.@cryo.length()) 	s += vulner(11, node.@cryo);
 			}
 			return s;
 		}

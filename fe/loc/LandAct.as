@@ -38,7 +38,10 @@ package fe.loc
 		//настройки
 		public var xp:int=100;		//опыт за сбор вещей
 		public var rad:Number=0, wrad:Number=1;	//радиоактивность воздуха и воды
-		public var wdam:Number=0, wtipdam:int=7;	//урон от воды
+		
+		public var wdam:Number		= 0;
+		public var wtipdam:String	= "venom";	//урон от воды
+		
 		public var tipWater:int=0;				//внешний вид воды
 		public var color:String;
 		public var sndMusic:String;

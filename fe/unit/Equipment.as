@@ -27,14 +27,52 @@ package fe.unit {
 			return _weaponMap[id] as Weapon;
 		}
 
+		public function get weapons():Vector.<Weapon> {
+			return _weapons;
+		}
+
 		public function addArmor(armor:Armor):void {
 			_armors.push(armor);
 			_armorMap[armor.id] = armor;
 		}
 
+		public function deleteArmor(id:String):void {
+			var armor:Armor = _armorMap[id];
+			
+			if (armor != null) {
+				// Find the index of the armor in the Vector
+				var index:int = _armors.indexOf(armor);
+
+				if (index != -1) {
+					// Remove the armor from the Vector
+					_armors.splice(index, 1);
+				}
+				
+				// Remove the armor from the Dictionary
+				delete _armorMap[id];
+			}
+		}
+
 		public function addWeapon(weapon:Weapon):void {
 			_weapons.push(weapon);
 			_weaponMap[weapon.id] = weapon;
+		}
+
+		public function deleteWeapon(id:String):void {
+			var weapon:Weapon = _weaponMap[id];
+			
+			if (weapon != null) {
+				// Find the index of the weapon in the Vector
+				var index:int = _weapons.indexOf(weapon);
+
+				if (index != -1) {
+					// Remove the weapon from the Vector
+					_weapons.splice(index, 1);
+				}
+				
+				// Remove the weapon from the Dictionary
+				delete _weaponMap[id];
+			}
 		}
 
 		// Check both maps for an entry and return the result

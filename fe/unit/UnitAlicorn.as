@@ -178,7 +178,7 @@ package fe.unit {
 			super.getXmlParam();
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
 			weaponY = magicY = coordinates.Y + obj.y+visBmp.y;

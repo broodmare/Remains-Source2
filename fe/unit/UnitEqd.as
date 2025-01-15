@@ -77,7 +77,7 @@ package fe.unit {
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y-40;
 		}

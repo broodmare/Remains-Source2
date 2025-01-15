@@ -21,7 +21,7 @@ package fe.unit {
 		}
 
 		//положение оружия
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 				if (weaponKrep==0) { //телекинез
 					if (storona>0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) weaponX = coordinates.X + this.boundingBox.width * storona;
 					else weaponX = coordinates.X;
@@ -42,7 +42,7 @@ package fe.unit {
 		
 		public function weaponLevit():void {
 			if (!currentWeapon || !teleFilter) return;
-			if (weaponKrep==0 && currentWeapon.tip!=5) {
+			if (weaponKrep==0 && currentWeapon.tip != "magic") {
 				if (currentWeapon.vis.kor) currentWeapon.vis.kor.filters=[teleFilter];
 				else currentWeapon.vis.filters=[teleFilter];
 			} 

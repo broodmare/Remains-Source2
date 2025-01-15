@@ -453,7 +453,7 @@ package fe.inter  {
 				ritem1(6, 0, 0, false);
 			}
 
-			if (gg.currentWeapon && gg.currentWeapon.tip <= 3) {
+			if (gg.currentWeapon && gg.currentWeapon.tip != "explosives") {
 				ritem2(7, gg.currentWeapon.hp, gg.currentWeapon.maxhp);
 			}
 			else {

@@ -69,7 +69,7 @@ package fe.unit {
 		}
 		
 		//задать положение оружия
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			if (arm==null || arm.parent==null) {
 				super.setWeaponPos(tip);
 				return;

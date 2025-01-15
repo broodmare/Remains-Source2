@@ -30,101 +30,107 @@ package fe.unit {
 		public var sats:Sats;			// Player SATS
 
 		//движение
-		public var maxjumpp:int,jumpNumb:int=0;
-		public var jumpp:int=0, downp:int=0;
-		public var dash:int=22, dash_t:int=0, dash_maxt:int=30, kdash_t:int=0, dash_dy:int=-2;
+		public var maxjumpp:int;
+		public var jumpNumb:int		= 0;
+		public var jumpp:int		= 0;
+		public var downp:int		= 0;
+		public var dash:int			= 22;
+		public var dash_t:int		= 0;
+		public var dash_maxt:int	= 30;
+		public var kdash_t:int		= 0;
+		public var dash_dy:int		= -2;
 		public var osnSpeed:Number;
-		private var t_fly:Number=0;
-		public var noReanim:Boolean=false;
-		public var pinok:Number=0;	//сбивание с лестниц
-		public var noStairs:Boolean=false;	//запред движения по лестницам
-		public var dstam:Number=5;	//расход выносливости
+		private var t_fly:Number	= 0;
+		public var noReanim:Boolean	= false;
+		public var pinok:Number		= 0;	//сбивание с лестниц
+		public var noStairs:Boolean	= false;	//запред движения по лестницам
+		public var dstam:Number		= 5;	//расход выносливости
 		
 		//телекинез
-		public var levitOn:int=0;
+		public var levitOn:int		= 0;
 		
 		//Telekensis variables
 		public var teleObj:Obj;				// The object we're moving(?)
 		public var teleSqrtMassa:Number;
-		public var teleSpeed:Number = 8;
-		public var teleAccel:Number = 1;
-		public var maxTeleDist:int = 200;
-		public var levitup:Boolean=false;
+		public var teleSpeed:Number		= 8.00;
+		public var teleAccel:Number		= 1.00;
+		public var maxTeleDist:int		= 200;
+		public var levitup:Boolean		= false;
 		
 		//действия
-		public var ggControl:Boolean = true;	// Player control enabled
+		public var ggControl:Boolean	= true;	// Player control enabled
 		public var actionObj:Interact;
-		public var t_action:int=0;
-		public var mt_action:int=20;
-		public var work:String='';
-		public var t_work:int=0;
-		private var actionReady:Boolean=true;
-		private var t_stay:int=3;
-		private var t_walk:int=3;
-		private var t_run:int=0;
-		public var runForever:int=0;
-		private static var burningForcesRunOption:Boolean = Settings.settings.burningForcesRun;
-		public var h2o:Number=1000;
-		public var stam:Number=1000;
-		public var possRun:Boolean=true;
-		public var zaput:int=0;	//перепутанное управление
-		public var aJump:int=0;	//был ли прыжок, и какой именно
-		private var weapUp:Boolean=false;
-		private var inBattle:Boolean=false;
-		public var noRad:Boolean=true;
-		public var dodgePlus:Number=0;
-		public var isStayDam:int=0;	//получать урон от стояния на полу
-		
+		public var t_action:int			= 0;
+		public var mt_action:int		= 20;
+		public var work:String			= "";
+		public var t_work:int			= 0;
+		private var actionReady:Boolean	= true;
+		private var t_stay:int			= 3;
+		private var t_walk:int			= 3;
+		private var t_run:int			= 0;
+		public var runForever:int		= 0;
+		public var h2o:Number			= 1000.00;
+		public var stam:Number			= 1000.00;
+		public var possRun:Boolean		= true;
+		public var zaput:int			= 0;		//перепутанное управление
+		public var aJump:int			= 0;		//был ли прыжок, и какой именно
+		private var weapUp:Boolean		= false;
+		private var inBattle:Boolean	= false;
+		public var noRad:Boolean		= true;
+		public var dodgePlus:Number		= 0.00;
+		public var isStayDam:int		= 0;		//получать урон от стояния на полу
+		private static var burningForcesRunOption:Boolean = Settings.settings.burningForcesRun; // Toggle whether or not being set on fire forces the player unit to run aorund randomly
+
 		//двойной прыжок
-		public var dJump:Boolean=false;		//второй прыжок активен
-		public var dJump2:Boolean=false;	//второй прыжок активен
-		public var djumpdy:Number=5;		//сила
-		public var maxdjumpp:int=10;		//продолжительность
+		public var dJump:Boolean		= false;	//второй прыжок активен
+		public var dJump2:Boolean		= false;	//второй прыжок активен
+		public var djumpdy:Number		= 5.00;		//сила
+		public var maxdjumpp:int		= 10;		//продолжительность
 		
 		//оковы
-		public var isFetter:int=0;
-		public var fetX:Number=0;
-		public var fetY:Number=0;
-		private var dfx:Number=0;
-		private var dfy:Number=0;
-		private var rfetter:Number=0;
+		public var isFetter:int			= 0;
+		public var fetX:Number			= 0.00;
+		public var fetY:Number			= 0.00;
+		private var dfx:Number			= 0.00;
+		private var dfy:Number			= 0.00;
+		private var rfetter:Number		= 0.00;
 		//
-		public var t_raddam:int=0;
-		public var t_nogas:int=0;	//не действовать газом
-		private var ddam1:Number=0;
-		private var ddam2:Number=0;
-		private var ddam3:Number=0;
+		public var t_raddam:int			= 0;
+		public var t_nogas:int			= 0;	//не действовать газом
+		private var ddam1:Number		= 0.00;
+		private var ddam2:Number		= 0.00;
+		private var ddam3:Number		= 0.00;
 		
 		//магия
 		public var currentSpell:Spell;
-		private var t_dclick:int=0;		//двойной клик
-		public var t_port:int=0;
-		public var t_culd:int=0;
-		private var teleReady:Boolean=true;
-		public var t_cryst:int=0;
-		public var cryst:Boolean=false;
+		private var t_dclick:int		= 0;		//двойной клик
+		public var t_port:int			= 0;
+		public var t_culd:int			= 0;
+		private var teleReady:Boolean	= true;
+		public var t_cryst:int			= 0;
+		public var cryst:Boolean		= false;
 		
 		//видимость
-		public var sneak:Number=0;			//скрытность
-		public var obs:Number=0;
-		public var maxObs:Number=20;
-		private var minusObs:Number=0.1;	//скорость уменьшения видимости
-		private var isObs:int=0;
-		public var showObsInd:Boolean=true;	//показывать индикатор скрытности
+		public var sneak:Number			=  0.00;	//скрытность
+		public var obs:Number			=  0.00;
+		public var maxObs:Number		= 20.00;
+		private var minusObs:Number		=  0.10;	//скорость уменьшения видимости
+		private var isObs:int			=  0;
+		public var showObsInd:Boolean	= true;		//показывать индикатор скрытности
 		
 		//нычки
-		private var t_up:int = 0;
-		public var lurked:Boolean = false;
-		private var lurkTip:int = 1;
-		private var lurkX:Number = 0;
+		private var t_up:int			= 0;
+		public var lurked:Boolean		= false;
+		private var lurkTip:int			= 1;
+		private var lurkX:Number		= 0.00;
 		private var lurkBox:Box;
 		
 		// Inventory and Weapons
-		public var isTake:int=0;
-		public var changeWeaponTime1:int=30;
-		public var changeWeaponTime2:int=20;
-		public var changeWeaponTime3:int=10;
-		private var t_reload:int=0;			// [Holding the recharge button]
+		public var isTake:int				=  0;
+		public var changeWeaponTime1:int	= 30;
+		public var changeWeaponTime2:int	= 20;
+		public var changeWeaponTime3:int	= 10;
+		private var t_reload:int			=  0;			// [Holding the recharge button]
 		
 		public var punchWeapon:Weapon;
 		public var throwWeapon:Weapon;
@@ -134,34 +140,41 @@ package fe.unit {
 		public var currentArmor:Armor;
 		public var armorEffect:Effect;
 		public var currentAmul:Armor;
+		
 		// Moved from Invent
-		public var cWeaponId:String;	// Current weapon equipped (ID)
-		public var cSpellId:String;		// Current spell equipped (ID)
-		public var cArmorId:String;		// Current armor equipped (ID)
-		public var prevArmor:String;	// Previous armor equipped (ID)
-		public var cAmulId:String;		// Current amulet equipped (ID)
+		public var cItem:String			= "";	// Current item 
+		public var cWeaponId:String		= "";	// Current weapon equipped (ID)
+		public var cSpellId:String		= "";	// Current spell equipped (ID)
+		public var cArmorId:String		= "";	// Current armor equipped (ID)
+		public var prevArmor:String		= "";	// Previous armor equipped (ID)
+		public var cAmulId:String		= "";	// Current amulet equipped (ID)
 
-		public var atkPoss:int = 1;			// [The ability to attack in principle (prohibits the shadow potion)]
-		public var attackForever:int = 0;	// [Uncontrolled attack]
-		public var autoAttack:int = 0;
-		public var atkWeapon:int = 0;		// [What weapon is attacking at the moment 1-basic, 2-throwing, 3-magic]
+		public var atkPoss:int			= 1;	// [The ability to attack in principle (prohibits the shadow potion)]
+		public var attackForever:int	= 0;	// [Uncontrolled attack]
+		public var autoAttack:int		= 0;
+		public var atkWeapon:int		= 0;	// [What weapon is attacking at the moment 1-basic, 2-throwing, 3-magic]
 		
-		public var eyeMind:int = 0;		// [Necromancer's gaze]
+		public var eyeMind:int			= 0;	// [Necromancer's gaze]
 
-		public var pipOff:int=0;		// [Disabling pipbuck]
+		public var pipOff:int			= 0;	// [Disabling pipbuck]
 		
-		public var rad:Number=0, drad:Number=0, drad2:Number=0, radX:Number=1, healhp:Number=0;
+		public var rad:Number			= 0.00;
+		public var drad:Number			= 0.00;
+		public var drad2:Number			= 0.00;
+		public var radX:Number			= 1.00;
+		public var healhp:Number		= 0.00;
 		
-		//сопровождение
+		// Companions
 		public var pet:UnitPet;
 		public var defpet:UnitPet;
 		public var pets:Array;
-		public var currentPet:String='';
-		public var retPet:String='';
-		public var noPet:int=0, noPet2:int=0;
-		private var k_pet:int=0;
+		public var currentPet:String	= "";
+		public var retPet:String		= "";
+		public var noPet:int			= 0;
+		public var noPet2:int			= 0;
+		private var k_pet:int			= 0;
 		
-		//визуальная часть
+		// [visual part]
 		public var levitFilter1:GlowFilter;
 		public var levitFilter2:GlowFilter;
 		protected var dieFilter:GlowFilter;
@@ -184,14 +197,17 @@ package fe.unit {
 		private var prev_replic:String;
 		private var prev_dx:Number=0;
 		
-		public var rat:int=0, ratX:int=30, ratY:int=17;	//форма крысы
-		public var mordaN:int=1;
+		// [Rat shape]
+		public var rat:int				= 0;
+		public var ratX:int				= 30;
+		public var ratY:int				= 17;	
+		public var mordaN:int			= 1;
 		
 		public var reloadbar:MovieClip;
-		private var showRadius:Boolean=false;
-		private var klip:int=300;
-		public var visSel:Boolean=false; //селектор оружия
-		public var animOff:Boolean=false;
+		private var showRadius:Boolean	= false;
+		private var klip:int			= 300;
+		public var visSel:Boolean		= false; // [Weapon selector]
+		public var animOff:Boolean		= false;
 
 		// Cache
 		private static var tileX:int = Tile.tileX;
@@ -209,9 +225,9 @@ package fe.unit {
 		}
 		
 		// Constructor
-		public function UnitPlayer(cid:String=null, ndif:Number=100) {
+		public function UnitPlayer(cid:String = null, ndif:Number = 100.00) {
 			player = true;
-			id = 'littlepip';
+			id = "littlepip";
 			vis = new visualPlayer();
 
 			vis.osn.body.pip2.visible = false;
@@ -2626,7 +2642,7 @@ package fe.unit {
 //
 //**************************************************************************************************************************
 		//удар хол. оружием достиг цели
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			if (weaponKrep==0) {			//телекинез
 				if (storona > 0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) weaponX = coordinates.X + this.boundingBox.width * storona;
 				else weaponX = coordinates.X;

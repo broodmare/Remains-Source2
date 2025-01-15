@@ -2,16 +2,17 @@ package fe {
 
 	import fe.serv.Vendor;
 	import fe.serv.Item;
+	import fe.unit.InventoryItem;
 	import fe.serv.LootGen;
 
 	public class VendorManager {
 		
-		private static const directory:String = "Modules/core/AllData/";
-		private static const vendorsFileName:String = "vendors.json";
+		private static const directory:String			= "Modules/core/AllData/";
+		private static const vendorsFileName:String		= "vendors.json";
 		
-		private var saveData:Object;				// Vendor inventories if a previous save was loaded
-		private static var vendorLists:Object = {};		// Vendor ivnentory types are stored here after being loaded from JSON
-		private var _vendors:Object	= {};				// Initialized vendors are stored here
+		private var saveData:Object;						// Vendor inventories if a previous save was loaded
+		private static var vendorLists:Object	= {};		// Vendor ivnentory types are stored here after being loaded from JSON
+		private var _vendors:Object				= {};		// Initialized vendors are stored here
 
 		public function VendorManager(loadObj:Object = null) {
 			
@@ -74,16 +75,10 @@ package fe {
 					// Create a new item for each object the vendor trades
 					for each (var obj1:Object in vendorLists[id].buys) {
 						// Create the item, set the amount for sale, and if it's a variant
-						var item:Item = new Item(obj1.id, obj1.kol);	
-						// Add it to the array of items this vender trades
+						var item:InventoryItem = new InventoryItem(obj1.id, obj1.quantity);	
+						
 						vendor.buys.push(item);
-						// If the item is a variant, restore it's original name, eg. "Shotgun^1"
-						var uid:String = item.id;
-						if (item.variant > 0) {
-							uid += '^' + item.variant;
-						}
-						// Store the item unique or not in buys2
-						vendor.buys2[uid] = item;
+						vendor.buys2[id] = item;
 					}
 				}
 				else {
@@ -103,14 +98,14 @@ package fe {
 				if (vendorSaveData.buys && !isEmpty(vendorSaveData.buys)) {
 					for each(var obj:Object in vendorSaveData.buys) {
 						var uniqueId:String = obj.id + (obj.variant > 0 ? "^" + obj.variant : "");
-						var existingItem:Item = vendor.buys2[uniqueId];
+						var existingItem:InventoryItem = vendor.buys2[uniqueId];
 						
 						if (existingItem) {
-							existingItem.kol = obj.kol;
-							existingItem.sost = obj.sost;
+							existingItem.quantity = obj.quantity;
+							//existingItem.sost = obj.sost;
 						}
 						else {
-							var newItem:Item = new Item(obj.id, obj.kol);
+							var newItem:InventoryItem = new InventoryItem(obj.id, obj.quantity);
 							vendor.buys.push(newItem);
 							vendor.buys2[uniqueId] = newItem;
 						}
@@ -120,10 +115,10 @@ package fe {
 					//trace("VendorManager.as/createVendor() - No vendor.buys data found in saveData for vendor: " + id);
 				}
 
-				vendor.kolBou = vendorSaveData.kolBou;
-				vendor.kolSell = vendorSaveData.kolSell;
-				vendor.money = vendorSaveData.money;
-				vendor.multPrice = vendorSaveData.multPrice;
+				vendor.kolBou		= vendorSaveData.kolBou;
+				vendor.kolSell		= vendorSaveData.kolSell;
+				vendor.money		= vendorSaveData.money;
+				vendor.multPrice	= vendorSaveData.multPrice;
 			}
 			
 			// Set the amount of money available to the vendor
@@ -141,7 +136,7 @@ package fe {
 		// Generate random items for the vendor
 		// THIS IS SUPPOSED TO USE CHARACTER LEVEL, BUT I'D RATHER ALL ITEMS BE SHOWN NORMALLY AND UNAVAILABLE ITEMS JUST HIDDEN INSTEAD
 		// THAT SHOULD MAKE THIS ABLE TO KNOW NOTHING ABOUT THE PLAYER
-		public function setRndBuys(lvl:int = 99, id:String = "vendor") {
+		public function setRndBuys(lvl:int = 99, id:String = "vendor"):void {
 			
 			var vendor:Vendor = _vendors[id];
 
@@ -165,15 +160,16 @@ package fe {
 			num = Math.round(num * (0.5 + Math.random() * 0.7));
 			num2 = num * (0.1 + Math.random() * 0.3);
 			
-			var item:Item;
+			var item:InventoryItem;
 			var cid:String;
 			
 			for (var i:int = 0; i < num; i++) {
 				if (i < num2 && id != 'doctor') {
 					cid = LootGen.getRandom(Item.L_WEAPON, 1 + lvl / 4);
-					item = new Item(cid, 1)
+					item = new InventoryItem(cid)
 					
 					if (vendor.buys2[cid] == null) {
+						/*
 						if (Math.random() < 0.2) {
 							item.barter = Math.floor(Math.random() * lvl / 4 + 1);
 							
@@ -181,6 +177,7 @@ package fe {
 								item.barter = 5;
 							}
 						}
+						*/
 						vendor.buys.push(item);
 						vendor.buys2[cid] = item;
 					}
@@ -215,28 +212,30 @@ package fe {
 						continue;
 					}
 					
-					item = new Item(cid);
+					item = new InventoryItem(cid);
 					
 					if (vendor.buys2[cid] == null) {
+						/*
 						if (Math.random() < 0.3) {
 							item.lvl = Math.floor(Math.random() * lvl + 1);
 							if (item.lvl > 5) {
 								item.lvl = 5;
 							}
 						}
+						*/
 						
 						if (itemTip == Item.L_AMMO) {
-							item.kol = Math.round(item.kol * (3 + Math.random() * 12));
+							item.quantity = Math.round(item.quantity * (3 + Math.random() * 12));
 						}
 						else if (itemTip!=Item.L_UNIQ && itemTip != Item.L_SCHEME) {
-							item.kol = Math.round(item.kol * (1 + Math.random() * 4));
+							item.quantity = Math.round(item.quantity * (1 + Math.random() * 4));
 						}
 						
 						vendor.buys.push(item);
 						vendor.buys2[cid] = item;
 					}
 					else if (itemTip != Item.L_UNIQ && itemTip != Item.L_SCHEME) {
-						vendor.buys2[cid].kol += item.kol;
+						vendor.buys2[cid].kol += item.quantity;
 					}
 				}
 			}
@@ -266,9 +265,12 @@ package fe {
 					return;
 				} 
 				
-				for each(var item2:Item in vendor.buys) {
-					if (item2.noref || item2.tip == Item.L_ARMOR || item2.tip == Item.L_WEAPON || 
-						item2.tip == Item.L_SCHEME || item2.tip == Item.L_UNIQ || item2.tip == Item.L_IMPL) {
+				var item2Data:Object; 
+				for each(var item2:InventoryItem in vendor.buys) {
+					item2Data = ItemManager.reference.getItem(item2.id);
+					
+					if (item2Data.noref || item2Data.tip == Item.L_ARMOR || item2Data.tip == Item.L_WEAPON || 
+						item2Data.tip == Item.L_SCHEME || item2Data.tip == Item.L_UNIQ || item2Data.tip == Item.L_IMPL) {
 						continue;
 					}
 					
@@ -279,8 +281,8 @@ package fe {
 					
 					var lim:int = Math.ceil(buyData.n * World.w.pers.limitBuys);
 					
-					if (item2.kol < lim) {
-						item2.kol = Math.min(lim, item2.kol + Math.ceil(0.25 * lim));
+					if (item2.quantity < lim) {
+						item2.quantity = Math.min(lim, item2.quantity + Math.ceil(0.25 * lim));
 					}
 				}
 			}

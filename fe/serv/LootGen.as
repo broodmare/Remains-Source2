@@ -3,6 +3,8 @@ package fe.serv {
 	import fe.*;
 	import fe.loc.Loot;
 	import fe.loc.Location;
+	import fe.unit.InventoryItem;
+	import fe.unit.Equipment;
 	
 	public class LootGen {
 
@@ -26,15 +28,15 @@ package fe.serv {
 			arr = [];
 			var n:Array = [];
 
-			n['weapon'] = 0;
-			arr['weapon'] = [];
-			arr['magic'] = [];
-			arr['uniq'] = [];
-			arr['pers'] = [];
+			n['weapon']		= 0;
+			arr['weapon']	= [];
+			arr['magic']	= [];
+			arr['uniq']		= [];
+			arr['pers']		= [];
 
 			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			for each (var weap in weaponList.(@tip > 0 && @tip < 4)) {
-				if (weap.com.length()==0) {
+			for each (var weap in weaponList.(@tip == "cryo" || @tip == "lightGun" || @tip == "heavyGun")) {
+				if (weap.com.length() == 0) {
 					continue;
 				}
 				
@@ -185,41 +187,43 @@ package fe.serv {
 			}
 			
 			// Spawn the item
-			var item:Item = new Item(id, iCount);
+			var item:InventoryItem = new InventoryItem(id, iCount);
+			
+			var itemData:Object = itemManager.getItem(id);
 
 			if (lootType == 'eda') {
-				item.tip = 'food';
+				itemData.tip = 'food';
 			}
 			
 			if (lootType == 'co') {
-				item.tip = 'scheme';
+				itemData.tip = 'scheme';
 				var wid:String = id.substr(2);
-				item.nazv = LanguageManager.reference.localText("pip", 'recipe') + ' «' + Res.txt('i', wid) + '»';
+				itemData.nazv = LanguageManager.reference.localText("pip", 'recipe') + ' «' + Res.txt('i', wid) + '»';
 			}
 
-			item.multHP = mn;
-			item.imp = imp;
-			item.cont = cont;
+			//item.multHP = mn;
+			//item.imp = imp;
+			//item.cont = cont;
 
 			// Reduce rewards for containers that were broken into instead of unlocked
 			if (item.id == 'money') {	//множитель крышек
-				item.kol *= (World.w.pers.capsMult * World.w.pers.difCapsMult);
+				item.quantity *= (World.w.pers.capsMult * World.w.pers.difCapsMult);
 			}	
 			
 			if (item.id == 'bit') {		//множитель крышек
-				item.kol *= (World.w.pers.bitsMult * World.w.pers.difCapsMult);
+				item.quantity *= (World.w.pers.bitsMult * World.w.pers.difCapsMult);
 			}	
 			
 			if (lootBroken && (item.id == 'money' || item.id == 'bit')) {
-				item.kol *= 0.5;
+				item.quantity *= 0.5;
 			}
 			
-			if (lootBroken && (item.tip == Item.L_AMMO || item.tip == Item.L_EXPL) && Math.random() < 0.5) {
+			if (lootBroken && (itemData.tip == Item.L_AMMO || itemData.tip == Item.L_EXPL) && Math.random() < 0.5) {
 				return false;
 			
 			}
 			
-			var itemData = itemManager.getItem(id);
+			
 
 			// [Check limits]
 			if (imp == 0 && "limit" in itemData) {
@@ -251,7 +255,7 @@ package fe.serv {
 			
 			if (World.w.testLoot) {
 				trace("LootGen.as/newLoot() - is calling the Invent.as()/take function because World.testLoot is true");
-				World.w.invent.take(item);
+				World.w.invent.increaseQuantity(item.id, item.quantity);
 			}
 			else {
 				new Loot(loc, item, nx, ny, true);
@@ -536,24 +540,43 @@ package fe.serv {
 					if (is_loot<2) replic('empty');
 				}
 			}
-			else if (cont=='specweap') {
-				itemCount=Math.floor(Math.random()*4);
+			else if (cont == 'specweap') {
+				itemCount = Math.floor(Math.random()*4);
 				var vars:Array = [];
-				if (World.w.invent.weapons['lsword']==null || World.w.invent.weapons['lsword'].variant==0) vars.push('lsword^1');
-				if (World.w.invent.weapons['antidrak']==null || World.w.invent.weapons['antidrak'].variant==0) vars.push('antidrak^1');
-				if (World.w.invent.weapons['quick']==null || World.w.invent.weapons['quick'].variant==0) vars.push('quick^1');
-				if (World.w.invent.weapons['mlau']==null || World.w.invent.weapons['mlau'].variant==0) vars.push('mlau^1');
-				if (vars.length) newLoot(1, Item.L_WEAPON, vars[Math.floor(Math.random()*vars.length)]);
-				else newLoot(1, Item.L_UNIQ);
+				var equip:Equipment = World.w.invent.equipment;
+				
+				if (!equip.hasEquipment('lsword') || (equip.hasEquipment('lsword') && equip.getWeapon('lsword').variant == 0)) {
+					vars.push('lsword^1');
+				}
+				
+				if (!equip.hasEquipment('antidrak') || (equip.hasEquipment('antidrak') && equip.getWeapon('antidrak').variant == 0)) {
+					vars.push('antidrak^1');
+				}
+				
+				if (!equip.hasEquipment('quick') || (equip.hasEquipment('quick') && equip.getWeapon('quick').variant == 0)) {
+					vars.push('quick^1');
+				}
+				
+				if (!equip.hasEquipment('mlau') || (equip.hasEquipment('mlau') && equip.getWeapon('mlau').variant == 0)) {
+					vars.push('mlau^1');
+				}
+				
+				if (vars.length) {
+					newLoot(1, Item.L_WEAPON, vars[Math.floor(Math.random() * vars.length)]);
+				}
+				else {
+					newLoot(1, Item.L_UNIQ);
+				}
 			}
-			else if (cont=='specalc') {
+			else if (cont == 'specalc') {
 				newLoot(1, Item.L_SPEC,'alc7');
-				newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
+				newLoot(1, Item.L_ITEM,'gem' + Math.floor(Math.random() * 3 + 1));
 			}
-			else if (cont=='speclp') {
-				newLoot(1, Item.L_SPEC,'lp_item');
-				newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
+			else if (cont == 'speclp') {
+				newLoot(1, Item.L_SPEC, 'lp_item');
+				newLoot(1, Item.L_ITEM, 'gem' + Math.floor(Math.random() * 3 + 1));
 			}
+			
 			return is_loot > 0;
 		}
 		

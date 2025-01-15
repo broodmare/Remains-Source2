@@ -21,16 +21,19 @@ package fe.inter {
 		private var vis:MovieClip;
 		private var visX:int = 1200;
 		private var visY:int = 800;
+
 		private var pages:Vector.<MovieClip>;
 		private var buttons:Vector.<MovieClip>;
+
 		private var weapons:Array;
 		private var arts:Array;
 		private var armors:Array;
+		
 		public var inv:Inventory;
 		
-		private var kolPages:int=9;
-		private var kolLevels:int=6;
-		private var page:int=0;
+		private var kolPages:int		= 9;
+		private var kolLevels:int		= 6;
+		private var page:int			= 0;
 		
 		private var ls:Array = ['stat_aj','stat_tw','stat_fl','stat_rr','stat_rd','stat_pp'];
 		
@@ -105,13 +108,13 @@ package fe.inter {
 		}
 		
 		private function createWeaponLists(n:int):void {
-			var levels:Array=[0,0,0,0,0,0,0];
+			var levels:Array = [0, 0, 0, 0, 0, 0, 0];
 			var stolb:int = -1;
 			
 			var tempId:String;
 			var unique:Boolean;
 
-			for each (var weap in ItemManager.reference.weapons) {
+			for each (var weap in WeaponManager.reference.weapons) {
 
 				// Define tempId by removing "^1" if present
 				tempId = weap.id;
@@ -121,14 +124,14 @@ package fe.inter {
 					unique = true;
 				}
 				
-				if (weap.tip <= 0 || weap.nostand) {
+				if (weap.tip == "internal" || weap.nostand) {
 					continue;
 				}
 				
 				if ((n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
 					var item:MovieClip = new itemStand();  // SWF Dependency
 					
-					if (weap.tip == 5) {
+					if (weap.tip == "magic") {
 						stolb++;
 						if (stolb >= kolLevels) {
 							stolb = 0;
@@ -153,7 +156,7 @@ package fe.inter {
 					var r:Number = 1;
 					
 					// [Spell]
-					if (weap.tip == 5) {	
+					if (weap.tip == "magic") {	
 						infIco = new itemIco();  // SWF Dependency
 						
 						try {
@@ -194,7 +197,7 @@ package fe.inter {
 						r = infIco.scaleX = infIco.scaleY = weap.vis_icomult;
 					}
 					
-					infIco.x = -infIco.getRect(infIco).left * r - infIco.width / 2;
+					infIco.x = -infIco.getRect(infIco).left * r - infIco.width * 0.50;
 					infIco.y = -infIco.height - infIco.getRect(infIco).top;
 					infIco.stop();
 					
@@ -204,7 +207,7 @@ package fe.inter {
 					
 					item.weapon.addChild(infIco);
 					
-					// Determine if the weapon is a unique variant by checking if the ID ends with "^1"
+					// Extra processing for unique variants
 					if (unique) {
 						item.nazv2.text = LanguageManager.reference.localText("weapon", tempId);
 						item.dop.text = "1";	// [There is a unique option]
@@ -213,7 +216,7 @@ package fe.inter {
 						
 						if (vWeapon != null) {
 							infIco = new vWeapon();
-							infIco.x = -infIco.getRect(infIco).left * r - infIco.width / 2;
+							infIco.x = -infIco.getRect(infIco).left * r - infIco.width * 0.50;
 							infIco.y = -infIco.height - infIco.getRect(infIco).top;
 							infIco.stop();
 							if (infIco.lez) infIco.lez.stop();
@@ -250,7 +253,7 @@ package fe.inter {
 			var aid:String = Appear.ggArmorId;
 			Appear.transp = true;
 			
-			for each(var arm in ItemManager.reference.armors) {
+			for each(var arm in ArmorManager.reference.armors) {
 
 				if (n == 6 && arm.tip > 1 || n == 7 && arm.tip != 3) {
 					continue;
@@ -314,14 +317,20 @@ package fe.inter {
 		
 		private function showMass():void {
 			vis.bottext.htmlText = "";
-			
+			trace("Stand.as/showMass - THIS IS COMMENTED OUT, FIX THIS  -- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") 
+			/*
 			try {
-				if (page <= 4) vis.bottext.htmlText = inv.retMass(4);
-				if (page == 5) vis.bottext.htmlText = inv.retMass(5);
+				if (page <= 4) {
+					vis.bottext.htmlText = inv.retMass(4);
+				}
+				if (page == 5) {
+					vis.bottext.htmlText = inv.retMass(5);
+				}
 			}
 			catch (err) {
 
 			}
+			*/
 		}
 		
 		private function showWeaponList(n:int):void {
@@ -346,29 +355,29 @@ package fe.inter {
 				vis.toptext.visible = false;
 			}
 
-			for each (var weap in ItemManager.reference.weapons) {
+			for each (var weap:Weapon in WeaponManager.reference.weapons) {
 
-				if (weap.tip <= 0|| (n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
+				if (weap.tip == "internal" || (n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
 					if (weapons[weap.id] == null) {
 						continue;
 					}
 					
-					if (weap.spell && (inv.items[weap.id] == null || inv.items[weap.id].kol <= 0)) {
+					if (weap.spell && inv.equipment.hasEquipment(weap.id)) {
 						showWeapon(weapons[weap.id], 0, 0);
 					}
-					else if (inv.weapons[weap.id] == null || inv.weapons[weap.id].respect == 3) {
+					else if (inv.equipment.hasEquipment(weap.id) || inv.equipment.getWeapon(weap.id).respect == 3) {
 						showWeapon(weapons[weap.id], 0, 0)
 					}
 					else {
-						showWeapon(weapons[weap.id], inv.weapons[weap.id].variant + 1, inv.weapons[weap.id].respect);
+						showWeapon(weapons[weap.id], inv.equipment.getWeapon(weap.id).variant + 1, inv.equipment.getWeapon(weap.id).respect);
 					}
 				}
 			}
 
-			for each(var arm in ItemManager.reference.armors) {
+			for each(var arm:Armor in ArmorManager.reference.armors) {
 
 				if (armors[arm.id]) {
-					if (inv.armors[arm.id] && inv.armors[arm.id].lvl >= 0) {
+					if (inv.equipment.hasEquipment(arm.id) && inv.equipment.getArmor(arm.id).lvl >= 0) {
 						armors[arm.id].nazv.visible = true;
 						armors[arm.id].art.filters = [itemFilter, glowFilter];
 					}
@@ -379,8 +388,9 @@ package fe.inter {
 				}
 			}
 			
+			// Ministry mare statuettes 
 			for (var s:String in ls) {
-				if (inv.items[ls[s]].kol) {
+				if (inv.hasItem(ls[s])) {
 					arts[s].nazv.visible = true;
 					arts[s].art.filters = [itemFilter, glowFilter];
 				}
@@ -459,20 +469,23 @@ package fe.inter {
 		public function itemClick(event:MouseEvent):void {
 			var id:String = event.currentTarget.id.text;
 			
-			if (inv.weapons[id] == null || inv.weapons[id].respect == 3) {
+			if (!inv.equipment.hasEquipment(id) || inv.equipment.getWeapon(id).respect == 3) {
 				return;
 			}
 			
+			trace("Stand.as/itemClick() - THIS IS COMMENTED OUT FIX THIS -- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			/*
 			var resp:int = inv.respectWeapon(id);
 			showWeapon(event.currentTarget as MovieClip, -1, resp);
-			
+			*/
+
 			if (World.w.hardInv) {
 				showMass();
 			}
 		}
 
 		public function itemOver(event:MouseEvent):void {
-			if (inv.weapons[event.currentTarget.id.text] == null) {
+			if (inv.equipment.hasEquipment(event.currentTarget.id.text)) {
 				return;
 			}
 			if (!event.currentTarget.nazv.visible && !event.currentTarget.nazv2.visible) {

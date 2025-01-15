@@ -5,42 +5,50 @@ package fe.serv {
 	import fe.entities.Obj;
 	import fe.loc.Land;
 	import fe.unit.Unit;
+	import fe.unit.Armor;
 	
 	public class Script {
 
-		var land:Land;
+		private var land:Land;
 		public var owner:Obj;
 		
-		public var eve:String;	//событие, которое приводит к запуску скрипта
-		public var acts:Array;
-		var actObj:Object;
+		public var eve:String;						// [event that causes the script to run]
+		public var acts:Array			= [];
+		private var actObj:Object;
 		
-		public var onTimer:Boolean=false;	//есть ли команды с задержкой времени
-		public var running:Boolean=false;	//скрипт со временем выполнения запущен
-		var wait:Boolean=false;	//ожидание нажатия кнопки
-		var ncom:int;
-		var tcom:int=0;
-		var dial_n:int=-1;
+		public var onTimer:Boolean		= false;	// [are there any commands with time delay]
+		public var running:Boolean		= false;	// [runtime script running]
+		private var wait:Boolean		= false;	// [waiting for a button to be pressed]
+		private var ncom:int;
+		private var tcom:int			= 0;
+		private var dial_n:int			= -1;
 
 		public function Script(xml:XML, nland:Land=null, nowner:Obj=null, tt:Boolean=false) {
-			land=nland;
-			owner=nowner;
-			acts=[];
+			land = nland;
+			owner = nowner;
 			
-			if (xml.@eve.length()) eve=xml.@eve;
+			if (xml.@eve.length()) {
+				eve=xml.@eve;
+			}
 			
-			if (xml.@act.length()) analiz(xml);
+			if (xml.@act.length()) {
+				analiz(xml);
+			}
 			
 			if (xml.s.length()) {
 				for each(var s:XML in xml.s) analiz(s);
 			}
 			
-			if (tt) onTimer=true;
+			if (tt) {
+				onTimer = true;
+			}
 			
-			if (land && onTimer) land.scripts.push(this);
+			if (land && onTimer) {
+				land.scripts.push(this);
+			}
 		}
 		
-		private function analiz(xml:XML) {
+		private function analiz(xml:XML):void {
 			var act:String, targ:String, val:String, t:int=0, n:String='-1', opt1:int=0, opt2:int=0;
 			
 			if (xml.@act.length()) {		//команда
@@ -48,28 +56,41 @@ package fe.serv {
 				if (act=='dial' || act=='dialog' || act=='inform' || act=='landlevel') onTimer=true;
 			}
 			
-			if (xml.@targ.length()) targ=xml.@targ;		//цель 
+			if (xml.@targ.length()) {
+				targ=xml.@targ;		//цель
+			}
 			
-			if (xml.@val.length()) val=xml.@val;		//значение
+			if (xml.@val.length()) {
+				val=xml.@val;		//значение
+			}
 			
 			if (xml.@t.length()) {						//задержка в сек.
 				t=Math.round(xml.@t*World.fps);
 				if (t>0) onTimer=true;
 			}
 			
-			if (xml.@n.length()) n=xml.@n;		//опция
+			if (xml.@n.length()) {
+				n=xml.@n;		//опция
+			}
 			
-			if (xml.@opt1.length()) opt1=xml.@opt1;		//опция
+			if (xml.@opt1.length()) {
+				opt1=xml.@opt1;		//опция
+			}
 			
-			if (xml.@opt2.length()) opt2=xml.@opt2;		//опция
+			if (xml.@opt2.length()) {
+				opt2=xml.@opt2;		//опция
+			}
 			
-			if (act) acts.push({act:act, targ:targ, val:val, t:t, n:n, opt1:opt1, opt2:opt2});
+			if (act) {
+				acts.push({act:act, targ:targ, val:val, t:t, n:n, opt1:opt1, opt2:opt2});
+			}
 		}
 		
 		//запуск скрипта
 		public function start():void {
-			//trace("Script.as/start() - Starting script!");
-			if (acts.length <= 0) return;
+			if (acts.length <= 0) {
+				return;
+			}
 			
 			if (onTimer) {
                 ncom = 0;
@@ -85,42 +106,47 @@ package fe.serv {
 		}
 		
 		public function step():void {
-			if (tcom>0) tcom--;
+			if (tcom > 0) {
+				tcom--;
+			}
 			
 			if (tcom<=0) {
 				if (wait) {
 					if (World.w.ctr.keyPressed2) {
-						dial_n=10000;
+						dial_n = 10000;
 					}
-					else if (!World.w.ctr.keyPressed) return;
+					else if (!World.w.ctr.keyPressed) {
+						return;
+					}
 					
-					if (dial_n<0) {
+					if (dial_n < 0) {
 						World.w.gui.dialText();
-						wait=false;
+						wait = false;
 					}
 					else {
 						dial_n++;
 						
-						if (World.w.gui.dialText(actObj.val,dial_n,actObj.opt1>0,true)) {
-							World.w.ctr.active=false;
-							World.w.ctr.keyPressed=false;
-							World.w.gg.levit=0;
+						if (World.w.gui.dialText(actObj.val, dial_n, actObj.opt1 > 0, true)) {
+							World.w.ctr.active = false;
+							World.w.ctr.keyPressed = false;
+							World.w.gg.levit = 0;
 							return;
 						}
 						else {
 							World.w.gui.dialText();
 							World.w.gg.controlOn();
-							wait=false;
+							wait = false;
 						}
 					}
 					
-					World.w.ctr.keyPressed=World.w.ctr.keyPressed2=false;
+					World.w.ctr.keyPressed	= false;
+					World.w.ctr.keyPressed2	= false;
 				}
 				
 				ncom++;
 				
-				if (ncom>=acts.length) {
-					running=false;
+				if (ncom >= acts.length) {
+					running = false;
 					World.w.gui.dialText();
 				}
 				else {
@@ -178,7 +204,9 @@ package fe.serv {
 					break;
 
 					case 'dial':
-						if (!(obj.t > 0)) wait = true;
+						if (!(obj.t > 0)) {
+							wait = true;
+						}
 						World.w.ctr.active = false;
 						World.w.gui.dialText(obj.val, obj.n, obj.opt1 > 0, wait);
 					break;
@@ -219,23 +247,24 @@ package fe.serv {
 					break;
 
 					case 'take':
-						if (obj.n < 0 && World.w.invent.items[obj.val]) {
-							World.w.gui.infoText('withdraw', World.w.invent.items[obj.val].nazv, -obj.n);
-							World.w.invent.minusItem(obj.val, -obj.n);
+						if (obj.n < 0 && World.w.invent.hasItem(obj.val)) {
+							World.w.gui.infoText('withdraw', ItemManager.reference.getItem(obj.value).nazv, -obj.n);
+							World.w.invent.decreaseQuantity(obj.val, -obj.n);
 							World.w.pers.setParameters();
 						}
 						else {
-							var item:Item = new Item(obj.val, obj.n);
-							World.w.invent.take(item);
+							World.w.invent.increaseQuantity(obj.val, obj.n);
 						}
 					break;
 
 					case 'takeArmor':
-						World.w.invent.addArmor(obj.val);
+						var a:Armor = ArmorManager.reference.cloneArmor(obj.val);
+						World.w.invent.equipment.addArmor(a);
 					break;
 
 					case 'fav':
-						World.w.invent.favItem(obj.val, obj.n);
+						trace("Script.as/com() - 'fav' was called, but it's commented out AAAAAAAAAAAAAAAAAAAAAAAAAA FIX THIS AAAAAAAAAAAAAAAAAA");
+						//World.w.invent.favItem(obj.val, obj.n);
 					break;
 
 					case 'armor':

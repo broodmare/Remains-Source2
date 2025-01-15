@@ -1,7 +1,6 @@
 package fe.weapon {
 
 	import flash.geom.Point;
-	import flash.utils.*;
 	import flash.media.SoundChannel;
 	import flash.display.Graphics;
 	
@@ -31,7 +30,7 @@ package fe.weapon {
 		public var svis:String;
 		public var svisv:String;					// [The weapon itself]
 		
-		public var vWeapon:Class;			
+		public var vWeapon:Class;
 		public var visbul:String;					// [Shells]
 		public var vBullet:Class;
 		public var flare:String;					// [Flash]
@@ -59,7 +58,7 @@ package fe.weapon {
 		public var kol_shoot:int		= 0;		//количество сделанных выстрелов
 		public var ready:Boolean		= false;	//оружие наведено на цель
 		public var is_shoot:Boolean		= false;	// [shot fired]
-		protected var animated:Boolean	= false;
+		public var animated:Boolean	= false;
 		
 		public var krep:int	= 0;					// [fastening type]
 		public var hold:int	= 0;					// [left in the clip]
@@ -75,21 +74,22 @@ package fe.weapon {
 		
 		// [Characteristics]
 		// [Weapon type]
-		//0 - [Internal]
-		//1 - [Cryo(?)]
-		//2 - [Light guns]
-		//3 - [Heavy gun]
-		//4 - [Explosives]
-		public var tip:int = 0;
+		// 0 - [Internal]					-> "internal"
+		// 1 - [Cryo(?)]					-> "cryo"
+		// 2 - [Light guns]					-> "lightGun"
+		// 3 - [Heavy gun]					-> "heavyGun"
+		// 4 - [Explosives]					-> "explosives"
+		// 5 - magic						-> "magic"
+		public var tip:String = "";			// Changed from int to String
 
-		//категория 
-		public var cat:int = 0;
+		// [category]
+		public var cat:int				= 0;
 		
 		// [Inventory]
-		public var respect:int = 0;			// [Relation 0 - new, 1 - hidden, 2 - used, 3 - scheme]
+		public var respect:int			= 0;		// [Relation 0 - new, 1 - hidden, 2 - used, 3 - scheme]
 		
 		// [Required skill]
-		public var skill:int = 0;
+		public var skill:int			= 0;
 		
 		// [Skill level]
 		public var lvl:int				= 0;
@@ -121,7 +121,7 @@ package fe.weapon {
 		public var destroy:Number		= 10.00;	// [Block damage]
 		public var damage:Number		= 0.00;		// [Damage to units]
 		public var damageExpl:Number	= 0.00;		// [Area damage]
-		public var tipDamage:int		= 0;		// [Damage type]
+		public var tipDamage:String		= "";		// [Damage type]
 		public var pier:Number			= 0.00;		// [armor-piercing]
 		public var critCh:Number		= 0.10;		// [crit chance]
 		public var critM:Number			= 0.00;		// [extra crit]
@@ -153,13 +153,13 @@ package fe.weapon {
 		public var noise:int			= 0;		// [sound of a gunshot]
 		public var shine:int			= 500;		// [flash from a shot]
 		public var tipDecal:int			= 0;		// [type of traces left (Bullet hole/scorch marks)]
-		public var bulAnim:Boolean		=  false;	// [animate the projectile]
+		public var bulAnim:Boolean		= false;	// [animate the projectile]
 		public var spring:int			= 1;		// [stretching]
 		public var flame:int			= 0;		// [the projectile behaves like fire]
 		public var grav:Number			= 0.00;		// [the projectile moves in a parabola]
 		public var accel:Number			= 0.00;		// [the projectile moves with acceleration]
-		public var shell:Boolean		=  false;	// [throws out the cartridge case]
-		public var fromWall:Boolean		=  false;	// [shoot from the wall]
+		public var shell:Boolean		= false;	// [throws out the cartridge case]
+		public var fromWall:Boolean		= false;	// [shoot from the wall]
 		public var bulBlend:String		= "screen";
 		private var emitShell:Emitter	= Emitter.arr["gilza"];
 		
@@ -248,13 +248,13 @@ package fe.weapon {
 			
 			super.addVisual();	// Obj.addVisual()
 			
-			if (owner && tip != 5 && owner.cTransform) {
+			if (owner && tip != "magic" && owner.cTransform) {
 				vis.transform.colorTransform = owner.cTransform;
 			}
 		}
 		
 		public function addVisual2():void {
-			if (tip == 5 && vis) {
+			if (tip == "magic" && vis) {
 				World.w.grafon.visObjs[sloy].addChild(vis);
 			}
 		}
@@ -275,7 +275,7 @@ package fe.weapon {
 				desintegr = pers.desintegr;
 			}
 			
-			if (tip != 5) {
+			if (tip != "magic") {
 				drotMult = pers.drotMult;
 			}
 			
@@ -342,7 +342,7 @@ package fe.weapon {
 
 			// This turns the weapon to face the curosr and is executed every tick.
 			if (findCel) {
-				if (tip == 5) {
+				if (tip == "magic") {
 					coordinates.X = owner.magicX;
 					coordinates.Y = owner.magicY;
 					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
@@ -353,8 +353,8 @@ package fe.weapon {
 					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X)*owner.storona);
 				}
 				else {
-					coordinates.X += (owner.weaponX - coordinates.X) / 5;
-					coordinates.Y += (owner.weaponY - coordinates.Y) / 5;
+					coordinates.X += (owner.weaponX - coordinates.X) * 0.20;
+					coordinates.Y += (owner.weaponY - coordinates.Y) * 0.20;
 					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
 			}
@@ -810,20 +810,20 @@ package fe.weapon {
 			owner.isShoot = true;
 			
 			if (holder > 0 && hold > 0) {
-				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo == 'batt' || ammo == 'energ' || ammo == 'crystal') && Math.random() < (owner as UnitPlayer).pers.recyc) {
+				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo == "batt" || ammo == "energ" || ammo == "crystal") && Math.random() < (owner as UnitPlayer).pers.recyc) {
 					// [don't waste ammunition]
 				}
 				else {
 					hold -= rashod;
 					// [replenishment at the landfill]
-					if (owner.player && (loc.train) && ammo!='recharg' && ammo!='not') {
-						World.w.invent.items[ammo].kol+=rashod;
-						World.w.invent.mass[2]+=World.w.invent.items[ammo].mass*rashod;
+					if (owner.player && (loc.train) && ammo != "recharg" && ammo != "not") {
+						World.w.invent.increaseQuantity(ammo, rashod);
+						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * rashod;
 					}
 				}
 			}
 			
-			if (owner.player && tip<4 && tip!=0 && !(loc.train || World.w.alicorn)) {
+			if (owner.player && tip != "internal" && tip != "explosives" && tip != "magic" && !(loc.train || World.w.alicorn)) {
 				hp -= (1 + ammoHP);
 			}
 			
@@ -913,6 +913,7 @@ package fe.weapon {
 				bul.probiv = 1;
 			}
 			
+			/*
 			if (ammoMod >= 0) {
 				bul.tipDamage = ammoMod;
 				
@@ -921,7 +922,8 @@ package fe.weapon {
 					bul.otbros = 0;
 				}
 			}
-			
+			*/ // BROKEN FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+
 			if (owner) {
 				bul.critCh=critCh+owner.critCh+critchAdd;
 				bul.critInvis=owner.critInvis;
@@ -944,23 +946,23 @@ package fe.weapon {
 			if (owner && owner.player && ammo != 'not') {
 				if (ammoTarg != ammo) {
 					if (hold > 0) {
-						World.w.invent.items[ammo].kol += hold;
-						World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;
+						World.w.invent.increaseQuantity(ammo, hold);
+						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;
 						hold = 0;
 					}
 					
 					setAmmo(ammoTarg);
 				}
 				
-				var kol:int = World.w.invent.items[ammo].kol;
+				var kol:int = World.w.invent.getQuantity(ammo);
 				
 				if (kol > holder - hold) {
 					kol = holder-hold;
 				}
 				
 				hold += kol;
-				World.w.invent.items[ammo].kol -= kol;
-				World.w.invent.mass[2] -= World.w.invent.items[ammo].mass * kol;
+				World.w.invent.decreaseQuantity(ammo, kol);
+				//World.w.invent.mass[2] -= World.w.invent.items[ammo].mass * kol;
 			}
 			else {
 				if (ammoTarg != ammo) {
@@ -1023,8 +1025,8 @@ package fe.weapon {
 		public function unloadWeapon():void {
 			if (owner && owner.player && holder && hold && ammo!='' && ammo != "recharg" && ammo != "not") {
 				World.w.gui.infoText('unloadWeapon', nazv, null, false);
-				(owner as UnitPlayer).invent.items[ammo].kol += hold;
-				World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;
+				(owner as UnitPlayer).invent.increaseQuantity(ammo, hold);
+				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;
 				hold = 0;
 				
 				if (sndReload != "") {
@@ -1044,7 +1046,7 @@ package fe.weapon {
 			}
 			
 			if (ammo != 'recharg' && ammo != 'not' && holder > 0 && hold < rashod) {
-				if (World.w.invent.items[ammo].kol < rashod) {
+				if (World.w.invent.getQuantity(ammo) < rashod) {
 					return 4;
 				}
 				
@@ -1082,7 +1084,7 @@ package fe.weapon {
 				return -1;
 			}
 			
-			if (ammo != 'recharg' && ammo != 'not' && holder > 0 && World.w.invent.items[ammo].kol < rashod) {
+			if (ammo != 'recharg' && ammo != 'not' && holder > 0 && World.w.invent.getQuantity(ammo) < rashod) {
 				return 0;
 			}
 			
@@ -1112,6 +1114,8 @@ package fe.weapon {
 			
 			if (owner.player) {
 				// unsuitable ammunition
+				
+				/*
 				if (nammo != "" && nammo != ammo) {
 					var am:XML = getAmmoInfo(nammo);
 					
@@ -1120,20 +1124,21 @@ package fe.weapon {
 					}
 					
 					if (am.@base != ammoBase) {
-						World.w.gui.infoText('imprAmmo', World.w.invent.items[nammo].nazv, null, false);
+						World.w.gui.infoText('imprAmmo', ItemManager.reference.getItem(nammo).nazv, null, false);
 						World.w.gui.bulb(coordinates.X, coordinates.Y);
 						return;
 					}
 					
 					ammoTarg = nammo;
 				}
+				*/ // BROKEN FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				
 				if (nammo != "" && nammo == ammo) {
 					ammoTarg = nammo;
 				}
 				
-				if (!jammed && ammo != 'not' && World.w.invent.items[ammoTarg].kol < rashod) {
-					World.w.gui.infoText('noAmmo', World.w.invent.items[ammoTarg].nazv, null, false);
+				if (!jammed && ammo != 'not' && World.w.invent.getQuantity(ammoTarg) < rashod) {
+					World.w.gui.infoText('noAmmo', ItemManager.reference.getItem(ammoTarg).nazv, null, false);
 					World.w.gui.bulb(coordinates.X, coordinates.Y);
 					return;
 				}
@@ -1180,7 +1185,7 @@ package fe.weapon {
 				
 				if (t_prep >= prep) {
 					try {
-						if (tip != 0) vis.gotoAndStop('ready'); // Don't try to animate internal weapons
+						if (tip != "internal") vis.gotoAndStop('ready'); // Don't try to animate internal weapons
 					}
 					catch(err) {
 						trace("ERROR: (00:17) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"ready\"!");
@@ -1221,7 +1226,7 @@ package fe.weapon {
 			if (lvl > 0) {
 				s += lvl + '\t';
 			}
-			else if (tip == 5 && variant > 0) {
+			else if (tip == "magic" && variant > 0) {
 				s += (perslvl + 7) + '\t';
 			}
 			else {
@@ -1248,7 +1253,7 @@ package fe.weapon {
 			s += Math.round(precision / 40) + '\t';
 			s += pier + '\t';
 			
-			if (tip == 5) {
+			if (tip == "magic") {
 				s += 'магия\t'+mana+'\t';
 			}
 			else {
@@ -1284,17 +1289,17 @@ package fe.weapon {
 			
 			s += '\t';
 			
-			if (tip < 4) {
+			if (tip != "explosives" && tip != "magic") {
 				s += maxhp + '\t';
 			}
 			else {
 				s += '\t';
 			}
 			
-			if (tip == 4) {
-				s += getWeaponInfo(id).@price + '\t';
+			if (tip == "explosives") {
+				s += WeaponManager.reference.weaponData(id).price + '\t';
 			}
-			else if (tip != 5 && variant > 0) {
+			else if (tip != "magic" && variant > 0) {
 				s += price * 3 + '\t';
 			}
 			else {

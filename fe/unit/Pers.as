@@ -1300,23 +1300,42 @@ package fe.unit {
 			}
 		}
 		
-		public function bloodDamage(dam:Number, tip:int):void {
-			if (dam<=0) return;
-			dam*=3;
-			if (tip==Unit.D_BLEED || tip==Unit.D_BLADE || tip==Unit.D_BUL || tip==Unit.D_FANG) {
-				dam*=organMult;
-				dam=Math.random()*dam;
-				if (tip==Unit.D_BUL || tip==Unit.D_FANG) dam*=0.5;
-				var sst:int=4-Math.ceil(bloodHP/inMaxHP*4);
-				bloodHP-=dam;
-				if (bloodHP<bloodMin) bloodHP=bloodMin;
-				if (bloodHP<=0) {
-					bloodHP=1;
+		public function bloodDamage(dam:Number, tip:String):void {
+			if (dam <= 0) {
+				return;
+			}
+
+			dam *= 3;
+
+			if (tip == Unit.D_BLEED || tip == Unit.D_BLADE || tip == Unit.D_BUL || tip == Unit.D_FANG) {
+				dam *= organMult;
+				dam = Math.random() * dam;
+				
+				if (tip == Unit.D_BUL || tip == Unit.D_FANG) {
+					dam *= 0.5;
+				}
+				
+				var sst:int = 4 - Math.ceil(bloodHP / inMaxHP * 4);
+				bloodHP -= dam;
+				
+				if (bloodHP < bloodMin) {
+					bloodHP = bloodMin;
+				}
+				
+				if (bloodHP <= 0) {
+					bloodHP = 1;
 					die();
 				}
-				bloodSt=4-Math.ceil(bloodHP/inMaxHP*4);
-				if (sst!=bloodSt) setParameters();
-				if (bloodSt>sst) trauma(bloodSt,4);
+				
+				bloodSt = 4 - Math.ceil(bloodHP / inMaxHP * 4);
+				
+				if (sst != bloodSt) {
+					setParameters();
+				}
+				
+				if (bloodSt > sst) {
+					trauma(bloodSt, 4);
+				}
 			}
 		}
 		
@@ -1432,6 +1451,7 @@ package fe.unit {
 		}
 
 		public function armorParameters(arm:Armor):void {
+			// Dexterity Bonus
 			if (arm.dexter!=0) {
 				setBegFactor('dexter',gg.dexter);
 				gg.dexter+=arm.dexter;
@@ -1439,38 +1459,46 @@ package fe.unit {
 				setFactor('dexter', arm.id, 'add', arm.dexter, gg.dexter, 'a');
 			}
 			
+			// Critical Chance Bonus
 			if (arm.crit!=0) {
 				gg.critCh+=arm.crit;
 			}
 			
-			gg.showObsInd=gg.showObsInd || arm.showObsInd;
+			// Stealth Indicator
+			gg.showObsInd = gg.showObsInd || arm.showObsInd;
 			
+			// Stealth Bonus
 			if (arm.sneak!=1) {
 				setBegFactor('visiMult',visiMult);
 				visiMult*=(1-arm.sneak);
 				setFactor('visiMult', arm.id, 'mult', (1-arm.sneak), visiMult, 'a');
 			}
 			
+			// Radiation vulnerability
 			if (arm.radVul!=1) {
 				setBegFactor('radX',gg.radX);
 				gg.radX*=arm.radVul;
 				setFactor('radX', arm.id, 'mult', arm.radVul, gg.radX, 'a');
 			}
 			
+			// Water Breathing Multiplier
 			h2oPlav *= arm.h2oMult;
 			
+			// Melee Damage Multiplier
 			if (arm.meleeMult!=1) {
 				setBegFactor('meleeDamMult',meleeDamMult);
 				meleeDamMult*=arm.meleeMult;
 				setFactor('meleeDamMult', arm.id, 'mult', arm.meleeMult, meleeDamMult, 'a');
 			}
 			
+			// Gun Damage Multiplier
 			if (arm.gunsMult!=1) {
 				setBegFactor('gunsDamMult',gunsDamMult);
 				gunsDamMult*=arm.gunsMult;
 				setFactor('gunsDamMult', arm.id, 'mult', arm.gunsMult, gunsDamMult, 'a');
 			}
 			
+			// Magic Multiplier
 			if (arm.magicMult!=1) {
 				setBegFactor('throwForce',throwForce);
 				setBegFactor('spellsDamMult',spellsDamMult);
@@ -1480,19 +1508,30 @@ package fe.unit {
 				setFactor('spellsDamMult', arm.id, 'mult', arm.magicMult, spellsDamMult, 'a');
 			}
 			
+			// Bonus Loot Chance (?)
 			dropTre += arm.tre;
 			
+			// Flight Ability
 			if (arm.ableFly) {
 				ableFly=1;
 			}
 			
-			for (var i=0; i<Unit.kolVulners; i++) {
-				gg.vulner[i]*=(1 - arm.resist[i]);
-				setFactor(i, arm.id, 'mult', (1 - arm.resist[i]), gg.vulner[i], 'a');
-			}
+			// Get all resistance types
+			var resistTypes:Array = arm.resistances.getAllResistanceTypes();
+
+			for each (var resistType:String in resistTypes) {
+				var resistValue:Number = arm.resistances.getResist(resistType);
+				
+				if (resistValue != 0) {
+					setBegFactor('vulner_' + resistType, gg.vulner[resistType]);
+					gg.vulner[resistType] *= (1 - resistValue);
+					setFactor('vulner_' + resistType, arm.id, 'mult', (1 - resistValue), gg.vulner[resistType], 'a');
+				}
+   			 }
 			
-			if (arm.id=='socks') {
-				socks=true;
+			// Special case for socks
+			if (arm.id == 'socks') {
+				socks = true;
 			}
 		}
 		
@@ -1505,6 +1544,7 @@ package fe.unit {
 			jumpMult=1;
 			shtrManaRes=1;
 			gg.noStairs=false;
+			
 			if (!World.w.hardInv) return;
 			if (inv.massW>maxmW) speedShtr++; 
 			if (inv.massW>maxmW+2) speedShtr++; 
@@ -1567,8 +1607,7 @@ package fe.unit {
 			gg.maxhp+=(level-1)*lvlHP;
 			inMaxHP+=(level-1)*lvlOrganHp;
 			//скиллы
-			for (var id in skills)
-			{
+			for (var id in skills) {
 				var lvl=0;
 				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]);
 				else lvl=getSkLevel(skills[id]);
@@ -1576,8 +1615,7 @@ package fe.unit {
 				setSkillParam(xml, lvl, skills[id]);
 			}
 			//перки
-			for (id in perks)
-			{
+			for (id in perks) {
 				xml = getPerkInfo(id);
 				setSkillParam(xml, perks[id]);
 			}
@@ -1599,10 +1637,11 @@ package fe.unit {
 			}
 			//броня и защиты
 			if (gg.rat>0) {
+				// Do nothing
 			}
 			else if (!World.w.alicorn) {
 				if (gg.currentArmor) {
-					gg.currentArmor.setArmor();
+					ArmorManager.reference.setArmor(gg.currentArmor);
 					armorParameters(gg.currentArmor)
 				}
 				else {
@@ -1630,6 +1669,7 @@ package fe.unit {
 				gg.allVulnerMult*=alicornVulner;
 				setFactor('allVulnerMult', 'alicorn', 'mult', alicornVulner, gg.allVulnerMult, 'e');
 			}
+			
 			//восст. хп
 			gg.hp=gg.maxhp*procHP;
 			if (gg.rad>gg.maxhp-1) gg.rad=gg.maxhp-1;
@@ -1637,7 +1677,9 @@ package fe.unit {
 			if (gg.currentWeapon) gg.currentWeapon.setPers(gg,this);
 			if (gg.magicWeapon) gg.magicWeapon.setPers(gg,this);
 			if (gg.throwWeapon) gg.throwWeapon.setPers(gg,this);
+			
 			World.w.gui.setHp();
+			
 			if (World.w.game.triggers['nomed']) {
 				organMult=0.5;
 				headMin=156;
@@ -1645,15 +1687,18 @@ package fe.unit {
 				legsMin=167;
 				bloodMin=113;
 				manaMin=56;
-			} else {
+			}
+			else {
 				headMin=torsMin=legsMin=bloodMin=-1;
 			}
+			
 			if (gg.pet) gg.pet.setLevel(level);
 			World.w.game.triggers['eco']=eco;
 			invMassParam();
 		}
 		
 		public function setInvParameters(inv:Inventory):void {
+			/*
 			for each (var w in LootGen.arr["pers"]) {
 				if (inv.items[w].kol>0) {
 					if (inv.items[w].xml && inv.items[w].xml.sk.length()) {
@@ -1665,6 +1710,7 @@ package fe.unit {
 					}
 				}
 			}
+			*/
 		}
 
 		// [Determine the required skill level]

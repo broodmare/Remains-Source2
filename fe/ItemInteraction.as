@@ -1,6 +1,7 @@
 package fe { 
 
 	import fe.weapon.Weapon;
+	import fe.unit.Unit;
 	import fe.unit.Armor;
 	import fe.unit.Spell;
 	import fe.unit.Inventory;
@@ -590,7 +591,7 @@ package fe {
 			
 			return w;
 			*/
-			return {};
+			return new Weapon();
 		}
 		
 		public function remWeapon(id:String):void {
@@ -720,8 +721,6 @@ package fe {
 			*/
 		}
 
-		
-		
 		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor {
 			/*
 			if (!_inventory.hasOwnProperty(id)) {
@@ -740,7 +739,7 @@ package fe {
 			
 			return w;
 			*/
-			return {};
+			return new Armor();
 		}
 		
 		public function addSpell(id:String):Spell {
@@ -762,7 +761,8 @@ package fe {
 			
 			return sp;
 			*/
-			return {};
+			var unit:Unit = null;
+			return new Spell(unit, "id");
 		}
 		
 		// Initializes the list of spells

@@ -14,7 +14,7 @@ package fe.loc {
 
 		// Level information
 		public var globalDif:int = 2			// [Global difficulty level]
-		public var curLandId:String = 'test';	// Current level ID
+		public var curLandId:String = "test";	// Current level ID
 		public var curCoord:String = null;		// 
 		public var curLand:LandAct;				// 
 		
@@ -34,10 +34,10 @@ package fe.loc {
 		public var t_save:Number=0;			// [Save time]
 		
 		// ???
-		public var baseId:String = '';		// Where to send the player when returning from a level
-		public var missionId:String = '';	// 
-		public var crea:Boolean = false;	// 
-		public var mReturn:Boolean=true;	// [You can return to base camp]
+		public var baseId:String		= "";		// Where to send the player when returning from a level
+		public var missionId:String		= "";		// 
+		public var crea:Boolean			= false;	// 
+		public var mReturn:Boolean		= true;		// [You can return to base camp]
 		
 		// All in-game data
 		public var objs:Array;
@@ -386,7 +386,7 @@ package fe.loc {
 		}
 		
 		// [Check the possibility of traveling through the map]
-		public function checkTravel(lid):Boolean {
+		public function checkTravel(lid:String):Boolean {
 			if (this.curLandId == 'grave') {
 				return false;
 			}
@@ -410,7 +410,7 @@ package fe.loc {
 			return true;
 		}
 		
-		public function refillAllVendors() {
+		public function refillAllVendors():void {
 			
 			vendorManager.refillAllVendors();
 
@@ -420,11 +420,11 @@ package fe.loc {
 				}
 			}
 			
-			World.w.invent.good.kol = World.w.pers.goodHp;
+			World.w.invent.setQuantity("good", World.w.pers.goodHp);	// TODO: ????? What is a good item, why are we putting it in the player's inventory????
 			World.w.gui.infoText("refill");
 		}
 		
-		public function addQuest(questID:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest {
+		public function addQuest(questID:String, loadObj:Object = null, noVis:Boolean = false, snd:Boolean = true, showDial:Boolean = true):Quest {
 			// [If the quest already exists]
 			if (quests[questID]) {
 				// [If there is, but is not active, make it active]

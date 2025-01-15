@@ -17,6 +17,7 @@ package fe.loc {
 	import fe.unit.UnitTransmitter;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
+	import fe.unit.InventoryItem;
 	import fe.unit.UnitTurret;
 	
 	public class Location {
@@ -31,40 +32,41 @@ package fe.loc {
 		//рамеры и положение
 		
 
-		public var landX:int=0;	//положение локации на местности
-		public var landY:int=0;
-		public var landZ:int=0;
-		public var landProb:String='';
-		public var bindLoc:Location;	//привязанная по координате z
-		public var base:Boolean = false;	//базовый лагерь
-		public var train:Boolean = false;	//полигон
+		public var landX:int			= 0;			//положение локации на местности
+		public var landY:int			= 0;
+		public var landZ:int			= 0;
+		public var landProb:String		= "";
+		public var bindLoc:Location;				//привязанная по координате z
+		public var base:Boolean			= false;	//базовый лагерь
+		public var train:Boolean		= false;	//полигон
 		
 		//объекты
 		public var grafon:Grafon;
-		public var space:Vector.<Tile>;	//пространство блоков | One dimensional array of area tiles. instead of a nested [X][Y], indices are [tileXIndex * spaceY + tileYIndex;]
-		public var defaultTile:Tile;			//пустой блок
-		public var units:Vector.<Unit>;			//юниты
-		public var ups:Array;			// [Spawn random units]
-		public var objs:Array;			// [Boxes]
-		public var bonuses:Array;		//бонусы
-		public var areas:Array;			//области
-		public var acts:Array;			//активные объекты (отображаемые на карте)
-		public var saves:Array;			//объекты, подлежащие сохранению
-		public var backobjs:Array;		//фоновые объекты
-		public var grenades:Array;		// [Active grenades]
+		public var space:Vector.<Tile>;				//пространство блоков | One dimensional array of area tiles. instead of a nested [X][Y], indices are [tileXIndex * spaceY + tileYIndex;]
+		public var defaultTile:Tile;				//пустой блок
+		public var units:Vector.<Unit>;				//юниты
+		public var ups:Array;						// [Spawn random units]
+		public var objs:Array;						// [Boxes]
+		public var bonuses:Array;					//бонусы
+		public var areas:Array;						//области
+		public var acts:Array;						//активные объекты (отображаемые на карте)
+		public var saves:Array;						//объекты, подлежащие сохранению
+		public var backobjs:Array;					//фоновые объекты
+		public var grenades:Array;					// [Active grenades]
 		public var gg:UnitPlayer;
-		public var celObj:Obj, celDist:Number=-1;	//целевой объект и расстояние до него
-		public var unitCoord;			// [object for unit coordination]
+		public var celObj:Obj;
+		public var celDist:Number		= -1.00;	//целевой объект и расстояние до него
+		public var unitCoord;						// [object for unit coordination]
 		
 		// [Entrances and visiting]
-		public var spawnPoints:Array;	//точки спавна | Array of objects containing two Numbers {x, y}
-		public var enspawn:Array;		//точки спавна врагов
-		public var doors:Array;			//проходы в другие локации
+		public var spawnPoints:Array;				//точки спавна | Array of objects containing two Numbers {x, y}
+		public var enspawn:Array;					//точки спавна врагов
+		public var doors:Array;						//проходы в другие локации
 		public var signposts:Array;
-		public var sign_vis:Boolean = true;		//указатели выхода
-		public var nAct:int=0;			//последнее посещение
-		public var active:Boolean=false;		//активна в данный момент
-		public var visited:Boolean=false;		//посещена
+		public var sign_vis:Boolean = true;			//указатели выхода
+		public var nAct:int=0;						//последнее посещение
+		public var active:Boolean=false;			//активна в данный момент
+		public var visited:Boolean=false;			//посещена
 		
 		// [Serivce]
 		public var cp:CheckPoint;
@@ -77,94 +79,104 @@ package fe.loc {
 		public var nextObj:Entity;
 		public var lastObj:Entity;
 		
-		public var isRebuild:Boolean=false, isRecalc:Boolean=false, isRelight:Boolean=false, relight_t:int;
-		public var warning:int=0;			//имеются опасности типа брошенных гранат
-		public var t_gwall:int=0;	//имеются призрачные стены
-		public var lDist1:int=300, lDist2:int=1000;	//дистанция открывания тумана войны
-		public var quake:int=0;
-		public var broom:Boolean=false;		//весь лут поднимется автоматически
-		public var isCheck:Boolean=false;	//была создана контрольная точка, точка выхода или дверь испытаний
+		public var isRebuild:Boolean		= false;
+		public var isRecalc:Boolean			= false;
+		public var isRelight:Boolean		= false;
+		public var relight_t:int;
+
+		public var warning:int				=   0;			//имеются опасности типа брошенных гранат
+		public var t_gwall:int				=   0;			//имеются призрачные стены
+		public var lDist1:int				=  300;			//дистанция открывания тумана войны
+		public var lDist2:int				= 1000;		
+		public var quake:int				=   0;	
+		public var broom:Boolean			= false;		//весь лут поднимется автоматически
+		public var isCheck:Boolean			= false;		//была создана контрольная точка, точка выхода или дверь испытаний
+
+		//опции	
+		public var noHolesPlace:Boolean		= true;			//убирать контейнеры около проходов
+		public var ramka:int				= 0;			//рамка из блоков по периметру 1-весь периметр, 2-только бока, 3-только низ, 4-низ и бока
+		public var bezdna:Boolean			= false;		//выход вниз при падении
+		public var mirror:Boolean			= false;		//зеркальная комната
+		public var endLand:Boolean			= false;		//комната на последнем уровне локации
+		public var sky:Boolean				= false;	
+		public var zoom:Number				= 1;	
+
+		//настройки	
+		public var gas:int					=   0;			//особая текстура
+		public var maxdy:Number				=  20.00;	
+		public var rad:Number				=   0.00;		//радиоактивность воздуха и воды
+		public var wrad:Number				=   1.00;		
+		public var wdam:Number				=   0.00;	
+		public var wtipdam:String			=   "venom";	// [water damage]	 DOUBLE CHECK THIS FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+		public var tipWater:int				=   0;			//внешний вид воды
+		public var opacWater:Number			=   0.00;		//непрозрачность воды
+		public var waterLevel:int			= 100;			//уровень воды
+		public var backform:int				=   0;			//форма фона задней стены 0-закрашено всё, 1-боковые части, 2-нижняя часть
+		public var backwall:String			= "";			//фон задней стены
+		public var transpFon:Boolean		= false;		//задний фон имеет прозрачность
 		
-		//опции
-		public var noHolesPlace:Boolean=true;	//убирать контейнеры около проходов
-		public var ramka:int=0;					//рамка из блоков по периметру 1-весь периметр, 2-только бока, 3-только низ, 4-низ и бока
-		public var bezdna:Boolean=false;		//выход вниз при падении
-		public var mirror:Boolean=false;		//зеркальная комната
-		public var endLand:Boolean=false;		//комната на последнем уровне локации
-		public var sky:Boolean=false;
-		public var zoom:Number=1;
-		
-		//настройки
-		public var gas:int=0;					//особая текстура
-		public var maxdy:Number=20;
-		public var rad:Number=0, wrad:Number=1;	//радиоактивность воздуха и воды
-		public var wdam:Number=0, wtipdam:int=7;	//урон от воды
-		public var tipWater:int=0;				//внешний вид воды
-		public var opacWater:Number=0;			//непрозрачность воды
-		public var waterLevel:int=100;			//уровень воды
-		public var backwall:String='';			//фон задней стены
-		public var backform:int=0;				//форма фона задней стены 0-закрашено всё, 1-боковые части, 2-нижняя часть
-		public var transpFon:Boolean=false;		//задний фон имеет прозрачность
 		public var cTransform:ColorTransform;
 		public var cTransformFon:ColorTransform;
 		public var color:String;
 		public var colorfon:String;
-		public var sndMusic:String='music_0';
-		public var postMusic:Boolean=false;		//музыка не пеключается на боевую
-		public var homeStable:Boolean=false;	
-		public var homeAtk:Boolean=false;	
-		public var visMult:Number=1;
-		public var noMap:Boolean=false;			//карта недоступна
-		public var darkness:int = 0;			// Background darkening
-		public var lightOn:int = 0;				// More than 0, light is on, 0 or less is off
+		
+		public var sndMusic:String			= 'music_0';
+		public var postMusic:Boolean		= false;		//музыка не пеключается на боевую
+		public var homeStable:Boolean		= false;	
+		public var homeAtk:Boolean			= false;	
+		public var visMult:Number			= 1.00;
+		public var noMap:Boolean			= false;		//карта недоступна
+		public var darkness:int				= 0;			// Background darkening
+		public var lightOn:int				= 0;			// More than 0, light is on, 0 or less is off
 
 		// Fog of war
-		public var black:Boolean	= true;								//	Fog of war is enabled	(Default: True)
-		public var retDark:Boolean	= Settings.settings.fogRegenerates;	//	Fog of war returns		(Default: False)
+		public var black:Boolean			= true;								//	Fog of war is enabled	(Default: True)
+		public var retDark:Boolean			= Settings.settings.fogRegenerates;	//	Fog of war returns		(Default: False)
 		
-		public var levitOn:Boolean=true;		//самолевитация разрешена
-		public var portOn:Boolean=true;			//телепортация разрешена
-		public var petOn:Boolean=true;			//спутник разрешен
-		public var destroyOn:Boolean=true;		//разрушение стены разрешены
-		public var itemsTip:String;				//особый тип лута
-		public var electroDam:Number=0;
-		public var trus:Number=0;				//постоянная тряска
+		public var levitOn:Boolean			= true;			//самолевитация разрешена
+		public var portOn:Boolean			= true;			//телепортация разрешена
+		public var petOn:Boolean			= true;			//спутник разрешен
+		public var destroyOn:Boolean		= true;			//разрушение стены разрешены
+		public var itemsTip:String;							//особый тип лута
+		public var electroDam:Number		= 0.00;
+		public var trus:Number				= 0.00;			//постоянная тряска
 		
 		// [Enemies]
-		public var tipEnemy:int=-1;				//тип случайных врагов
-		public var kolEn:Array=[0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
-		private var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
-		public var tipSpawn:String='enl2';
-		public var kolEnSpawn:int=0;		//может заспавнится обычных врагов
-		public var tileSpawn:Number=0;		//спавн при разрушении блоков
-		public var kolEnHid:int=3;			//скрытых обычных врагов
-		public var kol_phoenix:int=0;
+		public var tipEnemy:int				= -1;			//тип случайных врагов
+		public var kolEn:Array				= [0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
+		private var tipEn:Array				= ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
+		public var tipSpawn:String			= 'enl2';
+		public var kolEnSpawn:int			=  0;			//может заспавнится обычных врагов
+		public var tileSpawn:Number			=  0.00;			//спавн при разрушении блоков
+		public var kolEnHid:int				=  3;			//скрытых обычных врагов
+		public var kol_phoenix:int			=  0;
 		
-		public var detecting:Boolean=false;
-		public var t_alarm:int=0;			//счётчик сигнализации
-		public var t_alarmsp:int=0;			//счётчик спавна врагов
+		public var detecting:Boolean		= false;
+		public var t_alarm:int				= 0;			//счётчик сигнализации
+		public var t_alarmsp:int			= 0;			//счётчик спавна врагов
 		
 		// [Bonuses and experience]
-		public var kolXp:int=0, maxXp:int=0;
-		public var unXp:int=100;
-		public var summXp:int=0;
+		public var kolXp:int				=   0;
+		public var maxXp:int				=   0;
+		public var unXp:int					= 100;
+		public var summXp:int				=   0;
 		
 		// [Difficulty level]
-		public var locDifLevel:Number=0;
-		public var biom:int=0;
-		public var locksLevel:Number=0;		//уровень замков 0-25
-		public var mechLevel:Number=0;		//уровень мин и механизмов 0-7
-		public var weaponLevel:Number=0;	//уровень случайно выпадающего оружия
-		public var enemyLevel:int=0;		//левел мобов
-		public var earMult:Number=1; 		//множитель слуха мобов
+		public var locDifLevel:Number		= 0.00;
+		public var biom:int					= 0;
+		public var locksLevel:Number		= 0.00;		//уровень замков 0-25
+		public var mechLevel:Number			= 0.00;		//уровень мин и механизмов 0-7
+		public var weaponLevel:Number		= 0.00;		//уровень случайно выпадающего оружия
+		public var enemyLevel:int			= 0;		//левел мобов
+		public var earMult:Number			= 1.00; 	//множитель слуха мобов
 		
 		// Cached tile size in pixels
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		private const TOP_Y:int = 0;
+		private const TOP_Y:int				= 0;
+		private const LEFT_X:int			= 0;
 		private var BOTTOM_Y:int;
-		private const LEFT_X:int = 0;
 		private var RIGHT_X:int;
 
 		// Precomputed for inverse multiplication instead of division 
@@ -277,7 +289,7 @@ package fe.loc {
 			rad=land.act.rad;
 			wrad=land.act.wrad;
 			wdam=land.act.wdam;
-			wtipdam=land.act.wtipdam;
+			wtipdam = land.act.wtipdam;
 			tipWater=land.act.tipWater;
 			color=land.act.color;
 			visMult=land.act.visMult;
@@ -792,7 +804,7 @@ package fe.loc {
 			}
 			
 			// Create the item
-			var item:Item = new Item(itemID, 1);
+			var item:InventoryItem = new InventoryItem(itemID);
 			// Use the item to create a visible loot item
 			var l:Loot = new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
 			

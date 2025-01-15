@@ -359,7 +359,7 @@ package fe.inter {
 			if (tip == 1) { // Weapon 
 				var w:Weapon = WeaponManager.reference.weapon(id);
 				
-				if (w.tip == 5) {
+				if (w.tip == "magic") {
 					tip = 3;
 				}
 				else {
@@ -646,10 +646,10 @@ package fe.inter {
 							s += " (-20% ";
 						}
 						
-						if (w.tip == 1) {
+						if (w.tip == "cryo") {
 							s += localize("pip", "rapid");
 						}
-						else if (w.tip == 4) {
+						else if (w.tip == "explosives") {
 							s += localize("pip", "distance");
 						}
 						else {
@@ -707,7 +707,7 @@ package fe.inter {
 				}
 
 				var wrapid:int = w.resultRapid(w.rapid);
-				if (w.tip != 4) {
+				if (w.tip != "explosives") {
 					s += "\n" + localize("pip", "aps") + ": "
 						+ textAsColor("yellow", Number(World.fps / wrapid).toFixed(1));
 
@@ -726,7 +726,7 @@ package fe.inter {
 				s += "\n" + localize("pip", "critch") + ": " + textAsColor("yellow", Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + "%");
 				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", "tipdam" + w.tipDamage));
 
-				if (w.tip < 4 && w.holder > 0) {
+				if (w.tip < "explosives" && w.holder > 0) {
 					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", Res.txt("i", w.ammo));
 					s += "\n" + localize("pip", "holder") + ": " + numberAsColor("yellow", w.holder);
 				}
@@ -734,7 +734,7 @@ package fe.inter {
 				if (w.rashod > 1) {
 					s += " (" + numberAsColor("yellow", w.rashod) + " " + localize("pip", "rashod") + ")";
 				}
-				if (w.tip == 5) {
+				if (w.tip == "magic") {
 					s += "\n" + localize("pip", "dmana") + ": " + numberAsColor("yellow", Math.round(w.mana));
 				}
 				if (w.precision > 0) {
@@ -775,10 +775,10 @@ package fe.inter {
 					sinf = Res.txt("w", w.id, 1);
 				}
 
-				if (World.w.hardInv && w.tip < 4) {
+				if (World.w.hardInv && w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun") {
 					s += "\n" + localize("pip", "mass2") + ": <span class = 'mass'>" + w.mass + "</span>";
 				}
-				else if (World.w.hardInv && w.tip == 4) {
+				else if (World.w.hardInv && w.tip == "explosives") {
 					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getItem(id).m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getItem(id).invCat) + ")";
 				}
 

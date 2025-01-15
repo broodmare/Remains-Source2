@@ -217,7 +217,7 @@ package fe.unit {
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = vis.x;
 			weaponY = vis.y - 110;
 		}

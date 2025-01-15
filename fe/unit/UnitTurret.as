@@ -279,7 +279,7 @@ package fe.unit {
 			newPart('miniexpl');
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
 			if (turrettip==0 || turrettip==4) weaponY = coordinates.Y - 12;
 			else if (turrettip==1) weaponY = coordinates.Y - 60;
@@ -289,7 +289,9 @@ package fe.unit {
 		
 		// [Tear away from a fixed place]
 		public override function otryv():void {
-			if (turrettip==5) return;
+			if (turrettip==5) {
+				return;
+			}
 			
 			if (turrettip==0 || turrettip==2 || turrettip==4) {
 				newPart('iskr_bul',20);
@@ -297,7 +299,11 @@ package fe.unit {
 				aiState=0;
 				currentWeapon.findCel=false;
 				warn=0;
-				if (xp>0) loc.takeXP(xp, coordinates.X, coordinates.Y, true);
+				
+				if (xp>0) {
+					loc.takeXP(xp, coordinates.X, coordinates.Y, true);
+				}
+
 				xp=0;
 			}
 			

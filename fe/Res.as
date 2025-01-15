@@ -353,7 +353,7 @@ package fe {
 		}
 
 		// Retrieves a class by its primary ID, backup ID, and/or an optional default
-		public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
+		public static function getClass(id1:String, id2:String = null, def:Class = null):Class {
 			var r:Class;
 			
 			try {

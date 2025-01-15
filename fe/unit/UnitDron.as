@@ -136,7 +136,7 @@ package fe.unit {
 			else vis.dis.visible=false;
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
 			weaponY = this.boundingBox.top;
 			if (tr>=100) {
