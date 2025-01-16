@@ -12,7 +12,7 @@ package fe.weapon  {
 		public var kick:Boolean = true;
 		
 		// Constructor
-		public function WKick(id:String) {
+		public function WKick() {
 			super();
 			vBullet = visualPunch;	// .SWF Dependency
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );

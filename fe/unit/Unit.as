@@ -630,7 +630,7 @@ package fe.unit {
 				if (node.@armorhp.length()) armor_hp=armor_maxhp=node.@armorhp*hpmult;
 				else armor_hp=armor_maxhp=hp;
 				
-				if (node.@krep.length()) weaponKrep=node.@krep;			//способ держать оружие, 0 - телекинез
+				if (node.@krep.length()) weaponKrep=node.@krep;			//способ держать оружие, 0 - телекинез // fixedToOwner
 				if (node.@dexter.length()) dexter=node.@dexter;			//уклонение
 				if (node.@damage.length()) dam=node.@damage;			//собственный урон
 				if (node.@tipdam.length()) tipDamage=node.@tipdam;		//тип собственного урона
@@ -3160,8 +3160,8 @@ package fe.unit {
 						}
 					}
 					
-					if (bul.weap.ammoFire) {
-						addEffect('burning', bul.weap.ammoFire);
+					if (bul.weap.ammo.incendiaryDamage) {
+						addEffect('burning', bul.weap.ammo.incendiaryDamage);
 						mess = Res.txt('e', 'burning');
 					}
 				}

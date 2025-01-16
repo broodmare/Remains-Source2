@@ -1,61 +1,67 @@
 package fe.unit {
 	
-	import fe.*;
-	import fe.serv.BlitAnim;
+	import fe.World;
+	import fe.WeaponManager;
 	import fe.loc.Tile;
-	import fe.weapon.WPunch;
 	
 	public class UnitMonstrik extends Unit {
 
-		private var optDistAtt:int=100;
-		private var optJumping:Boolean=false;
-		private var optJumpAtt:Boolean=true;
-		private var optAnimAtt:Boolean=false;
-		private var t_punch:int=0;
+		private var optDistAtt:int			= 100;
+		private var optJumping:Boolean		= false;
+		private var optJumpAtt:Boolean		= true;
+		private var optAnimAtt:Boolean		= false;
+		private var t_punch:int				= 0;
+
+		private var aiVis:Number			= 0.50;
 
 		private static var tileY:int = Tile.tileY;
 		
 		// Constructor
-		public function UnitMonstrik(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitMonstrik(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			
 			super(cid, ndif, xml, loadObj);
-			id=cid;
-			if (id=='scorp') id += int(Math.random()*2+1);
+			id = cid;
+			
+			if (id=="scorp") {
+				id += int(Math.random() * 2 + 1);
+			}
+			
 			getXmlParam();
 			initBlit();
-			animState='stay';
-			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
-			sitSpeed=maxSpeed;
-			walkSpeed=maxSpeed;
-			plavdy=accel;
 			
-			if (id=='rat') {
-				optJumping=true;
+			animState = "stay";
+			maxSpeed = maxSpeed*(0.90 + Math.random() * 0.2);
+			sitSpeed = maxSpeed;
+			walkSpeed = maxSpeed;
+			plavdy = accel;
+			
+			if (id == "rat") {
+				optJumping = true;
 			}
 			
-			if (id=='molerat') {
-				optJumping=true;
+			if (id == "molerat") {
+				optJumping = true;
 			}
 			
-			if (id=='scorp1') {
-				optJumpAtt=false;
-				optAnimAtt=true;
-				currentWeapon=new WPunch(this,'scorppunch');
-				childObjs=new Array(currentWeapon);
+			if (id == "scorp1") {
+				optJumpAtt = false;
+				optAnimAtt = true;
+				currentWeapon = WeaponManager.reference.cloneWeapon("scorppunch");
+				childObjs = new Array(currentWeapon);
 			}
 			
-			if (id=='scorp2') {
-				optJumpAtt=false;
-				optAnimAtt=true;
-				currentWeapon=new WPunch(this,'scorp2punch');
-				childObjs=new Array(currentWeapon);
+			if (id == "scorp2") {
+				optJumpAtt = false;
+				optAnimAtt = true;
+				currentWeapon = WeaponManager.reference.cloneWeapon("scorp2punch");
+				childObjs = new Array(currentWeapon);
 			}
 			
-			if (id=='scorp3') {
-				optJumpAtt=false;
-				optAnimAtt=true;
-				currentWeapon=new WPunch(this,'scorp3punch');
-				childObjs=new Array(currentWeapon);
+			if (id == "scorp3") {
+				optJumpAtt = false;
+				optAnimAtt = true;
+				currentWeapon = WeaponManager.reference.cloneWeapon("scorp3punch");
+				childObjs = new Array(currentWeapon);
 			}
 			
 			aiNapr = storona;
@@ -64,25 +70,27 @@ package fe.unit {
 		//сделать героем
 		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
-			if (hero==1) {
-				hp=maxhp=maxhp*2;
+			
+			if (hero == 1) {
+				hp = maxhp = maxhp * 2;
 			}
 		}
 		
 		public override function alarma(nx:Number=-1,ny:Number=-1):void {
-			if (sost==1 && aiState<=1) {
-				super.alarma(nx,ny);
-				aiSpok=maxSpok;
-				aiState=2;
-				shok=Math.floor(Math.random()*5+3);
+			if (sost == 1 && aiState <= 1) {
+				super.alarma(nx, ny);
+				aiSpok = maxSpok;
+				aiState = 2;
+				shok = Math.floor(Math.random() * 5 + 3);
 				budilo(250);
 			}
 		}
 		
 		public override function expl():void {
 			super.expl();
-			if (id=='tarakan') {
-				newPart('shmatok',2,1);
+			
+			if (id == "tarakan") {
+				newPart("shmatok", 2, 1);
 			}
 		}
 		
@@ -90,38 +98,50 @@ package fe.unit {
 			
 			var cframe:int;
 			
-			if (trup && (sost==2 || sost==3)) { //сдох
-				if (stay && animState!='death') {
-					animState='die';
+			if (trup && (sost == 2 || sost == 3)) { //сдох
+				if (stay && animState!="death") {
+					animState = "die";
 				}
-				else animState='death';
+				else {
+					animState = "death";
+				}
 			}
-			else if (t_punch>0){
-				animState='attack';
-				if (t_punch==15) anims[animState].restart();
+			else if (t_punch > 0){
+				animState = "attack";
+				
+				if (t_punch == 15) {
+					anims[animState].restart();
+				}
 			}
 			else {
 				if (stay) {
 					if  (velocity.X == 0) {
-						animState = 'stay';
+						animState = "stay";
 					}
-					else if (velocity.X > 5 || velocity.X < -5) animState = 'run';
-					else  animState = 'walk';
+					else if (velocity.X > 5 || velocity.X < -5) {
+						animState = "run";
+					}
+					else {
+						animState = "walk";
+					}
 				}
 				else if (aiPlav || levit) {
-					animState='plav';
+					animState="plav";
 				}
 				else {
-					animState='jump';
+					animState="jump";
 				}
 			}
+			
 			if (animState!=animState2) {
 				anims[animState].restart();
 				animState2=animState;
 			}
+			
 			if (!anims[animState].st) {
 				blit(anims[animState].id,Math.floor(anims[animState].f));
 			}
+			
 			anims[animState].step();
 		}
 		
@@ -130,13 +150,15 @@ package fe.unit {
 				velocity.Y = -jumpdy * v;
 				velocity.X += storona * accel * 5;
 			}
-			if (!isPlav&&aiPlav) velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
+			
+			if (!isPlav&&aiPlav) {
+				velocity.Y = -jumpdy * 0.60;	//выпрыгивание из воды
+			}
+			
 			if (isPlav) {
 				velocity.Y -= plavdy;
 			}
 		}
-		
-		var aiVis = 0.5;
 		
 		//aiState
 		//0 - стоит на месте
@@ -148,12 +170,15 @@ package fe.unit {
 			
 			var t:Tile;
 			//если сдох, то не двигаться
-			if (sost==3) return;
+			if (sost==3) {
+				return;
+			}
 			
 			if (levit) {
 				if (aiState<=1) {
 					aiSpok=maxSpok;
 				}
+				
 				shok=15;
 			}
 			
@@ -161,7 +186,9 @@ package fe.unit {
 				aiState=0; aiTCh=3; walk=0;
 			}
 			
-			if (t_punch>0) t_punch--;
+			if (t_punch > 0) {
+				t_punch--;
+			}
 
 			var jmp:Number=0;
 			
@@ -174,39 +201,50 @@ package fe.unit {
 			//таймер смены состояний
 			if (aiTCh>0) aiTCh--;
 			else {
-				if (aiSpok==0) {
-					aiState = int(Math.random()*2);
-					storona=aiNapr;
+				if (aiSpok == 0) {
+					aiState = int(Math.random() * 2);
+					storona = aiNapr;
 				}
-				if (aiSpok>0) aiState=2;
-				aiTCh = int(Math.random()*50)+40;
+				
+				if (aiSpok > 0) {
+					aiState = 2;
+				}
+				
+				aiTCh = int(Math.random() * 50) + 40;
 			}
 			
 			//атаковать оружием
-			if (optAnimAtt && aiState==2 && celUnit && celDY<40 && celDY>-80 && celDX<80 && celDX>-80 && isrnd(0.7)) {
-				aiState=3;
-				aiTCh=15;
+			if (optAnimAtt && aiState == 2 && celUnit && celDY < 40 && celDY > -80 && celDX < 80 && celDX > -80 && isrnd(0.70)) {
+				aiState = 3;
+				aiTCh = 15;
 			}
 			
 			//поиск цели
 			//trace(aiState)
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.w.enemyAct > 1 && aiTCh % 10 == 1) {
 				if (findCel() && celUnit) {
-					aiSpok=maxSpok;
+					aiSpok = maxSpok;
 				}
 				else {
-					setCel(null, celX+Math.random()*80-40, celY);
-					if (aiSpok>0) {
+					setCel(null, celX + Math.random() * 80 - 40, celY);
+					if (aiSpok > 0) {
 						aiSpok--;
 					}
 				}
-				if (celDY>40) aiVNapr=1;		//вниз
-				else if(celDY<-40) aiVNapr=-1;	//прыжок
-				else aiVNapr=0;
+				
+				if (celDY > 40) {
+					aiVNapr = 1;		//вниз
+				}
+				else if(celDY < -40) {
+					aiVNapr = -1;	//прыжок
+				}
+				else {
+					aiVNapr = 0;
+				}
 			}
 			//в возбуждённом состоянии наблюдательность увеличивается
-			if (aiSpok==0) {
-				vision=aiVis/2;
+			if (aiSpok == 0) {
+				vision=aiVis * 0.50;
 				celY = coordinates.Y - this.boundingBox.height;
 				celX = coordinates.X + this.boundingBox.width * storona * 2;
 			}
@@ -215,157 +253,246 @@ package fe.unit {
 			}
 			
 			//поведение в воде
-			if (isPlav && aiState==0) aiState=1;
-			if (aiPlav>0) aiPlav--;
-			if (isPlav) aiPlav=5;
+			if (isPlav && aiState == 0) {
+				aiState = 1;
+			}
+			
+			if (aiPlav > 0) {
+				aiPlav--;
+			}
+			
+			if (isPlav) {
+				aiPlav = 5;
+			}
 			
 			//скорость
 			maxSpeed=walkSpeed;
-			if (aiState==2) {
-				maxSpeed=runSpeed;
+			
+			if (aiState == 2) {
+				maxSpeed = runSpeed;
 			}
-			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
-			walk=0;
+			
+			if (velocity.X * diagon > 0) {
+				maxSpeed *= 0.5;
+			}
+			
+			walk = 0;
 
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
-				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
-				if (isPlav) jump();
+				if (stay && shX1>0.5 && aiNapr<0) {
+					turnX=1;
+				}
+				
+				if (stay && shX2>0.5 && aiNapr>0) {
+					turnX=-1;
+				}
+				
+				if (isPlav) {
+					jump();
+				}
 			}
+			
 			if (aiState==1) {
 				if (aiNapr == -1) {
-					if (velocity.X > -maxSpeed) velocity.X -= accel;
+					if (velocity.X > -maxSpeed) {
+						velocity.X -= accel;
+					}
+					
 					walk = -1;
 				}
 				else {
-					if (velocity.X < maxSpeed) velocity.X += accel;
+					if (velocity.X < maxSpeed) {
+						velocity.X += accel;
+					}
+					
 					walk = 1;
 				}
 				//поворачиваем, если впереди некуда бежать
-				if (stay && shX1>0.5 && aiNapr<0) {
-					if (optJumping && isrnd(0.1)) {
-						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
-						if (t.phis==1 || t.shelf) {
-							jump(0.5);
+				if (stay && shX1 > 0.50 && aiNapr < 0) {
+					if (optJumping && isrnd(0.10)) {
+						t = loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
+						
+						if (t.phis == 1 || t.shelf) {
+							jump(0.50);
 						}
-						else turnX=1;
-					}
-					else turnX=1;
-				}
-				if (stay && shX2>0.5 && aiNapr>0) {
-					if (optJumping && isrnd(0.1)) {
-						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
-						if (t.phis==1 || t.shelf) {
-							jump(0.5);
+						else {
+							turnX = 1;
 						}
-						else turnX=-1;
 					}
-					else turnX=-1;
+					else {
+						turnX = 1;
+					}
 				}
-				if (stay && turnX!=0) {
-					aiNapr=storona=turnX;
-					turnX=0;
+				
+				if (stay && shX2 > 0.50 && aiNapr > 0) {
+					if (optJumping && isrnd(0.10)) {
+						t = loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
+						if (t.phis == 1 || t.shelf) {
+							jump(0.50);
+						}
+						else {
+							turnX = -1;
+						}
+					}
+					else {
+						turnX = -1;
+					}
 				}
+				
+				if (stay && turnX != 0) {
+					aiNapr = storona = turnX;
+					turnX = 0;
+				}
+				
 				//в воде всплываем
 				if (isPlav) {
 					jump();
-					if (turnX!=0) {
-						aiNapr=storona=turnX;
-						turnX=0;
+					
+					if (turnX != 0) {
+						aiNapr = storona = turnX;
+						turnX = 0;
 					}
 				}
 				//в возбуждённом или атакующем состоянии
 			}
-			else if (aiState==2) {
+			else if (aiState == 2) {
 				//определить, куда двигаться
-				if (aiTCh%10==1) {
-					if (isrnd(0.9)) {
-						if (celDY>80) throu=true;
-						if (optJumping && aiVNapr<0 && isrnd()) jmp=1;
+				if (aiTCh % 10 == 1) {
+					if (isrnd(0.90)) {
+						if (celDY > 80) {
+							throu = true;
+						}
+						
+						if (optJumping && aiVNapr<0 && isrnd()) {
+							jmp = 1;
+						}
 					}
 					else {
-						throu=false;
-						jmp=0;
+						throu = false;
+						jmp = 0;
 					}
-					if (isrnd(0.7)) {
-						if (celDX>80) aiNapr=storona=1;
-						if (celDX<-80) aiNapr=storona=-1;
+					if (isrnd(0.70)) {
+						if (celDX > 80) {
+							aiNapr = storona = 1;
+						}
+						
+						if (celDX < -80) {
+							aiNapr = storona = -1;
+						}
 					}
 				}
-				if (isPlav && isrnd(0.7)&& celDY<0) {
-					jmp=1;
+				
+				if (isPlav && isrnd(0.70)&& celDY < 0) {
+					jmp = 1;
 				}
+				
 				if (levit) {
-					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
+					if (aiNapr == -1) {
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= levitaccel;
+						}
 					}
-					else  if (aiNapr==1){
-						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+					else if (aiNapr == 1){
+						if (velocity.X < maxSpeed) {
+							velocity.X += levitaccel;
+						}
 					}
 				}
 				else if (stay || isPlav) {
-					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) velocity.X -= accel;
-						walk=-1;
+					if (aiNapr == -1) {
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= accel;
+						}
+						
+						walk = -1;
 					}
 					else if (aiNapr==1){
-						if (velocity.X < maxSpeed) velocity.X += accel;
+						if (velocity.X < maxSpeed) {
+							velocity.X += accel;
+						}
+						
 						walk=1;
 					}
 				}
 				else {
 					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= accel * 0.25;
+						}
 					}
-					else  if (aiNapr==1){
-						if (velocity.X < maxSpeed) velocity.X += accel / 4;
+					else if (aiNapr==1){
+						if (velocity.X < maxSpeed) {
+							velocity.X += accel * 0.25;
+						}
 					}
 				}
-				if (optJumping && stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
+				
+				if (optJumping && stay && isrnd(0.50) && aiVNapr <= 0 && (shX1 > 0.50 && aiNapr < 0 || shX2 > 0.50 && aiNapr > 0)) {
+					jmp = 0.50;
+				}
+				
 				//если наткнулся на препятствие
-				if (turnX!=0) {
-					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
-						aiNapr=storona=turnX;
+				if (turnX != 0) {
+					if (celDX * aiNapr < 0) {				//повернуться, если цель сзади
+						aiNapr = storona = turnX;
 					}
 					else {							//попытаться перепрыгнуть
 						aiTTurn--;
-						if (isrnd(0.03) || turnY>0 || kray) aiTTurn-=10;
-						else jmp=1;
-						kray=false;
-						if (aiTTurn<0) {
-							aiNapr=storona=turnX;
-							aiTTurn=Math.floor(Math.random()*20)+5;
+						
+						if (isrnd(0.03) || turnY > 0 || kray) {
+							aiTTurn -= 10;
+						}
+						else {
+							jmp = 1;
+						}
+						
+						kray = false;
+						
+						if (aiTTurn < 0) {
+							aiNapr = storona = turnX;
+							aiTTurn = Math.floor(Math.random() * 20) + 5;
 						}
 					}
-					turnX=turnY=0;
+					
+					turnX = 0;
+					turnY = 0;
 				}
-				if (jmp>0) {
+				
+				if (jmp > 0) {
 					jump(jmp);
-					jmp=0;
+					jmp = 0;
 				}
-				if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80) {
+				
+				if (celUnit && celDX < optDistAtt && celDX > -optDistAtt && celDY < 80 && celDY > -80) {
 					attack();
 				}
 			}
-			else if (aiState==3) {
-				if (t_punch==0) {
-					if (celDY<-40) {
+			else if (aiState == 3) {
+				if (t_punch == 0) {
+					if (celDY < -40) {
 						jump();
-						velocity.X = walk * 1.5;
+						velocity.X = walk * 1.50;
 					}
+					
 					currentWeapon.attack();
-					t_punch=15;
+					t_punch = 15;
 				}
 			}
-			if (coordinates.Y > loc.spaceY * tileY-80) throu = false;
+			
+			if (coordinates.Y > loc.spaceY * tileY-80) {
+				throu = false;
+			}
 		}
 		
-		public function attack() {
-			if (celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
-				attKorp(celUnit,1);
+		public function attack():void {
+			if (celUnit && shok <= 0) {	//атака холодным оружием без левитации или корпусом
+				attKorp(celUnit, 1);
 			}
-			if (optJumpAtt) jump(0.5);
+			
+			if (optJumpAtt) {
+				jump(0.50);
+			}
 		}	
 	}	
 }

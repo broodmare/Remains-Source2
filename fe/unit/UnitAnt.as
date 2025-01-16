@@ -1,7 +1,7 @@
 package fe.unit {
 	
-	import fe.*;
-	import fe.serv.BlitAnim;
+	import fe.World;
+	import fe.WeaponManager;
 	import fe.loc.Tile;
 	import fe.weapon.Weapon;
 	
@@ -9,13 +9,18 @@ package fe.unit {
 
 		public var tr:int;
 		
-		private var optDistAtt:int=100;
-		private var optJumping:Boolean=false;
-		private var optJumpAtt:Boolean=true;
-		private var optAnimAtt:Boolean=false;
-		private var t_punch:int=0;
+		private var optDistAtt:int		= 100;
+		private var optJumping:Boolean	= false;
+		private var optJumpAtt:Boolean	= true;
+		private var optAnimAtt:Boolean	= false;
+		private var t_punch:int			= 0;
 		
-		private var vstorona:int=0;
+		private var vstorona:int		= 0;
+
+		private var aiLaz:int			= 0;
+		private var aiNeedLaz:int		= 0;
+		
+		private var aiVis:Number		= 0.50;
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -25,39 +30,53 @@ package fe.unit {
 			
 			super(cid, ndif, xml, loadObj);
 			
-			if (loadObj && loadObj.tr) tr=loadObj.tr;		//из загружаемого объекта
-			else if (xml && xml.@tr.length()) tr=xml.@tr;	//из настроек карты
-			else if (cid) tr=int(cid);						//из заданного идентификатора cid
-			else tr=1;										//случайно по параметру ndif
+			// [from loadable object]
+			if (loadObj && loadObj.tr) {
+				tr = loadObj.tr;
+			}
+			// [from map settings]
+			else if (xml && xml.@tr.length()) {
+				tr = xml.@tr;
+			}
+			// [from given cid]
+			else if (cid) {
+				tr = int(cid);
+			}
+			// [randomly by ndif parameter]
+			else {
+				tr = 1;
+			}
 
-			id = 'ant' + tr;
+			id = "ant" + tr;
+			
 			getXmlParam();
 			initBlit();
-			animState='stay';
-			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
-			sitSpeed=maxSpeed;
-			walkSpeed=maxSpeed;
-			lazSpeed=maxSpeed;
-			plavdy=accel/4;
+
+			animState = "stay";
+			maxSpeed = maxSpeed * (0.90 + Math.random() * 0.20);
+			sitSpeed = maxSpeed;
+			walkSpeed = maxSpeed;
+			lazSpeed = maxSpeed;
+			plavdy = accel * 0.25;
 			
-			if (tr==3) {
-				currentWeapon=new Weapon(this,'antfire');
-				childObjs=new Array(currentWeapon);
+			if (tr == 3) {
+				currentWeapon = WeaponManager.reference.cloneWeapon("antfire");
+				childObjs = new Array(currentWeapon);
 			}
 			
-			aiNapr=storona;
+			aiNapr = storona;
 		}
 		
-		//сделать героем
+		// [Make a hero]
 		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
-			if (hero==1) {
-				skin+=4;
+			if (hero == 1) {
+				skin += 4;
 			}
 		}
 		
 		public override function getXmlParam(mid:String=null):void {
-			super.getXmlParam('ant');
+			super.getXmlParam("ant");
 			super.getXmlParam();
 		}
 
@@ -102,31 +121,31 @@ package fe.unit {
 		public override function animate():void {
 			var cframe:int;
 			if (trup && (sost==2 || sost==3)) { //сдох
-				if (stay && animState!='death') {
-					animState='die';
-				} else animState='death';
+				if (stay && animState!="death") {
+					animState="die";
+				} else animState="death";
 			}
 			else if (t_punch>0){
-				animState='attack';
+				animState="attack";
 				if (t_punch==15) anims[animState].restart();
 			}
 			else {
 				if (stay) {
 					if  (velocity.X == 0) {
-						animState='stay';
+						animState="stay";
 					}
-					else if  (velocity.X > 5 || velocity.X < -5) animState = 'run';
-					else  animState='walk';
+					else if  (velocity.X > 5 || velocity.X < -5) animState = "run";
+					else  animState="walk";
 				}
 				else if (isLaz) {
-					if  (velocity.Y > 1 || velocity.Y < -1) animState='walk';
-					else  animState='stay';
+					if  (velocity.Y > 1 || velocity.Y < -1) animState="walk";
+					else  animState="stay";
 				}
 				else if (aiPlav || levit) {
-					animState='plav';
+					animState="plav";
 				}
 				else {
-					animState='jump';
+					animState="jump";
 				}
 			}
 			if (animState!=animState2) {
@@ -149,11 +168,6 @@ package fe.unit {
 				velocity.Y -= plavdy;
 			}
 		}
-		
-		private var aiLaz:int=0;
-		private var aiNeedLaz:int=0;
-		
-		private var aiVis=0.5;
 		
 		//aiState
 		//0 - стоит на месте

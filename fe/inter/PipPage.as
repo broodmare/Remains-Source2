@@ -714,10 +714,10 @@ package fe.inter {
 					s += "\n" + localize("pip", "dps") + ": "
 						+ textAsColor("yellow", Number((wdam + wdamexpl) * w.kol * World.fps / wrapid).toFixed(1));
 
-					if (w.holder) {
+					if (w.magazineCapacity) {
 						s += " (" + textAsColor("yellow",
 								Number((wdam + wdamexpl) * w.kol * World.fps
-									/ (wrapid + w.reload * w.reloadMult / w.holder * w.rashod)
+									/ (wrapid + w.reload * w.reloadMult / w.magazineCapacity * w.rashod)
 								).toFixed(1))
 							+ ")";
 					}
@@ -726,9 +726,9 @@ package fe.inter {
 				s += "\n" + localize("pip", "critch") + ": " + textAsColor("yellow", Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + "%");
 				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", "tipdam" + w.tipDamage));
 
-				if (w.tip < "explosives" && w.holder > 0) {
-					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", Res.txt("i", w.ammo));
-					s += "\n" + localize("pip", "holder") + ": " + numberAsColor("yellow", w.holder);
+				if (w.tip < "explosives" && w.magazineCapacity > 0) {
+					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", w.ammo.name);
+					s += "\n" + localize("pip", "holder") + ": " + numberAsColor("yellow", w.magazineCapacity);
 				}
 
 				if (w.rashod > 1) {
@@ -833,38 +833,31 @@ package fe.inter {
 			else if (tip == Item.L_AMMO) {
 				var ammo:Object = ItemManager.reference.getItem(id);
 				
-				if (WeaponManager.reference.weaponData(id) != null) {
-					s = Res.txt("w", id, 1);
-				}
-				else if ("base" in ammo) {
-					s = Res.txt("i", ammo.base, 1);
-					if ("mod" in ammo) {
-						s += "\n\n" + Res.txt("p", "ammomod_" + ammo.mod, 1);
-					}
-				}
-				else {
-					s = Res.txt("i", id, 1);
+				// Get the name of the base ammo type (Eg. '9mm')
+				s = Res.txt("i", ammo.base, 1);
+				
+				// Add the type of ammo variant if applicable (Eg. 'High Explosive)
+				if ("mod" in ammo) {
+					// Forms the localization string key as "STR_AMMO_FLECHETTE"
+					s += "\n\n" + Res.txt("p", "STR_AMMO_" + ammo.mod.toUpperCase(), 1);
 				}
 
 				s += "\n";
+
 				if ("damage" in ammo) {
-					s += "\n" + localize("pip", "damage") + ": x"
-						+ textAsColor("yellow", ammo.damage);
+					s += "\n" + localize("pip", "damage") + ": x" + textAsColor("yellow", ammo.damage);
 				}
 				
 				if ("pier" in ammo) {
-					s += "\n" + localize("pip", "pier") + ": "
-						+ textAsColor("yellow", ammo.pier);
+					s += "\n" + localize("pip", "pier") + ": " + textAsColor("yellow", ammo.pier);
 				}
 				
 				if ("armor" in ammo) {
-					s += "\n" + localize("pip", "tarmor") + ": x"
-						+ textAsColor("yellow", ammo.armor);
+					s += "\n" + localize("pip", "tarmor") + ": x" + textAsColor("yellow", ammo.armor);
 				}
 				
 				if ("prec" in ammo) {
-					s += "\n" + localize("pip", "prec") + ": x"
-						+ textAsColor("yellow", ammo.prec);
+					s += "\n" + localize("pip", "prec") + ": x" + textAsColor("yellow", ammo.prec);
 				}
 				
 				if ("det" in ammo) {

@@ -5860,41 +5860,41 @@
             "string": "AP"
         },
         "ammomod_0": {
-            "string": "standard"
+            "string": "Standard"
         },
-        "ammomod_1": {
+        "STR_AMMO_AP": {
             "string": "armor-piercing",
             "description": "Armor-piercing round has a special bullet with a hard core and a soft shell, designed to pierce armor. However, such bullets are less effective against unprotected targets and have a weaker stopping action"
         },
-        "ammomod_2": {
+        "STR_AMMO_HP": {
             "string": "expansive",
             "description": "The expansive round has a bullet that deforms when it hits a soft environment, such as the victim`s body. Such bullets do more damage to unprotected targets, but at the same time they are very bad at penetrating armor, therefore are not effective against armored targets"
         },
-        "ammomod_3": {
+        "STR_AMMO_FLECHETTE": {
             "string": "armor-piercing",
             "description": "In this ammo, 5 arrow-shaped bullets are used instead of the usual shot, good for penetrating armor but having a weaker stopping action"
         },
-        "ammomod_4": {
+        "STR_AMMO_INCENDIARY": {
             "string": "incendiary",
             "description": "A cartridge that has a magically enchanted bullet that ignites the target on impact"
         },
-        "ammomod_5": {
+        "STR_AMMO_MAGIC": {
             "string": "magical",
             "description": "A cartridge that allows exploiting magical energy technologies with common firearms. When hitting a target, the bullet from such a cartridge turns into a ball of plasma"
         },
-        "ammomod_6": {
+        "STR_AMMO_OVERCHARGE": {
             "string": "enhanced charge",
             "description": "A battery of increased power. Improves damage and gives weapons ability to burn armor, but a weapon wears out more quickly"
         },
-        "ammomod_7": {
+        "STR_AMMO_OPTIMIZED": {
             "string": "optimized",
             "description": "Fuel with special additives that significantly increase the combustion temperature"
         },
-        "ammomod_8": {
+        "STR_AMMO_PLASMA": {
             "string": "plasma",
             "description": "A more powerful magical energy model of grenades"
         },
-        "ammomod_9": {
+        "STR_AMMO_PULSE": {
             "string": "pulse",
             "description": "Grenade with a pulse charge, designed for fighting against robots"
         },

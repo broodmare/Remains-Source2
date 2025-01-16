@@ -7,35 +7,42 @@ package fe.unit {
 	public class VirtualUnit extends Unit {
 
 		public var owner:Obj;
-		var nTipDam:int=-1;
+		private var nTipDam:String = "";
 
 		// Constructor
-		public function VirtualUnit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			activateTrap=0;
-			dexter=0;
-			mat=1;
-			showNumbs=false;
-			isSats=false;
-			doop=true;
-			levitPoss=false;
-			if (cid!=null) {
-				nTipDam=int(cid);
+		public function VirtualUnit(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
+			activateTrap	= 0;
+			dexter			= 0;
+			mat				= 1;
+			showNumbs		= false;
+			isSats			= false;
+			doop			= true;
+			levitPoss		= false;
+			
+			if (cid != null) {
+				nTipDam = cid;
 			}
 		}
 		
-		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
-			if (nTipDam>=0 && nTipDam!=tip) {
+		// Changed nTipDam to a String, old check was (nTipDam >= 0)
+		public override function damage(dam:Number, tip:String, bul:Bullet = null, tt:Boolean = false):Number {
+			if (nTipDam != "" && nTipDam != tip) {
 				return 0;
 			}
-			owner.command('dam');
+			
+			owner.command("dam");
+			
 			return 1;
 		}
 		
-		public override function udarBullet(bul:Bullet, sposob:int=0):int {
-			if (nTipDam>=0 && nTipDam!=bul.tipDamage) {
+		// Changed nTipDam to a String, old check was (nTipDam >= 0)
+		public override function udarBullet(bul:Bullet, sposob:int = 0):int {
+			if (nTipDam != "" && nTipDam != bul.tipDamage) {
 				return 0;
 			}
-			owner.command('dam');
+			
+			owner.command("dam");
+			
 			return 1;
 		}
 

@@ -9,7 +9,7 @@ package fe.weapon {
 		public var zadok:Boolean = false;	// [Can act backwards]
 
 		// Constructor
-		public function WPunch(id:String) {
+		public function WPunch() {
 			super();
 			vBullet = visualPunch;
 		}
@@ -42,7 +42,7 @@ package fe.weapon {
 				
 				b.liv=5;
 				
-				if (zadok && (rot < Math.PI / 2 && rot > -Math.PI / 2 && owner.storona < 0 || (rot > Math.PI / 2 || rot < -Math.PI / 2) && owner.storona > 0)) {	//kick
+				if (zadok && (rot < HALF_PI && rot > -HALF_PI && owner.storona < 0 || (rot > HALF_PI || rot < -HALF_PI) && owner.storona > 0)) {	//kick
 					b.otbros = otbros * 1.5;
 					b.damage = damage * 2 * damMult;
 					

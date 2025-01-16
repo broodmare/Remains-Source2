@@ -8,7 +8,7 @@ package fe.weapon {
 
 	public class WMagic extends Weapon {
 
-		public function WMagic(id:String) {
+		public function WMagic() {
 			super();
 			
 			if (prep) {

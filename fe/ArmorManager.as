@@ -290,7 +290,7 @@ package fe {
 			if (armor.owner && armor.active) {
 				var koef:Number = 1.00;
 				
-				if (armor.hp < armor.maxhp / 2) {
+				if (armor.hp < armor.maxhp * 0.50) {
 					koef = 0.5 + armor.hp / armor.maxhp;
 				}
 				

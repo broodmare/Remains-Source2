@@ -5964,7 +5964,7 @@
     },
     "dinamit": {
         "id": "dinamit",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 0,
@@ -5984,7 +5984,7 @@
     },
     "hgren": {
         "id": "hgren",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 0,
@@ -6004,7 +6004,7 @@
     },
     "grenade": {
         "id": "grenade",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 1,
@@ -6024,7 +6024,7 @@
     },
     "gasgr": {
         "id": "gasgr",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 1,
@@ -6046,7 +6046,7 @@
     },
     "acidgr": {
         "id": "acidgr",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 1,
@@ -6072,7 +6072,7 @@
     },
     "plagr": {
         "id": "plagr",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 2,
@@ -6092,7 +6092,7 @@
     },
     "impgr": {
         "id": "impgr",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 3,
@@ -6112,7 +6112,7 @@
     },
     "cryogr": {
         "id": "cryogr",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 3,
@@ -6133,7 +6133,7 @@
     },
     "molotov": {
         "id": "molotov",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "perk": "pyro",
@@ -6158,7 +6158,7 @@
     },
     "fgren": {
         "id": "fgren",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "perk": "pyro",
@@ -6182,7 +6182,7 @@
     },
     "spgren": {
         "id": "spgren",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "lvl": 5,
@@ -6203,7 +6203,7 @@
     },
     "hmine": {
         "id": "hmine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6231,7 +6231,7 @@
     },
     "mine": {
         "id": "mine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6259,7 +6259,7 @@
     },
     "cryomine": {
         "id": "cryomine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6286,7 +6286,7 @@
     },
     "plamine": {
         "id": "plamine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6314,7 +6314,7 @@
     },
     "impmine": {
         "id": "impmine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6342,7 +6342,7 @@
     },
     "x37": {
         "id": "x37",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6370,7 +6370,7 @@
     },
     "zebmine": {
         "id": "zebmine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6398,7 +6398,7 @@
     },
     "balemine": {
         "id": "balemine",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6426,7 +6426,7 @@
     },
     "dbomb": {
         "id": "dbomb",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 2,
@@ -6446,7 +6446,7 @@
     },
     "bomb": {
         "id": "bomb",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 2,
@@ -6466,7 +6466,7 @@
     },
     "exc4": {
         "id": "exc4",
-        "tip": 4,
+        "tip": "throwable",
         "cat": 9,
         "skill": 5,
         "throwtip": 2,
@@ -6486,7 +6486,7 @@
     },
     "telebul": {
         "id": "telebul",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 7,
         "perslvl": 0,
@@ -6513,7 +6513,7 @@
     },
     "mbul": {
         "id": "mbul",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 2,
@@ -6541,7 +6541,7 @@
     },
     "mbul^1": {
         "id": "mbul^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 2,
@@ -6570,7 +6570,7 @@
     },
     "ice": {
         "id": "ice",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 4,
@@ -6598,7 +6598,7 @@
     },
     "ice^1": {
         "id": "ice^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 4,
@@ -6627,7 +6627,7 @@
     },
     "dragon": {
         "id": "dragon",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 6,
@@ -6663,7 +6663,7 @@
     },
     "dragon^1": {
         "id": "dragon^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 6,
@@ -6700,7 +6700,7 @@
     },
     "blades": {
         "id": "blades",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 8,
@@ -6728,7 +6728,7 @@
     },
     "blades^1": {
         "id": "blades^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 8,
@@ -6757,7 +6757,7 @@
     },
     "lightning": {
         "id": "lightning",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 10,
@@ -6784,7 +6784,7 @@
     },
     "lightning^1": {
         "id": "lightning^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 10,
@@ -6812,7 +6812,7 @@
     },
     "fireball": {
         "id": "fireball",
-        "tip": 5,
+        "tip": "magic",
         "cat": 6,
         "skill": 6,
         "perslvl": 12,
@@ -6845,7 +6845,7 @@
     },
     "fireball^1": {
         "id": "fireball^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 6,
         "skill": 6,
         "perslvl": 12,
@@ -6879,7 +6879,7 @@
     },
     "mray": {
         "id": "mray",
-        "tip": 5,
+        "tip": "magic",
         "cat": 5,
         "skill": 6,
         "perslvl": 14,
@@ -6911,7 +6911,7 @@
     },
     "mray^1": {
         "id": "mray^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 5,
         "skill": 6,
         "perslvl": 14,
@@ -6944,7 +6944,7 @@
     },
     "defwave": {
         "id": "defwave",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 16,
@@ -6972,7 +6972,7 @@
     },
     "defwave^1": {
         "id": "defwave^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 16,
@@ -7001,7 +7001,7 @@
     },
     "eclipse": {
         "id": "eclipse",
-        "tip": 5,
+        "tip": "magic",
         "cat": 6,
         "skill": 6,
         "perslvl": 18,
@@ -7033,7 +7033,7 @@
     },
     "eclipse^1": {
         "id": "eclipse^1",
-        "tip": 5,
+        "tip": "magic",
         "cat": 6,
         "skill": 6,
         "perslvl": 18,
@@ -7066,7 +7066,7 @@
     },
     "dray": {
         "id": "dray",
-        "tip": 5,
+        "tip": "magic",
         "cat": 5,
         "skill": 6,
         "perslvl": 20,
@@ -7091,7 +7091,7 @@
     },
     "udar": {
         "id": "udar",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 7,
         "perslvl": 22,
@@ -7118,7 +7118,7 @@
     },
     "skybolt": {
         "id": "skybolt",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 24,
@@ -7305,7 +7305,7 @@
     },
     "a_magic": {
         "id": "a_magic",
-        "tip": 5,
+        "tip": "magic",
         "cat": 2,
         "skill": 6,
         "perslvl": 28,
@@ -7331,13 +7331,13 @@
     },
     "paint": {
         "id": "paint",
-        "tip": 0,
+        "tip": "punch",
         "phis_massa": 1,
         "sats_noSats": true
     },
     "punch": {
         "id": "punch",
-        "tip": 0,
+        "tip": "punch",
         "cat": 0,
         "skill": 1,
         "tipdec": 5,
@@ -7353,70 +7353,70 @@
     },
     "sp_slow": {
         "id": "sp_slow",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 3,
         "spell": true
     },
     "sp_mwall": {
         "id": "sp_mwall",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 6,
         "spell": true
     },
     "sp_blast": {
         "id": "sp_blast",
-        "tip": 5,
+        "tip": "magic",
         "skill": 7,
         "perslvl": 9,
         "spell": true
     },
     "sp_cryst": {
         "id": "sp_cryst",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 12,
         "spell": true
     },
     "sp_kdash": {
         "id": "sp_kdash",
-        "tip": 5,
+        "tip": "magic",
         "skill": 7,
         "perslvl": 15,
         "spell": true
     },
     "sp_mshit": {
         "id": "sp_mshit",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 18,
         "spell": true
     },
     "sp_moon": {
         "id": "sp_moon",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 20,
         "spell": true
     },
     "sp_gwall": {
         "id": "sp_gwall",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 21,
         "spell": true
     },
     "sp_invulner": {
         "id": "sp_invulner",
-        "tip": 5,
+        "tip": "magic",
         "skill": 6,
         "perslvl": 24,
         "spell": true
     },
     "necrbullet": {
         "id": "necrbullet",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 22,
         "char_rapid": 6,
         "char_prec": 0,
@@ -7433,7 +7433,7 @@
     },
     "mercgr": {
         "id": "mercgr",
-        "tip": 4,
+        "tip": "throwable",
         "throwtip": 2,
         "char_rapid": 90,
         "char_damexpl": 250,
@@ -7449,7 +7449,7 @@
     },
     "alilight": {
         "id": "alilight",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 50,
         "char_rapid": 35,
         "char_prep": 12,
@@ -7468,7 +7468,7 @@
     },
     "alipsy": {
         "id": "alipsy",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 5,
         "char_rapid": 5,
         "char_prec": 0,
@@ -7485,7 +7485,7 @@
     },
     "alilight2": {
         "id": "alilight2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 70,
         "char_rapid": 20,
         "char_prec": 0,
@@ -7503,7 +7503,7 @@
     },
     "aliblade": {
         "id": "aliblade",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 24,
         "char_rapid": 10,
         "char_prec": 12,
@@ -7522,7 +7522,7 @@
     },
     "alipsy2": {
         "id": "alipsy2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 15,
         "char_rapid": 30,
         "char_prec": 0,
@@ -7539,7 +7539,7 @@
     },
     "alimray": {
         "id": "alimray",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 12,
         "char_pier": 30,
         "char_rapid": 1,
@@ -7565,7 +7565,7 @@
     },
     "zombivenom": {
         "id": "zombivenom",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 15,
         "char_damage": 0,
         "char_expltip": 2,
@@ -7582,7 +7582,7 @@
     },
     "zombiacid": {
         "id": "zombiacid",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 20,
         "char_damage": 0,
         "char_expltip": 3,
@@ -7602,7 +7602,7 @@
     },
     "zombinecro": {
         "id": "zombinecro",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 15,
         "char_kol": 5,
         "char_rapid": 60,
@@ -7619,7 +7619,7 @@
     },
     "zombipink": {
         "id": "zombipink",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 25,
         "char_damage": 0,
         "char_expltip": 2,
@@ -7636,7 +7636,7 @@
     },
     "bloat": {
         "id": "bloat",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 5,
         "char_rapid": 60,
         "char_prec": 6,
@@ -7649,7 +7649,7 @@
     },
     "ship": {
         "id": "ship",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 3,
         "char_rapid": 80,
         "char_prec": 8,
@@ -7666,7 +7666,7 @@
     },
     "pinkbloat": {
         "id": "pinkbloat",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 15,
         "char_rapid": 60,
         "char_prec": 6,
@@ -7681,7 +7681,7 @@
     "scorppunch": {
         "id": "scorppunch",
         "punch": 1,
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 12,
         "char_rapid": 15,
         "char_tipdam": 14,
@@ -7696,7 +7696,7 @@
     "scorp2punch": {
         "id": "scorp2punch",
         "punch": 1,
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 18,
         "char_rapid": 15,
         "char_tipdam": 14,
@@ -7711,7 +7711,7 @@
     "scorp3punch": {
         "id": "scorp3punch",
         "punch": 1,
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 48,
         "char_rapid": 15,
         "char_tipdam": 14,
@@ -7725,7 +7725,7 @@
     },
     "antfire": {
         "id": "antfire",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 2,
         "char_rapid": 2,
         "char_prec": 4,
@@ -7748,7 +7748,7 @@
     },
     "slime": {
         "id": "slime",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 5,
         "char_rapid": 10,
         "char_prec": 0,
@@ -7765,7 +7765,7 @@
     },
     "pinkslime": {
         "id": "pinkslime",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 25,
         "char_rapid": 10,
         "char_prec": 0,
@@ -7782,7 +7782,7 @@
     },
     "phoenix": {
         "id": "phoenix",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 2,
         "char_rapid": 2,
         "char_prec": 8,
@@ -7808,7 +7808,7 @@
     },
     "robolaser": {
         "id": "robolaser",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 7,
         "char_rapid": 30,
         "char_prec": 10,
@@ -7826,7 +7826,7 @@
     },
     "robospark": {
         "id": "robospark",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 12,
         "char_rapid": 40,
         "char_prec": 0,
@@ -7844,7 +7844,7 @@
     },
     "robolaser2": {
         "id": "robolaser2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 11,
         "char_rapid": 30,
         "char_prec": 10,
@@ -7864,7 +7864,7 @@
     },
     "robospark2": {
         "id": "robospark2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 16,
         "char_rapid": 40,
         "char_prec": 0,
@@ -7882,7 +7882,7 @@
     },
     "roboplasma": {
         "id": "roboplasma",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 22,
         "char_rapid": 40,
         "char_prec": 10,
@@ -7899,7 +7899,7 @@
     },
     "roboplasma2": {
         "id": "roboplasma2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 27,
         "char_rapid": 40,
         "char_prec": 10,
@@ -7917,7 +7917,7 @@
     },
     "robofire": {
         "id": "robofire",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 2.2,
         "char_rapid": 1,
         "char_prec": 5,
@@ -7946,7 +7946,7 @@
     },
     "roboplam": {
         "id": "roboplam",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 13,
         "char_rapid": 5,
         "char_prec": 8,
@@ -7967,7 +7967,7 @@
     },
     "robosparkl": {
         "id": "robosparkl",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 10,
         "char_rapid": 3,
         "char_dkol": 3,
@@ -7992,7 +7992,7 @@
     },
     "robonova": {
         "id": "robonova",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 20,
         "char_rapid": 7,
         "char_prec": 10,
@@ -8017,7 +8017,7 @@
     },
     "robofire2": {
         "id": "robofire2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 5,
         "char_rapid": 1,
         "char_prec": 5,
@@ -8044,7 +8044,7 @@
     },
     "robominigun": {
         "id": "robominigun",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 8,
         "char_rapid": 2,
         "char_prec": 10,
@@ -8066,7 +8066,7 @@
     },
     "robogatl": {
         "id": "robogatl",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 12,
         "char_rapid": 3,
         "char_prec": 8,
@@ -8089,7 +8089,7 @@
     },
     "robomlau": {
         "id": "robomlau",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 150,
         "char_damage": 50,
         "char_rapid": 150,
@@ -8112,7 +8112,7 @@
     },
     "robogatp": {
         "id": "robogatp",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 15,
         "char_rapid": 4,
         "char_prec": 10,
@@ -8136,7 +8136,7 @@
     },
     "robogatp2": {
         "id": "robogatp2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 18,
         "char_rapid": 4,
         "char_prec": 10,
@@ -8160,7 +8160,7 @@
     },
     "robomlau2": {
         "id": "robomlau2",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 100,
         "char_damage": 50,
         "char_rapid": 12,
@@ -8183,7 +8183,7 @@
     },
     "robogas": {
         "id": "robogas",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 20,
         "char_damage": 0,
         "char_expltip": 2,
@@ -8206,7 +8206,7 @@
     },
     "roboplagr": {
         "id": "roboplagr",
-        "tip": 4,
+        "tip": "throwable",
         "char_rapid": 15,
         "char_damexpl": 140,
         "char_tipdam": 6,
@@ -8221,7 +8221,7 @@
     },
     "dronmlau": {
         "id": "dronmlau",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 150,
         "char_damage": 50,
         "char_rapid": 150,
@@ -8244,7 +8244,7 @@
     },
     "drongr": {
         "id": "drongr",
-        "tip": 4,
+        "tip": "throwable",
         "throwtip": 2,
         "char_rapid": 10,
         "char_damexpl": 250,
@@ -8260,7 +8260,7 @@
     },
     "dronlaser": {
         "id": "dronlaser",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 3,
         "char_pier": 50,
         "char_dkol": 15,
@@ -8287,7 +8287,7 @@
     },
     "dronplasma": {
         "id": "dronplasma",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 12,
         "char_rapid": 5,
         "char_prec": 20,
@@ -8307,7 +8307,7 @@
     },
     "dronpspark": {
         "id": "dronpspark",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 12,
         "char_rapid": 5,
         "char_prec": 20,
@@ -8328,7 +8328,7 @@
     },
     "owllaser": {
         "id": "owllaser",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 2,
         "char_rapid": 2,
         "char_prec": 15,
@@ -8353,7 +8353,7 @@
     },
     "turretWep1": {
         "id": "turretWep1",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 6.5,
         "char_rapid": 3,
         "char_prec": 10,
@@ -8370,7 +8370,7 @@
     },
     "turretWep2": {
         "id": "turretWep2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 8,
         "char_rapid": 10,
         "char_prec": 12,
@@ -8392,7 +8392,7 @@
     },
     "turretWep3": {
         "id": "turretWep3",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 26,
         "char_rapid": 40,
         "char_prec": 8,
@@ -8411,7 +8411,7 @@
     },
     "turretWep4": {
         "id": "turretWep4",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 50,
         "char_rapid": 30,
         "char_prec": 11,
@@ -8435,7 +8435,7 @@
     },
     "turretWep5": {
         "id": "turretWep5",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 15,
         "char_rapid": 3,
         "char_prec": 16,
@@ -8457,7 +8457,7 @@
     },
     "turretWep6": {
         "id": "turretWep6",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 11,
         "char_rapid": 2,
         "char_prec": 12,
@@ -8476,7 +8476,7 @@
     },
     "turretWep7": {
         "id": "turretWep7",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 60,
         "char_rapid": 25,
         "char_prec": 20,
@@ -8498,7 +8498,7 @@
     },
     "turretWep10": {
         "id": "turretWep10",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 25,
         "char_rapid": 3,
         "char_prec": 0,
@@ -8517,7 +8517,7 @@
     },
     "ttweap1": {
         "id": "ttweap1",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 140,
         "char_rapid": 3,
         "char_prec": 50,
@@ -8533,7 +8533,7 @@
     },
     "ttweap2": {
         "id": "ttweap2",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 800,
         "char_kol": 5,
         "char_rapid": 5,
@@ -8554,7 +8554,7 @@
     },
     "ttweap3": {
         "id": "ttweap3",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 400,
         "char_rapid": 5,
         "char_prec": 0,
@@ -8572,7 +8572,7 @@
     },
     "ttweap4": {
         "id": "ttweap4",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 800,
         "char_damage": 100,
         "char_rapid": 5,
@@ -8594,7 +8594,7 @@
     },
     "ttweap5": {
         "id": "ttweap5",
-        "tip": 0,
+        "tip": "punch",
         "char_damexpl": 1100,
         "char_damage": 100,
         "char_rapid": 5,
@@ -8617,7 +8617,7 @@
     },
     "ttweap6": {
         "id": "ttweap6",
-        "tip": 0,
+        "tip": "punch",
         "char_damage": 700,
         "char_rapid": 5,
         "char_prec": 0,

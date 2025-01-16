@@ -258,7 +258,8 @@ package fe.inter {
 					if (weap.tip == "explosives" && ab == weap.id) {
 						return true;
 					}
-					if (ab == weap.ammoBase) {
+					
+					if (ab == weap.ammo.base) {
 						return true;
 					}
 				}

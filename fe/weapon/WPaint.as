@@ -19,7 +19,7 @@ package fe.weapon {
 		public var paintNazv:String	= "";
 
 		// Constructor
-		public function WPaint(id:String) {
+		public function WPaint() {
 			super();
 			vWeapon = visualpaint;	// .SWF Dependency
 			vis = new vWeapon();

@@ -1,6 +1,9 @@
 package fe.unit {
 
-	import fe.*;
+	import fe.World;
+	import fe.Res;
+	import fe.XMLDataGrabber;
+	import fe.WeaponManager;
 	import fe.util.Vector2;
 	import fe.serv.Interact;
 	import fe.loc.Location;
@@ -14,178 +17,248 @@ package fe.unit {
 	
 	public class UnitDamager extends Unit {
 
-		private var tr:String = "0";
+		private var tr:int					= 0;
 		private var weap:String;
 		
-		private var tipDamager:int = 1;				// [1 - Guns, 2 Explosives]
-		private var status:int = 0;					// [0 - Armed, 1 - Activated, 2 - Disabled]
-		private var needSkill:String = "repair";
-		private var isAct:Boolean = false;
+		private var tipDamager:int			= 1;				// [1 - Guns, 2 Explosives]
+		private var status:int				= 0;				// [0 - Armed, 1 - Activated, 2 - Disabled]
+		private var needSkill:String		= "repair";
+		private var isAct:Boolean			= false;
 		public var allid:String;
 		
-		private var och:int = 20;
-		private var noch:int = 0;
-		private var kolammo:int = 100;
+		private var och:int					=  20;
+		private var noch:int				=   0;
+		private var kolammo:int				= 100;
 		
-		private var damageExpl:Number = 0;
-		private var destroyExpl:Number = 0;
-		private var explRadius:Number = 0;
+		private var damageExpl:Number		= 0.00;
+		private var destroyExpl:Number		= 0.00;
+		private var explRadius:Number		= 0.00;
 
-		private var aiN:int = Math.floor(Math.random() * 5);
+		private var aiN:int					= Math.floor(Math.random() * 5);
 
 		// Cosntructor
-		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitDamager(cid:String = null, ndif:Number = 100.00, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			
-			if (cid==null) {
-				id='damshot';
+			if (cid == null) {
+				id = "damshot";
 			}
 			else {
-				id=cid;
+				id = cid;
 			}
 			
-			mat=1;
-			vis=Res.getVis('vis' + id, vismtrap);	// .SWF Dependency
-			getXmlParam();
-			visibility=300;
-			showNumbs=levitPoss=isSats=false;
-			doop=true;
-			sloy=0;
-			noBox=true;
+			mat = 1;
+			vis = Res.getVis("vis" + id, vismtrap);	// .SWF Dependency
 			
-			if (loadObj && loadObj.tr!=null) {
-				tr=loadObj.tr;
+			getXmlParam();
+			
+			visibility	= 300;
+			showNumbs	= false;
+			levitPoss	= false;
+			isSats		= false;
+			doop		= true;
+			sloy		= 0;
+			noBox		= true;
+			
+			if (loadObj && loadObj.tr != null) {
+				tr = loadObj.tr;
 			}
 			
 			if (xml) {
-				if (xml.@allid.length()) allid=xml.@allid;
-				if (xml.@tr.length()) tr=xml.@tr;
+				if (xml.@allid.length()) {
+					allid = xml.@allid;
+				}
+				
+				if (xml.@tr.length()) {
+					tr = xml.@tr;
+				}
 			}
 			
 			setWeapon();
 			
 			if (xml) {
-				if (xml.@kolammo.length()) kolammo=xml.@kolammo;
-				if (xml.@och.length()) och=xml.@och;
-				if (xml.@expl.length()) damageExpl=xml.@expl;
+				if (xml.@kolammo.length()) {
+					kolammo = xml.@kolammo;
+				}
+				
+				if (xml.@och.length()) {
+					och = xml.@och;
+				}
+				
+				if (xml.@expl.length()) {
+					damageExpl = xml.@expl;
+				}
 			}
 			
-			fixed=true;
-			inter = new Interact(this);
-			inter.active=true;
-			inter.action=100;
-			inter.userAction='disarm';
-			inter.actFun=disarm;
-			inter.t_action=30;
-			inter.needSkill=needSkill;
-			inter.needSkillLvl=1;
+			fixed = true;
+			
+			inter				= new Interact(this);
+			inter.active		= true;
+			inter.action		= 100;
+			inter.userAction	= "disarm";
+			inter.actFun		= disarm;
+			inter.t_action		= 30;
+			inter.needSkill		= needSkill;
+			inter.needSkillLvl	= 1;
+			
 			setVis(false);
 			setStatus();
 		}
 		
 		private function setWeapon():void {
-			if (tipDamager==1) {
-				if (tr=='0') tr=Math.floor(Math.random()*5+1).toString();
-				if (tr=='1') weap='lshot';
-				else if (tr=='2') weap='hunt';
-				else if (tr=='3') weap='assr';
-				else if (tr=='4') weap='dartgun';
-				else if (tr=='5') weap='flamer';
-				else weap=tr;
-			}
-			
-			if (tipDamager==2) {
-				if (tr=='0') weap='hgren';
-				else weap=tr;
-				kolammo=och=3;
-			}
-			
-			if (tipDamager==3) {
-				damageExpl=250;
-				destroyExpl=1000;
-				explRadius=200;
-				kolammo=1;
-			}
-			
-			if (tipDamager==1 || tipDamager==2) {
-				currentWeapon=Weapon.create(this,weap);
-				if (currentWeapon==null) currentWeapon=Weapon.create(this,'lshot');
-				currentWeapon.hold=currentWeapon.holder;
-				if (tipDamager==1) {
-					kolammo=currentWeapon.holder;
-					och=currentWeapon.satsQue;
-					if (och>1) och*=2;
-					if (kolammo==1) kolammo=3;
+			if (tipDamager == 1) {
+				if (tr == 0) {
+					tr = Math.floor(Math.random() * 5 + 1);
 				}
-				if (currentWeapon.tip==4) {
-					currentWeapon.rapid=1;
+				
+				if (tr == 1) {
+					weap = "lshot";
 				}
-				childObjs=new Array(currentWeapon);
+				else if (tr == 2) {
+					weap = "hunt";
+				}
+				else if (tr == 3) {
+					weap = "assr";
+				}
+				else if (tr == 4) {
+					weap = "dartgun";
+				}
+				else if (tr == 5) {
+					weap = "flamer";
+				}
+				else {
+					weap = String(tr);
+				}
+			}
+			
+			if (tipDamager == 2) {
+				if (tr == 0) {
+					weap = "hgren";
+				}
+				else {
+					weap = String(tr);
+				}
+				
+				kolammo = 3;
+				och = 3;
+			}
+			
+			if (tipDamager == 3) {
+				damageExpl	=  250;
+				destroyExpl	= 1000;
+				explRadius	=  200;
+				kolammo		=    1;
+			}
+			
+			if (tipDamager == 1 || tipDamager == 2) {
+				currentWeapon = WeaponManager.reference.cloneWeapon(weap);
+				
+				if (currentWeapon == null) {
+					WeaponManager.reference.cloneWeapon("lshot");
+				}
+				
+				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
+				
+				if (tipDamager == 1) {
+					kolammo = currentWeapon.magazineCapacity;
+					och = currentWeapon.satsQue;
+					
+					if (och > 1) {
+						och *= 2;
+					}
+					
+					if (kolammo == 1) {
+						kolammo = 3;
+					}
+				}
+				
+				if (currentWeapon.tip == "explosive") {
+					currentWeapon.rapid = 1;
+				}
+				
+				childObjs = new Array(currentWeapon);
 			}
 		}
 		
 		public override function save():Object {
-			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
-			obj.tr=tr;
+			var obj:Object = super.save();
+			
+			if (obj == null) {
+				obj = {};
+			}
+			
+			obj.tr = tr;
+			
 			return obj;
 		}
 		
 		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			
 			if (node0.un.length()) {
-				if (node0.un.@tip.length()) tipDamager=node0.un.@tip;		//требуемый скилл
-				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
-
+				if (node0.un.@tip.length()) {
+					tipDamager = node0.un.@tip;			//требуемый скилл
+				}
+				
+				if (node0.un.@skill.length()) {
+					needSkill = node0.un.@skill;		//требуемый скилл
+				}
 			}
 		}
 		
 		public override function setLevel(nlevel:int=0):void {
-			level+=nlevel;
-			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
-			if (sk<1) sk=1;
-			if (sk>5) sk=5;
-			inter.needSkillLvl=sk;
+			level += nlevel;
+			var sk:int = Math.round(level * 0.25 * (Math.random() * 0.70 + 0.30));
+			
+			if (sk < 1) {
+				sk = 1;
+			}
+			
+			if (sk > 5) {
+				sk = 5;
+			}
+			
+			inter.needSkillLvl = sk;
+			
 			if (currentWeapon) {
-				currentWeapon.damage*=(1+level*0.05);
-				currentWeapon.damageExpl*=(1+level*0.05);
+				currentWeapon.damage		*= (1 + level * 0.05);
+				currentWeapon.damageExpl	*= (1 + level * 0.05);
 			}
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
-			super.putLoc(nloc,nx,ny);
+			super.putLoc(nloc, nx, ny);
 			
 			if (loc.mirror) {
-				storona=-storona;
-				aiNapr=storona;
+				storona = -storona;
+				aiNapr = storona;
 			}
 			
 			if (currentWeapon) {
-				if (tipDamager==2) {
+				if (tipDamager == 2) {
 					celX = coordinates.X;
 					celY = coordinates.Y;
-					currentWeapon.rot=Math.PI/2;
-					currentWeapon.rapid=1;
-					(currentWeapon as WThrow).detTime=45;
+					currentWeapon.rot = Math.PI * 0.50;
+					currentWeapon.rapid = 1;
+					(currentWeapon as WThrow).detTime = 45;
 				}
-				else if (tipDamager==1)
-				{
+				else if (tipDamager==1) {
 					celX = coordinates.X + 200 * storona;
 					celY = this.boundingBox.top;
-					currentWeapon.rot=(storona<0)?Math.PI:0;
+					currentWeapon.rot = (storona < 0) ? Math.PI : 0;
 				}
 			}
 		}
 
 		private function setStatus():void {
-			if (status>0) {
-				warn=0;
-				inter.active=false;
+			if (status > 0) {
+				warn = 0;
+				inter.active = false;
 			}
 			else {
-				warn=1;
-				inter.active=true;
+				warn = 1;
+				inter.active = true;
 			}
 			
 			vis.gotoAndStop(status+1);
@@ -193,57 +266,63 @@ package fe.unit {
 		}
 		
 		public function setVis(v:Boolean):void {
-			isVis=v;
-			vis.visible=v;
-			vis.alpha = v? 1:0.1;
+			isVis = v;
+			vis.visible = v;
+			vis.alpha = v ? 1.00 : 0.10;
 			
 			if (currentWeapon) {
 				currentWeapon.vis.visible = v;
-				currentWeapon.vis.alpha = v? 1:0.1;
+				currentWeapon.vis.alpha = v ? 1.00 : 0.10;
 			}
 		}
 		
 		public override function expl():void {
-			newPart('metal',3);
+			newPart("metal", 3);
 		}
 		
 		//обезвредить
 		private function disarm():void {
-			if (tipDamager == 1)
-			{
-				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, 'frag', 1);
-				if (kolammo>0) LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.ammo, kolammo);
+			if (tipDamager == 1) {
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, "frag", 1);
+				
+				if (kolammo > 0) {
+					LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.ammo.id, kolammo);
+				}
 			}
-			else if (tipDamager == 2 && kolammo > 0)
-			{
+			else if (tipDamager == 2 && kolammo > 0) {
 				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 1);
 				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 1);
 				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 1);
 			}
-			else if (tipDamager == 3 && kolammo > 0)
-			{
-				LootGen.lootCont(loc, coordinates.X, coordinates.Y - 20,'bomb');
+			else if (tipDamager == 3 && kolammo > 0) {
+				LootGen.lootCont(loc, coordinates.X, coordinates.Y - 20, "bomb");
 			}
 			
-			sost=4;
-			disabled=true;
+			sost = 4;
+			disabled = true;
 			loc.remObj(this);
 		}
 		
 		//взорвать при нанесении урона
 		public override function dropLoot():void {
 			super.dropLoot();
-			if ((tipDamager==2 || tipDamager==3) && kolammo>0) iExpl();
-			if (tipDamager==1) LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y,'frag',1);
+
+			if ((tipDamager == 2 || tipDamager == 3) && kolammo > 0) {
+				iExpl();
+			}
+
+			if (tipDamager == 1) {
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, "frag", 1);
+			}
 		}
 		
 		private function iExpl():void {
 			var bul:Bullet;
 			
-			if (tipDamager==2) {
-				damageExpl=currentWeapon.damageExpl*kolammo;
-				destroyExpl=currentWeapon.destroy;
-				explRadius=currentWeapon.explRadius;
+			if (tipDamager == 2) {
+				damageExpl = currentWeapon.damageExpl * kolammo;
+				destroyExpl = currentWeapon.destroy;
+				explRadius = currentWeapon.explRadius;
 			}
 			
 			if (currentWeapon) {
@@ -260,23 +339,27 @@ package fe.unit {
 		
 		//активировать
 		public function activate():void {
-			if (status!=0 || sost>1) return;
+			if (status != 0 || sost > 1) {
+				return;
+			}
 			
-			if (tipDamager==3) {
+			if (tipDamager == 3) {
 				iExpl();
-				kolammo=0;
+				kolammo = 0;
 				disarm();
 			}
 			else {
-				status=1;
-				noch=0;
+				status = 1;
+				noch = 0;
 				setVis(true);
 			}
 		}
 		
 		//команда
 		public override function command(com:String, val:String=null):void {
-			if (com=='dam') activate();
+			if (com == "dam") {
+				activate();
+			}
 		}
 		
 		//не искать цели
@@ -285,7 +368,9 @@ package fe.unit {
 		}
 
 		override protected function control():void {
-			if (sost>1 || status==2 || kolammo<=0) return;
+			if (sost > 1 || status == 2 || kolammo <= 0) {
+				return;
+			}
 			
 			aiN++;
 			
@@ -293,27 +378,29 @@ package fe.unit {
 				noch++;
 				kolammo--;
 				
-				if (noch>=och) {
-					status=0;
+				if (noch >= och) {
+					status = 0;
 				}
 				
-				if (kolammo<=0) {
+				if (kolammo <= 0) {
 					disarm();
 				}
 				
-				isShoot=false;
+				isShoot = false;
 			}
 			
-			if (status==1) {
-				if (tipDamager==2) {
+			if (status == 1) {
+				if (tipDamager == 2) {
 					celX = coordinates.X + Math.random() * 80 - 40;
 				}
 				
-				if (currentWeapon) currentWeapon.attack();
+				if (currentWeapon) {
+					currentWeapon.attack();
+				}
 			}
 			
-			if (aiN%10==0 && !isVis) {
-				isVis=World.w.gg.lookInvis(this);
+			if (aiN % 10 == 0 && !isVis) {
+				isVis = World.w.gg.lookInvis(this);
 				
 				if (isVis) {
 					setVis(true);

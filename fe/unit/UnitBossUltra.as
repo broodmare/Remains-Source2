@@ -10,32 +10,34 @@ package fe.unit {
 	
 	public class UnitBossUltra extends Unit {
 		
-		public var tr:int = 1;
 		private var weap:String;
-		public var scrAlarmOn:Boolean = true;
-		public var controlOn:Boolean = true;
-		public var kol_emit:int = 3;
+		public var tr:int				= 1;
+		public var scrAlarmOn:Boolean	= true;
+		public var controlOn:Boolean	= true;
+		public var kol_emit:int			= 3;
+		public var called:Boolean		= false;
 		private var spd:Object;
-		public var called:Boolean = false;
 		
 		// Weapons
 		private var dopWeapon:Weapon;
 		private var gasWeapon:Weapon;
+		//		var	currentWeapon -- Defined in Unit
 		private var currentWeapon2:Weapon;
 		private var thWeapon:Weapon;
 		
-		private var shitMaxHp:Number = 500;
 		private var visshit:MovieClip;
-		private var usil:Boolean = false;
+		private var shitMaxHp:Number	= 500.00;
+		private var usil:Boolean		= false;
 
-		private var emit_t:int = 0;
+		private var emit_t:int			=   0;
+		private var mp:int				=   3;
+		private var moveX:Number		=   0.00;
+		private var moveY:Number		=   0.00;
+		private var attState:int		=   0;
+		private var t_turn:int			=  15;
+		private var t_shit:int			= 300
+
 		private var movePoints:Array = [{x:10, y:7}, {x:37, y:7}, {x:24, y:13}, {x:7, y:18}, {x:40, y:18}];
-		private var mp:int = 3;
-		private var moveX:Number = 0;
-		private var moveY:Number = 0;
-		private var attState:int = 0;
-		private var t_turn:int = 15;
-		private var t_shit:int = 300
 
 		// Constructor
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -52,8 +54,9 @@ package fe.unit {
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible = false;
-			visshit.y=-70;
-			visshit.scaleX=visshit.scaleY=1.7;
+			visshit.y = -70;
+			visshit.scaleX = 1.70;
+			visshit.scaleY = 1.70;
 			
 			getXmlParam();
 			
@@ -66,22 +69,23 @@ package fe.unit {
 			
 			
 			// [Give weapons]
-			var weapData:Object;
-			weapData = ItemManager.reference.getWeapon("robogatp");
-			currentWeapon = Weapon.create(this, weapData);
-
-			weapData = ItemManager.reference.getWeapon("robogatp2");
-			currentWeapon2 = Weapon.create(this, weapData);
+			var clone:Function = WeaponManager.reference.cloneWeapon;
+			
+			// Weapon 1
+			currentWeapon = clone("robogatp");
+			
+			// Weapon 2
+			currentWeapon2 = clone("robogatp2");
 			currentWeapon2.vis.visible = false;
+			
+			// Weapon 3
+			dopWeapon = clone("robomlau2");
+			
+			// Weapon 4
+			gasWeapon = clone("robogas");
 
-			weapData = ItemManager.reference.getWeapon("robomlau2");
-			dopWeapon = Weapon.create(this, weapData);
-			
-			weapData = ItemManager.reference.getWeapon("robogas");
-			gasWeapon = Weapon.create(this, weapData);
-			
-			weapData = ItemManager.reference.getWeapon("roboplagr");
-			thWeapon = Weapon.create(this, weapData);
+			// Weapon 5
+			thWeapon = clone("roboplagr");
 			thWeapon.findCel = false;
 			(thWeapon as WThrow).kolAmmo = 100000;
 			

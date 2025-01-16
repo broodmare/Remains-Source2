@@ -25,39 +25,36 @@ package fe.weapon {
 		public var sndFall:String	= "";
 		
 		// Constructor
-		public function WThrow(id:String) {
-			super();
+		public function WThrow(data:Object) {
+			super();	// Weapon Constructor
 			
-			noPerc		= true;
-			vBullet		= vWeapon;
-			animated	= false;
-			holder		= 1;
-			ammo		= id;
+			noPerc				= true;
+			vBullet				= vWeapon;
+			animated			= false;
+			magazineCapacity	= 1;
+			ammo				= WeaponManager.reference.getAmmo(data.id);
 			
 			vis.gotoAndStop(1);
 			
-			if (node.@throwtip>0) {
-				throwTip=node.@throwtip;
-			}
-
-			if (throwTip > 0) {
+			if ("throwtip" in data) {
+				throwTip = data.throwtip;
 				lvlNoUse = true;
 			}
 
-			if (node.char.length() && node.char[0].@time > 0) {
-				detTime = node.char[0].@time;
+			if ("time" in data) {
+				detTime = data.time;
 			}
 
-			if (node.char.length() && node.char.@radio.length()) {
-				radio = true;
+			if ("radio" in data) {
+				radio = data.radio;
 			}
 
-			if (node.phis.length() && node.phis[0].@bumc>0) {
-				bumc = true;
+			if ("bumc" in data) {
+				bumc = data.bumc;
 			}
 
-			if (node.snd.length() && node.snd[0].@fall.length()) {
-				sndFall = node.snd[0].@fall;
+			if ("snd_fall" in data) {
+				sndFall = data.snd_fall;
 			}
 		}
 
@@ -65,6 +62,7 @@ package fe.weapon {
 
 			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
 				t_auto = 3;
+				
 				return false;
 			}
 			
@@ -74,6 +72,7 @@ package fe.weapon {
 				if (lvlNoUse) {
 					if ((owner as UnitPlayer).pers.getWeapLevel(skill) < lvl) {
 						World.w.gui.infoText('weaponSkillLevel');
+						
 						return false;
 					}
 				}
@@ -88,6 +87,7 @@ package fe.weapon {
 					}
 					else if (razn > 2) {
 						World.w.gui.infoText('weaponSkillLevel');
+						
 						return false;
 					}
 				}
@@ -115,12 +115,13 @@ package fe.weapon {
 			
 			if (owner) {
 				sk = owner.weaponSkill;
+				
 				if (owner.player) {
 					sk = weaponSkill;
 				}
 			}
 			
-			var r:Number = (Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
+			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * RAD_TO_DEG;
 			var rasstx:Number = owner.celX - coordinates.X;
 			var rassty:Number = owner.celY - coordinates.Y;
 			
@@ -191,11 +192,11 @@ package fe.weapon {
 			}
 			
 			is_shoot = true;
-			hold = 0;
+			magazineRounds = 0;
 			
 			if (owner.player && loc.train) {
-				World.w.invent.items[ammo].kol++;
-				World.w.invent.mass[2] += World.w.invent.items[ammo].mass;
+				World.w.invent.increaseQuantity(ammo.id);
+				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass;
 			}
 			
 			t_auto = 3;
@@ -246,7 +247,7 @@ package fe.weapon {
 
 		public function getAmmo():Boolean {
 			if (owner.player) {
-				return (owner as UnitPlayer).getInvAmmo(ammo, 1, 1, true) > 0
+				//return (owner as UnitPlayer).getInvAmmo(ammo, 1, 1, true) > 0
 			}
 			else {
 				if (kolAmmo <= 0) {
@@ -266,12 +267,14 @@ package fe.weapon {
 			vis.rotation = 0;
 			vis.scaleX = 1;
 			
+			/*
 			if (t_attack > 0 || kolAmmo <= 0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo) <= 0) {
 				vis.alpha = 0;
 			}
 			else {
 				vis.alpha = 1;
 			}
+			*/
 		}
 		
 		public override function detonator():Boolean {

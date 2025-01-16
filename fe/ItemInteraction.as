@@ -556,7 +556,7 @@ package fe {
 		
 		
 		
-		public function addWeapon(id:String, hp:int = 0xFFFFFF, hold:int = 0, respect:int = 0):Weapon {
+		public function addWeapon(id:String, hp:int = 0xFFFFFF, magazineRounds:int = 0, respect:int = 0):Weapon {
 			/*
 			// We already have this weapon in inventory, use this to repair our current weapon instead
 			if (_inventory[id]) {
@@ -578,8 +578,8 @@ package fe {
 				w.hp=hp;
 			}
 			
-			if (hold > 0) {
-				w.hold = hold;
+			if (magazineRounds > 0) {
+				w.magazineRounds = magazineRounds;
 			}
 
 			if (w.tip == 4 && respect == 3) {
@@ -601,9 +601,9 @@ package fe {
 					gg.changeWeapon(id, true);
 				}
 				
-				if (_inventory[id].hold > 0) {
-					_inventory[id].kol += _inventory[id].hold;
-					_inventory[id].hold = 0;
+				if (_inventory[id].magazineRounds > 0) {
+					_inventory[id].kol += _inventory[id].magazineRounds;
+					_inventory[id].magazineRounds = 0;
 				}
 				
 				if (_inventory['s_' + id] && _inventory['s_' + id].kol > 0) {

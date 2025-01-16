@@ -8,33 +8,36 @@ package fe.serv {
 	public class Item {
 
 		// Ghetto AS3 enumeration
-		public static const L_ITEM:String		= 'item';
-		public static const L_ARMOR:String		= 'armor';
-		public static const L_WEAPON:String		= 'weapon';
-		public static const L_UNIQ:String		= 'uniq';
-		public static const L_SPELL:String		= 'spell';
-		public static const L_AMMO:String		= 'a';
-		public static const L_EXPL:String		= 'e';
-		public static const L_MED:String		= 'med';
-		public static const L_BOOK:String		= 'book';
-		public static const L_HIM:String		= 'him';
-		public static const L_POT:String		= 'pot';
-		public static const L_FOOD:String		= 'food';
-		public static const L_SCHEME:String		= 'scheme';
-		public static const L_PAINT:String		= 'paint';
-		public static const L_COMPA:String		= 'compa';
-		public static const L_COMPW:String		= 'compw';
-		public static const L_COMPE:String		= 'compe';
-		public static const L_COMPM:String		= 'compm';
-		public static const L_COMPP:String		= 'compp';
-		public static const L_SPEC:String		= 'spec';
-		public static const L_INSTR:String		= 'instr';
-		public static const L_STUFF:String		= 'stuff';
-		public static const L_ART:String		= 'art';
-		public static const L_IMPL:String		= 'impl';
-		public static const L_KEY:String		= 'key';
+		public static const L_ITEM:String		= "item";
+		public static const L_ARMOR:String		= "armor";
+		public static const L_WEAPON:String		= "weapon";
+		public static const L_UNIQ:String		= "uniq";
+		public static const L_SPELL:String		= "spell";
+		public static const L_AMMO:String		= "a";
+		public static const L_EXPL:String		= "e";
+		public static const L_MED:String		= "med";
+		public static const L_BOOK:String		= "book";
+		public static const L_HIM:String		= "him";
+		public static const L_POT:String		= "pot";
+		public static const L_FOOD:String		= "food";
+		public static const L_SCHEME:String		= "scheme";
+		public static const L_PAINT:String		= "paint";
+		public static const L_COMPA:String		= "compa";
+		public static const L_COMPW:String		= "compw";
+		public static const L_COMPE:String		= "compe";
+		public static const L_COMPM:String		= "compm";
+		public static const L_COMPP:String		= "compp";
+		public static const L_SPEC:String		= "spec";
+		public static const L_INSTR:String		= "instr";
+		public static const L_STUFF:String		= "stuff";
+		public static const L_ART:String		= "art";
+		public static const L_IMPL:String		= "impl";
+		public static const L_KEY:String		= "key";
 
-		public static var itemTip:Array = ['weapon','spell','a','e','med','book','him','scheme','compa','compw','compe','compm','compp','paint','art','impl','key'];
+		public static var itemTip:Array = ["weapon","spell","a","e","med","book","him","scheme","compa","compw","compe","compm","compp","paint","art","impl","key"];
+		
+		public var cont:Interact;						// [parent container]
+		private var _data:Object;						// The objects properties in JSON format
 		
 		public var id:String;							// Internal item ID
 		public var nazv:String;							// Localized item name
@@ -52,7 +55,6 @@ package fe.serv {
 		public var mass:Number			= 0.00;			// Item weight
 
 		public var imp:int				= 0;			// [0 - randomly generated, 1 - specified, 2 - critical]
-		public var cont:Interact;						// [parent container]
 		
 		public var nov:int				= 0;			// [New thing]
 		public var dat:Number			= 0.00;			// [When item was acquired]
@@ -66,10 +68,6 @@ package fe.serv {
 		public var noref:Boolean		= false;		// [Do not replenish]
 		public var nocheap:Boolean		= false;		// [Don't reduce the price]
 		public var hardinv:Boolean		= false;		// [only with limited inventory]
-
-		private var _data:Object;						// The objects properties in JSON format
-		
-		// [nkol -- number of items or weapon/armor condition 0-1-2]
 		
 		// Constructor
 		public function Item(itemID:String) {
@@ -128,8 +126,8 @@ package fe.serv {
 				mess = _data.mess;
 			}
 			
-			if ("m" in _data) {
-				mass = _data.m;
+			if ("weight" in _data) {
+				mass = _data.weight;
 			}
 
 		}
@@ -168,7 +166,7 @@ package fe.serv {
 			
 			// Check the weight before picking up items in limited inventory mode
 			if (World.w.hardInv) {
-				if (inv.mass[invCat] + mass * inv.getQuantity(id) > World.w.pers['maxm' + invCat]) {
+				if (inv.mass[invCat] + mass * inv.getQuantity(id) > World.w.pers["maxm" + invCat]) {
 					return false;
 				}
 			}
@@ -179,7 +177,7 @@ package fe.serv {
 			
 			if (World.w.vsAmmoTek && tip == L_AMMO) {
 				for each (var w:Weapon in inv.equipment.weapons) {
-					if (w.tip == "internal" || w.tip == "cryo" || w,tip == "lightGun" || w.tip == "heavyGun" && (w.respect == 0 || w.respect == 2) && w.ammoBase != "" && (w.ammoBase == data.id || w.ammoBase == data.base)) {
+					if (w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun" && (w.respect == 0 || w.respect == 2) && w.ammo.base != "" && (w.ammoBase == data.id || w.ammoBase == data.base)) {
 						return true;
 					}
 				}
@@ -197,7 +195,7 @@ package fe.serv {
 				return true;
 			}
 			
-			if (World.w.vsEqipAll && tip == 'equip') {
+			if (World.w.vsEqipAll && tip == "equip") {
 				return true;
 			}
 			
@@ -205,23 +203,23 @@ package fe.serv {
 				return true;
 			}
 			
-			if (World.w.vsVal && tip == 'valuables') {
+			if (World.w.vsVal && tip == "valuables") {
 				return true;
 			}
 			
-			if (World.w.vsBook && (tip == 'book' || tip == 'sphera')) {
+			if (World.w.vsBook && (tip == "book" || tip == "sphera")) {
 				return true;
 			}
 			
-			if (World.w.vsFood && (tip == 'food' || tip == 'eda')) {
+			if (World.w.vsFood && (tip == "food" || tip == "eda")) {
 				return true;
 			}
 			
-			if (World.w.vsComp && (tip == 'stuff' || tip == 'compa' || tip == 'compw' || tip == 'compe' || tip == 'compm')) {
+			if (World.w.vsComp && (tip == "stuff" || tip == "compa" || tip == "compw" || tip == "compe" || tip == "compm")) {
 				return true;
 			}
 			
-			if (World.w.vsIngr && tip == 'compp') {
+			if (World.w.vsIngr && tip == "compp") {
 				return true;
 			}
 			

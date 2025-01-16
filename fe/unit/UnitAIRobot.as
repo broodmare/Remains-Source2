@@ -69,7 +69,7 @@ package fe.unit {
 			else weap='';
 			if (currentWeapon) {
 				childObjs=new Array(currentWeapon);
-				currentWeapon.hold=currentWeapon.holder;
+				currentWeapon.magazineRounds=currentWeapon.magazineCapacity;
 			}
 		}
 		

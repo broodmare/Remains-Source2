@@ -131,7 +131,7 @@ package fe.unit {
 			if (weap != "") {
 				weapData = ItemManager.reference.getWeapon(weap);
 				currentWeapon = Weapon.create(this, weapData);
-				currentWeapon.hold = currentWeapon.holder;
+				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
 				setCel(null, 100, -30);
 				childObjs = [currentWeapon];
 				
@@ -143,7 +143,7 @@ package fe.unit {
 			if (weap2 != "") {
 				weapData = ItemManager.reference.getWeapon(weap2);
 				dopWeapon = Weapon.create(this, weapData);
-				dopWeapon.hold = dopWeapon.holder;
+				dopWeapon.magazineRounds = dopWeapon.magazineCapacity;
 				childObjs.push(dopWeapon);
 			}
 			

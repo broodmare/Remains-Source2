@@ -131,8 +131,8 @@ package fe.unit {
 			
 			if (currentWeapon) {
 				childObjs=new Array(currentWeapon);
-				currentWeapon.hold=currentWeapon.holder;
-				if (currentWeapon.antiprec>0) currentWeapon.damage*=0.8;
+				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
+				if (currentWeapon.antiprec > 0) currentWeapon.damage *= 0.8;
 			}
 
 			if (xml && xml.@emit.length()) {
@@ -150,8 +150,8 @@ package fe.unit {
 				childObjs.push(dropWeapon);
 			}
 
-			if (currentWeapon && currentWeapon.holder>10 && aiAttackOch==0) {
-				aiAttackOch=Math.round(currentWeapon.holder/2);
+			if (currentWeapon && currentWeapon.magazineCapacity > 10 && aiAttackOch == 0) {
+				aiAttackOch = Math.round(currentWeapon.magazineCapacity * 0.50);
 			}
 
 			initBlit();

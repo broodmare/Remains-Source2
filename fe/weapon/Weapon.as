@@ -16,9 +16,9 @@ package fe.weapon {
 	import fe.projectile.SmartBullet;
 
 	public class Weapon extends Obj {
-		
-		public static var weaponPerks:Array		= ['pistol', 'shot', 'commando', 'rifle', 'perf', 'laser', 'plasma', 'pyro', 'acute', 'stunning']
-		public static var variant2:String		= ' - II';
+
+		public static var weaponPerks:Array		= ["pistol", "shot", "commando", "rifle", "perf", "laser", "plasma", "pyro", "acute", "stunning"]
+		public static var variant2:String		= " - II";
 		
 		public var b:Bullet;
 		public var trasser:Trasser;
@@ -59,9 +59,6 @@ package fe.weapon {
 		public var ready:Boolean		= false;	//оружие наведено на цель
 		public var is_shoot:Boolean		= false;	// [shot fired]
 		public var animated:Boolean	= false;
-		
-		public var krep:int	= 0;					// [fastening type]
-		public var hold:int	= 0;					// [left in the clip]
 
 		public var findCel:Boolean		= true;		// [turn to target]
 		public var forceRot:Number		= 0.00;
@@ -75,7 +72,7 @@ package fe.weapon {
 		// [Characteristics]
 		// [Weapon type]
 		// 0 - [Internal]					-> "internal"
-		// 1 - [Cryo(?)]					-> "cryo"
+		// 1 - [Cryo(?)]					-> "cryo"   (Cold steel??????)
 		// 2 - [Light guns]					-> "lightGun"
 		// 3 - [Heavy gun]					-> "heavyGun"
 		// 4 - [Explosives]					-> "explosives"
@@ -103,9 +100,9 @@ package fe.weapon {
 		public var rapid:int			= 5;		// [cycles per shot, 30 = 1s]
 		public var speed:Number			= 100.00;	// [bullet speed]
 		public var volna:Boolean		= false;	// [if true, then the bullet speed will not be random]
-		public var deviation:Number		= 0;		// Weapon dispersion
-		public var precision:Number		= 0;		// [accuracy, shows the distance at which the hit will be 100%]
-		public var antiprec:Number		= 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
+		public var deviation:Number		= 0.00;		// Weapon dispersion
+		public var precision:Number		= 0.00;		// [accuracy, shows the distance at which the hit will be 100%]
+		public var antiprec:Number		= 0.00;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
 
 		public var dlina:int			= 50;		// [Bladed weapon length]
 		public var mindlina:int			= 50;			
@@ -139,10 +136,14 @@ package fe.weapon {
 		public var recoilMult:int		= 1;		// [recoil multiplier]
 		public var desintegr:Number		= 0.00;		// [probability of disintegration]
 		
-		public var holder:int			= 0;		// Rounds in the magazine
-		public var ammoBase:String		= "";		// ID of the weapon's default ammo
-		public var ammo:String			= "";		// ID o fthe weapon's current ammo
-		public var ammoTarg:String		= "";		// [Type of ammunition to replace]
+		public var fixedToOwner:Boolean	= false;	// True means the weapon is attached to the unit's position and follows its rotation. False means the weapon moves dynamically, chasing the cursor or target.
+		public var magazineRounds:int	= 0;		// [left in the clip]
+		public var magazineCapacity:int	= 0;		// Rounds in the magazine
+
+		public var ammoBase:Ammo;					// ID of the weapon's default ammo
+		public var ammo:Ammo;						// ID o fthe weapon's current ammo
+		public var ammoTarg:Ammo;					// [Type of ammunition to replace]
+		
 		public var reload:int			= 0;		// [reload cycles, 30 = 1s]
 		public var recharg:int			= 0;		// [cycles for recharging if applicable, 0 if not]
 		public var magic:Number			= 100.00;
@@ -186,18 +187,6 @@ package fe.weapon {
 		public var devMult:Number		= 1.00;
 		
 		public var absPierRnd:Number	= 0.00;
-		
-		// [Cartridge modifiers]
-		public var ammoPier:Number		= 0.00;	// [armor-piercing]
-		public var ammoArmor:Number		= 1.00;	// [target's armor modifier]
-		public var ammoDamage:Number	= 1.00;	// [damage]
-		public var ammoProbiv:Number	= 0.00;	// [punching through the target]
-		public var ammoOtbros:Number	= 1.00;	// [discarding]
-		public var ammoPrec:Number		= 1.00;	// [precision]
-		public var ammoHP:int			= 0;	// [increase in wear]
-		public var ammoFire:Number		= 0.00;	// [incendiary]
-		public var ammoMod:int			= -1;	// [change damage type]
-		
 		
 		// SATS
 		public var satsQue:int			= 1;
@@ -258,7 +247,6 @@ package fe.weapon {
 				World.w.grafon.visObjs[sloy].addChild(vis);
 			}
 		}
-		
 
 		/*public override function setNull(f:Boolean = false):void {
 			if (owner) {
@@ -306,18 +294,18 @@ package fe.weapon {
 			
 			for each(var wp:String in weaponPerks) {
 				if (opt[wp]) {
-					if (pers.hasOwnProperty(wp + 'Prec')) precMult *= pers[wp + 'Prec'];
-					if (pers.hasOwnProperty(wp + 'Cons')) consMult *= pers[wp + 'Cons'];
-					if (pers.hasOwnProperty(wp + 'Dam')) damMult *= pers[wp + 'Dam'];
-					if (pers.hasOwnProperty(wp + 'Speed')) speedMult *= pers[wp + 'Speed'];
-					if (pers.hasOwnProperty(wp + 'Det')) damAdd += pers[wp + 'Det'];
-					if (pers.hasOwnProperty(wp + 'Pier')) pierAdd += pers[wp + 'Pier'];
-					if (pers.hasOwnProperty(wp + 'Critch')) critchAdd += pers[wp + 'Critch'];
-					if (pers.hasOwnProperty(wp + 'Knock')) otbrosMult *= pers[wp + 'Knock'];
-					if (pers.hasOwnProperty(wp + 'Dev')) devMult *= pers[wp + 'Dev'];
-					if (pers.hasOwnProperty(wp + 'Stun')) {
-						dopEffect = 'stun';
-						dopDamage = pers[wp + 'Stun'];
+					if (pers.hasOwnProperty(wp + "Prec")) precMult *= pers[wp + "Prec"];
+					if (pers.hasOwnProperty(wp + "Cons")) consMult *= pers[wp + "Cons"];
+					if (pers.hasOwnProperty(wp + "Dam")) damMult *= pers[wp + "Dam"];
+					if (pers.hasOwnProperty(wp + "Speed")) speedMult *= pers[wp + "Speed"];
+					if (pers.hasOwnProperty(wp + "Det")) damAdd += pers[wp + "Det"];
+					if (pers.hasOwnProperty(wp + "Pier")) pierAdd += pers[wp + "Pier"];
+					if (pers.hasOwnProperty(wp + "Critch")) critchAdd += pers[wp + "Critch"];
+					if (pers.hasOwnProperty(wp + "Knock")) otbrosMult *= pers[wp + "Knock"];
+					if (pers.hasOwnProperty(wp + "Dev")) devMult *= pers[wp + "Dev"];
+					if (pers.hasOwnProperty(wp + "Stun")) {
+						dopEffect = "stun";
+						dopDamage = pers[wp + "Stun"];
 						dopCh = 1.00;
 					}
 				}
@@ -329,30 +317,28 @@ package fe.weapon {
 		
 		public function actions():void {
 			var rot2:Number;
+			
 			if (owner == null) {
 				return;
 			}
 
-			if (coordinates.X < owner.celX) {
-				storona = 1;
-			}
-			else {
-				storona = -1;
-			}
+			// Determine if facing right or left
+			storona = (coordinates.X < owner.celX) ? 1 : -1;
 
-			// This turns the weapon to face the curosr and is executed every tick.
+			// Update weapon coordinates and calculate rotation
 			if (findCel) {
 				if (tip == "magic") {
 					coordinates.X = owner.magicX;
 					coordinates.Y = owner.magicY;
 					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
 				}
-				else if (krep > 0 || !coordinates.X) {
+				else if (fixedToOwner || coordinates.X == 0) {
 					coordinates.X = owner.weaponX;
 					coordinates.Y = owner.weaponY;
-					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X)*owner.storona);
+					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X) * storona);
 				}
 				else {
+					// Smoothly interpolate weapon position towards the owner's weapon position
 					coordinates.X += (owner.weaponX - coordinates.X) * 0.20;
 					coordinates.Y += (owner.weaponY - coordinates.Y) * 0.20;
 					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
@@ -366,19 +352,17 @@ package fe.weapon {
 
 			ready = false;
 			
-			var rdrot:Number = drot;
-			
-			if (drot2 > 0 && (t_prep > 0 || t_attack > 0)) {
-				rdrot = drot2;
-			}
-			
+			var rdrot:Number = (drot2 > 0 && (t_prep > 0 || t_attack > 0)) ? drot2 : drot;
+
 			if (rdrot == 0) {
 				rot = rot2;
 				ready = true;
 			}
 			else {
-				if (Math.abs(rot - rot2) > Math.PI) {
-					if (Math.abs(rot - rot2) > Math.PI * 2 - rdrot * drotMult) {
+				var rotDifference:Number = Math.abs(rot - rot2);
+				
+				if (rotDifference > ONE_PI) {
+					if (rotDifference > TWO_PI - rdrot * drotMult) {
 						rot = rot2;
 						ready = true;
 					}
@@ -401,63 +385,62 @@ package fe.weapon {
 						ready = true;
 					}
 				}
+
+				// Normalize rotation to be within [-PI, PI]
+				if (rot > ONE_PI) {
+					rot -= TWO_PI;
+				}
+				if (rot < ONE_PI) {
+					rot += TWO_PI;
+				}
+			}
+			
+			// Apply rotation fixes using precomputed constants
+			switch(fixRot) {
+				case 1:
+					if (rot < NEGATIVE_SIXTH_PI && rot > NEGATIVE_HALF_PI) {
+						rot = NEGATIVE_SIXTH_PI;
+					}
+					if (rot > NEGATIVE_FIVE_SIXTH_PI && rot <= NEGATIVE_HALF_PI) {
+						rot = NEGATIVE_FIVE_SIXTH_PI;
+					}
+					break;
 				
-				if (rot > Math.PI) {
-					rot -= Math.PI * 2;
-				}
+				case 2:
+					if (rot < NEGATIVE_SIXTH_PI) {
+						rot = NEGATIVE_SIXTH_PI;
+					}
+					if (rot > SIXTH_PI) {
+						rot = SIXTH_PI;
+					}
+					break;
 				
-				if (rot <- Math.PI) {
-					rot += Math.PI * 2;
-				}
-			}
-			
-			if (fixRot == 1) {
-				if (rot < -Math.PI / 6 && rot > -Math.PI / 2) {
-					rot = -Math.PI / 6;
-				}
-				if (rot > -Math.PI * 5 / 6 && rot <= -Math.PI/2) {
-					rot = -Math.PI * 5 / 6;
-				}
-			}
-			
-			if (fixRot == 2) {
-				if (rot < -Math.PI / 6) rot = -Math.PI / 6;
-				if (rot >  Math.PI / 6) rot =  Math.PI / 6;
-			}
-			
-			if (fixRot == 3) {
-				if (rot > 0 && rot <   Math.PI * 5 / 6) {
-					rot =  Math.PI * 5 / 6;
-				}
-				if (rot <= 0 && rot > -Math.PI * 5 / 6) {
-					rot = -Math.PI * 5 / 6;
-				}
+				case 3:
+					if (rot > 0 && rot < POSITIVE_FIVE_SIXTH_PI) {
+						rot = POSITIVE_FIVE_SIXTH_PI;
+					}
+					if (rot <= 0 && rot > NEGATIVE_FIVE_SIXTH_PI) {
+						rot = NEGATIVE_FIVE_SIXTH_PI;
+					}
+					break;
 			}
 
 			try {
-				if (dkol <= 0 && t_attack == rapid) {
-					shoot();
-				}
-				if (dkol > 0 && t_attack > rapid && t_attack % rapid == 0) {
+				if ((dkol <= 0 && t_attack == rapid) ||
+					(dkol > 0 && t_attack > rapid && t_attack % rapid == 0)) {
 					shoot();
 				}
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace("ERROR: (00:12)");
 			}
 
-			if (t_attack > 0) {
-				t_attack--;
-			}
-			
-			if (t_rel > 0) {
-				t_rel--;
-			}
-			
-			if (t_ret > 0) {
-				t_ret--;
-			}
-			
+			// Decrement timers
+			if (t_attack > 0) t_attack--;
+			if (t_rel > 0) t_rel--;
+			if (t_ret > 0) t_ret--;
+
+			// Smooth rotation adjustments
 			if (rotUp > 5) {
 				rotUp *= 0.9;
 			}
@@ -467,26 +450,28 @@ package fe.weapon {
 			else {
 				rotUp = 0;
 			}
-			
+
+			// Handle preparation and shooting
 			if (t_prep > 0) {
 				t_prep--;
 			}
 			else {
 				kol_shoot = 0;
 			}
-			
+
 			if (t_auto > 0) {
 				t_auto--;
 			}
 			else {
 				pow = 0;
 			}
-			
+
 			if (t_shoot > 0) {
 				t_shoot--;
 			}
-			
-			if (sndPrep != '') {
+
+			// Handle sounds with precomputed positions and delays
+			if (sndPrep != "") {
 				if (!is_pattack && is_attack) {
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, t_prep * 30);
 				}	// [spin sound]
@@ -502,10 +487,11 @@ package fe.weapon {
 				}	// [stop sound]
 			}
 			
-			if (recharg && hold < holder && t_attack == 0) {
+			// Handle recharging logic
+			if (recharg && magazineRounds < magazineCapacity && t_attack == 0) {
 				t_rech--;
 				if (t_rech <= 0) {
-					hold++;
+					magazineCapacity++;
 					t_rech = recharg;
 					if (owner.player) {
 						World.w.gui.setWeapon();
@@ -513,6 +499,7 @@ package fe.weapon {
 				}
 			}
 			
+			// Handle reloading logic
 			if (t_attack == 0 && t_reload > 0) {
 				t_reload--;
 			}
@@ -532,13 +519,13 @@ package fe.weapon {
 			
 			// Weapon is broke, abort
 			if (hp <= 0 && owner == World.w.gg) {
-				World.w.gui.infoText('brokenWeapon', nazv, null, false);
+				World.w.gui.infoText("brokenWeapon", nazv, null, false);
 				World.w.gui.bulb(coordinates.X, coordinates.Y);
 				return false;
 			}
 			
 			if (owner.player && (respect == 1 || alicorn && !World.w.alicorn)) {
-				World.w.gui.infoText('disWeapon', null, null, false);
+				World.w.gui.infoText("disWeapon", null, null, false);
 				return false;
 			}
 			
@@ -554,7 +541,7 @@ package fe.weapon {
 				return false;
 			}
 			
-			if (holder > 0 && hold < rashod) { // [requires recharging]
+			if (magazineCapacity > 0 && magazineCapacity < rashod) { // [requires recharging]
 				initReload();
 				return false;
 			}
@@ -575,7 +562,7 @@ package fe.weapon {
 					t_attack = rapid * (dkol + 1);
 				}
 
-				if (holder == 1) {
+				if (magazineCapacity == 1) {
 					initReload();
 				}
 			
@@ -587,13 +574,13 @@ package fe.weapon {
 		protected function weaponAttack():void {
 			if (jammed) {
 				if (tipDamage == "laser" || tipDamage == "plasma" || tipDamage == "emp" || tipDamage == "electric") {
-					World.w.gui.infoText('weaponCircuit', null, null, false);
+					World.w.gui.infoText("weaponCircuit", null, null, false);
 				}
 				else {
-					World.w.gui.infoText('weaponJammed', null, null, false);
+					World.w.gui.infoText("weaponJammed", null, null, false);
 				}
 				
-				Snd.ps('no_ammo', coordinates.X, coordinates.Y);
+				Snd.ps("no_ammo", coordinates.X, coordinates.Y);
 				initReload();
 				
 				return;
@@ -617,12 +604,12 @@ package fe.weapon {
 				skillConf = 0.6;
 			}
 			else if (razn > 2) {
-				World.w.gui.infoText('weaponSkillLevel', null, null, false);
+				World.w.gui.infoText("weaponSkillLevel", null, null, false);
 				return false;
 			}
 			
 			if (perslvl && (owner as UnitPlayer).pers.level < perslvl) {
-				World.w.gui.infoText('persLevel', null, null, false);
+				World.w.gui.infoText("persLevel", null, null, false);
 				return false;
 			}
 			
@@ -659,7 +646,7 @@ package fe.weapon {
 				var rnd:Number = Math.random();
 				var jm:Number = (owner as UnitPlayer).pers.jammedMult;
 				
-				if (rnd < breaking / Math.max(20, holder) * jm) {
+				if (rnd < breaking / Math.max(20, magazineCapacity) * jm) {
 					t_ret = 2;
 					jammed = true;
 					return null;
@@ -668,15 +655,15 @@ package fe.weapon {
 					t_ret = 2;
 					
 					if (rapid > 5) {
-						World.w.gui.infoText('misfire', null, null, false);
+						World.w.gui.infoText("misfire", null, null, false);
 					}
 					
-					Snd.ps('no_ammo', coordinates.X, coordinates.Y);
+					Snd.ps("no_ammo", coordinates.X, coordinates.Y);
 					return null;
 				}
 			}
 
-			if (holder > 0 && hold < rashod) {
+			if (magazineCapacity > 0 && magazineCapacity < rashod) {
 				return null;
 			}
 			
@@ -742,7 +729,7 @@ package fe.weapon {
 				}
 				
 				if (damage > 0) {
-					b.damage = resultDamage(damage, sk) * ammoDamage;
+					b.damage = resultDamage(damage, sk) * ammo.damageMultiplier;
 				}
 				
 				if (damageExpl > 0) {
@@ -809,27 +796,27 @@ package fe.weapon {
 			
 			owner.isShoot = true;
 			
-			if (holder > 0 && hold > 0) {
-				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo == "batt" || ammo == "energ" || ammo == "crystal") && Math.random() < (owner as UnitPlayer).pers.recyc) {
+			if (magazineCapacity > 0 && magazineCapacity > 0) {
+				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo.id == "batt" || ammo.id == "energ" || ammo.id == "crystal") && Math.random() < (owner as UnitPlayer).pers.recyc) {
 					// [don't waste ammunition]
 				}
 				else {
-					hold -= rashod;
+					magazineCapacity -= rashod;
 					// [replenishment at the landfill]
-					if (owner.player && (loc.train) && ammo != "recharg" && ammo != "not") {
-						World.w.invent.increaseQuantity(ammo, rashod);
+					if (owner.player && (loc.train) && ammo.id != "recharg" && ammo.id != "not") {
+						World.w.invent.increaseQuantity(ammo.id, rashod);
 						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * rashod;
 					}
 				}
 			}
 			
 			if (owner.player && tip != "internal" && tip != "explosives" && tip != "magic" && !(loc.train || World.w.alicorn)) {
-				hp -= (1 + ammoHP);
+				hp -= (1 + ammo.increasedWear);
 			}
 			
 			if (animated && t_shoot <= 1) {
 				try {
-					vis.gotoAndPlay('shoot');
+					vis.gotoAndPlay("shoot");
 				}
 				catch (err) {
 					trace("ERROR: (00:15) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"shoot\"!");
@@ -897,27 +884,27 @@ package fe.weapon {
 		protected function setBullet(bul:Bullet):void {
 			bul.tipDamage = tipDamage;
 			bul.tipDecal = tipDecal;
-			bul.otbros = otbros * otbrosMult * ammoOtbros;
-			bul.pier = pier + pierAdd + ammoPier;
-			bul.armorMult = ammoArmor;
+			bul.otbros = otbros * otbrosMult * ammo.knockback;
+			bul.pier = pier + pierAdd + ammo.piercing;
+			bul.armorMult = ammo.armorMultiplier;
 			bul.destroy = destroy;
-			bul.precision = precision * ammoPrec;
+			bul.precision = precision * ammo.accuracyModifier;
 			bul.explTip = explTip;
 			bul.explRadius = explRadius * explRadMult;
 			bul.explKol = explKol;
 			bul.spring = spring;
 			bul.flare = flare;
-			bul.probiv = probiv + ammoProbiv;
+			bul.probiv = probiv + ammo.penetrationModifier;
 			
 			if (bul.probiv > 1) {
 				bul.probiv = 1;
 			}
 			
 			/*
-			if (ammoMod >= 0) {
-				bul.tipDamage = ammoMod;
+			if (ammo.damageType != "") {
+				bul.tipDamage = ammo.damageType;
 				
-				if (ammoMod == 8) {
+				if (ammo.damageType == "emp") {
 					bul.destroy = 0;
 					bul.otbros = 0;
 				}
@@ -937,97 +924,59 @@ package fe.weapon {
 		}
 		
 		public function reloadWeapon():void {
+			// Unjam the waepon if applicable
 			jammed = false;
 			
-			if (ammo == 'recharg') {
+			// Rechargeable weapons can't reload, abort
+			if (ammo.id == "recharg") {
 				return;
 			}
 			
-			if (owner && owner.player && ammo != 'not') {
-				if (ammoTarg != ammo) {
-					if (hold > 0) {
-						World.w.invent.increaseQuantity(ammo, hold);
-						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;
-						hold = 0;
+			if (owner && owner.player && ammo.id != "not") {
+				if (ammoTarg.id != ammo.id) {
+					if (magazineCapacity > 0) {
+						World.w.invent.increaseQuantity(ammo.id, magazineCapacity);
+						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * magazineCapacity;
+						magazineCapacity = 0;
 					}
 					
-					setAmmo(ammoTarg);
+					setAmmo(ammoTarg.id);
 				}
 				
-				var kol:int = World.w.invent.getQuantity(ammo);
+				var kol:int = World.w.invent.getQuantity(ammo.id);
 				
-				if (kol > holder - hold) {
-					kol = holder-hold;
+				if (kol > magazineCapacity - magazineCapacity) {
+					kol = magazineCapacity-magazineCapacity;
 				}
 				
-				hold += kol;
-				World.w.invent.decreaseQuantity(ammo, kol);
+				magazineCapacity += kol;
+				World.w.invent.decreaseQuantity(ammo.id, kol);
 				//World.w.invent.mass[2] -= World.w.invent.items[ammo].mass * kol;
 			}
 			else {
 				if (ammoTarg != ammo) {
-					setAmmo(ammoTarg);
+					setAmmo(ammoTarg.id);
 				}
 				
-				hold = holder;
+				magazineCapacity = magazineCapacity;
 			}
 		}
 		
 		// [Set the type of ammunition used]
-		public function setAmmo(nammo:String = null):void {
-			ammo = nammo;
+		public function setAmmo(id:String):void {
+			ammo = WeaponManager.reference.getAmmo(id);
 
 			if (owner && owner.player && World.w.gui) {
 				World.w.gui.setWeapon();
 			}
-			
-			ammoPier	=  0.00;		// [Armor-piercing]
-			ammoArmor	=  1.00;		// [Target's armor modifier]
-			ammoDamage	=  1.00;		// [Damage]
-			ammoProbiv	=  0.00;
-			ammoOtbros	=  1.00;		// [Discarding]
-			ammoPrec	=  1.00;		// [Accuracy]
-			ammoHP		=  0.00;		// [Increase in wear]
-			ammoFire	=  0.00;		// [Incendiary]
-			ammoMod		= -1.00;		// [Change damage type]
-			
-			var ammoData:Object = ItemManager.reference.getItem(nammo);
-			
-			if ("pier" in ammoData) {
-				ammoPier = ammoData.pier;
-			}
-			if ("armor" in ammoData) {
-				ammoArmor = ammoData.armor;
-			}
-			if ("damage" in ammoData) {
-				ammoDamage = ammoData.damage;
-			}
-			if ("probiv" in ammoData) {
-				ammoProbiv = ammoData.probiv;
-			}
-			if ("knock" in ammoData) {
-				ammoOtbros = ammoData.knock;
-			}
-			if ("prec" in ammoData) {
-				ammoPrec = ammoData.prec;
-			}
-			if ("det" in ammoData) {
-				ammoHP = ammoData.det;
-			}
-			if ("fire" in ammoData) {
-				ammoFire = ammoData.fire;
-			}
-			if ("tipdam" in ammoData) {
-				ammoMod = ammoData.tipdam;
-			}
 		}
 		
 		public function unloadWeapon():void {
-			if (owner && owner.player && holder && hold && ammo!='' && ammo != "recharg" && ammo != "not") {
-				World.w.gui.infoText('unloadWeapon', nazv, null, false);
-				(owner as UnitPlayer).invent.increaseQuantity(ammo, hold);
-				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * hold;
-				hold = 0;
+			if (owner && owner.player && magazineCapacity && magazineCapacity && ammo.id != "" && ammo.id != "recharg" && ammo.id != "not") {
+				World.w.gui.infoText("unloadWeapon", nazv, null, false);
+				(owner as UnitPlayer).invent.increaseQuantity(ammo.id, magazineCapacity);
+				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * magazineCapacity;
+				magazineCapacity = 0;
 				
 				if (sndReload != "") {
 					Snd.ps(sndReload, coordinates.X, coordinates.Y);
@@ -1045,8 +994,8 @@ package fe.weapon {
 				return 2;
 			}
 			
-			if (ammo != 'recharg' && ammo != 'not' && holder > 0 && hold < rashod) {
-				if (World.w.invent.getQuantity(ammo) < rashod) {
+			if (ammo.id != "recharg" && ammo.id != "not" && magazineCapacity > 0 && magazineCapacity < rashod) {
+				if (World.w.invent.getQuantity(ammo.id) < rashod) {
 					return 4;
 				}
 				
@@ -1084,7 +1033,7 @@ package fe.weapon {
 				return -1;
 			}
 			
-			if (ammo != 'recharg' && ammo != 'not' && holder > 0 && World.w.invent.getQuantity(ammo) < rashod) {
+			if (ammo.id != "recharg" && ammo.id != "not" && magazineCapacity > 0 && World.w.invent.getQuantity(ammo.id) < rashod) {
 				return 0;
 			}
 			
@@ -1103,42 +1052,39 @@ package fe.weapon {
 			
 		}
 
-		public function initReload(nammo:String = ""):void {
-			if (!jammed && (holder <= 0 || (hold == holder && nammo == "") || recharg > 0)) {
+		public function initReload(s:String = ""):void {
+			if (!jammed && (magazineCapacity <= 0 || (magazineCapacity == magazineCapacity && s == "") || recharg > 0)) {
 				return;
 			}
 			
-			if (nammo == "") {
+			// Reload using the same ammo
+			if (s == "") {
 				ammoTarg = ammo;
 			}
 			
 			if (owner.player) {
-				// unsuitable ammunition
-				
-				/*
-				if (nammo != "" && nammo != ammo) {
-					var am:XML = getAmmoInfo(nammo);
+				// Reloading using ammunition different than our current ammunition
+				if (s != "" && s != ammo.id) {
+					var am:Ammo = WeaponManager.reference.getAmmo(s);
 					
-					if (am.length() == 0) {
-						return;
-					}
-					
-					if (am.@base != ammoBase) {
-						World.w.gui.infoText('imprAmmo', ItemManager.reference.getItem(nammo).nazv, null, false);
+					// The base ammo type does not match, abort
+					if (am.base != ammo.base) {
+						World.w.gui.infoText("imprAmmo", am.name, null, false);
 						World.w.gui.bulb(coordinates.X, coordinates.Y);
 						return;
 					}
 					
-					ammoTarg = nammo;
+					ammoTarg = am;
 				}
-				*/ // BROKEN FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-				
-				if (nammo != "" && nammo == ammo) {
-					ammoTarg = nammo;
+
+				// We're reloading using the same ammo
+				if (s != "" && s == ammo.id) {
+					ammoTarg = ammo;
 				}
 				
-				if (!jammed && ammo != 'not' && World.w.invent.getQuantity(ammoTarg) < rashod) {
-					World.w.gui.infoText('noAmmo', ItemManager.reference.getItem(ammoTarg).nazv, null, false);
+				// The required ammo is missing from inventory
+				if (!jammed && ammo.id != "not" && World.w.invent.getQuantity(ammoTarg.id) < rashod) {
+					World.w.gui.infoText("noAmmo", ammoTarg.name, null, false);
 					World.w.gui.bulb(coordinates.X, coordinates.Y);
 					return;
 				}
@@ -1146,16 +1092,20 @@ package fe.weapon {
 			
 			if (t_reload <= 0 || reload == 0) {
 				if (reload > 0) {
+					// Set the time to reload in frames
 					t_reload = Math.round(reload * reloadMult);
 					
+					// Play the reload animation
 					if (animated) {
 						try {
-							vis.gotoAndPlay('reload');
+							vis.gotoAndPlay("reload");
 						}
 						catch (err) {
 							trace("ERROR: (00:16) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"reload\"!");
 						}
 					}
+					
+					// Play the reload sound (if applicable)
 					if (sndReload != "") {
 						Snd.ps(sndReload, coordinates.X, coordinates.Y);
 					}
@@ -1185,7 +1135,7 @@ package fe.weapon {
 				
 				if (t_prep >= prep) {
 					try {
-						if (tip != "internal") vis.gotoAndStop('ready'); // Don't try to animate internal weapons
+						if (tip != "internal") vis.gotoAndStop("ready"); // Don't try to animate internal weapons
 					}
 					catch(err) {
 						trace("ERROR: (00:17) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"ready\"!");
@@ -1194,20 +1144,20 @@ package fe.weapon {
 				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);
 			}
 			
-			if (krep == 0) {
+			if (!fixedToOwner) {
 				if (coordinates.X > owner.celX) {
 					vis.scaleX = -1;
-					vis.rotation = rot * 180 / Math.PI + 180 + rotUp;
+					vis.rotation = rot * 180 / ONE_PI + 180 + rotUp;
 				}
 				
 				if (coordinates.X < owner.celX) {
 					vis.scaleX = 1;
-					vis.rotation = rot * 180 / Math.PI - rotUp;
+					vis.rotation = rot * 180 / ONE_PI - rotUp;
 				}
 			}
 			else {
 				vis.scaleX = owner.storona;
-				vis.rotation = rot * 180 / Math.PI + 90 * (1 - owner.storona) - rotUp * storona;
+				vis.rotation = rot * 180 / ONE_PI + 90 * (1 - owner.storona) - rotUp * storona;
 			}
 		}
 		
@@ -1215,22 +1165,18 @@ package fe.weapon {
 			var s:String = "";
 			s += id;
 			
-			if (variant>0) {
-				s += '^' + variant;
-			}
-			
-			s += '\t';
-			s += nazv + '\t';
-			s += skill + '\t';
+			s += "\t";
+			s += nazv + "\t";
+			s += skill + "\t";
 			
 			if (lvl > 0) {
-				s += lvl + '\t';
+				s += lvl + "\t";
 			}
 			else if (tip == "magic" && variant > 0) {
-				s += (perslvl + 7) + '\t';
+				s += (perslvl + 7) + "\t";
 			}
 			else {
-				s += perslvl + '\t';
+				s += perslvl + "\t";
 			}
 			
 			if (damage > 0) {
@@ -1238,72 +1184,72 @@ package fe.weapon {
 			}
 			
 			if (kol > 1) {
-				s += ' [x' + kol + ']';
+				s += " [x" + kol + "]";
 			}
 			
-			if (this.damageExpl > 0) {
-				s += '(' + damageExpl + ' взр) ';
+			if (damageExpl > 0) {
+				s += "(" + damageExpl + " взр) ";
 			}
 			
-			s += '\t';
-			s += Number(30 / rapid).toFixed(1) + '\t';
-			s += Number((damage + damageExpl) * kol * 30 / rapid).toFixed(1) + '\t';
-			s += LanguageManager.reference.localText("pip", 'tipdam' + tipDamage) + '\t';
-			s += Math.round(critCh * 100) + '%\t';
-			s += Math.round(precision / 40) + '\t';
-			s += pier + '\t';
+			s += "\t";
+			s += Number(30 / rapid).toFixed(1) + "\t";
+			s += Number((damage + damageExpl) * kol * 30 / rapid).toFixed(1) + "\t";
+			s += LanguageManager.reference.localText("pip", "tipdam" + tipDamage) + "\t";
+			s += Math.round(critCh * 100) + "%\t";
+			s += Math.round(precision / 40) + "\t";
+			s += pier + "\t";
 			
 			if (tip == "magic") {
-				s += 'магия\t'+mana+'\t';
+				s += "магия\t"+mana+"\t";
 			}
 			else {
-				if (ammo == '') {
-                    s += '\t';
+				if (!ammo) {
+                    s += "\t";
                 }
 				else {
-					s += Res.txt('i', ammo) + '\t';
+					s += ammo.name + "\t";
 				}
 				
-				if (holder > 0) {
-					s += holder;
+				if (magazineCapacity > 0) {
+					s += magazineCapacity;
 					
 					if (rashod > 1) {
-						s += ' (-' + rashod + ')';
+						s += " (-" + rashod + ")";
 					}
 				}
 				
-				s += '\t';
+				s += "\t";
 			}
 			
 			s += satsCons;
 			
 			if (satsQue > 1) {
-				s += ' [x' + satsQue + ']';
+				s += " [x" + satsQue + "]";
 			}
 			
-			s += '\t';
+			s += "\t";
 			
 			if (opt && opt.perk) {
-				s += Res.txt('e', opt.perk);
+				s += Res.txt("e", opt.perk);
 			}
 			
-			s += '\t';
+			s += "\t";
 			
 			if (tip != "explosives" && tip != "magic") {
-				s += maxhp + '\t';
+				s += maxhp + "\t";
 			}
 			else {
-				s += '\t';
+				s += "\t";
 			}
 			
 			if (tip == "explosives") {
-				s += WeaponManager.reference.weaponData(id).price + '\t';
+				s += WeaponManager.reference.weaponData(id).price + "\t";
 			}
 			else if (tip != "magic" && variant > 0) {
-				s += price * 3 + '\t';
+				s += price * 3 + "\t";
 			}
 			else {
-				s += price + '\t';
+				s += price + "\t";
 			}
 			
 			return s;

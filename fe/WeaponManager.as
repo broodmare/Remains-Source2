@@ -3,6 +3,7 @@ package fe {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.Dictionary;
 
+	import fe.weapon.Ammo;
 	import fe.weapon.Weapon;
 	import fe.weapon.WClub;
 	import fe.weapon.WPaint;
@@ -13,9 +14,15 @@ package fe {
 
 	public class WeaponManager {
 
-		private static const _weaponPath:String = "Modules/core/AllData/weapons.json";
 		public static var reference:WeaponManager;		// Publically acessable reference to this instance
 
+		private static const _weaponPath:String	= "Modules/core/AllData/weapons.json";
+		private static const _ammoPath:String	= "Modules/core/AllData/ammo.json";
+		
+		private static var _ammoData:Object;			// An object containing the JSON data of all ammo types
+		private var _ammo:Vector.<Weapon>;				// Vector that stores a contigious collection of <Weapon> references for fast iteration
+		private var _ammoMap:Dictionary;				// Dictionary to map each weapon.id to a reference to the Weapon (Key-Pair)
+		
 		private static var _weaponData:Object;			// An object containing the JSON data of all weapons
 		private var _weapons:Vector.<Weapon>;			// Vector that stores a contigious collection of <Weapon> references for fast iteration
 		private var _weaponMap:Dictionary;				// Dictionary to map each weapon.id to a reference to the Weapon (Key-Pair)
@@ -27,17 +34,49 @@ package fe {
 			_weapons	= new Vector.<Weapon>();
 			_weaponMap	= new Dictionary();
 
-			loadWeaponData();
+			_ammoData = loadData(_ammoPath);
+			initializeAllAmmo();
+
+			_weaponData = loadData(_weaponPath);
 			initializeAllWeapons();
 		}
 
-		private function loadWeaponData():void {
+		private function initializeAllAmmo():void {
+
+			for each (var data:Object in _ammoData) {
+				var ammo:Ammo = new Ammo();
+
+				// Iterate through property of the data object
+				for (var property:String in data) {
+					// If we find anything that matches a property an Ammo object has...
+					if (ammo.hasOwnProperty(property)) {
+						// Copy it to the ammo object
+						ammo[property] = data[property];
+					}
+				}
+
+				// Store the initialized Ammo object and a reference to it using it's ID
+				_ammo.push(ammo);
+				_ammoMap[ammo.id] = ammo;
+			}
+		}
+		
+		public function getAmmo(id:String):Ammo {
+			if (_ammoMap[id] != null) {
+				return _ammoMap[id];
+			}
 			
+			trace("WeaponManager.as/getAmmo() - ERROR: Couldn't find ammo type: " + id);
+			return new Ammo();
+		}
+
+		private function loadData(path:String):Object {
 			// Create the JSON loader
 			var loader:TextLoader = new TextLoader();
 
-			// Load the data for all weapons into memory
-			_weaponData = loader.syncLoad(_weaponPath);
+			// Load the data into memory and return it as a single object
+			var data:Object = loader.syncLoad(path);
+			return data;
 		}
 
 		public function weaponData(id:String):Object {
@@ -66,26 +105,27 @@ package fe {
 		**	5 - magic, 0 - punch, other - firearm
 		*/
 
+		// Initialize and store a base version of each weapon
 		private function initializeAllWeapons():void {
-			
-			// Initialize and store a base version of each armor set
+
 			for each (var data:Object in _weaponData) {
 				var weapon:Weapon;
 
 				if (data.tip == "melee") {
-					weapon = new WClub(weapon.id);
+					weapon = new WClub(data);
 				}
 				else if (data.tip == "paint") {	// tip 12 was never used????? 
-					weapon = new WPaint(weapon.id);
+					weapon = new WPaint();
 				}
 				else if (data.tip == "throwable") {
-					weapon = new WThrow(weapon.id);
+					var wthrow:WThrow = new WThrow(data);
+					weapon = wthrow;
 				}
 				else if (data.tip == "magic") {
-					weapon = new WMagic(weapon.id);
+					weapon = new WMagic();
 				}
 				else if ("punch" in data && data["punch"] == true) {
-					weapon = new WPunch(weapon.id);
+					weapon = new WPunch();
 				}
 				else {
 					weapon = new Weapon();
@@ -186,7 +226,7 @@ package fe {
 				}
 				
 				/*if (owner && owner.weaponKrep > 0) {
-					weapon.krep = owner.weaponKrep;
+					weapon.fixedToOwner = owner.weaponKrep;
 				}*/
 
 				if (weapon.vis && weapon.vis.totalFrames > 1) {
@@ -283,7 +323,7 @@ package fe {
 
 				// Ammunition
 				if ("ammo_holder" in data ) {
-					weapon.holder = data.ammo_holder;
+					weapon.magazineCapacity = data.ammo_holder;
 				}
 				if ("ammo_rashod" in data ) {
 					weapon.rashod = data.ammo_rashod;
@@ -403,7 +443,7 @@ package fe {
 				weapon.t_rech = weapon.recharg;
 				
 				if (weapon.recharg) {
-					weapon.hold = weapon.holder;
+					weapon.magazineRounds = weapon.magazineCapacity;
 				}
 				
 				weapon.hp = weapon.maxhp;
@@ -420,6 +460,22 @@ package fe {
 				weapon.t_attack = 0;
 				weapon.t_reload = 0;
 			}
+		}
+
+		// Returns an entire new deep copy of a weapon, NOT just the reference
+		public function cloneWeapon(id:String):Weapon {
+			if (_weaponMap[id] == null) {
+				throw new ArgumentError("Could not clone weapon: " + id);
+			}
+
+			var weapon:Object = Cloner.deepClone(_weaponMap[id]);
+			var clonedWeapon:Weapon = weapon as Weapon;
+
+			if (clonedWeapon == null) {
+				throw new ArgumentError("Cloning failed: Object: " + id + " is not compatible with the Weapon type.");
+			}
+
+			return clonedWeapon;
 		}
 	}
 }

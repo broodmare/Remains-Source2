@@ -373,7 +373,7 @@ package fe.inter {
                     }
 					else {
                         w.respect = 0;
-                        w.hold = w.holder;
+                        w.magazineRounds = w.magazineCapacity;
                         World.w.gui.infoText('created', cnazv);
                         setStatus();
                     }

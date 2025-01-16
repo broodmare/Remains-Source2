@@ -164,15 +164,15 @@ package fe.inter {
 							n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
 						}
 						
-						if (w.ammo != "" && w.ammo != null) {
-							if (inv.ammos[w.ammoBase] == null) {
-                                n.ammo = inv.items[w.ammo].kol + w.hold;
+						if (w.ammo != null) {
+							if (inv.ammos[w.ammo.base] == null) {
+                                n.ammo = inv.items[w.ammo].kol + w.magazineRounds;
                             }
 							else {
-								n.ammo = inv.ammos[w.ammoBase] + w.hold;
+								n.ammo = inv.ammos[w.ammo.base] + w.magazineRounds;
 							}
 							
-							n.ammotip=(w.tip == "explosives") ? "" : inv.items[w.ammoBase].nazv;
+							n.ammotip = (w.tip == "explosives") ? "" : inv.items[w.ammo.base].nazv;
 						}
 						
 						if (w.alicorn) {
@@ -518,7 +518,9 @@ package fe.inter {
 					gg.invent.weapons[ci].respect=2;
 					World.w.gg.changeWeapon(ci);
 				} 
-				else if (gg.currentWeapon && gg.currentWeapon.tip<=3 && gg.currentWeapon.holder>0) gg.currentWeapon.initReload(ci);
+				else if (gg.currentWeapon && gg.currentWeapon.tip <= 3 && gg.currentWeapon.magazineCapacity > 0) {
+					gg.currentWeapon.initReload(ci);
+				}
 			}
 			
 			pip.setRPanel();

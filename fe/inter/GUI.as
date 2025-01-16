@@ -189,7 +189,7 @@ package fe.inter {
 			txtZhopa		= localize("g", 'zhopa');
 			txtEmpty		= localize("g", 'empty');
 			txtDrop			= localize("g", 'drop');
-			txtHold			= localize("g", 'hold');
+			txtHold			= localize("g", 'hold');	// Rounds in magazine
 			txtHeavy		= localize("g", 'heavy');
 			txtMagia		= localize("g", 'magia');
 			txtArmorMana	= localize("g", 'armormana');
@@ -324,10 +324,10 @@ package fe.inter {
 						
 						if (w.ammo != "" && w.ammo != null) {
 							if (inv.ammos[w.ammoBase] != null) {
-								n.ammo = inv.ammos[w.ammoBase] + w.hold;
+								n.ammo = inv.ammos[w.ammoBase] + w.magazineRounds;
 							}
 							else if (inv.items[w.ammo] != null) {
-								n.ammo = inv.items[w.ammo].kol + w.hold;
+								n.ammo = inv.items[w.ammo].kol + w.magazineRounds;
 							}
 							if (w.ammoBase != "") {
 								n.ammotip = (w.tip == "explosives") ? "" : inv.items[w.ammoBase].nazv;
@@ -669,17 +669,17 @@ package fe.inter {
 				
 				if (w.ammo) {
 					var n:String = "";
-					var k:int = World.w.invent.getQuantity(w.ammo);
+					var k:int = World.w.invent.getQuantity(w.ammo.id);
 					var s:String;
 					
 					if (w.tip != "explosives") {
-						if (w.hold < w.holder / 4) {
+						if (w.magazineRounds < w.magazineCapacity * 0.25) {
 							n = "2";
 						}
-						if (w.hold < w.rashod) {
+						if (w.magazineRounds < w.rashod) {
 							n = "3";
 						}
-						if (w.hold + k < w.rashod) {
+						if (w.magazineRounds + k < w.rashod) {
 							n = "5";
 						}
 					}
@@ -687,10 +687,10 @@ package fe.inter {
 					s = "<span class = 'r" + n + "'>";
 					
 					if (w.tip == "explosives") {
-                        s += k + w.hold;
+                        s += k + w.magazineRounds;
                     }
 					else {
-						s += w.hold + '/' + w.holder + ' (' + k + ')';
+						s += w.magazineRounds + '/' + w.magazineCapacity + ' (' + k + ')';
 					}
 					
 					s += "</span>";
@@ -737,8 +737,8 @@ package fe.inter {
 				weapon.htmlText = s;
 				vis.textWeapon.x = 20 + weapon.textWidth;
 			
-				if (w.ammo != "" && w.tip != "explosives") {
-					ammo.text = ItemManager.reference.getItem(w.ammo).nazv;
+				if (w.ammo && w.tip != "explosives") {
+					ammo.text = w.ammo.name;
 				}
 				else if (w.id == "paint") {
 					ammo.text = (w as WPaint).paintNazv;
