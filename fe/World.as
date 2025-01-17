@@ -345,9 +345,11 @@ package fe {
 			if (configObj.data.vsComp>0) vsComp=false;
 			if (configObj.data.vsIngr>0) vsIngr=false;
 			
-			ctr=new Ctr(configObj.data.ctr);
-			pip=new PipBuck(vpip);
-			if (!sysCur) Mouse.cursor='arrow';
+			ctr = new Ctr(configObj.data.ctr);
+			pip = new PipBuck(vpip);
+			if (!sysCur) {
+				Mouse.cursor='arrow';
+			}
 			
 			// [Loading location maps]
 			landData = [];

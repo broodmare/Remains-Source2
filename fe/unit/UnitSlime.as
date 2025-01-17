@@ -56,8 +56,10 @@ package fe.unit {
 			doop=true;		//не отслеживает цели
 			mat=12;
 			collisionTip=0;
-			currentWeapon=getXmlWeapon(ndif);
-			if (currentWeapon) childObjs=new Array(currentWeapon);
+			currentWeapon = getXmlWeapon(ndif);
+			if (currentWeapon) {
+				childObjs=new Array(currentWeapon);
+			}
 			visibility=300;
 		}
 

@@ -18,7 +18,7 @@ package fe.unit {
 		public var armor:Number		= 0.00;		// [Armor, the likelihood that it will work]
 		public var marmor:Number	= 0.00;
 		public var armorQual:Number	= 0.00;		
-		public var resistances:Resistances;		// The stats of the armor based on it's current upgrade level
+		public var resistances:Resistances = new Resistances();		// The stats of the armor based on it's current upgrade level
 
 		// Stat modifiers
 		public var dexter:Number	= 0.00;		// [Dodge bonus]

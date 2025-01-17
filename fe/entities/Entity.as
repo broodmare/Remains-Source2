@@ -9,12 +9,13 @@ package fe.entities {
 	public class Entity {
 
 		// Precomputed values for speed
-		protected static const ONE_PI:Number					= Math.PI;
 		protected static const ONE_SIXTH:Number					= 1 / 6;
 		protected static const FIVE_SIXTH:Number				= 5 / 6;
 		protected static const HALF_PI:Number					= ONE_PI / 2;
 		protected static const SIXTH_PI:Number					= ONE_PI / 6;
 		protected static const RAD_TO_DEG:Number				= 180 / ONE_PI;
+		protected static const DEG_TO_RAD:Number				= Math.PI / 180;
+		protected static const ONE_PI:Number					= Math.PI;
 		protected static const TWO_PI:Number					= 2 * ONE_PI;
 		protected static const NEGATIVE_SIXTH_PI:Number			= -SIXTH_PI;
 		protected static const NEGATIVE_HALF_PI:Number			= -HALF_PI;
@@ -69,6 +70,14 @@ package fe.entities {
 		
 		public function step():void {
 
+		}
+
+		// Check if an object is empty, Eg. '{}'
+		private static function isEmpty(obj:Object):Boolean {
+			for (var key:String in obj) {
+				return false; // Found a property, so it's not empty
+			}
+			return true; // No properties found, it's empty
 		}
 	}
 }

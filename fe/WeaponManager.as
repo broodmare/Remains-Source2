@@ -14,13 +14,15 @@ package fe {
 
 	public class WeaponManager {
 
+		private static const DEG_TO_RAD:Number				= Math.PI / 180;
+
 		public static var reference:WeaponManager;		// Publically acessable reference to this instance
 
 		private static const _weaponPath:String	= "Modules/core/AllData/weapons.json";
 		private static const _ammoPath:String	= "Modules/core/AllData/ammo.json";
 		
 		private static var _ammoData:Object;			// An object containing the JSON data of all ammo types
-		private var _ammo:Vector.<Weapon>;				// Vector that stores a contigious collection of <Weapon> references for fast iteration
+		private var _ammo:Vector.<Ammo>;				// Vector that stores a contigious collection of <Ammo> references for fast iteration
 		private var _ammoMap:Dictionary;				// Dictionary to map each weapon.id to a reference to the Weapon (Key-Pair)
 		
 		private static var _weaponData:Object;			// An object containing the JSON data of all weapons
@@ -31,7 +33,11 @@ package fe {
 		public function WeaponManager() {
 			
 			reference	= this;
+
+			_ammo		= new Vector.<Ammo>();
 			_weapons	= new Vector.<Weapon>();
+			
+			_ammoMap	= new Dictionary();
 			_weaponMap	= new Dictionary();
 
 			_ammoData = loadData(_ammoPath);
@@ -45,29 +51,46 @@ package fe {
 
 			for each (var data:Object in _ammoData) {
 				var ammo:Ammo = new Ammo();
-
-				// Iterate through property of the data object
-				for (var property:String in data) {
-					// If we find anything that matches a property an Ammo object has...
+        
+				// Step 1: Assign default properties from the placeholder
+				for (var property in _ammoData.placeholder) {
 					if (ammo.hasOwnProperty(property)) {
-						// Copy it to the ammo object
+						ammo[property] = _ammoData.placeholder[property];
+					}
+				}
+				
+				// Step 2: Override with specific properties from the current data
+				for (property in data) {
+					if (ammo.hasOwnProperty(property)) {
 						ammo[property] = data[property];
 					}
 				}
-
-				// Store the initialized Ammo object and a reference to it using it's ID
+				
+				// Store the initialized Ammo object and map it by its ID
+				if (_ammoMap[data.id]) {
+					throw new Error("Duplicate ammo ID found in ammo file: " + data.id);
+				}
 				_ammo.push(ammo);
 				_ammoMap[ammo.id] = ammo;
 			}
 		}
 		
 		public function getAmmo(id:String):Ammo {
+			var ammo:Ammo;
+			
 			if (_ammoMap[id] != null) {
-				return _ammoMap[id];
+				ammo = _ammoMap[id];
+				return ammo;
+			}
+			else {
+				ammo = _ammoMap["placeholder"]
 			}
 			
-			trace("WeaponManager.as/getAmmo() - ERROR: Couldn't find ammo type: " + id);
-			return new Ammo();
+			if (ammo == null) {
+				throw new Error("Failed retrieve ammo type: " + id);
+			}
+			
+			return ammo;
 		}
 
 		private function loadData(path:String):Object {
@@ -75,8 +98,11 @@ package fe {
 			var loader:TextLoader = new TextLoader();
 
 			// Load the data into memory and return it as a single object
-			var data:Object = loader.syncLoad(path);
-			return data;
+			var newData:Object = loader.syncLoad(path);
+			if (isEmpty(newData)) {
+				throw new Error("Failed to load data from: " + path);
+			}
+			return newData;
 		}
 
 		public function weaponData(id:String):Object {
@@ -109,27 +135,8 @@ package fe {
 		private function initializeAllWeapons():void {
 
 			for each (var data:Object in _weaponData) {
-				var weapon:Weapon;
-
-				if (data.tip == "melee") {
-					weapon = new WClub(data);
-				}
-				else if (data.tip == "paint") {	// tip 12 was never used????? 
-					weapon = new WPaint();
-				}
-				else if (data.tip == "throwable") {
-					var wthrow:WThrow = new WThrow(data);
-					weapon = wthrow;
-				}
-				else if (data.tip == "magic") {
-					weapon = new WMagic();
-				}
-				else if ("punch" in data && data["punch"] == true) {
-					weapon = new WPunch();
-				}
-				else {
-					weapon = new Weapon();
-				}
+				// Create a default weapon
+				var weapon:Weapon = new Weapon();
 
 				weapon.sloy = 2;	// ???
 				weapon.id = data.id;
@@ -272,7 +279,6 @@ package fe {
 				if ("snd_noise" in data ) {
 					weapon.noise = data.snd_noise;			// Int
 				}
-
 				
 				// [Physical parameters]
 				if ("phis_massa" in data) {
@@ -285,10 +291,10 @@ package fe {
 					weapon.mass = data.phis_m;				// Int
 				}
 				if ("phis_drot" in data ) {
-					weapon.drot = data.phis_drot * Math.PI / 180;
+					weapon.drot = data.phis_drot * DEG_TO_RAD;
 				}
 				if ("phis_drot2" in data ) {
-					weapon.drot2 = data.phis_drot2 * Math.PI / 180;
+					weapon.drot2 = data.phis_drot2 * DEG_TO_RAD;
 				}
 				if ("phis_recoil" in data ) {
 					weapon.recoil = data.phis_recoil;
@@ -305,7 +311,7 @@ package fe {
 				if ("phis_grav" in data ) {
 					weapon.grav = data.phis_grav;
 				}
-				if ("phis_grav2" in data && weapon.owner && weapon.owner.fraction != 100) {	// ( != 100 is != player )
+				if ("phis_grav2" in data && weapon.owner && weapon.owner.fraction != 100) {	// ( != 100 means != player )
 					weapon.grav = data.phis_grav2;
 				}
 				if ("phis_accel" in data ) {
@@ -361,12 +367,12 @@ package fe {
 					weapon.probiv = data.dop_probiv;
 				}
 				
-				// [ammunition (was called 'a')]
-				if ("ammo_base" in data) {
-					weapon.ammo = data.ammo_base;
-					weapon.ammoBase = data.ammo_base;
+				// Tries to get either the ammo specified or a placeholder
+				weapon.ammo = getAmmo(data.ammo_base);
+				weapon.ammoBase = getAmmo(data.ammo_base);
 
-					// setAmmo(ammo);                                 TODO: MOVE THIS OVER FROM WEAPONS.AS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+				if (weapon.ammo == null) {
+					throw new Error("Failed to assign ammo to weapon " + data.id);
 				}
 				
 				// [Combat characteristics]
@@ -459,6 +465,30 @@ package fe {
 
 				weapon.t_attack = 0;
 				weapon.t_reload = 0;
+
+				// If needed, continue creating this as a subclass
+				// GOD this is so HACKY, but I'm not re-doing the damage yet. 
+				// This is a stupid work-around and I hate it 
+				if (data.tip == "melee") {
+					var wepClub = new WClub(weapon, data);
+					weapon = wepClub;
+				}
+				else if (data.tip == "paint") {	// tip 12 was never used????? 
+					var wepPaint = new WPaint();
+					weapon = wepPaint;
+				}
+				else if (data.tip == "throwable") {
+					var wepThrow = new WThrow(data);
+					weapon = wepThrow;
+				}
+				else if (data.tip == "magic") {
+					var wepMagic = new WMagic();
+					weapon = wepMagic;
+				}
+				else if ("punch" in data && data["punch"] == true) {
+					var wepPunch = new WPunch();
+					weapon = wepPunch;
+				}
 			}
 		}
 
@@ -476,6 +506,14 @@ package fe {
 			}
 
 			return clonedWeapon;
+		}
+
+		// Check if an object is empty, Eg. '{}'
+		private static function isEmpty(obj:Object):Boolean {
+			for (var key:String in obj) {
+				return false; // Found a property, so it's not empty
+			}
+			return true; // No properties found, it's empty
 		}
 	}
 }

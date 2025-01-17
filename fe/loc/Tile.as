@@ -14,7 +14,7 @@ package  fe.loc {
 		public var boundingBox:BoundingBox;			// Bounding box
 		
 		public var indestruct:Boolean	= false;
-		public var phis:int				= 0;			// Do objects collide with this block
+		public var phis:int				= 0;			// 4 States 0: No Collision, 1: Collision, 2: Grate, 3: Ghost Wall
 		public var hp:int				= 1000;			// Hitpoints before the block breaks
 		public var thre:int				= 0;			// Amount of damage needed to affect the tile's HP
 

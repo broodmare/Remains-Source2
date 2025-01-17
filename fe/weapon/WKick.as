@@ -16,7 +16,7 @@ package fe.weapon  {
 			super();
 			vBullet = visualPunch;	// .SWF Dependency
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
-			b = new Bullet(own, v, null, false);
+			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			dopCh = 0;
 			dopEffect = 'stun';

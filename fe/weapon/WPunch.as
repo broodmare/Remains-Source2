@@ -40,7 +40,7 @@ package fe.weapon {
 					b.damage *= World.w.pers.punchDamMult;
 				}
 				
-				b.liv=5;
+				b.liv = 5;
 				
 				if (zadok && (rot < HALF_PI && rot > -HALF_PI && owner.storona < 0 || (rot > HALF_PI || rot < -HALF_PI) && owner.storona > 0)) {	//kick
 					b.otbros = otbros * 1.5;

@@ -34,7 +34,7 @@ package fe.weapon {
 			magazineCapacity	= 1;
 			ammo				= WeaponManager.reference.getAmmo(data.id);
 			
-			vis.gotoAndStop(1);
+			//vis.gotoAndStop(1);	// Why was this being called during initialization?
 			
 			if ("throwtip" in data) {
 				throwTip = data.throwtip;

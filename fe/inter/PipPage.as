@@ -28,8 +28,8 @@ package fe.inter {
 	public class PipPage {
 		
 		public var  pip:PipBuck;
-		protected static var inv;
-		protected static var gg;
+		protected var inv:Inventory = World.w.gg.invent;
+		protected var gg:UnitPlayer = World.w.gg;
 		
 		public var vis:MovieClip;
 		public var arr:Array;
@@ -81,10 +81,6 @@ package fe.inter {
 			
 			pip = npip;
 			pp = npp;
-
-			gg = World.w.gg;
-			inv = World.w.gg.invent;
-
 
 			if (pageClass == null) {
 				pageClass = visPipInv;

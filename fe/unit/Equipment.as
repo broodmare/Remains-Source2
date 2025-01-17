@@ -8,15 +8,21 @@ package fe.unit {
 
 		private var _weapons:Vector.<Weapon>;	// Vector that stores a contigious collection of <Weapon> references for fast iteration
 		private var _armors:Vector.<Armor>;		// Vector that stores a contigious collection of <Armor> references for fast iteration
+		private var _spells:Vector.<Spell>		// Vector that stores a contigious collection of <Spell> references for fast iteration
+
 		private var _weaponMap:Dictionary;		// Dictionary to map each weapon.id to it's reference (Key-Pair)
 		private var _armorMap:Dictionary;		// Dictionary to map each armor.id to it's reference (Key-Pair)
+		private var _spellMap:Dictionary;		// Dictionary to map each spell.id to it's reference (Key-Pair)
 
 		// Constructor
 		public function Equipment() {
 			_weapons	= new Vector.<Weapon>;
 			_armors		= new Vector.<Armor>;
+			_spells		= new Vector.<Spell>;
+			
 			_weaponMap	= new Dictionary();
 			_armorMap	= new Dictionary();
+			_spellMap	= new Dictionary();
 		}
 
 		public function getArmor(id:String):Armor {
@@ -27,13 +33,30 @@ package fe.unit {
 			return _weaponMap[id] as Weapon;
 		}
 
+		public function getSpell(id:String):Spell {
+			return _spellMap[id] as Spell;
+		}
+
+		public function get spells():Vector.<Spell> {
+			return _spells;
+		}
+
 		public function get weapons():Vector.<Weapon> {
 			return _weapons;
+		}
+
+		public function get armors():Vector.<Armor> {
+			return _armors;
 		}
 
 		public function addArmor(armor:Armor):void {
 			_armors.push(armor);
 			_armorMap[armor.id] = armor;
+		}
+
+		public function addWeapon(weapon:Weapon):void {
+			_weapons.push(weapon);
+			_weaponMap[weapon.id] = weapon;
 		}
 
 		public function deleteArmor(id:String):void {
@@ -51,11 +74,6 @@ package fe.unit {
 				// Remove the armor from the Dictionary
 				delete _armorMap[id];
 			}
-		}
-
-		public function addWeapon(weapon:Weapon):void {
-			_weapons.push(weapon);
-			_weaponMap[weapon.id] = weapon;
 		}
 
 		public function deleteWeapon(id:String):void {
@@ -77,7 +95,7 @@ package fe.unit {
 
 		// Check both maps for an entry and return the result
 		public function hasEquipment(id:String):Boolean {
-			return (_weaponMap[id] != null || _armorMap[id] != null);
+			return (_weaponMap[id] != null || _spellMap[id] != null || _armorMap[id] != null);
 		}
 	}
 }

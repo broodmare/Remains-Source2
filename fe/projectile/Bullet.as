@@ -14,21 +14,35 @@ package fe.projectile {
 	
 	public class Bullet extends Obj {	
 
-		//типы реакции на попадание
-		//-1 - промах, пуля летит дальше
-		//0 - попал, пуля исчезла
-		//1 - попал в твёрдую поверхность (металл или камень)
-		//2 - попал в мясо
-		//3 - ?
+		// [hit response types]
+		// -1 - [miss, the bullet flies further]
+		//  0 - [hit, the bullet disappeared]
+		//  1 - [hit a hard surface (metal or stone)]
+		//  2 - [hit the meat]
+		//  3 - ?
 		
 		protected var vse:Boolean=false;
 		
 		public var owner:Unit;
 		public var weap:Weapon;
 		public var weapId:String;
-		public var tipBullet:int=0;	//тип пули. 0-обычная, 1-холодное оружие
-		public var rot:Number=0, vel:Number=15, liv:int=100, begx:Number, begy:Number, knockx:Number, knocky:Number;
-		public var ddy:Number=0, ddx:Number=0, accel:Number=0, brakeR:Number=0, vRot:Boolean=false;
+		public var tipBullet:int=0;	// [Bullet type -- 0-normal, 1-melee weapon]
+		public var rot:Number=0;
+		public var vel:Number=15;
+		public var liv:int=100;
+		
+		public var begx:Number;
+		public var begy:Number;
+		
+		public var knockx:Number;
+		public var knocky:Number;
+
+		public var ddy:Number=0;
+		public var ddx:Number=0;
+		public var accel:Number=0;
+		public var brakeR:Number=0;
+		public var vRot:Boolean=false;
+		
 		public var celX:Number = -100000;
 		public var celY:Number = -100000;
 		public var inWater:int = -1;
@@ -128,17 +142,23 @@ package fe.projectile {
 				velocity.Y += ddy;
 				velocity.X += ddx;
 				
-				if (vRot) rot=Math.atan2(velocity.Y, velocity.X);
+				if (vRot) {
+					rot = Math.atan2(velocity.Y, velocity.X);
+				}
 				
 				if (brakeR && dist>brakeR) {
-					vRot=true;
-					velocity.multiply(0.9);
+					vRot = true;
+					velocity.multiply(0.90);
 					vel *= 0.9;
 				}
 				
-				if (vRot) rot = Math.atan2(velocity.Y, velocity.X);
+				if (vRot) {
+					rot = Math.atan2(velocity.Y, velocity.X);
+				}
 				
-				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
+				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+					run();
+				}
 				else {
 					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
 					
@@ -151,21 +171,25 @@ package fe.projectile {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.rotation=rot*180/Math.PI;
-				if (vis.laser && (spring>=2)) {
-					vis.laser.scaleX=Math.sqrt((coordinates.X - begx) * (coordinates.X - begx) + (coordinates.Y - begy) * (coordinates.Y - begy))/100;
+				vis.rotation = rot * RAD_TO_DEG;
+				
+				if (vis.laser && (spring >= 2)) {
+					vis.laser.scaleX = Math.sqrt((coordinates.X - begx) * (coordinates.X - begx) + (coordinates.Y - begy) * (coordinates.Y - begy)) * 0.01;
 				}
-				else if (spring==1 && vel>100) {
+				else if (spring == 1 && vel > 100) {
 					if (!babah) {
-						vis.scaleX=vel/100;
+						vis.scaleX = vel * 0.01;
 					}
 				}
 				else {
-					vis.scaleX=1;
+					vis.scaleX = 1;
 				}
-				vis.visible=true;
-				if (liv<4 && vis.laser) {
-					vis.alpha=liv/4;
+				
+				vis.visible = true;
+				
+				if (liv < 4 && vis.laser) {
+					vis.alpha = liv * 0.25;
+					
 					if (weap) {
 						weap.getBulXY();
 						vis.x = coordinates.X + weap.bulCoords.X - begx;
@@ -174,23 +198,23 @@ package fe.projectile {
 				}
 			}
 
-			if (expl_t>0) {
+			if (expl_t > 0) {
 				expl_t--;
 			}
 			else {
 				liv--;
 			}
 
-			if (expl_t>0 && expl_t%explPeriod==1) {
+			if (expl_t > 0 && expl_t % explPeriod == 1) {
 				explRun();
 			}
 
-			if (liv<=0 && !vse && explRadius>0) {
+			if (liv <= 0 && !vse && explRadius > 0) {
 				explosion();
 			}
 
-			if (liv<=0 || loc!=owner.loc) {
-				vse=true;
+			if (liv <= 0 || loc != owner.loc) {
+				vse = true;
 			}
 
 			if (vse) {
@@ -203,8 +227,11 @@ package fe.projectile {
 		}
 		
 		public override function err():String {
-			if (loc) loc.remObj(this);
-			return 'Error bullet '+(owner?owner.nazv:'???')+' '+(weap?weap.nazv:'???');
+			if (loc) {
+				loc.remObj(this);
+			}
+
+			return 'Error bullet ' + (owner ? owner.nazv : '???') + ' ' + (weap ? weap.nazv : '???');
 		}
 		
 		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
@@ -350,20 +377,28 @@ package fe.projectile {
 				
 				// Checking collision with a tile if relevant
 				if (!tilehit 
-				&& (tileX < 0 || (int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY)) 
-				&& ((t.phis == 1) || (t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY)) 
-				&& coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right 
-				&& coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) 
+					&& (tileX < 0 || (int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
+					// If phis == 1, the bullet collides, if phis == 2, the bullet MUST be coming from above the tile to pass through this tile, bullets can't go from below to above
+					&& ((t.phis == 1) || (t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
+					&& t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) 
 				{
 					if (!inWall) {
 						popadalo(t.mat);
 						sound(t.mat);
-						if (weap) weap.crash();
+						
+						if (weap) {
+							weap.crash();
+						}
+						
 						owner.crash(this);
-						if (explRadius == 0) loc.hitTile(t, destroy, coordinates.X, coordinates.Y, tipDecal);
+						
+						if (explRadius == 0) {
+							loc.hitTile(t, destroy, coordinates.X, coordinates.Y, tipDecal);
+						}
+						
 						tilehit = true;
 					}
-				}
+				} 
 				else {
 					inWall = false;
 				}
@@ -495,14 +530,22 @@ package fe.projectile {
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
 			inWall = false;
 			isExpl = true;
-			levitPoss=false;
-			if (t && t.phis && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) inWall = true;
-			if (targetObj && destroy > 0 && (targetObj is Box)) (targetObj as Box).damage(destroy);
+			levitPoss = false;
 
-			if (explKol<=0) explRun();
+			if (t && t.phis && t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) {
+				inWall = true;
+			}
+
+			if (targetObj && destroy > 0 && (targetObj is Box)) {
+				(targetObj as Box).damage(destroy);
+			}
+
+			if (explKol <= 0) {
+				explRun();
+			}
 			else {
 				explRun();
-				expl_t=(explKol-1)*explPeriod;
+				expl_t = (explKol - 1) * explPeriod;
 			}
 		}
 		
@@ -519,9 +562,18 @@ package fe.projectile {
 		
 		//выполнять процесс взрыва
 		public function explRun():void {
-			if (destroy > 0) explDestroy();
-			if (explTip == 1 || explTip == 3 && expl_t == 0) explBlast();	
-			if (explTip == 2 || explTip == 3 && expl_t >  0) explGas();
+			if (destroy > 0) {
+				explDestroy();
+			}
+
+			if (explTip == 1 || explTip == 3 && expl_t == 0) {
+				explBlast();
+			}
+
+			if (explTip == 2 || explTip == 3 && expl_t >  0) {
+				explGas();
+			}
+			
 			explVis();
 		}
 		
@@ -532,7 +584,10 @@ package fe.projectile {
 					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
 					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
 					var ter:Number = tx * tx + ty * ty;
-					if (ter < explRadius * explRadius) loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
+					
+					if (ter < explRadius * explRadius) {
+						loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
+					}
 				}
 			}
 		}
@@ -540,41 +595,66 @@ package fe.projectile {
 		//поражение всех юнитов, попавших в радиус, без отбрасывания и учёта стен
 		private function explGas():void {
 			for each(var un:Unit in loc.units) {
-				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;// || (un is VirtualUnit)
-				if (explTip==3 && !un.stay) continue; 
+				if (un.sost == 4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) {
+					continue;
+				}
+				
+				if (explTip == 3 && !un.stay) {
+					continue;
+				}
+				
 				var tx:Number = un.coordinates.X - coordinates.X;
 				var ty:Number = un.boundingBox.bottom - coordinates.Y;
 				var rasst:Number = Math.sqrt(tx*tx+ty*ty);
-				var dam:Number = damageExpl * Calc.floatBetween(0.7, 1.3);
-				//дружественный огонь врагов
-				if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
-					dam*=0.25;
+				var dam:Number = damageExpl * Calc.floatBetween(0.70, 1.30);
+				
+				// [Friendly fire from enemies]
+				if (weap && weap.owner.fraction == un.fraction && un.fraction != Unit.F_PLAYER) {
+					dam *= 0.25;
 				}
-				if (rasst<explRadius) {
-					if (rasst>explRadius*0.5) dam*=(2-rasst*2/explRadius);
-					if (weap!=null) un.dieWeap=weap.id;
-					if (weapId!=null) un.dieWeap=weapId;
-					if (weap && weap.owner.fraction==Unit.F_PLAYER && un.player)  un.damage(dam*World.w.pers.autoExpl,tipDamage);
-					else un.damage(dam,tipDamage);
+				
+				if (rasst < explRadius) {
+					if (rasst > explRadius * 0.5) {
+						dam *= (2 - rasst * 2 / explRadius);
+					}
+					
+					if (weap != null) {
+						un.dieWeap = weap.id;
+					}
+					
+					if (weapId != null) {
+						un.dieWeap = weapId;
+					}
+					
+					if (weap && weap.owner.fraction == Unit.F_PLAYER && un.player) {
+						un.damage(dam * World.w.pers.autoExpl, tipDamage);
+					}
+					else {
+						un.damage(dam, tipDamage);
+					}
 				}
 			}
 		}
 		
-		//поражение всех юнитов виртуальными осколками, с учётом защиты от стен
+		// [defeat of all units by virtual fragments, taking into account protection from walls]
 		private function explBlast():void {
 			if (loc != owner.loc) return;
 			for each(var un:Unit in loc.units) {
-				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
+				if (un.sost == 4 || un.invulner || un.disabled || un.trigDis || un.loc != loc) {
+					continue;
+				}
+				
 				var tx:Number = un.coordinates.X - coordinates.X;
 				var ty:Number = un.boundingBox.bottom - coordinates.Y;
 				var b:Bullet=explBullet(tx, ty, explRadius + un.boundingBox.width);
+				
 				if (b) {
-					b.targetObj=un;
-					//дружественный огонь врагов
+					b.targetObj = un;
+					// [friendly fire from enemies]
 					if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
 						b.damage*=un.friendlyExpl;
 					}
-					//огонь по себе
+					// [fire on yourself]
 					if (un.player) {
 						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
 						var p:Object = {x:b.knockx, y:b.knocky};
@@ -594,7 +674,7 @@ package fe.projectile {
 			if (rasst < er) {
 				b = new Bullet(owner, coordinates, null);
 				b.inWall = inWall;
-				b.vel=er*(1+rasst/er*4)/3;
+				b.vel = er * (1 + rasst / er * 4) / 3;
 				b.velocity.X = tx / rasst * er / 3;
 				b.velocity.Y = ty / rasst * er / 3;
 				b.knockx = b.velocity.X / b.vel;
@@ -607,18 +687,20 @@ package fe.projectile {
 				
 				b.damage=damageExpl;
 				
-				if (rasst>er*0.5) b.damage*=(2-rasst*2/er);
+				if (rasst > er * 0.50) {
+					b.damage *= (2 - rasst * 2 / er);
+				}
 				
-				b.otbros=otbros;
-				b.pier=pier;
-				b.weapId=weapId;
-				b.tipDamage=tipDamage;
-				b.precision=0;
-				b.liv=3;
-				b.weap=weap;
-				b.critCh=critCh;
-				b.critDamMult=critDamMult;
-				b.critInvis=critInvis;
+				b.otbros = otbros;
+				b.pier = pier;
+				b.weapId = weapId;
+				b.tipDamage = tipDamage;
+				b.precision = 0;
+				b.liv = 3;
+				b.weap = weap;
+				b.critCh = critCh;
+				b.critDamMult = critDamMult;
+				b.critInvis = critInvis;
 			}
 			
 			return b;
@@ -796,6 +878,7 @@ package fe.projectile {
 					explLiquid('fire', -33);
 				}
 			}
+			
 			if (otbros > 0)	{
 				World.w.quake(Calc.floatBetween(-4, 4) * otbros, otbros * 0.8);
 			}

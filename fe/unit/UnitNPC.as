@@ -127,10 +127,8 @@ package fe.unit {
 				}
 			}
 			// [Weapon]
-			var weapData:Object;
 			if (weap != "") {
-				weapData = ItemManager.reference.getWeapon(weap);
-				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon = WeaponManager.reference.cloneWeapon(weap);
 				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
 				setCel(null, 100, -30);
 				childObjs = [currentWeapon];
@@ -141,8 +139,7 @@ package fe.unit {
 			}
 			
 			if (weap2 != "") {
-				weapData = ItemManager.reference.getWeapon(weap2);
-				dopWeapon = Weapon.create(this, weapData);
+				dopWeapon = WeaponManager.reference.cloneWeapon(weap2);
 				dopWeapon.magazineRounds = dopWeapon.magazineCapacity;
 				childObjs.push(dopWeapon);
 			}
@@ -186,7 +183,7 @@ package fe.unit {
 			inter.active = isVis;
 		}
 		
-		public function setInter() {
+		public function setInter():void {
 			inter.action = 100;
 			inter.active = true;
 			inter.cont = null;
@@ -247,7 +244,7 @@ package fe.unit {
 			}
 		}
 		
-		public function npcFun() {
+		public function npcFun():void {
 			if (zanyato || t_ref > 0) {
 				return;
 			}
@@ -320,7 +317,7 @@ package fe.unit {
 		}
 		
 		//команды, выполняющиеся в очереди
-		private function analiz(q):void {
+		private function analiz(q:Object):void {
 			//реплика
 			if (q.com=='tell') {
 				t_replic=0;
@@ -394,51 +391,66 @@ package fe.unit {
 					}
 				}
 			}
+			
 			if (wait>0) wait--;
+			
 			if (wait==1) dey='';
+			
 			if (que.length && wait<=0) {
 				var q=que.shift();
 				analiz(q);
 			}
+			
 			if (vis.alpha<1) vis.alpha+=0.05;
+			
 			if (currentWeapon && currentWeapon.vis.alpha<1) currentWeapon.vis.alpha+=0.05;
+			
 			if (aiTip=='fly') {
 				if (!stay) isFly=true;
 			}
+			
 			if (isFly) {
 				t_float+=0.243;
 				floatY=Math.cos(t_float)*0.5;
 				velocity.X += floatX;
 				velocity.Y += floatY;
 			}
+		
 			if (celUnit==null) {
 				celX = coordinates.X + storona * 100;
 				celY = coordinates.Y - 10;
 			}
+			
 			if (dey=='fly') {
 				dvig.x = cx - coordinates.X;
 				dvig.y = cy - coordinates.Y;
-				var dst2=dvig.x*dvig.x+dvig.y*dvig.y;
+				var dst2:Number = dvig.x * dvig.x + dvig.y * dvig.y;
+				
 				if (dst2 < 1600) {
 					velocity.multiply(0.85);
+					
 					if (dst2<5*5) {
 						dey='';
 						velocity.set(0, 0);
 						wait=0;
 					}
-				} else {
+				}
+				else {
 					norma(dvig,accel);
 					velocity.X += dvig.x;
 					velocity.Y += dvig.y;
 				}
 			}
+		
 			if (aiTip=='agro') {
 				if (celUnit && celUnit.sost==1 && celUnit.hp>0) {
 					setCel(celUnit);
+					
 					if (celDX>0 && storona==-1) storona=1;
 					if (celDX<0 && storona==1) storona=-1;
 					if (currentWeapon) currentWeapon.attack();
 					if (dopWeapon) dopWeapon.attack();
+					
 					ico.visible=false;
 					zanyato=true;
 				}
@@ -452,12 +464,14 @@ package fe.unit {
 					celUnit=null;
 					if (isFly && velocity.Y < 5) velocity.Y += 1;
 				}
+				
 				if (turnY<0) {
 					isFly=false;
 					turnY=0;
 					aiTip='';
 					targNPC.landing();
 					inter.active=true;
+					
 					if (ico.sign) {
 						ico.sign.visible=World.w.helpMess;
 					}

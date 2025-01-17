@@ -356,14 +356,21 @@ package fe.inter {
 				var string2:String = 's_' + cid;
 				var sch:XML = getItemInfo(string2);
 				var kol:int=1;
+				
 				if (sch.@kol.length()) kol=int(sch.@kol);
+				
 				if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
+				
 				if (!checkScheme(sch)) return;
+				
 				if (ccat==Item.L_WEAPON) {
 					w=inv.weapons[cid];
 					var obj=assArr[cid];
+					
 					if (w.tip != "explosives" && w.respect!=3) return;
+					
 					minusCraftComp(sch);
+					
 					if (w.tip == "explosives") {
                         inv.plusItem(w.id, kol);
                         obj.kol = inv.items[w.id].kol;
@@ -377,6 +384,7 @@ package fe.inter {
                         World.w.gui.infoText('created', cnazv);
                         setStatus();
                     }
+					
 					inv.calcWeaponMass();
 				}
 				else if (ccat==Item.L_ARMOR) {
@@ -410,6 +418,7 @@ package fe.inter {
 				
 				if (World.w.helpMess && inv.items[cid]) {
 					var lmess:String=inv.items[cid].mess;
+					
 					if (lmess!=null && !(World.w.game.triggers['mess_'+lmess]>0)) {
 						World.w.game.triggers['mess_'+lmess]=1;
 						World.w.gui.impMess(Res.txt('i',lmess),Res.txt('i',lmess,2),lmess);

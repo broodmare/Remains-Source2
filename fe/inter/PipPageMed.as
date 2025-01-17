@@ -46,78 +46,125 @@ package fe.inter {
 			vis.but5.visible = false;
 		}
 
-		//подготовка страниц
+		// [preparing pages]
 		override protected function setSubPages():void {
 			setIco();
 			
-			if (pip.npcInter=='adoc') {
-				vis.but2.visible=false;
-				plata = inv.gel;
+			var localize:Function = LanguageManager.reference.localText;
+			var item:Function = ItemManager.reference.getItem;
+
+			if (pip.npcInter == 'adoc') {
+				vis.but2.visible = false;
+				plata = item("gel");
 			}
-			else if (pip.npcInter=='vdoc') {
-				vis.but2.visible=false;
-				plata = inv.good;
+			else if (pip.npcInter == 'vdoc') {
+				vis.but2.visible = false;
+				plata = item("good");
 			}
 			else {
-				vis.but2.visible=true;
-				plata = inv.money;
+				vis.but2.visible = true;
+				plata = item("money");
 			}
 			
-			pers=World.w.pers;
-			priceHP=pers.priceHP;
-			priceBlood=pers.priceBlood;
-			priceRad=pers.priceRad;
-			priceOrgan=pers.priceOrgan;
-			priceCut=pers.priceCut;
-			pricePoison=pers.pricePoison;
-			priceMana=pers.priceMana;
+			pers						= World.w.pers;
+
+			priceHP						= pers.priceHP;
+			priceBlood					= pers.priceBlood;
+			priceRad					= pers.priceRad;
+			priceOrgan					= pers.priceOrgan;
+			priceCut					= pers.priceCut;
+			pricePoison					= pers.pricePoison;
+			priceMana					= pers.priceMana;
 			
-			statHead.hpbar.visible=false;
-			statHead.nazv.text='';
-			statHead.numb.text='';
-			statHead.price.text=LanguageManager.reference.localText("pip", 'medprice');
-			vis.butOk.visible=vis.butDef.visible=false;
-			if (page2==1) {
+			statHead.hpbar.visible		= false;
+			statHead.nazv.text			= "";
+			statHead.numb.text			= "";
+			statHead.price.text			= localize("pip", 'medprice');
+			vis.butOk.visible			= false;
+			vis.butDef.visible			= false;
+
+			if (page2 == 1) {
 				gg.pers.checkHP();
 				setTopText('usemed2');
-				var cena:Number;
-				cena=(gg.maxhp-gg.hp-gg.rad)*priceHP;
-				if (cena<0) cena=0;
+				var cena:Number = (gg.maxhp - gg.hp - gg.rad) * priceHP;
 				
-				arr.push({id:'hp', nazv:LanguageManager.reference.localText("pip", 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp), price:cena});
-				arr.push({id:'organism', nazv:LanguageManager.reference.localText("pip", 'organism')+':', lvl:''});
+				if (cena < 0) {
+					cena = 0;
+				}
 				
-				if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
-				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+LanguageManager.reference.localText("pip", 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP), price:cena});
 				
-				if (gg.pers.inMaxHP-gg.pers.torsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
-				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+LanguageManager.reference.localText("pip", 'tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'hp', nazv:localize("pip", 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp), price:cena});
+				arr.push({id:'organism', nazv:localize("pip", 'organism')+':', lvl:''});
 				
-				if (gg.pers.inMaxHP-gg.pers.legsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
-				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+LanguageManager.reference.localText("pip", 'legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP), price:cena});
+				if (gg.pers.inMaxHP-gg.pers.headHP>raz) {
+					cena=raz*priceOrgan; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
+				}
 				
-				if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) cena=raz*priceBlood; else cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
-				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+LanguageManager.reference.localText("pip", 'blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+localize("pip", 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP), price:cena});
 				
-				if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) cena=razMana*priceMana; else cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
-				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+LanguageManager.reference.localText("pip", 'mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana), price:cena});
+				if (gg.pers.inMaxHP-gg.pers.torsHP>raz) {
+					cena=raz*priceOrgan; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
+				}
+				
+				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+localize("pip", 'tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP), price:cena});
+				
+				if (gg.pers.inMaxHP-gg.pers.legsHP>raz) {
+					cena=raz*priceOrgan; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
+				}
+				
+				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+localize("pip", 'legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP), price:cena});
+				
+				if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) {
+					cena=raz*priceBlood; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
+				}
+				
+				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+localize("pip", 'blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP), price:cena});
+				
+				if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) {
+					cena=razMana*priceMana; 
+				}
+				else {
+					cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
+				}
+				
+				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+localize("pip", 'mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana), price:cena});
 				
 				cena=(gg.rad)*priceRad;
-				arr.push({id:'rad', nazv:LanguageManager.reference.localText("pip", 'rad'), lvl:Math.round(gg.rad), price:cena});
+				
+				arr.push({id:'rad', nazv:localize("pip", 'rad'), lvl:Math.round(gg.rad), price:cena});
+				
 				cena=(gg.cut)*priceCut;
-				arr.push({id:'cut', nazv:LanguageManager.reference.localText("pip", 'cut'), lvl:Math.round(gg.cut*10)/10, price:cena});
+				
+				arr.push({id:'cut', nazv:localize("pip", 'cut'), lvl:Math.round(gg.cut*10)/10, price:cena});
+				
 				cena=(gg.poison)*pricePoison;
-				arr.push({id:'poison', nazv:LanguageManager.reference.localText("pip", 'poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
+				
+				arr.push({id:'poison', nazv:localize("pip", 'poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
 			}
+			
 			showBottext();
 		}
 		
-		//показ одного элемента
+		// [Show one element]
 		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			if (obj.id == null) {
                 item.id.text = '';
             }
-			else item.id.text = obj.id;
+			else {
+				item.id.text = obj.id;
+			}
 			
 			item.id.visible=false;
 			item.hpbar.visible=false;
@@ -138,8 +185,7 @@ package fe.inter {
 		}
 		
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
+		override protected function statInfo(event:MouseEvent):void {
 				if (event.currentTarget.id.text == '') {
                     vis.nazv.text = vis.info.htmlText = '';
                 }
@@ -168,6 +214,7 @@ package fe.inter {
 		private function showBottext():void {
 			var plataQty:int = World.w.invent.getQuantity(plata.id);
 			var localize:Function = LanguageManager.reference.localText;
+			
 			if (pip.npcInter == "adoc") {
 				vis.bottext.htmlText = localize("item", "gel") + ": " + numberAsColor("yellow", plataQty);
 			}
@@ -191,6 +238,7 @@ package fe.inter {
 			var originalQty:int = plataQty;
 
 			infoItemId = getSimplifiedItemId(event.currentTarget.id.text);
+			
 			switch (infoItemId) {
 				case 'hp':
 					cena = (gg.maxhp - gg.hp - gg.rad) * priceHP;
@@ -328,7 +376,7 @@ package fe.inter {
 					break;
 			}
 			
-			inv.decreaseQuantity(plata, Math.round(cena));
+			inv.decreaseQuantity(plata.id, Math.round(cena));
 			plataQty = World.w.invent.getQuantity(plata.id);
 
 			if (plata.id == 'money' && plataQty < originalQty && pip.vendor) {

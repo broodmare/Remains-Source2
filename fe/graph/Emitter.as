@@ -9,16 +9,16 @@ package fe.graph {
 
 	public class Emitter {
 
-		public static var arr:Array;
-		public static var kols:Array=[0,0,0,0,0,0];
-		public static var kol1:int=0, kol2:int=0;
+		public static var arr:Object = {};
+		public static var kols:Array = [0, 0, 0, 0, 0, 0];
+		public static var kol1:int = 0;
+		public static var kol2:int = 0;
 
+		// Load all particle data into memory
 		public static function init():void {
-			arr = [];
 			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "parts", "part");
 
-			for each(var node:XML in xmlList)
-			{
+			for each(var node:XML in xmlList) {
 				var em:Emitter = new Emitter(node);
 				arr[em.id] = em;
 			}
@@ -26,12 +26,16 @@ package fe.graph {
 			xmlList = null; // Manual cleanup.
 		}
 		
-		//заданный эмиттер создаёт частицу
+		// [a given emitter creates a particle]
 		public static function emit(nid:String, loc:Location, nx:Number, ny:Number, param:Object=null):void {
 			var em:Emitter = arr[nid];
 			
-			if (em) em.cast(loc,nx,ny,param);
-			else trace ('Нет частицы ' + nid);
+			if (em) {
+				em.cast(loc, nx, ny, param);
+			}
+			else {
+				trace ("Emitter.as/emit() - ERROR: Failed to emit particle: \"" + nid + "\"");
+			}
 		}
 		/*
 				Частицы

@@ -1,5 +1,5 @@
-[
-    {
+{
+    "pip": {
         "id": "pip",
         "sort": 0,
         "clo": 1,
@@ -7,11 +7,13 @@
         "price": 100,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "dexter": 0.2
-        }
+        "upd": [
+			{
+				"dexter": 0.2
+			}
+        ]
     },
-    {
+    "kombu": {
         "id": "kombu",
         "sort": 1,
         "hp": 2000,
@@ -47,7 +49,7 @@
             }
         ]
     },
-    {
+    "antirad": {
         "id": "antirad",
         "sort": 21,
         "clo": 1,
@@ -86,7 +88,7 @@
             }
         ]
     },
-    {
+    "antihim": {
         "id": "antihim",
         "sort": 22,
         "clo": 1,
@@ -125,7 +127,7 @@
             }
         ]
     },
-    {
+    "skin": {
         "id": "skin",
         "sort": 2,
         "hp": 4000,
@@ -164,7 +166,7 @@
             }
         ]
     },
-    {
+    "metal": {
         "id": "metal",
         "sort": 3,
         "hp": 5000,
@@ -212,7 +214,7 @@
             }
         ]
     },
-    {
+    "chitin": {
         "id": "chitin",
         "sort": 4,
         "hp": 4000,
@@ -254,7 +256,7 @@
             }
         ]
     },
-    {
+    "intel": {
         "id": "intel",
         "sort": 5,
         "hp": 3500,
@@ -292,7 +294,7 @@
             }
         ]
     },
-    {
+    "sapper": {
         "id": "sapper",
         "sort": 4,
         "hp": 5000,
@@ -338,7 +340,7 @@
             }
         ]
     },
-    {
+    "battle": {
         "id": "battle",
         "sort": 6,
         "hp": 10000,
@@ -384,7 +386,7 @@
             }
         ]
     },
-    {
+    "polic": {
         "id": "polic",
         "sort": 6,
         "hp": 10000,
@@ -436,7 +438,7 @@
             }
         ]
     },
-    {
+    "magus": {
         "id": "magus",
         "sort": 7,
         "hp": 8000,
@@ -476,7 +478,7 @@
             }
         ]
     },
-    {
+    "astealth": {
         "id": "astealth",
         "sort": 8,
         "hp": 8000,
@@ -528,7 +530,7 @@
             }
         ]
     },
-    {
+    "assault": {
         "id": "assault",
         "sort": 9,
         "hp": 20000,
@@ -575,7 +577,7 @@
             }
         ]
     },
-    {
+    "spec": {
         "id": "spec",
         "sort": 9,
         "hp": 20000,
@@ -628,7 +630,7 @@
             }
         ]
     },
-    {
+    "moon": {
         "id": "moon",
         "sort": 10,
         "hp": 18000,
@@ -669,7 +671,7 @@
             }
         ]
     },
-    {
+    "power": {
         "id": "power",
         "sort": 11,
         "hp": 30000,
@@ -725,7 +727,7 @@
             }
         ]
     },
-    {
+    "encl": {
         "id": "encl",
         "sort": 11,
         "hp": 20000,
@@ -778,7 +780,7 @@
             }
         ]
     },
-    {
+    "ali": {
         "id": "ali",
         "sort": 11,
         "hp": 40000,
@@ -841,7 +843,7 @@
             }
         ]
     },
-    {
+    "tre": {
         "id": "tre",
         "sort": 31,
         "clo": 1,
@@ -849,16 +851,18 @@
         "price": 5000,
         "tre": 3,
         "noRepair": true,
-        "upd": {
-            "armor": 3,
-            "marmor": 3,
-            "armorQual": 0.4,
-            "fang": 0.2,
-            "dexter": 0.2,
-            "sneak": 0.1
-        }
+        "upd": [
+			{         
+				"armor": 3,
+				"marmor": 3,
+				"armorQual": 0.4,
+				"fang": 0.2,
+				"dexter": 0.2,
+				"sneak": 0.1
+			}
+        ]
     },
-    {
+    "socks": {
         "id": "socks",
         "sort": 32,
         "clo": 1,
@@ -866,166 +870,196 @@
         "price": 1000,
         "noRepair": true,
         "unbreakable": true,
-        "upd": {
-            "dexter": 0.2
-        }
+        "upd": [
+			{
+				"dexter": 0.2
+			}
+        ]
     },
-    {
+    "amul_bul": {
         "id": "amul_bul",
         "tip": "amulet",
         "price": 2000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "bul": 0.15
-        }
+        "upd": [
+			{
+				"bul": 0.15
+			}
+        ]
     },
-    {
+    "amul_phis": {
         "id": "amul_phis",
         "tip": "amulet",
         "price": 2500,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "phis": 0.15,
-            "blade": 0.15
-        }
+        "upd": [
+			{
+				"phis": 0.15,
+				"blade": 0.15
+			}
+		]
     },
-    {
+    "amul_expl": {
         "id": "amul_expl",
         "tip": "amulet",
         "price": 2000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "expl": 0.25,
-            "fire": 0.1
-        }
+        "upd": [
+			{         
+				"expl": 0.25,
+				"fire": 0.1
+			}
+		]
     },
-    {
+    "amul_fang": {
         "id": "amul_fang",
         "tip": "amulet",
         "price": 3000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "fang": 0.3,
-            "acid": 0.15
-        }
+        "upd": [
+			{         
+				"fang": 0.3,
+				"acid": 0.15
+			}
+		]
     },
-    {
+    "amul_fire": {
         "id": "amul_fire",
         "tip": "amulet",
         "price": 2000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "fire": 0.2,
-            "laser": 0.1,
-            "spark": 0.1
-        }
+        "upd": [
+			{         
+				"fire": 0.2,
+				"laser": 0.1,
+				"spark": 0.1
+			}
+		]
     },
-    {
+    "amul_energ": {
         "id": "amul_energ",
         "tip": "amulet",
         "price": 2000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "laser": 0.15,
-            "plasma": 0.15
-        }
+        "upd": [
+			{
+				"laser": 0.15,
+				"plasma": 0.15
+			}
+		]
     },
-    {
+    "amul_spark": {
         "id": "amul_spark",
         "tip": "amulet",
         "price": 3000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "spark": 0.3
-        }
+        "upd": [
+			{
+				"spark": 0.3
+			}
+		]
     },
-    {
+    "amul_sneak": {
         "id": "amul_sneak",
         "tip": "amulet",
         "price": 3000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "sneak": 0.2,
-            "dexter": 0.2
-        }
+        "upd": [
+			{
+				"sneak": 0.2,
+				"dexter": 0.2
+			}
+		]
     },
-    {
+    "amul_dark": {
         "id": "amul_dark",
         "tip": "amulet",
         "price": 2000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "necro": 0.3,
-            "cryo": 0.1
-        }
+        "upd": [
+			{
+				"necro": 0.3,
+				"cryo": 0.1
+			}
+		]
     },
-    {
+    "amul_mage": {
         "id": "amul_mage",
         "tip": "amulet",
         "price": 10000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "fire": 0.15,
-            "cryo": 0.15,
-            "laser": 0.15,
-            "spark": 0.15,
-            "plasma": 0.15
-        }
+        "upd": [
+			{
+				"fire": 0.15,
+				"cryo": 0.15,
+				"laser": 0.15,
+				"spark": 0.15,
+				"plasma": 0.15
+			}
+		]
     },
-    {
+    "amul_war": {
         "id": "amul_war",
         "tip": "amulet",
         "price": 10000,
         "unbreakable": true,
         "noRepair": true,
-        "upd": {
-            "bul": 0.15,
-            "phis": 0.15,
-            "blade": 0.15,
-            "expl": 0.15
-        }
+        "upd": [
+			{
+				"bul": 0.15,
+				"phis": 0.15,
+				"blade": 0.15,
+				"expl": 0.15
+			}
+		]
     },
-    {
+    "amul_sniper": {
         "id": "amul_sniper",
         "tip": "amulet",
         "price": 5000,
         "unbreakable": true,
         "noRepair": true,
         "gunsMult": 1.16,
-        "upd": {
-            "sneak": 0.2
-        }
+        "upd": [
+			{
+				"sneak": 0.2
+			}
+		]
     },
-    {
+    "amul_berserk": {
         "id": "amul_berserk",
         "tip": "amulet",
         "price": 5000,
         "unbreakable": true,
         "noRepair": true,
         "meleeMult": 1.16,
-        "upd": {
-            "blade": 0.2
-        }
+        "upd": [
+			{
+				"blade": 0.2
+			}
+		]
     },
-    {
+    "amul_adept": {
         "id": "amul_adept",
         "tip": "amulet",
         "price": 5000,
         "unbreakable": true,
         "noRepair": true,
         "magicMult": 1.16,
-        "upd": {
-            "dark": 0.2
-        }
+        "upd": [
+			{
+				"dark": 0.2
+			}
+		]
     }
-]
+}

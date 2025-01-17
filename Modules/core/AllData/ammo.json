@@ -1,5 +1,28 @@
 {
-	{
+	"placeholder": {
+		"id": "placeholder",
+		"base": "",
+		"piercing": 0.00,
+		"armorMultiplier": 1.00,
+		"damageMultiplier": 1.00,
+		"penetrationModifier": 0.00,
+		"knockback": 1.00,
+		"accuracyModifier": 1.00,
+		"increasedWear": 0.00,
+		"incendiaryDamage": 0.00,
+		"damageType": "",
+		"tip": "",
+		"kol": 0,
+		"stage": 0,
+		"lvl": 0,
+		"chance": 0.00,
+		"price": 0.00,
+		"sell": 0.00,
+		"weight": 0.00,
+		"fc": -1,
+		"invis": false
+	},
+	"p9": {
 		"id": "p9",
 		"base": "p9",
 		"tip": "a",
@@ -11,7 +34,7 @@
 		"sell": 0.30,
 		"weight": 1.00
 	},
-	{
+	"p32": {
         "id": "p32",
         "base": "p32",
         "tip": "a",
@@ -23,7 +46,7 @@
         "sell": 0.50,
         "weight": 1.00
     },
-    {
+    "p32_1": {
         "id": "p32_1",
         "base": "p32",
         "tip": "a",
@@ -39,7 +62,7 @@
         "damageMultiplier": 0.90,
         "weight": 1.00
     },
-    {
+    "p32_2": {
         "id": "p32_2",
         "base": "p32",
         "tip": "a",
@@ -54,7 +77,7 @@
         "damageMultiplier": 1.50,
         "weight": 1.00
     },
-	{
+	"p10": {
         "id": "p10",
         "base": "p10",
         "tip": "a",
@@ -66,7 +89,7 @@
         "sell": 0.50,
         "weight": 1.00
     },
-    {
+    "p10_1": {
         "id": "p10_1",
         "base": "p10",
         "tip": "a",
@@ -82,7 +105,7 @@
         "damageMultiplier": 0.90,
         "weight": 1.00
     },
-    {
+    "p375": {
         "id": "p375",
         "base": "p375",
         "tip": "a",
@@ -94,7 +117,7 @@
         "sell": 1.20,
         "weight": 2.00
     },
-    {
+    "p375_1": {
         "id": "p375_1",
         "base": "p375",
         "tip": "a",
@@ -111,7 +134,7 @@
         "knockback": 0.80,
         "damageMultiplier": 0.90
     },
-    {
+    "p375_2": {
         "id": "p375_2",
         "base": "p375",
         "tip": "a",
@@ -127,7 +150,7 @@
         "penetrationModifier": -1.00,
         "damageMultiplier": 1.60
     },
-    {
+    "p44": {
         "id": "p44",
         "base": "p44",
         "tip": "a",
@@ -139,7 +162,7 @@
         "sell": 1.80,
         "weight": 3.00
     },
-    {
+    "p44_1": {
         "id": "p44_1",
         "base": "p44",
         "tip": "a",
@@ -156,7 +179,7 @@
         "knockback": 0.80,
         "damageMultiplier": 0.95
     },
-    {
+    "p44_2": {
         "id": "p44_2",
         "base": "p44",
         "tip": "a",
@@ -172,7 +195,7 @@
         "penetrationModifier": -1.00,
         "damageMultiplier": 1.60
     },
-    {
+    "p127": {
         "id": "p127",
         "base": "p127",
         "tip": "a",
@@ -184,7 +207,7 @@
         "sell": 1.20,
         "weight": 2.00
     },
-    {
+    "p127_1": {
         "id": "p127_1",
         "base": "p127",
         "tip": "a",
@@ -201,7 +224,7 @@
         "knockback": 0.80,
         "damageMultiplier": 0.95
     },
-    {
+    "p127_2": {
         "id": "p127_2",
         "base": "p127",
         "tip": "a",
@@ -217,7 +240,7 @@
         "damageMultiplier": 1.60,
         "knockback": 1.20
     },
-    {
+    "p145": {
         "id": "p145",
         "base": "p145",
         "tip": "a",
@@ -229,7 +252,7 @@
         "sell": 4.00,
         "weight": 4.00
     },
-    {
+    "p308": {
         "id": "p308",
         "base": "p308",
         "tip": "a",
@@ -241,7 +264,7 @@
         "sell": 1.20,
         "weight": 2.00
     },
-    {
+    "p308_1": {
         "id": "p308_1",
         "base": "p308",
         "tip": "a",
@@ -258,7 +281,7 @@
         "knockback": 0.80,
         "damageMultiplier": 0.95
     },
-    {
+    "p308_2": {
         "id": "p308_2",
         "base": "p308",
         "tip": "a",
@@ -274,7 +297,7 @@
         "penetrationModifier": -1.00,
         "damageMultiplier": 1.60
     },
-    {
+    "p50mg": {
         "id": "p50mg",
         "base": "p50mg",
         "tip": "a",
@@ -287,7 +310,7 @@
         "weight": 4.00,
         "piercing": 10.00
     },
-    {
+    "p50mg_1": {
         "id": "p50mg_1",
         "base": "p50mg",
         "tip": "a",
@@ -304,7 +327,7 @@
         "damageMultiplier": 0.95,
         "knockback": 0.80
     },
-    {
+    "p50mg_4": {
         "id": "p50mg_4",
         "base": "p50mg",
         "tip": "a",
@@ -319,7 +342,7 @@
         "piercing": 10.00,
         "incendiaryDamage": 8.00
     },
-    {
+    "p556": {
         "id": "p556",
         "base": "p556",
         "tip": "a",
@@ -331,7 +354,7 @@
         "sell": 0.50,
         "weight": 1.00
     },
-    {
+    "p556_1": {
         "id": "p556_1",
         "base": "p556",
         "tip": "a",
@@ -347,7 +370,7 @@
         "knockback": 0.80,
         "damageMultiplier": 0.90
     },
-    {
+    "p556_2": {
         "id": "p556_2",
         "base": "p556",
         "tip": "a",
@@ -362,7 +385,7 @@
         "armorMultiplier": 3.00,
         "damageMultiplier": 1.60
     },
-    {
+    "p556_5": {
         "id": "p556_5",
         "base": "p556",
         "tip": "a",
@@ -378,7 +401,7 @@
         "damageMultiplier": 0.90,
         "damageType": "plasma"
     },
-	{
+	"p5": {
         "id": "p5",
         "base": "p5",
         "tip": "a",
@@ -391,7 +414,7 @@
         "weight": 0.50,
         "piercing": 10.00
     },
-    {
+    "p5_1": {
         "id": "p5_1",
         "base": "p5",
         "tip": "a",
@@ -407,7 +430,7 @@
         "knockback": 0.80,
         "damageMultiplier": 0.90
     },
-    {
+    "p20": {
         "id": "p20",
         "base": "p20",
         "tip": "a",
@@ -419,7 +442,7 @@
         "sell": 1.00,
         "weight": 3.00
     },
-    {
+    "p12": {
         "id": "p12",
         "base": "p12",
         "tip": "a",
@@ -431,7 +454,7 @@
         "sell": 2.00,
         "weight": 3.00
     },
-    {
+    "p12_3": {
         "id": "p12_3",
         "base": "p12",
         "tip": "a",
@@ -446,7 +469,7 @@
         "piercing": 30.00,
         "knockback": 0.60
     },
-    {
+    "p12_4": {
         "id": "p12_4",
         "base": "p12",
         "tip": "a",
@@ -460,7 +483,7 @@
         "mod": "Incendiary",
         "incendiaryDamage": 10
     },
-    {
+    "p12_5": {
         "id": "p12_5",
         "base": "p12",
         "tip": "a",
@@ -475,7 +498,7 @@
         "piercing": 15.00,
         "damageType": "plasma"
     },
-    {
+    "batt": {
         "id": "batt",
         "base": "batt",
         "tip": "a",
@@ -487,7 +510,7 @@
         "sell": 0.20,
         "weight": 0.30
     },
-    {
+    "batt_6": {
         "id": "batt_6",
         "base": "batt",
         "tip": "a",
@@ -503,7 +526,7 @@
         "damageMultiplier": 1.40,
         "increasedWear": 1.00
     },
-    {
+    "energ": {
         "id": "energ",
         "base": "energ",
         "tip": "a",
@@ -515,7 +538,7 @@
         "sell": 0.20,
         "weight": 0.30
     },
-    {
+    "energ_6": {
         "id": "energ_6",
         "base": "energ",
         "tip": "a",
@@ -531,7 +554,7 @@
         "damageMultiplier": 1.50,
         "increasedWear": 1.00
     },
-    {
+    "crystal": {
         "id": "crystal",
         "base": "crystal",
         "tip": "a",
@@ -543,7 +566,7 @@
         "sell": 0.50,
         "weight": 0.50
     },
-    {
+    "crystal_6": {
         "id": "crystal_6",
         "base": "crystal",
         "tip": "a",
@@ -559,7 +582,7 @@
         "damageMultiplier": 1.50,
         "increasedWear": 1.00
     },
-    {
+    "fuel": {
         "id": "fuel",
         "base": "fuel",
         "tip": "a",
@@ -571,7 +594,7 @@
         "sell": 0.10,
         "weight": 0.30
     },
-    {
+    "fuel_7": {
         "id": "fuel_7",
         "base": "fuel",
         "tip": "a",
@@ -586,7 +609,7 @@
         "armorMultiplier": 0.20,
         "damageMultiplier": 1.25
     },
-    {
+    "bcell": {
         "id": "bcell",
         "tip": "a",
         "lvl": 4,
@@ -597,7 +620,7 @@
         "sell": 12,
         "weight": 0.30
     },
-	{
+	"gren40": {
         "id": "gren40",
         "base": "gren40",
         "tip": "a",
@@ -609,7 +632,7 @@
         "sell": 5.00,
         "weight": 8.00
     },
-    {
+    "gren40_8": {
         "id": "gren40_8",
         "base": "gren40",
         "tip": "a",
@@ -624,7 +647,7 @@
         "damageMultiplier": 1.25,
         "damageType": "plasma"
     },
-    {
+    "gren40_9": {
         "id": "gren40_9",
         "base": "gren40",
         "tip": "a",
@@ -639,7 +662,7 @@
         "damageMultiplier": 1.50,
         "damageType": "emp"
     },
-    {
+    "rocket": {
         "id": "rocket",
         "tip": "a",
         "kol": 1,
@@ -650,7 +673,7 @@
         "sell": 15.00,
         "weight": 20.00
     },
-    {
+    "egg": {
         "id": "egg",
         "tip": "a",
         "kol": 1,
@@ -661,19 +684,19 @@
         "sell": 120.00,
         "weight": 20.00
     },
-    {
+    "recharg": {
         "id": "recharg",
         "tip": "a",
         "chance": 0,
         "invis": true
     },
-    {
+    "not": {
         "id": "not",
         "tip": "a",
         "chance": 0.00,
         "invis": true
     },
-    {
+    "aero": {
         "id": "aero",
         "tip": "compw",
         "chance": 0.50,
@@ -682,7 +705,7 @@
         "weight": 0.10,
         "fc": 3
     },
-    {
+    "dart": {
         "id": "dart",
         "tip": "compw",
         "chance": 0.30,
@@ -693,7 +716,7 @@
         "fc": 3,
         "weight": 1.00
     },
-    {
+    "saw": {
         "id": "saw",
         "tip": "compw",
         "chance": 0.50,
@@ -705,7 +728,7 @@
         "fc": 3,
         "weight": 5.00
     },
-    {
+    "acid": {
         "id": "acid",
         "tip": "compw",
         "chance": 0.65,
@@ -717,7 +740,7 @@
         "fc": 3,
         "weight": 1.50
     },
-    {
+    "pcryo": {
         "id": "pcryo",
         "tip": "compw",
         "chance": 0.10,
@@ -729,7 +752,7 @@
         "fc": 3,
         "weight": 1.50
     },
-    {
+    "spikenail": {
         "id": "spikenail",
         "tip": "compw",
         "chance": 0.50,

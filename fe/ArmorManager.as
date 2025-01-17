@@ -192,10 +192,10 @@ package fe {
 			}
 
 			// Retrieve the level-specific data for the armor set
-			var data:Object = _armorData[armor.id].upd[armor.lvl];
+			var lvlData:Object = _armorData[armor.id].upd[armor.lvl];
 			
 			// Create the armor's resistance values
-			armor.resistances.importResistances(data);
+			armor.resistances.importResistances(lvlData);
 
 			// If this is armor (not an amulet) make it weak to pink cloud
 			if (armor.tip == 1) {
@@ -203,45 +203,45 @@ package fe {
 			}
 
 			// Get upgrade-level dependant stats
-			if ("armor" in data) {
-				armor.armor = data.armor;
+			if ("armor" in lvlData) {
+				armor.armor = lvlData.armor;
 			}
 
-			if ("marmor" in data) {
-				armor.marmor = data.marmor;
+			if ("marmor" in lvlData) {
+				armor.marmor = lvlData.marmor;
 			}
 
-			if ("armorQual" in data) {
-				armor.armorQual = data.armorQual;
+			if ("armorQual" in lvlData) {
+				armor.armorQual = lvlData.armorQual;
 			}
 
-			if ("radx" in data) {
-				armor.radVul = 1 - data.radx;
+			if ("radx" in lvlData) {
+				armor.radVul = 1 - lvlData.radx;
 			}
 
-			if ("dexter" in data) {
-				armor.dexter = data.dexter;
+			if ("dexter" in lvlData) {
+				armor.dexter = lvlData.dexter;
 			}
 
-			if ("sneak" in data) {
-				armor.sneak = data.sneak;
+			if ("sneak" in lvlData) {
+				armor.sneak = lvlData.sneak;
 				armor.showObsInd = true;
 			}
 
-			if ("maxmana" in data) {
-				armor.maxmana = data.maxmana;
+			if ("maxmana" in lvlData) {
+				armor.maxmana = lvlData.maxmana;
 			}
 
-			if ("act" in data) {
-				armor.dmana_act = data.act;
+			if ("act" in lvlData) {
+				armor.dmana_act = lvlData.act;
 			}
 
-			if ("used" in data) {
-				armor.dmana_use = data.used;
+			if ("used" in lvlData) {
+				armor.dmana_use = lvlData.used;
 			}
 
-			if ("res" in data) {
-				armor.dmana_res = data.res;
+			if ("res" in lvlData) {
+				armor.dmana_res = lvlData.res;
 			}
 		}
 

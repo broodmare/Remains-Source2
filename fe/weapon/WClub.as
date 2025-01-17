@@ -29,7 +29,7 @@ package fe.weapon  {
 		private var stepdlina:int			= 10;
 		private var del:Object				= {x:0, y:0};
 		private var lasM:Boolean			= false;
-		private var mtip:int				= 0;		//тип холодного оружия
+		private var mtip:int				= 0;		// [Type of bladed weapon]
 		
 		private var powerMult:Number		= 1.00;
 		private var curDam:Number			= 0.00;
@@ -60,8 +60,10 @@ package fe.weapon  {
 		private static var tileY:int = Tile.tileY;
 		
 		// Constructor
-		public function WClub(data:Object) {
-			
+		public function WClub(w:Weapon, data:Object) {
+			// Get all the properties from an already made default weapon and use them
+			copyFrom(w);
+
 			if ("vis_lasm" in data) {
 				lasM = data.vis_lasm;
 			}
@@ -76,9 +78,8 @@ package fe.weapon  {
 			visvzz.visible = false;
 			visvzz.stop();
 			
-			super();	// Create a default weapon
+			//vis.stop(); // Why was this being called during initialization?
 			
-			vis.stop();
 			speed = 15;
 			satsMelee = true;
 			noTrass = true;
@@ -117,7 +118,8 @@ package fe.weapon  {
 			
 			kolvzz = Math.round((dlina - mindlina) / stepdlina);
 			vzz = [];
-			storona = owner.storona;
+			//storona = owner.storona;
+			
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) ); 
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
@@ -185,8 +187,8 @@ package fe.weapon  {
 				celY = by + ndy * i / div;
 				var t:Tile = World.w.loc.getAbsTile(int(celX), int(celY));
 				
-				if (t.phis == 1 && celX >= t.boundingBox.left && celX <= t.boundingBox.right && celY >= t.boundingBox.top && celY <= t.boundingBox.bottom) {
-					return 0
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(celX, celY)) {
+					return 0;
 				}
 			}
 			
@@ -203,85 +205,89 @@ package fe.weapon  {
 			}
 			
 			if (owner.player) {
-				levitRun=(owner as UnitPlayer).pers.meleeRun;
-				if (loc.sky) levitRun*=4;
-				if (mtip==0) {
-					celX=owner.celX-dlina*0.8*storona;
-					celY=owner.celY+dlina*0.3;
+				levitRun = (owner as UnitPlayer).pers.meleeRun;
+				
+				if (loc.sky) {
+					levitRun *= 4;
+				}
+				
+				if (mtip == 0) {
+					celX = owner.celX - dlina * 0.8 * storona;
+					celY = owner.celY + dlina * 0.3;
 					lineCel();
-					storona=(owner.celX>owner.coordinates.X-100*owner.storona)?1:-1;
-					del.x=(celX-(owner.coordinates.X+ds));
-					del.y=(celY-owner.weaponY);
-					norma(del,meleeR);
-					ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
+					storona = (owner.celX > owner.coordinates.X - 100 * owner.storona) ? 1 : -1;
+					del.x = (celX - (owner.coordinates.X + ds));
+					del.y = (celY - owner.weaponY);
+					norma(del, meleeR);
+					ds = (owner as UnitPlayer).pers.meleeS * owner.storona;
 				}
 				else {
-					if (mtip==2 || t_attack<=0) {
-						celRX=owner.celX;
-						celRY=owner.celY;
+					if (mtip == 2 || t_attack <= 0) {
+						celRX = owner.celX;
+						celRY = owner.celY;
 					}
 					
-					celX=celRX;
-					celY=celRY;
+					celX = celRX;
+					celY = celRY;
 					
-					if (mtip==2 || t_attack<=0) {
+					if (mtip == 2 || t_attack <= 0) {
 						(owner as UnitPlayer).lineCel();
-						celRX=owner.celX;
-						celRY=owner.celY;
+						celRX = owner.celX;
+						celRY = owner.celY;
 					}
 					
-					if (mtip==2) {
-						del.x=(celRX-(owner.coordinates.X+ds));
-						del.y=(celRY-owner.weaponY);
-						norma(del,dlina-(dlina-mindlina)/2);
-						celRX-=del.x;
-						celRY-=del.y;
+					if (mtip == 2) {
+						del.x = (celRX - (owner.coordinates.X + ds));
+						del.y = (celRY - owner.weaponY);
+						norma(del, dlina - (dlina - mindlina) * 0.50);
+						celRX -= del.x;
+						celRY -= del.y;
 					}
 					
-					storona=(celRX>owner.coordinates.X)?1:-1;
-					del.x=(celRX-(owner.coordinates.X+ds));
-					del.y=(celRY-owner.weaponY);
-					norma(del,meleeR);
-					ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
+					storona = (celRX > owner.coordinates.X) ? 1 : -1;
+					del.x = (celRX - (owner.coordinates.X + ds));
+					del.y = (celRY - owner.weaponY);
+					norma(del, meleeR);
+					ds = (owner as UnitPlayer).pers.meleeS * owner.storona;
 				}
 			}
 			else {
-				if (mtip==0) {
-					celX=owner.celX-dlina*0.8*storona;
-					celY=owner.celY+dlina*0.3;
+				if (mtip == 0) {
+					celX = owner.celX - dlina * 0.8 * storona;
+					celY = owner.celY + dlina * 0.3;
 				}
 				else {
-					celX=owner.celX;
-					celY=owner.celY;
+					celX = owner.celX;
+					celY = owner.celY;
 				}
 				
-				storona=owner.storona;
-				ready=true;
+				storona = owner.storona;
+				ready = true;
 			}
 			
 			if (fixedToOwner || !coordinates.X) {
 				coordinates.X = owner.weaponX;
 				coordinates.Y = owner.weaponY;
-				ready=true;
+				ready = true;
 			}
 			else {
 				var tx:Number = celX - coordinates.X;
 				var ty:Number = celY - coordinates.Y;
 				
-				if (mtip!=0) {
+				if (mtip != 0) {
 					tx = celRX - coordinates.X;
 					ty = celRY - coordinates.Y;
 				}
 				
-				ready=((tx*tx+ty*ty)<100);			//вот тут баг с копьями
-				del.x=((owner.coordinates.X + ds + del.x) - coordinates.X)/2;
-				del.y=((owner.weaponY + del.y) - coordinates.Y)/2;
+				ready = ((tx * tx + ty * ty) < 100);			//вот тут баг с копьями
+				del.x = ((owner.coordinates.X + ds + del.x) - coordinates.X) * 0.50;
+				del.y = ((owner.weaponY + del.y) - coordinates.Y) * 0.50;
 				
 				if (owner.player) {
-					norma(del,Math.max(levitRun,1/massa));
+					norma(del, Math.max(levitRun, 1 / massa));
 				}
 				
-				blumR=(del.x*storona+del.y)/2;
+				blumR = (del.x * storona + del.y) * 0.50;
 				coordinates.X += del.x;
 				coordinates.Y += del.y;
 			}
@@ -407,8 +413,8 @@ package fe.weapon  {
 						sndPl = false;
 					}
 				}
-				else if (mtip==2) {
-					rot=Math.atan2(celY - (owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
+				else if (mtip == 2) {
+					rot = Math.atan2(celY - (owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
 					cos2 = Math.cos(rot);
 					sin2 = Math.sin(rot);
 					
@@ -685,5 +691,194 @@ package fe.weapon  {
 				vis.rotation = 90 * owner.storona - 90 + owner.weaponR * owner.storona;
 			}
 		}
-	}	
+
+		/*
+		**	Temporary awful workaround. Currently this subclass needs information from it's ammo, but ammo is now a real item and assigned when a weapon is constructed,
+		**	This lets us use all the default values from the weapon we constructed and then continue to build the subclass.
+		**
+		*/
+		public function copyFrom(weapon:Weapon):void {
+			b = weapon.b;
+			trasser = weapon.trasser;
+			owner = weapon.owner;
+			rot = weapon.rot;
+			bulCoords = weapon.bulCoords;
+			
+			// Visual properties
+			svis = weapon.svis;
+			svisv = weapon.svisv;
+			vWeapon = weapon.vWeapon;
+			visbul = weapon.visbul;
+			vBullet = weapon.vBullet;
+			flare = weapon.flare;
+			visexpl = weapon.visexpl;
+			
+			// State flags
+			is_attack = weapon.is_attack;
+			is_pattack = weapon.is_pattack;
+			
+			// Timers
+			t_attack = weapon.t_attack;
+			t_prep = weapon.t_prep;
+			t_reload = weapon.t_reload;
+			t_rech = weapon.t_rech;
+			t_rel = weapon.t_rel;
+			t_shoot = weapon.t_shoot;
+			t_auto = weapon.t_auto;
+			t_ret = weapon.t_ret;
+			
+			// Attributes
+			pow = weapon.pow;
+			skillConf = weapon.skillConf;
+			skillPlusDam = weapon.skillPlusDam;
+			weaponSkill = weapon.weaponSkill;
+			rotUp = weapon.rotUp;
+			jammed = weapon.jammed;
+			kol_shoot = weapon.kol_shoot;
+			ready = weapon.ready;
+			is_shoot = weapon.is_shoot;
+			animated = weapon.animated;
+			
+			// Targeting
+			findCel = weapon.findCel;
+			forceRot = weapon.forceRot;
+			fixRot = weapon.fixRot;
+			checkLine = weapon.checkLine;
+			
+			// Identification
+			id = weapon.id;
+			uniq = weapon.uniq;
+			variant = weapon.variant;
+			
+			// Characteristics
+			tip = weapon.tip;
+			cat = weapon.cat;
+			respect = weapon.respect;
+			skill = weapon.skill;
+			lvl = weapon.lvl;
+			lvlNoUse = weapon.lvlNoUse;
+			perslvl = weapon.perslvl;
+			spell = weapon.spell;
+			alicorn = weapon.alicorn;
+			rep_eff = weapon.rep_eff;
+			
+			// Combat properties
+			auto = weapon.auto;
+			rapid = weapon.rapid;
+			speed = weapon.speed;
+			volna = weapon.volna;
+			deviation = weapon.deviation;
+			precision = weapon.precision;
+			antiprec = weapon.antiprec;
+			
+			// Physical properties
+			dlina = weapon.dlina;
+			mindlina = weapon.mindlina;
+			mass = weapon.mass;
+			drot = weapon.drot;
+			drot2 = weapon.drot2;
+			prep = weapon.prep;
+			
+			// Damage and effects
+			explRadius = weapon.explRadius;
+			explTip = weapon.explTip;
+			explKol = weapon.explKol;
+			destroy = weapon.destroy;
+			damage = weapon.damage;
+			damageExpl = weapon.damageExpl;
+			tipDamage = weapon.tipDamage;
+			pier = weapon.pier;
+			critCh = weapon.critCh;
+			critM = weapon.critM;
+			critDamPlus = weapon.critDamPlus;
+			distExpl = weapon.distExpl;
+			navod = weapon.navod;
+			
+			// Additional properties
+			otbros = weapon.otbros;
+			kol = weapon.kol;
+			dkol = weapon.dkol;
+			rashod = weapon.rashod;
+			opt = weapon.opt;
+			recoil = weapon.recoil;
+			recoilUp = weapon.recoilUp;
+			recoilMult = weapon.recoilMult;
+			desintegr = weapon.desintegr;
+			
+			// Attachment and ammo
+			fixedToOwner = weapon.fixedToOwner;
+			magazineRounds = weapon.magazineRounds;
+			magazineCapacity = weapon.magazineCapacity;
+			ammoBase = weapon.ammoBase;
+			ammo = weapon.ammo;
+			ammoTarg = weapon.ammoTarg;
+			
+			// Reload and magic
+			reload = weapon.reload;
+			recharg = weapon.recharg;
+			magic = weapon.magic;
+			dmagic = weapon.dmagic;
+			mana = weapon.mana;
+			dmana = weapon.dmana;
+			
+			// Audio and visuals
+			noise = weapon.noise;
+			shine = weapon.shine;
+			tipDecal = weapon.tipDecal;
+			bulAnim = weapon.bulAnim;
+			spring = weapon.spring;
+			flame = weapon.flame;
+			grav = weapon.grav;
+			accel = weapon.accel;
+			shell = weapon.shell;
+			fromWall = weapon.fromWall;
+			bulBlend = weapon.bulBlend;
+			emitShell = weapon.emitShell;
+			
+			// Additional effects
+			dopEffect = weapon.dopEffect;
+			dopDamage = weapon.dopDamage;
+			dopCh = weapon.dopCh;
+			probiv = weapon.probiv;
+			visionMult = weapon.visionMult;
+			
+			// Modifiers
+			drotMult = weapon.drotMult;
+			reloadMult = weapon.reloadMult;
+			precMult = weapon.precMult;
+			consMult = weapon.consMult;
+			damMult = weapon.damMult;
+			damAdd = weapon.damAdd;
+			pierAdd = weapon.pierAdd;
+			critchAdd = weapon.critchAdd;
+			speedMult = weapon.speedMult;
+			otbrosMult = weapon.otbrosMult;
+			explRadMult = weapon.explRadMult;
+			devMult = weapon.devMult;
+			absPierRnd = weapon.absPierRnd;
+			
+			// SATS properties
+			satsQue = weapon.satsQue;
+			satsCons = weapon.satsCons;
+			noSats = weapon.noSats;
+			noPerc = weapon.noPerc;
+			noTrass = weapon.noTrass;
+			satsMelee = weapon.satsMelee;
+			
+			// Sounds
+			sndShoot = weapon.sndShoot;
+			sndReload = weapon.sndReload;
+			sndPrep = weapon.sndPrep;
+			sndHit = weapon.sndHit;
+			snd_t_prep1 = weapon.snd_t_prep1;
+			snd_t_prep2 = weapon.snd_t_prep2;
+			sndCh = weapon.sndCh;
+			
+			// Health and pricing
+			hp = weapon.hp;
+			maxhp = weapon.maxhp;
+			price = weapon.price;
+			breaking = weapon.breaking;
+		}
+	}
 }

@@ -27,8 +27,8 @@ package fe.weapon {
 		
 		public function lineCel():int {
 			var res:int = 0;
-			var bx:Number=owner.coordinates.X;
-			var by:Number=owner.coordinates.Y - owner.boundingBox.height * 0.75;
+			var bx:Number = owner.coordinates.X;
+			var by:Number = owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number = (celX - bx);
 			var ndy:Number = (celY - by);
 			var div:Number = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
@@ -36,12 +36,13 @@ package fe.weapon {
 			for (var i:int = 1; i < div; i++) {
 				celX = bx + ndx * i / div;
 				celY = by + ndy * i / div;
-				var t:Tile=World.w.loc.getAbsTile(int(celX), int(celY));
+				var t:Tile = World.w.loc.getAbsTile(int(celX), int(celY));
 				
-				if (t.phis==1 && celX>=t.boundingBox.left && celX<=t.boundingBox.right && celY>=t.boundingBox.top && celY<=t.boundingBox.bottom) {
-					return 0
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(celX, celY)) {
+					return 0;
 				}
 			}
+			
 			return 1;
 		}
 		

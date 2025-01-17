@@ -52,8 +52,8 @@ package fe.weapon {
 		public var skillConf:Number		= 1.00;		//модификатор, зависит от соответствия уровня скилла, 1 - норм, 0.8 - скилл на 1 уровень ниже, 0.6 - скилл на 2 уровня ниже
 		public var skillPlusDam:Number	= 1.00;		//усиление оружия низких уровней;
 		public var weaponSkill:Number	= 1.00;		//умение для гг
-		private var t_ret:int			= 0;
-		private var rotUp:Number		= 0.00;
+		public var t_ret:int			= 0;
+		public var rotUp:Number		= 0.00;
 		public var jammed:Boolean		= false;	//заклинило
 		public var kol_shoot:int		= 0;		//количество сделанных выстрелов
 		public var ready:Boolean		= false;	//оружие наведено на цель
@@ -162,7 +162,7 @@ package fe.weapon {
 		public var shell:Boolean		= false;	// [throws out the cartridge case]
 		public var fromWall:Boolean		= false;	// [shoot from the wall]
 		public var bulBlend:String		= "screen";
-		private var emitShell:Emitter	= Emitter.arr["gilza"];
+		public var emitShell:Emitter	= Emitter.arr["gilza"];
 		
 		// [additional effects] (usually called 'DOP')
 		public var dopEffect:String;				// [Effect]
