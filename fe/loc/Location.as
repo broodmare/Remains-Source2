@@ -6,10 +6,11 @@ package fe.loc {
 
 
 	import fe.*;
-	import fe.entities.BoundingBox;
 	import fe.graph.*;
 	import fe.entities.Entity;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
+	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;

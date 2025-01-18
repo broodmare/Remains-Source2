@@ -26,9 +26,12 @@ package fe.inter {
 	*		3 - Options
 	*		4 - Controls
 	*		5 - Log
+	*		6 - Item Pickup Options
 	*/
 	public class PipPageOpt extends PipPage {
 		
+		private static const PAGE_LOAD:int = 1, PAGE_SAVE:int = 2, PAGE_OPTIONS:int = 3, PAGE_CONTROLS:int = 4, PAGE_LOG:int = 5, PAGE_AUTOPICKUP_OPT:int = 6;
+
 		private var setkeyAction:String;
 		private var setkeyCell:int=1;
 		private var setkeyKey;
@@ -57,7 +60,8 @@ package fe.inter {
 
 		//подготовка страниц
 		override protected  function setSubPages():void {
-			
+			var localize:Function = LanguageManager.reference.localText;
+
 			info.visible = false;
 			statHead.visible = false;
 			
@@ -68,7 +72,7 @@ package fe.inter {
 			
 			nSave = -1;
 			
-			if (page2==3) {
+			if (page2 == PAGE_OPTIONS) {
 				statHead.nazv.text=statHead.numb.text='';
 				arr.push({id:'fullscreen'});
 				arr.push({id:'zoom100', check:World.w.zoom100});
@@ -87,7 +91,7 @@ package fe.inter {
 				arr.push({id:'err_show', check:World.w.errorShowOpt});
 				arr.push({id:'autotake'});
 			}
-			if (page2==6) {
+			if (page2 == PAGE_AUTOPICKUP_OPT) {
 				arr.push({id:'vsWeaponNew', check:World.w.vsWeaponNew});
 				arr.push({id:'vsWeaponRep', check:World.w.vsWeaponRep});
 				arr.push({id:'vsAmmoAll', check:World.w.vsAmmoAll});
@@ -103,58 +107,77 @@ package fe.inter {
 				arr.push({id:'vsComp', check:World.w.vsComp});
 				arr.push({id:'vsIngr', check:World.w.vsIngr});
 			}
-			if (page2==4) {
+			if (page2 == PAGE_CONTROLS) {
 				setTopText('infokeys');
+				
 				for (i in World.w.ctr.keyObj) {
 					var key:Object=World.w.ctr.keyObj[i];
 					obj={id:key.id, nazv:Res.txt('k',key.id), a1:key.a1, a2:key.a2};
 					arr.push(obj);
 				}
-				vis.butOk.text.text=LanguageManager.reference.localText("pip", 'accept');
+				
+				vis.butOk.text.text = localize("pip", 'accept');
 				vis.butDef.visible=true;
-				vis.butDef.text.text=LanguageManager.reference.localText("pip", 'default');
+				vis.butDef.text.text = localize("pip", 'default');
 			}
-			if (page2==5) {
-				if (pip.light) return;
+			if (page2 == PAGE_LOG) {
+				if (pip.light) {
+					return;
+				}
+
 				info.visible=true;
 				info.styleSheet=World.w.gui.style;
 				info.htmlText=World.w.log;
 				info.scrollV=info.maxScrollV;
 			}
-			if (page2==1 || page2==2) {
-				if (pip.light) return;
+			if (page2 == PAGE_LOAD || page2 == PAGE_SAVE) {
+				if (pip.light) {
+					return;
+				}
+
 				vis.butDef.visible=true;
 				World.w.app.saveOst();
-				if (page2==1) {
+
+				if (page2 == PAGE_LOAD) {
 					setTopText('infoload');
-					vis.butOk.text.text=LanguageManager.reference.localText("pip", 'opt1');
-					vis.butDef.text.text=LanguageManager.reference.localText("pip", 'loadfile');
+					vis.butOk.text.text  = localize("pip", 'opt1');
+					vis.butDef.text.text = localize("pip", 'loadfile');
 				}
 				else {
 					setTopText('infosave');
+					
 					if (World.w.pers.hardcore) {
 						nSave=World.w.autoSaveN;
 						vis.butOk.visible=true;
 					}
-					vis.butOk.text.text=LanguageManager.reference.localText("pip", 'opt2');
-					if (gg.pers.hardcore) vis.butDef.visible=false;
-					vis.butDef.text.text=LanguageManager.reference.localText("pip", 'savefile');
+					
+					vis.butOk.text.text = localize("pip", 'opt2');
+					
+					if (gg.pers.hardcore) {
+						vis.butDef.visible = false;
+					}
+					
+					vis.butDef.text.text = localize("pip", 'savefile');
 				}
-				for (var i=0; i<=World.w.saveKol; i++) {
-					var save:Object=World.w.getSave(i);
-					var obj:Object=saveObj(save,i);
+				
+				for (var i = 0; i <= World.w.saveKol; i++) {
+					var save:Object = World.w.getSave(i);
+					var obj:Object = saveObj(save,i);
 					arr.push(obj);
 				}
-				if (page2==2 && World.w.pers.hardcore) {
+				
+				if (page2 == PAGE_SAVE && World.w.pers.hardcore) {
 					showSaveInfo(arr[nSave],vis);
 				}
-				pip.vis.butHelp.visible=true;
-				pip.helpText=Res.txt('p','helpSave',0,true);
+				
+				pip.vis.butHelp.visible = true;
+				pip.helpText = Res.txt('p', 'helpSave', 0, true);
 			}
 		}
 		
 		public static function saveObj(save:Object, n):Object {
 			var obj:Object={id:n};
+			
 			if (save==null || save.est==null) {
 				obj.nazv=LanguageManager.reference.localText("pip", 'freeslot');
 				obj.gg='';
@@ -169,10 +192,22 @@ package fe.inter {
 				obj.dif=Res.txt("g", 'dif'+save.game.dif);
 				obj.app=save.app;
 				obj.armor=save.invent.cArmorId;
-				if (save.pers.dead) obj.hard=2;
-				else if (save.pers.hardcore) obj.hard=1;
-				if (save.hardInv) obj.hardInv=1;
-				if (save.pers.rndpump) obj.rndpump=1;
+				
+				if (save.pers.dead) {
+					obj.hard=2;
+				}
+				else if (save.pers.hardcore) {
+					obj.hard=1;
+				}
+				
+				if (save.hardInv) {
+					obj.hardInv=1;
+				}
+				
+				if (save.pers.rndpump) {
+					obj.rndpump=1;
+				}
+				
 				obj.time=Res.gameTime(save.game.t_save);
 				obj.ver=save.ver;
 			}
@@ -184,18 +219,22 @@ package fe.inter {
 			if (obj.id == null) {
                 item.id.text = '';
             }
-			else item.id.text = obj.id;
+			else {
+				item.id.text = obj.id;
+			}
+			
 			item.id.visible=false;
 			item.scr.visible=false;
 			item.check.visible=false;
 			item.key1.visible=item.key2.visible=false;
 			item.ramka.visible=false;
-			item.land.text='';
-			if (page2==3 || page2==6) {
-				item.nazv.text=LanguageManager.reference.localText("pip", obj.id);
-				item.ggName.text='';
+			item.land.text = "";
+			
+			if (page2 == PAGE_OPTIONS || page2 == PAGE_AUTOPICKUP_OPT) {
+				item.nazv.text = LanguageManager.reference.localText("pip", obj.id);
+				item.ggName.text = "";
 				if (obj.numb == null) {
-                    item.numb.text = '';
+                    item.numb.text = "";
                 }
 				else {
                     item.numb.text = obj.numb;
@@ -213,31 +252,54 @@ package fe.inter {
 					if (!ch.hasEventListener(Event.CHANGE)) ch.addEventListener(Event.CHANGE,optCheck);
 				}
 			}
-			if (page2==4) {
+			
+			if (page2 == PAGE_CONTROLS) {
 				item.key1.visible=item.key2.visible=true;
 				item.numb.text=item.ggName.text='';
 				item.nazv.text=obj.nazv;
 				setVisKey(obj.a1,item.key1);
 				setVisKey(obj.a2,item.key2);
 			}
-			if (page2==1 || page2==2) {
+			
+			if (page2 == PAGE_LOAD || page2 == PAGE_SAVE) {
 				item.nazv.text=obj.nazv;
 				item.numb.text=obj.date;
 				item.ggName.text=obj.gg;
-				if (obj.level) item.ggName.text+=((obj.level == '') ? '' : (' (' + obj.level + ')'));
-				if (obj.land) item.land.text=obj.land.substr(0,18);
-				if (obj.hard==1) item.nazv.text+=' {!}';
-				if (obj.hard==2) item.nazv.text+=' [†]';
-				if (nSave==obj.id) item.ramka.visible=true;
+				
+				if (obj.level) {
+					item.ggName.text+=((obj.level == '') ? '' : (' (' + obj.level + ')'));
+				}
+				
+				if (obj.land) {
+					item.land.text=obj.land.substr(0,18);
+				}
+				
+				if (obj.hard==1) {
+					item.nazv.text+=' {!}';
+				}
+				
+				if (obj.hard==2) {
+					item.nazv.text+=' [†]';
+				}
+				
+				if (nSave==obj.id) {
+					item.ramka.visible=true;
+				}
 			}
 		}
 		
 		//установить визуальное отображение клавиши
-		private function setVisKey(n,vis):void {
-			vis.txt.text='';
+		private function setVisKey(n, vis):void {
+			vis.txt.text = "";
 			vis.gotoAndStop(1);
-			if (n==null) return;
-			try { vis.txt.text=World.w.ctr.keyNames[n]; } 
+			
+			if (n == null) {
+				return;
+			}
+			
+			try {
+				vis.txt.text = World.w.ctr.keyNames[n];
+			} 
 			catch(err) {
 				trace('ERROR: (00:3C)');
 				vis.gotoAndStop(n);
@@ -254,17 +316,30 @@ package fe.inter {
 		private function unshowSetKey():void {
 			var newkey=World.w.ctr.setkeyRequest;
 			pip.vissetkey.visible=false;
+			
 			if (newkey!=-1) {
 				for (var i in arr) {
 					if (newkey!=null) {
-						if (arr[i].a1==newkey) arr[i].a1=null;
-						if (arr[i].a2==newkey) arr[i].a2=null;
+						if (arr[i].a1==newkey) {
+							arr[i].a1=null;
+						}
+						
+						if (arr[i].a2==newkey) {
+							arr[i].a2=null;
+						}
 					}
+					
 					if (arr[i].id==setkeyAction) {
-						if (setkeyCell==1) arr[i].a1=newkey;
-						if (setkeyCell==2) arr[i].a2=newkey;
+						if (setkeyCell==1) {
+							arr[i].a1=newkey;
+						}
+						
+						if (setkeyCell==2) {
+							arr[i].a2=newkey;
+						}
 					}
 				}
+				
 				setStatItems();
 				vis.butOk.visible=true;
 			}
@@ -272,12 +347,20 @@ package fe.inter {
 		
 		override public function setStatus(flop:Boolean=true):void {
 			if (pip.light) {
-				vis.but5.visible=vis.but1.visible=vis.but2.visible=false;
-				if (page2==1 || page2==2) page2=3;
+				vis.but5.visible = false;
+				vis.but1.visible = false;
+				vis.but2.visible = false;
+
+				if (page2 == PAGE_LOAD || page2 == PAGE_SAVE) {
+					page2 = PAGE_OPTIONS;
+				}
 			}
 			else {
-				vis.but5.visible=vis.but1.visible=vis.but2.visible=true;
+				vis.but5.visible = true;
+				vis.but1.visible = true;
+				vis.but2.visible = true;
 			}
+			
 			super.setStatus(flop);
 		}
 
@@ -314,87 +397,146 @@ package fe.inter {
 		public function optCheck(event:Event):void {
 			var id=event.currentTarget.parent.id.text;
 			var sel:Boolean=(event.target as CheckBox).selected;
-			if (id=='dial_on') World.w.dialOn=sel;
-			if (id=='mat_filter') World.w.matFilter=sel;
-			if (id=='help_mess') World.w.helpMess=sel;
+			
+			if (id=='dial_on') {World.w.dialOn=sel;}
+			
+			if (id=='mat_filter') {World.w.matFilter=sel;}
+			
+			if (id=='help_mess') {World.w.helpMess=sel;}
+			
 			var hit1:Boolean = World.w.showHit > 0;
 			var hit2:Boolean = World.w.showHit == 2;
-			if (id=='show_hit1') hit1=sel;
-			if (id=='show_hit2') hit2=sel;
+			
+			if (id=='show_hit1') {
+				hit1=sel;
+			}
+			
+			if (id=='show_hit2') {
+				hit2=sel;
+			}
+			
 			World.w.showHit=hit1?(hit2?2:1):0;
-			if (id=='sys_cur') World.w.sysCur=sel
-			if (id=='hint_tele') World.w.hintTele=sel;
-			if (id=='show_favs') World.w.showFavs=sel;
-			if (id=='quake') World.w.quakeCam=sel;
-			if (id=='err_show') World.w.errorShowOpt=sel;
+			
+			if (id=='sys_cur') {
+				World.w.sysCur=sel;
+			}
+			
+			if (id=='hint_tele') {
+				World.w.hintTele=sel;
+			}
+			
+			if (id=='show_favs') {
+				World.w.showFavs=sel;
+			}
+			
+			if (id=='quake') {
+				World.w.quakeCam=sel;
+			}
+			
+			if (id=='err_show') {
+				World.w.errorShowOpt=sel;
+			}
+			
 			if (id=='zoom100') {
 				World.w.zoom100=sel;
+				
 				if (pip.light) {
-					if (sel) World.w.cam.isZoom = 0;
-					else World.w.cam.isZoom = 2;
+					if (sel) {
+						World.w.cam.isZoom = 0;
+					}
+					else {
+						World.w.cam.isZoom = 2;
+					}
 				}
 				else {
-					if (sel) World.w.cam.setZoom(0);
-					else World.w.cam.setZoom(2);
+					if (sel) {
+						World.w.cam.setZoom(0);
+					}
+					else {
+						World.w.cam.setZoom(2);
+					}
 				}
 			}
-			if (page2==6) {
+		
+			if (page2 == PAGE_AUTOPICKUP_OPT) {
 				World.w[id]=sel;
 				World.w.checkLoot=true;
 			}
+			
 			pip.isSaveConf=true;
 		}
 
 		override protected function itemClick(event:MouseEvent):void {
 			if (World.w.ctr.setkeyOn) return;
-			if (page2==3) {
+			
+			if (page2 == PAGE_OPTIONS) {
 				if (event.currentTarget.id.text=='fullscreen') {
 					World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				}
+				
 				if (event.currentTarget.id.text=='autotake') {
-					page2=6;
+					page2 = PAGE_AUTOPICKUP_OPT;
 					setStatus();
 				}
 			}
-			else if (page2==4) {
-				if (event.target.parent.name=='key1' || event.target.name=='key1') setkeyCell=1;
-				else if (event.target.parent.name=='key2' || event.target.name=='key2') setkeyCell=2;
-				else return;
-				if (setkeyCell==1 && event.currentTarget.key1.txt.text=='TAB') return;
+			else if (page2 == PAGE_CONTROLS) {
+				if (event.target.parent.name=='key1' || event.target.name=='key1') {
+					setkeyCell=1;
+				}
+				else if (event.target.parent.name=='key2' || event.target.name=='key2') {
+					setkeyCell=2;
+				}
+				else {
+					return;
+				}
+				
+				if (setkeyCell==1 && event.currentTarget.key1.txt.text=='TAB') {
+					return;
+				}
+				
 				setkeyAction=event.currentTarget.id.text;
 				showSetKey();
 			}
-			else if (page2==1 || page2==2) {
-				if (pip.noAct && page2==2) {
+			else if (page2 == PAGE_LOAD || page2 == PAGE_SAVE) {
+				if (pip.noAct && page2 == PAGE_SAVE) {
 					World.w.gui.infoText('noAct');
 					return;
 				}
-				if (page2==2 && gg.pers.hardcore) return;
+
+				if (page2 == PAGE_SAVE && gg.pers.hardcore) {
+					return;
+				}
+			
 				var numb:int=event.currentTarget.id.text;
-				if (page2==1 && event.currentTarget.numb.text=='') return;
-				nSave=numb;
+			
+				if (page2 == PAGE_LOAD && event.currentTarget.numb.text == "") {
+					return;
+				}
+			
+				nSave = numb;
 				setStatItems();
-				showSaveInfo(arr[numb],vis);
-				vis.butOk.visible=true;
+				showSaveInfo(arr[numb], vis);
+				vis.butOk.visible = true;
 			}
 		}
 		
 		//применить настройки
 		private function transOk(event:MouseEvent):void {
-			if (page2==4) {
+			if (page2 == PAGE_CONTROLS) {
 				for (var i in arr) {
-					var obj=World.w.ctr.keyIds[arr[i].id];
-					obj.a1=arr[i].a1;
-					obj.a2=arr[i].a2;
+					var obj = World.w.ctr.keyIds[arr[i].id];
+					obj.a1 = arr[i].a1;
+					obj.a2 = arr[i].a2;
 				}
-				vis.butOk.visible=false;
+				
+				vis.butOk.visible = false;
 				World.w.ctr.updateKeys();
 				World.w.saveConfig();
 			}
-			else if (page2==1) {
+			else if (page2 == PAGE_LOAD) {
 				World.w.comLoad=nSave;
 			}
-			else if (page2==2) {
+			else if (page2 == PAGE_SAVE) {
 				if (pip.noAct) {
 					World.w.gui.infoText('noAct');
 					return;
@@ -420,41 +562,46 @@ package fe.inter {
 		private function completeHandler(event:Event):void {
 			try {
 				var obj:Object=file.data.readObject();
-				if (obj && obj.est==1) {
-					World.w.comLoad=99;
-					World.w.loaddata=obj;
+				if (obj && obj.est == 1) {
+					World.w.comLoad = 99;
+					World.w.loaddata = obj;
 					return;
 				}
 			}
 			catch(err) {
 				trace('ERROR: (00:3E)');
 			}
+
 			World.w.gui.infoText('noLoadGame');
 			trace('Error load');
        }		
 		
 		private function gotoDef(event:MouseEvent):void {
-			if (page2==4) {
+			var localize:Function = LanguageManager.reference.localText;
+			
+			if (page2 == PAGE_CONTROLS) {
 				World.w.ctr.gotoDef();
 				World.w.ctr.updateKeys();
 				World.w.saveConfig();
 				setStatus();
 			}
-			else if (page2==1) {
-				ffil=[new FileFilter(LanguageManager.reference.localText("pip", 'gamesaves')+" (*.sav)", "*.sav")];
+			else if (page2 == PAGE_LOAD) {
+				ffil = [new FileFilter(localize("pip", 'gamesaves')+" (*.sav)", "*.sav")];
 				file.browse(ffil);
 			}
-			else if (page2==2) {
+			else if (page2 == PAGE_SAVE) {
 				if (pip.noAct) {
 					World.w.gui.infoText('noAct');
 					return;
 				}
+				
 				//сохранить в файл
 				var obj:Object=new Object();
 				World.w.saveToObj(obj);
 				var ba:ByteArray=new ByteArray();
 				ba.writeObject(obj);
 				var sfile = new FileReference();
+				
 				try {
 					sfile.save(ba,gg.pers.persName+'('+gg.pers.level+').sav');
 				}
@@ -466,8 +613,10 @@ package fe.inter {
 		}
 		
 		public static function showSaveInfo(obj:Object, vis:MovieClip):void {
-			vis.info.htmlText='';
-			if (obj && obj.gg!='') {
+			var localize:Function = LanguageManager.reference.localText;
+			vis.info.htmlText = "";
+		
+			if (obj && obj.gg != "") {
 				vis.nazv.text=obj.gg;
 				World.w.app.load(obj.app);
 				World.w.pip.setArmor(obj.armor);
@@ -476,34 +625,52 @@ package fe.inter {
 				vis.pers.head.morda.magic.visible=false;
 				vis.pers.visible=true;
 				vis.info.y=vis.pers.y+25;
-				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'level')+': '+textAsColor('yellow', obj.level)+'\n';
+				vis.info.htmlText+=localize("pip", 'level')+': '+textAsColor('yellow', obj.level)+'\n';
 				vis.info.htmlText+=obj.land+'\n';
 				vis.info.htmlText+='\n';
-				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'diff')+': '+textAsColor('yellow', obj.dif)+'\n';
-				if (obj.hard==1) vis.info.htmlText+=Res.txt("g", 'opt2')+'\n';
-				if (obj.hard==2) vis.info.htmlText+=textAsColor('red', LanguageManager.reference.localText("pip", 'dead'))+'\n';
-				if (obj.hardInv==1) vis.info.htmlText+=Res.txt("g", 'opt6')+'\n';
-				if (obj.rndpump==1) vis.info.htmlText+=Res.txt("g", 'opt4')+'\n';
-				if (obj.ver) vis.info.htmlText+=Res.txt("g", 'version')+': '+textAsColor('yellow', obj.ver)+'\n';
-				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'tgame')+': '+textAsColor('yellow', obj.time)+'\n';
-				vis.info.htmlText+=LanguageManager.reference.localText("pip", 'saved')+': '+textAsColor('yellow', obj.date)+'\n';
+				vis.info.htmlText+=localize("pip", 'diff')+': '+textAsColor('yellow', obj.dif)+'\n';
+				
+				if (obj.hard == 1) {
+					vis.info.htmlText+=Res.txt("g", 'opt2')+'\n';
+				}
+				
+				if (obj.hard == 2) {
+					vis.info.htmlText+=textAsColor('red', localize("pip", 'dead'))+'\n';
+				}
+				
+				if (obj.hardInv == 1) {
+					vis.info.htmlText += Res.txt("g", 'opt6')+'\n';
+				}
+				
+				if (obj.rndpump == 1) {
+					vis.info.htmlText += Res.txt("g", 'opt4')+'\n';
+				}
+				
+				if (obj.ver) {
+					vis.info.htmlText += Res.txt("g", 'version') + ': ' + textAsColor('yellow', obj.ver)+'\n';
+				}
+				
+				vis.info.htmlText += localize("pip", 'tgame') + ': ' + textAsColor('yellow', obj.time) + '\n';
+				vis.info.htmlText += localize("pip", 'saved') + ': ' + textAsColor('yellow', obj.date) + '\n';
 			} 
 			else {
-				vis.nazv.text='';
-				vis.pers.visible=false;
+				vis.nazv.text = "";
+				vis.pers.visible = false;
 			}
 		}
 		
 		//информация об элементе
 		override protected function statInfo(event:MouseEvent):void {
-			if (page2==3 || page2==6) {
-				vis.info.htmlText=Res.txt('p',event.currentTarget.id.text,1);
+			if (page2 == PAGE_OPTIONS || page2 == PAGE_AUTOPICKUP_OPT) {
+				vis.info.htmlText = Res.txt('p', event.currentTarget.id.text, 1);
 			}
-			else if (page2==1 || page2==2) {
-				if (nSave<0) showSaveInfo(arr[event.currentTarget.id.text],vis);
+			else if (page2 == PAGE_LOAD || page2 == PAGE_SAVE) {
+				if (nSave < 0) {
+					showSaveInfo(arr[event.currentTarget.id.text], vis);
+				}
 			}
 			else {
-				vis.info.text='';
+				vis.info.text = "";
 			}
 		}
 	}

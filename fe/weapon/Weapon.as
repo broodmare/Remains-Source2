@@ -17,6 +17,9 @@ package fe.weapon {
 
 	public class Weapon extends Obj {
 
+		public static const WEP_INACTIVE:int = 0, WEP_LOCKED:int = 1, WEP_ACTIVE:int = 2, WEP_BLUEPRINT:int = 3;
+		public static const TYPE_INTERNAL:String = "internal", TYPE_MELEE:String = "melee", TYPE_LIGHTGUN:String = "lightGun", TYPE_HEAVYGUN:String = "heavyGun", TYPE_EXPLOSIVES:String = "explosive", TYPE_MAGIC:String = "magic";
+
 		public static var weaponPerks:Array		= ["pistol", "shot", "commando", "rifle", "perf", "laser", "plasma", "pyro", "acute", "stunning"]
 		public static var variant2:String		= " - II";
 		
@@ -53,12 +56,12 @@ package fe.weapon {
 		public var skillPlusDam:Number	= 1.00;		//усиление оружия низких уровней;
 		public var weaponSkill:Number	= 1.00;		//умение для гг
 		public var t_ret:int			= 0;
-		public var rotUp:Number		= 0.00;
+		public var rotUp:Number			= 0.00;
 		public var jammed:Boolean		= false;	//заклинило
 		public var kol_shoot:int		= 0;		//количество сделанных выстрелов
 		public var ready:Boolean		= false;	//оружие наведено на цель
 		public var is_shoot:Boolean		= false;	// [shot fired]
-		public var animated:Boolean	= false;
+		public var animated:Boolean		= false;
 
 		public var findCel:Boolean		= true;		// [turn to target]
 		public var forceRot:Number		= 0.00;
@@ -83,7 +86,7 @@ package fe.weapon {
 		public var cat:int				= 0;
 		
 		// [Inventory]
-		public var respect:int			= 0;		// [Relation 0 - new, 1 - hidden, 2 - used, 3 - scheme]
+		public var respect:int			= 0;		// [ 0 - INACTIVE, 1 - LOCKED, 2 - EQUIPED, 3 - BLUEPRINT (Not crafted yet)
 		
 		// [Required skill]
 		public var skill:int			= 0;
@@ -524,7 +527,7 @@ package fe.weapon {
 				return false;
 			}
 			
-			if (owner.player && (respect == 1 || alicorn && !World.w.alicorn)) {
+			if (owner.player && (respect == WEP_LOCKED || alicorn && !World.w.alicorn)) {
 				World.w.gui.infoText("disWeapon", null, null, false);
 				return false;
 			}
@@ -1040,16 +1043,9 @@ package fe.weapon {
 			return 1;
 		}
 		
-		public function repair(nhp:int):void {
-			hp += nhp;
-			
-			if (hp > maxhp) {
-				hp = maxhp;
-			}
-		}
-		
+		// ??? 
 		public function crash(dam:int=1):void {
-			
+			// Maybe used by sub-classes??? 
 		}
 
 		public function initReload(s:String = ""):void {

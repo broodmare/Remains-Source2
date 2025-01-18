@@ -28,6 +28,8 @@ package fe.inter {
 	*		5 - *disabled*
 	*/
 	public class PipPageVend extends PipPage {
+
+		private static const PAGE_BUY:int = 1, PAGE_SELL:int = 2, PAGE_REPAIR:int = 3, PAGE_QUEST:int = 4;
 		
 		private var npcId:String		= "";
 		private var vendor:Vendor;
@@ -48,9 +50,9 @@ package fe.inter {
 			// Set which sub-categories are disabled at the top of the pip-buck
 			vis.but5.visible = false;
 			
-			vis.butOk.text.text=LanguageManager.reference.localText("pip", 'transaction');
+			vis.butOk.text.text=LanguageManager.reference.localText("pip", "transaction");	// "Accept"
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
-			var tf:TextFormat=new TextFormat();
+			var tf:TextFormat = new TextFormat();
 			tf.color = 0x00FF99; 
 			tf.size = 16; 
 			
@@ -67,22 +69,22 @@ package fe.inter {
 			tips = [
 				[],
 				[
-					'',
-					[Item.L_WEAPON, Item.L_ARMOR,'spell'],
-					['a','e'],
-					['med','him','pot','food'],
-					['equip','art','book','sphera','spec','key','impl','instr'],
-					['stuff','compa','compw','compe','compm','compp'],
-					'scheme'
+					"",
+					[Item.L_WEAPON, Item.L_ARMOR,"spell"],
+					["a","e"],
+					["med","him","pot","food"],
+					["equip","art","book","sphera","spec","key","impl","instr"],
+					["stuff","compa","compw","compe","compm","compp"],
+					"scheme"
 				],
 				[
-					'',
-					'valuables',
-					['a','e'],
-					['med','him','pot','equip','food'],
-					'food',
-					['stuff','compa','compw','compe','compm','spec'],
-					'compp'
+					"",
+					"valuables",
+					["a","e"],
+					["med","him","pot","equip","food"],
+					"food",
+					["stuff","compa","compw","compe","compm","spec"],
+					"compp"
 				]
 			];
 			
@@ -91,12 +93,14 @@ package fe.inter {
 
 		// [Preparing pages]
 		override protected function setSubPages():void {
+			var localize:Function = LanguageManager.reference.localText;
+			
 			// Get the npc ID and vendor inventory
 			npcId = pip.npcId;
 			vendor = pip.vendor;
 			
 			if (vendor) {
-				vendor.kolBou = 0;
+				vendor.buyTotal = 0;
 			}
 			
 			inbase = World.w.loc.base;	// If we're currently at home base
@@ -106,30 +110,30 @@ package fe.inter {
 			vis.but4.visible = true;	// Enable the Vendor quests page
 			
 			// Set the size
-			statHead.price.x = 504;
-			statHead.price.width = 150;
+			statHead.price.x		= 504;
+			statHead.price.width	= 150;
 			
 			// If there's no valid NPC and we're on the Vendor quests page, move to the buying screen instead 
-			if (npcId == '') {
-				if (page2 == 4) {
-					page2 = 1;
+			if (npcId == "") {
+				if (page2 == PAGE_QUEST) {
+					page2 = PAGE_BUY;
 				}
 				
 				vis.but4.visible = false;	// Disable the Vendor quests page
 			}
 			
-			if (npcInter == 'vr') {
-				vis.but3.text.text = LanguageManager.reference.localText("pip", 'vend3');	// Button text = "Repair"
+			if (npcInter == "vr") {
+				vis.but3.text.text = localize("pip", "vend3");	// Button text = "Repair"
 			}
 			
-			if (npcInter == 'doc') {
-				vis.but3.text.text = LanguageManager.reference.localText("pip", 'med1');	// Button text = "Healing"
+			if (npcInter == "doc") {
+				vis.but3.text.text = localize("pip", "med1");	// Button text = "Healing"
 			}
 			
-			if (npcInter == 'v') {
+			if (npcInter == "v") {
 				vis.but3.visible = false;
-				if (page2 == 3) {
-					page2 = 1;
+				if (page2 == PAGE_REPAIR) {
+					page2 = PAGE_BUY;
 				}
 			}
 			
@@ -146,47 +150,45 @@ package fe.inter {
 			}
 			
 			// Buy items page
-			if (page2 == 1) {
+			if (page2 == PAGE_BUY) {
 				trace("PipPageVend.as/setSubPages() - Initializing Buy menu");
 				assArr = [];
-				setTopText('infotrade');
-				statHead.nazv.text = LanguageManager.reference.localText("pip", 'iv1');
-				statHead.hp.text = LanguageManager.reference.localText("pip", 'iv2') + ' / ' + LanguageManager.reference.localText("pip", 'iv6');
-				statHead.price.text = LanguageManager.reference.localText("pip", 'iv3');
-				statHead.kol.text = LanguageManager.reference.localText("pip", 'iv4');
+				setTopText("infotrade");														// "[click] - select 1 unit of product@[right click] - cancel selection@hold [shift] - select all"
+				statHead.nazv.text = localize("pip", "iv1");									// "Goods"
+				statHead.hp.text = localize("pip", "iv2") + " / " + localize("pip", "iv6");		// "Condition / You have"
+				statHead.price.text = localize("pip", "iv3");									// "Price"
+				statHead.kol.text = localize("pip", "iv4");										// "Available"
 				statHead.cat.visible = false;
 				
-				for each(var b:InventoryItem in vendor.buys) {
-					if (b.quantity <= 0) {
-						continue;
-					}
+				for each(var b:InventoryItem in vendor.inventory) {
 					
 					try {
 
 						data = ItemManager.reference.getItem(b.id);
 
-						// Remove the first two characters of the string 
-						if (data.tip == Item.L_SCHEME && (inv.weapons[data.id.substr(2)] != null || inv.items[b.id].quantity > 0)) {
+						// If it's a schematic, remove the first two characters of the string (Eg. "s_dartgun" -> "dartgun") and check if we already own the real item
+						if (data.tip == Item.L_SCHEME && inv.equipment.hasEquipment(data.id.substr(2))) {
+							// If we already own the real item, don't list the schematic
 							continue;
 						}
 						
-						// We have the weapon and the weapon variant
+						// If it's a weapon and We already own the base weapon and unique variant, don't list it
 						if (data.tip == Item.L_WEAPON && (inv.equipment.hasEquipment(b.id) && inv.equipment.getWeapon(b.id).variant)) {
 							continue;
 						}
 						
-						// Armor we already have
+						// If it's an armor set and we already own it, don't list it
 						if (data.tip == Item.L_ARMOR && inv.equipment.hasEquipment(b.id)) {
 							continue;
 						}
 						
-						// Not a weapon and has no price
+						// If it's not a weapon and has no price, don't list it (What is this for???)
 						if (data.tip != Item.L_WEAPON && !("price" in data))  {
 							continue;
 						}
 						
-						// Art or Implant we already have
-						if ((data.tip == Item.L_ART || data.tip == Item.L_IMPL) && inv.getQuantity(b.id) > 0) {
+						// If it's an "Art" item or an implant we already have, don't list it
+						if ((data.tip == Item.L_ART || data.tip == Item.L_IMPL) && inv.hasItem(b.id)) {
 							continue;
 						}
 						
@@ -205,31 +207,42 @@ package fe.inter {
 							continue;
 						}
 						
+						// ???
 						if (!checkCat(data.tip)) {
 							continue;
 						}
 						
-						/*
-						data.getPrice();
+						var price:Number;
+						if ("com_price" in data) {
+							price = data.com_price * data.sost * data.multHP * data.pmult;
+						}
+						else {
+							price = data.price * data.sost * data.multHP * data.pmult;
+						}
 						
-						var mp:Number = data.getMultPrice();
+						var mp:Number;
+						if ("price" in data && "sell" in data) {
+							mp = data.sell / data.price;
+						}
+						else {
+							mp = 0.10;
+						}
 						
 						if (vendor.multPrice > mp) {
 							mp = vendor.multPrice;
 						}
-						*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 
 						var n:Object = {
-							tip: data.tip,
-							id: data.id,
-							nazv: data.nazv,
-							sost: data.sost * data.multHP,
-							price: data.price,
-							//mp: mp,
-							bou: 0,
-							sort: LanguageManager.reference.localText("pip", data.tip),
-							barter: data.barter,
-							variant: data.variant
+							tip:		data.tip,
+							id:			data.id,
+							nazv:		data.nazv,
+							sost:		data.sost * data.multHP,
+							price:		price,
+							mp:			mp,
+							bou:		0,
+							sort:		localize("pip", data.tip),
+							barter: 	data.barter,
+							variant:	data.variant
 						};
 						
 						if (data.nocheap) {
@@ -250,61 +263,66 @@ package fe.inter {
 						arr.push(n);
 					}
 					catch (err) {
-						trace('ERROR: (00:41)');
+						trace("ERROR: (00:41)");
 					}
 				}
 				
 				if (arr.length) {
-					arr.sortOn(['sort', 'barter', 'price'], [0, 0, Array.NUMERIC]);
+					arr.sortOn(["sort", "barter", "price"], [0, 0, Array.NUMERIC]);
 					vis.emptytext.text = "";
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptybuy');
+					vis.emptytext.text = localize("pip", "emptybuy");	// "This merchant has nothing to sell"
 					statHead.visible = false;
 				}
 
-				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'transaction');
+				vis.butOk.text.text = localize("pip", "transaction");	// "Accept"
 				vis.butOk.visible = false;
 			}
 			// Sell items page
-			if (page2 == 2) {
+			if (page2 == PAGE_SELL) {
 				trace("PipPageVend.as/setSubPages() - Initializing Sell menu");
 				assArr = [];
-				setTopText('infotrade');
-				vendor.kolSell = 0;
-				statHead.nazv.text = LanguageManager.reference.localText("pip", 'iv1');
+				setTopText("infotrade");
+				vendor.sellTotal = 0;
+				statHead.nazv.text = localize("pip", "iv1");			// "Goods"
 				statHead.hp.text = "";
-				statHead.price.text = LanguageManager.reference.localText("pip", 'iv3');
-				statHead.kol.text = LanguageManager.reference.localText("pip", 'iv6');
+				statHead.price.text = localize("pip", "iv3");			// "Price"
+				statHead.kol.text = localize("pip", "iv6");				// "You have"
 				statHead.cat.visible = false;
-				for (var s in inv.items) {
+				
+				for each (var item:InventoryItem in inv.getAllItems()) {
 					
-					if (s == "" || inv.items[s].kol <= 0) {
-						continue;
-					}
-					
-					var data = ItemManager.reference.getItem(s);
+					var data:Object = ItemManager.reference.getItem(item.id);
 					
 					if (data.sell > 0) {
 						if (!checkCat(data.tip)) {
 							continue;
 						}
-						var n:Object = {tip:inv.items[s].tip, id:s, nazv:inv.items[s].nazv, kol:inv.items[s].kol, bou:0, sort:'b'};
+
+						var n:Object = {
+							tip:	data.tip,
+							id:		item.id,
+							nazv:	data.nazv,
+							kol:	data.kol,
+							bou:	0,
+							sort:	"b"
+						};
 						
-						if (inv.weapons[s] != null) {
-							n.nazv = Res.txt('w', s);
+						if (inv.equipment.hasEquipment(item.id)) {
+							n.nazv = Res.txt("w", item.id);
 						}
 						
 						n.price = data.sell;
 						n.wtip = data.tip;
 						
-						if (data.tip == 'food' && data.ftip == 1) {
-							n.wtip = 'drink';
+						if (data.tip == "food" && data.ftip == 1) {
+							n.wtip = "drink";
 						}
 						
-						if (n.wtip == 'valuables') {
-							n.sort = 'a';
+						if (n.wtip == "valuables") {
+							n.sort = "a";
 						}
 						
 						assArr[n.id] = n;
@@ -313,18 +331,18 @@ package fe.inter {
 				}
 				
 				if (arr.length) {
-					arr.sortOn(['sort', 'wtip', 'price'], [0, 0, Array.NUMERIC]);
+					arr.sortOn(["sort", "wtip", "price"], [0, 0, Array.NUMERIC]);
 					vis.emptytext.text = "";
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptysell');
+					vis.emptytext.text = localize("pip", "emptysell");
 					statHead.visible = false;
 				}
 				
 				if (inbase) {
 					selall = true;
-					vis.butOk.text.text = LanguageManager.reference.localText("pip", 'sellall');
+					vis.butOk.text.text = localize("pip", "sellall");
 					vis.butOk.visible = true;
 				}
 				else {
@@ -334,62 +352,83 @@ package fe.inter {
 				setIco();
 			}
 			// Repair items page
-			if (page2 == 3) {
+			if (page2 == PAGE_REPAIR) {
 				trace("PipPageVend.as/setSubPages() - Initializing Repair menu");
 				assArr = [];
-				setTopText('inforepair');
+				setTopText("inforepair");
 				statHead.nazv.text = "";
-				statHead.hp.text = LanguageManager.reference.localText("pip", 'iv2');
-				statHead.price.text = LanguageManager.reference.localText("pip", 'iv5');
-				statHead.kol.text = '';
+				statHead.hp.text = localize("pip", "iv2");
+				statHead.price.text = localize("pip", "iv5");
+				statHead.kol.text = "";
 				statHead.price.x = 450;
 				statHead.cat.visible = false;
 				
-				if (inv.items['owl'] && inv.items['owl'].kol) {
+				if (inv.hasItem("owl")) {
 					World.w.pers.setRoboowl();
 					var repOwl:int = 2;
-					n = {tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.w.pers.owlhp*World.w.pers.owlhpProc, maxhp:World.w.pers.owlhp, price:World.w.pers.owlhp*repOwl};
+					
+					n = {
+						tip:		Item.L_INSTR,
+						id:			"owl",
+						nazv:		ItemManager.reference.getItem("owl").nazv,
+						hp:			World.w.pers.owlhp * World.w.pers.owlhpProc,
+						maxhp:		World.w.pers.owlhp,
+						price:		World.w.pers.owlhp * repOwl};
+					
 					arr.push(n);
 					assArr[n.id] = n;
 
 				}
 				
-				for each (var w:Weapon in inv.weapons) {
-					if (w == null) {
-						continue;
-					}
-					
-					if (w.tip != "internal" && w.tip != "explosives" && w.respect != 1 && w.hp < w.maxhp) {
-						n = {tip:Item.L_WEAPON, id:w.id, nazv:w.nazv, hp:w.hp, maxhp:w.maxhp, price:w.price, variant:w.variant};
-						n.wtip = 'w' + w.skill;
+				for each (var w:Weapon in inv.equipment.weapons) {
+					if (w.tip != "internal" && w.tip != "explosives" && w.respect != Weapon.WEP_LOCKED && w.hp < w.maxhp) {
+						n = {
+							tip:		Item.L_WEAPON,
+							id:			w.id,
+							nazv:		w.nazv,
+							hp:			w.hp,
+							maxhp:		w.maxhp,
+							price:		w.price,
+							variant:	w.variant
+						};
+
+						n.wtip = "w" + w.skill;
 						arr.push(n);
 						assArr[n.id] = n;
 					}
 				}
 				
-				for each (var a:Armor in inv.armors) {
+				for each (var a:Armor in inv.equipment.armors) {
 					if (a.hp < a.maxhp && a.tip < 3) {
-						n = {tip:Item.L_ARMOR, id:a.id, nazv:a.nazv, hp:a.hp, maxhp:a.maxhp, price:a.price};
+						n = {
+							tip:		Item.L_ARMOR,
+							id:			a.id,
+							nazv:		a.nazv,
+							hp:			a.hp,
+							maxhp:		a.maxhp,
+							price:		a.price
+						};
+
 						arr.push(n);
 						assArr[n.id] = n;
-						n.wtip = 'armor1';
+						n.wtip = "armor1";
 					}
 				}
 				
 				if (arr.length) {
-					arr.sortOn(['price'], [Array.NUMERIC]);
+					arr.sortOn(["price"], [Array.NUMERIC]);
 					vis.emptytext.text = "";
 					statHead.visible = true;
 				}
 				else {
-					vis.emptytext.text = LanguageManager.reference.localText("pip", 'emptyrep');
+					vis.emptytext.text = localize("pip", "emptyrep");
 					statHead.visible = false;
 				}
 				
 				vis.butOk.visible = false;
 			}
 			// Vendor quests
-			if (page2 == 4) {
+			if (page2 == PAGE_QUEST) {
 				trace("PipPageVend.as/setSubPages() - Initializing Tasks menu");
 				statHead.visible = false;
 				
@@ -398,7 +437,7 @@ package fe.inter {
 				}
 
 				if (isEmpty(vendor.vendorData) || vendor.vendorData.tasks == undefined) {
-					vis.emptytext.text = LanguageManager.reference.localText("pip", "emptytasks");
+					vis.emptytext.text = localize("pip", "emptytasks");
 					return;
 				}
 				
@@ -445,7 +484,7 @@ package fe.inter {
 				}
 				
 				if (arr.length == 0) {
-					vis.emptytext.text = LanguageManager.reference.localText("pip", "emptytasks");
+					vis.emptytext.text = localize("pip", "emptytasks");
 				}
 				else {
 					vis.emptytext.text = "";
@@ -505,8 +544,8 @@ package fe.inter {
 			page2 = clickedPage;
 			trace("PipPageVend.as/page2Click() - Changing page2 to: " + page2);
 			
-			if (page2 == 3 && npcInter == 'doc') {
-				page2 = 1;
+			if (page2 == PAGE_REPAIR && npcInter == "doc") {
+				page2 = PAGE_BUY;
 				pip.onoff(6);
 			}
 			else {
@@ -515,23 +554,25 @@ package fe.inter {
 		}
 	
 		private function showBottext():void {
-			if (page2==1 && vendor) {
-				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', inv.getQuantity("money"))+' (';
+			if (page2 == PAGE_BUY && vendor) {
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", "caps")+": "+numberAsColor("yellow", inv.getQuantity("money"))+" (";
 				
-				if (vendor.kolBou>0) {
-					vis.bottext.htmlText+='-'+numberAsColor('yellow', Math.ceil(vendor.kolBou))+'; ';
+				if (vendor.buyTotal > 0) {
+					vis.bottext.htmlText+="-"+numberAsColor("yellow", Math.ceil(vendor.buyTotal))+"; ";
 				}
 				
-				vis.bottext.htmlText+=numberAsColor('yellow', Math.floor(inv.getQuantity("money") - vendor.kolBou))+' '+LanguageManager.reference.localText("pip", 'ost')+')';
+				vis.bottext.htmlText+=numberAsColor("yellow", Math.floor(inv.getQuantity("money") - vendor.buyTotal))+" "+LanguageManager.reference.localText("pip", "ost")+")";
 			}
 			
-			if (page2==2 && vendor) {
-				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', inv.getQuantity("money"))+' (+'+numberAsColor('yellow', Math.floor(vendor.kolSell))+')';
-				if (!inbase) vis.bottext.htmlText+='   '+LanguageManager.reference.localText("pip", 'vcaps')+': '+numberAsColor('yellow', vendor.money);
+			if (page2 == PAGE_SELL && vendor) {
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", "caps")+": "+numberAsColor("yellow", inv.getQuantity("money"))+" (+"+numberAsColor("yellow", Math.floor(vendor.sellTotal))+")";
+				if (!inbase) {
+					vis.bottext.htmlText+="   "+LanguageManager.reference.localText("pip", "vcaps")+": "+numberAsColor("yellow", vendor.money);
+				}
 			}
 			
-			if (page2==3) {
-				vis.bottext.htmlText=LanguageManager.reference.localText("pip", 'caps')+': '+numberAsColor('yellow', inv.money.kol);
+			if (page2 == PAGE_REPAIR) {
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", "caps")+": "+numberAsColor("yellow", inv.getQuantity("money"));
 			}
 		}
 		
@@ -554,7 +595,7 @@ package fe.inter {
 				item.trol.gotoAndStop(1);
 			}
 			
-			if (page2 == 1) {
+			if (page2 == PAGE_BUY) {
 				item.lvl.visible = true;
 				item.lvl.gotoAndStop(obj.barter + 1);
 				item.rid.text = obj.id;
@@ -562,13 +603,13 @@ package fe.inter {
 				item.nazv.text = obj.nazv;
 				
 				if (obj.tip == Item.L_WEAPON || obj.tip == Item.L_ARMOR) {
-					item.hp.text = Math.round(obj.sost * 100) + '%';
+					item.hp.text = Math.round(obj.sost * 100) + "%";
 					
 					if (obj.bou == 0) {
-						item.kol.text = LanguageManager.reference.localText("pip", 'est');
+						item.kol.text = LanguageManager.reference.localText("pip", "est");
 					}
 					else {
-						item.kol.text = LanguageManager.reference.localText("pip", 'sel');
+						item.kol.text = LanguageManager.reference.localText("pip", "sel");
 					}
 					
 					item.price.text = Math.round(obj.price * obj.mp);
@@ -584,11 +625,11 @@ package fe.inter {
 				}
 			} 
 			
-			if (page2 == 2) {
+			if (page2 == PAGE_SELL) {
 				item.cat.text=obj.tip;
 				item.rid.text=obj.id;
 				item.nazv.text=obj.nazv;
-				item.hp.text='';
+				item.hp.text="";
 				item.price.text = Math.round(obj.price*10)/10;
 				item.kol.text=obj.kol;
 				var ns:NumericStepper = item.ns;	// Adobe Animate dependency
@@ -598,10 +639,10 @@ package fe.inter {
 				item.kol.text=obj.kol-obj.bou;
 			} 
 			
-			if (page2 == 3) {
+			if (page2 == PAGE_REPAIR) {
 				item.cat.text = obj.tip;
 				item.nazv.text = obj.nazv;
-				item.hp.text = Math.round(obj.hp / obj.maxhp * 100) + '%';
+				item.hp.text = Math.round(obj.hp / obj.maxhp * 100) + "%";
 				
 				var mp:Number = 1;
 				if (obj.tip == Item.L_ARMOR) {
@@ -612,55 +653,66 @@ package fe.inter {
 				item.kol.text = "";
 				
 				if (obj.variant > 0) {
-					item.rid.text = obj.id + '^' + obj.variant;
+					item.rid.text = obj.id + "^" + obj.variant;
 				}
 				else {
 					item.rid.text = obj.id;
 				}
 			} 
 		
-			if (page2==4) {
-				item.cat.text=obj.state;
-				item.nazv.text=obj.nazv;
-				item.hp.text='';
-				item.price.text='';
-				item.price.x=400;
-				item.price.width=158;
-				if (obj.state==1) item.price.text=LanguageManager.reference.localText("pip", 'perform');
-				if (obj.state==2) {
-					item.price.text=LanguageManager.reference.localText("pip", 'done');
+			if (page2 == 4) {
+				item.cat.text = obj.state;
+				item.nazv.text = obj.nazv;
+				item.hp.text = "";
+				item.price.text = "";
+				item.price.x = 400;
+				item.price.width = 158;
+				
+				if (obj.state == 1) {
+					item.price.text=LanguageManager.reference.localText("pip", "perform");
+				}
+				
+				if (obj.state == 2) {
+					item.price.text=LanguageManager.reference.localText("pip", "done");
 					item.nazv.alpha=0.5;
 				}
-				if (obj.state==3) item.price.text=LanguageManager.reference.localText("pip", 'surr');
-				if (obj.state==4) item.price.text=LanguageManager.reference.localText("pip", 'progress');
-				item.kol.text='';
+				
+				if (obj.state == 3) {
+					item.price.text=LanguageManager.reference.localText("pip", "surr");
+				}
+				
+				if (obj.state == 4) {
+					item.price.text=LanguageManager.reference.localText("pip", "progress");
+				}
+				
+				item.kol.text = "";
 			}
 		}
 		
 		// [Item information]
 		override protected function statInfo(event:MouseEvent):void {
-			if (page2 == 1 || page2 == 2 || page2 == 3) {
+			if (page2 == PAGE_BUY || page2 == PAGE_SELL || page2 == PAGE_REPAIR) {
 				infoItem(event.currentTarget.cat.text, event.currentTarget.rid.text, event.currentTarget.nazv.text);
 			}
 			
-			if (page2 == 4) {
+			if (page2 == PAGE_QUEST) {
 				vis.nazv.text = event.currentTarget.nazv.text;
 				
 				var s:String = infoQuest(event.currentTarget.id.text);
 				
-				if (s == '') vis.info.htmlText=Res.messText(event.currentTarget.id.text, 1);
+				if (s == "") vis.info.htmlText=Res.messText(event.currentTarget.id.text, 1);
 				else vis.info.htmlText = s;
 				
-				if (event.currentTarget.cat.text == '0') {
-					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", 'actTake') + "</span>";
+				if (event.currentTarget.cat.text == "0") {
+					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", "actTake") + "</span>";
 				}
 				
-				if (event.currentTarget.cat.text == '3') {
-					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", 'actSurr') + "</span>";
+				if (event.currentTarget.cat.text == "3") {
+					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", "actSurr") + "</span>";
 				}
 				
-				if (event.currentTarget.cat.text == '4') {
-					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", 'actGive') + "</span>";
+				if (event.currentTarget.cat.text == "4") {
+					vis.info.htmlText += "\n\n<span class = 'orange'>" + LanguageManager.reference.localText("pip", "actGive") + "</span>";
 				}
 				
 				setIco();
@@ -671,7 +723,7 @@ package fe.inter {
 		
 		private function selBuy(buy:Object, n:int=1):void {
 			if (selall) {
-				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'transaction');
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", "transaction");	// "Accept"
 			}
 			
 			selall = false;
@@ -680,22 +732,20 @@ package fe.inter {
 				return;
 			}
 			
-			if (buy.tip == Item.L_WEAPON && inv.weapons[buy.id] != null && inv.weapons[buy.id].variant >= buy.variant) {
+			if (buy.tip == Item.L_WEAPON && inv.equipment.hasEquipment(buy.id) && inv.equipment.getWeapon(buy.id).variant) {
 				return;
 			}
 			
-			if (buy.tip == Item.L_ARMOR && inv.armors[buy.id] != null) {
+			if (buy.tip == Item.L_ARMOR && inv.equipment.hasEquipment(buy.id)) {
 				return;
 			}
 			
-			if (buy.tip == Item.L_WEAPON && inv.weapons[buy.id] == null) {
-				if (vendor.buys2[buy.id]) {
-					vendor.buys2[buy.id].checkAuto(true);
-				}
+			if (buy.tip == Item.L_WEAPON && vendor.hasItem(buy.id)) {
+				//vendor.getItem(buy.id).checkAuto(true); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			}
 			
-			if (buy.tip == Item.L_SPELL && vendor.buys2[buy.id]) {
-				vendor.buys2[buy.id].checkAuto(true);
+			if (buy.tip == Item.L_SPELL && vendor.hasItem(buy.id)) {
+				//vendor.getItem(buy.id).checkAuto(true); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			}
 			
 			vis.butOk.visible = true;
@@ -704,22 +754,22 @@ package fe.inter {
 				n = buy.kol - buy.bou;
 			}
 			
-			if (page2 == 1 && Math.round(buy.price * buy.mp * n) > inv.getQuantity("money") - vendor.kolBou) {//!!!
-				n = Math.floor((inv.getQuantity("money") - vendor.kolBou) / (buy.price * buy.mp));
+			if (page2 == PAGE_BUY && Math.round(buy.price * buy.mp * n) > inv.getQuantity("money") - vendor.buyTotal) {
+				n = Math.floor((inv.getQuantity("money") - vendor.buyTotal) / (buy.price * buy.mp));
 				if (n <= 0) {
-					World.w.gui.infoText('noMoney', Math.round(buy.price * buy.mp - (inv.getQuantity("money") - vendor.kolBou)));
+					World.w.gui.infoText("noMoney", Math.round(buy.price * buy.mp - (inv.getQuantity("money") - vendor.buyTotal)));
 					return;
 				}
 			}
 			
 			buy.bou += n;
 			
-			if (page2 == 1) {
-				vendor.kolBou += buy.price * buy.mp * n;
+			if (page2 == PAGE_BUY) {
+				vendor.buyTotal += buy.price * buy.mp * n;
 			}
 			
-			if (page2 == 2) {
-				vendor.kolSell += buy.price * n;
+			if (page2 == PAGE_SELL) {
+				vendor.buyTotal += buy.price * n;
 			}
 		}
 		
@@ -734,12 +784,12 @@ package fe.inter {
 			
 			buy.bou -= n;
 			
-			if (page2 == 1) {
-				vendor.kolBou -= buy.price * buy.mp * n;
+			if (page2 == PAGE_BUY) {
+				vendor.buyTotal -= buy.price * buy.mp * n;
 			}
 			
-			if (page2 == 2) {
-				vendor.kolSell -= buy.price * n;
+			if (page2 == PAGE_SELL) {
+				vendor.sellTotal -= buy.price * n;
 			}
 		}
 		
@@ -748,7 +798,7 @@ package fe.inter {
 		}
 
 		private function nsCh(event:Event):void {
-			if (page2 == 1 || page2 == 2) {
+			if (page2 == PAGE_BUY || page2 == PAGE_SELL) {
 				var buy:Object = assArr[event.currentTarget.parent.rid.text];
 				var n = event.currentTarget.value - buy.bou;
 				
@@ -767,7 +817,7 @@ package fe.inter {
 		}
 		
 		override protected function itemClick(event:MouseEvent):void {
-			if (page2 == 1 || page2 == 2) {
+			if (page2 == PAGE_BUY || page2 == PAGE_SELL) {
 				var buy:Object = assArr[event.currentTarget.rid.text];
 				var n:int = 1;
 				
@@ -789,7 +839,7 @@ package fe.inter {
 				setStatItem(event.currentTarget as MovieClip, buy);
 			}
 			
-			if (page2==3) {
+			if (page2 == PAGE_REPAIR) {
 				if (inv.getQuantity("money") <= 0) {
 					return;
 				}
@@ -810,26 +860,28 @@ package fe.inter {
 					var owl:UnitPet=gg.pets[event.currentTarget.id.text];
 					var repOwl:int = 2;
 					var hl:Number=price/repOwl/vendor.multPrice;
-					if (hl>owl.maxhp-owl.hp) {
-						hl=(owl.maxhp-owl.hp);
-						price=hl*repOwl*vendor.multPrice;
+					
+					if (hl > owl.maxhp - owl.hp) {
+						hl = (owl.maxhp - owl.hp);
+						price = hl * repOwl * vendor.multPrice;
 					}
+					
 					owl.repair(hl);
-					obj=assArr[event.currentTarget.id.text];
-					obj.hp=owl.hp;
+					obj = assArr[event.currentTarget.id.text];
+					obj.hp = owl.hp;
 				}
 				
 				if (event.currentTarget.cat.text==Item.L_WEAPON) {
-					var w:Weapon = inv.weapons[event.currentTarget.id.text];
+					var w:Weapon = inv.equipment.getWeapon(event.currentTarget.id.text);
 					var hp1:int = Math.ceil(price/w.price*w.maxhp/vendor.multPrice);
-					w.repair(hp1);
+					WeaponManager.reference.repairWeapon(w, hp1);
 					
 					obj = assArr[event.currentTarget.id.text];
 					obj.hp = w.hp;
 				}
 				
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
-					var a:Armor = inv.armors[event.currentTarget.id.text];
+					var a:Armor = inv.equipment.getArmor(event.currentTarget.id.text);
 					var hp2:int = Math.ceil(price / a.price * a.maxhp / vendor.multPrice / gg.pers.priceRepArmor);
 					ArmorManager.reference.repair(a, hp2);
 					
@@ -838,13 +890,13 @@ package fe.inter {
 				}
 				
 				inv.decreaseQuantity("money", price);
-				pip.vendor.money+=price;
+				pip.vendor.increaseMoney(price);
 				setStatItem(event.currentTarget as MovieClip, obj);
 				World.w.gui.setWeapon();
 				pip.setRPanel();
 			}
 			
-			if (page2==4) {
+			if (page2 == PAGE_QUEST) {
 				try {
 					if (World.w.game.quests[event.currentTarget.id.text]) {
 						var quest:Quest=World.w.game.quests[event.currentTarget.id.text];
@@ -856,7 +908,7 @@ package fe.inter {
 					}
 				}
 				catch(err) {
-					trace('ERROR: (00:43)');
+					trace("ERROR: (00:43)");
 				}
 				
 				setStatus(false);
@@ -868,7 +920,7 @@ package fe.inter {
 		}
 
 		override protected function itemRightClick(event:MouseEvent):void {
-			if (page2==1 || page2==2) {
+			if (page2 == PAGE_BUY || page2 == PAGE_SELL) {
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n:int = 1;
 				if (event.shiftKey) n=10;
@@ -882,13 +934,17 @@ package fe.inter {
 		}
 		
 		private function transOk(event:MouseEvent):void {
-			if (page2==1) {
+			if (page2 == PAGE_BUY) {
 				trade(assArr);
 			}
 			
-			if (page2==2) {
-				if (selall) sellAll();
-				else sell(assArr);
+			if (page2 == PAGE_SELL) {
+				if (selall) {
+					sellAll();
+				}
+				else {
+					sell(assArr);
+				}
 			}
 			
 			pip.setRPanel();
@@ -896,67 +952,77 @@ package fe.inter {
 		}
 		
 		public function trade(arr:Array):void {
-			if (vendor.kolBou > inv.getQuantity("money")) {
+			// We don't have enough money to buy the items selected
+			if (vendor.buyTotal > inv.getQuantity("money")) {
 				return;
 			}
 			
-			for each(var buy:Item in vendor.buys) {
-				var rid:String=buy.id;
-				if (buy.variant>0) rid+='^'+buy.variant;
-				if (arr[rid] && arr[rid].bou>0) {
-					buy.bou=arr[rid].bou;
-					inv.take(buy,1);
+			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			for each(var item:Item in vendor.inventory) {
+				if (arr[item.id] && arr[item.id].bou > 0) {
+					item.bou = arr[item.id].bou;
+					// inv.take(buy, 1); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 			}
 			
-			inv.decreaseQuantity("money", Math.ceil(vendor.kolBou));
-			vendor.money += Math.ceil(vendor.kolBou);
-			vendor.kolBou=0;
-			inv.calcMass();
-			inv.calcWeaponMass();
+			inv.decreaseQuantity("money", Math.ceil(vendor.buyTotal));
+			vendor.increaseMoney(Math.ceil(vendor.buyTotal));
+			vendor.buyTotal = 0;
+
+			*/
+
+			//inv.calcMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			//inv.calcWeaponMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			
+			// Refresh the PipBuck(?)
 			setStatus();
 		}
 		
-		public function sell(arr:Array):void {
-			if (!inbase && Math.ceil(vendor.kolSell)>vendor.money) {
-				World.w.gui.infoText('noSell');
+		public function sell(arr:Array):void {	// VENDORS NEED PROPER INVENTORIES FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			// We're not at the base and the vendor doesn't have enough money to buy our goods
+			if (!inbase && Math.ceil(vendor.sellTotal) > vendor.money) {
+				World.w.gui.infoText("noSell");
 				return;
 			}
 			
-			for (var s in inv.items) {
-				if (s == "" || inv.items[s].kol <= 0) {
-					continue;
-				}
+			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			var data:Object;
+			for each (var item:InventoryItem in inv.getAllItems()) {
 				
-				var data:Object = ItemManager.reference.getItem(s);
+				data = ItemManager.reference.getItem(item.id);
 				
-				if (arr[s] && arr[s].bou>0) {
-					var buy:InventoryItem = vendor.buys2[s];
+				if (arr[item.id] && arr[item.id].bou > 0) {
+					var buy:InventoryItem = vendor.buys2[item.id];
 					
 					if (buy == null) {
-						buy = new InventoryItem(s, 0);
+						buy = new InventoryItem(item.id, 0);
 						vendor.buys.push(buy);
-						vendor.buys2[s] = buy;
+						vendor.buys2[item.id] = buy;
 					}
-					buy.quantity += arr[s].bou;
-					inv.items[s].kol -= arr[s].bou;
+					
+					buy.quantity += arr[item.id].bou;
+					inv.decreaseQuantity(item.id, arr[item.id].bou);
 				}
 			}
 			
-			inv.increaseQuantity("money", Math.floor(vendor.kolSell));
-			vendor.money -= Math.ceil(vendor.kolSell);
-			vendor.kolSell = 0;
+			inv.increaseQuantity("money", Math.floor(vendor.sellTotal));
+			vendor.decreaseMoney(Math.ceil(vendor.sellTotal));
+			vendor.sellTotal = 0;
+
+			*/
+
+			// Refresh the PipBuck(?)
 			setStatus();
 		}
 		
 		public function sellAll():void {
 			for (var s in arr) {
-				if (arr[s].tip == 'valuables') {
+				if (arr[s].tip == "valuables") {
 					selBuy(arr[s], arr[s].kol - arr[s].bou);
 				}
 			}
 			
-			vis.butOk.text.text = LanguageManager.reference.localText("pip", 'transaction');
+			vis.butOk.text.text = LanguageManager.reference.localText("pip", "transaction");	// "Accept"
 			selall = false;
 			showBottext();
 			setStatItems();

@@ -5,6 +5,7 @@ package fe.unit {
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
+	import fe.weapon.Weapon;
 
 	public class Spell {
 
@@ -78,18 +79,18 @@ package fe.unit {
 			if (xml.@tele.length())		teleSpell = true;
 			if (xml.@snd.length())		snd = xml.@snd;
 
-			nazv = Res.txt('i', id);
+			nazv = Res.txt("i", id);
 
 			// What hard-coded function does this spell use
-			if (id == 'sp_mwall')		cf = cast_mwall;
-			if (id == 'sp_mshit')		cf = cast_mshit;
-			if (id == 'sp_blast')		cf = cast_blast;
-			if (id == 'sp_kdash')		cf = cast_kdash;
-			if (id == 'sp_slow')		cf = cast_slow;
-			if (id == 'sp_cryst')		cf = cast_cryst;
-			if (id == 'sp_moon')		cf = cast_moon;
-			if (id == 'sp_gwall')		cf = cast_gwall;
-			if (id == 'sp_invulner')	cf = cast_invulner;
+			if (id == "sp_mwall")		cf = cast_mwall;
+			if (id == "sp_mshit")		cf = cast_mshit;
+			if (id == "sp_blast")		cf = cast_blast;
+			if (id == "sp_kdash")		cf = cast_kdash;
+			if (id == "sp_slow")		cf = cast_slow;
+			if (id == "sp_cryst")		cf = cast_cryst;
+			if (id == "sp_moon")		cf = cast_moon;
+			if (id == "sp_gwall")		cf = cast_gwall;
+			if (id == "sp_invulner")	cf = cast_invulner;
 		}
 
 		public static function getItemInfo(id:String):XML {
@@ -118,7 +119,7 @@ package fe.unit {
 			}
 			
 			if (player) {
-				if (World.w.alicorn && id!='sp_mshit') {
+				if (World.w.alicorn && id!="sp_mshit") {
 					return false;
 				}
 				
@@ -126,27 +127,29 @@ package fe.unit {
 					return false;
 				}
 				
-				if (gg.invent.equipment.hasEquipment(id) && gg.invent.equipment.getWeapon(id).respect == 1) {
-					World.w.gui.infoText('disSpell',null,null,false);
-					Snd.ps('nomagic');
+				if (gg.invent.equipment.hasEquipment(id) && gg.invent.equipment.getWeapon(id).respect == Weapon.WEP_LOCKED) {
+					World.w.gui.infoText("disSpell",null,null,false);
+					Snd.ps("nomagic");
+					
 					return false;
 				}
 				
 				if (World.w.pers.spellsPoss==0 || atk && !gg.atkPoss) {
-					World.w.gui.infoText('noSpells',null,null,false);
-					Snd.ps('nomagic');
+					World.w.gui.infoText("noSpells",null,null,false);
+					Snd.ps("nomagic");
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
+					
 					return false;
 				}
 				
 				if (t_culd > 0) {
 					if (!active) {
 						if (culd >= 100) {
-							World.w.gui.infoText('spellCuld', Math.ceil(t_culd / World.fps), null, false);
+							World.w.gui.infoText("spellCuld", Math.ceil(t_culd / World.fps), null, false);
 							World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y - 20);
 						}
 						
-						Snd.ps('nomagic');
+						Snd.ps("nomagic");
 					}
 					
 					return false;
@@ -160,15 +163,17 @@ package fe.unit {
 				}
 				
 				if (owner.mana<dmagic) {
-					World.w.gui.infoText('overMana',null,null,false);
-					Snd.ps('nomagic');
+					World.w.gui.infoText("overMana",null,null,false);
+					Snd.ps("nomagic");
 					World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y-20);
+					
 					return false;
 				}
 				
 				if (dmana>World.w.pers.manaHP) {
-					World.w.gui.infoText('noMana',null,null,false);
-					Snd.ps('nomagic');
+					World.w.gui.infoText("noMana",null,null,false);
+					Snd.ps("nomagic");
+					
 					return false;
 				}
 			}
@@ -179,6 +184,7 @@ package fe.unit {
 				Y = owner.magicY;
 				loc = owner.loc;
 				power = owner.spellPower;
+				
 				if (player && teleSpell) {
 					power = gg.pers.telePower;
 				}
@@ -192,9 +198,9 @@ package fe.unit {
 			cy = ny;
 
 			// [checking the visibility of the target point, if necessary]
-			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy)) {
+			if (line == 1 && owner && !owner.loc.isLine(X, Y, cx, cy)) {
 				if (player) {
-					World.w.gui.infoText('noVisible', null, null, false);
+					World.w.gui.infoText("noVisible", null, null, false);
 				}
 				
 				return false;
@@ -229,7 +235,7 @@ package fe.unit {
 				}
 			}
 			else if (est == 0) {
-				Snd.ps('nomagic');
+				Snd.ps("nomagic");
 				
 				return false;
 			}
@@ -239,7 +245,7 @@ package fe.unit {
 		
 		// [create a magic wall]
 		private function cast_mwall():void {
-			var un:Unit=loc.createUnit('mwall',cx,cy+60,true);
+			var un:Unit=loc.createUnit("mwall",cx,cy+60,true);
 			
 			if (owner) {
 				un.fraction=owner.fraction;
@@ -252,10 +258,10 @@ package fe.unit {
 		// [magic shield]
 		private function cast_mshit():void {
 			if (owner.player && World.w.alicorn) {
-				owner.shithp=World.w.pers.alicornShitHP;
+				owner.shithp = World.w.pers.alicornShitHP;
 			}
 			else {
-				owner.shithp=hp*power;
+				owner.shithp = hp * power;
 			}
 		}
 
@@ -354,7 +360,7 @@ package fe.unit {
 			}
 			
 			if (loc.active) {
-				Emitter.emit('blast', loc, X, Y);
+				Emitter.emit("blast", loc, X, Y);
 			}
 			
 			if (loc.active) {
@@ -365,15 +371,15 @@ package fe.unit {
 		// [slowing field]
 		private function cast_slow():void {
 			if (owner) {
-				owner.addEffect('inhibitor', rad * power);
+				owner.addEffect("inhibitor", rad * power);
 			}
 		}
 		
 		// [moon blade]
 		private function cast_moon():void {
-			if (gg.currentPet != 'moon') {
-				gg.pets['moon'].hp = gg.pets['moon'].maxhp;
-				gg.callPet('moon', true);
+			if (gg.currentPet != "moon") {
+				gg.pets["moon"].hp = gg.pets["moon"].maxhp;
+				gg.callPet("moon", true);
 			}
 			else if (gg.pet) {
 				gg.pet.heal(gg.pet.maxhp);
@@ -394,7 +400,7 @@ package fe.unit {
 			
 			}
 			
-			Emitter.emit('gwall', loc,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY);
+			Emitter.emit("gwall", loc,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY);
 		}
 		
 		// [ghost wall]
@@ -416,7 +422,7 @@ package fe.unit {
 					est = 0;
 				}
 				else {
-					owner.addEffect('bloodinv');
+					owner.addEffect("bloodinv");
 					gg.pers.bloodDamage(dam, Unit.D_BLEED);
 					est = 1;
 				}

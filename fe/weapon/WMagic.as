@@ -35,7 +35,7 @@ package fe.weapon {
 				return false;
 			}
 			
-			if (owner.player && respect == 1) {
+			if (owner.player && respect == Weapon.WEP_LOCKED) {
 				World.w.gui.infoText('disSpell', null, null, false);
 				Snd.ps('nomagic');
 				return false;

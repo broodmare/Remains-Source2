@@ -3241,7 +3241,7 @@ package fe.unit {
 			}
 			
 			if (nw is Weapon) {
-				if (nw.respect == 1 || nw.alicorn && !World.w.alicorn) {
+				if (nw.respect == Weapon.WEP_LOCKED || nw.alicorn && !World.w.alicorn) {
 					if (nw.tip == "magic") {
 						World.w.gui.infoText('disSpell',null,null,false);
 					}
@@ -3252,8 +3252,8 @@ package fe.unit {
 				}
 			
 				if (nw.spell) {
-					if (nw.respect == 0) {
-						nw.respect = 2;
+					if (nw.respect == Weapon.WEP_INACTIVE) {
+						nw.respect = Weapon.WEP_ACTIVE;
 					}
 					// invent.useItem(nid); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 					return;
@@ -3293,6 +3293,7 @@ package fe.unit {
 		// [Direct replacement of weapons]
 		private function changeWeaponNow(st:int):void {
 			vision = 1;
+			
 			if (st == 1) {
 				if (currentWeapon) {
 					if (currentWeapon.tip != "magic" || newWeapon && newWeapon.tip == "magic") {
@@ -3309,8 +3310,8 @@ package fe.unit {
 				childObjs[0] = currentWeapon;
 				
 				if (currentWeapon) {
-					if (currentWeapon.respect == 0) {
-						currentWeapon.respect = 2;
+					if (currentWeapon.respect == Weapon.WEP_INACTIVE) {
+						currentWeapon.respect = Weapon.WEP_ACTIVE;
 					}
 
 					/*
@@ -3554,7 +3555,10 @@ package fe.unit {
 		
 		public function uncallPet(ret:Boolean=false):void {
 			if (pet) {
-				if (ret && currentPet!='moon') retPet=currentPet;
+				if (ret && currentPet!='moon') {
+					retPet=currentPet;
+				}
+				
 				World.w.gui.infoText('petRecall',pet.nazv);
 				pet.recall();
 				pet=null;
@@ -3592,7 +3596,7 @@ package fe.unit {
 			pers.setParameters();
 
 			if (eff) {
-				newPart('redray',40);
+				newPart('redray', 40);
 				Snd.ps('al_armor', coordinates.X, coordinates.Y);
 			}
 
@@ -3644,6 +3648,7 @@ package fe.unit {
 						boundingBox.height = ratY;
 						boundingBox.centerHorizontally(coordinates);
 						boundingBox.top = coordinates.Y - boundingBox.height;
+						
 						return false;
 					}
 					else {
@@ -3661,6 +3666,7 @@ package fe.unit {
 			vis.rat.visible = false;
 			newPart('black', 30);
 			rat = 0;
+			
 			return true;
 		}
 		
@@ -3674,6 +3680,7 @@ package fe.unit {
 		public function anim(dey:String = null, ok:Boolean = false):void {
 			if (dey == null || dey == '') {
 				animOff=false;
+			
 				return;
 			}
 			
@@ -3809,11 +3816,19 @@ package fe.unit {
 			if (animateResurrect())		return;
 			if (continueLurking())		return;
 
-			if (klip > 0) klip--;
-			else klip = Math.random() * 200 + 50;
+			if (klip > 0) {
+				klip--;
+			}
+			else {
+				klip = Math.random() * 200 + 50;
+			}
 			
-			if (stay) t_stay = 5;
-			else if (t_stay > 0) t_stay--;
+			if (stay) {
+				t_stay = 5;
+			}
+			else if (t_stay > 0) {
+				t_stay--;
+			}
 
 			var cframe:int;
 
@@ -3875,6 +3890,7 @@ package fe.unit {
 					
 					setFilters();
 					otherVisual();
+					
 					return true;
 				}
 				else {
@@ -3892,6 +3908,7 @@ package fe.unit {
 					
 					setFilters();
 					otherVisual();
+					
 					return true;
 				}
 				else {
@@ -3909,6 +3926,7 @@ package fe.unit {
 					
 					setFilters();
 					otherVisual();
+					
 					return true;
 				}
 				else {
@@ -3920,6 +3938,7 @@ package fe.unit {
 				if (lurked) {
 					vis.osn.body.head.morda.eye.gotoAndStop(1);
 					otherVisual();
+					
 					return true;
 				}
 				else {
@@ -3935,6 +3954,7 @@ package fe.unit {
 					}
 					
 					otherVisual();
+					
 					return true;
 				}
 				else {
@@ -3949,7 +3969,9 @@ package fe.unit {
 //###############
 			function animatePlayerMovement():void {
 				
-				if (t_work && work == 'punch') freeAnim = 0;
+				if (t_work && work == 'punch') {
+					freeAnim = 0;
+				}
 				
 				if (t_work && work == 'punch' && animState != 'punch') {
 					if (ctr.keyRun) {
@@ -4078,7 +4100,8 @@ package fe.unit {
                                         vis.osn.gotoAndStop('polz');
                                         animState = 'polz';
                                     }
-                                    vis.osn.body.play();
+                                   
+								    vis.osn.body.play();
                                 }
                             }
 							else if (maxSpeed < 5) {
@@ -4291,15 +4314,15 @@ package fe.unit {
 					}
 					
 					if (isNaN(headRA)) {
-						headRA=0;
+						headRA = 0;
 					}
 					
-					if (headRA>55) {
-						headRA=55;
+					if (headRA > 55) {
+						headRA = 55;
 					}
 					
-					if (headRA<-35) {
-						headRA=-35;
+					if (headRA < -35) {
+						headRA = -35;
 					}
 					
 					vis.osn.body.head.morda.rotation=headRA;
@@ -4343,13 +4366,29 @@ package fe.unit {
 			}
 
 			function animateEyes():void {
-				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) vis.osn.body.head.morda.eye.gotoAndStop(2);
-				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) vis.osn.body.head.morda.eye.gotoAndStop(1);
-				if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) vis.osn.body.head.morda.eye.gotoAndStop(3);
+				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) {
+					vis.osn.body.head.morda.eye.gotoAndStop(2);
+				}
+				
+				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) {
+					vis.osn.body.head.morda.eye.gotoAndStop(1);
+				}
+				
+				if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) {
+					vis.osn.body.head.morda.eye.gotoAndStop(3);
+				}
+				
 				if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2)) {
 					vis.osn.body.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
-					if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) vis.osn.body.head.morda.eye.eye.zrak.x=-20;
-					if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) vis.osn.body.head.morda.eye.eye.zrak.x=-11;
+					
+					if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) {
+						vis.osn.body.head.morda.eye.eye.zrak.x=-20;
+					}
+					
+					if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) {
+						vis.osn.body.head.morda.eye.eye.zrak.x=-11;
+					}
+					
 					vis.osn.body.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
 				}
 			}
@@ -4370,41 +4409,41 @@ package fe.unit {
 			
 			if (storona > 0) {
 				if (isSit) {
-					if (shX2 > 0) {
-						return 49+Math.round(shX2*10);
+					if (shX2 > 0.00) {
+						return 49 + Math.round(shX2 * 10);
 					}
 				
-					if (shX1 > 0) {
-						return 49+11+Math.round(shX1*10);
+					if (shX1 > 0.00) {
+						return 49 + 11 + Math.round(shX1 * 10);
 					}
 				}
 				else {
-					if (shX2 > 0.3) {
-						return 27 + Math.round((shX2-0.3)*13);
+					if (shX2 > 0.30) {
+						return 27 + Math.round((shX2 - 0.30) * 13);
 					}
 				
-					if (shX1 > 0.3) {
-						return 27 + 11 + Math.round((shX1-0.3)*13);
+					if (shX1 > 0.30) {
+						return 27 + 11 + Math.round((shX1 - 0.30) * 13);
 					}
 				}
 			}
 			else {
 				if (isSit) {
-					if (shX1 > 0) {
-						return 49+Math.round(shX1*10);
+					if (shX1 > 0.00) {
+						return 49 + Math.round(shX1 * 10);
 					}
 					
-					if (shX2 > 0) {
-						return 49+11+Math.round(shX2*10);
+					if (shX2 > 0.00) {
+						return 49 + 11 + Math.round(shX2 * 10);
 					}
 				}
 				else {
-					if (shX1 > 0.3) {
-						return 27+Math.round((shX1-0.3)*13);
+					if (shX1 > 0.30) {
+						return 27 + Math.round((shX1 - 0.30) * 13);
 					}
 					
-					if (shX2 > 0.3) {
-						return 27+11+Math.round((shX2-0.3)*13);
+					if (shX2 > 0.30) {
+						return 27 + 11 + Math.round((shX2 - 0.30) * 13);
 					}
 				}
 			}
@@ -4442,9 +4481,11 @@ package fe.unit {
 					hairR += hairDY;
 					hairDY -= hairR/4;
 					hairDY *= 0.8;
+					
 					if (hairR > 8) {
 						hairR = 8;
 					}
+					
 					if (hairR < -8) {
 						hairR = -8;
 					}
@@ -4615,7 +4656,7 @@ package fe.unit {
 				return;
 			}
 			
-			prev_replic=s_replic;
+			prev_replic = s_replic;
 			
 			if (s_replic != '' && s_replic) {
 				Emitter.emit('replic2', loc, coordinates.X, coordinates.Y - 90,{txt:s_replic, ry:20});

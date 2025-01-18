@@ -25,7 +25,8 @@ package fe.inter {
 	*		5 - *disabled*
 	*/
 	public class PipPageVault extends PipPage {
-
+		
+		private static const PAGE_EQUIPMENT:int = 1, PAGE_AMMO:int = 2, PAGE_STUFF:int = 3;
 		private var assArr:Array;
 
 		// Constructor
@@ -62,57 +63,72 @@ package fe.inter {
 			statHead.ns.visible = false;
 			statHead.id.visible = false;
 			statHead.cat.visible = false;
-			statHead.nazv.text = LanguageManager.reference.localText("pip", 'ii2');
-			statHead.kol.text = LanguageManager.reference.localText("pip", 'ii7');
+			statHead.nazv.text = LanguageManager.reference.localText("pip", "ii2");
+			statHead.kol.text = LanguageManager.reference.localText("pip", "ii7");
 			statHead.kol.width = 170;
-			statHead.mass.text  = World.w.hardInv ? LanguageManager.reference.localText("pip", 'ii8') : "";
-			statHead.mass2.text = World.w.hardInv ? LanguageManager.reference.localText("pip", 'ii9') : "";
-			setTopText('vaultupr');
+			statHead.mass.text  = World.w.hardInv ? LanguageManager.reference.localText("pip", "ii8") : "";
+			statHead.mass2.text = World.w.hardInv ? LanguageManager.reference.localText("pip", "ii9") : "";
+			setTopText("vaultupr");
 			vis.butOk.visible = false;
 			
-			inv.calcMass();
-			for (var s in inv.items) {
-				if (s=='' || (inv.items[s].kol<=0 && inv.items[s].vault<=0) || inv.items[s].invis) continue;
-				var node:XML = inv.items[s].xml;
-				if (node == null) continue;
-				if (node.@tip=='money' || node.@tip=='paint' || node.@tip=='spell' || node.@tip=='spec' || node.@tip=='key' || node.@tip=='instr' || node.@tip=='impl' || node.@tip=='art' || node.@tip=='scheme') continue;
-				if (inv.items[s].invCat==page2) {
+			// inv.calcMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			var vault:Inventory = World.w.vault;
+
+			for each (var item:InventoryItem in inv.getAllItems()) {
+				if (item.hidden) {
+					continue;
+				}
+
+				var iData:Object = ItemManager.reference.getItem(item.id);
+				var type:String = iData.tip;
+
+				if (type == "money" || type == "paint" || type == "spell" || type == "spec" || type == "key" || type == "instr" 
+									|| type == "impl" || type == "art" || type == "scheme") {
+					continue;
+				}
+				
+				if (iData.invCat == page2) {
+					
+					// Get the localized name of the category this item belondgs to
 					var tcat:String;
+					tcat = LanguageManager.reference.localText("pip", type);
 					
-					if (Res.istxt('p', node.@tip)) {
-						tcat = LanguageManager.reference.localText("pip", node.@tip);
+					var n:Object = {
+						tip:	type, 
+						id:		iData.id, 
+						nazv:((type == "e") ? Res.txt("w", iData.id) : iData.nazv), 
+						kol:	inv.getQuantity(item.id), 
+						vault:	vault.getQuantity(item.id), 
+						mass:	iData.mass, 
+						cat:	tcat,
+						trol:	type
+					};
+					
+					if (type == "valuables") {
+						n.price = iData.price;
 					}
-					else {
-						tcat = LanguageManager.reference.localText("pip", 'stuff');
+					
+					if (type == "food" && iData.ftip == "1") {
+						n.trol = "drink";
 					}
 					
-					var n = {tip:node.@tip, id:s, nazv:((node.@tip == 'e') ? Res.txt('w', s):inv.items[s].nazv), kol:inv.items[s].kol, vault:inv.items[s].vault, mass : inv.items[s].mass, cat:tcat, trol:node.@tip};
-					
-					if (node.@tip=='valuables') {
-						n.price=node.@price;
-					}
-					
-					if (node.@tip=='food' && node.@ftip=='1') {
-						n.trol='drink';
-					}
-					
-					if (node.@keep>0) {
-						n.keep=true;
+					if (iData.keep > 0) {
+						n.keep = true;
 					}
 					
 					n.sort = n.cat;
-					n.sort2 = node.@sort.length() ? node.@sort : 0;
+					n.sort2 = "sort" in iData ? iData.sort : 0;
 					arr.push(n);
 					assArr[n.id] = n;
 				}
 			}
 			
 			if (arr.length) {
-				arr.sortOn(['sort', 'sort2', 'nazv'], [0, Array.NUMERIC, 0]);
+				arr.sortOn(["sort", "sort2", "nazv"], [0, Array.NUMERIC, 0]);
 			}
 			
-			if (page2 == 2 || page2 == 3) {
-				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'tovault');
+			if (page2 == PAGE_AMMO || page2 == PAGE_STUFF) {
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", "tovault");
 				vis.butOk.visible = true;
 			}
 				
@@ -121,8 +137,12 @@ package fe.inter {
 		}
 		
 		private function showBottext():void {
-			if (World.w.hardInv) vis.bottext.text=inv.retMass(page2);
-			else vis.bottext.text='';
+			if (World.w.hardInv) {
+				//vis.bottext.text=inv.retMass(page2); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			}
+			else {
+				vis.bottext.text = "";
+			}
 		}
 		
 		// [Show one element]
@@ -136,7 +156,7 @@ package fe.inter {
 				item.trol.gotoAndStop(obj.tip);
 			}
 			catch (err) {
-				trace('ERROR: (00:40)');
+				trace("ERROR: (00:40)");
 				item.trol.gotoAndStop(1);
 			}
 			
@@ -149,8 +169,8 @@ package fe.inter {
 			}
 			
 			item.cat.text=obj.tip;
-			item.mass.text=World.w.hardInv?obj.mass:'';
-			item.mass2.text=World.w.hardInv?Res.numb(obj.mass*obj.kol):'';
+			item.mass.text=World.w.hardInv?obj.mass:"";
+			item.mass2.text=World.w.hardInv?Res.numb(obj.mass*obj.kol):"";
 			item.kol.text=obj.kol;
 			item.ns.maximum=obj.kol+obj.vault;
 			item.ns.value=obj.vault;
@@ -245,16 +265,16 @@ package fe.inter {
 		private function checkAmmo(item:Item):Boolean {
 			var ab:String = item.id;
 			
-			if (item.tip == 'a' && "base" in item.data) {
+			if (item.tip == "a" && "base" in item.data) {
 				ab = item.base;
 			}
 			
-			for each(var weap:Weapon in inv.weapons) {
+			for each(var weap:Weapon in inv.equipment.weapons) {
 				if (weap == null) {
 					continue;
 				}
 				
-				if (weap.respect == 0 || weap.respect == 2) {
+				if (weap.respect == Weapon.WEP_INACTIVE || weap.respect == Weapon.WEP_ACTIVE) {
 					if (weap.tip == "explosives" && ab == weap.id) {
 						return true;
 					}
@@ -273,12 +293,12 @@ package fe.inter {
 			var dmass:Number = 0;	// Total mass of items?
 			
 			for (var s:String in arr) {
-				if (arr[s].tip != 'food' && arr[s].tip != 'book' && arr[s].tip != 'sphera' && arr[s].tip != 'valuables' && !arr[s].keep) {
+				if (arr[s].tip != "food" && arr[s].tip != "book" && arr[s].tip != "sphera" && arr[s].tip != "valuables" && !arr[s].keep) {
 					var item:InventoryItem = inv.getItem(arr[s].id);
 					var data:Object = ItemManager.reference.getItem(item.id)
 					
 					/*
-					if (arr[s].tip == 'a' || arr[s].tip == 'e' || arr[s].tip == 'compw') {
+					if (arr[s].tip == "a" || arr[s].tip == "e" || arr[s].tip == "compw") {
 						if (checkAmmo(item)) {
 							continue
 						}
@@ -302,7 +322,7 @@ package fe.inter {
 		}
 		
 		private function transOk(event:MouseEvent):void {
-			if (page2 == 2 || page2 == 3) {
+			if (page2 == PAGE_AMMO || page2 == PAGE_STUFF) {
 				sbrosHlam();
 			}
 		}

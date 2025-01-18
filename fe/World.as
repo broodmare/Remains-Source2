@@ -26,189 +26,189 @@ package fe {
 	
 	public class World {
 
-		public static var w:World;							// Publically Accessible reference to this instance of World
+		public static var w:World;								// Publically Accessible reference to this instance of World
 		
 		// Managers for in-game items
-		private static var itemManager:ItemManager;			// Stores all simple item data
-		private static var armorManager:ArmorManager;		// Stores all armor set data and Armors
-		private static var weaponManager:WeaponManager;		// Stores all weapon data and Weapons
+		private static var itemManager:ItemManager;				// Stores all simple item data
+		private static var armorManager:ArmorManager;			// Stores all armor set data and Armors
+		private static var weaponManager:WeaponManager;			// Stores all weapon data and Weapons
 		
 		// Visual components
-		public var main:Sprite;			//Главный спрайт игры
+		public var main:Sprite;									//Главный спрайт игры
 		public var swfStage:Stage;
-		public var languageManager:LanguageManager;	// Publically Accessible reference to the langauge manager
+		public var languageManager:LanguageManager;				// Publically Accessible reference to the langauge manager
 
-		public var vwait:MovieClip;		//Картинка с надписью ЗАГРУЗКА
-		public var vfon:MovieClip;		//Неподвижный задник
-		public var visual:Sprite;		//активная область
-		public var vscene:MovieClip;	//Сцена
-		public var vblack:MovieClip;	//Затемнение
-		public var vpip:MovieClip;		//Пипбак
-		public var vsats:MovieClip;		//Интерфейс ЗПС
-		public var vgui:MovieClip;		//GUI (HUD)
-		public var vstand:MovieClip;	//Стенд
-		public var verror:MovieClip;	//окно ошибки
-		public var vconsol:MovieClip;	//Консоль
+		public var vwait:MovieClip;								//Картинка с надписью ЗАГРУЗКА
+		public var vfon:MovieClip;								//Неподвижный задник
+		public var visual:Sprite;								//активная область
+		public var vscene:MovieClip;							//Сцена
+		public var vblack:MovieClip;							//Затемнение
+		public var vpip:MovieClip;								//Пипбак
+		public var vsats:MovieClip;								//Интерфейс ЗПС
+		public var vgui:MovieClip;								//GUI (HUD)
+		public var vstand:MovieClip;							//Стенд
+		public var verror:MovieClip;							//окно ошибки
+		public var vconsol:MovieClip;							//Консоль
 	
 		// All main components
 		public var mainMenuClass:MainMenu;
-		public var cam:Camera;			// Camera
-		public var ctr:Ctr;				// Input controller
-		public var consol:Consol;		// Command console
-		public var game:Game;			// Game container
-		public var gg:UnitPlayer;		// Player unit
-		public var pers:Pers;			// Player stats
-		public var invent:Inventory;	// Player inventory
-		public var vault:Inventory;		// Global storage for the player
-		public var favorites:Favorites;	// Inventory hotkeys
-		public var gui:GUI;				// GUI
-		public var grafon:Grafon;		// Renderer
-		public var pip:PipBuck;			// Pipbuck (Menus)
-		public var stand:Stand;			// Item stand 
-		public var sats:Sats;			// SATS
-		public var app:Appear;			// Appearance customizer
+		public var cam:Camera;									// Camera
+		public var ctr:Ctr;										// Input controller
+		public var consol:Consol;								// Command console
+		public var game:Game;									// Game container
+		public var gg:UnitPlayer;								// Player unit
+		public var pers:Pers;									// Player stats
+		public var invent:Inventory;							// Player inventory
+		public var vault:Inventory;								// Global storage for the player
+		public var favorites:Favorites;							// Inventory hotkeys
+		public var gui:GUI;										// GUI
+		public var grafon:Grafon;								// Renderer
+		public var pip:PipBuck;									// Pipbuck (Menus)
+		public var stand:Stand;									// Item stand 
+		public var sats:Sats;									// SATS
+		public var app:Appear;									// Appearance customizer
 		
 		// Location components
-		public var land:Land;		// [Current land]
-		public var loc:Location;	// [Current location]
+		public var land:Land;									// [Current land]
+		public var loc:Location;								// [Current location]
 		public var rooms:Array;
 		
 		// Operating Variables
-		public var consoleActive:Boolean = false;	// Console active
-		public var onPause:Boolean=false;			// Game is paused
-		public var allStat:int=0;					// [General status 0 - game has not started]
-		public var celX:Number;						// [Cursor coordinates in the location reference system]
+		public var consoleActive:Boolean		= false;		// Console active
+		public var onPause:Boolean				= false;		// Game is paused
+		public var allStat:int					= 0;			// [General status 0 - game has not started]
+		public var celX:Number;									// [Cursor coordinates in the location reference system]
 		public var celY:Number;
-		public var t_battle:int=0;					// Battle timer
-		public var t_die:int=0;						// If the player is dead
-		public var t_exit:int=0;					// [Exit from the area]
-		public var gr_stage:int=0;					// Current stage of Grafon while rendering 
-		public var checkLoot:Boolean=false;			// [Recalculate auto loot pickup]
+		public var t_battle:int					= 0;			// Battle timer
+		public var t_die:int					= 0;			// If the player is dead
+		public var t_exit:int					= 0;			// [Exit from the area]
+		public var gr_stage:int					= 0;			// Current stage of Grafon while rendering 
+		public var checkLoot:Boolean			= false;		// [Recalculate auto loot pickup]
 		
 		// Update player inventory weight
-		public var calcMass:Boolean = false;		// [Recalculate mass]
-		public var calcMassW:Boolean = false;		// [Recalculate the mass of weapons]
+		public var calcMass:Boolean				= false;		// [Recalculate mass]
+		public var calcMassW:Boolean			= false;		// [Recalculate the mass of weapons]
 		
-		public var lastCom:String=null;
-		public var armorWork:String='';				// [Temporary display of armor]
-		public var mmArmor:Boolean=false;			// [Armor in the main menu]
-		public var catPause:Boolean=false;			// [Pause for scene]
+		public var lastCom:String				= "";
+		public var armorWork:String				= "";			// [Temporary display of armor]
+		public var mmArmor:Boolean				= false;		// [Armor in the main menu]
+		public var catPause:Boolean				= false;		// [Pause for scene]
 		
-		public var testLoot:Boolean=false;			// [Testing loot and experience]
-		public var summxp:int=0;
+		public var testLoot:Boolean				= false;		// [Testing loot and experience]
+		public var summxp:int					= 0;
 		private var ccur:String;
 		
-		public var currentMusic:String = "";
+		public var currentMusic:String			= "";
 		
 		// [Settings Variables]
-		public var enemyAct:int=3;					//активность врагов, должно быть 3. Если 0, враги будут не активны
-		public var roomsLoad:int = 1;				//1-загружать из файла карты локаций
-		private var langLoad:int = 1;				//1-загружать из файла
-		public var addCheckSP:Boolean=false;		//добавлять скилл-поинты при посещении контрольной точки
-		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
-		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
-		public var black:Boolean=true;				//отображать туман войны
+		public var enemyAct:int					= 3;			//активность врагов, должно быть 3. Если 0, враги будут не активны
+		public var roomsLoad:int				= 1;			//1-загружать из файла карты локаций
+		private var langLoad:int				= 1;			//1-загружать из файла
+		public var addCheckSP:Boolean			= false;		//добавлять скилл-поинты при посещении контрольной точки
+		public var weaponsLevelsOff:Boolean		= true;			//запрещать ли использование оружия не соотв. уровня
+		public var drawAllMap:Boolean			= false;		//отображать ли всю карту без тумана войны
+		public var black:Boolean				= true;			//отображать туман войны
 		
 		// Debug variables
-		public var testMode:Boolean = false;	// [Test mode]
-		public var chitOn:Boolean = false;		//
-		public var chit:String = '';			// [Current cheat]
-		public var chitX:String = null;			//
-		public var showArea:Boolean = false;	// [Show active areas]
-		public var godMode:Boolean = false;		// Invulnerability
-		public var showAddInfo:Boolean = false;	// [Show additional information]
-		public var testBattle:Boolean = false;	// [Stamina will be consumed outside of combat]
-		public var testEff:Boolean = false;		// [Effects will be 10 times shorter]
-		public var testDam:Boolean = false;		// [Cancels damage spread]
+		public var testMode:Boolean				= false;		// [Test mode]
+		public var chitOn:Boolean				= false;		//
+		public var chit:String					= "";			// [Current cheat]
+		public var chitX:String					= null;			//
+		public var showArea:Boolean				= false;		// [Show active areas]
+		public var godMode:Boolean				= false;		// Invulnerability
+		public var showAddInfo:Boolean			= false;		// [Show additional information]
+		public var testBattle:Boolean			= false;		// [Stamina will be consumed outside of combat]
+		public var testEff:Boolean				= false;		// [Effects will be 10 times shorter]
+		public var testDam:Boolean				= false;		// [Cancels damage spread]
 		
 		// Game settings
-		public var hardInv:Boolean = false;		// [Limited inventory]
-		public var alicorn:Boolean = false;		//
-		public var maxParts:int=100;			// [Maximum particles]
+		public var hardInv:Boolean				= false;		// [Limited inventory]
+		public var alicorn:Boolean				= false;		//
+		public var maxParts:int					= 100;			// [Maximum particles]
 		
-		public var zoom100:Boolean=false;		// [Scale 100%]
-		public var dialOn:Boolean=true;			// [Show dialogues with NPCs]
-		public var showHit:int=2;				// Show damage number pop-ups
-		public var matFilter:Boolean=true;		// [Mat filter]
-		public var helpMess:Boolean=true;		// [Educational messages]
+		public var zoom100:Boolean				= false;		// [Scale 100%]
+		public var dialOn:Boolean				= true;			// [Show dialogues with NPCs]
+		public var showHit:int					= 2;			// Show damage number pop-ups
+		public var matFilter:Boolean			= true;			// [Mat filter]
+		public var helpMess:Boolean				= true;			// [Educational messages]
 		
-		public var shineObjs:Boolean=false;		// [Glow of objects]
-		public var sysCur:Boolean=false;		// [System cursor]
-		public var hintKeys:Boolean=true;		// Pop-up hints for interactables, eg. (Press "e" to open)
-		public var hintTele:Boolean=true;		// Pop-up hints for things you can levitate, eg. (Press "q" to levitate)
-		public var showFavs:Boolean=true;		// [Show additional information when the cursor is at the top of the screen]
-		public var errorShow:Boolean=true;		//
-		public var errorShowOpt:Boolean=true;	//
-		public var quakeCam:Boolean=true;		// [Camera shaking]
+		public var shineObjs:Boolean			= false;		// [Glow of objects]
+		public var sysCur:Boolean				= false;		// [System cursor]
+		public var hintKeys:Boolean				= true;			// Pop-up hints for interactables, eg. (Press "e" to open)
+		public var hintTele:Boolean				= true;			// Pop-up hints for things you can levitate, eg. (Press "q" to levitate)
+		public var showFavs:Boolean				= true;			// [Show additional information when the cursor is at the top of the screen]
+		public var errorShow:Boolean			= true;			//
+		public var errorShowOpt:Boolean			= true;			//
+		public var quakeCam:Boolean				= true;			// [Camera shaking]
 		
-		public var vsWeaponNew:Boolean=true;	// [Automatically pick up a new weapon if there is room]
-		public var vsWeaponRep:Boolean=true;	// [automatically pick up weapons for repairs]
-		public var vsAmmoAll:Boolean=true;		//
-		public var vsAmmoTek:Boolean=true;		//
-		public var vsExplAll:Boolean=true;		//
-		public var vsMedAll:Boolean=true;		//
-		public var vsHimAll:Boolean=true;		//
-		public var vsEqipAll:Boolean=true;		//
-		public var vsStuffAll:Boolean=true;		//
-		public var vsVal:Boolean=true;			//
-		public var vsBook:Boolean=true;			//
-		public var vsFood:Boolean=true;			//
-		public var vsComp:Boolean=true;			//
-		public var vsIngr:Boolean=true;			//
+		public var vsWeaponNew:Boolean			= true;			// [Automatically pick up a new weapon if there is room]
+		public var vsWeaponRep:Boolean			= true;			// [automatically pick up weapons for repairs]
+		public var vsAmmoAll:Boolean			= true;			//
+		public var vsAmmoTek:Boolean			= true;			//
+		public var vsExplAll:Boolean			= true;			//
+		public var vsMedAll:Boolean				= true;			//
+		public var vsHimAll:Boolean				= true;			//
+		public var vsEqipAll:Boolean			= true;			//
+		public var vsStuffAll:Boolean			= true;			//
+		public var vsVal:Boolean				= true;			//
+		public var vsBook:Boolean				= true;			//
+		public var vsFood:Boolean				= true;			//
+		public var vsComp:Boolean				= true;			//
+		public var vsIngr:Boolean				= true;			//
 		
 		// Global Constants
-		public var actionDist:int = 40000;
+		public var actionDist:int				= 40000;
 
-		public static const cellsX:int = 48;	// How many tiles there are in a room (horizontally)
-		public static const cellsY:int = 25;	// How many tiles there are in a room (vertically)
-		public static const fps:int = 30;
-		public static const ddy:int = 1;
-		public static const maxdy:int = 20;
-		public static const maxwaterdy:int = 20;
-		public static const maxdelta:int = 9;
-		public static const detectionDelay:int = 100;	// Default grace period before an enemy spots the player
-		public static const battleNoOut:int = 120;
-		public static const unitXPMult:Number = 2;
-		public static const kolHK:int = 12;			//количество горячих клавиш
-		public static const kolQS:int = 4;			//количество быстрых заклинаний
+		public static const cellsX:int			= 48;			// How many tiles there are in a room (horizontally)
+		public static const cellsY:int			= 25;			// How many tiles there are in a room (vertically)
+		public static const fps:int				= 30;
+		public static const ddy:int				= 1;
+		public static const maxdy:int			= 20;
+		public static const maxwaterdy:int		= 20;
+		public static const maxdelta:int		= 9;
+		public static const detectionDelay:int	= 100;			// Default grace period before an enemy spots the player
+		public static const battleNoOut:int		= 120;
+		public static const unitXPMult:Number	= 2.00;
+		public static const kolHK:int			= 12;			//количество горячих клавиш
+		public static const kolQS:int			= 4;			//количество быстрых заклинаний
 		
-		public static const boxDamage:Number = 0.2;		// [Box impact force multiplier]
+		public static const boxDamage:Number	= 0.20;			// [Box impact force multiplier]
 		
 		//Файлы
 		public var spriteURL:String;
 		public var sprite1URL:String;
 		
 		// [Loading, saves, config]
-		public var configObj:Object;	 	// The user's stored settings
+		public var configObj:Object;							// The user's stored settings
 		private var saveObj:SharedObject;
 		private var saveArr:Array;
-		public var saveKol:int = 10;
-		private var t_save:int = 0;
-		public var loaddata:Object;			// [Data loaded from file]
-		public var nadv:int=0;
-		public var koladv:int;				// How many advice snippets are loaded
-		public var load_log:String='';
+		public var saveKol:int					= 10;
+		private var t_save:int					= 0;
+		public var loaddata:Object;								// [Data loaded from file]
+		public var nadv:int						= 0;
+		public var koladv:int;									// How many advice snippets are loaded
+		public var load_log:String				= "";
 		
 		// [Location maps]
 		public var landPath:String;
-		public var fileVersion:int=2;		// [Change this number to reset the cache]
+		public var fileVersion:int				= 2;			// [Change this number to reset the cache]
 		public var landData:Array;
-		public var kolLands:int = 0;
-		public var kolLandsLoaded:int = 0;
-		public var allLandsLoaded:Boolean = false;
+		public var kolLands:int					= 0;
+		public var kolLandsLoaded:int			= 0;
+		public var allLandsLoaded:Boolean		= false;
 		
-		public var comLoad:int=-1;		//команда на загрузку
-		public var clickReq:int=0;		//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
-		public var ng_wait:int=0;		//начало новой игры, ожидание
-		public var loadScreen:int=-1;	//загрузочный экран
-		public var autoSaveN:int=0;		//номер ячейки автосейва
-		public var log:String='';
+		public var comLoad:int					= -1;			//команда на загрузку
+		public var clickReq:int					=  0;			//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
+		public var ng_wait:int					=  0;			//начало новой игры, ожидание
+		public var loadScreen:int				= -1;			//загрузочный экран
+		public var autoSaveN:int				=  0;			//номер ячейки автосейва
+		public var log:String					= "";
 
 		// Used for the timer to measure in-game processes
 		private var d1:int;
 		private var d2:int;
 		
-		public var landError:Boolean = false;
+		public var landError:Boolean			= false;
 
 		// Constructor
 		public function World(nmain:Sprite, cfgObj:Object, langManager:LanguageManager) {
@@ -218,7 +218,7 @@ package fe {
 			configObj = cfgObj;		// The user's stored settings
 			languageManager = langManager;	// Store the passed reference to the language manager
 
-			//файлы
+			// [Files]
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
 			landPath = 'Rooms/';
@@ -235,27 +235,38 @@ package fe {
 			Form.setForms();
 			Emitter.init();
 
-			//создание элементов графики
-			vwait = new visualWait();	// SWF Dependency
+			// [Creation of graphic elements]
+			vwait = new visualWait();			// SWF Dependency
 			vwait.cacheAsBitmap = true;
 
-			//настройщик внешности
-			app = new Appear();
-			visual = new Sprite();
-			vgui = new visualGUI();		// SWF Dependency
-			vfon = new MovieClip();
-			vpip = new visPipBuck();	// SWF Dependency
-			vstand = new visualStand();	// SWF Dependency
-			vsats = new MovieClip();
-			vscene = new visualScene();	// SWF Dependency
-			vblack = new visBlack();	// SWF Dependency
+			app			= new Appear();
+			visual		= new Sprite();
+			vgui 		= new visualGUI();		// SWF Dependency
+			vfon 		= new MovieClip();
+			vpip 		= new visPipBuck();		// SWF Dependency
+			vstand 		= new visualStand();	// SWF Dependency
+			vsats		= new MovieClip();
+			vscene 		= new visualScene();	// SWF Dependency
+			vconsol		= new visConsol();		// SWF Dependency
+			verror		= new visError();		// SWF Dependency
+			vblack 		= new visBlack();		// SWF Dependency
 			vblack.cacheAsBitmap = true;
-			vconsol = new visConsol();	// SWF Dependency
-			verror = new visError();	// SWF Dependency
 			
 			setLoadScreen();
-			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
+			
+			vgui.visible		= false;
+			vpip.visible		= false;
+			vconsol.visible		= false;
+			vfon.visible		= false;
+			visual.visible		= false;
+			vsats.visible		= false;
+			vwait.visible		= false;
+			vblack.visible		= false;
+			verror.visible		= false;
+			vscene.visible		= false;
+			
 			vscene.stop();
+			
 			main.addChild(vwait);
 			main.addChild(vfon);
 			main.addChild(visual);
@@ -267,12 +278,16 @@ package fe {
 			main.addChild(vstand);
 			main.addChild(verror);
 			main.addChild(vconsol);
+			
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function():void {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
 			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function():void {verror.visible=false;});
 			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function():void {errorShow=false; verror.visible=false;});
-			vstand.visible=false;
+			
+			vstand.visible		= false;
+			
 			grafon = new Grafon(visual);
 			cam = new Camera(this);
+			
 			load_log+='Stage 1 Ok\n';
 
 			// FPS Counter (This seems to also be used for other things like measuring load times.)
@@ -286,8 +301,14 @@ package fe {
 		
 		public function init2():void {
 
-			if (consol) return;
-			if (configObj) lastCom = configObj.data.lastCom;
+			if (consol) {
+				return;
+			}
+
+			if (configObj) {
+				lastCom = configObj.data.lastCom;
+			}
+
 			consol = new Consol(vconsol, lastCom);
 			// [Saves and config]
 			saveArr = [];
@@ -301,7 +322,12 @@ package fe {
 
 			if (configObj.data.dialon!=null) dialOn=configObj.data.dialon;
 			if (configObj.data.zoom100!=null) zoom100=configObj.data.zoom100;
-			if (zoom100) cam.isZoom=0; else cam.isZoom=2;
+			if (zoom100) {
+				cam.isZoom = 0;
+			}
+			else {
+				cam.isZoom = 2;
+			}
 			if (configObj.data.mat!=null) matFilter=configObj.data.mat;
 			if (configObj.data.help!=null) helpMess=configObj.data.help;
 			if (configObj.data.hit!=null) showHit=configObj.data.hit;
@@ -363,7 +389,7 @@ package fe {
 			}
 			xmlList = null; // Manual cleanup
 
-			load_log+='Stage 2 Ok\n';
+			load_log += 'Stage 2 Ok\n';
 		}
 
 		public function roomsLoadOk():void {

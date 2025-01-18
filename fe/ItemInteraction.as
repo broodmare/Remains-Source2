@@ -582,8 +582,8 @@ package fe {
 				w.magazineRounds = magazineRounds;
 			}
 
-			if (w.tip == 4 && respect == 3) {
-				respect=0;
+			if (w.tip == 4 && respect == Weapon.WEP_BLUEPRINT) {
+				respect = Weapon.WEP_INACTIVE;
 			}
 			
 			w.respect = respect;
@@ -607,7 +607,7 @@ package fe {
 				}
 				
 				if (_inventory['s_' + id] && _inventory['s_' + id].kol > 0) {
-					_inventory[id].respect = 3;
+					_inventory[id].respect = Weapon.WEP_BLUEPRINT;
 				}
 				else {
 					_inventory[id] = null;
@@ -638,18 +638,18 @@ package fe {
 				return 2;
 			}
 			
-			if (w.respect == 0 || w.respect == 2) {
-				w.respect = 1;
+			if (w.respect == Weapon.WEP_INACTIVE || w.respect == Weapon.WEP_ACTIVE) {
+				w.respect = Weapon.WEP_LOCKED;
 			}
 			else {
-				w.respect = 2;
+				w.respect = Weapon.WEP_ACTIVE;
 			}
 			
-			if (gg.currentWeapon && gg.currentWeapon.respect == 1) {
+			if (gg.currentWeapon && gg.currentWeapon.respect == Weapon.WEP_LOCKED) {
 				gg.changeWeapon(gg.currentWeapon.id);
 			}
 			
-			if (w.respect == 1 && gg.currentSpell && gg.currentSpell.id == w.id) {
+			if (w.respect == Weapon.WEP_LOCKED && gg.currentSpell && gg.currentSpell.id == w.id) {
 				gg.changeSpell("");
 			}
 			
@@ -831,7 +831,7 @@ package fe {
 				}
 				
 				if (l.shpun == 2) {
-					_inventory[l.id].respect = 0;
+					_inventory[l.id].respect = Weapon.WEP_INACTIVE;
 				}
 				
 				World.w.gui.setWeapon();
@@ -1249,11 +1249,11 @@ package fe {
 					continue;
 				}
 				
-				if (w.tip > 0 && w.tip<4 && (w.respect==0 || w.respect==2)) {
+				if (w.tip > 0 && w.tip<4 && (w.respect == Weapon.WEP_INACTIVE || w.respect == Weapon.WEP_ACTIVE)) {
 					inv.massW += w.mass;
 				}
 				
-				if (w.tip == 5 && (w.respect==0 || w.respect==2) && (!w.spell || _inventory[w.id] && _inventory[w.id].kol > 0)) {
+				if (w.tip == 5 && (w.respect == Weapon.WEP_INACTIVE || w.respect == Weapon.WEP_ACTIVE) && (!w.spell || _inventory[w.id] && _inventory[w.id].kol > 0)) {
 					inv.massM += w.mass;
 				}
 			}

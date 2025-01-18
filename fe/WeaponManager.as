@@ -470,25 +470,33 @@ package fe {
 				// GOD this is so HACKY, but I'm not re-doing the damage yet. 
 				// This is a stupid work-around and I hate it 
 				if (data.tip == "melee") {
-					var wepClub = new WClub(weapon, data);
+					var wepClub:WClub = new WClub(weapon, data);
 					weapon = wepClub;
 				}
 				else if (data.tip == "paint") {	// tip 12 was never used????? 
-					var wepPaint = new WPaint();
+					var wepPaint:WPaint = new WPaint();
 					weapon = wepPaint;
 				}
 				else if (data.tip == "throwable") {
-					var wepThrow = new WThrow(data);
+					var wepThrow:WThrow = new WThrow(data);
 					weapon = wepThrow;
 				}
 				else if (data.tip == "magic") {
-					var wepMagic = new WMagic();
+					var wepMagic:WMagic = new WMagic();
 					weapon = wepMagic;
 				}
 				else if ("punch" in data && data["punch"] == true) {
-					var wepPunch = new WPunch();
+					var wepPunch:WPunch = new WPunch();
 					weapon = wepPunch;
 				}
+			}
+		}
+
+		public function repairWeapon(weapon:Weapon, n:int):void {
+			weapon.hp += n;
+			
+			if (weapon.hp > weapon.maxhp) {
+				weapon.hp = weapon.maxhp;
 			}
 		}
 

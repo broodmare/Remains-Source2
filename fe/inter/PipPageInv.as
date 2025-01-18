@@ -7,6 +7,7 @@ package fe.inter {
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
+	import fe.unit.InventoryItem;
 
 	import fe.stubs.visPipInvItem;
 	
@@ -21,11 +22,7 @@ package fe.inter {
 	*/
 	public class PipPageInv extends PipPage {
 
-		public static const PAGE_WEAPON:int			= 1;
-		public static const PAGE_ARMOR:int			= 2;
-		public static const PAGE_EQUIPMENT:int		= 3;
-		public static const PAGE_OTHER:int			= 4;
-		public static const PAGE_AMMO:int			= 5;
+		private static const PAGE_WEAPON:int = 1, PAGE_ARMOR:int = 2, PAGE_EQUIPMENT:int = 3, PAGE_OTHER:int = 4, PAGE_AMMO:int = 5;
 		
 		private var assId:String = null;
 		private var assArr:Array;
@@ -38,11 +35,11 @@ package fe.inter {
 		
 		// Constructor
 		public function PipPageInv(npip:PipBuck, npp:String) {
-			super(npip, npp);
-
 			isLC = true;
 			isRC = true;
 			itemClass = visPipInvItem;
+			
+			super(npip, npp);
 			
 			vis.butOk.addEventListener(MouseEvent.CLICK,showH);
 			// FILTERS - each array is a subcategory in the inventory, each index in the array is the filter.
@@ -60,6 +57,8 @@ package fe.inter {
 		
 		// [Preparing pages]
 		override protected function setSubPages():void {
+			var localize:Function = LanguageManager.reference.localText;
+
 			vis.butOk.visible = false;
 			statHead.cat.visible = false;
 			statHead.rid.visible = false;
@@ -83,16 +82,16 @@ package fe.inter {
 			if (page2 == PAGE_WEAPON) {
 				assArr = [];
 				
-				statHead.fav.text = LanguageManager.reference.localText("pip", "ii1");
-				statHead.nazv.text = LanguageManager.reference.localText("pip", "ii2");
-				statHead.hp.text = LanguageManager.reference.localText("pip", "ii3");
+				statHead.fav.text = localize("pip", "ii1");
+				statHead.nazv.text = localize("pip", "ii2");
+				statHead.hp.text = localize("pip", "ii3");
 				statHead.ammo.text = "";
 				statHead.mass.text = "";
-				statHead.ammotip.text = LanguageManager.reference.localText("pip", "ii4");
+				statHead.ammotip.text = localize("pip", "ii4");
 				
 				for each(var weapon:Weapon in inv.equipment.weapons) {
 					
-					if (weapon.respect == 3) {
+					if (weapon.respect == Weapon.WEP_BLUEPRINT) {
 						continue;
 					}
 					
@@ -107,7 +106,7 @@ package fe.inter {
 					weapon.setPers(gg, gg.pers);
 					
 					// [Hidden]
-					if (weapon.respect == 1) {	
+					if (weapon.respect == Weapon.WEP_LOCKED) {	
 						if (!World.w.hardInv || World.w.loc.base || World.w.loc.train) {
 							vis.butOk.visible = true;
 						}
@@ -146,7 +145,7 @@ package fe.inter {
 						n.sort1 = 2;
 					}
 					
-					if (n.respect==1) {
+					if (n.respect == Weapon.WEP_LOCKED) {
 						n.sort1 = 3;
 					}
 					
@@ -187,7 +186,7 @@ package fe.inter {
 				}
 				
 				pip.reqKey = true;
-				vis.butOk.text.text = LanguageManager.reference.localText("pip", "showhidden");
+				vis.butOk.text.text = localize("pip", "showhidden");
 				actCurrent = "showhidden";
 				
 				if (arr.length) {
@@ -198,14 +197,14 @@ package fe.inter {
 			}
 			// Armor page
 			else if (page2 == PAGE_ARMOR) {
-				statHead.fav.text		= LanguageManager.reference.localText("pip", "ii1");
-				statHead.nazv.text		= LanguageManager.reference.localText("pip", "ii2");
-				statHead.hp.text		= LanguageManager.reference.localText("pip", "ii3");
+				statHead.fav.text		= localize("pip", "ii1");
+				statHead.nazv.text		= localize("pip", "ii2");
+				statHead.hp.text		= localize("pip", "ii3");
 				statHead.ammo.text		= "";
 				statHead.mass.text		= "";
 				statHead.ammotip.text	= "";
 				
-				for (var arm:Armor in inv.equipment.armors) {
+				for each (var arm:Armor in inv.equipment.armors) {
 					
 					if (arm.lvl < 0) {
 						continue;
@@ -230,82 +229,89 @@ package fe.inter {
 			}
 			else if (page2 == PAGE_EQUIPMENT || page2 == PAGE_OTHER || page2 == PAGE_AMMO) {	// [equipment]
 				assArr = [];
-				statHead.fav.text		= LanguageManager.reference.localText("pip", "ii1");
-				statHead.nazv.text		= LanguageManager.reference.localText("pip", "ii2");
-				statHead.hp.text		= LanguageManager.reference.localText("pip", "ii5");
-				statHead.ammotip.text	= LanguageManager.reference.localText("pip", "ii6");
+				statHead.fav.text		= localize("pip", "ii1");
+				statHead.nazv.text		= localize("pip", "ii2");
+				statHead.hp.text		= localize("pip", "ii5");
+				statHead.ammotip.text	= localize("pip", "ii6");
 				statHead.ammo.text		= "";
 				
 				if (World.w.hardInv) {
-					statHead.mass.text	= LanguageManager.reference.localText("pip", "ii8");
+					statHead.mass.text	= localize("pip", "ii8");
 				}
 
+				var data:Object; 
+				var itemManager:ItemManager;
 				for each (var item:InventoryItem in inv.getAllItems()) {
 					if (item.hidden) {
 						continue;
 					}
 					
-					var node = inv.items[s].xml;
-					
-					if (node==null) {
-						continue;
+					data = itemManager.getItem(item.id);
+
+					if (data.nov == 1 && (data.dat) > 1000 * 60 * 15) {
+						//data.nov = 0; Can't set this anymore right now FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 					}
 					
-					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) {
-						inv.items[s].nov=0;
+					if (data.nov == 2 && (data.dat) > 1000 * 60 * 5) {
+						//data.nov = 0; ; Can't set this anymore right now FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 					}
 					
-					if (inv.items[s].nov==2 && (dat-inv.items[s].dat)>1000*60*5) {
-						inv.items[s].nov=0;
-					}
-					
-					if (!checkCat(node.@tip)) {
+					if (!checkCat(data.tip)) {
 						continue;
 					}
 					
 					var itemTip:int = 0;
-					if (node.@tip == "a" || node.@tip == "e") {
+					if (data.tip == "a" || data.tip == "e") {
 						itemTip = 2;
 					}
-					else if (node.@us > 0) {
+					else if (data.us > 0) {
 						itemTip = 1;
 					}
 					
-					if ((itemTip==1 && page2 == PAGE_EQUIPMENT) || (itemTip==0 && page2 == PAGE_OTHER) || (itemTip==2 && page2 == PAGE_AMMO)) {
+					if ((itemTip == 1 && page2 == PAGE_EQUIPMENT) || (itemTip == 0 && page2 == PAGE_OTHER) || (itemTip == 2 && page2 == PAGE_AMMO)) {
 						var tcat:String;
 						
-						if (Res.istxt("p",node.@tip)) {
-							tcat = LanguageManager.reference.localText("pip", node.@tip);
+						if (Res.istxt("p", data.tip)) {
+							tcat = localize("pip", data.tip);
 						}
 						else {
-							tcat = LanguageManager.reference.localText("pip", "stuff");
+							tcat = localize("pip", "stuff");
 						}
 						
-						n = {tip:node.@tip, id:s, nazv:((node.@tip == "e") ? LanguageManager.reference.localText("weapon", s) : inv.items[s].nazv), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
+						n = {
+							tip:		data.tip,
+							id:			item.id,
+							nazv:		((data.tip == "e") ? localize("weapon", item.id) : ItemManager.reference.getItem(item.id).nazv),
+							kol:		inv.getQuantity(item.id),
+							drop:		0,
+							mass:		0, //inv.items[s].mass, FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+							cat:		tcat,
+							trol:		data.tip
+						};
 						
-						if (node.@tip == "valuables") {
-							n.price = node.@price;
+						if (data.tip == "valuables") {
+							n.price = data.price;
 						}
 						
-						if (node.@tip == "food" && node.@ftip == "1") {
+						if (data.tip == "food" && data.ftip == "1") {
 							n.trol = "drink";
 						}
 						
 						// [Hidden spell]
-						if (node.@tip == "spell" && inv.weapons[s] && inv.weapons[s].respect==1) {
+						if (data.tip == "spell" && inv.equipment.hasEquipment(item.id) && inv.equipment.getWeapon(item.id).respect == Weapon.WEP_LOCKED) {
 							continue;
 						}
 						
 						n.sort = n.cat;
-						n.sort2 = node.@sort.length() ? node.@sort : 0;
+						n.sort2 = "sort" in data ? data.sort : 0;
 						
 						// [Cartridges for current weapon forward]
-						if (page2 == PAGE_AMMO && gg.currentWeapon && gg.currentWeapon.tip < 4 && (gg.currentWeapon.ammoBase == node.@base || gg.currentWeapon.ammoBase == node.@id)) {
+						if (page2 == PAGE_AMMO && gg.currentWeapon && gg.currentWeapon.tip != "explosives" && gg.currentWeapon.tip != "magic" && (gg.currentWeapon.ammoBase.id == data.base || gg.currentWeapon.ammoBase.id == data.id)) {
 							n.sort = "0" + n.sort;
 						}
 						
 						arr.push(n);
-						assArr[n.id]=n;
+						assArr[n.id] = n;
 					}
 				}
 				
@@ -317,13 +323,13 @@ package fe.inter {
 					arr.sortOn(["sort", "sort2", "nazv"], [0, Array.NUMERIC, 0]);
 				}
 				
-				pip.massText=Res.txt("p","massInv0",0,true)+"<br><br>"+Res.txt("p","massInv3",0,true);
+				pip.massText = Res.txt("p", "massInv0", 0, true) + "<br><br>" + Res.txt("p", "massInv3", 0, true);
 			}
 			
-			pip.helpText=Res.txt("p","helpInv" + page2, 0, true);
+			pip.helpText = Res.txt("p","helpInv" + page2, 0, true);
 			
 			if (arr.length == 0) {
-				vis.emptytext.text = LanguageManager.reference.localText("pip", "emptyinv");
+				vis.emptytext.text = localize("pip", "emptyinv");
 				statHead.visible = false;
 			}
 			else {
@@ -336,30 +342,32 @@ package fe.inter {
 		
 		private function showBottext():void {
 			vis.bottext.htmlText = LanguageManager.reference.localText("pip", "caps") + ": " + numberAsColor("yellow", World.w.invent.getQuantity("money"));
-			
+			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			if (World.w.hardInv) {
 				if (page2 == PAGE_WEAPON) {
-					vis.bottext.htmlText="    "+inv.retMass(4)+"    "+inv.retMass(5);
+					vis.bottext.htmlText  = "    " + inv.retMass(4) + "    " + inv.retMass(5);
 				}
 				else if (page2 == PAGE_EQUIPMENT) {
-					vis.bottext.htmlText+="    "+inv.retMass(1);
+					vis.bottext.htmlText += "    " + inv.retMass(1);
 				}
 				else if (page2 == PAGE_OTHER) {
-					vis.bottext.htmlText+="    "+inv.retMass(3);
+					vis.bottext.htmlText += "    " + inv.retMass(3);
 				}
 				else if (page2 == PAGE_AMMO) {
-					vis.bottext.htmlText+="    "+inv.retMass(2);
+					vis.bottext.htmlText += "    " + inv.retMass(2);
 				}
-			}
+			} */
 		}
 		
 		//показ одного элемента
 		override protected function setStatItem(item:MovieClip, obj:Object):void {
-			item.id.text=obj.id;
-			item.id.visible=item.rid.visible=item.cat.visible=false;
-			item.alpha=1;
-			item.nazv.alpha=1;
-			item.mass.text="";
+			item.id.text		= obj.id;
+			item.id.visible		= false;
+			item.rid.visible	= false;
+			item.cat.visible	= false;
+			item.alpha			= 1;
+			item.nazv.alpha		= 1;
+			item.mass.text		= "";
 			
 			/*
 			if (inv.favIds[obj.id]) {
@@ -383,15 +391,15 @@ package fe.inter {
 			}
 			
 			if (page2 == PAGE_WEAPON) {
-				item.ramka.visible=(World.w.gg.newWeapon && World.w.gg.newWeapon.id==obj.id) || (World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
+				item.ramka.visible = (World.w.gg.newWeapon && World.w.gg.newWeapon.id == obj.id) || (World.w.gg.currentSpell && World.w.gg.currentSpell.id == obj.id);
 				
 				if (item.ramka.visible) {
-					selItem=item;
+					selItem = item;
 				}
 				
 				item.nazv.htmlText = obj.nazv;
 				
-				if (obj.respect == 0 && item.fav.text == "") {
+				if (obj.respect == Weapon.WEP_INACTIVE && item.fav.text == "") {
 					item.fav.text = "☩";
 				}
 				
@@ -405,14 +413,14 @@ package fe.inter {
                     item.ammotip.text = obj.ammotip;
                 }
 				
-				if (obj.respect == 1) {
+				if (obj.respect == Weapon.WEP_LOCKED) {
 					item.alpha = 0.40;
 				}
 				
 				if (obj.avail == false) {
-					item.nazv.alpha = 0.6;
+					item.nazv.alpha = 0.60;
 				}
-				a
+
 				item.rid.text = obj.id;
 			}
 			else if (page2 == PAGE_ARMOR) {
@@ -438,7 +446,7 @@ package fe.inter {
 					item.hp.text = "";
 				}
 				else {
-					item.hp.text=obj.hp;
+					item.hp.text = obj.hp;
 				}
 				
 				item.ammo.text = "";
@@ -460,15 +468,17 @@ package fe.inter {
 					item.ammo.text = "";
 				}
 				
+				/*
 				if (item.fav.text == "") {
-					if (inv.items[obj.id].nov == 1) {
+					if (inv.getItem(obj.id).nov == 1) {
 						item.fav.text = "☩";
 					}
 				
-					if (inv.items[obj.id].nov == 2) {
+					if (inv.getItem(obj.id).nov == 2) {
 						item.fav.text = "+";
 					}
-				}
+				} */ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+
 				
 				if (obj.drop > 0) {
 					item.ammotip.text = LanguageManager.reference.localText("pip", "drop") + ": " + obj.drop;
@@ -573,8 +583,8 @@ package fe.inter {
 				over_t=2;
 			}
 			else if (page2 == PAGE_AMMO) {
-				if (gg.invent.weapons[ci]) {
-					gg.invent.weapons[ci].respect = 2;
+				if (gg.invent.equipment.hasEquipment(ci)) {
+					gg.invent.equipment.getWeapon(ci).respect = Weapon.WEP_ACTIVE;
 					World.w.gg.changeWeapon(ci);
 				} 
 				else if (gg.currentWeapon && gg.currentWeapon.tip <= "heavyGun" && gg.currentWeapon.magazineCapacity > 0) {
@@ -639,31 +649,31 @@ package fe.inter {
 		}
 		
 		private function showH(event:MouseEvent):void {
-			//показать скрытое оружие
+			// [show hidden weapon]
 			if (actCurrent == "showhidden") {
 				pip.showHidden=!pip.showHidden;
 				setStatus();
 				pip.snd(2);
 			}
-			//Возврат на базу
+			// [Return to base]
 			else if (actCurrent == "retr") {
-				if (inv.items["retr"].kol>0 && World.w.game.triggers["noreturn"]!=1) {
-					inv.minusItem("retr");
+				if (inv.hasItem("retr") && World.w.game.triggers["noreturn"] != 1) {
+					inv.decreaseQuantity("retr");
 					World.w.game.gotoLand(World.w.game.baseId);
 				}
 				
-				vis.butOk.visible=false;
+				vis.butOk.visible = false;
 				pip.onoff(-1);
 			}
 			//выбросить вещи
 			else if (actCurrent == "drop") {		
 				for each (var obj in arr) {
-					if (obj.drop>0) {
-						inv.drop(obj.id, obj.drop);
+					if (obj.drop > 0) {
+						//inv.drop(obj.id, obj.drop);	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 					}
 				}
 				
-				vis.butOk.visible=false;
+				vis.butOk.visible = false;
 				pip.onoff(-1);
 			}
 		}
@@ -683,7 +693,7 @@ package fe.inter {
 			if (over_t == 1 && overItem) {
 				try {
 					if (overItem.fav.text == "☩" || overItem.fav.text == "+") overItem.fav.text = "";
-					inv.items[overId].nov = 0;
+					//inv.getItem(overId).nov = 0;	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 				catch (err) {
 					trace("ERROR: (00:3C)");

@@ -365,7 +365,7 @@ package fe.inter {
 					if (weap.spell && inv.equipment.hasEquipment(weap.id)) {
 						showWeapon(weapons[weap.id], 0, 0);
 					}
-					else if (inv.equipment.hasEquipment(weap.id) || inv.equipment.getWeapon(weap.id).respect == 3) {
+					else if (inv.equipment.hasEquipment(weap.id) || inv.equipment.getWeapon(weap.id).respect == Weapon.WEP_BLUEPRINT) {
 						showWeapon(weapons[weap.id], 0, 0)
 					}
 					else {
@@ -436,7 +436,7 @@ package fe.inter {
 			}
 			
 			if (item.nazv.visible || item.nazv2.visible) {
-				if (respect == 1) {
+				if (respect == Weapon.WEP_LOCKED) {
 					item.weapon.alpha = 0.5;
 					item.weapon.filters = [itemFilter]
 					item.weapon2.filters = [itemFilter];
@@ -469,7 +469,7 @@ package fe.inter {
 		public function itemClick(event:MouseEvent):void {
 			var id:String = event.currentTarget.id.text;
 			
-			if (!inv.equipment.hasEquipment(id) || inv.equipment.getWeapon(id).respect == 3) {
+			if (!inv.equipment.hasEquipment(id) || inv.equipment.getWeapon(id).respect == Weapon.WEP_BLUEPRINT) {
 				return;
 			}
 			
@@ -560,6 +560,7 @@ package fe.inter {
 				World.w.cur();
 				setButtons();
 				showWeaponList(page);
+				
 				for each (var item:MovieClip in weapons) {
 					if (!item.hasEventListener(MouseEvent.CLICK)) {
 						item.addEventListener(MouseEvent.CLICK,itemClick);
@@ -567,10 +568,12 @@ package fe.inter {
 						item.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 					}
 				}
+				
 				for each (var item1:MovieClip in armors) {
 					item1.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item1.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
+				
 				for each (var item2:MovieClip in arts) {
 					item2.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item2.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
@@ -584,10 +587,12 @@ package fe.inter {
 						item3.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 					}
 				}
+			
 				for each (var item4:MovieClip in armors) {
 					item4.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item4.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
+				
 				for each (var item5:MovieClip in arts) {
 					item5.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item5.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
@@ -606,6 +611,7 @@ package fe.inter {
 			else {
 				vis.x = 0;
 				vis.y = 0;
+			
 				if (nx / 1200 < ny / 800) {
 					vis.scaleX = vis.scaleY = nx / 1200;
 				}

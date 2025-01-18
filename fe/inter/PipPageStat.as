@@ -478,7 +478,7 @@ package fe.inter {
 				switch (simplifiedID)
 				{
 					case 'hp':
-						vis.bottext.htmlText = Res.txt('pip', 'healpotions') + ': ' + textAsColor('yellow', inv.items['pot1'].kol + inv.items['pot2'].kol + inv.items['pot3'].kol);
+						vis.bottext.htmlText = Res.txt('pip', 'healpotions') + ': ' + textAsColor('yellow', String(inv.getQuantity('pot1') + inv.getQuantity('pot2') + inv.getQuantity('pot3')));
 					break;
 					case 'rad':
 						ci = 'antiradin';
@@ -493,7 +493,7 @@ package fe.inter {
 						ci = 'bloodpak';
 					break;
 					case 'statMana':
-						vis.bottext.htmlText = Res.txt('i','potm1') + ': ' + textAsColor('yellow', inv.items['potm1'].kol + inv.items['potm2'].kol + inv.items['potm3'].kol);
+						vis.bottext.htmlText = Res.txt('i','potm1') + ': ' + textAsColor('yellow', String(inv.getQuantity('potm1') + inv.getQuantity('potm2') + inv.getQuantity('potm3')));
 					break;
 					case 'phoenix':
 						ci = 'radcookie';
@@ -502,20 +502,34 @@ package fe.inter {
 						ci = 'detoxin';
 					break;
 					case 'statHead':
+						/*							FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						ci = gg.invent.getMed(1);
-						if (ci == '') vis.bottext.text = '';
+						if (ci == "") {
+							vis.bottext.text = "";
+						}
+						*/
 					break;
-					case 'statTors':
+					case "statTors":
+						/*							FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						ci = gg.invent.getMed(2);
-						if (ci == '') vis.bottext.text = '';
+						if (ci == "") {
+							vis.bottext.text = "";
+						}
+						*/
 					break;
-					case 'statLegs':
+					case "statLegs":
+						/*							FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						ci = gg.invent.getMed(3);
-						if (ci == '') vis.bottext.text = '';
+						if (ci == "") {
+							vis.bottext.text = "";
+						}
+						*/
 					break;
 				}
 
-				if (ci != '') vis.bottext.htmlText = Res.txt('i', ci) + ': ' + textAsColor('yellow', inv.items[ci].kol);
+				if (ci != "") {
+					vis.bottext.htmlText = Res.txt("i", ci) + ": " + textAsColor("yellow", String(inv.getQuantity(ci)));
+				}
 			}
 		}
 		
@@ -548,40 +562,52 @@ package fe.inter {
 
 				switch (simplifiedID) {
 					case 'hp':
-						inv.usePotion();
+						//inv.usePotion();
 					break;
 					case 'rad':
-						inv.usePotion('antiradin');
+						//inv.usePotion('antiradin');
 					break;
 					case 'cut':
-						inv.usePotion('pot0');
+						//inv.usePotion('pot0');
 					break;
 					case 'poison':
-						inv.usePotion('antidote');
+						//inv.usePotion('antidote');
 					break;
 					case 'statBlood':
-						inv.usePotion('bloodpak');
+						//inv.usePotion('bloodpak');
 					break;
 					case 'statMana':
-						inv.usePotion('mana');
+						//inv.usePotion('mana');
 					break;
 					case 'phoenix':
-						inv.usePotion('radcookie');
+						//inv.usePotion('radcookie');
 					break;
 					case 'post_':
-						inv.usePotion('detoxin');
+						//inv.usePotion('detoxin');
 					break;
 					case 'statHead':
+						/*									FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						need = gg.invent.getMed(1);
-						if (need != '') inv.usePotion(need, 1);
+						if (need != '') {
+							inv.usePotion(need, 1);
+						}
+						*/
 					break;
 					case 'statTors':
+						/*									FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME
 						need = gg.invent.getMed(2);
-						if (need != '') inv.usePotion(need, 2);
+						if (need != '') {
+							inv.usePotion(need, 2);
+						}
+						*/
 					break;
 					case 'statLegs':
+						/*									FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						need = gg.invent.getMed(3);
-						if (need != '') inv.usePotion(need, 3);
+						if (need != '') {
+							inv.usePotion(need, 3);
+						}
+						*/
 					break;
 				}
 				setStatus();

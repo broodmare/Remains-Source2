@@ -3,6 +3,7 @@ package fe.loc {
 	import fe.*;
 	import fe.serv.Item;
 	import fe.serv.Script;
+	import fe.weapon.Weapon;
 
 	public class Quest {
 		
@@ -256,8 +257,8 @@ package fe.loc {
 					}
 				}
 				
-				if (collect && colTip==1) {
-					if (World.w.invent.equipment.hasEquipment(collect) && World.w.invent.equipment.getWeapon(collect).respect != 3) {
+				if (collect && colTip == 1) {
+					if (World.w.invent.equipment.hasEquipment(collect) && World.w.invent.equipment.getWeapon(collect).respect != Weapon.WEP_BLUEPRINT) {
 						state = 2;
 						
 						if (par.result) {
@@ -466,6 +467,7 @@ package fe.loc {
 					if (q.isDel) {
 						if (q.colTip == 0) {
 							World.w.invent.decreaseQuantity(q.collect, q.kol);
+							
 							try {
 								World.w.gui.infoText('withdraw', ItemManager.reference.getItem(q.collect).nazv, q.kol);
 							}

@@ -22,13 +22,11 @@ package fe.inter {
 	import fe.loc.LandAct;
 	import fe.unit.UnitPet;
 	import fe.unit.Effect;
-
-	import fe.stubs.visPipInv;
 	
 	public class PipPage {
 		
 		public var  pip:PipBuck;
-		protected var inv:Inventory = World.w.gg.invent;
+		protected var inv:Inventory = World.w.invent;
 		protected var gg:UnitPlayer = World.w.gg;
 		
 		public var vis:MovieClip;
@@ -40,8 +38,8 @@ package fe.inter {
 		public var maxrows:int = 18;
 		public var selItem:MovieClip;
 		
-		public var isLC:Boolean=false;
-		public var isRC:Boolean=false; //реакция на клик
+		public var isLC:Boolean = false;
+		public var isRC:Boolean = false; //реакция на клик
 		
 		public var signs:Array=[0, 0, 0, 0, 0, 0];
 		public var page2:int=1;
@@ -480,15 +478,24 @@ package fe.inter {
 
 			if (tip == 'perk') {
 				lvl = pers.perks[id];
-				if (lvl < 0) lvl = 0;
+				
+				if (lvl < 0) {
+					lvl = 0;
+				}
 			}
 			else if (tip == 'skill') {
 				lvl = pers.getSkLevel(pers.skills[id]);
 			}
 			else if (dp.@him == '2') {
 				var ad:int = pers.addictions[id];
-				if (ad >= pers.ad2) lvl = 2;
-				if (ad >= pers.ad3) lvl = 3;
+				
+				if (ad >= pers.ad2) {
+					lvl = 2;
+				}
+				
+				if (ad >= pers.ad3) {
+					lvl = 3;
+				}
 			}
 			else if (dp.@him == '1') {
 				lvl = pers.himLevel;
@@ -1476,7 +1483,7 @@ package fe.inter {
 			}
 		}
 		
-		//проверить соответствии категории
+		// [check category compliance]
 		protected function checkCat(tip:String):Boolean {
 			if (curTip == "" || curTip == null || curTip == tip) {
 				return true;

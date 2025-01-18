@@ -338,7 +338,7 @@ package fe.inter {
 							arrfav[n.fav] = n;
 						}
 						
-						if (w.respect == 1 || w.respect == 3 || w.spell) {
+						if (w.respect == Weapon.WEP_LOCKED || w.respect == Weapon.WEP_BLUEPRINT || w.spell) {
 							continue;
 						}
 						

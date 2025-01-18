@@ -380,7 +380,7 @@ package fe.inter {
 			plataQty = World.w.invent.getQuantity(plata.id);
 
 			if (plata.id == 'money' && plataQty < originalQty && pip.vendor) {
-				pip.vendor.money += (originalQty - plataQty);
+				pip.vendor.increaseMoney(originalQty - plataQty);
 			}
 
 			pip.snd(1);

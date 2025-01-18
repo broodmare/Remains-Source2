@@ -29,6 +29,8 @@ package fe.inter {
 	*/
 	public class PipPageInfo extends PipPage {
 		
+		private static const PAGE_LOCAL_MAP:int = 1, PAGE_QUEST:int = 2, PAGE_WORLD_MAP:int = 3, PAGE_NOTES:int = 4, PAGE_ENEMIES:int = 5;
+
 		private var visMap:MovieClip;
 		private var visWMap:MovieClip;
 		public var map:Bitmap;
@@ -112,29 +114,35 @@ package fe.inter {
 			targetLand='';
 			setTopText();
 			game=World.w.game;
-			if (page2==1) {		//карта
+			
+			if (page2 == PAGE_LOCAL_MAP) {		//карта
 				if (World.w.loc.noMap) {
 					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptymap');
 				}
 				else {
-					vis.emptytext.text='';
-					map.bitmapData=World.w.land.drawMap();
+					vis.emptytext.text = "";
+					map.bitmapData = World.w.land.drawMap();
 					setMapSize();
-					visMap.visible=true;
+					visMap.visible = true;
 				}
 			}
-			else if (page2==2) {	//задания
+			else if (page2 == PAGE_QUEST) {	//задания
 				for each(var q:Quest in game.quests) {
 					if (q.state>0) {
 						var n:Object={id:q.id, nazv:q.nazv, main:q.main, sort:(q.main?0:1), state:q.state};
 						arr.push(n);
 					}
 				}
-				if (arr.length) arr.sortOn(['state','sort','nazv']);
+				
+				if (arr.length) {
+					arr.sortOn(['state','sort','nazv']);
+				}
+				
 				if (World.w.loc && World.w.loc.base) {
 					for each (var task in cachedTaskList) {
 						if (checkQuest(task)) {
 							var q:Quest = game.quests[task.@id];
+							
 							if (q == null || q.state == 0) {
 								vis.butOk.visible = true;
 								vis.butOk.text.text = LanguageManager.reference.localText("pip", 'alltask');
@@ -144,7 +152,7 @@ package fe.inter {
 					}
 				}
 			}
-			else if (page2==3) {	// [General map]
+			else if (page2 == PAGE_WORLD_MAP) {	// [General map]
 				
 				vis.nazv.x = 584
 				vis.info.x = 584;
@@ -206,55 +214,86 @@ package fe.inter {
 				pip.vis.butHelp.visible = true;
 				pip.helpText = Res.txt('p', 'helpWorld', 0, true);
 			}
-			else if (page2==4) {	// [Notes]
-				var doparr:Array=[];
+			else if (page2 == PAGE_NOTES) {	// [Notes]
+				var doparr:Array = [];
 				for each (var note:String in game.notes) {
 					//TODO: Stop searching Res on your own.
-					var xml=Res.currentLanguageData.txt.(@id==note);
+					var xml = Res.currentLanguageData.txt.(@id == note);
 					
-					var nico:int=0;
-					if (xml && xml.@imp>0) {
-						nico=int(xml.@imp);
-					} else continue;
+					var nico:int = 0;
+					
+					if (xml && xml.@imp > 0) {
+						nico = int(xml.@imp);
+					}
+					else {
+						continue;
+					}
+
 					var title:String;
-					if (xml.n.t.length()) title=xml.n.t[0];
-					else title=xml.n.r[0];
-					title=title.replace(/&lp/g,World.w.pers.persName);
-					var n:Object={id:note, nazv:title, ico:nico};
-					if (nico==3) doparr.push(n);
-					else arr.push(n);
+					
+					if (xml.n.t.length()) {
+						title = xml.n.t[0];
+					}
+					else {
+						title = xml.n.r[0];
+					}
+					
+					title = title.replace(/&lp/g,World.w.pers.persName);
+					var n:Object = {id:note, nazv:title, ico:nico};
+					
+					if (nico==3) {
+						doparr.push(n);
+					}
+					else {
+						arr.push(n);
+					}
 				}
+				
 				arr.reverse();
-				arr=doparr.concat(arr);
+				arr = doparr.concat(arr);
 			}
-			else if (page2==5) {	// [Enemies]
-				if (Unit.arrIcos==null) Unit.initIcos();
-				var prevObj:Object=null;
-				statHead.visible=true;
-				statHead.nazv.text='';
-				statHead.mq.visible=false;
-				statHead.kol.text=LanguageManager.reference.localText("pip", 'frag');
-				vis.ico.visible=true;
+			else if (page2 == PAGE_ENEMIES) {	// [Enemies]
+				if (Unit.arrIcos == null) {
+					Unit.initIcos();
+				}
+				
+				var prevObj:Object = null;
+				statHead.visible = true;
+				statHead.nazv.text = "";
+				statHead.mq.visible = false;
+				statHead.kol.text = LanguageManager.reference.localText("pip", 'frag');
+				vis.ico.visible = true;
 
 				for each(var xml in cachedUnitList) {
 					if (xml && xml.@cat.length()) {
-						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
-						if (xml.@cat=='3' && World.w.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.w.game.triggers['frag_'+xml.@id]);
-						if (xml.@cat=='2') {
-							prevObj=n;
+						var n:Object = {id:xml.@id, nazv:Res.txt('u', xml.@id), cat:xml.@cat, kol:-1};
+						
+						if (xml.@cat == '3' && World.w.game.triggers['frag_' + xml.@id] >= 0) {
+							n.kol = int(World.w.game.triggers['frag_' + xml.@id]);
 						}
-						else if (xml.@cat=='3') {
-							if (prevObj && n.kol>=0) {
-								if (prevObj.kol<0) prevObj.kol=0;
-								prevObj.kol+=n.kol;
+						
+						if (xml.@cat == '2') {
+							prevObj = n;
+						}
+						else if (xml.@cat == '3') {
+							if (prevObj && n.kol >= 0) {
+								if (prevObj.kol < 0) {
+									prevObj.kol = 0;
+								}
+								
+								prevObj.kol += n.kol;
 							}
-							if (prevObj) n.prev=prevObj.id;
+							
+							if (prevObj) {
+								n.prev = prevObj.id;
+							}
 						}
+						
 						arr.push(n);
 					}
 				}
 
-				arr=arr.filter(isKol);		// [Filter]
+				arr = arr.filter(isKol);		// [Filter]
 			}
 		}
 		
@@ -272,10 +311,11 @@ package fe.inter {
 			item.nazv.alpha=1;
 			item.kol.text='';
 			item.kol.visible=false;
-			if (page2==2) {
+			if (page2 == PAGE_QUEST) {
 				item.nazv.x=32;
 				item.mq.visible=obj.main;
 				item.mq.gotoAndStop(1);
+				
 				if (obj.state==2) {
 					item.nazv.alpha=item.mq.alpha=0.4;
 					item.nazv.text+=' ('+LanguageManager.reference.localText("pip", 'done')+')';
@@ -284,7 +324,7 @@ package fe.inter {
 					item.nazv.alpha=item.mq.alpha=1;
 				}
 			}
-			else if (page2==4) {
+			else if (page2 == PAGE_NOTES) {
 				item.nazv.x=32;
 				item.nazv.htmlText=obj.nazv.substr((obj.nazv.charAt(0)==' ')?3:0, 60);
 				item.kol.text=obj.nazv;
@@ -292,12 +332,26 @@ package fe.inter {
 				item.mq.alpha=1;
 				item.mq.gotoAndStop(obj.ico+1);
 			}
-			else if (page2==5) {
-				item.nazv.x=5;
-				if (obj.cat == '1') item.nazv.htmlText = '<b>' + item.nazv.text + '</b>';
-				if (obj.cat == '2') item.nazv.htmlText = '      <b>'+item.nazv.text + '</b>';
-				if (obj.cat == '3') item.nazv.htmlText = '            ' + item.nazv.text;
-				if (obj.kol > 0) item.kol.text = obj.kol;
+			else if (page2 == PAGE_ENEMIES) {
+				
+				item.nazv.x = 5;
+				
+				if (obj.cat == '1') {
+					item.nazv.htmlText = '<b>' + item.nazv.text + '</b>';
+				}
+				
+				if (obj.cat == '2') {
+					item.nazv.htmlText = '      <b>'+item.nazv.text + '</b>';
+				}
+				
+				if (obj.cat == '3') {
+					item.nazv.htmlText = '            ' + item.nazv.text;
+				}
+				
+				if (obj.kol > 0) {
+					item.kol.text = obj.kol;
+				}
+				
 				item.kol.visible = true;
 			}
 		}
@@ -305,10 +359,10 @@ package fe.inter {
 		//информация об элементе
 		override protected function statInfo(event:MouseEvent):void {
 			vis.info.y=vis.ico.y;
-			if (page2==2) {
+			if (page2 == PAGE_QUEST) {
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
 			}
-			else if (page2 == 3) {
+			else if (page2 == PAGE_WORLD_MAP) {
 				var l:LandAct = game.lands[event.currentTarget.name];
 
 				if (l == null || l.id == lastLandTooltipDisplayed) {
@@ -371,8 +425,7 @@ package fe.inter {
 				
 				vis.info.htmlText=s;
 			}
-			else if (page2==4)
-			{
+			else if (page2 == PAGE_NOTES) {
 				vis.info.y=vis.nazv.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
@@ -380,11 +433,17 @@ package fe.inter {
 				s=s.replace(/]/g,"</span>");
 				vis.info.htmlText=s;
 			}
-			else if (page2==5)
-			{
-				if (vis.ico.numChildren>0) vis.ico.removeChildAt(0);
+			else if (page2 == PAGE_ENEMIES) {
+				if (vis.ico.numChildren>0) {
+					vis.ico.removeChildAt(0);
+				}
+				
 				Unit.initIco(event.currentTarget.id.text)
-				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
+				
+				if (Unit.arrIcos[event.currentTarget.id.text]) {
+					vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
+				}
+				
 				vis.nazv.text=event.currentTarget.nazv.text;
 				vis.info.htmlText=Res.txt('u',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
 				vis.info.y=vis.ico.y+vis.ico.height+20;
@@ -569,8 +628,8 @@ package fe.inter {
 				return;
 			}
 			
-			if (page2==3 && (pip.travel || World.w.testMode)) {
-				if (targetLand!='' && visWMap[targetLand]) {
+			if (page2 == PAGE_WORLD_MAP && (pip.travel || World.w.testMode)) {
+				if (targetLand != "" && visWMap[targetLand]) {
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
 				
@@ -598,13 +657,15 @@ package fe.inter {
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.w.testMode)) {
+			
+			if (page2 == PAGE_WORLD_MAP && (pip.travel || World.w.testMode)) {
 				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
 					game.beginMission(targetLand);
 					pip.onoff(-1);
 				}
 			}
-			if (page2==2) {
+			
+			if (page2 == PAGE_QUEST) {
 				addAllQuestsToGameClass();
 				setStatus();
 			}

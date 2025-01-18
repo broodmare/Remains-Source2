@@ -136,25 +136,6 @@ package fe.serv {
 			return _data;
 		}
 		
-		public function getPrice():void {
-
-			if ("com_price" in _data) {
-				price = _data.com_price * sost * multHP * pmult;
-			}
-			else {
-				price = _data.price * sost * multHP * pmult;
-			}
-		}
-		
-		public function getMultPrice():Number {
-			if ("price" in _data && "sell" in _data) {
-				return _data.sell / _data.price;
-			}
-			else {
-				return 0.10;
-			}
-		}
-		
 		public function checkAuto(m:Boolean = false):Boolean {
 			// Get the player inventory
 			var inv:Inventory = World.w.invent;
@@ -177,7 +158,7 @@ package fe.serv {
 			
 			if (World.w.vsAmmoTek && tip == L_AMMO) {
 				for each (var w:Weapon in inv.equipment.weapons) {
-					if (w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun" && (w.respect == 0 || w.respect == 2) && w.ammo.base != "" && (w.ammoBase == data.id || w.ammoBase == data.base)) {
+					if (w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun" && (w.respect == Weapon.WEP_INACTIVE || w.respect == Weapon.WEP_ACTIVE) && w.ammo.base != "" && (w.ammoBase == data.id || w.ammoBase == data.base)) {
 						return true;
 					}
 				}

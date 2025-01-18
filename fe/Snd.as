@@ -13,49 +13,49 @@ package fe {
 	public class Snd {
 		
 		// Holds either sound objects or arrays of sound objects (For sounds with more than one variation)
-		private static var soundMap:Object = {};
-		private static var musicMap:Object = {};
+		private static var soundMap:Object				= {};
+		private static var musicMap:Object				= {};
 
 		private static var music:Sound;
-		private static var trackName:String = '';	// The currently playing song
+		private static var trackName:String				= "";		// The currently playing song
 
-		public static var globalVol:Number = 0.4;
-		public static var stepVol:Number = 0.5;
-		public static var musicVol:Number = 0.2;
+		public static var globalVol:Number				= 0.40;
+		public static var stepVol:Number				= 0.50;
+		public static var musicVol:Number				= 0.20;
 		
 		// Sound state flags
-		private static var soundMuted:Boolean = false;
-		private static var tempMuted:Boolean = true;
+		private static var soundMuted:Boolean			= false;
+		private static var tempMuted:Boolean			= true;
 		
-		private static var musicCh:SoundChannel;		// ..
-		private static var musicPrevCh:SoundChannel;	// ..
-		public static var actionCh:SoundChannel;		// Seems exclusively used for the player interacting with objects (Accessed by UnitPlayer.as and Interact.as) 
+		private static var musicCh:SoundChannel;					// ..
+		private static var musicPrevCh:SoundChannel;				// ..
+		public static var actionCh:SoundChannel;					// Seems exclusively used for the player interacting with objects (Accessed by UnitPlayer.as and Interact.as) 
 
-		private static var currentMusicPriority:int = 0;
+		private static var currentMusicPriority:int		= 0;
 
-		public static var center:Vector2 = new Vector2(1000, 500); // Center for directional audio purposes, (Accessed and set by the Camera) 
+		public static var center:Vector2				= new Vector2(1000, 500);	// Center for directional audio purposes, (Accessed and set by the Camera) 
 
 		// Timers
-		private static var musicTimer:int = 0;
-		public static var hitTimer:int = 0; // (Accessed by Bullet.as)
-		private static var combatTimer:int = 0;
-		private static var shumTimer:int = 0;
+		private static var musicTimer:int				= 0;
+		public static var hitTimer:int					= 0;		// (Accessed by Bullet.as)
+		private static var combatTimer:int				= 0;
+		private static var shumTimer:int				= 0;
 		
-		private static var shumArr:Array = [];
+		private static var shumArr:Array				= [];
 
 		// Moved here from world class
-		private static var xmlPath:String	= "Modules/core/sounds.xml";	// Manifest of all sounds/songs
-		private static var soundPath:String	= 'Modules/core/sound/';			// Sounds path
-		private static var musicPath:String	= 'Modules/core/sound/music/';		// Songs path
+		private static var xmlPath:String				= "Modules/core/sounds.xml";		// Manifest of all sounds/songs
+		private static var soundPath:String				= "Modules/core/sound/";			// Sounds path
+		private static var musicPath:String				= "Modules/core/sound/music/";		// Songs path
 		
 		// Loading flags and counters
-		private static var startedLoading:Boolean = false;
-		private static var finishedLoading:Boolean = false;
-		private static var totalSoundsToLoad:int = -1;
-		private static var totalSoundsLoaded:int = 0;
-		public static var totalSongsToLoad:int = -1;	// (Accessed by MainMenu)
-		public static var totalSongsLoaded:int = 0;		// (Accessed by MainMenu)
-		private static var startedMainMenuMusic:Boolean = false;
+		private static var startedLoading:Boolean		= false;
+		private static var finishedLoading:Boolean		= false;
+		private static var totalSoundsToLoad:int		= -1;
+		private static var totalSoundsLoaded:int		=  0;
+		public static var totalSongsToLoad:int			= -1;		// (Accessed by MainMenu)
+		public static var totalSongsLoaded:int			=  0;		// (Accessed by MainMenu)
+		private static var startedMainMenuMusic:Boolean	= false;
 		
 		public static function initSnd(configObj:Object):void {
 			trace("Snd.as/initSnd() - Initializing sound");
@@ -82,6 +82,7 @@ package fe {
 			}
 
 			totalSoundsToLoad = 0;
+			
 			// Load all sound resources from XML
 			for each (var i:XML in xmlData.res) {
 				var folderName:String = i.@id;
@@ -95,10 +96,12 @@ package fe {
 
 		private static function loadSoundResource(subDir:String, sndXML:XML):void {
 			var soundID:String = sndXML.@id;
+			
 			// Check if this <s> has nested <s>, indicating multiple variations:
 			if (sndXML.s.length() > 0) {
 				// We have multiple sounds under this ID
 				soundMap[soundID] = [];
+				
 				for each (var variant:XML in sndXML.s) {
 					var variantID:String = variant.@id;
 					var variantReq:URLRequest = new URLRequest(soundPath + subDir + "/" + variantID + ".mp3");
@@ -164,8 +167,8 @@ package fe {
 					finishedLoading = true;
 					trace("All sounds are finished loading: Sounds: (" + totalSoundsToLoad + "/" + totalSoundsLoaded + ") Songs: (" + totalSongsToLoad + "/" + totalSongsLoaded + ")");
 				
-					if (musicMap['mainmenu']) {
-						playMusic('mainmenu');
+					if (musicMap["mainmenu"]) {
+						playMusic("mainmenu");
 					}
 				}
 			}
@@ -192,7 +195,10 @@ package fe {
 			var trans:SoundTransform = new SoundTransform(musicVol, 0);
 			
 			if (musicCh) {
-				if (musicPrevCh || musicTimer > 0) musicPrevCh.stop();
+				if (musicPrevCh || musicTimer > 0) {
+					musicPrevCh.stop();
+				}
+				
 				musicPrevCh = musicCh;
 				musicCh = null;
 				musicTimer = 100;
@@ -226,14 +232,17 @@ package fe {
 		}
 
 		public static function setGameMuted(b:Boolean):void {
-			b? trace("Snd.as/setGameMuted() - Sound unmuted") : trace("Snd.as/setTempMute() - Sound muted");
+			b ? trace("Snd.as/setGameMuted() - Sound muted")
+			  : trace("Snd.as/setTempMute() - Sound unmuted");
 			soundMuted = b;
 		}
 		public static function getGameMuted():Boolean {
 			return soundMuted;
 		}
+
 		public static function setTempMute(b:Boolean):void {
-			b? trace("Snd.as/setTempMute() - Temporary mute disabled") : trace("Snd.as/setTempMute() - Temporarily muting sound");
+			b ? trace("Snd.as/setTempMute() - Temporarily muting sound") 
+      		  : trace("Snd.as/setTempMute() - Temporary mute disabled");
 			tempMuted = b;
 		}
 		public static function getTempMute():Boolean {
@@ -251,6 +260,7 @@ package fe {
 			// and find an entry in the sound map
 			if (soundMap[soundName]) {
 				var s:Sound;
+			
 				// If the entry is an array of sounds...
 				if (soundMap[soundName] is Array) {
 					// Pick one at random to use
@@ -265,11 +275,14 @@ package fe {
 				if (s.bytesTotal > 0 && s.bytesLoaded >= s.bytesTotal) {
 					// Positional audio
 					var pan:Number = (nx - center.X) / WIDTH_X;
+					
 					if (nx == -1000) {
 						pan = 0;
 					}
+					
 					// Create the sound transform
 					var trans:SoundTransform = new SoundTransform(vol * globalVol * Calc.floatBetween(0.9, 1.0), pan);
+					
 					// Play the sound
 					return s.play(msec, 0, trans);
 				}
@@ -277,15 +290,23 @@ package fe {
 					trace("Snd.as/ps() - Error: Tried to play a sonud before it was loaded")
 				}
 			}
+			
 			return null;
 		}
 		
 		public static function pshum(soundName:String, vol:Number=1):void {
-			if (soundMuted || tempMuted) return;
+			if (soundMuted || tempMuted) {
+				return;
+			}
+			
 			var shum:Object;
+			
 			if (shumArr[soundName]) {
 				shum = shumArr[soundName];
-				if (shum.maxVol < vol) shum.maxVol = vol;
+				
+				if (shum.maxVol < vol) {
+					shum.maxVol = vol;
+				}
 			}
 			else if (soundMap[soundName]) {
 				shum = {};
@@ -306,7 +327,7 @@ package fe {
 				hitTimer--;
 			}
 
-			if (musicTimer>0 && musicPrevCh) {
+			if (musicTimer > 0 && musicPrevCh) {
 				var trans:SoundTransform;
 				
 				if (musicTimer % 10 == 1) {
@@ -333,6 +354,7 @@ package fe {
 					currentMusicPriority = 0;
 					playMusic(World.w.currentMusic);
 				}
+				
 				if (World.w.pip == null || !World.w.pip.active && !World.w.sats.active) {
 					combatTimer--;
 				}
@@ -342,6 +364,7 @@ package fe {
 			shumTimer--;
 			if (shumTimer <= 0) {
 				shumTimer = 5;
+				
 				for each (var obj:Object in shumArr) {
 					if (obj.curVol != obj.maxVol) {
 						if (!obj.pl && obj.maxVol > 0) {
@@ -360,7 +383,9 @@ package fe {
 							obj.curVol = obj.maxVol;
 						}
 					}
-					obj.maxVol -= 0.2;
+					
+					obj.maxVol -= 0.20;
+					
 					if (obj.maxVol < 0) {
 						obj.maxVol = 0;
 					}
@@ -373,14 +398,26 @@ package fe {
 			obj.globalVol = globalVol;
 			obj.stepVol = stepVol;
 			obj.musicVol = musicVol;
+		
 			return obj;
 		}
 		
 		public static function load(obj:Object):void {
-			if (obj.data.snd.globalVol != null && !isNaN(obj.data.snd.globalVol)) globalVol = obj.data.snd.globalVol;
-			if (obj.data.snd.stepVol != null && !isNaN(obj.data.snd.stepVol)) stepVol = obj.data.snd.stepVol;
-			if (obj.data.snd.musicVol != null && !isNaN(obj.data.snd.musicVol)) musicVol = obj.data.snd.musicVol;
-			if (musicCh) updateMusicVol();
+			if (obj.data.snd.globalVol != null && !isNaN(obj.data.snd.globalVol)) {
+				globalVol = obj.data.snd.globalVol;
+			}
+			
+			if (obj.data.snd.stepVol != null && !isNaN(obj.data.snd.stepVol)) {
+				stepVol = obj.data.snd.stepVol;
+			}
+			
+			if (obj.data.snd.musicVol != null && !isNaN(obj.data.snd.musicVol)) {
+				musicVol = obj.data.snd.musicVol;
+			}
+		
+			if (musicCh) {
+				updateMusicVol();
+			}
 		}
 	}
 }
