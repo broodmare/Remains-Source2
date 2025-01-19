@@ -15,9 +15,10 @@ package fe {
 		// Holds either sound objects or arrays of sound objects (For sounds with more than one variation)
 		private static var soundMap:Object				= {};
 		private static var musicMap:Object				= {};
+		private static var activeSoundChannels:Vector.<SoundChannel>;	// Holds references to sounds that are current playing so they're not deleted
 
 		private static var music:Sound;
-		private static var trackName:String				= "";		// The currently playing song
+		private static var trackName:String				= "";			// The currently playing song
 
 		public static var globalVol:Number				= 0.40;
 		public static var stepVol:Number				= 0.50;
@@ -27,9 +28,9 @@ package fe {
 		private static var soundMuted:Boolean			= false;
 		private static var tempMuted:Boolean			= true;
 		
-		private static var musicCh:SoundChannel;					// ..
-		private static var musicPrevCh:SoundChannel;				// ..
-		public static var actionCh:SoundChannel;					// Seems exclusively used for the player interacting with objects (Accessed by UnitPlayer.as and Interact.as) 
+		private static var musicCh:SoundChannel;						// ..
+		private static var musicPrevCh:SoundChannel;					// ..
+		public static var actionCh:SoundChannel;						// Seems exclusively used for the player interacting with objects (Accessed by UnitPlayer.as and Interact.as) 
 
 		private static var currentMusicPriority:int		= 0;
 
@@ -37,7 +38,7 @@ package fe {
 
 		// Timers
 		private static var musicTimer:int				= 0;
-		public static var hitTimer:int					= 0;		// (Accessed by Bullet.as)
+		public static var hitTimer:int					= 0;			// (Accessed by Bullet.as)
 		private static var combatTimer:int				= 0;
 		private static var shumTimer:int				= 0;
 		
@@ -59,6 +60,8 @@ package fe {
 		
 		public static function initSnd(configObj:Object):void {
 			trace("Snd.as/initSnd() - Initializing sound");
+
+			activeSoundChannels = new Vector.<SoundChannel>();
 
 			if (configObj.data.snd) {
 				load(configObj);
@@ -282,9 +285,22 @@ package fe {
 					
 					// Create the sound transform
 					var trans:SoundTransform = new SoundTransform(vol * globalVol * Calc.floatBetween(0.9, 1.0), pan);
+
+					// Check Active Channel Count**
+					if (activeSoundChannels.length >= 32) {
+						trace("Snd.as/ps() - Warning: Maximum of 32 active sound channels reached. Current active channels: " + activeSoundChannels.length);
+					}
 					
 					// Play the sound
-					return s.play(msec, 0, trans);
+					var ch:SoundChannel = s.play(msec, 0, trans);
+
+					// If we have a valid channel, keep track of it and listen for when it finishes
+					if (ch) {
+						activeSoundChannels.push(ch);
+						ch.addEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
+					}
+
+					return ch;
 				}
 				else {
 					trace("Snd.as/ps() - Error: Tried to play a sonud before it was loaded")
@@ -292,6 +308,18 @@ package fe {
 			}
 			
 			return null;
+		}
+
+		private static function onSoundChannelComplete(e:Event):void {
+			var ch:SoundChannel = e.currentTarget as SoundChannel;
+			// Remove the listener to prevent leaks
+			ch.removeEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
+
+			// Remove this channel from the Vector so we don't leak references
+			var index:int = activeSoundChannels.indexOf(ch);
+			if (index != -1) {
+				activeSoundChannels.splice(index, 1);
+			}
 		}
 		
 		public static function pshum(soundName:String, vol:Number=1):void {
