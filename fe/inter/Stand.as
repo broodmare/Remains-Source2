@@ -114,7 +114,7 @@ package fe.inter {
 			var tempId:String;
 			var unique:Boolean;
 
-			for each (var weap in WeaponManager.reference.weapons) {
+			for each (var weap:Object in WeaponManager.reference.allWeaponData) {
 
 				// Define tempId by removing "^1" if present
 				tempId = weap.id;
@@ -355,7 +355,7 @@ package fe.inter {
 				vis.toptext.visible = false;
 			}
 
-			for each (var weap:Weapon in WeaponManager.reference.weapons) {
+			for each (var weap:Object in WeaponManager.reference.allWeaponData) {
 
 				if (weap.tip == "internal" || (n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
 					if (weapons[weap.id] == null) {

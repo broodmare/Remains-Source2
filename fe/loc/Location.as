@@ -13,6 +13,7 @@ package fe.loc {
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
 	import fe.unit.UnitPlayer;
 	import fe.unit.UnitPhoenix;
 	import fe.unit.UnitTransmitter;
@@ -2182,21 +2183,47 @@ package fe.loc {
 			getDist();
 			
 			//если нужно, пересчитать пространство
-			if (isRebuild) rebuild();
-			if (isRecalc) recalcWater();
-			if (t_gwall == 1) gwalls();
-			if (t_gwall > 0) t_gwall--;
+			if (isRebuild) {
+				rebuild();
+			}
+		
+			if (isRecalc) {
+				recalcWater();
+			}
+			
+			if (t_gwall == 1) {
+				gwalls();
+			}
+			
+			if (t_gwall > 0) {
+				t_gwall--;
+			}
+
 			//показать/скрыть указатели перехода
-			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) showSign(!sign_vis);
+			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) {
+				showSign(!sign_vis);
+			}
+			
 			//тревога
-			if (t_alarm > 0) t_alarm--;
+			if (t_alarm > 0) {
+				t_alarm--;
+			}
+			
 			if (t_alarmsp > 0) {
 				t_alarmsp--;
-				if (t_alarmsp==0) enemySpawn();
+				if (t_alarmsp==0) {
+					enemySpawn();
+				}
 			}
+			
 			//трясучка
-			if (quake > 0) quake--;
-			if (trus > 0) World.w.quake(trus / 2, trus);
+			if (quake > 0) {
+				quake--;
+			}
+			
+			if (trus > 0) {
+				World.w.quake(trus * 0.50, trus);
+			}
 
 			// Bounding-box debugging (Draws each objects bounding box)
 			grafon.drawDebugLayer();
@@ -2205,52 +2232,71 @@ package fe.loc {
 		// [Kill all enemies and open all containers]
 		public function getAll():int {
 			World.w.summxp = 0;
-			World.w.pers.expa(unXp*9);
+			World.w.pers.expa(unXp * 9);
+			
 			for each (var un:Unit in units) {
-				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
+				if (un.fraction!=Unit.F_PLAYER && un.xp>0) {
+					un.damage(100000, Resistances.DAM_INTERNAL);
+				}
 			}
+			
 			for each (var box:Box in objs) {
-				if (box.inter && box.inter.cont) box.inter.loot();
+				if (box.inter && box.inter.cont) {
+					box.inter.loot();
+				}
 			}
+			
 			return World.w.summxp;
 		}
 		
 		public function openAllPrize():void {
 			for each (var box:Box in objs) {
-				if (box.inter && box.inter.cont && box.inter.prize) box.inter.loot();
+				if (box.inter && box.inter.cont && box.inter.prize) {
+					box.inter.loot();
+				}
 			}
 		}
 		
-		
 		//дистанция между гг и активным объектом
 		private function getDist():void {
-			if (getTile(Math.round(World.w.celX/tileX),Math.round(World.w.celY/tileY)).visi<0.1) celObj=null;
+			if (getTile(Math.round(World.w.celX / tileX), Math.round(World.w.celY / tileY)).visi < 0.10) {
+				celObj = null;
+			}
+			
 			if (celObj) {
-				celDist=(gg.coordinates.X - celObj.coordinates.X) * (gg.coordinates.X - celObj.coordinates.X) + (gg.coordinates.Y - celObj.coordinates.Y) * (gg.coordinates.Y - celObj.coordinates.Y);
+				celDist = (gg.coordinates.X - celObj.coordinates.X) * (gg.coordinates.X - celObj.coordinates.X) + (gg.coordinates.Y - celObj.coordinates.Y) * (gg.coordinates.Y - celObj.coordinates.Y);
 			} 
-			else celDist=-1;
+			else {
+				celDist = -1;
+			}
 		}
-		
 		
 		//показать/скрыть указатели перехода
 		private function showSign(n:Boolean):void {
 			for each (var s in signposts) {
 				s.visible = n;
 			}
+			
 			sign_vis = n;
 		}
 		
 		public function newGrenade(g:Bullet):void {
-			if (grenades[0] == null) grenades[0] = g;
+			if (grenades[0] == null) {
+				grenades[0] = g;
+			}
 			else {
 				for (var i:int = 1; i < 10; i++) {
-					if (grenades[i] == null) grenades[i] = g;
+					if (grenades[i] == null) {
+						grenades[i] = g;
+					}
 				}
 			}
 		}
 
 		public function remGrenade(g:Bullet):void {
-			if (grenades[0] == g) grenades[0] = null;
+			if (grenades[0] == g) {
+				grenades[0] = null;
+			}
 			else {
 				for (var i:int = 1; i < 10; i++) {
 					if (grenades[i] == g) {

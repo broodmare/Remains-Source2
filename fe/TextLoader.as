@@ -115,5 +115,13 @@ package fe {
 					break;
 			}
 		}
+
+		// Check if an object is empty, Eg. '{}'
+		public static function isEmpty(obj:Object):Boolean {
+			for (var key:String in obj) {
+				return false; // Found a property, so it's not empty
+			}
+			return true; // No properties found, it's empty
+		}
 	}
 }

@@ -1,69 +1,116 @@
-package fe.loc
-{
-	import fe.*;
+package fe.loc {
 
-	public class Form
-	{
+	import fe.TextLoader;
+
+	public class Form {
+
+		private static const materialsPath = "Modules/core/allData/materials.json";
+
 		public var id:String;
 		public var idMirror:String;
-		public var tip:int=0;	//1  передний план, 2-задний план
+		public var tip:int				= 0;	//1 - Foreground, 2 - Background
 		
+		public var vid:int;
 		public var front:String;
 		public var back:String;
-		public var vid:int;
-		public var rear:Boolean=false;
-		public var mat:int=0;
 		
-		public var hp:int=0;
-		public var thre:int=0;
-		public var indestruct:Boolean=false;
+		public var rear:Boolean			= false;
+		public var mat:int				= 0;
 		
-		public var phis:int=0;
-		public var shelf:Boolean=false;
-		public var diagon:int=0;
-		public var stair:int=0;
-		public var lurk:int=0;
+		public var hp:int				= 0;
+		public var thre:int				= 0;
+		public var indestruct:Boolean	= false;
+		
+		public var phis:int				= 0;
+		public var shelf:Boolean		= false;
+		public var diagon:int			= 0;
+		public var stair:int			= 0;
+		public var lurk:int				= 0;
 
-		public function Form(node:XML=null) {
-			if (node!=null) {
-				id=node.@id;
-				if (node.@m.length()) idMirror=node.@m;
-				tip=node.@ed;
-				if (node.@vid>0) vid=node.@vid;
-				else front=node.@id;
-				if (node.@back.length()) back=node.@back;
-				if (node.@mat.length()) mat=node.@mat;
-				if (node.@rear.length()) rear=true;
-				if (node.@lurk.length()) lurk=node.@lurk;
-				
-				if (node.@hp>0) hp=node.@hp;
-				if (node.@thre>0) thre=node.@thre;
-				if (node.@indestruct>0) indestruct=true;
-				
-				if (node.@phis.length()) phis=node.@phis;
-				if (node.@shelf.length()) shelf=true;
-				if (node.@diagon.length()) diagon=node.@diagon;
-				if (node.@stair.length()) stair=node.@stair;
+		public static var fForms:Object;
+		public static var oForms:Object;
+
+		public function Form(data:Object) {
+			
+			id		= data.id;
+			tip		= data.ed;
+			
+			if ("vid" in data) {
+				vid = data.vid;
+			}
+			else {
+				front = data.id;
+			}
+
+			if ("back" in data) {
+				back = data.back;
+			}
+
+			if ("rear" in data) {
+				rear = data.rear;
+			}
+
+			if ("idMirror" in data) {
+				idMirror = data.idMirror;
+			}
+			
+			if ("mat" in data) {
+				mat = data.mat;
+			}
+			
+			if ("lurk" in data) {
+				lurk = data.lurk;
+			}
+			
+			if ("hp" in data) {
+				hp = data.hp;
+			}
+			
+			if ("thre" in data) {
+				thre = data.thre;
+			}
+			
+			if ("indestruct" in data) {
+				indestruct = data.indestruct;
+			}
+			
+			if ("phis" in data) {
+				phis = data.phis;
+			}
+			
+			if ("shelf" in data) {
+				shelf = data.shelf;
+			}
+			
+			if ("diagon" in data) {
+				diagon = data.diagon;
+			}
+			
+			if ("stair" in data) {
+				stair = data.stair;
 			}
 		}
 		
-		public static var fForms:Array;
-		public static var oForms:Array;
-		
-		public static function setForms()
-		{
-			fForms = [];
-			oForms = [];
+		public static function setForms():void {
+			fForms = {};
+			oForms = {};
 			
-			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "mats", "mat");
-
-			for each (var node in xmlList)
-			{
-				if (node.@ed==1) fForms[node.@id]=new Form(node);
-				else oForms[node.@id]=new Form(node);
+			// Load the materials data
+			var loader:TextLoader = new TextLoader();
+			var formData:Object = loader.syncLoad(materialsPath);
+			if (TextLoader.isEmpty(formData)) {
+				throw new Error("Failed to load form data from: " + materialsPath);
 			}
-
-			xmlList = null; // Manual cleanup.
+			
+			// Use it to create the forms
+			for each (var form:Object in formData.mats) {
+				if (form.ed == 1) {
+					fForms[form.id] = new Form(form);
+				}
+				else {
+					oForms[form.id] = new Form(form);
+				}
+			}
 		}
 	}
 }

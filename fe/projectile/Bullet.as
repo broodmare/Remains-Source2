@@ -9,6 +9,7 @@ package fe.projectile {
 	import fe.loc.*;
 	import fe.entities.Obj;
 	import fe.graph.Emitter;
+	import fe.unit.Resistances;
 	import fe.unit.UnitMsp;
 	import fe.weapon.Weapon;
 	
@@ -119,8 +120,8 @@ package fe.projectile {
 			levitPoss = false;
 			
 			if (visClass) {
-				if (World.w.alicorn && own.player && visClass == visualBullet) {
-					visClass = visualRainbow;	// .SWF Dependency
+				if (World.w.alicorn && own.player && visClass == visualBullet) {	// .SWF Dependency
+					visClass = visualRainbow;										// .SWF Dependency
 				}
 				
 				vis = new visClass();
@@ -339,7 +340,7 @@ package fe.projectile {
 				var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
 				if (t.water > 0) {
 					if (inWater == 0) {
-						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE)) {
+						if (partEmit && (tipDamage == Resistances.DAM_PIERCE || tipDamage == Resistances.DAM_BLUNT || tipDamage == Resistances.DAM_CUT)) {
 							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {
 								dx: -velocity.X / vel * 10,
 								dy: -velocity.Y / vel * 10,
@@ -349,8 +350,8 @@ package fe.projectile {
 							partEmit = false;
 						}
 					}
-					if (tipDamage == Unit.D_FIRE || tipDamage == Unit.D_LASER || tipDamage == Unit.D_PLASMA 
-					|| tipDamage == Unit.D_SPARK || tipDamage == Unit.D_ACID) 
+					if (tipDamage == Resistances.DAM_BURN || tipDamage == Resistances.DAM_LASER || tipDamage == Resistances.DAM_PLASMA 
+					|| tipDamage == Resistances.DAM_ELECTRIC || tipDamage == Resistances.DAM_ACID) 
 					{
 						if (partEmit) {
 							Emitter.emit('steam', loc, coordinates.X, coordinates.Y);
@@ -362,7 +363,7 @@ package fe.projectile {
 				}
 				else {
 					if (inWater == 1) {
-						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE)) {
+						if (partEmit && (tipDamage == Resistances.DAM_PIERCE || tipDamage == Resistances.DAM_BLUNT || tipDamage == Resistances.DAM_CUT)) {
 							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {
 								dx: velocity.X / vel * 10,
 								dy: velocity.Y / vel * 10,
@@ -445,7 +446,7 @@ package fe.projectile {
 								if ((un is fe.unit.Mine || un is fe.unit.UnitMsp) && un.sost > 2) {
 									weap.crash(15);
 								}
-								else if (un.tipDamage == Unit.D_ACID) {
+								else if (un.tipDamage == Resistances.DAM_ACID) {
 									weap.crash(3);
 								}
 								else {
@@ -513,8 +514,8 @@ package fe.projectile {
 				if (res==7) Snd.ps('hit_pole', coordinates.X, coordinates.Y, 0, 0.5);
 				if (res==10)
 				{
-					if (tipDamage == Unit.D_BUL) Snd.ps('hit_bullet', coordinates.X, coordinates.Y, 0, 0.8);
-					else if (tipDamage==Unit.D_BLADE) Snd.ps('hit_blade', coordinates.X, coordinates.Y, 0, 0.8);
+					if (tipDamage == Resistances.DAM_PIERCE) Snd.ps('hit_bullet', coordinates.X, coordinates.Y, 0, 0.8);
+					else if (tipDamage==Resistances.DAM_CUT) Snd.ps('hit_blade', coordinates.X, coordinates.Y, 0, 0.8);
 					else Snd.ps('hit_flesh', coordinates.X, coordinates.Y, 0, 0.5);		//удары по мясу
 				}
 				if (res==11) Snd.ps('hit_water', coordinates.X, coordinates.Y, 0, 0.5);
@@ -552,7 +553,7 @@ package fe.projectile {
 		//выполнить искусственный взрыв
 		public function iExpl(ndamage:Number, ndestroy:Number, nradius:Number):void {
 			loc=owner.loc;
-			tipDamage=Unit.D_EXPL;
+			tipDamage=Resistances.DAM_EXPLOSION;
 			otbros=10;
 			damageExpl=ndamage;
 			destroy=ndestroy;
@@ -736,31 +737,31 @@ package fe.projectile {
 						Emitter.emit(weap.visexpl, loc, coordinates.X, coordinates.Y);
 					}
 				}
-				else if (tipDamage == Unit.D_EMP) {
+				else if (tipDamage == Resistances.DAM_EMP) {
 					loc.budilo(coordinates.X, coordinates.Y, 500);
 					Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
 					Snd.ps('emp_e', coordinates.X, coordinates.Y);
 				}
-				else if (tipDamage == Unit.D_CRIO) {
+				else if (tipDamage == Resistances.DAM_COLD) {
 					loc.budilo(coordinates.X, coordinates.Y, 500);
 					Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
 					Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol: 16});
 					Snd.ps('cryo_e', coordinates.X, coordinates.Y);
 				}
-				else if (tipDamage == Unit.D_PLASMA) {
+				else if (tipDamage == Resistances.DAM_PLASMA) {
 					loc.budilo(coordinates.X, coordinates.Y, 500);
 					Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
 					Snd.ps('exppla_e', coordinates.X, coordinates.Y);
 				}
-				else if (tipDamage == Unit.D_VENOM) {
+				else if (tipDamage == Resistances.DAM_VENOM) {
 					Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
 					if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 				}
-				else if (tipDamage == Unit.D_PINK) {
+				else if (tipDamage == Resistances.DAM_PINKCLOUD) {
 					Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
 					if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 				}
-				else if (tipDamage == Unit.D_ACID) {
+				else if (tipDamage == Resistances.DAM_ACID) {
 					if (expl_t == 0) {
 						Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
 						Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {
@@ -770,13 +771,13 @@ package fe.projectile {
 						explLiquid('acid');
 					}
 				}
-				else if (tipDamage == Unit.D_BALE) {
+				else if (tipDamage == Resistances.DAM_BALEFIRE) {
 					loc.budilo(coordinates.X, coordinates.Y, 3000);
 					Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
 					Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
 					Snd.ps('bale_e', coordinates.X, coordinates.Y);
 				}
-				else if (tipDamage == Unit.D_EXPL) {
+				else if (tipDamage == Resistances.DAM_EXPLOSION) {
 					if (inWater > 0) {
 						loc.budilo(coordinates.X, coordinates.Y, 700);
 						Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
@@ -797,7 +798,7 @@ package fe.projectile {
 						Snd.ps('expl_e', coordinates.X, coordinates.Y);
 					}
 				}
-				else if (tipDamage == Unit.D_FIRE) {
+				else if (tipDamage == Resistances.DAM_BURN) {
 					if (!(inWater > 0) && expl_t == 0) {
 						loc.budilo(coordinates.X, coordinates.Y, 500);
 						Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);
@@ -808,31 +809,31 @@ package fe.projectile {
 					}
 				}
 			}
-			else if (tipDamage == Unit.D_EMP) {
+			else if (tipDamage == Resistances.DAM_EMP) {
 				loc.budilo(coordinates.X, coordinates.Y, 500);
 				Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
 				Snd.ps('emp_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage == Unit.D_CRIO) {
+			else if (tipDamage == Resistances.DAM_COLD) {
 				loc.budilo(coordinates.X, coordinates.Y, 500);
 				Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
 				Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol: 16});
 				Snd.ps('cryo_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage == Unit.D_PLASMA) {
+			else if (tipDamage == Resistances.DAM_PLASMA) {
 				loc.budilo(coordinates.X, coordinates.Y, 500);
 				Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
 				Snd.ps('exppla_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage == Unit.D_VENOM) {
+			else if (tipDamage == Resistances.DAM_VENOM) {
 				Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
 				if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage == Unit.D_PINK) {
+			else if (tipDamage == Resistances.DAM_PINKCLOUD) {
 				Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
 				if (expl_t == 0) Snd.ps('gas_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage == Unit.D_ACID) {
+			else if (tipDamage == Resistances.DAM_ACID) {
 				if (expl_t == 0) {
 					Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
 					Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {
@@ -842,13 +843,13 @@ package fe.projectile {
 					explLiquid('acid');
 				}
 			}
-			else if (tipDamage == Unit.D_BALE) {
+			else if (tipDamage == Resistances.DAM_BALEFIRE) {
 				loc.budilo(coordinates.X, coordinates.Y, 3000);
 				Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
 				Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
 				Snd.ps('bale_e', coordinates.X, coordinates.Y);
 			}
-			else if (tipDamage == Unit.D_EXPL) {
+			else if (tipDamage == Resistances.DAM_EXPLOSION) {
 				if (inWater > 0) {
 					loc.budilo(coordinates.X, coordinates.Y, 700);
 					Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
@@ -868,7 +869,7 @@ package fe.projectile {
 					Snd.ps('expl_e', coordinates.X, coordinates.Y);
 				}
 			}
-			else if (tipDamage == Unit.D_FIRE) {
+			else if (tipDamage == Resistances.DAM_BURN) {
 				if (!(inWater > 0) && expl_t == 0) {
 					loc.budilo(coordinates.X, coordinates.Y, 500);
 					Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);

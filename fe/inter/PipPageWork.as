@@ -39,8 +39,9 @@ package fe.inter {
 
 		// [Preparing pages]
 		override protected function setSubPages():void {
-			
 			trace("PipPageWork.as/setSubPages() - Initializing the workbench interface. Station type: " + pip.workTip);
+			gg = World.w.gg;
+			inv = World.w.invent;
 
 			// Indicate if we're using a specialized crafting bench, otherwise this value is just "work"
 			if (pip.workTip == "mworklab") {

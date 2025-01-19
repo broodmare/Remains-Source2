@@ -8,8 +8,8 @@ package fe.unit {
 	public class UnitMsp extends Unit {
 
 		public var tr:int;
-		var weap:String;
-		var cep:int=0; //способ прикрепления 0-обычный, 1-к потолку, 2- к стене слева, 3-к стене справа
+		private var weap:String;
+		private var cep:int = 0; //способ прикрепления 0-обычный, 1-к потолку, 2- к стене слева, 3-к стене справа
 		
 		private var tileY:int = Tile.tileY;
 
@@ -34,7 +34,7 @@ package fe.unit {
 			
 			id = 'msp';
 			
-			vis=new visualMsp();
+			vis = new visualMsp();
 			vis.stop();
 			
 			getXmlParam();
@@ -67,7 +67,7 @@ package fe.unit {
 		}
 
 		public override function expl():void {
-			newPart('metal',4);
+			newPart('metal', 4);
 			newPart('miniexpl');
 		}
 		

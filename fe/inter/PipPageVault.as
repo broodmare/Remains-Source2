@@ -59,6 +59,10 @@ package fe.inter {
 
 		// [Preparing pages]
 		override protected function setSubPages():void {
+			inv = World.w.invent;
+			gg = World.w.gg;
+			var vault:Inventory = World.w.vault;
+			
 			assArr = [];
 			statHead.ns.visible = false;
 			statHead.id.visible = false;
@@ -72,7 +76,7 @@ package fe.inter {
 			vis.butOk.visible = false;
 			
 			// inv.calcMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-			var vault:Inventory = World.w.vault;
+			
 
 			for each (var item:InventoryItem in inv.getAllItems()) {
 				if (item.hidden) {

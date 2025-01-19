@@ -8,6 +8,7 @@ package fe.weapon {
 	import fe.util.Vector2;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.unit.Pers;
@@ -576,7 +577,7 @@ package fe.weapon {
 		
 		protected function weaponAttack():void {
 			if (jammed) {
-				if (tipDamage == "laser" || tipDamage == "plasma" || tipDamage == "emp" || tipDamage == "electric") {
+				if (tipDamage == Resistances.DAM_LASER || tipDamage == Resistances.DAM_PLASMA || tipDamage == Resistances.DAM_EMP || tipDamage == Resistances.DAM_ELECTRIC) {
 					World.w.gui.infoText("weaponCircuit", null, null, false);
 				}
 				else {
@@ -907,7 +908,7 @@ package fe.weapon {
 			if (ammo.damageType != "") {
 				bul.tipDamage = ammo.damageType;
 				
-				if (ammo.damageType == "emp") {
+				if (ammo.damageType == Resistances.DAM_EMP) {
 					bul.destroy = 0;
 					bul.otbros = 0;
 				}

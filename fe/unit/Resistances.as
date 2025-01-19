@@ -2,6 +2,30 @@ package fe.unit {
 
 	public class Resistances {
 
+		// Define all resistance types in one place as public static constants
+		public static const DAM_PIERCE:String		= "DAM_PIERCE";
+		public static const DAM_CUT:String			= "DAM_CUT";
+		public static const DAM_BLUNT:String		= "DAM_BLUNT";
+		public static const DAM_BURN:String			= "DAM_BURN";
+		public static const DAM_EXPLOSION:String	= "DAM_EXPLOSION";
+		public static const DAM_LASER:String		= "DAM_LASER";
+		public static const DAM_PLASMA:String		= "DAM_PLASMA";
+		public static const DAM_VENOM:String		= "DAM_VENOM";
+		public static const DAM_EMP:String			= "DAM_EMP";
+		public static const DAM_ELECTRIC:String		= "DAM_ELECTRIC";
+		public static const DAM_ACID:String			= "DAM_ACID";
+		public static const DAM_COLD:String			= "DAM_COLD";
+		public static const DAM_POISON:String		= "DAM_POISON";
+		public static const DAM_BLEED:String		= "DAM_BLEED";
+		public static const DAM_BITE:String			= "DAM_BITE";
+		public static const DAM_BALEFIRE:String		= "DAM_BALEFIRE";
+		public static const DAM_DEATH:String		= "DAM_DEATH";
+		public static const DAM_PSYCHIC:String		= "DAM_PSYCHIC";
+		public static const DAM_ASTRO:String		= "DAM_ASTRO";
+		public static const DAM_PINKCLOUD:String	= "DAM_PINKCLOUD";
+		public static const DAM_INTERNAL:String		= "DAM_INTERNAL";
+		public static const DAM_HARMONY:String		= "DAM_HARMONY";
+
 		// Resistances
 		private var _typeResist:Object = {};		// Specific damage type resistances
 		private var _resistTypes:Array;            // Array to store resistance type names
@@ -55,35 +79,16 @@ package fe.unit {
 
 			// Store all the resistance type names
 			_resistTypes = [
-                "pierce", "cut", "blunt", "fire", "explosive", "laser", "plasma",
-                "venom", "emp", "electric", "acid", "cold", "poison", "bleed",
-                "bite", "balefire", "necro", "psychic", "astro", "pinkCloud",
-                "inside", "friend"
+                DAM_PIERCE, DAM_CUT, DAM_BLUNT, DAM_BURN, DAM_EXPLOSION, DAM_LASER, DAM_PLASMA,
+                DAM_VENOM, DAM_EMP, DAM_ELECTRIC, DAM_ACID, DAM_COLD, DAM_POISON,
+				DAM_BLEED, DAM_BITE, DAM_BALEFIRE, DAM_DEATH, DAM_PSYCHIC, DAM_ASTRO, 
+				DAM_PINKCLOUD, DAM_INTERNAL, DAM_HARMONY
             ];
 
-			// Manually add each resistance property as the Number 0.00
-			_typeResist["pierce"]		= 0.00;		// Formerly   0 | D_BUL 
-			_typeResist["cut"]			= 0.00;		// Formerly   1 | D_BLADE
-			_typeResist["blunt"]		= 0.00;		// Formerly   2 | D_PHIS
-			_typeResist["fire"]			= 0.00;		// Formerly   3 | D_FIRE
-			_typeResist["explosive"]	= 0.00;		// Formerly   4 | D_EXPL
-			_typeResist["laser"]		= 0.00;		// Formerly   5 | D_LASER
-			_typeResist["plasma"]		= 0.00;		// Formerly   6 | D_PLASMA
-			_typeResist["venom"]		= 0.00;		// Formerly   7 | D_VENOM
-			_typeResist["emp"]			= 0.00;		// Formerly   8 | D_EMP
-			_typeResist["electric"]		= 0.00;		// Formerly   9 | D_SPARK
-			_typeResist["acid"]			= 0.00;		// Formerly  10 | D_ACID
-			_typeResist["cold"]			= 0.00;		// Formerly  11 | D_CRIO
-			_typeResist["poison"]		= 0.00;		// Formerly  12 | D_POISON
-			_typeResist["bleed"]		= 0.00;		// Formerly  13 | D_BLEED
-			_typeResist["bite"]			= 0.00;		// Formerly  14 | D_FANG
-			_typeResist["balefire"]		= 0.00;		// Formerly  15 | D_BALE
-			_typeResist["necro"]		= 0.00;		// Formerly  16 | D_NECRO
-			_typeResist["psychic"]		= 0.00;		// Formerly  17 | D_PSY
-			_typeResist["astro"]		= 0.00;		// Formerly  18 | D_ASTRO
-			_typeResist["pinkCloud"]	= 0.00;		// Formerly  19 | D_PINK
-			_typeResist["inside"]		= 0.00;		// Formerly 100 | D_INSIDE
-			_typeResist["friend"]		= 0.00;		// Formerly 101 | D_FRIEND
+			// Add each resistance property as the Number 0.00
+			for each (var resistType:String in _resistTypes) {
+                _typeResist[resistType] = 0.00;
+            }
 		}
 
 		// Return all resistance names

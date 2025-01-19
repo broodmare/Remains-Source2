@@ -148,7 +148,7 @@ package fe.unit {
 			}
 			else if (turrettip == 2 || turrettip == 5){
 				aRot = [45, 135, -135, -45];
-				vKonus = Math.PI / 2;
+				vKonus = HALF_PI;
 				
 				if (loc.mirror) {
 					if (angle == "left") {
@@ -184,11 +184,11 @@ package fe.unit {
 				else {
 					aRot=[-165, 165]
 					currentWeapon.fixRot = 3;
-					vAngle = Math.PI;
+					vAngle = ONE_PI;
 				}
 				
 				watchDrot = 0.01;
-				vKonus = Math.PI * 0.25 ;
+				vKonus = QUARTER_PI ;
 				noTurn = true;
 				vis.osn.t1.scaleX=vis.osn.t2.scaleX=vis.osn.t3.scaleX=storona;
 			}
@@ -199,7 +199,7 @@ package fe.unit {
 			aiState = 1;
 			
 			if (hidden > 0) {
-				currentWeapon.rot = currentWeapon.forceRot = Math.PI * 0.50;
+				currentWeapon.rot = currentWeapon.forceRot = HALF_PI;
 				aiState = 0;
 				vis.osn.gotoAndStop(6);
 			}
@@ -247,7 +247,7 @@ package fe.unit {
 			}
 
 			if (vis.osn.currentFrame == 1) {
-				vis.osn.puha.rotation = radiansToDegrees(currentWeapon.rot); // Rotate the gun of the turret.
+				vis.osn.puha.rotation = currentWeapon.rot * RAD_TO_DEG; // Rotate the gun of the turret.
 
 				if (vis.osn.light.currentFrame != aiState + 1) {
 					vis.osn.light.gotoAndStop(aiState + 1);
@@ -268,10 +268,6 @@ package fe.unit {
 
 		}
 
-		private function radiansToDegrees(radians:Number):Number {
-			return radians * 180 / Math.PI;
-		}
-
 		public override function setPos(nx:Number,ny:Number):void {
 			super.setPos(nx, ny);
 		
@@ -289,7 +285,7 @@ package fe.unit {
 			
 			if (sost == 1 && !sleep) {
 				ear = 10;
-				var vK = vKonus;
+				var vK:Number = vKonus;
 				vKonus = 0;
 				findCel();
 				vKonus = vK;
@@ -317,7 +313,7 @@ package fe.unit {
 			if (sposob == 0) {
 				sleep = true;
 				aiState = 0;
-				currentWeapon.forceRot = Math.PI/2;
+				currentWeapon.forceRot = HALF_PI;
 				currentWeapon.findCel = false;
 			}
 			else if (sposob == 1) {
@@ -518,7 +514,7 @@ package fe.unit {
 				if (aiSpok <= 0) {
 					if (aiState == 1 && hidden) {
 						aiState = 0;
-						currentWeapon.forceRot = Math.PI * 0.50;
+						currentWeapon.forceRot = HALF_PI;
 					}
 					else if (aiState > 0) {
 						aiState = 1;
@@ -531,7 +527,7 @@ package fe.unit {
 							nRot = 0;
 						}
 						
-						currentWeapon.forceRot = aRot[nRot] * Math.PI / 180;
+						currentWeapon.forceRot = aRot[nRot] * DEG_TO_RAD;
 					}
 					
 					aiTCh=period;
@@ -599,7 +595,7 @@ package fe.unit {
 				}
 				
 				if (aiState==0)  {
-					if (!noTurn) storona=(currentWeapon.rot>-Math.PI/2 && currentWeapon.rot<=Math.PI/2)?1:-1;
+					if (!noTurn) storona=(currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? 1 : -1;
 					
 					currentWeapon.findCel=false;
 					overLook=true;
@@ -615,7 +611,7 @@ package fe.unit {
 				}
 				else if (aiState==1) {
 					if (!noTurn) {
-						storona=(currentWeapon.rot>-Math.PI/2 && currentWeapon.rot<=Math.PI/2)?1:-1;
+						storona = (currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? 1 : -1;
 					}
 					
 					currentWeapon.findCel=false;
@@ -627,7 +623,7 @@ package fe.unit {
 				}
 				else if (aiState>1) {
 					if (!noTurn) {
-						storona=(celDX>0)?1:-1;
+						storona = (celDX > 0) ? 1 : -1;
 					}
 					
 					currentWeapon.findCel=true;

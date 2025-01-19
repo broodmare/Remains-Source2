@@ -130,8 +130,8 @@ package fe.inter {
 			vis.toptext.visible = false;
 			PipPage.setStyle(vis.toptext.txt);
 			
-			info=vis.info.getChildByName('infoText') as TextField;
-			info.text='';
+			info=vis.info.getChildByName("infoText") as TextField;
+			info.text="";
 			info.autoSize=TextFieldAutoSize.RIGHT;
 			info.multiline=true;
 			info.styleSheet = style;
@@ -141,30 +141,30 @@ package fe.inter {
 			vis.odBar.bar2.mask=vis.odBar.maska2;
 			
 			setSats(false);
-			weapon = vis.textWeapon.getChildByName('weapon') as TextField;
+			weapon = vis.textWeapon.getChildByName("weapon") as TextField;
 			weapon.styleSheet = style;
 			
-			holder = vis.textWeapon.getChildByName('holder') as TextField;
+			holder = vis.textWeapon.getChildByName("holder") as TextField;
 			holder.styleSheet = style;
-			ammo = vis.textWeapon.getChildByName('ammo') as TextField;
+			ammo = vis.textWeapon.getChildByName("ammo") as TextField;
 			
-			celobj=vis.getChildByName('celObj') as TextField;
+			celobj=vis.getChildByName("celObj") as TextField;
 			celobj.autoSize=TextFieldAutoSize.CENTER;
 			celobj.styleSheet = style;
 			
 			// Store references for differnt parts of the GUI
-			item 		= vis.textItem.getChildByName('kolItem') as TextField;
-			mana 		= vis.textMana.getChildByName('mana') as TextField;
-			hp 			= vis.getChildByName('hp') as TextField;
-			vitem 		= vis.getChildByName('vItem') as MovieClip;
-			mess 		= vis.getChildByName('mess') as MovieClip;
-			dial 		= vis.getChildByName('dial') as MovieClip;
-			inform 		= vis.getChildByName('inform') as MovieClip;
-			imp 		= vis.getChildByName('imp') as MovieClip;
-			pet 		= vis.getChildByName('hpPet') as MovieClip;
-			pr_bar 		= vis.getChildByName('pr_bar') as MovieClip;
-			levit_poss 	= vis.getChildByName('levit_poss') as MovieClip;
-			tharrow 	= vis.getChildByName('tharrow') as MovieClip;
+			item 		= vis.textItem.getChildByName("kolItem") as TextField;
+			mana 		= vis.textMana.getChildByName("mana") as TextField;
+			hp 			= vis.getChildByName("hp") as TextField;
+			vitem 		= vis.getChildByName("vItem") as MovieClip;
+			mess 		= vis.getChildByName("mess") as MovieClip;
+			dial 		= vis.getChildByName("dial") as MovieClip;
+			inform 		= vis.getChildByName("inform") as MovieClip;
+			imp 		= vis.getChildByName("imp") as MovieClip;
+			pet 		= vis.getChildByName("hpPet") as MovieClip;
+			pr_bar 		= vis.getChildByName("pr_bar") as MovieClip;
+			levit_poss 	= vis.getChildByName("levit_poss") as MovieClip;
+			tharrow 	= vis.getChildByName("tharrow") as MovieClip;
 			
 			vis.portCel.gotoAndStop(1);
 			vis.portCel.visible = false;
@@ -172,33 +172,33 @@ package fe.inter {
 			// Set localized text
 			var localize:Function = LanguageManager.reference.localText;
 
-			txtTele			= localize("g", 'tele');
-			txtOpen			= localize("g", 'open');
-			txtSoft			= localize("g", 'soft');
-			txtHard			= localize("g", 'hard');
-			txtVeryHard		= localize("g", 'veryhard');
-			txtUnreal		= localize("g", 'unreal');
-			txtUndef0		= localize("g", 'undef0');
-			txtUndef1		= localize("g", 'undef1');
-			txtUndef2		= localize("g", 'undef2');
-			txtClose		= localize("g", 'close');
-			txtUnlock		= localize("g", 'unlock');
-			txtRemine		= localize("g", 'remine');
-			txtUse			= localize("g", 'use');
-			txtLock			= localize("g", 'lock');
-			txtZhopa		= localize("g", 'zhopa');
-			txtEmpty		= localize("g", 'empty');
-			txtDrop			= localize("g", 'drop');
-			txtHold			= localize("g", 'hold');	// Rounds in magazine
-			txtHeavy		= localize("g", 'heavy');
-			txtMagia		= localize("g", 'magia');
-			txtArmorMana	= localize("g", 'armormana');
-			txtChance		= localize("g", 'chance');
-			txtMagiaOver	= localize("g", 'magiaover');
-			txtH2o			= localize("g", 'h2o');
-			txtH2oOver		= localize("g", 'h2over');
-			txtStam			= localize("g", 'stam');
-			txtOd			= localize("pip", 'ap');
+			txtTele			= localize("gui", "tele");
+			txtOpen			= localize("gui", "open");
+			txtSoft			= localize("gui", "soft");
+			txtHard			= localize("gui", "hard");
+			txtVeryHard		= localize("gui", "veryhard");
+			txtUnreal		= localize("gui", "unreal");
+			txtUndef0		= localize("gui", "undef0");
+			txtUndef1		= localize("gui", "undef1");
+			txtUndef2		= localize("gui", "undef2");
+			txtClose		= localize("gui", "close");
+			txtUnlock		= localize("gui", "unlock");
+			txtRemine		= localize("gui", "remine");
+			txtUse			= localize("gui", "use");
+			txtLock			= localize("gui", "lock");
+			txtZhopa		= localize("gui", "zhopa");
+			txtEmpty		= localize("gui", "empty");
+			txtDrop			= localize("gui", "drop");
+			txtHold			= localize("gui", "hold");	// Rounds in magazine
+			txtHeavy		= localize("gui", "heavy");
+			txtMagia		= localize("gui", "magia");
+			txtArmorMana	= localize("gui", "armormana");
+			txtChance		= localize("gui", "chance");
+			txtMagiaOver	= localize("gui", "magiaover");
+			txtH2o			= localize("gui", "h2o");
+			txtH2oOver		= localize("gui", "h2over");
+			txtStam			= localize("gui", "stam");
+			txtOd			= localize("pip", "ap");
 			
 			vis.odBar.txt.text		= txtOd;
 			vis.selector.visible	= false;
@@ -232,7 +232,7 @@ package fe.inter {
 			
 			vis.inform.but0.addEventListener(MouseEvent.MOUSE_DOWN,showHelp);
 			
-			vis.inform.but0.text.text = localize("g", 'help');
+			vis.inform.but0.text.text = localize("gui", 'help');
 			vis.blood.visible = false;
 			vis.blood.stop();
 		}
@@ -279,8 +279,7 @@ package fe.inter {
 		}
 		
 		public function showSelector(turn:int=0, mode:int=0):void {
-			trace("Game.as/showSelector - SHOW SELECTOR COMMENTED OUT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA NOTICE ME ")
-			/*
+			/*	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			if (turn != 0) {
 				t_sel = 60;
 			}
@@ -411,7 +410,7 @@ package fe.inter {
 						n.nazv = Res.txt('i', n.id);
 						
 						if (Res.istxt('i', n.id)) {
-                            if (inv.items[n.id] == null) {
+							if (inv.items[n.id] == null) {
 								if (inv.items[w.ammoBase] == null) {
 									n.ammo = inv.items[w.ammo].kol;
 								}
@@ -420,10 +419,10 @@ package fe.inter {
 							else {
 								n.ammo = inv.items[n.id].kol;
 							}
-                        }
+						}
 						else {
-                            n.nazv = Res.txt('a', n.id);
-                        }
+							n.nazv = Res.txt('a', n.id);
+						}
 						
 						if (inv.spells[n.id] != null) {
 							if (inv.spells[n.id].t_culd > 0) {
@@ -487,8 +486,8 @@ package fe.inter {
 					mc.nazv.text = arrfav[i].nazv;
 					
 					if (arrfav[i].ammo == null) {
-                        mc.ammo.text = "";
-                    }
+						mc.ammo.text = "";
+					}
 					else {
 						mc.ammo.text = arrfav[i].ammo;
 					}
@@ -565,8 +564,8 @@ package fe.inter {
 				mc.nazv.text = arr[n].nazv;
 				
 				if (arr[n].ammo == null) {
-                    mc.ammo.text = "";
-                }
+					mc.ammo.text = "";
+				}
 				else {
 					mc.ammo.text = arr[n].ammo;
 				}
@@ -687,8 +686,8 @@ package fe.inter {
 					s = "<span class = 'r" + n + "'>";
 					
 					if (w.tip == "explosives") {
-                        s += k + w.magazineRounds;
-                    }
+						s += k + w.magazineRounds;
+					}
 					else {
 						s += w.magazineRounds + '/' + w.magazineCapacity + ' (' + k + ')';
 					}
@@ -965,14 +964,14 @@ package fe.inter {
 		
 		public function setTopText(s:String=''):void {
 			if (s == '') {
-                vis.toptext.visible = false;
-            }
+				vis.toptext.visible = false;
+			}
 			else {
-                vis.toptext.visible = true;
-                var ins:String = Res.txt('g', s, 0, true);
-                var myPattern:RegExp = /@/g;
-                vis.toptext.txt.htmlText = ins.replace(myPattern, '\n');
-            }
+				vis.toptext.visible = true;
+				var ins:String = Res.txt('g', s, 0, true);
+				var myPattern:RegExp = /@/g;
+				vis.toptext.txt.htmlText = ins.replace(myPattern, '\n');
+			}
 		}
 		
 		public function setEffects():void {
@@ -1267,8 +1266,8 @@ package fe.inter {
 			}
 			
 			if (s == "") {
-                return s;
-            }
+				return s;
+			}
 			else {
 				return "\n (" + s + ")";
 			}
@@ -1550,77 +1549,75 @@ package fe.inter {
 			s = Res.lpName(s);
 
 			if (reg) {
-                if (reg >= 1) {
-                    dial.visible = false;
-                    if (xml.@push > 0) inform.txt.htmlText += "<br><br>" + s;
-                    else inform.txt.htmlText = s;
-                    inform.txt.scrollV = 0;
-                    inform.lmb.visible = wait;
-                    if (wait) inform.lmb.play();
-                    else inform.lmb.stop();
-                    inform.but0.visible = (reg == 2);
-                    if (inform.scText) inform.scText.visible = false;
-                    if (inform.txt.height < inform.txt.textHeight && inform.scText) {
-                        inform.scText.maxScrollPosition = inform.txt.maxScrollV;
-                        inform.scText.visible = true;
-                    }
+				if (reg >= 1) {
+					dial.visible = false;
+					if (xml.@push > 0) inform.txt.htmlText += "<br><br>" + s;
+					else inform.txt.htmlText = s;
+					inform.txt.scrollV = 0;
+					inform.lmb.visible = wait;
+					if (wait) inform.lmb.play();
+					else inform.lmb.stop();
+					inform.but0.visible = (reg == 2);
+					if (inform.scText) inform.scText.visible = false;
+					if (inform.txt.height < inform.txt.textHeight && inform.scText) {
+						inform.scText.maxScrollPosition = inform.txt.maxScrollV;
+						inform.scText.visible = true;
+					}
 
-                }
-            }
+				}
+			}
 			else {
-                inform.visible = false;
-                dial.portret.gotoAndStop(1);	// Display empty portrait
+				inform.visible = false;
+				dial.portret.gotoAndStop(1);	// Display empty portrait
 
 				// If the string of text has a 'p'ortrait
-                if (xml.@p.length()) {
-                    trace('This section of dialogue has a portrait.');
+				if (xml.@p.length()) {
+					trace('This section of dialogue has a portrait.');
 
-                    var portraitName:String = xml.@p;
-                    // Replace the little pip portrait with the helmeted version
+					var portraitName:String = xml.@p;
+					// Replace the little pip portrait with the helmeted version
 					if (portraitName.substr(0, 2) == 'lp' && World.w.alicorn) {
-                        portraitName = 'lpa';
-                        s = "<span class='crim'>" + s + "</span>";
-                    }
+						portraitName = 'lpa';
+						s = "<span class='crim'>" + s + "</span>";
+					}
 
-                    try {
-                        if (portraitHelper == null) {
-                            trace('Creating new PortraitHelper!');
-                            portraitHelper = new PortraitHelper(vis);
-                        }
-                        portraitHelper.displayPortrait(portraitName);
-                        //dial.portret.gotoAndStop(portraitName);
-                    }
+					try {
+						if (portraitHelper == null) {
+							trace('Creating new PortraitHelper!');
+							portraitHelper = new PortraitHelper(vis);
+						}
+						portraitHelper.displayPortrait(portraitName);
+					}
 					catch (err) {
-                        trace('ERROR: (00:34) - Failed to load portrait: "' + portraitName + '"!');
-                        portraitHelper.clearPortrait();
-                        //dial.portret.gotoAndStop(1);
-                    }
-                }
+						trace('ERROR: (00:34) - Failed to load portrait: "' + portraitName + '"!');
+						portraitHelper.clearPortrait();
+					}
+				}
 				else {
-                    trace('This secion of dialogue has no portrait.');
-                    if (portraitHelper.currentPortrait != null) {
-                        trace('Clearing old portrait in memory for new dialogue.');
-                        portraitHelper.clearPortrait();
-                    }
+					trace('This secion of dialogue has no portrait.');
+					if (portraitHelper.currentPortrait != null) {
+						trace('Clearing old portrait in memory for new dialogue.');
+						portraitHelper.clearPortrait();
+					}
 
-                }
+				}
 
-                if (xml.@push > 0) {
+				if (xml.@push > 0) {
 					dial.txt.htmlText += "<br>" + s;
 				}
-                else {
+				else {
 					dial.txt.htmlText = s;
 				}
 
-                dial.lmb.visible = wait;
-               
-			    if (wait) {
+				dial.lmb.visible = wait;
+			
+				if (wait) {
 					dial.lmb.play();
 				}
-                else {
+				else {
 					dial.lmb.stop();
 				}
-            }
+			}
 			
 			return true;
 		}

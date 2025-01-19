@@ -100,6 +100,9 @@ package fe.inter {
 		}
 
 		override protected function setSubPages():void {
+			gg = World.w.gg;
+			inv = World.w.invent;
+			
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
 			statHead.visible=false;
@@ -550,6 +553,7 @@ package fe.inter {
 						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
 					}
 					
+					// Get what weapons the enemy uses
 					if (un.w.length()) {
 						var wk:Boolean = false;
 						for each (var weap in un.w) {
@@ -564,15 +568,15 @@ package fe.inter {
 								s += textAsColor('blue', Res.txt('w', weap.@id));
 								
 								try {
-									var w:Weapon = WeaponManager.reference.weapon(weap.@id);
+									var data:Object = WeaponManager.reference.weaponData(weap.@id);
 									var dam:Number = 0;
 									
-									if (w.damage > 0) {
-										dam += Number(w.damage);
+									if (data.damage > 0) {
+										dam += Number(data.damage);
 									}
 									
-									if (w.damageExpl > 0) {
-										dam += Number(w.damageExpl);
+									if (data.damageExpl > 0) {
+										dam += Number(data.damageExpl);
 									}
 									
 									s += ' (' + textAsColor('yellow', Res.numb(dam)) + ')';

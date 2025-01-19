@@ -308,9 +308,13 @@ package fe.unit {
 			
 			//prevArmor = invent.prevArmor;
 			
-			punchWeapon = WeaponManager.reference.cloneWeapon("punch");
-			paintWeapon = WeaponManager.reference.cloneWeapon("paint");
-			childObjs=[currentWeapon,punchWeapon];
+			var wm:WeaponManager = WeaponManager.reference;
+			punchWeapon = wm.cloneWeapon("punch");
+			wm.setOwner(punchWeapon, this);
+			paintWeapon = wm.cloneWeapon("paint");
+			wm.setOwner(paintWeapon, this);
+
+			childObjs = [currentWeapon,punchWeapon];
 			
 			/*
 			if (invent.fav[29]) {
@@ -1165,7 +1169,7 @@ package fe.unit {
 					if (sost==1 && isrnd(0.1)) Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 				else {
-					damage(maxhp/500,D_INSIDE,null,true);
+					damage(maxhp/500,Resistances.DAM_INTERNAL,null,true);
 					if (sost==1 && isrnd())Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 			}
@@ -1307,17 +1311,17 @@ package fe.unit {
 				t_raddam=0;
 				
 				if (ddam1>0) {
-					damage(ddam1/30,Unit.D_VENOM,null,true);
+					damage(ddam1/30, Resistances.DAM_VENOM,null,true);
 					ddam1=0;
 				}
 				
 				if (ddam2>0) {
-					damage(ddam2/30,Unit.D_PINK,null,true);
+					damage(ddam2/30, Resistances.DAM_PINKCLOUD,null,true);
 					ddam2=0;
 				}
 			
 				if (ddam3>0) {
-					damage(ddam3/30,Unit.D_NECRO,null,true);
+					damage(ddam3/30, Resistances.DAM_DEATH,null,true);
 					ddam3=0;
 				}
 			}
@@ -1623,7 +1627,7 @@ package fe.unit {
 				teleObj.velocity.Y += p.y;
 				
 				if (pers.throwForce > 0) {
-					Emitter.emit('throw', loc,teleObj.coordinates.X, teleObj.coordinates.Y - teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X)*180/Math.PI});
+					Emitter.emit('throw', loc,teleObj.coordinates.X, teleObj.coordinates.Y - teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X) * RAD_TO_DEG});
 					Snd.ps('dash', teleObj.coordinates.X, teleObj.coordinates.Y);
 				}
 				
@@ -1922,7 +1926,7 @@ package fe.unit {
 			}
 			
 			// [magic]
-			if (ctr.keyMagic && !loc.base && !ctr.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==3)) {
+			if (ctr.keyMagic && !loc.base && !ctr.keyAttack && attackForever <= 0 && atkPoss && (atkWeapon==0 || atkWeapon==3)) {
 				if (sats.que.length>0) {
 					sats.clearAll();
 				}
@@ -2007,7 +2011,7 @@ package fe.unit {
 				}
 			}
 			else {
-				if (k_pet>0) {				//[order]
+				if (k_pet > 0) {				//[order]
 					if (pet) {
 						if (loc.celObj && loc.celObj is Unit && (loc.celObj as Unit).fraction != fraction) {
 							pet.atk((loc.celObj as Unit));
@@ -2025,7 +2029,7 @@ package fe.unit {
 			if ((ctr.keyAttack || autoAttack) && (!loc.base || visSel) && atkPoss && (atkWeapon == 0 || atkWeapon == 1)) {
 				if (visSel) {
 					World.w.gui.unshowSelector(1);
-					ctr.keyAttack=false;
+					ctr.keyAttack = false;
 				}
 				else if (ctr.keyTele) {
 					ctr.keyTele = false;
@@ -2095,9 +2099,9 @@ package fe.unit {
 			if (rat == 0) {
 			// [Change weapons]
 				if (t_work <= 0 && attackForever <= 0) {
-					for (var i = 1; i <= World.kolHK; i++) {
-						if (ctr['keyWeapon' + i]) {
-							ctr['keyWeapon' + i] = false;
+					for (var i:int = 1; i <= World.kolHK; i++) {
+						if (ctr['keyWeapon' + String(i)]) {
+							ctr['keyWeapon' + String(i)] = false;
 							// invent.useFav(i + (ctr.keyRun ? World.kolHK : 0)); HOTKEY COMMENTED OUT FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						
 							if (visSel) {
@@ -2114,13 +2118,13 @@ package fe.unit {
 				}
 				
 				if (ctr.keyScrDown && !autoAttack) {
-					World.w.gui.showSelector(1, ctr.keyRun?1:0);
-					ctr.keyScrDown=ctr.keyScrUp=false;
+					World.w.gui.showSelector(1, ctr.keyRun ? 1:0);
+					ctr.keyScrDown=ctr.keyScrUp = false;
 				}
 			
 				if (ctr.keyScrUp && !autoAttack) {
 					World.w.gui.showSelector(-1, ctr.keyRun?1:0);
-					ctr.keyScrDown=ctr.keyScrUp=false;
+					ctr.keyScrDown=ctr.keyScrUp = false;
 				}
 				
 				/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
@@ -2253,7 +2257,8 @@ package fe.unit {
 			
 			walk = 0;
 			
-			if ((keyLeft && !keyRight || (burningForcesRunOption && runForever > 0)) && storona < 0) {
+			// Move left
+			if (((keyLeft && !keyRight) || (burningForcesRunOption && runForever>0)) && storona < 0) {
 				porog = 20;
 				isTake = 40;
 				
@@ -2268,7 +2273,8 @@ package fe.unit {
 				walk = -1;
 				t_run++;
 			}
-			else if ((!keyLeft && keyRight || (burningForcesRunOption && runForever > 0)) && storona > 0) {
+			// Move right
+			else if (((!keyLeft && keyRight) || (burningForcesRunOption && runForever>0)) && storona > 0) {
 				porog = 20;
 				isTake = 40;
 				
@@ -2901,7 +2907,7 @@ package fe.unit {
 			
 			if (loc.train || loc.base) return 0;
 			
-			if (tip==Unit.D_EMP && dam>30 && pers.pipEmpVulner>0) {
+			if (tip== Resistances.DAM_EMP && dam>30 && pers.pipEmpVulner>0) {
 				pipOff+=Math.round(dam*pers.pipEmpVulner);
 				
 				if (sats.que.length>0) sats.clearAll();
@@ -2909,7 +2915,7 @@ package fe.unit {
 				World.w.gui.allOff();
 			}
 			
-			if (cryst && tip!=Unit.D_BLEED && tip!=Unit.D_POISON && tip!=Unit.D_INSIDE) {
+			if (cryst && tip != Resistances.DAM_BLEED && tip!= Resistances.DAM_POISON && tip != Resistances.DAM_INTERNAL) {
 				dam*=5/spellPower;
 				mana-=dam;
 			
@@ -2928,7 +2934,7 @@ package fe.unit {
 				ArmorManager.reference.damage(currentArmor, dam * pers.armorVulner, tip);
 			}
 			
-			if (tip != Unit.D_BLEED && tip != Unit.D_POISON && tip != Unit.D_INSIDE && tip != Unit.D_PINK) {
+			if (tip != Resistances.DAM_BLEED && tip != Resistances.DAM_POISON && tip != Resistances.DAM_INTERNAL && tip != Resistances.DAM_PINKCLOUD) {
 				pinok += dam / maxhp * 200 * knocked;
 				
 				//повреждение инвентаря
@@ -2985,10 +2991,10 @@ package fe.unit {
 			}
 			
 			if (pers.potShad == 0) {
-				damage(dam, D_SPARK, null, true);
+				damage(dam, Resistances.DAM_ELECTRIC, null, true);
 			}
 			else {
-				damage(dam, D_INSIDE, null, true);
+				damage(dam, Resistances.DAM_INTERNAL, null, true);
 				pinok = 90;
 			}
 			
@@ -3477,12 +3483,12 @@ package fe.unit {
 		public override function setPunchWeaponPos(w:WPunch):void {
 			w.coordinates.X = coordinates.X + boundingBox.width * ((celX > coordinates.X) ? 1 : -1);
 			w.coordinates.Y = boundingBox.top;
-			w.rot = (celX > coordinates.X)? 0:Math.PI;
+			w.rot = (celX > coordinates.X) ? 0 : ONE_PI;
 		}
 		
 		//особая функция брони
 		public function armorAbil():void {
-			if (currentArmor==null || currentArmor.abil==null) {
+			if (currentArmor == null || currentArmor.abil == null) {
 				return;
 			}
 			
@@ -4552,8 +4558,8 @@ package fe.unit {
 							vis.osn.body.lwing.gotoAndStop(11);
 						}
 					
-						vis.osn.body.rwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.6;
-						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.2;
+						vis.osn.body.rwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.60;
+						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.20;
 					}
 					catch (err) {
 						trace('ERROR: (00:F)');
@@ -4606,7 +4612,7 @@ package fe.unit {
 				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
 				vis.fetter.visible = true;
 				vis.fetter.scaleX = rfetter / 100;
-				vis.fetter.rotation = Math.atan2(dfy, dfx * storona) / Math.PI * 180;
+				vis.fetter.rotation = Math.atan2(dfy, dfx * storona) / ONE_PI * 180;
 			}
 			else if (vis.fetter.visible) {
 				vis.fetter.visible = false;

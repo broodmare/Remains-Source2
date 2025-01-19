@@ -423,7 +423,7 @@ package fe.unit {
 				}
 				else {
 					owner.addEffect("bloodinv");
-					gg.pers.bloodDamage(dam, Unit.D_BLEED);
+					gg.pers.bloodDamage(dam, Resistances.DAM_BLEED);
 					est = 1;
 				}
 			}

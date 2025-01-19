@@ -239,14 +239,14 @@ package fe.unit {
 				if (tipDamager == 2) {
 					celX = coordinates.X;
 					celY = coordinates.Y;
-					currentWeapon.rot = Math.PI * 0.50;
+					currentWeapon.rot = HALF_PI;
 					currentWeapon.rapid = 1;
 					(currentWeapon as WThrow).detTime = 45;
 				}
 				else if (tipDamager==1) {
 					celX = coordinates.X + 200 * storona;
 					celY = this.boundingBox.top;
-					currentWeapon.rot = (storona < 0) ? Math.PI : 0;
+					currentWeapon.rot = (storona < 0) ? ONE_PI : 0;
 				}
 			}
 		}

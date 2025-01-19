@@ -12,9 +12,10 @@ package fe.entities {
 		protected static const ONE_SIXTH:Number					= 1 / 6;
 		protected static const FIVE_SIXTH:Number				= 5 / 6;
 		protected static const HALF_PI:Number					= ONE_PI / 2;
+		protected static const QUARTER_PI:Number				= ONE_PI / 4;
 		protected static const SIXTH_PI:Number					= ONE_PI / 6;
 		protected static const RAD_TO_DEG:Number				= 180 / ONE_PI;
-		protected static const DEG_TO_RAD:Number				= Math.PI / 180;
+		protected static const DEG_TO_RAD:Number				= ONE_PI / 180;
 		protected static const ONE_PI:Number					= Math.PI;
 		protected static const TWO_PI:Number					= 2 * ONE_PI;
 		protected static const NEGATIVE_SIXTH_PI:Number			= -SIXTH_PI;

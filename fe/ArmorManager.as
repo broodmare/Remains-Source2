@@ -3,6 +3,7 @@ package fe {
 	import flash.utils.Dictionary;
 
 	import fe.unit.Armor;
+	import fe.unit.Resistances;
 
 	public class ArmorManager {
 
@@ -21,7 +22,6 @@ package fe {
 			_armorMap	= new Dictionary();
 
 			loadArmorData();
-			initializeAllArmors();
 		}
 
 		private function loadArmorData():void {
@@ -43,7 +43,7 @@ package fe {
 		
 		public function armor(id:String):Armor {
 			if (id in _armors) {
-				return _armors[id];
+				return _armorData[id];
 			}
 
 			return null;
@@ -54,134 +54,17 @@ package fe {
 			return _armors;
 		}
 
-		private function initializeAllArmors():void {
-			trace("ArmorManager.as/initializeAllArmors() - Initializing all armor sets");
+		public function cloneArmor(id:String):Armor {
 			
-			// Initialize and store a base version of each armor set
-			for each (var data:Object in _armorData) {
-				var armor:Armor = new Armor();
+			var data:Object = _armorData[id];
+			var armor:Armor = ArmorFactory.createArmor(data);
 
-				if ("id" in data) {
-					armor.id = data.id;
-				}
+			
 
-				if ("tip" in data) {
-					armor.tip = data.tip;
-				}
+			// TODO: This won't work as-is because armors are always initialized at lvl 0 
+			setArmorLevel(armor);
 
-				if ("clo" in data) {
-					armor.clo = data.clo;
-				}
-
-				if ("upgrades" in data) {
-					armor.maxlvl = data.upgrades;
-				}
-
-				if ("unbreakable" in data) {
-					armor.und = data.unbreakable;
-				}
-
-				if ("hp" in data) {
-					armor.hp = data.hp;
-					armor.maxhp = data.maxhp;
-				}
-
-				if ("noRepair" in data) {
-					armor.norep = data.noRepair;
-				}
-
-				if ("h2oMult" in data) {
-					armor.h2oMult = data.h2oMult;
-				}
-
-				if ("tre" in data) {
-					armor.tre = data.tre;
-				}
-
-				if ("meleeMult" in data) {
-					armor.meleeMult = data.meleeMult;
-				}
-
-				if ("gunsMult" in data) {
-					armor.gunsMult = data.gunsMult;
-				}
-
-				if ("magicMult" in data) {
-					armor.magicMult = data.magicMult;
-				}
-
-				if ("crit" in data) {
-					armor.crit = data.crit;
-				}
-
-				// Get the name of the item needed to repair this armor set, if one doesn't exist use "id_comp"
-				if ("idComp" in data) {
-					armor.idComp = data.idComp;
-				}
-				else {
-					armor.idComp = armor.id + "_comp";
-				}
-
-				if ("kolComp" in data) {
-					armor.kolComp = data.kolComp;
-				}
-
-				if ("price" in data) {
-					armor.price = data.price;
-				}
-
-				if ("sort" in data) {
-					armor.sort = data.sort;
-				}
-
-				if ("abil" in data) {
-					armor.abil = data.abil;
-				}
-
-				if ("ableFly" in data) {
-					armor.ableFly = data.ableFly;
-				}
-
-				if ("hideMane" in data) {
-					armor.hideMane = data.hideMane;
-				}
-
-				if ("radx" in data) {
-					armor.radVul = 1 - data.radx;
-				}
-
-				if ("dexter" in data) {
-					armor.dexter = data.dexter;
-				}
-
-				if ("sneak" in data) {
-					armor.sneak = data.sneak;
-				}
-
-				if ("maxmana" in data) {
-					armor.maxmana = data.maxmana;
-				}
-
-				if ("act" in data) {
-					armor.dmana_act = data.act;
-				}
-
-				if ("used" in data) {
-					armor.dmana_use = data.used;
-				}
-
-				if ("res" in data) {
-					armor.dmana_res = data.res;
-				}
-
-				// TODO: This won't work as-is because armors are always initialized at lvl 0 
-				setArmorLevel(armor);
-
-				_armors.push(armor)
-				_armorMap[armor.id] = armor;
-			}
-
-			trace("ArmorManager.as/initializeAllArmor() - Total armor sets initialized: " + _armors.length);
+			return armor;
 		}
 
 		// Set the armor set's protection stats based on it's upgrade level
@@ -202,7 +85,7 @@ package fe {
 
 			// If this is armor (not an amulet) make it weak to pink cloud
 			if (armor.tip == 1) {
-				armor.resistances.changeResist("pinkCloud", -0.50);
+				armor.resistances.changeResist(Resistances.DAM_PINKCLOUD, -0.50);
 			}
 
 			// Get upgrade-level dependant stats
@@ -254,14 +137,14 @@ package fe {
 				return;
 			}
 
-			if (tip != "venom" && tip != "emp" && tip != "poison" && tip != "bleed" && tip != "inside") {
+			if (tip != Resistances.DAM_VENOM && tip != Resistances.DAM_EMP && tip != Resistances.DAM_POISON && tip != Resistances.DAM_BLEED && tip != Resistances.DAM_INTERNAL) {
 				dam *= 1 - armor.resistances.getResist(tip);
 				
-				if (tip == "acid") {
+				if (tip == Resistances.DAM_ACID) {
 					dam *= 2;
 				}
 				
-				if (tip == "pinkCloud") {
+				if (tip == Resistances.DAM_PINKCLOUD) {
 					dam *= 3;
 				}
 				
@@ -320,22 +203,6 @@ package fe {
 			}
 			
 			return 0;
-		}
-
-		// Returns an entire new deep copy of a set of armor, NOT just the reference
-		public function cloneArmor(id:String):Armor {
-			if (_armorMap[id] == null) {
-				throw new ArgumentError("Could not clone armor set: " + id);
-			}
-
-			var armor:Object = Cloner.deepClone(_armorMap[id]);
-			var clonedArmor:Armor = armor as Armor;
-
-			if (clonedArmor == null) {
-				throw new ArgumentError("Cloning failed: Object: " + id + " is not compatible with the Armor type.");
-			}
-
-			return clonedArmor;
 		}
 	}
 }

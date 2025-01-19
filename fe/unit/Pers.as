@@ -685,7 +685,7 @@ package fe.unit {
 				gg.vulner[i] = 1;
 			}
 			
-			gg.vulner[Unit.D_EMP]=0;
+			gg.vulner[Resistances.DAM_EMP]=0;
 			
 			for (var j:String in weaponSkills) {
 				weaponSkills[j] = 1;
@@ -1194,11 +1194,11 @@ package fe.unit {
 				dam = dieDamage * inMaxHP;
 			}
 
-			if (dam <= 0 || tip == Unit.D_INSIDE || tip == Unit.D_BLEED) {
+			if (dam <= 0 || tip == Resistances.DAM_INTERNAL || tip == Resistances.DAM_BLEED) {
 				return;
 			}
 
-			if (tip == Unit.D_NECRO) {
+			if (tip == Resistances.DAM_DEATH) {
 				dam *= 0.1;
 			}
 
@@ -1239,7 +1239,7 @@ package fe.unit {
 					trauma(headSt, 1);
 				}
 			}
-			else if (rnd < 0.6 || tip == Unit.D_POISON || tip == Unit.D_VENOM) {
+			else if (rnd < 0.6 || tip == Resistances.DAM_POISON || tip == Resistances.DAM_VENOM) {
 				sst = 4 - Math.ceil(torsHP / inMaxHP * 4);
 				torsHP -= dam;
 				
@@ -1307,11 +1307,11 @@ package fe.unit {
 
 			dam *= 3;
 
-			if (tip == Unit.D_BLEED || tip == Unit.D_BLADE || tip == Unit.D_BUL || tip == Unit.D_FANG) {
+			if (tip == Resistances.DAM_BLEED || tip == Resistances.DAM_CUT || tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_BITE) {
 				dam *= organMult;
 				dam = Math.random() * dam;
 				
-				if (tip == Unit.D_BUL || tip == Unit.D_FANG) {
+				if (tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_BITE) {
 					dam *= 0.5;
 				}
 				

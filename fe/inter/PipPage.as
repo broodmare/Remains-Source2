@@ -54,22 +54,6 @@ package fe.inter {
 		public var tips:Array = [[]];
 
 		public static var infoCache:Object = {}; // Static cache for item descriptions
-
-		private static var damageTypes:Array = [
-			{type: Unit.D_BUL,		label: 'bullet'},
-			{type: Unit.D_EXPL,		label: 'expl'},
-			{type: Unit.D_PHIS,		label: 'phis'},
-			{type: Unit.D_BLADE,	label: 'blade'},
-			{type: Unit.D_FANG,		label: 'fang'},
-			{type: Unit.D_FIRE,		label: 'fire'},
-			{type: Unit.D_LASER,	label: 'laser'},
-			{type: Unit.D_PLASMA,	label: 'plasma'},
-			{type: Unit.D_SPARK,	label: 'spark'},
-			{type: Unit.D_CRIO,		label: 'crio'},
-			{type: Unit.D_VENOM,	label: 'venom'},
-			{type: Unit.D_ACID,		label: 'acid'},
-			{type: Unit.D_NECRO,	label: 'necro'}
-		];
 		
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
@@ -351,13 +335,13 @@ package fe.inter {
 			vis.info.y = vis.ico.y;
 			
 			if (tip == 1) { // Weapon 
-				var w:Weapon = WeaponManager.reference.weapon(id);
+				var data:Object = WeaponManager.reference.weaponData(id);
 				
-				if (w.tip == "magic") {
+				if (data.tip == "magic") {
 					tip = 3;
 				}
 				else {
-					var vWeapon:Class = w.vWeapon;
+					var vWeapon:Class = data.vWeapon;
 					var data:Object = WeaponManager.reference.weaponData(id);
 					
 					if ("vis_vico" in data) { // Did this ever actually work? I can't find a 'vico' node in the original XML 
@@ -613,7 +597,7 @@ package fe.inter {
 
 			// Weapons or explosives
 			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) {
-				var w:Weapon = WeaponManager.reference.weapon(id);
+				var w:Weapon = inv.equipment.getWeapon(id);
 				
 				if (!w) {
 					infoCache[cacheKey] = "";
@@ -727,7 +711,7 @@ package fe.inter {
 				}
 
 				s += "\n" + localize("pip", "critch") + ": " + textAsColor("yellow", Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + "%");
-				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", "tipdam" + w.tipDamage));
+				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", w.tipDamage));
 
 				if (w.tip < "explosives" && w.magazineCapacity > 0) {
 					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", w.ammo.name);
@@ -788,46 +772,47 @@ package fe.inter {
 				s += "\n\n" + sinf;
 			}
 			else if (tip == Item.L_ARMOR) {
-				var a:Armor = ArmorManager.reference.armor(id);
+				var armRef:Armor = inv.equipment.getArmor(id);
 
 				// Print all armor bonuses if they exist
-				if (a.armorQual > 0) {
-					s += localize("pip", "aqual") + ": " + textAsColor("yellow", Math.round(a.armorQual * 100) + "%");
+				if (armRef.armorQual > 0) {
+					s += localize("pip", "aqual") + ": " + textAsColor("yellow", Math.round(armRef.armorQual * 100) + "%");
 				}
-				if (a.armor > 0) {
-					s += "\n" + localize("pip", "armor") + ": " + numberAsColor("yellow", Math.round(a.armor));
+				if (armRef.armor > 0) {
+					s += "\n" + localize("pip", "armor") + ": " + numberAsColor("yellow", Math.round(armRef.armor));
 				}
-				if (a.marmor > 0) {
-					s += "\n" + localize("pip", "marmor") + ": " + numberAsColor("yellow", Math.round(a.marmor));
+				if (armRef.marmor > 0) {
+					s += "\n" + localize("pip", "marmor") + ": " + numberAsColor("yellow", Math.round(armRef.marmor));
 				}
-				if (a.dexter != 0) {
-					s += "\n" + localize("pip", "dexter") + ": " + textAsColor("yellow", Math.round(a.dexter * 100) + "%");
+				if (armRef.dexter != 0) {
+					s += "\n" + localize("pip", "dexter") + ": " + textAsColor("yellow", Math.round(armRef.dexter * 100) + "%");
 				}
-				if (a.sneak != 0) {
-					s += "\n" + localize("pip", "sneak") + ": " + textAsColor("yellow", Math.round(a.sneak * 100) + "%");
+				if (armRef.sneak != 0) {
+					s += "\n" + localize("pip", "sneak") + ": " + textAsColor("yellow", Math.round(armRef.sneak * 100) + "%");
 				}
-				if (a.meleeMult != 1) {
-					s += "\n" + localize("pip", "meleedamage") + ": +" + textAsColor("yellow", Math.round((a.meleeMult - 1) * 100) + "%");
+				if (armRef.meleeMult != 1) {
+					s += "\n" + localize("pip", "meleedamage") + ": +" + textAsColor("yellow", Math.round((armRef.meleeMult - 1) * 100) + "%");
 				}
-				if (a.gunsMult != 1) {
-					s += "\n" + localize("pip", "gunsdamage") + ": +" + textAsColor("yellow", Math.round((a.gunsMult - 1) * 100) + "%");
+				if (armRef.gunsMult != 1) {
+					s += "\n" + localize("pip", "gunsdamage") + ": +" + textAsColor("yellow", Math.round((armRef.gunsMult - 1) * 100) + "%");
 				}
-				if (a.magicMult != 1) {
-					s += "\n" + localize("pip", "spelldamage") + ": +" + textAsColor("yellow", Math.round((a.magicMult - 1) * 100) + "%");
+				if (armRef.magicMult != 1) {
+					s += "\n" + localize("pip", "spelldamage") + ": +" + textAsColor("yellow", Math.round((armRef.magicMult - 1) * 100) + "%");
 				}
-				if (a.crit != 0) {
-					s += "\n" + localize("pip", "critch") + ": +" + textAsColor("yellow", Math.round(a.crit * 100) + "%");
+				if (armRef.crit != 0) {
+					s += "\n" + localize("pip", "critch") + ": +" + textAsColor("yellow", Math.round(armRef.crit * 100) + "%");
 				}
-				if (a.radVul < 1) {
-					s += "\n" + localize("pip", "radx") + ": " + textAsColor("yellow", Math.round((1 - a.radVul) * 100) + "%");
+				if (armRef.radVul < 1) {
+					s += "\n" + localize("pip", "radx") + ": " + textAsColor("yellow", Math.round((1 - armRef.radVul) * 100) + "%");
 				}
 
-				// Print all armor resistances
-				for (var i:int = 0; i < damageTypes.length; i++) {
-					var damageType:Object = damageTypes[i];
-					
-					if (a.resistances.getResist(damageType.type) != 0) {
-						s += "\n" + localize("pip", damageType.label) + ": " + textAsColor("yellow", Math.round(a.resistances.getResist(damageType.type) * 100) + "%");
+				// Print all armor resistances using the new Resistances class
+				var allResistTypes:Array = armRef.resistances.getAllResistanceTypes();
+				for each (var resistType:String in allResistTypes) {
+					var resistValue:Number = armRef.resistances.getResist(resistType);
+					if (resistValue != 0) {
+						// Assuming you have a localization entry for each resist type
+						s += "\n" + localize("pip", resistType) + ": " + textAsColor("yellow", Math.round(resistValue * 100) + "%");
 					}
 				}
 
@@ -1044,7 +1029,7 @@ package fe.inter {
 				}
 			}
 			else if (tip == Item.L_ARMOR) {
-				var a:Armor = ArmorManager.reference.armor(id);
+				var a:Object = ArmorManager.reference.armorData(id);
 
 				if (craft > 0) {
 					setIco();

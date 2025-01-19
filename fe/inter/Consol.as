@@ -7,6 +7,8 @@ package fe.inter {
 
 	import fe.*;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
+
 	
 	// Debug console class. 
 	// The debug console contains three textboxes. "help", "list1", and "list2" in order from left to right.
@@ -26,7 +28,9 @@ package fe.inter {
 			vis = vcons;
 			ist = [];
 
-			if (prev != null) ist.push(prev);
+			if (prev != null) {
+				ist.push(prev);
+			}
 
 			vis.input.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDownEvent);
 			vis.butEnter.addEventListener(MouseEvent.CLICK, onButEnter);
@@ -52,7 +56,9 @@ package fe.inter {
 
 			trace("Consol.as/setConsoleVisiblility() - Set console visiblity to " + setState.toString());
 
-			if (consoleIsVisible) world.swfStage.focus = vis.input;
+			if (consoleIsVisible) {
+				world.swfStage.focus = vis.input;
+			}
 		}
 
 		public function printLine(text:String):void {
@@ -75,8 +81,7 @@ package fe.inter {
 			}
 		}
 
-		private function onKeyboardDownEvent(event:KeyboardEvent):void
-		{
+		private function onKeyboardDownEvent(event:KeyboardEvent):void {
 			if (event.keyCode == Keyboard.ENTER) {
 				analis();
 			}
@@ -138,8 +143,11 @@ package fe.inter {
 					world.gg.vis.visible=true;
 					world.vblack.alpha=0;
 					world.vblack.visible=false;
-					world.t_exit=world.t_die=0;
-					world.vgui.visible=world.vfon.visible=world.visual.visible=true;
+					world.t_exit=0;
+					world.t_die=0;
+					world.vgui.visible=true;
+					world.vfon.visible=true;
+					world.visual.visible=true;
 					Snd.setTempMute(false);
 					world.pip.noAct=false;
 					break;
@@ -150,7 +158,7 @@ package fe.inter {
 					world.gui.vis.visible=!world.gui.vis.visible;
 					break;
 				case "die":
-					world.gg.damage(10000, Unit.D_INSIDE);
+					world.gg.damage(10000, Resistances.DAM_INTERNAL);
 					break;
 				case "hardreset":
 					if (world.pers.dead) {

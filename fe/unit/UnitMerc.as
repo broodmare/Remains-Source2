@@ -63,7 +63,9 @@ package fe.unit {
 			}
 			
 			if (arm) {
-				if (currentWeapon) arm.rotation=currentWeapon.rot*180/Math.PI+90*(1-storona);
+				if (currentWeapon) {
+					arm.rotation = currentWeapon.rot * RAD_TO_DEG + 90 * (1 - storona);
+				}
 				arm.scaleX=storona;
 			}
 		}

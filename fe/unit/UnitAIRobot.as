@@ -244,9 +244,14 @@ package fe.unit {
 				//если повернули, то можем остановиться
 				if (stay && turnX!=0) {
 					if (turnX*storona<0 && currentWeapon) {
-						if (currentWeapon.rot>0) currentWeapon.rot=Math.PI-currentWeapon.rot;
-						else currentWeapon.rot=-Math.PI-currentWeapon.rot;
+						if (currentWeapon.rot > 0) {
+							currentWeapon.rot = ONE_PI - currentWeapon.rot;
+						}
+						else {
+							currentWeapon.rot = -ONE_PI - currentWeapon.rot;
+						}
 					}
+					
 					aiNapr=storona=turnX;
 					turnX=0;
 				}

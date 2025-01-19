@@ -64,7 +64,7 @@ package fe.unit {
 			if (id == 'owl') {
 				optAutores=false;
 				rasstWeap=400;
-				vulner[D_NECRO]=0.2;
+				vulner[Resistances.DAM_DEATH]=0.2;
 			}
 			if (id == 'moon') {
 				knocked=0;
@@ -74,7 +74,7 @@ package fe.unit {
 				rasstWeap=400;
 				optTurn=false;
 				storona=1;
-				vulner[D_NECRO]=0.5;
+				vulner[Resistances.DAM_DEATH]=0.5;
 			}
 			transT = true;
 			sost = 4;
@@ -573,11 +573,11 @@ package fe.unit {
 			if (aiState==4) {
 				if (celUnit) {
 					if (attKorp(celUnit)) {
-						spd.x*=0.5;
-						spd.y*=0.5;
-						aiState=5;
-						aiTCh=15;
-						damage(dam*0.02,Unit.D_INSIDE);
+						spd.x *= 0.50;
+						spd.y *= 0.50;
+						aiState = 5;
+						aiTCh = 15;
+						damage(dam * 0.02, Resistances.DAM_INTERNAL);
 					}
 				}
 				else aiState=2;

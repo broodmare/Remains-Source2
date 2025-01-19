@@ -5,6 +5,7 @@ package fe.weapon {
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Mine;
 	import fe.projectile.Bullet;
@@ -34,7 +35,7 @@ package fe.weapon {
 			magazineCapacity	= 1;
 			ammo				= WeaponManager.reference.getAmmo(data.id);
 			
-			//vis.gotoAndStop(1);	// Why was this being called during initialization?
+			vis.gotoAndStop(1);	// Why was this being called during initialization?
 			
 			if ("throwtip" in data) {
 				throwTip = data.throwtip;
@@ -153,7 +154,7 @@ package fe.weapon {
 				}
 				if (owner && owner.player && World.w.pers.sapper > 1) {
 					un.damage1 *= World.w.pers.sapper;
-					un.vulner[Unit.D_EXPL] = un.vulner[Unit.D_PLASMA] = 0;
+					un.vulner[Resistances.DAM_EXPLOSION] = un.vulner[Resistances.DAM_PLASMA] = 0;
 				}
 			}
 			else {

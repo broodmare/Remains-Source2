@@ -83,8 +83,8 @@ package fe.unit {
 		
 		public override function run(div:int=1):void {
 			if (bind) {
-				coordinates.X = bind.coordinates.X - Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
-				coordinates.Y = bind.coordinates.Y - bind.boundingBox.halfHeight - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
+				coordinates.X = bind.coordinates.X - Math.sin(t * bindKoef + TWO_PI * bindN / 6)*bindRad;
+				coordinates.Y = bind.coordinates.Y - bind.boundingBox.halfHeight - Math.cos(t * bindKoef + TWO_PI * bindN / 6)*bindRad;
 			}
 			else {
 				coordinates.X += velocity.X / div;

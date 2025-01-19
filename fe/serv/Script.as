@@ -455,7 +455,7 @@ package fe.serv {
 					break;
 
 					default:
-						trace('ERROR: Script: "' + obj.act + '" not found!');
+						trace('Script.as/com() - ERROR: Script: "' + obj.act + '" not found!');
 					break;
 				}
 			}

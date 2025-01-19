@@ -122,8 +122,8 @@ package fe.unit {
 			doop=true;
 			transT=true;
 			
-			vulner[D_EMP]=1;
-			vulner[D_VENOM]=0;
+			vulner[Resistances.DAM_EMP]=1;
+			vulner[Resistances.DAM_VENOM]=0;
 			inter.mine=Math.round(1+Math.random()*(ndif+1));
 			
 			if (inter.mine>inter.maxMechLvl) {
@@ -242,7 +242,7 @@ package fe.unit {
 							continue;
 						}
 						
-						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != "emp" || un.vulner["emp"] > 0)) {
+						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != Resistances.DAM_EMP || un.vulner["emp"] > 0)) {
 							if (otschet > 0 && un.activateTrap == 1 && un.fraction == Unit.F_PLAYER) {
 								otschet--;
 								continue;

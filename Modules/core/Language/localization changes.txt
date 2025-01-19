@@ -1,0 +1,24 @@
+old stringID	#	new StringID	#
+####################################################################
+tipdam0     	#	DAM_PIERCE      #	Formerly   0 | D_BUL 
+tipdam1     	#	DAM_CUT         #	Formerly   1 | D_BLADE
+tipdam2     	#	DAM_BLUNT       #	Formerly   2 | D_PHIS
+tipdam3     	#	DAM_BURN        #	Formerly   3 | D_FIRE
+tipdam4     	#	DAM_EXPLOSION   #	Formerly   4 | D_EXPL
+tipdam5     	#	DAM_LASER       #	Formerly   5 | D_LASER
+tipdam6     	#	DAM_PLASMA      #	Formerly   6 | D_PLASMA
+tipdam7     	#	DAM_VENOM		#	Formerly   7 | D_VENOM
+tipdam8     	#	DAM_EMP         #	Formerly   8 | D_EMP
+tipdam9     	#	DAM_ELECTRIC    #	Formerly   9 | D_SPARK
+tipdam10     	#	DAM_ACID        #	Formerly  10 | D_ACID
+tipdam11     	#	DAM_COLD        #	Formerly  11 | D_CRIO
+tipdam12     	#	DAM_POISON      #	Formerly  12 | D_POISON
+tipdam13     	#	DAM_BLEED       #	Formerly  13 | D_BLEED
+tipdam14     	#	DAM_BITE        #	Formerly  14 | D_FANG
+tipdam15     	#	DAM_BALEFIRE    #	Formerly  15 | D_BALE
+tipdam16     	#	DAM_DEATH       #	Formerly  16 | D_NECRO
+tipdam17     	#	DAM_PSYCHIC     #	Formerly  17 | D_PSY
+tipdam18     	#	DAM_ASTRO       #	Formerly  18 | D_ASTRO
+tipdam19     	#	DAM_PINKCLOUD   #	Formerly  19 | D_PINK
+tipdam100     	#	DAM_INTERNAL    #	Formerly 100 | D_INSIDE
+tipdam101     	#	DAM_HARMONY     #	Formerly 101 | D_FRIEND

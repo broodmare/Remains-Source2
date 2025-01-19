@@ -94,6 +94,8 @@ package fe.inter {
 		// [Preparing pages]
 		override protected function setSubPages():void {
 			var localize:Function = LanguageManager.reference.localText;
+			gg = World.w.gg;
+			inv = World.w.invent;
 			
 			// Get the npc ID and vendor inventory
 			npcId = pip.npcId;

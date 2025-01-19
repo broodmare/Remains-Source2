@@ -61,7 +61,9 @@ package fe.inter {
 		//подготовка страниц
 		override protected  function setSubPages():void {
 			var localize:Function = LanguageManager.reference.localText;
-
+			gg = World.w.gg;
+			inv = World.w.invent;
+			
 			info.visible = false;
 			statHead.visible = false;
 			

@@ -18,7 +18,7 @@ package fe.unit {
 			mat = 7;
 			vis=Res.getVis('vis'+id,vismwall);
 			getXmlParam();
-			vulner[D_NECRO]=begvulner[D_NECRO]=1;
+			vulner[Resistances.DAM_DEATH]=begvulner[Resistances.DAM_DEATH]=1;
 			nazv='';
 			this.levitPoss=false;
 			showNumbs=false;

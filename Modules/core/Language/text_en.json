@@ -5799,61 +5799,73 @@
         "tipdam": {
             "string": "Damage type"
         },
-        "tipdam0": {
+        "DAM_PIERCE": {
             "string": "bullet"
         },
-        "tipdam1": {
+        "DAM_CUT": {
             "string": "blade"
         },
         "critch": {
             "string": "Critical damage chance"
         },
-        "tipdam2": {
+        "DAM_BLUNT": {
             "string": "blunt"
         },
-        "tipdam3": {
+        "DAM_BURN": {
             "string": "fire"
         },
-        "tipdam4": {
+        "DAM_EXPLOSION": {
             "string": "explosion"
         },
-        "tipdam5": {
+        "DAM_LASER": {
             "string": "laser"
         },
-        "tipdam6": {
+        "DAM_PLASMA": {
             "string": "plasma"
         },
-        "tipdam7": {
+        "DAM_POISON": {
             "string": "poison"
         },
-        "tipdam8": {
+        "DAM_EMP": {
             "string": "EMP"
         },
-        "tipdam9": {
+        "DAM_ELECTRIC": {
             "string": "lightning"
         },
-        "tipdam10": {
+        "DAM_ACID": {
             "string": "acid"
         },
-        "tipdam11": {
+        "DAM_COLD": {
             "string": "freezing"
         },
-        "tipdam14": {
-            "string": "natural weapon"
+		"DAM_POISON": {
+            "string": "poison"
         },
-        "tipdam15": {
+		"DAM_BLEED": {
+            "string": "bleeding"
+        },
+        "DAM_BITE": {
+            "string": "bite"
+        },
+        "DAM_BALEFIRE": {
             "string": "balefire"
         },
-        "tipdam16": {
+        "DAM_DEATH": {
             "string": "death"
         },
-        "tipdam18": {
+		"DAM_PSYCHIC": {
+            "string": "psychic"
+        },
+        "DAM_ASTRO": {
             "string": "stellar blaze"
         },
-        "tipdam19": {
+        "DAM_PINKCLOUD": {
             "string": "pink cloud"
         },
-        "tipdam101": {
+		"DAM_INTERNAL": {
+            "string": "internal"
+        },
+        "DAM_HARMONY": {
             "string": "kindness rays"
         },
         "ap": {

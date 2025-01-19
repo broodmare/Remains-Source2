@@ -38,14 +38,15 @@ package fe.unit {
 						weaponX = coordinates.X;
 					}
 					
-					if (tip == "cut") {
+					if (tip == Resistances.DAM_CUT) {
 						weaponY = coordinates.Y - this.boundingBox.height * 0.40;
 					}
 					else {
 						weaponY = coordinates.Y - this.boundingBox.height * 0.70;
 					}
 				}
-				else if (tip == "cut" || tip == "blunt" || tip == "explosive") {	 // [in the teeth]
+				// TODO CHECK THIS THIS IS RIGHT vvv
+				else if (tip == Resistances.DAM_CUT || tip == Resistances.DAM_BLUNT || tip == Resistances.DAM_EXPLOSION) {	 // [in the teeth]
 					weaponX = coordinates.X;
 					weaponY = coordinates.Y - this.boundingBox.height * 0.50;
 				}

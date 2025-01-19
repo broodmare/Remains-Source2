@@ -288,7 +288,7 @@ package fe {
 
 					// Check Active Channel Count**
 					if (activeSoundChannels.length >= 32) {
-						trace("Snd.as/ps() - Warning: Maximum of 32 active sound channels reached. Current active channels: " + activeSoundChannels.length);
+						trace("Snd.as/ps() - Playing \"" + soundName + "\" Warning: Maximum of 32 active sound channels reached. Current active channels: " + activeSoundChannels.length);
 					}
 					
 					// Play the sound

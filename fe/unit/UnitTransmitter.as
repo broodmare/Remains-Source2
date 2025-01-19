@@ -7,17 +7,17 @@ package fe.unit {
 	
 	public class UnitTransmitter extends Unit {
 
-		var cDam:Number;
-		var dist:Number=1000, distdam:Number=400;
-		var upKoef:Number=0;
-		var prevKoef:Number=0;
-		var cep:int=-1;
+		private var cDam:Number;
+		private var dist:Number=1000, distdam:Number=400;
+		private var upKoef:Number=0;
+		private var prevKoef:Number=0;
+		private var cep:int=-1;
 
 		// Constructor
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
-			vis=new visualTransmitter();
+			vis=new visualTransmitter();	// .SWF Dependency
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			storona=1;

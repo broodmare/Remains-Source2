@@ -26,30 +26,6 @@ package fe.unit {
 	import fe.entities.Part;
 	
 	public class Unit extends Obj {
-		
-		// Ghetto AS3 enums, reference by other classes so these need to stay public
-		public static const D_BUL:String		= "pierce";			// Bullets		+
-		public static const D_BLADE:String		= "cut";			// Blade		+
-		public static const D_PHIS:String		= "blunt";			// Blunt		+
-		public static const D_FIRE:String		= "fire";			// Fire			*
-		public static const D_EXPL:String		= "explosive";		// Explosion	+
-		public static const D_LASER:String		= "laser";			// Laser		*
-		public static const D_PLASMA:String		= "plasma";			// Plasma		*
-		public static const D_VENOM:String		= "venom";			// Venom
-		public static const D_EMP:String		= "emp";			// EMP
-		public static const D_SPARK:String		= "electric";		// Lightning	*
-		public static const D_ACID:String		= "acid";			// Acid			*
-		public static const D_CRIO:String		= "cold";			// Cold			*
-		public static const D_POISON:String		= "poison";			// Poison
-		public static const D_BLEED:String		= "bleed";			// Bleeding
-		public static const D_FANG:String		= "bite";			// Beast		+
-		public static const D_BALE:String		= "balefire";		// Balefire
-		public static const D_NECRO:String		= "necro";			// Necromancy
-		public static const D_PSY:String		= "psychic";		// Psychic
-		public static const D_ASTRO:String		= "astro";			// ???
-		public static const D_PINK:String		= "pinkCloud";		// Pink Cloud
-		public static const D_INSIDE:String		= "inside";			// ???
-		public static const D_FRIEND:String		= "friend";			// ???
 
 		public static var txtMiss:String;
 		public static var arrIcos:Array;
@@ -119,7 +95,7 @@ package fe.unit {
 		
 		// Damage
 		public var dam:Number				= 0.00;			//урон самого юнита
-		public var tipDamage:String			= D_PHIS;		//тип урона
+		public var tipDamage:String			= Resistances.DAM_BLUNT;		//тип урона
 		public var radDamage:Number			= 0.00;			//урон радиацией
 		public var retDamage:Boolean		= false;		//возврат урона от юнита к врагу
 		public var relat:Number				= 0.00;			//обратный возврат урона, от врага к юниту
@@ -385,7 +361,7 @@ package fe.unit {
 				vulner[i] = 1;
 			}
 			
-			vulner[D_EMP] = 0;
+			vulner[Resistances.DAM_EMP] = 0;
 			effects = [];
 			sloy = 2;
 			prior = 1;
@@ -460,7 +436,7 @@ package fe.unit {
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 
 			if (!node) {
-				trace("ERROR: unit: \"" + id + "\" not found!");
+				trace("Unit.as/create() - ERROR: unit: \"" + id + "\" not found!");
 				return null;
 			}
 
@@ -471,12 +447,12 @@ package fe.unit {
 				UnitClass = getDefinitionByName(className) as Class;
 			}
 			catch (e:ReferenceError) {
-				trace("ERROR: Class \"" + className + "\" not found!");
+				trace("Unit.as/create() - ERROR: Class \"" + className + "\" not found!");
 				return null;
 			}
 
 			if (!UnitClass) {
-				trace("ERROR: Unit class for id \"" + id + "\" could not be resolved.");
+				trace("Unit.as/create() - ERROR: Unit class for id \"" + id + "\" could not be resolved.");
 				return null;
 			}
 
@@ -652,22 +628,22 @@ package fe.unit {
 			//уязвимости
 			if (node0.vulner.length()) {
 				node=node0.vulner[0];
-				if (node.@bul.length()) vulner[D_BUL]=node.@bul;
-				if (node.@blade.length()) vulner[D_BLADE]=node.@blade;
-				if (node.@phis.length()) vulner[D_PHIS]=node.@phis;
-				if (node.@fire.length()) vulner[D_FIRE]=node.@fire;
-				if (node.@expl.length()) vulner[D_EXPL]=node.@expl;
-				if (node.@laser.length()) vulner[D_LASER]=node.@laser;
-				if (node.@plasma.length()) vulner[D_PLASMA]=node.@plasma;
-				if (node.@venom.length()) vulner[D_VENOM]=node.@venom;
-				if (node.@emp.length()) vulner[D_EMP]=node.@emp;
-				if (node.@spark.length()) vulner[D_SPARK]=node.@spark;
-				if (node.@acid.length()) vulner[D_ACID]=node.@acid;
-				if (node.@cryo.length()) vulner[D_CRIO]=node.@cryo;
-				if (node.@poison.length()) vulner[D_POISON]=node.@poison;
-				if (node.@bleed.length()) vulner[D_BLEED]=node.@bleed;
-				if (node.@fang.length()) vulner[D_FANG]=node.@fang;
-				if (node.@pink.length()) vulner[D_PINK]=node.@pink;
+				if (node.@bul.length()) vulner[Resistances.DAM_PIERCE]=node.@bul;
+				if (node.@blade.length()) vulner[Resistances.DAM_CUT]=node.@blade;
+				if (node.@phis.length()) vulner[Resistances.DAM_BLUNT]=node.@phis;
+				if (node.@fire.length()) vulner[Resistances.DAM_BURN]=node.@fire;
+				if (node.@expl.length()) vulner[Resistances.DAM_EXPLOSION]=node.@expl;
+				if (node.@laser.length()) vulner[Resistances.DAM_LASER]=node.@laser;
+				if (node.@plasma.length()) vulner[Resistances.DAM_PLASMA]=node.@plasma;
+				if (node.@venom.length()) vulner[Resistances.DAM_VENOM]=node.@venom;
+				if (node.@emp.length()) vulner[Resistances.DAM_EMP]=node.@emp;
+				if (node.@spark.length()) vulner[Resistances.DAM_ELECTRIC]=node.@spark;
+				if (node.@acid.length()) vulner[Resistances.DAM_ACID]=node.@acid;
+				if (node.@cryo.length()) vulner[Resistances.DAM_COLD]=node.@cryo;
+				if (node.@poison.length()) vulner[Resistances.DAM_POISON]=node.@poison;
+				if (node.@bleed.length()) vulner[Resistances.DAM_BLEED]=node.@bleed;
+				if (node.@fang.length()) vulner[Resistances.DAM_BITE]=node.@fang;
+				if (node.@pink.length()) vulner[Resistances.DAM_PINKCLOUD]=node.@pink;
 			}
 			
 			//visual parameters
@@ -735,12 +711,12 @@ package fe.unit {
 			}
 			
 			if (blood == 0) {
-				vulner[D_BLEED] = 0;
+				vulner[Resistances.DAM_BLEED] = 0;
 			}
 			
 			if (opt) {
 				if (opt.robot || opt.mech) {
-					vulner[D_NECRO]=vulner[D_BLEED]=vulner[D_VENOM]=vulner[D_POISON]=0;
+					vulner[Resistances.DAM_DEATH]=vulner[Resistances.DAM_BLEED]=vulner[Resistances.DAM_VENOM]=vulner[Resistances.DAM_POISON]=0;
 				}
 			}
 
@@ -795,7 +771,7 @@ package fe.unit {
 				}
 				
 				if (n.@ch.length() == 0 || isrnd(n.@ch)) {
-					return WeaponManager.reference.weapon(n.@id);	// THIS IS PROBABLY WRONG, IT SHOULD BE CLONING NEW WEAPONS FOR EACH UNIT HERE!!! FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					return WeaponManager.reference.cloneWeapon(n.@id);
 				}
 			}
 			
@@ -884,7 +860,7 @@ package fe.unit {
 			}
 			
 			if (loc.biom == 5) {
-				vulner[D_PINK] = 0;	// [Invulnerable to the pink cloud]
+				vulner[Resistances.DAM_PINKCLOUD] = 0;	// [Invulnerable to the pink cloud]
 			}
 			
 			// [Attached scripts]
@@ -997,23 +973,23 @@ package fe.unit {
 		}
 		
 		public function setHeroVulners():void {
-			vulner[D_EMP]	*= 0.80;
-			vulner[D_BALE]	*= 0.70;
-			vulner[D_NECRO]	*= 0.70;
-			vulner[D_ASTRO]	*= 0.70;
+			vulner[Resistances.DAM_EMP]	*= 0.80;
+			vulner[Resistances.DAM_BALEFIRE]	*= 0.70;
+			vulner[Resistances.DAM_DEATH]	*= 0.70;
+			vulner[Resistances.DAM_ASTRO]	*= 0.70;
 
 			if (hero == 2) {
-				vulner[D_BUL]		*= 0.50;
-				vulner[D_PHIS]		*= 0.65;
-				vulner[D_BLADE]		*= 0.65;
-				vulner[D_EXPL]		*= 0.75;
+				vulner[Resistances.DAM_PIERCE]		*= 0.50;
+				vulner[Resistances.DAM_BLUNT]		*= 0.65;
+				vulner[Resistances.DAM_CUT]		*= 0.65;
+				vulner[Resistances.DAM_EXPLOSION]		*= 0.75;
 			}
 			if (hero == 3) {
-				vulner[D_LASER]		*= 0.60;
-				vulner[D_PLASMA]	*= 0.50;
-				vulner[D_EMP]		*= 0.75;
-				vulner[D_SPARK]		*= 0.70;
-				vulner[D_FIRE]		*= 0.70;
+				vulner[Resistances.DAM_LASER]		*= 0.60;
+				vulner[Resistances.DAM_PLASMA]	*= 0.50;
+				vulner[Resistances.DAM_EMP]		*= 0.75;
+				vulner[Resistances.DAM_ELECTRIC]		*= 0.70;
+				vulner[Resistances.DAM_BURN]		*= 0.70;
 			}
 		}
 		
@@ -1161,12 +1137,13 @@ package fe.unit {
 
 			for (i in childObjs) {
 				if (childObjs[i]) { // Here is where it's called as a string.
-					try {
-						childObjs[i].step();
+					childObjs[i].step();
+					/*try {
+						
 					}
 					catch(err) {
-						trace('ERROR: (00:2) - Child object: "' + childObjs[i].id + '" with parent: "' + id + '" failed to run step()!');
-					}
+						trace("Unit.as/step() - Unit: " + nazv + " (" + id + ")" + "'s  Child object: \"" + childObjs[i].id + "\" failed to run step()!");
+					}*/
 				}
 			}
 
@@ -2620,7 +2597,7 @@ package fe.unit {
 					t_hp = 30;
 					
 					if (cut > 0) {
-						damage(Math.sqrt(cut), D_BLEED, null, true);
+						damage(Math.sqrt(cut), Resistances.DAM_BLEED, null, true);
 						cut -= critHeal;
 						
 						if (cut < 0) {
@@ -2629,7 +2606,7 @@ package fe.unit {
 					}
 					
 					if (poison > 0) {
-						damage(Math.sqrt(poison), D_POISON, null, true);
+						damage(Math.sqrt(poison), Resistances.DAM_POISON, null, true);
 						poison -= critHeal;
 						
 						if (poison < 0) {
@@ -2788,7 +2765,7 @@ package fe.unit {
 			if (tkol > 1) {
 				bul.explTip = 2;
 			}
-			else if (ttipdam == "acid") {
+			else if (ttipdam == Resistances.DAM_ACID) {
 				bul.explTip = 3;
 			}
 			
@@ -2922,7 +2899,7 @@ package fe.unit {
 			}
 			
 			if (!player && loc.biom == 5) {
-				vulner[D_PINK] = 0;	// [invulnerable to the pink cloud]
+				vulner[Resistances.DAM_PINKCLOUD] = 0;	// [invulnerable to the pink cloud]
 			}
 			
 			for each(var eff:Effect in effects) {
@@ -2983,21 +2960,21 @@ package fe.unit {
 			}
 			
 			//уменьшение электрического урона
-			if (tip == D_SPARK) {
+			if (tip == Resistances.DAM_ELECTRIC) {
 				if (!stay && !inWater && isLaz == 0) {
 					dam *= 0.5;
 				}
 			}
 			
 			//урон ядом наносится только живым
-			if (tip == D_VENOM && sost != 1) {
+			if (tip == Resistances.DAM_VENOM && sost != 1) {
 				return 0;
 			}
 			
 			var mess:String;
 			
 			// [Damage to armor]
-			if (!player && armor_hp > 0 && (shithp <= 0 || dam > shitArmor) && (armor > 0 || marmor > 0) && (tip <= D_BALE && tip != D_EMP && tip != D_POISON && tip != D_BLEED || tip == D_ASTRO)) {
+			if (!player && armor_hp > 0 && (shithp <= 0 || dam > shitArmor) && (armor > 0 || marmor > 0) && (tip <= Resistances.DAM_BALEFIRE && tip != Resistances.DAM_EMP && tip != Resistances.DAM_POISON && tip != Resistances.DAM_BLEED || tip == Resistances.DAM_ASTRO)) {
 				var damarm:Number = dam;
 				
 				if (shithp > 0) {
@@ -3008,10 +2985,10 @@ package fe.unit {
 					damarm /= bul.armorMult;
 				}
 				
-				if (tip == D_ACID) {
+				if (tip == Resistances.DAM_ACID) {
 					damarm *= 4;
 				}
-				else if (tip == D_EXPL) {
+				else if (tip == Resistances.DAM_EXPLOSION) {
 					damarm *= 2;
 				}
 				
@@ -3034,7 +3011,7 @@ package fe.unit {
 			// [Armor and armor-piercing]
 			var armor2:Number = 0;		
 			if (!tt) {
-				if (tip == D_BUL || tip == D_BLADE || tip == D_EXPL || tip == D_PHIS || tip == D_FANG || tip == D_ACID) {
+				if (tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_CUT || tip == Resistances.DAM_EXPLOSION || tip == Resistances.DAM_BLUNT || tip == Resistances.DAM_BITE || tip == Resistances.DAM_ACID) {
 					armor2 = skin;
 					
 					if (armorQual > 0 && isrnd(armorQual)) {
@@ -3042,7 +3019,7 @@ package fe.unit {
 					}
 				}
 				
-				if (tip == D_FIRE || tip == D_LASER || tip == D_PLASMA || tip == D_SPARK || tip == D_CRIO || tip == D_ASTRO) {
+				if (tip == Resistances.DAM_BURN || tip == Resistances.DAM_LASER || tip == Resistances.DAM_PLASMA || tip == Resistances.DAM_ELECTRIC || tip == Resistances.DAM_COLD || tip == Resistances.DAM_ASTRO) {
 					armor2 = skin;
 					
 					if (armorQual > 0 && isrnd(armorQual)) {
@@ -3093,14 +3070,14 @@ package fe.unit {
 				var sposob:int = 0; // [way to die]
 				
 				// [Instant disintegration]
-				if (bul && bul.desintegr && (tip == D_LASER || tip == D_PLASMA)) {
+				if (bul && bul.desintegr && (tip == Resistances.DAM_LASER || tip == Resistances.DAM_PLASMA)) {
 					if (hp <= dam * 10 && isrnd(bul.desintegr)) {
 						sposob = 1;
 						dam *= 12;
 					}
 				}
 				
-				if (tip != D_POISON && tip != D_BLEED && tip != D_INSIDE) {
+				if (tip != Resistances.DAM_POISON && tip != Resistances.DAM_BLEED && tip != Resistances.DAM_INTERNAL) {
 					dam *= allVulnerMult;
 				}
 				
@@ -3142,23 +3119,23 @@ package fe.unit {
 						dieWeap = bul.weapId;
 					}
 					
-					if (tip == D_FIRE && (hp <= -maxhp * 3 || !trup)) {
+					if (tip == Resistances.DAM_BURN && (hp <= -maxhp * 3 || !trup)) {
 						sposob = 1;
 					}
 					
-					if (tip == D_LASER && (hp <= -maxhp * 3 || !trup || isrnd())) {
+					if (tip == Resistances.DAM_LASER && (hp <= -maxhp * 3 || !trup || isrnd())) {
 						sposob = 1;
 					}
 					
-					if (tip == D_PLASMA || tip == D_ACID) {
+					if (tip == Resistances.DAM_PLASMA || tip == Resistances.DAM_ACID) {
 						sposob = 2;
 					}
 					
-					if (tip == D_ASTRO || tip == D_FRIEND) {
+					if (tip == Resistances.DAM_ASTRO || tip == Resistances.DAM_HARMONY) {
 						sposob = 3;
 					}
 					
-					if (tip == D_CRIO) {
+					if (tip == Resistances.DAM_COLD) {
 						sposob = 4;
 					}
 					
@@ -3171,7 +3148,7 @@ package fe.unit {
 				}
 				
 				// [Electric and emp damage stuns robots]
-				if ((tip == D_SPARK || tip == D_EMP) && opt && opt.robot && sost == 1 && Math.random() < dam / maxhp) {
+				if ((tip == Resistances.DAM_ELECTRIC || tip == Resistances.DAM_EMP) && opt && opt.robot && sost == 1 && Math.random() < dam / maxhp) {
 					mess = Res.txt("g", 'kz');
 					
 					if (stun < robotKZ) {
@@ -3180,7 +3157,7 @@ package fe.unit {
 				}
 				
 				// [Explosions cause concussion]
-				if (tip == D_EXPL && opt && !opt.robot && !mech && !doop && sost == 1 && Math.random() < dam / maxhp) {
+				if (tip == Resistances.DAM_EXPLOSION && opt && !opt.robot && !mech && !doop && sost == 1 && Math.random() < dam / maxhp) {
 					mess = Res.txt('e', 'contusion');
 					addEffect('contusion');
 				}
@@ -3192,32 +3169,32 @@ package fe.unit {
 				// [Additional effects]
 				if (bul && bul.weap) {								
 					if (bul.weap.dopEffect != null && bul.weap.dopCh > 0 && (bul.weap.dopCh >= 1 || Math.random() < bul.weap.dopCh)) {
-						if (bul.weap.dopEffect == 'igni' && vulner[D_FIRE] > 0.1) {
+						if (bul.weap.dopEffect == 'igni' && vulner[Resistances.DAM_BURN] > 0.1) {
 							addEffect('burning', bul.weap.dopDamage);
 							mess = Res.txt('e', 'burning');
 						}
 						
-						if (bul.weap.dopEffect == 'ice' && vulner[D_CRIO] > 0.1 && !mech) {
+						if (bul.weap.dopEffect == 'ice' && vulner[Resistances.DAM_COLD] > 0.1 && !mech) {
 							mess = Res.txt('e', 'freezing');
 							addEffect('freezing');
 						}
 						
-						if (bul.weap.dopEffect == 'blind' && vulner[D_LASER] > 0.1 && !mech && !doop) {
+						if (bul.weap.dopEffect == 'blind' && vulner[Resistances.DAM_LASER] > 0.1 && !mech && !doop) {
 							mess = Res.txt('e', 'blindness');
 							addEffect('blindness');
 						}
 						
-						if (bul.weap.dopEffect == 'acid' && vulner[D_ACID] > 0.1) {
+						if (bul.weap.dopEffect == 'acid' && vulner[Resistances.DAM_ACID] > 0.1) {
 							mess = Res.txt('e', 'chemburn');
 							addEffect('chemburn', bul.weap.dopDamage);
 						}
 						
-						if (bul.weap.dopEffect == 'pink' && vulner[D_PINK] > 0.1) {
+						if (bul.weap.dopEffect == 'pink' && vulner[Resistances.DAM_PINKCLOUD] > 0.1) {
 							mess = Res.txt('e', 'pinkcloud');
 							addEffect('pinkcloud', bul.weap.dopDamage);
 						}
 						
-						if (bul.weap.dopEffect == 'poison' && vulner[D_POISON] > 0.1) {
+						if (bul.weap.dopEffect == 'poison' && vulner[Resistances.DAM_POISON] > 0.1) {
 							if (player && poison <= 0) {
 								World.w.gui.infoText('poison');
 							}
@@ -3225,7 +3202,7 @@ package fe.unit {
 							poison += bul.weap.dopDamage;
 						}
 						
-						if (bul.weap.dopEffect == 'cut' && vulner[D_BLEED] > 0.1 && !mech) {
+						if (bul.weap.dopEffect == 'cut' && vulner[Resistances.DAM_BLEED] > 0.1 && !mech) {
 							if (player && cut <= 0) {
 								World.w.gui.infoText('cut');
 							}
@@ -3256,14 +3233,14 @@ package fe.unit {
 				
 				//возврат урона хозяину пули
 				if (bul && bul.owner && bul.owner.relat > 0) {
-					bul.owner.damage(dam*bul.owner.relat, D_INSIDE);
+					bul.owner.damage(dam*bul.owner.relat, Resistances.DAM_INTERNAL);
 				}
 				
-				if (tip == D_INSIDE && dam<5) {
+				if (tip == Resistances.DAM_INTERNAL && dam<5) {
 					isShow = false;
 				}
 				
-				if (blood > 0 && (tip == D_BUL || tip == D_BLADE || tip == D_PHIS || tip == D_BLEED || tip == D_FANG)) {	//кровь
+				if (blood > 0 && (tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_CUT || tip == Resistances.DAM_BLUNT || tip == Resistances.DAM_BLEED || tip == Resistances.DAM_BITE)) {	//кровь
 					if (bloodEmit == null) {
 						if (blood == 1) {
 							bloodEmit = Emitter.arr["blood"];
@@ -3284,10 +3261,10 @@ package fe.unit {
 							bloodEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {kol:int(dam/3)});
 						}
 						
-						if (blood == 1 && tip != D_BLEED && massa > 0.2) {
+						if (blood == 1 && tip != Resistances.DAM_BLEED && massa > 0.2) {
 							var ver:Number = Math.random();
 							
-							if (tip == D_BLADE) {
+							if (tip == Resistances.DAM_CUT) {
 								ver = ver * ver;
 							}
 							
@@ -3333,7 +3310,7 @@ package fe.unit {
 						vnumb = 3;
 					}
 					
-					if (player && tt && tip == D_PINK) {
+					if (player && tt && tip == Resistances.DAM_PINKCLOUD) {
 						vnumb = 11;
 					}
 					
@@ -3390,7 +3367,7 @@ package fe.unit {
 			
 			if (damWall > 0) {
 				var dam:Number = Math.sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y) / damWallSpeed * damWall;
-				damage(dam, D_PHIS);
+				damage(dam, Resistances.DAM_BLUNT);
 				
 				if (Math.random() < dam / maxhp) {
 					stun = damWallStun;
@@ -3550,19 +3527,19 @@ package fe.unit {
 				sc = 3;
 			}
 			
-			if (un.tipDamage == Unit.D_SPARK) {
+			if (un.tipDamage == Resistances.DAM_ELECTRIC) {
 				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-boundingBox.halfHeight, {celx:un.coordinates.X, cely:(un.coordinates.Y - un.boundingBox.halfHeight)});
 				Snd.ps('electro', coordinates.X, coordinates.Y);
 			}
-			else if (un.tipDamage == Unit.D_ACID) {
+			else if (un.tipDamage == Resistances.DAM_ACID) {
 				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X) * 0.50, (coordinates.Y - boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight) * 0.50, {scale:sc});
 				Snd.ps('acid',coordinates.X, coordinates.Y);
 			}
-			else if (un.tipDamage == Unit.D_NECRO) {
+			else if (un.tipDamage == Resistances.DAM_DEATH) {
 				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X) * 0.50, (coordinates.Y - boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight) * 0.50, {scale:sc});
 				Snd.ps('hit_necr', coordinates.X, coordinates.Y);
 			}
-			else if (un.tipDamage == Unit.D_FANG) {
+			else if (un.tipDamage == Resistances.DAM_BITE) {
 				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X) * 0.50, (coordinates.Y - boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight) * 0.50, {scale:sc});
 				Snd.ps('fang_hit', coordinates.X, coordinates.Y);
 			}
@@ -3583,7 +3560,7 @@ package fe.unit {
 			}
 			
 			if (un.molnDam > 0) {
-				damage(un.molnDam, D_SPARK);
+				damage(un.molnDam, Resistances.DAM_ELECTRIC);
 				return 1;
 			}
 			
@@ -3601,7 +3578,7 @@ package fe.unit {
 				un.velocity.Y = (-un.velocity.Y + ndy) * 0.25 + ndy;
             }
 			
-			damage(un.massa * (un.vel2 - 50) * World.boxDamage, D_PHIS);
+			damage(un.massa * (un.vel2 - 50) * World.boxDamage, Resistances.DAM_BLUNT);
 			priorUnit = null;
 			
 			return 2;

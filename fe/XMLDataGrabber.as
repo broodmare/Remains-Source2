@@ -38,7 +38,7 @@ package fe  {
                 return matchingNodes[0];
             }
             else {
-                trace('ERROR: Node with name: "' + nodeName + '" and attribute: "' + attributeName + '" that matches: "' + attributeKey + '" returned no results!');
+                trace('XMLDataGrabber.as/getNodeByNameWithAttributeThatMatches() - ERROR: Node with name: "' + nodeName + '" and attribute: "' + attributeName + '" that matches: "' + attributeKey + '" returned no results!');
                 return null;
             }
         }
@@ -51,19 +51,19 @@ package fe  {
             }
 
             if (data == null) {
-                trace('ERROR: Cannot find XMLData dictionary!');
+                trace('XMLDataGrabber.as/getFileFromModuleDictionary() - ERROR: Cannot find XMLData dictionary!');
                 return new XML();
             }
             if (data[module] == null) {
-                trace('ERROR: Module: "' + module + '" not found!');
+                trace('XMLDataGrabber.as/getFileFromModuleDictionary() - ERROR: Module: "' + module + '" not found!');
                 return new XML();
             }
             if (data[module][directory] == null) {
-                trace('ERROR: Directory "' + directory + '" not found in module: "' + module + '"!');
+                trace('XMLDataGrabber.as/getFileFromModuleDictionary() - ERROR: Directory "' + directory + '" not found in module: "' + module + '"!');
                 return new XML();
             }
             if (data[module][directory][fileName] == null) {
-                trace('ERROR: File "' + fileName + '" not found in directory: "' + directory + '"!');
+                trace('XMLDataGrabber.as/getFileFromModuleDictionary() - ERROR: File "' + fileName + '" not found in directory: "' + directory + '"!');
                 return new XML();
             }
 

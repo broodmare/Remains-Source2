@@ -247,11 +247,11 @@ package fe.inter {
 			keyNames[Keyboard.NUMPAD_ENTER]		= "Numpad Enter";
 			
 			var localize:Function = LanguageManager.reference.localText;
-			mbNames["lmb"]						= localize("k","lmb");
-			mbNames["rmb"]						= localize("k","rmb");
-			mbNames["mmb"]						= localize("k","mmb");
-			mbNames["scrd"]						= localize("k","scrd");
-			mbNames["scru"]						= localize("k","scru");
+			mbNames["lmb"]						= localize("key","lmb");
+			mbNames["rmb"]						= localize("key","rmb");
+			mbNames["mmb"]						= localize("key","mmb");
+			mbNames["scrd"]						= localize("key","scrd");
+			mbNames["scru"]						= localize("key","scru");
 			
 			gotoDef();
 			if (loadObj) load(loadObj);

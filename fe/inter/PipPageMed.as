@@ -48,6 +48,9 @@ package fe.inter {
 
 		// [preparing pages]
 		override protected function setSubPages():void {
+			gg = World.w.gg;
+			inv = World.w.invent;
+			
 			setIco();
 			
 			var localize:Function = LanguageManager.reference.localText;

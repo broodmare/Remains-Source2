@@ -227,12 +227,15 @@ package fe {
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
-			itemManager = new ItemManager();
-			armorManager = new ArmorManager();
-			weaponManager = new WeaponManager();
+			itemManager		= new ItemManager();
+			armorManager	= new ArmorManager();
+			weaponManager	= new WeaponManager();
 
 			LootGen.init();
+
+			// All Form class data is loaded and intitialized
 			Form.setForms();
+			
 			Emitter.init();
 
 			// [Creation of graphic elements]

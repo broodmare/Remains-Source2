@@ -76,13 +76,18 @@ package fe.loc {
 			
 			if (loadObj) {
 				active=loadObj.act;
-				if (active==undefined) active=0;
+			
+				if (active==false) active=0;
+			
 				if (active==1)  vis.osn.gotoAndStop('reopen');
+			
 				if (active==2)  {
 					vis.osn.gotoAndStop('open');
 				}
+			
 				if (loadObj.used) used=true;
 			}
+			
 			if (main) {
 				area=null;
 				active=2;
@@ -95,6 +100,7 @@ package fe.loc {
 				inter.update();
 				vis.fiol.gotoAndStop(25);
 			}
+			
 			if (hide) {
 				vis.visible=false;
 				nazv='';
@@ -105,6 +111,7 @@ package fe.loc {
 		public override function addVisual():void {
 			if (vis && !hide) {
 				World.w.grafon.visObjs[sloy].addChild(vis);
+			
 				if (cTransform) {
 					vis.transform.colorTransform=cTransform;
 				}
@@ -116,10 +123,13 @@ package fe.loc {
 		
 		public override function save():Object {
 			if (active==0) return null;
+		
 			var obj:Object=new Object();
 			inter.save(obj);
 			obj.act=active;
+		
 			if (used) obj.used=1;
+		
 			return obj;
 		}
 		
@@ -130,48 +140,64 @@ package fe.loc {
 		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
 		public function activate(first:Boolean=false):void {
 			if (inter.lock>0 || inter.mine>0) return;
+		
 			if (active==2) {
 				return;
 			}
+		
 			if (active==0 && first==false) {
 				if (World.w.pers.manaCPres) World.w.pers.heal(World.w.pers.manaCPres,6);
+		
 				if (World.w.pers.xpCPadd) World.w.pers.expa(loc.unXp*3);
 			}
+	
 			active=2;
 			World.w.pers.currentCP=this;
 			World.w.pers.currentCPCode=code;
+	
 			if (code) {
 				World.w.pers.prevCPCode=code;
 				loc.land.act.lastCpCode=code;
 			}
+	
 			loc.land.currentCP=this;
+	
 			if (first) {
 				vis.osn.gotoAndStop('open');
 				if (World.w.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
-			} else {
+			}
+			else {
 				vis.osn.play();
+				
 				if (World.w.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
 			}
+		
 			if (used) vis.fiol.gotoAndStop(1);
+		
 			if (World.w.game.mReturn && teleOn && !used) {
 				inter.actFun=teleport;
 				inter.userAction='returnb';
 				inter.t_action=30;
 				inter.update();
-			} else {
+			}
+			else {
 				inter.active=false;
 				inter.actionText='';
 			}
+			
 			World.w.gui.infoText('checkPoint');
 			World.w.saveGame();
 		}
 		
 		public function teleport():void {
 			if (main) {
-				if (World.w.game.missionId != 'rbl') World.w.game.gotoLand(World.w.game.missionId);
+				if (World.w.game.missionId != 'rbl') {
+					World.w.game.gotoLand(World.w.game.missionId);
+				}
 			}
 			else {
 				World.w.game.gotoLand(World.w.game.baseId);
+				
 				if (World.w.hardInv && World.w.land.rnd) {
 					used = true;
 					inter.active = false;
@@ -182,11 +208,16 @@ package fe.loc {
 		}
 		
 		public function areaActivate():void {
-			if (active==0) activate();
+			if (active == 0) {
+				activate();
+			}
 		}
 		
 		public function deactivate():void {
-			if (main) return;
+			if (main) {
+				return;
+			}
+
 			inter.active=!hide;
 			active=1;
 			vis.osn.gotoAndStop('reopen');
@@ -199,18 +230,34 @@ package fe.loc {
 		
 		public override function step():void {
 			onCursor=(this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY)?prior:0;
-			if (inter) inter.step();
+			
+			if (inter) {
+				inter.step();
+			}
+			
 			if (main) {
-				if (World.w.game.missionId && World.w.game.lands[World.w.game.missionId] && World.w.game.lands[World.w.game.missionId].tip!='base') inter.active=true;
-				else inter.active=false;
+				if (World.w.game.missionId && World.w.game.lands[World.w.game.missionId] && World.w.game.lands[World.w.game.missionId].tip !='base') {
+					inter.active = true;
+				}
+				else {
+					inter.active = false;
+				}
+				
 				return;
 			}
+			
 			if (locked && inter.lock==0 && inter.mine==0) {
 				locked=false;
 				vis.lock.visible=false;
 			}
-			if (area) area.step();
-			if (active==2 && World.w.pers.currentCP!=this) deactivate();
+			
+			if (area) {
+				area.step();
+			}
+			
+			if (active == 2 && World.w.pers.currentCP != this) {
+				deactivate();
+			}
 		}
 	}
 }

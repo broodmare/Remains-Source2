@@ -16,10 +16,10 @@ package fe.loc {
 		public var tip:String='gg';	//1 - активируется ГГ
 		
 		//зазмеры в блоках
-		var bx:int=0, by:int=0, rx:int=2, ry:int=2;
+		private var bx:int=0, by:int=0, rx:int=2, ry:int=2;
 		
-		var active:Boolean=false;		//область активна (активатор находится в ней)
-		var preactive:Boolean=false;	//область была активна в предыдущем такте
+		private var active:Boolean=false;		//область активна (активатор находится в ней)
+		private var preactive:Boolean=false;	//область была активна в предыдущем такте
 		
 		public var over:Function;
 		public var out:Function;
@@ -49,37 +49,52 @@ package fe.loc {
 
 		// Constructor
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
-			loc=nloc;
+			loc = nloc;
+			
 			if (xml) {
 				bx=xml.@x;
 				by=xml.@y;
+				
 				if (xml.@w.length()) rx=xml.@w;
+				
 				if (mirror) {
 					bx=loc.spaceX-bx-rx;
 				}
+				
 				this.boundingBox.width = rx * tileX;
 				this.coordinates.X  = bx * tileX;
 				this.boundingBox.left = bx * tileX;
 				this.coordinates.Y  = by * tileY + tileY;
 				this.boundingBox.bottom = by * tileY + tileY;
 				this.boundingBox.right = this.boundingBox.left + this.boundingBox.width;
+				
 				if (xml.@h.length()) ry=xml.@h;
+				
 				this.boundingBox.height = ry * tileY;
 				this.boundingBox.top = this.boundingBox.bottom - this.boundingBox.height
+				
 				//визуал
 				if (xml.@vis.length()) {
-					vis=Res.getVis('vis'+xml.@vis,visArea);	// .SWF Dependency
+					vis=Res.getVis('vis'+xml.@vis,visArea);		// .SWF Dependency
 				}
 				if (World.w.showArea) {
-					vis=new visArea();	// .SWF Dependency
+					vis=new visArea();							// .SWF Dependency
 				}
+				
 				if (xml.@tip.length()) tip=xml.@tip;
+				
 				if (xml.@mess.length()) mess=xml.@mess;
+				
 				if (xml.@down.length()) messDown=true;
+				
 				if (xml.@off.length()) enabled=xml.@off<=0;
+				
 				if (xml.@allact.length()) allact=xml.@allact;
+				
 				if (xml.@allid.length()) allid=xml.@allid;
+				
 				if (xml.@trig.length()) trig=true;
+				
 				//прикреплённые скрипты
 				if (xml.scr.length()) {
 					for each (var xscr in xml.scr) {
@@ -88,12 +103,15 @@ package fe.loc {
 						if (scr.eve=='out') scrOut=scr;
 					}
 				}
+				
 				if (xml.@scr.length()) scrOver=World.w.game.getScript(xml.@scr,this);
+				
 				if (xml.@scrout.length()) scrOut=World.w.game.getScript(xml.@scrout,this);
+				
 				//изменить стенки
 				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length()) {
-					for (var i=bx; i<bx+rx; i++) {
-						for (var j=by-ry+1; j<=by; j++) {
+					for (var i:int = bx; i<bx+rx; i++) {
+						for (var j:int = by - ry + 1; j<=by; j++) {
 							var t:Tile=loc.getTile(i,j);
 							if (xml.@tilehp.length()) {
 								t.hp=xml.@tilehp;

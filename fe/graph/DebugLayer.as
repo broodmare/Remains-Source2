@@ -15,9 +15,9 @@ package fe.graph {
         private var spriteContainer:Sprite; // Main sprite container
 		
 		// Units and Objects
-		private var drawObjectBoundingBoxes:Boolean = false;
+		private var drawObjectBoundingBoxes:Boolean = true;
 		private var drawUnitBoundingBoxes:Boolean = false;
-		private var drawPlayerBoundingBoxes:Boolean = false;
+		private var drawPlayerBoundingBoxes:Boolean = true;
 
 		private var drawChainBoundingBoxes:Boolean = false; // Processing chain for the current loc (Bullets, Triggers, ..)
 

@@ -262,7 +262,17 @@ package fe {
 
 		// Replaces the placeholder @lp with the player's name
 		public static function lpName(s:String):String {
-			return s.replace(/@lp/g,World.w.pers.persName);
+			var name:String = "Littlepip";
+			
+			if (s != "" && s != null && World.w.pers.persName) {
+				name = s.replace(/@lp/g, World.w.pers.persName) 
+			}
+			else {
+				var msg = (s == "" || s == null) ? msg = "String was blank or null" : "World.w.pers.persName was null"
+				trace("Res.as/lpName() - ERROR: " + msg);
+			}
+			
+			return name;
 		}
 
 		// Formats a timestamp into a human-readable date string

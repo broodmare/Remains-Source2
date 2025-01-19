@@ -28,11 +28,15 @@ package fe.unit {
 		
 		private static var cachedEffects:Object = {};
 
-		public var vse:Boolean=false;		//действие окончено
+		public var vse:Boolean=false;			//действие окончено
 
 		public function Effect(nid:String, own:Unit=null, nval:Number=0) {
-			if (own == null) owner = World.w.gg;
-			else owner = own;
+			if (
+				own == null) {owner = World.w.gg;
+			}
+			else {
+				owner = own;
+			}
 
 			player = owner.player;
 			id = nid;
@@ -43,10 +47,15 @@ package fe.unit {
 		public static function getEffectInfo(id:String):XML {
 			// Check if the node is already cached
 			var node:XML;
+			
 			if (cachedEffects[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", id);
 				cachedEffects[id] = node;
-			} else node = cachedEffects[id];
+			}
+			else {
+				node = cachedEffects[id];
+			}
+			
 			return node;
 		}
 		
@@ -63,6 +72,7 @@ package fe.unit {
 			if (node.length()) {
 				tip=node.@tip;
 				t=node.@t*30;
+				
 				if (World.w.testEff) t=node.@t*3;
 				if (val==0) val=node.@val;
 				if (node.sk.length()) params=true;
@@ -80,6 +90,7 @@ package fe.unit {
 					for each(var ndel in node.del) del.push(ndel.@id);
 				}
 			}
+			
 			if (t==0) {
 				t=30;
 				forever=true;
@@ -97,59 +108,93 @@ package fe.unit {
 					}
 				}
 			}
+			
 			if (params) {
-				if (player) (owner as UnitPlayer).pers.setParameters();
-				else owner.setEffParams();
+				if (player) {
+					(owner as UnitPlayer).pers.setParameters();
+				}
+				else {
+					owner.setEffParams();
+				}
 			}
+			
 			if (id=='potion_fly' || id=='potion_shadow') {
 				owner.newPart('black',15);
 			}
+			
 			if (id=='potion_shadow') {
 				if (player) {
 					(owner as UnitPlayer).uncallPet(true);
 					(owner as UnitPlayer).changeWeapon('not');
 				}
 			}
+			
 			if (id=='potion_rat') {
-				if (player) (owner as UnitPlayer).ratOn();
+				if (player) {
+					(owner as UnitPlayer).ratOn();
+				}
 			}
+			
 			if (id=='potion_infra') {
 				World.w.grafon.warShadow();
 			}
+			
 			if (id=='reanim' && player) {
 				(owner as UnitPlayer).noReanim=true;
 			}
+			
 			if (id=='stupor' && player) {
 				(owner as UnitPlayer).stam=0;
 			}
+			
 			if (id=='fetter' && player) {
 				(owner as UnitPlayer).fetX = owner.coordinates.X;
 				(owner as UnitPlayer).fetY = owner.coordinates.Y;
 			}
+			
 			if (id=='stealth' || id=='stealth_armor') {
 				(owner as UnitPlayer).f_stealth=true;
 				(owner as UnitPlayer).setFilters();
 			}
+			
 			if (id=='bloodinv' && player) {
 				(owner as UnitPlayer).f_inv=true;
 				(owner as UnitPlayer).setFilters();
 				owner.newPart('blood',30);
 			}
-			if (id=='curse') World.w.game.triggers['curse']=1;
+			
+			if (id=='curse') {
+				World.w.game.triggers['curse']=1;
+			}
+			
 			visEff();
 		}
 		
 		//проверить уровень эффекта
 		public function checkT():void {
-			if (lvl1>0) {
+			if (lvl1 > 0) {
 				var plvl:int = lvl;
-				lvl=1;
-				if (t/30>lvl1) lvl=2;
-				if (t/30>lvl2) lvl=3;
-				if (t/30>lvl3) lvl=4;
-				if (plvl!=lvl && params) {
-					if (player) (owner as UnitPlayer).pers.setParameters();
-					else owner.setEffParams();
+				lvl = 1;
+				
+				if (t / 30 > lvl1) {
+					lvl = 2;
+				}
+				
+				if (t / 30 > lvl2) {
+					lvl = 3;
+				}
+				
+				if (t / 30 > lvl3) {
+					lvl = 4;
+				}
+				
+				if (plvl != lvl && params) {
+					if (player) {
+						(owner as UnitPlayer).pers.setParameters();
+					}
+					else {
+						owner.setEffParams();
+					}
 				}
 			}
 		}
@@ -167,75 +212,123 @@ package fe.unit {
 			}
 			if (id=='freezing') {
 				var freezTransform:ColorTransform=new ColorTransform(0.7,0.7,1,1,100,100,130);
-				if (owner.cTransform) freezTransform.concat(owner.cTransform);
+			
+				if (owner.cTransform) {
+					freezTransform.concat(owner.cTransform);
+				}
+				
 				owner.vis.transform.colorTransform=freezTransform;
 			}
 		}
 		
 		public function unsetEff(onPost:Boolean=true, inf:Boolean=true, setParam:Boolean=true):void {
-			if (id=='potion_rat') {
+			if (id == 'potion_rat') {
 				if ((owner as UnitPlayer).ratOff()) {
-					if ((owner as UnitPlayer).retPet!='') (owner as UnitPlayer).callPet((owner as UnitPlayer).retPet,true);
+					if ((owner as UnitPlayer).retPet != '') {
+						(owner as UnitPlayer).callPet((owner as UnitPlayer).retPet,true);
+					}
 				}
 				else {
-					if (t<20) t=29;
+					if (t < 20) {
+						t = 29;
+					}
+					
 					return;
 				}
 			}
+	
 			vse=true;
+	
 			if (player && inf && se) {
-				if (tip==3) World.w.gui.infoText('endFoodEffect',Res.txt('e',id));
-				else World.w.gui.infoText('endEffect',Res.txt('e',id));
+				if (tip == 3) {
+					World.w.gui.infoText('endFoodEffect',Res.txt('e',id));
+				}
+				else {
+					World.w.gui.infoText('endEffect',Res.txt('e',id));
+				}
 			}
+		
 			if (post && onPost) {		//замена эффекта пост-эффектом
-					id=post;
+					id = post;
 					var isBad:Boolean=postBad;
 					getXmlParam();
+					
 					if (isBad) {
 						var proc=World.w.pers.addictions[id];
+						
 						if (proc>=World.w.pers.ad1) {
 							forever=true;
 							ad=true;
 						}
-						if (proc>=World.w.pers.ad2) lvl=2;
-						if (proc>=World.w.pers.ad3) lvl=3;
+						
+						if (proc>=World.w.pers.ad2) {
+							lvl=2;
+						}
+						
+						if (proc>=World.w.pers.ad3) {
+							lvl=3;
+						}
 					}
-					vse=false;
+					
+					vse = false;
 			}
+	
 			if (params && setParam) {
-				if (player) (owner as UnitPlayer).pers.setParameters();
-				else owner.setEffParams();
+				if (player) {
+					(owner as UnitPlayer).pers.setParameters();
+				}
+				else {
+					owner.setEffParams();
+				}
 			}
+	
 			if (id=='stealth' || id=='stealth_armor') {
 				(owner as UnitPlayer).f_stealth=false;
 				(owner as UnitPlayer).setFilters();
 			}
+	
 			if (id=='potion_fly') {
 				owner.isFly=false;
 				owner.newPart('black',15);
 			}
+	
 			if (id=='potion_shadow' && player) {
 				(owner as UnitPlayer).f_shad=false;
 				(owner as UnitPlayer).f_stealth=false;
 				(owner as UnitPlayer).setFilters();
-				if ((owner as UnitPlayer).retPet!='') (owner as UnitPlayer).callPet((owner as UnitPlayer).retPet,true);
+
+				if ((owner as UnitPlayer).retPet!='') {
+					(owner as UnitPlayer).callPet((owner as UnitPlayer).retPet,true);
+				}
 			}
+		
 			if (id=='potion_infra') {
 				World.w.grafon.warShadow();
 			}
+			
 			if (id=='reanim' && player) {
 				(owner as UnitPlayer).noReanim=false;
 			}
+		
 			if (id=='inhibitor') {
-				if (owner.vis.inh) owner.vis.inh.visible=false;
+				if (owner.vis.inh) {
+					owner.vis.inh.visible=false;
+				}
 			}
+		
 			if (id=='freezing') {
-				if (owner.cTransform) owner.vis.transform.colorTransform=owner.cTransform;
-				else owner.vis.transform.colorTransform=new ColorTransform();
+				if (owner.cTransform) {
+					owner.vis.transform.colorTransform=owner.cTransform;
+				}
+				else {
+					owner.vis.transform.colorTransform=new ColorTransform();
+				}
 			}
+		
 			if (id=='sacrifice' && player) {
 				(owner as UnitPlayer).noReanim=false;
 			}
+		
 			if (id=='bloodinv' && player) {
 				(owner as UnitPlayer).f_inv=false;
 				(owner as UnitPlayer).setFilters();
@@ -245,41 +338,58 @@ package fe.unit {
 		public function secEffect():void {
 			checkT();
 			if (id=='burning') {
-				if (owner.isPlav) t=1;
+				if (owner.isPlav) {
+					t=1;
+				}
 				else {
-					owner.damage(val,Unit.D_FIRE,null,true);
+					owner.damage(val, Resistances.DAM_BURN, null, true);
 					owner.shok=33;
 				}
 			}
+		
 			if (id=='pinkcloud') {
-				owner.damage(val,Unit.D_PINK,null,true);
+				owner.damage(val, Resistances.DAM_PINKCLOUD,null,true);
 			}
+			
 			if (id=='blindness' && player) {
-				if (owner.sost<4) Emitter.emit('blind',owner.loc,owner.coordinates.X-300+Math.random()*600,owner.coordinates.Y-200+Math.random()*400);
+				if (owner.sost<4) {
+					Emitter.emit('blind',owner.loc,owner.coordinates.X-300+Math.random()*600,owner.coordinates.Y-200+Math.random()*400);
+				}
 			}
+		
 			if (id=='chemburn') {
-				owner.damage(val,Unit.D_ACID,null,true);
+				owner.damage(val,Resistances.DAM_ACID,null,true);
 			}
+			
 			if (id=='drunk' && lvl>3) {
-				owner.damage(val,Unit.D_POISON,null,true);
+				owner.damage(val,Resistances.DAM_POISON,null,true);
 				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
 			}
+			
 			if (id=='namok') {
-				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.boundingBox.height*0.25,{md:0.1});
+				if (!owner.isPlav && owner.sost<4) {
+					Emitter.emit('kap',owner.loc,owner.coordinates.X,owner.coordinates.Y-owner.boundingBox.height*0.25,{md:0.1});
+				}
 			}
+			
 			if (id=='hydra' && owner.sost==1) {
 				owner.heal(val);
+				
 				if (owner.player) {
 					owner.heal(val/2, 3, false);
 					(owner as UnitPlayer).pers.heal(val,4);
 					(owner as UnitPlayer).pers.heal(val,5);
 				}
 			}
+			
 			if (id=='inhibitor') {
 				for each (var un:Unit in owner.loc.units) {
-					if (owner.isMeet(un) && un.fraction!=owner.fraction && un.rasst2<val*val) un.slow=40;
+					if (owner.isMeet(un) && un.fraction!=owner.fraction && un.rasst2<val*val) {
+						un.slow=40;
+					}
 				}
 			}
+			
 			if (id=='fetter') {
 				Emitter.emit('slow',owner.loc,(owner as UnitPlayer).fetX,(owner as UnitPlayer).fetY);
 			}
@@ -287,10 +397,13 @@ package fe.unit {
 
 		public function stepEffect():void {
 			if (id=='burning') {
-				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.boundingBox.bottom);
+				if (owner.sost<4) {
+					Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.boundingBox.bottom);
+				}
 			}
+		
 			if (id == 'sacrifice' && t == 5) {
-				owner.damage(owner.maxhp * 0.5, Unit.D_INSIDE);
+				owner.damage(owner.maxhp * 0.5, Resistances.DAM_INTERNAL);
 				owner.newPart('blood', 50);
 			}
 		}
@@ -299,10 +412,14 @@ package fe.unit {
 			if (t%30==0) {
 				secEffect();
 			}
+			
 			stepEffect();
 			t--; 
+			
 			if (t<=0) {
-				if (forever) t=30;
+				if (forever) {
+					t=30;
+				}
 				else {
 					unsetEff();
 				}
