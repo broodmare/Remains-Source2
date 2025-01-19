@@ -797,7 +797,9 @@ package fe {
 					world.newGame(loadCell, mainMenuMovieClip.dialNew.inputName.text, opt);
 				}
 			} 
-			else world.step();
+			else {
+				world.step();
+			}
 		}			
 	}	
 }

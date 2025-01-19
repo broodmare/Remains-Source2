@@ -14,40 +14,46 @@ package fe.serv {
 	import fe.entities.Obj;
 	import fe.graph.Emitter;
 	
-	// Constructor
-	public class Desintegr { // Handles disintegration effect for units
+	// Handles disintegration effect for units
+	public class Desintegr { 
 	
 		public var owner:Obj;
 		
 		private var burnBmp:BitmapData;
 		private var burnBm:Bitmap;
-		private var burnN:int=0;
-		private var burnTip:int=0;
-		private var burnPart:String;
+
+		private var burnN:int					= 0;
+		private var burnTip:int					= 0;
+		private var burnPart:String				= "";
+
 		private var burnGlowColor:uint;
 		private var burnCt:ColorTransform;
-		private var burnRnd:int=Math.random() * int.MAX_VALUE;
-		private var burnKolPix:int;
-		private var burnTime1:int=10;
-		private var burnTime2:int=30;
 		
-		public var vse:Boolean=false;
+		private var burnRnd:int					= Math.random() * int.MAX_VALUE;
+		private var burnKolPix:int				= 0;
+		private var burnTime1:int				= 10;
+		private var burnTime2:int				= 30;
+		
+		public var vse:Boolean					= false;
 
+		// Constructor
 		public function Desintegr(own:Obj, sposob:int) {
-			owner=own;
-			burnTip=sposob;
-			burnBmp=new BitmapData(owner.vis.width,owner.vis.height,true,0);
-			var m:Matrix=new Matrix();
-			var rect:Rectangle=owner.vis.getBounds(owner.vis);
-			m.tx=-rect.left;
-			m.ty=-rect.top;
+			owner = own;
+			burnTip = sposob;
+			burnBmp = new BitmapData(owner.vis.width,owner.vis.height,true,0);
+			var m:Matrix = new Matrix();
+			var rect:Rectangle = owner.vis.getBounds(owner.vis);
+			m.tx = -rect.left;
+			m.ty = -rect.top;
 			burnBmp.draw(owner.vis,m);
 			
-			owner.vis=new MovieClip();
-			burnBm=new Bitmap(burnBmp);
+			owner.vis = new MovieClip();
+			burnBm = new Bitmap(burnBmp);
 			owner.vis.addChild(burnBm);
-			burnBm.x=rect.left;
-			burnBm.y=rect.top;
+			
+			burnBm.x = rect.left;
+			burnBm.y = rect.top;
+			
 			if (burnTip==1) {
 				burnCt=new ColorTransform(1,1,1,1,255/burnTime1,100/burnTime1,0,0);
 				burnPart='burn';
@@ -87,6 +93,7 @@ package fe.serv {
 				burnPart='pblood';
 				burnGlowColor=0xFF66FF;
 			}
+			
 			burnKolPix = burnBmp.height * burnBmp.width;
 			burnN = 1;
 		}
@@ -103,6 +110,7 @@ package fe.serv {
 			else if (burnN>=burnTime2+burnTime1) {
 				vse=true;
 			}
+			
 			burnN++;
 		}
 	}	

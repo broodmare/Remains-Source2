@@ -31,7 +31,7 @@ package fe {
 
 		// Constructor
 		public function WeaponManager() {
-			
+			trace("WeaponManager.as/Constructor() - Weapon Manager initializing");
 			reference	= this;
 
 			_ammo		= new Vector.<Ammo>();
@@ -48,12 +48,13 @@ package fe {
 		}
 
 		private function initializeAllAmmo():void {
+			trace("WeaponManager.as/initializeAllAmmo() - Initializing all ammo types");
 
 			for each (var data:Object in _ammoData) {
 				var ammo:Ammo = new Ammo();
         
 				// Step 1: Assign default properties from the placeholder
-				for (var property in _ammoData.placeholder) {
+				for each (var property:String in _ammoData.placeholder) {
 					if (ammo.hasOwnProperty(property)) {
 						ammo[property] = _ammoData.placeholder[property];
 					}
@@ -73,6 +74,8 @@ package fe {
 				_ammo.push(ammo);
 				_ammoMap[ammo.id] = ammo;
 			}
+
+			trace("WeaponManager.as/initializeAllAmmo() - Total ammo types initialized: " + _ammo.length);
 		}
 		
 		public function getAmmo(id:String):Ammo {
@@ -133,6 +136,7 @@ package fe {
 
 		// Initialize and store a base version of each weapon
 		private function initializeAllWeapons():void {
+			trace("WeaponManager.as/initializeAllWeapons() - Initializing all weapons");
 
 			for each (var data:Object in _weaponData) {
 				// Create a default weapon
@@ -490,6 +494,8 @@ package fe {
 					weapon = wepPunch;
 				}
 			}
+
+			trace("WeaponManager.as/initializeAllWeapons() - Total weapons initialized: " + _weapons.length);
 		}
 
 		public function repairWeapon(weapon:Weapon, n:int):void {

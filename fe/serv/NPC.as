@@ -323,7 +323,7 @@ package fe.serv {
 			return false;
 		}
 		
-		public function setStatus(dial:int=0) {
+		public function setStatus(dial:int = 0):void {
 			if (dial > 0) {
 				setIco('dial' + dial);
 				
@@ -375,7 +375,7 @@ package fe.serv {
 		}
 		
 		// [Set top icon]
-		private function setIco(n:String = null) {
+		private function setIco(n:String = null):void {
 			if (n == null) {
 				owner['ico'].gotoAndStop(owner['icoFrame']);
 			}
@@ -384,7 +384,7 @@ package fe.serv {
 			}
 		}
 		
-		public function repair() {
+		public function repair():void {
 			if (xml && xml.quest.length()) {
 				if (World.w.game.quests[xml.quest.@id] == null) {
 					World.w.game.addQuest(xml.quest.@id);
@@ -445,7 +445,7 @@ package fe.serv {
 			}
 		}
 		
-		public function patient() {
+		public function patient():void {
 			if (World.w.pers.skills[xml.@needskill] == null) {
 				return;
 			}

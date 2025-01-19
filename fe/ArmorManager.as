@@ -55,7 +55,8 @@ package fe {
 		}
 
 		private function initializeAllArmors():void {
-
+			trace("ArmorManager.as/initializeAllArmors() - Initializing all armor sets");
+			
 			// Initialize and store a base version of each armor set
 			for each (var data:Object in _armorData) {
 				var armor:Armor = new Armor();
@@ -179,6 +180,8 @@ package fe {
 				_armors.push(armor)
 				_armorMap[armor.id] = armor;
 			}
+
+			trace("ArmorManager.as/initializeAllArmor() - Total armor sets initialized: " + _armors.length);
 		}
 
 		// Set the armor set's protection stats based on it's upgrade level
