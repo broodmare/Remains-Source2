@@ -169,7 +169,7 @@ package fe.unit {
 			}
 		}
 
-		private function emit() {
+		private function emit():void {
 			var un:Unit = loc.createUnit("vortex", coordinates.X, this.boundingBox.top, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;

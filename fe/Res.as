@@ -268,7 +268,7 @@ package fe {
 				name = s.replace(/@lp/g, World.w.pers.persName) 
 			}
 			else {
-				var msg = (s == "" || s == null) ? msg = "String was blank or null" : "World.w.pers.persName was null"
+				var msg:String = (s == "" || s == null) ? msg = "String was blank or null" : "World.w.pers.persName was null"
 				trace("Res.as/lpName() - ERROR: " + msg);
 			}
 			

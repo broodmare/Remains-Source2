@@ -114,7 +114,7 @@ package fe.unit {
 			var i:int=1;
 			var nx:Number = coordinates.X;
 			var ny:Number = coordinates.Y;
-			var nxml=<obj/>;
+			var nxml = <obj/>;
 			var ok:Boolean=false;
 			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).phis==0) {
 				ny = coordinates.Y + 2 * tileY;
@@ -185,7 +185,7 @@ package fe.unit {
 			}
 		}
 
-		private function setStatus() {
+		private function setStatus():void {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -203,7 +203,7 @@ package fe.unit {
 			if (status==0) activate();
 		}
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean):void {
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
@@ -214,7 +214,7 @@ package fe.unit {
 		}
 		
 		// [Set activation boundaries]
-		private function setArea() {
+		private function setArea():void {
 			var bb:BoundingBox = new BoundingBox(coordinates);
 			var l:Number;
 			var r:Number;
@@ -261,13 +261,16 @@ package fe.unit {
 		//активировать
 		private function activate():void {
 			if (status!=0) return;
+			
 			setVis(true);
 			status=1;
 			var act:Boolean = false;
+			
 			if (allact=='spawn') {
 				loc.enemySpawn(true,true);
 				return;
 			}
+			
 			if (allid!=null && allid!='') {
 				for each (var un:Unit in loc.units) {
 					if (un!=this && (un is UnitDamager) && (un as UnitDamager).allid==allid) {
@@ -275,22 +278,35 @@ package fe.unit {
 						act=true;
 					}
 				}
-				if (allact) loc.allAct(this,allact,allid);
+				
+				if (allact) {
+					loc.allAct(this,allact,allid);
+				}
 			}
+			
 			celX = coordinates.X;
 			celY = coordinates.Y;
+			
 			if (res=='noise' || res=='hturret2') {
 				budilo(vNoise);
 				act=true;
 				if (res=='hturret2' && damager) damager.command('alarma');
 			}
+		
 			if (damager && damager.sost<2) {
 				damager.command('dam');
 				act=true;
 			}
-			if (sndAct) sound(sndAct);
+		
+			if (sndAct) {
+				sound(sndAct);
+			}
+		
 			setStatus();
-			if (act) World.w.gui.infoText('trapActivate')
+		
+			if (act) {
+				World.w.gui.infoText('trapActivate');
+			}
 		}
 		
 		private var aiN:int = Math.floor(Math.random() * 5);

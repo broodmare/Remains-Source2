@@ -1,7 +1,9 @@
 package fe {
 
 	import flash.utils.getDefinitionByName;
+	import flash.display.MovieClip;
 
+	import fe.SymbolFactory;
 	import fe.weapon.Weapon;
 	import fe.projectile.Trasser;
 	import fe.unit.Resistances;
@@ -122,15 +124,15 @@ package fe {
 			
 			if (weapon.visbul) { 
 				try {
-					weapon.vBullet = getDefinitionByName('visbul' + weapon.visbul) as Class;
+					weapon.vBullet = SymbolFactory.createSymbol("visbul" + String(weapon.visbul)) as Class;
 				}
 				catch (err:ReferenceError) {
 					trace("ERROR: (00:11)");
-					weapon.vBullet = visualBullet;		// .SWF Dependency
+					weapon.vBullet = SymbolFactory.createSymbol("visualBullet") as Class;
 				}
 			}
 			else {
-				weapon.vBullet = visualBullet;	// .SWF Dependency
+				weapon.vBullet = SymbolFactory.createSymbol("visualBullet") as Class;
 			}
 			
 			// Sounds

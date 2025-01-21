@@ -1,6 +1,7 @@
 package fe.weapon {
 
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.loc.Tile;
@@ -22,7 +23,7 @@ package fe.weapon {
 		public function WPaint() {
 			super();
 			
-			vWeapon = visualpaint;	// .SWF Dependency
+			vWeapon = SymbolFactory.createSymbol("visualpaint") as Class;
 			vis = new vWeapon();
 		}
 		

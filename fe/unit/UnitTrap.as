@@ -5,7 +5,8 @@ package fe.unit {
 
 	public class UnitTrap extends Unit {
 
-		var rearm:Boolean=false;
+		private var rearm:Boolean=false;
+		private var aiN:int = Math.floor(Math.random() * 5);
 
 		// Constructor
 		public function UnitTrap(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -46,14 +47,14 @@ package fe.unit {
 			newPart('metal',3);
 		}
 
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean):void {
 			isVis=v;
 			levitPoss=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
 		}
 		
-		function disarm() {
+		function disarm():void {
 			if (aiState==1) {
 				klac();
 			}
@@ -84,7 +85,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		function klac() {
+		function klac():void {
 			aiState=2;
 			sound('trap_a');
 			vis.gotoAndPlay(1);
@@ -93,9 +94,7 @@ package fe.unit {
 			inter.userAction='rearm';
 			inter.update();
 		}
-		
-		var aiN:int = Math.floor(Math.random() * 5);
-		
+
 		override protected function control():void {
 			aiN++;
 			

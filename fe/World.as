@@ -218,6 +218,8 @@ package fe {
 			configObj = cfgObj;		// The user's stored settings
 			languageManager = langManager;	// Store the passed reference to the language manager
 
+			var create:Function = SymbolFactory.createSymbol;
+
 			// [Files]
 			spriteURL = 'sprite.swf';
 			sprite1URL = 'sprite1.swf';
@@ -239,20 +241,20 @@ package fe {
 			Emitter.init();
 
 			// [Creation of graphic elements]
-			vwait = new visualWait();			// SWF Dependency
+			vwait = create("visualWait") as MovieClip;
 			vwait.cacheAsBitmap = true;
 
 			app			= new Appear();
 			visual		= new Sprite();
-			vgui 		= new visualGUI();		// SWF Dependency
+			vgui 		= create("visualGUI") as MovieClip;
 			vfon 		= new MovieClip();
-			vpip 		= new visPipBuck();		// SWF Dependency
-			vstand 		= new visualStand();	// SWF Dependency
+			vpip 		= create("visPipBuck") as MovieClip;
+			vstand 		= create("visualStand") as MovieClip;
 			vsats		= new MovieClip();
-			vscene 		= new visualScene();	// SWF Dependency
-			vconsol		= new visConsol();		// SWF Dependency
-			verror		= new visError();		// SWF Dependency
-			vblack 		= new visBlack();		// SWF Dependency
+			vscene 		= create("visualScene") as MovieClip;
+			vconsol		= create("visConsol") as MovieClip;
+			verror		= create("visError") as MovieClip;
+			vblack 		= create("visBlack") as MovieClip;
 			vblack.cacheAsBitmap = true;
 			
 			setLoadScreen();

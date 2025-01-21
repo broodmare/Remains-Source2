@@ -2,8 +2,10 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	import fe.weapon.*;
+	
 	import fe.*;
+	import fe.SymbolFactory;
+	import fe.weapon.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	
@@ -33,9 +35,9 @@ package fe.unit {
 			id = "bossdron";
 			
 			// [take parameters from xml]
-			vis = new visualMegaDron();		// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualMegaDron") as MovieClip;
 			vis.osn.gotoAndStop(1);
-			visshit = new visShit();		// .SWF Dependency
+			visshit = SymbolFactory.createSymbol("visShit") as MovieClip;
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible = false;

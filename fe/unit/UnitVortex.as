@@ -1,21 +1,24 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
 	
 	public class UnitVortex extends Unit {
 
-		var spd:Object;
-		var br:Number=0;
-		var iskr:Emitter;
+		private var spd:Object;
+		private var br:Number = 0;
+		private var iskr:Emitter;
 
 		// Constructor
 		public function UnitVortex(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='vortex';
-			vis=new visualVortex();
+			vis = SymbolFactory.createSymbol("visualVortex") as MovieClip;
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;

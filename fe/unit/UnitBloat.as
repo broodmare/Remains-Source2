@@ -31,17 +31,23 @@ package fe.unit {
 				tr = int(Math.random()*5);	//случайно по параметру ndif
 			}
 
-			if (!(tr>=0)) tr=0;
+			if (!(tr>=0)) {
+				tr=0;
+			}
+			
 			id='bloat'+tr;
 			var vClass:Class=Res.getClass('visualBloat'+tr,null,visualBloat1);	// .SWF Dependency
 			vis=new vClass();
 			vis.stop();
 			runSpeed=0;
 			getXmlParam();
+			
 			if (tr>=7) nazv=Res.txt('u','bloat10');
+			
 			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
 			sitSpeed=maxSpeed*0.5;
 			walkSpeed=maxSpeed;
+			
 			if (runSpeed==0) runSpeed=maxSpeed*2;
 			
 			isFly=true;
@@ -50,6 +56,7 @@ package fe.unit {
 			aiDy=isrnd()?0.7:-0.7;
 			storona=(aiDx>0)?1:-1;
 			currentWeapon=getXmlWeapon(ndif);
+			
 			if (currentWeapon) childObjs=new Array(currentWeapon);
 		}
 
@@ -57,6 +64,7 @@ package fe.unit {
 			super.getXmlParam('bloat');
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			
 			if (node0.un.length()) {
 				if (node0.un.@attr.length()) attRasst=node0.un.@attr;		//дистанция атаки
 				if (node0.un.@attch.length()) attCh=node0.un.@attch;				//шанс атаки
@@ -104,15 +112,18 @@ package fe.unit {
 		public override function dropLoot():void {
 			super.dropLoot();
 			var un:Unit
+			
 			if (tr>=8) {
 				un=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, String(tr-1));
 				un.questId=questId;
 				un=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, String(tr-1));
 				un.questId=questId;
 			} 
+			
 			if (isEmit) {
 				emit();
 				emit();
+				
 				if (hero) {
 					emit();
 					emit();
@@ -157,8 +168,10 @@ package fe.unit {
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
 			else {						//смена состояний
 				aiTCh=Math.floor(Math.random()*50)+20;
+				
 				if (celUnit) {
 					aiRasst=Math.sqrt(celDX*celDX+celDY*celDY);
+				
 					if (aiRasst<attRasst && isrnd(attCh)) {
 						aiDx=celDX/aiRasst;
 						aiDy=celDY/aiRasst;
@@ -170,6 +183,7 @@ package fe.unit {
 						aiState=1;
 						maxSpeed=walkSpeed;
 					}
+				
 					storona=(celDX>0)?1:-1;
 				}
 				else {
@@ -177,6 +191,7 @@ package fe.unit {
 						aiDx=isrnd()?0.7:-0.7;
 						aiDy=isrnd()?0.7:-0.7;
 					}
+					
 					storona=(aiDx>0)?1:-1;
 					aiState=0;
 					maxSpeed=sitSpeed
@@ -228,9 +243,17 @@ package fe.unit {
 			
 			//атака
 			if (World.w.enemyAct>=3 && celUnit && shok<=0) {
-				if (aiState==1 && currentWeapon) if (isrnd(shootCh)) currentWeapon.attack();
-				var atk = attKorp(celUnit);
-				if (atk && gryz) isGryz=true;
+				if (aiState==1 && currentWeapon) {
+					if (isrnd(shootCh)) {
+						currentWeapon.attack();
+					}
+				}
+				
+				var atk:Boolean = attKorp(celUnit);
+				
+				if (atk && gryz) {
+					isGryz=true;
+				}
 			}
 		}
 	}	

@@ -1,6 +1,9 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.loc.Location;
@@ -17,7 +20,7 @@ package fe.unit {
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
-			vis=new visualTransmitter();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualTransmitter") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			storona=1;

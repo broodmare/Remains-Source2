@@ -3,6 +3,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.loc.Location;
@@ -53,10 +54,10 @@ package fe.unit {
 			tr = 1;
 			
 			// [Take parameters from xml]
-			vis = new visualUltraSentinel();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualUltraSentinel") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			
-			visshit = new visShit();			// .SWF Dependency
+			visshit = SymbolFactory.createSymbol("visShit") as MovieClip;
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible = false;

@@ -1,5 +1,6 @@
 package fe.weapon  {
 
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.World;
 	import fe.Snd;
@@ -15,7 +16,7 @@ package fe.weapon  {
 		public function WKick() {
 			super();
 			
-			vBullet = visualPunch;	// .SWF Dependency
+			vBullet = SymbolFactory.createSymbol("visualPunch") as Class;
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
@@ -82,10 +83,10 @@ package fe.weapon  {
 					Snd.ps('m_big', coordinates.X, coordinates.Y, 0, Math.random() * 0.2 + 0.1);
 				}
 				else {
-					var t1:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 30);
-					var t2:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 50);
+					var t3:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 30);
+					var t4:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 50);
 					
-					if (t1 && t2 && t2.thre<t1.thre) {
+					if (t3 && t4 && t4.thre < t3.thre) {
 						vverh = true;
 					}
 					

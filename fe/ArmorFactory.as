@@ -6,7 +6,7 @@ package fe {
 
 		// Initialize a base set of armor using the data passed to this function
 		public static function createArmor(data:Object):Armor {
-			var armor = new Armor();
+			var armor:Armor = new Armor();
 			
 			if ("id" in data) {
 				armor.id = data.id;

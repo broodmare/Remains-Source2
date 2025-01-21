@@ -1,8 +1,12 @@
 package fe.unit  {
 
+	import flash.display.MovieClip;
+
+	import fe.SymbolFactory;
+
 	public class UnitTrain extends Unit {
 
-		var tr:int=0;
+		private var tr:int=0;
 		
 		// Constructor
 		public function UnitTrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -19,11 +23,15 @@ package fe.unit  {
 				if (xml.@fix.length()) fixed=true;
 			}
 			getXmlParam();
+
 			if (tr==1) {
-				vis=new visualTrainArmor();
+				vis = SymbolFactory.createSymbol("visualTrainArmor") as MovieClip;
 				skin=20;
 			}
-			else vis=new visualTrain();
+			else {
+				vis = SymbolFactory.createSymbol("visualTrain") as MovieClip;
+			}
+
 			vis.gotoAndStop(1);
 			doop=true;
 		}

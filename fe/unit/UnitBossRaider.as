@@ -1,6 +1,9 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.loc.Tile;
@@ -28,10 +31,10 @@ package fe.unit {
 			
 			//взять параметры из xml
 			if (tr == 2) {
-				vis = new visualRaiderBoss2();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualRaiderBoss2") as MovieClip;
 			}
 			else {
-				vis = new visualRaiderBoss();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualRaiderBoss") as MovieClip;
 			}
 			
 			vis.osn.gotoAndStop(1);
@@ -175,7 +178,7 @@ package fe.unit {
 			}
 			
 			if (attackerType==3) {
-				for (var i=0; i<3; i++) {
+				for (var i:int = 0; i < 3; i++) {
 					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 					currentWeapon.attack();
 				}
@@ -194,7 +197,7 @@ package fe.unit {
 			return td;
 		}
 
-		private function emit() {
+		private function emit():void {
 			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;

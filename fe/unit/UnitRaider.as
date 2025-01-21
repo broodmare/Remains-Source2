@@ -119,7 +119,7 @@ package fe.unit {
 			}
 			else if (xml && xml.@weap.length()) {
 				if (xml.@weap != "") {
-					currentWeapon = wm.cloneWeapon(xml.@weap.id);
+					currentWeapon = wm.cloneWeapon(xml.@weap);
 				}
 			}
 			else {
@@ -399,7 +399,7 @@ package fe.unit {
 			}
 			
 			if (attackerType==3) {
-				for (var i=0; i<3; i++) {
+				for (var i:int = 0; i < 3; i++) {
 					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 					currentWeapon.attack();
 				}

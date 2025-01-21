@@ -1,5 +1,8 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
+	import fe.SymbolFactory;
 	import fe.WeaponManager;
 	import fe.World;
 
@@ -17,7 +20,7 @@ package fe.unit {
 			
 			id = "spritebot";
 			
-			vis = new visualSpriteBot();
+			vis = SymbolFactory.createSymbol("visualSpriteBot") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			
 			getXmlParam();

@@ -171,7 +171,7 @@ package fe {
 		public function setOwner(weapon:Weapon, own:Unit):void {
 			weapon.owner = own;
 
-			if (own.weaponKrep > 0) {
+			if (own.weaponKrep) {
 				weapon.fixedToOwner = own.weaponKrep;
 			}
 		}

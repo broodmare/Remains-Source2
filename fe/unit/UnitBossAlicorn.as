@@ -4,6 +4,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.entities.Obj;
@@ -76,8 +77,8 @@ package fe.unit {
 			initBlit();
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicornBoss");
-			visshit = new visShit3();		// .SWF Dependency
-			vis.addChild(visshit);
+			vis = SymbolFactory.createSymbol("visShit3") as MovieClip;
+			visshit.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.y=-50;
 			visshit.scaleX=visshit.scaleY=1.5;

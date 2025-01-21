@@ -3,6 +3,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Calc;
 	import fe.loc.Tile;
 	import fe.serv.Npc;
@@ -114,7 +115,7 @@ package fe.unit {
 			vis.addChild(ico);
 			
 			if (vis == null) {
-				vis = new visualVendor();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualVendor") as MovieClip;
 			}	
 			
 			if (vis.osn) {

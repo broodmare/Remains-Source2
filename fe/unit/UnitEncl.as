@@ -1,5 +1,8 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
+	import fe.SymbolFactory;
 	import fe.serv.AnimationSet;
 	import fe.WeaponManager;
 	import fe.weapon.Weapon;
@@ -35,7 +38,7 @@ package fe.unit {
 			
 				if (currentWeapon) {
 					currentWeapon.svis = "encl";
-					currentWeapon.vis=new visencl(); // SWF Dependency
+					currentWeapon.vis = SymbolFactory.createSymbol("visencl") as MovieClip;
 				}
 			}
 		

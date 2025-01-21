@@ -4,12 +4,13 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	
 	public class UnitCaptive extends Unit {
 		
 		private var tr:int=1;
 		private var sr:int=0;
-		private var statusCapt=0;
+		private var statusCapt:int = 0;	// TODO: This can be a bool
 		private var novoi:Boolean=false;
 		
 		// Constructor
@@ -54,7 +55,7 @@ package fe.unit {
 			inter.action=1;
 			inter.actFun=free;
 			inter.update();
-			vis=new visualCaptive();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualCaptive") as MovieClip;
 			vis.osn.pon.gotoAndStop(tr);
 			vis.osn.cage.gotoAndStop(sr+1);
 			

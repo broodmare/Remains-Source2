@@ -341,7 +341,7 @@ package fe {
 
 		// The advice widget at the bottom of the main menu
 		private function advText(n:int):String {
-			var s = "";
+			var s:String = "";
 			s = language.data.advice[n];
 			return s;
 		}

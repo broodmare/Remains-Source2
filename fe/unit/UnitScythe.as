@@ -1,6 +1,9 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Location;
 	
 	public class UnitScythe extends Unit {
@@ -25,7 +28,7 @@ package fe.unit {
 		public function UnitScythe (cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			id = 'scythe';
-			vis = new visualScythe();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualScythe") as MovieClip;
 			vis.gotoAndPlay(Math.floor(Math.random() * vis.totalFrames + 1));
 			vis.osn.alpha = 0;
 			vis.vzz.alpha = 0;

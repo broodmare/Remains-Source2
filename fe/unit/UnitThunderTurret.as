@@ -1,5 +1,8 @@
 package  fe.unit {
 
+	import flash.display.MovieClip;
+
+	import fe.SymbolFactory;
 	import fe.World;
 	import fe.WeaponManager;
 	import fe.weapon.Weapon;
@@ -24,7 +27,7 @@ package  fe.unit {
 			
 			getXmlParam();
 			
-			vis = new visualTTurret();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualTTurret") as MovieClip;
 			vis.osn.scaleX = 3;
 			vis.osn.scaleY = 3;
 			vis.osn.pole.visible = false;

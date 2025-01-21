@@ -1,5 +1,8 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
+	import fe.SymbolFactory;
 	import fe.WeaponManager;
 	import fe.weapon.Weapon;
 
@@ -14,7 +17,7 @@ package fe.unit {
 			super(cid, ndif, xml, loadObj);
 		
 			id = "sentinel";
-			vis = new visualSentinel(); // .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualSentinel") as MovieClip;
 			vis.stop();
 			vis.osn.gotoAndStop(1);
 			getXmlParam();

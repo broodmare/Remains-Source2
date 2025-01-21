@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Tile;
 	import fe.entities.BoundingBox;
 	
@@ -34,8 +37,12 @@ package fe.unit {
 			
 			getXmlParam();
 			
-			if (tr==2) vis=new visualRoller2();	// .SWF Dependency
-			else vis=new visualRoller();		// .SWF Dependency
+			if (tr == 2) {
+				vis = SymbolFactory.createSymbol("visualRoller2") as MovieClip;
+			}
+			else {
+				vis = SymbolFactory.createSymbol("visualRoller") as MovieClip;
+			}
 			
 			vis.osn.rotation=Math.random()*360;
 			vis.osn.stop();

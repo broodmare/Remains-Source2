@@ -4,6 +4,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.entities.Obj;
 	import fe.serv.AnimationSet;
 	import fe.loc.Tile;
@@ -157,11 +158,11 @@ package fe.unit {
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicorn");
 			
-			if (tr==3) {
-				visshit = new visShit2();	// SWF Dependency
+			if (tr == 3) {
+				visshit = SymbolFactory.createSymbol("visShit2") as MovieClip;
 			}
 			else {
-				visshit = new visShit();			// SWF Dependency
+				visshit = SymbolFactory.createSymbol("visShit") as MovieClip;
 			}
 			
 			vis.addChild(visshit);

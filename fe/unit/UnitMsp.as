@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
@@ -34,7 +37,7 @@ package fe.unit {
 			
 			id = 'msp';
 			
-			vis = new visualMsp();
+			vis = SymbolFactory.createSymbol("visualMsp") as MovieClip;
 			vis.stop();
 			
 			getXmlParam();

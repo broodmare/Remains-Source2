@@ -4,8 +4,9 @@ package fe.unit {
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	
-	import fe.weapon.*;
 	import fe.*;
+	import fe.SymbolFactory;
+	import fe.weapon.*;
 	import fe.loc.Tile;
 	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
@@ -47,8 +48,9 @@ package fe.unit {
 		// Constructor
 		public function UnitBossNecr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
+			
 			id='bossnecr';
-			vis=new visualNecrBoss();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualNecrBoss") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			walkSpeed=maxSpeed;

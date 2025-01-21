@@ -1,6 +1,9 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.projectile.Bullet;
 	import fe.graph.Emitter;
 	
@@ -14,7 +17,7 @@ package fe.unit {
 		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='spectre';
-			vis=new visualSpectre();	// .SWF Dependency
+			vis = SymbolFactory.createSymbol("visualSpectre") as MovieClip;
 			vis.visible=false;
 			getXmlParam();
 			walkSpeed = maxSpeed;

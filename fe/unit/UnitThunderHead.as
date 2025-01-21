@@ -6,6 +6,7 @@ package fe.unit {
 	import flash.geom.ColorTransform;
 
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.projectile.Bullet;
@@ -87,8 +88,8 @@ package fe.unit {
 			osn.x = -osn.width / 2;
 			osn.y = -osn.height / 2;
 			
-			moln1 = new ThunderHeadMoln();	// .SWF Dependency
-			moln2 = new ThunderHeadMoln();	// .SWF Dependency
+			moln1 = SymbolFactory.createSymbol("ThunderHeadMoln") as MovieClip;
+			moln2 = SymbolFactory.createSymbol("ThunderHeadMoln") as MovieClip;
 			
 			moln1.blendMode=moln2.blendMode="screen";
 			moln1.alpha = 0;

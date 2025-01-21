@@ -1,23 +1,41 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	
 	public class UnitBat extends Unit {
 		
-		private var bleedDamage=5;
-		private var tr:int=1;
+		private var bleedDamage:int = 5;
+		private var tr:int = 1;
+		private var aiDx:Number = 0;
+		private var aiDy:Number = 0;
+		private var aiRasst:Number;
 		
 		// Constructor
 		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 
 			super(cid, ndif, xml, loadObj);
+			
 			if (cid) tr=int(cid);
+			
 			if (xml && xml.@tr.length()) tr=xml.@tr;
-			id='bloodwing';
-			if (tr>1) id+=tr;
-			if (tr==2) vis=new visualBloodwing2();
-			else vis=new visualBloodwing();
-			vis.osn.gotoAndStop('stay');
+			
+			id = "bloodwing";
+			
+			if (tr > 1) {
+				id += tr;
+			}
+			
+			if (tr == 2) {
+				vis = SymbolFactory.createSymbol("visualBloodwing2") as MovieClip;
+			}
+			else {
+				vis = SymbolFactory.createSymbol("visualBloodwing") as MovieClip;
+			}
+			
+			vis.osn.gotoAndStop("stay");
 			getXmlParam();
 			maxSpeed+=Math.random()*2-1;
 			walkSpeed=maxSpeed;
@@ -30,6 +48,7 @@ package fe.unit {
 		//сделать героем
 		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
+			
 			if (hero==1) {
 				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
 				runSpeed=maxSpeed*2.5;
@@ -38,6 +57,7 @@ package fe.unit {
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
+		
 			if (f) {
 				aiState=aiSpok=0;
 				aiTCh=Math.floor(Math.random()*10)+5;
@@ -46,27 +66,27 @@ package fe.unit {
 		
 		public override function animate():void {
 				if (sost==2 || sost==3) { //сдох
-					if (animState!='die') {
-						vis.osn.gotoAndStop('die');
-						animState='die';
+					if (animState!="die") {
+						vis.osn.gotoAndStop("die");
+						animState="die";
 					}
 				}
 				else if (aiState==0) {
-					if (animState!='stay') {
-						vis.osn.gotoAndStop('stay');
-						animState='stay';
+					if (animState!="stay") {
+						vis.osn.gotoAndStop("stay");
+						animState="stay";
 					}
 				}
 				else if (aiState==6) {
-					if (animState!='attack') {
-						vis.osn.gotoAndStop('attack');
-						animState='attack';
+					if (animState!="attack") {
+						vis.osn.gotoAndStop("attack");
+						animState="attack";
 					}
 				}
 				else {
-					if (animState!='fly') {
-						vis.osn.gotoAndStop('fly');
-						animState='fly';
+					if (animState!="fly") {
+						vis.osn.gotoAndStop("fly");
+						animState="fly";
 					}
 				}
 		}
@@ -79,10 +99,6 @@ package fe.unit {
 			}
 		}
 
-		var aiDx:Number = 0;
-		var aiDy:Number = 0;
-		var aiRasst:Number;
-		
 		//состояния
 		//0 - неподвижен
 		//2 - не видит цели

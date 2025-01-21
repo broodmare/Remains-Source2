@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
 
@@ -30,15 +33,15 @@ package fe.unit {
 			}
 			if (tr==1) {
 				id='cryoslime';
-				vis=new visualCryoSlime();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualCryoSlime") as MovieClip;
 			}
 			else if (tr==2) {
 				id='pinkslime';
-				vis=new visualPinkSlime();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualPinkSlime") as MovieClip;
 			}
 			else {
 				id='slime';
-				vis=new visualSlime();		// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualSlime") as MovieClip;
 			}
 
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));

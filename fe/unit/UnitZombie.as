@@ -4,6 +4,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
@@ -87,7 +88,7 @@ package fe.unit {
 			animState='stay';
 			
 			if (glowTip>0) {
-				vlight=new visZombieLight();	// .SWF Dependency
+				vlight = SymbolFactory.createSymbol("visZombieLight") as MovieClip;
 				vis.addChild(vlight);
 				vlight.y = -boundingBox.halfHeight;
 				vlight.blendMode='screen';

@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.entities.BoundingBox;
@@ -36,7 +39,7 @@ package fe.unit {
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon') {
-				vis = new visualMoon();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualMoon") as MovieClip;
 				vis.osn.stop();
 			}
 			else {

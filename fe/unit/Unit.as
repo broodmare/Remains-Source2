@@ -10,9 +10,9 @@ package fe.unit {
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-	import flash.utils.getDefinitionByName;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Calc;
 	import fe.util.Vector2;
 
@@ -182,7 +182,7 @@ package fe.unit {
 		public var precMult:Number			= 1.00;			//модификатор точности для гг, для всех остальных он равен 1
 		public var precMultCont:Number		= 1.00;			//модификатор точности, уменьшающийся от критических эффектов
 		public var rapidMultCont:Number		= 1.00;			//модификатор скорости атаки холодным оружием, уменьшающийся от критических эффектов
-		public var weaponKrep:int			= 1;	
+		public var weaponKrep:Boolean		= true;	
 		public var weaponX:Number			= 0.00;
 		public var weaponY:Number			= 0.00;
 		public var weaponR:Number			= 0.00;
@@ -783,9 +783,10 @@ package fe.unit {
 		
 		// TODO: Only a few classes use this and they should be cloning the weapon themselves, this is obsolete
 		public function getXmlWeapon(dif:int):Weapon {
+			trace("Unit.as/getXmlWeapon() - Unit: \"" + id + "\" is getting a weapon from XML");
 			// Get the unit info
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
-			
+
 			// Create the internal weapon(s) for this unit
 			for each(var n:XML in node0.w) {
 				if (n.@f.length()) {
@@ -797,10 +798,14 @@ package fe.unit {
 				}
 				
 				if (n.@ch.length() == 0 || isrnd(n.@ch)) {
+					trace("Unit.as/getXmlWeapon() - Returning weapon ID: " + n.@id);
 					return WeaponManager.reference.cloneWeapon(n.@id);
 				}
 			}
+
 			
+			
+			trace("Unit.as/getXmlWeapon() - Failed, returning null");
 			return null;
 		}
 		
@@ -2311,7 +2316,7 @@ package fe.unit {
 			super.addVisual();
 			
 			if (!player && !hpbar && vis) {
-				hpbar = new hpBar();	// .SWF Dependency
+				hpbar = SymbolFactory.createSymbol("hpBar") as MovieClip;
 				
 				if (hero <= 0) {
 					hpbar.goldstar.visible = false;

@@ -1,5 +1,6 @@
 package fe.weapon {
 
+	import fe.SymbolFactory;
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
@@ -14,7 +15,7 @@ package fe.weapon {
 			// Get all the properties from an already made default weapon and use them
 			WeaponCopier.copyFrom(w, this);
 
-			vBullet = visualPunch;
+			vBullet = SymbolFactory.createSymbol("visualPunch") as Class;
 		}
 		
 		public override function actions():void {

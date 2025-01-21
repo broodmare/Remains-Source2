@@ -3,6 +3,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Calc;
 	
 	public class UnitPonPon extends Unit {
@@ -34,12 +35,12 @@ package fe.unit {
 			
 			if (cid=='zebra') {
 				if (tr>=4) msex=true;
-				vis=new visualZebPon();		// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualZebPon") as MovieClip;
 				if (!uniqName) nazv=Res.txt('u','zebpon');
 				verVis=1;
 			}
 			else if (cid=='stab') {
-				vis=new visualStabPon();	// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualStabPon") as MovieClip;
 				if (!uniqName) nazv=Res.txt('u','stabpon');
 				verVis=1;
 				id_replic='stabpon';
@@ -48,7 +49,7 @@ package fe.unit {
 				privet=true;
 			}
 			else {
-				vis=new visualPonPon();		// .SWF Dependency
+				vis = SymbolFactory.createSymbol("visualPonPon") as MovieClip;
 				if (tr>=9 && tr<=11 || tr>=22) msex=true;
 				else msex=false;
 				if (tr==12) novoi=true;

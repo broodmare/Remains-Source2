@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.serv.Interact;
@@ -79,12 +82,24 @@ package fe.unit {
 			
 			id = "turret" + turrettip;
 
-			if (turrettip == 0)		vis = new visualTurret0();		// .SWF Dependency
-			else if (turrettip==1)	vis = new visualTurret1();		// .SWF Dependency
-			else if (turrettip==2)	vis = new visualTurret2();		// .SWF Dependency
-			else if (turrettip==3)	vis = new visualTurret3();		// .SWF Dependency
-			else if (turrettip==4)	vis = new visualTurret4();		// .SWF Dependency
-			else if (turrettip==5)	vis = new visualTurret5();		// .SWF Dependency
+			if (turrettip == 0)		{
+				vis = SymbolFactory.createSymbol("visualTurret0") as MovieClip;
+			}
+			else if (turrettip==1)	{
+				vis = SymbolFactory.createSymbol("visualTurret1") as MovieClip;
+			}
+			else if (turrettip==2)	{
+				vis = SymbolFactory.createSymbol("visualTurret2") as MovieClip;
+			}
+			else if (turrettip==3)	{
+				vis = SymbolFactory.createSymbol("visualTurret3") as MovieClip;
+			}
+			else if (turrettip==4)	{
+				vis = SymbolFactory.createSymbol("visualTurret4") as MovieClip;
+			}
+			else if (turrettip==5)	{
+				vis = SymbolFactory.createSymbol("visualTurret5") as MovieClip;
+			}
 			
 			vis.stop();
 			getXmlParam();
