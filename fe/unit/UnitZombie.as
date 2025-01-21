@@ -89,7 +89,7 @@ package fe.unit {
 			if (glowTip>0) {
 				vlight=new visZombieLight();	// .SWF Dependency
 				vis.addChild(vlight);
-				vlight.y = -this.boundingBox.halfHeight;
+				vlight.y = -boundingBox.halfHeight;
 				vlight.blendMode='screen';
 				vlight.cacheAsBitmap=true;
 			}
@@ -137,7 +137,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X + storona * 30;
-			weaponY = coordinates.Y - this.boundingBox.height * 0.8;
+			weaponY = coordinates.Y - boundingBox.height * 0.8;
 		}
 		
 		public override function save():Object {
@@ -168,7 +168,7 @@ package fe.unit {
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
 				blit(anims[animState].id,t_res);
-				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * 10);
+				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5) * boundingBox.width, coordinates.Y - Math.random() * 10);
 				
 				return;
 			}
@@ -201,7 +201,7 @@ package fe.unit {
 				animState='dig';
 				if (vlight && vlight.alpha<1) {
 					vlight.alpha+=0.05;
-					vlight.y -= this.boundingBox.standingHeight / 40;
+					vlight.y -= _standingHeight / 40;
 				}
 			}
 			else {
@@ -228,7 +228,7 @@ package fe.unit {
 					animState='jump';
 				}
 				if (vlight && vlight.alpha != 1) {
-					vlight.y = -this.boundingBox.halfHeight;
+					vlight.y = -boundingBox.halfHeight;
 					vlight.alpha = 1;
 				}
 			}
@@ -309,8 +309,8 @@ package fe.unit {
 		public function zakop():void {
 			knocked=0;
 			aiState=5;
-			this.boundingBox.height = 0;
-			this.boundingBox.flatten(coordinates);
+			boundingBox.height = 0;
+			boundingBox.flatten(coordinates);
 			overLook=true;
 			levitPoss=false;
 			activateTrap=0;
@@ -337,8 +337,8 @@ package fe.unit {
 		}
 		public function vykop():void {
 			knocked=knocked2;
-			this.boundingBox.height = this.boundingBox.standingHeight;
-			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+			boundingBox.height = _standingHeight;
+			boundingBox.center(coordinates);
 			aiState=3;
 			aiSpok=maxSpok+10;
 			overLook=false;
@@ -371,16 +371,16 @@ package fe.unit {
 		private function resurrect():void {
 			hp=maxhp;
 			sost=1;
-			this.boundingBox.height = this.boundingBox.standingHeight;
-			this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+			boundingBox.height = _standingHeight;
+			boundingBox.top = coordinates.Y - boundingBox.height;
 			fraction=Unit.F_MONSTER;
 			t_res=tIsRes;
 			tZlo=120;
 			aiTCh=30;
 			transT=false;
 			
-			for (var i:int = int((this.boundingBox.left)/tileX); i<=int((this.boundingBox.right)/tileX); i++) {
-				for (var j:int = int((this.boundingBox.top)/tileY); j<=int((this.boundingBox.bottom)/tileY); j++) {
+			for (var i:int = int((boundingBox.left)/tileX); i<=int((boundingBox.right)/tileX); i++) {
+				for (var j:int = int((boundingBox.top)/tileY); j<=int((boundingBox.bottom)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					
 					if (collisionTile(loc.getTile(i, j))) loc.dieTile(loc.getTile(i, j));
@@ -426,8 +426,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celY = coordinates.Y - boundingBox.height;
+				celX = coordinates.X + boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -493,7 +493,7 @@ package fe.unit {
 			}
 			//направление
 			celDX=celX - coordinates.X;
-			celDY=celY - coordinates.Y + this.boundingBox.height;
+			celDY=celY - coordinates.Y + boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -503,8 +503,8 @@ package fe.unit {
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
 				vision=0.7;
-				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celY = coordinates.Y - boundingBox.height;
+				celX = coordinates.X + boundingBox.width * storona * 2;
 			} else {
 				vision=1;
 			}
@@ -749,7 +749,7 @@ package fe.unit {
 			var nx:int = int(celX/tileX);
 			var ny:int = int((celY+40)/tileY);
 		
-			if (superSilaTip==1) superY = ny * tileY + tileY + this.boundingBox.height;
+			if (superSilaTip==1) superY = ny * tileY + tileY + boundingBox.height;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 		
 			if (coordinates.Y-celY>120) {
@@ -817,7 +817,7 @@ package fe.unit {
 						if (rasst1 < radrad) un.heal(radHeal * (radrad - rasst1) / radrad);
 					}
 				}
-				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight);
+				Emitter.emit('radioblast', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight);
 			}
 			else if (superSilaTip==6) {
 				loc.budilo(coordinates.X, coordinates.Y, 1000);

@@ -340,6 +340,11 @@ package fe.unit {
 		private static const robotKZ:int		= 75;
 		private static const damWallStun:int	= 45;
 
+		protected var _standingHeight:Number;  // Standing height (Constant)
+		protected var _standingWidth:Number;   // Standing width (Constant)
+		protected var _crouchingHeight:Number; // Crouching height (Constant)
+		protected var _crouchingWidth:Number;  // Crouching width (Constant)
+
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
@@ -404,7 +409,9 @@ package fe.unit {
 			mapxml = xml;
 		}
 		
-		
+		public function get height():Number {
+			return _standingHeight;
+		}
 
 		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit {
 			switch (id) {
@@ -552,25 +559,25 @@ package fe.unit {
 				node = node0.phis[0];
 				
 				if (node.@sX.length()) {
-					boundingBox.width = boundingBox.standingWidth = node.@sX;
+					_standingWidth = node.@sX;
 				}
 				
 				if (node.@sY.length()) {
-					boundingBox.height = boundingBox.standingHeight = node.@sY;
+					_standingHeight = node.@sY;
 				}
 				
 				if (node.@sitX.length()) {
-					boundingBox.crouchingWidth = node.@sitX; 
+					_crouchingWidth = node.@sitX;
 				}
 				else {
-					boundingBox.crouchingWidth = boundingBox.standingHeight;
+					_crouchingWidth = _standingWidth;
 				}
 				
 				if (node.@sitY.length()) {
-					boundingBox.crouchingHeight = node.@sitY; 
+					_crouchingHeight = node.@sitY; 
 				}
 				else {
-					boundingBox.crouchingHeight = boundingBox.standingHeight * 0.5;
+					_crouchingHeight = _standingHeight * 0.50;
 				}
 				
 				if (node.@massa.length()) {
@@ -584,6 +591,11 @@ package fe.unit {
 					massaFix = massaMove;
 				}
 			}
+
+			// Update bounding box with the unit size
+			boundingBox.height = _standingHeight;
+			boundingBox.width = _standingWidth;
+			boundingBox.center(coordinates);
 			
 			massa = massaFix;
 			
@@ -1136,12 +1148,12 @@ package fe.unit {
 			}
 
 			if (burn) {
-                burn.step();
-                
+				burn.step();
+
 				if (burn.vse) {
 					exterminate();
 				}
-            }
+			}
 			else {
 				animate();
 			}
@@ -1254,6 +1266,7 @@ package fe.unit {
 				}
 				
 				if (stay) {
+					// Apply friction
 					velocity.X *= tormoz;
 					
 					if (walk < 0) {
@@ -1324,7 +1337,7 @@ package fe.unit {
 			var newmy:Number = 0;
 			var autoSit:Boolean = false;
 
-			// If we're... Not passing through stairs, on the ground, standing on a slope, and moving
+			// Walking up or down stairs
 			if (!throu && stay && diagon && velocity.Y >= 0) {
 				
 				var dxdiv:Number = velocity.X / div;
@@ -1335,81 +1348,96 @@ package fe.unit {
 						diagon = 0;
 					}
 				}
-				// Apply sloped movement
-				else {
+				else {	// Apply sloped movement
 					coordinates.X += dxdiv;
-					coordinates.Y -= slopeY; // If diagon > 0, this reduces Y, going “up”
+					coordinates.Y -= slopeY;
 					velocity.Y = 0;
 					checkDiagon(0);
 				}
+
 				return;
 			}
+
 			// Otherwise, indicate we're not on a slope
 			diagon = 0;
 			
 			//HORIZONTAL
 			if (!isLaz) {
-
 				coordinates.X += (velocity.X + osndx) / div;
-				if (coordinates.X - this.boundingBox.halfWidth < 0) {
+				
+				if (coordinates.X - boundingBox.halfWidth < 0) {
 					if (!outLoc(1)) {
-						coordinates.X = this.boundingBox.halfWidth;
+						coordinates.X = boundingBox.halfWidth;
 						velocity.X = Math.abs(velocity.X) * elast;
 						turnX = 1;
 						kray = true;
 					}
 				}
-				if (coordinates.X + this.boundingBox.halfWidth >= loc.maxX)
-				{
-					if (!outLoc(2))
-					{
-						coordinates.X = loc.maxX - 1 - this.boundingBox.halfWidth;
+				
+				if (coordinates.X + boundingBox.halfWidth >= loc.maxX) 	{
+					if (!outLoc(2)) {
+						coordinates.X = loc.maxX - 1 - boundingBox.halfWidth;
 						velocity.X = -Math.abs(velocity.X) * elast;
 						turnX = -1;
 						kray = true;
 					}
 				}
-				this.boundingBox.centerHorizontally(coordinates);
+				
+				boundingBox.center(coordinates);
 				
 				// [Move left]
 				if (velocity.X + osndx < 0) {
-					if (!player && stay && shX1 > 0.5) {
+					if (!player && stay && shX1 > 0.50) {
 						newmy = checkDiagon(-5);
+						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							this.boundingBox.flatten(coordinates);
+							boundingBox.flatten(coordinates);
 						}
 					}
+					
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1 > 0.5)) {
 						newmy=checkDiagon(-2, -1);
+						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							this.boundingBox.flatten(coordinates);
+							boundingBox.flatten(coordinates);
 						}
 					}
+					
 					if (player && isUp && stay && !isSit) {
-						var x:int = int(this.boundingBox.left / tileX);
-						var y:int = int(this.boundingBox.top / tileY);
+						var x:Number = boundingBox.left / tileX;
+						var y:Number = boundingBox.top / tileY;
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, y + 1);
+						
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							coordinates.Y = t2.boundingBox.top;
-							this.boundingBox.bottom = t2.boundingBox.top;
+							boundingBox.bottom = t2.boundingBox.top;
 							sit(true);
 							autoSit = true;
 						}
 					}
+					
 					if (mater) {
-						for (i = int(this.boundingBox.top/tileY); i <= int(this.boundingBox.bottom/tileY); i++) {
-							t = loc.getTile(int(this.boundingBox.left/tileX), i);
+						for (i = int(boundingBox.top/tileY); i <= int(boundingBox.bottom/tileY); i++) {
+							t = loc.getTile(int(boundingBox.left/tileX), i);
+						
 							if (collisionTile(t)) {
-								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (this.boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(-20,t.boundingBox.top-this.boundingBox.bottom)) {
+								if (t.door && t.door.inter) {
+									pumpObj=t.door.inter;
+								}
+							
+								if (boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(-20,t.boundingBox.top-boundingBox.bottom)) {
 									coordinates.Y = t.boundingBox.top;
 								}
 								else {
-									coordinates.X = t.boundingBox.right + this.boundingBox.halfWidth;
-									if (t_throw > 0 && velocity.X < -damWallSpeed && damWall) damageWall(2);
+									// Left side collision detection / resolution
+									coordinates.X = t.boundingBox.right + boundingBox.halfWidth;
+									
+									if (t_throw > 0 && velocity.X < -damWallSpeed && damWall) {
+										damageWall(2);
+									}
 
 									if (destroy > 0 && destroyWall(t, 1)) {
 										velocity.X *= 0.75;
@@ -1417,8 +1445,12 @@ package fe.unit {
 									else {
 										velocity.X = Math.abs(velocity.X) * elast;
 										turnX = 1;
-										if (t.mat == 1) tykMat = 1;
-										this.boundingBox.centerHorizontally(coordinates);
+
+										if (t.mat == 1) {
+											tykMat = 1;
+										}
+
+										boundingBox.center(coordinates);
 									}
 								}
 							}
@@ -1430,56 +1462,77 @@ package fe.unit {
 				if (velocity.X + osndx > 0) {
 					if (!player && stay && shX2 > 0.5) {
 						newmy = checkDiagon(-5);
+						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							this.boundingBox.flatten(coordinates);
+							boundingBox.flatten(coordinates);
 						}
 					}
+					
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5)) {
 						newmy = checkDiagon(-2, 1);
+						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
-							this.boundingBox.flatten(coordinates);
+							boundingBox.flatten(coordinates);
 						}
 					}
+					
 					if (player && isUp && stay && !isSit) {
-						var x:int = int(this.boundingBox.right / tileX);
-						var y:int = int(this.boundingBox.top / tileY);
+						var x:Number = boundingBox.right / tileX;
+						var y:Number = boundingBox.top / tileY;
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, (y + 1));
+						
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							coordinates.Y  = t2.boundingBox.top;
-							this.boundingBox.bottom = t2.boundingBox.top;
+							boundingBox.bottom = t2.boundingBox.top;
 							sit(true);
 							autoSit = true;
 						}
 					} 
+					
 					if (mater) {
-						for (i = int(this.boundingBox.top / tileY); i <= int(this.boundingBox.bottom / tileY); i++) {
-							t = loc.getTile(int(this.boundingBox.right / tileX), i);
+						for (i = int(boundingBox.top / tileY); i <= int(boundingBox.bottom / tileY); i++) {
+							t = loc.getTile(int(boundingBox.right / tileX), i);
+						
 							if (collisionTile(t)) {
-								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (this.boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(20,t.boundingBox.top-this.boundingBox.bottom)) {
+								if (t.door && t.door.inter) {
+									pumpObj=t.door.inter;
+								}
+								
+								if (boundingBox.bottom - t.boundingBox.top<=(stay ? porog : porog_jump) && !collisionAll(20, t.boundingBox.top - boundingBox.bottom)) {
 									coordinates.Y = t.boundingBox.top;
 								}
 								else {
-									coordinates.X = t.boundingBox.left - this.boundingBox.halfWidth;
-									if (t_throw > 0 && velocity.X > damWallSpeed && damWall) damageWall(1);
+
+									// Right side collision detection / resolution
+									coordinates.X = t.boundingBox.left - boundingBox.halfWidth;
+								
+									if (t_throw > 0 && velocity.X > damWallSpeed && damWall) {
+										damageWall(1);
+									}
+								
 									if (destroy > 0 && destroyWall(t, 2)) {
 										velocity.X *= 0.75;
 									}
 									else {
 										velocity.X = -Math.abs(velocity.X) * elast;
 										turnX = -1;
-										if (t.mat == 1) tykMat = 1;
-										this.boundingBox.centerHorizontally(coordinates);
+
+										if (t.mat == 1) {
+											tykMat = 1;
+										}
+
+										boundingBox.center(coordinates);
 									}
 								}
 							}
 						}
 					}
 				}
-				this.boundingBox.flatten(coordinates);
+
+				boundingBox.flatten(coordinates);
 			}
 			//отталкивание | [Repulsion]
 			
@@ -1487,6 +1540,7 @@ package fe.unit {
 			//VERTICAL
 			//downward movement
 			newmy = 0;
+			
 			if (velocity.Y + osndy > 0) {
 				if (velocity.Y > 0) {
 					stay = false;
@@ -1495,27 +1549,35 @@ package fe.unit {
 				}
 				
 				shX1 = 1;
-				shX2 = 1; //if >0, then you are not completely standing on the floor
+				shX2 = 1; //if > 0, then you are not completely standing on the floor
 
 				// Flying, levitating or swimming
 				if (levit || plav && isPlav || isFly)  {
 					diagon = 0;
 					coordinates.Y += (velocity.Y + osndy) / div;
+					
 					if (coordinates.Y > loc.maxY && !outLoc(3)) {
 						coordinates.Y = loc.maxY - 1;
 						velocity.Y = 0;
 						turnY = -1;
 					}
-					this.boundingBox.flatten(coordinates);
+					
+					boundingBox.flatten(coordinates);
+					
 					if (mater) {
-						for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
-							t = loc.getTile(i, int(this.boundingBox.bottom/tileY));
+						// Collision check below unit
+						for (i = int(boundingBox.left / tileX); i <= int(boundingBox.right / tileX); i++) {
+							t = loc.getTile(i, int(boundingBox.bottom/tileY));
+							
 							if (collisionTile(t)) {
 								coordinates.Y = t.boundingBox.top;
-								this.boundingBox.flatten(coordinates);
+								boundingBox.flatten(coordinates);
 								velocity.Y = 0;
 								turnY = -1;
-								if (t.mat == 1) tykMat = 1;
+								
+								if (t.mat == 1) {
+									tykMat = 1;
+								}
 							}
 						}
 					}
@@ -1523,65 +1585,107 @@ package fe.unit {
 				// [a fall]
 				else  {						
 					if (mater) {
-						for (i = int(this.boundingBox.left/tileX); i<=int(this.boundingBox.right/tileX); i++) {
-							t = loc.getTile(i, int(this.boundingBox.bottom + velocity.Y / div) / tileY);
+						// Collision check below unit
+						for (i = int(boundingBox.left/tileX); i<=int(boundingBox.right/tileX); i++) {
+							t = loc.getTile(i, int(boundingBox.bottom + velocity.Y / div) / tileY);
+							
 							if (collisionTile(t, 0, velocity.Y / div)) {
-								if (-(this.boundingBox.left - t.boundingBox.left) / this.boundingBox.width < shX1) shX1 = -(this.boundingBox.left - t.boundingBox.left) / this.boundingBox.width;
-								if ((this.boundingBox.right - t.boundingBox.right) / this.boundingBox.width < shX2) shX2 = (this.boundingBox.right - t.boundingBox.right) / this.boundingBox.width;
+								if (-(boundingBox.left - t.boundingBox.left) / boundingBox.width < shX1) {
+									shX1 = -(boundingBox.left - t.boundingBox.left) / boundingBox.width;
+								}
+								
+								if ((boundingBox.right - t.boundingBox.right) / boundingBox.width < shX2) {
+									shX2 = (boundingBox.right - t.boundingBox.right) / boundingBox.width;
+								}
+								
 								newmy = t.boundingBox.top;
-								if (t.mat > 0) stayMat = t.mat;
+								
+								if (t.mat > 0) {
+									stayMat = t.mat;
+								}
+								
 								if (t.phis >= 1 && !(transT && t.phis == 3)) {
 									stayPhis = 1;
-									if (t_throw > 0 && velocity.Y > damWallSpeed && damWall) damageWall(3);
-									if (destroy > 0 || massa >= 1) destroyWall(t, 3);
+									
+									if (t_throw > 0 && velocity.Y > damWallSpeed && damWall) {
+										damageWall(3);
+									}
+									
+									if (destroy > 0 || massa >= 1) {
+										destroyWall(t, 3);
+									}
 								}
 								else if (t.shelf && stayPhis == 0) {
 									stayPhis = 2;
 									stayMat = t.mat;
 								}
+								
 								diagon = 0;
 							}
 						}
 					}
 
-					if (newmy == 0 && !throu) newmy = checkDiagon(velocity.Y / div);
-					if (newmy == 0 && !throu) newmy = checkShelf(velocity.Y / div, osndy / div);
+					// Check for stairs
+					if (newmy == 0 && !throu) {
+						newmy = checkDiagon(velocity.Y / div);
+					}
+
+					// Check for a beam
+					if (newmy == 0 && !throu) {
+						newmy = checkShelf(velocity.Y / div, osndy / div);
+					}
 
 					if (newmy)  {
-						this.boundingBox.top = newmy - this.boundingBox.height;
-						for (i = int(this.boundingBox.left / tileX); i <= int(this.boundingBox.right / tileX); i++) {
-							t = loc.getTile(i, int((newmy - this.boundingBox.height) / tileY));
-							if (collisionTile(t)) newmy = 0;
+						boundingBox.top = newmy - boundingBox.height;
+						
+						for (i = int(boundingBox.left / tileX); i <= int(boundingBox.right / tileX); i++) {
+							t = loc.getTile(i, int((newmy - boundingBox.height) / tileY));
+							
+							if (collisionTile(t)) {
+								newmy = 0;
+							}
 						}
 					}
+					
 					if (newmy) {
 						coordinates.Y = newmy;
-						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
-						this.boundingBox.bottom = coordinates.Y;
-						if (velocity.Y > 16) makeNoise(noiseRun, true);
-						else if (velocity.Y > 9) makeNoise(noiseRun / 2, true);
-						if (velocity.Y > 5) sndFall();
+						boundingBox.top = coordinates.Y - boundingBox.height;
+						boundingBox.bottom = coordinates.Y;
+						
+						if (velocity.Y > 16) {
+							makeNoise(noiseRun, true);
+						}
+						else if (velocity.Y > 9) {
+							makeNoise(noiseRun * 0.50, true);
+						}
+						
+						if (velocity.Y > 5) {
+							sndFall();
+						}
+						
 						if (jumpBall > 0 && velocity.Y > 3) {
 							velocity.Y = -velocity.Y * jumpBall;
 							turnY=-1;
 						}
-						else velocity.Y = 0;
+						else {
+							velocity.Y = 0;
+						}
 
 						stay = true;
 						fracLevit = 0;
 		
-						isLaz=0;
+						isLaz = 0;
 					}
 					else {
 						coordinates.Y += velocity.Y / div;
-						this.boundingBox.flatten(coordinates);
+						boundingBox.flatten(coordinates);
 					}
 					
 					if (coordinates.Y > loc.maxY) {
 						if (!outLoc(3)) {
-							coordinates.Y = loc.maxY-1;
+							coordinates.Y = loc.maxY - 1;
 							turnY = -1;
-							this.boundingBox.flatten(coordinates);
+							boundingBox.flatten(coordinates);
 						}
 					}
 				}
@@ -1592,43 +1696,58 @@ package fe.unit {
 					stay = false;
 					diagon = 0;
 				}
-				if (coordinates.Y - this.boundingBox.height < 0) {
+				
+				if (coordinates.Y - boundingBox.height < 0) {
 					if (!outLoc(4)) {
-						coordinates.Y = this.boundingBox.height - 0.1;
+						coordinates.Y = boundingBox.height - 0.10;
 						velocity.Y = 0;
 						turnY = 1;
 					}
 				}
+				
 				if (velocity.Y > 0) {
 					newmy = checkShelf(velocity.Y / div, osndy / div);
+					
 					if (newmy) {
 						coordinates.Y = newmy;
-						this.boundingBox.flatten(coordinates);
+						boundingBox.flatten(coordinates);
 						velocity.Y = 0;
 						stay = true;
 					}
 				}
 				else {
 					coordinates.Y += (velocity.Y + osndy) / div;
-					this.boundingBox.flatten(coordinates);
+					boundingBox.flatten(coordinates);
 				}
 
 				if (mater) {
-					for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
-						t = loc.getTile(i, int(this.boundingBox.top / tileY));
+					for (i = int(boundingBox.left / tileX); i <= int(boundingBox.right / tileX); i++) {
+						t = loc.getTile(i, int(boundingBox.top / tileY));
+					
 						if (collisionTile(t)) {
-							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) damageWall(4);
-							if (destroy > 0) destroyWall(t, 4);
-							coordinates.Y = t.boundingBox.bottom + this.boundingBox.height;
-							this.boundingBox.flatten(coordinates);
+							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) {
+								damageWall(4);
+							}
+							
+							if (destroy > 0) {
+								destroyWall(t, 4);
+							}
+							
+							coordinates.Y = t.boundingBox.bottom + boundingBox.height;
+							boundingBox.flatten(coordinates);
 							velocity.Y = 0;
 							turnY = 1;
-							if (t.mat == 1) tykMat = 1;
+						
+							if (t.mat == 1) {
+								tykMat = 1;
+							}
+						
 							stay = false;
 						}
 					}
 				}
 			} 
+			
 			if (autoSit) {
 				autoSit = false;	
 				unsit();
@@ -1701,19 +1820,17 @@ package fe.unit {
 			
 			// Adjust dimensions for crouching
 			if (isSit) {
-				boundingBox.width = boundingBox.crouchingWidth;
-				boundingBox.height = boundingBox.crouchingHeight;
+				boundingBox.width = _crouchingWidth;
+				boundingBox.height = _crouchingHeight;
 			}
 			// Adjust dimensions for standing
 			else {
-				boundingBox.width = boundingBox.standingWidth;
-				boundingBox.height = boundingBox.standingHeight;
+				boundingBox.width = _standingWidth;
+				boundingBox.height = _standingHeight;
 			}
 			
-			// Re-center the character horizontally after dimension change
-			boundingBox.centerHorizontally(coordinates);
-			// Update the top boundary based on the new height
-			boundingBox.top = coordinates.Y - boundingBox.height;
+			// Re-center the bounding box after dimension change
+			boundingBox.center(coordinates);
 		}
 		
 		// Stand up
@@ -1765,31 +1882,29 @@ package fe.unit {
 		
 		// Checks collision between the character's bounding box and a tile's bounding box.
 		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int {
-			// If the tile is empty or non-collidable, return no collision.
 			if (!t || (t.phis == 0 || (transT && t.phis == 3)) && !t.shelf) {
 				return 0; // No collision
 			} 
 			
-			// Create an adjusted bounding box to represent where the character would be after moving.
 			var adjustedBox:BoundingBox = new BoundingBox(new Vector2(0, 0));
 			adjustedBox.setBounds(
-				boundingBox.left + gx,  // Shift the left boundary by gx (horizontal movement).
-				boundingBox.right + gx, // Shift the right boundary by gx (horizontal movement).
-				boundingBox.top + gy,   // Shift the top boundary by gy (vertical movement).
-				boundingBox.bottom + gy // Shift the bottom boundary by gy (vertical movement).
+				boundingBox.left + gx,
+				boundingBox.right + gx,
+				boundingBox.top + gy,
+				boundingBox.bottom + gy
 			);
 
-			// Check if the adjusted bounding box intersects the tile's bounding box.
 			if (!adjustedBox.intersects(t.boundingBox)) {
 				return 0; // No collision
 			}
 
-			// Shelf Tiles: If the tile has a shelf and the character is above it or in a state that allows bypassing the shelf, return no collision.
-			if (t.shelf && (boundingBox.bottom - (stay ? porog : porog_jump) > t.boundingBox.top || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
-				return 0; // No collision with the shelf.
+			// Corrected shelf condition
+			if (t.shelf && (t.phis == 0 || (transT && t.phis == 3)) &&
+				(boundingBox.bottom - (stay ? porog : porog_jump) > t.boundingBox.top || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
+				return 0; // No collision with the shelf
 			}
 
-			return 1;
+			return 1; // Collision detected
 		}
 
 		// Search for stairs
@@ -1818,7 +1933,7 @@ package fe.unit {
 					coordinates.X = (loc.getTile(i, j)).boundingBox.right - boundingBox.halfWidth;
 				}
 				
-				boundingBox.centerHorizontally(coordinates);	// Center the character on the horizontal axis
+				boundingBox.center(coordinates);	// Center the character on the horizontal axis
 				stay = false;				// Indicate that the character is no standing on the ground
 				sit(false);					// The character is not crouched 
 				
@@ -1968,7 +2083,7 @@ package fe.unit {
 			}
 		}
 
-		// [search for an object to stand on]
+		// This checks for physics objects to stand on and returns the top of their boundingbox
 		public function checkShelf(pdy:Number, pdy2:Number = 0):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;
@@ -2316,7 +2431,7 @@ package fe.unit {
 				hpbar.x = World.w.cam.screenX / 2;
 			}
 			else {
-				hpbar.y = coordinates.Y - boundingBox.standingHeight - 20;
+				hpbar.y = coordinates.Y - _standingHeight - 20;
 				
 				if (hpbar.y < 20) {
 					hpbar.y = 20;
@@ -3519,12 +3634,11 @@ package fe.unit {
 			else if (trup && hp > -maxhp * 2) {	// [Leave the corpse and it is not destroyed]
 				replic('die');
 				isFly = false;
-				boundingBox.width = boundingBox.crouchingWidth;
-				boundingBox.height = boundingBox.crouchingHeight;
+				boundingBox.width = _crouchingWidth;
+				boundingBox.height = _crouchingHeight;
 				
-				// Flatten the obj and make it wider since the body is stretched out on the floor
-				boundingBox.flatten(coordinates);
-				boundingBox.centerHorizontally(coordinates);
+				// Crouch the obj since the body is stretched out on the floor
+				boundingBox.center(coordinates);
 
 				fraction = 0;
 				throu = false;

@@ -9,39 +9,29 @@
 		private var _left:Number;
 		private var _right:Number;
 		
-		private var _width:Number = 10;     // Width in pixels (This WILL change during gameplay!)
-		private var _height:Number = 10;    // Height in pixels (This WILL change during gameplay!)
-
-		private var _standingHeight:Number;  // Standing height (Constant)
-		private var _standingWidth:Number;   // Standing width (Constant)
-		private var _crouchingHeight:Number; // Crouching height (Constant)
-		private var _crouchingWidth:Number;  // Crouching width (Constant)
+		private var _width:Number	= 10.00;     // Width in pixels
+		private var _height:Number	= 10.00;    // Height in pixels
 
 		public function BoundingBox(vec:Vector2) {
-			_left   = vec.X - _width * 0.5;
-			_right  = vec.X + _width * 0.5;
-			_top    = vec.Y - _height;
-			_bottom = vec.Y;
+			_left	= vec.X - (_width * 0.50) + 0.01;	// Slight offset to avoid overlapping with the floor tiles
+			_right	= vec.X + (_width * 0.50) - 0.01;	// Slight offset to avoid overlapping with the floor tiles
+			_top	= vec.Y - _height + 0.01;
+			_bottom	= vec.Y - 0.01;				// Slight offset to avoid overlapping with the floor tiles
 		}
 
 		//Updates the boundaries based on new coordinate
 		public function center(vec:Vector2):void {
-			_left   = vec.X - halfWidth;
-			_right  = vec.X + halfWidth;
-			_top    = vec.Y - _height;
-			_bottom = vec.Y;
-		}
-
-		public function centerHorizontally(vec:Vector2):void {
-			_left   = vec.X - halfWidth;
-			_right  = vec.X + halfWidth;
+			_left	= vec.X - halfWidth + 0.01;
+			_right	= vec.X + halfWidth - 0.01;
+			_top	= vec.Y - _height + 0.01;;
+			_bottom	= vec.Y - 0.01;	// To avoid overlapping with the floor tiles
 		}
 
 		public function setBounds(left:Number, right:Number, top:Number, bottom:Number):void {
-			_left = left;
-			_right = right;
-			_top = top;
-			_bottom = bottom;
+			_left	= left; + 0.01;	// Slight offset to avoid overlapping with the floor tiles
+			_right	= right - 0.01;	// Slight offset to avoid overlapping with the floor tiles
+			_top	= top + 0.01;;
+			_bottom	= bottom - 0.01;	// To avoid overlapping with the floor tiles
 		}
 
 		public function duck():void {
@@ -97,31 +87,6 @@
 		public function get halfWidth():Number {
 			return _width * 0.5;
 		}
-		public function get standingHeight():Number {
-			return _standingHeight;
-		}
-		public function get standingWidth():Number {
-			return _standingWidth;
-		}
-		public function get crouchingHeight():Number {
-			return _crouchingHeight;
-		}
-		public function get crouchingWidth():Number {
-			return _crouchingWidth;
-		}
-
-		public function set standingHeight(n:Number):void {
-			_standingHeight = n;
-		}
-		public function set standingWidth(n:Number):void {
-			_standingWidth = n;
-		}
-		public function set crouchingHeight(n:Number):void {
-			_crouchingHeight = n;
-		}
-		public function set crouchingWidth(n:Number):void {
-			_crouchingWidth = n;
-		}
 
 		// Returns the center X coordinate of the bounding box.
 		public function get centerX():Number {
@@ -135,6 +100,11 @@
 					 other.top > _bottom ||
 					 other.bottom < _top);
 		}
+
+		// Checks horizontal intersection with another bounding box
+        public function intersectsHorizontally(other:BoundingBox):Boolean {
+            return !(other.left > right || other.right < left);
+        }
 
 		public function intersectsPoint(x:Number, y:Number):Boolean {
 			return (x >= _left && x <= _right && y >= _top && y <= _bottom);

@@ -390,7 +390,7 @@ package fe.unit {
 			
 			visBmp.filters = [];
 			loc.land.aliAlarm = true;
-			boundingBox.crouchingHeight = 30;
+			_crouchingHeight = 30;
 			
 			super.die(sposob);
 		}

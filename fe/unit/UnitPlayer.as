@@ -1431,7 +1431,7 @@ package fe.unit {
 			var tx:int = Math.round(World.w.celX / tileX) * tileX
 			var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
 			
-			if (loc.sky || !loc.collisionUnit(tx, ty, boundingBox.standingWidth, boundingBox.standingHeight))	{
+			if (loc.sky || !loc.collisionUnit(tx, ty, _standingWidth, _standingHeight))	{
 				teleport(tx, ty, 1);
 				
 				if (teleObj) {
@@ -1457,7 +1457,7 @@ package fe.unit {
 			var ny:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
 			var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
 			
-			if (t.visi >= 0.8 && !loc.collisionUnit(nx, ny, boundingBox.standingWidth, boundingBox.standingHeight)) {
+			if (t.visi >= 0.8 && !loc.collisionUnit(nx, ny, _standingWidth, _standingHeight)) {
 				return true;
 			}
 			
@@ -1750,7 +1750,7 @@ package fe.unit {
 				var tx:int = Math.round(World.w.celX / tileX) * tileX
 				var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
 				
-				if (!loc.collisionUnit(tx, ty, boundingBox.standingWidth, boundingBox.standingHeight)) {
+				if (!loc.collisionUnit(tx, ty, _standingWidth, _standingHeight)) {
 					teleport(tx, ty);
 				}
 			}
@@ -3631,8 +3631,7 @@ package fe.unit {
 			actionObj = null;
 			boundingBox.width = ratX;
 			boundingBox.height = ratY;
-			boundingBox.centerHorizontally(coordinates);
-			boundingBox.top = coordinates.Y - boundingBox.height;
+			boundingBox.center(coordinates);
 			vis.osn.visible = false;
 			vis.rat.visible = true;
 			
@@ -3642,29 +3641,27 @@ package fe.unit {
 		}
 
 		public function ratOff():Boolean {
-			boundingBox.width = boundingBox.standingWidth;
-			boundingBox.height = boundingBox.standingHeight;
-			boundingBox.centerHorizontally(coordinates);
-			boundingBox.top = coordinates.Y - boundingBox.height;
+			boundingBox.width = _standingWidth;
+			boundingBox.height = _standingHeight;
+			boundingBox.center(coordinates);
 			
 			if (collisionAll()) {
 				if (collisionAll(15)) {
 					if (collisionAll(-15)) {
 						boundingBox.width = ratX;
 						boundingBox.height = ratY;
-						boundingBox.centerHorizontally(coordinates);
-						boundingBox.top = coordinates.Y - boundingBox.height;
+						boundingBox.center(coordinates);
 						
 						return false;
 					}
 					else {
 						coordinates.X -= 15;
-						boundingBox.centerHorizontally(coordinates);
+						boundingBox.center(coordinates);
 					}
 				}
 				else {
 					coordinates.X += 15;
-					boundingBox.centerHorizontally(coordinates);
+					boundingBox.center(coordinates);
 				}
 			}
 			

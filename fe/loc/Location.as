@@ -2128,7 +2128,7 @@ package fe.loc {
 			// Set default coordinates if not provided
 			if (nx == -10000) {
 				nx = gg.coordinates.X + gg.storona * 12;
-				ny = gg.boundingBox.top + int(gg.boundingBox.standingHeight * 0.247);
+				ny = gg.boundingBox.top + int(gg.height * 0.247);
 			}
 
 			relight_t = 10;
