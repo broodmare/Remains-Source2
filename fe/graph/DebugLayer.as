@@ -11,20 +11,27 @@ package fe.graph {
 	import fe.projectile.Bullet;
 
     public class DebugLayer {
+		
+		// Colors 
+		private static var COLOR_RED:uint				= 0xFF0000;
+		private static var COLOR_ORANGE:uint			= 0xFFAA32;
+		private static var COLOR_PURPLE:uint			= 0x6464FF;
+		private static var COLOR_LIGHTBLUE:uint			= 0x64FFFF;
 
-        private var spriteContainer:Sprite; // Main sprite container
+        private var spriteContainer:Sprite;								// Main sprite container
 		
 		// Units and Objects
-		private var drawObjectBoundingBoxes:Boolean = true;
-		private var drawUnitBoundingBoxes:Boolean = false;
-		private var drawPlayerBoundingBoxes:Boolean = true;
+		private var drawObjectBoundingBoxes:Boolean		= true;
+		private var drawUnitBoundingBoxes:Boolean		= true;
+		private var drawPlayerBoundingBoxes:Boolean		= true;
 
-		private var drawChainBoundingBoxes:Boolean = false; // Processing chain for the current loc (Bullets, Triggers, ..)
+		private var drawChainBoundingBoxes:Boolean		= true; 		// Processing chain for the current loc (Bullets, Triggers, ..)
 
 		// Tiles
-		private var drawShelfBoundingBoxes:Boolean = false;
-		private var drawDiagBoundingBoxes:Boolean = false;
-		private var drawStairBoundingBoxes:Boolean = false;
+		private var drawShelfBoundingBoxes:Boolean		= false;		// Draw all beam bounding boxes
+		private var drawDiagBoundingBoxes:Boolean		= false;		// Draw all stair bounding boxes
+		private var drawStairBoundingBoxes:Boolean		= false;		// Draw all ladder bounding boxes
+		private var drawTileBoundingBoxes:Boolean		= false;		// Literally all tiles (will lag)
 
         // Constructor
         public function DebugLayer() {
@@ -43,30 +50,34 @@ package fe.graph {
 			}
 
 			if (drawDiagBoundingBoxes) {
-				debugDrawBoundingBoxesForDiags(spriteContainer, World.w.loc.space, 0x64FFFF);
+				debugDrawBoundingBoxesForDiags(spriteContainer, World.w.loc.space, COLOR_LIGHTBLUE);
 			}
 
 			if (drawStairBoundingBoxes) {
 				debugDrawBoundingBoxesForStairs(spriteContainer, World.w.loc.space, 0x00FF64);
 			}
 
-			// Draw all object bounding boxes (in blue)
+			if (drawTileBoundingBoxes) {
+				debugDrawBoundingBoxesForTiles(spriteContainer, World.w.loc.space, 0x57E668);
+			}
+
+			// Draw all object bounding boxes (in purple)
 			if (drawObjectBoundingBoxes) {
-				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.objs, 0x6464FF);
+				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.objs, COLOR_PURPLE);
 			}
 
 			// Draw unit bounding box (in red)
 			if (drawUnitBoundingBoxes) {
-				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.units, 0xFF0000);
+				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.units, COLOR_RED);
 			}
 			
 			// Draw player bounding box (in red)
 			if (drawPlayerBoundingBoxes) {
-				debugDrawBoundingBoxForObjects(spriteContainer, World.w.loc.gg, 0xFF0000);
+				debugDrawBoundingBoxForObjects(spriteContainer, World.w.loc.gg, COLOR_RED);
 			}
 
 			if (drawChainBoundingBoxes) {
-				debugDrawBoundingBoxesForChain(spriteContainer, 0xFFAA32);
+				debugDrawBoundingBoxesForChain(spriteContainer, COLOR_ORANGE);
 			}
 
 			// Return the finished debug layer
@@ -89,7 +100,7 @@ package fe.graph {
 					
 					var shape:Shape = new Shape();
 					shape.graphics.lineStyle(1, color, 1); // 1-pixel wide line, 100% alpha
-					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -99,8 +110,8 @@ package fe.graph {
 				if (current is Bullet) {
 					var bullet:Bullet = current as Bullet;
 					var bulletShape:Shape = new Shape();
-					bulletShape.graphics.lineStyle(1, 0xFF0000, 1); // Red circle outline
-					bulletShape.graphics.beginFill(0xFF0000, 1); // Red fill
+					bulletShape.graphics.lineStyle(1, COLOR_RED, 1); // Red circle outline
+					bulletShape.graphics.beginFill(COLOR_RED, 1); // Red fill
 					bulletShape.graphics.drawCircle(bullet.coordinates.X, bullet.coordinates.Y, 5); // Radius of 5
 					bulletShape.graphics.endFill();
 					
@@ -132,7 +143,7 @@ package fe.graph {
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
 					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
-					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -153,7 +164,7 @@ package fe.graph {
 				// Create a Shape for each bounding box
 				var shape:Shape = new Shape();
 				shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
-				shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+				shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 				shape.graphics.endFill();
 				
 				container.addChild(shape);
@@ -163,7 +174,7 @@ package fe.graph {
 		private function debugDrawBoundingBoxesForTiles(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
 			for each (var item in list) {
-				// If the item is "a stair", skip it
+				// Don't draw beam collision
 				if (!item.hasOwnProperty("shelf")) {
 					continue;
 				}
@@ -174,7 +185,7 @@ package fe.graph {
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
 					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
-					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -197,7 +208,7 @@ package fe.graph {
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
 					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
-					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -219,7 +230,7 @@ package fe.graph {
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
 					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
-					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);
@@ -241,7 +252,7 @@ package fe.graph {
 					// Create a Shape for each bounding box
 					var shape:Shape = new Shape();
 					shape.graphics.lineStyle(1, color, 1);  // 1-pixel wide line, 100% alpha
-					shape.graphics.drawRect(bb.left, bb.top, bb.width, bb.height);
+					shape.graphics.drawRect(bb.left, bb.top, bb.right - bb.left, bb.bottom - bb.top);
 					shape.graphics.endFill();
 					
 					container.addChild(shape);

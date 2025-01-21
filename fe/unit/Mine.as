@@ -122,28 +122,28 @@ package fe.unit {
 			doop=true;
 			transT=true;
 			
-			vulner[Resistances.DAM_EMP]=1;
-			vulner[Resistances.DAM_VENOM]=0;
-			inter.mine=Math.round(1+Math.random()*(ndif+1));
+			vulnerabilities.setResist(Resistances.DAM_EMP, 1);
+			vulnerabilities.setResist(Resistances.DAM_VENOM, 0);
+			inter.mine = Math.round(1 + Math.random() * (ndif + 1));
 			
-			if (inter.mine>inter.maxMechLvl) {
-				inter.mine=inter.maxMechLvl;
+			if (inter.mine > inter.maxMechLvl) {
+				inter.mine = inter.maxMechLvl;
 			}
 			
-			if (tr>=5) {
-				inter.mine=Math.floor(Math.random()*3+5);
+			if (tr >= 5) {
+				inter.mine = Math.floor(Math.random() * 3 + 5);
 				
-				if (tr==5) {
-					chain=true;
-					visibility=180;
+				if (tr == 5) {
+					chain = true;
+					visibility = 180;
 				}
 			}
 			
-			inter.active=true;
-			inter.action=3;
+			inter.active = true;
+			inter.action = 3;
 			inter.update();
-			inter.successRemine=remine;
-			inter.fiascoRemine=activate;
+			inter.successRemine = remine;
+			inter.fiascoRemine = activate;
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
@@ -242,7 +242,7 @@ package fe.unit {
 							continue;
 						}
 						
-						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != Resistances.DAM_EMP || un.vulner["emp"] > 0)) {
+						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != Resistances.DAM_EMP || un.vulnerabilities.getResist(Resistances.DAM_EMP) > 0)) {
 							if (otschet > 0 && un.activateTrap == 1 && un.fraction == Unit.F_PLAYER) {
 								otschet--;
 								continue;

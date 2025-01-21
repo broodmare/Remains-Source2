@@ -33,6 +33,12 @@ package fe.graph {
 
 	public class Grafon {
 		
+		// colors
+		private static const COLOR_TRANSPARENT:uint		= 0xFF000000;
+		private static const COLOR_BLACK:uint			= 0x00000000;
+		private static const COLOR_WHITE:uint			= 0xFFFFFFFF;
+		
+
 		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
 		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
 
@@ -68,129 +74,141 @@ package fe.graph {
 		private var satsBitmap:Bitmap;
 		private var shadBmp:BitmapData;
 		private var colorBmp:BitmapData;
-		private var dsFilter:DropShadowFilter=new DropShadowFilter(7,90,0,0.75,16,16,1,3,false,false,true);
-		private var infraTransform:ColorTransform=new ColorTransform(1,1,1,1,100);
-		private var defTransform:ColorTransform=new ColorTransform();
+		private var dsFilter:DropShadowFilter		= new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
+		private var infraTransform:ColorTransform	= new ColorTransform(1, 1, 1, 1, 100);
+		private var defTransform:ColorTransform		= new ColorTransform();
 		
 		public var pa:MovieClip;
 		public var pb:MovieClip;
 
-		public var brTrans:ColorTransform = new ColorTransform();
-		public var brColor:Color = new Color();		// Adobe Animate dependency.
-		private var brData:BitmapData = new BitmapData(100, 100, false, 0x0);
-		private var brPoint:Point = new Point(0, 0);
-		private var brRect:Rectangle = new Rectangle(0,0,50,50);
-		private var pm:Matrix = new Matrix();
+		public var brTrans:ColorTransform			= new ColorTransform();
+		public var brColor:Color					= new Color();		// Adobe Animate dependency.
+		private var brData:BitmapData				= new BitmapData(100, 100, false, COLOR_BLACK);
+		private var brPoint:Point					= new Point(0, 0);
+		private var brRect:Rectangle				= new Rectangle(0, 0, 50, 50);
+		private var pm:Matrix						= new Matrix();
 			
-		private var voda:MovieClip = new tileVoda();
+		private var voda:MovieClip = new tileVoda();	// .SWF Dependency
 
 		private var m:Matrix;
 		
 		//рамки
-		public var ramT:MovieClip, ramB:MovieClip;
-		public var ramL:MovieClip, ramR:MovieClip;
+		public var ramT:MovieClip;
+		public var ramB:MovieClip;
+		public var ramL:MovieClip;
+		public var ramR:MovieClip;
 		
 		private var arrFront:Array;
 		private var arrBack:Array;
 		
-		private var rectX:int=1920, rectY:int=1000;
-		private var allRect:Rectangle=new Rectangle(0,0,rectX,rectY);
+		private var rectX:int = 1920;
+		private var rectY:int = 1000;
+		private var allRect:Rectangle = new Rectangle(0, 0, rectX, rectY);
 		
-		private var lightX:int=49, lightY:int=28;
-		private var lightRect:Rectangle=new Rectangle(0,0,lightX,lightY);
+		private var lightX:int = 49;
+		private var lightY:int = 28;
+		private var lightRect:Rectangle = new Rectangle(0, 0, lightX, lightY);
 		
 		//загрузка
-		public var resIsLoad:Boolean=false;
-		public var progressLoad:Number=0;
-		public static var spriteLists:Array=[];
+		public var resIsLoad:Boolean			= false;
+		public var progressLoad:Number			= 0;
+		public static var spriteLists:Array		= [];
 		
 		// Lack of '.swf' indicates loose textures in a folder
-		public static var texUrl:Array = ['texture', 'texture1.swf', 'sprite.swf', 'sprite1.swf'];
+		public static var texUrl:Array = ["texture", "texture1.swf", "sprite.swf", "sprite1.swf"];
 		public var grLoaders:Array;
 		
-		public static const numbMat:int = 0;		//материалы
-		public static const numbFon:int = 0;		//задники
-		public static const numbBack:int = 1;		//декорации
-		public static const numbObj:int= 1;		//объекты
-		public static const numbSprite:int = 2;	//номер, с которого начинаются файлы спрайтов
+		public static const numbMat:int		= 0;		//материалы
+		public static const numbFon:int		= 0;		//задники
+		public static const numbBack:int	= 1;		//декорации
+		public static const numbObj:int		= 1;		//объекты
+		public static const numbSprite:int	= 2;	//номер, с которого начинаются файлы спрайтов
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
 		// Constructor
 		public function Grafon(nvis:Sprite) {
+			// Main container
 			visual = nvis;
 
-			visBack = new Sprite();
-			visBack2 = new Sprite();
-			visVoda = new Sprite();
-			visVoda.alpha = 0.6;
-			visFront = new Sprite();
-			visLight = new Sprite();
-			visSats = new Sprite();
-			visSats.visible=false;
-			visSats.filters=[new BlurFilter(3,3,1)];
+			// Drawing the room
+			visBack				= new Sprite();
+			visBack2			= new Sprite();
+			visVoda				= new Sprite();
+			visVoda.alpha		= 0.6;
+			visFront			= new Sprite();
+			visLight			= new Sprite();
+			visSats				= new Sprite();
+			visSats.visible		= false;
+			visSats.filters		= [new BlurFilter(3, 3, 1)];
 
-			debug = new DebugLayer();
-			visBoundingBoxes = new Sprite();	// Layer to draw all bounding boxes on
-			visBoundingBoxes.mouseEnabled = false; // Prevent bounding boxes from blocking mouse events
-			visBoundingBoxes.mouseChildren = false;
+			// Drawing bounding boxes
+			debug								= new DebugLayer();
+			visBoundingBoxes					= new Sprite();	// Layer to draw all bounding boxes on
+			visBoundingBoxes.mouseEnabled		= false; // Prevent bounding boxes from blocking mouse events
+			visBoundingBoxes.mouseChildren		= false;
 			
 			visObjs = [];
 			for (var i:int = 0; i < kolObjs; i++) {
 				visObjs.push(new Sprite());
 			}
 			
-			visual.addChild(visBack);		//0
-			visual.addChild(visBack2);		//0
-			visual.addChild(visObjs[0]);	//1
-			visual.addChild(visObjs[1]);	//2
-			visual.addChild(visObjs[2]);	//3
-			visual.addChild(visFront);		//4
-			visual.addChild(visObjs[3]);	//6
-			visual.addChild(visVoda);		//5
-			visual.addChild(visLight);		//7
-			visual.addChild(visObjs[4]);	//8
-			visual.addChild(visSats);		//9
-			visual.addChild(visObjs[5]);	//10
+			visual.addChild(visBack);		//  0
+			visual.addChild(visBack2);		//  0
+			visual.addChild(visObjs[0]);	//  1
+			visual.addChild(visObjs[1]);	//  2
+			visual.addChild(visObjs[2]);	//  3
+			visual.addChild(visFront);		//  4
+			visual.addChild(visObjs[3]);	//  6
+			visual.addChild(visVoda);		//  5
+			visual.addChild(visLight);		//  7
+			visual.addChild(visObjs[4]);	//  8
+			visual.addChild(visSats);		//  9
+			visual.addChild(visObjs[5]);	// 10
 			
-			visLight.x = -tileX / 2;
-			visLight.y = -tileX / 2 - Tile.tileY;
+			visLight.x = -tileX * 0.50;
+			visLight.y = -tileX * 0.50 - Tile.tileY;
 			visLight.scaleX = tileX;
 			visLight.scaleY = Tile.tileY;
 			
-			frontBmp = new BitmapData(rectX, rectY, true, 0x0)
+			frontBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			frontBitmap = new Bitmap(frontBmp);
 			visFront.addChild(frontBitmap);
 			
-			backBmp = new BitmapData(rectX, rectY, true, 0x0)
+			backBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			backBitmap = new Bitmap(backBmp);
 			visBack.addChild(backBitmap);
 			
-			backBmp2 = new BitmapData(rectX, rectY, true, 0x0)
+			backBmp2 = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			backBitmap2 = new Bitmap(backBmp2);
 			visBack2.addChild(backBitmap2);
 
-			vodaBmp = new BitmapData(rectX, rectY, true, 0x0)
+			vodaBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			vodaBitmap = new Bitmap(vodaBmp);
 			visVoda.addChild(vodaBitmap);
 			
-			satsBmp = new BitmapData(rectX, rectY, true,0);
-			satsBitmap = new Bitmap(satsBmp,'auto',true);
+			satsBmp = new BitmapData(rectX, rectY, true, 0);
+			satsBitmap = new Bitmap(satsBmp, "auto", true);
 			visSats.addChild(satsBitmap);
 			
-			colorBmp = new BitmapData(rectX, rectY, true,0);
-			shadBmp = new BitmapData(rectX, rectY, true,0);
+			colorBmp = new BitmapData(rectX, rectY, true, 0);
+			shadBmp = new BitmapData(rectX, rectY, true, 0);
 			
-			lightBmp = new BitmapData(lightX, lightY,true,0xFF000000);
-			lightBitmap = new Bitmap(lightBmp,'auto',true);
+			lightBmp = new BitmapData(lightX, lightY, true, COLOR_TRANSPARENT);
+			lightBitmap = new Bitmap(lightBmp, "auto", true);
 			visLight.addChild(lightBitmap);
 
 			ramT = new visBlack();
 			ramB = new visBlack();
 			ramR = new visBlack();
 			ramL = new visBlack();
-			ramT.cacheAsBitmap=ramB.cacheAsBitmap=ramR.cacheAsBitmap=ramL.cacheAsBitmap=true;
+
+			ramT.cacheAsBitmap = true;
+			ramB.cacheAsBitmap = true;
+			ramR.cacheAsBitmap = true;
+			ramL.cacheAsBitmap = true;
+			
 			visual.addChild(ramT);
 			visual.addChild(ramB);
 			visual.addChild(ramR);
@@ -209,6 +227,7 @@ package fe.graph {
 					grLoaders[j] = new GrLoader(j, textureURL, this, "looseImage");
 				}
 			}
+			
 			createCursors();
 		}
 		
@@ -225,7 +244,7 @@ package fe.graph {
 
 				for each (var p:XML in xmlList) {
 					if (p.@vid.length() == 0) {
-						if (p.@ed == '2') {
+						if (p.@ed == "2") {
 							arrBack[p.@id] = new Material(p);
 						}
 						else {
@@ -243,41 +262,42 @@ package fe.graph {
 		
 		public function allProgress():void {
 			progressLoad = 0;
+			
 			for (var loader:String in grLoaders) {
 				progressLoad += grLoaders[loader].progressLoad;
 			}
+			
 			progressLoad /= GrLoader.kol;
 		}
 		
 		private function createCursors():void {
-			createCursor(visCurArrow,'arrow');				// .SWF Dependency
-			createCursor(visCurTarget,'target', 13, 13);	// .SWF Dependency
-			createCursor(visCurTarget1,'combat', 13, 13);	// .SWF Dependency
-			createCursor(visCurTarget2,'action', 13, 13);	// .SWF Dependency
+			createCursor(visCurArrow,"arrow");				// .SWF Dependency
+			createCursor(visCurTarget,"target", 13, 13);	// .SWF Dependency
+			createCursor(visCurTarget1,"combat", 13, 13);	// .SWF Dependency
+			createCursor(visCurTarget2,"action", 13, 13);	// .SWF Dependency
  		}
 		
 		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void {
-			var cursorData:Vector.<BitmapData>;
-			var mouseCursorData:MouseCursorData;
-			cursorData=new Vector.<BitmapData>();
+			var cursorData:Vector.<BitmapData> = new Vector.<BitmapData>();
+			var mouseCursorData:MouseCursorData = new MouseCursorData();
+			
 			cursorData.push(new vcur());
-			mouseCursorData = new MouseCursorData();
             mouseCursorData.data = cursorData;
-			mouseCursorData.hotSpot=new Point(nx,ny);
-            Mouse.registerCursor(nazv, mouseCursorData);
+			mouseCursorData.hotSpot = new Point(nx, ny);
+            
+			Mouse.registerCursor(nazv, mouseCursorData);
 		}
 		
 //============================================================================================		
 //							Начальная прорисовка локации
 //============================================================================================		
 		
+		// Draws the bounding box of various objects. Settings for this are in DebugLayer.as
 		public function drawDebugLayer():void {
-			// Ensure the bounding boxes container exists
 			visual.addChild(debug.drawAllBoundingBoxes());
 		}
 
 		public function getObj(textureName:String, n:int = 0):* {
-			//trace("Getting resource object: " + textureName + " from GrLoader: " + n);
 			if (grLoaders[n] && grLoaders[n].isLoad) {
 				return grLoaders[n].getObj(textureName);
 			}
@@ -287,43 +307,45 @@ package fe.graph {
 			}
 		}
 		
-		//показать задний фон
+		// Draw the sky texture
 		public function drawFon(vfon:MovieClip, tex:String):void {
-		// Set default texture if none provided
-		if (tex == '' || tex == null) {
-			tex = 'fonDefault';
-		}
-		// Remove the existing background if present
-		if (visFon && vfon.contains(visFon)) {
-			vfon.removeChild(visFon);
-		}
-		// Retrieve the sky bitmap
-		var obj:Object = getObj(tex);
-		
-		if (obj) {
-			// Check if the object is already a MovieClip
-			if (obj is MovieClip) {
-				visFon = obj as MovieClip;
-			}
-			// If it's BitmapData, wrap it inside a Bitmap and then a MovieClip
-			else if (obj is BitmapData) {
-				var bitmap:Bitmap = new Bitmap(obj as BitmapData);
-				var mc:MovieClip = new MovieClip();
-				mc.addChild(bitmap);
-				visFon = mc;
-			}
-			// Optionally handle other types or throw an error
-			else {
-				throw new TypeError("Unsupported object type for visFon");
+			// Set default texture if none provided
+			if (tex == "" || tex == null) {
+				tex = "fonDefault";
 			}
 			
-			// Add the MovieClip to the display list
-			vfon.addChild(visFon);
+			// Remove the existing background if present
+			if (visFon && vfon.contains(visFon)) {
+				vfon.removeChild(visFon);
+			}
+			
+			// Retrieve the sky bitmap
+			var obj:Object = getObj(tex);
+			
+			if (obj) {
+				// Check if the object is already a MovieClip
+				if (obj is MovieClip) {
+					visFon = obj as MovieClip;
+				}
+				// If it's BitmapData, wrap it inside a Bitmap and then a MovieClip
+				else if (obj is BitmapData) {
+					var bitmap:Bitmap = new Bitmap(obj as BitmapData);
+					var mc:MovieClip = new MovieClip();
+					mc.addChild(bitmap);
+					visFon = mc;
+				}
+				// Optionally handle other types or throw an error
+				else {
+					throw new TypeError("Unsupported object type for visFon");
+				}
+				
+				// Add the MovieClip to the display list
+				vfon.addChild(visFon);
+			}
+			else {
+				trace("Warning: visFon object not found for texture:", tex);
+			}
 		}
-		else {
-			trace("Warning: visFon object not found for texture:", tex);
-		}
-	}
 		
 		public function setFonSize(nx:Number, ny:Number):void {
 			if (visFon) {
@@ -337,191 +359,270 @@ package fe.graph {
 					var koef:int = visFon.width / visFon.height;
 					visFon.x = 0;
 					visFon.y = 0;
-					if (nx>=ny*koef) {
-						visFon.width=nx;
-						visFon.height=nx/koef;
+				
+					if (nx >= ny * koef) {
+						visFon.width = nx;
+						visFon.height = nx / koef;
 					}
 					else {
-						visFon.height=ny;
-						visFon.width=ny*koef;
+						visFon.height = ny;
+						visFon.width = ny * koef;
 					}
 				}
 			}
 		}
-		
+
 		public function warShadow():void {
 			if (World.w.pers.infravis) {
 				visLight.transform.colorTransform = infraTransform;
-				visLight.blendMode = 'multiply';
+				visLight.blendMode = "multiply";
 			}
 			else {
 				visLight.transform.colorTransform = defTransform
-				visLight.blendMode = 'normal';
+				visLight.blendMode = "normal";
 			}
 		}
-		
-		//прорисовка локации
+	
+		// [Location drawing]
 		public function drawLoc(nloc:Location):void {
 			World.w.gr_stage=1;
-			loc=nloc;
-			loc.grafon=this;
+			loc = nloc;
+			loc.grafon = this;
 			resX = loc.spaceX * tileX;
 			resY = loc.spaceY * Tile.tileY;
 			
-			var transpFon:Boolean=nloc.transpFon;
-			if (nloc.backwall=='sky') transpFon=true;
+			var transpFon:Boolean = nloc.transpFon;
 			
-			World.w.gr_stage=2;
+			if (nloc.backwall == "sky") {
+				transpFon = true;
+			}
+			
+			World.w.gr_stage = 2;
 			//рамки
-			ramT.x=ramB.x=-50;
-			ramR.y=ramL.y=0;
-			ramT.y=0;
-			ramL.x=0;
-			ramB.y=loc.maxY-1;
-			ramR.x=loc.maxX-1;
-			ramT.scaleX=ramB.scaleX=loc.maxX/100+1;
-			ramT.scaleY=ramB.scaleY=2;
-			ramR.scaleY=ramL.scaleY=loc.maxY/100;
-			ramR.scaleX=ramL.scaleX=2;
+			ramT.x = -50;
+			ramB.x = -50;
+			ramR.y = 0;
+			ramL.y = 0;
+			ramT.y = 0;
+			ramL.x = 0;
+			ramB.y = loc.maxY - 1;
+			ramR.x = loc.maxX - 1;
+			ramT.scaleX = loc.maxX * 0.01 + 1;
+			ramB.scaleX = loc.maxX * 0.01 + 1;
+			ramT.scaleY = 2;
+			ramB.scaleY = 2;
+			ramR.scaleY = loc.maxY * 0.01;
+			ramL.scaleY = loc.maxY * 0.01;
+			ramR.scaleX = 2;
+			ramL.scaleX = 2;
 		
-			World.w.gr_stage=3;		// [somewhere here] (I assume this means whatever graphical bug)
+			World.w.gr_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
 			frontBmp.lock();
 			backBmp.lock();
 			backBmp2.lock();
 			vodaBmp.lock();
 			
-			frontBmp.fillRect(allRect,0);
-			backBmp.fillRect(allRect,0);
-			backBmp2.fillRect(allRect,0);
-			vodaBmp.fillRect(allRect,0);
-			satsBmp.fillRect(allRect,0);
+			frontBmp.fillRect(allRect, 0);
+			backBmp.fillRect(allRect,  0);
+			backBmp2.fillRect(allRect, 0);
+			vodaBmp.fillRect(allRect,  0);
+			satsBmp.fillRect(allRect,  0);
 			
-			lightBmp.fillRect(lightRect,0xFF000000);
+			lightBmp.fillRect(lightRect, COLOR_TRANSPARENT);
 			setLight();
-			visLight.visible=loc.black&&World.w.black;
+			visLight.visible = loc.black && World.w.black;
 			warShadow();
 			
-			var darkness:int=0xAA+loc.darkness;
-			if (darkness>0xFF) darkness=0xFF;
-			if (darkness<0) darkness=0;
-			colorBmp.fillRect(allRect,darkness*0x1000000);
-			shadBmp.fillRect(allRect,0xFFFFFFFF);
+			var darkness:int = 0xAA + loc.darkness;
+			if (darkness > 0xFF) {
+				darkness = 0xFF;
+			}
+			
+			if (darkness<0) {
+				darkness = 0;
+			}
+			
+			colorBmp.fillRect(allRect, darkness * 0x1000000);
+			shadBmp.fillRect(allRect, COLOR_WHITE);
 
 			World.w.gr_stage=4;
 
 			m = new Matrix();
 			var tile:MovieClip;
 			var t:Tile;
-			var front:Sprite	= new Sprite();	//отпечаток на битмапе переднего плана
-			var back:Sprite		= new Sprite();	//отпечаток на битмапе задника
-			var back2:Sprite	= new Sprite();	//отпечаток на битмапе задника
-			var voda:Sprite		= new Sprite();	//отпечаток на битмапе воды
+			var front:Sprite	= new Sprite();	// [fingerprint on the foreground bitmap ]
+			var back:Sprite		= new Sprite();	// [fingerprint on the backdrop bitmap]
+			var back2:Sprite	= new Sprite();	// [fingerprint on the backdrop bitmap]
+			var voda:Sprite		= new Sprite();	// [fingerprint on the water bitmap]
 			
 			//отключить все материалы
 			var mat:Material;
-			for each (mat in arrFront) mat.used=false;
-			for each (mat in arrBack) mat.used=false;
+			for each (mat in arrFront) {
+				mat.used = false;
+			}
+			
+			for each (mat in arrBack) {
+				mat.used = false;
+			}
 			
 			var gret:int=0;
 			World.w.gr_stage=5;
 			for (var i:int = 0; i < loc.spaceX; i++) {
 				for (var j:int = 0; j < loc.spaceY; j++) {
 					t = loc.getTile(i, j);
-					loc.tileKontur(i,j,t);
-					if (arrFront[t.front]) arrFront[t.front].used=true;
-					if (arrBack[t.back]) arrBack[t.back].used=true;
+					loc.tileKontur(i, j, t);
+					
+					if (arrFront[t.front]) {
+						arrFront[t.front].used = true;
+					}
+					
+					if (arrBack[t.back]) {
+						arrBack[t.back].used = true;
+					}
+					
 					if (t.vid > 0) {				// [Objects with vid]
-						tile=new tileFront();
+						tile = new tileFront();
 						tile.gotoAndStop(t.vid);
-						if (t.vRear) back2.addChild(tile);
-						else front.addChild(tile);
+					
+						if (t.vRear) {
+							back2.addChild(tile);
+						}
+						else {
+							front.addChild(tile);
+						}
+					
 						tile.x = i * tileX;
 						tile.y = j * Tile.tileY;
 					}
+					
 					if (t.vid2 > 0) {				// [Objects with vid2]
-						tile=new tileFront();
+						tile = new tileFront();
 						tile.gotoAndStop(t.vid2);
-						if (t.v2Rear) back2.addChild(tile);
-						else front.addChild(tile);
+						
+						if (t.v2Rear) {
+							back2.addChild(tile);
+						}
+						else {
+							front.addChild(tile);
+						}
+						
 						tile.x = i * tileX;
 						tile.y = j * Tile.tileY;
 					}
+					
 					if (t.water) {				// [Water]
-						tile=new tileVoda();
-						tile.gotoAndStop(loc.tipWater+1);
-						if (loc.getTile(i,j-1).water==0 && loc.getTile(i,j-1).phis==0) tile.voda.gotoAndStop(2);
+						tile = new tileVoda();
+						tile.gotoAndStop(loc.tipWater + 1);
+						
+						if (loc.getTile(i, j - 1).water == 0 && loc.getTile(i, j - 1).phis == 0) {
+							tile.voda.gotoAndStop(2);
+						}
+						
 						tile.x = i * tileX;
 						tile.y = j * Tile.tileY;
 						voda.addChild(tile);
 					}
 				}
 			}
-			World.w.gr_stage=6;
+
+			World.w.gr_stage = 6;
 			vodaBmp.draw(voda, new Matrix, null, null, null, false);
 			frontBmp.draw(front, new Matrix, null, null, null, false);
 			
 			
-			World.w.gr_stage=7;
+			World.w.gr_stage = 7;
 			drawBackWall(nloc.backwall, nloc.backform);	// [Back wall]
 			
-			World.w.gr_stage=8;
+			World.w.gr_stage = 8;
 			for each (mat in arrFront) {
 				drawKusok(mat, true);	// [Foreground]
 			}
-			World.w.gr_stage=9;
+
+			World.w.gr_stage = 9;
 			for each (mat in arrBack) {
 				drawKusok(mat, false);	// [Background]
 			}
-			World.w.gr_stage=10;
-			satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+
+			World.w.gr_stage = 10;
+			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0 ,0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 			var darkness2:Number = 1 - (255 - darkness) / 150;
 			// [Background objects]
 			var ct:ColorTransform = new ColorTransform();
 
-			World.w.gr_stage=11;
-			for (j=-2; j<=3; j++) {
-				if (j==-1) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			World.w.gr_stage = 11;
+			for (j = -2; j <= 3; j++) {
+				if (j == -1) {
+					backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
+				}
+				
 				for each(var bo:BackObj in loc.backobjs) {	
-					if (bo.sloy==j && !bo.er || j==-2 && bo.er) {
-						m=new Matrix();
+					if (bo.sloy == j && !bo.er || j == -2 && bo.er) {
+						m = new Matrix();
 						m.scale(bo.objectWidth, bo.objectHeight);
-						m.tx=bo.X;
-						m.ty=bo.Y;
-						ct.alphaMultiplier=bo.alpha;
+						m.tx = bo.X;
+						m.ty = bo.Y;
+						ct.alphaMultiplier = bo.alpha;
+						
 						if (bo.vis) {
-							if (j<=0) {
-								ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
+							if (j <= 0) {
+								ct.redMultiplier	= 1.00;
+								ct.greenMultiplier	= 1.00;
+								ct.blueMultiplier	= 1.00;
 								backBmp.draw(bo.vis, m, ct, bo.blend, null, true);
 							}
 							else {
 								if (bo.light) {
-									if (darkness2>=0.43) ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
-									else ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=0.55+darkness2;
+									if (darkness2>=0.43) {
+										ct.redMultiplier	= 1.00;
+										ct.greenMultiplier	= 1.00;
+										ct.blueMultiplier	= 1.00;
+									}
+									else {
+										ct.redMultiplier	= 0.55 + darkness2;
+										ct.greenMultiplier	= 0.55 + darkness2;
+										ct.blueMultiplier	= 0.55 + darkness2;
+									}
 								}
 								else {
-									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+									ct.redMultiplier	= darkness2;
+									ct.greenMultiplier	= darkness2;
+									ct.blueMultiplier	= darkness2;
 								}
+								
 								backBmp2.draw(bo.vis, m, ct, bo.blend, null, true);
+								
 								if (bo.light) {
-									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=1;
+									ct.redMultiplier	= 1.00;
+									ct.greenMultiplier	= 1.00;
+									ct.blueMultiplier	= 1.00;
 								}
 								else {
-									ct.redMultiplier=ct.greenMultiplier=ct.blueMultiplier=darkness2;
+									ct.redMultiplier	= darkness2;
+									ct.greenMultiplier	= darkness2;
+									ct.blueMultiplier	= darkness2;
 								}
 							}
 						}
-						if (bo.erase) satsBmp.draw(bo.erase, m, null, 'erase', null, true);
-						if (bo.light) colorBmp.draw(bo.light, m, ct, 'normal', null, true);
+						
+						if (bo.erase) {
+							satsBmp.draw(bo.erase, m, null, "erase", null, true);
+						}
+						
+						if (bo.light) {
+							colorBmp.draw(bo.light, m, ct, "normal", null, true);
+						}
 					}
 				}
 			}
 
 			World.w.gr_stage=12;
 			m=new Matrix();
+		
 			if (nloc.cTransform) {
 				frontBmp.colorTransform(frontBmp.rect,nloc.cTransform);
 				vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
 			}
+		
 			shadBmp.applyFilter(frontBmp,frontBmp.rect,new Point(0,0),dsFilter);
 
 			World.w.gr_stage=13;
@@ -531,45 +632,61 @@ package fe.graph {
 				ct=new ColorTransform();
 				darkness2=1+(170-darkness)/33;
 				ct.concat(nloc.cTransform);
+			
 				if (darkness2>1) {
-					ct.redMultiplier*=darkness2;
-					ct.greenMultiplier*=darkness2;
-					ct.blueMultiplier*=darkness2;
+					ct.redMultiplier	*= darkness2;
+					ct.greenMultiplier	*= darkness2;
+					ct.blueMultiplier	*= darkness2;
 				}
-				backBmp2.colorTransform(backBmp2.rect,ct);
+			
+				backBmp2.colorTransform(backBmp2.rect, ct);
 			}
+
 			World.w.gr_stage=14;
 			backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
 			
 			World.w.gr_stage=15;
-			if (transpFon) satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-			backBmp.draw(colorBmp, null, null, 'hardlight');
+				
+			if (transpFon) {
+				satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			}
+			
+			backBmp.draw(colorBmp, null, null, "hardlight");
 			backBmp.draw(shadBmp);
-			if (transpFon) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			
+			if (transpFon) {
+				backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+			}
 			
 			// [Pink cloud]
 			World.w.gr_stage = 16;
 			if (loc.gas > 0) {
 				m = new Matrix();
 				m.ty=520;
-				backBmp2.draw(getObj('back_pink_t',numbBack),m,new ColorTransform(1,1,1,0.3));
+				backBmp2.draw(getObj("back_pink_t",numbBack),m,new ColorTransform(1,1,1,0.3));
 			}
 			
-			World.w.gr_stage=17;
+			World.w.gr_stage = 17;
 			for each (mat in arrFront) {
-				drawKusok(mat,false,true); // [Adding foreground textures such as beams to the background]
+				drawKusok(mat, false, true); // [Adding foreground textures such as beams to the background]
 			}
+		
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
 			
-			World.w.gr_stage=18;
+			World.w.gr_stage = 18;
 			frontBmp.unlock();
 			backBmp.unlock();
 			backBmp2.unlock();
 			vodaBmp.unlock();
 			
-			if (nloc.cTransform && nloc.cTransformFon) visFon.transform.colorTransform=nloc.cTransformFon;
-			else if (visFon.transform.colorTransform!=defTransform) visFon.transform.colorTransform=defTransform;
+			if (nloc.cTransform && nloc.cTransformFon) {
+				visFon.transform.colorTransform = nloc.cTransformFon;
+			}
+			else if (visFon.transform.colorTransform != defTransform) {
+				visFon.transform.colorTransform = defTransform;
+			}
+				
 			World.w.gr_stage = 19;
 			// [Active objects]
 			drawAllObjs();
@@ -580,11 +697,13 @@ package fe.graph {
 		//прорисовка всей карты затемнения
 		public function setLight():void {
 			lightBmp.lock();
+			
 			for (var i:int = 1; i < loc.spaceX; i++) {
 				for (var j:int = 1; j < loc.spaceY; j++) {
 					lightBmp.setPixel32(i, j + 1, int((1 - loc.getTile(i, j).visi) * 255) * 0x1000000);
 				}
 			}
+			
 			lightBmp.unlock();
 		}
 		
@@ -621,12 +740,14 @@ package fe.graph {
 			var roomPixelWidth:int    = localKusokX * localTileX;
 			var roomPixelHeight:int   = localKusokY * localTileY;
 
-			if (tex == 'sky') return;
+			if (tex == "sky") {
+				return;
+			}
 
 			m = new Matrix();
 
 			// Cache the result of getObj('tBackWall') to avoid multiple calls
-			var defaultTex:String = 'tBackWall';
+			var defaultTex:String = "tBackWall";
 			var fill:BitmapData = getObj(tex) || getObj(defaultTex);
 
 			var osn:Sprite = new Sprite();
@@ -682,8 +803,9 @@ package fe.graph {
 			var roomPixelWidth:int = kusokX * tileX;
 			var roomPixelHeight:int = kusokY * tileY;
 
-			if (!material.used) return;
-			if (material.rear == toFront) return;
+			if (!material.used || material.rear == toFront) {
+				return;
+			}
 			
 			// Cache frequently accessed properties
 			var spaceX:int = loc.spaceX;
@@ -718,8 +840,12 @@ package fe.graph {
 			
 			// Use cached textures
 			if (texture) {
-				if (homeStable && altTexture != null) osn.graphics.beginBitmapFill(altTexture);
-				else osn.graphics.beginBitmapFill(texture);
+				if (homeStable && altTexture != null) {
+					osn.graphics.beginBitmapFill(altTexture);
+				}
+				else {
+					osn.graphics.beginBitmapFill(texture);
+				}
 			}
 			else {
 				osn.graphics.beginFill(0x666666);
@@ -729,12 +855,14 @@ package fe.graph {
 
 			kusok.addChild(osn);
 			kusok.addChild(maska);
+			
 			if (borderTexture) {
 				border.graphics.beginBitmapFill(borderTexture);
 				border.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(border);
 				kusok.addChild(bmaska);
 			}
+			
 			if (floorTexture) {
 				floor.graphics.beginBitmapFill(floorTexture);
 				floor.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
@@ -790,48 +918,63 @@ package fe.graph {
 				}
 			}
 
-			if (!isDraw) return;
+			if (!isDraw) {
+				return;
+			}
 
 			m.tx = 0;
 			m.ty = 0;
 			
 			// Cache setting as Bitmap
-			osn.cacheAsBitmap = true;
-			maska.cacheAsBitmap = true;
-			border.cacheAsBitmap = true;
-			bmaska.cacheAsBitmap = true;
-			floor.cacheAsBitmap = true;
-			fmaska.cacheAsBitmap = true;
+			osn.cacheAsBitmap		= true;
+			maska.cacheAsBitmap		= true;
+			border.cacheAsBitmap	= true;
+			bmaska.cacheAsBitmap	= true;
+			floor.cacheAsBitmap		= true;
+			fmaska.cacheAsBitmap	= true;
 			
 			// Set masks
-			osn.mask = maska;
-			border.mask = bmaska;
-			floor.mask = fmaska;
+			osn.mask				= maska;
+			border.mask				= bmaska;
+			floor.mask				= fmaska;
 			
 			// Apply filters if any
-			if (filters) kusok.filters = filters;
+			if (filters) {
+				kusok.filters = filters;
+			}
 			
 			// Draw to appropriate bitmap
-			if (toFront) frontBmp.draw(kusok, m, null, null, null, false);
-			else if (dop) backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
-			else backBmp.draw(kusok, m, null, null, null, false); 
+			if (toFront) {
+				frontBmp.draw(kusok, m, null, null, null, false);
+			}
+			else if (dop) {
+				backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
+			}
+			else {
+				backBmp.draw(kusok, m, null, null, null, false);
+			}
 		}
 		
 //============================================================================================		
 //							Время выполнения
 //============================================================================================		
 		
-		public function getSpriteList(id:String, n:int=0):BitmapData {
+		public function getSpriteList(id:String, n:int = 0):BitmapData {
 			if (spriteLists[id] == null) {
-				if (n > 0) spriteLists[id] = getObj(id, numbSprite + n);
+				if (n > 0) {
+					spriteLists[id] = getObj(id, numbSprite + n);
+				}
 				else {
 					spriteLists[id] = getObj(id, numbSprite);
-					if (spriteLists[id] == null) spriteLists[id] = getObj(id, numbSprite + 1);
+					
+					if (spriteLists[id] == null) {
+						spriteLists[id] = getObj(id, numbSprite + 1);
+					}
 				}
 			}
 
 			if (spriteLists[id] == null) {
-				trace('нет спрайтов', id)
+				trace("Grafon.as/getSpriteList() - No sprites", id); // (Not my errors message)
 			}
 			
 			return spriteLists[id];
@@ -849,10 +992,11 @@ package fe.graph {
 		
 		//рисование одного блока воды
 		public function drawWater(t:Tile, recurs:Boolean = true):void {
-			m=new Matrix();
+			m = new Matrix();
 			m.tx = t.coords.X * tileX;
 			m.ty = t.coords.Y * Tile.tileY;
 			voda.gotoAndStop(loc.tipWater + 1);
+			
 			if (loc.getTile(t.coords.X, t.coords.Y - 1).water == 0 && loc.getTile(t.coords.X, t.coords.Y - 1).phis == 0 ) {
 				voda.voda.gotoAndStop(2);
 			}
@@ -860,7 +1004,7 @@ package fe.graph {
 				voda.voda.gotoAndStop(1);
 			}
 			
-			vodaBmp.draw(voda, m, loc.cTransform, (t.water > 0)? 'normal' : 'erase', null, false);
+			vodaBmp.draw(voda, m, loc.cTransform, (t.water > 0)? "normal" : "erase", null, false);
 			
 			if (recurs) {
 				drawWater(loc.getTile(t.coords.X, t.coords.Y + 1), false);
@@ -871,209 +1015,277 @@ package fe.graph {
 			var erC:Class = block_dyr;	// .fla linkage
 			var drC:Class = block_tre;	// .fla linkage
 			
-			var nx:Number = (t.coords.X + 0.5) * tileX;
-			var ny:Number = (t.coords.Y + 0.5) * tileY;
+			var nx:Number = (t.coords.X + 0.50) * tileX;
+			var ny:Number = (t.coords.Y + 0.50) * tileY;
 
 			if (t.fake) {
-				Emitter.emit('fake', loc, nx, ny);
+				Emitter.emit("fake", loc, nx, ny);
 				drC = block_bur;	// .fla linkage
 			}
 			else if (t.mat == 7) {
-				Emitter.emit('fake',loc,nx,ny);
-				Emitter.emit('pole',loc,nx,ny,{kol:10, rx:tileX, ry:tileY});
+				Emitter.emit("fake", loc, nx, ny);
+				Emitter.emit("pole", loc, nx, ny, { kol:10, rx:tileX, ry:tileY });
 				erC = TileMask;
 				drC = null;
 			}
 			else if (tip < 10) {
 				var emitEffect:Array = ["null", "metal", "kusok", "schep", "kusokB", "steklo", "kusokD"];
+				
 				if (t.mat >= 1 && t.mat <= 6) {
-					Emitter.emit(emitEffect[t.mat],	loc,nx,ny,{kol:6, rx:tileX, ry:tileY});
+					Emitter.emit(emitEffect[t.mat],	loc, nx, ny, { kol:6, rx:tileX, ry:tileY });
 				}
 			}
 			else if (tip >= 15) {
-				Emitter.emit('plav',loc,nx,ny);
-				erC=block_plav;		// .fla linkage
+				Emitter.emit("plav", loc, nx, ny);
+				erC = block_plav;		// .fla linkage
 				drC = block_pla;		// .fla linkage
 			}
 			else if (tip >= 11 && tip <= 13) {
-				Emitter.emit('bur',loc,nx,ny);
+				Emitter.emit("bur", loc, nx, ny);
 				drC = block_bur;		// .fla linkage
 			}
 
-			decal(erC, drC, nx, ny, 1, 0, 'hardlight');
+			decal(erC, drC, nx, ny, 1, 0, "hardlight");
 		}
 		
 		// Bullethole
-		public function dyrka(nx:int,ny:int,tip:int,mat:int, soft:Boolean=false, ver:Number=1):void
-		{
+		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void {
 			var erC:Class;
 			var drC:Class;
-			var bl:String = 'normal';
+			var bl:String = "normal";
 			var centr:Boolean = false;
-			var sc:Number = Math.random() * 0.5 + 0.5;
+			var sc:Number = Math.random() * 0.50 + 0.50;
 			var rc:Number = Math.random() * 360
 
-			if (tip == 0 || mat == 0) return;
+			if (tip == 0 || mat == 0) {
+				return;
+			}
 
-			switch (mat)
-			{
+			switch (mat) {
 				case 1:	//металл
-					if (tip >= 1 && tip <= 6) drC = bullet_metal;	// .fla Linkage
-					else if (tip==9) //взрыв
-					{		
-						if (!soft && Math.random()*0.5<ver) drC=metal_tre;	// .fla Linkage
-						centr=true;
+					if (tip >= 1 && tip <= 6) {
+						drC = bullet_metal;	// .fla Linkage
+					}
+					else if (tip==9) {			//взрыв
+						if (!soft && Math.random()*0.5<ver) {
+							drC=metal_tre;	// .fla Linkage
+						}
+						
+						centr = true;
 					}
 				break;
 
 				case 2:  //камень
 				case 4:
 				case 6:
-					if (tip>=1 && tip<=3) //пули
-					{					
-						if (tip>1 && Math.random()>0.5) erC=bullet_dyr;	// .fla Linkage
-						drC=bullet_tre;
-						if (tip==2) sc+=0.5;
-						if (tip==3) sc+=1;
+					if (tip >= 1 && tip <= 3) {				//пули		
+						if (tip > 1 && Math.random() > 0.50) {
+							erC = bullet_dyr;	// .fla Linkage
+						}
+
+						drC = bullet_tre;
+
+						if (tip == 2) {
+							sc += 0.50;
+						}
+						
+						if (tip == 3) {
+							sc += 1;
+						}
 					}
-					else if (tip>=4 && tip<=6) //удары
-					{
-						if (!soft) drC=punch_tre;
-						if (tip==5) sc+=0.5;
-						if (tip==6) sc+=1;
+					else if (tip>=4 && tip<=6) { //удары
+						if (!soft) {
+							drC=punch_tre;
+						}
+						
+						if (tip==5) {
+							sc+=0.5;
+						}
+						
+						if (tip==6) {
+							sc+=1;
+						}
 					}
-					else if (tip==9) //взрыв
-					{
-						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .fla Linkage
-						centr=true;
+					else if (tip == 9) {	//взрыв
+						if (!soft && Math.random() * 0.50 < ver) {
+							drC = expl_tre;	// .fla Linkage
+						}
+
+						centr = true;
 					}
 
-					if (tip<10 && !soft)
-					{
-						if (mat==2) Emitter.emit('kusoch',loc,nx,ny,{kol:3});
-						else Emitter.emit('kusochB',loc,nx,ny,{kol:3});
+					if (tip < 10 && !soft) {
+						if (mat == 2) {
+							Emitter.emit("kusoch", loc, nx, ny, { kol:3 });
+						}
+						else {
+							Emitter.emit("kusochB", loc, nx, ny, { kol:3 });
+						}
 					}
 				break;
 
 				case 3: //дерево
-					if (tip>=1 && tip<=3) //пули
-					{
-						erC=bullet_dyr;		// .fla Linkage
-						drC=bullet_wood;	// .fla Linkage
-						rc=0;
-						if (tip==2) sc+=0.5;
-						if (tip==3) sc+=1;
+					if (tip >= 1 && tip <= 3) {	//пули
+						erC = bullet_dyr;		// .fla Linkage
+						drC = bullet_wood;		// .fla Linkage
+						rc = 0;
+						
+						if (tip == 2) {
+							sc += 0.50;
+						}
+						
+						if (tip == 3) {
+							sc += 1.00;
+						}
 					}
-					else if (tip>=4 && tip<=6) //удары
-					{
+					else if (tip>=4 && tip<=6) {	//удары
 						if (!soft) drC=punch_tre;	// .fla Linkage
 						if (tip==5) sc+=0.5;
 						if (tip==6) sc+=1;
 					}
-					else if (tip==9) //взрыв
-					{
+					else if (tip==9) {	//взрыв
 						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .fla Linkage
 						centr=true;
 					}
 
-					if (tip < 10 && !soft)
-					{
-						Emitter.emit('schepoch',loc,nx,ny,{kol:3});
+					if (tip < 10 && !soft) {
+						Emitter.emit("schepoch",loc,nx,ny,{kol:3});
 					}
 				break;
 
 				case 7: //поле
-					Emitter.emit('pole',loc,nx,ny,{kol:5});
+					Emitter.emit("pole",loc,nx,ny,{kol:5});
 				break;
 
 				case 11:
-					if (Math.random() < 0.1) drC=fire_soft;		// .fla Linkage
+					if (Math.random() < 0.10) {
+						drC = fire_soft;			// .fla Linkage
+					}
 				break;
 
 				case 12: //лазеры
 				case 13:
-					if (soft && Math.random()*0.2>ver) drC=fire_soft;	// .fla Linkage
-					else drC=laser_tre;				// .fla Linkage
+					if (soft && Math.random() * 0.20 > ver) {
+						drC = fire_soft;			// .fla Linkage
+					}
+					else {
+						drC = laser_tre;			// .fla Linkage
+					}
 
 					if (tip == 13) sc *= 0.6;
-					bl='hardlight';
+					bl="hardlight";
 				break;
 
 				case 15: //плазма
-					if (soft) drC = plasma_soft;	// .fla Linkage
+					if (soft) {
+						drC = plasma_soft;			// .fla Linkage
+					}
 					else {
 						erC = plasma_dyr;			// .fla Linkage
 						drC = plasma_tre;			// .fla Linkage
 					}
 
-					bl = 'hardlight';
+					bl = "hardlight";
 				break;
 
 				case 16:
-					if (soft) drC=fire_soft;		// .fla Linkage
+					if (soft) {
+						drC=fire_soft;				// .fla Linkage
+					}
 					else {
 						erC = plasma_dyr;			// .fla Linkage
 						drC = bluplasma_tre;		// .fla Linkage
 					}
-					bl = 'hardlight';
+					bl = "hardlight";
 				break;
 
 				case 17:
-					if (soft) drC=fire_soft;		// .fla Linkage
+					if (soft) {
+						drC=fire_soft;				// .fla Linkage
+					}
 					else {
 						erC = plasma_dyr;			// .fla Linkage
 						drC = pinkplasma_tre;		// .fla Linkage
 					}
-					bl = 'hardlight';
+					bl = "hardlight";
 				break;
 
 				case 18:
 					drC = cryo_soft;				// .fla Linkage
-					bl = 'hardlight';
+					bl = "hardlight";
 				break;
 
 				case 19: //взрыв
-					if (!soft && Math.random() * 0.5 < ver) drC=plaexpl_tre;	// .fla Linkage
+					if (!soft && Math.random() * 0.50 < ver) {
+						drC = plaexpl_tre;			// .fla Linkage
+					}
+
 					centr=true;
 				break;
 
 				default:
-					trace('ERROR: unknown bullethole: "' + mat + '" !');
+					trace("Grafon.as/dyrka() - ERROR: unknown bullethole: \"" + mat + "\" !");
 				break;
 			}
 			
-			decal(erC,drC,nx,ny,sc,rc,bl);
+			decal(erC, drC, nx, ny, sc, rc, bl);
 		}
 		
-		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number=1, rc:Number=0, bl:String='normal'):void {
-			m=new Matrix();
-			if (sc!=1) m.scale(sc,sc);
-			if (rc!=0) m.rotate(rc);
-			m.tx=nx;
-			m.ty=ny;
-			if (erC) {
-				var erase:MovieClip=new erC();
-				if (erase.totalFrames>1) erase.gotoAndStop(Math.floor(Math.random()*erase.totalFrames+1));
-				frontBmp.draw(erase, m, null, 'erase', null, true);
+		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number = 1.00, rc:Number = 0.00, bl:String = "normal"):void {
+			m = new Matrix();
+			
+			if (sc != 1) {
+				m.scale(sc,sc);
 			}
+			
+			if (rc != 0) {
+				m.rotate(rc);
+			}
+			
+			m.tx = nx;
+			m.ty = ny;
+			
+			if (erC) {
+				var erase:MovieClip = new erC();
+
+				if (erase.totalFrames > 1) {
+					erase.gotoAndStop(Math.floor(Math.random() * erase.totalFrames + 1));
+				}
+
+				frontBmp.draw(erase, m, null, "erase", null, true);
+			}
+		
 			if (drD) {
-				var nagar:MovieClip=new drD();
-				if (nagar.totalFrames>1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
-				nagar.scaleX=nagar.scaleY=sc;
-				nagar.rotation=rc;
-				var dyrx:int = Math.round(nagar.width/2+2)*2;
-				var dyry:int = Math.round(nagar.height/2+2)*2;
-				var res2:BitmapData = new BitmapData(dyrx, dyry, false, 0x0);
+				var nagar:MovieClip = new drD();
+				
+				if (nagar.totalFrames > 1) {
+					nagar.gotoAndStop(Math.floor(Math.random() * nagar.totalFrames + 1));
+				}
+				
+				nagar.scaleX = sc;
+				nagar.scaleY = sc;
+				nagar.rotation = rc;
+
+				var dyrx:int = Math.round(nagar.width  * 0.50 + 2) * 2;
+				var dyry:int = Math.round(nagar.height * 0.50 + 2) * 2;
+				var res2:BitmapData = new BitmapData(dyrx, dyry, false, COLOR_BLACK);
 				var rdx:int = 0;
 				var rdy:int = 0;
-				if (nx-dyrx/2<0) rdx = -(nx - dyrx/2);
-				if (ny-dyry/2<0) rdy = -(ny - dyry/2);
-				var rect:Rectangle = new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
+				
+				if (nx-dyrx/2<0) {
+					rdx = -(nx - dyrx/2);
+				}
+				
+				if (ny-dyry/2<0) {
+					rdy = -(ny - dyry/2);
+				}
+				
+				var rect:Rectangle = new Rectangle(nx - dyrx * 0.50 + rdx, ny - dyry * 0.50 + rdy, nx + dyrx * 0.50 + rdx, ny + dyry * 0.50 + rdy);
 				var pt:Point = new Point(0, 0);
 				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-				frontBmp.draw(nagar, m, (bl=='normal')?World.w.loc.cTransform:null, bl, null, true);
+				frontBmp.draw(nagar, m, (bl == "normal")?World.w.loc.cTransform:null, bl, null, true);
 				rect = new Rectangle(0, 0, dyrx, dyry);
-				pt=new Point(nx-dyrx/2+rdx, ny-dyry/2+rdy);
+				pt = new Point(nx - dyrx * 0.50 + rdx, ny - dyry * 0.50 + rdy);
 				frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 			}
 		}
@@ -1089,16 +1301,22 @@ package fe.graph {
 		
 		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void {
 			var padding:int = 25;
-			var br:MovieClip; //brush
+			var brush:MovieClip;
 
-			// Determine what brush to use. I moved brush instantiation here was well instead being loaded with the class.
+			// Determine what brush to use
 			if (aero) {
-				if (!pa) pa = new paintaero();
-				br = pa;
+				if (!pa) {
+					pa = new paintaero();
+				}
+
+				brush = pa;
 			}
 			else {
-				if (!pb) pb = new paintbrush();
-				br = pb;
+				if (!pb) {
+					pb = new paintbrush();
+				}
+
+				brush = pb;
 			}	
 			
 			// Calculate the straight-line distance between two points (start and end positions, I assume how far the mouse moved).
@@ -1120,8 +1338,8 @@ package fe.graph {
 			ry2 = Math.max(ny1, ny2) + padding;
 			
 			// Prepare the canvas for drawing.
-			brPoint.x = 0;
-			brPoint.y = 0;
+			brPoint.x		= 0;
+			brPoint.y		= 0;
 			brRect.left		= rx1;
 			brRect.right	= rx2;
 			brRect.top		= ry1;
@@ -1136,7 +1354,7 @@ package fe.graph {
 				pm.ty = ny1 + dy * i;
 
 				// Perform the painting action at this point.		
-				backBmp.draw(br, pm, brTrans, 'normal', null, false);
+				backBmp.draw(brush, pm, brTrans, "normal", null, false);
 			}
 			
 			// Finish up by adjusting the painted area on the canvas.
@@ -1149,8 +1367,7 @@ package fe.graph {
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
 		
-		public function specEffect(n:Number = 0):void
-		{
+		public function specEffect(n:Number = 0):void {
 			// Define the filter lookup table for cases 1 through 6
 			const colorMatrixFilters:Array = [
 				// Case 0 (unused)
@@ -1217,7 +1434,7 @@ package fe.graph {
 			}
 			else {
 				// Handle unknown cases
-				trace('ERROR: Unknown special effect: "' + n + '"!');
+				trace("ERROR: Unknown special effect: \"" + n + "\"!");
 			}
 		}
 	}

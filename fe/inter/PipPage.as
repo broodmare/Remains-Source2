@@ -636,7 +636,7 @@ package fe.inter {
 						if (w.tip == "cryo") {
 							s += localize("pip", "rapid");
 						}
-						else if (w.tip == "explosives") {
+						else if (w.tip == Weapon.TYPE_EXPLOSIVES) {
 							s += localize("pip", "distance");
 						}
 						else {
@@ -694,7 +694,7 @@ package fe.inter {
 				}
 
 				var wrapid:int = w.resultRapid(w.rapid);
-				if (w.tip != "explosives") {
+				if (w.tip != Weapon.TYPE_EXPLOSIVES) {
 					s += "\n" + localize("pip", "aps") + ": "
 						+ textAsColor("yellow", Number(World.fps / wrapid).toFixed(1));
 
@@ -713,7 +713,7 @@ package fe.inter {
 				s += "\n" + localize("pip", "critch") + ": " + textAsColor("yellow", Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + "%");
 				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", w.tipDamage));
 
-				if (w.tip < "explosives" && w.magazineCapacity > 0) {
+				if (w.tip < Weapon.TYPE_EXPLOSIVES && w.magazineCapacity > 0) {
 					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", w.ammo.name);
 					s += "\n" + localize("pip", "holder") + ": " + numberAsColor("yellow", w.magazineCapacity);
 				}
@@ -765,7 +765,7 @@ package fe.inter {
 				if (World.w.hardInv && w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun") {
 					s += "\n" + localize("pip", "mass2") + ": <span class = 'mass'>" + w.mass + "</span>";
 				}
-				else if (World.w.hardInv && w.tip == "explosives") {
+				else if (World.w.hardInv && w.tip == Weapon.TYPE_EXPLOSIVES) {
 					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getItem(id).m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getItem(id).invCat) + ")";
 				}
 

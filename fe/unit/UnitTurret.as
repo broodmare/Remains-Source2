@@ -94,7 +94,8 @@ package fe.unit {
 				absVis = true;
 			}
 			
-			currentWeapon = WeaponManager.reference.cloneWeapon("turretWep" + tr);	
+			currentWeapon = WeaponManager.reference.cloneWeapon("turretWep" + tr);
+			WeaponManager.reference.setOwner(currentWeapon, this);
 			childObjs = new Array(currentWeapon);
 			mat = 1;
 			currentWeapon.rot = currentWeapon.forceRot;

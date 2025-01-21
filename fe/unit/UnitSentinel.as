@@ -1,5 +1,6 @@
 package fe.unit {
 
+	import fe.WeaponManager;
 	import fe.weapon.Weapon;
 
 	public class UnitSentinel extends UnitAIRobot {
@@ -11,7 +12,8 @@ package fe.unit {
 		// Constructor
 		public function UnitSentinel(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			id = 'sentinel';
+		
+			id = "sentinel";
 			vis = new visualSentinel(); // .SWF Dependency
 			vis.stop();
 			vis.osn.gotoAndStop(1);
@@ -21,53 +23,61 @@ package fe.unit {
 			runSpeed=maxSpeed*2;
 			//дать оружие
 			getWeapon(ndif, xml, loadObj);
-			dopWeapon=Weapon.create(this,'robomlau');
+			dopWeapon = WeaponManager.reference.cloneWeapon("robomlau");
+			WeaponManager.reference.setOwner(dopWeapon, this);
 			childObjs=[currentWeapon, dopWeapon];
-			if (quiet) id_replic='';
+			
+			if (quiet) {
+				id_replic = "";
+			}
 		}
 		
 		public override function dropLoot():void {
-			newPart('expl');
+			newPart("expl");
 			currentWeapon.vis.visible = false;
 			super.dropLoot();
 		}
 		
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
-			if (dopWeapon && dopWeapon.tip==0) {
-				dopWeapon.damage*=(1+level*0.1);
+			if (dopWeapon && dopWeapon.tip == Weapon.TYPE_INTERNAL) {
+				dopWeapon.damage *= (1 + level * 0.10);
 			}
 		}
 		
 		public override function expl():void {
-			newPart('metal',12);
+			newPart("metal", 12);
 		}
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			if (sost==1) {
-				if (dopWeapon) dopWeapon.setNull();
+				if (dopWeapon) {
+					dopWeapon.setNull();
+				}
 			}
-			if (f) kolRock=6;
+			if (f) {
+				kolRock = 6;
+			}
 		}
 		
 		public override function animate():void {
-			if (sost==3) { //сдох
-				if (animState!='die') {
-					vis.osn.gotoAndStop('die');
-					animState='die';
+			if (sost == 3) { //сдох
+				if (animState!="die") {
+					vis.osn.gotoAndStop("die");
+					animState="die";
 				}
 			}
-			else if (stay || jump_n<=0) {
-				if (animState!='stay') {
-					vis.osn.gotoAndStop('stay');
-					animState='stay';
+			else if (stay || jump_n <= 0) {
+				if (animState!="stay") {
+					vis.osn.gotoAndStop("stay");
+					animState="stay";
 				}
 			}
 			else {
-				if (animState!='jump') {
-					vis.osn.gotoAndStop('jump');
-					animState='jump';
+				if (animState!="jump") {
+					vis.osn.gotoAndStop("jump");
+					animState="jump";
 				}
 			} 
 		}
@@ -92,9 +102,15 @@ package fe.unit {
 
 		//атака
 		public override function attack():void {
-			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
+			if (celDX < 100 && celDX > -100 && celDY < 80 && celDY > -80 && celUnit) {
+				attKorp(celUnit, 1);
+			}
+
 			currentWeapon.attack();
-			if (celUnit && !(celDX<160 && celDX>-160 && celDY<80 && celDY>-80)) dopWeapon.attack();
+
+			if (celUnit && !(celDX < 160 && celDX > -160 && celDY < 80 && celDY > -80)) {
+				dopWeapon.attack();
+			}
 		}
 	}
 }

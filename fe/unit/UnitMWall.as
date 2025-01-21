@@ -10,24 +10,25 @@ package fe.unit {
 
 		// Constructor
 		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			if (cid==null) {
-				id='mwall';
+			if (cid == null) {
+				id = "mwall";
 			}
 			else id = cid
 			
 			mat = 7;
-			vis=Res.getVis('vis'+id,vismwall);
+			vis = Res.getVis("vis" + id, vismwall);
 			getXmlParam();
-			vulner[Resistances.DAM_DEATH]=begvulner[Resistances.DAM_DEATH]=1;
-			nazv='';
-			this.levitPoss=false;
-			showNumbs=false;
-			doop=true;
-			transT=true;
+			vulnerabilities.setResist(Resistances.DAM_DEATH, 1);
+			begvulner.setResist(Resistances.DAM_DEATH, 1);
+			nazv = "";
+			levitPoss = false;
+			showNumbs = false;
+			doop = true;
+			transT = true;
 		}
 
 		public override function expl():void {
-			Emitter.emit('pole', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
+			Emitter.emit("pole", loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
 		}
 		
 		public override function addVisual():void {

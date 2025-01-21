@@ -37,7 +37,13 @@ package fe.unit {
 		private var t_turn:int			=  15;
 		private var t_shit:int			= 300
 
-		private var movePoints:Array = [{x:10, y:7}, {x:37, y:7}, {x:24, y:13}, {x:7, y:18}, {x:40, y:18}];
+		private var movePoints:Array = [
+			{x:10, y:7},
+			{x:37, y:7},
+			{x:24, y:13},
+			{x:7, y:18},
+			{x:40, y:18}
+		];
 
 		// Constructor
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -268,7 +274,7 @@ package fe.unit {
 				t_shit--;
 			}
 
-			vulner[Unit.D_EMP] = (shithp > 0) ? 0.2 : 1;	// [Considered invulnerable to emp]
+			vulnerabilities.setResist(Resistances.DAM_EMP, (shithp > 0) ? 0.20 : 1);	// [Considered invulnerable to emp]
 			
 			// [State change timer]
 			if (aiTCh > 0) {
@@ -277,41 +283,73 @@ package fe.unit {
 			else {
 				aiState++;
 				if (aiState>3) {
-					if (attState==4) aiState=2;
-					else aiState=1;
+					if (attState==4) {
+						aiState=2;
+					}
+					else {
+						aiState=1;
+					}
 				}
-				if (aiState==1) {	//выбор точки перемещения
+				if (aiState == 1) {	//выбор точки перемещения
 					var nmp:int = int(Math.random() * 5);
-					if (nmp==mp) nmp++;
-					if (nmp>=5) nmp=0;
-					mp=nmp;
-					moveX=movePoints[mp].x*40+20;
-					moveY=movePoints[mp].y*40+40;
-					aiTCh=60;
+					
+					if (nmp == mp) {
+						nmp++;
+					}
+					
+					if (nmp >= 5) {
+						nmp = 0;
+					}
+					
+					mp = nmp;
+					moveX = movePoints[mp].x * 40 + 20;
+					moveY = movePoints[mp].y * 40 + 40;
+					aiTCh = 60;
 					castShit();
 				}
-				else if (aiState==2) {
-					aiTCh=30;
-					if (attState!=4 && isrnd(0.33)) attState=4;
-					else attState=int(Math.random()*2);
-					if (coordinates.Y<17*40 && celY>16*40 && isrnd(0.33)) {
-						attState=2;
-						aiTCh=5;
+				else if (aiState == 2) {
+					aiTCh = 30;
+					
+					if (attState != 4 && isrnd(0.33)) {
+						attState = 4;
 					}
-					if (attState==4) aiTCh=15;
-					if (attState==0) setCel(loc.gg);
+					else {
+						attState=int(Math.random()*2);
+					}
+					
+					if (coordinates.Y < 17 * 40 && celY > 16 * 40 && isrnd(0.33)) {
+						attState = 2;
+						aiTCh = 5;
+					}
+					
+					if (attState == 4) {
+						aiTCh = 15;
+					}
+					
+					if (attState == 0) {
+						setCel(loc.gg);
+					}
 				}
 				else if (aiState==3) {
 					replic('attack');
-					if (attState==0) aiTCh=80;
-					else if (attState==2) aiTCh=120;
-					else if (attState==4) aiTCh=60;
-					else aiTCh=int(Math.random()*100)+150;
+					
+					if (attState==0) {
+						aiTCh=80;
+					}
+					else if (attState==2) {
+						aiTCh=120;
+					}
+					else if (attState==4) {
+						aiTCh=60;
+					}
+					else {
+						aiTCh=int(Math.random()*100)+150;
+					}
 				}
 			}
 			
 			//поиск цели
-			if ((aiState==1 || aiState>1 && attState==1) && aiTCh%10==1) {
+			if ((aiState == 1 || aiState > 1 && attState == 1) && aiTCh % 10 == 1) {
 				setCel(loc.gg);
 			}
 			
@@ -323,45 +361,57 @@ package fe.unit {
 			
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (velocity.X > 0.5) storona=1; 
-				if (velocity.X < -0.5) storona=-1;
+				if (velocity.X > 0.5) {
+					storona = 1;
+				}
+			
+				if (velocity.X < -0.50) {
+					storona = -1;
+				}
+				
 				walk=0;
 			}
-			else if (aiState==1) {
+			else if (aiState == 1) {
 				spd.x = moveX - coordinates.X;
 				spd.y = moveY - coordinates.Y;
-				
 				norma(spd,Math.min(accel, accel * dist / 10000));
 				velocity.X += spd.x;
 				velocity.Y += spd.y;
+				
 				if (dist < 1000) {
 					velocity.multiply(0.80);
 				}
 			}
-			else if (aiState>=2) {
+			else if (aiState >= 2) {
 				velocity.multiply(0.70);
 			}
 			
 			if (aiState==2 && aiTCh%5==1) {
-				if (attState==0) Emitter.emit('laser', loc, celX + Math.random()*100-50, celY-Math.random()*50);
-				if (attState==1) Emitter.emit('plasma', loc, celX + Math.random()*50-25, celY-Math.random()*20);
-				if (attState==4) Emitter.emit('spark', loc, celX + Math.random()*100-50, celY-Math.random()*50);
+				if (attState == 0) {
+					Emitter.emit('laser', loc, celX + Math.random()*100-50, celY-Math.random()*50);
+				}
+				if (attState == 1) {
+					Emitter.emit('plasma', loc, celX + Math.random()*50-25, celY-Math.random()*20);
+				}
+				if (attState == 4) {
+					Emitter.emit('spark', loc, celX + Math.random()*100-50, celY-Math.random()*50);
+				}
 			}
 			
 			if (aiState > 0 && !(aiState == 3 && attState == 2)) {
 				aiNapr = (celX > coordinates.X) ? 1 : -1;
 				
 				if (storona == aiNapr) {
-                    t_turn = 15;
-                }
+					t_turn = 15;
+				}
 				else {
-                    t_turn--;
-                	
+					t_turn--;
+					
 					if (t_turn <= 0) {
-                        storona = aiNapr;
-                        t_turn = 15;
-                    }
-                }
+						storona = aiNapr;
+						t_turn = 15;
+					}
+				}
 			}
 			
 			attack();

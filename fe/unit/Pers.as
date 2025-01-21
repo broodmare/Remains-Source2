@@ -299,6 +299,9 @@ package fe.unit {
 		
 		public var factor:Array;
 
+		// [post-skills]
+		public var postSkTab:Array=[5,11,18,26,35,45,56,68,82,100];
+
 		private static var cachedSkillList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "skills", "skill");
 		private static var cachedParamList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 		private static var cachedPerkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
@@ -317,8 +320,13 @@ package fe.unit {
 
 			for each (var sk:XML in cachedSkillList) {
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
-				if (loadObj == null || loadObj.skills[sk.@id] == null) skills[sk.@id] = 0;
-				else skills[sk.@id] = loadObj.skills[sk.@id];
+				
+				if (loadObj == null || loadObj.skills[sk.@id] == null) {
+					skills[sk.@id] = 0;
+				}
+				else {
+					skills[sk.@id] = loadObj.skills[sk.@id];
+				}
 			}
 			
 			//сложность игры
@@ -334,63 +342,100 @@ package fe.unit {
 				if (loadObj.dead) {
 					dead=true;
 				}
+				
 				skillPoint=loadObj.skillPoint;
 				perkPoint=loadObj.perkPoint;
+				
 				if (loadObj.perkPointExtra>0) perkPointExtra=loadObj.perkPointExtra;
+				
 				level=loadObj.level;
+				
 				if (loadObj.xpDelta!=null) xpDelta=loadObj.xpDelta;
+				
 				if (loadObj.levelSkAdd!=null) levelSkAdd=loadObj.levelSkAdd;
+				
 				if (loadObj.xp) xpCur=loadObj.xp;
 				else {	//установить xp соразмерно левелу (старые сейвы версии 0.4)
 					setForcLevel(Math.floor(level/5)+1);
 					xpVer=xpCurVer;
 				}
+				
 				if (loadObj.xpVer) xpVer=loadObj.xpVer;
+				
 				if (xpVer!=xpCurVer) {	//другая формула расчёта опыта из старой версии игры (0.6), пересчитать
 					recalcXP();
 				}
+				
 				xpPrev=xpProgress(level-1);
 				xpNext=xpProgress(level);
+				
 				if (loadObj.hardcore) hardcore=true;
+				
 				if (loadObj.rndpump) rndpump=true;
+				
 				if (loadObj.cp) currentCPCode=loadObj.cp;
+				
 				if (loadObj.prevcp) prevCPCode=loadObj.prevcp;
+				
 				if (loadObj.hasOwnProperty('headHP')) headHP=loadObj.headHP*inMaxHP;
+				
 				if (loadObj.hasOwnProperty('torsHP')) torsHP=loadObj.torsHP*inMaxHP;
+				
 				if (loadObj.hasOwnProperty('legsHP')) legsHP=loadObj.legsHP*inMaxHP;
+				
 				if (loadObj.hasOwnProperty('bloodHP')) bloodHP=loadObj.bloodHP*inMaxHP;
+				
 				if (loadObj.hasOwnProperty('manaHP')) manaHP=loadObj.manaHP*inMaxMana;
+				
 				if (loadObj.hasOwnProperty('owlhp')) owlhpProc=loadObj.owlhp;
+				
 				if (headHP>inMaxHP) headHP=inMaxHP;
+				
 				if (torsHP>inMaxHP) torsHP=inMaxHP;
+				
 				if (legsHP>inMaxHP) legsHP=inMaxHP;
+				
 				if (bloodHP>inMaxHP) bloodHP=inMaxHP;
+				
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
+				
 				currentPet=loadObj.pet;
+				
 				if (loadObj.addictions) {
 					for (var ad:String in loadObj.addictions) {
 						addictions[ad]=loadObj.addictions[ad];
 					}
 				}
+				
 				if (loadObj.rep) rep=loadObj.rep;
+				
 				World.w.alicorn=false;
+				
 				if (loadObj.alicorn) World.w.alicorn=loadObj.alicorn;
 			}
 			else if (opt) {
 				if (opt.hardcore) hardcore=true;
+			
 				if (opt.fastxp) xpDelta=3000;
+			
 				if (opt.rndpump) rndpump=true;
+			
 				if (opt.hardskills) levelSkAdd=3;
+			
 				xpNext=xpDelta;
 			}
+		
 			setAllSt();
 			perks=[];
+		
 			if (loadObj && loadObj.perks) {
 				for (var pid:String in loadObj.perks) {
 					perks[pid]=loadObj.perks[pid];
 				}
 			}
+		
 			if (loadObj && loadObj.persName) persName=loadObj.persName;
+		
 			if (loadObj==null && opt && opt.propusk) perks['levitation'] = 1;
 
 			factor = [];
@@ -405,15 +450,19 @@ package fe.unit {
 			obj.skills		= [];
 			obj.perks		= [];
 			obj.addictions	= [];
+		
 			for (var sk:String in skills) {
 				obj.skills[sk]=skills[sk];
 			}
+		
 			for (var pid:String in perks) {
 				obj.perks[pid]=perks[pid];
 			}
+		
 			for (var ad:String in addictions) {
 				obj.addictions[ad]=addictions[ad];
 			}
+		
 			obj.dead=dead;
 			obj.level=level;
 			obj.xp=xpCur;
@@ -450,7 +499,11 @@ package fe.unit {
 			if (cachedPerks[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
                 cachedPerks[id] = node;
-            } else node = cachedPerks[id];
+            }
+			else {
+				node = cachedPerks[id];
+			}
+		
 			return node;
 		}
 
@@ -459,7 +512,11 @@ package fe.unit {
 			if (cachedSkills[id] == undefined) {
                 node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "skills", "id", id);
                 cachedSkills[id] = node;
-            } else node = cachedSkills[id];
+            }
+			else {
+				node = cachedSkills[id];
+			}
+		
 			return node;
 		}
 
@@ -564,7 +621,7 @@ package fe.unit {
 		}
 		
 		public function defaultParams():void {
-			//параметры по умолчанию
+			// [default parameters]
 			gg.maxhp=begHP;
 			gg.critHeal=critHeal;
 			
@@ -680,12 +737,10 @@ package fe.unit {
 			//аликорн
 			alicornRunMana=5;
 			
-			//сопротивления и оружейные скиллы
-			for (var i:String in gg.vulner) {
-				gg.vulner[i] = 1;
-			}
-			
-			gg.vulner[Resistances.DAM_EMP]=0;
+			// [resistance and weapon skills]
+			gg.vulnerabilities = new Resistances();
+			gg.vulnerabilities.setResistances(1);
+			gg.vulnerabilities.setResist(Resistances.DAM_EMP, 0);
 			
 			for (var j:String in weaponSkills) {
 				weaponSkills[j] = 1;
@@ -723,16 +778,17 @@ package fe.unit {
 			World.w.gui.setXp();
 		}
 		
-		//вернуть уровень навыка в зависимости от вложенных очков
+		// Return the skill level depending on how many points the player has invested in the skill
 		public function getSkLevel(n:int):int {
-			if (n>=20) return 5;
-			if (n>=14) return 4;
-			if (n>=9) return 3;
-			if (n>=5) return 2;
-			if (n>=2) return 1;
-			return 0;
+			return	(n >= 20) ? 5 :		// 20+
+					(n >= 14) ? 4 :		// 14 - 19
+					(n >=  9) ? 3 :		//  9 - 13
+					(n >=  5) ? 2 :		//  5 -  8
+					(n >=  2) ? 1 :		//  2 -  4
+					0;					//  0 -  1
 		}
 
+		// ???
 		public function getSkBonus(n:int):int {
 			switch (n) {
 				case 20:
@@ -749,9 +805,6 @@ package fe.unit {
 					return 0;
 			}
 		}
-		
-		// [post-skills]
-		public var postSkTab:Array=[5,11,18,26,35,45,56,68,82,100];
 		
 		public function skillIsPost(id:String):Boolean {
 			if (id=='attack' || id=='defense' || id=='knowl') {
@@ -985,8 +1038,8 @@ package fe.unit {
 		
 		// [Random leveling]
 		private function autoPump():void {
-			var n:int=1000;
-			while (skillPoint>0 && n>0) {
+			var n:int = 1000;
+			while (skillPoint > 0 && n > 0) {
 				//определить скиллы, доступные для увеличения
 				var dost:Array=[];
 				
@@ -995,7 +1048,7 @@ package fe.unit {
 				}
 				
 				//если уже все прокачаны, вкачать дополнительные
-				if (dost.length==0 || level>=postPersLevel && Math.random()<0.2) {
+				if (dost.length == 0 || level >= postPersLevel && Math.random() < 0.20) {
 					for (var sk in skills) {
 						if (skillIsPost(sk) && skills[sk]<maxPostSkLvl) dost.push(sk);
 					}
@@ -1009,7 +1062,9 @@ package fe.unit {
 				//определить, на сколько поднимать
 				var kol:int=(Math.random()<0.5)?2:1;
 				
-				if (Math.random()<0.15) kol=3;
+				if (Math.random() < 0.15) {
+					kol = 3;
+				}
 				
 				if (skillIsPost(sk)) {
 					kol=Math.min(skillPoint,kol,maxPostSkLvl-skills[sk]);
@@ -1057,13 +1112,13 @@ package fe.unit {
 				return -1;
 			}
 			
-			var numb=perks[nid];
+			var numb = perks[nid];
 			
-			if (numb==null) {
-				numb=0;
+			if (numb == null) {
+				numb = 0;
 			}
 			
-			var maxlvl=1;
+			var maxlvl:int = 1;
 			
 			if (dp.@lvl.length()) {
 				maxlvl=dp.@lvl;
@@ -1079,18 +1134,28 @@ package fe.unit {
 				for each(var req in dp.req) {
 					var reqlevel:int=1;
 					
-					if (req.@lvl.length()) reqlevel=req.@lvl;
+					if (req.@lvl.length()) {
+						reqlevel=req.@lvl;
+					}
 					
-					if (numb>0 && req.@dlvl.length()) reqlevel+=numb*req.@dlvl;
+					if (numb>0 && req.@dlvl.length()) {
+						reqlevel+=numb*req.@dlvl;
+					}
 					
 					if (req.@id=='level') {
-						if (level<reqlevel) ok=0;
+						if (level<reqlevel) {
+							ok=0;
+						}
 					}
 					else if (req.@id=='guns') {
-						if (getSkLevel(skills['smallguns'])<reqlevel && getSkLevel(skills['energy'])<reqlevel) ok=0;
+						if (getSkLevel(skills['smallguns'])<reqlevel && getSkLevel(skills['energy'])<reqlevel) {
+							ok=0;
+						}
 					}
 					else {
-						if (getSkLevel(skills[req.@id])<reqlevel) ok=0;
+						if (getSkLevel(skills[req.@id])<reqlevel) {
+							ok=0;
+						}
 					}
 				}
 			}
@@ -1102,45 +1167,90 @@ package fe.unit {
 		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void {
 			for each(var sk in xml.sk) {
 				var val:Number, lvl:int, val0:Number=0;
-				if (sk.@dop.length()) lvl=lvl2;
-				else lvl=lvl1;
+				
+				if (sk.@dop.length()) {
+					lvl=lvl2;
+				}
+				else {
+					lvl=lvl1;
+				}
 				
 				//исходное значение
-				if (sk.@v0.length()) val0=Number(sk.@v0);
-				else if (sk.@ref=='add' || sk.@tip=='res') val0=0;
-				else if (sk.@ref=='mult') val0=1;
+				if (sk.@v0.length()) {
+					val0=Number(sk.@v0);
+				}
+				else if (sk.@ref=='add' || sk.@tip=='res') {
+					val0=0;
+				}
+				else if (sk.@ref=='mult') {
+					val0=1;
+				}
 				
 				//устанавливаемое значение
-				if (lvl==0) val=val0;
-				else if (sk.@vd.length()) val=val0+lvl*Number(sk.@vd);
-				else if (sk.attribute('v'+lvl).length()) val=Number(sk.attribute('v'+lvl));
-				else val=Number(sk.@v1);
-				
-				//установить значение
-				if (sk.@tip=='weap') weaponSkills[sk.@id]=val; //оружейное умение
-				else if (sk.@tip=='res') {
-					gg.vulner[sk.@id]-=val;	//сопротивление
-					setFactor(sk.@id, xml.@id, 'min', val, gg.vulner[sk.@id]);
+				if (lvl==0) {
+					val=val0;
 				}
-				else if (sk.@tip=='m') this[sk.@id]+=val; //максимум веса
-				else if (gg.hasOwnProperty(sk.@id)) { //переменная юнита
-					setBegFactor(sk.@id,gg[sk.@id]);
-					if (sk.@ref=='add') gg[sk.@id]+=val;
-					else if (sk.@ref=='mult') gg[sk.@id]*=val;
-					else gg[sk.@id]=val;
+				else if (sk.@vd.length()) {
+					val=val0+lvl*Number(sk.@vd);
+				}
+				else if (sk.attribute('v'+lvl).length()) {
+					val=Number(sk.attribute('v'+lvl));
+				}
+				else {
+					val=Number(sk.@v1);
+				}
+				
+				// [set value]
+				if (sk.@tip=='weap') {
+					weaponSkills[sk.@id]=val; // [weapon skill]
+				}
+				else if (sk.@tip == 'res') {
+					gg.vulnerabilities.changeResist(sk.@id, -val);	// [resistance]
+					setFactor(sk.@id, xml.@id, 'min', val, gg.vulnerabilities.getResist(sk.@id));
+				}
+				else if (sk.@tip == 'm') {
+					this[sk.@id] += val; // [maximum weight]
+				}
+				else if (gg.hasOwnProperty(sk.@id)) { // [unit variable]
+					setBegFactor(sk.@id, gg[sk.@id]);
+					
+					if (sk.@ref=='add') {
+						gg[sk.@id]+=val;
+					}
+					else if (sk.@ref=='mult') {
+						gg[sk.@id]*=val;
+					}
+					else {
+						gg[sk.@id]=val;
+					}
+					
 					setFactor(sk.@id, xml.@id, sk.@ref, val, gg[sk.@id]);
 				}
-				else if (this.hasOwnProperty(sk.@id)) { //переменная перса
+				else if (this.hasOwnProperty(sk.@id)) { // [Pers(?) variable]
 					setBegFactor(sk.@id,this[sk.@id]);
-					if (sk.@ref=='add') this[sk.@id]+=val;
-					else if (sk.@ref=='mult') this[sk.@id]*=val;
-					else this[sk.@id]=val;
+					
+					if (sk.@ref == 'add') {
+						this[sk.@id] += val;
+					}
+					else if (sk.@ref == 'mult') {
+						this[sk.@id] *= val;
+					}
+					else {
+						this[sk.@id]=val;
+					}
+					
 					setFactor(sk.@id, xml.@id, sk.@ref, val, this[sk.@id]);
 				}
 				else {
-					if (sk.@ref=='add') this[sk.@id]+=val;
-					else if (sk.@ref=='mult') this[sk.@id]*=val;
-					else this[sk.@id]=val;
+					if (sk.@ref == 'add') {
+						this[sk.@id] += val;
+					}
+					else if (sk.@ref == 'mult') {
+						this[sk.@id] *= val;
+					}
+					else {
+						this[sk.@id] = val;
+					}
 				}
 			}
 		}
@@ -1150,8 +1260,13 @@ package fe.unit {
 		}
 
 		private function setFactor(id:String, fact:String, ref:String, val, res, tip=null):void {
-			if (ref=='add' && val==0 || ref=='mult' && val==1) return;
-			if (factor[id] is Array) factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
+			if (ref=='add' && val==0 || ref=='mult' && val==1) {
+				return;
+			}
+			
+			if (factor[id] is Array) {
+				factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
+			}
 		}
 		
 		private function setAllSt():void {
@@ -1169,6 +1284,7 @@ package fe.unit {
 			mc.magic.gotoAndStop(manaSt+1);
 			mc.blood.gotoAndStop(bloodSt+1);
 			mc.armor.gotoAndStop(1);
+			
 			if (gg.currentArmor) {
 				var armorSt:int = 4 - Math.ceil(gg.currentArmor.hp/gg.currentArmor.maxhp*4);
 				mc.armor.gotoAndStop(armorSt+1);
@@ -1176,16 +1292,28 @@ package fe.unit {
 		}
 		
 		private function trauma(st:int, organ:int):void {
-			if (st>4) st=4;
-			if (organ==3 && st==4) st=3;
-			if (organ==4) {
-				if (st>0) World.w.gui.infoText('blood'+st, persName);
+			if (st > 4) {
+				st = 4;
 			}
-			else if (organ==5) {
-				if (st>1) World.w.gui.infoText('tmana'+st);
+			
+			if (organ == 3 && st == 4) {
+				st = 3;
+			}
+			
+			if (organ == 4) {
+				if (st > 0) {
+					World.w.gui.infoText("blood" + st, persName);
+				}
+			}
+			else if (organ == 5) {
+				if (st > 1) {
+					World.w.gui.infoText("tmana" + st);
+				}
 			}
 			else {
-				if (st>0) World.w.gui.infoText('trauma'+st, persName);
+				if (st > 0) {
+					World.w.gui.infoText("trauma" + st, persName);
+				}
 			}
 		}
 		
@@ -1199,7 +1327,7 @@ package fe.unit {
 			}
 
 			if (tip == Resistances.DAM_DEATH) {
-				dam *= 0.1;
+				dam *= 0.10;
 			}
 
 			dam *= organMult;
@@ -1212,7 +1340,7 @@ package fe.unit {
 			var rnd:Number = Math.random();
 			var sst:int;
 			
-			if (rnd < 0.2) {
+			if (rnd < 0.20) {
 				if (!isDie) {
 					dam *= 2;
 				}
@@ -1239,7 +1367,7 @@ package fe.unit {
 					trauma(headSt, 1);
 				}
 			}
-			else if (rnd < 0.6 || tip == Resistances.DAM_POISON || tip == Resistances.DAM_VENOM) {
+			else if (rnd < 0.60 || tip == Resistances.DAM_POISON || tip == Resistances.DAM_VENOM) {
 				sst = 4 - Math.ceil(torsHP / inMaxHP * 4);
 				torsHP -= dam;
 				
@@ -1340,65 +1468,135 @@ package fe.unit {
 		}
 		
 		public function manaDamage(dam:Number):void {
-			if (dam <= 0) return;
-			if (gg.loc.train) return;
+			if (dam <= 0) {
+				return;
+			}
+		
+			if (gg.loc.train) {
+				return;
+			}
+		
 			var sst:int = 4 - Math.ceil(manaHP / inMaxMana * 4);
 			manaHP -= dam;
-			if (manaMin > 0 && manaHP < 1) manaHP = 1;
-			if (manaHP < 0)
-			{
+		
+			if (manaMin > 0 && manaHP < 1) {
+				manaHP = 1;
+			}
+		
+			if (manaHP < 0) {
 				trace('ManaHP fell below 0, resetting to 0!');
 				manaHP = 0;
 			}
+		
 			manaSt = 4 - Math.ceil(manaHP / inMaxMana * 4);
-			if (sst != manaSt) setParameters();
-			if (manaSt > sst) trauma(manaSt, 5);
+		
+			if (sst != manaSt) {
+				setParameters();
+			}
+		
+			if (manaSt > sst) {
+				trauma(manaSt, 5);
+			}
 		}
 		
 		//исцеление 0-самого повреждённого места, 1-голова, 2-корпус, 3-ноги, 4-всё, 5-кровь, 6-мана
 		public function heal(hhp:Number, tip:int):void {
 			var sst:int;
-			if (hhp==0) return;
-			if (tip==0) {
-				if (legsHP<headHP && legsHP<torsHP) tip=3;
-				else if (headHP<torsHP) tip=1;
-				else tip=2;
+			
+			if (hhp == 0) {
+				return;
 			}
-			if (tip==1 || tip==4) {
-				sst=4-Math.ceil(headHP/inMaxHP*4);
-				headHP+=hhp;
-				if (headHP>inMaxHP) headHP=inMaxHP;
-				headSt=4-Math.ceil(headHP/inMaxHP*4);
-				if (sst!=headSt) setParameters();
+			
+			if (tip == 0) {
+				if (legsHP < headHP && legsHP < torsHP) {
+					tip = 3;
+				}
+				else if (headHP<torsHP) {
+					tip = 1;
+				}
+				else {
+					tip = 2;
+				}
 			}
-			if (tip==2 || tip==4) {
-				sst=4-Math.ceil(torsHP/inMaxHP*4);
-				torsHP+=hhp;
-				if (torsHP>inMaxHP) torsHP=inMaxHP;
-				torsSt=4-Math.ceil(torsHP/inMaxHP*4);
-				if (sst!=torsSt) setParameters();
+			
+			if (tip == 1 || tip == 4) {
+				sst = 4 - Math.ceil(headHP / inMaxHP * 4);
+				headHP += hhp;
+				
+				if (headHP > inMaxHP) {
+					headHP = inMaxHP;
+				}
+				
+				headSt = 4 - Math.ceil(headHP / inMaxHP * 4);
+				
+				if (sst != headSt) {
+					setParameters();
+				}
 			}
-			if (tip==3 || tip==4) {
-				sst=4-Math.ceil(legsHP/inMaxHP*4);
-				legsHP+=hhp;
-				if (legsHP>inMaxHP) legsHP=inMaxHP;
-				legsSt=4-Math.ceil(legsHP/inMaxHP*4);
-				if (sst!=legsSt) setParameters();
+			
+			if (tip == 2 || tip == 4) {
+				sst = 4 - Math.ceil(torsHP / inMaxHP * 4);
+				torsHP += hhp;
+				
+				if (torsHP > inMaxHP) {
+					torsHP = inMaxHP;
+				}
+				
+				torsSt = 4 - Math.ceil(torsHP / inMaxHP * 4);
+				
+				if (sst != torsSt) {
+					setParameters();
+				}
 			}
-			if (tip==5) {
-				var sst:int=4-Math.ceil(bloodHP/inMaxHP*4);
-				bloodHP+=hhp;
-				if (bloodHP>inMaxHP) bloodHP=inMaxHP;
-				bloodSt=4-Math.ceil(bloodHP/inMaxHP*4);
-				if (sst!=bloodSt) setParameters();
+			
+			if (tip == 3 || tip == 4) {
+				sst = 4 - Math.ceil(legsHP / inMaxHP * 4);
+				legsHP += hhp;
+				
+				if (legsHP > inMaxHP) {
+					legsHP = inMaxHP;
+				}
+				
+				legsSt = 4 - Math.ceil(legsHP / inMaxHP * 4);
+				
+				if (sst != legsSt) {
+					setParameters();
+				}
 			}
-			if (tip==6) {
-				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.boundingBox.halfHeight, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
-				var sst2:int=4-Math.ceil(manaHP/inMaxMana*4);
-				manaHP+=hhp;
-				if (manaHP>inMaxMana) manaHP=inMaxMana;
-				manaSt=4-Math.ceil(manaHP/inMaxMana*4);
-				if (sst2!=manaSt) setParameters();
+		
+			if (tip == 5) {
+				var sst:int = 4 - Math.ceil(bloodHP / inMaxHP * 4);
+				bloodHP += hhp;
+				
+				if (bloodHP > inMaxHP) {
+					bloodHP = inMaxHP;
+				}
+				
+				bloodSt = 4 - Math.ceil(bloodHP / inMaxHP * 4);
+				
+				if (sst != bloodSt) {
+					setParameters();
+				}
+			}
+			
+			if (tip == 6) {
+				if (manaHP<inMaxMana && hhp>5) {
+					gg.numbEmit.cast(gg.loc, gg.coordinates.X, gg.coordinates.Y - gg.boundingBox.halfHeight, {txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
+				}
+				
+				var sst2:int = 4 - Math.ceil(manaHP / inMaxMana * 4);
+				manaHP += hhp;
+				
+				if (manaHP > inMaxMana) {
+					manaHP = inMaxMana;
+				}
+				
+				manaSt = 4 - Math.ceil(manaHP / inMaxMana * 4);
+				
+				if (sst2 != manaSt) {
+					setParameters();
+				}
+				
 				World.w.gui.setMana();
 			}
 		}
@@ -1523,9 +1721,9 @@ package fe.unit {
 				var resistValue:Number = arm.resistances.getResist(resistType);
 				
 				if (resistValue != 0) {
-					setBegFactor('vulner_' + resistType, gg.vulner[resistType]);
-					gg.vulner[resistType] *= (1 - resistValue);
-					setFactor('vulner_' + resistType, arm.id, 'mult', (1 - resistValue), gg.vulner[resistType], 'a');
+					setBegFactor('vulner_' + resistType, gg.vulnerabilities.getResist(resistType));
+					gg.vulnerabilities.multiplyResist(resistType, (1 - resistValue));
+					setFactor('vulner_' + resistType, arm.id, 'mult', (1 - resistValue), gg.vulnerabilities.getResist(resistType), 'a');
 				}
    			 }
 			

@@ -172,7 +172,7 @@ package fe.unit {
 					}
 				}
 				
-				if (currentWeapon.tip == "explosive") {
+				if (currentWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
 					currentWeapon.rapid = 1;
 				}
 				

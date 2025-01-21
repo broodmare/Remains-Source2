@@ -9,8 +9,11 @@ package fe.weapon {
 		public var zadok:Boolean = false;	// [Can act backwards]
 
 		// Constructor
-		public function WPunch() {
+		public function WPunch(w:Weapon) {
 			super();
+			// Get all the properties from an already made default weapon and use them
+			WeaponCopier.copyFrom(w, this);
+
 			vBullet = visualPunch;
 		}
 		

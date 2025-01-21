@@ -46,15 +46,15 @@ package fe.unit {
 			aiTCh = 80;
 			
 			//дать оружие
-			var weapData:Object;
+			var wm:WeaponManager = WeaponManager.reference;
 			if (tr == 1) {
-				weapData = ItemManager.reference.getWeapon("carbine");
-				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon = wm.cloneWeapon("carbine");
+				wm.setOwner(currentWeapon, this);
 				aiDist = 2000;
 			}
 			else if (tr == 2) {
-				weapData = ItemManager.reference.getWeapon("flamer");
-				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon = wm.cloneWeapon("flamer");
+				wm.setOwner(currentWeapon, this);
 				aiDist = 500;
 			}
 			
@@ -69,13 +69,8 @@ package fe.unit {
 				childObjs = new Array(currentWeapon);
 			}
 			
-			if (currentWeapon && currentWeapon.uniq) {
-				currentWeapon.updVariant(1);
-			}
-			
 			aiNapr = storona;
 		}
-		
 
 		public override function save():Object {
 			var obj:Object = super.save();
@@ -90,33 +85,38 @@ package fe.unit {
 			return obj;
 		}
 		
-		public override function setLevel(nlevel:int=0):void {
+		public override function setLevel(nlevel:int = 0):void {
 			super.setLevel(nlevel);
-			var wMult:Number = (1+level*0.08);
+			
+			var wMult:Number = (1 + level * 0.08);
 			var dMult:Number = 1;
 			
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
+			if (World.w.game.globalDif == 3) {
+				dMult = 1.20;
+			}
+			if (World.w.game.globalDif == 4) {
+				dMult = 1.50;
+			}
 			
-			hp=maxhp=hp*dMult;
-			dam*=dMult;
+			hp = maxhp = hp * dMult;
+			dam *= dMult;
 			
 			if (currentWeapon) {
-				currentWeapon.damage*=dMult;
+				currentWeapon.damage *= dMult;
 			} 
 		}
 		
 		public override function animate():void {
 			if (sost==3) { //сдох
-				if (animState!='die') {
+				if (animState != 'die') {
 					vis.osn.gotoAndStop('die');
-					animState='die';
+					animState = 'die';
 				}
 			}
-			else if (aiState==4 || aiState==6) {
-				if (animState!='bac') {
+			else if (aiState == 4 || aiState == 6) {
+				if (animState != 'bac') {
 					vis.osn.gotoAndStop('bac');
-					animState='bac';
+					animState = 'bac';
 				}
 			}
 			else if (stay) {
@@ -144,8 +144,15 @@ package fe.unit {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
 					var cframe:int = Math.round(16 + velocity.Y);
-					if (cframe>32) cframe=32;
-					if (cframe<1) cframe=1;
+					
+					if (cframe > 32) {
+						cframe = 32;
+					}
+					
+					if (cframe < 1) {
+						cframe = 1;
+					}
+					
 					vis.osn.body.gotoAndStop(cframe);
 				}
 			} 
@@ -158,12 +165,15 @@ package fe.unit {
 		
 		public override function dropLoot():void {
 			super.dropLoot();
+			
 			if (currentWeapon) {
-				if (currentWeapon.vis) currentWeapon.vis.visible=false;
-				var cid:String=currentWeapon.id;
-				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
+				if (currentWeapon.vis) {
+					currentWeapon.vis.visible = false;
+				}
+				
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
 			}
+			
 			if (attackerType==3) {
 				for (var i=0; i<3; i++) {
 					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
@@ -343,9 +353,10 @@ package fe.unit {
 					jmp=0;
 				}
 			}
-			else if (aiState==3 || aiState==2) {
+			else if (aiState == 3 || aiState == 2) {
 				walk=0;
 				aiNapr = storona = (celX > coordinates.X)? 1 : -1;
+			
 				if (celDX * celDX + celDY * celDY < 40000) {
 					aiState=1;
 				}
@@ -363,9 +374,13 @@ package fe.unit {
 				mazil=10;		//стоя на месте стрельба точнее
 				
 				if (aiAttackOch>0) {										//стрельба очередями
-					if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
+					if (aiAttackT<=0) {
+						aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
+					}
 					
-					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
+					if (aiAttackT > aiAttackOch * 0.25) {
+						currentWeapon.attack();
+					}
 					
 					aiAttackT--;
 				}
@@ -373,18 +388,26 @@ package fe.unit {
 				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) attKorp(celUnit, 0.5);
 			}
 			else if (aiState==4) {		//тряска
-				if (aiTCh==5) quake();
+				if (aiTCh==5) {
+					quake();
+				}
 			}
 			else if (aiState==5) {		//тряска
-				if (aiTCh==5 && kol_emit && tr==1) emit();
+				if (aiTCh==5 && kol_emit && tr==1) {
+					emit();
+				}
 				
 				if (celUnit && isrnd(0.02)) {
 					currentWeapon.attack();
 					
-					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) attackerType=0;
+					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) {
+						attackerType=0;
+					}
 				}
 				
-				if ((celDX*celDX+celDY*celDY<10000) && isrnd(0.1)) attKorp(celUnit,(Math.abs(velocity.X) > 8)? 1 : 0.5);
+				if ((celDX*celDX+celDY*celDY<10000) && isrnd(0.1)) {
+					attKorp(celUnit,(Math.abs(velocity.X) > 8)? 1 : 0.5);
+				}
 			}
 		}
 		

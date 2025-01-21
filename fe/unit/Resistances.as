@@ -55,6 +55,12 @@ package fe.unit {
 			}
 		}
 
+		public function multiplyResist(type:String, n:Number):void {
+			if (_typeResist.hasOwnProperty(type)) {
+				_typeResist[type] *= n;
+			}
+		}
+
 		// Import resistance values from the passed object
 		public function importResistances(armorData:Object):void {
 			// Reset all resistances to zero
@@ -73,7 +79,8 @@ package fe.unit {
 			}
 		}
 
-		private function zeroResistances():void {
+		// Initializes all resistances to 0.00, technically accepts a paramter, but use the 'setResistances' wrapper instead
+		private function zeroResistances(n:Number = 0):void {
 			// Set the resistances as an empty object
 			_typeResist = {};
 
@@ -85,10 +92,15 @@ package fe.unit {
 				DAM_PINKCLOUD, DAM_INTERNAL, DAM_HARMONY
             ];
 
-			// Add each resistance property as the Number 0.00
+			// Add each resistance property as the Number n
 			for each (var resistType:String in _resistTypes) {
-                _typeResist[resistType] = 0.00;
+                _typeResist[resistType] = n;
             }
+		}
+
+		// Set all resistances to the given number
+		public function setResistances(n:Number):void {
+			zeroResistances(n);
 		}
 
 		// Return all resistance names
@@ -101,5 +113,19 @@ package fe.unit {
 			
 			return keys;
 		}
+
+		public function copyFrom(other:Resistances):void {
+			for (var resistType:String in other._typeResist) {
+				if (_typeResist.hasOwnProperty(resistType)) {
+					_typeResist[resistType] = other._typeResist[resistType];
+				}
+			}
+		}
+
+		public function clone():Resistances {
+            var newResistances:Resistances = new Resistances();
+            newResistances.copyFrom(this);
+            return newResistances;
+        }
 	}
 }

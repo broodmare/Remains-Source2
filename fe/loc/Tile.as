@@ -6,12 +6,12 @@ package  fe.loc {
 	
 	public class Tile {
 		
-		private static var tileSize:int = 40; // Size in pixels
-		public static var tileX:int = tileSize;	// TODO: Replace this better with tileSize
+		private static var tileSize:int = 40;			// Size in pixels
+		public static var tileX:int = tileSize;			// TODO: Replace this better with tileSize
 		public static var tileY:int = tileSize;
 		
-		public var coords:Vector2;					// (is this raw coords or tilespace coords??)
-		public var boundingBox:BoundingBox;			// Bounding box
+		public var coords:Vector2;						// (is this raw coords or tilespace coords??)
+		public var boundingBox:BoundingBox;				// Bounding box
 		
 		public var indestruct:Boolean	= false;
 		public var phis:int				= 0;			// 4 States 0: No Collision, 1: Collision, 2: Grate, 3: Ghost Wall
@@ -83,6 +83,7 @@ package  fe.loc {
 			var t:Number = coords.Y * tileSize;
 			var b:Number = (coords.Y + 1) * tileSize;
 			boundingBox.setBounds(l, r, t, b);
+			boundingBox.setSize(40);
 		}
 		
 		private function inForm(f:Form):void {
@@ -254,7 +255,7 @@ package  fe.loc {
 			}
 			
 			zForm = n;
-			boundingBox.top = ( coords.Y + zForm / 4) * tileSize;
+			boundingBox.top = (coords.Y + zForm * 0.25) * tileSize;
 			
 			if (n > 0) {
 				opac = 0;

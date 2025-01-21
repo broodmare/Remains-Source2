@@ -84,19 +84,19 @@ package fe.unit {
 			
 			//Instantiate the alicorn's weapon array and add each entry
 			weaps = [];
-			var weapData:Object;
+			var wm:WeaponManager = WeaponManager.reference;
 			
-			weapData = ItemManager.reference.getWeapon("alilight2");
-			weaps[0] = Weapon.create(this, weapData);
+			weaps[0] = wm.cloneWeapon("alilight2");
+			wm.setOwner(weaps[0], this);
 
-			weapData = ItemManager.reference.getWeapon("aliblade");
-			weaps[1] = Weapon.create(this, weapData);
+			weaps[1] = wm.cloneWeapon("aliblade");
+			wm.setOwner(weaps[1], this);
 
-			weapData = ItemManager.reference.getWeapon("alipsy2");
-			weaps[2] = Weapon.create(this, weapData);
+			weaps[2] = wm.cloneWeapon("alipsy2");
+			wm.setOwner(weaps[2], this);
 
-			weapData = ItemManager.reference.getWeapon("alimray");
-			weaps[3] = Weapon.create(this, weapData);
+			weaps[3] = wm.cloneWeapon("alimray");
+			wm.setOwner(weaps[3], this);
 			
 			currentWeapon = weaps[0];
 			childObjs = weaps;
@@ -115,25 +115,25 @@ package fe.unit {
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			
-			var wMult:Number = (1+level*0.07);
+			var wMult:Number = (1 + level * 0.07);
 			var dMult:Number = 1;
 			
 			if (World.w.game.globalDif == 3) {
-				dMult = 1.2;
+				dMult = 1.20;
 			}
 			else if (World.w.game.globalDif == 4) {
-				dMult = 1.5;
+				dMult = 1.50;
 			}
 			
 			hp = maxhp = hp * dMult;
 			dam *= dMult;
 			
 			if (weaps[1]) {
-				weaps[1].damage*=wMult*dMult;
+				weaps[1].damage *= wMult * dMult;
 			}
 			
 			if (currentWeapon) {
-				currentWeapon.damage*=dMult;
+				currentWeapon.damage *= dMult;
 			} 
 		}
 		
@@ -158,22 +158,27 @@ package fe.unit {
 		}
 		
 		public override function expl():void {
-			newPart('blood',100);
+			newPart('blood', 100);
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
-			setCel(null,nx+200*storona, ny-50);
+			setCel(null, nx + 200 * storona, ny - 50);
 		}
 		
 		public override function setNull(f:Boolean=false):void {
-			if (!isNoResBoss()) isShit=true;
+			if (!isNoResBoss()) {
+				isShit=true;
+			}
 			
 			super.setNull(f);
 			
-			if (teleObj) dropTeleObj();
+			if (teleObj) {
+				dropTeleObj();
+			}
 			
-			aiState=aiSpok=0;
+			aiState = 0;
+			aiSpok = 0;
 		}
 
 		public override function animate():void {
@@ -182,6 +187,7 @@ package fe.unit {
 				
 				if (sost==2) { 
 					animState='die';
+					
 					if (!isBlast) {
 						newPart('bloodblast2');
 						isBlast=true;
@@ -215,16 +221,22 @@ package fe.unit {
 				if (superInvis && World.w.pers.infravis==0) {
 					celA=0;
 				}
-				else celA=100;
+				else {
+					celA=100;
+				}
 				
-				if (curA>celA) curA-=5;
+				if (curA > celA) {
+					curA -= 5;
+				}
 				
-				if (curA<celA) curA+=5;
+				if (curA < celA) {
+					curA += 5;
+				}
 				
-				vis.alpha=curA/100;
+				vis.alpha = curA / 100;
 			}
 			catch(err) {
-
+				trace("UnitBossAlicorn.as/Constructor() - Creating Alicorn Boss failed");
 			}
 		}
 		

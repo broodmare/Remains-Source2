@@ -4,20 +4,21 @@ package fe.unit {
 
 	import fe.Snd;
 	import fe.loc.Tile;
+	import fe.weapon.Weapon;
 	
 	public class UnitPon extends Unit {
 
-		public var teleColor:uint=0;
+		protected var footstepVol:Number	= 0.2;
+		public var teleColor:uint			= 0;
 		protected var teleFilter:GlowFilter;
-		protected var footstepVol:Number=0.2;
-
+		
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
 		// Constructor
 		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			blood=1;
+			blood = 1;
 		}
 
 		// [weapon position]
@@ -61,7 +62,7 @@ package fe.unit {
 				return;
 			}
 			
-			if (weaponKrep==0 && currentWeapon.tip != "magic") {
+			if (weaponKrep == 0 && currentWeapon.tip != Weapon.TYPE_MAGIC) {
 				if (currentWeapon.vis.kor) {
 					currentWeapon.vis.kor.filters=[teleFilter];
 				}
@@ -72,7 +73,7 @@ package fe.unit {
 		}
 		
 		public function sndStep(faza:int,tip:int=0):void {
-			if (loc==null || !loc.active) {
+			if (loc == null || !loc.active) {
 				return;
 			}
 			

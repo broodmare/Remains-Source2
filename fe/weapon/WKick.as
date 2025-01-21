@@ -14,6 +14,7 @@ package fe.weapon  {
 		// Constructor
 		public function WKick() {
 			super();
+			
 			vBullet = visualPunch;	// .SWF Dependency
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(owner, v, null, false);

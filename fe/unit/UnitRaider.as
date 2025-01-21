@@ -111,28 +111,37 @@ package fe.unit {
 			baseDexter=dexter;
 
 			//дать оружие
+			var wm:WeaponManager = WeaponManager.reference;
 			if (loadObj && loadObj.weap) {
-				if (loadObj.weap!='') currentWeapon=Weapon.create(this,loadObj.weap);
+				if (loadObj.weap != "") {
+					currentWeapon = wm.cloneWeapon(loadObj.weap.id);
+				}
 			}
 			else if (xml && xml.@weap.length()) {
-				if (xml.@weap!='') currentWeapon=Weapon.create(this,xml.@weap);
+				if (xml.@weap != "") {
+					currentWeapon = wm.cloneWeapon(xml.@weap.id);
+				}
 			}
 			else {
-				currentWeapon=getXmlWeapon(ndif);
+				currentWeapon = getXmlWeapon(ndif);
 			}
+			// Set weapon owner to this unit
+			wm.setOwner(currentWeapon, this)
 			
 			if (currentWeapon) {
-				weap=currentWeapon.id;
-				if (currentWeapon.variant>0) weap+='^'+currentWeapon.variant;
+				weap = currentWeapon.id;
 			}
 			else {
-				weap='';
+				weap = "";
 			}
 			
 			if (currentWeapon) {
 				childObjs=new Array(currentWeapon);
 				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
-				if (currentWeapon.antiprec > 0) currentWeapon.damage *= 0.8;
+				
+				if (currentWeapon.antiprec > 0) {
+					currentWeapon.damage *= 0.80;
+				}
 			}
 
 			if (xml && xml.@emit.length()) {
@@ -140,13 +149,14 @@ package fe.unit {
 			}
 			
 			if (xml && xml.@nodrop.length()) {
-				isDropArm=false;
+				isDropArm = false;
 			}
 			
-			if (dropW!=null) {
-				dropWeapon=Weapon.create(this,dropW);
-				dropWeapon.vis.visible=false;
-				dropWeapon.vis.alpha=0;
+			if (dropW != null) {
+				dropWeapon = WeaponManager.reference.cloneWeapon(dropW);
+				WeaponManager.reference.setOwner(dropWeapon, this);
+				dropWeapon.vis.visible = false;
+				dropWeapon.vis.alpha = 0;
 				childObjs.push(dropWeapon);
 			}
 
@@ -155,48 +165,58 @@ package fe.unit {
 			}
 
 			initBlit();
-			animState='stay';
+			animState = 'stay';
 			
 			if (teleColor) {
 				teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
 			}
 
-			if (aiTip=='stay') {
-				stroll=false;
+			if (aiTip == 'stay') {
+				stroll = false;
 			}
 			
-			if (aiTip=='quiet') {
-				stroll=false;
-				quiet=true;
+			if (aiTip == 'quiet') {
+				stroll = false;
+				quiet = true;
 			}
 			
-			if (aiTip=='sniper') {
-				stroll=false;
-				moving=false;
-				weaponSkill=2;
+			if (aiTip == 'sniper') {
+				stroll = false;
+				moving = false;
+				weaponSkill = 2;
 			}
 			
 			if (xml && xml.@fraction.length()) {
-				fraction=xml.@fraction;
-				if (fraction==F_PLAYER) warn=0;
+				fraction = xml.@fraction;
+				if (fraction==F_PLAYER) {
+					warn = 0;
+				}
 			}
 
 			weaponLevit();
 			var headArr:Array = [{x: 100, y: 100, r: 10}];
 			aiNapr=storona;
 
-			if (!currentWeapon || currentWeapon.tip<=1 && weaponKrep==1) attackerType=0;		//атака корпусом
-			else if (currentWeapon.tip==1 && weaponKrep==0) attackerType=1;						//атака холодным оружием 
-			else if (currentWeapon.tip==4) attackerType=3;										//гранаты
-			else attackerType=2;//пальба
-
-			if (attackerType<=0) {
-				stalkDist=0;
+			if (!currentWeapon || currentWeapon.tip <= Weapon.TYPE_MELEE && weaponKrep == 1) {
+				attackerType = 0;	// [body attack]
+			}
+			else if (currentWeapon.tip == Weapon.TYPE_MELEE && weaponKrep == 0) {
+				attackerType = 1;	// [melee weapon attack]
+			}
+			else if (currentWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
+				attackerType = 3;	// [grenades]
+			}
+			else {
+				attackerType = 2;	// [firing]
 			}
 
-			acidDey=0.5;
-			spd=new Object();
-			tstor=storona;
+			if (attackerType <= 0) {
+				stalkDist = 0;
+			}
+
+			acidDey = 0.50;
+			spd = new Object();
+			tstor = storona;
 
 			if (msex) {
 				wPos = AnimationSet.getWeaponOffset("wPosRaider1");
@@ -206,11 +226,11 @@ package fe.unit {
 			}
 
 			if (!msex) {
-				id_name+='_f';
+				id_name += '_f';
 			}
 
-			if (sndDie=='rm' && !msex) {
-				sndDie='rw';
+			if (sndDie == 'rm' && !msex) {
+				sndDie = 'rw';
 			}
 		}
 
@@ -218,6 +238,7 @@ package fe.unit {
 			super.getXmlParam(parentId);
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			
 			if (node0.vis.length()) {
 				if (node0.vis.@telecolor.length()) teleColor=node0.vis.@telecolor;
 			}
@@ -227,15 +248,25 @@ package fe.unit {
 					flyer=true;
 					mostLaz=false;
 				}
+			
 				if (node0.un.@och.length()) aiAttackOch=node0.un.@och;		//стрельба очередью
+			
 				if (node0.un.@dist.length()) aiDist=node0.un.@dist;		//минимальная дистанция
+			
 				if (node0.un.@stalk.length()) stalkDist=node0.un.@stalk;		//дистанция преследования в полёте
+			
 				if (node0.un.@walker.length()) walker=true;
+			
 				if (node0.un.@sniper.length()) sniper=true;
+			
 				if (node0.un.@gren.length()) fearGrenade=false;
+			
 				if (node0.un.@grenader.length()) grenader=node0.un.@grenader;
+			
 				if (node0.un.@drop.length()) dropW=node0.un.@drop;
+			
 				if (node0.un.@stay.length()) stroll=false;
+			
 				if (node0.un.@enclweap.length()) enclWeap=true;
 			}
 		}
@@ -243,24 +274,25 @@ package fe.unit {
 		//сделать героем
 		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
-			if (hero==1) {
-				if (currentWeapon && currentWeapon.uniq>0 && isrnd(currentWeapon.uniq/2)) {
-					currentWeapon.updVariant(1);
-				}
-			}
 		}
 
 		public override function save():Object {
 			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
+			
+			if (obj==null) {
+				obj=new Object();
+			}
+			
 			obj.tr=tr;
 			obj.weap=weap;
+			
 			return obj;
 		}	
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			super.setWeaponPos(tip);
-			if (!enclWeap && (tip==1 || tip==2 || tip==4)) {
+		
+			if (!enclWeap && (tip == Weapon.TYPE_MELEE || tip == Weapon.TYPE_LIGHTGUN || tip == Weapon.TYPE_EXPLOSIVES)) {
 				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
 				weaponX = coordinates.X + (obj.x+visBmp.x)*storona;
 				weaponY = coordinates.Y + obj.y+visBmp.y;
@@ -274,11 +306,18 @@ package fe.unit {
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
+						// Do nothing
 					}
-					else if (animState=='death') animState='fall';
-					else animState='die';
+					else if (animState=='death') {
+						animState='fall';
+					}
+					else {
+						animState='die';
+					}
 				}
-				else animState='death';
+				else {
+					animState='death';
+				}
 			}
 			else {
 				if (stay) {
@@ -318,13 +357,16 @@ package fe.unit {
 					//anims[animState].setStab((dy*0.6+8)/16);
 				}
 			}
+			
 			if (animState!=animState2) {
 				anims[animState].restart();
 				animState2=animState;
 			}
+			
 			if (!anims[animState].st) {
 				blit(anims[animState].id, anims[animState].f);
 			}
+			
 			anims[animState].step();
 		}
 		
@@ -345,20 +387,24 @@ package fe.unit {
 		
 		public override function dropLoot():void {
 			super.dropLoot();
+			
 			if (currentWeapon) {
-				if (currentWeapon.vis) currentWeapon.vis.visible=false;
+				if (currentWeapon.vis) {
+					currentWeapon.vis.visible=false;
+				}
+				
 				if (isDropArm) {
-					var cid:String=currentWeapon.id;
-					if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-					LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
+					LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
 				}
 			}
+			
 			if (attackerType==3) {
 				for (var i=0; i<3; i++) {
 					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 					currentWeapon.attack();
 				}
 			}
+			
 			if (dropWeapon) {
 				setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 				dropWeapon.attack();
@@ -376,18 +422,25 @@ package fe.unit {
 		public override function actions():void {
 			super.actions();
 			
-			if (aiPlav>0) aiPlav--;
+			if (aiPlav>0) {
+				aiPlav--;
+			}
 			
-			if (isPlav) aiPlav=10;
+			if (isPlav) {
+				aiPlav=10;
+			}
 			
-			rasst=Math.sqrt(rasst2);
-			volMinus=rasst/8000;
+			rasst = Math.sqrt(rasst2);
+			volMinus = rasst / 8000;
 		}
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			
-			if (f) aiState=aiSpok=0;
+			if (f) {
+				aiState = 0;
+				aiSpok = 0;
+			}
 		}
 		
 		public function jump(v:Number=1):void {
@@ -407,7 +460,9 @@ package fe.unit {
 				}
 			}
 			
-			if (!isPlav&&aiPlav) velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
+			if (!isPlav&&aiPlav) {
+				velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
+			}
 			
 			if (isPlav) {
 				velocity.Y -= plavdy;
@@ -448,6 +503,7 @@ package fe.unit {
 					aiState=3;
 					budilo();
 				}
+				
 				replic('levit');
 			}
 			
@@ -457,7 +513,9 @@ package fe.unit {
 			
 			t_replic--;
 			
-			if (emit_t>0) emit_t--;
+			if (emit_t>0) {
+				emit_t--;
+			}
 			
 			var jmp:Number=0;
 
@@ -465,19 +523,27 @@ package fe.unit {
 			if (storona!=tstor && t_turn<=0) {
 				storona=tstor;
 				
-				if (stay) t_turn=5;
-				else t_turn=30;
+				if (stay) {
+					t_turn=5;
+				}
+				else {
+					t_turn=30;
+				}
 				
 				if (currentWeapon && currentWeapon.drot>0) {
 					currentWeapon.rot=Math.atan2(celY-currentWeapon.coordinates.Y, Math.abs(celX-currentWeapon.coordinates.X)*storona);
 				}
 			}
 			
-			if (t_turn>0) t_turn--;
+			if (t_turn>0) {
+				t_turn--;
+			}
 			
 			dexter=isFly?baseDexter*1.5:baseDexter
 			
-			if (!controlOn) return;
+			if (!controlOn) {
+				return;
+			}
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
@@ -485,12 +551,18 @@ package fe.unit {
 				return;
 			}
 			
-			if (aiLaz>0) aiLaz--;
+			if (aiLaz>0) {
+				aiLaz--;
+			}
 			
-			if (aiJump>0) aiJump--;
+			if (aiJump>0) {
+				aiJump--;
+			}
 			
 			//таймер смены состояний
-			if (aiTCh>0) aiTCh--;
+			if (aiTCh>0) {
+				aiTCh--;
+			}
 			else if (aiState==5) {
 				if (celUnit) {
 					replic('attack');
@@ -596,6 +668,7 @@ package fe.unit {
 					}
 				}
 			}
+			
 			//гранаты
 			if (loc.warning>0 && aiTCh%10==1 && fearGrenade && isrnd(0.2)) {
 				if (findGrenades()) {
@@ -655,6 +728,7 @@ package fe.unit {
 			}
 			
 			porog=10;
+			
 			if (moving) throu=(celDY>80);
 			
 			if (celDY>70) porog=0;
@@ -703,13 +777,18 @@ package fe.unit {
 			
 			//скорость
 			maxSpeed=walkSpeed;
+			
 			if (!flyer && (durak || (attackerType==0 && aiSpok>=maxSpok)) && (aiState==2 || aiState==3)) {
 				maxSpeed=runSpeed;
 				if (attackerType==0 && aiAttack) maxSpeed=runSpeed*1.5;
 			}
+			
 			if (aiState == 6) maxSpeed = runSpeed * 1.5;
+			
 			if (aiState == 7) maxSpeed = 0;
+			
 			if (aiState == 8) maxSpeed = runSpeed * 2.5;
+			
 			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
 			
 			//если землепони с огн.оружием, то можно бежать задом
@@ -721,11 +800,17 @@ package fe.unit {
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (stay && shX1 > 0.25 && aiNapr < 0) turnX = 1;
+				
 				if (stay && shX2 > 0.25 && aiNapr > 0) turnX = -1;
+				
 				if (isPlav) jump();
+				
 				if (!quiet && isrnd(0.001)) replic('neutral');
+				
 				if (velocity.X > 0.5) tstor = 1; 
+				
 				if (velocity.X < -0.5) tstor = -1;
+				
 				walk = 0;
 				isLaz = 0;
 				overLook = false;
@@ -759,15 +844,18 @@ package fe.unit {
 							if (velocity.X > -maxSpeed) {
 								velocity.X -= accel / 3;
 							}
+						
 							walk = -1;
 						}
 						else if (aiNapr == 1) {
 							if (velocity.X < maxSpeed) {
 								velocity.X += accel / 3;
 							}
+						
 							walk = 1;
 						}
 					}
+					
 					//поворачиваем, если впереди некуда бежать
 					if (stay && shX1>0.25 && aiNapr<0) {
 						if (isrnd(0.1)) {
@@ -779,25 +867,34 @@ package fe.unit {
 						}
 						else turnX = 1;
 					}
+					
 					if (stay && shX2 > 0.25 && aiNapr > 0) {
 						if (isrnd(0.1)) {
 							t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
+							
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
 							}
-							else turnX = -1;
+							else {
+								turnX = -1;
+							}
 						}
-						else turnX = -1;
+						else {
+							turnX = -1;
+						}
 					}
+					
 					//если повернули, то можем остановиться
 					if (stay && turnX!=0) {
 						if (isrnd(0.1)) aiState=0;
 						aiNapr=tstor=turnX;
 						turnX=0;
 					}
+					
 					//в воде всплываем
 					if (isPlav) {
 						jump();
+						
 						if (turnX!=0) {
 							aiNapr=tstor=turnX;
 							turnX=0;
@@ -808,32 +905,43 @@ package fe.unit {
 			}
 			else if (aiState==2 || aiState==3 || aiState==6 || aiState==8) {
 				overLook=true;
+				
 				//определить, куда двигаться
 				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;	
+				
 				if (aiTCh%15==1 && aiState!=6) {
 					if (isrnd(durak?0.5:0.9)) {
 						if (celDX>100) aiNapr=tstor=1;
 						if (celDX<-100) aiNapr=tstor=-1;
 					}
 				}
+				
 				if (isPlav && isrnd(0.7)&& celDY<0) {
 					jmp=1;
 				}
+				
 				if (mostLaz && aiState<6) {
 					if (isLaz==0 && aiVNapr==-1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вверх
 						checkStairs();
+						
 						if (isLaz && isLaz!=0) aiLaz=30;
 					}
+					
 					if (isLaz==0 && aiVNapr==1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вниз
 						checkStairs(2);
+						
 						if (isLaz && isLaz!=0) aiLaz=30;
 					}
 				}
+				
 				if (isLaz) {
 					if (t_laz<0) t_laz=0;
+				
 					t_laz++;
+				
 					if (celY < coordinates.Y && r_laz <= 0) {
 						r_laz=-1;
+				
 						if (velocity.Y > -lazSpeed) {
 							velocity.Y -= lazSpeed / 3;
 						}
@@ -860,6 +968,7 @@ package fe.unit {
 						isLaz=0;
 						if (t_laz>20 && isrnd(0.7)) jmp=0.8;
 					}
+					
 					if (turnY!=0) {
 						isLaz=0;
 						turnY=0;
@@ -920,8 +1029,11 @@ package fe.unit {
 							isFly=false;
 							turnY=0;
 						}
-						else t_landing++;
+						else {
+							t_landing++;
+						}
 					}
+					
 					turnX=turnY=t_fall=0;
 				}
 				else if (stay || isPlav) {
@@ -930,12 +1042,14 @@ package fe.unit {
 							if (velocity.X > -maxSpeed) {
 								velocity.X -= accel;
 							}
+							
 							walk = -1;
 						}
 						else {
 							if (velocity.X < maxSpeed) {
 								velocity.X += accel;
 							}
+							
 							walk = 1;
 						}
 					}
@@ -961,6 +1075,7 @@ package fe.unit {
 							pumpObj.setDoor();
 						}
 					}
+					
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=tstor=turnX;
 						aiTTurn = int(Math.random()*20)+5;
@@ -974,6 +1089,7 @@ package fe.unit {
 							aiTTurn = int(Math.random()*20)+5;
 						}
 					}
+					
 					turnX=turnY=0;
 				}
 				if (jmp>0) {
@@ -985,11 +1101,13 @@ package fe.unit {
 			else if (aiState==4) {
 				walk=0;
 				aiNapr=tstor=(celX > coordinates.X)?1:-1;
+			
 				if (attackerType==2 && (celDX*celDX+celDY*celDY<200*200)) {
 					if (isrnd(0.6)) {
 						velocity.X = runSpeed * (celDX > 0? -1 : 1) * 2;
 						jump(0.4);
 					}
+				
 					aiState=3;
 				}
 			}
@@ -1000,7 +1118,9 @@ package fe.unit {
 			
 			pumpObj=null;
 			
-			if (coordinates.Y > loc.spaceY*Tile.tileY-80) throu=false;
+			if (coordinates.Y > loc.spaceY*Tile.tileY-80) {
+				throu=false;
+			}
 			
 			if (aiState==3 || aiState==4 || aiState==6 || aiState==8) aiAttack=1;
 			else aiAttack=0;
@@ -1055,7 +1175,10 @@ package fe.unit {
 			else if (attackerType==3) {		//гранаты
 				if (celUnit && isrnd(0.02)) {
 					currentWeapon.attack();
-					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) attackerType=0;
+				
+					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) {
+						attackerType=0;
+					}
 				}
 				
 				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) {
@@ -1067,12 +1190,20 @@ package fe.unit {
 		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
 			if (com=='turn') {
-				if (val=='0') storona=-storona;
-				else if (val=='-1') storona=-1;
-				else storona=1;
+				if (val=='0') {
+					storona=-storona;
+				}
+				else if (val=='-1') {
+					storona=-1;
+				}
+				else {
+					storona=1;
+				}
+				
 				tstor=storona;
 				setVisPos();
 			}
+			
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

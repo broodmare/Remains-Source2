@@ -317,7 +317,7 @@ package fe.inter {
 							n.fav = inv.favIds[w.id];
 						}
 						
-						if (w.tip != "explosives" && w.tip != "magic") {
+						if (w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
 							n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
 						}
 						
@@ -329,7 +329,7 @@ package fe.inter {
 								n.ammo = inv.items[w.ammo].kol + w.magazineRounds;
 							}
 							if (w.ammoBase != "") {
-								n.ammotip = (w.tip == "explosives") ? "" : inv.items[w.ammoBase].nazv;
+								n.ammotip = (w.tip == Weapon.TYPE_EXPLOSIVES) ? "" : inv.items[w.ammoBase].nazv;
 							}
 						}
 						
@@ -451,7 +451,7 @@ package fe.inter {
 				gg.pers.setPonpon(vis.status.pon);
 			}
 			else {		// Ammo selection
-				if (gg.currentWeapon == null || gg.currentWeapon.holder <= 0 || gg.currentWeapon.ammoBase == "" || gg.currentWeapon.recharg > 0 || gg.currentWeapon.alicorn || gg.currentWeapon.tip == "explosives" || gg.currentWeapon.tip == "magic") {
+				if (gg.currentWeapon == null || gg.currentWeapon.holder <= 0 || gg.currentWeapon.ammoBase == "" || gg.currentWeapon.recharg > 0 || gg.currentWeapon.alicorn || gg.currentWeapon.tip == Weapon.TYPE_EXPLOSIVES || gg.currentWeapon.tip == Weapon.TYPE_MAGIC) {
 					return;
 				}
 
@@ -671,7 +671,7 @@ package fe.inter {
 					var k:int = World.w.invent.getQuantity(w.ammo.id);
 					var s:String;
 					
-					if (w.tip != "explosives") {
+					if (w.tip != Weapon.TYPE_EXPLOSIVES) {
 						if (w.magazineRounds < w.magazineCapacity * 0.25) {
 							n = "2";
 						}
@@ -685,7 +685,7 @@ package fe.inter {
 					
 					s = "<span class = 'r" + n + "'>";
 					
-					if (w.tip == "explosives") {
+					if (w.tip == Weapon.TYPE_EXPLOSIVES) {
 						s += k + w.magazineRounds;
 					}
 					else {
@@ -736,7 +736,7 @@ package fe.inter {
 				weapon.htmlText = s;
 				vis.textWeapon.x = 20 + weapon.textWidth;
 			
-				if (w.ammo && w.tip != "explosives") {
+				if (w.ammo && w.tip != Weapon.TYPE_EXPLOSIVES) {
 					ammo.text = w.ammo.name;
 				}
 				else if (w.id == "paint") {

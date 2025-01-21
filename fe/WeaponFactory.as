@@ -17,6 +17,7 @@ package fe {
 			weapon.sloy = 2;	// ???
 			weapon.id = data.id;
 
+			weapon.tip = data.tip;
 			weapon.variant = data.variant;
 			weapon.trasser = new Trasser();
 
@@ -104,14 +105,13 @@ package fe {
 			}
 
 			if (weapon.tip != "punch" || weapon.svisv) {
-				weapon.vWeapon = Res.getClass(weapon.svisv, weapon.svis, visp10mm);	// .SWF Dependency
-				weapon.vis = new (weapon.vWeapon)();								// .SWF Dependency
+				weapon.vWeapon = Res.getClass(weapon.svisv, weapon.svis, visp10mm);			// .SWF Dependency
+				
+				weapon.vis = new (weapon.vWeapon)();										// .SWF Dependency
+				(weapon.vis != null) ? trace("WeaponFactory.as/createWeaponPart1() - Retrieved vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv)
+									 : trace("WeaponFactory.as/createWeaponPart1() - Failed to retrieve vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv);
 			}
 			
-			/*if (owner && owner.weaponKrep > 0) {
-				weapon.fixedToOwner = owner.weaponKrep;
-			}*/
-
 			if (weapon.vis && weapon.vis.totalFrames > 1) {
 				weapon.animated = true;
 			}
@@ -126,11 +126,11 @@ package fe {
 				}
 				catch (err:ReferenceError) {
 					trace("ERROR: (00:11)");
-					//weapon.vBullet = visualBullet;		// .SWF Dependency
+					weapon.vBullet = visualBullet;		// .SWF Dependency
 				}
 			}
 			else {
-				//weapon.vBullet = visualBullet;	// .SWF Dependency
+				weapon.vBullet = visualBullet;	// .SWF Dependency
 			}
 			
 			// Sounds

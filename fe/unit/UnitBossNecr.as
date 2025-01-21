@@ -61,8 +61,8 @@ package fe.unit {
 			destroy=110;
 			
 			//дать оружие
-			var weapData:Object = ItemManager.reference.getWeapon("necrbullet");
-			currentWeapon = Weapon.create(this, weapData);
+			currentWeapon = WeaponManager.reference.cloneWeapon("necrbullet");
+			WeaponManager.reference.setOwner(currentWeapon, this);
 			
 			if (currentWeapon) {
 				childObjs = new Array(currentWeapon);
@@ -86,13 +86,22 @@ package fe.unit {
 
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
-			var wMult:Number = (1+level*0.08);
+			
+			var wMult:Number = (1 + level * 0.08);
 			var dMult:Number = 1;
-			healHp=maxhp/10;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
+			healHp = maxhp / 10;
+			
+			if (World.w.game.globalDif==3) {
+				dMult = 1.20;
+			}
+			
+			if (World.w.game.globalDif==4) {
+				dMult = 1.50;
+			}
+			
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
+			
 			if (currentWeapon) {
 				currentWeapon.damage*=dMult;
 			} 
@@ -149,18 +158,35 @@ package fe.unit {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
 					var cframe:int = Math.round(16+velocity.Y);
-					if (cframe>32) cframe=32;
-					if (cframe<1) cframe=1;
+					
+					if (cframe > 32) {
+						cframe = 32;
+					}
+					
+					if (cframe < 1) {
+						cframe = 1;
+					}
+					
 					vis.osn.body.gotoAndStop(cframe);
 				}
 			} 
-			if (superInvis && World.w.pers.infravis==0) {
-				celA=0;
+			
+			if (superInvis && World.w.pers.infravis == 0) {
+				celA = 0;
 			}
-			else celA=100;
-			if (curA>celA) curA-=5;
-			if (curA<celA) curA+=5;
-			vis.alpha=curA/100;
+			else {
+				celA = 100;
+			}
+			
+			if (curA > celA) {
+				curA -= 5;
+			}
+			
+			if (curA < celA) {
+				curA += 5;
+			}
+			
+			vis.alpha = curA / 100;
 		}
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
@@ -169,23 +195,37 @@ package fe.unit {
 		}
 		
 		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
-			var td:Number=super.damage(dam, tip, bul,tt);
-			if (aiState==0) aiState=1;
+			var td:Number = super.damage(dam, tip, bul, tt);
+			
+			if (aiState==0) {
+				aiState=1;
+			}
+			
 			if (protculd_t<=0 && td>0 && aiState!=3 && aiState!=2) {
 				aiState=3;
 				aiTCh=30;
 			}
+		
 			curseculd_t-=Math.floor(td/40);
 			atk_t-=Math.floor(td/30);
+		
 			return td;
 		}
 		
 		public override function setNull(f:Boolean=false):void {
-			if (isNoResBoss()) f=false;
+			if (isNoResBoss()) {
+				f = false;
+			}
+			
 			super.setNull(f);
+
 			//вернуть в исходную точку
-			if (begX>0 && begY>0) setPos(begX, begY);
+			if (begX>0 && begY>0) {
+				setPos(begX, begY);
+			}
+
 			velocity.set(0, 0);
+
 			if (f) {
 				phase=1;
 				sost=1;
@@ -196,6 +236,7 @@ package fe.unit {
 				dexter=1;
 				blood=1;
 			}
+
 			setWeaponPos();
 			aiState=aiSpok=0;
 		}
@@ -204,6 +245,7 @@ package fe.unit {
 			if (stay) {		//прыжок
 				velocity.Y = -jumpdy * v;
 			}
+
 			if (stay) {
 				if (aiNapr==-1) velocity.X *= 0.8;
 				else velocity.X += storona * accel * 2;
@@ -218,8 +260,12 @@ package fe.unit {
 		
 		override protected function control():void {
 			var t:Tile;
+			
 			//если сдох, то не двигаться
-			if (sost==3) return;
+			if (sost==3) {
+				return;
+			}
+			
 			if (sost==2) {
 				velocity.X = 0;
 				return;
@@ -227,18 +273,39 @@ package fe.unit {
 			
 			var jmp:Number=0;
 			
-			if (loc.gg.invulner) return;
+			if (loc.gg.invulner) {
+				return;
+			}
+			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
 				celX = coordinates.X + this.boundingBox.width * storona * 2;
 				return;
 			}
-			if (levit && protculd_t<=0) castProtect(1);
-			if (throu_t>0) throu_t--;
-			else throu=false;
-			if (prot_t>0) prot_t--;
-			if (prot_t==1) resetProtect();
-			if (protculd_t>0) protculd_t--;
+			
+			if (levit && protculd_t<=0) {
+				castProtect(1);
+			}
+			
+			if (throu_t>0) {
+				throu_t--;
+			}
+			else {
+				throu=false;
+			}
+			
+			if (prot_t>0) {
+				prot_t--;
+			}
+			
+			if (prot_t==1) {
+				resetProtect();
+			}
+			
+			if (protculd_t>0) {
+				protculd_t--;
+			}
+			
 			if (curseculd_t>0) {
 				curseculd_t--;
 			}
@@ -260,12 +327,14 @@ package fe.unit {
 				}
 				curseculd_t=Math.floor((Math.random()*1.6+0.2)*timeCurseCuld);
 			}
+			
 			if (aiState!=3 && aiState!=2) {
 				if (atk_t>0) {
 					atk_t--;
 				}
 				else {
 					atk_n++;
+					
 					if (atk_n%2==0) {
 						if (!isShadow && findCel()) {
 							aiState=2;
@@ -275,23 +344,31 @@ package fe.unit {
 							walk=0;
 							resetProtect();
 						}
-						else atk_n++;
+						else {
+							atk_n++;
+						}
 					}
+					
 					if (atk_n%2==1) {
 						spawn(atk_n%((phase==1)?6:8));
 					}
+					
 					atk_t=Math.floor((Math.random()*0.6+0.7)*timeAttackCuld);
 				}
 			}
-			invis=superInvis;
+			
+			invis = superInvis;
 			
 			//таймер смены состояний
-			if (aiTCh>0) aiTCh--;
+			if (aiTCh>0) {
+				aiTCh--;
+			}
 			else {
 				if (aiState==3) {
 					aiState=0;
 					castProtect();
 				}
+				
 				if (aiState==0) {
 					aiState=1;
 					if (isrnd(0.8)) aiNapr=(celDX>0)?-1:1;
@@ -303,35 +380,56 @@ package fe.unit {
 					aiState=isrnd(0.7)?1:0;
 					storona=aiNapr;
 				}
-				if (isrnd(0.3)) jmp=1;
+				
+				if (isrnd(0.3)) {
+					jmp=1;
+				}
+				
 				if (isrnd(0.3)) {
 					throu_t=5;
 					throu=true;
 				}
+				
 				aiTCh=Math.floor(Math.random()*100+40);
 			}
+			
 			//поиск цели
 			if (aiTCh%10==1) {
-				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.4)) setCel(loc.gg.pet);
-				else setCel(loc.gg);
+				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.4)) {
+					setCel(loc.gg.pet);
+				}
+				else {
+					setCel(loc.gg);
+				}
 			}
+			
 			//направление
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y + this.boundingBox.height;
+			
 			//поворот от игрока
 			if (aiTCh%10==1 && aiState==1 && celDY<80 && celDY>-80) {
 				if (celDX<0 && celDX>-400) aiNapr=storona=1;
 				if (celDX>0 && celDX<400) aiNapr=storona=-1;
 			}
+			
 			//скорость
 			maxSpeed=walkSpeed;
+			
 			if (aiState==1) {
 				maxSpeed=runSpeed;
 			}
+			
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (velocity.X > 0.5) storona=1; 
-				if (velocity.X < -0.5) storona=-1;
+				if (velocity.X > 0.5) {
+					storona=1;
+				}
+				
+				if (velocity.X < -0.5) {
+					storona=-1;
+				}
+
 				walk=0;
 			}
 			else if (aiState==1) {
@@ -339,32 +437,53 @@ package fe.unit {
 
 				if (levit) {
 					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= levitaccel;
+						}
 					}
 					else {
-						if (velocity.X < maxSpeed) velocity.X += levitaccel;
+						if (velocity.X < maxSpeed) {
+							velocity.X += levitaccel;
+						}
 					}
 				}
 				else if (stay || isPlav) {
 					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) velocity.X -= accel;
-						walk=-1;
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= accel;
+						}
+
+						walk = -1;
 					}
 					else {
-						if (velocity.X < maxSpeed) velocity.X += accel;
-						walk=1;
+						if (velocity.X < maxSpeed) {
+							velocity.X += accel;
+						}
+
+						walk = 1;
 					}
 				}
 				else {
 					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
+						if (velocity.X > -maxSpeed) {
+							velocity.X -= accel * 0.25;
+						}
 					}
 					else  if (aiNapr==1){
-						if (velocity.X < maxSpeed) velocity.X += accel / 4;
+						if (velocity.X < maxSpeed) {
+							velocity.X += accel * 0.25;
+						}
 					}
 				}
-				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0) && isrnd(0.8)) jmp=0.4;
-				if (stay && coordinates.Y-begY>=35) jmp=0.6;
+				
+				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0) && isrnd(0.8)) {
+					jmp=0.40;
+				}
+				
+				if (stay && coordinates.Y-begY>=35) {
+					jmp=0.60;
+				}
+				
 				if (turnX!=0) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
@@ -372,13 +491,16 @@ package fe.unit {
 					}
 					else {							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
+						
 						if (aiTTurn<0) {
 							aiNapr=storona=turnX;
 							aiTTurn=Math.floor(Math.random()*20)+5;
 						}
 					}
+					
 					turnX=turnY=0;
 				}
+				
 				if (jmp>0) {
 					storona=aiNapr;
 					jump(jmp);
@@ -389,13 +511,17 @@ package fe.unit {
 				celA=100;
 				velocity.X *= 0.7;
 				aiNapr=storona=(celDX>0)?1:-1;
-				if (aiTCh<120) currentWeapon.attack();
+				
+				if (aiTCh<120) {
+					currentWeapon.attack();
+				}
 			}
 			
 		}
 		
 		public override function die(sposob:int=0):void {
 			resetProtect();
+			
 			if (phase==1) {
 				phase=2;
 				sost=1;
@@ -412,8 +538,11 @@ package fe.unit {
 			}
 			else {
 				for each(var un:Unit in loc.units) {
-					if (un.mother==this) un.die();
+					if (un.mother==this) {
+						un.die();
+					}
 				}
+				
 				super.die();
 			}
 		}
@@ -427,7 +556,8 @@ package fe.unit {
 				this.visDetails();
 			}
 			else if (n==1 || prot_n==1) {
-				isShadow=invulner=transp=true;
+				isShadow=true;
+				invulner=transp=true;
 				levitPoss=false;
 				setVis();
 				prot_t=timeProtect;
@@ -441,20 +571,40 @@ package fe.unit {
 			}
 			
 			prot_n++;
-			if (prot_n>=3) prot_n=0;
+
+			if (prot_n>=3) {
+				prot_n=0;
+			}
 		}
 		
 		private function spawn(n:int=0):void {
-			if (kolChild>=kol_emit) return;
+			if (kolChild >= kol_emit) {
+				return;
+			}
+			
 			loc.resetUnits();
+			
 			for (var i:int = 0; i < 3; i++) {
 				var xmlun:XML;
-				if (n==1) xmlun=<un id='zombie' tr='7' hpmult='0.85'/>;
-				else if (n==3) xmlun=<un id='zombie' tr='8' hpmult='0.75'/>;
-				else if (n==5) xmlun=<un id='necros'  hpmult='0.65'/>;
-				else if (n==7) xmlun=<un id='zombie' tr='9' hpmult='0.65'/>;
-				else return;
+				
+				if (n==1) {
+					xmlun=<un id='zombie' tr='7' hpmult='0.85'/>;
+				}
+				else if (n==3) {
+					xmlun=<un id='zombie' tr='8' hpmult='0.75'/>;
+				}
+				else if (n==5) {
+					xmlun=<un id='necros'  hpmult='0.65'/>;
+				}
+				else if (n==7) {
+					xmlun=<un id='zombie' tr='9' hpmult='0.65'/>;
+				}
+				else {
+					return;
+				}
+				
 				var un:Unit=loc.waveSpawn(xmlun,i,'magsymbol');
+				
 				if (un) {
 					un.fraction=fraction;
 					un.inter.cont='';
@@ -462,13 +612,18 @@ package fe.unit {
 					un.sndMusic=null;
 					un.areaTestTip=areaTestTip;
 					un.dam*=summonAtkMult;
+				
 					if (un.currentWeapon) {
 						un.currentWeapon.damage*=summonAtkMult;
 						un.currentWeapon.damageExpl*=summonAtkMult;
 					}
+				
 					kolChild++;
 				}
-				if (kolChild>=kol_emit) return;
+				
+				if (kolChild>=kol_emit) {
+					return;
+				}
 			}
 		}
 

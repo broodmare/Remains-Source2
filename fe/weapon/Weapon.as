@@ -19,7 +19,7 @@ package fe.weapon {
 	public class Weapon extends Obj {
 
 		public static const WEP_INACTIVE:int = 0, WEP_LOCKED:int = 1, WEP_ACTIVE:int = 2, WEP_BLUEPRINT:int = 3;
-		public static const TYPE_INTERNAL:String = "internal", TYPE_MELEE:String = "melee", TYPE_LIGHTGUN:String = "lightGun", TYPE_HEAVYGUN:String = "heavyGun", TYPE_EXPLOSIVES:String = "explosive", TYPE_MAGIC:String = "magic";
+		public static const TYPE_INTERNAL:String = "internal", TYPE_MELEE:String = "melee", TYPE_LIGHTGUN:String = "lightGun", TYPE_HEAVYGUN:String = "heavyGun", TYPE_EXPLOSIVES:String = "explosives", TYPE_MAGIC:String = "magic";
 
 		public static var weaponPerks:Array		= ["pistol", "shot", "commando", "rifle", "perf", "laser", "plasma", "pyro", "acute", "stunning"]
 		public static var variant2:String		= " - II";
@@ -241,13 +241,13 @@ package fe.weapon {
 			
 			super.addVisual();	// Obj.addVisual()
 			
-			if (owner && tip != "magic" && owner.cTransform) {
+			if (owner && tip != TYPE_MAGIC && owner.cTransform) {
 				vis.transform.colorTransform = owner.cTransform;
 			}
 		}
 		
 		public function addVisual2():void {
-			if (tip == "magic" && vis) {
+			if (tip == TYPE_MAGIC && vis) {
 				World.w.grafon.visObjs[sloy].addChild(vis);
 			}
 		}
@@ -267,7 +267,7 @@ package fe.weapon {
 				desintegr = pers.desintegr;
 			}
 			
-			if (tip != "magic") {
+			if (tip != TYPE_MAGIC) {
 				drotMult = pers.drotMult;
 			}
 			
@@ -331,7 +331,7 @@ package fe.weapon {
 
 			// Update weapon coordinates and calculate rotation
 			if (findCel) {
-				if (tip == "magic") {
+				if (tip == TYPE_MAGIC) {
 					coordinates.X = owner.magicX;
 					coordinates.Y = owner.magicY;
 					rot2 = Math.atan2(owner.celY - coordinates.Y, owner.celX - coordinates.X);
@@ -814,7 +814,7 @@ package fe.weapon {
 				}
 			}
 			
-			if (owner.player && tip != "internal" && tip != "explosives" && tip != "magic" && !(loc.train || World.w.alicorn)) {
+			if (owner.player && tip != "internal" && tip != TYPE_EXPLOSIVES && tip != TYPE_MAGIC && !(loc.train || World.w.alicorn)) {
 				hp -= (1 + ammo.increasedWear);
 			}
 			
@@ -903,8 +903,6 @@ package fe.weapon {
 			if (bul.probiv > 1) {
 				bul.probiv = 1;
 			}
-			
-			/*
 			if (ammo.damageType != "") {
 				bul.tipDamage = ammo.damageType;
 				
@@ -913,7 +911,6 @@ package fe.weapon {
 					bul.otbros = 0;
 				}
 			}
-			*/ // BROKEN FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 
 			if (owner) {
 				bul.critCh=critCh+owner.critCh+critchAdd;
@@ -1132,13 +1129,18 @@ package fe.weapon {
 				
 				if (t_prep >= prep) {
 					try {
-						if (tip != "internal") vis.gotoAndStop("ready"); // Don't try to animate internal weapons
+						if (tip != "internal") {
+							vis.gotoAndStop("ready"); // Don't try to animate internal weapons
+						}
 					}
 					catch(err) {
 						trace("ERROR: (00:17) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"ready\"!");
 					}
 				}
-				if (t_prep<=1 && t_reload==0) vis.gotoAndStop(1);
+				
+				if (t_prep<=1 && t_reload == 0) {
+					vis.gotoAndStop(1);
+				}
 			}
 			
 			if (!fixedToOwner) {
@@ -1169,7 +1171,7 @@ package fe.weapon {
 			if (lvl > 0) {
 				s += lvl + "\t";
 			}
-			else if (tip == "magic" && variant > 0) {
+			else if (tip == TYPE_MAGIC && variant) {
 				s += (perslvl + 7) + "\t";
 			}
 			else {
@@ -1196,7 +1198,7 @@ package fe.weapon {
 			s += Math.round(precision / 40) + "\t";
 			s += pier + "\t";
 			
-			if (tip == "magic") {
+			if (tip == TYPE_MAGIC) {
 				s += "магия\t"+mana+"\t";
 			}
 			else {
@@ -1232,17 +1234,17 @@ package fe.weapon {
 			
 			s += "\t";
 			
-			if (tip != "explosives" && tip != "magic") {
+			if (tip != TYPE_EXPLOSIVES && tip != TYPE_MAGIC) {
 				s += maxhp + "\t";
 			}
 			else {
 				s += "\t";
 			}
 			
-			if (tip == "explosives") {
+			if (tip == TYPE_EXPLOSIVES) {
 				s += WeaponManager.reference.weaponData(id).price + "\t";
 			}
-			else if (tip != "magic" && variant > 0) {
+			else if (tip != TYPE_MAGIC && variant > 0) {
 				s += price * 3 + "\t";
 			}
 			else {

@@ -7,29 +7,29 @@ package fe.unit {
 
 	public class UnitBossEncl extends UnitPon {
 
-		public var tr:int=1;
+		public var tr:int				= 1;
 		private var weap:String;
-		public var scrAlarmOn:Boolean=true;
-		public var controlOn:Boolean=true;
-		public var kol_emit:int = 8;
-		public var called:int=0;
+		public var scrAlarmOn:Boolean	= true;
+		public var controlOn:Boolean	= true;
+		public var kol_emit:int			= 8;
+		public var called:int			= 0;
 		public var coord:Object;
 
-		private var minY:int = 250;
-		private var maxY:int = 850;
-		private var minX:int = 1000;
-		private var maxX:int = 1600;
-		private var sinX:Number = Math.random() * 10;
-		private var sinDX:Number = Math.random() * 0.1 + 0.02;
+		private var minY:int			=  250;
+		private var maxY:int			=  850;
+		private var minX:int			= 1000;
+		private var maxX:int			= 1600;
+		private var sinX:Number			= Math.random() * 10;
+		private var sinDX:Number		= Math.random() * 0.10 + 0.02;
 		
-		private var emit_t:int = 0;
+		private var emit_t:int			=    0;
 
 		// constructor
 		public function UnitBossEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);
 			
-			id='bossencl';
+			id="bossencl";
 			
 			if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
@@ -40,30 +40,36 @@ package fe.unit {
 			aiTCh=30;
 			aiVNapr=1;
 			
-			var weapData:Object;
+			var wm:WeaponManager = WeaponManager.reference;
 			if (tr==1) {
-				weapData = ItemManager.reference.getWeapon("lmg");
-				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon = wm.cloneWeapon("lmg");
+				wm.setOwner(currentWeapon, this);
 				armor=20;
-				vulner[D_BUL]=vulner[D_PHIS]=vulner[D_BLADE]=0.7;
+				vulnerabilities.setResist(Resistances.DAM_PIERCE, 0.70);
+				vulnerabilities.setResist(Resistances.DAM_BLUNT, 0.70);
+				vulnerabilities.setResist(Resistances.DAM_CUT, 0.70);
 			}
 			else if (tr==2) {
-				weapData = ItemManager.reference.getWeapon("quick");
-				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon = wm.cloneWeapon("quick");
+				wm.setOwner(currentWeapon, this);
 				marmor=20;
-				vulner[D_LASER]=vulner[D_PLASMA]=vulner[D_SPARK]=0.7;
-				blitId='sprEnclboss2';
+				vulnerabilities.setResist(Resistances.DAM_LASER, 0.70);
+				vulnerabilities.setResist(Resistances.DAM_PLASMA, 0.70);
+				vulnerabilities.setResist(Resistances.DAM_ELECTRIC, 0.70);
+				blitId="sprEnclboss2";
 			}
 			else if (tr==3) {
-				weapData = ItemManager.reference.getWeapon("mlau");
-				currentWeapon = Weapon.create(this, weapData);
+				currentWeapon = wm.cloneWeapon("mlau");
+				wm.setOwner(currentWeapon, this);
 				currentWeapon.speed=12;
 				currentWeapon.accel=0.6;
 				currentWeapon.reload=30;
 				currentWeapon.damageExpl*=0.6;
 				armor=marmor=10;
-				vulner[D_EXPL]=vulner[D_FIRE]=vulner[D_CRIO]=0.7;
-				blitId='sprEnclboss3';
+				vulnerabilities.setResist(Resistances.DAM_EXPLOSION, 0.70);
+				vulnerabilities.setResist(Resistances.DAM_BURN, 0.70);
+				vulnerabilities.setResist(Resistances.DAM_COLD, 0.70);
+				blitId="sprEnclboss3";
 			}
 			
 			initBlit();
@@ -80,17 +86,13 @@ package fe.unit {
 				childObjs = new Array(currentWeapon);
 			}
 			
-			if (currentWeapon && currentWeapon.uniq) {
-				currentWeapon.updVariant(1);
-			}
-			
 			isFly = true;
 			aiNapr = storona;
 		}
 		
 		public override function die(sposob:int=0):void {
 			super.die(3);
-			coord['liv' + tr] = false;
+			coord["liv" + tr] = false;
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
@@ -101,7 +103,7 @@ package fe.unit {
 			}
 			
 			coord = nloc.unitCoord;
-			coord['liv' + tr] = true;
+			coord["liv" + tr] = true;
 		}
 
 		public override function setLevel(nlevel:int=0):void {
@@ -126,20 +128,28 @@ package fe.unit {
 		
 		public override function animate():void {
 			var revers:Boolean = false;
+			
 			if (isFly) {
-				animState = 'fly';
+				animState = "fly";
 			}
 			else {
-				animState = 'stay';
+				animState = "stay";
 			}
+			
 			if (animState!=animState2) {
 				anims[animState].restart();
 				animState2=animState;
 			}
+			
 			if (!anims[animState].st) {
-				if (revers) blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
-				else blit(anims[animState].id,anims[animState].f);
+				if (revers) {
+					blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
+				}
+				else {
+					blit(anims[animState].id,anims[animState].f);
+				}
 			}
+			
 			anims[animState].step();
 		}
 		
@@ -151,15 +161,16 @@ package fe.unit {
 		public override function dropLoot():void {
 			super.dropLoot();
 			if (currentWeapon) {
-				if (currentWeapon.vis) currentWeapon.vis.visible=false;
-				var cid:String=currentWeapon.id;
-				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
+				if (currentWeapon.vis) {
+					currentWeapon.vis.visible = false;
+				}
+				
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
 			}
 		}
 
 		private function emit() {
-			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
+			var un:Unit = loc.createUnit("vortex", coordinates.X, this.boundingBox.top, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;
 			emit_t = 500;
@@ -182,15 +193,21 @@ package fe.unit {
 		//2 - меняет оружие
 		override protected function control():void {
 			//если сдох, то не двигаться
-			if (sost==3) return;
+			if (sost==3) {
+				return;
+			}
 			
 			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
+				aiState=0;
+				aiTCh=3;
+				walk=0;
 			}
 			
 			t_replic--;
 			
-			if (loc.gg.invulner) return;
+			if (loc.gg.invulner) {
+				return;
+			}
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
@@ -199,7 +216,9 @@ package fe.unit {
 			}
 			
 			//таймер смены состояний
-			if (aiTCh>0) aiTCh--;
+			if (aiTCh>0) {
+				aiTCh--;
+			}
 			else {
 				aiState=1;
 				aiTCh=Math.floor(Math.random()*60+150);
@@ -217,31 +236,44 @@ package fe.unit {
 			destroy=0;
 			//поведение при различных состояниях
 			if (aiState==0) {
+				// Do nothing
 			}
 			else {
 				sinX += sinDX;
+				
 				if (coordinates.Y < minY && velocity.Y < maxSpeed) {
 					velocity.Y += accel;
 					aiVNapr = 1;
 				}
+				
 				if (coordinates.Y > maxY && velocity.Y > -maxSpeed) {
 					velocity.Y -= accel;
 					aiVNapr = -1;
 				}
+				
 				if (coordinates.Y >= minY && coordinates.Y <= maxY) {
-					if (aiVNapr == 1 && velocity.Y < maxSpeed) velocity.Y += accel;
-					if (aiVNapr == -1 && velocity.Y > -maxSpeed) velocity.Y -= accel;
+					if (aiVNapr == 1 && velocity.Y < maxSpeed) {
+						velocity.Y += accel;
+					}
+					
+					if (aiVNapr == -1 && velocity.Y > -maxSpeed) {
+						velocity.Y -= accel;
+					}
 				}
+				
 				if (coordinates.X < minX && velocity.X < maxSpeed) {
 					velocity.X += accel;
 				}
+				
 				if (coordinates.X > maxX && velocity.X > -maxSpeed) {
 					velocity.X -= accel;
 				}
+				
 				if (coordinates.X >= minX && coordinates.X <= maxX) {
 					velocity.X += Math.sin(sinX) * accel / 2;
 				}
 			} 
+			
 			if (aiState == 1) {
 				attack();
 			}
@@ -251,15 +283,19 @@ package fe.unit {
 		public function attack():void {
 			if (celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit);
-				if (coord.tr==tr && coord.t1>45) currentWeapon.attack();
+				
+				if (coord.tr==tr && coord.t1>45) {
+					currentWeapon.attack();
+				}
 			}
 		}
 		
 		public override function command(com:String, val:String=null):void {
-			if (com=='off') {
+			if (com=="off") {
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			}
+			else if (com=="on") {
 				controlOn=true;
 			}
 		}

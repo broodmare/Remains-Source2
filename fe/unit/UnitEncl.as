@@ -1,6 +1,7 @@
 package fe.unit {
 
 	import fe.serv.AnimationSet;
+	import fe.WeaponManager;
 	import fe.weapon.Weapon;
 	import fe.weapon.WThrow;
 	
@@ -21,20 +22,28 @@ package fe.unit {
 			allLink=true;
 			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosEncl1");
-			if (grenader>0) {
-				thWeapon=Weapon.create(this,'mercgr');
-				(thWeapon as WThrow).kolAmmo=grenader;
+		
+			if (grenader > 0) {
+				thWeapon = WeaponManager.reference.cloneWeapon("mercgr");
+				WeaponManager.reference.setOwner(thWeapon, this);
+				(thWeapon as WThrow).kolAmmo = grenader;
 				childObjs.push(thWeapon);
 			}
+		
 			if (enclWeap) {
 				isDropArm=false;
+			
 				if (currentWeapon) {
-					currentWeapon.svis='encl';
+					currentWeapon.svis = "encl";
 					currentWeapon.vis=new visencl(); // SWF Dependency
 				}
 			}
-			if (currentWeapon.damage<20) currentWeapon.damage*=1.2;
-			currentWeapon.damage*=1.2;
+		
+			if (currentWeapon.damage < 20) {
+				currentWeapon.damage *= 1.20;
+			}
+			
+			currentWeapon.damage *= 1.20;
 		}
 		
 		public override function addVisual():void {

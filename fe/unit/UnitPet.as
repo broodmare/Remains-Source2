@@ -64,7 +64,7 @@ package fe.unit {
 			if (id == 'owl') {
 				optAutores=false;
 				rasstWeap=400;
-				vulner[Resistances.DAM_DEATH]=0.2;
+				vulnerabilities.setResist(Resistances.DAM_DEATH, 0.20);
 			}
 			if (id == 'moon') {
 				knocked=0;
@@ -74,7 +74,7 @@ package fe.unit {
 				rasstWeap=400;
 				optTurn=false;
 				storona=1;
-				vulner[Resistances.DAM_DEATH]=0.5;
+				vulnerabilities.setResist(Resistances.DAM_DEATH, 0.5);
 			}
 			transT = true;
 			sost = 4;
@@ -281,7 +281,7 @@ package fe.unit {
 				
 				if (optEnW && un.isPlav) continue;	//если враг под водой, игнорировать 
 				
-				if (currentWeapon && currentWeapon.damage * un.vulner[currentWeapon.tipDamage] < (optEnW?un.marmor:un.armor)+un.skin+1-currentWeapon.pier) continue;	//если оружие не наносит урона, игнорировать
+				if (currentWeapon && currentWeapon.damage * un.vulnerabilities.getResist(currentWeapon.tipDamage) < (optEnW?un.marmor:un.armor)+un.skin+1-currentWeapon.pier) continue;	//если оружие не наносит урона, игнорировать
 				
 				if (visCelUnit(un)) {
 					setCel(un);

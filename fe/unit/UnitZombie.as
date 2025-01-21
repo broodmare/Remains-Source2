@@ -656,11 +656,14 @@ package fe.unit {
 		}
 		
 		private function setSuper():void {
+			var wm:WeaponManager = WeaponManager.reference;
+
 			if (superSilaTip==1) {	//суперпрыжок
 				tPrepSuper=30;
 				tSuper=20;
 				tZlo=90;
 			}
+			
 			if (superSilaTip==9) {	//суперпрыжок
 				superSilaTip=1;
 				tPrepSuper=30;
@@ -668,30 +671,38 @@ package fe.unit {
 				tZlo=75;
 				vJump=40;
 			}
+		
 			if (superSilaTip==2 || superSilaTip==7) {	//телекинез
 				tPrepSuper=10;
 				tSuper=50;
 				tZlo=120;
 				levitFilter=new GlowFilter(0xFF0099,1,6,6,1,3);
 			}
+		
 			if (superSilaTip==3) {	//плевок ядом
 				tPrepSuper=18;
 				tSuper=10;
 				tZlo=150;
+				
 				if (currentWeapon==null) {
-					currentWeapon=new Weapon(this,'zombivenom');
+					currentWeapon = wm.cloneWeapon("zombivenom");
+					wm.setOwner(currentWeapon, this);
+
 					childObjs=new Array(currentWeapon);
 				}
 			}
+		
 			if (superSilaTip==4) {	//плевок кислотой
 				tPrepSuper=18;
 				tSuper=10;
 				tZlo=150;
 				if (currentWeapon==null) {
-					currentWeapon=new Weapon(this,'zombiacid');
-					childObjs=new Array(currentWeapon);
+					currentWeapon = wm.cloneWeapon("zombiacid");
+					wm.setOwner(currentWeapon, this);
+					childObjs = new Array(currentWeapon);
 				}
 			}
+		
 			if (superSilaTip==5) {	//вспышка радиации
 				tPrepSuper=30;
 				tSuper=45;
@@ -701,6 +712,7 @@ package fe.unit {
 				radrad=radradMin=120;
 				radradMax=1200;
 			}
+		
 			if (superSilaTip==6) {	//трясучка
 				tZlo=220;
 				tPrepSuper=15;
@@ -708,20 +720,26 @@ package fe.unit {
 				superQuake=1;
 				vDestroy=50;
 			}
+		
 			if (superSilaTip==7) {
 				optDistAtt=400;
+				
 				if (currentWeapon==null) {
-					currentWeapon=new Weapon(this,'zombinecro');
-					childObjs=new Array(currentWeapon);
+					currentWeapon = wm.cloneWeapon("zombinecro");
+					wm.setOwner(currentWeapon, this);
+					childObjs = new Array(currentWeapon);
 				}
 			}
+		
 			if (superSilaTip==8) {
 				tPrepSuper=18;
 				tSuper=10;
 				tZlo=120;
+				
 				if (currentWeapon==null) {
-					currentWeapon=new Weapon(this,'zombipink');
-					childObjs=new Array(currentWeapon);
+					currentWeapon = wm.cloneWeapon("zombipink");
+					wm.setOwner(currentWeapon, this);
+					childObjs = new Array(currentWeapon);
 				}
 			}
 		}
@@ -730,29 +748,36 @@ package fe.unit {
 			superX=-1;
 			var nx:int = int(celX/tileX);
 			var ny:int = int((celY+40)/tileY);
+		
 			if (superSilaTip==1) superY = ny * tileY + tileY + this.boundingBox.height;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
+		
 			if (coordinates.Y-celY>120) {
 				if (loc.getTile(nx,ny).phis==0) {
 					if (loc.getTile(nx-1,ny).phis==0) {
 						superX=nx*tileX;
-					} else if (loc.getTile(nx+1,ny).phis==0) {
+					}
+					else if (loc.getTile(nx+1,ny).phis==0) {
 						superX=(nx+1)*tileX;
 					}
 				}
+			
 				if (superX<0 && loc.getTile(nx-2,ny).phis==0) {
 					if (loc.getTile(nx-1,ny).phis==0) superX=(nx-1)*tileX;
 					else if (loc.getTile(nx-3,ny).phis==0) superX=(nx-2)*tileX;
 				}
+			
 				if (superX<0 && loc.getTile(nx+2,ny).phis==0) {
 					if (loc.getTile(nx+1,ny).phis==0) superX=(nx+2)*tileX;
 					else if (loc.getTile(nx+3,ny).phis==0) superX=(nx+3)*tileX;
 				}
-			} else {
+			}
+			else {
 				if (superSilaTip==1) {
 					superY=celY;
 					superX=celX;
-				} else if (superSilaTip==2 || superSilaTip==7) {
+				}
+				else if (superSilaTip==2 || superSilaTip==7) {
 					superX = coordinates.X;
 					superY = coordinates.Y;
 				}
@@ -849,7 +874,10 @@ package fe.unit {
 		
 		public override function dropLoot():void {
 			super.dropLoot();
-			if (superSilaTip == 8) explosion(dam * 0.4, 19, 150, 15);
+
+			if (superSilaTip == 8) {
+				explosion(dam * 0.4, Resistances.DAM_PINKCLOUD, 150, 15);
+			}
 		}
 	}
 }

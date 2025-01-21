@@ -63,21 +63,38 @@ package fe.unit {
 		//дать оружие
 		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null) {
 			if (loadObj && loadObj.weap) {
-				if (loadObj.weap!='') currentWeapon=Weapon.create(this,loadObj.weap);
-			} else currentWeapon=getXmlWeapon(ndif);
-			if (currentWeapon) weap=currentWeapon.id;
-			else weap='';
+				if (loadObj.weap!='') {
+					currentWeapon = WeaponManager.reference.cloneWeapon(loadObj.weap);
+					WeaponManager.reference.setOwner(currentWeapon, this);
+				}
+			}
+			else {
+				currentWeapon = getXmlWeapon(ndif);
+			}
+			
 			if (currentWeapon) {
-				childObjs=new Array(currentWeapon);
-				currentWeapon.magazineRounds=currentWeapon.magazineCapacity;
+				weap = currentWeapon.id;
+			}
+			else {
+				weap = "";
+			}
+			
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
 			}
 		}
 		
 		public override function save():Object {
 			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
+			
+			if (obj==null) {
+				obj=new Object();
+			}
+
 			obj.tr=tr;
 			obj.weap=weap;
+			
 			return obj;
 		}	
 
@@ -88,7 +105,9 @@ package fe.unit {
 		
 		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			if (sost==1) {
-				if (aiState<=1) budilo();
+				if (aiState<=1) {
+					budilo();
+				}
 			}
 			
 			return super.damage(dam, tip, bul,tt);

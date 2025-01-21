@@ -43,7 +43,11 @@ package fe.unit {
 		override protected function control():void {
 			if (tr==1) {
 				t_part--;
-				if (t_part==0) t_part=10;
+				
+				if (t_part==0) {
+					t_part=10;
+				}
+				
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
 					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * this.boundingBox.height);

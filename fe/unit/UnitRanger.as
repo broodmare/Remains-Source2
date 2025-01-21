@@ -1,5 +1,6 @@
 package fe.unit {
 
+	import fe.WeaponManager;
 	import fe.serv.AnimationSet;
 	import fe.weapon.Weapon;
 	
@@ -19,32 +20,45 @@ package fe.unit {
 			allLink=true;
 			isDropArm=false;
 			wPos = AnimationSet.getWeaponOffset("wPosRanger1");
-			if (1)
-			{
-				dopWeapon1=Weapon.create(this,'robomlau');
-				dopWeapon2=Weapon.create(this,'robogas');
-				childObjs.push(dopWeapon1, dopWeapon2);
+			
+			var wm:WeaponManager = WeaponManager.reference;
+			dopWeapon1 = wm.cloneWeapon('robomlau');
+			wm.setOwner(dopWeapon1, this);
+			dopWeapon2 = wm.cloneWeapon('robogas');
+			wm.setOwner(dopWeapon2, this);
+			childObjs.push(dopWeapon1, dopWeapon2);
+			
+			if (currentWeapon.damage < 20) {
+				currentWeapon.damage *= 1.20;
 			}
-			if (currentWeapon.damage<20) currentWeapon.damage*=1.2;
-			currentWeapon.damage*=1.2;
-			dopWeapon1.damageExpl*=0.8;
-			plusObserv=5;
+			
+			currentWeapon.damage *= 1.20;
+			dopWeapon1.damageExpl *= 0.80;
+			plusObserv = 5;
 		}
 		
 		public override function attack():void {
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
+			
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
+			
 			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
 				if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
+			
 				if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
+			
 				aiAttackT--;
 			}
+			
 			if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
+			
 			if (dopWeapon1) {
 				t_gren--;
+			
 				if (t_gren<=0) {
 					if (celUnit) dopWeapon1.attack();
 					else dopWeapon2.attack();
+			
 					t_gren=Math.round(Math.random()*90+50);
 				}
 			}
@@ -55,11 +69,12 @@ package fe.unit {
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {
 					if (animState=='fall') {
-
+						// Do nothing
 					}
 					else if (animState=='death') animState='fall';
 					else animState='die';
-				} else animState='death';
+				}
+				else animState='death';
 			}
 			else {
 				if (stay) {

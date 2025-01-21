@@ -12,6 +12,7 @@ package fe.unit {
 			if (cid==null) {
 				id='mtrap';
 			}
+			
 			mat=1;
 			prior=2;
 			vis=Res.getVis('vis'+id,vismtrap);
@@ -21,11 +22,13 @@ package fe.unit {
 			visibility=300;
 			showNumbs=false;
 			doop=true;
+			
 			if (loadObj && loadObj.rearm) {
 				rearm=true;
 				fraction=F_PLAYER;
 				warn=0;
 			}
+			
 			aiState=1;
 			undodge=1;
 			inter = new Interact(this);
@@ -53,7 +56,8 @@ package fe.unit {
 		function disarm() {
 			if (aiState==1) {
 				klac();
-			} else if (aiState==2) {
+			}
+			else if (aiState==2) {
 				rearm=true;
 				aiState=1;
 				vis.gotoAndPlay(5);
@@ -69,10 +73,14 @@ package fe.unit {
 
 		public override function save():Object {
 			var obj:Object=super.save();
+			
 			if (rearm) {
-				if (obj==null) obj=new Object();
+				if (obj==null) {
+					obj=new Object();
+				}
 				obj.rearm=true;
 			}
+			
 			return obj;
 		}	
 		
@@ -90,21 +98,30 @@ package fe.unit {
 		
 		override protected function control():void {
 			aiN++;
-			if (sost>1) return;
+			
+			if (sost>1) {
+				return;
+			}
+			
 			if (aiState==1 && !levit) { //взведена, поиск целей
 				if (aiN%5==0) {
 					for each (var un:Unit in loc.units) {
-						if (un==null || un.activateTrap<=1 || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;
+						if (un==null || un.activateTrap<=1 || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) {
+							continue;
+						}
+						
 						if (attKorp(un)) {
 							klac();
-							damage(35,D_INSIDE);
+							damage(35, Resistances.DAM_INTERNAL);
 							setVis(true);
 						}
 					}
 				}
 			} 
-			if (aiN%10==0 && !isVis) {
+			
+			if (aiN % 10 == 0 && !isVis) {
 				isVis=World.w.gg.lookInvis(this);
+				
 				if (isVis) {
 					setVis(true);
 				}

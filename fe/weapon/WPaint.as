@@ -21,6 +21,7 @@ package fe.weapon {
 		// Constructor
 		public function WPaint() {
 			super();
+			
 			vWeapon = visualpaint;	// .SWF Dependency
 			vis = new vWeapon();
 		}

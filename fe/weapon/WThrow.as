@@ -72,7 +72,7 @@ package fe.weapon {
 			if (owner.player && World.w.weaponsLevelsOff) {
 				if (lvlNoUse) {
 					if ((owner as UnitPlayer).pers.getWeapLevel(skill) < lvl) {
-						World.w.gui.infoText('weaponSkillLevel');
+						World.w.gui.infoText("weaponSkillLevel");
 						
 						return false;
 					}
@@ -87,7 +87,7 @@ package fe.weapon {
 						skillConf = 0.50;
 					}
 					else if (razn > 2) {
-						World.w.gui.infoText('weaponSkillLevel');
+						World.w.gui.infoText("weaponSkillLevel");
 						
 						return false;
 					}
@@ -149,12 +149,15 @@ package fe.weapon {
 				if (un.collisionAll()) {
 					un.setPos(owner.coordinates.X, owner.coordinates.Y);
 				}
+				
 				if (un.collisionAll()) {
 					un.fixed = true;
 				}
+				
 				if (owner && owner.player && World.w.pers.sapper > 1) {
 					un.damage1 *= World.w.pers.sapper;
-					un.vulner[Resistances.DAM_EXPLOSION] = un.vulner[Resistances.DAM_PLASMA] = 0;
+					un.vulnerabilities.setResist(Resistances.DAM_EXPLOSION, 0);	// Immune to explosion
+					un.vulnerabilities.setResist(Resistances.DAM_PLASMA, 0);	// Immune to plasma
 				}
 			}
 			else {

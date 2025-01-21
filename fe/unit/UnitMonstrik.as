@@ -47,6 +47,7 @@ package fe.unit {
 				optJumpAtt = false;
 				optAnimAtt = true;
 				currentWeapon = WeaponManager.reference.cloneWeapon("scorppunch");
+				WeaponManager.reference.setOwner(currentWeapon, this);
 				childObjs = new Array(currentWeapon);
 			}
 			
@@ -54,6 +55,7 @@ package fe.unit {
 				optJumpAtt = false;
 				optAnimAtt = true;
 				currentWeapon = WeaponManager.reference.cloneWeapon("scorp2punch");
+				WeaponManager.reference.setOwner(currentWeapon, this);
 				childObjs = new Array(currentWeapon);
 			}
 			
@@ -61,6 +63,7 @@ package fe.unit {
 				optJumpAtt = false;
 				optAnimAtt = true;
 				currentWeapon = WeaponManager.reference.cloneWeapon("scorp3punch");
+				WeaponManager.reference.setOwner(currentWeapon, this);
 				childObjs = new Array(currentWeapon);
 			}
 			

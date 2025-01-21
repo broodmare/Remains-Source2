@@ -18,11 +18,8 @@
 		private var _crouchingWidth:Number;  // Crouching width (Constant)
 
 		public function BoundingBox(vec:Vector2) {
-			_width = width;
-			_height = height;
-
-			_left   = vec.X - width * 0.5;
-			_right  = vec.X + width * 0.5;
+			_left   = vec.X - _width * 0.5;
+			_right  = vec.X + _width * 0.5;
 			_top    = vec.Y - _height;
 			_bottom = vec.Y;
 		}
@@ -48,7 +45,7 @@
 		}
 
 		public function duck():void {
-			_top = _bottom - height;
+			_top = _bottom - _height;
 		}
 
 		public function get top():Number {
@@ -89,6 +86,11 @@
 		public function set height(n:Number):void {
 			_height = n;
 		}
+		public function setSize(n:int):void {
+			_width = n;
+			_height = n;
+		}
+
 		public function get halfHeight():Number {
 			return _height * 0.5;
 		}

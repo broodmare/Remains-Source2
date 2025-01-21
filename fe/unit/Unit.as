@@ -72,12 +72,10 @@ package fe.unit {
 		public var typeResist:Resistances;					// This replaces 'armor', 'marmor', and 'armorQual'
 		
 		// OLD VULNERABILITIES
-		public var opt:Object;								// Unit variant's stats and resistances (vulnerabilities)
-		public static var opts:Array		= [];			// All unit variants
-		public var vulner:Array;		
-		public var begvulner:Array;
-		public static const kolVulners:int	= 20;
-		public static var begvulners:Array	= [];
+		public static var opts:Array		= [];			// Default 'opt' values for every unit ID initialized
+		public var opt:Object;								// Paramteters for this unit or variant
+		public var vulnerabilities:Resistances;				// Damage multiplers for each type of damage (Eg. 1.20 is 120% damage or 0.00 is 0% damage) (These can change)
+		public var begvulner:Resistances;					// The unit's default vulnerabilities without an modifiers (These can not change)
 		
 		// Evasion, 1 is standard, 0 always hits
 		public var dexter:Number			= 1.00;
@@ -156,7 +154,7 @@ package fe.unit {
 		public var porog_jump:Number		= 4.00;			//автоподъём
 
 		public var isSit:Boolean			= false;
-		private var autoSit:Boolean			= false;	// used by run() and it's helper functions to keep track of if the unit automatically crouched
+		private var autoSit:Boolean			= false;		// used by run() and it's helper functions to keep track of if the unit automatically crouched
 		public var isFly:Boolean			= false;
 		public var isRun:Boolean			= false;
 		public var isPlav:Boolean			= false;
@@ -169,29 +167,29 @@ package fe.unit {
 		public var turnY:int				= 0;
 		public var kray:Boolean				= false;
 		
-		public var pumpObj:Interact;					//объект на который наткнулся (для открывание дверей мобами)
+		public var pumpObj:Interact;						// [object that came across (for opening doors by mobs)]
 		private var namok_t:int				= 0;
 		public var visDamDY:int				= 0;
 
 		//оружие
 		public var currentWeapon:Weapon;
-		public var weaponSkill:Number		= 1.00;		//владение оружием
-		public var spellPower:Number		= 1.00;		//сила заклинаний, не являющихся оружием
-		public var mazil:int				= 0;		//дополнительный случайный разлёт пуль
-		public var critCh:Number			= 0.00;		//дополнительный шанс крита
-		public var critInvis:Number			= 0.00;		//прибавка к шансу крита для мобов, у которых не установлена цель на владелца пули
-		public var critDamMult:Number		= 2.00;		//множитель критического урона
-		public var precMult:Number			= 1.00;		//модификатор точности для гг, для всех остальных он равен 1
-		public var precMultCont:Number		= 1.00;		//модификатор точности, уменьшающийся от критических эффектов
-		public var rapidMultCont:Number		= 1.00;		//модификатор скорости атаки холодным оружием, уменьшающийся от критических эффектов
+		public var weaponSkill:Number		= 1.00;			//владение оружием
+		public var spellPower:Number		= 1.00;			//сила заклинаний, не являющихся оружием
+		public var mazil:int				= 0;			//дополнительный случайный разлёт пуль
+		public var critCh:Number			= 0.00;			//дополнительный шанс крита
+		public var critInvis:Number			= 0.00;			//прибавка к шансу крита для мобов, у которых не установлена цель на владелца пули
+		public var critDamMult:Number		= 2.00;			//множитель критического урона
+		public var precMult:Number			= 1.00;			//модификатор точности для гг, для всех остальных он равен 1
+		public var precMultCont:Number		= 1.00;			//модификатор точности, уменьшающийся от критических эффектов
+		public var rapidMultCont:Number		= 1.00;			//модификатор скорости атаки холодным оружием, уменьшающийся от критических эффектов
 		public var weaponKrep:int			= 1;	
 		public var weaponX:Number			= 0.00;
 		public var weaponY:Number			= 0.00;
 		public var weaponR:Number			= 0.00;
 		public var magicX:Number;
 		public var magicY:Number;
-		public var childObjs:Array;						//подчинённые объекты
-		public var isShoot:Boolean			= false;	//устанавливается оружием в true если был выстрел
+		public var childObjs:Array;							//подчинённые объекты
+		public var isShoot:Boolean			= false;		//устанавливается оружием в true если был выстрел
 
 		//ии
 		public var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
@@ -352,16 +350,14 @@ package fe.unit {
 		//loadObj - объект для загрузки состояния юнита
 
 		// Constructor
-		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			vulner = [];
+		public function Unit(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
+			vulnerabilities = new Resistances();
+			vulnerabilities.setResistances(1.00);
+			vulnerabilities.setResist(Resistances.DAM_EMP, 0.00)
+
 			inter = new Interact(this, null, xml, loadObj);
 			inter.active = false;
 			
-			for (var i:int = 0; i < kolVulners; i++) {
-				vulner[i] = 1;
-			}
-			
-			vulner[Resistances.DAM_EMP] = 0;
 			effects = [];
 			sloy = 2;
 			prior = 1;
@@ -410,64 +406,82 @@ package fe.unit {
 		
 		
 
-		public static function create(id:String, dif:int, xml:XML = null, loadObj:Object = null, ncid:String = null):Unit {
-			var UnitClass:Class;
-			
-			// Edge cases -- TODO: Remove this
-			var SPECIAL_UNITS:Object = {
-				"mwall": UnitMWall,
-				"scythe": UnitScythe,
-				"ttur": UnitThunderTurret
-			};
-
-			// Check if the id is a special unit
-			if (SPECIAL_UNITS.hasOwnProperty(id)) {
-				UnitClass = SPECIAL_UNITS[id];
-				// Handle constructor parameters based on specific unit if needed
-				if (id == "ttur") {
-					return new UnitClass(ncid, dif, xml, loadObj);
-				}
-				else {
-					return new UnitClass(null, 0, null, null);
-				}
+		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit {
+			switch (id) {
+				case 'mwall':
+					return new UnitMWall(null,0,null,null);
+				break;
+				case 'scythe':
+					return new UnitScythe(null,0,null,null);
+				break;
+				case 'ttur':
+					return new UnitThunderTurret(ncid,0,null,null);
+				break;
 			}
 
-			// Retrieve the XML node
 			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
-
 			if (!node) {
-				trace("Unit.as/create() - ERROR: unit: \"" + id + "\" not found!");
+				trace("ERROR: unit: \"" + id + "\" not found!");
 				return null;
 			}
-
-			// Get the class name from the XML
-			var className:String = node.@cl.toString();
-
-			try {
-				UnitClass = getDefinitionByName(className) as Class;
+			var uc:Class;
+			var cn:String = node.@cl;
+			switch (cn) {
+				case 'Mine':			uc = Mine;break;
+				case 'UnitTrap':		uc = UnitTrap;break;
+				case 'UnitTrigger':		uc = UnitTrigger;break;
+				case 'UnitDamager':		uc = UnitDamager;break;
+				case 'UnitRaider':		uc = UnitRaider;break;
+				case 'UnitSlaver':		uc = UnitSlaver;break;
+				case 'UnitZebra':		uc = UnitZebra;break;
+				case 'UnitRanger':		uc = UnitRanger;break;
+				case 'UnitEncl':		uc = UnitEncl;break;
+				case 'UnitMerc':		uc = UnitMerc;break;
+				case 'UnitZombie':		uc = UnitZombie;break;
+				case 'UnitAlicorn':		uc = UnitAlicorn;break;
+				case 'UnitHellhound':	uc = UnitHellhound;break;
+				case 'UnitRobobrain':	uc = UnitRobobrain;break;
+				case 'UnitProtect':		uc = UnitProtect;break;
+				case 'UnitGutsy':		uc = UnitGutsy;break;
+				case 'UnitEqd':			uc = UnitEqd;break;
+				case 'UnitSentinel':	uc = UnitSentinel;break;
+				case 'UnitTurret':		uc = UnitTurret;break;
+				case 'UnitBat':			uc = UnitBat;break;
+				case 'UnitFish':		uc = UnitFish;break;
+				case 'UnitBloat':		uc = UnitBloat;break;
+				case 'UnitSpriteBot':	uc = UnitSpriteBot;break;
+				case 'UnitDron':		uc = UnitDron;break;
+				case 'UnitVortex':		uc = UnitVortex;break;
+				case 'UnitMonstrik':	uc = UnitMonstrik;break;
+				case 'UnitAnt':			uc = UnitAnt;break;
+				case 'UnitSlime':		uc = UnitSlime;break;
+				case 'UnitRoller':		uc = UnitRoller;break;
+				case 'UnitNPC':			uc = UnitNPC;break;
+				case 'UnitCaptive':		uc = UnitCaptive;break;
+				case 'UnitPonPon':		uc = UnitPonPon;break;
+				case 'UnitTrain':		uc = UnitTrain;break;
+				case 'UnitMsp':			uc = UnitMsp;break;
+				case 'UnitTransmitter':	uc = UnitTransmitter;break;
+				case 'UnitNecros':		uc = UnitNecros;break;
+				case 'UnitSpectre':		uc = UnitSpectre;break;
+				case 'UnitBossRaider':	uc = UnitBossRaider;break;
+				case 'UnitBossAlicorn':	uc = UnitBossAlicorn;break;
+				case 'UnitBossUltra':	uc = UnitBossUltra;break;
+				case 'UnitBossNecr':	uc = UnitBossNecr;break;
+				case 'UnitBossDron':	uc = UnitBossDron;break;
+				case 'UnitBossEncl':	uc = UnitBossEncl;break;
+				case 'UnitThunderHead':	uc = UnitThunderHead;break;
+				case 'UnitDestr':		uc = UnitDestr;break;
+				case 'UnitBloatEmitter': uc = UnitBloatEmitter;break;
 			}
-			catch (e:ReferenceError) {
-				trace("Unit.as/create() - ERROR: Class \"" + className + "\" not found!");
-				return null;
-			}
+			if (!uc) return null;
 
-			if (!UnitClass) {
-				trace("Unit.as/create() - ERROR: Unit class for id \"" + id + "\" could not be resolved.");
-				return null;
-			}
-
-			// Determine the creation ID
-			var cid:String = ncid || (node.@cid.length() ? node.@cid.toString() : null);
-
-			// Instantiate the unit
-			var unit:Unit = new UnitClass(cid, dif, xml, loadObj);
-
-			// Assign code if present in XML
-			if (xml && xml.@code.length()) {
-				unit.code = xml.@code.toString();
-			}
-
-			return unit;
+			var cid:String = null;	// [Creation ID]
+			if (node.@cid.length()) cid = node.@cid;
+			if (ncid) cid = ncid;
+			var un:Unit=new uc(cid, dif, xml, loadObj);
+			if (xml && xml.@code.length()) un.code = xml.@code;
+			return un;
 		}
 		
 		public override function save():Object {
@@ -485,17 +499,16 @@ package fe.unit {
 		}
 		
 		public function getXmlParam(mid:String = null):void {
-			var setOpts:Boolean=false;
+			var setOpts:Boolean = false;
 			
+			// If we've intialized this unit ID before, get it's stored variant options
 			if (opts[id]) {
 				opt = opts[id];
-				begvulner = begvulners[id];
 			}
+			// Else load them
 			else {
 				opt = new Object();
 				opts[id] = opt;
-				begvulner = [];
-				begvulners[id] = begvulner;
 				setOpts = true;
 			}
 			
@@ -625,25 +638,25 @@ package fe.unit {
 				if (node.@levitatk.length()) levitAttack=node.@levitatk;//атака при левитации
 			}
 			
-			//уязвимости
+			// [vulnerabilities]
 			if (node0.vulner.length()) {
-				node=node0.vulner[0];
-				if (node.@bul.length()) vulner[Resistances.DAM_PIERCE]=node.@bul;
-				if (node.@blade.length()) vulner[Resistances.DAM_CUT]=node.@blade;
-				if (node.@phis.length()) vulner[Resistances.DAM_BLUNT]=node.@phis;
-				if (node.@fire.length()) vulner[Resistances.DAM_BURN]=node.@fire;
-				if (node.@expl.length()) vulner[Resistances.DAM_EXPLOSION]=node.@expl;
-				if (node.@laser.length()) vulner[Resistances.DAM_LASER]=node.@laser;
-				if (node.@plasma.length()) vulner[Resistances.DAM_PLASMA]=node.@plasma;
-				if (node.@venom.length()) vulner[Resistances.DAM_VENOM]=node.@venom;
-				if (node.@emp.length()) vulner[Resistances.DAM_EMP]=node.@emp;
-				if (node.@spark.length()) vulner[Resistances.DAM_ELECTRIC]=node.@spark;
-				if (node.@acid.length()) vulner[Resistances.DAM_ACID]=node.@acid;
-				if (node.@cryo.length()) vulner[Resistances.DAM_COLD]=node.@cryo;
-				if (node.@poison.length()) vulner[Resistances.DAM_POISON]=node.@poison;
-				if (node.@bleed.length()) vulner[Resistances.DAM_BLEED]=node.@bleed;
-				if (node.@fang.length()) vulner[Resistances.DAM_BITE]=node.@fang;
-				if (node.@pink.length()) vulner[Resistances.DAM_PINKCLOUD]=node.@pink;
+				node = node0.vulner[0];
+				if (node.@bul.length())		vulnerabilities.setResist(Resistances.DAM_PIERCE, node.@bul);
+				if (node.@blade.length())	vulnerabilities.setResist(Resistances.DAM_CUT, node.@blade);
+				if (node.@phis.length())	vulnerabilities.setResist(Resistances.DAM_BLUNT, node.@phis);
+				if (node.@fire.length())	vulnerabilities.setResist(Resistances.DAM_BURN, node.@fire);
+				if (node.@expl.length())	vulnerabilities.setResist(Resistances.DAM_EXPLOSION, node.@expl);
+				if (node.@laser.length())	vulnerabilities.setResist(Resistances.DAM_LASER, node.@laser);
+				if (node.@plasma.length())	vulnerabilities.setResist(Resistances.DAM_PLASMA, node.@plasma);
+				if (node.@venom.length())	vulnerabilities.setResist(Resistances.DAM_VENOM, node.@venom);
+				if (node.@emp.length())		vulnerabilities.setResist(Resistances.DAM_EMP, node.@emp);
+				if (node.@spark.length())	vulnerabilities.setResist(Resistances.DAM_ELECTRIC, node.@spark);
+				if (node.@acid.length())	vulnerabilities.setResist(Resistances.DAM_ACID, node.@acid);
+				if (node.@cryo.length())	vulnerabilities.setResist(Resistances.DAM_COLD, node.@cryo);
+				if (node.@poison.length())	vulnerabilities.setResist(Resistances.DAM_POISON, node.@poison);
+				if (node.@bleed.length())	vulnerabilities.setResist(Resistances.DAM_BLEED, node.@bleed);
+				if (node.@fang.length())	vulnerabilities.setResist(Resistances.DAM_BITE, node.@fang);
+				if (node.@pink.length())	vulnerabilities.setResist(Resistances.DAM_PINKCLOUD, node.@pink);
 			}
 			
 			//visual parameters
@@ -695,28 +708,31 @@ package fe.unit {
 					id_name=node.@hero;
 				}
 				if (setOpts) {
-					if (node.@pony.length()) opt.pony=true;			//является пони
-					if (node.@zombie.length()) opt.zombie=true;		//является зомби
-					if (node.@robot.length()) opt.robot=true;		//является роботом
-					if (node.@insect.length()) opt.insect=true;		//является насекомым
-					if (node.@monster.length()) opt.monster=true;	//является насекомым
-					if (node.@alicorn.length()) opt.alicorn=true;	//является аликорном
+					if (node.@pony.length()) opt.pony=true;			// [is a pony]
+					if (node.@zombie.length()) opt.zombie=true;		// [is a zombie]
+					if (node.@robot.length()) opt.robot=true;		// [is a robot]
+					if (node.@insect.length()) opt.insect=true;		// [is an insect]
+					if (node.@monster.length()) opt.monster=true;	// [is a monster]
+					if (node.@alicorn.length()) opt.alicorn=true;	// [is an alicorn]
 					if (node.@mech.length()) {
-						opt.mech=true;					//является механизмом
+						opt.mech=true;					// [is a mechanism]
 						mech=true;
 					}
-					if (node.@hbonus.length()) opt.hbonus=true;					//является пони
-					if (node.@izvrat.length()) opt.izvrat=true;					//является пони
+					if (node.@hbonus.length()) opt.hbonus=true;					// [is a pony]
+					if (node.@izvrat.length()) opt.izvrat=true;					// [is a pony]
 				}
 			}
 			
 			if (blood == 0) {
-				vulner[Resistances.DAM_BLEED] = 0;
+				vulnerabilities.setResist(Resistances.DAM_BLEED, 0);
 			}
 			
 			if (opt) {
 				if (opt.robot || opt.mech) {
-					vulner[Resistances.DAM_DEATH]=vulner[Resistances.DAM_BLEED]=vulner[Resistances.DAM_VENOM]=vulner[Resistances.DAM_POISON]=0;
+					vulnerabilities.setResist(Resistances.DAM_DEATH, 0);
+					vulnerabilities.setResist(Resistances.DAM_BLEED, 0);
+					vulnerabilities.setResist(Resistances.DAM_VENOM, 0);
+					vulnerabilities.setResist(Resistances.DAM_POISON, 0);
 				}
 			}
 
@@ -747,11 +763,9 @@ package fe.unit {
 				anims = AnimationSet.loadAnimations(id);
 			}
 
-
+			// Create a duplicate of all the vulnerability values so we can keep track of the default values
 			if (setOpts) {
-				for (var i:int = 0; i < kolVulners; i++) {
-					begvulner[i] = vulner[i];
-				}
+				begvulner = vulnerabilities.clone();
 			}
 		}
 		
@@ -860,7 +874,7 @@ package fe.unit {
 			}
 			
 			if (loc.biom == 5) {
-				vulner[Resistances.DAM_PINKCLOUD] = 0;	// [Invulnerable to the pink cloud]
+				vulnerabilities.setResist(Resistances.DAM_PINKCLOUD, 0);	// [Invulnerable to the pink cloud]
 			}
 			
 			// [Attached scripts]
@@ -973,23 +987,23 @@ package fe.unit {
 		}
 		
 		public function setHeroVulners():void {
-			vulner[Resistances.DAM_EMP]	*= 0.80;
-			vulner[Resistances.DAM_BALEFIRE]	*= 0.70;
-			vulner[Resistances.DAM_DEATH]	*= 0.70;
-			vulner[Resistances.DAM_ASTRO]	*= 0.70;
+			vulnerabilities.multiplyResist(Resistances.DAM_EMP, 0.80);
+			vulnerabilities.multiplyResist(Resistances.DAM_BALEFIRE, 0.70);
+			vulnerabilities.multiplyResist(Resistances.DAM_DEATH, 0.70);
+			vulnerabilities.multiplyResist(Resistances.DAM_ASTRO, 0.70);
 
 			if (hero == 2) {
-				vulner[Resistances.DAM_PIERCE]		*= 0.50;
-				vulner[Resistances.DAM_BLUNT]		*= 0.65;
-				vulner[Resistances.DAM_CUT]		*= 0.65;
-				vulner[Resistances.DAM_EXPLOSION]		*= 0.75;
+				vulnerabilities.multiplyResist(Resistances.DAM_PIERCE, 0.50);
+				vulnerabilities.multiplyResist(Resistances.DAM_BLUNT, 0.65);
+				vulnerabilities.multiplyResist(Resistances.DAM_CUT, 0.65);
+				vulnerabilities.multiplyResist(Resistances.DAM_EXPLOSION, 0.75);
 			}
 			if (hero == 3) {
-				vulner[Resistances.DAM_LASER]		*= 0.60;
-				vulner[Resistances.DAM_PLASMA]	*= 0.50;
-				vulner[Resistances.DAM_EMP]		*= 0.75;
-				vulner[Resistances.DAM_ELECTRIC]		*= 0.70;
-				vulner[Resistances.DAM_BURN]		*= 0.70;
+				vulnerabilities.multiplyResist(Resistances.DAM_LASER, 0.60);
+				vulnerabilities.multiplyResist(Resistances.DAM_PLASMA, 0.50);
+				vulnerabilities.multiplyResist(Resistances.DAM_EMP, 0.75);
+				vulnerabilities.multiplyResist(Resistances.DAM_ELECTRIC, 0.70);
+				vulnerabilities.multiplyResist(Resistances.DAM_BURN, 0.70);
 			}
 		}
 		
@@ -1296,495 +1310,330 @@ package fe.unit {
 			
 			stayOsn = null;
 		}
-		
-		
-		/*	####################################
-		**
-		**	NEW RUN REPLACEMENT CODE STARTS HERE
-		**
-		** 	##################################*/
-		// Run has been consolidated in some places and split into helper functions. This should run 1:1 as the code before the re-write, but is untested
 
 		public function run(div:int = 1):void {
-			// If in "sky" mode, defer to run2
 			if (loc.sky) {
 				run2(div);
 				return;
 			}
 
-			// [Slope Logic]
+			// [Movement] | движение
+			var t:Tile;
+			var t2:Tile;
+			var i:int;
+			var newmy:Number = 0;
+			var autoSit:Boolean = false;
+
+			// If we're... Not passing through stairs, on the ground, standing on a slope, and moving
 			if (!throu && stay && diagon && velocity.Y >= 0) {
-				handleSlopeMovement(div);
+				
+				var dxdiv:Number = velocity.X / div;
+				var slopeY:Number = (dxdiv * diagon); 
+
+				if (collisionAll(dxdiv, dxdiv * diagon * -1)) {
+					if (slopeY < 0 && !collisionAll(dxdiv, 0)) {
+						diagon = 0;
+					}
+				}
+				// Apply sloped movement
+				else {
+					coordinates.X += dxdiv;
+					coordinates.Y -= slopeY; // If diagon > 0, this reduces Y, going “up”
+					velocity.Y = 0;
+					checkDiagon(0);
+				}
 				return;
 			}
-
-			// Not on a slope
+			// Otherwise, indicate we're not on a slope
 			diagon = 0;
-
-			// 1) HORIZONTAL MOVEMENT
+			
+			//HORIZONTAL
 			if (!isLaz) {
-				doHorizontalMovement(div);
+
+				coordinates.X += (velocity.X + osndx) / div;
+				if (coordinates.X - this.boundingBox.halfWidth < 0) {
+					if (!outLoc(1)) {
+						coordinates.X = this.boundingBox.halfWidth;
+						velocity.X = Math.abs(velocity.X) * elast;
+						turnX = 1;
+						kray = true;
+					}
+				}
+				if (coordinates.X + this.boundingBox.halfWidth >= loc.maxX)
+				{
+					if (!outLoc(2))
+					{
+						coordinates.X = loc.maxX - 1 - this.boundingBox.halfWidth;
+						velocity.X = -Math.abs(velocity.X) * elast;
+						turnX = -1;
+						kray = true;
+					}
+				}
+				this.boundingBox.centerHorizontally(coordinates);
+				
+				// [Move left]
+				if (velocity.X + osndx < 0) {
+					if (!player && stay && shX1 > 0.5) {
+						newmy = checkDiagon(-5);
+						if (newmy > 0) {
+							coordinates.Y = newmy;
+							this.boundingBox.flatten(coordinates);
+						}
+					}
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1 > 0.5)) {
+						newmy=checkDiagon(-2, -1);
+						if (newmy > 0) {
+							coordinates.Y = newmy;
+							this.boundingBox.flatten(coordinates);
+						}
+					}
+					if (player && isUp && stay && !isSit) {
+						var x:int = int(this.boundingBox.left / tileX);
+						var y:int = int(this.boundingBox.top / tileY);
+						t = loc.getTile(x, y);
+						t2 = loc.getTile(x, y + 1);
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+							coordinates.Y = t2.boundingBox.top;
+							this.boundingBox.bottom = t2.boundingBox.top;
+							sit(true);
+							autoSit = true;
+						}
+					}
+					if (mater) {
+						for (i = int(this.boundingBox.top/tileY); i <= int(this.boundingBox.bottom/tileY); i++) {
+							t = loc.getTile(int(this.boundingBox.left/tileX), i);
+							if (collisionTile(t)) {
+								if (t.door && t.door.inter) pumpObj=t.door.inter;
+								if (this.boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(-20,t.boundingBox.top-this.boundingBox.bottom)) {
+									coordinates.Y = t.boundingBox.top;
+								}
+								else {
+									coordinates.X = t.boundingBox.right + this.boundingBox.halfWidth;
+									if (t_throw > 0 && velocity.X < -damWallSpeed && damWall) damageWall(2);
+
+									if (destroy > 0 && destroyWall(t, 1)) {
+										velocity.X *= 0.75;
+									}
+									else {
+										velocity.X = Math.abs(velocity.X) * elast;
+										turnX = 1;
+										if (t.mat == 1) tykMat = 1;
+										this.boundingBox.centerHorizontally(coordinates);
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				// [Move right]
+				if (velocity.X + osndx > 0) {
+					if (!player && stay && shX2 > 0.5) {
+						newmy = checkDiagon(-5);
+						if (newmy > 0) {
+							coordinates.Y = newmy;
+							this.boundingBox.flatten(coordinates);
+						}
+					}
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5)) {
+						newmy = checkDiagon(-2, 1);
+						if (newmy > 0) {
+							coordinates.Y = newmy;
+							this.boundingBox.flatten(coordinates);
+						}
+					}
+					if (player && isUp && stay && !isSit) {
+						var x:int = int(this.boundingBox.right / tileX);
+						var y:int = int(this.boundingBox.top / tileY);
+						t = loc.getTile(x, y);
+						t2 = loc.getTile(x, (y + 1));
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+							coordinates.Y  = t2.boundingBox.top;
+							this.boundingBox.bottom = t2.boundingBox.top;
+							sit(true);
+							autoSit = true;
+						}
+					} 
+					if (mater) {
+						for (i = int(this.boundingBox.top / tileY); i <= int(this.boundingBox.bottom / tileY); i++) {
+							t = loc.getTile(int(this.boundingBox.right / tileX), i);
+							if (collisionTile(t)) {
+								if (t.door && t.door.inter) pumpObj=t.door.inter;
+								if (this.boundingBox.bottom-t.boundingBox.top<=(stay?porog:porog_jump) && !collisionAll(20,t.boundingBox.top-this.boundingBox.bottom)) {
+									coordinates.Y = t.boundingBox.top;
+								}
+								else {
+									coordinates.X = t.boundingBox.left - this.boundingBox.halfWidth;
+									if (t_throw > 0 && velocity.X > damWallSpeed && damWall) damageWall(1);
+									if (destroy > 0 && destroyWall(t, 2)) {
+										velocity.X *= 0.75;
+									}
+									else {
+										velocity.X = -Math.abs(velocity.X) * elast;
+										turnX = -1;
+										if (t.mat == 1) tykMat = 1;
+										this.boundingBox.centerHorizontally(coordinates);
+									}
+								}
+							}
+						}
+					}
+				}
+				this.boundingBox.flatten(coordinates);
 			}
+			//отталкивание | [Repulsion]
+			
+			
+			//VERTICAL
+			//downward movement
+			newmy = 0;
+			if (velocity.Y + osndy > 0) {
+				if (velocity.Y > 0) {
+					stay = false;
+					stayPhis = 0;
+					stayMat = 0;
+				}
+				
+				shX1 = 1;
+				shX2 = 1; //if >0, then you are not completely standing on the floor
 
-			// 2) VERTICAL MOVEMENT
-			doVerticalMovement(div);
+				// Flying, levitating or swimming
+				if (levit || plav && isPlav || isFly)  {
+					diagon = 0;
+					coordinates.Y += (velocity.Y + osndy) / div;
+					if (coordinates.Y > loc.maxY && !outLoc(3)) {
+						coordinates.Y = loc.maxY - 1;
+						velocity.Y = 0;
+						turnY = -1;
+					}
+					this.boundingBox.flatten(coordinates);
+					if (mater) {
+						for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
+							t = loc.getTile(i, int(this.boundingBox.bottom/tileY));
+							if (collisionTile(t)) {
+								coordinates.Y = t.boundingBox.top;
+								this.boundingBox.flatten(coordinates);
+								velocity.Y = 0;
+								turnY = -1;
+								if (t.mat == 1) tykMat = 1;
+							}
+						}
+					}
+				}
+				// [a fall]
+				else  {						
+					if (mater) {
+						for (i = int(this.boundingBox.left/tileX); i<=int(this.boundingBox.right/tileX); i++) {
+							t = loc.getTile(i, int(this.boundingBox.bottom + velocity.Y / div) / tileY);
+							if (collisionTile(t, 0, velocity.Y / div)) {
+								if (-(this.boundingBox.left - t.boundingBox.left) / this.boundingBox.width < shX1) shX1 = -(this.boundingBox.left - t.boundingBox.left) / this.boundingBox.width;
+								if ((this.boundingBox.right - t.boundingBox.right) / this.boundingBox.width < shX2) shX2 = (this.boundingBox.right - t.boundingBox.right) / this.boundingBox.width;
+								newmy = t.boundingBox.top;
+								if (t.mat > 0) stayMat = t.mat;
+								if (t.phis >= 1 && !(transT && t.phis == 3)) {
+									stayPhis = 1;
+									if (t_throw > 0 && velocity.Y > damWallSpeed && damWall) damageWall(3);
+									if (destroy > 0 || massa >= 1) destroyWall(t, 3);
+								}
+								else if (t.shelf && stayPhis == 0) {
+									stayPhis = 2;
+									stayMat = t.mat;
+								}
+								diagon = 0;
+							}
+						}
+					}
 
-			// If we auto-sat (“autoSit = true”) during movement, unsit now
+					if (newmy == 0 && !throu) newmy = checkDiagon(velocity.Y / div);
+					if (newmy == 0 && !throu) newmy = checkShelf(velocity.Y / div, osndy / div);
+
+					if (newmy)  {
+						this.boundingBox.top = newmy - this.boundingBox.height;
+						for (i = int(this.boundingBox.left / tileX); i <= int(this.boundingBox.right / tileX); i++) {
+							t = loc.getTile(i, int((newmy - this.boundingBox.height) / tileY));
+							if (collisionTile(t)) newmy = 0;
+						}
+					}
+					if (newmy) {
+						coordinates.Y = newmy;
+						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
+						this.boundingBox.bottom = coordinates.Y;
+						if (velocity.Y > 16) makeNoise(noiseRun, true);
+						else if (velocity.Y > 9) makeNoise(noiseRun / 2, true);
+						if (velocity.Y > 5) sndFall();
+						if (jumpBall > 0 && velocity.Y > 3) {
+							velocity.Y = -velocity.Y * jumpBall;
+							turnY=-1;
+						}
+						else velocity.Y = 0;
+
+						stay = true;
+						fracLevit = 0;
+		
+						isLaz=0;
+					}
+					else {
+						coordinates.Y += velocity.Y / div;
+						this.boundingBox.flatten(coordinates);
+					}
+					
+					if (coordinates.Y > loc.maxY) {
+						if (!outLoc(3)) {
+							coordinates.Y = loc.maxY-1;
+							turnY = -1;
+							this.boundingBox.flatten(coordinates);
+						}
+					}
+				}
+			}
+			// [Upward movement] | движение вверх
+			if (velocity.Y + osndy < 0) {
+				if (velocity.Y < 0) {
+					stay = false;
+					diagon = 0;
+				}
+				if (coordinates.Y - this.boundingBox.height < 0) {
+					if (!outLoc(4)) {
+						coordinates.Y = this.boundingBox.height - 0.1;
+						velocity.Y = 0;
+						turnY = 1;
+					}
+				}
+				if (velocity.Y > 0) {
+					newmy = checkShelf(velocity.Y / div, osndy / div);
+					if (newmy) {
+						coordinates.Y = newmy;
+						this.boundingBox.flatten(coordinates);
+						velocity.Y = 0;
+						stay = true;
+					}
+				}
+				else {
+					coordinates.Y += (velocity.Y + osndy) / div;
+					this.boundingBox.flatten(coordinates);
+				}
+
+				if (mater) {
+					for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
+						t = loc.getTile(i, int(this.boundingBox.top / tileY));
+						if (collisionTile(t)) {
+							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) damageWall(4);
+							if (destroy > 0) destroyWall(t, 4);
+							coordinates.Y = t.boundingBox.bottom + this.boundingBox.height;
+							this.boundingBox.flatten(coordinates);
+							velocity.Y = 0;
+							turnY = 1;
+							if (t.mat == 1) tykMat = 1;
+							stay = false;
+						}
+					}
+				}
+			} 
 			if (autoSit) {
 				autoSit = false;	
 				unsit();
 			}
 		}
-
-		// Handles movement along a slope (when diagon != 0)
-		private function handleSlopeMovement(div:int):void {
-			var dxdiv:Number  = velocity.X / div;
-			var slopeY:Number = dxdiv * diagon; 
-
-			// If collision occurs with slope movement
-			if (collisionAll(dxdiv, dxdiv * diagon * -1)) {
-				// If upward slope is blocked but horizontal is not, zero out slope
-				if (slopeY < 0 && !collisionAll(dxdiv, 0)) {
-					diagon = 0;
-				}
-			} 
-			else {
-				// Apply slope
-				coordinates.X += dxdiv;
-				coordinates.Y -= slopeY; // diagon > 0 => move “up”
-				velocity.Y = 0;
-				checkDiagon(0);
-			}
-		}
-
-		// Horizontal movement logic for both left and right directions
-		private function doHorizontalMovement(div:int):void {
-			// Basic X-move
-			coordinates.X += (velocity.X + osndx) / div;
-			
-			// Check boundary collisions on the left/right of the room
-			handleHorizontalBoundaries();
-
-			// Re-center bounding box horizontally
-			boundingBox.centerHorizontally(coordinates);
-
-			// Decide left vs right
-			var horizontalSpeed:Number = velocity.X + osndx;
-			if (horizontalSpeed < 0) {
-				handleMoveLeft(div);
-			}
-			else if (horizontalSpeed > 0) {
-				handleMoveRight(div);
-			}
-			
-			// Flatten bounding box after horizontal corrections
-			boundingBox.flatten(coordinates);
-		}
-
-		// Handle room boundary collisions (left < 0 and right > loc.maxX).
-		private function handleHorizontalBoundaries():void {
-			// Left boundary
-			if (coordinates.X - boundingBox.halfWidth < 0) {
-				if (!outLoc(1)) {
-					coordinates.X = boundingBox.halfWidth;
-					velocity.X = Math.abs(velocity.X) * elast;
-					turnX = 1;
-					kray = true;
-				}
-			}
-			
-			// Right boundary
-			if (coordinates.X + boundingBox.halfWidth >= loc.maxX) {
-				if (!outLoc(2)) {
-					coordinates.X = loc.maxX - 1 - boundingBox.halfWidth;
-					velocity.X = -Math.abs(velocity.X) * elast;
-					turnX = -1;
-					kray = true;
-				}
-			}
-		}
-
-		// Handle moving left (H. velocity is negative)
-		private function handleMoveLeft(div:int):void {
-			// Non-player slope snapping
-			if (!player && stay && shX1 > 0.5) {
-				tryCheckDiagon(-5);
-			}
-			
-			// Player slope snapping
-			if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1 > 0.5)) {
-				tryCheckDiagon(-2, -1);
-			}
-			
-			// Automatic crouch if there's a small overhead tile
-			if (player && isUp && stay && !isSit) {
-				autoSit = checkAutoSit(int(boundingBox.left / tileX), int(boundingBox.top / tileY));
-			}
-			
-			// Handle tile collisions
-			if (mater) {
-				checkTilesHorizontal(int(boundingBox.left / tileX), true);
-			}
-		}
-
-		// Handle moving right (H. velocity is positive)
-		private function handleMoveRight(div:int):void {
-			// Non-player slope snapping
-			if (!player && stay && shX2 > 0.5) {
-				tryCheckDiagon(-5);
-			}
-			
-			// Player slope snapping
-			if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5)) {
-				tryCheckDiagon(-2, 1);
-			}
-			
-			// Automatic crouch if there's a small overhead tile
-			if (player && isUp && stay && !isSit) {
-				autoSit = checkAutoSit(int(boundingBox.right / tileX), int(boundingBox.top / tileY));
-			}
-			
-			// Handle tile collisions
-			if (mater) {
-				checkTilesHorizontal(int(boundingBox.right / tileX), false);
-			}
-		}
-
-		// Utility for repeated [ checkDiagon + flatten if newmy > 0 ] calls
-		private function tryCheckDiagon(distY:Number, direction:int = 0):void {
-			var newmy:Number = checkDiagon(distY, direction);
-			
-			if (newmy > 0) {
-				coordinates.Y = newmy;
-				boundingBox.flatten(coordinates);
-			}
-		}
-
-		// Checks overhead tile to see if we should auto-crouch
-		private function checkAutoSit(tx:int, ty:int):Boolean {
-			var t:Tile  = loc.getTile(tx, ty);
-			var t2:Tile = loc.getTile(tx, ty + 1);
-			
-			if ((t.phis == 0 || t.phis == 3) && !(t2.phis == 0 || t2.phis == 3) && t2.zForm == 0) {
-				coordinates.Y = t2.boundingBox.top;
-				boundingBox.bottom = t2.boundingBox.top;
-				sit(true);
-				
-				return true;
-			}
-
-			return false;
-		}
-
-		// Handles the loop over tiles horizontally for collision checking
-		private function checkTilesHorizontal(tx:int, movingLeft:Boolean):void {
-			var t:Tile;
-			for (var i:int = int(boundingBox.top / tileY); i <= int(boundingBox.bottom / tileY); i++) {
-				t = loc.getTile(tx, i);
-				
-				if (collisionTile(t)) {
-					if (t.door && t.door.inter) {
-						pumpObj = t.door.inter;
-					}
-					
-					// Step up if difference is small
-					if (boundingBox.bottom - t.boundingBox.top <= (stay ? porog : porog_jump) && !collisionAll(movingLeft ? -20 : 20, t.boundingBox.top - boundingBox.bottom)) {
-						coordinates.Y = t.boundingBox.top;
-					}
-					// Otherwise, do wall collision response
-					else {
-						if (movingLeft) {
-							coordinates.X = t.boundingBox.right + boundingBox.halfWidth;
-							handleWallDamage(2, velocity.X < -damWallSpeed);
-							bounceX(t, 1);
-						} 
-						else {
-							coordinates.X = t.boundingBox.left - boundingBox.halfWidth;
-							handleWallDamage(1, velocity.X > damWallSpeed);
-							bounceX(t, -1);
-						}
-					}
-				}
-			}
-		}
-
-		//	Unified “damage wall” check for left/right collisions (slamming into the wall?)
-		private function handleWallDamage(damageDir:int, doDamage:Boolean):void {
-			if (t_throw > 0 && doDamage && damWall) {
-				damageWall(damageDir);
-			}
-		}
-
-		// Bounces or partially destroys a wall, or simply stops horizontal velocity.
-		private function bounceX(collidedTile:Tile, newTurnX:int):void {
-			if (destroy > 0 && destroyWall(collidedTile, (newTurnX > 0 ? 1 : 2))) {
-				velocity.X *= 0.75;
-			}
-			else {
-				velocity.X = Math.abs(velocity.X) * elast * newTurnX;
-				turnX = newTurnX;
-				
-				if (collidedTile.mat == 1) {
-					tykMat = 1;
-				}
-				
-				boundingBox.centerHorizontally(coordinates);
-			}
-		}
-
-		// Handle vertical movement
-		private function doVerticalMovement(div:int):void {
-			var newmy:Number = 0;
-			var speedY:Number = velocity.Y + osndy;
-
-			// Going downward
-			if (speedY > 0) {
-				handleFalling(div, speedY);
-			}
-			// Going upward
-			else if (speedY < 0) {
-				handleRising(div, speedY);
-			}
-		}
-
-		// When moving/falling downward.
-		private function handleFalling(div:int, speedY:Number):void {
-			if (velocity.Y > 0) {
-				stay = false;
-				stayPhis = 0;
-				stayMat = 0;
-			}
-
-			// If flying/levitating/swimming
-			if (levit || (plav && isPlav) || isFly) {
-				diagon = 0;
-				coordinates.Y += speedY / div;
-				clampBottom();
-				boundingBox.flatten(coordinates);
-				checkDownwardCollisions();
-			} 
-			// Normal fall
-			else {
-				var newmy:Number = checkMaterialCollisionDown(div);
-
-				// If still 0, try diagonal or shelf checks
-				if (newmy == 0 && !throu) {
-					newmy = checkDiagon(speedY / div);
-				}
-				if (newmy == 0 && !throu) {
-					newmy = checkShelf(speedY / div, osndy / div);
-				}
-
-				// We found a tile to land on
-				if (newmy) {
-					landOnGround(newmy, div);
-				}
-				else {
-					// Just fall freely
-					coordinates.Y += velocity.Y / div;
-					boundingBox.flatten(coordinates);
-					clampBottom();
-				}
-			}
-		}
-
-		// Called when we do a normal downward fall; checks collisions with tiles below. Returns the Y coordinate of the floor (0 if none found).
-		private function checkMaterialCollisionDown(div:int):Number {
-			var newmy:Number = 0;
-			
-			if (mater) {
-				for (var i:int = int(boundingBox.left / tileX); i <= int(boundingBox.right / tileX); i++) {
-					var t:Tile = loc.getTile(i, int((boundingBox.bottom + (velocity.Y / div)) / tileY));
-					
-					if (collisionTile(t, 0, velocity.Y / div)) {
-						
-						// Adjust shX1, shX2
-						var ratioLeft:Number  = - (boundingBox.left - t.boundingBox.left) / boundingBox.width;
-						if (ratioLeft < shX1)  {
-							shX1 = ratioLeft;
-						}
-
-						var ratioRight:Number = (boundingBox.right - t.boundingBox.right) / boundingBox.width;
-						if (ratioRight < shX2) {
-							shX2 = ratioRight;
-						}
-
-						newmy = t.boundingBox.top;
-						if (t.mat > 0) {
-							stayMat = t.mat;
-						}
-						
-						// Mark as solid or shelf
-						if (t.phis >= 1 && !(transT && t.phis == 3)) {
-							stayPhis = 1;
-							// Possibly damage or destroy(?) (is this when jumping on nearly broken blocks?)
-							if (t_throw > 0 && velocity.Y > damWallSpeed && damWall) {
-								damageWall(3);
-							}
-							if (destroy > 0 || massa >= 1) {
-								destroyWall(t, 3);
-							}
-						}
-						else if (t.shelf && stayPhis == 0) {
-							stayPhis = 2;
-							stayMat  = t.mat;
-						}
-						diagon = 0;
-					}
-				}
-			}
-			
-			return newmy;
-		}
-
-		// Once we’ve found `newmy` (the floor), do the final landing logic.
-		private function landOnGround(newmy:Number, div:int):void {
-			boundingBox.top = newmy - boundingBox.height;
-			
-			// Double-check collisions at the new top
-			for (var i:int = int(boundingBox.left / tileX); i <= int(boundingBox.right / tileX); i++) {
-				var t:Tile = loc.getTile(i, int((newmy - boundingBox.height) / tileY));
-				
-				if (collisionTile(t)) {
-					// If that’s invalid, don’t land
-					newmy = 0;
-				}
-			}
-			
-			if (newmy) {
-				coordinates.Y    = newmy;
-				boundingBox.top  = coordinates.Y - boundingBox.height;
-				boundingBox.bottom = coordinates.Y;
-				
-				// Fall sounds
-				if (velocity.Y > 16) {
-					makeNoise(noiseRun, true);
-				} else if (velocity.Y > 9) {
-					makeNoise(noiseRun * 0.50, true);
-				}
-				if (velocity.Y > 5) {
-					sndFall();
-				}
-				
-				// Bounce?
-				if (jumpBall > 0 && velocity.Y > 3) {
-					velocity.Y = -velocity.Y * jumpBall;
-					turnY = -1;
-				}
-				else {
-					velocity.Y = 0;
-				}
-				
-				stay = true;
-				fracLevit = 0;
-				isLaz = 0;
-			}
-			else {
-				// If invalid, just do normal falling
-				coordinates.Y += velocity.Y / div;
-				boundingBox.flatten(coordinates);
-				clampBottom();
-			}
-		}
-
-		// Clamp Y at the bottom of the map, if needed.
-		private function clampBottom():void {
-			if (coordinates.Y > loc.maxY) {
-				if (!outLoc(3)) {
-					coordinates.Y = loc.maxY - 1;
-					turnY = -1;
-				}
-			}
-		}
-
-		// After adding Y, check bottom-most tile collisions (for flying, etc.).
-		private function checkDownwardCollisions():void {
-			if (mater) {
-				for (var i:int = int(boundingBox.left/tileX); i <= int(boundingBox.right/tileX); i++) {
-					var t:Tile = loc.getTile(i, int(boundingBox.bottom/tileY));
-					
-					if (collisionTile(t)) {
-						coordinates.Y = t.boundingBox.top;
-						boundingBox.flatten(coordinates);
-						velocity.Y = 0;
-						turnY = -1;
-						
-						if (t.mat == 1) {
-							tykMat = 1;
-						}
-					}
-				}
-			}
-		}
-
-		// When moving upward.
-		private function handleRising(div:int, speedY:Number):void {
-			// We are going up => not on ground
-			if (velocity.Y < 0) {
-				stay   = false;
-				diagon = 0;
-			}
-			
-			// Check upper boundary
-			if (coordinates.Y - boundingBox.height < 0) {
-				if (!outLoc(4)) {
-					coordinates.Y = boundingBox.height - 0.1;
-					velocity.Y = 0;
-					turnY = 1;
-				}
-			}
-			
-			// If velocity is still > 0 somehow => could check shelves
-			if (velocity.Y > 0) {
-				var newmy:Number = checkShelf(velocity.Y/div, osndy/div);
-				
-				if (newmy) {
-					coordinates.Y = newmy;
-					boundingBox.flatten(coordinates);
-					velocity.Y = 0;
-					stay = true;
-				}
-			}
-			// Just move up
-			else {
-				coordinates.Y += speedY / div;
-				boundingBox.flatten(coordinates);
-			}
-			
-			// Collisions above
-			if (mater) {
-				for (var i:int = int(boundingBox.left/tileX); i <= int(boundingBox.right/tileX); i++) {
-					var t:Tile = loc.getTile(i, int(boundingBox.top / tileY));
-					
-					if (collisionTile(t)) {
-						if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) {
-							damageWall(4);
-						}
-						
-						if (destroy > 0) {
-							destroyWall(t, 4);
-						}
-						
-						coordinates.Y = t.boundingBox.bottom + boundingBox.height;
-						boundingBox.flatten(coordinates);
-						velocity.Y = 0;
-						turnY = 1;
-						
-						if (t.mat == 1) {
-							tykMat = 1;
-						}
-						
-						stay = false;
-					}
-				}
-			}
-		}
-
-		/* 	##################################
-		**
-		**	NEW RUN REPLACEMENT CODE ENDS HERE
-		**
-		** 	################################*/
 		
 		public function run2(div:int = 1):void {
 			const MIN_Y_POSITION:Number = 0.10;
@@ -2752,7 +2601,7 @@ package fe.unit {
 			return false;
 		}
 		
-		public function explosion(tdam:Number, ttipdam:String = "explosive", trad:Number = 200, tkol:int = 0, totbros:Number = 0, tdestroy:Number = 0, tdecal:int = 0):void {
+		public function explosion(tdam:Number, ttipdam:String = Resistances.DAM_EXPLOSION, trad:Number = 200, tkol:int = 0, totbros:Number = 0, tdestroy:Number = 0, tdecal:int = 0):void {
 			
 			var v:Vector2 = new Vector2(coordinates.X, coordinates.Y - 3);
 			var bul:Bullet = new Bullet(this, v, null, tkol > 1);
@@ -2869,7 +2718,7 @@ package fe.unit {
 				}
 				
 				if (sk.@tip == 'res') {
-					vulner[sk.@id] -= val;
+					vulnerabilities.changeResist(sk.@id, -val);
 				}
 				else if (hasOwnProperty(sk.@id)) {
 					if (sk.@ref == 'add') {
@@ -2894,14 +2743,15 @@ package fe.unit {
 				return;
 			}
 			
-			for (var i = 0; i < kolVulners; i++) {
-				vulner[i] = begvulner[i];
-			}
+			// Reset all vulnerabilities to their base values
+			vulnerabilities.copyFrom(begvulner);
 			
+			// Make all NPCs invulnerable to Pink Cloud
 			if (!player && loc.biom == 5) {
-				vulner[Resistances.DAM_PINKCLOUD] = 0;	// [invulnerable to the pink cloud]
+				vulnerabilities.setResist(Resistances.DAM_PINKCLOUD, 0);
 			}
 			
+			// Process active effects
 			for each(var eff:Effect in effects) {
 				var effid:String = eff.id;
 				var sk = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", effid);
@@ -2924,8 +2774,8 @@ package fe.unit {
 				dieWeap = null;
 			}
 			
-			if (vulner[tip] != null) {
-				dam *= vulner[tip];	// Vulnerabilities
+			if (vulnerabilities.getResist(tip) != 1) {
+				dam *= vulnerabilities.getResist(tip);	// Vulnerabilities
 			}
 			
 			var isCrit:int = 0;
@@ -3169,32 +3019,32 @@ package fe.unit {
 				// [Additional effects]
 				if (bul && bul.weap) {								
 					if (bul.weap.dopEffect != null && bul.weap.dopCh > 0 && (bul.weap.dopCh >= 1 || Math.random() < bul.weap.dopCh)) {
-						if (bul.weap.dopEffect == 'igni' && vulner[Resistances.DAM_BURN] > 0.1) {
+						if (bul.weap.dopEffect == 'igni' && vulnerabilities.getResist(Resistances.DAM_BURN) > 0.1) {
 							addEffect('burning', bul.weap.dopDamage);
 							mess = Res.txt('e', 'burning');
 						}
 						
-						if (bul.weap.dopEffect == 'ice' && vulner[Resistances.DAM_COLD] > 0.1 && !mech) {
+						if (bul.weap.dopEffect == 'ice' && vulnerabilities.getResist(Resistances.DAM_COLD) > 0.1 && !mech) {
 							mess = Res.txt('e', 'freezing');
 							addEffect('freezing');
 						}
 						
-						if (bul.weap.dopEffect == 'blind' && vulner[Resistances.DAM_LASER] > 0.1 && !mech && !doop) {
+						if (bul.weap.dopEffect == 'blind' && vulnerabilities.getResist(Resistances.DAM_LASER) > 0.1 && !mech && !doop) {
 							mess = Res.txt('e', 'blindness');
 							addEffect('blindness');
 						}
 						
-						if (bul.weap.dopEffect == 'acid' && vulner[Resistances.DAM_ACID] > 0.1) {
+						if (bul.weap.dopEffect == 'acid' && vulnerabilities.getResist(Resistances.DAM_ACID) > 0.1) {
 							mess = Res.txt('e', 'chemburn');
 							addEffect('chemburn', bul.weap.dopDamage);
 						}
 						
-						if (bul.weap.dopEffect == 'pink' && vulner[Resistances.DAM_PINKCLOUD] > 0.1) {
+						if (bul.weap.dopEffect == 'pink' && vulnerabilities.getResist(Resistances.DAM_PINKCLOUD) > 0.1) {
 							mess = Res.txt('e', 'pinkcloud');
 							addEffect('pinkcloud', bul.weap.dopDamage);
 						}
 						
-						if (bul.weap.dopEffect == 'poison' && vulner[Resistances.DAM_POISON] > 0.1) {
+						if (bul.weap.dopEffect == 'poison' && vulnerabilities.getResist(Resistances.DAM_POISON) > 0.1) {
 							if (player && poison <= 0) {
 								World.w.gui.infoText('poison');
 							}
@@ -3202,7 +3052,7 @@ package fe.unit {
 							poison += bul.weap.dopDamage;
 						}
 						
-						if (bul.weap.dopEffect == 'cut' && vulner[Resistances.DAM_BLEED] > 0.1 && !mech) {
+						if (bul.weap.dopEffect == 'cut' && vulnerabilities.getResist(Resistances.DAM_BLEED) > 0.1 && !mech) {
 							if (player && cut <= 0) {
 								World.w.gui.infoText('cut');
 							}
@@ -3433,7 +3283,7 @@ package fe.unit {
 				bul.tipBullet == 1 && dodge < 1 && (dodge <= 0 || Math.random() > dodge)
 			)) {
 				var dm:Number = 0;
-				if (transp && (vulner[bul.tipDamage] <= 0 || invulner)) {
+				if ((transp && (vulnerabilities.getResist(bul.tipDamage) <= 0) || invulner)) {
 					return -1;
 				}
 				else if (bul.damage > 0) {

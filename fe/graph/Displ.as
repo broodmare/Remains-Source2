@@ -32,8 +32,8 @@ package fe.graph {
 		
 		private var wavKol:int=10;
 		private var wavArr:Array=[];
-		private var disX = 200;
-		private var disY = 250;
+		private var disX:int = 200;
+		private var disY:int = 250;
 		private var spd:Number=1;
 		
 		private var t_anim:int=0;

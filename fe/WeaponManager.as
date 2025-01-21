@@ -140,30 +140,40 @@ package fe {
 			// This is a stupid work-around and I hate it 
 			if (data.tip == "melee") {
 				var wepClub:WClub = new WClub(weapon, data);
-				weapon = wepClub;
+				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wClub vis is " + ((weapon.vis != null) ? "present" : "missing"));
+				return weapon = wepClub;
 			}
 			else if (data.tip == "paint") {	// tip 12 was never used????? 
 				var wepPaint:WPaint = new WPaint();
-				weapon = wepPaint;
+				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wPaint vis is " + ((weapon.vis != null) ? "present" : "missing"));
+				return weapon = wepPaint;
 			}
 			else if (data.tip == "throwable") {
 				var wepThrow:WThrow = new WThrow(data);
-				weapon = wepThrow;
+				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wThrow vis is " + ((weapon.vis != null) ? "present" : "missing"));
+				return weapon = wepThrow;
 			}
 			else if (data.tip == "magic") {
 				var wepMagic:WMagic = new WMagic();
-				weapon = wepMagic;
+				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wMagic vis is " + ((weapon.vis != null) ? "present" : "missing"));
+				return weapon = wepMagic;
 			}
 			else if ("punch" in data && data["punch"] == true) {
-				var wepPunch:WPunch = new WPunch();
-				weapon = wepPunch;
+				var wepPunch:WPunch = new WPunch(weapon);
+				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wPunch vis is " + ((weapon.vis != null) ? "present" : "missing"));
+				return weapon = wepPunch;
 			}
 
+			trace("WeaponManager.as/cloneWeapon() - Created new weapon: " + weapon.id + " vis is " + ((weapon.vis != null) ? "present" : "missing"));
 			return weapon;
 		}
 
 		public function setOwner(weapon:Weapon, own:Unit):void {
 			weapon.owner = own;
+
+			if (own.weaponKrep > 0) {
+				weapon.fixedToOwner = own.weaponKrep;
+			}
 		}
 
 		public function repairWeapon(weapon:Weapon, n:int):void {
