@@ -37,20 +37,21 @@ package fe.graph {
 				trace ("Emitter.as/emit() - ERROR: Failed to emit particle: \"" + nid + "\"");
 			}
 		}
+	
 		/*
-				Частицы
-				vis - Movieclip object
-				ctrans='1' - [location color settings are applied]
-				move='1' - the particle moves
-				alph='1' - the particle becomes transparent at the end of its life
-				
-				minliv, rliv - lifetime
-				minv, rv - initial speed in random direction
-				rdx, rdy - random speed in x, y direction
-				velocity - specified speed as [X, Y] vector
-				rr - random rotation speed
-				rot='1' - random initial rotation angle
-				grav - degree of gravity
+			Частицы
+			vis - Movieclip object
+			ctrans='1' - [location color settings are applied]
+			move='1' - the particle moves
+			alph='1' - the particle becomes transparent at the end of its life
+			
+			minliv, rliv - lifetime
+			minv, rv - initial speed in random direction
+			rdx, rdy - random speed in x, y direction
+			velocity - specified speed as [X, Y] vector
+			rr - random rotation speed
+			rot='1' - random initial rotation angle
+			grav - degree of gravity
 		*/
 		public var id:String;
 		

@@ -84,61 +84,72 @@ package fe.unit {
 		private static var xml_mana:XML		= XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id",  'trauma_mana');
  
 		public var manaHP:Number;
-		public var manaSt:int=0;
-		public var manaMin:Number=0;
-		public var manahpMult:Number=0.02;
-		public var manaCPres:Number=50;		//восст. маны на контрольной точке
-		public var manaHPRes:Number=0.1;
-
-		public var inMaxHP:Number=200;
-		public var inMaxMana:Number=400;
-		public var lvlOrganHp:Number=40;
-		//выносливость
-		public var h2oPlav:Number=1;
-		public var stamRun:Number=1;
-		public var stamRes:Number=2;
-		public var stamDash:int = 40;		//мультипликатор расхода выносливости на рывок
-		public var stamJump:int = 20;		//мультипликатор расхода выносливости на прыжок
-
-		public var weaponSkills:Array=[1,1,1,1,1,1,1,1];
-		//melee
-		public var meleeR:Number=100, meleeS:Number=40;
-		public var meleeRun:Number=10;
-		public var meleeSpdMult:Number=1;	//скорость атаки
-		public var meleeDamMult:Number=1;
+		public var manaSt:int					=   0;
+		public var manaMin:Number				=   0.00;
+		public var manahpMult:Number			=   0.02;
+		public var manaCPres:Number				=  50.00;		//восст. маны на контрольной точке
+		public var manaHPRes:Number				=   0.10;
+ 
+		public var inMaxHP:Number				= 200.00;
+		public var inMaxMana:Number				= 400.00;
+		public var lvlOrganHp:Number			=  40.00;
 		
-		//guns
-		public var gunsDamMult:Number=1;
-		public var bigGunsSlow:Number=1;
-		public var drotMult:Number=1;
-		public var reloadMult:Number=1;
-		public var runPenalty:Number=0.5;
-		public var jumpPenalty:Number=0.3;
-		public var backPenalty:Number=0.4;
-		public var stayBonus:Number=0.3;
+		//выносливость 
+		public var h2oPlav:Number				=   1.00;
+		public var stamRun:Number				=   1.00;
+		public var stamRes:Number				=   2.00;
+		public var stamDash:int					=  40;			//мультипликатор расхода выносливости на рывок
+		public var stamJump:int					=  20;			//мультипликатор расхода выносливости на прыжок
+
+		public var weaponSkills:Array = [1, 1, 1, 1, 1, 1, 1, 1];
+
+		//melee
+		public var meleeR:Number				= 100.00;
+		public var meleeS:Number				=  40.00;
+		public var meleeRun:Number				=  10.00;
+		public var meleeSpdMult:Number			=   1.00;		//скорость атаки
+		public var meleeDamMult:Number			=   1.00;
+		 
+		//guns 
+		public var gunsDamMult:Number			=   1.00;
+		public var bigGunsSlow:Number			=   1.00;
+		public var drotMult:Number				=   1.00;
+		public var reloadMult:Number			=   1.00;
+		public var runPenalty:Number			=   0.50;
+		public var jumpPenalty:Number			=   0.30;
+		public var backPenalty:Number			=   0.40;
+		public var stayBonus:Number				=   0.30;
 		//smallguns
-		public var recoilMult:Number=1;		//отдача вверх
+		public var recoilMult:Number			=   1.00;		//отдача вверх
 
 		//energy
-		public var desintegr:Number=0;
-		public var recyc:Number=0;	//рециклинг
+		public var desintegr:Number				=   0.00;
+		public var recyc:Number					=   0.00;		//рециклинг
 		//explosives
-		public var remine:int=0, visiTrap:Number;
-		public var grenader:int=0;
-		public var explRadMult:Number=1;
-		public var sapper:Number=1;
-		public var autoExpl:Number=1;
+		public var remine:int					=   0;
+		public var visiTrap:Number;
+		public var grenader:int					=   0;
+		public var explRadMult:Number			=   1.00;
+		public var sapper:Number				=   1.00;
+		public var autoExpl:Number				=   1.00;
 		//tele
-		public var teleManaMult:Number=0.04;	//соотношение затрат магии и маны
-		public var telePorog:Number=0, maxTeleMassa:Number=1;	//вес левитируемых объектов
-		public var teleMult:Number=1, levitDMana:Number=0, levitDManaUp:Number=0, allDManaMult:Number=1;	//расход маны
-		public var recManaMin:Number=0, recMana:Number=0.012;
-		public var telemaster:int=0;
-		public var teleDist:int=600*600;
-		public var throwForce:Number=0, throwDmagic:Number=200, throwDmanaMult:Number=0.05;	//расход магии и множитель расхода маны
-		public var unitLevitMult:Number=1;	//время левитации юнитов
-		public var teleEnemy:int=60;		//сила левитации игрока врагами
-		public var telePower:Number=1;//	мощность заклинаний, основанных на телекинезе
+		public var teleManaMult:Number			=   0.04;		//соотношение затрат магии и маны
+		public var telePorog:Number				=   0.00;
+		public var maxTeleMassa:Number			=   1.00;		//вес левитируемых объектов
+		public var teleMult:Number				=   1.00;
+		public var levitDMana:Number			=   0.00;
+		public var levitDManaUp:Number			=   0.00;
+		public var allDManaMult:Number			=   1.00;		//расход маны
+		public var recManaMin:Number			=   0.00;
+		public var recMana:Number				=   0.012;
+		public var telemaster:int				=   0;
+		public var teleDist:int					=   600 * 600;
+		public var throwForce:Number			=   0.00;
+		public var throwDmagic:Number			= 200.00;
+		public var throwDmanaMult:Number		=   0.05;		//расход магии и множитель расхода маны
+		public var unitLevitMult:Number			=   1.00;		//время левитации юнитов
+		public var teleEnemy:int				=  60;			//сила левитации игрока врагами
+		public var telePower:Number				=   1.00;		//	мощность заклинаний, основанных на телекинезе
 		//repair
 		public var repairMult:Number=0.25;
 		public var jammedMult:Number=1;
@@ -1870,33 +1881,52 @@ package fe.unit {
 			
 			//восст. хп
 			gg.hp=gg.maxhp*procHP;
-			if (gg.rad>gg.maxhp-1) gg.rad=gg.maxhp-1;
+			
+			if (gg.rad > gg.maxhp - 1) {
+				gg.rad = gg.maxhp - 1;
+			}
+			
 			gg.setSpeeds();
-			if (gg.currentWeapon) gg.currentWeapon.setPers(gg,this);
-			if (gg.magicWeapon) gg.magicWeapon.setPers(gg,this);
-			if (gg.throwWeapon) gg.throwWeapon.setPers(gg,this);
+			
+			if (gg.currentWeapon) {
+				gg.currentWeapon.setPers(gg, this);
+			}
+			
+			if (gg.magicWeapon) {
+				gg.magicWeapon.setPers(gg, this);
+			}
+			
+			if (gg.throwWeapon) {
+				gg.throwWeapon.setPers(gg, this);
+			}
 			
 			World.w.gui.setHp();
 			
 			if (World.w.game.triggers['nomed']) {
-				organMult=0.5;
-				headMin=156;
-				torsMin=86;
-				legsMin=167;
-				bloodMin=113;
-				manaMin=56;
+				organMult	= 0.50;
+				headMin		= 156;
+				torsMin		= 86;
+				legsMin		= 167;
+				bloodMin	= 113;
+				manaMin		= 56;
 			}
 			else {
-				headMin=torsMin=legsMin=bloodMin=-1;
+				headMin		= -1;
+				torsMin		= -1;
+				legsMin		= -1;
+				bloodMin	= -1;
 			}
 			
-			if (gg.pet) gg.pet.setLevel(level);
+			if (gg.pet) {
+				gg.pet.setLevel(level);
+			}
+
 			World.w.game.triggers['eco']=eco;
 			invMassParam();
 		}
 		
 		public function setInvParameters(inv:Inventory):void {
-			/*
+			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			for each (var w in LootGen.arr["pers"]) {
 				if (inv.items[w].kol>0) {
 					if (inv.items[w].xml && inv.items[w].xml.sk.length()) {
@@ -1936,8 +1966,12 @@ package fe.unit {
 		}
 		
 		public function dopusk():Boolean {
-			if (headHP<=1 || torsHP<=1 || legsHP<=1 || bloodHP<=1) return false;
-			else return true;
+			if (headHP<=1 || torsHP<=1 || legsHP<=1 || bloodHP<=1) {
+				return false;
+			}
+			else {
+				return true;
+			}
 		}
 		
 		// [Determine the skill level for picking a lock]
@@ -1959,24 +1993,42 @@ package fe.unit {
 			
 			if (gg.pets['owl']) {
 				gg.pets['owl'].setLevel(level);
-				owlhp=gg.pets['owl'].maxhp;
-				owlhpProc=gg.pets['owl'].hp/gg.pets['owl'].maxhp;
+				owlhp = gg.pets['owl'].maxhp;
+				owlhpProc = gg.pets['owl'].hp / gg.pets['owl'].maxhp;
 			}
 		}
 		
 		// [Determine the time required for action]
 		public function getLockPickTime(lock:int, lockTip:int):int {
 			var pick:int = getLockTip(lockTip);
-			if (lock < pick) return lockPickTime * 0.6;
+			
+			if (lock < pick) {
+				return lockPickTime * 0.60;
+			}
+
 			return lockPickTime;
 		}
 		
 		public function repTex():String {
-			if (rep>=repGood) return LanguageManager.reference.localText("pip", 'reputmax');
-			if (rep>=rep4) return LanguageManager.reference.localText("pip", 'reput4');
-			if (rep>=rep3) return LanguageManager.reference.localText("pip", 'reput3');
-			if (rep>=rep2) return LanguageManager.reference.localText("pip", 'reput2');
-			if (rep>=rep1) return LanguageManager.reference.localText("pip", 'reput1');
+			if (rep >= repGood) {
+				return LanguageManager.reference.localText("pip", 'reputmax');
+			}
+			
+			if (rep >= rep4) {
+				return LanguageManager.reference.localText("pip", 'reput4');
+			}
+			
+			if (rep >= rep3) {
+				return LanguageManager.reference.localText("pip", 'reput3');
+			}
+			
+			if (rep >= rep2) {
+				return LanguageManager.reference.localText("pip", 'reput2');
+			}
+			
+			if (rep >= rep1) {
+				return LanguageManager.reference.localText("pip", 'reput1');
+			}
 			
 			return LanguageManager.reference.localText("pip", 'reput0');
 		}

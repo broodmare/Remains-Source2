@@ -51,6 +51,7 @@ package fe.graph {
 			displMatrix.ty=mm.target.y-mm.displ1.y;
 			displFilter1=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,displX,displY,DisplacementMapFilterMode.COLOR);
 			displFilter2=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,0,5,DisplacementMapFilterMode.COLOR);
+			
 			for (var i:int = 0; i < wavKol; i++) {
 				var v:MovieClip=new visWav();
 				v.x = Calc.floatBetween(-disX, disX);
@@ -64,6 +65,7 @@ package fe.graph {
 			displStamp.addChild(v);
 			p_x=mm.pistol.x;
 			p_y=mm.pistol.y;
+			
 			if (gr) {
 				gr.tuchi.cacheAsBitmap=gr.maska.cacheAsBitmap=true;
 				gr.tuchi.blendMode='screen';
@@ -74,22 +76,29 @@ package fe.graph {
 		public function anim():void {
 			t_anim++;
 			t_klip--;
+			
 			if (t_klip<=0) {
 				mm.eye.play();
 				t_klip = Calc.intBetween(60, 169);
 			}
+			
 			for (var i:int=0; i<wavKol; i++) {
 				var v:MovieClip=wavArr[i];
 				v.x-=(spd+i/2);
 				v.y+=(spd+i/2)*0.3;
+			
 				if (v.x<-disX*2) {
 					v.x=disX;
 					v.scaleX = Calc.floatBetween(2, 3);
 					v.scaleY=3;
 					v.alpha = Calc.floatBetween(0.5, 1);
 				}
-				if (v.y>disY) v.y=-disY;
+			
+				if (v.y>disY) {
+					v.y=-disY;
+				}
 			}
+			
 			displBmpd.draw(displStamp,displMatrix);
 			mm.displ1.filters=[displFilter1];
 			mm.displ2.filters=[displFilter2];
@@ -98,8 +107,10 @@ package fe.graph {
 			mm.pistol.magic.krug.rotation=t_anim;
 			mm.pistol.magic2.krug.rotation=90+t_anim*0.67;
 			mm.horn.magic.krug.rotation=90+t_anim*0.67;
+			
 			if (gr) {
 				t_groza--;
+				
 				if (t_groza == 0) {
 					gr.x = Calc.floatBetween(0, 1800);
 					gr.y = Calc.floatBetween(0, 350);
@@ -115,6 +126,7 @@ package fe.graph {
 					gr.alpha = Math.min(1, Calc.floatBetween(0, 0.5) + t_groza / 12 + 0.7);
 					if (t_groza < -6 && Calc.floatBetween(0, 1) < 0.1) t_groza = -100;
 				}
+				
 				if (t_groza < -30) {
 					t_groza = Calc.intBetween(100, 300);
 					gr.visible = false;
