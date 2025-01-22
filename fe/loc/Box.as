@@ -4,6 +4,7 @@ package fe.loc {
 	import flash.display.MovieClip;
 
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
@@ -28,34 +29,34 @@ package fe.loc {
 		public var cdx:Number=0, cdy:Number=0;	//движение того, кто стоит на ящике	
 		public var vel2:Number=0; //скорость в квадрате
 		
-		public var mat:int=0;		//материал	//0 - хз что //1 - металл //2 - камень //3 - дерево
-		public var wall:int=0;		//крепится на стену
-		public var phis:int=1;
-		public var sur:int=0;		//предме на ящике
-		public var hp:Number=100;
-		public var thre:Number=0;
-		public var montdam:int=5;		//насколько будет ломаться монтировка
-		public var electroDam:Number=0;	//если больше 0 - является генератором электрозащиты
-		public var tiles:Array;			//задействованные блоки
-		public var dead:Boolean	= false;
-		public var invis:Boolean = false;
-		public var light:Boolean = false;	//убрать туман войны в этой точке
-		public var door_opac:Number=1;
-		private var massaMult:Number=1;
+		public var mat:int					= 0;		//материал	//0 - хз что //1 - металл //2 - камень //3 - дерево
+		public var wall:int					= 0;		//крепится на стену
+		public var phis:int					= 1;
+		public var sur:int					= 0;		//предме на ящике
+		public var hp:Number				= 100.00;
+		public var thre:Number				=0;
+		public var montdam:int				=5;			//насколько будет ломаться монтировка
+		public var electroDam:Number		=0.00;		//если больше 0 - является генератором электрозащиты
+		public var tiles:Array;							//задействованные блоки
+		public var dead:Boolean				= false;
+		public var invis:Boolean			= false;
+		public var light:Boolean			= false;	//убрать туман войны в этой точке
+		public var door_opac:Number			= 1.00;
+		private var massaMult:Number		= 1.00;
 		
-		public var molnDam:Number=0;	//удар разрядом
-		public var molnPeriod:int=60;
-		public var moln_t:int=0;
+		public var molnDam:Number			= 0.00;		//удар разрядом
+		public var molnPeriod:int			= 60;
+		public var moln_t:int				= 0;
 
-		public var bulPlayer:Boolean=false;	//ловить пули игрока
-		public var explcrack:Boolean=false;	//открывается взрывом
-		public var bulTele:Boolean=false;	//ловить пули врагов при левитации
-		public var bulChance:Number=0;
-		public var lurk:int=0;				//возможность прятаться
-		public var isThrow:Boolean=false;	//был брошен телекинезом
-		public var t_throw:int=0;
+		public var bulPlayer:Boolean		= false;	//ловить пули игрока
+		public var explcrack:Boolean		= false;	//открывается взрывом
+		public var bulTele:Boolean			= false;	//ловить пули врагов при левитации
+		public var bulChance:Number			= 0.00;
+		public var lurk:int					= 0;		//возможность прятаться
+		public var isThrow:Boolean			= false;	//был брошен телекинезом
+		public var t_throw:int				= 0;
 		
-		public var noiseDie:Number=800;
+		public var noiseDie:Number			= 800.00;
 
 		public var scrDie:Script;
 		
@@ -69,7 +70,6 @@ package fe.loc {
 		public var shad:MovieClip;
 		
 		public var ddyPlav:Number=1; //выталкивающая сила, 1 если нет, <0 если предмет всплывает
-		
 		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
 		
 		private static var cachedObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
@@ -81,17 +81,21 @@ package fe.loc {
 		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			loc=nloc;
 			id=nid;
+			
 			if (loc.land.kolAll) {
 				if (loc.land.kolAll[id]>0) loc.land.kolAll[id]++;
 				else loc.land.kolAll[id]=1;
 			}
+			
 			prior=1;
 			vis=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
 			shad=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
+			
 			if (vis == null) {
-				vis = new visbox0();	// SWF Dependency
-				shad = new visbox0();	// SWF Dependency
+				vis  = SymbolFactory.createSymbol("visbox0") as MovieClip;
+				shad = SymbolFactory.createSymbol("visbox0") as MovieClip;
 			}
+			
 			vis.stop();
 			shad.gotoAndStop(vis.currentFrame);
 			shad.filters = [dsf];
@@ -100,11 +104,16 @@ package fe.loc {
 			
 			coordinates.X = begX = nx; 
 			coordinates.Y = begY = ny;
-			this.boundingBox.width = vis.width;
-			this.boundingBox.height = vis.height;
-			if (node.@scx.length()) this.boundingBox.width = node.@scx;
-			if (node.@scy.length()) this.boundingBox.height = node.@scy;
-			this.boundingBox.center(coordinates);
+			
+			// Set bounding box to the size of it's visual
+			boundingBox.width = vis.width;
+			boundingBox.height = vis.height;
+			
+			// If applicable, use the specified size
+			if (node.@scx.length()) boundingBox.width = node.@scx;
+			if (node.@scy.length()) boundingBox.height = node.@scy;
+			
+			boundingBox.center(coordinates);
 			
 			
 			if (node.@mat.length()) mat=node.@mat;
@@ -131,10 +140,10 @@ package fe.loc {
 			if (node.@nazv.length()) nazv=Res.txt('o',node.@nazv);
 			else nazv=Res.txt('o',id);
 			if (node.@explcrack.length()) explcrack=true;
-			if (this.boundingBox.width < 40 || wall > 0) shelf=false;
+			if (boundingBox.width < 40 || wall > 0) shelf=false;
 			if (node.@shelf.length()) shelf=true;
 			if (node.@massaMult.length()) massaMult=node.@massaMult;
-			massa = this.boundingBox.width * this.boundingBox.height * this.boundingBox.height / 250000 * massaMult;
+			massa = boundingBox.width * boundingBox.height * boundingBox.height / 250000 * massaMult;
 			if (node.@massa.length()) massa=node.@massa/50;
 			
 			if (xml && xml.@indestruct.length()) {
@@ -150,7 +159,7 @@ package fe.loc {
 			}
 			// [Interactivity]
 			if (node.@inter.length() || (xml && (xml.@inter.length() || xml.scr.length() || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
-			if (inter && inter.cont!='' && inter.cont!='empty' && inter.lock && inter.lockTip<=1) bulPlayer=true;
+			if (inter && inter.cont != "" && inter.cont!='empty' && inter.lock && inter.lockTip<=1) bulPlayer=true;
 			
 			// [Individual parameters from xml card]
 			if (xml) {
@@ -191,7 +200,9 @@ package fe.loc {
 				stay = true;
 				sloy = 0;
 			}
-			else sloy = 1;
+			else {
+				sloy = 1;
+			}
 			
 			if (node.@sloy.length()) sloy = node.@sloy;
 			
@@ -201,7 +212,8 @@ package fe.loc {
 			vis.x = shad.x = coordinates.X;
 			vis.y = coordinates.Y;
 			shad.y = coordinates.Y + (wall?2:6);
-			prior +=1 / (this.boundingBox.width * this.boundingBox.height);
+			prior += 1 / (boundingBox.width * boundingBox.height);
+			
 			if (node.@actdam.length()) {
 				if (xml && xml.@tipdam.length())  bindUnit(xml.@tipdam);
 				else bindUnit();
@@ -223,7 +235,10 @@ package fe.loc {
 					node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
 					cachedObjs[id] = node;
 				}
-				else node = cachedObjs[id];
+				else {
+					node = cachedObjs[id];
+				}
+				
 				return node;
 			}
 		}
@@ -237,15 +252,22 @@ package fe.loc {
 		
 		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
+			
 			if (com == 'die') {
 				hp = 0;
 				die();
 			}
-			if (inter) inter.command(com,val);
+			
+			if (inter) {
+				inter.command(com, val);
+			}
 		}
 		
 		public override function addVisual():void {
-			if (invis) return;
+			if (invis) {
+				return;
+			}
+		
 			if (vis && loc && loc.active) {
 				if (shad) World.w.grafon.visObjs[0].addChild(shad);
 				World.w.grafon.visObjs[sloy].addChild(vis);
@@ -270,25 +292,34 @@ package fe.loc {
 				var t:Number;
 				var b:Number;
 
-				t = coordinates.Y - this.boundingBox.height;
+				t = coordinates.Y - boundingBox.height;
 				b = coordinates.Y;
 
-				l = coordinates.X - this.boundingBox.halfWidth;
-				b = coordinates.X + this.boundingBox.halfWidth;
+				l = coordinates.X - boundingBox.halfWidth;
+				b = coordinates.X + boundingBox.halfWidth;
 
 				boundingBox.setBounds(l, r, t, b);
 			}
 		}
 		
 		public override function remVisual():void {
-			if (vis && vis.parent) vis.parent.removeChild(vis);
-			if (shad && shad.parent) shad.parent.removeChild(shad);
+			if (vis && vis.parent) {
+				vis.parent.removeChild(vis);
+			}
+			
+			if (shad && shad.parent) {
+				shad.parent.removeChild(shad);
+			}
 		}
 		
 		public override function setVisState(s:String):void {
-			if ((s == 'open' || s == 'comein') && sndOpen != '' && !World.w.testLoot) Snd.ps(sndOpen, coordinates.X, coordinates.Y);
+			if ((s == 'open' || s == 'comein') && sndOpen != '' && !World.w.testLoot) {
+				Snd.ps(sndOpen, coordinates.X, coordinates.Y);
+			}
 			
-			if (s == 'close' && sndClose!='') Snd.ps(sndClose, coordinates.X, coordinates.Y);
+			if (s == 'close' && sndClose!='') {
+				Snd.ps(sndClose, coordinates.X, coordinates.Y);
+			}
 			
 			try {
 				if (s == 'comein') vis.gotoAndPlay(s);
@@ -304,13 +335,17 @@ package fe.loc {
 				onCursor=0;
 				return;
 			}
+			
 			stX = coordinates.X;
 			stY = coordinates.Y;
+			
 			if (inter) inter.step();
+			
 			if (radioactiv) {
 				getRasst2()
 				ggModum();
 			}
+			
 			if (molnDam>0) {
 				moln_t++;
 				if (moln_t>=molnPeriod) {
@@ -319,15 +354,18 @@ package fe.loc {
 					vis.gotoAndPlay('moln');
 				}
 			}
+			
 			if (levit) {
 				stay=fixPlav=false;
 				osnova=null;
 			}
+			
 			if (wall==0 && stay && osnova) {
 				if (!osnova.stay || osnova.levit) {
 					stay=false;
 					osnova=null;
 				}
+				
 				if (osnova &&  (osnova.cdx!=0 || osnova.cdy!=0)) {
 					if (collisionAll(osnova.cdx,osnova.cdy)) {
 						stay=false;
@@ -338,38 +376,63 @@ package fe.loc {
 						coordinates.X += osnova.cdx;
 						coordinates.Y += osnova.cdy;
 						boundingBox.center(coordinates);
-						if (vis) runVis()
+						
+						if (vis) {
+							runVis();
+						}
 					}
 				}
 			}
 			if (wall==0 && !(stay && velocity.X == 0) && !fixPlav) {
-				if (wall==0) forces();		//внешние силы, влияющие на ускорение
-				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	run();
+				if (wall==0) {
+					forces();		//внешние силы, влияющие на ускорение
+				}
+				
+				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	{
+					run();
+				}
 				else {
-					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y))/World.maxdelta)+1;
+					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
 					for (var i:int = 0; i < div; i++) {
 						run(div);
 					}
 				}
+				
 				checkWater();
+				
 				if (!fixPlav && !levit && isPlav&&!isPlav2 && velocity.Y < 2 && velocity.Y > -2 && ddyPlav<0) {
 					velocity.set(0, 0);
 					fixPlav=true;
 				}
-				if (!levit && (velocity.Y > 5 || velocity.Y < -5 || velocity.X > 5 || velocity.X < -5)) attDrop();
-				if (vis) runVis();
-				if (inter) {inter.coordinates.X = coordinates.X; inter.coordinates.Y = coordinates.Y;}
+				
+				if (!levit && (velocity.Y > 5 || velocity.Y < -5 || velocity.X > 5 || velocity.X < -5)) {
+					attDrop();
+				}
+				
+				if (vis) {
+					runVis();
+				}
+				
+				if (inter) {
+					inter.coordinates.X = coordinates.X; inter.coordinates.Y = coordinates.Y;
+				}
 			}
+			
 			cdx = coordinates.X - stX;
 			cdy = coordinates.Y - stY;
-			if (t_throw>0) t_throw--;
-			onCursor = (this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY) ? prior : 0;
+			
+			if (t_throw > 0) {
+				t_throw--;
+			}
+			
+			onCursor = (boundingBox.left < World.w.celX && boundingBox.right > World.w.celX && boundingBox.top < World.w.celY && boundingBox.bottom > World.w.celY) ? prior : 0;
 		}
 		
 		public function initDoor():void {
 			tiles = [];
-			for (var i:int = int(this.boundingBox.left / tileX + 0.5); i <= int(this.boundingBox.right / tileX - 0.5); i++) {
-				for (var j:int = int(this.boundingBox.top / tileY + 0.5); j <= int(this.boundingBox.bottom / tileY - 0.5); j++) {
+			
+			for (var i:int = int(boundingBox.left / tileX + 0.5); i <= int(boundingBox.right / tileX - 0.5); i++) {
+				for (var j:int = int(boundingBox.top / tileY + 0.5); j <= int(boundingBox.bottom / tileY - 0.5); j++) {
 					var t:Tile = loc.getTile(i, j);
 					t.front = '';
 					t.phis = phis;
@@ -402,11 +465,16 @@ package fe.loc {
 		public function attDoor():Boolean {
 			// First check units
 			for each (var cel in loc.units) {
-				if (!cel || (cel as Unit).sost == 4) continue;  // Skip nulls or "dead" units
-				if (cel is fe.unit.UnitMWall) continue;         // Skip walls
+				if (!cel || (cel as Unit).sost == 4) {
+					continue;  // Skip nulls or "dead" units
+				}
+
+				if (cel is fe.unit.UnitMWall) {
+					continue;         // Skip walls
+				}
 
 				// If the unit has its own boundingBox, use intersects:
-				if (cel.boundingBox && cel.boundingBox.intersects(this.boundingBox)) {
+				if (cel.boundingBox && cel.boundingBox.intersects(boundingBox)) {
 					// Special logic for Mine
 					if (cel is fe.unit.Mine) {
 						cel.fixed = true;
@@ -414,6 +482,7 @@ package fe.loc {
 						(cel as fe.unit.Mine).activate();
 						continue; 
 					}
+					
 					// Otherwise it's a blocking unit
 					trace("Door blocked by unit!");
 					return true;
@@ -423,14 +492,16 @@ package fe.loc {
 			// Now check objects (boxes) that may not have a built-in bounding box
 			for each (var obj in loc.objs) {
 				// If it's actually a Box with a "wall" property
-				if ((obj as Box).wall > 0) continue;  // skip “wall” boxes
+				if ((obj as Box).wall > 0) {
+					continue;  // skip “wall” boxes
+				}
 
 				// If it has no boundingBox, create one on the fly
 				var boxBB:BoundingBox = new BoundingBox(new Vector2(obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight));
 				boxBB.width = obj.boundingBox.width;
 				boxBB.height = obj.boundingBox.height;
 
-				if (boxBB.intersects(this.boundingBox)) {
+				if (boxBB.intersects(boundingBox)) {
 					trace("Door blocked by box!");
 					return true;
 				}
@@ -442,9 +513,11 @@ package fe.loc {
 		
 		public function attMoln():void {
 			for each (var cel in loc.units) {
-				if (!cel || (cel as Unit).sost == 4) continue; // Skip null or "dead"
+				if (!cel || (cel as Unit).sost == 4) {
+					continue; // Skip null or "dead"
+				}
 
-				if (cel.boundingBox && cel.boundingBox.intersects(this.boundingBox)) {
+				if (cel.boundingBox && cel.boundingBox.intersects(boundingBox)) {
 					// If there is a collision, call "udarBox"
 					cel.udarBox(this);
 				}
@@ -454,13 +527,17 @@ package fe.loc {
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
 			if (sposob==1) {
-				if (!bulPlayer) return -1;
+				if (!bulPlayer) {
+					return -1;
+				}
+
 				damage(bul.destroy);
+				
 				return mat;
 			}
 			if (sposob == 0 && bulChance > 0) {
 				if (Math.random() < bulChance) {
-					var sila:Number = Math.random()*0.4+0.8;
+					var sila:Number = Math.random() * 0.40 + 0.80;
 					sila /= massa;
 					if (sila > 3) sila = 3;
 
@@ -471,15 +548,20 @@ package fe.loc {
 					return mat;
 				}
 			}
+			
 			return -1;
 		}
 		
 		public function damage(dam:Number):void {
 			dam-=thre;
 			
-			if (dam > 0) hp -= dam;
+			if (dam > 0) {
+				hp -= dam;
+			}
 			
-			if (hp <= 0) die();
+			if (hp <= 0) {
+				die();
+			}
 		}
 		
 		public override function die(sposob:int=0):void {
@@ -525,13 +607,13 @@ package fe.loc {
 							break;
 					}
 					
-					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-this.boundingBox.halfHeight, {kol:12,rx: this.boundingBox.width, ry:this.boundingBox.height});
+					Emitter.emit(kus, loc, coordinates.X, coordinates.Y-boundingBox.halfHeight, {kol:12,rx: boundingBox.width, ry:boundingBox.height});
 					
 					if (sndDie != "") {
 						Snd.ps(sndDie, coordinates.X, coordinates.Y);
 					}
 				}
-				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - this.boundingBox.halfHeight, noiseDie);
+				if (noiseDie) loc.budilo(coordinates.X, coordinates.Y - boundingBox.halfHeight, noiseDie);
 				if (inter) inter.sign=0;
 			}
 			else if (un) {
@@ -586,7 +668,7 @@ package fe.loc {
 				if (cel.sost == 4 || cel.neujaz > 0 || cel.loc != loc) continue;
 
 				// Use the built-in intersection check
-				if (cel.boundingBox && cel.boundingBox.intersects(this.boundingBox)) {
+				if (cel.boundingBox && cel.boundingBox.intersects(boundingBox)) {
 					// If thrown recently (t_throw > 0), set neujaz & skip
 					if (t_throw > 0) {
 						cel.neujaz = 12;
@@ -613,8 +695,8 @@ package fe.loc {
 				fixPlav = true;
 			}
 			
-			for (var i:int = int(this.boundingBox.left / tileX); i<=int(this.boundingBox.right / tileX); i++) {
-				var t:Tile = loc.getTile(i, int((this.boundingBox.bottom + 1) / tileY));
+			for (var i:int = int(boundingBox.left / tileX); i<=int(boundingBox.right / tileX); i++) {
+				var t:Tile = loc.getTile(i, int((boundingBox.bottom + 1) / tileY));
 				if (collisionTile(t, 0, 1)) {
 					return true;
 				}
@@ -632,40 +714,40 @@ package fe.loc {
 
 			//HORIZONTAL
 				coordinates.X += velocity.X / div;
-				if (coordinates.X - this.boundingBox.halfWidth < 0) {
-					coordinates.X = this.boundingBox.halfWidth;
+				if (coordinates.X - boundingBox.halfWidth < 0) {
+					coordinates.X = boundingBox.halfWidth;
 					velocity.X = Math.abs(velocity.X);
 				}
-				if (coordinates.X + this.boundingBox.halfWidth >= loc.spaceX * tileX) {
-					coordinates.X = loc.spaceX * tileX - 1 - this.boundingBox.halfWidth;
+				if (coordinates.X + boundingBox.halfWidth >= loc.spaceX * tileX) {
+					coordinates.X = loc.spaceX * tileX - 1 - boundingBox.halfWidth;
 					velocity.X = -Math.abs(velocity.X);
 				}
-				this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
-				this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
+				boundingBox.left = coordinates.X - boundingBox.halfWidth;
+				boundingBox.right = coordinates.X + boundingBox.halfWidth;
 				//движение влево
 				if (velocity.X < 0) {
-					for (i = int(this.boundingBox.top / tileY); i <= int(this.boundingBox.bottom / tileY); i++) {
-						t = loc.getTile(int(this.boundingBox.left / tileX), i);
+					for (i = int(boundingBox.top / tileY); i <= int(boundingBox.bottom / tileY); i++) {
+						t = loc.getTile(int(boundingBox.left / tileX), i);
 						if (collisionTile(t)) {
-								coordinates.X = t.boundingBox.right + this.boundingBox.halfWidth;
+								coordinates.X = t.boundingBox.right + boundingBox.halfWidth;
 								if (velocity.X < -10) velocity.X = -velocity.X * 0.2;
 								else velocity.X = 0;
-								this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
-								this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
+								boundingBox.left = coordinates.X - boundingBox.halfWidth;
+								boundingBox.right = coordinates.X + boundingBox.halfWidth;
 							isThrow=false;
 						}
 					}
 				}
 				//движение вправо
 				if (velocity.X > 0) {
-					for (i=int(this.boundingBox.top/tileY); i<=int(this.boundingBox.bottom/tileY); i++) {
-						t = loc.getTile(int(this.boundingBox.right/tileX), i);
+					for (i=int(boundingBox.top/tileY); i<=int(boundingBox.bottom/tileY); i++) {
+						t = loc.getTile(int(boundingBox.right/tileX), i);
 						if (collisionTile(t)) {
-								coordinates.X = t.boundingBox.left - this.boundingBox.halfWidth;
+								coordinates.X = t.boundingBox.left - boundingBox.halfWidth;
 								if (velocity.X > 10) velocity.X = -velocity.X * 0.2;
 								else velocity.X = 0;
-								this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
-								this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
+								boundingBox.left = coordinates.X - boundingBox.halfWidth;
+								boundingBox.right = coordinates.X + boundingBox.halfWidth;
 							isThrow=false;
 						}
 					}
@@ -677,8 +759,8 @@ package fe.loc {
 			var newmy:Number = 0;
 			if (velocity.Y > 0) {
 				stay = false;
-				for (i = int(this.boundingBox.left / tileX); i <= int(this.boundingBox.right / tileX); i++) {
-					t = loc.getTile(i, int((this.boundingBox.bottom + velocity.Y / div) / tileY));
+				for (i = int(boundingBox.left / tileX); i <= int(boundingBox.right / tileX); i++) {
+					t = loc.getTile(i, int((boundingBox.bottom + velocity.Y / div) / tileY));
 					if (collisionTile(t, 0, velocity.Y / div)) {
 						newmy = t.boundingBox.top;
 						break;
@@ -693,8 +775,8 @@ package fe.loc {
 				if (newmy)
 				{
 					coordinates.Y = newmy;
-					this.boundingBox.top = coordinates.Y - this.boundingBox.height;
-					this.boundingBox.bottom = coordinates.Y;
+					boundingBox.top = coordinates.Y - boundingBox.height;
+					boundingBox.bottom = coordinates.Y;
 					if (loc.active && velocity.Y > 4 && velocity.Y * massa > 5) World.w.quake(0, velocity.Y * Math.sqrt(massa) / 2);
 					if (velocity.Y > 5 && sndFall && sndOn) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, velocity.Y / 15);
 					if (velocity.Y > 5)
@@ -708,7 +790,7 @@ package fe.loc {
 					if (velocity.X > -5 && velocity.X < 5) velocity.X = 0;
 					else {
 						velocity.X *= 0.92;
-						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*this.boundingBox.width, coordinates.Y);
+						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*boundingBox.width, coordinates.Y);
 					}
 
 					if (!levit && (!isPlav || ddyPlav>0)) {
@@ -721,23 +803,23 @@ package fe.loc {
 				}
 				else {
 					coordinates.Y += velocity.Y / div;
-					this.boundingBox.top = coordinates.Y - this.boundingBox.height;
-					this.boundingBox.bottom = coordinates.Y;
+					boundingBox.top = coordinates.Y - boundingBox.height;
+					boundingBox.bottom = coordinates.Y;
 				}
 			}
 			//движение вверх
 			if (velocity.Y < 0) {
 				stay = false;
 				coordinates.Y += velocity.Y / div;
-				this.boundingBox.top = coordinates.Y - this.boundingBox.height;
-				this.boundingBox.bottom = coordinates.Y;
-				if (coordinates.Y - this.boundingBox.height < 0) coordinates.Y = this.boundingBox.height;
-				for (i = int(this.boundingBox.left/tileX); i <= int(this.boundingBox.right/tileX); i++) {
-					t = loc.getTile(i, int(this.boundingBox.top/tileY));
+				boundingBox.top = coordinates.Y - boundingBox.height;
+				boundingBox.bottom = coordinates.Y;
+				if (coordinates.Y - boundingBox.height < 0) coordinates.Y = boundingBox.height;
+				for (i = int(boundingBox.left/tileX); i <= int(boundingBox.right/tileX); i++) {
+					t = loc.getTile(i, int(boundingBox.top/tileY));
 					if (collisionTile(t)) {
-						coordinates.Y = t.boundingBox.bottom + this.boundingBox.height;
-						this.boundingBox.top = coordinates.Y - this.boundingBox.height;
-						this.boundingBox.bottom = coordinates.Y;
+						coordinates.Y = t.boundingBox.bottom + boundingBox.height;
+						boundingBox.top = coordinates.Y - boundingBox.height;
+						boundingBox.bottom = coordinates.Y;
 						velocity.Y = 0;
 						isThrow=false;
 					}
@@ -752,15 +834,15 @@ package fe.loc {
 			isPlav2 = false;
 
 			var x:int = int(coordinates.X/tileX);
-			if (loc.getTile(x , int((coordinates.Y - this.boundingBox.height * 0.45) / tileY)).water > 0) {
+			if (loc.getTile(x , int((coordinates.Y - boundingBox.height * 0.45) / tileY)).water > 0) {
 				isPlav = true;
 			}
-			if (loc.getTile(x , int((coordinates.Y - this.boundingBox.height * 0.55) / tileY)).water > 0) {
+			if (loc.getTile(x , int((coordinates.Y - boundingBox.height * 0.55) / tileY)).water > 0) {
 				isPlav2 = true;
 			}
 
 
-			if (pla!=isPlav && (velocity.Y > 8 || velocity.Y < -8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y - this.boundingBox.height * 0.25 + velocity.Y, {dy:-Math.abs(velocity.Y)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(velocity.Y*massa*2)-5)});
+			if (pla!=isPlav && (velocity.Y > 8 || velocity.Y < -8)) Emitter.emit('kap', loc, coordinates.X, coordinates.Y - boundingBox.height * 0.25 + velocity.Y, {dy:-Math.abs(velocity.Y)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(velocity.Y*massa*2)-5)});
 			if (pla!=isPlav && velocity.Y > 5) {
 				if (massa>2) sound('fall_water0', 0, velocity.Y / 10);
 				else if (massa>0.4) sound('fall_water1', 0, velocity.Y / 10);
@@ -780,8 +862,8 @@ package fe.loc {
 					if ( !( coordinates.X < b.boundingBox.left ||
 							coordinates.X > b.boundingBox.right ) &&
 							// Check Y range by comparing bottom to b's top
-							this.boundingBox.bottom <= b.boundingBox.top &&
-							(this.boundingBox.bottom + velocityDown) > b.boundingBox.top )
+							boundingBox.bottom <= b.boundingBox.top &&
+							(boundingBox.bottom + velocityDown) > b.boundingBox.top )
 						{
 						osnova = b;
 						return b.boundingBox.top;
@@ -793,10 +875,10 @@ package fe.loc {
 
 		public function collisionAll(gx:Number = 0, gy:Number = 0):Boolean {
 			// Use boundingBox properties for iteration
-			var leftIndex:int   = int((this.boundingBox.left   + gx) / tileX);
-			var rightIndex:int  = int((this.boundingBox.right  + gx) / tileX);
-			var topIndex:int    = int((this.boundingBox.top    + gy) / tileY);
-			var bottomIndex:int = int((this.boundingBox.bottom + gy) / tileY);
+			var leftIndex:int   = int((boundingBox.left   + gx) / tileX);
+			var rightIndex:int  = int((boundingBox.right  + gx) / tileX);
+			var topIndex:int    = int((boundingBox.top    + gy) / tileY);
+			var bottomIndex:int = int((boundingBox.bottom + gy) / tileY);
 
 			for (var i:int = leftIndex; i <= rightIndex; i++) {
 				for (var j:int = topIndex; j <= bottomIndex; j++) {
@@ -846,10 +928,10 @@ package fe.loc {
 
 			// Cache shifted bounding box edges (for clarity/efficiency).
 			// These represent where our bounding box will be after applying (gx, gy).
-			var newLeft:Number   = this.boundingBox.left   + gx;
-			var newRight:Number  = this.boundingBox.right  + gx;
-			var newTop:Number    = this.boundingBox.top    + gy;
-			var newBottom:Number = this.boundingBox.bottom + gy;
+			var newLeft:Number   = boundingBox.left   + gx;
+			var newRight:Number  = boundingBox.right  + gx;
+			var newTop:Number    = boundingBox.top    + gy;
+			var newBottom:Number = boundingBox.bottom + gy;
 
 			// Compare against the tile’s “physical” boundaries.
 			// If we are completely to the left, right, above, or below the tile, no collision.
@@ -864,7 +946,7 @@ package fe.loc {
 			// If it's a shelf-type tile (phis == 0 or 3), and our bottom is already below the tile’s top edge
 			// (or if we’re levitating or being thrown), then we also skip collision.
 			if ((t.phis == 0 || t.phis == 3) && t.shelf &&
-				(this.boundingBox.bottom > t.boundingBox.top || levit || isThrow)) 
+				(boundingBox.bottom > t.boundingBox.top || levit || isThrow)) 
 			{
 				return 0;
 			}

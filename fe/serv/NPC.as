@@ -256,7 +256,7 @@ package fe.serv {
 					}
 					
 					if (dial.@quest.length()) {						//если активен квест
-						var quest=World.w.game.quests[dial.@quest];
+						var quest = World.w.game.quests[dial.@quest];
 						
 						if (quest==null || quest.state!=1) {
 							continue;

@@ -236,8 +236,15 @@ package fe.unit {
 			reloadbar = new reloadBar();
 			reloadbar.visible = false;
 			vis.addChild(reloadbar);
-			if (vis.shit) vis.shit.visible = false;
-			if (vis.svet) vis.svet.visible = false;
+			
+			if (vis.shit) {
+				vis.shit.visible = false;
+			}
+			
+			if (vis.svet) {
+				vis.svet.visible = false;
+			}
+			
 			storona=1; // Whether the unit is facing left or right.
 			id_replic = 'pip';
 			
@@ -258,7 +265,7 @@ package fe.unit {
 			hp=maxhp;
 			reloadbar.y = -boundingBox.height-10;
 			
-			weaponKrep=0;	//0 - левитация оружия, 1 - держать
+			weaponKrep = false;	// false - левитация оружия, true - держать
 			
 			teleColor=World.w.app.cMagic;
 			levitFilter1=new GlowFilter(teleColor,0,6,6,2,3);
@@ -3688,7 +3695,7 @@ package fe.unit {
 			}
 			
 			vis.osn.gotoAndStop(dey);
-			var f = vis.osn.body.totalFrames;
+			var f:int = vis.osn.body.totalFrames;
 			
 			if (ok) {
 				animOff = true;
@@ -4617,12 +4624,12 @@ package fe.unit {
 		}
 		
 		public function refreshVis():void {
-			var dez = vis.osn.currentFrameLabel;
+			var dez:String = vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
-			teleColor=World.w.app.cMagic;
-			levitFilter1.color=teleColor;
-			teleFilter.color=teleColor;
+			teleColor = World.w.app.cMagic;
+			levitFilter1.color = teleColor;
+			teleFilter.color = teleColor;
 		}
 		
 		public override function visDetails():void {

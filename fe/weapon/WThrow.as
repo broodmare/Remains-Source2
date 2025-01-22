@@ -26,16 +26,17 @@ package fe.weapon {
 		public var sndFall:String	= "";
 		
 		// Constructor
-		public function WThrow(data:Object) {
-			super();	// Weapon Constructor
+		public function WThrow(w:Weapon, data:Object) {
+			// Get all the properties from an already made default weapon and use them
+			WeaponCopier.copyFrom(w, this);
 			
 			noPerc				= true;
 			vBullet				= vWeapon;
-			animated			= false;
 			magazineCapacity	= 1;
 			ammo				= WeaponManager.reference.getAmmo(data.id);
-			
-			vis.gotoAndStop(1);	// Why was this being called during initialization?
+
+			animated			= false;
+			//vis.gotoAndStop(1);	// Why was this being called during initialization?
 			
 			if ("throwtip" in data) {
 				throwTip = data.throwtip;

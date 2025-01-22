@@ -6,6 +6,7 @@ package fe.loc {
 
 
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.graph.*;
 	import fe.entities.Entity;
 	import fe.entities.BoundingBox;
@@ -599,7 +600,7 @@ package fe.loc {
 		// [Add directional signs to neighboring locations]
 		private function addSignPost(xCoord:int, yCoord:int, rotation:int):void {
 			var sign:MovieClip;
-			sign = new signPost();	// SWF Dependency
+			sign = SymbolFactory.createSymbol("signPost") as MovieClip;
 			sign.x = xCoord * tileX;
 			sign.y = yCoord * tileY;
 			sign.rotation = rotation;
@@ -1792,10 +1793,19 @@ package fe.loc {
 		
 		// [check for the possibility of installing a ghost wall, returns true if nothing interferes]
 		public function testTile(t:Tile):Boolean {
-			if (t.phis>0 || t.stair!=0 || t.water!=0 || t.door) return false;
+			if (t.phis > 0 || t.stair != 0 || t.water != 0 || t.door) {
+				return false;
+			}
+
 			for each (var cel in units) {
-				if (cel==null || (cel as Unit).sost==4) continue;
-				if (cel.transT) continue;
+				if (cel == null || (cel as Unit).sost == 4) {
+					continue;
+				}
+				
+				if (cel.transT) {
+					continue;
+				}
+				
 				if (!(cel.leftBound >= (t.coords.X + 1) * tileX 
 					|| cel.rightBound <= t.coords.X * tileX
 					|| cel.topBound >= (t.coords.Y + 1) * tileY
@@ -1814,39 +1824,77 @@ package fe.loc {
 				for (var j:int = 0; j < spaceY; j++) {
 					var color:uint = 0x003323;
 					var t:Tile = getTile(i, j);
-					if (t.water) color = 0x0066FF;
-					if (t.shelf || t.diagon != 0) color = 0x7B482F;
-					if (t.stair != 0) color = 0x666666;
-					if (t.phis == 1) {
-						if (t.indestruct) color = 0xFFFFFF;
-						else if (t.door) color = 0x639104;
-						else if (t.hp<100) color = 0x01995A; 
-						else color = 0x00FF99;
+					
+					if (t.water) {
+						color = 0x0066FF;
 					}
-					if (t.phis == 2) color = 0x01995A; 
+					
+					if (t.shelf || t.diagon != 0) {
+						color = 0x7B482F;
+					}
+					
+					if (t.stair != 0) {
+						color = 0x666666;
+					}
+					
+					if (t.phis == 1) {
+						if (t.indestruct) {
+							color = 0xFFFFFF;
+						}
+						else if (t.door) {
+							color = 0x639104;
+						}
+						else if (t.hp<100) {
+							color = 0x01995A;
+						}
+						else {
+							color = 0x00FF99;
+						}
+					}
+
+					if (t.phis == 2) {
+						color = 0x01995A;
+					}
+
 					if (!World.w.drawAllMap) {
 						vid = getTile(i, j).visi;
+						
 						if (i < RIGHT_X) {
-							if (getTile(i + 1, j).visi > vid) vid = getTile(i + 1, j).visi;
+							if (getTile(i + 1, j).visi > vid) {
+								vid = getTile(i + 1, j).visi;
+							}
+							
 							if (j < BOTTOM_Y) {
 								if (getTile(i + 1, j + 1).visi > vid) vid = getTile(i + 1, j + 1).visi;
 							}
 						}
+						
 						if (j < BOTTOM_Y) {
-							if (getTile(i, j + 1).visi > vid) vid = getTile(i, j + 1).visi;
+							if (getTile(i, j + 1).visi > vid) {
+								vid = getTile(i, j + 1).visi;
+							}
 						}
 					}
+					
 					color += int(vid * 255) * 0x1000000;
 					m.setPixel32((landX - land.minLocX) * World.cellsX + i, (landY - land.minLocY) * World.cellsY + j, color);
 				}
 			}
+
 			for each (var obj:Obj in objs) {
-				if (obj.inter && obj.inter.cont!='' && obj.inter.active) drawMapObj(m, obj, 0xFFCC00);
-				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) drawMapObj(m, obj, 0xFF0077);
+				if (obj.inter && obj.inter.cont != "" && obj.inter.active) {
+					drawMapObj(m, obj, 0xFFCC00);
+				}
+
+				if (obj.inter && obj.inter.prob != "" && obj.inter.prob != null) {
+					drawMapObj(m, obj, 0xFF0077);
+				}
 			}
+
 			for each (obj in acts) {
 				if (obj is CheckPoint) drawMapObj(m, obj, 0xFF00FF)
 			}
+			
 			for each (obj in units) {
 				if ((obj as Unit).npc) drawMapObj(m, obj, 0x5500FF);
 			}
@@ -1878,22 +1926,22 @@ package fe.loc {
 //**************************************************************************************************************************
 		
 		// [Command to all objects]
-		public function allAct(emit:Obj, allact:String, allid:String=''):void {
+		public function allAct(emit:Obj, allact:String, allid:String = ""):void {
 			var obj:Obj;
 			for each (obj in objs) {
-				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) {
-					obj.command(allact,'13');
+				if (obj != emit && obj.inter && (allid == "" || allid == null || obj.inter.allid == allid)) {
+					obj.command(allact, "13");
 				}
 			}
 			
 			for each (obj in areas) {
-				if (obj!=emit && allid=='' || allid==null || (obj as Area).allid==allid) {
+				if (obj != emit && allid == "" || allid == null || (obj as Area).allid == allid) {
 					obj.command(allact);
 				}
 			}
 			
 			for each (obj in units) {
-				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) {
+				if (obj!=emit && obj.inter && (allid == "" || allid == null || obj.inter.allid == allid)) {
 					obj.command(allact);
 				}
 			}
@@ -1957,8 +2005,8 @@ package fe.loc {
 			darkness = -20;
 			gg.inLoc(this);
 			
-			for each(var obj in units) {
-				obj.cTransform = cTransform;
+			for each(var un:Unit in units) {
+				un.cTransform = cTransform;
 			}
 			
 			for each(var obj in objs) {
@@ -1986,8 +2034,8 @@ package fe.loc {
 			darkness = 20;
 			gg.inLoc(this);
 			
-			for each(var obj in units) {
-				obj.cTransform = cTransform;
+			for each(var un:Unit in units) {
+				un.cTransform = cTransform;
 			}
 			
 			for each(var obj in objs) {
@@ -2504,7 +2552,7 @@ package fe.loc {
 		
 		//показать/скрыть указатели перехода
 		private function showSign(n:Boolean):void {
-			for each (var s in signposts) {
+			for each (var s:MovieClip in signposts) {
 				s.visible = n;
 			}
 			

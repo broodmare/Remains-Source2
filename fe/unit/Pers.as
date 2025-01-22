@@ -886,8 +886,15 @@ package fe.unit {
 			xpNext=xpProgress(level);
 			addSkillPoint(levelSkAdd, false, false);
 			perkPoint++;
-			if (rndpump) autoPump();
-			if (gg.pet) gg.pet.setLevel(level);
+		
+			if (rndpump) {
+				autoPump();
+			}
+		
+			if (gg.pet) {
+				gg.pet.setLevel(level);
+			}
+		
 			World.w.gui.infoText('perkPoint');
 			Snd.ps('levelup');
 			gg.newPart('gold_spark',25);
@@ -896,13 +903,17 @@ package fe.unit {
 		//опыта на уровень
 		public function xpProgress(lvl:int):int {
 			var mn:Number=1;
-			if (lvl>10) mn=(lvl-10)/30+1;
+			
+			if (lvl > 10) {
+				mn = (lvl - 10) / 30 + 1;
+			}
+			
 			return Math.round(xpDelta*(lvl)*(lvl+1)/2*mn*mn/1000)*1000;
 		}
 		
 		//формула из версии 0.6
 		public function xpProgress06(lvl:int):int {
-			return xpDelta*(lvl)*(lvl+1)/2;
+			return xpDelta * (lvl) * (lvl + 1) * 0.50;
 		}
 		
 		//принудительно установить количество опыта для сейва старой версии
@@ -916,10 +927,21 @@ package fe.unit {
 		//добавить скиллпоинты, если dop==true, не повышать левел
 		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true):void {
 			skillPoint+=numb;
-			if (numb==1) World.w.gui.infoText('skillPoint');
-			else World.w.gui.infoText('skillPoints',numb);
-			if (snd) Snd.ps('skill');
-			if (rndpump) autoPump();
+			
+			if (numb==1) {
+				World.w.gui.infoText('skillPoint');
+			}
+			else {
+				World.w.gui.infoText('skillPoints',numb);
+			}
+			
+			if (snd) {
+				Snd.ps('skill');
+			}
+			
+			if (rndpump) {
+				autoPump();
+			}
 		}
 		
 		//поднять скилл
@@ -939,7 +961,8 @@ package fe.unit {
 			if (skillIsPost(id)) {
                 if (id == 'knowl') {
                     var sklvl = getPostSkLevel(skills[id]);
-                    if (sklvl > perkPointExtra) {
+                  
+				    if (sklvl > perkPointExtra) {
                         perkPoint += sklvl - perkPointExtra;
                         perkPointExtra = sklvl;
                         World.w.gui.infoText('perkPoint');
@@ -949,7 +972,10 @@ package fe.unit {
 			else {
                 for (var i = preNumb + 1; i <= postNumb; i++) {
                     var bonus = getSkBonus(i);
-                    if (bonus > 0) World.w.gui.infoText('skill', Res.txt('e', id) + '-' + bonus);
+                   
+				    if (bonus > 0) {
+						World.w.gui.infoText('skill', Res.txt('e', id) + '-' + bonus);
+					}
                 }
             }
 			

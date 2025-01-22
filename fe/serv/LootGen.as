@@ -492,13 +492,22 @@ package fe.serv {
 				if (nloc.itemsTip=='bibl') newLoot(0.5, Item.L_ITEM, 'book_cm');
 			}
 			else if (cont=='term' || cont=='info') {
-				if (nloc.land.act.id=='minst') newLoot(1,Item.L_ITEM,'datast');
-				else if (!newLoot(0.25, Item.L_ITEM,'disc')) newLoot(1,Item.L_ITEM,'data');
+				if (nloc.land.act.id=='minst') {
+					newLoot(1,Item.L_ITEM,'datast');
+				}
+				else if (!newLoot(0.25, Item.L_ITEM,'disc')) {
+					newLoot(1,Item.L_ITEM,'data');
+				}
+				
 				newLoot(0.5, Item.L_COMPM);
 			}
 			else if (cont=='cryo') {
 				itemCount=Math.floor(Math.random()*3);
-				for (var j:int = 0; j<=itemCount; j++) newLoot(1, Item.L_ITEM,'pcryo');
+			
+				for (var l:int = 0; l<=itemCount; l++) {
+					newLoot(1, Item.L_ITEM,'pcryo');
+				}
+				
 				newLoot(0.5, Item.L_ITEM, 'gel');
 			}
 			else if (cont=='chest') {
@@ -510,12 +519,18 @@ package fe.serv {
 				newLoot(0.03, Item.L_BOOK);
 				newLoot(0.5, Item.L_AMMO);
 				newLoot(0.03, Item.L_SCHEME);
-				if (is_loot>5) replic('full');
-				if (is_loot<2) replic('empty');
+				
+				if (is_loot>5) {
+					replic('full');
+				}
+				
+				if (is_loot<2) {
+					replic('empty');
+				}
 			}
 			else if (cont=='safe') {
 				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
-					for (var k:int = 0; k < 4; k++) {
+					for (var m:int = 0; m < 4; m++) {
 						loc.createUnit('bloat', nx, ny, true);
 					}
 				}
@@ -534,10 +549,22 @@ package fe.serv {
 					newLoot(0.1+lockDifficulty/300, Item.L_SCHEME);
 					newLoot(0.25, Item.L_POT, 'potMP');
 					newLoot(0.1, Item.L_POT, 'potHP');
-					if (!newLoot(0.4, Item.L_MED, 'potm2')) newLoot(0.3, Item.L_MED, 'potm3')
-					if (is_loot==0) newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
-					if (is_loot>6) replic('full');
-					if (is_loot<2) replic('empty');
+					
+					if (!newLoot(0.4, Item.L_MED, 'potm2')) {
+						newLoot(0.3, Item.L_MED, 'potm3');
+					}
+					
+					if (is_loot==0) {
+						newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
+					}
+					
+					if (is_loot>6) {
+						replic('full');
+					}
+					
+					if (is_loot<2) {
+						replic('empty');
+					}
 				}
 			}
 			else if (cont == 'specweap') {

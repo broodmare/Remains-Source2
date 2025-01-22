@@ -3,6 +3,7 @@ package fe.loc {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.serv.Item;
@@ -70,40 +71,40 @@ package fe.loc {
 			
 			var data:Object = ItemManager.reference.getItem(item.id)
 
-			massa = 0.1;
+			massa = 0.10;
 			nazv = data.nazv;
-			this.boundingBox.width = 30;
-			this.boundingBox.height = 20;
+			boundingBox.width = 30;
+			boundingBox.height = 20;
 
 			
 			
 			// Determine the appropriate sprite for the item
 			if (data.tip == Item.L_WEAPON) {
 				if ("vis" in data && "loot" in data) {
-					vis = new visualItem();	// .SWF Dependency
+					vis = SymbolFactory.createSymbol("visualItem") as MovieClip;
 					if ("vis_loot" in data) {
 						try {
 							vis.gotoAndStop(data.vis_loot);
 						}
 						catch (err) {
-							trace('ERROR: (00:25)');
+							trace("ERROR: (00:25)");
 						}
 					}
 				}
 				else {
 					if (data.variant) {
-						vClass = Res.getClass('vis' + item.id + '_' + data.variant, 'vis' + item.id, visp10mm);	// .SWF Dependency
+						vClass = Res.getClass("vis" + item.id + "_" + data.variant, "vis" + item.id, visp10mm);	// .SWF Dependency
 					}
 					else {
-						vClass = Res.getClass('vis' + item.id, null, visp10mm);	// .SWF Dependency
+						vClass = Res.getClass("vis" + item.id, null, visp10mm);	// .SWF Dependency
 					}
 
-					var infIco = new vClass();
-					infIco.stop();
-					infIco.x = -infIco.getRect(infIco).left - infIco.width * 0.50;
-					infIco.y = -infIco.height - infIco.getRect(infIco).top + 10;
+					var infIco1:MovieClip = new vClass();
+					infIco1.stop();
+					infIco1.x = -infIco1.getRect(infIco1).left - infIco1.width * 0.50;
+					infIco1.y = -infIco1.height - infIco1.getRect(infIco1).top + 10;
 					vis = new MovieClip();
-					vis.addChild(infIco);
+					vis.addChild(infIco1);
 					dery = 10;
 				}
 				
@@ -116,13 +117,13 @@ package fe.loc {
 				}
 			}
 			else if (data.tip == Item.L_EXPL) {
-				vClass = Res.getClass('vis' + item.id, null, visualAmmo);	// .SWF Dependency
-				var infIco = new vClass();
-				infIco.stop();
-				infIco.x = -infIco.getRect(infIco).left - infIco.width / 2;
-				infIco.y = -infIco.height - infIco.getRect(infIco).top;
+				vClass = Res.getClass("vis" + item.id, null, visualAmmo);	// .SWF Dependency
+				var infIco2:MovieClip = new vClass();
+				infIco2.stop();
+				infIco2.x = -infIco2.getRect(infIco2).left - infIco2.width * 0.50;
+				infIco2.y = -infIco2.height - infIco2.getRect(infIco2).top;
 				vis = new MovieClip();
-				vis.addChild(infIco);
+				vis.addChild(infIco2);
 				if ("fall" in data) {
 					sndFall = data.fall;
 				}
@@ -139,7 +140,7 @@ package fe.loc {
 					}
 				}
 				catch(err) {
-					trace('ERROR: (00:26)');
+					trace("ERROR: (00:26)");
 					vis.gotoAndStop(1);
 				}
 				if ("fall" in data) {
@@ -154,27 +155,27 @@ package fe.loc {
 					vis.gotoAndStop(item.id);
 				}
 				catch(err) {
-					if (data.tip == Item.L_COMPA) vis.gotoAndStop('compa');
-					else if (data.tip == Item.L_COMPW) vis.gotoAndStop('compw');
-					else if (data.tip == Item.L_COMPE) vis.gotoAndStop('compe');
-					else if (data.tip == Item.L_COMPP) vis.gotoAndStop('compp');
-					else if (data.tip == Item.L_KEY) vis.gotoAndStop('key');
-					else if (data.tip == Item.L_PAINT) vis.gotoAndStop('paint');
-					else if (data.tip == Item.L_FOOD) vis.gotoAndStop('food');
+					if (data.tip == Item.L_COMPA) vis.gotoAndStop("compa");
+					else if (data.tip == Item.L_COMPW) vis.gotoAndStop("compw");
+					else if (data.tip == Item.L_COMPE) vis.gotoAndStop("compe");
+					else if (data.tip == Item.L_COMPP) vis.gotoAndStop("compp");
+					else if (data.tip == Item.L_KEY) vis.gotoAndStop("key");
+					else if (data.tip == Item.L_PAINT) vis.gotoAndStop("paint");
+					else if (data.tip == Item.L_FOOD) vis.gotoAndStop("food");
 					else  {
-						trace('ERROR: (00:53) - ERROR: Could not load sprite for item: "' + item.id +'", using generic!');
+						trace("ERROR: (00:53) - ERROR: Could not load sprite for item: \"" + item.id + "\", using generic!");
 						vis.gotoAndStop(1);
 					}
 				}
 				
 				if (data.tip == Item.L_SCHEME) {
-					sndFall = 'fall_paper';
-					vis.gotoAndStop('scheme');
+					sndFall = "fall_paper";
+					vis.gotoAndStop("scheme");
 				}
 				
 				if (data.tip == Item.L_BOOK) {
-					nazv = '"' + nazv + '"';
-					sndFall = 'fall_paper';
+					nazv = "\"" + nazv + "\"";
+					sndFall = "fall_paper";
 				}
 				
 				if ("fall" in data) {
@@ -186,8 +187,8 @@ package fe.loc {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.cacheAsBitmap = true;
-				this.boundingBox.width = vis.width;
-				this.boundingBox.height = vis.height;
+				boundingBox.width = vis.width;
+				boundingBox.height = vis.height;
 			}
 
 			if (jump) {
@@ -216,7 +217,7 @@ package fe.loc {
 		public override function addVisual():void {
 			super.addVisual();
 			if (vis && cTransform) {
-				if (ItemManager.reference.getItem(item.id).tip != 'art') {
+				if (ItemManager.reference.getItem(item.id).tip != "art") {
 					vis.transform.colorTransform=cTransform;
 				}
 			}
@@ -224,7 +225,7 @@ package fe.loc {
 		
 		private function shine():void {
 			if (vis) {
-				var sh:MovieClip = new lootShine();	// .SWF Dependency
+				var sh:MovieClip = SymbolFactory.createSymbol("lootShine") as MovieClip;
 				sh.blendMode = "hardlight";
 				vis.addChild(sh);
 			}
@@ -282,7 +283,7 @@ package fe.loc {
 			}
 			
 			// [attraction] | притяжение
-			if ((World.w.gg.isTake>=20 || actTake) && rx < takeR && rx > -takeR && ry < takeR &&ry > -takeR && tvsos < 45) {
+			if ((World.w.gg.isTake >= 20 || actTake) && rx < takeR && rx > -takeR && ry < takeR &&ry > -takeR && tvsos < 45) {
 				levitPoss = false;
 				stay = false;
 				vsos = true;
@@ -345,7 +346,7 @@ package fe.loc {
 			}
 			
 			// AABB collision
-			onCursor = (coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
+			onCursor = (coordinates.X - boundingBox.halfWidth < World.w.celX && coordinates.X + boundingBox.halfWidth > World.w.celX && coordinates.Y - boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
 			
 			if (World.w.checkLoot) {
 				// auto2 = item.checkAuto(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
@@ -363,13 +364,13 @@ package fe.loc {
 			
 			//ГОРИЗОНТАЛЬ
 				coordinates.X += velocity.X / div;
-				if (coordinates.X - this.boundingBox.halfWidth < 0) {
-					coordinates.X = this.boundingBox.halfWidth;
+				if (coordinates.X - boundingBox.halfWidth < 0) {
+					coordinates.X = boundingBox.halfWidth;
 					velocity.X = Math.abs(velocity.X);
 				}
 
-				if (coordinates.X + this.boundingBox.halfWidth >= loc.spaceX * tileX) {
-					coordinates.X = loc.spaceX * tileX - 1 - this.boundingBox.halfWidth;
+				if (coordinates.X + boundingBox.halfWidth >= loc.spaceX * tileX) {
+					coordinates.X = loc.spaceX * tileX - 1 - boundingBox.halfWidth;
 					velocity.X = -Math.abs(velocity.X);
 				}
 
@@ -397,7 +398,7 @@ package fe.loc {
 			if (velocity.Y < 0) {
 				stay=false;
 				coordinates.Y += velocity.Y / div;
-				if (coordinates.Y - this.boundingBox.height < 0) coordinates.Y = this.boundingBox.height;
+				if (coordinates.Y - boundingBox.height < 0) coordinates.Y = boundingBox.height;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
 				if (t.phis==1 && coordinates.Y <= t.boundingBox.bottom && coordinates.Y >= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
 					coordinates.Y = t.boundingBox.bottom + 1;
@@ -436,7 +437,10 @@ package fe.loc {
 				if (newmy) {
 					coordinates.Y = newmy - 1;
 					if (!levit) {
-						if (velocity.Y > 5 && sndFall) Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, velocity.Y / 15);
+						if (velocity.Y > 5 && sndFall) {
+							Snd.ps(sndFall, coordinates.X, coordinates.Y, 0, velocity.Y / 15);
+						}
+
 						stay = true;
 						velocity.Y = 0;
 						velocity.X = 0;
@@ -467,11 +471,13 @@ package fe.loc {
 		public function checkShelf(velocityDown:Number):Number {
 			for (var i in loc.objs) {
 				var b:Box = loc.objs[i] as Box;
+				
 				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.boundingBox.left || coordinates.X > b.boundingBox.right) && coordinates.Y <= b.boundingBox.top && coordinates.Y + velocityDown > b.boundingBox.top) {
 					osnova = b;
 					return b.boundingBox.top;
 				}
 			}
+			
 			return 0;
 		}
 		
@@ -486,12 +492,12 @@ package fe.loc {
 				}
 			}
 			catch (err) {
-				trace('ERROR: (00:28)');
+				trace("ERROR: (00:28)");
 			}
 
 			if (pla != isPlav && velocity.Y > 5) {
-				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(velocity.Y) * (Math.random() * 0.3 + 0.3), kol:5});
-				Snd.ps('fall_item_water', coordinates.X, coordinates.Y, 0, velocity.Y / 10);
+				Emitter.emit("kap", loc, coordinates.X, coordinates.Y, {dy:-Math.abs(velocity.Y) * (Math.random() * 0.3 + 0.3), kol:5});
+				Snd.ps("fall_item_water", coordinates.X, coordinates.Y, 0, velocity.Y / 10);
 			}
 			
 			return isPlav;

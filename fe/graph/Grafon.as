@@ -271,10 +271,10 @@ package fe.graph {
 		}
 		
 		private function createCursors():void {
-			createCursor(visCurArrow,"arrow");				// .SWF Dependency
-			createCursor(visCurTarget,"target", 13, 13);	// .SWF Dependency
-			createCursor(visCurTarget1,"combat", 13, 13);	// .SWF Dependency
-			createCursor(visCurTarget2,"action", 13, 13);	// .SWF Dependency
+			createCursor(visCurArrow,"arrow");				// .SWF Dependency (Class)
+			createCursor(visCurTarget,"target", 13, 13);	// .SWF Dependency (Class)
+			createCursor(visCurTarget1,"combat", 13, 13);	// .SWF Dependency (Class)
+			createCursor(visCurTarget2,"action", 13, 13);	// .SWF Dependency (Class)
  		}
 		
 		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void {
@@ -1012,15 +1012,15 @@ package fe.graph {
 		}
 		
 		public function tileDie(t:Tile,tip:int):void {
-			var erC:Class = block_dyr;	// .fla linkage
-			var drC:Class = block_tre;	// .fla linkage
+			var erC:Class = block_dyr;	// .SWF Dependency (Class)
+			var drC:Class = block_tre;	// .SWF Dependency (Class)
 			
 			var nx:Number = (t.coords.X + 0.50) * tileX;
 			var ny:Number = (t.coords.Y + 0.50) * tileY;
 
 			if (t.fake) {
 				Emitter.emit("fake", loc, nx, ny);
-				drC = block_bur;	// .fla linkage
+				drC = block_bur;		// .SWF Dependency (Class)
 			}
 			else if (t.mat == 7) {
 				Emitter.emit("fake", loc, nx, ny);
@@ -1037,12 +1037,12 @@ package fe.graph {
 			}
 			else if (tip >= 15) {
 				Emitter.emit("plav", loc, nx, ny);
-				erC = block_plav;		// .fla linkage
-				drC = block_pla;		// .fla linkage
+				erC = block_plav;		// .SWF Dependency (Class)
+				drC = block_pla;		// .SWF Dependency (Class)
 			}
 			else if (tip >= 11 && tip <= 13) {
 				Emitter.emit("bur", loc, nx, ny);
-				drC = block_bur;		// .fla linkage
+				drC = block_bur;		// .SWF Dependency (Class)
 			}
 
 			decal(erC, drC, nx, ny, 1, 0, "hardlight");
@@ -1064,11 +1064,11 @@ package fe.graph {
 			switch (mat) {
 				case 1:	//металл
 					if (tip >= 1 && tip <= 6) {
-						drC = bullet_metal;	// .fla Linkage
+						drC = bullet_metal;	// .SWF Dependency (Class)
 					}
 					else if (tip==9) {			//взрыв
 						if (!soft && Math.random()*0.5<ver) {
-							drC=metal_tre;	// .fla Linkage
+							drC=metal_tre;	// .SWF Dependency (Class)
 						}
 						
 						centr = true;
@@ -1080,7 +1080,7 @@ package fe.graph {
 				case 6:
 					if (tip >= 1 && tip <= 3) {				//пули		
 						if (tip > 1 && Math.random() > 0.50) {
-							erC = bullet_dyr;	// .fla Linkage
+							erC = bullet_dyr	// .SWF Dependency (Class)
 						}
 
 						drC = bullet_tre;
@@ -1108,7 +1108,7 @@ package fe.graph {
 					}
 					else if (tip == 9) {	//взрыв
 						if (!soft && Math.random() * 0.50 < ver) {
-							drC = expl_tre;	// .fla Linkage
+							drC = expl_tre;	// .SWF Dependency (Class)
 						}
 
 						centr = true;
@@ -1126,8 +1126,8 @@ package fe.graph {
 
 				case 3: //дерево
 					if (tip >= 1 && tip <= 3) {	//пули
-						erC = bullet_dyr;		// .fla Linkage
-						drC = bullet_wood;		// .fla Linkage
+						erC = bullet_dyr;		// .SWF Dependency (Class)
+						drC = bullet_wood;		// .SWF Dependency (Class)
 						rc = 0;
 						
 						if (tip == 2) {
@@ -1139,12 +1139,12 @@ package fe.graph {
 						}
 					}
 					else if (tip>=4 && tip<=6) {	//удары
-						if (!soft) drC=punch_tre;	// .fla Linkage
+						if (!soft) drC=punch_tre;	// .SWF Dependency (Class)
 						if (tip==5) sc+=0.5;
 						if (tip==6) sc+=1;
 					}
 					else if (tip==9) {	//взрыв
-						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .fla Linkage
+						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .SWF Dependency (Class)
 						centr=true;
 					}
 
@@ -1159,17 +1159,17 @@ package fe.graph {
 
 				case 11:
 					if (Math.random() < 0.10) {
-						drC = fire_soft;			// .fla Linkage
+						drC = fire_soft;			// .SWF Dependency (Class)
 					}
 				break;
 
 				case 12: //лазеры
 				case 13:
 					if (soft && Math.random() * 0.20 > ver) {
-						drC = fire_soft;			// .fla Linkage
+						drC = fire_soft;			// .SWF Dependency (Class)
 					}
 					else {
-						drC = laser_tre;			// .fla Linkage
+						drC = laser_tre;			// .SWF Dependency (Class)
 					}
 
 					if (tip == 13) sc *= 0.6;
@@ -1178,11 +1178,11 @@ package fe.graph {
 
 				case 15: //плазма
 					if (soft) {
-						drC = plasma_soft;			// .fla Linkage
+						drC = plasma_soft;			// .SWF Dependency (Class)
 					}
 					else {
-						erC = plasma_dyr;			// .fla Linkage
-						drC = plasma_tre;			// .fla Linkage
+						erC = plasma_dyr;			// .SWF Dependency (Class)
+						drC = plasma_tre;			// .SWF Dependency (Class)
 					}
 
 					bl = "hardlight";
@@ -1190,34 +1190,34 @@ package fe.graph {
 
 				case 16:
 					if (soft) {
-						drC=fire_soft;				// .fla Linkage
+						drC=fire_soft;				// .SWF Dependency (Class)
 					}
 					else {
-						erC = plasma_dyr;			// .fla Linkage
-						drC = bluplasma_tre;		// .fla Linkage
+						erC = plasma_dyr;			// .SWF Dependency (Class)
+						drC = bluplasma_tre;		// .SWF Dependency (Class)
 					}
 					bl = "hardlight";
 				break;
 
 				case 17:
 					if (soft) {
-						drC=fire_soft;				// .fla Linkage
+						drC=fire_soft;				// .SWF Dependency (Class)
 					}
 					else {
-						erC = plasma_dyr;			// .fla Linkage
-						drC = pinkplasma_tre;		// .fla Linkage
+						erC = plasma_dyr;			// .SWF Dependency (Class)
+						drC = pinkplasma_tre;		// .SWF Dependency (Class)
 					}
 					bl = "hardlight";
 				break;
 
 				case 18:
-					drC = cryo_soft;				// .fla Linkage
+					drC = cryo_soft;				// .SWF Dependency (Class)
 					bl = "hardlight";
 				break;
 
 				case 19: //взрыв
 					if (!soft && Math.random() * 0.50 < ver) {
-						drC = plaexpl_tre;			// .fla Linkage
+						drC = plaexpl_tre;			// .SWF Dependency (Class)
 					}
 
 					centr=true;
@@ -1276,8 +1276,8 @@ package fe.graph {
 					rdx = -(nx - dyrx/2);
 				}
 				
-				if (ny-dyry/2<0) {
-					rdy = -(ny - dyry/2);
+				if (ny - dyry * 0.50 < 0) {
+					rdy = -(ny - dyry * 0.50);
 				}
 				
 				var rect:Rectangle = new Rectangle(nx - dyrx * 0.50 + rdx, ny - dyry * 0.50 + rdy, nx + dyrx * 0.50 + rdx, ny + dyry * 0.50 + rdy);
@@ -1347,8 +1347,7 @@ package fe.graph {
 			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
 			
 			// Paint along the line, step by step.
-			for (var i:int = 1; i <= kol; i++)
-			{
+			for (var i:int = 1; i <= kol; i++) {
 				// Calculate the next point to paint.
 				pm.tx = nx1 + dx * i;
 				pm.ty = ny1 + dy * i;

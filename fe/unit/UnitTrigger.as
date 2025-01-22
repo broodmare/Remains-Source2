@@ -108,20 +108,23 @@ package fe.unit {
 			inter.needSkillLvl=sk;
 		}
 		
-		private function setDamager():void
-		{
-			if (res=='noise' || res=='') return;
+		private function setDamager():void {
+			if (res=='noise' || res=='') {
+				return;
+			}
+			
 			var i:int=1;
 			var nx:Number = coordinates.X;
 			var ny:Number = coordinates.Y;
 			var nxml = <obj/>;
 			var ok:Boolean=false;
+			
 			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).phis==0) {
 				ny = coordinates.Y + 2 * tileY;
 				res='expl1';
 				ok=true;
 			}
-			else for (var i=1; i<=10; i++) {
+			else for (var i:int = 1; i <= 10; i++) {
 				if (res=='damgren' || res=='hturret2') {
 					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).phis) {
 						if (i==1) break;

@@ -61,7 +61,7 @@ package fe.unit {
 		}
 		
 		//дать оружие
-		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null) {
+		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null):void {
 			if (loadObj && loadObj.weap) {
 				if (loadObj.weap!='') {
 					currentWeapon = WeaponManager.reference.cloneWeapon(loadObj.weap);
@@ -155,8 +155,8 @@ package fe.unit {
 			var jmp:Number=0;
 			
 			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celY = coordinates.Y - boundingBox.height;
+				celX = coordinates.X + boundingBox.width * storona * 2;
 				return;
 			}
 			
@@ -213,7 +213,7 @@ package fe.unit {
 						aiSpok--;
 					}
 					else {
-						setCel(null, coordinates.X + storona * 100, coordinates.Y - this.boundingBox.height * 0.75);
+						setCel(null, coordinates.X + storona * 100, coordinates.Y - boundingBox.height * 0.75);
 					}
 					if (aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
@@ -223,7 +223,7 @@ package fe.unit {
 			
 			//направление
 			celDX = celX - coordinates.X;
-			celDY = celY - coordinates.Y + this.boundingBox.height;
+			celDY = celY - coordinates.Y + boundingBox.height;
 			if (celDY>40) aiVNapr=1;		//вниз
 			else if(celDY<-40) aiVNapr=-1;	//прыжок
 			else aiVNapr=0;
@@ -342,10 +342,11 @@ package fe.unit {
 
 		}
 		
-		public function actPort(rnd:Boolean=false) {
+		public function actPort(rnd:Boolean=false):void {
 			var cel:Unit=World.w.gg;
 			var nx:Number=0;
 			var ny:Number=0;
+			
 			for (var i:int = 1; i <= 20; i++) {
 				if (i<5 && !rnd) {
 					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
@@ -361,27 +362,42 @@ package fe.unit {
 					nx=Math.random()*loc.maxX;
 					ny=Math.random()*loc.maxY;
 				}
+				
 				nx = Math.round(nx/tileX)*tileX
 				ny = Math.ceil(ny/tileY)*tileY-1;
-				if (nx < this.boundingBox.width) nx = this.boundingBox.width;
-				if (ny < this.boundingBox.height + 40) ny = this.boundingBox.height + 40;
-				if (nx > loc.maxX - this.boundingBox.width) nx = loc.maxX - this.boundingBox.width;
-				if (ny > loc.maxY - 40) ny = loc.maxY - 40;
+				
+				if (nx < boundingBox.width) {
+					nx = boundingBox.width;
+				}
+				
+				if (ny < boundingBox.height + 40) {
+					ny = boundingBox.height + 40;
+				}
+				
+				if (nx > loc.maxX - boundingBox.width) {
+					nx = loc.maxX - boundingBox.width;
+				}
+				
+				if (ny > loc.maxY - 40) {ny = loc.maxY - 40;}
+				
 				if (!collisionAll(nx-coordinates.X, ny-coordinates.Y)) {
 					teleport(nx,ny,1);
 					velocity.set(0, 0);
 					setWeaponPos();
+					
 					if (findCel(true) && celUnit) {
 						aiSpok=0;
 						aiState=5;
 						storona=(celX>coordinates.X)?1:-1;
-						aiTCh=int(Math.random()*30)+20;
-						t_port=int(Math.random()*90+150);
+						aiTCh = int(Math.random()  * 30) + 20;
+						t_port = int(Math.random() * 90  + 150);
 					}
 					else {
 						t_port=int(Math.random()*90+30);
 					}
+					
 					kol_port--;
+					
 					return;
 				}
 			}

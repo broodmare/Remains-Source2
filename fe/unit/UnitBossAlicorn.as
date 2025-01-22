@@ -512,10 +512,11 @@ package fe.unit {
 					(teleObj as UnitPlayer).t_throw=30;
 				}
 				
-				if (teleObj is Box) (teleObj as Box).isThrow=true;
+				if (teleObj is Box) {
+					(teleObj as Box).isThrow=true;
+				}
 				
-				norma(p,tspeed);
-				var dm = 0;
+				norma(p, tspeed);
 				teleObj.velocity.X += p.x;
 				teleObj.velocity.Y += p.y;
 				dropTeleObj();

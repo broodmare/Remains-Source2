@@ -205,10 +205,13 @@ package fe.unit {
 		// Vision varaibles
 		public var celUnit:Unit;	//кто является целью
 		public var priorUnit:Unit;	//кто является врагом
-		public var eyeX:Number=-1000, eyeY:Number=-1000;	//точка зрения
+		
+		// Point of view
+		public var eyeX:Number				= -1000.00;
+		public var eyeY:Number				= -1000.00;
 		
 		//состояния
-		public var sost:int					= 1;		//1-живой	2-в отключке    3-сдох    4-уничтожен и больше не обрабатывается
+		public var sost:int					= 1;		//1 - Alive, 2 - Unconscious, 3 - Dead, 4- Destroyed and no longer processed
 		public var shok:int					= 0;
 		public var maxShok:int				= 30;
 		public var stun:int					= 0;
@@ -306,23 +309,31 @@ package fe.unit {
 		public var ctrans:Boolean			= true;		//применять цветофильтр
 		//полоска хп
 		public var hpbar:MovieClip;
-		public static var heroTransforms:Array = [new ColorTransform(1,0.8,0.8,1,64,0,0,0), new ColorTransform(0.8,1,1,1,0,32,64,0), new ColorTransform(1,0.8,1,1,32,0,64,0), new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
+		public static var heroTransforms:Array = [ 
+			new ColorTransform(1.0, 0.8, 0.8, 1, 64,  0, 0,  0), 
+			new ColorTransform(0.8, 1.0, 1.0, 1,  0, 32, 64, 0), 
+			new ColorTransform(1.0, 0.8, 1.0, 1, 32,  0, 64, 0), 
+			new ColorTransform(0.8, 1.0, 0.8, 1,  0, 64, 0,  0)
+		];
 		
 		//смертельные эффекты
 		public var timerDie:int				= 0;		//отложенная смерть
 		public var burn:Desintegr;
 		public var bloodEmit:Emitter;
 		public var numbEmit:Emitter;
-		public var hitPart:Part, t_hitPart:int=0, hitSumm:Number=0, t_mess:int=0;
+		public var hitPart:Part;
+		public var t_hitPart:int			= 0;
+		public var hitSumm:Number			= 0.00;
+		public var t_mess:int				= 0;
 		
 		//звуки
 		public var sndMusic:String;
-		private var sndMusicPrior:int		=   0;
+		private var sndMusicPrior:int		= 0;
 		public var sndDie:String;
 		public var sndRun:String;
 		public var sndRunDist:Number		= 800;
 		public var sndRunOn:Boolean			= false;
-		public var sndVolkoef:Number		=   1.00;
+		public var sndVolkoef:Number		= 1.00;
 
 		//пложение
 		public var mother:Unit;
@@ -433,6 +444,7 @@ package fe.unit {
 			}
 			var uc:Class;
 			var cn:String = node.@cl;
+
 			switch (cn) {
 				case 'Mine':			uc = Mine;break;
 				case 'UnitTrap':		uc = UnitTrap;break;
@@ -2509,7 +2521,7 @@ package fe.unit {
 			eyeX = coordinates.X + boundingBox.width * 0.25 * storona;
 			eyeY = coordinates.Y - boundingBox.height * 0.75;
 			
-			//левитация
+			// [Levitation]
 			if (sost == 1) {
 				if (levit) {
 					levit_r++;
@@ -3201,7 +3213,7 @@ package fe.unit {
 					}
 				}
 				
-				//возврат урона хозяину пули
+				// [Return damage to the owner of the bullet]
 				if (bul && bul.owner && bul.owner.relat > 0) {
 					bul.owner.damage(dam*bul.owner.relat, Resistances.DAM_INTERNAL);
 				}
@@ -3231,7 +3243,7 @@ package fe.unit {
 							bloodEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {kol:int(dam/3)});
 						}
 						
-						if (blood == 1 && tip != Resistances.DAM_BLEED && massa > 0.2) {
+						if (blood == 1 && tip != Resistances.DAM_BLEED && massa > 0.20) {
 							var ver:Number = Math.random();
 							
 							if (tip == Resistances.DAM_CUT) {
@@ -3239,7 +3251,7 @@ package fe.unit {
 							}
 							
 							if (isCrit > 0) {
-								ver *= 0.3;
+								ver *= 0.30;
 							}
 							
 							if (dam / 1000 > ver) {
@@ -3249,7 +3261,7 @@ package fe.unit {
 									st = -1;
 								}
 								
-								if (bul == null && Math.random() < 0.5) {
+								if (bul == null && Math.random() < 0.50) {
 									st=-1;
 								}
 								

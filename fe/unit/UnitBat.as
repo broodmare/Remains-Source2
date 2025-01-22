@@ -18,9 +18,13 @@ package fe.unit {
 
 			super(cid, ndif, xml, loadObj);
 			
-			if (cid) tr=int(cid);
+			if (cid) {
+				tr=int(cid);
+			}
 			
-			if (xml && xml.@tr.length()) tr=xml.@tr;
+			if (xml && xml.@tr.length()) {
+				tr=xml.@tr;
+			}
 			
 			id = "bloodwing";
 			
@@ -92,6 +96,7 @@ package fe.unit {
 		}
 		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);
+			
 			if (sost==1 && aiState<=1) {
 				aiSpok=maxSpok-1;
 				aiState=2;
@@ -109,13 +114,18 @@ package fe.unit {
 		
 		override protected function control():void {
 			if (sost>=3) return;
+			
 			if (World.w.enemyAct<=0) {
 				return;
 			}
+			
 			if (stun) {
 				return;
 			}
-			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
+			
+			if (aiTCh>0) {
+				aiTCh--;		//счётчик смены состояний
+			}
 			else {						//смена состояний
 				if (aiState==6) {	
 					aiState=4;
@@ -155,6 +165,7 @@ package fe.unit {
 					aiTCh=Math.floor(Math.random()*100)+100;
 				}
 			}
+			
 			//поиск цели
 			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState<6) {
 				if (findCel()) {
@@ -175,6 +186,7 @@ package fe.unit {
 					aiDy=aiDy/aiRasst;
 				}
 			}
+			
 			if (isPlav) {
 				turnY=-1;
 				aiState=1;
@@ -183,25 +195,30 @@ package fe.unit {
 			vision=(aiState==0)?0.4:1;
 			ear=(aiState==0)?0.6:1;
 	
-				if (turnX) {
-					storona=turnX;
-					aiDx=Math.abs(aiDx)*turnX;
-					turnX=0;
+			if (turnX) {
+				storona=turnX;
+				aiDx=Math.abs(aiDx)*turnX;
+				turnX=0;
+			}
+			
+			if (turnY) {
+				if (turnY==1 && aiState==1) {
+					velocity.set(0, 0);
+					aiDx = 0;
+					aiDy = 0;
+					aiSpok = 0;
+					aiState = 0;
 				}
-				if (turnY) {
-					if (turnY==1 && aiState==1) {
-						velocity.set(0, 0);
-						aiDx = 0;
-						aiDy = 0;
-						aiSpok = 0;
-						aiState = 0;
-					} else {
-						aiDy=Math.abs(aiDy)*turnY;
-					}
-					turnY=0;
+				else {
+					aiDy=Math.abs(aiDy)*turnY;
 				}
+				
+				turnY=0;
+			}
+			
 			if (aiState==1 || aiState==2 || aiState==3 || aiState==4) {
 				maxSpeed=(aiState==4)?runSpeed:walkSpeed;
+				
 				if (isPlav) {
 					velocity.X += aiDx * accel * 0.3;
 					velocity.Y += aiDy * accel * 0.3;
@@ -221,10 +238,18 @@ package fe.unit {
 			}
 			
 			if (World.w.enemyAct>=3) {
-				if (aiState==3 && shok<=0 && isrnd(0.1)) attKorp(celUnit);
-				if (aiState==4 && shok<=0) attKorp(celUnit);
+				if (aiState==3 && shok<=0 && isrnd(0.1)) {
+					attKorp(celUnit);
+				}
+				
+				if (aiState==4 && shok<=0) {
+					attKorp(celUnit);
+				}
+				
 				if (aiState==6) {
-					if (attKorp(celUnit,2) && !celUnit.invulner) celUnit.cut+=dam/3;
+					if (attKorp(celUnit, 2) && !celUnit.invulner) {
+						celUnit.cut+=dam/3;
+					}
 				}
 			}
 		}

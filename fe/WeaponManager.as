@@ -149,7 +149,7 @@ package fe {
 				return weapon = wepPaint;
 			}
 			else if (data.tip == "throwable") {
-				var wepThrow:WThrow = new WThrow(data);
+				var wepThrow:WThrow = new WThrow(weapon, data);
 				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wThrow vis is " + ((weapon.vis != null) ? "present" : "missing"));
 				return weapon = wepThrow;
 			}

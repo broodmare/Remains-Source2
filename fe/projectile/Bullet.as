@@ -309,7 +309,7 @@ package fe.projectile {
 		// [if not, then adds it to the list and returns true]
 		// I changed this to a dictionary for O1 searches on bullet hits, but I'm not sure if there'd ever be enough targets in the list
 		// To justify the overhead of creating a new dictionary for every bullet?
-		public function udar(un):Boolean {
+		public function udar(un:Obj):Boolean {
 			if (parrDict == null) parrDict = new Dictionary();
 			if (parrDict[un] === true) {
 				return false;

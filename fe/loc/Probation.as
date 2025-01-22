@@ -72,7 +72,7 @@ package fe.loc {
 		}
 		
 		//начальная подготовка (один раз)
-		public function prepare() {
+		public function prepare():void {
 			for each (var b:Box in loc.objs) {
 				if (b.inter && (b.inter.prize && prizeActive)) {
 					b.inter.setAct('lock',0);
@@ -83,8 +83,11 @@ package fe.loc {
 		
 		//вызвать при открывании контейнеров и убийстве мобов
 		//если условия выполнены, то закрыть испытание
-		public function check() {
-			if (closed) return;
+		public function check():void {
+			if (closed) {
+				return;
+			}
+			
 			if (checkAllCon()) {
 				closeProb();
 			}
@@ -154,38 +157,39 @@ package fe.loc {
 		}
 		
 		public function showHelp():void {
-			var isHelp=(help!='');
-			World.w.gui.informText(info+(isHelp?('<br><br>'+Res.txt("g", 'need_help')):''),isHelp);
+			var isHelp:Boolean = (help != "");
+			World.w.gui.informText(info+(isHelp?('<br><br>'+Res.txt("g", 'need_help')):''), isHelp);
 		}
 		
 		//активировать испытание
 		public function activateProb():void {
-			if (closed || active || !loc.active) return;
-			active=true;
+			if (closed || active || !loc.active) {
+				return;
+			}
+
+			active = true;
 			doorsOnOff(-1);
 		}
 		
-		//вернуть испытание в исходное состояние
+		// [return the prob to its original state]
 		public function defaultProb():void {
-			active=false;
+			active = false;
 			doorsOnOff(0);
-			/*for each (var un:Unit in loc.units) {
-				un.sost=1;
-				un.setNull(true);
-			}*/
 		}
 
 		//-1 - отключить все выходы, 0 - отключить все выходы, кроме основного, 1-включить все выходы
-		private function doorsOnOff(turn:int) {
+		private function doorsOnOff(turn:int):void {
 			for each (var b:Box in loc.objs) {
 				if (b.id=='doorout') {
 					if (!b.vis.visible && turn==1 || b.vis.visible && turn==-1) {
 						b.inter.shine();
 					}
+					
 					if (turn==-1 || turn==0 && b.uid!='begin') {
 						b.vis.visible=b.shad.visible=false;
 						b.inter.active=false;
 					}
+					
 					if (turn==1 || turn==0 && b.uid=='begin') {
 						b.vis.visible=b.shad.visible=true;
 						b.inter.active=true;
@@ -195,7 +199,10 @@ package fe.loc {
 		}
 		
 		public function beginWave():void {
-			if (onWave) return;
+			if (onWave) {
+				return;
+			}
+			
 			doorsOnOff(-1);
 			onWave=true;
 			kolEn=killEn=0;
@@ -206,23 +213,39 @@ package fe.loc {
 		private function createWave():void {
 			nspawn=0;
 			var w:XML=xml.wave[nwave];
-			if (w==null) return;
+			
+			if (w==null) {
+				return;
+			}
+			
 			for each (var un in w.obj) {
 				loc.waveSpawn(un,nspawn);
 				kolEn++;
 				nspawn++;
 			}
-			if (w.@t.length()) t_wave=int(w.@t)*World.fps;
+			
+			if (w.@t.length()) {
+				t_wave=int(w.@t)*World.fps;
+			}
+			
 			nwave++;
 		}
 		
 		//проверка выполняется при убийстве врага
 		public function checkWave(inc:Boolean=false):void {
-			if (inc) killEn++;
+			if (inc) {
+				killEn++;
+			}
+			
 			if (killEn>=kolEn) {
 				checkAllCon();
-				if (nwave<maxwave) t_wave=next_t;
-				else t_wave=0;
+				
+				if (nwave<maxwave) {
+					t_wave=next_t;
+				}
+				else {
+					t_wave=0;
+				}
 			}
 		}
 		
@@ -238,9 +261,17 @@ package fe.loc {
 		
 		public function step():void {
 			if (onWave) {
-				if (t_wave>0) t_wave--;
-				if (t_wave==1 && nwave<maxwave) createWave();
-				if (t_wave%30==1) World.w.gui.messText('',Math.floor(t_wave/30).toString());
+				if (t_wave>0) {
+					t_wave--;
+				}
+
+				if (t_wave==1 && nwave<maxwave) {
+					createWave();
+				}
+
+				if (t_wave%30==1) {
+					World.w.gui.messText('',Math.floor(t_wave/30).toString());
+				}
 			}
 		}
 		

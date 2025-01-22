@@ -54,7 +54,7 @@ package fe.unit {
 			vis.alpha=v?1:0.1;
 		}
 		
-		function disarm():void {
+		private function disarm():void {
 			if (aiState==1) {
 				klac();
 			}
@@ -85,7 +85,7 @@ package fe.unit {
 			return obj;
 		}	
 		
-		function klac():void {
+		private function klac():void {
 			aiState=2;
 			sound('trap_a');
 			vis.gotoAndPlay(1);

@@ -125,10 +125,9 @@ package fe.unit {
 			else {
 				currentWeapon = getXmlWeapon(ndif);
 			}
-			// Set weapon owner to this unit
-			wm.setOwner(currentWeapon, this)
 			
 			if (currentWeapon) {
+				wm.setOwner(currentWeapon, this);
 				weap = currentWeapon.id;
 			}
 			else {

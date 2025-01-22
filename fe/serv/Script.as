@@ -20,7 +20,7 @@ package fe.serv {
 		public var running:Boolean		= false;	// [runtime script running]
 		private var wait:Boolean		= false;	// [waiting for a button to be pressed]
 		private var ncom:int;
-		private var tcom:int			= 0;
+		private var tcom:int			=  0;
 		private var dial_n:int			= -1;
 
 		public function Script(xml:XML, nland:Land=null, nowner:Obj=null, tt:Boolean=false) {
@@ -28,7 +28,7 @@ package fe.serv {
 			owner = nowner;
 			
 			if (xml.@eve.length()) {
-				eve=xml.@eve;
+				eve = xml.@eve;
 			}
 			
 			if (xml.@act.length()) {
@@ -36,7 +36,9 @@ package fe.serv {
 			}
 			
 			if (xml.s.length()) {
-				for each(var s:XML in xml.s) analiz(s);
+				for each(var s:XML in xml.s) {
+					analiz(s);
+				}
 			}
 			
 			if (tt) {
@@ -65,8 +67,10 @@ package fe.serv {
 			}
 			
 			if (xml.@t.length()) {						//задержка в сек.
-				t=Math.round(xml.@t*World.fps);
-				if (t>0) onTimer=true;
+				t = Math.round(xml.@t * World.fps);
+				if (t > 0) {
+					onTimer=true;
+				}
 			}
 			
 			if (xml.@n.length()) {
@@ -236,8 +240,12 @@ package fe.serv {
 							World.w.gg.controlOff();
 							wait=true;
 							World.w.ctr.active=false;
-							var str = Res.txt('m',actObj.val) + "\n" + LanguageManager.reference.localText("pip", 'recLevel') + ': [' + World.w.game.lands[actObj.val].dif + "]\n" + LanguageManager.reference.localText("pip", 'isperslvl') + ': [' + World.w.pers.level + ']';
-							if (World.w.game.lands[actObj.val].dif>World.w.pers.level) str += '\n\n' + LanguageManager.reference.localText("pip", 'wrLevel');
+							var str:String = Res.txt('m',actObj.val) + "\n" + LanguageManager.reference.localText("pip", 'recLevel') + ': [' + World.w.game.lands[actObj.val].dif + "]\n" + LanguageManager.reference.localText("pip", 'isperslvl') + ': [' + World.w.pers.level + ']';
+							
+							if (World.w.game.lands[actObj.val].dif>World.w.pers.level) {
+								str += '\n\n' + LanguageManager.reference.localText("pip", 'wrLevel');
+							}
+							
 							World.w.gui.dialText(<r mod='1'>{str}</r>,0,false,true);
 						}
 					break;

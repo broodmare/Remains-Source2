@@ -254,19 +254,19 @@ package fe.unit {
 					getXmlParam();
 					
 					if (isBad) {
-						var proc=World.w.pers.addictions[id];
+						var proc = World.w.pers.addictions[id];
 						
-						if (proc>=World.w.pers.ad1) {
-							forever=true;
-							ad=true;
+						if (proc >= World.w.pers.ad1) {
+							forever = true;
+							ad = true;
 						}
 						
-						if (proc>=World.w.pers.ad2) {
-							lvl=2;
+						if (proc >= World.w.pers.ad2) {
+							lvl = 2;
 						}
 						
-						if (proc>=World.w.pers.ad3) {
-							lvl=3;
+						if (proc >= World.w.pers.ad3) {
+							lvl = 3;
 						}
 					}
 					

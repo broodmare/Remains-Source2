@@ -128,8 +128,11 @@ package fe.unit {
 				}
 			}
 			// [Weapon]
+			var wm = WeaponManager.reference;
 			if (weap != "") {
-				currentWeapon = WeaponManager.reference.cloneWeapon(weap);
+				currentWeapon = wm.cloneWeapon(weap);
+				wm.setOwner(currentWeapon, this);
+
 				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
 				setCel(null, 100, -30);
 				childObjs = [currentWeapon];
@@ -140,7 +143,8 @@ package fe.unit {
 			}
 			
 			if (weap2 != "") {
-				dopWeapon = WeaponManager.reference.cloneWeapon(weap2);
+				dopWeapon = wm.cloneWeapon(weap2);
+				wm.setOwner(dopWeapon, this);
 				dopWeapon.magazineRounds = dopWeapon.magazineCapacity;
 				childObjs.push(dopWeapon);
 			}
@@ -393,21 +397,31 @@ package fe.unit {
 				}
 			}
 			
-			if (wait>0) wait--;
+			if (wait>0) {
+				wait--;
+			}
 			
-			if (wait==1) dey='';
+			if (wait==1) {
+				dey='';
+			}
 			
 			if (que.length && wait<=0) {
-				var q=que.shift();
+				var q:Object = que.shift();	// Removes first element of the array and returns it
 				analiz(q);
 			}
 			
-			if (vis.alpha<1) vis.alpha+=0.05;
+			if (vis.alpha < 1) {
+				vis.alpha += 0.05;
+			}
 			
-			if (currentWeapon && currentWeapon.vis.alpha<1) currentWeapon.vis.alpha+=0.05;
+			if (currentWeapon && currentWeapon.vis.alpha < 1) {
+				currentWeapon.vis.alpha += 0.05;
+			}
 			
-			if (aiTip=='fly') {
-				if (!stay) isFly=true;
+			if (aiTip == 'fly') {
+				if (!stay) {
+					isFly=true;
+				}
 			}
 			
 			if (isFly) {
