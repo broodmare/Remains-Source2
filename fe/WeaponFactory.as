@@ -67,6 +67,7 @@ package fe {
 			// [Visual]
 			weapon.svis = 'vis' + weapon.id;
 			
+			// Punch weapons don't have a visual sprite
 			if (weapon.tip == "punch") {
 				weapon.svisv = null;
 			}

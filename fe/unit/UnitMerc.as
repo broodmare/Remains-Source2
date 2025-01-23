@@ -24,7 +24,7 @@ package fe.unit {
 			visionMult=1.5;
 			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosGriffon1");
-			arm=Res.getVis('visualGrifArm'+tr, visualGrifArm1); // .SWF Dependency
+			arm = SymbolFactory.fetchSymbolClass("visualGrifArm" + String(tr)) || SymbolFactory.fetchSymbolClass("visualGrifArm1") as MovieClip;
 			
 			if (grenader > 0) {
 				thWeapon = WeaponManager.reference.cloneWeapon("mercgr");
@@ -35,21 +35,29 @@ package fe.unit {
 		}
 		
 		public override function addVisual():void {
-			if (disabled) return;
+			if (disabled) {
+				return;
+			}
 			
 			trigDis=!checkTrig();
 			
-			if (trigDis) return;
+			if (trigDis) {
+				return;
+			}
 			
 			super.addVisual();
 			
-			if (arm) World.w.grafon.visObjs[sloy].addChild(arm);
+			if (arm) {
+				World.w.grafon.visObjs[sloy].addChild(arm);
+			}
 			
-			if (cTransform) arm.transform.colorTransform=cTransform;
+			if (cTransform) {
+				arm.transform.colorTransform = cTransform;
+			}
 			
 			if (currentWeapon) {
-				currentWeapon.recoil=0;
-				currentWeapon.recoilUp*=0.25;
+				currentWeapon.recoil = 0;
+				currentWeapon.recoilUp *= 0.25;
 			}
 		}
 

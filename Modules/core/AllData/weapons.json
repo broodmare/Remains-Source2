@@ -1328,7 +1328,7 @@
     },
     "p9mm": {
         "id": "p9mm",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 0,
@@ -1360,7 +1360,7 @@
     },
     "r32": {
         "id": "r32",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 0,
@@ -1392,7 +1392,7 @@
     },
     "r375": {
         "id": "r375",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 2,
@@ -1424,7 +1424,7 @@
     },
     "p10mm": {
         "id": "p10mm",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 1,
@@ -1457,7 +1457,7 @@
     },
     "p10mm^1": {
         "id": "p10mm^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 1,
@@ -1491,7 +1491,7 @@
     },
     "p10s": {
         "id": "p10s",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 2,
@@ -1524,7 +1524,7 @@
     },
     "revo": {
         "id": "revo",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 3,
@@ -1557,7 +1557,7 @@
     },
     "revo^1": {
         "id": "revo^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 3,
@@ -1591,7 +1591,7 @@
     },
     "p308c": {
         "id": "p308c",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 3,
@@ -1623,7 +1623,7 @@
     },
     "p127mm": {
         "id": "p127mm",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 4,
@@ -1656,7 +1656,7 @@
     },
     "p127mm^1": {
         "id": "p127mm^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 4,
@@ -1690,7 +1690,7 @@
     },
     "psc": {
         "id": "psc",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 5,
@@ -1724,7 +1724,7 @@
     },
     "psc^1": {
         "id": "psc^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 5,
@@ -1759,7 +1759,7 @@
     },
     "shok": {
         "id": "shok",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 0,
@@ -1792,7 +1792,7 @@
     },
     "rech": {
         "id": "rech",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 0,
@@ -1828,7 +1828,7 @@
     },
     "flaregun": {
         "id": "flaregun",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 1,
@@ -1865,7 +1865,7 @@
     },
     "lasp": {
         "id": "lasp",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 1,
@@ -1903,7 +1903,7 @@
     },
     "lasp^1": {
         "id": "lasp^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 1,
@@ -1942,7 +1942,7 @@
     },
     "plap": {
         "id": "plap",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 2,
@@ -1976,7 +1976,7 @@
     },
     "plap^1": {
         "id": "plap^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 2,
@@ -2011,7 +2011,7 @@
     },
     "pulsep": {
         "id": "pulsep",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 3,
@@ -2043,7 +2043,7 @@
     },
     "blaster": {
         "id": "blaster",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 5,
@@ -2077,7 +2077,7 @@
     },
     "wquest1": {
         "id": "wquest1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 3,
@@ -2112,7 +2112,7 @@
     },
     "smg9": {
         "id": "smg9",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 3,
         "skill": 2,
         "lvl": 1,
@@ -2144,7 +2144,7 @@
     },
     "smg10": {
         "id": "smg10",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 3,
         "skill": 2,
         "lvl": 2,
@@ -2176,7 +2176,7 @@
     },
     "pp127mm": {
         "id": "pp127mm",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 4,
@@ -2210,7 +2210,7 @@
     },
     "pp127mm^1": {
         "id": "pp127mm^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 4,
@@ -2245,7 +2245,7 @@
     },
     "assr": {
         "id": "assr",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 2,
@@ -2280,7 +2280,7 @@
     },
     "assr^1": {
         "id": "assr^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 2,
@@ -2316,7 +2316,7 @@
     },
     "carbine": {
         "id": "carbine",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 3,
@@ -2353,7 +2353,7 @@
     },
     "carbine^1": {
         "id": "carbine^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 3,
@@ -2391,7 +2391,7 @@
     },
     "zebr": {
         "id": "zebr",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 4,
@@ -2433,7 +2433,7 @@
     },
     "zebr^1": {
         "id": "zebr^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 4,
@@ -2476,7 +2476,7 @@
     },
     "lmg": {
         "id": "lmg",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 5,
@@ -2512,7 +2512,7 @@
     },
     "lmg^1": {
         "id": "lmg^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 5,
@@ -2549,7 +2549,7 @@
     },
     "autor": {
         "id": "autor",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 5,
@@ -2584,7 +2584,7 @@
     },
     "sparkl": {
         "id": "sparkl",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 3,
@@ -2625,7 +2625,7 @@
     },
     "sparkl^1": {
         "id": "sparkl^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 3,
@@ -2667,7 +2667,7 @@
     },
     "plamg": {
         "id": "plamg",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 4,
@@ -2705,7 +2705,7 @@
     },
     "plamg^1": {
         "id": "plamg^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 4,
@@ -2745,7 +2745,7 @@
     },
     "nova": {
         "id": "nova",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 4,
@@ -2786,7 +2786,7 @@
     },
     "nova^1": {
         "id": "nova^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 4,
@@ -2828,7 +2828,7 @@
     },
     "quick": {
         "id": "quick",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 5,
@@ -2867,7 +2867,7 @@
     },
     "quick^1": {
         "id": "quick^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 5,
@@ -2907,7 +2907,7 @@
     },
     "oldshot": {
         "id": "oldshot",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 1,
@@ -2942,7 +2942,7 @@
     },
     "oldshot^1": {
         "id": "oldshot^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 1,
@@ -2978,7 +2978,7 @@
     },
     "lshot": {
         "id": "lshot",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 2,
@@ -3012,7 +3012,7 @@
     },
     "shotgun": {
         "id": "shotgun",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 3,
@@ -3048,7 +3048,7 @@
     },
     "shotgun^1": {
         "id": "shotgun^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 3,
@@ -3085,7 +3085,7 @@
     },
     "saf9": {
         "id": "saf9",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 4,
@@ -3122,7 +3122,7 @@
     },
     "saf9^1": {
         "id": "saf9^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 2,
         "lvl": 4,
@@ -3160,7 +3160,7 @@
     },
     "pshot": {
         "id": "pshot",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 2,
         "lvl": 5,
@@ -3197,7 +3197,7 @@
     },
     "pshot^1": {
         "id": "pshot^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 2,
         "lvl": 5,
@@ -3235,7 +3235,7 @@
     },
     "prism": {
         "id": "prism",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 4,
         "lvl": 2,
@@ -3276,7 +3276,7 @@
     },
     "prism^1": {
         "id": "prism^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 4,
         "lvl": 2,
@@ -3319,7 +3319,7 @@
     },
     "cryo": {
         "id": "cryo",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 4,
         "lvl": 3,
@@ -3358,7 +3358,7 @@
     },
     "plam": {
         "id": "plam",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 4,
         "lvl": 4,
@@ -3396,7 +3396,7 @@
     },
     "plam^1": {
         "id": "plam^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 4,
         "lvl": 4,
@@ -3436,7 +3436,7 @@
     },
     "oldr": {
         "id": "oldr",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 1,
@@ -3471,7 +3471,7 @@
     },
     "oldr^1": {
         "id": "oldr^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 1,
@@ -3507,7 +3507,7 @@
     },
     "hunt": {
         "id": "hunt",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 2,
@@ -3542,7 +3542,7 @@
     },
     "winchester": {
         "id": "winchester",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 3,
@@ -3579,7 +3579,7 @@
     },
     "winchester^1": {
         "id": "winchester^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 3,
@@ -3617,7 +3617,7 @@
     },
     "brushgun": {
         "id": "brushgun",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 4,
@@ -3654,7 +3654,7 @@
     },
     "brushgun^1": {
         "id": "brushgun^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 2,
         "lvl": 4,
@@ -3692,7 +3692,7 @@
     },
     "rechr": {
         "id": "rechr",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 4,
         "lvl": 1,
@@ -3727,7 +3727,7 @@
     },
     "lasr": {
         "id": "lasr",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 2,
@@ -3769,7 +3769,7 @@
     },
     "lasr^1": {
         "id": "lasr^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 2,
@@ -3812,7 +3812,7 @@
     },
     "plar": {
         "id": "plar",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 3,
@@ -3851,7 +3851,7 @@
     },
     "plar^1": {
         "id": "plar^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 3,
@@ -3891,7 +3891,7 @@
     },
     "pulser": {
         "id": "pulser",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 4,
@@ -3926,7 +3926,7 @@
     },
     "pulser^1": {
         "id": "pulser^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 4,
@@ -3962,7 +3962,7 @@
     },
     "termo": {
         "id": "termo",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 4,
@@ -4003,7 +4003,7 @@
     },
     "termo^1": {
         "id": "termo^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 4,
@@ -4045,7 +4045,7 @@
     },
     "rail": {
         "id": "rail",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 5,
@@ -4086,7 +4086,7 @@
     },
     "rail^1": {
         "id": "rail^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 5,
@@ -4128,7 +4128,7 @@
     },
     "sniper": {
         "id": "sniper",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 7,
         "skill": 2,
         "lvl": 3,
@@ -4168,7 +4168,7 @@
     },
     "sniper^1": {
         "id": "sniper^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 7,
         "skill": 2,
         "lvl": 3,
@@ -4209,7 +4209,7 @@
     },
     "lassn": {
         "id": "lassn",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 3,
@@ -4254,7 +4254,7 @@
     },
     "lassn^1": {
         "id": "lassn^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 3,
@@ -4300,7 +4300,7 @@
     },
     "grom": {
         "id": "grom",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 7,
         "skill": 4,
         "lvl": 5,
@@ -4341,7 +4341,7 @@
     },
     "grom^1": {
         "id": "grom^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 7,
         "skill": 4,
         "lvl": 5,
@@ -4384,7 +4384,7 @@
     },
     "anti": {
         "id": "anti",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 7,
         "skill": 2,
         "lvl": 5,
@@ -4424,7 +4424,7 @@
     },
     "anti^1": {
         "id": "anti^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 7,
         "skill": 2,
         "lvl": 5,
@@ -4466,7 +4466,7 @@
     },
     "minigun": {
         "id": "minigun",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 2,
         "lvl": 4,
@@ -4506,7 +4506,7 @@
     },
     "minigun^1": {
         "id": "minigun^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 2,
         "lvl": 4,
@@ -4547,7 +4547,7 @@
     },
     "hmg": {
         "id": "hmg",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 2,
         "lvl": 5,
@@ -4582,7 +4582,7 @@
     },
     "antidrak": {
         "id": "antidrak",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 2,
         "lvl": 5,
@@ -4618,7 +4618,7 @@
     },
     "antidrak^1": {
         "id": "antidrak^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 2,
         "lvl": 5,
@@ -4655,7 +4655,7 @@
     },
     "gatl": {
         "id": "gatl",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 4,
@@ -4698,7 +4698,7 @@
     },
     "gatl^1": {
         "id": "gatl^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 4,
@@ -4742,7 +4742,7 @@
     },
     "gatp": {
         "id": "gatp",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 5,
@@ -4783,7 +4783,7 @@
     },
     "gatp^1": {
         "id": "gatp^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 5,
@@ -4825,7 +4825,7 @@
     },
     "flamer": {
         "id": "flamer",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 2,
@@ -4870,7 +4870,7 @@
     },
     "flamer^1": {
         "id": "flamer^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 2,
@@ -4916,7 +4916,7 @@
     },
     "incin": {
         "id": "incin",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 3,
@@ -4960,7 +4960,7 @@
     },
     "cflamer": {
         "id": "cflamer",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 5,
@@ -5008,7 +5008,7 @@
     },
     "cflamer^1": {
         "id": "cflamer^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 8,
         "skill": 4,
         "lvl": 5,
@@ -5057,7 +5057,7 @@
     },
     "bfg": {
         "id": "bfg",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 4,
         "lvl": 5,
@@ -5101,7 +5101,7 @@
     },
     "arson": {
         "id": "arson",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 3,
         "lvl": 0,
@@ -5141,7 +5141,7 @@
     },
     "arson^1": {
         "id": "arson^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 3,
         "lvl": 0,
@@ -5182,7 +5182,7 @@
     },
     "dartgun": {
         "id": "dartgun",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 3,
         "lvl": 1,
@@ -5217,7 +5217,7 @@
     },
     "dartgun^1": {
         "id": "dartgun^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 3,
         "lvl": 1,
@@ -5253,7 +5253,7 @@
     },
     "acidgun": {
         "id": "acidgun",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 3,
         "lvl": 2,
@@ -5287,7 +5287,7 @@
     },
     "acidgun^1": {
         "id": "acidgun^1",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 4,
         "skill": 3,
         "lvl": 2,
@@ -5322,7 +5322,7 @@
     },
     "sawgun": {
         "id": "sawgun",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 3,
         "lvl": 3,
@@ -5360,7 +5360,7 @@
     },
     "sawgun^1": {
         "id": "sawgun^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 5,
         "skill": 3,
         "lvl": 3,
@@ -5400,7 +5400,7 @@
     },
     "buckshot": {
         "id": "buckshot",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 3,
         "lvl": 4,
@@ -5434,7 +5434,7 @@
     },
     "buckshot^1": {
         "id": "buckshot^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 4,
         "skill": 3,
         "lvl": 4,
@@ -5469,7 +5469,7 @@
     },
     "railway": {
         "id": "railway",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 3,
         "lvl": 5,
@@ -5505,7 +5505,7 @@
     },
     "railway^1": {
         "id": "railway^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 3,
         "lvl": 5,
@@ -5543,7 +5543,7 @@
     },
     "friend": {
         "id": "friend",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 3,
         "lvl": 5,
@@ -5582,7 +5582,7 @@
     },
     "friend^1": {
         "id": "friend^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 3,
         "lvl": 5,
@@ -5622,7 +5622,7 @@
     },
     "glau1": {
         "id": "glau1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 2,
@@ -5663,7 +5663,7 @@
     },
     "glau": {
         "id": "glau",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 3,
@@ -5705,7 +5705,7 @@
     },
     "glau^1": {
         "id": "glau^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 3,
@@ -5748,7 +5748,7 @@
     },
     "aglau": {
         "id": "aglau",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 4,
@@ -5790,7 +5790,7 @@
     },
     "mlau": {
         "id": "mlau",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 4,
@@ -5834,7 +5834,7 @@
     },
     "mlau^1": {
         "id": "mlau^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 4,
@@ -5879,7 +5879,7 @@
     },
     "bel": {
         "id": "bel",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 5,
@@ -5921,7 +5921,7 @@
     },
     "bel^1": {
         "id": "bel^1",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 5,
@@ -5964,7 +5964,7 @@
     },
     "dinamit": {
         "id": "dinamit",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 0,
@@ -5984,7 +5984,7 @@
     },
     "hgren": {
         "id": "hgren",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 0,
@@ -6004,7 +6004,7 @@
     },
     "grenade": {
         "id": "grenade",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 1,
@@ -6024,7 +6024,7 @@
     },
     "gasgr": {
         "id": "gasgr",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 1,
@@ -6046,7 +6046,7 @@
     },
     "acidgr": {
         "id": "acidgr",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 1,
@@ -6072,7 +6072,7 @@
     },
     "plagr": {
         "id": "plagr",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 2,
@@ -6092,7 +6092,7 @@
     },
     "impgr": {
         "id": "impgr",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 3,
@@ -6112,7 +6112,7 @@
     },
     "cryogr": {
         "id": "cryogr",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 3,
@@ -6133,7 +6133,7 @@
     },
     "molotov": {
         "id": "molotov",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "perk": "pyro",
@@ -6158,7 +6158,7 @@
     },
     "fgren": {
         "id": "fgren",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "perk": "pyro",
@@ -6182,7 +6182,7 @@
     },
     "spgren": {
         "id": "spgren",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "lvl": 5,
@@ -6203,7 +6203,7 @@
     },
     "hmine": {
         "id": "hmine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6231,7 +6231,7 @@
     },
     "mine": {
         "id": "mine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6259,7 +6259,7 @@
     },
     "cryomine": {
         "id": "cryomine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6286,7 +6286,7 @@
     },
     "plamine": {
         "id": "plamine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6314,7 +6314,7 @@
     },
     "impmine": {
         "id": "impmine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6342,7 +6342,7 @@
     },
     "x37": {
         "id": "x37",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6370,7 +6370,7 @@
     },
     "zebmine": {
         "id": "zebmine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6398,7 +6398,7 @@
     },
     "balemine": {
         "id": "balemine",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 1,
@@ -6426,7 +6426,7 @@
     },
     "dbomb": {
         "id": "dbomb",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 2,
@@ -6446,7 +6446,7 @@
     },
     "bomb": {
         "id": "bomb",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 2,
@@ -6466,7 +6466,7 @@
     },
     "exc4": {
         "id": "exc4",
-        "tip": "throwable",
+        "tip": "explosives",
         "cat": 9,
         "skill": 5,
         "throwtip": 2,
@@ -7145,7 +7145,7 @@
     },
     "test": {
         "id": "test",
-        "tip": 2,
+        "tip": "lightGun",
         "cat": 2,
         "skill": 2,
         "lvl": 0,
@@ -7202,7 +7202,7 @@
     },
     "a_fire": {
         "id": "a_fire",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 2,
         "lvl": 5,
@@ -7232,7 +7232,7 @@
     },
     "a_energ": {
         "id": "a_energ",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 3,
         "skill": 4,
         "lvl": 5,
@@ -7264,7 +7264,7 @@
     },
     "a_expl": {
         "id": "a_expl",
-        "tip": 3,
+        "tip": "heavyGun",
         "cat": 6,
         "skill": 5,
         "lvl": 5,
@@ -7433,7 +7433,7 @@
     },
     "mercgr": {
         "id": "mercgr",
-        "tip": "throwable",
+        "tip": "explosives",
         "throwtip": 2,
         "char_rapid": 90,
         "char_damexpl": 250,
@@ -7680,7 +7680,7 @@
     },
     "scorppunch": {
         "id": "scorppunch",
-        "punch": 1,
+        "punch": true,
         "tip": "punch",
         "char_damage": 12,
         "char_rapid": 15,
@@ -7695,7 +7695,7 @@
     },
     "scorp2punch": {
         "id": "scorp2punch",
-        "punch": 1,
+        "punch": true,
         "tip": "punch",
         "char_damage": 18,
         "char_rapid": 15,
@@ -7710,7 +7710,7 @@
     },
     "scorp3punch": {
         "id": "scorp3punch",
-        "punch": 1,
+        "punch": true,
         "tip": "punch",
         "char_damage": 48,
         "char_rapid": 15,
@@ -8206,7 +8206,7 @@
     },
     "roboplagr": {
         "id": "roboplagr",
-        "tip": "throwable",
+        "tip": "explosives",
         "char_rapid": 15,
         "char_damexpl": 140,
         "char_tipdam": 6,
@@ -8244,7 +8244,7 @@
     },
     "drongr": {
         "id": "drongr",
-        "tip": "throwable",
+        "tip": "explosives",
         "throwtip": 2,
         "char_rapid": 10,
         "char_damexpl": 250,

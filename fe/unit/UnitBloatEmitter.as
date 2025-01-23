@@ -57,12 +57,14 @@ package fe.unit {
 			var un:Unit;
 			var emitTr:String='0';
 		
-			if (emitId=='bloat') {
-				if (loc.locDifLevel>3) emitTr=loc.randomCid(emitId);
+			if (emitId == 'bloat') {
+				if (loc.locDifLevel > 3) {
+					emitTr=loc.randomCid(emitId);
+				}
 				un=loc.createUnit(emitId, coordinates.X, coordinates.Y, true, null, emitTr);
 			}
 			
-			if (emitId=='ant') {
+			if (emitId == 'ant') {
 				emitTr=loc.randomCid(emitId);
 				un=loc.createUnit(emitId, coordinates.X, coordinates.Y - 40, true, null,emitTr);
 			}
@@ -76,8 +78,12 @@ package fe.unit {
 		public override function expl():void {
 			super.expl();
 		
-			if (emitId=='ant') newPart('schep',16,2);
-			else newPart('shmatok',16,2);
+			if (emitId=='ant') {
+				newPart('schep', 16, 2);
+			}
+			else {
+				newPart('shmatok', 16, 2);
+			}
 		}
 		
 		public override function dropLoot():void {

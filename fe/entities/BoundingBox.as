@@ -23,14 +23,14 @@
 		public function center(vec:Vector2):void {
 			_left	= vec.X - halfWidth + 0.01;
 			_right	= vec.X + halfWidth - 0.01;
-			_top	= vec.Y - _height + 0.01;;
+			_top	= vec.Y - _height + 0.01;
 			_bottom	= vec.Y - 0.01;	// To avoid overlapping with the floor tiles
 		}
 
 		public function setBounds(left:Number, right:Number, top:Number, bottom:Number):void {
 			_left	= left; + 0.01;	// Slight offset to avoid overlapping with the floor tiles
 			_right	= right - 0.01;	// Slight offset to avoid overlapping with the floor tiles
-			_top	= top + 0.01;;
+			_top	= top + 0.01;
 			_bottom	= bottom - 0.01;	// To avoid overlapping with the floor tiles
 		}
 

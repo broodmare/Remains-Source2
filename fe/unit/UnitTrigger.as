@@ -1,5 +1,7 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Tile;
@@ -12,20 +14,19 @@ package fe.unit {
 	
 	public class UnitTrigger extends Unit {
 
-		private var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
-		private var trapT:int=0;	//тип области
-
 		private var triggerBounds:BoundingBox;
-		
-		private var trapL:int=2;	//1 - нажимная плита, 2 - обычная
-		private var needSkill:String='repair';
-		private var isAct:Boolean=false;
-		private var one:Boolean=false;	//одноразовая
+
+		private var status:int			= 0;				//0 - взведён, 1 - активирован, 2 - отключён
+		private var trapT:int			= 0;				//тип области
+		private var trapL:int			= 2;				//1 - нажимная плита, 2 - обычная
+		private var needSkill:String	= "repair";
+		private var isAct:Boolean		= false;
+		private var one:Boolean			= false;			//одноразовая
 		private var allid:String;
 		private var allact:String;
-		private var vNoise:int=1200;
+		private var vNoise:int			= 1200;
 		
-		private var res:String='';
+		private var res:String			= "";
 		private var damager:Unit;
 		
 		private var sndAct:String;
@@ -34,18 +35,18 @@ package fe.unit {
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
-		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTrigger(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			
-			if (cid==null) {
-				id='triglaser';
+			if (cid == null) {
+				id = 'triglaser';
 			}
 			else {
-				id=cid;
+				id = cid;
 			}
 			
-			mat=1;
-			vis=Res.getVis('vis'+id, vismtrap);	// .SWF Dependency
+			mat = 1;
+			vis = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismtrap") as MovieClip;
 			setVis(false);
 			getXmlParam();
 			visibility=300;
@@ -82,12 +83,14 @@ package fe.unit {
 		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+		
 			if (node0.un.length()) {
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
 				if (node0.un.@res.length()) res=node0.un.@res;
 				if (node0.un.@one.length()) one=true;		//одноразовая
 				if (node0.un.@plate.length()) trapL=1;		//напольная
 			}
+		
 			if (node0.snd.length()) {
 				if (node0.snd.@act.length()) sndAct=node0.snd.@act;
 			}
@@ -100,11 +103,18 @@ package fe.unit {
 			if (allid==null || allid=='') setDamager();
 		}
 		
-		public override function setLevel(nlevel:int=0):void {
-			level+=nlevel;
-			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
-			if (sk<1) sk=1;
-			if (sk>5) sk=5;
+		public override function setLevel(nlevel:int = 0):void {
+			level += nlevel;
+			var sk:int = Math.round(level * 0.25 * (Math.random() * 0.70 + 0.30));
+		
+			if (sk<1) {
+				sk=1;
+			}
+		
+			if (sk>5) {
+				sk=5;
+			}
+		
 			inter.needSkillLvl=sk;
 		}
 		

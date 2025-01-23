@@ -13,11 +13,12 @@ package fe.weapon  {
 		public var kick:Boolean = true;
 		
 		// Constructor
-		public function WKick() {
-			super();
+		public function WKick(w:Weapon) {
+			// Get all the properties from an already made default weapon and use them
+			WeaponCopier.copyFrom(w, this);
 			
 			vBullet = SymbolFactory.createInstance("visualPunch") as Class;
-			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
+			var v:Vector2 = new Vector2((coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina));
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			dopCh = 0;
@@ -64,7 +65,7 @@ package fe.weapon  {
 					
 					b.knockx = storona;
 					b.damage *= 2;
-					b.otbros *= 1.5;
+					b.otbros *= 1.50;
 					b.destroy = World.w.pers.kickDestroy;
 					dopDamage = 60;
 					

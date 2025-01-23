@@ -271,10 +271,12 @@ package fe.graph {
 		}
 		
 		private function createCursors():void {
-			createCursor(visCurArrow,"arrow");				// .SWF Dependency (Class)
-			createCursor(visCurTarget,"target", 13, 13);	// .SWF Dependency (Class)
-			createCursor(visCurTarget1,"combat", 13, 13);	// .SWF Dependency (Class)
-			createCursor(visCurTarget2,"action", 13, 13);	// .SWF Dependency (Class)
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
+
+			createCursor(fetch("visCurArrow"),   "arrow");
+			createCursor(fetch("visCurTarget"),  "target", 13, 13);
+			createCursor(fetch("visCurTarget1"), "combat", 13, 13);
+			createCursor(fetch("visCurTarget2"), "action", 13, 13);
  		}
 		
 		private function createCursor(vcur:Class, nazv:String, nx:int=0, ny:int=0):void {
@@ -1012,20 +1014,22 @@ package fe.graph {
 		}
 		
 		public function tileDie(t:Tile,tip:int):void {
-			var erC:Class = block_dyr;	// .SWF Dependency (Class)
-			var drC:Class = block_tre;	// .SWF Dependency (Class)
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
+
+			var erC:Class = fetch("block_dyr");
+			var drC:Class = fetch("block_tre");
 			
 			var nx:Number = (t.coords.X + 0.50) * tileX;
 			var ny:Number = (t.coords.Y + 0.50) * tileY;
 
 			if (t.fake) {
 				Emitter.emit("fake", loc, nx, ny);
-				drC = block_bur;		// .SWF Dependency (Class)
+				drC = fetch("block_bur");		// .SWF Dependency (Class)
 			}
 			else if (t.mat == 7) {
 				Emitter.emit("fake", loc, nx, ny);
 				Emitter.emit("pole", loc, nx, ny, { kol:10, rx:tileX, ry:tileY });
-				erC = TileMask;
+				//erC = TileMask; ????
 				drC = null;
 			}
 			else if (tip < 10) {
@@ -1037,12 +1041,12 @@ package fe.graph {
 			}
 			else if (tip >= 15) {
 				Emitter.emit("plav", loc, nx, ny);
-				erC = block_plav;		// .SWF Dependency (Class)
-				drC = block_pla;		// .SWF Dependency (Class)
+				erC = fetch("block_plav");
+				drC = fetch("block_pla");
 			}
 			else if (tip >= 11 && tip <= 13) {
 				Emitter.emit("bur", loc, nx, ny);
-				drC = block_bur;		// .SWF Dependency (Class)
+				drC = fetch("block_bur");
 			}
 
 			decal(erC, drC, nx, ny, 1, 0, "hardlight");
@@ -1050,6 +1054,8 @@ package fe.graph {
 		
 		// Bullethole
 		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void {
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
+			
 			var erC:Class;
 			var drC:Class;
 			var bl:String = "normal";
@@ -1064,11 +1070,11 @@ package fe.graph {
 			switch (mat) {
 				case 1:	//металл
 					if (tip >= 1 && tip <= 6) {
-						drC = bullet_metal;	// .SWF Dependency (Class)
+						drC = fetch("bullet_metal");
 					}
 					else if (tip==9) {			//взрыв
 						if (!soft && Math.random()*0.5<ver) {
-							drC=metal_tre;	// .SWF Dependency (Class)
+							drC = fetch("metal_tre");
 						}
 						
 						centr = true;
@@ -1080,10 +1086,10 @@ package fe.graph {
 				case 6:
 					if (tip >= 1 && tip <= 3) {				//пули		
 						if (tip > 1 && Math.random() > 0.50) {
-							erC = bullet_dyr	// .SWF Dependency (Class)
+							erC = fetch("bullet_dyr");
 						}
 
-						drC = bullet_tre;
+						drC = fetch("bullet_tre");
 
 						if (tip == 2) {
 							sc += 0.50;
@@ -1095,7 +1101,7 @@ package fe.graph {
 					}
 					else if (tip>=4 && tip<=6) { //удары
 						if (!soft) {
-							drC=punch_tre;
+							drC = fetch("punch_tre");
 						}
 						
 						if (tip==5) {
@@ -1108,7 +1114,7 @@ package fe.graph {
 					}
 					else if (tip == 9) {	//взрыв
 						if (!soft && Math.random() * 0.50 < ver) {
-							drC = expl_tre;	// .SWF Dependency (Class)
+							drC = fetch("expl_tre");
 						}
 
 						centr = true;
@@ -1126,8 +1132,8 @@ package fe.graph {
 
 				case 3: //дерево
 					if (tip >= 1 && tip <= 3) {	//пули
-						erC = bullet_dyr;		// .SWF Dependency (Class)
-						drC = bullet_wood;		// .SWF Dependency (Class)
+						erC = fetch("bullet_dyr");
+						drC = fetch("bullet_wood");
 						rc = 0;
 						
 						if (tip == 2) {
@@ -1139,13 +1145,22 @@ package fe.graph {
 						}
 					}
 					else if (tip>=4 && tip<=6) {	//удары
-						if (!soft) drC=punch_tre;	// .SWF Dependency (Class)
-						if (tip==5) sc+=0.5;
-						if (tip==6) sc+=1;
+						if (!soft) {
+							drC = fetch("punch_tre");
+						}
+						if (tip == 5) {
+							sc += 0.50;
+						}
+						if (tip == 6) {
+							sc += 1;
+						}
 					}
 					else if (tip==9) {	//взрыв
-						if (!soft && Math.random()*0.5<ver) drC=expl_tre;	// .SWF Dependency (Class)
-						centr=true;
+						if (!soft && Math.random() * 0.50 < ver) {
+							drC = fetch("expl_tre");
+						}
+
+						centr = true;
 					}
 
 					if (tip < 10 && !soft) {
@@ -1159,17 +1174,17 @@ package fe.graph {
 
 				case 11:
 					if (Math.random() < 0.10) {
-						drC = fire_soft;			// .SWF Dependency (Class)
+						drC = fetch("fire_soft");
 					}
 				break;
 
 				case 12: //лазеры
 				case 13:
 					if (soft && Math.random() * 0.20 > ver) {
-						drC = fire_soft;			// .SWF Dependency (Class)
+						drC = fetch("fire_soft");
 					}
 					else {
-						drC = laser_tre;			// .SWF Dependency (Class)
+						drC = fetch("laser_tre");
 					}
 
 					if (tip == 13) sc *= 0.6;
@@ -1178,11 +1193,11 @@ package fe.graph {
 
 				case 15: //плазма
 					if (soft) {
-						drC = plasma_soft;			// .SWF Dependency (Class)
+						drC = fetch("plasma_soft");
 					}
 					else {
-						erC = plasma_dyr;			// .SWF Dependency (Class)
-						drC = plasma_tre;			// .SWF Dependency (Class)
+						erC = fetch("plasma_dyr");
+						drC = fetch("plasma_tre");
 					}
 
 					bl = "hardlight";
@@ -1190,34 +1205,34 @@ package fe.graph {
 
 				case 16:
 					if (soft) {
-						drC=fire_soft;				// .SWF Dependency (Class)
+						drC = fetch("fire_soft");
 					}
 					else {
-						erC = plasma_dyr;			// .SWF Dependency (Class)
-						drC = bluplasma_tre;		// .SWF Dependency (Class)
+						erC = fetch("plasma_dyr");
+						drC = fetch("bluplasma_tre");
 					}
 					bl = "hardlight";
 				break;
 
 				case 17:
 					if (soft) {
-						drC=fire_soft;				// .SWF Dependency (Class)
+						drC = fetch("fire_soft");
 					}
 					else {
-						erC = plasma_dyr;			// .SWF Dependency (Class)
-						drC = pinkplasma_tre;		// .SWF Dependency (Class)
+						erC = fetch("plasma_dyr");
+						drC = fetch("pinkplasma_tre");
 					}
 					bl = "hardlight";
 				break;
 
 				case 18:
-					drC = cryo_soft;				// .SWF Dependency (Class)
+					drC = fetch("cryo_soft");
 					bl = "hardlight";
 				break;
 
 				case 19: //взрыв
 					if (!soft && Math.random() * 0.50 < ver) {
-						drC = plaexpl_tre;			// .SWF Dependency (Class)
+						drC = fetch("plaexpl_tre");
 					}
 
 					centr=true;

@@ -242,7 +242,7 @@ package fe.inter {
 				}
 
 				var data:Object; 
-				var itemManager:ItemManager;
+				var itemManager:ItemManager = ItemManager.reference;
 				for each (var item:InventoryItem in inv.getAllItems()) {
 					if (item.hidden) {
 						continue;
@@ -361,7 +361,7 @@ package fe.inter {
 			} */
 		}
 		
-		//показ одного элемента
+		// [Show one element] (in inventory)
 		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			item.id.text		= obj.id;
 			item.id.visible		= false;
@@ -399,7 +399,7 @@ package fe.inter {
 					selItem = item;
 				}
 				
-				item.nazv.htmlText = obj.nazv;
+				item.nazv.htmlText = LanguageManager.reference.localText("weapon", obj.id);
 				
 				if (obj.respect == Weapon.WEP_INACTIVE && item.fav.text == "") {
 					item.fav.text = "☩";
@@ -442,7 +442,7 @@ package fe.inter {
 					item.ramka.visible = true;
 				}
 				
-				item.nazv.text = obj.nazv;
+				item.nazv.text = LanguageManager.reference.localText("armor", obj.id);
 				
 				if (obj.trol == "armor3") {
 					item.hp.text = "";
@@ -456,7 +456,7 @@ package fe.inter {
 			}
 			else  {
 				item.ramka.visible = (World.w.gg.currentSpell && World.w.gg.currentSpell.id == obj.id);
-				item.nazv.text = obj.nazv;
+				item.nazv.text = LanguageManager.reference.localText("item", obj.id);
 				item.hp.text = obj.kol;
 				
 				if (World.w.hardInv && obj.mass > 0) {
@@ -621,9 +621,9 @@ package fe.inter {
 				
 				var obj = assArr[event.currentTarget.id.text];
 				
-				if (obj.mass>0 && obj.tip!="book" && obj.tip!="sphera") {
+				if (obj.mass > 0 && obj.tip != "book" && obj.tip != "sphera") {
 					if (event.shiftKey) {
-						obj.drop=obj.kol;
+						obj.drop = obj.kol;
 					}
 					else {
 						obj.drop++;
@@ -633,7 +633,7 @@ package fe.inter {
 					buttonOk("drop");
 				}
 				else {
-					World.w.gui.infoText("noDrop2",null,null,false);
+					World.w.gui.infoText("noDrop2", null, null, false);
 				}
 			}
 		}
@@ -694,7 +694,9 @@ package fe.inter {
 			
 			if (over_t == 1 && overItem) {
 				try {
-					if (overItem.fav.text == "☩" || overItem.fav.text == "+") overItem.fav.text = "";
+					if (overItem.fav.text == "☩" || overItem.fav.text == "+") {
+						overItem.fav.text = "";
+					}
 					//inv.getItem(overId).nov = 0;	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 				catch (err) {

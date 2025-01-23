@@ -1,5 +1,6 @@
 package fe.unit {
 	
+	import fe.SymbolFactory;
 	import fe.World;
 	import fe.Res;
 	import fe.WeaponManager;
@@ -51,10 +52,11 @@ package fe.unit {
 			}
 			
 			getXmlParam();
-			var vClass:Class = Res.getClass("visualDron" + tr, null, visualBloat1);	// SWF Dependency
+			var vClass:Class = SymbolFactory.fetchSymbolClass("visualDron" + String(tr)) || SymbolFactory.fetchSymbolClass("visualBloat1") as Class;	// 'visualBloat1' being the fallback visual probably means dronse are a copy/paste of bloatsprites?
+			
 			
 			if (tr == 100) {
-				vClass = visualMegaDron;	// SWF Dependency
+				vClass = SymbolFactory.fetchSymbolClass("visualMegaDron") as Class;	// SWF Dependency
 			}
 			
 			vis = new vClass();

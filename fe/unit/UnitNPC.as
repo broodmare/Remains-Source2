@@ -11,40 +11,40 @@ package fe.unit {
 	
 	public class UnitNPC extends UnitPon {
 		
+		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between barks
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
 		public var targNPC:Npc;
-		public var npcId:String = "";
 		public var npcXML:XML;
+		public var npcId:String			= "";
 		
 		public var visClass:Class;
 		public var ico:MovieClip;
-		public var icoFrame:int = 1;
-		public var noTurn:Boolean = false;	//не поворачиваться при разговоре
-		public var silent:Boolean = false;	//не трындеть в обычном состоянии
-		public var showSign:Boolean = false;	//показывать мигающий указатель
+		public var icoFrame:int			= 1;
+		public var noTurn:Boolean		= false;		// Do not rotate during conversation
+		public var silent:Boolean		= false;		// Do not chatter in normal state
+		public var showSign:Boolean		= false;	// Show blinking indicator
 		
-		public var animFly:Boolean=false;
-		public var weap:String="";
-		public var weap2:String="";
+		public var animFly:Boolean		=false;
+		public var weap:String			="";
+		public var weap2:String			="";
 		private var dopWeapon:Weapon;
 		
-		public var zanyato:Boolean = false;				// [Npc is busy fighting, does not interact]
-		private var t_ref:int=0;						// [stop talking several times in a row]
-		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between barks
+		public var zanyato:Boolean		= false;				// [Npc is busy fighting, does not interact]
+		private var t_ref:int			= 0;						// [stop talking several times in a row]
 		
-		private var t_anim:int=100;
-		private var t_float:Number=0;
-		private var floatX:Number=0;
-		private var floatY:Number=0;
+		private var t_anim:int			= 100;
+		private var t_float:Number		= 0.00;
+		private var floatX:Number		= 0.00;
+		private var floatY:Number		= 0.00;
 		
-		private var que:Array = [];
-		private var wait:int = 0;
-		private var dey:String = "";
-		private var cx:Number = -1;
-		private var cy:Number = -1;
-		private var dvig:Object = {};
-
-		private static var tileX:int = Tile.tileX;
-		private static var tileY:int = Tile.tileY;
+		private var que:Array			= [];
+		private var wait:int			= 0;
+		private var dey:String			= "";
+		private var cx:Number			= -1.00;
+		private var cy:Number			= -1.00;
+		private var dvig:Object			= {};
 		
 		// Constructor
 		public function UnitNPC(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
@@ -111,7 +111,7 @@ package fe.unit {
 			}
 			
 			// [Appearance]
-			vis = SymbolFactory.createInstance("visClass") as MovieClip;
+			vis = new visClass() as MovieClip;
 			ico = SymbolFactory.createInstance("visNPCIco") as MovieClip;
 			ico.y = -140;
 			vis.addChild(ico);
@@ -367,7 +367,11 @@ package fe.unit {
 		
 		public override function findCel(over:Boolean=false):Boolean {
 			for each (var un:Unit in loc.units) {
-				if (un.disabled || un.sost>1 || un.fraction==fraction || un.doop || un.invis) continue;
+				
+				if (un.disabled || un.sost>1 || un.fraction==fraction || un.doop || un.invis) {
+					continue;
+				}
+				
 				if (look(un,true)) {
 					setCel(un);
 					return true;

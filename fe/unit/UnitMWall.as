@@ -1,5 +1,7 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+	
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
@@ -16,7 +18,7 @@ package fe.unit {
 			else id = cid
 			
 			mat = 7;
-			vis = Res.getVis("vis" + id, vismwall);
+			vis = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismwall") as MovieClip;
 			getXmlParam();
 			vulnerabilities.setResist(Resistances.DAM_DEATH, 1);
 			begvulner.setResist(Resistances.DAM_DEATH, 1);

@@ -1,10 +1,12 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
 	import fe.*;
 
 	public class UnitFish extends Unit {
 		
-		public var tr:int;
+		public var tr:int;	// Unit variant
 		
 		// Constructor
 		public function UnitFish(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -24,17 +26,17 @@ package fe.unit {
 				tr=1;
 			}
 
-			id='fish'+tr;
-			vis=Res.getVis('visualFish'+tr, visualFish1);	// SWF Dependency
+			id = 'fish' + tr;
+			vis = SymbolFactory.fetchSymbolClass("visualFish" + String(tr)) || SymbolFactory.fetchSymbolClass("visualFish1") as MovieClip;
 			vis.osn.gotoAndStop('stay');
 			getXmlParam();
-			maxSpeed+=Math.random()*2-1;
-			walkSpeed=maxSpeed;
-			runSpeed=maxSpeed*2;
-			aiState=1;
-			aiDx=storona;
-			elast=0.2;
-			throu=true;
+			maxSpeed += Math.random()*2-1;
+			walkSpeed = maxSpeed;
+			runSpeed = maxSpeed * 2;
+			aiState = 1;
+			aiDx = storona;
+			elast = 0.20;
+			throu = true;
 		}
 
 		//сделать героем

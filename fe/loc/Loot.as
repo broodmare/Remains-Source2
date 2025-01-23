@@ -76,8 +76,6 @@ package fe.loc {
 			boundingBox.width = 30;
 			boundingBox.height = 20;
 
-			
-			
 			// Determine the appropriate sprite for the item
 			if (data.tip == Item.L_WEAPON) {
 				if ("vis" in data && "loot" in data) {
@@ -92,13 +90,7 @@ package fe.loc {
 					}
 				}
 				else {
-					if (data.variant) {
-						vClass = Res.getClass("vis" + item.id + "_" + data.variant, "vis" + item.id, visp10mm);	// .SWF Dependency
-					}
-					else {
-						vClass = Res.getClass("vis" + item.id, null, visp10mm);	// .SWF Dependency
-					}
-
+					vClass = SymbolFactory.fetchSymbolClass("vis" + item.id) || SymbolFactory.fetchSymbolClass("visp10mm") as Class;
 					var infIco1:MovieClip = new vClass();
 					infIco1.stop();
 					infIco1.x = -infIco1.getRect(infIco1).left - infIco1.width * 0.50;
@@ -117,7 +109,7 @@ package fe.loc {
 				}
 			}
 			else if (data.tip == Item.L_EXPL) {
-				vClass = Res.getClass("vis" + item.id, null, visualAmmo);	// .SWF Dependency
+				vClass = SymbolFactory.fetchSymbolClass("vis" + item.id) || SymbolFactory.fetchSymbolClass("visualAmmo") as Class;
 				var infIco2:MovieClip = new vClass();
 				infIco2.stop();
 				infIco2.x = -infIco2.getRect(infIco2).left - infIco2.width * 0.50;
@@ -129,7 +121,7 @@ package fe.loc {
 				}
 			}
 			else if (data.tip == Item.L_AMMO) {
-				vClass = visualAmmo;	// .SWF Dependency
+				vClass = SymbolFactory.fetchSymbolClass("visualAmmo") as Class;
 				vis = new vClass();
 				try {
 					if ("base" in data) {
@@ -148,7 +140,7 @@ package fe.loc {
 				}
 			}
 			else {
-				vClass = visualItem;	// .SWF Dependency
+				vClass = SymbolFactory.fetchSymbolClass("visualItem") as Class;
 				vis = new vClass();
 				
 				try {
@@ -271,9 +263,8 @@ package fe.loc {
 				
 				// If the item is not already marked as taken, take it and mark it as taken.
 				if (!isTake) {
-					// Call inventory to add the item to the player inventory
 					trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.quantity);
-					// World.w.invent.take(item); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					World.w.invent.increaseQuantity(item.id, item.quantity);
 				}
 				
 				isTake = true;

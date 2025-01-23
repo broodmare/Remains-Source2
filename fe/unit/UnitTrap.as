@@ -1,5 +1,7 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
 	import fe.serv.Interact;
 
@@ -14,9 +16,9 @@ package fe.unit {
 				id='mtrap';
 			}
 			
-			mat=1;
-			prior=2;
-			vis=Res.getVis('vis'+id,vismtrap);
+			mat		= 1;
+			prior	= 2;
+			vis = SymbolFactory.createInstance("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismtrap") as MovieClip;
 			vis.gotoAndStop(1);
 			setVis(false);
 			getXmlParam();

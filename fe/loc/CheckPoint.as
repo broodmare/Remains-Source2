@@ -36,25 +36,29 @@ package fe.loc {
 			
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			this.boundingBox.width = node.@size * tileX;
-			this.boundingBox.height = node.@wid * tileY;
+			boundingBox.width = node.@size * tileX;
+			boundingBox.height = node.@wid * tileY;
 			nazv=Res.txt('o','checkpoint');
 			
-			this.boundingBox.center(coordinates);
+			boundingBox.center(coordinates);
 
 			coordinates.X  = nx;
 			coordinates.Y  = ny;
-			var vClass:Class = Res.getClass('vischeckpoint', null, vischeckpoint); // .SWF Dependency
-			vis=new vClass();
+			var vClass:Class = SymbolFactory.fetchSymbolClass("vischeckpoint");
+			vis = new vClass();
 			vis.x = coordinates.X;
 			vis.y = coordinates.Y;
 			vis.gotoAndStop(1);
+		
 			if (id.charAt(10)) {
 				vis.lock.gotoAndStop(int(id.charAt(10)));
-				locked=true;
+				locked = true;
 			}
-			else vis.lock.visible=false;
-			this.boundingBox.center(coordinates);
+			else {
+				vis.lock.visible = false;
+			}
+		
+			boundingBox.center(coordinates);
 			cTransform=loc.cTransform;
 			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).shelf = true;
 			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).shelf = true;
@@ -67,7 +71,7 @@ package fe.loc {
 			inter.action=100;
 			
 			area=new Area(loc);
-			area.setSize(this.boundingBox.left, this.boundingBox.top, this.boundingBox.right, this.boundingBox.bottom);
+			area.setSize(boundingBox.left, boundingBox.top, boundingBox.right, boundingBox.bottom);
 			area.over=areaActivate;
 			
 			if (xml && xml.@main.length()) main=true;
@@ -229,7 +233,7 @@ package fe.loc {
 		}
 		
 		public override function step():void {
-			onCursor=(this.boundingBox.left < World.w.celX && this.boundingBox.right > World.w.celX && this.boundingBox.top < World.w.celY && this.boundingBox.bottom > World.w.celY)?prior:0;
+			onCursor=(boundingBox.left < World.w.celX && boundingBox.right > World.w.celX && boundingBox.top < World.w.celY && boundingBox.bottom > World.w.celY)?prior:0;
 			
 			if (inter) {
 				inter.step();

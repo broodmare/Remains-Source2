@@ -118,10 +118,10 @@ package fe.projectile {
 			
 			sloy = 2;
 			levitPoss = false;
-			
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
 			if (visClass) {
-				if (World.w.alicorn && own.player && visClass == visualBullet) {	// .SWF Dependency
-					visClass = visualRainbow;										// .SWF Dependency
+				if (World.w.alicorn && own.player && visClass == fetch("visualBullet")) {
+					visClass = fetch("visualRainbow");
 				}
 				
 				vis = new visClass();
