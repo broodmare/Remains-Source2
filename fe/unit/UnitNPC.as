@@ -12,7 +12,7 @@ package fe.unit {
 	public class UnitNPC extends UnitPon {
 		
 		public var targNPC:Npc;
-		public var npcId:String = '';
+		public var npcId:String = "";
 		public var npcXML:XML;
 		
 		public var visClass:Class;
@@ -23,8 +23,8 @@ package fe.unit {
 		public var showSign:Boolean = false;	//показывать мигающий указатель
 		
 		public var animFly:Boolean=false;
-		public var weap:String='';
-		public var weap2:String='';
+		public var weap:String="";
+		public var weap2:String="";
 		private var dopWeapon:Weapon;
 		
 		public var zanyato:Boolean = false;				// [Npc is busy fighting, does not interact]
@@ -38,7 +38,7 @@ package fe.unit {
 		
 		private var que:Array = [];
 		private var wait:int = 0;
-		private var dey:String = '';
+		private var dey:String = "";
 		private var cx:Number = -1;
 		private var cy:Number = -1;
 		private var dvig:Object = {};
@@ -51,11 +51,11 @@ package fe.unit {
 			
 			super(cid, ndif, xml, loadObj); // UnitPon Constructor
 			
-			if (cid != '' && cid != null) {
+			if (cid != "" && cid != null) {
 				id = cid;
 			}
 			else {
-				id = 'npc';
+				id = "npc";
 			}
 			
 			getXmlParam();
@@ -79,12 +79,14 @@ package fe.unit {
 			targNPC.owner = this;
 			
 			// [If there are npc settings]
+			var fetch:Function  = SymbolFactory.fetchSymbolClass;
 			if (npcXML) {
 				if (npcXML.@vis.length()) {
-					visClass = Res.getClass('visual' + npcXML.@vis, npcXML.@vis, visualVendor);	// .SWF Dependency
+					// Try getting the visuals for 'visualNAME' or if that can't be found xml.vis or if both fail, visualVendor
+					visClass = fetch("visual" + npcXML.@vis) || fetch(npcXML.@vis) || fetch("visualVendor") as Class;
 				}
 				else {
-					visClass = visualVendor;	// .SWF Dependency
+					visClass = fetch("visualVendor") as Class;
 				}
 				
 				if (npcXML.@noturn.length()) noTurn=true;
@@ -98,37 +100,38 @@ package fe.unit {
 				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
 			}
 			else {	// [And if not]
-				if (id == 'doctor') {
-					visClass = visualDoctor;	// .SWF Dependency
+				if (id == "doctor") {
+					visClass = fetch("visualDoctor") as Class;
 					icoFrame = 3;
 				}
 				else {
-					visClass = visualVendor;	// .SWF Dependency
+					visClass = fetch("visualVendor") as Class;
 					icoFrame = 2;
 				}
 			}
 			
 			// [Appearance]
-			vis = new visClass();			// .SWF Dependency
-			ico = new visNPCIco();			// .SWF Dependency
+			vis = SymbolFactory.createInstance("visClass") as MovieClip;
+			ico = SymbolFactory.createInstance("visNPCIco") as MovieClip;
 			ico.y = -140;
 			vis.addChild(ico);
 			
+			// use the class name we fetched to create an instance of the NPCs visuals
 			if (vis == null) {
-				vis = SymbolFactory.createSymbol("visualVendor") as MovieClip;
+				vis = SymbolFactory.createInstance("visualVendor") as MovieClip;
 			}	
 			
 			if (vis.osn) {
 				try {
-					vis.osn.gotoAndStop('stay');
+					vis.osn.gotoAndStop("stay");
 				}
 				catch(err) {
-					trace('ERROR: (00:9)');
+					trace("ERROR: (00:9)");
 					vis.osn.gotoAndStop(1);
 				}
 			}
 			// [Weapon]
-			var wm = WeaponManager.reference;
+			var wm:WeaponManager = WeaponManager.reference;
 			if (weap != "") {
 				currentWeapon = wm.cloneWeapon(weap);
 				wm.setOwner(currentWeapon, this);
@@ -153,7 +156,7 @@ package fe.unit {
 			if (xml) {
 				if (xml.@fly.length()) {
 					animFly = true;
-					aiTip = 'fly';
+					aiTip = "fly";
 					isFly = true;
 				}
 				
@@ -210,28 +213,28 @@ package fe.unit {
 				var br:int = int(Math.random() * 2 + 1);
 				
 				try {
-					vis.osn.gotoAndPlay('move' + br);
+					vis.osn.gotoAndPlay("move" + br);
 				}
 				catch (err) {
 					// TODO: NPCs will spam this error, investigate why 
-					//trace('ERROR: (00:0A) - Npc: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
+					//trace("ERROR: (00:0A) - Npc: \"" + npcId + "\" failed to play animation (move" + br.toString() + ")!");
 				}
 			}
 			
 			if (animFly) {
 				try {
-					if (isFly && animState != 'fly') {
-						vis.osn.gotoAndStop('fly');
-						animState = 'fly';
+					if (isFly && animState != "fly") {
+						vis.osn.gotoAndStop("fly");
+						animState = "fly";
 					}
 					
-					if (!isFly && animState != 'stay') {
-						vis.osn.gotoAndStop('stay');
-						animState = 'stay';
+					if (!isFly && animState != "stay") {
+						vis.osn.gotoAndStop("stay");
+						animState = "stay";
 					}
 				}
 				catch(err) {	
-					trace('ERROR: (00:0B)  - Npc: "' + npcId + '" failed run flying animation!');	
+					trace("ERROR: (00:0B)  - Npc: \"" + npcId + "\" failed run flying animation!");	
 				}
 			}
 		}
@@ -275,11 +278,11 @@ package fe.unit {
 			super.command(com,val);
 			
 			//скрыть
-			if (com=='hide') {
+			if (com=="hide") {
 				hide();
 			//проявиться
 			}
-			else if (com=='show') {
+			else if (com=="show") {
 				isVis=true;
 				vis.visible=true;
 				vis.alpha=0;
@@ -290,27 +293,27 @@ package fe.unit {
 				targNPC.hidden=false;
 			//открыть глаза
 			}
-			else if (com=='openEyes') {
+			else if (com=="openEyes") {
 				try {
 					vis.osn.gotoAndStop(2);
 				}
 				catch (err) {
-					trace('ERROR: (00:C)');
+					trace("ERROR: (00:C)");
 				}
 			//проверить, нужна ли мигающая подсказка
 			}
-			else if (com=='sign') {
+			else if (com=="sign") {
 				if (ico.sign) {
-					if (aiTip=='fly') ico.sign.visible=false;
+					if (aiTip=="fly") ico.sign.visible=false;
 					else ico.sign.visible=World.w.helpMess;
 				}
 			//попрощаться
 			}
-			else if (com=='replicVse') {
+			else if (com=="replicVse") {
 				t_replic=0;
-				replic('vse');
+				replic("vse");
 			}
-			else if (com=='rep') {
+			else if (com=="rep") {
 				targNPC.rep=int(val);
 			}
 			else {
@@ -324,40 +327,40 @@ package fe.unit {
 		//команды, выполняющиеся в очереди
 		private function analiz(q:Object):void {
 			//реплика
-			if (q.com=='tell') {
+			if (q.com=="tell") {
 				t_replic=0;
 				replic(q.val);
 			//проверка статуса
 			}
-			else if (q.com=='check') {
+			else if (q.com=="check") {
 				if (targNPC) targNPC.check();
 			//сменить тип поведения
 			}
-			else if (q.com=='ai') {
+			else if (q.com=="ai") {
 				aiTip=q.val;
 			//лететь в точку
 			}
-			else if (q.com=='fly') {
+			else if (q.com=="fly") {
 				var celF:Array=q.val.split(":");
 				cx=(int(celF[0])+1)*tileX;
 				cy=(int(celF[1]))*tileY;
 				trace(cx,cy);
-				dey='fly';
+				dey="fly";
 				wait=1000;
 			//скрыть
 			}
-			else if (q.com=='rem') {
+			else if (q.com=="rem") {
 				hide();
 			//повернуться
 			}
-			else if (q.com=='turn') {
-				if (q.val=='0') storona=-storona;
-				else if (q.val=='-1') storona=-1;
+			else if (q.com=="turn") {
+				if (q.val=="0") storona=-storona;
+				else if (q.val=="-1") storona=-1;
 				else storona=1;
 				setVisPos();
 			}
-			else if (q.com=='mater') {
-				if (q.val=='0') mater=false;
+			else if (q.com=="mater") {
+				if (q.val=="0") mater=false;
 				else mater=true;
 			}
 		}
@@ -383,16 +386,16 @@ package fe.unit {
 			else {
 				t_replic--;
 				if (t_replic<=0) {
-					if (!silent) replic('neutral');
+					if (!silent) replic("neutral");
 					t_replic=Math.random()*500+200;
 				}
 				if (targNPC && targNPC.zzzGen && t_replic%120==2) {
-					newPart('zzz',3);
+					newPart("zzz",3);
 					try {
 						vis.osn.gotoAndStop(1);
 					}
 					catch (err) {
-						trace('ERROR: (00:D)');
+						trace("ERROR: (00:D)");
 					}
 				}
 			}
@@ -402,7 +405,7 @@ package fe.unit {
 			}
 			
 			if (wait==1) {
-				dey='';
+				dey="";
 			}
 			
 			if (que.length && wait<=0) {
@@ -418,7 +421,7 @@ package fe.unit {
 				currentWeapon.vis.alpha += 0.05;
 			}
 			
-			if (aiTip == 'fly') {
+			if (aiTip == "fly") {
 				if (!stay) {
 					isFly=true;
 				}
@@ -436,7 +439,7 @@ package fe.unit {
 				celY = coordinates.Y - 10;
 			}
 			
-			if (dey=='fly') {
+			if (dey=="fly") {
 				dvig.x = cx - coordinates.X;
 				dvig.y = cy - coordinates.Y;
 				var dst2:Number = dvig.x * dvig.x + dvig.y * dvig.y;
@@ -445,7 +448,7 @@ package fe.unit {
 					velocity.multiply(0.85);
 					
 					if (dst2<5*5) {
-						dey='';
+						dey="";
 						velocity.set(0, 0);
 						wait=0;
 					}
@@ -457,7 +460,7 @@ package fe.unit {
 				}
 			}
 		
-			if (aiTip=='agro') {
+			if (aiTip=="agro") {
 				if (celUnit && celUnit.sost==1 && celUnit.hp>0) {
 					setCel(celUnit);
 					
@@ -483,7 +486,7 @@ package fe.unit {
 				if (turnY<0) {
 					isFly=false;
 					turnY=0;
-					aiTip='';
+					aiTip="";
 					targNPC.landing();
 					inter.active=true;
 					

@@ -23,7 +23,7 @@ package fe.weapon {
 		public function WPaint() {
 			super();
 			
-			vWeapon = SymbolFactory.createSymbol("visualpaint") as Class;
+			vWeapon = SymbolFactory.createInstance("visualpaint") as Class;
 			vis = new vWeapon();
 		}
 		

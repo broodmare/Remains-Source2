@@ -35,9 +35,9 @@ package fe.unit {
 			id = "bossdron";
 			
 			// [take parameters from xml]
-			vis = SymbolFactory.createSymbol("visualMegaDron") as MovieClip;
+			vis = SymbolFactory.createInstance("visualMegaDron") as MovieClip;
 			vis.osn.gotoAndStop(1);
-			visshit = SymbolFactory.createSymbol("visShit") as MovieClip;
+			visshit = SymbolFactory.createInstance("visShit") as MovieClip;
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible = false;

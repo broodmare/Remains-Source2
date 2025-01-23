@@ -31,10 +31,10 @@ package fe.unit {
 			
 			//взять параметры из xml
 			if (tr == 2) {
-				vis = SymbolFactory.createSymbol("visualRaiderBoss2") as MovieClip;
+				vis = SymbolFactory.createInstance("visualRaiderBoss2") as MovieClip;
 			}
 			else {
-				vis = SymbolFactory.createSymbol("visualRaiderBoss") as MovieClip;
+				vis = SymbolFactory.createInstance("visualRaiderBoss") as MovieClip;
 			}
 			
 			vis.osn.gotoAndStop(1);

@@ -33,10 +33,10 @@ package fe.unit {
 			}
 			
 			if (tr == 2) {
-				vis = SymbolFactory.createSymbol("visualBloodwing2") as MovieClip;
+				vis = SymbolFactory.createInstance("visualBloodwing2") as MovieClip;
 			}
 			else {
-				vis = SymbolFactory.createSymbol("visualBloodwing") as MovieClip;
+				vis = SymbolFactory.createInstance("visualBloodwing") as MovieClip;
 			}
 			
 			vis.osn.gotoAndStop("stay");

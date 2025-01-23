@@ -218,7 +218,7 @@ package fe {
 			configObj = cfgObj;		// The user's stored settings
 			languageManager = langManager;	// Store the passed reference to the language manager
 
-			var create:Function = SymbolFactory.createSymbol;
+			var create:Function = SymbolFactory.createInstance;
 
 			// [Files]
 			spriteURL = 'sprite.swf';

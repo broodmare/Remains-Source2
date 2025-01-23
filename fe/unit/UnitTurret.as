@@ -83,22 +83,22 @@ package fe.unit {
 			id = "turret" + turrettip;
 
 			if (turrettip == 0)		{
-				vis = SymbolFactory.createSymbol("visualTurret0") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTurret0") as MovieClip;
 			}
 			else if (turrettip==1)	{
-				vis = SymbolFactory.createSymbol("visualTurret1") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTurret1") as MovieClip;
 			}
 			else if (turrettip==2)	{
-				vis = SymbolFactory.createSymbol("visualTurret2") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTurret2") as MovieClip;
 			}
 			else if (turrettip==3)	{
-				vis = SymbolFactory.createSymbol("visualTurret3") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTurret3") as MovieClip;
 			}
 			else if (turrettip==4)	{
-				vis = SymbolFactory.createSymbol("visualTurret4") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTurret4") as MovieClip;
 			}
 			else if (turrettip==5)	{
-				vis = SymbolFactory.createSymbol("visualTurret5") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTurret5") as MovieClip;
 			}
 			
 			vis.stop();

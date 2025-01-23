@@ -38,10 +38,10 @@ package fe.unit {
 			getXmlParam();
 			
 			if (tr == 2) {
-				vis = SymbolFactory.createSymbol("visualRoller2") as MovieClip;
+				vis = SymbolFactory.createInstance("visualRoller2") as MovieClip;
 			}
 			else {
-				vis = SymbolFactory.createSymbol("visualRoller") as MovieClip;
+				vis = SymbolFactory.createInstance("visualRoller") as MovieClip;
 			}
 			
 			vis.osn.rotation=Math.random()*360;

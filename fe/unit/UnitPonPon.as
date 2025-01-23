@@ -35,12 +35,12 @@ package fe.unit {
 			
 			if (cid=='zebra') {
 				if (tr>=4) msex=true;
-				vis = SymbolFactory.createSymbol("visualZebPon") as MovieClip;
+				vis = SymbolFactory.createInstance("visualZebPon") as MovieClip;
 				if (!uniqName) nazv=Res.txt('u','zebpon');
 				verVis=1;
 			}
 			else if (cid=='stab') {
-				vis = SymbolFactory.createSymbol("visualStabPon") as MovieClip;
+				vis = SymbolFactory.createInstance("visualStabPon") as MovieClip;
 				if (!uniqName) nazv=Res.txt('u','stabpon');
 				verVis=1;
 				id_replic='stabpon';
@@ -49,7 +49,7 @@ package fe.unit {
 				privet=true;
 			}
 			else {
-				vis = SymbolFactory.createSymbol("visualPonPon") as MovieClip;
+				vis = SymbolFactory.createInstance("visualPonPon") as MovieClip;
 				if (tr>=9 && tr<=11 || tr>=22) msex=true;
 				else msex=false;
 				if (tr==12) novoi=true;

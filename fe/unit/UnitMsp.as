@@ -37,7 +37,7 @@ package fe.unit {
 			
 			id = 'msp';
 			
-			vis = SymbolFactory.createSymbol("visualMsp") as MovieClip;
+			vis = SymbolFactory.createInstance("visualMsp") as MovieClip;
 			vis.stop();
 			
 			getXmlParam();

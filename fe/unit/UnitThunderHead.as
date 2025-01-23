@@ -88,8 +88,8 @@ package fe.unit {
 			osn.x = -osn.width / 2;
 			osn.y = -osn.height / 2;
 			
-			moln1 = SymbolFactory.createSymbol("ThunderHeadMoln") as MovieClip;
-			moln2 = SymbolFactory.createSymbol("ThunderHeadMoln") as MovieClip;
+			moln1 = SymbolFactory.createInstance("ThunderHeadMoln") as MovieClip;
+			moln2 = SymbolFactory.createInstance("ThunderHeadMoln") as MovieClip;
 			
 			moln1.blendMode=moln2.blendMode="screen";
 			moln1.alpha = 0;

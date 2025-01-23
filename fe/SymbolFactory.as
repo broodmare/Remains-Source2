@@ -5,7 +5,7 @@ package fe {
 
 	public class SymbolFactory {
 		//Dynamically creates an instance of a symbol from the main SWF.
-		public static function createSymbol(className:String):* {
+		public static function createInstance(className:String):* {
 			try {
 				// Retrieve the class reference from the global namespace
 				var SymbolClass:Class = getDefinitionByName(className) as Class;
@@ -24,6 +24,17 @@ package fe {
 			catch (error:IllegalOperationError) {
 				trace(error.message);
 				throw error;
+			}
+		}
+
+		//Dynamically gets a reference to the class of the symbol (but does not instantiate an instance yet)
+		public static function fetchSymbolClass(className:String):* {
+			try {
+				return Class(getDefinitionByName(className));
+			}
+			catch (error:ReferenceError) {
+				trace("Error: Symbol '" + className + "' does not exist.");
+				return null;
 			}
 		}
 	}

@@ -92,8 +92,8 @@ package fe.loc {
 			shad=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
 			
 			if (vis == null) {
-				vis  = SymbolFactory.createSymbol("visbox0") as MovieClip;
-				shad = SymbolFactory.createSymbol("visbox0") as MovieClip;
+				vis  = SymbolFactory.createInstance("visbox0") as MovieClip;
+				shad = SymbolFactory.createInstance("visbox0") as MovieClip;
 			}
 			
 			vis.stop();

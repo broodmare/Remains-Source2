@@ -17,7 +17,7 @@ package fe.unit {
 			super(cid, ndif, xml, loadObj);
 		
 			id = "sentinel";
-			vis = SymbolFactory.createSymbol("visualSentinel") as MovieClip;
+			vis = SymbolFactory.createInstance("visualSentinel") as MovieClip;
 			vis.stop();
 			vis.osn.gotoAndStop(1);
 			getXmlParam();

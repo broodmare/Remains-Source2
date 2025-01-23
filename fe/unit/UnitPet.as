@@ -39,7 +39,7 @@ package fe.unit {
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon') {
-				vis = SymbolFactory.createSymbol("visualMoon") as MovieClip;
+				vis = SymbolFactory.createInstance("visualMoon") as MovieClip;
 				vis.osn.stop();
 			}
 			else {

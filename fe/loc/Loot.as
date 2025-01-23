@@ -81,7 +81,7 @@ package fe.loc {
 			// Determine the appropriate sprite for the item
 			if (data.tip == Item.L_WEAPON) {
 				if ("vis" in data && "loot" in data) {
-					vis = SymbolFactory.createSymbol("visualItem") as MovieClip;
+					vis = SymbolFactory.createInstance("visualItem") as MovieClip;
 					if ("vis_loot" in data) {
 						try {
 							vis.gotoAndStop(data.vis_loot);
@@ -225,7 +225,7 @@ package fe.loc {
 		
 		private function shine():void {
 			if (vis) {
-				var sh:MovieClip = SymbolFactory.createSymbol("lootShine") as MovieClip;
+				var sh:MovieClip = SymbolFactory.createInstance("lootShine") as MovieClip;
 				sh.blendMode = "hardlight";
 				vis.addChild(sh);
 			}

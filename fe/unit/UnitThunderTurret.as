@@ -27,7 +27,7 @@ package  fe.unit {
 			
 			getXmlParam();
 			
-			vis = SymbolFactory.createSymbol("visualTTurret") as MovieClip;
+			vis = SymbolFactory.createInstance("visualTTurret") as MovieClip;
 			vis.osn.scaleX = 3;
 			vis.osn.scaleY = 3;
 			vis.osn.pole.visible = false;

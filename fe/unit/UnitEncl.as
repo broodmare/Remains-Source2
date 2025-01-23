@@ -38,7 +38,7 @@ package fe.unit {
 			
 				if (currentWeapon) {
 					currentWeapon.svis = "encl";
-					currentWeapon.vis = SymbolFactory.createSymbol("visencl") as MovieClip;
+					currentWeapon.vis = SymbolFactory.createInstance("visencl") as MovieClip;
 				}
 			}
 		

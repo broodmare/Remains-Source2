@@ -17,7 +17,7 @@ package fe.unit {
 		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='spectre';
-			vis = SymbolFactory.createSymbol("visualSpectre") as MovieClip;
+			vis = SymbolFactory.createInstance("visualSpectre") as MovieClip;
 			vis.visible=false;
 			getXmlParam();
 			walkSpeed = maxSpeed;

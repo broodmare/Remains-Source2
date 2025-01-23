@@ -88,7 +88,7 @@ package fe.unit {
 			animState='stay';
 			
 			if (glowTip>0) {
-				vlight = SymbolFactory.createSymbol("visZombieLight") as MovieClip;
+				vlight = SymbolFactory.createInstance("visZombieLight") as MovieClip;
 				vis.addChild(vlight);
 				vlight.y = -boundingBox.halfHeight;
 				vlight.blendMode='screen';

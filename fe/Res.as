@@ -6,9 +6,9 @@ package fe {
 	public class Res {
 
 		private static var _currentLanguageData:XML;
-		private static var istxtCache:Object = {};
-		private static var txtCache:Object = {};
-		private static var loaded:Boolean = false;
+		private static var istxtCache:Object	= {};
+		private static var txtCache:Object		= {};
+		private static var loaded:Boolean		= false;
 
 		private static const typeDictionary:Object = {
 			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
@@ -370,7 +370,7 @@ package fe {
 				r = getDefinitionByName(id1) as Class;
 			} 
 			catch (err:ReferenceError) {
-				//trace('ERROR: (00:1C) - Could not retrieve class with ID1: "' + id1 + '".');
+				trace('ERROR: (00:1C) - Could not retrieve class with ID1: "' + id1 + '".');
 				if (id2 == null) {
 					r = def;
 				}
@@ -379,7 +379,7 @@ package fe {
 						r = getDefinitionByName(id2) as Class;
 					}
 					catch (err:ReferenceError) {
-						//trace('ERROR: (00:1D) - Could not retrieve class with ID2: "' + id2 + '".');
+						trace('ERROR: (00:1D) - Could not retrieve class with ID2: "' + id2 + '".');
 						r = def;
 					}
 				}

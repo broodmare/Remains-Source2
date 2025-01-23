@@ -50,7 +50,7 @@ package fe.unit {
 			super(cid, ndif, xml, loadObj);
 			
 			id='bossnecr';
-			vis = SymbolFactory.createSymbol("visualNecrBoss") as MovieClip;
+			vis = SymbolFactory.createInstance("visualNecrBoss") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			walkSpeed=maxSpeed;

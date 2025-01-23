@@ -35,7 +35,7 @@ package fe.unit {
 			getXmlParam();
 			
 			if (tr==1) {
-				vis = SymbolFactory.createSymbol("visualStolp") as MovieClip;
+				vis = SymbolFactory.createInstance("visualStolp") as MovieClip;
 				boss=true;
 				noDestr=true;
 			}

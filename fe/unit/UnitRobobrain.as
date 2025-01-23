@@ -10,7 +10,7 @@ package fe.unit {
 		public function UnitRobobrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='robobrain';
-			vis = SymbolFactory.createSymbol("visualRobobrain") as MovieClip;
+			vis = SymbolFactory.createInstance("visualRobobrain") as MovieClip;
 			vis.stop();
 			vis.osn.gotoAndStop(1);
 			getXmlParam();

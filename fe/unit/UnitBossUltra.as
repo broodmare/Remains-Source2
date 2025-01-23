@@ -54,10 +54,10 @@ package fe.unit {
 			tr = 1;
 			
 			// [Take parameters from xml]
-			vis = SymbolFactory.createSymbol("visualUltraSentinel") as MovieClip;
+			vis = SymbolFactory.createInstance("visualUltraSentinel") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			
-			visshit = SymbolFactory.createSymbol("visShit") as MovieClip;
+			visshit = SymbolFactory.createInstance("visShit") as MovieClip;
 			vis.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.visible = false;

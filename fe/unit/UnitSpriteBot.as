@@ -20,7 +20,7 @@ package fe.unit {
 			
 			id = "spritebot";
 			
-			vis = SymbolFactory.createSymbol("visualSpriteBot") as MovieClip;
+			vis = SymbolFactory.createInstance("visualSpriteBot") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			
 			getXmlParam();

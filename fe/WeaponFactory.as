@@ -15,7 +15,7 @@ package fe {
 		// Initialize a weapon using the data passed to this function (until it reaches the step that requires an Ammo item)
 		public static function createWeaponPart1(data:Object):Weapon {
 			var weapon:Weapon = new Weapon();
-			
+
 			weapon.sloy = 2;	// ???
 			weapon.id = data.id;
 
@@ -106,10 +106,15 @@ package fe {
 				weapon.flare = data.vis_flare;		// String
 			}
 
+			var create:Function = SymbolFactory.createInstance;
+			var fetch:Function  = SymbolFactory.fetchSymbolClass;
+
 			if (weapon.tip != "punch" || weapon.svisv) {
-				weapon.vWeapon = Res.getClass(weapon.svisv, weapon.svis, visp10mm);			// .SWF Dependency
+				// Tries to set the weapon visual movieclip as weapon.svisv, if that fails, weapon.svis, and finally visp10mm as a failsafe
+				weapon.vWeapon = fetch("weapon.svisv") || fetch("weapon.svis") || fetch("visp10mm");
 				
-				weapon.vis = new (weapon.vWeapon)();										// .SWF Dependency
+				// Create a new instance of the class we fetched
+				weapon.vis = new (weapon.vWeapon)();
 				(weapon.vis != null) ? trace("WeaponFactory.as/createWeaponPart1() - Retrieved vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv)
 									 : trace("WeaponFactory.as/createWeaponPart1() - Failed to retrieve vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv);
 			}
@@ -124,15 +129,15 @@ package fe {
 			
 			if (weapon.visbul) { 
 				try {
-					weapon.vBullet = SymbolFactory.createSymbol("visbul" + String(weapon.visbul)) as Class;
+					weapon.vBullet = create("visbul" + String(weapon.visbul)) as Class;
 				}
 				catch (err:ReferenceError) {
 					trace("ERROR: (00:11)");
-					weapon.vBullet = SymbolFactory.createSymbol("visualBullet") as Class;
+					weapon.vBullet = create("visualBullet") as Class;
 				}
 			}
 			else {
-				weapon.vBullet = SymbolFactory.createSymbol("visualBullet") as Class;
+				weapon.vBullet = create("visualBullet") as Class;
 			}
 			
 			// Sounds

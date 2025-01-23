@@ -25,11 +25,11 @@ package fe.unit  {
 			getXmlParam();
 
 			if (tr==1) {
-				vis = SymbolFactory.createSymbol("visualTrainArmor") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTrainArmor") as MovieClip;
 				skin=20;
 			}
 			else {
-				vis = SymbolFactory.createSymbol("visualTrain") as MovieClip;
+				vis = SymbolFactory.createInstance("visualTrain") as MovieClip;
 			}
 
 			vis.gotoAndStop(1);

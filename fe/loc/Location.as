@@ -600,7 +600,7 @@ package fe.loc {
 		// [Add directional signs to neighboring locations]
 		private function addSignPost(xCoord:int, yCoord:int, rotation:int):void {
 			var sign:MovieClip;
-			sign = SymbolFactory.createSymbol("signPost") as MovieClip;
+			sign = SymbolFactory.createInstance("signPost") as MovieClip;
 			sign.x = xCoord * tileX;
 			sign.y = yCoord * tileY;
 			sign.rotation = rotation;

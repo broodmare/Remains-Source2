@@ -55,7 +55,7 @@ package fe.unit {
 			inter.action=1;
 			inter.actFun=free;
 			inter.update();
-			vis = SymbolFactory.createSymbol("visualCaptive") as MovieClip;
+			vis = SymbolFactory.createInstance("visualCaptive") as MovieClip;
 			vis.osn.pon.gotoAndStop(tr);
 			vis.osn.cage.gotoAndStop(sr+1);
 			

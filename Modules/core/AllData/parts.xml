@@ -25,7 +25,7 @@
 -->
 <parts>
 	
-	<!-- Разрушение стен -->
+	<!-- Destroying walls -->
 	<part id='kusok' vis='visualKusok' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
 	<part id='kusokB' vis='visualKusokB' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
 	<part id='kusokD' vis='visualKusokD' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
@@ -42,7 +42,7 @@
 	<part id='gwall' vis='visualGwall' anim='1' minliv='12' blend='screen' imp='1'/>
 	<part id='iskr_wall' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='10' rliv='10' grav='0.5' minv='1' rv='2' dy='-2' blend='screen'/>
 
-	<!-- взрывы -->
+	<!-- Explosions -->
 	<part id='expl' blit='sprExpl' blitx='240' blity='240' anim='1' minliv='15' imp='1'/>
 	<part id='explw' blit='sprExplW' blitx='240' blity='240' ctrans='1' anim='1' minliv='15' blend='hardlight' imp='1'/>
 	<part id='fireexpl' blit='sprExpl' blitx='240' blity='240' anim='1' minliv='15' blend='screen' imp='1'/>
@@ -68,7 +68,7 @@
 	<part id='necrblast2' vis='visualNecrblast2' anim='1' minliv='120' imp='1'/>
 	<part id='necrblast3' vis='visualNecrblast3' anim='1' minliv='30' imp='1'/>
 	
-	<!-- Эффекты оружия -->
+	<!-- Weapon Effects -->
 	<part id='gilza' vis='visualGilza' ctrans='1' minliv='20' rliv='10' grav='1' rdx='4' rdy='4'/>
 	<part id='react' blit='sprReact' blitx='60' blity='60' anim='1' minliv='15' blend='screen'/>
 	<part id='snow' vis='visualSnow' alph='1' ctrans='1' minliv='20' rliv='10' minv='15' rv='5' rr='20' rot='1' rsc='0.6' brake='0.95'/>
@@ -79,7 +79,7 @@
 	<part id='iskr' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='20' rliv='20' grav='0.5' minv='10' rv='5' dy='-5' blend='screen'/>
 	<part id='iskr_bul' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='15' rliv='5' grav='0.7' minv='5' rv='3' dy='-5' blend='screen'/>
 	
-	<!-- Вспышки при ударах пуль и корпуса -->
+	<!-- Flashes upon impact of bullets and body -->
 	<part id='flare' vis='visualFlare' minliv='10' anim='1'/>
 	<part id='bum' vis='visualBum' minliv='5' anim='1'/>
 	<part id='buma' vis='visualBumAcid' minliv='5' anim='1'/>
@@ -101,7 +101,7 @@
 	<part id='plevok' vis='flPlevok' minliv='3' anim='1'/>
 	<part id='pinkplevok' vis='flPinkPlevok' minliv='3' anim='1'/>
 	
-	<!-- Кровь -->
+	<!-- Blood -->
 	<part id='bloodexpl1' blit='sprBl1' blitx='240' blity='240' anim='1' minliv='20'/>
 	<part id='bloodexpl2' blit='sprBl2' blitx='240' blity='240' anim='1' minliv='20'/>
 	<part id='bloodexpl3' blit='sprBl3' blitx='240' blity='240' anim='1' minliv='20'/>
@@ -109,7 +109,7 @@
 	<part id='gblood' blit='sprGBlood' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='1' minv='0' rv='5' dy='-5'/>
 	<part id='pblood' blit='sprPBlood' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='1' minv='0' rv='5' dy='-6'/>
 	
-	<!-- Удары и смерть -->
+	<!-- Strikes and death -->
 	<part id='pole2' vis='visualPole2' alph='1' minliv='10' rliv='5'/>
 	<part id='burn' blit='sprIskr' blitx='3' blity='3' alph='1' minliv='20' rliv='20' grav='-0.5' minv='0' rv='5' dy='-3' blend='screen'/>
 	<part id='krupa' blit='sprKrupa' blitx='5' blity='5' alph='1' minliv='20' rliv='20' grav='0.5' minv='0' rv='5' dy='3'/>
@@ -120,13 +120,13 @@
 	<part id='bloat_kap' vis='bloat_kap' alph='1' ctrans='1' minliv='20' rliv='40' grav='0.8' minv='2' rv='10' dy='-5'/>
 	<part id='black' vis='visualBlack' alph='1' ctrans='1' minliv='20' rliv='10' minv='3' rv='8' rsc='0.4' brake='0.92'/>
 	
-	<!-- Эффекты -->
+	<!-- Effects -->
 	<part id='poison' vis='visualPoison' alph='1' ctrans='1' minliv='20' rliv='10' grav='-0.2' minv='0' rv='3' rsc='0.6' brake='0.95'/>
 	<part id='stun' vis='visualStun' alph='1' ctrans='1' minliv='20' rliv='10' minv='5' rv='5' rr='20' rot='1' rsc='0.6' brake='0.91'/>
 	<part id='slow' vis='visualSlow' alph='1' ctrans='1' minliv='20' rliv='10' rsc='0.2' brake='0.91'/>
 	<part id='blind' vis='visualBlind' alph='1' minliv='40' rliv='20' rsc='0.5' blend='multiply'/>
 	
-	<!-- Способности -->
+	<!-- Magic -->
 	<part id='teleport' vis='visualTele' minliv='12' anim='1' imp='1'/>
 	<part id='tele' blit='sprBSpark' blitx='9' blity='9' alph='1' minliv='10' rliv='20' rv='5' blend='screen'/>
 	<part id='telered' blit='sprRSpark' blitx='9' blity='9' alph='1' minliv='10' rliv='20' rv='5' blend='screen'/>
@@ -138,7 +138,7 @@
 	<part id='redray' vis='visualRedRay' minliv='50' rot='1' rsc='0.7' anim='1' otklad='15'/>
 	<part id='vsos' vis='visualVsos' alph='1' minliv='30' rsc='0.2'/>
 	
-	<!-- Прочие -->
+	<!-- Others -->
 	<part id='kap' blit='sprKap' blitx='3' blity='3' alph='1' minliv='15' rliv='5' grav='1' minv='3' rv='3' dy='-5'/>
 	<part id='unlock' vis='flUnlock' minliv='17' anim='1' blend='screen'/>
 	<part id='lift' blit='sprBSpark' blitx='9' blity='9' alph='1' minliv='20' rliv='20' dy='-5' rdy='-5' blend='screen'/>
@@ -156,7 +156,7 @@
 	<part id='red' vis='flRed' minliv='30' rliv='15' alph='1'/>
 	<part id='marker' vis='visualMarker' minliv='10' sloy='4' camscale='1'/>
 	
-	<!-- Числа урона и надписи -->
+	<!-- Damage numbers and inscriptions -->
 	<part id='numb' vis='visualNumb' minliv='60' dy='-1' brake='0.98' sloy='4' camscale='1'/>
 	<part id='replic' vis='visReplic' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>
 	<part id='replic2' vis='visReplic2' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>

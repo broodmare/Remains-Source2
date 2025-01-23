@@ -18,7 +18,7 @@ package fe.unit {
 		public function UnitVortex(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='vortex';
-			vis = SymbolFactory.createSymbol("visualVortex") as MovieClip;
+			vis = SymbolFactory.createInstance("visualVortex") as MovieClip;
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;

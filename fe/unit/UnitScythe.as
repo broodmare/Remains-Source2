@@ -28,7 +28,7 @@ package fe.unit {
 		public function UnitScythe (cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			id = 'scythe';
-			vis = SymbolFactory.createSymbol("visualScythe") as MovieClip;
+			vis = SymbolFactory.createInstance("visualScythe") as MovieClip;
 			vis.gotoAndPlay(Math.floor(Math.random() * vis.totalFrames + 1));
 			vis.osn.alpha = 0;
 			vis.vzz.alpha = 0;

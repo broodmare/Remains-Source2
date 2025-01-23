@@ -72,7 +72,7 @@ package fe.weapon  {
                 visvzz = new MovieClip()
             }
 			else {
-				visvzz = SymbolFactory.createSymbol("visVzz") as MovieClip;
+				visvzz = SymbolFactory.createInstance("visVzz") as MovieClip;
 			}
 
 			visvzz.visible = false;

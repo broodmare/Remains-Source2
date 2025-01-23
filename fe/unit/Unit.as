@@ -1788,9 +1788,8 @@ package fe.unit {
 			coordinates.X += velocity.X * reciprocalDiv;
 			coordinates.Y += velocity.Y * reciprocalDiv;
 
-			// Precompute half dimensions
+			// Precompute half width
 			var halfWidth:Number = boundingBox.halfWidth;
-			var halfHeight:Number = boundingBox.halfHeight;
 
 			// Cache map boundaries
 			var maxX:Number = loc.maxX;
@@ -2328,7 +2327,7 @@ package fe.unit {
 			super.addVisual();
 			
 			if (!player && !hpbar && vis) {
-				hpbar = SymbolFactory.createSymbol("hpBar") as MovieClip;
+				hpbar = SymbolFactory.createInstance("hpBar") as MovieClip;
 				
 				if (hero <= 0) {
 					hpbar.goldstar.visible = false;

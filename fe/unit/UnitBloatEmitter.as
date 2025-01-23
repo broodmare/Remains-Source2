@@ -22,11 +22,11 @@ package fe.unit {
 			}
 			
 			if (id=='eant') {
-				vis = SymbolFactory.createSymbol("visualAntEmitter") as MovieClip;
+				vis = SymbolFactory.createInstance("visualAntEmitter") as MovieClip;
 				emitId='ant';
 			}
 			else {
-				vis = SymbolFactory.createSymbol("visualBloatEmitter") as MovieClip;
+				vis = SymbolFactory.createInstance("visualBloatEmitter") as MovieClip;
 			}
 			
 			vis.stop();

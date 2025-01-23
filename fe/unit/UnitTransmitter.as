@@ -20,7 +20,7 @@ package fe.unit {
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
-			vis = SymbolFactory.createSymbol("visualTransmitter") as MovieClip;
+			vis = SymbolFactory.createInstance("visualTransmitter") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			storona=1;

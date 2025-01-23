@@ -159,10 +159,10 @@ package fe.unit {
 			wPos = AnimationSet.getWeaponOffset("wPosAlicorn");
 			
 			if (tr == 3) {
-				visshit = SymbolFactory.createSymbol("visShit2") as MovieClip;
+				visshit = SymbolFactory.createInstance("visShit2") as MovieClip;
 			}
 			else {
-				visshit = SymbolFactory.createSymbol("visShit") as MovieClip;
+				visshit = SymbolFactory.createInstance("visShit") as MovieClip;
 			}
 			
 			vis.addChild(visshit);

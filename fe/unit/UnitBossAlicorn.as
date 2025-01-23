@@ -77,7 +77,7 @@ package fe.unit {
 			initBlit();
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicornBoss");
-			vis = SymbolFactory.createSymbol("visShit3") as MovieClip;
+			vis = SymbolFactory.createInstance("visShit3") as MovieClip;
 			visshit.addChild(visshit);
 			visshit.gotoAndStop(1);
 			visshit.y=-50;

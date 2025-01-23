@@ -33,15 +33,15 @@ package fe.unit {
 			}
 			if (tr==1) {
 				id='cryoslime';
-				vis = SymbolFactory.createSymbol("visualCryoSlime") as MovieClip;
+				vis = SymbolFactory.createInstance("visualCryoSlime") as MovieClip;
 			}
 			else if (tr==2) {
 				id='pinkslime';
-				vis = SymbolFactory.createSymbol("visualPinkSlime") as MovieClip;
+				vis = SymbolFactory.createInstance("visualPinkSlime") as MovieClip;
 			}
 			else {
 				id='slime';
-				vis = SymbolFactory.createSymbol("visualSlime") as MovieClip;
+				vis = SymbolFactory.createInstance("visualSlime") as MovieClip;
 			}
 
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));

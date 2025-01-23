@@ -16,7 +16,7 @@ package fe.weapon  {
 		public function WKick() {
 			super();
 			
-			vBullet = SymbolFactory.createSymbol("visualPunch") as Class;
+			vBullet = SymbolFactory.createInstance("visualPunch") as Class;
 			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
