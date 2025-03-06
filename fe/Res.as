@@ -314,7 +314,13 @@ package fe {
 		
 		// Replaces carriage return and newline characters with HTML <br> tags
 		public static function formatText(s:String):String {
-			return s.replace(/\r\n/g,'<br>');
+			// Replace line breaks
+			s = s.replace(/\r\n/g, '<br>');
+			
+			// Replace color tags in plain text with HTML spans, eg. [color:yellow]text[/color] -> <span class='yellow'>text</span>
+			s = s.replace(/\[color:([a-zA-Z]+)\](.*?)\[\/color\]/g, "<span class='$1'>$2</span>");
+			
+			return s;
 		}
 		
 		// Formats game time from milliseconds to HH:MM:SS format
@@ -330,13 +336,15 @@ package fe {
 		// Wraps each character in the input string with a <span> tag assigning it a color from a rainbow sequence
 		public static function rainbow(s:String):String {
 			var n:int = 0;
-			var res:String = '';
-			var rainbowcol:Array = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+			var res:String = "";
+			var rainbowcol:Array = ["red", "orange", "yellow", "green", "blue", "purple"];
 
 			for (var i:int = 0; i < s.length; i++) {
 				res += "<span class='" + rainbowcol[n] + "'>" + s.charAt(i) + "</span>";
 				n++;
-				if (n >= 6) n = 0;
+				if (n >= 6) {
+					n = 0;
+				}
 			}
 			
 			return res;

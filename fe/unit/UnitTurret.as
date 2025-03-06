@@ -29,18 +29,18 @@ package fe.unit {
 		
 		private var osnova:Tile;
 		
-		private var turrettip:int=0;
-		private var hidden:int=0;	//1 - является срытой, 2 - скрыта и не реагирует пока не получит команду
-		private var sleep:Boolean=false;	//отключена
-		private var reprog:Boolean=false;	//перенастроена
+		private var turrettip:int		= 0;
+		private var hidden:int			= 0;			// [1 - is hidden, 2 - hidden and won't react until commanded]
+		private var sleep:Boolean		= false;		// Disabled
+		private var reprog:Boolean		= false;		// Reprogrammed
 		
-		private var actDrot:Number=0.1;
-		private var noTurn:Boolean=false;
-		private var absVis:Boolean=false;
-		private var watchDrot:Number=0.015;
-		private var period:int=120;
-		private var aRot:Array;		//массив углов поворота
-		private var nRot:int=0;		//и текущий элемент массива
+		private var actDrot:Number		= 0.10;			// turn speed in radians
+		private var noTurn:Boolean		= false;
+		private var absVis:Boolean		= false;
+		private var watchDrot:Number	= 0.015;		// scanning turn speed in radians
+		private var period:int			= 120;
+		private var aRot:Array;							// array of angles, now in radians
+		private var nRot:int			= 0;			// current index in aRot
 		private var mxml:XML;
 		private var angle:String;
 
@@ -72,35 +72,22 @@ package fe.unit {
 			}
 
 			// [determine the turret type]
-			if (cid == "land") turrettip=1;
-			if (cid == "arm") turrettip=3;
-			if (cid == "wall") turrettip=2;
-			if (cid == "hidden") hidden=1;
-			if (cid == "hidden2") hidden=2;
-			if (cid == "combat") turrettip=4;
-			if (cid == "boss") turrettip=5;
+			if (cid == "land")		turrettip = 1;
+			if (cid == "wall")		turrettip = 2;
+			if (cid == "arm")		turrettip = 3;
+			if (cid == "combat")	turrettip = 4;
+			if (cid == "boss")		turrettip = 5;
+
+			if (cid == "hidden")	hidden = 1;
+			if (cid == "hidden2")	hidden = 2;
+			
 			
 			id = "turret" + turrettip;
 
-			if (turrettip == 0)		{
-				vis = SymbolFactory.createInstance("visualTurret0") as MovieClip;
-			}
-			else if (turrettip==1)	{
-				vis = SymbolFactory.createInstance("visualTurret1") as MovieClip;
-			}
-			else if (turrettip==2)	{
-				vis = SymbolFactory.createInstance("visualTurret2") as MovieClip;
-			}
-			else if (turrettip==3)	{
-				vis = SymbolFactory.createInstance("visualTurret3") as MovieClip;
-			}
-			else if (turrettip==4)	{
-				vis = SymbolFactory.createInstance("visualTurret4") as MovieClip;
-			}
-			else if (turrettip==5)	{
-				vis = SymbolFactory.createInstance("visualTurret5") as MovieClip;
-			}
-			
+			// Create the turret base's texture
+			var tBase:String = "visualTurret" + String(turrettip);
+			vis = SymbolFactory.createInstance(tBase) as MovieClip;
+
 			vis.stop();
 			getXmlParam();
 			
@@ -109,9 +96,12 @@ package fe.unit {
 				absVis = true;
 			}
 			
-			currentWeapon = WeaponManager.reference.cloneWeapon("turretWep" + tr);
+			// Create and assign the tureret's weapon
+			var weaponName:String = "turretWep" + String(tr);
+			currentWeapon = WeaponManager.reference.cloneWeapon(weaponName);
 			WeaponManager.reference.setOwner(currentWeapon, this);
 			childObjs = new Array(currentWeapon);
+			
 			mat = 1;
 			currentWeapon.rot = currentWeapon.forceRot;
 			currentWeapon.auto = true;
@@ -158,7 +148,7 @@ package fe.unit {
 					watchDrot = 0.05;
 				}
 			}
-			else if (turrettip==1){
+			else if (turrettip == 1){
 				aRot = [-15, -165];
 				watchDrot = 0.1;
 			}
@@ -204,13 +194,15 @@ package fe.unit {
 				}
 				
 				watchDrot = 0.01;
-				vKonus = QUARTER_PI ;
+				vKonus = QUARTER_PI;
 				noTurn = true;
-				vis.osn.t1.scaleX=vis.osn.t2.scaleX=vis.osn.t3.scaleX=storona;
+				vis.osn.t1.scaleX = storona;
+				vis.osn.t2.scaleX = storona;
+				vis.osn.t3.scaleX = storona;
 			}
 			
 			nRot = int(Math.random() * aRot.length);
-			currentWeapon.rot = currentWeapon.forceRot = aRot[nRot];
+			currentWeapon.rot = currentWeapon.forceRot = aRot[nRot] * DEG_TO_RAD;
 			currentWeapon.findCel = false;
 			aiState = 1;
 			
@@ -220,6 +212,7 @@ package fe.unit {
 				vis.osn.gotoAndStop(6);
 			}
 			
+			// Set the weapon MovieClip to the correct frame (weapon visual)
 			try {
 				vis.osn.puha.gotoAndStop(tr);
 			}
@@ -355,7 +348,7 @@ package fe.unit {
 		}
 
 		public override function expl():void {
-			newPart("metal",4);
+			newPart("metal", 4);
 			newPart("miniexpl");
 		}
 		
@@ -569,9 +562,9 @@ package fe.unit {
 				}
 			}
 			
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.w.enemyAct > 1 && aiTCh % 10 == 1) {
 				if (!noTurn) {
-					vAngle=currentWeapon.rot;
+					vAngle = currentWeapon.rot;
 				}
 				
 				if (osnova && osnova.phis==0) {

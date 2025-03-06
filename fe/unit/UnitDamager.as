@@ -1,5 +1,8 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
+	import fe.SymbolFactory;
 	import fe.World;
 	import fe.Res;
 	import fe.XMLDataGrabber;
@@ -48,8 +51,7 @@ package fe.unit {
 			}
 			
 			mat = 1;
-			vis = Res.getVis("vis" + id, vismtrap);	// .SWF Dependency
-			
+			vis = SymbolFactory.createInstance("vis" + String(id)) as MovieClip || SymbolFactory.createInstance("vismtrap") as MovieClip;
 			getXmlParam();
 			
 			visibility	= 300;

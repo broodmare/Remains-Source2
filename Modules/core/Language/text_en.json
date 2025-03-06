@@ -1814,11 +1814,11 @@
         "about": {
             "string": "Credits",
             "description": [
-				"[Empalu] - concept, programming, graphics.",
-				"[DipFanken] - graphics, locations design.",
-				"[Mihasik] - English localization.",
-				"[Apple_Snack], [GreyGazer], [Shadow_Of_History] - participation in development.",
-				"The game is based on the \"Fallout: Equestria\" story by [kkat].",
+				"[color:yel]Empalu[/color] - concept, programming, graphics.",
+				"[color:yel]DipFanken[/color] - graphics, locations design.",
+				"[color:yel]Mihasik[/color] - English localization.",
+				"[color:yel]Apple_Snack[/color], [color:yel]GreyGazer[/color], [color:yel]Shadow_Of_History[/color] - participation in development.",
+				"The game is based on the \"Fallout: Equestria\" story by [color:yel]kkat[/color].",
 				"This game is a non-commercial project and is distributed free of charge."
 			]
         },
@@ -6198,8 +6198,8 @@
             "description": "Total damage will be shown as a single number instead of multiple number popups"
         },
         "mat_filter": {
-            "string": "Censor obscene language",
-            "description": "Disables most swearing by NPCs"
+            "string": "Censor obscene language [FEATURE REMOVED]",
+            "description": "Disables most swearing by NPCs [FEATURE REMOVED]"
         },
         "sys_cur": {
             "string": "System cursor",

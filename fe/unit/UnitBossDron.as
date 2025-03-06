@@ -58,9 +58,15 @@ package fe.unit {
 			collisionTip = 0;
 			
 			// [Give weapons]
-			var clone:Function = WeaponManager.reference.cloneWeapon;
+			var wm:WeaponManager = WeaponManager.reference;
+			var clone:Function = wm.cloneWeapon;
+			
+
 			currentWeapon = clone("dronmlau");
+			wm.setOwner(currentWeapon, this);
+
 			thWeapon = clone("drongr");
+			wm.setOwner(thWeapon, this);
 			(thWeapon as WThrow).kolAmmo = 100000;
 			childObjs = [currentWeapon, thWeapon];
 			

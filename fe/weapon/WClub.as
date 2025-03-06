@@ -78,7 +78,7 @@ package fe.weapon  {
 			visvzz.visible = false;
 			visvzz.stop();
 			
-			//vis.stop(); // Why was this being called during initialization?
+			vis.stop(); // Why is this being called during initialization?
 			
 			speed = 15;
 			satsMelee = true;
@@ -120,7 +120,7 @@ package fe.weapon  {
 			vzz = [];
 			//storona = owner.storona;
 			
-			var v:Vector2 = new Vector2( (coordinates.X - (dlina / 2) * storona), (coordinates.Y - dlina) ); 
+			var v:Vector2 = new Vector2( (coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina) ); 
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			b.tipBullet = 1;

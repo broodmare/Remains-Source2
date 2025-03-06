@@ -35,11 +35,11 @@ package fe.inter {
 		private var kolLevels:int		= 6;
 		private var page:int			= 0;
 		
-		private var ls:Array = ['stat_aj','stat_tw','stat_fl','stat_rr','stat_rd','stat_pp'];
+		private var ls:Array = ["stat_aj","stat_tw","stat_fl","stat_rr","stat_rd","stat_pp"];
 		
-		private var itemFilter:GlowFilter = new GlowFilter(0x00FF99, 1, 3, 3, 4, 1, false, false);
-		private var clearFilter:GlowFilter = new GlowFilter(0x00FF99, 1, 3, 3, 1, 1, false, true);
-		private var glowFilter:GlowFilter = new GlowFilter(0x00FF99, 1, 10, 6, 2, 3);
+		private var itemFilter:GlowFilter	= new GlowFilter(0x00FF99, 1, 3, 3, 4, 1, false, false);
+		private var clearFilter:GlowFilter	= new GlowFilter(0x00FF99, 1, 3, 3, 1, 1, false, true);
+		private var glowFilter:GlowFilter	= new GlowFilter(0x00FF99, 1, 10, 6, 2, 3);
 		
 		private var info:MovieClip;
 		
@@ -63,7 +63,7 @@ package fe.inter {
 				but.id.text = i;
 				but.id.visible = false;
 				but.ico.gotoAndStop(i + 2);
-				but.text.text = Res.txt("g", 'stand' + i);
+				but.text.text = Res.txt("g", "stand" + i);
 				but.y = 25 + 75 * i;
 				but.x = 20;
 				but.stop();
@@ -74,8 +74,10 @@ package fe.inter {
 			
 			vis.butclose.addEventListener(MouseEvent.CLICK,standClose);
 			vis.butclose.id.visible=false;
-			vis.butclose.text.text=Res.txt("g", 'close');
-			resizeScreen(1200,800);
+			vis.butclose.text.text=Res.txt("g", "close");
+			
+			resizeScreen(1200, 800);
+			
 			createWeaponLists(0);
 			createWeaponLists(1);
 			createWeaponLists(2);
@@ -86,15 +88,16 @@ package fe.inter {
 			createArmorList(7);
 			createArtList(8);
 			showWeaponList(0);
+			
 			info = new visualStandInfo(); // SWF Dependency
 			vis.addChild(info);
 			info.visible=false;
 			PipPage.setStyle(info.info);
-			info.info.autoSize='left';
+			info.info.autoSize="left";
 			vis.toptext.visible=false;
 			PipPage.setStyle(vis.bottext);
 			PipPage.setStyle(vis.toptext.txt);
-			vis.bottext.htmlText='';
+			vis.bottext.htmlText="";
 		}
 		
 		public function standClose(event:MouseEvent):void {
@@ -102,7 +105,7 @@ package fe.inter {
 		}
 		
 		public function standBut(event:MouseEvent):void {
-			page=event.currentTarget.id.text;
+			page = event.currentTarget.id.text;
 			setButtons();
 			showWeaponList(page);
 		}
@@ -163,7 +166,7 @@ package fe.inter {
 							infIco.gotoAndStop(tempId);
 						}
 						catch(err) {
-							trace('ERROR: (00:47)');
+							trace("ERROR: (00:47)");
 							infIco.stop();
 						}
 						
@@ -185,7 +188,7 @@ package fe.inter {
 						
 						if (vWeapon == null) {
 							
-							vWeapon = Res.getClass('vis' + tempId, null);
+							vWeapon = Res.getClass("vis" + tempId, null);
 						}
 						
 						if (vWeapon != null) {
@@ -212,16 +215,20 @@ package fe.inter {
 						item.nazv2.text = LanguageManager.reference.localText("weapon", tempId);
 						item.dop.text = "1";	// [There is a unique option]
 						item.goldstar.gotoAndStop(2);	// Add a gold star to indicate it's a unique variant
-						vWeapon = Res.getClass('vis' + tempId + '_1', null);	// Get the variant image
+						vWeapon = Res.getClass("vis" + tempId + "_1", null);	// Get the variant image
 						
 						if (vWeapon != null) {
 							infIco = new vWeapon();
 							infIco.x = -infIco.getRect(infIco).left * r - infIco.width * 0.50;
 							infIco.y = -infIco.height - infIco.getRect(infIco).top;
 							infIco.stop();
-							if (infIco.lez) infIco.lez.stop();
+							
+							if (infIco.lez) {
+								infIco.lez.stop();
+							}
+							
 							item.weapon2.addChild(infIco);
-							item.dop.text = '2'; // [There is a unique option with your own picture]
+							item.dop.text = "2"; // [There is a unique option with your own picture]
 						}
 					}
 					
@@ -237,7 +244,7 @@ package fe.inter {
 				item.x = 80 + stolb * 160;
 				item.y = 40;
 				item.art.gotoAndStop(ls[stolb]);
-				item.nazv.text=Res.txt('i', ls[stolb]);
+				item.nazv.text=Res.txt("i", ls[stolb]);
 				item.id.text = ls[stolb];
 				item.id.visible = false;
 				pages[n].addChild(item);
@@ -348,7 +355,7 @@ package fe.inter {
 			pages[n].visible = true;
 			
 			if (n <= 5) {
-				vis.toptext.txt.htmlText = Res.txt('p', 'infostand', 0, true);
+				vis.toptext.txt.htmlText = Res.txt("p", "infostand", 0, true);
 				vis.toptext.visible = true;
 			}
 			else {
@@ -423,7 +430,7 @@ package fe.inter {
 			else if (n==2) {
 				item.nazv.visible = false;
 				item.nazv2.visible = true;
-				if (item.dop.text == '2') {
+				if (item.dop.text == "2") {
 					item.weapon.visible = false;
 					item.weapon2.visible = true;
 				}

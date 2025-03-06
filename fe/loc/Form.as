@@ -4,7 +4,7 @@ package fe.loc {
 
 	public class Form {
 
-		private static const materialsPath = "Modules/core/allData/materials.json";
+		private static const materialsPath:String = "Modules/core/allData/materials.json";
 
 		public var id:String;
 		public var idMirror:String;
@@ -111,6 +111,18 @@ package fe.loc {
 					oForms[form.id] = new Form(form);
 				}
 			}
+		}
+
+		public static function getMirror(formID:String):Form {
+			if (oForms.hasOwnProperty(formID) && oForms[formID].idMirror != "") {
+				var mirrorID:String = oForms[formID].idMirror;
+				return oForms[mirrorID]; // Return the mirrored Form
+			}
+			else {
+				trace("Form.as/getMirror() - ERROR: Could not find a mirrored form of \"" + formID + "\"");
+				return null;
+			}
+			
 		}
 	}
 }

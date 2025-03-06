@@ -402,13 +402,13 @@ package fe.inter {
 		
 		// [Return visible key name by action code]
 		public function retKey(id):String {
-			if (keyIds[id]==null) {
+			if (keyIds[id] == null) {
 				return "?"
 			}
 			
-			var key=keyIds[id].a1;
+			var key = keyIds[id].a1;
 			
-			if (key==null) {
+			if (key == null) {
 				key=keyIds[id].a2;
 			}
 			
@@ -576,7 +576,7 @@ package fe.inter {
 				}
 			}
 			catch(err) {
-				trace("Ctr.as/onMouseWheel() - ERROR: (00:2C)");
+				trace("Ctr.as/onMouseWheel() - ERROR: (00:2C)"); // This is being thrown when at the limit of a scrollbar and scrolling more
 			}
 			
 			if (event.delta < 0 && keys["scrd"]) {
@@ -689,11 +689,6 @@ package fe.inter {
 				}
 
 				keyFull = false;
-			}
-
-			// DEBUG: Crash if 'G' and 'L' are pressed
-			if (keyGrenad && keyMed) {
-				crash();
 			}
 		}
 		

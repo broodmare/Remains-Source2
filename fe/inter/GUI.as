@@ -1484,9 +1484,10 @@ package fe.inter {
 			}
 
 			var xml;
+			
 			// TODO: Stop searching Res on your own
 			if (id is String) {
-				trace('Playing dialogue: "' + id +'".');
+				//trace("GUI.as/dialText() - Playing dialogue: \"" + id + "\".");
 
 				xml = Res.currentLanguageData.txt.(@id==id);
 				
@@ -1532,8 +1533,12 @@ package fe.inter {
 			if (xml && xml.@m.length()) {
 				var sar:Array=s.split('|');
 				if (sar) {
-					if (World.w.matFilter && sar.length>1) s=sar[1];
-					else s=sar[0];
+					if (World.w.matFilter && sar.length>1) {
+						s=sar[1];
+					}
+					else {
+						s=sar[0];
+					}
 				}
 			}
 
@@ -1572,7 +1577,7 @@ package fe.inter {
 
 				// If the string of text has a 'p'ortrait
 				if (xml.@p.length()) {
-					trace('This section of dialogue has a portrait.');
+					//trace("GUI.as/dialText() - This section of dialogue has a portrait.");
 
 					var portraitName:String = xml.@p;
 					// Replace the little pip portrait with the helmeted version
@@ -1583,7 +1588,7 @@ package fe.inter {
 
 					try {
 						if (portraitHelper == null) {
-							trace('Creating new PortraitHelper!');
+							trace("GUI.as/dialText() - Creating new PortraitHelper");
 							portraitHelper = new PortraitHelper(vis);
 						}
 						portraitHelper.displayPortrait(portraitName);
@@ -1594,9 +1599,9 @@ package fe.inter {
 					}
 				}
 				else {
-					trace('This secion of dialogue has no portrait.');
+					//trace("GUI.as/dialText() - This secion of dialogue has no portrait.");
 					if (portraitHelper.currentPortrait != null) {
-						trace('Clearing old portrait in memory for new dialogue.');
+						//trace("GUI.as/dialText() - Clearing old portrait in memory for new dialogue.");
 						portraitHelper.clearPortrait();
 					}
 

@@ -14,6 +14,7 @@ package fe.weapon {
 			weaponTo.bulCoords = weaponFrom.bulCoords;
 			
 			// Visual properties
+			weaponTo.vis = weaponFrom.vis;			// Weapon sprite
 			weaponTo.svis = weaponFrom.svis;
 			weaponTo.svisv = weaponFrom.svisv;
 			weaponTo.vWeapon = weaponFrom.vWeapon;

@@ -132,7 +132,7 @@ package fe.entities {
 				if (blitMFrame>0 && blitFrame>=blitMFrame) blitFrame=0;
 			}
 			if (water > 0) {
-				var voda=loc.getAbsTile(coordinates.X, coordinates.Y).water;
+				var voda:int = loc.getAbsTile(coordinates.X, coordinates.Y).water;
 				if (water == 2 && voda == 0 || water == 1 && voda > 0) liv = 1;
 			}
 			liv--;

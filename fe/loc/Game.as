@@ -157,8 +157,8 @@ package fe.loc {
 			
 			if (loadObj && loadObj.objs) {
 				for (var uid in loadObj.objs) {
-					var obj = loadObj.objs[uid];
-					var nobj = {};
+					var obj:Object = loadObj.objs[uid];
+					var nobj:Object = {};
 					
 					for (var n in obj) {
 						nobj[n] = obj[n];
@@ -179,7 +179,7 @@ package fe.loc {
 
 			var npcList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Npcs", "npc");
 			var npc:Npc;
-			var loadNPC;
+			var loadNPC:Npc;
 			for each(var xl in npcList) {
 				loadNPC = null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) {
@@ -344,7 +344,7 @@ package fe.loc {
 			if (curLandId=='stable_pi' && triggers['storm'] == 5) curLandId = 'stable_pi_surf';
 		}
 		
-		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false) {
+		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false):void {
 			if (nland != baseId && !World.w.pers.dopusk()) {
 				World.w.gui.messText('nocont');
 			}
@@ -358,7 +358,7 @@ package fe.loc {
 			}
 		}
 		
-		public function beginMission(nid:String = null) {
+		public function beginMission(nid:String = null):void {
 			if (nid == curLandId) return;
 			if (nid && lands[nid]) {
 				if (lands[nid].tip != 'base') {
@@ -464,7 +464,7 @@ package fe.loc {
 			return q;
 		}
 		
-		public function showQuest(id:String, sid:String) {
+		public function showQuest(id:String, sid:String):void {
 			var q:Quest = quests[id];
 			if (q == null) {
 				q = addQuest(id, null, true);
@@ -483,7 +483,7 @@ package fe.loc {
 			}
 		}
 		
-		public function closeQuest(id:String, sid:String=null) {
+		public function closeQuest(id:String, sid:String=null):void {
 			var q:Quest = quests[id];
 			// If a quest stage is completed and the quest is not accepted, add it as inactive
 			if (q == null) {
@@ -514,7 +514,7 @@ package fe.loc {
 			return res2;
 		}
 
-		public function incQuests(cid:String, kol:int = 1) {
+		public function incQuests(cid:String, kol:int = 1):void {
 			for each(var q:Quest in quests) {
 				if (q.state == 1 && q.isCheck) {
 					q.inc(cid, kol);
@@ -523,14 +523,17 @@ package fe.loc {
 			}
 		}
 		
-		public function addNote(id:String) {
-			if (triggers['note_'+id]) return;
+		public function addNote(id:String):void {
+			if (triggers['note_'+id]) {
+				return;
+			}
+
 			triggers['note_'+id]=1;
 			notes.push(id);
 		}
 		
-		public function setTrigger(id:String, n=1) {
-			triggers[id]=n;
+		public function setTrigger(id:String, n:int = 1):void {
+			triggers[id] = n;
 		}
 		
 		// [Determine how many items were generated]

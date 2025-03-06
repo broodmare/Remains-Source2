@@ -51,11 +51,20 @@ package fe.serv {
 		}
 		
 		private function analiz(xml:XML):void {
-			var act:String, targ:String, val:String, t:int=0, n:String='-1', opt1:int=0, opt2:int=0;
+			var act:String;
+			var targ:String;
+			var val:String;
+			var t:int = 0;
+			var n:String = "-1";
+			var opt1:int = 0;
+			var opt2:int = 0;
 			
 			if (xml.@act.length()) {		//команда
-				act=xml.@act;
-				if (act=='dial' || act=='dialog' || act=='inform' || act=='landlevel') onTimer=true;
+				act = xml.@act;
+				
+				if (act=="dial" || act=="dialog" || act=="inform" || act=="landlevel") {
+					onTimer=true;
+				}
 			}
 			
 			if (xml.@targ.length()) {
@@ -74,19 +83,28 @@ package fe.serv {
 			}
 			
 			if (xml.@n.length()) {
-				n=xml.@n;		//опция
+				n = xml.@n;		//опция
 			}
 			
 			if (xml.@opt1.length()) {
-				opt1=xml.@opt1;		//опция
+				opt1 = xml.@opt1;		//опция
 			}
 			
 			if (xml.@opt2.length()) {
-				opt2=xml.@opt2;		//опция
+				opt2 = xml.@opt2;		//опция
 			}
 			
 			if (act) {
-				acts.push({act:act, targ:targ, val:val, t:t, n:n, opt1:opt1, opt2:opt2});
+				acts.push(
+					{
+						act:act,
+						targ:targ,
+						val:val,
+						t:t,
+						n:n,
+						opt1:opt1,
+						opt2:opt2
+					});
 			}
 		}
 		
@@ -102,7 +120,7 @@ package fe.serv {
                 tcom = acts[ncom].t;
                 running = true;
             }
-			else {	//всё выполнить сразу
+			else {	// [Do everything at once]
                 for each(var obj:Object in acts) {
 					com(obj);
 				}
@@ -114,7 +132,7 @@ package fe.serv {
 				tcom--;
 			}
 			
-			if (tcom<=0) {
+			if (tcom <= 0) {
 				if (wait) {
 					if (World.w.ctr.keyPressed2) {
 						dial_n = 10000;
@@ -134,6 +152,7 @@ package fe.serv {
 							World.w.ctr.active = false;
 							World.w.ctr.keyPressed = false;
 							World.w.gg.levit = 0;
+							
 							return;
 						}
 						else {
@@ -155,7 +174,7 @@ package fe.serv {
 				}
 				else {
 					com(acts[ncom]);
-					tcom=acts[ncom].t;
+					tcom = acts[ncom].t;
 				}
 			}
 		}
@@ -180,7 +199,7 @@ package fe.serv {
 			if (obj.targ) {
 				var target:Obj;
 				
-				if (obj.targ == 'this') {
+				if (obj.targ == "this") {
 					target = owner;
 				}
 				else if (land) {
@@ -190,24 +209,27 @@ package fe.serv {
 					target = World.w.land.uidObjs[obj.targ];
 				}
 				
-				if (target) {target.command(obj.act, obj.val);}
+				if (target) {
+					target.command(obj.act, obj.val);
+				}
 			}
 			else {
+				trace("Performing action: " + String(obj.act));
 				switch (obj.act) {
 
-					case 'control off':
+					case "control off":
 						World.w.gg.controlOff();
 					break;
 					
-					case 'control on':
+					case "control on":
 						World.w.gg.controlOn();
 					break;
 
-					case 'mess':
-						World.w.gui.messText(obj.val, '', obj.opt1 > 0, obj.opt2 > 0);
+					case "mess":
+						World.w.gui.messText(obj.val, "", obj.opt1 > 0, obj.opt2 > 0);
 					break;
 
-					case 'dial':
+					case "dial":
 						if (!(obj.t > 0)) {
 							wait = true;
 						}
@@ -215,7 +237,7 @@ package fe.serv {
 						World.w.gui.dialText(obj.val, obj.n, obj.opt1 > 0, wait);
 					break;
 
-					case 'dialog':
+					case "dialog":
 						if (World.w.dialOn) {
 							World.w.gg.controlOff();
 							wait=true;
@@ -227,36 +249,36 @@ package fe.serv {
 						}
 					break;
 
-					case 'inform':
+					case "inform":
 						World.w.gg.controlOff();
 						wait = true;
 						dial_n = 0;
 						World.w.ctr.active = false;
-						World.w.gui.dialText(<r mod={actObj.opt2} push={(actObj.opt1>0)?'1':'0'}>{actObj.val}</r>,0,false,true);
+						World.w.gui.dialText(<r mod={actObj.opt2} push={(actObj.opt1>0)?"1":"0"}>{actObj.val}</r>,0,false,true);
 					break;
 
-					case 'landlevel':
+					case "landlevel":
 						if (World.w.dialOn && World.w.game.lands[actObj.val]) {
 							World.w.gg.controlOff();
 							wait=true;
 							World.w.ctr.active=false;
-							var str:String = Res.txt('m',actObj.val) + "\n" + LanguageManager.reference.localText("pip", 'recLevel') + ': [' + World.w.game.lands[actObj.val].dif + "]\n" + LanguageManager.reference.localText("pip", 'isperslvl') + ': [' + World.w.pers.level + ']';
+							var str:String = Res.txt("m",actObj.val) + "\n" + LanguageManager.reference.localText("pip", "recLevel") + ": [" + World.w.game.lands[actObj.val].dif + "]\n" + LanguageManager.reference.localText("pip", "isperslvl") + ": [" + World.w.pers.level + "]";
 							
 							if (World.w.game.lands[actObj.val].dif>World.w.pers.level) {
-								str += '\n\n' + LanguageManager.reference.localText("pip", 'wrLevel');
+								str += "\n\n" + LanguageManager.reference.localText("pip", "wrLevel");
 							}
 							
-							World.w.gui.dialText(<r mod='1'>{str}</r>,0,false,true);
+							World.w.gui.dialText(<r mod="1">{str}</r>,0,false,true);
 						}
 					break;
 
-					case 'allact':
+					case "allact":
 						World.w.loc.allAct(null, obj.val, obj.n);
 					break;
 
-					case 'take':
+					case "take":
 						if (obj.n < 0 && World.w.invent.hasItem(obj.val)) {
-							World.w.gui.infoText('withdraw', ItemManager.reference.getItem(obj.value).nazv, -obj.n);
+							World.w.gui.infoText("withdraw", ItemManager.reference.getItem(obj.value).nazv, -obj.n);
 							World.w.invent.decreaseQuantity(obj.val, -obj.n);
 							World.w.pers.setParameters();
 						}
@@ -265,50 +287,50 @@ package fe.serv {
 						}
 					break;
 
-					case 'takeArmor':
+					case "takeArmor":
 						var a:Armor = ArmorManager.reference.cloneArmor(obj.val);
 						World.w.invent.equipment.addArmor(a);
 					break;
 
-					case 'fav':
-						trace("Script.as/com() - 'fav' was called, but it's commented out AAAAAAAAAAAAAAAAAAAAAAAAAA FIX THIS AAAAAAAAAAAAAAAAAA");
+					case "fav":
+						trace("Script.as/com() - \"fav\" was called, but it's commented out AAAAAAAAAAAAAAAAAAAAAAAAAA FIX THIS AAAAAAAAAAAAAAAAAA");
 						//World.w.invent.favItem(obj.val, obj.n);
 					break;
 
-					case 'armor':
+					case "armor":
 						World.w.pip.setArmor(obj.val);
 					break;
 
-					case 'xp':
+					case "xp":
 						World.w.pers.expa(obj.val, World.w.gg.coordinates.X, World.w.gg.coordinates.Y);
 					break;
 
-					case 'perk':
+					case "perk":
 						World.w.pers.addPerk(obj.val);
 					break;
 
-					case 'eff':
+					case "eff":
 						World.w.gg.addEffect(obj.val,obj.opt1,obj.opt2);
 					break;
 
-					case 'remeff': 
+					case "remeff": 
 						World.w.gg.remEffect(obj.val);
 					break;
 
-					case 'music':
+					case "music":
 						if (obj.n>0) Snd.playMusic(obj.val, obj.n);
 						else Snd.playMusic(obj.val);
 					break;
 
-					case 'music_rep':
+					case "music_rep":
 						if (World.w.pers.rep>=World.w.pers.repGood) Snd.playMusic(obj.val);
 					break;
 
-					case 'anim':
+					case "anim":
 						World.w.gg.anim(obj.val,actObj.opt1>0);
 					break;
 
-					case 'turn':
+					case "turn":
 						if (obj.val > 0) {
 							World.w.gg.storona  = 1;
 						}
@@ -319,7 +341,7 @@ package fe.serv {
 						World.w.gg.velocity.X += World.w.gg.storona * 3;
 					break;
 
-					case 'black':
+					case "black":
 						World.w.cam.dblack = 0;
 						
 						if (obj.val > 0) {
@@ -329,141 +351,141 @@ package fe.serv {
 						World.w.vblack.alpha = obj.val;
 					break;
 
-					case 'dblack':
+					case "dblack":
 						World.w.cam.dblack = obj.val;
 					break;
 
-					case 'gui off':
+					case "gui off":
 						World.w.gui.hpBarOnOff(false);
 					break;
 
-					case 'gui on':
+					case "gui on":
 						World.w.gui.hpBarOnOff(true);
 					break;
 
-					case 'refill':
+					case "refill":
 						World.w.land.refill();
 					break;
 
-					case 'upland':
+					case "upland":
 						World.w.game.upLandLevel();
 					break;
 
-					case 'locon':
+					case "locon":
 						World.w.loc.allon();
 					break;
 
-					case 'locoff':
+					case "locoff":
 						World.w.loc.alloff();
 					break;
 
-					case 'quest':
+					case "quest":
 						World.w.game.addQuest(obj.val);
 					break;
 
-					case 'showstage':
+					case "showstage":
 						World.w.game.showQuest(obj.val, obj.n);
 					break;
 
-					case 'show':
+					case "show":
 						World.w.cam.showOn=false;
 					break;
 
-					case 'stage':
+					case "stage":
 						World.w.game.closeQuest(obj.val, obj.n);
 					break;
 
-					case 'trigger':
+					case "trigger":
 						if (obj.n == null) {
                             World.w.game.setTrigger(obj.val);
                         }
 						else World.w.game.setTrigger(obj.val, obj.n);
 					break;
 
-					case 'goto':		//перейти в комнату
-						var distr:Array=obj.val.split(' ');
+					case "goto":		//перейти в комнату
+						var distr:Array=obj.val.split(" ");
 						if (distr.length==2) land.gotoXY(distr[0],distr[1]);
 					break;
 
-					case 'gotoland':	//перейти в местность
+					case "gotoland":	//перейти в местность
 						if (obj.n==2) World.w.game.gotoLand(obj.val,null,true);
-						else if (obj.n==1) World.w.game.gotoLand(obj.val, obj.opt1+':'+obj.opt2);
+						else if (obj.n==1) World.w.game.gotoLand(obj.val, obj.opt1+":"+obj.opt2);
 						else World.w.game.gotoLand(obj.val);
 					break;
 
-					case 'openland':	//открыть местность на карте
+					case "openland":	//открыть местность на карте
 						World.w.game.lands[obj.val].access = true;
 					break;
 
-					case 'passed':		//местность пройдена
+					case "passed":		//местность пройдена
 						World.w.land.act.passed = true;
 					break;
 
-					case 'actprob':
+					case "actprob":
 						if (World.w.loc.prob) World.w.loc.prob.activateProb();
 					break;
 
-					case 'alarm':
+					case "alarm":
 						World.w.loc.signal();
 					break;
 
-					case 'trus':
+					case "trus":
 						if (owner && owner.loc) owner.loc.trus=Number(obj.val);
 						else World.w.loc.trus=Number(obj.val);
 					break;
 
-					case 'checkall':
+					case "checkall":
 						for each (var un:Unit in World.w.loc.units) {
-							un.command('check');
+							un.command("check");
 						}
 					break;
 
-					case 'robots':
+					case "robots":
 						World.w.loc.robocellActivate();
 					break;
 
-					case 'weapch':
+					case "weapch":
 						World.w.gg.changeWeapon(obj.val);
 					break;
 
-					case 'alicorn':
+					case "alicorn":
 						if (obj.val <= 0) World.w.gg.alicornOff();
 						else World.w.gg.alicornOn();
 					break;
 
-					case 'wave':
+					case "wave":
 						if (World.w.loc.prob) World.w.loc.prob.beginWave();
 					break;
 
-					case 'pip':
+					case "pip":
 						World.w.pip.onoff(obj.val, obj.n);
 					break;
 
-					case 'speceffect':
+					case "speceffect":
 						World.w.grafon.specEffect(obj.n);
 					break;
 
-					case 'scene':
+					case "scene":
 						if (obj.val) World.w.showScene(obj.val, obj.n);
 						else World.w.unshowScene();
 					break;
 
-					case 'endgame':
+					case "endgame":
 						World.w.endgame();
 					break;
 
-					case 'gameover':
+					case "gameover":
 						World.w.endgame(1);
 					break;
 
-					case 'wait':
+					case "wait":
 						wait=true;
 						dial_n=0;
 						World.w.ctr.active=false;
 					break;
 
 					default:
-						trace('Script.as/com() - ERROR: Script: "' + obj.act + '" not found!');
+						trace("Script.as/com() - ERROR: Script: \"" + obj.act + "\" not found!");
 					break;
 				}
 			}

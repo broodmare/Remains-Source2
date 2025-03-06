@@ -148,7 +148,7 @@ package fe {
 				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wPaint vis is " + ((weapon.vis != null) ? "present" : "missing"));
 				return weapon = wepPaint;
 			}
-			else if (data.tip == "throwable") {
+			else if (data.tip == "throwable" || data.tip == "explosives") {
 				var wepThrow:WThrow = new WThrow(weapon, data);
 				trace("WeaponManager.as/cloneWeapon() - Created new weapon subclass: "  + weapon.id + " wThrow vis is " + ((weapon.vis != null) ? "present" : "missing"));
 				return weapon = wepThrow;

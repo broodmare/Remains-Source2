@@ -65,7 +65,7 @@ package fe {
 			}
 			
 			// [Visual]
-			weapon.svis = 'vis' + weapon.id;
+			weapon.svis = SymbolFactory.fetchSymbolClass("vis" + String(weapon.id)) || SymbolFactory.fetchSymbolClass("visual" + String(weapon.id));
 			
 			// Punch weapons don't have a visual sprite
 			if (weapon.tip == "punch") {
@@ -77,7 +77,7 @@ package fe {
 			
 			// "vis" properties
 			if ("vis_vweap" in data ) {
-				weapon.svisv = data.vis_vweap;		// String
+				weapon.svisv = SymbolFactory.fetchSymbolClass(data.vis_vweap);		// String
 			}
 			if ("vis_tipdec" in data ) {
 				weapon.tipDecal = data.vis_tipdec;	// Int
@@ -112,10 +112,13 @@ package fe {
 
 			if (weapon.tip != "punch" || weapon.svisv) {
 				// Tries to set the weapon visual movieclip as weapon.svisv, if that fails, weapon.svis, and finally visp10mm as a failsafe
-				weapon.vWeapon = fetch("weapon.svisv") || fetch("weapon.svis") || fetch("visp10mm");
+				weapon.vWeapon = fetch(weapon.svisv) as Class || fetch(weapon.svis) as Class || fetch("visp10mm") as Class;
 				
-				// Create a new instance of the class we fetched
-				weapon.vis = new (weapon.vWeapon)();
+				// If we successfully fetched a class, isntantiate a new instance of the class we fetched
+				if (weapon.vWeapon) {
+					weapon.vis = new (weapon.vWeapon)();
+				}
+				
 				(weapon.vis != null) ? trace("WeaponFactory.as/createWeaponPart1() - Retrieved vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv)
 									 : trace("WeaponFactory.as/createWeaponPart1() - Failed to retrieve vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv);
 			}

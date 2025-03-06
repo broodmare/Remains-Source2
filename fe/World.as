@@ -321,7 +321,7 @@ package fe {
 			var i:int;
 			for (i = 0; i<=saveKol; i++) {
 				var savePath:String = null;
-				saveArr[i]=SharedObject.getLocal('PFEgame'+i,savePath);
+				saveArr[i] = SharedObject.getLocal('PFEgame' + i,savePath);
 			}
 			saveObj = saveArr[0];
 

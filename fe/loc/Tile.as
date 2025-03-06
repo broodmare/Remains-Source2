@@ -208,8 +208,8 @@ package  fe.loc {
 						setZForm(3);
 					}
 					else {
-						if (mirror && Form.oForms[sym].idMirror) {
-							inForm(Form.oForms[Form.oForms[sym].idMirror]);
+						if (mirror) {
+							inForm(Form.getMirror(sym));
 						}
 						else {
 							inForm(Form.oForms[sym]);

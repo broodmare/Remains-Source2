@@ -252,13 +252,13 @@ package fe.weapon {
 			}
 		}
 
-		/*public override function setNull(f:Boolean = false):void {
+		public override function setNull(f:Boolean = false):void {
 			if (owner) {
 				coordinates.X = owner.weaponX;
 				coordinates.Y = owner.weaponY;
 				animate();
 			}
-		}*/
+		}
 		
 		public function setPers(gg:UnitPlayer, pers:Pers):void {
   			weaponSkill = pers.weaponSkills[skill];
@@ -394,7 +394,7 @@ package fe.weapon {
 				if (rot > ONE_PI) {
 					rot -= TWO_PI;
 				}
-				if (rot < ONE_PI) {
+				if (rot < -ONE_PI) {
 					rot += TWO_PI;
 				}
 			}
@@ -805,7 +805,7 @@ package fe.weapon {
 					// [don't waste ammunition]
 				}
 				else {
-					magazineCapacity -= rashod;
+					magazineRounds -= rashod;
 					// [replenishment at the landfill]
 					if (owner.player && (loc.train) && ammo.id != "recharg" && ammo.id != "not") {
 						World.w.invent.increaseQuantity(ammo.id, rashod);
@@ -938,7 +938,7 @@ package fe.weapon {
 					if (magazineCapacity > 0) {
 						World.w.invent.increaseQuantity(ammo.id, magazineCapacity);
 						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * magazineCapacity;
-						magazineCapacity = 0;
+						magazineRounds = 0;
 					}
 					
 					setAmmo(ammoTarg.id);
@@ -946,8 +946,8 @@ package fe.weapon {
 				
 				var kol:int = World.w.invent.getQuantity(ammo.id);
 				
-				if (kol > magazineCapacity - magazineCapacity) {
-					kol = magazineCapacity-magazineCapacity;
+				if (kol > magazineCapacity - magazineRounds) {
+					kol = magazineCapacity-magazineRounds;
 				}
 				
 				magazineCapacity += kol;
@@ -977,7 +977,7 @@ package fe.weapon {
 				World.w.gui.infoText("unloadWeapon", nazv, null, false);
 				(owner as UnitPlayer).invent.increaseQuantity(ammo.id, magazineCapacity);
 				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * magazineCapacity;
-				magazineCapacity = 0;
+				magazineRounds = 0;
 				
 				if (sndReload != "") {
 					Snd.ps(sndReload, coordinates.X, coordinates.Y);
@@ -1146,17 +1146,17 @@ package fe.weapon {
 			if (!fixedToOwner) {
 				if (coordinates.X > owner.celX) {
 					vis.scaleX = -1;
-					vis.rotation = rot * 180 / ONE_PI + 180 + rotUp;
+					vis.rotation = rot * RAD_TO_DEG + 180 + rotUp;
 				}
 				
 				if (coordinates.X < owner.celX) {
 					vis.scaleX = 1;
-					vis.rotation = rot * 180 / ONE_PI - rotUp;
+					vis.rotation = rot * RAD_TO_DEG - rotUp;
 				}
 			}
 			else {
 				vis.scaleX = owner.storona;
-				vis.rotation = rot * 180 / ONE_PI + 90 * (1 - owner.storona) - rotUp * storona;
+				vis.rotation = rot * RAD_TO_DEG + 90 * (1 - owner.storona) - rotUp * storona;
 			}
 		}
 		
@@ -1199,7 +1199,7 @@ package fe.weapon {
 			s += pier + "\t";
 			
 			if (tip == TYPE_MAGIC) {
-				s += "магия\t"+mana+"\t";
+				s += "магия\t" + mana + "\t";
 			}
 			else {
 				if (!ammo) {

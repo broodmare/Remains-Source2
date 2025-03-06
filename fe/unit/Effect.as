@@ -87,7 +87,9 @@ package fe.unit {
 				if (node.@lvl3.length()) lvl3=node.@lvl3;
 				if (node.@add.length()) add=true;
 				if (node.del.length()) {
-					for each(var ndel in node.del) del.push(ndel.@id);
+					for each(var ndel in node.del) {
+						del.push(ndel.@id);
+					}
 				}
 			}
 			

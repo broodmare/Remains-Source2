@@ -21,16 +21,16 @@ package fe.graph {
 		private static var COLOR_LIGHTBLUE:uint			= 0x64FFFF;
 		private static var COLOR_COLLISION:uint			= 0x00FF00;
     	private static var COLOR_NO_COLLISION:uint		= 0xFF6464; 
-		private static var COLOR_DARK_RED:uint  = 0xAA0000;
+		private static var COLOR_DARK_RED:uint			= 0xAA0000;
 
         private var spriteContainer:Sprite;								// Main sprite container
 		
 		// Units and Objects
-		private var drawObjectBoundingBoxes:Boolean		= true;
-		private var drawUnitBoundingBoxes:Boolean		= true;
-		private var drawPlayerBoundingBoxes:Boolean		= true;
+		private var drawObjectBoundingBoxes:Boolean		= false;
+		private var drawUnitBoundingBoxes:Boolean		= false;
+		private var drawPlayerBoundingBoxes:Boolean		= false;
 
-		private var drawChainBoundingBoxes:Boolean		= true; 		// Processing chain for the current loc (Bullets, Triggers, ..)
+		private var drawChainBoundingBoxes:Boolean		= false; 		// Processing chain for the current loc (Bullets, Triggers, ..)
 
 		// Tiles
 		private var drawShelfBoundingBoxes:Boolean		= false;		// Draw all beam bounding boxes
@@ -39,7 +39,7 @@ package fe.graph {
 		private var drawTileBoundingBoxes:Boolean		= false;		// Literally all tiles (will lag)
 
 		// NOTE: These two functions are shit garbage and I'm not even sure the top one works, but it'll show the tiles being checked around the player and floor/ceiling tiles being interacted with
-		private var drawCollisionChecks:Boolean = false;					// Collision ceheck visualization
+		private var drawCollisionChecks:Boolean = false;				// Collision ceheck visualization
 		private var drawHorizontalCollisionChecks:Boolean = false;
 
         // Constructor

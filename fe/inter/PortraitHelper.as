@@ -13,20 +13,20 @@ package fe.inter {
 
         // Constructor
         public function PortraitHelper(guiMC:MovieClip) {
-            var dialogueBox:MovieClip = guiMC.getChildByName('dial') as MovieClip;
+            var dialogueBox:MovieClip = guiMC.getChildByName("dial") as MovieClip;
             pictureHolder = dialogueBox.portret;
         }
         
         public function displayPortrait(newPortrait:String):void  {
             if (currentPortrait != newPortrait) {
-                trace('Loading new portrait: "' + newPortrait + '".');
+                //trace("PortraitHelper.as/displayPortrait() - Loading new portrait: \"" + newPortrait + "\".");
                 clearPortrait();
                 currentPortrait = newPortrait;
                 loadImage(newPortrait);
             }
             else {
                 // Do nothing, we already have the correct portait loaded
-                //trace('Ignoring request to render duplicate portrait.');
+                //trace("PortraitHelper.as/displayPortrait() - Ignoring request to render duplicate portrait.");
             }
         }
 
@@ -49,7 +49,7 @@ package fe.inter {
         private static function onImageLoadError(event:IOErrorEvent):void {
             event.target.removeEventListener(Event.COMPLETE, onImageLoaded);
             event.target.removeEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
-            trace("Error loading image: " + event.text);
+            trace("PortraitHelper.as/onImageLoadError() - Error loading image: " + event.text);
         }
 
         public function clearPortrait():void {

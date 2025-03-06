@@ -26,7 +26,7 @@ package fe {
 		public var language:LanguageManager; // Handles loading and storing languages
 
 		// MainMenu variables
-		public var version:String = '1.1a';
+		public var version:String = "1.1a";
 		public var active:Boolean = true;	// The main menu is visible and needs to update
 		public var loaded:Boolean = false;
 		private var animOn:Boolean = true;
@@ -55,7 +55,7 @@ package fe {
 		private var loadCell:int = -1;
 		private var loadReg:int = 0;		// [Loading window mode, 0 - loading, 1 - selecting slot for autosave]
 		private var command:int = 0;
-		private var com:String = '';
+		private var com:String = "";
 		
 
 		private var mmp:MovieClip; // [For pipbuck]
@@ -68,7 +68,7 @@ package fe {
 			main = nmain;
 
 			// Load the user's in-game settings
-			userSettings = SharedObject.getLocal('config', null);
+			userSettings = SharedObject.getLocal("config", null);
 			// Load the settings file and store it in memory
 			Settings.initializeSettings();
 
@@ -98,7 +98,7 @@ package fe {
 		}
 
 		private function mainMenu2():void {
-			trace('STARTING LOADING PART 2!');
+			trace("STARTING LOADING PART 2!");
 			
 			world = new World(main, userSettings, language);
 			world.mainMenuClass = this;
@@ -167,7 +167,7 @@ package fe {
 			}
 			
 			world.vwait.visible = true;
-			world.vwait.progres.text = Res.txt("g", 'loading');
+			world.vwait.progres.text = Res.txt("g", "loading");
 		}
 
 		private function menuButtonListeners(setState:Boolean):void {
@@ -182,7 +182,7 @@ package fe {
 			}
 
 			function funButtonPress(event:MouseEvent):void {
-				trace('MainMenu.as/funButtonPress() - "' + event.currentTarget.name + '" pressed.');
+				trace("MainMenu.as/funButtonPress() - \"" + event.currentTarget.name + "\" pressed.");
 				switch(event.currentTarget.name) {
 					case "butContGame":
 						funContGame();
@@ -288,13 +288,13 @@ package fe {
 			mainMenuMovieClip.dialNew.title.text = language.localText("gui", "newgame");
 			mainMenuMovieClip.dialLoad.title.text = language.localText("gui", "loadgame");
 			mainMenuMovieClip.dialLoad.title2.text = language.localText("gui", "select_slot");
-			mainMenuMovieClip.version.htmlText='<b>' + language.localText("gui", "version") + ' ' + version + '</b>';
+			mainMenuMovieClip.version.htmlText="<b>" + language.localText("gui", "version") + " " + version + "</b>";
 			mainMenuMovieClip.dialLoad.butCancel.text.text = mainMenuMovieClip.dialNew.butCancel.text.text = language.localText("gui", "cancel");
 			mainMenuMovieClip.dialLoad.butFile.text.text = language.localText("pip", "loadfile");
 			mainMenuMovieClip.dialLoad.warn.text = mainMenuMovieClip.dialNew.warn.text = language.localText("gui", "loadwarn");
 			mainMenuMovieClip.dialNew.infoName.text = language.localText("gui", "inputname");
 			mainMenuMovieClip.dialNew.hardOpt.text = language.localText("gui", "hardopt");
-			mainMenuMovieClip.dialNew.butOk.text.text = 'OK';
+			mainMenuMovieClip.dialNew.butOk.text.text = "OK";
 			mainMenuMovieClip.dialNew.inputName.text = language.localText("unit", "littlepip");
 			mainMenuMovieClip.dialNew.maxChars = 32;
 			
@@ -357,7 +357,11 @@ package fe {
 			mainMenuMovieClip.version.y=main.stage.stageHeight-58;
 			mainMenuMovieClip.link.y=main.stage.stageHeight-125;
 			var ny:int = main.stage.stageHeight-400;
-			if (ny<280) ny=280;
+			
+			if (ny < 280) {
+				ny = 280;
+			}
+			
 			mainMenuMovieClip.dialLoad.x=mainMenuMovieClip.dialNew.x=world.app.vis.x=main.stage.stageWidth/2;
 			mainMenuMovieClip.dialLoad.y=mainMenuMovieClip.dialNew.y=world.app.vis.y=ny;
 			mainMenuMovieClip.lang.x=main.stage.stageWidth-30;
@@ -394,7 +398,7 @@ package fe {
 			saveFiles = [];
 			
 			for (var i:int = 0; i <= world.saveKol; i++) {
-				var slot:MovieClip = mainMenuMovieClip.dialLoad['slot' + i];
+				var slot:MovieClip = mainMenuMovieClip.dialLoad["slot" + i];
 				var save:Object = World.w.getSave(i);
 				var obj:Object = fe.inter.PipPageOpt.saveObj(save, i);
 				saveFiles.push(obj);
@@ -402,13 +406,13 @@ package fe {
 				slot.id.visible = false;
 				
 				if (save != null && save.est != null) {
-					slot.nazv.text=(i==0) ? language.localText("pip", "autoslot") : (language.localText("pip", "saveslot") + ' ' + i);
-					slot.ggName.text=(save.pers.persName==null)?'-------':save.pers.persName;
-					if (save.pers.level!=null) slot.ggName.text+=' ('+save.pers.level+')';
-					if (save.pers.dead) slot.nazv.text+=' [†]';
-					else if (save.pers.hardcore) slot.nazv.text+=' {!}';
-					slot.date.text=(save.date==null)? '-------' : Res.getDate(save.date);
-					slot.land.text=(save.date==null)? '' : language.localText("map", save.game.land).substr(0, 18);
+					slot.nazv.text=(i==0) ? language.localText("pip", "autoslot") : (language.localText("pip", "saveslot") + " " + i);
+					slot.ggName.text=(save.pers.persName==null)?"-------":save.pers.persName;
+					if (save.pers.level!=null) slot.ggName.text+=" ("+save.pers.level+")";
+					if (save.pers.dead) slot.nazv.text+=" [†]";
+					else if (save.pers.hardcore) slot.nazv.text+=" {!}";
+					slot.date.text=(save.date==null)? "-------" : Res.getDate(save.date);
+					slot.land.text=(save.date==null)? "" : language.localText("map", save.game.land).substr(0, 18);
 				} 
 				else {
 					slot.nazv.text = language.localText("pip", "freeslot");
@@ -489,7 +493,7 @@ package fe {
 				mainLoadOff();
 				mainMenuOff();
 				command = 3;
-				com = 'load';
+				com = "load";
 				return;
 			}
        }		
@@ -546,16 +550,24 @@ package fe {
 
 		private function funAdv(event:MouseEvent):void {
 			world.nadv++;
-			if (world.nadv>=world.koladv) world.nadv=0;
+			
+			if (world.nadv>=world.koladv) {
+				world.nadv=0;
+			}
+			
 			mainMenuMovieClip.adv.text = advText(world.nadv);
-			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
+			mainMenuMovieClip.adv.y = main.stage.stageHeight - mainMenuMovieClip.adv.textHeight - 40;
 		}
 
 		private function funAdvR(event:MouseEvent):void {
 			world.nadv--;
-			if (world.nadv<0) world.nadv=world.koladv-1;
+			
+			if (world.nadv < 0) {
+				world.nadv = world.koladv - 1;
+			}
+			
 			mainMenuMovieClip.adv.text = advText(world.nadv);
-			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
+			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight - 40;
 		}
 
 		private function funNewCancel(event:MouseEvent):void {
@@ -565,6 +577,7 @@ package fe {
 		//нажать ОК в окне новой игры
 		private function funNewOk(event:MouseEvent):void {
 			mainNewOff();
+			
 			if (mainMenuMovieClip.dialNew.checkOpt2.selected) { //показать окно выбора слота
 				loadReg=1;
 				mainLoadOn();
@@ -573,7 +586,7 @@ package fe {
 				mainMenuOff();
 				loadCell=-1;
 				command=3;
-				com='new';
+				com="new";
 			}
 		}
 
@@ -639,7 +652,7 @@ package fe {
 			}
 			
 			showButtons(false);
-			mainMenuMovieClip.loading.text = 'Loading';
+			mainMenuMovieClip.loading.text = "Loading";
 			language.changeLanguage(nid);
 			langReload = true;
 		}
@@ -653,7 +666,7 @@ package fe {
 			mainMenuMovieClip.butAbout.visible = n;
 		}
 		
-		//создатели
+		// Credits
 		private function funAbout():void {
 			// Access the JSON data
 			var guiData:Object = language.data.gui;
@@ -662,13 +675,13 @@ package fe {
 			mainMenuMovieClip.dialAbout.title.text = guiData.about.string;
 			
 			// Initialize the description string by joining the 'about' descriptions with <br>
-			var aboutDescription:String = Res.formatText(guiData.about.description.join('<br>'));
+			var aboutDescription:String = Res.formatText(guiData.about.description.join("<br>"));
 			
 			// Start building the HTML content
 			var s:String = aboutDescription;
 			
 			// Add 'usedmusic' section title
-			s += '<br><br>' + guiData.usedmusic.string + '<br>';
+			s += "<br><br>" + guiData.usedmusic.string + "<br>";
 			
 			// Iterate through each music entry and append it with styling
 			for(var i:int = 0; i < guiData.usedmusic.description.length; i++) {
@@ -708,11 +721,11 @@ package fe {
 				if (world.allLandsLoaded) {
 					// If we're still loading songs, show the progress
 					if (Snd.totalSongsToLoad > Snd.totalSongsLoaded) {
-						mainMenuMovieClip.loading.text = 'Music loading ' + Snd.totalSongsLoaded + '/' + Snd.totalSongsToLoad;
+						mainMenuMovieClip.loading.text = "Music loading " + Snd.totalSongsLoaded + "/" + Snd.totalSongsToLoad;
 					}
 					// Otherwise clear the text to hide this
 					else {
-						mainMenuMovieClip.loading.text = '';
+						mainMenuMovieClip.loading.text = "";
 					}
 				}
 				return;
@@ -720,7 +733,7 @@ package fe {
 			// If all resource packs (.swfs / or loose files) have finished loading
 			if (world.grafon.resIsLoad && language.data != null) {
 				stn++;
-				mainMenuMovieClip.loading.text = 'Loading ' + (Math.floor(stn / 30)) + '\n';
+				mainMenuMovieClip.loading.text = "Loading " + (Math.floor(stn / 30)) + "\n";
 				world.init2();
 				
 				if (world.allLandsLoaded) {
@@ -734,13 +747,13 @@ package fe {
 				mainMenuMovieClip.loading.text += world.load_log;
 			} 
 			else {
-				mainMenuMovieClip.loading.text = 'Loading ' + Math.round(world.grafon.progressLoad * 100) + '%';
+				mainMenuMovieClip.loading.text = "Loading " + Math.round(world.grafon.progressLoad * 100) + "%";
 				
 			}
 		}
 		
 		public function log(s:String):void {
-			mainMenuMovieClip.loading.text += s + '; ';
+			mainMenuMovieClip.loading.text += s + "; ";
 		}
 
 		// This is the main loop of the game and runs every frame
@@ -748,11 +761,11 @@ package fe {
 			if (!part1Loaded) {
 				if (XMLData.fileCount < 1) return;
 				else if (XMLData.filesLoaded >= XMLData.fileCount) {
-					trace('Finished loading: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
+					trace("Finished loading: " + XMLData.filesLoaded + " of " + XMLData.fileCount + " files.");
 					part1Loaded = true;
 				}
 				else {
-					trace('Loaded: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
+					trace("Loaded: " + XMLData.filesLoaded + " of " + XMLData.fileCount + " files.");
 					return;
 				}
 
@@ -765,13 +778,13 @@ package fe {
 			if (active) step();
 			else if (command>0) {
 				command--;
-				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=='new') {
+				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=="new") {
 					world.setLoadScreen(0);
 				}
 				
 				if (command==0) { //начать игру !!!!
 					var opt:Object;
-					if (com=='new') {
+					if (com=="new") {
 						//propusk - опция 1 - пропуск обучения
 						//hardcore - опция 2
 						//fastxp - опция 3, опыта нужно на 40% меньше

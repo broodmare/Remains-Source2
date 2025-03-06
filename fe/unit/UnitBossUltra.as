@@ -76,23 +76,30 @@ package fe.unit {
 			
 			
 			// [Give weapons]
-			var clone:Function = WeaponManager.reference.cloneWeapon;
+			var wm:WeaponManager = WeaponManager.reference;
+			var clone:Function = wm.cloneWeapon;
+			
 			
 			// Weapon 1
 			currentWeapon = clone("robogatp");
+			wm.setOwner(currentWeapon, this);
 			
 			// Weapon 2
 			currentWeapon2 = clone("robogatp2");
+			wm.setOwner(currentWeapon2, this);
 			currentWeapon2.vis.visible = false;
 			
 			// Weapon 3
 			dopWeapon = clone("robomlau2");
+			wm.setOwner(dopWeapon, this);
 			
 			// Weapon 4
 			gasWeapon = clone("robogas");
+			wm.setOwner(gasWeapon, this);
 
 			// Weapon 5
 			thWeapon = clone("roboplagr");
+			wm.setOwner(thWeapon, this);
 			thWeapon.findCel = false;
 			(thWeapon as WThrow).kolAmmo = 100000;
 			

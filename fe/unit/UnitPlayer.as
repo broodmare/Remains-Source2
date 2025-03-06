@@ -267,23 +267,24 @@ package fe.unit {
 			
 			weaponKrep = false;	// false - левитация оружия, true - держать
 			
-			teleColor=World.w.app.cMagic;
-			levitFilter1=new GlowFilter(teleColor,0,6,6,2,3);
-			teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
-			dieFilter=new GlowFilter(0xCC00FF,0,6,6,2,3);
-			dashFilter=new BlurFilter(5,0,3);
-			stealthFilter=new BlurFilter(3,3);
-			shadowFilter=new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
-			teleTransform.redMultiplier=Appear.trMagic.redMultiplier*0.5+1;
-			teleTransform.greenMultiplier=Appear.trMagic.greenMultiplier*0.5+1;
-			teleTransform.blueMultiplier=Appear.trMagic.blueMultiplier*0.5+1;
-			shineTransform.greenMultiplier=1.5;
-			shineTransform.blueMultiplier=1.2;
-			invulnerFilter1=new GlowFilter(0xFF5555,1,2,2,3,3);
-			invulnerFilter2=new GlowFilter(0xFF0000,1,7,7,1,3);
-			doop=true;
-			transT=true;
-			fraction=F_PLAYER;
+			teleColor			= World.w.app.cMagic;
+			levitFilter1		= new GlowFilter(teleColor,0,6,6,2,3);
+			teleFilter			= new GlowFilter(teleColor,1,6,6,1,3);
+			dieFilter			= new GlowFilter(0xCC00FF,0,6,6,2,3);
+			dashFilter			= new BlurFilter(5,0,3);
+			stealthFilter		= new BlurFilter(3,3);
+			shadowFilter		= new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
+			invulnerFilter1		= new GlowFilter(0xFF5555,1,2,2,3,3);
+			invulnerFilter2		= new GlowFilter(0xFF0000,1,7,7,1,3);
+
+			teleTransform.redMultiplier		= Appear.trMagic.redMultiplier*0.5+1;
+			teleTransform.greenMultiplier	= Appear.trMagic.greenMultiplier*0.5+1;
+			teleTransform.blueMultiplier	= Appear.trMagic.blueMultiplier*0.5+1;
+			shineTransform.greenMultiplier	= 1.50;
+			shineTransform.blueMultiplier	= 1.20;
+			doop		= true;
+			transT		= true;
+			fraction	= F_PLAYER;
 		}
 		
 		public function attach():void {
@@ -295,21 +296,21 @@ package fe.unit {
 			hp = pers.begHP;
 			maxhp = pers.begHP;
 			
-			if (cArmorId!="" && cArmorId!=null && !World.w.alicorn) {
-				changeArmor(cArmorId,true);
+			if (cArmorId != "" && cArmorId != null && !World.w.alicorn) {
+				changeArmor(cArmorId, true);
 			}
 			else {
 				pers.setParameters();
 			}
 			
-			if (cAmulId!="" && cAmulId!=null) {
-				changeArmor(cAmulId,true);
+			if (cAmulId != "" && cAmulId != null) {
+				changeArmor(cAmulId, true);
 			}
-			if (!pers.dead && cWeaponId!="" && cWeaponId!=null) {
+			if (!pers.dead && cWeaponId != "" && cWeaponId != null) {
 				changeWeapon(cWeaponId);
 			}
 
-			if (cSpellId!="" && cSpellId!=null) {
+			if (cSpellId != "" && cSpellId != null) {
 				changeSpell(cSpellId, false);
 			}
 			
@@ -318,10 +319,11 @@ package fe.unit {
 			var wm:WeaponManager = WeaponManager.reference;
 			punchWeapon = wm.cloneWeapon("punch");
 			wm.setOwner(punchWeapon, this);
+
 			paintWeapon = wm.cloneWeapon("paint");
 			wm.setOwner(paintWeapon, this);
 
-			childObjs = [currentWeapon,punchWeapon];
+			childObjs = [currentWeapon, punchWeapon];
 			
 			/*
 			if (invent.fav[29]) {
@@ -385,8 +387,8 @@ package fe.unit {
 				weaponLevit();
 			}
 			
-			World.w.calcMassW = 
-			World.w.calcMass = true;
+			World.w.calcMassW	= true;
+			World.w.calcMass	= true;
 			
 			setAddictions();
 			
@@ -407,14 +409,19 @@ package fe.unit {
 			}
 			
 			dropTeleObj();
-			actionObj=null;
-			isLaz=0;
-			levit=0;
-			f_stealth=stealthMult<1;
-			f_die=f_levit=f_dash=f_inv=false;
+
+			actionObj	= null;
+			isLaz		= 0;
+			levit		= 0;
+			f_stealth	= stealthMult < 1;
+			f_die		= false;
+			f_levit		= false;
+			f_dash		= false;
+			f_inv		= false;
+
 			setFilters();
-			vis.osn.alpha=1;
-			vis.osn.transform.colorTransform=new ColorTransform();
+			vis.osn.alpha = 1;
+			vis.osn.transform.colorTransform = new ColorTransform();
 		}
 		
 		public function setSpeeds():void {
@@ -479,8 +486,14 @@ package fe.unit {
 				if (napr == 3 || napr == 4) {
 					if (laz != 0) {
 						checkStairs();
-						if (!isLaz) checkStairs(1, -tileX * laz);
-						if (!isLaz) checkStairs(1,  tileX * laz);
+						
+						if (!isLaz) {
+							checkStairs(1, -tileX * laz);
+						}
+					
+						if (!isLaz) {
+							checkStairs(1,  tileX * laz);
+						}
 					}
 				} 
 				
@@ -519,10 +532,15 @@ package fe.unit {
 				if (!nloc.petOn && loc.petOn) {
 					World.w.gui.infoText('noPetFollow');
 					pet.vis.alpha=0;
-					if (pet.hpbar) pet.hpbar.alpha=pet.vis.alpha;
-				} else {
+					
+					if (pet.hpbar) {
+						pet.hpbar.alpha=pet.vis.alpha;
+					}
+				}
+				else {
 					pet.loc=nloc;
 				}
+				
 				nloc.units[1]=pet;
 				pet.vis.visible=(nloc.petOn && pet.sost<3);
 			}
@@ -583,7 +601,7 @@ package fe.unit {
 		}
 		
 		//установить позицию при входе в локацию
-		public function setLocPos(nx:Number,ny:Number):void {
+		public function setLocPos(nx:Number, ny:Number):void {
 			coordinates.X = nx;
 			coordinates.Y = ny;
 			
@@ -641,18 +659,24 @@ package fe.unit {
 			else {
 				var brake1:Number = brake;
 				
-				if (inWater && !isPlav) velocity.X *= 0.5;
+				if (inWater && !isPlav) {
+					velocity.X *= 0.50;
+				}
 				
 				if (isPlav) {
 					velocity.Y += World.ddy * ddyPlav;
 					velocity.Y *= 0.8;
 				}
 				else {
-					var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height / 4);
+					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height / 4);
 					
 					if (t.grav > 0 && velocity.Y < loc.maxdy * t.grav || t.grav < 0 && velocity.Y > loc.maxdy * t.grav) {
-						if (dash_t > dash_maxt - 11) velocity.Y += World.ddy * t.grav * 0.1;
-						else velocity.Y += World.ddy * t.grav;
+						if (dash_t > dash_maxt - 11) {
+							velocity.Y += World.ddy * t.grav * 0.10;
+						}
+						else {
+							velocity.Y += World.ddy * t.grav;
+						}
 					}
 					
 					if (t.grav > 0) {
@@ -663,7 +687,7 @@ package fe.unit {
 					}
 					
 					if (t.grav < 0) {
-						velocity.X *= 0.8;
+						velocity.X *= 0.80;
 					}
 				}
 				
@@ -675,19 +699,30 @@ package fe.unit {
 				}
 				
 				if (walk<0) {
-					if (velocity.X < -maxSpeed) velocity.X += brake1;
+					if (velocity.X < -maxSpeed) {
+						velocity.X += brake1;
+					}
 				}
 				else if (walk>0) {
-					if (velocity.X > maxSpeed) velocity.X -= brake1;
+					if (velocity.X > maxSpeed) {
+						velocity.X -= brake1;
+					}
 				}
 				else {
-					if (velocity.X > -brake1 && velocity.X < brake1) velocity.X = 0;
-					else if (velocity.X > 0) velocity.X -= brake1;
-					else if (velocity.X < 0) velocity.X += brake1;
+					if (velocity.X > -brake1 && velocity.X < brake1) {
+						velocity.X = 0;
+					}
+					else if (velocity.X > 0) {
+						velocity.X -= brake1;
+					}
+					else if (velocity.X < 0) {
+						velocity.X += brake1;
+					}
 				}
 				
 				if (stay) {
 					velocity.X *= tormoz;
+				
 					if (loc.quake && massa<=2) {
 						var pun:Number=(1+(2-massa)/2)*loc.quake;
 						if (pun>10) pun=10;
@@ -830,6 +865,7 @@ package fe.unit {
 					
 					World.w.gui.setHp();
 				}
+			
 				if (pers.manaHP < pers.inMaxMana) {
 					pers.manaHP += pers.alicornManaHeal;
 					
@@ -867,6 +903,7 @@ package fe.unit {
 						chSloy(1);
 					}
 				}
+			
 				if (lurkBox && lurkBox.sloy == 1 && sloy == 1) {
 					lurkBox.vis.parent.setChildIndex(lurkBox.vis,lurkBox.vis.parent.numChildren-1);
 				}
@@ -890,17 +927,27 @@ package fe.unit {
 			
 			// [whining]
 			if (lurked) {
-				if (!stay) lurked=false;
-				if (lurkBox && lurkBox.wall==0 && !lurkBox.stay) lurked=false; 
-				if (work!='lurk' && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) lurked=false; 
+				if (!stay) {
+					lurked = false;
+				}
+			
+				if (lurkBox && lurkBox.wall == 0 && !lurkBox.stay) {
+					lurked = false;
+				}
+			
+				if (work != 'lurk' && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) {
+					lurked = false;
+				}
 			}
 			
-			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) chSloy(2);
+			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) {
+				chSloy(2);
+			}
 			
 			// [Dash]
-			f_dash=(dash_t>dash_maxt-20);
+			f_dash = (dash_t > dash_maxt - 20);
 			
-			if (dash_t>0) {
+			if (dash_t > 0) {
 				dash_t--;
 			}
 		
@@ -2310,19 +2357,20 @@ package fe.unit {
 						velocity.X = dash;
 					}
 					
-					aJump=2;
-					velocity.Y+=dash_dy;
-					dash_t=dash_maxt;
-					jumpNumb=2;
-					dJump=false;
-					stay=false;
-					jumpp=0;
-					ctr.keyJump=false;
+					aJump = 2;
+					velocity.Y += dash_dy;
+					dash_t = dash_maxt;
+					jumpNumb = 2;
+					dJump = false;
+					stay = false;
+					jumpp = 0;
+					ctr.keyJump = false;
 					
 					if (inBattle) {
 						stam-=pers.stamRun*pers.stamDash*dstam;
 					}
 				}
+
 				ctr.keyDubRight = false;
 				ctr.keyDubLeft = false;
 				ctr.keyDash = false;
@@ -2347,6 +2395,7 @@ package fe.unit {
 						stam-=pers.stamRun*pers.stamDash*dstam;
 					}
 				}
+				
 				ctr.keyDubLeft = false;
 				ctr.keyDubRight = false;
 				ctr.keyDash = false;
@@ -2569,7 +2618,9 @@ package fe.unit {
 					velocity.Y += plavdy * pers.speedPlavMult / 2;
 				}
 				
-				if (downp < 6) downp++;
+				if (downp < 6) {
+					downp++;
+				}
 			}
 			else {
 				downp = 0;
@@ -2631,7 +2682,6 @@ package fe.unit {
 					t_up = 10;
 				}
 			}
-			
 			
 			if ((burningForcesRunOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5) {
 				// [Stop climbing the ladder]
@@ -4018,6 +4068,7 @@ package fe.unit {
 							}
 
 							cframe = getStayFrame();
+							
 							//если сидим
 							if (isSit) {
 								if (animState=='jump') {
@@ -4027,12 +4078,13 @@ package fe.unit {
 									}
 								}
 								
-								if (animState!='down' && animState!='downjump') {
-									if (animState=='polz' || cframe!=2) {
+								if (animState != 'down' && animState != 'downjump') {
+									if (animState == 'polz' || cframe != 2) {
 										vis.osn.body.gotoAndStop(cframe);
 									}
-									else if (animState!='roll') {
+									else if (animState != 'roll') {
 										vis.osn.body.gotoAndPlay('down');
+										animState = 'down';
 									}
 									else {
 										vis.osn.body.gotoAndStop('sit');
@@ -4042,7 +4094,7 @@ package fe.unit {
 								//если стоим
 							}
 							else {
-								if (animState=='down') {
+								if (animState == 'down') {
 									vis.osn.body.gotoAndPlay('up');
 									animState='up';
 								}

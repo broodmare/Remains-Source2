@@ -15,12 +15,15 @@ package fe.weapon {
 			// Get all the properties from an already made default weapon and use them
 			WeaponCopier.copyFrom(w, this);
 
+			// Instantiate the movieclip with the bullet effect
 			vBullet = SymbolFactory.createInstance("visualPunch") as Class;
 		}
 		
 		public override function actions():void {
-
+			
+			
 			owner.setPunchWeaponPos(this);
+			
 			if (t_attack > 0) {
 				t_attack--;
 			}
