@@ -1346,7 +1346,11 @@ package fe.inter {
 		
 		public function infoEffText(id:String):void {
 			var s:String=Res.txt('e',id,2);
-			if (s==null || s=='') return;
+			
+			if (s==null || s=='') {
+				return;
+			}
+			
 			info.htmlText+=(s+"<br>");
 			kolStr++;
 			t_info=150;
@@ -1354,7 +1358,10 @@ package fe.inter {
 		}
 		
 		public function bulb(nx:int, ny:int):void {
-			if (t_bulb>0) return
+			if (t_bulb > 0) {
+				return;
+			}
+
 			Emitter.emit('gui',World.w.loc,nx,ny-110,{txt:bulbText, ry:50});
 			t_bulb=20;
 		}
@@ -1556,14 +1563,30 @@ package fe.inter {
 			if (reg) {
 				if (reg >= 1) {
 					dial.visible = false;
-					if (xml.@push > 0) inform.txt.htmlText += "<br><br>" + s;
-					else inform.txt.htmlText = s;
+					
+					if (xml.@push > 0) {
+						inform.txt.htmlText += "<br><br>" + s;
+					}
+					else {
+						inform.txt.htmlText = s;
+					}
+					
 					inform.txt.scrollV = 0;
 					inform.lmb.visible = wait;
-					if (wait) inform.lmb.play();
-					else inform.lmb.stop();
+					
+					if (wait) {
+						inform.lmb.play();
+					}
+					else {
+						inform.lmb.stop();
+					}
+					
 					inform.but0.visible = (reg == 2);
-					if (inform.scText) inform.scText.visible = false;
+					
+					if (inform.scText) {
+						inform.scText.visible = false;
+					}
+					
 					if (inform.txt.height < inform.txt.textHeight && inform.scText) {
 						inform.scText.maxScrollPosition = inform.txt.maxScrollV;
 						inform.scText.visible = true;
@@ -1666,15 +1689,25 @@ package fe.inter {
 			
 			if (kolStr>0 && !dialScript.running) {
 				t_info--;
-				if (t_info==0) remStr();
-				if (t_info==100) prevInfoText='';
-				if (t_info<=0 && kolStr>0) t_info=60;
+
+				if (t_info==0) {
+					remStr();
+				}
+
+				if (t_info==100) {
+					prevInfoText='';
+				}
+
+				if (t_info<=0 && kolStr>0) {
+					t_info=60;
+				}
 			}
 			
 			if (Math.abs(infoAlpha-realAlpha)>0.01) {
 				if (infoAlpha>realAlpha) {
 					realAlpha+=0.1;
 				}
+
 				if (infoAlpha<realAlpha) {
 					realAlpha-=0.1;
 				}
@@ -1687,45 +1720,87 @@ package fe.inter {
 				vis.portCel.visible=false;
 			}
 			
-			if (Math.abs(vis.info.alpha-realAlpha)>0.05) vis.info.alpha=realAlpha;
+			if (Math.abs(vis.info.alpha-realAlpha)>0.05) {
+				vis.info.alpha=realAlpha;
+			}
 			
-			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || World.w.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) setMana();
-			else if (mana.text!='') mana.text='';
+			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || World.w.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) {
+				setMana();
+			}
+			else if (mana.text!='') {
+				mana.text='';
+			}
 			
-			if (gg.effects.length || gg.poison>0 || gg.cut>0 || gg.shithp>0 || effIsVis) setEffects();
+			if (gg.effects.length || gg.poison>0 || gg.cut>0 || gg.shithp>0 || effIsVis) {
+				setEffects();
+			}
 			
-			if (t_sel>0) t_sel--;
+			if (t_sel>0) {
+				t_sel--;
+			}
 			
-			if (t_sel==1) unshowSelector(1);
+			if (t_sel==1) {
+				unshowSelector(1);
+			}
 			
-			if (t_od>0) t_od--;
+			if (t_od>0) {
+				t_od--;
+			}
 			
-			if (t_od==1) vis.odBar.visible=false;
+			if (t_od==1) {
+				vis.odBar.visible=false;
+			}
 			
-			if (t_bulb>0) t_bulb--;
+			if (t_bulb>0) {
+				t_bulb--;
+			}
 			
-			if (t_item>0) t_item--;
+			if (t_item>0) {
+				t_item--;
+			}
 			
-			if (t_item==1) setItems(-1);
+			if (t_item==1) {
+				setItems(-1);
+			}
 			
-			if (gg.currentWeapon) setHolder();
+			if (gg.currentWeapon) {
+				setHolder();
+			}
 			
 			setVisibility();
 			
 			if (t_mess>0) {
 				t_mess--;
-				if (mess.alpha<1) mess.alpha+=0.1;
-				if (mess.alpha>1) mess.alpha=1;
-				if (!mess.visible) mess.visible=true;
+			
+				if (mess.alpha<1) {
+					mess.alpha+=0.1;
+				}
+
+				if (mess.alpha>1) {
+					mess.alpha=1;
+				}
+
+				if (!mess.visible) {
+					mess.visible=true;
+				}
 			}
 			else {
-				if (mess.alpha>0) mess.alpha-=0.01;
-				if (mess.alpha<=0 && mess.visible) mess.visible=false;
+				if (mess.alpha>0) {
+					mess.alpha-=0.01;
+				}
+
+				if (mess.alpha<=0 && mess.visible) {
+					mess.visible=false;
+				}
 			}
 			
-			if (informScript.running) informScript.step();
+			if (informScript.running) {
+				informScript.step();
+			}
 			
-			if (dialScript.running) dialScript.step();
+			if (dialScript.running) {
+				dialScript.step();
+			}
 			
 			if (World.w.ctr.active && guiPause) {
 				if (t_bulb<=0) {
@@ -1745,8 +1820,13 @@ package fe.inter {
 				tharrow.rotation = Math.atan2(ndy, ndx) / Math.PI * 180;
 				var alph:Number = gg.throwForceRelat();
 				tharrow.alpha=alph;
-				if (alph>=0.99) tharrow.gotoAndStop(1);
-				else  tharrow.gotoAndStop(2);
+				
+				if (alph>=0.99) {
+					tharrow.gotoAndStop(1);
+				}
+				else  {
+					tharrow.gotoAndStop(2);
+				}
 			}
 			else {
 				tharrow.visible=false;
@@ -1755,7 +1835,8 @@ package fe.inter {
 			if (showDop&&!World.w.sats.active && !vis.fav.visible && !World.w.catPause) {
 				showSelector();
 			}
-			vis.fav.visible=vis.status.visible=(showFav || showDop)&&!World.w.sats.active && !World.w.catPause;
+
+			vis.fav.visible = vis.status.visible = (showFav || showDop) && !World.w.sats.active && !World.w.catPause;
 		}
 		
 		public function setSats(turn:Boolean):void {

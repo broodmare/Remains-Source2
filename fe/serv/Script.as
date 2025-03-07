@@ -9,24 +9,32 @@ package fe.serv {
 	
 	public class Script {
 
-		private var land:Land;
-		public var owner:Obj;
+		private var id:String;						// Name of the script
+		private var land:Land;						// Level this script is on
+		public var owner:Obj;						// Object this script belongs to
 		
 		public var eve:String;						// [event that causes the script to run]
 		public var acts:Array			= [];
 		private var actObj:Object;
 		
-		public var onTimer:Boolean		= false;	// [are there any commands with time delay]
-		public var running:Boolean		= false;	// [runtime script running]
-		private var wait:Boolean		= false;	// [waiting for a button to be pressed]
+		public var onTimer:Boolean		= false;	// The script has a delay before starting
+		public var running:Boolean		= false;	// The script is currently active
+		private var wait:Boolean		= false;	// The script is waiting to be activated
+		
 		private var ncom:int;
 		private var tcom:int			=  0;
 		private var dial_n:int			= -1;
 
-		public function Script(xml:XML, nland:Land=null, nowner:Obj=null, tt:Boolean=false) {
+		private static var debugLog = true;			// Output script information as it's executed
+
+		public function Script(xml:XML, nland:Land = null, nowner:Obj = null, tt:Boolean = false) {
 			land = nland;
 			owner = nowner;
 			
+			if (xml.@id.length()) {
+				id = xml.@id;
+			}
+
 			if (xml.@eve.length()) {
 				eve = xml.@eve;
 			}
@@ -50,6 +58,7 @@ package fe.serv {
 			}
 		}
 		
+		// Analyze each step in a script and create an object containing all it's actions
 		private function analiz(xml:XML):void {
 			var act:String;
 			var targ:String;
@@ -59,39 +68,39 @@ package fe.serv {
 			var opt1:int = 0;
 			var opt2:int = 0;
 			
-			if (xml.@act.length()) {		//команда
+			if (xml.@act.length()) {		// [Command]
 				act = xml.@act;
 				
-				if (act=="dial" || act=="dialog" || act=="inform" || act=="landlevel") {
-					onTimer=true;
+				if (act == "dial" || act == "dialog" || act == "inform" || act == "landlevel") {
+					onTimer = true;
 				}
 			}
 			
 			if (xml.@targ.length()) {
-				targ=xml.@targ;		//цель
+				targ = xml.@targ;		// [Target]
 			}
 			
 			if (xml.@val.length()) {
-				val=xml.@val;		//значение
+				val = xml.@val;		// [Value]
 			}
 			
-			if (xml.@t.length()) {						//задержка в сек.
+			if (xml.@t.length()) {						// [Delay in seconds]
 				t = Math.round(xml.@t * World.fps);
 				if (t > 0) {
-					onTimer=true;
+					onTimer = true;
 				}
 			}
 			
 			if (xml.@n.length()) {
-				n = xml.@n;		//опция
+				n = xml.@n;		// [option]
 			}
 			
 			if (xml.@opt1.length()) {
-				opt1 = xml.@opt1;		//опция
+				opt1 = xml.@opt1;		// [option]
 			}
 			
 			if (xml.@opt2.length()) {
-				opt2 = xml.@opt2;		//опция
+				opt2 = xml.@opt2;		// [option]
 			}
 			
 			if (act) {
@@ -108,8 +117,12 @@ package fe.serv {
 			}
 		}
 		
-		//запуск скрипта
+		// [Running the script]
 		public function start():void {
+			if (debugLog) {
+				trace("Script.as/start() - Running script: \"" + id + "\"");
+			}
+			
 			if (acts.length <= 0) {
 				return;
 			}
@@ -123,6 +136,10 @@ package fe.serv {
 			else {	// [Do everything at once]
                 for each(var obj:Object in acts) {
 					com(obj);
+					
+					if (debugLog) {
+						trace("Script.as/start() - Script: \"" + id + "\" completed");
+					}
 				}
             }
 		}
@@ -214,7 +231,10 @@ package fe.serv {
 				}
 			}
 			else {
-				trace("Performing action: " + String(obj.act));
+				if (debugLog) {
+					trace("Script.as/com() - Performing action: \"" + String(obj.act) + "\" of script \"" + id + "\"");
+				}
+
 				switch (obj.act) {
 
 					case "control off":
@@ -485,7 +505,7 @@ package fe.serv {
 					break;
 
 					default:
-						trace("Script.as/com() - ERROR: Script: \"" + obj.act + "\" not found!");
+						trace("Script.as/com() - ERROR: Script action: \"" + obj.act + "\" not found for script: \"" + id + "\"");
 					break;
 				}
 			}
