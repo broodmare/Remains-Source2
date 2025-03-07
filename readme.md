@@ -2,12 +2,6 @@ This project is an on-going rewrite of the source code for Fallout Equestria: Re
 
 \#####
 
-Contributors:
-
- Woons - Developer
- 
-\#####
-
 Goals:
 - Simplify and document the code.
 - Optimize wherever possible.
@@ -32,8 +26,14 @@ Wip:
  - Load background items at runtime.
  - Load in-game items/objects at runtime.
  - Add ability to easily create new tiles.
- - Real inventories and items instead of global values
- - Weapons are all separate, unique, easy to understand items
- - Localizations simplified, no more using multiple strings for a single key
+ - Real inventories and items instead of global values.
+ - Weapons are all separate, unique, easy to understand items.
+ - Localizations simplified, no more using a single key for multiple strings.
 
+\#####
+
+Contributors:
+
+ Woons - Developer
+ 
 \#####
