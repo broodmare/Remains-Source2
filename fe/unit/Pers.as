@@ -683,7 +683,7 @@ package fe.unit {
 			gg.precMultCont=1;			
 			gg.rapidMultCont=1;	
 			//флаги
-			gg.levitOn=0;
+			gg.levitOn=false;
 			gg.atkPoss=1;
 			gg.runForever=0;
 			gg.attackForever=0;
@@ -1677,7 +1677,7 @@ package fe.unit {
 			
 			if (manaSt>=4) {
 				if (teleMana>0) {
-					gg.levitOn=0;
+					gg.levitOn=false;
 				}
 				
 				isDJ=0;
@@ -1871,7 +1871,7 @@ package fe.unit {
 				setSkillParam(xml, eff.vse?0:eff.lvl);
 			}
 			//броня и защиты
-			if (gg.rat>0) {
+			if (gg.rat) {
 				// Do nothing
 			}
 			else if (!World.w.alicorn) {

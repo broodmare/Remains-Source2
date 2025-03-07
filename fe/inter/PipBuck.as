@@ -285,7 +285,7 @@ package fe.inter  {
 					World.w.gui.inform.alpha = 0;
 				}
 				
-				if (World.w.gg && World.w.gg.rat > 0 || World.w.catPause) {
+				if (World.w.gg && World.w.gg.rat || World.w.catPause) {
 					noAct2 = noAct;
 					noAct = true;
 				}
@@ -308,7 +308,7 @@ package fe.inter  {
 					World.w.gui.inform.alpha = 1;
 				}
 				
-				if (World.w.gg && World.w.gg.rat > 0) {
+				if (World.w.gg && World.w.gg.rat) {
 					noAct = noAct2;
 				}
 			}

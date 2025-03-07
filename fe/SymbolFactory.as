@@ -1,5 +1,12 @@
+/*
+	This class in theory should allow the game to be compiled by programs other than Adobe Animate. 
+	The original code has hundreds of calls to symbols that are only defined in the .fla file, not in the actual code.
+	Adobe Animate can handle resolving what these calls were actually referring to, but other compilers cannot do this.
+	My fix is to write a class that dynamically fetches and/or instantiates symbols from the '.fla' using strings (the symbol name). 
+*/
+
 package fe {
-	import flash.display.Sprite;
+	
 	import flash.utils.getDefinitionByName;
 	import flash.errors.IllegalOperationError;
 

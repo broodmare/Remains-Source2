@@ -123,7 +123,7 @@ package fe.unit {
 					return false;
 				}
 				
-				if (gg.rat>0) {
+				if (gg.rat) {
 					return false;
 				}
 				

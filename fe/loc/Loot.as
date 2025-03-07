@@ -233,7 +233,7 @@ package fe.loc {
 
 		// [Try to take]
 		public function take(prinud:Boolean = false):void {
-			if ((ttake > 0 || World.w.gg.loc != loc || World.w.gg.rat > 0) && !prinud) {
+			if ((ttake > 0 || World.w.gg.loc != loc || World.w.gg.rat) && !prinud) {
 				return;
 			}
 			
@@ -243,7 +243,7 @@ package fe.loc {
 			// [Take]
 			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
-					/*
+					/* AUTO PICKUP
 					auto2 = item.checkAuto();
 					if (!auto2) {
 						vsos = false;

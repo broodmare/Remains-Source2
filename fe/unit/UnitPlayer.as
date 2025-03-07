@@ -42,14 +42,12 @@ package fe.unit {
 		public var osnSpeed:Number;
 		private var t_fly:Number	= 0;
 		public var noReanim:Boolean	= false;
-		public var pinok:Number		= 0;	//сбивание с лестниц
-		public var noStairs:Boolean	= false;	//запред движения по лестницам
-		public var dstam:Number		= 5;	//расход выносливости
-		
-		//телекинез
-		public var levitOn:int		= 0;
-		
+		public var pinok:Number		= 0;		// [Knocking down stairs]
+		public var noStairs:Boolean	= false;	// [Restrict movement on stairs]
+		public var dstam:Number		= 5;		// [Stamina consumption]
+
 		//Telekensis variables
+		public var levitOn:Boolean		= false;
 		public var teleObj:Obj;				// The object we're moving(?)
 		public var teleSqrtMassa:Number;
 		public var teleSpeed:Number		= 8.00;
@@ -57,7 +55,7 @@ package fe.unit {
 		public var maxTeleDist:int		= 200;
 		public var levitup:Boolean		= false;
 		
-		//действия
+		// [Actions]
 		public var ggControl:Boolean	= true;	// Player control enabled
 		public var actionObj:Interact;
 		public var t_action:int			= 0;
@@ -198,10 +196,10 @@ package fe.unit {
 		private var prev_dx:Number=0;
 		
 		// [Rat shape]
-		public var rat:int				= 0;
-		public var ratX:int				= 30;
-		public var ratY:int				= 17;	
-		public var mordaN:int			= 1;
+		public var rat:Boolean			= false;		// Player is in rat form
+		public var ratX:int				= 30;			// Rat form bounding box width
+		public var ratY:int				= 17;			// Rat form bounding box height
+		public var mordaN:int			= 1;			// (What head the player is using? Pony or Rat?)
 		
 		public var reloadbar:MovieClip;
 		private var showRadius:Boolean	= false;
@@ -212,17 +210,6 @@ package fe.unit {
 		// Cache
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
-
-		private function testFunction():void {
-			if (World.w.chitOn) {
-				World.w.godMode = true;
-				World.w.chit = 'port';
-				World.w.drawAllMap = true;
-				World.w.black = false;
-				World.w.showAddInfo = true;
-				World.w.grafon.visLight.visible = false;
-			}
-		}
 		
 		// Constructor
 		public function UnitPlayer(cid:String = null, ndif:Number = 100.00) {
@@ -232,7 +219,12 @@ package fe.unit {
 
 			vis.osn.body.pip2.visible = false;
 			vis.osn.stop();
-			vis.inh.visible=vis.cryst.visible=vis.fetter.visible=vis.rat.visible=false;
+
+			vis.inh.visible		= false;
+			vis.cryst.visible	= false;
+			vis.fetter.visible	= false;
+			vis.rat.visible		= false;
+
 			reloadbar = new reloadBar();
 			reloadbar.visible = false;
 			vis.addChild(reloadbar);
@@ -246,7 +238,7 @@ package fe.unit {
 			}
 			
 			storona=1; // Whether the unit is facing left or right.
-			id_replic = 'pip';
+			id_replic = "pip";
 			
 			getXmlParam();
 			walkSpeed = osnSpeed = maxSpeed;
@@ -277,14 +269,26 @@ package fe.unit {
 			invulnerFilter1		= new GlowFilter(0xFF5555,1,2,2,3,3);
 			invulnerFilter2		= new GlowFilter(0xFF0000,1,7,7,1,3);
 
-			teleTransform.redMultiplier		= Appear.trMagic.redMultiplier*0.5+1;
-			teleTransform.greenMultiplier	= Appear.trMagic.greenMultiplier*0.5+1;
-			teleTransform.blueMultiplier	= Appear.trMagic.blueMultiplier*0.5+1;
+			teleTransform.redMultiplier		= Appear.trMagic.redMultiplier   * 0.50 + 1;
+			teleTransform.greenMultiplier	= Appear.trMagic.greenMultiplier * 0.50 + 1;
+			teleTransform.blueMultiplier	= Appear.trMagic.blueMultiplier  * 0.50 + 1;
 			shineTransform.greenMultiplier	= 1.50;
 			shineTransform.blueMultiplier	= 1.20;
 			doop		= true;
 			transT		= true;
 			fraction	= F_PLAYER;
+		}
+
+		// Debug mode
+		private function testFunction():void {
+			if (World.w.chitOn) {
+				World.w.godMode = true;
+				World.w.chit = "port";
+				World.w.drawAllMap = true;
+				World.w.black = false;
+				World.w.showAddInfo = true;
+				World.w.grafon.visLight.visible = false;
+			}
 		}
 		
 		public function attach():void {
@@ -314,8 +318,7 @@ package fe.unit {
 				changeSpell(cSpellId, false);
 			}
 			
-			//prevArmor = invent.prevArmor;
-			
+			// Create and assign player weapons
 			var wm:WeaponManager = WeaponManager.reference;
 			punchWeapon = wm.cloneWeapon("punch");
 			wm.setOwner(punchWeapon, this);
@@ -329,17 +332,17 @@ package fe.unit {
 			if (invent.fav[29]) {
 				throwWeapon=invent.weapons[invent.fav[29]];
 				throwWeapon.setNull();
-				throwWeapon.setPers(this,pers);
+				throwWeapon.setPers(this, pers);
 			}
 			
 			if (invent.fav[30]) {
 				magicWeapon=invent.weapons[invent.fav[30]];
 				magicWeapon.setNull();
-				magicWeapon.setPers(this,pers);
+				magicWeapon.setPers(this, pers);
 			}
 			*/ // FAVORITES ARE COMMENTED OUT FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			
-			//спутники
+			// Pets
 			pets = [];
 			pet = new UnitPet("phoenix");
 			pet.gg = this;
@@ -443,7 +446,7 @@ package fe.unit {
 
 //**************************************************************************************************************************
 //
-//				Движение, перемещение в другую локацию
+//				[Movement, moving to another location]
 //
 //**************************************************************************************************************************
 		// [exit from location (attempt, returns true if exit is successful)]
@@ -451,22 +454,24 @@ package fe.unit {
 			
 			// [Don't let me leave]
 			if (teleObj || actionObj || t_work > 0 || isFetter > 0 || loc.sky) {
-				trace('UnitPlayer.as/outLoc() - Failed to leave room!');
+				trace("UnitPlayer.as/outLoc() - Failed to leave room!");
 				return false;
 			}
 			
 			// [Don't let them leave while they're under attack]
 			var po:int = World.w.possiblyOut();
-			if (po > 0 && !(napr == 3 && loc.bezdna) && rat == 0) {
+			if (po > 0 && !(napr == 3 && loc.bezdna) && !rat) {
 				if (napr == 3 && !loc.bezdna) {
 					velocity.Y = -jumpdy;
 					velocity.X = maxSpeed * storona;
 				}
+
 				if (po == 1) {
 					trace("UnitPlayer.as/outLoc() - Can't leave room: Leaving too quickly");
 				}
+
 				if (po == 2) {
-					World.w.gui.infoText('noOutLoc', null, null, false);
+					World.w.gui.infoText("noOutLoc", null, null, false);
 				}
 				
 				return false;
@@ -527,10 +532,11 @@ package fe.unit {
 		
 		// [entrance to the location]
 		public function inLoc(nloc:Location):void {
-			trace('Entering room: "' + nloc.id + '", at (' + nloc.landX + ', ' + nloc.landY + ', ' + nloc.landZ + ').');
+			trace("Entering room: \"" + nloc.id + "\", at (" + nloc.landX + ", " + nloc.landY + ", " + nloc.landZ + ").");
+			
 			if (pet) {
 				if (!nloc.petOn && loc.petOn) {
-					World.w.gui.infoText('noPetFollow');
+					World.w.gui.infoText("noPetFollow");
 					pet.vis.alpha=0;
 					
 					if (pet.hpbar) {
@@ -581,7 +587,7 @@ package fe.unit {
 			}
 			
 			if (loc.electroDam > 0) {
-				World.w.gui.infoText('electroOn', null, null, true);
+				World.w.gui.infoText("electroOn", null, null, true);
 				isStayDam = 45;
 			}
 			
@@ -600,7 +606,7 @@ package fe.unit {
 			}
 		}
 		
-		//установить позицию при входе в локацию
+		// [Set position when entering location]
 		public function setLocPos(nx:Number, ny:Number):void {
 			coordinates.X = nx;
 			coordinates.Y = ny;
@@ -795,7 +801,9 @@ package fe.unit {
 			}
 			else {
 				drad += loc.rad;
-				if (inWater) drad += loc.wrad;
+				if (inWater) {
+					drad += loc.wrad;
+				}
 			}
 			
 			if (drad2 > 0) {
@@ -822,10 +830,10 @@ package fe.unit {
 					World.w.gui.setHp();
 				}
 				
-				var ver:Number = Math.min(0.50, drad / 10);
+				var ver:Number = Math.min(0.50, drad * 0.10);
 				
-				if (drad>0.1 && isrnd (ver)) {
-					sound('geiger');
+				if (drad > 0.10 && isrnd (ver)) {
+					sound("geiger");
 				}
 				if (pet) {
 					pet.heal(drad / 15, 1);
@@ -882,19 +890,19 @@ package fe.unit {
 				t_work--;
 			}
 			else {
-				work = '';
+				work = "";
 			}
 			
-			if (work=='change' && t_work==changeWeaponTime2) {
+			if (work == "change" && t_work == changeWeaponTime2) {
 				changeWeaponNow(1);
 			}
 			
-			if (work=='change' && t_work==changeWeaponTime3) {
+			if (work == "change" && t_work == changeWeaponTime3) {
 				changeWeaponNow(2);
 			}
 			
 			// [go to the bottom layer]
-			if (work == 'lurk' && t_work == 10) {
+			if (work == "lurk" && t_work == 10) {
 				if (sloy == 2) {
 					if (lurkTip == 1) {
 						chSloy(0);
@@ -905,17 +913,17 @@ package fe.unit {
 				}
 			
 				if (lurkBox && lurkBox.sloy == 1 && sloy == 1) {
-					lurkBox.vis.parent.setChildIndex(lurkBox.vis,lurkBox.vis.parent.numChildren-1);
+					lurkBox.vis.parent.setChildIndex(lurkBox.vis, lurkBox.vis.parent.numChildren - 1);
 				}
 			}
 			
-			if (work=='unlurk' && t_work==5) {
+			if (work=="unlurk" && t_work==5) {
 				if (sloy==1 || sloy==0) {
 					chSloy(2);
 				}
 			}
 			
-			if (work=='lurk') {
+			if (work=="lurk") {
 				if (lurkX - coordinates.X > 3) {
 					velocity.X = 4;
 				}
@@ -935,12 +943,12 @@ package fe.unit {
 					lurked = false;
 				}
 			
-				if (work != 'lurk' && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) {
+				if (work != "lurk" && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) {
 					lurked = false;
 				}
 			}
 			
-			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) {
+			if (!lurked && work != "unlurk" && (sloy == 1 || sloy == 0)) {
 				chSloy(2);
 			}
 			
@@ -1192,7 +1200,7 @@ package fe.unit {
 				dmana = -pers.alicornRunMana;
 				
 				if (!loc.sky) {
-					Emitter.emit('magrun', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, { dx:(velocity.X * 0.5 + Math.random() * 4 - 2), dy:(velocity.Y * 0.5 + Math.random() * 4 - 2) });
+					Emitter.emit("magrun", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, { dx:(velocity.X * 0.5 + Math.random() * 4 - 2), dy:(velocity.Y * 0.5 + Math.random() * 4 - 2) });
 				}
 			}
 			else {
@@ -1220,11 +1228,11 @@ package fe.unit {
 				
 				if (h2o>0) {
 					h2o-=pers.h2oPlav;
-					if (sost==1 && isrnd(0.1)) Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
+					if (sost==1 && isrnd(0.1)) Emitter.emit("bubble", loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 				else {
 					damage(maxhp/500,Resistances.DAM_INTERNAL,null,true);
-					if (sost==1 && isrnd())Emitter.emit('bubble', loc, coordinates.X+storona*23, coordinates.Y-58);
+					if (sost==1 && isrnd())Emitter.emit("bubble", loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 			}
 			else if (h2o < 1000) {
@@ -1389,20 +1397,20 @@ package fe.unit {
 				
 					if (tykMat == 1) {
 						if (turnX != 0) {
-							Emitter.emit('moln', loc,coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
+							Emitter.emit("moln", loc,coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
 						}
 						else if (turnY == 1) {
-							Emitter.emit('moln', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y - 70});
+							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y - 70});
 						}
 						else if (turnY == -1) {
-							Emitter.emit('moln', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y + 20});
+							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y + 20});
 						}
 					}
 					else if (isLaz) {
-						Emitter.emit('moln', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
+						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
 					}
 					else if (stay) {
-						Emitter.emit('moln', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
+						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
 					}
 
 					electroDamage();
@@ -1443,7 +1451,7 @@ package fe.unit {
 			}
 
 			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
-				World.w.gui.infoText('overMana', null, null, false);
+				World.w.gui.infoText("overMana", null, null, false);
 				World.w.gui.bulb(coordinates.X, coordinates.Y - 20);
 			}
 			else {
@@ -1452,13 +1460,13 @@ package fe.unit {
 				
 				if (checkPort()) {
 					teleport(nx, ny, 1);
-					sound('teleport');
+					sound("teleport");
 					manaSpell(pers.portMagic, pers.portMana);
 					
 					if (loc.electroDam) {
 						electroDamage(loc.electroDam);
-						addEffect('burning', 40);
-						newPart('iskr', 40);
+						addEffect("burning", 40);
+						newPart("iskr", 40);
 					}
 					
 					t_culd = int(pers.spellDown * pers.portDown);
@@ -1469,7 +1477,7 @@ package fe.unit {
 		
 		private function alicornPort():void {
 			if (mana < pers.alicornPortMana && mana < maxmana * 0.99) {
-				World.w.gui.infoText('overMana',null,null,false);
+				World.w.gui.infoText("overMana",null,null,false);
 				World.w.gui.bulb(coordinates.X, coordinates.Y - 20);
 				return;
 			}
@@ -1520,7 +1528,7 @@ package fe.unit {
 		
 		// [remove the required amount of mana, set the cooldown time]
 		public function manaSpell(dmag:Number, dm:Number):void {
-			trace('manaSpell: dmag: (' + dmag + '), dm: (' + dm + ')');
+			trace("manaSpell: dmag: (" + dmag + "), dm: (" + dm + ")");
 
 			mana -= dmag * pers.allDManaMult;
 			pers.manaDamage(dm * pers.allDManaMult);
@@ -1536,7 +1544,7 @@ package fe.unit {
 		}
 		
 		public function bindChain(nx:Number, ny:Number):void {
-			addEffect('fetter', 0, 10, false);
+			addEffect("fetter", 0, 10, false);
 			fetX = nx;
 			fetY = ny;
 		}
@@ -1597,7 +1605,7 @@ package fe.unit {
 			
 			if (loc.celObj && loc.celObj.levitPoss && loc.celObj.onCursor && loc.celDist<=pers.teleDist && loc.celObj.massa<=pers.maxTeleMassa){
 				if ((pers.telemaster == 0 || !loc.portOn) && !loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight)) {
-					World.w.gui.infoText('noVisible',null,null,false);
+					World.w.gui.infoText("noVisible",null,null,false);
 					return;
 				}
 				
@@ -1681,8 +1689,8 @@ package fe.unit {
 				teleObj.velocity.Y += p.y;
 				
 				if (pers.throwForce > 0) {
-					Emitter.emit('throw', loc,teleObj.coordinates.X, teleObj.coordinates.Y - teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X) * RAD_TO_DEG});
-					Snd.ps('dash', teleObj.coordinates.X, teleObj.coordinates.Y);
+					Emitter.emit("throw", loc,teleObj.coordinates.X, teleObj.coordinates.Y - teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X) * RAD_TO_DEG});
+					Snd.ps("dash", teleObj.coordinates.X, teleObj.coordinates.Y);
 				}
 				
 				dropTeleObj();
@@ -1727,8 +1735,8 @@ package fe.unit {
 			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist) {
 				actionReady = false;
 				
-				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == 'comein')) && !loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight, loc.celObj)) {
-					World.w.gui.infoText('noVisible', null, null, false);
+				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == "comein")) && !loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight, loc.celObj)) {
+					World.w.gui.infoText("noVisible", null, null, false);
 					return;
 				}
 				
@@ -1796,11 +1804,11 @@ package fe.unit {
 		}
 
 		private function chit():void {
-			if (World.w.chit == 'fly') {
+			if (World.w.chit == "fly") {
 				isFly =! isFly;
 			}
 
-			if (World.w.chit == 'port') {
+			if (World.w.chit == "port") {
 				var tx:int = Math.round(World.w.celX / tileX) * tileX
 				var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
 				
@@ -1809,7 +1817,7 @@ package fe.unit {
 				}
 			}
 
-			if (World.w.chit == 'emit') {
+			if (World.w.chit == "emit") {
 				Emitter.emit(World.w.chitX, loc, World.w.celX, World.w.celY);
 			}
 		}
@@ -1863,7 +1871,7 @@ package fe.unit {
 			var keyLeft:Boolean = zaput ? ctr.keyRight : ctr.keyLeft;
 			var keyRight:Boolean = zaput ? ctr.keyLeft : ctr.keyRight;
 			
-			if (work == 'lurk' || work == 'unlurk' || work == 'res') {
+			if (work == "lurk" || work == "unlurk" || work == "res") {
 				return;
 			}
 			
@@ -1892,7 +1900,7 @@ package fe.unit {
 			//--------------------- [Various actions] ---------------------------
 			
 			// [action]
-			if (ctr.keyAction && rat == 0) {
+			if (ctr.keyAction && !rat) {
 				if (teleObj) {
                     throwTele();
                     ctr.keyAction = false;
@@ -1910,13 +1918,13 @@ package fe.unit {
 				actionObj = null;
 			}
 			
-			if (ctr.keyCrack && !ctr.keyAction && !loc.base && rat == 0) {
+			if (ctr.keyCrack && !ctr.keyAction && !loc.base && !rat) {
 				ctr.keyCrack = false;
 				crackAction();
 			}
 			
 			// [telekinesis]
-			if (ctr.keyTele && !ctr.keyAction && !loc.base && rat == 0) {
+			if (ctr.keyTele && !ctr.keyAction && !loc.base && !rat) {
 				if (!teleReady) {
 					if (sats.que.length > 0) {
 						sats.clearAll();
@@ -1999,7 +2007,7 @@ package fe.unit {
 			}
 			
 			//[spell]
-			if (ctr.keyDef && rat == 0) { 
+			if (ctr.keyDef && !rat) { 
 				if (sats.que.length > 0) {
 					sats.clearAll();
 				}
@@ -2024,9 +2032,9 @@ package fe.unit {
 			
 			/*
 			for (var i:int = 1; i <= World.kolQS; i++) {
-				if (ctr['keySpell' + i]) {
+				if (ctr["keySpell" + i]) {
 					if (invent.fav[World.kolHK * 2 + i] == null) {
-                        ctr['keySpell' + i] = false;
+                        ctr["keySpell" + i] = false;
                     }
 					else {
                         if (sats.que.length > 0) {
@@ -2037,15 +2045,15 @@ package fe.unit {
                         
 						if (sp) {
                             if (!sp.cast(World.w.celX, World.w.celY)) {
-								ctr['keySpell' + i] = false;
+								ctr["keySpell" + i] = false;
 							}
                            
 						    if (!sp.prod) {
-								ctr['keySpell' + i] = false;
+								ctr["keySpell" + i] = false;
 							}
                         }
 						else {
-							ctr['keySpell' + i] = false;
+							ctr["keySpell" + i] = false;
 						}
                     }
 				}
@@ -2140,22 +2148,22 @@ package fe.unit {
 				(punchWeapon as WKick).kick = ctr.keyRun;
 				punchWeapon.attack();
 				spellDisact();
-				work = 'punch';
+				work = "punch";
 				t_work = 13;
 				ctr.keyPunch = false;
 			}
 			
-			if (ctr.keyPunch && rat > 0) {
-				remEffect('potion_rat');
+			if (ctr.keyPunch && rat) {
+				remEffect("potion_rat");
 				ctr.keyPunch = false;
 			}
 			
-			if (rat == 0) {
+			if (!rat) {
 			// [Change weapons]
 				if (t_work <= 0 && attackForever <= 0) {
 					for (var i:int = 1; i <= World.kolHK; i++) {
-						if (ctr['keyWeapon' + String(i)]) {
-							ctr['keyWeapon' + String(i)] = false;
+						if (ctr["keyWeapon" + String(i)]) {
+							ctr["keyWeapon" + String(i)] = false;
 							// invent.useFav(i + (ctr.keyRun ? World.kolHK : 0)); HOTKEY COMMENTED OUT FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						
 							if (visSel) {
@@ -2204,7 +2212,7 @@ package fe.unit {
 				}
 				
 				if (ctr.keyMana) {
-					invent.usePotion('mana');
+					invent.usePotion("mana");
 					ctr.keyMana=false;
 				}
 				*/
@@ -2352,7 +2360,7 @@ package fe.unit {
 			
 			// [Jerk to the side]
 			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==1)) {
-				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
+				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && !rat) {
 					if (velocity.X < dash) {
 						velocity.X = dash;
 					}
@@ -2377,7 +2385,7 @@ package fe.unit {
 			}
 			
 			if (ctr.keyDubLeft&&!zaput || ctr.keyDubRight&&zaput || ctr.keyDash&&(storona==-1)) {
-				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
+				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && !rat) {
 					if (velocity.X > -dash) {
 						velocity.X = -dash;
 					}
@@ -2488,7 +2496,7 @@ package fe.unit {
 						else if (dJump) {		// [Double jump]
 							velocity.Y = -djumpdy * pers.jumpMult;
 							if (jumpp==maxdjumpp-1) {
-								Emitter.emit('quake', loc, coordinates.X, coordinates.Y);
+								Emitter.emit("quake", loc, coordinates.X, coordinates.Y);
 								if (keyLeft) velocity.X -= djumpdy * 0.5;
 								if (keyRight) velocity.X += djumpdy * 0.5;
 								if (velocity.X > 25) velocity.X = 25;
@@ -2509,7 +2517,7 @@ package fe.unit {
 						aJump = 1;
 					}
 				}
-				else if (pers.ableFly && loc.levitOn && rat == 0) {
+				else if (pers.ableFly && loc.levitOn && !rat) {
 					// Stop climbing ladder
 					if (isLaz) {
 						isLaz = 0;
@@ -2585,7 +2593,7 @@ package fe.unit {
 			// Sit down
 			if (ctr.keySit) {
 				porog = 0;
-				if (stay && diagon == 0 && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && rat == 0) {
+				if (stay && diagon == 0 && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && !rat) {
 					// Check here for stairs
 					if (checkStairs(2)) {
 						t_stay = 0;
@@ -2742,7 +2750,7 @@ package fe.unit {
 		
 		private function lurk():void {
 			lurkTip = 0;
-			if (stay && !isSit && velocity.X < 5 && velocity.X > -5 && stayPhis >= 1 && work == '') {
+			if (stay && !isSit && velocity.X < 5 && velocity.X > -5 && stayPhis >= 1 && work == "") {
 				lurkBox = null;
 				for each (var b:Box in loc.objs) {
 					if (b.lurk > lurkTip && coordinates.X > b.boundingBox.left && coordinates.X < b.boundingBox.right && coordinates.Y - 10 > b.boundingBox.top && coordinates.Y - 10 < b.boundingBox.bottom) {
@@ -2755,7 +2763,7 @@ package fe.unit {
 					lurkX = coordinates.X;
 					velocity.X = 0;
 					t_work = 20;
-					work = 'lurk';
+					work = "lurk";
 					lurked = true;
 
 					if (lurkBox.lurk == 2) {
@@ -2778,7 +2786,7 @@ package fe.unit {
 					lurkX = Math.round(coordinates.X / tileX) * tileX;
 					velocity.X = 0;
 					t_work = 20;
-					work = 'lurk';
+					work = "lurk";
 					lurked = true;
 				}
 				else {
@@ -2790,7 +2798,7 @@ package fe.unit {
 		private function unlurk():void {
 			if (lurked && stay) {
 				t_work = 10;
-				work = 'unlurk';
+				work = "unlurk";
 			}
 
 			lurked = false;
@@ -2820,8 +2828,8 @@ package fe.unit {
 				}
 			}
 
-			if (World.w.game.triggers['curse']>0) {
-				addEffect('curse');
+			if (World.w.game.triggers["curse"]>0) {
+				addEffect("curse");
 			}
 		}
 
@@ -2916,7 +2924,7 @@ package fe.unit {
 			}
 			
 			if (ismess && (sost==1 || sost==2) && showNumbs && hl > 0.5) {
-				numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:((tip == 2)? '-' : '+') + Math.round(hl), frame:((tip == 2)? 7 : 4), rx:20, ry:20});
+				numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:((tip == 2)? "-" : "+") + Math.round(hl), frame:((tip == 2)? 7 : 4), rx:20, ry:20});
 			}
 			
 			World.w.gui.setHp();
@@ -2941,7 +2949,7 @@ package fe.unit {
 			if (tip == 0) {
 				World.w.gg.drad += dam * koef;
 			}
-			else if (this['ddam' + tip] != null) {
+			else if (this["ddam" + tip] != null) {
 				if (koef < 0.25) {
 					koef = koef * 4;
 				}
@@ -2949,15 +2957,15 @@ package fe.unit {
 					koef = 1;
 				}
 				
-				this['ddam' + tip] += dam * koef;
+				this["ddam" + tip] += dam * koef;
 			}
 		}
 		
 		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
-			if (bul && bul.weap && bul.weap.dopEffect=='psy') {
-				if (isrnd(0.33)) addEffect('horror');
-				else if (isrnd()) addEffect('vote');
-				else  addEffect('disorient');
+			if (bul && bul.weap && bul.weap.dopEffect=="psy") {
+				if (isrnd(0.33)) addEffect("horror");
+				else if (isrnd()) addEffect("vote");
+				else  addEffect("disorient");
 			}
 			
 			var dhp:Number = hp;
@@ -3024,7 +3032,7 @@ package fe.unit {
 			}
 			
 			if (pdam/maxhp>0.1 && isrnd(pdam/maxhp)) {
-				replic('dam');
+				replic("dam");
 			}
 			
 			if (World.w.godMode) {
@@ -3055,10 +3063,10 @@ package fe.unit {
 				pinok = 90;
 			}
 			
-			Snd.ps('electro', coordinates.X, coordinates.Y);
+			Snd.ps("electro", coordinates.X, coordinates.Y);
 			
 			if (nx != -9999 && ny != -9999) {
-				Emitter.emit('moln', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:nx, cely:ny});
+				Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:nx, cely:ny});
 			}
 		}
 		
@@ -3084,15 +3092,15 @@ package fe.unit {
 					hp = 1;
 					heal(pers.lastCh * 0.10, 0, false);
 					heal(pers.lastCh * 0.90, 1, false);
-					remEffect('potion_chance');
-					addEffect('post_chance');
+					remEffect("potion_chance");
+					addEffect("post_chance");
 					return;
 				}
 				
 				if (pers.reanimHp > 0 && !noReanim) {
 					hp = 0;
 					heal(pers.reanimHp);
-					addEffect('reanim');
+					addEffect("reanim");
 					return;
 				}
 				
@@ -3119,27 +3127,27 @@ package fe.unit {
 			healhp = 0;
 			shithp = 0;
 			
-			if (work == 'change') {
+			if (work == "change") {
 				changeWeaponNow(1);
 				changeWeaponNow(2);
 			}
 			
 			walk = 0;
 			t_work = 205;
-			work = 'die';
+			work = "die";
 			
 			if (pers.hardcore && sposob>=0) {
 				pers.dead=true;
 				World.w.saveGame(-2);
 				
 				if (sposob==10) {
-					World.w.gui.messText('hardDie2', pers.persName, false, false, 10000);
+					World.w.gui.messText("hardDie2", pers.persName, false, false, 10000);
 				}
 				else {
-					World.w.gui.messText('hardDie', pers.persName, false, false, 10000);
+					World.w.gui.messText("hardDie", pers.persName, false, false, 10000);
 				}
 				
-				Snd.playMusic('harddie', 1);
+				Snd.playMusic("harddie", 1);
 			}
 			else {
 				World.w.t_die=300;
@@ -3165,7 +3173,7 @@ package fe.unit {
 				heal(Math.min(100, maxhp * 0.50));
 				cut = 0;
 				poison = 0;
-				pers.addPerk('dead');
+				pers.addPerk("dead");
 			}
 			
 			if (pers.manaHP < 50) {
@@ -3175,7 +3183,7 @@ package fe.unit {
 			t_work		= 100;
 			t_nogas		= 250;
 			animOff		= false;
-			work		= 'res';
+			work		= "res";
 			mana		= 1000;
 			h2o			= 1000;
 			stam		= 1000;
@@ -3251,7 +3259,7 @@ package fe.unit {
 				super.setWeaponPos(tip);
 			}
 			
-			if (work == 'change' && t_work > changeWeaponTime3 && tip != "magic") {
+			if (work == "change" && t_work > changeWeaponTime3 && tip != "magic") {
 					weaponX = coordinates.X;
 					weaponY = coordinates.Y - boundingBox.height * 0.50;
 			}
@@ -3273,7 +3281,7 @@ package fe.unit {
 				}
 			}
 			catch (err) {
-				trace('ERROR: (00:E)');
+				trace("ERROR: (00:E)");
 				magicX = coordinates.X;
 				magicY = boundingBox.top;
 			}
@@ -3291,7 +3299,7 @@ package fe.unit {
 			if (nid == "not") {
 				nw = null;
 			}
-			else if (nid==null || nid=='' || attackForever>0 || atkPoss==0) {
+			else if (nid==null || nid=="" || attackForever>0 || atkPoss==0) {
 				return;
 			}
 			else {
@@ -3306,10 +3314,10 @@ package fe.unit {
 			if (nw is Weapon) {
 				if (nw.respect == Weapon.WEP_LOCKED || nw.alicorn && !World.w.alicorn) {
 					if (nw.tip == "magic") {
-						World.w.gui.infoText('disSpell',null,null,false);
+						World.w.gui.infoText("disSpell",null,null,false);
 					}
 					else {
-						World.w.gui.infoText('disWeapon',null,null,false);
+						World.w.gui.infoText("disWeapon",null,null,false);
 					}
 					return;
 				}
@@ -3324,7 +3332,7 @@ package fe.unit {
 				
 				if (World.w.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
 					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) {
-						World.w.gui.infoText('weaponSkillLevel',null,null,false);
+						World.w.gui.infoText("weaponSkillLevel",null,null,false);
 					}
 				}
 			}
@@ -3335,7 +3343,7 @@ package fe.unit {
 				changeWeaponNow(2);
 			}
 			else {
-				work = 'change';
+				work = "change";
 				t_work = changeWeaponTime1;
 				newWeapon = nw;
 			}
@@ -3349,7 +3357,7 @@ package fe.unit {
 			}
 			
 			newWeapon = paintWeapon;
-			work = 'change';
+			work = "change";
 			t_work = changeWeaponTime1;
 		}
 		
@@ -3426,14 +3434,14 @@ package fe.unit {
 			return res;
 		}
 		
-		public function changeArmor (nid:String='', forced:Boolean=false):Boolean {
-			if (World.w.alicorn && nid!='' && !forced) {
-				World.w.gui.infoText('alicornNot',null,null,false);
+		public function changeArmor (nid:String="", forced:Boolean=false):Boolean {
+			if (World.w.alicorn && nid!="" && !forced) {
+				World.w.gui.infoText("alicornNot",null,null,false);
 				return false;
 			}
 			
-			if (World.w.t_battle>0 && nid!='off') {
-				World.w.gui.infoText('noChArmor',null,null,false);
+			if (World.w.t_battle>0 && nid!="off") {
+				World.w.gui.infoText("noChArmor",null,null,false);
 				return false;
 			}
 			
@@ -3445,15 +3453,15 @@ package fe.unit {
 				clo = invent.equipment.getArmor(nid).clo;
 			}
 
-			if (World.w.hardInv && !forced && nid != 'off' && !(loc && loc.base) && tipArmor == 1) {
+			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == 1) {
 				if (clo == 0 && nid != prevArmor) {
-					World.w.gui.infoText('noChArmor2', null, null, false);
+					World.w.gui.infoText("noChArmor2", null, null, false);
 					return false;
 				}
 			}
 
-			if (nid == 'off') {
-				World.w.gui.infoText('brokenArmor');
+			if (nid == "off") {
+				World.w.gui.infoText("brokenArmor");
 				nid = "";
 			}
 
@@ -3477,7 +3485,7 @@ package fe.unit {
 						currentArmor = invent.equipment.getArmor(nid);
 					}
 					else {
-						World.w.gui.infoText('brokenArmor');
+						World.w.gui.infoText("brokenArmor");
 					}
 				}
 
@@ -3533,7 +3541,7 @@ package fe.unit {
 			}
 			
 			if (inf && currentSpell) {
-				World.w.gui.infoText('usedSpell', currentSpell.nazv);
+				World.w.gui.infoText("usedSpell", currentSpell.nazv);
 			}
 		}
 		
@@ -3569,24 +3577,24 @@ package fe.unit {
 		// [summoning and recalling a companion, f = true - forced]
 		public function callPet(npet:String, f:Boolean=false):void {
 			if (noPet > 0 && !f) {
-				World.w.gui.infoText('petNot', null, null, false);
+				World.w.gui.infoText("petNot", null, null, false);
 				return;
 			}
 			
 			if (noPet2 > 0 && !f || !atkPoss || World.w.alicorn) {
-				World.w.gui.infoText('petNot2', null, null, false);
+				World.w.gui.infoText("petNot2", null, null, false);
 				return;
 			}
 			
-			if (npet=='owl' && currentPet=='owl' && pets[npet] && pets[npet].hp<=0 && !f) {
-				World.w.gui.infoText('petNot3',null,null,false);
+			if (npet=="owl" && currentPet=="owl" && pets[npet] && pets[npet].hp<=0 && !f) {
+				World.w.gui.infoText("petNot3",null,null,false);
 				return;
 			}
 			
 			noPet2 = 5 * 30;
 			
 			if (pet) {
-				World.w.gui.infoText('petRecall',pet.nazv);
+				World.w.gui.infoText("petRecall",pet.nazv);
 				pet.recall();
 				pet = null;
 				childObjs[2] = null;
@@ -3595,7 +3603,7 @@ package fe.unit {
 			retPet = "";
 			
 			if (currentPet == npet) {
-				currentPet='';
+				currentPet="";
 			}
 			else {
 				if (loc.petOn) {
@@ -3606,10 +3614,10 @@ package fe.unit {
                     pet.coordinates.Y = coordinates.Y - 20;
                     pet.loc = loc;
                     pet.call();
-                    World.w.gui.infoText('petCall', pet.nazv);
+                    World.w.gui.infoText("petCall", pet.nazv);
                 }
 				else {
-                    World.w.gui.infoText('noPetCall', null, null, false);
+                    World.w.gui.infoText("noPetCall", null, null, false);
                 }
 			}
 			
@@ -3618,15 +3626,15 @@ package fe.unit {
 		
 		public function uncallPet(ret:Boolean=false):void {
 			if (pet) {
-				if (ret && currentPet!='moon') {
+				if (ret && currentPet!="moon") {
 					retPet=currentPet;
 				}
 				
-				World.w.gui.infoText('petRecall',pet.nazv);
+				World.w.gui.infoText("petRecall",pet.nazv);
 				pet.recall();
 				pet=null;
 				childObjs[2]=null;
-				currentPet='';
+				currentPet="";
 			}
 			World.w.gui.setPet();
 		}
@@ -3659,8 +3667,8 @@ package fe.unit {
 			pers.setParameters();
 
 			if (eff) {
-				newPart('redray', 40);
-				Snd.ps('al_armor', coordinates.X, coordinates.Y);
+				newPart("redray", 40);
+				Snd.ps("al_armor", coordinates.X, coordinates.Y);
 			}
 
 			refreshVis();
@@ -3669,7 +3677,7 @@ package fe.unit {
 		public function alicornOff():void {
 			World.w.alicorn = false;
 			isFly = false;
-			changeWeapon('not', true);
+			changeWeapon("not", true);
 			pers.setParameters();
 			refreshVis();
 		}
@@ -3677,7 +3685,7 @@ package fe.unit {
 		public function ratOn():void {
 			unlurk();
 			uncallPet(true);
-			changeWeapon('not');
+			changeWeapon("not");
 			isSit = false;
 			isLaz = 0;
 			levit = 0;
@@ -3692,9 +3700,9 @@ package fe.unit {
 			vis.osn.visible = false;
 			vis.rat.visible = true;
 			
-			newPart('black', 30);
+			newPart("black", 30);
 			
-			rat = 1;
+			rat = true;
 		}
 
 		public function ratOff():Boolean {
@@ -3724,8 +3732,8 @@ package fe.unit {
 			
 			vis.osn.visible = true;
 			vis.rat.visible = false;
-			newPart('black', 30);
-			rat = 0;
+			newPart("black", 30);
+			rat = false;
 			
 			return true;
 		}
@@ -3738,7 +3746,7 @@ package fe.unit {
 //**************************************************************************************************************************
 		
 		public function anim(dey:String = null, ok:Boolean = false):void {
-			if (dey == null || dey == '') {
+			if (dey == null || dey == "") {
 				animOff=false;
 			
 				return;
@@ -3814,7 +3822,7 @@ package fe.unit {
 		}
 
 //##########################################################################################################
-//		Player Unit cheatsheet for 'vis.osn', the main player sprite.
+//		Player Unit cheatsheet for "vis.osn", the main player sprite.
 //		OSN Animation states have both a frame number and alias.
 //		//	Num	:	Alias
 //		//###################
@@ -3906,13 +3914,13 @@ package fe.unit {
 			//##
 			//###############
 			function animatePlayerDeath():Boolean {
-				if (t_work && work == 'die') {
+				if (t_work && work == "die") {
 					reloadbar.visible = false;
 					
 					if (World.w.alicorn) {
-                        if (animState != 'die') {
-                            vis.osn.gotoAndStop('dieali');
-                            animState = 'die';
+                        if (animState != "die") {
+                            vis.osn.gotoAndStop("dieali");
+                            animState = "die";
                         }
                        
 					    if (t_work < 200 && t_work > 140) {
@@ -3920,19 +3928,19 @@ package fe.unit {
                             dieTransform.redOffset = (200 - t_work) * 4;
                             dieTransform.blueOffset = (200 - t_work);
                             vis.osn.transform.colorTransform = dieTransform;
-                            newPart('redray');
+                            newPart("redray");
                         }
                        
 					    if (t_work == 140) {
-                            newPart('bloodblast');
-                            Snd.ps('bale_e');
+                            newPart("bloodblast");
+                            Snd.ps("bale_e");
                             vis.osn.alpha = 0;
                         }
                     }
 					else {
-                        if (animState != 'die') {
-                            vis.osn.gotoAndStop('die');
-                            animState = 'die';
+                        if (animState != "die") {
+                            vis.osn.gotoAndStop("die");
+                            animState = "die";
                         }
                        
 					    if (t_work < 170 && t_work > 120) {
@@ -3941,7 +3949,7 @@ package fe.unit {
                             dieTransform.redOffset = (170 - t_work) * 2;
                             dieTransform.blueOffset = (170 - t_work) * 3;
                             vis.osn.transform.colorTransform = dieTransform;
-                            Emitter.emit('die_spark', loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona, coordinates.Y);
+                            Emitter.emit("die_spark", loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona, coordinates.Y);
                         }
 						else if (t_work < 120 && t_work > 70) {
 							vis.osn.alpha = (t_work - 70) / 50;
@@ -3959,11 +3967,11 @@ package fe.unit {
 			}
 
 			function startLurking():Boolean {
-				if (t_work && work == 'lurk') {
-					if (animState != 'lurk') {
-						vis.osn.gotoAndStop('lurk' + lurkTip);
+				if (t_work && work == "lurk") {
+					if (animState != "lurk") {
+						vis.osn.gotoAndStop("lurk" + lurkTip);
 						vis.osn.body.gotoAndPlay(1);
-						animState = 'lurk';
+						animState = "lurk";
 					}
 					
 					setFilters();
@@ -3977,10 +3985,10 @@ package fe.unit {
 			}
 
 			function stopLurking():Boolean {
-				if (t_work && work=='unlurk') {
-					if (animState!='unlurk') {
-						vis.osn.body.gotoAndPlay('un');
-						animState = 'unlurk';
+				if (t_work && work=="unlurk") {
+					if (animState!="unlurk") {
+						vis.osn.body.gotoAndPlay("un");
+						animState = "unlurk";
 
 					}
 					
@@ -4007,10 +4015,10 @@ package fe.unit {
 			}
 
 			function animateResurrect():Boolean {
-				if (t_work && work=='res') {
-					if (animState!='res') {
-						vis.osn.gotoAndStop('res');
-						animState='res';
+				if (t_work && work=="res") {
+					if (animState!="res") {
+						vis.osn.gotoAndStop("res");
+						animState="res";
 					}
 					
 					otherVisual();
@@ -4029,28 +4037,28 @@ package fe.unit {
 //###############
 			function animatePlayerMovement():void {
 				
-				if (t_work && work == 'punch') {
+				if (t_work && work == "punch") {
 					freeAnim = 0;
 				}
 				
-				if (t_work && work == 'punch' && animState != 'punch') {
+				if (t_work && work == "punch" && animState != "punch") {
 					if (ctr.keyRun) {
-                        vis.osn.gotoAndStop('kick');
+                        vis.osn.gotoAndStop("kick");
                     }
 					else {
-						vis.osn.gotoAndStop('punch');
+						vis.osn.gotoAndStop("punch");
 					}
 					
-					animState = 'punch';
+					animState = "punch";
 				}
 				
-				if (t_work==0 && animState=='punch') {
-					animState='';
+				if (t_work==0 && animState=="punch") {
+					animState="";
 				}
 				
 				if (stay || t_stay > 0) {
 					//Какие-то действия
-					if (animState=='punch' || animState=='kick') {
+					if (animState=="punch" || animState=="kick") {
 					//если не нажаты влево или вправа, или стоим на месте, то СТОИМ
 					}
 					else if  (diagon==0 && (velocity.X <= 1 && velocity.X >= -1 && walk!=0 || velocity.X <= 4 && velocity.X >= -4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
@@ -4059,11 +4067,11 @@ package fe.unit {
 						if (freeAnim == 0 || isSit) {
 							freeAnim = 0;
 							
-							if (vis.osn.currentFrameLabel != 'stay') {	// ANIMATION IS SET TO 'STAY' EVERY FRAME
-								vis.osn.gotoAndStop('stay');
+							if (vis.osn.currentFrameLabel != "stay") {	// ANIMATION IS SET TO 'STAY' EVERY FRAME
+								vis.osn.gotoAndStop("stay");
 								
-								if (vis.osn.currentFrameLabel == 'jump' || vis.osn.currentFrameLabel == 'levit') {
-									vis.osn.body.gotoAndPlay('jump');
+								if (vis.osn.currentFrameLabel == "jump" || vis.osn.currentFrameLabel == "levit") {
+									vis.osn.body.gotoAndPlay("jump");
 								}
 							}
 
@@ -4071,35 +4079,35 @@ package fe.unit {
 							
 							//если сидим
 							if (isSit) {
-								if (animState=='jump') {
-									if (animState!='downjump') {
-										animState='downjump';
-										vis.osn.body.gotoAndPlay('downjump');
+								if (animState=="jump") {
+									if (animState!="downjump") {
+										animState="downjump";
+										vis.osn.body.gotoAndPlay("downjump");
 									}
 								}
 								
-								if (animState != 'down' && animState != 'downjump') {
-									if (animState == 'polz' || cframe != 2) {
+								if (animState != "down" && animState != "downjump") {
+									if (animState == "polz" || cframe != 2) {
 										vis.osn.body.gotoAndStop(cframe);
 									}
-									else if (animState != 'roll') {
-										vis.osn.body.gotoAndPlay('down');
-										animState = 'down';
+									else if (animState != "roll") {
+										vis.osn.body.gotoAndPlay("down");
+										animState = "down";
 									}
 									else {
-										vis.osn.body.gotoAndStop('sit');
-										animState = 'down';
+										vis.osn.body.gotoAndStop("sit");
+										animState = "down";
 									}
 								}
 								//если стоим
 							}
 							else {
-								if (animState == 'down') {
-									vis.osn.body.gotoAndPlay('up');
-									animState='up';
+								if (animState == "down") {
+									vis.osn.body.gotoAndPlay("up");
+									animState="up";
 								}
 								
-								if (animState!='up' || cframe!=1) {
+								if (animState!="up" || cframe!=1) {
 									if (vis.osn.body.currentFrame < 70) {
 										vis.osn.body.gotoAndStop(cframe);
 									}
@@ -4112,10 +4120,10 @@ package fe.unit {
 								vis.osn.body.gotoAndStop(cframe);
 							}
 							
-							if (vis.osn.currentFrameLabel=='stay' && cframe==1) {
+							if (vis.osn.currentFrameLabel=="stay" && cframe==1) {
 								if (isrnd(0.01)) {
 									freeAnim = int(Math.random() * 3) + 1;
-									vis.osn.gotoAndStop('free' + freeAnim);
+									vis.osn.gotoAndStop("free" + freeAnim);
 									vis.osn.body.play();
 								}
 							}
@@ -4129,16 +4137,16 @@ package fe.unit {
 						t_walk=0;
 						
 						if (diagon*storona>0) {
-							if (animState!='diag_up') {
-								animState='diag_up';
-								vis.osn.gotoAndStop('trot_up');
+							if (animState!="diag_up") {
+								animState="diag_up";
+								vis.osn.gotoAndStop("trot_up");
 								vis.osn.body.gotoAndStop(1);
 							}
 						}
 						else {
-							if (animState!='diag_down') {
-								animState='diag_down';
-								vis.osn.gotoAndStop('trot_down');
+							if (animState!="diag_down") {
+								animState="diag_down";
+								vis.osn.gotoAndStop("trot_down");
 								vis.osn.body.gotoAndStop(1);
 							}
 						}
@@ -4148,19 +4156,19 @@ package fe.unit {
 						
 						if (diagon == 0) {
                             if (isSit) {
-                                if (animState == 'roll' && vis.osn.body.currentFrame >= 15) {
-                                    vis.osn.gotoAndStop('polz');
-                                    animState = 'polz';
+                                if (animState == "roll" && vis.osn.body.currentFrame >= 15) {
+                                    vis.osn.gotoAndStop("polz");
+                                    animState = "polz";
                                 }
                               
-							    if (animState != 'polz' && animState != 'roll') {
+							    if (animState != "polz" && animState != "roll") {
                                     if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
-                                        vis.osn.gotoAndStop('roll');
-                                        animState = 'roll';
+                                        vis.osn.gotoAndStop("roll");
+                                        animState = "roll";
                                     }
 									else {
-                                        vis.osn.gotoAndStop('polz');
-                                        animState = 'polz';
+                                        vis.osn.gotoAndStop("polz");
+                                        animState = "polz";
                                     }
                                    
 								    vis.osn.body.play();
@@ -4170,45 +4178,45 @@ package fe.unit {
                                 sndStep(t_walk, 4);
                                 t_walk++;
                                
-							    if (animState != 'walk') {
-                                    vis.osn.gotoAndStop('walk');
+							    if (animState != "walk") {
+                                    vis.osn.gotoAndStop("walk");
                                     vis.osn.body.play();
-                                    animState = 'walk';
+                                    animState = "walk";
                                 }
                             }
 							else if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                 sndStep(t_walk, 2);
                                 t_walk++;
                                
-							    if (animState != 'run') {
-                                    vis.osn.gotoAndStop('run');
+							    if (animState != "run") {
+                                    vis.osn.gotoAndStop("run");
                                     vis.osn.body.play();
-                                    animState = 'run';
+                                    animState = "run";
                                 }
                             }
 							else if (velocity.X * storona > 0) {
                                 sndStep(t_walk, 1);
                                 t_walk++;
                               
-							    if (animState != 'trot') {
-                                    vis.osn.gotoAndStop('trot');
+							    if (animState != "trot") {
+                                    vis.osn.gotoAndStop("trot");
                                     vis.osn.body.play();
-                                    animState = 'trot';
+                                    animState = "trot";
                                 }
                             }
                         }
 						else {
                             if (diagon * storona > 0) {
-                                if (animState != 'trot_up') {
-                                    animState = 'trot_up';
-                                    vis.osn.gotoAndStop('trot_up');
+                                if (animState != "trot_up") {
+                                    animState = "trot_up";
+                                    vis.osn.gotoAndStop("trot_up");
                                     vis.osn.body.play();
                                 }
                             }
 							else {
-                                if (animState != 'trot_down') {
-                                    animState = 'trot_down';
-                                    vis.osn.gotoAndStop('trot_down');
+                                if (animState != "trot_down") {
+                                    animState = "trot_down";
+                                    vis.osn.gotoAndStop("trot_down");
                                     vis.osn.body.play();
                                 }
                             }
@@ -4222,9 +4230,9 @@ package fe.unit {
 				else if (isLaz) {
 					freeAnim = 0;
 					
-					if (animState != 'laz') {
-						vis.osn.gotoAndStop('laz');
-						animState = 'laz';
+					if (animState != "laz") {
+						vis.osn.gotoAndStop("laz");
+						animState = "laz";
 					}
 					
 					if (velocity.Y == 0) {
@@ -4257,57 +4265,57 @@ package fe.unit {
 					freeAnim = 0;
 					vis.osn.rotation = velocity.Y * 1.5;
 				
-					if (animState != 'plav') {
-						animState = 'plav';
-						vis.osn.gotoAndStop('plav');
+					if (animState != "plav") {
+						animState = "plav";
+						vis.osn.gotoAndStop("plav");
 					}
 				//в воздухе
 				}
 				else {
 					freeAnim=0;
 					
-					if (animState!='jump' && animState!='levit') {
+					if (animState!="jump" && animState!="levit") {
 						if (aJump>0) {
-							vis.osn.gotoAndStop('jump');
-							animState='jump';
+							vis.osn.gotoAndStop("jump");
+							animState="jump";
 						}
 						else {
-							vis.osn.gotoAndStop('pinok');
-							animState='pinok';
+							vis.osn.gotoAndStop("pinok");
+							animState="pinok";
 						}
 					}
 					
-					if (animState=='pinok' && isFly) {
-						vis.osn.gotoAndStop('jump');
-						animState='jump';
+					if (animState=="pinok" && isFly) {
+						vis.osn.gotoAndStop("jump");
+						animState="jump";
 					}
 					
-					if (levit==1 && animState!='levit') {	//начать левитировать
+					if (levit==1 && animState!="levit") {	//начать левитировать
 						if (aJump>0 && vis.osn.body.currentFrame>=14 && vis.osn.body.currentFrame<=18) {
-							animState='levit';
-							vis.osn.gotoAndStop('levit');
+							animState="levit";
+							vis.osn.gotoAndStop("levit");
 						}
 					
 						if (aJump==0 && vis.osn.body.currentFrame>=10 && vis.osn.body.currentFrame<=22) {
-							animState='levit';
-							vis.osn.gotoAndStop('levit');
+							animState="levit";
+							vis.osn.gotoAndStop("levit");
 							vis.osn.body.gotoAndPlay(51);
 						}
 					}
 					
-					if (levit==0 && animState=='levit') {	//перестать левитировать
-						vis.osn.gotoAndStop('levit');
+					if (levit==0 && animState=="levit") {	//перестать левитировать
+						vis.osn.gotoAndStop("levit");
 						if (vis.osn.body.currentFrame<66) {
 							vis.osn.body.gotoAndPlay(67);
 						}
 					}
 					
-					if (levit==1 && animState=='levit') {
+					if (levit==1 && animState=="levit") {
 						if (vis.osn.body.currentFrame>66) {
 							vis.osn.body.gotoAndPlay(17);
 						}
 					}
-					else if (animState!='levit') {
+					else if (animState!="levit") {
 						if (aJump > 0) {
 							cframe = Math.round(16 + velocity.Y);
 						
@@ -4618,7 +4626,7 @@ package fe.unit {
 						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.20;
 					}
 					catch (err) {
-						trace('ERROR: (00:F)');
+						trace("ERROR: (00:F)");
 					}
 				}
 				else if (isFly && !stay && !isPlav && !isLaz) {
@@ -4677,7 +4685,7 @@ package fe.unit {
 		
 		public function refreshVis():void {
 			var dez:String = vis.osn.currentFrameLabel;
-			vis.osn.gotoAndStop('nope');
+			vis.osn.gotoAndStop("nope");
 			vis.osn.gotoAndStop(dez);
 			teleColor = World.w.app.cMagic;
 			levitFilter1.color = teleColor;
@@ -4692,7 +4700,7 @@ package fe.unit {
 			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (boundingBox.top + Math.random() * 320 - 160));
 			
 			if (t && t.mat == 1 && t.hp > 0) {
-				Emitter.emit('electro', loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
+				Emitter.emit("electro", loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
 			}
 		}
 		
@@ -4720,8 +4728,8 @@ package fe.unit {
 			
 			prev_replic = s_replic;
 			
-			if (s_replic != '' && s_replic) {
-				Emitter.emit('replic2', loc, coordinates.X, coordinates.Y - 90,{txt:s_replic, ry:20});
+			if (s_replic != "" && s_replic) {
+				Emitter.emit("replic2", loc, coordinates.X, coordinates.Y - 90,{txt:s_replic, ry:20});
 			}
 		}
 		
