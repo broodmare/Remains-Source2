@@ -11,6 +11,7 @@ package fe.inter {
 	import fe.loc.Quest;
 	import fe.loc.LandAct;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
 	import fe.weapon.Weapon;
 
 	import fe.stubs.visPipQuestItem;
@@ -29,21 +30,23 @@ package fe.inter {
 	*/
 	public class PipPageInfo extends PipPage {
 		
-		var visMap:MovieClip;
-		var visWMap:MovieClip;
+		private static const PAGE_LOCAL_MAP:int = 1, PAGE_QUEST:int = 2, PAGE_WORLD_MAP:int = 3, PAGE_NOTES:int = 4, PAGE_ENEMIES:int = 5;
+
+		private var visMap:MovieClip;
+		private var visWMap:MovieClip;
 		public var map:Bitmap;
 		public var mbmp:BitmapData;
-		var visPageX=850, visPageY=540;
-		var mapScale:Number=2, ms:Number=2;
-		var plTag:MovieClip;
-		var targetLand:String='';
-		var game:Game;
+		private var visPageX=850, visPageY=540;
+		private var mapScale:Number=2, ms:Number=2;
+		private var plTag:MovieClip;
+		private var targetLand:String='';
+		private var game:Game;
 
 		private static var lastLandTooltipDisplayed:String;
 
 		private static var cachedUnits:Object = {};
-		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
-		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
+		private static var cachedTaskList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
+		private static var cachedUnitList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 		
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -85,7 +88,7 @@ package fe.inter {
 
 		public static function getUnitInfo(id:String):XML {
 			
-			var node:XML;
+			var node;
 			if (cachedUnits[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 				cachedUnits[id] = node;
@@ -98,6 +101,9 @@ package fe.inter {
 		}
 
 		override protected function setSubPages():void {
+			gg = World.w.gg;
+			inv = World.w.invent;
+			
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
 			statHead.visible=false;
@@ -112,39 +118,45 @@ package fe.inter {
 			targetLand='';
 			setTopText();
 			game=World.w.game;
-			if (page2==1) {		//карта
+			
+			if (page2 == PAGE_LOCAL_MAP) {		//карта
 				if (World.w.loc.noMap) {
-					vis.emptytext.text=Res.pipText('emptymap');
+					vis.emptytext.text=LanguageManager.reference.localText("pip", 'emptymap');
 				}
 				else {
-					vis.emptytext.text='';
-					map.bitmapData=World.w.land.drawMap();
+					vis.emptytext.text = "";
+					map.bitmapData = World.w.land.drawMap();
 					setMapSize();
-					visMap.visible=true;
+					visMap.visible = true;
 				}
 			}
-			else if (page2==2) {	//задания
+			else if (page2 == PAGE_QUEST) {	//задания
 				for each(var q:Quest in game.quests) {
 					if (q.state>0) {
 						var n:Object={id:q.id, nazv:q.nazv, main:q.main, sort:(q.main?0:1), state:q.state};
 						arr.push(n);
 					}
 				}
-				if (arr.length) arr.sortOn(['state','sort','nazv']);
+				
+				if (arr.length) {
+					arr.sortOn(['state','sort','nazv']);
+				}
+				
 				if (World.w.loc && World.w.loc.base) {
-					for each (var task:XML in cachedTaskList) {
+					for each (var task in cachedTaskList) {
 						if (checkQuest(task)) {
 							var q:Quest = game.quests[task.@id];
+							
 							if (q == null || q.state == 0) {
 								vis.butOk.visible = true;
-								vis.butOk.text.text = Res.pipText('alltask');
+								vis.butOk.text.text = LanguageManager.reference.localText("pip", 'alltask');
 								break;
 							}
 						}
 					}
 				}
 			}
-			else if (page2==3) {	// [General map]
+			else if (page2 == PAGE_WORLD_MAP) {	// [General map]
 				
 				vis.nazv.x = 584
 				vis.info.x = 584;
@@ -201,60 +213,90 @@ package fe.inter {
 						if (World.w.testMode || land.visited || land.access) sim.visible = true;
 					}
 				}
-				vis.butOk.text.text = Res.pipText('trans');
+				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'trans');
 				visWMap.visible = true;
 				pip.vis.butHelp.visible = true;
 				pip.helpText = Res.txt('p', 'helpWorld', 0, true);
 			}
-			else if (page2==4) {	// [Notes]
-				var doparr:Array=[];
+			else if (page2 == PAGE_NOTES) {	// [Notes]
+				var doparr:Array = [];
 				for each (var note:String in game.notes) {
-					//TODO: Stop searching Res on your own.
-					var xml=Res.currentLanguageData.txt.(@id==note);
-					
-					var nico:int=0;
-					if (xml && xml.@imp>0) {
-						nico=int(xml.@imp);
-					} else continue;
+					var dialogue:Object = Res.dialogue(note);
+
+					var nico:int = 0;
+
+					if (dialogue && dialogue.imp > 0) {
+						nico = int(dialogue.imp);
+					}
+					else {
+						continue;
+					}
+
 					var title:String;
-					if (xml.n.t.length()) title=xml.n.t[0];
-					else title=xml.n.r[0];
-					title=title.replace(/&lp/g,World.w.pers.persName);
-					var n:Object={id:note, nazv:title, ico:nico};
-					if (nico==3) doparr.push(n);
-					else arr.push(n);
+
+					if (dialogue.Title) {
+						title = dialogue.Title;
+					}
+					else {
+						title = dialogue.Lines[0].text;
+					}
+					
+					title = title.replace(/&lp/g,World.w.pers.persName);
+					var n:Object = {id:note, nazv:title, ico:nico};
+					
+					if (nico==3) {
+						doparr.push(n);
+					}
+					else {
+						arr.push(n);
+					}
 				}
+				
 				arr.reverse();
-				arr=doparr.concat(arr);
+				arr = doparr.concat(arr);
 			}
-			else if (page2==5) {	// [Enemies]
-				if (Unit.arrIcos==null) Unit.initIcos();
-				var prevObj:Object=null;
-				statHead.visible=true;
-				statHead.nazv.text='';
-				statHead.mq.visible=false;
-				statHead.kol.text=Res.pipText('frag');
-				vis.ico.visible=true;
+			else if (page2 == PAGE_ENEMIES) {	// [Enemies]
+				if (Unit.arrIcos == null) {
+					Unit.initIcos();
+				}
+				
+				var prevObj:Object = null;
+				statHead.visible = true;
+				statHead.nazv.text = "";
+				statHead.mq.visible = false;
+				statHead.kol.text = LanguageManager.reference.localText("pip", 'frag');
+				vis.ico.visible = true;
 
 				for each(var xml in cachedUnitList) {
 					if (xml && xml.@cat.length()) {
-						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
-						if (xml.@cat=='3' && World.w.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.w.game.triggers['frag_'+xml.@id]);
-						if (xml.@cat=='2') {
-							prevObj=n;
+						var n:Object = {id:xml.@id, nazv:Res.txt('u', xml.@id), cat:xml.@cat, kol:-1};
+						
+						if (xml.@cat == '3' && World.w.game.triggers['frag_' + xml.@id] >= 0) {
+							n.kol = int(World.w.game.triggers['frag_' + xml.@id]);
 						}
-						else if (xml.@cat=='3') {
-							if (prevObj && n.kol>=0) {
-								if (prevObj.kol<0) prevObj.kol=0;
-								prevObj.kol+=n.kol;
+						
+						if (xml.@cat == '2') {
+							prevObj = n;
+						}
+						else if (xml.@cat == '3') {
+							if (prevObj && n.kol >= 0) {
+								if (prevObj.kol < 0) {
+									prevObj.kol = 0;
+								}
+								
+								prevObj.kol += n.kol;
 							}
-							if (prevObj) n.prev=prevObj.id;
+							
+							if (prevObj) {
+								n.prev = prevObj.id;
+							}
 						}
+						
 						arr.push(n);
 					}
 				}
 
-				arr=arr.filter(isKol);		// [Filter]
+				arr = arr.filter(isKol);		// [Filter]
 			}
 		}
 		
@@ -272,19 +314,20 @@ package fe.inter {
 			item.nazv.alpha=1;
 			item.kol.text='';
 			item.kol.visible=false;
-			if (page2==2) {
+			if (page2 == PAGE_QUEST) {
 				item.nazv.x=32;
 				item.mq.visible=obj.main;
 				item.mq.gotoAndStop(1);
+				
 				if (obj.state==2) {
 					item.nazv.alpha=item.mq.alpha=0.4;
-					item.nazv.text+=' ('+Res.pipText('done')+')';
+					item.nazv.text+=' ('+LanguageManager.reference.localText("pip", 'done')+')';
 				}
 				else {
 					item.nazv.alpha=item.mq.alpha=1;
 				}
 			}
-			else if (page2==4) {
+			else if (page2 == PAGE_NOTES) {
 				item.nazv.x=32;
 				item.nazv.htmlText=obj.nazv.substr((obj.nazv.charAt(0)==' ')?3:0, 60);
 				item.kol.text=obj.nazv;
@@ -292,12 +335,26 @@ package fe.inter {
 				item.mq.alpha=1;
 				item.mq.gotoAndStop(obj.ico+1);
 			}
-			else if (page2==5) {
-				item.nazv.x=5;
-				if (obj.cat == '1') item.nazv.htmlText = '<b>' + item.nazv.text + '</b>';
-				if (obj.cat == '2') item.nazv.htmlText = '      <b>'+item.nazv.text + '</b>';
-				if (obj.cat == '3') item.nazv.htmlText = '            ' + item.nazv.text;
-				if (obj.kol > 0) item.kol.text = obj.kol;
+			else if (page2 == PAGE_ENEMIES) {
+				
+				item.nazv.x = 5;
+				
+				if (obj.cat == '1') {
+					item.nazv.htmlText = '<b>' + item.nazv.text + '</b>';
+				}
+				
+				if (obj.cat == '2') {
+					item.nazv.htmlText = '      <b>'+item.nazv.text + '</b>';
+				}
+				
+				if (obj.cat == '3') {
+					item.nazv.htmlText = '            ' + item.nazv.text;
+				}
+				
+				if (obj.kol > 0) {
+					item.kol.text = obj.kol;
+				}
+				
 				item.kol.visible = true;
 			}
 		}
@@ -305,10 +362,10 @@ package fe.inter {
 		//информация об элементе
 		override protected function statInfo(event:MouseEvent):void {
 			vis.info.y=vis.ico.y;
-			if (page2==2) {
+			if (page2 == PAGE_QUEST) {
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
 			}
-			else if (page2 == 3) {
+			else if (page2 == PAGE_WORLD_MAP) {
 				var l:LandAct = game.lands[event.currentTarget.name];
 
 				if (l == null || l.id == lastLandTooltipDisplayed) {
@@ -321,58 +378,57 @@ package fe.inter {
 				var s:String = Res.txt('m',l.id,1);
 				
 				if (l.visited) {
-					if (l.passed) s += "\n\n<span class ='orange'>" + Res.pipText('ls2') + "</span>";							// "Cleared" message
-					else if (l.tip == 'base') s += "\n\n<span class ='orange'>" + Res.pipText('ls4') + "</span>";						// "Base camp" message
-					else if (l.tip == 'rnd') s += "\n\n<span class ='yellow'>" + Res.pipText('ls3') + ": " + (l.landStage + 1) + "</span>";
+					if (l.passed) s += "\n\n<span class ='orange'>" + LanguageManager.reference.localText("pip", 'ls2') + "</span>";							// "Cleared" message
+					else if (l.tip == 'base') s += "\n\n<span class ='orange'>" + LanguageManager.reference.localText("pip", 'ls4') + "</span>";						// "Base camp" message
+					else if (l.tip == 'rnd') s += "\n\n<span class ='yellow'>" + LanguageManager.reference.localText("pip", 'ls3') + ": " + (l.landStage + 1) + "</span>";
 				}
 				else {
-					s += "\n\n<span class ='blue'>" + Res.pipText('ls1') + "</span>";	// "Location level reached" message
+					s += "\n\n<span class ='blue'>" + LanguageManager.reference.localText("pip", 'ls1') + "</span>";	// "Location level reached" message
 				}
 				
 				if (l.tip == 'rnd' && l.kolAllProb > 0) {
 					if (l.kolClosedProb >= l.kolAllProb) { // If all trials complete, print in green
-						s += "\n" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
+						s += "\n" + LanguageManager.reference.localText("pip", 'kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
 					}
 					else { // Otherwise, print in yellow
-						s += "\n<span class ='yellow'>" + Res.pipText('kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
+						s += "\n<span class ='yellow'>" + LanguageManager.reference.localText("pip", 'kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
 					}
 				}
 				
 				if (l.dif > 0) { // "Reccomended level" message
 					if (World.w.pers.level < l.dif) { // Player below reccomended level, highlight red
 						//trace('Highlighting level requirement. Requirement not met. 	Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
-						s += '\n\n' + "<span class = 'red'>"+ Res.pipText('recLevel') + ' ' + Math.round(l.dif) + "</span>";
+						s += '\n\n' + "<span class = 'red'>"+ LanguageManager.reference.localText("pip", 'recLevel') + ' ' + Math.round(l.dif) + "</span>";
 					}
 					else {
 						//trace('Highlighting level requirement. Requirement met. Player level: "' + World.w.pers.level + '", requirement: "' + l.dif + '".');
-						s += '\n\n' + Res.pipText('recLevel') + ' ' + Math.round(l.dif);
+						s += '\n\n' + LanguageManager.reference.localText("pip", 'recLevel') + ' ' + Math.round(l.dif);
 					}
 
 					
 				}
 				
 				if (l.dif>World.w.pers.level) {
-					s += '\n\n' + Res.pipText('wrLevel');
+					s += '\n\n' + LanguageManager.reference.localText("pip", 'wrLevel');
 				}
 				
 				if (World.w.pers.speedShtr>=3) {
-					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr3'));
+					s += '\n\n' + textAsColor('red', LanguageManager.reference.localText("pip", 'speedshtr3'));
 				}
 				else if (World.w.pers.speedShtr==2) {
-					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr2'));
+					s += '\n\n' + textAsColor('red', LanguageManager.reference.localText("pip", 'speedshtr2'));
 				}
 				else if (World.w.pers.speedShtr==1) {
-					s += '\n\n' + textAsColor('red', Res.pipText('speedshtr1'));
+					s += '\n\n' + textAsColor('red', LanguageManager.reference.localText("pip", 'speedshtr1'));
 				}
 				
 				if (World.w.pers.speedShtr >= 1) {
-					s += '\n' + Res.pipText('speedshtr0');
+					s += '\n' + LanguageManager.reference.localText("pip", 'speedshtr0');
 				}
 				
 				vis.info.htmlText=s;
 			}
-			else if (page2==4)
-			{
+			else if (page2 == PAGE_NOTES) {
 				vis.info.y=vis.nazv.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
@@ -380,11 +436,17 @@ package fe.inter {
 				s=s.replace(/]/g,"</span>");
 				vis.info.htmlText=s;
 			}
-			else if (page2==5)
-			{
-				if (vis.ico.numChildren>0) vis.ico.removeChildAt(0);
+			else if (page2 == PAGE_ENEMIES) {
+				if (vis.ico.numChildren>0) {
+					vis.ico.removeChildAt(0);
+				}
+				
 				Unit.initIco(event.currentTarget.id.text)
-				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
+				
+				if (Unit.arrIcos[event.currentTarget.id.text]) {
+					vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
+				}
+				
 				vis.nazv.text=event.currentTarget.nazv.text;
 				vis.info.htmlText=Res.txt('u',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
 				vis.info.y=vis.ico.y+vis.ico.height+20;
@@ -410,112 +472,158 @@ package fe.inter {
 			return null;
 		}
 		
-		private function infoUnit(id:String, kol):String {
-			var n:int=0, delta;
+		private function infoUnit(id:String, kol:int):String {
+			var n:int = 0;
+
 			//юнит
 			var un = getUnitInfo(id);
-			if (un.length()==0 || un.@cat!='3') return '';
+
+			if (un.length()==0 || un.@cat!='3') {
+				return '';
+			}
+			
 			//родитель
 			var pun;
+			
 			if (un.@parent.length()) pun = getUnitInfo(un.@parent);
 			//дельта
-			delta=getParam(un,pun,'vis','dkill');
+			
+			var delta=getParam(un,pun,'vis','dkill');
 			if (delta==null) delta=5;
+			
 			if (delta<=0) n=10;
 			else n = Math.floor(int(kol)/delta);
 
 			
-			var v_hp=getParam(un,pun,'comb','hp');
-			var v_skin=getParam(un,pun,'comb','skin');
-			var v_aqual=getParam(un,pun,'comb','aqual');
-			var v_armor=getParam(un,pun,'comb','armor');
-			var v_marmor=getParam(un,pun,'comb','marmor');
-			var v_dexter=getParam(un,pun,'comb','dexter');
-			var v_skill=getParam(un,pun,'comb','skill');
-			var v_observ=getParam(un,pun,'comb','observ');
-			var v_visdam=getParam(un,pun,'vis','visdam');
-			var v_damage=getParam(un,pun,'comb','damage');
-			var v_tipdam=getParam(un,pun,'comb','tipdam');
-			var v_sdamage=getParam(un,pun,'vis','sdamage');
-			var v_stipdam=getParam(un,pun,'vis','stipdam');
+			var v_hp		= getParam(un, pun, 'comb', 'hp');
+			var v_skin		= getParam(un, pun, 'comb', 'skin');
+			var v_aqual		= getParam(un, pun, 'comb', 'aqual');
+			var v_armor		= getParam(un, pun, 'comb', 'armor');
+			var v_marmor	= getParam(un, pun, 'comb', 'marmor');
+			var v_dexter	= getParam(un, pun, 'comb', 'dexter');
+			var v_skill		= getParam(un, pun, 'comb', 'skill');
+			var v_observ	= getParam(un, pun, 'comb', 'observ');
+			var v_visdam	= getParam(un, pun, 'vis',  'visdam');
+			var v_damage	= getParam(un, pun, 'comb', 'damage');
+			var v_tipdam	= getParam(un, pun, 'comb', 'tipdam');
+			var v_sdamage	= getParam(un, pun, 'vis',  'sdamage');
+			var v_stipdam	= getParam(un, pun, 'vis',  'stipdam');
 			
-			var s:String='\n';
+			var s:String = "\n";
+			
 			if (un.comb.length()) {
 				var node=un.comb[0];
+				
 				if (n>=1) {
 					//ХП
-					s+=Res.pipText('hp')+': '+textAsColor('yellow', v_hp)+'\n';
+					s+=LanguageManager.reference.localText("pip", 'hp')+': '+textAsColor('yellow', v_hp)+'\n';
 					//порог урона и броня
-					if (v_skin) 	s+=Res.pipText('skin')+': '+textAsColor('yellow', v_skin)+'\n';
+					if (v_skin) 	s+=LanguageManager.reference.localText("pip", 'skin')+': '+textAsColor('yellow', v_skin)+'\n';
 					if (v_aqual) {
-						if (v_armor) 	s+=Res.pipText('armor')+': '+textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=Res.pipText('marmor')+': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=LanguageManager.reference.localText("pip", 'armor')+': '+textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
+						if (v_marmor) 	s+=LanguageManager.reference.localText("pip", 'marmor')+': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
+				
 				if (n>=2) {
 					if ((v_visdam==1 || v_visdam==3) && v_damage) {
-						s+=Res.pipText('dam_melee')+': ';
-						if (v_tipdam) s+=textAsColor('blue', Res.pipText('tipdam'+v_tipdam)); else s+=textAsColor('blue', Res.pipText('tipdam2'));
+						s+=LanguageManager.reference.localText("pip", 'dam_melee')+': ';
+						
+						if (v_tipdam) {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_tipdam)));
+						}
+						else {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.DAM_BLUNT));
+						}
+						
 						s+=' ('+textAsColor('yellow', v_damage)+')\n'
 					}
+					
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) {
-						s+=Res.pipText('dam_shoot')+': ';
-						if (v_stipdam) s+=textAsColor('blue', Res.pipText('tipdam'+v_stipdam)); else s+=textAsColor('blue', Res.pipText('tipdam0'));
+						s+=LanguageManager.reference.localText("pip", 'dam_shoot')+': ';
+						
+						if (v_stipdam) {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_stipdam)));
+						}
+						else {
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.DAM_PIERCE));
+						}
+						
 						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
 					}
+					
+					// Get what weapons the enemy uses
 					if (un.w.length()) {
-						var wk:Boolean=false;
+						var wk:Boolean = false;
 						for each (var weap in un.w) {
-							if (!(weap.@no>0)) {
-								if (wk) s+=', ';
-								else s+=Res.pipText('enemy_weap')+': ';
-								s+=textAsColor('blue', Res.txt('w', weap.@id));
+							if (!(weap.@no > 0)) {
+								if (wk) {
+									s += ', ';
+								}
+								else {
+									s += LanguageManager.reference.localText("pip", 'enemy_weap') + ': ';
+								}
+								
+								s += textAsColor('blue', Res.txt('w', weap.@id));
+								
 								try {
-									var w = Weapon.getWeaponInfo(weap.@id);
-									var dam = 0;
-									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
-									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
-									s+=' ('+textAsColor('yellow', Res.numb(dam))+')';
+									var data:Object = WeaponManager.reference.weaponData(weap.@id);
+									var dam:Number = 0;
+									
+									if (data.damage > 0) {
+										dam += Number(data.damage);
+									}
+									
+									if (data.damageExpl > 0) {
+										dam += Number(data.damageExpl);
+									}
+									
+									s += ' (' + textAsColor('yellow', Res.numb(dam)) + ')';
 								}
 								catch (err) {
 									trace('ERROR: (00:3B)');
 								}
+								
 								wk = true;
 							}
 						}
-						s+='\n';
+						
+						s += "\n";
 					}
 				}
+				
 				//уклонение
 				if (n>=3) {
-					if (v_dexter!=null) 	s+=Res.pipText('dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=Res.pipText('observ')+': '+textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=Res.pipText('weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
+					if (v_dexter!=null) 	s+=LanguageManager.reference.localText("pip", 'dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=LanguageManager.reference.localText("pip", 'observ')+': '+textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
+					if (v_skill!=null) 	s+=LanguageManager.reference.localText("pip", 'weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
+			
 			//сопротивления
 			if (n>=3 && un.vulner.length()) {
-				s+=Res.pipText('resists')+': ';
-				node=un.vulner[0];
-				if (node.@emp.length()) 	s+=vulner(Unit.D_EMP,node.@emp);
-				if (node.@bul.length()) 	s+=vulner(Unit.D_BUL,node.@bul);
-				if (node.@blade.length()) 	s+=vulner(Unit.D_BLADE,node.@blade);
-				if (node.@phis.length()) 	s+=vulner(Unit.D_PHIS,node.@phis);
-				if (node.@expl.length()) 	s+=vulner(Unit.D_EXPL,node.@expl);
-				if (node.@laser.length()) 	s+=vulner(Unit.D_LASER,node.@laser);
-				if (node.@plasma.length()) 	s+=vulner(Unit.D_PLASMA,node.@plasma);
-				if (node.@fire.length()) 	s+=vulner(Unit.D_FIRE,node.@fire);
-				if (node.@cryo.length()) 	s+=vulner(Unit.D_CRIO,node.@cryo);
-				if (node.@spark.length()) 	s+=vulner(Unit.D_SPARK,node.@spark);
-				if (node.@venom.length()) 	s+=vulner(Unit.D_VENOM,node.@venom);
-				if (node.@acid.length()) 	s+=vulner(Unit.D_ACID,node.@acid);
+				s += LanguageManager.reference.localText("pip", 'resists')+': ';
+				node = un.vulner[0];
+				
+				if (node.@bul.length()) 	s += vulner(0,  node.@bul);
+				if (node.@blade.length()) 	s += vulner(1,  node.@blade);
+				if (node.@phis.length()) 	s += vulner(2,  node.@phis);
+				if (node.@fire.length()) 	s += vulner(3,  node.@fire);
+				if (node.@expl.length()) 	s += vulner(4,  node.@expl);
+				if (node.@laser.length()) 	s += vulner(5,  node.@laser);
+				if (node.@plasma.length()) 	s += vulner(6,  node.@plasma);
+				if (node.@venom.length()) 	s += vulner(7,  node.@venom);
+				if (node.@emp.length()) 	s += vulner(8,  node.@emp);
+				if (node.@spark.length()) 	s += vulner(9,  node.@spark);
+				if (node.@acid.length()) 	s += vulner(10, node.@acid);
+				if (node.@cryo.length()) 	s += vulner(11, node.@cryo);
 			}
 			return s;
 		}
 		
 		private function vulner(n:int, val:Number):String {
-			return textAsColor('blue', Res.pipText('tipdam' + n))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
+			return textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(n)))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
 		}
 		
 		override protected function itemClick(event:MouseEvent):void {
@@ -524,8 +632,8 @@ package fe.inter {
 				return;
 			}
 			
-			if (page2==3 && (pip.travel || World.w.testMode)) {
-				if (targetLand!='' && visWMap[targetLand]) {
+			if (page2 == PAGE_WORLD_MAP && (pip.travel || World.w.testMode)) {
+				if (targetLand != "" && visWMap[targetLand]) {
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
 				
@@ -553,20 +661,22 @@ package fe.inter {
 				World.w.gui.infoText('noAct');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.w.testMode)) {
+			
+			if (page2 == PAGE_WORLD_MAP && (pip.travel || World.w.testMode)) {
 				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
 					game.beginMission(targetLand);
 					pip.onoff(-1);
 				}
 			}
-			if (page2==2) {
+			
+			if (page2 == PAGE_QUEST) {
 				addAllQuestsToGameClass();
 				setStatus();
 			}
 		}
 
 		private function addAllQuestsToGameClass():void {
-			for each (var task:XML in cachedTaskList) {
+			for each (var task in cachedTaskList) {
 				if (task.@man=='1') continue;
 				if (checkQuest(task)) {
 					var q:Quest = game.quests[task.@id];

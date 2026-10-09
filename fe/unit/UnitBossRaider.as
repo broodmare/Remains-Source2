@@ -1,6 +1,9 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.loc.Tile;
@@ -10,85 +13,113 @@ package fe.unit {
 	
 	public class UnitBossRaider extends UnitPon {
 		
-		public var tr:int=1;
-		var weap:String;
-		public var scrAlarmOn:Boolean=true;
-		public var controlOn:Boolean=true;
-		public var kol_emit=8;
-		public var called:int=0;
+		public var tr:int = 1;
+		private var weap:String;
+		public var scrAlarmOn:Boolean = true;
+		public var controlOn:Boolean = true;
+		public var kol_emit:int = 8;
+		public var called:int = 0;
 
 		// Constructor
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
-			id='bossraider';
+			id = "bossraider";
+			
 			if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
+				tr = xml.@tr;
 			}
+			
 			//взять параметры из xml
-			if (tr==2) vis=new visualRaiderBoss2();
-			else vis=new visualRaiderBoss();
+			if (tr == 2) {
+				vis = SymbolFactory.createInstance("visualRaiderBoss2") as MovieClip;
+			}
+			else {
+				vis = SymbolFactory.createInstance("visualRaiderBoss") as MovieClip;
+			}
+			
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
-			walkSpeed=maxSpeed;
-			plavSpeed=maxSpeed;
-			runSpeed=maxSpeed*6;
-			plavdy=accel;
-			porog=45;
-			boss=true;
-			aiTCh=80;
+			
+			walkSpeed = maxSpeed;
+			plavSpeed = maxSpeed;
+			runSpeed = maxSpeed * 6;
+			plavdy = accel;
+			porog = 45;
+			boss = true;
+			aiTCh = 80;
 			
 			//дать оружие
-			if (tr==1) {
-				currentWeapon=Weapon.create(this,'carbine');
-				aiDist=2000;
+			var wm:WeaponManager = WeaponManager.reference;
+			if (tr == 1) {
+				currentWeapon = wm.cloneWeapon("carbine");
+				wm.setOwner(currentWeapon, this);
+				aiDist = 2000;
 			}
-			if (tr==2) {
-				currentWeapon=Weapon.create(this,'flamer');
-				aiDist=500;
-			}
-			if (currentWeapon) weap=currentWeapon.id;
-			else weap='';
-			if (currentWeapon) childObjs=new Array(currentWeapon);
-			if (currentWeapon && currentWeapon.uniq) {
-				currentWeapon.updVariant(1);
+			else if (tr == 2) {
+				currentWeapon = wm.cloneWeapon("flamer");
+				wm.setOwner(currentWeapon, this);
+				aiDist = 500;
 			}
 			
-			aiNapr=storona;
+			if (currentWeapon) {
+				weap = currentWeapon.id;
+			}
+			else {
+				weap = "";
+			}
+			
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+			}
+			
+			aiNapr = storona;
 		}
-		
 
 		public override function save():Object {
-			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
-			obj.tr=tr;
-			obj.weap=weap;
+			var obj:Object = super.save();
+			
+			if (obj == null) {
+				obj = new Object();
+			}
+			
+			obj.tr = tr;
+			obj.weap = weap;
+			
 			return obj;
 		}
 		
-		public override function setLevel(nlevel:int=0):void {
+		public override function setLevel(nlevel:int = 0):void {
 			super.setLevel(nlevel);
-			var wMult=(1+level*0.08);
-			var dMult=1;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
-			hp=maxhp=hp*dMult;
-			dam*=dMult;
+			
+			var wMult:Number = (1 + level * 0.08);
+			var dMult:Number = 1;
+			
+			if (World.w.game.globalDif == 3) {
+				dMult = 1.20;
+			}
+			if (World.w.game.globalDif == 4) {
+				dMult = 1.50;
+			}
+			
+			hp = maxhp = hp * dMult;
+			dam *= dMult;
+			
 			if (currentWeapon) {
-				currentWeapon.damage*=dMult;
+				currentWeapon.damage *= dMult;
 			} 
 		}
 		
 		public override function animate():void {
 			if (sost==3) { //сдох
-				if (animState!='die') {
+				if (animState != 'die') {
 					vis.osn.gotoAndStop('die');
-					animState='die';
+					animState = 'die';
 				}
 			}
-			else if (aiState==4 || aiState==6) {
-				if (animState!='bac') {
+			else if (aiState == 4 || aiState == 6) {
+				if (animState != 'bac') {
 					vis.osn.gotoAndStop('bac');
-					animState='bac';
+					animState = 'bac';
 				}
 			}
 			else if (stay) {
@@ -115,36 +146,46 @@ package fe.unit {
 				if (animState!='jump') {
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
-					var cframe=Math.round(16 + velocity.Y);
-					if (cframe>32) cframe=32;
-					if (cframe<1) cframe=1;
+					var cframe:int = Math.round(16 + velocity.Y);
+					
+					if (cframe > 32) {
+						cframe = 32;
+					}
+					
+					if (cframe < 1) {
+						cframe = 1;
+					}
+					
 					vis.osn.body.gotoAndStop(cframe);
 				}
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
 		}
 		
 		public override function dropLoot():void {
 			super.dropLoot();
+			
 			if (currentWeapon) {
-				if (currentWeapon.vis) currentWeapon.vis.visible=false;
-				var cid:String=currentWeapon.id;
-				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, cid, 0);
+				if (currentWeapon.vis) {
+					currentWeapon.vis.visible = false;
+				}
+				
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
 			}
+			
 			if (attackerType==3) {
-				for (var i=0; i<3; i++) {
+				for (var i:int = 0; i < 3; i++) {
 					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
 					currentWeapon.attack();
 				}
 			}
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			var td:Number=super.damage(dam, tip, bul,tt);
 			if (tr==2 && World.w.game.globalDif>1) {
 				var tc:int=Math.floor((maxhp-hp)/maxhp*4);
@@ -156,7 +197,7 @@ package fe.unit {
 			return td;
 		}
 
-		private function emit() {
+		private function emit():void {
 			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;
@@ -315,9 +356,10 @@ package fe.unit {
 					jmp=0;
 				}
 			}
-			else if (aiState==3 || aiState==2) {
+			else if (aiState == 3 || aiState == 2) {
 				walk=0;
 				aiNapr = storona = (celX > coordinates.X)? 1 : -1;
+			
 				if (celDX * celDX + celDY * celDY < 40000) {
 					aiState=1;
 				}
@@ -327,42 +369,62 @@ package fe.unit {
 
 		}
 		
-		public function attack() {
+		public function attack():void {
 			if (aiState == 1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit, (Math.abs(velocity.X - celUnit.velocity.X) > 8)? 1 : 0.5);
 			}
 			else if (aiState==3) {							//пальба
 				mazil=10;		//стоя на месте стрельба точнее
+				
 				if (aiAttackOch>0) {										//стрельба очередями
-					if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
-					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
+					if (aiAttackT<=0) {
+						aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
+					}
+					
+					if (aiAttackT > aiAttackOch * 0.25) {
+						currentWeapon.attack();
+					}
+					
 					aiAttackT--;
 				}
+				
 				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) attKorp(celUnit, 0.5);
+			}
+			else if (aiState==4) {		//тряска
+				if (aiTCh==5) {
+					quake();
 				}
-				else if (aiState==4) {		//тряска
-					if (aiTCh==5) quake();
+			}
+			else if (aiState==5) {		//тряска
+				if (aiTCh==5 && kol_emit && tr==1) {
+					emit();
 				}
-				else if (aiState==5) {		//тряска
-					if (aiTCh==5 && kol_emit && tr==1) emit();
+				
 				if (celUnit && isrnd(0.02)) {
 					currentWeapon.attack();
-					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) attackerType=0;
+					
+					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) {
+						attackerType=0;
+					}
 				}
-				if ((celDX*celDX+celDY*celDY<10000) && isrnd(0.1)) attKorp(celUnit,(Math.abs(velocity.X) > 8)? 1 : 0.5);
+				
+				if ((celDX*celDX+celDY*celDY<10000) && isrnd(0.1)) {
+					attKorp(celUnit,(Math.abs(velocity.X) > 8)? 1 : 0.5);
+				}
 			}
 		}
 		
-		private function quake() {
+		private function quake():void {
 			loc.earthQuake(40);
 			Emitter.emit('quake', loc, coordinates.X+Math.random()*40-20, coordinates.Y);
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			if (com=='off') {
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			}
+			else if (com=='on') {
 				controlOn=true;
 			}
 		}

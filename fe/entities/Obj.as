@@ -12,39 +12,37 @@ package  fe.entities {
 	
 	public class Obj extends Entity {
 		
-		public var code:String;		// [Individual code]
-		public var uid:String;		// [Unique identifier used for script access to the object]
-		
-		public var prior:Number = 1;			// Priority?
-		
-		public var storona:int = 1;				// Sprite Facing (Left/Right)
+		private static const NULL_TRANSFORM:ColorTransform = new ColorTransform();	// Re-use this instead of creating a new color transform every time
 
-		public var rasst2:Number=0;				// Distance to player squared
-		public var massa:Number=1;
-		public var levit:int=0;
-		public var levitPoss:Boolean=true;		// [ability to move using levitation]
-		public var fracLevit:int=0;				// [was levitated]
-		public var radioactiv:Number=0;			// [Radioactivity]
-		public var radrad:Number=250;			// [Radius of radioactivity]
-		public var radtip:int=0;				// [0 - Radiation, 1 - Poison, 2 - Pink Cloud, 3 - Death]
-		public var warn:int=0;					// [Float color tips]
+		public var code:String;								// [Individual code]
+		public var uid:String;								// [Unique identifier used for script access to the object]
+		public var nazv:String				= "";			// Name
+
+		public var prior:Number				= 1.00;			// Priority?
+		public var storona:int				= 1;			// Sprite Facing (Left/Right)
+
+		public var rasst2:Number			= 0.00;			// Distance to player squared
+		public var massa:Number				= 1.00;			//
 		
-		public var nazv:String = '';			// Name
+		public var levitPoss:Boolean		= true;			// [ability to move using levitation]
+		public var levit:int				= 0;			//
+		public var fracLevit:int			= 0;			// [was levitated]
 		
-		public var inter:Interact;				// Player interaction script 
+		public var radioactiv:Number		= 0.00;			// [Radioactivity]
+		public var radrad:Number			= 250.00;		// [Radius of radioactivity]
+		public var radtip:int				= 0;			// [0 - Radiation, 1 - Poison, 2 - Pink Cloud, 3 - Death]
+		public var warn:int					= 0;			// [Float color tips]
 		
-		// Bounding box
+		public var inter:Interact;							// Player interaction script 
 		public var boundingBox:BoundingBox;
 		
-		public var onCursor:Number=0;
-		//цветовой фильтр
-		
-		public static var nullTransfom:ColorTransform = new ColorTransform();
-		public var cTransform:ColorTransform = nullTransfom;
+		public var onCursor:int				= 0;
+
+		public var cTransform:ColorTransform = NULL_TRANSFORM;	// [Color filter]
 		
 		// Constructor
 		public function Obj() {
-			boundingBox = new BoundingBox(this.coordinates);
+			boundingBox = new BoundingBox(coordinates);
 		}
 		
 		public override function remVisual():void {
@@ -52,7 +50,7 @@ package  fe.entities {
 			onCursor = 0;
 		}
 		
-		public function setVisState(s:String) {
+		public function setVisState(s:String):void {
 
 		}
 		
@@ -64,14 +62,34 @@ package  fe.entities {
 			return false;
 		}
 		
-		public function getRasst2(obj:Obj=null):Number {
-			if (obj == null) obj = World.w.gg;
-			var nx:Number = obj.coordinates.X - coordinates.X;
-			var ny:Number = obj.coordinates.Y - obj.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight
-			if (obj == World.w.gg) ny = obj.coordinates.Y - obj.boundingBox.height * 0.75 - coordinates.Y + this.boundingBox.halfHeight;
-			rasst2 = nx * nx + ny * ny;
-			if (isNaN(rasst2)) rasst2 = -1;
-			return rasst2;
+		// Calculate the distance to an object or player
+		public function getRasst2(obj:Obj = null):Number {
+			// Default to the player if obj is not provided
+			obj = obj || World.w.gg;
+			
+			// Cache frequently accessed properties
+			var objCoords:Vector2		= obj.coordinates;
+			var objBB:BoundingBox		= obj.boundingBox;
+			var thisCoords:Vector2		= coordinates;
+			var thisBB:BoundingBox		= boundingBox;
+			
+			// Calculate differences in X and Y coordinates
+			var deltaX:Number = objCoords.X - thisCoords.X;
+			var deltaY:Number;
+			
+			// ??
+			if (obj === World.w.gg) {
+				deltaY = objCoords.Y - (objBB.height * 0.75) - thisCoords.Y + thisBB.halfHeight;
+			}
+			else {
+				deltaY = objCoords.Y - objBB.halfHeight - thisCoords.Y + thisBB.halfHeight;
+			}
+			
+			// Compute squared distance
+			var distanceSquared:Number = (deltaX * deltaX) + (deltaY * deltaY);
+			
+			// Return -1 if the result is NaN, else return the squared distance
+			return isNaN(distanceSquared) ? -1 : distanceSquared;
 		}
 		
 		public function save():Object {
@@ -79,8 +97,8 @@ package  fe.entities {
 		}
 		
 		//Interpret a script command
-		public function command(com:String, val:String = null) {
-			if (com == 'show') {
+		public function command(com:String, val:String = null):void {
+			if (com == "show") {
 				World.w.cam.showOn	= true;
 				World.w.cam.showX	= coordinates.X;
 				World.w.cam.showY	= coordinates.Y;
@@ -89,7 +107,7 @@ package  fe.entities {
 		
 		// If the object and the player are in the same location, and the object is radioactive, and the player is within the radioactive radius,
 		// deal radiation damage to the player 
-		public function ggModum() {
+		public function ggModum():void {
 			if (loc == World.w.gg.loc && radioactiv && rasst2 >= 0 && rasst2 < radrad * radrad) {
 				World.w.gg.raddamage((radrad - Math.sqrt(rasst2)) / radrad, radioactiv, radtip);
 			}
@@ -100,26 +118,27 @@ package  fe.entities {
 			if (loc) {
 				loc.remObj(this);
 			}
-			return 'Error obj ' + nazv;
+			
+			return "Error obj " + nazv;
 		}
 		
 		// A “normalize” method that caps the length of vector p to mr. If p is longer than mr, it scales it down to exactly mr
-		public function norma(p:Object, mr:Number) {
+		public function norma(p:Object, mr:Number):void {
 			if (p.x * p.x + p.y * p.y > mr * mr) {
-				var nr = Math.sqrt(p.x * p.x + p.y * p.y);
+				var nr:Number = Math.sqrt(p.x * p.x + p.y * p.y);
 				p.x *= mr / nr;
 				p.y *= mr / nr;
 			}
 		}
 		
 		// Change the object’s position a given location and then re-center the bounding box.
-		public function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1) {
+		public function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
 			coordinates = v;
 			boundingBox.center(v);
 		}
 		
-		//копирование состояния в другой объект
-		public function copy(un:Obj) {
+		// [copying state to another object]
+		public function copy(un:Obj):void {
 			un.coordinates = coordinates;
 			un.boundingBox = boundingBox;
 			un.storona = storona;
@@ -131,19 +150,29 @@ package  fe.entities {
 		}
 		
 		// Triggers when the (player? object?) leaves a location. 
-		public function locout() {
+		public function locout():void {
 
 		}
 		
-		public static function setArmor(m:MovieClip) {
-			var aid:String = '';
+		public static function setArmor(m:MovieClip):void {
+			var aid:String = "";
+			
 			if (World.w) {
-				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat == 0) aid = World.w.pip.armorID;
-				else if (World.w.armorWork != '') aid = World.w.armorWork;
-				else if (World.w.alicorn) aid = 'ali';
-				else aid = Appear.ggArmorId;
+				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat == 0) {
+					aid = World.w.pip.armorID;
+				}
+				else if (World.w.armorWork != "") {
+					aid = World.w.armorWork;
+				}
+				else if (World.w.alicorn) {
+					aid = "ali";
+				}
+				else {
+					aid = Appear.ggArmorId;
+				}
 			}
-			if (aid == '') {
+			
+			if (aid == "") {
 				m.gotoAndStop(1);
 				return;
 			}
@@ -152,47 +181,73 @@ package  fe.entities {
 				m.gotoAndStop(aid);
 			}
 			catch (err) {
-				//trace('ERROR: (00:51) - Could not apply armor: "' + aid + '"!');
+				//trace("ERROR: (00:51) - Could not apply armor: \"" + aid + "\"!");
 				m.gotoAndStop(1);
 			}
 		}
 		
 		// Set the head of the player to something
-		public static function setMorda(m:MovieClip, c:int) {
-			if (World.w && World.w.gg) m.gotoAndStop(World.w.gg.mordaN);
-			else m.gotoAndStop(1);
+		public static function setMorda(m:MovieClip, c:int):void {
+			if (World.w && World.w.gg) {
+				m.gotoAndStop(World.w.gg.mordaN);
+			}
+			else {
+				m.gotoAndStop(1);
+			}
 		}
 		
-		public static function setColor(m:MovieClip, c:int) {
+		public static function setColor(m:MovieClip, c:int):void {
 			if (Appear.transp) {
-				m.visible=false;
+				m.visible = false;
 				return;
 			}
-			if (c == 0) m.transform.colorTransform=Appear.trFur;
-			if (c == 1) m.transform.colorTransform=Appear.trHair;
-			if (c == 2) {
-				if (Appear.visHair1) {
-					m.visible=true;
-					m.transform.colorTransform=Appear.trHair1;
-				}
-				else m.visible=false;
+			
+			switch(c) {
+				case 0:
+					m.transform.colorTransform = Appear.trFur;
+					break;
+				case 1:
+					m.transform.colorTransform = Appear.trHair;
+					break;
+				case 2:
+					if (Appear.visHair1) {
+						m.visible = true;
+						m.transform.colorTransform = Appear.trHair1;
+					}
+					else {
+						m.visible = false;
+					}
+					break;
+				case 3:
+					m.transform.colorTransform = Appear.trEye;
+					break;
+				case 4:
+					m.transform.colorTransform = Appear.trMagic;
+					break;
+				default:
+					trace("Obj.as/setColor() - ERROR: unknown color id: " + c)
+					break;
 			}
-			if (c==3) m.transform.colorTransform=Appear.trEye;
-			if (c==4) m.transform.colorTransform=Appear.trMagic;
 		}
 		
-		public static function setVisible(m:MovieClip) {
+		public static function setVisible(m:MovieClip):void {
 			var h:int;
-			if (World.w && World.w.pip && World.w.pip.active) h=World.w.pip.hideMane;
-			else h = Appear.hideMane;
-			m.visible = (h==0);
+			
+			if (World.w && World.w.pip && World.w.pip.active) {
+				h = World.w.pip.hideMane;
+			}
+			else {
+				h = Appear.hideMane;
+			}
+			
+			m.visible = (h == 0);
 		}
 		
-		public static function setEye(m:MovieClip) {	// SWF Depenency (Called by SWF)
+		public static function setEye(m:MovieClip):void {	// .SWF Depenency
 			m.gotoAndStop(Appear.fEye);
 		}
 
-		public static function setHair(m:MovieClip) {	// SWF Dependency (Called by SWF)
+		public static function setHair(m:MovieClip):void {	// .SWF Dependency
 			m.gotoAndStop(Appear.fHair);
 		}
 	}

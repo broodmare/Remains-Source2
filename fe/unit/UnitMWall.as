@@ -1,5 +1,7 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+	
 	import fe.*;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
@@ -10,24 +12,26 @@ package fe.unit {
 
 		// Constructor
 		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			if (cid==null) {
-				id='mwall';
+			if (cid == null) {
+				id = "mwall";
 			}
 			else id = cid
 			
 			mat = 7;
-			vis=Res.getVis('vis'+id,vismwall);
+			var vClass:Class = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismwall");
+			vis = new vClass() as MovieClip;
 			getXmlParam();
-			vulner[D_NECRO]=begvulner[D_NECRO]=1;
-			nazv='';
-			this.levitPoss=false;
-			showNumbs=false;
-			doop=true;
-			transT=true;
+			vulnerabilities.setResist(Resistances.DAM_DEATH, 1);
+			begvulner.setResist(Resistances.DAM_DEATH, 1);
+			nazv = "";
+			levitPoss = false;
+			showNumbs = false;
+			doop = true;
+			transT = true;
 		}
 
 		public override function expl():void {
-			Emitter.emit('pole', loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
+			Emitter.emit("pole", loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight, {kol:12,rx:this.boundingBox.width, ry:this.boundingBox.height});
 		}
 		
 		public override function addVisual():void {

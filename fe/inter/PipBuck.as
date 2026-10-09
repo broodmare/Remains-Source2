@@ -4,7 +4,7 @@ package fe.inter  {
 	import flash.events.MouseEvent;
 	
 	import fe.*;
-	import fe.unit.Invent;
+	import fe.unit.Inventory;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
 	import fe.unit.UnitPlayer;
@@ -18,145 +18,177 @@ package fe.inter  {
 	
 	public class PipBuck {
 
-		public var light:Boolean=false;		//простая версия
-		public var vis:MovieClip; 		//property to store the page's GUI (MovieClip).
+		public var vis:MovieClip; 				// Reference to the movieclip used for the pipbuck
+		private var language:LanguageManager;	// Reference to the localization class
+		private var itemManager:ItemManager;	// Reference to the item manager class
+
+		public var light:Boolean = false;		// [Simple version]
+		
 		public var vissetkey:MovieClip;
 		public var vishelp:MovieClip;
-		public var active:Boolean=false;
-		public var noAct:Boolean=false;
-		private var noAct2:Boolean=false;
-		public var armorID:String;
-		public var hideMane:int=0;
-		private var page:int=1;
+		
+		public var active:Boolean		= false;
+		public var noAct:Boolean		= false;
+		private var noAct2:Boolean		= false;
+		public var armorID:String;					// ID of the currently worn armor
+		public var hideMane:int			= 0;		// If the current armor hides the player's mane
+		private var page:int			= 1;		// Current interface the PipBuck is using, (Inventory, Trade, Options, Medical, Etc.)
 
 		private var pages:Array;
 		public var currentPage:PipPage;
 		
-		public var inv:Invent;
-		public var gg:UnitPlayer;
-		public var money:int=0;
+		public var helpText:String		= "";
+		public var massText:String		= "";
 		
-		public var helpText:String='';
-		public var massText:String='';
+		public  var showHidden:Boolean	= false;
+		public var reqKey:Boolean		= false;	// [Request to assign a key]
 		
-		public  var showHidden:Boolean=false;
-		public var reqKey:Boolean=false;		//запрос на назначение клавиши
+		// [These variables set depending on which object or NPC called the interface]
+		public var vendor:Vendor;					// [associated merchant]
 		
-		public var arrWeapon:Array;
-		public var arrArmor:Array;
+		private var _displayWeapons:Object	= {};	// Copies of weapons used to show their stats when the player doesn't have them (formerly arrWeapon)
+		private var _displayOwner:Unit;
+		public var npcInter:String		= "";		// [type of interaction of the associated NPC]
+		public var npcId:String			= "";		// [ID of the associated NPC]
+		public var workTip:String		= "work";	// [type of associated crafting station]
+		public var travel:Boolean		= false;	// [you can use the transition between locations]
 		
-		//переменные, устанавливаемые в зависимости от того, какой объект или нпс вызвал интерфейс
-		public var vendor:Vendor;			//связанный торговец
-		public var npcInter:String='';		//тип взаимодействия связанного нпс-а
-		public var npcId:String='';			//id связанного нпс-а
-		public var workTip:String='work';	//тип связанной крафт-станции
-		public var travel:Boolean=false;	//можно использовать переход между локациями
+		public var isSaveConf:Boolean	= false;
 		
-		public var isSaveConf:Boolean=false;
-		
-		public var pipVol:Number=0.25;
+		public var pipVol:Number		= 0.25;
 		public var ritems:Array;
-		private var ritemsNazv:Array = ['hp','head','tors','legs','blood','mana','pet','inv1','inv1','caps']
+		private var ritemsNazv:Array	= ['hp', 'head', 'tors', 'legs', 'blood', 'mana', 'pet', 'inv1', 'inv1', 'caps']
 
 		// Constructor
 		public function PipBuck(vpip:MovieClip) {
 			light = true;
 			vis = vpip;
+			language = LanguageManager.reference;	// Store a reference to the language manager instance
+			itemManager = ItemManager.reference;	// Store a reference to the item manager instance
+
 			vis.visible = false;
+			
 			if (light) {
-				vis.skin.visible=false;
-				vis.fon.visible=false;
+				vis.skin.visible = false;
+				vis.fon.visible  = false;
 			}
 			
 			//кнопки
 			var kolPages:int = 5;
-			for (var i:int = 0; i <= kolPages; i++)
-			{
-				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
-				item.id.visible=false;
-				item.visible=false;
-				item.mouseChildren=false;
+			for (var i:int = 0; i <= kolPages; i++) {
+				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
+				item.id.visible = false;
+				item.visible = false;
+				item.mouseChildren = false;
 			}
 			
 			vis.but0.visible=true;
 			vis.but0.addEventListener(MouseEvent.CLICK,pipClose);
-			vis.but0.text.text=Res.pipText('mainclose');
+			vis.but0.text.text=LanguageManager.reference.localText("pip", 'mainclose');
 			pages = [
 						null,
-						new PipPageStat(this,'stat'),
-						new PipPageInv(this,'inv'),
-						new PipPageInfo(this,'info'),
-						new PipPageVend(this,'vend'),
-						new PipPageOpt(this,'opt'),
-						new PipPageMed(this,'med'),
-						new PipPageWork(this,'work'),
-						new PipPageApp(this,'app'),
-						new PipPageVault(this,'vault')
+						new PipPageStat(this, 'stat'),
+						new PipPageInv(this, 'inv'),
+						new PipPageInfo(this, 'info'),
+						new PipPageVend(this, 'vend'),
+						new PipPageOpt(this, 'opt'),
+						new PipPageMed(this, 'med'),
+						new PipPageWork(this, 'work'),
+						new PipPageApp(this, 'app'),
+						new PipPageVault(this, 'vault')
 					];
 			
 			page = kolPages;
 			currentPage = pages[page];
-			vishelp=new visPipHelp();
-			vishelp.x=168;
-			vishelp.y=138;
+			
+			vishelp = new visPipHelp();
+			vishelp.visible = false;
+			vishelp.x = 168;
+			vishelp.y = 138;
 			vis.addChild(vishelp);
-			vissetkey=new visSetKey();
-			vissetkey.visible=false;
-			vissetkey.x=600;
-			vissetkey.y=400;
-			vis.addChild(vissetkey);
-			vishelp.visible=false;
 			PipPage.setStyle(vishelp.txt);
+
+			vissetkey = new visSetKey();
+			vissetkey.visible = false;
+			vissetkey.x = 600;
+			vissetkey.y = 400;
+			vis.addChild(vissetkey);
+			PipPage.setStyle(vis.toptext.txt);
+			
 			vis.butHelp.addEventListener(MouseEvent.MOUSE_OVER,helpShow);
 			vis.butHelp.addEventListener(MouseEvent.MOUSE_OUT,helpUnshow);
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OVER,massShow);
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OUT,massUnshow);
-			PipPage.setStyle(vis.toptext.txt);
-
-			vis.pr.visible=false;
-			ritems=[];
+			
+			vis.pr.visible = false;
+			
+			ritems = [];
+			
 			var kolRItems:int = 15;
+			
 			for (var j:int = 0; j < kolRItems; j++) {
-				item=new visPipRItem();
-				ritems[j]=item;
+				item = new visPipRItem();
+				ritems[j] = item;
 				vis.pr.addChild(item);
-				item.x=5;
-				item.y=40+j*30;
+				item.x = 5;
+				item.y = 40 + j * 30;
 				PipPage.setStyle(item.txt);
-				item.trol.gotoAndStop(j+1);
-				item.nazv.visible=false;
+				item.trol.gotoAndStop(j + 1);
+				item.nazv.visible = false;
 			}
 		}
 		
 		public function updateLang():void {
-			vis.but0.text.text = Res.pipText('mainclose');
-			for each(var p in pages) if (p is PipPage) p.updateLang();
+			vis.but0.text.text = LanguageManager.reference.localText("pip", 'mainclose');
+			
+			for each(var p in pages) if (p is PipPage) {
+				p.updateLang();
+			}
+			
 			currentPage.setStatus();
 		}
 		
 		public function toNormalMode():void {
-			light=false;
-			vis.skin.visible=true;
-			vis.fon.visible=true;
+			light = false;
+			vis.skin.visible = true;
+			vis.fon.visible = true;
+			
 			var kolPages:int = 5;
 			for (var i:int = 1; i <= kolPages; i++) {
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK,pageClick);
-				item.text.text=Res.pipText('main'+i);
+				item.text.text=LanguageManager.reference.localText("pip", 'main'+i);
 				item.id.text=i;
 				item.visible=true;
 			}
-			vis.but0.text.text=Res.pipText('main0');
-			page=1;
-			allItems();
+			
+			vis.but0.text.text = language.data.pip.main0.string;
+			page = 1;
 		}
 
 		public function pageClick(event:MouseEvent):void {
-			if (World.w.ctr.setkeyOn) return;
-			if (World.w.gg && World.w.gg.pipOff) return;
-			page=int(event.currentTarget.id.text);
+			if (World.w.ctr.setkeyOn) {
+				return;
+			}
+			
+			if (World.w.gg && World.w.gg.pipOff) {
+				return;
+			}
+			
+			var clickedPage:int = int(event.currentTarget.id.text);
+    
+			// Check if the clicked page is the same as the current page, if so, don't run initialization again
+			if (clickedPage == page) {
+				trace("PipBuck.as/pageClick() - Ignoring request to load the same page")
+				snd(2); // Play the sound anyway
+				return;
+			}
+			
+			page = clickedPage;
+			
 			setPage();
 			setButtons();
+			
 			snd(2);
 		}
 
@@ -192,8 +224,8 @@ package fe.inter  {
 		//0 - сменить вкл на выкл
 		//11 - принудительно включить
 		//Показать/скрыть
-		public function onoff(turn:int=0, p2:int=0):void {
-			reqKey=false;
+		public function onoff(turn:int = 0, p2:int = 0):void {
+			reqKey = false;
 			if (active && turn==11) {
 				return;
 			}
@@ -212,63 +244,97 @@ package fe.inter  {
 				active=false;
 			}
 
-			if (!light && World.w.loc && World.w.loc.base) travel=true;
-			
-			vis.but4.visible=false;
-			
-			if (turn==4 || (turn>=6 && turn<=9)) {
-				vis.but4.id.text=turn;
-				vis.but4.text.text=Res.pipText('main'+turn);
-				vis.but4.visible=true;
+			if (!light && World.w.loc && World.w.loc.base) {
+				travel = true;
 			}
 			
-			vis.visible=active;
+			vis.but4.visible = false;
+			
+			if (turn == 4 || (turn >= 6 && turn <= 9)) {
+				vis.but4.id.text = turn;
+				vis.but4.text.text = LanguageManager.reference.localText("pip", 'main' + turn);
+				vis.but4.visible = true;
+			}
+			
+			// Show or hide the pipbuck
+			vis.visible = active;
 			
 			if (active) {
+				// Render a new cursor (An arrow for the pipbuck)
 				World.w.cur();
-				showHidden=false;
-				if (vendor) vendor.reset();
+				
+				showHidden = false;	// Something for pipPageInv
+				
+				if (vendor) {
+					vendor.reset();
+				}
+				
+				// Cleat all queued actions?
 				World.w.ctr.clearAll();
-				if (World.w.stand) World.w.stand.onoff(-1);
+				
+				if (World.w.stand) {
+					World.w.stand.onoff(-1);
+				}
+				
 				setPage(p2);
+				
 				if (!light) {
 					World.w.gui.offCelObj();
-					if (World.w.gui.t_mess>30) World.w.gui.t_mess=30;
+					if (World.w.gui.t_mess > 30) World.w.gui.t_mess = 30;
 				}
+				
 				if (World.w.gui) {
-					World.w.gui.dial.alpha=World.w.gui.inform.alpha=0;
+					World.w.gui.dial.alpha = 0;
+					World.w.gui.inform.alpha = 0;
 				}
-				if (World.w.gg && World.w.gg.rat>0 || World.w.catPause) {
-					noAct2=noAct;
-					noAct=true;
+				
+				if (World.w.gg && World.w.gg.rat || World.w.catPause) {
+					noAct2 = noAct;
+					noAct = true;
 				}
+				
 				World.w.gc();	// Garbage collection if required
 			}
 			else {
 				if (isSaveConf) {
 					World.w.saveConfig();
-					isSaveConf=false;
+					isSaveConf = false;
 				}
-				vendor=null;
-				npcId='';
+				
+				vendor = null;
+				npcId = "";
 				World.w.ctr.clearAll();
 				World.w.app.detach();
+				
 				if (World.w.gui) {
-					World.w.gui.dial.alpha=World.w.gui.inform.alpha=1;
+					World.w.gui.dial.alpha = 1;
+					World.w.gui.inform.alpha = 1;
 				}
-				if (World.w.gg && World.w.gg.rat>0) {
-					noAct=noAct2;
+				
+				if (World.w.gg && World.w.gg.rat) {
+					noAct = noAct2;
 				}
 			}
+			
 			if (!light) {
 				World.w.gui.setEffects();
-				vis.pr.visible=true;
+				vis.pr.visible = true;
 			}
+			
 			setButtons();
-			if (!light && World.w.loc && !World.w.loc.base) travel=false;
-			if (World.w && World.w.gg && World.w.gg.pipOff) supply(-1);
-			else supply(1);
-			World.w.ctr.keyPressed=false;
+			
+			if (!light && World.w.loc && !World.w.loc.base) {
+				travel = false;
+			}
+			
+			if (World.w && World.w.gg && World.w.gg.pipOff) {
+				supply(-1);
+			}
+			else {
+				supply(1);
+			}
+			
+			World.w.ctr.keyPressed = false;
 		}
 		
 		//коррекция размеров
@@ -303,7 +369,7 @@ package fe.inter  {
 				currentPage.vis.visible=false;
 				vis.toptext.visible=false;
 				vis.pipError.visible=true;
-				vis.pipError.nazv.text=Res.pipText('piperror');
+				vis.pipError.nazv.text=LanguageManager.reference.localText("pip", 'piperror');
 				var s:String=Res.txt('p','piperror',1);
 				vis.pipError.info.text=s.replace(/[\b\r\t]/g,'');
 			}
@@ -312,12 +378,9 @@ package fe.inter  {
 			}
 		}
 		
-		//режим показа
-		public function setPage(p2:int=0):void {
+		// [Display mode]
+		public function setPage(subcategory:int = 0):void {
 			if (!light) {
-				gg = World.w.gg;
-				inv = World.w.invent;
-				money = inv.money.kol;
 				if (vendor) {
 					vendor.multPrice = World.w.pers.barterMult;
 				}
@@ -332,7 +395,7 @@ package fe.inter  {
 			currentPage = pages[page];
 			
 			if (currentPage is PipPage) {
-				if (p2 > 0) currentPage.page2 = p2;
+				if (subcategory > 0) currentPage.page2 = subcategory;
 				currentPage.setStatus();
 			}
 			
@@ -354,43 +417,35 @@ package fe.inter  {
 		}
 		
 		public function helpShow(event:MouseEvent):void {
-			vishelp.txt.htmlText=helpText;
-			vishelp.visible=true;
+			vishelp.txt.htmlText = helpText;
+			vishelp.visible = true;
 		}
 
 		public function helpUnshow(event:MouseEvent):void {
-			vishelp.visible=false;
+			vishelp.visible = false;
 		}
 
 		public function massShow(event:MouseEvent):void {
-			vishelp.txt.htmlText=massText;
-			vishelp.visible=true;
+			vishelp.txt.htmlText = massText;
+			vishelp.visible = true;
 		}
 
 		public function massUnshow(event:MouseEvent):void {
-			vishelp.visible=false;
+			vishelp.visible = false;
 		}
 		
-		public function allItems():void {
-			arrWeapon = [];
-			arrArmor  = [];
-			var owner:Unit = new Unit();
-			var w:Weapon;
-			var a:Armor;
-
-			for each (var weap:XML in Weapon.cachedWeaponList.(@tip > 0)) {
-				w = Weapon.create(owner, weap.@id, 0);
-				arrWeapon[weap.@id] = w;
-				if (weap.char.length() > 1) {
-					w = Weapon.create(owner, weap.@id, 1);
-					arrWeapon[weap.@id+'^'+1]=w;
-				}
+		// A copy of a weapon for showing its stats, eg. for weapons sold by vendors
+		public function displayWeapon(id:String):Weapon {
+			if (_displayOwner != World.w.gg) {
+				_displayOwner = World.w.gg;
+				_displayWeapons = {};
 			}
-
-			for each (var armor:XML in Armor.cachedArmorList) {
-				a = new Armor(armor.@id);
-				arrArmor[armor.@id] = a;
+			
+			if (!(id in _displayWeapons)) {
+				_displayWeapons[id] = WeaponManager.reference.cloneWeapon(id, World.w.gg);
 			}
+			
+			return _displayWeapons[id];
 		}
 		
 		public function setRPanel():void {
@@ -398,14 +453,15 @@ package fe.inter  {
 				return;
 			}
 
-			var gg:UnitPlayer=World.w.gg;
-			var pers:Pers=World.w.pers;
-			ritem1(0,gg.hp,gg.maxhp);
-			ritem1(1,pers.headHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(2,pers.torsHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(3,pers.legsHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(4,pers.bloodHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(5,pers.manaHP,pers.inMaxMana,!World.w.game.triggers['nomed']);
+			var gg:UnitPlayer = World.w.gg;
+			var pers:Pers = World.w.pers;
+			
+			ritem1(0, gg.hp, gg.maxhp);
+			ritem1(1, pers.headHP, pers.inMaxHP, !World.w.game.triggers['nomed']);
+			ritem1(2, pers.torsHP, pers.inMaxHP, !World.w.game.triggers['nomed']);
+			ritem1(3, pers.legsHP, pers.inMaxHP, !World.w.game.triggers['nomed']);
+			ritem1(4, pers.bloodHP, pers.inMaxHP, !World.w.game.triggers['nomed']);
+			ritem1(5, pers.manaHP, pers.inMaxMana, !World.w.game.triggers['nomed']);
 			
 			if (gg.pet) {
 				ritem1(6, gg.pet.hp, gg.pet.maxhp);
@@ -414,7 +470,7 @@ package fe.inter  {
 				ritem1(6, 0, 0, false);
 			}
 
-			if (gg.currentWeapon && gg.currentWeapon.tip <= 3) {
+			if (gg.currentWeapon && gg.currentWeapon.tip != Weapon.TYPE_EXPLOSIVES) {
 				ritem2(7, gg.currentWeapon.hp, gg.currentWeapon.maxhp);
 			}
 			else {
@@ -428,67 +484,68 @@ package fe.inter  {
 				ritem1(8, 0, 0, false);
 			}
 			
-			ritems[9].txt.htmlText="<span class = 'yellow'>"+gg.invent.money.kol+"</span>"
-			ritem3(10,inv.massW,pers.maxmW,World.w.hardInv);
-			ritem3(11,inv.massM,pers.maxmM,World.w.hardInv);
-			ritem3(12,inv.mass[1],pers.maxm1,World.w.hardInv);
-			ritem3(13,inv.mass[2],pers.maxm2,World.w.hardInv);
-			ritem3(14,inv.mass[3],pers.maxm3,World.w.hardInv);
+			ritems[9].txt.htmlText = "<span class='yellow'>" + String(gg.invent.getQuantity("money")) + "</span>";
+			
+			ritem3(10, gg.invent.massW,		pers.maxmW, World.w.hardInv);
+			ritem3(11, gg.invent.massM,		pers.maxmM, World.w.hardInv);
+			ritem3(12, gg.invent.mass[1],	pers.maxm1, World.w.hardInv);
+			ritem3(13, gg.invent.mass[2],	pers.maxm2, World.w.hardInv);
+			ritem3(14, gg.invent.mass[3],	pers.maxm3, World.w.hardInv);
 		}
 		
 		private function ritem1(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
-			ritems[n].visible=usl;
+			ritems[n].visible = usl;
+
 			if (usl) {
-				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp);
+				ritems[n].txt.htmlText="<span class = '" + med(hp, maxhp) + "'>" + Math.round(hp) + "</span>" + ' / ' + Math.round(maxhp);
 			}
 			else {
-				ritems[n].txt.htmlText='';
+				ritems[n].txt.htmlText = "";
 			}
 		}
 
 		private function ritem2(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
-			ritems[n].visible=usl;
+			ritems[n].visible = usl;
+			
 			if (usl) {
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp/maxhp*100)+"%</span>";
 			}
 			else {
-				ritems[n].txt.htmlText='';
+				ritems[n].txt.htmlText = "";
 			}
 		}
 
 		private function ritem3(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {
 			ritems[n].visible = usl;
 
-			if (usl) ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
-			else ritems[n].txt.htmlText='';
+			if (usl) {
+				ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
+			}
+			else {
+				ritems[n].txt.htmlText = "";
+			}
 		}
 		
 		private function med(hp:Number, maxhp:Number):String {
 			if (hp < maxhp * 0.25) {
-				return 'red';
+				return "red";
 			}
 			else if (hp < maxhp * 0.5) {
-				return 'orange';
+				return "orange";
 			}
 			
-			return '';
+			return "";
 		}
 		
 		public function setArmor(id:String):void {
-			armorID = id;
-			var node:XML = Armor.getArmorInfo(id);
-			
-			// Hacky failsafe to avoid crashing if no information is found.
-			if (node == "" || node == null) {
-				hideMane = 0;
-				return;
-			}
-			
-			hideMane = node.@hide;
+			armorID	 = id;
+			hideMane = ArmorManager.reference.armorData(id).hideMane;
 		}
 		
 		public function step():void {
-			if (currentPage) currentPage.step();
+			if (currentPage) {
+				currentPage.step();
+			}
 		}
 	}	
 }

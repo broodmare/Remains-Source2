@@ -18,7 +18,7 @@
 		<s act="fav" val="mont" n="2"/>
 	</scr>
 
-	<!-- приручить феникса -->
+	<!-- Tame the phoenix -->
 	<scr id="tamePhoenix">
 		<s act="dialog" val="dialTamePhoenix"/>
 		<s targ="this" act="tame"/>
@@ -27,7 +27,7 @@
 		<s act="dialog" val="dialTakeWhistle"/>
 	</scr>
 	
-	<!-- выкурить косяк -->
+	<!-- Smoke a joint -->
 	<scr id="smokeRollup">
 		<s act="control off"/>
 		<s act="dial" val="dialSmoke" n="0"/>
@@ -55,7 +55,7 @@
 		<s act="xp" val="500"/>
 	</scr>
 	
-	<!-- починка генератора -->
+	<!-- Generator repair -->
 	<scr id="fixGenerator">
 		<s act="control off"/>
 		<s act="dblack" val="2" t="3"/>
@@ -65,7 +65,7 @@
 		<s act="black" val="0"/>
 	</scr>
 	
-	<!-- [The very beginning of the game] -->
+	<!-- Starting a new game -->
 	<scr id="beginBeg">
 		<s act="black" val="1"/>
 		<s act="takeArmor" val="pip"/>
@@ -84,7 +84,7 @@
 		<s act="mess" val="trWalk"/>
 	</scr>
 	
-	<!-- контакт с терминалом мтн -->
+	<!-- Contact with mtn terminal -->
 	<scr id="beginMtn">
 		<s act="control off"/>
 		<s act="music" val="music_strange"/>
@@ -103,7 +103,7 @@
 		<s act="control on" t="1"/>
 	</scr>
 	
-	<!-- получение перка самолевитации -->
+	<!-- Getting the self-levitation perk -->
 	<scr id="beginLevit">
 		<s act="control off"/>
 		<s act="dial" val="begDialLevit" n="0" t="2"/>
@@ -141,7 +141,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- встреча с Каламити -->
+	<!-- Meeting with Calamity -->
 	<scr id="surfStory">
 		<s act="control off"/>
 		<s act="dial" val="dialCalam1" n="0"/>
@@ -178,7 +178,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- на переходе между 1 и 2 уровнями завода -->
+	<!-- [at the transition between levels 1 and 2 of the plant] -->
 	<scr id="plantStory1">
 		<s act="stage" val="storyMain" n="2"/>
 		<s act="showstage" val="storyMain" n="3"/>
@@ -186,7 +186,7 @@
 		<s act="dialog" val="plantNextLevel"/>
 	</scr>
 	
-	<!-- вход в отдел особых исседований -->
+	<!-- [entrance to the special research department] -->
 	<scr id="plantStory2">
 		<s act="dialog" val="nioDial1"/>
 		<s act="stage" val="storyMain" n="4"/>
@@ -199,14 +199,14 @@
 		<s act="off" targ="this"/>
 	</scr>
 	
-	<!-- вход в стойло -->
+	<!-- Entrance to the stable -->
 	<scr id="stableStory">
 		<s act="stage" val="storyStable" n="2"/>
 		<s act="gotoland" val="random_stable"/>
 		<s act="passed"/>
 	</scr>
 	
-	<!-- явиться к гаражам -->
+	<!-- Show up at the garages -->
 	<scr id="garages">
 		<s act="stage" val="storyMeet" n="1"/>
 		<s act="off" targ="this"/>
@@ -222,14 +222,14 @@
 		<s act="passed"/>
 	</scr>
 	
-	<!-- осмотр с крыши высотки -->
+	<!-- [Inspection from the roof of a high-rise building] -->
 	<scr id="maneStory0">
 		<s act="dialog" val="maneNextLevel"/>
 		<s act="stage" val="storyMane" n="2"/>
 		<s act="showstage" val="storyMane" n="3"/>
 	</scr>
 	
-	<!-- встреча с аликорнами -->
+	<!-- [Meeting with alicorns] -->
 	<scr id="maneStory1">
 		<s act="control off"/>
 		<s act="music" val="pre_1"/>
@@ -241,7 +241,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- встреча с боссом аликорнов -->
+	<!-- [Meeting with the alicorn boss] -->
 	<scr id="maneStory2">
 		<s act="control off"/>
 		<s act="music" val="pre_1"/>
@@ -252,7 +252,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- встреча с Зебрами -->
+	<!-- [Meeting with Zebras] -->
 	<scr id="zebraWay">
 		<s act="control off"/>
 		<s act="dialog" val="dialZebra1"/>
@@ -261,7 +261,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- встреча с Вельвет -->
+	<!-- [Meeting with Velvet] -->
 	<scr id="covertStory">
 		<s act="control off"/>
 		<s act="music" val="music_enc"/>
@@ -273,7 +273,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- квест на лечение -->
+	<!-- [Quest for treatment] -->
 	<scr id="coverPatient">
 		<s act="control off"/>
 		<s act="dialog" val="dialPatient1"/>
@@ -282,13 +282,13 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- кантерлот, вход -->
+	<!-- [Canterlot, entrance] -->
 	<scr id="canterStory1">
 		<s act="stage" val="storyCanter" n="2"/>
 		<s act="dialog" val="dialCanter3"/>
 	</scr>
 	
-	<!-- кантерлот, встреча с СР -->
+	<!-- [Canterlot, meeting with Steel Rangers] -->
 	<scr id="canterRangers">
 		<s act="control off"/>
 		<s act="dialog" val="dialCanter5"/>
@@ -299,13 +299,13 @@
 		<s act="off" targ="this"/>
 	</scr>
 	
-	<!-- мин ст, вход -->
+	<!-- [Main st., entrance] -->
 	<scr id="canterStory2">
 		<s act="stage" val="storyCanter" n="3"/>
 		<s act="off" targ="this"/>
 	</scr>
 	
-	<!-- мин ст, встреча с боссом -->
+	<!-- [Main st., meeting with the boss] -->
 	<scr id="canterStory3">
 		<s act="control off"/>
 		<s act="music" val="pre_1"/>
@@ -318,7 +318,7 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- база СР, диалог с охраной -->
+	<!-- [Steel Rangers base, dialogue with security] -->
 	<scr id="rangerStory1">
 		<s act="control off"/>
 		<s act="music" val="pre_1" t="1"/>
@@ -330,20 +330,20 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- база СР, вход -->
+	<!-- [Steel Rangers base, input] -->
 	<scr id="rangerStory2">
 		<s act="trigger" val="mbase_visited" n="1"/>
 		<s act="stage" val="storyRanger" n="2"/>
 		<s act="off" targ="this"/>
 	</scr>
 	
-	<!-- база СР, встреча с Колдсайтом -->
+	<!-- [Steel Rangers base, meeting with Coldsight] -->
 	<scr id="rangerStory3">
 		<s act="music" val="pre_1"/>
 		<s act="dialog" val="dialRanger4"/>
 	</scr>
 	
-	<!-- база СР, убийство Колдсайта -->
+	<!-- [Steel Rangers base, Coldsight assassination] -->
 	<scr id="rangerStoryOk">
 		<s act="stage" val="storyRanger" n="3"/>
 		<s act="showstage" val="storyRanger" n="4"/>
@@ -352,7 +352,7 @@
 		<s act="passed"/>
 	</scr>
 	
-	<!-- исследовать орудийный цех -->
+	<!-- [Explore the gun shop] -->
 	<scr id="helpCampOk">
 		<s act="dialog" val="dialHelpCamp3"/>
 		<s act="stage" val="storyHelpCamp" n="2"/>
@@ -360,7 +360,7 @@
 		<s act="passed"/>
 	</scr>
 	
-	<!-- совет общины -->
+	<!-- [Community council] -->
 	<scr id="sovietStory">
 		<s act="control off"/>
 		<s act="dblack" val="-3" t="2"/>
@@ -377,7 +377,7 @@
 		<s act="black" val="0"/>
 	</scr>
 	
-	<!-- войти в орудийный цех -->
+	<!-- [Enter the gun shop] -->
 	<scr id="workshopIn">
 		<s act="off" targ="this"/>
 		<s act="dialog" val="dialHelpCamp1"/>
@@ -385,18 +385,18 @@
 		<s act="dialog" val="dialHelpCamp2"/>
 	</scr>
 	
-	<!-- войти в штаб -->
+	<!-- [Enter the headquarters] -->
 	<scr id="hqlIn">
 		<s act="stage" val="storyHelpCovert" n="4"/>
 		<s act="off" targ="this"/>
 	</scr>
 	
-	<!-- убить центуриона -->
+	<!-- [Kill the centurion] -->
 	<scr id="zebraKill">
 		<s act="stage" val="storyHelpCovert" n="5"/>
 	</scr>
 	
-	<!-- пост анклава, встреча с охраной -->
+	<!-- [Enclave post, meeting with security] -->
 	<scr id="postStory1">
 		<s act="control off"/>
 		<s act="music" val="pre_1" t="1"/>
@@ -408,7 +408,7 @@
 		<s act="alarm"/>
 	</scr>
 	
-	<!-- пост анклава, вход на базу -->
+	<!-- [Enclave post, entrance to the base] -->
 	<scr id="postStory3">
 		<s act="dialog" val="dialEncl2"/>
 		<s act="stage" val="storyEncl" n="1"/>
@@ -419,7 +419,7 @@
 		<s act="gotoland" val="random_encl"/>
 	</scr>
 	
-	<!-- командный центр, вход -->
+	<!-- [Command center entrance] -->
 	<scr id="commStory0">
 		<s act="dialog" val="dialEncl3"/>
 		<s act="stage" val="storyEncl" n="2"/>
@@ -432,7 +432,7 @@
 		<s targ="this" act="off"/>
 	</scr>
 	
-	<!-- командный центр, разговор с полковником -->
+	<!-- [Command Center, conversation with The Colonel] -->
 	<scr id="commStory2">
 		<s val="colonel_show" act="trigger" n="2"/>
 		<s act="dialog" val="dialEncl4"/>
@@ -446,13 +446,13 @@
 		<s targ="this" act="off"/>
 	</scr>
 	
-	<!-- командный центр, убить полковника -->
+	<!-- [Command center, kill The Colonel] -->
 	<scr id="commStory3">
 		<s val="colonel_show" act="trigger" n="3"/>
 		<s act="dialog" val="dialEncl5"/>
 	</scr>
 	
-	<!-- стойло пи, первое посещение -->
+	<!-- [Stable Pi, first visit] -->
 	<scr id="stablePi0">
 		<s act="control off"/>
 		<s act="turn" val="1"/>
@@ -474,13 +474,13 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- стойло пи, комната ЛП -->
+	<!-- [Stable Pi, room LP] -->
 	<scr id="stablePi1">
 		<s act="music" val="music_enc"/>
 		<s act="dialog" val="roomLP"/>
 	</scr>
 	
-	<!-- форт Рокс, вход -->
+	<!-- [Fort Rocks, entrance] -->
 	<scr id="fortRocks1">
 		<s act="stage" val="storyStorm" n="3"/>
 		<s act="trigger" val="fin" n="1"/>
@@ -488,7 +488,7 @@
 		<s targ="this" act="off"/>
 	</scr>
 	
-	<!-- форт Рокс, отключение генераторов -->
+	<!-- [Fort Rocks, generators out] -->
 	<scr id="fortRocks2">
 		<s act="control off"/>
 		<s act="dial" val="dialStorm3" n="0"/>
@@ -510,13 +510,13 @@
 		<s act="control on"/>
 	</scr>
 	
-	<!-- атакованное стойло пи, вход -->
+	<!-- [Attacked Stable Pi, entrance] -->
 	<scr id="stablePi2">
 		<s act="dialog" val="dialFin1"/>
 		<s act="open" targ="piF2"/>
 	</scr>
 	
-	<!-- атакованное стойло пи, разговор с наставником -->
+	<!-- [Attacked Stable Pi, talk to mentor] -->
 	<scr id="stablePi3">
 		<s act="dialog" val="dialFin3"/>
 		<s act="stage" val="storyFbattle" n="1"/>
@@ -525,7 +525,7 @@
 		<s targ="this" act="off"/>
 	</scr>
 	
-	<!-- атакованное стойло пи, получение брони аликорна -->
+	<!-- [Attacked Stable Pi, getting alicorn armor] -->
 	<scr id="stablePi4">
 		<s act="dialog" val="dialFin4"/>
 		<s act="control off"/>
@@ -546,7 +546,7 @@
 		<s act="dialog" val="alicornArmor"/>
 	</scr>
 	
-	<!-- тандерхед -->
+	<!-- [Thunderhead] -->
 	<scr id="megabossDie">
 		<s act="control off" t="1"/>
 		<s act="dialog" val="dialFB5"/>
@@ -593,7 +593,7 @@
 		<s act="gotoland" val="grave" n="2"/>
 	</scr>
 	
-	<!-- кладбище -->
+	<!-- [Cemetery] -->
 	<scr id="vse">
 		<s act="black" val="1"/>
 		<s act="black" val="1"/>

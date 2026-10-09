@@ -1,12 +1,16 @@
 package fe.unit {
 
-	public class UnitRobobrain extends UnitAIRobot {
+	import flash.display.MovieClip;
 
+	import fe.SymbolFactory;
+
+	public class UnitRobobrain extends UnitAIRobot {
+		
 		// Constructor
 		public function UnitRobobrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='robobrain';
-			vis=new visualRobobrain();
+			vis = SymbolFactory.createInstance("visualRobobrain") as MovieClip;
 			vis.stop();
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
@@ -40,7 +44,7 @@ package fe.unit {
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0):void {
+		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
 			weaponY = coordinates.Y-40;
 		}

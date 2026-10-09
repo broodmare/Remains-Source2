@@ -1,0 +1,466 @@
+{
+	
+	{
+		"quest_id": "test", 
+		"main": true,
+		"sp": 3,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2"
+			},
+			{
+				"id": "3"
+			}
+		]
+	},
+	{
+		"quest_id": "toExit", 
+		"main": true,
+		"xp": 5000,
+		"stages": [
+			{
+				"id": "1"
+			}
+		]
+	},
+	{
+		"quest_id": "storyContact", 
+		"main": true,
+		"xp": 1000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2"
+			}
+		]
+	},
+	{
+		"quest_id": "storyFind", 
+		"main": true,
+		"xp": 10000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4"
+			}
+		]
+	},
+	{
+		"quest_id": "storyMain", 
+		"main": true,
+		"xp": 10000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+			},
+			{
+				"id": "3",
+				"invis": true
+				"collect": [
+					"key_sewer": 1
+				]
+			},
+			{
+				"id": "4"
+				"invis": true
+			},
+			{
+				"id": "5",
+			}
+		]
+	},
+	{
+		"quest_id": "storyStable", 
+		"main": true,
+		"xp": 25000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+			},
+			{
+				"id": "3",
+			},
+			{
+				"id": "4"
+			}
+		]
+	},
+	{
+		"quest_id": "storyMeet", 
+		"main": true,
+		"xp": 25000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+			},
+			{
+				"id": "3",
+				"invis": true
+			}
+		]
+	},
+	{
+		"quest_id": "storyMane", 
+		"main": true,
+		"xp": 50000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4"
+				"invis": true
+			},
+			{
+				"id": "5"
+			}
+		]
+	},
+	{
+		"quest_id": "storyCanter", 
+		"main": true,
+		"xp": 50000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4"
+			}
+		]
+	},
+	{
+		"quest_id": "storyHome", 
+		"main": true,
+		"xp": 100000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4",
+				"invis": true
+			},
+			{
+				"id": "5",
+				"invis": true
+			},
+			{
+				"id": "6",
+				"invis": true
+			}
+		]
+	},
+	{
+		"quest_id": "storyRanger", 
+		"main": true,
+		"xp": 100000,
+		"next": [
+			"storyHelpCamp", "storyHelpCovert"
+		]
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "8",
+				"invis": true,
+				"nn": true
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4",
+				"invis": true
+			},
+			{
+				"id": "5",
+				"invis": true
+			},
+			{
+				"id": "6",
+				"invis": true
+			},
+			{
+				"id": "7",
+				"invis": true
+			}
+		]
+	},
+	{
+		"quest_id": "storyHelpCamp", 
+		"main": true,
+		"xp": 50000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			}
+		]
+		"reward": [
+			"money": 10000
+		]
+	},
+	{
+		"quest_id": "storyHelpCovert", 
+		"main": true,
+		"xp": 50000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4",
+				"invis": true
+			},
+			{
+				"id": "5",
+				"invis": true
+			},
+			{
+				"id": "6",
+				"invis": true
+				"collect": [
+					"secret_doc": 1
+				]
+				"del": [
+					"secret_doc": 1
+				]
+			},
+			{
+				"id": "7",
+				"invis": true,
+				"result": true
+			},
+			{
+				"id": "8",
+				"invis": true
+			}
+		]
+		"reward": [
+			"potHP": 1,
+			"potMP": 1
+		]
+	},
+	{
+		"quest_id": "storyEncl", 
+		"main": true,
+		"xp": 100000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			}
+		]
+	},
+	{
+		"quest_id": "storyStorm", 
+		"main": true,
+		"xp": 100000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4",
+				"invis": true
+			},
+			{
+				"id": "5",
+				"invis": true
+			}
+		]
+	},
+	{
+		"quest_id": "storyFbattle", 
+		"main": true,
+		"xp": 100000,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4",
+				"invis": true
+			},
+			{
+				"id": "5",
+				"invis": true
+			}
+		]
+	},
+	{
+		"quest_id": "collectHS", 
+		"main": false,
+		"xp": 1000,
+		"stages": [
+			{
+				"id": "1",
+				"collect": [
+					"col1": 20
+				],
+				"del": [
+					"col1": 20
+				]
+			}
+		]
+	},
+	{
+		"quest_id": "tamePhoenix", 
+		"main": false,
+		"xp": 10000,
+		"stages": [
+			{
+				"id": "1",
+				"collect": [
+					"tame_ph": 5
+				]
+			},
+			{
+				"id": "2"
+			}
+		]
+	},
+	{
+		"quest_id": "freeCaptive", 
+		"main": false,
+		"xp": 10000,
+		"sp": 1,
+		"rep": 5,
+		"stages": [
+			{
+				"id": "1",
+				"collect": [
+					"capt_raiders": 12
+				]
+			}
+		]
+	},
+	{
+		"quest_id": "patientHeal", 
+		"main": false,
+		"xp": 20000,
+		"rep": 3,
+		"stages": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2",
+				"invis": true
+			},
+			{
+				"id": "3",
+				"invis": true
+			},
+			{
+				"id": "4",
+				"invis": true
+			},
+			{
+				"id": "5",
+				"invis": true
+			}
+		]
+	},
+	
+	
+	
+	
+	
+	
+	
+	
+}

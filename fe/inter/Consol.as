@@ -6,7 +6,10 @@ package fe.inter {
 	import flash.ui.Keyboard;
 
 	import fe.*;
+	import fe.serv.Item;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
+
 	
 	// Debug console class. 
 	// The debug console contains three textboxes. "help", "list1", and "list2" in order from left to right.
@@ -26,7 +29,9 @@ package fe.inter {
 			vis = vcons;
 			ist = [];
 
-			if (prev != null) ist.push(prev);
+			if (prev != null) {
+				ist.push(prev);
+			}
 
 			vis.input.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDownEvent);
 			vis.butEnter.addEventListener(MouseEvent.CLICK, onButEnter);
@@ -52,7 +57,9 @@ package fe.inter {
 
 			trace("Consol.as/setConsoleVisiblility() - Set console visiblity to " + setState.toString());
 
-			if (consoleIsVisible) world.swfStage.focus = vis.input;
+			if (consoleIsVisible) {
+				world.swfStage.focus = vis.input;
+			}
 		}
 
 		public function printLine(text:String):void {
@@ -75,8 +82,7 @@ package fe.inter {
 			}
 		}
 
-		private function onKeyboardDownEvent(event:KeyboardEvent):void
-		{
+		private function onKeyboardDownEvent(event:KeyboardEvent):void {
 			if (event.keyCode == Keyboard.ENTER) {
 				analis();
 			}
@@ -106,6 +112,21 @@ package fe.inter {
 		private function onButClose(event:MouseEvent):void {
 			setConsoleVisiblility(false);
 			event.stopPropagation();
+		}
+
+		// Lists the ids and names of a localization category, sorted by id. Eg. "mont 	Crowbar"
+		private function listNames(entries:Object):String {
+			var ids:Array = [];
+			for (var id:String in entries) {
+				ids.push(id);
+			}
+			ids.sort();
+
+			var s:String = "";
+			for each (id in ids) {
+				s += id + " \t" + entries[id].string + "\n";
+			}
+			return s;
 		}
 
 		private function setTextBoxVisibility(setState:Boolean):void {
@@ -138,8 +159,11 @@ package fe.inter {
 					world.gg.vis.visible=true;
 					world.vblack.alpha=0;
 					world.vblack.visible=false;
-					world.t_exit=world.t_die=0;
-					world.vgui.visible=world.vfon.visible=world.visual.visible=true;
+					world.t_exit=0;
+					world.t_die=0;
+					world.vgui.visible=true;
+					world.vfon.visible=true;
+					world.visual.visible=true;
 					Snd.setTempMute(false);
 					world.pip.noAct=false;
 					break;
@@ -150,7 +174,7 @@ package fe.inter {
 					world.gui.vis.visible=!world.gui.vis.visible;
 					break;
 				case "die":
-					world.gg.damage(10000, Unit.D_INSIDE);
+					world.gg.damage(10000, Resistances.DAM_INTERNAL);
 					break;
 				case "hardreset":
 					if (world.pers.dead) {
@@ -186,17 +210,13 @@ package fe.inter {
 					break;
 				case "all":
 					if (s.length==1) {
-						world.invent.addAll();
+						world.gg.itemInteraction.addAll();
 						world.pers.addSkillPoint(10);
 					}
-					else if (s[1]=="weapon") world.invent.addAllWeapon();
-					else if (s[1]=="ammo") world.invent.addAllAmmo();
-					else if (s[1]=="item") world.invent.addAllItem();
-					else if (s[1]=="armor") world.invent.addAllArmor();
-					setConsoleVisiblility(false);
-					break;
-				case "min":
-					world.invent.addMin();
+					else if (s[1]=="weapon") world.gg.itemInteraction.addAllWeapon();
+					else if (s[1]=="ammo") world.gg.itemInteraction.addAllAmmo();
+					else if (s[1]=="item") world.gg.itemInteraction.addAllItem();
+					else if (s[1]=="armor") world.gg.itemInteraction.addAllArmor();
 					setConsoleVisiblility(false);
 					break;
 				case "god":
@@ -218,27 +238,28 @@ package fe.inter {
 					else  world.pers.perkPoint+=int(s[1]);
 					break;
 				case "weapon":
-					if (s.length==2) world.invent.addWeapon(s[1]);
-					else if (s.length>2) world.invent.updWeapon(s[1],1)
+					// "weapon id" adds a weapon, "weapon id 1" adds its unique variant
+					if (s.length==2) world.gg.itemInteraction.addWeapon(s[1]);
+					else if (s.length>2) world.gg.itemInteraction.addWeapon(s[1] + "^1");
 					break;
 				case "remw":
-					if (s.length==2) world.invent.remWeapon(s[1]);
+					if (s.length==2) world.gg.itemInteraction.remWeapon(s[1]);
 					break;
 				case "armor":
-					if (s.length==2) world.invent.addArmor(s[1]);
+					if (s.length==2) world.gg.itemInteraction.addArmor(s[1]);
 					break;
 				case "money":
-					if (s.length==2) world.invent.items["money"].kol=int(s[1]);
+					if (s.length==2) world.invent.setQuantity("money", int(s[1]));
 					break;
 				case "item":
-					if (world.invent.items[s[1]]==null) return;
-					if (s.length==3) world.invent.items[s[1]].kol=int(s[2]);
-					else if (s.length==2) world.invent.items[s[1]].kol++;
+					if (!ItemManager.reference.hasItem(s[1])) return;
+					if (s.length==3) world.invent.setQuantity(s[1], int(s[2]));
+					else if (s.length==2) world.invent.increaseQuantity(s[1]);
 					world.game.checkQuests(s[1]);
 					world.pers.setParameters();
 					break;
 				case "ammo":
-					if (s.length==3) world.invent.items[s[1]].kol=int(s[2]);
+					if (s.length==3 && ItemManager.reference.hasItem(s[1])) world.invent.setQuantity(s[1], int(s[2]));
 					break;
 				case "perk":
 					if (s.length==2) world.pers.addPerk(s[1]);
@@ -349,18 +370,19 @@ package fe.inter {
 					setTextBoxVisibility(b);
 					break;
 				case "listWeapons":
-					vis.list1.text = "";
-					for each(i in Res.currentLanguageData.weapon) vis.list1.text += i.@id + " \t" + i.n[0] + "\n";
+					vis.list1.text = listNames(LanguageManager.reference.data.weapon);
 					if (!textboxesVisible) setTextBoxVisibility(true);
 					break;
 				case "listAmmo":
-					vis.list1.text = "";
-					for each(i in Res.currentLanguageData.ammo) vis.list1.text += i.@id + " \t" + i.n[0] + "\n";
+					var ammoList:String = "";
+					for each (var itemData:Object in ItemManager.reference.itemList) {
+						if (itemData.tip == Item.L_AMMO) ammoList += itemData.id + " \t" + Res.txt('i', itemData.id) + "\n";
+					}
+					vis.list1.text = ammoList;
 					if (!textboxesVisible) setTextBoxVisibility(true);
 					break;
 				case "listItems":
-					vis.list1.text = "";
-					for each(i in Res.currentLanguageData.item) vis.list1.text += i.@id + " \t" + i.n[0] + "\n";
+					vis.list1.text = listNames(LanguageManager.reference.data.items);
 					if (!textboxesVisible) setTextBoxVisibility(true);
 					break;
 				case "spam":

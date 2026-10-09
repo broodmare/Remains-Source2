@@ -44,7 +44,7 @@ package fe.inter {
 			w = nw;
 		}
 		
-		public function setLoc(loc:Location) {
+		public function setLoc(loc:Location):void {
 			if (loc == null) return;
 			screenX = w.swfStage.stageWidth;
 			screenY = w.swfStage.stageHeight;
@@ -65,16 +65,14 @@ package fe.inter {
 			setZoom();
 		}
 		
-		public function setKoord(mc:DisplayObject, nx:Number, ny:Number) {
+		public function setKoord(mc:DisplayObject, nx:Number, ny:Number):void {
 			
 			mc.x = nx * scaleV + vx;
 			mc.y = ny * scaleV + vy;
 		}
 		
-		public function setZoom(turn:int=-1000)
-		{
-			if (turn == 1000)
-			{
+		public function setZoom(turn:int=-1000):void {
+			if (turn == 1000) {
 				isZoom++;
 				if (isZoom > 2) isZoom = 0;
 				World.w.gui.infoText('zoom' + isZoom);
@@ -119,7 +117,7 @@ package fe.inter {
 			}
 		}
 		
-		public function calc(un:Unit) {
+		public function calc(un:Unit):void {
 			if (w.ctr.keyZoom) {
 				if (World.w.loc && World.w.loc.sky) {
 					setZoom(2);

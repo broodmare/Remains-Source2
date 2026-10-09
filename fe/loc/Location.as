@@ -6,163 +6,178 @@ package fe.loc {
 
 
 	import fe.*;
-	import fe.entities.BoundingBox;
+	import fe.SymbolFactory;
 	import fe.graph.*;
 	import fe.entities.Entity;
+	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
+	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
 	import fe.unit.UnitPlayer;
 	import fe.unit.UnitPhoenix;
 	import fe.unit.UnitTransmitter;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
+	import fe.unit.InventoryItem;
 	import fe.unit.UnitTurret;
 	
 	public class Location {
 
+		private var itemManager:ItemManager;				// Reference to the item manager
 		public var land:Land;
 		
 		public var id:String;
-		public var room:Room;		//связанный шаблон
-		public var prob:Probation;	//связанное испытание
+		public var room:Room;								//связанный шаблон
+		public var prob:Probation;							//связанное испытание
 		
 		//рамеры и положение
-		
-
-		public var landX:int=0;	//положение локации на местности
-		public var landY:int=0;
-		public var landZ:int=0;
-		public var landProb:String='';
-		public var bindLoc:Location;	//привязанная по координате z
-		public var base:Boolean = false;	//базовый лагерь
-		public var train:Boolean = false;	//полигон
+		public var landX:int			= 0;				//положение локации на местности
+		public var landY:int			= 0;
+		public var landZ:int			= 0;
+		public var landProb:String		= "";
+		public var bindLoc:Location;						//привязанная по координате z
+		public var base:Boolean			= false;			//базовый лагерь
+		public var train:Boolean		= false;			//полигон
 		
 		//объекты
 		public var grafon:Grafon;
-		public var space:Vector.<Tile>;	//пространство блоков | One dimensional array of area tiles. instead of a nested [X][Y], indices are [tileXIndex * spaceY + tileYIndex;]
-		public var defaultTile:Tile;			//пустой блок
-		public var units:Vector.<Unit>;			//юниты
-		public var ups:Array;			// [Spawn random units]
-		public var objs:Array;			// [Boxes]
-		public var bonuses:Array;		//бонусы
-		public var areas:Array;			//области
-		public var acts:Array;			//активные объекты (отображаемые на карте)
-		public var saves:Array;			//объекты, подлежащие сохранению
-		public var backobjs:Array;		//фоновые объекты
-		public var grenades:Array;		// [Active grenades]
+		public var space:Vector.<Tile>;						// One dimensional array of area tiles. instead of a nested [X][Y], indices are [tileXIndex * spaceY + tileYIndex;]
+		public var defaultTile:Tile;						//пустой блок
+		public var units:Vector.<Unit>;						//юниты
+		public var ups:Array;								// [Spawn random units]
+		public var objs:Array;								// [Boxes]
+		public var bonuses:Array;							//бонусы
+		public var areas:Array;								//области
+		public var acts:Array;								//активные объекты (отображаемые на карте)
+		public var saves:Array;								//объекты, подлежащие сохранению
+		public var backobjs:Array;							//фоновые объекты
+		public var grenades:Array;							// [Active grenades]
 		public var gg:UnitPlayer;
-		public var celObj:Obj, celDist:Number=-1;	//целевой объект и расстояние до него
-		public var unitCoord;			// [object for unit coordination]
+		public var celObj:Obj;
+		public var celDist:Number		= -1.00;			//целевой объект и расстояние до него
+		public var unitCoord;								// [object for unit coordination]
 		
 		// [Entrances and visiting]
-		public var spawnPoints:Array;	//точки спавна | Array of objects containing two Numbers {x, y}
-		public var enspawn:Array;		//точки спавна врагов
-		public var doors:Array;			//проходы в другие локации
-		public var signposts:Array, sign_vis:Boolean=true;		//указатели выхода
-		public var nAct:int=0;			//последнее посещение
-		public var active:Boolean=false;		//активна в данный момент
-		public var visited:Boolean=false;		//посещена
+		public var spawnPoints:Array;						//точки спавна | Array of objects containing two Numbers {x, y}
+		public var enspawn:Array;							//точки спавна врагов
+		public var doors:Array;								//проходы в другие локации
+		public var signposts:Array;	
+		public var sign_vis:Boolean = true;					//указатели выхода
+		public var nAct:int=0;								//последнее посещение
+		public var active:Boolean=false;					//активна в данный момент
+		public var visited:Boolean=false;					//посещена
 		
 		// [Serivce]
 		public var cp:CheckPoint;
-		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
-		public var objsT:Array;						// [Active objects]
-		public var recalcTiles:Vector.<Tile>;		// [Count the water]
+		public var pass_r:Array, pass_d:Array;				//проходы в другие локации
+		public var objsT:Array;								// [Active objects]
+		public var recalcTiles:Vector.<Tile>;				// [Count the water]
 
 		//цепочка выполнения
 		public var firstObj:Entity;
 		public var nextObj:Entity;
 		public var lastObj:Entity;
 		
-		public var isRebuild:Boolean=false, isRecalc:Boolean=false, isRelight:Boolean=false, relight_t:int;
-		public var warning:int=0;			//имеются опасности типа брошенных гранат
-		public var t_gwall:int=0;	//имеются призрачные стены
-		public var lDist1:int=300, lDist2:int=1000;	//дистанция открывания тумана войны
-		public var quake:int=0;
-		public var broom:Boolean=false;		//весь лут поднимется автоматически
-		public var isCheck:Boolean=false;	//была создана контрольная точка, точка выхода или дверь испытаний
+		public var isRebuild:Boolean		= false;
+		public var isRecalc:Boolean			= false;
+		public var isRelight:Boolean		= false;
+		public var relight_t:int;
+
+		public var warning:int				=   0;			//имеются опасности типа брошенных гранат
+		public var t_gwall:int				=   0;			//имеются призрачные стены
+		public var lDist1:int				=  300;			//дистанция открывания тумана войны
+		public var lDist2:int				= 1000;		
+		public var quake:int				=   0;	
+		public var broom:Boolean			= false;		//весь лут поднимется автоматически
+		public var isCheck:Boolean			= false;		//была создана контрольная точка, точка выхода или дверь испытаний
+
+		//опции	
+		public var noHolesPlace:Boolean		= true;			//убирать контейнеры около проходов
+		public var ramka:int				= 0;			//рамка из блоков по периметру 1-весь периметр, 2-только бока, 3-только низ, 4-низ и бока
+		public var bezdna:Boolean			= false;		//выход вниз при падении
+		public var mirror:Boolean			= false;		//зеркальная комната
+		public var endLand:Boolean			= false;		//комната на последнем уровне локации
+		public var sky:Boolean				= false;	
+		public var zoom:Number				= 1;	
+
+		//настройки	
+		public var gas:int					=   0;			//особая текстура
+		public var maxdy:Number				=  20.00;	
+		public var rad:Number				=   0.00;		//радиоактивность воздуха и воды
+		public var wrad:Number				=   1.00;		
+		public var wdam:Number				=   0.00;	
+		public var wtipdam:String			=   Resistances.DAM_VENOM;	// [water damage]
+		public var tipWater:int				=   0;			//внешний вид воды
+		public var opacWater:Number			=   0.00;		//непрозрачность воды
+		public var waterLevel:int			= 100;			//уровень воды
+		public var backform:int				=   0;			//форма фона задней стены 0-закрашено всё, 1-боковые части, 2-нижняя часть
+		public var backwall:String			= "";			//фон задней стены
+		public var transpFon:Boolean		= false;		//задний фон имеет прозрачность
 		
-		//опции
-		public var noHolesPlace:Boolean=true;	//убирать контейнеры около проходов
-		public var ramka:int=0;					//рамка из блоков по периметру 1-весь периметр, 2-только бока, 3-только низ, 4-низ и бока
-		public var bezdna:Boolean=false;		//выход вниз при падении
-		public var mirror:Boolean=false;		//зеркальная комната
-		public var endLand:Boolean=false;		//комната на последнем уровне локации
-		public var sky:Boolean=false;
-		public var zoom:Number=1;
-		
-		//настройки
-		public var gas:int=0;					//особая текстура
-		public var maxdy:Number=20;
-		public var rad:Number=0, wrad:Number=1;	//радиоактивность воздуха и воды
-		public var wdam:Number=0, wtipdam:int=7;	//урон от воды
-		public var tipWater:int=0;				//внешний вид воды
-		public var opacWater:Number=0;			//непрозрачность воды
-		public var waterLevel:int=100;			//уровень воды
-		public var backwall:String='';			//фон задней стены
-		public var backform:int=0;				//форма фона задней стены 0-закрашено всё, 1-боковые части, 2-нижняя часть
-		public var transpFon:Boolean=false;		//задний фон имеет прозрачность
 		public var cTransform:ColorTransform;
 		public var cTransformFon:ColorTransform;
 		public var color:String;
 		public var colorfon:String;
-		public var sndMusic:String='music_0';
-		public var postMusic:Boolean=false;		//музыка не пеключается на боевую
-		public var homeStable:Boolean=false;	
-		public var homeAtk:Boolean=false;	
-		public var visMult:Number=1;
-		public var noMap:Boolean=false;			//карта недоступна
-		public var darkness:int = 0;			// Background darkening
-		public var lightOn:int = 0;				// More than 0, light is on, 0 or less is off
+		
+		public var sndMusic:String			= 'music_0';
+		public var postMusic:Boolean		= false;		//музыка не пеключается на боевую
+		public var homeStable:Boolean		= false;	
+		public var homeAtk:Boolean			= false;	
+		public var visMult:Number			= 1.00;
+		public var noMap:Boolean			= false;		//карта недоступна
+		public var darkness:int				= 0;			// Background darkening
+		public var lightOn:int				= 0;			// More than 0, light is on, 0 or less is off
 
 		// Fog of war
-		public var black:Boolean	= true;								//	Fog of war is enabled	(Default: True)
-		public var retDark:Boolean	= Settings.settings.fogRegenerates;	//	Fog of war returns		(Default: False)
+		public var black:Boolean			= true;								//	Fog of war is enabled	(Default: True)
+		public var retDark:Boolean			= Settings.settings.fogRegenerates;	//	Fog of war returns		(Default: False)
 		
-		public var levitOn:Boolean=true;		//самолевитация разрешена
-		public var portOn:Boolean=true;			//телепортация разрешена
-		public var petOn:Boolean=true;			//спутник разрешен
-		public var destroyOn:Boolean=true;		//разрушение стены разрешены
-		public var itemsTip:String;				//особый тип лута
-		public var electroDam:Number=0;
-		public var trus:Number=0;				//постоянная тряска
+		public var levitOn:Boolean			= true;			//самолевитация разрешена
+		public var portOn:Boolean			= true;			//телепортация разрешена
+		public var petOn:Boolean			= true;			//спутник разрешен
+		public var destroyOn:Boolean		= true;			//разрушение стены разрешены
+		public var itemsTip:String;							//особый тип лута
+		public var electroDam:Number		= 0.00;
+		public var trus:Number				= 0.00;			//постоянная тряска
 		
 		// [Enemies]
-		public var tipEnemy:int=-1;				//тип случайных врагов
-		public var kolEn:Array=[0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
-		private var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
-		public var tipSpawn:String='enl2';
-		public var kolEnSpawn:int=0;		//может заспавнится обычных врагов
-		public var tileSpawn:Number=0;		//спавн при разрушении блоков
-		public var kolEnHid:int=3;			//скрытых обычных врагов
-		public var kol_phoenix:int=0;
+		public var tipEnemy:int				= -1;			//тип случайных врагов
+		public var kolEn:Array				= [0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
+		private var tipEn:Array				= ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
+		public var tipSpawn:String			= 'enl2';
+		public var kolEnSpawn:int			=  0;			//может заспавнится обычных врагов
+		public var tileSpawn:Number			=  0.00;			//спавн при разрушении блоков
+		public var kolEnHid:int				=  3;			//скрытых обычных врагов
+		public var kol_phoenix:int			=  0;
 		
-		public var detecting:Boolean=false;
-		public var t_alarm:int=0;			//счётчик сигнализации
-		public var t_alarmsp:int=0;			//счётчик спавна врагов
+		public var detecting:Boolean		= false;
+		public var t_alarm:int				= 0;			//счётчик сигнализации
+		public var t_alarmsp:int			= 0;			//счётчик спавна врагов
 		
 		// [Bonuses and experience]
-		public var kolXp:int=0, maxXp:int=0;
-		public var unXp:int=100;
-		public var summXp:int=0;
+		public var kolXp:int				=   0;
+		public var maxXp:int				=   0;
+		public var unXp:int					= 100;
+		public var summXp:int				=   0;
 		
 		// [Difficulty level]
-		public var locDifLevel:Number=0;
-		public var biom:int=0;
-		public var locksLevel:Number=0;		//уровень замков 0-25
-		public var mechLevel:Number=0;		//уровень мин и механизмов 0-7
-		public var weaponLevel:Number=0;	//уровень случайно выпадающего оружия
-		public var enemyLevel:int=0;		//левел мобов
-		public var earMult:Number=1; 		//множитель слуха мобов
+		public var locDifLevel:Number		= 0.00;
+		public var biom:int					= 0;
+		public var locksLevel:Number		= 0.00;		//уровень замков 0-25
+		public var mechLevel:Number			= 0.00;		//уровень мин и механизмов 0-7
+		public var weaponLevel:Number		= 0.00;		//уровень случайно выпадающего оружия
+		public var enemyLevel:int			= 0;		//левел мобов
+		public var earMult:Number			= 1.00; 	//множитель слуха мобов
 		
 		// Cached tile size in pixels
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		private const TOP_Y:int = 0;
+		private const TOP_Y:int				= 0;
+		private const LEFT_X:int			= 0;
 		private var BOTTOM_Y:int;
-		private const LEFT_X:int = 0;
 		private var RIGHT_X:int;
 
 		// Precomputed for inverse multiplication instead of division 
@@ -178,44 +193,37 @@ package fe.loc {
 		private var halfSpaceY:int;
 		private var spaceLength:int;
 
-//**************************************************************************************************************************
-//
-//				Создание
-//
-//**************************************************************************************************************************
-
-
-// ------------------------------------------------------------------------------------------------
-// первый этап - создать и построить по карте из xml
-
 		// Constructor
-		public function Location(land:Land, room:XML, rnd:Boolean, opt:Object=null) {
-			this.land = land;
-			
-			spaceX = World.cellsX;	// Room width in tiles
-			spaceY = World.cellsY;	// Room height in tiles
+		public function Location(land:Land, iManager:ItemManager, room:XML, rnd:Boolean, opt:Object=null) {
+			this.land		= land;
+			itemManager		= iManager;
+
+			spaceX			= World.cellsX;		// Room width in tiles
+			spaceY			= World.cellsY;		// Room height in tiles
 
 			// Initialize right and bottom bounds based on spaceX and spaceY
-			RIGHT_X = spaceX - 1;
-			BOTTOM_Y = spaceY - 1;
+			RIGHT_X			= spaceX - 1;
+			BOTTOM_Y		= spaceY - 1;
 
-			INV_TILEX = 1 / tileX;
-			INV_TILEY = 1 / tileY;
+			INV_TILEX		= 1 / tileX;
+			INV_TILEY		= 1 / tileY;
 
-
-			halfSpaceX = spaceX / 2;
-			halfSpaceY = spaceY / 2;
+			halfSpaceX		= spaceX * 0.50;
+			halfSpaceY		= spaceY * 0.50;
 
 			// GetAbsTile uses thse values CONSTANTLY, calculating beforehand. 
-			maxX = spaceX * tileX;	// Screen width in pixels
-			maxY = spaceY * tileY;	// Screen height in pixels
+			maxX = spaceX * tileX;				// Screen width in pixels
+			maxY = spaceY * tileY;				// Screen height in pixels
 
-			defaultTile = new Tile(-1, -1);
+			defaultTile = new Tile(-1, -1);		// Use this as a back-up if a tile can't be found
 
 			initializeArrays();
 			maxdy = World.maxdy;
 
-			if (rnd) ramka = 1;
+			if (rnd) {
+				ramka = 1;
+			}
+			
 			if (opt) {
 				if (opt.prob) ramka=0;
 				if (opt.mirror) mirror=true;
@@ -274,12 +282,13 @@ package fe.loc {
 			rad=land.act.rad;
 			wrad=land.act.wrad;
 			wdam=land.act.wdam;
-			wtipdam=land.act.wtipdam;
+			wtipdam = land.act.wtipdam;
 			tipWater=land.act.tipWater;
 			color=land.act.color;
 			visMult=land.act.visMult;
 			opacWater=land.act.opacWater;
 			darkness=land.act.darkness;
+			
 			if (nroom.options.length()) {
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
 				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
@@ -290,7 +299,7 @@ package fe.loc {
 				if (nroom.options.@wtip.length()) tipWater=nroom.options.@wtip;
 				if (nroom.options.@wopac.length()) opacWater=nroom.options.@wopac;
 				if (nroom.options.@wdam.length()) wdam=nroom.options.@wdam;
-				if (nroom.options.@wtipdam.length()) wtipdam=nroom.options.@wtipdam;
+				if (nroom.options.@wtipdam.length()) wtipdam=Resistances.parseDamageType(nroom.options.@wtipdam);
 				if (nroom.options.@bezdna.length()) bezdna=true;
 				if (nroom.options.@wlevel.length()) waterLevel=nroom.options.@wlevel;
 				if (nroom.options.@base.length()) base=true;
@@ -324,11 +333,13 @@ package fe.loc {
 					}
 				}
 			}
+			
 			if (homeStable) {
 				color = 'yellow';
 				lightOn = 1;
 				base = true;
 			}
+			
 			if (homeAtk) {
 				color = 'fire';
 				lightOn = 1;
@@ -338,22 +349,33 @@ package fe.loc {
 				var js:String = '';
 				js = nroom.a[j];
 				var arri:Array = js.split('.');
+				
 				for (i = 0; i < spaceX; i++) {
 					var jis:String;
 
-					if (mirror) jis = arri[RIGHT_X - i];
-					else jis = arri[i];
+					if (mirror) {
+						jis = arri[RIGHT_X - i];
+					}
+					else {
+						jis = arri[i];
+					}
 						
-					if (jis == null) jis = '';
+					if (jis == null) {
+						jis = '';
+					}
+					
 					getTile(i, j).dec(jis, mirror);
+					
 					if (getTile(i, j).stair != 0) { //полочка наверху лестницы  
 						if (j > 0 && getTile(i, j).phis == 0 && !getTile(i, j).shelf && getTile(i, j).stair != getTile(i, j - 1).stair) {
 							getTile(i, j).shelf = true;
 							getTile(i, j).vid++;
 						}
 					}
+					
 					//линия воды
 					if (j >= waterLevel) getTile(i, j).water = 1;
+					
 					//рамка
 					if (i == LEFT_X || i == RIGHT_X || j == TOP_Y || j == BOTTOM_Y) {
 						if (ramka == 1
@@ -377,6 +399,7 @@ package fe.loc {
 			if (nroom.doors.length() > 0) {
 				var s:String = nroom.doors[0];
 				doors = s.split('.');
+			
 				if (mirror) {
 					var d;
 					d = doors[6];
@@ -407,13 +430,18 @@ package fe.loc {
 			//видимость
 			lDist1 *= visMult;
 			lDist2 *= visMult;
+			
 			if (isNaN(lDist1)) {
 				lDist1 =  300;
 				lDist2 = 1000;
 			}
+			
 			//цветофильтр
 			cTransform = colorFilter(color);
-			if (colorfon) cTransformFon = colorFilter(colorfon);
+			
+			if (colorfon) {
+				cTransformFon = colorFilter(colorfon);
+			}
 			
 			
 			//точки появления активных объектов
@@ -421,24 +449,38 @@ package fe.loc {
 			for each(var obj:XML in nroom.obj) {
 				var xmll:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", obj.@id);
 				var size:int = xmll.@size;
-				if (size <= 0) size = 1;
+				
+				if (size <= 0) {
+					size = 1;
+				}
+				
 				var nx:int = obj.@x;
 				var ny:int = obj.@y;
-				if (mirror) nx = spaceX - nx - size;
+				
+				if (mirror) {
+					nx = spaceX - nx - size;
+				}
 
-				if (xmll.@tip == 'spawnpoint') spawnPoints.push({x:nx, y:ny});
-				else if (xmll.@tip == 'enspawn') addEnSpawn(nx, ny, xmll);
+				if (xmll.@tip == 'spawnpoint') {
+					spawnPoints.push({x:nx, y:ny});
+				}
+				else if (xmll.@tip == 'enspawn') {
+					addEnSpawn(nx, ny, xmll);
+				}
 				else if (xmll.@tip == 'up') {
 					var n:int = xmll.@tipn;
 					ups[n].push({x:nx, y:ny, xml:obj});
 				}
-				else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
+				else {
+					objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj});
+				}
 			}
 			
 			//фоновые объекты
 			for each(obj in nroom.back) {
 				backobjs.push(new BackObj(this, obj.@id, obj.@x * tileX,obj.@y * tileY, obj));
 			}
+
 			if (zoom > 1) {
 				maxX *= zoom;
 				maxY *= zoom;
@@ -463,19 +505,20 @@ package fe.loc {
 		// [add transition number n]
 		public function setDoor(n:int, fak:int=2):void {
 			var q:int;
-			if (fak < 2) return;
-
 			var dyr:Boolean = false;
 
-			if (n > 21) return;
+			if (fak < 2 || n > 21) {
+				return;
+			}
 			else if (n >= 17) {
 				q = (n - 17) * 9 + 4;
 				dyr = getTile(q + 1, 0).hole() || dyr;
 				dyr = getTile(q + 2, 0).hole() || dyr;
 				getTile(q + 1, 1).hole();
-				getTile(q + 2, 2).hole();
+				getTile(q + 2, 1).hole();
 				setNoObj(q + 1, 0, 0, 2);
 				setNoObj(q + 2, 0, 0, 2);
+				
 				if (fak > 2) {
 					dyr = getTile(q, 0).hole() || dyr;
 					dyr = getTile(q + 3, 0).hole() || dyr;
@@ -484,7 +527,10 @@ package fe.loc {
 					setNoObj(q, 0, 0, 2);
 					setNoObj(q + 3, 0, 0, 2);
 				}
-				if (dyr) addSignPost(q + 2, 0, -90);
+				
+				if (dyr) {
+					addSignPost(q + 2, 0, -90);
+				}
 			}
 			else if (n>=11) {
 				q=(n-11)*4+3;
@@ -494,11 +540,16 @@ package fe.loc {
 				getTile(1, q - 1).hole();
 				setNoObj(0,q,5,0);
 				setNoObj(0,q-1,5,0);
+				
 				if (fak>2) {
 					dyr=getTile(0, q - 2).hole() || dyr;
 					getTile(1, q - 2).hole();
 				} 
-				if (dyr) addSignPost(0,q,180);
+				
+				if (dyr) {
+					addSignPost(0, q, 180);
+				}
+			
 				addEnSpawn(tileX, (q+1)*tileY-1);
 			}
 			else if (n >= 6) {
@@ -509,6 +560,7 @@ package fe.loc {
 				getTile(q + 2, BOTTOM_Y - 1).hole();
 				setNoObj(q + 1, BOTTOM_Y, 0, -2);
 				setNoObj(q + 2, BOTTOM_Y, 0, -2);
+				
 				if (fak > 2) {
 					dyr = getTile(q, BOTTOM_Y).hole() || dyr;
 					dyr = getTile(q + 3, BOTTOM_Y).hole() || dyr;
@@ -517,7 +569,10 @@ package fe.loc {
 					setNoObj(q, BOTTOM_Y, 0, -2);
 					setNoObj(q + 3, BOTTOM_Y, 0, -2);
 				} 
-				if (dyr) addSignPost(q + 2, BOTTOM_Y, 90);
+				
+				if (dyr) {
+					addSignPost(q + 2, spaceY, 90);
+				}
 			}
 			else if (n>=0) {
 				q=(n)*4+3;
@@ -527,11 +582,16 @@ package fe.loc {
 				getTile(RIGHT_X - 1, q - 1).hole();
 				setNoObj(RIGHT_X, q, -5, 0);
 				setNoObj(RIGHT_X, q - 1, -5, 0);
+				
 				if (fak>2) {
 					dyr=getTile(RIGHT_X, q - 2).hole() || dyr;
 					getTile(RIGHT_X - 1, q - 2).hole();
 				} 
-				if (dyr) addSignPost(spaceX, q, 0);
+				
+				if (dyr) {
+					addSignPost(spaceX, q, 0);
+				}
+				
 				addEnSpawn((RIGHT_X) * tileX, (q + 1) * tileY - 1);
 			}
 			else return;
@@ -540,7 +600,7 @@ package fe.loc {
 		// [Add directional signs to neighboring locations]
 		private function addSignPost(xCoord:int, yCoord:int, rotation:int):void {
 			var sign:MovieClip;
-			sign = new signPost();	// SWF Dependency
+			sign = SymbolFactory.createInstance("signPost") as MovieClip;
 			sign.x = xCoord * tileX;
 			sign.y = yCoord * tileY;
 			sign.rotation = rotation;
@@ -552,7 +612,11 @@ package fe.loc {
 			var obj:Object = new Object();
 			if (xmll) {
 				var size:int = xmll.@size;
-				if (size <= 0) size = 1;
+				
+				if (size <= 0) {
+					size = 1;
+				}
+				
 				obj.x = (xCoord + 0.5 * size) * tileX;
 				obj.y = (yCoord + 1.0) * tileY - 1;
 			}
@@ -560,44 +624,86 @@ package fe.loc {
 				obj.x = xCoord;
 				obj.y = yCoord;
 			}
+			
 			enspawn.push(obj);
 		}
 		
 		// [Add places where containers should not be (near transitions)]
 		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void {
 			var i:int;
-			if (dx > 0) for (i = nx; i <= nx + dx; i++) getTile(i, ny).place = false;
-			if (dx < 0) for (i = nx + dx; i <= nx; i++) getTile(i, ny).place = false;
-			if (dy > 0) for (i = ny; i <= ny + dy; i++) getTile(nx, i).place = false;
-			if (dy < 0) for (i = ny + dy; i <= ny; i++) getTile(nx, i).place = false;
+			if (dx > 0) {
+				for (i = nx; i <= nx + dx; i++) {
+					getTile(i, ny).place = false;
+				}
+			}
+			if (dx < 0) {
+				for (i = nx + dx; i <= nx; i++) {
+					getTile(i, ny).place = false;
+				}
+			}
+			if (dy > 0) {
+				for (i = ny; i <= ny + dy; i++) {
+					getTile(nx, i).place = false;
+				}
+			}
+			if (dy < 0) {
+				for (i = ny + dy; i <= ny; i++) {
+					getTile(nx, i).place = false;
+				}
+			}
 		}
 		
 		
 		// [Main frame, call after making passes]
 		public function mainFrame():void {
 			var border:String = 'A';
-			if (land && land.act) border = land.act.border;
-			for (var j:int = 0; j < spaceX; j++) {
-				if (getTile(j, TOP_Y).phis >= 1) getTile(j, TOP_Y).mainFrame(border);
-				if (getTile(j, BOTTOM_Y).phis >= 1) getTile(j, BOTTOM_Y).mainFrame(border);
+			
+			if (land && land.act) {
+				border = land.act.border;
 			}
+			
+			for (var j:int = 0; j < spaceX; j++) {
+				if (getTile(j, TOP_Y).phis >= 1) {
+					getTile(j, TOP_Y).mainFrame(border);
+				}
+				
+				if (getTile(j, BOTTOM_Y).phis >= 1) {
+					getTile(j, BOTTOM_Y).mainFrame(border);
+				}
+			}
+		
 			for (j = 0; j < spaceY; j++) {
-				if (getTile(LEFT_X, j).phis >= 1) getTile(LEFT_X, j).mainFrame(border);
-				if (getTile(RIGHT_X, j).phis >= 1) getTile(RIGHT_X, j).mainFrame(border);
+				if (getTile(LEFT_X, j).phis >= 1) {
+					getTile(LEFT_X, j).mainFrame(border);
+				}
+				
+				if (getTile(RIGHT_X, j).phis >= 1) {
+					getTile(RIGHT_X, j).mainFrame(border);
+				}
 			}
 		}
 		
 		//создать активные объекты в местах их появления, кроме мест около переходов, вызывать после проделывания проходов
 		public function setObjects():void {
 			for each (var obj in objsT) {
-				if (noHolesPlace && obj.rem>0 && !getTile(obj.x, obj.y).place) continue;	//не ставить ящики около прохода
+				if (noHolesPlace && obj.rem>0 && !getTile(obj.x, obj.y).place) {
+					continue;	//не ставить ящики около прохода
+				}
 				
-				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
-				else createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
+				if (obj.tip=='unit') {
+					createUnit(obj.id,obj.x,obj.y, false, obj.xml);
+				}
+				else {
+					createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
+				}
 			}
+			
 			objsT = null;
 			setRandomUnits();
-			if (land.rnd && World.w.pers.modMetal > 0 && Math.random() < World.w.pers.modMetal) putRandomLoot();
+			
+			if (land.rnd && World.w.pers.modMetal > 0 && Math.random() < World.w.pers.modMetal) {
+				putRandomLoot();
+			}
 		}
 		
 		// [Set the number of random enemies]
@@ -607,7 +713,9 @@ package fe.loc {
 			}
 			else {
 				kolEn[en] = min + int(Math.random() * (max - min + 1));
-				if (spl > 0 && Math.random() < 0.2) kolEn[en] += spl;
+				if (spl > 0 && Math.random() < 0.2) {
+					kolEn[en] += spl;
+				}
 			}
 		}
 		
@@ -646,8 +754,12 @@ package fe.loc {
 					n = int(Math.random() * ups[2].length);
 					createHidden(ups[2][n].x, ups[2][n].y);
 					
-					if (ups[2].length <= 1) break;
-					else ups[2].splice(n, 1);
+					if (ups[2].length <= 1) {
+						break;
+					}
+					else {
+						ups[2].splice(n, 1);
+					}
 				}
 			}
 		}
@@ -656,6 +768,7 @@ package fe.loc {
 		public function putRandomLoot():void {
 			var nx:int = int(Math.random() * (RIGHT_X - 1) + 1);
 			var ny:int = int(Math.random() * (BOTTOM_Y - 1) + 1);
+			
 			if (getTile(nx, ny).phis == 0) {
 				LootGen.lootCont(this, (nx + 0.5) * tileX, (ny + 0.8) * tileY, 'metal');
 			}
@@ -670,20 +783,29 @@ package fe.loc {
 				createUnit('mine', nx + 4, ny);
 				return null;
 			}
+			
 			if (land.rnd && tip=='transm') {
 				if ((xml==null || xml.@on.length()==0) && Math.random()<0.5) return null;
 			}
+			
 			if (xml && xml.@trigger.length() && World.w.game.triggers[xml.@trigger]=='1') return null;
+			
 			var loadObj:Object=null;
+			
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];
+			
 			//не генерировать юнита, который сдох
 			if (loadObj && loadObj.dead>0 && loadObj.loot!=2) return null;
+			
 			var un:Unit;
 			var scid:String;
 			var hero:int=0;
 			var inWater:Boolean=false;
+			
 			if ((biom == 1 || biom == 5) && abs == false) inWater = getTile(nx, ny).water > 0;
+			
 			var s:String=randomUnit(tip,inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
+			
 			//если тип был случайным и удалось сгенерировать его id
 			if (s!='') {
 				if (cid) scid=cid;
@@ -691,20 +813,25 @@ package fe.loc {
 				if (s=='slmine') s='slime';
 				un=Unit.create(s,locDifLevel,xml,loadObj,scid);
 			}
+			
 			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
 			if ((s=='' && !homeStable) || un==null) {
 				if (cid) scid=cid;
 				else scid=randomCid(tip);
 				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
 			}
+			
 			if (un!=null) {
 				var enl:int = enemyLevel;
 				if (land.rnd && landProb=='') { //геройский юнит
 					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
 				}
+				
 				if (hero==0 && un.boss==false) enl=Math.round(enl*(1.1-Math.random()*0.4));
+				
 				un.setLevel(enl);
 				un.setHero(hero);
+				
 				if (abs) {
 					un.putLoc(this,nx,ny);
 				}
@@ -712,80 +839,116 @@ package fe.loc {
 					var size:int = Math.floor((un.boundingBox.width - 1) / 40)+1;
 					un.putLoc(this,(nx+0.5*size)*tileX,(ny+1)*tileY-1);
 				}
+				
 				if (active) {
 					un.xp=0;
 				}
 				else {
 					summXp+=un.xp;
 				}
+				
 				addObj(un);
 				units.push(un);
+				
 				if (homeStable) {
 					un.fraction=Unit.F_PLAYER;
 					un.warn=0;
 				}
+			
 				if (homeAtk) {
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
 					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*tileX,(ny-Math.random()*4)*tileY));
 					
 				}
+			
 				if (xml && xml.@code.length()) saves.push(un);
+			
 				//Добавление объектов, имеющих uid в массив
 				if (xml && xml.@uid.length()) {
 					un.uid=xml.@uid;
 					land.uidObjs[un.uid]=un;
 				}
+			
 				if (emerg>0) un.emergence(emerg);
+			
 				un.step();
 			}
+		
 			return un;
 		}
 		
 		//создать феникса, сидящего на ящике
 		private function createPhoenix(box:Box):Boolean {
 			if (box.wall || !box.shelf) return false;
+			
 			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 38, 38)) return false;
+		
 			var un:Unit=new UnitPhoenix();
 			un.putLoc(this, box.coordinates.X, box.boundingBox.top-1);
 			addObj(un);
 			units.push(un);
 			kol_phoenix++;
 			land.kol_phoenix++;
+		
 			return true;
 		}
 		//создать передатчик на ящике
 		private function createTransmitter(box:Box):Boolean {
 			if (box.wall || !box.shelf) return false;
+		
 			if (land.rnd && Math.random()<0.5) return false;
+		
 			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 30, 20)) return false;
+		
 			var un:Unit=new UnitTransmitter('box');
 			un.setLevel(enemyLevel);
 			un.putLoc(this, box.coordinates.X, box.boundingBox.top - 1);
 			addObj(un);
 			units.push(un);
+		
 			return true;
 		}
 		
-		//создать предмет, стоящий на ящике
-		private function createSur(box:Box, nsur:String=null):void {
-			if (nsur==null) {
-				if (Math.random()>0.25) return;
-				if (biom==0) nsur='fan';
-				if (biom==2) nsur='lamp';
-				if (biom==3) nsur='kofe';
-				if (nsur==null) return;
+		// [Create an item standing on a box]
+		private function createSur(box:Box, itemID:String = null):void {
+			// If it's not specified what item to put on a box, generate one
+			if (itemID == null) {
+				if (Math.random() > 0.25) {
+					return;
+				}
+
+				if (biom == 0) {
+					itemID = 'fan';
+				}
+				else if (biom == 2) {
+					itemID = 'lamp';
+				}
+				else if (biom == 3) {
+					itemID = 'kofe';
+				}
+				else {
+					return;
+				}
 			}
-			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
+			
+			// Create the item
+			var item:Item = new Item(itemID, 1);
+			// Use the item to create a visible loot item
+			var l:Loot = new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
+			
+			// If we're at the base, don't let the player interact with them
 			if (base) {
-				l.inter.active=false;
-				l.levitPoss=false;
+				l.inter.active = false;
+				l.levitPoss = false;
 			}
 		}
 		
 		//создать скрытый юнит или дополнительный объект
 		public function createHidden(nx:int,ny:int):void {
-			if (biom==10 || biom==11) return;
+			if (biom==10 || biom==11) {
+				return;
+			}
+			
 			if (tipEnemy==0) createUnit('zombie',nx,ny, false, <unit dig='2'/>);
 			else if (tipEnemy==2) createObj('robocell','box',nx,ny);
 			else if (tipEnemy==1 || tipEnemy==3) createObj('alarm','box',nx,ny);
@@ -799,27 +962,35 @@ package fe.loc {
 					ncloud='tcloud1';
 					if (lvl>=2) return;
 				}
+				
 				if (biom == 5) {
 					ncloud = 'pcloud1';
 				}
 			}
 			if (ncloud != null) {
 				var kol:int = 1;
+			
 				if (biom == 1) kol = Math.random() * 5;
+			
 				if (biom == 5) {
 					if (lvl == 0) kol = Math.random() * 2;
 					else kol = Math.random()*3;
 				}
+			
 				for (var i:int = 0; i<kol; i++) {
 					var nx:int = int(Math.random() * (spaceX - 4) + 2);
 					var ny:int = int(Math.random() * (spaceY - 4) + 2);
+			
 					if (cp) {
 						var dnx:int = cp.coordinates.X - (nx * tileX + 20);
 						var dny:int = cp.coordinates.Y - (ny * tileY + 40);
 						if (dnx * dnx + dny * dny < 80 * 80) continue;
 					}
+			
 					if (biom==1 && lvl==1 && ny>15) ny=15;
+			
 					if (biom==5 && lvl==0) ny = int(Math.random()*15+9);
+			
 					createObj(ncloud,'box',nx,ny);
 				}
 			}
@@ -1622,10 +1793,19 @@ package fe.loc {
 		
 		// [check for the possibility of installing a ghost wall, returns true if nothing interferes]
 		public function testTile(t:Tile):Boolean {
-			if (t.phis>0 || t.stair!=0 || t.water!=0 || t.door) return false;
+			if (t.phis > 0 || t.stair != 0 || t.water != 0 || t.door) {
+				return false;
+			}
+
 			for each (var cel in units) {
-				if (cel==null || (cel as Unit).sost==4) continue;
-				if (cel.transT) continue;
+				if (cel == null || (cel as Unit).sost == 4) {
+					continue;
+				}
+				
+				if (cel.transT) {
+					continue;
+				}
+				
 				if (!(cel.leftBound >= (t.coords.X + 1) * tileX 
 					|| cel.rightBound <= t.coords.X * tileX
 					|| cel.topBound >= (t.coords.Y + 1) * tileY
@@ -1638,45 +1818,83 @@ package fe.loc {
 		}
 		
 		// [drawing the map] (Mini-map in the pipbuck)
-		public function drawMap(m:BitmapData) {
+		public function drawMap(m:BitmapData):void {
 			var vid:Number = 1;
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {
 					var color:uint = 0x003323;
 					var t:Tile = getTile(i, j);
-					if (t.water) color = 0x0066FF;
-					if (t.shelf || t.diagon != 0) color = 0x7B482F;
-					if (t.stair != 0) color = 0x666666;
-					if (t.phis == 1) {
-						if (t.indestruct) color = 0xFFFFFF;
-						else if (t.door) color = 0x639104;
-						else if (t.hp<100) color = 0x01995A; 
-						else color = 0x00FF99;
+					
+					if (t.water) {
+						color = 0x0066FF;
 					}
-					if (t.phis == 2) color = 0x01995A; 
+					
+					if (t.shelf || t.diagon != 0) {
+						color = 0x7B482F;
+					}
+					
+					if (t.stair != 0) {
+						color = 0x666666;
+					}
+					
+					if (t.phis == 1) {
+						if (t.indestruct) {
+							color = 0xFFFFFF;
+						}
+						else if (t.door) {
+							color = 0x639104;
+						}
+						else if (t.hp<100) {
+							color = 0x01995A;
+						}
+						else {
+							color = 0x00FF99;
+						}
+					}
+
+					if (t.phis == 2) {
+						color = 0x01995A;
+					}
+
 					if (!World.w.drawAllMap) {
 						vid = getTile(i, j).visi;
+						
 						if (i < RIGHT_X) {
-							if (getTile(i + 1, j).visi > vid) vid = getTile(i + 1, j).visi;
+							if (getTile(i + 1, j).visi > vid) {
+								vid = getTile(i + 1, j).visi;
+							}
+							
 							if (j < BOTTOM_Y) {
 								if (getTile(i + 1, j + 1).visi > vid) vid = getTile(i + 1, j + 1).visi;
 							}
 						}
+						
 						if (j < BOTTOM_Y) {
-							if (getTile(i, j + 1).visi > vid) vid = getTile(i, j + 1).visi;
+							if (getTile(i, j + 1).visi > vid) {
+								vid = getTile(i, j + 1).visi;
+							}
 						}
 					}
+					
 					color += int(vid * 255) * 0x1000000;
 					m.setPixel32((landX - land.minLocX) * World.cellsX + i, (landY - land.minLocY) * World.cellsY + j, color);
 				}
 			}
+
 			for each (var obj:Obj in objs) {
-				if (obj.inter && obj.inter.cont!='' && obj.inter.active) drawMapObj(m, obj, 0xFFCC00);
-				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) drawMapObj(m, obj, 0xFF0077);
+				if (obj.inter && obj.inter.cont != "" && obj.inter.active) {
+					drawMapObj(m, obj, 0xFFCC00);
+				}
+
+				if (obj.inter && obj.inter.prob != "" && obj.inter.prob != null) {
+					drawMapObj(m, obj, 0xFF0077);
+				}
 			}
+
 			for each (obj in acts) {
 				if (obj is CheckPoint) drawMapObj(m, obj, 0xFF00FF)
 			}
+			
 			for each (obj in units) {
 				if ((obj as Unit).npc) drawMapObj(m, obj, 0x5500FF);
 			}
@@ -1689,10 +1907,10 @@ package fe.loc {
 			var startXIndex:int = (landX - land.minLocX) * worldCellsX;
 			var startYIndex:int = (landY - land.minLocY) * worldCellsY;
 
-			var xStart:int	= startXIndex + int(obj.boundingBox.left / tileX + 0.5);
-			var xEnd:int	= startXIndex + int(obj.boundingBox.right / tileX - 0.5);
-			var yStart:int	= startYIndex + int(obj.boundingBox.top / tileY + 0.4);
-			var yEnd:int	= startYIndex + int(obj.boundingBox.bottom / tileY - 0.5);
+			var xStart:int	= startXIndex + int(obj.boundingBox.left   / tileX + 0.50);
+			var xEnd:int	= startXIndex + int(obj.boundingBox.right  / tileX - 0.50);
+			var yStart:int	= startYIndex + int(obj.boundingBox.top    / tileY + 0.40);
+			var yEnd:int	= startYIndex + int(obj.boundingBox.bottom / tileY - 0.50);
 
 			for (var i:int = xStart; i <= xEnd; i++) {
 				for (var j:int = yStart; j <= yEnd; j++) {
@@ -1708,53 +1926,75 @@ package fe.loc {
 //**************************************************************************************************************************
 		
 		// [Command to all objects]
-		public function allAct(emit:Obj, allact:String, allid:String=''):void {
+		public function allAct(emit:Obj, allact:String, allid:String = ""):void {
 			var obj:Obj;
 			for each (obj in objs) {
-				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) obj.command(allact,'13');
+				if (obj != emit && obj.inter && (allid == "" || allid == null || obj.inter.allid == allid)) {
+					obj.command(allact, "13");
+				}
 			}
+			
 			for each (obj in areas) {
-				if (obj!=emit && allid=='' || allid==null || (obj as Area).allid==allid) obj.command(allact);
+				if (obj != emit && allid == "" || allid == null || (obj as Area).allid == allid) {
+					obj.command(allact);
+				}
 			}
+			
 			for each (obj in units) {
-				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) obj.command(allact);
+				if (obj!=emit && obj.inter && (allid == "" || allid == null || obj.inter.allid == allid)) {
+					obj.command(allact);
+				}
 			}
 		}
 		
 		// [Awakening everyone around]
-		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null):void {
+		public function budilo(nx:Number, ny:Number, rad:Number = 1000, owner:Unit=null):void {
 			var r2:Number = rad * rad * earMult * earMult;
 
 			for each(var un:Unit in units) {
 				if (un && un != owner && un.sost == 1 && !un.unres) {
 					var dx:Number = un.coordinates.X - nx;
 					var dy:Number = un.coordinates.Y - ny;
-					var delta:Number = rad / 2;
-					if (delta > 400) delta = 400;
-					if (dx * dx + dy * dy < r2 * un.ear * un.ear) un.alarma(nx+(Math.random()-0.5)*delta,ny+(Math.random()-0.5)*delta);
+					var delta:Number = rad * 0.50;
+					
+					if (delta > 400) {
+						delta = 400;
+					}
+					
+					if (dx * dx + dy * dy < r2 * un.ear * un.ear) {
+						un.alarma(nx + (Math.random() - 0.50) * delta, ny + (Math.random() - 0.50) * delta);
+					}
 				}
 			}
 		}
 		
 		public function electroCheck():void {
 			electroDam = 0;
+			
 			for each (var obj:Obj in objs) {
-				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
+				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) {
+					electroDam = (obj as Box).electroDam;
+				}
 			}
 		}
 		
 		//активировать все ячейки роботов
 		public function robocellActivate():void {
 			for each(var un in objs) { // 'un' is being called as a Box
-				if (un.inter && un.inter.allact=='robocell') un.inter.genRobot();
+				if (un.inter && un.inter.allact == 'robocell') {
+					un.inter.genRobot();
+				}
 			}
 		}
 		
 		//включить сигнализацию
-		public function signal(n:int=300):void {
+		public function signal(n:int = 300):void {
 			t_alarm = n;
 			t_alarmsp = int(n*Math.random() * 0.25 + 0.25);
-			if (prob && prob.alarmScript) prob.alarmScript.start(); 
+			
+			if (prob && prob.alarmScript) {
+				prob.alarmScript.start();
+			}
 		}
 
 		//включить всё
@@ -1764,20 +2004,25 @@ package fe.loc {
 			lightOn = 1;
 			darkness = -20;
 			gg.inLoc(this);
-			for each(var obj in units) {
-				obj.cTransform = cTransform;
+			
+			for each(var un:Unit in units) {
+				un.cTransform = cTransform;
 			}
+			
 			for each(var obj in objs) {
 				obj.cTransform=cTransform;
+				
 				if (obj.inter) {
 					if (obj.inter.lockTip == '4') obj.inter.setAct('open', 0);
 					obj.inter.active = true;
 					obj.inter.update();
 				}
 			}
+			
 			for each(var obj in backobjs) {
 				obj.onoff(1);
 			}
+			
 			World.w.redrawLoc();
 		}
 
@@ -1788,46 +2033,73 @@ package fe.loc {
 			lightOn = -1;
 			darkness = 20;
 			gg.inLoc(this);
-			for each(var obj in units) {
-				obj.cTransform = cTransform;
+			
+			for each(var un:Unit in units) {
+				un.cTransform = cTransform;
 			}
+			
 			for each(var obj in objs) {
 				obj.cTransform = cTransform;
 			}
+			
 			for each(var obj in backobjs) {
 				obj.onoff(-1);
 			}
+			
 			World.w.redrawLoc();
 		}
 		
 		//спавн врага в точке спавна
 		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null):void {
-			if (kolEnSpawn <= 0 || enspawn == null || enspawn.length == 0) return;
+			if (kolEnSpawn <= 0 || enspawn == null || enspawn.length == 0) {
+				return;
+			}
+			
 			kolEnSpawn--;
-			if (!one) t_alarmsp=Math.floor(Math.random()*30);
-			var sp:Object=enspawn[Math.floor(Math.random()*enspawn.length)];
-			var un:Unit=createUnit((tipSp==null)?tipSpawn:tipSp,sp.x,sp.y,true,null,null,30);
+			
+			if (!one) {
+				t_alarmsp = Math.floor(Math.random() * 30);
+			}
+			
+			var sp:Object = enspawn[Math.floor(Math.random() * enspawn.length)];
+			var un:Unit = createUnit((tipSp == null) ? tipSpawn : tipSp, sp.x, sp.y, true, null, null, 30);
 
-			if (getGG) un.alarma(gg.coordinates.X, gg.coordinates.Y);
-			else un.alarma();
+			if (getGG) {
+				un.alarma(gg.coordinates.X, gg.coordinates.Y);
+			}
+			else {
+				un.alarma();
+			}
 		}
 		
 		//спавн врага из волны
 		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit {
-			if (w == null) return null;
-			if (enspawn.length == 0) return null;
+			if (w == null || enspawn.length == 0) {
+				return null;
+			}
+			
 			var sp:Object = enspawn[n];
-			if (sp == null) sp = enspawn[Math.floor(Math.random() * enspawn.length)];
-			var un:Unit=createUnit(w.@id,sp.x,sp.y,true,w,w.@cid,30);
-			if (spart!=null) Emitter.emit(spart,this,sp.x,sp.y);
+			
+			if (sp == null) {
+				sp = enspawn[Math.floor(Math.random() * enspawn.length)];
+			}
+			
+			var un:Unit = createUnit(w.@id, sp.x, sp.y, true, w, w.@cid, 30);
+			
+			if (spart != null) {
+				Emitter.emit(spart,this,sp.x,sp.y);
+			}
+			
 			if (un) {
 				un.trup = false;
 				un.isRes = false;
 				un.fraction = 1;
 				un.wave = 1;
 				un.alarma();
+			
 				return un;
 			}
+			
 			return null;
 		}
 		
@@ -1835,16 +2107,23 @@ package fe.loc {
 		public function earthQuake(n:int):void {
 			if (quake < n) {
 				quake = n;
-				World.w.quake(n, n / 4);
+				World.w.quake(n, n * 0.25);
 			}
 		}
 		
 		public function createHealBonus(nx:Number, ny:Number):void {
-			if (World.w.pers.bonusHeal <= 0) return;
+			if (World.w.pers.bonusHeal <= 0) {
+				return;
+			}
+			
 			var obj:Bonus = new Bonus(this, 'heal', nx, ny);
 			obj.liv = 300;
 			obj.val = World.w.pers.bonusHeal * World.w.pers.bonusHealMult;
-			if (active) obj.addVisual();
+			
+			if (active) {
+				obj.addVisual();
+			}
+
 			addObj(obj);
 		}
 		
@@ -1852,6 +2131,7 @@ package fe.loc {
 		private function gwalls():void {
 			var est:Boolean = false;
 			var t:Tile
+			
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {
 					t = getTile(i, j);
@@ -1868,6 +2148,7 @@ package fe.loc {
 					}
 				}
 			}
+			
 			if (est) {
 				t_gwall = World.fps + 1;
 			}
@@ -1884,28 +2165,28 @@ package fe.loc {
 				}
 			}
 		}
-		
-		private function changePixelOpacity(tileToChange:Tile, i:int, j:int):void {
-			grafon.lightBmp.setPixel32(i, j + 1, int((1 - tileToChange.updVisi()) * 255) << 24);
-		}
 
 		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1):void {
 			if (!active) return;
 
+			// Use default distances if not provided
 			dist1 = (dist1 < 0) ? lDist1 : dist1;
 			dist2 = (dist2 < 0) ? lDist2 : dist2;
 
+			// Set default coordinates if not provided
 			if (nx == -10000) {
 				nx = gg.coordinates.X + gg.storona * 12;
-				ny = gg.boundingBox.top + gg.boundingBox.standingHeight * 0.247;
+				ny = gg.boundingBox.top + int(gg.height * 0.247);
 			}
 
 			relight_t = 10;
 
+			// Precompute squared distances and inverse difference
 			var dist1Squared:int = dist1 * dist1;
 			var dist2Squared:int = dist2 * dist2;
 			var invDistDiff:Number = 1 / (dist2Squared - dist1Squared);
 
+			// Cache frequently accessed properties
 			var tileXCache:int = tileX;
 			var tileYCache:int = tileY;
 			var spaceXCache:int = spaceX;
@@ -1918,20 +2199,28 @@ package fe.loc {
 			var invTileX:Number = INV_TILEX;
 			var invTileY:Number = INV_TILEY;
 
+			var spaceRef:Vector.<Tile> = space; // Correctly typed as Vector.<Tile>
+			var lightBmpRef:BitmapData = grafon.lightBmp; // Assuming 'lightBmp' is BitmapData
+
+			// Precompute iTileXArray to avoid repeated multiplication in the loop
 			var iTileXArray:Vector.<int> = new Vector.<int>(spaceXCache, true);
 			for (var i:int = 1; i < spaceXCache; i++) {
 				iTileXArray[i] = i * tileXCache;
 			}
 
+			// Lock the bitmap for bulk pixel operations
+			lightBmpRef.lock();
+
 			for (i = 1; i < spaceXCache; i++) {
 				var currentITileX:int = iTileXArray[i];
 				for (var j:int = 1; j < spaceYCache; j++) {
-					var index:int = j * spaceX + i;
-					if (index < 0 || index >= space.length) continue;
+					var index:int = j * spaceXCache + i;
+					if (index < 0 || index >= spaceRef.length) continue;
 
-					var currentTile:Tile = space[index];
+					var currentTile:Tile = spaceRef[index];
 					var n1:Number = currentTile.visi;
 
+					// Skip tiles that are fully visible unless retDark is true
 					if (!retDark && n1 >= 1) continue;
 
 					var dx:int = currentITileX - nx;
@@ -1940,60 +2229,65 @@ package fe.loc {
 
 					if (rasst >= dist2Squared) {
 						if (retDark && currentTile.t_visi > 0) {
+							// Update visibility and set pixel opacity
 							currentTile.t_visi = Math.max(currentTile.t_visi - 0.025, 0);
-							changePixelOpacity(currentTile, i, j);
+							var pixelValue:int = int((1 - currentTile.updVisi()) * 255) << 24;
+							lightBmpRef.setPixel32(i, j + 1, pixelValue);
 						}
 						continue;
 					}
 
+					// Calculate new visibility based on distance
 					var n2:Number = (rasst <= dist1Squared) ? 1 : (dist2Squared - rasst) * invDistDiff;
-					n2 = (n2 > 1) ? 1 : n2;
+					if (n2 > 1) n2 = 1;
 
 					if (rasst <= dist2Squared) {
 						var dex:Number, dey:Number, maxe:int;
-						var absDx:int = Math.abs(dx);
-						var absDy:int = Math.abs(dy);
+						var absDx:int = dx >= 0 ? dx : -dx;
+						var absDy:int = dy >= 0 ? dy : -dy;
 
 						if (absDx == absDy) {
 							dy++;
-							absDy = Math.abs(dy);
+							absDy = dy >= 0 ? dy : -dy;
 						}
 
 						if (absDx >= absDy) {
 							if (dx > 0) {
 								dex = tileXCache;
-								dey = dy / dx * tileYCache;
-							}
-							else {
+								dey = (dy / dx) * tileYCache;
+							} else {
 								dex = -tileXCache;
-								dey = -dy / dx * tileYCache;
+								dey = (-dy / dx) * tileYCache;
 							}
 							maxe = Math.abs(dx / dex);
-						}
-						else {
+						} else {
 							if (dy > 0) {
 								dey = tileYCache;
-								dex = dx / dy * tileXCache;
-							}
-							else {
+								dex = (dx / dy) * tileXCache;
+							} else {
 								dey = -tileYCache;
-								dex = -dx / dy * tileXCache;
+								dex = (-dx / dy) * tileXCache;
 							}
 							maxe = Math.abs(dy / dey);
 						}
 
+						// Iterate along the line to adjust visibility based on opacity
 						for (var e:int = 1; e <= maxe; e++) {
 							var absNx:int = nx + e * dex;
 							var absNy:int = ny + e * dey;
+
+							// Boundary checks
 							if (absNx < 0 || absNx >= mX || absNy < 0 || absNy >= mY) {
 								continue;
 							}
+
 							var tileXIdx:int = int(absNx * invTileX);
 							var tileYIdx:int = int(absNy * invTileY);
-							var absIndex:int = tileYIdx * spaceX + tileXIdx;
-							if (absIndex < 0 || absIndex >= space.length) continue;
+							var absIndex:int = tileYIdx * spaceXCache + tileXIdx;
 
-							var t:Tile = space[absIndex];
+							if (absIndex < 0 || absIndex >= spaceRef.length) continue;
+
+							var t:Tile = spaceRef[absIndex];
 							var opac:Number = (opacWaterCache > 0 && t.water > waterThreshold && opacWaterCache > t.opac) ? opacWaterCache : t.opac;
 
 							if (opac > 0) {
@@ -2006,36 +2300,51 @@ package fe.loc {
 						}
 					}
 
+					// Update visibility and set pixel opacity based on the new visibility
 					if (n2 > n1 + 0.01) {
 						currentTile.t_visi = n2;
-						changePixelOpacity(currentTile, i, j);
+						pixelValue = int((1 - currentTile.updVisi()) * 255) << 24;
+						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
 					else if (retDark && n2 < n1 - 0.01) {
 						currentTile.t_visi = Math.max(currentTile.t_visi - 0.025, n2);
-						changePixelOpacity(currentTile, i, j);
-					}
-				}
-			}
-		}
-		
-		public function lighting2():void {
-			if (!active) return;
-			relight_t--;
-			for (var i:int = 1; i < spaceX; i++) {
-				for (var j:int = 1; j < spaceY; j++) {
-					var currentTile:Tile = getTile(i, j);
-					if (currentTile.visi != currentTile.t_visi) {
-						changePixelOpacity(currentTile);
+						pixelValue = int((1 - currentTile.updVisi()) * 255) << 24;
+						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
 				}
 			}
 
-			function changePixelOpacity(tileToChange:Tile):void {
-				grafon.lightBmp.setPixel32(i, j + 1, int((1 - tileToChange.updVisi()) * 255) * 0x1000000);
-			}
+			// Unlock the bitmap after all pixel operations are complete
+			lightBmpRef.unlock();
 		}
-		
-		
+
+		public function lighting2():void {
+			if (!active) return;
+			relight_t--;
+
+			var spaceRef:Vector.<Tile> = space; // Correctly typed as Vector.<Tile>
+			var lightBmpRef:BitmapData = grafon.lightBmp; // Assuming 'lightBmp' is BitmapData
+
+			// Lock the bitmap for bulk pixel operations
+			lightBmpRef.lock();
+
+			for (var i:int = 1; i < spaceX; i++) {
+				for (var j:int = 1; j < spaceY; j++) {
+					var index:int = j * spaceX + i;
+					if (index < 0 || index >= spaceRef.length) continue;
+
+					var currentTile:Tile = spaceRef[index];
+					if (currentTile.visi != currentTile.t_visi) {
+						// Inlined changePixelOpacity
+						var pixelValue:int = int((1 - currentTile.updVisi()) * 255) << 24;
+						lightBmpRef.setPixel32(i, j + 1, pixelValue);
+					}
+				}
+			}
+
+			// Unlock the bitmap after all pixel operations are complete
+			lightBmpRef.unlock();
+		}
 		//дать опыт
 		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false):void {
 			if (un) {
@@ -2043,7 +2352,10 @@ package fe.loc {
 					dxp=summXp;
 					summXp=0;
 				}
-				else summXp -= dxp;
+				else {
+					summXp -= dxp;
+				}
+
 				land.summXp += dxp;
 			}
 			if (dxp > 0) {
@@ -2056,9 +2368,12 @@ package fe.loc {
 		public function stepInvis():void {
 			var numb:int = 0;
 			var obj:Entity = firstObj;
+		
 			if (warning > 0) warning--;
+		
 			while (obj) {
 				nextObj=obj.nobj;
+				
 				try {
 					obj.step();
 				} 
@@ -2066,32 +2381,57 @@ package fe.loc {
 					trace('ERROR: (00:29)');
 					World.w.showError(err, obj.err());
 				}
+				
 				obj=nextObj;
 				numb++;
+				
 				if (numb>10000) {
 					trace('alarma');
 					break;
 				}
 			}
-			if (isRebuild) rebuild();
-			if (isRecalc) recalcWater();
-			if (t_gwall==1) gwalls();
-			if (t_gwall>0) t_gwall--;
+			
+			if (isRebuild) {
+				rebuild();
+			}
+			
+			if (isRecalc) {
+				recalcWater();
+			}
+			
+			if (t_gwall == 1) {
+				gwalls();
+			}
+			
+			if (t_gwall > 0) {
+				t_gwall--;
+			}
 		}
 		
 		public function step():void {
 			gg.step();
-			if (prob) prob.step();
+			
+			if (prob) {
+				prob.step();
+			}
+			
 			//пройтись по всей цепочке объектов
 			var numb:int = 0;
 			var obj:Entity = firstObj;
-			if (warning>0) warning--;
+			
+			if (warning > 0) {
+				warning--;
+			}
+			
 			while (obj) {
 				nextObj=obj.nobj;
 				obj.step();
 
 				//определить объект под курсором
-				if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
+				if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) {
+					celObj=(obj as Obj);
+				}
+
 				obj=nextObj;
 				
 				//нет ли бесконечного цикла
@@ -2122,21 +2462,47 @@ package fe.loc {
 			getDist();
 			
 			//если нужно, пересчитать пространство
-			if (isRebuild) rebuild();
-			if (isRecalc) recalcWater();
-			if (t_gwall == 1) gwalls();
-			if (t_gwall > 0) t_gwall--;
+			if (isRebuild) {
+				rebuild();
+			}
+		
+			if (isRecalc) {
+				recalcWater();
+			}
+			
+			if (t_gwall == 1) {
+				gwalls();
+			}
+			
+			if (t_gwall > 0) {
+				t_gwall--;
+			}
+
 			//показать/скрыть указатели перехода
-			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) showSign(!sign_vis);
+			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) {
+				showSign(!sign_vis);
+			}
+			
 			//тревога
-			if (t_alarm > 0) t_alarm--;
+			if (t_alarm > 0) {
+				t_alarm--;
+			}
+			
 			if (t_alarmsp > 0) {
 				t_alarmsp--;
-				if (t_alarmsp==0) enemySpawn();
+				if (t_alarmsp==0) {
+					enemySpawn();
+				}
 			}
+			
 			//трясучка
-			if (quake > 0) quake--;
-			if (trus > 0) World.w.quake(trus / 2, trus);
+			if (quake > 0) {
+				quake--;
+			}
+			
+			if (trus > 0) {
+				World.w.quake(trus * 0.50, trus);
+			}
 
 			// Bounding-box debugging (Draws each objects bounding box)
 			grafon.drawDebugLayer();
@@ -2145,52 +2511,71 @@ package fe.loc {
 		// [Kill all enemies and open all containers]
 		public function getAll():int {
 			World.w.summxp = 0;
-			World.w.pers.expa(unXp*9);
+			World.w.pers.expa(unXp * 9);
+			
 			for each (var un:Unit in units) {
-				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
+				if (un.fraction!=Unit.F_PLAYER && un.xp>0) {
+					un.damage(100000, Resistances.DAM_INTERNAL);
+				}
 			}
+			
 			for each (var box:Box in objs) {
-				if (box.inter && box.inter.cont) box.inter.loot();
+				if (box.inter && box.inter.cont) {
+					box.inter.loot();
+				}
 			}
+			
 			return World.w.summxp;
 		}
 		
 		public function openAllPrize():void {
 			for each (var box:Box in objs) {
-				if (box.inter && box.inter.cont && box.inter.prize) box.inter.loot();
+				if (box.inter && box.inter.cont && box.inter.prize) {
+					box.inter.loot();
+				}
 			}
 		}
-		
 		
 		//дистанция между гг и активным объектом
 		private function getDist():void {
-			if (getTile(Math.round(World.w.celX/tileX),Math.round(World.w.celY/tileY)).visi<0.1) celObj=null;
+			if (getTile(Math.round(World.w.celX / tileX), Math.round(World.w.celY / tileY)).visi < 0.10) {
+				celObj = null;
+			}
+			
 			if (celObj) {
-				celDist=(gg.coordinates.X - celObj.coordinates.X) * (gg.coordinates.X - celObj.coordinates.X) + (gg.coordinates.Y - celObj.coordinates.Y) * (gg.coordinates.Y - celObj.coordinates.Y);
+				celDist = (gg.coordinates.X - celObj.coordinates.X) * (gg.coordinates.X - celObj.coordinates.X) + (gg.coordinates.Y - celObj.coordinates.Y) * (gg.coordinates.Y - celObj.coordinates.Y);
 			} 
-			else celDist=-1;
+			else {
+				celDist = -1;
+			}
 		}
-		
 		
 		//показать/скрыть указатели перехода
 		private function showSign(n:Boolean):void {
-			for each (var s in signposts) {
+			for each (var s:MovieClip in signposts) {
 				s.visible = n;
 			}
+			
 			sign_vis = n;
 		}
 		
 		public function newGrenade(g:Bullet):void {
-			if (grenades[0] == null) grenades[0] = g;
+			if (grenades[0] == null) {
+				grenades[0] = g;
+			}
 			else {
 				for (var i:int = 1; i < 10; i++) {
-					if (grenades[i] == null) grenades[i] = g;
+					if (grenades[i] == null) {
+						grenades[i] = g;
+					}
 				}
 			}
 		}
 
 		public function remGrenade(g:Bullet):void {
-			if (grenades[0] == g) grenades[0] = null;
+			if (grenades[0] == g) {
+				grenades[0] = null;
+			}
 			else {
 				for (var i:int = 1; i < 10; i++) {
 					if (grenades[i] == g) {

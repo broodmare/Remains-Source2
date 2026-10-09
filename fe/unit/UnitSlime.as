@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
 
@@ -30,15 +33,15 @@ package fe.unit {
 			}
 			if (tr==1) {
 				id='cryoslime';
-				vis=new visualCryoSlime();	// .SWF Dependency
+				vis = SymbolFactory.createInstance("visualCryoSlime") as MovieClip;
 			}
 			else if (tr==2) {
 				id='pinkslime';
-				vis=new visualPinkSlime();	// .SWF Dependency
+				vis = SymbolFactory.createInstance("visualPinkSlime") as MovieClip;
 			}
 			else {
 				id='slime';
-				vis=new visualSlime();		// .SWF Dependency
+				vis = SymbolFactory.createInstance("visualSlime") as MovieClip;
 			}
 
 			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));
@@ -56,8 +59,10 @@ package fe.unit {
 			doop=true;		//не отслеживает цели
 			mat=12;
 			collisionTip=0;
-			currentWeapon=getXmlWeapon(ndif);
-			if (currentWeapon) childObjs=new Array(currentWeapon);
+			currentWeapon = getXmlWeapon(ndif);
+			if (currentWeapon) {
+				childObjs=new Array(currentWeapon);
+			}
 			visibility=300;
 		}
 
@@ -68,7 +73,7 @@ package fe.unit {
 			detectionDelay = World.detectionDelay * 0.5;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
 			if (isMine) {
 				aiState=2;
@@ -81,7 +86,7 @@ package fe.unit {
 			} else aiState=0;
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				if (aiState==1) {
 					vis.rotation=180;
@@ -98,13 +103,13 @@ package fe.unit {
 			}
 		}
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean):void {
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
+		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void {
 			if (un && isMeet(un)) {
 				celX = un.coordinates.X;
 				celY = un.coordinates.Y - un.boundingBox.halfHeight;
@@ -121,7 +126,7 @@ package fe.unit {
 			celDY = celY - coordinates.Y + this.boundingBox.height;
 		}
 		
-		public function activate() {
+		public function activate():void {
 			if (sost>1) return;
 			setVis(true);
 			xp=0;

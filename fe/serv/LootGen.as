@@ -3,8 +3,12 @@ package fe.serv {
 	import fe.*;
 	import fe.loc.Loot;
 	import fe.loc.Location;
+	import fe.weapon.Weapon;
+	import fe.unit.Equipment;
 	
 	public class LootGen {
+
+		private static var itemManager:ItemManager;
 
 		// [Random objects]
 		public static var arr:Array;
@@ -16,45 +20,79 @@ package fe.serv {
 		private static var lootBroken:Boolean = false;
 		
 		public static function init():void {
+			// Get a reference to the item manager if needed
+			if (!itemManager) {
+				itemManager = ItemManager.reference;
+			}
+			
 			arr = [];
 			var n:Array = [];
 
-			n['weapon'] = 0;
-			arr['weapon'] = [];
-			arr['magic'] = [];
-			arr['uniq'] = [];
-			arr['pers'] = [];
+			n['weapon']		= 0;
+			n['uniq']		= 0;
+			arr['weapon']	= [];
+			arr['magic']	= [];
+			arr['uniq']		= [];
+			arr['pers']		= [];
 
-			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			for each (var weap in weaponList.(@tip > 0 && @tip < 4)) {
-				if (weap.com.length()==0) continue;
-				arr['weapon'].push({id:weap.@id, st:weap.com.@stage, chance:weap.com.@chance, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['weapon']+=Number(weap.com.@chance))});
-				if (weap.com.@uniq.length()) arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
+			// [Weapons that can be found] Unique variants are found using their base weapon's 'uniq' chance
+			var weaponData:Object = WeaponManager.reference.allWeaponData();
+			for each (var weap:Object in weaponData) {
+				if (weap.variant) {
+					continue;
+				}
+				
+				if (weap.tip == Weapon.TYPE_MAGIC) {
+					arr['magic'].push({id:weap.id, st:0, chance:0, worth:0, lvl:0, r:0});
+					continue;
+				}
+				
+				if (weap.tip != Weapon.TYPE_MELEE && weap.tip != Weapon.TYPE_LIGHTGUN && weap.tip != Weapon.TYPE_HEAVYGUN) {
+					continue;
+				}
+				
+				// Weapons without any [price, finding and repair] properties can't be found
+				if (!("com_chance" in weap) && !("com_price" in weap) && !("com_stage" in weap)) {
+					continue;
+				}
+				
+				var chance:Number = Number(weap.com_chance) || 0;
+				arr['weapon'].push({id:weap.id, st:weap.com_stage, chance:chance, worth:weap.com_worth, lvl:weap.lvl, r:(n['weapon'] += chance)});
+				
+				if ("com_uniq" in weap && (weap.id + "^1") in weaponData) {
+					var uniqChance:Number = Number(weap.com_uniq) || 0;
+					arr['uniq'].push({id:weap.id + "^1", st:weap.com_stage, chance:uniqChance, worth:weap.com_worth, lvl:weap.lvl, r:(n['uniq'] += uniqChance)});
+				}
 			}
-			for each (weap in weaponList.(@tip==5)) {
-				arr['magic'].push({id:weap.@id, st:0, chance:0, worth:0, lvl:0, r:0});
-			}
-			weaponList = null; // Manual cleanup.
 
-			var itemList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
-			for each (var item in itemList) {
-				if (item.@tip.length()) {
-					if (arr[item.@tip] == null) {
-						arr[item.@tip] = [];
-						n[item.@tip] = 0;
+			// [Items, ammo and schematics]
+			for each (var item:Object in itemManager.itemList) {
+				if (item.tip) {
+					if (arr[item.tip] == null) {
+						arr[item.tip] = [];
+						n[item.tip] = 0;
 					}
-					arr[item.@tip].push({id:item.@id, st:item.@stage, chance:(item.@chance.length()?item.@chance:1), lvl:item.@lvl,  r:(n[item.@tip]+=Number(item.@chance.length()?item.@chance:1))});
-					if (item.@tip=='art' || item.@tip=='impl' || item.sk.length()) arr['pers'].push(item.@id);	//признак предметов, изменяющих характеристики перса
+					
+					var itemChance:Number = ("chance" in item) ? Number(item.chance) : 1;
+					arr[item.tip].push({id:item.id, st:item.stage, chance:itemChance, lvl:item.lvl, r:(n[item.tip] += itemChance)});
+					
+					// [a sign of items that change the characteristics of a character]
+					if (item.tip == Item.L_ART || item.tip == Item.L_IMPL || "sk" in item || "skills" in item) {
+						arr['pers'].push(item.id);
+					}
 				}
-				if (item.@tip2.length()) {
-					if (arr[item.@tip2] == null) {
-						arr[item.@tip2] = [];
-						n[item.@tip2] = 0;
+				
+				// [Items that are also found as a second type of loot]
+				if (item.tip2) {
+					if (arr[item.tip2] == null) {
+						arr[item.tip2] = [];
+						n[item.tip2] = 0;
 					}
-					arr[item.@tip2].push({id:item.@id, st:item.@stage, chance:(item.@chance2.length()?item.@chance2:item.@chance), lvl:item.@lvl,  r:(n[item.@tip2]+=Number(item.@chance2.length()?item.@chance2:item.@chance))});
+					
+					var chance2:Number = ("chance2" in item) ? Number(item.chance2) : Number(item.chance);
+					arr[item.tip2].push({id:item.id, st:item.stage, chance:chance2, lvl:item.lvl, r:(n[item.tip2] += chance2)});
 				}
 			}
-			itemList = null; // Manual cleanup
 		}
 		
 		public static function getRandom(lootType:String, maxlvl:Number=-100, worth:int=-100):String {
@@ -76,9 +114,9 @@ package fe.serv {
 			if (lootType != Item.L_BOOK && (maxlvl > 0 || worth > 0 || gameStage > 0)) {
 				for each(var i in a) {
 					if (
-						(gameStage <= 0 || i.st == null || i.st <= gameStage) &&	//зависит от этапа сюжета
-						(maxlvl == -100 || i.lvl == null || i.lvl <= maxlvl) &&		//максимальный уровень, зависит от сложности
-						(worth == -100 || i.worth == null || worth == i.worth)		//тип предмета, зависит от типа контейнера
+						(gameStage <= 0 || i.st == null || i.st <= gameStage) &&	// [Depends on the stage of the plot]
+						(maxlvl == -100 || i.lvl == null || i.lvl <= maxlvl) &&		// [Maximum level, depends on difficulty]
+						(worth == -100 || i.worth == null || worth == i.worth)		// [Item type, depends on container type]
 					) {
 						res.push({id:i.id, r:(n += Number(i.chance))});
 					}
@@ -159,27 +197,24 @@ package fe.serv {
 			if (itemCount != -1) {
 				iCount = itemCount;
 			}	
+			
 			// If no amount of items was specified or it's a unique item, spawn 1 of the item
 			if (itemCount == -1 && lootType == Item.L_UNIQ) {
 				iCount = 1;
 			}
+			
 			// Spawn the item
-			var item:Item = new Item(lootType, id, iCount);
-			if (item.xml != null) {
-				//trace("LootGen.as/newLoot() - Created new item, XML Data: " + item.xml.toXMLString());
-				//trace("LoostGen.as/newLoot() - Item info -- ID: " + item.id + ", name: " + item.nazv  + ", kol: " + item.kol);
-			}
-			else {
-				trace("LootGen.as/newLoot() - ERROR: Created new item with no XML data");
-			}
+			var item:Item = new Item(id, iCount, (lootType == Item.L_UNIQ) ? Item.L_WEAPON : null);
+			var itemData:Object = item.data;
 
 			if (lootType == 'eda') {
-				item.tip = 'food';
+				item.tip = Item.L_FOOD;
 			}
+			
 			if (lootType == 'co') {
-				item.tip = 'scheme';
+				item.tip = Item.L_SCHEME;
 				var wid:String = id.substr(2);
-				item.nazv = Res.pipText('recipe') + ' «' + Res.txt('i', wid) + '»';
+				item.nazv = LanguageManager.reference.localText("pip", 'recipe') + ' «' + LanguageManager.reference.localText("items", wid) + '»';
 			}
 
 			item.multHP = mn;
@@ -187,42 +222,59 @@ package fe.serv {
 			item.cont = cont;
 
 			// Reduce rewards for containers that were broken into instead of unlocked
-			if (item.id == 'money') {	//множитель крышек
+			if (item.id == 'money') {	// [Cap multiplier]
 				item.kol *= (World.w.pers.capsMult * World.w.pers.difCapsMult);
 			}	
-			if (item.id == 'bit') {		//множитель крышек
+			
+			if (item.id == 'bit') {		// [Cap multiplier]
 				item.kol *= (World.w.pers.bitsMult * World.w.pers.difCapsMult);
 			}	
+			
 			if (lootBroken && (item.id == 'money' || item.id == 'bit')) {
 				item.kol *= 0.5;
 			}
+			
 			if (lootBroken && (item.tip == Item.L_AMMO || item.tip == Item.L_EXPL) && Math.random() < 0.5) {
 				return false;
+			}
 			
-			}
 			// [Check limits]
-			if (imp == 0 && item.xml.@limit.length()) {
-				var lim:int = World.w.game.getLimit(item.xml.@limit);
+			if (imp == 0 && "limit" in itemData) {
+				var lim:int = World.w.game.getLimit(itemData.limit);
 				var itemLimit:Number = World.w.land.lootLimit;
-				if (item.xml.@mlim.length()) itemLimit *= item.xml.@mlim;
-				if (item.xml.@maxlim.length() && lim >= item.xml.@maxlim) {
-					if (!World.w.testLoot) trace("Maximum loot amount reached for item: " + id + ", amount: " + lim);
+				
+				if ("mlim" in itemData) {
+					itemLimit *= itemData.mlim;
+				}
+				
+				if ("maxlim" in itemData && lim >= itemData.maxlim) {
+					if (!World.w.testLoot) {
+						trace("Maximum loot amount reached for item: " + id + ", amount: " + lim);
+					}
+					
 					return false;
 				}
+				
 				if (lim >= itemLimit) {
-					if (!World.w.testLoot) trace("Maximum loot amount reached for item: " + id + ", amount: " + itemLimit);
+					if (!World.w.testLoot) {
+						trace("Maximum loot amount reached for item: " + id + ", amount: " + itemLimit);
+					}
+					
 					return false;
 				}
-				World.w.game.addLimit(item.xml.@limit,1);
+				
+				World.w.game.addLimit(itemData.limit, 1);
 			}
+			
 			if (World.w.testLoot) {
-				trace("LootGen.as/newLoot() - is calling the Invent.as()/take function because World.testLoot is true");
-				World.w.invent.take(item);
+				World.w.gg.itemInteraction.take(item);
 			}
 			else {
 				new Loot(loc, item, nx, ny, true);
 			}
+			
 			is_loot++;
+			
 			return true;
 		}
 		
@@ -301,9 +353,12 @@ package fe.serv {
 					if (Math.random()<0.5) newLoot(1, Item.L_WEAPON,'5',1);
 					else newLoot(1, Item.L_WEAPON,'4',1);
 				}
+				
 				newLoot(0.5,Item.L_EXPL,'',Math.floor(Math.random()*4));
 				newLoot(0.5,Item.L_AMMO,'',Math.floor(Math.random()*4));
+				
 				if (World.w.pers.freel) newLoot(0.5,Item.L_AMMO);
+				
 				if (World.w.pers.barahlo) newLoot(0.5, Item.L_COMPA, 'intel_comp');
 			}
 			else if (cont=='robocell') {
@@ -311,32 +366,42 @@ package fe.serv {
 			}
 			else if (cont=='instr') {
 				newLoot(0.1, Item.L_ITEM,'pin',Math.floor(Math.random()*5+1)); 
-				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) newLoot(0.5, Item.L_ITEM,'rep');
+				
+				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) {
+					newLoot(0.5, Item.L_ITEM,'rep');
+				}
+				
 				newLoot(0.85, Item.L_COMPA);
 				newLoot(0.7, Item.L_COMPW);
 				newLoot(0.1, Item.L_COMPE);
 				newLoot(0.5, Item.L_COMPM);
 				newLoot(0.5, Item.L_PAINT);
+				
 				if (World.w.pers.barahlo) {
 					newLoot(0.85, Item.L_COMPA);
-					newLoot(0.7, Item.L_COMPW);
-					newLoot(0.1, Item.L_COMPE);
-					newLoot(0.1, Item.L_COMPE);
-					newLoot(0.5, Item.L_COMPA);
+					newLoot(0.70, Item.L_COMPW);
+					newLoot(0.10, Item.L_COMPE);
+					newLoot(0.10, Item.L_COMPE);
+					newLoot(0.50, Item.L_COMPA);
 				}
 			}
 			else if (cont=='instr2') {
 				newLoot(0.1, Item.L_ITEM,'pin',Math.floor(Math.random()*5+1)); 
-				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) newLoot(0.5, Item.L_ITEM,'rep');
+				
+				if (!newLoot(0.35, Item.L_WEAPON,'2',1)) {
+					newLoot(0.5, Item.L_ITEM,'rep');
+				}
+				
 				newLoot(0.75, Item.L_COMPA);
 				newLoot(0.4, Item.L_COMPW);
 				newLoot(0.5, Item.L_COMPM);
 				newLoot(0.2, Item.L_PAINT);
+				
 				if (World.w.pers.barahlo) {
 					newLoot(0.75, Item.L_COMPA);
-					newLoot(0.4, Item.L_COMPW);
-					newLoot(0.1, Item.L_COMPE);
-					newLoot(0.5, Item.L_COMPA);
+					newLoot(0.40, Item.L_COMPW);
+					newLoot(0.10, Item.L_COMPE);
+					newLoot(0.50, Item.L_COMPA);
 				}
 			}
 			else if (cont=='trash') {
@@ -439,13 +504,22 @@ package fe.serv {
 				if (nloc.itemsTip=='bibl') newLoot(0.5, Item.L_ITEM, 'book_cm');
 			}
 			else if (cont=='term' || cont=='info') {
-				if (nloc.land.act.id=='minst') newLoot(1,Item.L_ITEM,'datast');
-				else if (!newLoot(0.25, Item.L_ITEM,'disc')) newLoot(1,Item.L_ITEM,'data');
+				if (nloc.land.act.id=='minst') {
+					newLoot(1,Item.L_ITEM,'datast');
+				}
+				else if (!newLoot(0.25, Item.L_ITEM,'disc')) {
+					newLoot(1,Item.L_ITEM,'data');
+				}
+				
 				newLoot(0.5, Item.L_COMPM);
 			}
 			else if (cont=='cryo') {
 				itemCount=Math.floor(Math.random()*3);
-				for (var j:int = 0; j<=itemCount; j++) newLoot(1, Item.L_ITEM,'pcryo');
+			
+				for (var l:int = 0; l<=itemCount; l++) {
+					newLoot(1, Item.L_ITEM,'pcryo');
+				}
+				
 				newLoot(0.5, Item.L_ITEM, 'gel');
 			}
 			else if (cont=='chest') {
@@ -457,12 +531,18 @@ package fe.serv {
 				newLoot(0.03, Item.L_BOOK);
 				newLoot(0.5, Item.L_AMMO);
 				newLoot(0.03, Item.L_SCHEME);
-				if (is_loot>5) replic('full');
-				if (is_loot<2) replic('empty');
+				
+				if (is_loot>5) {
+					replic('full');
+				}
+				
+				if (is_loot<2) {
+					replic('empty');
+				}
 			}
 			else if (cont=='safe') {
 				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
-					for (var k = 0; k<4; k++) {
+					for (var m:int = 0; m < 4; m++) {
 						loc.createUnit('bloat', nx, ny, true);
 					}
 				}
@@ -481,30 +561,52 @@ package fe.serv {
 					newLoot(0.1+lockDifficulty/300, Item.L_SCHEME);
 					newLoot(0.25, Item.L_POT, 'potMP');
 					newLoot(0.1, Item.L_POT, 'potHP');
-					if (!newLoot(0.4, Item.L_MED, 'potm2')) newLoot(0.3, Item.L_MED, 'potm3')
-					if (is_loot==0) newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
-					if (is_loot>6) replic('full');
-					if (is_loot<2) replic('empty');
+					
+					if (!newLoot(0.4, Item.L_MED, 'potm2')) {
+						newLoot(0.3, Item.L_MED, 'potm3');
+					}
+					
+					if (is_loot==0) {
+						newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
+					}
+					
+					if (is_loot>6) {
+						replic('full');
+					}
+					
+					if (is_loot<2) {
+						replic('empty');
+					}
 				}
 			}
-			else if (cont=='specweap') {
-				itemCount=Math.floor(Math.random()*4);
+			else if (cont == 'specweap') {
+				itemCount = Math.floor(Math.random()*4);
 				var vars:Array = [];
-				if (World.w.invent.weapons['lsword']==null || World.w.invent.weapons['lsword'].variant==0) vars.push('lsword^1');
-				if (World.w.invent.weapons['antidrak']==null || World.w.invent.weapons['antidrak'].variant==0) vars.push('antidrak^1');
-				if (World.w.invent.weapons['quick']==null || World.w.invent.weapons['quick'].variant==0) vars.push('quick^1');
-				if (World.w.invent.weapons['mlau']==null || World.w.invent.weapons['mlau'].variant==0) vars.push('mlau^1');
-				if (vars.length) newLoot(1, Item.L_WEAPON, vars[Math.floor(Math.random()*vars.length)]);
-				else newLoot(1, Item.L_UNIQ);
+				var equip:Equipment = World.w.invent.equipment;
+				
+				// [Unique weapons the player doesn't have yet]
+				for each (var specId:String in ['lsword^1', 'antidrak^1', 'quick^1', 'mlau^1']) {
+					if (!equip.hasWeapon(specId)) {
+						vars.push(specId);
+					}
+				}
+				
+				if (vars.length) {
+					newLoot(1, Item.L_WEAPON, vars[Math.floor(Math.random() * vars.length)]);
+				}
+				else {
+					newLoot(1, Item.L_UNIQ);
+				}
 			}
-			else if (cont=='specalc') {
+			else if (cont == 'specalc') {
 				newLoot(1, Item.L_SPEC,'alc7');
-				newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
+				newLoot(1, Item.L_ITEM,'gem' + Math.floor(Math.random() * 3 + 1));
 			}
-			else if (cont=='speclp') {
-				newLoot(1, Item.L_SPEC,'lp_item');
-				newLoot(1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
+			else if (cont == 'speclp') {
+				newLoot(1, Item.L_SPEC, 'lp_item');
+				newLoot(1, Item.L_ITEM, 'gem' + Math.floor(Math.random() * 3 + 1));
 			}
+			
 			return is_loot > 0;
 		}
 		
@@ -716,7 +818,8 @@ package fe.serv {
 			else if (lootTable=='vortex' || lootTable=='spritebot' || lootTable=='roller') {
 				newLoot(0.2, Item.L_ITEM, 'scrap');
 			}
-			return is_loot>0;
+			
+			return is_loot > 0;
 		}
 		
 		public static function replic(s:String):void {

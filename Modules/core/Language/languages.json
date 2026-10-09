@@ -2,36 +2,43 @@
 	{
 		"id": "en",
 		"name": "English",
-		"file": "text_en.xml"
+		"file": "text_en.json",
+		"folder": "English"
 	},
 	{
 		"id": "ru",
 		"name": "Русский",
-		"file": "text_ru.xml"
+		"file": "text_ru.json",
+		"folder": "Russian"
 	},
 	{
 		"id": "zh",
 		"name": "中文",
-		"file": "text_zh.xml"
+		"file": "text_zh.json",
+		"folder": "Chinese"
 	},
 	{
 		"id": "pl",
 		"name": "Polski",
-		"file": "text_pl.xml"
+		"file": "text_pl.json",
+		"folder": "Polish"
 	},
 	{
 		"id": "de",
 		"name": "Deutsch",
-		"file": "text_de.xml"
+		"file": "text_de.json",
+		"folder": "German"
 	},
 	{
 		"id": "es",
 		"name": "Español",
-		"file": "text_es.xml"
+		"file": "text_es.json",
+		"folder": "Spanish"
 	},
 	{
 		"id": "jp",
 		"name": "日本語",
-		"file": "text_jp.xml"
+		"file": "text_jp.json",
+		"folder": "Japanese"
 	}
 ]

@@ -3,55 +3,61 @@ package fe.unit {
 	import flash.display.MovieClip;
 	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Calc;
 	import fe.loc.Tile;
-	import fe.serv.NPC;
+	import fe.serv.Npc;
 	import fe.weapon.Weapon;
 	
 	public class UnitNPC extends UnitPon {
 		
-		public var targNPC:NPC;
-		public var npcId:String = '';
+		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between barks
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+
+		public var targNPC:Npc;
 		public var npcXML:XML;
+		public var npcId:String			= "";
 		
 		public var visClass:Class;
 		public var ico:MovieClip;
-		public var icoFrame:int=1;
-		public var noTurn:Boolean=false;	//не поворачиваться при разговоре
-		public var silent:Boolean=false;	//не трындеть в обычном состоянии
-		public var showSign:Boolean=false;	//показывать мигающий указатель
+		public var icoFrame:int			= 1;
+		public var noTurn:Boolean		= false;		// Do not rotate during conversation
+		public var silent:Boolean		= false;		// Do not chatter in normal state
+		public var showSign:Boolean		= false;	// Show blinking indicator
 		
-		public var animFly:Boolean=false;
-		public var weap:String='';
-		public var weap2:String='';
-		var dopWeapon:Weapon;
+		public var animFly:Boolean		=false;
+		public var weap:String			="";
+		public var weap2:String			="";
+		private var dopWeapon:Weapon;
 		
-		public var zanyato:Boolean = false;				// [Npc is busy fighting, does not interact]
-		var t_ref:int=0;								// [stop talking several times in a row]
-		private static var NPC_BARK_COOLDOWN:int = 12;	// How long to wait between NPC barks
+		public var zanyato:Boolean		= false;				// [Npc is busy fighting, does not interact]
+		private var t_ref:int			= 0;						// [stop talking several times in a row]
 		
-		var t_anim:int=100;
-		var t_float:Number=0;
-		var floatX:Number=0, floatY:Number=0;
+		private var t_anim:int			= 100;
+		private var t_float:Number		= 0.00;
+		private var floatX:Number		= 0.00;
+		private var floatY:Number		= 0.00;
 		
-		var que:Array = [];
-		var wait:int=0;
-		var dey:String='';
-		var cx:Number=-1, cy:Number=-1;
-		var dvig:Object=new Object;
-
-		private static var tileX:int = Tile.tileX;
-		private static var tileY:int = Tile.tileY;
+		private var que:Array			= [];
+		private var wait:int			= 0;
+		private var dey:String			= "";
+		private var cx:Number			= -1.00;
+		private var cy:Number			= -1.00;
+		private var dvig:Object			= {};
 		
 		// Constructor
-		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			super(cid, ndif, xml, loadObj);
-			if (cid!='' && cid!=null) {
-				id=cid;
+		public function UnitNPC(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
+			
+			super(cid, ndif, xml, loadObj); // UnitPon Constructor
+			
+			if (cid != "" && cid != null) {
+				id = cid;
 			}
 			else {
-				id='npc';
+				id = "npc";
 			}
+			
 			getXmlParam();
 			
 			//взять данные об npc
@@ -60,152 +66,193 @@ package fe.unit {
 			}
 
 			if (targNPC) {
-				if (loadObj && loadObj.rep!=null) targNPC.rep=loadObj.rep;	//старый формат сохранения
-				npcId=targNPC.id;
-				npcXML=targNPC.xml;
+				if (loadObj && loadObj.rep != null) targNPC.rep = loadObj.rep;	//старый формат сохранения
+				npcId = targNPC.id;
+				npcXML = targNPC.xml;
 			}
 			else {
-				npcId=id;
-				targNPC = new NPC(null,null,id,ndif);
+				npcId = id;
+				targNPC = new Npc(null, null, id, ndif);
 			}
 			
-			targNPC.inter=inter;
-			targNPC.owner=this;
-			//если есть настройки npc
+			targNPC.inter = inter;
+			targNPC.owner = this;
+			
+			// [If there are npc settings]
+			var fetch:Function  = SymbolFactory.fetchSymbolClass;
 			if (npcXML) {
 				if (npcXML.@vis.length()) {
-					visClass=Res.getClass('visual'+npcXML.@vis, npcXML.@vis, visualVendor);
-				} else visClass=visualVendor;
+					// Try getting the visuals for 'visualNAME' or if that can't be found xml.vis or if both fail, visualVendor
+					visClass = fetch("visual" + npcXML.@vis) || fetch(npcXML.@vis) || fetch("visualVendor") as Class;
+				}
+				else {
+					visClass = fetch("visualVendor") as Class;
+				}
+				
 				if (npcXML.@noturn.length()) noTurn=true;
 				if (npcXML.@ico.length()) icoFrame=npcXML.@ico;
-				if (Res.istxt('u',npcId)) nazv=Res.txt('u',npcId);
-				if (npcXML.@name.length()) nazv=Res.txt('u',npcXML.@name);
+				nazv = LanguageManager.reference.localText("unit", npcId);
+				if (npcXML.@name.length()) nazv = LanguageManager.reference.localText("unit", npcXML.@name);
 				if (npcXML.@replic.length()) id_replic=npcXML.@replic;
 				if (npcXML.@silent.length()) silent=true;
 				if (npcXML.@weap.length()) weap=npcXML.@weap;
 				if (npcXML.@weap2.length()) weap2=npcXML.@weap2;
 				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
 			}
-			else {	//и если нет
-				if (id=='doctor') {
-					visClass=visualDoctor;
-					icoFrame=3;
+			else {	// [And if not]
+				if (id == "doctor") {
+					visClass = fetch("visualDoctor") as Class;
+					icoFrame = 3;
 				}
 				else {
-					visClass=visualVendor;
-					icoFrame=2;
+					visClass = fetch("visualVendor") as Class;
+					icoFrame = 2;
 				}
 			}
 			
-			//внешний вид
-			vis=new visClass();
-			ico=new visNPCIco();
-			ico.y=-140;
+			// [Appearance]
+			vis = new visClass() as MovieClip;
+			ico = SymbolFactory.createInstance("visNPCIco") as MovieClip;
+			ico.y = -140;
 			vis.addChild(ico);
-			if (vis==null) vis=new visualVendor();
+			
+			// use the class name we fetched to create an instance of the NPCs visuals
+			if (vis == null) {
+				vis = SymbolFactory.createInstance("visualVendor") as MovieClip;
+			}	
+			
 			if (vis.osn) {
 				try {
-					vis.osn.gotoAndStop('stay');
+					vis.osn.gotoAndStop("stay");
 				}
-				catch(err)
-				{
-					trace('ERROR: (00:9)');
+				catch(err) {
+					trace("ERROR: (00:9)");
 					vis.osn.gotoAndStop(1);
 				}
 			}
-			//оружие
-			if (weap != '') {
-				currentWeapon=Weapon.create(this,weap);
-				currentWeapon.hold=currentWeapon.holder;
-				setCel(null,100,-30);
-				childObjs=[currentWeapon];
-				if (npcXML && npcXML.@dammult.length()) currentWeapon.damage*=npcXML.@dammult;
+			// [Weapon]
+			var wm:WeaponManager = WeaponManager.reference;
+			if (weap != "") {
+				currentWeapon = wm.cloneWeapon(weap);
+				wm.setOwner(currentWeapon, this);
+
+				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
+				setCel(null, 100, -30);
+				childObjs = [currentWeapon];
+				
+				if (npcXML && npcXML.@dammult.length()) {
+					currentWeapon.damage *= npcXML.@dammult;
+				}
 			}
-			if (weap2 != '') {
-				dopWeapon=Weapon.create(this,weap2);
-				dopWeapon.hold=dopWeapon.holder;
+			
+			if (weap2 != "") {
+				dopWeapon = wm.cloneWeapon(weap2);
+				wm.setOwner(dopWeapon, this);
+				dopWeapon.magazineRounds = dopWeapon.magazineCapacity;
 				childObjs.push(dopWeapon);
 			}
 			
-			//настройки из XML карты
+			// [Settings from XML map]
 			if (xml) {
 				if (xml.@fly.length()) {
-					animFly=true;
-					aiTip='fly';
-					isFly=true;
+					animFly = true;
+					aiTip = "fly";
+					isFly = true;
 				}
-				if (xml.@hide.length()) hide();
-				if (xml.@ai.length()) aiTip=xml.@ai;
+				
+				if (xml.@hide.length()) {
+					hide();
+				}
+				
+				if (xml.@ai.length()) {
+					aiTip = xml.@ai;
+				}
 			}
+			
 			targNPC.init();
 			setInter();
 		}
 
 		public override function addVisual():void {
 			super.addVisual();
+			
 			if (targNPC) {
 				targNPC.refresh();
 				targNPC.check();
-				isVis=!targNPC.hidden;
+				isVis =! targNPC.hidden;
 			}
+			
 			vis.visible=isVis;
-			if (currentWeapon) currentWeapon.vis.visible=isVis;
-			inter.active=isVis;
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = isVis;
+			}
+			
+			inter.active = isVis;
 		}
 		
-		public function setInter() {
-			inter.action=100;
-			inter.active=true;
-			inter.cont=null;
-			inter.actFun=npcFun;
-			if (targNPC) targNPC.setInter();
+		public function setInter():void {
+			inter.action = 100;
+			inter.active = true;
+			inter.cont = null;
+			inter.actFun = npcFun;
+			
+			if (targNPC) {
+				targNPC.setInter();
+			}
+			
 			inter.update();
 		}
 		
-		public override function animate():void
-		{
-			if (t_anim > 0) t_anim--;
-			else
-			{
+		public override function animate():void {
+			if (t_anim > 0) {
+				t_anim--;
+			}
+			else {
 				t_anim = Math.random() * 200 + 150;
 				var br:int = int(Math.random() * 2 + 1);
-				try
-				{
-					vis.osn.gotoAndPlay('move' + br);
-				}
-				catch (err)
-				{
-					// TODO: NPCs will spam this error, investigate why 
-					//trace('ERROR: (00:0A) - NPC: "' + npcId + '" failed to play animation (move' + br.toString() + ')!');
-				}
-			}
-			if (animFly)
-			{
+				
 				try {
-					if (isFly && animState!='fly') {
-						vis.osn.gotoAndStop('fly');
-						animState = 'fly';
+					vis.osn.gotoAndPlay("move" + br);
+				}
+				catch (err) {
+					// TODO: NPCs will spam this error, investigate why 
+					//trace("ERROR: (00:0A) - Npc: \"" + npcId + "\" failed to play animation (move" + br.toString() + ")!");
+				}
+			}
+			
+			if (animFly) {
+				try {
+					if (isFly && animState != "fly") {
+						vis.osn.gotoAndStop("fly");
+						animState = "fly";
 					}
-					if (!isFly && animState!='stay') {
-						vis.osn.gotoAndStop('stay');
-						animState = 'stay';
+					
+					if (!isFly && animState != "stay") {
+						vis.osn.gotoAndStop("stay");
+						animState = "stay";
 					}
 				}
-				catch(err)
-				{	
-					trace('ERROR: (00:0B)  - NPC: "' + npcId + '" failed run flying animation!');	
+				catch(err) {	
+					trace("ERROR: (00:0B)  - Npc: \"" + npcId + "\" failed run flying animation!");	
 				}
 			}
 		}
 		
-		function hide() {
-			inter.active=false;
-			isVis=false;
-			if (vis) vis.visible=false;
-			if (currentWeapon) currentWeapon.vis.visible=false;
+		private function hide():void {
+			inter.active = false;
+			isVis = false;
+			
+			if (vis) {
+				vis.visible = false;
+			}
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = false;
+			}
 		}
 		
-		public function npcFun() {
+		public function npcFun():void {
 			if (zanyato || t_ref > 0) {
 				return;
 			}
@@ -221,19 +268,21 @@ package fe.unit {
 					storona = 1;
 				}
 			}
+			
 			if (targNPC) {
 				targNPC.activate();
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null):void {
 			super.command(com,val);
+			
 			//скрыть
-			if (com=='hide') {
+			if (com=="hide") {
 				hide();
 			//проявиться
 			}
-			else if (com=='show') {
+			else if (com=="show") {
 				isVis=true;
 				vis.visible=true;
 				vis.alpha=0;
@@ -244,28 +293,27 @@ package fe.unit {
 				targNPC.hidden=false;
 			//открыть глаза
 			}
-			else if (com=='openEyes') {
+			else if (com=="openEyes") {
 				try {
 					vis.osn.gotoAndStop(2);
 				}
-				catch (err)
-				{
-					trace('ERROR: (00:C)');
+				catch (err) {
+					trace("ERROR: (00:C)");
 				}
 			//проверить, нужна ли мигающая подсказка
 			}
-			else if (com=='sign') {
+			else if (com=="sign") {
 				if (ico.sign) {
-					if (aiTip=='fly') ico.sign.visible=false;
+					if (aiTip=="fly") ico.sign.visible=false;
 					else ico.sign.visible=World.w.helpMess;
 				}
 			//попрощаться
 			}
-			else if (com=='replicVse') {
+			else if (com=="replicVse") {
 				t_replic=0;
-				replic('vse');
+				replic("vse");
 			}
-			else if (com=='rep') {
+			else if (com=="rep") {
 				targNPC.rep=int(val);
 			}
 			else {
@@ -277,49 +325,53 @@ package fe.unit {
 		}
 		
 		//команды, выполняющиеся в очереди
-		function analiz(q) {
+		private function analiz(q:Object):void {
 			//реплика
-			if (q.com=='tell') {
+			if (q.com=="tell") {
 				t_replic=0;
 				replic(q.val);
 			//проверка статуса
 			}
-			else if (q.com=='check') {
+			else if (q.com=="check") {
 				if (targNPC) targNPC.check();
 			//сменить тип поведения
 			}
-			else if (q.com=='ai') {
+			else if (q.com=="ai") {
 				aiTip=q.val;
 			//лететь в точку
 			}
-			else if (q.com=='fly') {
+			else if (q.com=="fly") {
 				var celF:Array=q.val.split(":");
 				cx=(int(celF[0])+1)*tileX;
 				cy=(int(celF[1]))*tileY;
 				trace(cx,cy);
-				dey='fly';
+				dey="fly";
 				wait=1000;
 			//скрыть
 			}
-			else if (q.com=='rem') {
+			else if (q.com=="rem") {
 				hide();
 			//повернуться
 			}
-			else if (q.com=='turn') {
-				if (q.val=='0') storona=-storona;
-				else if (q.val=='-1') storona=-1;
+			else if (q.com=="turn") {
+				if (q.val=="0") storona=-storona;
+				else if (q.val=="-1") storona=-1;
 				else storona=1;
 				setVisPos();
 			}
-			else if (q.com=='mater') {
-				if (q.val=='0') mater=false;
+			else if (q.com=="mater") {
+				if (q.val=="0") mater=false;
 				else mater=true;
 			}
 		}
 		
 		public override function findCel(over:Boolean=false):Boolean {
 			for each (var un:Unit in loc.units) {
-				if (un.disabled || un.sost>1 || un.fraction==fraction || un.doop || un.invis) continue;
+				
+				if (un.disabled || un.sost>1 || un.fraction==fraction || un.doop || un.invis) {
+					continue;
+				}
+				
 				if (look(un,true)) {
 					setCel(un);
 					return true;
@@ -333,86 +385,115 @@ package fe.unit {
 			if (t_ref > 0) t_ref--;
 
 			if (World.w.gui.dialScript.running) {
+				// Do nothing
 			}
 			else {
 				t_replic--;
 				if (t_replic<=0) {
-					if (!silent) replic('neutral');
+					if (!silent) replic("neutral");
 					t_replic=Math.random()*500+200;
 				}
 				if (targNPC && targNPC.zzzGen && t_replic%120==2) {
-					newPart('zzz',3);
+					newPart("zzz",3);
 					try {
 						vis.osn.gotoAndStop(1);
 					}
-					catch (err)
-					{
-						trace('ERROR: (00:D)');
+					catch (err) {
+						trace("ERROR: (00:D)");
 					}
 				}
 			}
-			if (wait>0) wait--;
-			if (wait==1) dey='';
+			
+			if (wait>0) {
+				wait--;
+			}
+			
+			if (wait==1) {
+				dey="";
+			}
+			
 			if (que.length && wait<=0) {
-				var q=que.shift();
+				var q:Object = que.shift();	// Removes first element of the array and returns it
 				analiz(q);
 			}
-			if (vis.alpha<1) vis.alpha+=0.05;
-			if (currentWeapon && currentWeapon.vis.alpha<1) currentWeapon.vis.alpha+=0.05;
-			if (aiTip=='fly') {
-				if (!stay) isFly=true;
+			
+			if (vis.alpha < 1) {
+				vis.alpha += 0.05;
 			}
+			
+			if (currentWeapon && currentWeapon.vis.alpha < 1) {
+				currentWeapon.vis.alpha += 0.05;
+			}
+			
+			if (aiTip == "fly") {
+				if (!stay) {
+					isFly=true;
+				}
+			}
+			
 			if (isFly) {
 				t_float+=0.243;
 				floatY=Math.cos(t_float)*0.5;
 				velocity.X += floatX;
 				velocity.Y += floatY;
 			}
+		
 			if (celUnit==null) {
 				celX = coordinates.X + storona * 100;
 				celY = coordinates.Y - 10;
 			}
-			if (dey=='fly') {
+			
+			if (dey=="fly") {
 				dvig.x = cx - coordinates.X;
 				dvig.y = cy - coordinates.Y;
-				var dst2=dvig.x*dvig.x+dvig.y*dvig.y;
+				var dst2:Number = dvig.x * dvig.x + dvig.y * dvig.y;
+				
 				if (dst2 < 1600) {
 					velocity.multiply(0.85);
+					
 					if (dst2<5*5) {
-						dey='';
+						dey="";
 						velocity.set(0, 0);
 						wait=0;
 					}
-				} else {
+				}
+				else {
 					norma(dvig,accel);
 					velocity.X += dvig.x;
 					velocity.Y += dvig.y;
 				}
 			}
-			if (aiTip=='agro') {
+		
+			if (aiTip=="agro") {
 				if (celUnit && celUnit.sost==1 && celUnit.hp>0) {
 					setCel(celUnit);
+					
 					if (celDX>0 && storona==-1) storona=1;
 					if (celDX<0 && storona==1) storona=-1;
 					if (currentWeapon) currentWeapon.attack();
 					if (dopWeapon) dopWeapon.attack();
+					
 					ico.visible=false;
 					zanyato=true;
-				} else if (loc.active && findCel()) {
+				}
+				else if (loc.active && findCel()) {
 					ico.visible=false;
 					zanyato=true;
-				} else {
+				}
+				else {
 					ico.visible=true;
 					zanyato=false;
 					celUnit=null;
 					if (isFly && velocity.Y < 5) velocity.Y += 1;
 				}
+				
 				if (turnY<0) {
 					isFly=false;
 					turnY=0;
-					aiTip='';
+					aiTip="";
 					targNPC.landing();
 					inter.active=true;
+					
 					if (ico.sign) {
 						ico.sign.visible=World.w.helpMess;
 					}

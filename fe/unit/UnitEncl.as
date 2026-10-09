@@ -1,13 +1,17 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
+	import fe.SymbolFactory;
 	import fe.serv.AnimationSet;
+	import fe.WeaponManager;
 	import fe.weapon.Weapon;
 	import fe.weapon.WThrow;
 	
 	public class UnitEncl extends UnitRaider {
 		
 		private var thWeapon:Weapon;
-		private var t_gren:int=Math.round(Math.random()*150+50);
+		private var t_gren:int = Math.round(Math.random() * 150 + 50);
 		
 		// Constructor
 		public function UnitEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -21,20 +25,28 @@ package fe.unit {
 			allLink=true;
 			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosEncl1");
-			if (grenader>0) {
-				thWeapon=Weapon.create(this,'mercgr');
-				(thWeapon as WThrow).kolAmmo=grenader;
+		
+			if (grenader > 0) {
+				thWeapon = WeaponManager.reference.cloneWeapon("mercgr");
+				WeaponManager.reference.setOwner(thWeapon, this);
+				(thWeapon as WThrow).kolAmmo = grenader;
 				childObjs.push(thWeapon);
 			}
+		
 			if (enclWeap) {
 				isDropArm=false;
+			
 				if (currentWeapon) {
-					currentWeapon.svis='encl';
-					currentWeapon.vis=new visencl(); // SWF Dependency
+					currentWeapon.svis = "encl";
+					currentWeapon.vis = SymbolFactory.createInstance("visencl") as MovieClip;
 				}
 			}
-			if (currentWeapon.damage<20) currentWeapon.damage*=1.2;
-			currentWeapon.damage*=1.2;
+		
+			if (currentWeapon.damage < 20) {
+				currentWeapon.damage *= 1.20;
+			}
+			
+			currentWeapon.damage *= 1.20;
 		}
 		
 		public override function addVisual():void {

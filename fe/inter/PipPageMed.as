@@ -20,19 +20,19 @@ package fe.inter {
 	*/
 	public class PipPageMed extends PipPage {
 
-		var pers:Pers;
-		var infoItemId:String='';
-		var priceHP:Number=0.5;
-		var priceBlood:Number=0.5;
-		var priceRad:Number=1;
-		var priceOrgan:Number=0.5;
-		var priceCut:Number=4;
-		var pricePoison:Number=4;
-		var priceMana:Number=1;
-		var raz:int=200;
-		var razMana:int=100;
+		private var pers:Pers;
+		private var infoItemId:String='';
+		private var priceHP:Number=0.5;
+		private var priceBlood:Number=0.5;
+		private var priceRad:Number=1;
+		private var priceOrgan:Number=0.5;
+		private var priceCut:Number=4;
+		private var pricePoison:Number=4;
+		private var priceMana:Number=1;
+		private var raz:int=200;
+		private var razMana:int=100;
 		
-		var plata:Item;
+		private var plata:String;		// ID of the item used to pay the doctor
 
 		// Constructor
 		public function PipPageMed(npip:PipBuck, npp:String) {
@@ -46,78 +46,127 @@ package fe.inter {
 			vis.but5.visible = false;
 		}
 
-		//подготовка страниц
+		// [preparing pages]
 		override protected function setSubPages():void {
+			gg = World.w.gg;
+			inv = World.w.invent;
+			
 			setIco();
 			
-			if (pip.npcInter=='adoc') {
-				vis.but2.visible=false;
-				plata=inv.gel;
+			var localize:Function = LanguageManager.reference.localText;
+
+			if (pip.npcInter == 'adoc') {
+				vis.but2.visible = false;
+				plata = "gel";
 			}
-			else if (pip.npcInter=='vdoc') {
-				vis.but2.visible=false;
-				plata=inv.good;
+			else if (pip.npcInter == 'vdoc') {
+				vis.but2.visible = false;
+				plata = "good";
 			}
 			else {
-				vis.but2.visible=true;
-				plata=inv.money;
+				vis.but2.visible = true;
+				plata = "money";
 			}
 			
-			pers=World.w.pers;
-			priceHP=pers.priceHP;
-			priceBlood=pers.priceBlood;
-			priceRad=pers.priceRad;
-			priceOrgan=pers.priceOrgan;
-			priceCut=pers.priceCut;
-			pricePoison=pers.pricePoison;
-			priceMana=pers.priceMana;
+			pers						= World.w.pers;
+
+			priceHP						= pers.priceHP;
+			priceBlood					= pers.priceBlood;
+			priceRad					= pers.priceRad;
+			priceOrgan					= pers.priceOrgan;
+			priceCut					= pers.priceCut;
+			pricePoison					= pers.pricePoison;
+			priceMana					= pers.priceMana;
 			
-			statHead.hpbar.visible=false;
-			statHead.nazv.text='';
-			statHead.numb.text='';
-			statHead.price.text=Res.pipText('medprice');
-			vis.butOk.visible=vis.butDef.visible=false;
-			if (page2==1) {
+			statHead.hpbar.visible		= false;
+			statHead.nazv.text			= "";
+			statHead.numb.text			= "";
+			statHead.price.text			= localize("pip", 'medprice');
+			vis.butOk.visible			= false;
+			vis.butDef.visible			= false;
+
+			if (page2 == 1) {
 				gg.pers.checkHP();
 				setTopText('usemed2');
-				var cena:Number;
-				cena=(gg.maxhp-gg.hp-gg.rad)*priceHP;
-				if (cena<0) cena=0;
+				var cena:Number = (gg.maxhp - gg.hp - gg.rad) * priceHP;
 				
-				arr.push({id:'hp', nazv:Res.pipText('hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp), price:cena});
-				arr.push({id:'organism', nazv:Res.pipText('organism')+':', lvl:''});
+				if (cena < 0) {
+					cena = 0;
+				}
 				
-				if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
-				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+Res.pipText('head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP), price:cena});
 				
-				if (gg.pers.inMaxHP-gg.pers.torsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
-				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+Res.pipText('tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'hp', nazv:localize("pip", 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp), price:cena});
+				arr.push({id:'organism', nazv:localize("pip", 'organism')+':', lvl:''});
 				
-				if (gg.pers.inMaxHP-gg.pers.legsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
-				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+Res.pipText('legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP), price:cena});
+				if (gg.pers.inMaxHP-gg.pers.headHP>raz) {
+					cena=raz*priceOrgan; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
+				}
 				
-				if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) cena=raz*priceBlood; else cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
-				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+Res.pipText('blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+localize("pip", 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP), price:cena});
 				
-				if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) cena=razMana*priceMana; else cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
-				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+Res.pipText('mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana), price:cena});
+				if (gg.pers.inMaxHP-gg.pers.torsHP>raz) {
+					cena=raz*priceOrgan; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
+				}
+				
+				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+localize("pip", 'tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP), price:cena});
+				
+				if (gg.pers.inMaxHP-gg.pers.legsHP>raz) {
+					cena=raz*priceOrgan; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
+				}
+				
+				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+localize("pip", 'legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP), price:cena});
+				
+				if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) {
+					cena=raz*priceBlood; 
+				}
+				else {
+					cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
+				}
+				
+				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+localize("pip", 'blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP), price:cena});
+				
+				if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) {
+					cena=razMana*priceMana; 
+				}
+				else {
+					cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
+				}
+				
+				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+localize("pip", 'mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana), price:cena});
 				
 				cena=(gg.rad)*priceRad;
-				arr.push({id:'rad', nazv:Res.pipText('rad'), lvl:Math.round(gg.rad), price:cena});
+				
+				arr.push({id:'rad', nazv:localize("pip", 'rad'), lvl:Math.round(gg.rad), price:cena});
+				
 				cena=(gg.cut)*priceCut;
-				arr.push({id:'cut', nazv:Res.pipText('cut'), lvl:Math.round(gg.cut*10)/10, price:cena});
+				
+				arr.push({id:'cut', nazv:localize("pip", 'cut'), lvl:Math.round(gg.cut*10)/10, price:cena});
+				
 				cena=(gg.poison)*pricePoison;
-				arr.push({id:'poison', nazv:Res.pipText('poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
+				
+				arr.push({id:'poison', nazv:localize("pip", 'poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
 			}
+			
 			showBottext();
 		}
 		
-		//показ одного элемента
+		// [Show one element]
 		override protected function setStatItem(item:MovieClip, obj:Object):void {
 			if (obj.id == null) {
                 item.id.text = '';
             }
-			else item.id.text = obj.id;
+			else {
+				item.id.text = obj.id;
+			}
 			
 			item.id.visible=false;
 			item.hpbar.visible=false;
@@ -138,13 +187,12 @@ package fe.inter {
 		}
 		
 		//информация об элементе
-		override protected function statInfo(event:MouseEvent):void
-		{
+		override protected function statInfo(event:MouseEvent):void {
 				if (event.currentTarget.id.text == '') {
                     vis.nazv.text = vis.info.htmlText = '';
                 }
 				else {
-                    vis.nazv.text = Res.pipText(event.currentTarget.id.text);
+                    vis.nazv.text = LanguageManager.reference.localText("pip", event.currentTarget.id.text);
                     var s:String = Res.txt('p', event.currentTarget.id.text, 1);
                     vis.info.htmlText = s;
                 }
@@ -166,9 +214,18 @@ package fe.inter {
 		}
 
 		private function showBottext():void {
-			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+numberAsColor('yellow', plata.kol);
-			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+numberAsColor('yellow', plata.kol);
-			else vis.bottext.htmlText=Res.pipText('caps')+': '+numberAsColor('yellow', plata.kol);
+			var plataQty:int = World.w.invent.getQuantity(plata);
+			var localize:Function = LanguageManager.reference.localText;
+			
+			if (pip.npcInter == "adoc") {
+				vis.bottext.htmlText = localize("items", "gel") + ": " + numberAsColor("yellow", plataQty);
+			}
+			else if (pip.npcInter == "vdoc") {
+				vis.bottext.htmlText = localize("items", "good") + ": " + numberAsColor("yellow", plataQty);
+			}
+			else {
+				vis.bottext.htmlText = localize("pip", "caps") + ": " + numberAsColor("yellow", plataQty);
+			}
 		}
 		
 		override protected function itemClick(event:MouseEvent):void {
@@ -179,88 +236,155 @@ package fe.inter {
 			
 			var cena:Number;
 			var need:String;
-			var mon = plata.kol;
+			var plataQty:int = World.w.invent.getQuantity(plata);
+			var originalQty:int = plataQty;
 
 			infoItemId = getSimplifiedItemId(event.currentTarget.id.text);
+			
 			switch (infoItemId) {
 				case 'hp':
 					cena = (gg.maxhp - gg.hp - gg.rad) * priceHP;
-					if (cena > plata.kol) cena = plata.kol;
+					
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
+					
 					gg.heal(cena / priceHP, 0, false);
 					break;
 
 				case 'rad':
 					cena = (gg.rad) * priceRad;
-					if (cena > plata.kol) cena = plata.kol;
+					
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
+					
 					gg.heal(cena / priceRad, 2, false);
 					break;
 
 				case 'cut':
 					cena = (gg.cut) * priceCut;
-					if (cena > plata.kol) cena = plata.kol;
+					
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
+					
 					gg.heal(cena / priceCut, 3, false);
 					break;
 
 				case 'poison':
 					cena = (gg.poison) * pricePoison;
-					if (cena > plata.kol) cena = plata.kol;
+					
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
+					
 					gg.heal(cena / pricePoison, 4, false);
 					break;
 
 				case 'statBlood':
-					if (gg.pers.inMaxHP - gg.pers.bloodHP > raz) cena = raz * priceBlood; 
-					else cena = (gg.pers.inMaxHP - gg.pers.bloodHP) * priceBlood;
+					if (gg.pers.inMaxHP - gg.pers.bloodHP > raz) {
+						cena = raz * priceBlood;
+					}
+					else {
+						cena = (gg.pers.inMaxHP - gg.pers.bloodHP) * priceBlood;
+					}
 
-					if (cena > plata.kol) cena = plata.kol;
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
 
-					if (healCheckPassed(gg.pers.bloodHP)) gg.pers.heal(49, 5);
-					else gg.pers.heal(cena / priceBlood, 5);
+					if (healCheckPassed(gg.pers.bloodHP)) {
+						gg.pers.heal(49, 5);
+					}
+					else {
+						gg.pers.heal(cena / priceBlood, 5);
+					}
 					break;
 				
 				case 'statMana':
-					if (gg.pers.inMaxMana - gg.pers.manaHP > razMana) cena = razMana * priceMana; 
-					else cena = (gg.pers.inMaxMana - gg.pers.manaHP) * priceMana;
+					if (gg.pers.inMaxMana - gg.pers.manaHP > razMana) {
+						cena = razMana * priceMana;
+					}
+					else {
+						cena = (gg.pers.inMaxMana - gg.pers.manaHP) * priceMana;
+					}
 
-					if (cena > plata.kol) cena = plata.kol;
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
 
 					gg.pers.heal(cena / priceMana, 6);
 					break;
 
 				case 'statHead':
-					if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena = raz * priceOrgan; 
-					else cena = (gg.pers.inMaxHP - gg.pers.headHP) * priceOrgan;
+					if (gg.pers.inMaxHP-gg.pers.headHP>raz) {
+						cena = raz * priceOrgan;
+					}
+					else {
+						cena = (gg.pers.inMaxHP - gg.pers.headHP) * priceOrgan;
+					}
 
-					if (cena > plata.kol) cena = plata.kol;
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
 
-					if (healCheckPassed(gg.pers.headHP)) gg.pers.heal(49, 1);
-					else gg.pers.heal(cena / priceOrgan, 1);
+					if (healCheckPassed(gg.pers.headHP)) {
+						gg.pers.heal(49, 1);
+					}
+					else {
+						gg.pers.heal(cena / priceOrgan, 1);
+					}
 					break;
 				
 				case 'statTors':
-					if (gg.pers.inMaxHP - gg.pers.torsHP > raz) cena = raz * priceOrgan; 
-					else cena = (gg.pers.inMaxHP - gg.pers.torsHP) * priceOrgan;
+					if (gg.pers.inMaxHP - gg.pers.torsHP > raz) {
+						cena = raz * priceOrgan;
+					}
+					else {
+						cena = (gg.pers.inMaxHP - gg.pers.torsHP) * priceOrgan;
+					}
 
-					if (cena > plata.kol) cena = plata.kol;
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
 
-					if (healCheckPassed(gg.pers.torsHP)) gg.pers.heal(49, 2);
-					else gg.pers.heal(cena / priceOrgan, 2);
+					if (healCheckPassed(gg.pers.torsHP)) {
+						gg.pers.heal(49, 2);
+					}
+					else {
+						gg.pers.heal(cena / priceOrgan, 2);
+					}
 					break;
 
 				case 'statLegs':
-					if (gg.pers.inMaxHP - gg.pers.legsHP > raz) cena = raz * priceOrgan; 
-					else cena = (gg.pers.inMaxHP - gg.pers.legsHP) * priceOrgan;
+					if (gg.pers.inMaxHP - gg.pers.legsHP > raz) {
+						cena = raz * priceOrgan;
+					}
+					else {
+						cena = (gg.pers.inMaxHP - gg.pers.legsHP) * priceOrgan;
+					}
 
-					if (cena > plata.kol) cena = plata.kol;
+					if (cena > plataQty) {
+						cena = plataQty;
+					}
 
-					if (healCheckPassed(gg.pers.legsHP)) gg.pers.heal(49, 3);
-					else gg.pers.heal(cena / priceOrgan, 3);
+					if (healCheckPassed(gg.pers.legsHP)) {
+						gg.pers.heal(49, 3);
+					}
+					else {
+						gg.pers.heal(cena / priceOrgan, 3);
+					}
 					break;
 			}
 			
-			plata.kol -= Math.round(cena);
+			if (Math.round(cena) > 0) {
+				inv.decreaseQuantity(plata, Math.round(cena));
+			}
+			plataQty = World.w.invent.getQuantity(plata);
 
-			if (plata.id == 'money' && plata.kol < mon && pip.vendor) {
-				pip.vendor.money += (mon - plata.kol);
+			if (plata == 'money' && plataQty < originalQty && pip.vendor) {
+				pip.vendor.increaseMoney(originalQty - plataQty);
 			}
 
 			pip.snd(1);
@@ -280,8 +404,11 @@ package fe.inter {
 			}
 
 			function healCheckPassed(input:Number):Boolean {
-				if (input <= 2 && plata.kol <= 0 && gg.pers.level < 6) return true
-				else return false;
+				if (input <= 2 && World.w.invent.getQuantity(plata) <= 0 && gg.pers.level < 6) {
+					return true
+				}
+				
+				return false;
 			}
 		}
 	}	

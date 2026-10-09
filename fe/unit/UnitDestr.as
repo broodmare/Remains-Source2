@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 
@@ -13,7 +16,9 @@ package fe.unit {
 		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='destr';
+			
 			if (cid!=null) tr=int(cid);
+			
 			if (xml) {
 				if (xml.@turn.length()) {
 					if (xml.@turn>0) storona=1;
@@ -25,13 +30,16 @@ package fe.unit {
 				if (xml.@tr.length()) tr=xml.@tr;
 				if (xml.@fix.length()) fixed=true;
 			}
+			
 			id=id+tr;
 			getXmlParam();
+			
 			if (tr==1) {
-				vis=new visualStolp();	// .SWF Dependency
+				vis = SymbolFactory.createInstance("visualStolp") as MovieClip;
 				boss=true;
 				noDestr=true;
 			}
+			
 			doop=true;
 			mat=1;
 		}
@@ -43,7 +51,11 @@ package fe.unit {
 		override protected function control():void {
 			if (tr==1) {
 				t_part--;
-				if (t_part==0) t_part=10;
+				
+				if (t_part==0) {
+					t_part=10;
+				}
+				
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
 					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * this.boundingBox.height);

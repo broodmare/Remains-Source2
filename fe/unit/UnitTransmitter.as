@@ -1,23 +1,26 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.graph.Emitter;
 	import fe.loc.Location;
 	
 	public class UnitTransmitter extends Unit {
 
-		var cDam:Number;
-		var dist:Number=1000, distdam:Number=400;
-		var upKoef:Number=0;
-		var prevKoef:Number=0;
-		var cep:int=-1;
+		private var cDam:Number;
+		private var dist:Number=1000, distdam:Number=400;
+		private var upKoef:Number=0;
+		private var prevKoef:Number=0;
+		private var cep:int=-1;
 
 		// Constructor
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
-			vis=new visualTransmitter();
+			vis = SymbolFactory.createInstance("visualTransmitter") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
 			storona=1;
@@ -27,7 +30,7 @@ package fe.unit {
 		}
 
 		//поместить созданный юнит в локацию
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			if (cep<0 && nloc.getAbsTile(nx, ny+10).phis==0) {
 				if (nloc.getAbsTile(nx, ny-50).phis) {
 					cep=1;
@@ -57,14 +60,14 @@ package fe.unit {
 			newPart('metal', 4);
 		}
 
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 			}
 		}
 		
-		public override function locout()	{
+		public override function locout():void	{
 			super.locout();
 			upKoef=0;
 		}

@@ -64,7 +64,7 @@ package fe.unit {
 			super.control();
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
 			if (bul && bul.owner && bul.owner.fraction == 4) return super.damage(dam * 0.3, tip, bul, tt);	// [Take less damage from CP]
 			return super.damage(dam, tip, bul, tt);
 		}

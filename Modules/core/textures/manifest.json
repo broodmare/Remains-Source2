@@ -2,8 +2,8 @@
 	"texture" : {
 		"tWoodPlanks" : "WoodPlanks.jpg",
 		"tWoodBeam" : "wood_beam.png",
-		"tWindows2" : "windows2.jpg",
-		"tWindows" : "windows1.jpg",
+		"tWindows2" : "windows2.png",
+		"tWindows" : "windows1.png",
 		"tVent" : "vent.jpg",
 		"tTower" : "tower.png",
 		"tTiles" : "tiles.jpg",
@@ -28,7 +28,7 @@
 		"tConcrete" : "TexturesCom_ConcreteBunker0202_1_seamless_S.jpg",
 		"tBlocks" : "TexturesCom_BrickLargeBlocks0028_1_seamless_S.jpg",
 		"tBrick" : "TexturesCom_BrickLargeBlocks0024_1_seamless_S.jpg",
-		"tSteklo" : "steklo.jpg",
+		"tSteklo" : "steklo.png",
 		"tStConcrete" : "stable_plates.jpg",
 		"tStShelf" : "st_Shelf.png",
 		"tCave" : "SoilRough.jpg",
@@ -46,7 +46,7 @@
 		"tPlates2" : "plates2.jpg",
 		"tMetalPlates2" : "plates.jpg",
 		"tPipes" : "pipes.jpg",
-		"tOrn" : "orn.jpg",
+		"tOrn" : "orn.png",
 		"tMWall" : "mwall.jpg",
 		"tMoss" : "moss.jpg",
 		"tBaseMetal" : "metal.jpg",
@@ -70,7 +70,7 @@
 		"tBorder" : "ConcreteNew0047.jpg",
 		"tMossy" : "ConcreteMossy0097.jpg",
 		"tLeaking" : "ConcreteLeaking0072.jpg",
-		"tConBeam" : "con_shelf.jpg",
+		"tConBeam" : "con_shelf.png",
 		"tCloud" : "clouds.jpg",
 		"tCloudBeam" : "cloud_shelf.png",
 		"tCanStuc" : "canter_stuc.jpg",
@@ -83,11 +83,11 @@
 		"fonWay" : "way.jpg",
 		"fonRuins" : "ruins.jpg",
 		"fonFire" : "Fire.jpg",
-		"fonFinalb" : "finalb.jpg",
+		"fonFinalb" : "finalb.png",
 		"fonEnclave" : "oblaka.jpg",
 		"fonDefault" : "default.png",
 		"fonDarkClouds" : "dark-clouds-audrey-chandler.jpg",
 		"fonClear" : "clear.jpg",
-		"fonCanter" : "canterlot.jpg"
+		"fonCanter" : "canterlot.png"
 	}
 }

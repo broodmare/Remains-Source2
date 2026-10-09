@@ -3,6 +3,7 @@ package fe.loc {
 	import fe.*;
 	import fe.serv.Item;
 	import fe.serv.Script;
+	import fe.weapon.Weapon;
 
 	public class Quest {
 		
@@ -12,30 +13,30 @@ package fe.loc {
 		public var info:String;
 		public var empl:String;
 		
-		public var main:Boolean=false;	//главный квест
-		public var sub:Boolean=false;	//этап квеста
-		public var nsub:int=0;			//номер этапа
-		public var subs:Array;			//массив этапов 
-		public var subsId:Array;			//массив этапов по id
-		public var par:Quest;			//главный квест по отношению к подквесту
-		public var auto:Boolean=true;	//квест автматически берётся если закрыт один из этапов, установить в false чтобы квест добавлялся как скрытый
+		public var main:Boolean = false;		// [Main quest]
+		public var sub:Boolean = false;			// [Quest stage]
+		public var nsub:int = 0;				// [Stage number]
+		public var subs:Array;					// [Array of stages]
+		public var subsId:Array;				// [Array of stages by id]
+		public var par:Quest;					// [Main quest in relation to subquest]
+		public var auto:Boolean = true;			// [The quest is automatically taken if one of the stages is closed, set to false so that the quest is added as hidden]
 		
-		public var isCheck:Boolean=false;
-		public var nn:Boolean=false;	//не обязательно
-		public var collect:String;		//собрать предметы
-		public var colTip:int=0;		//тип коллекционного предмета. 0-обычный, 1-оружие
-		public var isDel:Boolean=false;	//изъять предмет после закрытия квеста
-		public var give:String;			//кому отдать
-		public var est:int=0;
-		public var kol:int=1;
-		public var canBeUse:Boolean=false;	//подквест закроется если количество будет достигнуто, и больше уже не откроется
-		public var gived:int=0;			//сколько было отдано
-		public var pay:int=0;			//плата за каждый принесённый предмет
-		public var prevRes:String='';	//предыдущий реузльтат проверки
+		public var isCheck:Boolean = false;		// 
+		public var nn:Boolean = false;			// Optional (quest?/stage?)
+		public var collect:String;				// [Collect items]
+		public var colTip:int = 0;				// [Type of collectible. 0-regular, 1-weapon]
+		public var isDel:Boolean = false;		// [Retrieve the item after completing the quest]
+		public var give:String;					// [Who to give it to]
+		public var est:int = 0;
+		public var kol:int = 1;
+		public var canBeUse:Boolean = false;	// [The subquest will close if the quantity is reached and will not open again]
+		public var gived:int = 0;				// [How much was given]
+		public var pay:int = 0;					// [Fee for each item brought]
+		public var prevRes:String = "";			// [Previous test result]
 		
-		public var hidden:Boolean=false;//описание скрыто
-		public var invis:Boolean=false;//пункт квеста не отображается
-		public var result:Boolean=false;//открывается, если выполнены все предыдущие пункты
+		public var hidden:Boolean = false;		// [Description hidden]
+		public var invis:Boolean = false;		// [Quest item is not displayed]
+		public var result:Boolean = false;		// [Opens if all previous steps have been completed]
 		
 		public var report:String;
 		
@@ -43,33 +44,43 @@ package fe.loc {
 		public var endDial:String;
 		public var endScript:String;
 		
-		public var state:int=0;			//состояние 0 - не активен, 1 - активен, 2 - выполнен
-		public var sp:int=0;			//награда в скилл-поинтах
-		public var xp:int=0;			//награда в опыте
-		public var rep:int=0;			//награда в репутации
+		public var state:int=0;			// [State 0 - not active, 1 - active, 2 - completed]
 		
-		public var trigger:String;		//установить триггер, когда квест будет выполнен
-		public var triggerSet:String;	//значение устанавливаемого триггера
+		// TODO: Ideally this should be done through scripts
+		public var sp:int = 0;			// [Reward in skill points]
+		public var xp:int = 0;			// [Reward in experience]
+		public var rep:int = 0;			// [Reward in reputation]
 		
-		public var sort:int=0;
+		public var trigger:String;		// [Set a trigger when the quest is completed]
+		public var triggerSet:String;	// [Value of the trigger being set]
+		
+		public var sort:int = 0;
 
-		public function Quest(nxml:XML, loadObj:Object=null, npar:Quest=null, nnsub:int=0) {
-			xml=nxml;
-			id=xml.@id;
+		public function Quest(nxml:XML, loadObj:Object = null, npar:Quest = null, nnsub:int = 0) {
+			
+			xml = nxml;
+			id = xml.@id;
+			
 			var pid:String;
-			if (npar==null)	{
-				pid=id;
-			} else {
-				par=npar;
-				sub=true;
-				pid=par.id+id;
+
+			if (npar == null)	{
+				pid = id;
 			}
-			state=1;
-			nsub=nnsub;
+			else {
+				par = npar;
+				sub = true;
+				pid = par.id + id;
+			}
+			
+			state = 1;
+			nsub = nnsub;
+			
 			if (loadObj) {
-				state=loadObj.state;
-				est=loadObj.est;
-				if (loadObj.gived) gived=loadObj.gived;
+				state = loadObj.state;
+				est = loadObj.est;
+				if (loadObj.gived) {
+					gived = loadObj.gived;
+				}
 			}
 			
 			if (xml.@empl.length()) empl=xml.@empl;
@@ -98,6 +109,7 @@ package fe.loc {
 			if (xml.@invis.length()) invis=true;
 			if (xml.@result.length()) {
 				result=true;
+				
 				if (par) par.result=true;
 			}
 			
@@ -108,35 +120,43 @@ package fe.loc {
 				trigger=xml.@trigger;
 				if (xml.@triggerset.length()) triggerSet=xml.@triggerset;
 				else triggerSet='1';
+				
 				if (state==2 && World.w.game.triggers[trigger]==null) World.w.game.triggers[trigger]=triggerSet;
 			}
-			if (loadObj && loadObj.invis!=undefined) {
-				invis=loadObj.invis;
+			if (loadObj && loadObj.invis != undefined) {
+				invis = loadObj.invis;
+			}
+			
+			// Get the localized name of the quest
+			nazv = LanguageManager.reference.localText("quest", pid)
+			// Failsafe
+			if (nazv == "") {
+				nazv = '[' + id + ']';
 			}
 
-			// TODO: Stop searching Res on your own.
-			var node = Res.currentLanguageData.txt.(@id==pid);
-			
-			if (node.length()) {
-				node=node[0]
-				nazv=node.n[0];
-				if (nazv==null) nazv='['+id+']';
-			} else {
-				nazv='['+id+']';
-			}
+			// Get the description of the quest			
 			if (!sub) {
-				if (node && node.info.length())	info=node.info[0];
-				else info='---';
-				//if (info==null) info=node.info[0];
-				main=xml.@main.length()>0;
-				subs=[];
-				subsId=[];
-				nnsub=1;
+				info = LanguageManager.reference.localDesc("quest", pid)
+				// Failsafe
+				if (info == "")	{
+					info = '---';
+				}
+
+				main = xml.@main.length() > 0;
+				subs = [];
+				subsId = [];
+				nnsub = 1;
+				
+				var sl:Object;
 				for each(var sxml:XML in xml.q) {
-					var sl:Object;
-					if (loadObj) sl=loadObj.subs[sxml.@id];
-					var q:Quest=new Quest(sxml,sl,this,nnsub);
-					subsId[q.id]=q;
+					sl = {};
+					
+					if (loadObj) {
+						sl = loadObj.subs[sxml.@id];
+					}
+					
+					var q:Quest = new Quest(sxml, sl, this, nnsub);
+					subsId[q.id] = q;
 					subs.push(q);
 					nnsub++;
 				}
@@ -144,245 +164,362 @@ package fe.loc {
 		}
 		
 		public function save():Object {
-			var obj:Object={id:id, state:state, est:est, gived:gived, invis:invis};
+			var obj:Object = {id:id, state:state, est:est, gived:gived, invis:invis};
 			if (!sub) {
-				obj.subs=[];
+				obj.subs = [];
+				
 				for each(var q:Quest in subs) {
-					obj.subs[q.id]=q.save();
+					obj.subs[q.id] = q.save();
 				}
 			}
+			
 			return obj;
 		}
 		
-		//проверить, если cid совпадает с collect, увеличить est
-		public function inc(cid:String, kol:int=1) {
-			if (cid==collect) est+=kol;
+		// [Check if cid matches collect, increase est]
+		public function inc(cid:String, kol:int=1):void {
+			if (cid == collect) {
+				est += kol;
+			}
+			
 			if (!sub) {
 				for each (var q:Quest in subs) {
-					q.inc(cid,kol);
+					q.inc(cid, kol);
 				}
 			}
 		}
 		
-		//выдать начальные предметы
-		public function deposit() {
+		// [Give out starting items]
+		public function deposit():void {
 			if (xml.deposit.length()) {
 				for each(var rew in xml.deposit) {
 					if (rew.@id.length()) {
-						var item:Item;
-						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
-						else item=new Item('', rew.@id);
-						World.w.invent.take(item,2);
+						World.w.gg.itemInteraction.giveReward(rew.@id, rew.@kol.length() ? int(rew.@kol) : -1);
 					}
+					
 					if (rew.@trigger.length()) {
-						if (rew.@set.length()) World.w.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.w.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) {
+							World.w.game.triggers[rew.@trigger] = rew.@set.toString();
+						}
+						else {
+							World.w.game.triggers[rew.@trigger] = 1;
+						}
 					}
 				}
 			}
 		}
 		
-		//проверка на соответствие условию, если всё соотвествует, то закрыть
-		//вернуть выводимый результат
-		public function check(cid:String=null):String {
+		// [Check for compliance with the condition, if everything meets the requirements, then close]
+		// [Return output result]
+		public function check(cid:String = null):String {
 			var res:String;
 			if (sub) {
-				if (collect && colTip==0 && gived<kol) {
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol+gived;
-					if (est>kol) est=kol;
-					if (give==null) {
-						if (est>=kol) {
-							state=2;
-							if (par.result) par.isResult();
-						} else if (canBeUse) {
-							if (state<2) state=1;
-							else est=kol;
-						} else state=1;
-					} else {
+				if (collect && colTip == 0 && gived < kol) {
+					
+					est = World.w.invent.getQuantity(collect) + gived;
+					
+					if (est > kol) {
+						est = kol;
+					}
+					
+					if (give == null) {
+						if (est >= kol) {
+							state = 2;
+							
+							if (par.result) {
+								par.isResult();
+							}
+						}
+						else if (canBeUse) {
+							if (state < 2) {
+								state = 1;
+							}
+							else {
+								est = kol;
+							}
+						}
+						else {
+							state = 1;
+						}
+					}
+					else {
+						// Do nothing	
+					}
+					
+					if (cid != null && collect == cid) {
+						res = nazv + ' ' + est + '/' + kol;
+					}
+					
+					est = World.w.invent.getQuantity(collect);
+				}
+				
+				if (collect && colTip == 1) {
+					if (World.w.invent.equipment.hasWeapon(collect) && World.w.invent.equipment.getWeapon(collect).respect != Weapon.WEP_BLUEPRINT) {
+						state = 2;
 						
+						if (par.result) {
+							par.isResult();
+						}
 					}
-					if (cid!=null && collect==cid) res=nazv+' '+est+'/'+kol;
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol;
-				}
-				if (collect && colTip==1) {
-					if (World.w.invent.weapons[collect]!=null && World.w.invent.weapons[collect].respect!=3) {
-						state=2;
-						if (par.result) par.isResult();
+					
+					if (cid != null && collect == cid) {
+						res = nazv;
 					}
-					if (cid!=null && collect==cid) res=nazv;
 				}
-			} else {
-				if (state==2) return null;
-				var cl:Boolean=true;
-				var res2:String;
-				for each (var q:Quest in subs) {
-					res2=q.check(cid);
-					if (res2!=null) res=res2;
-					if (q.state<2 && !q.nn) cl=false;
-				}
-				if (cl) close();
 			}
-			//trace(res,prevRes)
-			if (res==prevRes || res==null) {
+			else {
+				if (state == 2) {
+					return null;
+				}
+				
+				var cl:Boolean = true;
+				var res2:String;
+				
+				for each (var q:Quest in subs) {
+					res2 = q.check(cid);
+					
+					if (res2 != null) {
+						res = res2;
+					}
+					
+					if (q.state < 2 && !q.nn) {
+						cl = false;
+					}
+				}
+				
+				if (cl) {
+					close();
+				}
+			}
+
+			if (res == prevRes || res == null) {
 				return null;
 			}
-			prevRes=res;
+			
+			prevRes = res;
+			
 			return res;
 		}
 		
-		//проверить на возможность отдать предметы
-		public function chGive(npc:String, us:Boolean=false) {
+		// [Check for the possibility of giving away items]
+		public function chGive(npc:String, us:Boolean=false):Boolean {
 			if (sub) {
-				if (give==null) return false;
+				if (give == null) {
+					return false;
+				}
+				
 				if (collect) {
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol;
-					if (est>0 && (kol-gived)>0) {
-						if (est>kol-gived) est=kol-gived;
-						if (us) {
-							World.w.invent.minusItem(collect,est);
-							gived+=est;
-							if (pay>0) {
-								World.w.invent.money.kol+=est*pay;
-								World.w.gui.infoText('reward',Res.txt('i','money'),est*pay);
-							}
-							World.w.gui.infoText('withdraw',World.w.invent.items[collect].nazv, est);
-							est=0;
-							if (gived>=kol) close();
+					est = World.w.invent.getQuantity(collect);
+					
+					if (est > 0 && (kol - gived) > 0) {
+						if (est > kol - gived) {
+							est = kol - gived;
 						}
+						
+						if (us) {
+							World.w.gg.itemInteraction.minusItem(collect, est);
+							gived += est;
+							
+							if (pay > 0) {
+								World.w.invent.increaseQuantity("money", (est * pay));
+								World.w.gui.infoText('reward', Res.txt('i','money'), est * pay);
+							}
+							
+							World.w.gui.infoText('withdraw', Item.nameOf(collect), est);
+							est = 0;
+							
+							if (gived >= kol) {
+								close();
+							}
+						}
+						
 						return true;
 					}
 				}
+				
 				return false;
-			} else {
-				var ok=false;
+			}
+			else {
+				var ok:Boolean = false;
+				
 				for each (var q:Quest in subs) {
-					if (q.chGive(npc,us)) ok=true;
+					if (q.chGive(npc, us)) {
+						ok = true;
+					}
 				}
+				
 				check(null);
+				
 				return ok;
 			}
 		}
 		
 		public function chReport(npc:String, us:Boolean=false):Boolean {
 			if (!sub) {
-				var cl:Boolean=true;
+				var cl:Boolean = true;
 				var rep:Quest;
+				
 				for each (var q:Quest in subs) {
-					if (q.report && q.report==npc) {
-						rep=q;
-					} else if (q.state<2 && !q.nn) cl=false;
+					if (q.report && q.report == npc) {
+						rep = q;
+					}
+					else if (q.state < 2 && !q.nn) {
+						cl = false;
+					}
 				}
+				
 				if (cl && rep) {
-					if (!us) return true;
+					if (!us) {
+						return true;
+					}
+					
 					rep.close();
 					check(null);
+					
 					return true;
 				}
 			}
+			
 			return false;
 		}
 		
-		//проверить все этапы, если все закрыты, то закрыть основной
-		public function isClosed() {
-			var cl:Boolean=true;
+		// [Check all stages, if all are closed, then close the main one]
+		public function isClosed():void {
+			var cl:Boolean = true;
+			
 			for each (var q:Quest in subs) {
-				if (q.state<2) cl=false;
+				if (q.state < 2) {
+					cl = false;
+				}
 			}
-			if (cl) close();
+			
+			if (cl) {
+				close();
+			}
 		}
 		
-		public function isResult() {
-			for (var i=0; i<subs.length; i++) {
+		public function isResult():void {
+			var cl:Boolean = true;
+
+			for (var i:int = 0; i < subs.length; i++) {
 				if (subs[i].result) {
-					var cl:Boolean=true;
-					for (var j=i-1; j>=0; j--) {
-						if (subs[j].state<2) cl=false;
+					for (var j:int = i - 1; j >= 0; j--) {
+						if (subs[j].state < 2) {
+							cl = false;
+						}
 					}
-					if (cl) subs[i].invis=false;
-					//trace(subs[i].nazv, cl);
+					
+					if (cl) {
+						subs[i].invis = false;
+					}
+
+					// Reset cl for the next loop
+					cl = true;
 				}
 			}
 		}
 		
-		//закрыть этап
-		public function closeSub(sid:String) {
-			if (state==2 || sid==null || sid=='' || subsId[sid]==null) return;
+		// [Close the stage]
+		public function closeSub(sid:String):void {
+			if (state == 2 || sid == null || sid == "" || subsId[sid] == null) {
+				return;
+			}
+			
 			subsId[sid].close();
-			if (result) isResult();
-			if (state==1) isClosed();
+			
+			if (result) {
+				isResult();
+			}
+			
+			if (state == 1) {
+				isClosed();
+			}
 		}
 		
-		//показать скрытый этап
-		public function showSub(sid:String) {
-			if (sid==null || sid=='' || subsId[sid]==null) return;
-			subsId[sid].invis=false;
+		// [Show hidden stage]
+		public function showSub(sid:String):void {
+			if (sid == null || sid == "" || subsId[sid] == null) {
+				return;
+			}
+			
+			subsId[sid].invis = false;
 		}
 		
-		//закрыть квест
-		public function close() {
-			if (state==2) return;
-			state=2;
-			//изъять квестовые вещи
+		// [Close the quest]
+		public function close():void {
+			
+			// Already closed
+			if (state == 2) {
+				return;
+			}
+			
+			state = 2;
+			
+			// [Remove quest items]
 			if (!sub) {
 				for each (var q:Quest in subs) {
 					if (q.isDel) {
-						if (q.colTip==0) {
-							World.w.invent.minusItem(q.collect, q.kol);
-							try {
-								World.w.gui.infoText('withdraw',World.w.invent.items[q.collect].nazv, q.kol);
-							}
-							catch (err)
-							{
-								trace('ERROR: (00:23)');
-							}
+						if (q.colTip == 0) {
+							World.w.gg.itemInteraction.withdraw(q.collect, q.kol);
 						}
-						else if (q.colTip==1) {
-							try
-							{
-								World.w.gui.infoText('withdraw',World.w.invent.weapons[q.collect].nazv, 1);
-							}
-							catch (err)
-							{
-								trace('ERROR: (00:24)');
-							}
-							World.w.invent.remWeapon(q.collect);
+						else if (q.colTip == 1) {
+							World.w.gg.itemInteraction.withdraw(q.collect, 1);
 						}
 					}
 				}
 			}
-			//выдать награды
-			if (sp) World.w.pers.addSkillPoint(sp);
-			if (xp) World.w.pers.expa(xp);
-			if (rep) World.w.pers.rep+=rep;
-			if (trigger) World.w.game.triggers[trigger]=triggerSet;
+			
+			// [Issue awards]
+			if (sp) {
+				World.w.pers.addSkillPoint(sp);
+			}
+			
+			if (xp) {
+				World.w.pers.expa(xp);
+			}
+			
+			if (rep) {
+				World.w.pers.rep += rep;
+			}
+			
+			if (trigger) {
+				World.w.game.triggers[trigger] = triggerSet;
+			}
+			
 			if (xml.reward.length()) {
 				for each(var rew in xml.reward) {
 					if (rew.@id.length()) {
-						var item:Item;
-						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
-						else item=new Item('', rew.@id);
-						World.w.invent.take(item,2);
+						World.w.gg.itemInteraction.giveReward(rew.@id, rew.@kol.length() ? int(rew.@kol) : -1);
 					}
+					
 					if (rew.@trigger.length()) {
-						if (rew.@set.length()) World.w.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.w.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) {
+							World.w.game.triggers[rew.@trigger] = rew.@set.toString();
+						}
+						else {
+							World.w.game.triggers[rew.@trigger] = 1;
+						}
 					}
 				}
 			}
-			//сообщение и звук
+			
+			// [Message and sound]
 			if (sub) {
                 World.w.gui.infoText('doneStage', nazv);
-            } else {
+            }
+			else {
                 World.w.gui.infoText('doneTask', nazv);
                 Snd.ps('quest_ok');
             }
-			//завершающий диалог
+			
+			// [Final dialogue]
 			if (endDial && World.w.dialOn) {
 				World.w.pip.onoff(-1);
 				World.w.gui.dialog(endDial);
 			}
-			//завершающий скрипт
-			if (endScript!=null) {
+			
+			// [Finishing script]
+			if (endScript != null) {
 				World.w.game.runScript(endScript);
 			}
 		}

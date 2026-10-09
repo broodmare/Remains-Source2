@@ -1,6 +1,9 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.projectile.Bullet;
 	import fe.graph.Emitter;
 	
@@ -14,7 +17,7 @@ package fe.unit {
 		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='spectre';
-			vis=new visualSpectre();	// .SWF Dependency
+			vis = SymbolFactory.createInstance("visualSpectre") as MovieClip;
 			vis.visible=false;
 			getXmlParam();
 			walkSpeed = maxSpeed;
@@ -51,7 +54,7 @@ package fe.unit {
 			return -1;
 		}
 		
-		public override function command(com:String, val:String = null) {
+		public override function command(com:String, val:String = null):void {
 			if (com == 'show') {
 				vis.visible = true;
 				loc.lighting(coordinates.X, coordinates.Y);

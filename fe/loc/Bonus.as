@@ -1,15 +1,17 @@
 package fe.loc {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
 	import fe.entities.Obj;
 	
 	//Бонусы, которые подбираются путём контакта с ними
 	public class Bonus extends Obj {
 
-		public var sost:int=1; 	//состояние 0-неактивен, 1-активен, 2-взят
-		public var id:String='';
-		public var val:Number=100;
-		public var liv:int=1000000;
+		public var sost:int			= 1; 	//состояние 0-неактивен, 1-активен, 2-взят
+		public var id:String		= "";
+		public var val:Number		= 100.00;
+		public var liv:int			= 1000000;
 
 		// Constructor
 		public function Bonus(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
@@ -22,21 +24,25 @@ package fe.loc {
 			levitPoss = false;
 			sloy = 3;
 			if (sost == 1) {
-				if (id == 'heal')	vis = new visualHealBonus();	// .SWF Dependency
-				else				vis = new visualBonus();		// .SWF Dependency
+				if (id == 'heal') {
+					vis = SymbolFactory.createInstance("visualHealBonus") as MovieClip;
+				}
+				else {
+					vis = SymbolFactory.createInstance("visualBonus") as MovieClip;
+				}
 			}
 			if (vis) {
 				vis.bonus.cacheAsBitmap = true;
 				vis.x = coordinates.X;
-				vis.y = this.boundingBox.getCenter(coordinates);
+				vis.y = boundingBox.getCenter(coordinates);
 			}
 		}
 		
 		private function setSize():void {
-			this.boundingBox.width = 40;
-			this.boundingBox.height = 40;
+			boundingBox.width = 40;
+			boundingBox.height = 40;
 
-			this.boundingBox.center(coordinates);
+			boundingBox.center(coordinates);
 		}
 		
 		public override function save():Object {
@@ -54,21 +60,32 @@ package fe.loc {
 					vis.gotoAndPlay(22);
 				}
 			}
-			if (liv<-25) loc.remObj(this);
-			if (sost!=1 || !loc.active) return;
-			if (this.boundingBox.intersects(loc.gg.boundingBox)) take();
+			
+			if (liv<-25) {
+				loc.remObj(this);
+			}
+			
+			if (sost!=1 || !loc.active) {
+				return;
+			}
+			
+			if (boundingBox.intersects(loc.gg.boundingBox)) {
+				take();
+			}
 		}
 		
 		public function take():void {
 			sost = 2;
 			liv = 0;
 			vis.gotoAndPlay(2);
+			
 			if (id == 'xp') {
 				loc.kolXp--;
+				
 				if (loc.kolXp == 0 && loc.maxXp > 1) { //собрали все бонусы 
 					World.w.pers.expa(loc.unXp * loc.maxXp);
-					if (!loc.detecting && loc.summXp > 0)
-					{
+				
+					if (!loc.detecting && loc.summXp > 0) {
 						loc.takeXP(loc.summXp, World.w.gg.coordinates.X, World.w.gg.coordinates.Y - 100, true);
 						World.w.gui.infoText('sneakBonus');
 					}

@@ -1,64 +1,80 @@
 package fe.weapon {
 
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.loc.Tile;
 	
 	public class WPaint extends Weapon {
 
-		private var del:Object={x:0, y:0};
-		private var celX:Number, celY:Number;
-		private var pX:Number=-1, pY:Number=-1;
+		private var del:Object = {x:0, y:0};
 		
-		public var color:int=1;
-		public var paintId:String='p_black';
-		public var paintNazv:String='';
+		private var celX:Number;
+		private var celY:Number;
+		private var pX:Number		= -1.00;
+		private var pY:Number		= -1.00;
+		
+		public var color:int		= 1;
+		public var paintId:String	= "p_black";
+		public var paintNazv:String	= "";
 
-		// Constructor
-		public function WPaint(own:Unit, id:String, nvar:int=0) {
-			super(own, id, nvar);
-			vWeapon = visualpaint;	// .SWF Dependency
-			vis = new vWeapon();
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		public function WPaint() {
+			super();
+		}
+		
+		public override function init(data:Object):void {
+			vWeapon = SymbolFactory.fetchSymbolClass("visualpaint");
+			
+			if (vWeapon) {
+				vis = new vWeapon();
+			}
 		}
 		
 		public function lineCel():int {
-			var res=0;
-			var bx:Number=owner.coordinates.X;
-			var by:Number=owner.coordinates.Y - owner.boundingBox.height * 0.75;
+			var res:int = 0;
+			var bx:Number = owner.coordinates.X;
+			var by:Number = owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number = (celX - bx);
 			var ndy:Number = (celY - by);
-			var div=int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			for (var i=1; i<div; i++) {
-				celX=bx+ndx*i/div;
-				celY=by+ndy*i/div;
-				var t:Tile=World.w.loc.getAbsTile(int(celX), int(celY));
-				if (t.phis==1 && celX>=t.boundingBox.left && celX<=t.boundingBox.right && celY>=t.boundingBox.top && celY<=t.boundingBox.bottom) {
-					return 0
+			var div:Number = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
+			
+			for (var i:int = 1; i < div; i++) {
+				celX = bx + ndx * i / div;
+				celY = by + ndy * i / div;
+				var t:Tile = World.w.loc.getAbsTile(int(celX), int(celY));
+				
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(celX, celY)) {
+					return 0;
 				}
 			}
+			
 			return 1;
 		}
 		
 		public override function actions():void {
-			var ds=40*owner.storona;
+			var ds:int = 40 * owner.storona;
+			
 			if (owner.player) {
-				celX=owner.celX;
-				celY=owner.celY;
-				storona=owner.storona;
-				del.x=(celX-(owner.coordinates.X+ds));
-				del.y=(celY-owner.weaponY);
-				norma(del,600);
-				ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
+				celX = owner.celX;
+				celY = owner.celY;
+				storona = owner.storona;
+				del.x = (celX-(owner.coordinates.X+ds));
+				del.y = (celY-owner.weaponY);
+				norma(del, 600);
+				ds = (owner as UnitPlayer).pers.meleeS * owner.storona;
 				
-				var tx=celX - coordinates.X;
-				var ty=celY - coordinates.Y;
-				ready=((tx*tx+ty*ty)<100);
-				del.x=((owner.coordinates.X + ds + del.x) - coordinates.X) / 2;
-				del.y=((owner.weaponY + del.y) - coordinates.Y) / 2;
+				var tx:Number = celX - coordinates.X;
+				var ty:Number = celY - coordinates.Y;
+				ready = ((tx*tx+ty*ty)<100);
+				del.x = ((owner.coordinates.X + ds + del.x) - coordinates.X) * 0.50;
+				del.y = ((owner.weaponY + del.y) - coordinates.Y) * 0.50;
+				
 				if (owner.player) {
-					norma(del,20);
+					norma(del, 20);
 				}
+				
 				pX = coordinates.X;
 				pY = coordinates.Y;
 				coordinates.X += del.x;
@@ -71,17 +87,17 @@ package fe.weapon {
 			return true;
 		}
 
-		public function setPaint(npaint:String, ncolor:uint, nblend:String) {
-			paintId=npaint;
-			paintNazv=Res.txt('i',paintId);
-			World.w.grafon.brTrans.color=ncolor
+		public function setPaint(npaint:String, ncolor:uint, nblend:String):void {
+			paintId = npaint;
+			paintNazv = Res.txt('i', paintId);
+			World.w.grafon.brTrans.color = ncolor
 		}
 		
 		public override function animate():void {
 			if (vis) {
 				vis.y = coordinates.Y;
 				vis.x = coordinates.X;
-				vis.scaleX=storona;
+				vis.scaleX = storona;
 			}
 		}
 	}	

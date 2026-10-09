@@ -6,7 +6,8 @@ package fe.inter {
 	
 	// The player appearance editor
 	public class PipPageApp extends PipPage {
-
+		
+		// Constructor
 		public function PipPageApp(npip:PipBuck, npp:String):void {
 			itemClass = visPipQuestItem;
 			super(npip, npp);
@@ -35,7 +36,7 @@ package fe.inter {
 
 			setTopText();
 			if (page2 == 1) {
-				pip.armorID = '';
+				pip.armorID = "";
 				World.w.app.attach(vis, funVidOk, funVidCancel);
 				World.w.app.vis.y = 400;
 				World.w.app.vis.x = 444;

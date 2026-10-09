@@ -3,6 +3,7 @@ package fe {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.LoaderInfo;
+	import flash.net.SharedObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
@@ -20,46 +21,54 @@ package fe {
 
 	public class MainMenu {
 
-		public var version:String = '1.1a';
-		private var mainMenuMovieClip:MovieClip;
-		public var main:Sprite;	// The stage everything is contained in
-		private var world:World;
+		public var main:Sprite;				// A reference to the Flash Container everything is contained in
+
+		public var language:LanguageManager; // Handles loading and storing languages
+
+		// MainMenu variables
+		public var version:String = "1.1a";
 		public var active:Boolean = true;	// The main menu is visible and needs to update
 		public var loaded:Boolean = false;
-		private var newGameMode:int = 2;
-		private var newGameDif:int = 2;
-		private var loadCell:int = -1;
-		private var loadReg:int = 0;	// [Loading window mode, 0 - loading, 1 - selecting slot for autosave]
-		private var command:int = 0;
-		private var com:String = '';
-		private var mmp:MovieClip; // [For pipbuck]
-		private var pip:PipBuck;
-		private var displ:Displ;
 		private var animOn:Boolean = true;
 		private var langReload:Boolean = false;
-
-		// Buttons for each language option
-		private var butsLang:Array;
-		
+		private var butsLang:Array;		// Buttons for each language option
 		private var stn:int=0;
-		
+		// Text formatting
 		public var style:StyleSheet = new StyleSheet(); 
 		private var styleObj:Object = new Object();
-		
 		private var format:TextFormat = new TextFormat();
-		
+		// Saving/Loading
 		private var file:FileReference = new FileReference();
 		private var saveFiles:Array=[];
-		
-		private var mainTimer:Timer;
-
 		// Loading state flags
 		private var part1Loaded:Boolean = false;
 		private var part2Loaded:Boolean = false;
 
+		// Main menu resources
+		private var mainMenuMovieClip:MovieClip;
+
+		// Game data
+		private var userSettings:Object;	// An object containing the user's imported settings
+		private var world:World;
+		private var newGameMode:int = 2;
+		private var newGameDif:int = 2;
+		private var loadCell:int = -1;
+		private var loadReg:int = 0;		// [Loading window mode, 0 - loading, 1 - selecting slot for autosave]
+		private var command:int = 0;
+		private var com:String = "";
+		
+
+		private var mmp:MovieClip; // [For pipbuck]
+		private var pip:PipBuck;
+		private var displ:Displ;
+
 		// Constructor
-		public function MainMenu(nmain:Sprite) 
-		{
+		public function MainMenu(nmain:Sprite) {
+			// Save a reference to the stage container
+			main = nmain;
+
+			// Load the user's in-game settings
+			userSettings = SharedObject.getLocal("config", null);
 			// Load the settings file and store it in memory
 			Settings.initializeSettings();
 
@@ -67,10 +76,10 @@ package fe {
 			XMLData.initializeModules();
 
 			// Load all music and sounds
-			Snd.initSnd();
-
-			// Save a reference to the stage container
-			main = nmain;
+			Snd.initSnd(userSettings);
+			
+			// Initialize the languageManager and load the current localization into memory
+			language = new LanguageManager(userSettings);
 
 			// Load the main menu moveclip object and hide some of it's children
 			mainMenuMovieClip = new visMainMenu();
@@ -89,10 +98,9 @@ package fe {
 		}
 
 		private function mainMenu2():void {
-			trace('ALL XML LOADED, STARTING LOADING PART 2!');
-
-			var paramObj:Object = LoaderInfo(main.root.loaderInfo).parameters;
-			world = new World(main, paramObj);
+			trace("STARTING LOADING PART 2!");
+			
+			world = new World(main, userSettings, language);
 			world.mainMenuClass = this;
 			
 			mainMenuMovieClip.testtest.visible=world.testMode;
@@ -159,7 +167,7 @@ package fe {
 			}
 			
 			world.vwait.visible = true;
-			world.vwait.progres.text = Res.guiText('loading');
+			world.vwait.progres.text = Res.txt("g", "loading");
 		}
 
 		private function menuButtonListeners(setState:Boolean):void {
@@ -174,9 +182,8 @@ package fe {
 			}
 
 			function funButtonPress(event:MouseEvent):void {
-				trace('MainMenu.as/funButtonPress() - "' + event.currentTarget.name + '" pressed.');
-				switch(event.currentTarget.name)
-				{
+				trace("MainMenu.as/funButtonPress() - \"" + event.currentTarget.name + "\" pressed.");
+				switch(event.currentTarget.name) {
 					case "butContGame":
 						funContGame();
 					break;
@@ -250,12 +257,11 @@ package fe {
 		
 		private function setLangButtons():void {
 			butsLang = [];
-			var languageManager:LanguageManager = world.languageManager; // Access the LanguageManager instance
 
-			if (languageManager.languages.length > 1) {
+			if (language.languages.length > 1) {
 				// Loop through the languages array
-				for (var i:int = 0; i < languageManager.languages.length; i++) {
-					var lang:Object = languageManager.languages[i];
+				for (var i:int = 0; i < language.languages.length; i++) {
+					var lang:Object = language.languages[i];
 					var m:MovieClip = new butLang(); // .SWF Dependency
 					butsLang[i] = m;
 					m.lang.text = lang.name; // Use the language name from JSON
@@ -270,45 +276,80 @@ package fe {
 		
 		//надписи
 		private function setMainLang():void {
-			setMainButton(mainMenuMovieClip.butContGame,Res.guiText('contgame'));
-			setMainButton(mainMenuMovieClip.butNewGame,Res.guiText('newgame'));
-			setMainButton(mainMenuMovieClip.butLoadGame,Res.guiText('loadgame'));
-			setMainButton(mainMenuMovieClip.butOpt,Res.guiText('options'));
-			setMainButton(mainMenuMovieClip.butAbout,Res.guiText('about'));
-			mainMenuMovieClip.dialNew.title.text=Res.guiText('newgame');
-			mainMenuMovieClip.dialLoad.title.text=Res.guiText('loadgame');
-			mainMenuMovieClip.dialLoad.title2.text=Res.guiText('select_slot');
-			mainMenuMovieClip.version.htmlText='<b>'+Res.guiText('version')+' '+version+'</b>';
-			mainMenuMovieClip.dialLoad.butCancel.text.text=mainMenuMovieClip.dialNew.butCancel.text.text=Res.guiText('cancel');
-			mainMenuMovieClip.dialLoad.butFile.text.text=Res.pipText('loadfile');
-			mainMenuMovieClip.dialLoad.warn.text=mainMenuMovieClip.dialNew.warn.text=Res.guiText('loadwarn');
-			mainMenuMovieClip.dialNew.infoName.text=Res.guiText('inputname');
-			mainMenuMovieClip.dialNew.hardOpt.text=Res.guiText('hardopt');
-			mainMenuMovieClip.dialNew.butOk.text.text='OK';
-			mainMenuMovieClip.dialNew.inputName.text=Res.txt('u','littlepip');
-			mainMenuMovieClip.dialNew.maxChars=32;
+			trace("MainMenu.as/setMainLang() - Setting up MainMenu language");
+			
+			// The main menu buttons on the left
+			setMainButton(mainMenuMovieClip.butContGame, language.localText("gui", "contgame"));
+			setMainButton(mainMenuMovieClip.butLoadGame, language.localText("gui", "loadgame"));
+			setMainButton(mainMenuMovieClip.butNewGame, language.localText("gui", "newgame"));
+			setMainButton(mainMenuMovieClip.butOpt, language.localText("gui", "options"));
+			setMainButton(mainMenuMovieClip.butAbout, language.localText("gui", "about"));
+			
+			mainMenuMovieClip.dialNew.title.text = language.localText("gui", "newgame");
+			mainMenuMovieClip.dialLoad.title.text = language.localText("gui", "loadgame");
+			mainMenuMovieClip.dialLoad.title2.text = language.localText("gui", "select_slot");
+			mainMenuMovieClip.version.htmlText="<b>" + language.localText("gui", "version") + " " + version + "</b>";
+			mainMenuMovieClip.dialLoad.butCancel.text.text = mainMenuMovieClip.dialNew.butCancel.text.text = language.localText("gui", "cancel");
+			mainMenuMovieClip.dialLoad.butFile.text.text = language.localText("pip", "loadfile");
+			mainMenuMovieClip.dialLoad.warn.text = mainMenuMovieClip.dialNew.warn.text = language.localText("gui", "loadwarn");
+			mainMenuMovieClip.dialNew.infoName.text = language.localText("gui", "inputname");
+			mainMenuMovieClip.dialNew.hardOpt.text = language.localText("gui", "hardopt");
+			mainMenuMovieClip.dialNew.butOk.text.text = "OK";
+			mainMenuMovieClip.dialNew.inputName.text = language.localText("unit", "littlepip");
+			mainMenuMovieClip.dialNew.maxChars = 32;
+			
 			var kolDifs:int = 5;
-			for (var i:int = 0; i<kolDifs; i++) {
-				mainMenuMovieClip.dialNew['dif'+i].mode.text=Res.guiText('dif'+i);
-				mainMenuMovieClip.dialNew['dif'+i].modeinfo.text=Res.formatText(Res.txt('g','dif'+i,1));
+			for (var i:int = 0; i < kolDifs; i++) {
+				mainMenuMovieClip.dialNew["dif" + i].mode.text = language.localText("gui", "dif" + i);
+				mainMenuMovieClip.dialNew["dif" + i].modeinfo.text = Res.formatText(language.localDesc("gui", "dif" + i));
 			}
+			
 			var kolOpts:int = 6;
-			for (i = 1; i<=kolOpts; i++) {
-				mainMenuMovieClip.dialNew['infoOpt'+i].text=Res.guiText('opt'+i);
+			for (i = 1; i <= kolOpts; i++) {
+				mainMenuMovieClip.dialNew["infoOpt" + i].text = language.localText("gui", "opt" + i);
 			}
-			mainMenuMovieClip.dialNew.butVid.mode.text=Res.guiText('butvid');
-			if (world.app) world.app.setLang();
-			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
+			
+			mainMenuMovieClip.dialNew.butVid.mode.text = language.localText("gui", "butvid");
+			
+			if (world.app) {
+				world.app.setLang();
+			}
+			
+			mainMenuMovieClip.adv.text = advText(world.nadv);
 			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
-			mainMenuMovieClip.info.txt.htmlText=Res.txt('g','inform')+'<br>'+Res.txt('g','inform',1);
+			funInform();
 			mainMenuMovieClip.info.visible=(mainMenuMovieClip.info.txt.text.length>0);
 			setScrollInfo();
 		}
 
+		// Update the information links on the left of the main menu
+		private function funInform():void {
+			var guiData:Object = language.data.gui;
+			
+			// Initialize the inform content
+			var informContent:String = Res.formatText(guiData.inform.string) + "<br>";
+			
+			// Iterate through each link and append with formatting
+			for(var j:int = 0; j < guiData.inform.description.length; j++) {
+				informContent += "<br>" + guiData.inform.description[j];
+			}
+			
+			// Apply the style and set the HTML text
+			mainMenuMovieClip.info.txt.styleSheet = style;
+			mainMenuMovieClip.info.txt.htmlText = informContent;
+		}
+
+		// The advice widget at the bottom of the main menu
+		private function advText(n:int):String {
+			var s:String = "";
+			s = language.data.advice[n];
+			return s;
+		}
+
 		private function setMainButton(but:MovieClip, txt:String):void {
-			but.txt.text=txt;
-			but.glow.text=txt;
-			but.txt.visible=(but.glow.textWidth<1)
+			but.txt.text = txt;
+			but.glow.text = txt;
+			but.txt.visible = (but.glow.textWidth < 1)
 		}
 		
 		private function setMenuSize():void {
@@ -316,7 +357,11 @@ package fe {
 			mainMenuMovieClip.version.y=main.stage.stageHeight-58;
 			mainMenuMovieClip.link.y=main.stage.stageHeight-125;
 			var ny:int = main.stage.stageHeight-400;
-			if (ny<280) ny=280;
+			
+			if (ny < 280) {
+				ny = 280;
+			}
+			
 			mainMenuMovieClip.dialLoad.x=mainMenuMovieClip.dialNew.x=world.app.vis.x=main.stage.stageWidth/2;
 			mainMenuMovieClip.dialLoad.y=mainMenuMovieClip.dialNew.y=world.app.vis.y=ny;
 			mainMenuMovieClip.lang.x=main.stage.stageWidth-30;
@@ -346,30 +391,36 @@ package fe {
 			mainMenuMovieClip.dialLoad.title2.visible=(loadReg==1);
 			mainMenuMovieClip.dialLoad.title.visible=(loadReg==0);
 			mainMenuMovieClip.dialLoad.slot0.visible=(loadReg==0);
-			mainMenuMovieClip.dialLoad.info.text='';
-			mainMenuMovieClip.dialLoad.nazv.text='';
-			mainMenuMovieClip.dialLoad.pers.visible=false;
+			mainMenuMovieClip.dialLoad.info.text = "";
+			mainMenuMovieClip.dialLoad.nazv.text = "";
+			mainMenuMovieClip.dialLoad.pers.visible = false;
+			
 			saveFiles = [];
+			
 			for (var i:int = 0; i <= world.saveKol; i++) {
-				var slot:MovieClip = mainMenuMovieClip.dialLoad['slot' + i];
+				var slot:MovieClip = mainMenuMovieClip.dialLoad["slot" + i];
 				var save:Object = World.w.getSave(i);
 				var obj:Object = fe.inter.PipPageOpt.saveObj(save, i);
 				saveFiles.push(obj);
 				slot.id.text = i;
 				slot.id.visible = false;
+				
 				if (save != null && save.est != null) {
-					slot.nazv.text=(i==0)?Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+i);
-					slot.ggName.text=(save.pers.persName==null)?'-------':save.pers.persName;
-					if (save.pers.level!=null) slot.ggName.text+=' ('+save.pers.level+')';
-					if (save.pers.dead) slot.nazv.text+=' [†]';
-					else if (save.pers.hardcore) slot.nazv.text+=' {!}';
-					slot.date.text=(save.date==null)?'-------':Res.getDate(save.date);
-					slot.land.text=(save.date==null)?'':Res.txt('m',save.game.land).substr(0,18);
+					slot.nazv.text=(i==0) ? language.localText("pip", "autoslot") : (language.localText("pip", "saveslot") + " " + i);
+					slot.ggName.text=(save.pers.persName==null)?"-------":save.pers.persName;
+					if (save.pers.level!=null) slot.ggName.text+=" ("+save.pers.level+")";
+					if (save.pers.dead) slot.nazv.text+=" [†]";
+					else if (save.pers.hardcore) slot.nazv.text+=" {!}";
+					slot.date.text=(save.date==null)? "-------" : Res.getDate(save.date);
+					slot.land.text=(save.date==null)? "" : language.localText("map", save.game.land).substr(0, 18);
 				} 
 				else {
-					slot.nazv.text=Res.pipText('freeslot');
-					slot.ggName.text=slot.land.text=slot.date.text='';
+					slot.nazv.text = language.localText("pip", "freeslot");
+					slot.ggName.text = "";
+					slot.land.text	 = "";
+					slot.date.text   = "";
 				}
+				
 				slot.addEventListener(MouseEvent.CLICK, funLoadSlot);
 				slot.addEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
 			}
@@ -385,7 +436,7 @@ package fe {
 				mainMenuMovieClip.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
 			}
 			for (var i:int = 0; i<=world.saveKol; i++) {
-				var slot:MovieClip=mainMenuMovieClip.dialLoad['slot'+i];
+				var slot:MovieClip=mainMenuMovieClip.dialLoad["slot" + i];
 				if (slot.hasEventListener(MouseEvent.CLICK)) {
 					slot.removeEventListener(MouseEvent.CLICK, funLoadSlot);
 					slot.removeEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
@@ -400,14 +451,25 @@ package fe {
 
 		//выбрать слот
 		private function funLoadSlot(event:MouseEvent):void {
-			loadCell=event.currentTarget.id.text;
-			if (loadReg==1 && loadCell==0) return;
-			if (loadReg==0 && event.currentTarget.ggName.text=='') return;
+			loadCell = event.currentTarget.id.text;
+			
+			if (loadReg == 1 && loadCell == 0) {
+				return;
+			}
+			if (loadReg == 0 && event.currentTarget.ggName.text == "") {
+				return;
+			}
+			
 			mainLoadOff();
 			mainMenuOff();
-			command=3;
-			if (loadReg==1) com='new';
-			else com='load';
+			command = 3;
+			
+			if (loadReg == 1) {
+				com = "new";
+			}
+			else {
+				com = "load";
+			}
 		}
 
 		private function funOverSlot(event:MouseEvent):void {
@@ -415,7 +477,7 @@ package fe {
 		}
 		
 		private function funLoadFile(event:MouseEvent):void {
-			var ffil:Array = [new FileFilter(Res.pipText('gamesaves') + " (*.sav)", "*.sav")];
+			var ffil:Array = [new FileFilter(language.localText("pip", "gamesaves") + " (*.sav)", "*.sav")];
 			file.browse(ffil);
 		}
 
@@ -431,7 +493,7 @@ package fe {
 				mainLoadOff();
 				mainMenuOff();
 				command = 3;
-				com = 'load';
+				com = "load";
 				return;
 			}
        }		
@@ -442,16 +504,20 @@ package fe {
 			mainMenuMovieClip.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
 			mainMenuMovieClip.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
 			mainMenuMovieClip.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
+			
 			var kolDifs:int = 5;
 			for (var i:int = 0; i<kolDifs; i++) {
-				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.CLICK, funNewDif);
-				mainMenuMovieClip.dialNew['dif'+i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
+				mainMenuMovieClip.dialNew["dif" + i].addEventListener(MouseEvent.CLICK, funNewDif);
+				mainMenuMovieClip.dialNew["dif" + i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
+			
 			var kolOpts:int = 6;
+			
 			for (i = 1; i<=kolOpts; i++) {
-				mainMenuMovieClip.dialNew['infoOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
-				mainMenuMovieClip.dialNew['checkOpt'+i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
+				mainMenuMovieClip.dialNew["infoOpt"  + i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
+				mainMenuMovieClip.dialNew["checkOpt" + i].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 			}
+			
 			updNewMode();
 			mainMenuMovieClip.dialNew.pers.gotoAndStop(2);
 			mainMenuMovieClip.dialNew.pers.gotoAndStop(1);
@@ -460,31 +526,48 @@ package fe {
 
 		private function mainNewOff():void {
 			mainMenuMovieClip.dialNew.visible=false;
-			if (mainMenuMovieClip.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
-			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) mainMenuMovieClip.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
+			
+			if (mainMenuMovieClip.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) {
+				mainMenuMovieClip.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
+			}
+			
+			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) {
+				mainMenuMovieClip.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
+			}
+			
 			if (mainMenuMovieClip.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) {
 				mainMenuMovieClip.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
+				
 				var kolDifs:int = 5;
 				for (var i:int = 0; i<kolDifs; i++) {
-					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.CLICK, funNewDif);
-					mainMenuMovieClip.dialNew['dif'+i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
+					mainMenuMovieClip.dialNew["dif" + i].removeEventListener(MouseEvent.CLICK, funNewDif);
+					mainMenuMovieClip.dialNew["dif" + i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
 				}
 			}
+			
 			animOn = true;
 		}
 
 		private function funAdv(event:MouseEvent):void {
 			world.nadv++;
-			if (world.nadv>=world.koladv) world.nadv=0;
-			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
-			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
+			
+			if (world.nadv>=world.koladv) {
+				world.nadv=0;
+			}
+			
+			mainMenuMovieClip.adv.text = advText(world.nadv);
+			mainMenuMovieClip.adv.y = main.stage.stageHeight - mainMenuMovieClip.adv.textHeight - 40;
 		}
 
 		private function funAdvR(event:MouseEvent):void {
 			world.nadv--;
-			if (world.nadv<0) world.nadv=world.koladv-1;
-			mainMenuMovieClip.adv.text=Res.advText(world.nadv);
-			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
+			
+			if (world.nadv < 0) {
+				world.nadv = world.koladv - 1;
+			}
+			
+			mainMenuMovieClip.adv.text = advText(world.nadv);
+			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight - 40;
 		}
 
 		private function funNewCancel(event:MouseEvent):void {
@@ -494,6 +577,7 @@ package fe {
 		//нажать ОК в окне новой игры
 		private function funNewOk(event:MouseEvent):void {
 			mainNewOff();
+			
 			if (mainMenuMovieClip.dialNew.checkOpt2.selected) { //показать окно выбора слота
 				loadReg=1;
 				mainLoadOn();
@@ -502,7 +586,7 @@ package fe {
 				mainMenuOff();
 				loadCell=-1;
 				command=3;
-				com='new';
+				com="new";
 			}
 		}
 
@@ -549,7 +633,7 @@ package fe {
 
 		private function infoOpt(event:MouseEvent):void {
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
-			mainMenuMovieClip.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
+			mainMenuMovieClip.dialNew.modeinfo.htmlText = Res.formatText(language.localDesc("gui", "opt" + n));
 		}
 		
 		private function funOpt():void {
@@ -560,15 +644,18 @@ package fe {
 
 		// Function to change the language of the game after clicking a language button
 		private function funLang(event:MouseEvent):void {
-			mainMenuMovieClip.loading.text = '';
+			mainMenuMovieClip.loading.text = "";
 			var nid:String = event.currentTarget.n.text;
-			if (nid == world.languageManager.currentLanguage) {
+			
+			if (nid == language.currentLanguage) {
 				return;
 			}
-			world.languageManager.changeLanguage(nid);
-			langReload = true;
+			
 			showButtons(false);
-			mainMenuMovieClip.loading.text = 'Loading';
+			mainMenuMovieClip.loading.text = "Loading";
+			language.changeLanguage(nid);
+			world.saveConfig();		// Remember the selected language
+			langReload = true;
 		}
 		
 		private function showButtons(n:Boolean):void {
@@ -580,32 +667,50 @@ package fe {
 			mainMenuMovieClip.butAbout.visible = n;
 		}
 		
-		//создатели
+		// Credits
 		private function funAbout():void {
-			mainMenuMovieClip.dialAbout.title.text = Res.guiText('about');
-			var s:String = Res.formatText(Res.txt('g', 'about', 1));
-			s += '<br><br>' + Res.guiText('usedmusic') + '<br>';
-			s += "<br><span class='music'>" + Res.formatText(Res.currentLanguageData.gui.(@id == 'usedmusic').info[0]) + "</span>"
-			s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
+			// Access the JSON data
+			var guiData:Object = language.data.gui;
+			
+			// Set the title text using the 'about' string
+			mainMenuMovieClip.dialAbout.title.text = guiData.about.string;
+			
+			// Initialize the description string by joining the 'about' descriptions with <br>
+			var aboutDescription:String = Res.formatText(guiData.about.description.join("<br>"));
+			
+			// Start building the HTML content
+			var s:String = aboutDescription;
+			
+			// Add 'usedmusic' section title
+			s += "<br><br>" + guiData.usedmusic.string + "<br>";
+			
+			// Iterate through each music entry and append it with styling
+			for(var i:int = 0; i < guiData.usedmusic.description.length; i++) {
+				s += "<br><span class='music'>" + Res.formatText(guiData.usedmusic.description[i]) + "</span>";
+			}
+			
+			// Apply the style and set the HTML text
 			mainMenuMovieClip.dialAbout.txt.styleSheet = style;
 			mainMenuMovieClip.dialAbout.txt.htmlText = s;
+			
+			// Make the About dialog visible and set up event listeners
 			mainMenuMovieClip.dialAbout.visible = true;
 			mainMenuMovieClip.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
 			mainMenuMovieClip.dialAbout.scroll.maxScrollPosition = mainMenuMovieClip.dialAbout.txt.maxScrollV;
 		}
 
 		private function funAboutOk(event:MouseEvent):void {
-			mainMenuMovieClip.dialAbout.visible=false;
+			mainMenuMovieClip.dialAbout.visible = false;
 			mainMenuMovieClip.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
 		private function step():void {
 			if (langReload) {
 				langReload = false;
-				showButtons(true);
-				mainMenuMovieClip.loading.text = '';
+				mainMenuMovieClip.loading.text = "";
 				world.pip.updateLang();
 				setMainLang();
+				showButtons(true);
 				return;
 			}
 			if (loaded) {
@@ -617,39 +722,44 @@ package fe {
 				if (world.allLandsLoaded) {
 					// If we're still loading songs, show the progress
 					if (Snd.totalSongsToLoad > Snd.totalSongsLoaded) {
-						mainMenuMovieClip.loading.text = 'Music loading ' + Snd.totalSongsLoaded + '/' + Snd.totalSongsToLoad;
+						mainMenuMovieClip.loading.text = "Music loading " + Snd.totalSongsLoaded + "/" + Snd.totalSongsToLoad;
 					}
 					// Otherwise clear the text to hide this
 					else {
-						mainMenuMovieClip.loading.text = '';
+						mainMenuMovieClip.loading.text = "";
 					}
 				}
 				return;
 			}
 			// If all resource packs (.swfs / or loose files) have finished loading
-			if (world.grafon.resIsLoad) {
+			if (world.grafon.resIsLoad && language.data != null) {
 				stn++;
-				mainMenuMovieClip.loading.text = 'Loading ' + (Math.floor(stn / 30)) + '\n';
+				mainMenuMovieClip.loading.text = "Loading " + (Math.floor(stn / 30)) + "\n";
 				world.init2();
 				
-				if (world.allLandsLoaded) {
+				if (world.allLandsLoaded && Snd.audioReady) {
 					setLangButtons();
 					setMainLang();
-					loaded=true;
+					loaded = true;
 					showButtons(true);
 					return;
 				}
+
+				if (world.allLandsLoaded && !Snd.audioReady) {
+					mainMenuMovieClip.loading.text += "Audio SFX " + Snd.totalSoundsLoaded + "/" + Snd.totalSoundsToLoad +
+						" Music " + Snd.totalSongsLoaded + "/" + Snd.totalSongsToLoad;
+				}
 				
-				mainMenuMovieClip.loading.text+=world.load_log;
+				mainMenuMovieClip.loading.text += world.load_log;
 			} 
 			else {
-				mainMenuMovieClip.loading.text='Loading '+Math.round(world.grafon.progressLoad*100)+'%';
+				mainMenuMovieClip.loading.text = "Loading " + Math.round(world.grafon.progressLoad * 100) + "%";
 				
 			}
 		}
 		
 		public function log(s:String):void {
-			mainMenuMovieClip.loading.text+=s+'; ';
+			mainMenuMovieClip.loading.text += s + "; ";
 		}
 
 		// This is the main loop of the game and runs every frame
@@ -657,11 +767,11 @@ package fe {
 			if (!part1Loaded) {
 				if (XMLData.fileCount < 1) return;
 				else if (XMLData.filesLoaded >= XMLData.fileCount) {
-					trace('Finished loading: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
+					trace("Finished loading: " + XMLData.filesLoaded + " of " + XMLData.fileCount + " files.");
 					part1Loaded = true;
 				}
 				else {
-					trace('Loaded: ' + XMLData.filesLoaded + ' of ' + XMLData.fileCount + ' files.');
+					trace("Loaded: " + XMLData.filesLoaded + " of " + XMLData.fileCount + " files.");
 					return;
 				}
 
@@ -674,13 +784,13 @@ package fe {
 			if (active) step();
 			else if (command>0) {
 				command--;
-				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=='new') {
+				if (command==1 && !mainMenuMovieClip.dialNew.checkOpt1.selected && com=="new") {
 					world.setLoadScreen(0);
 				}
 				
 				if (command==0) { //начать игру !!!!
 					var opt:Object;
-					if (com=='new') {
+					if (com=="new") {
 						//propusk - опция 1 - пропуск обучения
 						//hardcore - опция 2
 						//fastxp - опция 3, опыта нужно на 40% меньше
@@ -706,7 +816,9 @@ package fe {
 					world.newGame(loadCell, mainMenuMovieClip.dialNew.inputName.text, opt);
 				}
 			} 
-			else world.step();
+			else {
+				world.step();
+			}
 		}			
 	}	
 }

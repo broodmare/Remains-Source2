@@ -11,35 +11,37 @@ package fe.inter {
 	import fl.events.ScrollEvent;	// Adobe Animate dependency
 
 	import fe.*;
-	import fe.unit.Invent;
+	import fe.unit.Inventory;
 	import fe.unit.Pers;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
 	import fe.unit.UnitPlayer;
+	import fe.weapon.Ammo;
 	import fe.loc.Quest;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import fe.loc.LandAct;
 	import fe.unit.UnitPet;
 	import fe.unit.Effect;
-
-	import fe.stubs.visPipInv;
 	
 	public class PipPage {
-
+		
+		public var  pip:PipBuck;
+		protected var inv:Inventory = World.w.invent;
+		protected var gg:UnitPlayer = World.w.gg;
+		
 		public var vis:MovieClip;
 		public var arr:Array;
 		public var statArr:Array;
 		public var statHead:MovieClip;
 		public var pageClass:Class;
 		public var itemClass:Class;
-		public var maxrows:int=18;
+		public var maxrows:int = 18;
 		public var selItem:MovieClip;
-		public var pip:PipBuck;
-		public var inv:Invent;
-		public var gg:UnitPlayer;
-		public var isLC:Boolean=false;
-		public var isRC:Boolean=false; //реакция на клик
+		
+		public var isLC:Boolean = false;
+		public var isRC:Boolean = false; //реакция на клик
+		
 		public var signs:Array=[0, 0, 0, 0, 0, 0];
 		public var page2:int=1;
 		private var scrl:int=0;
@@ -49,26 +51,9 @@ package fe.inter {
 		private var pp:String;
 		private var kolCats:int = 6;
 		private var cat:Array = [0, 0, 0, 0, 0, 0, 0];
-		public var curTip = '';
+		public var curTip:String = "";
 		public var tips:Array = [[]];
 
-		public static var infoCache:Object = {}; // Global cache for item descriptions
-
-		private static var damageTypes:Array = [
-			{type: Unit.D_BUL,		label: 'bullet'},
-			{type: Unit.D_EXPL,		label: 'expl'},
-			{type: Unit.D_PHIS,		label: 'phis'},
-			{type: Unit.D_BLADE,	label: 'blade'},
-			{type: Unit.D_FANG,		label: 'fang'},
-			{type: Unit.D_FIRE,		label: 'fire'},
-			{type: Unit.D_LASER,	label: 'laser'},
-			{type: Unit.D_PLASMA,	label: 'plasma'},
-			{type: Unit.D_SPARK,	label: 'spark'},
-			{type: Unit.D_CRIO,		label: 'crio'},
-			{type: Unit.D_VENOM,	label: 'venom'},
-			{type: Unit.D_ACID,		label: 'acid'},
-			{type: Unit.D_NECRO,	label: 'necro'}
-		];
 		
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
@@ -83,47 +68,82 @@ package fe.inter {
 				pageClass = visPipInv;
 			}
 			
-			vis=new pageClass();
-			vis.x=165;
-			vis.y=72;
-			vis.visible=false;
-			if (vis.pers) vis.pers.visible=false
-			if (vis.skill) vis.skill.visible=false;
-			if (vis.item) vis.item.visible=false
+			vis = new pageClass();
+			
+			// Coordinates of the visual relative to the parent(?)
+			vis.x = 165;
+			vis.y = 72;
+			
+			vis.visible = false;
+			
+			if (vis.pers) {
+				vis.pers.visible = false
+			}
+			
+			if (vis.skill) {
+				vis.skill.visible = false;
+			}
+			
+			if (vis.item) {
+				vis.item.visible = false
+			}
+			
 			pip.vis.addChild(vis);
 			
-			vis.scBar.addEventListener(ScrollEvent.SCROLL,statScroll); // Adobe Animate Dependency
-			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
-			statArr=[];
+			vis.scBar.addEventListener(ScrollEvent.SCROLL, statScroll); // Adobe Animate Dependency
+			vis.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel1);
+			statArr = [];
+			
 			var item:MovieClip;
+			
 			for (var i:int = -1; i < maxrows; i++) {
-				item=new itemClass(); 
-				item.x=30;
-				item.y=100+i*30;
-				if (item.nazv) setStyle(item.nazv);
+				item = new itemClass(); 
+				item.x = 30;
+				item.y = 100 + i * 30;
+				
+				if (item.nazv) {
+					setStyle(item.nazv);
+				}
+				
 				vis.addChild(item);
-				if (item.ramka) item.ramka.visible=false;
+				
+				if (item.ramka) {
+					item.ramka.visible = false;
+				}
+				
 				if (i<0) {
-					item.back.visible=false;
+					item.back.visible = false;
 					statHead=item;
 				}
 				else {
-					if (isLC) item.addEventListener(MouseEvent.CLICK,itemClick);
-					if (isRC) item.addEventListener(MouseEvent.RIGHT_CLICK,itemRightClick);
+					if (isLC) {
+						item.addEventListener(MouseEvent.CLICK,itemClick);
+					}
+					
+					if (isRC) {
+						item.addEventListener(MouseEvent.RIGHT_CLICK,itemRightClick);
+					}
+					
 					item.addEventListener(MouseEvent.MOUSE_OVER,statInfo);
 					statArr.push(item);
 				}
 			}
-			for (i = 1; i <= 5; i++) {
-				item=vis.getChildByName('but' + i) as MovieClip;
-				item.addEventListener(MouseEvent.CLICK,page2Click);
-				item.text.text=Res.pipText(pp+i);
-				item.id.text=i;
-				item.id.visible=false;
+			
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
+			for (var j:int = 1; j <= 5; j++) {
+				item = vis.getChildByName('but' + j) as MovieClip;
+				item.addEventListener(MouseEvent.CLICK, page2Click);
+				item.text.text = localize("pip", pp + j);
+				item.id.text = j;
+				item.id.visible = false;
 			}
-			vis.butOk.visible=false;
-			vis.butDef.visible=false;
-			if (vis.cats) vis.cats.visible=false;
+			
+			vis.butOk.visible = false;
+			vis.butDef.visible = false;
+			
+			if (vis.cats) {
+				vis.cats.visible = false;
+			}
 			
 			setStyle(vis.info);
 			setStyle(vis.bottext);
@@ -168,60 +188,92 @@ package fe.inter {
 		}
 
 		public function updateLang():void {
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
+			
 			for (var i:int = 1; i <= 5; i++) {
 				var button:MovieClip = vis.getChildByName('but'+i) as MovieClip;
-				button.text.text = Res.pipText(pp + i);
+				button.text.text = localize("pip", pp + i);
 			}
 		}
 
+		// Clicking on one of the sub-categories at the top of the page
 		protected function page2Click(event:MouseEvent):void {
 			if (World.w.ctr.setkeyOn) {
 				return;
 			}
-			page2 = int(event.currentTarget.id.text);
+
+			var clickedPage:int = int(event.currentTarget.id.text);
+			trace("PipPage.as/page2Click() - Current page2: " + page2 + ", Clicked page: " + clickedPage);
+
+			// Check if the clicked subcategory is the same as the current one
+			if (clickedPage == page2) {
+				trace("PipPage.as/page2Click() - Selected the same sub-category, aborting");
+				pip.snd(2);    // Play the button press sound anyway
+				return;
+			}
+
+			// Update the current subcategory
+			page2 = clickedPage;
+			trace("PipPage.as/page2Click() - Changing page2 to: " + page2);
+
 			setStatus();
 			pip.snd(2);
 		}
 		
 		private function setButtons():void {
 			for (var i:int = 1; i <= 5; i++) {
-				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
-				if (page2==i) item.gotoAndStop(2);
-				else if (signs[i]>0) item.gotoAndStop(signs[i]+2);
-				else item.gotoAndStop(1);
+				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
+				
+				if (page2 == i) {
+					item.gotoAndStop(2);
+				}
+				else if (signs[i] > 0) {
+					item.gotoAndStop(signs[i] + 2);
+				}
+				else {
+					item.gotoAndStop(1);
+				}
 			}
 		}
 		
 		public function setStatus(flop:Boolean=true):void {
-			setStatus
-			pip.reqKey=false;
-			statHead.id.text='';
-			vis.visible=true;
-			vis.info.text='';
-			vis.nazv.text='';
-			vis.bottext.text='';
-			vis.emptytext.text='';
-			arr=[];
-			if (flop) scrl=0;
-			if (vis.scText) vis.scText.visible=false;
+			pip.reqKey = false;
+			statHead.id.text = "";
+			vis.visible = true;
+			vis.info.text = "";
+			vis.nazv.text = "";
+			vis.bottext.text = "";
+			vis.emptytext.text = "";
+			arr = [];
 			
-			gg=pip.gg;
-			inv=pip.inv;
-			pip.vis.toptext.visible=false;
-			pip.vis.butHelp.visible=pip.vis.butMass.visible=false;
-			pip.vishelp.visible=false;
+			if (flop) {
+				scrl = 0;
+			}
+			
+			if (vis.scText) {
+				vis.scText.visible = false;
+			}
+			
+			pip.vis.toptext.visible = false;
+			pip.vis.butHelp.visible = false;
+			pip.vis.butMass.visible = false;
+			pip.vishelp.visible = false;
+			
 			setSubPages();
-			setStatItems(flop?0:-1);
+			
+			setStatItems(flop ? 0 : -1);
 
 			var sc:ScrollBar = vis.scBar; // Adobe Animate dependency
 
-			if (arr.length>maxrows) {
-				sc.visible=true;
-				sc.minScrollPosition=0
-				sc.maxScrollPosition=arr.length-maxrows;
-				sc.scrollPosition=scrl;
+			if (arr.length > maxrows) {
+				sc.visible = true;
+				sc.minScrollPosition = 0
+				sc.maxScrollPosition = arr.length - maxrows;
+				sc.scrollPosition = scrl;
 			} 
-			else sc.visible=false;
+			else {
+				sc.visible=false;
+			}
 
 			setSigns();
 			setButtons();
@@ -257,91 +309,112 @@ package fe.inter {
 		
 		//показ всех элементов
 		protected function setStatItems(n:int=-1):void {
-			if (n >= 0) scrl = n;
+			if (n >= 0) {
+				scrl = n;
+			}
+			
 			for (var i:int = 0; i < statArr.length; i++) {
-				if (i+scrl>=arr.length) {
-					statArr[i].visible=false;
+				if (i + scrl >= arr.length) {
+					statArr[i].visible = false;
 				}
 				else {
-					statArr[i].visible=true;
-					setStatItem(statArr[i],arr[i+scrl]);
+					statArr[i].visible = true;
+					setStatItem(statArr[i], arr[i + scrl]);
 				}
 			}
 		}
 		
 		protected function setIco(tip:int = 0, id:String = ''):void {
-			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
+			if (infIco && vis.ico.contains(infIco)) {
+				vis.ico.removeChild(infIco);
+			}
+			
 			vis.pers.visible = false;
 			vis.skill.visible = false;
 			vis.item.gotoAndStop(1);
 			vis.info.y = vis.ico.y;
+			
 			if (tip == 1) { // Weapon 
-				var w:Weapon = pip.arrWeapon[id];
-				if (w.tip == 5) {
+				var data:Object = WeaponManager.reference.weaponData(id);
+				
+				// [Spells use their item icon] Unique variants use the base spell's icon, eg. "mbul" for "mbul^1"
+				if (data.tip == Weapon.TYPE_MAGIC) {
 					tip = 3;
-					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
+					
+					if (id.indexOf("^") >= 0) {
+						id = id.substr(0, id.indexOf("^"));
+					}
 				}
 				else {
-					var vWeapon:Class = w.vWeapon;
-					var node:XML = Weapon.getWeaponInfo(id);
-					if (node != null) {
-						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
+					// Use the weapon's own sprite, unique variants have their own (eg. "vismont_1") and some weapons use another weapon's sprite
+					var w:Weapon = World.w.gg.invent.equipment.getWeapon(id) || pip.displayWeapon(id);
+					var vWeapon:Class = w ? w.vWeapon : null;
+					
+					if ("vis_vico" in data) { // Did this ever actually work? I can't find a 'vico' node in the original XML 
+						vWeapon = Res.getClass(data.vis_vico, null);
 					}
-					if (vWeapon==null) {
-						vWeapon=Res.getClass('vis'+id, null);
+
+					
+					if (vWeapon == null) {
+						vWeapon = Res.getClass('vis' + id, null);
 					}
-					if (vWeapon!=null) {
-						infIco=new vWeapon();
+					
+					if (vWeapon != null) {
+						infIco = new vWeapon();
 						infIco.stop();
-						if (infIco.lez) infIco.lez.stop();
-						var r:Number=1;
-						if (node != null && node.vis.length()) {
-							if (node.vis.@icomult.length()) r=infIco.scaleX=infIco.scaleY=node.vis.@icomult;
+						
+						if (infIco.lez) {
+							infIco.lez.stop();
 						}
-						infIco.x=-infIco.getRect(infIco).left*r+140-infIco.width/2;
-						infIco.y=-infIco.getRect(infIco).top;
+						
+						var r:Number = 1.00;
+						
+						if ("vis_icomult" in data) {
+							r = data.vis_icomult;
+							infIco.scaleX = data.vis_icomult;
+							infIco.scaleY = data.vis_icomult;
+						}
+						
+						infIco.x = -infIco.getRect(infIco).left * r + 140 - infIco.width * 0.50;
+						infIco.y = -infIco.getRect(infIco).top;
 						vis.ico.addChild(infIco);
-						vis.info.y=vis.ico.y+vis.ico.height+10;
-						infIco.transform.colorTransform=itemTrans;
-						infIco.filters=[itemFilter];
+						vis.info.y = vis.ico.y + vis.ico.height + 10;
+						infIco.transform.colorTransform = itemTrans;
+						infIco.filters = [itemFilter];
 					}
 				}
 			}
-			if (tip==2) {//бронька
+			else if (tip == 2) {// [reservation]
 				pip.setArmor(id);
 				vis.pers.gotoAndStop(2);
 				vis.pers.gotoAndStop(1);
-				vis.pers.head.morda.magic.visible=false;
-				vis.pers.visible=true;
-				vis.info.y=vis.pers.y+25;
+				vis.pers.head.morda.magic.visible = false;
+				vis.pers.visible = true;
+				vis.info.y = vis.pers.y + 25;
 			}
-			if (tip==3) {
-				vis.item.visible=true;
-				try
-				{
+			else if (tip == 3) {
+				vis.item.visible = true;
+				try {
 					vis.item.gotoAndStop(id);
 					vis.info.y = vis.item.y + vis.item.height + 25;
 				}
-				catch(err)
-				{
+				catch(err) {
 					//trace('ERROR: (00:35) - invalid icon ID: "' + id + '"!');
 					vis.item.gotoAndStop(1);
 					vis.item.visible = false;
 					vis.info.y = vis.ico.y;
 				}
 			}
-			if (tip==5) {//перки
-				vis.skill.visible=true;
-				try
-				{
+			else if (tip==5) {// [perks]
+				vis.skill.visible = true;
+				try {
 					vis.skill.gotoAndStop(id);
-					vis.info.y=vis.ico.y+220;
+					vis.info.y = vis.ico.y + 220;
 				}
-				catch(err)
-				{
+				catch(err) {
 					trace('ERROR: (00:36)');
-					vis.skill.visible=false;
-					vis.info.y=vis.ico.y;
+					vis.skill.visible = false;
+					vis.info.y = vis.ico.y;
 				}
 			}
 		}
@@ -349,40 +422,70 @@ package fe.inter {
 		// [add values ​​to text string]
 		public static function addVar(s:String, xml:XML):String {
 			for (var i:int = 1; i <= 5; i++) {
-				if (xml.attribute('s' + i).length())  s = s.replace('#' + i, "<span class='yellow'>" + xml.attribute('s' + i) + "</span>");
+				if (xml.attribute('s' + i).length())  {
+					s = s.replace('#' + i, "<span class='yellow'>" + xml.attribute('s' + i) + "</span>");
+				}
 			}
+			
 			return s;
 		}
 		
 		// [dlvl=1 if the perk is not current, but selectable]
 		public static function effStr(tip:String, id:String, dlvl:int=0):String {
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
 			var s:String;
-			if (tip=='item') s=Res.txt('i',id,1)
-			else s=Res.txt('e',id,1);
-			if (id.substr(-3)=='_ad') id=id.substr(0,id.length-3);
+			
+			if (tip == 'item') {
+				s = Res.txt('i', id, 1)
+			}
+			else {
+				s = Res.txt('e', id, 1);
+			}
+			
+			// If the id ends with "_ad", remove it
+			if (id.substr(-3) == '_ad') {
+				id = id.substr(0, id.length - 3);
+			}
 
 			var typeName:String = tip + 's';
-			var dp = Effect.getEffectInfo(id);
+			var dp = Effect.getEffectInfo(id);	// XML / XMLList 
 
-			if (dp == null) return s;
+			if (dp == null) {
+				return s;
+			}
+			
 			dp = dp.(@id==id);
-			if (dp.length()==0) return s;
-			dp=dp[0];
+			
+			if (dp.length()==0) {
+				return s;
+			}
+			
+			dp = dp[0];
+			
 			//определение текущего уровня
 			var lvl:int = 1;
 			var pers:Pers = World.w.pers;
 
 			if (tip == 'perk') {
 				lvl = pers.perks[id];
-				if (lvl < 0) lvl = 0;
+				
+				if (lvl < 0) {
+					lvl = 0;
+				}
 			}
 			else if (tip == 'skill') {
 				lvl = pers.getSkLevel(pers.skills[id]);
 			}
 			else if (dp.@him == '2') {
-				var ad = pers.addictions[id];
-				if (ad >= pers.ad2) lvl = 2;
-				if (ad >= pers.ad3) lvl = 3;
+				var ad:int = pers.addictions[id];
+				
+				if (ad >= pers.ad2) {
+					lvl = 2;
+				}
+				
+				if (ad >= pers.ad3) {
+					lvl = 3;
+				}
 			}
 			else if (dp.@him == '1') {
 				lvl = pers.himLevel;
@@ -391,14 +494,19 @@ package fe.inter {
 			lvl += dlvl;
 			
 			// [Inserting numeric values ​​into text]
-			if (lvl > 1 && dp.textvar[lvl - 1]) s = addVar(s, dp.textvar[lvl - 1]);
-			else if (dp.textvar.length()) s = addVar(s, dp.textvar[0]);
+			if (lvl > 1 && dp.textvar[lvl - 1]) {
+				s = addVar(s, dp.textvar[lvl - 1]);
+			}
+			else if (dp.textvar.length()) {
+				s = addVar(s, dp.textvar[0]);
+			}
 			
 			// [Adding special effects]
 			if (dp.eff.length() && lvl > 0) {
-				s+='<br>';
+				s += '<br>';
+				
 				for each(var eff in dp.eff) {
-					s+='<br>'+(eff.@id.length()?Res.pipText(eff.@id):Res.pipText('refeff'))+': '+textAsColor('yellow', eff.attribute('n'+lvl));
+					s+='<br>'+(eff.@id.length()?localize("pip", eff.@id):localize("pip", 'refeff'))+': '+textAsColor('yellow', eff.attribute('n'+lvl));
 				}
 			}
 			
@@ -410,39 +518,44 @@ package fe.inter {
 						var add:String = textAsColor('lightBlue', '+1');
 						
 						if (sk.@vd > 0) {
-							add = textAsColor('lightBlue', '+' + sk.@vd) + ' ' + Res.pipText('perlevel');
+							add = textAsColor('lightBlue', '+' + sk.@vd) + ' ' + localize("pip", 'perlevel');
 						}
 						
 						if (sk.@v1 > 0) {
 							add = textAsColor('lightBlue', '+' + sk.@v1);
 						}
 						
-						s+='<br>'+Res.pipText('add_'+sk.@id)+' '+add;
+						s+='<br>'+localize("pip", 'add_'+sk.@id)+' '+add;
 					}
 				}
 			}
 			
 			// [Adding requirements]
 			if (dp.req.length()) {
-				s += '<br><br>' + Res.pipText('requir');
+				s += '<br><br>' + localize("pip", 'requir');
 				lvl--;
+				
 				for each(var req in dp.req) {
 					
 					var reqlevel:int = 1;
 					
-					if (req.@lvl.length()) reqlevel = req.@lvl;
+					if (req.@lvl.length()) {
+						reqlevel = req.@lvl;
+					}
 					
-					if (lvl > 0 && req.@dlvl.length()) reqlevel += lvl * req.@dlvl;
+					if (lvl > 0 && req.@dlvl.length()) {
+						reqlevel += lvl * req.@dlvl;
+					}
 					
 					var s1:String = '<br>';
 					var ok:Boolean = true;
 					
 					if (req.@id=='level') {
-						s1+=Res.pipText('level');
+						s1+=localize("pip", 'level');
 						if (pers.level<reqlevel) ok=false;
 					}
 					else if (req.@id=='guns') {
-						s1+=Res.txt('e','smallguns')+' '+Res.pipText('orange')+' '+Res.txt('e','energy');
+						s1+=Res.txt('e','smallguns')+' '+localize("pip", 'orange')+' '+Res.txt('e','energy');
 						if (pers.getSkLevel(pers.skills['smallguns'])<reqlevel && pers.getSkLevel(pers.skills['energy'])<reqlevel) ok=false;
 					}
 					else {
@@ -463,216 +576,430 @@ package fe.inter {
 			return s;
 		}
 		
-		
 		public static function infoStr(tip:String, id:String):String {
-			// Generate a unique cache key
-			var cacheKey:String = tip + ":" + id;
-
-			// Check if the value is already cached
-			if (infoCache[cacheKey] != null) {
-				return infoCache[cacheKey];
-			}
-			
-			var s:String='';
 			var pip:PipBuck = World.w.pip;
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
 			var gg:UnitPlayer = World.w.gg;
-			var inv:Invent=World.w.invent;
-			
-			if (tip==Item.L_ARMOR && inv.armors[id]==null && pip.arrArmor[id]==null) tip=Item.L_ITEM;
-			if (tip==Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip=Item.L_ITEM;
-			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
-				var w:Weapon = pip.arrWeapon[id];
-				if (w==null) return '';
-				w.setPers(gg,gg.pers);
-				var skillConf:int = 1;
-				var razn:int = w.lvl-gg.pers.getWeapLevel(w.skill);
-				if (razn == 1) skillConf = 0.75;
-				if (razn >= 2) skillConf = 0.5;
+			var inv:Inventory = World.w.gg.invent;							// Reference to the player inventory
+
+			var s:String = "";
+
+			// Switch from armor to item if not found
+			if (tip == Item.L_ARMOR && isEmpty(ArmorManager.reference.armorData(id))) {
+				tip = Item.L_ITEM;
+			}
+			// Switch from weapon to item if it's a spell-based weapon
+			if (tip == Item.L_WEAPON && !isEmpty(WeaponManager.reference.weaponData(id)) && WeaponManager.reference.weaponData(id).spell) {
+				tip = Item.L_ITEM;
+			}
+
+			// Weapons or explosives
+			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) {
+				// The player's own weapon, or a copy of it for weapons they don't have (eg. at vendors)
+				var w:Weapon = inv.equipment.getWeapon(id) || pip.displayWeapon(id);
+				
+				if (!w) {
+					return "";
+				}
+
+				w.setPers(gg, gg.pers);
+
+				// Determine skillConf based on weapon level vs. player’s skill
+				var razn:int = w.lvl - gg.pers.getWeapLevel(w.skill);
+				var skillConf:Number = (razn == 1) ? 0.75 : (razn >= 2 ? 0.5 : 1);
 				w.skillConf = skillConf;
-				s += Res.pipText('weapontip') + ': ' + textAsColor('yellow', Res.pipText('weapontip' + w.skill));
-				if (w.lvl>0) {
-					s+='\n'+Res.pipText('lvl')+': '+numberAsColor('yellow', w.lvl);
-					s += '\n' + Res.pipText('islvl') + ': ' + textAsColor('yellow', gg.pers.getWeapLevel(w.skill).toString());
-					if (razn>0) s+="<span class = 'red'>";
-					if (w.lvlNoUse && razn>0 || razn>2) s+=' ('+Res.pipText('weapnouse')+')</span>';
-					else if (razn>0){
-						if (razn==2) {
-							s+=' (-40% ';
+
+				s += localize("pip", "weapontip") + ": "
+					+ textAsColor("yellow", localize("pip", "weapontip" + w.skill));
+
+				if (w.lvl > 0) {
+					s += "\n" + localize("pip", "lvl") + ": " + numberAsColor("yellow", w.lvl);
+					s += "\n" + localize("pip", "islvl") + ": " + textAsColor("yellow", gg.pers.getWeapLevel(w.skill).toString());
+
+					if (razn > 0) {
+						s += "<span class = 'red'>";
+					}
+					
+					if ((w.lvlNoUse && razn > 0) || razn > 2) {
+						s += " (" + localize("pip", "weapnouse") + ")</span>";
+					}
+					else if (razn > 0) {
+						if (razn == 2) {
+							s += " (-40% ";
 						}
-						else if (razn==1) {
-							s+=' (-20% ';
+						else if (razn == 1) {
+							s += " (-20% ";
 						}
-						if (w.tip==1) s+=Res.pipText('rapid')
-						else if (w.tip==4) s+=Res.pipText('distance');
-						else s+=Res.pipText('precision');
-						s+=")</span>";
+						
+						if (w.tip == Weapon.TYPE_MELEE) {
+							s += localize("pip", "rapid");
+						}
+						else if (w.tip == Weapon.TYPE_EXPLOSIVES) {
+							s += localize("pip", "distance");
+						}
+						else {
+							s += localize("pip", "precision");
+						}
+						
+						s += ")</span>";
 					}
 				}
-				if (w.perslvl>0) {
-					s+='\n'+Res.pipText('perslvl')+': '+numberAsColor('yellow', w.perslvl);
-					s+='\n'+Res.pipText('isperslvl')+': '+textAsColor('yellow', gg.pers.level.toString());
-					if (gg.pers.level<w.perslvl) s+=textAsColor('red', ' ('+Res.pipText('weapnouse')+')');
+
+				if (w.perslvl > 0) {
+					s += "\n" + localize("pip", "perslvl") + ": " + numberAsColor("yellow", w.perslvl);
+					s += "\n" + localize("pip", "isperslvl") + ": " + textAsColor("yellow", gg.pers.level.toString());
+					
+					if (gg.pers.level < w.perslvl) {
+						s += textAsColor("red", " (" + localize("pip", "weapnouse") + ")");
+					}
 				}
-				s+='\n'+Res.pipText('damage')+': ';
+
+				// Damage
+				s += "\n" + localize("pip", "damage") + ": ";
 				var wdam:Number = w.damage;
 				var wdamexpl:Number = w.damageExpl;
-				if (w.damage>0) {
-					s+=numberAsColor('yellow', Math.round(w.damage*10)/10);
-					wdam=w.resultDamage(w.damage,gg.pers.weaponSkills[w.skill]);
-					if (wdam!=w.damage) {
-						s+=' ('+numberAsColor('yellow', Math.round(wdam*10)/10)+')';
+
+				if (w.damage > 0) {
+					s += numberAsColor("yellow", Math.round(w.damage * 10) / 10);
+					var calcDam:Number = w.resultDamage(w.damage, gg.pers.weaponSkills[w.skill]);
+					
+					if (calcDam != w.damage) {
+						s += " (" + numberAsColor("yellow", Math.round(calcDam * 10) / 10) + ")";
 					}
 				}
-				if (w.damage>0 && w.damageExpl>0) s+=' + ';
-				if (w.damageExpl>0) {
-					s+=numberAsColor('yellow', Math.round(w.damageExpl*w.damMult*10)/10);
-					wdamexpl=w.resultDamage(w.damageExpl,gg.pers.weaponSkills[w.skill]);
-					if (wdamexpl!=w.damageExpl) {
-						s+=' ('+numberAsColor('yellow', Math.round(wdamexpl*10)/10)+')';
-					}
-					s+=' '+Res.pipText('expldam');
+				
+				if (w.damage > 0 && w.damageExpl > 0) {
+					s += " + ";
 				}
-				if (w.kol>1) s+=' [x'+w.kol+']';
-				if (w.explKol>1) s+=' [x'+w.explKol+']';
+				
+				if (w.damageExpl > 0) {
+					s += numberAsColor("yellow", Math.round(w.damageExpl * w.damMult * 10) / 10);
+					var calcDamExpl:Number = w.resultDamage(w.damageExpl, gg.pers.weaponSkills[w.skill]);
+					
+					if (calcDamExpl != w.damageExpl) {
+						s += " (" + numberAsColor("yellow", Math.round(calcDamExpl * 10) / 10) + ")";
+					}
+					
+					s += " " + localize("pip", "expldam");
+				}
+
+				if (w.kol > 1) {
+					s += " [x" + w.kol + "]";
+				}
+				
+				if (w.explKol > 1) {
+					s += " [x" + w.explKol + "]";
+				}
+
 				var wrapid:int = w.resultRapid(w.rapid);
-				if (w.tip!=4) {
-					s+='\n'+Res.pipText('aps')+': '+textAsColor('yellow', Number(World.fps/wrapid).toFixed(1));
-					s+='\n'+Res.pipText('dps')+': '+textAsColor('yellow', Number((wdam+wdamexpl)*w.kol*World.fps/wrapid).toFixed(1));
-					if (w.holder) s+=' ('+textAsColor('yellow', Number((wdam+wdamexpl)*w.kol*World.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
+				if (w.tip != Weapon.TYPE_EXPLOSIVES) {
+					s += "\n" + localize("pip", "aps") + ": "
+						+ textAsColor("yellow", Number(World.fps / wrapid).toFixed(1));
+
+					s += "\n" + localize("pip", "dps") + ": "
+						+ textAsColor("yellow", Number((wdam + wdamexpl) * w.kol * World.fps / wrapid).toFixed(1));
+
+					if (w.magazineCapacity) {
+						s += " (" + textAsColor("yellow",
+								Number((wdam + wdamexpl) * w.kol * World.fps
+									/ (wrapid + w.reload * w.reloadMult / w.magazineCapacity * w.rashod)
+								).toFixed(1))
+							+ ")";
+					}
 				}
-				s+='\n'+Res.pipText('critch')+': '+textAsColor('yellow', Math.round((w.critCh+w.critchAdd+gg.critCh)*100)+'%');
-				s+='\n'+Res.pipText('tipdam')+': '+textAsColor('blue', Res.pipText('tipdam'+w.tipDamage));
-				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('inv5')+': '+textAsColor('yellow', Res.txt('i',w.ammo));
-				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('holder')+': '+numberAsColor('yellow', w.holder);
-				if (w.rashod>1) s+=' ('+numberAsColor('yellow', w.rashod)+' '+Res.pipText('rashod')+')';
-				if (w.tip==5) s+='\n'+Res.pipText('dmana')+': '+numberAsColor('yellow', Math.round(w.mana));
-				if (w.precision>0) s+='\n'+Res.pipText('prec')+': '+numberAsColor('yellow', Math.round(w.precision*w.precMult/40));
-				if (w.pier+w.pierAdd>0) s+='\n'+Res.pipText('pier')+': '+numberAsColor('yellow', Math.round(w.pier+w.pierAdd));
+
+				s += "\n" + localize("pip", "critch") + ": " + textAsColor("yellow", Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + "%");
+				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", w.tipDamage));
+
+				if (w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC && w.magazineCapacity > 0) {
+					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", w.ammo ? w.ammo.name : "");
+					s += "\n" + localize("pip", "holder") + ": " + numberAsColor("yellow", w.magazineCapacity);
+				}
+
+				if (w.rashod > 1) {
+					s += " (" + numberAsColor("yellow", w.rashod) + " " + localize("pip", "rashod") + ")";
+				}
+				if (w.tip == Weapon.TYPE_MAGIC) {
+					s += "\n" + localize("pip", "dmana") + ": " + numberAsColor("yellow", Math.round(w.mana));
+				}
+				if (w.precision > 0) {
+					s += "\n" + localize("pip", "prec") + ": "
+						+ numberAsColor("yellow", Math.round(w.precision * w.precMult / 40));
+				}
+				if (w.pier + w.pierAdd > 0) {
+					s += "\n" + localize("pip", "pier") + ": " + numberAsColor("yellow", Math.round(w.pier + w.pierAdd));
+				}
+
 				if (!w.noSats) {
-					s+='\n'+Res.pipText('ap')+': ';
-					if (razn>0) s+="<span class = 'red'>";
-					else s+="<span class = 'yellow'>";
-					s+=Math.round(w.satsCons*w.consMult/skillConf*gg.pers.satsMult);
-					s+="</span>";
-					if (w.satsQue>1) s+=' (x'+numberAsColor('yellow', w.satsQue)+')';
+					s += "\n" + localize("pip", "ap") + ": ";
+					
+					if (razn > 0) {
+						s += "<span class = 'red'>";
+					}
+					else {
+						s += "<span class = 'yellow'>";
+					}
+					
+					s += Math.round(w.satsCons * w.consMult / skillConf * gg.pers.satsMult) + "</span>";
+					
+					if (w.satsQue > 1) {
+						s += " (x" + numberAsColor("yellow", w.satsQue) + ")";
+					}
 				}
-				if (w.destroy>=100) {
-					s+='\n'+Res.pipText('destroy');
+
+				if (w.destroy >= 100) {
+					s += "\n" + localize("pip", "destroy");
 				}
+				
 				if (w.opt && w.opt.perk) {
-					s+='\n'+Res.pipText('refperk')+': '+textAsColor('pink', Res.txt('e',w.opt.perk));
+					s += "\n" + localize("pip", "refperk") + ": " + textAsColor("pink", Res.txt("e", w.opt.perk));
 				}
-				var sinf:String = Res.txt('w', id, 1);
-				if (sinf=='') sinf=Res.txt('w',w.id,1);
-				if (World.w.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
-				if (World.w.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
-				s+='\n\n'+sinf;
+
+				var sinf:String = Res.txt("w", id, 1);
+				if (sinf == "") {
+					sinf = Res.txt("w", w.id, 1);
+				}
+
+				if (World.w.hardInv && w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
+					s += "\n" + localize("pip", "mass2") + ": <span class = 'mass'>" + w.mass + "</span>";
+				}
+				else if (World.w.hardInv && w.tip == Weapon.TYPE_EXPLOSIVES) {
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getWeight(id) + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
+				}
+
+				s += "\n\n" + sinf;
 			}
-			else if (tip==Item.L_ARMOR) {
-				var a:Armor = inv.armors[id];
-				if (a == null) a = pip.arrArmor[id];
+			else if (tip == Item.L_ARMOR) {
+				// The player's own armor, or a default copy for armor they don't have
+				var armRef:Armor = inv.equipment.getArmor(id) || ArmorManager.reference.armor(id);
+				
+				if (!armRef) {
+					return "";
+				}
 
 				// Print all armor bonuses if they exist
-				if (a.armor_qual>0) s+=Res.pipText('aqual')+': '+textAsColor('yellow', Math.round(a.armor_qual*100)+'%');
-				if (a.armor>0) s+='\n'+Res.pipText('armor')+': '+numberAsColor('yellow', Math.round(a.armor));
-				if (a.marmor>0) s+='\n'+Res.pipText('marmor')+': '+numberAsColor('yellow', Math.round(a.marmor));
-				if (a.dexter!=0) s+='\n'+Res.pipText('dexter')+': '+textAsColor('yellow', Math.round(a.dexter*100)+'%');
-				if (a.sneak!=0) s+='\n'+Res.pipText('sneak')+': '+textAsColor('yellow', Math.round(a.sneak*100)+'%');
-				if (a.meleeMult!=1) s+='\n'+Res.pipText('meleedamage')+': +'+textAsColor('yellow', Math.round((a.meleeMult-1)*100)+'%');
-				if (a.gunsMult!=1) s+='\n'+Res.pipText('gunsdamage')+': +'+textAsColor('yellow', Math.round((a.gunsMult-1)*100)+'%');
-				if (a.magicMult!=1) s+='\n'+Res.pipText('spelldamage')+': +'+textAsColor('yellow', Math.round((a.magicMult-1)*100)+'%');
-				if (a.crit!=0) s+='\n'+Res.pipText('critch')+': +'+textAsColor('yellow', Math.round(a.crit*100)+'%');
-				if (a.radVul<1) s+='\n'+Res.pipText('radx')+': '+textAsColor('yellow', Math.round((1-a.radVul)*100)+'%');
-				
-				// Print all armor resistances if they exist
-				for (var i:int = 0; i < damageTypes.length; i++)
-				{
-					var damageType:Object = damageTypes[i];
-					if (a.resist[damageType.type] != 0) {
-						s += '\n' + Res.pipText(damageType.label) + ': ' + textAsColor('yellow', Math.round(a.resist[damageType.type] * 100) + '%');
+				if (armRef.armorQual > 0) {
+					s += localize("pip", "aqual") + ": " + textAsColor("yellow", Math.round(armRef.armorQual * 100) + "%");
+				}
+				if (armRef.armor > 0) {
+					s += "\n" + localize("pip", "armor") + ": " + numberAsColor("yellow", Math.round(armRef.armor));
+				}
+				if (armRef.marmor > 0) {
+					s += "\n" + localize("pip", "marmor") + ": " + numberAsColor("yellow", Math.round(armRef.marmor));
+				}
+				if (armRef.dexter != 0) {
+					s += "\n" + localize("pip", "dexter") + ": " + textAsColor("yellow", Math.round(armRef.dexter * 100) + "%");
+				}
+				if (armRef.sneak != 0) {
+					s += "\n" + localize("pip", "sneak") + ": " + textAsColor("yellow", Math.round(armRef.sneak * 100) + "%");
+				}
+				if (armRef.meleeMult != 1) {
+					s += "\n" + localize("pip", "meleedamage") + ": +" + textAsColor("yellow", Math.round((armRef.meleeMult - 1) * 100) + "%");
+				}
+				if (armRef.gunsMult != 1) {
+					s += "\n" + localize("pip", "gunsdamage") + ": +" + textAsColor("yellow", Math.round((armRef.gunsMult - 1) * 100) + "%");
+				}
+				if (armRef.magicMult != 1) {
+					s += "\n" + localize("pip", "spelldamage") + ": +" + textAsColor("yellow", Math.round((armRef.magicMult - 1) * 100) + "%");
+				}
+				if (armRef.crit != 0) {
+					s += "\n" + localize("pip", "critch") + ": +" + textAsColor("yellow", Math.round(armRef.crit * 100) + "%");
+				}
+				if (armRef.radVul < 1) {
+					s += "\n" + localize("pip", "radx") + ": " + textAsColor("yellow", Math.round((1 - armRef.radVul) * 100) + "%");
+				}
+
+				// Print all armor resistances using the new Resistances class
+				var allResistTypes:Array = armRef.resistances.getAllResistanceTypes();
+				for each (var resistType:String in allResistTypes) {
+					var resistValue:Number = armRef.resistances.getResist(resistType);
+					if (resistValue != 0) {
+						// Assuming you have a localization entry for each resist type
+						s += "\n" + localize("pip", resistType) + ": " + textAsColor("yellow", Math.round(resistValue * 100) + "%");
 					}
 				}
-				
-				s += '\n\n'+Res.txt('a',id,1);
+
+				s += "\n\n" + Res.txt("a", id, 1);
 			}
-			else if (tip==Item.L_AMMO) {
-				var ammo:XML = inv.items[id].xml;
-				if (Weapon.getWeaponInfo(id) != null) {
-					s = Res.txt('w',id,1);
+			else if (tip == Item.L_AMMO) {
+				var ammoData:Object = ItemManager.reference.getItem(id);
+				var ammo:Ammo = WeaponManager.reference.getAmmo(id);
+				
+				// [Explosives on the ammo page use the weapon's description]
+				if (id in WeaponManager.reference.allWeaponData()) {
+					s = Res.txt("w", id, 1);
 				}
-				else if (ammo.@base.length()) {
-					s=Res.txt('i',ammo.@base,1);
-					if (ammo.@mod>0) {
-						s+='\n\n'+Res.txt('p','ammomod_'+ammo.@mod,1);
+				else if (ammo.base != "") {
+					// Get the description of the base ammo type (Eg. '9mm')
+					s = Res.txt("i", ammo.base, 1);
+					
+					// Add the description of the ammo variant if applicable (Eg. 'Armor-piercing')
+					if (ammo.mod != "") {
+						s += "\n\n" + LanguageManager.reference.localDesc("pip", "STR_AMMO_" + ammo.mod.toUpperCase());
 					}
 				}
-				else s = Res.txt('i', id, 1);
-				s+='\n';
-				if (ammo.@damage.length()) s+='\n'+Res.pipText('damage')+': x'+textAsColor('yellow', ammo.@damage);
-				if (ammo.@pier.length()) s+='\n'+Res.pipText('pier')+': '+textAsColor('yellow', ammo.@pier);
-				if (ammo.@armor.length()) s+='\n'+Res.pipText('tarmor')+': x'+textAsColor('yellow', ammo.@armor);
-				if (ammo.@prec.length()) s+='\n'+Res.pipText('prec')+': x'+textAsColor('yellow', ammo.@prec);
-				if (ammo.@det>0) s+='\n'+Res.pipText('det');
-				if (World.w.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
-				if (ammo.@sell>0) s+='\n'+Res.pipText('sell')+": "+textAsColor('yellow', ammo.@sell);
+				else {
+					s = Res.txt("i", id, 1);
+				}
+
+				s += "\n";
+
+				if (ammo.damageMultiplier != 1) {
+					s += "\n" + localize("pip", "damage") + ": x" + numberAsColor("yellow", ammo.damageMultiplier);
+				}
+				
+				if (ammo.piercing != 0) {
+					s += "\n" + localize("pip", "pier") + ": " + numberAsColor("yellow", ammo.piercing);
+				}
+				
+				if (ammo.armorMultiplier != 1) {
+					s += "\n" + localize("pip", "tarmor") + ": x" + numberAsColor("yellow", ammo.armorMultiplier);
+				}
+				
+				if (ammo.accuracyModifier != 1) {
+					s += "\n" + localize("pip", "prec") + ": x" + numberAsColor("yellow", ammo.accuracyModifier);
+				}
+				
+				if (ammo.increasedWear > 0) {
+					s += "\n" + localize("pip", "det");
+				}
+				
+				if (World.w.hardInv && ammoData.m > 0) {
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ammoData.m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
+				}
+				
+				if (ammoData.sell > 0) {
+					s += "\n" + localize("pip", "sell") + ": " + textAsColor("yellow", ammoData.sell);
+				}
 			}
 			else {
-				var hhp:Number=0;
-				s=Res.txt('i',id,1)+'\n';
-				var pot:XML = inv.items[id].xml;
-				tip=pot.@tip;
-				if (tip=='instr' || tip=='impl'|| tip=='art') {
-					s=effStr('item',id)+'\n';
+				var pot:Object = ItemManager.reference.getItem(id);
+				s = Res.txt("i", id, 1) + "\n";
+				tip = pot.tip;
+
+				if (tip == "instr" || tip == "impl" || tip == "art") {
+					s = effStr("item", id) + "\n";
 				}
-				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') {
-					if (pot.@hhp.length() || pot.@hhplong.length())
-					s+='\n'+Res.pipText('healhp')+': '+numberAsColor('yellow', Math.round(pot.@hhp*World.w.pers.healMult));
-					if (pot.@hhplong.length()) s+='+'+numberAsColor('yellow', Math.round(pot.@hhplong*World.w.pers.healMult));
-					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+numberAsColor('yellow', Math.round(pot.@hrad*World.w.pers.healMult));
-					if (pot.@hcut.length()) s+='\n'+Res.pipText('healcut')+': '+numberAsColor('yellow', Math.round(pot.@hcut));
-					if (pot.@hpoison.length()) s+='\n'+Res.pipText('healpoison')+': '+numberAsColor('yellow', Math.round(pot.@hpoison));
-					if (pot.@horgan.length()) s+='\n'+Res.pipText('healorgan')+': '+numberAsColor('yellow', Math.round(pot.@horgan));
-					if (pot.@horgans.length()) s+='\n'+Res.pipText('healorgans')+': '+numberAsColor('yellow', Math.round(pot.@horgans));
-					if (pot.@hblood.length()) s+='\n'+Res.pipText('healblood')+': '+numberAsColor('yellow', Math.round(pot.@hblood));
-					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+numberAsColor('yellow', Math.round(pot.@hmana*World.w.pers.healManaMult));
-					if (pot.@alc.length()) s+='\n'+Res.pipText('alcohol')+': '+numberAsColor('yellow', Math.round(pot.@alc));
-					if (pot.@rad.length()) s+='\n'+Res.pipText('rad')+': '+numberAsColor('yellow', Math.round(pot.@rad));
-					if (pot.@effect.length()) s+='\n'+Res.pipText('refeff')+': '+effStr('eff',pot.@effect);
-					if (pot.@perk.length()) s+='\n'+textAsColor('pink', Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
-					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
-				}
-				if (tip=='book') {
-					if (World.w.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+textAsColor('pink', Res.txt('e',id));
-				}
-				if (tip=='spell') {
-					s+='\n'+Res.pipText('dmana2')+': '+textAsColor('yellow', pot.@mana)+' ('+numberAsColor('yellow', Math.round(pot.@mana*World.w.pers.allDManaMult))+')';
-					s+='\n'+Res.pipText('culd')+': '+textAsColor('yellow', pot.@culd+Res.guiText('sec'))+' ('+textAsColor('yellow', Math.round(pot.@culd*World.w.pers.spellDown)+Res.guiText('sec'))+')';
-					s+='\n'+Res.pipText('is1')+': '+textAsColor('pink', (pot.@tele>0)?Res.txt('e','tele'):Res.txt('e','magic'));
-				}
-				if (id=='rep') {
-					if (pot.@hp.length()) hhp=pot.@hp*gg.pers.repairMult;
-					if (hhp>0) s+='\n'+Res.pipText('effect')+': '+numberAsColor('yellow', Math.round(hhp));
-				}
-				if (pot.@pet_info.length()) {
-					var pet:UnitPet=gg.pets[pot.@pet_info];
-					if (pet) {
-						s+='\n'+Res.pipText('hp')+': '+numberAsColor('yellow', Math.round(pet.hp))+'/'+numberAsColor('yellow', Math.round(pet.maxhp));
-						s+='\n'+Res.pipText('skin')+': '+numberAsColor('yellow', Math.round(pet.skin));
-						if (pet.allVulnerMult<1) s+='\n'+Res.pipText('allresist')+': '+textAsColor('yellow', Math.round((1-pet.allVulnerMult)*100)+'%');
-						s+='\n'+Res.pipText('damage')+': '+numberAsColor('yellow', Math.round(pet.dam));
+
+				if (tip == "med" || tip == "food" || tip == "pot" || tip == "him") {
+					if ("hhp" in pot || "hhplong" in pot) {
+						s += "\n" + localize("pip", "healhp") + ": " + numberAsColor("yellow", Math.round(pot.hhp * World.w.pers.healMult));
+					}
+					if ("hhplong" in pot) {
+						s += "+" + numberAsColor("yellow", Math.round(pot.hhplong * World.w.pers.healMult));
+					}
+					if ("hrad" in pot) {
+						s += "\n" + localize("pip", "healrad") + ": " + numberAsColor("yellow", Math.round(pot.hrad * World.w.pers.healMult));
+					}
+					if ("hcut" in pot) {
+						s += "\n" + localize("pip", "healcut") + ": " + numberAsColor("yellow", Math.round(pot.hcut));
+					}
+					if ("hpoison" in pot) {
+						s += "\n" + localize("pip", "healpoison") + ": " + numberAsColor("yellow", Math.round(pot.hpoison));
+					}
+					if ("horgan" in pot) {
+						s += "\n" + localize("pip", "healorgan") + ": " + numberAsColor("yellow", Math.round(pot.horgan));
+					}
+					if ("horgans" in pot) {
+						s += "\n" + localize("pip", "healorgans") + ": " + numberAsColor("yellow", Math.round(pot.horgans));
+					}
+					if ("hblood" in pot) {
+						s += "\n" + localize("pip", "healblood") + ": " + numberAsColor("yellow", Math.round(pot.hblood));
+					}
+					if ("hmana" in pot) {
+						s += "\n" + localize("pip", "healmana") + ": " + numberAsColor("yellow", Math.round(pot.hmana * World.w.pers.healManaMult));
+					}
+					if ("alc" in pot) {
+						s += "\n" + localize("pip", "alcohol") + ": " + numberAsColor("yellow", Math.round(pot.alc));
+					}
+					if ("rad" in pot) {
+						s += "\n" + localize("pip", "rad") + ": " + numberAsColor("yellow", Math.round(pot.rad));
+					}
+					if ("effect" in pot) {
+						s += "\n" + localize("pip", "refeff") + ": " + effStr("eff", pot.effect);
+					}
+					if ("perk" in pot) {
+						s += "\n" + textAsColor("pink", Res.txt("e", pot.perk)) + ": " + localize("pip", "level") + " "
+							+ (World.w.pers.perks[pot.perk] > 0 ? World.w.pers.perks[pot.perk] : "0");
+					}
+					if ("maxperk" in pot) {
+						s += "/" + pot.maxperk;
 					}
 				}
-				if (tip=='paint') s=Res.txt('p','paint',1);
-				if (World.w.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
-				if (pot.@sell>0) s+='\n'+Res.pipText('sell')+": "+textAsColor('yellow', pot.@sell);
+				
+				if (tip == "book") {
+					if (World.w.pers.skills[id] != null) {
+						s += "\n" + localize("pip", "skillup") + ": " + textAsColor("pink", Res.txt("e", id));
+					}
+				}
+				
+				if (tip == "spell") {
+					s += "\n" + localize("pip", "dmana2") + ": "
+						+ textAsColor("yellow", pot.mana)
+						+ " (" + numberAsColor("yellow", Math.round(pot.mana * World.w.pers.allDManaMult)) + ")";
+					
+					s += "\n" + localize("pip", "culd") + ": "
+						+ textAsColor("yellow", pot.culd + Res.txt("g", "sec"))
+						+ " (" + textAsColor("yellow", Math.round(pot.culd * World.w.pers.spellDown)
+						+ Res.txt("g", "sec")) + ")";
+					
+					s += "\n" + localize("pip", "is1") + ": "
+						+ textAsColor("pink", (pot.tele > 0) ? Res.txt("e", "tele") : Res.txt("e", "magic"));
+				}
+				
+				if (id == "rep") {
+					var hhp:Number = 0;
+					if ("hp" in pot) {
+						hhp = pot.hp * gg.pers.repairMult;
+					}
+					if (hhp > 0) {
+						s += "\n" + localize("pip", "effect") + ": "
+							+ numberAsColor("yellow", Math.round(hhp));
+					}
+				}
+				
+				if ("pet_info" in pot) {
+					var pet:UnitPet = gg.pets[pot.pet_info];
+					if (pet) {
+						s += "\n" + localize("pip", "hp") + ": "
+							+ numberAsColor("yellow", Math.round(pet.hp)) + "/"
+							+ numberAsColor("yellow", Math.round(pet.maxhp));
+						s += "\n" + localize("pip", "skin") + ": "
+							+ numberAsColor("yellow", Math.round(pet.skin));
+						
+						if (pet.allVulnerMult < 1) {
+							s += "\n" + localize("pip", "allresist") + ": "
+								+ textAsColor("yellow", Math.round((1 - pet.allVulnerMult) * 100) + "%");
+						}
+						
+						s += "\n" + localize("pip", "damage") + ": "
+							+ numberAsColor("yellow", Math.round(pet.dam));
+					}
+				}
+				
+				if (tip == "paint") {
+					s = Res.txt("p", "paint", 1);
+				}
+				
+				if (World.w.hardInv && pot.m > 0) {
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>"
+						+ pot.m + "</span> ("
+						+ localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
+				}
+				
+				if (pot.sell > 0) {
+					s += "\n" + localize("pip", "sell") + ": "
+						+ textAsColor("yellow", pot.sell);
+				}
 			}
 
-			// Cache the result before returning
-			infoCache[cacheKey] = s;
 			return s;
 		}
 		
 		protected function infoItem(tip:String, itemID:String, nazv:String, craft:int=0):void {
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
+			var inv:Inventory = World.w.gg.invent;							// Reference to player inventory
+
 			vis.nazv.text = nazv;
 
 			var s:String;
@@ -682,57 +1009,104 @@ package fe.inter {
 				id = itemID.substr(2);
 				craft = 1;
 				
-				if (Weapon.getWeaponInfo(id))		tip = Item.L_WEAPON;
-				else if (Armor.getArmorInfo(id))	tip = Item.L_ARMOR;
-				else tip = Item.L_ITEM;
+				if (!isEmpty(WeaponManager.reference.weaponData(id))) {
+					tip = Item.L_WEAPON;
+				}
+				else if (!isEmpty(ArmorManager.reference.armorData(id))) {
+					tip = Item.L_ARMOR;
+				}
+				else {
+					tip = Item.L_ITEM;
+				}
 			}
 
 			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) {
-				if (craft > 0) setIco();
-				else setIco(1, id);
+				if (craft > 0) {
+					setIco();
+				}
+				else {
+					setIco(1, id);
+				}
 
 				s = infoStr(tip, id);
-				if (craft == 1) s += craftInfo(id);
-				if (craft == 2) s += craftInfo(id.substr(0, id.length - 2));
+				
+				if (craft == 1) {
+					s += craftInfo(id);
+				}
+				
+				if (craft == 2) {
+					s += craftInfo(id.substr(0, id.length - 2));
+				}
 			}
 			else if (tip == Item.L_ARMOR) {
-				var a:Armor=inv.armors[id];
-				if (a == null) a = pip.arrArmor[id];
+				// The player's own armor, or a default copy for armor they don't have
+				var a:Armor = inv.equipment.getArmor(id) || ArmorManager.reference.armor(id);
 
-				if (craft > 0) setIco();
-				else if (a.tip == 3) setIco(3, id);
-				else setIco(2, id);
+				if (craft > 0 || a == null) {
+					setIco();
+				}
+				else if (a.tip == Armor.TYPE_AMULET) {
+					setIco(3, id);
+				}
+				else {
+					setIco(2, id);
+				}
 
 				s = infoStr(tip, id);
-				if (craft == 2)
-				{
-					var cid:String = a.idComp;
-					var kolcomp:int = a.needComp();
+				
+				if (craft == 2 && a) {
+					var cid:String = a.idComp;										// What component needed
+					var kolcomp:int = ArmorManager.upgradeComponentsNeeded(a);		// How many components needed for the next upgrade
+
 					s += "\n\n<span class = 'orange'>" + Res.txt('i', cid) +  " - " + kolcomp + " <span ";
-					if (!World.w.loc.base && kolcomp>inv.items[cid].kol || World.w.loc.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
-					s += "> ("+inv.items[cid].kol;
-					if (World.w.loc.base && inv.items[cid].vault > 0) s += ' +' + inv.items[cid].vault;
+					
+					if (!World.w.loc.base && kolcomp > inv.getQuantity(cid) || World.w.loc.base && kolcomp > inv.getQuantity(cid) + World.w.vault.getQuantity(cid)) {
+						s += "class='red'";
+					}
+					
+					s += "> (" + inv.getQuantity(cid);
+					
+					if (World.w.loc.base && World.w.vault.getQuantity(cid) > 0) {
+						s += ' +' + World.w.vault.getQuantity(cid);
+					}
+					
 					s += ")</span></span>";
 				}
-				if (craft == 1) s += craftInfo(id);
+				
+				if (craft == 1) {
+					s += craftInfo(id);
+				}
 			}
 			else if (tip == Item.L_AMMO) {
-				var ammo:XML = inv.items[id].xml;
-				if (ammo.@base.length())
-				{
-					vis.nazv.text = Res.txt('i', ammo.@base);
+				var ammo:Object = ItemManager.reference.getItem(id);
+				
+				if (ammo.base) {
+					vis.nazv.text = Res.txt('i', ammo.base);
 
-					if (ammo.@mod > 0) vis.nazv.text += '\n' + Res.pipText('ammomod_' + ammo.@mod);
-					else vis.nazv.text += '\n' + Res.pipText('ammomod_0');
+					if (ammo.mod) {
+						vis.nazv.text += '\n' + localize("pip", "STR_AMMO_" + String(ammo.mod).toUpperCase());
+					}
+					else {
+						vis.nazv.text += '\n' + localize("pip", 'ammomod_0');
+					}
 				}
+				
 				setIco();
 				s = infoStr(tip, id);
 			}
 			else {
-				if (craft > 0) setIco();
-				else setIco(3, id);
+				if (craft > 0) {
+					setIco();
+				}
+				else {
+					setIco(3, id);
+				}
+				
 				s = infoStr(tip, id);
-				if (craft == 1) s += craftInfo(id);
+				
+				if (craft == 1) {
+					s += craftInfo(id);
+				}
 			}
 
 			vis.info.htmlText = s;
@@ -740,7 +1114,9 @@ package fe.inter {
 			vis.info.scaleX = 1;
 			vis.info.scaleY = 1;
 
-			if (vis.scText) vis.scText.visible = false;
+			if (vis.scText) {
+				vis.scText.visible = false;
+			}
 
 			if (vis.info.height<vis.info.textHeight && vis.scText) {
 				vis.scText.maxScrollPosition = vis.info.maxScrollV;
@@ -749,87 +1125,192 @@ package fe.inter {
 		}
 		
 		public function craftInfo(id:String):String {
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
+			var inv:Inventory = World.w.gg.invent;							// Reference to player inventory
+
 			var s:String='\n';
 			var cs:String = 's_' + id;
-			var sch:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "items", "id", cs);
-			var kol:int=1;
-			if (sch.@kol.length()) kol=sch.@kol;
-			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
-			if (kol>1) s+=Res.pipText('crekol')+": "+kol+"\n";
-			if (sch.@skill.length() && sch.@lvl.length()) {
-				s+="\n"+Res.pipText('needskill')+": <span class = '";
-				if (gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) s+="red";
-				else s+="pink";
-				s+="'>"+Res.txt('e',sch.@skill)+" - "+sch.@lvl+"</span>\n";
+			var sch:Object = ItemManager.reference.getItem(cs);
+			var kol:int = 1;
+			
+			if ("kol" in sch) {
+				kol = sch.kol;
 			}
-			for each(var c:XML in sch.craft) {
-				s+="\n<span class = 'orange'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
-				if (!World.w.loc.base && c.@kol>inv.items[c.@id].kol
-				  || World.w.loc.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
-				s+=">("+inv.items[c.@id].kol;
-				if (World.w.loc.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
-				s+=")</span></span>";
+			
+			if ("perk" in sch && sch.perk == "potmaster" && gg.pers.potmaster) {
+				kol *= 2;
 			}
+			
+			if (kol > 1) {
+				s += localize("pip", 'crekol') + ": " + kol + "\n";
+			}
+			
+			if ("skill" in sch && "skillRequirement" in sch) {
+				s += "\n" + localize("pip", 'needskill') + ": <span class = '";
+
+				if (gg.pers.getSkillLevel(sch.skill) < sch.skillRequirement) {
+					s += "red";
+				}
+				else {
+					s += "pink";
+				}
+
+				s += "'>" + Res.txt('e', sch.skill) + " - " + sch.skillRequirement + "</span>\n";
+			}
+
+			// Crafting ingredients (items stored in the vault can also be used at the base)
+			for (var ingredientID:String in sch.ingredients) {
+				var needed:int = sch.ingredients[ingredientID];
+				var inInventory:int = inv.getQuantity(ingredientID);
+				var inVault:int = World.w.loc.base ? World.w.vault.getQuantity(ingredientID) : 0;
+
+				s += "\n<span class = 'orange'>" + Res.txt('i', ingredientID) +  " - " + needed + " <span ";
+
+				if (needed > inInventory + inVault) {
+					s += "class='red'";
+				}
+
+				s += ">(" + inInventory;
+
+				if (inVault > 0) {
+					s += ' +' + inVault;
+				}
+
+				s += ")</span></span>";
+			}
+			
 			return s;
 		}
 		
 		protected function infoQuest(id:String):String {
-				var q:Quest=World.w.game.quests[id];
-				if (q==null) return '';
-				vis.nazv.text=q.nazv;
-				var s:String=q.info;
-				if (q.empl) s+='<br><br>'+Res.txt('u',q.empl);
-				s+='\n';
-				var n:int=1;
-				for each(var st:Quest in q.subs) {
-					if (st.invis && st.state<2) continue;
-					s+="\n";
-					if (st.state==2) s+="<span class = 'dark'>";
-					s+=textAsColor('yellow', n+'.')+" "
-					if (st.hidden && st.state<2 && st.est<=0) s+='?????';
-					else s+=st.nazv;
-					if (st.collect && st.colTip==0) {
-						if (st.give) {
-							s+=' ('+textAsColor('yellow', st.gived+'/'+st.kol)+')';
-							if (st.est>0 && st.state<2) s+=' ('+textAsColor('yellow', '+'+st.est)+')';
-						} else s+=' ('+textAsColor('yellow', st.est+'/'+st.kol)+')';
-					}
-					if (st.nn) s+=' ('+Res.pipText('nn')+')';
-					if (st.state==2) s+="</span>";
-					n++;
-				}
-				return s;
-		}
-		
-		protected function factor(id:String):String {
-			var s:String='', s1:String;
-			var ok:Boolean = false;
-			if (World.w.pers.factor[id] is Array) {
-				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
+			var inv:Inventory = World.w.gg.invent;							// Reference to player inventory
 
-				var xml = paramList.(@v==id);
-				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', '100%')+'\n';
-				for each (var obj in World.w.pers.factor[id]) {
-					if (obj.id=='beg') {
-						if (xml.@nobeg>0) continue;
-						if (xml.@tip=='0') {
-							if (obj.res!=0) s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res))+'\n';
-						} else if (xml.@tip=='3') {
-							s+='- '+Res.pipText('begvulner')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
-						} else {
-							s+='- '+Res.pipText('begval')+': '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+'\n';
+			var q:Quest=World.w.game.quests[id];
+			
+			if (q == null) {
+				return "";
+			}
+			
+			vis.nazv.text = q.nazv;
+			var s:String = q.info;
+			
+			if (q.empl) {
+				s += '<br><br>' + Res.txt('u', q.empl);
+			}
+			
+			s += '\n';
+			var n:int = 1;
+			
+			for each(var st:Quest in q.subs) {
+				if (st.invis && st.state < 2) {
+					continue;
+				}
+				
+				s += "\n";
+				
+				if (st.state == 2) {
+					s += "<span class = 'dark'>";
+				}
+				
+				s += textAsColor('yellow', n + '.') + " "
+				
+				if (st.hidden && st.state < 2 && st.est <= 0) {
+					s += '?????';
+				}
+				else {
+					s += st.nazv;
+				}
+				
+				if (st.collect && st.colTip == 0) {
+					if (st.give) {
+						s += ' (' + textAsColor('yellow', st.gived + '/' + st.kol) + ')';
+						
+						if (st.est > 0 && st.state < 2) {
+							s+=' ('+textAsColor('yellow', '+'+st.est)+')';
 						}
 					}
 					else {
-						if (obj.ref=='add' && obj.val==0 || obj.ref=='mult' && obj.val==1) continue;
-						ok=true;
-						if (obj.tip!=null) s1=Res.txt(obj.tip,obj.id);
-						else if (Res.istxt('e',obj.id)) s1=Res.txt('e',obj.id);
-						else if (Res.istxt('i',obj.id)) s1=Res.txt('i',obj.id);
-						else if (Res.istxt('a',obj.id)) s1=Res.txt('a',obj.id);
-						else s1='???';
-						if (s1.substr(0,6)=='*eff_f') s1=Res.txt('e','food');
-						s+='- '+s1+': ';
+						s += ' (' + textAsColor('yellow', st.est + '/' + st.kol) + ')';
+					}
+				}
+				
+				if (st.nn) {
+					s += ' (' + localize("pip", 'nn') + ')';
+				}
+				
+				if (st.state == 2) {
+					s += "</span>";
+				}
+				
+				n++;
+			}
+
+			return s;
+		}
+		
+		protected function factor(id:String):String {
+			var localize:Function = LanguageManager.reference.localText;	// Reference to the localization function
+
+			var s:String = "";
+			var s1:String;
+			var ok:Boolean = false;
+			
+			if (World.w.pers.factor[id] is Array) {
+				var paramList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+
+				var xml = paramList.(@v==id);	// XML / XMLLIST
+				if (xml.@tip=='4') {
+					s+='- '+localize("pip", 'begvulner')+': '+textAsColor('yellow', '100%')+'\n';
+				}
+				
+				for each (var obj in World.w.pers.factor[id]) {
+					if (obj.id == "beg") {
+						if (xml.@nobeg > 0) {
+							continue;
+						}
+						
+						if (xml.@tip=='0') {
+							if (obj.res != 0) {
+								s += '- ' + localize("pip", 'begval') + ': ' + textAsColor('yellow', Res.numb(obj.res)) + '\n';
+							}
+						}
+						else if (xml.@tip == '3') {
+							s += '- ' + localize("pip", 'begvulner') + ': ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%') + '\n';
+						}
+						else {
+							s += '- ' + localize("pip", 'begval') + ': ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%') + '\n';
+						}
+					}
+					else {
+						if (obj.ref == 'add' && obj.val == 0 || obj.ref == 'mult' && obj.val == 1) {
+							continue;
+						}
+						
+						ok = true;
+						
+						if (obj.tip != null) {
+							s1 = Res.txt(obj.tip, obj.id);
+						}
+						else if (Res.istxt('e', obj.id)) {
+							s1 = Res.txt('e', obj.id);
+						}
+						else if (Res.istxt('i', obj.id)) {
+							s1 = Res.txt('i', obj.id);
+						}
+						else if (Res.istxt('a', obj.id)) {
+							s1 = Res.txt('a', obj.id);
+						}
+						else {
+							s1 = "???";
+						}
+						
+						if (s1.substr(0, 6) == '*eff_f') {
+							s1 = Res.txt('e', 'food');
+						}
+						
+						s += '- ' + s1 + ': ';
+						
 						if (obj.ref=='add') {
 							if (xml.@tip=='0') {
 								s+=(obj.val>0?'+':'-')+' '+numberAsColor('yellow', Math.abs(obj.val));
@@ -842,14 +1323,14 @@ package fe.inter {
 						}
 						else if (obj.ref=='mult') {
 							if (xml.@tip=='0') {
-								s+='× '+textAsColor('yellow', obj.val)+' = '+textAsColor('yellow', Res.numb(obj.res));
+								s+='x '+textAsColor('yellow', obj.val)+' = '+textAsColor('yellow', Res.numb(obj.res));
 							}
 							else if (xml.@tip=='3' || xml.@tip=='4') {
-								s+='× (1 '+(obj.val<1?'-':'+')+' '+numberAsColor('yellow', Math.abs(Math.round(100-obj.val*100))*0.01)+')';
+								s+='x (1 '+(obj.val<1?'-':'+')+' '+numberAsColor('yellow', Math.abs(Math.round(100-obj.val*100))*0.01)+')';
 								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							}
 							else {
-								s+='× '+textAsColor('yellow', obj.val);
+								s+='x '+textAsColor('yellow', obj.val);
 								s+=' = '+textAsColor('yellow', Res.numb(obj.res*100)+'%');
 							}
 						}
@@ -865,54 +1346,74 @@ package fe.inter {
 								s+=textAsColor('yellow', Res.numb(obj.val*100)+'%');
 							}
 						}
-						s+='\n';
+						
+						s += "\n";
 					}
 				}
+				
 				if (obj && (xml.@tip=='3' || xml.@tip=='4')) {
-					s+='- '+Res.pipText('result')+': 100% - '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+' = '+textAsColor('yellow', Res.numb((1-obj.res)*100)+'%');
+					s+='- '+localize("pip", 'result')+': 100% - '+textAsColor('yellow', Res.numb(obj.res*100)+'%')+' = '+textAsColor('yellow', Res.numb((1-obj.res)*100)+'%');
 				}
 			}
-			if (ok) s=Res.pipText('factor')+':\n'+s;
-			else return '';
+			
+			if (ok) {
+				s = localize("pip", 'factor') + ':\n' + s;
+			}
+			else {
+				return "";
+			}
+			
 			return s;
 		}
 		
 		protected function setTopText(s:String=''):void {
-			if (s=='') {
-				pip.vis.toptext.visible=false;
+			if (s == '') {
+				pip.vis.toptext.visible = false;
 			}
 			else {
-				pip.vis.toptext.visible=true;
-				var ins:String=Res.txt('p',s,0,true);
+				pip.vis.toptext.visible = true;
+				var ins:String = Res.txt('p', s, 0, true);
 				var myPattern:RegExp = /@/g; 
-				pip.vis.toptext.txt.htmlText=ins.replace(myPattern,'\n');
+				pip.vis.toptext.txt.htmlText = ins.replace(myPattern, "\n");
 			}
 		}
 		
-		//проверка квеста на доступность
-		protected function checkQuest(task):Boolean {
-			//проверка на доступ к местности
-			if (task.@land.length()) {
-				var land:LandAct=World.w.game.lands[task.@land];
-				if (land==null) return false;
-				if (!land.access && !land.visited && World.w.pers.level<land.dif) return false;
+		// [Checking the quest for availability]
+		protected function checkQuest(task:Object):Boolean {
+			// [Land access check]
+			if (task.land) {
+				var land:LandAct = World.w.game.lands[task.land];
+				
+				if (land == null) {
+					return false;
+				}
+				
+				if (!land.access && !land.visited && World.w.pers.level < land.dif) {
+					return false;
+				}
 			}
-			//проверка триггера
-			if (task.@trigger.length()) {
-				if (World.w.game.triggers[task.@trigger]!=1) return false;
+			
+			// [Trigger check]
+			if (task.trigger) {
+				if (World.w.game.triggers[task.trigger] != 1) {
+					return false;
+				}
 			}
-			//проверка скилла
-			if (task.@skill.length() && task.@skilln.length()) {
-				if (World.w.pers.skills[task.@skill]<task.@skilln) return false;
+			
+			// [Skill check]
+			if (task.skill && task.skilln) {
+				if (World.w.pers.skills[task.skill] < task.skilln) {
+					return false;
+				}
 			}
 			return true;
 		}
 		
 		protected function initCats():void {
-			for (var i:int = 0; i <= kolCats; i++)
-			{
+			for (var i:int = 0; i <= kolCats; i++) {
 				vis.cats['cat' + i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
+			
 			selCat();
 		}
 		
@@ -928,8 +1429,10 @@ package fe.inter {
 			vis.cats.visible = true;
 			
 			var ntip;
+			
 			for (var i:int  = 1; i <= kolCats; i++) {
 				ntip = arr[i];
+				
 				if (ntip == null || ntip == "") {
 					vis.cats['cat' + i].visible = false;
 				}
@@ -945,10 +1448,10 @@ package fe.inter {
 					}
 				}
 			}
+			
 			selCat(cat[page2]);
 		}
 
-		
 		// selecting an inventory subcategory
 		protected function selCatEvent(event:MouseEvent):void {
 			// Get the 4th letter of the target's name 'cat1, cat2, etc.
@@ -973,15 +1476,25 @@ package fe.inter {
 				trace('ERROR: (00:38) - No icon for: "' + n + '"!');
 			}
 			
-			if (curTip == null) curTip = '';
+			if (curTip == null) {
+				curTip = "";
+			}
 		}
 		
-		//проверить соответствии категории
+		// [check category compliance]
 		protected function checkCat(tip:String):Boolean {
-			if (curTip=='' || curTip==null || curTip==tip) return true;
-			if (curTip is Array) {
-				for each (var t in curTip) if (t==tip) return true;
+			if (curTip == "" || curTip == null || curTip == tip) {
+				return true;
 			}
+			
+			if (curTip is Array) {
+				for each (var t in curTip) {
+					if (t == tip) {
+						return true;
+					}
+				}
+			}
+			
 			return false;
 		}
 		
@@ -990,17 +1503,31 @@ package fe.inter {
 		}
 
 		public function onMouseWheel1(event:MouseEvent):void {
-			if (World.w.ctr.setkeyOn) return;
+			if (World.w.ctr.setkeyOn) {
+				return;
+			}
+			
 			try {
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
 			}
 			catch(err) {
 				trace('ERROR: (00:39)');
 			}
+			
 			scroll(event.delta);
-			if (!vis.scBar.visible) return;
-			if (event.delta < 0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
-			if (event.delta > 0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
+			
+			if (!vis.scBar.visible) {
+				return;
+			}
+			
+			if (event.delta < 0) {
+				(event.currentTarget as MovieClip).scBar.scrollPosition++;
+			}
+			
+			if (event.delta > 0) {
+				(event.currentTarget as MovieClip).scBar.scrollPosition--;
+			}
+			
 			event.stopPropagation();
 		}
 
@@ -1011,5 +1538,13 @@ package fe.inter {
 		public function step():void {
 
 		}
-	}	
+
+		// Check if an object is empty, Eg. '{}'
+		private static function isEmpty(obj:Object):Boolean {
+			for (var key:String in obj) {
+				return false; // Found a property, so it's not empty
+			}
+			return true; // No properties found, it's empty
+		}
+	}
 }

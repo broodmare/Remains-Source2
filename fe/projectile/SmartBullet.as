@@ -9,14 +9,14 @@ package fe.projectile {
 		public var manevr:Number = 3;
 		public var maxVel:int = 150;
 		public var cel:Unit;
-		static var p:Object = {x:0, y:0};
+		private static var p:Object = {x:0, y:0};
 
 		public function SmartBullet(own:Unit, coords:Vector2, visClass:Class=null, addobj:Boolean=true) {
 			super(own, coords, visClass);
 			vRot = true;
 		}
 		
-		public function setCel(ncel:Unit, man:Number=3) {
+		public function setCel(ncel:Unit, man:Number=3):void {
 			cel = ncel;
 			manevr = man;
 		}
@@ -28,16 +28,22 @@ package fe.projectile {
 				norma(p,manevr);
 				p.x += velocity.X;
 				p.y += velocity.Y;
+				
 				if (vel < maxVel) {
 					vel += accel;
 				}
+				
 				norma(p, vel);
 				velocity.X = p.x;
 				velocity.Y = p.y;
 			}
+			
 			super.step();
 			rot = Math.atan2(velocity.Y, velocity.X);
-			if (vis) vis.rotation = rot * 180 / Math.PI;
+			
+			if (vis) {
+				vis.rotation = rot * RAD_TO_DEG;
+			}
 		}
 	}
 }

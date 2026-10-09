@@ -6,6 +6,7 @@ package fe.unit {
 	import flash.geom.ColorTransform;
 
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.util.Vector2;
 	import fe.weapon.*;
 	import fe.projectile.Bullet;
@@ -15,55 +16,68 @@ package fe.unit {
 	public class UnitThunderHead extends Unit {
 
 		public var controlOn:Boolean=true;
-		var spd:Object;
-		var dopWeapon:Weapon;
-		var thWeapon:Weapon;
-		var shitMaxHp:Number=500;
-		var visshit:MovieClip;
+		private var spd:Object;
+		private var dopWeapon:Weapon;
+		private var thWeapon:Weapon;
+		private var shitMaxHp:Number=500;
+		private var visshit:MovieClip;
 		
-		var emit_t:int=120;
+		private var emit_t:int=120;
 		
-		var moveX:Number=0, moveY:Number=0;
-		var t_atk:int=100;
-		var t_shit:int=300;
-		var kolth:int=0;
-		var speedBonus:Number=1;
-		var t_doptest=20;
+		private var moveX:Number = 0;
+		private var moveY:Number = 0;
+		private var t_atk:int = 100;
+		private var t_shit:int = 300;
+		private var kolth:int = 0;
+		private var speedBonus:Number = 1;
+		private var t_doptest:int = 20;
 		
-		var maxX:int=1920*3;
-		var maxY:int=3000;
+		private var maxX:int = 1920 * 3;
+		private var maxY:int = 3000;
 		
-		var moln1_x=500;
-		var moln2_x=1700;
-		var moln_y=666;
-		var t_moln:int=100;
-		var moln1:MovieClip, moln2:MovieClip;
+		private var moln1_x:Number = 500;
+		private var moln2_x:Number = 1700;
+		private var moln_y:Number = 666;
+		private var t_moln:int=100;
+		private var moln1:MovieClip, moln2:MovieClip;
 		
-		var turrets:Array;
-		public var attTur:int=0;
-		public var reloadDiv:Number=1;
-		var isAtt:Boolean=false;
+		private var turrets:Array;
+		public var attTur:int = 0;
+		public var reloadDiv:Number = 1;
+		public var isAtt:Boolean = false;
 		
-		var kol_emit:int = 5;
-		var max_emit:int = 15;
+		private var kol_emit:int = 5;
+		private var max_emit:int = 15;
 		
-		var p = {};
-		var vsosOn=false;
-		var t_die:int=0;
-		var t_vsos:int=800;
-		var vsos_max:int=450;
-		var vsos_porog:int=120;
-		var vsos_force:Number=3;
-		var dieTransform:ColorTransform = new ColorTransform();
+		private var p:Object = {};
+		private var vsosOn:Boolean = false;
+		private var t_die:int=0;
+		private var t_vsos:int=800;
+		private var vsos_max:int=450;
+		private var vsos_porog:int=120;
+		private var vsos_force:Number=3;
+		private var dieTransform:ColorTransform = new ColorTransform();
+
+		// Todo: These should probably be renamed to Waypoints
+		private var movePoints:Array = [
+			{x:6000, y:1500},
+			{x:3000, y:0},
+			{x:0, y:1500},
+			{x:3000, y:3000}
+		];
+		private var mp:int = 0;
+		private var moveTime:int = 180;
+		private var ugol:Number = 90;
+		private var distanc:Number = 6000;
 
 		// Constructor
 		public function UnitThunderHead(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);
-			id = 'thunderhead';
+			id = "thunderhead";
 			
 			// [Take parameters from the xml]
-			blitData = World.w.grafon.getSpriteList('sprThunderHead');
+			blitData = World.w.grafon.getSpriteList("sprThunderHead");
 			vis = new MovieClip();
 			var osn:Sprite = new Sprite();
 			visBmp = new Bitmap(blitData);
@@ -74,10 +88,10 @@ package fe.unit {
 			osn.x = -osn.width / 2;
 			osn.y = -osn.height / 2;
 			
-			moln1 = new ThunderHeadMoln();	// .SWF Dependency
-			moln2 = new ThunderHeadMoln();	// .SWF Dependency
+			moln1 = SymbolFactory.createInstance("ThunderHeadMoln") as MovieClip;
+			moln2 = SymbolFactory.createInstance("ThunderHeadMoln") as MovieClip;
 			
-			moln1.blendMode=moln2.blendMode='screen';
+			moln1.blendMode=moln2.blendMode="screen";
 			moln1.alpha = 0;
 			moln2.alpha = 0;
 			moln1.x = moln1_x;
@@ -99,10 +113,10 @@ package fe.unit {
 			dexter = 0;
 			mat = 10;
 
-			vulner[D_BALE] = 0.7;
-			vulner[D_NECRO] = 0.8;
-			vulner[D_ASTRO] = 0.8;
-			vulner[D_FRIEND] = 0.8;
+			vulnerabilities.setResist(Resistances.DAM_BALEFIRE, 0.70);
+			vulnerabilities.setResist(Resistances.DAM_DEATH, 0.80);
+			vulnerabilities.setResist(Resistances.DAM_ASTRO, 0.80);
+			vulnerabilities.setResist(Resistances.DAM_HARMONY, 0.80);
 			
 			mater = false;
 			collisionTip = 0;
@@ -118,7 +132,7 @@ package fe.unit {
 		}
 		
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			
 			super.putLoc(nloc, nx, ny);
 
@@ -169,44 +183,46 @@ package fe.unit {
 			super.setNull(f);
 		}
 
-		private function createTurret(n:int, bindX:Number, bindY:Number, rot:int = 0, mega:Boolean = false) {
-			var un:Unit = loc.createUnit('ttur', 0, 0, true, null, n.toString());
+		private function createTurret(n:int, bindX:Number, bindY:Number, rot:int = 0, mega:Boolean = false):void {
+			var un:Unit = loc.createUnit("ttur", 0, 0, true, null, n.toString());
 			(un as UnitThunderTurret).head = this;
 			(un as UnitThunderTurret).bindX = bindX * 3;
 			(un as UnitThunderTurret).bindY = bindY * 3;
 			un.fraction = fraction;
 			un.vis.osn.korp.rotation = rot * 90;
+			
 			if (mega) {
 				(un as UnitThunderTurret).mega();
 			}
+			
 			turrets.push(un);
 		}
 		
-		public function dieTurret() {
+		public function dieTurret():void {
 			reloadDiv += 0.1;
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 			}
 		}
 		
-		public override function run(div:int=1) {
+		public override function run(div:int=1):void {
 			this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth + 300 * 3;
 			this.boundingBox.right = this.boundingBox.left + 1370 * 3;
 			this.boundingBox.top = this.boundingBox.top + 170 * 3;
 			this.boundingBox.bottom = this.boundingBox.top + 580 * 3;
 		}
 		
-		private function setUgolPos() {
-			var def:Number = Math.sin(ugol / 45 * Math.PI);
-			var dif:Number = Math.sin(ugol / 90 * Math.PI);
+		private function setUgolPos():void {
+			var def:Number = Math.sin(ugol / 45 * ONE_PI);
+			var dif:Number = Math.sin(ugol / 90 * ONE_PI);
 			var ugol2:Number = -def * 12 + ugol;
 			var distanc2:Number = distanc + dif * dif * dif * dif * 1000;
-			coordinates.X = maxX / 2 + Math.sin(ugol2 / 180 * Math.PI) * distanc2;
-			coordinates.Y = maxY / 2 + Math.cos(ugol2 / 180 * Math.PI) * distanc2 / 1.6;
+			coordinates.X = maxX / 2 + Math.sin(ugol2 / 180 * ONE_PI) * distanc2;
+			coordinates.Y = maxY / 2 + Math.cos(ugol2 / 180 * ONE_PI) * distanc2 / 1.60;
 			for each (var un:Unit in turrets) {
 				un.run();
 			}
@@ -240,17 +256,6 @@ package fe.unit {
 		//0 - [Stands still]
 		//1 - [Moves]
 		//2 - [in the attack phase]
-		
-		// Todo: These should probably be renamed to Waypoints
-		var movePoints = [{x:6000, y:1500}, {x:3000, y:0}, {x:0, y:1500}, {x:3000, y:3000}];
-		var mp = 0;
-		
-		var moveTime=180;
-		
-		var ugol:Number = 90;
-		var distanc:Number = 6000;
-		
-		
 		override protected function control():void {
 			if (vsosOn) {
 				vsos();
@@ -381,37 +386,42 @@ package fe.unit {
 
 		}
 		
-		public override function command(com:String, val:String = null) {
-			if (com == 'off') {
+		public override function command(com:String, val:String = null):void {
+			if (com == "off") {
 				walk = 0;
 				controlOn = false;
 			}
-			else if (com == 'on') {
+			else if (com == "on") {
 				controlOn = true;
 			}
 			
-			if (com == 'vsos') {
+			if (com == "vsos") {
 				vsosOn = true;
 			}
 		}
 		
-		private function emit() {
+		private function emit():void {
 			var nx:Number = coordinates.X;
 			var ny:Number = coordinates.Y;
+			
 			if (nx < 200) nx = 200;
+			
 			if (nx > loc.maxX - 200) nx = loc.maxX - 200;
+			
 			if (ny < 200) ny = 200;
+			
 			if (ny > loc.maxY - 200) ny = loc.maxY - 200;
-			var un:Unit = loc.createUnit('dron', nx, ny, true, null, '100');
+			
+			var un:Unit = loc.createUnit("dron", nx, ny, true, null, "100");
 			un.fraction = fraction;
-			un.inter.cont = '';
+			un.inter.cont = "";
 			un.mother = this;
 			un.sndMusic = null;
 			un.detectionDelay = 0;
 			kol_emit++;
 		}
 		
-		public function vzdrzhne(n:Number=0) {
+		public function vzdrzhne(n:Number=0):void {
 			if (n > 10) n = 10 - n / 10;
 			dieTransform.redMultiplier = 1 + n / 15;
 			dieTransform.greenOffset = 1 + n / 10;
@@ -419,10 +429,12 @@ package fe.unit {
 			vis.transform.colorTransform = dieTransform;
 		}
 		
-		public function vsos(n:Number=0, klob:Boolean=false) {
+		public function vsos(n:Number=0, klob:Boolean=false):void {
 			if (!loc.active) return;
+			
 			p.x = coordinates.X - World.w.gg.coordinates.X;
 			p.y = coordinates.Y - World.w.gg.coordinates.Y;
+			
 			if (n == 0) {
 				norma(p, 5);
 				World.w.gg.storona = (World.w.gg.velocity.X > 0) ? 1 : -1;
@@ -430,9 +442,11 @@ package fe.unit {
 			else {
 				norma(p, n);
 			}
+			
 			if (klob && t_vsos%3 == 0) {
-				Emitter.emit('vsos', loc, World.w.gg.coordinates.X, World.w.gg.coordinates.Y - 40, {dx:(p.x * 12 + Math.random() * 4 - 2), dy:(p.y * 12 + Math.random() * 4 - 2), scale:6});
+				Emitter.emit("vsos", loc, World.w.gg.coordinates.X, World.w.gg.coordinates.Y - 40, {dx:(p.x * 12 + Math.random() * 4 - 2), dy:(p.y * 12 + Math.random() * 4 - 2), scale:6});
 			}
+			
 			World.w.gg.velocity.X += p.x;
 			World.w.gg.velocity.Y += p.y;
 		}

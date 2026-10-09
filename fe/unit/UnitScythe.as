@@ -1,29 +1,34 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+	
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Location;
 	
 	public class UnitScythe extends Unit {
 
-		var napr:Number = -1;
-		var dr:Number = 0;
-		var t:int = 0;
-		var skor = 1.5;
+		private var napr:Number = -1;
+		private var dr:Number = 0;
+		private var t:int = 0;
+		private var skor:Number = 1.5;
 		
-		var cel:Unit;
+		private var cel:Unit;
 		
-		var owner:Unit;
-		var por:int = 0;
+		private var owner:Unit;
+		private var por:int = 0;
 		
 		public var bindN:int = 0;
-		var bindRad:int = 200;
-		var bindKoef = 0.05;
+		private var bindRad:int = 200;
+		private var bindKoef:Number = 0.05;
+
+		private var aiN:int = Math.floor(Math.random() * 5);
 		
 		// Constructor
 		public function UnitScythe (cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			id = 'scythe';
-			vis = new visualScythe();	// .SWF Dependency
+			vis = SymbolFactory.createInstance("visualScythe") as MovieClip;
 			vis.gotoAndPlay(Math.floor(Math.random() * vis.totalFrames + 1));
 			vis.osn.alpha = 0;
 			vis.vzz.alpha = 0;
@@ -35,8 +40,6 @@ package fe.unit {
 			collisionTip = 0;
 		}
 
-		var aiN:int = Math.floor(Math.random() * 5);
-		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
 			getNapr();
@@ -46,7 +49,7 @@ package fe.unit {
 			// No forces since this flies around freely
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc, nx, ny);
 			cel = World.w.gg;
 			getNapr();
@@ -71,20 +74,20 @@ package fe.unit {
 			}
 		}
 		
-		public function getNapr() {
+		public function getNapr():void {
 			if (cel == null) {
 				return;
 			}
 			if (napr == -1) {
-				var napr2 = Math.atan2(cel.coordinates.X - coordinates.X, cel.coordinates.Y - coordinates.Y);
+				var napr2:Number = Math.atan2(cel.coordinates.X - coordinates.X, cel.coordinates.Y - coordinates.Y);
 				napr = napr2;
 			}
 		}
 		
-		public override function run(div:int=1) {
+		public override function run(div:int=1):void {
 			if (bind) {
-				coordinates.X = bind.coordinates.X - Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
-				coordinates.Y = bind.coordinates.Y - bind.boundingBox.halfHeight - Math.cos(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
+				coordinates.X = bind.coordinates.X - Math.sin(t * bindKoef + TWO_PI * bindN / 6)*bindRad;
+				coordinates.Y = bind.coordinates.Y - bind.boundingBox.halfHeight - Math.cos(t * bindKoef + TWO_PI * bindN / 6)*bindRad;
 			}
 			else {
 				coordinates.X += velocity.X / div;
@@ -93,6 +96,7 @@ package fe.unit {
 					die();
 				}
 			}
+			
 			this.boundingBox.center(coordinates);
 		}
 		

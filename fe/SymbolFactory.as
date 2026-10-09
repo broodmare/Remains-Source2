@@ -1,0 +1,50 @@
+/*
+	This class in theory should allow the game to be compiled by programs other than Adobe Animate. 
+	The original code has hundreds of calls to symbols that are only defined in the .fla file, not in the actual code.
+	Adobe Animate can handle resolving what these calls were actually referring to, but other compilers cannot do this.
+	My fix is to write a class that dynamically fetches and/or instantiates symbols from the '.fla' using strings (the symbol name). 
+*/
+
+package fe {
+	
+	import flash.display.MovieClip;
+	import flash.utils.getDefinitionByName;
+	import flash.errors.IllegalOperationError;
+
+	public class SymbolFactory {
+		//Dynamically creates an instance of a symbol from the main SWF.
+		public static function createInstance(className:String):MovieClip {
+			var symbolClass:Class = fetchSymbolClass(className);
+			if (symbolClass == null) {
+				return null;
+			}
+
+			try {
+				return new symbolClass() as MovieClip;
+			}
+			catch (error:IllegalOperationError) {
+				trace(error.message);
+				throw error;
+			}
+
+			return null;
+		}
+
+		//Dynamically gets a reference to the class of the symbol (but does not instantiate an instance yet)
+		public static function fetchSymbolClass(className:String):Class {
+			if (className == null) {
+				return null;
+			}
+			
+			try {
+				return Class(getDefinitionByName(className));
+			}
+			catch (error:ReferenceError) {
+				trace("Error: Symbol '" + className + "' does not exist.");
+				return null;
+			}
+
+			return null;
+		}
+	}
+}

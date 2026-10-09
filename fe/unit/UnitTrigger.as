@@ -1,5 +1,7 @@
 package fe.unit {
 
+	import flash.display.MovieClip;
+
 	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Tile;
@@ -12,20 +14,19 @@ package fe.unit {
 	
 	public class UnitTrigger extends Unit {
 
-		private var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
-		private var trapT:int=0;	//тип области
-
 		private var triggerBounds:BoundingBox;
-		
-		private var trapL:int=2;	//1 - нажимная плита, 2 - обычная
-		private var needSkill:String='repair';
-		private var isAct:Boolean=false;
-		private var one:Boolean=false;	//одноразовая
+
+		private var status:int			= 0;				//0 - взведён, 1 - активирован, 2 - отключён
+		private var trapT:int			= 0;				//тип области
+		private var trapL:int			= 2;				//1 - нажимная плита, 2 - обычная
+		private var needSkill:String	= "repair";
+		private var isAct:Boolean		= false;
+		private var one:Boolean			= false;			//одноразовая
 		private var allid:String;
 		private var allact:String;
-		private var vNoise:int=1200;
+		private var vNoise:int			= 1200;
 		
-		private var res:String='';
+		private var res:String			= "";
 		private var damager:Unit;
 		
 		private var sndAct:String;
@@ -34,18 +35,21 @@ package fe.unit {
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
-		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTrigger(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			
-			if (cid==null) {
-				id='triglaser';
+			if (cid == null) {
+				id = 'triglaser';
 			}
 			else {
-				id=cid;
+				id = cid;
 			}
 			
-			mat=1;
-			vis=Res.getVis('vis'+id, vismtrap);	// .SWF Dependency
+			mat = 1;
+			vis = SymbolFactory.createInstance("vis" + String(id));
+			if (!vis) {
+				vis = SymbolFactory.createInstance("vismtrap");
+			}
 			setVis(false);
 			getXmlParam();
 			visibility=300;
@@ -82,46 +86,58 @@ package fe.unit {
 		public override function getXmlParam(mid:String=null):void {
 			super.getXmlParam();
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+		
 			if (node0.un.length()) {
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
 				if (node0.un.@res.length()) res=node0.un.@res;
 				if (node0.un.@one.length()) one=true;		//одноразовая
 				if (node0.un.@plate.length()) trapL=1;		//напольная
 			}
+		
 			if (node0.snd.length()) {
 				if (node0.snd.@act.length()) sndAct=node0.snd.@act;
 			}
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
 			setArea();
 			if (loc.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
 			if (allid==null || allid=='') setDamager();
 		}
 		
-		public override function setLevel(nlevel:int=0):void {
-			level+=nlevel;
-			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
-			if (sk<1) sk=1;
-			if (sk>5) sk=5;
+		public override function setLevel(nlevel:int = 0):void {
+			level += nlevel;
+			var sk:int = Math.round(level * 0.25 * (Math.random() * 0.70 + 0.30));
+		
+			if (sk<1) {
+				sk=1;
+			}
+		
+			if (sk>5) {
+				sk=5;
+			}
+		
 			inter.needSkillLvl=sk;
 		}
 		
-		private function setDamager():void
-		{
-			if (res=='noise' || res=='') return;
+		private function setDamager():void {
+			if (res=='noise' || res=='') {
+				return;
+			}
+			
 			var i:int=1;
 			var nx:Number = coordinates.X;
 			var ny:Number = coordinates.Y;
-			var nxml=<obj/>;
+			var nxml = <obj/>;
 			var ok:Boolean=false;
+			
 			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).phis==0) {
 				ny = coordinates.Y + 2 * tileY;
 				res='expl1';
 				ok=true;
 			}
-			else for (var i=1; i<=10; i++) {
+			else for (var i:int = 1; i <= 10; i++) {
 				if (res=='damgren' || res=='hturret2') {
 					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).phis) {
 						if (i==1) break;
@@ -185,7 +201,7 @@ package fe.unit {
 			}
 		}
 
-		private function setStatus() {
+		private function setStatus():void {
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -203,7 +219,7 @@ package fe.unit {
 			if (status==0) activate();
 		}
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean):void {
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
@@ -214,7 +230,7 @@ package fe.unit {
 		}
 		
 		// [Set activation boundaries]
-		private function setArea() {
+		private function setArea():void {
 			var bb:BoundingBox = new BoundingBox(coordinates);
 			var l:Number;
 			var r:Number;
@@ -261,13 +277,16 @@ package fe.unit {
 		//активировать
 		private function activate():void {
 			if (status!=0) return;
+			
 			setVis(true);
 			status=1;
 			var act:Boolean = false;
+			
 			if (allact=='spawn') {
 				loc.enemySpawn(true,true);
 				return;
 			}
+			
 			if (allid!=null && allid!='') {
 				for each (var un:Unit in loc.units) {
 					if (un!=this && (un is UnitDamager) && (un as UnitDamager).allid==allid) {
@@ -275,28 +294,42 @@ package fe.unit {
 						act=true;
 					}
 				}
-				if (allact) loc.allAct(this,allact,allid);
+				
+				if (allact) {
+					loc.allAct(this,allact,allid);
+				}
 			}
+			
 			celX = coordinates.X;
 			celY = coordinates.Y;
+			
 			if (res=='noise' || res=='hturret2') {
 				budilo(vNoise);
 				act=true;
 				if (res=='hturret2' && damager) damager.command('alarma');
 			}
+		
 			if (damager && damager.sost<2) {
 				damager.command('dam');
 				act=true;
 			}
-			if (sndAct) sound(sndAct);
+		
+			if (sndAct) {
+				sound(sndAct);
+			}
+		
 			setStatus();
-			if (act) World.w.gui.infoText('trapActivate')
+		
+			if (act) {
+				World.w.gui.infoText('trapActivate');
+			}
 		}
 		
 		private var aiN:int = Math.floor(Math.random() * 5);
 		
 		override protected function control():void {
 			if (sost>1 || status==2 || one && status==1) return;
+			if (isPlayerInteractingWithThis()) return;
 			aiN++;
 			if (aiN%5==0) {
 				var act:Boolean=false;

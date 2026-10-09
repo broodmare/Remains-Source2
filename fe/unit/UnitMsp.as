@@ -1,6 +1,9 @@
 package fe.unit {
 	
+	import flash.display.MovieClip;
+
 	import fe.*;
+	import fe.SymbolFactory;
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
@@ -8,8 +11,8 @@ package fe.unit {
 	public class UnitMsp extends Unit {
 
 		public var tr:int;
-		var weap:String;
-		var cep:int=0; //способ прикрепления 0-обычный, 1-к потолку, 2- к стене слева, 3-к стене справа
+		private var weap:String;
+		private var cep:int = 0; //способ прикрепления 0-обычный, 1-к потолку, 2- к стене слева, 3-к стене справа
 		
 		private var tileY:int = Tile.tileY;
 
@@ -34,7 +37,7 @@ package fe.unit {
 			
 			id = 'msp';
 			
-			vis=new visualMsp();
+			vis = SymbolFactory.createInstance("visualMsp") as MovieClip;
 			vis.stop();
 			
 			getXmlParam();
@@ -45,7 +48,7 @@ package fe.unit {
 		}
 
 		//поместить созданный юнит в локацию
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			if (nloc.getAbsTile(nx, ny+10).phis==0) {
 				if (nloc.getAbsTile(nx, ny-50).phis) {
 					cep=1;
@@ -67,11 +70,11 @@ package fe.unit {
 		}
 
 		public override function expl():void {
-			newPart('metal',4);
+			newPart('metal', 4);
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos():void {
 			if (vis) {
 				if (cep==0) {
 					vis.x = coordinates.X;

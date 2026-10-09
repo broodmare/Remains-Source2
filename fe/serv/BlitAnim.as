@@ -42,7 +42,7 @@ package fe.serv {
 			else st = true;
 		}
 		
-		public function restart() {
+		public function restart():void {
 			st = false;
 			f = firstf;
 		}
