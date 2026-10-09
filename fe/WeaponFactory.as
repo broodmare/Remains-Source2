@@ -1,8 +1,5 @@
 package fe {
 
-	import flash.utils.getDefinitionByName;
-	import flash.display.MovieClip;
-
 	import fe.SymbolFactory;
 	import fe.weapon.Weapon;
 	import fe.projectile.Trasser;
@@ -12,18 +9,19 @@ package fe {
 		
 		private static const DEG_TO_RAD:Number = Math.PI / 180;
 
-		// Initialize a weapon using the data passed to this function (until it reaches the step that requires an Ammo item)
-		public static function createWeaponPart1(data:Object):Weapon {
-			var weapon:Weapon = new Weapon();
-
+		// Initialize a weapon using the data passed to this function (formerly Weapon.getXmlParam)
+		// Anything that depends on the weapon's owner is applied later by Weapon.setOwner()
+		public static function applyData(weapon:Weapon, data:Object):void {
 			weapon.sloy = 2;	// ???
 			weapon.id = data.id;
+			weapon.trasser = new Trasser();
+			
+			// Unique variants are stored as their own weapon, eg. "mont^1" is a variant of "mont"
+			weapon.variant = Boolean(data.variant);
+			var baseId:String = weapon.baseId;
 
 			weapon.tip = data.tip;
-			weapon.variant = data.variant;
-			weapon.trasser = new Trasser();
-
-			weapon.nazv = LanguageManager.reference.data.weapon.id;
+			weapon.nazv = WeaponManager.weaponName(weapon.id);
 			weapon.cat = data.cat;
 			weapon.skill = data.skill;
 			
@@ -37,6 +35,10 @@ package fe {
 
 			if ("alicorn" in data) {
 				weapon.alicorn = data.alicorn;
+			}
+			
+			if ("spell" in data) {
+				weapon.spell = data.spell;
 			}
 
 			//SATS
@@ -64,12 +66,15 @@ package fe {
 				weapon.uniq = data.com_uniq;
 			}
 			
-			// [Visual]
-			weapon.svis = SymbolFactory.fetchSymbolClass("vis" + String(weapon.id)) || SymbolFactory.fetchSymbolClass("visual" + String(weapon.id));
+			// [Visual] -- These are the names of the symbols, eg. "vismont" and "vismont_1" for its unique variant
+			weapon.svis = "vis" + baseId;
 			
-			// Punch weapons don't have a visual sprite
-			if (weapon.tip == "punch") {
+			// Internal weapons don't have a visual sprite
+			if (weapon.tip == Weapon.TYPE_INTERNAL) {
 				weapon.svisv = null;
+			}
+			else if (weapon.variant) {
+				weapon.svisv = weapon.svis + "_" + weapon.id.substr(weapon.id.lastIndexOf("^") + 1);
 			}
 			else {
 				weapon.svisv = weapon.svis;
@@ -77,7 +82,7 @@ package fe {
 			
 			// "vis" properties
 			if ("vis_vweap" in data ) {
-				weapon.svisv = SymbolFactory.fetchSymbolClass(data.vis_vweap);		// String
+				weapon.svisv = data.vis_vweap;		// String
 			}
 			if ("vis_tipdec" in data ) {
 				weapon.tipDecal = data.vis_tipdec;	// Int
@@ -107,20 +112,16 @@ package fe {
 				weapon.flare = data.vis_flare;		// String
 			}
 
-			var create:Function = SymbolFactory.createInstance;
-			var fetch:Function  = SymbolFactory.fetchSymbolClass;
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
 
-			if (weapon.tip != "punch" || weapon.svisv) {
-				// Tries to set the weapon visual movieclip as weapon.svisv, if that fails, weapon.svis, and finally visp10mm as a failsafe
-				weapon.vWeapon = fetch(weapon.svisv) as Class || fetch(weapon.svis) as Class || fetch("visp10mm") as Class;
+			if (weapon.tip != Weapon.TYPE_INTERNAL || weapon.svisv) {
+				// Use the weapon's own sprite (or its variant's sprite), then the base weapon's sprite, and finally visp10mm as a failsafe
+				weapon.vWeapon = fetch(weapon.svisv) || fetch(weapon.svis) || fetch("visp10mm");
 				
-				// If we successfully fetched a class, isntantiate a new instance of the class we fetched
+				// If we successfully fetched a class, instantiate a new instance of the class we fetched
 				if (weapon.vWeapon) {
 					weapon.vis = new (weapon.vWeapon)();
 				}
-				
-				(weapon.vis != null) ? trace("WeaponFactory.as/createWeaponPart1() - Retrieved vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv)
-									 : trace("WeaponFactory.as/createWeaponPart1() - Failed to retrieve vis for weapon: " + data.id + " svis: " + weapon.svis + " svisv: " + weapon.svisv);
 			}
 			
 			if (weapon.vis && weapon.vis.totalFrames > 1) {
@@ -131,17 +132,13 @@ package fe {
 				weapon.flare = weapon.visbul;
 			}
 			
-			if (weapon.visbul) { 
-				try {
-					weapon.vBullet = create("visbul" + String(weapon.visbul)) as Class;
-				}
-				catch (err:ReferenceError) {
-					trace("ERROR: (00:11)");
-					weapon.vBullet = create("visualBullet") as Class;
-				}
+			// Bullet sprite
+			weapon.vBullet = null;
+			if (weapon.visbul) {
+				weapon.vBullet = fetch("visbul" + weapon.visbul);
 			}
-			else {
-				weapon.vBullet = create("visualBullet") as Class;
+			if (weapon.vBullet == null) {
+				weapon.vBullet = fetch("visualBullet");
 			}
 			
 			// Sounds
@@ -169,7 +166,7 @@ package fe {
 			
 			// [Physical parameters]
 			if ("phis_massa" in data) {
-				weapon.massa = data.phis_massa / 50
+				weapon.massa = data.phis_massa / 50;
 			}
 			else {
 				weapon.massa = 0;
@@ -198,8 +195,8 @@ package fe {
 			if ("phis_grav" in data ) {
 				weapon.grav = data.phis_grav;
 			}
-			if ("phis_grav2" in data && weapon.owner && weapon.owner.fraction != 100) {	// ( != 100 means != player )
-				weapon.grav = data.phis_grav2;
+			if ("phis_grav2" in data) {
+				weapon.grav2 = data.phis_grav2;			// Only used by non-player owners, see Weapon.setOwner()
 			}
 			if ("phis_accel" in data ) {
 				weapon.accel = data.phis_accel;
@@ -214,7 +211,7 @@ package fe {
 				weapon.volna = data.phis_volna;
 			}
 
-			// Ammunition
+			// [Ammunition]
 			if ("ammo_holder" in data ) {
 				weapon.magazineCapacity = data.ammo_holder;
 			}
@@ -236,6 +233,10 @@ package fe {
 				weapon.dmagic = data.ammo_magic;
 			}
 
+			// Weapons without 'ammo_base' don't use ammo (ammo stays null)
+			weapon.ammoBase = WeaponManager.reference.getAmmo(data.ammo_base);
+			weapon.ammo = weapon.ammoBase;
+			weapon.ammoTarg = weapon.ammoBase;
 			
 			// [Additional effects (was called 'dop')]
 			if ("dop_vision" in data ) {
@@ -254,11 +255,6 @@ package fe {
 				weapon.probiv = data.dop_probiv;
 			}
 
-			return weapon;
-		}
-
-		// Continue creating the weapon after ammo has been added
-		public static function createWeaponPart2(weapon:Weapon, data:Object):void {
 			// [Combat characteristics]
 			if ("char_maxhp" in data ) {
 				weapon.maxhp = data.char_maxhp;
@@ -285,9 +281,10 @@ package fe {
 			if ("char_knock" in data ) {
 				weapon.otbros = data.char_knock;
 			}
-			if ("char_tipdam" in data ) {
-				weapon.tipDamage = data.char_tipdam;
-			}
+			
+			// Weapons without a damage type do bullet damage
+			weapon.tipDamage = Resistances.parseDamageType(data.char_tipdam);
+			
 			if ("char_prec" in data ) {
 				weapon.precision = data.char_prec * 40;
 			}
@@ -325,29 +322,14 @@ package fe {
 			// End of accessing data
 
 			weapon.recoilUp = weapon.recoil * 0.50;
-			
-			if (weapon.owner && !weapon.owner.player) {
-				weapon.recoilUp *= 0.20;
-			}
-			
 			weapon.t_rech = weapon.recharg;
 			
+			// Weapons that recharge start with a full magazine
 			if (weapon.recharg) {
 				weapon.magazineRounds = weapon.magazineCapacity;
 			}
 			
 			weapon.hp = weapon.maxhp;
-			
-			if (weapon.owner && weapon.owner.player) {
-				if (weapon.tipDamage == Resistances.DAM_PIERCE) {
-					weapon.critDamPlus += 0.20;
-				}
-				
-				if (weapon.tipDamage == Resistances.DAM_PLASMA) {
-					weapon.critDamPlus -= 0.20;
-				}
-			}
-
 			weapon.t_attack = 0;
 			weapon.t_reload = 0;
 		}

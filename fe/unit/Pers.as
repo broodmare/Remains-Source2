@@ -1951,20 +1951,44 @@ package fe.unit {
 			invMassParam();
 		}
 		
+		// [Apply the stat bonuses of artifacts, implants and tools the player has]
 		public function setInvParameters(inv:Inventory):void {
-			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-			for each (var w in LootGen.arr["pers"]) {
-				if (inv.items[w].kol>0) {
-					if (inv.items[w].xml && inv.items[w].xml.sk.length()) {
-						setSkillParam(inv.items[w].xml, 1);	
-					}
-					else {
-						var xml = getEffInfo(w);
-						if (xml.length()) setSkillParam(xml[0], 1);
+			for each (var w:String in LootGen.arr["pers"]) {
+				if (inv.getQuantity(w) <= 0) {
+					continue;
+				}
+
+				var data:Object = ItemManager.reference.getItem(w);
+				var skills:Array = data.sk || data.skills;
+
+				if (skills) {
+					setSkillParam(skillXml(w, skills), 1);
+				}
+				else {
+					var xml:XML = getEffInfo(w);
+					if (xml) {
+						setSkillParam(xml, 1);
 					}
 				}
 			}
-			*/
+		}
+
+		// The item's stat bonuses in the format setSkillParam() uses, eg. <item id="screwdriver"><sk id="possLockPick" v1="1"/></item>
+		private static function skillXml(id:String, skills:Array):XML {
+			var xml:XML = <item/>;
+			xml.@id = id;
+
+			for each (var sk:Object in skills) {
+				var node:XML = <sk/>;
+
+				for (var key:String in sk) {
+					node.@[key] = sk[key];
+				}
+
+				xml.appendChild(node);
+			}
+
+			return xml;
 		}
 
 		// [Determine the required skill level]

@@ -81,7 +81,7 @@ package fe.loc {
 			else this.boundingBox.height = node.@wid * tileY;
 			
 			dam=node.@damage;
-			if (node.@tipdam.length()) tipDamage=node.@tipdam;
+			if (node.@tipdam.length()) tipDamage=Resistances.parseDamageType(node.@tipdam);
 			if (node.@anim.length()) anim=true;
 			if (node.@floor.length()) floor=true;
 			if (node.@att.length()) spDam=node.@att;

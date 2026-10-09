@@ -274,7 +274,7 @@ package fe.serv {
 						wait = true;
 						dial_n = 0;
 						World.w.ctr.active = false;
-						World.w.gui.dialText(<r mod={actObj.opt2} push={(actObj.opt1>0)?"1":"0"}>{actObj.val}</r>,0,false,true);
+						World.w.gui.dialText({mod:actObj.opt2, pushed:(actObj.opt1>0)?1:0, text:String(actObj.val)},0,false,true);
 					break;
 
 					case "landlevel":
@@ -288,7 +288,7 @@ package fe.serv {
 								str += "\n\n" + LanguageManager.reference.localText("pip", "wrLevel");
 							}
 							
-							World.w.gui.dialText(<r mod="1">{str}</r>,0,false,true);
+							World.w.gui.dialText({mod:1, text:str},0,false,true);
 						}
 					break;
 
@@ -297,24 +297,23 @@ package fe.serv {
 					break;
 
 					case "take":
-						if (obj.n < 0 && World.w.invent.hasItem(obj.val)) {
-							World.w.gui.infoText("withdraw", ItemManager.reference.getItem(obj.value).nazv, -obj.n);
-							World.w.invent.decreaseQuantity(obj.val, -obj.n);
-							World.w.pers.setParameters();
+						if (obj.n < 0) {
+							if (ItemManager.reference.hasItem(obj.val)) {
+								World.w.gg.itemInteraction.withdraw(obj.val, -obj.n);
+								World.w.pers.setParameters();
+							}
 						}
 						else {
-							World.w.invent.increaseQuantity(obj.val, obj.n);
+							World.w.gg.itemInteraction.take(new Item(obj.val, obj.n));
 						}
 					break;
 
 					case "takeArmor":
-						var a:Armor = ArmorManager.reference.cloneArmor(obj.val);
-						World.w.invent.equipment.addArmor(a);
+						World.w.gg.itemInteraction.addArmor(obj.val);
 					break;
 
 					case "fav":
-						trace("Script.as/com() - \"fav\" was called, but it's commented out AAAAAAAAAAAAAAAAAAAAAAAAAA FIX THIS AAAAAAAAAAAAAAAAAA");
-						//World.w.invent.favItem(obj.val, obj.n);
+						World.w.gg.itemInteraction.favItem(obj.val, obj.n);
 					break;
 
 					case "armor":

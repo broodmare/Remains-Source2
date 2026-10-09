@@ -2,55 +2,70 @@ package fe {
 
 	import flash.utils.getDefinitionByName;
 	import flash.display.MovieClip;
- 
+	
+	// Resource Manager and text parsing
 	public class Res {
 
-		private static var _currentLanguageData:XML;
 		private static var istxtCache:Object	= {};
 		private static var txtCache:Object		= {};
-		private static var loaded:Boolean		= false;
+		private static var cachedData:Object;		// The language data the caches were built from
 
-		private static const typeDictionary:Object = {
-			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'obj', 'i':'item',
-			'e':'eff', 'f':'info', 'p':'pip', 'k':'key', 'g':'gui', 'm':'map',
-			0:'n', 1:'info', 2:'mess', 3:'help'
+		// The single letter text types used by txt() and istxt() -> categories in the localization JSON
+		private static const categoryDictionary:Object = {
+			'u':'unit', 'w':'weapon', 'a':'armor', 'o':'object', 'i':'items',
+			'e':'effect', 'f':'info', 'p':'pip', 'k':'keys', 'g':'gui', 'm':'map'
 		};
 
-		// I want to replace all the XML stuff anyway, so I'm just hardcoding a lazy-loader
-		private static function loadXML():void {
-			trace("Res.as/loadXML() - Initializing XML language data");
-			var path:String = "Modules/core/language/text_en.xml";
-			var loader:TextLoader = new TextLoader();
-			_currentLanguageData = loader.syncLoad(path);
-			loaded = true;
+		// The 'razd' of txt() -> field of a localization entry
+		private static const fieldDictionary:Object = {
+			0:'string', 1:'description', 2:'message', 3:'help'
+		};
+
+		// The current language's localization data (see LanguageManager)
+		private static function getLanguageData():Object {
+			var data:Object = LanguageManager.reference ? LanguageManager.reference.data : null;
+
+			// The language changed, so the cached strings are out of date
+			if (data != cachedData) {
+				istxtCache	= {};
+				txtCache	= {};
+				cachedData	= data;
+			}
+
+			return data;
 		}
 
-		public static function get currentLanguageData():XML {
-			return _currentLanguageData;
+		// Returns the entry with this id from a category of the localization data, or null if there isn't one
+		private static function getEntry(category:String, id:String):Object {
+			var data:Object = getLanguageData();
+
+			if (data == null || id == null || !data.hasOwnProperty(category)) {
+				return null;
+			}
+
+			var categoryData:Object = data[category];
+			return categoryData.hasOwnProperty(id) ? categoryData[id] : null;
+		}
+
+		// Returns a dialogue (a conversation, tutorial message, note, etc.) or null if there isn't one with this id
+		// Eg. {"Key":"trJump", "s1":"keyJump", "Lines":[{"text":"Press @1 to jump. [br]Hold the key to jump higher"}]}
+		public static function dialogue(id:String):Object {
+			return getEntry("dialogue", id);
 		}
 
 		// Check if a string has a localization
 		public static function istxt(tip:String, id:String):Boolean {
-			if (!loaded) {
-				loadXML();
-			}
-			
+			getLanguageData();	// Resets the caches if the language changed
+
 			// Check previously cached lookups
 			var key:String = tip + id;
-			if (istxtCache[key]) {
+			if (key in istxtCache) {
 				return istxtCache[key];
 			}
-			
-			// Not cached before, do the slow XML lookup and store the answer
-			var xmlList:XMLList = _currentLanguageData[typeDictionary[tip]].(@id == id); // Check _currentLanguageData for matching nodes.
-			
-			if (xmlList.length() == 0) {
-				istxtCache[key] = false;
-				return false; // If there's no matching nodes, return false.
-			}
-			
-			istxtCache[key] = true;
-			return true;
+
+			var result:Boolean = getEntry(categoryDictionary[tip], id) != null;
+			istxtCache[key] = result;
+			return result;
 		}
 
 		/*
@@ -61,45 +76,29 @@ package fe {
 		* @dop   -- Extra formatting?
 		*/
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String {
-			if (!loaded) {
-				loadXML();
-			}
-			
+			getLanguageData();	// Resets the caches if the language changed
+
 			// Return the formatted string if it's already cached
-			var key:String = tip + id;
+			// (razd and dop both change the result, so they're part of the key - eg. name vs. description of the same id)
+			var key:String = tip + "|" + id + "|" + razd + "|" + dop;
 			if (txtCache[key]) {
 				return txtCache[key];
 			}
 
-			// Reduce redundant dictionary lookups
-			var tipType:String = typeDictionary[tip];
-			var razdType:String = typeDictionary[razd];
-
-			var s:String;	// String representation of localized text.
-			var xl1:XMLList; // XML List of all returned nodes for the type[id].
-
-			// Try to get a localized string from _currentLanguageData
-			for each (var langData in _currentLanguageData) {
-				if (!s) { // Skip checking fallback if string was found 
-					xl1 = langData[tipType].(@id == id);
-					if (xl1.length() > 0) {
-						s = xl1[razdType][0];
-					}
-				}
-			}
+			var category:String = categoryDictionary[tip];
+			var entry:Object = getEntry(category, id);
+			var value:* = (entry != null) ? entry[fieldDictionary[razd]] : null;
+			var s:String = (value is String) ? value : null;	// String representation of localized text.
 
 			// Handle cases where no data was found
 			if (!s) {
 				if (tip == "o") return "";
-				if (razd == 0) return "*" + tipType + "_" + id;
+				if (razd == 0) return "*" + category + "_" + id;
 				return "";
 			}
 
-			var xl2:XML = xl1[0];
-			
 			if (razd >= 1 || dop) {
-				if (xl2.@s1.length()) s = addKeys(s, xl2);
-				if (xl2[razdType][0].@s1.length()) s = addKeys(s, xl2[razdType][0]);
+				s = addKeys(s, entry);
 
 				//Merged all 3 regex searches instead of iterating 3 times per string.
 				var combinedRegExp:RegExp = /\[br]|\[|]/g;
@@ -123,8 +122,8 @@ package fe {
 				s = s.replace(controlCharsRegExp, '');
 			}
 			
-			if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && xl2.@st.length()) {
-				s = "<span class='r" + xl2.@st + "'>" + s + "</span>";
+			if (tip == 'f' || tip == 'e' && razd == 2 || razd >= 1 && entry.style != null) {
+				s = "<span class='r" + (entry.style != null ? entry.style : "") + "'>" + s + "</span>";
 			}
 
 			txtCache[key] = s; // Cache the formatted string
@@ -132,97 +131,101 @@ package fe {
 		}
 
 		/*
-		* Retrieves and formats message texts, potentially including multiple lines and speaker names.
+		* Retrieves and formats message texts (dialogues and quests), potentially including multiple lines and speaker names.
 		* @id   -- Internal name of the string
-		* @v    -- Returns either the localized string or it's information, eg.  v=0: "Telekensis" v=1: "The 'Telekinesis' skill determines your ability to move.."
-		* @imp  -- Displays a message based on it's importance level
+		* @v    -- Returns either the text or the description (only quests have one), eg. v=0: "Chosen-24" v=1: "A few months earlier, the "Chosen-24" was entrusted.."
+		* @imp  -- If false, only returns messages that have an importance level (notes)
 		*/
-		public static function messText(id:String, v:int = 1, imp:Boolean = true):String {
-			var s:String = "";
-			var xml:XMLList = _currentLanguageData.txt.(@id == id);
+		public static function messText(id:String, v:int = 0, imp:Boolean = true):String {
+			var dial:Object = dialogue(id);
+			var quest:Object = (dial == null) ? getEntry("quest", id) : null;
 			
-			if (xml.length() == 0) {
+			if (dial == null && quest == null) {
 				return "";
 			}
+			
+			var tip:int = (dial != null) ? int(dial.imp) : 0;
 
-			if (!imp && !(xml.@imp > 0)) {
+			if (!imp && !(tip > 0)) {
 				return "";
 			}
 			
-			var tip:int = xml.@imp;
+			var s:String = "";
 			
-			if (v==1) {
-				s = xml.info[0];
+			if (v == 1) {
+				if (quest != null) {
+					s = quest.description;
+				}
+			}
+			else if (quest != null) {
+				s = quest.string;
+			}
+			else if (isPlainText(dial)) {
+				s = dial.Lines[0].text;
 			}
 			else {
-				if (xml.n[0].r.length()) {
-					for each (var node:XML in xml.n[0].r) {
-						var s1:String=node.toString();
+				for each (var line:Object in dial.Lines) {
+					var s1:String = line.text;
+					
+					if (line.m) {
+						var sar:Array = s1.split('|');
 						
-						if (node.@m.length()) {
-							var sar:Array=s1.split('|');
-							
-							if (sar) {
-								if (World.w.matFilter && sar.length>1) s1=sar[1];
-								else s1 = sar[0];
-							}
-						}
-						
-						if (node.@s1.length()) {
-							for (var i:int = 1; i <= 5; i++) {
-								if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span class='yellow'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
-							}
-						}
-						
-						s1 = s1.replace(/[\b\r\t]/g,'');
-						
-						if (tip==1) {
-							if (node.@p.length()==0) s+="<span class='dark'>"+s1+"</span>"+'<br>';
-							else {
-								//TODO: Figure out how to declare this without breaking notes.
-								var pers = node.@p;
-								
-								if (pers.indexOf("lp") == 0) s += "<span class='light'>" + ' - ' + s1 + "</span>" + '<br>';
-								else s += ' - ' + s1 + '<br>';
-							}
-						} 
-						else s += s1+'<br>';
+						if (World.w.matFilter && sar.length > 1) s1 = sar[1];
+						else s1 = sar[0];
 					}
-				}
-				else {
-					s = xml.n[0];
+					
+					s1 = addKeys(s1, line, 'yellow');
+					s1 = s1.replace(/[\b\r\t]/g,'');
+					
+					if (tip==1) {
+						if (line.Portrait == null) s+="<span class='dark'>"+s1+"</span>"+'<br>';
+						else {
+							var pers:String = line.Portrait;
+							
+							if (pers.indexOf("lp") == 0) s += "<span class='light'>" + ' - ' + s1 + "</span>" + '<br>';
+							else s += ' - ' + s1 + '<br>';
+						}
+					} 
+					else s += s1+'<br>';
 				}
 			}
 			
 			s = lpName(s);
 			s = s.replace(/\[br]/g,'<br>');
 			
-			if (xml.@s1.length()) {
-				for (var j:int = 1; j <= 5; j++) {
-					if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span class='r2'>" + World.w.ctr.retKey(xml.attribute('s' + j)) + "</span>");
+			if (dial != null) {
+				s = addKeys(s, dial, 'r2');
+			}
+			
+			return s;
+		}
+
+		// True for dialogues that are one line of text without a speaker or any settings (these were plain text in the old XML)
+		private static function isPlainText(dial:Object):Boolean {
+			if (dial.Lines == null || dial.Lines.length != 1) {
+				return false;
+			}
+			
+			for (var field:String in dial.Lines[0]) {
+				if (field != "text") {
+					return false;
 				}
 			}
 			
-			return (s == null) ? "" : s;
+			return true;
 		}
 		
 		// Unit Reply text? Retrieves a randomized reply text based on id and act, with an option to handle gender-specific replies.
 		public static function repText(id:String, act:String, msex:Boolean=true):String {
-			var xl:XMLList = _currentLanguageData.replic[0].rep.(@id==id && @act==act);
+			var lines:Array = getEntry("barks", id + "_" + act) as Array;
 
-			if (xl.length() == 0) {
+			if (lines == null || lines.length == 0) {
 				return "";
 			}
 			
-			xl = xl[0].r;
+			var num:int = Math.floor(Math.random() * lines.length);
 			
-			if (xl.length() == 0) {
-				return "";
-			}
-			
-			var num:int = Math.floor(Math.random() * xl.length());
-			
-			var s:String = xl[num];
+			var s:String = lines[num];
 			var n1:int = s.indexOf('#');
 			
 			if (n1 >= 0) {
@@ -238,41 +241,31 @@ package fe {
 
 		// Retrieves an array of names based the ID
 		public static function namesArr(id:String):Array {
-			var xl:XMLList = _currentLanguageData.names;
+			var entry:Object = getEntry("name", id);
 			
-			if (xl.length()==0) {
+			if (entry == null || !(entry.names is Array)) {
 				return null;
 			}
 			
-			xl = xl[0].name.(@id==id);
-
-			if (xl.length()==0) {
-				return null;
-			}
-			
-			xl = xl[0].r;
-			
-			var arr:Array = [];
-			for each (var n:XML in xl) {
-				arr.push(n.toString());
-			}
-			
-			return arr;
+			return (entry.names as Array).concat(); // A copy, since the caller removes names from it as they're used
 		}
 
 		// Replaces the placeholder @lp with the player's name
 		public static function lpName(s:String):String {
+			if (s == null || s == "") {
+				return "";
+			}
+			
 			var name:String = "Littlepip";
 			
-			if (s != "" && s != null && World.w.pers.persName) {
-				name = s.replace(/@lp/g, World.w.pers.persName) 
+			if (World.w.pers && World.w.pers.persName) {
+				name = World.w.pers.persName;
 			}
 			else {
-				var msg:String = (s == "" || s == null) ? msg = "String was blank or null" : "World.w.pers.persName was null"
-				trace("Res.as/lpName() - ERROR: " + msg);
+				trace("Res.as/lpName() - ERROR: World.w.pers.persName was null");
 			}
 			
-			return name;
+			return s.replace(/@lp/g, name);
 		}
 
 		// Formats a timestamp into a human-readable date string
@@ -297,18 +290,23 @@ package fe {
 			}
 		}
 		
-		//Inserts key representations into a string based on XML attributes.
-		public static function addKeys(s:String, xml:XML):String {
+		// Replaces @1-@5 in a string with the keys bound to the controls named by 's1'-'s5' of a localization entry or dialogue line
+		// Eg. "Press @1 to jump" with {"s1":"keyJump"} -> "Press <span class='imp'>Space</span> to jump"
+		public static function addKeys(s:String, keys:Object, style:String = 'imp'):String {
 			if (s == null) {
 				return "";
 			}
-			
+
+			if (keys == null) {
+				return s;
+			}
+
 			for (var i:int = 1; i <= 5; i++) {
-				if (xml.attribute('s'+i).length())  {
-					s = s.replace('@' + i, "<span class='imp'>" + World.w.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+				if (keys['s' + i])  {
+					s = s.replace('@' + i, "<span class='" + style + "'>" + World.w.ctr.retKey(keys['s' + i]) + "</span>");
 				}
 			}
-			
+
 			return s;
 		}
 		

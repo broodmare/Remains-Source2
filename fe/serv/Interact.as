@@ -674,7 +674,7 @@ package fe.serv {
 							if (World.w.gg.invent.getQuantity("pin") > 0) {
 								
 								if (World.w.pers.pinBreak>=1 || Math.random()<World.w.pers.pinBreak) {
-									World.w.gg.invent.decreaseQuantity("pin");
+									World.w.gg.itemInteraction.minusItem("pin");
 									pinCrack = true;
 								}
 							}
@@ -833,14 +833,14 @@ package fe.serv {
 		public function actOsn():void {
 			if (cons) {
 				if (World.w.gg.invent.getQuantity(cons) > 0) {
-					World.w.gg.invent.decreaseQuantity(cons);
-					World.w.gui.infoText("usedCons", LanguageManager.reference.localText("item", cons));
+					World.w.gg.itemInteraction.minusItem(cons);
+					World.w.gui.infoText("usedCons", LanguageManager.reference.localText("items", cons));
 					if (cons == "empbomb") {
 						Emitter.emit("impexpl", loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight);
 					}
 				}
 				else {
-					World.w.gui.infoText("needCons", LanguageManager.reference.localText("item", cons), null, false);
+					World.w.gui.infoText("needCons", LanguageManager.reference.localText("items", cons), null, false);
 					return;
 				}
 			}
@@ -1096,14 +1096,14 @@ package fe.serv {
 			
 			if (lockTip == 1 && lock > 0 && World.w.gg.invent.getQuantity("runa") > 0) {
 				command("unlock");
-				World.w.gg.invent.decreaseQuantity("runa");
+				World.w.gg.itemInteraction.minusItem("runa");
 				World.w.gui.infoText("useRuna");
 				World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 			}
 			
 			if (lockTip == 2 && lock > 0 && World.w.gg.invent.getQuantity("reboot") > 0) {
 				command("unlock");
-				World.w.gg.invent.decreaseQuantity("reboot");
+				World.w.gg.itemInteraction.minusItem("reboot");
 				World.w.gui.infoText("useReboot");
 				World.w.gui.bulb(owner.coordinates.X, owner.coordinates.Y);
 			}
@@ -1417,16 +1417,24 @@ package fe.serv {
 		
 		public function sound(s:String=null):void {
 			if (s == "move") {
+				if (moveCh) {
+					Snd.stopChannel(moveCh);
+				}
 				moveCh = Snd.ps("move", coordinates.X, coordinates.Y, 0);
 			}
 			else if (s == "stop") {
 				if (moveCh) {
-					moveCh.stop();
+					Snd.stopChannel(moveCh);
 				}
 				
 				moveCh = Snd.ps("move", coordinates.X, coordinates.Y, 5500);
 			}
-			else if (sndAct!="") Snd.actionCh = Snd.ps(sndAct, coordinates.X, coordinates.Y);
+			else if (sndAct!="") {
+				if (Snd.actionCh) {
+					Snd.stopChannel(Snd.actionCh);
+				}
+				Snd.actionCh = Snd.ps(sndAct, coordinates.X, coordinates.Y);
+			}
 			
 		}
 		

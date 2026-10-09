@@ -8,6 +8,7 @@ package fe.inter {
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
 	import fe.unit.InventoryItem;
+	import fe.unit.Favorites;
 
 	import fe.stubs.visPipInvItem;
 	
@@ -27,6 +28,7 @@ package fe.inter {
 		private var assId:String = null;
 		private var assArr:Array;
 		private var actCurrent:String = "";
+		private var canShowHidden:Boolean = false;	// The weapon page's 'show hidden' button can be used
 		
 		private var overId:String;
 		private var overItem:Object;
@@ -71,14 +73,15 @@ package fe.inter {
 			setCats();
 			
 			assId = null;
+			canShowHidden = false;
 			dat = new Date().getTime();
 			
 			if (page2 != PAGE_OTHER) {
 				setTopText("invupr" + page2);
 			}
 			
-			//inv.calcMass();
-			//inv.calcWeaponMass();
+			ItemInteraction.calcMass(inv);
+			ItemInteraction.calcWeaponMass(inv);
 			
 			// Weapons page
 			if (page2 == PAGE_WEAPON) {
@@ -101,16 +104,18 @@ package fe.inter {
 						continue;
 					}
 					
-					if (weapon.spell && !inv.equipment.hasEquipment(weapon.id)) {
+					// [Spells the player hasn't learned]
+					if (weapon.spell && inv.getQuantity(weapon.id) <= 0) {
 						continue;
 					}
 					
 					weapon.setPers(gg, gg.pers);
 					
-					// [Hidden]
+					// [Hidden] Spells can be hidden and taken back at any time, weapons stored on the weapon stand only where the stand can be used
 					if (weapon.respect == Weapon.WEP_LOCKED) {	
-						if (!World.w.hardInv || World.w.loc.base || World.w.loc.train) {
+						if (weapon.tip == Weapon.TYPE_MAGIC || !World.w.hardInv || World.w.loc.base || World.w.loc.train) {
 							vis.butOk.visible = true;
+							canShowHidden = true;
 						}
 						
 						if (!pip.showHidden) {
@@ -139,7 +144,8 @@ package fe.inter {
 						avail = false;
 					}
 					
-					var n:Object = {tip:"w", id:weapon.id, nazv:weapon.nazv, respect:weapon.respect, avail:avail, variant:weapon.variant, trol:trol};
+					var n:Object = {tip:"w", id:weapon.id, nazv:weapon.nazv, respect:weapon.respect, avail:avail, variant:weapon.variant, trol:trol, drop:0};
+					n.expl = (weapon.tip == Weapon.TYPE_EXPLOSIVES);	// Explosives are items, any amount of them can be dropped
 					
 					n.sort1 = 1;
 					
@@ -154,7 +160,7 @@ package fe.inter {
 					n.sort3 = weapon.lvl;
 					n.sort2 = weapon.skill;
 					
-					if (weapon.tip == "magic") {
+					if (weapon.tip == Weapon.TYPE_MAGIC) {
 						n.sort3 = weapon.perslvl;
 					}
 					
@@ -164,19 +170,13 @@ package fe.inter {
 					
 					n.sort3 = int(n.sort3);
 					
-					if (weapon.tip == "internal" || weapon.tip == "cryo" || weapon.tip == "lightGun" || weapon.tip == "heavyGun") {
+					if (weapon.tip != Weapon.TYPE_EXPLOSIVES && weapon.tip != Weapon.TYPE_MAGIC) {
 						n.hp = Math.round(weapon.hp / weapon.maxhp * 100) + "%";
 					}
 					
 					if (weapon.ammo != null) {
-						if (inv.hasItem(weapon.ammo.base)) {
-							n.ammo = inv.getQuantity(weapon.ammo.id) + weapon.magazineRounds;
-						}
-						else {
-							n.ammo = inv.getQuantity(weapon.ammo.base) + weapon.magazineRounds;
-						}
-						
-						n.ammotip = (weapon.tip == "explosives") ? "" : ItemManager.reference.getItem(weapon.ammo.base).nazv;
+						n.ammo = WeaponManager.reference.getAmmoTotal(inv, weapon) + weapon.magazineRounds;
+						n.ammotip = (weapon.tip == Weapon.TYPE_EXPLOSIVES || weapon.ammoBase == null) ? "" : weapon.ammoBase.name;
 					}
 					
 					if (weapon.alicorn) {
@@ -199,6 +199,7 @@ package fe.inter {
 			}
 			// Armor page
 			else if (page2 == PAGE_ARMOR) {
+				assArr = [];
 				statHead.fav.text		= localize("pip", "ii1");
 				statHead.nazv.text		= localize("pip", "ii2");
 				statHead.hp.text		= localize("pip", "ii3");
@@ -208,7 +209,8 @@ package fe.inter {
 				
 				for each (var arm:Armor in inv.equipment.armors) {
 					
-					if (arm.lvl < 0) {
+					// [Blueprints and armor left on the weapon stand]
+					if (arm.lvl < 0 || arm.stored) {
 						continue;
 					}
 					
@@ -217,8 +219,9 @@ package fe.inter {
 						continue;
 					}	
 					
-					n = {id:arm.id, nazv:arm.nazv, clo:arm.clo, hp:Math.round(arm.hp / arm.maxhp * 100)+"%", sort:arm.sort, trol:"armor" + arm.tip};
+					n = {id:arm.id, nazv:arm.nazv, clo:arm.clo, hp:Math.round(arm.hp / arm.maxhp * 100)+"%", sort:arm.sort, trol:"armor" + arm.tip, drop:0};
 					arr.push(n);
+					assArr[n.id] = n;
 				}
 				
 				pip.reqKey = true;
@@ -244,18 +247,23 @@ package fe.inter {
 				var data:Object; 
 				var itemManager:ItemManager = ItemManager.reference;
 				for each (var item:InventoryItem in inv.getAllItems()) {
-					if (item.hidden) {
+					if (item.quantity <= 0 || item.hidden || !itemManager.hasItem(item.id)) {
 						continue;
 					}
 					
 					data = itemManager.getItem(item.id);
+					
+					if (data.invis) {
+						continue;
+					}
 
-					if (data.nov == 1 && (data.dat) > 1000 * 60 * 15) {
-						//data.nov = 0; Can't set this anymore right now FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					// [Items stop being marked as new after a while]
+					if (item.nov == 1 && (dat - item.dat) > 1000 * 60 * 15) {
+						item.nov = 0;
 					}
 					
-					if (data.nov == 2 && (data.dat) > 1000 * 60 * 5) {
-						//data.nov = 0; ; Can't set this anymore right now FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					if (item.nov == 2 && (dat - item.dat) > 1000 * 60 * 5) {
+						item.nov = 0;
 					}
 					
 					if (!checkCat(data.tip)) {
@@ -283,10 +291,10 @@ package fe.inter {
 						n = {
 							tip:		data.tip,
 							id:			item.id,
-							nazv:		((data.tip == "e") ? localize("weapon", item.id) : ItemManager.reference.getItem(item.id).nazv),
-							kol:		inv.getQuantity(item.id),
+							nazv:		Item.nameOf(item.id, data.tip),
+							kol:		item.quantity,
 							drop:		0,
-							mass:		0, //inv.items[s].mass, FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+							mass:		itemManager.getWeight(item.id),
 							cat:		tcat,
 							trol:		data.tip
 						};
@@ -300,7 +308,7 @@ package fe.inter {
 						}
 						
 						// [Hidden spell]
-						if (data.tip == "spell" && inv.equipment.hasEquipment(item.id) && inv.equipment.getWeapon(item.id).respect == Weapon.WEP_LOCKED) {
+						if (data.tip == Item.L_SPELL && inv.equipment.getWeapon(item.id) && inv.equipment.getWeapon(item.id).respect == Weapon.WEP_LOCKED) {
 							continue;
 						}
 						
@@ -308,7 +316,7 @@ package fe.inter {
 						n.sort2 = "sort" in data ? data.sort : 0;
 						
 						// [Cartridges for current weapon forward]
-						if (page2 == PAGE_AMMO && gg.currentWeapon && gg.currentWeapon.tip != "explosives" && gg.currentWeapon.tip != "magic" && (gg.currentWeapon.ammoBase.id == data.base || gg.currentWeapon.ammoBase.id == data.id)) {
+						if (page2 == PAGE_AMMO && gg.currentWeapon && gg.currentWeapon.tip != Weapon.TYPE_EXPLOSIVES && gg.currentWeapon.tip != Weapon.TYPE_MAGIC && gg.currentWeapon.ammoBase && (gg.currentWeapon.ammoBase.id == data.base || gg.currentWeapon.ammoBase.id == data.id)) {
 							n.sort = "0" + n.sort;
 						}
 						
@@ -344,21 +352,21 @@ package fe.inter {
 		
 		private function showBottext():void {
 			vis.bottext.htmlText = LanguageManager.reference.localText("pip", "caps") + ": " + numberAsColor("yellow", World.w.invent.getQuantity("money"));
-			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			
 			if (World.w.hardInv) {
 				if (page2 == PAGE_WEAPON) {
-					vis.bottext.htmlText  = "    " + inv.retMass(4) + "    " + inv.retMass(5);
+					vis.bottext.htmlText  = "    " + ItemInteraction.retMass(inv, 4) + "    " + ItemInteraction.retMass(inv, 5);
 				}
 				else if (page2 == PAGE_EQUIPMENT) {
-					vis.bottext.htmlText += "    " + inv.retMass(1);
+					vis.bottext.htmlText += "    " + ItemInteraction.retMass(inv, 1);
 				}
 				else if (page2 == PAGE_OTHER) {
-					vis.bottext.htmlText += "    " + inv.retMass(3);
+					vis.bottext.htmlText += "    " + ItemInteraction.retMass(inv, 3);
 				}
 				else if (page2 == PAGE_AMMO) {
-					vis.bottext.htmlText += "    " + inv.retMass(2);
+					vis.bottext.htmlText += "    " + ItemInteraction.retMass(inv, 2);
 				}
-			} */
+			}
 		}
 		
 		// [Show one element] (in inventory)
@@ -371,18 +379,29 @@ package fe.inter {
 			item.nazv.alpha		= 1;
 			item.mass.text		= "";
 			
-			/*
-			if (inv.favIds[obj.id]) {
-				if (inv.favIds[obj.id]==29) item.fav.text=World.w.ctr.retKey("keyGrenad");
-				else if (inv.favIds[obj.id]==30) item.fav.text=World.w.ctr.retKey("keyMagic");
-				else if (inv.favIds[obj.id]>World.kolHK*2) item.fav.text=World.w.ctr.retKey("keySpell"+(inv.favIds[obj.id]-World.kolHK*2));
-				else if (inv.favIds[obj.id]>World.kolHK) item.fav.text="^"+World.w.ctr.retKey("keyWeapon"+(inv.favIds[obj.id]-World.kolHK));
-				else item.fav.text=World.w.ctr.retKey("keyWeapon"+inv.favIds[obj.id]);
+			// [Favorites cell]
+			var cell:int = inv.favorites.getCell(obj.id);
+			
+			if (cell > 0) {
+				if (cell == Favorites.CELL_THROW) {
+					item.fav.text = World.w.ctr.retKey("keyGrenad");
+				}
+				else if (cell == Favorites.CELL_MAGIC) {
+					item.fav.text = World.w.ctr.retKey("keyMagic");
+				}
+				else if (cell > World.kolHK * 2) {
+					item.fav.text = World.w.ctr.retKey("keySpell" + (cell - World.kolHK * 2));
+				}
+				else if (cell > World.kolHK) {
+					item.fav.text = "^" + World.w.ctr.retKey("keyWeapon" + (cell - World.kolHK));
+				}
+				else {
+					item.fav.text = World.w.ctr.retKey("keyWeapon" + cell);
+				}
 			}
 			else {
 				item.fav.text = "";
 			}
-			*/ // DISBALED FOR ITEM REWORK FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 
 			try {
 				item.trol.gotoAndStop(obj.trol);
@@ -399,7 +418,7 @@ package fe.inter {
 					selItem = item;
 				}
 				
-				item.nazv.htmlText = LanguageManager.reference.localText("weapon", obj.id);
+				item.nazv.htmlText = obj.nazv;
 				
 				if (obj.respect == Weapon.WEP_INACTIVE && item.fav.text == "") {
 					item.fav.text = "☩";
@@ -422,6 +441,11 @@ package fe.inter {
 				if (obj.avail == false) {
 					item.nazv.alpha = 0.60;
 				}
+				
+				// [Marked to be dropped]
+				if (obj.drop > 0) {
+					item.ammotip.text = LanguageManager.reference.localText("pip", "drop") + (obj.expl ? ": " + obj.drop : "");
+				}
 
 				item.rid.text = obj.id;
 			}
@@ -442,7 +466,7 @@ package fe.inter {
 					item.ramka.visible = true;
 				}
 				
-				item.nazv.text = LanguageManager.reference.localText("armor", obj.id);
+				item.nazv.text = obj.nazv;
 				
 				if (obj.trol == "armor3") {
 					item.hp.text = "";
@@ -452,11 +476,11 @@ package fe.inter {
 				}
 				
 				item.ammo.text = "";
-				item.ammotip.text = "";
+				item.ammotip.text = (obj.drop > 0) ? LanguageManager.reference.localText("pip", "drop") : "";
 			}
 			else  {
 				item.ramka.visible = (World.w.gg.currentSpell && World.w.gg.currentSpell.id == obj.id);
-				item.nazv.text = LanguageManager.reference.localText("item", obj.id);
+				item.nazv.text = obj.nazv;
 				item.hp.text = obj.kol;
 				
 				if (World.w.hardInv && obj.mass > 0) {
@@ -470,8 +494,8 @@ package fe.inter {
 					item.ammo.text = "";
 				}
 				
-				/*
-				if (item.fav.text == "") {
+				// [New items]
+				if (item.fav.text == "" && inv.getItem(obj.id)) {
 					if (inv.getItem(obj.id).nov == 1) {
 						item.fav.text = "☩";
 					}
@@ -479,7 +503,7 @@ package fe.inter {
 					if (inv.getItem(obj.id).nov == 2) {
 						item.fav.text = "+";
 					}
-				} */ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+				}
 
 				
 				if (obj.drop > 0) {
@@ -540,11 +564,13 @@ package fe.inter {
 				World.w.gg.changeWeapon(ci);
 				selItem = event.currentTarget as MovieClip;
 				setStatus(false);
+				statInfo(event);	// setStatus() clears the item's information, show it again
 				pip.snd(1);
 			} 
 			else if (page2 == PAGE_ARMOR) {
 				if (World.w.gg.changeArmor(ci)) {
 					setStatus(false);
+					statInfo(event);
 				}
 				
 				pip.snd(1);
@@ -576,7 +602,7 @@ package fe.inter {
 					}
 				} 
 				else {
-					//World.w.invent.useItem(ci);	// FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					gg.itemInteraction.useItem(ci);
 					setStatus(false);
 					World.w.gui.setHp();
 				}
@@ -585,11 +611,11 @@ package fe.inter {
 				over_t=2;
 			}
 			else if (page2 == PAGE_AMMO) {
-				if (gg.invent.equipment.hasEquipment(ci)) {
+				if (gg.invent.equipment.hasWeapon(ci)) {
 					gg.invent.equipment.getWeapon(ci).respect = Weapon.WEP_ACTIVE;
 					World.w.gg.changeWeapon(ci);
 				} 
-				else if (gg.currentWeapon && gg.currentWeapon.tip <= "heavyGun" && gg.currentWeapon.magazineCapacity > 0) {
+				else if (gg.currentWeapon && gg.currentWeapon.tip != Weapon.TYPE_EXPLOSIVES && gg.currentWeapon.tip != Weapon.TYPE_MAGIC && gg.currentWeapon.magazineCapacity > 0) {
 					gg.currentWeapon.initReload(ci);
 				}
 			}
@@ -604,22 +630,66 @@ package fe.inter {
 				return;
 			}
 			
-			if (page2 == PAGE_WEAPON) {
-				var obj = assArr[event.currentTarget.id.text];
-				// obj.respect = World.w.invent.respectWeapon(event.currentTarget.id.text); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			var obj:Object = assArr[event.currentTarget.id.text];
+			
+			if (obj == null) {
+				return;
+			}
+			
+			// [Mark weapons and armor to be dropped] Spells can't be dropped, they're hidden or taken back instead
+			if (page2 == PAGE_WEAPON || page2 == PAGE_ARMOR) {
+				var weapon:Weapon = (page2 == PAGE_WEAPON) ? inv.equipment.getWeapon(obj.id) : null;
+				
+				if (weapon && weapon.tip == Weapon.TYPE_MAGIC) {
+					obj.respect = gg.itemInteraction.respectWeapon(obj.id);
+					setStatItem(event.currentTarget as MovieClip, obj);
+					pip.setRPanel();
+					showBottext();
+					pip.snd(1);
+					return;
+				}
+				
+				if (World.w.loc.base) {
+					World.w.gui.infoText("noDrop1", null, null, false);
+					return;
+				}
+				
+				// [Explosives are dropped like other items] one at a time, or all of them with [shift]
+				if (obj.expl) {
+					var have:int = inv.getQuantity(obj.id);
+					
+					if (have <= 0) {
+						World.w.gui.infoText("noDrop2", null, null, false);
+						return;
+					}
+					
+					obj.drop = event.shiftKey ? have : Math.min(obj.drop + 1, have);
+				}
+				// Weapons stored on the weapon stand are taken back from the stand
+				else if (page2 == PAGE_WEAPON && !ItemInteraction.canDropWeapon(weapon)) {
+					World.w.gui.infoText((weapon && weapon.respect == Weapon.WEP_LOCKED) ? "disWeapon" : "noDrop2", null, null, false);
+					return;
+				}
+				// [Amulets can't be dropped]
+				else if (page2 == PAGE_ARMOR && !ItemInteraction.canDropArmor(inv.equipment.getArmor(obj.id))) {
+					World.w.gui.infoText("noDrop2", null, null, false);
+					return;
+				}
+				else {
+					obj.drop = (obj.drop > 0) ? 0 : 1;
+				}
+				
 				setStatItem(event.currentTarget as MovieClip, obj);
-				pip.setRPanel();
-				showBottext();
+				updateDropButton();
 				pip.snd(1);
 			}
 			
-			if (page2 == 0 || page2 == PAGE_WEAPON || page2 == PAGE_ARMOR || page2 == PAGE_EQUIPMENT) {
+			// [Drop items]
+			if (page2 >= PAGE_EQUIPMENT) {
 				if (World.w.loc.base) {
 					World.w.gui.infoText("noDrop1",null,null,false);
 					return;
 				}
-				
-				var obj = assArr[event.currentTarget.id.text];
 				
 				if (obj.mass > 0 && obj.tip != "book" && obj.tip != "sphera") {
 					if (event.shiftKey) {
@@ -643,7 +713,7 @@ package fe.inter {
 			var temp = assId;
 			
 			if ((page2 == 0 || page2 == PAGE_WEAPON || page2 == PAGE_ARMOR || page2 == PAGE_EQUIPMENT) && assId != null) {
-				// World.w.invent.favItem(assId, num); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+				gg.itemInteraction.favItem(assId, num);
 				setStatus(false);
 			}
 			
@@ -669,15 +739,38 @@ package fe.inter {
 			}
 			//выбросить вещи
 			else if (actCurrent == "drop") {		
-				for each (var obj in arr) {
-					if (obj.drop > 0) {
-						//inv.drop(obj.id, obj.drop);	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+				for each (var obj:Object in arr) {
+					if (obj.drop <= 0) {
+						continue;
+					}
+					
+					if (page2 == PAGE_WEAPON && !obj.expl) {
+						gg.itemInteraction.dropWeapon(obj.id);
+					}
+					else if (page2 == PAGE_ARMOR) {
+						gg.itemInteraction.dropArmor(obj.id);
+					}
+					else {
+						gg.itemInteraction.drop(obj.id, obj.drop);
 					}
 				}
 				
 				vis.butOk.visible = false;
 				pip.onoff(-1);
 			}
+		}
+		
+		// Show the drop button while something is marked to be dropped, otherwise put back the weapon page's 'show hidden' button
+		private function updateDropButton():void {
+			for each (var obj:Object in arr) {
+				if (obj.drop > 0) {
+					buttonOk("drop");
+					return;
+				}
+			}
+			
+			buttonOk("showhidden");
+			vis.butOk.visible = (page2 == PAGE_WEAPON && canShowHidden);
 		}
 		
 		private function buttonOk(act:String):void {
@@ -697,7 +790,9 @@ package fe.inter {
 					if (overItem.fav.text == "☩" || overItem.fav.text == "+") {
 						overItem.fav.text = "";
 					}
-					//inv.getItem(overId).nov = 0;	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					if (inv.getItem(overId)) {
+						inv.getItem(overId).nov = 0;
+					}
 				}
 				catch (err) {
 					trace("ERROR: (00:3C)");

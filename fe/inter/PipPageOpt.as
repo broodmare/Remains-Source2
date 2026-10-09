@@ -383,7 +383,7 @@ package fe.inter {
 			
 			if (id == "opt1_1") {
 				Snd.globalVol = volume;
-				Snd.setGameMuted(Snd.globalVol > 0);
+				Snd.setGameMuted(Snd.globalVol <= 0);
 				Snd.ps("mine_bip", 1000, 0);
 			}
 			

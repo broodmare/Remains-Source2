@@ -1,165 +1,114 @@
 package fe.serv {
 	
 	import fe.*;
-	import fe.TextLoader;
-	import fe.unit.Unit;
-	import fe.unit.Inventory;
-	import fe.unit.InventoryItem;
 
+	// A merchant, its items for sale and money. VendorManager creates and restocks them
 	public class Vendor {
 		
 		// Main vendor data
 		private var _id:String;						// Inventory list name
 		private var _data:Object;					// The vendor's items for sale and quests
-		private var _inventory:Inventory;			// The vendor's inventory
+		private var _stock:Vector.<Item>;			// The items the vendor sells
+		private var _stockMap:Object;				// The items the vendor sells by ID
 
-		// Working variables
-		private var _priceMultiplier:Number;		// Item price multiplier
-		private var _currentTrade:Object;			// How much of each item has been bought/sold during this trade
+		public var money:int				= 0;	// Caps the vendor has to buy items from the player
+		public var multPrice:Number			= 1.00;	// Item price multiplier
+		public var buyTotal:Number			= 0;	// [kolBou] The price of all items the player wants to buy
+		public var sellTotal:Number			= 0;	// [kolSell] The price of all items the player wants to sell
 
 		// Constructor
-		public function Vendor(id:String = "Vendor", data:Object = null, inv:Inventory = null) {
+		public function Vendor(id:String = "Vendor", data:Object = null) {
 			_id = id;
 			_data = data;
-			_inventory = inv;
-
-			_priceMultiplier = 1.00;
-			
-			// Initialize the _currentTrade object using the inventory
-			reset();
+			_stock = new Vector.<Item>();
+			_stockMap = {};
 		}
 
 		public function get vendorData():Object {
-			return _data;
+			return _data ? _data : {};
 		}
 
 		public function get id():String {
 			return _id;
 		}
 
-		public function get multPrice():Number {
-			return _priceMultiplier;
+		// Everything the vendor sells
+		public function get stock():Vector.<Item> {
+			return _stock;
 		}
-		public function set multPrice(n:Number):void {
-			_priceMultiplier = n;
+		
+		public function getItem(id:String):Item {
+			return _stockMap[id] as Item;
+		}
+		
+		public function hasItem(id:String):Boolean {
+			var item:Item = _stockMap[id];
+			return item != null && item.kol > 0;
+		}
+		
+		// Add an item for sale, if the vendor already sells it the amount is added to it
+		public function addItem(item:Item):void {
+			var existing:Item = _stockMap[item.id];
+			
+			if (existing) {
+				existing.kol += item.kol;
+				return;
+			}
+			
+			_stock.push(item);
+			_stockMap[item.id] = item;
+		}
+		
+		// Add more of an item for sale (eg. the player sold it)
+		public function addStock(id:String, n:int):void {
+			var item:Item = _stockMap[id];
+			
+			if (item == null) {
+				item = new Item(id, 0);
+				item.kol = 0;
+				_stock.push(item);
+				_stockMap[id] = item;
+			}
+			
+			item.kol += n;
+		}
+		
+		// Remove everything the vendor sells
+		public function clearStock():void {
+			_stock = new Vector.<Item>();
+			_stockMap = {};
 		}
 
 		// Handling money
-		public function get money():int {
-			return _inventory.getQuantity("money");
-		}
 		public function increaseMoney(n:int):void {
-			_inventory.increaseQuantity("money", n);
+			money += n;
 		}
 		public function decreaseMoney(n:int):void {
-			_inventory.decreaseQuantity("money", n);
-		}
-		
-		// Swap out the vendor's inventory for a new one
-		public function setInventory(inv:Inventory):void {
-			_inventory = inv;
+			money -= n;
 		}
 
-		// Inventory wrappers
-		public function get inventory():Vector.<InventoryItem> {
-			return _inventory.getAllItems();
-		}
-		public function getQuantity(id:String):int {
-			return _inventory.getQuantity(id);
-		}
-		public function increaseQuantity(id:String, n:int):void {
-			_inventory.increaseQuantity(id, n);
-		}
-		public function decreaseQuantity(id:String, n:int):void {
-			_inventory.decreaseQuantity(id, n);
-		}
-		public function hasItem(id:String):Boolean {
-			return _inventory.hasItem(id);
-		}
-
-		// Adjusting the _currentTrade counters
-		public function getBuyingAmount(id:String):int {
-			return _currentTrade[id].bought;
-		}
-		public function setBuyingAmount(id:String, n:int):void {
-			_currentTrade[id].bought = n;
-		}
-		public function getSellingAmount(id:String):int {
-			return _currentTrade[id].sold;
-		}
-		public function setSellingAmount(id:String, n:int):void {
-			_currentTrade[id].sold = n;
-		}
-
-		// Finish the trade by adjusting inventory values
-		public function finishTrade(playerInventory:Inventory):void {
-			// Adjust trader money based on the transaction
-			increaseMoney(_currentTrade.buyTotal);
-    		decreaseMoney(_currentTrade.sellTotal);
-
-			// Adjust player money based on the transaction
-			playerInventory.decreaseQuantity("money", _currentTrade.buyTotal);
-    		playerInventory.increaseQuantity("money", _currentTrade.sellTotal);
-
-			// Iterate through each item in the current trade to adjust inventory
-			for (var itemId:String in _currentTrade) {
-				// Skip the total buy and sell amounts
-				if (itemId == "buyTotal" || itemId == "sellTotal") continue;
-				
-				var tradeData:Object = _currentTrade[itemId];
-				if (!tradeData) continue; // Safety check
-				
-				// Handle items bought by the player from the vendor
-				if (tradeData.bought > 0) {
-					_inventory.decreaseQuantity(itemId, tradeData.bought);
-					playerInventory.increaseQuantity(itemId, tradeData.bought);
-				}
-				
-				// Handle items sold by the player to the vendor
-				if (tradeData.sold > 0) {
-					_inventory.increaseQuantity(itemId, tradeData.sold);
-					playerInventory.decreaseQuantity(itemId, tradeData.sold)
-				}
-			}
-
-			// Reset the transaction item here??
-			//reset();
-		}
-
-		// Reset our counter for the amount of each item bought and sold during this trade
+		// [Clear how many of each item are being bought in the current trade]
 		public function reset():void {
-			// Set properties to track the value of items current marked for buying/selling
-			_currentTrade = { 
-				buyTotal: 0,	// Amount of money the player is spending
-				sellTotal: 0	// Amount of money the player will recieve
-			};
+			buyTotal = 0;
+			sellTotal = 0;
 
-			for each (var item:InventoryItem in _inventory.getAllItems()) {
-				_currentTrade[item.id] = { bought: 0, sold: 0 };
+			for each (var item:Item in _stock) {
+				item.bou = 0;
 			}
 		}
 
-		// Total price of all items the player wishes to purchase
-		public function get buyTotal():int {
-			return _currentTrade.buyTotal;
-		}
-		
-
-		// How many caps the player will receive from the trader when selling an item
-		public function get sellTotal():int {
-			return _currentTrade.sellTotal;
-		}
-
-		// Lazy fix for now until I can rework pipPageVend
-		public function set buyTotal(n:int):void {
-			_currentTrade.buyTotal = n;
-		}
-		public function set sellTotal(n:int):void {
-			_currentTrade.sellTotal = n;
-		}
-
+		// The items for sale, in the same format as the original game (Vendor.save)
 		public function save():* {
-			// TODO: re-implement this
+			if (_id == null) {
+				return null;
+			}
+			
+			var arr:Array = [];
+			for each (var item:Item in _stock) {
+				arr.push(item.save());
+			}
+			
+			return arr;
 		}
-	}	
+	}
 }

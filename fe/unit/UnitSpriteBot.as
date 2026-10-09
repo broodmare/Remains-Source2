@@ -33,7 +33,7 @@ package fe.unit {
 			acidDey = 1;
 			elast = 0.80;
 
-			currentWeapon = WeaponManager.reference.cloneWeapon("robolaser");
+			currentWeapon = WeaponManager.reference.cloneWeapon("robolaser", this);
 			childObjs = new Array(currentWeapon);
 		}
 

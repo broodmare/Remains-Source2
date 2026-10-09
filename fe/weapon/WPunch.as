@@ -9,14 +9,14 @@ package fe.weapon {
 		
 		public var zadok:Boolean = false;	// [Can act backwards]
 
-		// Constructor
-		public function WPunch(w:Weapon) {
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		public function WPunch() {
 			super();
-			// Get all the properties from an already made default weapon and use them
-			WeaponCopier.copyFrom(w, this);
+		}
 
-			// Instantiate the movieclip with the bullet effect
-			vBullet = SymbolFactory.createInstance("visualPunch") as Class;
+		public override function init(data:Object):void {
+			// The movieclip with the bullet effect
+			vBullet = SymbolFactory.fetchSymbolClass("visualPunch");
 		}
 		
 		public override function actions():void {

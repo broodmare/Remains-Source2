@@ -3,7 +3,7 @@ package fe.serv {
 	import fe.*;
 	import fe.loc.Loot;
 	import fe.loc.Location;
-	import fe.unit.InventoryItem;
+	import fe.weapon.Weapon;
 	import fe.unit.Equipment;
 	
 	public class LootGen {
@@ -29,53 +29,70 @@ package fe.serv {
 			var n:Array = [];
 
 			n['weapon']		= 0;
+			n['uniq']		= 0;
 			arr['weapon']	= [];
 			arr['magic']	= [];
 			arr['uniq']		= [];
 			arr['pers']		= [];
 
-			var weaponList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "weapons", "weapon");
-			for each (var weap in weaponList.(@tip == "cryo" || @tip == "lightGun" || @tip == "heavyGun")) {
-				if (weap.com.length() == 0) {
+			// [Weapons that can be found] Unique variants are found using their base weapon's 'uniq' chance
+			var weaponData:Object = WeaponManager.reference.allWeaponData();
+			for each (var weap:Object in weaponData) {
+				if (weap.variant) {
 					continue;
 				}
 				
-				arr['weapon'].push({id:weap.@id, st:weap.com.@stage, chance:weap.com.@chance, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['weapon']+=Number(weap.com.@chance))});
+				if (weap.tip == Weapon.TYPE_MAGIC) {
+					arr['magic'].push({id:weap.id, st:0, chance:0, worth:0, lvl:0, r:0});
+					continue;
+				}
 				
-				if (weap.com.@uniq.length()) {
-					arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
+				if (weap.tip != Weapon.TYPE_MELEE && weap.tip != Weapon.TYPE_LIGHTGUN && weap.tip != Weapon.TYPE_HEAVYGUN) {
+					continue;
+				}
+				
+				// Weapons without any [price, finding and repair] properties can't be found
+				if (!("com_chance" in weap) && !("com_price" in weap) && !("com_stage" in weap)) {
+					continue;
+				}
+				
+				var chance:Number = Number(weap.com_chance) || 0;
+				arr['weapon'].push({id:weap.id, st:weap.com_stage, chance:chance, worth:weap.com_worth, lvl:weap.lvl, r:(n['weapon'] += chance)});
+				
+				if ("com_uniq" in weap && (weap.id + "^1") in weaponData) {
+					var uniqChance:Number = Number(weap.com_uniq) || 0;
+					arr['uniq'].push({id:weap.id + "^1", st:weap.com_stage, chance:uniqChance, worth:weap.com_worth, lvl:weap.lvl, r:(n['uniq'] += uniqChance)});
 				}
 			}
-			
-			for each (weap in weaponList.(@tip==5)) {
-				arr['magic'].push({id:weap.@id, st:0, chance:0, worth:0, lvl:0, r:0});
-			}
-			weaponList = null; // Manual cleanup.
 
-			var itemList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "items", "item");
-			for each (var item in itemList) {
-				if (item.@tip.length()) {
-					if (arr[item.@tip] == null) {
-						arr[item.@tip] = [];
-						n[item.@tip] = 0;
+			// [Items, ammo and schematics]
+			for each (var item:Object in itemManager.itemList) {
+				if (item.tip) {
+					if (arr[item.tip] == null) {
+						arr[item.tip] = [];
+						n[item.tip] = 0;
 					}
 					
-					arr[item.@tip].push({id:item.@id, st:item.@stage, chance:(item.@chance.length()?item.@chance:1), lvl:item.@lvl,  r:(n[item.@tip]+=Number(item.@chance.length()?item.@chance:1))});
+					var itemChance:Number = ("chance" in item) ? Number(item.chance) : 1;
+					arr[item.tip].push({id:item.id, st:item.stage, chance:itemChance, lvl:item.lvl, r:(n[item.tip] += itemChance)});
 					
 					// [a sign of items that change the characteristics of a character]
-					if (item.@tip=='art' || item.@tip=='impl' || item.sk.length()) {
-						arr['pers'].push(item.@id);
+					if (item.tip == Item.L_ART || item.tip == Item.L_IMPL || "sk" in item || "skills" in item) {
+						arr['pers'].push(item.id);
 					}
 				}
-				if (item.@tip2.length()) {
-					if (arr[item.@tip2] == null) {
-						arr[item.@tip2] = [];
-						n[item.@tip2] = 0;
+				
+				// [Items that are also found as a second type of loot]
+				if (item.tip2) {
+					if (arr[item.tip2] == null) {
+						arr[item.tip2] = [];
+						n[item.tip2] = 0;
 					}
-					arr[item.@tip2].push({id:item.@id, st:item.@stage, chance:(item.@chance2.length()?item.@chance2:item.@chance), lvl:item.@lvl,  r:(n[item.@tip2]+=Number(item.@chance2.length()?item.@chance2:item.@chance))});
+					
+					var chance2:Number = ("chance2" in item) ? Number(item.chance2) : Number(item.chance);
+					arr[item.tip2].push({id:item.id, st:item.stage, chance:chance2, lvl:item.lvl, r:(n[item.tip2] += chance2)});
 				}
 			}
-			itemList = null; // Manual cleanup
 		}
 		
 		public static function getRandom(lootType:String, maxlvl:Number=-100, worth:int=-100):String {
@@ -187,44 +204,40 @@ package fe.serv {
 			}
 			
 			// Spawn the item
-			var item:InventoryItem = new InventoryItem(id, iCount);
-			
-			var itemData:Object = itemManager.getItem(id);
+			var item:Item = new Item(id, iCount, (lootType == Item.L_UNIQ) ? Item.L_WEAPON : null);
+			var itemData:Object = item.data;
 
 			if (lootType == 'eda') {
-				itemData.tip = 'food';
+				item.tip = Item.L_FOOD;
 			}
 			
 			if (lootType == 'co') {
-				itemData.tip = 'scheme';
+				item.tip = Item.L_SCHEME;
 				var wid:String = id.substr(2);
-				itemData.nazv = LanguageManager.reference.localText("pip", 'recipe') + ' «' + Res.txt('i', wid) + '»';
+				item.nazv = LanguageManager.reference.localText("pip", 'recipe') + ' «' + LanguageManager.reference.localText("items", wid) + '»';
 			}
 
-			//item.multHP = mn;
-			//item.imp = imp;
-			//item.cont = cont;
+			item.multHP = mn;
+			item.imp = imp;
+			item.cont = cont;
 
 			// Reduce rewards for containers that were broken into instead of unlocked
-			if (item.id == 'money') {	//множитель крышек
-				item.quantity *= (World.w.pers.capsMult * World.w.pers.difCapsMult);
+			if (item.id == 'money') {	// [Cap multiplier]
+				item.kol *= (World.w.pers.capsMult * World.w.pers.difCapsMult);
 			}	
 			
-			if (item.id == 'bit') {		//множитель крышек
-				item.quantity *= (World.w.pers.bitsMult * World.w.pers.difCapsMult);
+			if (item.id == 'bit') {		// [Cap multiplier]
+				item.kol *= (World.w.pers.bitsMult * World.w.pers.difCapsMult);
 			}	
 			
 			if (lootBroken && (item.id == 'money' || item.id == 'bit')) {
-				item.quantity *= 0.5;
+				item.kol *= 0.5;
 			}
 			
-			if (lootBroken && (itemData.tip == Item.L_AMMO || itemData.tip == Item.L_EXPL) && Math.random() < 0.5) {
+			if (lootBroken && (item.tip == Item.L_AMMO || item.tip == Item.L_EXPL) && Math.random() < 0.5) {
 				return false;
-			
 			}
 			
-			
-
 			// [Check limits]
 			if (imp == 0 && "limit" in itemData) {
 				var lim:int = World.w.game.getLimit(itemData.limit);
@@ -254,8 +267,7 @@ package fe.serv {
 			}
 			
 			if (World.w.testLoot) {
-				trace("LootGen.as/newLoot() - is calling the Invent.as()/take function because World.testLoot is true");
-				World.w.invent.increaseQuantity(item.id, item.quantity);
+				World.w.gg.itemInteraction.take(item);
 			}
 			else {
 				new Loot(loc, item, nx, ny, true);
@@ -572,20 +584,11 @@ package fe.serv {
 				var vars:Array = [];
 				var equip:Equipment = World.w.invent.equipment;
 				
-				if (!equip.hasEquipment('lsword') || (equip.hasEquipment('lsword') && equip.getWeapon('lsword').variant == 0)) {
-					vars.push('lsword^1');
-				}
-				
-				if (!equip.hasEquipment('antidrak') || (equip.hasEquipment('antidrak') && equip.getWeapon('antidrak').variant == 0)) {
-					vars.push('antidrak^1');
-				}
-				
-				if (!equip.hasEquipment('quick') || (equip.hasEquipment('quick') && equip.getWeapon('quick').variant == 0)) {
-					vars.push('quick^1');
-				}
-				
-				if (!equip.hasEquipment('mlau') || (equip.hasEquipment('mlau') && equip.getWeapon('mlau').variant == 0)) {
-					vars.push('mlau^1');
+				// [Unique weapons the player doesn't have yet]
+				for each (var specId:String in ['lsword^1', 'antidrak^1', 'quick^1', 'mlau^1']) {
+					if (!equip.hasWeapon(specId)) {
+						vars.push(specId);
+					}
 				}
 				
 				if (vars.length) {

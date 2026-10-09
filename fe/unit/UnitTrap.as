@@ -18,7 +18,10 @@ package fe.unit {
 			
 			mat		= 1;
 			prior	= 2;
-			vis = SymbolFactory.createInstance("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismtrap") as MovieClip;
+			vis = SymbolFactory.createInstance("vis" + String(id));
+			if (!vis) {
+				vis = SymbolFactory.createInstance("vismtrap");
+			}
 			vis.gotoAndStop(1);
 			setVis(false);
 			getXmlParam();
@@ -104,7 +107,7 @@ package fe.unit {
 				return;
 			}
 			
-			if (aiState==1 && !levit) { //взведена, поиск целей
+			if (aiState==1 && !levit && !isPlayerInteractingWithThis()) { //взведена, поиск целей
 				if (aiN%5==0) {
 					for each (var un:Unit in loc.units) {
 						if (un==null || un.activateTrap<=1 || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) {

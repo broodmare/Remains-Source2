@@ -344,7 +344,7 @@ package fe.unit {
 		}
 		
 		public override function damage(dam:Number, tip:String, bul:Bullet = null, tt:Boolean = false):Number {
-			if (tr == 1 && osob && !blasted && bul && bul.weap && bul.weap.tip == Resistances.DAM_CUT && aiState <= 1) {
+			if (tr == 1 && osob && !blasted && bul && bul.weap && bul.weap.tip == Weapon.TYPE_MELEE && aiState <= 1) {
 				mblast.cast(coordinates.X, coordinates.Y);
 				blasted = true;
 			}

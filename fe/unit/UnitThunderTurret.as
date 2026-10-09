@@ -37,7 +37,7 @@ package  fe.unit {
 			fixed = true;
 			nazv = "";
 			friendlyExpl = 0;
-			currentWeapon = WeaponManager.reference.cloneWeapon("ttweap" + tr);
+			currentWeapon = WeaponManager.reference.cloneWeapon("ttweap" + tr, this);
 			childObjs = new Array(currentWeapon);
 			t_wait = Math.round(Math.random() * 100);
 		}

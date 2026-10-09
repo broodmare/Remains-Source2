@@ -20,13 +20,13 @@ package fe.inter {
 	*	sub-categories:
 	*		1 - Equipment
 	*		2 - Ammunition
-	*		3 - Stuff
-	*		4 - *disabled*
+	*		3 - Explosives
+	*		4 - Stuff
 	*		5 - *disabled*
 	*/
 	public class PipPageVault extends PipPage {
 		
-		private static const PAGE_EQUIPMENT:int = 1, PAGE_AMMO:int = 2, PAGE_STUFF:int = 3;
+		private static const PAGE_EQUIPMENT:int = 1, PAGE_AMMO:int = 2, PAGE_EXPLOSIVES:int = 3, PAGE_STUFF:int = 4;
 		private var assArr:Array;
 
 		// Constructor
@@ -39,8 +39,8 @@ package fe.inter {
 			super(npip,npp);
 			
 			// Set which sub-categories are disabled at the top of the pip-buck
-			vis.but4.visible = false;
 			vis.but5.visible = false;
+			updateLang();
 			
 			var tf:TextFormat=new TextFormat();
 			tf.color = 0x00FF99; 
@@ -57,6 +57,38 @@ package fe.inter {
 			}
 		}
 
+		// The tabs don't match the 'vault1'-'vault3' texts anymore (those are also used for the weight categories)
+		override public function updateLang():void {
+			super.updateLang();
+			
+			var localize:Function = LanguageManager.reference.localText;
+			vis.but3.text.text = localize("pip", "vaultexpl");
+			vis.but4.text.text = localize("pip", "vault3");
+		}
+		
+		// [The tab an item is listed on] Explosives have their own tab, but they still count towards the ammunition's weight
+		private static function vaultPage(id:String, type:String):int {
+			if (type == Item.L_EXPL) {
+				return PAGE_EXPLOSIVES;
+			}
+			
+			var invCat:int = ItemManager.reference.getInvCat(id);
+			return (invCat == 3) ? PAGE_STUFF : invCat;
+		}
+		
+		// The weight category shown on the current tab (see ItemManager.getInvCat)
+		private function massCat():int {
+			if (page2 == PAGE_EXPLOSIVES) {
+				return 2;
+			}
+			
+			if (page2 == PAGE_STUFF) {
+				return 3;
+			}
+			
+			return page2;
+		}
+		
 		// [Preparing pages]
 		override protected function setSubPages():void {
 			inv = World.w.invent;
@@ -75,35 +107,62 @@ package fe.inter {
 			setTopText("vaultupr");
 			vis.butOk.visible = false;
 			
-			// inv.calcMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			ItemInteraction.calcMass(inv);
 			
+			var itemManager:ItemManager = ItemManager.reference;
+			
+			// [Everything the player is carrying or has stored]
+			var ids:Array = [];
+			var listed:Object = {};
+			var item:InventoryItem;
+			
+			for each (item in inv.getAllItems()) {
+				listed[item.id] = true;
+				ids.push(item.id);
+			}
+			
+			for each (item in vault.getAllItems()) {
+				if (!listed[item.id]) {
+					listed[item.id] = true;
+					ids.push(item.id);
+				}
+			}
 
-			for each (var item:InventoryItem in inv.getAllItems()) {
-				if (item.hidden) {
+			for each (var id:String in ids) {
+				if (!itemManager.hasItem(id)) {
 					continue;
 				}
 
-				var iData:Object = ItemManager.reference.getItem(item.id);
+				var iData:Object = itemManager.getItem(id);
 				var type:String = iData.tip;
+				
+				if (iData.invis) {
+					continue;
+				}
 
 				if (type == "money" || type == "paint" || type == "spell" || type == "spec" || type == "key" || type == "instr" 
 									|| type == "impl" || type == "art" || type == "scheme") {
 					continue;
 				}
 				
-				if (iData.invCat == page2) {
+				if (vaultPage(id, type) == page2) {
 					
 					// Get the localized name of the category this item belondgs to
 					var tcat:String;
-					tcat = LanguageManager.reference.localText("pip", type);
+					if (LanguageManager.reference.hasText("pip", type)) {
+						tcat = LanguageManager.reference.localText("pip", type);
+					}
+					else {
+						tcat = LanguageManager.reference.localText("pip", "stuff");
+					}
 					
 					var n:Object = {
 						tip:	type, 
-						id:		iData.id, 
-						nazv:((type == "e") ? Res.txt("w", iData.id) : iData.nazv), 
-						kol:	inv.getQuantity(item.id), 
-						vault:	vault.getQuantity(item.id), 
-						mass:	iData.mass, 
+						id:		id, 
+						nazv:	Item.nameOf(id, type), 
+						kol:	inv.getQuantity(id), 
+						vault:	vault.getQuantity(id), 
+						mass:	itemManager.getWeight(id), 
 						cat:	tcat,
 						trol:	type
 					};
@@ -112,7 +171,7 @@ package fe.inter {
 						n.price = iData.price;
 					}
 					
-					if (type == "food" && iData.ftip == "1") {
+					if (type == "food" && iData.ftip == 1) {
 						n.trol = "drink";
 					}
 					
@@ -142,7 +201,7 @@ package fe.inter {
 		
 		private function showBottext():void {
 			if (World.w.hardInv) {
-				//vis.bottext.text=inv.retMass(page2); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+				vis.bottext.htmlText = ItemInteraction.retMass(inv, massCat());
 			}
 			else {
 				vis.bottext.text = "";
@@ -185,10 +244,10 @@ package fe.inter {
 			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text);
 		}
 		
+		// [Change how many of an item are stored in the vault] n - the amount that should be in the vault
 		private function chKol(mc, n:int = 0):void {
 			var obj = assArr[mc.id.text];
 			var id:String = mc.id.text;
-			var data:Object = ItemManager.reference.getItem(id);
 			
 			if (id == "" || obj == null) {
 				return;
@@ -196,10 +255,10 @@ package fe.inter {
 			
 			var inv:Inventory = World.w.invent;
 			var vault:Inventory = World.w.vault;
-
 			var invQty:int = inv.getQuantity(id);
 			var vaultQty:int = vault.getQuantity(id);
 			
+			// The amount to move into the vault (negative to take items out)
 			n = n - vaultQty;
 			
 			if (n > invQty) {
@@ -210,14 +269,19 @@ package fe.inter {
 				n = -vaultQty;
 			}
 			
-			vault.increaseQuantity(id, n);
-			inv.decreaseQuantity(id, n);
+			if (n > 0) {
+				inv.decreaseQuantity(id, n);
+				vault.increaseQuantity(id, n);
+			}
+			else if (n < 0) {
+				vault.decreaseQuantity(id, -n);
+				inv.increaseQuantity(id, -n);
+			}
 
 			obj.kol = inv.getQuantity(id);
 			obj.vault = vault.getQuantity(id);
 			
-			var dmass:Number = n * data.mass;
-			inv.mass[data.invCat] -= dmass;
+			inv.mass[ItemManager.reference.getInvCat(id)] -= n * obj.mass;
 			
 			showBottext();
 			pip.setRPanel();
@@ -266,24 +330,21 @@ package fe.inter {
 			event.stopPropagation();
 		}
 		
-		private function checkAmmo(item:Item):Boolean {
-			var ab:String = item.id;
+		// [Check if the item is ammo for a weapon the player is using]
+		private function checkAmmo(id:String, tip:String):Boolean {
+			var ab:String = id;
 			
-			if (item.tip == "a" && "base" in item.data) {
-				ab = item.base;
+			if (tip == Item.L_AMMO && WeaponManager.reference.getAmmo(id).base != "") {
+				ab = WeaponManager.reference.getAmmo(id).base;
 			}
 			
 			for each(var weap:Weapon in inv.equipment.weapons) {
-				if (weap == null) {
-					continue;
-				}
-				
 				if (weap.respect == Weapon.WEP_INACTIVE || weap.respect == Weapon.WEP_ACTIVE) {
-					if (weap.tip == "explosives" && ab == weap.id) {
+					if (weap.tip == Weapon.TYPE_EXPLOSIVES && ab == weap.id) {
 						return true;
 					}
 					
-					if (ab == weap.ammo.base) {
+					if (weap.ammoBase && ab == weap.ammoBase.id) {
 						return true;
 					}
 				}
@@ -292,31 +353,28 @@ package fe.inter {
 			return false;
 		}
 
+		// [Put everything that isn't needed in the vault]
 		private function sbrosHlam():void {
+			var inv:Inventory = World.w.invent;
+			var vault:Inventory = World.w.vault;
 			
-			var dmass:Number = 0;	// Total mass of items?
-			
-			for (var s:String in arr) {
-				if (arr[s].tip != "food" && arr[s].tip != "book" && arr[s].tip != "sphera" && arr[s].tip != "valuables" && !arr[s].keep) {
-					var item:InventoryItem = inv.getItem(arr[s].id);
-					var data:Object = ItemManager.reference.getItem(item.id)
+			for each (var obj:Object in arr) {
+				if (obj.tip != "food" && obj.tip != "book" && obj.tip != "sphera" && obj.tip != "valuables" && !obj.keep) {
+					var kol:int = inv.getQuantity(obj.id);
 					
-					/*
-					if (arr[s].tip == "a" || arr[s].tip == "e" || arr[s].tip == "compw") {
-						if (checkAmmo(item)) {
-							continue
+					if (kol <= 0) {
+						continue;
+					}
+					
+					if (obj.tip == Item.L_AMMO || obj.tip == Item.L_EXPL || obj.tip == Item.L_COMPW) {
+						if (checkAmmo(obj.id, obj.tip)) {
+							continue;
 						}
 					}
-					*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME
 
-					var inv:Inventory = World.w.invent;
-					var vault:Inventory = World.w.vault;
-
-					dmass = inv.getQuantity(item.id) * data.mass;
-					vault.increaseQuantity(item.id, item.quantity);
-					inv.setQuantity(item.id, 0);
-					inv.mass[data.invCat] -= dmass;
-					dmass = 0;
+					inv.setQuantity(obj.id, 0);
+					vault.increaseQuantity(obj.id, kol);
+					inv.mass[ItemManager.reference.getInvCat(obj.id)] -= kol * obj.mass;
 				}
 			}
 			

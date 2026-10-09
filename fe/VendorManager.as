@@ -3,8 +3,6 @@ package fe {
 	import fe.util.Calc;
 	import fe.serv.Vendor;
 	import fe.serv.Item;
-	import fe.unit.Inventory;
-	import fe.unit.InventoryItem;
 	import fe.serv.LootGen;
 
 	public class VendorManager {
@@ -24,7 +22,7 @@ package fe {
 			}
 
 			var loader:TextLoader = new TextLoader();
-			var path:String; 
+			var path:String;
 			
 			// Load all the vendor inventory lists into memory and store them by id
 			path = directory + vendorsFileName;
@@ -32,7 +30,7 @@ package fe {
 			var lists:Object = loader.syncLoad(path);
 			for each (var inv:Object in lists) {
 				// Store each vendor inventory type
-				vendorData[inv.id] = inv; 
+				vendorData[inv.id] = inv;
 
 				// Build and store a vendor with each inventory type
 				createVendor(inv.id);
@@ -62,108 +60,144 @@ package fe {
 			return {};
 		}
 
-		private function createVendor(id:String):void {
+		// The items a vendor had when the game was saved, unique weapons in the original game's saves were stored as {id:"mont", variant:1}
+		private function getSavedStock(id:String):Array {
+			if (saveData == null || saveData[id] == null) {
+				return null;
+			}
 			
+			var stock:Array = [];
+			for each (var obj:Object in saveData[id]) {
+				if (obj == null || !obj.id) {
+					continue;
+				}
+				
+				var itemId:String = obj.id;
+				if (obj.variant > 0 && itemId.indexOf("^") < 0) {
+					itemId += "^" + obj.variant;
+				}
+				
+				stock.push({id:itemId, kol:obj.kol, sost:obj.sost});
+			}
+			
+			return stock;
+		}
+		
+		private function createVendor(id:String):void {
 			trace("VendorManager.as/createVendor() - Building vendor type: " + id);
-			// Create the vendor object to hold all the data and state for this vendor
-			var vendor:Vendor;
+			
 			// Load the vendor's items for sale and quests into memory
 			var data:Object = vendorData[id];
+			var vendor:Vendor = new Vendor(id, data);
+			var saved:Array = getSavedStock(id);
+			var obj:Object;
+			var item:Item;
 
-			if (!isEmpty(data)) {
-				
-				// Create a new inventory for the vendor
-				var inventory:Inventory = new Inventory();
-				var currentTradeData:Object = {};
-
-				// Create a new item for each object the vendor trades
-				for each (var item:Object in vendorData[id].buys) {
-					// Let inventory create it's own InventoryItems
-					inventory.increaseQuantity(item.id, item.quantity);
-				}
-
-				vendor = new Vendor(id, vendorData[id], inventory);
-			}
-			else {
-				// Fallback if the inventory list isn't found in vendorData
-				trace("VendorManager.as/createVendor() - Error: Couldn't locate inventory list for vendor type: " + id);
-				inventory = setRndBuys(id);
-			}
-
-			// Load vendor inventories from a save file if present
-			/*
-			if (saveData && saveData[id]) {
-				var vendorSaveData:Object = saveData[id];
-				
-				if (vendorSaveData.buys && !isEmpty(vendorSaveData.buys)) {
-					for each(var obj:Object in vendorSaveData.buys) {
-						var uniqueId:String = obj.id + (obj.variant > 0 ? "^" + obj.variant : "");
-						var existingItem:InventoryItem = vendor.buys2[uniqueId];
-						
-						if (existingItem) {
-							existingItem.quantity = obj.quantity;
-							//existingItem.sost = obj.sost;
+			if (id == "random") {
+				// [Random vendors keep what they had]
+				if (saved) {
+					for each (obj in saved) {
+						if (ItemManager.reference.getItemType(obj.id) == null) {
+							continue;
 						}
-						else {
-							var newItem:InventoryItem = new InventoryItem(obj.id, obj.quantity);
-							vendor.buys.push(newItem);
-							vendor.buys2[uniqueId] = newItem;
-						}
+
+						item = new Item(obj.id, obj.kol);
+						vendor.addItem(item);
 					}
 				}
 				else {
-					//trace("VendorManager.as/createVendor() - No vendor.buys data found in saveData for vendor: " + id);
+					setRndBuys(vendor, 100, "random");
 				}
-				
-				vendor.kolBou		= vendorSaveData.kolBou;
-				vendor.kolSell		= vendorSaveData.kolSell;
-				vendor.money		= vendorSaveData.money;
-				vendor.multPrice	= vendorSaveData.multPrice;
 			}
-			*/
+			else {
+				// Create a new item for each object the vendor trades
+				for each (var buy:Object in data.buys) {
+					if (ItemManager.reference.getItemType(buy.id) == null) {
+						trace("VendorManager.as/createVendor() - Error: Vendor \"" + id + "\" sells an unknown item: " + buy.id);
+						continue;
+					}
+					
+					item = new Item(buy.id, ("quantity" in buy) ? buy.quantity : -1);
+					
+					if ("barter" in buy)	item.barter		= buy.barter;
+					if ("lvl" in buy)		item.lvl		= buy.lvl;
+					if ("trigger" in buy)	item.trig		= buy.trigger;
+					if ("noref" in buy)		item.noref		= Boolean(buy.noref);
+					if ("nocheap" in buy)	item.nocheap	= Boolean(buy.nocheap);
+					if ("hardinv" in buy)	item.hardinv	= Boolean(buy.hardinv);
+					if ("pmult" in buy)		item.pmult		= buy.pmult;
+					
+					// Load vendor inventories from a save file if present
+					if (saved) {
+						for each (obj in saved) {
+							if (obj.id == item.id) {
+								item.kol = obj.kol;
+								item.sost = obj.sost;
+								break;
+							}
+						}
+					}
+					
+					vendor.addItem(item);
+				}
+			}
 			
-			// Set the amount of money available to the vendor
-			if (vendor.money == 0) { // If money wasn't set from JSON
-				vendor.increaseMoney(Calc.intBetween(50, 500));
-				
-				// 20% chance to double available money
-				if (Math.random() < 0.20) {
-					vendor.increaseMoney(vendor.money);
-				}
-			}
+			setStartingMoney(vendor);
 
 			// Store the finished vendor
 			_vendors[id] = vendor;
 		}
 
+		// A vendor without a list of items, it sells random items (Used by NPCs with vendor types that aren't defined)
+		public function createRandomVendor(tip:String, lvl:int):Vendor {
+			var vendor:Vendor = new Vendor(tip, null);
+			setRndBuys(vendor, lvl, tip);
+			setStartingMoney(vendor);
+			return vendor;
+		}
+		
+		private static function setStartingMoney(vendor:Vendor):void {
+			vendor.money = Math.round(Math.random() * 450 + 50);
+			
+			// 20% chance to double available money
+			if (Math.random() < 0.20) {
+				vendor.money *= 2;
+			}
+		}
+		
 		// Restock all items a vender sells
 		public function refillVendor(vendor:Vendor):void {
-				
-			// Creates a completely random selection of items available for purchase
-			if (vendor.id == 'random') {
-				vendor.setInventory(setRndBuys('random'));
-			} 
 			
-			// Cache
-			var itemManager:ItemManager = ItemManager.reference;
-			var buyLimit:int = World.w.pers.limitBuys;
+			// Creates a completely random selection of items available for purchase
+			if (vendor.id == "random") {
+				vendor.clearStock();
+				setRndBuys(vendor, 100, "random");
+				return;
+			}
+			
+			var data:Object = vendorData[vendor.id];
+			if (data == null) {
+				return;
+			}
+			
+			var buyLimit:Number = World.w.pers.limitBuys;
+			
 			// Adds 25% of the item limit to each item the vendor sells (Eg. If the limit is 12, 4 of that item would be added)
-			for each(var item:Object in vendorData[vendor.id].buys) {
-				var itemData:Object = itemManager.getItem(item.id);
-				var itemQty:int = item.quantity || 1;
+			for each (var buy:Object in data.buys) {
+				var item:Item = vendor.getItem(buy.id);
 				
 				// Don't refill certain items or item types
-				if (itemData.noref || itemData.tip == Item.L_ARMOR || itemData.tip == Item.L_WEAPON || 
-					itemData.tip == Item.L_SCHEME || itemData.tip == Item.L_UNIQ || itemData.tip == Item.L_IMPL) {
+				if (item == null || item.noref || item.tip == Item.L_ARMOR || item.tip == Item.L_WEAPON ||
+					item.tip == Item.L_SCHEME || item.tip == Item.L_UNIQ || item.tip == Item.L_IMPL || !("quantity" in buy)) {
 					continue;
 				}
 				
 				// Calculate the maximum amount of this item the vendor can stock
-				var itemCap:int = Math.ceil(itemQty * buyLimit);
+				var itemCap:int = Math.ceil(buy.quantity * buyLimit);
 				
 				// Increase the vendors stock of that item by 1/4th of the item cap
-				if (vendor.getQuantity(itemData.id) < itemCap) {
-					vendor.increaseQuantity(itemData.id, Math.min(itemQty, Math.ceil(0.25 * itemCap)));
+				if (item.kol < itemCap) {
+					item.kol = Math.min(itemCap, item.kol + Math.ceil(0.25 * itemCap));
 				}
 			}
 		}
@@ -175,23 +209,18 @@ package fe {
 		}
 
 		// Generate a random set of items for sale
-		public function setRndBuys(id:String = "vendor"):Inventory {
-			
-			var vendor:Vendor = _vendors[id];
-			var inv:Inventory = new Inventory();
-
+		public function setRndBuys(vendor:Vendor, lvl:int = 0, rndtip:String = "vendor"):void {
 			// 70% chance to apply a random price modifier
 			if (Math.random() < 0.70) {
-				vendor.multPrice = Calc.floatBetween(0.70, 1.30);
+				vendor.multPrice = Math.floor(Math.random() * 6 + 8) / 10;
 			}
 			
 			var num:int;
-			var num2:int;
 			
-			if (id == 'random') {
+			if (rndtip == "random") {
 				num = 30;
 			}
-			else if (id == 'doctor') {
+			else if (rndtip == "doctor") {
 				num = 5 + 3 * World.w.pers.barterLvl;
 			}
 			else {
@@ -199,45 +228,32 @@ package fe {
 			}
 			
 			num = Math.round(num * (0.50 + Math.random() * 0.70));
-			num2 = num * (0.10 + Math.random() * 0.30);
-			
-			
+			var num2:int = num * (0.10 + Math.random() * 0.30);
 
-			
-			var cid:String;							// Re-useable string to use for item ID
-			var lvl:int = World.w.pers.level;		// Get the player level
+			var item:Item;
+			var cid:String;
 			
 			for (var i:int = 0; i < num; i++) {
-				if (i < num2 && id != 'doctor') {
-					cid = LootGen.getRandom(Item.L_WEAPON, 1 + lvl * 0.25);
+				if (i < num2 && rndtip != "doctor") {
+					cid = LootGen.getRandom(Item.L_WEAPON, 1 + lvl / 4);
 					
-					// We don't have this item yet, add it to inventory
-					if (!inv.hasItem(cid)) {
+					// We don't have this weapon yet, add it to inventory
+					if (cid != null && vendor.getItem(cid) == null) {
+						item = new Item(cid, 1, Item.L_WEAPON);
 						
-						/*	?????? FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 						if (Math.random() < 0.20) {
-							item.barter = Math.floor(Math.random() * lvl * 0.25 + 1);
-							
-							if (item.barter > 5) {
-								item.barter = 5;
-							}
+							item.barter = Math.min(Math.floor(Math.random() * lvl / 4 + 1), 5);
 						}
-						*/
 
-						inv.increaseQuantity(cid);
+						vendor.addItem(item);
 					}
 				}
 				else {
 					var itemTip:String;
-					var t:int = Calc.intBetween(0, 109);
+					var t:int = Math.floor(Math.random() * 110);
 					
-					if (id == 'doctor') {
-						if (t < 70) {
-							itemTip = Item.L_MED;
-						}
-						else {
-							itemTip = Item.L_HIM;
-						}
+					if (rndtip == "doctor") {
+						itemTip = (t < 70) ? Item.L_MED : Item.L_HIM;
 					}
 					else {
 						if (t < 5) itemTip			= Item.L_UNIQ;
@@ -257,37 +273,27 @@ package fe {
 						continue;
 					}
 					
-					/*
-					if (Math.random() < 0.30) {
-						item.lvl = Math.floor(Math.random() * lvl + 1);
-						if (item.lvl > 5) {
-							item.lvl = 5;
+					item = new Item(cid, -1, itemTip);
+					
+					if (vendor.getItem(cid) == null) {
+						if (Math.random() < 0.30) {
+							item.lvl = Math.min(Math.floor(Math.random() * lvl + 1), 5);
 						}
-					}
-					*/
-					var qty:int = 1;
 
-					if (itemTip == Item.L_AMMO) {
-						qty = Calc.intBetween(3, 15);	// TODO: This might be wrong and need to be multipled by the ammo's "Kol" property
+						if (itemTip == Item.L_AMMO) {
+							item.kol = Math.round(item.kol * (3 + Math.random() * 12));
+						}
+						else if (itemTip != Item.L_UNIQ && itemTip != Item.L_SCHEME) {
+							item.kol = Math.round(item.kol * (1 + Math.random() * 4));
+						}
+						
+						vendor.addItem(item);
 					}
 					else if (itemTip != Item.L_UNIQ && itemTip != Item.L_SCHEME) {
-						qty = Calc.intBetween(1, 5);
+						vendor.getItem(cid).kol += item.kol;
 					}
-					
-					inv.increaseQuantity(cid, qty);
 				}
 			}
-
-			return inv;
-		}
-
-		// Check if an object is empty, Eg. '{}'
-		private function isEmpty(obj:Object):Boolean {
-			for (var key:String in obj) {
-				return false; // Found a property, so it's not empty
-			}
-			
-			return true; // No properties found, it's empty
 		}
 	}
 }

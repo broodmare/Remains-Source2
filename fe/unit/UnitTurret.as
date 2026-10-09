@@ -422,7 +422,7 @@ package fe.unit {
 				shitArmor = 25;
 				
 				if (bul) {
-					if (bul.weap != null && bul.weap.tip == "cryo") {	// [bladed weapon]
+					if (bul.weap != null && bul.weap.tip == Weapon.TYPE_MELEE) {	// [bladed weapon]
 						var w:Weapon = bul.weap;
 						
 						if ((coordinates.X - w.coordinates.X) * storona > 25) {

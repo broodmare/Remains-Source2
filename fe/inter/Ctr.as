@@ -713,10 +713,5 @@ package fe.inter {
 				}
 			}
 		}
-
-		private static function crash():void {
-			var obj:Object = null;
-			trace(obj.someProperty); // Crashes with a null reference error
-		}
-	}	
+	}
 }

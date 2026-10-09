@@ -97,7 +97,7 @@ package fe.inter {
 				}
 			}
 			if (active) {
-				if (weapon.tip != "internal" && weapon.tip != "cryo") {
+				if (weapon.tip != Weapon.TYPE_INTERNAL && weapon.tip != Weapon.TYPE_MELEE) {
 					trasser.visible = true;
 					trass();
 				}

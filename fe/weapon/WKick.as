@@ -12,17 +12,29 @@ package fe.weapon  {
 
 		public var kick:Boolean = true;
 		
-		// Constructor
-		public function WKick(w:Weapon) {
-			// Get all the properties from an already made default weapon and use them
-			WeaponCopier.copyFrom(w, this);
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		public function WKick() {
+			super();
+		}
+		
+		public override function init(data:Object):void {
+			vBullet = SymbolFactory.fetchSymbolClass("visualPunch");
+			dopCh = 0;
+			dopEffect = 'stun';
+		}
+		
+		// The weapon's bullet needs to know its owner, so it's created once the owner is set
+		public override function setOwner(own:Unit):void {
+			if (own == null || own == owner) {
+				super.setOwner(own);
+				return;
+			}
 			
-			vBullet = SymbolFactory.createInstance("visualPunch") as Class;
+			super.setOwner(own);
+			
 			var v:Vector2 = new Vector2((coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina));
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
-			dopCh = 0;
-			dopEffect = 'stun';
 			setBullet(b);
 		}
 		

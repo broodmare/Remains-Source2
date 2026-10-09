@@ -9,14 +9,14 @@
 		private var _left:Number;
 		private var _right:Number;
 		
-		private var _width:Number	= 10.00;     // Width in pixels
-		private var _height:Number	= 10.00;    // Height in pixels
+		private var _width:Number	= 10.00;			// Width in pixels
+		private var _height:Number	= 10.00;			// Height in pixels
 
 		public function BoundingBox(vec:Vector2) {
 			_left	= vec.X - (_width * 0.50) + 0.01;	// Slight offset to avoid overlapping with the floor tiles
 			_right	= vec.X + (_width * 0.50) - 0.01;	// Slight offset to avoid overlapping with the floor tiles
 			_top	= vec.Y - _height + 0.01;
-			_bottom	= vec.Y - 0.01;				// Slight offset to avoid overlapping with the floor tiles
+			_bottom	= vec.Y - 0.01;						// Slight offset to avoid overlapping with the floor tiles
 		}
 
 		//Updates the boundaries based on new coordinate
@@ -38,44 +38,21 @@
 			_top = _bottom - _height;
 		}
 
-		public function get top():Number {
-			return _top;
-		}
-		public function get bottom():Number {
-			return _bottom;
-		}
-		public function get left():Number {
-			return _left;
-		}
-		public function get right():Number {
-			return _right;
-		}
+		public function get top():Number			{ return _top;		}
+		public function get bottom():Number			{ return _bottom;	}
+		public function get left():Number			{ return _left;		}
+		public function get right():Number			{ return _right;	}
 
-		public function set top(n:Number):void {
-			_top = n;
-		}
-		public function set bottom(n:Number):void {
-			_bottom = n;
-		}
-		public function set left(n:Number):void {
-			_left = n;
-		}
-		public function set right(n:Number):void {
-			_right = n;
-		}
+		public function set top(n:Number):void		{ _top = n; }
+		public function set bottom(n:Number):void	{ _bottom = n; }
+		public function set left(n:Number):void		{ _left = n; }
+		public function set right(n:Number):void	{ _right = n; }
 
-		public function get width():Number {
-			return _width;
-		}
-		public function get height():Number {
-			return _height;
-		}
-		public function set width(n:Number):void {
-			_width = n;
-		}
-		public function set height(n:Number):void {
-			_height = n;
-		}
+		public function get width():Number			{ return _width; }
+		public function get height():Number			{ return _height; }
+		public function set width(n:Number):void	{ _width = n; }
+		public function set height(n:Number):void	{ _height = n; }
+
 		public function setSize(n:int):void {
 			_width = n;
 			_height = n;
@@ -123,4 +100,4 @@
 			_bottom = vec.Y;
 		}
 	}
-	}
+}

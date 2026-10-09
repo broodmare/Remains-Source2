@@ -127,7 +127,7 @@ package fe.unit {
 					return false;
 				}
 				
-				if (gg.invent.equipment.hasEquipment(id) && gg.invent.equipment.getWeapon(id).respect == Weapon.WEP_LOCKED) {
+				if (gg.invent.equipment.hasWeapon(id) && gg.invent.equipment.getWeapon(id).respect == Weapon.WEP_LOCKED) {
 					World.w.gui.infoText("disSpell",null,null,false);
 					Snd.ps("nomagic");
 					

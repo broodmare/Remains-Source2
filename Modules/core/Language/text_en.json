@@ -136,7 +136,9 @@
         },
         "astealth": {
             "string": "Stealth Armor Prototype",
-            "description": "Unique armor with integrated active camouflage system. This system is similar in principle to the StealthBuck, but can be used an unlimited number of times, just taking some time to recharge. Press @1 or @2 to activate"
+            "description": "Unique armor with integrated active camouflage system. This system is similar in principle to the StealthBuck, but can be used an unlimited number of times, just taking some time to recharge. Press @1 or @2 to activate",
+            "s1": "keyArmor",
+            "s2": "keyBeUp"
         },
         "sapper": {
             "string": "Sapper's Armor",
@@ -229,7 +231,8 @@
     },
 	"quest": {
 		"test": {
-			"string": "test"
+			"string": "test",
+			"description": "Test test test"
 		},
 		"test1": {
 			"string": "Complete part 1"
@@ -241,7 +244,8 @@
 			"string": "Complete part 3"
 		},
 		"toExit": {
-			"string": "To exit"
+			"string": "To exit",
+			"description": "You found yourself in abandoned auxiliary tunnels, all alone and without any equipment, and the most important - you have no clue how you ended up here. Find your way back to surface, and in the meantime try to scout this place for some useful and valuable stuff."
 		},
 		"toExit1": {
 			"string": "Get to the exit to surface"
@@ -253,7 +257,8 @@
 			"string": "Cogwheels found:"
 		},
 		"storyContact": {
-			"string": "Contact locals"
+			"string": "Contact locals",
+			"description": "Peaceful settlements should exist somewhere in the Equestrian Wasteland. They can be base camps for further operations. Find such a settlement and meet local ponies"
 		},
 		"storyContact1": {
 			"string": "Reach the nearest settlement"
@@ -262,7 +267,8 @@
 			"string": "Gather information"
 		},
 		"storyFind": {
-			"string": "Chosen-24"
+			"string": "Chosen-24",
+			"description": "A few months earlier, the \"Chosen-24\" was entrusted with the same mission as you. But the signal from her PipBuck was lost seventy-two days ago. Your task is to find \"Chosen-24\" and find out the reasons why the contact with her is lost. Then proceed according to circumstances"
 		},
 		"storyFind1": {
 			"string": "Obtain any information about the \"Chosen-24\""
@@ -277,7 +283,8 @@
 			"string": "Find \"Chosen-24\""
 		},
 		"storyMain": {
-			"string": "Chasing the rainbow"
+			"string": "Chasing the rainbow",
+			"description": "Somewhere in the vicinity of your landing point there must be a ManeTec factory or at least what is left of it. Your main goal is the central maneframe, its disks must contain the information that we require. Just connect your PipBuck, everything else will be done by the programs installed on it. So far this is all the information I can share with you. Attention! Do not try to take off your PipBuck! The success of the mission depends on it, and so does your life"
 		},
 		"storyMain1": {
 			"string": "Find out the location of the ManeTec factory"
@@ -295,7 +302,8 @@
 			"string": "Connect your PipBuck to the central maneframe"
 		},
 		"storyStable": {
-			"string": "The Quantum Cogitator"
+			"string": "The Quantum Cogitator",
+			"description": "Your main task now is to get hold of the Quantum Cogitator. It is an extremely powerful yet very compact processor capable of supporting artificial intelligence of the highest class. The only place where it can be obtained, according to our information, is Stable 88, known for its developments in the field of computers and robots with advanced AI. The entrance to Stable is somewhere in the town of Falls Springs"
 		},
 		"storyStable1": {
 			"string": "Ask Daiquiri about the location of Falls Springs"
@@ -310,13 +318,15 @@
 			"string": "Report to the Mentor about your success"
 		},
 		"freeCaptive": {
-			"string": "Rescue captives"
+			"string": "Rescue captives",
+			"description": "Raiders hold their captives in cages. Find a way to release them. Break cage locks or find a key"
 		},
 		"freeCaptive1": {
 			"string": "Captives rescued:"
 		},
 		"storyMeet": {
-			"string": "Meeting"
+			"string": "Meeting",
+			"description": "Send the Quantum Cogitator to our trusted person through his sprite-bot. The meeting place is Hankey garages"
 		},
 		"storyMeet1": {
 			"string": "Come to the meeting place"
@@ -328,7 +338,8 @@
 			"string": "Inspect the remains of the sprite-bot"
 		},
 		"storyMane": {
-			"string": "Alicorn Amulet"
+			"string": "Alicorn Amulet",
+			"description": "The new main task is to get the Alicorn Amulet, which is hidden somewhere in the ruins of Manehattan"
 		},
 		"storyMane1": {
 			"string": "Ask Daiquiri about the road to Manehattan"
@@ -346,7 +357,8 @@
 			"string": "Find the Alicorn Amulet"
 		},
 		"storyCanter": {
-			"string": "The Black Book"
+			"string": "The Black Book",
+			"description": "The new main task is to get the Black Book, an artifact of zebra necromancers. The last known location of the Book is the main office of the Ministry of Image, Canterlot"
 		},
 		"storyCanter1": {
 			"string": "Ask Calamity the directions to Canterlot"
@@ -361,7 +373,8 @@
 			"string": "Get the Black Book"
 		},
 		"storyHome": {
-			"string": "Way back home"
+			"string": "Way back home",
+			"description": "Now that all the required components have been collected, you need to find a way to return home, to Stable Pi"
 		},
 		"storyHome1": {
 			"string": "Attempt contacting the Mentor through the communication unit"
@@ -382,7 +395,8 @@
 			"string": "Return to Stable Pi"
 		},
 		"storyRanger": {
-			"string": "Steel Rangers"
+			"string": "Steel Rangers",
+			"description": "It seems that the Elder of the local Steel Rangers division conspires with zebras of the Legion and plans an attack on Stable Pi! You must take measures at once"
 		},
 		"storyRanger1": {
 			"string": "Talk to SteelHooves in his camp"
@@ -409,7 +423,8 @@
 			"string": "Warn citizens of Covertsign about the danger"
 		},
 		"storyHelpCamp": {
-			"string": "Aiding the \"Prancing Pony\""
+			"string": "Aiding the \"Prancing Pony\"",
+			"description": "A serious talk requires serious arguments, like a couple of large caliber guns. Measures should be taken to ensure that the \"Prancing Pony\" camp is able to defend itself against the Steel Rangers"
 		},
 		"storyHelpCamp1": {
 			"string": "Talk with Oak about the mission"
@@ -421,7 +436,8 @@
 			"string": "Tell Oak what you found"
 		},
 		"storyHelpCovert": {
-			"string": "Aiding Covertsign"
+			"string": "Aiding Covertsign",
+			"description": "Covertsign has nothing to help them withstand the Legion`s might. Askari decided to gather a community council for discussing the situation and finding a solution"
 		},
 		"storyHelpCovert1": {
 			"string": "Wait for the community council to gather"
@@ -448,7 +464,8 @@
 			"string": "Check on Velvet"
 		},
 		"storyEncl": {
-			"string": "Shadow of the Enclave"
+			"string": "Shadow of the Enclave",
+			"description": "Find out what the Pegasus Enclave forgot on the surface, what are its goals and what its presence means for all of us"
 		},
 		"storyEncl1": {
 			"string": "Visit the Enclave base and try to negotiate"
@@ -460,7 +477,8 @@
 			"string": "Interrogate the base commander"
 		},
 		"storyStorm": {
-			"string": "The storm is coming"
+			"string": "The storm is coming",
+			"description": "The Mentor refused to participate in some random wars on the surface. But you can`t just leave your new friends in danger while hiding in a safe Stable. You have to go back to the Wasteland"
 		},
 		"storyStorm1": {
 			"string": "Tell Velvet about the latest events"
@@ -478,7 +496,8 @@
 			"string": "Talk to SteelHooves"
 		},
 		"storyFbattle": {
-			"string": "The last battle"
+			"string": "The last battle",
+			"description": "The Enclave is attacking your home, Stable Pi. Protect it at all costs!"
 		},
 		"storyFbattle1": {
 			"string": "Return to Stable Pi and find Mentor"
@@ -496,7 +515,8 @@
 			"string": "Survive"
 		},
 		"tamePhoenix": {
-			"string": "Make friends with a balefire phoenix"
+			"string": "Make friends with a balefire phoenix",
+			"description": "The balefire phoenix, it seems, is not afraid of you and does not show any aggression. Rumors say, these birds are unusually intelligent and, with proper care, can become loyal friends. Try to make friends with one"
 		},
 		"tamePhoenix1": {
 			"string": "Offer radioactive cookies:"
@@ -505,7 +525,8 @@
 			"string": "Talk"
 		},
 		"patientHeal": {
-			"string": "Cure a sick zebra"
+			"string": "Cure a sick zebra",
+			"description": "A zebra named Zira is seriously ill, and Velvet can do nothing to help her. Your knowledge of medicine will be very helpful"
 		},
 		"patientHeal1": {
 			"string": "Determine the diagnosis"
@@ -520,7 +541,8 @@
 			"string": "Come after some time and ask Velvet about the patient"
 		},
 		"bunkerRaid": {
-			"string": "Bunker"
+			"string": "Bunker",
+			"description": "The storage bunker of the Steel Rangers surely contains many valuable things. They wanted to attack your home and plunder it, so pay them with the same price!"
 		},
 		"bunkerRaid1": {
 			"string": "Talk to Amaranth about the bunker"
@@ -532,7 +554,8 @@
 			"string": "Get to the storage"
 		},
 		"findProArmor": {
-			"string": "Find armor schematics"
+			"string": "Find armor schematics",
+			"description": "You need to find schematics for the secret armor, which are hidden somewhere in the destroyed factory. I presume, it is hidden the office of the factory CEO. Or not. But where else, if not there?"
 		},
 		"findProArmor1": {
 			"string": "Get armor schematics from the CEO`s safe"
@@ -541,7 +564,8 @@
 			"string": "Bring back the schematics and get a reward"
 		},
 		"collectPowerArmor": {
-			"string": "Power armor"
+			"string": "Power armor",
+			"description": "If you want to get a power armor specially created for you, get at least a few fragments of it. I do not care how you get them, but the electronic components must be in working condition"
 		},
 		"collectPowerArmor1": {
 			"string": "Get fragments of power armor"
@@ -550,7 +574,8 @@
 			"string": "Give Oak Stalwart the materials for the armor and wait for the completion of the work"
 		},
 		"killMadfox": {
-			"string": "Kill Mad Fox"
+			"string": "Kill Mad Fox",
+			"description": "Have you heard about the Mad Fox gang? They say their lair is somewhere in the old factory. Whoever finds and finishes these degenerates off, would deserve my eternal gratitude"
 		},
 		"killMadfox1": {
 			"string": "Kill Mad Fox"
@@ -559,7 +584,8 @@
 			"string": "Get a reward from Oak Stalwart"
 		},
 		"collectPaintsA": {
-			"string": "Get the paint"
+			"string": "Get the paint",
+			"description": "I`m looking for sprays with paint of different colors. For a start, the common ones will do"
 		},
 		"collectPaintsA1": {
 			"string": "Red"
@@ -580,7 +606,8 @@
 			"string": "Bring back all the paint and get a reward"
 		},
 		"collectPaintsB": {
-			"string": "Get the paint - 2"
+			"string": "Get the paint - 2",
+			"description": "Again I`m looking for paint sprays, but now I require more rare colors"
 		},
 		"collectPaintsB1": {
 			"string": "Grey"
@@ -607,7 +634,8 @@
 			"string": "Bring back all the paint and get a reward"
 		},
 		"collectPaintsC": {
-			"string": "Get the paint - 3"
+			"string": "Get the paint - 3",
+			"description": "Another hunt for paint. I need special colors, see the list attached. As usual - you bright paint, I pay caps, but this time the reward is bigger"
 		},
 		"collectPaintsC1": {
 			"string": "Cyan"
@@ -634,7 +662,8 @@
 			"string": "Bring back all the paint and get a reward"
 		},
 		"killBloats": {
-			"string": "Destroy bloatsprites` lair"
+			"string": "Destroy bloatsprites` lair",
+			"description": "Bloatsprites, that inhabit the ruins of the factory, recently started multiplying out of control. It`s time to end this! I`ll pay to anypony who finds a lair of bloatsprites and burns it once and for all"
 		},
 		"killBloats1": {
 			"string": "Find a lair of bloatsprites"
@@ -646,7 +675,8 @@
 			"string": "Get a reward from Brass Buckshot"
 		},
 		"collectFcrystal": {
-			"string": "Find a new focusing crystal"
+			"string": "Find a new focusing crystal",
+			"description": "A focusing crystal in my favorite plasma gun has cracked. I need a new one, the largest and purest of course. But if somepony tries to slip me a piece of glass again, prepare to get some shot in a rump"
 		},
 		"collectFcrystal1": {
 			"string": "Find a focusing crystal"
@@ -655,7 +685,8 @@
 			"string": "Bring Brass the crystal and get a reward"
 		},
 		"retPistol": {
-			"string": "Return the pistol"
+			"string": "Return the pistol",
+			"description": "If somepony finds my lost gun, please bring it back. Reward guaranteed"
 		},
 		"retPistol1": {
 			"string": "Find the pistol named \"Loyalty\""
@@ -664,7 +695,8 @@
 			"string": "Return the pistol to its owner"
 		},
 		"collectBlaster": {
-			"string": "Star blaster"
+			"string": "Star blaster",
+			"description": "Have you ever heard a story about a weapon that fell from the stars? Let them tell that this is just fairy tales! Maybe this weapon never actually fell from nowhere, but it definitely exists, and I have a proof - the ammunition that I found in the ruins of Manehattan. They do not fit any known model of weapons created by ponies or zebras, and I know this sort of things"
 		},
 		"collectBlaster1": {
 			"string": "Find a Star blaster"
@@ -673,7 +705,8 @@
 			"string": "Show Brass Buckshot the Star blaster"
 		},
 		"killLucerne": {
-			"string": "Kill Lucerne"
+			"string": "Kill Lucerne",
+			"description": "Many of you probably remember a pony named Lucerne. Once she was a good, decent ghoul, but now, it seems, the process of decay finally reached her brain, and she turned into a feral. They say she was seen in the sewers, in a place called \"Pit\", in the company of a whole herd of other ferals. It would be nice if somepony decided to end her time on earth - in present state she poses a considerable danger for all of us"
 		},
 		"killLucerne1": {
 			"string": "Kill Lucerne"
@@ -682,7 +715,8 @@
 			"string": "Get a reward from Brass Buckshot"
 		},
 		"collectNitro": {
-			"string": "Help with dynamite production"
+			"string": "Help with dynamite production",
+			"description": "I gonna start producing dynamite. Folks, share if you have, or help me get the components"
 		},
 		"collectNitro1": {
 			"string": "Find or prepare some more acid"
@@ -694,7 +728,8 @@
 			"string": "Give components to Smoky Pit and get a reward"
 		},
 		"killAnthills": {
-			"string": "Destroy the ant nests"
+			"string": "Destroy the ant nests",
+			"description": "I gonna say it again - those ants will soon become a pain in the ass for all of us. If you don`t give a shit, I myself gonna pay to anypony who finds and blows up all the fucking ant nests. You can get the dynamite from me|I gonna say it again - those ants will soon become a pain in the neck for all of us. If you don`t care, I myself gonna pay to anypony who finds and blows up all the fricking ant nests. You can get dynamite from me"
 		},
 		"killAnthills1": {
 			"string": "Nests destroyed"
@@ -703,7 +738,8 @@
 			"string": "Get a reward from Smoky Pit"
 		},
 		"testCryo": {
-			"string": "Cryotechnology"
+			"string": "Cryotechnology",
+			"description": "A new type of explosives, coming soon! For reals! There is a tiny-winy thing left, just get them materials, get it together and test it in battle"
 		},
 		"testCryo1": {
 			"string": "Obtain cryo-cells from the laboratory in an abandoned stable"
@@ -724,7 +760,8 @@
 			"string": "Report to Smoky Pit about test results"
 		},
 		"collectSpgren": {
-			"string": "Find schematics of a doomsday grenade"
+			"string": "Find schematics of a doomsday grenade",
+			"description": "How about a little fair trade? For anypony who snatches me schematics of the doomsday grenade, that`s made from Sparkle-cola, I will give drawings of my own creation - even more demolishing mine"
 		},
 		"collectSpgren1": {
 			"string": "Find schematics for the sparkle-grenade"
@@ -733,7 +770,8 @@
 			"string": "Share a copy of the schematics with Smoky Pit and get rewarded"
 		},
 		"collectSmoke": {
-			"string": "Smoking accessories"
+			"string": "Smoking accessories",
+			"description": "I`m fed up smoking these crap cigarettes. Who brings me some cooler smokes, gets a bunch of caps"
 		},
 		"collectSmoke1": {
 			"string": "Joint of magic weed"
@@ -751,7 +789,8 @@
 			"string": "Smuggled cigars"
 		},
 		"repairAutoDoc": {
-			"string": "Fix AutoDoc"
+			"string": "Fix AutoDoc",
+			"description": "Looks like the AutoDoc finally went to meet its maker. Fix it already, somepony! It`s in your best interests, you know!"
 		},
 		"repairAutoDoc1": {
 			"string": "Repair the AutoDoc"
@@ -760,7 +799,8 @@
 			"string": "Report to Doc Sepsis and get a reward"
 		},
 		"collectFishfat": {
-			"string": "Collect 20 portions of fish oil"
+			"string": "Collect 20 portions of fish oil",
+			"description": "I read in the old scientific journal about the benefits of fish oil, and I am willing to test this theory. The problem is that the nearest river is hundreds of miles away. Therefore, I`m ready to buy oil at a triple cost. But those who will try selling me melted radpig fat instead of fish oil, will become test subjects for verification of those potions without labels that were found in the factory"
 		},
 		"collectFishfat1": {
 			"string": "Collect fish oil"
@@ -769,7 +809,8 @@
 			"string": "Bring fish oil and get a reward"
 		},
 		"collectTmed": {
-			"string": "Find a working medical talisman"
+			"string": "Find a working medical talisman",
+			"description": "Will buy an intact medical talisman. I understand that the item is valuable and rare and promise a corresponding reward"
 		},
 		"collectTmed1": {
 			"string": "Find a medical talisman"
@@ -778,7 +819,8 @@
 			"string": "Bring Doc the talisman and get a reward"
 		},
 		"collectRecipes": {
-			"string": "Obtain recipes for potent drugs"
+			"string": "Obtain recipes for potent drugs",
+			"description": "I offer a monetary reward to those ponies that can share the recipes for Party-Time Mint-als, Stampede and Ultra-Dash. Special information for those who like jokes about drug trafficking doctors: Doc Sepsis Clinic does not offer discounts to patients whose injuries were acquired during a conflict with the owner of the clinic"
 		},
 		"collectRecipes1": {
 			"string": "Find a recipe of Ultra-Dash"
@@ -793,7 +835,8 @@
 			"string": "Give copies of the recipes to Doc and get a reward"
 		},
 		"collectTools": {
-			"string": "Find tools"
+			"string": "Find tools",
+			"description": "I am buying rare tools. I require: calipers, a hydraulic bolt cutter and an oscilloscope. I`ll pay well for each"
 		},
 		"collectTools1": {
 			"string": "Bring calipers"
@@ -805,19 +848,22 @@
 			"string": "Bring an oscilloscope"
 		},
 		"collectMolefat": {
-			"string": "Looking for mole rat fat"
+			"string": "Looking for mole rat fat",
+			"description": "I am buying mole rat fat at a good price to be used as a lubricant for mechanisms"
 		},
 		"collectMolefat1": {
 			"string": "Bring the obtained fat"
 		},
 		"collectCol2": {
-			"string": "\"Cyberpony\" Magazine"
+			"string": "\"Cyberpony\" Magazine",
+			"description": "I`m looking for pre-war magazines \"Cyberpony\". They are very rare, they only came out during a single year and in small batches. I`ll pay for each, but anypony who brings all twelve numbers will receive a special reward"
 		},
 		"collectCol21": {
 			"string": "Bring found magazines"
 		},
 		"collectFans": {
-			"string": "Collect old electronic devices"
+			"string": "Collect old electronic devices",
+			"description": "Attention to those engaged in scavenging all sorts of ruins and junkyards! I need old electrical devices that can be dismantled for spare parts. Slightly broken ones will do, but no complete garbage please"
 		},
 		"collectFans1": {
 			"string": "Fans"
@@ -832,7 +878,8 @@
 			"string": "Bring all obtained stuff to Winry"
 		},
 		"collectScrew": {
-			"string": "Screws and nuts"
+			"string": "Screws and nuts",
+			"description": "Tired of digging out rusty bolts and nuts from old fans, I`m willing to buy new ones. But don`t even think of bringing them one by one, I need a whole box. This stuff, in theory, can be found somewhere in the old factory"
 		},
 		"collectScrew1": {
 			"string": "Find a box of new screws"
@@ -844,7 +891,8 @@
 			"string": "Bring everything to Winry and get a reward"
 		},
 		"collectData": {
-			"string": "Value of information"
+			"string": "Value of information",
+			"description": "I am looking for technical documentation on equidroids. For one who will be brave enough to sneak into the data storage room of the abandoned stable - the reward will be worth an effort"
 		},
 		"collectData1": {
 			"string": "Find the data room"
@@ -862,7 +910,8 @@
 			"string": "Bring the data disc to Winry and get a reward"
 		},
 		"collectGems": {
-			"string": "Collect precious stones"
+			"string": "Collect precious stones",
+			"description": "I am looking for especially rare precious stones. They are larger than usual and have pronounced magical properties. I will pay you generously. And I need ordinary ones as well"
 		},
 		"collectGems1": {
 			"string": "Get emeralds"
@@ -886,7 +935,8 @@
 			"string": "Bring all the stones to Dusty Nebula and get a reward"
 		},
 		"collectBooks": {
-			"string": "Library"
+			"string": "Library",
+			"description": "I am buying intact pre-war books for the best price. Any will do, providing they can be read. Who brings the most, receives a special reward. Reading is magic, yay!"
 		},
 		"collectBooks1": {
 			"string": "Bring pre-war books"
@@ -898,7 +948,8 @@
 			"string": "Talk to Dusty about the reward"
 		},
 		"collectDust": {
-			"string": "Collect Potion Ingredients"
+			"string": "Collect Potion Ingredients",
+			"description": "I am looking for ingredients for one peculiar potion. Who helps with collecting them, gets its recipe in reward"
 		},
 		"collectDust1": {
 			"string": "Collect magic dust"
@@ -910,7 +961,8 @@
 			"string": "Give Dusty the ingredients and get the recipe"
 		},
 		"collectAlc": {
-			"string": "Rare alcohol"
+			"string": "Rare alcohol",
+			"description": "I`m buying rare pre-war alcohol made from apples. I am interested in the very elite drinks, leave cheap hooch for yourself"
 		},
 		"collectAlc1": {
 			"string": "Apple cider \"Old farm\""
@@ -934,7 +986,8 @@
 			"string": "Apple balsam \"The gift of nature\""
 		},
 		"hydroPon": {
-			"string": "Hydroponics"
+			"string": "Hydroponics",
+			"description": "I need data on hydroponic farms from the Canterlot Stable-Tec office"
 		},
 		"hydroPon1": {
 			"string": "Locate the Canterlot Stable-Tec office"
@@ -946,7 +999,8 @@
 			"string": "Give the data to scribe Amaranth and receive the reward"
 		},
 		"collectCanter": {
-			"string": "Canterlot Alchemy"
+			"string": "Canterlot Alchemy",
+			"description": "I need help collect rare alchemical ingredients that can be obtained only from Canterlot monsters. This is a very dangerous work, but I`ll give the Elixir of intuition recipe in reward"
 		},
 		"collectCanter1": {
 			"string": "Pink slime"
@@ -961,7 +1015,8 @@
 			"string": "Bring everything to Zambezi and get collect your reward"
 		},
 		"collectTalisman": {
-			"string": "Water talisman"
+			"string": "Water talisman",
+			"description": "Covertsign lacks a source of clean water. The water talisman could solve the problem, but these components are very rare and valuable. We know for certain that one talisman can be found in Canterlot, but it seems that alicorns made themselves a lair there. Anypony who dares to get a water talisman will do the whole settlement an invaluable favor"
 		},
 		"collectTalisman1": {
 			"string": "Get the water talisman"
@@ -970,19 +1025,22 @@
 			"string": "Give Zambezi the water talisman and get a reward"
 		},
 		"collectDatast": {
-			"string": "Data on the stealth-buck M2"
+			"string": "Data on the stealth-buck M2",
+			"description": "The main Ministry of Image office, which in the past developed a stealth-buck, possibly still stores some data on a prototype of the stealth-buck M2 (the second model is much more advanced than the first one). I`ll pay you well for any information found"
 		},
 		"collectDatast1": {
 			"string": "Retrieve data about the stealth-buck M2"
 		},
 		"collectMotiv": {
-			"string": "Motivators RX-47"
+			"string": "Motivators RX-47",
+			"description": "We really need spare parts for robots, namely the motivators RX-47. They can be obtained from any robot of the \"Guardian\" class"
 		},
 		"collectMotiv1": {
 			"string": "Collect motivators"
 		},
 		"collectBbatt": {
-			"string": "Balefire-battery"
+			"string": "Balefire-battery",
+			"description": "Since we are now at war with Neighara Rangers, we need a powerful source of energy to properly equip our base. One of the balefire-batteries, collecting dust somewhere in a Bunker storage, will do"
 		},
 		"collectBbatt1": {
 			"string": "Get the balefire-battery"
@@ -991,7 +1049,8 @@
 			"string": "Exchange the balefire-battery for a reward"
 		},
 		"collectTech": {
-			"string": "Technologies of the future"
+			"string": "Technologies of the future",
+			"description": "If any faction owns technologies more advanced than those of Steel Rangers, then this undoubtedly is the Pegasus Enclave. Samples of such technology will be generously paid for"
 		},
 		"collectTech1": {
 			"string": "Magnetic resonance horsgregator"
@@ -1009,7 +1068,8 @@
 			"string": "Hyperbeam twilifuser"
 		},
 		"enclArmor": {
-			"string": "Enclave armor"
+			"string": "Enclave armor",
+			"description": "The Enclave`s power armor is an impressive example of modern technology. I would like to get at least one intact sample"
 		},
 		"enclArmor1": {
 			"string": "Find Intact Enclave Power Armor"
@@ -1089,7 +1149,8 @@
         },
         "tele_al": {
             "string": "Rainbow wings",
-            "description": "Alicorn Armor is equipped with magical wings that allow flying. You can accelerate in flight by holding the @1 key (consumes magic). The \"Telekinesis\" skill level determines maximum flight speed, as well as the magic consumption rate"
+            "description": "Alicorn Armor is equipped with magical wings that allow flying. You can accelerate in flight by holding the @1 key (consumes magic). The \"Telekinesis\" skill level determines maximum flight speed, as well as the magic consumption rate",
+            "s1": "keyRun"
         },
         "repair_al": {
             "string": "Titanium armor",
@@ -1101,11 +1162,13 @@
         },
         "lockpick_al": {
             "string": "Light speed",
-            "description": "The Alicorn Armor has a built-in instant teleportation spell. You can use instant teleportation using the @1 key, the magic consumption rate depends on the \"Lockpick\" skill level"
+            "description": "The Alicorn Armor has a built-in instant teleportation spell. You can use instant teleportation using the @1 key, the magic consumption rate depends on the \"Lockpick\" skill level",
+            "s1": "keyPunch"
         },
         "science_al": {
             "string": "Void shield",
-            "description": "The Alicorn Armor is equipped with a powerful shield generator. You can activate the magical shield by pressing @1 key. The strength of the shield depends on the \"Science\" skill level"
+            "description": "The Alicorn Armor is equipped with a powerful shield generator. You can activate the magical shield by pressing @1 key. The strength of the shield depends on the \"Science\" skill level",
+            "s1": "keyDef"
         },
         "sneak_al": {
             "string": "Shadow veil",
@@ -1117,7 +1180,12 @@
         },
         "selflevit": {
             "string": "Self-levitation",
-            "description": "You can levitate yourself using magical power. To do this, press and hold @1 while being in the air. Press the @2@3@4@5 movement keys to move sideways, down or up. Moving upwards consumes more magical power.\nAt the second level of this ability the consumption of magic will decrease, and the time and range of flight increase"
+            "description": "You can levitate yourself using magical power. To do this, press and hold @1 while being in the air. Press the @2@3@4@5 movement keys to move sideways, down or up. Moving upwards consumes more magical power.\nAt the second level of this ability the consumption of magic will decrease, and the time and range of flight increase",
+            "s1": "keyJump",
+            "s2": "keyBeUp",
+            "s3": "keyLeft",
+            "s4": "keySit",
+            "s5": "keyRight"
         },
         "jump": {
             "string": "Jumper",
@@ -1273,7 +1341,8 @@
         },
         "grenader": {
             "string": "Grenader",
-            "description": "You learned to supply all grenades with an advanced sensor, so that now they explode right after hitting an enemy! (To use ordinary grenades, hold @1 when throwing)"
+            "description": "You learned to supply all grenades with an advanced sensor, so that now they explode right after hitting an enemy! (To use ordinary grenades, hold @1 when throwing)",
+            "s1": "keyRun"
         },
         "acute": {
             "string": "Piercing strike",
@@ -1285,11 +1354,14 @@
         },
         "telethrow": {
             "string": "Zero point magical field manipulator",
-            "description": "Not only you are able to move objects with telekinesis, but also you can make them plummet through the air! To do that, press @1 when levitating an object. You can try to hit an enemy with a heady box or smash him against a wall. The second level of this perk allows you to throw objects even faster and further. Keep in mind - pushing heavy objects rapidly burns your magical power"
+            "description": "Not only you are able to move objects with telekinesis, but also you can make them plummet through the air! To do that, press @1 when levitating an object. You can try to hit an enemy with a heady box or smash him against a wall. The second level of this perk allows you to throw objects even faster and further. Keep in mind - pushing heavy objects rapidly burns your magical power",
+            "s1": "keyAction"
         },
         "spell_port": {
             "string": "Teleportation",
-            "description": "You receive an ability to instantly move between places. To use it press and hold @1 while the spell charges, then release to perform teleportation. To cancel already charged spell press @2. You must see the point of arrival. Consumes quite a lot of magical energy"
+            "description": "You receive an ability to instantly move between places. To use it press and hold @1 while the spell charges, then release to perform teleportation. To cancel already charged spell press @2. You must see the point of arrival. Consumes quite a lot of magical energy",
+            "s1": "keyTele",
+            "s2": "keyAttack"
         },
         "potmaster": {
             "string": "Alchemist",
@@ -1433,31 +1505,43 @@
         },
         "burning": {
             "string": "Burning",
-            "description": "You`re burning! You need to jump into water to stop it"
+            "description": "You`re burning! You need to jump into water to stop it",
+            "message": "Aahh, fire! I`m burning, burning!!!",
+            "style": "5"
         },
         "chemburn": {
             "string": "Chemical burn",
-            "description": "You got splashed with some corrosive substance, and now it corrupts your armor and burns your hide"
+            "description": "You got splashed with some corrosive substance, and now it corrupts your armor and burns your hide",
+            "message": "Ah! This stuff burns!",
+            "style": "5"
         },
         "stealth": {
             "string": "Stealth mode",
-            "description": "You are in stealth-mode"
+            "description": "You are in stealth-mode",
+            "message": "Stealth-Buck activated"
         },
         "stealth_armor": {
             "string": "Stealth mode",
-            "description": "You are in stealth-mode"
+            "description": "You are in stealth-mode",
+            "message": "Stealth armor camouflage system activated"
         },
         "disorient": {
             "string": "Disorientation",
-            "description": "The concepts \"right\" and \"left\" for you temporarily changed places"
+            "description": "The concepts \"right\" and \"left\" for you temporarily changed places",
+            "message": "You fell under the telepathic attack!",
+            "style": "5"
         },
         "horror": {
             "string": "Panic",
-            "description": "You can`t control yourself and try to flee to someplace else"
+            "description": "You can`t control yourself and try to flee to someplace else",
+            "message": "You fell under the telepathic attack!",
+            "style": "5"
         },
         "vote": {
             "string": "Voices in your head",
-            "description": "These voices in your head do not stop... and they order you to kill!"
+            "description": "These voices in your head do not stop... and they order you to kill!",
+            "message": "You fell under the telepathic attack!",
+            "style": "5"
         },
         "freezing": {
             "string": "Frozen",
@@ -1465,11 +1549,15 @@
         },
         "blindness": {
             "string": "Blind",
-            "description": "It became almost impossible to aim properly. Accuracy reduced by #1"
+            "description": "It became almost impossible to aim properly. Accuracy reduced by #1",
+            "message": "Right in the eye!",
+            "style": "5"
         },
         "contusion": {
             "string": "Contusion",
-            "description": "You were hit hard by a blast wave. You have reduced speed (-#1), accuracy (-#2) and melee attack speed (-#3), and increased magic energy consumption by #4"
+            "description": "You were hit hard by a blast wave. You have reduced speed (-#1), accuracy (-#2) and melee attack speed (-#3), and increased magic energy consumption by #4",
+            "message": "You got a concussion!",
+            "style": "5"
         },
         "namok": {
             "string": "Soaking wet",
@@ -1613,39 +1701,56 @@
         },
         "potion_rat": {
             "string": "Transformation",
-            "description": "You have become a desman. In this form you are able to climb into very narrow passages. To return to your original form press @1. Attention! Make sure there is enough space!"
+            "description": "You have become a desman. In this form you are able to climb into very narrow passages. To return to your original form press @1. Attention! Make sure there is enough space!",
+            "s1": "keyPunch"
         },
         "curse": {
             "string": "Curse",
-            "description": "You`ve been touched by dark and powerful magic. Healing potions will not heal you until the curse is lifted. Pay a visit to the nearest practicing magician"
+            "description": "You`ve been touched by dark and powerful magic. Healing potions will not heal you until the curse is lifted. Pay a visit to the nearest practicing magician",
+            "message": "You`ve been cursed!",
+            "style": "5"
         },
         "stupor": {
             "string": "Stupor",
-            "description": "Your speed and jumping height are significantly reduced, and you are completely deprived of stamina"
+            "description": "Your speed and jumping height are significantly reduced, and you are completely deprived of stamina",
+            "message": "Curse of stupor",
+            "style": "5"
         },
         "weak": {
             "string": "Weakness",
-            "description": "Your magic has temporarily weakened, therefore your accuracy, damage from melee weapons and magic decreased, as well as strength of the telekinetic throw"
+            "description": "Your magic has temporarily weakened, therefore your accuracy, damage from melee weapons and magic decreased, as well as strength of the telekinetic throw",
+            "message": "Curse of weakness",
+            "style": "5"
         },
         "sacrifice": {
             "string": "Sacrifice",
-            "description": "The moment this effect wears off you will receive damage equal to #1 of your maximum health"
+            "description": "The moment this effect wears off you will receive damage equal to #1 of your maximum health",
+            "message": "The curse of the sacrifice",
+            "style": "5"
         },
         "relat": {
             "string": "Pain connection",
-            "description": "You receive #1 of the damage you deal to enemies"
+            "description": "You receive #1 of the damage you deal to enemies",
+            "message": "Curse of pain",
+            "style": "5"
         },
         "fetter": {
             "string": "Shackles",
-            "description": "The magical chain binds you to the point where you were at the moment the curse was cast, and does not allow you to leave it"
+            "description": "The magical chain binds you to the point where you were at the moment the curse was cast, and does not allow you to leave it",
+            "message": "Curse of shackles",
+            "style": "5"
         },
         "pinkcloud": {
             "string": "Poisoning by the Pink Cloud",
-            "description": "The toxin of the Pink Cloud got into your blood and now slowly kills you from inside"
+            "description": "The toxin of the Pink Cloud got into your blood and now slowly kills you from inside",
+            "message": "Pink Cloud poisoning",
+            "style": "5"
         },
         "antil": {
             "string": "Anti-life",
-            "description": "Healing potions have no effect on you"
+            "description": "Healing potions have no effect on you",
+            "message": "Curse of anti-life",
+            "style": "5"
         },
         "bloodinv": {
             "string": "Blood shield",
@@ -1676,7 +1781,8 @@
         },
         "drunk": {
             "string": "Drunkenness",
-            "description": "You got a serious dose of alcohol. Your protection and damage from melee weapons are increased, but accuracy and reaction are impaired, and magic consumption increased. \nDamage resistance #1, melee damage #2, accuracy #3, evasion bonus #4, magic consumption #5"
+            "description": "You got a serious dose of alcohol. Your protection and damage from melee weapons are increased, but accuracy and reaction are impaired, and magic consumption increased. \nDamage resistance #1, melee damage #2, accuracy #3, evasion bonus #4, magic consumption #5",
+            "style": "5"
         },
         "coffee": {
             "string": "Caffeine effect",
@@ -1684,7 +1790,8 @@
         },
         "food": {
             "string": "Effect of food",
-            "description": "You ate something, and this temporarily improved your characteristics. At the same time, only one food effect can be active. The effect of other food will replace the current one"
+            "description": "You ate something, and this temporarily improved your characteristics. At the same time, only one food effect can be active. The effect of other food will replace the current one",
+            "style": "5"
         },
         "f_hp": {
             "string": "",
@@ -2130,7 +2237,11 @@
             "string": "broken"
         },
         "infosats": {
-            "string": "@1 - select the target@@2 - cancel selection, exit@@3 or @4 - accept"
+            "string": "@1 - select the target@@2 - cancel selection, exit@@3 or @4 - accept",
+            "s1": "keyAttack",
+            "s2": "keyTele",
+            "s3": "keyAction",
+            "s4": "keySats"
         },
         "stand0": {
             "string": "Melee weapons"
@@ -2142,7 +2253,7 @@
             "string": "Magical energy"
         },
         "stand3": {
-            "string": "Explosives"
+            "string": "Explosive"
         },
         "stand4": {
             "string": "Other weapons"
@@ -2191,98 +2302,184 @@
         }
     },
     "info": {
+        "disArmor": {
+            "string": "This is left on the weapon stand",
+            "style": "0"
+        },
+        "noDrop1": {
+            "string": "Do not litter in the base camp, use the storage instead",
+            "style": "0"
+        },
+        "noDrop2": {
+            "string": "It is better to keep this item",
+            "style": "0"
+        },
+        "noSell": {
+            "string": "The merchant does not have enough caps to pay for your goods",
+            "style": "3"
+        },
+        "fullWeap": {
+            "string": "Not enough weapon slots",
+            "style": "3"
+        },
+        "fullMagic": {
+            "string": "Not enough spell slots",
+            "style": "3"
+        },
+        "itemDestr": {
+            "string": "The equipment destroyed (@1, @2pcs)",
+            "style": "5"
+        },
+        "itemLose": {
+            "string": "Items fell out of the bag (@1, @2pcs)",
+            "style": "3"
+        },
+        "killHero": {
+            "string": "Unique enemy defeated: @1",
+            "style": "2"
+        },
+        "electroOff": {
+            "string": "Electric fence disabled"
+        },
+        "electroOn": {
+            "string": "Electric fence active",
+            "style": "3"
+        },
+        "alicornNot": {
+            "string": "Not available with Alicorn mode active",
+            "style": "0"
+        },
+        "noTravel": {
+            "string": "You don`t have time for this",
+            "style": "3"
+        },
+        "overMass": {
+            "string": "Overload! Too many items",
+            "style": "3"
+        },
         "noPoss": {
-            "string": "Can do nothing here without instruments"
+            "string": "Can do nothing here without instruments",
+            "style": "2"
         },
         "itsEmpty": {
-            "string": "It is empty!"
+            "string": "It is empty!",
+            "style": "0"
         },
         "unLock": {
-            "string": "Lock successfully opened"
+            "string": "Lock successfully opened",
+            "style": "2"
         },
         "unLockKey": {
-            "string": "Opened with the key"
+            "string": "Opened with the key",
+            "style": "2"
         },
         "unFixPart": {
-            "string": "Consuming material for repair"
+            "string": "Consuming material for repair",
+            "style": "2"
         },
         "unRepLock": {
-            "string": "Force field is shut down"
+            "string": "Force field is shut down",
+            "style": "2"
         },
         "useRuna": {
-            "string": "Burglar`s rune used"
+            "string": "Burglar`s rune used",
+            "style": "2"
         },
         "useReboot": {
-            "string": "Electronic lockpick used"
+            "string": "Electronic lockpick used",
+            "style": "2"
         },
         "unTermLock": {
-            "string": "Accessed"
+            "string": "Accessed",
+            "style": "2"
         },
         "unFixLock": {
-            "string": "Fixed"
+            "string": "Fixed",
+            "style": "2"
         },
         "unLockFail": {
-            "string": "Failed to open the lock"
+            "string": "Failed to open the lock",
+            "style": "3"
         },
         "unLockFailP": {
-            "string": "Failed to open the lock. A pin broke"
+            "string": "Failed to open the lock. A pin broke",
+            "style": "3"
         },
         "unLockFailA": {
-            "string": "Failed to open the lock. Try again"
+            "string": "Failed to open the lock. Try again",
+            "style": "3"
         },
         "unRepFail": {
-            "string": "Failed to disable"
+            "string": "Failed to disable",
+            "style": "3"
         },
         "unFixFail": {
-            "string": "Failed to repair"
+            "string": "Failed to repair",
+            "style": "3"
         },
         "unTermLockFail": {
-            "string": "Hacking failed. Attempts remaining: @1"
+            "string": "Hacking failed. Attempts remaining: @1",
+            "style": "3"
         },
         "unTermLockFail1": {
-            "string": "Hacking failed. The last attempt left"
+            "string": "Hacking failed. The last attempt left",
+            "style": "3"
         },
         "unTermLockFail2": {
-            "string": "Hacking failed. Try again"
+            "string": "Hacking failed. Try again",
+            "style": "3"
         },
         "unLockZhopa": {
-            "string": "Lock jammed!"
+            "string": "Lock jammed!",
+            "style": "3"
         },
         "unRepZhopa": {
-            "string": "You get electric shock"
+            "string": "You get electric shock",
+            "style": "5"
         },
         "unLockBlock": {
-            "string": "System is blocked!"
+            "string": "System is blocked!",
+            "style": "3"
         },
         "unFixZhopa": {
-            "string": "Broken for good"
+            "string": "Broken for good",
+            "style": "3"
         },
         "needSkill": {
-            "string": "Required skill @1-@2"
+            "string": "Required skill @1-@2",
+            "style": "3"
         },
         "remine": {
-            "string": "Explosive device disarmed"
+            "string": "Explosive device disarmed",
+            "style": "2"
         },
         "remineFail": {
-            "string": "Failed to disarm an explosive device"
+            "string": "Failed to disarm an explosive device",
+            "style": "3"
         },
         "remineZhopa": {
-            "string": "Bomb exploded!"
+            "string": "Bomb exploded!",
+            "style": "5"
         },
         "signalOff": {
-            "string": "Alarm turned off"
+            "string": "Alarm turned off",
+            "style": "2"
         },
         "signalFail": {
-            "string": "Failed to turn alarm off"
+            "string": "Failed to turn alarm off",
+            "style": "3"
         },
         "signalZhopa": {
-            "string": "Alarm goes off!"
+            "string": "Alarm goes off!",
+            "style": "3"
         },
         "trapActivate": {
-            "string": "Trap activated"
+            "string": "Trap activated",
+            "style": "3"
         },
         "trapDisarm": {
-            "string": "Trap disarmed"
+            "string": "Trap disarmed",
+            "style": "2"
         },
         "inUse": {
             "string": "@1 is in use"
@@ -2312,10 +2509,432 @@
             "string": "Items removed: @1 (@2 pcs)"
         },
         "required": {
-            "string": "Items required: @1 (@2 pcs)"
+            "string": "Items required: @1 (@2 pcs)",
+            "style": "2"
         },
         "takeMoney": {
             "string": "Found caps (@1 pcs)"
+        },
+        "heal": {
+            "string": "Medicine applied @1",
+            "style": "1"
+        },
+        "usedheal": {
+            "string": "@1 applied",
+            "style": "1"
+        },
+        "usedfood": {
+            "string": "@1 eaten",
+            "style": "1"
+        },
+        "usedfood2": {
+            "string": "@1 drunk",
+            "style": "1"
+        },
+        "noHeal": {
+            "string": "Healing is not required",
+            "style": "0"
+        },
+        "noMedic": {
+            "string": "@1 is not required",
+            "style": "0"
+        },
+        "noSuitablePot": {
+            "string": "No medication",
+            "style": "0"
+        },
+        "useAntirad": {
+            "string": "To clean radiation away use RadAway",
+            "style": "0"
+        },
+        "usedSpell": {
+            "string": "Using spell @1",
+            "style": "1"
+        },
+        "noClose": {
+            "string": "Something is preventing the door from closing!",
+            "style": "0"
+        },
+        "noChArmor": {
+            "string": "You can not change clothes during the fight!",
+            "style": "3"
+        },
+        "noChArmor2": {
+            "string": "You can only change your armor at the base camp",
+            "style": "3"
+        },
+        "noUseCombat": {
+            "string": "You can not use this during the fight!",
+            "style": "3"
+        },
+        "noAct": {
+            "string": "The PipBuck is currently unavailable",
+            "style": "3"
+        },
+        "repairWeapon": {
+            "string": "@1 repaired (condition @2%)",
+            "style": "2"
+        },
+        "noRepair": {
+            "string": "Repair is not required",
+            "style": "0"
+        },
+        "noRepair2": {
+            "string": "This weapon can not be repaired",
+            "style": "0"
+        },
+        "noAmmo": {
+            "string": "Ammunition @1 missing",
+            "style": "3"
+        },
+        "imprAmmo": {
+            "string": "Ammunition @1 cannot be used with this weapon",
+            "style": "3"
+        },
+        "brokenWeapon": {
+            "string": "Weapon @1 is broken",
+            "style": "3"
+        },
+        "reloadWeapon": {
+            "string": "@1 reload",
+            "style": "2"
+        },
+        "unloadWeapon": {
+            "string": "Weapon @1 is empty",
+            "style": "2"
+        },
+        "perk": {
+            "string": "Received perk @1",
+            "style": "4"
+        },
+        "skill": {
+            "string": "Received skill @1",
+            "style": "4"
+        },
+        "skillPoint": {
+            "string": "A skill point received",
+            "style": "4"
+        },
+        "sneakBonus": {
+            "string": "Sneak bonus",
+            "style": "4"
+        },
+        "skillPoints": {
+            "string": "Skill points received: @1",
+            "style": "4"
+        },
+        "perkPoint": {
+            "string": "New perks available",
+            "style": "4"
+        },
+        "skillUp": {
+            "string": "Skill @1 improved",
+            "style": "4"
+        },
+        "noSkill": {
+            "string": "Nothing interesting...",
+            "style": "0"
+        },
+        "noPerk": {
+            "string": "No effect...",
+            "style": "0"
+        },
+        "endEffect": {
+            "string": "Effect @1 passed",
+            "style": "0"
+        },
+        "endFoodEffect": {
+            "string": "Effect from the food has passed",
+            "style": "0"
+        },
+        "noVisible": {
+            "string": "The object is out of sight",
+            "style": "0"
+        },
+        "loc": {
+            "string": "Moving to @1"
+        },
+        "noOutLoc": {
+            "string": "You can not leave the room while being attacked",
+            "style": "3"
+        },
+        "term1Act": {
+            "string": "Security systems are disabled"
+        },
+        "term2Act": {
+            "string": "Locks opened"
+        },
+        "robocellOff": {
+            "string": "Robocell powered down"
+        },
+        "alarmOff": {
+            "string": "Alarm shut off"
+        },
+        "noSats": {
+            "string": "The weapon is not supported by S.A.T.S.",
+            "style": "3"
+        },
+        "noOd": {
+            "string": "Not enough action points",
+            "style": "2"
+        },
+        "zoom0": {
+            "string": "Zoom 100%"
+        },
+        "zoom1": {
+            "string": "Zoom 1"
+        },
+        "zoom2": {
+            "string": "Zoom 2"
+        },
+        "noMoney": {
+            "string": "Need @1 caps more",
+            "style": "3"
+        },
+        "noSkillPoint": {
+            "string": "Not enough skill points",
+            "style": "3"
+        },
+        "misfire": {
+            "string": "Misfire!",
+            "style": "3"
+        },
+        "weaponJammed": {
+            "string": "Weapon jammed",
+            "style": "3"
+        },
+        "spellCuld": {
+            "string": "Spell recharge - @1 sec",
+            "style": "9"
+        },
+        "overMana": {
+            "string": "Magic burnout",
+            "style": "9"
+        },
+        "noMana": {
+            "string": "Not enough magical power",
+            "style": "3"
+        },
+        "noSpells": {
+            "string": "Unable to use spells",
+            "style": "3"
+        },
+        "weaponCircuit": {
+            "string": "Short-circuit in the battery",
+            "style": "3"
+        },
+        "weaponSkillLevel": {
+            "string": "Your weapon skill is not sufficient",
+            "style": "3"
+        },
+        "persLevel": {
+            "string": "Insufficient character level",
+            "style": "3"
+        },
+        "upArmor": {
+            "string": "Armor enhanced",
+            "style": "2"
+        },
+        "brokenArmor": {
+            "string": "Armor damaged",
+            "style": "3"
+        },
+        "created": {
+            "string": "Weapon @1 created",
+            "style": "2"
+        },
+        "created2": {
+            "string": "Item @1 created. You have total - @2",
+            "style": "2"
+        },
+        "created3": {
+            "string": "@1 created",
+            "style": "2"
+        },
+        "created4": {
+            "string": "Augmentation @1 installed",
+            "style": "2"
+        },
+        "noMaterials": {
+            "string": "Lacking required materials",
+            "style": "3"
+        },
+        "SaveGame": {
+            "string": "Game saved"
+        },
+        "noSaveGame": {
+            "string": "Saving Error",
+            "style": "5"
+        },
+        "noLoadGame": {
+            "string": "Loading error",
+            "style": "5"
+        },
+        "checkPoint": {
+            "string": "Checkpoint"
+        },
+        "addTask": {
+            "string": "New mission added: @1",
+            "style": "6"
+        },
+        "addTask2": {
+            "string": "Added a new stage of the mission: \"@1\"",
+            "style": "6"
+        },
+        "doneTask": {
+            "string": "Mission \"@1\" complete",
+            "style": "6"
+        },
+        "doneStage": {
+            "string": "Stage of the mission \"@1\" complete",
+            "style": "6"
+        },
+        "collect": {
+            "string": "@1",
+            "style": "6"
+        },
+        "trauma1": {
+            "string": "Attention! A minor injury acquired",
+            "style": "5"
+        },
+        "trauma2": {
+            "string": "Attention! A serious injury acquired. Ask doctor for medical assistance",
+            "style": "5"
+        },
+        "trauma3": {
+            "string": "Attention! Multiple injuries detected. Critical medical condition. Immediate hospitalization is required",
+            "style": "5"
+        },
+        "trauma4": {
+            "string": "Injuries incompatible with life. Rest in peace, @1",
+            "style": "5"
+        },
+        "blood1": {
+            "string": "Attention! A minor blood loss",
+            "style": "5"
+        },
+        "blood2": {
+            "string": "Attention! Serious blood loss",
+            "style": "5"
+        },
+        "blood3": {
+            "string": "Attention! You are dying from blood loss. Critical medical condition",
+            "style": "5"
+        },
+        "blood4": {
+            "string": "User died from blood loss. Rest in peace, @1",
+            "style": "5"
+        },
+        "tmana2": {
+            "string": "You have a small magical exhaustion",
+            "style": "3"
+        },
+        "tmana3": {
+            "string": "Attention! You have a serious magical exhaustion",
+            "style": "3"
+        },
+        "tmana4": {
+            "string": "Attention! Your magical power is depleted. Further magical use is impossible",
+            "style": "5"
+        },
+        "poison": {
+            "string": "Attention! You are poisoned!",
+            "style": "5"
+        },
+        "cut": {
+            "string": "Attention! You are bleeding!",
+            "style": "5"
+        },
+        "addiction1": {
+            "string": "You got slightly addicted to @1",
+            "style": "3"
+        },
+        "addiction2": {
+            "string": "Your addiction to @1 increased to a medium level",
+            "style": "3"
+        },
+        "addiction3": {
+            "string": "You are completely addicted to @1",
+            "style": "3"
+        },
+        "petCall": {
+            "string": "Companion summoned: @1"
+        },
+        "petRecall": {
+            "string": "Companion dismissed: @1"
+        },
+        "petNot": {
+            "string": "The companion in being reborn",
+            "style": "3"
+        },
+        "petNot2": {
+            "string": "Action unavailable",
+            "style": "0"
+        },
+        "petNot3": {
+            "string": "Robo-owl needs repair",
+            "style": "3"
+        },
+        "petDie": {
+            "string": "@1 dies. Time for revival - @2 seconds",
+            "style": "3"
+        },
+        "petDie2": {
+            "string": "@1 breaks down",
+            "style": "3"
+        },
+        "petRes": {
+            "string": "@1 returns to you"
+        },
+        "noPetCall": {
+            "string": "Can`t summon a companion in here",
+            "style": "3"
+        },
+        "noPetFollow": {
+            "string": "Your companion won`t follow you there",
+            "style": "3"
+        },
+        "closeProb": {
+            "string": "Trial \"@1\" completed",
+            "style": "6"
+        },
+        "noBase": {
+            "string": "This must be done in a safe place",
+            "style": "0"
+        },
+        "refill": {
+            "string": "Merchants have new products for sale"
+        },
+        "trigger": {
+            "string": "Trigger [@1] = @2"
+        },
+        "changeDif": {
+            "string": "Game difficulty changed: \"@1\"",
+            "style": "4"
+        },
+        "needCons": {
+            "string": "Item required: @1",
+            "style": "3"
+        },
+        "usedCons": {
+            "string": "Item used: @1",
+            "style": "3"
+        },
+        "onlyExpl": {
+            "string": "Can assign explosives or spells only",
+            "style": "0"
+        },
+        "onlySpell": {
+            "string": "Only for defensive spells",
+            "style": "0"
+        },
+        "disSpell": {
+            "string": "Spell unavailable",
+            "style": "0"
+        },
+        "disWeapon": {
+            "string": "Weapon unavailable",
+            "style": "0"
         }
     },
     "items": {
@@ -2554,7 +3173,8 @@
         },
         "potHP": {
             "string": "Potion of life",
-            "description": "Permanently increases maximum health"
+            "description": "Permanently increases maximum health",
+            "message": "This is not an ordinary healing potion, but a potent elixir that can permanently fortify your health. Drink it without hesitation"
         },
         "potMP": {
             "string": "Potion of spirit",
@@ -2586,17 +3206,20 @@
         },
         "owl": {
             "string": "Robo-owl",
-            "description": "A small security robot that can also serve as a personal assistant or secretary. Has a fairly powerful laser weapon. Can be used as a companion"
+            "description": "A small security robot that can also serve as a personal assistant or secretary. Has a fairly powerful laser weapon. Can be used as a companion",
+            "message": "You assembled a [robo-owl], and now it can be your companion. Activate it through the inventory - the [equipment] section. There you can see the robo-owl condition and its stats. If the robo-owl is damaged in combat, you can repair it in the same way as any weapon or armor"
         },
         "s_owl": {
             "string": "Robo-owl schematics"
         },
         "sphera": {
             "string": "Memory orb",
-            "description": "This magical item contains recorded memories of other creatures. Using it brings you an additional skill point"
+            "description": "This magical item contains recorded memories of other creatures. Using it brings you an additional skill point",
+            "message": "You have found a memory orb - a magical repository of memories that contains important information, someone`s valuable experience, or just moments of the past that someone wanted to save. Using it, you will get an additional skill point"
         },
         "book": {
-            "string": "An interesting book"
+            "string": "An interesting book",
+            "message": "You have found a book in good condition, containing useful knowledge. Be sure to read it - from books you can learn a lot of useful things, thereby increasing one of your skills"
         },
         "firstaid": {
             "string": "First aid kit",
@@ -3048,7 +3671,8 @@
         },
         "runa": {
             "string": "Burglar rune",
-            "description": "The burglar rune can open any lock, even a stuck one. Single use. To activate, hover cursor over a door or container with a tough lock and press @1"
+            "description": "The burglar rune can open any lock, even a stuck one. Single use. To activate, hover cursor over a door or container with a tough lock and press @1",
+            "s1": "keyCrack"
         },
         "retr": {
             "string": "Rune of return",
@@ -3056,7 +3680,8 @@
         },
         "reboot": {
             "string": "Electronic lock pick",
-            "description": "A single use device used to do a deep reboot of the terminal resetting all passwords. It was hard to get even before the War, not to mention now. To use, hover over a secure terminal and press @1"
+            "description": "A single use device used to do a deep reboot of the terminal resetting all passwords. It was hard to get even before the War, not to mention now. To use, hover over a secure terminal and press @1",
+            "s1": "keyCrack"
         },
         "repair": {
             "string": "Toaster repair",
@@ -3236,7 +3861,8 @@
         },
         "screwdriver": {
             "string": "Screwdriver",
-            "description": "Screwdriver is required for lock picking. You will also require pins. If you lack them, you can try to open the lock anyway, but the probability for the lock to get jammed will be much higher"
+            "description": "Screwdriver is required for lock picking. You will also require pins. If you lack them, you can try to open the lock anyway, but the probability for the lock to get jammed will be much higher",
+            "message": "A screwdriver! Quite a useful tool. It can help you open simple locks. Try it on some locked chest. If the lock doesn`t yield on the first try - don`t worry, just try again!"
         },
         "pin": {
             "string": "Bobby pin",
@@ -3383,25 +4009,35 @@
             "description": "Key received from the commander of the Enclave base"
         },
         "mont": {
-            "string": "Crowbar"
+            "string": "Crowbar",
+            "message": "A crowbar is a universal tool. It can be used both as a weapon and for breaking various objects. With it, you can attack enemies, break open doors and break through fragile walls. You can also crack open chests and other containers when lock picking with a screwdriver fails. Both loot from the container and the crowbar itself will receive damage"
         },
         "rech": {
-            "string": "Magical energy weapon"
+            "string": "Magical energy weapon",
+            "message": "The self-recharging pistol is a lucky prize. It belongs to a variety of magical energy weapons that does not require batteries. Its charge restores with time by itself"
         },
         "r32": {
-            "string": "Firearms"
+            "string": "Firearms",
+            "message": "Firearms are weapons that use various types of cartridges for firing. Press @1 to reload",
+            "s1": "keyReload"
         },
         "telebul": {
-            "string": "Attacking spell"
+            "string": "Attacking spell",
+            "message": "You found a book that describes the telekinetic bullet spell. To use, equip it the same way as an ordinary weapon. The spell does not require ammunition but consumes your magical power. Also, the attacking spell can be used simultaneously with any other weapon by pressing the @1 key",
+            "s1": "keyMagic"
         },
         "spell": {
-            "string": "Protective spell"
+            "string": "Protective spell",
+            "message": "To use a protective spell first equip it from your inventory (section [Weapons] or [Equipment]). After that, you can apply it by pressing the @1 key. You can also assign a protective spell to one of the quick spell slots",
+            "s1": "keyDef"
         },
         "impl": {
-            "string": "Implant"
+            "string": "Implant",
+            "message": "The implant is installed and activated. No additional actions required"
         },
         "mod": {
-            "string": "PipBuck module"
+            "string": "PipBuck module",
+            "message": "The module is connected to the PipBuck and activated. No additional actions required"
         },
         "impl_skin": {
             "string": "Subdermal Armor",
@@ -3457,7 +4093,8 @@
         },
         "kogit": {
             "string": "Quantum cogitator",
-            "description": "A small but very powerful processor. Currently connected to your PipBuck, which increases your level of lockpicking and terminal hacking by #1, as well as the number of APs in S.A.T.S. mode by #2"
+            "description": "A small but very powerful processor. Currently connected to your PipBuck, which increases your level of lockpicking and terminal hacking by #1, as well as the number of APs in S.A.T.S. mode by #2",
+            "message": "In your hooves you hold a masterpiece of the former Equestria technology. A very compact processor a thousand times more superior to the conventional one. Using your knowledge of a PipBuck technician, you connect the cogitator to your PipBuck. Of course, this cannot reveal the whole potential of this technological miracle, but still, with it, your PipBuck starts to work faster and better. Your skill level for opening locks and hacking terminals, as well as the number of APs in the S.A.T.S. mode, are increased"
         },
         "mod_trans": {
             "string": "Transistor module",
@@ -3465,35 +4102,43 @@
         },
         "stat_tw": {
             "string": "Twilight Sparkle figurine",
-            "description": "Be Smart! Increases damage from combat spells by #1, also increases the chance of successful lockpicking and terminal hacking"
+            "description": "Be Smart! Increases damage from combat spells by #1, also increases the chance of successful lockpicking and terminal hacking",
+            "message": "You find a figurine of a young lavender unicorn with a crimson and lilac stripes in a dark blue mane and with a cutie mark shaped like a magic star. [\"Be Smart!\"] - reads the golden inscription at the base of the statuette. You immediately feel an unusual clarity of thought, and your magical power has clearly increased"
         },
         "stat_pp": {
             "string": "Pinkie Pie figurine",
-            "description": "Awareness! It was under \"E\"! Increases accuracy and stealth by #1"
+            "description": "Awareness! It was under \"E\"! Increases accuracy and stealth by #1",
+            "message": "A beautifully preserved statuette of a bright pink pony, with a mane that looks like cotton candy, just radiating an aura of unrestrained happiness and fun. The inscription at the base is a bit strange: [`Awareness! It was under \"E\"!`] You are surprised to note that all your feelings magically sharpened"
         },
         "stat_aj": {
             "string": "Applejack figurine",
-            "description": "Be Strong! Increases damage from melee weapons by #1, damage from hoof attacks by #2, and health by #3"
+            "description": "Be Strong! Increases damage from melee weapons by #1, damage from hoof attacks by #2, and health by #3",
+            "message": "You find a statue of an orange earth pony with a yellow mane and tail, depicted at the moment when her hind hooves hit the air. It is engraved with the inscription \"Be Strong!\". Amazingly, now you really feel much stronger"
         },
         "stat_rd": {
             "string": "Rainbow Dash figurine",
-            "description": "Be Awesome! Increases damage of all firearms by #1, and the speed of running and swimming by #2"
+            "description": "Be Awesome! Increases damage of all firearms by #1, and the speed of running and swimming by #2",
+            "message": "A statuette of a sky-blue pegasus, with rainbow mane and tail. She is depicted in a proud pose, with straightened wings and a grin on her face. You see the inscription on the base [\"Be awesome!\"], and immediately feel... much cooler! In every way"
         },
         "stat_fl": {
             "string": "Fluttershy figurine",
-            "description": "Be Pleasant! Reduces the prices of merchants by #1 and increases the effectiveness of healing potions by #2"
+            "description": "Be Pleasant! Reduces the prices of merchants by #1 and increases the effectiveness of healing potions by #2",
+            "message": "A statuette of a yellow pegasus, untouched by time, smiling very sweetly from beneath her pink mane with a gentle look in her eyes. The inscription at the base reads \"Be Pleasant!\" - and indeed you feel inside the power not to kill, but to heal and save lives"
         },
         "stat_rr": {
             "string": "Rarity figurine",
-            "description": "Be Unwavering! Increases the damage threshold by #1, reduces consumption of stamina and magical power by #2"
+            "description": "Be Unwavering! Increases the damage threshold by #1, reduces consumption of stamina and magical power by #2",
+            "message": "A statuette of an amazingly beautiful white unicorn with a carefully combed purple mane. With all its appearance, it radiates confidence and firmness, like diamonds on her cutie mark, and these qualities are immediately transmitted to you. The inscription at the base reads: [\"Be Unwavering!\"]"
         },
         "amul_al": {
             "string": "Alicorn Amulet",
-            "description": "An ancient and mysterious relic, increasing the magical power of the owner but enslaving his mind. Under no circumstances should you wear this amulet around your neck! Although just laying in your bag, it still strengthens your battle spells by #1 and decreases magic consumption by #2"
+            "description": "An ancient and mysterious relic, increasing the magical power of the owner but enslaving his mind. Under no circumstances should you wear this amulet around your neck! Although just laying in your bag, it still strengthens your battle spells by #1 and decreases magic consumption by #2",
+            "message": "Alicorn Amulet! An ancient and mysterious relic, increasing the magical power of the owner but enslaving his mind. You feel a strong desire to immediately put the amulet around your neck, but, realizing the danger of such a rash act, simply put it in your bag. And still, even just being near, the amulet increases your magical power"
         },
         "blackbook": {
             "string": "Black book",
-            "description": "The ancient tome written by mighty zebra shamans and containing their forbidden knowledge. But it is not just the dark spells and terrible rituals described in the book that are of interest. The book itself is also an extraordinarily powerful artifact, protecting its owner from black magic and giving the ability to absorb the vital energy from enemies"
+            "description": "The ancient tome written by mighty zebra shamans and containing their forbidden knowledge. But it is not just the dark spells and terrible rituals described in the book that are of interest. The book itself is also an extraordinarily powerful artifact, protecting its owner from black magic and giving the ability to absorb the vital energy from enemies",
+            "message": "The black book! A tome, written in ancient times by mighty zebra alchemists, containing their forbidden knowledge. You would really like to know what secrets are hidden in this book, but it is written in an unfamiliar language. And perhaps, this is for the best.\nHaving the book with you, you get some protection from black magic, as well as an ability to absorb the vital energy of ponies, zebras, griffins, and alicorns you kill"
         },
         "sp_mwall": {
             "string": "Magical barrier",
@@ -4096,7 +4741,8 @@
             "description": "Equestrian Wasteland, harsh and cruel"
         },
         "raiders1": {
-            "string": "Raiders` den"
+            "string": "Raiders` den",
+            "description": "Ruins, occupied by a large raiders gang"
         },
         "raiders": {
             "string": "Falls Springs",
@@ -5823,6 +6469,9 @@
         "DAM_PLASMA": {
             "string": "plasma"
         },
+        "DAM_VENOM": {
+            "string": "poison"
+        },
         "DAM_POISON": {
             "string": "poison"
         },
@@ -6236,13 +6885,19 @@
             "string": "Game saves"
         },
         "invupr1": {
-            "string": "[click] - select weapon@[right click] - in storage / take back@slot selection keys (@1- @2) - assign"
+            "string": "[click] - select weapon@[right click] - discard (spells - hide / take back)@slot selection keys (@1- @2) - assign",
+            "s1": "keyWeapon1",
+            "s2": "keyWeapon12"
         },
         "invupr2": {
-            "string": "[click] - put on armor@slot selection keys (@1- @2) - assign"
+            "string": "[click] - put on armor@[right click] - discard@slot selection keys (@1- @2) - assign",
+            "s1": "keyWeapon1",
+            "s2": "keyWeapon12"
         },
         "invupr3": {
-            "string": "[click] - use equipment@[right click] - discard (with [shift] - everything)@slot selection keys (@1- @2) - assign"
+            "string": "[click] - use equipment@[right click] - discard (with [shift] - everything)@slot selection keys (@1- @2) - assign",
+            "s1": "keyWeapon1",
+            "s2": "keyWeapon12"
         },
         "invupr5": {
             "string": "[click] - reload"
@@ -6286,6 +6941,9 @@
         "infostand2": {
             "string": "[click] - discard a spell or acquire it again"
         },
+        "infostand3": {
+            "string": "[click] - leave on the stand or take it back"
+        },
         "emptyinv": {
             "string": "No items in this category"
         },
@@ -6324,25 +6982,34 @@
             "description": "Error 0-4570-7f45-a420-ff98 (System error, contact administrator)\nThe likely cause of the failure is an effect of an electromagnetic pulse on the PipBuck systems.\nChecking the subsystems and modules:\n• User Status - Not Available\n• Medical module - not available\n• Inventory sorter - not available\n• Cartographic module - not available\n• Targeting spell - not available\n• User Interface - Disabled\n• The operating system kernel - not responding\nAttention! Reboot required\nSystem reboot in progress, please wait ......."
         },
         "helpInv1": {
-            "string": "This is a list of all your weapons and magic. New weapons are indicated by the [☩] symbol.\nUse [left mouse button] to equip the weapon. You can also use [mouse scroll] to change weapons in the game without opening inventory.\nUse [right mouse button] to remove weapons you are not going to use from the list, or to add them back to the list.\nHover over a list item and press [slot selection key] ([1] - [0], [-], [=]) to assign a weapon to the quick access slot, or to cancel the assignment. By pressing the same key in the game, you can quickly equip this weapon.\nYou can also press the [slot selection key] together with the @1 key. Thus, the number of available slots increases from 12 to 24.\nHover over a grenade, mine, or attack spell and press @2 or @3 to designate them as additional weapons. Thus you will be able to use them together with the main weapon at any time using these keys. If no additional weapon is assigned, pressing the @4 key will use the last selected explosive, and the @5 key will activate the last selected combat spell.\nIn addition, you can assign a defensive spell to the quick spell slot using one of the [quick spell keys] (see control settings). By pressing the same key in game you can immediately apply the selected spell without having to equip it.\nThe right side of the screen shows weapon characteristics.\nDamage: basic weapon damage (in parentheses is the actual damage that depends on your characteristics, in square brackets is the number of pellets for shotguns)\nDamage per second: damage per second based on your characteristics (in brackets - approximate damage per second based on the time for reloading)\nAP: action points for a shot at S.A.T.S. (in parentheses - the number of shots per burst shot in S.A.T.S. for automatic weapons)\nRange: the distance in blocks at which the weapon will be guaranteed to hit the target. In reality this value is relative and depends on the weapon mastery skill and other factors\n"
+            "string": "This is a list of all your weapons and magic. New weapons are indicated by the [☩] symbol.\nUse [left mouse button] to equip the weapon. You can also use [mouse scroll] to change weapons in the game without opening inventory.\nUse [right mouse button] to mark weapons you are not going to use to be dropped on the ground (grenades and mines one at a time, with [shift] - all of them). Spells can't be dropped, [right mouse button] removes them from the list or adds them back instead.\nHover over a list item and press [slot selection key] ([1] - [0], [-], [=]) to assign a weapon to the quick access slot, or to cancel the assignment. By pressing the same key in the game, you can quickly equip this weapon.\nYou can also press the [slot selection key] together with the @1 key. Thus, the number of available slots increases from 12 to 24.\nHover over a grenade, mine, or attack spell and press @2 or @3 to designate them as additional weapons. Thus you will be able to use them together with the main weapon at any time using these keys. If no additional weapon is assigned, pressing the @4 key will use the last selected explosive, and the @5 key will activate the last selected combat spell.\nIn addition, you can assign a defensive spell to the quick spell slot using one of the [quick spell keys] (see control settings). By pressing the same key in game you can immediately apply the selected spell without having to equip it.\nThe right side of the screen shows weapon characteristics.\nDamage: basic weapon damage (in parentheses is the actual damage that depends on your characteristics, in square brackets is the number of pellets for shotguns)\nDamage per second: damage per second based on your characteristics (in brackets - approximate damage per second based on the time for reloading)\nAP: action points for a shot at S.A.T.S. (in parentheses - the number of shots per burst shot in S.A.T.S. for automatic weapons)\nRange: the distance in blocks at which the weapon will be guaranteed to hit the target. In reality this value is relative and depends on the weapon mastery skill and other factors\n",
+            "s1": "keyRun",
+            "s2": "keyGrenad",
+            "s3": "keyMagic",
+            "s4": "keyGrenad",
+            "s5": "keyMagic"
         },
         "helpInv2": {
-            "string": "This is a list of your armor and amulets.\nUse [left mouse button] to put on or take off your armor.\nHover over an item and press [slot selection key] ([1] - [0], [-], [=]) to assign the item to a quick access slot, or to cancel the assignment. By pressing the same key in game, you can quickly put on this armor, unless you are being attacked. You can also use the [slot selection key] together with the @1 key\n"
+            "string": "This is a list of your armor and amulets.\nUse [left mouse button] to put on or take off your armor.\nUse [right mouse button] to mark armor to be dropped on the ground, amulets can't be dropped. Armor and amulets you want to keep can be left on the weapon stand in the base camp.\nHover over an item and press [slot selection key] ([1] - [0], [-], [=]) to assign the item to a quick access slot, or to cancel the assignment. By pressing the same key in game, you can quickly put on this armor, unless you are being attacked. You can also use the [slot selection key] together with the @1 key\n",
+            "s1": "keyRun"
         },
         "helpInv3": {
-            "string": "This is a list of your equipment, which includes all items that you can use: protective spells, medicines, chemicals, potions, food, tools, books, spray cans.\nUse [left mouse button] to apply an item or equip a protective spell if you have one (this spell can be used in game using the @2 key).\nHover over an item and press [slot selection key] ([1] - [0], [-], [=]) to assign this item to the quick access slot, or to cancel the assignment. By pressing the same key in game you can apply this item without opening inventory. You can also use the [slot selection key] together with the @1 key.\nIn addition, you can assign a protective spell to a quick spell slot using one of the [quick spell keys] (see control settings). By pressing the same key in the game, you can immediately apply the selected spell without having to equip it first.\nNew items are indicated by [☩]. Items which quantity has recently increased are indicated by the [+] symbol.\n"
+            "string": "This is a list of your equipment, which includes all items that you can use: protective spells, medicines, chemicals, potions, food, tools, books, spray cans.\nUse [left mouse button] to apply an item or equip a protective spell if you have one (this spell can be used in game using the @2 key).\nHover over an item and press [slot selection key] ([1] - [0], [-], [=]) to assign this item to the quick access slot, or to cancel the assignment. By pressing the same key in game you can apply this item without opening inventory. You can also use the [slot selection key] together with the @1 key.\nIn addition, you can assign a protective spell to a quick spell slot using one of the [quick spell keys] (see control settings). By pressing the same key in the game, you can immediately apply the selected spell without having to equip it first.\nNew items are indicated by [☩]. Items which quantity has recently increased are indicated by the [+] symbol.\n",
+            "s1": "keyRun",
+            "s2": "keyDef"
         },
         "helpInv4": {
             "string": "This is a list of all the other things you have, such as valuable items, artifacts, quest items, schematics, components and other junk. These things are either used automatically or are useless and can be sold to merchants\n"
         },
         "helpInv5": {
-            "string": "This is a list of all your ammunition and explosives. Ammunition suitable for the currently used weapon is located at the top of the list.\nUse [left mouse button] to load the weapon with the necessary type of ammunition. You can also use [mouse scroll] along with the @1 key to change ammunition directly in game without opening inventory\n"
+            "string": "This is a list of all your ammunition and explosives. Ammunition suitable for the currently used weapon is located at the top of the list.\nUse [left mouse button] to load the weapon with the necessary type of ammunition. You can also use [mouse scroll] along with the @1 key to change ammunition directly in game without opening inventory\n",
+            "s1": "keyRun"
         },
         "massInv0": {
             "string": "In limited inventory mode, most items have weight. All your items are divided into categories, the weights for which are calculated separately"
         },
         "massInv1": {
-            "string": "[Weapons]\nYou can take with you and use a limited number of weapons determined by the number of [weapon slots]. Knives and pistols occupy one cell, rifles, shotguns etc. - two, and large-sized weapons - three. Grenades and mines can be used without restrictions. All other weapons are only available at the base camp.\nUse [right mouse click] to discard a specific weapon and free the slots it occupies. The weapon will be hidden, will not occupy the weapon slots and you won`t be able to use it. You can still find the same weapon on a mission, or you can take it back when you return to the base camp using PipBuck or the weapon stand.\nYou can carry more weapons than you have weapon slots for, but it will slow you down. With a slight overload you will not be able to run and dash, with more overload you will only be able to trot, and finally, you won`t be able to move at all. It will not affect movement speed in the base camp, but you won`t be able to go anywhere else until you reduce weight.\n[Magic]\nYou can use a limited number of attacking or defensive spells, all others will be unavailable. Each spell occupies one [magic slot], otherwise the principle is the same as for weapons.\nEach extra spell will reduce the magic recovery speed by 25%"
+            "string": "[Weapons]\nYou can take with you and use a limited number of weapons determined by the number of [weapon slots]. Knives and pistols occupy one cell, rifles, shotguns etc. - two, and large-sized weapons - three. Grenades and mines can be used without restrictions. All other weapons are only available at the base camp.\nUse [right mouse click] to drop a specific weapon and free the slots it occupies. Weapons you want to keep can be put away on the weapon stand in the base camp instead, they will not occupy the weapon slots and you can take them back from the stand. Spells can't be dropped, [right mouse click] hides them instead and you can take them back at any time.\nYou can carry more weapons than you have weapon slots for, but it will slow you down. With a slight overload you will not be able to run and dash, with more overload you will only be able to trot, and finally, you won`t be able to move at all. It will not affect movement speed in the base camp, but you won`t be able to go anywhere else until you reduce weight.\n[Magic]\nYou can use a limited number of attacking or defensive spells, all others will be unavailable. Each spell occupies one [magic slot], otherwise the principle is the same as for weapons.\nEach extra spell will reduce the magic recovery speed by 25%"
         },
         "massInv2": {
             "string": "[Armor]\nYou can take only one set of armor on a mission, the rest will remain in the base camp, except for protective suits and clothing. On a mission you can change into protective suits and clothing or back into the same armor any time.\nAmulets can be changed at any time"
@@ -6376,6 +7043,9 @@
         },
         "vault3": {
             "string": "Stuff"
+        },
+        "vaultexpl": {
+            "string": "Explosives"
         },
         "mass": {
             "string": "Item weight"
@@ -6617,7 +7287,9 @@
         },
         "zoom100": {
             "string": "Zoom 100%",
-            "description": "Enabling this option will set the zoom to 100% at the beginning of the game. If left disabled, the scale will be set to fit the entire room on the screen.\nEnable this option if your monitor has a resolution of FullHD (1920x1080) or more.\nFor lower resolution, disabling this option is recommended for reducing the load on the processor and improving performance.\t\nYou can always change zoom in game using the @1 key. And if a room does not fit the entire screen, you can move the camera while holding @2"
+            "description": "Enabling this option will set the zoom to 100% at the beginning of the game. If left disabled, the scale will be set to fit the entire room on the screen.\nEnable this option if your monitor has a resolution of FullHD (1920x1080) or more.\nFor lower resolution, disabling this option is recommended for reducing the load on the processor and improving performance.\t\nYou can always change zoom in game using the @1 key. And if a room does not fit the entire screen, you can move the camera while holding @2",
+            "s1": "keyZoom",
+            "s2": "keyLook"
         },
         "quake": {
             "string": "Camera shaking",

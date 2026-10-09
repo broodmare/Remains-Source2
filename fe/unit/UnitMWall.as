@@ -18,7 +18,8 @@ package fe.unit {
 			else id = cid
 			
 			mat = 7;
-			vis = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismwall") as MovieClip;
+			var vClass:Class = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismwall");
+			vis = new vClass() as MovieClip;
 			getXmlParam();
 			vulnerabilities.setResist(Resistances.DAM_DEATH, 1);
 			begvulner.setResist(Resistances.DAM_DEATH, 1);

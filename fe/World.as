@@ -60,7 +60,6 @@ package fe {
 		public var pers:Pers;									// Player stats
 		public var invent:Inventory;							// Player inventory
 		public var vault:Inventory;								// Global storage for the player
-		public var favorites:Favorites;							// Inventory hotkeys
 		public var gui:GUI;										// GUI
 		public var grafon:Grafon;								// Renderer
 		public var pip:PipBuck;									// Pipbuck (Menus)
@@ -529,9 +528,10 @@ package fe {
 			gui.gg = gg;
 
 			// [Create inventory]
-			gg.attach();
-			invent = gg.invent;
+			invent = new Inventory();
+			vault = new Inventory();
 			stand = new Stand(vstand, invent);
+			gg.attach(ng ? null : data.invent);
 			
 			time___metr('Character');
 			
@@ -623,8 +623,8 @@ package fe {
 			gui.gg = gg;
 			
 			// Create inventory and load saved inventory
-			gg.attach();
-			invent.loadInventory(data);
+			invent = new Inventory();
+			vault = new Inventory();
 			
 			if (stand) {
 				stand.inv = invent;
@@ -632,6 +632,8 @@ package fe {
 			else {
 				stand = new Stand(vstand, invent);
 			}
+			
+			gg.attach(data.invent);
 			
 			// [Autosave cell number]
 			if (data.n != null) {
@@ -1145,7 +1147,7 @@ package fe {
 			var now:Date = new Date();
 			data.game = game.save();
 			data.pers = pers.save();
-			data.invent = invent.getAllItems();
+			data.invent = gg.itemInteraction.save();
 			data.app = app.save();
 			data.date = now.time;
 			data.n = autoSaveN;

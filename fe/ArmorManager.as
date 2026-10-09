@@ -13,6 +13,14 @@ package fe {
 		private static var _armorData:Object;			// An object containing the JSON data of all armor sets
 		private static var _armors:Vector.<Armor>;		// Vector that stores a contigious collection of <Armor> references for fast iteration
 		private static var _armorMap:Dictionary;		// Dictionary to map each armor.id to a reference to the Armor (Key-Pair)
+		
+		// Original resistance names used in the armor data mapped to their damage types
+		private static const RESIST_KEYS:Object = {
+			bul: Resistances.DAM_PIERCE,	blade: Resistances.DAM_CUT,		phis: Resistances.DAM_BLUNT,	fire: Resistances.DAM_BURN,
+			expl: Resistances.DAM_EXPLOSION,	laser: Resistances.DAM_LASER,	plasma: Resistances.DAM_PLASMA,	venom: Resistances.DAM_VENOM,
+			spark: Resistances.DAM_ELECTRIC,	acid: Resistances.DAM_ACID,		cryo: Resistances.DAM_COLD,		fang: Resistances.DAM_BITE,
+			necro: Resistances.DAM_DEATH
+		};
 
 		// Constructor
 		public function ArmorManager() {
@@ -31,6 +39,25 @@ package fe {
 
 			// Load the data for all armor sets into memory
 			_armorData = loader.syncLoad(_armorPath);
+			
+			// Create a default copy of every armor set (used for lists of all armor, eg. the weapon stand)
+			for (var id:String in _armorData) {
+				var armor:Armor = cloneArmor(id);
+				_armors.push(armor);
+				_armorMap[id] = armor;
+			}
+			
+			// Ties are sorted by ID, the order of the JSON data isn't kept so the order would change between sessions otherwise
+			_armors.sort(function(a:Armor, b:Armor):int {
+				if (a.sort != b.sort) {
+					return a.sort - b.sort;
+				}
+				return (a.id < b.id) ? -1 : ((a.id > b.id) ? 1 : 0);
+			});
+		}
+		
+		public function hasArmor(id:String):Boolean {
+			return id != null && _armorData[id] != null;
 		}
 
 		public function armorData(id:String):Object {
@@ -41,12 +68,9 @@ package fe {
 			return {};
 		}
 		
+		// The default copy of an armor set, use cloneArmor() to get one that can be used
 		public function armor(id:String):Armor {
-			if (id in _armors) {
-				return _armorData[id];
-			}
-
-			return null;
+			return _armorMap[id] as Armor;
 		}
 
 		// Returns an array of references to ALL armor sets
@@ -54,14 +78,16 @@ package fe {
 			return _armors;
 		}
 
-		public function cloneArmor(id:String):Armor {
-			
+		// Create a new armor set, a level of -1 means it's a blueprint that hasn't been crafted yet
+		public function cloneArmor(id:String, lvl:int = 0):Armor {
 			var data:Object = _armorData[id];
-			var armor:Armor = ArmorFactory.createArmor(data);
-
+			if (data == null) {
+				trace("ArmorManager.as/cloneArmor() - Error: Unknown armor: \"" + id + "\"");
+				return null;
+			}
 			
-
-			// TODO: This won't work as-is because armors are always initialized at lvl 0 
+			var armor:Armor = ArmorFactory.createArmor(data);
+			armor.lvl = lvl;
 			setArmorLevel(armor);
 
 			return armor;
@@ -77,14 +103,20 @@ package fe {
 				armor.nazv += " - " + armor.lvl;
 			}
 
-			// Retrieve the level-specific data for the armor set
-			var lvlData:Object = _armorData[armor.id].upd[armor.lvl];
+			// Retrieve the level-specific data for the armor set (blueprints use the first level)
+			var lvlData:Object = _armorData[armor.id].upd[Math.max(armor.lvl, 0)];
 			
 			// Create the armor's resistance values
 			armor.resistances.importResistances(lvlData);
+			
+			for (var key:String in RESIST_KEYS) {
+				if (key in lvlData) {
+					armor.resistances.setResist(RESIST_KEYS[key], lvlData[key]);
+				}
+			}
 
 			// If this is armor (not an amulet) make it weak to pink cloud
-			if (armor.tip == 1) {
+			if (armor.tip == Armor.TYPE_ARMOR) {
 				armor.resistances.changeResist(Resistances.DAM_PINKCLOUD, -0.50);
 			}
 
@@ -198,8 +230,10 @@ package fe {
 		}
 
 		public static function upgradeComponentsNeeded(armor:Armor):int {
-			if (armor.lvl + 1 < armor.maxlvl) {
-				return _armorData[armor.id].upd[armor.lvl + 1].kol;
+			var upgrades:Array = _armorData[armor.id].upd;
+			
+			if (armor.lvl + 1 < upgrades.length) {
+				return upgrades[armor.lvl + 1].kol;
 			}
 			
 			return 0;

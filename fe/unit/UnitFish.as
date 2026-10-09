@@ -27,7 +27,8 @@ package fe.unit {
 			}
 
 			id = 'fish' + tr;
-			vis = SymbolFactory.fetchSymbolClass("visualFish" + String(tr)) || SymbolFactory.fetchSymbolClass("visualFish1") as MovieClip;
+			var vClass:Class = SymbolFactory.fetchSymbolClass("visualFish" + String(tr)) || SymbolFactory.fetchSymbolClass("visualFish1");
+			vis = new vClass() as MovieClip;
 			vis.osn.gotoAndStop('stay');
 			getXmlParam();
 			maxSpeed += Math.random()*2-1;

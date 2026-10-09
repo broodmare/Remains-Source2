@@ -27,6 +27,7 @@ package fe.unit {
 		public var ctr:Ctr;				// Movement controller
 		public var pers:Pers;			// Player stats
 		public var invent:Inventory;	// Player inventory
+		public var itemInteraction:ItemInteraction;	// Using, taking and dropping inventory items
 		public var sats:Sats;			// Player SATS
 
 		//движение
@@ -140,7 +141,6 @@ package fe.unit {
 		public var currentAmul:Armor;
 		
 		// Moved from Invent
-		public var cItem:String			= "";	// Current item 
 		public var cWeaponId:String		= "";	// Current weapon equipped (ID)
 		public var cSpellId:String		= "";	// Current spell equipped (ID)
 		public var cArmorId:String		= "";	// Current armor equipped (ID)
@@ -291,9 +291,20 @@ package fe.unit {
 			}
 		}
 		
-		public function attach():void {
-			invent = new Inventory();
-			//invent.addAllSpells(); TODO: DISABLED FOR ITEM REWORK FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+		// Set up the player using the inventory created by the World, 'inventorySave' is the inventory's save data (null for a new game)
+		public function attach(inventorySave:Object = null):void {
+			invent = World.w.invent;
+			itemInteraction = new ItemInteraction(this, invent);
+			itemInteraction.load(inventorySave);
+			itemInteraction.addAllSpells();
+
+			// The player's equipment when the game was saved
+			cWeaponId	= invent.cWeaponId;
+			cArmorId	= invent.cArmorId;
+			cAmulId		= invent.cAmulId;
+			cSpellId	= invent.cSpellId;
+			prevArmor	= invent.prevArmor;
+			
 			pers = World.w.pers;
 			pers.gg = this;
 			
@@ -320,27 +331,23 @@ package fe.unit {
 			
 			// Create and assign player weapons
 			var wm:WeaponManager = WeaponManager.reference;
-			punchWeapon = wm.cloneWeapon("punch");
-			wm.setOwner(punchWeapon, this);
-
-			paintWeapon = wm.cloneWeapon("paint");
-			wm.setOwner(paintWeapon, this);
+			punchWeapon = wm.cloneWeapon("punch", this, WKick);
+			paintWeapon = wm.cloneWeapon("paint", this, WPaint);
 
 			childObjs = [currentWeapon, punchWeapon];
 			
-			/*
-			if (invent.fav[29]) {
-				throwWeapon=invent.weapons[invent.fav[29]];
+			// The explosive and spell in their favorites cells are used with their own keys
+			throwWeapon = invent.equipment.getWeapon(invent.favorites.fav[Favorites.CELL_THROW]);
+			if (throwWeapon) {
 				throwWeapon.setNull();
 				throwWeapon.setPers(this, pers);
 			}
 			
-			if (invent.fav[30]) {
-				magicWeapon=invent.weapons[invent.fav[30]];
+			magicWeapon = invent.equipment.getWeapon(invent.favorites.fav[Favorites.CELL_MAGIC]);
+			if (magicWeapon) {
 				magicWeapon.setNull();
 				magicWeapon.setPers(this, pers);
 			}
-			*/ // FAVORITES ARE COMMENTED OUT FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			
 			// Pets
 			pets = [];
@@ -386,7 +393,7 @@ package fe.unit {
 					currentPet = "";
 				}
 
-				//invent.nextItem(1); ???
+				itemInteraction.nextItem(1);
 				weaponLevit();
 			}
 			
@@ -572,7 +579,7 @@ package fe.unit {
 			t_nogas = 90;
 			vis.transform.colorTransform = cTransform;
 			
-			if (currentWeapon && currentWeapon.tip != "magic") {
+			if (currentWeapon && currentWeapon.tip != Weapon.TYPE_MAGIC) {
 				currentWeapon.vis.transform.colorTransform = cTransform;
 			}
 			
@@ -982,7 +989,7 @@ package fe.unit {
 			}
 			
 			if (Snd.actionCh != null && actionObj == null) {
-				Snd.actionCh.stop();
+				Snd.stopChannel(Snd.actionCh);
 				Snd.actionCh = null;
 			}
 
@@ -1036,7 +1043,7 @@ package fe.unit {
 				currentWeapon.is_shoot = false;
 			}
 
-			if (currentWeapon && currentWeapon.tip != "magic" && currentWeapon.vis && currentWeapon.vis.visible) aMagic = 50;
+			if (currentWeapon && currentWeapon.tip != Weapon.TYPE_MAGIC && currentWeapon.vis && currentWeapon.vis.visible) aMagic = 50;
 			else aMagic = 0;
 			
 			// [If there are active targets]
@@ -1080,7 +1087,8 @@ package fe.unit {
 			if (throwWeapon && currentWeapon != throwWeapon) {
 				throwWeapon.actions();
 				
-				if (throwWeapon.tip != "magic") {	// TODO: is this right? It looks like it should be != ???  I'm changing it from == to !=
+				// Only spells are visible (floating next to the player) while they aren't the current weapon, holstered explosives aren't drawn
+				if (throwWeapon.tip == Weapon.TYPE_MAGIC) {
 					throwWeapon.animate();
 				}
 			}
@@ -1088,7 +1096,7 @@ package fe.unit {
 			if (magicWeapon && currentWeapon != magicWeapon) {
 				magicWeapon.actions();
 				
-				if (magicWeapon.tip == "magic") {
+				if (magicWeapon.tip == Weapon.TYPE_MAGIC) {
 					magicWeapon.animate();
 				}
 			}
@@ -1429,12 +1437,10 @@ package fe.unit {
 			turnX = 0;
 			tykMat = 0;
 
-			/*
 			// [spells]
-			for each (var sp:Spell in invent.spells) {
+			for each (var sp:Spell in invent.equipment.spells) {
 				sp.step();
 			}
-			*/ // BROKEN SPELLS DURING ITEM REWORK FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			
 			t_replic--;
 		}
@@ -1978,7 +1984,7 @@ package fe.unit {
 					throwWeapon.attack();
 					spellDisact();
 					
-					if (throwWeapon.tip == "explosives") {
+					if (throwWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
 						ctr.keyGrenad=false;
 					}
 				}
@@ -1997,7 +2003,7 @@ package fe.unit {
 					magicWeapon.attack();
 					spellDisact();
 					
-					if (magicWeapon.tip == "explosives") {
+					if (magicWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
 						ctr.keyMagic=false;
 					}
 				}
@@ -2030,10 +2036,9 @@ package fe.unit {
 				}
 			}
 			
-			/*
 			for (var i:int = 1; i <= World.kolQS; i++) {
 				if (ctr["keySpell" + i]) {
-					if (invent.fav[World.kolHK * 2 + i] == null) {
+					if (invent.favorites.fav[World.kolHK * 2 + i] == null) {
                         ctr["keySpell" + i] = false;
                     }
 					else {
@@ -2041,7 +2046,7 @@ package fe.unit {
 							sats.clearAll();
 						}
                         
-						var sp:Spell = invent.spells[invent.fav[World.kolHK * 2 + i]];
+						var sp:Spell = invent.equipment.getSpell(invent.favorites.fav[World.kolHK * 2 + i]);
                         
 						if (sp) {
                             if (!sp.cast(World.w.celX, World.w.celY)) {
@@ -2058,7 +2063,6 @@ package fe.unit {
                     }
 				}
 			}
-			*/ // HOTKEYS WIP FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			
 			//[satellite] (Pets)
 			if (ctr.keyPet) { 
@@ -2164,7 +2168,7 @@ package fe.unit {
 					for (var i:int = 1; i <= World.kolHK; i++) {
 						if (ctr["keyWeapon" + String(i)]) {
 							ctr["keyWeapon" + String(i)] = false;
-							// invent.useFav(i + (ctr.keyRun ? World.kolHK : 0)); HOTKEY COMMENTED OUT FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+							itemInteraction.useFav(i + (ctr.keyRun ? World.kolHK : 0));
 						
 							if (visSel) {
 								World.w.gui.unshowSelector(0);
@@ -2189,33 +2193,31 @@ package fe.unit {
 					ctr.keyScrDown=ctr.keyScrUp = false;
 				}
 				
-				/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-				//вещи
+				// [Items]
 				if (ctr.keyItemNext) {
-					invent.nextItem(1);
+					itemInteraction.nextItem(1);
 					ctr.keyItemNext=ctr.keyItemPrev=false;
 				}
 				
 				if (ctr.keyItemPrev) {
-					invent.nextItem(-1);
+					itemInteraction.nextItem(-1);
 					ctr.keyItemNext=ctr.keyItemPrev=false;
 				}
 				
 				if (ctr.keyItem) {
-					invent.useItem();
+					itemInteraction.useItem();
 					ctr.keyItem=false;
 				}
 			
 				if (ctr.keyPot) {
-					invent.usePotion();
+					itemInteraction.usePotion();
 					ctr.keyPot=false;
 				}
 				
 				if (ctr.keyMana) {
-					invent.usePotion("mana");
+					itemInteraction.usePotion("mana");
 					ctr.keyMana=false;
 				}
-				*/
 			
 				if (ctr.keyArmor) {
 					armorAbil();
@@ -2473,7 +2475,7 @@ package fe.unit {
 				}
 				
 				if (stay && World.w.hardInv) {
-					// invent.damageItems(0, false); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					itemInteraction.damageItems(0, false);
 				}
 				
 				if (isPlav) {
@@ -3004,7 +3006,7 @@ package fe.unit {
 				
 				//повреждение инвентаря
 				if (!tt && World.w.hardInv && !World.w.alicorn) {
-					// invent.damageItems(dam); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					itemInteraction.damageItems(dam);
 				}
 			}
 			
@@ -3242,7 +3244,7 @@ package fe.unit {
 					weaponX = coordinates.X;
 				}
 				
-				if (tip == "cryo") {
+				if (tip == Weapon.TYPE_MELEE) {
 					weaponY = coordinates.Y - boundingBox.height * 0.40;
 				}
 				else {
@@ -3259,7 +3261,7 @@ package fe.unit {
 				super.setWeaponPos(tip);
 			}
 			
-			if (work == "change" && t_work > changeWeaponTime3 && tip != "magic") {
+			if (work == "change" && t_work > changeWeaponTime3 && tip != Weapon.TYPE_MAGIC) {
 					weaponX = coordinates.X;
 					weaponY = coordinates.Y - boundingBox.height * 0.50;
 			}
@@ -3313,7 +3315,7 @@ package fe.unit {
 			
 			if (nw is Weapon) {
 				if (nw.respect == Weapon.WEP_LOCKED || nw.alicorn && !World.w.alicorn) {
-					if (nw.tip == "magic") {
+					if (nw.tip == Weapon.TYPE_MAGIC) {
 						World.w.gui.infoText("disSpell",null,null,false);
 					}
 					else {
@@ -3326,7 +3328,7 @@ package fe.unit {
 					if (nw.respect == Weapon.WEP_INACTIVE) {
 						nw.respect = Weapon.WEP_ACTIVE;
 					}
-					// invent.useItem(nid); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					itemInteraction.useItem(nid);
 					return;
 				}
 				
@@ -3367,7 +3369,7 @@ package fe.unit {
 			
 			if (st == 1) {
 				if (currentWeapon) {
-					if (currentWeapon.tip != "magic" || newWeapon && newWeapon.tip == "magic") {
+					if (currentWeapon.tip != Weapon.TYPE_MAGIC || newWeapon && newWeapon.tip == Weapon.TYPE_MAGIC) {
 						currentWeapon.remVisual();
 					}
 				}				
@@ -3385,15 +3387,14 @@ package fe.unit {
 						currentWeapon.respect = Weapon.WEP_ACTIVE;
 					}
 
-					/*
-					if (currentWeapon.tip == "explosives" && invent.fav[29] == null) {
+					// [The last explosive or spell used is thrown/cast with their own keys if none are in the favorites]
+					if (currentWeapon.tip == Weapon.TYPE_EXPLOSIVES && invent.favorites.fav[Favorites.CELL_THROW] == null) {
 						throwWeapon = currentWeapon;
 					}
 
-					if (currentWeapon.tip == "magic" && invent.fav[30] == null) {
+					if (currentWeapon.tip == Weapon.TYPE_MAGIC && invent.favorites.fav[Favorites.CELL_MAGIC] == null) {
 						magicWeapon = currentWeapon;
 					}
-					*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 					
 					currentWeapon.addVisual();
 					currentWeapon.setNull();
@@ -3445,15 +3446,22 @@ package fe.unit {
 				return false;
 			}
 			
-			var tipArmor:int = 1;
+			var tipArmor:int = Armor.TYPE_ARMOR;
 			var clo:int = 0;
 			
-			if (invent.equipment.hasEquipment(nid)) {
-				tipArmor = invent.equipment.getArmor(nid).tip;
-				clo = invent.equipment.getArmor(nid).clo;
+			if (invent.equipment.hasArmor(nid)) {
+				var arm:Armor = invent.equipment.getArmor(nid);
+				tipArmor = arm.tip;
+				clo = arm.clo;
+				
+				// [Armor left on the weapon stand has to be taken back first]
+				if (arm.stored) {
+					World.w.gui.infoText("disArmor", null, null, false);
+					return false;
+				}
 			}
 
-			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == 1) {
+			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == Armor.TYPE_ARMOR) {
 				if (clo == 0 && nid != prevArmor) {
 					World.w.gui.infoText("noChArmor2", null, null, false);
 					return false;
@@ -3465,7 +3473,7 @@ package fe.unit {
 				nid = "";
 			}
 
-			if (tipArmor == 1) {		//броня
+			if (tipArmor == Armor.TYPE_ARMOR) {		//броня
 				if (currentArmor) {
 					currentArmor.active = false;
 					
@@ -3477,10 +3485,10 @@ package fe.unit {
 					currentArmor.abilActive = false;
 				}
 
-				if (nid == "" ||  currentArmor && currentArmor.id == invent.equipment.getArmor(nid).id) {
+				if (nid == "" ||  currentArmor && currentArmor.id == nid) {
 					currentArmor = null;
 				}
-				else if (invent.equipment.hasEquipment(nid)) {
+				else if (invent.equipment.hasArmor(nid)) {
 					if (invent.equipment.getArmor(nid).hp > 0) {
 						currentArmor = invent.equipment.getArmor(nid);
 					}
@@ -3509,12 +3517,12 @@ package fe.unit {
 				refreshVis();
 				isFly = false;
 			}
-			else if (tipArmor == 3) {	// Amulet
+			else if (tipArmor == Armor.TYPE_AMULET) {	// Amulet
 				if (currentAmul) {
 					currentAmul.active=false;
 				}
 
-				if (currentAmul && currentAmul.id == invent.equipment.getArmor(nid).id) {
+				if (currentAmul && currentAmul.id == nid) {
 					currentAmul = null;
 				}
 				else {
@@ -3648,12 +3656,11 @@ package fe.unit {
 
 			changeArmor("", true);
 			
-			var clone:Function = WeaponManager.reference.cloneWeapon;
-			invent.equipment.addWeapon(clone("a_melee"));
-			invent.equipment.addWeapon(clone("a_fire"));
-			invent.equipment.addWeapon(clone("a_energ"));
-			invent.equipment.addWeapon(clone("a_expl"));
-			invent.equipment.addWeapon(clone("a_magic"));
+			itemInteraction.addWeapon("a_melee");
+			itemInteraction.addWeapon("a_fire");
+			itemInteraction.addWeapon("a_energ");
+			itemInteraction.addWeapon("a_expl");
+			itemInteraction.addWeapon("a_magic");
 
 			uncallPet();
 			clearAddictions();
@@ -4160,8 +4167,16 @@ package fe.unit {
                                     vis.osn.gotoAndStop("polz");
                                     animState = "polz";
                                 }
-                              
-							    if (animState != "polz" && animState != "roll") {
+
+                                // Reversing direction can briefly enter the idle branch, which
+                                // switches the outer clip to "stay" without changing animState.
+                                // Treat the visual state as authoritative so crawling restarts
+                                // after that transition instead of sliding on a stopped frame.
+                                var movementAnimActive:Boolean =
+                                    (animState == "polz" && vis.osn.currentFrameLabel == "polz") ||
+                                    (animState == "roll" && vis.osn.currentFrameLabel == "roll");
+
+							    if (!movementAnimActive) {
                                     if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                         vis.osn.gotoAndStop("roll");
                                         animState = "roll";

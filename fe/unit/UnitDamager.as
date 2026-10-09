@@ -20,7 +20,7 @@ package fe.unit {
 	
 	public class UnitDamager extends Unit {
 
-		private var tr:int					= 0;
+		private var tr:String					= "0";	// [A number picks a weapon, otherwise it's a weapon ID]
 		private var weap:String;
 		
 		private var tipDamager:int			= 1;				// [1 - Guns, 2 Explosives]
@@ -63,7 +63,7 @@ package fe.unit {
 			noBox		= true;
 			
 			if (loadObj && loadObj.tr != null) {
-				tr = loadObj.tr;
+				tr = String(loadObj.tr);
 			}
 			
 			if (xml) {
@@ -72,7 +72,7 @@ package fe.unit {
 				}
 				
 				if (xml.@tr.length()) {
-					tr = xml.@tr;
+					tr = String(xml.@tr);
 				}
 			}
 			
@@ -109,36 +109,36 @@ package fe.unit {
 		
 		private function setWeapon():void {
 			if (tipDamager == 1) {
-				if (tr == 0) {
-					tr = Math.floor(Math.random() * 5 + 1);
+				if (tr == "0") {
+					tr = String(Math.floor(Math.random() * 5 + 1));
 				}
 				
-				if (tr == 1) {
+				if (tr == "1") {
 					weap = "lshot";
 				}
-				else if (tr == 2) {
+				else if (tr == "2") {
 					weap = "hunt";
 				}
-				else if (tr == 3) {
+				else if (tr == "3") {
 					weap = "assr";
 				}
-				else if (tr == 4) {
+				else if (tr == "4") {
 					weap = "dartgun";
 				}
-				else if (tr == 5) {
+				else if (tr == "5") {
 					weap = "flamer";
 				}
 				else {
-					weap = String(tr);
+					weap = tr;
 				}
 			}
 			
 			if (tipDamager == 2) {
-				if (tr == 0) {
+				if (tr == "0") {
 					weap = "hgren";
 				}
 				else {
-					weap = String(tr);
+					weap = tr;
 				}
 				
 				kolammo = 3;
@@ -153,10 +153,10 @@ package fe.unit {
 			}
 			
 			if (tipDamager == 1 || tipDamager == 2) {
-				currentWeapon = WeaponManager.reference.cloneWeapon(weap);
+				currentWeapon = WeaponManager.reference.cloneWeapon(weap, this);
 				
 				if (currentWeapon == null) {
-					WeaponManager.reference.cloneWeapon("lshot");
+					currentWeapon = WeaponManager.reference.cloneWeapon("lshot", this);
 				}
 				
 				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
@@ -287,7 +287,7 @@ package fe.unit {
 			if (tipDamager == 1) {
 				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, "frag", 1);
 				
-				if (kolammo > 0) {
+				if (kolammo > 0 && currentWeapon.ammo) {
 					LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.ammo.id, kolammo);
 				}
 			}

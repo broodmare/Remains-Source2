@@ -162,110 +162,97 @@ package fe.inter {
 				statHead.kol.text = localize("pip", "iv4");										// "Available"
 				statHead.cat.visible = false;
 				
-				for each(var b:InventoryItem in vendor.inventory) {
+				for each (var b:Item in vendor.stock) {
+					if (b.kol <= 0) {
+						continue;
+					}
 					
 					try {
-
-						data = ItemManager.reference.getItem(b.id);
-
-						// If it's a schematic, remove the first two characters of the string (Eg. "s_dartgun" -> "dartgun") and check if we already own the real item
-						if (data.tip == Item.L_SCHEME && inv.equipment.hasEquipment(data.id.substr(2))) {
-							// If we already own the real item, don't list the schematic
+						// [Schematics for weapons the player already has or schematics they already own]
+						if (b.tip == Item.L_SCHEME && (inv.equipment.hasWeapon(b.id.substr(2)) || inv.hasItem(b.id))) {
 							continue;
 						}
 						
-						// If it's a weapon and We already own the base weapon and unique variant, don't list it
-						if (data.tip == Item.L_WEAPON && (inv.equipment.hasEquipment(b.id) && inv.equipment.getWeapon(b.id).variant)) {
+						// Weapons and armor the player already has
+						if (b.tip == Item.L_WEAPON && inv.equipment.hasWeapon(b.id)) {
 							continue;
 						}
 						
-						// If it's an armor set and we already own it, don't list it
-						if (data.tip == Item.L_ARMOR && inv.equipment.hasEquipment(b.id)) {
+						if (b.tip == Item.L_ARMOR && inv.equipment.hasArmor(b.id)) {
 							continue;
 						}
 						
-						// If it's not a weapon and has no price, don't list it (What is this for???)
-						if (data.tip != Item.L_WEAPON && !("price" in data))  {
+						// Items without a price can't be sold
+						if (b.tip != Item.L_WEAPON && !("price" in b.data))  {
 							continue;
 						}
 						
 						// If it's an "Art" item or an implant we already have, don't list it
-						if ((data.tip == Item.L_ART || data.tip == Item.L_IMPL) && inv.hasItem(b.id)) {
+						if ((b.tip == Item.L_ART || b.tip == Item.L_IMPL) && inv.hasItem(b.id)) {
 							continue;
 						}
 						
 						// Character level or barter level too low
-						if (data.lvl > gg.pers.level || data.barter > gg.pers.barterLvl) {
+						if (b.lvl > gg.pers.level || b.barter > gg.pers.barterLvl) {
 							continue;
 						}
 						
 						// Haven't hit the required trigger
-						if (data.trig && World.w.game.triggers[data.trig] != 1) {
+						if (b.trig && World.w.game.triggers[b.trig] != 1) {
 							continue;
 						}
 						
-						// Item is hardinv and the world isn't (??)
-						if (data.hardinv && !World.w.hardInv) {
+						// [Only sold in limited inventory mode]
+						if (b.hardinv && !World.w.hardInv) {
 							continue;
 						}
 						
-						// ???
-						if (!checkCat(data.tip)) {
+						if (!checkCat(b.tip)) {
 							continue;
 						}
 						
-						var price:Number;
-						if ("com_price" in data) {
-							price = data.com_price * data.sost * data.multHP * data.pmult;
-						}
-						else {
-							price = data.price * data.sost * data.multHP * data.pmult;
-						}
-						
-						var mp:Number;
-						if ("price" in data && "sell" in data) {
-							mp = data.sell / data.price;
-						}
-						else {
-							mp = 0.10;
-						}
+						b.getPrice();
+						var mp:Number = b.getMultPrice();
 						
 						if (vendor.multPrice > mp) {
 							mp = vendor.multPrice;
 						}
 
 						var n:Object = {
-							tip:		data.tip,
-							id:			data.id,
-							nazv:		data.nazv,
-							sost:		data.sost * data.multHP,
-							price:		price,
+							tip:		b.tip,
+							id:			b.id,
+							rid:		b.id,
+							nazv:		b.nazv,
+							sost:		b.sost * b.multHP,
+							price:		b.price,
 							mp:			mp,
+							kol:		b.kol,
 							bou:		0,
-							sort:		localize("pip", data.tip),
-							barter: 	data.barter,
-							variant:	data.variant
+							sort:		LanguageManager.reference.hasText("pip", b.tip) ? localize("pip", b.tip) : b.tip,
+							barter: 	b.barter,
+							variant:	b.variant
 						};
 						
-						if (data.nocheap) {
+						if (b.nocheap) {
 							n.mp = 1;
 						}
 						
-						if (gg.invent.hasItem(b.id)) {
-							n.sost = gg.invent.getQuantity(b.id);
+						// [How many the player already has]
+						if (b.tip != Item.L_WEAPON && b.tip != Item.L_ARMOR) {
+							n.sost = inv.getQuantity(b.id);
 						}
 						
 						assArr[n.rid] = n;
-						n.wtip = data.wtip;
+						n.wtip = b.wtip;
 						
-						if (data.tip == "food" && data.ftip == 1) {
+						if (b.data.tip == Item.L_FOOD && b.data.ftip == 1) {
 							n.wtip = "drink";
 						}
 						
 						arr.push(n);
 					}
-					catch (err) {
-						trace("ERROR: (00:41)");
+					catch (err:Error) {
+						trace("ERROR: (00:41) " + err.message);
 					}
 				}
 				
@@ -295,6 +282,9 @@ package fe.inter {
 				statHead.cat.visible = false;
 				
 				for each (var item:InventoryItem in inv.getAllItems()) {
+					if (item.quantity <= 0 || !ItemManager.reference.hasItem(item.id)) {
+						continue;
+					}
 					
 					var data:Object = ItemManager.reference.getItem(item.id);
 					
@@ -306,20 +296,17 @@ package fe.inter {
 						var n:Object = {
 							tip:	data.tip,
 							id:		item.id,
-							nazv:	data.nazv,
-							kol:	data.kol,
+							rid:	item.id,
+							nazv:	Item.nameOf(item.id, data.tip),
+							kol:	item.quantity,
 							bou:	0,
 							sort:	"b"
 						};
 						
-						if (inv.equipment.hasEquipment(item.id)) {
-							n.nazv = Res.txt("w", item.id);
-						}
-						
 						n.price = data.sell;
 						n.wtip = data.tip;
 						
-						if (data.tip == "food" && data.ftip == 1) {
+						if (data.tip == Item.L_FOOD && data.ftip == 1) {
 							n.wtip = "drink";
 						}
 						
@@ -372,7 +359,7 @@ package fe.inter {
 					n = {
 						tip:		Item.L_INSTR,
 						id:			"owl",
-						nazv:		ItemManager.reference.getItem("owl").nazv,
+						nazv:		Item.nameOf("owl"),
 						hp:			World.w.pers.owlhp * World.w.pers.owlhpProc,
 						maxhp:		World.w.pers.owlhp,
 						price:		World.w.pers.owlhp * repOwl};
@@ -383,7 +370,7 @@ package fe.inter {
 				}
 				
 				for each (var w:Weapon in inv.equipment.weapons) {
-					if (w.tip != "internal" && w.tip != "explosives" && w.respect != Weapon.WEP_LOCKED && w.hp < w.maxhp) {
+					if (w.tip != Weapon.TYPE_INTERNAL && w.tip != Weapon.TYPE_EXPLOSIVES && w.respect != Weapon.WEP_LOCKED && w.hp < w.maxhp) {
 						n = {
 							tip:		Item.L_WEAPON,
 							id:			w.id,
@@ -401,7 +388,7 @@ package fe.inter {
 				}
 				
 				for each (var a:Armor in inv.equipment.armors) {
-					if (a.hp < a.maxhp && a.tip < 3) {
+					if (a.hp < a.maxhp && a.tip != Armor.TYPE_AMULET) {
 						n = {
 							tip:		Item.L_ARMOR,
 							id:			a.id,
@@ -654,12 +641,7 @@ package fe.inter {
 				item.price.text = Math.ceil(obj.price * (obj.maxhp - obj.hp) / obj.maxhp * vendor.multPrice * mp);
 				item.kol.text = "";
 				
-				if (obj.variant > 0) {
-					item.rid.text = obj.id + "^" + obj.variant;
-				}
-				else {
-					item.rid.text = obj.id;
-				}
+				item.rid.text = obj.id;
 			} 
 		
 			if (page2 == 4) {
@@ -734,20 +716,17 @@ package fe.inter {
 				return;
 			}
 			
-			if (buy.tip == Item.L_WEAPON && inv.equipment.hasEquipment(buy.id) && inv.equipment.getWeapon(buy.id).variant) {
+			if (buy.tip == Item.L_WEAPON && inv.equipment.hasWeapon(buy.id)) {
 				return;
 			}
 			
-			if (buy.tip == Item.L_ARMOR && inv.equipment.hasEquipment(buy.id)) {
+			if (buy.tip == Item.L_ARMOR && inv.equipment.hasArmor(buy.id)) {
 				return;
 			}
 			
-			if (buy.tip == Item.L_WEAPON && vendor.hasItem(buy.id)) {
-				//vendor.getItem(buy.id).checkAuto(true); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-			}
-			
-			if (buy.tip == Item.L_SPELL && vendor.hasItem(buy.id)) {
-				//vendor.getItem(buy.id).checkAuto(true); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			// [Warn the player if they can't carry it in limited inventory mode]
+			if ((buy.tip == Item.L_WEAPON || buy.tip == Item.L_SPELL) && vendor.getItem(buy.id)) {
+				vendor.getItem(buy.id).checkAuto(true);
 			}
 			
 			vis.butOk.visible = true;
@@ -771,7 +750,7 @@ package fe.inter {
 			}
 			
 			if (page2 == PAGE_SELL) {
-				vendor.buyTotal += buy.price * n;
+				vendor.sellTotal += buy.price * n;
 			}
 		}
 		
@@ -959,59 +938,55 @@ package fe.inter {
 				return;
 			}
 			
-			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-			for each(var item:Item in vendor.inventory) {
+			for each (var item:Item in vendor.stock) {
 				if (arr[item.id] && arr[item.id].bou > 0) {
 					item.bou = arr[item.id].bou;
-					// inv.take(buy, 1); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					gg.itemInteraction.take(item, 1);
 				}
 			}
 			
-			inv.decreaseQuantity("money", Math.ceil(vendor.buyTotal));
-			vendor.increaseMoney(Math.ceil(vendor.buyTotal));
-			vendor.buyTotal = 0;
-
-			*/
-
-			//inv.calcMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-			//inv.calcWeaponMass(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			var price:int = Math.ceil(vendor.buyTotal);
+			if (price > 0) {
+				inv.decreaseQuantity("money", price);
+				vendor.increaseMoney(price);
+			}
 			
+			vendor.buyTotal = 0;
+			ItemInteraction.calcMass(inv);
+			ItemInteraction.calcWeaponMass(inv);
+
 			// Refresh the PipBuck(?)
 			setStatus();
 		}
 		
-		public function sell(arr:Array):void {	// VENDORS NEED PROPER INVENTORIES FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+		public function sell(arr:Array):void {
 			// We're not at the base and the vendor doesn't have enough money to buy our goods
 			if (!inbase && Math.ceil(vendor.sellTotal) > vendor.money) {
 				World.w.gui.infoText("noSell");
 				return;
 			}
 			
-			/* FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
-			var data:Object;
 			for each (var item:InventoryItem in inv.getAllItems()) {
+				var obj:Object = arr[item.id];
 				
-				data = ItemManager.reference.getItem(item.id);
-				
-				if (arr[item.id] && arr[item.id].bou > 0) {
-					var buy:InventoryItem = vendor.buys2[item.id];
+				if (obj && obj.bou > 0) {
+					var n:int = Math.min(obj.bou, item.quantity);
 					
-					if (buy == null) {
-						buy = new InventoryItem(item.id, 0);
-						vendor.buys.push(buy);
-						vendor.buys2[item.id] = buy;
+					if (n > 0) {
+						vendor.addStock(item.id, n);
+						inv.decreaseQuantity(item.id, n);
 					}
-					
-					buy.quantity += arr[item.id].bou;
-					inv.decreaseQuantity(item.id, arr[item.id].bou);
 				}
 			}
 			
-			inv.increaseQuantity("money", Math.floor(vendor.sellTotal));
+			var price:int = Math.floor(vendor.sellTotal);
+			if (price > 0) {
+				inv.increaseQuantity("money", price);
+			}
+			
 			vendor.decreaseMoney(Math.ceil(vendor.sellTotal));
 			vendor.sellTotal = 0;
-
-			*/
+			ItemInteraction.calcMass(inv);
 
 			// Refresh the PipBuck(?)
 			setStatus();

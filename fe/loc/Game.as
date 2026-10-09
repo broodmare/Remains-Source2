@@ -67,6 +67,9 @@ package fe.loc {
 
 		public function save():Object {
 			var saveData:Object = {};
+			var currentTime:Date = new Date();
+			var elapsedTime:Number = currentTime.getTime() - dBeg.getTime();
+
 			saveData.dif = globalDif;
 			saveData.land = curLandId;
 			
@@ -76,18 +79,11 @@ package fe.loc {
 			
 			// Game data storage cloning
 			saveData.lands = saveCollection(lands, "save");
-		  //saveData.probs -- Not needed, challenge areas aren't persistant
 			saveData.notes = cloneCollection(notes);
 			saveData.vendors = saveCollection(vendorManager.vendors, "save");
 			saveData.npcs = saveCollection(npcs, "save");
 			saveData.triggers = cloneCollection(triggers);
-		  //saveData.limits -- ????
 			saveData.quests = saveCollection(quests, "save");
-		  //saveData.names -- Not needed, names are always re-initialized to the same thing
-			
-			// Calculate and save time
-			var currentTime:Date = new Date();
-			var elapsedTime:Number = currentTime.getTime() - dBeg.getTime();
 			saveData.t_save = t_save + elapsedTime;
 			
 			return saveData;
@@ -179,7 +175,7 @@ package fe.loc {
 
 			var npcList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Npcs", "npc");
 			var npc:Npc;
-			var loadNPC:Npc;
+			var loadNPC:Object;		// The NPC's save data
 			for each(var xl in npcList) {
 				loadNPC = null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) {

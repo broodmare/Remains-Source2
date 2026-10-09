@@ -8,9 +8,12 @@ package fe.weapon {
 
 	public class WMagic extends Weapon {
 
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
 		public function WMagic() {
 			super();
-			
+		}
+		
+		public override function init(data:Object):void {
 			if (prep) {
 				animated = false;
 			}

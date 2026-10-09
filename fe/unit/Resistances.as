@@ -26,9 +26,53 @@ package fe.unit {
 		public static const DAM_INTERNAL:String		= "DAM_INTERNAL";
 		public static const DAM_HARMONY:String		= "DAM_HARMONY";
 
+		// Legacy integer damage type IDs (still used by units.xml, weapons.json, etc.) mapped to their new string IDs
+		private static const LEGACY_DAMAGE_TYPES:Object = {
+			0: DAM_PIERCE,		1: DAM_CUT,			2: DAM_BLUNT,		3: DAM_BURN,		4: DAM_EXPLOSION,
+			5: DAM_LASER,		6: DAM_PLASMA,		7: DAM_VENOM,		8: DAM_EMP,			9: DAM_ELECTRIC,
+			10: DAM_ACID,		11: DAM_COLD,		12: DAM_POISON,		13: DAM_BLEED,		14: DAM_BITE,
+			15: DAM_BALEFIRE,	16: DAM_DEATH,		17: DAM_PSYCHIC,	18: DAM_ASTRO,		19: DAM_PINKCLOUD,
+			100: DAM_INTERNAL,	101: DAM_HARMONY
+		};
+		
+		// Damage types that wear down a unit's armor (formerly 'tip <= D_BALE' except EMP, poison and bleeding, plus astro)
+		private static const ARMOR_DAMAGE_TYPES:Object = {
+			DAM_PIERCE: true,	DAM_CUT: true,		DAM_BLUNT: true,	DAM_BURN: true,		DAM_EXPLOSION: true,
+			DAM_LASER: true,	DAM_PLASMA: true,	DAM_VENOM: true,	DAM_ELECTRIC: true,	DAM_ACID: true,
+			DAM_COLD: true,		DAM_BITE: true,		DAM_BALEFIRE: true,	DAM_ASTRO: true
+		};
+		
+		public static function damagesArmor(type:String):Boolean {
+			return ARMOR_DAMAGE_TYPES[type] == true;
+		}
+		
 		// Resistances
 		private var _typeResist:Object = {};		// Specific damage type resistances
 		private var _resistTypes:Array;            // Array to store resistance type names
+		
+		// Converts a damage type from data into its string ID. Accepts either a string ID (eg. "DAM_LASER") or a legacy integer ID (eg. 5 or "5").
+		// Returns 'fallback' if the value is empty or unknown.
+		public static function parseDamageType(value:*, fallback:String = DAM_PIERCE):String {
+			if (value == null) {
+				return fallback;
+			}
+			
+			var s:String = String(value);
+			if (s == "") {
+				return fallback;
+			}
+			
+			if (s in LEGACY_DAMAGE_TYPES) {
+				return LEGACY_DAMAGE_TYPES[s];
+			}
+			
+			if (s.indexOf("DAM_") == 0) {
+				return s;
+			}
+			
+			trace("Resistances.as/parseDamageType() - Unknown damage type: \"" + s + "\"");
+			return fallback;
+		}
 
 		// Constructor
 		public function Resistances() {

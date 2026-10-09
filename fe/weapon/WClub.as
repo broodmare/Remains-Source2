@@ -30,6 +30,7 @@ package fe.weapon  {
 		private var del:Object				= {x:0, y:0};
 		private var lasM:Boolean			= false;
 		private var mtip:int				= 0;		// [Type of bladed weapon]
+		private var crack:int				= 0;		// [Can break open containers, eg. crowbar]
 		
 		private var powerMult:Number		= 1.00;
 		private var curDam:Number			= 0.00;
@@ -59,26 +60,30 @@ package fe.weapon  {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		// Constructor
-		public function WClub(w:Weapon, data:Object) {
-			// Get all the properties from an already made default weapon and use them
-			WeaponCopier.copyFrom(w, this);
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		public function WClub() {
+			super();
+		}
 
+		public override function init(data:Object):void {
 			if ("vis_lasm" in data) {
 				lasM = data.vis_lasm;
 			}
 
-			if (lasM) {
-                visvzz = new MovieClip()
-            }
-			else {
+			if (!lasM) {
 				visvzz = SymbolFactory.createInstance("visVzz") as MovieClip;
 			}
 
+			if (visvzz == null) {
+                visvzz = new MovieClip();
+            }
+			
 			visvzz.visible = false;
 			visvzz.stop();
 			
-			vis.stop(); // Why is this being called during initialization?
+			if (vis) {
+				vis.stop();
+			}
 			
 			speed = 15;
 			satsMelee = true;
@@ -107,6 +112,10 @@ package fe.weapon  {
 				combinat = data.char_combo;
 			}
 			
+			if ("crack" in data) {
+				crack = data.crack;
+			}
+			
 			var n1:Number = dlina / 100;
 			visvzz.scaleX = n1;
 			visvzz.scaleY = n1;
@@ -118,9 +127,25 @@ package fe.weapon  {
 			
 			kolvzz = Math.round((dlina - mindlina) / stepdlina);
 			vzz = [];
-			//storona = owner.storona;
 			
-			var v:Vector2 = new Vector2( (coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina) ); 
+			for (var i:int = 0; i <= kolvzz; i++) {
+				vzz[i] = {X:0, Y:0};
+			}
+			
+			checkLine = true;
+		}
+		
+		// The weapon's bullet needs to know its owner, so it's created once the owner is set
+		public override function setOwner(own:Unit):void {
+			if (own == null || own == owner) {
+				super.setOwner(own);
+				return;
+			}
+			
+			super.setOwner(own);
+			storona = own.storona;
+			
+			var v:Vector2 = new Vector2( (coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			b.tipBullet = 1;
@@ -131,23 +156,14 @@ package fe.weapon  {
 			b.probiv = 0.75;
 			b.velocity.set(0, 0);
 			b.vel = 0;
-			
-			if ("crack" in data) {
-				b.crack = data.crack;
-			}
-			
-			checkLine = true;
+			b.crack = crack;
 			b.checkLine = checkLine;
+			
 			rot = -HALF_PI - (SIXTH_PI) * storona;
 			cos0 = Math.cos(rot);
 			sin0 = Math.sin(rot);
 			
-			for (var i:int = 0; i <= kolvzz; i++) {
-				var nx:Number = coordinates.X + cos2 * (mindlina + i * stepdlina) + anim * storona * (mindlina + i * stepdlina);
-				var ny:Number = coordinates.Y + sin2 * (mindlina + i * stepdlina);
-				vzz[i] = {X:0, Y:0};
-			}
-			
+			// [Every 4th blow is reinforced] for weapons that can't be charged up, 'auto' depends on the owner
 			if (!auto && !powerfull) {
 				combinat = true;
 			}
@@ -464,16 +480,19 @@ package fe.weapon  {
 			
 			if (sndPrep != "") {
 				if (!is_pattack && is_attack) {
+					if (sndCh != null) {
+						Snd.stopChannel(sndCh);
+					}
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, t_prep * 30);
 				}	//звук раскрутки
 				
 				if (is_attack && sndCh != null && sndCh.position > snd_t_prep2 - 300) {
-					sndCh.stop();
+					Snd.stopChannel(sndCh);
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep1 + 200);
 				}//	звук продолжения
 				
 				if (is_pattack && !is_attack && t_prep > 0 && sndCh != null && sndCh.position < snd_t_prep2 - 400)	{
-					sndCh.stop();
+					Snd.stopChannel(sndCh);
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep2 + 100);
 				}	//звук остановки
 			}
@@ -532,7 +551,7 @@ package fe.weapon  {
 			b.loc		= owner.loc;
 			b.knockx	= storona;
 			curDam		= resultDamage(damage,sk);
-			b.damage	= curDam * ammo.damageMultiplier;
+			b.damage	= curDam * (ammo ? ammo.damageMultiplier : 1);
 			b.otbros	= otbros*otbrosMult;
 			b.dist		= 0;
 			b.tilehit	= false;
@@ -575,7 +594,7 @@ package fe.weapon  {
 			
 			if (magazineCapacity > 0 && magazineRounds > 0) {
 				magazineRounds -= rashod;
-				if (owner.player && loc.train && ammo.id != "recharg") {
+				if (owner.player && loc.train && usesInventoryAmmo()) {
 					World.w.invent.increaseQuantity(ammo.id, rashod);
 				}
 			}
@@ -633,7 +652,7 @@ package fe.weapon  {
 		public override function crash(dam:int=1):void {
 			if (owner.player) {
 				if (!loc.train && !World.w.alicorn) {
-					hp -= dam + ammo.increasedWear;
+					hp -= dam + (ammo ? ammo.increasedWear : 0);
 				}
 				
 				if (hp < 0) {

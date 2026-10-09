@@ -650,10 +650,10 @@ package fe.unit {
 				if (node.@armorhp.length()) armor_hp=armor_maxhp=node.@armorhp*hpmult;
 				else armor_hp=armor_maxhp=hp;
 				
-				if (node.@krep.length()) weaponKrep=node.@krep;			//способ держать оружие, 0 - телекинез // fixedToOwner
+				if (node.@krep.length()) weaponKrep=(int(node.@krep) != 0);			//способ держать оружие, 0 - телекинез // fixedToOwner
 				if (node.@dexter.length()) dexter=node.@dexter;			//уклонение
 				if (node.@damage.length()) dam=node.@damage;			//собственный урон
-				if (node.@tipdam.length()) tipDamage=node.@tipdam;		//тип собственного урона
+				if (node.@tipdam.length()) tipDamage=Resistances.parseDamageType(node.@tipdam);		//тип собственного урона
 				if (node.@skill.length()) weaponSkill=node.@skill;		//владение оружием
 				if (node.@raddamage.length()) radDamage=node.@raddamage;//собственный урон радиацией
 				if (node.@vision.length()) vision=node.@vision;			//зрение
@@ -811,7 +811,7 @@ package fe.unit {
 				
 				if (n.@ch.length() == 0 || isrnd(n.@ch)) {
 					trace("Unit.as/getXmlWeapon() - Returning weapon ID: " + n.@id);
-					return WeaponManager.reference.cloneWeapon(n.@id);
+					return WeaponManager.reference.cloneWeapon(n.@id, this);
 				}
 			}
 
@@ -958,7 +958,7 @@ package fe.unit {
 			armor_hp	= armor_maxhp = armor_hp * (1 + level * 0.1);
 			observ		+= Math.min(nlevel * 0.6, 15) * (0.9 + Math.random() * 0.2);
 			
-			if (currentWeapon && currentWeapon.tip == "internal") {
+			if (currentWeapon && currentWeapon.tip == Weapon.TYPE_INTERNAL) {
 				currentWeapon.damage *= (1 + level * 0.07);
 			}
 			else {
@@ -1098,6 +1098,11 @@ package fe.unit {
 
 		}
 
+		// [Do not auto-trigger this trap while the player is interacting with it]
+		protected function isPlayerInteractingWithThis():Boolean {
+			return World.w.gg != null && World.w.gg.actionObj != null && World.w.gg.actionObj.owner == this;
+		}
+
 		public override function step():void {
 			if (disabled || trigDis) {
 				return;
@@ -1175,8 +1180,7 @@ package fe.unit {
 				animate();
 			}
 
-			// TODO: Replace with boundingBox check
-			onCursor = (isVis && !disabled && sost < 4 && boundingBox.intersectsPoint(World.w.celX, World.w.celY)) ? prior : 0;
+			onCursor =(isVis && !disabled && sost < 4 && boundingBox.intersectsPoint(World.w.celX, World.w.celY)) ? prior : 0;
 
 			for (i in childObjs) {
 				if (childObjs[i]) { // Here is where it's called as a string.
@@ -1423,8 +1427,8 @@ package fe.unit {
 					}
 					
 					if (player && isUp && stay && !isSit) {
-						var x:Number = boundingBox.left / tileX;
-						var y:Number = boundingBox.top / tileY;
+						var x:int = int(boundingBox.left / tileX);
+						var y:int = int(boundingBox.top / tileY);
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, y + 1);
 						
@@ -1496,8 +1500,8 @@ package fe.unit {
 					}
 					
 					if (player && isUp && stay && !isSit) {
-						var x:Number = boundingBox.right / tileX;
-						var y:Number = boundingBox.top / tileY;
+						var x:int = int(boundingBox.right / tileX);
+						var y:int = int(boundingBox.top / tileY);
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, (y + 1));
 						
@@ -1604,7 +1608,7 @@ package fe.unit {
 					if (mater) {
 						// Collision check below unit
 						for (i = int(boundingBox.left/tileX); i<=int(boundingBox.right/tileX); i++) {
-							t = loc.getTile(i, int(boundingBox.bottom + velocity.Y / div) / tileY);
+							t = loc.getTile(i, int((boundingBox.bottom + velocity.Y / div) / tileY));
 							
 							if (collisionTile(t, 0, velocity.Y / div)) {
 								if (-(boundingBox.left - t.boundingBox.left) / boundingBox.width < shX1) {
@@ -2955,7 +2959,7 @@ package fe.unit {
 			var mess:String;
 			
 			// [Damage to armor]
-			if (!player && armor_hp > 0 && (shithp <= 0 || dam > shitArmor) && (armor > 0 || marmor > 0) && (tip <= Resistances.DAM_BALEFIRE && tip != Resistances.DAM_EMP && tip != Resistances.DAM_POISON && tip != Resistances.DAM_BLEED || tip == Resistances.DAM_ASTRO)) {
+			if (!player && armor_hp > 0 && (shithp <= 0 || dam > shitArmor) && (armor > 0 || marmor > 0) && Resistances.damagesArmor(tip)) {
 				var damarm:Number = dam;
 				
 				if (shithp > 0) {
@@ -3206,7 +3210,7 @@ package fe.unit {
 						}
 					}
 					
-					if (bul.weap.ammo.incendiaryDamage) {
+					if (bul.weap.ammo && bul.weap.ammo.incendiaryDamage) {
 						addEffect('burning', bul.weap.ammo.incendiaryDamage);
 						mess = Res.txt('e', 'burning');
 					}
@@ -3302,7 +3306,7 @@ package fe.unit {
 					else if (World.w.showHit == 2) {
 						hitSumm += dam;
 						
-						if (hitPart == null) {
+						if (hitPart == null || hitPart.vis == null || hitPart.vis.numb == null) {
 							hitPart = numbEmit.cast(loc, castX, castY + visDamDY, {txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit == 1 || isCrit == 3) ? 1.6 : 1)});
 						}
 						else {
@@ -3491,7 +3495,7 @@ package fe.unit {
 				un.velocity.Y = (-un.velocity.Y + ndy) * un.knocked + ndy;
 			}
 			
-			if (un.currentWeapon && un.currentWeapon.tip == "cryo") {
+			if (un.currentWeapon && un.currentWeapon.tip == Weapon.TYPE_MELEE) {
 				damage((un.currentWeapon.damage*0.5+un.dam)*sila*mult, un.currentWeapon.tipDamage)
 			}
 			else {

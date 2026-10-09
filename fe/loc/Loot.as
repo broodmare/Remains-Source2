@@ -10,12 +10,11 @@ package fe.loc {
 	import fe.serv.Interact;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
-	import fe.unit.InventoryItem;
 	
 	// This is the object you see in-game when an item is dropped
 	public class Loot extends Obj {
 		
-		public var item:InventoryItem;
+		public var item:Item;
 
 		private const osnRad:int = 50;
 		private const actRad:int = 250;
@@ -41,9 +40,8 @@ package fe.loc {
 		private static var tileY:int = Tile.tileY;
 
 		// Constructor
-		public function Loot(nloc:Location, nitem:InventoryItem, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
+		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
 			
-			trace("Loot.as/Loot() - Creating new loot with item ID: " + nitem.id + ", kol: " + nitem.quantity);
 			loc = nloc;
 			item = nitem;
 			
@@ -69,28 +67,34 @@ package fe.loc {
 				ny = (loc.spaceY - 1) * tileY;
 			}
 			
-			var data:Object = ItemManager.reference.getItem(item.id)
+			var data:Object = item.data;
 
 			massa = 0.10;
-			nazv = data.nazv;
+			nazv = item.nazv;
 			boundingBox.width = 30;
 			boundingBox.height = 20;
 
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
+			
 			// Determine the appropriate sprite for the item
-			if (data.tip == Item.L_WEAPON) {
-				if ("vis" in data && "loot" in data) {
+			if (item.tip == Item.L_WEAPON) {
+				if ("vis_loot" in data) {
 					vis = SymbolFactory.createInstance("visualItem") as MovieClip;
-					if ("vis_loot" in data) {
-						try {
-							vis.gotoAndStop(data.vis_loot);
-						}
-						catch (err) {
-							trace("ERROR: (00:25)");
-						}
+					try {
+						vis.gotoAndStop(data.vis_loot);
+					}
+					catch (err:Error) {
+						trace("ERROR: (00:25)");
 					}
 				}
 				else {
-					vClass = SymbolFactory.fetchSymbolClass("vis" + item.id) || SymbolFactory.fetchSymbolClass("visp10mm") as Class;
+					// Unique variants use their own sprite if they have one, eg. "vismont_1"
+					var baseId:String = item.id.split("^")[0];
+					if (item.variant) {
+						vClass = fetch("vis" + baseId + "_" + item.id.split("^")[1]);
+					}
+					vClass = vClass || fetch("vis" + baseId) || fetch("visp10mm");
+					
 					var infIco1:MovieClip = new vClass();
 					infIco1.stop();
 					infIco1.x = -infIco1.getRect(infIco1).left - infIco1.width * 0.50;
@@ -100,16 +104,16 @@ package fe.loc {
 					dery = 10;
 				}
 				
-				if (data.variant) {
+				if (item.variant) {
 					shine();
 				}
 				
-				if ("fall" in data) {
-					sndFall = data.fall;
+				if ("snd_fall" in data) {
+					sndFall = data.snd_fall;
 				}
 			}
-			else if (data.tip == Item.L_EXPL) {
-				vClass = SymbolFactory.fetchSymbolClass("vis" + item.id) || SymbolFactory.fetchSymbolClass("visualAmmo") as Class;
+			else if (item.tip == Item.L_EXPL) {
+				vClass = fetch("vis" + item.id) || fetch("visualAmmo");
 				var infIco2:MovieClip = new vClass();
 				infIco2.stop();
 				infIco2.x = -infIco2.getRect(infIco2).left - infIco2.width * 0.50;
@@ -120,8 +124,8 @@ package fe.loc {
 					sndFall = data.fall;
 				}
 			}
-			else if (data.tip == Item.L_AMMO) {
-				vClass = SymbolFactory.fetchSymbolClass("visualAmmo") as Class;
+			else if (item.tip == Item.L_AMMO) {
+				vClass = fetch("visualAmmo");
 				vis = new vClass();
 				try {
 					if ("base" in data) {
@@ -140,32 +144,32 @@ package fe.loc {
 				}
 			}
 			else {
-				vClass = SymbolFactory.fetchSymbolClass("visualItem") as Class;
+				vClass = fetch("visualItem");
 				vis = new vClass();
 				
 				try {
 					vis.gotoAndStop(item.id);
 				}
 				catch(err) {
-					if (data.tip == Item.L_COMPA) vis.gotoAndStop("compa");
-					else if (data.tip == Item.L_COMPW) vis.gotoAndStop("compw");
-					else if (data.tip == Item.L_COMPE) vis.gotoAndStop("compe");
-					else if (data.tip == Item.L_COMPP) vis.gotoAndStop("compp");
-					else if (data.tip == Item.L_KEY) vis.gotoAndStop("key");
-					else if (data.tip == Item.L_PAINT) vis.gotoAndStop("paint");
-					else if (data.tip == Item.L_FOOD) vis.gotoAndStop("food");
+					if (item.tip == Item.L_COMPA) vis.gotoAndStop("compa");
+					else if (item.tip == Item.L_COMPW) vis.gotoAndStop("compw");
+					else if (item.tip == Item.L_COMPE) vis.gotoAndStop("compe");
+					else if (item.tip == Item.L_COMPP) vis.gotoAndStop("compp");
+					else if (item.tip == Item.L_KEY) vis.gotoAndStop("key");
+					else if (item.tip == Item.L_PAINT) vis.gotoAndStop("paint");
+					else if (item.tip == Item.L_FOOD) vis.gotoAndStop("food");
 					else  {
 						trace("ERROR: (00:53) - ERROR: Could not load sprite for item: \"" + item.id + "\", using generic!");
 						vis.gotoAndStop(1);
 					}
 				}
 				
-				if (data.tip == Item.L_SCHEME) {
+				if (item.tip == Item.L_SCHEME) {
 					sndFall = "fall_paper";
 					vis.gotoAndStop("scheme");
 				}
 				
-				if (data.tip == Item.L_BOOK) {
+				if (item.tip == Item.L_BOOK) {
 					nazv = "\"" + nazv + "\"";
 					sndFall = "fall_paper";
 				}
@@ -203,13 +207,13 @@ package fe.loc {
 			inter.update();
 			levitPoss = true;
 			loc.addObj(this);
-			// auto2 = item.checkAuto(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			auto2 = item.checkAuto();
 		}
 		
 		public override function addVisual():void {
 			super.addVisual();
 			if (vis && cTransform) {
-				if (ItemManager.reference.getItem(item.id).tip != "art") {
+				if (item.tip != Item.L_ART) {
 					vis.transform.colorTransform=cTransform;
 				}
 			}
@@ -225,7 +229,7 @@ package fe.loc {
 
 		// What to do when the player presses 'E' on the item
 		public function toTake():void {
-			//item.checkAuto(true);		// FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			item.checkAuto(true);
 			actTake = true;
 			ttake = 0;
 			takeR = actRad;
@@ -243,7 +247,6 @@ package fe.loc {
 			// [Take]
 			if (prinud || (World.w.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
 				if (World.w.hardInv && !actTake) {
-					/* AUTO PICKUP
 					auto2 = item.checkAuto();
 					if (!auto2) {
 						vsos = false;
@@ -253,7 +256,6 @@ package fe.loc {
 						takeR = osnRad;
 						return;
 					}
-					*/ // FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 				}
 				
 				levitPoss = false;
@@ -263,8 +265,7 @@ package fe.loc {
 				
 				// If the item is not already marked as taken, take it and mark it as taken.
 				if (!isTake) {
-					trace("Loot.as/take() - is calling the Invent.as()/take function. Item ID: " + item.id + ", kol: " + item.quantity);
-					World.w.invent.increaseQuantity(item.id, item.quantity);
+					World.w.gg.itemInteraction.take(item);
 				}
 				
 				isTake = true;
@@ -340,7 +341,7 @@ package fe.loc {
 			onCursor = (coordinates.X - boundingBox.halfWidth < World.w.celX && coordinates.X + boundingBox.halfWidth > World.w.celX && coordinates.Y - boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
 			
 			if (World.w.checkLoot) {
-				// auto2 = item.checkAuto(); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+				auto2 = item.checkAuto();
 			}
 			
 			if (auto && auto2 || actTake) {

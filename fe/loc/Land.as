@@ -1,9 +1,12 @@
 package fe.loc {
 
-	import fe.*;
-	import fe.util.Vector2;
-	import fe.unit.UnitPlayer;
 	import flash.display.BitmapData;
+
+	import fe.World;
+	import fe.Snd;
+	import fe.XMLDataGrabber
+	import fe.ItemManager;
+	import fe.unit.UnitPlayer;
 	import fe.serv.Script;
 
 	public class Land {
@@ -360,7 +363,7 @@ package fe.loc {
 					// Down passages
 					if (j < maxLocY - 1) {
 						loc2 = locs[i][j + 1][0];
-						for (var f:int = 6; f <= 11; f++) {
+						for (var f:int = 6; f <= 10; f++) {
 							hole = Math.min(loc1.doors[f], loc2.doors[f + 11]);
 							if (hole >= 2) {
 								loc1.pass_d.push({n: f, fak: hole});
@@ -375,7 +378,7 @@ package fe.loc {
 				for (j = minLocY; j < maxLocY; j++) {
 					loc1 = locs[i][j][0];
 
-					// Right passage
+					// Right passage: 3 picks with replacement, so 1-3 distinct doors get opened
 					if (i < maxLocX - 1 && loc1.pass_r.length > 0) {
 						loc2 = locs[i + 1][j][0];
 						for (e = 0; e <= 2; e++) {
@@ -966,7 +969,7 @@ package fe.loc {
 		}
 		
 		// [Go to location x,y]
-		public function gotoXY(nx:int,ny:int) {
+		public function gotoXY(nx:int, ny:int) : void {
 			if (nx<minLocX) nx=minLocX;
 			if (nx>=maxLocX) nx=maxLocX-1;
 			if (ny<minLocY) ny=minLocY;
@@ -979,9 +982,11 @@ package fe.loc {
 		}
 		
 		// [Transition between locations]
-		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
+		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1) : Object {
 			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.boundingBox.width, objectHeight:Number=gg.boundingBox.height;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
+			var newLoc:Location;	// The room being entered, assigned once the new coordinates are known and checked
+			var outP:Object = {};
 
 			switch (napr) {
 				case 1:
@@ -1013,9 +1018,8 @@ package fe.loc {
 				if (napr==3) return {die:true};
 				return null;
 			}
-			
-			var newLoc:Location=locs[newX][newY][newZ];
-			var outP:Object = new Object();
+
+			newLoc = locs[newX][newY][newZ];
 
 			switch (napr) {
 				case 1:
@@ -1057,7 +1061,7 @@ package fe.loc {
 		}
 		
 		// [Go to the nprob test layer, or return to the main layer if the parameter is not specified]
-		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1):void {
+		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) : void {
 			if (nprob == "") {
 				prob = "";
 				locX = retLocX;

@@ -108,7 +108,7 @@ package fe.loc {
 		public var rad:Number				=   0.00;		//радиоактивность воздуха и воды
 		public var wrad:Number				=   1.00;		
 		public var wdam:Number				=   0.00;	
-		public var wtipdam:String			=   "venom";	// [water damage]	 DOUBLE CHECK THIS FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+		public var wtipdam:String			=   Resistances.DAM_VENOM;	// [water damage]
 		public var tipWater:int				=   0;			//внешний вид воды
 		public var opacWater:Number			=   0.00;		//непрозрачность воды
 		public var waterLevel:int			= 100;			//уровень воды
@@ -299,7 +299,7 @@ package fe.loc {
 				if (nroom.options.@wtip.length()) tipWater=nroom.options.@wtip;
 				if (nroom.options.@wopac.length()) opacWater=nroom.options.@wopac;
 				if (nroom.options.@wdam.length()) wdam=nroom.options.@wdam;
-				if (nroom.options.@wtipdam.length()) wtipdam=nroom.options.@wtipdam;
+				if (nroom.options.@wtipdam.length()) wtipdam=Resistances.parseDamageType(nroom.options.@wtipdam);
 				if (nroom.options.@bezdna.length()) bezdna=true;
 				if (nroom.options.@wlevel.length()) waterLevel=nroom.options.@wlevel;
 				if (nroom.options.@base.length()) base=true;
@@ -515,7 +515,7 @@ package fe.loc {
 				dyr = getTile(q + 1, 0).hole() || dyr;
 				dyr = getTile(q + 2, 0).hole() || dyr;
 				getTile(q + 1, 1).hole();
-				getTile(q + 2, 2).hole();
+				getTile(q + 2, 1).hole();
 				setNoObj(q + 1, 0, 0, 2);
 				setNoObj(q + 2, 0, 0, 2);
 				
@@ -571,7 +571,7 @@ package fe.loc {
 				} 
 				
 				if (dyr) {
-					addSignPost(q + 2, BOTTOM_Y, 90);
+					addSignPost(q + 2, spaceY, 90);
 				}
 			}
 			else if (n>=0) {
@@ -932,7 +932,7 @@ package fe.loc {
 			}
 			
 			// Create the item
-			var item:InventoryItem = new InventoryItem(itemID);
+			var item:Item = new Item(itemID, 1);
 			// Use the item to create a visible loot item
 			var l:Loot = new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
 			

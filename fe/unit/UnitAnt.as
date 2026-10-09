@@ -60,7 +60,7 @@ package fe.unit {
 			plavdy = accel * 0.25;
 			
 			if (tr == 3) {
-				currentWeapon = WeaponManager.reference.cloneWeapon("antfire");
+				currentWeapon = WeaponManager.reference.cloneWeapon("antfire", this);
 				childObjs = new Array(currentWeapon);
 			}
 			

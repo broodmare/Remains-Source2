@@ -12,6 +12,9 @@ package fe.inter {
 	import fe.weapon.Weapon;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Inventory;
+	import fe.unit.Favorites;
+	import fe.unit.Spell;
+	import fe.weapon.Ammo;
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.serv.Script;
@@ -279,7 +282,6 @@ package fe.inter {
 		}
 		
 		public function showSelector(turn:int=0, mode:int=0):void {
-			/*	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
 			if (turn != 0) {
 				t_sel = 60;
 			}
@@ -303,98 +305,100 @@ package fe.inter {
 			selMode = mode;
 			wSelN = 0;
 			var inv:Inventory = World.w.invent;
-			inv.getKolAmmos();
+			var favorites:Favorites = inv.favorites;
+			var wm:WeaponManager = WeaponManager.reference;
+			var lang:LanguageManager = LanguageManager.reference;
+			var w:Weapon;
+			var n:Object;
+			var i:int;
 			arr = [];
 			arrfav = [];
 			
 			if (mode == 0) {		// [weapon selection]
-				for each(var obj in inv.weapons) {
-					if (obj is Weapon) {
-						var w:Weapon = obj as Weapon;
-						var n:Object = {id:w.id, nazv:w.nazv, skill:w.skill, sort1:w.skill, sort2:w.lvl};
-						
-						if (inv.favIds[w.id]) {
-							n.fav = inv.favIds[w.id];
-						}
-						
-						if (w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
-							n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
-						}
-						
-						if (w.ammo != "" && w.ammo != null) {
-							if (inv.ammos[w.ammoBase] != null) {
-								n.ammo = inv.ammos[w.ammoBase] + w.magazineRounds;
-							}
-							else if (inv.items[w.ammo] != null) {
-								n.ammo = inv.items[w.ammo].kol + w.magazineRounds;
-							}
-							if (w.ammoBase != "") {
-								n.ammotip = (w.tip == Weapon.TYPE_EXPLOSIVES) ? "" : inv.items[w.ammoBase].nazv;
-							}
-						}
-						
-						if (n.fav > 0) {
-							arrfav[n.fav] = n;
-						}
-						
-						if (w.respect == Weapon.WEP_LOCKED || w.respect == Weapon.WEP_BLUEPRINT || w.spell) {
-							continue;
-						}
-						
-						if (w.avail() <= 0 && w != gg.currentWeapon) {
-							continue;
-						}
-						
-						if (w.alicorn && !World.w.alicorn) {
-							continue;
-						}
-						
-						arr.push(n);
+				for each (w in inv.equipment.weapons) {
+					n = {id:w.id, nazv:w.nazv, skill:w.skill, sort1:w.skill, sort2:w.lvl};
+					
+					if (favorites.getCell(w.id) > 0) {
+						n.fav = favorites.getCell(w.id);
 					}
+					
+					if (w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
+						n.hp = Math.round(w.hp / w.maxhp * 100) + '%';
+					}
+					
+					if (w.ammo) {
+						n.ammo = wm.getAmmoTotal(inv, w) + w.magazineRounds;
+						
+						if (w.ammoBase) {
+							n.ammotip = (w.tip == Weapon.TYPE_EXPLOSIVES) ? "" : w.ammoBase.name;
+						}
+					}
+					
+					if (n.fav > 0) {
+						arrfav[n.fav] = n;
+					}
+					
+					if (w.respect == Weapon.WEP_LOCKED || w.respect == Weapon.WEP_BLUEPRINT || w.spell) {
+						continue;
+					}
+					
+					if (w.avail() <= 0 && w != gg.currentWeapon) {
+						continue;
+					}
+					
+					if (w.alicorn && !World.w.alicorn) {
+						continue;
+					}
+					
+					arr.push(n);
 				}
 				
 				if (arr.length > 1) {
 					arr.sortOn(['sort1', 'sort2'], [Array.NUMERIC, Array.NUMERIC]);
 				}
 				
-				for (var i in arr) {
-					if (gg.currentWeapon && arr[i].id==gg.currentWeapon.id) wSelN=i;
+				for (i = 0; i < arr.length; i++) {
+					if (gg.currentWeapon && arr[i].id == gg.currentWeapon.id) {
+						wSelN = i;
+					}
 				}
 				
 				for (i = 1; i <= World.kolHK * 2 + 7; i++) {
-					if (i == String(World.kolHK * 2 + 5)) {
+					if (i == World.kolHK * 2 + 5) {
 						if (gg.throwWeapon) {
 							w = gg.throwWeapon;
 							n = {id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
 							
-							if (w.ammo != "") {
-								n.ammo = inv.items[w.ammo].kol;
+							if (w.ammo) {
+								n.ammo = inv.getQuantity(w.ammo.id);
 							}
 						}
 						else {
 							continue;
 						}
 					}
-					else if (i == String(World.kolHK * 2 + 6)) {
+					else if (i == World.kolHK * 2 + 6) {
 						if (gg.magicWeapon) {
 							w = gg.magicWeapon;
 							n = {id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
 							
-							if (w.ammo != "") {
-								n.ammo = inv.items[w.ammo].kol;
+							if (w.ammo) {
+								n.ammo = inv.getQuantity(w.ammo.id);
 							}
 						}
-						else continue;
+						else {
+							continue;
+						}
 					}
-					else if (i == String(World.kolHK * 2 + 7)) {
+					else if (i == World.kolHK * 2 + 7) {
 						if (gg.currentSpell) {
 							n = {id:gg.currentSpell.id, nazv:gg.currentSpell.nazv, fav:i};
 							
-							if (gg.currentSpell.t_culd>0) {
-								n.ammo=Math.ceil(gg.currentSpell.t_culd/World.fps)+' '+Res.txt("g", 'sec');
+							if (gg.currentSpell.t_culd > 0) {
+								n.ammo = Math.ceil(gg.currentSpell.t_culd / World.fps) + ' ' + lang.localText("gui", "sec");
 							}
 							else {
-								n.ammo = Res.txt("g", 'ready');
+								n.ammo = lang.localText("gui", "ready");
 							}
 						}
 						else {
@@ -402,40 +406,35 @@ package fe.inter {
 						}
 					}
 					else {
-						if (arrfav[i] || inv.fav[i] == null) {
+						// Weapons in the favorites were already added
+						if (arrfav[i] || favorites.fav[i] == null) {
 							continue;
 						}
 						
-						n = {id:inv.fav[i], fav:i};
-						n.nazv = Res.txt('i', n.id);
+						n = {id:favorites.fav[i], fav:i};
 						
-						if (Res.istxt('i', n.id)) {
-							if (inv.items[n.id] == null) {
-								if (inv.items[w.ammoBase] == null) {
-									n.ammo = inv.items[w.ammo].kol;
-								}
-								else n.ammo = inv.items[w.ammoBase].kol;
-							}
-							else {
-								n.ammo = inv.items[n.id].kol;
-							}
+						if (ItemManager.reference.hasItem(n.id)) {
+							n.nazv = lang.localText("items", n.id);
+							n.ammo = inv.getQuantity(n.id);
 						}
 						else {
-							n.nazv = Res.txt('a', n.id);
+							n.nazv = lang.localText("armor", n.id);
 						}
 						
-						if (inv.spells[n.id] != null) {
-							if (inv.spells[n.id].t_culd > 0) {
-								n.ammo = Math.ceil(inv.spells[n.id].t_culd / World.fps) + ' ' + Res.txt("g", 'sec');
+						var sp:Spell = inv.equipment.getSpell(n.id);
+						if (sp) {
+							if (sp.t_culd > 0) {
+								n.ammo = Math.ceil(sp.t_culd / World.fps) + ' ' + lang.localText("gui", "sec");
 							}
 							else {
-								n.ammo=Res.txt("g", 'ready');
+								n.ammo = lang.localText("gui", "ready");
 							}
 						}
 					}
 					
 					arrfav[i] = n;
 				}
+				
 				if (arr.length > 1 || turn == 0) {
 					if (turn != 0) {
 						showFav = true;
@@ -451,20 +450,22 @@ package fe.inter {
 				gg.pers.setPonpon(vis.status.pon);
 			}
 			else {		// Ammo selection
-				if (gg.currentWeapon == null || gg.currentWeapon.holder <= 0 || gg.currentWeapon.ammoBase == "" || gg.currentWeapon.recharg > 0 || gg.currentWeapon.alicorn || gg.currentWeapon.tip == Weapon.TYPE_EXPLOSIVES || gg.currentWeapon.tip == Weapon.TYPE_MAGIC) {
+				w = gg.currentWeapon;
+				
+				if (w == null || w.magazineCapacity <= 0 || w.ammoBase == null || w.recharg > 0 || w.alicorn || w.tip == Weapon.TYPE_EXPLOSIVES || w.tip == Weapon.TYPE_MAGIC) {
 					return;
 				}
 
-				for each(var obj in inv.items) {
-					if (obj && obj.base == gg.currentWeapon.ammoBase) {
-						var n:Object = {id:obj.id, nazv:obj.nazv, ammo:obj.kol};
-						arr.push(n);
+				// [Every variant of the weapon's ammo]
+				for each (var ammo:Ammo in wm.allAmmo) {
+					if (ammo.base == w.ammoBase.id) {
+						arr.push({id:ammo.id, nazv:ammo.name, ammo:inv.getQuantity(ammo.id)});
 					}
 				}
 				
 				if (arr.length > 1) {
-					for (var i in arr) {
-						if (gg.currentWeapon.ammo == arr[i].id) {
+					for (i = 0; i < arr.length; i++) {
+						if (w.ammo && w.ammo.id == arr[i].id) {
 							wSelN = i;
 						}
 					}
@@ -474,7 +475,6 @@ package fe.inter {
 					setSelector();
 				}
 			}
-			*/
 		}
 		
 		public function setFavs():void {
@@ -609,7 +609,7 @@ package fe.inter {
 						gg.changeWeapon(arr[wSelN].id);
 					}
 					
-					if (selMode == 1 && gg.currentWeapon && gg.currentWeapon.ammo != arr[wSelN].id) {
+					if (selMode == 1 && gg.currentWeapon && (gg.currentWeapon.ammo == null || gg.currentWeapon.ammo.id != arr[wSelN].id)) {
 						gg.currentWeapon.initReload(arr[wSelN].id);
 					}
 				}
@@ -728,7 +728,7 @@ package fe.inter {
 				
 				s = "<span class = 'r" + n + "'>" + w.nazv;
 				
-				if (w.tip != "internal" && w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun") {
+				if (w.hasDurability()) {
 					s += ' (' + r + '%)';
 				}
 				
@@ -776,7 +776,9 @@ package fe.inter {
 				return;
 			}
 			
-			if (World.w.gg.cItem == "") {
+			var ci:String = World.w.gg.itemInteraction.currentItemId;
+			
+			if (ci == null) {
 				vitem.visible = false;
 				item.visible = false;
 				vitem.gotoAndStop(1);
@@ -784,7 +786,6 @@ package fe.inter {
 			}
 			else {
 				t_item = 200;
-				var ci:String = World.w.invent.getItem[World.w.gg.cItem].id;
 				vitem.visible = active;
 				item.visible = active;
 				try {
@@ -795,7 +796,7 @@ package fe.inter {
 					vitem.gotoAndStop(1);
 				}
 				
-				item.text = Res.txt('i', ci) + ' (' + World.w.invent.getQuantity(ci) + ')';
+				item.text = LanguageManager.reference.localText("items", ci) + ' (' + World.w.invent.getQuantity(ci) + ')';
 			}
 			
 			setOtstup();
@@ -1480,7 +1481,7 @@ package fe.inter {
 		}
 		
 		// [Display a replica of the dialogue, return false if there is no replica]
-		// [id can be the dialog id in text.xml or a ready-made replica]
+		// [id can be a dialogue id from dialogues.json or a ready-made line, eg. {text:"...", mod:1}]
 		public function dialText(id:* = null, n:int = -1, down:Boolean = false, wait:Boolean = true):Boolean {
 			if (id == null) {
 				dial.visible = false;
@@ -1490,42 +1491,30 @@ package fe.inter {
 				return false;
 			}
 
-			var xml;
-			
-			// TODO: Stop searching Res on your own
+			var line:Object;	// One line of a dialogue, eg. {"Portrait":"lp2", "pushed":1, "text":"..."}
+
 			if (id is String) {
 				//trace("GUI.as/dialText() - Playing dialogue: \"" + id + "\".");
 
-				xml = Res.currentLanguageData.txt.(@id==id);
-				
-				if (xml.length() == 0) {
+				var dialogue:Object = Res.dialogue(id);
+
+				if (dialogue == null || dialogue.Lines == null || dialogue.Lines.length == 0) {
 					return false;
 				}
-				
-				xml = xml.n[0];
-				
-				if (xml.length() == 0) {
+
+				if (n >= dialogue.Lines.length) {
 					return false;
 				}
-				
-				if (n >= 0) {
-					xml = xml.r[n];
-					if (xml == null) {
-						return false;
-					}
-				}
-				
+
+				line = dialogue.Lines[Math.max(n, 0)];
+
 				World.w.game.addNote(id);
 			}
-			else if (id is XML) {
-				xml = id;
+			else {
+				line = id;	// A ready-made line
 			}
-			
-			var reg:int = 0;
 
-			if (xml.@mod.length()) {
-				reg = xml.@mod;
-			}
+			var reg:int = int(line.mod);
 			
 			if (reg == 0) {
 				dial.visible = true;
@@ -1534,10 +1523,10 @@ package fe.inter {
 				inform.visible = true;
 			}
 			
-			var s:String = xml.toString();
-			
+			var s:String = line.text;
+
 			// [mats]
-			if (xml && xml.@m.length()) {
+			if (line.m) {
 				var sar:Array=s.split('|');
 				if (sar) {
 					if (World.w.matFilter && sar.length>1) {
@@ -1549,12 +1538,7 @@ package fe.inter {
 				}
 			}
 
-			for (var i:int = 1; i <= 5; i++) {
-				if (xml.attribute('s' + i).length())  {
-					s = s.replace('@' + i, "<span class='imp'>" + World.w.ctr.retKey(xml.attribute('s' + i)) + "</span>");
-				}
-			}
-
+			s = Res.addKeys(s, line);
 			s = s.replace(/\[/g, "<span class='yellow'>");
 			s = s.replace(/]/g, "</span>");
 			s = s.replace(/[\b\r\t]/g, '');
@@ -1563,8 +1547,8 @@ package fe.inter {
 			if (reg) {
 				if (reg >= 1) {
 					dial.visible = false;
-					
-					if (xml.@push > 0) {
+
+					if (line.pushed > 0) {
 						inform.txt.htmlText += "<br><br>" + s;
 					}
 					else {
@@ -1599,10 +1583,10 @@ package fe.inter {
 				dial.portret.gotoAndStop(1);	// Display empty portrait
 
 				// If the string of text has a 'p'ortrait
-				if (xml.@p.length()) {
+				if (line.Portrait != null) {
 					//trace("GUI.as/dialText() - This section of dialogue has a portrait.");
 
-					var portraitName:String = xml.@p;
+					var portraitName:String = line.Portrait;
 					// Replace the little pip portrait with the helmeted version
 					if (portraitName.substr(0, 2) == 'lp' && World.w.alicorn) {
 						portraitName = 'lpa';
@@ -1630,7 +1614,7 @@ package fe.inter {
 
 				}
 
-				if (xml.@push > 0) {
+				if (line.pushed > 0) {
 					dial.txt.htmlText += "<br>" + s;
 				}
 				else {

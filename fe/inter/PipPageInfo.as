@@ -11,6 +11,7 @@ package fe.inter {
 	import fe.loc.Quest;
 	import fe.loc.LandAct;
 	import fe.unit.Unit;
+	import fe.unit.Resistances;
 	import fe.weapon.Weapon;
 
 	import fe.stubs.visPipQuestItem;
@@ -220,25 +221,24 @@ package fe.inter {
 			else if (page2 == PAGE_NOTES) {	// [Notes]
 				var doparr:Array = [];
 				for each (var note:String in game.notes) {
-					//TODO: Stop searching Res on your own.
-					var xml = Res.currentLanguageData.txt.(@id == note);
-					
+					var dialogue:Object = Res.dialogue(note);
+
 					var nico:int = 0;
-					
-					if (xml && xml.@imp > 0) {
-						nico = int(xml.@imp);
+
+					if (dialogue && dialogue.imp > 0) {
+						nico = int(dialogue.imp);
 					}
 					else {
 						continue;
 					}
 
 					var title:String;
-					
-					if (xml.n.t.length()) {
-						title = xml.n.t[0];
+
+					if (dialogue.Title) {
+						title = dialogue.Title;
 					}
 					else {
-						title = xml.n.r[0];
+						title = dialogue.Lines[0].text;
 					}
 					
 					title = title.replace(/&lp/g,World.w.pers.persName);
@@ -531,10 +531,10 @@ package fe.inter {
 						s+=LanguageManager.reference.localText("pip", 'dam_melee')+': ';
 						
 						if (v_tipdam) {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_tipdam));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_tipdam)));
 						}
 						else {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam2'));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.DAM_BLUNT));
 						}
 						
 						s+=' ('+textAsColor('yellow', v_damage)+')\n'
@@ -544,10 +544,10 @@ package fe.inter {
 						s+=LanguageManager.reference.localText("pip", 'dam_shoot')+': ';
 						
 						if (v_stipdam) {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam'+v_stipdam));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_stipdam)));
 						}
 						else {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam0'));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.DAM_PIERCE));
 						}
 						
 						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
@@ -623,7 +623,7 @@ package fe.inter {
 		}
 		
 		private function vulner(n:int, val:Number):String {
-			return textAsColor('blue', LanguageManager.reference.localText("pip", 'tipdam' + n))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
+			return textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(n)))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
 		}
 		
 		override protected function itemClick(event:MouseEvent):void {

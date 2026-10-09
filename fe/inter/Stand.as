@@ -110,31 +110,24 @@ package fe.inter {
 			showWeaponList(page);
 		}
 		
+		// [Create the weapon slots of a page] Each slot holds a base weapon and its unique variant (eg. "mont" and "mont^1")
 		private function createWeaponLists(n:int):void {
 			var levels:Array = [0, 0, 0, 0, 0, 0, 0];
 			var stolb:int = -1;
-			
-			var tempId:String;
-			var unique:Boolean;
+			var weaponData:Object = WeaponManager.reference.allWeaponData();
 
-			for each (var weap:Object in WeaponManager.reference.allWeaponData) {
+			for each (var weap:Object in weaponData) {
 
-				// Define tempId by removing "^1" if present
-				tempId = weap.id;
-				unique = false;
-				if (tempId.length >= 2 && tempId.substr(tempId.length - 2) == "^1") {
-					tempId = tempId.substr(0, tempId.length - 2); // Removes the last two characters "^1"
-					unique = true;
-				}
-				
-				if (weap.tip == "internal" || weap.nostand) {
+				// Explosives like grenades and mines are items, they're kept in the vault instead (launchers stay on the stand)
+				if (weap.variant || weap.tip == Weapon.TYPE_INTERNAL || weap.tip == Weapon.TYPE_EXPLOSIVES || weap.nostand) {
 					continue;
 				}
 				
 				if ((n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
 					var item:MovieClip = new itemStand();  // SWF Dependency
+					var uniqueId:String = ItemInteraction.uniqueVariant(weap.id);
 					
-					if (weap.tip == "magic") {
+					if (weap.tip == Weapon.TYPE_MAGIC) {
 						stolb++;
 						if (stolb >= kolLevels) {
 							stolb = 0;
@@ -151,21 +144,22 @@ package fe.inter {
 					item.id.text = weap.id;
 					item.id.visible = false;
 					item.dop.visible = false;
+					item.dop.text = "";
 					item.goldstar.stop();
-					item.nazv.text = LanguageManager.reference.localText("weapon", tempId);
+					item.nazv.text = WeaponManager.weaponName(weap.id);
 					
 					// [Image]
 					var infIco:MovieClip;
 					var r:Number = 1;
 					
 					// [Spell]
-					if (weap.tip == "magic") {	
+					if (weap.tip == Weapon.TYPE_MAGIC) {
 						infIco = new itemIco();  // SWF Dependency
 						
 						try {
-							infIco.gotoAndStop(tempId);
+							infIco.gotoAndStop(weap.id);
 						}
-						catch(err) {
+						catch(err:Error) {
 							trace("ERROR: (00:47)");
 							infIco.stop();
 						}
@@ -175,20 +169,18 @@ package fe.inter {
 						item.y = 40 + levels[stolb] * 140;
 						
 						if (weap.spell) {
-							item.nazv.text = LanguageManager.reference.localText("item", tempId);
+							item.nazv.text = Item.nameOf(weap.id);
 						}
 					}
 					else {
 						var vWeapon:Class = null;
 						
-						// I don't think this is used
 						if ("vis_vico" in weap) {
 							vWeapon = Res.getClass(weap.vis_vico, null);
 						}
 						
 						if (vWeapon == null) {
-							
-							vWeapon = Res.getClass("vis" + tempId, null);
+							vWeapon = Res.getClass("vis" + weap.id, null);
 						}
 						
 						if (vWeapon != null) {
@@ -196,26 +188,28 @@ package fe.inter {
 						}
 					}
 					
-					if ("vis_icomult" in weap) {
-						r = infIco.scaleX = infIco.scaleY = weap.vis_icomult;
+					if (infIco) {
+						if ("vis_icomult" in weap) {
+							r = infIco.scaleX = infIco.scaleY = weap.vis_icomult;
+						}
+						
+						infIco.x = -infIco.getRect(infIco).left * r - infIco.width * 0.50;
+						infIco.y = -infIco.height - infIco.getRect(infIco).top;
+						infIco.stop();
+						
+						if (infIco.lez) {
+							infIco.lez.stop();
+						}
+						
+						item.weapon.addChild(infIco);
 					}
 					
-					infIco.x = -infIco.getRect(infIco).left * r - infIco.width * 0.50;
-					infIco.y = -infIco.height - infIco.getRect(infIco).top;
-					infIco.stop();
-					
-					if (infIco.lez) {
-						infIco.lez.stop();
-					}
-					
-					item.weapon.addChild(infIco);
-					
-					// Extra processing for unique variants
-					if (unique) {
-						item.nazv2.text = LanguageManager.reference.localText("weapon", tempId);
+					// The unique variant shares the slot
+					if (uniqueId) {
+						item.nazv2.text = WeaponManager.weaponName(uniqueId);
 						item.dop.text = "1";	// [There is a unique option]
-						item.goldstar.gotoAndStop(2);	// Add a gold star to indicate it's a unique variant
-						vWeapon = Res.getClass("vis" + tempId + "_1", null);	// Get the variant image
+						item.goldstar.gotoAndStop(2);	// Add a gold star to indicate it has a unique variant
+						vWeapon = Res.getClass("vis" + weap.id + "_1", null);	// Get the variant image
 						
 						if (vWeapon != null) {
 							infIco = new vWeapon();
@@ -262,7 +256,8 @@ package fe.inter {
 			
 			for each(var arm in ArmorManager.reference.armors) {
 
-				if (n == 6 && arm.tip > 1 || n == 7 && arm.tip != 3) {
+				// Armor goes on the armor page and amulets on the amulet page
+				if (n == 6 && arm.tip != Armor.TYPE_ARMOR || n == 7 && arm.tip != Armor.TYPE_AMULET) {
 					continue;
 				}
 
@@ -324,20 +319,58 @@ package fe.inter {
 		
 		private function showMass():void {
 			vis.bottext.htmlText = "";
-			trace("Stand.as/showMass - THIS IS COMMENTED OUT, FIX THIS  -- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") 
-			/*
-			try {
-				if (page <= 4) {
-					vis.bottext.htmlText = inv.retMass(4);
-				}
-				if (page == 5) {
-					vis.bottext.htmlText = inv.retMass(5);
-				}
+			
+			if (page <= 4) {
+				vis.bottext.htmlText = ItemInteraction.retMass(inv, 4);
 			}
-			catch (err) {
 
+			if (page == 5) {
+				vis.bottext.htmlText = ItemInteraction.retMass(inv, 5);
 			}
-			*/
+		}
+		
+		// A weapon the player has, excluding blueprints and spells they haven't learned
+		private function ownedWeapon(id:String):Weapon {
+			var w:Weapon = inv.equipment.getWeapon(id);
+			
+			if (w == null || w.respect == Weapon.WEP_BLUEPRINT || (w.spell && inv.getQuantity(id) <= 0)) {
+				return null;
+			}
+			
+			return w;
+		}
+		
+		// [The weapon shown in a slot] The weapon the player is carrying (the unique variant if they carry both), otherwise the one that's stored
+		private function shownWeapon(baseId:String):Weapon {
+			var base:Weapon = ownedWeapon(baseId);
+			var unique:Weapon = ownedWeapon(baseId + "^1");
+			
+			if (unique && unique.respect != Weapon.WEP_LOCKED) {
+				return unique;
+			}
+			
+			if (base && base.respect != Weapon.WEP_LOCKED) {
+				return base;
+			}
+			
+			return unique || base;
+		}
+		
+		// Update a slot to show the weapons the player has
+		private function showFamily(item:MovieClip, baseId:String):void {
+			var w:Weapon = shownWeapon(baseId);
+			
+			if (w == null) {
+				showWeapon(item, 0, 0);
+				return;
+			}
+			
+			showWeapon(item, w.variant ? 2 : 1, w.respect);
+			
+			// [A brighter star if the player has the unique variant]
+			if (item.dop.text != "") {
+				item.goldstar.gotoAndStop(ownedWeapon(baseId + "^1") ? 3 : 2);
+			}
 		}
 		
 		private function showWeaponList(n:int):void {
@@ -358,41 +391,20 @@ package fe.inter {
 				vis.toptext.txt.htmlText = Res.txt("p", "infostand", 0, true);
 				vis.toptext.visible = true;
 			}
+			else if (n <= 7) {
+				vis.toptext.txt.htmlText = Res.txt("p", "infostand3", 0, true);
+				vis.toptext.visible = true;
+			}
 			else {
 				vis.toptext.visible = false;
 			}
 
-			for each (var weap:Object in WeaponManager.reference.allWeaponData) {
-
-				if (weap.tip == "internal" || (n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
-					if (weapons[weap.id] == null) {
-						continue;
-					}
-					
-					if (weap.spell && inv.equipment.hasEquipment(weap.id)) {
-						showWeapon(weapons[weap.id], 0, 0);
-					}
-					else if (inv.equipment.hasEquipment(weap.id) || inv.equipment.getWeapon(weap.id).respect == Weapon.WEP_BLUEPRINT) {
-						showWeapon(weapons[weap.id], 0, 0)
-					}
-					else {
-						showWeapon(weapons[weap.id], inv.equipment.getWeapon(weap.id).variant + 1, inv.equipment.getWeapon(weap.id).respect);
-					}
-				}
+			for (var baseId:String in weapons) {
+				showFamily(weapons[baseId], baseId);
 			}
 
-			for each(var arm:Armor in ArmorManager.reference.armors) {
-
-				if (armors[arm.id]) {
-					if (inv.equipment.hasEquipment(arm.id) && inv.equipment.getArmor(arm.id).lvl >= 0) {
-						armors[arm.id].nazv.visible = true;
-						armors[arm.id].art.filters = [itemFilter, glowFilter];
-					}
-					else {
-						armors[arm.id].nazv.visible = false;
-						armors[arm.id].art.filters = [clearFilter];
-					}
-				}
+			for (var armorId:String in armors) {
+				showArmor(armors[armorId], armorId);
 			}
 			
 			// Ministry mare statuettes 
@@ -414,6 +426,8 @@ package fe.inter {
 			if (n == 0) {
 				item.weapon.filters = [clearFilter, glowFilter];
 				item.weapon2.filters = [clearFilter, glowFilter];
+				item.weapon.alpha = 1;
+				item.weapon2.alpha = 1;
 				item.nazv.visible = false;
 				item.nazv2.visible = false;
 				item.weapon.visible = true;
@@ -443,9 +457,11 @@ package fe.inter {
 			}
 			
 			if (item.nazv.visible || item.nazv2.visible) {
+				// [Stored weapons are dimmed] Both sprites are dimmed, the unique variant uses weapon2
 				if (respect == Weapon.WEP_LOCKED) {
 					item.weapon.alpha = 0.5;
-					item.weapon.filters = [itemFilter]
+					item.weapon2.alpha = 0.5;
+					item.weapon.filters = [itemFilter];
 					item.weapon2.filters = [itemFilter];
 					item.nazv.alpha = 0.35;
 					item.nazv2.alpha = 0.35;
@@ -456,7 +472,31 @@ package fe.inter {
 					item.nazv.alpha = 1;
 					item.nazv2.alpha = 1;
 					item.weapon.alpha = 1;
+					item.weapon2.alpha = 1;
 				}
+			}
+		}
+		
+		// [Show armor or an amulet] Highlighted if the player is carrying it, dimmed if it's left on the stand
+		private function showArmor(item:MovieClip, id:String):void {
+			var a:Armor = inv.equipment.getArmor(id);
+			
+			if (a == null || a.lvl < 0) {
+				item.nazv.visible = false;
+				item.art.alpha = 1;
+				item.art.filters = [clearFilter];
+			}
+			else if (a.stored) {
+				item.nazv.visible = true;
+				item.nazv.alpha = 0.35;
+				item.art.alpha = 0.5;
+				item.art.filters = [itemFilter];
+			}
+			else {
+				item.nazv.visible = true;
+				item.nazv.alpha = 1;
+				item.art.alpha = 1;
+				item.art.filters = [itemFilter, glowFilter];
 			}
 		}
 		
@@ -473,35 +513,71 @@ package fe.inter {
 			}
 		}
 		
+		// [Store or take weapons] With both variants the clicks go: carry both -> store the base -> swap them -> store both -> carry both
 		public function itemClick(event:MouseEvent):void {
-			var id:String = event.currentTarget.id.text;
+			var baseId:String = event.currentTarget.id.text;
+			var base:Weapon = ownedWeapon(baseId);
+			var unique:Weapon = ownedWeapon(baseId + "^1");
+			var itemInteraction:ItemInteraction = World.w.gg.itemInteraction;
 			
-			if (!inv.equipment.hasEquipment(id) || inv.equipment.getWeapon(id).respect == Weapon.WEP_BLUEPRINT) {
+			if (base == null && unique == null) {
 				return;
 			}
 			
-			trace("Stand.as/itemClick() - THIS IS COMMENTED OUT FIX THIS -- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			/*
-			var resp:int = inv.respectWeapon(id);
-			showWeapon(event.currentTarget as MovieClip, -1, resp);
-			*/
+			if (base == null || unique == null) {
+				var w:Weapon = base || unique;
+				itemInteraction.storeWeapon(w.id, w.respect != Weapon.WEP_LOCKED);
+			}
+			else {
+				var baseStored:Boolean = (base.respect == Weapon.WEP_LOCKED);
+				var uniqueStored:Boolean = (unique.respect == Weapon.WEP_LOCKED);
+				
+				if (!baseStored && !uniqueStored) {
+					itemInteraction.storeWeapon(base.id, true);
+				}
+				else if (baseStored && !uniqueStored) {
+					itemInteraction.storeWeapon(unique.id, true);
+					itemInteraction.storeWeapon(base.id, false);
+				}
+				else if (!baseStored && uniqueStored) {
+					itemInteraction.storeWeapon(base.id, true);
+				}
+				else {
+					itemInteraction.storeWeapon(base.id, false);
+					itemInteraction.storeWeapon(unique.id, false);
+				}
+			}
+			
+			showFamily(event.currentTarget as MovieClip, baseId);
 
 			if (World.w.hardInv) {
 				showMass();
 			}
 		}
 
+		// [Leave armor or an amulet on the stand or take it back]
+		public function armorClick(event:MouseEvent):void {
+			var id:String = event.currentTarget.id.text;
+			var a:Armor = inv.equipment.getArmor(id);
+			
+			if (a == null || a.lvl < 0) {
+				return;
+			}
+			
+			if (World.w.gg.itemInteraction.storeArmor(id, !a.stored)) {
+				showArmor(event.currentTarget as MovieClip, id);
+			}
+		}
+
 		public function itemOver(event:MouseEvent):void {
-			if (inv.equipment.hasEquipment(event.currentTarget.id.text)) {
-				return;
-			}
-			if (!event.currentTarget.nazv.visible && !event.currentTarget.nazv2.visible) {
+			var w:Weapon = shownWeapon(event.currentTarget.id.text);
+			
+			if (w == null) {
 				return;
 			}
 			
-			info.nazv.text = event.currentTarget.nazv.visible ? event.currentTarget.nazv.text : event.currentTarget.nazv2.text;
-			
-			info.info.htmlText = PipPage.infoStr(Item.L_WEAPON, event.currentTarget.id.text);
+			info.nazv.text = w.nazv;
+			info.info.htmlText = PipPage.infoStr(Item.L_WEAPON, w.id);
 			
 			info.visible = true;
 			info.fon.height = info.info.height + info.info.y + 8;
@@ -577,6 +653,7 @@ package fe.inter {
 				}
 				
 				for each (var item1:MovieClip in armors) {
+					item1.addEventListener(MouseEvent.CLICK,armorClick);
 					item1.addEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item1.addEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}
@@ -596,6 +673,7 @@ package fe.inter {
 				}
 			
 				for each (var item4:MovieClip in armors) {
+					item4.removeEventListener(MouseEvent.CLICK,armorClick);
 					item4.removeEventListener(MouseEvent.MOUSE_OVER,itemOver2);
 					item4.removeEventListener(MouseEvent.MOUSE_OUT,itemOut);
 				}

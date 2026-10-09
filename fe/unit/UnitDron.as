@@ -81,7 +81,7 @@ package fe.unit {
 			
 			// [give weapons]
 			if (tr == 100) {
-				currentWeapon = WeaponManager.reference.cloneWeapon("ttweap" + int(Math.random() * 6 + 1));
+				currentWeapon = WeaponManager.reference.cloneWeapon("ttweap" + int(Math.random() * 6 + 1), this);
 			}
 			else {
 				currentWeapon = getXmlWeapon(ndif);

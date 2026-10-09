@@ -32,7 +32,7 @@ package fe.inter {
 		private var raz:int=200;
 		private var razMana:int=100;
 		
-		private var plata:Item;
+		private var plata:String;		// ID of the item used to pay the doctor
 
 		// Constructor
 		public function PipPageMed(npip:PipBuck, npp:String) {
@@ -54,19 +54,18 @@ package fe.inter {
 			setIco();
 			
 			var localize:Function = LanguageManager.reference.localText;
-			var item:Function = ItemManager.reference.getItem;
 
 			if (pip.npcInter == 'adoc') {
 				vis.but2.visible = false;
-				plata = item("gel");
+				plata = "gel";
 			}
 			else if (pip.npcInter == 'vdoc') {
 				vis.but2.visible = false;
-				plata = item("good");
+				plata = "good";
 			}
 			else {
 				vis.but2.visible = true;
-				plata = item("money");
+				plata = "money";
 			}
 			
 			pers						= World.w.pers;
@@ -215,14 +214,14 @@ package fe.inter {
 		}
 
 		private function showBottext():void {
-			var plataQty:int = World.w.invent.getQuantity(plata.id);
+			var plataQty:int = World.w.invent.getQuantity(plata);
 			var localize:Function = LanguageManager.reference.localText;
 			
 			if (pip.npcInter == "adoc") {
-				vis.bottext.htmlText = localize("item", "gel") + ": " + numberAsColor("yellow", plataQty);
+				vis.bottext.htmlText = localize("items", "gel") + ": " + numberAsColor("yellow", plataQty);
 			}
 			else if (pip.npcInter == "vdoc") {
-				vis.bottext.htmlText = localize("item", "good") + ": " + numberAsColor("yellow", plataQty);
+				vis.bottext.htmlText = localize("items", "good") + ": " + numberAsColor("yellow", plataQty);
 			}
 			else {
 				vis.bottext.htmlText = localize("pip", "caps") + ": " + numberAsColor("yellow", plataQty);
@@ -237,7 +236,7 @@ package fe.inter {
 			
 			var cena:Number;
 			var need:String;
-			var plataQty:int = World.w.invent.getQuantity(plata.id);
+			var plataQty:int = World.w.invent.getQuantity(plata);
 			var originalQty:int = plataQty;
 
 			infoItemId = getSimplifiedItemId(event.currentTarget.id.text);
@@ -379,10 +378,12 @@ package fe.inter {
 					break;
 			}
 			
-			inv.decreaseQuantity(plata.id, Math.round(cena));
-			plataQty = World.w.invent.getQuantity(plata.id);
+			if (Math.round(cena) > 0) {
+				inv.decreaseQuantity(plata, Math.round(cena));
+			}
+			plataQty = World.w.invent.getQuantity(plata);
 
-			if (plata.id == 'money' && plataQty < originalQty && pip.vendor) {
+			if (plata == 'money' && plataQty < originalQty && pip.vendor) {
 				pip.vendor.increaseMoney(originalQty - plataQty);
 			}
 
@@ -403,7 +404,7 @@ package fe.inter {
 			}
 
 			function healCheckPassed(input:Number):Boolean {
-				if (input <= 2 && World.w.invent.getQuantity(plata.id) <= 0 && gg.pers.level < 6) {
+				if (input <= 2 && World.w.invent.getQuantity(plata) <= 0 && gg.pers.level < 6) {
 					return true
 				}
 				

@@ -19,8 +19,9 @@ package fe.unit {
 			doop			= true;
 			levitPoss		= false;
 			
-			if (cid != null) {
-				nTipDam = cid;
+			// Only take damage of this type, "-1" (or nothing) means any type of damage
+			if (cid != null && cid != "" && cid != "-1") {
+				nTipDam = Resistances.parseDamageType(cid, "");
 			}
 		}
 		

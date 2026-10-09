@@ -399,7 +399,7 @@
         "mod": "Magic",
         "piercing": 15.00,
         "damageMultiplier": 0.90,
-        "damageType": "plasma"
+        "damageType": "DAM_PLASMA"
     },
 	"p5": {
         "id": "p5",
@@ -496,7 +496,7 @@
         "weight": 3.00,
         "mod": "Magic",
         "piercing": 15.00,
-        "damageType": "plasma"
+        "damageType": "DAM_PLASMA"
     },
     "batt": {
         "id": "batt",
@@ -645,7 +645,7 @@
         "weight": 8.00,
         "mod": "Plasma",
         "damageMultiplier": 1.25,
-        "damageType": "plasma"
+        "damageType": "DAM_PLASMA"
     },
     "gren40_9": {
         "id": "gren40_9",
@@ -660,7 +660,7 @@
         "weight": 8.00,
         "mod": "Pulse",
         "damageMultiplier": 1.50,
-        "damageType": "emp"
+        "damageType": "DAM_EMP"
     },
     "rocket": {
         "id": "rocket",

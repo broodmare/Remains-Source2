@@ -19,12 +19,17 @@ package fe.weapon {
 		public var paintId:String	= "p_black";
 		public var paintNazv:String	= "";
 
-		// Constructor
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
 		public function WPaint() {
 			super();
+		}
+		
+		public override function init(data:Object):void {
+			vWeapon = SymbolFactory.fetchSymbolClass("visualpaint");
 			
-			vWeapon = SymbolFactory.createInstance("visualpaint") as Class;
-			vis = new vWeapon();
+			if (vWeapon) {
+				vis = new vWeapon();
+			}
 		}
 		
 		public function lineCel():int {

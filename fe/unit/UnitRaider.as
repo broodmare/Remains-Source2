@@ -196,10 +196,10 @@ package fe.unit {
 			var headArr:Array = [{x: 100, y: 100, r: 10}];
 			aiNapr=storona;
 
-			if (!currentWeapon || currentWeapon.tip <= Weapon.TYPE_MELEE && weaponKrep == 1) {
+			if (!currentWeapon || (currentWeapon.tip == Weapon.TYPE_INTERNAL || currentWeapon.tip == Weapon.TYPE_MELEE) && weaponKrep) {
 				attackerType = 0;	// [body attack]
 			}
-			else if (currentWeapon.tip == Weapon.TYPE_MELEE && weaponKrep == 0) {
+			else if (currentWeapon.tip == Weapon.TYPE_MELEE && !weaponKrep) {
 				attackerType = 1;	// [melee weapon attack]
 			}
 			else if (currentWeapon.tip == Weapon.TYPE_EXPLOSIVES) {

@@ -654,6 +654,7 @@ package fe {
 			showButtons(false);
 			mainMenuMovieClip.loading.text = "Loading";
 			language.changeLanguage(nid);
+			world.saveConfig();		// Remember the selected language
 			langReload = true;
 		}
 		
@@ -736,12 +737,17 @@ package fe {
 				mainMenuMovieClip.loading.text = "Loading " + (Math.floor(stn / 30)) + "\n";
 				world.init2();
 				
-				if (world.allLandsLoaded) {
+				if (world.allLandsLoaded && Snd.audioReady) {
 					setLangButtons();
 					setMainLang();
 					loaded = true;
 					showButtons(true);
 					return;
+				}
+
+				if (world.allLandsLoaded && !Snd.audioReady) {
+					mainMenuMovieClip.loading.text += "Audio SFX " + Snd.totalSoundsLoaded + "/" + Snd.totalSoundsToLoad +
+						" Music " + Snd.totalSongsLoaded + "/" + Snd.totalSongsToLoad;
 				}
 				
 				mainMenuMovieClip.loading.text += world.load_log;

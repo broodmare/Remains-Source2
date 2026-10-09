@@ -24,7 +24,8 @@ package fe.unit {
 			visionMult=1.5;
 			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosGriffon1");
-			arm = SymbolFactory.fetchSymbolClass("visualGrifArm" + String(tr)) || SymbolFactory.fetchSymbolClass("visualGrifArm1") as MovieClip;
+			var armClass:Class = SymbolFactory.fetchSymbolClass("visualGrifArm" + String(tr)) || SymbolFactory.fetchSymbolClass("visualGrifArm1");
+			arm = new armClass() as MovieClip;
 			
 			if (grenader > 0) {
 				thWeapon = WeaponManager.reference.cloneWeapon("mercgr");

@@ -16,6 +16,7 @@ package fe.inter {
 	import fe.unit.Unit;
 	import fe.unit.Armor;
 	import fe.unit.UnitPlayer;
+	import fe.weapon.Ammo;
 	import fe.loc.Quest;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
@@ -53,7 +54,6 @@ package fe.inter {
 		public var curTip:String = "";
 		public var tips:Array = [[]];
 
-		public static var infoCache:Object = {}; // Static cache for item descriptions
 		
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
@@ -337,12 +337,18 @@ package fe.inter {
 			if (tip == 1) { // Weapon 
 				var data:Object = WeaponManager.reference.weaponData(id);
 				
-				if (data.tip == "magic") {
+				// [Spells use their item icon] Unique variants use the base spell's icon, eg. "mbul" for "mbul^1"
+				if (data.tip == Weapon.TYPE_MAGIC) {
 					tip = 3;
+					
+					if (id.indexOf("^") >= 0) {
+						id = id.substr(0, id.indexOf("^"));
+					}
 				}
 				else {
-					var vWeapon:Class = data.vWeapon;
-					var data:Object = WeaponManager.reference.weaponData(id);
+					// Use the weapon's own sprite, unique variants have their own (eg. "vismont_1") and some weapons use another weapon's sprite
+					var w:Weapon = World.w.gg.invent.equipment.getWeapon(id) || pip.displayWeapon(id);
+					var vWeapon:Class = w ? w.vWeapon : null;
 					
 					if ("vis_vico" in data) { // Did this ever actually work? I can't find a 'vico' node in the original XML 
 						vWeapon = Res.getClass(data.vis_vico, null);
@@ -576,14 +582,6 @@ package fe.inter {
 			var gg:UnitPlayer = World.w.gg;
 			var inv:Inventory = World.w.gg.invent;							// Reference to the player inventory
 
-			// Generate a unique cache key
-			var cacheKey:String = tip + ":" + id;
-
-			// Check if the value is already cached
-			if (infoCache[cacheKey] != null) {
-				return infoCache[cacheKey];
-			}
-
 			var s:String = "";
 
 			// Switch from armor to item if not found
@@ -597,10 +595,10 @@ package fe.inter {
 
 			// Weapons or explosives
 			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) {
-				var w:Weapon = inv.equipment.getWeapon(id);
+				// The player's own weapon, or a copy of it for weapons they don't have (eg. at vendors)
+				var w:Weapon = inv.equipment.getWeapon(id) || pip.displayWeapon(id);
 				
 				if (!w) {
-					infoCache[cacheKey] = "";
 					return "";
 				}
 
@@ -633,7 +631,7 @@ package fe.inter {
 							s += " (-20% ";
 						}
 						
-						if (w.tip == "cryo") {
+						if (w.tip == Weapon.TYPE_MELEE) {
 							s += localize("pip", "rapid");
 						}
 						else if (w.tip == Weapon.TYPE_EXPLOSIVES) {
@@ -713,15 +711,15 @@ package fe.inter {
 				s += "\n" + localize("pip", "critch") + ": " + textAsColor("yellow", Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + "%");
 				s += "\n" + localize("pip", "tipdam") + ": " + textAsColor("blue", localize("pip", w.tipDamage));
 
-				if (w.tip < Weapon.TYPE_EXPLOSIVES && w.magazineCapacity > 0) {
-					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", w.ammo.name);
+				if (w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC && w.magazineCapacity > 0) {
+					s += "\n" + localize("pip", "inv5") + ": " + textAsColor("yellow", w.ammo ? w.ammo.name : "");
 					s += "\n" + localize("pip", "holder") + ": " + numberAsColor("yellow", w.magazineCapacity);
 				}
 
 				if (w.rashod > 1) {
 					s += " (" + numberAsColor("yellow", w.rashod) + " " + localize("pip", "rashod") + ")";
 				}
-				if (w.tip == "magic") {
+				if (w.tip == Weapon.TYPE_MAGIC) {
 					s += "\n" + localize("pip", "dmana") + ": " + numberAsColor("yellow", Math.round(w.mana));
 				}
 				if (w.precision > 0) {
@@ -762,17 +760,22 @@ package fe.inter {
 					sinf = Res.txt("w", w.id, 1);
 				}
 
-				if (World.w.hardInv && w.tip == "internal" || w.tip == "cryo" || w.tip == "lightGun" || w.tip == "heavyGun") {
+				if (World.w.hardInv && w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
 					s += "\n" + localize("pip", "mass2") + ": <span class = 'mass'>" + w.mass + "</span>";
 				}
 				else if (World.w.hardInv && w.tip == Weapon.TYPE_EXPLOSIVES) {
-					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getItem(id).m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getItem(id).invCat) + ")";
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getWeight(id) + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 
 				s += "\n\n" + sinf;
 			}
 			else if (tip == Item.L_ARMOR) {
-				var armRef:Armor = inv.equipment.getArmor(id);
+				// The player's own armor, or a default copy for armor they don't have
+				var armRef:Armor = inv.equipment.getArmor(id) || ArmorManager.reference.armor(id);
+				
+				if (!armRef) {
+					return "";
+				}
 
 				// Print all armor bonuses if they exist
 				if (armRef.armorQual > 0) {
@@ -819,45 +822,54 @@ package fe.inter {
 				s += "\n\n" + Res.txt("a", id, 1);
 			}
 			else if (tip == Item.L_AMMO) {
-				var ammo:Object = ItemManager.reference.getItem(id);
+				var ammoData:Object = ItemManager.reference.getItem(id);
+				var ammo:Ammo = WeaponManager.reference.getAmmo(id);
 				
-				// Get the name of the base ammo type (Eg. '9mm')
-				s = Res.txt("i", ammo.base, 1);
-				
-				// Add the type of ammo variant if applicable (Eg. 'High Explosive)
-				if ("mod" in ammo) {
-					// Forms the localization string key as "STR_AMMO_FLECHETTE"
-					s += "\n\n" + Res.txt("p", "STR_AMMO_" + ammo.mod.toUpperCase(), 1);
+				// [Explosives on the ammo page use the weapon's description]
+				if (id in WeaponManager.reference.allWeaponData()) {
+					s = Res.txt("w", id, 1);
+				}
+				else if (ammo.base != "") {
+					// Get the description of the base ammo type (Eg. '9mm')
+					s = Res.txt("i", ammo.base, 1);
+					
+					// Add the description of the ammo variant if applicable (Eg. 'Armor-piercing')
+					if (ammo.mod != "") {
+						s += "\n\n" + LanguageManager.reference.localDesc("pip", "STR_AMMO_" + ammo.mod.toUpperCase());
+					}
+				}
+				else {
+					s = Res.txt("i", id, 1);
 				}
 
 				s += "\n";
 
-				if ("damage" in ammo) {
-					s += "\n" + localize("pip", "damage") + ": x" + textAsColor("yellow", ammo.damage);
+				if (ammo.damageMultiplier != 1) {
+					s += "\n" + localize("pip", "damage") + ": x" + numberAsColor("yellow", ammo.damageMultiplier);
 				}
 				
-				if ("pier" in ammo) {
-					s += "\n" + localize("pip", "pier") + ": " + textAsColor("yellow", ammo.pier);
+				if (ammo.piercing != 0) {
+					s += "\n" + localize("pip", "pier") + ": " + numberAsColor("yellow", ammo.piercing);
 				}
 				
-				if ("armor" in ammo) {
-					s += "\n" + localize("pip", "tarmor") + ": x" + textAsColor("yellow", ammo.armor);
+				if (ammo.armorMultiplier != 1) {
+					s += "\n" + localize("pip", "tarmor") + ": x" + numberAsColor("yellow", ammo.armorMultiplier);
 				}
 				
-				if ("prec" in ammo) {
-					s += "\n" + localize("pip", "prec") + ": x" + textAsColor("yellow", ammo.prec);
+				if (ammo.accuracyModifier != 1) {
+					s += "\n" + localize("pip", "prec") + ": x" + numberAsColor("yellow", ammo.accuracyModifier);
 				}
 				
-				if ("det" in ammo) {
+				if (ammo.increasedWear > 0) {
 					s += "\n" + localize("pip", "det");
 				}
 				
-				if (World.w.hardInv && "m" in ammo && ammo.m > 1) {
-					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ammo.m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getItem(id).invCat) + ")";
+				if (World.w.hardInv && ammoData.m > 0) {
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ammoData.m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 				
-				if ("sell" in ammo && ammo.sell > 1) {
-					s += "\n" + localize("pip", "sell") + ": " + textAsColor("yellow", ammo.sell);
+				if (ammoData.sell > 0) {
+					s += "\n" + localize("pip", "sell") + ": " + textAsColor("yellow", ammoData.sell);
 				}
 			}
 			else {
@@ -924,11 +936,11 @@ package fe.inter {
 				if (tip == "spell") {
 					s += "\n" + localize("pip", "dmana2") + ": "
 						+ textAsColor("yellow", pot.mana)
-						+ " (" + numberAsColor("yellow", Math.round(pot.@mana * World.w.pers.allDManaMult)) + ")";
+						+ " (" + numberAsColor("yellow", Math.round(pot.mana * World.w.pers.allDManaMult)) + ")";
 					
 					s += "\n" + localize("pip", "culd") + ": "
 						+ textAsColor("yellow", pot.culd + Res.txt("g", "sec"))
-						+ " (" + textAsColor("yellow", Math.round(pot.@culd * World.w.pers.spellDown)
+						+ " (" + textAsColor("yellow", Math.round(pot.culd * World.w.pers.spellDown)
 						+ Res.txt("g", "sec")) + ")";
 					
 					s += "\n" + localize("pip", "is1") + ": "
@@ -972,7 +984,7 @@ package fe.inter {
 				if (World.w.hardInv && pot.m > 0) {
 					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>"
 						+ pot.m + "</span> ("
-						+ localize("pip", "vault" + ItemManager.reference.getItem(id).invCat) + ")";
+						+ localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 				
 				if (pot.sell > 0) {
@@ -981,8 +993,6 @@ package fe.inter {
 				}
 			}
 
-			// Cache the result before returning
-			infoCache[cacheKey] = s;
 			return s;
 		}
 		
@@ -1029,12 +1039,13 @@ package fe.inter {
 				}
 			}
 			else if (tip == Item.L_ARMOR) {
-				var a:Object = ArmorManager.reference.armorData(id);
+				// The player's own armor, or a default copy for armor they don't have
+				var a:Armor = inv.equipment.getArmor(id) || ArmorManager.reference.armor(id);
 
-				if (craft > 0) {
+				if (craft > 0 || a == null) {
 					setIco();
 				}
-				else if (a.tip == 3) {
+				else if (a.tip == Armor.TYPE_AMULET) {
 					setIco(3, id);
 				}
 				else {
@@ -1043,9 +1054,9 @@ package fe.inter {
 
 				s = infoStr(tip, id);
 				
-				if (craft == 2) {
-					var cid:String = a.idComp;		// What component needed
-					var kolcomp:int = a.kolComp;	// How many components needed
+				if (craft == 2 && a) {
+					var cid:String = a.idComp;										// What component needed
+					var kolcomp:int = ArmorManager.upgradeComponentsNeeded(a);		// How many components needed for the next upgrade
 
 					s += "\n\n<span class = 'orange'>" + Res.txt('i', cid) +  " - " + kolcomp + " <span ";
 					
@@ -1069,11 +1080,11 @@ package fe.inter {
 			else if (tip == Item.L_AMMO) {
 				var ammo:Object = ItemManager.reference.getItem(id);
 				
-				if ("base" in ammo) {
-					vis.nazv.text = Res.txt('i', ammo.@base);
+				if (ammo.base) {
+					vis.nazv.text = Res.txt('i', ammo.base);
 
-					if (ammo.mod > 0) {
-						vis.nazv.text += '\n' + localize("pip", 'ammomod_' + ammo.mod);
+					if (ammo.mod) {
+						vis.nazv.text += '\n' + localize("pip", "STR_AMMO_" + String(ammo.mod).toUpperCase());
 					}
 					else {
 						vis.nazv.text += '\n' + localize("pip", 'ammomod_0');
@@ -1134,35 +1145,37 @@ package fe.inter {
 				s += localize("pip", 'crekol') + ": " + kol + "\n";
 			}
 			
-			if ("skill" in sch && "lvl" in sch) {
+			if ("skill" in sch && "skillRequirement" in sch) {
 				s += "\n" + localize("pip", 'needskill') + ": <span class = '";
 
-				if (gg.pers.getSkillLevel(sch.skill) < sch.lvl) {
+				if (gg.pers.getSkillLevel(sch.skill) < sch.skillRequirement) {
 					s += "red";
 				}
 				else {
 					s += "pink";
 				}
-				
-				s += "'>" + Res.txt('e', sch.skill) + " - " + sch.lvl + "</span>\n";
+
+				s += "'>" + Res.txt('e', sch.skill) + " - " + sch.skillRequirement + "</span>\n";
 			}
-			
-			// ??? Probably broke
-			for each(var c in sch.craft) {
-				s += "\n<span class = 'orange'>" + Res.txt('i', c.id) +  " - " + c.kol + " <span ";
-				
-				if (!World.w.loc.base && c.kol > inv.getQuantity(c.id) ||
-				  	 World.w.loc.base && c.kol > inv.getQuantity(c.id) + World.w.vault.getQuantity(c.id)
-				  ){
+
+			// Crafting ingredients (items stored in the vault can also be used at the base)
+			for (var ingredientID:String in sch.ingredients) {
+				var needed:int = sch.ingredients[ingredientID];
+				var inInventory:int = inv.getQuantity(ingredientID);
+				var inVault:int = World.w.loc.base ? World.w.vault.getQuantity(ingredientID) : 0;
+
+				s += "\n<span class = 'orange'>" + Res.txt('i', ingredientID) +  " - " + needed + " <span ";
+
+				if (needed > inInventory + inVault) {
 					s += "class='red'";
 				}
-				
-				s += ">(" + inv.getQuantity(c.id);
-				
-				if (World.w.loc.base && World.w.vault.getQuantity(c.id) > 0) {
-					s += ' +' + World.w.vault.getQuantity(c.id);
+
+				s += ">(" + inInventory;
+
+				if (inVault > 0) {
+					s += ' +' + inVault;
 				}
-				
+
 				s += ")</span></span>";
 			}
 			
@@ -1533,10 +1546,5 @@ package fe.inter {
 			}
 			return true; // No properties found, it's empty
 		}
-
-		private static function crash():void {
-			var obj:Object = null;
-			trace(obj.someProperty); // Crashes with a null reference error
-		}
-	}	
+	}
 }

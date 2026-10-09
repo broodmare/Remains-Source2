@@ -94,28 +94,35 @@ package fe.inter {
 				statHead.ammo.text		= "";
 				statHead.ammotip.text	= "";
 				
+				var itemManager:ItemManager = ItemManager.reference;
+				
+				// [Schematics the player has for this workbench]
 				for each (var item:InventoryItem in inv.getAllItems()) {
+					if (item.quantity <= 0 || !itemManager.hasItem(item.id)) {
+						continue;
+					}
 					
-					var data:Object = ItemManager.reference.getItem(item.id);
+					var data:Object = itemManager.getItem(item.id);
 					
-					if (data.tip == "scheme" && "work" in data && (data.work == 0 || data.work == pip.workTip || data.work == "expl" && pip.workTip == "work")) {
+					if (data.tip == Item.L_SCHEME && (!("work" in data) || data.work == pip.workTip || data.work == "expl" && pip.workTip == "work")) {
 						var ok:int = 1;
 						
-						if ("skill" in data && "lvl" in data && gg.pers.getSkillLevel(data.skill) < data.lvl) {
+						if (!hasSchemeSkill(data)) {
 							ok = 2;
 						}
 						
 						// Get the real item ID by removing the first two letters from the id, eg. "s_pizza" turns into "pizza"
 						var wid:String = data.id.substr(2);
+						var sort:String = data.skill + data.skillRequirement;
 						
-						if (inv.equipment.hasEquipment(wid)) {
+						if (inv.equipment.hasWeapon(wid)) {
 							if (inv.equipment.getWeapon(wid).respect == Weapon.WEP_BLUEPRINT || inv.equipment.getWeapon(wid).tip == Weapon.TYPE_EXPLOSIVES) {
 								n = {
 									tip:	Item.L_WEAPON,
 									id:		wid,
-									nazv:	Res.txt("w", wid),
+									nazv:	Item.nameOf(wid, Item.L_WEAPON),
 									ok:		ok,
-									sort:	data.skill + data.lvl
+									sort:	sort
 								};
 								
 								if (inv.hasItem(wid)) {
@@ -126,32 +133,39 @@ package fe.inter {
 								assArr[n.id] = n;
 							}
 						}
-						else if (inv.equipment.getArmor(wid)) {
+						else if (inv.equipment.hasArmor(wid)) {
 							if (inv.equipment.getArmor(wid).lvl < 0) {
 								n = {
 									tip:	Item.L_ARMOR,
 									id:		wid,
-									nazv:	Res.txt("a", wid),
+									nazv:	Item.nameOf(wid, Item.L_ARMOR),
 									ok:		ok,
-									sort:	data.skill + data.lvl
+									sort:	sort
 								};
 								
 								arr.push(n);
 							}
 						}
 						else {
+							if (!itemManager.hasItem(wid)) {
+								trace("PipPageWork.as/setSubPages() - ID: \"" + wid + "\" for schematic: \"" + data.id + "\" doesn't match any items");
+								continue;
+							}
 							
-							if ((data.tip == Item.L_IMPL || data.one > 0) && inv.hasItem(wid)) {
-								trace("PipPageWork.as/setSubPages() - We've already made this item");
-								continue; // [Only one piece]
-							}	
+							var crafted:Object = itemManager.getItem(wid);
+							
+							// [Only one piece]
+							if ((crafted.tip == Item.L_IMPL || crafted.one > 0) && inv.hasItem(wid)) {
+								continue;
+							}
 							
 							n = {
-								tip:(data.tip == Item.L_IMPL ? Item.L_IMPL : Item.L_ITEM),
-								kol:inv.getQuantity(wid),
-								id:wid, nazv:Res.txt("i", wid),
-								ok:ok,
-								sort:data.skill + data.lvl
+								tip:	(crafted.tip == Item.L_IMPL ? Item.L_IMPL : Item.L_ITEM),
+								kol:	inv.getQuantity(wid),
+								id:		wid,
+								nazv:	Item.nameOf(wid, crafted.tip),
+								ok:		ok,
+								sort:	sort
 							};
 
 							arr.push(n);
@@ -187,8 +201,9 @@ package fe.inter {
 					}
 				}
 				
+				// [Homemade weapons can be upgraded to their unique variant]
 				for each(var weap:Weapon in inv.equipment.weapons) {
-					if (weap.skill==3 && weap.variant == 0 && weap.respect != Weapon.WEP_BLUEPRINT) {
+					if (weap.skill == 3 && !weap.variant && weap.respect != Weapon.WEP_BLUEPRINT && ItemInteraction.uniqueVariant(weap.id) && !inv.equipment.hasWeapon(ItemInteraction.uniqueVariant(weap.id))) {
 						n = {tip:Item.L_WEAPON, id:weap.id, nazv:weap.nazv, sort:("w" + weap.nazv)};
 						arr.push(n);
 					}
@@ -225,7 +240,7 @@ package fe.inter {
 						n = {
 							tip:	Item.L_INSTR,
 							id:		"owl",
-							nazv:	ItemManager.reference.getItem("owl").nazv,
+							nazv:	Item.nameOf("owl"),
 							hp:		World.w.pers.owlhp * World.w.pers.owlhpProc,
 							maxhp:	World.w.pers.owlhp,
 							rep:	owlRep / World.w.pers.owlhp
@@ -238,7 +253,7 @@ package fe.inter {
 				}
 				
 				for each (var w:Weapon in inv.equipment.weapons) {
-					if (w.tip != "internal" && w.tip != "explosives" && w.respect != Weapon.WEP_LOCKED && w.hp < w.maxhp) {
+					if (w.tip != Weapon.TYPE_INTERNAL && w.tip != Weapon.TYPE_EXPLOSIVES && w.respect != Weapon.WEP_LOCKED && w.hp < w.maxhp) {
 						n = {
 							tip:	Item.L_WEAPON,
 							id:		w.id,
@@ -364,18 +379,22 @@ package fe.inter {
 			}
 		}
 		
+		// [The player's skill is high enough to use a schematic]
+		private function hasSchemeSkill(data:Object):Boolean {
+			return !("skill" in data && "skillRequirement" in data && gg.pers.getSkillLevel(data.skill) < data.skillRequirement);
+		}
+		
 		// Check if the player meets all the requirements to craft an item
 		private function checkScheme(data:Object):Boolean {
 			// Skill and level requirements
-			if ("skill" in data && "lvl" in data && gg.pers.getSkillLevel(data.skill) < data.lvl) {
-				World.w.gui.infoText("needSkill", Res.txt("e", data.skill), data.lvl);	// [skill required]
-				
+			if (!hasSchemeSkill(data)) {
+				World.w.gui.infoText("needSkill", LanguageManager.reference.localText("effect", data.skill), data.skillRequirement);	// [skill required]
 				return false;
 			}
 			
-			// Crafting ingredients
+			// Crafting ingredients (items stored in the vault can also be used at the base)
 			for (var ingredientID:String in data.ingredients) {
-				if ((inv.getQuantity(ingredientID) + World.w.vault.getQuantity(ingredientID)) < data.ingredients[ingredientID]) {
+				if (!gg.itemInteraction.checkKol(ingredientID, data.ingredients[ingredientID])) {
 					World.w.gui.infoText("noMaterials");
 					return false;
 				}
@@ -387,7 +406,7 @@ package fe.inter {
 		// [subtract the number of components required for crafting]
 		private function minusCraftComp(data:Object):void {
 			for (var ingredientID:String in data.ingredients) {
-				inv.decreaseQuantity(data.id, data.ingredients[ingredientID]);
+				gg.itemInteraction.minusItem(ingredientID, data.ingredients[ingredientID], false);
 			}
 		}
 		
@@ -405,7 +424,7 @@ package fe.inter {
 			
 			if (page2 == PAGE_CRAFT) {
 				var string2:String = "s_" + cid;
-				var data:Object = ItemManager.reference.getItem(string2);
+				var data:Object = ItemManager.reference.getSchematic(string2);
 				var kol:int = 1;
 				
 				if ("kol" in data) {
@@ -424,14 +443,14 @@ package fe.inter {
 					w = inv.equipment.getWeapon(cid);
 					var obj = assArr[cid];
 					
-					if (w.tip != "explosives" && w.respect != Weapon.WEP_BLUEPRINT) {
+					if (w.tip != Weapon.TYPE_EXPLOSIVES && w.respect != Weapon.WEP_BLUEPRINT) {
 						return;
 					}
 					
 					minusCraftComp(data);
 					
-					if (w.tip == "explosives") {
-                        inv.increaseQuantity(w.id, kol);
+					if (w.tip == Weapon.TYPE_EXPLOSIVES) {
+                        gg.itemInteraction.plusItem(w.id, kol);
                         obj.kol = inv.getQuantity(w.id);
                         World.w.gui.infoText("created2", cnazv, inv.getQuantity(cid));
                         infoItem(ccat, cid, cnazv, 1);
@@ -444,7 +463,7 @@ package fe.inter {
                         setStatus();
                     }
 					
-					//inv.calcWeaponMass();	FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					ItemInteraction.calcWeaponMass(inv);
 				}
 				else if (ccat == Item.L_ARMOR) {
 					arm = inv.equipment.getArmor(cid);
@@ -460,8 +479,8 @@ package fe.inter {
 				}
 				else if (ccat == Item.L_IMPL) {
 					minusCraftComp(data);
-					inv.increaseQuantity(cid, 1);
-					//inv.takeScript(cid); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+					gg.itemInteraction.plusItem(cid, 1);
+					gg.itemInteraction.takeScript(cid);
 					World.w.gui.infoText("created4", cnazv);
 					gg.pers.setParameters();
 					setStatus();
@@ -469,12 +488,12 @@ package fe.inter {
 				else if (ccat == Item.L_ITEM) {
 					var obj = assArr[cid];
 					minusCraftComp(data);
-					inv.increaseQuantity(cid, kol);
+					gg.itemInteraction.plusItem(cid, kol);
 					obj.kol = inv.getQuantity(cid);
 					World.w.gui.infoText("created2", cnazv, inv.getQuantity(cid));
 					infoItem(ccat,cid,cnazv, 1);
 					
-					if ("one" in ItemManager.reference.getItem(cid).data && ItemManager.reference.getItem(cid).data.one == "1") {
+					if (ItemManager.reference.getItem(cid).one == 1) {
 						setStatus();
 					}
 					
@@ -501,9 +520,9 @@ package fe.inter {
 						return;
 					}
 				
-					var kol:int = arm.kolComp;
-					if (inv.getQuantity(arm.idComp) >= kol) {
-						inv.decreaseQuantity(arm.idComp, kol);
+					var kol:int = ArmorManager.upgradeComponentsNeeded(arm);
+					if (gg.itemInteraction.checkKol(arm.idComp, kol)) {
+						gg.itemInteraction.minusItem(arm.idComp, kol, false);
 						ArmorManager.upgradeArmor(arm);
 						gg.pers.setParameters();
 						World.w.gui.infoText("upArmor");
@@ -515,14 +534,14 @@ package fe.inter {
 				}
 				else if (ccat == Item.L_WEAPON) {
 					// Create the name of the schematic, eg. "s_dartgun" and retrieve the data for the schematic
-					var data:Object = ItemManager.reference.getItem("s_" + cid);
+					var data:Object = ItemManager.reference.getSchematic("s_" + cid);
 					
 					if (!checkScheme(data)) {
 						return;
 					}
 
 					minusCraftComp(data);
-					//inv.updWeapon(cid, 1); FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME NOT SURE IF STILL NEEDED
+					gg.itemInteraction.upgradeWeapon(cid);
 					World.w.gui.infoText("created", cnazv + Weapon.variant2);
 					setStatus();
 				}
@@ -540,10 +559,10 @@ package fe.inter {
 					
 					var cid2:String = inv.equipment.getArmor(cid).idComp;
 					
-					if (inv.hasItem(cid2)) {
+					if (gg.itemInteraction.checkKol(cid2)) {
 						var repairAmount:Number = arm.maxhp*gg.pers.repairMult/arm.kolComp;
 						ArmorManager.reference.repair(arm, repairAmount);
-						inv.decreaseQuantity(cid2);
+						gg.itemInteraction.minusItem(cid2);
 						obj.hp = arm.hp;
 						showBottext(cid2);
 					}
@@ -552,11 +571,11 @@ package fe.inter {
 					}
 				}
 				else if (ccat == Item.L_WEAPON) {
-					if (inv.hasItem("frag")) {
+					if (gg.itemInteraction.checkKol("frag")) {
 						w = inv.equipment.getWeapon(cid);
 						
-						if (WeaponManager.reference.repairWeapon(w, 0.25)) {
-							inv.decreaseQuantity("frag");
+						if (gg.itemInteraction.repWeapon(w, 0.25)) {
+							gg.itemInteraction.minusItem("frag");
 							obj.hp = w.hp;
 							showBottext("frag");
 						}
@@ -566,12 +585,12 @@ package fe.inter {
 					}
 				}
 				else if (ccat == Item.L_INSTR) {
-					if (inv.hasItem("scrap")) {
+					if (gg.itemInteraction.checkKol("scrap")) {
 						var owl:UnitPet = gg.pets[cid];
 						var owlRep:int = 100;
 					
 						if (owl.repair(owlRep * gg.pers.repairMult)) {
-							inv.decreaseQuantity("scrap");
+							gg.itemInteraction.minusItem("scrap");
 							obj.hp = owl.hp;
 							showBottext("scrap");
 						}
@@ -585,7 +604,7 @@ package fe.inter {
 			}
 			
 			pip.snd(1);
-			//inv.calcMass();	// FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME FIX ME 
+			ItemInteraction.calcMass(inv);
 			pip.setRPanel();
 		}	
 	}	

@@ -25,34 +25,44 @@ package fe.weapon {
 
 		public var sndFall:String	= "";
 		
-		// Constructor
-		public function WThrow(w:Weapon, data:Object) {
-			// Get all the properties from an already made default weapon and use them
-			WeaponCopier.copyFrom(w, this);
-			
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		public function WThrow() {
+			super();
+		}
+		
+		public override function init(data:Object):void {
 			noPerc				= true;
 			vBullet				= vWeapon;
 			magazineCapacity	= 1;
-			ammo				= WeaponManager.reference.getAmmo(data.id);
+			
+			// [Explosives are their own ammo]
+			ammo				= WeaponManager.reference.getAmmo(id);
+			ammoTarg			= ammo;
 
 			animated			= false;
-			//vis.gotoAndStop(1);	// Why was this being called during initialization?
+			
+			if (vis) {
+				vis.gotoAndStop(1);
+			}
 			
 			if ("throwtip" in data) {
 				throwTip = data.throwtip;
+			}
+			
+			if (throwTip > 0) {
 				lvlNoUse = true;
 			}
 
-			if ("time" in data) {
-				detTime = data.time;
+			if ("char_time" in data) {
+				detTime = data.char_time;
 			}
 
-			if ("radio" in data) {
-				radio = data.radio;
+			if ("char_radio" in data) {
+				radio = data.char_radio;
 			}
 
-			if ("bumc" in data) {
-				bumc = data.bumc;
+			if ("phis_bumc" in data) {
+				bumc = data.phis_bumc;
 			}
 
 			if ("snd_fall" in data) {
@@ -123,7 +133,7 @@ package fe.weapon {
 				}
 			}
 			
-			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * RAD_TO_DEG;
+			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * DEG_TO_RAD;
 			var rasstx:Number = owner.celX - coordinates.X;
 			var rassty:Number = owner.celY - coordinates.Y;
 			
@@ -201,7 +211,7 @@ package fe.weapon {
 			
 			if (owner.player && loc.train) {
 				World.w.invent.increaseQuantity(ammo.id);
-				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass;
+				World.w.calcMass = true;
 			}
 			
 			t_auto = 3;
@@ -250,36 +260,37 @@ package fe.weapon {
 			trasser.trass(gr);
 		}
 
+		// Take one of this explosive from the player's inventory (or the unit's own supply)
 		public function getAmmo():Boolean {
 			if (owner.player) {
-				//return (owner as UnitPlayer).getInvAmmo(ammo, 1, 1, true) > 0
-			}
-			else {
-				if (kolAmmo <= 0) {
-					return false;
-				}
-				else {
-					kolAmmo--
-					return true;
-				}
+				return (owner as UnitPlayer).getInvAmmo(ammo.id, 1, 1, true) > 0;
 			}
 			
-			return false;
+			if (kolAmmo <= 0) {
+				return false;
+			}
+			
+			kolAmmo--;
+			return true;
 		}
 		
 		public override function animate():void {
 			super.animate();
+			
+			if (!vis) {
+				return;
+			}
+			
 			vis.rotation = 0;
 			vis.scaleX = 1;
 			
-			/*
-			if (t_attack > 0 || kolAmmo <= 0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo) <= 0) {
+			// [Hide the explosive while it's being thrown or if there's none left]
+			if (t_attack > 0 || kolAmmo <= 0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo.id) <= 0) {
 				vis.alpha = 0;
 			}
 			else {
 				vis.alpha = 1;
 			}
-			*/
 		}
 		
 		public override function detonator():Boolean {

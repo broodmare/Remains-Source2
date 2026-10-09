@@ -92,7 +92,7 @@ package fe.unit {
 			if (charNode.@maxhp>0) hp=maxhp=charNode.@maxhp;
 			if (charNode.@damexpl.length()) damage1=charNode.@damexpl;
 			if (charNode.@knock.length()) otbros1=charNode.@knock;
-			if (charNode.@tipdam.length()) tipDamage=charNode.@tipdam;
+			if (charNode.@tipdam.length()) tipDamage=Resistances.parseDamageType(charNode.@tipdam);
 			if (charNode.@destroy.length()) wdestroy=charNode.@destroy;
 			if (charNode.@expl.length()) explRadius=charNode.@expl;
 			if (charNode.@time.length()) explTime=charNode.@time;
@@ -234,6 +234,10 @@ package fe.unit {
 			
 			inter.coordinates.X = coordinates.X;
 			inter.coordinates.Y = coordinates.Y;
+
+			if (isPlayerInteractingWithThis()) {
+				return;
+			}
 			
 			if (aiState==1 && detectionDelay <= 0 && sens>0) { //взведена, поиск целей
 				if (aiN%4==0) {

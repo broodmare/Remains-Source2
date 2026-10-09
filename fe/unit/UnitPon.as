@@ -39,15 +39,15 @@ package fe.unit {
 						weaponX = coordinates.X;
 					}
 					
-					if (tip == Resistances.DAM_CUT) {
+					if (tip == Weapon.TYPE_MELEE) {
 						weaponY = coordinates.Y - this.boundingBox.height * 0.40;
 					}
 					else {
 						weaponY = coordinates.Y - this.boundingBox.height * 0.70;
 					}
 				}
-				// TODO CHECK THIS THIS IS RIGHT vvv
-				else if (tip == Resistances.DAM_CUT || tip == Resistances.DAM_BLUNT || tip == Resistances.DAM_EXPLOSION) {	 // [in the teeth]
+				// [Melee weapons, light guns and explosives are held in the teeth]
+				else if (tip == Weapon.TYPE_MELEE || tip == Weapon.TYPE_LIGHTGUN || tip == Weapon.TYPE_EXPLOSIVES) {	 // [in the teeth]
 					weaponX = coordinates.X;
 					weaponY = coordinates.Y - this.boundingBox.height * 0.50;
 				}

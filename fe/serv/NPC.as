@@ -54,7 +54,7 @@ package fe.serv {
 					vendor = World.w.game.vendorManager.vendors[vid];
 				}
 				else {
-					vendor = new Vendor();
+					vendor = World.w.game.vendorManager.createRandomVendor(vid, ndif);
 					if (vid == 'doctor') {
 						npcInter = 'doc';
 					}
@@ -292,7 +292,7 @@ package fe.serv {
 						if (dial.reward.length()) {
 							for each(var rew in dial.reward) {
 								if (rew.@id.length()) {
-										World.w.invent.increaseQuantity(rew.@id, rew.@kol);
+										World.w.gg.itemInteraction.giveReward(rew.@id, rew.@kol.length() ? int(rew.@kol) : -1);
 								}
 							}
 						}
@@ -411,7 +411,7 @@ package fe.serv {
 				
 				for each(var node in xml.rep) {
 					if (World.w.invent.getQuantity(node.@id) < node.@kol) {
-						World.w.gui.infoText('required', ItemManager.reference.getItem(node.@id).nazv, node.@kol - World.w.invent.getQuantity(node.@id));
+						World.w.gui.infoText('required', Item.nameOf(node.@id), node.@kol - World.w.invent.getQuantity(node.@id));
 						ok = false;
 					}
 				}
@@ -419,8 +419,7 @@ package fe.serv {
 				if (ok) {
 					for each(node in xml.rep) {
 						if (World.w.invent.hasItem(node.@id)) {
-							World.w.invent.decreaseQuantity(node.@id, node.@kol);
-							World.w.gui.infoText('withdraw', ItemManager.reference.getItem(node.@id).nazv, node.@kol);
+							World.w.gg.itemInteraction.withdraw(node.@id, node.@kol);
 						}
 					}
 					World.w.gui.dialog('rblAutoDocR4');
@@ -464,7 +463,7 @@ package fe.serv {
 			}
 			else if (rep == 1) { //после осмотра
 				if (World.w.invent.getQuantity(xml.@needitem) > 0) {	//есть лекарство
-					World.w.invent.decreaseQuantity(xml.@needitem, 1);
+					World.w.gg.itemInteraction.minusItem(xml.@needitem, 1);
 					rep = 2;
 					World.w.gui.dialog('dialPatient5');
 					World.w.game.triggers['patient_tr2'] = 'wait';

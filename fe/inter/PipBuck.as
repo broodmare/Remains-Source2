@@ -45,6 +45,9 @@ package fe.inter  {
 		
 		// [These variables set depending on which object or NPC called the interface]
 		public var vendor:Vendor;					// [associated merchant]
+		
+		private var _displayWeapons:Object	= {};	// Copies of weapons used to show their stats when the player doesn't have them (formerly arrWeapon)
+		private var _displayOwner:Unit;
 		public var npcInter:String		= "";		// [type of interaction of the associated NPC]
 		public var npcId:String			= "";		// [ID of the associated NPC]
 		public var workTip:String		= "work";	// [type of associated crafting station]
@@ -429,6 +432,20 @@ package fe.inter  {
 
 		public function massUnshow(event:MouseEvent):void {
 			vishelp.visible = false;
+		}
+		
+		// A copy of a weapon for showing its stats, eg. for weapons sold by vendors
+		public function displayWeapon(id:String):Weapon {
+			if (_displayOwner != World.w.gg) {
+				_displayOwner = World.w.gg;
+				_displayWeapons = {};
+			}
+			
+			if (!(id in _displayWeapons)) {
+				_displayWeapons[id] = WeaponManager.reference.cloneWeapon(id, World.w.gg);
+			}
+			
+			return _displayWeapons[id];
 		}
 		
 		public function setRPanel():void {

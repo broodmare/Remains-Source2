@@ -83,7 +83,7 @@ package fe.unit {
 			
 			if (World.w.invent.hasItem("radcookie")) {
 				World.w.game.incQuests("tame_ph");
-				World.w.invent.decreaseQuantity("radcookie");
+				World.w.gg.itemInteraction.minusItem("radcookie");
 				
 				if (World.w.game.triggers["tame"]) {
 					World.w.game.triggers["tame"]++;

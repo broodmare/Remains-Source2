@@ -24,6 +24,8 @@ package fe.weapon {
 		public static var weaponPerks:Array		= ["pistol", "shot", "commando", "rifle", "perf", "laser", "plasma", "pyro", "acute", "stunning"]
 		public static var variant2:String		= " - II";
 		
+		private static const NO_AMMO:Ammo		= new Ammo();	// Default ammo modifiers for weapons that don't use ammo
+		
 		public var b:Bullet;
 		public var trasser:Trasser;
 		public var owner:Unit;	// TODO: REMOVE
@@ -75,8 +77,8 @@ package fe.weapon {
 		
 		// [Characteristics]
 		// [Weapon type]
-		// 0 - [Internal]					-> "internal"
-		// 1 - [Cryo(?)]					-> "cryo"   (Cold steel??????)
+		// 0 - [Internal]					-> "internal"	(Built into a unit, eg. punches, turret guns)
+		// 1 - [Cold steel]					-> "melee"		(Was mistranslated as "cryo")
 		// 2 - [Light guns]					-> "lightGun"
 		// 3 - [Heavy gun]					-> "heavyGun"
 		// 4 - [Explosives]					-> "explosives"
@@ -122,7 +124,7 @@ package fe.weapon {
 		public var destroy:Number		= 10.00;	// [Block damage]
 		public var damage:Number		= 0.00;		// [Damage to units]
 		public var damageExpl:Number	= 0.00;		// [Area damage]
-		public var tipDamage:String		= "";		// [Damage type]
+		public var tipDamage:String		= Resistances.DAM_PIERCE;	// [Damage type]
 		public var pier:Number			= 0.00;		// [armor-piercing]
 		public var critCh:Number		= 0.10;		// [crit chance]
 		public var critM:Number			= 0.00;		// [extra crit]
@@ -144,8 +146,8 @@ package fe.weapon {
 		public var magazineRounds:int	= 0;		// [left in the clip]
 		public var magazineCapacity:int	= 0;		// Rounds in the magazine
 
-		public var ammoBase:Ammo;					// ID of the weapon's default ammo
-		public var ammo:Ammo;						// ID o fthe weapon's current ammo
+		public var ammoBase:Ammo;					// The weapon's default ammo (null if the weapon doesn't use ammo)
+		public var ammo:Ammo;						// The weapon's current ammo (null if the weapon doesn't use ammo)
 		public var ammoTarg:Ammo;					// [Type of ammunition to replace]
 		
 		public var reload:int			= 0;		// [reload cycles, 30 = 1s]
@@ -162,6 +164,7 @@ package fe.weapon {
 		public var spring:int			= 1;		// [stretching]
 		public var flame:int			= 0;		// [the projectile behaves like fire]
 		public var grav:Number			= 0.00;		// [the projectile moves in a parabola]
+		public var grav2:Number			= NaN;		// Replaces 'grav' when the weapon isn't used by the player (NaN if not set)
 		public var accel:Number			= 0.00;		// [the projectile moves with acceleration]
 		public var shell:Boolean		= false;	// [throws out the cartridge case]
 		public var fromWall:Boolean		= false;	// [shoot from the wall]
@@ -214,9 +217,71 @@ package fe.weapon {
 		public var price:int			= 0;
 		public var breaking:Number		= 0.00;
 
-		// Constructor
+		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
 		public function Weapon() {
 			
+		}
+		
+		// The ID of the weapon this is a variant of, eg. "mont" for "mont^1"
+		public function get baseId():String {
+			var i:int = id.indexOf("^");
+			return (i < 0) ? id : id.substr(0, i);
+		}
+		
+		// Called once after WeaponFactory has applied the shared weapon data, subclasses override this to read their own properties
+		public function init(data:Object):void {
+			
+		}
+		
+		// Assign the unit using this weapon and apply any properties that depend on it
+		public function setOwner(own:Unit):void {
+			if (owner == own) {
+				return;
+			}
+			
+			var firstOwner:Boolean = (owner == null);
+			owner = own;
+			
+			if (own == null) {
+				return;
+			}
+			
+			fixedToOwner = own.weaponKrep;
+			recoilUp = recoil * 0.50;
+			
+			if (!own.player) {
+				auto = true;
+				recoilUp *= 0.20;
+				
+				if (!isNaN(grav2)) {
+					grav = grav2;
+				}
+			}
+			
+			// [The player gets a crit damage bonus with bullets and a penalty with plasma]
+			if (firstOwner && own.player) {
+				if (tipDamage == Resistances.DAM_PIERCE) {
+					critDamPlus += 0.20;
+				}
+				else if (tipDamage == Resistances.DAM_PLASMA) {
+					critDamPlus -= 0.20;
+				}
+			}
+			
+			setNull();
+		}
+		
+		// [Melee weapons and guns wear down and can be repaired] (formerly 'tip > 0 && tip < 4')
+		public function hasDurability():Boolean {
+			return tip == TYPE_MELEE || tip == TYPE_LIGHTGUN || tip == TYPE_HEAVYGUN;
+		}
+		
+		public function repair(n:int):void {
+			hp += n;
+			
+			if (hp > maxhp) {
+				hp = maxhp;
+			}
 		}
 		
 		public override function step():void {
@@ -253,6 +318,9 @@ package fe.weapon {
 		}
 
 		public override function setNull(f:Boolean = false):void {
+			t_attack = 0;
+			t_reload = 0;
+			
 			if (owner) {
 				coordinates.X = owner.weaponX;
 				coordinates.Y = owner.weaponY;
@@ -339,7 +407,7 @@ package fe.weapon {
 				else if (fixedToOwner || coordinates.X == 0) {
 					coordinates.X = owner.weaponX;
 					coordinates.Y = owner.weaponY;
-					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X) * storona);
+					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X) * owner.storona);	// [Fixed weapons point the way the owner is facing]
 				}
 				else {
 					// Smoothly interpolate weapon position towards the owner's weapon position
@@ -477,16 +545,19 @@ package fe.weapon {
 			// Handle sounds with precomputed positions and delays
 			if (sndPrep != "") {
 				if (!is_pattack && is_attack) {
+					if (sndCh != null) {
+						Snd.stopChannel(sndCh);
+					}
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, t_prep * 30);
 				}	// [spin sound]
 				
 				if (snd_t_prep1 > 0 && is_attack && sndCh != null && sndCh.position > snd_t_prep2 - 300) {
-					sndCh.stop();
+					Snd.stopChannel(sndCh);
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep1 + 200);
 				}	// [continuation sound]
 				
 				if (snd_t_prep2 > 0 && is_pattack && !is_attack && t_prep > 0 && sndCh != null && sndCh.position < snd_t_prep2 - 400) {
-					sndCh.stop();
+					Snd.stopChannel(sndCh);
 					sndCh = Snd.ps(sndPrep, coordinates.X, coordinates.Y, snd_t_prep2 + 100);
 				}	// [stop sound]
 			}
@@ -495,7 +566,7 @@ package fe.weapon {
 			if (recharg && magazineRounds < magazineCapacity && t_attack == 0) {
 				t_rech--;
 				if (t_rech <= 0) {
-					magazineCapacity++;
+					magazineRounds++;
 					t_rech = recharg;
 					if (owner.player) {
 						World.w.gui.setWeapon();
@@ -545,7 +616,7 @@ package fe.weapon {
 				return false;
 			}
 			
-			if (magazineCapacity > 0 && magazineCapacity < rashod) { // [requires recharging]
+			if (magazineCapacity > 0 && magazineRounds < rashod) { // [requires recharging]
 				initReload();
 				return false;
 			}
@@ -667,7 +738,7 @@ package fe.weapon {
 				}
 			}
 
-			if (magazineCapacity > 0 && magazineCapacity < rashod) {
+			if (magazineCapacity > 0 && magazineRounds < rashod) {
 				return null;
 			}
 			
@@ -733,7 +804,7 @@ package fe.weapon {
 				}
 				
 				if (damage > 0) {
-					b.damage = resultDamage(damage, sk) * ammo.damageMultiplier;
+					b.damage = resultDamage(damage, sk) * (ammo ? ammo.damageMultiplier : 1);
 				}
 				
 				if (damageExpl > 0) {
@@ -800,22 +871,22 @@ package fe.weapon {
 			
 			owner.isShoot = true;
 			
-			if (magazineCapacity > 0 && magazineCapacity > 0) {
-				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && (ammo.id == "batt" || ammo.id == "energ" || ammo.id == "crystal") && Math.random() < (owner as UnitPlayer).pers.recyc) {
+			if (magazineCapacity > 0 && magazineRounds > 0) {
+				if (owner.player && (owner as UnitPlayer).pers.recyc > 0 && ammo && (ammo.id == "batt" || ammo.id == "energ" || ammo.id == "crystal") && Math.random() < (owner as UnitPlayer).pers.recyc) {
 					// [don't waste ammunition]
 				}
 				else {
 					magazineRounds -= rashod;
 					// [replenishment at the landfill]
-					if (owner.player && (loc.train) && ammo.id != "recharg" && ammo.id != "not") {
+					if (owner.player && loc.train && usesInventoryAmmo()) {
 						World.w.invent.increaseQuantity(ammo.id, rashod);
-						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * rashod;
+						World.w.calcMass = true;
 					}
 				}
 			}
 			
-			if (owner.player && tip != "internal" && tip != TYPE_EXPLOSIVES && tip != TYPE_MAGIC && !(loc.train || World.w.alicorn)) {
-				hp -= (1 + ammo.increasedWear);
+			if (owner.player && tip != TYPE_INTERNAL && tip != TYPE_EXPLOSIVES && tip != TYPE_MAGIC && !(loc.train || World.w.alicorn)) {
+				hp -= (1 + (ammo ? ammo.increasedWear : 0));
 			}
 			
 			if (animated && t_shoot <= 1) {
@@ -838,6 +909,10 @@ package fe.weapon {
 			
 			rotUp += recoilUp * recoilMult;
 			is_shoot = true;
+			
+			if (sndShoot != "") {
+				Snd.ps(sndShoot, coordinates.X, coordinates.Y);
+			}
 			
 			t_auto = 3;
 			
@@ -886,27 +961,30 @@ package fe.weapon {
 		}
 		
 		protected function setBullet(bul:Bullet):void {
+			// Weapons without ammo use the default (neutral) ammo modifiers
+			var am:Ammo = ammo || NO_AMMO;
+			
 			bul.tipDamage = tipDamage;
 			bul.tipDecal = tipDecal;
-			bul.otbros = otbros * otbrosMult * ammo.knockback;
-			bul.pier = pier + pierAdd + ammo.piercing;
-			bul.armorMult = ammo.armorMultiplier;
+			bul.otbros = otbros * otbrosMult * am.knockback;
+			bul.pier = pier + pierAdd + am.piercing;
+			bul.armorMult = am.armorMultiplier;
 			bul.destroy = destroy;
-			bul.precision = precision * ammo.accuracyModifier;
+			bul.precision = precision * am.accuracyModifier;
 			bul.explTip = explTip;
 			bul.explRadius = explRadius * explRadMult;
 			bul.explKol = explKol;
 			bul.spring = spring;
 			bul.flare = flare;
-			bul.probiv = probiv + ammo.penetrationModifier;
+			bul.probiv = probiv + am.penetrationModifier;
 			
 			if (bul.probiv > 1) {
 				bul.probiv = 1;
 			}
-			if (ammo.damageType != "") {
-				bul.tipDamage = ammo.damageType;
+			if (am.damageType != "") {
+				bul.tipDamage = am.damageType;
 				
-				if (ammo.damageType == Resistances.DAM_EMP) {
+				if (am.damageType == Resistances.DAM_EMP) {
 					bul.destroy = 0;
 					bul.otbros = 0;
 				}
@@ -924,20 +1002,30 @@ package fe.weapon {
 			}
 		}
 		
+		// True if this weapon reloads from ammo in the player's inventory ('recharg' recharges by itself and 'not' is infinite)
+		public function usesInventoryAmmo():Boolean {
+			return ammo != null && ammo.id != "recharg" && ammo.id != "not";
+		}
+		
 		public function reloadWeapon():void {
-			// Unjam the waepon if applicable
+			// Unjam the weapon if applicable
 			jammed = false;
 			
 			// Rechargeable weapons can't reload, abort
-			if (ammo.id == "recharg") {
+			if (ammo && ammo.id == "recharg") {
 				return;
 			}
 			
-			if (owner && owner.player && ammo.id != "not") {
-				if (ammoTarg.id != ammo.id) {
-					if (magazineCapacity > 0) {
-						World.w.invent.increaseQuantity(ammo.id, magazineCapacity);
-						//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * magazineCapacity;
+			if (ammoTarg == null) {
+				ammoTarg = ammo;
+			}
+			
+			if (owner && owner.player && usesInventoryAmmo()) {
+				// Switching to a different type of ammo, put the rounds left in the magazine back into the inventory
+				if (ammoTarg != ammo) {
+					if (magazineRounds > 0) {
+						World.w.invent.increaseQuantity(ammo.id, magazineRounds);
+						World.w.calcMass = true;
 						magazineRounds = 0;
 					}
 					
@@ -947,19 +1035,22 @@ package fe.weapon {
 				var kol:int = World.w.invent.getQuantity(ammo.id);
 				
 				if (kol > magazineCapacity - magazineRounds) {
-					kol = magazineCapacity-magazineRounds;
+					kol = magazineCapacity - magazineRounds;
 				}
 				
-				magazineCapacity += kol;
-				World.w.invent.decreaseQuantity(ammo.id, kol);
-				//World.w.invent.mass[2] -= World.w.invent.items[ammo].mass * kol;
+				if (kol > 0) {
+					magazineRounds += kol;
+					World.w.invent.decreaseQuantity(ammo.id, kol);
+					World.w.calcMass = true;
+				}
 			}
 			else {
+				// Infinite ammo and non-player weapons are refilled for free
 				if (ammoTarg != ammo) {
 					setAmmo(ammoTarg.id);
 				}
 				
-				magazineCapacity = magazineCapacity;
+				magazineRounds = magazineCapacity;
 			}
 		}
 		
@@ -973,10 +1064,10 @@ package fe.weapon {
 		}
 		
 		public function unloadWeapon():void {
-			if (owner && owner.player && magazineCapacity && magazineCapacity && ammo.id != "" && ammo.id != "recharg" && ammo.id != "not") {
+			if (owner && owner.player && magazineCapacity > 0 && magazineRounds > 0 && usesInventoryAmmo()) {
 				World.w.gui.infoText("unloadWeapon", nazv, null, false);
-				(owner as UnitPlayer).invent.increaseQuantity(ammo.id, magazineCapacity);
-				//World.w.invent.mass[2] += World.w.invent.items[ammo].mass * magazineCapacity;
+				(owner as UnitPlayer).invent.increaseQuantity(ammo.id, magazineRounds);
+				World.w.calcMass = true;
 				magazineRounds = 0;
 				
 				if (sndReload != "") {
@@ -995,7 +1086,7 @@ package fe.weapon {
 				return 2;
 			}
 			
-			if (ammo.id != "recharg" && ammo.id != "not" && magazineCapacity > 0 && magazineCapacity < rashod) {
+			if (usesInventoryAmmo() && magazineCapacity > 0 && magazineRounds < rashod) {
 				if (World.w.invent.getQuantity(ammo.id) < rashod) {
 					return 4;
 				}
@@ -1034,20 +1125,21 @@ package fe.weapon {
 				return -1;
 			}
 			
-			if (ammo.id != "recharg" && ammo.id != "not" && magazineCapacity > 0 && World.w.invent.getQuantity(ammo.id) < rashod) {
+			if (usesInventoryAmmo() && magazineCapacity > 0 && World.w.invent.getQuantity(ammo.id) < rashod) {
 				return 0;
 			}
 			
 			return 1;
 		}
 		
-		// ??? 
+		// ???
 		public function crash(dam:int=1):void {
-			// Maybe used by sub-classes??? 
+			// Maybe used by sub-classes???
 		}
 
+		// Start reloading, 's' is the ID of the ammo to switch to (empty to reload with the current ammo)
 		public function initReload(s:String = ""):void {
-			if (!jammed && (magazineCapacity <= 0 || (magazineCapacity == magazineCapacity && s == "") || recharg > 0)) {
+			if (!jammed && (magazineCapacity <= 0 || (magazineRounds == magazineCapacity && s == "") || recharg > 0)) {
 				return;
 			}
 			
@@ -1056,13 +1148,13 @@ package fe.weapon {
 				ammoTarg = ammo;
 			}
 			
-			if (owner.player) {
+			if (owner.player && ammo != null) {
 				// Reloading using ammunition different than our current ammunition
 				if (s != "" && s != ammo.id) {
 					var am:Ammo = WeaponManager.reference.getAmmo(s);
 					
-					// The base ammo type does not match, abort
-					if (am.base != ammo.base) {
+					// [unsuitable ammunition] The ammo isn't a variant of this weapon's ammo, abort
+					if (ammoBase == null || am.base != ammoBase.id) {
 						World.w.gui.infoText("imprAmmo", am.name, null, false);
 						World.w.gui.bulb(coordinates.X, coordinates.Y);
 						return;
@@ -1129,7 +1221,7 @@ package fe.weapon {
 				
 				if (t_prep >= prep) {
 					try {
-						if (tip != "internal") {
+						if (tip != TYPE_INTERNAL) {
 							vis.gotoAndStop("ready"); // Don't try to animate internal weapons
 						}
 					}
@@ -1193,7 +1285,7 @@ package fe.weapon {
 			s += "\t";
 			s += Number(30 / rapid).toFixed(1) + "\t";
 			s += Number((damage + damageExpl) * kol * 30 / rapid).toFixed(1) + "\t";
-			s += LanguageManager.reference.localText("pip", "tipdam" + tipDamage) + "\t";
+			s += LanguageManager.reference.localText("pip", tipDamage) + "\t";
 			s += Math.round(critCh * 100) + "%\t";
 			s += Math.round(precision / 40) + "\t";
 			s += pier + "\t";
@@ -1242,9 +1334,9 @@ package fe.weapon {
 			}
 			
 			if (tip == TYPE_EXPLOSIVES) {
-				s += WeaponManager.reference.weaponData(id).price + "\t";
+				s += WeaponManager.reference.weaponData(id).com_price + "\t";
 			}
-			else if (tip != TYPE_MAGIC && variant > 0) {
+			else if (tip != TYPE_MAGIC && variant) {
 				s += price * 3 + "\t";
 			}
 			else {

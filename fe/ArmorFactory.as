@@ -12,8 +12,9 @@ package fe {
 				armor.id = data.id;
 			}
 
+			// The data uses "amulet" for amulets (formerly tip='3'), anything else is armor
 			if ("tip" in data) {
-				armor.tip = data.tip;
+				armor.tip = (data.tip == "amulet" || data.tip == Armor.TYPE_AMULET) ? Armor.TYPE_AMULET : Armor.TYPE_ARMOR;
 			}
 
 			if ("clo" in data) {
@@ -30,7 +31,7 @@ package fe {
 
 			if ("hp" in data) {
 				armor.hp = data.hp;
-				armor.maxhp = data.maxhp;
+				armor.maxhp = data.hp;
 			}
 
 			if ("noRepair" in data) {

@@ -2,6 +2,8 @@ package fe.unit {
 	
 	public class Armor {
 
+		public static const TYPE_ARMOR:int = 1, TYPE_AMULET:int = 3;
+
 		// Armor info
 		public var id:String	= "";
 		public var lvl:int		= 0;
@@ -13,6 +15,7 @@ package fe.unit {
 		// Usage flags
 		public var clo:int			= 0;		// [Armor can be changed at any time in the limited inventory]
 		public var active:Boolean	= false;
+		public var stored:Boolean	= false;		// [Left on the weapon stand] It can't be worn until it's taken back
 		
 		// Damage resistance
 		public var armor:Number		= 0.00;		// [Armor, the likelihood that it will work]

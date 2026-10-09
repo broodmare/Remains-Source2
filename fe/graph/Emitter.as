@@ -124,7 +124,7 @@ package fe.graph {
 
 			// Get a reference to the visual movieclip this uses
 			if (vis) {
-				visClass = SymbolFactory.createInstance(vis) as Class;
+				visClass = SymbolFactory.fetchSymbolClass(vis);
 			}
 		}
 		
@@ -302,7 +302,7 @@ package fe.graph {
 					if (scale!=1) p.vis.scaleX=p.vis.scaleY=scale;
 					if (rsc!=0) p.vis.scaleX=p.vis.scaleY=scale-rsc+Math.random()*rsc;
 					if (ctrans) p.vis.transform.colorTransform=loc.cTransform;
-					if (filter && Emitter.fils[filter]) p.vis.filters=Emitter.fils[filter];
+					if (filter && Emitter.fils[filter]) p.vis.filters=[Emitter.fils[filter]];
 					if (param && param.celx!=null && param.cely!=null && p.vis.len) {
 						var gx:Number = param.celx-p.coordinates.X;
 						var gy:Number = param.cely-p.coordinates.Y;

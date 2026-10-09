@@ -13,7 +13,7 @@ package fe.entities {
 
 	public class Part  extends Entity {
 		
-		public var vClass:Class;			// The instantiated class
+		public var vClass:Class;			// Class reference used to create the particle visual
 		
 		public var isMove:Boolean=false, isAnim:int=0, isAlph:Boolean=false, isPreAlph:Boolean=false;
 		public var dr:Number=0, r:Number=0, ddy:Number=0;
@@ -70,9 +70,8 @@ package fe.entities {
 		}
 		
 		public function initVis(frame:int=0):void {
-			// ??? (Create a new version of the movielcip we passed?)
 			if (vClass) {
-				vClass = (new vClass()) as Class;
+				vis = new vClass() as MovieClip;
 			}
 			else {
 				return;

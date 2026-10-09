@@ -46,7 +46,10 @@ package fe.unit {
 			}
 			
 			mat = 1;
-			vis = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismtrap") as MovieClip;
+			vis = SymbolFactory.createInstance("vis" + String(id));
+			if (!vis) {
+				vis = SymbolFactory.createInstance("vismtrap");
+			}
 			setVis(false);
 			getXmlParam();
 			visibility=300;
@@ -326,6 +329,7 @@ package fe.unit {
 		
 		override protected function control():void {
 			if (sost>1 || status==2 || one && status==1) return;
+			if (isPlayerInteractingWithThis()) return;
 			aiN++;
 			if (aiN%5==0) {
 				var act:Boolean=false;
