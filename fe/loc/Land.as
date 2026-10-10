@@ -635,7 +635,9 @@ package fe.loc {
 					
 					var xmll:XML = XMLDataGrabber.getNodeByNameWithAttributeThatMatches("core", "GameData", "Lands", "prob", "id", nprob);
 					
-					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
+					if (xmll) {
+						loc.prob = new Probation(xmll, loc);
+					}
 					
 					//добавить дверь для выхода
 					if (loc.spawnPoints.length) {
