@@ -653,7 +653,7 @@ package fe.loc {
 		// [Fall impact]
 		public function attDrop():void {
 			// Compute the squared velocity
-			var vel2:Number = velocity.X * velocity.X + velocity.Y * velocity.Y;
+			vel2 = velocity.X * velocity.X + velocity.Y * velocity.Y;
 			if (vel2 < 50) return;
 
 			// Loop over all units

@@ -183,6 +183,10 @@ package fe.unit {
 				return;
 			}
 			
+			if (!controlOn) {
+				return;
+			}
+			
 			if (loc.gg.invulner) {
 				return;
 			}
@@ -250,6 +254,7 @@ package fe.unit {
 				}
 				
 				attack();
+				castShit();
 				emit_t--;
 				
 				if (emit_t<=0) {
@@ -298,6 +303,8 @@ package fe.unit {
 		}
 		
 		public override function command(com:String, val:String=null):void {
+			super.command(com, val);
+			
 			if (com == "off") {
 				walk = 0;
 				controlOn = false;

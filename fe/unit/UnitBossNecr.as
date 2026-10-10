@@ -275,6 +275,10 @@ package fe.unit {
 			
 			var jmp:Number=0;
 			
+			if (!controlOn) {
+				return;
+			}
+			
 			if (loc.gg.invulner) {
 				return;
 			}
@@ -678,6 +682,8 @@ package fe.unit {
 		}
 		
 		public override function command(com:String, val:String=null):void {
+			super.command(com, val);
+			
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

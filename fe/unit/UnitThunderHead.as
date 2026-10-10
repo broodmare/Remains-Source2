@@ -271,6 +271,11 @@ package fe.unit {
 				return;
 			}
 			
+			if (!controlOn) {
+				isAtt = false;
+				return;
+			}
+			
 			if (aiTCh>0) aiTCh--;
 			else {
 				aiState++;
@@ -387,6 +392,8 @@ package fe.unit {
 		}
 		
 		public override function command(com:String, val:String = null):void {
+			super.command(com, val);
+			
 			if (com == "off") {
 				walk = 0;
 				controlOn = false;

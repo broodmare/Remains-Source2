@@ -100,7 +100,7 @@ package fe.unit {
 						celY = coordinates.Y + Math.random() * 200 - 100;
 						
 						if (celY < 0) {
-							celX = 200;
+							celY = 200;
 						}
 						
 						if (celY > loc.maxY) {

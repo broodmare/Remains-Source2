@@ -29,7 +29,7 @@ package fe.unit {
 			}
 			else {
 				if (cid == 'zebra') tr = Calc.intBetween(1, 5);
-				if (cid == 'stab') tr = Calc.intBetween(1, 33);
+				else if (cid == 'stab') tr = Calc.intBetween(1, 33);
 				else tr = Calc.intBetween(13, 27);
 			}
 			

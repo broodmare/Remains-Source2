@@ -204,7 +204,7 @@ package fe.unit {
 
 			if (!isPlav && aiTCh%10==1) {
 				aiDy=Math.abs(aiDy);
-				aiState==7;
+				aiState=7;
 				if (stay) {
 					jump();
 				}

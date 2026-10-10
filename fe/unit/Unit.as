@@ -3556,7 +3556,7 @@ package fe.unit {
             }
 			else {
                 var ndx:Number = (un.velocity.X * un.massa + velocity.X * massa) / (un.massa + massa);
-                var ndy:Number = (un.velocity.Y * un.massa + velocity.X * massa) / (un.massa + massa);
+                var ndy:Number = (un.velocity.Y * un.massa + velocity.Y * massa) / (un.massa + massa);
                 velocity.X = (-velocity.X + ndx) * knocked + ndx;
 				velocity.Y = (-velocity.Y + ndy) * knocked + ndy;
                 un.velocity.X = (-un.velocity.X + ndx) * 0.25 + ndx;

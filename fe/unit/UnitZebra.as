@@ -74,7 +74,7 @@ package fe.unit {
 			var cx:Number = -(coordinates.X - World.w.gg.eyeX);
 			var cy:Number = -(coordinates.Y - this.boundingBox.height * 0.6 - World.w.gg.eyeY);
 			if (cx*cx+cy*cy>1000*1000) return false;
-			var div:int = int(Math.max(Math.abs(cy),Math.abs(cy))/World.maxdelta)+1;
+			var div:int = int(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
 			for (var i:int = 1; i < div; i++) {
 				var nx:Number = coordinates.X + cx*i/div;
 				var ny:Number = coordinates.Y - this.boundingBox.height * 0.6 + cy * i / div;

@@ -114,7 +114,7 @@ package fe.unit {
 			var wm:WeaponManager = WeaponManager.reference;
 			if (loadObj && loadObj.weap) {
 				if (loadObj.weap != "") {
-					currentWeapon = wm.cloneWeapon(loadObj.weap.id);
+					currentWeapon = wm.cloneWeapon(loadObj.weap);
 				}
 			}
 			else if (xml && xml.@weap.length()) {
