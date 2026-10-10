@@ -15,7 +15,7 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	import fe.projectile.Bullet;
-	import fe.unit.ability.Telekinesis;
+	import fe.unit.ability.system.Telekinesis;
 	
 	public class UnitBossAlicorn extends UnitPon {
 		

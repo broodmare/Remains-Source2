@@ -9,7 +9,7 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
-	import fe.unit.ability.Telekinesis;
+	import fe.unit.ability.system.Telekinesis;
 
 	public class UnitZombie extends UnitPon {
 

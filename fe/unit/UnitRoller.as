@@ -1,279 +1,125 @@
 package fe.unit {
-	
+
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.loc.Tile;
-	import fe.entities.BoundingBox;
-	
+	import fe.World;
+	import fe.unit.ai.model.AIState;
+	import fe.unit.ai.model.Brain_Definition;
+	import fe.unit.ai.system.Brain;
+	import fe.unit.attack.model.BodyAttack_Definition;
+	import fe.unit.attack.system.BodyAttack;
+	import fe.unit.motor.model.WalkMotor_Definition;
+	import fe.unit.motor.system.WalkMotor;
+	import fe.util.Calc;
+
+	// A rolling robot ball that bounces at its target; the plasma variant (2) explodes when destroyed
 	public class UnitRoller extends Unit {
 
-		private var rollDr:Number = 0;
-		private var tr:int = 1;
+		private static const SPEED_SPREAD:Number	= 1.0;		// Each roller's speed varies by up to this much
+		private static const SPIN:Number			= 1.5;		// Degrees of spin per unit of horizontal speed
+		private static const ALERT_RANGE:Number		= 200.0;	// The sprite shows its alert frame while the player is closer than this
+		private static const CALM_RANGE:Number		= 600.0;	// The sprite returns to its calm frame once the player is further than this
 
-		private var aiVis:Number = 0.5;
-		private var optDistAtt:int=100;
-		private var optJumpAtt:Boolean=true;
+		private var tr:int;
+		private var rollSpin:Number = 0.0;		// Degrees the sprite turns per tick
 
-		private static var tileY:int = Tile.tileY;
+		// Water shorts it out
+		protected override function control():void {
+			if (sost < 3 && isPlav && World.w.enemyAct > 0) {
+				die();
+				return;
+			}
 
-		// Constructor
-		public function UnitRoller(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			super.control();
+		}
+
+		public function UnitRoller(cid:String = null, ndif:Number = 100.0, xml:XML = null, loadObj:Object = null) {
+			var brainDefinition:Brain_Definition = new Brain_Definition();
+			var motorDefinition:WalkMotor_Definition = new WalkMotor_Definition();
+			var slamDefinition:BodyAttack_Definition = new BodyAttack_Definition();
 
 			super(cid, ndif, xml, loadObj);
-			
-			if (cid) tr=int(cid);							//из заданного идентификатора cid
-			else tr=1;
-			
-			if (loadObj && loadObj.tr) tr=loadObj.tr;		//из загружаемого объекта
-			else if (xml && xml.@tr.length()) tr=xml.@tr;	//из настроек карты
-
-			if (!(tr>0)) tr=1;
-			
-			id='roller';
-			
-			if (tr>=2) id+=tr;
-			
+			tr = Math.max(resolveVariant(cid, xml, loadObj, 1), 1);
+			id = (tr >= 2) ? "roller" + tr : "roller";
 			getXmlParam();
-			
-			if (tr == 2) {
-				vis = SymbolFactory.createInstance("visualRoller2") as MovieClip;
-			}
-			else {
-				vis = SymbolFactory.createInstance("visualRoller") as MovieClip;
-			}
-			
-			vis.osn.rotation=Math.random()*360;
+
+			vis = SymbolFactory.createInstance((tr == 2) ? "visualRoller2" : "visualRoller") as MovieClip;
+			vis.osn.rotation = Math.random() * 360.0;
 			vis.osn.stop();
-			maxSpeed+=Math.random()*2-1;
-			walkSpeed=sitSpeed=runSpeed=maxSpeed;
-			mat=1;
-			acidDey=1;
-			jumpBall=0.5;	//подпрыгивание при падении
-			elast=0.8;
-			storona=1;
+			maxSpeed += Calc.floatBetween(-SPEED_SPREAD, SPEED_SPREAD);
+			walkSpeed = maxSpeed;
+			sitSpeed = maxSpeed;
+			runSpeed = maxSpeed;
+			mat = 1;
+			acidDey = 1.0;
+			jumpBall = 0.5;
+			elast = 0.8;
+			storona = 1;
+
+			brainDefinition.stroll = false;
+			brainDefinition.alertTimeMin = 40;
+			brainDefinition.alertTimeMax = 90;
+			brainDefinition.reaimChance = 1.0;
+			brainDefinition.hearsNoise = false;
+			brainDefinition.sightBonus = 0;
+			brainDefinition.wakeRadius = 0.0;
+			brainDefinition.wakesOnAlarm = false;
+			brainDefinition.wakesWhenLifted = false;
+			brainDefinition.levitHoldShock = 0;
+			brainDefinition.obeysStun = false;
+			brain = new Brain(this, brainDefinition);
+
+			motorDefinition.airControl = 1.0;
+			motorDefinition.walkFriction = true;
+			motorDefinition.turnsToTargetAtWall = false;
+			motorDefinition.looksBeforeJumping = false;
+			motorDefinition.reachJumpMin = 0.5;
+			motorDefinition.reachJumpMax = 1.0;
+			motor = new WalkMotor(this, motorDefinition);
+
+			slamDefinition.hop = 0.3;
+			attacks.push(new BodyAttack(this, slamDefinition));
 		}
 
 		public override function expl():void {
-			newPart('metal',4);
-			newPart('miniexpl');
+			newPart("metal", 4);
+			newPart("miniexpl");
 		}
-		
+
 		public override function setVisPos():void {
 			vis.x = coordinates.X;
-			vis.y = this.boundingBox.getCenter(coordinates);
+			vis.y = boundingBox.getCenter(coordinates);
 		}
-		
+
 		public override function dropLoot():void {
 			if (tr == 2) {
-				explosion(dam * 4, Resistances.DAM_PLASMA, 150, 0, 20, 30, 9);
+				explosion(dam * 4.0, Resistances.DAM_PLASMA, 150.0, 0, 20.0, 30.0, 9);
 			}
 
 			super.dropLoot();
 		}
-		
+
+		// Spin with the roll, and show the alert frame while the player is close
 		public override function animate():void {
-			if (aiState==0) {
-				if (vis.osn.currentFrame!=1) {
+			if (aiState == AIState.IDLE) {
+				if (vis.osn.currentFrame != 1) {
 					vis.osn.gotoAndStop(1);
 				}
 			}
-			else {
-				if (rasst2<200*200 && vis.osn.currentFrame==1) {
-					vis.osn.gotoAndStop(2);
-				}
-				
-				if (rasst2>600*600 && vis.osn.currentFrame==2) {
-					vis.osn.gotoAndStop(1);
-				}
+			else if (rasst2 < ALERT_RANGE * ALERT_RANGE && vis.osn.currentFrame == 1) {
+				vis.osn.gotoAndStop(2);
 			}
-			
-			if (stay || turnY==-1) {
-				rollDr = velocity.X * 1.5;
+			else if (rasst2 > CALM_RANGE * CALM_RANGE && vis.osn.currentFrame == 2) {
+				vis.osn.gotoAndStop(1);
 			}
-			
+
+			if (stay || turnY == -1) {
+				rollSpin = velocity.X * SPIN;
+			}
+
 			turnY = 0;
-			vis.osn.rotation += rollDr;
-		}
-		
-		public override function setNull(f:Boolean=false):void {
-			super.setNull(f);
-		
-			if (f) {
-				aiState = 0;
-				aiSpok = 0;
-			}
-		}
-		
-		public function jump(v:Number=1):void {
-			if (stay) {		//прыжок
-				velocity.Y = -jumpdy * v;
-			}
-		}
-
-		//aiState
-		//0 - стоит на месте
-		//1 - видит цель, катится к ней, атакует
-		override protected function control():void {
-			
-			var t:Tile;
-			//если сдох, то не двигаться
-			if (sost==3) {
-				return;
-			}
-
-			var jmp:Number=0;
-			
-			if (World.w.enemyAct <= 0) {
-				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
-				return;
-			}
-			
-			if (isPlav) {
-				die();
-				return;
-			}
-			
-			//таймер смены состояний
-			if (aiTCh>0) {
-				aiTCh--;
-			}
-			else {
-				if (aiSpok==0) {
-					aiState=0;
-				}
-				else {
-					aiState=1;
-				}
-				
-				aiTCh=Math.floor(Math.random()*50)+40;
-			}
-			
-			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
-				if (findCel() && celUnit) {
-					aiSpok=maxSpok;
-				}
-				else {
-					setCel(null, celX+Math.random()*80-40, celY);
-					
-					if (aiSpok>0) {
-						aiSpok--;
-					}
-				}
-				
-				if (celDY>40) {
-					aiVNapr=1;		//вниз
-				}
-				else if(celDY<-40) {
-					aiVNapr=-1;	//прыжок
-				}
-				else {
-					aiVNapr=0;
-				}
-			}
-			
-			//поведение при различных состояниях
-			if (aiState==0) {
-				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
-				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
-			}
-			else if (aiState==1) {
-				//определить, куда двигаться
-				if (aiTCh%15==1) {
-					if (isrnd(0.9)) {
-						if (celDY>80) {
-							throu=true;
-						}
-						
-						if (aiVNapr<0 && isrnd()) {
-							jmp=Math.random()*0.5+0.5;
-						}
-					}
-					else {
-						throu=false;
-						jmp=0;
-					}
-					
-					if (celDX>100) {
-						aiNapr=storona=1;
-					}
-					
-					if (celDX<-100) {
-						aiNapr=storona=-1;
-					}
-				}
-				
-				if (levit) {
-					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) {
-							velocity.X -= levitaccel;
-						}
-					}
-					else {
-						if (velocity.X < maxSpeed) {
-							velocity.X += levitaccel;
-						}
-					}
-				}
-				else {
-					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) {
-							velocity.X -= accel;
-						}
-					}
-					else {
-						if (velocity.X < maxSpeed) {
-							velocity.X += accel;
-						}
-					}
-				}
-				
-				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) {
-					jmp=0.5;
-				}
-				
-				if (turnX!=0) {
-					aiTTurn--;
-					
-					if (isrnd(0.03) || turnY>0) {
-						aiTTurn-=10;
-					}
-					else {
-						jmp=1;
-					}
-					
-					if (aiTTurn<0) {
-						aiNapr=storona=turnX;
-						aiTTurn=Math.floor(Math.random()*20)+5;
-					}
-					
-					turnX=turnY=0;
-				}
-				
-				if (jmp>0) {
-					jump(jmp);
-					jmp=0;
-				}
-				
-				if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80) {
-					attack();
-				}
-			} 
-			
-			if (coordinates.Y > loc.spaceY * tileY - 80) {
-				throu=false;
-			}
-		}
-		
-		public function attack():void {
-			if (celUnit && shok <= 0) {	//атака корпусом
-				attKorp(celUnit, 1);
-			}
-			
-			jump(0.3);
+			vis.osn.rotation += rollSpin;
 		}
 	}
 }

@@ -24,6 +24,10 @@ package fe.unit {
 	import fe.entities.Obj;
 	import fe.entities.BoundingBox;
 	import fe.entities.Part;
+	import fe.unit.ai.system.Brain;
+	import fe.unit.anim.system.Animator;
+	import fe.unit.attack.system.IAttack;
+	import fe.unit.motor.system.IMotor;
 	
 	public class Unit extends Obj {
 
@@ -146,9 +150,9 @@ package fe.unit {
 		public var stayMat:int;
 		public var tykMat:int;
 		
-		protected var shX1:Number;							//насколько не помещаешься
-		protected var shX2:Number;							//
-		protected var diagon:int			= 0;			//
+		public var shX1:Number;								// Fraction of the unit's width hanging past the floor on the left
+		public var shX2:Number;								// Fraction of the unit's width hanging past the floor on the right
+		public var diagon:int				= 0;			// Direction of the stairs under the unit, 0 when not on stairs
 		
 		public var porog:Number				= 10.00;
 		public var porog_jump:Number		= 4.00;			//автоподъём
@@ -195,8 +199,14 @@ package fe.unit {
 		public var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
 		public var aiTTurn:int=10, aiPlav:int=0; 
 		public var aiState:int=0;	//состояние ии 
-		protected var aiTCh:int = Calc.intBetween(0, 10);	// [AI state change timer], Changed from range of [0-9] to [0-10]
-		protected var aiSpok:int=0, maxSpok:int=30;		// [0 - calm, 1-9 - excited, maxSpok - attacks the target]
+		public var aiTCh:int = Calc.intBetween(0, 10);	// Ticks until the AI decides its state again
+		public var aiSpok:int = 0;						// Alertness: 0 is calm, below maxSpok is searching, maxSpok and above is attacking
+		public var maxSpok:int = 30;
+
+		public var brain:Brain;							// AI decisions, null for units that run their own
+		public var motor:IMotor;						// Carries out the brain's decisions
+		public var attacks:Vector.<IAttack> = new Vector.<IAttack>();
+		public var animator:Animator;					// Picks and plays sprite-sheet animations, null for units that animate themselves
 		//координаты и вид цели
 		public var celX:Number=0, celY:Number=0, celDX:Number=0, celDY:Number=0;
 
@@ -793,6 +803,31 @@ package fe.unit {
 			}
 		}
 		
+		// The variant number from a save, the map's tr attribute or the creation ID, in that order; fallback when none is set
+		protected function resolveVariant(cid:String, xml:XML, loadObj:Object, fallback:int):int {
+			if (loadObj && int(loadObj.tr) != 0) { return int(loadObj.tr); }
+			if (xml && xml.@tr.length() > 0) { return int(xml.@tr); }
+			if (cid != null && cid != "") { return int(cid); }
+
+			return fallback;
+		}
+
+		// A weapon of the unit's own: owned, updated as a child object and fully loaded. Null if the ID is unknown
+		protected function giveWeapon(weaponID:String):Weapon {
+			var weapon:Weapon = WeaponManager.reference.cloneWeapon(weaponID, this);
+
+			if (!weapon) { return null; }
+
+			weapon.magazineRounds = weapon.magazineCapacity;
+			if (!childObjs) {
+				childObjs = [];
+			}
+
+			childObjs.push(weapon);
+
+			return weapon;
+		}
+
 		// TODO: Only a few classes use this and they should be cloning the weapon themselves, this is obsolete
 		public function getXmlWeapon(dif:int):Weapon {
 			trace("Unit.as/getXmlWeapon() - Unit: \"" + id + "\" is getting a weapon from XML");
@@ -1076,6 +1111,10 @@ package fe.unit {
 					
 					velocity.set(0, 0);
 					setWeaponPos();
+
+					if (brain) {
+						brain.reset();
+					}
 				}
 				
 				if (currentWeapon) {
@@ -1095,7 +1134,9 @@ package fe.unit {
 		}
 
 		protected function control():void {
-
+			if (brain) {
+				brain.tick();
+			}
 		}
 
 		// [Do not auto-trigger this trap while the player is interacting with it]
@@ -2379,6 +2420,18 @@ package fe.unit {
 		}
 		
 		public function animate():void {
+			if (animator) {
+				animator.play();
+			}
+		}
+
+		// The animation to play instead of the animator's pick, "" to let the animator choose
+		public function animOverride():String {
+			return "";
+		}
+
+		// Footstep sound for a frame of a walking animation
+		public function sndStep(frame:int, pattern:int = 0):void {
 
 		}
 		
@@ -3595,6 +3648,10 @@ package fe.unit {
 			detectionDelay = 0;	// Player is seen, remove the grace period
 			if (nx > 0 && ny > 0 && celUnit == null) {
 				setCel(null, nx, ny);
+			}
+
+			if (brain) {
+				brain.alarm();
 			}
 		}
 

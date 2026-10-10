@@ -13,7 +13,7 @@ package fe.unit {
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.loc.Box;
-	import fe.unit.ability.Telekinesis;
+	import fe.unit.ability.system.Telekinesis;
 	
 	public class UnitAlicorn extends UnitPon {
 
@@ -897,7 +897,9 @@ package fe.unit {
 			if (t_tele>=tTeleThrow+10) t_tele = -int(Math.random()*100+50);
 		
 			if (tele.held) {
-				if (!tele.holdBeside()) {
+				tele.holdBeside();
+
+				if (!tele.held) {
 					t_tele=-tTeleRes;	// [Broke free or was taken]
 				}
 				else if (t_tele>=tTeleThrow) {

@@ -17,7 +17,7 @@ package fe.unit {
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
-	import fe.unit.ability.Telekinesis;
+	import fe.unit.ability.system.Telekinesis;
 
 	import fe.stubs.visualPlayer;	// .fla linkage
 	import fe.stubs.reloadBar;		// .fla linkage
@@ -1137,7 +1137,8 @@ package fe.unit {
 
 				tele.speed = teleSpeed;
 				tele.accel = teleAccel;
-				if (!tele.hold(celX, celY)) {
+				tele.hold(celX, celY);
+				if (!tele.held) {
 					World.w.gui.setMana();
 				}
 

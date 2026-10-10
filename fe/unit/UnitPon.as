@@ -72,7 +72,7 @@ package fe.unit {
 			} 
 		}
 		
-		public function sndStep(faza:int,tip:int=0):void {
+		public override function sndStep(faza:int,tip:int=0):void {
 			if (loc == null || !loc.active) {
 				return;
 			}
