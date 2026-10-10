@@ -1247,7 +1247,10 @@ package fe.unit {
 		// [Current forces]
 		public function forces():void {
 			if (levit) {
-				velocity.multiply(0.80);
+				if (!teleHolder) {
+					velocity.multiply(0.80);
+				}
+				
 				isLaz = 0;
 			}
 

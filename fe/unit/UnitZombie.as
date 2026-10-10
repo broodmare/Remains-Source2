@@ -9,6 +9,7 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
+	import fe.unit.ability.Telekinesis;
 
 	public class UnitZombie extends UnitPon {
 
@@ -38,7 +39,8 @@ package fe.unit {
 		private var tZlo:int=120;		//время накопления силы
 		private var tPrepSuper:int=30;	//время подготовки суперсилы
 		private var tSuper:int=75;		//время использования суперсилы
-		private var vJump:int=30, teleAccel:Number=2, teleSpeed:Number=10, teleUnit:Unit, vDestroy:Number=20;
+		private var vJump:int=30, teleUnit:Unit, vDestroy:Number=20;
+		private var tele:Telekinesis;
 		private var radMin:int=0, radMax:int=0, radradMin:int=200, radradMax:int=800, radHeal:Number=30;
 		private var superQuake:Number=0;
 		private var super_on:Boolean=false;
@@ -678,6 +680,7 @@ package fe.unit {
 				tSuper=50;
 				tZlo=120;
 				levitFilter=new GlowFilter(0xFF0099,1,6,6,1,3);
+				tele=new Telekinesis(this, 8, 2, levitFilter);
 			}
 		
 			if (superSilaTip==3) {	//плевок ядом
@@ -805,6 +808,9 @@ package fe.unit {
 				}
 			}
 			else if (superSilaTip==2 || superSilaTip==7) {
+				if (teleUnit && teleUnit.levit!=1) {
+					tele.grab(teleUnit);
+				}
 			}
 			else if (superSilaTip==3 || superSilaTip==4 || superSilaTip==8) {
 				currentWeapon.attack();
@@ -835,17 +841,8 @@ package fe.unit {
 					superX = coordinates.X;
 					superY = coordinates.Y;
 				}
-				if (teleUnit && teleUnit.levit!=1) {
-					var tdx:Number = superX - teleUnit.coordinates.X;
-					var tdy:Number = superY - teleUnit.coordinates.Y;
-					var rasst:Number = Math.sqrt(tdx*tdx+tdy*tdy);
-					tdx=tdx/rasst*teleAccel;
-					tdy=tdy/rasst*teleAccel;
-					teleUnit.isLaz=0;
-					teleUnit.levit=2;
-					if (tdx>0 && teleUnit.velocity.X < teleSpeed || tdx < 0 && teleUnit.velocity.X > -teleSpeed) teleUnit.velocity.X += tdx;
-					if (tdy>0 && teleUnit.velocity.Y < teleSpeed || tdy < 0 && teleUnit.velocity.Y > -teleSpeed) teleUnit.velocity.Y += tdy;
-					if (teleUnit.player) (teleUnit as UnitPlayer).levitFilter2=levitFilter;
+				if (tele.held) {
+					tele.hold(superX, superY - tele.held.boundingBox.halfHeight);
 				}
 			}
 			else if (superSilaTip==5) {
@@ -864,7 +861,7 @@ package fe.unit {
 				grav=1;
 			}
 			else if (superSilaTip==2 || superSilaTip==7) {
-				if (teleUnit && teleUnit.levit==2) teleUnit.levit=0;
+				tele.release();
 				teleUnit=null;
 			}
 			else if (superSilaTip==5) {

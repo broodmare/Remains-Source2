@@ -17,6 +17,7 @@ package fe.unit {
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
+	import fe.unit.ability.Telekinesis;
 
 	import fe.stubs.visualPlayer;	// .fla linkage
 	import fe.stubs.reloadBar;		// .fla linkage
@@ -49,10 +50,10 @@ package fe.unit {
 
 		//Telekensis variables
 		public var levitOn:Boolean		= false;
-		public var teleObj:Obj;				// The object we're moving(?)
+		public var tele:Telekinesis;			// Grabs, moves and throws objects
 		public var teleSqrtMassa:Number;
-		public var teleSpeed:Number		= 8.00;
-		public var teleAccel:Number		= 1.00;
+		public var teleSpeed:Number		= 8.00;		// Top speed of the held object (raised by the telekinesis skill)
+		public var teleAccel:Number		= 1.00;		// How much the held object's velocity can change per tick (raised by the telekinesis skill)
 		public var maxTeleDist:int		= 200;
 		public var levitup:Boolean		= false;
 		
@@ -272,6 +273,7 @@ package fe.unit {
 			teleTransform.redMultiplier		= Appear.trMagic.redMultiplier   * 0.50 + 1;
 			teleTransform.greenMultiplier	= Appear.trMagic.greenMultiplier * 0.50 + 1;
 			teleTransform.blueMultiplier	= Appear.trMagic.blueMultiplier  * 0.50 + 1;
+			tele = new Telekinesis(this, teleSpeed, teleAccel, teleFilter, teleTransform);
 			shineTransform.greenMultiplier	= 1.50;
 			shineTransform.blueMultiplier	= 1.20;
 			doop		= true;
@@ -651,7 +653,9 @@ package fe.unit {
 				velocity.X *= 0.8;
 			}
 			else if (levit) {
-				velocity.multiply(0.80);
+				if (!teleHolder) {
+					velocity.multiply(0.80);
+				}
 			}
 			else if (isFly) {
 				if (ctr.keyRun) {
@@ -1116,7 +1120,6 @@ package fe.unit {
 			}
 			
 			// [Telekinesis]
-			var derp:int = 15;
 			if (teleObj) {
 				aMagic=50;
 
@@ -1132,20 +1135,10 @@ package fe.unit {
 					isTake=40;
 				}
 
-				if (teleObj.coordinates.X < celX - derp && teleObj.velocity.X < teleSpeed) {
-					teleObj.velocity.X += teleAccel;
-				}
-
-				if (teleObj.coordinates.X > celX + derp && teleObj.velocity.X > -teleSpeed) {
-					teleObj.velocity.X -= teleAccel;
-				}
-
-				if (teleObj.coordinates.Y - teleObj.boundingBox.halfHeight < celY - derp && teleObj.velocity.Y < teleSpeed) {
-					teleObj.velocity.Y += teleAccel;
-				}
-
-				if (teleObj.coordinates.Y - teleObj.boundingBox.halfHeight > celY + derp && teleObj.velocity.Y > -teleSpeed) {
-					teleObj.velocity.Y -= teleAccel;
+				tele.speed = teleSpeed;
+				tele.accel = teleAccel;
+				if (!tele.hold(celX, celY)) {
+					World.w.gui.setMana();
 				}
 
 				if (teleObj is Unit) {
@@ -1620,11 +1613,7 @@ package fe.unit {
 					return;
 				}
 				
-				teleObj=loc.celObj;
-				
-				if (teleObj == null) {
-					return;
-				}
+				tele.grab(loc.celObj, 1);
 				
 				if (teleObj.massa > pers.telePorog) {
 					teleSqrtMassa = Math.sqrt(teleObj.massa);
@@ -1633,24 +1622,14 @@ package fe.unit {
 					teleSqrtMassa = 0;
 				}
 				
-				if (teleObj.vis) {
-					teleObj.vis.filters = [teleFilter];
-					teleObj.vis.transform.colorTransform=teleTransform;
-					teleObj.vis.parent.setChildIndex(teleObj.vis,teleObj.vis.parent.numChildren-1);
-				}
-				
 				if (teleObj is Unit) {
 					(teleObj as Unit).alarma(coordinates.X, coordinates.Y);
 				}
-				
-				teleObj.levit = 1;
 				
 				if (teleObj.inter) {
 					teleObj.inter.sign = 0;
 				}
 				
-				teleObj.fracLevit = fraction;
-				teleObj.stay = false;
 				ctr.keyTele = false;
 			}
 		}
@@ -1663,43 +1642,41 @@ package fe.unit {
 					return;
 				}
 				
-				var p:Object = {x:(teleObj.coordinates.X - coordinates.X), y:(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight - coordinates.Y + boundingBox.halfHeight - 10)}
+				var obj:Obj = teleObj;
+				var force:Number = pers.throwForce;
 				var dm:Number = 0
 				
 				if (pers.throwForce > 0) {
-					dm = teleObj.massa * pers.throwDmagic * pers.allDManaMult;
+					dm = obj.massa * pers.throwDmagic * pers.allDManaMult;
 				}
 				
 				if (dm <= mana) {
-					norma(p, pers.throwForce);
 					mana -= dm;
 					pers.manaDamage(dm * pers.throwDmanaMult);
 				}
 				else {
-					norma(p, pers.throwForce * mana / dm);
+					force = pers.throwForce * mana / dm;
 					pers.manaDamage(mana * pers.throwDmanaMult);
 					mana = 0;
 				}
 				
-				if (teleObj is Box) {
-					(teleObj as Box).isThrow = true;
-					(teleObj as Box).t_throw = 2;
+				// Thrown away from the player
+				tele.throwToward(obj.coordinates.X - coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight - coordinates.Y + boundingBox.halfHeight - 10, force);
+				
+				if (obj is Box) {
+					(obj as Box).t_throw = 2;
 				}
 				
-				if (teleObj is Unit) {
-					(teleObj as Unit).t_throw = 45;
+				if (obj is Unit) {
+					(obj as Unit).t_throw = 45;
+				}
+				
+				if (pers.throwForce > 0) {
+					Emitter.emit("throw", loc, obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight, {rotation:Math.atan2(obj.velocity.Y, obj.velocity.X) * RAD_TO_DEG});
+					Snd.ps("dash", obj.coordinates.X, obj.coordinates.Y);
 				}
 				
 				World.w.gui.setMana();
-				teleObj.velocity.X += p.x;
-				teleObj.velocity.Y += p.y;
-				
-				if (pers.throwForce > 0) {
-					Emitter.emit("throw", loc,teleObj.coordinates.X, teleObj.coordinates.Y - teleObj.boundingBox.halfHeight, {rotation:Math.atan2(teleObj.velocity.Y,teleObj.velocity.X) * RAD_TO_DEG});
-					Snd.ps("dash", teleObj.coordinates.X, teleObj.coordinates.Y);
-				}
-				
-				dropTeleObj();
 			}
 		}
 		
@@ -1712,19 +1689,15 @@ package fe.unit {
 			return 0;
 		}
 		
+		// The object held by telekinesis, null if none
+		public function get teleObj():Obj {
+			return tele ? tele.held : null;
+		}
+		
 		//уронить левитируемый объект
 		public function dropTeleObj():void {
 			if (teleObj) {
-				if (teleObj.vis) {
-					teleObj.vis.filters = [];
-					
-					if (teleObj.cTransform) {
-						teleObj.vis.transform.colorTransform = teleObj.cTransform;
-					}
-				}
-				
-				teleObj.levit = 0;
-				teleObj = null;
+				tele.release();
 				World.w.gui.setMana();
 			}
 		}

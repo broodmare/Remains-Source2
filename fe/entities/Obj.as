@@ -27,6 +27,7 @@ package  fe.entities {
 		public var levitPoss:Boolean		= true;			// [ability to move using levitation]
 		public var levit:int				= 0;			//
 		public var fracLevit:int			= 0;			// [was levitated]
+		public var teleHolder:Obj;							// Who holds this with telekinesis, null if nobody. The holder steers it directly, so levitation drag is skipped
 		
 		public var radioactiv:Number		= 0.00;			// [Radioactivity]
 		public var radrad:Number			= 250.00;		// [Radius of radioactivity]

@@ -244,8 +244,10 @@ package fe.unit {
 		}
 
 		public override function animate():void {
-			if (vis.osn.currentFrame != tr) {
-				vis.osn.puha.gotoAndStop(tr);
+			var puha:MovieClip = vis.osn.puha;	// The gun. Not every frame of the base's timeline has one
+			
+			if (puha && puha.currentFrame != tr) {
+				puha.gotoAndStop(tr);
 			}
 
 			if (fixed && levit) {
@@ -256,15 +258,17 @@ package fe.unit {
 			}
 
 			if (vis.osn.currentFrame == 1) {
-				vis.osn.puha.rotation = currentWeapon.rot * RAD_TO_DEG; // Rotate the gun of the turret.
-
-				if (vis.osn.light.currentFrame != aiState + 1) {
-					vis.osn.light.gotoAndStop(aiState + 1);
+				if (puha) {
+					puha.rotation = currentWeapon.rot * RAD_TO_DEG; // Rotate the gun of the turret.
+					
+					if (isShoot) {
+						isShoot = false;
+						puha.puha.gotoAndPlay(2);
+					}
 				}
 				
-				if (isShoot) {
-					isShoot = false;
-					vis.osn.puha.puha.gotoAndPlay(2); 
+				if (vis.osn.light && vis.osn.light.currentFrame != aiState + 1) {
+					vis.osn.light.gotoAndStop(aiState + 1);
 				}
 				
 				if (aiState == 0 && hidden && fixed) {

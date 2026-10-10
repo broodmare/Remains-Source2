@@ -15,6 +15,7 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	import fe.projectile.Bullet;
+	import fe.unit.ability.Telekinesis;
 	
 	public class UnitBossAlicorn extends UnitPon {
 		
@@ -36,12 +37,10 @@ package fe.unit {
 		private var floatX:Number=1, floatY:Number=0;
 		
 		//телекинез
-		private var teleObj:Obj;
+		private var tele:Telekinesis;
 		private var throwForce:Number=60;
-		private var teleX:Number=0, teleY:Number=0;
 		private var teleSpeed:Number=24;
 		private var teleAccel:Number=6;
-		private var derp:Number=15;
 		private var optDistTele:int=1000;	
 		
 		//невидимость
@@ -105,6 +104,7 @@ package fe.unit {
 			spd = new Object();
 			aiNapr = storona;
 			teleFilter = new GlowFilter(0xFF0000,1,6,6,1,3);
+			tele = new Telekinesis(this, teleSpeed, teleAccel, teleFilter);
 			
 			blood = 0;
 			bloodEmit = Emitter.arr['pole'];
@@ -174,9 +174,7 @@ package fe.unit {
 			
 			super.setNull(f);
 			
-			if (teleObj) {
-				dropTeleObj();
-			}
+			tele.release();
 			
 			aiState = 0;
 			aiSpok = 0;
@@ -419,23 +417,7 @@ package fe.unit {
 			attack();
 			
 
-			if (teleObj) {
-				if (teleObj is Unit) {
-					teleX = coordinates.X + storona * 150;
-					teleY = coordinates.Y - 40;
-				}
-				else {
-					teleX = coordinates.X + storona * 80;
-					teleY = coordinates.Y - 40;
-				} 				
-				if (teleObj.coordinates.X < teleX - derp && teleObj.velocity.X < teleSpeed) teleObj.velocity.X += teleAccel;
-				if (teleObj.coordinates.X > teleX + derp && teleObj.velocity.X > -teleSpeed) teleObj.velocity.X -= teleAccel;
-				if (teleObj.coordinates.Y < teleY - derp && teleObj.velocity.Y < teleSpeed) teleObj.velocity.Y += teleAccel;
-				if (teleObj.coordinates.Y > teleY + derp && teleObj.velocity.Y > -teleSpeed) teleObj.velocity.Y -= teleAccel;
-				if (teleObj.levit == 1) {
-					dropTeleObj();
-				}
-			}
+			tele.holdBeside();
 		}
 		
 		public function attack():void {
@@ -449,85 +431,46 @@ package fe.unit {
 		
 		//найти подходящий для телекинеза ящик и поднять его
 		private function findBox():Obj {
+			var b:Box;
+			
 			if (celUnit && isrnd(0.5)) {
-				upTeleObj(celUnit);
-				if (teleObj is UnitPlayer) {
-					(teleObj as UnitPlayer).levitFilter2=teleFilter;
-					(teleObj as UnitPlayer).isLaz=0;
-				}
-				return teleObj;
+				tele.grab(celUnit, (celUnit is UnitPlayer) ? World.w.pers.teleEnemy : 2);
+				return celUnit;
 			}
-			for each (var b:Box in loc.objs) {
-				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
-					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (loc.isLine(coordinates.X, this.boundingBox.top, b.coordinates.X, b.boundingBox.top)) {
-						upTeleObj(b);
-						return b;
-					}
-				}
+			
+			b = tele.findBox(optDistTele);
+			
+			if (b) {
+				tele.grab(b);
 			}
-			return null;
-		}
-		//подянть объект телекинезом
-		private function upTeleObj(obj:Obj):void {
-			if (obj==null) return;
-			teleObj=obj;
-			if (!(teleObj is UnitPlayer) && teleObj.vis) {
-				teleObj.vis.filters=[teleFilter];
-			}
-			teleObj.fracLevit=fraction;
-			if (teleObj is UnitPlayer) teleObj.levit=World.w.pers.teleEnemy;
-			else teleObj.levit=2;
-		}
-		
-		//уронить левитируемый объект
-		public function dropTeleObj():void {
-			if (teleObj) {
-				if (!(teleObj is UnitPlayer) && teleObj.vis) {
-					teleObj.vis.filters=[];
-				}
-				teleObj.levit=0;
-				teleObj=null;
-			}
+			
+			return b;
 		}
 		
 		//бросок телекинезом
 		private function throwTele():void {
-			if (teleObj) {
-				var p:Object;
-				var tspeed:Number=throwForce;
-				
-				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
-				
-				if (teleObj.coordinates.X<200 || teleObj.coordinates.X>loc.maxX-200) tspeed*=0.6;
-				
-				if (teleObj is Unit) {
-					p={x:100*storona, y:-30};
-				}
-				else {
-					p={x:(celX-teleObj.coordinates.X), y:(celY-(teleObj.coordinates.Y - teleObj.boundingBox.halfHeight)-Math.abs(celX-teleObj.coordinates.X)/4)};
-				}
-				
-				if (teleObj is UnitPlayer) {
-					(teleObj as UnitPlayer).damWall=dam/2;
-					(teleObj as UnitPlayer).t_throw=30;
-				}
-				
-				if (teleObj is Box) {
-					(teleObj as Box).isThrow=true;
-				}
-				
-				norma(p, tspeed);
-				teleObj.velocity.X += p.x;
-				teleObj.velocity.Y += p.y;
-				dropTeleObj();
+			var force:Number = throwForce;
+			
+			if (!tele.held) {
+				return;
 			}
 			
+			if (tele.held is UnitPlayer) {
+				(tele.held as UnitPlayer).damWall = dam / 2;
+				(tele.held as UnitPlayer).t_throw = 30;
+			}
+			
+			// Softer near the arena walls
+			if (tele.held.coordinates.X < 200 || tele.held.coordinates.X > loc.maxX - 200) {
+				force *= 0.6;
+			}
+			
+			tele.throwAt(celX, celY, force);
 		}
 		
 		public override function die(sposob:int=0):void {
 			superInvis=false;
-			dropTeleObj();
+			tele.release();
 			isBlast=false;
 			
 			if (isShit) {

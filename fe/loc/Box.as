@@ -645,7 +645,7 @@ package fe.loc {
 			if (isPlav) {
 				velocity.multiply(0.65);
 			}
-			else if (levit) {
+			else if (levit && !teleHolder) {
 				velocity.multiply(0.8);
 			}
 		}
