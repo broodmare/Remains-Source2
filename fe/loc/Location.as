@@ -1584,7 +1584,7 @@ package fe.loc {
 
 				var t:Tile = World.w.loc.getAbsTile(int(currentX), int(currentY));
 
-				if (t.phis == 1 && currentX >= t.boundingBox.left && currentX <= t.boundingBox.right && currentY >= t.boundingBox.top && currentY <= t.boundingBox.bottom) {
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(currentX, currentY)) {
 					if (obj == null || t.door != obj) {
 						return false;
 					}
@@ -1665,7 +1665,6 @@ package fe.loc {
 		// [Tile damage]
 		public function hitTile(t:Tile, hit:int, nx:int, ny:int, tip:int = 9):void {
 			var isPhisGreaterThanOrEqualToOne:Boolean = t.phis >= 1;
-			var isHpZeroOrLess:Boolean = t.hp <= 0;
 
 			if (tip == 100 && hit <= 50 && (t.thre > 0 || t.indestruct)) return;
 			if (tip == 100) tip = 4;
@@ -1680,9 +1679,11 @@ package fe.loc {
 				if (isPhisGreaterThanOrEqualToOne && active) grafon.dyrka(nx, ny, tip, t.mat, true, hitDivHp);
 				return;
 			}
+			var isHpZeroOrLess:Boolean = t.hp <= 0;
 			if (isHpZeroOrLess) {
 				if (isPhisGreaterThanOrEqualToOne) {
 					isRebuild = true;
+					isRelight = true;
 					if (t.coords.Y < waterLevel) {
 						recalcTiles.push(t);
 						isRecalc = true;
@@ -1710,6 +1711,7 @@ package fe.loc {
 					t.door.die(4);
 				} 				
 				isRebuild=true;			//изменить конфигурацию локации				
+				isRelight = true;
 				if (t.coords.Y < waterLevel) {	//пересчитать воду
 					recalcTiles.push(t);
 					isRecalc=true;
@@ -1934,6 +1936,7 @@ package fe.loc {
 			}
 			
 			for each (obj in areas) {
+				// Unbracketed as in vanilla: with an allid set, the emitting area also receives its own command; the maps were authored against this
 				if (obj != emit && allid == "" || allid == null || (obj as Area).allid == allid) {
 					obj.command(allact);
 				}

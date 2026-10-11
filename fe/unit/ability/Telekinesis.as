@@ -5,13 +5,12 @@ package fe.unit.ability {
 
 	import fe.entities.Obj;
 	import fe.loc.Box;
+	import fe.Settings;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 
 	// Magically grabbing an object, steering it to a point, throwing it and letting it go
 	public class Telekinesis {
-		public static const VANILLA_THROW:Boolean	= true;		// Let-go objects are slowed to vanilla's carry speed, so throws deal vanilla damage; false keeps the full carry speed
-
 		private static const RELEASE:Number			= 4.0;		// Vanilla's carry speed as a multiple of accel -- its 0.8 levitation drag capped held objects there
 		private static const EASE:Number			= 0.35;		// Fraction of the remaining distance covered per tick on the final approach
 		private static const BESIDE_UNIT:Number		= 150.0;	// How far beside the owner a lifted unit is held
@@ -28,11 +27,11 @@ package fe.unit.ability {
 		private var tint:ColorTransform;		// Optional colour tint on the held object
 		private var grabLevit:int;				// The levit value the object was grabbed with
 
-		// With VANILLA_THROW, slow the held object to vanilla's carry speed, so faster carrying doesn't make throws hit harder
+		// With Settings.VANILLA_THROW, slow the held object to vanilla's carry speed, so faster carrying doesn't make throws hit harder
 		private function trimRelease():void {
 			var trimmed:Object;
 
-			if (!VANILLA_THROW) { return; }
+			if (!Settings.VANILLA_THROW) { return; }
 
 			trimmed = {x:held.velocity.X, y:held.velocity.Y};
 			owner.norma(trimmed, accel * RELEASE);
@@ -196,7 +195,7 @@ package fe.unit.ability {
 			}
 		}
 
-		// Let go of the held object. With trim, it is first slowed to vanilla's carry speed (see VANILLA_THROW)
+		// Let go of the held object. With trim, it is first slowed to vanilla's carry speed (see Settings.VANILLA_THROW)
 		public function release(trim:Boolean = true):void {
 			var released:Obj = held;
 

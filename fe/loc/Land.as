@@ -649,7 +649,11 @@ package fe.loc {
 					break;
 				}
 			}
-			
+
+			if (probs[nprob] == null) {
+				trace("Land.as/buildProb() - Error: No <room> named \"" + nprob + "\" among the trial rooms; doors leading to it will do nothing");
+			}
+
 			return true;
 		}
 		

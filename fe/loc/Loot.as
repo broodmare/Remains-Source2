@@ -369,7 +369,7 @@ package fe.loc {
 				//движение влево
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X <= t.boundingBox.right && coordinates.X >= t.boundingBox.left && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						coordinates.X = t.boundingBox.right + 1;
 						velocity.X = Math.abs(velocity.X);
 					}
@@ -378,7 +378,7 @@ package fe.loc {
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						coordinates.X = t.boundingBox.left - 1;
 						velocity.X = -Math.abs(velocity.X);
 					}
@@ -392,7 +392,7 @@ package fe.loc {
 				coordinates.Y += velocity.Y / div;
 				if (coordinates.Y - boundingBox.height < 0) coordinates.Y = boundingBox.height;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
-				if (t.phis==1 && coordinates.Y <= t.boundingBox.bottom && coordinates.Y >= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+				if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 					coordinates.Y = t.boundingBox.bottom + 1;
 					velocity.Y = 0;
 				}

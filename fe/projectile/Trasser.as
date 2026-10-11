@@ -99,7 +99,7 @@ package fe.projectile {
 			
 			if (dx < 0) {
 				t = loc.getAbsTile(X, Y);
-				if (t.phis == 1 && X <= t.boundingBox.right && X >= t.boundingBox.left && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom) {
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(X, Y)) {
 					if (is_skok) {
                         X = t.boundingBox.right + 1;
                         dx = Math.abs(dx * skok);
@@ -114,7 +114,7 @@ package fe.projectile {
 			if (dx > 0) {
 				t = loc.getAbsTile(X, Y);
 				
-				if (t.phis == 1 && X >= t.boundingBox.left && X <= t.boundingBox.right && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom) {
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(X, Y)) {
 					if (is_skok) {
                         X = t.boundingBox.left - 1;
                         dx = -Math.abs(dx * skok);
@@ -136,7 +136,7 @@ package fe.projectile {
 				Y += dy / div;
 				t = loc.getAbsTile(X, Y);
 				
-				if (t.phis == 1 && Y <= t.boundingBox.bottom && Y >= t.boundingBox.top && X >= t.boundingBox.left && X <= t.boundingBox.right) {
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(X, Y)) {
 					if (is_skok) {
                         Y = t.boundingBox.bottom + 1;
                         dy = Math.abs(dy * skok);
@@ -160,7 +160,7 @@ package fe.projectile {
 				
 				t = loc.getAbsTile(X, Y);
 				
-				if (t.phis == 1 && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom && X >= t.boundingBox.left && X <= t.boundingBox.right) {
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(X, Y)) {
 					Y = t.boundingBox.top - 1;
 					
 					if (is_skok) {

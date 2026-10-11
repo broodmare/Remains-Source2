@@ -11,7 +11,7 @@ package fe.projectile {
 		public var cel:Unit;
 		private static var p:Object = {x:0, y:0};
 
-		public function SmartBullet(own:Unit, coords:Vec2, visClass:Class=null, addobj:Boolean=true) {
+		public function SmartBullet(own:Unit, coords:Vec2, visClass:Class=null) {
 			super(own, coords, visClass);
 			vRot = true;
 		}

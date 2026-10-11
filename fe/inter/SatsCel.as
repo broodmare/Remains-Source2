@@ -8,10 +8,10 @@ package fe.inter {
 
 	public class SatsCel extends Obj {
 
-		private var kol:int = 1;
-		private var cons:Number;
+		public var kol:int = 1;
+		public var cons:Number;
 		public var un:Object;
-		private var begined:Boolean = false;
+		public var begined:Boolean = false;
 
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) {
 			sloy = 5;

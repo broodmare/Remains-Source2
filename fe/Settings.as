@@ -6,6 +6,8 @@ package fe {
 		public static var settings:Object = {};
 
 		// CONSTANT GAME SETTINGS -- These probably won't change (but can!) during gameplay
+		public static const VANILLA_THROW:Boolean = true; // Limit telekinetic throws to vanilla's carry speed
+
 		public static var alwaysFogOfWar:Boolean;
 		public static var fogRegenerates:Boolean;
 		public static var burningForcesRun:Boolean;

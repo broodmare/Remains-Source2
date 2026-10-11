@@ -2726,7 +2726,7 @@ package fe.unit {
 				ny = coordinates.Y - boundingBox.halfHeight + ndy * i / div;
 				t = World.w.loc.getAbsTile(int(nx), int(ny));
 				
-				if (t.phis == 1 && nx >= t.boundingBox.left && nx <= t.boundingBox.right && ny >= t.boundingBox.top && ny <= t.boundingBox.bottom) {
+				if (t.phis == 1 && t.boundingBox.intersectsPoint(nx, ny)) {
 					celX = nx;
 					celY = ny;
 					return 0

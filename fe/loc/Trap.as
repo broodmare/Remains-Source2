@@ -128,7 +128,7 @@ package fe.loc {
 		
 		public function attKorp(cel:Unit):Boolean {
 			if (cel==null || cel.neujaz) return false;
-			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && cel.coordinates.X <= this.boundingBox.right && cel.coordinates.X >= this.boundingBox.left && cel.coordinates.Y <= this.boundingBox.bottom && cel.coordinates.Y >= this.boundingBox.top) { //шипы 
+			if (spDam == 1 && !cel.isFly && cel.velocity.Y > 8 && this.boundingBox.intersectsCoordinate(cel.coordinates)) { //шипы
 				cel.damage(cel.massa*cel.velocity.Y/20*dam*(1+loc.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}

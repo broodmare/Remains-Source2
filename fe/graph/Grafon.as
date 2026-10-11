@@ -37,7 +37,9 @@ package fe.graph {
 		private static const COLOR_TRANSPARENT:uint		= 0xFF000000;
 		private static const COLOR_BLACK:uint			= 0x00000000;
 		private static const COLOR_WHITE:uint			= 0xFFFFFFFF;
-		
+
+		private static const SHADOW_REACH:int			= 40;			// How far the drop shadow spreads past a front pixel: its blur plus offset, rounded up to a tile
+
 
 		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
 		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
@@ -74,6 +76,7 @@ package fe.graph {
 		private var satsBitmap:Bitmap;
 		private var shadBmp:BitmapData;
 		private var colorBmp:BitmapData;
+		private var transpFon:Boolean;				// The back wall lets the distant background show through; set per room by drawLoc
 		private var dsFilter:DropShadowFilter		= new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
 		private var infraTransform:ColorTransform	= new ColorTransform(1, 1, 1, 1, 100);
 		private var defTransform:ColorTransform		= new ColorTransform();
@@ -193,6 +196,7 @@ package fe.graph {
 			
 			colorBmp = new BitmapData(rectX, rectY, true, 0);
 			shadBmp = new BitmapData(rectX, rectY, true, 0);
+			visBack.addChild(new Bitmap(shadBmp));	// The tiles' drop shadow lies over the back wall as its own layer, so it can be recast when tiles break
 			
 			lightBmp = new BitmapData(lightX, lightY, true, COLOR_TRANSPARENT);
 			lightBitmap = new Bitmap(lightBmp, "auto", true);
@@ -392,7 +396,7 @@ package fe.graph {
 			resX = loc.spaceX * tileX;
 			resY = loc.spaceY * Tile.tileY;
 			
-			var transpFon:Boolean = nloc.transpFon;
+			transpFon = nloc.transpFon;
 			
 			if (nloc.backwall == "sky") {
 				transpFon = true;
@@ -653,10 +657,10 @@ package fe.graph {
 			}
 			
 			backBmp.draw(colorBmp, null, null, "hardlight");
-			backBmp.draw(shadBmp);
-			
+
 			if (transpFon) {
 				backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
+				shadBmp.draw(backBmp, null, null, "alpha");	// No shadow where the distant background shows through
 			}
 			
 			// [Pink cloud]
@@ -1020,6 +1024,7 @@ package fe.graph {
 			
 			var nx:Number = (t.coords.X + 0.50) * tileX;
 			var ny:Number = (t.coords.Y + 0.50) * tileY;
+			var hole:Rectangle;
 
 			if (t.fake) {
 				Emitter.emit("fake", loc, nx, ny);
@@ -1049,6 +1054,32 @@ package fe.graph {
 			}
 
 			decal(erC, drC, nx, ny, 1, 0, "hardlight");
+
+			hole = new Rectangle(t.coords.X * tileX, t.coords.Y * tileY, tileX, tileY);
+			hole.inflate(tileX, tileY);	// Room for the hole decal reaching past its tile
+			recastShadow(hole);
+		}
+
+		// Recasts the drop shadow around a changed part of the front layer, so a removed tile stops casting one
+		private function recastShadow(changed:Rectangle):void {
+			var area:Rectangle = changed.clone();
+			var source:Rectangle;
+			var cast:BitmapData;
+
+			area.inflate(SHADOW_REACH, SHADOW_REACH);
+			area = area.intersection(shadBmp.rect);
+			source = area.clone();
+			source.inflate(SHADOW_REACH, SHADOW_REACH);	// The front pixels that can still shade the area
+			source = source.intersection(frontBmp.rect);
+
+			cast = new BitmapData(source.width, source.height, true, 0);
+			cast.applyFilter(frontBmp, source, new Point(0, 0), dsFilter);
+			shadBmp.copyPixels(cast, new Rectangle(area.x - source.x, area.y - source.y, area.width, area.height), area.topLeft);
+			cast.dispose();
+
+			if (transpFon) {
+				shadBmp.draw(backBmp, null, null, "alpha", area);
+			}
 		}
 		
 		// Bullethole

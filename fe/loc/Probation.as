@@ -255,6 +255,7 @@ package fe.loc {
 				if (un.wave) {
 					un.sost=4;
 					un.disabled=true;
+					loc.remObj(un);
 				}
 			}
 		}

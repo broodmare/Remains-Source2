@@ -78,7 +78,7 @@ package fe.unit {
 				var nx:Number = coordinates.X + cx*i/div;
 				var ny:Number = coordinates.Y - this.boundingBox.height * 0.6 + cy * i / div;
 				var t:Tile=World.w.loc.getTile(int(nx/Tile.tileX), int(ny/Tile.tileY));
-				if (t.phis==1 && nx>=t.boundingBox.left && nx<=t.boundingBox.right && ny>=t.boundingBox.top && ny<=t.boundingBox.bottom) {
+				if (t.phis==1 && t.boundingBox.intersectsPoint(nx, ny)) {
 					return false;
 				}
 			}

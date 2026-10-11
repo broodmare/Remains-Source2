@@ -114,12 +114,14 @@ package fe.projectile
 		
 		private function sensor():Boolean {
 			for each (var un:Unit in loc.units) {
-				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.boundingBox.left && coordinates.X <= un.boundingBox.right && coordinates.Y >= un.boundingBox.top && coordinates.Y <= un.boundingBox.bottom && un.sost < 3) {
-					explosion();
-					onCursor=0;
-					vse=true;
-					return true;
+				if (un.loc != loc || un.disabled || un.fraction == owner.fraction || !un.boundingBox.intersectsCoordinate(coordinates) || un.sost >= 3) {
+					continue;
 				}
+
+				explosion();
+				onCursor=0;
+				vse=true;
+				return true;
 			}
 			return false;
 		}
@@ -159,7 +161,7 @@ package fe.projectile
 			var t:Tile;
 			coordinates.X += velocity.X / div;
 			if (lip) {
-				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && coordinates.X >= loc.celObj.boundingBox.left && coordinates.X <= loc.celObj.boundingBox.right && coordinates.Y >= loc.celObj.boundingBox.top && coordinates.Y <= loc.celObj.boundingBox.bottom) {
+				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && (loc.celObj as Box).boundingBox.intersectsCoordinate(coordinates)) {
 					targetObj=loc.celObj;
 					prilip=true;
 					return;
@@ -179,7 +181,7 @@ package fe.projectile
 				}
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.X <= t.boundingBox.right && coordinates.X >= t.boundingBox.left && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit != '') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
 							popadalo();
@@ -192,7 +194,7 @@ package fe.projectile
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis == 1 && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom) {
+					if (t.phis == 1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
 							popadalo();
@@ -208,7 +210,7 @@ package fe.projectile
 					stay=false;
 					coordinates.Y += velocity.Y / div;
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.Y <= t.boundingBox.bottom && coordinates.Y >= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 						if (bumc) {
 							popadalo();
@@ -228,7 +230,7 @@ package fe.projectile
 						return;
 					}
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && coordinates.Y >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (bumc) {
 							if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 							popadalo();
