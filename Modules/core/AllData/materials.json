@@ -777,7 +777,7 @@
     {
       "ed": 2,
       "n": "Доски",
-      "id": "idMirror",
+      "id": "M",
       "main": {
         "tex": "tWoodPlanks"
       },
