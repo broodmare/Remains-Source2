@@ -5,7 +5,7 @@ package fe.weapon  {
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
-	import fe.loc.Tile
+	import fe.loc.tile.Tile;
 	import fe.projectile.Bullet;
 	
 	public class WKick extends Weapon {
@@ -75,7 +75,7 @@ package fe.weapon  {
 					var t1:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 30);
 					var t2:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 50);
 					
-					if (t1 && t2 && t2.thre<t1.thre) {
+					if (t1 && t2 && t2.damageThreshold<t1.damageThreshold) {
 						vverh = true;
 					}
 					
@@ -103,7 +103,7 @@ package fe.weapon  {
 					var t3:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 30);
 					var t4:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 50);
 					
-					if (t3 && t4 && t4.thre < t3.thre) {
+					if (t3 && t4 && t4.damageThreshold < t3.damageThreshold) {
 						vverh = true;
 					}
 					

@@ -1,12 +1,12 @@
-package fe.loc
-{
+package fe.loc {
+
 	import fe.*;
 	import fe.unit.Resistances;
 
 	//[Class describing the Land and the player's activity in relation to the Land]
 	//[Contained in the game object]
-	public class LandAct
-	{
+	public class LandAct {
+	
 		public var id:String;
 		public var tip:String = '';
 		public var land:Land;

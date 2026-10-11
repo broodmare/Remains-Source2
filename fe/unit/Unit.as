@@ -28,6 +28,7 @@ package fe.unit {
 	import fe.unit.anim.Animator;
 	import fe.unit.attack.IAttack;
 	import fe.unit.motor.IMotor;
+	import fe.loc.tile.Tile;
 	
 	public class Unit extends Obj {
 
@@ -1333,8 +1334,8 @@ package fe.unit {
 				if (!levit && !isLaz) {
 					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height * 0.25);
 					
-					if (t.grav > 0 && velocity.Y < World.maxdy * t.grav || t.grav < 0 && velocity.Y > World.maxdy * t.grav) {
-						velocity.Y += World.ddy * t.grav * grav;
+					if (t.gravity > 0 && velocity.Y < World.maxdy * t.gravity || t.gravity < 0 && velocity.Y > World.maxdy * t.gravity) {
+						velocity.Y += World.ddy * t.gravity * grav;
 					}
 				}
 				
@@ -1484,7 +1485,7 @@ package fe.unit {
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, y + 1);
 						
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+						if ((t.collision==0 || t.collision==3) && !(t2.collision==0 || t2.collision==3) && t2.definition.height==4) {
 							coordinates.Y = t2.boundingBox.top;
 							boundingBox.bottom = t2.boundingBox.top;
 							sit(true);
@@ -1519,7 +1520,7 @@ package fe.unit {
 										velocity.X = Math.abs(velocity.X) * elast;
 										turnX = 1;
 
-										if (t.mat == 1) {
+										if (t.material == 1) {
 											tykMat = 1;
 										}
 
@@ -1557,7 +1558,7 @@ package fe.unit {
 						t = loc.getTile(x, y);
 						t2 = loc.getTile(x, (y + 1));
 						
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+						if ((t.collision==0 || t.collision==3) && !(t2.collision==0 || t2.collision==3) && t2.definition.height==4) {
 							coordinates.Y  = t2.boundingBox.top;
 							boundingBox.bottom = t2.boundingBox.top;
 							sit(true);
@@ -1593,7 +1594,7 @@ package fe.unit {
 										velocity.X = -Math.abs(velocity.X) * elast;
 										turnX = -1;
 
-										if (t.mat == 1) {
+										if (t.material == 1) {
 											tykMat = 1;
 										}
 
@@ -1648,7 +1649,7 @@ package fe.unit {
 								velocity.Y = 0;
 								turnY = -1;
 								
-								if (t.mat == 1) {
+								if (t.material == 1) {
 									tykMat = 1;
 								}
 							}
@@ -1673,11 +1674,11 @@ package fe.unit {
 								
 								newmy = t.boundingBox.top;
 								
-								if (t.mat > 0) {
-									stayMat = t.mat;
+								if (t.material > 0) {
+									stayMat = t.material;
 								}
 								
-								if (t.phis >= 1 && !(transT && t.phis == 3)) {
+								if (t.collision >= 1 && !(transT && t.collision == 3)) {
 									stayPhis = 1;
 									
 									if (t_throw > 0 && velocity.Y > damWallSpeed && damWall) {
@@ -1688,9 +1689,9 @@ package fe.unit {
 										destroyWall(t, 3);
 									}
 								}
-								else if (t.shelf && stayPhis == 0) {
+								else if (t.platform && stayPhis == 0) {
 									stayPhis = 2;
-									stayMat = t.mat;
+									stayMat = t.material;
 								}
 								
 								diagon = 0;
@@ -1811,7 +1812,7 @@ package fe.unit {
 							velocity.Y = 0;
 							turnY = 1;
 						
-							if (t.mat == 1) {
+							if (t.material == 1) {
 								tykMat = 1;
 							}
 						
@@ -1956,7 +1957,7 @@ package fe.unit {
 		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int {
 			var tileBox:BoundingBox;
 
-			if (!t || (t.phis == 0 || (transT && t.phis == 3)) && !t.shelf) {
+			if (!t || (t.collision == 0 || (transT && t.collision == 3)) && !t.platform) {
 				return 0; // No collision
 			}
 
@@ -1967,10 +1968,10 @@ package fe.unit {
 				return 0; // No collision
 			}
 
-			// Corrected shelf condition
-			if (t.shelf && (t.phis == 0 || (transT && t.phis == 3)) &&
+			// Corrected platform condition
+			if (t.platform && (t.collision == 0 || (transT && t.collision == 3)) &&
 				(boundingBox.bottom - (stay ? porog : porog_jump) > t.boundingBox.top || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
-				return 0; // No collision with the shelf
+				return 0; // No collision with the platform
 			}
 
 			return 1; // Collision detected
@@ -1988,14 +1989,14 @@ package fe.unit {
 			}
 
 			tile = loc.getTile(i, j);
-			if (tile.phis >= 1 && !(transT && tile.phis == 3)) {
+			if (tile.collision >= 1 && !(transT && tile.collision == 3)) {
 				isLaz = 0;
 				return false;
 			}
 
-			if (tile.stair != 0) {
-				isLaz = tile.stair;
-				storona = tile.stair;
+			if (tile.definition.ladderSide != 0) {
+				isLaz = tile.definition.ladderSide;
+				storona = tile.definition.ladderSide;
 
 				if (isLaz == -1) {
 					coordinates.X = tile.boundingBox.left + boundingBox.halfWidth;
@@ -2194,22 +2195,22 @@ package fe.unit {
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y);
 			
 			if (diagon == 0) {
-				if (t.diagon != 0 && (napr==0 || t.diagon==napr)) {
+				if (t.definition.slopeSide != 0 && (napr==0 || t.definition.slopeSide==napr)) {
 					ddy = t.getMaxY(coordinates.X);
 					
 					if (ddy < coordinates.Y + velN) {
-						diagon = t.diagon;
+						diagon = t.definition.slopeSide;
 						newmy = ddy;
 					}
 				}
 				else {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y + 40);
 					
-					if (t.diagon != 0 && (napr == 0 || t.diagon == napr)) {
+					if (t.definition.slopeSide != 0 && (napr == 0 || t.definition.slopeSide == napr)) {
 						ddy = t.getMaxY(coordinates.X);
 						
 						if (ddy < coordinates.Y + velN) {
-							diagon = t.diagon;
+							diagon = t.definition.slopeSide;
 							newmy = ddy;
 						}
 					}
@@ -2217,17 +2218,17 @@ package fe.unit {
 			}
 			else
 			{
-				if (t.diagon != 0 && (napr == 0 || t.diagon == napr)) {
+				if (t.definition.slopeSide != 0 && (napr == 0 || t.definition.slopeSide == napr)) {
 					ddy = t.getMaxY(coordinates.X);
-					diagon = t.diagon;
+					diagon = t.definition.slopeSide;
 					newmy = ddy;
 				}
 				else {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y - 40);
 					
-					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
+					if (t.definition.slopeSide!=0 && (napr==0 || t.definition.slopeSide==napr)) {
 						ddy=t.getMaxY(coordinates.X);
-						diagon = t.diagon;
+						diagon = t.definition.slopeSide;
 						newmy = ddy;
 					}
 					else {
@@ -2236,11 +2237,11 @@ package fe.unit {
 				}
 			}
 			
-			if (diagon != 0 && (napr == 0 || t.diagon == napr)) {
+			if (diagon != 0 && (napr == 0 || t.definition.slopeSide == napr)) {
 				shX1 = 0;
 				shX2 = 0;
 				stayPhis = 2;
-				stayMat = t.mat;
+				stayMat = t.material;
 			}
 			
 			return newmy;
@@ -2794,7 +2795,7 @@ package fe.unit {
 			if (napr == 3 && velocity.Y > 15 && destroy < 50 && massa >= 1) {
 				loc.hitTile(t, 50, (t.coords.X + 0.5) * tileX,(t.coords.Y + 0.5) * tileY, 100);
 				
-				if (t.phis == 0) {
+				if (t.collision == 0) {
 					return true;
 				}
 			}
@@ -2807,7 +2808,7 @@ package fe.unit {
 					loc.hitTile(t, destroy, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY, (napr == 3? 100 : 9));
 			}
 			
-			if (t.phis == 0) {
+			if (t.collision == 0) {
 				return true;
 			}
 			
@@ -3919,7 +3920,7 @@ package fe.unit {
 
 		// Whether the unit is covered by the fog of war, true if not
 		public function getTileVisi(r:Number=0.3):Boolean {
-			return (loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.halfHeight).visi > r);
+			return (loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.halfHeight).visibility > r);
 		}
 		
 		//слушать другого юнита
@@ -4010,7 +4011,7 @@ package fe.unit {
 				var tileYIdx:int = int(ny / tileY);
 				var t:Tile = World.w.loc.getTile(tileXIdx, tileYIdx);
 				
-				if (t.phis == 1 && t.boundingBox.intersectsPoint(nx, ny)) {
+				if (t.collision == 1 && t.boundingBox.intersectsPoint(nx, ny)) {
 					return 0;
 				}
 			}

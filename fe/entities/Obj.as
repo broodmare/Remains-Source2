@@ -88,8 +88,10 @@ package  fe.entities {
 			// Compute squared distance
 			var distanceSquared:Number = (deltaX * deltaX) + (deltaY * deltaY);
 			
-			// Return -1 if the result is NaN, else return the squared distance
-			return isNaN(distanceSquared) ? -1 : distanceSquared;
+			// Kept in rasst2 for the many readers between steps; -1 if the result is NaN
+			rasst2 = isNaN(distanceSquared) ? -1 : distanceSquared;
+
+			return rasst2;
 		}
 		
 		public function save():Object {
@@ -236,7 +238,7 @@ package  fe.entities {
 		}
 		
 		public static function setVisible(m:MovieClip):void {
-			var h:int;
+			var h:Boolean;
 			
 			if (World.w && World.w.pip && World.w.pip.active) {
 				h = World.w.pip.hideMane;
@@ -245,7 +247,7 @@ package  fe.entities {
 				h = Appear.hideMane;
 			}
 			
-			m.visible = (h == 0);
+			m.visible = !h;
 		}
 		
 		public static function setEye(m:MovieClip):void {	// .SWF Depenency

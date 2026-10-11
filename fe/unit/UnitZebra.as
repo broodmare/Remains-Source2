@@ -3,7 +3,7 @@ package fe.unit {
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
 	import fe.projectile.Bullet;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.World;
 	
 	public class UnitZebra extends UnitRaider {
@@ -78,7 +78,7 @@ package fe.unit {
 				var nx:Number = coordinates.X + cx*i/div;
 				var ny:Number = coordinates.Y - this.boundingBox.height * 0.6 + cy * i / div;
 				var t:Tile=World.w.loc.getTile(int(nx/Tile.tileX), int(ny/Tile.tileY));
-				if (t.phis==1 && t.boundingBox.intersectsPoint(nx, ny)) {
+				if (t.collision==1 && t.boundingBox.intersectsPoint(nx, ny)) {
 					return false;
 				}
 			}

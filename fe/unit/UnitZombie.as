@@ -5,7 +5,7 @@ package fe.unit {
 	
 	import fe.SymbolFactory;
 	import fe.util.Vec2;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
 	import fe.unit.ability.Telekinesis;
@@ -156,7 +156,7 @@ package fe.unit {
 			if (digger && loc && !loc.active) {
 				kop1 = loc.getAbsTile(coordinates.X - 10, coordinates.Y + 10);
 				kop2 = loc.getAbsTile(coordinates.X + 10, coordinates.Y + 10);
-				if (kop1.phis>0 && kop2.phis>0) {
+				if (kop1.collision>0 && kop2.collision>0) {
 					zak=true;
 					zakop();
 				}
@@ -358,10 +358,10 @@ package fe.unit {
 		
 		//проверка возможности прыжка
 		private function checkJump():Boolean {
-			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
-			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
-			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
-			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).phis!=0) return false;
+			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).collision!=0) return false;
+			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).collision!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).collision!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).collision!=0) return false;
 			return true;
 		}
 		
@@ -438,7 +438,7 @@ package fe.unit {
 				return;
 			}
 			
-			if (aiState==5 && (kop1.phis==0 || kop2.phis==0)) {
+			if (aiState==5 && (kop1.collision==0 || kop2.collision==0)) {
 				vykop();
 			}
 			
@@ -562,7 +562,7 @@ package fe.unit {
 				if (stay && shX1>0.25 && aiNapr<0) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
-						if (t.phis==1 || t.shelf) {
+						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
 						else turnX=1;
@@ -572,7 +572,7 @@ package fe.unit {
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
-						if (t.phis==1 || t.shelf) {
+						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
 						else turnX=-1;
@@ -761,23 +761,23 @@ package fe.unit {
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 		
 			if (coordinates.Y-celY>120) {
-				if (loc.getTile(nx,ny).phis==0) {
-					if (loc.getTile(nx-1,ny).phis==0) {
+				if (loc.getTile(nx,ny).collision==0) {
+					if (loc.getTile(nx-1,ny).collision==0) {
 						superX=nx*tileX;
 					}
-					else if (loc.getTile(nx+1,ny).phis==0) {
+					else if (loc.getTile(nx+1,ny).collision==0) {
 						superX=(nx+1)*tileX;
 					}
 				}
 			
-				if (superX<0 && loc.getTile(nx-2,ny).phis==0) {
-					if (loc.getTile(nx-1,ny).phis==0) superX=(nx-1)*tileX;
-					else if (loc.getTile(nx-3,ny).phis==0) superX=(nx-2)*tileX;
+				if (superX<0 && loc.getTile(nx-2,ny).collision==0) {
+					if (loc.getTile(nx-1,ny).collision==0) superX=(nx-1)*tileX;
+					else if (loc.getTile(nx-3,ny).collision==0) superX=(nx-2)*tileX;
 				}
 			
-				if (superX<0 && loc.getTile(nx+2,ny).phis==0) {
-					if (loc.getTile(nx+1,ny).phis==0) superX=(nx+2)*tileX;
-					else if (loc.getTile(nx+3,ny).phis==0) superX=(nx+3)*tileX;
+				if (superX<0 && loc.getTile(nx+2,ny).collision==0) {
+					if (loc.getTile(nx+1,ny).collision==0) superX=(nx+2)*tileX;
+					else if (loc.getTile(nx+3,ny).collision==0) superX=(nx+3)*tileX;
 				}
 			}
 			else {

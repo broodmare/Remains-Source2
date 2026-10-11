@@ -3,7 +3,7 @@ package fe.unit {
 	import fe.*;
 	import fe.util.Vec2;
 	import fe.loc.Location;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
 
@@ -389,10 +389,10 @@ package fe.unit {
 			var t:Tile = loc.getAbsTile(nx, ny);
 			
 			if (loc.testTile(t)) {
-				t.phis = 3;
+				t.collision = 3;
 				t.hp = Math.round(hp * power);
-				t.mat = 7;
-				t.t_ghost = Math.round(dam * power);
+				t.material = 7;
+				t.ghostTimer = Math.round(dam * power);
 				World.w.grafon.gwall(t.coords.X, t.coords.Y);
 				est = 1;
 			

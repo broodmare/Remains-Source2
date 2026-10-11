@@ -31,21 +31,21 @@ package fe.unit {
 
 		//поместить созданный юнит в локацию
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
-			if (cep<0 && nloc.getAbsTile(nx, ny+10).phis==0) {
-				if (nloc.getAbsTile(nx, ny-50).phis) {
+			if (cep<0 && nloc.getAbsTile(nx, ny+10).collision==0) {
+				if (nloc.getAbsTile(nx, ny-50).collision) {
 					cep=1;
 					ny-=10;
 					vis.osn.gotoAndStop(2);
 					vis.osn.rotation=90;
 					fixed=true;
 				}
-				else if (nloc.getAbsTile(nx-40, ny-10).phis) {
+				else if (nloc.getAbsTile(nx-40, ny-10).collision) {
 					cep=2;
 					nx -= (40 - this.boundingBox.width) / 2 - 1;
 					vis.osn.gotoAndStop(2);
 					fixed=true;
 				}
-				else if (nloc.getAbsTile(nx + 40, ny - 10).phis) {
+				else if (nloc.getAbsTile(nx + 40, ny - 10).collision) {
 					cep=3;
 					nx += (40 - this.boundingBox.width) / 2 - 1;
 					vis.osn.gotoAndStop(2);

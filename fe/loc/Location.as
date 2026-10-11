@@ -22,6 +22,9 @@ package fe.loc {
 	import fe.serv.Item;
 	import fe.unit.InventoryItem;
 	import fe.unit.UnitTurret;
+	import fe.loc.tile.Tile;
+	import fe.loc.tile.TilePiece_Definition;
+	import fe.loc.tile.TileRegistry;
 	
 	public class Location {
 
@@ -331,7 +334,7 @@ package fe.loc {
 				if (!black) {
 					for (var i:int = 0; i < spaceX; i++) {
 						for (var j:int = 0; j < spaceY; j++) {
-							getTile(i, j).visi = 1;
+							getTile(i, j).visibility = 1;
 						}
 					}
 				}
@@ -368,12 +371,12 @@ package fe.loc {
 					}
 					
 					tile = getTile(i, j);
-					tile.dec(jis, mirror);
+					tile.applyDefinition(TileRegistry.viewDefinition(jis, mirror));
 
-					if (tile.stair != 0) { //полочка наверху лестницы
-						if (j > 0 && tile.phis == 0 && !tile.shelf && tile.stair != getTile(i, j - 1).stair) {
-							tile.shelf = true;
-							tile.vid++;
+					if (tile.definition.ladderSide != 0) { //полочка наверху лестницы
+						if (j > 0 && tile.collision == 0 && !tile.platform && tile.definition.ladderSide != getTile(i, j - 1).definition.ladderSide) {
+							tile.platform = true;
+							tile.ladderTop = true;
 						}
 					}
 
@@ -390,10 +393,10 @@ package fe.loc {
 							|| ramka == 7 && (i <= 10 || i>=37) && j >= 16
 							|| ramka == 8 && (i == RIGHT_X)
 							) {
-								tile.phis = 1;
+								tile.collision = 1;
 						}
-						else if (tile.phis >= 1) {
-							tile.indestruct = true;
+						else if (tile.collision >= 1) {
+							tile.indestructible = true;
 						}
 					}
 				}
@@ -637,22 +640,22 @@ package fe.loc {
 			var i:int;
 			if (dx > 0) {
 				for (i = nx; i <= nx + dx; i++) {
-					getTile(i, ny).place = false;
+					getTile(i, ny).canPlaceObjects = false;
 				}
 			}
 			if (dx < 0) {
 				for (i = nx + dx; i <= nx; i++) {
-					getTile(i, ny).place = false;
+					getTile(i, ny).canPlaceObjects = false;
 				}
 			}
 			if (dy > 0) {
 				for (i = ny; i <= ny + dy; i++) {
-					getTile(nx, i).place = false;
+					getTile(nx, i).canPlaceObjects = false;
 				}
 			}
 			if (dy < 0) {
 				for (i = ny + dy; i <= ny; i++) {
-					getTile(nx, i).place = false;
+					getTile(nx, i).canPlaceObjects = false;
 				}
 			}
 		}
@@ -667,21 +670,21 @@ package fe.loc {
 			}
 			
 			for (var j:int = 0; j < spaceX; j++) {
-				if (getTile(j, TOP_Y).phis >= 1) {
+				if (getTile(j, TOP_Y).collision >= 1) {
 					getTile(j, TOP_Y).mainFrame(border);
 				}
 				
-				if (getTile(j, BOTTOM_Y).phis >= 1) {
+				if (getTile(j, BOTTOM_Y).collision >= 1) {
 					getTile(j, BOTTOM_Y).mainFrame(border);
 				}
 			}
 		
 			for (j = 0; j < spaceY; j++) {
-				if (getTile(LEFT_X, j).phis >= 1) {
+				if (getTile(LEFT_X, j).collision >= 1) {
 					getTile(LEFT_X, j).mainFrame(border);
 				}
 				
-				if (getTile(RIGHT_X, j).phis >= 1) {
+				if (getTile(RIGHT_X, j).collision >= 1) {
 					getTile(RIGHT_X, j).mainFrame(border);
 				}
 			}
@@ -690,7 +693,7 @@ package fe.loc {
 		//создать активные объекты в местах их появления, кроме мест около переходов, вызывать после проделывания проходов
 		public function setObjects():void {
 			for each (var obj in objsT) {
-				if (noHolesPlace && obj.rem>0 && !getTile(obj.x, obj.y).place) {
+				if (noHolesPlace && obj.rem>0 && !getTile(obj.x, obj.y).canPlaceObjects) {
 					continue;	//не ставить ящики около прохода
 				}
 				
@@ -730,7 +733,7 @@ package fe.loc {
 					// [Remove points from passages]
 					if (noHolesPlace) {
 						for (var j:int = 0; j<ups[i].length; j++) {
-							if (!getTile( ups[i][j].x, ups[i][j].y ).place) {
+							if (!getTile( ups[i][j].x, ups[i][j].y ).canPlaceObjects) {
 								ups[i].splice(j, 1);
 								j--;
 							}
@@ -773,7 +776,7 @@ package fe.loc {
 			var nx:int = int(Math.random() * (RIGHT_X - 1) + 1);
 			var ny:int = int(Math.random() * (BOTTOM_Y - 1) + 1);
 			
-			if (getTile(nx, ny).phis == 0) {
+			if (getTile(nx, ny).collision == 0) {
 				LootGen.lootCont(this, (nx + 0.5) * tileX, (ny + 0.8) * tileY, 'metal');
 			}
 		}
@@ -1379,7 +1382,7 @@ package fe.loc {
 
 				nx = int(x1 + Math.random() * (x2 - x1));
 				ny = int(y1 + Math.random() * (y2 - y1));
-				if (getTile(nx, ny).phis == 0 && (getTile(nx - 1, ny).phis == 0 || getTile(nx + 1, ny).phis == 0)) { // Check that the tile is empty.
+				if (getTile(nx, ny).collision == 0 && (getTile(nx - 1, ny).collision == 0 || getTile(nx + 1, ny).collision == 0)) { // Check that the tile is empty.
 					createObj('xp','bonus',nx,ny);
 					kolXp++;
 					if (mesto>0) mesto--;
@@ -1564,7 +1567,7 @@ package fe.loc {
 
 					var tile:Tile = space[index];
 
-					if (tile.phis > 0) {
+					if (tile.collision > 0) {
 						return true; // Collision detected
 					}
 				}
@@ -1589,7 +1592,7 @@ package fe.loc {
 
 				var t:Tile = World.w.loc.getAbsTile(int(currentX), int(currentY));
 
-				if (t.phis == 1 && t.boundingBox.intersectsPoint(currentX, currentY)) {
+				if (t.collision == 1 && t.boundingBox.intersectsPoint(currentX, currentY)) {
 					if (obj == null || t.door != obj) {
 						return false;
 					}
@@ -1601,7 +1604,7 @@ package fe.loc {
 		// [tile outlines]
 		public function tileKontur(tx:int, ty:int, t:Tile):void {
 			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
-			if (t.phis==1) {
+			if (t.collision==1) {
 				a0=uslKontur(tx-1,ty-1);
 				a1=uslKontur(tx,  ty-1);
 				a2=uslKontur(tx+1,ty-1);
@@ -1610,37 +1613,37 @@ package fe.loc {
 				a5=uslKontur(tx,  ty+1);
 				a6=uslKontur(tx-1,ty+1);
 				a7=uslKontur(tx-1,ty);
-				t.kont1=insKontur(a1,a7,a0);
-				t.kont2=insKontur(a1,a3,a2);
-				t.kont3=insKontur(a5,a7,a6);
-				t.kont4=insKontur(a5,a3,a4);
+				t.mainOutline1=insKontur(a1,a7,a0);
+				t.mainOutline2=insKontur(a1,a3,a2);
+				t.mainOutline3=insKontur(a5,a7,a6);
+				t.mainOutline4=insKontur(a5,a3,a4);
 				// Differs from vanilla, which read an unassigned local here and so set back outlines on every solid tile
-				if (t.back != '') {
+				if (t.definition.wall) {
 					if (!a1) a1=uslPontur(tx, ty-1);
 					if (!a3) a3=uslPontur(tx+1,ty);
 					if (!a5) a5=uslPontur(tx, ty+1);
 					if (!a7) a7=uslPontur(tx-1,ty);
-					t.pont1=insKontur(a1,a7,a0);
-					t.pont2=insKontur(a1,a3,a2);
-					t.pont3=insKontur(a5,a7,a6);
-					t.pont4=insKontur(a5,a3,a4);
+					t.backOutline1=insKontur(a1,a7,a0);
+					t.backOutline2=insKontur(a1,a3,a2);
+					t.backOutline3=insKontur(a5,a7,a6);
+					t.backOutline4=insKontur(a5,a3,a4);
 				}
 			} 
 			else {
-				var b:String=t.back;
+				var wall:TilePiece_Definition=t.definition.wall;
 				var vse:Boolean=(backwall=='sky');
-				a0=uslBontur(tx-1,ty-1, b, vse);
-				a1=uslBontur(tx,  ty-1, b, vse);
-				a2=uslBontur(tx+1,ty-1, b, vse);
-				a3=uslBontur(tx+1,ty, b, vse);
-				a4=uslBontur(tx+1,ty+1, b, vse);
-				a5=uslBontur(tx,  ty+1,b, vse);
-				a6=uslBontur(tx-1,ty+1,b, vse);
-				a7=uslBontur(tx-1,ty,b, vse);
-				t.pont1=insKontur(a1,a7,a0);
-				t.pont2=insKontur(a1,a3,a2);
-				t.pont3=insKontur(a5,a7,a6);
-				t.pont4=insKontur(a5,a3,a4);
+				a0=uslBontur(tx-1,ty-1, wall, vse);
+				a1=uslBontur(tx,  ty-1, wall, vse);
+				a2=uslBontur(tx+1,ty-1, wall, vse);
+				a3=uslBontur(tx+1,ty, wall, vse);
+				a4=uslBontur(tx+1,ty+1, wall, vse);
+				a5=uslBontur(tx,  ty+1, wall, vse);
+				a6=uslBontur(tx-1,ty+1, wall, vse);
+				a7=uslBontur(tx-1,ty, wall, vse);
+				t.backOutline1=insKontur(a1,a7,a0);
+				t.backOutline2=insKontur(a1,a3,a2);
+				t.backOutline3=insKontur(a5,a7,a6);
+				t.backOutline4=insKontur(a5,a3,a4);
 			}
 		}
 		
@@ -1656,7 +1659,7 @@ package fe.loc {
 			var tile:Tile;
 			if (nx < LEFT_X || nx >= spaceX || ny < TOP_Y || ny >= spaceY) return true;
 			tile = space[ny * spaceX + nx];
-			return (tile.phis == 1 || tile.door != null);
+			return (tile.collision == 1 || tile.door != null);
 		}
 
 		// [Background contours if there is a wall]
@@ -1664,36 +1667,36 @@ package fe.loc {
 			var tile:Tile;
 			if (nx < LEFT_X || nx >= spaceX || ny < TOP_Y || ny >= spaceY) return true;
 			tile = space[ny * spaceX + nx];
-			return (tile.back != '' || tile.shelf > 0);
+			return (tile.definition.wall != null || tile.platform);
 		}
 		// [Background contours if there is no wall]
-		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean {
+		private function uslBontur(nx:int,ny:int,wall:TilePiece_Definition,vse:Boolean=false):Boolean {
 			var tile:Tile;
 			if (nx < LEFT_X || nx >= spaceX || ny < TOP_Y || ny >= spaceY) return true;
 			tile = space[ny * spaceX + nx];
-			return (tile.back == b || vse && tile.back != '' || tile.phis == 1 || tile.shelf > 0);
+			return (tile.definition.wall == wall || vse && tile.definition.wall != null || tile.collision == 1 || tile.platform);
 		}
 		
 		// [Tile damage]
 		public function hitTile(t:Tile, hit:int, nx:int, ny:int, tip:int = 9):void {
-			var isPhisGreaterThanOrEqualToOne:Boolean = t.phis >= 1;
+			var hasCollision:Boolean = t.collision >= 1;
 
-			if (tip == 100 && hit <= 50 && (t.thre > 0 || t.indestruct)) return;
+			if (tip == 100 && hit <= 50 && (t.damageThreshold > 0 || t.indestructible)) return;
 			if (tip == 100) tip = 4;
 
 			var hitDivHp:Number = hit / t.hp;
 
 			if (!destroyOn && t.hp > 500) {
-				if (active && isPhisGreaterThanOrEqualToOne) grafon.dyrka(nx, ny, tip, t.mat, true, hitDivHp);
+				if (active && hasCollision) grafon.dyrka(nx, ny, tip, t.material, true, hitDivHp);
 				return;
 			}
 			if (!t.udar(hit)) {
-				if (isPhisGreaterThanOrEqualToOne && active) grafon.dyrka(nx, ny, tip, t.mat, true, hitDivHp);
+				if (hasCollision && active) grafon.dyrka(nx, ny, tip, t.material, true, hitDivHp);
 				return;
 			}
 			var isHpZeroOrLess:Boolean = t.hp <= 0;
 			if (isHpZeroOrLess) {
-				if (isPhisGreaterThanOrEqualToOne) {
+				if (hasCollision) {
 					isRebuild = true;
 					isRelight = true;
 					if (t.coords.Y < waterLevel) {
@@ -1702,7 +1705,7 @@ package fe.loc {
 					}
 				}
 				if (t.door) t.door.die(tip);
-				else if (isPhisGreaterThanOrEqualToOne) {
+				else if (hasCollision) {
 					t.die();
 					if (tileSpawn > 0 && Math.random() < tileSpawn) {
 						enemySpawn(true, true);
@@ -1712,13 +1715,13 @@ package fe.loc {
 					}
 				}
 			} 
-			else if (isPhisGreaterThanOrEqualToOne && active) grafon.dyrka(nx, ny, tip, t.mat, false, hitDivHp);
+			else if (hasCollision && active) grafon.dyrka(nx, ny, tip, t.material, false, hitDivHp);
 		}
 		
 		// [Destroy the tile]
 		public function dieTile(t:Tile):void {
-			if (t.indestruct) return;
-			if (t.phis==1) {
+			if (t.indestructible) return;
+			if (t.collision==1) {
 				if (t.door) { //если это дверь
 					t.door.die(4);
 				} 				
@@ -1729,7 +1732,7 @@ package fe.loc {
 					isRecalc=true;
 				}
 			}
-			if (t.phis>=1) {
+			if (t.collision>=1) {
 				t.die();
 				if (active) grafon.tileDie(t,4);
 			}
@@ -1759,34 +1762,34 @@ package fe.loc {
 			
 			for each (t in rec) {
 				if (t.coords.Y >= waterLevel) continue;
-				if (t.phis != 1) {
+				if (t.collision != 1) {
 					tl = getTile(t.coords.X - 1, t.coords.Y);
 					tr = getTile(t.coords.X + 1, t.coords.Y);
 					tt = getTile(t.coords.X, t.coords.Y - 1);
 					tb = getTile(t.coords.X, t.coords.Y + 1);
 					
-					if ((tb.phis == 1 || tb.water == 1) && 
-						(tr.phis == 1 || tr.water == 1) && 
-						(tl.phis == 1 || tl.water == 1) && 
+					if ((tb.collision == 1 || tb.water == 1) && 
+						(tr.collision == 1 || tr.water == 1) && 
+						(tl.collision == 1 || tl.water == 1) && 
 						(tl.water == 1 || tr.water == 1 || tt.water == 1)) {
 						
 						t.water = 1;
 						if (active) grafon.drawWater(t);
 					}
 					else {
-						if (tl.water > 0 && t.phis != 1) {
+						if (tl.water > 0 && t.collision != 1) {
 							tl.water = 0;
 							recalcTiles.push(tl);
 							if (active) grafon.drawWater(tl);
 							isRecalc = true;
 						}
-						if (tr.water > 0 && t.phis != 1) {
+						if (tr.water > 0 && t.collision != 1) {
 							tr.water = 0;
 							recalcTiles.push(tr);
 							if (active) grafon.drawWater(tr);
 							isRecalc = true;
 						}
-						if (tt.water > 0 && t.phis != 1) {
+						if (tt.water > 0 && t.collision != 1) {
 							tt.water = 0;
 							recalcTiles.push(tt);
 							if (active) grafon.drawWater(tt);
@@ -1805,7 +1808,7 @@ package fe.loc {
 		
 		// [check for the possibility of installing a ghost wall, returns true if nothing interferes]
 		public function testTile(t:Tile):Boolean {
-			if (t.phis > 0 || t.stair != 0 || t.water != 0 || t.door) {
+			if (t.collision > 0 || t.definition.ladderSide != 0 || t.water != 0 || t.door) {
 				return false;
 			}
 
@@ -2046,14 +2049,14 @@ package fe.loc {
 			for (var i:int = 0; i < spaceX; i++) {
 				for (var j:int = 0; j < spaceY; j++) {
 					t = getTile(i, j);
-					if (t.phis == 3) {
+					if (t.collision == 3) {
 						if (active) {
-							t.t_ghost--;
+							t.ghostTimer--;
 							est = true;
-							if (t.t_ghost <= 0) dieTile(t);
+							if (t.ghostTimer <= 0) dieTile(t);
 						}
 						else {
-							t.t_ghost = 0;
+							t.ghostTimer = 0;
 							dieTile(t);
 						}
 					}
@@ -2129,7 +2132,7 @@ package fe.loc {
 					if (index < 0 || index >= spaceRef.length) continue;
 
 					var currentTile:Tile = spaceRef[index];
-					var n1:Number = currentTile.visi;
+					var n1:Number = currentTile.visibility;
 
 					// Skip tiles that are fully visible unless retDark is true
 					if (!retDark && n1 >= 1) continue;
@@ -2139,9 +2142,9 @@ package fe.loc {
 					var rasst:int = dx * dx + dy * dy;
 
 					if (rasst >= dist2Squared) {
-						if (retDark && currentTile.t_visi > 0) {
+						if (retDark && currentTile.targetVisibility > 0) {
 							// Update visibility and set pixel opacity
-							currentTile.t_visi = Math.max(currentTile.t_visi - 0.025, 0);
+							currentTile.targetVisibility = Math.max(currentTile.targetVisibility - 0.025, 0);
 							var pixelValue:int = int((1 - currentTile.updVisi()) * 255) << 24;
 							lightBmpRef.setPixel32(i, j + 1, pixelValue);
 						}
@@ -2199,7 +2202,7 @@ package fe.loc {
 							if (absIndex < 0 || absIndex >= spaceRef.length) continue;
 
 							var t:Tile = spaceRef[absIndex];
-							var opac:Number = (opacWaterCache > 0 && t.water > waterThreshold && opacWaterCache > t.opac) ? opacWaterCache : t.opac;
+							var opac:Number = (opacWaterCache > 0 && t.water > waterThreshold && opacWaterCache > t.opacity) ? opacWaterCache : t.opacity;
 
 							if (opac > 0) {
 								n2 -= opac;
@@ -2213,12 +2216,12 @@ package fe.loc {
 
 					// Update visibility and set pixel opacity based on the new visibility
 					if (n2 > n1 + 0.01) {
-						currentTile.t_visi = n2;
+						currentTile.targetVisibility = n2;
 						pixelValue = int((1 - currentTile.updVisi()) * 255) << 24;
 						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
 					else if (retDark && n2 < n1 - 0.01) {
-						currentTile.t_visi = Math.max(currentTile.t_visi - 0.025, n2);
+						currentTile.targetVisibility = Math.max(currentTile.targetVisibility - 0.025, n2);
 						pixelValue = int((1 - currentTile.updVisi()) * 255) << 24;
 						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
@@ -2245,7 +2248,7 @@ package fe.loc {
 					if (index < 0 || index >= spaceRef.length) continue;
 
 					var currentTile:Tile = spaceRef[index];
-					if (currentTile.visi != currentTile.t_visi) {
+					if (currentTile.visibility != currentTile.targetVisibility) {
 						// Inlined changePixelOpacity
 						var pixelValue:int = int((1 - currentTile.updVisi()) * 255) << 24;
 						lightBmpRef.setPixel32(i, j + 1, pixelValue);
@@ -2449,7 +2452,7 @@ package fe.loc {
 		
 		//дистанция между гг и активным объектом
 		private function getDist():void {
-			if (getTile(Math.round(World.w.celX / tileX), Math.round(World.w.celY / tileY)).visi < 0.10) {
+			if (getTile(Math.round(World.w.celX / tileX), Math.round(World.w.celY / tileY)).visibility < 0.10) {
 				celObj = null;
 			}
 			

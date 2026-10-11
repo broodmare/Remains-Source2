@@ -23,6 +23,7 @@ package fe {
 	import fe.unit.Inventory;
 	import fe.unit.Favorites;
 	import fe.unit.Pers;
+	import fe.loc.tile.TileRegistry;
 	
 	public class World {
 
@@ -233,8 +234,7 @@ package fe {
 
 			LootGen.init();
 
-			// All Form class data is loaded and intitialized
-			Form.setForms();
+			TileRegistry.load();
 			
 			Emitter.init();
 

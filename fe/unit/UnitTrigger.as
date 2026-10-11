@@ -3,7 +3,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 
 	import fe.serv.Interact;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Location;
 	import fe.util.Vec2;
 	import fe.entities.BoundingBox;
@@ -133,27 +133,27 @@ package fe.unit {
 			var nxml = <obj/>;
 			var ok:Boolean=false;
 			
-			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).phis==0) {
+			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).collision==0) {
 				ny = coordinates.Y + 2 * tileY;
 				res='expl1';
 				ok=true;
 			}
 			else for (var i:int = 1; i <= 10; i++) {
 				if (res=='damgren' || res=='hturret2') {
-					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).phis) {
+					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).collision) {
 						if (i==1) break;
 						ny = coordinates.Y - (i - 1) * tileY;
 						ok=true;
 						break;
 					}
 					if (res=='hturret2') {
-						if (loc.getAbsTile(coordinates.X - tileX, coordinates.Y - 10 - i * tileY).phis) {
+						if (loc.getAbsTile(coordinates.X - tileX, coordinates.Y - 10 - i * tileY).collision) {
 							ny = coordinates.Y - (i-1) * tileY;
 							nx = coordinates.X - tileX;
 							ok=true;
 							break;
 						}
-						if (loc.getAbsTile(coordinates.X + tileX, coordinates.Y - 10 - i * tileY).phis) {
+						if (loc.getAbsTile(coordinates.X + tileX, coordinates.Y - 10 - i * tileY).collision) {
 							ny = coordinates.Y - (i-1) * tileY;
 							nx = coordinates.X + tileX;
 							ok=true;
@@ -162,13 +162,13 @@ package fe.unit {
 					}
 				}
 				if (res=='damshot') {
-					if (i>1 && loc.getAbsTile(coordinates.X - i * tileX, coordinates.Y).phis) {
+					if (i>1 && loc.getAbsTile(coordinates.X - i * tileX, coordinates.Y).collision) {
 						nx = coordinates.X - (i-1) * tileX;
 						nxml=<obj turn="1"/>;
 						ok=true;
 						break;
 					}
-					if (i>1 && loc.getAbsTile(coordinates.X + i * tileX, coordinates.Y).phis) {
+					if (i>1 && loc.getAbsTile(coordinates.X + i * tileX, coordinates.Y).collision) {
 						nx = coordinates.X + (i-1) * tileX;
 						nxml=<obj turn="-1"/>;
 						ok=true;

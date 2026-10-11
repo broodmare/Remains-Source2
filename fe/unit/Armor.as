@@ -2,7 +2,8 @@ package fe.unit {
 	
 	public class Armor {
 
-		public static const TYPE_ARMOR:int = 1, TYPE_AMULET:int = 3;
+		public static const TYPE_ARMOR:int = 1;
+		public static const TYPE_AMULET:int = 3;
 
 		// Armor info
 		public var id:String	= "";
@@ -10,7 +11,7 @@ package fe.unit {
 		public var maxlvl:int	= 0;
 		public var nazv:String	= "";
 		public var owner:Unit	= null; // TODO: REMOVE
-		public var tip:int		= 1;			// [1 - Armor, 3 - Amulet]
+		public var tip:int		= TYPE_ARMOR;			// [1 - Armor, 3 - Amulet]
 		
 		// Usage flags
 		public var clo:int			= 0;		// [Armor can be changed at any time in the limited inventory]
@@ -54,10 +55,6 @@ package fe.unit {
 		public var kolComp:int			= 1;		// How many components are needed to upgrade
 		public var price:int			= 0;		// How much the armor is worth
 		public var sort:int				= 0;		// Inventory category
-		public var hideMane:int			= 0;		// This armor hides the player's mane
-		
-		public function Armor() {
-
-		}
+		public var hideMane:Boolean		= false;		// This armor hides the player's mane
 	}	
 }

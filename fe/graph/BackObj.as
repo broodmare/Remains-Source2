@@ -3,7 +3,7 @@ package fe.graph {
 	import flash.display.MovieClip;
 	import fe.*;
 	import fe.loc.Location;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	
 	public class BackObj {
 		

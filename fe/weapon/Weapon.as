@@ -773,7 +773,7 @@ package fe.weapon {
 
 				if (fromWall) {
 					try {
-						if (loc.getAbsTile(bulCoords.X, bulCoords.Y).phis) b.inWall = true;
+						if (loc.getAbsTile(bulCoords.X, bulCoords.Y).collision) b.inWall = true;
 					}
 					catch(err) { 
 						trace("ERROR: (00:14)");

@@ -45,7 +45,7 @@ package fe.inter {
 		public static var fHair:int=1, maxHair:int=5;
 
 		public static var ggArmorId:String='';	//надетая броня
-		public static var hideMane:int=0;	//скрыть волосы
+		public static var hideMane:Boolean=false;	//скрыть волосы
 		public static var transp:Boolean=false;
 
 		private var clist:Array = ['Fur', 'Hair', 'Hair1', 'Eye', 'Magic'];

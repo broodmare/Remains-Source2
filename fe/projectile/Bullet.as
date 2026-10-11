@@ -12,6 +12,7 @@ package fe.projectile {
 	import fe.unit.Resistances;
 	import fe.unit.UnitMsp;
 	import fe.weapon.Weapon;
+	import fe.loc.tile.Tile;
 	
 	public class Bullet extends Obj {	
 
@@ -381,13 +382,13 @@ package fe.projectile {
 				// Checking collision with a tile if relevant
 				if (!tilehit 
 					&& (tileX < 0 || (int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
-					// If phis == 1, the bullet collides, if phis == 2, the bullet MUST be coming from above the tile to pass through this tile, bullets can't go from below to above
-					&& ((t.phis == 1) || (t.phis == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
+					// If collision == 1, the bullet collides, if collision == 2, the bullet MUST be coming from above the tile to pass through this tile, bullets can't go from below to above
+					&& ((t.collision == 1) || (t.collision == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
 					&& t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) 
 				{
 					if (!inWall) {
-						popadalo(t.mat);
-						sound(t.mat);
+						popadalo(t.material);
+						sound(t.material);
 						
 						if (weap) {
 							weap.crash();
@@ -535,7 +536,7 @@ package fe.projectile {
 			isExpl = true;
 			levitPoss = false;
 
-			if (t && t.phis && t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) {
+			if (t && t.collision && t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) {
 				inWall = true;
 			}
 
@@ -897,7 +898,7 @@ package fe.projectile {
 					if (ter < explRadius * explRadius) {
 						var t:Tile = loc.getTile(i, j);
 						
-						if (j > 1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i, j - 1).phis == 0)) {
+						if (j > 1 && (t.collision || t.platform) && (t.definition.height < 4 || loc.getTile(i, j - 1).collision == 0)) {
 							Emitter.emit(
 								liq,
 								loc,

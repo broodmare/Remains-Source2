@@ -8,6 +8,7 @@ package fe.loc {
 	import fe.ItemManager;
 	import fe.unit.UnitPlayer;
 	import fe.serv.Script;
+	import fe.loc.tile.Tile;
 
 	public class Land {
 		

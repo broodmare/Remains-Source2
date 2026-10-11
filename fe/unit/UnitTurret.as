@@ -6,7 +6,7 @@ package fe.unit {
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.serv.Interact;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Location;
 	import fe.WeaponManager;
 	import fe.World;
@@ -571,7 +571,7 @@ package fe.unit {
 					vAngle = currentWeapon.rot;
 				}
 				
-				if (osnova && osnova.phis==0) {
+				if (osnova && osnova.collision==0) {
 					die();
 				}
 				

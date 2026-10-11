@@ -15,6 +15,7 @@ package fe.loc {
 	import fe.serv.Script;
 	import fe.projectile.Bullet;
 	import fe.unit.Mine;
+	import fe.loc.tile.Tile;
 
 	public class Box extends Obj {
 
@@ -434,13 +435,12 @@ package fe.loc {
 			for (var i:int = int(boundingBox.left / tileX + 0.5); i <= int(boundingBox.right / tileX - 0.5); i++) {
 				for (var j:int = int(boundingBox.top / tileY + 0.5); j <= int(boundingBox.bottom / tileY - 0.5); j++) {
 					var t:Tile = loc.getTile(i, j);
-					t.front = '';
-					t.phis = phis;
-					t.opac = door_opac;
+					t.collision = phis;
+					t.opacity = door_opac;
 					t.door = this;
-					t.mat = mat;
+					t.material = mat;
 					t.hp = hp;
-					t.thre = thre;
+					t.damageThreshold = thre;
 					tiles.push(t);
 				}
 			}
@@ -448,9 +448,9 @@ package fe.loc {
 
 		// This is for opening and closing doors inside of rooms, NOT for traveling to new rooms.
 		public function setDoor(state:Boolean):void {
-			for (var i in tiles) {
-				tiles[i].phis = (state ? 0 : phis);
-				tiles[i].opac = (state ? 0 : door_opac);
+			for each (var tile:Tile in tiles) {
+				tile.collision = (state ? 0 : phis);
+				tile.opacity = (state ? 0 : door_opac);
 			}
 
 			setVisState(state? 'open':'close');
@@ -564,10 +564,10 @@ package fe.loc {
 			if (inter && inter.prize) return;
 			dead = true;
 			if (door > 0) {
-				for (var i in tiles) {
-					tiles[i].opac = 0;
-					tiles[i].phis = 0;
-					tiles[i].hp = 0;
+				for each (var tile:Tile in tiles) {
+					tile.opacity = 0;
+					tile.collision = 0;
+					tile.hp = 0;
 				}
 				
 				setVisState('die');
@@ -927,7 +927,7 @@ package fe.loc {
 		
 		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int {
 			// If the tile is non-existent or effectively “empty,” just return 0.
-			if (!t || ((t.phis == 0 || t.phis == 3) && !t.shelf)) {
+			if (!t || ((t.collision == 0 || t.collision == 3) && !t.platform)) {
 				return 0;
 			}
 
@@ -948,9 +948,9 @@ package fe.loc {
 				return 0;
 			}
 
-			// If it's a shelf-type tile (phis == 0 or 3), and our bottom is already below the tile’s top edge
+			// If it's a platform tile (collision 0 or 3), and our bottom is already below the tile’s top edge
 			// (or if we’re levitating or being thrown), then we also skip collision.
-			if ((t.phis == 0 || t.phis == 3) && t.shelf &&
+			if ((t.collision == 0 || t.collision == 3) && t.platform &&
 				(boundingBox.bottom > t.boundingBox.top || levit || isThrow)) 
 			{
 				return 0;

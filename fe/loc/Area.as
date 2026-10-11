@@ -5,7 +5,7 @@ package fe.loc {
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.entities.Obj;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	
 	//[Active area]
 	public class Area extends Obj {
@@ -80,7 +80,7 @@ package fe.loc {
 					vis = Res.getVis('vis' + xml.@vis, visArea);		// .SWF Dependency
 				}
 				if (World.w.showArea) {
-					vis = new visArea();							// .SWF Dependency
+					vis = new visArea();								// .SWF Dependency
 				}
 				
 				if (xml.@tip.length()) tip=xml.@tip;
@@ -117,16 +117,16 @@ package fe.loc {
 							var t:Tile=loc.getTile(i,j);
 							if (xml.@tilehp.length()) {
 								t.hp=xml.@tilehp;
-								t.indestruct=false;
-								if (t.hp<=1) t.fake=true;
-								if (t.thre>t.hp) t.thre=t.hp;
+								t.indestructible=false;
+								if (t.hp<=1) t.isFakeWall=true;
+								if (t.damageThreshold>t.hp) t.damageThreshold=t.hp;
 							}
 							if (xml.@tilethre.length()) {
-								t.indestruct=false;
-								t.thre=xml.@tilethre;
+								t.indestructible=false;
+								t.damageThreshold=xml.@tilethre;
 							}
 							if (xml.@tileop.length()) {
-								if (t.phis==0) t.opac=xml.@tileop;
+								if (t.collision==0) t.opacity=xml.@tileop;
 							}
 						}
 					}
@@ -282,7 +282,7 @@ package fe.loc {
 		public function setLift():void {
 			for (var i:int = bx; i < bx + rx; i++) {
 				for (var j:int = by - ry + 1; j <= by; j++) {
-					loc.getTile(i, j).grav = enabled ? lift : 1;
+					loc.getTile(i, j).gravity = enabled ? lift : 1;
 				}
 			}
 		}

@@ -6,7 +6,7 @@ package fe.inter {
 	import flash.display.BitmapData;
 
 	import fe.*;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Game;
 	import fe.loc.Quest;
 	import fe.loc.LandAct;

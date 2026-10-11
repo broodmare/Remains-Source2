@@ -1,6 +1,6 @@
 package fe.unit.motor {
 
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
 	import fe.unit.ai.AIState;
@@ -131,11 +131,11 @@ package fe.unit.motor {
 		private function isGroundAhead():Boolean {
 			var tile:Tile = owner.loc.getAbsTile(owner.coordinates.X + owner.storona * LEDGE_LOOKAHEAD, owner.coordinates.Y + 10);
 
-			return tile.phis == 1 || tile.shelf;
+			return tile.collision == 1 || tile.platform;
 		}
 
 		private function isClear(x:Number, y:Number):Boolean {
-			return owner.loc.getAbsTile(x, y).phis == 0;
+			return owner.loc.getAbsTile(x, y).collision == 0;
 		}
 
 		private function openDoor():void {
@@ -209,13 +209,13 @@ package fe.unit.motor {
 			row = Math.min(int((owner.coordinates.Y + dy) / Tile.tileY), owner.loc.spaceY - 1);
 			tile = owner.loc.getTile(column, row);
 
-			if (tile.phis >= 1) {
+			if (tile.collision >= 1) {
 				owner.isLaz = 0;
 			}
-			else if (tile.stair != 0) {
-				owner.isLaz = tile.stair;
+			else if (tile.definition.ladderSide != 0) {
+				owner.isLaz = tile.definition.ladderSide;
 			}
-			else if (owner.loc.getTile(column + owner.storona, row).phis != 0) {
+			else if (owner.loc.getTile(column + owner.storona, row).collision != 0) {
 				owner.isLaz = owner.storona;
 			}
 			else {

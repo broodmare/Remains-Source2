@@ -19,7 +19,7 @@ package fe.inter {
 	import fe.unit.Unit;
 	import fe.serv.Script;
 	import fe.weapon.WPaint;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	
 	public class GUI {
 

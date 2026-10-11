@@ -12,8 +12,9 @@ package fe.graph {
 	import flash.filters.BlurFilter;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.DropShadowFilter;
-    import flash.ui.MouseCursorData;
-    import flash.ui.Mouse;
+	import flash.ui.MouseCursorData;
+	import flash.ui.Mouse;
+	import flash.utils.Dictionary;
 	
 	import fl.motion.Color;	// Adobe Animate dependency
 
@@ -30,6 +31,12 @@ package fe.graph {
 	import fe.stubs.paintbrush;
 	import fe.stubs.tileGwall;
 	import fe.stubs.tileFront;
+	import fe.loc.tile.Material;
+	import fe.loc.tile.Tile;
+	import fe.loc.tile.TileBehaviour;
+	import fe.loc.tile.TileLayer;
+	import fe.loc.tile.TilePiece_Definition;
+	import fe.loc.tile.TileRegistry;
 
 	public class Grafon {
 		
@@ -53,6 +60,7 @@ package fe.graph {
 		private const kolObjs:int = 6;
 		public var visVoda:Sprite;
 		public var visFront:Sprite;
+		private var visForeground:Sprite;
 		public var visLight:Sprite;
 		public var visSats:Sprite;
 		public var visFon:MovieClip;
@@ -64,6 +72,8 @@ package fe.graph {
 		
 		public var frontBmp:BitmapData;
 		private var frontBitmap:Bitmap;
+		private var foregroundBmp:BitmapData;			// Foreground tile pieces, over the main ones
+		private var foregroundBitmap:Bitmap;
 		private var vodaBmp:BitmapData;
 		private var vodaBitmap:Bitmap;
 		private var backBmp:BitmapData;
@@ -75,6 +85,7 @@ package fe.graph {
 		public var satsBmp:BitmapData;
 		private var satsBitmap:Bitmap;
 		private var shadBmp:BitmapData;
+		private var shadowCasterBmp:BitmapData;			// The main and foreground layers merged, for casting the drop shadow
 		private var colorBmp:BitmapData;
 		private var transpFon:Boolean;				// The back wall lets the distant background show through; set per room by drawLoc
 		private var dsFilter:DropShadowFilter		= new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
@@ -101,8 +112,8 @@ package fe.graph {
 		public var ramL:MovieClip;
 		public var ramR:MovieClip;
 		
-		private var arrFront:Array;
-		private var arrBack:Array;
+		private var tileTextures:Vector.<TilePieceTextures>;	// One per tile piece drawn from textures, in data order
+		private var texturesByPiece:Dictionary;				// The same, by TilePiece_Definition
 		
 		private var rectX:int = 1920;
 		private var rectY:int = 1000;
@@ -140,6 +151,7 @@ package fe.graph {
 			visVoda				= new Sprite();
 			visVoda.alpha		= 0.6;
 			visFront			= new Sprite();
+			visForeground		= new Sprite();
 			visLight			= new Sprite();
 			visSats				= new Sprite();
 			visSats.visible		= false;
@@ -162,6 +174,7 @@ package fe.graph {
 			visual.addChild(visObjs[1]);	//  2
 			visual.addChild(visObjs[2]);	//  3
 			visual.addChild(visFront);		//  4
+			visual.addChild(visForeground);
 			visual.addChild(visObjs[3]);	//  6
 			visual.addChild(visVoda);		//  5
 			visual.addChild(visLight);		//  7
@@ -177,7 +190,11 @@ package fe.graph {
 			frontBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			frontBitmap = new Bitmap(frontBmp);
 			visFront.addChild(frontBitmap);
-			
+
+			foregroundBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK);
+			foregroundBitmap = new Bitmap(foregroundBmp);
+			visForeground.addChild(foregroundBitmap);
+
 			backBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			backBitmap = new Bitmap(backBmp);
 			visBack.addChild(backBitmap);
@@ -196,6 +213,7 @@ package fe.graph {
 			
 			colorBmp = new BitmapData(rectX, rectY, true, 0);
 			shadBmp = new BitmapData(rectX, rectY, true, 0);
+			shadowCasterBmp = new BitmapData(rectX, rectY, true, 0);
 			visBack.addChild(new Bitmap(shadBmp));	// The tiles' drop shadow lies over the back wall as its own layer, so it can be recast when tiles break
 			
 			lightBmp = new BitmapData(lightX, lightY, true, COLOR_TRANSPARENT);
@@ -236,27 +254,20 @@ package fe.graph {
 		
 		// Checks whether all resources have finished loading
 		public function checkLoaded(n:int):void {
-			
+			var piece:TilePiece_Definition;
+			var textures:TilePieceTextures;
+
 			// 0 is tile and sky textures
 			if (n == 0) {
-				// [Reading their xml materials]
-				arrFront = [];
-				arrBack  = [];
-
-				var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "mats", "mat");
-
-				for each (var p:XML in xmlList) {
-					if (p.@vid.length() == 0) {
-						if (p.@ed == "2") {
-							arrBack[p.@id] = new Material(p);
-						}
-						else {
-							arrFront[p.@id] = new Material(p);
-						}
+				tileTextures = new Vector.<TilePieceTextures>();
+				texturesByPiece = new Dictionary();
+				for each (piece in TileRegistry.viewPieces()) {
+					if (piece.texture != "") {
+						textures = new TilePieceTextures(piece);
+						tileTextures.push(textures);
+						texturesByPiece[piece] = textures;
 					}
 				}
-
-				xmlList = null; // Manual cleanup.
 			}
 
 
@@ -423,11 +434,13 @@ package fe.graph {
 		
 			World.w.gr_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
 			frontBmp.lock();
+			foregroundBmp.lock();
 			backBmp.lock();
 			backBmp2.lock();
 			vodaBmp.lock();
-			
+
 			frontBmp.fillRect(allRect, 0);
+			foregroundBmp.fillRect(allRect, 0);
 			backBmp.fillRect(allRect,  0);
 			backBmp2.fillRect(allRect, 0);
 			vodaBmp.fillRect(allRect,  0);
@@ -456,72 +469,60 @@ package fe.graph {
 			var tile:MovieClip;
 			var t:Tile;
 			var tileAbove:Tile;
-			var front:Sprite	= new Sprite();	// [fingerprint on the foreground bitmap ]
+			var front:Sprite	= new Sprite();	// Sprites for the main layer's bitmap
+			var fore:Sprite		= new Sprite();	// Sprites for the foreground layer's bitmap
 			var back:Sprite		= new Sprite();	// [fingerprint on the backdrop bitmap]
 			var back2:Sprite	= new Sprite();	// [fingerprint on the backdrop bitmap]
 			var voda:Sprite		= new Sprite();	// [fingerprint on the water bitmap]
 			
 			//отключить все материалы
-			var mat:Material;
-			for each (mat in arrFront) {
-				mat.used = false;
+			var textures:TilePieceTextures;
+			var piece:TilePiece_Definition;
+			for each (textures in tileTextures) {
+				textures.used = false;
 			}
-			
-			for each (mat in arrBack) {
-				mat.used = false;
-			}
-			
+
 			var gret:int=0;
 			World.w.gr_stage=5;
 			for (var i:int = 0; i < loc.spaceX; i++) {
 				for (var j:int = 0; j < loc.spaceY; j++) {
 					t = loc.getTile(i, j);
 					loc.tileKontur(i, j, t);
-					
-					if (arrFront[t.front]) {
-						arrFront[t.front].used = true;
+
+					if (t.definition.wall) {
+						markUsed(t.definition.wall);
 					}
-					
-					if (arrBack[t.back]) {
-						arrBack[t.back].used = true;
-					}
-					
-					if (t.vid > 0) {				// [Objects with vid]
+
+					for each (piece in t.definition.pieces) {
+						if (piece.layer == TileLayer.BACK_WALL || !showsPiece(t, piece)) {
+							continue;
+						}
+						if (piece.spriteFrame == 0) {
+							markUsed(piece);
+							continue;
+						}
+
 						tile = new tileFront();
-						tile.gotoAndStop(t.vid);
-					
-						if (t.vRear) {
+						tile.gotoAndStop(piece.spriteFrame + ((t.ladderTop && piece.behaviour == TileBehaviour.LADDER) ? 1 : 0));
+						if (piece.layer < TileLayer.MAIN) {
 							back2.addChild(tile);
 						}
-						else {
+						else if (piece.layer == TileLayer.MAIN) {
 							front.addChild(tile);
 						}
-					
+						else {
+							fore.addChild(tile);
+						}
 						tile.x = i * tileX;
 						tile.y = j * Tile.tileY;
 					}
-					
-					if (t.vid2 > 0) {				// [Objects with vid2]
-						tile = new tileFront();
-						tile.gotoAndStop(t.vid2);
-						
-						if (t.v2Rear) {
-							back2.addChild(tile);
-						}
-						else {
-							front.addChild(tile);
-						}
-						
-						tile.x = i * tileX;
-						tile.y = j * Tile.tileY;
-					}
-					
+
 					if (t.water) {				// [Water]
 						tile = new tileVoda();
 						tile.gotoAndStop(loc.tipWater + 1);
-						
+
 						tileAbove = loc.getTile(i, j - 1);
-						if (tileAbove.water == 0 && tileAbove.phis == 0) {
+						if (tileAbove.water == 0 && tileAbove.collision == 0) {
 							tile.voda.gotoAndStop(2);
 						}
 						
@@ -535,20 +536,18 @@ package fe.graph {
 			World.w.gr_stage = 6;
 			vodaBmp.draw(voda, new Matrix, null, null, null, false);
 			frontBmp.draw(front, new Matrix, null, null, null, false);
+			foregroundBmp.draw(fore, new Matrix, null, null, null, false);
 			
 			
 			World.w.gr_stage = 7;
 			drawBackWall(nloc.backwall, nloc.backform);	// [Back wall]
 			
 			World.w.gr_stage = 8;
-			for each (mat in arrFront) {
-				drawKusok(mat, true);	// [Foreground]
-			}
+			drawTileLayer(TileLayer.MAIN);
+			drawTileLayer(TileLayer.FOREGROUND);
 
 			World.w.gr_stage = 9;
-			for each (mat in arrBack) {
-				drawKusok(mat, false);	// [Background]
-			}
+			drawTileLayer(TileLayer.BACK_WALL);
 
 			World.w.gr_stage = 10;
 			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0 ,0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -627,10 +626,12 @@ package fe.graph {
 		
 			if (nloc.cTransform) {
 				frontBmp.colorTransform(frontBmp.rect,nloc.cTransform);
+				foregroundBmp.colorTransform(foregroundBmp.rect,nloc.cTransform);
 				vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
 			}
-		
-			shadBmp.applyFilter(frontBmp,frontBmp.rect,new Point(0,0),dsFilter);
+
+			mergeShadowCasters(frontBmp.rect);
+			shadBmp.applyFilter(shadowCasterBmp,shadowCasterBmp.rect,new Point(0,0),dsFilter);
 
 			World.w.gr_stage=13;
 			// [Darkening the background]
@@ -674,15 +675,14 @@ package fe.graph {
 			}
 			
 			World.w.gr_stage = 17;
-			for each (mat in arrFront) {
-				drawKusok(mat, false, true); // [Adding foreground textures such as beams to the background]
-			}
+			drawTileLayer(TileLayer.BACKGROUND);
 		
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
 			
 			World.w.gr_stage = 18;
 			frontBmp.unlock();
+			foregroundBmp.unlock();
 			backBmp.unlock();
 			backBmp2.unlock();
 			vodaBmp.unlock();
@@ -707,7 +707,7 @@ package fe.graph {
 			
 			for (var i:int = 1; i < loc.spaceX; i++) {
 				for (var j:int = 1; j < loc.spaceY; j++) {
-					lightBmp.setPixel32(i, j + 1, int((1 - loc.getTile(i, j).visi) * 255) * 0x1000000);
+					lightBmp.setPixel32(i, j + 1, int((1 - loc.getTile(i, j).visibility) * 255) * 0x1000000);
 				}
 			}
 			
@@ -790,27 +790,56 @@ package fe.graph {
 		private function setMovieClipTile(mc:MovieClip, t:Tile, toFront:Boolean):void {
 			if (mc.c1) {
 				if (toFront) {
-					mc.c1.gotoAndStop(t.kont1 + 1);
-					mc.c2.gotoAndStop(t.kont2 + 1);
-					mc.c3.gotoAndStop(t.kont3 + 1);
-					mc.c4.gotoAndStop(t.kont4 + 1);
+					mc.c1.gotoAndStop(t.mainOutline1 + 1);
+					mc.c2.gotoAndStop(t.mainOutline2 + 1);
+					mc.c3.gotoAndStop(t.mainOutline3 + 1);
+					mc.c4.gotoAndStop(t.mainOutline4 + 1);
 				}
 				else {
-					mc.c1.gotoAndStop(t.pont1 + 1);
-					mc.c2.gotoAndStop(t.pont2 + 1);
-					mc.c3.gotoAndStop(t.pont3 + 1);
-					mc.c4.gotoAndStop(t.pont4 + 1);
+					mc.c1.gotoAndStop(t.backOutline1 + 1);
+					mc.c2.gotoAndStop(t.backOutline2 + 1);
+					mc.c3.gotoAndStop(t.backOutline3 + 1);
+					mc.c4.gotoAndStop(t.backOutline4 + 1);
+				}
+			}
+		}
+
+		// Whether a tile still shows one of its pieces: a destroyed block is gone, a door hides the textures under it
+		private function showsPiece(t:Tile, piece:TilePiece_Definition):Boolean {
+			// Differs from vanilla, where destroying a block also hid the beams, steps and ladders in its tile once the room was redrawn
+			if (t.destroyed && piece.layer == TileLayer.MAIN) { return false; }
+			if (t.door && piece.spriteFrame == 0) { return false; }
+
+			return true;
+		}
+
+		// Pieces without textures were reported when the registry loaded, and draw nothing
+		private function markUsed(piece:TilePiece_Definition):void {
+			var textures:TilePieceTextures = texturesByPiece[piece];
+
+			if (textures) {
+				textures.used = true;
+			}
+		}
+
+		private function drawTileLayer(layer:int):void {
+			var textures:TilePieceTextures;
+
+			for each (textures in tileTextures) {
+				if (textures.piece.layer == layer) {
+					drawKusok(textures);
 				}
 			}
 		}
 		
 		// [Drawing texture materials]
-		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean = false):void {
-    
+		public function drawKusok(textures:TilePieceTextures):void {
+			var piece:TilePiece_Definition = textures.piece;
+			var toFront:Boolean = (piece.layer >= TileLayer.MAIN);
 			var roomPixelWidth:int = kusokX * tileX;
 			var roomPixelHeight:int = kusokY * tileY;
 
-			if (!material.used || material.rear == toFront) {
+			if (!textures.used) {
 				return;
 			}
 			
@@ -819,13 +848,13 @@ package fe.graph {
 			var spaceY:int = loc.spaceY;
 			var currentTileX:int = tileX;
 			var currentTileY:int = tileY;
-			var altTexture:BitmapData = material.alttexture;
-			var texture:BitmapData = material.texture;
-			var borderTexture:BitmapData = material.border;
-			var floorTexture:BitmapData = material.floor;
-			var borderMaskClass:Class = material.borderMask;
-			var floorMaskClass:Class = material.floorMask;
-			var filters:Array = material.F;
+			var altTexture:BitmapData = textures.stableTexture;
+			var texture:BitmapData = textures.texture;
+			var borderTexture:BitmapData = textures.edgeTexture;
+			var floorTexture:BitmapData = textures.topTexture;
+			var borderMaskClass:Class = textures.edgeMask;
+			var floorMaskClass:Class = textures.topMask;
+			var filters:Array = textures.filters;
 			var homeStable:Boolean = loc.homeStable;
 
 			var halfTileX:Number = 0.5 * currentTileX;
@@ -836,6 +865,7 @@ package fe.graph {
 			
 			var t:Tile;
 			var mc:MovieClip;
+			var shows:Boolean;
 
 			var kusok:Sprite    = new Sprite();    
 			var osn:Sprite      = new Sprite();
@@ -884,19 +914,24 @@ package fe.graph {
 				for (var j:int = 0; j < spaceY; j++) {
 					t = loc.getTile(i, j);
 					// Cache tile properties
-					var tFront:String = t.front;
-					var tBack:String = t.back;
-					var tZForm:int = t.zForm;
+					var tLowered:int = 4 - t.definition.height;
 					var tBoundingBox:BoundingBox = t.boundingBox;
+
+					if (piece.layer == TileLayer.BACK_WALL) {
+						shows = (t.definition.wall == piece);
+					}
+					else {
+						shows = showsPiece(t, piece) && t.definition.pieces.indexOf(piece) >= 0;
+					}
 					
-					if ((tFront == material.id && (toFront || dop)) || (tBack == material.id && !toFront)) {
+					if (shows) {
 						isDraw = true;
-						mc = new material.textureMask();
+						mc = new textures.textureMask();
 						setMovieClipTile(mc, t, toFront);
 						mc.x = (i + 0.5) * currentTileX;
 						mc.y = (j + 0.5) * currentTileY;
 						maska.addChild(mc);
-						if (tZForm && toFront) {
+						if (tLowered > 0 && toFront) {
 							mc.scaleY = (tBoundingBox.bottom - tBoundingBox.top) / currentTileY;
 							mc.y = (tBoundingBox.bottom + tBoundingBox.top) / 2;
 						}                            
@@ -906,7 +941,7 @@ package fe.graph {
 							mc.x = (i + 0.5) * currentTileX;
 							mc.y = (j + 0.5) * currentTileY;
 							bmaska.addChild(mc);
-							if (tZForm && toFront) {
+							if (tLowered > 0 && toFront) {
 								mc.scaleY = (tBoundingBox.bottom - tBoundingBox.top) / currentTileY;
 								mc.y = (tBoundingBox.bottom + tBoundingBox.top) / 2;
 							}                            
@@ -914,12 +949,12 @@ package fe.graph {
 						if (hasFloorMask) {
 							mc = new floorMaskClass();
 							if (mc.c1) {
-								mc.c1.gotoAndStop(t.kont1 + 1);
-								mc.c2.gotoAndStop(t.kont2 + 1);
+								mc.c1.gotoAndStop(t.mainOutline1 + 1);
+								mc.c2.gotoAndStop(t.mainOutline2 + 1);
 							}
 							fmaska.addChild(mc);
 							mc.x = (i + 0.5) * currentTileX;
-							mc.y = (j + 0.5 + tZForm / 4) * currentTileY;
+							mc.y = (j + 0.5 + tLowered / 4) * currentTileY;
 						}
 					}
 				}
@@ -951,10 +986,13 @@ package fe.graph {
 			}
 			
 			// Draw to appropriate bitmap
-			if (toFront) {
+			if (piece.layer == TileLayer.FOREGROUND) {
+				foregroundBmp.draw(kusok, m, null, null, null, false);
+			}
+			else if (piece.layer == TileLayer.MAIN) {
 				frontBmp.draw(kusok, m, null, null, null, false);
 			}
-			else if (dop) {
+			else if (piece.layer == TileLayer.BACKGROUND) {
 				backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
 			}
 			else {
@@ -1006,7 +1044,7 @@ package fe.graph {
 			m.ty = t.coords.Y * Tile.tileY;
 			voda.gotoAndStop(loc.tipWater + 1);
 
-			if (tileAbove.water == 0 && tileAbove.phis == 0) {
+			if (tileAbove.water == 0 && tileAbove.collision == 0) {
 				voda.voda.gotoAndStop(2);
 			}
 			else {
@@ -1030,11 +1068,11 @@ package fe.graph {
 			var ny:Number = (t.coords.Y + 0.50) * tileY;
 			var hole:Rectangle;
 
-			if (t.fake) {
+			if (t.isFakeWall) {
 				Emitter.emit("fake", loc, nx, ny);
 				drC = fetch("block_bur");		// .SWF Dependency (Class)
 			}
-			else if (t.mat == 7) {
+			else if (t.material == Material.FORCE_FIELD) {
 				Emitter.emit("fake", loc, nx, ny);
 				Emitter.emit("pole", loc, nx, ny, { kol:10, rx:tileX, ry:tileY });
 				//erC = TileMask; ????
@@ -1043,8 +1081,8 @@ package fe.graph {
 			else if (tip < 10) {
 				var emitEffect:Array = ["null", "metal", "kusok", "schep", "kusokB", "steklo", "kusokD"];
 				
-				if (t.mat >= 1 && t.mat <= 6) {
-					Emitter.emit(emitEffect[t.mat],	loc, nx, ny, { kol:6, rx:tileX, ry:tileY });
+				if (t.material >= Material.METAL && t.material <= Material.EARTH) {
+					Emitter.emit(emitEffect[t.material],	loc, nx, ny, { kol:6, rx:tileX, ry:tileY });
 				}
 			}
 			else if (tip >= 15) {
@@ -1064,7 +1102,7 @@ package fe.graph {
 			recastShadow(hole);
 		}
 
-		// Recasts the drop shadow around a changed part of the front layer, so a removed tile stops casting one
+		// Recasts the drop shadow around a changed part of the layers that cast it, so a removed tile stops casting one
 		private function recastShadow(changed:Rectangle):void {
 			var area:Rectangle = changed.clone();
 			var source:Rectangle;
@@ -1073,17 +1111,24 @@ package fe.graph {
 			area.inflate(SHADOW_REACH, SHADOW_REACH);
 			area = area.intersection(shadBmp.rect);
 			source = area.clone();
-			source.inflate(SHADOW_REACH, SHADOW_REACH);	// The front pixels that can still shade the area
+			source.inflate(SHADOW_REACH, SHADOW_REACH);	// The pixels that can still shade the area
 			source = source.intersection(frontBmp.rect);
 
+			mergeShadowCasters(source);
 			cast = new BitmapData(source.width, source.height, true, 0);
-			cast.applyFilter(frontBmp, source, new Point(0, 0), dsFilter);
+			cast.applyFilter(shadowCasterBmp, source, new Point(0, 0), dsFilter);
 			shadBmp.copyPixels(cast, new Rectangle(area.x - source.x, area.y - source.y, area.width, area.height), area.topLeft);
 			cast.dispose();
 
 			if (transpFon) {
 				shadBmp.draw(backBmp, null, null, "alpha", area);
 			}
+		}
+
+		// The main and foreground layers both cast the drop shadow onto the back wall, so they are merged over the area being cast
+		private function mergeShadowCasters(area:Rectangle):void {
+			shadowCasterBmp.copyPixels(frontBmp, area, area.topLeft);
+			shadowCasterBmp.copyPixels(foregroundBmp, area, area.topLeft, null, null, true);
 		}
 		
 		// Bullethole

@@ -4,7 +4,7 @@ package fe.weapon {
 	import fe.SymbolFactory;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	
 	public class WPaint extends Weapon {
 
@@ -45,7 +45,7 @@ package fe.weapon {
 				celY = by + ndy * i / div;
 				var t:Tile = World.w.loc.getAbsTile(int(celX), int(celY));
 				
-				if (t.phis == 1 && t.boundingBox.intersectsPoint(celX, celY)) {
+				if (t.collision == 1 && t.boundingBox.intersectsPoint(celX, celY)) {
 					return 0;
 				}
 			}

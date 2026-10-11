@@ -1,13 +1,12 @@
-package fe.loc
-{
-    public class ColorFilter
-    {
+package fe.loc {
+
+    public class ColorFilter {
+
         public var red:Number   = 1.00;
         public var green:Number = 1.00;
         public var blue:Number  = 1.00;
 
-        private static const ColorTable:Object = 
-        {
+        private static const ColorTable:Object = {
             'green'		: [0.80, 1.16, 0.80],
             'red'		: [1.10, 0.90, 0.70],
             'fire'		: [1.10, 0.70, 0.50],
@@ -24,26 +23,23 @@ package fe.loc
             'mf'		: [0.50, 0.50, 1.08]
         }
 
-        public function ColorFilter(rgbArray:Array = null)
-        {
-            if (rgbArray != null) setColor(rgbArray);
+        public function ColorFilter(rgbArray:Array = null) {
+            if (rgbArray != null) { setColor(rgbArray); }
         }
 
-        public function setColor(rgbArray:Array):void
-        {
+        public function setColor(rgbArray:Array):void {
             red     = rgbArray[0];
             green   = rgbArray[1];
             blue    = rgbArray[2];
         }
 
-        public static function getColorFromTable(colorName:String):ColorFilter
-        {
+        public static function getColorFromTable(colorName:String):ColorFilter {
             var filter:ColorFilter = new ColorFilter();
 
-            if (ColorTable.hasOwnProperty(colorName)) 
-            {
+            if (ColorTable.hasOwnProperty(colorName)) {
                 filter.setColor(ColorTable[colorName]);
             }
+
             return filter;
         }
     }

@@ -4,7 +4,7 @@ package fe.unit {
 
 	import fe.World;
 	import fe.SymbolFactory;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
 
@@ -48,18 +48,18 @@ package fe.unit {
 
 		//поместить созданный юнит в локацию
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
-			if (nloc.getAbsTile(nx, ny+10).phis==0) {
-				if (nloc.getAbsTile(nx, ny-50).phis) {
+			if (nloc.getAbsTile(nx, ny+10).collision==0) {
+				if (nloc.getAbsTile(nx, ny-50).collision) {
 					cep=1;
 					ny-=40-this.boundingBox.height-1
 					fixed=true;
 				}
-				else if (nloc.getAbsTile(nx-40, ny-10).phis) {
+				else if (nloc.getAbsTile(nx-40, ny-10).collision) {
 					cep=2;
 					nx-=(40-this.boundingBox.width)/2-1;
 					fixed=true;
 				}
-				else if (nloc.getAbsTile(nx+40, ny-10).phis) {
+				else if (nloc.getAbsTile(nx+40, ny-10).collision) {
 					cep=3;
 					nx+=(40-this.boundingBox.width)/2-1;
 					fixed=true;

@@ -10,6 +10,7 @@ package fe.serv {
 	import fe.projectile.Bullet;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
+	import fe.loc.tile.Tile;
 
 	public class Interact {
 
@@ -564,8 +565,8 @@ package fe.serv {
 		
 		// [perform an action]
 		public function act():void {
-			var verZhopa:int = 0;
-			var verFail:int = 0;
+			var verZhopa:Number = 0.0;
+			var verFail:Number = 0.0;
 			if (action==0) return;
 			
 			if (scrTouch) {

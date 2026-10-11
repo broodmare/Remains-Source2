@@ -7,7 +7,7 @@ package fe.loc {
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 
 	import fe.stubs.vistrapspikes
 	

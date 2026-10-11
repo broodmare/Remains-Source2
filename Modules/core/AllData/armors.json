@@ -58,7 +58,7 @@
         "h2oMult": 0.25,
         "upgrades": 2,
         "kolComp": 2,
-        "hideMane": 1,
+        "hideMane": true,
         "upd": [
             {
                 "armor": 2,
@@ -97,7 +97,7 @@
         "h2oMult": 0.25,
         "upgrades": 2,
         "kolComp": 2,
-        "hideMane": 1,
+        "hideMane": true,
         "upd": [
             {
                 "armor": 1,
@@ -264,7 +264,7 @@
         "upgrades": 2,
         "crit": 0.05,
         "kolComp": 4,
-        "hideMane": 1,
+        "hideMane": true,
         "upd": [
             {
                 "armor": 4,
@@ -488,7 +488,7 @@
         "crit": 0.1,
         "abil": "stealth_armor",
         "kolComp": 8,
-        "hideMane": 1,
+        "hideMane": true,
         "upd": [
             {
                 "armor": 12,
@@ -679,7 +679,7 @@
         "idComp": "power_comp",
         "upgrades": 2,
         "kolComp": 12,
-        "hideMane": 1,
+        "hideMane": true,
         "upd": [
             {
                 "armor": 25,
@@ -735,7 +735,7 @@
         "idComp": "power_comp",
         "upgrades": 2,
         "kolComp": 12,
-        "hideMane": 1,
+        "hideMane": true,
         "upd": [
             {
                 "armor": 15,
@@ -788,7 +788,7 @@
         "idComp": "power_comp",
         "upgrades": 2,
         "kolComp": 15,
-        "hideMane": 1,
+        "hideMane": true,
         "ableFly": 1,
         "upd": [
             {

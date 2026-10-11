@@ -91,7 +91,7 @@ package fe {
 			}
 
 			if ("hideMane" in data) {
-				armor.hideMane = data.hideMane;
+				armor.hideMane = Boolean(data.hideMane);
 			}
 
 			if ("radx" in data) {

@@ -5,6 +5,7 @@ package fe.loc {
 	import fe.World;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
+	import fe.loc.tile.Tile;
 
 	// Holds a reference to a location and renders a minimap of it
 	public class Minimap {
@@ -66,16 +67,16 @@ package fe.loc {
 						color = COLOR_WATER;
 					}
 
-					if (t.shelf || t.diagon != 0) {
+					if (t.platform || t.definition.slopeSide != 0) {
 						color = COLOR_SHELFSTAIR;
 					}
 
-					if (t.stair != 0) {
+					if (t.definition.ladderSide != 0) {
 						color = COLOR_STAIR;
 					}
 
-					if (t.phis == 1) {
-						if (t.indestruct) {
+					if (t.collision == 1) {
+						if (t.indestructible) {
 							color = COLOR_WHITE;
 						}
 						else if (t.door) {
@@ -89,21 +90,21 @@ package fe.loc {
 						}
 					}
 
-					if (t.phis == 2) {
+					if (t.collision == 2) {
 						color = COLOR_DAMAGED;
 					}
 
 					if (!World.w.drawAllMap) {
-						vid = t.visi;
+						vid = t.visibility;
 
 						if (i < rightX) {
-							neighborVisi = location.getTile(i + 1, j).visi;
+							neighborVisi = location.getTile(i + 1, j).visibility;
 							if (neighborVisi > vid) {
 								vid = neighborVisi;
 							}
 
 							if (j < bottomY) {
-								neighborVisi = location.getTile(i + 1, j + 1).visi;
+								neighborVisi = location.getTile(i + 1, j + 1).visibility;
 								if (neighborVisi > vid) {
 									vid = neighborVisi;
 								}
@@ -111,7 +112,7 @@ package fe.loc {
 						}
 
 						if (j < bottomY) {
-							neighborVisi = location.getTile(i, j + 1).visi;
+							neighborVisi = location.getTile(i, j + 1).visibility;
 							if (neighborVisi > vid) {
 								vid = neighborVisi;
 							}

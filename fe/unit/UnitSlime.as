@@ -78,8 +78,8 @@ package fe.unit {
 				aiState=2;
 				vis.gotoAndStop(2);
 				vis.scaleY=0.5;
-			} else if (loc.getAbsTile(nx,ny+10).phis) aiState=0;
-			else if (loc.getAbsTile(nx,ny-50).phis) {
+			} else if (loc.getAbsTile(nx,ny+10).collision) aiState=0;
+			else if (loc.getAbsTile(nx,ny-50).collision) {
 				aiState=1;
 				fixed=true;
 			} else aiState=0;
@@ -156,7 +156,7 @@ package fe.unit {
 				}
 			}
 			else if (aiState==1) {
-				if (aiN%5==0 && loc.getAbsTile(coordinates.X, coordinates.Y - 50).phis==0) {
+				if (aiN%5==0 && loc.getAbsTile(coordinates.X, coordinates.Y - 50).collision==0) {
 					aiState=0;
 					fixed=false;
 				}

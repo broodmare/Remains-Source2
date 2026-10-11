@@ -8,7 +8,7 @@
 		public var bottom:Number;
 		public var left:Number;
 		public var right:Number;
-		public var width:Number	= 10.00;			// Width in pixels
+		public var width:Number		= 10.00;			// Width in pixels
 		public var height:Number	= 10.00;			// Height in pixels
 
 		public function BoundingBox(vec:Vec2) {

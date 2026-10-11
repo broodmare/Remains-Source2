@@ -5,6 +5,7 @@ package fe.loc {
 	import fe.*;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
+	import fe.loc.tile.Tile;
 	
 	public class CheckPoint extends Obj {
 
@@ -21,9 +22,6 @@ package fe.loc {
 		
 		public var area:Area;
 
-		private static var tileX:int = Tile.tileX;
-		private static var tileY:int = Tile.tileY;
-
 		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			id=nid;
 			loc=nloc;
@@ -36,8 +34,8 @@ package fe.loc {
 			
 			coordinates.X = nx;
 			coordinates.Y = ny;
-			boundingBox.width = node.@size * tileX;
-			boundingBox.height = node.@wid * tileY;
+			boundingBox.width = node.@size * Tile.tileX;
+			boundingBox.height = node.@wid * Tile.tileY;
 			nazv=Res.txt('o','checkpoint');
 			
 			boundingBox.center(coordinates);
@@ -60,8 +58,8 @@ package fe.loc {
 		
 			boundingBox.center(coordinates);
 			cTransform=loc.cTransform;
-			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).shelf = true;
-			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).shelf = true;
+			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).platform = true;
+			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).platform = true;
 			
 			inter = new Interact(this,node,xml,loadObj);
 			inter.userAction='activate';

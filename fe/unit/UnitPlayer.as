@@ -20,7 +20,7 @@ package fe.unit {
 	import fe.WeaponManager;
 	import fe.inter.Ctr;
 	import fe.inter.Sats;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.weapon.Weapon;
 	import fe.ArmorManager;
 	import fe.Res;
@@ -699,23 +699,23 @@ package fe.unit {
 				else {
 					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height / 4);
 					
-					if (t.grav > 0 && velocity.Y < loc.maxdy * t.grav || t.grav < 0 && velocity.Y > loc.maxdy * t.grav) {
+					if (t.gravity > 0 && velocity.Y < loc.maxdy * t.gravity || t.gravity < 0 && velocity.Y > loc.maxdy * t.gravity) {
 						if (dash_t > dash_maxt - 11) {
-							velocity.Y += World.ddy * t.grav * 0.10;
+							velocity.Y += World.ddy * t.gravity * 0.10;
 						}
 						else {
-							velocity.Y += World.ddy * t.grav;
+							velocity.Y += World.ddy * t.gravity;
 						}
 					}
 					
-					if (t.grav > 0) {
-						grav = t.grav;
+					if (t.gravity > 0) {
+						grav = t.gravity;
 					}
 					else {
 						grav = 0;
 					}
 					
-					if (t.grav < 0) {
+					if (t.gravity < 0) {
 						velocity.X *= 0.80;
 					}
 				}
@@ -1497,7 +1497,7 @@ package fe.unit {
 			if (!loc.sky) {
 				var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
 				
-				if (t.visi < 0.80) {
+				if (t.visibility < 0.80) {
 					return;
 				}
 			}
@@ -1531,7 +1531,7 @@ package fe.unit {
 			var ny:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
 			var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
 			
-			if (t.visi >= 0.8 && !loc.collisionUnit(nx, ny, _standingWidth, _standingHeight)) {
+			if (t.visibility >= 0.8 && !loc.collisionUnit(nx, ny, _standingWidth, _standingHeight)) {
 				return true;
 			}
 			
@@ -1718,8 +1718,9 @@ package fe.unit {
 		// [Action with the active object while holding down the action key]
 		private function actAction():void {
 			if (actionObj) {
-				// Object too far away
-				if ((coordinates.X - actionObj.coordinates.X) * (coordinates.X - actionObj.coordinates.X) + (coordinates.Y - actionObj.coordinates.Y) * (coordinates.Y - actionObj.coordinates.Y) > World.w.actionDist) {
+				// Object too far away, measured to the object itself -- a unit's Interact keeps the position it had before the unit was placed
+				// Differs from vanilla, where that position was NaN, so walking away from a trap, trigger or charge never cancelled the action
+				if ((coordinates.X - actionObj.owner.coordinates.X) * (coordinates.X - actionObj.owner.coordinates.X) + (coordinates.Y - actionObj.owner.coordinates.Y) * (coordinates.Y - actionObj.owner.coordinates.Y) > World.w.actionDist) {
 					actionObj = null;
 				}
 			}
@@ -2726,7 +2727,7 @@ package fe.unit {
 				ny = coordinates.Y - boundingBox.halfHeight + ndy * i / div;
 				t = World.w.loc.getAbsTile(int(nx), int(ny));
 				
-				if (t.phis == 1 && t.boundingBox.intersectsPoint(nx, ny)) {
+				if (t.collision == 1 && t.boundingBox.intersectsPoint(nx, ny)) {
 					celX = nx;
 					celY = ny;
 					return 0
@@ -2769,7 +2770,7 @@ package fe.unit {
 					}
 
 				}
-				else if (loc.getAbsTile(coordinates.X - 20, coordinates.Y - 10).lurk && loc.getAbsTile(coordinates.X + 20, coordinates.Y - 10).lurk) {
+				else if (loc.getAbsTile(coordinates.X - 20, coordinates.Y - 10).definition.hidingSpot && loc.getAbsTile(coordinates.X + 20, coordinates.Y - 10).definition.hidingSpot) {
 					lurkTip = 1;
 					lurkX = Math.round(coordinates.X / tileX) * tileX;
 					velocity.X = 0;
@@ -3226,7 +3227,7 @@ package fe.unit {
 					weaponX = coordinates.X;
 				}
 				
-				if (loc.getAbsTile(weaponX, weaponY).phis == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).phis == 1) {
+				if (loc.getAbsTile(weaponX, weaponY).collision == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).collision == 1) {
 					weaponX = coordinates.X;
 				}
 				
@@ -3238,7 +3239,7 @@ package fe.unit {
 				}
 				
 				if (stay && weapUp) {
-					if (loc.getTile(int(weaponX / tileX), int((weaponY - 40) / tileY)).phis != 1) {
+					if (loc.getTile(int(weaponX / tileX), int((weaponY - 40) / tileY)).collision != 1) {
 						weaponY -= 40;
 					}
 				}
@@ -3259,7 +3260,7 @@ package fe.unit {
 				magicX = p.x;
 				magicY = p.y;
 				
-				if (loc.getAbsTile(magicX, magicY).phis == 1) {
+				if (loc.getAbsTile(magicX, magicY).collision == 1) {
 					if (isSit) {
 						magicY = coordinates.Y - 35;
 					}
@@ -3497,7 +3498,7 @@ package fe.unit {
 				}
 				else {
 					Appear.ggArmorId = "";
-					Appear.hideMane = 0;
+					Appear.hideMane = false;
 				}
 
 				refreshVis();
@@ -4700,7 +4701,7 @@ package fe.unit {
 		public function showElectroBlock():void {
 			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (coordinates.Y - boundingBox.halfHeight + Math.random() * 320 - 160));
 			
-			if (t && t.mat == 1 && t.hp > 0) {
+			if (t && t.material == 1 && t.hp > 0) {
 				Emitter.emit("electro", loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
 			}
 		}

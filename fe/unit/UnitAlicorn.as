@@ -6,7 +6,7 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.entities.Obj;
 	import fe.serv.AnimationSet;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Location;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
@@ -569,7 +569,7 @@ package fe.unit {
 				eyeX = coordinates.X + (obj.x+visBmp.x)*storona;
 				eyeY = coordinates.Y + obj.y+visBmp.y;
 				
-				if (loc.getAbsTile(eyeX,eyeY).phis) {
+				if (loc.getAbsTile(eyeX,eyeY).collision) {
 					eyeY+=20;
 				}
 				
@@ -672,14 +672,14 @@ package fe.unit {
 				
 					//пригнуться
 					if (turnX==-1) {
-						if (loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top + 40).phis==0 && loc.getAbsTile(this.boundingBox.right + 2,this.boundingBox.top + 80).phis==0) {
+						if (loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top).collision && loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top + 40).collision==0 && loc.getAbsTile(this.boundingBox.right + 2,this.boundingBox.top + 80).collision==0) {
 							sit(true);
 							turnX=0;
 						}
 					}
 				
 					if (turnX==1) {
-						if (loc.getAbsTile(this.boundingBox.left - 2, this.boundingBox.top).phis && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 40).phis==0 && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 80).phis==0) {
+						if (loc.getAbsTile(this.boundingBox.left - 2, this.boundingBox.top).collision && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 40).collision==0 && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 80).collision==0) {
 							sit(true);
 							turnX=0;
 						}
@@ -793,7 +793,7 @@ package fe.unit {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						
-						if (t.phis==1 || t.shelf) {
+						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
 						else {
@@ -809,7 +809,7 @@ package fe.unit {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						
-						if (t.phis==1 || t.shelf) {
+						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
 						else {

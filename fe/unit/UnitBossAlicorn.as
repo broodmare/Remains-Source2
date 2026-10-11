@@ -10,7 +10,7 @@ package fe.unit {
 	import fe.serv.AnimationSet;
 	import fe.graph.Emitter;
 	import fe.loc.Box;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Location;
 	import fe.projectile.Bullet;
 	import fe.unit.ability.Telekinesis;
@@ -281,7 +281,7 @@ package fe.unit {
 			
 			var t:Tile=loc.getAbsTile(coordinates.X, coordinates.Y + 10);
 			
-			if (t.phis || t.shelf) isFly=false;
+			if (t.collision || t.platform) isFly=false;
 			else isFly=true;
 			
 			levit=0;

@@ -1,7 +1,7 @@
 package fe.unit.ai {
 
 	import fe.World;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.unit.Unit;
 	import fe.unit.attack.IAttack;
 	import fe.unit.motor.IMotor;

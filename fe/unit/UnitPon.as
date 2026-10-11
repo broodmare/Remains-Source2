@@ -3,7 +3,7 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 
 	import fe.Snd;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.weapon.Weapon;
 	
 	public class UnitPon extends Unit {
@@ -34,7 +34,7 @@ package fe.unit {
 						weaponX = coordinates.X;
 					}
 					
-					if (loc.getTile(int((weaponX + storona * 15) / tileX), int(weaponY / tileY)).phis == 1) {
+					if (loc.getTile(int((weaponX + storona * 15) / tileX), int(weaponY / tileY)).collision == 1) {
 						weaponX = coordinates.X;
 					}
 					

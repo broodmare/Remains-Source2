@@ -5,7 +5,7 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.util.Vec2;
 	import fe.graph.Emitter;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.Snd;
 	import fe.World;
 	
@@ -60,7 +60,7 @@ package fe.unit {
 			if (destroy > 0 && napr==2 || napr==1) {
 				loc.hitTile(t, destroy,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY, 4);
 			}
-			if (t.phis == 0) {
+			if (t.collision == 0) {
 				return true;
 			}
 			return false;

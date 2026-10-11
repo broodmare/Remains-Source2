@@ -5,7 +5,7 @@ package fe.projectile
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.loc.Box;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
@@ -181,7 +181,7 @@ package fe.projectile
 				}
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit != '') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
 							popadalo();
@@ -194,7 +194,7 @@ package fe.projectile
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis == 1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+					if (t.collision == 1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
 							popadalo();
@@ -210,7 +210,7 @@ package fe.projectile
 					stay=false;
 					coordinates.Y += velocity.Y / div;
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 						if (bumc) {
 							popadalo();
@@ -230,7 +230,7 @@ package fe.projectile
 						return;
 					}
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (bumc) {
 							if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 							popadalo();

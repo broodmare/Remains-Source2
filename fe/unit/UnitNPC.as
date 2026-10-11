@@ -4,7 +4,7 @@ package fe.unit {
 	
 	import fe.SymbolFactory;
 	import fe.util.Calc;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.serv.Npc;
 	import fe.weapon.Weapon;
 	import fe.WeaponManager;

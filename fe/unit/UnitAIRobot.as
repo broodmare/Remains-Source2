@@ -1,7 +1,7 @@
 package fe.unit {
 
 	import fe.weapon.Weapon;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.projectile.Bullet;
 	import fe.WeaponManager;
 	import fe.World;

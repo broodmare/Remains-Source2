@@ -10,6 +10,7 @@ package fe.loc {
 	import fe.serv.Interact;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
+	import fe.loc.tile.Tile;
 	
 	// This is the object you see in-game when an item is dropped
 	public class Loot extends Obj {
@@ -34,10 +35,6 @@ package fe.loc {
 		private var ttake:int			= 30;
 		private var tvsos:int			=  0;
 		public var sndFall:String		= "fall_item";
-		
-		// Cached tile sizes
-		private static var tileX:int = Tile.tileX;
-		private static var tileY:int = Tile.tileY;
 
 		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
 			
@@ -54,16 +51,16 @@ package fe.loc {
 			coordinates.Y = ny;
 			krit = nkrit;
 			
-			if (nx < tileX) {
-				nx = tileX;
+			if (nx < Tile.tileX) {
+				nx = Tile.tileX;
 			}
 			
-			if (nx > (loc.spaceX - 1) * tileX) {
-				nx = (loc.spaceX - 1) * tileX;
+			if (nx > (loc.spaceX - 1) * Tile.tileX) {
+				nx = (loc.spaceX - 1) * Tile.tileX;
 			}
 			
-			if (ny > (loc.spaceY - 1) * tileY) {
-				ny = (loc.spaceY - 1) * tileY;
+			if (ny > (loc.spaceY - 1) * Tile.tileY) {
+				ny = (loc.spaceY - 1) * Tile.tileY;
 			}
 			
 			var data:Object = item.data;
@@ -361,15 +358,15 @@ package fe.loc {
 					velocity.X = Math.abs(velocity.X);
 				}
 
-				if (coordinates.X + boundingBox.halfWidth >= loc.spaceX * tileX) {
-					coordinates.X = loc.spaceX * tileX - 1 - boundingBox.halfWidth;
+				if (coordinates.X + boundingBox.halfWidth >= loc.spaceX * Tile.tileX) {
+					coordinates.X = loc.spaceX * Tile.tileX - 1 - boundingBox.halfWidth;
 					velocity.X = -Math.abs(velocity.X);
 				}
 
 				//движение влево
 				if (velocity.X < 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						coordinates.X = t.boundingBox.right + 1;
 						velocity.X = Math.abs(velocity.X);
 					}
@@ -378,7 +375,7 @@ package fe.loc {
 				//движение вправо
 				if (velocity.X > 0) {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y);
-					if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						coordinates.X = t.boundingBox.left - 1;
 						velocity.X = -Math.abs(velocity.X);
 					}
@@ -392,7 +389,7 @@ package fe.loc {
 				coordinates.Y += velocity.Y / div;
 				if (coordinates.Y - boundingBox.height < 0) coordinates.Y = boundingBox.height;
 				t = loc.getAbsTile(coordinates.X, coordinates.Y);
-				if (t.phis==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+				if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 					coordinates.Y = t.boundingBox.bottom + 1;
 					velocity.Y = 0;
 				}
@@ -403,7 +400,7 @@ package fe.loc {
 			if (velocity.Y > 0) {
 				stay = false;
 				
-				if (coordinates.Y + velocity.Y / div >= loc.spaceY * tileY) {
+				if (coordinates.Y + velocity.Y / div >= loc.spaceY * Tile.tileY) {
 					if (auto2) {
 						take(true);
 					}
@@ -414,7 +411,7 @@ package fe.loc {
 				
 				t = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y / div);
 				
-				if (t.phis==1 && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right || t.shelf && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
+				if (t.collision==1 && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.bottom && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right || t.platform && !levit && !vsos && coordinates.Y + velocity.Y / div >= t.boundingBox.top && coordinates.Y <= t.boundingBox.top && coordinates.X >= t.boundingBox.left && coordinates.X <= t.boundingBox.right) {
 					newmy = t.boundingBox.top;
 				}
 				
@@ -422,8 +419,8 @@ package fe.loc {
 					newmy = checkShelf(velocity.Y / div);
 				}
 				
-				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * tileY) {
-					newmy = (loc.spaceY - 1) * tileY;
+				if (!loc.active && coordinates.Y >= (loc.spaceY - 1) * Tile.tileY) {
+					newmy = (loc.spaceY - 1) * Tile.tileY;
 				}
 				
 				if (newmy) {
@@ -451,7 +448,7 @@ package fe.loc {
 			
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + 1);
 			
-			if ((t.phis==1 || t.shelf) && coordinates.Y + 1 > t.boundingBox.top) {
+			if ((t.collision==1 || t.platform) && coordinates.Y + 1 > t.boundingBox.top) {
 				return true;
 			}
 			else {
@@ -479,7 +476,7 @@ package fe.loc {
 			isPlav = false;
 			
 			try {
-				if (loc.getTile(int(coordinates.X/tileX) , int(coordinates.Y/tileY)).water > 0) {
+				if (loc.getTile(int(coordinates.X/Tile.tileX) , int(coordinates.Y/Tile.tileY)).water > 0) {
 					isPlav = true;
 				}
 			}

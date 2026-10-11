@@ -5,7 +5,7 @@ package fe.graph {
 
     import fe.World;
 	import fe.util.Vec2;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.graph.BackObj;
 	import fe.loc.Box;
 	import fe.unit.Unit;
@@ -271,7 +271,7 @@ package fe.graph {
 
 		// Helper method to replicate collisionTile logic
 		private function collisionTileDebug(unit:Object, t:Tile):Object {
-			if (!t || ((t.phis == 0 || (unit.transT && t.phis == 3)) && !t.shelf)) {
+			if (!t || ((t.collision == 0 || (unit.transT && t.collision == 3)) && !t.platform)) {
 				return { isColliding: false };
 			} 
 			
@@ -283,8 +283,8 @@ package fe.graph {
 				return { isColliding: false };
 			}
 			
-			// Check shelf condition
-			if (t.shelf && ((t.phis == 0 || (unit.transT && t.phis == 3))) &&
+			// Check platform condition
+			if (t.platform && ((t.collision == 0 || (unit.transT && t.collision == 3))) &&
 				((unitBox.bottom - (unit.stay ? unit.porog : unit.porog_jump)) > tileBox.top ||
 				unit.throu || unit.t_throw > 0 || unit.levit || unit.isFly || 
 				(unit.hasOwnProperty("diagon") && unit.diagon != 0))) {

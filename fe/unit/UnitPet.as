@@ -242,20 +242,20 @@ package fe.unit {
 			flyX = int(flyX / 40) * 40 + 20; // Weird math is grid alignment
 			flyY = int(flyY / 40) * 40 + 39;
 			
-			if (loc.getAbsTile(flyX,flyY).phis == 0) return;
+			if (loc.getAbsTile(flyX,flyY).collision == 0) return;
 			
 			flyX += 40 * gg.storona;
 			flyY += 40;
 			
-			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
+			if (loc.getAbsTile(flyX, flyY).collision == 0) return;
 			
 			flyY += 40;
 			
-			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
+			if (loc.getAbsTile(flyX, flyY).collision == 0) return;
 			
 			flyX += 40 * gg.storona;
 			
-			if (loc.getAbsTile(flyX, flyY).phis == 0) return;
+			if (loc.getAbsTile(flyX, flyY).collision == 0) return;
 
 			flyX = gg.coordinates.X;
 			flyY = gg.coordinates.Y - 1;
@@ -299,7 +299,7 @@ package fe.unit {
 			if (sost==4 || detectionDelay > 0) return;
 			tempUnmat=unmat;
 			flyBox=null;
-			if (!loc.base && loc.getAbsTile(nx,ny).visi<0.5) {
+			if (!loc.base && loc.getAbsTile(nx,ny).visibility<0.5) {
 				//не лететь в неразведанное место
 				return;
 			}

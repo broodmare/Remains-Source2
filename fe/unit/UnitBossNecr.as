@@ -5,7 +5,7 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 	
 	import fe.SymbolFactory;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;

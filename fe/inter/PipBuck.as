@@ -31,7 +31,7 @@ package fe.inter  {
 		public var noAct:Boolean		= false;
 		private var noAct2:Boolean		= false;
 		public var armorID:String;					// ID of the currently worn armor
-		public var hideMane:int			= 0;		// If the current armor hides the player's mane
+		public var hideMane:Boolean		= false;		// If the current armor hides the player's mane
 		private var page:int			= 1;		// Current interface the PipBuck is using, (Inventory, Trade, Options, Medical, Etc.)
 
 		private var pages:Array;

@@ -4,7 +4,7 @@ package fe.unit {
 
 	import fe.SymbolFactory;
 	import fe.util.Vec2;
-	import fe.loc.Tile;
+	import fe.loc.tile.Tile;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
