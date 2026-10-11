@@ -1177,7 +1177,7 @@ package fe.loc {
 			map.fillRect(map.rect,0x00000000);
 			for (var i:int = minLocX; i < maxLocX; i++) {
 				for (var j:int = minLocY; j < maxLocY; j++) {
-					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
+					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].minimap.drawMap(map);
 				}
 			}
 			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.coordinates.X;

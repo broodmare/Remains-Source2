@@ -153,7 +153,6 @@ package fe.inter {
 							x = un.coordinates.X * scaleV + otryv * (celX - screenX / 2);
 							y = un.coordinates.Y * scaleV + otryv * (celY - screenY / 2);
 						}
-						var v:Vec2 = new Vec2(x, y);
 					}
 					else
 					{
@@ -162,12 +161,10 @@ package fe.inter {
 							y = ovy-(ovy - un.coordinates.Y * scaleV) / 4;
 						}
 						else y = un.coordinates.Y * scaleV;
-
-						var v:Vec2 = new Vec2(x, y);
 					}
-					
+
 					// Update our coordinates
-					coord.setVector(v);
+					coord.set(x, y);
 				}
 				
 				ovy = coord.Y;

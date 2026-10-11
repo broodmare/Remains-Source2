@@ -26,16 +26,13 @@ package  fe.loc {
 		
 		public var fake:Boolean			= false;		// ??
 		public var t_ghost:int			= 0;			// Ghost wall lifetime timer(?)
-		
-		public var recalc:Boolean		= false;
-		
+
 		public var vid:int				= 0;
 		public var vid2:int				= 0; 
 		public var front:String			= "";
 		public var back:String			= "";
 		public var zad:String			= "";
 		
-		public var fRear:Boolean		= false;
 		public var vRear:Boolean		= false;
 		public var v2Rear:Boolean		= false;
 		
@@ -53,9 +50,6 @@ package  fe.loc {
 		
 		public var grav:Number		= 1.00;
 		public var lurk:int			= 0;
-		public var kontur:int		= 0;
-		public var konturRot:int	= 0;
-		public var floor:int		= 0;
 		public var place:Boolean	= true;	// objects can be placed in this tile
 		
 		// Kont
@@ -98,10 +92,6 @@ package  fe.loc {
 			else {
 				if (f.front) {
 					front = f.front;
-					
-					if (f.rear) {
-						fRear = true;
-					}
 				}
 				
 				if (f.back) {
@@ -160,30 +150,27 @@ package  fe.loc {
 				inForm(Form.fForms[s.charAt(0)]);
 			}
 			
-			if (s.length > 1) {
-				for (var i:int = 1; i < s.length; i++) {
-					fr = s.charCodeAt(i);
-					var sym:String = s.charAt(i);
-					
-					if (sym == "*") {
-						water = 1;
-					}
-					else if (sym == ",") {
-						setZForm(1);
-					}
-					else if (sym == ";") {
-						setZForm(2);
-					}
-					else if (sym == ":") {
-						setZForm(3);
+			for (var i:int = 1; i < s.length; i++) {
+				var sym:String = s.charAt(i);
+
+				if (sym == "*") {
+					water = 1;
+				}
+				else if (sym == ",") {
+					setZForm(1);
+				}
+				else if (sym == ";") {
+					setZForm(2);
+				}
+				else if (sym == ":") {
+					setZForm(3);
+				}
+				else {
+					if (mirror) {
+						inForm(Form.getMirror(sym));
 					}
 					else {
-						if (mirror) {
-							inForm(Form.getMirror(sym));
-						}
-						else {
-							inForm(Form.oForms[sym]);
-						}
+						inForm(Form.oForms[sym]);
 					}
 				}
 			}
@@ -200,9 +187,7 @@ package  fe.loc {
 				phis = 0;
 				return true;
 			}
-			
-			phis = 0;
-			
+
 			return false;
 		}
 		

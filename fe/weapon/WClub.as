@@ -212,7 +212,9 @@ package fe.weapon  {
 		}
 		
 		public override function actions():void {
-			
+			var nx:Number;
+			var ny:Number;
+
 			var ds:Number = 40 * owner.storona;
 			meleeR = World.w.pers.meleeR;
 			
@@ -368,14 +370,15 @@ package fe.weapon  {
 						sin2 = Math.sin(rot);
 						
 						for (var i:int = 0; i <= kolvzz; i++) {
-							var v1:Vec2 = new Vec2( (coordinates.X + cos2 * (mindlina + i * stepdlina)), (coordinates.Y + sin2 * (mindlina + i * stepdlina)) );
-							
+							nx = coordinates.X + cos2 * (mindlina + i * stepdlina);
+							ny = coordinates.Y + sin2 * (mindlina + i * stepdlina);
+
 							if (!isPow) {
-								b.bindMove(v1, vzz[i].X, vzz[i].Y);
+								b.bindMoveTo(nx, ny, vzz[i].X, vzz[i].Y);
 							}
-							
-							vzz[i].X = v1.X;
-							vzz[i].Y = v1.Y;
+
+							vzz[i].X = nx;
+							vzz[i].Y = ny;
 						}
 						
 						if (lasM) {
@@ -403,14 +406,15 @@ package fe.weapon  {
 					plY = sin2 * anim * atDlina;
 					
 					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * FIVE_SIXTH) {
-						var v2:Vec2 = new Vec2( (coordinates.X + cos2 * dlina + plX), (coordinates.Y + sin2 * dlina + plY) );
-						
+						nx = coordinates.X + cos2 * dlina + plX;
+						ny = coordinates.Y + sin2 * dlina + plY;
+
 						if (!isPow) {
-							b.bindMove(v2, vzz[0].X, vzz[0].Y);
+							b.bindMoveTo(nx, ny, vzz[0].X, vzz[0].Y);
 						}
-						
-						vzz[0].X = v2.X;
-						vzz[0].Y = v2.Y;
+
+						vzz[0].X = nx;
+						vzz[0].Y = ny;
 						
 						if (lasM) {
 							vis.gotoAndStop(3);
@@ -437,8 +441,8 @@ package fe.weapon  {
 					if (t_attack == 1) {
 						cos2 = Math.cos(rot);
 						sin2 = Math.sin(rot);
-						var v3:Vec2 = new Vec2( (coordinates.X + cos2 * mindlina), (coordinates.Y + sin2 * mindlina));
-						b.bindMove(v3, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
+						b.bindMoveTo(coordinates.X + cos2 * mindlina, coordinates.Y + sin2 * mindlina,
+							coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
 						
 						if (lasM) {
 							vis.gotoAndStop(3);

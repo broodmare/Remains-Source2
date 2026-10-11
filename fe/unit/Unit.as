@@ -1954,19 +1954,16 @@ package fe.unit {
 		
 		// Checks collision between the character's bounding box and a tile's bounding box.
 		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int {
+			var tileBox:BoundingBox;
+
 			if (!t || (t.phis == 0 || (transT && t.phis == 3)) && !t.shelf) {
 				return 0; // No collision
-			} 
-			
-			var adjustedBox:BoundingBox = new BoundingBox(new Vec2(0, 0));
-			adjustedBox.setBounds(
-				boundingBox.left + gx,
-				boundingBox.right + gx,
-				boundingBox.top + gy,
-				boundingBox.bottom + gy
-			);
+			}
 
-			if (!adjustedBox.intersects(t.boundingBox)) {
+			// Overlap test against the unit's box shifted by (gx, gy) and inset 0.01 on each side
+			tileBox = t.boundingBox;
+			if (tileBox.left > boundingBox.right + gx - 0.01 || tileBox.right < boundingBox.left + gx + 0.01 ||
+				tileBox.top > boundingBox.bottom + gy - 0.01 || tileBox.bottom < boundingBox.top + gy + 0.01) {
 				return 0; // No collision
 			}
 
@@ -1984,25 +1981,27 @@ package fe.unit {
 			
 			var i:int = int((coordinates.X + nx) / tileX);
 			var j:int = int((coordinates.Y + ny) / tileY);
+			var tile:Tile;
 
 			if (j >= loc.spaceY) {
 				j = loc.spaceY - 1;
 			}
-			
-			if (loc.getTile(i, j).phis >= 1 && !(transT&&loc.getTile(i, j).phis == 3)) {
+
+			tile = loc.getTile(i, j);
+			if (tile.phis >= 1 && !(transT && tile.phis == 3)) {
 				isLaz = 0;
 				return false;
 			}
-			
-			if ((loc.getTile(i, j)).stair) {
-				isLaz = (loc.getTile(i, j)).stair;
-				storona = (loc.getTile(i, j)).stair;
+
+			if (tile.stair != 0) {
+				isLaz = tile.stair;
+				storona = tile.stair;
 
 				if (isLaz == -1) {
-					coordinates.X = (loc.getTile(i, j)).boundingBox.left + boundingBox.halfWidth;
+					coordinates.X = tile.boundingBox.left + boundingBox.halfWidth;
 				}
 				else {
-					coordinates.X = (loc.getTile(i, j)).boundingBox.right - boundingBox.halfWidth;
+					coordinates.X = tile.boundingBox.right - boundingBox.halfWidth;
 				}
 				
 				boundingBox.center(coordinates);	// Center the character on the horizontal axis

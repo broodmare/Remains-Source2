@@ -27,6 +27,7 @@ package fe.loc {
 
 		private var itemManager:ItemManager;				// Reference to the item manager
 		public var land:Land;
+		public var minimap:Minimap;
 		
 		public var id:String;
 		public var room:Room;								//связанный шаблон
@@ -217,6 +218,7 @@ package fe.loc {
 			defaultTile = new Tile(-1, -1);		// Use this as a back-up if a tile can't be found
 
 			initializeArrays();
+			minimap = new Minimap(this);
 			maxdy = World.maxdy;
 
 			if (rnd) {
@@ -270,6 +272,8 @@ package fe.loc {
 		
 		// [Build from xml map]
 		public function buildLoc(nroom:XML):void {
+			var tile:Tile;
+
 			//создать массив блоков
 			// Initialize space as a single-dimensional Vector
 			initializeSpace();
@@ -363,17 +367,18 @@ package fe.loc {
 						jis = '';
 					}
 					
-					getTile(i, j).dec(jis, mirror);
-					
-					if (getTile(i, j).stair != 0) { //полочка наверху лестницы  
-						if (j > 0 && getTile(i, j).phis == 0 && !getTile(i, j).shelf && getTile(i, j).stair != getTile(i, j - 1).stair) {
-							getTile(i, j).shelf = true;
-							getTile(i, j).vid++;
+					tile = getTile(i, j);
+					tile.dec(jis, mirror);
+
+					if (tile.stair != 0) { //полочка наверху лестницы
+						if (j > 0 && tile.phis == 0 && !tile.shelf && tile.stair != getTile(i, j - 1).stair) {
+							tile.shelf = true;
+							tile.vid++;
 						}
 					}
-					
+
 					//линия воды
-					if (j >= waterLevel) getTile(i, j).water = 1;
+					if (j >= waterLevel) tile.water = 1;
 					
 					//рамка
 					if (i == LEFT_X || i == RIGHT_X || j == TOP_Y || j == BOTTOM_Y) {
@@ -385,10 +390,10 @@ package fe.loc {
 							|| ramka == 7 && (i <= 10 || i>=37) && j >= 16
 							|| ramka == 8 && (i == RIGHT_X)
 							) {
-								getTile(i, j).phis = 1;
+								tile.phis = 1;
 						}
-						else if (getTile(i, j).phis >= 1) {
-							getTile(i, j).indestruct = true;
+						else if (tile.phis >= 1) {
+							tile.indestruct = true;
 						}
 					}
 				}
@@ -1609,7 +1614,8 @@ package fe.loc {
 				t.kont2=insKontur(a1,a3,a2);
 				t.kont3=insKontur(a5,a7,a6);
 				t.kont4=insKontur(a5,a3,a4);
-				if (b!='') {
+				// Differs from vanilla, which read an unassigned local here and so set back outlines on every solid tile
+				if (t.back != '') {
 					if (!a1) a1=uslPontur(tx, ty-1);
 					if (!a3) a3=uslPontur(tx+1,ty);
 					if (!a5) a5=uslPontur(tx, ty+1);
@@ -1647,19 +1653,25 @@ package fe.loc {
 		
 		// [Foreground contours]
 		private function uslKontur(nx:int,ny:int):Boolean {
+			var tile:Tile;
 			if (nx < LEFT_X || nx >= spaceX || ny < TOP_Y || ny >= spaceY) return true;
-			return (getTile(nx, ny).phis == 1 || getTile(nx, ny).door != null);
+			tile = space[ny * spaceX + nx];
+			return (tile.phis == 1 || tile.door != null);
 		}
 
 		// [Background contours if there is a wall]
 		private function uslPontur(nx:int,ny:int):Boolean {
+			var tile:Tile;
 			if (nx < LEFT_X || nx >= spaceX || ny < TOP_Y || ny >= spaceY) return true;
-			return (getTile(nx, ny).back != '' || getTile(nx, ny).shelf > 0);
+			tile = space[ny * spaceX + nx];
+			return (tile.back != '' || tile.shelf > 0);
 		}
 		// [Background contours if there is no wall]
 		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean {
+			var tile:Tile;
 			if (nx < LEFT_X || nx >= spaceX || ny < TOP_Y || ny >= spaceY) return true;
-			return (getTile(nx, ny).back == b || vse && getTile(nx, ny).back != '' || getTile(nx, ny).phis == 1 || getTile(nx, ny).shelf > 0);
+			tile = space[ny * spaceX + nx];
+			return (tile.back == b || vse && tile.back != '' || tile.phis == 1 || tile.shelf > 0);
 		}
 		
 		// [Tile damage]
@@ -1781,7 +1793,6 @@ package fe.loc {
 							isRecalc = true;
 						}
 					}
-					t.recalc = false;
 				}
 			}
 			
@@ -1816,108 +1827,6 @@ package fe.loc {
 				}
 			}
 			return true;
-		}
-		
-		// [drawing the map] (Mini-map in the pipbuck)
-		public function drawMap(m:BitmapData):void {
-			var vid:Number = 1;
-			for (var i:int = 0; i < spaceX; i++) {
-				for (var j:int = 0; j < spaceY; j++) {
-					var color:uint = 0x003323;
-					var t:Tile = getTile(i, j);
-					
-					if (t.water) {
-						color = 0x0066FF;
-					}
-					
-					if (t.shelf || t.diagon != 0) {
-						color = 0x7B482F;
-					}
-					
-					if (t.stair != 0) {
-						color = 0x666666;
-					}
-					
-					if (t.phis == 1) {
-						if (t.indestruct) {
-							color = 0xFFFFFF;
-						}
-						else if (t.door) {
-							color = 0x639104;
-						}
-						else if (t.hp<100) {
-							color = 0x01995A;
-						}
-						else {
-							color = 0x00FF99;
-						}
-					}
-
-					if (t.phis == 2) {
-						color = 0x01995A;
-					}
-
-					if (!World.w.drawAllMap) {
-						vid = getTile(i, j).visi;
-						
-						if (i < RIGHT_X) {
-							if (getTile(i + 1, j).visi > vid) {
-								vid = getTile(i + 1, j).visi;
-							}
-							
-							if (j < BOTTOM_Y) {
-								if (getTile(i + 1, j + 1).visi > vid) vid = getTile(i + 1, j + 1).visi;
-							}
-						}
-						
-						if (j < BOTTOM_Y) {
-							if (getTile(i, j + 1).visi > vid) {
-								vid = getTile(i, j + 1).visi;
-							}
-						}
-					}
-					
-					color += int(vid * 255) * 0x1000000;
-					m.setPixel32((landX - land.minLocX) * World.cellsX + i, (landY - land.minLocY) * World.cellsY + j, color);
-				}
-			}
-
-			for each (var obj:Obj in objs) {
-				if (obj.inter && obj.inter.cont != "" && obj.inter.active) {
-					drawMapObj(m, obj, 0xFFCC00);
-				}
-
-				if (obj.inter && obj.inter.prob != "" && obj.inter.prob != null) {
-					drawMapObj(m, obj, 0xFF0077);
-				}
-			}
-
-			for each (obj in acts) {
-				if (obj is CheckPoint) drawMapObj(m, obj, 0xFF00FF)
-			}
-			
-			for each (obj in units) {
-				if ((obj as Unit).npc) drawMapObj(m, obj, 0x5500FF);
-			}
-		}
-		
-		private function drawMapObj(map:BitmapData, obj:Obj, color:uint):void {
-			var worldCellsX:int = World.cellsX;
-			var worldCellsY:int = World.cellsY;
-			
-			var startXIndex:int = (landX - land.minLocX) * worldCellsX;
-			var startYIndex:int = (landY - land.minLocY) * worldCellsY;
-
-			var xStart:int	= startXIndex + int(obj.boundingBox.left   / tileX + 0.50);
-			var xEnd:int	= startXIndex + int(obj.boundingBox.right  / tileX - 0.50);
-			var yStart:int	= startYIndex + int(obj.boundingBox.top    / tileY + 0.40);
-			var yEnd:int	= startYIndex + int(obj.boundingBox.bottom / tileY - 0.50);
-
-			for (var i:int = xStart; i <= xEnd; i++) {
-				for (var j:int = yStart; j <= yEnd; j++) {
-					map.setPixel(i, j, color);
-				}
-			}
 		}
 		
 //**************************************************************************************************************************

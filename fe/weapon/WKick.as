@@ -39,6 +39,10 @@ package fe.weapon  {
 		}
 		
 		public override function actions():void {
+			var reachX:Number;
+			var startX:Number;
+			var i:int;
+
 			coordinates.setVector(owner.coordinates);
 			storona = owner.storona;
 			
@@ -81,16 +85,16 @@ package fe.weapon  {
 					b.destroy = World.w.pers.kickDestroy;
 					dopDamage = 60;
 					
-					var v1:Vec2 = new Vec2( (coordinates.X + storona * 70), (coordinates.Y - 50) );
-					var v2:Vec2 = new Vec2( (coordinates.X + storona * 70), (coordinates.Y - 30) );
-					
+					reachX = coordinates.X + storona * 70;
+					startX = coordinates.X + storona * 20;
+
 					if (vverh) {
-						b.bindMove(v1, coordinates.X + storona * 20, coordinates.Y - 50);
-						b.bindMove(v2, coordinates.X + storona * 20, coordinates.Y - 30);
+						b.bindMoveTo(reachX, coordinates.Y - 50, startX, coordinates.Y - 50);
+						b.bindMoveTo(reachX, coordinates.Y - 30, startX, coordinates.Y - 30);
 					}
 					else {
-						b.bindMove(v2, coordinates.X + storona * 20, coordinates.Y - 30);
-						b.bindMove(v1, coordinates.X + storona * 20, coordinates.Y - 50);
+						b.bindMoveTo(reachX, coordinates.Y - 30, startX, coordinates.Y - 30);
+						b.bindMoveTo(reachX, coordinates.Y - 50, startX, coordinates.Y - 50);
 					}
 					
 					Snd.ps('m_big', coordinates.X, coordinates.Y, 0, Math.random() * 0.2 + 0.1);
@@ -103,19 +107,18 @@ package fe.weapon  {
 						vverh = true;
 					}
 					
-					var v0:Vec2 = new Vec2( (coordinates.X + storona * 60), (coordinates.Y - 50));
+					reachX = coordinates.X + storona * 60;
+					startX = coordinates.X + storona * 20;
+
 					if (vverh) {
-						b.bindMove(v0, coordinates.X + storona * 20, coordinates.Y - 50);
+						b.bindMoveTo(reachX, coordinates.Y - 50, startX, coordinates.Y - 50);
 					}
-					
-					var v3:Vec2 = new Vec2( (coordinates.X + storona * 60), (coordinates.Y - 30));
-					var v4:Vec2 = new Vec2( (coordinates.X + storona * 60), (coordinates.Y - i * 10));
-					
-					b.bindMove(v3, coordinates.X + storona * 20, coordinates.Y - 30);
-					
-					for (var i:int = 1; i <= 5; i++) {
+
+					b.bindMoveTo(reachX, coordinates.Y - 30, startX, coordinates.Y - 30);
+
+					for (i = 1; i <= 5; i++) {
 						if (i != 3 && !(vverh && i == 5)) {
-							b.bindMove(v4, coordinates.X + storona * 20, coordinates.Y - i * 10);
+							b.bindMoveTo(reachX, coordinates.Y - i * 10, startX, coordinates.Y - i * 10);
 						}
 					}
 					

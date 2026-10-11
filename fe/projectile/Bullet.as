@@ -235,15 +235,20 @@ package fe.projectile {
 		}
 		
 		public override function bindMove(v:Vec2, ox:Number = -1, oy:Number = -1):void {
+			bindMoveTo(v.X, v.Y, ox, oy);
+		}
+
+		// Sweeps from (ox, oy) to (nx, ny), hitting whatever is on the way; a negative ox or oy keeps that coordinate
+		public function bindMoveTo(nx:Number, ny:Number, ox:Number = -1, oy:Number = -1):void {
 			if (ox >= 0) {
 				coordinates.X = ox;
 			}
-			
+
 			if (oy >= 0) {
 				coordinates.Y = oy;
 			}
-			
-			velocity.setVector(v.subtractVectors(coordinates));
+
+			velocity.set(nx - coordinates.X, ny - coordinates.Y);
 			vel = velocity.magnitude();
 			
 			if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
@@ -320,9 +325,8 @@ package fe.projectile {
 
 		public function run(div:int = 1):void {
 			dist += vel / div;
-			var v:Vec2 = new Vec2(velocity.X, velocity.Y);
-			v.divide(div);
-			coordinates.sumVectors(v);
+			coordinates.X += velocity.X / div;
+			coordinates.Y += velocity.Y / div;
 			
 			// Checking if the bullet is out of bounds in sky
 			if (loc.sky && (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY)) {

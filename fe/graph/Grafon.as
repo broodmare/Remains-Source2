@@ -455,6 +455,7 @@ package fe.graph {
 			m = new Matrix();
 			var tile:MovieClip;
 			var t:Tile;
+			var tileAbove:Tile;
 			var front:Sprite	= new Sprite();	// [fingerprint on the foreground bitmap ]
 			var back:Sprite		= new Sprite();	// [fingerprint on the backdrop bitmap]
 			var back2:Sprite	= new Sprite();	// [fingerprint on the backdrop bitmap]
@@ -519,7 +520,8 @@ package fe.graph {
 						tile = new tileVoda();
 						tile.gotoAndStop(loc.tipWater + 1);
 						
-						if (loc.getTile(i, j - 1).water == 0 && loc.getTile(i, j - 1).phis == 0) {
+						tileAbove = loc.getTile(i, j - 1);
+						if (tileAbove.water == 0 && tileAbove.phis == 0) {
 							tile.voda.gotoAndStop(2);
 						}
 						
@@ -997,12 +999,14 @@ package fe.graph {
 		
 		//рисование одного блока воды
 		public function drawWater(t:Tile, recurs:Boolean = true):void {
+			var tileAbove:Tile = loc.getTile(t.coords.X, t.coords.Y - 1);
+
 			m = new Matrix();
 			m.tx = t.coords.X * tileX;
 			m.ty = t.coords.Y * Tile.tileY;
 			voda.gotoAndStop(loc.tipWater + 1);
-			
-			if (loc.getTile(t.coords.X, t.coords.Y - 1).water == 0 && loc.getTile(t.coords.X, t.coords.Y - 1).phis == 0 ) {
+
+			if (tileAbove.water == 0 && tileAbove.phis == 0) {
 				voda.voda.gotoAndStop(2);
 			}
 			else {

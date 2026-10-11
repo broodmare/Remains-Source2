@@ -373,6 +373,8 @@ package fe.unit {
 		}
 		
 		private function resurrect():void {
+			var tile:Tile;
+
 			hp=maxhp;
 			sost=1;
 			boundingBox.height = _standingHeight;
@@ -387,7 +389,8 @@ package fe.unit {
 				for (var j:int = int((boundingBox.top)/tileY); j<=int((boundingBox.bottom)/tileY); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					
-					if (collisionTile(loc.getTile(i, j))) loc.dieTile(loc.getTile(i, j));
+					tile = loc.getTile(i, j);
+					if (collisionTile(tile) != 0) { loc.dieTile(tile); }
 				}
 			}
 		}
