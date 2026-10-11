@@ -4,7 +4,7 @@ package fe.graph {
 	import flash.display.Sprite;
 
     import fe.World;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.loc.Tile;
 	import fe.graph.BackObj;
 	import fe.loc.Box;
@@ -42,7 +42,6 @@ package fe.graph {
 		private var drawCollisionChecks:Boolean = false;				// Collision ceheck visualization
 		private var drawHorizontalCollisionChecks:Boolean = false;
 
-        // Constructor
         public function DebugLayer() {
             spriteContainer = new Sprite();
         }

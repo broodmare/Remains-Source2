@@ -22,7 +22,6 @@ package fe {
 			necro: Resistances.DAM_DEATH
 		};
 
-		// Constructor
 		public function ArmorManager() {
 			
 			reference	= this;

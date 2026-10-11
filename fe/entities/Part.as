@@ -8,7 +8,7 @@ package fe.entities {
 	import flash.geom.Point;
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
 
 	public class Part  extends Entity {

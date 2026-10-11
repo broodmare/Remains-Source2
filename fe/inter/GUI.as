@@ -7,7 +7,7 @@ package fe.inter {
 	import flash.events.MouseEvent;
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.weapon.Weapon;
 	import fe.unit.UnitPlayer;
@@ -81,7 +81,6 @@ package fe.inter {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function GUI(vgui:MovieClip) {
 			vis=vgui;
 			vis.mouseChildren = false;

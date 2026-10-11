@@ -58,7 +58,6 @@ package fe.inter {
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
 
-		// Constructor
 		public function PipPage(npip:PipBuck, npp:String) {
 			
 			pip = npip;

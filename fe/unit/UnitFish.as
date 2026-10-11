@@ -1,14 +1,13 @@
 package fe.unit {
 	
 	import flash.display.MovieClip;
-
-	import fe.*;
+	import fe.SymbolFactory;
+	import fe.World;
 
 	public class UnitFish extends Unit {
 		
 		public var tr:int;	// Unit variant
 		
-		// Constructor
 		public function UnitFish(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

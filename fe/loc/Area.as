@@ -50,7 +50,6 @@ package fe.loc {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
 			loc = nloc;
 			

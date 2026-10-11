@@ -2,7 +2,7 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 
-	import fe.*;
+	import fe.World;
 	import fe.SymbolFactory;
 	import fe.loc.Tile;
 	import fe.loc.Location;
@@ -16,7 +16,6 @@ package fe.unit {
 		
 		private var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 
 			super(cid, ndif, xml, loadObj);

@@ -14,7 +14,7 @@ package fe.unit {
 	import fe.*;
 	import fe.SymbolFactory;
 	import fe.util.Calc;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 
 	import fe.weapon.*;
 	import fe.projectile.Bullet;
@@ -24,10 +24,10 @@ package fe.unit {
 	import fe.entities.Obj;
 	import fe.entities.BoundingBox;
 	import fe.entities.Part;
-	import fe.unit.ai.system.Brain;
-	import fe.unit.anim.system.Animator;
-	import fe.unit.attack.system.IAttack;
-	import fe.unit.motor.system.IMotor;
+	import fe.unit.ai.Brain;
+	import fe.unit.anim.Animator;
+	import fe.unit.attack.IAttack;
+	import fe.unit.motor.IMotor;
 	
 	public class Unit extends Obj {
 
@@ -375,7 +375,6 @@ package fe.unit {
 		//xml - индивидуальные параметры, взятые из карты
 		//loadObj - объект для загрузки состояния юнита
 
-		// Constructor
 		public function Unit(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			vulnerabilities = new Resistances();
 			vulnerabilities.setResistances(1.00);
@@ -1959,7 +1958,7 @@ package fe.unit {
 				return 0; // No collision
 			} 
 			
-			var adjustedBox:BoundingBox = new BoundingBox(new Vector2(0, 0));
+			var adjustedBox:BoundingBox = new BoundingBox(new Vec2(0, 0));
 			adjustedBox.setBounds(
 				boundingBox.left + gx,
 				boundingBox.right + gx,
@@ -2439,6 +2438,21 @@ package fe.unit {
 			return "";
 		}
 
+		// Called by the brain each time it sees its target, before it reacts
+		public function onSighting():void {
+
+		}
+
+		// Called by the brain when the unit turns on a target in sight, and each time it sees it again while alert
+		public function onSpotted():void {
+
+		}
+
+		// Called by the brain when the unit calms down
+		public function onCalm():void {
+
+		}
+
 		// Footstep sound for a frame of a walking animation
 		public function sndStep(frame:int, pattern:int = 0):void {
 
@@ -2803,7 +2817,7 @@ package fe.unit {
 		
 		public function explosion(tdam:Number, ttipdam:String = Resistances.DAM_EXPLOSION, trad:Number = 200, tkol:int = 0, totbros:Number = 0, tdestroy:Number = 0, tdecal:int = 0):void {
 			
-			var v:Vector2 = new Vector2(coordinates.X, coordinates.Y - 3);
+			var v:Vec2 = new Vec2(coordinates.X, coordinates.Y - 3);
 			var bul:Bullet = new Bullet(this, v, null, tkol > 1);
 			
 			bul.weapId = id;

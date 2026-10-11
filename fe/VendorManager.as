@@ -14,7 +14,6 @@ package fe {
 		private static var vendorData:Object			= {};		// Vendor ivnentory types are stored here after being loaded from JSON
 		private var _vendors:Object						= {};		// Initialized vendors are stored here
 
-		// Constructor
 		public function VendorManager(loadObj:Object = null) {
 			
 			if (loadObj) {

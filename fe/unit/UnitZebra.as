@@ -1,10 +1,10 @@
 package fe.unit {
 
-	import fe.*;
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
 	import fe.projectile.Bullet;
 	import fe.loc.Tile;
+	import fe.World;
 	
 	public class UnitZebra extends UnitRaider {
 
@@ -12,15 +12,14 @@ package fe.unit {
 		private var shine2:int=0;
 		private var red:Boolean=false;
 		
-		// Constructor
 		public function UnitZebra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			parentId='zebra';
-			kolTrs=5;
+			parentId = "zebra";
+			kolTrs = 5;
+			tupizna = 10;
+			visionMult = 1.3;
+			durak = false;
+			dash = true;
 			super(cid, ndif, xml, loadObj);
-			tupizna=10;
-			visionMult=1.3;
-			durak=false;
-			dash=true;
 			if (xml && xml.@red.length()) {
 				red=true;
 				shine=100;
@@ -38,7 +37,7 @@ package fe.unit {
 						if (velocity.X>10 || velocity.X<-10 || velocity.Y>10 || velocity.Y<-10) shine+=15;
 						else shine+=5;
 						shine2=20;
-						if (attackerType==0 && aiAttack && shine<100) shine=100;
+						if (attackerType == 0 && isAttacking() && shine < 100) { shine = 100; }
 					}
 				}
 				if (sost<1) shine=100;

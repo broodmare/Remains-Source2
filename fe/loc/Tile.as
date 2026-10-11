@@ -1,6 +1,6 @@
 package  fe.loc {
 
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	
@@ -10,7 +10,7 @@ package  fe.loc {
 		public static var tileX:int = tileSize;			// TODO: Replace this better with tileSize
 		public static var tileY:int = tileSize;
 		
-		public var coords:Vector2;						// (is this raw coords or tilespace coords??)
+		public var coords:Vec2;							// (is this raw coords or tilespace coords??)
 		public var boundingBox:BoundingBox;				// Bounding box
 		
 		public var indestruct:Boolean	= false;
@@ -73,9 +73,8 @@ package  fe.loc {
 		public var door:Box;		// Reference to (a door if it's contained in this tile?)
 		public var trap:Obj;		// Reference to (a trap if it's contained in this tile?)
 		
-		// Constructor
 		public function Tile(nx:Number, ny:Number) {
-			coords = new Vector2(nx, ny);
+			coords = new Vec2(nx, ny);
 			boundingBox = new BoundingBox(coords);
 			
 			var l:Number = coords.X * tileSize;

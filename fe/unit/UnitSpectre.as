@@ -2,8 +2,8 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
+	import fe.World;
 	import fe.projectile.Bullet;
 	import fe.graph.Emitter;
 	
@@ -13,7 +13,6 @@ package fe.unit {
 		private var br:Number=0;
 		private var iskr:Emitter;
 
-		// Constructor
 		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='spectre';

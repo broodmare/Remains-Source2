@@ -1,54 +1,69 @@
 package fe.unit {
 
 	import flash.display.MovieClip;
-	
+
 	import fe.SymbolFactory;
-	import fe.serv.AnimationSet;
 	import fe.WeaponManager;
-	import fe.weapon.Weapon;
+	import fe.serv.AnimationSet;
+	import fe.unit.attack.SideWeaponAttack;
+	import fe.unit.attack.SideWeaponAttack_Definition;
 	import fe.weapon.WThrow;
-	
+
+	// Enclave soldiers: flying pegasus gunners in power armour, some with grenades
 	public class UnitEncl extends UnitRaider {
-		
-		private var thWeapon:Weapon;
-		private var t_gren:int = Math.round(Math.random() * 150 + 50);
-		
-		// Constructor
-		public function UnitEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			parentId='encl';
-			flyer=true;
-			kolTrs=1;
+
+		private static const GRENADE_CHANCE:Number		= 0.5;		// Chance a grenade that is due is thrown
+		private static const DAMAGE_BONUS:Number		= 1.2;		// Damage multiplier of the main weapon, applied twice below WEAK_DAMAGE
+		private static const WEAK_DAMAGE:Number			= 20.0;
+
+		public function UnitEncl(cid:String = null, ndif:Number = 100.0, xml:XML = null, loadObj:Object = null) {
+			var grenadeDefinition:SideWeaponAttack_Definition = new SideWeaponAttack_Definition();
+			var grenades:WThrow;
+
+			parentId = "encl";
+			flyer = true;
+			kolTrs = 1;
+			tupizna = 10;
+			visionMult = 1.5;
+			durak = false;
+			allLink = true;
+			maxSpok = 50;
 			super(cid, ndif, xml, loadObj);
-			tupizna=10;
-			visionMult=1.5;
-			durak=false;
-			allLink=true;
-			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosEncl1");
-		
+
 			if (grenader > 0) {
-				thWeapon = WeaponManager.reference.cloneWeapon("mercgr");
-				WeaponManager.reference.setOwner(thWeapon, this);
-				(thWeapon as WThrow).kolAmmo = grenader;
-				childObjs.push(thWeapon);
+				grenades = WeaponManager.reference.cloneWeapon("mercgr", this) as WThrow;
+				grenades.kolAmmo = grenader;
+				childObjs.push(grenades);
+				grenadeDefinition.chance = GRENADE_CHANCE;
+				attacks.push(new SideWeaponAttack(this, grenadeDefinition, grenades, null));
 			}
-		
+
 			if (enclWeap) {
-				isDropArm=false;
-			
+				isDropArm = false;
+
 				if (currentWeapon) {
 					currentWeapon.svis = "encl";
 					currentWeapon.vis = SymbolFactory.createInstance("visencl") as MovieClip;
 				}
 			}
-		
-			if (currentWeapon.damage < 20) {
-				currentWeapon.damage *= 1.20;
+
+			if (currentWeapon.damage < WEAK_DAMAGE) {
+				currentWeapon.damage *= DAMAGE_BONUS;
 			}
-			
-			currentWeapon.damage *= 1.20;
+
+			currentWeapon.damage *= DAMAGE_BONUS;
+
+			// Power armour keeps its aim while levitated
+			gunDefinition.isShakenWhenLifted = false;
+
+			animatorDefinition.backpedal = "trot";
+			animatorDefinition.fly = "fly";
+			animatorDefinition.levitate = "fly";
+			animatorDefinition.swim = "fly";
+			animatorDefinition.jump = "stay";
 		}
-		
+
 		public override function addVisual():void {
 			if (disabled) return;
 			trigDis=!checkTrig();
@@ -59,76 +74,12 @@ package fe.unit {
 				currentWeapon.recoilUp*=0.25;
 			}
 		}
-		
+
 		public override function setLevel(nlevel:int=0):void {
 			super.setLevel(nlevel);
 			if (currentWeapon) {
 				currentWeapon.damage *= 1.25;
-			}			
-		}
-		
-		public override function attack():void {
-			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
-			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
-			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
-				if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
-				if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
-				aiAttackT--;
 			}
-			if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
-			if (thWeapon) {
-				t_gren--;
-				if (t_gren<=0) {
-					if (celUnit && isrnd()) thWeapon.attack();
-					t_gren=Math.round(Math.random()*150+50);
-				}
-			}
-		}
-		
-		public override function animate():void {
-			var revers:Boolean=false;
-			//поворот
-			if (sost==2 || sost==3) { //сдох
-				if (stay) {
-					if (animState=='fall') {
-
-					}
-					else if (animState=='death') animState='fall';
-					else animState='die';
-				}
-				else animState='death';
-			}
-			else {
-				if (stay) {
-					if  (velocity.X==0) {
-						animState='stay';
-					}
-					else if (walker && (aiState<=1 || aiState==4)) {
-						animState='walk';
-						sndStep(anims[animState].f,1);
-					}
-					else {
-						animState='trot';
-						if (aiNapr*storona<0) revers=true;
-						sndStep(anims[animState].f,1);
-					}
-				}
-				else if (isFly || aiPlav || levit) {
-					animState='fly';
-				}
-				else {
-					animState='stay';
-				}
-			}
-			if (animState!=animState2) {
-				anims[animState].restart();
-				animState2=animState;
-			}
-			if (!anims[animState].st) {
-				if (revers) blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
-				else blit(anims[animState].id,anims[animState].f);
-			}
-			anims[animState].step();
 		}
 	}
 }

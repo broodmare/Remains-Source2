@@ -3,7 +3,7 @@ package fe.weapon {
 	import flash.display.Graphics;
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
 	import fe.unit.UnitPlayer;
@@ -25,7 +25,7 @@ package fe.weapon {
 
 		public var sndFall:String	= "";
 		
-		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		// Use WeaponManager.cloneWeapon() to create weapons
 		public function WThrow() {
 			super();
 		}

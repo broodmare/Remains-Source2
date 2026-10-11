@@ -1,16 +1,16 @@
 package fe.unit {
 
 	import fe.serv.BlitAnim;
-	import fe.unit.ai.model.Brain_Definition;
-	import fe.unit.ai.system.Brain;
-	import fe.unit.anim.model.Animator_Definition;
-	import fe.unit.anim.system.Animator;
-	import fe.unit.attack.model.BodyAttack_Definition;
-	import fe.unit.attack.model.WeaponAttack_Definition;
-	import fe.unit.attack.system.BodyAttack;
-	import fe.unit.attack.system.WeaponAttack;
-	import fe.unit.motor.model.WalkMotor_Definition;
-	import fe.unit.motor.system.WalkMotor;
+	import fe.unit.ai.Brain;
+	import fe.unit.ai.Brain_Definition;
+	import fe.unit.anim.Animator;
+	import fe.unit.anim.Animator_Definition;
+	import fe.unit.attack.BodyAttack;
+	import fe.unit.attack.BodyAttack_Definition;
+	import fe.unit.attack.WeaponAttack;
+	import fe.unit.attack.WeaponAttack_Definition;
+	import fe.unit.motor.WalkMotor;
+	import fe.unit.motor.WalkMotor_Definition;
 	import fe.util.Calc;
 
 	// Small critters: radroaches, rats, molerats and radscorpions

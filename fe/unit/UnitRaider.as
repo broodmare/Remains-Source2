@@ -1,1214 +1,749 @@
 package fe.unit {
 
 	import flash.filters.GlowFilter;
-	
-	import fe.weapon.*;
-	import fe.*;
-	import fe.loc.Tile;
-	import fe.serv.BlitAnim;
+
+	import fe.WeaponManager;
+	import fe.World;
+	import fe.XMLDataGrabber;
+	import fe.projectile.Bullet;
 	import fe.serv.AnimationSet;
 	import fe.serv.LootGen;
-	import fe.projectile.Bullet;
-	
+	import fe.unit.ai.AIState;
+	import fe.unit.ai.Brain;
+	import fe.unit.ai.Brain_Definition;
+	import fe.unit.anim.Animator;
+	import fe.unit.anim.Animator_Definition;
+	import fe.unit.attack.BodyAttack;
+	import fe.unit.attack.BodyAttack_Definition;
+	import fe.unit.attack.GunAttack;
+	import fe.unit.attack.GunAttack_Definition;
+	import fe.unit.attack.WeaponAttack;
+	import fe.unit.attack.WeaponAttack_Definition;
+	import fe.unit.motor.FlyMotor;
+	import fe.unit.motor.FlyMotor_Definition;
+	import fe.unit.motor.WalkMotor;
+	import fe.unit.motor.WalkMotor_Definition;
+	import fe.util.Calc;
+	import fe.weapon.WThrow;
+	import fe.weapon.Weapon;
+
+	// Raiders, and the families built on them: slavers, zebras, rangers, Enclave soldiers and griffon mercenaries
 	public class UnitRaider extends UnitPon {
-		
-		protected var animFrame:int=0;
-		public var parentId:String;
-		public var kolTrs:int=0;		//количество разновидностей
-		public var tr:int=1;
-		private var weap:String;
-		public var walker:Boolean=false;	//имеет анимацию ходьбы
-		public var mostLaz:Boolean=true;	//залезает по лестницам
-		public var flyer:Boolean;		//летает
-		public var sniper:Boolean;		//стреляет только если видит цель
-		public var fearGrenade:Boolean=true;//убегает от гранат
-		public var stroll:Boolean=true;		//патрулирует в спокойном состоянии
-		public var moving:Boolean=true;		//двигается
-		public var quiet:Boolean=false;		//молчит
-		public var allLink:Boolean=false;	//одупляются все разом
-		public var kol_emit:int=0;
-		public var grenader:int=0;			//имеет гранаты
-		public var isDropArm:Boolean=true;	//роняет оружие
-		public var enclWeap:Boolean=false;	//имеет оружие анклава
-		public var wPos:Array;
-		public var tupizna:int=40;		//сколько времени тупит
-		public var durak:Boolean=true;	//бегает как идиот
-		public var dash:Boolean=false;	//выполняет атаку рывком
-		public var scrAlarmOn:Boolean=true;
-		public var controlOn:Boolean=true;
-		protected var visionMult:Number=1;
-		private var baseDexter:Number=1;
-		
-		public var dropW:String;
-		public var dropWeapon:Weapon;
 
-		private var spd:Object;
-		private var floatX:Number=1, floatY:Number=0;
+		// How the unit fights (attackerType), picked from its weapon
+		private static const UNARMED:int				= 0;		// Rams with its body
+		private static const MELEE:int					= 1;		// Swings a levitated melee weapon
+		private static const GUNNER:int					= 2;
+		private static const GRENADIER:int				= 3;
 
-		private var aiLaz:int=0;
-		private var aiJump:int=0;	
-		protected var aiAttack:int=0, attackerType:int=0;	//0-без оружия, 1-хол.оруж., 2-пальба
-		protected var aiAttackT:int=0, aiAttackOch:int=0;	//стрельба очередью
-		private var aiDist:int=1000; //минимальная дистанция
-		private var stalkDist:int=500;	//дистанция преследования в полёте
-		private var aiVKurse:Boolean=false;
-		private var celUnit2:Unit, t_chCel:int=0;
-		private var emit_t:int=0;
-		private var t_laz:int=0;	//прошло времени с начала лазения
-		private var r_laz:int=0;	//изменений направления лазения
-		private var t_landing:int=0, t_float:Number=Math.random(), t_fall:int=0, t_turn:int=0;
-		private var tstor:int=1;
-		private var plusObservOk:Boolean=false;
-		protected var plusObserv:int=0;
-		
-		// Constructor
-		public function UnitRaider(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
-			
-			super(cid, ndif, xml, loadObj);
-			
-			//определить разновидность tr
-			if (parentId == null) {
-				parentId = 'raider';
+		private static const WALKER_SPEED:Number		= 2.5;		// walkSpeed of raiders with a walking animation
+		private static const SIT_SPEED:Number			= 0.5;		// Speeds as multiples of the speed in the unit's data
+		private static const CLIMB_SPEED:Number			= 1.1;
+		private static const RUN_SPEED:Number			= 2.0;
+		private static const PATROL_ACCEL:Number		= 1.0 / 3.0;
+		private static const TURN_DELAY_GROUND:int		= 5;		// Ticks between turns on the ground
+		private static const TURN_DELAY_AIR:int			= 30;		// Ticks between turns off the ground
+		private static const JUMP_BOOST:Number			= 2.0;
+		private static const WALL_GIVE_UP:Number		= 0.1;
+		private static const FLY_DODGE:Number			= 1.5;
+		private static const CHATTER_CHANCE:Number		= 0.001;
+		private static const ALERT_VISION:Number		= 1.5;		// Vision while alert, as a multiple of the calm vision
+		private static const TARGET_MEMORY:int			= 6;
+		private static const DRIFT_INTERVAL:int			= 5;
+		private static const LEVIT_WAKE_SHOCK:int		= 45;
+		private static const WAKE_RADIUS:Number			= 500.0;	// Allies woken when the unit turns on its target or is hurt
+		private static const ALLIED_WAKE_RADIUS:Number	= 2000.0;	// The same for units with allLink
+		private static const SMART_REAIM:Number			= 0.9;		// Chance to turn toward a target off to the side, durak or not
+		private static const DURAK_REAIM:Number			= 0.5;
+		private static const SURPRISE_SPREAD:int		= 19;		// The surprise lasts tupizna to tupizna + this, a quarter of tupizna up close
+		private static const CHARGE_SPEED:Number		= 1.5;		// Chasing speed of body attackers, as a fraction of runSpeed
+		private static const DASH_CHANCE:Number			= 0.3;
+
+		// Gunners stand and shoot at a target seen within the last couple of looks inside aiDist, and leap back from one too close
+		private static const HOLD_CHANCE:Number			= 0.7;
+		private static const HOLD_ALERT_MARGIN:int		= 8;
+		private static const BACK_OFF_RANGE:Number		= 200.0;
+		private static const BACK_OFF_CHANCE:Number		= 0.6;
+
+		// Melee fighters stand and swing while the target is inside their reach band
+		private static const SWING_RANGE_MIN:Number		= 50.0;
+		private static const SWING_RANGE_MAX:Number		= 100.0;
+		private static const SWING_HEIGHT:Number		= 80.0;
+		private static const SWING_HOLD_MIN:int			= 10;		// Ticks a melee fighter that doesn't move holds before deciding again
+		private static const SWING_HOLD_MAX:int			= 19;
+		private static const SWING_REACH:Number			= 120.0;	// The weapon reaches this far side to side
+		private static const SWING_REACH_UP:Number		= 8.0;		// And this many times its rapid up and down
+		private static const SWING_CHANCE:Number		= 0.3;
+
+		private static const RAM_SLOW_SPEED:Number		= 8.0;		// A ram at or below this speed hits at RAM_SLOW_FACTOR
+		private static const RAM_SLOW_FACTOR:Number		= 0.5;
+		private static const BUMP_CHANCE:Number			= 0.1;		// Armed raiders now and then shove a target they touch
+		private static const BUMP_RANGE:Number			= 100.0;
+		private static const BUMP_STRENGTH:Number		= 0.5;
+		private static const THROW_CHANCE:Number		= 0.02;
+
+		// Dangers: grenades in sight, and mines the player is levitating
+		private static const GRENADE_CHECK:int			= 10;		// Ticks between looks for grenades
+		private static const GRENADE_CHECK_CHANCE:Number	= 0.2;
+		private static const GRENADE_REPLIC_HASTE:int	= 20;		// How much sooner the unit may speak again after shouting about a grenade
+		private static const MINE_CHECK:int				= 30;		// Ticks between looks for levitated mines
+		private static const MINE_FLEE_RANGE:Number		= 400.0;
+		private static const MINE_SUSPICION:int			= 8;		// aiSpok after seeing the player levitate something other than a mine
+		private static const FLEE_TIME_MIN:int			= 20;
+		private static const FLEE_TIME_MAX:int			= 84;
+		private static const FLEE_SLACK:Number			= 30.0;		// A danger closer than this side to side doesn't decide the way to run
+
+		private static const EMIT_COOLDOWN:int			= 300;		// Ticks between released vortices
+		private static const BURST_MAGAZINE:int			= 10;		// Weapons with bigger magazines fire in bursts of half a magazine
+		private static const ANTIPREC_DAMAGE:Number		= 0.8;		// Damage of weapons with antiprec in raider hands
+		private static const DEATH_THROWS:int			= 3;		// Explosives a dying grenadier lets go of
+		private static const DROP_SCATTER:Number		= 15.0;
+		private static const VOLUME_FALLOFF:Number		= 8000.0;	// Distance over which the unit's sounds fade out
+		private static const ACID_WEAR:Number			= 0.5;
+
+		private var weap:String;					// ID of the weapon the unit was given, saved with it
+		private var aiDist:int			= 1000;		// Gunners stand and shoot at targets inside this range
+		private var stalkDist:int		= 500;		// Fliers hover once within this distance of the player
+		private var aiAttackOch:int		= 0;		// Shots per burst, 0 for single shots
+		private var emit_t:int			= 0;		// Ticks until the next vortex may be released
+		private var plusObservOk:Boolean	= false;
+		private var brainDefinition:Brain_Definition		= new Brain_Definition();
+		private var walkDefinition:WalkMotor_Definition		= new WalkMotor_Definition();
+		private var flyDefinition:FlyMotor_Definition		= new FlyMotor_Definition();
+		private var ramDefinition:BodyAttack_Definition		= new BodyAttack_Definition();
+		private var bumpDefinition:BodyAttack_Definition	= new BodyAttack_Definition();
+
+		// Settings a subclass may change before calling this constructor
+		protected var parentId:String;				// The family, such as "raider"; the unit's id is this plus its variant number
+		protected var kolTrs:int		= 0;		// Variants in the family
+		protected var flyer:Boolean		= false;	// Can fly
+		protected var tupizna:int		= 40;		// Ticks a gunner stands surprised on seeing its target, a quarter of that for close fighters
+		protected var durak:Boolean		= true;		// Runs about while alert instead of walking and taking aim
+		protected var dash:Boolean		= false;	// Sometimes dashes at its target
+		protected var allLink:Boolean	= false;	// Wakes allies further away
+		protected var visionMult:Number	= 1.0;		// Vision while calm, raised by ALERT_VISION while alert
+
+		// Settings from the unit's data, which a subclass may change after calling this constructor
+		protected var walker:Boolean	= false;	// Has a walking animation, used while calm or holding
+		protected var sniper:Boolean	= false;	// Fires bursts only at a target in sight
+		protected var fearGrenade:Boolean	= true;	// Runs from grenades
+		protected var stroll:Boolean	= true;		// Wanders while calm
+		protected var moving:Boolean	= true;		// Leaves its post to chase
+		protected var quiet:Boolean		= false;	// Doesn't talk to itself while calm
+		protected var kol_emit:int		= 0;		// Vortices left to release on seeing the target
+		protected var grenader:int		= 0;		// Grenades carried as a second weapon
+		protected var isDropArm:Boolean	= true;		// Drops its weapon on death
+		protected var enclWeap:Boolean	= false;	// Holds an Enclave weapon
+		protected var dropW:String;					// Explosive dropped on death
+		protected var dropWeapon:Weapon;
+		protected var scrAlarmOn:Boolean	= true;	// The map's alarm script still starts on first sight
+		protected var plusObserv:int	= 0;		// Observation gained once alarmed
+		protected var wPos:Array;					// Weapon offsets per animation frame
+		protected var attackerType:int	= 0;
+		protected var gunDefinition:GunAttack_Definition		= new GunAttack_Definition();
+		protected var animatorDefinition:Animator_Definition	= new Animator_Definition();
+
+		// Whether the unit is in a state it attacks in
+		protected function isAttacking():Boolean {
+			return aiState == AIState.CHASE || aiState == AIState.HOLD || aiState == AIState.FLEE || aiState == AIState.DASH;
+		}
+
+		private function isCalm():Boolean {
+			return aiState == AIState.IDLE || aiState == AIState.PATROL;
+		}
+
+		// Tune the brain, motor and attacks for how the unit fights
+		private function arm():void {
+			var isUnarmed:Boolean = attackerType == UNARMED;
+
+			if (attackerType >= GUNNER) {
+				brainDefinition.surpriseTimeMin = tupizna;
 			}
-			
+			else {
+				brainDefinition.surpriseTimeMin = int(tupizna * 0.25);
+			}
+
+			brainDefinition.surpriseTimeMax = brainDefinition.surpriseTimeMin + SURPRISE_SPREAD;
+			brainDefinition.runsWhenAlert = !flyer && durak;
+			brainDefinition.runsOnceSeen = !flyer && isUnarmed;
+			brainDefinition.chaseSpeed = isUnarmed ? CHARGE_SPEED : 1.0;
+			flyDefinition.stalkDistance = isUnarmed ? 0.0 : stalkDist;
+
+			if (attackerType == GUNNER) {
+				brainDefinition.holdChance = HOLD_CHANCE;
+				brainDefinition.holdRange = aiDist;
+				brainDefinition.holdAlertMargin = HOLD_ALERT_MARGIN;
+				brainDefinition.backOffRange = BACK_OFF_RANGE;
+				brainDefinition.backOffChance = BACK_OFF_CHANCE;
+				walkDefinition.backpedals = weaponKrep;
+			}
+
+			if (attackerType == MELEE) {
+				brainDefinition.holdTimeMin = SWING_HOLD_MIN;
+				brainDefinition.holdTimeMax = SWING_HOLD_MAX;
+				brainDefinition.closeHoldChance = 1.0;
+				brainDefinition.closeRangeXMin = SWING_RANGE_MIN;
+				brainDefinition.closeRangeX = SWING_RANGE_MAX;
+				brainDefinition.closeRangeAbove = SWING_HEIGHT;
+				brainDefinition.closeRangeBelow = SWING_HEIGHT;
+				brainDefinition.closeHoldTimeMin = brainDefinition.alertTimeMin;
+				brainDefinition.closeHoldTimeMax = brainDefinition.alertTimeMax;
+				brainDefinition.closeHoldSearching = false;
+				brainDefinition.closeHoldReleases = true;
+			}
+
+			// Body attackers ram in every fight; everyone else rams only when dashing, and shoves now and then
+			ramDefinition.whileChasing = isUnarmed;
+			ramDefinition.whileHolding = isUnarmed;
+			ramDefinition.whileFleeing = isUnarmed;
+			bumpDefinition.whileChasing = !isUnarmed;
+			bumpDefinition.whileHolding = !isUnarmed;
+			bumpDefinition.whileFleeing = !isUnarmed;
+		}
+
+		private function addAttacks():void {
+			var swingDefinition:WeaponAttack_Definition = new WeaponAttack_Definition();
+			var throwDefinition:WeaponAttack_Definition = new WeaponAttack_Definition();
+
+			ramDefinition.rangeX = 0.0;
+			ramDefinition.rangeY = 0.0;
+			ramDefinition.slowSpeed = RAM_SLOW_SPEED;
+			ramDefinition.slowFactor = RAM_SLOW_FACTOR;
+			ramDefinition.whileDashing = true;
+			attacks.push(new BodyAttack(this, ramDefinition));
+
+			bumpDefinition.chance = BUMP_CHANCE;
+			bumpDefinition.rangeX = (attackerType == MELEE) ? 0.0 : BUMP_RANGE;
+			bumpDefinition.rangeY = bumpDefinition.rangeX;
+			bumpDefinition.strength = (attackerType == GRENADIER) ? 1.0 : BUMP_STRENGTH;
+			bumpDefinition.shockedStrength = bumpDefinition.strength;
+			bumpDefinition.slowSpeed = (attackerType == GRENADIER) ? RAM_SLOW_SPEED : 0.0;
+			bumpDefinition.slowFactor = RAM_SLOW_FACTOR;
+			attacks.push(new BodyAttack(this, bumpDefinition));
+
+			if (attackerType == MELEE) {
+				swingDefinition.chance = SWING_CHANCE;
+				swingDefinition.rangeX = SWING_REACH;
+				swingDefinition.rangeY = currentWeapon.rapid * SWING_REACH_UP;
+				swingDefinition.stopsWhenShocked = true;
+				swingDefinition.whileChasing = true;
+				swingDefinition.whileFleeing = true;
+				attacks.push(new WeaponAttack(this, swingDefinition));
+			}
+
+			if (attackerType == GUNNER) {
+				gunDefinition.burst = aiAttackOch;
+				gunDefinition.isSniper = sniper;
+				attacks.push(new GunAttack(this, gunDefinition));
+			}
+
+			if (attackerType == GRENADIER) {
+				throwDefinition.chance = THROW_CHANCE;
+				throwDefinition.needsTarget = true;
+				throwDefinition.whileChasing = true;
+				throwDefinition.whileFleeing = true;
+				attacks.push(new WeaponAttack(this, throwDefinition));
+			}
+		}
+
+		private function isOutOfGrenades():Boolean {
+			var thrown:WThrow = currentWeapon as WThrow;
+
+			return thrown != null && thrown.kolAmmo <= 0;
+		}
+
+		// Run from a danger dx away to one side
+		private function flee(dx:Number):void {
+			aiState = AIState.FLEE;
+			aiSpok = maxSpok + brainDefinition.sightBonus;
+			aiTCh = Calc.intBetween(FLEE_TIME_MIN, FLEE_TIME_MAX);
+
+			if (dx > FLEE_SLACK) {
+				aiNapr = -1;
+			}
+
+			if (dx < -FLEE_SLACK) {
+				aiNapr = 1;
+			}
+		}
+
+		// The player is levitating something: run from a mine close by, shoot one further off, or just grow wary
+		private function watchLevitation():void {
+			var mine:Mine = loc.gg.teleObj as Mine;
+			var dx:Number;
+			var dy:Number;
+
+			if (mine) {
+				dx = mine.coordinates.X - coordinates.X;
+				dy = mine.coordinates.Y - coordinates.Y + boundingBox.halfHeight;
+				alarma();
+
+				if (dx * dx + dy * dy < MINE_FLEE_RANGE * MINE_FLEE_RANGE) {
+					flee(dx);
+				}
+				else {
+					if (attackerType == GUNNER) {
+						setCel(mine);
+						aiState = AIState.HOLD;
+					}
+
+					aiSpok = maxSpok + brainDefinition.sightBonus;
+					aiTCh = Calc.intBetween(FLEE_TIME_MIN, FLEE_TIME_MAX);
+				}
+			}
+			else {
+				aiSpok = MINE_SUSPICION;
+			}
+
+			replic("tele");
+		}
+
+		private function watchForDanger():void {
+			var isGrenadeCheck:Boolean = fearGrenade && loc.warning > 0 && aiTCh % GRENADE_CHECK == 1;
+
+			if (isGrenadeCheck && Math.random() < GRENADE_CHECK_CHANCE && findGrenades()) {
+				t_replic -= GRENADE_REPLIC_HASTE;
+				replic("grenade");
+				flee(acelX - coordinates.X);
+			}
+
+			if (aiTCh % MINE_CHECK == 1 && levit == 0 && celUnit != loc.gg && findLevit()) {
+				watchLevitation();
+			}
+		}
+
+		// Aim just around its own feet, for dropping explosives on death
+		private function aimAtFeet():void {
+			var x:Number = coordinates.X + Calc.floatBetween(-DROP_SCATTER, DROP_SCATTER);
+			var y:Number = coordinates.Y - Calc.floatBetween(0.0, DROP_SCATTER);
+
+			setCel(null, x, y);
+		}
+
+		private function emit():void {
+			var vortex:Unit = loc.createUnit("vortex", coordinates.X, coordinates.Y - boundingBox.halfHeight, true);
+
+			vortex.fraction = fraction;
+			vortex.detectionDelay = 0;
+			emit_t = EMIT_COOLDOWN;
+			kol_emit--;
+		}
+
+		protected override function control():void {
+			if (emit_t > 0) {
+				emit_t--;
+			}
+
+			if (sost != 3 && brain.isOn && World.w.enemyAct > 0) {
+				watchForDanger();
+			}
+
+			super.control();
+
+			// A grenadier out of grenades fights with its body
+			if (attackerType == GRENADIER && isOutOfGrenades()) {
+				attackerType = UNARMED;
+				arm();
+			}
+		}
+
+		public var tr:int = 1;		// Variant number within the family
+
+		public function UnitRaider(cid:String = null, ndif:Number = 100.0, xml:XML = null, loadObj:Object = null) {
+			var wm:WeaponManager = WeaponManager.reference;
+			var tip:String;
+			var walkMotor:WalkMotor;
+
+			super(cid, ndif, xml, loadObj);
+
+			if (parentId == null) {
+				parentId = "raider";
+			}
+
 			if (kolTrs == 0) {
 				kolTrs = 9;
 			}
-			
-			if (cid) {						//из заданного идентификатора cid
-				tr = int(cid);
-			}
-			else {									//случайно по параметру ndif
-				tr = Math.floor(Math.random() * kolTrs + 1);
-			}
-			
-			if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr = loadObj.tr;
-			}
-			else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr = xml.@tr;
-			}
-			
-			if (!(tr > 0)) {
+
+			tr = resolveVariant(cid, xml, loadObj, Calc.intBetween(1, kolTrs));
+			if (tr <= 0) {
 				tr = 1;
 			}
-			
+
 			id = parentId + tr;
-
-			//взять параметры из xml
 			getXmlParam();
-			walkSpeed=maxSpeed;
-			
-			if (walker) {
-				walkSpeed = 2.5;
-			}
-			
-			plavSpeed=maxSpeed;
-			sitSpeed=maxSpeed*0.5;
-			lazSpeed=maxSpeed*1.1;
-			runSpeed=maxSpeed*2;
-			plavdy=accel;
-			baseDexter=dexter;
+			walkSpeed = walker ? WALKER_SPEED : maxSpeed;
+			plavSpeed = maxSpeed;
+			sitSpeed = maxSpeed * SIT_SPEED;
+			lazSpeed = maxSpeed * CLIMB_SPEED;
+			runSpeed = maxSpeed * RUN_SPEED;
+			plavdy = accel;
 
-			//дать оружие
-			var wm:WeaponManager = WeaponManager.reference;
+			// The weapon comes from the save, then the map, then the unit's data
 			if (loadObj && loadObj.weap) {
 				if (loadObj.weap != "") {
 					currentWeapon = wm.cloneWeapon(loadObj.weap);
 				}
 			}
-			else if (xml && xml.@weap.length()) {
+			else if (xml && xml.@weap.length() > 0) {
 				if (xml.@weap != "") {
-					currentWeapon = wm.cloneWeapon(xml.@weap);
+					currentWeapon = wm.cloneWeapon(String(xml.@weap));
 				}
 			}
 			else {
 				currentWeapon = getXmlWeapon(ndif);
 			}
-			
+
+			weap = "";
 			if (currentWeapon) {
 				wm.setOwner(currentWeapon, this);
 				weap = currentWeapon.id;
-			}
-			else {
-				weap = "";
-			}
-			
-			if (currentWeapon) {
-				childObjs=new Array(currentWeapon);
+				childObjs = [currentWeapon];
 				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
-				
+
 				if (currentWeapon.antiprec > 0) {
-					currentWeapon.damage *= 0.80;
+					currentWeapon.damage *= ANTIPREC_DAMAGE;
 				}
 			}
 
-			if (xml && xml.@emit.length()) {
-				kol_emit=xml.@emit;
+			if (xml && xml.@emit.length() > 0) {
+				kol_emit = int(xml.@emit);
 			}
-			
-			if (xml && xml.@nodrop.length()) {
+
+			if (xml && xml.@nodrop.length() > 0) {
 				isDropArm = false;
 			}
-			
+
 			if (dropW != null) {
-				dropWeapon = WeaponManager.reference.cloneWeapon(dropW);
-				WeaponManager.reference.setOwner(dropWeapon, this);
+				dropWeapon = wm.cloneWeapon(dropW);
+				wm.setOwner(dropWeapon, this);
 				dropWeapon.vis.visible = false;
-				dropWeapon.vis.alpha = 0;
+				dropWeapon.vis.alpha = 0.0;
 				childObjs.push(dropWeapon);
 			}
 
-			if (currentWeapon && currentWeapon.magazineCapacity > 10 && aiAttackOch == 0) {
-				aiAttackOch = Math.round(currentWeapon.magazineCapacity * 0.50);
+			if (currentWeapon && currentWeapon.magazineCapacity > BURST_MAGAZINE && aiAttackOch == 0) {
+				aiAttackOch = int(Math.round(currentWeapon.magazineCapacity * 0.5));
 			}
 
 			initBlit();
-			animState = 'stay';
-			
-			if (teleColor) {
-				teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
+			animState = "stay";
+
+			if (teleColor != 0) {
+				teleFilter = new GlowFilter(teleColor, 1.0, 6.0, 6.0, 1.0, 3);
 			}
 
-			if (aiTip == 'stay') {
+			if (aiTip == "stay") {
 				stroll = false;
 			}
-			
-			if (aiTip == 'quiet') {
+
+			if (aiTip == "quiet") {
 				stroll = false;
 				quiet = true;
 			}
-			
-			if (aiTip == 'sniper') {
+
+			if (aiTip == "sniper") {
 				stroll = false;
 				moving = false;
-				weaponSkill = 2;
+				weaponSkill = 2.0;
 			}
-			
-			if (xml && xml.@fraction.length()) {
-				fraction = xml.@fraction;
-				if (fraction==F_PLAYER) {
+
+			if (xml && xml.@fraction.length() > 0) {
+				fraction = int(xml.@fraction);
+				if (fraction == F_PLAYER) {
 					warn = 0;
 				}
 			}
 
 			weaponLevit();
-			var headArr:Array = [{x: 100, y: 100, r: 10}];
-			aiNapr=storona;
 
-			if (!currentWeapon || (currentWeapon.tip == Weapon.TYPE_INTERNAL || currentWeapon.tip == Weapon.TYPE_MELEE) && weaponKrep) {
-				attackerType = 0;	// [body attack]
+			// Units with nothing, or a melee weapon held in their teeth, ram with their body
+			tip = currentWeapon ? currentWeapon.tip : Weapon.TYPE_INTERNAL;
+			if ((tip == Weapon.TYPE_INTERNAL || tip == Weapon.TYPE_MELEE) && (weaponKrep || !currentWeapon)) {
+				attackerType = UNARMED;
 			}
-			else if (currentWeapon.tip == Weapon.TYPE_MELEE && !weaponKrep) {
-				attackerType = 1;	// [melee weapon attack]
+			else if (tip == Weapon.TYPE_MELEE) {
+				attackerType = MELEE;
 			}
-			else if (currentWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
-				attackerType = 3;	// [grenades]
+			else if (tip == Weapon.TYPE_EXPLOSIVES) {
+				attackerType = GRENADIER;
 			}
 			else {
-				attackerType = 2;	// [firing]
+				attackerType = GUNNER;
 			}
 
-			if (attackerType <= 0) {
-				stalkDist = 0;
-			}
-
-			acidDey = 0.50;
-			spd = new Object();
-			tstor = storona;
-
-			if (msex) {
-				wPos = AnimationSet.getWeaponOffset("wPosRaider1");
-			}
-			else {
-				wPos = AnimationSet.getWeaponOffset("wPosRaider2");
-			}
+			acidDey = ACID_WEAR;
+			wPos = AnimationSet.getWeaponOffset(msex ? "wPosRaider1" : "wPosRaider2");
 
 			if (!msex) {
-				id_name += '_f';
+				id_name += "_f";
 			}
 
-			if (sndDie == 'rm' && !msex) {
-				sndDie = 'rw';
+			if (sndDie == "rm" && !msex) {
+				sndDie = "rw";
 			}
+
+			brainDefinition.stroll = stroll;
+			brainDefinition.chatterChance = quiet ? 0.0 : CHATTER_CHANCE;
+			brainDefinition.turnsWhenSurprised = false;
+			brainDefinition.chasesOnSight = false;
+			brainDefinition.wakeRadius = allLink ? ALLIED_WAKE_RADIUS : WAKE_RADIUS;
+			brainDefinition.moves = moving;
+			brainDefinition.dropsInAnyState = true;
+			brainDefinition.freezesAimInAir = true;
+			brainDefinition.calmVision = visionMult;
+			brainDefinition.alertVision = visionMult * ALERT_VISION;
+			brainDefinition.looksBehindWhenAlert = true;
+			brainDefinition.targetMemory = TARGET_MEMORY;
+			brainDefinition.driftInterval = DRIFT_INTERVAL;
+			brainDefinition.driftsVertically = true;
+			brainDefinition.doubtsNoises = true;
+			brainDefinition.reaimChance = durak ? DURAK_REAIM : SMART_REAIM;
+			brainDefinition.levitWakeShock = LEVIT_WAKE_SHOCK;
+			brainDefinition.levitHoldShock = 0;
+			brainDefinition.dashChance = dash ? DASH_CHANCE : 0.0;
+
+			walkDefinition.patrolAccel = PATROL_ACCEL;
+			walkDefinition.staysPut = !moving;
+			walkDefinition.turnDelayGround = TURN_DELAY_GROUND;
+			walkDefinition.turnDelayAir = TURN_DELAY_AIR;
+			walkDefinition.idleFacesMotion = true;
+			walkDefinition.wallGiveUpChance = WALL_GIVE_UP;
+			walkDefinition.opensDoors = true;
+			walkDefinition.jumpBoost = JUMP_BOOST;
+			walkDefinition.climbsLadders = !flyer;
+			flyDefinition.dodge = FLY_DODGE;
+
+			arm();
+			addAttacks();
+
+			brain = new Brain(this, brainDefinition);
+			walkMotor = new WalkMotor(this, walkDefinition);
+			motor = flyer ? new FlyMotor(this, flyDefinition, walkMotor) : walkMotor;
+
+			animatorDefinition.trot = "trot";
+			animatorDefinition.walkStep = 1;
+			animatorDefinition.trotStep = 1;
+			animatorDefinition.runStep = 2;
+			animatorDefinition.climb = "laz";
+			animatorDefinition.climbStill = "laz";
+			animatorDefinition.climbStep = 3;
+			animatorDefinition.levitate = "derg";
+			animatorDefinition.swim = "plav";
+			animator = new Animator(this, animatorDefinition);
 		}
 
-		public override function getXmlParam(mid:String=null):void {
+		public override function getXmlParam(mid:String = null):void {
+			var node0:XML;
+			var un:XMLList;
+
 			super.getXmlParam(parentId);
 			super.getXmlParam();
-			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
-			
-			if (node0.vis.length()) {
-				if (node0.vis.@telecolor.length()) teleColor=node0.vis.@telecolor;
+			node0 = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+
+			if (node0.vis.length() > 0 && node0.vis.@telecolor.length() > 0) {
+				teleColor = uint(node0.vis.@telecolor);
 			}
 
-			if (node0.un.length()) {
-				if (node0.un.@flyer.length()) {
-					flyer=true;
-					mostLaz=false;
-				}
-			
-				if (node0.un.@och.length()) aiAttackOch=node0.un.@och;		//стрельба очередью
-			
-				if (node0.un.@dist.length()) aiDist=node0.un.@dist;		//минимальная дистанция
-			
-				if (node0.un.@stalk.length()) stalkDist=node0.un.@stalk;		//дистанция преследования в полёте
-			
-				if (node0.un.@walker.length()) walker=true;
-			
-				if (node0.un.@sniper.length()) sniper=true;
-			
-				if (node0.un.@gren.length()) fearGrenade=false;
-			
-				if (node0.un.@grenader.length()) grenader=node0.un.@grenader;
-			
-				if (node0.un.@drop.length()) dropW=node0.un.@drop;
-			
-				if (node0.un.@stay.length()) stroll=false;
-			
-				if (node0.un.@enclweap.length()) enclWeap=true;
+			un = node0.un;
+			if (un.length() == 0) { return; }
+
+			if (un.@flyer.length() > 0) {
+				flyer = true;
 			}
-		}
-		
-		//сделать героем
-		public override function setHero(nhero:int=1):void {
-			super.setHero(nhero);
+
+			if (un.@och.length() > 0) {
+				aiAttackOch = int(un.@och);
+			}
+
+			if (un.@dist.length() > 0) {
+				aiDist = int(un.@dist);
+			}
+
+			if (un.@stalk.length() > 0) {
+				stalkDist = int(un.@stalk);
+			}
+
+			if (un.@walker.length() > 0) {
+				walker = true;
+			}
+
+			if (un.@sniper.length() > 0) {
+				sniper = true;
+			}
+
+			if (un.@gren.length() > 0) {
+				fearGrenade = false;
+			}
+
+			if (un.@grenader.length() > 0) {
+				grenader = int(un.@grenader);
+			}
+
+			if (un.@drop.length() > 0) {
+				dropW = String(un.@drop);
+			}
+
+			if (un.@stay.length() > 0) {
+				stroll = false;
+			}
+
+			if (un.@enclweap.length() > 0) {
+				enclWeap = true;
+			}
 		}
 
 		public override function save():Object {
-			var obj:Object=super.save();
-			
-			if (obj==null) {
-				obj=new Object();
+			var obj:Object = super.save();
+
+			if (obj == null) {
+				obj = {};
 			}
-			
-			obj.tr=tr;
-			obj.weap=weap;
-			
+
+			obj.tr = tr;
+			obj.weap = weap;
+
 			return obj;
-		}	
-		
+		}
+
 		public override function setWeaponPos(tip:String = "internal"):void {
+			var obj:Object;
+
 			super.setWeaponPos(tip);
-		
+
 			if (!enclWeap && (tip == Weapon.TYPE_MELEE || tip == Weapon.TYPE_LIGHTGUN || tip == Weapon.TYPE_EXPLOSIVES)) {
-				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-				weaponX = coordinates.X + (obj.x+visBmp.x)*storona;
-				weaponY = coordinates.Y + obj.y+visBmp.y;
-				weaponR=obj.r;
+				obj = wPos[anims[animState].id][int(anims[animState].f)];
+				weaponX = coordinates.X + (obj.x + visBmp.x) * storona;
+				weaponY = coordinates.Y + obj.y + visBmp.y;
+				weaponR = obj.r;
 			}
 		}
-		
-		public override function animate():void {
-			var cframe:int;
-			//поворот
-			if (sost==2 || sost==3) { //сдох
-				if (stay) {
-					if (animState=='fall') {
-						// Do nothing
-					}
-					else if (animState=='death') {
-						animState='fall';
-					}
-					else {
-						animState='die';
-					}
-				}
-				else {
-					animState='death';
-				}
-			}
-			else {
-				if (stay) {
-					if  (velocity.X == 0 || aiState == 7) {
-						animState = 'stay';
-					}
-					else if (attackerType == 0 && aiAttack || aiState == 8) {
-						animState = 'run';
-						sndStep(anims[animState].f,2);
-					}
-					else if (walker && (aiState<=1 || aiState==4)) {
-						animState='walk';
-						sndStep(anims[animState].f,1);
-					}
-					else {
-						animState='trot';
-						sndStep(anims[animState].f,1);
-					}
-				}
-				else if (flyer) {
-					if  (isFly) animState='derg';
-					else animState='stay';
-				}
-				else if (levit) {
-					animState='derg';
-				}
-				else if (isLaz && mostLaz) {
-					animState='laz';
-					sndStep(anims[animState].f,3);
-				}
-				else if (aiPlav) {
-					animState='plav';
-				}
-				else {
-					animState='jump';
-					// Commented out, there is no setStab function
-					//anims[animState].setStab((dy*0.6+8)/16);
-				}
-			}
-			
-			if (animState!=animState2) {
-				anims[animState].restart();
-				animState2=animState;
-			}
-			
-			if (!anims[animState].st) {
-				blit(anims[animState].id, anims[animState].f);
-			}
-			
-			anims[animState].step();
+
+		// Ground animations go by what the unit is doing rather than how fast it moves
+		public override function animOverride():String {
+			if (sost == 2 || sost == 3 || !stay) { return ""; }
+			if (velocity.X == 0 || aiState == AIState.DASH_PREP) { return animatorDefinition.stand; }
+			if (attackerType == UNARMED && isAttacking() || aiState == AIState.DASH) { return animatorDefinition.run; }
+			if (walker && (isCalm() || aiState == AIState.HOLD)) { return animatorDefinition.walk; }
+
+			return animatorDefinition.trot;
 		}
-		
-		
-		public override function alarma(nx:Number=-1,ny:Number=-1):void {
-			if (sost==1 && aiState<=1) {
-				super.alarma(nx,ny);
-				aiSpok=maxSpok+10;
-				aiState=3;
-				shok = int(Math.random()*15+5);
-				areaTestTip='raider';
-				if (!plusObservOk) {
-					observ+=plusObserv;
-					plusObservOk=true;
-				}
+
+		public override function alarma(nx:Number = -1, ny:Number = -1):void {
+			if (sost != 1 || !isCalm()) { return; }
+
+			super.alarma(nx, ny);
+			areaTestTip = "raider";
+
+			if (!plusObservOk) {
+				observ += plusObserv;
+				plusObservOk = true;
 			}
 		}
-		
+
+		public override function onSighting():void {
+			if (scrAlarmOn && scrAlarm) {
+				scrAlarm.start();
+				scrAlarmOn = false;
+			}
+		}
+
+		public override function onSpotted():void {
+			areaTestTip = "raider";
+
+			if (kol_emit > 0 && emit_t <= 0) {
+				emit();
+			}
+		}
+
+		public override function onCalm():void {
+			areaTestTip = "";
+		}
+
 		public override function dropLoot():void {
+			var i:int;
+
 			super.dropLoot();
-			
+
 			if (currentWeapon) {
 				if (currentWeapon.vis) {
-					currentWeapon.vis.visible=false;
+					currentWeapon.vis.visible = false;
 				}
-				
+
 				if (isDropArm) {
-					LootGen.lootId(loc,currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
+					LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
 				}
 			}
-			
-			if (attackerType==3) {
-				for (var i:int = 0; i < 3; i++) {
-					setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
+
+			if (attackerType == GRENADIER) {
+				for (i = 0; i < DEATH_THROWS; i++) {
+					aimAtFeet();
 					currentWeapon.attack();
 				}
 			}
-			
+
 			if (dropWeapon) {
-				setCel(null, coordinates.X + Math.random() * 30 - 15, coordinates.Y - Math.random() * 15);
+				aimAtFeet();
 				dropWeapon.attack();
 			}
 		}
 
-		private function emit():void {
-			var un:Unit = loc.createUnit('vortex', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
-			un.fraction = fraction;
-			un.detectionDelay = 0;
-			emit_t = 300;
-			kol_emit--;
-		}
-		
 		public override function actions():void {
 			super.actions();
-			
-			if (aiPlav>0) {
-				aiPlav--;
-			}
-			
-			if (isPlav) {
-				aiPlav=10;
-			}
-			
 			rasst = Math.sqrt(rasst2);
-			volMinus = rasst / 8000;
-		}
-		
-		public override function setNull(f:Boolean=false):void {
-			super.setNull(f);
-			
-			if (f) {
-				aiState = 0;
-				aiSpok = 0;
-			}
-		}
-		
-		public function jump(v:Number=1):void {
-			aiJump = int(30+Math.random()*50);
-			
-			if (stay || isLaz) {		//прыжок
-				velocity.Y = -jumpdy * v;
-				isLaz=0;
-			}
-			
-			if (stay) {
-				if (aiNapr==-1) {
-					velocity.X *= 0.8;
-				}
-				else {
-					velocity.X += storona * accel * 2;
-				}
-			}
-			
-			if (!isPlav&&aiPlav) {
-				velocity.Y = -jumpdy * 0.6;	//выпрыгивание из воды
-			}
-			
-			if (isPlav) {
-				velocity.Y -= plavdy;
-			}
-		}
-		
-		//проверка возможности прыжка
-		private function checkJump():Boolean {
-			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).phis!=0) return false;
-			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).phis!=0) return false;
-			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).phis!=0) return false;
-			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).phis!=0) return false;
-			
-			return true;
+			volMinus = rasst / VOLUME_FALLOFF;
 		}
 
-		//aiState
-		//0 - стоит на месте
-		//1 - ходит туда-сюда
-		//2 - не видит цели, бегает и ищет цель
-		//3 - видит цель, бегает, атакует
-		//4 - стоит на месте и стреляет
-		//5 - увидел цель, тупит какое-то время
-		//6 - сматывается
-		//7 - готовится атаковать рывком
-		//8 - атакует быстрым рывком
-		
-		override protected function control():void {
-			
-			var t:Tile;
-			
-			//если сдох, то не двигаться
-			if (sost==3) return;
-			
-			if (levit) {
-				if (aiState<=1) {
-					shok=45;
-					aiState=3;
-					budilo();
-				}
-				
-				replic('levit');
-			}
-			
-			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
-			}
-			
-			t_replic--;
-			
-			if (emit_t>0) {
-				emit_t--;
-			}
-			
-			var jmp:Number=0;
+		public override function damage(dam:Number, tip:String, bul:Bullet = null, tt:Boolean = false):Number {
+			scrAlarmOn = false;
 
-			//разворот
-			if (storona!=tstor && t_turn<=0) {
-				storona=tstor;
-				
-				if (stay) {
-					t_turn=5;
-				}
-				else {
-					t_turn=30;
-				}
-				
-				if (currentWeapon && currentWeapon.drot>0) {
-					currentWeapon.rot=Math.atan2(celY-currentWeapon.coordinates.Y, Math.abs(celX-currentWeapon.coordinates.X)*storona);
-				}
-			}
-			
-			if (t_turn>0) {
-				t_turn--;
-			}
-			
-			dexter=isFly?baseDexter*1.5:baseDexter
-			
-			if (!controlOn) {
-				return;
-			}
-			
-			if (World.w.enemyAct<=0) {
-				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
-				return;
-			}
-			
-			if (aiLaz>0) {
-				aiLaz--;
-			}
-			
-			if (aiJump>0) {
-				aiJump--;
-			}
-			
-			//таймер смены состояний
-			if (aiTCh>0) {
-				aiTCh--;
-			}
-			else if (aiState==5) {
-				if (celUnit) {
-					replic('attack');
-					aiSpok=maxSpok+10;
-					if (kol_emit>0 && emit_t<=0) emit();
-					aiState=3;
-					areaTestTip='raider';
-				} else {
-					aiState=1;
-				}
-			}
-			else if (aiState==7) {
-				aiState=8;
-				aiTCh=35;
-			}
-			else {
-				if (aiSpok==0) {
-					if (aiVKurse && aiState>1) replic('vse');
-					if (stroll)	aiState=Math.floor(Math.random()*2);
-					else aiState=0;
-					areaTestTip='';
-				}
-				
-				if (aiSpok>0) aiState=2;
-				
-				if (aiSpok>=maxSpok) {
-					if (aiState!=3 && aiState!=4) {
-						if (allLink) budilo(2000);
-						else budilo();
-					}
-					
-					if (attackerType==2 && aiSpok>=maxSpok+8 && (celDX*celDX+celDY*celDY<aiDist*aiDist)) aiState=isrnd(0.3)?3:4;
-					else aiState=3;
-					
-					if (dash && isrnd(0.3) && celUnit) {
-						aiState=7;
-					}
-					
-					if (!moving) aiState=4;
-					
-					if (aiState==4) isLaz=0;
-				}
-				
-				if (aiState<=1) aiTCh=Math.floor(Math.random()*50)+40;
-				else if (attackerType==1 && aiState==4) aiTCh=Math.floor(Math.random()*10)+10;
-				else if (aiState==7) aiTCh=20;
-				else aiTCh=Math.floor(Math.random()*100)+100;
-			}
-			
-			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
-				if (findCel()) {
-					//увидели
-					if (celUnit) {
-						celUnit2=celUnit;
-						t_chCel=6;
-						
-						if (scrAlarmOn && scrAlarm) {
-							scrAlarm.start();
-							scrAlarmOn=false;
-							return;
-						}
-						
-						if (aiState<=1) {	//увидел, удивился, тупит
-							aiState=5;
-							if (attackerType>=2) aiTCh=Math.floor(Math.random()*20+tupizna);
-							else aiTCh=Math.floor(Math.random()*20+tupizna/4);
-						}
-						else {
-							replic('attack');
-							aiSpok=maxSpok+10;
-							if (kol_emit>0 && emit_t<=0) emit();
-						}
-					
-					//услышали
-					}
-					else {
-						replic('ear');
-						aiSpok=maxSpok-1;
-					}
-					
-					if (celUnit==World.w.gg) {
-						aiVKurse=true;
-					}
-				}
-				else if (t_chCel>0) {
-					t_chCel--;
-					setCel(celUnit2);
-				}
-				else {
-					if (aiSpok%5==1) setCel(null, celX+Math.random()*80-40, celY+Math.random()*80-40);
-					
-					if (aiSpok>0) {
-						aiSpok--;
-					}
-					
-					if (aiVKurse && aiSpok<maxSpok && aiSpok>0) {
-						replic('find');
-					}
-					else if (aiSpok<15 && aiSpok>0) {
-						aiSpok=0;
-						if (isrnd()) replic((hp>=maxhp)?'nope':'dont');
-					}
-				}
-			}
-			
-			//гранаты
-			if (loc.warning>0 && aiTCh%10==1 && fearGrenade && isrnd(0.2)) {
-				if (findGrenades()) {
-					t_replic-=20;
-					replic('grenade');
-					aiState=6;
-					aiSpok=maxSpok+10;
-					aiTCh=Math.floor(Math.random()*65)+20;
-					if (acelX - coordinates.X > 30) aiNapr=tstor=-1;
-					if (acelX - coordinates.X < -30) aiNapr=tstor=1;
-				}
-			}
-			
-			//поиск левитируемой мины
-			if (aiTCh%30==1 && !levit && findLevit() && celUnit!=loc.gg) {
-				if (loc.gg.teleObj && (loc.gg.teleObj is Mine)) {
-					var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
-					var gy:Number=loc.gg.teleObj.coordinates.Y - coordinates.Y + this.boundingBox.halfHeight;
-					alarma();
-					if (gx*gx+gy*gy<400*400) {
-						aiState=6;
-						if (gx>30) aiNapr=tstor=-1;
-						if (gx<-30) aiNapr=tstor=1;
-					}
-					else if (attackerType==2) {
-						setCel(loc.gg.teleObj as Mine);
-						aiState=4;
-					} 
-					aiSpok=maxSpok+10;
-					aiTCh=Math.floor(Math.random()*65)+20;
-				}
-				else {
-					aiSpok=8;
-				}
-				replic('tele');
-			}
-			
-			//направление
-			celDX = celX - coordinates.X;
-			
-			if (stay) {
-				celDY = celY - coordinates.Y + this.boundingBox.height;
-			}
-			
-			if (celDY>40) {
-				aiVNapr=1;		//вниз
-			}
-			else if(celDY<-40) {
-				aiVNapr=-1;	//прыжок
-			}
-			else {
-				aiVNapr=0;
-			}
-			
-			if (flyer && celDY<-80) {
-				isFly=true;
-			}
-			
-			porog=10;
-			
-			if (moving) throu=(celDY>80);
-			
-			if (celDY>70) porog=0;
-			
-			if (isLaz==0) tstor=aiNapr;
-			
-			//начать полёт при падении
-			if (flyer) {
-				if (stay) t_fall=0;
-				else {
-					t_fall++;
-					if (t_fall>6) isFly=true;
-				}
-				
-				if (isPlav) {
-					isFly=true;
-				}
-			}
-			
-			if (isFly) {
-				t_float+=0.0512;
-				floatX=Math.sin(t_float);
-				floatY=Math.cos(t_float)*2;
-			}
-			
-			if (isFly && aiState>1) elast=0.5;
-			else elast=0;
-
-
-			if (attackerType==1) {	//битьё на месте
-				if (aiState==3 && celUnit && celDY<80 && celDY>-80 && Math.abs(celX-coordinates.X)<(100) && Math.abs(celX-coordinates.X)>(50)) aiState=4;
-				if (aiState==4 && !(Math.abs(celX-coordinates.X)<(100) && Math.abs(celX-coordinates.X)>(50))) aiState=3;
-			} 
-			//в возбуждённом состоянии наблюдательность увеличивается
-			if (aiSpok==0) {
-				vision = visionMult;
-				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
-			}
-			else {
-				vision=1.5*visionMult;
-			}
-			
-			//поведение в воде
-			if (isPlav && aiState==0) aiState=1;
-			
-			//скорость
-			maxSpeed=walkSpeed;
-			
-			if (!flyer && (durak || (attackerType==0 && aiSpok>=maxSpok)) && (aiState==2 || aiState==3)) {
-				maxSpeed=runSpeed;
-				if (attackerType==0 && aiAttack) maxSpeed=runSpeed*1.5;
-			}
-			
-			if (aiState == 6) maxSpeed = runSpeed * 1.5;
-			
-			if (aiState == 7) maxSpeed = 0;
-			
-			if (aiState == 8) maxSpeed = runSpeed * 2.5;
-			
-			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
-			
-			//если землепони с огн.оружием, то можно бежать задом
-			if (aiState==3 && weaponKrep==1 && attackerType==2) {	
-				tstor=(celDX>0)?1:-1;
-				if (storona*aiNapr<0) maxSpeed=walkSpeed;
-			}
-			
-			//поведение при различных состояниях
-			if (aiState==0) {
-				if (stay && shX1 > 0.25 && aiNapr < 0) turnX = 1;
-				
-				if (stay && shX2 > 0.25 && aiNapr > 0) turnX = -1;
-				
-				if (isPlav) jump();
-				
-				if (!quiet && isrnd(0.001)) replic('neutral');
-				
-				if (velocity.X > 0.5) tstor = 1; 
-				
-				if (velocity.X < -0.5) tstor = -1;
-				
-				walk = 0;
-				isLaz = 0;
-				overLook = false;
-			}
-			
-			if (aiState == 1) {
-				
-				overLook = false;
-				
-				if (!quiet && isrnd(0.001)) replic('neutral');
-				
-				//бегаем туда-сюда
-				isLaz = 0;
-				
-				if (isFly) {
-					//приземлиться
-					if (velocity.Y < 10) {
-						velocity.Y++;
-					}
-					
-					velocity.X *= 0.85;
-					
-					if (turnY < 0) {
-						isFly = false;
-						turnY = 0;
-					}
-				}
-				else {
-					if (moving) {
-						if (aiNapr == -1) {
-							if (velocity.X > -maxSpeed) {
-								velocity.X -= accel / 3;
-							}
-						
-							walk = -1;
-						}
-						else if (aiNapr == 1) {
-							if (velocity.X < maxSpeed) {
-								velocity.X += accel / 3;
-							}
-						
-							walk = 1;
-						}
-					}
-					
-					//поворачиваем, если впереди некуда бежать
-					if (stay && shX1>0.25 && aiNapr<0) {
-						if (isrnd(0.1)) {
-							t = loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
-							if (t.phis==1 || t.shelf) {
-								jump(0.5);
-							}
-							else turnX = 1;
-						}
-						else turnX = 1;
-					}
-					
-					if (stay && shX2 > 0.25 && aiNapr > 0) {
-						if (isrnd(0.1)) {
-							t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
-							
-							if (t.phis==1 || t.shelf) {
-								jump(0.5);
-							}
-							else {
-								turnX = -1;
-							}
-						}
-						else {
-							turnX = -1;
-						}
-					}
-					
-					//если повернули, то можем остановиться
-					if (stay && turnX!=0) {
-						if (isrnd(0.1)) aiState=0;
-						aiNapr=tstor=turnX;
-						turnX=0;
-					}
-					
-					//в воде всплываем
-					if (isPlav) {
-						jump();
-						
-						if (turnX!=0) {
-							aiNapr=tstor=turnX;
-							turnX=0;
-						}
-					}
-				}
-				//в возбуждённом или атакующем состоянии
-			}
-			else if (aiState==2 || aiState==3 || aiState==6 || aiState==8) {
-				overLook=true;
-				
-				//определить, куда двигаться
-				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;	
-				
-				if (aiTCh%15==1 && aiState!=6) {
-					if (isrnd(durak?0.5:0.9)) {
-						if (celDX>100) aiNapr=tstor=1;
-						if (celDX<-100) aiNapr=tstor=-1;
-					}
-				}
-				
-				if (isPlav && isrnd(0.7)&& celDY<0) {
-					jmp=1;
-				}
-				
-				if (mostLaz && aiState<6) {
-					if (isLaz==0 && aiVNapr==-1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вверх
-						checkStairs();
-						
-						if (isLaz && isLaz!=0) aiLaz=30;
-					}
-					
-					if (isLaz==0 && aiVNapr==1 && aiLaz<=0 && t_laz<-30) {		//пытаться карабкаться вниз
-						checkStairs(2);
-						
-						if (isLaz && isLaz!=0) aiLaz=30;
-					}
-				}
-				
-				if (isLaz) {
-					if (t_laz<0) t_laz=0;
-				
-					t_laz++;
-				
-					if (celY < coordinates.Y && r_laz <= 0) {
-						r_laz=-1;
-				
-						if (velocity.Y > -lazSpeed) {
-							velocity.Y -= lazSpeed / 3;
-						}
-						else {
-							velocity.Y = -lazSpeed;
-						}
-						
-						checkStairs();
-					}
-					else if (aiVNapr == 1 && r_laz >= 0) {
-						
-						r_laz = 1;
-						
-						if (velocity.Y < lazSpeed) {
-							velocity.Y += lazSpeed / 3;
-						}
-						else {
-							velocity.Y = lazSpeed;
-						}
-						
-						checkStairs();
-					}
-					else {
-						isLaz=0;
-						if (t_laz>20 && isrnd(0.7)) jmp=0.8;
-					}
-					
-					if (turnY!=0) {
-						isLaz=0;
-						turnY=0;
-					}
-				}
-				else {
-					if (t_laz > 0) {
-						t_laz = 0;
-					}
-					t_laz--;
-					r_laz=0;
-				}
-
-				if (levit) {
-					if (aiNapr == -1) {
-						if (velocity.X > -maxSpeed) {
-							velocity.X -= levitaccel;
-						}
-					}
-					else {
-						if (velocity.X < maxSpeed) {
-							velocity.X += levitaccel;
-						}
-					}
-				}
-				else if (isFly) {
-					if (celUnit && rasst2<stalkDist*stalkDist) {
-						velocity.multiply(0.85);
-						velocity.X += floatX;
-						velocity.Y += floatY;
-					}
-					else {
-						spd.x = celX - coordinates.X;
-						spd.y = celY-(coordinates.Y - this.boundingBox.halfHeight);
-						
-						//дематериализоваться
-						if (turnX != 0) {
-							spd.x = 0;
-							tstor = turnX;
-							if (celUnit==null) {
-								setCel(null, coordinates.X + (Math.random() * 100 + 50) * turnX, celY);
-							}
-							turnX = 0;
-						}
-						
-						if (turnY != 0) {
-							spd.y = 0;
-						}
-						
-						norma(spd, Math.min(accel, accel * (celDX * celDX + celDY * celDY) / 10000));
-						velocity.X += spd.x + floatX;
-						velocity.Y += spd.y + floatY;
-					}
-					//приземлиться
-					if (turnY<0) {
-						if (t_landing>20) {
-							t_landing=0;
-							isFly=false;
-							turnY=0;
-						}
-						else {
-							t_landing++;
-						}
-					}
-					
-					turnX=turnY=t_fall=0;
-				}
-				else if (stay || isPlav) {
-					if (moving || Math.abs(coordinates.X - begX) > 20 || Math.abs(coordinates.Y - begY) > 20) {
-						if (aiNapr==-1) {
-							if (velocity.X > -maxSpeed) {
-								velocity.X -= accel;
-							}
-							
-							walk = -1;
-						}
-						else {
-							if (velocity.X < maxSpeed) {
-								velocity.X += accel;
-							}
-							
-							walk = 1;
-						}
-					}
-				}
-				else {
-					if (aiNapr==-1) {
-						if (velocity.X > -maxSpeed) {
-							velocity.X -= accel / 4;
-						}
-					}
-					else  if (aiNapr==1){
-						if (velocity.X < maxSpeed) {
-							velocity.X += accel / 4;
-						}
-					}
-				}
-				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
-				if (turnX!=0) {
-					if (pumpObj && pumpObj.door) {		//наткнулся на дверь, открыть
-						if (pumpObj.lock<=0 && pumpObj.active && pumpObj.action==1 && pumpObj.lockTip!=4) {
-							pumpObj.open = true;
-							trace('Raider opening door.');
-							pumpObj.setDoor();
-						}
-					}
-					
-					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
-						aiNapr=tstor=turnX;
-						aiTTurn = int(Math.random()*20)+5;
-					}
-					else {							//попытаться перепрыгнуть, если цель спереди
-						aiTTurn--;
-						if (isrnd(0.1) || turnY>0 || celDY>100 || !checkJump()) aiTTurn-=10;
-						else jmp=1;
-						if (aiTTurn<0 && stay) {
-							aiNapr=tstor=turnX;
-							aiTTurn = int(Math.random()*20)+5;
-						}
-					}
-					
-					turnX=turnY=0;
-				}
-				if (jmp>0) {
-					tstor=aiNapr;
-					jump(jmp);
-					jmp=0;
-				}
-			}
-			else if (aiState==4) {
-				walk=0;
-				aiNapr=tstor=(celX > coordinates.X)?1:-1;
-			
-				if (attackerType==2 && (celDX*celDX+celDY*celDY<200*200)) {
-					if (isrnd(0.6)) {
-						velocity.X = runSpeed * (celDX > 0? -1 : 1) * 2;
-						jump(0.4);
-					}
-				
-					aiState=3;
-				}
-			}
-			else if (aiState==7) {
-				walk=0;
-				aiNapr=tstor=(celX > coordinates.X)?1:-1;
-			}
-			
-			pumpObj=null;
-			
-			if (coordinates.Y > loc.spaceY*Tile.tileY-80) {
-				throu=false;
-			}
-			
-			if (aiState==3 || aiState==4 || aiState==6 || aiState==8) aiAttack=1;
-			else aiAttack=0;
-			
-			if (aiAttack && World.w.enemyAct>=3) {
-				attack();
+			if (sost == 1 && isCalm()) {
+				budilo(WAKE_RADIUS);
 			}
 
+			return super.damage(dam, tip, bul, tt);
 		}
-		
-		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
-			scrAlarmOn=false;
-			
-			if (sost==1) {
-				if (aiState<=1) budilo();
-			}
-			
-			return super.damage(dam, tip, bul,tt);
-		}
-		
+
+		// Firebugs and bombers sometimes shout about their trade when they attack
 		public override function replic(s:String):void {
-			if (t_replic<=0 && s=='attack') {
-				if (tr==8 && isrnd(0.3)) s='fire';
-				if (tr==9 && isrnd(0.3)) s='expl';
+			var line:String = s;
+
+			if (t_replic <= 0 && s == "attack") {
+				if (tr == 8 && isrnd(0.3)) {
+					line = "fire";
+				}
+
+				if (tr == 9 && isrnd(0.3)) {
+					line = "expl";
+				}
 			}
-			
-			super.replic(s);
+
+			super.replic(line);
 		}
-		
-		public function attack():void {
-			if ((attackerType==0 || aiState==8) && celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
-				if (attKorp(celUnit, (Math.abs(velocity.X) > 8)? 1 : 0.5)) {
-					if (aiState==8) aiTCh=5;
+
+		public override function command(com:String, val:String = null):void {
+			super.command(com, val);
+
+			if (com == "turn") {
+				if (val == "0") {
+					storona = -storona;
 				}
-			}
-			else if (attackerType==1) {		//атака холодным оружием с левитацией
-				if (Math.abs(celDX)<120 && Math.abs(celDY)<currentWeapon.rapid*8 && shok<=0 && isrnd(0.3)) currentWeapon.attack();
-				if (isrnd(0.1)) attKorp(celUnit,0.5);
-			}
-			else if (attackerType==2 && isLaz==0) {							//пальба
-				if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
-				if (levit>0) mazil=25;
-				if (levit>0 && levitAttack<1 && (levitAttack==0 || Math.random()>levitAttack)) return;	//не стрелять при левитации
-				if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
-				if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
-					if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
-					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
-					aiAttackT--;
-				}
-				if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
-			}
-			else if (attackerType==3) {		//гранаты
-				if (celUnit && isrnd(0.02)) {
-					currentWeapon.attack();
-				
-					if (currentWeapon is WThrow && (currentWeapon as WThrow).kolAmmo<=0) {
-						attackerType=0;
-					}
-				}
-				
-				if ((celDX * celDX + celDY * celDY < 10000) && isrnd(0.1)) {
-					attKorp(celUnit, (Math.abs(velocity.X) > 8)? 1 : 0.5);
-				}
-			}
-		}
-		
-		public override function command(com:String, val:String=null):void {
-			super.command(com,val);
-			if (com=='turn') {
-				if (val=='0') {
-					storona=-storona;
-				}
-				else if (val=='-1') {
-					storona=-1;
+				else if (val == "-1") {
+					storona = -1;
 				}
 				else {
-					storona=1;
+					storona = 1;
 				}
-				
-				tstor=storona;
+
+				motor.turnTo(storona);
 				setVisPos();
 			}
-			
-			if (com=='off') {
-				walk=0;
-				controlOn=false;
+
+			if (com == "off") {
+				walk = 0;
+				brain.isOn = false;
 			}
-			else if (com=='on') {
-				controlOn=true;
+			else if (com == "on") {
+				brain.isOn = true;
 			}
 		}
 	}

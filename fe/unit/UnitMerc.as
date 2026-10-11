@@ -1,38 +1,58 @@
 package fe.unit {
 	
-	import fe.*;
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
+	import fe.unit.attack.SideWeaponAttack;
+	import fe.unit.attack.SideWeaponAttack_Definition;
 	import fe.weapon.Weapon;
 	import fe.weapon.WThrow;
+	import fe.SymbolFactory;
+	import fe.WeaponManager;
+	import fe.World;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
-	
+
+	// Griffon mercenaries: flying gunners with a far arm that holds the weapon, some with grenades
 	public class UnitMerc extends UnitRaider {
-		
+
+		private static const GRENADE_CHANCE:Number = 0.5;		// Chance a grenade that is due is thrown
+
 		private var arm:MovieClip;
-		private var thWeapon:Weapon;
-		private var t_gren:int=Math.round(Math.random()*150+50);
-		
-		// Constructor
-		public function UnitMerc(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			parentId='merc';
-			flyer=true;
-			kolTrs=1;
+
+		public function UnitMerc(cid:String = null, ndif:Number = 100.0, xml:XML = null, loadObj:Object = null) {
+			var grenadeDefinition:SideWeaponAttack_Definition = new SideWeaponAttack_Definition();
+			var grenades:WThrow;
+			var armClass:Class;
+
+			parentId = "merc";
+			flyer = true;
+			kolTrs = 1;
+			tupizna = 10;
+			visionMult = 1.5;
+			maxSpok = 50;
 			super(cid, ndif, xml, loadObj);
-			tupizna=10;
-			visionMult=1.5;
-			maxSpok=50;
 			wPos = AnimationSet.getWeaponOffset("wPosGriffon1");
-			var armClass:Class = SymbolFactory.fetchSymbolClass("visualGrifArm" + String(tr)) || SymbolFactory.fetchSymbolClass("visualGrifArm1");
+			armClass = SymbolFactory.fetchSymbolClass("visualGrifArm" + String(tr)) || SymbolFactory.fetchSymbolClass("visualGrifArm1");
 			arm = new armClass() as MovieClip;
-			
+
 			if (grenader > 0) {
-				thWeapon = WeaponManager.reference.cloneWeapon("mercgr");
-				WeaponManager.reference.setOwner(thWeapon, this);
-				(thWeapon as WThrow).kolAmmo=grenader;
-				childObjs.push(thWeapon);
+				grenades = WeaponManager.reference.cloneWeapon("mercgr", this) as WThrow;
+				grenades.kolAmmo = grenader;
+				childObjs.push(grenades);
+				grenadeDefinition.chance = GRENADE_CHANCE;
+				attacks.push(new SideWeaponAttack(this, grenadeDefinition, grenades, null));
 			}
+
+			// Griffons keep their aim while levitated, and their walk makes no footstep sounds
+			gunDefinition.isShakenWhenLifted = false;
+
+			animatorDefinition.trot = "walk";
+			animatorDefinition.run = "walk";
+			animatorDefinition.walkStep = 0;
+			animatorDefinition.backpedal = "walk";
+			animatorDefinition.fly = "fly";
+			animatorDefinition.levitate = "fly";
+			animatorDefinition.swim = "fly";
 		}
 		
 		public override function addVisual():void {
@@ -110,122 +130,40 @@ package fe.unit {
 			super.dropLoot();
 		}
 		
-		public override function attack():void {
-			if (!sniper) {
-				mazil = (aiState == 4) ? 5 : 16;		//стоя на месте стрельба точнее
-			}
-			
-			if (aiAttackOch == 0 && shok <= 0 && (celUnit != null && isrnd(0.10) || celUnit == null && isrnd(0.03))) {
-				currentWeapon.attack();	//стрельба одиночными
-			}
-			
-			if (aiAttackOch > 0 && (!sniper || celUnit)) {										//стрельба очередями
-				if (aiAttackT <= 0) aiAttackT = Math.round((Math.random() * 0.40 + 0.80) * aiAttackOch);
-				
-				if (aiAttackT>aiAttackOch * 0.25) {
-					currentWeapon.attack();
-				}
-				
-				aiAttackT--;
-			}
-			
-			if ((celDX * celDX + celDY * celDY < 100 * 100) && isrnd(0.10)) {
-				attKorp(celUnit, 0.50);
-			}
-			
-			if (thWeapon) {
-				t_gren--;
-				
-				if (t_gren<=0) {
-					if (celUnit && isrnd()) {
-						thWeapon.attack();
-					}
-				
-					t_gren = Math.round(Math.random() * 150 + 50);
-				}
-			}
-		}
-		
 		public override function animate():void {
-			var revers:Boolean=false;
-			//поворот
-			if (sost==2 || sost==3) { //сдох
-				if (arm) {
-					arm.visible = false;
-				}
-				
-				if (stay) {
-					if (animState == 'fall') {
-						// Do nothing
-					}
-					else if (animState == 'death') {
-						animState = 'fall';
-					}
-					else {
-						animState = 'die';
-					}
-				}
-				else {
-					animState = 'death';
-				}
-			}
-			else {
-				if (stay) {
-					if  (velocity.X == 0) {
-						animState='stay';
-					}
-					else {
-						animState = 'walk';
-						if (aiNapr * storona < 0) {
-							revers = true;
-						}
-					}
-				}
-				else if (isFly || aiPlav || levit) {
-					animState='fly';
-				}
-				else {
-					animState='jump';
-				}
+			var animId:int;
+			var frameIndex:int;
+			var animFrames:Array;
+			var obj:Object;
+
+			if ((sost == 2 || sost == 3) && arm) {
+				arm.visible = false;
 			}
 
-			if (animState!=animState2) {
-				anims[animState].restart();
-				animState2=animState;
-			}
-			
-			if (!anims[animState].st) {
-				if (revers) blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
-				else blit(anims[animState].id,anims[animState].f);
-			}
-			
-			anims[animState].step();
-			
-			// Far arm position
-			var animId:int = anims[animState].id;			// 'id' is an integer index (0-3) which corresponds the current animation
-			var frameIndex:int = int(anims[animState].f);	// Current frame of the animation (used to get the correct weapon position from wPos using animId as an index)
+			super.animate();
 
-			// Validate 'animId' and 'frameIndex' before accessing
-			if (animId >= 0 && animId < wPos.length) {
-				var animFrames:Array = wPos[animId];
-				
-				if (animFrames != null) {
-					if (frameIndex >= 0 && frameIndex < animFrames.length) {
-						var obj:Object = animFrames[frameIndex];
-						arm.x = coordinates.X + (obj.x + visBmp.x) * storona;
-						arm.y = coordinates.Y + obj.y + visBmp.y;
-					}
-					else {
-						trace("UnitMerc.as/animate() - Frame index out of bounds. animId:", animId, " frameIndex:", frameIndex, " total frames:", animFrames.length);
-					}
-				}
-				else {
-					trace("UnitMerc.as/animate() - animFrames is null for animId:", animId);
-				}
+			// Far arm position, from the weapon offsets of the current animation frame
+			animId = anims[animState].id;
+			frameIndex = int(anims[animState].f);
+			if (animId < 0 || animId >= wPos.length) {
+				trace("UnitMerc.as/animate() - Warning: animId out of bounds. animId: " + animId + " total animIds: " + wPos.length);
+				return;
 			}
-			else {
-				trace("UnitMerc.as/animate() - animId out of bounds. animId:", animId, " total animIds:", wPos.length);
+
+			animFrames = wPos[animId];
+			if (animFrames == null) {
+				trace("UnitMerc.as/animate() - Warning: animFrames is null for animId: " + animId);
+				return;
 			}
+
+			if (frameIndex < 0 || frameIndex >= animFrames.length) {
+				trace("UnitMerc.as/animate() - Warning: Frame index out of bounds. animId: " + animId + " frameIndex: " + frameIndex + " total frames: " + animFrames.length);
+				return;
+			}
+
+			obj = animFrames[frameIndex];
+			arm.x = coordinates.X + (obj.x + visBmp.x) * storona;
+			arm.y = coordinates.Y + obj.y + visBmp.y;
 		}
 	}
 }

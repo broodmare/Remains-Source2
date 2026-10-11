@@ -10,7 +10,6 @@ package {
 		
 		private var mainMenu:fe.MainMenu;
 
-		// Constructor
 		public function MainFE() {
 			stage.scaleMode = "noScale";
 			stage.align=StageAlign.TOP_LEFT;

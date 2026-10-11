@@ -24,7 +24,6 @@ package fe.inter {
 		public var consoleIsVisible:Boolean = false;
 		private var textboxesVisible:Boolean = false;
 
-		// Constructor
 		public function Consol(vcons:MovieClip, prev:String = null) {
 			vis = vcons;
 			ist = [];

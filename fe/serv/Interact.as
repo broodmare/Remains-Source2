@@ -4,7 +4,7 @@ package fe.serv {
 
 	import fe.*;
 	import fe.loc.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.projectile.Bullet;
@@ -16,7 +16,7 @@ package fe.serv {
 		private var inited:Boolean = false;
 		public var owner:Obj;
 		public var loc:Location;
-		public var coordinates:Vector2 = new Vector2();
+		public var coordinates:Vec2 = new Vec2();
 		
 		public var active:Boolean = true;	// [Object is active]
 		// [action displayed in GUI]
@@ -1373,7 +1373,7 @@ package fe.serv {
 					else sound("stop");
 				}
 				
-				var v:Vector2 = new Vector2( (begX + (endX - begX) * f), (begY + (endY - begY) * f) );
+				var v:Vec2 = new Vec2( (begX + (endX - begX) * f), (begY + (endY - begY) * f) );
 				owner.bindMove(v);
 				coordinates.setVector(v);
 				

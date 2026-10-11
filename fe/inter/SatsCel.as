@@ -13,7 +13,6 @@ package fe.inter {
 		public var un:Object;
 		private var begined:Boolean = false;
 
-		// Constructor
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) {
 			sloy = 5;
 			loc = World.w.loc;

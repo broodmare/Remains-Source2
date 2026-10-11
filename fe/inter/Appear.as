@@ -57,7 +57,6 @@ package fe.inter {
 		
 		public var saved:Object;
 
-		// Constructor
 		public function Appear() {
 			vis=new dialVid();	// .SWF Dependency
 			for each(var l:String in clist) this['t'+l]=this['c'+l];

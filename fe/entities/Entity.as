@@ -3,7 +3,7 @@ package fe.entities {
 	import flash.display.MovieClip;
 
 	import fe.World;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.loc.Location;
 	
 	public class Entity {
@@ -37,10 +37,9 @@ package fe.entities {
 		public var sloy:int				= 0;
 		
 		// Movement
-		public var coordinates:Vector2	= new Vector2();	// The entity's [X, Y] coordinates stored as a vector
-		public var velocity:Vector2 	= new Vector2();	// The entity's [X, Y] movement stored as a vector
+		public var coordinates:Vec2		= new Vec2();	// The entity's [X, Y] coordinates stored as a vector
+		public var velocity:Vec2 		= new Vec2();	// The entity's [X, Y] movement stored as a vector
 		
-		// Constructor
 		public function Entity() {
 
 		}

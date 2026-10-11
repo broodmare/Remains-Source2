@@ -23,7 +23,6 @@ package fe.unit {
 		
 		private var t_krut:int			= 0;	// [dodging bullets]
 
-		// Constructor
 		public function UnitDron(cid:String = null, ndif:Number = 100.00, xml:XML = null, loadObj:Object = null) {
 			
 			super(cid, ndif, xml, loadObj);

@@ -7,17 +7,30 @@ package fe.unit {
 	import flash.filters.DropShadowFilter;
 	import flash.filters.BlurFilter;
 
-	import fe.*;
-	import fe.util.Vector2;
-	import fe.loc.*;
-	import fe.weapon.*;
-	import fe.inter.*;
 	import fe.entities.Entity;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
-	import fe.unit.ability.system.Telekinesis;
+	import fe.unit.ability.Telekinesis;
+	import fe.loc.Location;
+	import fe.loc.Box;
+	import fe.weapon.WPunch;
+	import fe.ItemInteraction;
+	import fe.WeaponManager;
+	import fe.inter.Ctr;
+	import fe.inter.Sats;
+	import fe.loc.Tile;
+	import fe.weapon.Weapon;
+	import fe.ArmorManager;
+	import fe.Res;
+	import fe.Settings;
+	import fe.Snd;
+	import fe.World;
+	import fe.inter.Appear;
+	import fe.loc.Loot;
+	import fe.weapon.WKick;
+	import fe.weapon.WPaint;
 
 	import fe.stubs.visualPlayer;	// .fla linkage
 	import fe.stubs.reloadBar;		// .fla linkage
@@ -212,7 +225,6 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		// Constructor
 		public function UnitPlayer(cid:String = null, ndif:Number = 100.00) {
 			player = true;
 			id = "littlepip";

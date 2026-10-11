@@ -2,15 +2,15 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.serv.Interact;
+	import fe.SymbolFactory;
+	import fe.World;
 
 	public class UnitTrap extends Unit {
 
 		private var rearm:Boolean=false;
 		private var aiN:int = Math.floor(Math.random() * 5);
 
-		// Constructor
 		public function UnitTrap(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			if (cid==null) {
 				id='mtrap';

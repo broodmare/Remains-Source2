@@ -34,7 +34,6 @@ package fe.inter {
 		
 		private var plata:String;		// ID of the item used to pay the doctor
 
-		// Constructor
 		public function PipPageMed(npip:PipBuck, npp:String) {
 			isLC = true;
 			itemClass = visPipMedItem;

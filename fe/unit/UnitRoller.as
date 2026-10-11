@@ -4,13 +4,13 @@ package fe.unit {
 
 	import fe.SymbolFactory;
 	import fe.World;
-	import fe.unit.ai.model.AIState;
-	import fe.unit.ai.model.Brain_Definition;
-	import fe.unit.ai.system.Brain;
-	import fe.unit.attack.model.BodyAttack_Definition;
-	import fe.unit.attack.system.BodyAttack;
-	import fe.unit.motor.model.WalkMotor_Definition;
-	import fe.unit.motor.system.WalkMotor;
+	import fe.unit.ai.AIState;
+	import fe.unit.ai.Brain;
+	import fe.unit.ai.Brain_Definition;
+	import fe.unit.attack.BodyAttack;
+	import fe.unit.attack.BodyAttack_Definition;
+	import fe.unit.motor.WalkMotor;
+	import fe.unit.motor.WalkMotor_Definition;
 	import fe.util.Calc;
 
 	// A rolling robot ball that bounces at its target; the plasma variant (2) explodes when destroyed

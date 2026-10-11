@@ -1,8 +1,7 @@
-package fe.unit.anim.system {
+package fe.unit.anim {
 
 	import fe.serv.BlitAnim;
 	import fe.unit.Unit;
-	import fe.unit.anim.model.Animator_Definition;
 
 	// Plays a unit's sprite-sheet animations, picking one each tick from what the unit is doing
 	public class Animator {
@@ -34,6 +33,7 @@ package fe.unit.anim.system {
 				return (Math.abs(owner.velocity.Y) > 1.0) ? definition.climb : definition.climbStill;
 			}
 
+			if (owner.isFly && definition.fly != "") { return definition.fly; }
 			if (owner.levit != 0 && definition.levitate != "") { return definition.levitate; }
 			if (owner.aiPlav > 0 && definition.swim != "") { return definition.swim; }
 
@@ -84,6 +84,7 @@ package fe.unit.anim.system {
 			var name:String = owner.animOverride();
 			var anim:BlitAnim;
 			var step:int;
+			var frame:int;
 
 			if (name == "") {
 				name = pick();
@@ -111,7 +112,14 @@ package fe.unit.anim.system {
 			}
 
 			if (!anim.st) {
-				owner.blit(anim.id, int(anim.f));
+				if (name == definition.backpedal && owner.aiNapr * owner.storona < 0) {
+					frame = int(anim.maxf - anim.f - 1.0);
+				}
+				else {
+					frame = int(anim.f);
+				}
+
+				owner.blit(anim.id, frame);
 			}
 
 			anim.step();

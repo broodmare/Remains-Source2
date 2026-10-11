@@ -4,7 +4,7 @@ package fe.projectile {
 
 	import fe.*;
 	import fe.util.Calc;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.unit.Unit;
 	import fe.loc.*;
 	import fe.entities.Obj;
@@ -99,8 +99,7 @@ package fe.projectile {
 		private static var constTileX:int = Tile.tileX;
 		private static var constTileY:int = Tile.tileY;
 
-		// Constructor
-		public function Bullet(own:Unit, coords:Vector2, visClass:Class=null, addobj:Boolean=true) {
+		public function Bullet(own:Unit, coords:Vec2, visClass:Class=null, addobj:Boolean=true) {
 			
 			if (own == null) {
 				owner = new Unit();
@@ -112,7 +111,7 @@ package fe.projectile {
 			}
 			
 			coordinates.setVector(coords);
-			// TODO: Replace begx/begy with Vector2's
+			// TODO: Replace begx/begy with Vec2's
 			begx = coords.X;
 			begy = coords.Y;
 			
@@ -235,8 +234,7 @@ package fe.projectile {
 			return 'Error bullet ' + (owner ? owner.nazv : '???') + ' ' + (weap ? weap.nazv : '???');
 		}
 		
-		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
-			
+		public override function bindMove(v:Vec2, ox:Number = -1, oy:Number = -1):void {
 			if (ox >= 0) {
 				coordinates.X = ox;
 			}
@@ -322,7 +320,7 @@ package fe.projectile {
 
 		public function run(div:int = 1):void {
 			dist += vel / div;
-			var v:Vector2 = new Vector2(velocity.X, velocity.Y);
+			var v:Vec2 = new Vec2(velocity.X, velocity.Y);
 			v.divide(div);
 			coordinates.sumVectors(v);
 			

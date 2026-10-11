@@ -42,7 +42,6 @@ package fe.loc {
 		// All in-game data
 		public var objs:Array;
 
-		// Constructor
 		public function Game() {
 			var landList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
 			

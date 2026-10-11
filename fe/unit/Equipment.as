@@ -14,7 +14,6 @@ package fe.unit {
 		private var _armorMap:Dictionary;		// Dictionary to map each armor.id to it's reference (Key-Pair)
 		private var _spellMap:Dictionary;		// Dictionary to map each spell.id to it's reference (Key-Pair)
 
-		// Constructor
 		public function Equipment() {
 			_weapons	= new Vector.<Weapon>;
 			_armors		= new Vector.<Armor>;

@@ -1,13 +1,12 @@
 package fe.unit {
-	
-	import fe.*;
-	
+
+	import fe.World;
+
 	public class UnitNecros extends Unit {
 		
 		private var spd:Object;
 		private var br:Number = 0;
 
-		// Constructor
 		public function UnitNecros(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			

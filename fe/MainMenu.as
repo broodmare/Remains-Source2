@@ -33,13 +33,16 @@ package fe {
 		private var langReload:Boolean = false;
 		private var butsLang:Array;		// Buttons for each language option
 		private var stn:int=0;
+
 		// Text formatting
 		public var style:StyleSheet = new StyleSheet(); 
 		private var styleObj:Object = new Object();
 		private var format:TextFormat = new TextFormat();
+
 		// Saving/Loading
 		private var file:FileReference = new FileReference();
 		private var saveFiles:Array=[];
+
 		// Loading state flags
 		private var part1Loaded:Boolean = false;
 		private var part2Loaded:Boolean = false;
@@ -57,12 +60,10 @@ package fe {
 		private var command:int = 0;
 		private var com:String = "";
 		
-
 		private var mmp:MovieClip; // [For pipbuck]
 		private var pip:PipBuck;
 		private var displ:Displ;
 
-		// Constructor
 		public function MainMenu(nmain:Sprite) {
 			// Save a reference to the stage container
 			main = nmain;

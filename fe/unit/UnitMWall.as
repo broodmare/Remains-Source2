@@ -2,15 +2,14 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 	
-	import fe.*;
-	import fe.util.Vector2;
+	import fe.SymbolFactory;
 	import fe.graph.Emitter;
+	import fe.World;
 
 	public class UnitMWall extends Unit {
 		
 		private var rearm:Boolean=false;
 
-		// Constructor
 		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			if (cid == null) {
 				id = "mwall";

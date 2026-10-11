@@ -209,7 +209,6 @@ package fe {
 		
 		public var landError:Boolean			= false;
 
-		// Constructor
 		public function World(nmain:Sprite, cfgObj:Object, langManager:LanguageManager) {
 
 			World.w = this;			// Store a publically accessable reference to itself

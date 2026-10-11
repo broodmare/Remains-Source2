@@ -74,7 +74,6 @@ package fe.unit {
 			return fallback;
 		}
 
-		// Constructor
 		public function Resistances() {
 			zeroResistances();
 		}

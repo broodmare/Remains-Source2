@@ -8,7 +8,6 @@ package fe.unit  {
 
 		private var tr:int=0;
 		
-		// Constructor
 		public function UnitTrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			id='training';
 			if (xml) {

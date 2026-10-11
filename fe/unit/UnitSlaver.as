@@ -2,7 +2,6 @@ package fe.unit {
 
 	public class UnitSlaver extends UnitRaider {
 
-		// Constructor
 		public function UnitSlaver(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			parentId =	"slaver";
 			kolTrs		= 6;
@@ -11,7 +10,7 @@ package fe.unit {
 				cid = "1";
 			}
 
-			super(cid, ndif, xml, loadObj);	// UnitRaider.Constructor()
+			super(cid, ndif, xml, loadObj);
 		}
 	}
 }

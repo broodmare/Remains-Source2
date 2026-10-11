@@ -10,7 +10,6 @@ package fe.unit {
 		public var fav:Array		= [];	// [Array of favorites by cell number]
 		public var favIds:Object	= {};	// [Array of favorites by item id]
 
-		// Constructor
 		public function Favorites() {
 
 		}

@@ -13,7 +13,6 @@ package fe.loc {
 		public var val:Number		= 100.00;
 		public var liv:int			= 1000000;
 
-		// Constructor
 		public function Bonus(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			loc = nloc;
 			id = nid;

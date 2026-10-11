@@ -27,7 +27,6 @@ package fe {
 		public var cItem:int		= -1;	// [Index of the item selected for the 'use item' key]
 		public var cItemMax:int		= 0;
 		
-		// Constructor
 		public function ItemInteraction(owner:UnitPlayer, inventory:Inventory) {
 			_owner = owner;
 			_inventory = inventory;

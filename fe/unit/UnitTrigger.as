@@ -2,13 +2,15 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.serv.Interact;
 	import fe.loc.Tile;
 	import fe.loc.Location;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
+	import fe.SymbolFactory;
+	import fe.World;
+	import fe.XMLDataGrabber;
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
@@ -34,7 +36,6 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function UnitTrigger(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			

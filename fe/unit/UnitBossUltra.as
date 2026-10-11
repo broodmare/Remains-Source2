@@ -2,12 +2,15 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
-	import fe.weapon.*;
+	import fe.util.Vec2;
 	import fe.loc.Location;
 	import fe.graph.Emitter;
+	import fe.WeaponManager;
+	import fe.weapon.Weapon;
+	import fe.Snd;
+	import fe.World;
+	import fe.weapon.WThrow;
 	
 	public class UnitBossUltra extends Unit {
 		
@@ -46,7 +49,6 @@ package fe.unit {
 			{x:40, y:18}
 		];
 
-		// Constructor
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

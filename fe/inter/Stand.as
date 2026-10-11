@@ -43,7 +43,6 @@ package fe.inter {
 		
 		private var info:MovieClip;
 		
-		// Constructor
 		public function Stand(vstand:MovieClip, ninv:Inventory) {
 			vis = vstand;
 			inv = ninv;

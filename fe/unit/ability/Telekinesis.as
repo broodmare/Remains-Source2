@@ -1,4 +1,4 @@
-package fe.unit.ability.system {
+package fe.unit.ability {
 
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;

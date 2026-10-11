@@ -59,7 +59,6 @@ package fe.inter  {
 		public var ritems:Array;
 		private var ritemsNazv:Array	= ['hp', 'head', 'tors', 'legs', 'blood', 'mana', 'pet', 'inv1', 'inv1', 'caps']
 
-		// Constructor
 		public function PipBuck(vpip:MovieClip) {
 			light = true;
 			vis = vpip;

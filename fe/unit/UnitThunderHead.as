@@ -5,13 +5,13 @@ package fe.unit {
 	import flash.display.Bitmap;
 	import flash.geom.ColorTransform;
 
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
-	import fe.weapon.*;
+	import fe.util.Vec2;
 	import fe.projectile.Bullet;
 	import fe.loc.Location;
 	import fe.graph.Emitter;
+	import fe.weapon.Weapon;
+	import fe.World;
 	
 	public class UnitThunderHead extends Unit {
 
@@ -70,7 +70,6 @@ package fe.unit {
 		private var ugol:Number = 90;
 		private var distanc:Number = 6000;
 
-		// Constructor
 		public function UnitThunderHead(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

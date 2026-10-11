@@ -1,7 +1,7 @@
 package fe.unit {
 
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.loc.Location;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
@@ -284,10 +284,7 @@ package fe.unit {
 				return;
 			}
 			
-			var v:Vector2 = new Vector2(v[0], v[1]);
-
-			v.X = cx - owner.coordinates.X;
-			v.Y = cy - owner.coordinates.Y + owner.boundingBox.height;
+			var v:Vec2 = new Vec2(cx - owner.coordinates.X, cy - owner.coordinates.Y + owner.boundingBox.height);
 
 			var rasst:Number = v.magnitude();
 			
@@ -307,9 +304,10 @@ package fe.unit {
 			owner.isLaz = 0;
 			owner.levit = 0;
 			
-			owner.velocity.sumVectors(v)
-			// Leaving these here in case this isn't a correct replacement
-			
+			// Push the caster toward the target point, by at most spd (d, not the full distance v)
+			owner.velocity.X += d.x;
+			owner.velocity.Y += d.y;
+
 			if (player) {
 				gg.kdash_t = prod;
 				gg.t_levitfilter = 20;
@@ -330,7 +328,7 @@ package fe.unit {
 					continue;
 				}
 				
-				var v:Vector2 = new Vector2();
+				var v:Vec2 = new Vec2();
 				
 				v.X = un.coordinates.X - X;
 				v.Y = un.coordinates.Y - un.boundingBox.halfHeight - Y;

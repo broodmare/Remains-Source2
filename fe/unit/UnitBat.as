@@ -2,8 +2,8 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
+	import fe.World;
 	
 	public class UnitBat extends Unit {
 		
@@ -13,7 +13,6 @@ package fe.unit {
 		private var aiDy:Number = 0;
 		private var aiRasst:Number;
 		
-		// Constructor
 		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 
 			super(cid, ndif, xml, loadObj);

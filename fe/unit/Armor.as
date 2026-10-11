@@ -56,7 +56,6 @@ package fe.unit {
 		public var sort:int				= 0;		// Inventory category
 		public var hideMane:int			= 0;		// This armor hides the player's mane
 		
-		// Constructor
 		public function Armor() {
 
 		}

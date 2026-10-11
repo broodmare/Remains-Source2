@@ -20,7 +20,6 @@ package  fe.unit {
 		private static var kolClosed:int = 3;
 		public var opened:Array = [];
 
-		// Constructor
 		public function Coord(nloc:Location, ntip:String = null) {
 			loc = nloc;
 			tip = ntip;

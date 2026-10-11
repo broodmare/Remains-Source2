@@ -193,7 +193,6 @@ package fe.loc {
 		private var halfSpaceY:int;
 		private var spaceLength:int;
 
-		// Constructor
 		public function Location(land:Land, iManager:ItemManager, room:XML, rnd:Boolean, opt:Object=null) {
 			this.land		= land;
 			itemManager		= iManager;

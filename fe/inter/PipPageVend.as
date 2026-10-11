@@ -38,7 +38,6 @@ package fe.inter {
 		private var inbase:Boolean		= false;
 		private var selall:Boolean		= true;
 
-		// Constructor
 		public function PipPageVend(npip:PipBuck, npp:String) {
 			isLC = true;
 			isRC = true;

@@ -2,8 +2,8 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
+	import fe.World;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
 
@@ -16,7 +16,6 @@ package fe.unit {
 		private var explDist:Number=80;
 		private var isExpl:Boolean=false;
 
-		// Constructor
 		public function UnitSlime(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

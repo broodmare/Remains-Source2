@@ -18,7 +18,6 @@ package  fe.unit {
 		private var attTurN:int				= 15;
 		private var t_wait:int				= 0;
 
-		// Constructor
 		public function UnitThunderTurret(cid:String = null, ndif:Number = 100.00, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			

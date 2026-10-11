@@ -79,7 +79,6 @@ package fe.serv {
 		public var nocheap:Boolean		= false;		// [Don't reduce the price]
 		public var hardinv:Boolean		= false;		// [only with limited inventory]
 		
-		// Constructor
 		// nkol - [The number of items or the condition of weapons/armor 0-1-2], if nkol = -1 the item's default amount is used
 		// ntip - Forces the item type, eg. a scheme or a spell (normally it's found from the item's ID)
 		public function Item(itemID:String, nkol:int = -1, ntip:String = null) {

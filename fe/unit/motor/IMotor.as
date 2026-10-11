@@ -1,4 +1,4 @@
-package fe.unit.motor.system {
+package fe.unit.motor {
 
 	// Moves a unit the way its brain asks
 	public interface IMotor {
@@ -7,7 +7,10 @@ package fe.unit.motor.system {
 		function idle():void;					// Stand still
 		function patrol():void;					// Wander toward aiNapr
 		function chase():void;					// Close in on the target point (celX, celY) heading aiNapr
+		function rush():void;					// Run headlong toward aiNapr, as when fleeing or dashing, without taking to ladders
 		function hold():void;					// Stand ground facing the target
+		function leapBack():void;				// Leap away from the target
+		function turnTo(direction:int):void;	// Face a direction, as soon as the unit can turn
 		function jump(power:Number):void;		// Jump, or swim upward, with a fraction of full strength
 	}
 }

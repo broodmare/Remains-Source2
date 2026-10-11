@@ -1,7 +1,7 @@
 package fe.weapon  {
 
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
@@ -12,7 +12,7 @@ package fe.weapon  {
 
 		public var kick:Boolean = true;
 		
-		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		// Use WeaponManager.cloneWeapon() to create weapons
 		public function WKick() {
 			super();
 		}
@@ -32,7 +32,7 @@ package fe.weapon  {
 			
 			super.setOwner(own);
 			
-			var v:Vector2 = new Vector2((coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina));
+			var v:Vec2 = new Vec2((coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina));
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			setBullet(b);
@@ -81,8 +81,8 @@ package fe.weapon  {
 					b.destroy = World.w.pers.kickDestroy;
 					dopDamage = 60;
 					
-					var v1:Vector2 = new Vector2( (coordinates.X + storona * 70), (coordinates.Y - 50) );
-					var v2:Vector2 = new Vector2( (coordinates.X + storona * 70), (coordinates.Y - 30) );
+					var v1:Vec2 = new Vec2( (coordinates.X + storona * 70), (coordinates.Y - 50) );
+					var v2:Vec2 = new Vec2( (coordinates.X + storona * 70), (coordinates.Y - 30) );
 					
 					if (vverh) {
 						b.bindMove(v1, coordinates.X + storona * 20, coordinates.Y - 50);
@@ -103,13 +103,13 @@ package fe.weapon  {
 						vverh = true;
 					}
 					
-					var v0:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - 50));
+					var v0:Vec2 = new Vec2( (coordinates.X + storona * 60), (coordinates.Y - 50));
 					if (vverh) {
 						b.bindMove(v0, coordinates.X + storona * 20, coordinates.Y - 50);
 					}
 					
-					var v3:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - 30));
-					var v4:Vector2 = new Vector2( (coordinates.X + storona * 60), (coordinates.Y - i * 10));
+					var v3:Vec2 = new Vec2( (coordinates.X + storona * 60), (coordinates.Y - 30));
+					var v4:Vec2 = new Vec2( (coordinates.X + storona * 60), (coordinates.Y - i * 10));
 					
 					b.bindMove(v3, coordinates.X + storona * 20, coordinates.Y - 30);
 					

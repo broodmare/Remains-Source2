@@ -4,7 +4,7 @@ package fe.loc {
 	
 	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
 	import fe.serv.Item;
 	import fe.serv.Interact;
@@ -39,7 +39,6 @@ package fe.loc {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean = false, nkrit:Boolean = false, nauto:Boolean = true) {
 			
 			loc = nloc;

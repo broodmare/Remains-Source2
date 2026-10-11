@@ -2,11 +2,12 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
 	import fe.loc.Tile;
+	import fe.Snd;
+	import fe.World;
 	
 	public class UnitVortex extends Unit {
 
@@ -14,7 +15,6 @@ package fe.unit {
 		private var br:Number = 0;
 		private var iskr:Emitter;
 
-		// Constructor
 		public function UnitVortex(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='vortex';

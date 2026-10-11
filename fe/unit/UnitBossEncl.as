@@ -1,9 +1,9 @@
 package fe.unit {
 
-	import fe.weapon.*;
-	import fe.*;
 	import fe.loc.Location;
 	import fe.serv.LootGen;
+	import fe.WeaponManager;
+	import fe.World;
 
 	public class UnitBossEncl extends UnitPon {
 
@@ -24,7 +24,6 @@ package fe.unit {
 		
 		private var emit_t:int			=    0;
 
-		// constructor
 		public function UnitBossEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

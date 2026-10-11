@@ -2,12 +2,14 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
 	import fe.util.Calc;
 	import fe.loc.Tile;
 	import fe.serv.Npc;
 	import fe.weapon.Weapon;
+	import fe.WeaponManager;
+	import fe.LanguageManager;
+	import fe.World;
 	
 	public class UnitNPC extends UnitPon {
 		
@@ -46,10 +48,9 @@ package fe.unit {
 		private var cy:Number			= -1.00;
 		private var dvig:Object			= {};
 		
-		// Constructor
 		public function UnitNPC(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			
-			super(cid, ndif, xml, loadObj); // UnitPon Constructor
+			super(cid, ndif, xml, loadObj);
 			
 			if (cid != "" && cid != null) {
 				id = cid;

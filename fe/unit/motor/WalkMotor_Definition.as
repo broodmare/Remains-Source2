@@ -1,4 +1,4 @@
-package fe.unit.motor.model {
+package fe.unit.motor {
 
 	// How a walking unit moves: acceleration, jumping, how it handles ledges and walls, what it can climb
 	public class WalkMotor_Definition {
@@ -7,6 +7,13 @@ package fe.unit.motor.model {
 		public var patrolAccel:Number		= 1.0;		// While wandering
 		public var airControl:Number		= 0.25;		// In the air while chasing
 		public var walkFriction:Boolean		= false;	// Ground friction keeps dragging on the unit while it walks, so it builds speed slowly
+		public var staysPut:Boolean			= false;	// Never wanders, and while chasing only walks once knocked away from where it was placed
+
+		// Facing
+		public var turnDelayGround:int		= 0;		// Ticks after turning around on the ground before the unit can turn again, 0 to turn at once
+		public var turnDelayAir:int			= 0;		// The same, off the ground
+		public var idleFacesMotion:Boolean	= false;	// A standing unit faces the way it slides
+		public var backpedals:Boolean		= false;	// While chasing, keeps facing its target and slows to walkSpeed when moving away from it
 
 		// Ledges and walls
 		public var ledgeThreshold:Number	= 0.25;		// How far over a ledge (fraction of width) a wandering unit goes before it reacts
@@ -17,6 +24,7 @@ package fe.unit.motor.model {
 		public var brakesAtLedges:Boolean	= false;	// A chasing unit that doesn't hop a gap slows down at its edge
 		public var turnsToTargetAtWall:Boolean	= true;	// A chasing unit that runs into a wall with its target behind turns around at once
 		public var wallGiveUpChance:Number	= 0.03;		// Chance per bump that a chasing unit gives up on a wall it can't get past
+		public var opensDoors:Boolean		= false;	// A chasing unit opens the unlocked doors it runs into
 
 		// Jumping
 		public var jumpToReach:Boolean		= true;		// Jump toward a target above

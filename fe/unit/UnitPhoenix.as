@@ -1,6 +1,6 @@
 package fe.unit {
 
-	import fe.*;
+	import fe.World;
 	import fe.projectile.Bullet;
 	
 	public class UnitPhoenix extends Unit {
@@ -8,7 +8,6 @@ package fe.unit {
 		private var t_fall:int=0;
 		private static var questOk:Boolean=false;
 		
-		// Constructor
 		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			id="phoenix";
 			getXmlParam();

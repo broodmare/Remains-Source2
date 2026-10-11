@@ -10,7 +10,7 @@ package fe.serv {
 	import flash.geom.Matrix;
 
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.graph.Emitter;
 	
@@ -36,7 +36,6 @@ package fe.serv {
 		
 		public var vse:Boolean					= false;
 
-		// Constructor
 		public function Desintegr(own:Obj, sposob:int) {
 			owner = own;
 			burnTip = sposob;

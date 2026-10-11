@@ -1,15 +1,15 @@
 package fe.unit {
 
 	import fe.loc.Location;
-	import fe.unit.ai.model.AIState;
-	import fe.unit.ai.model.Brain_Definition;
-	import fe.unit.ai.system.Brain;
-	import fe.unit.anim.model.Animator_Definition;
-	import fe.unit.anim.system.Animator;
-	import fe.unit.attack.model.BodyAttack_Definition;
-	import fe.unit.attack.system.BodyAttack;
-	import fe.unit.motor.model.WalkMotor_Definition;
-	import fe.unit.motor.system.WalkMotor;
+	import fe.unit.ai.AIState;
+	import fe.unit.ai.Brain;
+	import fe.unit.ai.Brain_Definition;
+	import fe.unit.anim.Animator;
+	import fe.unit.anim.Animator_Definition;
+	import fe.unit.attack.BodyAttack;
+	import fe.unit.attack.BodyAttack_Definition;
+	import fe.unit.motor.WalkMotor;
+	import fe.unit.motor.WalkMotor_Definition;
 
 	// Hellhounds climbs walls, squeezes under low ceilings and smashes through blocks while chasing
 	public class UnitHellhound extends UnitPon {

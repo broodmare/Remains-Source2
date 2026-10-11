@@ -3,10 +3,8 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
-	import fe.weapon.*;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.serv.BlitAnim;
 	import fe.serv.AnimationSet;
@@ -15,7 +13,10 @@ package fe.unit {
 	import fe.loc.Tile;
 	import fe.loc.Location;
 	import fe.projectile.Bullet;
-	import fe.unit.ability.system.Telekinesis;
+	import fe.unit.ability.Telekinesis;
+	import fe.WeaponManager;
+	import fe.Snd;
+	import fe.World;
 	
 	public class UnitBossAlicorn extends UnitPon {
 		
@@ -58,7 +59,6 @@ package fe.unit {
 		private var t_shit:int=300;
 		private var t_fly:int=3;
 
-		// Constructor
 		public function UnitBossAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

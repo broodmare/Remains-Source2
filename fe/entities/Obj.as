@@ -4,7 +4,7 @@ package  fe.entities {
 	import flash.display.MovieClip;
 	import flash.geom.ColorTransform;
 	
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.World;
 	import fe.serv.Interact;
 	import fe.projectile.Bullet;
@@ -41,7 +41,6 @@ package  fe.entities {
 
 		public var cTransform:ColorTransform = NULL_TRANSFORM;	// [Color filter]
 		
-		// Constructor
 		public function Obj() {
 			boundingBox = new BoundingBox(coordinates);
 		}
@@ -69,9 +68,9 @@ package  fe.entities {
 			obj = obj || World.w.gg;
 			
 			// Cache frequently accessed properties
-			var objCoords:Vector2		= obj.coordinates;
+			var objCoords:Vec2			= obj.coordinates;
 			var objBB:BoundingBox		= obj.boundingBox;
-			var thisCoords:Vector2		= coordinates;
+			var thisCoords:Vec2			= coordinates;
 			var thisBB:BoundingBox		= boundingBox;
 			
 			// Calculate differences in X and Y coordinates
@@ -133,7 +132,7 @@ package  fe.entities {
 		}
 		
 		// Change the object’s position a given location and then re-center the bounding box.
-		public function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
+		public function bindMove(v:Vec2, ox:Number = -1, oy:Number = -1):void {
 			coordinates = v;
 			boundingBox.center(v);
 		}

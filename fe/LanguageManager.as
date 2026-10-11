@@ -15,7 +15,6 @@ package fe {
 
 		public static var reference:LanguageManager;	// Publically accessable reference to this instance of the language manager
 
-		// Constructor
 		public function LanguageManager(configObj:Object) {
 			
 			reference = this;

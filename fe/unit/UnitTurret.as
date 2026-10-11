@@ -2,13 +2,14 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.serv.Interact;
 	import fe.loc.Tile;
 	import fe.loc.Location;
+	import fe.WeaponManager;
+	import fe.World;
 	
 	// Cheat sheet
 	// Puha = The gun part of the turret, not the base.
@@ -47,7 +48,6 @@ package fe.unit {
 		private var tileX:int = Tile.tileX;
 		private var tileY:int = Tile.tileY;
 		
-		// Constructor
 		public function UnitTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 
 			super(cid, ndif, xml, loadObj);

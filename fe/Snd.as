@@ -7,7 +7,7 @@ package fe {
 
 	import fe.audio.SoundAsset;
 	import fe.util.Calc;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	
 	public class Snd {
 		
@@ -59,7 +59,7 @@ package fe {
 		public static var actionCh:SoundChannel;
 		private static var currentMusicPriority:int = 0;
 
-		public static var center:Vector2 = new Vector2(1000, 500);
+		public static var center:Vec2 = new Vec2(1000, 500);
 
 		// Timers
 		public static var hitTimer:int = 0;

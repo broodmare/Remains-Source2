@@ -19,7 +19,7 @@ package fe.weapon {
 		public var paintId:String	= "p_black";
 		public var paintNazv:String	= "";
 
-		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		// Use WeaponManager.cloneWeapon() to create weapons
 		public function WPaint() {
 			super();
 		}

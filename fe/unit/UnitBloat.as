@@ -1,8 +1,11 @@
 package fe.unit {
 	
-	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
+	import fe.LanguageManager;
+	import fe.SymbolFactory;
+	import fe.World;
+	import fe.XMLDataGrabber;
 	
 	public class UnitBloat extends Unit {
 		
@@ -19,7 +22,6 @@ package fe.unit {
 		private var attRasst:int = 400;
 		private var attCh:Number = 0.40;
 		
-		// Constructor
 		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			

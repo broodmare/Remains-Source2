@@ -15,7 +15,6 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		// Constructor
 		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			blood = 1;

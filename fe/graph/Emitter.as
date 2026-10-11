@@ -3,7 +3,7 @@ package fe.graph {
 	import flash.filters.GlowFilter;
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Part;
 	import fe.loc.Location;
 
@@ -68,7 +68,7 @@ package fe.graph {
 		public var rdy:Number			= 0.00;
 		public var rdr:Number			= 0.00;
 
-		public var velocity:Vector2 = new Vector2();
+		public var velocity:Vec2 = new Vec2();
 		
 		public var rot:int				= 0.00;
 		public var brake:Number			= 1.00;

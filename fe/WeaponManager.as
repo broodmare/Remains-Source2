@@ -31,7 +31,6 @@ package fe {
 		
 		private static var _weaponData:Object;			// An object containing the JSON data of all weapons
 
-		// Constructor
 		public function WeaponManager() {
 			trace("WeaponManager.as/Constructor() - Weapon Manager initializing");
 			reference	= this;

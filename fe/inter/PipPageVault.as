@@ -29,7 +29,6 @@ package fe.inter {
 		private static const PAGE_EQUIPMENT:int = 1, PAGE_AMMO:int = 2, PAGE_EXPLOSIVES:int = 3, PAGE_STUFF:int = 4;
 		private var assArr:Array;
 
-		// Constructor
 		public function PipPageVault(npip:PipBuck, npp:String) {
 			isLC = true;
 			isRC = true;

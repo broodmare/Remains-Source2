@@ -24,7 +24,6 @@ package fe.unit {
 		public var cSpellId:String	= "";
 		public var prevArmor:String	= "";
 
-		// Constructor
 		public function Inventory() {
 			_inventory = new Vector.<InventoryItem>();
 			_inventoryMap = new Dictionary();

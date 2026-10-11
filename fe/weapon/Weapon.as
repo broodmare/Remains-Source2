@@ -5,7 +5,7 @@ package fe.weapon {
 	import flash.display.Graphics;
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
@@ -30,7 +30,7 @@ package fe.weapon {
 		public var trasser:Trasser;
 		public var owner:Unit;	// TODO: REMOVE
 		public var rot:Number;
-		public var bulCoords:Vector2 = new Vector2(0, 0);
+		public var bulCoords:Vec2 = new Vec2(0, 0);
 		
 		//[visual]
 		public var svis:String;
@@ -217,7 +217,7 @@ package fe.weapon {
 		public var price:int			= 0;
 		public var breaking:Number		= 0.00;
 
-		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		// Use WeaponManager.cloneWeapon() to create weapons
 		public function Weapon() {
 			
 		}

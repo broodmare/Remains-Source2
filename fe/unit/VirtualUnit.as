@@ -9,7 +9,6 @@ package fe.unit {
 		public var owner:Obj;
 		private var nTipDam:String = "";
 
-		// Constructor
 		public function VirtualUnit(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			activateTrap	= 0;
 			dexter			= 0;

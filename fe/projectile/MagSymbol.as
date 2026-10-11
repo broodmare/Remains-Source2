@@ -14,7 +14,6 @@ package fe.projectile {
 		public var rad:Number=100;
 		public var liv:int=20;
 		
-		// Constructor
 		public function MagSymbol(own:Unit, spell:String, nx:Number, ny:Number, otlozh:int=0) {
 			if (own==null) {
 				owner=new Unit();

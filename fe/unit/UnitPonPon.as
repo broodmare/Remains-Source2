@@ -2,9 +2,10 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
 	import fe.util.Calc;
+	import fe.Res;
+	import fe.World;
 	
 	public class UnitPonPon extends Unit {
 		
@@ -14,7 +15,6 @@ package fe.unit {
 		private var verVis:Number=0.4;
 		private var privet:Boolean=false;
 		
-		// Constructor
 		public function UnitPonPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='ponpon';

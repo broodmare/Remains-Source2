@@ -40,7 +40,6 @@ package fe.inter {
 		private static var cachedPerks:Object	= {};
 		private static var cachedParams:Object	= {};
 
-		// Constructor
 		public function PipPageStat(npip:PipBuck, npp:String) {
 			isLC = true;
 			isRC = true;

@@ -1,6 +1,5 @@
 package fe.unit {
 
-	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.serv.LootGen;
 	import fe.serv.BlitAnim;
@@ -10,7 +9,6 @@ package fe.unit {
 		private var jump_n:int=100;
 		private var jump_m:int=90;
 		
-		// Constructor
 		public function UnitProtect(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='protect';

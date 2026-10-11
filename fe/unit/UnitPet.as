@@ -2,12 +2,12 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
 	import fe.entities.BoundingBox;
 	import fe.loc.Box;
+	import fe.World;
 	
 	public class UnitPet extends Unit {
 		
@@ -29,7 +29,6 @@ package fe.unit {
 		private var optUncall:Boolean=false;	//отзыв при смерти
 		private var optTurn:Boolean=true;	//поворачиваться
 
-		// Constructor
 		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 
 			super(cid, ndif, xml, loadObj);

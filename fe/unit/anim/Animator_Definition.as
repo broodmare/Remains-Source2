@@ -1,4 +1,4 @@
-package fe.unit.anim.model {
+package fe.unit.anim {
 
 	// Which sprite-sheet animation a unit plays in each situation. An empty name means the unit has no such animation
 	public class Animator_Definition {
@@ -13,11 +13,13 @@ package fe.unit.anim.model {
 		public var runFrom:Number		= 6.0;
 		public var sit:String			= "";			// Crouched and still
 		public var crawl:String			= "";			// Crouched and moving faster than walkFrom
+		public var backpedal:String		= "";			// Played backward while the unit moves against the way it faces
 
 		// Off the ground
 		public var jump:String			= "jump";
 		public var climb:String			= "";			// On a ladder or wall and moving
 		public var climbStill:String	= "";			// On a ladder or wall and still
+		public var fly:String			= "";			// Flying under its own power
 		public var levitate:String		= "";
 		public var swim:String			= "";
 

@@ -7,7 +7,7 @@ package fe.unit {
 	import fe.Res;
 	import fe.XMLDataGrabber;
 	import fe.WeaponManager;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.serv.Interact;
 	import fe.loc.Location;
 	import fe.weapon.Weapon;
@@ -331,7 +331,7 @@ package fe.unit {
 				bul = new Bullet(this, currentWeapon.coordinates, null, false);
 			}
 			else {
-				var v:Vector2 = new Vector2(coordinates.X, coordinates.Y);
+				var v:Vec2 = new Vec2(coordinates.X, coordinates.Y);
 				v.Y -= 20; // Apply an offset
 				bul = new Bullet(this, v, null, false);
 			}

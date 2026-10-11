@@ -1,7 +1,7 @@
 package fe.serv {
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.loc.Land;
 	import fe.unit.Unit;

@@ -4,7 +4,6 @@ package fe.unit {
 
 		private var jump_n:int=100;
 		
-		// Constructor
 		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
 			super(cid, ndif, xml, loadObj);

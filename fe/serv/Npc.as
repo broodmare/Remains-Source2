@@ -25,7 +25,6 @@ package fe.serv {
 		public var userAction2:String;
 		public var ndial:String;	// [Dialogue when there is nothing more to say]
 		
-		// Constructor
 		public function Npc(nxml:XML, loadObj:Object = null, nvid:String = null, ndif:int = 100) {
 			xml = nxml;
 			

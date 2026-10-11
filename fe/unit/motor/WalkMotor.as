@@ -1,10 +1,11 @@
-package fe.unit.motor.system {
+package fe.unit.motor {
 
 	import fe.loc.Tile;
+	import fe.serv.Interact;
 	import fe.unit.Unit;
-	import fe.unit.ai.model.AIState;
-	import fe.unit.motor.model.WalkMotor_Definition;
+	import fe.unit.ai.AIState;
 	import fe.util.Calc;
+	import fe.weapon.Weapon;
 
 	// Walking, jumping, swimming and climbing for units that live on the ground
 	public class WalkMotor implements IMotor {
@@ -34,6 +35,11 @@ package fe.unit.motor.system {
 		private static const TURN_TIME_MAX:int			= 24;
 		private static const JUMP_COOLDOWN_MIN:int		= 30;		// Ticks after a jump before jumping toward a target above again
 		private static const JUMP_COOLDOWN_MAX:int		= 79;
+		private static const SLIDE_FACING:Number		= 0.5;		// Speed above which a standing unit with idleFacesMotion faces the way it slides
+		private static const POST_SLACK:Number			= 20.0;		// How far a unit that stays put can be pushed before it walks while chasing
+		private static const LEAP_BACK_SPEED:Number		= 2.0;		// Speed of a leap back, as a multiple of runSpeed
+		private static const LEAP_BACK:Number			= 0.4;		// Jump strength of a leap back
+		private static const REPAIR_LOCK:int			= 4;		// Lock type of doors that need the repair skill, which units can't open
 
 		private var owner:Unit;
 		private var definition:WalkMotor_Definition;
@@ -42,6 +48,8 @@ package fe.unit.motor.system {
 		private var ladderCooldown:int	= 0;
 		private var climbTime:int		= 0;		// Ticks spent climbing, or while negative, ticks since the last climb
 		private var climbIntent:int		= 0;		// Where a wandering climber wants to go: -1 up, 1 down, 0 neither
+		private var facing:int;						// The way the unit wants to face, reached once turnWait runs out
+		private var turnWait:int		= 0;
 
 		// Accelerate in a direction, up to maxSpeed
 		private function push(direction:int, amount:Number):void {
@@ -60,15 +68,52 @@ package fe.unit.motor.system {
 			}
 		}
 
+		private function isAwayFromPost():Boolean {
+			var dx:Number = Math.abs(owner.coordinates.X - owner.begX);
+			var dy:Number = Math.abs(owner.coordinates.Y - owner.begY);
+
+			return dx > POST_SLACK || dy > POST_SLACK;
+		}
+
+		private function hasTurnDelay():Boolean {
+			return definition.turnDelayGround > 0 || definition.turnDelayAir > 0;
+		}
+
+		// Turn around once the last turn has settled; the weapon swings straight to the new side
+		private function settleTurn():void {
+			var weapon:Weapon = owner.currentWeapon;
+			var aimX:Number;
+			var aimY:Number;
+
+			if (owner.storona != facing && turnWait <= 0) {
+				owner.storona = facing;
+				turnWait = owner.stay ? definition.turnDelayGround : definition.turnDelayAir;
+
+				if (weapon && weapon.drot > 0) {
+					aimX = Math.abs(owner.celX - weapon.coordinates.X) * owner.storona;
+					aimY = owner.celY - weapon.coordinates.Y;
+					weapon.rot = Math.atan2(aimY, aimX);
+				}
+			}
+
+			if (turnWait > 0) {
+				turnWait--;
+			}
+		}
+
 		private function face():void {
 			if (owner.isLaz == 0) {
-				owner.storona = owner.aiNapr;
+				turnTo(owner.aiNapr);
 			}
+		}
+
+		private function faceTarget():void {
+			turnTo((owner.celX > owner.coordinates.X) ? 1 : -1);
 		}
 
 		private function turnAround():void {
 			owner.aiNapr = owner.turnX;
-			owner.storona = owner.turnX;
+			turnTo(owner.turnX);
 			owner.turnX = 0;
 		}
 
@@ -93,8 +138,23 @@ package fe.unit.motor.system {
 			return owner.loc.getAbsTile(x, y).phis == 0;
 		}
 
+		private function openDoor():void {
+			var door:Interact = owner.pumpObj;
+
+			if (!door || door.door == 0) { return; }
+
+			if (door.lock <= 0 && door.active && door.action == 1 && door.lockTip != REPAIR_LOCK) {
+				door.open = true;
+				door.setDoor();
+			}
+		}
+
 		// Run into a wall while chasing: turn back toward a target behind, otherwise try to jump it and eventually give up
 		private function bumpWall():void {
+			if (definition.opensDoors) {
+				openDoor();
+			}
+
 			if (definition.turnsToTargetAtWall && owner.celDX * owner.aiNapr < 0) {
 				owner.aiNapr = owner.turnX;
 				owner.aiTTurn = Calc.intBetween(TURN_TIME_MIN, TURN_TIME_MAX);
@@ -200,11 +260,11 @@ package fe.unit.motor.system {
 			}
 		}
 
-		// Climb toward a target above or below, then let go once level with it
-		private function climbTowardTarget():void {
+		// Climb toward a target above or below, then let go once level with it; without canStart only a climb under way goes on
+		private function climbTowardTarget(canStart:Boolean):void {
 			var inRange:Boolean = definition.climbRangeX <= 0 || Math.abs(owner.celDX) < definition.climbRangeX;
 
-			if (owner.isLaz == 0 && owner.aiVNapr != 0 && inRange && ladderCooldown <= 0 && climbTime < -definition.climbRest) {
+			if (canStart && owner.isLaz == 0 && owner.aiVNapr != 0 && inRange && ladderCooldown <= 0 && climbTime < -definition.climbRest) {
 				findClimbable((owner.aiVNapr < 0) ? -1 : 2);
 
 				if (owner.isLaz != 0) {
@@ -283,14 +343,100 @@ package fe.unit.motor.system {
 			}
 		}
 
+		// Close in on the target point heading aiNapr; canClimb lets the unit take to ladders on the way
+		private function pursue(canClimb:Boolean):void {
+			var isBackpedalling:Boolean = definition.backpedals && owner.aiState == AIState.CHASE;
+
+			jumpPower = 0.0;
+
+			if (definition.crawls && owner.isSit) {
+				owner.maxSpeed = owner.walkSpeed * definition.crawlSpeed;
+			}
+
+			if (isBackpedalling && owner.storona * owner.aiNapr < 0) {
+				owner.maxSpeed = owner.walkSpeed;
+			}
+
+			limitSpeed();
+
+			if (definition.jumpToReach && owner.aiVNapr < 0 && jumpCooldown <= 0 && owner.aiTCh % 2 == 1 && (!definition.looksBeforeJumping || canJumpUp())) {
+				jumpPower = Calc.floatBetween(definition.reachJumpMin, definition.reachJumpMax);
+			}
+
+			// Units that walk along the bottom (plav off) don't swim up after a target
+			if (owner.isPlav && owner.plav && owner.celDY < 0 && Math.random() < SWIM_UP_CHANCE) {
+				jumpPower = 1.0;
+			}
+
+			if (definition.climbsLadders || definition.climbsWalls) {
+				climbTowardTarget(canClimb);
+			}
+
+			if (owner.levit != 0) {
+				push(owner.aiNapr, owner.levitaccel);
+			}
+			else if (owner.stay || owner.isPlav) {
+				if (!definition.staysPut || isAwayFromPost()) {
+					push(owner.aiNapr, owner.accel);
+					walkToward(owner.aiNapr);
+				}
+			}
+			else {
+				push(owner.aiNapr, owner.accel * definition.airControl);
+			}
+
+			if (isOverLedge(CHASE_LEDGE)) {
+				if (definition.hopsGaps && owner.aiVNapr <= 0 && Math.random() < 0.5) {
+					jumpPower = HOP;
+				}
+				else if (definition.brakesAtLedges && Math.abs(owner.velocity.X) > LEDGE_BRAKE_SPEED) {
+					owner.velocity.X *= LEDGE_BRAKE;
+				}
+			}
+
+			if (definition.crawls) {
+				crawlUnder();
+			}
+
+			if (owner.turnX != 0) {
+				bumpWall();
+			}
+
+			if (jumpPower > 0) {
+				turnTo(owner.aiNapr);
+				jump(jumpPower);
+			}
+			else if (isBackpedalling) {
+				faceTarget();
+			}
+			else {
+				face();
+			}
+		}
+
 		public var climbDirection:int	= 0;		// Direction of the current climb: -1 up, 1 down, 0 not climbing
 
 		public function WalkMotor(owner_:Unit, definition_:WalkMotor_Definition) {
 			owner = owner_;
 			definition = definition_;
+			facing = owner.storona;
+		}
+
+		// Face a direction, at once or, with a turn delay, once the last turn has settled
+		public function turnTo(direction:int):void {
+			if (hasTurnDelay()) {
+				facing = direction;
+			}
+			else {
+				owner.storona = direction;
+			}
 		}
 
 		public function tick():void {
+			if (hasTurnDelay()) {
+				settleTurn();
+			}
+
 			if (jumpCooldown > 0) {
 				jumpCooldown--;
 			}
@@ -319,6 +465,8 @@ package fe.unit.motor.system {
 		}
 
 		public function idle():void {
+			var slide:Number = owner.velocity.X;
+
 			limitSpeed();
 			owner.walk = 0;
 
@@ -337,6 +485,18 @@ package fe.unit.motor.system {
 			if (owner.isPlav) {
 				jump(1.0);
 			}
+
+			if (definition.idleFacesMotion) {
+				if (slide > SLIDE_FACING) {
+					turnTo(1);
+				}
+				else if (slide < -SLIDE_FACING) {
+					turnTo(-1);
+				}
+				else {
+					turnTo(owner.aiNapr);
+				}
+			}
 		}
 
 		public function patrol():void {
@@ -346,8 +506,10 @@ package fe.unit.motor.system {
 				owner.isLaz = 0;
 			}
 
-			push(owner.aiNapr, owner.accel * definition.patrolAccel);
-			walkToward(owner.aiNapr);
+			if (!definition.staysPut) {
+				push(owner.aiNapr, owner.accel * definition.patrolAccel);
+				walkToward(owner.aiNapr);
+			}
 
 			if (isOverLedge(definition.ledgeThreshold) && Math.random() < definition.ledgeTurnChance) {
 				if (Math.random() < definition.ledgeHopChance && isGroundAhead()) {
@@ -387,61 +549,11 @@ package fe.unit.motor.system {
 		}
 
 		public function chase():void {
-			jumpPower = 0.0;
+			pursue(true);
+		}
 
-			if (definition.crawls && owner.isSit) {
-				owner.maxSpeed = owner.walkSpeed * definition.crawlSpeed;
-			}
-
-			limitSpeed();
-
-			if (definition.jumpToReach && owner.aiVNapr < 0 && jumpCooldown <= 0 && owner.aiTCh % 2 == 1 && (!definition.looksBeforeJumping || canJumpUp())) {
-				jumpPower = Calc.floatBetween(definition.reachJumpMin, definition.reachJumpMax);
-			}
-
-			// Units that walk along the bottom (plav off) don't swim up after a target
-			if (owner.isPlav && owner.plav && owner.celDY < 0 && Math.random() < SWIM_UP_CHANCE) {
-				jumpPower = 1.0;
-			}
-
-			if (definition.climbsLadders || definition.climbsWalls) {
-				climbTowardTarget();
-			}
-
-			if (owner.levit != 0) {
-				push(owner.aiNapr, owner.levitaccel);
-			}
-			else if (owner.stay || owner.isPlav) {
-				push(owner.aiNapr, owner.accel);
-				walkToward(owner.aiNapr);
-			}
-			else {
-				push(owner.aiNapr, owner.accel * definition.airControl);
-			}
-
-			if (isOverLedge(CHASE_LEDGE)) {
-				if (definition.hopsGaps && owner.aiVNapr <= 0 && Math.random() < 0.5) {
-					jumpPower = HOP;
-				}
-				else if (definition.brakesAtLedges && Math.abs(owner.velocity.X) > LEDGE_BRAKE_SPEED) {
-					owner.velocity.X *= LEDGE_BRAKE;
-				}
-			}
-
-			if (definition.crawls) {
-				crawlUnder();
-			}
-
-			if (owner.turnX != 0) {
-				bumpWall();
-			}
-
-			if (jumpPower > 0) {
-				owner.storona = owner.aiNapr;
-				jump(jumpPower);
-			}
-
-			face();
+		public function rush():void {
+			pursue(false);
 		}
 
 		public function hold():void {
@@ -454,7 +566,12 @@ package fe.unit.motor.system {
 			}
 
 			owner.aiNapr = (owner.celX > owner.coordinates.X) ? 1 : -1;
-			owner.storona = owner.aiNapr;
+			turnTo(owner.aiNapr);
+		}
+
+		public function leapBack():void {
+			owner.velocity.X = owner.runSpeed * LEAP_BACK_SPEED * ((owner.celDX > 0) ? -1 : 1);
+			jump(LEAP_BACK);
 		}
 
 		public function jump(power:Number):void {

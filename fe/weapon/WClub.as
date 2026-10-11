@@ -3,7 +3,7 @@ package fe.weapon  {
 	import flash.display.MovieClip;
 	
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Pers;
@@ -60,7 +60,7 @@ package fe.weapon  {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		// Use WeaponManager.cloneWeapon() to create weapons
 		public function WClub() {
 			super();
 		}
@@ -145,7 +145,7 @@ package fe.weapon  {
 			super.setOwner(own);
 			storona = own.storona;
 			
-			var v:Vector2 = new Vector2( (coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina) );
+			var v:Vec2 = new Vec2( (coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina) );
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			b.tipBullet = 1;
@@ -368,7 +368,7 @@ package fe.weapon  {
 						sin2 = Math.sin(rot);
 						
 						for (var i:int = 0; i <= kolvzz; i++) {
-							var v1:Vector2 = new Vector2( (coordinates.X + cos2 * (mindlina + i * stepdlina)), (coordinates.Y + sin2 * (mindlina + i * stepdlina)) );
+							var v1:Vec2 = new Vec2( (coordinates.X + cos2 * (mindlina + i * stepdlina)), (coordinates.Y + sin2 * (mindlina + i * stepdlina)) );
 							
 							if (!isPow) {
 								b.bindMove(v1, vzz[i].X, vzz[i].Y);
@@ -403,7 +403,7 @@ package fe.weapon  {
 					plY = sin2 * anim * atDlina;
 					
 					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * FIVE_SIXTH) {
-						var v2:Vector2 = new Vector2( (coordinates.X + cos2 * dlina + plX), (coordinates.Y + sin2 * dlina + plY) );
+						var v2:Vec2 = new Vec2( (coordinates.X + cos2 * dlina + plX), (coordinates.Y + sin2 * dlina + plY) );
 						
 						if (!isPow) {
 							b.bindMove(v2, vzz[0].X, vzz[0].Y);
@@ -437,7 +437,7 @@ package fe.weapon  {
 					if (t_attack == 1) {
 						cos2 = Math.cos(rot);
 						sin2 = Math.sin(rot);
-						var v3:Vector2 = new Vector2( (coordinates.X + cos2 * mindlina), (coordinates.Y + sin2 * mindlina));
+						var v3:Vec2 = new Vec2( (coordinates.X + cos2 * mindlina), (coordinates.Y + sin2 * mindlina));
 						b.bindMove(v3, coordinates.X + cos2 * dlina, coordinates.Y + sin2 * dlina);
 						
 						if (lasM) {

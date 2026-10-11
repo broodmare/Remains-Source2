@@ -1,9 +1,10 @@
 package fe.unit {
 
-	import fe.*;
 	import fe.weapon.Weapon;
 	import fe.loc.Tile;
 	import fe.projectile.Bullet;
+	import fe.WeaponManager;
+	import fe.World;
 	
 	public class UnitAIRobot extends UnitPon {
 
@@ -22,7 +23,6 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		// Constructor
 		public function UnitAIRobot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			

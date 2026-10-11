@@ -51,7 +51,6 @@ package fe.inter {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function PipPageInfo(npip:PipBuck, npp:String) {
 
 			itemClass = visPipQuestItem;

@@ -2,11 +2,12 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
 	import fe.loc.Location;
+	import fe.World;
+	import fe.Snd;
 	
 	public class UnitTransmitter extends Unit {
 
@@ -16,7 +17,6 @@ package fe.unit {
 		private var prevKoef:Number=0;
 		private var cep:int=-1;
 
-		// Constructor
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';

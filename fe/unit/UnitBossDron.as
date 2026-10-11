@@ -2,12 +2,14 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.weapon.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
+	import fe.WeaponManager;
+	import fe.weapon.Weapon;
+	import fe.Snd;
+	import fe.World;
+	import fe.weapon.WThrow;
 	
 	public class UnitBossDron extends Unit {
 		
@@ -28,7 +30,6 @@ package fe.unit {
 		private var kolth:int				= 0;
 		private var speedBonus:Number		= 1.00;
 
-		// Constructor
 		public function UnitBossDron(cid:String = null, ndif:Number = 100.00, xml:XML = null, loadObj:Object = null) {
 			
 			super(cid, ndif, xml, loadObj);

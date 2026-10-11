@@ -1,7 +1,7 @@
 package fe.projectile
 {
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
@@ -24,7 +24,7 @@ package fe.projectile
 		
 		public var sndHit:String='';
 
-		public function PhisBullet(own:Unit, v:Vector2, visClass:Class=null) {
+		public function PhisBullet(own:Unit, v:Vec2, visClass:Class=null) {
 			super(own, v, visClass);
 			ddy=World.ddy;
 			massa=0.1;

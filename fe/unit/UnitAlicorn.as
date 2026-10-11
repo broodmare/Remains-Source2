@@ -3,7 +3,6 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
 	import fe.entities.Obj;
 	import fe.serv.AnimationSet;
@@ -13,7 +12,9 @@ package fe.unit {
 	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.loc.Box;
-	import fe.unit.ability.system.Telekinesis;
+	import fe.unit.ability.Telekinesis;
+	import fe.WeaponManager;
+	import fe.World;
 	
 	public class UnitAlicorn extends UnitPon {
 
@@ -79,7 +80,6 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function UnitAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
 			super(cid, ndif, xml, loadObj);

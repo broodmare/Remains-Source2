@@ -6,7 +6,6 @@ package {
 	public class MainEd extends MovieClip {
 		var ed:Editor;
 		
-		// Constructor
 		public function MainEd() {
 			ed = new Editor(ved);
 		}

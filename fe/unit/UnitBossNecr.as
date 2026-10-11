@@ -4,15 +4,16 @@ package fe.unit {
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.weapon.*;
 	import fe.loc.Tile;
 	import fe.serv.BlitAnim;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
 	import fe.projectile.MagSymbol;
+	import fe.Snd;
+	import fe.WeaponManager;
+	import fe.World;
 	
 	public class UnitBossNecr extends UnitPon {
 
@@ -45,7 +46,6 @@ package fe.unit {
 		protected var shadowFilter:DropShadowFilter;
 		protected var ghostFilter:GlowFilter;
 		
-		// Constructor
 		public function UnitBossNecr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			

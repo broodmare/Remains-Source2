@@ -6,7 +6,6 @@ package fe.unit {
 
 	public class UnitRobobrain extends UnitAIRobot {
 		
-		// Constructor
 		public function UnitRobobrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='robobrain';

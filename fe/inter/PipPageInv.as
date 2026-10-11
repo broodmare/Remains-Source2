@@ -35,7 +35,6 @@ package fe.inter {
 		private var over_t:int;
 		private var dat:Number = 0;
 		
-		// Constructor
 		public function PipPageInv(npip:PipBuck, npp:String) {
 			isLC = true;
 			isRC = true;

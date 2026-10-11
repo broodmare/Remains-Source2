@@ -2,9 +2,8 @@ package fe.unit {
 	
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.graph.Emitter;
 
 	public class UnitDestr extends Unit {
@@ -12,7 +11,6 @@ package fe.unit {
 		private var tr:int=1;
 		private var t_part:int=10;
 		
-		// Constructor
 		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='destr';

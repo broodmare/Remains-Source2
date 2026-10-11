@@ -2,14 +2,15 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
-	import fe.weapon.*;
+	import fe.util.Vec2;
 	import fe.loc.Tile;
 	import fe.serv.LootGen;
 	import fe.graph.Emitter;
 	import fe.projectile.Bullet;
+	import fe.WeaponManager;
+	import fe.World;
+	import fe.weapon.WThrow;
 	
 	public class UnitBossRaider extends UnitPon {
 		
@@ -20,7 +21,6 @@ package fe.unit {
 		public var kol_emit:int = 8;
 		public var called:int = 0;
 
-		// Constructor
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id = "bossraider";

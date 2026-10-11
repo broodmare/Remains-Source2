@@ -5,7 +5,7 @@ package fe.loc {
 
 	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
@@ -75,7 +75,6 @@ package fe.loc {
 		
 		private static var cachedObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 
-		// Constructor
 		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			loc=nloc;
 			id=nid;
@@ -904,7 +903,7 @@ package fe.loc {
 		}
 		
 		//принудительное движение
-		public override function bindMove(v:Vector2, ox:Number = -1, oy:Number = -1):void {
+		public override function bindMove(v:Vec2, ox:Number = -1, oy:Number = -1):void {
 			super.bindMove(v);
 			
 			if (this.un) {

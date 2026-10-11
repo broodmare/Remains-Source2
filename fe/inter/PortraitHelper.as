@@ -11,7 +11,6 @@ package fe.inter {
         private static var pictureHolder:MovieClip;     // The movieclip object containing the loaded image
         public var currentPortrait:String;              // The name of the currently loaded portrait   
 
-        // Constructor
         public function PortraitHelper(guiMC:MovieClip) {
             var dialogueBox:MovieClip = guiMC.getChildByName("dial") as MovieClip;
             pictureHolder = dialogueBox.portret;

@@ -9,7 +9,7 @@ package fe.weapon {
 		
 		public var zadok:Boolean = false;	// [Can act backwards]
 
-		// Constructor -- Use WeaponManager.cloneWeapon() to create weapons
+		// Use WeaponManager.cloneWeapon() to create weapons
 		public function WPunch() {
 			super();
 		}

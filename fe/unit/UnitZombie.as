@@ -3,13 +3,15 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.loc.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
-	import fe.unit.ability.system.Telekinesis;
+	import fe.unit.ability.Telekinesis;
+	import fe.WeaponManager;
+	import fe.World;
+	import fe.XMLDataGrabber;
 
 	public class UnitZombie extends UnitPon {
 
@@ -60,7 +62,6 @@ package fe.unit {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		// Constructor
 		public function UnitZombie(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr

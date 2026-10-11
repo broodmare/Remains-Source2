@@ -2,15 +2,14 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
 	import fe.SymbolFactory;
+	import fe.World;
 	
 	public class UnitBloatEmitter  extends Unit {
 		
 		private var emitId:String = "bloat";
 		private var emit_t:int = 0;
 
-		// Constructor
 		public function UnitBloatEmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			

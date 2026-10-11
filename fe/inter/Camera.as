@@ -2,7 +2,7 @@ package fe.inter {
 
 	import flash.display.DisplayObject;
 
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.util.Calc;
 	import fe.unit.Unit;
 	import fe.World;
@@ -15,7 +15,7 @@ package fe.inter {
 		public var moved:Boolean;
 		public var screenX:int=1280; //размеры экрана
 		public var screenY:int=800;
-		public var coord = new Vector2(200, 200); // [Coordinates of the camera center in the world]
+		public var coord = new Vec2(200, 200); // [Coordinates of the camera center in the world]
 		public var vx:int;				// [Visual coordinates of the world relative to the screen]
 		public var vy:int;
 		public var ovy:int;
@@ -39,7 +39,6 @@ package fe.inter {
 		public var showX:Number=-1;
 		public var showY:Number=0;
 		
-		// Constructor
 		public function Camera(nw:World) {
 			w = nw;
 		}
@@ -154,7 +153,7 @@ package fe.inter {
 							x = un.coordinates.X * scaleV + otryv * (celX - screenX / 2);
 							y = un.coordinates.Y * scaleV + otryv * (celY - screenY / 2);
 						}
-						var v:Vector2 = new Vector2(x, y);
+						var v:Vec2 = new Vec2(x, y);
 					}
 					else
 					{
@@ -164,7 +163,7 @@ package fe.inter {
 						}
 						else y = un.coordinates.Y * scaleV;
 
-						var v:Vector2 = new Vector2(x, y);
+						var v:Vec2 = new Vec2(x, y);
 					}
 					
 					// Update our coordinates

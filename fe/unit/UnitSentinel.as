@@ -12,7 +12,6 @@ package fe.unit {
 		private var dopWeapon:Weapon;
 		private var kolRock:int = 6;
 		
-		// Constructor
 		public function UnitSentinel(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 		

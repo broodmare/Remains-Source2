@@ -20,7 +20,6 @@ package fe {
 
 		public static const TEXT_LOADED:String = "text_Loaded";
 
-		// Constructor
 		public function TextLoader() {
 
 		}

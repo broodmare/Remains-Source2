@@ -10,7 +10,6 @@ package fe.unit {
 		private var dopWeapon:Weapon;
 		public var wPos:Array;
 		
-		// Constructor
 		public function UnitGutsy(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id="gutsy";

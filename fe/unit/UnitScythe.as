@@ -2,9 +2,9 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
 	import fe.loc.Location;
+	import fe.World;
 	
 	public class UnitScythe extends Unit {
 
@@ -24,7 +24,6 @@ package fe.unit {
 
 		private var aiN:int = Math.floor(Math.random() * 5);
 		
-		// Constructor
 		public function UnitScythe (cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			id = 'scythe';

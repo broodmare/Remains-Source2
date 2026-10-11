@@ -26,7 +26,6 @@ package fe.inter {
 		private static const PAGE_CRAFT:int = 1, PAGE_UPGRADE:int = 2, PAGE_REPAIR:int = 3;
 		private var assArr:Array;
 
-		// Constructor
 		public function PipPageWork(npip:PipBuck, npp:String) {
 			isLC = true;
 			itemClass = visPipInvItem;

@@ -14,7 +14,6 @@ package fe.unit {
 		private var aiDy:Number = 0.00;
 		private var aiRasst:Number;
 
-		// Constructor
 		public function UnitSpriteBot(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			super(cid, ndif, xml, loadObj);
 			

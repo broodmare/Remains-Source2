@@ -7,7 +7,6 @@ package fe.inter {
 	// The player appearance editor
 	public class PipPageApp extends PipPage {
 		
-		// Constructor
 		public function PipPageApp(npip:PipBuck, npp:String):void {
 			itemClass = visPipQuestItem;
 			super(npip, npp);

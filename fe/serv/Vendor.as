@@ -16,7 +16,6 @@ package fe.serv {
 		public var buyTotal:Number			= 0;	// [kolBou] The price of all items the player wants to buy
 		public var sellTotal:Number			= 0;	// [kolSell] The price of all items the player wants to sell
 
-		// Constructor
 		public function Vendor(id:String = "Vendor", data:Object = null) {
 			_id = id;
 			_data = data;

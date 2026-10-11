@@ -3,7 +3,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.loc.CheckPoint;
 	import fe.serv.LootGen;
 	
@@ -321,7 +321,6 @@ package fe.unit {
 		private static var cachedSkills:Object = {};
 		private static var cachedEffs:Object = {};
 		
-		// Constructor
 		public function Pers(loadObj:Object=null, opt:Object=null) {
 			skill_ids	= [];
 			skills		= [];

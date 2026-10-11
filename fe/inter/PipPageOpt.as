@@ -40,7 +40,6 @@ package fe.inter {
 		private var file:FileReference = new FileReference();
 		private var ffil:Array;
 		
-		// Constructor
 		public function PipPageOpt(npip:PipBuck, npp:String) {
 			isLC=true;
 			itemClass=visPipOptItem;

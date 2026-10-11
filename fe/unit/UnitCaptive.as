@@ -3,8 +3,9 @@ package fe.unit {
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
-	import fe.*;
 	import fe.SymbolFactory;
+	import fe.Res;
+	import fe.World;
 	
 	public class UnitCaptive extends Unit {
 		
@@ -13,7 +14,6 @@ package fe.unit {
 		private var statusCapt:int = 0;	// TODO: This can be a bool
 		private var novoi:Boolean=false;
 		
-		// Constructor
 		public function UnitCaptive(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='captive';

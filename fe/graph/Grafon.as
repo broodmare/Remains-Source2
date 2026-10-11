@@ -18,7 +18,7 @@ package fe.graph {
 	import fl.motion.Color;	// Adobe Animate dependency
 
 	import fe.*;
-	import fe.util.Vector2;
+	import fe.util.Vec2;
 	import fe.loc.*;
 	import fe.entities.Entity;
 	import fe.entities.BoundingBox;
@@ -127,7 +127,6 @@ package fe.graph {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 		
-		// Constructor
 		public function Grafon(nvis:Sprite) {
 			// Main container
 			visual = nvis;

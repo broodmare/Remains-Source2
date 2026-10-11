@@ -183,7 +183,6 @@ package fe.inter {
 		public var keyPressed:Boolean		= false;
 		public var keyPressed2:Boolean		= false;
 		
-		// Constructor
 		public function Ctr(loadObj:Object = null) {
 			keyNames = new Vector.<String>(256);
 			keyDowns = new Vector.<Boolean>(256);
