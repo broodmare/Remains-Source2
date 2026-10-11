@@ -111,7 +111,7 @@ package  fe.unit {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				currentWeapon.vis.x = coordinates.X;
-				currentWeapon.vis.y = boundingBox.top;
+				currentWeapon.vis.y = coordinates.Y - boundingBox.halfHeight;
 			}
 		}
 

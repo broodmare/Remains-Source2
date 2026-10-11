@@ -210,10 +210,11 @@ package fe.unit {
 		}
 		
 		public override function run(div:int=1):void {
+			var top:Number = coordinates.Y - this.boundingBox.halfHeight + 170 * 3;
 			this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth + 300 * 3;
 			this.boundingBox.right = this.boundingBox.left + 1370 * 3;
-			this.boundingBox.top = this.boundingBox.top + 170 * 3;
-			this.boundingBox.bottom = this.boundingBox.top + 580 * 3;
+			this.boundingBox.top = top;
+			this.boundingBox.bottom = top + 580 * 3;
 		}
 		
 		private function setUgolPos():void {

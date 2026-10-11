@@ -114,7 +114,7 @@ package fe.projectile
 		
 		private function sensor():Boolean {
 			for each (var un:Unit in loc.units) {
-				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.boundingBox.bottom && coordinates.X <= un.boundingBox.right && coordinates.Y >= un.boundingBox.top && coordinates.Y <= un.boundingBox.bottom && un.sost < 3) {
+				if (!un.disabled && un.fraction != owner.fraction && coordinates.X >= un.boundingBox.left && coordinates.X <= un.boundingBox.right && coordinates.Y >= un.boundingBox.top && coordinates.Y <= un.boundingBox.bottom && un.sost < 3) {
 					explosion();
 					onCursor=0;
 					vse=true;

@@ -1572,7 +1572,7 @@ package fe.unit {
 
 			// [find the closest matching object if the cursor is not pointing directly at the target]
 			if (loc.celObj == null) {
-				var dist:Number = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (boundingBox.top - World.w.celY) * (boundingBox.top - World.w.celY);
+				var dist:Number = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (coordinates.Y - boundingBox.halfHeight - World.w.celY) * (coordinates.Y - boundingBox.halfHeight - World.w.celY);
 				
 				if (dist > pers.teleDist) {
 					return;
@@ -2711,7 +2711,7 @@ package fe.unit {
 			
 			for (var i:int = 1; i < div; i++) {
 				nx = coordinates.X + ndx * i / div;
-				ny = boundingBox.top + ndy * i / div;
+				ny = coordinates.Y - boundingBox.halfHeight + ndy * i / div;
 				t = World.w.loc.getAbsTile(int(nx), int(ny));
 				
 				if (t.phis == 1 && nx >= t.boundingBox.left && nx <= t.boundingBox.right && ny >= t.boundingBox.top && ny <= t.boundingBox.bottom) {
@@ -3259,7 +3259,7 @@ package fe.unit {
 			catch (err) {
 				trace("ERROR: (00:E)");
 				magicX = coordinates.X;
-				magicY = boundingBox.top;
+				magicY = coordinates.Y - boundingBox.halfHeight;
 			}
 		}
 		
@@ -3528,8 +3528,8 @@ package fe.unit {
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch):void {
-			w.coordinates.X = coordinates.X + boundingBox.width * ((celX > coordinates.X) ? 1 : -1);
-			w.coordinates.Y = boundingBox.top;
+			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? 1 : -1);
+			w.coordinates.Y = coordinates.Y - boundingBox.halfHeight;
 			w.rot = (celX > coordinates.X) ? 0 : ONE_PI;
 		}
 		
@@ -4686,7 +4686,7 @@ package fe.unit {
 		}
 		
 		public function showElectroBlock():void {
-			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (boundingBox.top + Math.random() * 320 - 160));
+			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (coordinates.Y - boundingBox.halfHeight + Math.random() * 320 - 160));
 			
 			if (t && t.mat == 1 && t.hp > 0) {
 				Emitter.emit("electro", loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);

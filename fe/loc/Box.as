@@ -6,7 +6,6 @@ package fe.loc {
 	import fe.*;
 	import fe.SymbolFactory;
 	import fe.util.Vector2;
-	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.unit.Unit;
@@ -21,7 +20,9 @@ package fe.loc {
 
 		public var osnova:Box=null;		//на чём стоит
 		public var shelf:Boolean=true;	//на этом можно стоять
-		public var isPlav:Boolean=false, isPlav2:Boolean=false, fixPlav:Boolean=false;
+		public var isPlav:Boolean=false;
+		public var isPlav2:Boolean=false;
+		public var fixPlav:Boolean=false;
 		public var id:String;
 		public var door:int = 0;
 		public var begX:Number=-1, begY:Number=-1; 		//исходная точка
@@ -34,10 +35,10 @@ package fe.loc {
 		public var phis:int					= 1;
 		public var sur:int					= 0;		//предме на ящике
 		public var hp:Number				= 100.00;
-		public var thre:Number				=0;
-		public var montdam:int				=5;			//насколько будет ломаться монтировка
-		public var electroDam:Number		=0.00;		//если больше 0 - является генератором электрозащиты
-		public var tiles:Array;							//задействованные блоки
+		public var thre:Number				= 0;
+		public var montdam:int				= 5;		//насколько будет ломаться монтировка
+		public var electroDam:Number		= 0.00;		//если больше 0 - является генератором электрозащиты
+		public var tiles:Vector.<Tile>;					//задействованные блоки
 		public var dead:Boolean				= false;
 		public var invis:Boolean			= false;
 		public var light:Boolean			= false;	//убрать туман войны в этой точке
@@ -73,9 +74,6 @@ package fe.loc {
 		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
 		
 		private static var cachedObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
-		
-		private static var tileX:int = Tile.tileX;
-		private static var tileY:int = Tile.tileY;
 
 		// Constructor
 		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
@@ -296,7 +294,7 @@ package fe.loc {
 				b = coordinates.Y;
 
 				l = coordinates.X - boundingBox.halfWidth;
-				b = coordinates.X + boundingBox.halfWidth;
+				r = coordinates.X + boundingBox.halfWidth;
 
 				boundingBox.setBounds(l, r, t, b);
 			}
@@ -429,7 +427,10 @@ package fe.loc {
 		}
 		
 		public function initDoor():void {
-			tiles = [];
+			var tileX:int = Tile.tileX;
+			var tileY:int = Tile.tileY;
+
+			tiles = new Vector.<Tile>;
 			
 			for (var i:int = int(boundingBox.left / tileX + 0.5); i <= int(boundingBox.right / tileX - 0.5); i++) {
 				for (var j:int = int(boundingBox.top / tileY + 0.5); j <= int(boundingBox.bottom / tileY - 0.5); j++) {
@@ -449,8 +450,8 @@ package fe.loc {
 		// This is for opening and closing doors inside of rooms, NOT for traveling to new rooms.
 		public function setDoor(state:Boolean):void {
 			for (var i in tiles) {
-				(tiles[i] as Tile).phis = (state? 0 : phis);
-				(tiles[i] as Tile).opac = (state? 0 : door_opac);
+				tiles[i].phis = (state ? 0 : phis);
+				tiles[i].opac = (state ? 0 : door_opac);
 			}
 
 			setVisState(state? 'open':'close');
@@ -489,19 +490,14 @@ package fe.loc {
 				}
 			}
 
-			// Now check objects (boxes) that may not have a built-in bounding box
+			// Now check objects (boxes) using their maintained bounding boxes
 			for each (var obj in loc.objs) {
 				// If it's actually a Box with a "wall" property
 				if ((obj as Box).wall > 0) {
 					continue;  // skip “wall” boxes
 				}
 
-				// If it has no boundingBox, create one on the fly
-				var boxBB:BoundingBox = new BoundingBox(new Vector2(obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight));
-				boxBB.width = obj.boundingBox.width;
-				boxBB.height = obj.boundingBox.height;
-
-				if (boxBB.intersects(boundingBox)) {
+				if (obj.boundingBox && obj.boundingBox.intersects(boundingBox)) {
 					trace("Door blocked by box!");
 					return true;
 				}
@@ -570,9 +566,9 @@ package fe.loc {
 			dead = true;
 			if (door > 0) {
 				for (var i in tiles) {
-					(tiles[i] as Tile).opac=0;
-					(tiles[i] as Tile).phis=0;
-					(tiles[i] as Tile).hp=0;
+					tiles[i].opac = 0;
+					tiles[i].phis = 0;
+					tiles[i].hp = 0;
 				}
 				
 				setVisState('die');
@@ -684,6 +680,9 @@ package fe.loc {
 		
 		// Check if standing on ground
 		public override function checkStay():Boolean {
+			var tileX:int = Tile.tileX;
+			var tileY:int = Tile.tileY;
+
 			if (osnova || wall > 0) {
 				return true;
 			}
@@ -710,6 +709,8 @@ package fe.loc {
 		public function run(div:int=1):void {
 			//движение
 			var t:Tile;
+			var tileX:int = Tile.tileX;
+			var tileY:int = Tile.tileY;
 			var i:int;
 
 			//HORIZONTAL
@@ -829,11 +830,13 @@ package fe.loc {
 
 		//поиск жидкости
 		public function checkWater():Boolean {
+			var tileX:int = Tile.tileX;
+			var tileY:int = Tile.tileY;
 			var pla:Boolean = isPlav;
 			isPlav = false;
 			isPlav2 = false;
 
-			var x:int = int(coordinates.X/tileX);
+			var x:int = int(coordinates.X / tileX);
 			if (loc.getTile(x , int((coordinates.Y - boundingBox.height * 0.45) / tileY)).water > 0) {
 				isPlav = true;
 			}
@@ -874,6 +877,9 @@ package fe.loc {
 		}
 
 		public function collisionAll(gx:Number = 0, gy:Number = 0):Boolean {
+			var tileX:int = Tile.tileX;
+			var tileY:int = Tile.tileY;
+
 			// Use boundingBox properties for iteration
 			var leftIndex:int   = int((boundingBox.left   + gx) / tileX);
 			var rightIndex:int  = int((boundingBox.right  + gx) / tileX);

@@ -605,7 +605,7 @@ package fe.projectile {
 				}
 				
 				var tx:Number = un.coordinates.X - coordinates.X;
-				var ty:Number = un.boundingBox.bottom - coordinates.Y;
+				var ty:Number = un.coordinates.Y - un.boundingBox.halfHeight - coordinates.Y;
 				var rasst:Number = Math.sqrt(tx*tx+ty*ty);
 				var dam:Number = damageExpl * Calc.floatBetween(0.70, 1.30);
 				
@@ -646,7 +646,7 @@ package fe.projectile {
 				}
 				
 				var tx:Number = un.coordinates.X - coordinates.X;
-				var ty:Number = un.boundingBox.bottom - coordinates.Y;
+				var ty:Number = un.coordinates.Y - un.boundingBox.halfHeight - coordinates.Y;
 				var b:Bullet=explBullet(tx, ty, explRadius + un.boundingBox.width);
 				
 				if (b) {

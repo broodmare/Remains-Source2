@@ -772,7 +772,7 @@ package fe.unit {
 			
 			if (nx < 0 || ny < 0) {
 				nx = gg.coordinates.X;
-				ny = gg.boundingBox.bottom;
+				ny = gg.boundingBox.top;
 			}
 			
 			if (World.w.testLoot) {

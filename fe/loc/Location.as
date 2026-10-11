@@ -1806,10 +1806,10 @@ package fe.loc {
 					continue;
 				}
 				
-				if (!(cel.leftBound >= (t.coords.X + 1) * tileX 
-					|| cel.rightBound <= t.coords.X * tileX
-					|| cel.topBound >= (t.coords.Y + 1) * tileY
-					|| cel.bottomBound <= t.coords.Y * tileY)
+				if (!(cel.boundingBox.left >= (t.coords.X + 1) * tileX
+					|| cel.boundingBox.right <= t.coords.X * tileX
+					|| cel.boundingBox.top >= (t.coords.Y + 1) * tileY
+					|| cel.boundingBox.bottom <= t.coords.Y * tileY)
 					) {
 						return false;
 				}

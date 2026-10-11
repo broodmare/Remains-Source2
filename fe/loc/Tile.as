@@ -127,45 +127,16 @@ package  fe.loc {
 				}
 			}
 			
-			if (f.mat) {
-				mat = f.mat;
-			}
-			
-			if (f.hp) {
-				hp = f.hp;
-			}
-			
-			if (f.thre) {
-				thre = f.thre;
-			}
-			
-			if (f.indestruct) {
-				indestruct = true;
-			}
-			
-			if (f.lurk) {
-				lurk = f.lurk;
-			}
-			
-			if (f.phis) {
-				phis = f.phis;
-			}
-			
-			if (f.shelf) {
-				shelf = true;
-			}
-			
-			if (f.diagon) {
-				diagon = f.diagon;
-			}
-			
-			if (f.stair) {
-				stair = f.stair;
-			}
-			
-			if (phis > 0) {
-				opac = 1;
-			}
+			if (f.mat)			{ mat = f.mat;			}
+			if (f.hp)			{ hp = f.hp;			}
+			if (f.thre)			{ thre = f.thre;		}
+			if (f.indestruct)	{ indestruct = true;	}
+			if (f.lurk)			{ lurk = f.lurk;		}
+			if (f.phis)			{ phis = f.phis;		}
+			if (f.shelf)		{ shelf = true;			}
+			if (f.diagon)		{ diagon = f.diagon;	}
+			if (f.stair)		{ stair = f.stair;		}
+			if (phis > 0)		{ opac = 1;				}
 		}
 		
 		public function dec(s:String, mirror:Boolean=false):void {

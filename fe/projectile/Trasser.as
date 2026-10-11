@@ -101,7 +101,7 @@ package fe.projectile {
 				t = loc.getAbsTile(X, Y);
 				if (t.phis == 1 && X <= t.boundingBox.right && X >= t.boundingBox.left && Y >= t.boundingBox.top && Y <= t.boundingBox.bottom) {
 					if (is_skok) {
-                        X = t.boundingBox.bottom + 1;
+                        X = t.boundingBox.right + 1;
                         dx = Math.abs(dx * skok);
                     }
 					else {

@@ -186,6 +186,7 @@ package fe.loc {
 				boundingBox.width = vis.width;
 				boundingBox.height = vis.height;
 			}
+			boundingBox.center(coordinates);
 
 			if (jump) {
 				velocity.X = Math.random() * 10 - 5;

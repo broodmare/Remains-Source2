@@ -1177,7 +1177,7 @@ package fe.loc {
 				}
 			}
 			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.coordinates.X;
-			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.boundingBox.bottom;
+			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.coordinates.Y - gg.boundingBox.halfHeight;
 			return map;
 		}
 		

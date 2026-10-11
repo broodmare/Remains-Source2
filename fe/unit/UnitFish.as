@@ -191,9 +191,9 @@ package fe.unit {
 					if (aiSpok>0) aiSpok--;
 				}
 				if (aiState==2 || aiState==3 || aiState==4 || aiState==5) {
-					if (celX != coordinates.X || celY != this.boundingBox.top) {
+					if (celX != coordinates.X || celY != coordinates.Y - this.boundingBox.halfHeight) {
 						aiDx = celX - coordinates.X;
-						aiDy = celY - this.boundingBox.top;
+						aiDy = celY - (coordinates.Y - this.boundingBox.halfHeight);
 					}
 					if (aiDx>0) storona=1; else storona=-1;
 					aiRasst=Math.sqrt(aiDx*aiDx+aiDy*aiDy)+0.00001;

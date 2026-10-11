@@ -400,7 +400,7 @@ package fe.unit {
 		public function stepEffect():void {
 			if (id=='burning') {
 				if (owner.sost<4) {
-					Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.boundingBox.bottom);
+					Emitter.emit('flame',owner.loc,owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight);
 				}
 			}
 		

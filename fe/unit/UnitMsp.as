@@ -88,12 +88,12 @@ package fe.unit {
 				}
 				else if (cep==3) {
 					vis.x = this.boundingBox.right;
-					vis.y = this.boundingBox.top;
+					vis.y = coordinates.Y - this.boundingBox.halfHeight;
 					vis.rotation = -90;
 				}
 				else if (cep==2) {
 					vis.x = this.boundingBox.left;
-					vis.y = this.boundingBox.top;
+					vis.y = coordinates.Y - this.boundingBox.halfHeight;
 					vis.rotation = 90;
 				}
 				vis.scaleX = storona;

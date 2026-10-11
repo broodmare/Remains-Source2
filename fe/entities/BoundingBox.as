@@ -28,7 +28,7 @@
 		}
 
 		public function setBounds(left:Number, right:Number, top:Number, bottom:Number):void {
-			_left	= left; + 0.01;	// Slight offset to avoid overlapping with the floor tiles
+			_left	= left + 0.01;			// Slight offset to avoid overlapping with the floor tiles
 			_right	= right - 0.01;	// Slight offset to avoid overlapping with the floor tiles
 			_top	= top + 0.01;
 			_bottom	= bottom - 0.01;	// To avoid overlapping with the floor tiles

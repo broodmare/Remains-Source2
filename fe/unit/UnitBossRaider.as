@@ -198,7 +198,7 @@ package fe.unit {
 		}
 
 		private function emit():void {
-			var un:Unit = loc.createUnit('vortex', coordinates.X, this.boundingBox.top, true);
+			var un:Unit = loc.createUnit('vortex', coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
 			un.fraction = fraction;
 			un.detectionDelay = 0;
 			emit_t = 500;

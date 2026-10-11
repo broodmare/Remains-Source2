@@ -120,7 +120,7 @@ package fe.unit {
 			}
 			else {
 				celX = coordinates.X;
-				celY = this.boundingBox.top;
+				celY = coordinates.Y - this.boundingBox.halfHeight;
 			}
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y + this.boundingBox.height;

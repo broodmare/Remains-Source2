@@ -34,7 +34,7 @@ package fe.loc {
 			if (vis) {
 				vis.bonus.cacheAsBitmap = true;
 				vis.x = coordinates.X;
-				vis.y = boundingBox.getCenter(coordinates);
+				vis.y = coordinates.Y;
 			}
 		}
 		
@@ -42,7 +42,13 @@ package fe.loc {
 			boundingBox.width = 40;
 			boundingBox.height = 40;
 
-			boundingBox.center(coordinates);
+			// Bonuses are centered on their map cell, unlike bottom-anchored units and boxes.
+			boundingBox.setBounds(
+				coordinates.X - boundingBox.halfWidth,
+				coordinates.X + boundingBox.halfWidth,
+				coordinates.Y - boundingBox.halfHeight,
+				coordinates.Y + boundingBox.halfHeight
+			);
 		}
 		
 		public override function save():Object {

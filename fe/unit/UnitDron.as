@@ -164,7 +164,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
-			weaponY = this.boundingBox.top;
+			weaponY = coordinates.Y - this.boundingBox.halfHeight;
 			if (tr >= 100) {
 				weaponY += 40;
 			}
@@ -210,7 +210,7 @@ package fe.unit {
 				
 				if (aiState == 0) {		//выбрать случайную цель в пассивном режиме
 					celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd() ? 1 : -1);
-					celY = this.boundingBox.top;
+					celY = coordinates.Y - this.boundingBox.halfHeight;
 				}
 			}
 			
@@ -238,7 +238,7 @@ package fe.unit {
 				
 				atkRasst = celDX * celDX + celDY * celDY;
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.boundingBox.top;
+				spd.y = celY - (coordinates.Y - this.boundingBox.halfHeight);
 				norma(spd, aiState == 0 ? accel * 0.50 : accel);
 				
 				if (aiState == 3) {

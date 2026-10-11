@@ -1456,7 +1456,7 @@ package fe.serv {
 			}
 
 			coordinates.X = owner.coordinates.X;
-			coordinates.Y = owner.boundingBox.bottom;
+			coordinates.Y = owner.coordinates.Y - owner.boundingBox.halfHeight;
 
 			var kol:int;
 			var imp:int;

@@ -144,7 +144,12 @@ package fe.unit.ability.system {
 					continue;
 				}
 
-				if (owner.loc.isLine(owner.coordinates.X, owner.boundingBox.top, box.coordinates.X, box.boundingBox.top)) {
+				if (owner.loc.isLine(
+					owner.coordinates.X,
+					owner.coordinates.Y - owner.boundingBox.halfHeight,
+					box.coordinates.X,
+					box.coordinates.Y - box.boundingBox.halfHeight
+				)) {
 					return box;
 				}
 			}

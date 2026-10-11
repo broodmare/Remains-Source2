@@ -332,8 +332,8 @@ package fe.unit {
 				
 				var v:Vector2 = new Vector2();
 				
-				v.X = X - un.coordinates.X;
-				v.Y = Y - un.boundingBox.bottom;
+				v.X = un.coordinates.X - X;
+				v.Y = un.coordinates.Y - un.boundingBox.halfHeight - Y;
 				var rad2:Number=(v.X * v.X + v.Y * v.Y);
 				
 				if (rad2 > rad * rad) {

@@ -705,7 +705,7 @@ package fe.unit {
 						spd.y=200;
 					}
 					else {
-						spd.y = celY - this.boundingBox.top;
+						spd.y = celY - (coordinates.Y - this.boundingBox.halfHeight);
 					}
 					
 					//дематериализоваться

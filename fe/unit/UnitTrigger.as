@@ -245,19 +245,25 @@ package fe.unit {
 				
 			}
 			else if (id=='trigplate') {
-				l = bb.left;
-				r = bb.right;
+				l = boundingBox.left;
+				r = boundingBox.right;
 				t = coordinates.Y - 1;
 				b = coordinates.Y - 1;
 			}
 			else {
-				l = bb.left;
-				r = bb.right;
-				t = bb.top;
-				b = bb.bottom;
+				l = boundingBox.left;
+				r = boundingBox.right;
+				t = boundingBox.top;
+				b = boundingBox.bottom;
 			}
 
-			bb.setBounds(l, r, t, b);
+			// Preserve the old zero-height activation line for pressure plates.
+			if (id == 'trigplate') {
+				bb.setBounds(l, r, t - 0.01, b + 0.01);
+			}
+			else {
+				bb.setBounds(l, r, t, b);
+			}
 			this.triggerBounds = bb;
 		}
 		

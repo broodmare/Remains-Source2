@@ -138,13 +138,13 @@ package fe.unit {
 			}
 			else if (isLaz > 0) {
 				vis.x = boundingBox.right;
-				vis.y = boundingBox.top;
+				vis.y = coordinates.Y - boundingBox.halfHeight;
 				vis.rotation = -90;
 				vis.scaleX = -climbFacing;
 			}
 			else {
 				vis.x = boundingBox.left;
-				vis.y = boundingBox.top;
+				vis.y = coordinates.Y - boundingBox.halfHeight;
 				vis.rotation = 90;
 				vis.scaleX = climbFacing;
 			}

@@ -198,7 +198,7 @@ package fe.loc {
 				if (t_frec>1) {
 					var kol:int=int(t_frec);
 					t_frec-=kol;
-					emit.cast(loc,(boundingBox.left + boundingBox.right)/2,(boundingBox.bottom)/2,{rx:boundingBox.width, ry:boundingBox.height, kol:kol});
+					emit.cast(loc,(boundingBox.left + boundingBox.right)/2,(boundingBox.top + boundingBox.bottom)/2,{rx:boundingBox.width, ry:boundingBox.height, kol:kol});
 				}
 			}
 			

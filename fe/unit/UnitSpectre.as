@@ -98,7 +98,7 @@ package fe.unit {
 			
 			if (aiState==1 && World.w.gg.loc==loc) {
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.boundingBox.top;
+				spd.y = celY - (coordinates.Y - this.boundingBox.halfHeight);
 				norma(spd,accel);
 				velocity.X += spd.x;
 				velocity.Y += spd.y;

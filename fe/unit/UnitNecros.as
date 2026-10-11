@@ -109,7 +109,7 @@ package fe.unit {
 					}
 					else {
 						celX = coordinates.X;
-						celY = this.boundingBox.top;
+						celY = coordinates.Y - this.boundingBox.halfHeight;
 					}
 				}
 			}
@@ -128,7 +128,7 @@ package fe.unit {
 				}
 				
 				spd.x = celX - coordinates.X;
-				spd.y = celY - this.boundingBox.top;
+				spd.y = celY - (coordinates.Y - this.boundingBox.halfHeight);
 				norma(spd,aiState==0?accel/2:accel);
 			}
 

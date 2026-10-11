@@ -141,7 +141,12 @@ package  fe.entities {
 		// [copying state to another object]
 		public function copy(un:Obj):void {
 			un.coordinates = coordinates;
-			un.boundingBox = boundingBox;
+			un.boundingBox.width = boundingBox.width;
+			un.boundingBox.height = boundingBox.height;
+			un.boundingBox.left = boundingBox.left;
+			un.boundingBox.right = boundingBox.right;
+			un.boundingBox.top = boundingBox.top;
+			un.boundingBox.bottom = boundingBox.bottom;
 			un.storona = storona;
 		}
 		

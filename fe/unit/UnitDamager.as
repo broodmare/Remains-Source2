@@ -247,7 +247,7 @@ package fe.unit {
 				}
 				else if (tipDamager==1) {
 					celX = coordinates.X + 200 * storona;
-					celY = this.boundingBox.top;
+					celY = coordinates.Y - this.boundingBox.halfHeight;
 					currentWeapon.rot = (storona < 0) ? ONE_PI : 0;
 				}
 			}

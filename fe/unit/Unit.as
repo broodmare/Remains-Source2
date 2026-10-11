@@ -895,12 +895,21 @@ package fe.unit {
 		
 		// [Place the created unit in the location]
 		public function putLoc(nloc:Location, nx:Number, ny:Number):void {
+			var child:Obj;
+
 			if (loc != null) {
 				return;
 			}
-			
+
 			loc = nloc;
-			
+
+			// Weapons otherwise only get a location in addVisual, which never runs while the location is inactive
+			for each (child in childObjs) {
+				if (child) {
+					child.loc = nloc;
+				}
+			}
+
 			if (loc.mirror) {
 				storona	= -storona;
 				aiNapr	=  storona;
@@ -2753,9 +2762,9 @@ package fe.unit {
 
 		public function setWeaponPos(tip:String = "internal"):void {
 			weaponX = coordinates.X;
-			weaponY = boundingBox.top;
+			weaponY = coordinates.Y - boundingBox.halfHeight;
 			magicX = coordinates.X;
-			magicY = boundingBox.top;
+			magicY = coordinates.Y - boundingBox.halfHeight;
 		}
 
 		public function setPunchWeaponPos(w:WPunch):void {
@@ -3337,7 +3346,7 @@ package fe.unit {
 				if (isShow) {//Показывать урон
 					var vnumb:int = 1;
 					var castX:Number = coordinates.X;
-					var castY:Number = boundingBox.top;
+					var castY:Number = coordinates.Y - boundingBox.halfHeight;
 					
 					if (bul) {
 						castX = bul.coordinates.X; castY = bul.coordinates.Y;
@@ -3416,7 +3425,7 @@ package fe.unit {
 				
 				if (napr > 0) {
 					var nx:Number = coordinates.X;
-					var ny:Number = boundingBox.top;
+					var ny:Number = coordinates.Y - boundingBox.halfHeight;
 
 					if (napr == 1) {
 						nx = coordinates.X + boundingBox.halfWidth;
@@ -3784,7 +3793,7 @@ package fe.unit {
 				}
 				
 				if (opt && opt.hbonus) {
-					loc.createHealBonus(coordinates.X, boundingBox.top);
+					loc.createHealBonus(coordinates.X, coordinates.Y - boundingBox.halfHeight);
 				}
 			}
 		}
@@ -3828,13 +3837,13 @@ package fe.unit {
 			}
 			
 			if (hero > 0 && !(opt.robot == true) && isrnd(0.75)) {
-				LootGen.lootId(loc, coordinates.X, boundingBox.top, 'essence');
+				LootGen.lootId(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, 'essence');
 			}
 			
 			//выпадение драгоценного камня
 			if (World.w.pers && World.w.pers.dropTre > 0 && xp > 0) {
 				if (Math.random() < World.w.pers.dropTre * xp / 4000) {
-					LootGen.lootId(loc, coordinates.X, boundingBox.top, 'gem' + int(Math.random() * 3 + 1));
+					LootGen.lootId(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, 'gem' + int(Math.random() * 3 + 1));
 				}
 			}
 		}
@@ -3897,7 +3906,7 @@ package fe.unit {
 
 		// Whether the unit is covered by the fog of war, true if not
 		public function getTileVisi(r:Number=0.3):Boolean {
-			return (loc.getAbsTile(coordinates.X, boundingBox.top).visi > r);
+			return (loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.halfHeight).visi > r);
 		}
 		
 		//слушать другого юнита
@@ -3913,7 +3922,7 @@ package fe.unit {
 			}
 			else {
 				var nx:Number = ncel.coordinates.X - this.coordinates.X;
-				var ny:Number = ncel.boundingBox.top - boundingBox.bottom;
+				var ny:Number = ncel.coordinates.Y - ncel.boundingBox.halfHeight - (coordinates.Y - boundingBox.halfHeight);
 				r2 = nx * nx + ny * ny;
 			}
 
@@ -3938,7 +3947,7 @@ package fe.unit {
 
 			// Calculate relative position once
 			var cx:Number = ncel.coordinates.X - eyeX;
-			var cy:Number = ncel.coordinates.Y - ncel.boundingBox.halfHeight * 0.6 - eyeY;
+			var cy:Number = ncel.coordinates.Y - ncel.boundingBox.height * 0.6 - eyeY;
 
 			// Calculate squared distance once to avoid repeated calculations
 			var r2:Number = cx * cx + cy * cy;
@@ -4079,7 +4088,7 @@ package fe.unit {
 		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void {
 			if (un && isMeet(un)) {
 				celX = un.coordinates.X + un.boundingBox.width * 0.25 * un.storona;
-				celY = un.boundingBox.top;
+				celY = un.coordinates.Y - un.boundingBox.halfHeight;
 				celUnit = un;
 				
 				if (un.player) {
@@ -4098,7 +4107,7 @@ package fe.unit {
 			}
 			else {
 				celX = coordinates.X;
-				celY = boundingBox.top;
+				celY = coordinates.Y - boundingBox.halfHeight;
 				celUnit = null;
 			}
 			
@@ -4113,7 +4122,7 @@ package fe.unit {
 				}
 				
 				var gx:Number = loc.grenades[i].coordinates.X - coordinates.X;
-				var gy:Number = loc.grenades[i].coordinates.Y - boundingBox.top;
+				var gy:Number = loc.grenades[i].coordinates.Y - (coordinates.Y - boundingBox.halfHeight);
 				
 				if (gx * gx + gy * gy < 160000) { // [There is a grenade]
 					if (loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.grenades[i].coordinates.X, loc.grenades[i].coordinates.Y)) {
@@ -4153,7 +4162,7 @@ package fe.unit {
 				disabled = false;
 				setNull(true);
 				addVisual();
-				Emitter.emit('tele', loc, coordinates.X, boundingBox.bottom, {rx:boundingBox.width, ry:boundingBox.height, kol:30});
+				Emitter.emit('tele', loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {rx:boundingBox.width, ry:boundingBox.height, kol:30});
 			}
 			
 			if (com == 'fraction') {
