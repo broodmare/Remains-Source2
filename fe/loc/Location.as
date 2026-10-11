@@ -2566,6 +2566,7 @@ package fe.loc {
 				for (var i:int = 1; i < 10; i++) {
 					if (grenades[i] == null) {
 						grenades[i] = g;
+						break;
 					}
 				}
 			}
