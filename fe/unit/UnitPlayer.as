@@ -4747,7 +4747,7 @@ package fe.unit {
 				return;
 			}
 			
-			if (t_replic) {
+			if (t_replic > 0) {
 				return;
 			}
 			
