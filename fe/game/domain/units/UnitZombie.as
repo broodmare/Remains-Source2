@@ -10,11 +10,11 @@ package fe.game.domain.units {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.ability.Telekinesis;
 	import fe.game.WeaponManager;
-	import fe.game.World;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
 	import fe.game.rendering.enums.E_Decal;
+	import fe.game.GameContainer;
 
 	public class UnitZombie extends UnitPon {
 
@@ -435,7 +435,7 @@ package fe.game.domain.units {
 
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				celY = coordinates.Y - boundingBox.height;
 				celX = coordinates.X + boundingBox.width * storona.X * 2;
 				return;
@@ -483,7 +483,7 @@ package fe.game.domain.units {
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
 				if (findCel()) {
 					//увидели
 					if (celUnit) {

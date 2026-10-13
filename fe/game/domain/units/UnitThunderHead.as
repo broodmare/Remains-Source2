@@ -10,7 +10,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.Location;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.weapon.Weapon;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.enums.E_Material;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;

@@ -1,6 +1,6 @@
 package fe.game.domain.location {
 
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.units.enums.E_Resistances;
 

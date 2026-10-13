@@ -14,7 +14,7 @@ package fe.game.ui {
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Armor;
 	import fe.game.domain.units.UnitPet;
 	import fe.game.domain.units.InventoryItem;
@@ -211,7 +211,7 @@ package fe.game.ui {
 						}
 						
 						// [Only sold in limited inventory mode]
-						if (b.hardinv && !World.w.hardInv) {
+						if (b.hardinv && !GameContainer.reference.hardInv) {
 							continue;
 						}
 						

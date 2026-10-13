@@ -5,7 +5,7 @@ package fe.game.domain.units {
 	
 	import fe.engine.utils.SymbolFactory;
 	import fe.engine.text.TextParser;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	
 	public class UnitCaptive extends Unit {
 		

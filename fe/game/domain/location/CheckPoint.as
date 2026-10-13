@@ -5,12 +5,13 @@ package fe.game.domain.location {
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.engine.text.TextParser;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.serv.Interact;
 	import fe.game.domain.location.tile.Tile;
+	import fe.engine.SaveManager;
 	
 	public class CheckPoint extends Obj {
 
@@ -193,7 +194,7 @@ package fe.game.domain.location {
 			}
 			
 			GUIManager.reference.gui.infoText('checkPoint');
-			World.w.saveGame();
+			SaveManager.reference.saveGame();
 		}
 		
 		public function teleport():void {
@@ -205,7 +206,7 @@ package fe.game.domain.location {
 			else {
 				GameContainer.reference.game.gotoLand(GameContainer.reference.game.baseId);
 				
-				if (World.w.hardInv && World.w.land.rnd) {
+				if (GameContainer.reference.hardInv && World.w.land.rnd) {
 					used = true;
 					inter.active = false;
 					inter.actionText = '';
@@ -236,7 +237,7 @@ package fe.game.domain.location {
 		}
 		
 		public override function step():void {
-			onCursor=(boundingBox.left < World.w.celX && boundingBox.right > World.w.celX && boundingBox.top < World.w.celY && boundingBox.bottom > World.w.celY)?prior:0;
+			onCursor=(boundingBox.left < GameContainer.reference.celX && boundingBox.right > GameContainer.reference.celX && boundingBox.top < GameContainer.reference.celY && boundingBox.bottom > GameContainer.reference.celY)?prior:0;
 			
 			if (inter) {
 				inter.step();

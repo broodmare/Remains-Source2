@@ -3,8 +3,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.Location;
 	import fe.game.domain.serv.LootGen;
 	import fe.game.WeaponManager;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
 
@@ -215,7 +214,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
 				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;

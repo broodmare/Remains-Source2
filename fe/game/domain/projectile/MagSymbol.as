@@ -1,7 +1,7 @@
 package fe.game.domain.projectile {
 
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.entities.Obj;
 	import fe.game.rendering.Emitter;

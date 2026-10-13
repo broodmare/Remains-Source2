@@ -3,8 +3,8 @@ package fe.game.domain.units {
 	import flash.display.MovieClip;
 
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 	
 	public class UnitBat extends Unit {
 		
@@ -115,7 +115,7 @@ package fe.game.domain.units {
 		override protected function control():void {
 			if (sost>=3) return;
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			
@@ -167,7 +167,7 @@ package fe.game.domain.units {
 			}
 			
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState<6) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1 && aiState<6) {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					if (aiState<5) aiState=(hp<maxhp)?4:3;
@@ -237,7 +237,7 @@ package fe.game.domain.units {
 				velocity.Y += aiDy * accel * 3;
 			}
 			
-			if (World.w.enemyAct>=3) {
+			if (GameContainer.reference.enemyAct>=3) {
 				if (aiState==3 && shok<=0 && isrnd(0.1)) {
 					attKorp(celUnit);
 				}

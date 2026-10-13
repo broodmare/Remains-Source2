@@ -1,9 +1,8 @@
 package fe.game.domain.location {
 
 	import fe.engine.text.TextParser;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.serv.Script;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.units.Unit;
@@ -83,7 +82,7 @@ package fe.game.domain.location {
 				if (xml.@vis.length()) {
 					vis = TextParser.getVis('vis' + xml.@vis, visArea);		// .SWF Dependency
 				}
-				if (World.w.showArea) {
+				if (GameContainer.reference.showArea) {
 					vis = new visArea();								// .SWF Dependency
 				}
 				

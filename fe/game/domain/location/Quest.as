@@ -3,9 +3,8 @@ package fe.game.domain.location {
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.weapon.Weapon;
@@ -518,7 +517,7 @@ package fe.game.domain.location {
             }
 			
 			// [Final dialogue]
-			if (endDial && World.w.dialOn) {
+			if (endDial && GameContainer.reference.dialOn) {
 				GUIManager.reference.pip.onoff(-1);
 				GUIManager.reference.gui.dialog(endDial);
 			}

@@ -7,6 +7,7 @@ package fe.game.domain.location {
 	import flash.events.IOErrorEvent;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.World;
+	import fe.game.GameContainer;
 	
 	public class LandLoader {
 
@@ -33,7 +34,7 @@ package fe.game.domain.location {
 			test = (roomNode.@test > 0);
 
 			//источник шаблонов локаций
-			if (World.w.roomsLoad) {
+			if (GameContainer.reference.roomsLoad) {
 				loader_rooms = new URLLoader();
 				var roomsURL:String = LAND_PATH+roomsFile+".xml";
 				request = new URLRequest(roomsURL); 
@@ -45,7 +46,7 @@ package fe.game.domain.location {
 			else {
 				allroom=World.w.rooms.rooms[roomsFile];
 				loaded=true;
-				World.w.load_log+='Land '+roomsFile+' loaded\n';
+				GameContainer.reference.load_log+='Land '+roomsFile+' loaded\n';
 				if (!test) World.w.roomsLoadOk();
 			}
 		}
@@ -55,7 +56,7 @@ package fe.game.domain.location {
             loader.removeEventListener(Event.COMPLETE, onCompleteLoadRooms); 
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
 			loaded=true;
-			World.w.load_log+='Land '+roomsFile+' loaded\n';
+			GameContainer.reference.load_log+='Land '+roomsFile+' loaded\n';
 			allroom = new XML(loader_rooms.data);
 			if (!test) World.w.roomsLoadOk();
 		}
@@ -64,7 +65,7 @@ package fe.game.domain.location {
 			var loader:URLLoader = URLLoader(event.currentTarget);
 			loader.removeEventListener(Event.COMPLETE, onCompleteLoadRooms); 
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
-			World.w.load_log+='IOerror '+roomsFile+'\n';
+			GameContainer.reference.load_log+='IOerror '+roomsFile+'\n';
         }
 	}
 }

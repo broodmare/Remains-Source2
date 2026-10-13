@@ -14,7 +14,7 @@ package fe.game.ui {
 	import fe.engine.text.LanguageManager;
 	import fe.game.World;
 	import fe.engine.Engine;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.UnitPlayer;
@@ -63,7 +63,7 @@ package fe.game.ui {
 			}
 			
 			if (active) {
-				if (World.w.loc.base || World.w.alicorn) {
+				if (World.w.loc.base || GameContainer.reference.alicorn) {
 					active = false;
 					return;
 				}
@@ -114,7 +114,7 @@ package fe.game.ui {
 
 				skillConf = 1;
 				
-				if (World.w.weaponsLevelsOff) {
+				if (GameContainer.reference.weaponsLevelsOff) {
 					var razn:int = weapon.lvl - gg.pers.getWeapLevel(weapon.skill);
 					if (razn == 1) skillConf = 0.8;
 					else if (razn == 2) skillConf = 0.6;
@@ -219,7 +219,7 @@ package fe.game.ui {
 			}
 			
 			if (cel == null) {
-				cel = new SatsCel(null, World.w.celX, World.w.celY, weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult, weapon.satsQue);
+				cel = new SatsCel(null, GameContainer.reference.celX, GameContainer.reference.celY, weapon.satsCons * weapon.consMult / skillConf * gg.pers.satsMult, weapon.satsQue);
 			}
 			
 			weapon.ready = false;

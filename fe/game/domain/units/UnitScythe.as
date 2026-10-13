@@ -4,7 +4,7 @@ package fe.game.domain.units {
 	
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.location.Location;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	
 	public class UnitScythe extends Unit {
 

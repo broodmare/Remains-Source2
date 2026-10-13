@@ -13,11 +13,12 @@ package fe.game.ui {
 
 	import fe.game.stubs.visMainMenu;
 	import fe.game.stubs.butLang;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.game.World;
+	import fe.engine.SaveManager;
 
 	public class MainMenu {
 
@@ -76,7 +77,7 @@ package fe.game.ui {
 		private function mainMenu2():void {
 			trace("STARTING LOADING PART 2!");
 			
-			mainMenuMovieClip.testtest.visible=World.w.testMode;
+			mainMenuMovieClip.testtest.visible=GameContainer.reference.testMode;
 			mainMenuMovieClip.info.visible=false;
 			setMenuSize();
 			displ = new Displ(mainMenuMovieClip.pipka, mainMenuMovieClip.groza);
@@ -181,13 +182,13 @@ package fe.game.ui {
 		}
 
 		private function funNewGame():void {
-			World.w.mmArmor = false;
+			GameContainer.reference.mmArmor = false;
 			mainLoadOff();
 			mainNewOn();
 		}
 
 		private function funLoadGame():void {
-			World.w.mmArmor = true;
+			GameContainer.reference.mmArmor = true;
 			mainNewOff();
 			loadReg = 0;
 			mainLoadOn();
@@ -197,15 +198,15 @@ package fe.game.ui {
 		private function funContGame():void {
 			var n:int=0;
 			var maxDate:Number=0;
-			for (var i:int = 0; i<=World.w.saveKol; i++)  {
-				var save:Object=World.w.getSave(i);
+			for (var i:int = 0; i<=SaveManager.reference.saveKol; i++)  {
+				var save:Object=SaveManager.reference.getSave(i);
 				if (save && save.est && save.date>maxDate) {
 					n = i;
 					maxDate = save.date;
 				}
 			}
 
-			save = World.w.getSave(n);
+			save = SaveManager.reference.getSave(n);
 
 			if (save && save.est) {
 				mainMenuOff();
@@ -288,7 +289,7 @@ package fe.game.ui {
 				GUIManager.reference.app.setLang();
 			}
 			
-			mainMenuMovieClip.adv.text = advText(World.w.nadv);
+			mainMenuMovieClip.adv.text = advText(GameContainer.reference.nadv);
 			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight-40;
 			funInform();
 			mainMenuMovieClip.info.visible=(mainMenuMovieClip.info.txt.text.length>0);
@@ -369,9 +370,9 @@ package fe.game.ui {
 			
 			saveFiles = [];
 			
-			for (var i:int = 0; i <= World.w.saveKol; i++) {
+			for (var i:int = 0; i <= SaveManager.reference.saveKol; i++) {
 				var slot:MovieClip = mainMenuMovieClip.dialLoad["slot" + i];
-				var save:Object = World.w.getSave(i);
+				var save:Object = SaveManager.reference.getSave(i);
 				var obj:Object = fe.game.ui.PipPageOpt.saveObj(save, i);
 				saveFiles.push(obj);
 				slot.id.text = i;
@@ -407,7 +408,7 @@ package fe.game.ui {
 				mainMenuMovieClip.dialLoad.butCancel.removeEventListener(MouseEvent.CLICK, funLoadCancel);
 				mainMenuMovieClip.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
 			}
-			for (var i:int = 0; i<=World.w.saveKol; i++) {
+			for (var i:int = 0; i<=SaveManager.reference.saveKol; i++) {
 				var slot:MovieClip=mainMenuMovieClip.dialLoad["slot" + i];
 				if (slot.hasEventListener(MouseEvent.CLICK)) {
 					slot.removeEventListener(MouseEvent.CLICK, funLoadSlot);
@@ -461,7 +462,7 @@ package fe.game.ui {
 			var obj:Object = file.data.readObject();
 			if (obj && obj.est == 1){
 				loadCell = 99;
-				World.w.loaddata = obj;
+				SaveManager.reference.loaddata = obj;
 				mainLoadOff();
 				mainMenuOff();
 				command = 3;
@@ -521,24 +522,24 @@ package fe.game.ui {
 		}
 
 		private function funAdv(event:MouseEvent):void {
-			World.w.nadv++;
+			GameContainer.reference.nadv++;
 			
-			if (World.w.nadv>=World.w.koladv) {
-				World.w.nadv=0;
+			if (GameContainer.reference.nadv>=GameContainer.reference.koladv) {
+				GameContainer.reference.nadv=0;
 			}
 			
-			mainMenuMovieClip.adv.text = advText(World.w.nadv);
+			mainMenuMovieClip.adv.text = advText(GameContainer.reference.nadv);
 			mainMenuMovieClip.adv.y = main.stage.stageHeight - mainMenuMovieClip.adv.textHeight - 40;
 		}
 
 		private function funAdvR(event:MouseEvent):void {
-			World.w.nadv--;
+			GameContainer.reference.nadv--;
 			
-			if (World.w.nadv < 0) {
-				World.w.nadv = World.w.koladv - 1;
+			if (GameContainer.reference.nadv < 0) {
+				GameContainer.reference.nadv = GameContainer.reference.koladv - 1;
 			}
 			
-			mainMenuMovieClip.adv.text = advText(World.w.nadv);
+			mainMenuMovieClip.adv.text = advText(GameContainer.reference.nadv);
 			mainMenuMovieClip.adv.y=main.stage.stageHeight-mainMenuMovieClip.adv.textHeight - 40;
 		}
 
@@ -626,7 +627,7 @@ package fe.game.ui {
 			showButtons(false);
 			mainMenuMovieClip.loading.text = "Loading";
 			language.changeLanguage(nid);
-			World.w.saveConfig();		// Remember the selected language
+			GameContainer.reference.saveConfig();		// Remember the selected language
 			langReload = true;
 		}
 		
@@ -722,7 +723,7 @@ package fe.game.ui {
 						" Music " + Sound.totalSongsLoaded + "/" + Sound.totalSongsToLoad;
 				}
 				
-				mainMenuMovieClip.loading.text += World.w.load_log;
+				mainMenuMovieClip.loading.text += GameContainer.reference.load_log;
 			} 
 			else {
 				mainMenuMovieClip.loading.text = "Loading " + Math.round(GameContainer.reference.grafon.progressLoad * 100) + "%";

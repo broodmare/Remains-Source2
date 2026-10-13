@@ -4,9 +4,8 @@ package fe.game.domain.units {
 	
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.units.enums.E_Resistances;
 
@@ -77,7 +76,7 @@ package fe.game.domain.units {
 				tip=node.@tip;
 				t=node.@t*30;
 				
-				if (World.w.testEff) t=node.@t*3;
+				if (GameContainer.reference.testEff) t=node.@t*3;
 				if (val==0) val=node.@val;
 				if (node.sk.length()) params=true;
 				if (node.@post.length()) post=node.@post;

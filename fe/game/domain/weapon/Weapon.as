@@ -10,7 +10,7 @@ package fe.game.domain.weapon {
 	import fe.game.WeaponManager;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.units.Unit;
@@ -608,12 +608,12 @@ package fe.game.domain.weapon {
 				return false;
 			}
 			
-			if (owner.player && (respect == WEP_LOCKED || alicorn && !World.w.alicorn)) {
+			if (owner.player && (respect == WEP_LOCKED || alicorn && !GameContainer.reference.alicorn)) {
 				GUIManager.reference.gui.infoText("disWeapon", null, null, false);
 				return false;
 			}
 			
-			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
+			if (!waitReady && !GameContainer.reference.alicorn && !auto && t_auto > 0) {
 				t_auto = 3;
 				pow++;
 				return true;
@@ -856,7 +856,7 @@ package fe.game.domain.weapon {
 				}
 				
 				if (grav) {
-					b.ddy += World.ddy * grav;
+					b.ddy += GameContainer.ddy * grav;
 					b.vRot = true;
 				}
 				
@@ -889,12 +889,12 @@ package fe.game.domain.weapon {
 					// [replenishment at the landfill]
 					if (owner.player && loc.train && usesInventoryAmmo()) {
 						GameContainer.reference.invent.increaseQuantity(ammo.id, rashod);
-						World.w.calcMass = true;
+						GameContainer.reference.calcMass = true;
 					}
 				}
 			}
 			
-			if (owner.player && tip != TYPE_INTERNAL && tip != TYPE_EXPLOSIVES && tip != TYPE_MAGIC && !(loc.train || World.w.alicorn)) {
+			if (owner.player && tip != TYPE_INTERNAL && tip != TYPE_EXPLOSIVES && tip != TYPE_MAGIC && !(loc.train || GameContainer.reference.alicorn)) {
 				hp -= (1 + (ammo ? ammo.increasedWear : 0));
 			}
 			
@@ -944,7 +944,7 @@ package fe.game.domain.weapon {
 		}
 		
 		public function setTrass(gr:Graphics):void {
-			var rot3:Number = Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+			var rot3:Number = Math.atan2(GameContainer.reference.celY - coordinates.Y, GameContainer.reference.celX - coordinates.X);
 			
 			trasser.loc = owner.loc;
 			trasser.X = trasser.begx = coordinates.X;
@@ -955,7 +955,7 @@ package fe.game.domain.weapon {
 			trasser.ddx = 0;
 			
 			if (grav) {
-				trasser.ddy += World.ddy;
+				trasser.ddy += GameContainer.ddy;
 			}
 			
 			trasser.trass(gr);
@@ -1034,7 +1034,7 @@ package fe.game.domain.weapon {
 				if (ammoTarg != ammo) {
 					if (magazineRounds > 0) {
 						GameContainer.reference.invent.increaseQuantity(ammo.id, magazineRounds);
-						World.w.calcMass = true;
+						GameContainer.reference.calcMass = true;
 						magazineRounds = 0;
 					}
 					
@@ -1050,7 +1050,7 @@ package fe.game.domain.weapon {
 				if (kol > 0) {
 					magazineRounds += kol;
 					GameContainer.reference.invent.decreaseQuantity(ammo.id, kol);
-					World.w.calcMass = true;
+					GameContainer.reference.calcMass = true;
 				}
 			}
 			else {
@@ -1076,7 +1076,7 @@ package fe.game.domain.weapon {
 			if (owner && owner.player && magazineCapacity > 0 && magazineRounds > 0 && usesInventoryAmmo()) {
 				GUIManager.reference.gui.infoText("unloadWeapon", nazv, null, false);
 				(owner as UnitPlayer).invent.increaseQuantity(ammo.id, magazineRounds);
-				World.w.calcMass = true;
+				GameContainer.reference.calcMass = true;
 				magazineRounds = 0;
 				
 				if (sndReload != "") {
@@ -1130,7 +1130,7 @@ package fe.game.domain.weapon {
 			
 			var razn:int = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			
-			if (World.w.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) {
+			if (GameContainer.reference.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) {
 				return -1;
 			}
 			

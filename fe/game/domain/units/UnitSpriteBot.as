@@ -4,9 +4,9 @@ package fe.game.domain.units {
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.WeaponManager;
-	import fe.game.World;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	public class UnitSpriteBot extends Unit {
 
@@ -102,7 +102,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			
@@ -148,7 +148,7 @@ package fe.game.domain.units {
 				}
 			}
 			// [goal search]
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					zlo();
 					storona = (celDX > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
@@ -165,7 +165,7 @@ package fe.game.domain.units {
 			}
 			
 			// [attack]
-			if (World.w.enemyAct >= 3 && aiState == 1 && celUnit && shok <= 0) {
+			if (GameContainer.reference.enemyAct >= 3 && aiState == 1 && celUnit && shok <= 0) {
 				if (isrnd(0.1)) {
 					currentWeapon.attack();
 				}

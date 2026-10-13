@@ -10,7 +10,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.Location;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
 	
@@ -509,7 +509,7 @@ package fe.game.domain.units {
 			
 			levitPoss = !hidden;
 			
-			if (World.w.enemyAct <= 0 || sleep) {
+			if (GameContainer.reference.enemyAct <= 0 || sleep) {
 				return;
 			}
 			
@@ -569,7 +569,7 @@ package fe.game.domain.units {
 				}
 			}
 			
-			if (World.w.enemyAct > 1 && aiTCh % 10 == 1) {
+			if (GameContainer.reference.enemyAct > 1 && aiTCh % 10 == 1) {
 				if (!noTurn) {
 					vAngle = currentWeapon.rot;
 				}
@@ -659,11 +659,11 @@ package fe.game.domain.units {
 			}
 			
 			//атака
-			if (World.w.enemyAct>=3 && aiState==3 && !stun) {
+			if (GameContainer.reference.enemyAct>=3 && aiState==3 && !stun) {
 				currentWeapon.attack();
 			}
 			
-			if (World.w.enemyAct >= 3 && celUnit && dam>0 && detectionDelay <= 0) {	//атака корпусом
+			if (GameContainer.reference.enemyAct >= 3 && celUnit && dam>0 && detectionDelay <= 0) {	//атака корпусом
 				attKorp(celUnit, 1);
 			}
 		}

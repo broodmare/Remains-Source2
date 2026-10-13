@@ -9,8 +9,7 @@ package fe.game.domain.units {
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.WeaponManager;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.weapon.WThrow;
 	import fe.game.enums.E_Direction;
 	
@@ -256,7 +255,7 @@ package fe.game.domain.units {
 			
 			if (!controlOn) return;
 			if (loc.gg.invulner) return;
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
 				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;

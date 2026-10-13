@@ -3,7 +3,7 @@ package fe.game.domain.units {
 	import flash.display.MovieClip;
 	
 	import fe.engine.utils.SymbolFactory;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.WeaponManager;

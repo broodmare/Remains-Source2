@@ -9,7 +9,7 @@ package fe.game.ui {
 	import fe.game.ItemInteraction;
 	import fe.game.ItemManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Armor;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Item;
@@ -507,7 +507,7 @@ package fe.game.ui {
 				
 				GameContainer.reference.game.checkQuests(cid);
 				
-				if (World.w.helpMess && inv.hasItem(cid)) {
+				if (GameContainer.reference.helpMess && inv.hasItem(cid)) {
 					var lmess:String = ItemManager.reference.getItem(cid).mess;
 					
 					if (lmess != null && !(GameContainer.reference.game.triggers["mess_"+lmess] > 0)) {

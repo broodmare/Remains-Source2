@@ -1,8 +1,8 @@
 package fe.game.domain.units {
 
-	import fe.game.World;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	public class UnitNecros extends Unit {
 		
@@ -66,7 +66,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (World.w.enemyAct <= 0) {
+			if (GameContainer.reference.enemyAct <= 0) {
 				return;
 			}
 			
@@ -116,7 +116,7 @@ package fe.game.domain.units {
 			}
 			
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -144,7 +144,7 @@ package fe.game.domain.units {
 			}
 	
 			//атака
-			if (World.w.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
+			if (GameContainer.reference.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
 				attKorp(celUnit,1);
 			}
 		}

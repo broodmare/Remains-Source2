@@ -28,7 +28,7 @@ package fe.game.domain.units {
 	import fe.engine.audio.Sound;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.ui.Appear;
 	import fe.game.domain.location.Loot;
 	import fe.game.domain.weapon.WKick;
@@ -41,6 +41,7 @@ package fe.game.domain.units {
 
 	import fe.game.stubs.visualPlayer;	// .fla linkage
 	import fe.game.stubs.reloadBar;		// .fla linkage
+	import fe.engine.SaveManager;
 	
 	public class UnitPlayer extends UnitPon {
 
@@ -275,7 +276,7 @@ package fe.game.domain.units {
 			maxjumpp = 8;
 			plavdy = accel * 0.50;
 			levidy = accel * 0.25;	// Levitation speed.
-			if (World.w.alicorn) levidy = accel * 0.5;
+			if (GameContainer.reference.alicorn) levidy = accel * 0.5;
 			hp=maxhp;
 			reloadbar.y = -boundingBox.height-10;
 			
@@ -304,12 +305,12 @@ package fe.game.domain.units {
 
 		// Debug mode
 		private function testFunction():void {
-			if (World.w.chitOn) {
-				World.w.godMode = true;
-				World.w.chit = "port";
-				World.w.drawAllMap = true;
-				World.w.black = false;
-				World.w.showAddInfo = true;
+			if (GameContainer.reference.chitOn) {
+				GameContainer.reference.godMode = true;
+				GameContainer.reference.chit = "port";
+				GameContainer.reference.drawAllMap = true;
+				GameContainer.reference.black = false;
+				GameContainer.reference.showAddInfo = true;
 				GameContainer.reference.grafon.visLight.visible = false;
 			}
 		}
@@ -334,7 +335,7 @@ package fe.game.domain.units {
 			hp = pers.begHP;
 			maxhp = pers.begHP;
 			
-			if (cArmorId != "" && cArmorId != null && !World.w.alicorn) {
+			if (cArmorId != "" && cArmorId != null && !GameContainer.reference.alicorn) {
 				changeArmor(cArmorId, true);
 			}
 			else {
@@ -420,12 +421,12 @@ package fe.game.domain.units {
 				weaponLevit();
 			}
 			
-			World.w.calcMassW	= true;
-			World.w.calcMass	= true;
+			GameContainer.reference.calcMassW	= true;
+			GameContainer.reference.calcMass	= true;
 			
 			setAddictions();
 			
-			if (World.w.alicorn) {
+			if (GameContainer.reference.alicorn) {
 				alicornOn(false);
 			}
 			else {
@@ -732,7 +733,7 @@ package fe.game.domain.units {
 				}
 				
 				if (isPlav) {
-					velocity.Y += World.ddy * ddyPlav;
+					velocity.Y += GameContainer.ddy * ddyPlav;
 					velocity.Y *= 0.8;
 				}
 				else {
@@ -740,10 +741,10 @@ package fe.game.domain.units {
 					
 					if (t.gravity > 0 && velocity.Y < loc.maxdy * t.gravity || t.gravity < 0 && velocity.Y > loc.maxdy * t.gravity) {
 						if (dash_t > dash_maxt - 11) {
-							velocity.Y += World.ddy * t.gravity * 0.10;
+							velocity.Y += GameContainer.ddy * t.gravity * 0.10;
 						}
 						else {
-							velocity.Y += World.ddy * t.gravity;
+							velocity.Y += GameContainer.ddy * t.gravity;
 						}
 					}
 					
@@ -850,7 +851,7 @@ package fe.game.domain.units {
 			
 			super.actions();
 
-			inBattle = World.w.t_battle > 0 || World.w.testBattle;
+			inBattle = GameContainer.reference.t_battle > 0 || GameContainer.reference.testBattle;
 			
 			// [loot capture]
 			if (isTake > 0) {
@@ -874,7 +875,7 @@ package fe.game.domain.units {
 			}
 			
 			if (drad > 0) {
-				if (radX > 0 && !invulner && !World.w.godMode) {
+				if (radX > 0 && !invulner && !GameContainer.reference.godMode) {
 					rad += drad / 30 * radX;
 					
 					if (pers.radChild > 0 && rad > maxhp * (1 - pers.radChild)) {
@@ -925,7 +926,7 @@ package fe.game.domain.units {
 				GUIManager.reference.gui.setHp();
 			}
 			
-			if (World.w.alicorn && sost==1) {
+			if (GameContainer.reference.alicorn && sost==1) {
 				if (hp < maxhp) {
 					hp += pers.alicornHeal;
 					
@@ -1124,8 +1125,8 @@ package fe.game.domain.units {
 				}
 			}
 			else {
-				celX = World.w.celX;
-				celY = World.w.celY;
+				celX = GameContainer.reference.celX;
+				celY = GameContainer.reference.celY;
 			}
 			
 			// [accuracy modifier precMult, only if shooting is not through the SATS]
@@ -1249,7 +1250,7 @@ package fe.game.domain.units {
 					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
 				}
 			}
-			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
+			else if (GameContainer.reference.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
 				dmana = -pers.alicornRunMana;
 				
 				if (!loc.sky) {
@@ -1506,8 +1507,8 @@ package fe.game.domain.units {
 				GUIManager.reference.gui.bulb(coordinates.X, coordinates.Y - 20);
 			}
 			else {
-				var nx:int = Math.round(World.w.celX / tileX) * tileX
-				var ny:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+				var nx:int = Math.round(GameContainer.reference.celX / tileX) * tileX
+				var ny:int = Math.round(GameContainer.reference.celY / tileY + 1) * tileY - 1;
 				
 				if (checkPort()) {
 					teleport(nx, ny, 1);
@@ -1534,15 +1535,15 @@ package fe.game.domain.units {
 			}
 			
 			if (!loc.sky) {
-				var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
+				var t:Tile = loc.getAbsTile(GameContainer.reference.celX, GameContainer.reference.celY);
 				
 				if (t.visibility < 0.80) {
 					return;
 				}
 			}
 			
-			var tx:int = Math.round(World.w.celX / tileX) * tileX
-			var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+			var tx:int = Math.round(GameContainer.reference.celX / tileX) * tileX
+			var ty:int = Math.round(GameContainer.reference.celY / tileY + 1) * tileY - 1;
 			
 			if (loc.sky || !loc.collisionUnit(tx, ty, _standingWidth, _standingHeight))	{
 				teleport(tx, ty, 1);
@@ -1566,9 +1567,9 @@ package fe.game.domain.units {
 				return true;
 			}
 			
-			var nx:int = Math.round(World.w.celX / tileX) * tileX
-			var ny:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
-			var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
+			var nx:int = Math.round(GameContainer.reference.celX / tileX) * tileX
+			var ny:int = Math.round(GameContainer.reference.celY / tileY + 1) * tileY - 1;
+			var t:Tile = loc.getAbsTile(GameContainer.reference.celX, GameContainer.reference.celY);
 			
 			if (t.visibility >= 0.8 && !loc.collisionUnit(nx, ny, _standingWidth, _standingHeight)) {
 				return true;
@@ -1623,13 +1624,13 @@ package fe.game.domain.units {
 
 			// [find the closest matching object if the cursor is not pointing directly at the target]
 			if (loc.celObj == null) {
-				var dist:Number = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (coordinates.Y - boundingBox.halfHeight - World.w.celY) * (coordinates.Y - boundingBox.halfHeight - World.w.celY);
+				var dist:Number = (coordinates.X - GameContainer.reference.celX) * (coordinates.X - GameContainer.reference.celX) + (coordinates.Y - boundingBox.halfHeight - GameContainer.reference.celY) * (coordinates.Y - boundingBox.halfHeight - GameContainer.reference.celY);
 				
 				if (dist > pers.teleDist) {
 					return;
 				}
 				
-				if (!loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, World.w.celX, World.w.celY)) {
+				if (!loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, GameContainer.reference.celX, GameContainer.reference.celY)) {
 					return;
 				}
 				
@@ -1638,7 +1639,7 @@ package fe.game.domain.units {
 				
 				while (pt) {
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
-						dist = (World.w.celX - pt.coordinates.X) * (World.w.celX - pt.coordinates.X) + (World.w.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight) * (World.w.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight);
+						dist = (GameContainer.reference.celX - pt.coordinates.X) * (GameContainer.reference.celX - pt.coordinates.X) + (GameContainer.reference.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight) * (GameContainer.reference.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight);
 						
 						if (dist < mindist) {
 							loc.celObj = (pt as Obj);
@@ -1759,12 +1760,12 @@ package fe.game.domain.units {
 			if (actionObj) {
 				// Object too far away, measured to the object itself -- a unit's Interact keeps the position it had before the unit was placed
 				// Differs from vanilla, where that position was NaN, so walking away from a trap, trigger or charge never cancelled the action
-				if ((coordinates.X - actionObj.owner.coordinates.X) * (coordinates.X - actionObj.owner.coordinates.X) + (coordinates.Y - actionObj.owner.coordinates.Y) * (coordinates.Y - actionObj.owner.coordinates.Y) > World.w.actionDist) {
+				if ((coordinates.X - actionObj.owner.coordinates.X) * (coordinates.X - actionObj.owner.coordinates.X) + (coordinates.Y - actionObj.owner.coordinates.Y) * (coordinates.Y - actionObj.owner.coordinates.Y) > GameContainer.reference.actionDist) {
 					actionObj = null;
 				}
 			}
 			// Object within range
-			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist) {
+			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= GameContainer.reference.actionDist) {
 				actionReady = false;
 				
 				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == "comein")) && !loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight, loc.celObj)) {
@@ -1828,7 +1829,7 @@ package fe.game.domain.units {
 		}
 
 		private function crackAction():void {
-			if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
+			if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=GameContainer.reference.actionDist){
 				if (loc.celObj.inter &&  loc.celObj.inter.needRuna(this)) {
 					loc.celObj.inter.useRuna(this);
 				}
@@ -1836,21 +1837,21 @@ package fe.game.domain.units {
 		}
 
 		private function chit():void {
-			if (World.w.chit == "fly") {
+			if (GameContainer.reference.chit == "fly") {
 				isFly =! isFly;
 			}
 
-			if (World.w.chit == "port") {
-				var tx:int = Math.round(World.w.celX / tileX) * tileX
-				var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+			if (GameContainer.reference.chit == "port") {
+				var tx:int = Math.round(GameContainer.reference.celX / tileX) * tileX
+				var ty:int = Math.round(GameContainer.reference.celY / tileY + 1) * tileY - 1;
 				
 				if (!loc.collisionUnit(tx, ty, _standingWidth, _standingHeight)) {
 					teleport(tx, ty);
 				}
 			}
 
-			if (World.w.chit == "emit") {
-				Emitter.emit(World.w.chitX, loc, World.w.celX, World.w.celY);
+			if (GameContainer.reference.chit == "emit") {
+				Emitter.emit(GameContainer.reference.chitX, loc, GameContainer.reference.celX, GameContainer.reference.celY);
 			}
 		}
 		
@@ -1972,7 +1973,7 @@ package fe.game.domain.units {
 					teleReady = true;
 				}
 				
-				if (t_culd <= 0 && pers.portPoss && pers.spellsPoss && !World.w.alicorn) {
+				if (t_culd <= 0 && pers.portPoss && pers.spellsPoss && !GameContainer.reference.alicorn) {
 					t_port++;
 				}
 			}
@@ -2044,12 +2045,12 @@ package fe.game.domain.units {
 					sats.clearAll();
 				}
 				
-				if (World.w.alicorn) {
+				if (GameContainer.reference.alicorn) {
 					currentSpell = invent.equipment.getSpell("sp_mshit");
 				}
 				
 				if (currentSpell) {
-					if (!currentSpell.cast(World.w.celX, World.w.celY)) {
+					if (!currentSpell.cast(GameContainer.reference.celX, GameContainer.reference.celY)) {
 						ctr.keyDef = false;
 					}
 					
@@ -2062,9 +2063,9 @@ package fe.game.domain.units {
 				}
 			}
 			
-			for (var i:int = 1; i <= World.kolQS; i++) {
+			for (var i:int = 1; i <= GameContainer.kolQS; i++) {
 				if (ctr["keySpell" + i]) {
-					if (invent.favorites.fav[World.kolHK * 2 + i] == null) {
+					if (invent.favorites.fav[GameContainer.kolHK * 2 + i] == null) {
                         ctr["keySpell" + i] = false;
                     }
 					else {
@@ -2072,10 +2073,10 @@ package fe.game.domain.units {
 							sats.clearAll();
 						}
                         
-						var sp:Spell = invent.equipment.getSpell(invent.favorites.fav[World.kolHK * 2 + i]);
+						var sp:Spell = invent.equipment.getSpell(invent.favorites.fav[GameContainer.kolHK * 2 + i]);
                         
 						if (sp) {
-                            if (!sp.cast(World.w.celX, World.w.celY)) {
+                            if (!sp.cast(GameContainer.reference.celX, GameContainer.reference.celY)) {
 								ctr["keySpell" + i] = false;
 							}
                            
@@ -2169,12 +2170,12 @@ package fe.game.domain.units {
 			}
 			
 			// [kick]
-			if (ctr.keyPunch && World.w.alicorn) {
+			if (ctr.keyPunch && GameContainer.reference.alicorn) {
 				ctr.keyPunch = false;
 				alicornPort();
 			}
 			
-			if (ctr.keyPunch && !World.w.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !loc.base && !lurked && attackForever<=0 && atkPoss) {
+			if (ctr.keyPunch && !GameContainer.reference.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !loc.base && !lurked && attackForever<=0 && atkPoss) {
 				(punchWeapon as WKick).kick = ctr.keyRun;
 				punchWeapon.attack();
 				spellDisact();
@@ -2191,10 +2192,10 @@ package fe.game.domain.units {
 			if (!rat) {
 			// [Change weapons]
 				if (t_work <= 0 && attackForever <= 0) {
-					for (var i:int = 1; i <= World.kolHK; i++) {
+					for (var i:int = 1; i <= GameContainer.kolHK; i++) {
 						if (ctr["keyWeapon" + String(i)]) {
 							ctr["keyWeapon" + String(i)] = false;
-							itemInteraction.useFav(i + (ctr.keyRun ? World.kolHK : 0));
+							itemInteraction.useFav(i + (ctr.keyRun ? GameContainer.kolHK : 0));
 						
 							if (visSel) {
 								GUIManager.reference.gui.unshowSelector(0);
@@ -2302,7 +2303,7 @@ package fe.game.domain.units {
 			
 			if (isFly) {
 				maxSpeed *= 1.3;
-				if (World.w.alicorn && ctr.keyRun && mana > 20) {
+				if (GameContainer.reference.alicorn && ctr.keyRun && mana > 20) {
 					accel1 = accel;
 					maxSpeed = runSpeed * pers.alicornFlyMult;
 					if (loc.sky) maxSpeed *= 2;
@@ -2500,7 +2501,7 @@ package fe.game.domain.units {
 					jumpNumb++;
 				}
 				
-				if (stay && World.w.hardInv) {
+				if (stay && GameContainer.reference.hardInv) {
 					itemInteraction.damageItems(0, false);
 				}
 				
@@ -2754,7 +2755,7 @@ package fe.game.domain.units {
 			// Constants
 			var ndx:Number = (celX + rdx - coordinates.X);
 			var ndy:Number = (celY + rdy - coordinates.Y + boundingBox.halfHeight);
-			var div:int = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta) + 1;
+			var div:int = int(Math.max(Math.abs(ndx),Math.abs(ndy))/GameContainer.maxdelta) + 1;
 			
 			// Defined outside of loop for optimization
 			var nx:Number;
@@ -3023,7 +3024,7 @@ package fe.game.domain.units {
 				return 0;
 			}
 			
-			if (currentArmor && !World.w.godMode) {
+			if (currentArmor && !GameContainer.reference.godMode) {
 				ArmorManager.reference.damage(currentArmor, dam * pers.armorVulner, tip);
 			}
 			
@@ -3031,7 +3032,7 @@ package fe.game.domain.units {
 				pinok += dam / maxhp * 200 * knocked;
 				
 				//повреждение инвентаря
-				if (!tt && World.w.hardInv && !World.w.alicorn) {
+				if (!tt && GameContainer.reference.hardInv && !GameContainer.reference.alicorn) {
 					itemInteraction.damageItems(dam);
 				}
 			}
@@ -3063,10 +3064,10 @@ package fe.game.domain.units {
 				replic("dam");
 			}
 			
-			if (World.w.godMode) {
+			if (GameContainer.reference.godMode) {
 				hp=dhp;
 			}
-			else if (!World.w.alicorn) {
+			else if (!GameContainer.reference.alicorn) {
 				pers.damage(pdam, tip);
 				pers.bloodDamage(pdam, tip);
 			}
@@ -3111,7 +3112,7 @@ package fe.game.domain.units {
 
 		public override function die(sposob:int = 0):void {
 			//реанимация
-			if (sost > 1 || World.w.godMode && sposob >= 0) {
+			if (sost > 1 || GameContainer.reference.godMode && sposob >= 0) {
 				return;
 			}
 			
@@ -3166,7 +3167,7 @@ package fe.game.domain.units {
 			
 			if (pers.hardcore && sposob>=0) {
 				pers.dead=true;
-				World.w.saveGame(-2);
+				SaveManager.reference.saveGame(-2);
 				
 				if (sposob==10) {
 					GUIManager.reference.gui.messText("hardDie2", pers.persName, false, false, 10000);
@@ -3340,7 +3341,7 @@ package fe.game.domain.units {
 			}
 			
 			if (nw is Weapon) {
-				if (nw.respect == Weapon.WEP_LOCKED || nw.alicorn && !World.w.alicorn) {
+				if (nw.respect == Weapon.WEP_LOCKED || nw.alicorn && !GameContainer.reference.alicorn) {
 					if (nw.tip == Weapon.TYPE_MAGIC) {
 						GUIManager.reference.gui.infoText("disSpell",null,null,false);
 					}
@@ -3358,7 +3359,7 @@ package fe.game.domain.units {
 					return;
 				}
 				
-				if (World.w.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
+				if (GameContainer.reference.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
 					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) {
 						GUIManager.reference.gui.infoText("weaponSkillLevel",null,null,false);
 					}
@@ -3462,12 +3463,12 @@ package fe.game.domain.units {
 		}
 		
 		public function changeArmor (nid:String="", forced:Boolean=false):Boolean {
-			if (World.w.alicorn && nid!="" && !forced) {
+			if (GameContainer.reference.alicorn && nid!="" && !forced) {
 				GUIManager.reference.gui.infoText("alicornNot",null,null,false);
 				return false;
 			}
 			
-			if (World.w.t_battle>0 && nid!="off") {
+			if (GameContainer.reference.t_battle>0 && nid!="off") {
 				GUIManager.reference.gui.infoText("noChArmor",null,null,false);
 				return false;
 			}
@@ -3487,7 +3488,7 @@ package fe.game.domain.units {
 				}
 			}
 
-			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == E_ArmorTypes.ARMOR) {
+			if (GameContainer.reference.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == E_ArmorTypes.ARMOR) {
 				if (clo == 0 && nid != prevArmor) {
 					GUIManager.reference.gui.infoText("noChArmor2", null, null, false);
 					return false;
@@ -3615,7 +3616,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (noPet2 > 0 && !f || !atkPoss || World.w.alicorn) {
+			if (noPet2 > 0 && !f || !atkPoss || GameContainer.reference.alicorn) {
 				GUIManager.reference.gui.infoText("petNot2", null, null, false);
 				return;
 			}
@@ -3674,7 +3675,7 @@ package fe.game.domain.units {
 		}
 		
 		public function alicornOn(eff:Boolean=true):void {
-			World.w.alicorn = true;
+			GameContainer.reference.alicorn = true;
 
 			if (armorEffect) {
 				armorEffect.unsetEff(true, false, true);
@@ -3708,7 +3709,7 @@ package fe.game.domain.units {
 		}
 		
 		public function alicornOff():void {
-			World.w.alicorn = false;
+			GameContainer.reference.alicorn = false;
 			isFly = false;
 			changeWeapon("not", true);
 			pers.setParameters();
@@ -3950,7 +3951,7 @@ package fe.game.domain.units {
 				if (t_work && work == "die") {
 					reloadbar.visible = false;
 					
-					if (World.w.alicorn) {
+					if (GameContainer.reference.alicorn) {
                         if (animState != "die") {
                             vis.osn.gotoAndStop("dieali");
                             animState = "die";
@@ -4653,7 +4654,7 @@ package fe.game.domain.units {
 					vis.osn.body.lwing.visible=true;
 				}
 				
-				if (World.w.alicorn || currentArmor && currentArmor.ableFly) {
+				if (GameContainer.reference.alicorn || currentArmor && currentArmor.ableFly) {
 					try {
 						if (vis.osn.body.rwing.currentFrame != 11) {
 							vis.osn.body.rwing.gotoAndStop(11);

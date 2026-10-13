@@ -3,8 +3,7 @@ package fe.game.domain.units {
 	import flash.display.MovieClip;
 	
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.enums.E_Material;
@@ -73,7 +72,7 @@ package fe.game.domain.units {
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
-			detectionDelay = World.detectionDelay * 0.5;
+			detectionDelay = GameContainer.detectionDelay * 0.5;
 		}
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
@@ -140,7 +139,7 @@ package fe.game.domain.units {
 		
 		override protected function control():void {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			aiN++;
@@ -184,7 +183,7 @@ package fe.game.domain.units {
 			}
 			
 			//атака
-			if (World.w.enemyAct >= 3 && detectionDelay <= 0) {
+			if (GameContainer.reference.enemyAct >= 3 && detectionDelay <= 0) {
 				if (aiN%5==0) {
 					for each (var un:Unit in loc.units) {
 						if (un.activateTrap<2 && !un.player || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;

@@ -2,8 +2,8 @@ package fe.game.domain.units {
 	
 	import flash.display.MovieClip;
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	public class UnitFish extends Unit {
 		
@@ -130,7 +130,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			
@@ -182,7 +182,7 @@ package fe.game.domain.units {
 			}
 
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState<6) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1 && aiState<6) {
 				if (findCel() && celUnit && celUnit.inWater) {
 					aiSpok=maxSpok+10;
 					if (aiState<5) aiState=(hp<maxhp)?4:3;

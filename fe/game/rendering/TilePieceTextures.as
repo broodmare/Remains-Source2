@@ -6,7 +6,7 @@ package fe.game.rendering {
 	import flash.filters.GlowFilter;
 	import flash.utils.getDefinitionByName;
 
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.location.tile.TilePiece_Definition;
 	import fe.game.stubs.TileMask;
 

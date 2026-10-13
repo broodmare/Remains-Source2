@@ -13,7 +13,7 @@ package fe.game.ui {
 
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
-	import fe.game.World;
+	import fe.game.GameContainer;
 	
 	//Настройки внешнего вида персонажа
 	public class Appear {
@@ -151,7 +151,7 @@ package fe.game.ui {
 		//нажать кнопку ОК
 		public function buttonOk(event:MouseEvent):void {
 			if (funOk) funOk();
-			World.w.saveConfig();
+			GameContainer.reference.saveConfig();
 		}
 
 		//нажать кнопку отмена

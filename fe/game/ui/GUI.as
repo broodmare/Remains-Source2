@@ -12,7 +12,7 @@ package fe.game.ui {
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.weapon.Weapon;
@@ -26,6 +26,7 @@ package fe.game.ui {
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.weapon.WPaint;
 	import fe.game.domain.location.tile.Tile;
+	import fe.engine.Engine;
 	
 	public class GUI {
 
@@ -351,7 +352,7 @@ package fe.game.ui {
 						continue;
 					}
 					
-					if (w.alicorn && !World.w.alicorn) {
+					if (w.alicorn && !GameContainer.reference.alicorn) {
 						continue;
 					}
 					
@@ -368,8 +369,8 @@ package fe.game.ui {
 					}
 				}
 				
-				for (i = 1; i <= World.kolHK * 2 + 7; i++) {
-					if (i == World.kolHK * 2 + 5) {
+				for (i = 1; i <= GameContainer.kolHK * 2 + 7; i++) {
+					if (i == GameContainer.kolHK * 2 + 5) {
 						if (gg.throwWeapon) {
 							w = gg.throwWeapon;
 							n = {id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
@@ -382,7 +383,7 @@ package fe.game.ui {
 							continue;
 						}
 					}
-					else if (i == World.kolHK * 2 + 6) {
+					else if (i == GameContainer.kolHK * 2 + 6) {
 						if (gg.magicWeapon) {
 							w = gg.magicWeapon;
 							n = {id:w.id, nazv:w.nazv, skill:w.skill, fav:i};
@@ -395,12 +396,12 @@ package fe.game.ui {
 							continue;
 						}
 					}
-					else if (i == World.kolHK * 2 + 7) {
+					else if (i == GameContainer.kolHK * 2 + 7) {
 						if (gg.currentSpell) {
 							n = {id:gg.currentSpell.id, nazv:gg.currentSpell.nazv, fav:i};
 							
 							if (gg.currentSpell.t_culd > 0) {
-								n.ammo = Math.ceil(gg.currentSpell.t_culd / World.fps) + ' ' + lang.localText("gui", "sec");
+								n.ammo = Math.ceil(gg.currentSpell.t_culd / Engine.TPS) + ' ' + lang.localText("gui", "sec");
 							}
 							else {
 								n.ammo = lang.localText("gui", "ready");
@@ -429,7 +430,7 @@ package fe.game.ui {
 						var sp:Spell = inv.equipment.getSpell(n.id);
 						if (sp) {
 							if (sp.t_culd > 0) {
-								n.ammo = Math.ceil(sp.t_culd / World.fps) + ' ' + lang.localText("gui", "sec");
+								n.ammo = Math.ceil(sp.t_culd / Engine.TPS) + ' ' + lang.localText("gui", "sec");
 							}
 							else {
 								n.ammo = lang.localText("gui", "ready");
@@ -483,7 +484,7 @@ package fe.game.ui {
 		}
 		
 		public function setFavs():void {
-			for (var i:int = 1; i <= World.kolHK * 2 + 7; i++) {
+			for (var i:int = 1; i <= GameContainer.kolHK * 2 + 7; i++) {
 				var mc:MovieClip = vis.fav.getChildByName('s' + i);
 				
 				if (arrfav[i]) {
@@ -497,26 +498,26 @@ package fe.game.ui {
 						mc.ammo.text = arrfav[i].ammo;
 					}
 					
-					if (i <= World.kolHK) {
+					if (i <= GameContainer.kolHK) {
 						mc.fav.text = GameContainer.reference.ctr.retKey('keyWeapon' + arrfav[i].fav);
 					}
-					else if (i<=World.kolHK*2+4) {
-						if (i<=World.kolHK*2) {
-							mc.fav.text='^'+GameContainer.reference.ctr.retKey('keyWeapon'+(arrfav[i].fav-World.kolHK));
+					else if (i<=GameContainer.kolHK*2+4) {
+						if (i<=GameContainer.kolHK*2) {
+							mc.fav.text='^'+GameContainer.reference.ctr.retKey('keyWeapon'+(arrfav[i].fav-GameContainer.kolHK));
 						}
 						else {
-							mc.fav.text=GameContainer.reference.ctr.retKey('keySpell'+(arrfav[i].fav-World.kolHK*2));
+							mc.fav.text=GameContainer.reference.ctr.retKey('keySpell'+(arrfav[i].fav-GameContainer.kolHK*2));
 						}
 						
 						mc.x = screenX-400;
 					}
-					else if (i==World.kolHK*2+5) {
+					else if (i==GameContainer.kolHK*2+5) {
 						mc.fav.text=GameContainer.reference.ctr.retKey('keyGrenad');
 					}
-					else if (i==World.kolHK*2+6) {
+					else if (i==GameContainer.kolHK*2+6) {
 						mc.fav.text=GameContainer.reference.ctr.retKey('keyMagic');
 					}
-					else if (i==World.kolHK*2+7) {
+					else if (i==GameContainer.kolHK*2+7) {
 						mc.fav.text=GameContainer.reference.ctr.retKey('keyDef');
 					}
 					
@@ -575,10 +576,10 @@ package fe.game.ui {
 					mc.ammo.text = arr[n].ammo;
 				}
 				
-				if (arr[n].fav > World.kolHK && arr[n].fav <= World.kolHK * 2) {
-					mc.fav.text = '^' + GameContainer.reference.ctr.retKey('keyWeapon' + (arr[n].fav - World.kolHK));
+				if (arr[n].fav > GameContainer.kolHK && arr[n].fav <= GameContainer.kolHK * 2) {
+					mc.fav.text = '^' + GameContainer.reference.ctr.retKey('keyWeapon' + (arr[n].fav - GameContainer.kolHK));
 				}
-				else if (arr[n].fav > 0 && arr[n].fav <= World.kolHK) {
+				else if (arr[n].fav > 0 && arr[n].fav <= GameContainer.kolHK) {
 					mc.fav.text = GameContainer.reference.ctr.retKey('keyWeapon' + arr[n].fav);
 				}
 				else {
@@ -885,7 +886,7 @@ package fe.game.ui {
 				}
 			}
 			
-			if (gg.stam < 500 || World.w.testBattle && gg.stam < 980) {
+			if (gg.stam < 500 || GameContainer.reference.testBattle && gg.stam < 980) {
 				if (mana.text != "") {
 					mana.text += "\n";
 				}
@@ -950,7 +951,7 @@ package fe.game.ui {
 					pet.hp.visible=false;
 				}
 				
-				if (gg.noPet>0) pet.txt.text=Math.floor(gg.noPet/World.fps);
+				if (gg.noPet>0) pet.txt.text=Math.floor(gg.noPet/Engine.TPS);
 				else pet.txt.text='';
 				
 				pet.ico.visible=(gg.noPet==0);
@@ -1067,7 +1068,7 @@ package fe.game.ui {
 			celObj=World.w.loc.celObj;
 			
 			if (celObj!=prevObj) {
-				if (World.w.shineObjs && prevObj && prevObj.vis && prevObj.levit==0) {
+				if (GameContainer.reference.shineObjs && prevObj && prevObj.vis && prevObj.levit==0) {
 					prevObj.vis.transform.colorTransform = prevObj.cTransform;
 				}
 			}
@@ -1083,16 +1084,16 @@ package fe.game.ui {
 			pr_bar.visible = false;
 			
 			if (gg.teleObj) {
-				World.w.cur('action');
+				GameContainer.reference.cur('action');
 				celobj.visible=true;
 				if (gg.teleObj.warn>0)  warn='warn';
 				s="<span class = '"+warn+"'>"+gg.teleObj.nazv+"</span>"
-				if (World.w.hintTele) s+='\n'+GameContainer.reference.ctr.retKey('keyTele')+' - '+txtDrop;
+				if (GameContainer.reference.hintTele) s+='\n'+GameContainer.reference.ctr.retKey('keyTele')+' - '+txtDrop;
 				celobj.text=s;
 				GameContainer.reference.cam.setKoord(celobj, gg.teleObj.coordinates.X, gg.teleObj.coordinates.Y);
 			}
 			else if (gg.actionObj!=null && gg.actionObj.owner) {
-				World.w.cur('action');
+				GameContainer.reference.cur('action');
 				try {
 					celobj.visible=true;
 					s=gg.actionObj.owner.nazv;
@@ -1130,9 +1131,9 @@ package fe.game.ui {
 				
 				//телекинез
 				if (!World.w.loc.base && celObj.stay && celObj.levitPoss && World.w.loc.celDist<=GameContainer.reference.pers.teleDist && celObj.massa<=GameContainer.reference.pers.maxTeleMassa) {
-					if (World.w.hintTele) s+='\n'+GameContainer.reference.ctr.retKey('keyTele')+' - '+txtTele;
+					if (GameContainer.reference.hintTele) s+='\n'+GameContainer.reference.ctr.retKey('keyTele')+' - '+txtTele;
 					//свечение
-					if (World.w.shineObjs && celObj.vis) {
+					if (GameContainer.reference.shineObjs && celObj.vis) {
 						celObj.vis.transform.colorTransform=gg.shineTransform;
 					}
 					levit_poss.visible=true;
@@ -1140,14 +1141,14 @@ package fe.game.ui {
 				}
 				
 				//добавить строку про действие
-				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.w.loc.celDist<=World.w.actionDist && GameContainer.reference.gg.rat==0) {
-					World.w.cur('action');
+				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.w.loc.celDist<=GameContainer.reference.actionDist && GameContainer.reference.gg.rat==0) {
+					GameContainer.reference.cur('action');
 					if (!World.w.loc.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
 						//заперто и имеется ключ
 						if (celObj.inter.mine <= 0 && celObj.inter.lock > 0 && celObj.inter.lockKey && gg.invent.getQuantity(celObj.inter.lockKey) > 0) {
 							s += '\n';
 							
-							if (World.w.hintKeys) {
+							if (GameContainer.reference.hintKeys) {
 								s+=GameContainer.reference.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							}
 							
@@ -1164,7 +1165,7 @@ package fe.game.ui {
 						else if (celObj.inter.actionText!='') {
 							var acts:String ='\n';
 							
-							if (World.w.hintKeys) {
+							if (GameContainer.reference.hintKeys) {
 								acts+=GameContainer.reference.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							}
 							
@@ -1199,7 +1200,7 @@ package fe.game.ui {
 					else {
 						s += '\n';
 						
-						if (World.w.hintKeys) {
+						if (GameContainer.reference.hintKeys) {
 							s+=GameContainer.reference.ctr.retKey('keyAction')+' - ';
 						}
 						
@@ -1207,16 +1208,16 @@ package fe.game.ui {
 					}
 				}
 				else if (celObj.warn > 0)  {
-					World.w.cur('combat');
+					GameContainer.reference.cur('combat');
 				}
 				else {
-					World.w.cur('target');
+					GameContainer.reference.cur('target');
 				}
 				
-				if (celObj.inter && World.w.loc.celDist <= World.w.actionDist) {
+				if (celObj.inter && World.w.loc.celDist <= GameContainer.reference.actionDist) {
 					acts = "\n<span class = 'r3'>";
 					
-					if (World.w.hintKeys) {
+					if (GameContainer.reference.hintKeys) {
 						acts += GameContainer.reference.ctr.retKey('keyCrack') + ' - ';
 					}
 					
@@ -1240,7 +1241,7 @@ package fe.game.ui {
 			}
 			else {
 				celobj.visible = false;
-				World.w.cur('target');
+				GameContainer.reference.cur('target');
 			}
 			
 			if (celobj.visible) {
@@ -1313,8 +1314,8 @@ package fe.game.ui {
 		
 		private function showPortCel():void {
 			vis.portCel.visible=true;
-			var nx:int = Math.round(World.w.celX / tileX) * tileX;
-			var ny:int = Math.round(World.w.celY / tileY) * tileY;
+			var nx:int = Math.round(GameContainer.reference.celX / tileX) * tileX;
+			var ny:int = Math.round(GameContainer.reference.celY / tileY) * tileY;
 			GameContainer.reference.cam.setKoord(vis.portCel, nx, ny);
 			
 			if (gg.checkPort()) {
@@ -1534,7 +1535,7 @@ package fe.game.ui {
 			if (line.m) {
 				var sar:Array=s.split('|');
 				if (sar) {
-					if (World.w.matFilter && sar.length>1) {
+					if (GameContainer.reference.matFilter && sar.length>1) {
 						s=sar[1];
 					}
 					else {
@@ -1593,7 +1594,7 @@ package fe.game.ui {
 
 					var portraitName:String = line.Portrait;
 					// Replace the little pip portrait with the helmeted version
-					if (portraitName.substr(0, 2) == 'lp' && World.w.alicorn) {
+					if (portraitName.substr(0, 2) == 'lp' && GameContainer.reference.alicorn) {
 						portraitName = 'lpa';
 						s = "<span class='crim'>" + s + "</span>";
 					}
@@ -1713,7 +1714,7 @@ package fe.game.ui {
 				vis.info.alpha=realAlpha;
 			}
 			
-			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || World.w.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) {
+			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || GameContainer.reference.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) {
 				setMana();
 			}
 			else if (mana.text!='') {
@@ -1821,11 +1822,11 @@ package fe.game.ui {
 				tharrow.visible=false;
 			}
 			
-			if (showDop&&!GUIManager.reference.sats.active && !vis.fav.visible && !World.w.catPause) {
+			if (showDop&&!GUIManager.reference.sats.active && !vis.fav.visible && !GameContainer.reference.catPause) {
 				showSelector();
 			}
 
-			vis.fav.visible = vis.status.visible = (showFav || showDop) && !GUIManager.reference.sats.active && !World.w.catPause;
+			vis.fav.visible = vis.status.visible = (showFav || showDop) && !GUIManager.reference.sats.active && !GameContainer.reference.catPause;
 		}
 		
 		public function setSats(turn:Boolean):void {

@@ -7,7 +7,7 @@ package fe.game.domain.entities {
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 

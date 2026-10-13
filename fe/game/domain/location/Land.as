@@ -1,7 +1,7 @@
 package fe.game.domain.location {
 
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.XMLDataGrabber
 	import fe.game.ItemManager;
@@ -1193,7 +1193,7 @@ package fe.game.domain.location {
 		}
 		
 		public function step():void {
-			if (!World.w.catPause) {
+			if (!GameContainer.reference.catPause) {
 				loc.step();
 				if (loc_t>0) {
 					loc_t--;

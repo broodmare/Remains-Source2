@@ -2,11 +2,11 @@ package fe.game.domain.location {
 	
 	import fe.engine.audio.Sound;
 	import fe.engine.text.TextParser;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.serv.Script;
+	import fe.engine.Engine;
 	
 	//Класс представляет собой набор условий для испытания
 	
@@ -228,7 +228,7 @@ package fe.game.domain.location {
 			}
 			
 			if (w.@t.length()) {
-				t_wave=int(w.@t)*World.fps;
+				t_wave=int(w.@t)*Engine.TPS;
 			}
 			
 			nwave++;

@@ -4,7 +4,7 @@ package fe.game.domain.serv {
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.location.Loot;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.weapon.Weapon;
@@ -252,7 +252,7 @@ package fe.game.domain.serv {
 				}
 				
 				if ("maxlim" in itemData && lim >= itemData.maxlim) {
-					if (!World.w.testLoot) {
+					if (!GameContainer.reference.testLoot) {
 						trace("Maximum loot amount reached for item: " + id + ", amount: " + lim);
 					}
 					
@@ -260,7 +260,7 @@ package fe.game.domain.serv {
 				}
 				
 				if (lim >= itemLimit) {
-					if (!World.w.testLoot) {
+					if (!GameContainer.reference.testLoot) {
 						trace("Maximum loot amount reached for item: " + id + ", amount: " + itemLimit);
 					}
 					
@@ -270,7 +270,7 @@ package fe.game.domain.serv {
 				GameContainer.reference.game.addLimit(itemData.limit, 1);
 			}
 			
-			if (World.w.testLoot) {
+			if (GameContainer.reference.testLoot) {
 				GameContainer.reference.gg.itemInteraction.take(item);
 			}
 			else {

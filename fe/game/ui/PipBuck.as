@@ -10,7 +10,7 @@ package fe.game.ui  {
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Armor;
@@ -267,7 +267,7 @@ package fe.game.ui  {
 			
 			if (active) {
 				// Render a new cursor (An arrow for the pipbuck)
-				World.w.cur();
+				GameContainer.reference.cur();
 				
 				showHidden = false;	// Something for pipPageInv
 				
@@ -294,7 +294,7 @@ package fe.game.ui  {
 					GUIManager.reference.gui.inform.alpha = 0;
 				}
 				
-				if (GameContainer.reference.gg && GameContainer.reference.gg.rat || World.w.catPause) {
+				if (GameContainer.reference.gg && GameContainer.reference.gg.rat || GameContainer.reference.catPause) {
 					noAct2 = noAct;
 					noAct = true;
 				}
@@ -303,7 +303,7 @@ package fe.game.ui  {
 			}
 			else {
 				if (isSaveConf) {
-					World.w.saveConfig();
+					GameContainer.reference.saveConfig();
 					isSaveConf = false;
 				}
 				
@@ -492,11 +492,11 @@ package fe.game.ui  {
 			
 			ritems[9].txt.htmlText = "<span class='yellow'>" + String(gg.invent.getQuantity("money")) + "</span>";
 			
-			ritem3(10, gg.invent.massW,		pers.maxmW, World.w.hardInv);
-			ritem3(11, gg.invent.massM,		pers.maxmM, World.w.hardInv);
-			ritem3(12, gg.invent.mass[1],	pers.maxm1, World.w.hardInv);
-			ritem3(13, gg.invent.mass[2],	pers.maxm2, World.w.hardInv);
-			ritem3(14, gg.invent.mass[3],	pers.maxm3, World.w.hardInv);
+			ritem3(10, gg.invent.massW,		pers.maxmW, GameContainer.reference.hardInv);
+			ritem3(11, gg.invent.massM,		pers.maxmM, GameContainer.reference.hardInv);
+			ritem3(12, gg.invent.mass[1],	pers.maxm1, GameContainer.reference.hardInv);
+			ritem3(13, gg.invent.mass[2],	pers.maxm2, GameContainer.reference.hardInv);
+			ritem3(14, gg.invent.mass[3],	pers.maxm3, GameContainer.reference.hardInv);
 		}
 		
 		private function ritem1(n:int, hp:Number, maxhp:Number, usl:Boolean = true):void {

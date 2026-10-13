@@ -8,6 +8,7 @@ package fe.game.ui {
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
+	import fe.game.GameContainer;
 
 	public class GUIManager {
 		public static var reference:GUIManager;				// Publically accessable reference to this instance
@@ -87,7 +88,7 @@ package fe.game.ui {
 
 			verror.butCopy.addEventListener(MouseEvent.CLICK, function():void {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
 			verror.butClose.addEventListener(MouseEvent.CLICK, function():void {verror.visible=false;});
-			verror.butForever.addEventListener(MouseEvent.CLICK, function():void {World.w.errorShow=false; verror.visible=false;});
+			verror.butForever.addEventListener(MouseEvent.CLICK, function():void {GameContainer.reference.errorShow=false; verror.visible=false;});
 
 			vstand.visible		= false;
 		}

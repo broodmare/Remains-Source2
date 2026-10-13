@@ -2,11 +2,11 @@ package fe.game.domain.location {
 
 	import flash.display.BitmapData;
 
-	import fe.game.World;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	// Pip-Buck map of a level, stitched together from rooms
 	public class Minimap {
@@ -34,8 +34,8 @@ package fe.game.domain.location {
 		public var playerY:Number = 0;
 
 		private function drawObj(room:Location, obj:Obj, color:uint):void {
-			var worldCellsX:int = World.cellsX;
-			var worldCellsY:int = World.cellsY;
+			var worldCellsX:int = GameContainer.cellsX;
+			var worldCellsY:int = GameContainer.cellsY;
 			var i:int;
 			var j:int;
 
@@ -104,7 +104,7 @@ package fe.game.domain.location {
 						color = COLOR_DAMAGED;
 					}
 
-					if (!World.w.drawAllMap) {
+					if (!GameContainer.reference.drawAllMap) {
 						vid = tile.visibility;
 
 						if (i < rightX) {
@@ -130,7 +130,7 @@ package fe.game.domain.location {
 					}
 
 					color += int(vid * 255) * 0x1000000;
-					bitmap.setPixel32((room.landX - level.minLocX) * World.cellsX + i, (room.landY - level.minLocY) * World.cellsY + j, color);
+					bitmap.setPixel32((room.landX - level.minLocX) * GameContainer.cellsX + i, (room.landY - level.minLocY) * GameContainer.cellsY + j, color);
 				}
 			}
 
@@ -155,7 +155,7 @@ package fe.game.domain.location {
 
 		public function Minimap(level_:Land) {
 			level = level_;
-			bitmap = new BitmapData(World.cellsX * (level.maxLocX - level.minLocX), World.cellsY * (level.maxLocY - level.minLocY), true, 0);
+			bitmap = new BitmapData(GameContainer.cellsX * (level.maxLocX - level.minLocX), GameContainer.cellsY * (level.maxLocY - level.minLocY), true, 0);
 		}
 
 		// Redraw every visited room into the level bitmap and update the player position
@@ -168,14 +168,14 @@ package fe.game.domain.location {
 			for (i = level.minLocX; i < level.maxLocX; i++) {
 				for (j = level.minLocY; j < level.maxLocY; j++) {
 					room = level.locs[i][j][0];
-					if (room != null && (World.w.drawAllMap || room.visited)) {
+					if (room != null && (GameContainer.reference.drawAllMap || room.visited)) {
 						drawRoom(room);
 					}
 				}
 			}
 
-			playerX = (level.loc.landX - level.minLocX) * World.cellsX * tileX + level.gg.coordinates.X;
-			playerY = (level.loc.landY - level.minLocY) * World.cellsY * tileY + level.gg.coordinates.Y - level.gg.boundingBox.halfHeight;
+			playerX = (level.loc.landX - level.minLocX) * GameContainer.cellsX * tileX + level.gg.coordinates.X;
+			playerY = (level.loc.landY - level.minLocY) * GameContainer.cellsY * tileY + level.gg.coordinates.Y - level.gg.boundingBox.halfHeight;
 
 			return bitmap;
 		}

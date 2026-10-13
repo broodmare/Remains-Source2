@@ -9,7 +9,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.Box;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
 	
@@ -109,7 +109,7 @@ package fe.game.domain.units {
 				}
 				if (isPlav) {
 					velocity.multiply(0.90);
-					if (mater) velocity.Y += World.ddy * ddyPlav;
+					if (mater) velocity.Y += GameContainer.ddy * ddyPlav;
 				}
 			}
 			else {
@@ -466,7 +466,7 @@ package fe.game.domain.units {
 				} else if (aiState==4 || aiState==5) {
 					aiState=2;
 				} else if (aiState==3) {
-					if (World.w.t_battle<=0) aiState=1;
+					if (GameContainer.reference.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
 				if (gg.velocity.X > 2 || gg.velocity.X < -2) aiTCh=int(Math.random()*20)+10;
@@ -548,7 +548,7 @@ package fe.game.domain.units {
 			if (celUnit && celUnit.fraction==fraction) celUnit=null;
 			//поиск цели
 			if (aiState<=1 && aiTCh%30==1 && detectionDelay <= 0) {
-				if (findCel() || World.w.t_battle>0) {
+				if (findCel() || GameContainer.reference.t_battle>0) {
 					aiState=2;
 				}
 			}
@@ -559,13 +559,13 @@ package fe.game.domain.units {
 				else if (findCel()) {		//найти новую цель
 				}
 				else {					//успокоиться
-					if (World.w.t_battle<=0) aiState=1;
+					if (GameContainer.reference.t_battle<=0) aiState=1;
 				}
 			}
 			else if (aiState==3) {
 				//достиг точки назначения
 				if (flyR<20) {
-					if (World.w.t_battle<=0) aiState=1;
+					if (GameContainer.reference.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
 			}

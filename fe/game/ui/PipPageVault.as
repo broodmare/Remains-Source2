@@ -12,8 +12,7 @@ package fe.game.ui {
 	import fe.game.ItemInteraction;
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.Inventory;
@@ -107,8 +106,8 @@ package fe.game.ui {
 			statHead.nazv.text = LanguageManager.reference.localText("pip", "ii2");
 			statHead.kol.text = LanguageManager.reference.localText("pip", "ii7");
 			statHead.kol.width = 170;
-			statHead.mass.text  = World.w.hardInv ? LanguageManager.reference.localText("pip", "ii8") : "";
-			statHead.mass2.text = World.w.hardInv ? LanguageManager.reference.localText("pip", "ii9") : "";
+			statHead.mass.text  = GameContainer.reference.hardInv ? LanguageManager.reference.localText("pip", "ii8") : "";
+			statHead.mass2.text = GameContainer.reference.hardInv ? LanguageManager.reference.localText("pip", "ii9") : "";
 			setTopText("vaultupr");
 			vis.butOk.visible = false;
 			
@@ -205,7 +204,7 @@ package fe.game.ui {
 		}
 		
 		private function showBottext():void {
-			if (World.w.hardInv) {
+			if (GameContainer.reference.hardInv) {
 				vis.bottext.htmlText = ItemInteraction.retMass(inv, massCat());
 			}
 			else {
@@ -237,8 +236,8 @@ package fe.game.ui {
 			}
 			
 			item.cat.text=obj.tip;
-			item.mass.text=World.w.hardInv?obj.mass:"";
-			item.mass2.text=World.w.hardInv?TextParser.numb(obj.mass*obj.kol):"";
+			item.mass.text=GameContainer.reference.hardInv?obj.mass:"";
+			item.mass2.text=GameContainer.reference.hardInv?TextParser.numb(obj.mass*obj.kol):"";
 			item.kol.text=obj.kol;
 			item.ns.maximum=obj.kol+obj.vault;
 			item.ns.value=obj.vault;
@@ -301,7 +300,7 @@ package fe.game.ui {
 				
 				mc.kol.text = obj.kol;
 				mc.ns.value = obj.vault;
-				mc.mass2.text = World.w.hardInv ? TextParser.numb(obj.mass * obj.kol) : "";
+				mc.mass2.text = GameContainer.reference.hardInv ? TextParser.numb(obj.mass * obj.kol) : "";
 			}
 		}
 		

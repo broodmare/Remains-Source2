@@ -2,7 +2,7 @@ package fe.game.rendering {
 
 	import flash.display.MovieClip;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.location.tile.Tile;
 	

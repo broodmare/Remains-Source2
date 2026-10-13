@@ -7,7 +7,7 @@ package fe.game.domain.serv {
 	import fe.engine.text.TextParser;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.location.Area;
 	import fe.game.domain.location.Box;
 	import fe.game.domain.location.Location;
@@ -396,7 +396,7 @@ package fe.game.domain.serv {
 			if (sign>0) {
 				if (t_sign<=0) {
 					t_sign=30;
-					if (World.w.helpMess) Emitter.emit("sign" + sign, loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight);
+					if (GameContainer.reference.helpMess) Emitter.emit("sign" + sign, loc, owner.coordinates.X, owner.coordinates.Y - owner.boundingBox.halfHeight);
 				}
 				t_sign--;
 			}
@@ -1515,7 +1515,7 @@ package fe.game.domain.serv {
 					}
 				}
 			}
-			if (!is_loot && (owner is Box) && !World.w.testLoot) GUIManager.reference.gui.infoText("itsEmpty");
+			if (!is_loot && (owner is Box) && !GameContainer.reference.testLoot) GUIManager.reference.gui.infoText("itsEmpty");
 			setAct("loot",imp_loot);
 		}
 	}

@@ -3,7 +3,7 @@ package fe.game.domain.serv {
 	import fe.engine.audio.Sound;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.units.UnitNPC;
 	import fe.game.domain.units.InventoryItem;
@@ -273,7 +273,7 @@ package fe.game.domain.serv {
 						if (dial.scr.length()) {
 							var scr:Script=new Script(dial.scr[0],World.w.land,owner,true);
 							
-							if (World.w.dialOn) {
+							if (GameContainer.reference.dialOn) {
 								var did:String=dial.@id;
 								scr.acts.unshift({act:'dialog', val:did, t:0, n:-1, opt1:0, opt2:0, targ:""});
 							}
@@ -283,7 +283,7 @@ package fe.game.domain.serv {
 							scr.start();
 						}
 						else {
-							if (World.w.dialOn) {
+							if (GameContainer.reference.dialOn) {
 								GUIManager.reference.gui.dialog(dial.@id);
 							}
 

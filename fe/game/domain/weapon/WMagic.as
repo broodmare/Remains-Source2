@@ -1,9 +1,8 @@
 package fe.game.domain.weapon {
 
 	import fe.engine.audio.Sound;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.domain.units.Pers;
@@ -23,7 +22,7 @@ package fe.game.domain.weapon {
 		}
 
 		public override function attack(waitReady:Boolean = false):Boolean {
-			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
+			if (!waitReady && !GameContainer.reference.alicorn && !auto && t_auto > 0) {
 				t_auto = 3;
 				return false;
 			}
@@ -34,7 +33,7 @@ package fe.game.domain.weapon {
 				return false;
 			}
 			
-			if (owner.player && (GameContainer.reference.pers.spellsPoss == 0 || alicorn && !World.w.alicorn)) {
+			if (owner.player && (GameContainer.reference.pers.spellsPoss == 0 || alicorn && !GameContainer.reference.alicorn)) {
 				GUIManager.reference.gui.infoText('noSpells');
 				GUIManager.reference.gui.bulb(coordinates.X, coordinates.Y);
 				Sound.ps('nomagic');

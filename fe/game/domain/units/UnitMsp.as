@@ -2,7 +2,6 @@ package fe.game.domain.units {
 	
 	import flash.display.MovieClip;
 
-	import fe.game.World;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Location;
@@ -10,6 +9,7 @@ package fe.game.domain.units {
 	import fe.game.enums.E_Material;
 	import fe.game.rendering.enums.E_Decal;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	public class UnitMsp extends Unit {
 
@@ -172,7 +172,7 @@ package fe.game.domain.units {
 
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
 				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;
@@ -207,7 +207,7 @@ package fe.game.domain.units {
 				if (aiSpok>=maxSpok) aiState=3;
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					if (aiState<=1) {
 						aiState=2;

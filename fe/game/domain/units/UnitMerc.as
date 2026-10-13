@@ -8,7 +8,7 @@ package fe.game.domain.units {
 	import fe.game.domain.weapon.WThrow;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.WeaponManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 

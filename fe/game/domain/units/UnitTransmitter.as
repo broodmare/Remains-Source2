@@ -6,8 +6,7 @@ package fe.game.domain.units {
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.location.Location;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.game.enums.E_Direction;
 	
@@ -80,7 +79,7 @@ package fe.game.domain.units {
 		
 		override protected function control():void {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			aiTCh++;

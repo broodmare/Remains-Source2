@@ -6,14 +6,14 @@ package fe.game.ui {
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.units.Pers;
 	import fe.game.domain.units.enums.E_Resistances;
 
 	import fe.game.stubs.visPipStatItem;
+	import fe.engine.SaveManager;
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -769,7 +769,7 @@ package fe.game.ui {
 						}
 					}
 					else if (page2 == PAGE_SKILLS) {
-						if (World.w.alicorn && TextParser.istxt('e', id + '_al')) {
+						if (GameContainer.reference.alicorn && TextParser.istxt('e', id + '_al')) {
 							vis.info.htmlText = TextParser.rainbow(TextParser.txt('e', id + '_al'));
 							vis.info.htmlText += '<br><br>' + effStr('skill', id + '_al');
 						}
@@ -1023,7 +1023,7 @@ package fe.game.ui {
 				}
 				
 				pip.snd(3);
-				World.w.saveGame();
+				SaveManager.reference.saveGame();
 			}
 			else if (page2 == PAGE_PERKS) {
 				page2 = PAGE_CHOOSEPERK;
@@ -1038,7 +1038,7 @@ package fe.game.ui {
 				page2 = PAGE_PERKS;
 				pip.snd(3);
 				pip.setRPanel();
-				World.w.saveGame();
+				SaveManager.reference.saveGame();
 			}
 
 			setStatus();

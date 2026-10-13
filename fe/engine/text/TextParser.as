@@ -3,8 +3,7 @@ package fe.engine.text {
 	import flash.utils.getDefinitionByName;
 	import flash.display.MovieClip;
 
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	
 	// Resource Manager and text parsing
 	public class TextParser {
@@ -176,7 +175,7 @@ package fe.engine.text {
 					if (line.m) {
 						var sar:Array = s1.split('|');
 						
-						if (World.w.matFilter && sar.length > 1) s1 = sar[1];
+						if (GameContainer.reference.matFilter && sar.length > 1) s1 = sar[1];
 						else s1 = sar[0];
 					}
 					

@@ -6,7 +6,7 @@ package fe.game.domain.units {
 	import fe.engine.utils.Calc;
 	import fe.engine.text.TextParser;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	
 	public class UnitPonPon extends Unit {
 		

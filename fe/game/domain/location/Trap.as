@@ -4,7 +4,7 @@ package fe.game.domain.location {
 	
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.units.Unit;

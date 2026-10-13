@@ -3,8 +3,7 @@ package fe.game.domain.units {
 	import flash.display.MovieClip;
 
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.rendering.Emitter;
 	import fe.game.enums.E_Direction;
@@ -77,13 +76,13 @@ package fe.game.domain.units {
 				return;
 			}
 
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 
 			aiTCh++;
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && !GameContainer.reference.gg.invulner) {
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -117,7 +116,7 @@ package fe.game.domain.units {
 				turnY = E_Direction.NEUTRAL;
 			}
 			//атака
-			if (World.w.enemyAct >= 3 && aiState == 1 && celUnit && celUnit.sost == 1) {
+			if (GameContainer.reference.enemyAct >= 3 && aiState == 1 && celUnit && celUnit.sost == 1) {
 				if (attKorp(celUnit, 1)) celUnit.addEffect('curse');
 			}
 		}

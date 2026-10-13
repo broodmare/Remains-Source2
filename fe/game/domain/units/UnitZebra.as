@@ -5,7 +5,7 @@ package fe.game.domain.units {
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	
 	public class UnitZebra extends UnitRaider {
 
@@ -74,7 +74,7 @@ package fe.game.domain.units {
 			var cx:Number = -(coordinates.X - GameContainer.reference.gg.eyeX);
 			var cy:Number = -(coordinates.Y - this.boundingBox.height * 0.6 - GameContainer.reference.gg.eyeY);
 			if (cx*cx+cy*cy>1000*1000) return false;
-			var div:int = int(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
+			var div:int = int(Math.max(Math.abs(cx),Math.abs(cy))/GameContainer.maxdelta)+1;
 			for (var i:int = 1; i < div; i++) {
 				var nx:Number = coordinates.X + cx*i/div;
 				var ny:Number = coordinates.Y - this.boundingBox.height * 0.6 + cy * i / div;

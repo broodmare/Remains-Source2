@@ -3,7 +3,6 @@ package fe.game.domain.units {
 	import flash.display.MovieClip;
 
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
 	import fe.game.domain.units.ai.Brain;
 	import fe.game.domain.units.ai.Brain_Definition;
 	import fe.game.domain.units.attack.BodyAttack;
@@ -16,6 +15,7 @@ package fe.game.domain.units {
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.rendering.enums.E_Decal;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	// A rolling robot ball that bounces at its target; the plasma variant (2) explodes when destroyed
 	public class UnitRoller extends Unit {
@@ -30,7 +30,7 @@ package fe.game.domain.units {
 
 		// Water shorts it out
 		protected override function control():void {
-			if (sost < 3 && isPlav && World.w.enemyAct > 0) {
+			if (sost < 3 && isPlav && GameContainer.reference.enemyAct > 0) {
 				die();
 				return;
 			}

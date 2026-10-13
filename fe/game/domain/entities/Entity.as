@@ -2,7 +2,7 @@ package fe.game.domain.entities {
 	
 	import flash.display.MovieClip;
 
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.location.Location;
 	

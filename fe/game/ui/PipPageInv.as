@@ -9,7 +9,7 @@ package fe.game.ui {
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Armor;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Item;
@@ -72,7 +72,7 @@ package fe.game.ui {
 			statHead.cat.visible = false;
 			statHead.rid.visible = false;
 			pip.vis.butHelp.visible = true;
-			pip.vis.butMass.visible = World.w.hardInv;
+			pip.vis.butMass.visible = GameContainer.reference.hardInv;
 			
 			setIco();
 			setCats();
@@ -105,7 +105,7 @@ package fe.game.ui {
 						continue;
 					}
 					
-					if (weapon.spell && World.w.alicorn) {
+					if (weapon.spell && GameContainer.reference.alicorn) {
 						continue;
 					}
 					
@@ -118,7 +118,7 @@ package fe.game.ui {
 					
 					// [Hidden] Spells can be hidden and taken back at any time, weapons stored on the weapon stand only where the stand can be used
 					if (weapon.respect == Weapon.WEP_LOCKED) {	
-						if (weapon.tip == Weapon.TYPE_MAGIC || !World.w.hardInv || World.w.loc.base || World.w.loc.train) {
+						if (weapon.tip == Weapon.TYPE_MAGIC || !GameContainer.reference.hardInv || World.w.loc.base || World.w.loc.train) {
 							vis.butOk.visible = true;
 							canShowHidden = true;
 						}
@@ -128,7 +128,7 @@ package fe.game.ui {
 						}
 					}
 					
-					if (weapon.alicorn && !World.w.alicorn) {
+					if (weapon.alicorn && !GameContainer.reference.alicorn) {
 						continue;
 					}
 					
@@ -245,7 +245,7 @@ package fe.game.ui {
 				statHead.ammotip.text	= localize("pip", "ii6");
 				statHead.ammo.text		= "";
 				
-				if (World.w.hardInv) {
+				if (GameContainer.reference.hardInv) {
 					statHead.mass.text	= localize("pip", "ii8");
 				}
 
@@ -358,7 +358,7 @@ package fe.game.ui {
 		private function showBottext():void {
 			vis.bottext.htmlText = LanguageManager.reference.localText("pip", "caps") + ": " + numberAsColor("yellow", GameContainer.reference.invent.getQuantity("money"));
 			
-			if (World.w.hardInv) {
+			if (GameContainer.reference.hardInv) {
 				if (page2 == PAGE_WEAPON) {
 					vis.bottext.htmlText  = "    " + ItemInteraction.retMass(inv, 4) + "    " + ItemInteraction.retMass(inv, 5);
 				}
@@ -394,11 +394,11 @@ package fe.game.ui {
 				else if (cell == Favorites.CELL_MAGIC) {
 					item.fav.text = GameContainer.reference.ctr.retKey("keyMagic");
 				}
-				else if (cell > World.kolHK * 2) {
-					item.fav.text = GameContainer.reference.ctr.retKey("keySpell" + (cell - World.kolHK * 2));
+				else if (cell > GameContainer.kolHK * 2) {
+					item.fav.text = GameContainer.reference.ctr.retKey("keySpell" + (cell - GameContainer.kolHK * 2));
 				}
-				else if (cell > World.kolHK) {
-					item.fav.text = "^" + GameContainer.reference.ctr.retKey("keyWeapon" + (cell - World.kolHK));
+				else if (cell > GameContainer.kolHK) {
+					item.fav.text = "^" + GameContainer.reference.ctr.retKey("keyWeapon" + (cell - GameContainer.kolHK));
 				}
 				else {
 					item.fav.text = GameContainer.reference.ctr.retKey("keyWeapon" + cell);
@@ -457,7 +457,7 @@ package fe.game.ui {
 			else if (page2 == PAGE_ARMOR) {
 				item.ramka.visible = false;
 				
-				if (World.w.hardInv && !World.w.loc.base && obj.trol=="armor1" && GameContainer.reference.gg.prevArmor!=obj.id && obj.clo==0) {
+				if (GameContainer.reference.hardInv && !World.w.loc.base && obj.trol=="armor1" && GameContainer.reference.gg.prevArmor!=obj.id && obj.clo==0) {
 					item.alpha = 0.40;
 				}
 				
@@ -488,7 +488,7 @@ package fe.game.ui {
 				item.nazv.text = obj.nazv;
 				item.hp.text = obj.kol;
 				
-				if (World.w.hardInv && obj.mass > 0) {
+				if (GameContainer.reference.hardInv && obj.mass > 0) {
 					item.mass.text = TextParser.numb(obj.kol * obj.mass);
 				}
 				
@@ -582,7 +582,7 @@ package fe.game.ui {
 			} 
 			else if (page2 == PAGE_EQUIPMENT) {
 				if (ci=="retr") {
-					if (World.w.alicorn) {
+					if (GameContainer.reference.alicorn) {
 						GUIManager.reference.gui.infoText("alicornNot",null,null,false);
 						return; // Set as return instead of return false.
 					}
@@ -598,7 +598,7 @@ package fe.game.ui {
 					}
 				} 
 				else if (ci=="mworkbench" || ci=="mworkexpl" || ci=="mworklab") {
-					if (World.w.t_battle>0) {
+					if (GameContainer.reference.t_battle>0) {
 						GUIManager.reference.gui.infoText("noUseCombat",null,null,false);
 					} 
 					else {

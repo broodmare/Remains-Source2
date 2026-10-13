@@ -10,7 +10,7 @@ package fe.game.ui {
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Game;
 	import fe.game.domain.location.Quest;
@@ -198,7 +198,7 @@ package fe.game.ui {
 							sim.sim.gotoAndStop(1);
 						}
 						
-						if (land.test && !World.w.testMode) {
+						if (land.test && !GameContainer.reference.testMode) {
 							continue;
 						}
 						
@@ -206,16 +206,16 @@ package fe.game.ui {
 							sim.alpha = 0.5;
 						}
 						
-						if (World.w.testMode && !land.visited && !land.access) {
+						if (GameContainer.reference.testMode && !land.visited && !land.access) {
 							sim.alpha = 0.3;
 						}
 						
-						if (World.w.helpMess && !land.visited && land.access) {
+						if (GameContainer.reference.helpMess && !land.visited && land.access) {
 							sim.sign.play();
 							sim.sign.visible = true;
 						}
 						
-						if (World.w.testMode || land.visited || land.access) sim.visible = true;
+						if (GameContainer.reference.testMode || land.visited || land.access) sim.visible = true;
 					}
 				}
 				vis.butOk.text.text = LanguageManager.reference.localText("pip", 'trans');
@@ -637,7 +637,7 @@ package fe.game.ui {
 				return;
 			}
 			
-			if (page2 == PAGE_WORLD_MAP && (pip.travel || World.w.testMode)) {
+			if (page2 == PAGE_WORLD_MAP && (pip.travel || GameContainer.reference.testMode)) {
 				if (targetLand != "" && visWMap[targetLand]) {
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
@@ -667,7 +667,7 @@ package fe.game.ui {
 				return;
 			}
 			
-			if (page2 == PAGE_WORLD_MAP && (pip.travel || World.w.testMode)) {
+			if (page2 == PAGE_WORLD_MAP && (pip.travel || GameContainer.reference.testMode)) {
 				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
 					game.beginMission(targetLand);
 					pip.onoff(-1);

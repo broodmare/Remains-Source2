@@ -5,7 +5,7 @@ package fe.game.domain.location {
 	import fe.engine.utils.SymbolFactory;
 	import fe.engine.audio.Sound;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.entities.Obj;
 	
 	//Бонусы, которые подбираются путём контакта с ними

@@ -7,7 +7,7 @@ package fe.game.ui {
 	
 	import fe.game.World;
 	import fe.engine.Engine;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.LanguageManager;
 	
 	public class Ctr {
@@ -467,7 +467,7 @@ package fe.game.ui {
 					GUIManager.reference.gui.infoAlpha = 1.00;
 				}
 				
-				GUIManager.reference.gui.showDop=World.w.showFavs && (event.stageY>Engine.reference.stage.stageHeight-15);
+				GUIManager.reference.gui.showDop=GameContainer.reference.showFavs && (event.stageY>Engine.reference.stage.stageHeight-15);
 			}
 		}
 
@@ -666,12 +666,12 @@ package fe.game.ui {
 				GUIManager.reference.consol.setConsoleVisiblility(!GUIManager.reference.consoleActive);
 			}
 
-			if (World.w.chitOn && event.keyCode == Keyboard.HOME) {
+			if (GameContainer.reference.chitOn && event.keyCode == Keyboard.HOME) {
 				trace("Ctr.as/onKeyboardDownEvent() - HOME pressed, enabling debug mode!");
 				keyTest1 = true;
 			}
 
-			if (event.keyCode == Keyboard.DELETE && World.w.testMode) {
+			if (event.keyCode == Keyboard.DELETE && GameContainer.reference.testMode) {
 				GameContainer.reference.onPause = !GameContainer.reference.onPause;
 			}
 
@@ -683,7 +683,7 @@ package fe.game.ui {
 				keyFly = true;
 			}
 
-			if (World.w.chitOn) {
+			if (GameContainer.reference.chitOn) {
 				if (event.keyCode == Keyboard.INSERT) {
 					keyTest2 = true;
 				}

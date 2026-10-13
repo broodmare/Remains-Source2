@@ -7,13 +7,12 @@ package fe.game.ui {
 	import fe.game.domain.units.Unit;
 	import fe.game.World;
 	import fe.engine.Engine;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.game.domain.location.Location;
 	
 	public class Camera {
 
-		public var w:World;
 		public var moved:Boolean;
 		public var screenX:int=1280; //размеры экрана
 		public var screenY:int=800;
@@ -41,8 +40,7 @@ package fe.game.ui {
 		public var showX:Number=-1;
 		public var showY:Number=0;
 		
-		public function Camera(nw:World) {
-			w = nw;
+		public function Camera() {
 		}
 		
 		public function setLoc(loc:Location):void {
@@ -201,8 +199,8 @@ package fe.game.ui {
 			GUIManager.reference.visual.y=GUIManager.reference.sats.vis.y=vy+quakeY;
 			Sound.center.setVector(coord);
 			
-			w.celX = (celX - vx) / scaleV;
-			w.celY = (celY - vy) / scaleV;
+			GameContainer.reference.celX = (celX - vx) / scaleV;
+			GameContainer.reference.celY = (celY - vy) / scaleV;
 			if (dblack > 0) {
 				GUIManager.reference.vblack.visible = true;
 				GUIManager.reference.vblack.alpha += dblack / 100;

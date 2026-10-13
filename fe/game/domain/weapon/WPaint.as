@@ -2,7 +2,7 @@ package fe.game.domain.weapon {
 
 	import fe.engine.text.TextParser;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.UnitPlayer;
@@ -40,7 +40,7 @@ package fe.game.domain.weapon {
 			var by:Number = owner.coordinates.Y - owner.boundingBox.height * 0.75;
 			var ndx:Number = (celX - bx);
 			var ndy:Number = (celY - by);
-			var div:Number = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
+			var div:Number = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / GameContainer.maxdelta) + 1;
 			
 			for (var i:int = 1; i < div; i++) {
 				celX = bx + ndx * i / div;

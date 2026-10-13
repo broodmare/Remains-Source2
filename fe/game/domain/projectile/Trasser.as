@@ -1,9 +1,9 @@
 package fe.game.domain.projectile {
 
-	import fe.game.World;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.location.tile.Tile;
 	import flash.display.Graphics;
+	import fe.game.GameContainer;
 
 	public class Trasser {
 	
@@ -65,11 +65,11 @@ package fe.game.domain.projectile {
 					}
 				}
 				
-				if (Math.abs(dx) < World.maxdelta && Math.abs(dy) < World.maxdelta)	{
+				if (Math.abs(dx) < GameContainer.maxdelta && Math.abs(dy) < GameContainer.maxdelta)	{
 					run();
 				}
 				else {
-					var div:int = int(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(dx),Math.abs(dy))/GameContainer.maxdelta) + 1;
 					
 					for (var j:int = 0; (j < div && !vse); j++) {
 						run(div);

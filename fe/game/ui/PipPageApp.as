@@ -1,6 +1,6 @@
 package fe.game.ui {
 
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 
 	import fe.game.stubs.visPipQuestItem;
 	

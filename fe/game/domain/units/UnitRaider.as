@@ -3,7 +3,6 @@ package fe.game.domain.units {
 	import flash.filters.GlowFilter;
 
 	import fe.game.WeaponManager;
-	import fe.game.World;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.serv.AnimationSet;
@@ -27,6 +26,7 @@ package fe.game.domain.units {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.enums.E_AIState;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	// Raiders, and the families built on them: slavers, zebras, rangers, Enclave soldiers and griffon mercenaries
 	public class UnitRaider extends UnitPon {
@@ -335,7 +335,7 @@ package fe.game.domain.units {
 				emit_t--;
 			}
 
-			if (sost != 3 && brain.isOn && World.w.enemyAct > 0) {
+			if (sost != 3 && brain.isOn && GameContainer.reference.enemyAct > 0) {
 				watchForDanger();
 			}
 

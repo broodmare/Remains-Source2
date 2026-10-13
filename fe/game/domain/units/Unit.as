@@ -16,7 +16,7 @@ package fe.game.domain.units {
 	import fe.game.WeaponManager;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.domain.location.Box;
 	import fe.game.domain.location.Location;
@@ -45,6 +45,7 @@ package fe.game.domain.units {
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.rendering.enums.E_Decal;
 	import fe.game.enums.E_Direction;
+	import fe.engine.Engine;
 	
 	public class Unit extends Obj {
 
@@ -589,7 +590,7 @@ package fe.game.domain.units {
 			}
 			
 			if (node0.@xp.length()) {
-				xp = node0.@xp * World.unitXPMult;
+				xp = node0.@xp * GameContainer.unitXPMult;
 			}
 			
 			// [Physical parameters]
@@ -1116,7 +1117,7 @@ package fe.game.domain.units {
 					stun = 0;
 					cut = 0;
 					poison = 0;
-					detectionDelay = Math.round(World.detectionDelay * (Math.random() * 0.2 + 0.9));
+					detectionDelay = Math.round(GameContainer.detectionDelay * (Math.random() * 0.2 + 0.9));
 					
 					if (!noAct) {
 						disabled = false;		// [turn on]
@@ -1216,11 +1217,11 @@ package fe.game.domain.units {
 			if (fixed) {
 				// We're fixed in place, do nothing
 			}
-			else if (bind || Math.abs(velocity.X + osndx) < World.maxdelta && Math.abs(velocity.Y + osndy) < World.maxdelta) {
+			else if (bind || Math.abs(velocity.X + osndx) < GameContainer.maxdelta && Math.abs(velocity.Y + osndy) < GameContainer.maxdelta) {
 				run();
 			}
 			else {
-				var div:int = int(Math.max(Math.abs(velocity.X + osndx),Math.abs(velocity.Y + osndy))/World.maxdelta)+1;
+				var div:int = int(Math.max(Math.abs(velocity.X + osndx),Math.abs(velocity.Y + osndy))/GameContainer.maxdelta)+1;
 				
 				for (var i = 0; i < div; i++) {
 					run(div); // What the fuck, this is being used as a string later.
@@ -1246,7 +1247,7 @@ package fe.game.domain.units {
 				animate();
 			}
 
-			onCursor =(isVis && !disabled && sost < 4 && boundingBox.intersectsPoint(World.w.celX, World.w.celY)) ? prior : 0;
+			onCursor =(isVis && !disabled && sost < 4 && boundingBox.intersectsPoint(GameContainer.reference.celX, GameContainer.reference.celY)) ? prior : 0;
 
 			for (i in childObjs) {
 				if (childObjs[i]) { // Here is where it's called as a string.
@@ -1321,7 +1322,7 @@ package fe.game.domain.units {
 
 			if (isPlav) {
 				if (!levit) {
-					velocity.Y += World.ddy * ddyPlav;
+					velocity.Y += GameContainer.ddy * ddyPlav;
 				}
 				
 				velocity.multiply(0.80);
@@ -1349,8 +1350,8 @@ package fe.game.domain.units {
 				if (!levit && isLaz == E_Direction.NEUTRAL) {
 					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height * 0.25);
 					
-					if (t.gravity > 0 && velocity.Y < World.maxdy * t.gravity || t.gravity < 0 && velocity.Y > World.maxdy * t.gravity) {
-						velocity.Y += World.ddy * t.gravity * grav;
+					if (t.gravity > 0 && velocity.Y < GameContainer.maxdy * t.gravity || t.gravity < 0 && velocity.Y > GameContainer.maxdy * t.gravity) {
+						velocity.Y += GameContainer.ddy * t.gravity * grav;
 					}
 				}
 				
@@ -2730,7 +2731,7 @@ package fe.game.domain.units {
 			}
 			
 			//сборный показ цифр урона
-			if (World.w.showHit == 2) {
+			if (GameContainer.reference.showHit == 2) {
 				if (t_hitPart > 0) {
 					t_hitPart--;
 				}
@@ -2864,7 +2865,7 @@ package fe.game.domain.units {
 			var eff:Effect = new Effect(id, this, val);
 
 			if (t > 0) {
-				eff.t = t * World.fps;
+				eff.t = t * Engine.TPS;
 			}
 
 			// [Getting a temporary effect]
@@ -3329,7 +3330,7 @@ package fe.game.domain.units {
 						}
 					}
 					
-					if (!(player && World.w.alicorn)) {
+					if (!(player && GameContainer.reference.alicorn)) {
 						if (bul) {
 							bloodEmit.cast(loc, bul.coordinates.X, bul.coordinates.Y, {dx:bul.velocity.X / bul.vel * 5, dy:bul.velocity.Y / bul.vel * 5, kol:int(Math.random()*5+dam/5)});
 						}
@@ -3390,11 +3391,11 @@ package fe.game.domain.units {
 						vnumb = 11;
 					}
 					
-					if (World.w.showHit == 1 || tt) {
+					if (GameContainer.reference.showHit == 1 || tt) {
 						visDamDY -= 15;
 						numbEmit.cast(loc, castX,castY + visDamDY, {txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit == 1 || isCrit == 3) ? 1.6 : 1)});
 					}
-					else if (World.w.showHit == 2) {
+					else if (GameContainer.reference.showHit == 2) {
 						hitSumm += dam;
 						
 						if (hitPart == null || hitPart.vis == null || hitPart.vis.numb == null) {
@@ -3417,13 +3418,13 @@ package fe.game.domain.units {
 					replic('dam');
 				}
 			}
-			else if (World.w.showHit == 2) {
+			else if (GameContainer.reference.showHit == 2) {
 				t_hitPart = 10;
 			}
 
 			visDetails();
 			
-			if (World.w.showHit>=1 && t_mess <= 0) {
+			if (GameContainer.reference.showHit>=1 && t_mess <= 0) {
 				if (hp > 0 && mess) {
 					numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:mess, frame:5, rx:20, ry:20});
 					t_mess = 45;
@@ -3475,7 +3476,7 @@ package fe.game.domain.units {
 
 			visDetails();
 			
-			if (World.w.showHit >= 1) {
+			if (GameContainer.reference.showHit >= 1) {
 				if ((sost == 1 || sost == 2) && showNumbs && hl > 0.5) {
 					numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:('+' + Math.round(hl)), frame:4, rx:20, ry:20});
 				}
@@ -3508,7 +3509,7 @@ package fe.game.domain.units {
 					
 					dm = bul.damage * (Math.random() * 0.60 + 0.70);
 					
-					if (World.w.testDam) {
+					if (GameContainer.reference.testDam) {
 						dm = bul.damage;
 					}
 					
@@ -3535,7 +3536,7 @@ package fe.game.domain.units {
 				}
 			}
 			else {
-				if (World.w.showHit == 1 || World.w.showHit == 2 && t_hitPart == 0) {
+				if (GameContainer.reference.showHit == 1 || GameContainer.reference.showHit == 2 && t_hitPart == 0) {
 					visDamDY -= 15;
 					t_hitPart = 10;
 					
@@ -3557,7 +3558,7 @@ package fe.game.domain.units {
 			neujaz = neujazMax;
 			
 			if (dodge - un.undodge > 0 && isrnd(dodge - un.undodge)) {
-				if (World.w.showHit >= 1) {
+				if (GameContainer.reference.showHit >= 1) {
 					numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.50});
 					
 					return false;
@@ -3643,7 +3644,7 @@ package fe.game.domain.units {
 				un.velocity.Y = (-un.velocity.Y + ndy) * 0.25 + ndy;
             }
 			
-			damage(un.massa * (un.vel2 - 50) * World.boxDamage, E_Resistances.DAM_BLUNT);
+			damage(un.massa * (un.vel2 - 50) * GameContainer.boxDamage, E_Resistances.DAM_BLUNT);
 			priorUnit = null;
 			
 			return 2;
@@ -3779,8 +3780,8 @@ package fe.game.domain.units {
 			sndRunOn	= false;
 			plaKap		= false;
 			
-			if (!doop && World.w.t_battle > 30) {
-				World.w.t_battle = 30;
+			if (!doop && GameContainer.reference.t_battle > 30) {
+				GameContainer.reference.t_battle = 30;
 			}
 			
 			if (!lootIsDrop && (!isRes || sost == 4 || burn)) {
@@ -3998,7 +3999,7 @@ package fe.game.domain.units {
 			}
 
 			// Line of sight check
-			var maxDeltaInv:Number = 1 / World.maxdelta;
+			var maxDeltaInv:Number = 1 / GameContainer.maxdelta;
 			var div:int = int(Math.max(Math.abs(cx), Math.abs(cy)) * maxDeltaInv) + 1;
 			var startIdx:int = mater ? 1 : 4;
 			var step:Number = 1 / div;
@@ -4107,8 +4108,8 @@ package fe.game.domain.units {
 				celUnit = un;
 				
 				if (un.player) {
-					World.w.t_battle = World.battleNoOut;
-					World.w.cur();
+					GameContainer.reference.t_battle = GameContainer.battleNoOut;
+					GameContainer.reference.cur();
 					loc.detecting = true;
 					if (sndMusic && !loc.postMusic) {
 						Sound.combatMusic(sndMusic, sndMusicPrior, boss ? 10000 : 150);

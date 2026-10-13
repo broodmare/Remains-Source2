@@ -4,9 +4,8 @@ package fe.game.rendering {
 	
 	import fe.engine.text.XMLDataGrabber;
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Part;
 	import fe.game.domain.location.Location;
@@ -147,7 +146,7 @@ package fe.game.rendering {
 				return null;
 			}
 			
-			if (kol2 > World.w.maxParts && imp == 0) {
+			if (kol2 > GameContainer.reference.maxParts && imp == 0) {
 				return null;
 			}
 			
@@ -255,11 +254,11 @@ package fe.game.rendering {
 					}
 				}
 				
-				p.ddy=World.ddy*grav;
+				p.ddy=GameContainer.ddy*grav;
 				p.brake=brake;
 				
 				if (rgrav) {
-					p.ddy+=World.ddy*rgrav*Math.random();
+					p.ddy+=GameContainer.ddy*rgrav*Math.random();
 				}
 				
 				p.liv=p.mliv=int(Math.random()*rliv)+minliv;

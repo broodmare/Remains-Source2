@@ -4,8 +4,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.WeaponManager;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
 	
@@ -157,7 +156,7 @@ package fe.game.domain.units {
 			t_replic--;
 			var jmp:Number=0;
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				celY = coordinates.Y - boundingBox.height;
 				celX = coordinates.X + boundingBox.width * storona.X * 2;
 				return;
@@ -192,7 +191,7 @@ package fe.game.domain.units {
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				if (findCel(aiState>1)) {
 					//увидели
 					if (celUnit) {
@@ -341,7 +340,7 @@ package fe.game.domain.units {
 			
 			if (coordinates.Y>loc.spaceY*tileY-80) throu=false;
 			
-			if ((aiState==3 || aiState==4) && World.w.enemyAct>=3) attack();
+			if ((aiState==3 || aiState==4) && GameContainer.reference.enemyAct>=3) attack();
 
 		}
 		

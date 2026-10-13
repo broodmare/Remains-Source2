@@ -13,8 +13,7 @@ package fe.game.ui {
 	import fe.game.ArmorManager;
 	import fe.game.ItemInteraction;
 	import fe.game.WeaponManager;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.Armor;
 	import fe.game.domain.weapon.Weapon;
@@ -285,7 +284,7 @@ package fe.game.ui {
 				armors[arm.id] = item;
 				
 				if (n == 6) {
-					World.w.armorWork = arm.id;
+					GameContainer.reference.armorWork = arm.id;
 					dvis.gotoAndStop(2);
 					dvis.gotoAndStop(1);
 					var sprX:int = dvis.width * sc + 2;
@@ -320,7 +319,7 @@ package fe.game.ui {
 			}
 			
 			Appear.transp = false;
-			World.w.armorWork = "";
+			GameContainer.reference.armorWork = "";
 		}
 		
 		private function showMass():void {
@@ -387,7 +386,7 @@ package fe.game.ui {
 
 
 			// Limited inventory, show weight
-			if (World.w.hardInv) {
+			if (GameContainer.reference.hardInv) {
 				showMass();
 			}
 			
@@ -556,7 +555,7 @@ package fe.game.ui {
 			
 			showFamily(event.currentTarget as MovieClip, baseId);
 
-			if (World.w.hardInv) {
+			if (GameContainer.reference.hardInv) {
 				showMass();
 			}
 		}
@@ -646,7 +645,7 @@ package fe.game.ui {
 			vis.visible = active;
 
 			if (active) {
-				World.w.cur();
+				GameContainer.reference.cur();
 				setButtons();
 				showWeaponList(page);
 				

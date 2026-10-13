@@ -2,7 +2,7 @@ package fe.game.domain.weapon  {
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.location.tile.Tile;

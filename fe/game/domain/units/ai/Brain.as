@@ -1,6 +1,5 @@
 package fe.game.domain.units.ai {
 
-	import fe.game.World;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.attack.IAttack;
@@ -8,6 +7,7 @@ package fe.game.domain.units.ai {
 	import fe.engine.utils.Calc;
 	import fe.game.domain.units.enums.E_AIState;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 
 	// Decides what an AI unit does each tick: stays calm, notices targets, searches for them, chases them, stops to attack
 	public class Brain {
@@ -438,7 +438,7 @@ package fe.game.domain.units.ai {
 
 			if (!isOn) { return; }
 
-			if (World.w.enemyAct <= 0) {
+			if (GameContainer.reference.enemyAct <= 0) {
 				lookAhead();
 				return;
 			}
@@ -453,7 +453,7 @@ package fe.game.domain.units.ai {
 				owner.motor.rethink();
 			}
 
-			if (World.w.enemyAct > 1 && owner.aiTCh % SENSE_INTERVAL == 1 && owner.aiState != E_AIState.FLEE) {
+			if (GameContainer.reference.enemyAct > 1 && owner.aiTCh % SENSE_INTERVAL == 1 && owner.aiState != E_AIState.FLEE) {
 				sense();
 			}
 
@@ -475,7 +475,7 @@ package fe.game.domain.units.ai {
 			act();
 			owner.pumpObj = null;
 
-			if (World.w.enemyAct >= 3) {
+			if (GameContainer.reference.enemyAct >= 3) {
 				for each (attack in owner.attacks) {
 					attack.tick();
 				}

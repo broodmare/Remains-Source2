@@ -3,7 +3,7 @@ package fe.game.domain.units {
 	import flash.display.MovieClip;
 
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
+	import fe.game.GameContainer;
 	
 	public class UnitBloatEmitter  extends Unit {
 		
@@ -46,7 +46,7 @@ package fe.game.domain.units {
 						effects = [];
 					}
 					
-					detectionDelay = Math.round(World.detectionDelay * (Math.random() * 0.2 + 0.9));
+					detectionDelay = Math.round(GameContainer.detectionDelay * (Math.random() * 0.2 + 0.9));
 					disabled=false;		//включить
 				}
 			}
@@ -94,14 +94,14 @@ package fe.game.domain.units {
 		}
 		
 		override protected function control():void {
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			
 			//поиск цели
 			if (aiTCh>0) aiTCh--;
 			
-			if (World.w.enemyAct>1 && aiTCh==0) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh==0) {
 				aiTCh=10;
 				if (findCel()) {
 					aiState=2;
@@ -120,7 +120,7 @@ package fe.game.domain.units {
 			}
 		
 			//атака
-			if (World.w.enemyAct>=3 && celUnit) {
+			if (GameContainer.reference.enemyAct>=3 && celUnit) {
 				attKorp(celUnit);
 			}
 		}

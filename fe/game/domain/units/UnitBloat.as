@@ -4,9 +4,9 @@ package fe.game.domain.units {
 	import fe.game.domain.projectile.Bullet;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 	
 	public class UnitBloat extends Unit {
 		
@@ -186,7 +186,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			
@@ -228,7 +228,7 @@ package fe.game.domain.units {
 			}
 
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				findCel();
 			}
 
@@ -271,7 +271,7 @@ package fe.game.domain.units {
 			}
 			
 			//атака
-			if (World.w.enemyAct>=3 && celUnit && shok<=0) {
+			if (GameContainer.reference.enemyAct>=3 && celUnit && shok<=0) {
 				if (aiState==1 && currentWeapon) {
 					if (isrnd(shootCh)) {
 						currentWeapon.attack();

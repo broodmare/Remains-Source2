@@ -8,7 +8,7 @@ package fe.game.domain.location {
 	import fe.engine.text.TextParser;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
@@ -317,7 +317,7 @@ package fe.game.domain.location {
 		}
 		
 		public override function setVisState(s:String):void {
-			if ((s == 'open' || s == 'comein') && sndOpen != '' && !World.w.testLoot) {
+			if ((s == 'open' || s == 'comein') && sndOpen != '' && !GameContainer.reference.testLoot) {
 				Sound.ps(sndOpen, coordinates.X, coordinates.Y);
 			}
 			
@@ -392,11 +392,11 @@ package fe.game.domain.location {
 					forces();		//внешние силы, влияющие на ускорение
 				}
 				
-				if (Math.abs(velocity.X)<World.maxdelta && Math.abs(velocity.Y)<World.maxdelta)	{
+				if (Math.abs(velocity.X)<GameContainer.maxdelta && Math.abs(velocity.Y)<GameContainer.maxdelta)	{
 					run();
 				}
 				else {
-					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / GameContainer.maxdelta) + 1;
 					for (var i:int = 0; i < div; i++) {
 						run(div);
 					}
@@ -429,7 +429,7 @@ package fe.game.domain.location {
 				t_throw--;
 			}
 			
-			onCursor = (boundingBox.left < World.w.celX && boundingBox.right > World.w.celX && boundingBox.top < World.w.celY && boundingBox.bottom > World.w.celY) ? prior : 0;
+			onCursor = (boundingBox.left < GameContainer.reference.celX && boundingBox.right > GameContainer.reference.celX && boundingBox.top < GameContainer.reference.celY && boundingBox.bottom > GameContainer.reference.celY) ? prior : 0;
 		}
 		
 		public function initDoor():void {
@@ -639,8 +639,8 @@ package fe.game.domain.location {
 		
 		public function forces():void {
 			if (!levit) {
-				if (!isPlav && velocity.Y < World.maxdy) velocity.Y += World.ddy;
-				if (isPlav && isPlav2) velocity.Y += World.ddy * ddyPlav;
+				if (!isPlav && velocity.Y < GameContainer.maxdy) velocity.Y += GameContainer.ddy;
+				if (isPlav && isPlav2) velocity.Y += GameContainer.ddy * ddyPlav;
 			}
 			
 			if (isPlav) {

@@ -1,8 +1,7 @@
 package fe.game.domain.serv {	
 	
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.LanguageManager;
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
@@ -13,6 +12,7 @@ package fe.game.domain.serv {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.weapon.Ammo;
 	import fe.game.domain.units.enums.E_ArmorTypes;
+	import fe.game.AutoPickupManager;
 	
 	public class Item {
 
@@ -260,11 +260,11 @@ package fe.game.domain.serv {
 				}
 				
 				// [We already have this weapon, pick it up to repair ours]
-				if (w != null && (World.w.vsWeaponRep || m)) {
-					if (w.hp <= w.maxhp && (w.respect == Weapon.WEP_INACTIVE || w.respect == Weapon.WEP_ACTIVE || !World.w.hardInv)) {
+				if (w != null && (AutoPickupManager.reference.vsWeaponRep || m)) {
+					if (w.hp <= w.maxhp && (w.respect == Weapon.WEP_INACTIVE || w.respect == Weapon.WEP_ACTIVE || !GameContainer.reference.hardInv)) {
 						return true;
 					}
-					else if (m && World.w.hardInv) {
+					else if (m && GameContainer.reference.hardInv) {
 						// [The player picked it up on purpose in limited inventory mode, make the weapon usable again]
 						shpun = 2;
 					}
@@ -272,9 +272,9 @@ package fe.game.domain.serv {
 					return false;
 				}
 				
-				if (w == null && World.w.vsWeaponNew) {
+				if (w == null && AutoPickupManager.reference.vsWeaponNew) {
 					// [Check the weight in limited inventory mode]
-					if (World.w.hardInv) {
+					if (GameContainer.reference.hardInv) {
 						if (mass == 0) {
 							return true;
 						}
@@ -328,17 +328,17 @@ package fe.game.domain.serv {
 			}
 			
 			// Check the weight before picking up items in limited inventory mode
-			if (World.w.hardInv) {
+			if (GameContainer.reference.hardInv) {
 				if (inv.mass[invCat] + mass * kol > pers["maxm" + invCat]) {
 					return false;
 				}
 			}
 			
-			if (World.w.vsAmmoAll && tip == L_AMMO) {
+			if (AutoPickupManager.reference.vsAmmoAll && tip == L_AMMO) {
 				return true;
 			}
 			
-			if (World.w.vsAmmoTek && tip == L_AMMO) {
+			if (AutoPickupManager.reference.vsAmmoTek && tip == L_AMMO) {
 				// [Pick up ammo for weapons the player is using]
 				for each (var weapon:Weapon in inv.equipment.weapons) {
 					if (weapon.tip != Weapon.TYPE_EXPLOSIVES && weapon.tip != Weapon.TYPE_MAGIC && (weapon.respect == Weapon.WEP_INACTIVE || weapon.respect == Weapon.WEP_ACTIVE) && weapon.ammoBase && (weapon.ammoBase.id == id || weapon.ammoBase.id == base)) {
@@ -347,43 +347,43 @@ package fe.game.domain.serv {
 				}
 			}
 			
-			if (World.w.vsExplAll && tip == L_EXPL) {
+			if (AutoPickupManager.reference.vsExplAll && tip == L_EXPL) {
 				return true;
 			}
 			
-			if (World.w.vsMedAll && (tip == L_MED || tip == L_POT)) {
+			if (AutoPickupManager.reference.vsMedAll && (tip == L_MED || tip == L_POT)) {
 				return true;
 			}
 			
-			if (World.w.vsHimAll && tip == L_HIM) {
+			if (AutoPickupManager.reference.vsHimAll && tip == L_HIM) {
 				return true;
 			}
 			
-			if (World.w.vsEqipAll && tip == "equip") {
+			if (AutoPickupManager.reference.vsEqipAll && tip == "equip") {
 				return true;
 			}
 			
-			if (World.w.vsStuffAll && invCat == 3) {
+			if (AutoPickupManager.reference.vsStuffAll && invCat == 3) {
 				return true;
 			}
 			
-			if (World.w.vsVal && tip == "valuables") {
+			if (AutoPickupManager.reference.vsVal && tip == "valuables") {
 				return true;
 			}
 			
-			if (World.w.vsBook && (tip == L_BOOK || tip == "sphera")) {
+			if (AutoPickupManager.reference.vsBook && (tip == L_BOOK || tip == "sphera")) {
 				return true;
 			}
 			
-			if (World.w.vsFood && (tip == L_FOOD || tip == "eda")) {
+			if (AutoPickupManager.reference.vsFood && (tip == L_FOOD || tip == "eda")) {
 				return true;
 			}
 			
-			if (World.w.vsComp && (tip == L_STUFF || tip == L_COMPA || tip == L_COMPW || tip == L_COMPE || tip == L_COMPM)) {
+			if (AutoPickupManager.reference.vsComp && (tip == L_STUFF || tip == L_COMPA || tip == L_COMPW || tip == L_COMPE || tip == L_COMPM)) {
 				return true;
 			}
 			
-			if (World.w.vsIngr && tip == L_COMPP) {
+			if (AutoPickupManager.reference.vsIngr && tip == L_COMPP) {
 				return true;
 			}
 			

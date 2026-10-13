@@ -9,7 +9,7 @@ package fe.game.domain.units {
 	import fe.engine.audio.Sound;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.domain.location.CheckPoint;
 	import fe.game.domain.serv.LootGen;
@@ -427,9 +427,9 @@ package fe.game.domain.units {
 				
 				if (loadObj.rep) rep=loadObj.rep;
 				
-				World.w.alicorn=false;
+				GameContainer.reference.alicorn=false;
 				
-				if (loadObj.alicorn) World.w.alicorn=loadObj.alicorn;
+				if (loadObj.alicorn) GameContainer.reference.alicorn=loadObj.alicorn;
 			}
 			else if (opt) {
 				if (opt.hardcore) hardcore=true;
@@ -503,7 +503,7 @@ package fe.game.domain.units {
 			obj.prevcp=prevCPCode;
 			
 			obj.rep=rep;
-			obj.alicorn=World.w.alicorn;
+			obj.alicorn=GameContainer.reference.alicorn;
 
 			obj.pet=gg.currentPet;
 			setRoboowl();
@@ -782,8 +782,8 @@ package fe.game.domain.units {
 				ny = gg.boundingBox.top;
 			}
 			
-			if (World.w.testLoot) {
-				World.w.summxp+=dxp;
+			if (GameContainer.reference.testLoot) {
+				GameContainer.reference.summxp+=dxp;
 			} 
 			else {
 				gg.numbEmit.cast(gg.loc, nx, ny, {txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
@@ -1787,7 +1787,7 @@ package fe.game.domain.units {
 			shtrManaRes=1;
 			gg.noStairs=false;
 			
-			if (!World.w.hardInv) return;
+			if (!GameContainer.reference.hardInv) return;
 			if (inv.massW>maxmW) speedShtr++; 
 			if (inv.massW>maxmW+2) speedShtr++; 
 			if (inv.massW>maxmW+4) speedShtr++; 
@@ -1795,7 +1795,7 @@ package fe.game.domain.units {
 			if (inv.mass[2]>maxm2*1.2) speedShtr++;
 			if (inv.mass[3]>maxm3) speedShtr++;
 			if (inv.mass[3]>maxm3*1.2) speedShtr++;
-			if (World.w.loc && !World.w.loc.base && !World.w.loc.train && !World.w.alicorn) {
+			if (World.w.loc && !World.w.loc.base && !World.w.loc.train && !GameContainer.reference.alicorn) {
 				if (speedShtr>=3) {
 					maxSpeed=0;
 					accelMult=0.1;
@@ -1815,7 +1815,7 @@ package fe.game.domain.units {
 				}
 			}
 			//штраф на магию
-			if (inv.massM>maxmM && !World.w.alicorn) shtrManaRes-=0.25*(inv.massM-maxmM);
+			if (inv.massM>maxmM && !GameContainer.reference.alicorn) shtrManaRes-=0.25*(inv.massM-maxmM);
 			if (shtrManaRes<0) shtrManaRes=0;
 			gg.setSpeeds();
 		}
@@ -1868,7 +1868,7 @@ package fe.game.domain.units {
 			bloodHP=procBlood*inMaxHP;
 			manaHP=procMana*inMaxMana;
 			//уменьшение характеристик от состояния здоровья
-			if (!World.w.alicorn) traumaParameters();
+			if (!GameContainer.reference.alicorn) traumaParameters();
 			gg.showObsInd=false;
 				//эффекты
 			for each(var eff:Effect in gg.effects) {
@@ -1881,7 +1881,7 @@ package fe.game.domain.units {
 			if (gg.rat) {
 				// Do nothing
 			}
-			else if (!World.w.alicorn) {
+			else if (!GameContainer.reference.alicorn) {
 				if (gg.currentArmor) {
 					ArmorManager.reference.setArmor(gg.currentArmor);
 					armorParameters(gg.currentArmor)

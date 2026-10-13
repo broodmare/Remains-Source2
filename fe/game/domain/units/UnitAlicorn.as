@@ -14,8 +14,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.Box;
 	import fe.game.domain.units.ability.Telekinesis;
 	import fe.game.WeaponManager;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.enums.E_Direction;
 	
 	public class UnitAlicorn extends UnitPon {
@@ -489,7 +488,7 @@ package fe.game.domain.units {
 				mana+=resmana;
 			}
 			
-			if (World.w.enemyAct<=0) {
+			if (GameContainer.reference.enemyAct<=0) {
 				return;
 			}
 			
@@ -565,7 +564,7 @@ package fe.game.domain.units {
 				}
 			}
 
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				//установить точку зрения
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
 				eyeX = coordinates.X + (obj.x+visBmp.x)*storona.X;

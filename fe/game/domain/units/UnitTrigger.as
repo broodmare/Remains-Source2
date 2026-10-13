@@ -10,7 +10,7 @@ package fe.game.domain.units {
 	import fe.game.domain.entities.Obj;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.enums.E_Material;
 	

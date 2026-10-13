@@ -1,8 +1,7 @@
 package fe.game.domain.projectile {
 
 	import fe.engine.audio.Sound;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.UnitPlayer;
@@ -28,7 +27,7 @@ package fe.game.domain.projectile {
 
 		public function PhisBullet(own:Unit, v:Vec2, visClass:Class=null) {
 			super(own, v, visClass);
-			ddy=World.ddy;
+			ddy=GameContainer.ddy;
 			massa=0.1;
 			warn=1;
 			levitPoss=true;
@@ -63,9 +62,9 @@ package fe.game.domain.projectile {
 			}
 
 			if (!babah && !prilip) {
-				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	run();
+				if (Math.abs(velocity.X) < GameContainer.maxdelta && Math.abs(velocity.Y) < GameContainer.maxdelta)	run();
 				else {
-					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / GameContainer.maxdelta) + 1;
 					for (var i:int = 0; (i < div && !babah); i++) run(div);
 				}
 			}
@@ -111,7 +110,7 @@ package fe.game.domain.projectile {
 				loc.remGrenade(this);
 			}
 
-			onCursor = (liv > 5 && coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.halfHeight < World.w.celY && coordinates.Y + this.boundingBox.halfHeight > World.w.celY)? 3:0;
+			onCursor = (liv > 5 && coordinates.X - this.boundingBox.halfWidth < GameContainer.reference.celX && coordinates.X + this.boundingBox.halfWidth > GameContainer.reference.celX && coordinates.Y - this.boundingBox.halfHeight < GameContainer.reference.celY && coordinates.Y + this.boundingBox.halfHeight > GameContainer.reference.celY)? 3:0;
 		}
 		
 		private function sensor():Boolean {

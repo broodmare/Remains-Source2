@@ -18,10 +18,12 @@ package fe.game.ui {
 	import fe.engine.text.TextParser;
 	import fe.game.World;
 	import fe.engine.Engine;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	
 	import fe.game.stubs.visPipOptItem;
 	import fe.game.stubs.logText;
+	import fe.game.AutoPickupManager;
+	import fe.engine.SaveManager;
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -80,38 +82,38 @@ package fe.game.ui {
 			if (page2 == PAGE_OPTIONS) {
 				statHead.nazv.text=statHead.numb.text="";
 				arr.push({id:"fullscreen"});
-				arr.push({id:"zoom100", check:World.w.zoom100});
-				arr.push({id:"quake", check:World.w.quakeCam});
+				arr.push({id:"zoom100", check:GameContainer.reference.zoom100});
+				arr.push({id:"quake", check:GameContainer.reference.quakeCam});
 				arr.push({id:"opt1_1", numb:Math.round(Sound.globalVol*100)});
 				arr.push({id:"opt1_2", numb:Math.round(Sound.musicVol*100)});
 				arr.push({id:"opt1_3", numb:Math.round(Sound.stepVol*100)});
-				arr.push({id:"help_mess", check:World.w.helpMess});
-				arr.push({id:"dial_on", check:World.w.dialOn});
-				arr.push({id:"show_hit1", check:World.w.showHit>0});
-				arr.push({id:"show_hit2", check:World.w.showHit==2});
-				arr.push({id:"hint_tele", check:World.w.hintTele});
-				arr.push({id:"sys_cur", check:World.w.sysCur});
-				arr.push({id:"show_favs", check:World.w.showFavs});
-				arr.push({id:"mat_filter", check:World.w.matFilter});
-				arr.push({id:"err_show", check:World.w.errorShowOpt});
+				arr.push({id:"help_mess", check:GameContainer.reference.helpMess});
+				arr.push({id:"dial_on", check:GameContainer.reference.dialOn});
+				arr.push({id:"show_hit1", check:GameContainer.reference.showHit>0});
+				arr.push({id:"show_hit2", check:GameContainer.reference.showHit==2});
+				arr.push({id:"hint_tele", check:GameContainer.reference.hintTele});
+				arr.push({id:"sys_cur", check:GameContainer.reference.sysCur});
+				arr.push({id:"show_favs", check:GameContainer.reference.showFavs});
+				arr.push({id:"mat_filter", check:GameContainer.reference.matFilter});
+				arr.push({id:"err_show", check:GameContainer.reference.errorShowOpt});
 				arr.push({id:"autotake"});
 			}
 
 			if (page2 == PAGE_AUTOPICKUP_OPT) {
-				arr.push({id:"vsWeaponNew", check:World.w.vsWeaponNew});
-				arr.push({id:"vsWeaponRep", check:World.w.vsWeaponRep});
-				arr.push({id:"vsAmmoAll", check:World.w.vsAmmoAll});
-				arr.push({id:"vsAmmoTek", check:World.w.vsAmmoTek});
-				arr.push({id:"vsExplAll", check:World.w.vsExplAll});
-				arr.push({id:"vsMedAll", check:World.w.vsMedAll});
-				arr.push({id:"vsHimAll", check:World.w.vsHimAll});
-				arr.push({id:"vsEqipAll", check:World.w.vsEqipAll});
-				arr.push({id:"vsStuffAll", check:World.w.vsStuffAll});
-				arr.push({id:"vsVal", check:World.w.vsVal});
-				arr.push({id:"vsBook", check:World.w.vsBook});
-				arr.push({id:"vsFood", check:World.w.vsFood});
-				arr.push({id:"vsComp", check:World.w.vsComp});
-				arr.push({id:"vsIngr", check:World.w.vsIngr});
+				arr.push({id:"vsWeaponNew", check:AutoPickupManager.reference.vsWeaponNew});
+				arr.push({id:"vsWeaponRep", check:AutoPickupManager.reference.vsWeaponRep});
+				arr.push({id:"vsAmmoAll", check:AutoPickupManager.reference.vsAmmoAll});
+				arr.push({id:"vsAmmoTek", check:AutoPickupManager.reference.vsAmmoTek});
+				arr.push({id:"vsExplAll", check:AutoPickupManager.reference.vsExplAll});
+				arr.push({id:"vsMedAll", check:AutoPickupManager.reference.vsMedAll});
+				arr.push({id:"vsHimAll", check:AutoPickupManager.reference.vsHimAll});
+				arr.push({id:"vsEqipAll", check:AutoPickupManager.reference.vsEqipAll});
+				arr.push({id:"vsStuffAll", check:AutoPickupManager.reference.vsStuffAll});
+				arr.push({id:"vsVal", check:AutoPickupManager.reference.vsVal});
+				arr.push({id:"vsBook", check:AutoPickupManager.reference.vsBook});
+				arr.push({id:"vsFood", check:AutoPickupManager.reference.vsFood});
+				arr.push({id:"vsComp", check:AutoPickupManager.reference.vsComp});
+				arr.push({id:"vsIngr", check:AutoPickupManager.reference.vsIngr});
 			}
 
 			if (page2 == PAGE_CONTROLS) {
@@ -169,8 +171,8 @@ package fe.game.ui {
 					vis.butDef.text.text = localize("pip", "savefile");
 				}
 				
-				for (var i = 0; i <= World.w.saveKol; i++) {
-					var save:Object = World.w.getSave(i);
+				for (var i = 0; i <= SaveManager.reference.saveKol; i++) {
+					var save:Object = SaveManager.reference.getSave(i);
 					var obj:Object = saveObj(save,i);
 					arr.push(obj);
 				}
@@ -408,19 +410,19 @@ package fe.game.ui {
 			var sel:Boolean = (event.target as CheckBox).selected;
 			
 			if (id == "dial_on") {
-				World.w.dialOn=sel;
+				GameContainer.reference.dialOn=sel;
 			}
 			
 			if (id == "mat_filter") {
-				World.w.matFilter=sel;
+				GameContainer.reference.matFilter=sel;
 			}
 			
 			if (id == "help_mess") {
-				World.w.helpMess=sel;
+				GameContainer.reference.helpMess=sel;
 			}
 			
-			var hit1:Boolean = World.w.showHit > 0;
-			var hit2:Boolean = World.w.showHit == 2;
+			var hit1:Boolean = GameContainer.reference.showHit > 0;
+			var hit2:Boolean = GameContainer.reference.showHit == 2;
 			
 			if (id == "show_hit1") {
 				hit1 = sel;
@@ -430,30 +432,30 @@ package fe.game.ui {
 				hit2 = sel;
 			}
 			
-			World.w.showHit = hit1 ? (hit2 ? 2 : 1) : 0;
+			GameContainer.reference.showHit = hit1 ? (hit2 ? 2 : 1) : 0;
 			
 			if (id == "sys_cur") {
-				World.w.sysCur = sel;
+				GameContainer.reference.sysCur = sel;
 			}
 			
 			if (id == "hint_tele") {
-				World.w.hintTele = sel;
+				GameContainer.reference.hintTele = sel;
 			}
 			
 			if (id == "show_favs") {
-				World.w.showFavs = sel;
+				GameContainer.reference.showFavs = sel;
 			}
 			
 			if (id == "quake") {
-				World.w.quakeCam=sel;
+				GameContainer.reference.quakeCam=sel;
 			}
 			
 			if (id == "err_show") {
-				World.w.errorShowOpt = sel;
+				GameContainer.reference.errorShowOpt = sel;
 			}
 			
 			if (id == "zoom100") {
-				World.w.zoom100 = sel;
+				GameContainer.reference.zoom100 = sel;
 				
 				if (pip.light) {
 					if (sel) {
@@ -474,8 +476,8 @@ package fe.game.ui {
 			}
 		
 			if (page2 == PAGE_AUTOPICKUP_OPT) {
-				World.w[id] = sel;
-				World.w.checkLoot = true;
+				AutoPickupManager.reference[id] = sel;
+				AutoPickupManager.reference.checkLoot = true;
 			}
 			
 			pip.isSaveConf = true;
@@ -548,7 +550,7 @@ package fe.game.ui {
 				
 				vis.butOk.visible = false;
 				GameContainer.reference.ctr.updateKeys();
-				World.w.saveConfig();
+				GameContainer.reference.saveConfig();
 			}
 			else if (page2 == PAGE_LOAD) {
 				World.w.comLoad=nSave;
@@ -559,7 +561,7 @@ package fe.game.ui {
 					return;
 				}
 					try {
-						World.w.saveGame(nSave);
+						SaveManager.reference.saveGame(nSave);
 						GUIManager.reference.gui.infoText("SaveGame");
 						nSave=-1;
 						vis.butOk.visible=false;
@@ -581,7 +583,7 @@ package fe.game.ui {
 				var obj:Object=file.data.readObject();
 				if (obj && obj.est == 1) {
 					World.w.comLoad = 99;
-					World.w.loaddata = obj;
+					SaveManager.reference.loaddata = obj;
 					return;
 				}
 			}
@@ -599,7 +601,7 @@ package fe.game.ui {
 			if (page2 == PAGE_CONTROLS) {
 				GameContainer.reference.ctr.gotoDef();
 				GameContainer.reference.ctr.updateKeys();
-				World.w.saveConfig();
+				GameContainer.reference.saveConfig();
 				setStatus();
 			}
 			else if (page2 == PAGE_LOAD) {
@@ -614,7 +616,7 @@ package fe.game.ui {
 				
 				// [Save to file]
 				var obj:Object = new Object();
-				World.w.saveToObj(obj);
+				SaveManager.reference.saveToObj(obj);
 				var ba:ByteArray = new ByteArray();
 				ba.writeObject(obj);
 				var sfile:FileReference = new FileReference();

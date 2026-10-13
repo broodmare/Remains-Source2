@@ -20,7 +20,7 @@ package fe.game.rendering {
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.entities.Entity;
@@ -409,7 +409,7 @@ package fe.game.rendering {
 	
 		// [Location drawing]
 		public function drawLoc(nloc:Location):void {
-			World.w.gr_stage=1;
+			GameContainer.reference.gr_stage=1;
 			loc = nloc;
 			loc.grafon = this;
 			resX = loc.spaceX * tileX;
@@ -421,7 +421,7 @@ package fe.game.rendering {
 				transpFon = true;
 			}
 			
-			World.w.gr_stage = 2;
+			GameContainer.reference.gr_stage = 2;
 			//рамки
 			ramT.x = -50;
 			ramB.x = -50;
@@ -440,7 +440,7 @@ package fe.game.rendering {
 			ramR.scaleX = 2;
 			ramL.scaleX = 2;
 		
-			World.w.gr_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
+			GameContainer.reference.gr_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
 			frontBmp.lock();
 			foregroundBmp.lock();
 			backBmp.lock();
@@ -456,7 +456,7 @@ package fe.game.rendering {
 			
 			lightBmp.fillRect(lightRect, COLOR_TRANSPARENT);
 			setLight();
-			visLight.visible = loc.black && World.w.black;
+			visLight.visible = loc.black && GameContainer.reference.black;
 			warShadow();
 			
 			var darkness:int = 0xAA + loc.darkness;
@@ -471,7 +471,7 @@ package fe.game.rendering {
 			colorBmp.fillRect(allRect, darkness * 0x1000000);
 			shadBmp.fillRect(allRect, COLOR_WHITE);
 
-			World.w.gr_stage=4;
+			GameContainer.reference.gr_stage=4;
 
 			m = new Matrix();
 			var tile:MovieClip;
@@ -491,7 +491,7 @@ package fe.game.rendering {
 			}
 
 			var gret:int=0;
-			World.w.gr_stage=5;
+			GameContainer.reference.gr_stage=5;
 			for (var i:int = 0; i < loc.spaceX; i++) {
 				for (var j:int = 0; j < loc.spaceY; j++) {
 					t = loc.getTile(i, j);
@@ -541,29 +541,29 @@ package fe.game.rendering {
 				}
 			}
 
-			World.w.gr_stage = 6;
+			GameContainer.reference.gr_stage = 6;
 			vodaBmp.draw(voda, new Matrix, null, null, null, false);
 			frontBmp.draw(front, new Matrix, null, null, null, false);
 			foregroundBmp.draw(fore, new Matrix, null, null, null, false);
 			
 			
-			World.w.gr_stage = 7;
+			GameContainer.reference.gr_stage = 7;
 			drawBackWall(nloc.backwall, nloc.backform);	// [Back wall]
 			
-			World.w.gr_stage = 8;
+			GameContainer.reference.gr_stage = 8;
 			drawTileLayer(E_TileLayer.MAIN);
 			drawTileLayer(E_TileLayer.FOREGROUND);
 
-			World.w.gr_stage = 9;
+			GameContainer.reference.gr_stage = 9;
 			drawTileLayer(E_TileLayer.BACK_WALL);
 
-			World.w.gr_stage = 10;
+			GameContainer.reference.gr_stage = 10;
 			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0 ,0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 			var darkness2:Number = 1 - (255 - darkness) / 150;
 			// [Background objects]
 			var ct:ColorTransform = new ColorTransform();
 
-			World.w.gr_stage = 11;
+			GameContainer.reference.gr_stage = 11;
 			for (j = -2; j <= 3; j++) {
 				if (j == -1) {
 					backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -629,7 +629,7 @@ package fe.game.rendering {
 				}
 			}
 
-			World.w.gr_stage=12;
+			GameContainer.reference.gr_stage=12;
 			m=new Matrix();
 		
 			if (nloc.cTransform) {
@@ -641,7 +641,7 @@ package fe.game.rendering {
 			mergeShadowCasters(frontBmp.rect);
 			shadBmp.applyFilter(shadowCasterBmp,shadowCasterBmp.rect,new Point(0,0),dsFilter);
 
-			World.w.gr_stage=13;
+			GameContainer.reference.gr_stage=13;
 			// [Darkening the background]
 			if (nloc.cTransform) {
 				backBmp.colorTransform(backBmp.rect,nloc.cTransform);
@@ -658,10 +658,10 @@ package fe.game.rendering {
 				backBmp2.colorTransform(backBmp2.rect, ct);
 			}
 
-			World.w.gr_stage=14;
+			GameContainer.reference.gr_stage=14;
 			backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
 			
-			World.w.gr_stage=15;
+			GameContainer.reference.gr_stage=15;
 				
 			if (transpFon) {
 				satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
@@ -675,20 +675,20 @@ package fe.game.rendering {
 			}
 			
 			// [Pink cloud]
-			World.w.gr_stage = 16;
+			GameContainer.reference.gr_stage = 16;
 			if (loc.gas > 0) {
 				m = new Matrix();
 				m.ty=520;
 				backBmp2.draw(getObj("back_pink_t",numbBack),m,new ColorTransform(1,1,1,0.3));
 			}
 			
-			World.w.gr_stage = 17;
+			GameContainer.reference.gr_stage = 17;
 			drawTileLayer(E_TileLayer.BACKGROUND);
 		
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
 			
-			World.w.gr_stage = 18;
+			GameContainer.reference.gr_stage = 18;
 			frontBmp.unlock();
 			foregroundBmp.unlock();
 			backBmp.unlock();
@@ -704,11 +704,11 @@ package fe.game.rendering {
 
 			backdrop.dirty = true;
 				
-			World.w.gr_stage = 19;
+			GameContainer.reference.gr_stage = 19;
 			// [Active objects]
 			drawAllObjs();
 
-			World.w.gr_stage = 0;
+			GameContainer.reference.gr_stage = 0;
 		}
 		
 		//прорисовка всей карты затемнения

@@ -5,7 +5,7 @@ package fe.game.domain.projectile {
 	import fe.engine.audio.Sound;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Calc;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.units.Unit;
@@ -125,7 +125,7 @@ package fe.game.domain.projectile {
 			levitPoss = false;
 			var fetch:Function = SymbolFactory.fetchSymbolClass;
 			if (visClass) {
-				if (World.w.alicorn && own.player && visClass == fetch("visualBullet")) {
+				if (GameContainer.reference.alicorn && own.player && visClass == fetch("visualBullet")) {
 					visClass = fetch("visualRainbow");
 				}
 				
@@ -162,11 +162,11 @@ package fe.game.domain.projectile {
 					rot = Math.atan2(velocity.Y, velocity.X);
 				}
 				
-				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+				if (Math.abs(velocity.X) < GameContainer.maxdelta && Math.abs(velocity.Y) < GameContainer.maxdelta)	{
 					run();
 				}
 				else {
-					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / GameContainer.maxdelta) + 1;
 					
 					for (var i:int = 0; (i < div && !babah); i++) {
 						run(div);
@@ -257,11 +257,11 @@ package fe.game.domain.projectile {
 			velocity.set(nx - coordinates.X, ny - coordinates.Y);
 			vel = velocity.magnitude();
 			
-			if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+			if (Math.abs(velocity.X) < GameContainer.maxdelta && Math.abs(velocity.Y) < GameContainer.maxdelta)	{
 				run();
 			}
 			else {
-				var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+				var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / GameContainer.maxdelta) + 1;
 				for (var i:int = 0; i < div; i++) {
 					run(div);
 				}
@@ -287,7 +287,7 @@ package fe.game.domain.projectile {
 				if (res == E_Material.METAL || res == E_Material.STONE || res == E_Material.GLASS || res == E_Material.FORCE_FIELD) {
 					if (vis) vis.gotoAndPlay(2);
 					var koliskr:int = Calc.intBetween(0, 5) + int(damage / 5);
-					if (World.w.alicorn) koliskr *= 0.2;
+					if (GameContainer.reference.alicorn) koliskr *= 0.2;
 					if (koliskr > 20) koliskr = 20;
 					Emitter.emit('iskr_bul', loc, coordinates.X, coordinates.Y, {dx:-velocity.X / vel * 10, dy:-velocity.Y / vel * 10, kol:koliskr});
 					if (flare!=null && flare!='') Emitter.emit(flare, loc, coordinates.X, coordinates.Y);

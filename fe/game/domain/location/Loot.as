@@ -3,14 +3,14 @@ package fe.game.domain.location {
 	import flash.display.MovieClip;
 	
 	import fe.engine.audio.Sound;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.serv.Interact;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.location.tile.Tile;
+	import fe.game.AutoPickupManager;
 	
 	// This is the object you see in-game when an item is dropped
 	public class Loot extends Obj {
@@ -243,7 +243,7 @@ package fe.game.domain.location {
 			
 			// [Take]
 			if (prinud || (GameContainer.reference.gg.isTake >= 1 || actTake) && rx < 20 && rx > -20 && ry < 20 &&ry > -20) {
-				if (World.w.hardInv && !actTake) {
+				if (GameContainer.reference.hardInv && !actTake) {
 					auto2 = item.checkAuto();
 					if (!auto2) {
 						vsos = false;
@@ -305,7 +305,7 @@ package fe.game.domain.location {
 			}
 			
 			if (!stay) {
-				if (!levit && !vsos && velocity.Y < World.maxdy) velocity.Y += World.ddy;
+				if (!levit && !vsos && velocity.Y < GameContainer.maxdy) velocity.Y += GameContainer.ddy;
 				else if (levit && !isPlav) {
 					velocity.multiply(0.80);
 				}
@@ -314,11 +314,11 @@ package fe.game.domain.location {
 					velocity.multiply(0.70);
 				}
 				
-				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+				if (Math.abs(velocity.X) < GameContainer.maxdelta && Math.abs(velocity.Y) < GameContainer.maxdelta)	{
 					run();
 				}
 				else {
-					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / GameContainer.maxdelta) + 1;
 					for (var i:int = 0; (i<div && !stay && !isTake); i++) run(div);
 				}
 				
@@ -335,9 +335,9 @@ package fe.game.domain.location {
 			}
 			
 			// AABB collision
-			onCursor = (coordinates.X - boundingBox.halfWidth < World.w.celX && coordinates.X + boundingBox.halfWidth > World.w.celX && coordinates.Y - boundingBox.height < World.w.celY && coordinates.Y > World.w.celY)? prior:0;
+			onCursor = (coordinates.X - boundingBox.halfWidth < GameContainer.reference.celX && coordinates.X + boundingBox.halfWidth > GameContainer.reference.celX && coordinates.Y - boundingBox.height < GameContainer.reference.celY && coordinates.Y > GameContainer.reference.celY)? prior:0;
 			
-			if (World.w.checkLoot) {
+			if (AutoPickupManager.reference.checkLoot) {
 				auto2 = item.checkAuto();
 			}
 			

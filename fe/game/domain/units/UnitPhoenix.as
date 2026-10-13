@@ -1,7 +1,7 @@
 package fe.game.domain.units {
 
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.enums.E_Direction;
 	

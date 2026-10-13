@@ -17,7 +17,7 @@ package fe.game.ui {
 	import fe.game.ItemManager;
 	import fe.game.WeaponManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.Pers;
 	import fe.game.domain.units.Unit;
@@ -31,6 +31,7 @@ package fe.game.ui {
 	import fe.game.domain.units.UnitPet;
 	import fe.game.domain.units.Effect;
 	import fe.game.domain.units.enums.E_ArmorTypes;
+	import fe.engine.Engine;
 	
 	public class PipPage {
 		
@@ -518,7 +519,7 @@ package fe.game.ui {
 			}
 			
 			// [Adding weight effects]
-			if (World.w.hardInv && dp.sk.length()) {
+			if (GameContainer.reference.hardInv && dp.sk.length()) {
 				s += '<br>';
 				for each(var sk in dp.sk) {
 					if (sk.@tip == 'm') {
@@ -701,14 +702,14 @@ package fe.game.ui {
 				var wrapid:int = w.resultRapid(w.rapid);
 				if (w.tip != Weapon.TYPE_EXPLOSIVES) {
 					s += "\n" + localize("pip", "aps") + ": "
-						+ textAsColor("yellow", Number(World.fps / wrapid).toFixed(1));
+						+ textAsColor("yellow", Number(Engine.TPS / wrapid).toFixed(1));
 
 					s += "\n" + localize("pip", "dps") + ": "
-						+ textAsColor("yellow", Number((wdam + wdamexpl) * w.kol * World.fps / wrapid).toFixed(1));
+						+ textAsColor("yellow", Number((wdam + wdamexpl) * w.kol * Engine.TPS / wrapid).toFixed(1));
 
 					if (w.magazineCapacity) {
 						s += " (" + textAsColor("yellow",
-								Number((wdam + wdamexpl) * w.kol * World.fps
+								Number((wdam + wdamexpl) * w.kol * Engine.TPS
 									/ (wrapid + w.reload * w.reloadMult / w.magazineCapacity * w.rashod)
 								).toFixed(1))
 							+ ")";
@@ -767,10 +768,10 @@ package fe.game.ui {
 					sinf = TextParser.txt("w", w.id, 1);
 				}
 
-				if (World.w.hardInv && w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
+				if (GameContainer.reference.hardInv && w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
 					s += "\n" + localize("pip", "mass2") + ": <span class = 'mass'>" + w.mass + "</span>";
 				}
-				else if (World.w.hardInv && w.tip == Weapon.TYPE_EXPLOSIVES) {
+				else if (GameContainer.reference.hardInv && w.tip == Weapon.TYPE_EXPLOSIVES) {
 					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getWeight(id) + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 
@@ -871,7 +872,7 @@ package fe.game.ui {
 					s += "\n" + localize("pip", "det");
 				}
 				
-				if (World.w.hardInv && ammoData.m > 0) {
+				if (GameContainer.reference.hardInv && ammoData.m > 0) {
 					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ammoData.m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 				
@@ -988,7 +989,7 @@ package fe.game.ui {
 					s = TextParser.txt("p", "paint", 1);
 				}
 				
-				if (World.w.hardInv && pot.m > 0) {
+				if (GameContainer.reference.hardInv && pot.m > 0) {
 					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>"
 						+ pot.m + "</span> ("
 						+ localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";

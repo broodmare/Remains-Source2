@@ -7,7 +7,7 @@ package fe.game.domain.entities {
 	import fe.engine.utils.Vec2;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.serv.Interact;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.ui.Appear;
@@ -168,13 +168,13 @@ package fe.game.domain.entities {
 			var aid:String = "";
 			
 			if (World.w) {
-				if (GUIManager.reference.pip && GUIManager.reference.pip.active || World.w.mmArmor && World.w.allStat == 0) {
+				if (GUIManager.reference.pip && GUIManager.reference.pip.active || GameContainer.reference.mmArmor && GameContainer.reference.allStat == 0) {
 					aid = GUIManager.reference.pip.armorID;
 				}
-				else if (World.w.armorWork != "") {
-					aid = World.w.armorWork;
+				else if (GameContainer.reference.armorWork != "") {
+					aid = GameContainer.reference.armorWork;
 				}
-				else if (World.w.alicorn) {
+				else if (GameContainer.reference.alicorn) {
 					aid = "ali";
 				}
 				else {

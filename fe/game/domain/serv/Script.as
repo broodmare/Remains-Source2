@@ -6,13 +6,14 @@ package fe.game.domain.serv {
 	import fe.game.ItemManager;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.location.Land;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Armor;
 	import fe.game.enums.E_Direction;
+	import fe.engine.Engine;
 	
 	public class Script {
 
@@ -92,7 +93,7 @@ package fe.game.domain.serv {
 			}
 			
 			if (xml.@t.length()) {						// [Delay in seconds]
-				t = Math.round(xml.@t * World.fps);
+				t = Math.round(xml.@t * Engine.TPS);
 				if (t > 0) {
 					onTimer = true;
 				}
@@ -265,7 +266,7 @@ package fe.game.domain.serv {
 					break;
 
 					case "dialog":
-						if (World.w.dialOn) {
+						if (GameContainer.reference.dialOn) {
 							GameContainer.reference.gg.controlOff();
 							wait=true;
 							dial_n=0;
@@ -285,7 +286,7 @@ package fe.game.domain.serv {
 					break;
 
 					case "landlevel":
-						if (World.w.dialOn && GameContainer.reference.game.lands[actObj.val]) {
+						if (GameContainer.reference.dialOn && GameContainer.reference.game.lands[actObj.val]) {
 							GameContainer.reference.gg.controlOff();
 							wait=true;
 							GameContainer.reference.ctr.active=false;

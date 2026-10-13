@@ -6,7 +6,7 @@ package fe.game.domain.weapon {
 	import fe.game.WeaponManager;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
@@ -77,7 +77,7 @@ package fe.game.domain.weapon {
 
 		public override function attack(waitReady:Boolean = false):Boolean {
 
-			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
+			if (!waitReady && !GameContainer.reference.alicorn && !auto && t_auto > 0) {
 				t_auto = 3;
 				
 				return false;
@@ -85,7 +85,7 @@ package fe.game.domain.weapon {
 			
 			skillConf = 1;
 			
-			if (owner.player && World.w.weaponsLevelsOff) {
+			if (owner.player && GameContainer.reference.weaponsLevelsOff) {
 				if (lvlNoUse) {
 					if ((owner as UnitPlayer).pers.getWeapLevel(skill) < lvl) {
 						GUIManager.reference.gui.infoText("weaponSkillLevel");
@@ -216,7 +216,7 @@ package fe.game.domain.weapon {
 			
 			if (owner.player && loc.train) {
 				GameContainer.reference.invent.increaseQuantity(ammo.id);
-				World.w.calcMass = true;
+				GameContainer.reference.calcMass = true;
 			}
 			
 			t_auto = 3;
@@ -234,13 +234,13 @@ package fe.game.domain.weapon {
 				skillConf = 0.50;
 			}
 			
-			var rot3:Number = Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+			var rot3:Number = Math.atan2(GameContainer.reference.celY - coordinates.Y, GameContainer.reference.celX - coordinates.X);
 			trasser.loc = owner.loc;
-			var rasstx:Number = World.w.celX - coordinates.X;
-			var rassty:Number = World.w.celY - coordinates.Y;
+			var rasstx:Number = GameContainer.reference.celX - coordinates.X;
+			var rassty:Number = GameContainer.reference.celY - coordinates.Y;
 			trasser.X = trasser.begx = coordinates.X;
 			trasser.Y = trasser.begy = coordinates.Y;
-			trasser.ddy=World.ddy;
+			trasser.ddy=GameContainer.ddy;
 			trasser.skok=skok;
 			trasser.tormoz=tormoz;
 			trasser.brake=brake;

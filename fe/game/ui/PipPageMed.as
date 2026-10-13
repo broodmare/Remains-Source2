@@ -5,7 +5,7 @@ package fe.game.ui {
 
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.units.Pers;
 	import fe.game.domain.serv.Item;
 	import fe.engine.utils.TradeValue;

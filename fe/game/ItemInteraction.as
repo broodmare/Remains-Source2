@@ -19,7 +19,6 @@ package fe.game {
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.GameContainer;
 	import fe.game.ui.GUIManager;
 
 	// Everything the player can do with their inventory (formerly most of Invent.as), the Inventory class only holds the data
@@ -233,7 +232,7 @@ package fe.game {
 			}
 			pot = itemManager.getItem(ci);
 			
-			if (World.w.alicorn) {
+			if (GameContainer.reference.alicorn) {
 				if (pot.tip == Item.L_POT || pot.tip == Item.L_HIM || pot.tip == Item.L_FOOD) {
 					GUIManager.reference.gui.infoText("alicornNot", null, null, false);
 					return false;
@@ -465,7 +464,7 @@ package fe.game {
 			
 			// [Portable workbenches]
 			if (ci == "mworkbench" || ci == "mworkexpl" || ci == "mworklab") {
-				if (World.w.t_battle > 0) {
+				if (GameContainer.reference.t_battle > 0) {
 					GUIManager.reference.gui.infoText("noUseCombat", null, null, false);
 					return false;
 				}
@@ -491,7 +490,7 @@ package fe.game {
 			
 			// [Document]
 			if ("text" in item) {
-				if (World.w.t_battle > 0) {
+				if (GameContainer.reference.t_battle > 0) {
 					GUIManager.reference.gui.infoText("noUseCombat", null, null, false);
 					return false;
 				}
@@ -515,12 +514,12 @@ package fe.game {
 				return usePotion(ci);
 			}
 			else if (tip == Item.L_FOOD) {
-				if (World.w.alicorn) {
+				if (GameContainer.reference.alicorn) {
 					GUIManager.reference.gui.infoText("alicornNot", null, null, false);
 					return false;
 				}
 				
-				if (World.w.t_battle > 0) {
+				if (GameContainer.reference.t_battle > 0) {
 					GUIManager.reference.gui.infoText("noUseCombat", null, null, false);
 					return false;
 				}
@@ -528,7 +527,7 @@ package fe.game {
 				return usePotion(ci);
 			}
 			else if (tip == Item.L_SPELL) {
-				if (World.w.alicorn) {
+				if (GameContainer.reference.alicorn) {
 					GUIManager.reference.gui.infoText("alicornNot", null, null, false);
 					return false;
 				}
@@ -537,12 +536,12 @@ package fe.game {
 				return false;
 			}
 			else if (tip == Item.L_BOOK) {
-				if (World.w.t_battle > 0) {
+				if (GameContainer.reference.t_battle > 0) {
 					GUIManager.reference.gui.infoText("noUseCombat", null, null, false);
 					return false;
 				}
 				
-				if (World.w.hardInv && !World.w.loc.base) {
+				if (GameContainer.reference.hardInv && !World.w.loc.base) {
 					GUIManager.reference.gui.infoText("noBase");
 					return false;
 				}
@@ -558,12 +557,12 @@ package fe.game {
 				_inventory.increaseQuantity("lbook");
 			}
 			else if (ci == "sphera") {
-				if (World.w.t_battle > 0) {
+				if (GameContainer.reference.t_battle > 0) {
 					GUIManager.reference.gui.infoText("noUseCombat", null, null, false);
 					return false;
 				}
 				
-				if (World.w.hardInv && !World.w.loc.base) {
+				if (GameContainer.reference.hardInv && !World.w.loc.base) {
 					GUIManager.reference.gui.infoText("noBase");
 					return false;
 				}
@@ -579,7 +578,7 @@ package fe.game {
 				}
 			}
 			else if (ci == "stealth") {
-				if (World.w.alicorn) {
+				if (GameContainer.reference.alicorn) {
 					GUIManager.reference.gui.infoText("alicornNot", null, null, false);
 					return false;
 				}
@@ -587,7 +586,7 @@ package fe.game {
 				gg.addEffect("stealth");
 			}
 			else if ("pet" in item) {
-				if (World.w.alicorn) {
+				if (GameContainer.reference.alicorn) {
 					GUIManager.reference.gui.infoText("alicornNot", null, null, false);
 					return false;
 				}
@@ -613,7 +612,7 @@ package fe.game {
 				GUIManager.reference.gui.setItems();
 			}
 			
-			World.w.calcMass = true;
+			GameContainer.reference.calcMass = true;
 			
 			return true;
 		}
@@ -791,7 +790,7 @@ package fe.game {
 				_inventory.favorites.removeFavorite(id);
 			}
 			
-			World.w.calcMassW = true;
+			GameContainer.reference.calcMassW = true;
 		}
 		
 		// The ID of a weapon's unique variant, or null if it doesn't have one
@@ -828,7 +827,7 @@ package fe.game {
 				_owner.changeWeapon(uid);
 			}
 			
-			World.w.calcMassW = true;
+			GameContainer.reference.calcMassW = true;
 			
 			return w;
 		}
@@ -937,7 +936,7 @@ package fe.game {
 				if (n > 0) {
 					_inventory.increaseQuantity("frag", n);
 					
-					if (!World.w.testLoot) {
+					if (!GameContainer.reference.testLoot) {
 						GUIManager.reference.gui.infoText("take", itemName("frag") + ((n > 1) ? (" (" + n + ")") : ""));
 					}
 				}
@@ -1020,13 +1019,13 @@ package fe.game {
 					// [We already have this weapon, use it for repairs]
 					if (w.tip != Weapon.TYPE_MAGIC) {
 						repairWeapon(l.id, hp);
-						if (!World.w.testLoot) {
+						if (!GameContainer.reference.testLoot) {
 							GUIManager.reference.gui.infoText("repairWeapon", w.nazv, Math.round(w.hp / w.maxhp * 100));
 						}
 					}
 				}
 				else {
-					if (tr == 0 && !World.w.testLoot) {
+					if (tr == 0 && !GameContainer.reference.testLoot) {
 						GUIManager.reference.gui.infoText("takeWeapon", l.nazv, Math.round(l.sost * l.multHP * 100));
 					}
 					
@@ -1044,13 +1043,13 @@ package fe.game {
 				}
 				
 				GUIManager.reference.gui.setWeapon();
-				World.w.calcMassW = true;
+				GameContainer.reference.calcMassW = true;
 				color = 5;
 			}
 			else if (l.tip == Item.L_ARMOR) {
 				hp = Math.round(int(l.data.hp || 100) * l.sost * l.multHP);
 				
-				if (addArmor(l.id, hp, l.armorLvl) && tr == 0 && !World.w.testLoot) {
+				if (addArmor(l.id, hp, l.armorLvl) && tr == 0 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("take", l.nazv);
 				}
 				
@@ -1058,7 +1057,7 @@ package fe.game {
 			}
 			else if (l.tip == Item.L_SPELL) {
 				plus(l, tr);
-				World.w.calcMassW = true;
+				GameContainer.reference.calcMassW = true;
 				color = 5;
 			}
 			else if (l.tip == Item.L_SCHEME) {
@@ -1068,7 +1067,7 @@ package fe.game {
 				
 				plus(l, tr);
 				
-				if (tr <= 1 && !World.w.testLoot) {
+				if (tr <= 1 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("take", l.nazv);
 				}
 				
@@ -1091,7 +1090,7 @@ package fe.game {
 					addWeapon(l.id);
 				}
 				
-				if (tr == 0 && !World.w.testLoot) {
+				if (tr == 0 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("take", l.nazv + ((l.kol > 1) ? (" (" + l.kol + ")") : ""));
 				}
 				
@@ -1100,7 +1099,7 @@ package fe.game {
 			else if (l.tip == Item.L_AMMO) {
 				plus(l, tr);
 				
-				if (tr == 0 && !World.w.testLoot) {
+				if (tr == 0 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("takeAmmo", l.nazv, l.kol);
 				}
 				
@@ -1109,7 +1108,7 @@ package fe.game {
 			else if (l.tip == Item.L_MED) {
 				plus(l, tr);
 				
-				if (tr == 0 && !World.w.testLoot) {
+				if (tr == 0 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("takeMed", l.nazv);
 				}
 				
@@ -1123,7 +1122,7 @@ package fe.game {
 				
 				plus(l, tr);
 				
-				if (tr <= 1 && !World.w.testLoot) {
+				if (tr <= 1 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("takeBook", l.nazv);
 				}
 				
@@ -1137,7 +1136,7 @@ package fe.game {
 				
 				plus(l, tr);
 				
-				if (tr == 0 && !World.w.testLoot) {
+				if (tr == 0 && !GameContainer.reference.testLoot) {
 					GUIManager.reference.gui.infoText("take", l.nazv);
 				}
 				
@@ -1152,7 +1151,7 @@ package fe.game {
 				// Increment items in inventory
 				plus(l, tr);
 				
-				if (tr == 0 && !World.w.testLoot) {
+				if (tr == 0 && !GameContainer.reference.testLoot) {
 					if (l.id == "money") {
 						GUIManager.reference.gui.infoText("takeMoney", l.kol);
 					}
@@ -1195,7 +1194,7 @@ package fe.game {
 			}
 
 			// [pop-up message]
-			if (!World.w.testLoot && (tr == 0 || tr == 2)) {
+			if (!GameContainer.reference.testLoot && (tr == 0 || tr == 2)) {
 				if (l.fc >= 0) {
 					color = l.fc;
 				}
@@ -1204,7 +1203,7 @@ package fe.game {
 			}
 
 			// [information window for important items]
-			if (World.w.helpMess || l.tip == Item.L_ART) {
+			if (GameContainer.reference.helpMess || l.tip == Item.L_ART) {
 				if (l.mess != null && !(GameContainer.reference.game.triggers["mess_" + l.mess] > 0)) {
 					GameContainer.reference.game.triggers["mess_" + l.mess] = 1;
 					GUIManager.reference.gui.impMess(TextParser.txt("i", l.mess), TextParser.txt("i", l.mess, 2), l.mess);
@@ -1221,11 +1220,11 @@ package fe.game {
 				GUIManager.reference.gui.infoText("collect", res);
 			}
 
-			if (World.w.hardInv) {
+			if (GameContainer.reference.hardInv) {
 				_inventory.mass[l.invCat] += l.mass * l.kol;
 			}
 			
-			World.w.calcMass = true;
+			GameContainer.reference.calcMass = true;
 		}
 
 		// [Give the player an item as a reward (eg. from a quest)] kol - the amount, -1 uses the item's default amount
@@ -1336,7 +1335,7 @@ package fe.game {
 		public function damageItems(dam:Number, destr:Boolean = true):void {
 			var pers:Pers = _owner.pers;
 			
-			if (!destr && !World.w.loc.base && !World.w.alicorn) {
+			if (!destr && !World.w.loc.base && !GameContainer.reference.alicorn) {
 				dam = 5;
 			}
 			
@@ -1362,7 +1361,7 @@ package fe.game {
 							GUIManager.reference.gui.infoText("itemLose", itemName(nid), kol);
 						}
 						
-						World.w.calcMass = true;
+						GameContainer.reference.calcMass = true;
 						return;
 					}
 				}
@@ -1371,7 +1370,7 @@ package fe.game {
 
 		// [Drop items on the ground]
 		public function drop(nid:String, kol:int = 1):void {
-			if (World.w.loc.base || World.w.alicorn) {
+			if (World.w.loc.base || GameContainer.reference.alicorn) {
 				return;
 			}
 
@@ -1396,7 +1395,7 @@ package fe.game {
 		public function dropWeapon(id:String):void {
 			var w:Weapon = _inventory.equipment.getWeapon(id);
 			
-			if (World.w.loc.base || World.w.alicorn || !canDropWeapon(w)) {
+			if (World.w.loc.base || GameContainer.reference.alicorn || !canDropWeapon(w)) {
 				return;
 			}
 			
@@ -1412,7 +1411,7 @@ package fe.game {
 		public function dropArmor(id:String):void {
 			var a:Armor = _inventory.equipment.getArmor(id);
 			
-			if (World.w.loc.base || World.w.alicorn || !canDropArmor(a)) {
+			if (World.w.loc.base || GameContainer.reference.alicorn || !canDropArmor(a)) {
 				return;
 			}
 			
@@ -1641,13 +1640,13 @@ package fe.game {
 		
 		public static function calcMass(inv:Inventory):void {
 			inv.calcMass();
-			World.w.checkLoot = true;
+			AutoPickupManager.reference.checkLoot = true;
 			GameContainer.reference.pers.invMassParam();
 		}
 
 		public static function calcWeaponMass(inv:Inventory):void {
 			inv.calcWeaponMass();
-			World.w.checkLoot = true;
+			AutoPickupManager.reference.checkLoot = true;
 			GameContainer.reference.pers.invMassParam();
 		}
 		

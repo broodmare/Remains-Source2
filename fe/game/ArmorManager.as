@@ -8,7 +8,6 @@ package fe.game {
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextLoader;
-	import fe.GameContainer;
 
 	public class ArmorManager {
 

@@ -8,8 +8,7 @@ package fe.game.domain.units {
 	import fe.game.WeaponManager;
 	import fe.game.domain.weapon.Weapon;
 	import fe.engine.audio.Sound;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.weapon.WThrow;
 	import fe.game.enums.E_Direction;
 	
@@ -194,7 +193,7 @@ package fe.game.domain.units {
 				return;
 			}
 
-			if (World.w.enemyAct <= 0) {
+			if (GameContainer.reference.enemyAct <= 0) {
 				return;
 			}
 			if (t_shit > 0) {

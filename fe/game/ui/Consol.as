@@ -13,7 +13,7 @@ package fe.game.ui {
 	import fe.game.enums.E_DeathState;
 	import fe.game.enums.E_ExitState;
 	import fe.engine.Engine;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
@@ -151,8 +151,8 @@ package fe.game.ui {
 			var str:String = vis.input.text;
 			
 			ist.push(str);
-			world.lastCom = str;
-			world.saveConfig();
+			GameContainer.reference.lastCom = str;
+			GameContainer.reference.saveConfig();
 			istN = ist.length;
 			vis.input.text = "";
 			
@@ -168,8 +168,8 @@ package fe.game.ui {
 					GameContainer.reference.gg.vis.visible=true;
 					GUIManager.reference.vblack.alpha=0;
 					GUIManager.reference.vblack.visible=false;
-					world.exitState=E_ExitState.NONE;
-					world.deathState=E_DeathState.NONE;
+					GameContainer.reference.exitState=E_ExitState.NONE;
+					GameContainer.reference.deathState=E_DeathState.NONE;
 					GUIManager.reference.vgui.visible=true;
 					GUIManager.reference.vfon.visible=true;
 					GUIManager.reference.visual.visible=true;
@@ -194,21 +194,21 @@ package fe.game.ui {
 					}
 					break;
 				case "hardinv":
-					world.hardInv=!world.hardInv;
+					GameContainer.reference.hardInv=!GameContainer.reference.hardInv;
 					break;
 				case "res_watcher":
 					GameContainer.reference.game.triggers["observer"] = 1;
 					break;
 				case "mqt":
-					world.chitOn=!world.chitOn;
-					world.saveConfig();
+					GameContainer.reference.chitOn=!GameContainer.reference.chitOn;
+					GameContainer.reference.saveConfig();
 					break;
 				//TODO: Re-implement check that chitOn == true for commands below this point.
 				case "hardcore":
 					GameContainer.reference.pers.hardcore=!GameContainer.reference.pers.hardcore;
 					break;
 				case "testmode":
-					world.testMode=!world.testMode;
+					GameContainer.reference.testMode=!GameContainer.reference.testMode;
 					break;
 				case "dif":
 					GameContainer.reference.game.globalDif=s[1];
@@ -229,7 +229,7 @@ package fe.game.ui {
 					setConsoleVisiblility(false);
 					break;
 				case "god":
-					world.godMode=!world.godMode;
+					GameContainer.reference.godMode=!GameContainer.reference.godMode;
 					break;
 				case "lvl":
 				case "level":
@@ -317,24 +317,24 @@ package fe.game.ui {
 					if (s.length==3) world.land.gotoXY(s[1],s[2]);
 					break;
 				case "map":
-					world.drawAllMap=!world.drawAllMap;
+					GameContainer.reference.drawAllMap=!GameContainer.reference.drawAllMap;
 					break;
 				case "black":
-					world.black=!world.black;
-					GameContainer.reference.grafon.visLight.visible=world.black && world.loc.black;
+					GameContainer.reference.black=!GameContainer.reference.black;
+					GameContainer.reference.grafon.visLight.visible=GameContainer.reference.black && world.loc.black;
 					break;
 				case "battle":
-					world.testBattle=!world.testBattle;
+					GameContainer.reference.testBattle=!GameContainer.reference.testBattle;
 					break;
 				case "testeff":
-					world.testEff=!world.testEff;
+					GameContainer.reference.testEff=!GameContainer.reference.testEff;
 					break;
 				case "testdam":
-					world.testDam=!world.testDam;
+					GameContainer.reference.testDam=!GameContainer.reference.testDam;
 					break;
 				case "enemy":
-					if (world.enemyAct==3) world.enemyAct=0;
-					else world.enemyAct=3;
+					if (GameContainer.reference.enemyAct==3) GameContainer.reference.enemyAct=0;
+					else GameContainer.reference.enemyAct=3;
 					break;
 				case "lim":
 					if (s.length==2) world.land.lootLimit=Number(s[1]);
@@ -342,24 +342,24 @@ package fe.game.ui {
 				case "fly":
 				case "port":
 				case "emit":
-					world.chit=s[0];
-					world.chitX=s[1];
+					GameContainer.reference.chit=s[0];
+					GameContainer.reference.chitX=s[1];
 					break;
 				case "getroom":
-					world.testLoot=true;
+					GameContainer.reference.testLoot=true;
 					trace('получено опыта', world.loc.getAll());
-					world.testLoot=false;
+					GameContainer.reference.testLoot=false;
 					break;
 				case "err":
 					world.landError=!world.landError;
 					break;
 				case "getloc":
-					world.testLoot=true;
+					GameContainer.reference.testLoot=true;
 					trace('получено опыта', world.land.getAll());
-					world.testLoot=false;	
+					GameContainer.reference.testLoot=false;	
 					break;
 				case "alicorn":
-					if (world.alicorn) GameContainer.reference.gg.alicornOff();
+					if (GameContainer.reference.alicorn) GameContainer.reference.gg.alicornOff();
 					else GameContainer.reference.gg.alicornOn();
 					break;
 				case "st":

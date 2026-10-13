@@ -9,7 +9,7 @@ package fe.game.domain.location {
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.ItemManager;
 	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.rendering.Grafon;
 	import fe.game.rendering.Emitter;
@@ -31,6 +31,7 @@ package fe.game.domain.location {
 	import fe.game.domain.location.tile.TileRegistry;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
+	import fe.engine.Engine;
 	
 	public class Location {
 
@@ -206,8 +207,8 @@ package fe.game.domain.location {
 			this.land		= land;
 			itemManager		= iManager;
 
-			spaceX			= World.cellsX;		// Room width in tiles
-			spaceY			= World.cellsY;		// Room height in tiles
+			spaceX			= GameContainer.cellsX;		// Room width in tiles
+			spaceY			= GameContainer.cellsY;		// Room height in tiles
 
 			// Initialize right and bottom bounds based on spaceX and spaceY
 			RIGHT_X			= spaceX - 1;
@@ -226,7 +227,7 @@ package fe.game.domain.location {
 			defaultTile = new Tile(-1, -1);		// Use this as a back-up if a tile can't be found
 
 			initializeArrays();
-			maxdy = World.maxdy;
+			maxdy = GameContainer.maxdy;
 
 			if (rnd) {
 				ramka = 1;
@@ -1585,7 +1586,7 @@ package fe.game.domain.location {
 		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean {
 			var ndx:Number = cx - nx;
 			var ndy:Number = cy - ny;
-			var div:int = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
+			var div:int = int(Math.max(Math.abs(ndx), Math.abs(ndy)) / GameContainer.maxdelta) + 1;
 
 			var deltaX:Number = ndx / div;
 			var deltaY:Number = ndy / div;
@@ -2068,7 +2069,7 @@ package fe.game.domain.location {
 			}
 			
 			if (est) {
-				t_gwall = World.fps + 1;
+				t_gwall = Engine.TPS + 1;
 			}
 		}
 		
@@ -2445,7 +2446,7 @@ package fe.game.domain.location {
 		
 		// [Kill all enemies and open all containers]
 		public function getAll():int {
-			World.w.summxp = 0;
+			GameContainer.reference.summxp = 0;
 			GameContainer.reference.pers.expa(unXp * 9);
 			
 			for each (var un:Unit in units) {
@@ -2460,7 +2461,7 @@ package fe.game.domain.location {
 				}
 			}
 			
-			return World.w.summxp;
+			return GameContainer.reference.summxp;
 		}
 		
 		public function openAllPrize():void {
@@ -2473,7 +2474,7 @@ package fe.game.domain.location {
 		
 		//дистанция между гг и активным объектом
 		private function getDist():void {
-			if (getTile(Math.round(World.w.celX / tileX), Math.round(World.w.celY / tileY)).visibility < 0.10) {
+			if (getTile(Math.round(GameContainer.reference.celX / tileX), Math.round(GameContainer.reference.celY / tileY)).visibility < 0.10) {
 				celObj = null;
 			}
 			

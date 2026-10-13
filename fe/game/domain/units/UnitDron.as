@@ -1,12 +1,12 @@
 package fe.game.domain.units {
 	
 	import fe.engine.utils.SymbolFactory;
-	import fe.game.World;
 	import fe.engine.text.TextParser;
 	import fe.game.WeaponManager;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
+	import fe.game.GameContainer;
 	
 	public class UnitDron extends Unit {
 		
@@ -181,7 +181,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			if (World.w.enemyAct <= 0) {
+			if (GameContainer.reference.enemyAct <= 0) {
 				return;
 			}
 			
@@ -216,7 +216,7 @@ package fe.game.domain.units {
 			}
 			
 			//поиск цели
-			if (World.w.enemyAct > 1 && aiTCh % 10 == 1) {
+			if (GameContainer.reference.enemyAct > 1 && aiTCh % 10 == 1) {
 				if (findCel()) {
 					stuk = 0;
 					aiSpok = maxSpok + 10;
@@ -291,7 +291,7 @@ package fe.game.domain.units {
 				turnY = E_Direction.NEUTRAL;
 			}
 			//атака
-			if (World.w.enemyAct >= 3 && aiState == 1 && celUnit && shok <= 0) {
+			if (GameContainer.reference.enemyAct >= 3 && aiState == 1 && celUnit && shok <= 0) {
 				critCh = 0;
 				
 				if (celUnit && (atkRasst>atkDist*atkDist)) {
@@ -327,7 +327,7 @@ package fe.game.domain.units {
 				velocity.X += p.x;
 				velocity.Y += p.y;
 				
-				if (World.w.showHit == 1 || World.w.showHit == 2 && t_hitPart == 0) {
+				if (GameContainer.reference.showHit == 1 || GameContainer.reference.showHit == 2 && t_hitPart == 0) {
 					visDamDY -= 15;
 					t_hitPart = 10;
 					if (sost < 3 && isVis && !invulner && bul.flame == 0) numbEmit.cast(loc, coordinates.X, coordinates.Y - this.boundingBox.halfHeight + visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.5});

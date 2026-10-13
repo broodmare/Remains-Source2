@@ -1,6 +1,6 @@
 package fe.game.domain.location {
 
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.engine.text.TextParser;
 	import fe.engine.audio.Sound;
@@ -11,6 +11,7 @@ package fe.game.domain.location {
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.serv.Npc;
 	import fe.game.domain.entities.Obj;
+	import fe.engine.Engine;
 	
 	public class Game {       
 
@@ -267,7 +268,7 @@ package fe.game.domain.location {
 		
 		public function enterToCurLand():void {
 			Land.locN += 5;
-			World.w.time___metr();
+			Engine.reference.time___metr();
 
 			if (World.w.land && objs) World.w.land.saveObjs(objs);
 			// Check for random encounter(?)
@@ -296,7 +297,7 @@ package fe.game.domain.location {
 				curLand.land = new Land(GameContainer.reference.itemManager, GameContainer.reference.gg, curLand, n);
 			}
 
-			World.w.time___metr('Creating level');
+			Engine.reference.time___metr('Creating level');
 
 			if (!first) {
 				triggers['firstroom'] = 1;
@@ -330,7 +331,7 @@ package fe.game.domain.location {
 				curLand.upStage=false;
 			}
 			
-			World.w.time___metr('Entering level');
+			Engine.reference.time___metr('Entering level');
 		}
 		
 		// [Redirect to another location]
@@ -453,7 +454,7 @@ package fe.game.domain.location {
 				}
 			}
 			
-			if (loadObj==null && showDial && q.begDial && World.w.dialOn && World.w.loc.prob==null) {
+			if (loadObj==null && showDial && q.begDial && GameContainer.reference.dialOn && World.w.loc.prob==null) {
 				GUIManager.reference.pip.onoff(-1);
 				GUIManager.reference.gui.dialog(q.begDial);
 			}

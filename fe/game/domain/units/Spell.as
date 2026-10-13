@@ -5,7 +5,7 @@ package fe.game.domain.units {
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.location.tile.Tile;
@@ -14,6 +14,7 @@ package fe.game.domain.units {
 	import fe.game.enums.E_Material;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
+	import fe.engine.Engine;
 
 	public class Spell {
 
@@ -77,7 +78,7 @@ package fe.game.domain.units {
 			if (xml.@hp.length())		hp		= xml.@hp;
 			if (xml.@mana.length())		mana	= xml.@mana;
 			if (xml.@magic.length())	magic	= xml.@magic;
-			if (xml.@culd.length())		culd	= xml.@culd*World.fps;
+			if (xml.@culd.length())		culd	= xml.@culd*Engine.TPS;
 			if (xml.@dist.length())		dist	= xml.@dist;
 			if (xml.@line.length()) 	line	= xml.@line;
 			if (xml.@rad.length())		rad		= xml.@rad;
@@ -127,7 +128,7 @@ package fe.game.domain.units {
 			}
 			
 			if (player) {
-				if (World.w.alicorn && id!="sp_mshit") {
+				if (GameContainer.reference.alicorn && id!="sp_mshit") {
 					return false;
 				}
 				
@@ -153,7 +154,7 @@ package fe.game.domain.units {
 				if (t_culd > 0) {
 					if (!active) {
 						if (culd >= 100) {
-							GUIManager.reference.gui.infoText("spellCuld", Math.ceil(t_culd / World.fps), null, false);
+							GUIManager.reference.gui.infoText("spellCuld", Math.ceil(t_culd / Engine.TPS), null, false);
 							GUIManager.reference.gui.bulb(owner.coordinates.X, owner.coordinates.Y - 20);
 						}
 						
@@ -265,7 +266,7 @@ package fe.game.domain.units {
 		
 		// [magic shield]
 		private function cast_mshit():void {
-			if (owner.player && World.w.alicorn) {
+			if (owner.player && GameContainer.reference.alicorn) {
 				owner.shithp = GameContainer.reference.pers.alicornShitHP;
 			}
 			else {
@@ -417,7 +418,7 @@ package fe.game.domain.units {
 			gwall(cx, cy + 40);				
 			
 			if (est > 0) {
-				loc.t_gwall = World.fps;
+				loc.t_gwall = Engine.TPS;
 			}
 		}
 		

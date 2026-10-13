@@ -3,8 +3,7 @@ package fe.game.domain.units {
 	import fe.engine.audio.Sound;
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.World;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.domain.serv.LootGen;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.units.enums.E_Resistances;
@@ -168,7 +167,7 @@ package fe.game.domain.units {
 		
 		public override function setNull(f:Boolean=false):void {
 			super.setNull(f);
-			detectionDelay = World.detectionDelay * 0.5;
+			detectionDelay = GameContainer.detectionDelay * 0.5;
 		}
 
 		public override function save():Object {

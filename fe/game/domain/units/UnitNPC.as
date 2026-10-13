@@ -9,9 +9,8 @@ package fe.game.domain.units {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.WeaponManager;
 	import fe.engine.text.LanguageManager;
-	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.GameContainer;
+	import fe.game.GameContainer;
 	import fe.game.enums.E_Direction;
 	
 	public class UnitNPC extends UnitPon {
@@ -309,7 +308,7 @@ package fe.game.domain.units {
 			else if (com=="sign") {
 				if (ico.sign) {
 					if (aiTip=="fly") ico.sign.visible=false;
-					else ico.sign.visible=World.w.helpMess;
+					else ico.sign.visible=GameContainer.reference.helpMess;
 				}
 			//попрощаться
 			}
@@ -499,7 +498,7 @@ package fe.game.domain.units {
 					inter.active=true;
 					
 					if (ico.sign) {
-						ico.sign.visible=World.w.helpMess;
+						ico.sign.visible=GameContainer.reference.helpMess;
 					}
 				}
 			}
