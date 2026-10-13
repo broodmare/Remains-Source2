@@ -47,7 +47,7 @@ package fe.loc {
 		
 		//объекты
 		public var grafon:Grafon;
-		public var space:Vector.<Tile>;						// One dimensional array of area tiles. instead of a nested [X][Y], indices are [tileXIndex * spaceY + tileYIndex;]
+		public var space:Vector.<Tile>;						// The room's tiles row by row: the tile at (x, y) is at y * spaceX + x
 		public var defaultTile:Tile;						//пустой блок
 		public var units:Vector.<Unit>;						//юниты
 		public var ups:Array;								// [Spawn random units]
@@ -2079,183 +2079,200 @@ package fe.loc {
 			}
 		}
 
-		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1):void {
-			if (!active) return;
+		public function lighting(nx:int = -10000, ny:int = -10000):void {
+			var lightX:int = nx;
+			var lightY:int = ny;
+			var dist1Squared:int = lDist1 * lDist1;
+			var dist2Squared:int = lDist2 * lDist2;
+			var invDistDiff:Number = 1.0 / (dist2Squared - dist1Squared);
 
-			// Use default distances if not provided
-			dist1 = (dist1 < 0) ? lDist1 : dist1;
-			dist2 = (dist2 < 0) ? lDist2 : dist2;
+			// Cache frequently accessed properties
+			var fogReturns:Boolean = retDark;
+			var opacWaterCache:Number = opacWater;
+			var spaceRef:Vector.<Tile> = space;
+			var spaceXCache:int = spaceX;
+			var spaceYCache:int = spaceY;
+			var tileXCache:int = tileX;
+			var tileYCache:int = tileY;
+			var invTileX:Number = INV_TILEX;
+			var invTileY:Number = INV_TILEY;
+			var mX:int = maxX;
+			var mY:int = maxY;
 
-			// Set default coordinates if not provided
+			var lightBmpRef:BitmapData;
+			var i:int;
+			var j:int;
+			var e:int;
+			var row:int;
+			var rowDy:int;
+			var rowDySquared:int;
+			var index:int;
+			var stepIndex:int;
+			var currentTile:Tile;
+			var stepTile:Tile;
+			var n1:Number;
+			var n2:Number;
+			var cutoff:Number;
+			var fadedVisibility:Number;
+			var dx:int;
+			var dy:int;
+			var absDx:int;
+			var absDy:int;
+			var rasst:int;
+			var dex:Number;
+			var dey:Number;
+			var maxe:int;
+			var absNx:int;
+			var absNy:int;
+			var opac:Number;
+			var pixelValue:int;
+
+			if (!active) { return; }
+
 			if (nx == -10000) {
-				nx = gg.coordinates.X + gg.storona * 12;
-				ny = gg.boundingBox.top + int(gg.height * 0.247);
+				lightX = gg.coordinates.X + gg.storona.X * 12;
+				lightY = gg.boundingBox.top + int(gg.height * 0.247);
 			}
 
 			relight_t = 10;
-
-			// Precompute squared distances and inverse difference
-			var dist1Squared:int = dist1 * dist1;
-			var dist2Squared:int = dist2 * dist2;
-			var invDistDiff:Number = 1 / (dist2Squared - dist1Squared);
-
-			// Cache frequently accessed properties
-			var tileXCache:int = tileX;
-			var tileYCache:int = tileY;
-			var spaceXCache:int = spaceX;
-			var spaceYCache:int = spaceY;
-			var opacWaterCache:Number = opacWater;
-			var waterThreshold:int = 0;
-
-			var mX:int = maxX;
-			var mY:int = maxY;
-			var invTileX:Number = INV_TILEX;
-			var invTileY:Number = INV_TILEY;
-
-			var spaceRef:Vector.<Tile> = space; // Correctly typed as Vector.<Tile>
-			var lightBmpRef:BitmapData = grafon.lightBmp; // Assuming 'lightBmp' is BitmapData
-
-			// Precompute iTileXArray to avoid repeated multiplication in the loop
-			var iTileXArray:Vector.<int> = new Vector.<int>(spaceXCache, true);
-			for (var i:int = 1; i < spaceXCache; i++) {
-				iTileXArray[i] = i * tileXCache;
-			}
-
-			// Lock the bitmap for bulk pixel operations
+			lightBmpRef = grafon.lightBmp;
 			lightBmpRef.lock();
 
-			for (i = 1; i < spaceXCache; i++) {
-				var currentITileX:int = iTileXArray[i];
-				for (var j:int = 1; j < spaceYCache; j++) {
-					var index:int = j * spaceXCache + i;
-					if (index < 0 || index >= spaceRef.length) continue;
+			for (j = 1; j < spaceYCache; j++) {
+				row = j * spaceXCache;
+				rowDy = j * tileYCache - lightY;
+				rowDySquared = rowDy * rowDy;
 
-					var currentTile:Tile = spaceRef[index];
-					var n1:Number = currentTile.visibility;
+				for (i = 1; i < spaceXCache; i++) {
+					index = row + i;
+					currentTile = spaceRef[index];
+					n1 = currentTile.visibility;
 
-					// Skip tiles that are fully visible unless retDark is true
-					if (!retDark && n1 >= 1) continue;
+					if (!fogReturns && n1 >= 1.0) { continue; }
 
-					var dx:int = currentITileX - nx;
-					var dy:int = j * tileYCache - ny;
-					var rasst:int = dx * dx + dy * dy;
+					dx = i * tileXCache - lightX;
+					dy = rowDy;
+					rasst = dx * dx + rowDySquared;
 
+					// Out of reach: returning fog slowly covers the tile again
 					if (rasst >= dist2Squared) {
-						if (retDark && currentTile.targetVisibility > 0) {
-							// Update visibility and set pixel opacity
-							currentTile.targetVisibility = Math.max(currentTile.targetVisibility - 0.025, 0);
-							var pixelValue:int = int((1 - currentTile.updVisi()) * 255) << 24;
+						if (fogReturns && currentTile.targetVisibility > 0.0) {
+							fadedVisibility = currentTile.targetVisibility - 0.025;
+							currentTile.targetVisibility = (fadedVisibility > 0.0) ? fadedVisibility : 0.0;
+							pixelValue = int((1.0 - currentTile.updVisi()) * 255.0) << 24;
 							lightBmpRef.setPixel32(i, j + 1, pixelValue);
 						}
 						continue;
 					}
 
-					// Calculate new visibility based on distance
-					var n2:Number = (rasst <= dist1Squared) ? 1 : (dist2Squared - rasst) * invDistDiff;
-					if (n2 > 1) n2 = 1;
+					// Fully visible within dist1, fading out toward dist2
+					n2 = (rasst <= dist1Squared) ? 1.0 : (dist2Squared - rasst) * invDistDiff;
 
-					if (rasst <= dist2Squared) {
-						var dex:Number, dey:Number, maxe:int;
-						var absDx:int = dx >= 0 ? dx : -dx;
-						var absDy:int = dy >= 0 ? dy : -dy;
+					// A ray that drops to the cutoff counts as blocked -- it can't go below zero, and without returning fog only a result brighter than the tile gets drawn
+					cutoff = fogReturns ? 0.0 : n1 + 0.01;
+
+					if (n2 > cutoff) {
+						absDx = (dx >= 0) ? dx : -dx;
+						absDy = (dy >= 0) ? dy : -dy;
 
 						if (absDx == absDy) {
 							dy++;
-							absDy = dy >= 0 ? dy : -dy;
+							absDy = (dy >= 0) ? dy : -dy;
 						}
 
+						// Walk from the light toward the tile, one tile's width at a time along the longer axis
 						if (absDx >= absDy) {
 							if (dx > 0) {
 								dex = tileXCache;
 								dey = (dy / dx) * tileYCache;
-							} else {
+							}
+							else {
 								dex = -tileXCache;
 								dey = (-dy / dx) * tileYCache;
 							}
-							maxe = Math.abs(dx / dex);
-						} else {
+							maxe = dx / dex;
+						}
+						else {
 							if (dy > 0) {
 								dey = tileYCache;
 								dex = (dx / dy) * tileXCache;
-							} else {
+							}
+							else {
 								dey = -tileYCache;
 								dex = (-dx / dy) * tileXCache;
 							}
-							maxe = Math.abs(dy / dey);
+							maxe = dy / dey;
 						}
 
-						// Iterate along the line to adjust visibility based on opacity
-						for (var e:int = 1; e <= maxe; e++) {
-							var absNx:int = nx + e * dex;
-							var absNy:int = ny + e * dey;
+						for (e = 1; e <= maxe; e++) {
+							absNx = lightX + e * dex;
+							absNy = lightY + e * dey;
+							if (absNx < 0 || absNx >= mX || absNy < 0 || absNy >= mY) { continue; }
 
-							// Boundary checks
-							if (absNx < 0 || absNx >= mX || absNy < 0 || absNy >= mY) {
-								continue;
+							stepIndex = int(absNy * invTileY) * spaceXCache + int(absNx * invTileX);
+							stepTile = spaceRef[stepIndex];
+							opac = stepTile.opacity;
+							if (opacWaterCache > opac && stepTile.water > 0) {
+								opac = opacWaterCache;
 							}
 
-							var tileXIdx:int = int(absNx * invTileX);
-							var tileYIdx:int = int(absNy * invTileY);
-							var absIndex:int = tileYIdx * spaceXCache + tileXIdx;
-
-							if (absIndex < 0 || absIndex >= spaceRef.length) continue;
-
-							var t:Tile = spaceRef[absIndex];
-							var opac:Number = (opacWaterCache > 0 && t.water > waterThreshold && opacWaterCache > t.opacity) ? opacWaterCache : t.opacity;
-
-							if (opac > 0) {
+							if (opac > 0.0) {
 								n2 -= opac;
-								if (n2 <= 0) {
-									n2 = 0;
+								if (n2 <= cutoff) {
+									n2 = 0.0;
 									break;
 								}
 							}
 						}
 					}
 
-					// Update visibility and set pixel opacity based on the new visibility
 					if (n2 > n1 + 0.01) {
 						currentTile.targetVisibility = n2;
-						pixelValue = int((1 - currentTile.updVisi()) * 255) << 24;
+						pixelValue = int((1.0 - currentTile.updVisi()) * 255.0) << 24;
 						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
-					else if (retDark && n2 < n1 - 0.01) {
-						currentTile.targetVisibility = Math.max(currentTile.targetVisibility - 0.025, n2);
-						pixelValue = int((1 - currentTile.updVisi()) * 255) << 24;
+					else if (fogReturns && n2 < n1 - 0.01) {
+						fadedVisibility = currentTile.targetVisibility - 0.025;
+						currentTile.targetVisibility = (fadedVisibility > n2) ? fadedVisibility : n2;
+						pixelValue = int((1.0 - currentTile.updVisi()) * 255.0) << 24;
 						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
 				}
 			}
 
-			// Unlock the bitmap after all pixel operations are complete
 			lightBmpRef.unlock();
 		}
 
 		public function lighting2():void {
-			if (!active) return;
+			var spaceRef:Vector.<Tile> = space;
+			var spaceXCache:int = spaceX;
+			var spaceYCache:int = spaceY;
+			var lightBmpRef:BitmapData;
+			var i:int;
+			var j:int;
+			var row:int;
+			var index:int;
+			var currentTile:Tile;
+			var pixelValue:int;
+
+			if (!active) { return; }
+
 			relight_t--;
-
-			var spaceRef:Vector.<Tile> = space; // Correctly typed as Vector.<Tile>
-			var lightBmpRef:BitmapData = grafon.lightBmp; // Assuming 'lightBmp' is BitmapData
-
-			// Lock the bitmap for bulk pixel operations
+			lightBmpRef = grafon.lightBmp;
 			lightBmpRef.lock();
 
-			for (var i:int = 1; i < spaceX; i++) {
-				for (var j:int = 1; j < spaceY; j++) {
-					var index:int = j * spaceX + i;
-					if (index < 0 || index >= spaceRef.length) continue;
-
-					var currentTile:Tile = spaceRef[index];
+			for (j = 1; j < spaceYCache; j++) {
+				row = j * spaceXCache;
+				for (i = 1; i < spaceXCache; i++) {
+					index = row + i;
+					currentTile = spaceRef[index];
 					if (currentTile.visibility != currentTile.targetVisibility) {
-						// Inlined changePixelOpacity
-						var pixelValue:int = int((1 - currentTile.updVisi()) * 255) << 24;
+						pixelValue = int((1.0 - currentTile.updVisi()) * 255.0) << 24;
 						lightBmpRef.setPixel32(i, j + 1, pixelValue);
 					}
 				}
 			}
 
-			// Unlock the bitmap after all pixel operations are complete
 			lightBmpRef.unlock();
 		}
 		//дать опыт

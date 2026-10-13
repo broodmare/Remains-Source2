@@ -3,6 +3,7 @@ package fe.unit.motor {
 	import fe.unit.Unit;
 	import fe.util.Calc;
 	import fe.unit.enums.E_AIState;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 
 	// Flying for units that also walk: takes off when falling, swimming or reaching for a target high above, lands while wandering
@@ -38,7 +39,7 @@ package fe.unit.motor {
 		// Fly toward the target point, or bob about once within stalking distance of the player
 		private function fly():void {
 			var stalk:Number = definition.stalkDistance;
-			var heading:int = owner.aiNapr;
+			var heading:Vec2 = owner.aiNapr;
 			var stepX:Number;
 			var stepY:Number;
 			var length:Number;
@@ -60,7 +61,7 @@ package fe.unit.motor {
 					stepX = 0.0;
 					heading = owner.turnX;
 					if (!owner.celUnit) {
-						bounceX = owner.coordinates.X + Calc.floatBetween(BOUNCE_MIN, BOUNCE_MAX) * owner.turnX;
+						bounceX = owner.coordinates.X + Calc.floatBetween(BOUNCE_MIN, BOUNCE_MAX) * owner.turnX.X;
 						owner.setCel(null, bounceX, owner.celY);
 					}
 				}
@@ -187,7 +188,7 @@ package fe.unit.motor {
 			ground.leapBack();
 		}
 
-		public function turnTo(direction:int):void {
+		public function turnTo(direction:Vec2):void {
 			ground.turnTo(direction);
 		}
 

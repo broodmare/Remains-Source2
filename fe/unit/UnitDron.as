@@ -146,7 +146,7 @@ package fe.unit {
 		
 		public override function animate():void {
 			br += (velocity.X * 1.5 - br) / 4;
-			vis.osn.rotation = br * storona;
+			vis.osn.rotation = br * storona.X;
 			
 			if (celUnit && aiTCh%15==1) {
 				vis.dis.visible=true;
@@ -210,7 +210,7 @@ package fe.unit {
 				aiTCh = Math.floor(Math.random() * 100) + 100;
 				
 				if (aiState == 0) {		//выбрать случайную цель в пассивном режиме
-					celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd() ? E_Direction.RIGHT : E_Direction.LEFT);
+					celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd() ? E_Direction.RIGHT.X : E_Direction.LEFT.X);
 					celY = coordinates.Y - this.boundingBox.halfHeight;
 				}
 			}
@@ -276,11 +276,11 @@ package fe.unit {
 				turnX = E_Direction.NEUTRAL;
 
 				if (aiState == 0) {
-					celX = coordinates.X + 400 * storona;
+					celX = coordinates.X + 400 * storona.X;
 				}
 				
 				if (stuk > 5) {
-					setCel(null, celX + (Math.random() * 80 + 40) * storona, celY + Math.random() * 80 - 40);
+					setCel(null, celX + (Math.random() * 80 + 40) * storona.X, celY + Math.random() * 80 - 40);
 				}
 			}
 			

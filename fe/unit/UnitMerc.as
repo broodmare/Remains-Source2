@@ -97,15 +97,15 @@ package fe.unit {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.scaleX=storona;
+				vis.scaleX=storona.X;
 			}
 			
 			if (arm) {
 				if (currentWeapon) {
-					arm.rotation = currentWeapon.rot * RAD_TO_DEG + 90 * (1 - storona);
+					arm.rotation = currentWeapon.rot * RAD_TO_DEG + 90 * (1 - storona.X);
 				}
 				
-				arm.scaleX=storona;
+				arm.scaleX=storona.X;
 			}
 		}
 		
@@ -162,7 +162,7 @@ package fe.unit {
 			}
 
 			obj = animFrames[frameIndex];
-			arm.x = coordinates.X + (obj.x + visBmp.x) * storona;
+			arm.x = coordinates.X + (obj.x + visBmp.x) * storona.X;
 			arm.y = coordinates.Y + obj.y + visBmp.y;
 		}
 	}

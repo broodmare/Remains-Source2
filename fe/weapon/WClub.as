@@ -147,12 +147,12 @@ package fe.weapon  {
 			super.setOwner(own);
 			storona = own.storona;
 			
-			var v:Vec2 = new Vec2( (coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina) );
+			var v:Vec2 = new Vec2( (coordinates.X - (dlina * 0.50) * storona.X), (coordinates.Y - dlina) );
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			b.tipBullet = 1;
 			setBullet(b);
-			b.knockx = storona;
+			b.knockx = storona.X;
 			b.knocky = -0.20;
 			b.liv = 10;
 			b.probiv = 0.75;
@@ -161,7 +161,7 @@ package fe.weapon  {
 			b.crack = crack;
 			b.checkLine = checkLine;
 			
-			rot = -HALF_PI - (SIXTH_PI) * storona;
+			rot = -HALF_PI - (SIXTH_PI) * storona.X;
 			cos0 = Math.cos(rot);
 			sin0 = Math.sin(rot);
 			
@@ -217,7 +217,7 @@ package fe.weapon  {
 			var nx:Number;
 			var ny:Number;
 
-			var ds:Number = 40 * owner.storona;
+			var ds:Number = 40 * owner.storona.X;
 			meleeR = World.w.pers.meleeR;
 			
 			if (loc && loc.sky) {
@@ -232,14 +232,14 @@ package fe.weapon  {
 				}
 				
 				if (mtip == 0) {
-					celX = owner.celX - dlina * 0.8 * storona;
+					celX = owner.celX - dlina * 0.8 * storona.X;
 					celY = owner.celY + dlina * 0.3;
 					lineCel();
-					storona = (owner.celX > owner.coordinates.X - 100 * owner.storona) ? E_Direction.RIGHT : E_Direction.LEFT;
+					storona = (owner.celX > owner.coordinates.X - 100 * owner.storona.X) ? E_Direction.RIGHT : E_Direction.LEFT;
 					del.x = (celX - (owner.coordinates.X + ds));
 					del.y = (celY - owner.weaponY);
 					norma(del, meleeR);
-					ds = (owner as UnitPlayer).pers.meleeS * owner.storona;
+					ds = (owner as UnitPlayer).pers.meleeS * owner.storona.X;
 				}
 				else {
 					if (mtip == 2 || t_attack <= 0) {
@@ -268,12 +268,12 @@ package fe.weapon  {
 					del.x = (celRX - (owner.coordinates.X + ds));
 					del.y = (celRY - owner.weaponY);
 					norma(del, meleeR);
-					ds = (owner as UnitPlayer).pers.meleeS * owner.storona;
+					ds = (owner as UnitPlayer).pers.meleeS * owner.storona.X;
 				}
 			}
 			else {
 				if (mtip == 0) {
-					celX = owner.celX - dlina * 0.8 * storona;
+					celX = owner.celX - dlina * 0.8 * storona.X;
 					celY = owner.celY + dlina * 0.3;
 				}
 				else {
@@ -307,7 +307,7 @@ package fe.weapon  {
 					norma(del, Math.max(levitRun, 1 / massa));
 				}
 				
-				blumR = (del.x * storona + del.y) * 0.50;
+				blumR = (del.x * storona.X + del.y) * 0.50;
 				coordinates.X += del.x;
 				coordinates.Y += del.y;
 			}
@@ -352,7 +352,7 @@ package fe.weapon  {
 				}
 				
 				if (mtip == 0) {
-					rot = -HALF_PI + (-SIXTH_PI + anim * ONE_PI) * storona;
+					rot = -HALF_PI + (-SIXTH_PI + anim * ONE_PI) * storona.X;
 					
 					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * FIVE_SIXTH) {
 						if (!isPow) {
@@ -477,7 +477,7 @@ package fe.weapon  {
 				cos1 = cos2 = cos0;
 				
 				if (mtip == 0) {
-					rot = -HALF_PI - SIXTH_PI * storona;
+					rot = -HALF_PI - SIXTH_PI * storona.X;
 				}
 				else {
 					rot=Math.atan2(celY-(owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
@@ -555,7 +555,7 @@ package fe.weapon  {
 			
 			b.off		= false;
 			b.loc		= owner.loc;
-			b.knockx	= storona;
+			b.knockx	= storona.X;
 			curDam		= resultDamage(damage,sk);
 			b.damage	= curDam * (ammo ? ammo.damageMultiplier : 1);
 			b.otbros	= otbros*otbrosMult;
@@ -703,17 +703,17 @@ package fe.weapon  {
 			
 			if (!fixedToOwner) {
 				vis.x = coordinates.X + plX + quakeX;
-				vis.scaleY = storona;
+				vis.scaleY = storona.X;
 				vis.rotation = rot * RAD_TO_DEG + blumR;
 				visvzz.x = vis.x;
 				visvzz.y = vis.y;
 				visvzz.rotation=vis.rotation;
-				visvzz.scaleY = dlina / 100 * storona;
+				visvzz.scaleY = dlina / 100 * storona.X;
 			}
 			else {
 				vis.x = coordinates.X;
-				vis.scaleY = owner.storona;
-				vis.rotation = 90 * owner.storona - 90 + owner.weaponR * owner.storona;
+				vis.scaleY = owner.storona.X;
+				vis.rotation = 90 * owner.storona.X - 90 + owner.weaponR * owner.storona.X;
 			}
 		}
 	}

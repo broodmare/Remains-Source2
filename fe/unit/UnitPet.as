@@ -161,11 +161,11 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			if (id == 'phoenix') {
-				weaponX = coordinates.X + 15 * storona;
+				weaponX = coordinates.X + 15 * storona.X;
 				weaponY = coordinates.Y - 20;
 			}
 			else {
-				weaponX = coordinates.X + 11 * storona;
+				weaponX = coordinates.X + 11 * storona.X;
 				weaponY = coordinates.Y - 18;
 			}
 			
@@ -215,7 +215,7 @@ package fe.unit {
 			var rx:Number=-120;
 			var ry:Number=-80;
 			flyBox=null;
-			flyX = gg.coordinates.X + gg.storona * rx;
+			flyX = gg.coordinates.X + gg.storona.X * rx;
 			flyY = gg.coordinates.Y + ry;
 			
 			if (flyX<60) flyX=60;
@@ -246,7 +246,7 @@ package fe.unit {
 			
 			if (loc.getAbsTile(flyX,flyY).collision == 0) return;
 			
-			flyX += 40 * gg.storona;
+			flyX += 40 * gg.storona.X;
 			flyY += 40;
 			
 			if (loc.getAbsTile(flyX, flyY).collision == 0) return;
@@ -255,7 +255,7 @@ package fe.unit {
 			
 			if (loc.getAbsTile(flyX, flyY).collision == 0) return;
 			
-			flyX += 40 * gg.storona;
+			flyX += 40 * gg.storona.X;
 			
 			if (loc.getAbsTile(flyX, flyY).collision == 0) return;
 

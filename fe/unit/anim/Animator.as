@@ -113,7 +113,7 @@ package fe.unit.anim {
 			}
 
 			if (!anim.st) {
-				if (name == definition.backpedal && owner.aiNapr * owner.storona < 0) {
+				if (name == definition.backpedal && owner.aiNapr.X * owner.storona.X < 0) {
 					frame = int(anim.maxf - anim.f - 1.0);
 				}
 				else {

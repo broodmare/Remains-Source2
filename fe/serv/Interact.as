@@ -1157,7 +1157,7 @@ package fe.serv {
 			} 
 			else if (allact == "comein") {
 				trace("Interacting with door at coordinates: (" + coordinates.X + ", " + coordinates.Y + ")");
-		 		World.w.gg.outLoc(5, coordinates.X, coordinates.Y);
+		 		World.w.gg.goThroughDoor(coordinates.X, coordinates.Y);
 			}
 			else if (allact=="bind") {
 				World.w.gg.bindChain(coordinates.X, coordinates.Y - 20);

@@ -11,6 +11,7 @@ package fe.unit {
 	import fe.unit.motor.WalkMotor;
 	import fe.unit.motor.WalkMotor_Definition;
 	import fe.util.Calc;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 
 	// Giant ants that wander up and down walls; fire ants (variant 3) breathe flame
@@ -21,7 +22,7 @@ package fe.unit {
 		private static const HERO_SKIN:Number		= 4.0;		// Extra armor for a hero ant
 
 		private var walker:WalkMotor;
-		private var climbFacing:int = E_Direction.UP;		// Sprite direction along the wall, kept from the last climb
+		private var climbFacing:Vec2 = E_Direction.UP;		// Sprite direction along the wall, kept from the last climb
 
 		protected override function control():void {
 			overLook = isLaz != E_Direction.NEUTRAL;
@@ -133,7 +134,7 @@ package fe.unit {
 			if (isLaz == E_Direction.NEUTRAL) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.scaleX = storona;
+				vis.scaleX = storona.X;
 				vis.scaleY = 1;
 				vis.rotation = 0;
 			}
@@ -141,13 +142,13 @@ package fe.unit {
 				vis.x = boundingBox.right;
 				vis.y = coordinates.Y - boundingBox.halfHeight;
 				vis.rotation = -90;
-				vis.scaleX = -climbFacing;
+				vis.scaleX = -climbFacing.Y;
 			}
 			else {
 				vis.x = boundingBox.left;
 				vis.y = coordinates.Y - boundingBox.halfHeight;
 				vis.rotation = 90;
-				vis.scaleX = climbFacing;
+				vis.scaleX = climbFacing.Y;
 			}
 		}
 	}

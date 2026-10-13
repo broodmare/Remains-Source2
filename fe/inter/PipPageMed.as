@@ -6,6 +6,7 @@ package fe.inter {
 	import fe.*;
 	import fe.unit.Pers;
 	import fe.serv.Item;
+	import fe.util.TradeValue;
 
 	import fe.stubs.visPipMedItem;
 	
@@ -176,7 +177,7 @@ package fe.inter {
                 item.price.text = '';
             }
 			else {
-				item.price.text = Math.round(obj.price);
+				item.price.text = TradeValue.charge(obj.price);
 			}
 			
 			if (obj.bar!=null) {
@@ -377,8 +378,14 @@ package fe.inter {
 					break;
 			}
 			
-			if (Math.round(cena) > 0) {
-				inv.decreaseQuantity(plata, Math.round(cena));
+			var payment:int = TradeValue.charge(cena);
+			if (payment > plataQty) {
+				payment = plataQty;
+				cena = payment;
+			}
+
+			if (payment > 0) {
+				inv.decreaseQuantity(plata, payment);
 			}
 			plataQty = World.w.invent.getQuantity(plata);
 

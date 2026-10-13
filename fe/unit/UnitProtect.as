@@ -61,7 +61,7 @@ package fe.unit {
 					else if (velocity.X<3 && velocity.X>-3) {
 						animState='walk';
 						sndStep(anims[animState].f,4);
-						if (aiNapr*storona<0) revers=true;
+						if (aiNapr.X*storona.X<0) revers=true;
 					}
 					else {
 						animState='trot';

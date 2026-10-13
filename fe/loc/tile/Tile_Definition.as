@@ -1,6 +1,7 @@
 package fe.loc.tile {
 
 	import fe.enums.E_Material;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 
 	// What a room places in one tile: its pieces, and the starting values combined from them. Shared by every tile with the same contents
@@ -21,8 +22,8 @@ package fe.loc.tile {
 		public var platform:Boolean			= false;
 
 		// Fixed for the tile's whole life
-		public var ladderSide:int			= E_Direction.NEUTRAL;	// Side of the tile a ladder hugs, NEUTRAL for no ladder
-		public var slopeSide:int			= E_Direction.NEUTRAL;	// Side a slope rises toward, NEUTRAL for no slope
+		public var ladderSide:Vec2			= E_Direction.NEUTRAL;	// Side of the tile a ladder hugs, NEUTRAL for no ladder
+		public var slopeSide:Vec2			= E_Direction.NEUTRAL;	// Side a slope rises toward, NEUTRAL for no slope
 		public var hidingSpot:Boolean		= false;
 	}
 }

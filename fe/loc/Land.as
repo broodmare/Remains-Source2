@@ -7,6 +7,8 @@ package fe.loc {
 	import fe.unit.UnitPlayer;
 	import fe.serv.Script;
 	import fe.loc.tile.Tile;
+	import fe.enums.E_Direction;
+	import fe.util.Vec2;
 
 	public class Land {
 		
@@ -981,83 +983,91 @@ package fe.loc {
 			setGGToSpawnPoint();
 		}
 		
-		// [Transition between locations]
-		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1) : Object {
-			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.boundingBox.width, objectHeight:Number=gg.boundingBox.height;
-			var newX:int=locX, newY:int=locY, newZ:int=locZ;
-			var newLoc:Location;	// The room being entered, assigned once the new coordinates are known and checked
-			var outP:Object = {};
+		// The room at these coordinates in the active layer, main or test, or null if there is none
+		// Differs from vanilla, which checked the test layer for the room but then took it from the main map
+		private function findLoc(roomX:int, roomY:int, roomZ:int):Location {
+			var rooms:Array = (prob == '') ? locs : probs[prob];
 
-			switch (napr) {
-				case 1:
-					newX--;
-				break;
-				case 2:
-					newX++;
-				break;
-				case 3:
-					newY++;
-				break;
-				case 4:
-					newY--;
-				break;
-				case 5:
-					newZ = 1 - newZ;
-				break;
-				default:
-					return null;
-				break;
-			}
-
-			if (prob=='' && (locs[newX]==null || locs[newX][newY]==null || locs[newX][newY][newZ]==null)) {
-				if (napr==3) return {die:true};
-				return null;
-			}
-			
-			if (prob!='' && (probs[prob][newX]==null || probs[prob][newX][newY]==null || probs[prob][newX][newY][newZ]==null)) {
-				if (napr==3) return {die:true};
+			if (rooms[roomX] == null || rooms[roomX][roomY] == null) {
 				return null;
 			}
 
-			newLoc = locs[newX][newY][newZ];
+			return rooms[roomX][roomY][roomZ];
+		}
 
-			switch (napr) {
-				case 1:
-					outP.x = newLoc.maxX - objectWidth / 2 - 9;
-					outP.y = Y - 1;
-				break;
-				case 2:
-					outP.x = objectWidth / 2 + 9;
-					outP.y = Y - 1;
-				break;
-				case 3:
-					outP.x = X;
-					outP.y = objectHeight + 10;
-				break;
-				case 4:
-					outP.x = X;
-					outP.y = newLoc.maxY - 10;
-				break;
-				case 5:
-					outP.x = portX;
-					outP.y = portY;
-				break;
-			}
-
-			if (newLoc.collisionUnit(outP.x, outP.y, objectWidth - 4, objectHeight)) {
+		// Moves the player into newLoc, which sits at these coordinates, placed at outP; null if they wouldn't fit there
+		private function enterLoc(newLoc:Location, newX:int, newY:int, newZ:int, outP:Object):Object {
+			if (newLoc.collisionUnit(outP.x, outP.y, gg.boundingBox.width - 4, gg.boundingBox.height)) {
 				return null;
 			}
-			
+
 			loc_t = 150;
-			
+
 			locX = newX;
 			locY = newY;
 			locZ = newZ;
 
 			ativateLoc();
 			gg.setLocPos(outP.x, outP.y);
-			
+
 			return outP;
+		}
+
+		// [Transition between locations] across the edge of the room in the given direction
+		public function gotoLoc(direction:Vec2):Object {
+			var X:Number=gg.coordinates.X, Y:Number=gg.coordinates.Y, objectWidth:Number=gg.boundingBox.width, objectHeight:Number=gg.boundingBox.height;
+			var newX:int = locX + direction.X;
+			var newY:int = locY + direction.Y;
+			var newLoc:Location;	// The room being entered, assigned once the new coordinates are known and checked
+			var outP:Object = {};
+
+			newLoc = findLoc(newX, newY, locZ);
+			if (!newLoc) {
+				if (direction == E_Direction.DOWN) { return {die:true}; }
+
+				return null;
+			}
+
+			switch (direction) {
+				case E_Direction.LEFT: {
+					outP.x = newLoc.maxX - objectWidth / 2 - 9;
+					outP.y = Y - 1;
+					break;
+				}
+				case E_Direction.RIGHT: {
+					outP.x = objectWidth / 2 + 9;
+					outP.y = Y - 1;
+					break;
+				}
+				case E_Direction.DOWN: {
+					outP.x = X;
+					outP.y = objectHeight + 10;
+					break;
+				}
+				case E_Direction.UP: {
+					outP.x = X;
+					outP.y = newLoc.maxY - 10;
+					break;
+				}
+				default: {
+					trace("Land.as/gotoLoc() - Warning: a room can't be left in a neutral direction");
+					return null;
+				}
+			}
+
+			return enterLoc(newLoc, newX, newY, locZ, outP);
+		}
+
+		// Goes through a door between a room and the room behind it, arriving at (arriveX, arriveY)
+		public function gotoOtherLayer(arriveX:Number, arriveY:Number):Object {
+			var newZ:int = 1 - locZ;
+			var newLoc:Location = findLoc(locX, locY, newZ);
+
+			if (!newLoc) {
+				return null;
+			}
+
+			return enterLoc(newLoc, locX, locY, newZ, {x:arriveX, y:arriveY});
 		}
 		
 		// [Go to the nprob test layer, or return to the main layer if the parameter is not specified]

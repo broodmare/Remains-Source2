@@ -63,7 +63,7 @@ package fe.unit {
 		
 		public override function animate():void {
 			br += (velocity.X * 4 - br) / 4;
-			vis.osn.rotation=br*storona;
+			vis.osn.rotation=br*storona.X;
 		}
 		
 		//состояния

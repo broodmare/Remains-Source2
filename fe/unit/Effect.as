@@ -370,7 +370,7 @@ package fe.unit {
 			
 			if (id=='drunk' && lvl>3) {
 				owner.damage(val,E_Resistances.DAM_POISON,null,true);
-				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
+				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona.X*20,owner.coordinates.Y-40);
 			}
 			
 			if (id=='namok') {

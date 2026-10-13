@@ -151,7 +151,7 @@ package fe.unit {
 		public override function setWeaponPos(tip:String = "internal"):void {
 			try {
 				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-				weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
+				weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona.X;
 				weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 				weaponR=obj.r;
 			}
@@ -166,7 +166,7 @@ package fe.unit {
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
 			super.putLoc(nloc,nx,ny);
-			setCel(null, nx + 200 * storona, ny - 50);
+			setCel(null, nx + 200 * storona.X, ny - 50);
 		}
 		
 		public override function setNull(f:Boolean=false):void {
@@ -252,7 +252,7 @@ package fe.unit {
 					vis.y = coordinates.Y;
 				}
 				
-				vis.scaleX=storona;
+				vis.scaleX=storona.X;
 			}
 		}
 		
@@ -322,7 +322,7 @@ package fe.unit {
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;
 			}
 			

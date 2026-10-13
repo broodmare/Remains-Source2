@@ -158,7 +158,7 @@ package fe.unit {
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - boundingBox.height;
-				celX = coordinates.X + boundingBox.width * storona * 2;
+				celX = coordinates.X + boundingBox.width * storona.X * 2;
 				return;
 			}
 			
@@ -215,7 +215,7 @@ package fe.unit {
 						aiSpok--;
 					}
 					else {
-						setCel(null, coordinates.X + storona * 100, coordinates.Y - boundingBox.height * 0.75);
+						setCel(null, coordinates.X + storona.X * 100, coordinates.Y - boundingBox.height * 0.75);
 					}
 					if (aiSpok<maxSpok && aiSpok>0) {
 						replic('find');
@@ -264,7 +264,7 @@ package fe.unit {
 				}
 				//если повернули, то можем остановиться
 				if (stay && turnX!=E_Direction.NEUTRAL) {
-					if (turnX*storona<0 && currentWeapon) {
+					if (turnX.X*storona.X<0 && currentWeapon) {
 						if (currentWeapon.rot > 0) {
 							currentWeapon.rot = ONE_PI - currentWeapon.rot;
 						}
@@ -351,13 +351,13 @@ package fe.unit {
 			
 			for (var i:int = 1; i <= 20; i++) {
 				if (i<5 && !rnd) {
-					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona*(Math.random()*300+200);
-					else nx=cel.coordinates.X+cel.storona*(Math.random()*300+200);
+					if (isrnd(0.7)) nx=cel.coordinates.X-cel.storona.X*(Math.random()*300+200);
+					else nx=cel.coordinates.X+cel.storona.X*(Math.random()*300+200);
 					ny=cel.coordinates.Y;
 				}
 				else if (i < 10 && !rnd) {
-					if (isrnd()) nx=cel.coordinates.X-cel.storona*(Math.random()*800+200);
-					else  nx=cel.coordinates.X+cel.storona*(Math.random()*800+200);
+					if (isrnd()) nx=cel.coordinates.X-cel.storona.X*(Math.random()*800+200);
+					else  nx=cel.coordinates.X+cel.storona.X*(Math.random()*800+200);
 					ny=cel.coordinates.Y+Math.random()*160-80;
 				}
 				else {

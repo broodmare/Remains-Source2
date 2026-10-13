@@ -704,14 +704,24 @@ package fe.graph {
 		
 		//прорисовка всей карты затемнения
 		public function setLight():void {
+			var space:Vector.<Tile> = loc.space;
+			var spaceX:int = loc.spaceX;
+			var spaceY:int = loc.spaceY;
+			var row:int;
+			var index:int;
+			var i:int;
+			var j:int;
+
 			lightBmp.lock();
-			
-			for (var i:int = 1; i < loc.spaceX; i++) {
-				for (var j:int = 1; j < loc.spaceY; j++) {
-					lightBmp.setPixel32(i, j + 1, int((1 - loc.getTile(i, j).visibility) * 255) * 0x1000000);
+
+			for (j = 1; j < spaceY; j++) {
+				row = j * spaceX;
+				for (i = 1; i < spaceX; i++) {
+					index = row + i;
+					lightBmp.setPixel32(i, j + 1, int((1.0 - space[index].visibility) * 255.0) << 24);
 				}
 			}
-			
+
 			lightBmp.unlock();
 		}
 		
@@ -822,16 +832,6 @@ package fe.graph {
 				textures.used = true;
 			}
 		}
-
-		private function drawTileLayer(layer:int):void {
-			var textures:TilePieceTextures;
-
-			for each (textures in tileTextures) {
-				if (textures.piece.layer == layer) {
-					drawKusok(textures);
-				}
-			}
-		}
 		
 		// [Drawing texture materials]
 		public function drawKusok(textures:TilePieceTextures):void {
@@ -840,10 +840,6 @@ package fe.graph {
 			var roomPixelWidth:int = kusokX * tileX;
 			var roomPixelHeight:int = kusokY * tileY;
 
-			if (!textures.used) {
-				return;
-			}
-			
 			// Cache frequently accessed properties
 			var spaceX:int = loc.spaceX;
 			var spaceY:int = loc.spaceY;
@@ -998,6 +994,16 @@ package fe.graph {
 			}
 			else {
 				backBmp.draw(kusok, m, null, null, null, false);
+			}
+		}
+
+		private function drawTileLayer(layer:int):void {
+			var textures:TilePieceTextures;
+
+			for each (textures in tileTextures) {
+				if (textures.used && textures.piece.layer == layer) {
+					drawKusok(textures);
+				}
 			}
 		}
 		

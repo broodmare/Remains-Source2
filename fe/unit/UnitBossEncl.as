@@ -216,7 +216,7 @@ package fe.unit {
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;
 			}
 			

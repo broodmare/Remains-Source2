@@ -35,7 +35,7 @@ package fe.unit {
 			walkSpeed = maxSpeed;
 			runSpeed = maxSpeed * 2;
 			aiState = 1;
-			aiDx = storona;
+			aiDx = storona.X;
 			elast = 0.20;
 			throu = true;
 		}
@@ -212,11 +212,11 @@ package fe.unit {
 			
 			if (turnX != E_Direction.NEUTRAL) {
 				storona = turnX;
-				aiDx = Math.abs(aiDx) * turnX;
+				aiDx = Math.abs(aiDx) * turnX.X;
 				turnX=E_Direction.NEUTRAL;
 			}
 			if (turnY != E_Direction.NEUTRAL) {
-				aiDy = Math.abs(aiDy) * turnY;
+				aiDy = Math.abs(aiDy) * turnY.Y;
 				turnY = E_Direction.NEUTRAL;
 			}
 

@@ -16,6 +16,7 @@ package fe.inter {
 	import fe.weapon.Weapon;
 	import fe.loc.Quest;
 	import fe.unit.enums.E_ArmorTypes;
+	import fe.util.TradeValue;
 
 	import fe.stubs.visPipBuyItem;
 
@@ -547,14 +548,14 @@ package fe.inter {
 				vis.bottext.htmlText=LanguageManager.reference.localText("pip", "caps")+": "+numberAsColor("yellow", inv.getQuantity("money"))+" (";
 				
 				if (vendor.buyTotal > 0) {
-					vis.bottext.htmlText+="-"+numberAsColor("yellow", Math.ceil(vendor.buyTotal))+"; ";
+					vis.bottext.htmlText+="-"+numberAsColor("yellow", TradeValue.charge(vendor.buyTotal))+"; ";
 				}
 				
-				vis.bottext.htmlText+=numberAsColor("yellow", Math.floor(inv.getQuantity("money") - vendor.buyTotal))+" "+LanguageManager.reference.localText("pip", "ost")+")";
+				vis.bottext.htmlText+=numberAsColor("yellow", inv.getQuantity("money") - TradeValue.charge(vendor.buyTotal))+" "+LanguageManager.reference.localText("pip", "ost")+")";
 			}
 			
 			if (page2 == PAGE_SELL && vendor) {
-				vis.bottext.htmlText=LanguageManager.reference.localText("pip", "caps")+": "+numberAsColor("yellow", inv.getQuantity("money"))+" (+"+numberAsColor("yellow", Math.floor(vendor.sellTotal))+")";
+				vis.bottext.htmlText=LanguageManager.reference.localText("pip", "caps")+": "+numberAsColor("yellow", inv.getQuantity("money"))+" (+"+numberAsColor("yellow", TradeValue.payout(vendor.sellTotal))+")";
 				if (!inbase) {
 					vis.bottext.htmlText+="   "+LanguageManager.reference.localText("pip", "vcaps")+": "+numberAsColor("yellow", vendor.money);
 				}
@@ -601,7 +602,7 @@ package fe.inter {
 						item.kol.text = LanguageManager.reference.localText("pip", "sel");
 					}
 					
-					item.price.text = Math.round(obj.price * obj.mp);
+					item.price.text = TradeValue.charge(obj.price * obj.mp);
 				}
 				else {
 					var ns:NumericStepper = item.ns;	// Adobe Animate dependency
@@ -610,7 +611,7 @@ package fe.inter {
 					ns.value = obj.bou;
 					item.kol.text = obj.kol-obj.bou;
 					item.hp.text = (obj.sost == 0)? "-" : obj.sost;
-					item.price.text = Math.round(obj.price * obj.mp * 10) / 10;
+					item.price.text = Math.round(TradeValue.normalize(obj.price * obj.mp) * 10) / 10;
 				}
 			} 
 			
@@ -619,7 +620,7 @@ package fe.inter {
 				item.rid.text=obj.id;
 				item.nazv.text=obj.nazv;
 				item.hp.text="";
-				item.price.text = Math.round(obj.price*10)/10;
+				item.price.text = Math.round(TradeValue.normalize(obj.price) * 10) / 10;
 				item.kol.text=obj.kol;
 				var ns:NumericStepper = item.ns;	// Adobe Animate dependency
 				ns.visible=true;
@@ -633,12 +634,7 @@ package fe.inter {
 				item.nazv.text = obj.nazv;
 				item.hp.text = Math.round(obj.hp / obj.maxhp * 100) + "%";
 				
-				var mp:Number = 1;
-				if (obj.tip == Item.L_ARMOR) {
-					mp = gg.pers.priceRepArmor;
-				}
-				
-				item.price.text = Math.ceil(obj.price * (obj.maxhp - obj.hp) / obj.maxhp * vendor.multPrice * mp);
+				item.price.text = repairPrice(obj);
 				item.kol.text = "";
 				
 				item.rid.text = obj.id;
@@ -735,23 +731,25 @@ package fe.inter {
 				n = buy.kol - buy.bou;
 			}
 			
-			if (page2 == PAGE_BUY && Math.round(buy.price * buy.mp * n) > inv.getQuantity("money") - vendor.buyTotal) {
-				n = Math.floor((inv.getQuantity("money") - vendor.buyTotal) / (buy.price * buy.mp));
-				if (n <= 0) {
-					World.w.gui.infoText("noMoney", Math.round(buy.price * buy.mp - (inv.getQuantity("money") - vendor.buyTotal)));
-					return;
+			if (page2 == PAGE_BUY) {
+				refreshTradeTotal();
+				var unitPrice:Number = buy.price * buy.mp;
+				var proposedTotal:Number = vendor.buyTotal + unitPrice * n;
+				if (unitPrice > 0 && TradeValue.charge(proposedTotal) > inv.getQuantity("money")) {
+					n = Math.floor((inv.getQuantity("money") - vendor.buyTotal) / unitPrice);
+					while (n > 0 && TradeValue.charge(vendor.buyTotal + unitPrice * n) > inv.getQuantity("money")) {
+						n--;
+					}
+
+					if (n <= 0) {
+						World.w.gui.infoText("noMoney", Math.max(1, TradeValue.charge(vendor.buyTotal + unitPrice) - inv.getQuantity("money")));
+						return;
+					}
 				}
 			}
 			
 			buy.bou += n;
-			
-			if (page2 == PAGE_BUY) {
-				vendor.buyTotal += buy.price * buy.mp * n;
-			}
-			
-			if (page2 == PAGE_SELL) {
-				vendor.sellTotal += buy.price * n;
-			}
+			refreshTradeTotal();
 		}
 		
 		private function unselBuy(buy:Object, n:int=1):void {
@@ -764,14 +762,39 @@ package fe.inter {
 			}
 			
 			buy.bou -= n;
+			refreshTradeTotal();
+		}
+
+		// Rebuild the pending total from the selected rows so adding and removing an item is reversible.
+		private function refreshTradeTotal():void {
+			var total:Number = 0;
 			
+			for (var selectionKey:String in assArr) {
+				var selection:Object = assArr[selectionKey];
+				if (selection == null || selection.bou <= 0) {
+					continue;
+				}
+
+				if (page2 == PAGE_BUY) {
+					total += selection.price * selection.mp * selection.bou;
+				}
+				else if (page2 == PAGE_SELL) {
+					total += selection.price * selection.bou;
+				}
+			}
+			
+			total = TradeValue.normalize(total);
 			if (page2 == PAGE_BUY) {
-				vendor.buyTotal -= buy.price * buy.mp * n;
+				vendor.buyTotal = total;
 			}
-			
-			if (page2 == PAGE_SELL) {
-				vendor.sellTotal -= buy.price * n;
+			else if (page2 == PAGE_SELL) {
+				vendor.sellTotal = total;
 			}
+		}
+
+		private function repairPrice(obj:Object):int {
+			var mp:Number = (obj.tip == Item.L_ARMOR) ? gg.pers.priceRepArmor : 1;
+			return TradeValue.charge(obj.price * (obj.maxhp - obj.hp) / obj.maxhp * vendor.multPrice * mp);
 		}
 		
 		private function nsClick(event:MouseEvent):void {
@@ -825,7 +848,8 @@ package fe.inter {
 					return;
 				}
 
-				var price:int = event.currentTarget.price.text;
+				var obj:Object = assArr[event.currentTarget.id.text];
+				var price:int = repairPrice(obj);
 				
 				if (price <= 0) {
 					return;
@@ -835,17 +859,11 @@ package fe.inter {
 					price = inv.getQuantity("money");
 				}
 				
-				var obj;
-				
 				if (event.currentTarget.cat.text==Item.L_INSTR) {
 					var owl:UnitPet=gg.pets[event.currentTarget.id.text];
 					var repOwl:int = 2;
 					var hl:Number=price/repOwl/vendor.multPrice;
-					
-					if (hl > owl.maxhp - owl.hp) {
-						hl = (owl.maxhp - owl.hp);
-						price = hl * repOwl * vendor.multPrice;
-					}
+					hl = Math.min(hl, owl.maxhp - owl.hp);
 					
 					owl.repair(hl);
 					obj = assArr[event.currentTarget.id.text];
@@ -934,7 +952,7 @@ package fe.inter {
 		
 		public function trade(arr:Array):void {
 			// We don't have enough money to buy the items selected
-			if (vendor.buyTotal > inv.getQuantity("money")) {
+			if (TradeValue.charge(vendor.buyTotal) > inv.getQuantity("money")) {
 				return;
 			}
 			
@@ -945,7 +963,7 @@ package fe.inter {
 				}
 			}
 			
-			var price:int = Math.ceil(vendor.buyTotal);
+			var price:int = TradeValue.charge(vendor.buyTotal);
 			if (price > 0) {
 				inv.decreaseQuantity("money", price);
 				vendor.increaseMoney(price);
@@ -961,7 +979,7 @@ package fe.inter {
 		
 		public function sell(arr:Array):void {
 			// We're not at the base and the vendor doesn't have enough money to buy our goods
-			if (!inbase && Math.ceil(vendor.sellTotal) > vendor.money) {
+			if (!inbase && TradeValue.payout(vendor.sellTotal) > vendor.money) {
 				World.w.gui.infoText("noSell");
 				return;
 			}
@@ -979,12 +997,12 @@ package fe.inter {
 				}
 			}
 			
-			var price:int = Math.floor(vendor.sellTotal);
+			var price:int = TradeValue.payout(vendor.sellTotal);
 			if (price > 0) {
 				inv.increaseQuantity("money", price);
 			}
 			
-			vendor.decreaseMoney(Math.ceil(vendor.sellTotal));
+			vendor.decreaseMoney(price);
 			vendor.sellTotal = 0;
 			ItemInteraction.calcMass(inv);
 

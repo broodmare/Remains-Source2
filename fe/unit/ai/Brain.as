@@ -44,7 +44,7 @@ package fe.unit.ai {
 
 		// Look a little ahead, where a calm unit's eyes rest
 		private function lookAhead():void {
-			owner.celX = owner.coordinates.X + owner.boundingBox.width * owner.storona * 2;
+			owner.celX = owner.coordinates.X + owner.boundingBox.width * owner.storona.X * 2;
 			owner.celY = owner.coordinates.Y - owner.boundingBox.height;
 		}
 

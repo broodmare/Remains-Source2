@@ -32,6 +32,7 @@ package fe.unit {
 	import fe.weapon.WKick;
 	import fe.weapon.WPaint;
 	import fe.enums.E_Material;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 	import fe.unit.enums.E_ArmorTypes;
 	import fe.unit.enums.E_Resistances;
@@ -474,25 +475,25 @@ package fe.unit {
 //				[Movement, moving to another location]
 //
 //**************************************************************************************************************************
-		// [exit from location (attempt, returns true if exit is successful)]
-		public override function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean {
-			
-			// [Don't let me leave]
+		// [Don't let me leave] Whether the player may leave the room now; dropping into an abyss is always allowed
+		private function canLeaveLoc(downward:Boolean):Boolean {
+			var po:int;
+
 			if (teleObj || actionObj || t_work > 0 || isFetter > 0 || loc.sky) {
-				trace("UnitPlayer.as/outLoc() - Failed to leave room!");
+				trace("UnitPlayer.as/canLeaveLoc() - Failed to leave room!");
 				return false;
 			}
 			
 			// [Don't let them leave while they're under attack]
-			var po:int = World.w.possiblyOut();
-			if (po > 0 && !(napr == 3 && loc.bezdna) && !rat) {
-				if (napr == 3 && !loc.bezdna) {
+			po = World.w.possiblyOut();
+			if (po > 0 && !(downward && loc.bezdna) && !rat) {
+				if (downward && !loc.bezdna) {
 					velocity.Y = -jumpdy;
-					velocity.X = maxSpeed * storona;
+					velocity.X = maxSpeed * storona.X;
 				}
 
 				if (po == 1) {
-					trace("UnitPlayer.as/outLoc() - Can't leave room: Leaving too quickly");
+					trace("UnitPlayer.as/canLeaveLoc() - Can't leave room: Leaving too quickly");
 				}
 
 				if (po == 2) {
@@ -501,10 +502,34 @@ package fe.unit {
 				
 				return false;
 			}
+
+			return true;
+		}
+
+		// Drops what shouldn't carry over into the new room
+		private function settleAfterLeaving():void {
+			if (sats.que.length > 0) {
+				sats.clearAll();
+			}
+
+			if (levit == 1 && !ctr.keyJump) {
+				levit = 0;
+			}
+		}
+
+		// [exit from location (attempt, returns true if exit is successful)]
+		public override function outLoc(direction:Vec2):Boolean {
+			var laz:Vec2;
+			var lev:int;
+			var outP:Object;
+
+			if (!canLeaveLoc(direction == E_Direction.DOWN)) {
+				return false;
+			}
 			
-			var laz:int = isLaz;
-			var lev:int = levit;
-			var outP:Object = World.w.land.gotoLoc(napr, portX, portY);
+			laz = isLaz;
+			lev = levit;
+			outP = World.w.land.gotoLoc(direction);
 			
 			if (outP) {
 				if (outP.die) { // [Death from falling into the abyss (switch to CT)]
@@ -513,46 +538,52 @@ package fe.unit {
 					return false;
 				}
 				
-				if (napr == 3 || napr == 4) {
+				if (direction == E_Direction.DOWN || direction == E_Direction.UP) {
 					if (laz != E_Direction.NEUTRAL) {
 						checkStairs();
 						
 						if (isLaz == E_Direction.NEUTRAL) {
-							checkStairs(1, -tileX * laz);
+							checkStairs(1, -tileX * laz.X);
 						}
 					
 						if (isLaz == E_Direction.NEUTRAL) {
-							checkStairs(1,  tileX * laz);
+							checkStairs(1,  tileX * laz.X);
 						}
 					}
 				} 
 				
-				if (napr == 4) {
+				if (direction == E_Direction.UP) {
 					if (isLaz == E_Direction.NEUTRAL && !isFly && lev == 0) {
 						velocity.Y= -jumpdy;
-						velocity.X = maxSpeed * storona;
+						velocity.X = maxSpeed * storona.X;
 					}
 					else if (isFly || lev == 1) {
 						velocity.Y = -jumpdy;
 					}
 				}
 				
-				if (napr == 5) {
-					velocity.X = 3 * storona;
-				}
-				
-				if (sats.que.length > 0) {
-					sats.clearAll();
-				}
-				
-				if (levit == 1 && !ctr.keyJump) {
-					levit = 0;
-				}
+				settleAfterLeaving();
 				
 				return true;
 			}
 
 			return false;
+		}
+
+		// Goes through a door into the room behind this one, or back out of it
+		public function goThroughDoor(doorX:Number, doorY:Number):Boolean {
+			if (!canLeaveLoc(false)) {
+				return false;
+			}
+
+			if (!World.w.land.gotoOtherLayer(doorX, doorY)) {
+				return false;
+			}
+
+			velocity.X = 3 * storona.X;
+			settleAfterLeaving();
+
+			return true;
 		}
 		
 		// [entrance to the location]
@@ -683,7 +714,7 @@ package fe.unit {
 				t_fly+=0.1;
 				if (loc.electroDam>0) {
 					velocity.Y += Math.sin(t_fly)*0.7;
-					velocity.X += storona*Math.cos(t_fly)*0.5;
+					velocity.X += storona.X*Math.cos(t_fly)*0.5;
 				}
 				else {
 					velocity.Y += Math.sin(t_fly)/5;
@@ -1246,11 +1277,11 @@ package fe.unit {
 				
 				if (h2o>0) {
 					h2o-=pers.h2oPlav;
-					if (sost==1 && isrnd(0.1)) Emitter.emit("bubble", loc, coordinates.X+storona*23, coordinates.Y-58);
+					if (sost==1 && isrnd(0.1)) Emitter.emit("bubble", loc, coordinates.X+storona.X*23, coordinates.Y-58);
 				}
 				else {
 					damage(maxhp/500,E_Resistances.DAM_INTERNAL,null,true);
-					if (sost==1 && isrnd())Emitter.emit("bubble", loc, coordinates.X+storona*23, coordinates.Y-58);
+					if (sost==1 && isrnd())Emitter.emit("bubble", loc, coordinates.X+storona.X*23, coordinates.Y-58);
 				}
 			}
 			else if (h2o < 1000) {
@@ -1415,7 +1446,7 @@ package fe.unit {
 				
 					if (tykMat == E_Material.METAL) {
 						if (turnX != E_Direction.NEUTRAL) {
-							Emitter.emit("moln", loc,coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
+							Emitter.emit("moln", loc,coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+45*storona.X), cely:coordinates.Y-10});
 						}
 						else if (turnY == E_Direction.DOWN) {
 							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y - 70});
@@ -1425,7 +1456,7 @@ package fe.unit {
 						}
 					}
 					else if (isLaz != E_Direction.NEUTRAL) {
-						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
+						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+20*storona.X), cely:coordinates.Y-10});
 					}
 					else if (stay) {
 						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
@@ -2594,13 +2625,13 @@ package fe.unit {
 						throu = true;
 					}
 					// Check behind us for stairs
-					else if (stayPhis == 2 && checkStairs(2, -20 * storona)) {
+					else if (stayPhis == 2 && checkStairs(2, -20 * storona.X)) {
 							t_stay = 0;
 							velocity.Y = lazSpeed;
 							throu = true;
 					}
 					// Check in front of us for stairs
-					else if (stayPhis == 2 && checkStairs(2, 20 * storona)) {
+					else if (stayPhis == 2 && checkStairs(2, 20 * storona.X)) {
 							t_stay = 0;
 							velocity.Y = lazSpeed;
 							throu = true;
@@ -3221,7 +3252,7 @@ package fe.unit {
 		public override function setWeaponPos(tip:String = "internal"):void {
 			if (weaponKrep == 0) {			//телекинез
 				if (storona == E_Direction.RIGHT && celX > boundingBox.right || storona == E_Direction.LEFT && celX < boundingBox.left) {
-					weaponX = coordinates.X + boundingBox.width * storona;
+					weaponX = coordinates.X + boundingBox.width * storona.X;
 				}
 				else {
 					weaponX = coordinates.X;
@@ -3231,7 +3262,7 @@ package fe.unit {
 					weaponX = coordinates.X;
 				}
 				
-				if (loc.getAbsTile(weaponX, weaponY).collision == 1 || loc.getAbsTile(weaponX + storona * 15, weaponY).collision == 1) {
+				if (loc.getAbsTile(weaponX, weaponY).collision == 1 || loc.getAbsTile(weaponX + storona.X * 15, weaponY).collision == 1) {
 					weaponX = coordinates.X;
 				}
 				
@@ -3545,7 +3576,7 @@ package fe.unit {
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch):void {
-			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? E_Direction.RIGHT : E_Direction.LEFT);
+			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? E_Direction.RIGHT.X : E_Direction.LEFT.X);
 			w.coordinates.Y = coordinates.Y - boundingBox.halfHeight;
 			w.rot = (celX > coordinates.X) ? 0 : ONE_PI;
 		}
@@ -3947,7 +3978,7 @@ package fe.unit {
                             dieTransform.redOffset = (170 - t_work) * 2;
                             dieTransform.blueOffset = (170 - t_work) * 3;
                             vis.osn.transform.colorTransform = dieTransform;
-                            Emitter.emit("die_spark", loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona, coordinates.Y);
+                            Emitter.emit("die_spark", loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona.X, coordinates.Y);
                         }
 						else if (t_work < 120 && t_work > 70) {
 							vis.osn.alpha = (t_work - 70) / 50;
@@ -4134,7 +4165,7 @@ package fe.unit {
 						freeAnim=0;
 						t_walk=0;
 						
-						if (diagon*storona>0) {
+						if (diagon.X*storona.X>0) {
 							if (animState!="diag_up") {
 								animState="diag_up";
 								vis.osn.gotoAndStop("trot_up");
@@ -4168,7 +4199,7 @@ package fe.unit {
                                     (animState == "roll" && vis.osn.currentFrameLabel == "roll");
 
 							    if (!movementAnimActive) {
-                                    if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                                    if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona.X > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                         vis.osn.gotoAndStop("roll");
                                         animState = "roll";
                                     }
@@ -4190,7 +4221,7 @@ package fe.unit {
                                     animState = "walk";
                                 }
                             }
-							else if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+							else if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona.X > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
                                 sndStep(t_walk, 2);
                                 t_walk++;
                                
@@ -4200,7 +4231,7 @@ package fe.unit {
                                     animState = "run";
                                 }
                             }
-							else if (velocity.X * storona > 0) {
+							else if (velocity.X * storona.X > 0) {
                                 sndStep(t_walk, 1);
                                 t_walk++;
                               
@@ -4212,7 +4243,7 @@ package fe.unit {
                             }
                         }
 						else {
-                            if (diagon * storona > 0) {
+                            if (diagon.X * storona.X > 0) {
                                 if (animState != "trot_up") {
                                     animState = "trot_up";
                                     vis.osn.gotoAndStop("trot_up");
@@ -4346,7 +4377,7 @@ package fe.unit {
 								}
 							}
 							else {
-								cframe=Math.round(16 + velocity.X * storona);
+								cframe=Math.round(16 + velocity.X * storona.X);
 								
 								if (cframe>32) {
 									cframe=32;
@@ -4682,7 +4713,7 @@ package fe.unit {
 				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
 				vis.fetter.visible = true;
 				vis.fetter.scaleX = rfetter / 100;
-				vis.fetter.rotation = Math.atan2(dfy, dfx * storona) / ONE_PI * 180;
+				vis.fetter.rotation = Math.atan2(dfy, dfx * storona.X) / ONE_PI * 180;
 			}
 			else if (vis.fetter.visible) {
 				vis.fetter.visible = false;

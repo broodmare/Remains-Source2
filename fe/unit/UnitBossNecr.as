@@ -251,7 +251,7 @@ package fe.unit {
 
 			if (stay) {
 				if (aiNapr==E_Direction.LEFT) velocity.X *= 0.8;
-				else velocity.X += storona * accel * 2;
+				else velocity.X += storona.X * accel * 2;
 			}
 		}
 		
@@ -286,7 +286,7 @@ package fe.unit {
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;
 			}
 			
@@ -492,7 +492,7 @@ package fe.unit {
 				}
 				
 				if (turnX!=E_Direction.NEUTRAL) {
-					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
+					if (celDX*aiNapr.X<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
 					}
@@ -639,7 +639,7 @@ package fe.unit {
 			var ny:Number = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15 + (Math.random() - 0.5) * 30;
 			
 			if (n == 2) {
-				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? E_Direction.RIGHT : E_Direction.LEFT);
+				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? E_Direction.RIGHT.X : E_Direction.LEFT.X);
 				ny = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15;
 			}
 			

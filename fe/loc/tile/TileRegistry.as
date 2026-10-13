@@ -1,9 +1,11 @@
 package fe.loc.tile {
 
 	import fe.TextLoader;
+	import fe.enums.E_Direction;
 	import fe.enums.E_Material;
 	import fe.loc.tile.enums.E_TileBehaviour;
 	import fe.loc.tile.enums.E_TileLayer;
+	import fe.util.Vec2;
 
 	// Loads every tile piece, and turns the text in a room's tile rows into definitions shared by every tile with the same text
 	public class TileRegistry {
@@ -22,6 +24,7 @@ package fe.loc.tile {
 			metal:E_Material.METAL, stone:E_Material.STONE, wood:E_Material.WOOD, brick:E_Material.BRICK,
 			glass:E_Material.GLASS, earth:E_Material.EARTH, forceField:E_Material.FORCE_FIELD, meat:E_Material.MEAT
 		};
+		private static const SIDES:Object = {left:E_Direction.LEFT, right:E_Direction.RIGHT};
 
 		private static var pieces:Vector.<TilePiece_Definition> = new Vector.<TilePiece_Definition>();
 		private static var piecesById:Object			= {};
@@ -41,7 +44,7 @@ package fe.loc.tile {
 			piece.layer = parseName(LAYERS, data.layer, piece.id, "layer");
 			piece.behaviour = parseName(BEHAVIOURS, data.behaviour, piece.id, "behaviour");
 
-			if ("side" in data)				{ piece.side = data.side; }
+			if ("side" in data)				{ piece.side = parseSide(data.side, piece.id); }
 			if ("material" in data)			{ piece.material = parseName(MATERIALS, data.material, piece.id, "material"); }
 			if ("hp" in data)				{ piece.hp = data.hp; }
 			if ("damageThreshold" in data)	{ piece.damageThreshold = data.damageThreshold; }
@@ -65,6 +68,13 @@ package fe.loc.tile {
 			trace("TileRegistry.as/parseName() - Warning: piece \"" + pieceId + "\" has unknown " + field + " \"" + name + "\"");
 
 			return 0;
+		}
+
+		private static function parseSide(name:String, pieceId:String):Vec2 {
+			if (name in SIDES) { return SIDES[name]; }
+			trace("TileRegistry.as/parseSide() - Warning: piece \"" + pieceId + "\" has unknown side \"" + name + "\"");
+
+			return E_Direction.NEUTRAL;
 		}
 
 		private static function findPiece(id:String, ownerId:String):TilePiece_Definition {

@@ -129,7 +129,7 @@ package fe.unit {
 		public var mater:Boolean			= true;			//взаимодействовать со стенами
 		public var massaFix:Number			=  1.00;		//масса зафиксированного объекта
 		public var massaMove:Number			=  1.00;		//масса перемещаемого объекта
-		public var walk:int;								// Which way the unit walks on the floor, NEUTRAL when not walking
+		public var walk:Vec2				= E_Direction.NEUTRAL;	// Which way the unit walks on the floor, NEUTRAL when not walking
 		
 		public var maxSpeed:Number			= 10.00;
 		public var walkSpeed:Number			=  5.00;
@@ -167,7 +167,7 @@ package fe.unit {
 		
 		public var shX1:Number;								// Fraction of the unit's width hanging past the floor on the left
 		public var shX2:Number;								// Fraction of the unit's width hanging past the floor on the right
-		public var diagon:int				= E_Direction.NEUTRAL;	// Direction of the stairs under the unit, NEUTRAL when not on stairs
+		public var diagon:Vec2				= E_Direction.NEUTRAL;	// Direction of the stairs under the unit, NEUTRAL when not on stairs
 		
 		public var porog:Number				= 10.00;
 		public var porog_jump:Number		= 4.00;			//автоподъём
@@ -177,13 +177,13 @@ package fe.unit {
 		public var isFly:Boolean			= false;
 		public var isRun:Boolean			= false;
 		public var isPlav:Boolean			= false;
-		public var isLaz:int				= E_Direction.NEUTRAL;
+		public var isLaz:Vec2				= E_Direction.NEUTRAL;
 		public var inWater:Boolean			= false;
 		public var isUp:Boolean				= false;
 		public var throu:Boolean			= false;
 		public var isJump:Boolean			= false;
-		public var turnX:int				= E_Direction.NEUTRAL;
-		public var turnY:int				= E_Direction.NEUTRAL;
+		public var turnX:Vec2				= E_Direction.NEUTRAL;
+		public var turnY:Vec2				= E_Direction.NEUTRAL;
 		public var kray:Boolean				= false;
 		
 		public var pumpObj:Interact;						// [object that came across (for opening doors by mobs)]
@@ -211,7 +211,7 @@ package fe.unit {
 		public var isShoot:Boolean			= false;		//устанавливается оружием в true если был выстрел
 
 		//ии
-		public var aiNapr:int=E_Direction.RIGHT, aiVNapr:int=E_Direction.NEUTRAL; //направление, в котором стремиться двигаться ии
+		public var aiNapr:Vec2=E_Direction.RIGHT, aiVNapr:Vec2=E_Direction.NEUTRAL; //направление, в котором стремиться двигаться ии
 		public var aiTTurn:int=10, aiPlav:int=0; 
 		public var aiState:int=0;	//состояние ии 
 		public var aiTCh:int = Calc.intBetween(0, 10);	// Ticks until the AI decides its state again
@@ -925,7 +925,7 @@ package fe.unit {
 			}
 
 			if (loc.mirror) {
-				storona	= -storona;
+				storona	= E_Direction.opposite(storona);
 				aiNapr	=  storona;
 			}
 			
@@ -991,7 +991,7 @@ package fe.unit {
 			
 			if (postDie) {
 				sost = 3;
-				setCel(null, coordinates.X + storona * 100, coordinates.Y + 50);
+				setCel(null, coordinates.X + storona.X * 100, coordinates.Y + 50);
 				lootIsDrop = true;
 				die();
 			}
@@ -1274,14 +1274,13 @@ package fe.unit {
 		}
 		
 		// [Going beyond the location]
-		public function outLoc(napr:int, portX:Number = -1, portY:Number = -1):Boolean {
-			// [1-left, 2-right, 3-down, 4-up]
+		public function outLoc(direction:Vec2):Boolean {
 			// [for all except yy, should return false]
 			if (isFly || levit) {
 				return false;
 			}
 			
-			if (napr == 3) {
+			if (direction == E_Direction.DOWN) {
 				if (loc.bezdna || jumpdy <= 0 || sost == 3) {		// [falling outside the location]
 					disabled = true;
 					velocity.Y = 0;
@@ -1295,7 +1294,7 @@ package fe.unit {
 				}
 				else {
 					velocity.Y = -jumpdy;
-					velocity.X = storona * maxSpeed;
+					velocity.X = storona.X * maxSpeed;
 				}
 			} 
 			
@@ -1429,9 +1428,9 @@ package fe.unit {
 			if (!throu && stay && diagon != E_Direction.NEUTRAL && velocity.Y >= 0) {
 				
 				var dxdiv:Number = velocity.X / div;
-				var slopeY:Number = (dxdiv * diagon); 
+				var slopeY:Number = (dxdiv * diagon.X); 
 
-				if (collisionAll(dxdiv, dxdiv * diagon * -1)) {
+				if (collisionAll(dxdiv, dxdiv * diagon.X * -1)) {
 					if (slopeY < 0 && !collisionAll(dxdiv, 0)) {
 						diagon = E_Direction.NEUTRAL;
 					}
@@ -1454,7 +1453,7 @@ package fe.unit {
 				coordinates.X += (velocity.X + osndx) / div;
 				
 				if (coordinates.X - boundingBox.halfWidth < 0) {
-					if (!outLoc(1)) {
+					if (!outLoc(E_Direction.LEFT)) {
 						coordinates.X = boundingBox.halfWidth;
 						velocity.X = Math.abs(velocity.X) * elast;
 						turnX = E_Direction.RIGHT;
@@ -1463,7 +1462,7 @@ package fe.unit {
 				}
 				
 				if (coordinates.X + boundingBox.halfWidth >= loc.maxX) 	{
-					if (!outLoc(2)) {
+					if (!outLoc(E_Direction.RIGHT)) {
 						coordinates.X = loc.maxX - 1 - boundingBox.halfWidth;
 						velocity.X = -Math.abs(velocity.X) * elast;
 						turnX = E_Direction.LEFT;
@@ -1524,10 +1523,10 @@ package fe.unit {
 									coordinates.X = t.boundingBox.right + boundingBox.halfWidth;
 									
 									if (t_throw > 0 && velocity.X < -damWallSpeed && damWall) {
-										damageWall(2);
+										damageWall(E_Direction.LEFT);
 									}
 
-									if (destroy > 0 && destroyWall(t, 1)) {
+									if (destroy > 0 && destroyWall(t, E_Direction.LEFT)) {
 										velocity.X *= 0.75;
 									}
 									else {
@@ -1598,10 +1597,10 @@ package fe.unit {
 									coordinates.X = t.boundingBox.left - boundingBox.halfWidth;
 								
 									if (t_throw > 0 && velocity.X > damWallSpeed && damWall) {
-										damageWall(1);
+										damageWall(E_Direction.RIGHT);
 									}
 								
-									if (destroy > 0 && destroyWall(t, 2)) {
+									if (destroy > 0 && destroyWall(t, E_Direction.RIGHT)) {
 										velocity.X *= 0.75;
 									}
 									else {
@@ -1644,7 +1643,7 @@ package fe.unit {
 					diagon = E_Direction.NEUTRAL;
 					coordinates.Y += (velocity.Y + osndy) / div;
 					
-					if (coordinates.Y > loc.maxY && !outLoc(3)) {
+					if (coordinates.Y > loc.maxY && !outLoc(E_Direction.DOWN)) {
 						coordinates.Y = loc.maxY - 1;
 						velocity.Y = 0;
 						turnY = E_Direction.UP;
@@ -1696,11 +1695,11 @@ package fe.unit {
 									stayPhis = 1;
 									
 									if (t_throw > 0 && velocity.Y > damWallSpeed && damWall) {
-										damageWall(3);
+										damageWall(E_Direction.DOWN);
 									}
 									
 									if (destroy > 0 || massa >= 1) {
-										destroyWall(t, 3);
+										destroyWall(t, E_Direction.DOWN);
 									}
 								}
 								else if (t.platform && stayPhis == 0) {
@@ -1770,7 +1769,7 @@ package fe.unit {
 					}
 					
 					if (coordinates.Y > loc.maxY) {
-						if (!outLoc(3)) {
+						if (!outLoc(E_Direction.DOWN)) {
 							coordinates.Y = loc.maxY - 1;
 							turnY = E_Direction.UP;
 							boundingBox.flatten(coordinates);
@@ -1786,7 +1785,7 @@ package fe.unit {
 				}
 				
 				if (coordinates.Y - boundingBox.height < 0) {
-					if (!outLoc(4)) {
+					if (!outLoc(E_Direction.UP)) {
 						coordinates.Y = boundingBox.height - 0.10;
 						velocity.Y = 0;
 						turnY = E_Direction.DOWN;
@@ -1814,11 +1813,11 @@ package fe.unit {
 					
 						if (collisionTile(t)) {
 							if (t_throw > 0 && velocity.Y < -damWallSpeed && damWall) {
-								damageWall(4);
+								damageWall(E_Direction.UP);
 							}
 							
 							if (destroy > 0) {
-								destroyWall(t, 4);
+								destroyWall(t, E_Direction.UP);
 							}
 							
 							coordinates.Y = t.boundingBox.bottom + boundingBox.height;
@@ -2203,7 +2202,7 @@ package fe.unit {
 		}
 		
 		// [Search for steps]
-		public function checkDiagon(velN:Number, napr:int):Number {
+		public function checkDiagon(velN:Number, napr:Vec2):Number {
 			var ddy:Number;
 			var newmy:Number = 0;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y);
@@ -2499,7 +2498,7 @@ package fe.unit {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.scaleX = storona;
+				vis.scaleX = storona.X;
 			}
 		}
 
@@ -2614,7 +2613,7 @@ package fe.unit {
 			}
 			
 			//положение глаз
-			eyeX = coordinates.X + boundingBox.width * 0.25 * storona;
+			eyeX = coordinates.X + boundingBox.width * 0.25 * storona.X;
 			eyeY = coordinates.Y - boundingBox.height * 0.75;
 			
 			// [Levitation]
@@ -2796,17 +2795,17 @@ package fe.unit {
 		}
 
 		public function setPunchWeaponPos(w:WPunch):void {
-			w.coordinates.X = coordinates.X + boundingBox.width / 3 * storona;
+			w.coordinates.X = coordinates.X + boundingBox.width / 3 * storona.X;
 			w.coordinates.Y = coordinates.Y - boundingBox.height * 0.75;
 			w.rot = (storona == E_Direction.RIGHT) ? 0 : ONE_PI;
 		}
 		
-		public function destroyWall(t:Tile, napr:int=0):Boolean {
+		public function destroyWall(t:Tile, direction:Vec2):Boolean {
 			if (isPlav || levit || sost != 1) {
 				return false;
 			}
 			
-			if (napr == 3 && velocity.Y > 15 && destroy < 50 && massa >= 1) {
+			if (direction == E_Direction.DOWN && velocity.Y > 15 && destroy < 50 && massa >= 1) {
 				loc.hitTile(t, 50, (t.coords.X + 0.5) * tileX,(t.coords.Y + 0.5) * tileY, E_Decal.STOMP);
 				
 				if (t.collision == 0) {
@@ -2814,12 +2813,9 @@ package fe.unit {
 				}
 			}
 			
-			if (destroy > 0 && (velocity.X > 10 && napr == 2 
-				|| velocity.X < -10 && napr == 1
-				|| velocity.Y < -10 && napr == 4 
-				|| velocity.Y > 10 && napr == 3
-				)) {
-					loc.hitTile(t, destroy, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY, (napr == 3 ? E_Decal.STOMP : E_Decal.EXPLOSION));
+			// Break through only when moving into the wall faster than 10
+			if (destroy > 0 && velocity.X * direction.X + velocity.Y * direction.Y > 10) {
+				loc.hitTile(t, destroy, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY, (direction == E_Direction.DOWN ? E_Decal.STOMP : E_Decal.EXPLOSION));
 			}
 			
 			if (t.collision == 0) {
@@ -3351,7 +3347,7 @@ package fe.unit {
 							}
 							
 							if (dam / 1000 > ver) {
-								var st:int = E_Direction.RIGHT;
+								var st:Vec2 = E_Direction.RIGHT;
 								
 								if (bul && bul.velocity.X < 0) {
 									st = E_Direction.LEFT;
@@ -3361,7 +3357,7 @@ package fe.unit {
 									st=E_Direction.LEFT;
 								}
 								
-								Emitter.emit('bloodexpl' + int(Math.random() * 3 + 1), loc, coordinates.X + 80 * st + (Math.random() - 0.5) * boundingBox.width * 0.5, coordinates.Y - Math.random() * boundingBox.height * 0.5 - 40, {mirr:(st==E_Direction.LEFT?1:0)});
+								Emitter.emit('bloodexpl' + int(Math.random() * 3 + 1), loc, coordinates.X + 80 * st.X + (Math.random() - 0.5) * boundingBox.width * 0.5, coordinates.Y - Math.random() * boundingBox.height * 0.5 - 40, {mirr:(st==E_Direction.LEFT?1:0)});
 							}
 						}
 					}
@@ -3440,7 +3436,7 @@ package fe.unit {
 		}
 		
 		// [hit the wall 1-right, 2-left, 3-bottom, 4-top]
-		public function damageWall(napr:int = 0):void {
+		public function damageWall(direction:Vec2):void {
 			t_throw = 0;
 			
 			if (damWall > 0) {
@@ -3451,22 +3447,10 @@ package fe.unit {
 					stun = damWallStun;
 				}
 				
-				if (napr > 0) {
-					var nx:Number = coordinates.X;
-					var ny:Number = coordinates.Y - boundingBox.halfHeight;
-
-					if (napr == 1) {
-						nx = coordinates.X + boundingBox.halfWidth;
-					}
-					else if (napr == 2) {
-						nx = coordinates.X - boundingBox.halfWidth;
-					}
-					else if (napr == 3) {
-						ny = coordinates.Y;
-					}
-					else if (napr == 4) {
-						ny = coordinates.Y - boundingBox.height;
-					}
+				if (direction != E_Direction.NEUTRAL) {
+					// Puff at the edge of the unit that hit the wall
+					var nx:Number = coordinates.X + boundingBox.halfWidth * direction.X;
+					var ny:Number = coordinates.Y - boundingBox.halfHeight + boundingBox.halfHeight * direction.Y;
 
 					Emitter.emit('bum', loc, nx, ny);
 					Snd.ps('hit_flesh', coordinates.X, coordinates.Y);
@@ -3997,7 +3981,7 @@ package fe.unit {
 			}
 
 			// Early exit if the unit is behind and out of detecting range
-			if (vKonus == 0 && !over && cx * storona < 0 && r2 > detecting * detecting) {
+			if (vKonus == 0 && !over && cx * storona.X < 0 && r2 > detecting * detecting) {
 				return 0;
 			}
 
@@ -4016,7 +4000,7 @@ package fe.unit {
 			var div:int = int(Math.max(Math.abs(cx), Math.abs(cy)) * maxDeltaInv) + 1;
 			var startIdx:int = mater ? 1 : 4;
 			var step:Number = 1 / div;
-			var baseX:Number = coordinates.X + boundingBox.width * 0.25 * storona;
+			var baseX:Number = coordinates.X + boundingBox.width * 0.25 * storona.X;
 			var baseY:Number = coordinates.Y - boundingBox.height * 0.75;
 			
 			for (var i:int = startIdx; i < div; i++) {
@@ -4116,7 +4100,7 @@ package fe.unit {
 		// [Set a target to a unit or point]
 		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void {
 			if (un && isMeet(un)) {
-				celX = un.coordinates.X + un.boundingBox.width * 0.25 * un.storona;
+				celX = un.coordinates.X + un.boundingBox.width * 0.25 * un.storona.X;
 				celY = un.coordinates.Y - un.boundingBox.halfHeight;
 				celUnit = un;
 				
@@ -4169,7 +4153,7 @@ package fe.unit {
 			if (isMeet(loc.gg) && loc.gg.teleObj) {
 				var gx:Number=loc.gg.teleObj.coordinates.X - coordinates.X;
 				
-				if (!overLook && gx * storona < 0) {
+				if (!overLook && gx * storona.X < 0) {
 					return false;
 				}
 				

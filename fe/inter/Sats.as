@@ -104,7 +104,7 @@ package fe.inter {
 				else {
 					trasser.visible = false;
 					radius.visible = true;
-					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona;
+					radius.x = gg.coordinates.X + gg.pers.meleeS*gg.storona.X;
 					radius.y = gg.coordinates.Y - gg.boundingBox.halfHeight;
 					radius.scaleX = radius.scaleY = gg.pers.meleeR / 100;
 				}

@@ -127,7 +127,7 @@ package fe.unit.ability {
 
 			if (!held) { return; }
 
-			besideX = owner.coordinates.X + owner.storona * ((held is Unit) ? BESIDE_UNIT : BESIDE_OBJECT);
+			besideX = owner.coordinates.X + owner.storona.X * ((held is Unit) ? BESIDE_UNIT : BESIDE_OBJECT);
 			hold(besideX, owner.coordinates.Y - HOLD_HEIGHT - held.boundingBox.halfHeight);
 		}
 
@@ -188,7 +188,7 @@ package fe.unit.ability {
 			}
 
 			if (held is Unit) {
-				throwToward(FLING_X * owner.storona, FLING_Y, throwForce);
+				throwToward(FLING_X * owner.storona.X, FLING_Y, throwForce);
 			}
 			else {
 				dx = targetX - held.coordinates.X;

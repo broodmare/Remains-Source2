@@ -47,7 +47,7 @@ package fe.unit {
 					else if (velocity.X < 4 && velocity.X > -4) {
 						animState='walk';
 						sndStep(anims[animState].f,4);
-						if (aiNapr*storona<0) revers=true;
+						if (aiNapr.X*storona.X<0) revers=true;
 					}
 					else if (velocity.X > 9 || velocity.X < -9) {
 						animState='run';
@@ -56,7 +56,7 @@ package fe.unit {
 					else {
 						animState='trot';
 						sndStep(anims[animState].f,1);
-						if (aiNapr*storona<0) revers=true;
+						if (aiNapr.X*storona.X<0) revers=true;
 					}
 				}
 				else {

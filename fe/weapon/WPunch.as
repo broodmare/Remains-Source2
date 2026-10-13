@@ -4,6 +4,7 @@ package fe.weapon {
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 
 	public class WPunch extends Weapon {
@@ -33,10 +34,10 @@ package fe.weapon {
 				if (owner.player) {
 					var deltaX:Number = owner.celX - coordinates.X;
 					var deltaY:Number = owner.celY - coordinates.Y;
-					var signY:int=(deltaY > 0) ? E_Direction.DOWN : E_Direction.UP;
+					var signY:Vec2=(deltaY > 0) ? E_Direction.DOWN : E_Direction.UP;
 					
 					if (Math.abs(deltaY) > Math.abs(deltaX)) {
-						deltaY = Math.abs(deltaX) * signY;
+						deltaY = Math.abs(deltaX) * signY.Y;
 					}
 					
 					rot = Math.atan2(deltaY, deltaX);

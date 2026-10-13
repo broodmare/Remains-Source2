@@ -358,7 +358,7 @@ package fe.serv {
 							World.w.gg.storona = E_Direction.LEFT;
 						}
 						
-						World.w.gg.velocity.X += World.w.gg.storona * 3;
+						World.w.gg.velocity.X += World.w.gg.storona.X * 3;
 					break;
 
 					case "black":

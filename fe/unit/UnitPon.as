@@ -26,7 +26,7 @@ package fe.unit {
 		public override function setWeaponPos(tip:String = "internal"):void {
 				if (weaponKrep==0) { // [telekinesis]
 					if (storona==E_Direction.RIGHT && celX > this.boundingBox.right || storona == E_Direction.LEFT && celX < this.boundingBox.left) {
-						weaponX = coordinates.X + this.boundingBox.width * storona;
+						weaponX = coordinates.X + this.boundingBox.width * storona.X;
 					}
 					else {
 						weaponX = coordinates.X;
@@ -36,7 +36,7 @@ package fe.unit {
 						weaponX = coordinates.X;
 					}
 					
-					if (loc.getTile(int((weaponX + storona * 15) / tileX), int(weaponY / tileY)).collision == 1) {
+					if (loc.getTile(int((weaponX + storona.X * 15) / tileX), int(weaponY / tileY)).collision == 1) {
 						weaponX = coordinates.X;
 					}
 					

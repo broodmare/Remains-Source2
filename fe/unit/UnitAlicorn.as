@@ -206,7 +206,7 @@ package fe.unit {
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona;
+			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona.X;
 			weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
@@ -567,7 +567,7 @@ package fe.unit {
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				//установить точку зрения
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-				eyeX = coordinates.X + (obj.x+visBmp.x)*storona;
+				eyeX = coordinates.X + (obj.x+visBmp.x)*storona.X;
 				eyeY = coordinates.Y + obj.y+visBmp.y;
 				
 				if (loc.getAbsTile(eyeX,eyeY).collision) {
@@ -639,7 +639,7 @@ package fe.unit {
 				}
 				
 				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 			}
 			else {
 				t_gotov++;
@@ -792,7 +792,7 @@ package fe.unit {
 				overLook=false;
 				if (stay && shX1>0.25 && aiNapr==E_Direction.LEFT) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
+						t=loc.getAbsTile(coordinates.X+storona.X*80,coordinates.Y+10);
 						
 						if (t.collision==1 || t.platform) {
 							jump(0.5);
@@ -808,7 +808,7 @@ package fe.unit {
 				
 				if (stay && shX2>0.25 && aiNapr==E_Direction.RIGHT) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
+						t=loc.getAbsTile(coordinates.X+storona.X*80,coordinates.Y+10);
 						
 						if (t.collision==1 || t.platform) {
 							jump(0.5);
@@ -851,7 +851,7 @@ package fe.unit {
 				
 				if (turnX!=E_Direction.NEUTRAL) {
 					if (isFly) {
-						if (aiState!=3) setCel(null, celX+turnX*(Math.random()*200+200), celY+Math.random()*120-60);
+						if (aiState!=3) setCel(null, celX+turnX.X*(Math.random()*200+200), celY+Math.random()*120-60);
 						turnX=E_Direction.NEUTRAL;
 					}
 					else {
@@ -989,20 +989,20 @@ package fe.unit {
 			for (var i:int = 1; i <= 20; i++) {
 				if (i < 5 && !rnd) {
 					if (isrnd(0.7)) {
-						nx = cel.coordinates.X - cel.storona * (Math.random() * 300 + 200);
+						nx = cel.coordinates.X - cel.storona.X * (Math.random() * 300 + 200);
 					}
 					else {
-						nx = cel.coordinates.X + cel.storona * (Math.random() * 300 + 200);
+						nx = cel.coordinates.X + cel.storona.X * (Math.random() * 300 + 200);
 					}
 					
 					ny=cel.coordinates.Y;
 				}
 				else if (i < 10 && !rnd) {
 					if (isrnd()) {
-						nx = cel.coordinates.X - cel.storona * (Math.random() * 800 + 200);
+						nx = cel.coordinates.X - cel.storona.X * (Math.random() * 800 + 200);
 					}
 					else  {
-						nx = cel.coordinates.X + cel.storona * (Math.random() * 800 + 200);
+						nx = cel.coordinates.X + cel.storona.X * (Math.random() * 800 + 200);
 					}
 					
 					ny = cel.coordinates.Y + Math.random() * 160 - 80;

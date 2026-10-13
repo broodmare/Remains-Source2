@@ -198,9 +198,9 @@ package fe.unit {
 				watchDrot = 0.01;
 				vKonus = QUARTER_PI;
 				noTurn = true;
-				vis.osn.t1.scaleX = storona;
-				vis.osn.t2.scaleX = storona;
-				vis.osn.t3.scaleX = storona;
+				vis.osn.t1.scaleX = storona.X;
+				vis.osn.t2.scaleX = storona.X;
+				vis.osn.t3.scaleX = storona.X;
 			}
 			
 			nRot = int(Math.random() * aRot.length);
@@ -431,11 +431,11 @@ package fe.unit {
 					if (bul.weap != null && bul.weap.tip == Weapon.TYPE_MELEE) {	// [bladed weapon]
 						var w:Weapon = bul.weap;
 						
-						if ((coordinates.X - w.coordinates.X) * storona > 25) {
+						if ((coordinates.X - w.coordinates.X) * storona.X > 25) {
 							shitArmor = 0;
 						}
 					}
-					else if (bul.velocity.X * storona > 0) {
+					else if (bul.velocity.X * storona.X > 0) {
 						shitArmor = 0;
 					}
 				}

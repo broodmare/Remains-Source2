@@ -410,7 +410,7 @@ package fe.weapon {
 				else if (fixedToOwner || coordinates.X == 0) {
 					coordinates.X = owner.weaponX;
 					coordinates.Y = owner.weaponY;
-					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X) * owner.storona);	// [Fixed weapons point the way the owner is facing]
+					rot2 = Math.atan2(owner.celY - coordinates.Y, Math.abs(owner.celX - coordinates.X) * owner.storona.X);	// [Fixed weapons point the way the owner is facing]
 				}
 				else {
 					// Smoothly interpolate weapon position towards the owner's weapon position
@@ -787,7 +787,7 @@ package fe.weapon {
 					b.vis.gotoAndStop(i + 1);
 				}
 				
-				b.rot = rot - rotUp * storona / 50 + r + (i - (kol - 1) / 2) * deviation * 3.1415 / 360;
+				b.rot = rot - rotUp * storona.X / 50 + r + (i - (kol - 1) / 2) * deviation * 3.1415 / 360;
 			
 				if (grav > 0 || volna) {
 					b.vel = speed * speedMult;
@@ -1250,8 +1250,8 @@ package fe.weapon {
 				}
 			}
 			else {
-				vis.scaleX = owner.storona;
-				vis.rotation = rot * RAD_TO_DEG + 90 * (1 - owner.storona) - rotUp * storona;
+				vis.scaleX = owner.storona.X;
+				vis.rotation = rot * RAD_TO_DEG + 90 * (1 - owner.storona.X) - rotUp * storona.X;
 			}
 		}
 		

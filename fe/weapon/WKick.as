@@ -7,6 +7,7 @@ package fe.weapon  {
 	import fe.unit.Unit;
 	import fe.loc.tile.Tile;
 	import fe.projectile.Bullet;
+	import fe.enums.E_Direction;
 	
 	public class WKick extends Weapon {
 
@@ -32,7 +33,7 @@ package fe.weapon  {
 			
 			super.setOwner(own);
 			
-			var v:Vec2 = new Vec2((coordinates.X - (dlina * 0.50) * storona), (coordinates.Y - dlina));
+			var v:Vec2 = new Vec2((coordinates.X - (dlina * 0.50) * storona.X), (coordinates.Y - dlina));
 			b = new Bullet(owner, v, null, false);
 			b.weap = this;
 			setBullet(b);
@@ -56,7 +57,7 @@ package fe.weapon  {
 				b.tilehit = false;
 				b.loc = owner.loc;
 				b.knocky = -0.10;
-				b.knockx = storona;
+				b.knockx = storona.X;
 				b.parrDict = null;
 				b.dist = 0;
 				b.damage = damage * World.w.pers.punchDamMult;
@@ -71,22 +72,22 @@ package fe.weapon  {
 				}
 				
 				if (kick) {
-					storona = -owner.storona;
-					var t1:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 30);
-					var t2:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 50);
+					storona = E_Direction.opposite(owner.storona);
+					var t1:Tile = owner.loc.getAbsTile(coordinates.X + storona.X * 60, coordinates.Y - 30);
+					var t2:Tile = owner.loc.getAbsTile(coordinates.X + storona.X * 60, coordinates.Y - 50);
 					
 					if (t1 && t2 && t2.damageThreshold<t1.damageThreshold) {
 						vverh = true;
 					}
 					
-					b.knockx = storona;
+					b.knockx = storona.X;
 					b.damage *= 2;
 					b.otbros *= 1.50;
 					b.destroy = World.w.pers.kickDestroy;
 					dopDamage = 60;
 					
-					reachX = coordinates.X + storona * 70;
-					startX = coordinates.X + storona * 20;
+					reachX = coordinates.X + storona.X * 70;
+					startX = coordinates.X + storona.X * 20;
 
 					if (vverh) {
 						b.bindMoveTo(reachX, coordinates.Y - 50, startX, coordinates.Y - 50);
@@ -100,15 +101,15 @@ package fe.weapon  {
 					Snd.ps('m_big', coordinates.X, coordinates.Y, 0, Math.random() * 0.2 + 0.1);
 				}
 				else {
-					var t3:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 30);
-					var t4:Tile = owner.loc.getAbsTile(coordinates.X + storona * 60, coordinates.Y - 50);
+					var t3:Tile = owner.loc.getAbsTile(coordinates.X + storona.X * 60, coordinates.Y - 30);
+					var t4:Tile = owner.loc.getAbsTile(coordinates.X + storona.X * 60, coordinates.Y - 50);
 					
 					if (t3 && t4 && t4.damageThreshold < t3.damageThreshold) {
 						vverh = true;
 					}
 					
-					reachX = coordinates.X + storona * 60;
-					startX = coordinates.X + storona * 20;
+					reachX = coordinates.X + storona.X * 60;
+					startX = coordinates.X + storona.X * 20;
 
 					if (vverh) {
 						b.bindMoveTo(reachX, coordinates.Y - 50, startX, coordinates.Y - 50);

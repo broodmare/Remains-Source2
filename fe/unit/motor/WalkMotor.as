@@ -6,6 +6,7 @@ package fe.unit.motor {
 	import fe.util.Calc;
 	import fe.weapon.Weapon;
 	import fe.unit.enums.E_AIState;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 
 	// Walking, jumping, swimming and climbing for units that live on the ground
@@ -31,6 +32,7 @@ package fe.unit.motor {
 		private static const CRAWL_CHECK:int			= 10;		// Ticks between attempts to stand up from a crawl
 		private static const CRAWL_GAP:Number			= 40.0;		// Height of the opening a crawler squeezes into
 		private static const WANDER_CLIMB_CHANCE:Number	= 0.2;		// Chance a wandering climber picks a new climbing direction when it rethinks
+		private static const WANDER_CLIMBS:Vector.<Vec2>	= Vector.<Vec2>([E_Direction.UP, E_Direction.NEUTRAL, E_Direction.DOWN]);	// Directions a wandering climber picks from
 		private static const WALL_CLIMB_CHANCE:Number	= 0.5;		// Chance a wandering climber climbs a wall instead of turning away from it
 		private static const TURN_TIME_MIN:int			= 5;		// Bumps against a wall before a chasing unit turns back
 		private static const TURN_TIME_MAX:int			= 24;
@@ -48,12 +50,12 @@ package fe.unit.motor {
 		private var jumpCooldown:int	= 0;
 		private var ladderCooldown:int	= 0;
 		private var climbTime:int		= 0;		// Ticks spent climbing, or while negative, ticks since the last climb
-		private var climbIntent:int		= E_Direction.NEUTRAL;	// Where a wandering climber wants to go: UP, DOWN or NEUTRAL
-		private var facing:int;						// The way the unit wants to face, reached once turnWait runs out
+		private var climbIntent:Vec2		= E_Direction.NEUTRAL;	// Where a wandering climber wants to go: UP, DOWN or NEUTRAL
+		private var facing:Vec2;						// The way the unit wants to face, reached once turnWait runs out
 		private var turnWait:int		= 0;
 
 		// Accelerate in a direction, up to maxSpeed
-		private function push(direction:int, amount:Number):void {
+		private function push(direction:Vec2, amount:Number):void {
 			if (direction == E_Direction.LEFT && owner.velocity.X > -owner.maxSpeed) {
 				owner.velocity.X -= amount;
 			}
@@ -63,7 +65,7 @@ package fe.unit.motor {
 		}
 
 		// Tell the physics which way the unit is walking; with walkFriction it is left to drag as if standing
-		private function walkToward(direction:int):void {
+		private function walkToward(direction:Vec2):void {
 			if (!definition.walkFriction) {
 				owner.walk = direction;
 			}
@@ -91,7 +93,7 @@ package fe.unit.motor {
 				turnWait = owner.stay ? definition.turnDelayGround : definition.turnDelayAir;
 
 				if (weapon && weapon.drot > 0) {
-					aimX = Math.abs(owner.celX - weapon.coordinates.X) * owner.storona;
+					aimX = Math.abs(owner.celX - weapon.coordinates.X) * owner.storona.X;
 					aimY = owner.celY - weapon.coordinates.Y;
 					weapon.rot = Math.atan2(aimY, aimX);
 				}
@@ -119,7 +121,7 @@ package fe.unit.motor {
 		}
 
 		private function limitSpeed():void {
-			if (owner.velocity.X * owner.diagon > 0) {
+			if (owner.velocity.X * owner.diagon.X > 0) {
 				owner.maxSpeed *= STAIRS_SPEED;
 			}
 		}
@@ -130,7 +132,7 @@ package fe.unit.motor {
 		}
 
 		private function isGroundAhead():Boolean {
-			var tile:Tile = owner.loc.getAbsTile(owner.coordinates.X + owner.storona * LEDGE_LOOKAHEAD, owner.coordinates.Y + 10);
+			var tile:Tile = owner.loc.getAbsTile(owner.coordinates.X + owner.storona.X * LEDGE_LOOKAHEAD, owner.coordinates.Y + 10);
 
 			return tile.collision == 1 || tile.platform;
 		}
@@ -156,7 +158,7 @@ package fe.unit.motor {
 				openDoor();
 			}
 
-			if (definition.turnsToTargetAtWall && owner.celDX * owner.aiNapr < 0) {
+			if (definition.turnsToTargetAtWall && owner.celDX * owner.aiNapr.X < 0) {
 				owner.aiNapr = owner.turnX;
 				owner.aiTTurn = Calc.intBetween(TURN_TIME_MIN, TURN_TIME_MAX);
 			}
@@ -216,7 +218,7 @@ package fe.unit.motor {
 			else if (tile.definition.ladderSide != E_Direction.NEUTRAL) {
 				owner.isLaz = tile.definition.ladderSide;
 			}
-			else if (owner.loc.getTile(column + owner.storona, row).collision != 0) {
+			else if (owner.loc.getTile(column + owner.storona.X, row).collision != 0) {
 				owner.isLaz = owner.storona;
 			}
 			else {
@@ -236,7 +238,7 @@ package fe.unit.motor {
 			owner.stay = false;
 		}
 
-		private function climb(direction:int):void {
+		private function climb(direction:Vec2):void {
 			var step:Number = owner.lazSpeed * definition.climbAccel;
 
 			climbDirection = direction;
@@ -354,7 +356,7 @@ package fe.unit.motor {
 				owner.maxSpeed = owner.walkSpeed * definition.crawlSpeed;
 			}
 
-			if (isBackpedalling && owner.storona * owner.aiNapr < 0) {
+			if (isBackpedalling && owner.storona.X * owner.aiNapr.X < 0) {
 				owner.maxSpeed = owner.walkSpeed;
 			}
 
@@ -415,7 +417,7 @@ package fe.unit.motor {
 			}
 		}
 
-		public var climbDirection:int	= E_Direction.NEUTRAL;	// Direction of the current climb, NEUTRAL when not climbing
+		public var climbDirection:Vec2	= E_Direction.NEUTRAL;	// Direction of the current climb, NEUTRAL when not climbing
 
 		public function WalkMotor(owner_:Unit, definition_:WalkMotor_Definition) {
 			owner = owner_;
@@ -424,7 +426,7 @@ package fe.unit.motor {
 		}
 
 		// Face a direction, at once or, with a turn delay, once the last turn has settled
-		public function turnTo(direction:int):void {
+		public function turnTo(direction:Vec2):void {
 			if (hasTurnDelay()) {
 				facing = direction;
 			}
@@ -461,7 +463,7 @@ package fe.unit.motor {
 
 		public function rethink():void {
 			if (definition.wanderClimb && Math.random() < WANDER_CLIMB_CHANCE) {
-				climbIntent = Calc.intBetween(E_Direction.UP, E_Direction.DOWN);
+				climbIntent = WANDER_CLIMBS[Calc.intBetween(0, WANDER_CLIMBS.length - 1)];
 			}
 		}
 
@@ -517,7 +519,7 @@ package fe.unit.motor {
 					jump(HOP);
 				}
 				else {
-					owner.turnX = -owner.aiNapr;
+					owner.turnX = E_Direction.opposite(owner.aiNapr);
 				}
 			}
 
@@ -571,7 +573,7 @@ package fe.unit.motor {
 		}
 
 		public function leapBack():void {
-			owner.velocity.X = owner.runSpeed * LEAP_BACK_SPEED * ((owner.celDX > 0) ? E_Direction.LEFT : E_Direction.RIGHT);
+			owner.velocity.X = owner.runSpeed * LEAP_BACK_SPEED * ((owner.celDX > 0) ? E_Direction.LEFT.X : E_Direction.RIGHT.X);
 			jump(LEAP_BACK);
 		}
 
@@ -584,7 +586,7 @@ package fe.unit.motor {
 			}
 
 			if (owner.stay) {
-				owner.velocity.X += owner.storona * owner.accel * definition.jumpBoost;
+				owner.velocity.X += owner.storona.X * owner.accel * definition.jumpBoost;
 			}
 
 			if (!owner.isPlav && owner.aiPlav > 0) {
@@ -600,7 +602,7 @@ package fe.unit.motor {
 		public function canJumpUp():Boolean {
 			var x:Number = owner.coordinates.X;
 			var y:Number = owner.coordinates.Y;
-			var aheadX:Number = x + HEADROOM_AHEAD * owner.storona;
+			var aheadX:Number = x + HEADROOM_AHEAD * owner.storona.X;
 
 			return isClear(x, y - HEADROOM_NEAR) && isClear(x, y - HEADROOM_FAR) && isClear(aheadX, y - HEADROOM_NEAR) && isClear(aheadX, y - HEADROOM_FAR);
 		}

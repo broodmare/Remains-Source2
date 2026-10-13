@@ -143,7 +143,7 @@ package fe.unit {
 		}
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
-			weaponX = coordinates.X + storona * 30;
+			weaponX = coordinates.X + storona.X * 30;
 			weaponY = coordinates.Y - boundingBox.height * 0.8;
 		}
 		
@@ -363,16 +363,16 @@ package fe.unit {
 		private function checkJump():Boolean {
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 85).collision!=0) return false;
 			if (loc.getAbsTile(coordinates.X, coordinates.Y - 125).collision!=0) return false;
-			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 85).collision!=0) return false;
-			if (loc.getAbsTile(coordinates.X + 40 * storona, coordinates.Y - 125).collision!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona.X, coordinates.Y - 85).collision!=0) return false;
+			if (loc.getAbsTile(coordinates.X + 40 * storona.X, coordinates.Y - 125).collision!=0) return false;
 			return true;
 		}
 		
-		public override function destroyWall(t:Tile, napr:int=0):Boolean {
-			if (napr==3 && velocity.Y > 5 && superQuake && isrnd(0.2)) {
+		public override function destroyWall(t:Tile, direction:Vec2):Boolean {
+			if (direction == E_Direction.DOWN && velocity.Y > 5 && superQuake && isrnd(0.2)) {
 				quake(velocity.Y);
 			}
-			return super.destroyWall(t, napr);
+			return super.destroyWall(t, direction);
 		}
 		
 		private function resurrect():void {
@@ -437,7 +437,7 @@ package fe.unit {
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - boundingBox.height;
-				celX = coordinates.X + boundingBox.width * storona * 2;
+				celX = coordinates.X + boundingBox.width * storona.X * 2;
 				return;
 			}
 			
@@ -514,7 +514,7 @@ package fe.unit {
 			if (aiSpok==0) {
 				vision=0.7;
 				celY = coordinates.Y - boundingBox.height;
-				celX = coordinates.X + boundingBox.width * storona * 2;
+				celX = coordinates.X + boundingBox.width * storona.X * 2;
 			} else {
 				vision=1;
 			}
@@ -525,7 +525,7 @@ package fe.unit {
 			maxSpeed=walkSpeed;
 			if (aiState==2) maxSpeed=runSpeed*0.6;
 			if (aiState==3) maxSpeed=runSpeed;
-			if (velocity.X * diagon > 0) maxSpeed *= 0.5;
+			if (velocity.X * diagon.X > 0) maxSpeed *= 0.5;
 
 			if (aiState==3 && aiZlo<tZlo+10) aiZlo++;
 			if (superSilaTip>0 && aiZlo>tZlo && (celUnit || aiState==3)) {
@@ -564,7 +564,7 @@ package fe.unit {
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr==E_Direction.LEFT) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
+						t=loc.getAbsTile(coordinates.X + storona.X * 80, coordinates.Y + 10);
 						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
@@ -574,7 +574,7 @@ package fe.unit {
 				}
 				if (stay && shX2>0.25 && aiNapr==E_Direction.RIGHT) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
+						t=loc.getAbsTile(coordinates.X + storona.X * 80, coordinates.Y + 10);
 						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}

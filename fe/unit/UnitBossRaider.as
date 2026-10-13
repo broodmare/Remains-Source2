@@ -223,7 +223,7 @@ package fe.unit {
 			}
 			if (stay) {
 				if (aiNapr==E_Direction.LEFT) velocity.X *= 0.8;
-				else velocity.X += storona * accel * 2;
+				else velocity.X += storona.X * accel * 2;
 			}
 		}
 		
@@ -257,7 +257,7 @@ package fe.unit {
 			if (loc.gg.invulner) return;
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;
 			}
 			
@@ -339,7 +339,7 @@ package fe.unit {
 				if (stay && coordinates.Y-begY>=40) jmp=1;
 				if (stay && tr==2 && celDY<-100) jmp=1;
 				if (turnX!=E_Direction.NEUTRAL) {
-					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
+					if (celDX*aiNapr.X<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=int(Math.random()*20)+5;
 					}

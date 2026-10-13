@@ -356,7 +356,7 @@ package fe.unit {
 			//повернуться
 			}
 			else if (q.com=="turn") {
-				if (q.val=="0") storona=-storona;
+				if (q.val=="0") storona=E_Direction.opposite(storona);
 				else if (q.val=="-1") storona=E_Direction.LEFT;
 				else storona=E_Direction.RIGHT;
 				setVisPos();
@@ -441,7 +441,7 @@ package fe.unit {
 			}
 		
 			if (celUnit==null) {
-				celX = coordinates.X + storona * 100;
+				celX = coordinates.X + storona.X * 100;
 				celY = coordinates.Y - 10;
 			}
 			

@@ -360,7 +360,7 @@
 			"name": "Ladder (right)",
 			"layer": "foreground",
 			"behaviour": "ladder",
-			"side": 1,
+			"side": "right",
 			"material": "metal",
 			"mirror": "ladder_left",
 			"spriteFrame": 3
@@ -371,7 +371,7 @@
 			"name": "Ladder (left)",
 			"layer": "foreground",
 			"behaviour": "ladder",
-			"side": -1,
+			"side": "left",
 			"material": "metal",
 			"mirror": "ladder_right",
 			"spriteFrame": 1
@@ -392,7 +392,7 @@
 			"name": "Steps /",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": 1,
+			"side": "right",
 			"material": "metal",
 			"mirror": "steps_up_left",
 			"spriteFrame": 6
@@ -403,7 +403,7 @@
 			"name": "Steps \\",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": -1,
+			"side": "left",
 			"material": "metal",
 			"mirror": "steps_up_right",
 			"spriteFrame": 5
@@ -425,7 +425,7 @@
 			"name": "Wooden steps /",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": 1,
+			"side": "right",
 			"material": "wood",
 			"mirror": "steps_wood_up_left",
 			"spriteFrame": 8
@@ -436,7 +436,7 @@
 			"name": "Wooden steps \\",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": -1,
+			"side": "left",
 			"material": "wood",
 			"mirror": "steps_wood_up_right",
 			"spriteFrame": 7
@@ -458,7 +458,7 @@
 			"name": "Steel steps /",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": 1,
+			"side": "right",
 			"material": "metal",
 			"mirror": "steps_steel_up_left",
 			"spriteFrame": 10
@@ -469,7 +469,7 @@
 			"name": "Steel steps \\",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": -1,
+			"side": "left",
 			"material": "metal",
 			"mirror": "steps_steel_up_right",
 			"spriteFrame": 9
@@ -491,7 +491,7 @@
 			"name": "Concrete steps /",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": 1,
+			"side": "right",
 			"material": "stone",
 			"mirror": "steps_concrete_up_left",
 			"spriteFrame": 12
@@ -502,7 +502,7 @@
 			"name": "Concrete steps \\",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": -1,
+			"side": "left",
 			"material": "stone",
 			"mirror": "steps_concrete_up_right",
 			"spriteFrame": 11
@@ -523,7 +523,7 @@
 			"name": "Canterlot steps /",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": 1,
+			"side": "right",
 			"material": "stone",
 			"mirror": "steps_canterlot_up_left",
 			"spriteFrame": 14
@@ -534,7 +534,7 @@
 			"name": "Canterlot steps \\",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": -1,
+			"side": "left",
 			"material": "stone",
 			"mirror": "steps_canterlot_up_right",
 			"spriteFrame": 13
@@ -555,7 +555,7 @@
 			"name": "Cloud steps /",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": 1,
+			"side": "right",
 			"material": "stone",
 			"mirror": "steps_cloud_up_left",
 			"spriteFrame": 16
@@ -566,7 +566,7 @@
 			"name": "Cloud steps \\",
 			"layer": "background",
 			"behaviour": "slope",
-			"side": -1,
+			"side": "left",
 			"material": "stone",
 			"mirror": "steps_cloud_up_right",
 			"spriteFrame": 15

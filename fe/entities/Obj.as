@@ -20,7 +20,7 @@ package  fe.entities {
 		public var nazv:String				= "";			// Name
 
 		public var prior:Number				= 1.00;			// Priority?
-		public var storona:int				= E_Direction.RIGHT;	// Sprite Facing (Left/Right)
+		public var storona:Vec2				= E_Direction.RIGHT;	// Sprite Facing (Left/Right)
 
 		public var rasst2:Number			= 0.00;			// Distance to player squared
 		public var massa:Number				= 1.00;			//

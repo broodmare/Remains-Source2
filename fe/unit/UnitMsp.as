@@ -98,7 +98,7 @@ package fe.unit {
 					vis.y = coordinates.Y - this.boundingBox.halfHeight;
 					vis.rotation = 90;
 				}
-				vis.scaleX = storona;
+				vis.scaleX = storona.X;
 			}
 		}
 		
@@ -174,7 +174,7 @@ package fe.unit {
 			
 			if (World.w.enemyAct<=0) {
 				celY = coordinates.Y - this.boundingBox.height;
-				celX = coordinates.X + this.boundingBox.width * storona * 2;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
 				return;
 			}
 			if (aiState>=3 && cep>0) {

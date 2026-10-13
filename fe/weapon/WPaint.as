@@ -54,7 +54,7 @@ package fe.weapon {
 		}
 		
 		public override function actions():void {
-			var ds:int = 40 * owner.storona;
+			var ds:int = 40 * owner.storona.X;
 			
 			if (owner.player) {
 				celX = owner.celX;
@@ -63,7 +63,7 @@ package fe.weapon {
 				del.x = (celX-(owner.coordinates.X+ds));
 				del.y = (celY-owner.weaponY);
 				norma(del, 600);
-				ds = (owner as UnitPlayer).pers.meleeS * owner.storona;
+				ds = (owner as UnitPlayer).pers.meleeS * owner.storona.X;
 				
 				var tx:Number = celX - coordinates.X;
 				var ty:Number = celY - coordinates.Y;
@@ -97,7 +97,7 @@ package fe.weapon {
 			if (vis) {
 				vis.y = coordinates.Y;
 				vis.x = coordinates.X;
-				vis.scaleX = storona;
+				vis.scaleX = storona.X;
 			}
 		}
 	}	

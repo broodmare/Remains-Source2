@@ -100,7 +100,7 @@ package fe.unit {
 					vis.rotation=0;
 					vis.x = coordinates.X;
 					vis.y = coordinates.Y;
-					vis.scaleX=storona;
+					vis.scaleX=storona.X;
 				}
 			}
 		}

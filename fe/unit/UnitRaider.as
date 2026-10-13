@@ -613,7 +613,7 @@ package fe.unit {
 
 			if (!enclWeap && (tip == Weapon.TYPE_MELEE || tip == Weapon.TYPE_LIGHTGUN || tip == Weapon.TYPE_EXPLOSIVES)) {
 				obj = wPos[anims[animState].id][int(anims[animState].f)];
-				weaponX = coordinates.X + (obj.x + visBmp.x) * storona;
+				weaponX = coordinates.X + (obj.x + visBmp.x) * storona.X;
 				weaponY = coordinates.Y + obj.y + visBmp.y;
 				weaponR = obj.r;
 			}
@@ -726,7 +726,7 @@ package fe.unit {
 
 			if (com == "turn") {
 				if (val == "0") {
-					storona = -storona;
+					storona = E_Direction.opposite(storona);
 				}
 				else if (val == "-1") {
 					storona = E_Direction.LEFT;

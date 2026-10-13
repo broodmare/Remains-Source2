@@ -1,12 +1,24 @@
 package fe.enums {
 
-	// Which way along one axis, as the sign of a step that way, so it can scale a speed or offset
-	// UP shares LEFT's value and DOWN shares RIGHT's; tile piece data stores these numbers, so they never change
+	import fe.util.Vec2;
+
 	public class E_Direction {
-		public static const UP:int		= -1;	// Screen y grows downward
-		public static const DOWN:int	= 1;
-		public static const LEFT:int	= -1;
-		public static const RIGHT:int	= 1;
-		public static const NEUTRAL:int	= 0;	// Neither way, such as standing still or off a ladder
+		public static const UP:Vec2			= new Vec2(  0.0, -1.0 );	// -Y is up
+		public static const DOWN:Vec2		= new Vec2(  0.0,  1.0 );	// +Y is down
+		public static const LEFT:Vec2		= new Vec2( -1.0,  0.0 );	// -X is left
+		public static const RIGHT:Vec2		= new Vec2(  1.0,  0.0 );	// +X is right
+		public static const NEUTRAL:Vec2	= new Vec2(  0.0,  0.0 );
+		// For future use: +Z is away from the camera
+		// For future use: -Z is towards the camera
+
+		// The direction pointing the other way
+		public static function opposite(direction:Vec2):Vec2 {
+			if (direction == LEFT)		{ return RIGHT; }
+			if (direction == RIGHT)		{ return LEFT; }
+			if (direction == UP)		{ return DOWN; }
+			if (direction == DOWN)		{ return UP; }
+
+			return NEUTRAL;
+		}
 	}
 }

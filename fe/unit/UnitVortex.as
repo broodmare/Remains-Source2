@@ -56,11 +56,11 @@ package fe.unit {
 			}
 		}
 		
-		public override function destroyWall(t:Tile, napr:int=0):Boolean {
+		public override function destroyWall(t:Tile, direction:Vec2):Boolean {
 			if (sost != 1) {
 				return false;
 			}
-			if (destroy > 0 && napr==2 || napr==1) {
+			if (destroy > 0 && direction == E_Direction.RIGHT || direction == E_Direction.LEFT) {
 				loc.hitTile(t, destroy,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY, E_Decal.BLOW_SMALL);
 			}
 			if (t.collision == 0) {
@@ -83,7 +83,7 @@ package fe.unit {
 		
 		public override function animate():void {
 			br += (velocity.X * 2.5 - br) / 4;
-			vis.osn.rotation = br * storona;
+			vis.osn.rotation = br * storona.X;
 		}
 		
 		//состояния
@@ -124,7 +124,7 @@ package fe.unit {
 				
 				if (aiState == 0) {		//выбрать случайную цель в пассивном режиме
 					if (isrnd()) {
-						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? E_Direction.RIGHT : E_Direction.LEFT);
+						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? E_Direction.RIGHT.X : E_Direction.LEFT.X);
 						celY = coordinates.Y + Math.random() * 200 - 100;
 					}
 					else
@@ -160,7 +160,7 @@ package fe.unit {
 			}
 	
 			if (turnX != E_Direction.NEUTRAL) {
-				iskr.cast(loc, coordinates.X + 15 * storona, coordinates.Y - 15, {dx:velocity.X, kol:int(Math.random() * 5 + 3)});
+				iskr.cast(loc, coordinates.X + 15 * storona.X, coordinates.Y - 15, {dx:velocity.X, kol:int(Math.random() * 5 + 3)});
 				Snd.ps('vortex_cut', coordinates.X, coordinates.Y, 0, sndVolkoef);
 				storona = turnX;
 				aiTCh = 0

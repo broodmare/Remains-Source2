@@ -3,6 +3,7 @@ package fe.loc.tile {
 	import fe.enums.E_Material;
 	import fe.loc.tile.enums.E_TileBehaviour;
 	import fe.loc.tile.enums.E_TileLayer;
+	import fe.util.Vec2;
 	import fe.enums.E_Direction;
 
 	// One thing a room can place in a tile: a block, a wall patch, a beam, steps or a ladder
@@ -12,7 +13,7 @@ package fe.loc.tile {
 		public var name:String				= "";
 		public var layer:int				= E_TileLayer.BACKGROUND;
 		public var behaviour:int			= E_TileBehaviour.NONE;
-		public var side:int					= E_Direction.NEUTRAL;	// Ladders hug and slopes rise toward this side, LEFT or RIGHT
+		public var side:Vec2					= E_Direction.NEUTRAL;	// Ladders hug and slopes rise toward this side, LEFT or RIGHT
 		public var material:int				= E_Material.NONE;
 		public var hp:int					= 0;		// 0 keeps the tile's default
 		public var damageThreshold:int		= 0;		// Hits weaker than this do no damage

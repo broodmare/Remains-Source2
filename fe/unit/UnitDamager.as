@@ -235,7 +235,7 @@ package fe.unit {
 			super.putLoc(nloc, nx, ny);
 			
 			if (loc.mirror) {
-				storona = -storona;
+				storona = E_Direction.opposite(storona);
 				aiNapr = storona;
 			}
 			
@@ -248,7 +248,7 @@ package fe.unit {
 					(currentWeapon as WThrow).detTime = 45;
 				}
 				else if (tipDamager==1) {
-					celX = coordinates.X + 200 * storona;
+					celX = coordinates.X + 200 * storona.X;
 					celY = coordinates.Y - this.boundingBox.halfHeight;
 					currentWeapon.rot = (storona == E_Direction.LEFT) ? ONE_PI : 0;
 				}

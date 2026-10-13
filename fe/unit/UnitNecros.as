@@ -88,7 +88,7 @@ package fe.unit {
 				
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					if (aiTip!='stay' && isrnd()) {
-						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? E_Direction.RIGHT:E_Direction.LEFT);
+						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? E_Direction.RIGHT.X:E_Direction.LEFT.X);
 						
 						if (celX < 0) {
 							celX = 200;
