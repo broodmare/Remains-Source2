@@ -1,0 +1,111 @@
+package fe.game.domain.units {
+
+	import flash.display.MovieClip;
+	
+	import fe.engine.utils.SymbolFactory;
+	import fe.engine.utils.Vec2;
+	import fe.game.rendering.Emitter;
+	import fe.game.domain.location.Location;
+	import fe.game.World;
+	import fe.GameContainer;
+	import fe.engine.audio.Sound;
+	import fe.game.enums.E_Direction;
+	
+	public class UnitTransmitter extends Unit {
+
+		private var cDam:Number;
+		private var dist:Number=1000, distdam:Number=400;
+		private var upKoef:Number=0;
+		private var prevKoef:Number=0;
+		private var cep:int=-1;
+
+		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			super(cid, ndif, xml, loadObj);
+			id='transmitter';
+			vis = SymbolFactory.createInstance("visualTransmitter") as MovieClip;
+			vis.osn.gotoAndStop(1);
+			getXmlParam();
+			storona=E_Direction.RIGHT;
+			if (cid=='box') cep=0;
+			doop=true;		//не отслеживает цели
+			aiState=1;
+		}
+
+		//поместить созданный юнит в локацию
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
+			if (cep<0 && nloc.getAbsTile(nx, ny+10).collision==0) {
+				if (nloc.getAbsTile(nx, ny-50).collision) {
+					cep=1;
+					ny-=10;
+					vis.osn.gotoAndStop(2);
+					vis.osn.rotation=90;
+					fixed=true;
+				}
+				else if (nloc.getAbsTile(nx-40, ny-10).collision) {
+					cep=2;
+					nx -= (40 - this.boundingBox.width) / 2 - 1;
+					vis.osn.gotoAndStop(2);
+					fixed=true;
+				}
+				else if (nloc.getAbsTile(nx + 40, ny - 10).collision) {
+					cep=3;
+					nx += (40 - this.boundingBox.width) / 2 - 1;
+					vis.osn.gotoAndStop(2);
+					vis.osn.scaleX=-1;
+					fixed=true;
+				}
+			}
+			super.putLoc(nloc, nx, ny);
+		}
+
+		public override function expl():void {
+			newPart('metal', 4);
+		}
+
+		public override function setVisPos():void {
+			if (vis) {
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+			}
+		}
+		
+		public override function locout():void	{
+			super.locout();
+			upKoef=0;
+		}
+		
+		//состояния
+		//0 - ничего не делает
+		//1 - излучает
+		
+		override protected function control():void {
+			if (sost>=3) return;
+			if (World.w.enemyAct<=0) {
+				return;
+			}
+			aiTCh++;
+			if (aiState==1 && detectionDelay <= 0 && aiTCh%3==1 && loc==GameContainer.reference.gg.loc) {
+				upKoef+=0.05;
+				if (rasst2<dist*dist) {
+					rasst=Math.sqrt(rasst2);
+					var rkoef:Number = (dist-rasst)/dist;
+					if (rkoef<0.5) rkoef*=2;
+					else rkoef=1;
+					if (rkoef>upKoef) rkoef=upKoef;
+					if (loc.active) {
+						Sound.pshum(sndRun, rkoef);
+					}
+					if (aiTCh%15==1) Emitter.emit('necronoise',loc, coordinates.X, coordinates.Y-10,{alpha:rkoef});
+										if (!GameContainer.reference.gg.invulner && aiTCh%30==1) {
+						if (rasst<distdam) {
+							rkoef=(distdam-rasst)/distdam;
+							if (rkoef<0.5) rkoef*=2;
+							else rkoef=1;
+							GameContainer.reference.gg.damage(dam*rkoef,tipDamage,null,false);
+						}
+					}
+				}
+			}
+		}
+	}
+}

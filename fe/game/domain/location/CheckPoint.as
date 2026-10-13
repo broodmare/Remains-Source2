@@ -1,0 +1,270 @@
+package fe.game.domain.location {
+
+	import flash.display.MovieClip;
+	
+	import fe.engine.utils.SymbolFactory;
+	import fe.game.World;
+	import fe.game.ui.GUIManager;
+	import fe.GameContainer;
+	import fe.engine.text.XMLDataGrabber;
+	import fe.engine.text.TextParser;
+	import fe.game.domain.entities.Obj;
+	import fe.game.domain.serv.Interact;
+	import fe.game.domain.location.tile.Tile;
+	
+	public class CheckPoint extends Obj {
+
+		public var id:String;
+		public var vis2:MovieClip;
+		
+		public var active:int = 0;
+		public var teleOn:Boolean=false;
+		public var used:Boolean=false;
+		public var main:Boolean=false;
+		public var hide:Boolean=false;
+		
+		private var locked:Boolean=false;
+		
+		public var area:Area;
+
+		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
+			id=nid;
+			loc=nloc;
+			sloy=0;
+			prior=1;
+			id=nid;
+			levitPoss=false;
+			
+			var node:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id);
+			
+			coordinates.X = nx;
+			coordinates.Y = ny;
+			boundingBox.width = node.@size * Tile.tileX;
+			boundingBox.height = node.@wid * Tile.tileY;
+			nazv=TextParser.txt('o','checkpoint');
+			
+			boundingBox.center(coordinates);
+
+			coordinates.X  = nx;
+			coordinates.Y  = ny;
+			var vClass:Class = SymbolFactory.fetchSymbolClass("vischeckpoint");
+			vis = new vClass();
+			vis.x = coordinates.X;
+			vis.y = coordinates.Y;
+			vis.gotoAndStop(1);
+		
+			if (id.charAt(10)) {
+				vis.lock.gotoAndStop(int(id.charAt(10)));
+				locked = true;
+			}
+			else {
+				vis.lock.visible = false;
+			}
+		
+			boundingBox.center(coordinates);
+			cTransform=loc.cTransform;
+			loc.getAbsTile(coordinates.X - 20, coordinates.Y + 10).platform = true;
+			loc.getAbsTile(coordinates.X + 20, coordinates.Y + 10).platform = true;
+			
+			inter = new Interact(this,node,xml,loadObj);
+			inter.userAction='activate';
+			inter.actFun=activate;
+			inter.update();
+			inter.active=true;
+			inter.action=100;
+			
+			area=new Area(loc);
+			area.setSize(boundingBox.left, boundingBox.top, boundingBox.right, boundingBox.bottom);
+			area.over=areaActivate;
+			
+			if (xml && xml.@main.length()) main=true;
+			if (xml && xml.@tele.length()) teleOn=true;
+			if (xml && xml.@hide.length()) hide=true;
+			
+			if (loadObj) {
+				active=loadObj.act;
+			
+				if (active==false) active=0;
+			
+				if (active==1)  vis.osn.gotoAndStop('reopen');
+			
+				if (active==2)  {
+					vis.osn.gotoAndStop('open');
+				}
+			
+				if (loadObj.used) used=true;
+			}
+			
+			if (main) {
+				area=null;
+				active=2;
+				teleOn=true;
+				vis.osn.gotoAndStop('open');
+				loc.land.currentCP=this;
+				inter.actFun=teleport;
+				inter.userAction='returnm';
+				inter.t_action=30;
+				inter.update();
+				vis.fiol.gotoAndStop(25);
+			}
+			
+			if (hide) {
+				vis.visible=false;
+				nazv='';
+				inter.active=false;
+			}
+		}
+		
+		public override function addVisual():void {
+			if (vis && !hide) {
+				GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
+			
+				if (cTransform) {
+					vis.transform.colorTransform=cTransform;
+				}
+			}
+		}
+		public override function remVisual():void {
+			super.remVisual();
+		}
+		
+		public override function save():Object {
+			if (active==0) return null;
+		
+			var obj:Object=new Object();
+			inter.save(obj);
+			obj.act=active;
+		
+			if (used) obj.used=1;
+		
+			return obj;
+		}
+		
+		public override function command(com:String, val:String=null):void {
+			activate();
+		}
+		
+		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
+		public function activate(first:Boolean=false):void {
+			if (inter.lock>0 || inter.mine>0) return;
+		
+			if (active==2) {
+				return;
+			}
+		
+			if (active==0 && first==false) {
+				if (GameContainer.reference.pers.manaCPres) GameContainer.reference.pers.heal(GameContainer.reference.pers.manaCPres,6);
+		
+				if (GameContainer.reference.pers.xpCPadd) GameContainer.reference.pers.expa(loc.unXp*3);
+			}
+	
+			active=2;
+			GameContainer.reference.pers.currentCP=this;
+			GameContainer.reference.pers.currentCPCode=code;
+	
+			if (code) {
+				GameContainer.reference.pers.prevCPCode=code;
+				loc.land.act.lastCpCode=code;
+			}
+	
+			loc.land.currentCP=this;
+	
+			if (first) {
+				vis.osn.gotoAndStop('open');
+				if (GameContainer.reference.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
+			}
+			else {
+				vis.osn.play();
+				
+				if (GameContainer.reference.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
+			}
+		
+			if (used) vis.fiol.gotoAndStop(1);
+		
+			if (GameContainer.reference.game.mReturn && teleOn && !used) {
+				inter.actFun=teleport;
+				inter.userAction='returnb';
+				inter.t_action=30;
+				inter.update();
+			}
+			else {
+				inter.active=false;
+				inter.actionText='';
+			}
+			
+			GUIManager.reference.gui.infoText('checkPoint');
+			World.w.saveGame();
+		}
+		
+		public function teleport():void {
+			if (main) {
+				if (GameContainer.reference.game.missionId != 'rbl') {
+					GameContainer.reference.game.gotoLand(GameContainer.reference.game.missionId);
+				}
+			}
+			else {
+				GameContainer.reference.game.gotoLand(GameContainer.reference.game.baseId);
+				
+				if (World.w.hardInv && World.w.land.rnd) {
+					used = true;
+					inter.active = false;
+					inter.actionText = '';
+					vis.fiol.gotoAndStop(1);
+				}
+			}
+		}
+		
+		public function areaActivate():void {
+			if (active == 0) {
+				activate();
+			}
+		}
+		
+		public function deactivate():void {
+			if (main) {
+				return;
+			}
+
+			inter.active=!hide;
+			active=1;
+			vis.osn.gotoAndStop('reopen');
+			vis.fiol.gotoAndStop(1);
+			inter.actFun=activate;
+			inter.userAction='activate';
+			inter.t_action=0;
+			inter.update();
+		}
+		
+		public override function step():void {
+			onCursor=(boundingBox.left < World.w.celX && boundingBox.right > World.w.celX && boundingBox.top < World.w.celY && boundingBox.bottom > World.w.celY)?prior:0;
+			
+			if (inter) {
+				inter.step();
+			}
+			
+			if (main) {
+				if (GameContainer.reference.game.missionId && GameContainer.reference.game.lands[GameContainer.reference.game.missionId] && GameContainer.reference.game.lands[GameContainer.reference.game.missionId].tip !='base') {
+					inter.active = true;
+				}
+				else {
+					inter.active = false;
+				}
+				
+				return;
+			}
+			
+			if (locked && inter.lock==0 && inter.mine==0) {
+				locked=false;
+				vis.lock.visible=false;
+			}
+			
+			if (area) {
+				area.step();
+			}
+			
+			if (active == 2 && GameContainer.reference.pers.currentCP != this) {
+				deactivate();
+			}
+		}
+	}
+}

@@ -1,0 +1,960 @@
+package fe.game.domain.projectile {
+
+	import flash.utils.Dictionary;
+
+	import fe.engine.audio.Sound;
+	import fe.engine.utils.SymbolFactory;
+	import fe.game.World;
+	import fe.GameContainer;
+	import fe.engine.utils.Calc;
+	import fe.engine.utils.Vec2;
+	import fe.game.domain.units.Unit;
+	import fe.game.domain.location.Box;
+	import fe.game.domain.entities.Obj;
+	import fe.game.rendering.Emitter;
+	import fe.game.domain.units.Resistances;
+	import fe.game.domain.units.UnitMsp;
+	import fe.game.domain.weapon.Weapon;
+	import fe.game.domain.location.tile.Tile;
+	import fe.game.domain.projectile.enums.E_WaterState;
+	import fe.game.enums.E_Material;
+	import fe.game.domain.units.enums.E_Resistances;
+	import fe.game.rendering.enums.E_Decal;
+	
+	public class Bullet extends Obj {	
+
+		// What udarBullet() returns when the bullet misses and flies on; on a hit it returns the E_Material struck
+		public static const MISS:int = -1;
+
+		private static const PROXIMITY:int = 100;	// Detonates near its target, which counts as a hit with a material
+
+		protected var vse:Boolean=false;
+		
+		public var owner:Unit;
+		public var weap:Weapon;
+		public var weapId:String;
+		public var tipBullet:int=0;	// [Bullet type -- 0-normal, 1-melee weapon]
+		public var rot:Number=0;
+		public var vel:Number=15;
+		public var liv:int=100;
+		
+		public var begx:Number;
+		public var begy:Number;
+		
+		public var knockx:Number;
+		public var knocky:Number;
+
+		public var ddy:Number=0;
+		public var ddx:Number=0;
+		public var accel:Number=0;
+		public var brakeR:Number=0;
+		public var vRot:Boolean=false;
+		
+		public var celX:Number = -100000;
+		public var celY:Number = -100000;
+		public var inWater:int = E_WaterState.UNCHECKED;
+		public var isExpl:Boolean = false;
+		
+		public var partEmit:Boolean = true;	
+		public var spring:int = 1;
+		public var flame:int = 0;
+		public var flare:String;
+		public var outspace:Boolean = false;
+		
+		public var otbros:int = 0;
+		public var probiv:Number = 0;
+		public var parrDict:Dictionary;	// List of objects the bullet has already interacted with.
+		
+		public var babah:Boolean = false;
+		public var tilehit:Boolean = false;
+		public var off:Boolean = false;	//отключить урон по юнитам
+		public var checkLine:Boolean = false;	
+		public var dist:Number = 0;
+		
+		public var destroy:Number = 0;		//урон блокам
+		public var crack:int = 0;			//взлом контейнеров
+		private var box:Box;
+		public var tileX:int = -1;
+		public var tileY:int = -1;			//урон блокам для холодного оружия (координаты, на которые указывает курсор)
+		public var damage:Number = 0;
+		public var pier:Number = 0;			//бронебойность
+		public var armorMult:Number = 1;	//модификатор действия брони
+		public var tipDamage:String = E_Resistances.DAM_PIERCE;
+		public var tipDecal:int = E_Decal.NONE;
+		public var precision:Number = 0;	// [accuracy, shows the distance at which the hit will be 100%, 0 if the hit is always]
+		public var antiprec:Number = 0;		// [for sniper rifles, shows the distance at which accuracy will begin to decrease]
+		public var miss:Number = 0;			// [absolute miss probability]
+		public var desintegr:Number = 0;	// [probability of disintegration]
+		
+		public var critCh:Number = 0;		//шанс крита
+		public var critInvis:Number = 0;	//шанс крита для мобов, у которых не установлена цель
+		public var critDamMult:Number = 1;	//множитель критического урона
+		public var critM:Number = 0;		//дополнительный крит
+		
+		public var explTip:int = 1;			//тип взрыва, 1-обычный, 2-облако газа, 3-забрызгивание
+		public var explKol:int = 0;			//количество взрывов, интервал 1с, 0 - мгновенный взрыв
+		public var explPeriod:int = 10;
+		public var damageExpl:Number = 0;	//урон по площади
+		public var explRadius:Number = 0;	//радиус взрыва, если 0, то взрыва нет
+		public var targetObj:Obj;			//объект назначения
+		public var inWall:Boolean = false;
+		public var expl_t:int = 0;
+		
+		public var retDam:Boolean=false;	//возврат урона
+
+		private static var constTileX:int = Tile.tileX;
+		private static var constTileY:int = Tile.tileY;
+
+		public function Bullet(own:Unit, coords:Vec2, visClass:Class=null, addobj:Boolean=true) {
+			
+			if (own == null) {
+				owner = new Unit();
+				loc = World.w.loc;
+			}
+			else {
+				owner = own;
+				loc = own.loc;
+			}
+			
+			coordinates.setVector(coords);
+			// TODO: Replace begx/begy with Vec2's
+			begx = coords.X;
+			begy = coords.Y;
+			
+			sloy = 2;
+			levitPoss = false;
+			var fetch:Function = SymbolFactory.fetchSymbolClass;
+			if (visClass) {
+				if (World.w.alicorn && own.player && visClass == fetch("visualBullet")) {
+					visClass = fetch("visualRainbow");
+				}
+				
+				vis = new visClass();
+				vis.stop();
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+				vis.visible = false;
+			}
+
+			// Adds itself to the location's processing chain for updates
+			if (addobj) {
+				loc.addObj(this);
+			}
+		}
+		
+		public override function step():void {
+			
+			if (!babah) {
+				velocity.Y += ddy;
+				velocity.X += ddx;
+				
+				if (vRot) {
+					rot = Math.atan2(velocity.Y, velocity.X);
+				}
+				
+				if (brakeR && dist>brakeR) {
+					vRot = true;
+					velocity.multiply(0.90);
+					vel *= 0.9;
+				}
+				
+				if (vRot) {
+					rot = Math.atan2(velocity.Y, velocity.X);
+				}
+				
+				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+					run();
+				}
+				else {
+					var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					
+					for (var i:int = 0; (i < div && !babah); i++) {
+						run(div);
+					}
+				}
+			}
+
+			if (vis) {
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+				vis.rotation = rot * RAD_TO_DEG;
+				
+				if (vis.laser && (spring >= 2)) {
+					vis.laser.scaleX = Math.sqrt((coordinates.X - begx) * (coordinates.X - begx) + (coordinates.Y - begy) * (coordinates.Y - begy)) * 0.01;
+				}
+				else if (spring == 1 && vel > 100) {
+					if (!babah) {
+						vis.scaleX = vel * 0.01;
+					}
+				}
+				else {
+					vis.scaleX = 1;
+				}
+				
+				vis.visible = true;
+				
+				if (liv < 4 && vis.laser) {
+					vis.alpha = liv * 0.25;
+					
+					if (weap) {
+						weap.getBulXY();
+						vis.x = coordinates.X + weap.bulCoords.X - begx;
+						vis.y = coordinates.Y + weap.bulCoords.Y - begy;
+					}
+				}
+			}
+
+			if (expl_t > 0) {
+				expl_t--;
+			}
+			else {
+				liv--;
+			}
+
+			if (expl_t > 0 && expl_t % explPeriod == 1) {
+				explRun();
+			}
+
+			if (liv <= 0 && !vse && explRadius > 0) {
+				explosion();
+			}
+
+			if (liv <= 0 || loc != owner.loc) {
+				vse = true;
+			}
+
+			if (vse) {
+				loc.remObj(this);
+			}
+		}
+		
+		public override function setNull(f:Boolean=false):void {
+			loc.remObj(this);
+		}
+		
+		public override function err():String {
+			if (loc) {
+				loc.remObj(this);
+			}
+
+			return 'Error bullet ' + (owner ? owner.nazv : '???') + ' ' + (weap ? weap.nazv : '???');
+		}
+		
+		public override function bindMove(v:Vec2, ox:Number = -1, oy:Number = -1):void {
+			bindMoveTo(v.X, v.Y, ox, oy);
+		}
+
+		// Sweeps from (ox, oy) to (nx, ny), hitting whatever is on the way; a negative ox or oy keeps that coordinate
+		public function bindMoveTo(nx:Number, ny:Number, ox:Number = -1, oy:Number = -1):void {
+			if (ox >= 0) {
+				coordinates.X = ox;
+			}
+
+			if (oy >= 0) {
+				coordinates.Y = oy;
+			}
+
+			velocity.set(nx - coordinates.X, ny - coordinates.Y);
+			vel = velocity.magnitude();
+			
+			if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	{
+				run();
+			}
+			else {
+				var div:int = int(Math.max(Math.abs(velocity.X), Math.abs(velocity.Y)) / World.maxdelta) + 1;
+				for (var i:int = 0; i < div; i++) {
+					run(div);
+				}
+			}
+		}
+		
+		//[Returns the bullet's own probability of hitting, depending on the distance traveled and accuracy]
+		public function accuracy():Number {
+			if (precision == 0) return 1;	// If the bullet should always hit, return '1'
+			if (antiprec > 0 && dist < antiprec) return dist / antiprec * 0.75 + 0.25;
+			return precision / dist;
+		}
+		
+		// The bullet hit something: res is the E_Material it struck, or MISS
+		public function popadalo(res:int):void {
+			if (res == MISS) { return; }
+
+			if (explRadius) {
+				explosion();
+				if (vis) vis.visible=false;
+			}
+			else if (tipDecal >= E_Decal.BULLET_SMALL && tipDecal <= E_Decal.BLOW_LARGE) {
+				if (res == E_Material.METAL || res == E_Material.STONE || res == E_Material.GLASS || res == E_Material.FORCE_FIELD) {
+					if (vis) vis.gotoAndPlay(2);
+					var koliskr:int = Calc.intBetween(0, 5) + int(damage / 5);
+					if (World.w.alicorn) koliskr *= 0.2;
+					if (koliskr > 20) koliskr = 20;
+					Emitter.emit('iskr_bul', loc, coordinates.X, coordinates.Y, {dx:-velocity.X / vel * 10, dy:-velocity.Y / vel * 10, kol:koliskr});
+					if (flare!=null && flare!='') Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
+				}
+				else if (res == E_Material.WOOD || res == E_Material.BRICK) {
+					if (vis && dist < vel) {
+						vis.scaleX = dist / 100;
+					}
+				}
+				else {
+					if (vis && dist<vel) vis.visible = false;
+				}
+			}
+			else if ((flare != null && flare != '') && res != E_Material.NONE) {
+				Emitter.emit(flare, loc, coordinates.X, coordinates.Y);
+			}
+
+			if (liv > 4) {
+				liv = 4;
+			}
+
+			babah = true;
+		}
+		
+		// [returns false if the object is already in the list of objects with which the bullet has already interacted]
+		// [if not, then adds it to the list and returns true]
+		// I changed this to a dictionary for O1 searches on bullet hits, but I'm not sure if there'd ever be enough targets in the list
+		// To justify the overhead of creating a new dictionary for every bullet?
+		public function udar(un:Obj):Boolean {
+			if (parrDict == null) parrDict = new Dictionary();
+			if (parrDict[un] === true) {
+				return false;
+			}
+			else {
+				parrDict[un] = true;
+				return true;
+			}
+		}
+
+		public function run(div:int = 1):void {
+			dist += vel / div;
+			coordinates.X += velocity.X / div;
+			coordinates.Y += velocity.Y / div;
+			
+			// Checking if the bullet is out of bounds in sky
+			if (loc.sky && (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY)) {
+				popadalo(E_Material.NONE);
+			}
+			else {
+				// Checking out of space boundaries
+				if (!outspace && (coordinates.X < 0 || coordinates.X >= loc.spaceX * constTileX 
+							|| coordinates.Y < 0 || coordinates.Y >= loc.spaceY * constTileY)) {
+					popadalo(E_Material.NONE);
+				}
+
+				var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
+				if (t.water > 0) {
+					if (inWater == E_WaterState.OUT) {
+						if (partEmit && (tipDamage == E_Resistances.DAM_PIERCE || tipDamage == E_Resistances.DAM_BLUNT || tipDamage == E_Resistances.DAM_CUT)) {
+							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {
+								dx: -velocity.X / vel * 10,
+								dy: -velocity.Y / vel * 10,
+								kol: Math.floor(Calc.intBetween(0, 4) + damage / 5)
+							});
+							hitSound("hit_water", 0.5);
+							partEmit = false;
+						}
+					}
+					if (tipDamage == E_Resistances.DAM_BURN || tipDamage == E_Resistances.DAM_LASER || tipDamage == E_Resistances.DAM_PLASMA 
+					|| tipDamage == E_Resistances.DAM_ELECTRIC || tipDamage == E_Resistances.DAM_ACID) 
+					{
+						if (partEmit) {
+							Emitter.emit('steam', loc, coordinates.X, coordinates.Y);
+							partEmit = false;
+						}
+						popadalo(E_Material.NONE);
+					}
+					inWater = E_WaterState.IN;
+				}
+				else {
+					if (inWater == E_WaterState.IN) {
+						if (partEmit && (tipDamage == E_Resistances.DAM_PIERCE || tipDamage == E_Resistances.DAM_BLUNT || tipDamage == E_Resistances.DAM_CUT)) {
+							Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {
+								dx: velocity.X / vel * 10,
+								dy: velocity.Y / vel * 10,
+								kol: Calc.intBetween(0, 4) + int(damage / 5)
+							});
+							hitSound("hit_water", 0.5);
+							partEmit = false;
+						}
+					}
+					inWater = E_WaterState.OUT;
+				}
+				
+				// Checking collision with a tile if relevant
+				if (!tilehit 
+					&& (tileX < 0 || (int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
+					// If collision == 1, the bullet collides, if collision == 2, the bullet MUST be coming from above the tile to pass through this tile, bullets can't go from below to above
+					&& ((t.collision == 1) || (t.collision == 2 && int(coordinates.X / constTileX) == tileX && int(coordinates.Y / constTileY) == tileY))
+					&& t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) 
+				{
+					if (!inWall) {
+						popadalo(t.material);
+						sound(t.material);
+						
+						if (weap) {
+							weap.crash();
+						}
+						
+						owner.crash(this);
+						
+						if (explRadius == 0) {
+							loc.hitTile(t, destroy, coordinates.X, coordinates.Y, tipDecal);
+						}
+						
+						tilehit = true;
+					}
+				} 
+				else {
+					inWall = false;
+				}
+			}
+
+			if (off) {
+				return;
+			}
+
+			// -------------------------------------------------------------
+			// For each Unit in the location, use boundingBox.intersectsCoordinate
+			// instead of manual left/right/top/bottom checks.
+			// -------------------------------------------------------------
+			for each(var un:Unit in loc.units) {
+				if (targetObj) {
+					if (targetObj is Unit) un = targetObj as Unit;
+					else break;
+				}
+
+				if (un.sost == 4 || un.disabled || un.trigDis || un.loc != loc) continue;
+				
+				// *** Changed from manual boundary checks to boundingBox call ***
+				if ((targetObj || un.fraction != owner.fraction) 
+					&& un.boundingBox.intersectsCoordinate(coordinates)) 
+				{
+					if (checkLine && weap && !weap.isLine(coordinates.X, coordinates.Y)) {
+						// Bullet can’t reach the object
+						off = true;
+						return;
+					}
+
+					if (un.dopTestOn && !un.dopTest(this)) continue;
+
+					// If the bullet has not interacted with this object yet
+					if (udar(un)) {
+						var res:int = un.udarBullet(this); 
+						sound(res);
+
+						// If the bullet does not penetrate, or if it should be destroyed
+						if (!(probiv > 0 && damage > 0) && res != MISS) {
+							popadalo(res);
+							if (weap) {
+								// Crash weapon in special cases
+								if ((un is fe.game.domain.units.Mine || un is fe.game.domain.units.UnitMsp) && un.sost > 2) {
+									weap.crash(15);
+								}
+								else if (un.tipDamage == E_Resistances.DAM_ACID) {
+									weap.crash(3);
+								}
+								else {
+									weap.crash();
+								}
+							}
+							break;
+						}
+					}
+				}
+				if (targetObj) break;
+			}
+			
+			// -------------------------------------------------------------
+			// Same idea for Box boundingBox checks:
+			// -------------------------------------------------------------
+			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) {
+				box = loc.celObj as Box;
+				
+				// *** Changed from manual boundary checks to boundingBox call ***
+				if (box.boundingBox.intersectsCoordinate(coordinates) && udar(box)) {
+					res = box.udarBullet(this, 1);
+					sound(res);
+					if (res != MISS) {
+						popadalo(res);
+						if (weap) weap.crash();
+					}
+					if (box.dead && weap) weap.crash(box.montdam);
+				}
+			}
+			
+			if (GameContainer.reference.gg.loc == loc && GameContainer.reference.gg.teleObj && (GameContainer.reference.gg.teleObj is Box) && owner != GameContainer.reference.gg) {
+				box = GameContainer.reference.gg.teleObj as Box;
+				
+				// *** Changed from manual boundary checks to boundingBox call ***
+				if (box.boundingBox.intersectsCoordinate(coordinates) && udar(box)) {
+					res = box.udarBullet(this, 0);
+					sound(res);
+
+					if (res != MISS) {
+						popadalo(res);
+					}
+				}
+			}
+
+			if (celX > -10000 && celY > -10000 && explRadius > 0) {
+				if (Math.abs(celX - coordinates.X) < 50 && Math.abs(celY - coordinates.Y) < 200 && Math.random() < 0.3) {
+					popadalo(PROXIMITY);
+				}
+			}
+		}
+		
+		// Plays the sound of the E_Material the bullet struck; a miss or a hit with no material plays none
+		private function sound(res:int):void {
+			var soundId:String = "";
+			var volume:Number = 0.5;
+
+			switch (res) {
+				case E_Material.METAL: {
+					soundId = "hit_metal";
+					volume = 0.4;
+					break;
+				}
+				case E_Material.STONE:
+				case E_Material.BRICK:
+				case E_Material.EARTH: {
+					soundId = "hit_concrete";
+					break;
+				}
+				case E_Material.WOOD: {
+					soundId = "hit_wood";
+					break;
+				}
+				case E_Material.GLASS: {
+					soundId = "hit_glass";
+					break;
+				}
+				case E_Material.FORCE_FIELD: {
+					soundId = "hit_pole";
+					break;
+				}
+				case E_Material.MEAT: {
+					if (tipDamage == E_Resistances.DAM_PIERCE) {
+						soundId = "hit_bullet";
+						volume = 0.8;
+					}
+					else if (tipDamage == E_Resistances.DAM_CUT) {
+						soundId = "hit_blade";
+						volume = 0.8;
+					}
+					else {
+						soundId = "hit_flesh";
+					}
+					break;
+				}
+				case E_Material.SLIME: {
+					soundId = "hit_slime";
+					break;
+				}
+			}
+
+			hitSound(soundId, volume);
+		}
+
+		// Plays the weapon's own hit sound, then soundId unless any bullet started a hit sound in the last few ticks
+		private function hitSound(soundId:String, volume:Number):void {
+			if (weap && weap.sndHit != '') {
+				Sound.ps(weap.sndHit, coordinates.X, coordinates.Y);
+			}
+			if (tipDecal < E_Decal.BULLET_SMALL || tipDecal > E_Decal.BLOW_LARGE) {
+				return;
+			}
+			if (Sound.hitTimer <= 0) {
+				if (soundId != "") {
+					Sound.ps(soundId, coordinates.X, coordinates.Y, 0, volume);
+				}
+				Sound.hitTimer = Calc.intBetween(3, 6);
+			}
+		}
+		
+		//запустить процесс взрыва
+		public function explosion():void {
+			if (isExpl) return;
+
+			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y);
+			inWall = false;
+			isExpl = true;
+			levitPoss = false;
+
+			if (t && t.collision && t.boundingBox.intersectsPoint(coordinates.X, coordinates.Y)) {
+				inWall = true;
+			}
+
+			if (targetObj && destroy > 0 && (targetObj is Box)) {
+				(targetObj as Box).damage(destroy);
+			}
+
+			if (explKol <= 0) {
+				explRun();
+			}
+			else {
+				explRun();
+				expl_t = (explKol - 1) * explPeriod;
+			}
+		}
+		
+		//выполнить искусственный взрыв
+		public function iExpl(ndamage:Number, ndestroy:Number, nradius:Number):void {
+			loc=owner.loc;
+			tipDamage=E_Resistances.DAM_EXPLOSION;
+			otbros=10;
+			damageExpl=ndamage;
+			destroy=ndestroy;
+			explRadius=nradius;
+			explosion();
+		}
+		
+		//выполнять процесс взрыва
+		public function explRun():void {
+			if (destroy > 0) {
+				explDestroy();
+			}
+
+			if (explTip == 1 || explTip == 3 && expl_t == 0) {
+				explBlast();
+			}
+
+			if (explTip == 2 || explTip == 3 && expl_t >  0) {
+				explGas();
+			}
+			
+			explVis();
+		}
+		
+		//поражение всех стен в радиусе
+		private function explDestroy():void {
+			for (var i:int = int((coordinates.X - explRadius) / constTileX); i<= int((coordinates.X + explRadius) / constTileX); i++) {
+				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j<= int((coordinates.Y + explRadius) / constTileY); j++) {
+					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
+					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
+					var ter:Number = tx * tx + ty * ty;
+					
+					if (ter < explRadius * explRadius) {
+						loc.hitTile(loc.getTile(i, j), destroy,(i + 0.5) * constTileX, (j + 0.5) * constTileY, tipDecal);
+					}
+				}
+			}
+		}
+		
+		//поражение всех юнитов, попавших в радиус, без отбрасывания и учёта стен
+		private function explGas():void {
+			for each(var un:Unit in loc.units) {
+				if (un.sost == 4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) {
+					continue;
+				}
+				
+				if (explTip == 3 && !un.stay) {
+					continue;
+				}
+				
+				var tx:Number = un.coordinates.X - coordinates.X;
+				var ty:Number = un.coordinates.Y - un.boundingBox.halfHeight - coordinates.Y;
+				var rasst:Number = Math.sqrt(tx*tx+ty*ty);
+				var dam:Number = damageExpl * Calc.floatBetween(0.70, 1.30);
+				
+				// [Friendly fire from enemies]
+				if (weap && weap.owner.fraction == un.fraction && un.fraction != Unit.F_PLAYER) {
+					dam *= 0.25;
+				}
+				
+				if (rasst < explRadius) {
+					if (rasst > explRadius * 0.5) {
+						dam *= (2 - rasst * 2 / explRadius);
+					}
+					
+					if (weap != null) {
+						un.dieWeap = weap.id;
+					}
+					
+					if (weapId != null) {
+						un.dieWeap = weapId;
+					}
+					
+					if (weap && weap.owner.fraction == Unit.F_PLAYER && un.player) {
+						un.damage(dam * GameContainer.reference.pers.autoExpl, tipDamage);
+					}
+					else {
+						un.damage(dam, tipDamage);
+					}
+				}
+			}
+		}
+		
+		// [defeat of all units by virtual fragments, taking into account protection from walls]
+		private function explBlast():void {
+			if (loc != owner.loc) return;
+			for each(var un:Unit in loc.units) {
+				if (un.sost == 4 || un.invulner || un.disabled || un.trigDis || un.loc != loc) {
+					continue;
+				}
+				
+				var tx:Number = un.coordinates.X - coordinates.X;
+				var ty:Number = un.coordinates.Y - un.boundingBox.halfHeight - coordinates.Y;
+				var b:Bullet=explBullet(tx, ty, explRadius + un.boundingBox.width);
+				
+				if (b) {
+					b.targetObj = un;
+					// [friendly fire from enemies]
+					if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER) {
+						b.damage*=un.friendlyExpl;
+					}
+					// [fire on yourself]
+					if (un.player) {
+						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage*=GameContainer.reference.pers.autoExpl;
+						var p:Object = {x:b.knockx, y:b.knocky};
+						norma(p, 10);
+						b.knockx = p.x;
+						b.knocky = p.y;
+					}
+				}
+			}
+		}
+		
+		//создать осколок
+		private function explBullet(tx:Number, ty:Number, er:Number):Bullet {
+			var rasst:Number = Math.sqrt(tx*tx+ty*ty);
+			var b:Bullet;
+			
+			if (rasst < er) {
+				b = new Bullet(owner, coordinates, null);
+				b.inWall = inWall;
+				b.vel = er * (1 + rasst / er * 4) / 3;
+				b.velocity.X = tx / rasst * er / 3;
+				b.velocity.Y = ty / rasst * er / 3;
+				b.knockx = b.velocity.X / b.vel;
+				b.knocky = b.velocity.Y / b.vel;
+				
+				if (!loc.levitOn) {
+					b.knockx = 0;
+					b.knocky = 0;
+				}
+				
+				b.damage=damageExpl;
+				
+				if (rasst > er * 0.50) {
+					b.damage *= (2 - rasst * 2 / er);
+				}
+				
+				b.otbros = otbros;
+				b.pier = pier;
+				b.weapId = weapId;
+				b.tipDamage = tipDamage;
+				b.precision = 0;
+				b.liv = 3;
+				b.weap = weap;
+				b.critCh = critCh;
+				b.critDamMult = critDamMult;
+				b.critInvis = critInvis;
+			}
+			
+			return b;
+		}
+		
+		//визуальный и звуковой эффект от взрыва
+		private function explVis():void {
+			if (weap) {
+				if (weap.visexpl) {
+					if (weap.visexpl == 'sparkle') {
+						if (inWater == E_WaterState.IN) {
+							loc.budilo(coordinates.X, coordinates.Y, 700);
+							Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
+							Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {
+								kol: 30,
+								rx: 100,
+								ry: 100,
+								rdx: 10,
+								rdy: 10
+							});
+							Sound.ps('expl_uw', coordinates.X, coordinates.Y);
+						}
+						else {
+							loc.budilo(coordinates.X, coordinates.Y, 1500);
+							Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
+							Emitter.emit('sparkleexpl', loc, coordinates.X, coordinates.Y);
+							Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+							Sound.ps('bale_e', coordinates.X, coordinates.Y);
+						}
+					}
+					else {
+						loc.budilo(coordinates.X, coordinates.Y, 500);
+						Emitter.emit(weap.visexpl, loc, coordinates.X, coordinates.Y);
+					}
+				}
+				else if (tipDamage == E_Resistances.DAM_EMP) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
+					Sound.ps('emp_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == E_Resistances.DAM_COLD) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol: 16});
+					Sound.ps('cryo_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == E_Resistances.DAM_PLASMA) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
+					Sound.ps('exppla_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == E_Resistances.DAM_VENOM) {
+					Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
+					if (expl_t == 0) Sound.ps('gas_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == E_Resistances.DAM_PINKCLOUD) {
+					Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
+					if (expl_t == 0) Sound.ps('gas_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == E_Resistances.DAM_ACID) {
+					if (expl_t == 0) {
+						Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {
+							kol: Calc.intBetween(30, 34)
+						});
+						Sound.ps('acid_e', coordinates.X, coordinates.Y);
+						explLiquid('acid');
+					}
+				}
+				else if (tipDamage == E_Resistances.DAM_BALEFIRE) {
+					loc.budilo(coordinates.X, coordinates.Y, 3000);
+					Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
+					Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
+					Sound.ps('bale_e', coordinates.X, coordinates.Y);
+				}
+				else if (tipDamage == E_Resistances.DAM_EXPLOSION) {
+					if (inWater == E_WaterState.IN) {
+						loc.budilo(coordinates.X, coordinates.Y, 700);
+						Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {
+							kol: 30,
+							rx: 100,
+							ry: 100,
+							rdx: 10,
+							rdy: 10
+						});
+						Sound.ps('expl_uw', coordinates.X, coordinates.Y);
+					}
+					else {
+						loc.budilo(coordinates.X, coordinates.Y, 1500);
+						Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+						Sound.ps('expl_e', coordinates.X, coordinates.Y);
+					}
+				}
+				else if (tipDamage == E_Resistances.DAM_BURN) {
+					if (inWater != E_WaterState.IN && expl_t == 0) {
+						loc.budilo(coordinates.X, coordinates.Y, 500);
+						Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+						Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+						Sound.ps('fire_e', coordinates.X, coordinates.Y);
+						explLiquid('fire', -33);
+					}
+				}
+			}
+			else if (tipDamage == E_Resistances.DAM_EMP) {
+				loc.budilo(coordinates.X, coordinates.Y, 500);
+				Emitter.emit('impexpl', loc, coordinates.X, coordinates.Y);
+				Sound.ps('emp_e', coordinates.X, coordinates.Y);
+			}
+			else if (tipDamage == E_Resistances.DAM_COLD) {
+				loc.budilo(coordinates.X, coordinates.Y, 500);
+				Emitter.emit('iceexpl', loc, coordinates.X, coordinates.Y);
+				Emitter.emit('snow', loc, coordinates.X, coordinates.Y, {kol: 16});
+				Sound.ps('cryo_e', coordinates.X, coordinates.Y);
+			}
+			else if (tipDamage == E_Resistances.DAM_PLASMA) {
+				loc.budilo(coordinates.X, coordinates.Y, 500);
+				Emitter.emit('plaexpl', loc, coordinates.X, coordinates.Y);
+				Sound.ps('exppla_e', coordinates.X, coordinates.Y);
+			}
+			else if (tipDamage == E_Resistances.DAM_VENOM) {
+				Emitter.emit('gas', loc, coordinates.X, coordinates.Y);
+				if (expl_t == 0) Sound.ps('gas_e', coordinates.X, coordinates.Y);
+			}
+			else if (tipDamage == E_Resistances.DAM_PINKCLOUD) {
+				Emitter.emit('pinkgas', loc, coordinates.X, coordinates.Y);
+				if (expl_t == 0) Sound.ps('gas_e', coordinates.X, coordinates.Y);
+			}
+			else if (tipDamage == E_Resistances.DAM_ACID) {
+				if (expl_t == 0) {
+					Emitter.emit('acidexpl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('acidkap', loc, coordinates.X, coordinates.Y, {
+						kol: Calc.intBetween(30, 34)
+					});
+					Sound.ps('acid_e', coordinates.X, coordinates.Y);
+					explLiquid('acid');
+				}
+			}
+			else if (tipDamage == E_Resistances.DAM_BALEFIRE) {
+				loc.budilo(coordinates.X, coordinates.Y, 3000);
+				Emitter.emit('balefire', loc, coordinates.X, coordinates.Y - 60);
+				Emitter.emit('baleblast', loc, coordinates.X, coordinates.Y);
+				Sound.ps('bale_e', coordinates.X, coordinates.Y);
+			}
+			else if (tipDamage == E_Resistances.DAM_EXPLOSION) {
+				if (inWater == E_WaterState.IN) {
+					loc.budilo(coordinates.X, coordinates.Y, 700);
+					Emitter.emit('explw', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('bubble', loc, coordinates.X, coordinates.Y, {
+						kol: 30,
+						rx: 100,
+						ry: 100,
+						rdx: 10,
+						rdy: 10
+					});
+					Sound.ps('expl_uw', coordinates.X, coordinates.Y);
+				} else {
+					loc.budilo(coordinates.X, coordinates.Y, 1500);
+					Emitter.emit('expl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+					Sound.ps('expl_e', coordinates.X, coordinates.Y);
+				}
+			}
+			else if (tipDamage == E_Resistances.DAM_BURN) {
+				if (inWater != E_WaterState.IN && expl_t == 0) {
+					loc.budilo(coordinates.X, coordinates.Y, 500);
+					Emitter.emit('fireexpl', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('flare', loc, coordinates.X, coordinates.Y);
+					Emitter.emit('iskr', loc, coordinates.X, coordinates.Y, {kol: 16});
+					Sound.ps('fire_e', coordinates.X, coordinates.Y);
+					explLiquid('fire', -33);
+				}
+			}
+			
+			if (otbros > 0)	{
+				World.w.quake(Calc.floatBetween(-4, 4) * otbros, otbros * 0.8);
+			}
+		}
+
+		private function explLiquid(liq:String, ndy:int = 0):void {
+			for (var i:int = int((coordinates.X - explRadius) / constTileX); i <= int((coordinates.X + explRadius) / constTileX); i++) {
+				for (var j:int = int((coordinates.Y - explRadius) / constTileY); j <= int((coordinates.Y + explRadius) / constTileY); j++) {
+					var tx:Number = coordinates.X - (i + 0.5) * constTileX;
+					var ty:Number = coordinates.Y - (j + 0.5) * constTileY;
+					var ter:Number = tx * tx + ty * ty;
+					
+					if (ter < explRadius * explRadius) {
+						var t:Tile = loc.getTile(i, j);
+						
+						if (j > 1 && (t.collision || t.platform) && (t.definition.height < 4 || loc.getTile(i, j - 1).collision == 0)) {
+							Emitter.emit(
+								liq,
+								loc,
+								(i + 0.5) * constTileX + Calc.floatBetween(-2, 2),
+								t.boundingBox.top + ndy
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+}

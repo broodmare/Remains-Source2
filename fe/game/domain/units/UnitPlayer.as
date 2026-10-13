@@ -1,0 +1,4793 @@
+package fe.game.domain.units {
+
+	import flash.filters.GlowFilter;
+	import flash.geom.Point;
+	import flash.geom.ColorTransform;
+	import flash.display.MovieClip;
+	import flash.filters.DropShadowFilter;
+	import flash.filters.BlurFilter;
+
+	import fe.game.domain.entities.Entity;
+	import fe.game.domain.entities.Obj;
+	import fe.game.domain.serv.Interact;
+	import fe.game.rendering.Emitter;
+	import fe.game.domain.projectile.Bullet;
+	import fe.game.domain.units.ability.Telekinesis;
+	import fe.game.domain.location.Location;
+	import fe.game.domain.location.Box;
+	import fe.game.domain.weapon.WPunch;
+	import fe.game.ItemInteraction;
+	import fe.game.WeaponManager;
+	import fe.game.ui.Ctr;
+	import fe.game.ui.Sats;
+	import fe.game.domain.location.tile.Tile;
+	import fe.game.domain.weapon.Weapon;
+	import fe.game.ArmorManager;
+	import fe.engine.text.TextParser;
+	import fe.engine.Settings;
+	import fe.engine.audio.Sound;
+	import fe.game.World;
+	import fe.game.ui.GUIManager;
+	import fe.GameContainer;
+	import fe.game.ui.Appear;
+	import fe.game.domain.location.Loot;
+	import fe.game.domain.weapon.WKick;
+	import fe.game.domain.weapon.WPaint;
+	import fe.game.enums.E_Material;
+	import fe.engine.utils.Vec2;
+	import fe.game.enums.E_Direction;
+	import fe.game.domain.units.enums.E_ArmorTypes;
+	import fe.game.domain.units.enums.E_Resistances;
+
+	import fe.game.stubs.visualPlayer;	// .fla linkage
+	import fe.game.stubs.reloadBar;		// .fla linkage
+	
+	public class UnitPlayer extends UnitPon {
+
+		private static const DYING_FRAMES:int = 100;	// How long the death animation plays before the screen fades
+
+		// Really important stuff
+		public var ctr:Ctr;				// Movement controller
+		public var pers:Pers;			// Player stats
+		public var invent:Inventory;	// Player inventory
+		public var itemInteraction:ItemInteraction;	// Using, taking and dropping inventory items
+		public var sats:Sats;			// Player SATS
+
+		//движение
+		public var maxjumpp:int;
+		public var jumpNumb:int		= 0;
+		public var jumpp:int		= 0;
+		public var downp:int		= 0;
+		public var dash:int			= 22;
+		public var dash_t:int		= 0;
+		public var dash_maxt:int	= 30;
+		public var kdash_t:int		= 0;
+		public var dash_dy:int		= -2;
+		public var osnSpeed:Number;
+		private var t_fly:Number	= 0;
+		public var noReanim:Boolean	= false;
+		public var pinok:Number		= 0;		// [Knocking down stairs]
+		public var noStairs:Boolean	= false;	// [Restrict movement on stairs]
+		public var dstam:Number		= 5;		// [Stamina consumption]
+
+		//Telekensis variables
+		public var levitOn:Boolean		= false;
+		public var tele:Telekinesis;			// Grabs, moves and throws objects
+		public var teleSqrtMassa:Number;
+		public var teleSpeed:Number		= 8.00;		// Top speed of the held object (raised by the telekinesis skill)
+		public var teleAccel:Number		= 1.00;		// How much the held object's velocity can change per tick (raised by the telekinesis skill)
+		public var maxTeleDist:int		= 200;
+		public var levitup:Boolean		= false;
+		
+		// [Actions]
+		public var ggControl:Boolean	= true;	// Player control enabled
+		public var actionObj:Interact;
+		public var t_action:int			= 0;
+		public var mt_action:int		= 20;
+		public var work:String			= "";
+		public var t_work:int			= 0;
+		private var actionReady:Boolean	= true;
+		private var t_stay:int			= 3;
+		private var t_walk:int			= 3;
+		private var t_run:int			= 0;
+		public var runForever:int		= 0;
+		public var h2o:Number			= 1000.00;
+		public var stam:Number			= 1000.00;
+		public var possRun:Boolean		= true;
+		public var zaput:int			= 0;		//перепутанное управление
+		public var aJump:int			= 0;		//был ли прыжок, и какой именно
+		private var weapUp:Boolean		= false;
+		private var inBattle:Boolean	= false;
+		public var noRad:Boolean		= true;
+		public var dodgePlus:Number		= 0.00;
+		public var isStayDam:int		= 0;		//получать урон от стояния на полу
+		private static var burningForcesRunOption:Boolean = Settings.settings.burningForcesRun; // Toggle whether or not being set on fire forces the player unit to run aorund randomly
+
+		//двойной прыжок
+		public var dJump:Boolean		= false;	//второй прыжок активен
+		public var dJump2:Boolean		= false;	//второй прыжок активен
+		public var djumpdy:Number		= 5.00;		//сила
+		public var maxdjumpp:int		= 10;		//продолжительность
+		
+		//оковы
+		public var isFetter:int			= 0;
+		public var fetX:Number			= 0.00;
+		public var fetY:Number			= 0.00;
+		private var dfx:Number			= 0.00;
+		private var dfy:Number			= 0.00;
+		private var rfetter:Number		= 0.00;
+		//
+		public var t_raddam:int			= 0;
+		public var t_nogas:int			= 0;	//не действовать газом
+		private var ddam1:Number		= 0.00;
+		private var ddam2:Number		= 0.00;
+		private var ddam3:Number		= 0.00;
+		
+		//магия
+		public var currentSpell:Spell;
+		private var t_dclick:int		= 0;		//двойной клик
+		public var t_port:int			= 0;
+		public var t_culd:int			= 0;
+		private var teleReady:Boolean	= true;
+		public var t_cryst:int			= 0;
+		public var cryst:Boolean		= false;
+		
+		//видимость
+		public var sneak:Number			=  0.00;	//скрытность
+		public var obs:Number			=  0.00;
+		public var maxObs:Number		= 20.00;
+		private var minusObs:Number		=  0.10;	//скорость уменьшения видимости
+		private var isObs:int			=  0;
+		public var showObsInd:Boolean	= true;		//показывать индикатор скрытности
+		
+		//нычки
+		private var t_up:int			= 0;
+		public var lurked:Boolean		= false;
+		private var lurkTip:int			= 1;
+		private var lurkX:Number		= 0.00;
+		private var lurkBox:Box;
+		
+		// Inventory and Weapons
+		public var isTake:int				=  0;
+		public var changeWeaponTime1:int	= 30;
+		public var changeWeaponTime2:int	= 20;
+		public var changeWeaponTime3:int	= 10;
+		private var t_reload:int			=  0;			// [Holding the recharge button]
+		
+		public var punchWeapon:Weapon;
+		public var throwWeapon:Weapon;
+		public var magicWeapon:Weapon;
+		public var paintWeapon:Weapon;
+		public var newWeapon:Weapon;
+		public var currentArmor:Armor;
+		public var armorEffect:Effect;
+		public var currentAmul:Armor;
+		
+		// Moved from Invent
+		public var cWeaponId:String		= "";	// Current weapon equipped (ID)
+		public var cSpellId:String		= "";	// Current spell equipped (ID)
+		public var cArmorId:String		= "";	// Current armor equipped (ID)
+		public var prevArmor:String		= "";	// Previous armor equipped (ID)
+		public var cAmulId:String		= "";	// Current amulet equipped (ID)
+
+		public var atkPoss:int			= 1;	// [The ability to attack in principle (prohibits the shadow potion)]
+		public var attackForever:int	= 0;	// [Uncontrolled attack]
+		public var autoAttack:int		= 0;
+		public var atkWeapon:int		= 0;	// [What weapon is attacking at the moment 1-basic, 2-throwing, 3-magic]
+		
+		public var eyeMind:int			= 0;	// [Necromancer's gaze]
+
+		public var pipOff:int			= 0;	// [Disabling pipbuck]
+		
+		public var rad:Number			= 0.00;
+		public var drad:Number			= 0.00;
+		public var drad2:Number			= 0.00;
+		public var radX:Number			= 1.00;
+		public var healhp:Number		= 0.00;
+		
+		// Companions
+		public var pet:UnitPet;
+		public var defpet:UnitPet;
+		public var pets:Array;
+		public var currentPet:String	= "";
+		public var retPet:String		= "";
+		public var noPet:int			= 0;
+		public var noPet2:int			= 0;
+		private var k_pet:int			= 0;
+		
+		// [visual part]
+		public var levitFilter1:GlowFilter;
+		public var levitFilter2:GlowFilter;
+		protected var dieFilter:GlowFilter;
+		protected var shadowFilter:DropShadowFilter;
+		protected var invulnerFilter1:GlowFilter, invulnerFilter2:GlowFilter;
+		private var dashFilter:BlurFilter;
+		private var stealthFilter:BlurFilter;
+		protected var dieTransform:ColorTransform = new ColorTransform();
+		protected var teleTransform:ColorTransform = new ColorTransform();
+		public var shineTransform:ColorTransform = new ColorTransform(); 
+		public var t_levitfilter:int = -1;
+		private var freeAnim:int = 0;
+		private var prev_levit:int;
+		public var f_levit:Boolean=false, f_die:Boolean=false, f_dash:Boolean=false, f_stealth:Boolean=false, f_inv:Boolean=false;
+		public var f_shad:Boolean=false;
+		private var aMagic:int=50, aMC:int=50; //интенсивность магии установленная и текущая
+		private var headR:Number=0, headRO:Number=0, headRA:Number=0, t_head:int=100;	//поворот головы
+		private var hair:MovieClip, tail:MovieClip, hairY:Number=-1000;
+		private var hairDY:Number=0, hairR:Number=0;
+		private var prev_replic:String;
+		private var prev_dx:Number=0;
+		
+		// [Rat shape]
+		public var rat:Boolean			= false;		// Player is in rat form
+		public var ratX:int				= 30;			// Rat form bounding box width
+		public var ratY:int				= 17;			// Rat form bounding box height
+		public var mordaN:int			= 1;			// (What head the player is using? Pony or Rat?)
+		
+		public var reloadbar:MovieClip;
+		private var showRadius:Boolean	= false;
+		private var klip:int			= 300;
+		public var visSel:Boolean		= false; // [Weapon selector]
+		public var animOff:Boolean		= false;
+
+		// Cache
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+		
+		public function UnitPlayer(cid:String = null, ndif:Number = 100.00) {
+			player = true;
+			id = "littlepip";
+			vis = new visualPlayer();
+
+			vis.osn.body.pip2.visible = false;
+			vis.osn.stop();
+
+			vis.inh.visible		= false;
+			vis.cryst.visible	= false;
+			vis.fetter.visible	= false;
+			vis.rat.visible		= false;
+
+			reloadbar = new reloadBar();
+			reloadbar.visible = false;
+			vis.addChild(reloadbar);
+			
+			if (vis.shit) {
+				vis.shit.visible = false;
+			}
+			
+			if (vis.svet) {
+				vis.svet.visible = false;
+			}
+			
+			storona=E_Direction.RIGHT; // Whether the unit is facing left or right.
+			id_replic = "pip";
+			
+			getXmlParam();
+			walkSpeed = osnSpeed = maxSpeed;
+			plavSpeed = walkSpeed * 0.75;
+			sitSpeed = walkSpeed * 0.50;
+			lazSpeed = walkSpeed * 0.75;
+			runSpeed = walkSpeed * 2.00;
+			
+			critCh = 0.05;
+			
+			brake = 2;
+			maxjumpp = 8;
+			plavdy = accel * 0.50;
+			levidy = accel * 0.25;	// Levitation speed.
+			if (World.w.alicorn) levidy = accel * 0.5;
+			hp=maxhp;
+			reloadbar.y = -boundingBox.height-10;
+			
+			weaponKrep = false;	// false - левитация оружия, true - держать
+			
+			teleColor			= GUIManager.reference.app.cMagic;
+			levitFilter1		= new GlowFilter(teleColor,0,6,6,2,3);
+			teleFilter			= new GlowFilter(teleColor,1,6,6,1,3);
+			dieFilter			= new GlowFilter(0xCC00FF,0,6,6,2,3);
+			dashFilter			= new BlurFilter(5,0,3);
+			stealthFilter		= new BlurFilter(3,3);
+			shadowFilter		= new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
+			invulnerFilter1		= new GlowFilter(0xFF5555,1,2,2,3,3);
+			invulnerFilter2		= new GlowFilter(0xFF0000,1,7,7,1,3);
+
+			teleTransform.redMultiplier		= Appear.trMagic.redMultiplier   * 0.50 + 1;
+			teleTransform.greenMultiplier	= Appear.trMagic.greenMultiplier * 0.50 + 1;
+			teleTransform.blueMultiplier	= Appear.trMagic.blueMultiplier  * 0.50 + 1;
+			tele = new Telekinesis(this, teleSpeed, teleAccel, teleFilter, teleTransform);
+			shineTransform.greenMultiplier	= 1.50;
+			shineTransform.blueMultiplier	= 1.20;
+			doop		= true;
+			transT		= true;
+			fraction	= F_PLAYER;
+		}
+
+		// Debug mode
+		private function testFunction():void {
+			if (World.w.chitOn) {
+				World.w.godMode = true;
+				World.w.chit = "port";
+				World.w.drawAllMap = true;
+				World.w.black = false;
+				World.w.showAddInfo = true;
+				GameContainer.reference.grafon.visLight.visible = false;
+			}
+		}
+		
+		// Set up the player using the inventory created by the World, 'inventorySave' is the inventory's save data (null for a new game)
+		public function attach(inventorySave:Object = null):void {
+			invent = GameContainer.reference.invent;
+			itemInteraction = new ItemInteraction(this, invent);
+			itemInteraction.load(inventorySave);
+			itemInteraction.addAllSpells();
+
+			// The player's equipment when the game was saved
+			cWeaponId	= invent.cWeaponId;
+			cArmorId	= invent.cArmorId;
+			cAmulId		= invent.cAmulId;
+			cSpellId	= invent.cSpellId;
+			prevArmor	= invent.prevArmor;
+			
+			pers = GameContainer.reference.pers;
+			pers.gg = this;
+			
+			hp = pers.begHP;
+			maxhp = pers.begHP;
+			
+			if (cArmorId != "" && cArmorId != null && !World.w.alicorn) {
+				changeArmor(cArmorId, true);
+			}
+			else {
+				pers.setParameters();
+			}
+			
+			if (cAmulId != "" && cAmulId != null) {
+				changeArmor(cAmulId, true);
+			}
+			if (!pers.dead && cWeaponId != "" && cWeaponId != null) {
+				changeWeapon(cWeaponId);
+			}
+
+			if (cSpellId != "" && cSpellId != null) {
+				changeSpell(cSpellId, false);
+			}
+			
+			// Create and assign player weapons
+			var wm:WeaponManager = WeaponManager.reference;
+			punchWeapon = wm.cloneWeapon("punch", this, WKick);
+			paintWeapon = wm.cloneWeapon("paint", this, WPaint);
+
+			childObjs = [currentWeapon, punchWeapon];
+			
+			// The explosive and spell in their favorites cells are used with their own keys
+			throwWeapon = invent.equipment.getWeapon(invent.favorites.fav[Favorites.CELL_THROW]);
+			if (throwWeapon) {
+				throwWeapon.setNull();
+				throwWeapon.setPers(this, pers);
+			}
+			
+			magicWeapon = invent.equipment.getWeapon(invent.favorites.fav[Favorites.CELL_MAGIC]);
+			if (magicWeapon) {
+				magicWeapon.setNull();
+				magicWeapon.setPers(this, pers);
+			}
+			
+			// Pets
+			pets = [];
+			pet = new UnitPet("phoenix");
+			pet.gg = this;
+			pet.setLevel(pers.level);
+			pets["phoenix"] = pet;
+			defpet = pet;
+			
+			pet = new UnitPet("owl");
+			pet.gg = this;
+			pet.setLevel(pers.level);
+			pets["owl"] = pet;
+			pet.hp = pet.maxhp * pers.owlhpProc;
+			
+			if (pers.owlhpProc <= 0) {
+				pet.sost = 4;
+			}
+			
+			pet = new UnitPet("moon");
+			pet.gg = this;
+			pet.setLevel(pers.level);
+			pets["moon"] = pet;
+			
+			pet = null;
+			neujazMax = pers.neujazMax;
+			
+			if (pers.dead) {
+				hp = 0;
+				controlOff();
+				anim("die", true);
+			}
+			else {
+				currentPet = pers.currentPet;
+				
+				if (currentPet != "" && currentPet != null && currentPet != "moon") {
+					pet = pets[currentPet];
+					childObjs[2] = pet;
+					pet.call();
+				}
+				
+				if (currentPet == "moon") {
+					currentPet = "";
+				}
+
+				itemInteraction.nextItem(1);
+				weaponLevit();
+			}
+			
+			World.w.calcMassW	= true;
+			World.w.calcMass	= true;
+			
+			setAddictions();
+			
+			if (World.w.alicorn) {
+				alicornOn(false);
+			}
+			else {
+				pers.setParameters();
+			}
+		}
+		
+		public override function setNull(f:Boolean=false):void {
+			boundingBox.center(coordinates);
+			setWeaponPos();
+			
+			if (currentWeapon) {
+				currentWeapon.setNull();
+			}
+			
+			dropTeleObj();
+
+			actionObj	= null;
+			isLaz		= E_Direction.NEUTRAL;
+			levit		= 0;
+			f_stealth	= stealthMult < 1;
+			f_die		= false;
+			f_levit		= false;
+			f_dash		= false;
+			f_inv		= false;
+
+			setFilters();
+			vis.osn.alpha = 1;
+			vis.osn.transform.colorTransform = new ColorTransform();
+		}
+		
+		public function setSpeeds():void {
+			walkSpeed = osnSpeed * pers.allSpeedMult;
+			if (walkSpeed > pers.maxSpeed) {
+				walkSpeed = pers.maxSpeed;
+			}
+			
+			runSpeed = walkSpeed * pers.runSpeedMult;
+			if (runSpeed > pers.maxSpeed) {
+				runSpeed = pers.maxSpeed;
+			}
+			
+			plavSpeed = walkSpeed * 0.75;
+			sitSpeed  = walkSpeed * 0.50;
+			lazSpeed  = walkSpeed * 0.75;
+		}
+		
+
+//**************************************************************************************************************************
+//
+//				[Movement, moving to another location]
+//
+//**************************************************************************************************************************
+		// [Don't let me leave] Whether the player may leave the room now; dropping into an abyss is always allowed
+		private function canLeaveLoc(downward:Boolean):Boolean {
+			var po:int;
+
+			if (teleObj || actionObj || t_work > 0 || isFetter > 0 || loc.sky) {
+				trace("UnitPlayer.as/canLeaveLoc() - Failed to leave room!");
+				return false;
+			}
+			
+			// [Don't let them leave while they're under attack]
+			po = World.w.possiblyOut();
+			if (po > 0 && !(downward && loc.bezdna) && !rat) {
+				if (downward && !loc.bezdna) {
+					velocity.Y = -jumpdy;
+					velocity.X = maxSpeed * storona.X;
+				}
+
+				if (po == 1) {
+					trace("UnitPlayer.as/canLeaveLoc() - Can't leave room: Leaving too quickly");
+				}
+
+				if (po == 2) {
+					GUIManager.reference.gui.infoText("noOutLoc", null, null, false);
+				}
+				
+				return false;
+			}
+
+			return true;
+		}
+
+		// Drops what shouldn't carry over into the new room
+		private function settleAfterLeaving():void {
+			if (sats.que.length > 0) {
+				sats.clearAll();
+			}
+
+			if (levit == 1 && !ctr.keyJump) {
+				levit = 0;
+			}
+		}
+
+		// [exit from location (attempt, returns true if exit is successful)]
+		public override function outLoc(direction:Vec2):Boolean {
+			var laz:Vec2;
+			var lev:int;
+			var outP:Object;
+
+			if (!canLeaveLoc(direction == E_Direction.DOWN)) {
+				return false;
+			}
+			
+			laz = isLaz;
+			lev = levit;
+			outP = World.w.land.gotoLoc(direction);
+			
+			if (outP) {
+				if (outP.die) { // [Death from falling into the abyss (switch to CT)]
+					die(-1);
+					vis.visible=false;
+					return false;
+				}
+				
+				if (direction == E_Direction.DOWN || direction == E_Direction.UP) {
+					if (laz != E_Direction.NEUTRAL) {
+						checkStairs();
+						
+						if (isLaz == E_Direction.NEUTRAL) {
+							checkStairs(1, -tileX * laz.X);
+						}
+					
+						if (isLaz == E_Direction.NEUTRAL) {
+							checkStairs(1,  tileX * laz.X);
+						}
+					}
+				} 
+				
+				if (direction == E_Direction.UP) {
+					if (isLaz == E_Direction.NEUTRAL && !isFly && lev == 0) {
+						velocity.Y= -jumpdy;
+						velocity.X = maxSpeed * storona.X;
+					}
+					else if (isFly || lev == 1) {
+						velocity.Y = -jumpdy;
+					}
+				}
+				
+				settleAfterLeaving();
+				
+				return true;
+			}
+
+			return false;
+		}
+
+		// Goes through a door into the room behind this one, or back out of it
+		public function goThroughDoor(doorX:Number, doorY:Number):Boolean {
+			if (!canLeaveLoc(false)) {
+				return false;
+			}
+
+			if (!World.w.land.gotoOtherLayer(doorX, doorY)) {
+				return false;
+			}
+
+			velocity.X = 3 * storona.X;
+			settleAfterLeaving();
+
+			return true;
+		}
+		
+		// [entrance to the location]
+		public function inLoc(nloc:Location):void {
+			trace("Entering room: \"" + nloc.id + "\", at (" + nloc.landX + ", " + nloc.landY + ", " + nloc.landZ + ").");
+			
+			if (pet) {
+				if (!nloc.petOn && loc.petOn) {
+					GUIManager.reference.gui.infoText("noPetFollow");
+					pet.vis.alpha=0;
+					
+					if (pet.hpbar) {
+						pet.hpbar.alpha=pet.vis.alpha;
+					}
+				}
+				else {
+					pet.loc=nloc;
+				}
+				
+				nloc.units[1]=pet;
+				pet.vis.visible=(nloc.petOn && pet.sost<3);
+			}
+			else {
+				nloc.units[1]=defpet;
+			}
+			
+			loc = nloc;
+			
+			if (currentWeapon) {
+				currentWeapon.loc = loc;
+			}
+			
+			if (throwWeapon) {
+				throwWeapon.loc = loc;
+			}
+			
+			if (magicWeapon) {
+				magicWeapon.loc = loc;
+			}
+			
+			cTransform = loc.cTransform;
+			t_nogas = 90;
+			vis.transform.colorTransform = cTransform;
+			
+			if (currentWeapon && currentWeapon.tip != Weapon.TYPE_MAGIC) {
+				currentWeapon.vis.transform.colorTransform = cTransform;
+			}
+			
+			if (effects.length>0) {
+				for each (var eff in effects) {
+					eff.visEff();
+				}
+			}
+			
+			if (!loc.levitOn && isFly) {
+				isFly=false;
+			}
+			
+			if (loc.electroDam > 0) {
+				GUIManager.reference.gui.infoText("electroOn", null, null, true);
+				isStayDam = 45;
+			}
+			
+			vis.svet.visible = loc.sky;
+		}
+		
+		public override function addVisual():void {
+			super.addVisual();
+			
+			if (throwWeapon) {
+				throwWeapon.addVisual2();
+			}
+			
+			if (magicWeapon) {
+				magicWeapon.addVisual2();
+			}
+		}
+		
+		// [Set position when entering location]
+		public function setLocPos(nx:Number, ny:Number):void {
+			coordinates.X = nx;
+			coordinates.Y = ny;
+			
+			setNull();
+			
+			if (pet) {
+				pet.coordinates.X = coordinates.X;
+				pet.coordinates.Y = coordinates.Y - 30;
+				
+				if (isSit) {
+					pet.coordinates.Y = coordinates.Y;
+				}
+				
+				pet.setNull();
+				pet.detectionDelay = 60;
+			}
+		}
+		
+//**************************************************************************************************************************
+//
+//				[Actions]
+//
+//**************************************************************************************************************************
+
+		public override function forces():void {
+			grav=1;
+			if (kdash_t>0) {
+				if (kdash_t==1) {
+					velocity.multiply(0.30);
+				}
+			}
+			else if (isLaz != E_Direction.NEUTRAL) {
+				velocity.Y = 0;
+				velocity.X *= 0.8;
+			}
+			else if (levit) {
+				if (!teleHolder) {
+					velocity.multiply(0.80);
+				}
+			}
+			else if (isFly) {
+				if (ctr.keyRun) {
+					velocity.multiply(0.96);
+				}
+				else if (t_throw<=0){
+					velocity.multiply(0.90);
+				}
+				t_fly+=0.1;
+				if (loc.electroDam>0) {
+					velocity.Y += Math.sin(t_fly)*0.7;
+					velocity.X += storona.X*Math.cos(t_fly)*0.5;
+				}
+				else {
+					velocity.Y += Math.sin(t_fly)/5;
+				}
+			}
+			else {
+				var brake1:Number = brake;
+				
+				if (inWater && !isPlav) {
+					velocity.X *= 0.50;
+				}
+				
+				if (isPlav) {
+					velocity.Y += World.ddy * ddyPlav;
+					velocity.Y *= 0.8;
+				}
+				else {
+					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height / 4);
+					
+					if (t.gravity > 0 && velocity.Y < loc.maxdy * t.gravity || t.gravity < 0 && velocity.Y > loc.maxdy * t.gravity) {
+						if (dash_t > dash_maxt - 11) {
+							velocity.Y += World.ddy * t.gravity * 0.10;
+						}
+						else {
+							velocity.Y += World.ddy * t.gravity;
+						}
+					}
+					
+					if (t.gravity > 0) {
+						grav = t.gravity;
+					}
+					else {
+						grav = 0;
+					}
+					
+					if (t.gravity < 0) {
+						velocity.X *= 0.80;
+					}
+				}
+				
+				//[Braking]
+				if (isSit) brake1=0.4*brake;
+				
+				if (!stay) {
+					brake1=0.1*brake;
+				}
+				
+				if (walk==E_Direction.LEFT) {
+					if (velocity.X < -maxSpeed) {
+						velocity.X += brake1;
+					}
+				}
+				else if (walk==E_Direction.RIGHT) {
+					if (velocity.X > maxSpeed) {
+						velocity.X -= brake1;
+					}
+				}
+				else {
+					if (velocity.X > -brake1 && velocity.X < brake1) {
+						velocity.X = 0;
+					}
+					else if (velocity.X > 0) {
+						velocity.X -= brake1;
+					}
+					else if (velocity.X < 0) {
+						velocity.X += brake1;
+					}
+				}
+				
+				if (stay) {
+					velocity.X *= tormoz;
+				
+					if (loc.quake && massa<=2) {
+						var pun:Number=(1+(2-massa)/2)*loc.quake;
+						if (pun>10) pun=10;
+						velocity.Y = -pun*Math.random();
+						velocity.X += pun*(Math.random()*2-1);
+					}
+				}
+			}
+			
+			osndx = 0;
+			osndy = 0;
+			
+			if (stayOsn) {
+				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
+					stay=false;
+				}
+				else {
+					osndx = stayOsn.cdx;
+					osndy = stayOsn.cdy;
+				}
+			}
+			
+			stayOsn = null;
+
+			//Fettered (Chained up)
+			if (isFetter > 0) {
+				isLaz = E_Direction.NEUTRAL;
+				dfx = fetX - coordinates.X;
+				dfy = fetY - coordinates.Y + 30;
+				rfetter = dfx * dfx + dfy * dfy; // Chain-ging this to using squared distance instead of square root for comparisons to save cycles.
+				
+				if (rfetter > isFetter * 2) {
+					fetX = coordinates.X;
+					fetY = coordinates.Y;
+					dfx		= 0;
+					dfy		= 0;
+					rfetter	= 0;
+				} 
+				
+				if (rfetter > isFetter * 0.95) {
+					if (rfetter > isFetter) {
+						velocity.X += dfx / 20;
+						velocity.Y += dfy / 20;
+					}
+					else {
+						velocity.X += dfx / 20 * (rfetter / isFetter * 20 - 19);
+						velocity.Y += dfy / 20 * (rfetter / isFetter * 20 - 19);
+					}
+				}
+			}
+			else {
+				rfetter = 0;
+			}
+		}
+		
+		public override function actions():void {
+			
+			super.actions();
+
+			inBattle = World.w.t_battle > 0 || World.w.testBattle;
+			
+			// [loot capture]
+			if (isTake > 0) {
+				isTake--;
+			}
+			
+			// [radiation]
+			if (noRad) {
+				noRad = false;
+			}
+			else {
+				drad += loc.rad;
+				if (inWater) {
+					drad += loc.wrad;
+				}
+			}
+			
+			if (drad2 > 0) {
+				drad += drad2;
+				drad2 -= 0.1;
+			}
+			
+			if (drad > 0) {
+				if (radX > 0 && !invulner && !World.w.godMode) {
+					rad += drad / 30 * radX;
+					
+					if (pers.radChild > 0 && rad > maxhp * (1 - pers.radChild)) {
+						rad = maxhp * (1 - pers.radChild);
+					}
+					
+					if (hp > maxhp - rad) {
+						hp = maxhp - rad;
+						
+						if (hp<=0) {
+							die();
+						}
+					}
+					
+					GUIManager.reference.gui.setHp();
+				}
+				
+				var ver:Number = Math.min(0.50, drad * 0.10);
+				
+				if (drad > 0.10 && isrnd (ver)) {
+					sound("geiger");
+				}
+				if (pet) {
+					pet.heal(drad / 15, 1);
+				}
+				
+				drad=0;
+			}
+			else if (drad == 0){
+				GUIManager.reference.gui.setHp();
+				drad =- 0.0001;
+			}
+			
+			// [Treatment]
+			if (healhp > 0) {
+				healhp -= pers.healMult / 5 * pers.metaMult;
+				hp += pers.healMult / 5 * pers.metaMult;
+				
+				if (hp > maxhp - rad) {
+					hp = maxhp - rad;
+				}
+				
+				GUIManager.reference.gui.setHp();
+			}
+			
+			if (pers.regenFew > 0 && hp < Math.min(maxhp * pers.regenMax, maxhp - rad) && hp > 0) {
+				hp += pers.regenFew;
+				GUIManager.reference.gui.setHp();
+			}
+			
+			if (World.w.alicorn && sost==1) {
+				if (hp < maxhp) {
+					hp += pers.alicornHeal;
+					
+					if (hp > maxhp) {
+						hp = maxhp;
+					}
+					
+					GUIManager.reference.gui.setHp();
+				}
+			
+				if (pers.manaHP < pers.inMaxMana) {
+					pers.manaHP += pers.alicornManaHeal;
+					
+					if (pers.manaHP > pers.inMaxMana) {
+						pers.manaHP = pers.inMaxMana;
+					}
+					
+					GUIManager.reference.gui.setMana();
+				}				
+			}
+			
+			// [various actions]
+			if (t_work > 0) {
+				t_work--;
+			}
+			else {
+				work = "";
+			}
+			
+			if (work == "change" && t_work == changeWeaponTime2) {
+				changeWeaponNow(1);
+			}
+			
+			if (work == "change" && t_work == changeWeaponTime3) {
+				changeWeaponNow(2);
+			}
+			
+			// [go to the bottom layer]
+			if (work == "lurk" && t_work == 10) {
+				if (sloy == 2) {
+					if (lurkTip == 1) {
+						chSloy(0);
+					}
+					else {
+						chSloy(1);
+					}
+				}
+			
+				if (lurkBox && lurkBox.sloy == 1 && sloy == 1) {
+					lurkBox.vis.parent.setChildIndex(lurkBox.vis, lurkBox.vis.parent.numChildren - 1);
+				}
+			}
+			
+			if (work=="unlurk" && t_work==5) {
+				if (sloy==1 || sloy==0) {
+					chSloy(2);
+				}
+			}
+			
+			if (work=="lurk") {
+				if (lurkX - coordinates.X > 3) {
+					velocity.X = 4;
+				}
+				
+				if (lurkX - coordinates.X < -3) {
+					velocity.X = -4;
+				}
+			}
+			
+			// [whining]
+			if (lurked) {
+				if (!stay) {
+					lurked = false;
+				}
+			
+				if (lurkBox && lurkBox.wall == 0 && !lurkBox.stay) {
+					lurked = false;
+				}
+			
+				if (work != "lurk" && (coordinates.X - lurkX > 10 || coordinates.X - lurkX < -10)) {
+					lurked = false;
+				}
+			}
+			
+			if (!lurked && work != "unlurk" && (sloy == 1 || sloy == 0)) {
+				chSloy(2);
+			}
+			
+			// [Dash]
+			f_dash = (dash_t > dash_maxt - 20);
+			
+			if (dash_t > 0) {
+				dash_t--;
+			}
+		
+			if (kdash_t>0) {
+				kdash_t--;
+				stay=false;
+			}
+			
+			f_stealth=(stealthMult<1);
+			
+			// [action on active objects]
+			if (actionObj) {
+				if (actionObj.active == 0) {
+					actionObj = null;
+				}
+				else if (t_action > 0) {
+					t_action--;
+				}
+				else {
+					ctr.keyAction = false;
+					actionObj.is_act = true;
+					actionObj = null;
+				}
+			}
+			
+			if (Sound.actionCh != null && actionObj == null) {
+				Sound.stopChannel(Sound.actionCh);
+				Sound.actionCh = null;
+			}
+
+			// [visibility]
+			visibility = 2000;
+			
+			if (velocity.X < 2 && velocity.X >- 2 && velocity.Y < 2 && velocity.Y >- 2) {
+				visibility = 1500;
+			}
+			
+			if (velocity.X > 10 || velocity.X < -10 || velocity.Y > 10 || velocity.Y < -10) {
+				if (demask < 200 * pers.visiMult) demask = 200 * pers.visiMult;
+			}
+			
+			if (obs > 0 && isObs <= 0) {
+				obs -= minusObs;
+			} 
+			
+			if (isObs >= 0) {
+				isObs--;
+			}
+			
+			if (levit > 0 && demask < 200) {
+				demask = 200;
+			}
+			
+			dexterPlus = 0;
+			detecting = 80;
+			
+			if (isSit) {
+				dexterPlus = pers.sitDexterPlus;
+			}
+			
+			if (lurked) {
+				detecting = 0;
+				dexterPlus = pers.lurkDexterPlus;
+				visibility *= 0.5;
+			}
+			
+			if (stealthMult < 0.5) {
+				detecting = 0;
+			}
+
+			//--------------------- [Weapon] ------------------------
+			// [If the shot was fired]
+			if (currentWeapon && currentWeapon.is_shoot) {
+				if (sats.que.length > 0) {
+					sats.act();
+					GUIManager.reference.gui.setWeapon();
+				}
+				currentWeapon.is_shoot = false;
+			}
+
+			if (currentWeapon && currentWeapon.tip != Weapon.TYPE_MAGIC && currentWeapon.vis && currentWeapon.vis.visible) aMagic = 50;
+			else aMagic = 0;
+			
+			// [If there are active targets]
+			if (sats.que.length > 0) {
+				if (currentWeapon == null || currentWeapon.noSats || currentWeapon.status() > 3) {	// [if the weapon is not ready]
+					sats.clearAll();	// [Clear queue]
+				}
+				else if (sats.getReady()) {	// [If the target has not yet been killed]
+					sats.que[0].run();			// [Set a goal (target)]
+					celX = sats.que[0].coordinates.X;
+					celY = sats.que[0].coordinates.Y;
+					trace("Firing SATS bullet at (" + celX + ", " + celY + ")");
+					currentWeapon.attack(true);	// [Shoot when ready]
+				}
+				else {			
+					sats.unsetCel(true);	// [Otherwise cancel the target]
+				}
+			}
+			else if (attackForever) {
+				if (isrnd(0.05)) {
+					celX = Math.random() * loc.maxX;
+					celY = Math.random() * loc.maxY;
+				}
+			}
+			else {
+				celX = World.w.celX;
+				celY = World.w.celY;
+			}
+			
+			// [accuracy modifier precMult, only if shooting is not through the SATS]
+			precMult = pers.allPrecMult;
+			mazil = pers.mazilAdd;
+			
+			if (sats.que.length == 0 && !lurked) {
+				if (pers.runPenalty>0 && (velocity.X > 10 || velocity.X < -10 || velocity.Y > 10 || velocity.Y < -10))  precMult*=(1-pers.runPenalty);
+				if (!stay) precMult*=(1-pers.jumpPenalty);
+				if (stay && velocity.X < 1 && velocity.X > -1)  precMult*=(1+pers.stayBonus);
+				if (currentWeapon && (currentWeapon.storona!=storona)) precMult*=(1-pers.backPenalty);
+			}
+			
+			if (throwWeapon && currentWeapon != throwWeapon) {
+				throwWeapon.actions();
+				
+				// Only spells are visible (floating next to the player) while they aren't the current weapon, holstered explosives aren't drawn
+				if (throwWeapon.tip == Weapon.TYPE_MAGIC) {
+					throwWeapon.animate();
+				}
+			}
+			
+			if (magicWeapon && currentWeapon != magicWeapon) {
+				magicWeapon.actions();
+				
+				if (magicWeapon.tip == Weapon.TYPE_MAGIC) {
+					magicWeapon.animate();
+				}
+			}
+			
+			atkWeapon = 0;
+			
+			if (currentWeapon && !currentWeapon.attackPos()) {
+				atkWeapon = 1;
+			}
+			
+			if (throwWeapon && currentWeapon!=throwWeapon && !throwWeapon.attackPos()) {
+				atkWeapon = 2;
+			}
+			
+			if (magicWeapon && currentWeapon!=magicWeapon && !magicWeapon.attackPos()) {
+				atkWeapon = 3;
+			}
+			
+			// [Telekinesis]
+			if (teleObj) {
+				aMagic=50;
+
+				if (teleObj.massa>=1) {
+					aMagic=100;
+				}
+
+				if (demask<200) {
+					demask=200;
+				}
+
+				if (isTake<10) {
+					isTake=40;
+				}
+
+				tele.speed = teleSpeed;
+				tele.accel = teleAccel;
+				tele.hold(celX, celY);
+				if (!tele.held) {
+					GUIManager.reference.gui.setMana();
+				}
+
+				if (teleObj is Unit) {
+					if ((teleObj as Unit).levit_max > 0 && (teleObj as Unit).levit_r > (teleObj as Unit).levit_max * pers.unitLevitMult) {
+						teleObj.levitPoss = false;
+						dropTeleObj();
+					}
+				}
+			}
+			
+			if (teleObj) {
+				if (loc.celDist > pers.teleDist * 1.20 || mana <= 0 || !teleObj.levitPoss) {
+					dropTeleObj();
+				}
+			}
+			
+			if (levit == 1) {
+				aMagic = 100;
+			}
+			
+			if (sost > 1) {
+				aMagic = 0;
+			}
+			
+			// Double click
+			if (t_dclick > 0) {
+				t_dclick--;
+			}
+			
+			// Weapon/Spell cooldown
+			if (t_culd > 0) {
+				t_culd--;
+			}
+			
+			if (shithp > 0) {
+				shithp -= 0.05;
+			}
+			
+			// Mana
+			if (teleObj || levit==1 || cryst) {
+				dmana=0;
+				
+				if (teleObj) {			
+					dmana-=teleSqrtMassa*pers.teleMult;
+				} 
+				
+				if (levit==1) {
+					if (levitup) dmana-=(pers.levitDManaUp*grav+pers.levitDMana);
+					else dmana-=pers.levitDMana;
+				}
+				
+				dmana*=pers.allDManaMult;
+				
+				if (pers.teleMana>0) {
+					if (levit==1) pers.manaDamage(-dmana*pers.teleMana*pers.teleManaMult);
+					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
+				}
+			}
+			else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
+				dmana = -pers.alicornRunMana;
+				
+				if (!loc.sky) {
+					Emitter.emit("magrun", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, { dx:(velocity.X * 0.5 + Math.random() * 4 - 2), dy:(velocity.Y * 0.5 + Math.random() * 4 - 2) });
+				}
+			}
+			else {
+				if (dmana < pers.recManaMin * pers.shtrManaRes) {
+					dmana = pers.recManaMin * pers.shtrManaRes;
+				}
+				
+				dmana += pers.recMana*pers.shtrManaRes;
+			}
+			
+			mana += dmana;
+			
+			if (mana > maxmana) {
+				mana = maxmana;
+			}
+			
+			if (pers.manaHP<pers.manaMin) {
+				pers.manaHP += pers.manaHPRes;
+				GUIManager.reference.gui.setMana();
+			}
+
+			// Flying
+			if (isPlav) {
+				isFly=false;
+				
+				if (h2o>0) {
+					h2o-=pers.h2oPlav;
+					if (sost==1 && isrnd(0.1)) Emitter.emit("bubble", loc, coordinates.X+storona.X*23, coordinates.Y-58);
+				}
+				else {
+					damage(maxhp/500,E_Resistances.DAM_INTERNAL,null,true);
+					if (sost==1 && isrnd())Emitter.emit("bubble", loc, coordinates.X+storona.X*23, coordinates.Y-58);
+				}
+			}
+			else if (h2o < 1000) {
+				h2o += 10;
+				
+				if (h2o > 1000) {
+					h2o = 1000;
+				}
+			}
+
+			// Stamina
+			if (isRun && walk != E_Direction.NEUTRAL && stay && !isSit && (velocity.X != 0)) {
+				if (stam > 0) {
+					if (inBattle) {
+						stam-=pers.stamRun*dstam;
+					}
+				}
+				else {
+					possRun=false;
+				}
+			}
+			else if (stam<1000) {
+				stam+=pers.stamRes;
+				
+				if (stam>200) {
+					possRun=true;
+				}
+				
+				if (stam>1000) {
+					stam=1000;
+				}
+			}
+
+			// Dashing
+			if (dash_t > dash_maxt - 10 || kdash_t > 0) {
+				dodge = 1 + dodgePlus;
+			}
+			else {
+				dodge = dodgePlus;
+			}
+
+			// Armor
+			if (currentArmor && currentArmor.maxmana>0) {
+				if (currentArmor.abilActive) {
+					if (currentArmor.mana>0) {
+						currentArmor.mana-=currentArmor.dmana_use;
+					}
+					else {
+						if (armorEffect) {
+							armorEffect.unsetEff(true,false,true);
+						}
+						
+						currentArmor.abilActive = false;
+					}
+				}
+				else {
+					if (currentArmor.mana < currentArmor.maxmana) {
+						currentArmor.mana += currentArmor.dmana_res;
+					}
+				}
+			}
+
+			// Crystal shield
+			if (t_cryst > 0) {
+				if (t_cryst == 4) {
+					vis.cryst.gotoAndPlay(10);
+				}
+				
+				t_cryst--;
+				
+				if (!cryst) {
+					vis.cryst.gotoAndPlay(1);
+					vis.cryst.visible = true;
+				}
+				
+				cryst = true;
+			}
+			else
+			{
+				if (cryst) {
+					vis.cryst.visible = false;
+				}
+				
+				cryst = false;
+			}
+
+			stun = 0;
+			
+			//поворот оружия
+			weaponR=-(celY-coordinates.Y)/10;
+			
+			if (weaponR>85) weaponR=85;
+			
+			if (weaponR<-85) weaponR=-85;
+			
+			//свечение магии
+			if (aMC<aMagic) aMC+=5;
+			
+			if (aMC>aMagic) aMC-=5;
+			
+			//спутник
+			if (noPet>0) {
+				noPet--;
+				GUIManager.reference.gui.setPet();
+			}
+			
+			if (noPet2>0) noPet2--;
+			
+			if (pet && pet.sost==4 && noPet<=0 && pet.optAutores) pet.resurrect();
+			
+			//откл. пипбака
+			if (pipOff==1) GUIManager.reference.gui.allOn();
+			
+			if (pipOff>0) pipOff--;
+			
+			//неконтролируемая атака
+			if (attackForever) {
+				if (isrnd(0.1)) {
+					autoAttack=1-autoAttack;
+				}
+			}
+			else {
+				autoAttack=0;
+			}
+			
+			//удары врагов
+			if (pinok>0) {
+				if (stay || isLaz!=E_Direction.NEUTRAL) pinok--;
+				else pinok-=3;
+			}
+			
+			//урон на расстоянии
+			t_raddam++;
+			
+			if (t_nogas>0) t_nogas--;
+			
+			if (t_raddam>30) {
+				t_raddam=0;
+				
+				if (ddam1>0) {
+					damage(ddam1/30, E_Resistances.DAM_VENOM,null,true);
+					ddam1=0;
+				}
+				
+				if (ddam2>0) {
+					damage(ddam2/30, E_Resistances.DAM_PINKCLOUD,null,true);
+					ddam2=0;
+				}
+			
+				if (ddam3>0) {
+					damage(ddam3/30, E_Resistances.DAM_DEATH,null,true);
+					ddam3=0;
+				}
+			}
+			
+			//урон от блоков
+			if (isStayDam>0) isStayDam--;
+			
+			if (loc.electroDam>0 && isStayDam==0) {
+				if (stay && stayMat == E_Material.METAL || isLaz != E_Direction.NEUTRAL || inWater || tykMat == E_Material.METAL) {
+					isStayDam = 20;
+				
+					if (tykMat == E_Material.METAL) {
+						if (turnX != E_Direction.NEUTRAL) {
+							Emitter.emit("moln", loc,coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+45*storona.X), cely:coordinates.Y-10});
+						}
+						else if (turnY == E_Direction.DOWN) {
+							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y - 70});
+						}
+						else if (turnY == E_Direction.UP) {
+							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y + 20});
+						}
+					}
+					else if (isLaz != E_Direction.NEUTRAL) {
+						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+20*storona.X), cely:coordinates.Y-10});
+					}
+					else if (stay) {
+						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X-25*shX2+Math.random()*25*(shX1+shX2)), cely:(coordinates.Y+20)});
+					}
+
+					electroDamage();
+				}
+			}
+			
+			if (loc.electroDam > 0) {
+				showElectroBlock();
+			}
+			
+			if (loc.sky) {
+				isFly = true;
+			}
+			
+			turnY = E_Direction.NEUTRAL;
+			turnX = E_Direction.NEUTRAL;
+			tykMat = E_Material.NONE;
+
+			// [spells]
+			for each (var sp:Spell in invent.equipment.spells) {
+				sp.step();
+			}
+			
+			t_replic--;
+		}
+		
+		// [magic consumption when hitting a levitated box]
+		public function otbrosTele(knock:Number):void {
+			mana -= pers.teleMult * knock * 5;
+		}
+		
+		// [activate teleport spell]
+		private function actPort():void {
+			if (!loc.portOn) {
+				return;
+			}
+
+			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
+				GUIManager.reference.gui.infoText("overMana", null, null, false);
+				GUIManager.reference.gui.bulb(coordinates.X, coordinates.Y - 20);
+			}
+			else {
+				var nx:int = Math.round(World.w.celX / tileX) * tileX
+				var ny:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+				
+				if (checkPort()) {
+					teleport(nx, ny, 1);
+					sound("teleport");
+					manaSpell(pers.portMagic, pers.portMana);
+					
+					if (loc.electroDam) {
+						electroDamage(loc.electroDam);
+						addEffect("burning", 40);
+						newPart("iskr", 40);
+					}
+					
+					t_culd = int(pers.spellDown * pers.portDown);
+					velocity.set(0, 0);
+				}
+			}
+		}
+		
+		private function alicornPort():void {
+			if (mana < pers.alicornPortMana && mana < maxmana * 0.99) {
+				GUIManager.reference.gui.infoText("overMana",null,null,false);
+				GUIManager.reference.gui.bulb(coordinates.X, coordinates.Y - 20);
+				return;
+			}
+			
+			if (!loc.sky) {
+				var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
+				
+				if (t.visibility < 0.80) {
+					return;
+				}
+			}
+			
+			var tx:int = Math.round(World.w.celX / tileX) * tileX
+			var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+			
+			if (loc.sky || !loc.collisionUnit(tx, ty, _standingWidth, _standingHeight))	{
+				teleport(tx, ty, 1);
+				
+				if (teleObj) {
+					dropTeleObj();
+				}
+				
+				mana -= pers.alicornPortMana;
+				dmana = 0;
+			}
+		}
+		
+		// [check the possibility of teleport]
+		public function checkPort():Boolean {
+			if (mana < pers.portMana * pers.allDManaMult) {
+				return false;
+			}
+			
+			if (loc.sky) {
+				return true;
+			}
+			
+			var nx:int = Math.round(World.w.celX / tileX) * tileX
+			var ny:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+			var t:Tile = loc.getAbsTile(World.w.celX, World.w.celY);
+			
+			if (t.visibility >= 0.8 && !loc.collisionUnit(nx, ny, _standingWidth, _standingHeight)) {
+				return true;
+			}
+			
+			return false;
+		}
+		
+		// [remove the required amount of mana, set the cooldown time]
+		public function manaSpell(dmag:Number, dm:Number):void {
+			trace("manaSpell: dmag: (" + dmag + "), dm: (" + dm + ")");
+
+			mana -= dmag * pers.allDManaMult;
+			pers.manaDamage(dm * pers.allDManaMult);
+			dmana = 0;
+			
+			if (teleObj) {
+				dropTeleObj();
+			}
+		}
+		
+		private function spellDisact():void {
+			ctr.keyDef=false;
+		}
+		
+		public function bindChain(nx:Number, ny:Number):void {
+			addEffect("fetter", 0, 10, false);
+			fetX = nx;
+			fetY = ny;
+		}
+		
+		// [enable or disable levitation of an object when the levitation key is pressed]
+		private function actTele():void {
+			// [double click]
+			if (t_dclick > 0) {
+
+			}
+			
+			if (t_dclick == 0) {
+				t_dclick = 15;
+			}
+			
+			if (teleObj) {
+				dropTeleObj();
+				return;
+			}
+			
+			
+			if (mana < 200) {
+				return;
+			}
+
+			// [find the closest matching object if the cursor is not pointing directly at the target]
+			if (loc.celObj == null) {
+				var dist:Number = (coordinates.X - World.w.celX) * (coordinates.X - World.w.celX) + (coordinates.Y - boundingBox.halfHeight - World.w.celY) * (coordinates.Y - boundingBox.halfHeight - World.w.celY);
+				
+				if (dist > pers.teleDist) {
+					return;
+				}
+				
+				if (!loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, World.w.celX, World.w.celY)) {
+					return;
+				}
+				
+				var pt:Entity = loc.firstObj;
+				var mindist:Number = 2500;
+				
+				while (pt) {
+					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
+						dist = (World.w.celX - pt.coordinates.X) * (World.w.celX - pt.coordinates.X) + (World.w.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight) * (World.w.celY - pt.coordinates.Y + (pt as Obj).boundingBox.halfHeight);
+						
+						if (dist < mindist) {
+							loc.celObj = (pt as Obj);
+							mindist = dist;
+						}
+					}
+					
+					pt = pt.nobj;
+				}
+				if (loc.celObj) {
+					loc.celObj.onCursor = 1;
+					loc.celDist = 0;
+				}
+			}
+			
+			if (loc.celObj && loc.celObj.levitPoss && loc.celObj.onCursor && loc.celDist<=pers.teleDist && loc.celObj.massa<=pers.maxTeleMassa){
+				if ((pers.telemaster == 0 || !loc.portOn) && !loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight)) {
+					GUIManager.reference.gui.infoText("noVisible",null,null,false);
+					return;
+				}
+				
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == E_Material.METAL) {
+					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight);
+					return;
+				}
+				
+				tele.grab(loc.celObj, 1);
+				
+				if (teleObj.massa > pers.telePorog) {
+					teleSqrtMassa = Math.sqrt(teleObj.massa);
+				}
+				else {
+					teleSqrtMassa = 0;
+				}
+				
+				if (teleObj is Unit) {
+					(teleObj as Unit).alarma(coordinates.X, coordinates.Y);
+				}
+				
+				if (teleObj.inter) {
+					teleObj.inter.sign = 0;
+				}
+				
+				ctr.keyTele = false;
+			}
+		}
+		
+		// [Telekinetic throw]
+		private function throwTele():void {
+			if (teleObj) {
+				if (pers.spellsPoss <= 0) {
+					dropTeleObj();
+					return;
+				}
+				
+				var obj:Obj = teleObj;
+				var force:Number = pers.throwForce;
+				var dm:Number = 0
+				
+				if (pers.throwForce > 0) {
+					dm = obj.massa * pers.throwDmagic * pers.allDManaMult;
+				}
+				
+				if (dm <= mana) {
+					mana -= dm;
+					pers.manaDamage(dm * pers.throwDmanaMult);
+				}
+				else {
+					force = pers.throwForce * mana / dm;
+					pers.manaDamage(mana * pers.throwDmanaMult);
+					mana = 0;
+				}
+				
+				// Thrown away from the player
+				tele.throwToward(obj.coordinates.X - coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight - coordinates.Y + boundingBox.halfHeight - 10, force);
+				
+				if (obj is Box) {
+					(obj as Box).t_throw = 2;
+				}
+				
+				if (obj is Unit) {
+					(obj as Unit).t_throw = 45;
+				}
+				
+				if (pers.throwForce > 0) {
+					Emitter.emit("throw", loc, obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight, {rotation:Math.atan2(obj.velocity.Y, obj.velocity.X) * RAD_TO_DEG});
+					Sound.ps("dash", obj.coordinates.X, obj.coordinates.Y);
+				}
+				
+				GUIManager.reference.gui.setMana();
+			}
+		}
+		
+		public function throwForceRelat():Number {
+			if (teleObj) {
+				var dm:Number=teleObj.massa * pers.throwDmagic * pers.allDManaMult;
+				if (dm > mana) return mana / dm;
+				else return 1;
+			}
+			return 0;
+		}
+		
+		// The object held by telekinesis, null if none
+		public function get teleObj():Obj {
+			return tele ? tele.held : null;
+		}
+		
+		//уронить левитируемый объект
+		public function dropTeleObj():void {
+			if (teleObj) {
+				tele.release();
+				GUIManager.reference.gui.setMana();
+			}
+		}
+		
+		// [Action with the active object while holding down the action key]
+		private function actAction():void {
+			if (actionObj) {
+				// Object too far away, measured to the object itself -- a unit's Interact keeps the position it had before the unit was placed
+				// Differs from vanilla, where that position was NaN, so walking away from a trap, trigger or charge never cancelled the action
+				if ((coordinates.X - actionObj.owner.coordinates.X) * (coordinates.X - actionObj.owner.coordinates.X) + (coordinates.Y - actionObj.owner.coordinates.Y) * (coordinates.Y - actionObj.owner.coordinates.Y) > World.w.actionDist) {
+					actionObj = null;
+				}
+			}
+			// Object within range
+			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist <= World.w.actionDist) {
+				actionReady = false;
+				
+				if ((pers.telemaster == 0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact == "comein")) && !loc.isLine(coordinates.X, coordinates.Y - boundingBox.height * 0.75, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight, loc.celObj)) {
+					GUIManager.reference.gui.infoText("noVisible", null, null, false);
+					return;
+				}
+				
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == E_Material.METAL) {
+					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight);
+					return;
+				}
+				
+				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action > 0) {
+					if (loc.celObj.inter.needSkill) {
+						loc.celObj.inter.unlock = pers.getSkillLevel(loc.celObj.inter.needSkill);
+					} 
+					
+					if (loc.celObj.inter.mine > 0) { // Trap or Mine 
+						loc.celObj.inter.unlock = pers.getLockTip(loc.celObj.inter.mineTip);
+						t_action = loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.mine, 3);
+						actionObj = loc.celObj.inter;
+					}
+					else if (loc.celObj.inter.lock > 0 && loc.celObj.inter.lockKey && invent.hasItem(loc.celObj.inter.lockKey)) {	// Open with key
+						loc.celObj.inter.unlock = 1;
+						t_action = 20;
+						actionObj = loc.celObj.inter;
+					}
+					else if (loc.celObj.inter.lock >= 100) {	// Lock is jammed
+						return;
+					}
+					else if (loc.celObj.inter.lock > 0) { // Lockpicking
+						if (loc.celObj.inter.lockTip == 0) {
+							return;
+						}
+
+						loc.celObj.inter.unlock = pers.getLockTip(loc.celObj.inter.lockTip);
+						loc.celObj.inter.master = pers.getLockMaster(loc.celObj.inter.lockTip);
+						t_action = loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.lock, loc.celObj.inter.lockTip);
+						actionObj = loc.celObj.inter;
+					}
+					else if (loc.celObj.inter.t_action) { // Timed action
+						t_action = loc.celObj.inter.t_action;
+						actionObj = loc.celObj.inter;
+						actionObj.beginAct();
+					}
+					else { // [Open immediately]
+						loc.celObj.inter.is_act = true;
+					}
+					
+					mt_action=t_action;
+					
+					if (mt_action <= 0) {
+						mt_action = 1;
+					}
+					
+					if (actionObj) {
+						actionObj.sound();
+					}
+				}
+			}
+		}
+
+		private function crackAction():void {
+			if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
+				if (loc.celObj.inter &&  loc.celObj.inter.needRuna(this)) {
+					loc.celObj.inter.useRuna(this);
+				}
+			}
+		}
+
+		private function chit():void {
+			if (World.w.chit == "fly") {
+				isFly =! isFly;
+			}
+
+			if (World.w.chit == "port") {
+				var tx:int = Math.round(World.w.celX / tileX) * tileX
+				var ty:int = Math.round(World.w.celY / tileY + 1) * tileY - 1;
+				
+				if (!loc.collisionUnit(tx, ty, _standingWidth, _standingHeight)) {
+					teleport(tx, ty);
+				}
+			}
+
+			if (World.w.chit == "emit") {
+				Emitter.emit(World.w.chitX, loc, World.w.celX, World.w.celY);
+			}
+		}
+		
+		// [Enable invulnerability, disable control]
+		public function controlOff():void {
+			ctr.clearAll();
+			ggControl = false;
+			dropTeleObj();
+			actionObj = null;
+			invulner = true;
+			isRun = false;
+			walk = E_Direction.NEUTRAL;
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = false;
+			}
+			
+			GUIManager.reference.pip.noAct = true;
+		}
+		
+		// [Return to normal mode]
+		public function controlOn():void {
+			if (pers.dead) {
+				return;
+			}
+			
+			invulner = false;
+			ggControl = true;
+			
+			if (currentWeapon) {
+				currentWeapon.vis.visible = true;
+			}
+			
+			GUIManager.reference.pip.noAct = false;
+		}
+		
+		public override function sit(turn:Boolean):void {
+			if (rat) {
+				return;
+			}
+			
+			super.sit(turn);
+		}
+		
+		override protected function control():void {
+			if (!ggControl) {
+				return;
+			}
+			
+			var keyLeft:Boolean = zaput ? ctr.keyRight : ctr.keyLeft;
+			var keyRight:Boolean = zaput ? ctr.keyLeft : ctr.keyRight;
+			
+			if (work == "lurk" || work == "unlurk" || work == "res") {
+				return;
+			}
+			
+			if (lurked) {
+				if (ctr.keyBeUp || ctr.keySit || ctr.keyJump) {
+					unlurk();
+					ctr.clearAll();
+					
+					return;
+				}
+				
+				if (keyLeft || keyRight) {
+					if (lurkTip == 1 || lurkTip == 3) {
+						if (keyLeft) {
+							storona = E_Direction.LEFT;
+						}
+						
+						if (keyRight) {
+							storona = E_Direction.RIGHT;
+						}
+					}
+					
+					return;
+				}
+			}
+			//--------------------- [Various actions] ---------------------------
+			
+			// [action]
+			if (ctr.keyAction && !rat) {
+				if (teleObj) {
+                    throwTele();
+                    ctr.keyAction = false;
+                }
+				else {
+                    if (sats.que.length > 0) {
+						sats.clearAll();
+					}
+                   
+				    actAction();
+                }
+			}
+			else {
+				actionReady = true;
+				actionObj = null;
+			}
+			
+			if (ctr.keyCrack && !ctr.keyAction && !loc.base && !rat) {
+				ctr.keyCrack = false;
+				crackAction();
+			}
+			
+			// [telekinesis]
+			if (ctr.keyTele && !ctr.keyAction && !loc.base && !rat) {
+				if (!teleReady) {
+					if (sats.que.length > 0) {
+						sats.clearAll();
+					}
+					
+					if (visSel) {
+						GUIManager.reference.gui.unshowSelector(0);
+					}
+					else {
+						actTele();
+					}
+					
+					teleReady = true;
+				}
+				
+				if (t_culd <= 0 && pers.portPoss && pers.spellsPoss && !World.w.alicorn) {
+					t_port++;
+				}
+			}
+			else {
+				if (teleReady) {
+					if (t_port >= pers.portTime && pers.portPoss && pers.spellsPoss && loc.portOn) {
+						actPort();
+					}
+					
+					teleReady = false;
+				}
+				
+				t_port = 0;
+			}
+			
+			// [flight]
+			if (ctr.keyFly) {
+				chit();
+				ctr.keyFly = false
+			}
+			
+			// [test function]
+			if (ctr.keyTest1) {
+				testFunction();
+				ctr.keyTest1 = false;
+			}
+			
+			// [explosives]
+			if (ctr.keyGrenad && !loc.base && !ctr.keyAttack && attackForever <= 0 && atkPoss && (atkWeapon == 0 || atkWeapon == 2)) {
+				if (sats.que.length > 0) {
+					sats.clearAll();
+				}
+				
+				if (throwWeapon) {
+					throwWeapon.attack();
+					spellDisact();
+					
+					if (throwWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
+						ctr.keyGrenad=false;
+					}
+				}
+				else {
+					ctr.keyGrenad=false;
+				}
+			}
+			
+			// [magic]
+			if (ctr.keyMagic && !loc.base && !ctr.keyAttack && attackForever <= 0 && atkPoss && (atkWeapon==0 || atkWeapon==3)) {
+				if (sats.que.length>0) {
+					sats.clearAll();
+				}
+				
+				if (magicWeapon) {
+					magicWeapon.attack();
+					spellDisact();
+					
+					if (magicWeapon.tip == Weapon.TYPE_EXPLOSIVES) {
+						ctr.keyMagic=false;
+					}
+				}
+				else {
+					ctr.keyMagic=false;
+				}
+			}
+			
+			//[spell]
+			if (ctr.keyDef && !rat) { 
+				if (sats.que.length > 0) {
+					sats.clearAll();
+				}
+				
+				if (World.w.alicorn) {
+					currentSpell = invent.equipment.getSpell("sp_mshit");
+				}
+				
+				if (currentSpell) {
+					if (!currentSpell.cast(World.w.celX, World.w.celY)) {
+						ctr.keyDef = false;
+					}
+					
+					if (!currentSpell.prod) {
+						ctr.keyDef = false;
+					}
+				}
+				else {
+					ctr.keyDef = false;
+				}
+			}
+			
+			for (var i:int = 1; i <= World.kolQS; i++) {
+				if (ctr["keySpell" + i]) {
+					if (invent.favorites.fav[World.kolHK * 2 + i] == null) {
+                        ctr["keySpell" + i] = false;
+                    }
+					else {
+                        if (sats.que.length > 0) {
+							sats.clearAll();
+						}
+                        
+						var sp:Spell = invent.equipment.getSpell(invent.favorites.fav[World.kolHK * 2 + i]);
+                        
+						if (sp) {
+                            if (!sp.cast(World.w.celX, World.w.celY)) {
+								ctr["keySpell" + i] = false;
+							}
+                           
+						    if (!sp.prod) {
+								ctr["keySpell" + i] = false;
+							}
+                        }
+						else {
+							ctr["keySpell" + i] = false;
+						}
+                    }
+				}
+			}
+			
+			//[satellite] (Pets)
+			if (ctr.keyPet) { 
+				k_pet++;
+				if (k_pet > 20) {
+					if (pet) {
+						pet.moveto(coordinates.X, coordinates.Y - 40, true);		//[review back]
+					}
+					
+					k_pet = 0;
+					ctr.keyPet = false;
+				}
+			}
+			else {
+				if (k_pet > 0) {				//[order]
+					if (pet) {
+						if (loc.celObj && loc.celObj is Unit && (loc.celObj as Unit).fraction != fraction) {
+							pet.atk((loc.celObj as Unit));
+						}
+						else {
+							pet.moveto(celX, celY);
+						}
+					}
+				}
+				
+				k_pet = 0;
+			}
+			
+			//[атака]
+			if ((ctr.keyAttack || autoAttack) && (!loc.base || visSel) && atkPoss && (atkWeapon == 0 || atkWeapon == 1)) {
+				if (visSel) {
+					GUIManager.reference.gui.unshowSelector(1);
+					ctr.keyAttack = false;
+				}
+				else if (ctr.keyTele) {
+					ctr.keyTele = false;
+					ctr.keyAttack = false;
+					t_port = 0;
+					spellDisact();
+				}
+				else if (currentWeapon && t_work <= 0) {
+					if (sats.que.length > 0) {
+						sats.clearAll();
+						ctr.keyAttack = false;
+					}
+					else {
+						weaponSkill = pers.weaponSkills[currentWeapon.skill];
+						
+						if (!currentWeapon.attack()) {
+							ctr.keyAttack = false;
+						}
+						
+						GUIManager.reference.gui.setWeapon();
+						spellDisact();
+					}
+				}
+			}
+			
+			// [recharge]
+			if (ctr.keyReload && currentWeapon && attackForever <= 0) {
+				if (t_reload >= 30) {
+					currentWeapon.unloadWeapon();
+					ctr.keyReload = false;
+				}
+				
+				if (currentWeapon.detonator()) {
+					ctr.keyReload = false;
+				}
+				
+				t_reload++;
+			}
+			else {
+				if (currentWeapon && t_reload > 0 && t_reload < 10) {
+					currentWeapon.initReload();
+				}
+				
+				t_reload = 0;
+			}
+			
+			// [kick]
+			if (ctr.keyPunch && World.w.alicorn) {
+				ctr.keyPunch = false;
+				alicornPort();
+			}
+			
+			if (ctr.keyPunch && !World.w.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !loc.base && !lurked && attackForever<=0 && atkPoss) {
+				(punchWeapon as WKick).kick = ctr.keyRun;
+				punchWeapon.attack();
+				spellDisact();
+				work = "punch";
+				t_work = 13;
+				ctr.keyPunch = false;
+			}
+			
+			if (ctr.keyPunch && rat) {
+				remEffect("potion_rat");
+				ctr.keyPunch = false;
+			}
+			
+			if (!rat) {
+			// [Change weapons]
+				if (t_work <= 0 && attackForever <= 0) {
+					for (var i:int = 1; i <= World.kolHK; i++) {
+						if (ctr["keyWeapon" + String(i)]) {
+							ctr["keyWeapon" + String(i)] = false;
+							itemInteraction.useFav(i + (ctr.keyRun ? World.kolHK : 0));
+						
+							if (visSel) {
+								GUIManager.reference.gui.unshowSelector(0);
+							}
+						
+							if (currentSpell) {
+								currentSpell.active = false;
+							}
+						
+							ctr.keyDef=ctr.keyAttack = false;
+						}
+					}
+				}
+				
+				if (ctr.keyScrDown && !autoAttack) {
+					GUIManager.reference.gui.showSelector(1, ctr.keyRun ? 1:0);
+					ctr.keyScrDown=ctr.keyScrUp = false;
+				}
+			
+				if (ctr.keyScrUp && !autoAttack) {
+					GUIManager.reference.gui.showSelector(-1, ctr.keyRun?1:0);
+					ctr.keyScrDown=ctr.keyScrUp = false;
+				}
+				
+				// [Items]
+				if (ctr.keyItemNext) {
+					itemInteraction.nextItem(1);
+					ctr.keyItemNext=ctr.keyItemPrev=false;
+				}
+				
+				if (ctr.keyItemPrev) {
+					itemInteraction.nextItem(-1);
+					ctr.keyItemNext=ctr.keyItemPrev=false;
+				}
+				
+				if (ctr.keyItem) {
+					itemInteraction.useItem();
+					ctr.keyItem=false;
+				}
+			
+				if (ctr.keyPot) {
+					itemInteraction.usePotion();
+					ctr.keyPot=false;
+				}
+				
+				if (ctr.keyMana) {
+					itemInteraction.usePotion("mana");
+					ctr.keyMana=false;
+				}
+			
+				if (ctr.keyArmor) {
+					armorAbil();
+					ctr.keyArmor=false;
+				}
+			}
+			
+			//--------------------- [movement] ---------------------------
+			
+			// [speed]
+			var accel1:Number = accel * pers.accelMult;
+			maxSpeed = walkSpeed;
+			
+			if (stay && ctr.keyAction && maxSpeed > 3) {
+				accel1 = accel * 0.4;
+				maxSpeed = 3;
+			}
+			
+			if (loc.sky) {
+				maxSpeed *= 3;
+			}
+			
+			isRun = ((possRun || stam > 200) && ctr.keyRun || (burningForcesRunOption && runForever > 0));
+			
+			if (h2o <= 0) {
+				isRun = false;
+			}
+			
+			if (isRun && stay) {
+				maxSpeed = runSpeed;
+			}
+			
+			if (isSit && stay) {
+				maxSpeed = sitSpeed;
+			}
+			
+			if (diagon != E_Direction.NEUTRAL) {
+				maxSpeed = walkSpeed * 0.75;
+			}
+			
+			if (isPlav) {
+				maxSpeed = plavSpeed * pers.speedPlavMult;
+			}
+			
+			if (maxSpeed > walkSpeed && currentWeapon && currentWeapon.massa >= 0.1 && pers.bigGunsSlow > 0) {
+				maxSpeed *= (1 - currentWeapon.massa * pers.bigGunsSlow);
+			}
+			
+			if (!stay) {
+				accel1 = 0.1 * accel;
+			}
+			
+			if (isPlav) {
+				accel1 = 0.3 * accel * pers.speedPlavMult;
+			}
+			
+			if (isFly) {
+				maxSpeed *= 1.3;
+				if (World.w.alicorn && ctr.keyRun && mana > 20) {
+					accel1 = accel;
+					maxSpeed = runSpeed * pers.alicornFlyMult;
+					if (loc.sky) maxSpeed *= 2;
+				}
+				else {
+					accel1 = 0.5 * accel;
+				}
+			}
+			
+			// If on ladder
+			if (isLaz != E_Direction.NEUTRAL) {
+				accel1 = 1.40 * accel;
+			}
+			
+			if (levit) {
+				maxSpeed = 1000;
+				accel1 = 0.30 * accel; 
+			}
+			
+			if (cryst) {
+				maxSpeed = sitSpeed;
+			}
+			
+			porog = 0;
+			porog_jump = 0;
+			
+			if ((isRun || ctr.keyBeUp) && jumpNumb == 0) {
+				porog_jump = 10;
+			}
+
+			// [acceleration]
+			// If not on a ladder
+			if (isLaz == E_Direction.NEUTRAL) {
+				if (keyLeft && !keyRight) {
+					storona = E_Direction.LEFT;
+				}
+				
+				if (!keyLeft && keyRight) {
+					storona = E_Direction.RIGHT;
+				}
+			}
+			
+			walk = E_Direction.NEUTRAL;
+			
+			// Move left
+			if (((keyLeft && !keyRight) || (burningForcesRunOption && runForever>0)) && storona == E_Direction.LEFT) {
+				porog = 20;
+				isTake = 40;
+				
+				if (storona == E_Direction.RIGHT && stay) {
+					storona = E_Direction.LEFT;
+				}
+				else if (velocity.X > -maxSpeed && (!ctr.keyRun || t_run>3)) {
+					velocity.X -= accel1;
+					if (velocity.X < -maxSpeed) velocity.X = -maxSpeed;
+				}
+				
+				walk = E_Direction.LEFT;
+				t_run++;
+			}
+			// Move right
+			else if (((!keyLeft && keyRight) || (burningForcesRunOption && runForever>0)) && storona == E_Direction.RIGHT) {
+				porog = 20;
+				isTake = 40;
+				
+				if (storona == E_Direction.LEFT && stay) {
+					storona = E_Direction.RIGHT;
+				}
+				else if (velocity.X < maxSpeed && (!ctr.keyRun || t_run > 3)) {
+					velocity.X += accel1;
+					if (velocity.X > maxSpeed) {
+						velocity.X = maxSpeed;
+					}
+					
+				}
+				
+				walk = E_Direction.RIGHT;
+				t_run++;
+			}
+			else {
+				t_run = 0;
+			}
+			
+			// [Jerk to the side]
+			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==E_Direction.RIGHT)) {
+				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && !rat) {
+					if (velocity.X < dash) {
+						velocity.X = dash;
+					}
+					
+					aJump = 2;
+					velocity.Y += dash_dy;
+					dash_t = dash_maxt;
+					jumpNumb = 2;
+					dJump = false;
+					stay = false;
+					jumpp = 0;
+					ctr.keyJump = false;
+					
+					if (inBattle) {
+						stam-=pers.stamRun*pers.stamDash*dstam;
+					}
+				}
+
+				ctr.keyDubRight = false;
+				ctr.keyDubLeft = false;
+				ctr.keyDash = false;
+			}
+			
+			if (ctr.keyDubLeft&&!zaput || ctr.keyDubRight&&zaput || ctr.keyDash&&(storona==E_Direction.LEFT)) {
+				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && !rat) {
+					if (velocity.X > -dash) {
+						velocity.X = -dash;
+					}
+
+					aJump=2;
+					velocity.Y+=dash_dy;
+					dash_t=dash_maxt;
+					jumpNumb=2;
+					dJump=false;
+					stay=false;
+					jumpp=0;
+					ctr.keyJump=false;
+
+					if (inBattle) {
+						stam-=pers.stamRun*pers.stamDash*dstam;
+					}
+				}
+				
+				ctr.keyDubLeft = false;
+				ctr.keyDubRight = false;
+				ctr.keyDash = false;
+			}
+			
+			// Jump
+			if (levit == 1) {
+				levit = 0;
+			}
+			
+			throu = (ctr.keyJump || !stay) && ctr.keySit || isPlav || kdash_t > 3 || pinok > 70;
+			
+			if (stay && !ctr.keyJump || isLaz != E_Direction.NEUTRAL) {
+				jumpp = maxjumpp;	// [while we are standing, the jump is fully charged]
+				dJump = false;
+				
+				// On ladder and not pressing left or right
+				if (isLaz != E_Direction.NEUTRAL && !keyLeft && !keyRight) {
+					jumpp = 0;
+				}
+				
+				jumpNumb = 0;
+				
+				if (dash_t <= 0) {
+					aJump = 0;
+				}
+			}
+			else if (!stay && !ctr.keyJump && pers.isDJ && jumpNumb <= 1 && loc.levitOn) {
+				jumpp = maxdjumpp;
+				dJump = true;
+			}
+			else if (!ctr.keyJump && jumpNumb==0) {
+				jumpNumb = 1;
+			}
+			
+			if (throu && stayPhis == 2) {
+				jumpp = 0;
+			}
+			
+			if (!stay && ctr.keyJump) {
+				jumpp--;
+			}
+			
+			if (!stay && !ctr.keyJump && !(pers.isDJ && loc.levitOn && jumpNumb<=1)) {
+				jumpp = 0;
+			}
+			
+			if (isPlav && (jumpp <= 2 || jumpNumb > 1)) {
+				jumpp = 5;
+				jumpNumb = 1;
+				dJump = false;
+			}
+			
+			dJump2 = false;
+			
+			if (ctr.keyJump && dash_t < dash_maxt - 15) {
+				isTake = 40;
+				t_stay = 0;
+				
+				if (!isJump) {
+					if (inBattle && stam > -100) {
+						stam -= pers.stamRun * pers.stamJump * dstam;
+					}
+
+					isJump = true;
+					jumpNumb++;
+				}
+				
+				if (stay && World.w.hardInv) {
+					itemInteraction.damageItems(0, false);
+				}
+				
+				if (isPlav) {
+					velocity.Y -= plavdy * pers.speedPlavMult;
+				}
+				else if (jumpp > 0) {
+					if (isSit) {
+						unsit();
+					}
+
+					if (!isSit) {
+						spellDisact();
+						
+						if (dJump && pers.ableFly && loc.levitOn) {
+							isFly=!isFly;
+							if (loc.sky) isFly=true;
+							t_fly=0;
+							ctr.keyJump=false;
+						}
+						else if (dJump) {		// [Double jump]
+							velocity.Y = -djumpdy * pers.jumpMult;
+							if (jumpp==maxdjumpp-1) {
+								Emitter.emit("quake", loc, coordinates.X, coordinates.Y);
+								if (keyLeft) velocity.X -= djumpdy * 0.5;
+								if (keyRight) velocity.X += djumpdy * 0.5;
+								if (velocity.X > 25) velocity.X = 25;
+								if (velocity.X < -25) velocity.X = -25;
+								jumpNumb = 3;
+							}
+							
+							dJump2=true;
+							
+							if (jumpp==1 && levitOn && loc.levitOn && !isPlav) {
+								jumpNumb=3;
+							}
+						}
+						else {
+							velocity.Y = -jumpdy * pers.jumpMult; // [Bounce]
+						}
+						
+						aJump = 1;
+					}
+				}
+				else if (pers.ableFly && loc.levitOn && !rat) {
+					// Stop climbing ladder
+					if (isLaz != E_Direction.NEUTRAL) {
+						isLaz = E_Direction.NEUTRAL;
+					}
+					
+					isFly =! isFly;
+					t_fly = 0;
+					ctr.keyJump = false;
+				}
+				else if (levitOn && loc.levitOn && jumpNumb>(pers.isDJ? 2 : 1) && !isPlav) {	// [Self-levitation, on the second press]
+					if (levit > 1) {
+						levit--;
+					}
+					else {
+						levit=1;
+						fracLevit=fraction;
+					}
+					
+					isFly = false;
+				}
+				
+				// We're on a ladder and idle
+				if (isLaz != E_Direction.NEUTRAL || stay) {
+					if (!keyLeft && keyRight && velocity.X < maxSpeed - accel1) {
+						velocity.X += accel1;
+					}
+				
+					if (keyLeft && !keyRight && velocity.X > -maxSpeed + accel1) {
+						velocity.X -= accel1;
+					}
+				}
+				
+				if (levit == 1 && mana <= 0) {
+					levit = 0;
+					jumpNumb = 2;
+				}
+			}
+			else {
+				isJump = false;
+			}
+
+			if (isPlav && ctr.keyBeUp && !ctr.keyJump) {
+				velocity.Y -= plavdy * pers.speedPlavMult;
+			}
+
+			//Self-levitation
+			if (levit) {
+				if (ctr.keyBeUp) {
+					velocity.Y -= levidy * 0.7;
+					levitup = true;
+					t_up = 10;
+				}
+				else {
+					levitup = false;
+				}
+
+				if (ctr.keySit) {
+					velocity.Y += levidy;
+				}
+			}
+			
+			if (isFly) {
+				if (ctr.keyBeUp) {
+					velocity.Y -= levidy;
+				}
+				
+				if (ctr.keySit) {
+					velocity.Y += levidy;
+				}
+			}
+			
+			// Swimming
+			// Sit down
+			if (ctr.keySit) {
+				porog = 0;
+				if (stay && diagon == E_Direction.NEUTRAL && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && !rat) {
+					// Check here for stairs
+					if (checkStairs(2)) {
+						t_stay = 0;
+						velocity.Y = lazSpeed;
+						throu = true;
+					}
+					// Check behind us for stairs
+					else if (stayPhis == 2 && checkStairs(2, -20 * storona.X)) {
+							t_stay = 0;
+							velocity.Y = lazSpeed;
+							throu = true;
+					}
+					// Check in front of us for stairs
+					else if (stayPhis == 2 && checkStairs(2, 20 * storona.X)) {
+							t_stay = 0;
+							velocity.Y = lazSpeed;
+							throu = true;
+					}
+					else if (stayPhis==1 && downp==1 || stayPhis==2 && downp==5){
+						sit(true);
+					}
+				}
+				// Climbing a ladder and there's stairs
+				else if (isLaz != E_Direction.NEUTRAL && !noStairs) {
+					if (checkStairs(2)) {
+						velocity.Y = lazSpeed * 1.5;
+					}
+				}
+				else if (isPlav) {
+					velocity.Y += plavdy * pers.speedPlavMult / 2;
+				}
+				
+				if (downp < 6) {
+					downp++;
+				}
+			}
+			else {
+				downp = 0;
+			}
+
+			//Stand up
+			if (isSit && ctr.keyBeUp && !ctr.keySit && !rat) {
+				t_up = 10;
+				unsit();
+			}
+			
+			if (isSit && !stay && !rat) {
+				unsit();
+			}
+
+			// [Raise weapon or hide]
+			weapUp = false;
+			if (stay && ctr.keyBeUp && !rat) {
+				if (isSit) {
+					t_up = 10;
+				}
+				
+				t_up++;
+				
+				if (t_up > 10) {
+					weapUp = true;
+				}
+			}
+			else {
+				if (t_up > 0 && t_up <= 7 && !keyLeft && !keyRight && !rat) {
+					lurk();
+				}
+				
+				if (!ctr.keyBeUp) {
+					t_up = 0;
+				}
+			}
+			
+			// [Quickly jump off the beam]
+			if (ctr.keyDubSit) {
+				if (stay && stayPhis == 2) {
+					t_stay = 0;
+					throu = true;
+					velocity.Y += 10;
+				}
+				
+				ctr.keyDubSit = false;
+			}
+			
+			if (loc.quake > 5) {
+				throu = true;
+			}
+			
+			// [Climb stairs]
+			if (!isSit && !isFly && ctr.keyBeUp && (!burningForcesRunOption || runForever <= 0) && loc.quake <= 5 && !cryst && isFetter <= 0 && !noStairs && pinok < 30 && !rat) {
+				if (checkStairs()) {
+					t_stay = 0;
+					velocity.Y = -lazSpeed;
+					t_up = 10;
+				}
+			}
+			
+			if ((burningForcesRunOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5) {
+				// [Stop climbing the ladder]
+				isLaz = E_Direction.NEUTRAL;
+			}
+
+			isUp = ctr.keyBeUp;
+			
+			if (rat) {
+				isSit = false;
+				boundingBox.width = ratX;
+				boundingBox.height = ratY;
+			}
+		}
+		
+		
+		//определить, видна ли ловушка
+		public function lookInvis(ncel:Unit, visParam:Number=-1):Boolean {
+			if (visParam == -1) {
+				visParam = pers.visiTrap;
+			}
+			
+			if (loc != ncel.loc) {
+				return false;
+			}
+			
+			return look(ncel, false, visParam) > 0;
+		}
+		
+		
+		// [look at the target point]
+		public function lineCel(rdx:int=0, rdy:int=0):int {
+			
+			// Constants
+			var ndx:Number = (celX + rdx - coordinates.X);
+			var ndy:Number = (celY + rdy - coordinates.Y + boundingBox.halfHeight);
+			var div:int = int(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta) + 1;
+			
+			// Defined outside of loop for optimization
+			var nx:Number;
+			var ny:Number;
+			var t:Tile;
+			
+			for (var i:int = 1; i < div; i++) {
+				nx = coordinates.X + ndx * i / div;
+				ny = coordinates.Y - boundingBox.halfHeight + ndy * i / div;
+				t = World.w.loc.getAbsTile(int(nx), int(ny));
+				
+				if (t.collision == 1 && t.boundingBox.intersectsPoint(nx, ny)) {
+					celX = nx;
+					celY = ny;
+					return 0
+				}
+			}
+			
+			return 1;
+		}
+		
+		private function lurk():void {
+			lurkTip = 0;
+			if (stay && !isSit && velocity.X < 5 && velocity.X > -5 && stayPhis >= 1 && work == "") {
+				lurkBox = null;
+				for each (var b:Box in loc.objs) {
+					if (b.lurk > lurkTip && coordinates.X > b.boundingBox.left && coordinates.X < b.boundingBox.right && coordinates.Y - 10 > b.boundingBox.top && coordinates.Y - 10 < b.boundingBox.bottom) {
+						lurkTip=b.lurk;
+						lurkBox=b;
+					}
+				}
+				
+				if (lurkBox) {
+					lurkX = coordinates.X;
+					velocity.X = 0;
+					t_work = 20;
+					work = "lurk";
+					lurked = true;
+
+					if (lurkBox.lurk == 2) {
+						if (coordinates.X > lurkBox.coordinates.X) {
+							storona = E_Direction.RIGHT;
+							lurkX = lurkBox.boundingBox.right - 10;
+						}
+						else {
+							storona = E_Direction.LEFT;
+							lurkX = lurkBox.boundingBox.left + 10;
+						}
+					}
+					else {
+						lurkX = lurkBox.coordinates.X;
+					}
+
+				}
+				else if (loc.getAbsTile(coordinates.X - 20, coordinates.Y - 10).definition.hidingSpot && loc.getAbsTile(coordinates.X + 20, coordinates.Y - 10).definition.hidingSpot) {
+					lurkTip = 1;
+					lurkX = Math.round(coordinates.X / tileX) * tileX;
+					velocity.X = 0;
+					t_work = 20;
+					work = "lurk";
+					lurked = true;
+				}
+				else {
+					armorAbil(); //включить особые свойства брони
+				}
+			}
+		}
+		
+		private function unlurk():void {
+			if (lurked && stay) {
+				t_work = 10;
+				work = "unlurk";
+			}
+
+			lurked = false;
+		}
+
+//**************************************************************************************************************************
+//
+//				Effects and Skills
+//
+//**************************************************************************************************************************
+		
+		// Установить зависимости
+		public function setAddictions():void {
+			for (var ad in pers.addictions) {
+				if (pers.addictions[ad]>=pers.ad1) {
+					var eff:Effect=addEffect(ad);
+					
+					if (pers.addictions[ad]>=pers.ad2) {
+						eff.lvl=2;
+					}
+					
+					if (pers.addictions[ad]>=pers.ad3) {
+						eff.lvl=3;
+					}
+					
+					eff.forever=true;
+				}
+			}
+
+			if (GameContainer.reference.game.triggers["curse"]>0) {
+				addEffect("curse");
+			}
+		}
+
+		private function endAllEffect():void {
+			if (effects.length>0) {
+				for each (var eff in effects) {
+					eff.unsetEff();
+				}
+
+				effects = [];
+			}
+		}
+		
+		private function clearAddictions():void {
+			for (var ad in pers.addictions) {
+				pers.addictions[ad] = 0;
+			}
+		}
+
+//**************************************************************************************************************************
+//
+//				Damage and Healing
+//
+//**************************************************************************************************************************
+
+		//взгляд другого юнита, увеличивающий собственное значение видимости героя obs
+		//оно увеличивается в зависимости от соотношения скрытности героя и наблюдательности врага
+		//nlook - базовое значение, на которое увеличивается obs, зависит от расстояния до врага и параметров видимости
+		//nobs - наблюдательность врага. если она не передаётся, то рассчёт соотношения скрытности героя и наблюдательности врага не производится
+		public function observation(nlook:Number, nobs:Number=-1000):Boolean {
+			var nsneak:Number = sneak - demask / 20;
+			
+			if (nsneak < 0) nsneak = 0;
+			
+			if (nobs > -1000) {
+				if (nobs>nsneak) {
+					nlook*=(1+(nobs-nsneak)*0.2);
+				}
+				else if (nobs<nsneak) {
+					nlook/=(1-(nobs-nsneak)*0.3);
+				}
+			}
+			
+			nlook*=pers.visiMult*stealthMult;
+			
+			if (lurked) nlook-=pers.sneakLurk;
+			
+			if (isSit) nlook-=pers.sneakLurk/5;
+			
+			if (nlook<0) nlook=0;
+			
+			obs+=nlook;
+			
+			if (nlook>0) isObs=30;
+			
+			if (obs>maxObs*2) obs=maxObs*2;
+			
+			return obs>=maxObs;
+		}
+
+		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true):void {
+			if (hl==0) return;
+			
+			if (tip==0) {				//мгновенное лечение
+				if (hl>maxhp-rad-hp) {
+					hl=maxhp-rad-hp;
+					hp=maxhp-rad;
+				}
+				else {
+					hp+=hl;
+				}
+			}
+			else if (tip==1) {	//лечение зельями
+				healhp+=hl;
+			}
+			else if (tip==2) {	//лечение радиации
+				rad-=hl;
+				if (rad<0) rad=0;
+			}
+			else if (tip==3) {	//порезов
+				cut-=hl;
+				if (cut<0) cut=0;
+			}
+			else if (tip==4) {	//яда
+				if (hl>0) {
+					poison-=hl;
+					if (poison<0) poison=0;
+				}
+				else {
+					poison-=hl;
+				}
+			}
+			
+			if (ismess && (sost==1 || sost==2) && showNumbs && hl > 0.5) {
+				numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:((tip == 2)? "-" : "+") + Math.round(hl), frame:((tip == 2)? 7 : 4), rx:20, ry:20});
+			}
+			
+			GUIManager.reference.gui.setHp();
+		}
+		
+		public override function udarUnit(un:Unit, mult:Number=1):Boolean {
+			if (super.udarUnit(un, mult)) {
+				if (un.radDamage) {
+					drad2 = un.radDamage;
+				}
+				
+				return true;
+			}
+
+			return false;
+		}
+		
+		//урон от радиации и прочий урон на расстоянии
+		public function raddamage(koef:Number, dam:Number, tip:int=0):void {
+			if (t_nogas > 0) return;
+			
+			if (tip == 0) {
+				GameContainer.reference.gg.drad += dam * koef;
+			}
+			else if (this["ddam" + tip] != null) {
+				if (koef < 0.25) {
+					koef = koef * 4;
+				}
+				else {
+					koef = 1;
+				}
+				
+				this["ddam" + tip] += dam * koef;
+			}
+		}
+		
+		public override function damage(dam:Number, tip:String, bul:Bullet=null, tt:Boolean=false):Number {
+			if (bul && bul.weap && bul.weap.dopEffect=="psy") {
+				if (isrnd(0.33)) addEffect("horror");
+				else if (isrnd()) addEffect("vote");
+				else  addEffect("disorient");
+			}
+			
+			var dhp:Number = hp;
+			
+			if (loc.train || loc.base) return 0;
+			
+			if (tip== E_Resistances.DAM_EMP && dam>30 && pers.pipEmpVulner>0) {
+				pipOff+=Math.round(dam*pers.pipEmpVulner);
+				
+				if (sats.que.length>0) sats.clearAll();
+				
+				GUIManager.reference.gui.allOff();
+			}
+			
+			if (cryst && tip != E_Resistances.DAM_BLEED && tip!= E_Resistances.DAM_POISON && tip != E_Resistances.DAM_INTERNAL) {
+				dam*=5/spellPower;
+				mana-=dam;
+			
+				if (mana<=0) {
+					cryst=false;
+					spellDisact();
+				}
+				
+				pers.manaDamage(dam*0.1);
+				dmana=0;
+				
+				return 0;
+			}
+			
+			if (currentArmor && !World.w.godMode) {
+				ArmorManager.reference.damage(currentArmor, dam * pers.armorVulner, tip);
+			}
+			
+			if (tip != E_Resistances.DAM_BLEED && tip != E_Resistances.DAM_POISON && tip != E_Resistances.DAM_INTERNAL && tip != E_Resistances.DAM_PINKCLOUD) {
+				pinok += dam / maxhp * 200 * knocked;
+				
+				//повреждение инвентаря
+				if (!tt && World.w.hardInv && !World.w.alicorn) {
+					itemInteraction.damageItems(dam);
+				}
+			}
+			
+			if (pinok > 100) {
+				pinok = 100;
+			}
+			
+			if (pinok > 60 && levit == 1) {
+				levit = 0;
+				ctr.keyJump = false;
+			}
+			
+			if (pinok > 60 && teleObj) {
+				dropTeleObj();
+			}
+			
+			if (pinok > 30) {
+				isLaz = E_Direction.NEUTRAL;
+			}
+			
+			var pdam:Number = super.damage(dam, tip, bul, tt);
+			
+			if (dhp / maxhp >= 0.20 && hp / maxhp < 0.20) {
+				GUIManager.reference.gui.critHP();
+			}
+			
+			if (pdam/maxhp>0.1 && isrnd(pdam/maxhp)) {
+				replic("dam");
+			}
+			
+			if (World.w.godMode) {
+				hp=dhp;
+			}
+			else if (!World.w.alicorn) {
+				pers.damage(pdam, tip);
+				pers.bloodDamage(pdam, tip);
+			}
+			
+			return pdam;
+		}
+		
+		public function electroDamage(dam:Number=-1, nx:Number = -9999, ny:Number = -9999):void {
+			if (dam < 0) {
+				dam = loc.electroDam;
+			}
+			
+			if (pinok > 0) {
+				dam *= 2;
+			}
+			
+			if (pers.potShad == 0) {
+				damage(dam, E_Resistances.DAM_ELECTRIC, null, true);
+			}
+			else {
+				damage(dam, E_Resistances.DAM_INTERNAL, null, true);
+				pinok = 90;
+			}
+			
+			Sound.ps("electro", coordinates.X, coordinates.Y);
+			
+			if (nx != -9999 && ny != -9999) {
+				Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:nx, cely:ny});
+			}
+		}
+		
+		public override function udarBox(un:Box):int {
+			var res:int = super.udarBox(un);
+			
+			if (res==2 && loc.electroDam && un.mat == E_Material.METAL) {
+				electroDamage(loc.electroDam, un.coordinates.X, un.coordinates.Y - un.boundingBox.halfHeight);
+			}
+			
+			return res;
+		}
+		
+
+		public override function die(sposob:int = 0):void {
+			//реанимация
+			if (sost > 1 || World.w.godMode && sposob >= 0) {
+				return;
+			}
+			
+			if (sposob >= 0) {
+				if (pers.lastCh > 0) {
+					hp = 1;
+					heal(pers.lastCh * 0.10, 0, false);
+					heal(pers.lastCh * 0.90, 1, false);
+					remEffect("potion_chance");
+					addEffect("post_chance");
+					return;
+				}
+				
+				if (pers.reanimHp > 0 && !noReanim) {
+					hp = 0;
+					heal(pers.reanimHp);
+					addEffect("reanim");
+					return;
+				}
+				
+				if (sposob < 10 && sost == 1) {
+					pers.damage(0, "pierce", true);
+				}
+			}
+			
+			controlOff();
+			GUIManager.reference.gui.unshowSelector();
+			
+			if (sost < 3) {
+				sost = 2;
+			}
+			
+			if (sposob >= 10) {
+				sost = 3;
+			}
+			
+			isLaz = E_Direction.NEUTRAL;
+			levit = 0;
+			isFly = false;
+			t_port = 0;
+			healhp = 0;
+			shithp = 0;
+			
+			if (work == "change") {
+				changeWeaponNow(1);
+				changeWeaponNow(2);
+			}
+			
+			walk = E_Direction.NEUTRAL;
+			t_work = 205;
+			work = "die";
+			
+			if (pers.hardcore && sposob>=0) {
+				pers.dead=true;
+				World.w.saveGame(-2);
+				
+				if (sposob==10) {
+					GUIManager.reference.gui.messText("hardDie2", pers.persName, false, false, 10000);
+				}
+				else {
+					GUIManager.reference.gui.messText("hardDie", pers.persName, false, false, 10000);
+				}
+				
+				Sound.playMusic("harddie", 1);
+			}
+			else {
+				World.w.startDeath(DYING_FRAMES);
+			}
+		}
+		
+		//восстановиться после смерти
+		public function resurect():void {
+			lurked = false;
+			sost = 1;
+			sit(false);
+			
+			if (rad > maxhp - 40) {
+				rad = maxhp - 40;
+			}
+			
+			if (rad < 0) {
+				rad = 0;
+			}
+			
+			if (hp <= 0) {
+				hp = 0;
+				heal(Math.min(100, maxhp * 0.50));
+				cut = 0;
+				poison = 0;
+				pers.addPerk("dead");
+			}
+			
+			if (pers.manaHP < 50) {
+				pers.heal(Math.min(50, 50 - pers.manaHP), 6);
+			}
+			
+			t_work		= 100;
+			t_nogas		= 250;
+			animOff		= false;
+			work		= "res";
+			mana		= 1000;
+			h2o			= 1000;
+			stam		= 1000;
+			drad2		= 0;
+			possRun		= true;
+			
+			if (pipOff > 0) {
+				GUIManager.reference.gui.allOn();
+				pipOff = 0;
+			}
+			
+			endAllEffect();
+			setAddictions();
+			pers.setParameters();
+			
+			if (pet && pet.sost == 4) {
+				noPet = 0;
+				
+				if (pet.optAutores) {
+					pet.resurrect();
+				}
+			}
+			
+			if (armorEffect) {
+				armorEffect.unsetEff(true, false, true);
+			}
+			
+			if (currentArmor) {
+				currentArmor.abilActive = false;
+			}
+			
+			vis.visible = true;
+		}
+		
+//**************************************************************************************************************************
+//
+//				Weapons and Armor
+//
+//**************************************************************************************************************************
+		
+		// [gift cold weapon reached the goal]
+		public override function setWeaponPos(tip:String = "internal"):void {
+			if (weaponKrep == 0) {			//телекинез
+				if (storona == E_Direction.RIGHT && celX > boundingBox.right || storona == E_Direction.LEFT && celX < boundingBox.left) {
+					weaponX = coordinates.X + boundingBox.width * storona.X;
+				}
+				else {
+					weaponX = coordinates.X;
+				}
+				
+				if (isLaz != E_Direction.NEUTRAL) {
+					weaponX = coordinates.X;
+				}
+				
+				if (loc.getAbsTile(weaponX, weaponY).collision == 1 || loc.getAbsTile(weaponX + storona.X * 15, weaponY).collision == 1) {
+					weaponX = coordinates.X;
+				}
+				
+				if (tip == Weapon.TYPE_MELEE) {
+					weaponY = coordinates.Y - boundingBox.height * 0.40;
+				}
+				else {
+					weaponY = coordinates.Y - boundingBox.height * 0.70;
+				}
+				
+				if (stay && weapUp) {
+					if (loc.getTile(int(weaponX / tileX), int((weaponY - 40) / tileY)).collision != 1) {
+						weaponY -= 40;
+					}
+				}
+			}
+			else {
+				super.setWeaponPos(tip);
+			}
+			
+			if (work == "change" && t_work > changeWeaponTime3 && tip != Weapon.TYPE_MAGIC) {
+					weaponX = coordinates.X;
+					weaponY = coordinates.Y - boundingBox.height * 0.50;
+			}
+			
+			try {
+				var p:Point = new Point(vis.osn.body.head.morda.konec.x, vis.osn.body.head.morda.konec.y);
+				p = vis.osn.body.head.morda.localToGlobal(p);
+				p = vis.parent.globalToLocal(p);
+				magicX = p.x;
+				magicY = p.y;
+				
+				if (loc.getAbsTile(magicX, magicY).collision == 1) {
+					if (isSit) {
+						magicY = coordinates.Y - 35;
+					}
+					else {
+						magicY = coordinates.Y - 75;
+					}
+				}
+			}
+			catch (err) {
+				trace("ERROR: (00:E)");
+				magicX = coordinates.X;
+				magicY = coordinates.Y - boundingBox.halfHeight;
+			}
+		}
+		
+		
+		// [Changing weapons by number key or ID]
+		public function changeWeapon(nid:String, moment:Boolean=false):void {
+			var nw:Weapon;
+			
+			if (sats && sats.que.length>0) {
+				sats.clearAll();
+			}
+			
+			if (nid == "not") {
+				nw = null;
+			}
+			else if (nid==null || nid=="" || attackForever>0 || atkPoss==0) {
+				return;
+			}
+			else {
+				if (currentWeapon && nid==currentWeapon.id) {
+					nw = null;	
+				}
+				else {
+					nw = invent.equipment.getWeapon(nid);
+				}
+			}
+			
+			if (nw is Weapon) {
+				if (nw.respect == Weapon.WEP_LOCKED || nw.alicorn && !World.w.alicorn) {
+					if (nw.tip == Weapon.TYPE_MAGIC) {
+						GUIManager.reference.gui.infoText("disSpell",null,null,false);
+					}
+					else {
+						GUIManager.reference.gui.infoText("disWeapon",null,null,false);
+					}
+					return;
+				}
+			
+				if (nw.spell) {
+					if (nw.respect == Weapon.WEP_INACTIVE) {
+						nw.respect = Weapon.WEP_ACTIVE;
+					}
+					itemInteraction.useItem(nid);
+					return;
+				}
+				
+				if (World.w.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
+					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) {
+						GUIManager.reference.gui.infoText("weaponSkillLevel",null,null,false);
+					}
+				}
+			}
+			
+			if (moment) {
+				newWeapon = nw;
+				changeWeaponNow(1);
+				changeWeaponNow(2);
+			}
+			else {
+				work = "change";
+				t_work = changeWeaponTime1;
+				newWeapon = nw;
+			}
+		}
+		
+		public function changePaintWeapon(npaint:String, ncolor:uint, nblend:String=null):void {
+			(paintWeapon as WPaint).setPaint(npaint, ncolor, nblend);
+			
+			if (sats && sats.que.length>0) {
+				sats.clearAll();
+			}
+			
+			newWeapon = paintWeapon;
+			work = "change";
+			t_work = changeWeaponTime1;
+		}
+		
+		// [Direct replacement of weapons]
+		private function changeWeaponNow(st:int):void {
+			vision = 1;
+			
+			if (st == 1) {
+				if (currentWeapon) {
+					if (currentWeapon.tip != Weapon.TYPE_MAGIC || newWeapon && newWeapon.tip == Weapon.TYPE_MAGIC) {
+						currentWeapon.remVisual();
+					}
+				}				
+			
+				currentWeapon = null;
+				childObjs[0] = null;
+			}
+			
+			if (st == 2 && currentWeapon == null) {
+				currentWeapon = newWeapon;
+				childObjs[0] = currentWeapon;
+				
+				if (currentWeapon) {
+					if (currentWeapon.respect == Weapon.WEP_INACTIVE) {
+						currentWeapon.respect = Weapon.WEP_ACTIVE;
+					}
+
+					// [The last explosive or spell used is thrown/cast with their own keys if none are in the favorites]
+					if (currentWeapon.tip == Weapon.TYPE_EXPLOSIVES && invent.favorites.fav[Favorites.CELL_THROW] == null) {
+						throwWeapon = currentWeapon;
+					}
+
+					if (currentWeapon.tip == Weapon.TYPE_MAGIC && invent.favorites.fav[Favorites.CELL_MAGIC] == null) {
+						magicWeapon = currentWeapon;
+					}
+					
+					currentWeapon.addVisual();
+					currentWeapon.setNull();
+					currentWeapon.setPers(this,pers);
+					weaponLevit();
+				}
+			}
+			
+			if (currentWeapon) {
+				vision=currentWeapon.visionMult;
+			}
+			
+			GUIManager.reference.gui.setWeapon();
+		}
+		
+		// [Return the required amount of ammunition from inventory, or as much as you have]
+		// [Return -1 if there is not enough for even 1 charge]
+		public function getInvAmmo(ammoId:String, need:int=1, needmin:int=1, minus:Boolean=false):int {
+			if (invent == null || invent.getQuantity(ammoId) < needmin) {
+				return -1;
+			}
+			
+			var res:int = 0;
+			
+			if (invent.getQuantity(ammoId) < need) {
+				res = invent.getQuantity(ammoId);
+				if (minus) {
+					invent.setQuantity(ammoId, 0);
+				}
+			}
+			else {
+				res=need;
+				if (minus) {
+					invent.decreaseQuantity(ammoId, need);
+				}
+			}
+			
+			return res;
+		}
+		
+		public function changeArmor (nid:String="", forced:Boolean=false):Boolean {
+			if (World.w.alicorn && nid!="" && !forced) {
+				GUIManager.reference.gui.infoText("alicornNot",null,null,false);
+				return false;
+			}
+			
+			if (World.w.t_battle>0 && nid!="off") {
+				GUIManager.reference.gui.infoText("noChArmor",null,null,false);
+				return false;
+			}
+			
+			var tipArmor:int = E_ArmorTypes.ARMOR;
+			var clo:int = 0;
+			
+			if (invent.equipment.hasArmor(nid)) {
+				var arm:Armor = invent.equipment.getArmor(nid);
+				tipArmor = arm.tip;
+				clo = arm.clo;
+				
+				// [Armor left on the weapon stand has to be taken back first]
+				if (arm.stored) {
+					GUIManager.reference.gui.infoText("disArmor", null, null, false);
+					return false;
+				}
+			}
+
+			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == E_ArmorTypes.ARMOR) {
+				if (clo == 0 && nid != prevArmor) {
+					GUIManager.reference.gui.infoText("noChArmor2", null, null, false);
+					return false;
+				}
+			}
+
+			if (nid == "off") {
+				GUIManager.reference.gui.infoText("brokenArmor");
+				nid = "";
+			}
+
+			if (tipArmor == E_ArmorTypes.ARMOR) {		//броня
+				if (currentArmor) {
+					currentArmor.active = false;
+					
+					if (armorEffect) {
+						armorEffect.unsetEff(true, false, true);
+					}
+					
+					armorEffect = null;
+					currentArmor.abilActive = false;
+				}
+
+				if (nid == "" ||  currentArmor && currentArmor.id == nid) {
+					currentArmor = null;
+				}
+				else if (invent.equipment.hasArmor(nid)) {
+					if (invent.equipment.getArmor(nid).hp > 0) {
+						currentArmor = invent.equipment.getArmor(nid);
+					}
+					else {
+						GUIManager.reference.gui.infoText("brokenArmor");
+					}
+				}
+
+				if (currentArmor) {
+					Appear.ggArmorId = currentArmor.id;
+					Appear.hideMane = currentArmor.hideMane;
+					currentArmor.owner = this;
+					currentArmor.active = true;
+					currentArmor.abilActive = false;
+					currentArmor.mana = 0;
+					
+					if (currentArmor.clo == 0) {
+						prevArmor = currentArmor.id;
+					}
+				}
+				else {
+					Appear.ggArmorId = "";
+					Appear.hideMane = false;
+				}
+
+				refreshVis();
+				isFly = false;
+			}
+			else if (tipArmor == E_ArmorTypes.AMULET) {	// Amulet
+				if (currentAmul) {
+					currentAmul.active=false;
+				}
+
+				if (currentAmul && currentAmul.id == nid) {
+					currentAmul = null;
+				}
+				else {
+					currentAmul = invent.equipment.getArmor(nid);
+				}
+				
+				if (currentAmul) {
+					currentAmul.owner = this;
+					currentAmul.active = true;
+				}
+			}
+
+			pers.setParameters();
+			
+			return true;
+		}
+		
+		public function changeSpell (nid:String = "", inf:Boolean = true):void {
+			if (currentSpell == invent.equipment.getSpell(nid)) {
+				currentSpell = null;
+			}
+			else {
+				currentSpell = invent.equipment.getSpell(nid);
+			}
+			
+			if (inf && currentSpell) {
+				GUIManager.reference.gui.infoText("usedSpell", currentSpell.nazv);
+			}
+		}
+		
+		public override function setPunchWeaponPos(w:WPunch):void {
+			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? E_Direction.RIGHT.X : E_Direction.LEFT.X);
+			w.coordinates.Y = coordinates.Y - boundingBox.halfHeight;
+			w.rot = (celX > coordinates.X) ? 0 : ONE_PI;
+		}
+		
+		//особая функция брони
+		public function armorAbil():void {
+			if (currentArmor == null || currentArmor.abil == null) {
+				return;
+			}
+			
+			if (currentArmor.abilActive) {
+                if (armorEffect) {
+					armorEffect.unsetEff(true, false, true);
+				}
+               
+			    armorEffect = null;
+                currentArmor.abilActive = false;
+            }
+			else {
+                if (currentArmor.dmana_act < currentArmor.mana) {
+                    currentArmor.mana -= currentArmor.dmana_act;
+                    armorEffect = addEffect(currentArmor.abil);
+                    currentArmor.abilActive = true;
+                }
+            }
+		}
+		
+		// [summoning and recalling a companion, f = true - forced]
+		public function callPet(npet:String, f:Boolean=false):void {
+			if (noPet > 0 && !f) {
+				GUIManager.reference.gui.infoText("petNot", null, null, false);
+				return;
+			}
+			
+			if (noPet2 > 0 && !f || !atkPoss || World.w.alicorn) {
+				GUIManager.reference.gui.infoText("petNot2", null, null, false);
+				return;
+			}
+			
+			if (npet=="owl" && currentPet=="owl" && pets[npet] && pets[npet].hp<=0 && !f) {
+				GUIManager.reference.gui.infoText("petNot3",null,null,false);
+				return;
+			}
+			
+			noPet2 = 5 * 30;
+			
+			if (pet) {
+				GUIManager.reference.gui.infoText("petRecall",pet.nazv);
+				pet.recall();
+				pet = null;
+				childObjs[2] = null;
+			}
+			
+			retPet = "";
+			
+			if (currentPet == npet) {
+				currentPet="";
+			}
+			else {
+				if (loc.petOn) {
+                    currentPet = npet;
+                    pet = pets[currentPet];
+                    childObjs[2] = pet;
+                    pet.coordinates.X = coordinates.X;
+                    pet.coordinates.Y = coordinates.Y - 20;
+                    pet.loc = loc;
+                    pet.call();
+                    GUIManager.reference.gui.infoText("petCall", pet.nazv);
+                }
+				else {
+                    GUIManager.reference.gui.infoText("noPetCall", null, null, false);
+                }
+			}
+			
+			GUIManager.reference.gui.setPet();
+		}
+		
+		public function uncallPet(ret:Boolean=false):void {
+			if (pet) {
+				if (ret && currentPet!="moon") {
+					retPet=currentPet;
+				}
+				
+				GUIManager.reference.gui.infoText("petRecall",pet.nazv);
+				pet.recall();
+				pet=null;
+				childObjs[2]=null;
+				currentPet="";
+			}
+			GUIManager.reference.gui.setPet();
+		}
+		
+		public function alicornOn(eff:Boolean=true):void {
+			World.w.alicorn = true;
+
+			if (armorEffect) {
+				armorEffect.unsetEff(true, false, true);
+			}
+
+			changeArmor("", true);
+			
+			itemInteraction.addWeapon("a_melee");
+			itemInteraction.addWeapon("a_fire");
+			itemInteraction.addWeapon("a_energ");
+			itemInteraction.addWeapon("a_expl");
+			itemInteraction.addWeapon("a_magic");
+
+			uncallPet();
+			clearAddictions();
+			endAllEffect();
+			pers.healAll();
+			
+			rad = 0;
+			cut = 0;
+			poison = 0;
+			
+			pers.setParameters();
+
+			if (eff) {
+				newPart("redray", 40);
+				Sound.ps("al_armor", coordinates.X, coordinates.Y);
+			}
+
+			refreshVis();
+		}
+		
+		public function alicornOff():void {
+			World.w.alicorn = false;
+			isFly = false;
+			changeWeapon("not", true);
+			pers.setParameters();
+			refreshVis();
+		}
+		
+		public function ratOn():void {
+			unlurk();
+			uncallPet(true);
+			changeWeapon("not");
+			isSit = false;
+			isLaz = E_Direction.NEUTRAL;
+			levit = 0;
+			isFly = false;
+			
+			dropTeleObj();
+			
+			actionObj = null;
+			boundingBox.width = ratX;
+			boundingBox.height = ratY;
+			boundingBox.center(coordinates);
+			vis.osn.visible = false;
+			vis.rat.visible = true;
+			
+			newPart("black", 30);
+			
+			rat = true;
+		}
+
+		public function ratOff():Boolean {
+			boundingBox.width = _standingWidth;
+			boundingBox.height = _standingHeight;
+			boundingBox.center(coordinates);
+			
+			if (collisionAll()) {
+				if (collisionAll(15)) {
+					if (collisionAll(-15)) {
+						boundingBox.width = ratX;
+						boundingBox.height = ratY;
+						boundingBox.center(coordinates);
+						
+						return false;
+					}
+					else {
+						coordinates.X -= 15;
+						boundingBox.center(coordinates);
+					}
+				}
+				else {
+					coordinates.X += 15;
+					boundingBox.center(coordinates);
+				}
+			}
+			
+			vis.osn.visible = true;
+			vis.rat.visible = false;
+			newPart("black", 30);
+			rat = false;
+			
+			return true;
+		}
+		
+		
+//**************************************************************************************************************************
+//
+//				Animation and Graphics
+//
+//**************************************************************************************************************************
+		
+		public function anim(dey:String = null, ok:Boolean = false):void {
+			if (dey == null || dey == "") {
+				animOff=false;
+			
+				return;
+			}
+			
+			vis.osn.gotoAndStop(dey);
+			var f:int = vis.osn.body.totalFrames;
+			
+			if (ok) {
+				animOff = true;
+				vis.osn.body.gotoAndStop(f);
+			} 
+			else {
+				animOff = false;
+				work = dey;
+				t_work = f;
+			}
+			
+			otherVisual();
+		}
+		
+		private function chSloy(n:int):void {
+			if (sloy == n) {
+				return;
+			}
+		
+			remVisual();
+			sloy = n;
+			addVisual();
+		}
+		
+		public function setFilters():void {
+			var arr:Array = [];
+			
+			if (f_levit) {
+				if (levit >= 1 && fracLevit!=fraction && levitFilter2) {
+					arr = [levitFilter2];
+				}
+				else if (levit == 1 && fracLevit == fraction || dJump && levit < 2) {
+					arr = [levitFilter1];
+				}
+
+			}
+			
+			if (f_die) {
+				arr.push(dieFilter);
+			}
+			
+			if (f_shad) {
+				arr.push(shadowFilter);
+			}
+			
+			if (f_dash) {
+				arr.push(dashFilter);
+			}
+			
+			if (f_stealth) {
+				arr.push(stealthFilter);
+			}
+
+			if (f_stealth) {
+				vis.alpha = 0.50;
+			}
+			else {
+				vis.alpha = 1.00;
+			}
+
+			if (f_inv) {
+				arr.push(invulnerFilter1, invulnerFilter2);
+			}
+			
+			vis.osn.filters = arr;
+		}
+
+//##########################################################################################################
+//		Player Unit cheatsheet for "vis.osn", the main player sprite.
+//		OSN Animation states have both a frame number and alias.
+//		//	Num	:	Alias
+//		//###################
+//		//	 1	:	Stay
+//		//	 2	:	Trot
+//		//	 3	:	Trot Up
+//		//	 4	:	Trot Down
+//		//	 5	:	Run
+//		//	 6	:	Polz (Crawl)
+//		//	 7	:	Walk
+//		//	 8	:	Jump
+//		//	 9	:	Sitjump (Jump from crouched)
+//		//	10	:	Laz (Climb Ladder)
+//		//	11	:	Plav (Swim)
+//		//	12	:	Punch
+//		//	13	:	Kick
+//		//	14	:	Die
+//		//	15	:	Die (Alicorn version)
+//		//	16	:	Derg (Panic, running on fire)
+//		//	17	:	TextParser (Ressurect, stands up from ground)
+//		//	18	:	Lurk1
+//		//	19	:	Lurk2 (Hide behind object in background)
+//		//	20	:	Lurk3 (Hop behind box)
+//		//	21	:	Pinok (???)
+//		//	22	:	Levit (Levitation effect)
+//		//	23	:	Free1 (Idle animation)
+//		//	24	:	Free2 (Idle animation)
+//		//	25	:	Free3 (Idle animation)
+//		//	26	:	Roll (Switch from running, to rolling, to crawling)
+//##########################################################################################################
+//		"Stay" Animation cframe(?)
+//		//	Num	:	Alias
+//		//###################
+//		//	 1		:	Standing
+//		//	 2		:	Laying down
+//		//	 3 - 11	:	Standing => Laying Down
+//		//	12 - 20	:	Laying Down => Standing
+//		//   5		:	Run
+//		//   6		:	Polz (Crawl)
+//		//   7		:	Walk
+//		//   8		:	Jump
+//		//   9		:	Sitjump (Jump from crouched)
+//		//  10		:	Laz (Climb Ladder)
+//		//  11		:	Plav (Swim)
+//		//  12		:	Punch
+
+		public override function animate():void {
+			if (animOff) {
+				return;
+			}
+			
+			vis.osn.y = 0;
+			vis.osn.rotation = 0;
+
+			// Alternate animations, will stop this function early if any of them play.
+			if (animatePlayerDeath())	return;
+			if (startLurking())			return;
+			if (stopLurking())			return;
+			if (animateResurrect())		return;
+			if (continueLurking())		return;
+
+			if (klip > 0) {
+				klip--;
+			}
+			else {
+				klip = Math.random() * 200 + 50;
+			}
+			
+			if (stay) {
+				t_stay = 5;
+			}
+			else if (t_stay > 0) {
+				t_stay--;
+			}
+
+			var cframe:int;
+
+			animatePlayerMovement();
+			animateLevitation();
+			animateDash();
+			otherVisual();
+			animateEyes();
+
+
+
+			//###############
+			//##
+			//##	ALTERNATE ANIMATIONS (These will stop the animation function early, which is why they return bools)
+			//##
+			//###############
+			function animatePlayerDeath():Boolean {
+				if (t_work && work == "die") {
+					reloadbar.visible = false;
+					
+					if (World.w.alicorn) {
+                        if (animState != "die") {
+                            vis.osn.gotoAndStop("dieali");
+                            animState = "die";
+                        }
+                       
+					    if (t_work < 200 && t_work > 140) {
+                            f_die = true;
+                            dieTransform.redOffset = (200 - t_work) * 4;
+                            dieTransform.blueOffset = (200 - t_work);
+                            vis.osn.transform.colorTransform = dieTransform;
+                            newPart("redray");
+                        }
+                       
+					    if (t_work == 140) {
+                            newPart("bloodblast");
+                            Sound.ps("bale_e");
+                            vis.osn.alpha = 0;
+                        }
+                    }
+					else {
+                        if (animState != "die") {
+                            vis.osn.gotoAndStop("die");
+                            animState = "die";
+                        }
+                       
+					    if (t_work < 170 && t_work > 120) {
+                            dieFilter.alpha = 1 - (t_work - 120) / 50;
+                            f_die = true;
+                            dieTransform.redOffset = (170 - t_work) * 2;
+                            dieTransform.blueOffset = (170 - t_work) * 3;
+                            vis.osn.transform.colorTransform = dieTransform;
+                            Emitter.emit("die_spark", loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona.X, coordinates.Y);
+                        }
+						else if (t_work < 120 && t_work > 70) {
+							vis.osn.alpha = (t_work - 70) / 50;
+						}
+                    }
+					
+					setFilters();
+					otherVisual();
+					
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+
+			function startLurking():Boolean {
+				if (t_work && work == "lurk") {
+					if (animState != "lurk") {
+						vis.osn.gotoAndStop("lurk" + lurkTip);
+						vis.osn.body.gotoAndPlay(1);
+						animState = "lurk";
+					}
+					
+					setFilters();
+					otherVisual();
+					
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+
+			function stopLurking():Boolean {
+				if (t_work && work=="unlurk") {
+					if (animState!="unlurk") {
+						vis.osn.body.gotoAndPlay("un");
+						animState = "unlurk";
+
+					}
+					
+					setFilters();
+					otherVisual();
+					
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+
+			function continueLurking():Boolean {
+				if (lurked) {
+					vis.osn.body.head.morda.eye.gotoAndStop(1);
+					otherVisual();
+					
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+
+			function animateResurrect():Boolean {
+				if (t_work && work=="res") {
+					if (animState!="res") {
+						vis.osn.gotoAndStop("res");
+						animState="res";
+					}
+					
+					otherVisual();
+					
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+
+//###############
+//##
+//##	MAIN ANIMATIONS
+//##
+//###############
+			function animatePlayerMovement():void {
+				
+				if (t_work && work == "punch") {
+					freeAnim = 0;
+				}
+				
+				if (t_work && work == "punch" && animState != "punch") {
+					if (ctr.keyRun) {
+                        vis.osn.gotoAndStop("kick");
+                    }
+					else {
+						vis.osn.gotoAndStop("punch");
+					}
+					
+					animState = "punch";
+				}
+				
+				if (t_work==0 && animState=="punch") {
+					animState="";
+				}
+				
+				if (stay || t_stay > 0) {
+					//Какие-то действия
+					if (animState=="punch" || animState=="kick") {
+					//если не нажаты влево или вправа, или стоим на месте, то СТОИМ
+					}
+					else if  (diagon==E_Direction.NEUTRAL && (velocity.X <= 1 && velocity.X >= -1 && walk!=E_Direction.NEUTRAL || velocity.X <= 4 && velocity.X >= -4 && walk==E_Direction.NEUTRAL || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
+						t_walk=0;
+						
+						if (freeAnim == 0 || isSit) {
+							freeAnim = 0;
+							
+							if (vis.osn.currentFrameLabel != "stay") {	// ANIMATION IS SET TO 'STAY' EVERY FRAME
+								vis.osn.gotoAndStop("stay");
+								
+								if (vis.osn.currentFrameLabel == "jump" || vis.osn.currentFrameLabel == "levit") {
+									vis.osn.body.gotoAndPlay("jump");
+								}
+							}
+
+							cframe = getStayFrame();
+							
+							//если сидим
+							if (isSit) {
+								if (animState=="jump") {
+									if (animState!="downjump") {
+										animState="downjump";
+										vis.osn.body.gotoAndPlay("downjump");
+									}
+								}
+								
+								if (animState != "down" && animState != "downjump") {
+									if (animState == "polz" || cframe != 2) {
+										vis.osn.body.gotoAndStop(cframe);
+									}
+									else if (animState != "roll") {
+										vis.osn.body.gotoAndPlay("down");
+										animState = "down";
+									}
+									else {
+										vis.osn.body.gotoAndStop("sit");
+										animState = "down";
+									}
+								}
+								//если стоим
+							}
+							else {
+								if (animState == "down") {
+									vis.osn.body.gotoAndPlay("up");
+									animState="up";
+								}
+								
+								if (animState!="up" || cframe!=1) {
+									if (vis.osn.body.currentFrame < 70) {
+										vis.osn.body.gotoAndStop(cframe);
+									}
+
+									animState = "";
+								}
+							}
+							
+							if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) {
+								vis.osn.body.gotoAndStop(cframe);
+							}
+							
+							if (vis.osn.currentFrameLabel=="stay" && cframe==1) {
+								if (isrnd(0.01)) {
+									freeAnim = int(Math.random() * 3) + 1;
+									vis.osn.gotoAndStop("free" + freeAnim);
+									vis.osn.body.play();
+								}
+							}
+						}
+						else if (vis.osn.body.currentFrame>=49) {
+							freeAnim=0;
+						}
+					}
+					else if (diagon != E_Direction.NEUTRAL && velocity.X == 0) {
+						freeAnim=0;
+						t_walk=0;
+						
+						if (diagon.X*storona.X>0) {
+							if (animState!="diag_up") {
+								animState="diag_up";
+								vis.osn.gotoAndStop("trot_up");
+								vis.osn.body.gotoAndStop(1);
+							}
+						}
+						else {
+							if (animState!="diag_down") {
+								animState="diag_down";
+								vis.osn.gotoAndStop("trot_down");
+								vis.osn.body.gotoAndStop(1);
+							}
+						}
+					}
+					else {			//движение
+						freeAnim=0;
+						
+						if (diagon == E_Direction.NEUTRAL) {
+                            if (isSit) {
+                                if (animState == "roll" && vis.osn.body.currentFrame >= 15) {
+                                    vis.osn.gotoAndStop("polz");
+                                    animState = "polz";
+                                }
+
+                                // Reversing direction can briefly enter the idle branch, which
+                                // switches the outer clip to "stay" without changing animState.
+                                // Treat the visual state as authoritative so crawling restarts
+                                // after that transition instead of sliding on a stopped frame.
+                                var movementAnimActive:Boolean =
+                                    (animState == "polz" && vis.osn.currentFrameLabel == "polz") ||
+                                    (animState == "roll" && vis.osn.currentFrameLabel == "roll");
+
+							    if (!movementAnimActive) {
+                                    if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona.X > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                                        vis.osn.gotoAndStop("roll");
+                                        animState = "roll";
+                                    }
+									else {
+                                        vis.osn.gotoAndStop("polz");
+                                        animState = "polz";
+                                    }
+                                   
+								    vis.osn.body.play();
+                                }
+                            }
+							else if (maxSpeed < 5) {
+                                sndStep(t_walk, 4);
+                                t_walk++;
+                               
+							    if (animState != "walk") {
+                                    vis.osn.gotoAndStop("walk");
+                                    vis.osn.body.play();
+                                    animState = "walk";
+                                }
+                            }
+							else if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona.X > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
+                                sndStep(t_walk, 2);
+                                t_walk++;
+                               
+							    if (animState != "run") {
+                                    vis.osn.gotoAndStop("run");
+                                    vis.osn.body.play();
+                                    animState = "run";
+                                }
+                            }
+							else if (velocity.X * storona.X > 0) {
+                                sndStep(t_walk, 1);
+                                t_walk++;
+                              
+							    if (animState != "trot") {
+                                    vis.osn.gotoAndStop("trot");
+                                    vis.osn.body.play();
+                                    animState = "trot";
+                                }
+                            }
+                        }
+						else {
+                            if (diagon.X * storona.X > 0) {
+                                if (animState != "trot_up") {
+                                    animState = "trot_up";
+                                    vis.osn.gotoAndStop("trot_up");
+                                    vis.osn.body.play();
+                                }
+                            }
+							else {
+                                if (animState != "trot_down") {
+                                    animState = "trot_down";
+                                    vis.osn.gotoAndStop("trot_down");
+                                    vis.osn.body.play();
+                                }
+                            }
+                           
+						    sndStep(t_walk, 1);
+                            t_walk++;
+                        }
+					}
+				//на лестнице
+				}
+				else if (isLaz != E_Direction.NEUTRAL) {
+					freeAnim = 0;
+					
+					if (animState != "laz") {
+						vis.osn.gotoAndStop("laz");
+						animState = "laz";
+					}
+					
+					if (velocity.Y == 0) {
+						vis.osn.body.gotoAndStop(1);
+					}
+					else {
+						cframe = vis.osn.body.currentFrame;
+						sndStep(cframe, 3);
+						
+						if (velocity.Y < 0) {
+							if (cframe <= 12) {
+								vis.osn.body.gotoAndStop(cframe + 1);
+							}
+							else {
+								vis.osn.body.gotoAndStop(2);
+							}
+						}
+						else {
+							if (cframe >= 3) {
+								vis.osn.body.gotoAndStop(cframe - 1);
+							}
+							else {
+								vis.osn.body.gotoAndStop(13);
+							}
+						}
+					}
+				//плавание
+				}
+				else if (isPlav) {
+					freeAnim = 0;
+					vis.osn.rotation = velocity.Y * 1.5;
+				
+					if (animState != "plav") {
+						animState = "plav";
+						vis.osn.gotoAndStop("plav");
+					}
+				//в воздухе
+				}
+				else {
+					freeAnim=0;
+					
+					if (animState!="jump" && animState!="levit") {
+						if (aJump>0) {
+							vis.osn.gotoAndStop("jump");
+							animState="jump";
+						}
+						else {
+							vis.osn.gotoAndStop("pinok");
+							animState="pinok";
+						}
+					}
+					
+					if (animState=="pinok" && isFly) {
+						vis.osn.gotoAndStop("jump");
+						animState="jump";
+					}
+					
+					if (levit==1 && animState!="levit") {	//начать левитировать
+						if (aJump>0 && vis.osn.body.currentFrame>=14 && vis.osn.body.currentFrame<=18) {
+							animState="levit";
+							vis.osn.gotoAndStop("levit");
+						}
+					
+						if (aJump==0 && vis.osn.body.currentFrame>=10 && vis.osn.body.currentFrame<=22) {
+							animState="levit";
+							vis.osn.gotoAndStop("levit");
+							vis.osn.body.gotoAndPlay(51);
+						}
+					}
+					
+					if (levit==0 && animState=="levit") {	//перестать левитировать
+						vis.osn.gotoAndStop("levit");
+						if (vis.osn.body.currentFrame<66) {
+							vis.osn.body.gotoAndPlay(67);
+						}
+					}
+					
+					if (levit==1 && animState=="levit") {
+						if (vis.osn.body.currentFrame>66) {
+							vis.osn.body.gotoAndPlay(17);
+						}
+					}
+					else if (animState!="levit") {
+						if (aJump > 0) {
+							cframe = Math.round(16 + velocity.Y);
+						
+							if (cframe > 32) {
+								cframe = 32;
+							}
+							
+							if (cframe < 1) {
+								cframe = 1;
+							}
+						}
+						else {
+							if (velocity.Y > 2 && velocity.X > -6 && velocity.X < 6) {
+								cframe = Math.round(31 + velocity.Y);
+							
+								if (cframe < 33) {
+									cframe = 33;
+								}
+								
+								if (cframe > 42) {
+									cframe = 42;
+								}
+							}
+							else {
+								cframe=Math.round(16 + velocity.X * storona.X);
+								
+								if (cframe>32) {
+									cframe=32;
+								}
+								
+								if (cframe<1) {
+									cframe=1;
+								}
+							}
+						}
+						
+						vis.osn.body.gotoAndStop(cframe);
+					}
+				}
+			}
+
+			function animateHead():void {
+				if (vis.osn.body.head.morda) {
+					var drot:int=3;
+					
+					if (lurked) headR=25;
+					else if (headRO-weaponR<=1 && headRO-weaponR>=-1) {
+						t_head--;
+						drot=6;
+						
+						if (t_head <= 0) {
+							t_head = int(Math.random() * 100 + 10);
+							headR = Math.random() * 70 - 25;
+						}
+					}
+					else {
+						headR = weaponR;
+						t_head = 100;
+					}
+					
+					if (headRA-headR<=1 && headRA-headR>=-1) {
+						headRA=headR;
+					}
+					else {
+						headRA+=(headR-headRA)/drot;
+					}
+					
+					if (isNaN(headRA)) {
+						headRA = 0;
+					}
+					
+					if (headRA > 55) {
+						headRA = 55;
+					}
+					
+					if (headRA < -35) {
+						headRA = -35;
+					}
+					
+					vis.osn.body.head.morda.rotation=headRA;
+					headRO=weaponR;
+				}
+			}
+
+			function animateLevitation():void {
+				if (levit > 0 && t_levitfilter <= 20) {
+					t_levitfilter += 2;
+				}
+				
+				if (dJump2 && t_levitfilter <= 20) {
+					t_levitfilter += 10;
+				}
+				
+				if (levit == 0 && !dJump2 && t_levitfilter >= 0) {
+					t_levitfilter--;
+				}
+
+				if (t_levitfilter==0) {
+					f_levit=false;
+					setFilters();
+				}
+				else if (t_levitfilter>0 && t_levitfilter<=20) {
+					levitFilter1.alpha=t_levitfilter/20;
+					levitFilter1.blurX=levitFilter1.blurY=t_levitfilter/4+2;
+					f_levit=true;
+					setFilters();
+				}
+			}
+
+			function animateDash():void {
+				if (dash_t>=dash_maxt-20) {
+					dashFilter.blurX=Math.min(dash_t-dash_maxt+20,10)/2;
+					setFilters();
+				}
+				else {
+					dashFilter.blurX=0;
+				}
+			}
+
+			function animateEyes():void {
+				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) {
+					vis.osn.body.head.morda.eye.gotoAndStop(2);
+				}
+				
+				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) {
+					vis.osn.body.head.morda.eye.gotoAndStop(1);
+				}
+				
+				if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) {
+					vis.osn.body.head.morda.eye.gotoAndStop(3);
+				}
+				
+				if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2)) {
+					vis.osn.body.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
+					
+					if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) {
+						vis.osn.body.head.morda.eye.eye.zrak.x=-20;
+					}
+					
+					if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) {
+						vis.osn.body.head.morda.eye.eye.zrak.x=-11;
+					}
+					
+					vis.osn.body.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
+				}
+			}
+
+		}
+
+//##########################################################################################################
+		
+		public function stopAnim():void {
+			vis.osn.body.stop();
+		}
+		
+		private function getStayFrame():int {
+			
+			if (shX2 >= 1 && shX2 >= 1) {
+				return isSit? 2 : 1;
+			}
+			
+			if (storona == E_Direction.RIGHT) {
+				if (isSit) {
+					if (shX2 > 0.00) {
+						return 49 + Math.round(shX2 * 10);
+					}
+				
+					if (shX1 > 0.00) {
+						return 49 + 11 + Math.round(shX1 * 10);
+					}
+				}
+				else {
+					if (shX2 > 0.30) {
+						return 27 + Math.round((shX2 - 0.30) * 13);
+					}
+				
+					if (shX1 > 0.30) {
+						return 27 + 11 + Math.round((shX1 - 0.30) * 13);
+					}
+				}
+			}
+			else {
+				if (isSit) {
+					if (shX1 > 0.00) {
+						return 49 + Math.round(shX1 * 10);
+					}
+					
+					if (shX2 > 0.00) {
+						return 49 + 11 + Math.round(shX2 * 10);
+					}
+				}
+				else {
+					if (shX1 > 0.30) {
+						return 27 + Math.round((shX1 - 0.30) * 13);
+					}
+					
+					if (shX2 > 0.30) {
+						return 27 + 11 + Math.round((shX2 - 0.30) * 13);
+					}
+				}
+			}
+			
+			return isSit ? 2 : 1;
+		}
+		
+		
+		private function otherVisual():void {
+			if (levit != prev_levit) {
+				setFilters();
+			}
+
+			prev_levit=levit;
+			
+			// Reload
+			if (currentWeapon && currentWeapon.t_reload>1) {
+				if (!reloadbar.visible) {
+					reloadbar.visible=true;
+				}
+
+				reloadbar.gotoAndStop(int(currentWeapon.t_reload/(currentWeapon.reload*currentWeapon.reloadMult)*11)+1)
+				GUIManager.reference.gui.setHolder();
+			}
+			else if (reloadbar.visible) {
+				reloadbar.visible = false;
+			}
+
+			// Hair
+			hair = vis.osn.body.head.morda.hair;
+			
+			if (hair) {
+				if (hairY != -1000) {
+					hairDY += ((coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation) - hairY) / 4;
+					hairR += hairDY;
+					hairDY -= hairR/4;
+					hairDY *= 0.8;
+					
+					if (hairR > 8) {
+						hairR = 8;
+					}
+					
+					if (hairR < -8) {
+						hairR = -8;
+					}
+				}
+
+				hairY = coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation;
+				hair.rotation = hairR;
+				tail = vis.osn.body.tail.h0;
+				
+				if (tail) {
+					tail.rotation = -hairR;
+				}
+				
+				tail = vis.osn.body.tail.h1;
+				
+				if (tail) {
+					tail.rotation = -hairR;
+				}
+			}
+
+			// Pip
+			if (vis.scaleX > 0) {
+				vis.osn.body.pip1.visible = true;
+				vis.osn.body.pip2.visible = false;
+				
+				if (vis.osn.body.frleg3) {
+					vis.osn.body.pip1.x=vis.osn.body.frleg3.x;
+					vis.osn.body.pip1.y=vis.osn.body.frleg3.y;
+					vis.osn.body.pip1.rotation=vis.osn.body.frleg3.rotation;
+				}
+			}
+			else {
+				vis.osn.body.pip2.visible = true;
+				vis.osn.body.pip1.visible = false;
+				
+				if (vis.osn.body.flleg3) {
+					vis.osn.body.pip2.x=vis.osn.body.flleg3.x;
+					vis.osn.body.pip2.y=vis.osn.body.flleg3.y;
+					vis.osn.body.pip2.rotation=vis.osn.body.flleg3.rotation;
+				}
+			}
+			
+			// Magic
+			vis.osn.body.head.morda.magic.alpha=aMC/100;
+			vis.osn.body.head.morda.magic.visible=vis.osn.body.head.morda.magic.alpha>0;
+
+			// Wings
+			if (pers.ableFly) {
+				if (vis.osn.body.rwing) {
+					vis.osn.body.rwing.visible=true;
+				}
+				
+				if (vis.osn.body.lwing) {
+					vis.osn.body.lwing.visible=true;
+				}
+				
+				if (World.w.alicorn || currentArmor && currentArmor.ableFly) {
+					try {
+						if (vis.osn.body.rwing.currentFrame != 11) {
+							vis.osn.body.rwing.gotoAndStop(11);
+						}
+					
+						if (vis.osn.body.lwing.currentFrame != 11) {
+							vis.osn.body.lwing.gotoAndStop(11);
+						}
+					
+						vis.osn.body.rwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.60;
+						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.20;
+					}
+					catch (err) {
+						trace("ERROR: (00:F)");
+					}
+				}
+				else if (isFly && !stay && !isPlav && isLaz == E_Direction.NEUTRAL) {
+					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) {
+						vis.osn.body.rwing.gotoAndPlay(2);
+					}
+					
+					if (vis.osn.body.lwing && vis.osn.body.lwing.currentFrame==1) {
+						vis.osn.body.lwing.gotoAndPlay(2);
+					}
+				}
+				else {
+					if (vis.osn.body.rwing) {
+						vis.osn.body.rwing.gotoAndStop(1);
+					}
+					
+					if (vis.osn.body.lwing) {
+						vis.osn.body.lwing.gotoAndStop(1);
+					}
+				}
+			}
+			else {
+				if (vis.osn.body.rwing) {
+					vis.osn.body.rwing.visible = false;
+				}
+			
+				if (vis.osn.body.lwing) {
+					vis.osn.body.lwing.visible = false;
+				}
+			}
+
+			// Shield
+			if (vis.shit && !vis.shit.visible && shithp > 0) {
+				vis.shit.visible = true;
+				vis.shit.gotoAndPlay(1);
+			}
+			
+			if (vis.shit && vis.shit.visible && shithp <= 0) {
+				vis.shit.visible = false;
+				vis.shit.gotoAndStop(1);
+			}
+			
+			// Shackles
+			if (isFetter > 0) {
+				dfx = fetX - coordinates.X;
+				dfy = fetY - coordinates.Y + 30;
+				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
+				vis.fetter.visible = true;
+				vis.fetter.scaleX = rfetter / 100;
+				vis.fetter.rotation = Math.atan2(dfy, dfx * storona.X) / ONE_PI * 180;
+			}
+			else if (vis.fetter.visible) {
+				vis.fetter.visible = false;
+			}
+		}
+		
+		public function refreshVis():void {
+			var dez:String = vis.osn.currentFrameLabel;
+			vis.osn.gotoAndStop("nope");
+			vis.osn.gotoAndStop(dez);
+			teleColor = GUIManager.reference.app.cMagic;
+			levitFilter1.color = teleColor;
+			teleFilter.color = teleColor;
+		}
+		
+		public override function visDetails():void {
+			GUIManager.reference.gui.setHp();
+		}
+		
+		public function showElectroBlock():void {
+			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (coordinates.Y - boundingBox.halfHeight + Math.random() * 320 - 160));
+			
+			if (t && t.material == E_Material.METAL && t.hp > 0) {
+				Emitter.emit("electro", loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
+			}
+		}
+		
+		public override function replic(s:String):void {
+			
+			if (sost != 1 || id_replic == "") {
+				return;
+			}
+			
+			if (t_replic > 0) {
+				return;
+			}
+			
+			var s_replic:String;
+			t_replic = 75 + Math.random() * 30;
+			s_replic = TextParser.repText(id_replic, s, false);
+			
+			if (s_replic == prev_replic) {
+				s_replic = TextParser.repText(id_replic, s, false);
+			}
+			
+			if (s_replic == prev_replic) {
+				return;
+			}
+			
+			prev_replic = s_replic;
+			
+			if (s_replic != "" && s_replic) {
+				Emitter.emit("replic2", loc, coordinates.X, coordinates.Y - 90,{txt:s_replic, ry:20});
+			}
+		}
+		
+		public override function sndStep(faza:int, tip:int = 0):void {
+			if (rat) {
+				return;
+			}
+			
+			super.sndStep(faza, tip);
+		}
+
+		protected override function sndFall():void {
+			if (rat) {
+				return;
+			}
+			
+			super.sndFall();
+		}
+	}
+}

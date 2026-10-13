@@ -1,0 +1,256 @@
+package fe.game.domain.projectile {
+
+	import fe.engine.audio.Sound;
+	import fe.game.World;
+	import fe.GameContainer;
+	import fe.engine.utils.Vec2;
+	import fe.game.domain.units.Unit;
+	import fe.game.domain.units.UnitPlayer;
+	import fe.game.rendering.Emitter;
+	import fe.game.domain.location.tile.Tile;
+	import fe.game.domain.location.Box;
+	import fe.game.domain.projectile.enums.E_WaterState;
+	import fe.game.enums.E_Material;
+
+	public class PhisBullet extends Bullet {
+
+		public var brake:int = 2;
+		public var dr:Number=0;
+		public var lip:Boolean=false;
+		public var prilip:Boolean=false;
+		public var bumc:Boolean=false;
+		
+		public var skok:Number=0.5;
+		public var tormoz:Number=0.7;
+		public var isSensor:Boolean=false;
+		
+		public var sndHit:String='';
+
+		public function PhisBullet(own:Unit, v:Vec2, visClass:Class=null) {
+			super(own, v, visClass);
+			ddy=World.ddy;
+			massa=0.1;
+			warn=1;
+			levitPoss=true;
+			inWater = E_WaterState.OUT;
+			this.boundingBox.width = 30;
+			this.boundingBox.height = 30;
+			if (vis) vis.visible = true;
+		}
+
+		public override function step():void {
+
+			if (levit) {
+				velocity.multiply(0.80);
+			}
+			else {
+				velocity.Y += ddy;
+			}
+
+			if (stay) {
+				if (velocity.X > 1) {
+					velocity.X -= brake;
+				}
+				else if (velocity.X < -1) {
+					velocity.X += brake;
+				}
+				else velocity.X = 0;
+				dr = velocity.X;
+			}
+
+			if (inWater == E_WaterState.IN) {
+				velocity.multiply(0.80);
+			}
+
+			if (!babah && !prilip) {
+				if (Math.abs(velocity.X) < World.maxdelta && Math.abs(velocity.Y) < World.maxdelta)	run();
+				else {
+					var div:int = int(Math.max(Math.abs(velocity.X),Math.abs(velocity.Y)) / World.maxdelta) + 1;
+					for (var i:int = 0; (i < div && !babah); i++) run(div);
+				}
+			}
+
+			checkWater();
+
+			if (vis) {
+				vis.rotation += dr;
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+			}
+
+			if (isSensor || loc.sky) sensor();
+			
+			if (expl_t > 0) {
+				expl_t--;
+			}
+			else {
+				liv--;
+			}
+			
+			if (liv == 3) {
+				if ((GameContainer.reference.gg as UnitPlayer).teleObj==this) (GameContainer.reference.gg as UnitPlayer).dropTeleObj();
+				explosion();
+				liv = 1;
+			}
+			
+			if (expl_t > 0 && expl_t%explPeriod == 1) {
+				explRun();
+			}
+			
+			if (liv <= 0) { 
+				onCursor = 0;
+				vse = true;
+			}
+			
+			if (explRadius > 0) {
+				loc.warning = 10; //команда для ИИ следить за гранатами
+			}
+			
+			if (vse) {
+				loc.remObj(this);
+				loc.remGrenade(this);
+			}
+
+			onCursor = (liv > 5 && coordinates.X - this.boundingBox.halfWidth < World.w.celX && coordinates.X + this.boundingBox.halfWidth > World.w.celX && coordinates.Y - this.boundingBox.halfHeight < World.w.celY && coordinates.Y + this.boundingBox.halfHeight > World.w.celY)? 3:0;
+		}
+		
+		private function sensor():Boolean {
+			for each (var un:Unit in loc.units) {
+				if (un.loc != loc || un.disabled || un.fraction == owner.fraction || !un.boundingBox.intersectsCoordinate(coordinates) || un.sost >= 3) {
+					continue;
+				}
+
+				explosion();
+				onCursor=0;
+				vse=true;
+				return true;
+			}
+			return false;
+		}
+		
+		//поиск жидкости
+		public function checkWater():int {
+			var pla:int = inWater;
+			inWater = E_WaterState.OUT;
+			try {
+				if (loc.getTile(int(coordinates.X / Tile.tileX), int(coordinates.Y / Tile.tileY)).water > 0) {
+					inWater = E_WaterState.IN;
+				}
+			}
+			catch (err) {
+				trace('ERROR: (00:22)');
+			}
+
+			if (pla != inWater && velocity.Y > 5) {
+				Emitter.emit('kap', loc, coordinates.X, coordinates.Y, {dy:-Math.abs(velocity.Y) * (Math.random() * 0.3 + 0.3), kol:5});
+				Sound.ps('fall_item_water', coordinates.X, coordinates.Y, 0, velocity.Y / 10);
+			}
+			return inWater;
+		}
+		
+		public override function popadalo(res:int):void {
+			if (res == MISS) { return; }
+			velocity.set(0, 0);
+			if (explRadius) {
+				explosion();
+				if (vis) vis.visible = false;
+			} 
+			if (liv > 1) liv = 1;
+			babah = true;
+		}
+		
+		public override function run(div:int=1):void {
+			var t:Tile;
+			coordinates.X += velocity.X / div;
+			if (lip) {
+				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && (loc.celObj as Box).boundingBox.intersectsCoordinate(coordinates)) {
+					targetObj=loc.celObj;
+					prilip=true;
+					return;
+				}
+			}
+			if (loc.sky) {
+				coordinates.Y += velocity.Y / div;
+				if (coordinates.X < 0 || coordinates.X >= loc.maxX || coordinates.Y < 0 || coordinates.Y >= loc.maxY) {
+					vse=true;
+					return;
+				}
+			}
+			else {
+				if (coordinates.X < 0 || coordinates.X >= loc.spaceX * Tile.tileX) {
+					vse=true;
+					return;
+				}
+				if (velocity.X < 0) {
+					t = loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+						if (sndHit != '') Sound.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
+						if (bumc) {
+							popadalo(E_Material.NONE);
+						}
+						coordinates.X = t.boundingBox.right + 1;
+						velocity.X = Math.abs(velocity.X * skok);
+						if (lip) prilip = true;
+					}
+				}
+				//движение вправо
+				if (velocity.X > 0) {
+					t = loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.collision == 1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+						if (sndHit!='') Sound.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
+						if (bumc) {
+							popadalo(E_Material.NONE);
+						}
+						coordinates.X = t.boundingBox.left - 1;
+						velocity.X = -Math.abs(velocity.X * skok);
+						if (lip) prilip = true;
+					}
+				}
+				//ВЕРТИКАЛЬ
+				//движение вверх
+				if (velocity.Y < 0) {
+					stay=false;
+					coordinates.Y += velocity.Y / div;
+					t = loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+						if (sndHit!='') Sound.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
+						if (bumc) {
+							popadalo(E_Material.NONE);
+						}
+						coordinates.Y = t.boundingBox.bottom + 1;
+						velocity.Y = Math.abs(velocity.Y * skok);
+						if (lip) prilip=true;
+					}
+				}
+				//движение вниз
+				var newmy:Number=0;
+				if (velocity.Y > 0) {
+					stay=false;
+					coordinates.Y += velocity.Y / div;
+					if (coordinates.Y >= loc.spaceY * Tile.tileY) {
+						vse=true;
+						return;
+					}
+					t = loc.getAbsTile(coordinates.X, coordinates.Y);
+					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
+						if (bumc) {
+							if (sndHit!='') Sound.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
+							popadalo(E_Material.NONE);
+						}
+						coordinates.Y = t.boundingBox.top - 1;
+						if (lip) prilip=true;
+						if (velocity.Y > 2) {
+							velocity.Y = -Math.abs(velocity.Y * skok);
+							velocity.X *= tormoz;
+							if (sndHit != '') Sound.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
+						}
+						else {
+							velocity.Y = 0;
+							stay = true;
+						}
+					}
+				}
+			}
+		}
+	}	
+}

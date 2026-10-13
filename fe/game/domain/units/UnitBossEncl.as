@@ -1,0 +1,311 @@
+package fe.game.domain.units {
+
+	import fe.game.domain.location.Location;
+	import fe.game.domain.serv.LootGen;
+	import fe.game.WeaponManager;
+	import fe.game.World;
+	import fe.GameContainer;
+	import fe.game.domain.units.enums.E_Resistances;
+	import fe.game.enums.E_Direction;
+
+	public class UnitBossEncl extends UnitPon {
+
+		public var tr:int				= 1;
+		private var weap:String;
+		public var scrAlarmOn:Boolean	= true;
+		public var controlOn:Boolean	= true;
+		public var kol_emit:int			= 8;
+		public var called:int			= 0;
+		public var coord:Object;
+
+		private var minY:int			=  250;
+		private var maxY:int			=  850;
+		private var minX:int			= 1000;
+		private var maxX:int			= 1600;
+		private var sinX:Number			= Math.random() * 10;
+		private var sinDX:Number		= Math.random() * 0.10 + 0.02;
+		
+		private var emit_t:int			=    0;
+
+		public function UnitBossEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			
+			super(cid, ndif, xml, loadObj);
+			
+			id="bossencl";
+			
+			if (xml && xml.@tr.length()) {	//из настроек карты
+				tr=xml.@tr;
+			}
+			
+			//взять параметры из xml
+			getXmlParam();
+			aiTCh=30;
+			aiVNapr=E_Direction.DOWN;
+			
+			var wm:WeaponManager = WeaponManager.reference;
+			if (tr==1) {
+				currentWeapon = wm.cloneWeapon("lmg");
+				wm.setOwner(currentWeapon, this);
+				armor=20;
+				vulnerabilities.setResist(E_Resistances.DAM_PIERCE, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_BLUNT, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_CUT, 0.70);
+			}
+			else if (tr==2) {
+				currentWeapon = wm.cloneWeapon("quick");
+				wm.setOwner(currentWeapon, this);
+				marmor=20;
+				vulnerabilities.setResist(E_Resistances.DAM_LASER, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_PLASMA, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_ELECTRIC, 0.70);
+				blitId="sprEnclboss2";
+			}
+			else if (tr==3) {
+				currentWeapon = wm.cloneWeapon("mlau");
+				wm.setOwner(currentWeapon, this);
+				currentWeapon.speed=12;
+				currentWeapon.accel=0.6;
+				currentWeapon.reload=30;
+				currentWeapon.damageExpl*=0.6;
+				armor=marmor=10;
+				vulnerabilities.setResist(E_Resistances.DAM_EXPLOSION, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_BURN, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_COLD, 0.70);
+				blitId="sprEnclboss3";
+			}
+			
+			initBlit();
+			animState = "fly";
+			
+			if (currentWeapon) {
+				weap = currentWeapon.id;
+			}
+			else {
+				weap = "";
+			}
+			
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+			}
+			
+			isFly = true;
+			aiNapr = storona;
+		}
+		
+		public override function die(sposob:int=0):void {
+			super.die(3);
+			coord["liv" + tr] = false;
+		}
+		
+		public override function putLoc(nloc:Location, nx:Number, ny:Number):void {
+			super.putLoc(nloc, nx, ny);
+			
+			if (nloc.unitCoord == null) {
+				nloc.unitCoord = new Coord(nloc);
+			}
+			
+			coord = nloc.unitCoord;
+			coord["liv" + tr] = true;
+		}
+
+		public override function setLevel(nlevel:int=0):void {
+			super.setLevel(nlevel);
+			var dMult:Number = 1;
+			
+			if (GameContainer.reference.game.globalDif == 3) {
+				dMult = 1.2;
+			}
+			
+			if (GameContainer.reference.game.globalDif == 4) {
+				dMult = 1.5;
+			}
+			
+			hp = maxhp = hp * dMult;
+			dam *= dMult;
+			
+			if (currentWeapon) {
+				currentWeapon.damage*=dMult;
+			} 
+		}
+		
+		public override function animate():void {
+			var revers:Boolean = false;
+			
+			if (isFly) {
+				animState = "fly";
+			}
+			else {
+				animState = "stay";
+			}
+			
+			if (animState!=animState2) {
+				anims[animState].restart();
+				animState2=animState;
+			}
+			
+			if (!anims[animState].st) {
+				if (revers) {
+					blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
+				}
+				else {
+					blit(anims[animState].id,anims[animState].f);
+				}
+			}
+			
+			anims[animState].step();
+		}
+		
+		public override function setWeaponPos(tip:String = "internal"):void {
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y - this.boundingBox.height * 0.58;
+		}
+		
+		public override function dropLoot():void {
+			super.dropLoot();
+			if (currentWeapon) {
+				if (currentWeapon.vis) {
+					currentWeapon.vis.visible = false;
+				}
+				
+				LootGen.lootId(loc, currentWeapon.coordinates.X, currentWeapon.coordinates.Y, currentWeapon.id, 0);
+			}
+		}
+
+		private function emit():void {
+			var un:Unit = loc.createUnit("vortex", coordinates.X, coordinates.Y - this.boundingBox.halfHeight, true);
+			un.fraction = fraction;
+			un.detectionDelay = 0;
+			emit_t = 500;
+			kol_emit--;
+		}
+		
+		public override function setNull(f:Boolean=false):void {
+			super.setNull(f);
+			//вернуть в исходную точку
+			if (begX>0 && begY>0) setPos(begX, begY);
+			velocity.set(0, 0);
+			setWeaponPos();
+			aiState = 0;
+			aiSpok = 0;
+		}
+
+		//aiState
+		//0 - стоит на месте
+		//1 - летает и атакует
+		//2 - меняет оружие
+		override protected function control():void {
+			//если сдох, то не двигаться
+			if (sost==3) {
+				return;
+			}
+			
+			if (stun) {
+				aiState=0;
+				aiTCh=3;
+				walk=E_Direction.NEUTRAL;
+			}
+			
+			t_replic--;
+			
+			if (!controlOn) {
+				return;
+			}
+			
+			if (loc.gg.invulner) {
+				return;
+			}
+			
+			if (World.w.enemyAct<=0) {
+				celY = coordinates.Y - this.boundingBox.height;
+				celX = coordinates.X + this.boundingBox.width * storona.X * 2;
+				return;
+			}
+			
+			//таймер смены состояний
+			if (aiTCh>0) {
+				aiTCh--;
+			}
+			else {
+				aiState=1;
+				aiTCh=Math.floor(Math.random()*60+150);
+			}
+			
+			//поиск цели
+			if (aiTCh%40==1) {
+				if (loc.gg.pet && loc.gg.pet.sost==1 && isrnd(0.4)) setCel(loc.gg.pet);
+				else setCel(loc.gg);
+			}
+			//направление
+			storona=(celDX>0)?E_Direction.RIGHT:E_Direction.LEFT;
+
+			
+			destroy=0;
+			//поведение при различных состояниях
+			if (aiState==0) {
+				// Do nothing
+			}
+			else {
+				sinX += sinDX;
+				
+				if (coordinates.Y < minY && velocity.Y < maxSpeed) {
+					velocity.Y += accel;
+					aiVNapr = E_Direction.DOWN;
+				}
+				
+				if (coordinates.Y > maxY && velocity.Y > -maxSpeed) {
+					velocity.Y -= accel;
+					aiVNapr = E_Direction.UP;
+				}
+				
+				if (coordinates.Y >= minY && coordinates.Y <= maxY) {
+					if (aiVNapr == E_Direction.DOWN && velocity.Y < maxSpeed) {
+						velocity.Y += accel;
+					}
+					
+					if (aiVNapr == E_Direction.UP && velocity.Y > -maxSpeed) {
+						velocity.Y -= accel;
+					}
+				}
+				
+				if (coordinates.X < minX && velocity.X < maxSpeed) {
+					velocity.X += accel;
+				}
+				
+				if (coordinates.X > maxX && velocity.X > -maxSpeed) {
+					velocity.X -= accel;
+				}
+				
+				if (coordinates.X >= minX && coordinates.X <= maxX) {
+					velocity.X += Math.sin(sinX) * accel / 2;
+				}
+			} 
+			
+			if (aiState == 1) {
+				attack();
+			}
+
+		}
+		
+		public function attack():void {
+			if (celUnit) {	//атака холодным оружием без левитации или корпусом
+				attKorp(celUnit);
+				
+				if (coord.tr==tr && coord.t1>45) {
+					currentWeapon.attack();
+				}
+			}
+		}
+		
+		public override function command(com:String, val:String=null):void {
+			super.command(com, val);
+			
+			if (com=="off") {
+				walk=E_Direction.NEUTRAL;
+				controlOn=false;
+			}
+			else if (com=="on") {
+				controlOn=true;
+			}
+		}
+	}
+}

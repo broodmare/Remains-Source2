@@ -1,0 +1,320 @@
+package fe.game.domain.weapon {
+
+	import flash.display.Graphics;
+	
+	import fe.engine.audio.Sound;
+	import fe.game.WeaponManager;
+	import fe.game.World;
+	import fe.game.ui.GUIManager;
+	import fe.GameContainer;
+	import fe.engine.utils.Vec2;
+	import fe.game.domain.units.Unit;
+	import fe.game.domain.units.Resistances;
+	import fe.game.domain.units.UnitPlayer;
+	import fe.game.domain.units.Mine;
+	import fe.game.domain.projectile.Bullet;
+	import fe.game.domain.projectile.PhisBullet;
+	import fe.game.domain.units.enums.E_Resistances;
+	
+	public class WThrow extends Weapon {
+		
+		public var kolAmmo:int		= 4;
+		public var detTime:int		= 75;
+		private var throwTip:int	= 0;
+		private var radio:Boolean	= false;
+		
+		private var brake:int		= 2; 
+		private var skok:Number		= 0.40;
+		private var tormoz:Number	= 0.60;
+		private var bumc:Boolean	= false;
+
+		public var sndFall:String	= "";
+		
+		// Use WeaponManager.cloneWeapon() to create weapons
+		public function WThrow() {
+			super();
+		}
+		
+		public override function init(data:Object):void {
+			noPerc				= true;
+			vBullet				= vWeapon;
+			magazineCapacity	= 1;
+			
+			// [Explosives are their own ammo]
+			ammo				= WeaponManager.reference.getAmmo(id);
+			ammoTarg			= ammo;
+
+			animated			= false;
+			
+			if (vis) {
+				vis.gotoAndStop(1);
+			}
+			
+			if ("throwtip" in data) {
+				throwTip = data.throwtip;
+			}
+			
+			if (throwTip > 0) {
+				lvlNoUse = true;
+			}
+
+			if ("char_time" in data) {
+				detTime = data.char_time;
+			}
+
+			if ("char_radio" in data) {
+				radio = data.char_radio;
+			}
+
+			if ("phis_bumc" in data) {
+				bumc = data.phis_bumc;
+			}
+
+			if ("snd_fall" in data) {
+				sndFall = data.snd_fall;
+			}
+		}
+
+		public override function attack(waitReady:Boolean = false):Boolean {
+
+			if (!waitReady && !World.w.alicorn && !auto && t_auto > 0) {
+				t_auto = 3;
+				
+				return false;
+			}
+			
+			skillConf = 1;
+			
+			if (owner.player && World.w.weaponsLevelsOff) {
+				if (lvlNoUse) {
+					if ((owner as UnitPlayer).pers.getWeapLevel(skill) < lvl) {
+						GUIManager.reference.gui.infoText("weaponSkillLevel");
+						
+						return false;
+					}
+				}
+				else {
+					var razn:int = lvl - (owner as UnitPlayer).pers.getWeapLevel(skill);
+					
+					if (razn == 1) {
+						skillConf = 0.75;
+					}
+					else if (razn == 2) {
+						skillConf = 0.50;
+					}
+					else if (razn > 2) {
+						GUIManager.reference.gui.infoText("weaponSkillLevel");
+						
+						return false;
+					}
+				}
+			}
+			
+			if (t_attack <= 0) {
+				if (getAmmo()) {
+					t_attack = rapid;
+				}
+			}
+			
+			return true;
+		}
+		
+		private function getVel(rx:Number, ry:Number, sk:Number):Number {
+			return Math.min(speed * sk, Math.sqrt(rx * rx + ry * ry) / 10 * sk - ry / 10 * sk)
+		}
+
+		private function getRot(rx:Number, ry:Number, rvel:Number):Number {
+			return -rx / (rvel + 0.0001) / 100;
+		}
+		
+		protected override function shoot():Bullet {
+			var sk:int = 1;
+			
+			if (owner) {
+				sk = owner.weaponSkill;
+				
+				if (owner.player) {
+					sk = weaponSkill;
+				}
+			}
+			
+			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * DEG_TO_RAD;
+			var rasstx:Number = owner.celX - coordinates.X;
+			var rassty:Number = owner.celY - coordinates.Y;
+			
+			if (throwTip == 1) {
+				var un:Mine = new Mine(id);
+				un.massa = un.massaMove;
+				un.putLoc(World.w.loc, coordinates.X, coordinates.Y);
+				un.loc.addObj(un);
+				un.loc.units.push(un);
+				un.fraction = owner.fraction;
+				
+				if (un.fraction == 100) { // (100 is player)
+					warn = 0;
+				}
+				
+				un.damage1 *= (1 + (sk - 1) * 0.5);
+				un.explTime *= 0.3;
+				un.explRadius *= explRadMult;
+				un.reloadTime = 75;
+				un.vis.gotoAndStop(1);
+				un.setVis(true);
+				un.inter.mine = 1;
+				
+				if (un.collisionAll()) {
+					un.setPos(owner.coordinates.X, owner.coordinates.Y);
+				}
+				
+				if (un.collisionAll()) {
+					un.fixed = true;
+				}
+				
+				if (owner && owner.player && GameContainer.reference.pers.sapper > 1) {
+					un.damage1 *= GameContainer.reference.pers.sapper;
+					un.vulnerabilities.setResist(E_Resistances.DAM_EXPLOSION, 0);	// Immune to explosion
+					un.vulnerabilities.setResist(E_Resistances.DAM_PLASMA, 0);	// Immune to plasma
+				}
+			}
+			else {
+				b = new PhisBullet(owner, coordinates, vBullet);
+				b.weap = this;
+				b.vel = getVel(rasstx, rassty, sk * skillConf);
+				b.rot = rot + r + getRot(rasstx, rassty, b.vel);
+				b.liv = detTime;
+				b.velocity.X = Math.cos(b.rot) * b.vel;
+				b.velocity.Y = Math.sin(b.rot) * b.vel;
+				(b as PhisBullet).bumc = bumc;
+				b.damage = (damage + damAdd) * damMult * (1 + (sk - 1) * 0.50);
+				b.damageExpl = (damageExpl)  * damMult * (1 + (sk - 1) * 0.50) * skillConf;
+				b.nazv = nazv;
+				(b as PhisBullet).skok = skok;
+				(b as PhisBullet).tormoz = tormoz;
+				(b as PhisBullet).brake = brake;
+				setBullet(b);
+				(b as PhisBullet).dr = (throwTip == 2) ? 0 : b.velocity.X;
+				(b as PhisBullet).lip = (throwTip == 2);
+				b.vis.play();
+				b.critDamMult = 1.00;
+				(b as PhisBullet).sndHit = sndFall;
+				
+				if (owner.player) {
+					if (GameContainer.reference.pers.grenader && !GameContainer.reference.ctr.keyRun) (b as PhisBullet).isSensor=true;
+				}
+				
+				loc.newGrenade(b);
+			}
+			
+			owner.isShoot = true;
+			
+			if (sndShoot != "") {
+				Sound.ps(sndShoot, coordinates.X, coordinates.Y);
+			}
+			
+			is_shoot = true;
+			magazineRounds = 0;
+			
+			if (owner.player && loc.train) {
+				GameContainer.reference.invent.increaseQuantity(ammo.id);
+				World.w.calcMass = true;
+			}
+			
+			t_auto = 3;
+			return b;
+		}
+		
+		public override function setTrass(gr:Graphics):void {
+			skillConf = 1;
+			var razn:int = lvl - GameContainer.reference.pers.getWeapLevel(skill);
+			
+			if (razn == 1) {
+				skillConf = 0.75;
+			}
+			else if (razn >= 2) {
+				skillConf = 0.50;
+			}
+			
+			var rot3:Number = Math.atan2(World.w.celY - coordinates.Y, World.w.celX - coordinates.X);
+			trasser.loc = owner.loc;
+			var rasstx:Number = World.w.celX - coordinates.X;
+			var rassty:Number = World.w.celY - coordinates.Y;
+			trasser.X = trasser.begx = coordinates.X;
+			trasser.Y = trasser.begy = coordinates.Y;
+			trasser.ddy=World.ddy;
+			trasser.skok=skok;
+			trasser.tormoz=tormoz;
+			trasser.brake=brake;
+			var bvel:Number = 0;
+			
+			if (owner.player) {
+				bvel = getVel(rasstx, rassty, weaponSkill * skillConf);
+			}
+			else {
+				bvel = getVel(rasstx, rassty, owner.weaponSkill * skillConf);
+			}
+			
+			var	brot:Number = rot3 + getRot(rasstx, rassty, bvel);
+			trasser.dx = trasser.begdx = Math.cos(brot) * bvel;
+			trasser.dy = trasser.begdy = Math.sin(brot) * bvel;
+			trasser.liv = detTime;
+			
+			if (throwTip == 0 && !bumc) {
+				trasser.is_skok = true;
+			}
+			
+			trasser.trass(gr);
+		}
+
+		// Take one of this explosive from the player's inventory (or the unit's own supply)
+		public function getAmmo():Boolean {
+			if (owner.player) {
+				return (owner as UnitPlayer).getInvAmmo(ammo.id, 1, 1, true) > 0;
+			}
+			
+			if (kolAmmo <= 0) {
+				return false;
+			}
+			
+			kolAmmo--;
+			return true;
+		}
+		
+		public override function animate():void {
+			super.animate();
+			
+			if (!vis) {
+				return;
+			}
+			
+			vis.rotation = 0;
+			vis.scaleX = 1;
+			
+			// [Hide the explosive while it's being thrown or if there's none left]
+			if (t_attack > 0 || kolAmmo <= 0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo.id) <= 0) {
+				vis.alpha = 0;
+			}
+			else {
+				vis.alpha = 1;
+			}
+		}
+		
+		public override function detonator():Boolean {
+			if (radio) {
+				for each (var un:Unit in loc.units) {
+					if ((un is Mine) && un.id == id) {
+						(un as Mine).activate();
+					}
+				}				
+				
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+		public override function setNull(f:Boolean = false):void {
+			super.setNull();
+		}	
+	}	
+}

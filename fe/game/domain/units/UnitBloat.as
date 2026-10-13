@@ -1,0 +1,289 @@
+package fe.game.domain.units {
+	
+	import fe.game.domain.weapon.Weapon;
+	import fe.game.domain.projectile.Bullet;
+	import fe.engine.text.LanguageManager;
+	import fe.engine.utils.SymbolFactory;
+	import fe.game.World;
+	import fe.engine.text.XMLDataGrabber;
+	import fe.game.enums.E_Direction;
+	
+	public class UnitBloat extends Unit {
+		
+		public var tr:int;
+		private var cDam:Number;
+		private var isEmit:Boolean = false;
+		private var gryz:Boolean = false;
+		private var isGryz:Boolean = false;
+		private var shootCh:Number = 0.10;
+
+		private var aiDx:Number = 0.00;
+		private var aiDy:Number = 0.00;
+		private var aiRasst:Number;
+		private var attRasst:int = 400;
+		private var attCh:Number = 0.40;
+		
+		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			super(cid, ndif, xml, loadObj);
+			
+			//определить разновидность tr
+			if (loadObj && loadObj.tr) {			//из загружаемого объекта
+				tr=loadObj.tr;
+			}
+			else if (xml && xml.@tr.length()) {	//из настроек карты
+				tr=xml.@tr;
+			}
+			else if (cid) {						//из заданного идентификатора cid
+				tr=int(cid);
+			}
+			else {
+				tr = int(Math.random()*5);	//случайно по параметру ndif
+			}
+
+			if (!(tr>=0)) {
+				tr=0;
+			}
+			
+			id = 'bloat' + tr;
+			var vClass:Class = SymbolFactory.fetchSymbolClass("visualBloat" + String(tr)) || SymbolFactory.fetchSymbolClass("visualBloat1") as Class;
+			vis = new vClass();
+			vis.stop();
+			runSpeed=0;
+			getXmlParam();
+			
+			if (tr>=7) {
+				nazv = LanguageManager.reference.localText("unit", "bloat10");
+			}
+			
+			maxSpeed = maxSpeed * (0.90 + Math.random() * 0.20);
+			sitSpeed = maxSpeed * 0.50;
+			walkSpeed = maxSpeed;
+			
+			if (runSpeed == 0) {
+				runSpeed = maxSpeed * 2;
+			}
+			
+			isFly = true;
+			plaKap = true;
+			aiDx = isrnd() ? 0.70 : -0.70;
+			aiDy = isrnd() ? 0.70 : -0.70;
+			storona = (aiDx > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
+			currentWeapon = getXmlWeapon(ndif);
+			
+			if (currentWeapon) {
+				childObjs = new Array(currentWeapon);
+			}
+		}
+
+		public override function getXmlParam(mid:String=null):void {
+			super.getXmlParam('bloat');
+			super.getXmlParam();
+			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
+			
+			if (node0.un.length()) {
+				if (node0.un.@attr.length()) {
+					attRasst=node0.un.@attr;		//дистанция атаки
+				}
+				
+				if (node0.un.@attch.length()) {
+					attCh=node0.un.@attch;				//шанс атаки
+				}
+				
+				if (node0.un.@shootch.length()) {
+					shootCh=node0.un.@shootch;				//шанс атаки
+				}
+				
+				if (node0.un.@bulb.length()) {
+					isEmit=true;				//шанс атаки
+				}
+			
+				if (node0.un.@gryz.length()) {
+					gryz=true;					//грызун
+				}
+			}
+		}
+
+		//сделать героем
+		public override function setHero(nhero:int=1):void {
+			super.setHero(nhero);
+			if (hero == 1) {
+				shootCh = 0.30;
+			}
+		}
+
+		public override function setNull(f:Boolean=false):void {
+			super.setNull(f);
+			if (f) {
+				aiState=0;
+				aiTCh = int(Math.random() * 10) + 5;
+			}
+		}
+
+		public override function save():Object {
+			var obj:Object=super.save();
+			
+			if (obj == null) {
+				obj = new Object();
+			}
+
+			obj.tr = tr;
+			return obj;
+		}
+		
+		public override function otbros(bul:Bullet):void {
+			if (bul && bul.knockx!=0 || bul.knocky!=0) isGryz=false;
+			super.otbros(bul);
+		}
+		
+		private function emit():void {
+			var un:Unit=loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, '0');
+		}
+		
+		public override function expl():void {
+			newPart('shmatok', 4, 2);
+			newPart('bloat_kap', int(Math.random() * 3 + 4));
+		}
+		
+		public override function dropLoot():void {
+			super.dropLoot();
+			var un:Unit
+			
+			if (tr >= 8) {
+				un = loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, String(tr - 1));
+				un.questId = questId;
+				un = loc.createUnit('bloat', coordinates.X, coordinates.Y, true, null, String(tr - 1));
+				un.questId = questId;
+			} 
+			
+			if (isEmit) {
+				emit();
+				emit();
+				
+				if (hero) {
+					emit();
+					emit();
+				}
+			}
+		}
+		
+		public override function incStat(sposob:int=0):void {
+			if (tr>=7 && tr<10) {
+				return;
+			}
+			super.incStat(sposob);
+		}
+		
+		public override function animate():void {
+
+		}
+
+		//состояния
+		//0 - летает
+		//1 - видит цель, стреляет
+		override protected function control():void {
+
+			if (sost>=3) {
+				return;
+			}
+			
+			if (World.w.enemyAct<=0) {
+				return;
+			}
+			
+			if (stun) {
+				return;
+			}
+
+			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
+			else {						//смена состояний
+				aiTCh=Math.floor(Math.random()*50)+20;
+				
+				if (celUnit) {
+					aiRasst=Math.sqrt(celDX*celDX+celDY*celDY);
+				
+					if (aiRasst<attRasst && isrnd(attCh)) {
+						aiDx = celDX / aiRasst;
+						aiDy = celDY / aiRasst;
+						aiState = 2;
+						aiTCh = 20;
+						maxSpeed = runSpeed;
+					}
+					else {
+						aiState=1;
+						maxSpeed=walkSpeed;
+					}
+				
+					storona=(celDX>0)?E_Direction.RIGHT:E_Direction.LEFT;
+				}
+				else {
+					if (isrnd(0.1)) {
+						aiDx=isrnd()?0.7:-0.7;
+						aiDy=isrnd()?0.7:-0.7;
+					}
+					
+					storona=(aiDx>0)?E_Direction.RIGHT:E_Direction.LEFT;
+					aiState=0;
+					maxSpeed=sitSpeed
+				}
+			}
+
+			//поиск цели
+			if (World.w.enemyAct>1 && aiTCh%10==1) {
+				findCel();
+			}
+
+			if (isPlav) {
+				turnY=E_Direction.UP;
+			}
+
+			if (levit) {
+				isGryz=false;
+			}
+	
+			if (turnX != E_Direction.NEUTRAL) {
+				storona=turnX;
+				aiDx=Math.abs(aiDx)*turnX.X;
+				turnX=E_Direction.NEUTRAL;
+			}
+
+			if (turnY != E_Direction.NEUTRAL) {
+				aiDy=Math.abs(aiDy)*turnY.Y;
+				turnY=E_Direction.NEUTRAL;
+			}
+
+			velocity.X += aiDx * accel + Math.random() * 2 - 1;
+			velocity.Y += aiDy * accel + Math.random() * 2 - 1;
+			
+			if (isGryz) {
+				if (celUnit && isMeet(celUnit)) {
+					if ((celUnit.coordinates.X - coordinates.X) * (celUnit.coordinates.X - coordinates.X) + (celUnit.coordinates.Y - coordinates.Y) * (celUnit.coordinates.Y - coordinates.Y) > 10000)
+					{
+						isGryz = false;
+					}
+					else {
+						velocity.X = celUnit.coordinates.X - coordinates.X;
+						velocity.Y = celUnit.coordinates.Y - celUnit.boundingBox.halfHeight - coordinates.Y + this.boundingBox.halfHeight;
+					}
+				}
+				else {
+					isGryz = false;
+				}
+			}
+			
+			//атака
+			if (World.w.enemyAct>=3 && celUnit && shok<=0) {
+				if (aiState==1 && currentWeapon) {
+					if (isrnd(shootCh)) {
+						currentWeapon.attack();
+					}
+				}
+				
+				var atk:Boolean = attKorp(celUnit);
+				
+				if (atk && gryz) {
+					isGryz=true;
+				}
+			}
+		}
+	}	
+}

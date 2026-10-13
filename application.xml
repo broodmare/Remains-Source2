@@ -10,6 +10,7 @@
     <content>pfe.swf</content>
     <systemChrome>standard</systemChrome>
     <transparent>false</transparent>
+    <renderMode>direct</renderMode>
     <visible>true</visible>
     <minimizable>true</minimizable>
     <maximizable>true</maximizable>

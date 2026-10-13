@@ -1,0 +1,118 @@
+package fe.game.domain.units {
+
+	import flash.display.MovieClip;
+	
+	import fe.engine.utils.SymbolFactory;
+	import fe.game.WeaponManager;
+	import fe.game.domain.weapon.Weapon;
+
+	public class UnitSentinel extends UnitAIRobot {
+
+		private var jump_n:int=100;
+		private var dopWeapon:Weapon;
+		private var kolRock:int = 6;
+		
+		public function UnitSentinel(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			super(cid, ndif, xml, loadObj);
+		
+			id = "sentinel";
+			vis = SymbolFactory.createInstance("visualSentinel") as MovieClip;
+			vis.stop();
+			vis.osn.gotoAndStop(1);
+			getXmlParam();
+			walkSpeed=maxSpeed;
+			sitSpeed=maxSpeed;
+			runSpeed=maxSpeed*2;
+			//дать оружие
+			getWeapon(ndif, xml, loadObj);
+			dopWeapon = WeaponManager.reference.cloneWeapon("robomlau");
+			WeaponManager.reference.setOwner(dopWeapon, this);
+			childObjs=[currentWeapon, dopWeapon];
+			
+			if (quiet) {
+				id_replic = "";
+			}
+		}
+		
+		public override function dropLoot():void {
+			newPart("expl");
+			currentWeapon.vis.visible = false;
+			super.dropLoot();
+		}
+		
+		public override function setLevel(nlevel:int=0):void {
+			super.setLevel(nlevel);
+			if (dopWeapon && dopWeapon.tip == Weapon.TYPE_INTERNAL) {
+				dopWeapon.damage *= (1 + level * 0.10);
+			}
+		}
+		
+		public override function expl():void {
+			newPart("metal", 12);
+		}
+		
+		public override function setNull(f:Boolean=false):void {
+			super.setNull(f);
+			if (sost==1) {
+				if (dopWeapon) {
+					dopWeapon.setNull();
+				}
+			}
+			if (f) {
+				kolRock = 6;
+			}
+		}
+		
+		public override function animate():void {
+			if (sost == 3) { //сдох
+				if (animState!="die") {
+					vis.osn.gotoAndStop("die");
+					animState="die";
+				}
+			}
+			else if (stay || jump_n <= 0) {
+				if (animState!="stay") {
+					vis.osn.gotoAndStop("stay");
+					animState="stay";
+				}
+			}
+			else {
+				if (animState!="jump") {
+					vis.osn.gotoAndStop("jump");
+					animState="jump";
+				}
+			} 
+		}
+		
+		public override function setWeaponPos(tip:String = "internal"):void {
+			weaponX = coordinates.X;
+			weaponY = coordinates.Y - 90;
+		}
+		
+		public override function jump(v:Number=1):void {
+			if (stay) {
+				jump_n = 90;
+			}
+			else {
+				jump_n--;
+			}
+			
+			if (velocity.Y > -jumpdy && jump_n > 0) {
+				velocity.Y -= jumpdy * v / 4;
+			}
+		}
+
+		//атака
+		public override function attack():void {
+			if (celDX < 100 && celDX > -100 && celDY < 80 && celDY > -80 && celUnit) {
+				attKorp(celUnit, 1);
+			}
+
+			currentWeapon.attack();
+
+			if (celUnit && !(celDX < 160 && celDX > -160 && celDY < 80 && celDY > -80)) {
+				dopWeapon.attack();
+			}
+		}
+	}
+}

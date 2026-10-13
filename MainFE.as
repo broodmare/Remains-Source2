@@ -4,11 +4,11 @@ package {
 	import flash.display.StageAlign;
 	import flash.events.Event;
 
-	import fe.*;
+	import fe.engine.Engine;
 	
 	public class MainFE extends MovieClip {
 		
-		private var mainMenu:fe.MainMenu;
+		private var engine:Engine;
 
 		public function MainFE() {
 			stage.scaleMode = "noScale";
@@ -27,7 +27,7 @@ package {
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 
 				this.nextFrame();
-				mainMenu = new MainMenu(this);
+				engine = new Engine(this);
 			}
 		}
 	}

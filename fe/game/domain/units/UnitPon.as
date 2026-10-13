@@ -1,0 +1,165 @@
+package fe.game.domain.units {
+
+	import flash.filters.GlowFilter;
+
+	import fe.engine.audio.Sound;
+	import fe.game.domain.location.tile.Tile;
+	import fe.game.domain.weapon.Weapon;
+	import fe.game.enums.E_Material;
+	import fe.game.enums.E_Direction;
+	
+	public class UnitPon extends Unit {
+
+		protected var footstepVol:Number	= 0.2;
+		public var teleColor:uint			= 0;
+		protected var teleFilter:GlowFilter;
+		
+		private static var tileX:int = Tile.tileX;
+		private static var tileY:int = Tile.tileY;
+		
+		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+			super(cid, ndif, xml, loadObj);
+			blood = 1;
+		}
+
+		// [weapon position]
+		public override function setWeaponPos(tip:String = "internal"):void {
+				if (weaponKrep==0) { // [telekinesis]
+					if (storona==E_Direction.RIGHT && celX > this.boundingBox.right || storona == E_Direction.LEFT && celX < this.boundingBox.left) {
+						weaponX = coordinates.X + this.boundingBox.width * storona.X;
+					}
+					else {
+						weaponX = coordinates.X;
+					}
+					
+					if (isLaz != E_Direction.NEUTRAL) {
+						weaponX = coordinates.X;
+					}
+					
+					if (loc.getTile(int((weaponX + storona.X * 15) / tileX), int(weaponY / tileY)).collision == 1) {
+						weaponX = coordinates.X;
+					}
+					
+					if (tip == Weapon.TYPE_MELEE) {
+						weaponY = coordinates.Y - this.boundingBox.height * 0.40;
+					}
+					else {
+						weaponY = coordinates.Y - this.boundingBox.height * 0.70;
+					}
+				}
+				// [Melee weapons, light guns and explosives are held in the teeth]
+				else if (tip == Weapon.TYPE_MELEE || tip == Weapon.TYPE_LIGHTGUN || tip == Weapon.TYPE_EXPLOSIVES) {	 // [in the teeth]
+					weaponX = coordinates.X;
+					weaponY = coordinates.Y - this.boundingBox.height * 0.50;
+				}
+				else { // [from the side]
+					weaponX = coordinates.X;
+					weaponY = coordinates.Y - this.boundingBox.height * 0.50;
+				}
+		}
+		
+		public function weaponLevit():void {
+			if (!currentWeapon || !teleFilter) {
+				return;
+			}
+			
+			if (weaponKrep == 0 && currentWeapon.tip != Weapon.TYPE_MAGIC) {
+				if (currentWeapon.vis.kor) {
+					currentWeapon.vis.kor.filters=[teleFilter];
+				}
+				else {
+					currentWeapon.vis.filters=[teleFilter];
+				}
+			} 
+		}
+		
+		public override function sndStep(faza:int,tip:int=0):void {
+			if (loc == null || !loc.active) {
+				return;
+			}
+			
+			var nstep:int;
+			var nleg:int;
+			var sst:String = "footstep";
+			
+			if (mat == E_Material.METAL) {
+				sst = "metalstep";
+			}
+			
+			if (tip == 0) {
+				nleg = Math.floor(Math.random() * 4) + 1;
+			}
+			else if (tip == 1) {
+				nstep=faza % 16;
+				
+				if (nstep==5) nleg=1;
+				else if (nstep==7) nleg=4;
+				else if (nstep==13) nleg=2;
+				else if (nstep==15) nleg=3;
+				else return;
+			}
+			else if (tip == 2) {
+				nstep = faza % 8;
+				
+				if (nstep==1) nleg=4;
+				else if (nstep==2) nleg=1;
+				else if (nstep==5) nleg=2;
+				else if (nstep==6) nleg=3;
+				else return;
+			}
+			else if (tip == 3) {
+				nstep = faza % 14;
+				
+				if (nstep==4) nleg=4;
+				else if (nstep==6) nleg=1;
+				else if (nstep==10) nleg=2;
+				else if (nstep==12) nleg=3;
+				else return;
+				
+				Sound.ps("lazstep" + nleg, coordinates.X, coordinates.Y, 0, (footstepVol*2-volMinus)*Sound.stepVol);
+				
+				return;
+			}
+			else if (tip == 4) {
+				nstep = faza % 24;
+				
+				if (nstep==4) nleg=4;
+				else if (nstep==9) nleg=1;
+				else if (nstep==16) nleg=2;
+				else if (nstep==21) nleg=3;
+				else return;
+			}
+			
+			var rnd:String = isrnd()? "a" : "";
+			
+			if (stayMat == E_Material.METAL) {
+				sst="metalstep";
+			}
+			
+			Sound.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, (footstepVol - volMinus) * Sound.stepVol);
+		}
+		
+		protected override function sndFall():void {
+			if (loc == null || !loc.active) {
+				return;
+			}
+			
+			var rnd:String = isrnd() ? "a" : "";
+			var nleg:int;
+			var sst:String = "footstep";
+			
+			if (stayMat == E_Material.METAL) {
+				sst = "metalstep";
+			}
+			
+			nleg = int(Math.random() * 4) + 1;
+			Sound.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, footstepVol - volMinus);
+			nleg = int(Math.random() * 4) + 1;
+			Sound.ps(sst + nleg + rnd, coordinates.X, coordinates.Y, 0, footstepVol - volMinus);
+		}
+		
+		public override function command(com:String, val:String = null):void {
+			super.command(com, val);
+		}
+	}
+}
