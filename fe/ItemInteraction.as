@@ -1,7 +1,6 @@
 package fe {
 
 	import fe.weapon.Weapon;
-	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.UnitPet;
 	import fe.unit.Armor;
@@ -15,6 +14,7 @@ package fe {
 	import fe.serv.LootGen;
 	import fe.serv.Script;
 	import fe.loc.Loot;
+	import fe.unit.enums.E_ArmorTypes;
 
 	// Everything the player can do with their inventory (formerly most of Invent.as), the Inventory class only holds the data
 	public class ItemInteraction {
@@ -1426,7 +1426,7 @@ package fe {
 		
 		// Amulets can't be dropped, and neither can armor that's stored on the weapon stand
 		public static function canDropArmor(a:Armor):Boolean {
-			return a != null && a.lvl >= 0 && !a.stored && a.tip != Armor.TYPE_AMULET;
+			return a != null && a.lvl >= 0 && !a.stored && a.tip != E_ArmorTypes.AMULET;
 		}
 		
 		// Store armor or an amulet on the weapon stand (it can't be worn) or take it back, worn armor is taken off first

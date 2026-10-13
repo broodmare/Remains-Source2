@@ -10,6 +10,8 @@ package fe.unit {
 	import fe.loc.Location;
 	import fe.WeaponManager;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	// Cheat sheet
 	// Puha = The gun part of the turret, not the base.
@@ -102,7 +104,7 @@ package fe.unit {
 			WeaponManager.reference.setOwner(currentWeapon, this);
 			childObjs = new Array(currentWeapon);
 			
-			mat = 1;
+			mat = E_Material.METAL;
 			currentWeapon.rot = currentWeapon.forceRot;
 			currentWeapon.auto = true;
 			currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
@@ -182,7 +184,7 @@ package fe.unit {
 				}
 			}
 			else if (turrettip == 3) {
-				if (storona > 0) {
+				if (storona == E_Direction.RIGHT) {
 					aRot = [-15, 15];
 					currentWeapon.fixRot = 2;
 					vAngle = 0;
@@ -608,7 +610,7 @@ package fe.unit {
 				}
 				
 				if (aiState==0)  {
-					if (!noTurn) storona=(currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? 1 : -1;
+					if (!noTurn) storona=(currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? E_Direction.RIGHT : E_Direction.LEFT;
 					
 					currentWeapon.findCel=false;
 					overLook=true;
@@ -624,7 +626,7 @@ package fe.unit {
 				}
 				else if (aiState==1) {
 					if (!noTurn) {
-						storona = (currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? 1 : -1;
+						storona = (currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? E_Direction.RIGHT : E_Direction.LEFT;
 					}
 					
 					currentWeapon.findCel=false;
@@ -636,7 +638,7 @@ package fe.unit {
 				}
 				else if (aiState>1) {
 					if (!noTurn) {
-						storona = (celDX > 0) ? 1 : -1;
+						storona = (celDX > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 					}
 					
 					currentWeapon.findCel=true;

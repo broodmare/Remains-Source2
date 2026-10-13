@@ -2,6 +2,7 @@ package fe.loc {
 
 	import fe.*;
 	import fe.unit.Resistances;
+	import fe.unit.enums.E_Resistances;
 
 	//[Class describing the Land and the player's activity in relation to the Land]
 	//[Contained in the game object]
@@ -41,7 +42,7 @@ package fe.loc {
 		public var rad:Number=0, wrad:Number=1;	//радиоактивность воздуха и воды
 		
 		public var wdam:Number		= 0;
-		public var wtipdam:String	= Resistances.DAM_VENOM;	//урон от воды
+		public var wtipdam:String	= E_Resistances.DAM_VENOM;	//урон от воды
 		
 		public var tipWater:int=0;				//внешний вид воды
 		public var color:String;
@@ -100,7 +101,7 @@ package fe.loc {
 				if (land.options.@wtip.length()) tipWater=land.options.@wtip;
 				if (land.options.@wopac.length()) opacWater=land.options.@wopac;
 				if (land.options.@wdam.length()) wdam=land.options.@wdam;
-				if (land.options.@wtipdam.length()) wtipdam=Resistances.parseDamageType(land.options.@wtipdam);
+				if (land.options.@wtipdam.length()) wtipdam=Resistances.parseDamageType(land.options.@wtipdam, E_Resistances.DAM_PIERCE);
 				if (land.options.@vis.length()) visMult=land.options.@vis;
 				if (land.options.@darkness.length()) darkness=land.options.@darkness;
 				if (land.options.@art.length()) artFire=land.options.@art;

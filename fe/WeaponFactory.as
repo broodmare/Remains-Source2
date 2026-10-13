@@ -4,6 +4,7 @@ package fe {
 	import fe.weapon.Weapon;
 	import fe.projectile.Trasser;
 	import fe.unit.Resistances;
+	import fe.unit.enums.E_Resistances;
 
 	public class WeaponFactory {
 		
@@ -283,7 +284,7 @@ package fe {
 			}
 			
 			// Weapons without a damage type do bullet damage
-			weapon.tipDamage = Resistances.parseDamageType(data.char_tipdam);
+			weapon.tipDamage = Resistances.parseDamageType(data.char_tipdam, E_Resistances.DAM_PIERCE);
 			
 			if ("char_prec" in data ) {
 				weapon.precision = data.char_prec * 40;

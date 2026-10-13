@@ -8,6 +8,7 @@ package fe.unit {
 	import fe.loc.Location;
 	import fe.World;
 	import fe.Snd;
+	import fe.enums.E_Direction;
 	
 	public class UnitTransmitter extends Unit {
 
@@ -23,7 +24,7 @@ package fe.unit {
 			vis = SymbolFactory.createInstance("visualTransmitter") as MovieClip;
 			vis.osn.gotoAndStop(1);
 			getXmlParam();
-			storona=1;
+			storona=E_Direction.RIGHT;
 			if (cid=='box') cep=0;
 			doop=true;		//не отслеживает цели
 			aiState=1;

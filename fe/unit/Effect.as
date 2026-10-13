@@ -2,9 +2,14 @@ package fe.unit {
 
 	import flash.geom.ColorTransform;
 	
-	import fe.*;
-	import fe.util.Vec2;
+	import fe.Res;
+	import fe.XMLDataGrabber;
+	import fe.World;
 	import fe.graph.Emitter;
+	import fe.unit.UnitPlayer;
+	import fe.unit.Resistances;
+	import fe.graph.Emitter;
+	import fe.unit.enums.E_Resistances;
 
 	public class Effect {
 
@@ -344,13 +349,13 @@ package fe.unit {
 					t=1;
 				}
 				else {
-					owner.damage(val, Resistances.DAM_BURN, null, true);
+					owner.damage(val, E_Resistances.DAM_BURN, null, true);
 					owner.shok=33;
 				}
 			}
 		
 			if (id=='pinkcloud') {
-				owner.damage(val, Resistances.DAM_PINKCLOUD,null,true);
+				owner.damage(val, E_Resistances.DAM_PINKCLOUD,null,true);
 			}
 			
 			if (id=='blindness' && player) {
@@ -360,11 +365,11 @@ package fe.unit {
 			}
 		
 			if (id=='chemburn') {
-				owner.damage(val,Resistances.DAM_ACID,null,true);
+				owner.damage(val,E_Resistances.DAM_ACID,null,true);
 			}
 			
 			if (id=='drunk' && lvl>3) {
-				owner.damage(val,Resistances.DAM_POISON,null,true);
+				owner.damage(val,E_Resistances.DAM_POISON,null,true);
 				Emitter.emit('poison',owner.loc,owner.coordinates.X+owner.storona*20,owner.coordinates.Y-40);
 			}
 			
@@ -405,7 +410,7 @@ package fe.unit {
 			}
 		
 			if (id == 'sacrifice' && t == 5) {
-				owner.damage(owner.maxhp * 0.5, Resistances.DAM_INTERNAL);
+				owner.damage(owner.maxhp * 0.5, E_Resistances.DAM_INTERNAL);
 				owner.newPart('blood', 50);
 			}
 		}

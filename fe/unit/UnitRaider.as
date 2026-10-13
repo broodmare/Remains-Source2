@@ -8,7 +8,6 @@ package fe.unit {
 	import fe.projectile.Bullet;
 	import fe.serv.AnimationSet;
 	import fe.serv.LootGen;
-	import fe.unit.ai.AIState;
 	import fe.unit.ai.Brain;
 	import fe.unit.ai.Brain_Definition;
 	import fe.unit.anim.Animator;
@@ -26,6 +25,8 @@ package fe.unit {
 	import fe.util.Calc;
 	import fe.weapon.WThrow;
 	import fe.weapon.Weapon;
+	import fe.unit.enums.E_AIState;
+	import fe.enums.E_Direction;
 
 	// Raiders, and the families built on them: slavers, zebras, rangers, Enclave soldiers and griffon mercenaries
 	public class UnitRaider extends UnitPon {
@@ -145,11 +146,11 @@ package fe.unit {
 
 		// Whether the unit is in a state it attacks in
 		protected function isAttacking():Boolean {
-			return aiState == AIState.CHASE || aiState == AIState.HOLD || aiState == AIState.FLEE || aiState == AIState.DASH;
+			return aiState == E_AIState.CHASE || aiState == E_AIState.HOLD || aiState == E_AIState.FLEE || aiState == E_AIState.DASH;
 		}
 
 		private function isCalm():Boolean {
-			return aiState == AIState.IDLE || aiState == AIState.PATROL;
+			return aiState == E_AIState.IDLE || aiState == E_AIState.PATROL;
 		}
 
 		// Tune the brain, motor and attacks for how the unit fights
@@ -254,16 +255,16 @@ package fe.unit {
 
 		// Run from a danger dx away to one side
 		private function flee(dx:Number):void {
-			aiState = AIState.FLEE;
+			aiState = E_AIState.FLEE;
 			aiSpok = maxSpok + brainDefinition.sightBonus;
 			aiTCh = Calc.intBetween(FLEE_TIME_MIN, FLEE_TIME_MAX);
 
 			if (dx > FLEE_SLACK) {
-				aiNapr = -1;
+				aiNapr = E_Direction.LEFT;
 			}
 
 			if (dx < -FLEE_SLACK) {
-				aiNapr = 1;
+				aiNapr = E_Direction.RIGHT;
 			}
 		}
 
@@ -284,7 +285,7 @@ package fe.unit {
 				else {
 					if (attackerType == GUNNER) {
 						setCel(mine);
-						aiState = AIState.HOLD;
+						aiState = E_AIState.HOLD;
 					}
 
 					aiSpok = maxSpok + brainDefinition.sightBonus;
@@ -621,9 +622,9 @@ package fe.unit {
 		// Ground animations go by what the unit is doing rather than how fast it moves
 		public override function animOverride():String {
 			if (sost == 2 || sost == 3 || !stay) { return ""; }
-			if (velocity.X == 0 || aiState == AIState.DASH_PREP) { return animatorDefinition.stand; }
-			if (attackerType == UNARMED && isAttacking() || aiState == AIState.DASH) { return animatorDefinition.run; }
-			if (walker && (isCalm() || aiState == AIState.HOLD)) { return animatorDefinition.walk; }
+			if (velocity.X == 0 || aiState == E_AIState.DASH_PREP) { return animatorDefinition.stand; }
+			if (attackerType == UNARMED && isAttacking() || aiState == E_AIState.DASH) { return animatorDefinition.run; }
+			if (walker && (isCalm() || aiState == E_AIState.HOLD)) { return animatorDefinition.walk; }
 
 			return animatorDefinition.trot;
 		}
@@ -728,10 +729,10 @@ package fe.unit {
 					storona = -storona;
 				}
 				else if (val == "-1") {
-					storona = -1;
+					storona = E_Direction.LEFT;
 				}
 				else {
-					storona = 1;
+					storona = E_Direction.RIGHT;
 				}
 
 				motor.turnTo(storona);
@@ -739,7 +740,7 @@ package fe.unit {
 			}
 
 			if (com == "off") {
-				walk = 0;
+				walk = E_Direction.NEUTRAL;
 				brain.isOn = false;
 			}
 			else if (com == "on") {

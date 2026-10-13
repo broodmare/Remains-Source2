@@ -6,6 +6,9 @@ package fe.unit {
 	import fe.World;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
+	import fe.graph.enums.E_Decal;
 
 	public class UnitSlime extends Unit {
 
@@ -56,7 +59,7 @@ package fe.unit {
 			walkSpeed=maxSpeed;
 			brake=accel/2;
 			doop=true;		//не отслеживает цели
-			mat=12;
+			mat = E_Material.SLIME;
 			collisionTip=0;
 			currentWeapon = getXmlWeapon(ndif);
 			if (currentWeapon) {
@@ -129,7 +132,7 @@ package fe.unit {
 			if (sost>1) return;
 			setVis(true);
 			xp=0;
-			if (!isExpl) explosion(dam*0.8,tipDamage,200,20);
+			if (!isExpl) explosion(dam*0.8,tipDamage,200,20, 0, 0, E_Decal.NONE);
 			isExpl=true;
 			die();
 		}
@@ -141,14 +144,14 @@ package fe.unit {
 			}
 			aiN++;
 	
-			if (stay && shX1 > 0.5 && storona < 0) turnX =  1;
-			if (stay && shX2 > 0.5 && storona > 0) turnX = -1;
-			if (turnX) {
+			if (stay && shX1 > 0.5 && storona == E_Direction.LEFT) turnX =  E_Direction.RIGHT;
+			if (stay && shX2 > 0.5 && storona == E_Direction.RIGHT) turnX = E_Direction.LEFT;
+			if (turnX != E_Direction.NEUTRAL) {
 				storona=turnX;
-				turnX=0;
+				turnX=E_Direction.NEUTRAL;
 			}
 			if (aiState==0) {
-				if (storona==-1) {
+				if (storona==E_Direction.LEFT) {
 					if (velocity.X > -maxSpeed) velocity.X -= accel;
 				}
 				else {

@@ -15,6 +15,8 @@ package fe.unit {
 	import fe.weapon.WThrow;
 	import fe.projectile.Bullet;
 	import fe.entities.BoundingBox;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	// [Mechanisms that cause damage]
 	
@@ -50,7 +52,7 @@ package fe.unit {
 				id = cid;
 			}
 			
-			mat = 1;
+			mat = E_Material.METAL;
 			vis = SymbolFactory.createInstance("vis" + String(id)) as MovieClip || SymbolFactory.createInstance("vismtrap") as MovieClip;
 			getXmlParam();
 			
@@ -248,7 +250,7 @@ package fe.unit {
 				else if (tipDamager==1) {
 					celX = coordinates.X + 200 * storona;
 					celY = coordinates.Y - this.boundingBox.halfHeight;
-					currentWeapon.rot = (storona < 0) ? ONE_PI : 0;
+					currentWeapon.rot = (storona == E_Direction.LEFT) ? ONE_PI : 0;
 				}
 			}
 		}

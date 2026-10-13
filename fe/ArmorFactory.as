@@ -1,6 +1,7 @@
 package fe {
 
 	import fe.unit.Armor;
+	import fe.unit.enums.E_ArmorTypes;
 
 	public class ArmorFactory {
 
@@ -14,7 +15,7 @@ package fe {
 
 			// The data uses "amulet" for amulets (formerly tip='3'), anything else is armor
 			if ("tip" in data) {
-				armor.tip = (data.tip == "amulet" || data.tip == Armor.TYPE_AMULET) ? Armor.TYPE_AMULET : Armor.TYPE_ARMOR;
+				armor.tip = (data.tip == "amulet" || data.tip == E_ArmorTypes.AMULET) ? E_ArmorTypes.AMULET : E_ArmorTypes.ARMOR;
 			}
 
 			if ("clo" in data) {

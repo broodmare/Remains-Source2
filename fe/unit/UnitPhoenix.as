@@ -2,6 +2,7 @@ package fe.unit {
 
 	import fe.World;
 	import fe.projectile.Bullet;
+	import fe.enums.E_Direction;
 	
 	public class UnitPhoenix extends Unit {
 		
@@ -78,7 +79,7 @@ package fe.unit {
 				World.w.game.addQuest("tamePhoenix");
 			}
 			
-			storona = (coordinates.X > World.w.gg.coordinates.X) ? -1 : 1;
+			storona = (coordinates.X > World.w.gg.coordinates.X) ? E_Direction.LEFT : E_Direction.RIGHT;
 			
 			if (World.w.invent.hasItem("radcookie")) {
 				World.w.game.incQuests("tame_ph");

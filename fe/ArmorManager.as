@@ -4,6 +4,8 @@ package fe {
 
 	import fe.unit.Armor;
 	import fe.unit.Resistances;
+	import fe.unit.enums.E_ArmorTypes;
+	import fe.unit.enums.E_Resistances;
 
 	public class ArmorManager {
 
@@ -16,10 +18,10 @@ package fe {
 		
 		// Original resistance names used in the armor data mapped to their damage types
 		private static const RESIST_KEYS:Object = {
-			bul: Resistances.DAM_PIERCE,	blade: Resistances.DAM_CUT,		phis: Resistances.DAM_BLUNT,	fire: Resistances.DAM_BURN,
-			expl: Resistances.DAM_EXPLOSION,	laser: Resistances.DAM_LASER,	plasma: Resistances.DAM_PLASMA,	venom: Resistances.DAM_VENOM,
-			spark: Resistances.DAM_ELECTRIC,	acid: Resistances.DAM_ACID,		cryo: Resistances.DAM_COLD,		fang: Resistances.DAM_BITE,
-			necro: Resistances.DAM_DEATH
+			bul: E_Resistances.DAM_PIERCE,	blade: E_Resistances.DAM_CUT,		phis: E_Resistances.DAM_BLUNT,	fire: E_Resistances.DAM_BURN,
+			expl: E_Resistances.DAM_EXPLOSION,	laser: E_Resistances.DAM_LASER,	plasma: E_Resistances.DAM_PLASMA,	venom: E_Resistances.DAM_VENOM,
+			spark: E_Resistances.DAM_ELECTRIC,	acid: E_Resistances.DAM_ACID,		cryo: E_Resistances.DAM_COLD,		fang: E_Resistances.DAM_BITE,
+			necro: E_Resistances.DAM_DEATH
 		};
 
 		public function ArmorManager() {
@@ -115,8 +117,8 @@ package fe {
 			}
 
 			// If this is armor (not an amulet) make it weak to pink cloud
-			if (armor.tip == Armor.TYPE_ARMOR) {
-				armor.resistances.changeResist(Resistances.DAM_PINKCLOUD, -0.50);
+			if (armor.tip == E_ArmorTypes.ARMOR) {
+				armor.resistances.changeResist(E_Resistances.DAM_PINKCLOUD, -0.50);
 			}
 
 			// Get upgrade-level dependant stats
@@ -168,14 +170,14 @@ package fe {
 				return;
 			}
 
-			if (tip != Resistances.DAM_VENOM && tip != Resistances.DAM_EMP && tip != Resistances.DAM_POISON && tip != Resistances.DAM_BLEED && tip != Resistances.DAM_INTERNAL) {
+			if (tip != E_Resistances.DAM_VENOM && tip != E_Resistances.DAM_EMP && tip != E_Resistances.DAM_POISON && tip != E_Resistances.DAM_BLEED && tip != E_Resistances.DAM_INTERNAL) {
 				dam *= 1 - armor.resistances.getResist(tip);
 				
-				if (tip == Resistances.DAM_ACID) {
+				if (tip == E_Resistances.DAM_ACID) {
 					dam *= 2;
 				}
 				
-				if (tip == Resistances.DAM_PINKCLOUD) {
+				if (tip == E_Resistances.DAM_PINKCLOUD) {
 					dam *= 3;
 				}
 				

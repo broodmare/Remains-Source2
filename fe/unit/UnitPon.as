@@ -5,6 +5,8 @@ package fe.unit {
 	import fe.Snd;
 	import fe.loc.tile.Tile;
 	import fe.weapon.Weapon;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	public class UnitPon extends Unit {
 
@@ -23,14 +25,14 @@ package fe.unit {
 		// [weapon position]
 		public override function setWeaponPos(tip:String = "internal"):void {
 				if (weaponKrep==0) { // [telekinesis]
-					if (storona>0 && celX > this.boundingBox.right || storona < 0 && celX < this.boundingBox.left) {
+					if (storona==E_Direction.RIGHT && celX > this.boundingBox.right || storona == E_Direction.LEFT && celX < this.boundingBox.left) {
 						weaponX = coordinates.X + this.boundingBox.width * storona;
 					}
 					else {
 						weaponX = coordinates.X;
 					}
 					
-					if (isLaz) {
+					if (isLaz != E_Direction.NEUTRAL) {
 						weaponX = coordinates.X;
 					}
 					
@@ -80,7 +82,7 @@ package fe.unit {
 			var nleg:int;
 			var sst:String = "footstep";
 			
-			if (mat == 1) {
+			if (mat == E_Material.METAL) {
 				sst = "metalstep";
 			}
 			
@@ -130,7 +132,7 @@ package fe.unit {
 			
 			var rnd:String = isrnd()? "a" : "";
 			
-			if (stayMat == 1) {
+			if (stayMat == E_Material.METAL) {
 				sst="metalstep";
 			}
 			
@@ -146,7 +148,7 @@ package fe.unit {
 			var nleg:int;
 			var sst:String = "footstep";
 			
-			if (stayMat == 1) {
+			if (stayMat == E_Material.METAL) {
 				sst = "metalstep";
 			}
 			

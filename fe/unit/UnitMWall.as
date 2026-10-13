@@ -5,6 +5,8 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.graph.Emitter;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.unit.enums.E_Resistances;
 
 	public class UnitMWall extends Unit {
 		
@@ -16,12 +18,12 @@ package fe.unit {
 			}
 			else id = cid
 			
-			mat = 7;
+			mat = E_Material.FORCE_FIELD;
 			var vClass:Class = SymbolFactory.fetchSymbolClass("vis" + String(id)) || SymbolFactory.fetchSymbolClass("vismwall");
 			vis = new vClass() as MovieClip;
 			getXmlParam();
-			vulnerabilities.setResist(Resistances.DAM_DEATH, 1);
-			begvulner.setResist(Resistances.DAM_DEATH, 1);
+			vulnerabilities.setResist(E_Resistances.DAM_DEATH, 1);
+			begvulner.setResist(E_Resistances.DAM_DEATH, 1);
 			nazv = "";
 			levitPoss = false;
 			showNumbs = false;

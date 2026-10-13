@@ -10,6 +10,7 @@ package fe.weapon {
 	import fe.unit.Mine;
 	import fe.projectile.Bullet;
 	import fe.projectile.PhisBullet;
+	import fe.unit.enums.E_Resistances;
 	
 	public class WThrow extends Weapon {
 		
@@ -167,8 +168,8 @@ package fe.weapon {
 				
 				if (owner && owner.player && World.w.pers.sapper > 1) {
 					un.damage1 *= World.w.pers.sapper;
-					un.vulnerabilities.setResist(Resistances.DAM_EXPLOSION, 0);	// Immune to explosion
-					un.vulnerabilities.setResist(Resistances.DAM_PLASMA, 0);	// Immune to plasma
+					un.vulnerabilities.setResist(E_Resistances.DAM_EXPLOSION, 0);	// Immune to explosion
+					un.vulnerabilities.setResist(E_Resistances.DAM_PLASMA, 0);	// Immune to plasma
 				}
 			}
 			else {

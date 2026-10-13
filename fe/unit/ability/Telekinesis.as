@@ -8,6 +8,7 @@ package fe.unit.ability {
 	import fe.Settings;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
+	import fe.enums.E_Direction;
 
 	// Magically grabbing an object, steering it to a point, throwing it and letting it go
 	public class Telekinesis {
@@ -101,7 +102,7 @@ package fe.unit.ability {
 			}
 
 			if (held is Unit) {
-				Unit(held).isLaz = 0;		// Held units can't cling to ladders
+				Unit(held).isLaz = E_Direction.NEUTRAL;		// Held units can't cling to ladders
 			}
 
 			dx = targetX - held.coordinates.X;

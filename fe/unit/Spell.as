@@ -6,6 +6,9 @@ package fe.unit {
 	import fe.loc.tile.Tile;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
+	import fe.enums.E_Material;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 
 	public class Spell {
 
@@ -301,7 +304,7 @@ package fe.unit {
 			}
 			
 			owner.norma(d, spd);
-			owner.isLaz = 0;
+			owner.isLaz = E_Direction.NEUTRAL;
 			owner.levit = 0;
 			
 			// Push the caster toward the target point, by at most spd (d, not the full distance v)
@@ -391,7 +394,7 @@ package fe.unit {
 			if (loc.testTile(t)) {
 				t.collision = 3;
 				t.hp = Math.round(hp * power);
-				t.material = 7;
+				t.material = E_Material.FORCE_FIELD;
 				t.ghostTimer = Math.round(dam * power);
 				World.w.grafon.gwall(t.coords.X, t.coords.Y);
 				est = 1;
@@ -421,7 +424,7 @@ package fe.unit {
 				}
 				else {
 					owner.addEffect("bloodinv");
-					gg.pers.bloodDamage(dam, Resistances.DAM_BLEED);
+					gg.pers.bloodDamage(dam, E_Resistances.DAM_BLEED);
 					est = 1;
 				}
 			}

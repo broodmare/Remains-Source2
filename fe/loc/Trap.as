@@ -8,6 +8,7 @@ package fe.loc {
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
 	import fe.loc.tile.Tile;
+	import fe.unit.enums.E_Resistances;
 
 	import fe.stubs.vistrapspikes
 	
@@ -17,7 +18,7 @@ package fe.loc {
 		public var vis2:MovieClip;
 
 		public var dam:Number=0;
-		public var tipDamage:String = Resistances.DAM_PIERCE;
+		public var tipDamage:String = E_Resistances.DAM_PIERCE;
 		
 		public var spDam:int = 1;	// [Method of dealing damage]
 		public var spBind:int = 1;	// [Attachment method]
@@ -81,7 +82,7 @@ package fe.loc {
 			else this.boundingBox.height = node.@wid * tileY;
 			
 			dam=node.@damage;
-			if (node.@tipdam.length()) tipDamage=Resistances.parseDamageType(node.@tipdam);
+			if (node.@tipdam.length()) tipDamage=Resistances.parseDamageType(node.@tipdam, E_Resistances.DAM_PIERCE);
 			if (node.@anim.length()) anim=true;
 			if (node.@floor.length()) floor=true;
 			if (node.@att.length()) spDam=node.@att;

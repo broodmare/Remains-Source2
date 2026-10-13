@@ -11,6 +11,7 @@ package fe.graph {
 	import fe.unit.Unit;
     import fe.entities.BoundingBox;
 	import fe.projectile.Bullet;
+	import fe.enums.E_Direction;
 
     public class DebugLayer {
 		
@@ -287,7 +288,7 @@ package fe.graph {
 			if (t.platform && ((t.collision == 0 || (unit.transT && t.collision == 3))) &&
 				((unitBox.bottom - (unit.stay ? unit.porog : unit.porog_jump)) > tileBox.top ||
 				unit.throu || unit.t_throw > 0 || unit.levit || unit.isFly || 
-				(unit.hasOwnProperty("diagon") && unit.diagon != 0))) {
+				(unit.hasOwnProperty("diagon") && unit.diagon != E_Direction.NEUTRAL))) {
 				return { isColliding: false };
 			}
 			
@@ -470,7 +471,7 @@ package fe.graph {
 			// `list` can be an Array, Vector, or other iterable
 			for each (var item in list) {
 				// If the item is not a diagon, skip it
-				if (!item.hasOwnProperty("diagon") || item.diagon == 0) {
+				if (!item.hasOwnProperty("diagon") || item.diagon == E_Direction.NEUTRAL) {
 					continue;
 				}
 				

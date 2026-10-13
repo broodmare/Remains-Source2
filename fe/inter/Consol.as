@@ -9,6 +9,7 @@ package fe.inter {
 	import fe.serv.Item;
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
+	import fe.unit.enums.E_Resistances;
 
 	
 	// Debug console class. 
@@ -173,7 +174,7 @@ package fe.inter {
 					world.gui.vis.visible=!world.gui.vis.visible;
 					break;
 				case "die":
-					world.gg.damage(10000, Resistances.DAM_INTERNAL);
+					world.gg.damage(10000, E_Resistances.DAM_INTERNAL);
 					break;
 				case "hardreset":
 					if (world.pers.dead) {

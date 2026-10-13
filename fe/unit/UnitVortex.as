@@ -8,6 +8,9 @@ package fe.unit {
 	import fe.loc.tile.Tile;
 	import fe.Snd;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.graph.enums.E_Decal;
+	import fe.enums.E_Direction;
 	
 	public class UnitVortex extends Unit {
 
@@ -23,7 +26,7 @@ package fe.unit {
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;
 			isFly=true;
-			mat=1;
+			mat=E_Material.METAL;
 			acidDey=1;
 			elast=0.8;
 			spd=new Object();
@@ -58,7 +61,7 @@ package fe.unit {
 				return false;
 			}
 			if (destroy > 0 && napr==2 || napr==1) {
-				loc.hitTile(t, destroy,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY, 4);
+				loc.hitTile(t, destroy,(t.coords.X + 0.5) * Tile.tileX, (t.coords.Y + 0.5) * Tile.tileY, E_Decal.BLOW_SMALL);
 			}
 			if (t.collision == 0) {
 				return true;
@@ -121,7 +124,7 @@ package fe.unit {
 				
 				if (aiState == 0) {		//выбрать случайную цель в пассивном режиме
 					if (isrnd()) {
-						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? 1 : -1);
+						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? E_Direction.RIGHT : E_Direction.LEFT);
 						celY = coordinates.Y + Math.random() * 200 - 100;
 					}
 					else
@@ -137,7 +140,7 @@ package fe.unit {
 				if (findCel()) {
 					aiSpok = maxSpok + 10;
 					aiState = 1;
-					storona = (celX > coordinates.X)? 1 : -1;
+					storona = (celX > coordinates.X)? E_Direction.RIGHT : E_Direction.LEFT;
 				}
 				else {
 					if (aiSpok > 0) aiSpok--;
@@ -156,16 +159,16 @@ package fe.unit {
 				maxSpeed = runSpeed;
 			}
 	
-			if (turnX != 0) {
+			if (turnX != E_Direction.NEUTRAL) {
 				iskr.cast(loc, coordinates.X + 15 * storona, coordinates.Y - 15, {dx:velocity.X, kol:int(Math.random() * 5 + 3)});
 				Snd.ps('vortex_cut', coordinates.X, coordinates.Y, 0, sndVolkoef);
 				storona = turnX;
 				aiTCh = 0
-				turnX = 0;
+				turnX = E_Direction.NEUTRAL;
 			}
-			if (turnY!=0) {
+			if (turnY!=E_Direction.NEUTRAL) {
 				velocity.Y = -velocity.Y * 0.5;
-				turnY = 0;
+				turnY = E_Direction.NEUTRAL;
 			}
 			
 			//атака

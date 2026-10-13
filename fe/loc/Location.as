@@ -4,14 +4,14 @@ package fe.loc {
 	import flash.display.MovieClip;
 	import flash.display.BitmapData;
 
-
 	import fe.*;
 	import fe.SymbolFactory;
-	import fe.graph.*;
+	import fe.graph.Grafon;
+	import fe.graph.Emitter;
+	import fe.graph.BackObj;
+	import fe.graph.enums.E_Decal;
 	import fe.entities.Entity;
-	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
-	import fe.weapon.Weapon;
 	import fe.projectile.Bullet;
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
@@ -20,17 +20,17 @@ package fe.loc {
 	import fe.unit.UnitTransmitter;
 	import fe.serv.LootGen;
 	import fe.serv.Item;
-	import fe.unit.InventoryItem;
 	import fe.unit.UnitTurret;
 	import fe.loc.tile.Tile;
 	import fe.loc.tile.TilePiece_Definition;
 	import fe.loc.tile.TileRegistry;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 	
 	public class Location {
 
 		private var itemManager:ItemManager;				// Reference to the item manager
 		public var land:Land;
-		public var minimap:Minimap;
 		
 		public var id:String;
 		public var room:Room;								//связанный шаблон
@@ -112,7 +112,7 @@ package fe.loc {
 		public var rad:Number				=   0.00;		//радиоактивность воздуха и воды
 		public var wrad:Number				=   1.00;		
 		public var wdam:Number				=   0.00;	
-		public var wtipdam:String			=   Resistances.DAM_VENOM;	// [water damage]
+		public var wtipdam:String			=   E_Resistances.DAM_VENOM;	// [water damage]
 		public var tipWater:int				=   0;			//внешний вид воды
 		public var opacWater:Number			=   0.00;		//непрозрачность воды
 		public var waterLevel:int			= 100;			//уровень воды
@@ -221,7 +221,6 @@ package fe.loc {
 			defaultTile = new Tile(-1, -1);		// Use this as a back-up if a tile can't be found
 
 			initializeArrays();
-			minimap = new Minimap(this);
 			maxdy = World.maxdy;
 
 			if (rnd) {
@@ -305,7 +304,7 @@ package fe.loc {
 				if (nroom.options.@wtip.length()) tipWater=nroom.options.@wtip;
 				if (nroom.options.@wopac.length()) opacWater=nroom.options.@wopac;
 				if (nroom.options.@wdam.length()) wdam=nroom.options.@wdam;
-				if (nroom.options.@wtipdam.length()) wtipdam=Resistances.parseDamageType(nroom.options.@wtipdam);
+				if (nroom.options.@wtipdam.length()) wtipdam=Resistances.parseDamageType(nroom.options.@wtipdam, E_Resistances.DAM_PIERCE);
 				if (nroom.options.@bezdna.length()) bezdna=true;
 				if (nroom.options.@wlevel.length()) waterLevel=nroom.options.@wlevel;
 				if (nroom.options.@base.length()) base=true;
@@ -373,7 +372,7 @@ package fe.loc {
 					tile = getTile(i, j);
 					tile.applyDefinition(TileRegistry.viewDefinition(jis, mirror));
 
-					if (tile.definition.ladderSide != 0) { //полочка наверху лестницы
+					if (tile.definition.ladderSide != E_Direction.NEUTRAL) { //полочка наверху лестницы
 						if (j > 0 && tile.collision == 0 && !tile.platform && tile.definition.ladderSide != getTile(i, j - 1).definition.ladderSide) {
 							tile.platform = true;
 							tile.ladderTop = true;
@@ -1678,11 +1677,11 @@ package fe.loc {
 		}
 		
 		// [Tile damage]
-		public function hitTile(t:Tile, hit:int, nx:int, ny:int, tip:int = 9):void {
+		public function hitTile(t:Tile, hit:int, nx:int, ny:int, tip:int):void {
 			var hasCollision:Boolean = t.collision >= 1;
 
-			if (tip == 100 && hit <= 50 && (t.damageThreshold > 0 || t.indestructible)) return;
-			if (tip == 100) tip = 4;
+			if (tip == E_Decal.STOMP && hit <= 50 && (t.damageThreshold > 0 || t.indestructible)) return;
+			if (tip == E_Decal.STOMP) tip = E_Decal.BLOW_SMALL;
 
 			var hitDivHp:Number = hit / t.hp;
 
@@ -1723,7 +1722,7 @@ package fe.loc {
 			if (t.indestructible) return;
 			if (t.collision==1) {
 				if (t.door) { //если это дверь
-					t.door.die(4);
+					t.door.die(E_Decal.BLOW_SMALL);
 				} 				
 				isRebuild=true;			//изменить конфигурацию локации				
 				isRelight = true;
@@ -1734,7 +1733,7 @@ package fe.loc {
 			}
 			if (t.collision>=1) {
 				t.die();
-				if (active) grafon.tileDie(t,4);
+				if (active) grafon.tileDie(t, E_Decal.BLOW_SMALL);
 			}
 		}
 		
@@ -1808,7 +1807,7 @@ package fe.loc {
 		
 		// [check for the possibility of installing a ghost wall, returns true if nothing interferes]
 		public function testTile(t:Tile):Boolean {
-			if (t.collision > 0 || t.definition.ladderSide != 0 || t.water != 0 || t.door) {
+			if (t.collision > 0 || t.definition.ladderSide != E_Direction.NEUTRAL || t.water != 0 || t.door) {
 				return false;
 			}
 
@@ -2429,7 +2428,7 @@ package fe.loc {
 			
 			for each (var un:Unit in units) {
 				if (un.fraction!=Unit.F_PLAYER && un.xp>0) {
-					un.damage(100000, Resistances.DAM_INTERNAL);
+					un.damage(100000, E_Resistances.DAM_INTERNAL);
 				}
 			}
 			

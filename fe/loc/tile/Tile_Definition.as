@@ -1,5 +1,8 @@
 package fe.loc.tile {
 
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
+
 	// What a room places in one tile: its pieces, and the starting values combined from them. Shared by every tile with the same contents
 	public class Tile_Definition {
 		public var code:String				= "";		// Text from the room's tile rows that this was built from
@@ -13,13 +16,13 @@ package fe.loc.tile {
 		public var hp:int					= 1000;
 		public var damageThreshold:int		= 0;
 		public var indestructible:Boolean	= false;
-		public var material:int				= Material.NONE;
+		public var material:int				= E_Material.NONE;
 		public var opacity:Number			= 0.0;
 		public var platform:Boolean			= false;
 
 		// Fixed for the tile's whole life
-		public var ladderSide:int			= 0;		// Side of the tile a ladder hugs: 1 right, -1 left, 0 for no ladder
-		public var slopeSide:int			= 0;		// Side a slope rises toward: 1 right, -1 left, 0 for no slope
+		public var ladderSide:int			= E_Direction.NEUTRAL;	// Side of the tile a ladder hugs, NEUTRAL for no ladder
+		public var slopeSide:int			= E_Direction.NEUTRAL;	// Side a slope rises toward, NEUTRAL for no slope
 		public var hidingSpot:Boolean		= false;
 	}
 }

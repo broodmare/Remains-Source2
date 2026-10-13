@@ -3,7 +3,10 @@ package fe.loc {
 	import flash.filters.DropShadowFilter;
 	import flash.display.MovieClip;
 
-	import fe.*;
+	import fe.XMLDataGrabber;
+	import fe.Snd;
+	import fe.Res;
+	import fe.World;
 	import fe.SymbolFactory;
 	import fe.util.Vec2;
 	import fe.entities.Obj;
@@ -16,6 +19,7 @@ package fe.loc {
 	import fe.projectile.Bullet;
 	import fe.unit.Mine;
 	import fe.loc.tile.Tile;
+	import fe.enums.E_Material;
 
 	public class Box extends Obj {
 
@@ -31,7 +35,7 @@ package fe.loc {
 		public var cdx:Number=0, cdy:Number=0;	//движение того, кто стоит на ящике	
 		public var vel2:Number=0; //скорость в квадрате
 		
-		public var mat:int					= 0;		//материал	//0 - хз что //1 - металл //2 - камень //3 - дерево
+		public var mat:int					= E_Material.NONE;
 		public var wall:int					= 0;		//крепится на стену
 		public var phis:int					= 1;
 		public var sur:int					= 0;		//предме на ящике
@@ -523,7 +527,7 @@ package fe.loc {
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
 			if (sposob==1) {
 				if (!bulPlayer) {
-					return -1;
+					return Bullet.MISS;
 				}
 
 				damage(bul.destroy);
@@ -544,7 +548,7 @@ package fe.loc {
 				}
 			}
 			
-			return -1;
+			return Bullet.MISS;
 		}
 		
 		public function damage(dam:Number):void {
@@ -582,19 +586,19 @@ package fe.loc {
 				if (sposob >= 0 && sposob < 10) {
 					var kus:String = 'iskr';
 					switch (mat) {
-						case 1:
+						case E_Material.METAL:
 							kus = 'metal';
 							break;
-						case 2:
+						case E_Material.STONE:
 							kus = 'kusok';
 							break;
-						case 3:
+						case E_Material.WOOD:
 							kus = 'schep';
 							break;
-						case 5:
+						case E_Material.GLASS:
 							kus = 'steklo';
 							break;
-						case 7:
+						case E_Material.FORCE_FIELD:
 							kus = 'pole';
 							break;
 						default:
@@ -790,7 +794,7 @@ package fe.loc {
 					if (velocity.X > -5 && velocity.X < 5) velocity.X = 0;
 					else {
 						velocity.X *= 0.92;
-						if (mat==1)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*boundingBox.width, coordinates.Y);
+						if (mat == E_Material.METAL)	Emitter.emit('iskr_wall', loc, coordinates.X + (Math.random()-0.5)*boundingBox.width, coordinates.Y);
 					}
 
 					if (!levit && (!isPlav || ddyPlav>0)) {

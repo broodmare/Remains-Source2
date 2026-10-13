@@ -4,6 +4,8 @@ package fe.unit {
 	import fe.serv.LootGen;
 	import fe.WeaponManager;
 	import fe.World;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 
 	public class UnitBossEncl extends UnitPon {
 
@@ -37,24 +39,24 @@ package fe.unit {
 			//взять параметры из xml
 			getXmlParam();
 			aiTCh=30;
-			aiVNapr=1;
+			aiVNapr=E_Direction.DOWN;
 			
 			var wm:WeaponManager = WeaponManager.reference;
 			if (tr==1) {
 				currentWeapon = wm.cloneWeapon("lmg");
 				wm.setOwner(currentWeapon, this);
 				armor=20;
-				vulnerabilities.setResist(Resistances.DAM_PIERCE, 0.70);
-				vulnerabilities.setResist(Resistances.DAM_BLUNT, 0.70);
-				vulnerabilities.setResist(Resistances.DAM_CUT, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_PIERCE, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_BLUNT, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_CUT, 0.70);
 			}
 			else if (tr==2) {
 				currentWeapon = wm.cloneWeapon("quick");
 				wm.setOwner(currentWeapon, this);
 				marmor=20;
-				vulnerabilities.setResist(Resistances.DAM_LASER, 0.70);
-				vulnerabilities.setResist(Resistances.DAM_PLASMA, 0.70);
-				vulnerabilities.setResist(Resistances.DAM_ELECTRIC, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_LASER, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_PLASMA, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_ELECTRIC, 0.70);
 				blitId="sprEnclboss2";
 			}
 			else if (tr==3) {
@@ -65,9 +67,9 @@ package fe.unit {
 				currentWeapon.reload=30;
 				currentWeapon.damageExpl*=0.6;
 				armor=marmor=10;
-				vulnerabilities.setResist(Resistances.DAM_EXPLOSION, 0.70);
-				vulnerabilities.setResist(Resistances.DAM_BURN, 0.70);
-				vulnerabilities.setResist(Resistances.DAM_COLD, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_EXPLOSION, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_BURN, 0.70);
+				vulnerabilities.setResist(E_Resistances.DAM_COLD, 0.70);
 				blitId="sprEnclboss3";
 			}
 			
@@ -199,7 +201,7 @@ package fe.unit {
 			if (stun) {
 				aiState=0;
 				aiTCh=3;
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 			}
 			
 			t_replic--;
@@ -233,7 +235,7 @@ package fe.unit {
 				else setCel(loc.gg);
 			}
 			//направление
-			storona=(celDX>0)?1:-1;
+			storona=(celDX>0)?E_Direction.RIGHT:E_Direction.LEFT;
 
 			
 			destroy=0;
@@ -246,20 +248,20 @@ package fe.unit {
 				
 				if (coordinates.Y < minY && velocity.Y < maxSpeed) {
 					velocity.Y += accel;
-					aiVNapr = 1;
+					aiVNapr = E_Direction.DOWN;
 				}
 				
 				if (coordinates.Y > maxY && velocity.Y > -maxSpeed) {
 					velocity.Y -= accel;
-					aiVNapr = -1;
+					aiVNapr = E_Direction.UP;
 				}
 				
 				if (coordinates.Y >= minY && coordinates.Y <= maxY) {
-					if (aiVNapr == 1 && velocity.Y < maxSpeed) {
+					if (aiVNapr == E_Direction.DOWN && velocity.Y < maxSpeed) {
 						velocity.Y += accel;
 					}
 					
-					if (aiVNapr == -1 && velocity.Y > -maxSpeed) {
+					if (aiVNapr == E_Direction.UP && velocity.Y > -maxSpeed) {
 						velocity.Y -= accel;
 					}
 				}
@@ -297,7 +299,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com=="off") {
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 				controlOn=false;
 			}
 			else if (com=="on") {

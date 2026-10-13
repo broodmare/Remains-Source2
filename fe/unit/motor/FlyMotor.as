@@ -1,8 +1,9 @@
 package fe.unit.motor {
 
 	import fe.unit.Unit;
-	import fe.unit.ai.AIState;
 	import fe.util.Calc;
+	import fe.unit.enums.E_AIState;
+	import fe.enums.E_Direction;
 
 	// Flying for units that also walk: takes off when falling, swimming or reaching for a target high above, lands while wandering
 	public class FlyMotor implements IMotor {
@@ -31,7 +32,7 @@ package fe.unit.motor {
 		private var landingTime:int		= 0;
 
 		private function isAlert():Boolean {
-			return owner.aiState != AIState.IDLE && owner.aiState != AIState.PATROL;
+			return owner.aiState != E_AIState.IDLE && owner.aiState != E_AIState.PATROL;
 		}
 
 		// Fly toward the target point, or bob about once within stalking distance of the player
@@ -55,7 +56,7 @@ package fe.unit.motor {
 				stepY = owner.celY - (owner.coordinates.Y - owner.boundingBox.halfHeight);
 
 				// Hit a wall: stop pushing into it, and with no target pick a point the other way
-				if (owner.turnX != 0) {
+				if (owner.turnX != E_Direction.NEUTRAL) {
 					stepX = 0.0;
 					heading = owner.turnX;
 					if (!owner.celUnit) {
@@ -64,7 +65,7 @@ package fe.unit.motor {
 					}
 				}
 
-				if (owner.turnY != 0) {
+				if (owner.turnY != E_Direction.NEUTRAL) {
 					stepY = 0.0;
 				}
 
@@ -82,7 +83,7 @@ package fe.unit.motor {
 
 			ground.turnTo(heading);
 
-			if (owner.turnY < 0) {
+			if (owner.turnY == E_Direction.UP) {
 				if (landingTime > LANDING_TIME) {
 					landingTime = 0;
 					owner.isFly = false;
@@ -92,8 +93,8 @@ package fe.unit.motor {
 				}
 			}
 
-			owner.turnX = 0;
-			owner.turnY = 0;
+			owner.turnX = E_Direction.NEUTRAL;
+			owner.turnY = E_Direction.NEUTRAL;
 			fallTime = 0;
 		}
 
@@ -152,9 +153,9 @@ package fe.unit.motor {
 
 			owner.velocity.X *= LANDING_DRAG;
 
-			if (owner.turnY < 0) {
+			if (owner.turnY == E_Direction.UP) {
 				owner.isFly = false;
-				owner.turnY = 0;
+				owner.turnY = E_Direction.NEUTRAL;
 			}
 
 			ground.turnTo(owner.aiNapr);

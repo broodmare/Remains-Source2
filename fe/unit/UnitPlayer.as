@@ -31,6 +31,10 @@ package fe.unit {
 	import fe.loc.Loot;
 	import fe.weapon.WKick;
 	import fe.weapon.WPaint;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
+	import fe.unit.enums.E_ArmorTypes;
+	import fe.unit.enums.E_Resistances;
 
 	import fe.stubs.visualPlayer;	// .fla linkage
 	import fe.stubs.reloadBar;		// .fla linkage
@@ -250,7 +254,7 @@ package fe.unit {
 				vis.svet.visible = false;
 			}
 			
-			storona=1; // Whether the unit is facing left or right.
+			storona=E_Direction.RIGHT; // Whether the unit is facing left or right.
 			id_replic = "pip";
 			
 			getXmlParam();
@@ -435,7 +439,7 @@ package fe.unit {
 			dropTeleObj();
 
 			actionObj	= null;
-			isLaz		= 0;
+			isLaz		= E_Direction.NEUTRAL;
 			levit		= 0;
 			f_stealth	= stealthMult < 1;
 			f_die		= false;
@@ -510,21 +514,21 @@ package fe.unit {
 				}
 				
 				if (napr == 3 || napr == 4) {
-					if (laz != 0) {
+					if (laz != E_Direction.NEUTRAL) {
 						checkStairs();
 						
-						if (!isLaz) {
+						if (isLaz == E_Direction.NEUTRAL) {
 							checkStairs(1, -tileX * laz);
 						}
 					
-						if (!isLaz) {
+						if (isLaz == E_Direction.NEUTRAL) {
 							checkStairs(1,  tileX * laz);
 						}
 					}
 				} 
 				
 				if (napr == 4) {
-					if (!isLaz && !isFly && lev == 0) {
+					if (isLaz == E_Direction.NEUTRAL && !isFly && lev == 0) {
 						velocity.Y= -jumpdy;
 						velocity.X = maxSpeed * storona;
 					}
@@ -660,7 +664,7 @@ package fe.unit {
 					velocity.multiply(0.30);
 				}
 			}
-			else if (isLaz != 0) {
+			else if (isLaz != E_Direction.NEUTRAL) {
 				velocity.Y = 0;
 				velocity.X *= 0.8;
 			}
@@ -727,12 +731,12 @@ package fe.unit {
 					brake1=0.1*brake;
 				}
 				
-				if (walk<0) {
+				if (walk==E_Direction.LEFT) {
 					if (velocity.X < -maxSpeed) {
 						velocity.X += brake1;
 					}
 				}
-				else if (walk>0) {
+				else if (walk==E_Direction.RIGHT) {
 					if (velocity.X > maxSpeed) {
 						velocity.X -= brake1;
 					}
@@ -778,7 +782,7 @@ package fe.unit {
 
 			//Fettered (Chained up)
 			if (isFetter > 0) {
-				isLaz = 0;
+				isLaz = E_Direction.NEUTRAL;
 				dfx = fetX - coordinates.X;
 				dfy = fetY - coordinates.Y + 30;
 				rfetter = dfx * dfx + dfy * dfy; // Chain-ging this to using squared distance instead of square root for comparisons to save cycles.
@@ -1245,7 +1249,7 @@ package fe.unit {
 					if (sost==1 && isrnd(0.1)) Emitter.emit("bubble", loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 				else {
-					damage(maxhp/500,Resistances.DAM_INTERNAL,null,true);
+					damage(maxhp/500,E_Resistances.DAM_INTERNAL,null,true);
 					if (sost==1 && isrnd())Emitter.emit("bubble", loc, coordinates.X+storona*23, coordinates.Y-58);
 				}
 			}
@@ -1258,7 +1262,7 @@ package fe.unit {
 			}
 
 			// Stamina
-			if (isRun && walk && stay && !isSit && (velocity.X != 0)) {
+			if (isRun && walk != E_Direction.NEUTRAL && stay && !isSit && (velocity.X != 0)) {
 				if (stam > 0) {
 					if (inBattle) {
 						stam-=pers.stamRun*dstam;
@@ -1374,7 +1378,7 @@ package fe.unit {
 			
 			//удары врагов
 			if (pinok>0) {
-				if (stay || isLaz!=0) pinok--;
+				if (stay || isLaz!=E_Direction.NEUTRAL) pinok--;
 				else pinok-=3;
 			}
 			
@@ -1387,17 +1391,17 @@ package fe.unit {
 				t_raddam=0;
 				
 				if (ddam1>0) {
-					damage(ddam1/30, Resistances.DAM_VENOM,null,true);
+					damage(ddam1/30, E_Resistances.DAM_VENOM,null,true);
 					ddam1=0;
 				}
 				
 				if (ddam2>0) {
-					damage(ddam2/30, Resistances.DAM_PINKCLOUD,null,true);
+					damage(ddam2/30, E_Resistances.DAM_PINKCLOUD,null,true);
 					ddam2=0;
 				}
 			
 				if (ddam3>0) {
-					damage(ddam3/30, Resistances.DAM_DEATH,null,true);
+					damage(ddam3/30, E_Resistances.DAM_DEATH,null,true);
 					ddam3=0;
 				}
 			}
@@ -1406,21 +1410,21 @@ package fe.unit {
 			if (isStayDam>0) isStayDam--;
 			
 			if (loc.electroDam>0 && isStayDam==0) {
-				if (stay && stayMat==1 || isLaz || inWater || tykMat==1) {
+				if (stay && stayMat == E_Material.METAL || isLaz != E_Direction.NEUTRAL || inWater || tykMat == E_Material.METAL) {
 					isStayDam = 20;
 				
-					if (tykMat == 1) {
-						if (turnX != 0) {
+					if (tykMat == E_Material.METAL) {
+						if (turnX != E_Direction.NEUTRAL) {
 							Emitter.emit("moln", loc,coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+45*storona), cely:coordinates.Y-10});
 						}
-						else if (turnY == 1) {
+						else if (turnY == E_Direction.DOWN) {
 							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y - 70});
 						}
-						else if (turnY == -1) {
+						else if (turnY == E_Direction.UP) {
 							Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:coordinates.X, cely:coordinates.Y + 20});
 						}
 					}
-					else if (isLaz) {
+					else if (isLaz != E_Direction.NEUTRAL) {
 						Emitter.emit("moln", loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {celx:(coordinates.X+20*storona), cely:coordinates.Y-10});
 					}
 					else if (stay) {
@@ -1439,9 +1443,9 @@ package fe.unit {
 				isFly = true;
 			}
 			
-			turnY = 0;
-			turnX = 0;
-			tykMat = 0;
+			turnY = E_Direction.NEUTRAL;
+			turnX = E_Direction.NEUTRAL;
+			tykMat = E_Material.NONE;
 
 			// [spells]
 			for each (var sp:Spell in invent.equipment.spells) {
@@ -1621,7 +1625,7 @@ package fe.unit {
 					return;
 				}
 				
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1) {
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == E_Material.METAL) {
 					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight);
 					return;
 				}
@@ -1733,7 +1737,7 @@ package fe.unit {
 					return;
 				}
 				
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == 1) {
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == E_Material.METAL) {
 					electroDamage(loc.electroDam, loc.celObj.coordinates.X, loc.celObj.coordinates.Y - loc.celObj.boundingBox.halfHeight);
 					return;
 				}
@@ -1823,7 +1827,7 @@ package fe.unit {
 			actionObj = null;
 			invulner = true;
 			isRun = false;
-			walk = 0;
+			walk = E_Direction.NEUTRAL;
 			
 			if (currentWeapon) {
 				currentWeapon.vis.visible = false;
@@ -1879,11 +1883,11 @@ package fe.unit {
 				if (keyLeft || keyRight) {
 					if (lurkTip == 1 || lurkTip == 3) {
 						if (keyLeft) {
-							storona = -1;
+							storona = E_Direction.LEFT;
 						}
 						
 						if (keyRight) {
-							storona = 1;
+							storona = E_Direction.RIGHT;
 						}
 					}
 					
@@ -2241,7 +2245,7 @@ package fe.unit {
 				maxSpeed = sitSpeed;
 			}
 			
-			if (diagon != 0) {
+			if (diagon != E_Direction.NEUTRAL) {
 				maxSpeed = walkSpeed * 0.75;
 			}
 			
@@ -2274,7 +2278,7 @@ package fe.unit {
 			}
 			
 			// If on ladder
-			if (isLaz) {
+			if (isLaz != E_Direction.NEUTRAL) {
 				accel1 = 1.40 * accel;
 			}
 			
@@ -2296,41 +2300,41 @@ package fe.unit {
 
 			// [acceleration]
 			// If not on a ladder
-			if (!isLaz) {
+			if (isLaz == E_Direction.NEUTRAL) {
 				if (keyLeft && !keyRight) {
-					storona = -1;
+					storona = E_Direction.LEFT;
 				}
 				
 				if (!keyLeft && keyRight) {
-					storona = 1;
+					storona = E_Direction.RIGHT;
 				}
 			}
 			
-			walk = 0;
+			walk = E_Direction.NEUTRAL;
 			
 			// Move left
-			if (((keyLeft && !keyRight) || (burningForcesRunOption && runForever>0)) && storona < 0) {
+			if (((keyLeft && !keyRight) || (burningForcesRunOption && runForever>0)) && storona == E_Direction.LEFT) {
 				porog = 20;
 				isTake = 40;
 				
-				if (storona > 0 && stay) {
-					storona = -1;
+				if (storona == E_Direction.RIGHT && stay) {
+					storona = E_Direction.LEFT;
 				}
 				else if (velocity.X > -maxSpeed && (!ctr.keyRun || t_run>3)) {
 					velocity.X -= accel1;
 					if (velocity.X < -maxSpeed) velocity.X = -maxSpeed;
 				}
 				
-				walk = -1;
+				walk = E_Direction.LEFT;
 				t_run++;
 			}
 			// Move right
-			else if (((!keyLeft && keyRight) || (burningForcesRunOption && runForever>0)) && storona > 0) {
+			else if (((!keyLeft && keyRight) || (burningForcesRunOption && runForever>0)) && storona == E_Direction.RIGHT) {
 				porog = 20;
 				isTake = 40;
 				
-				if (storona < 0 && stay) {
-					storona = 1;
+				if (storona == E_Direction.LEFT && stay) {
+					storona = E_Direction.RIGHT;
 				}
 				else if (velocity.X < maxSpeed && (!ctr.keyRun || t_run > 3)) {
 					velocity.X += accel1;
@@ -2340,7 +2344,7 @@ package fe.unit {
 					
 				}
 				
-				walk = 1;
+				walk = E_Direction.RIGHT;
 				t_run++;
 			}
 			else {
@@ -2348,7 +2352,7 @@ package fe.unit {
 			}
 			
 			// [Jerk to the side]
-			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==1)) {
+			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==E_Direction.RIGHT)) {
 				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && !rat) {
 					if (velocity.X < dash) {
 						velocity.X = dash;
@@ -2373,7 +2377,7 @@ package fe.unit {
 				ctr.keyDash = false;
 			}
 			
-			if (ctr.keyDubLeft&&!zaput || ctr.keyDubRight&&zaput || ctr.keyDash&&(storona==-1)) {
+			if (ctr.keyDubLeft&&!zaput || ctr.keyDubRight&&zaput || ctr.keyDash&&(storona==E_Direction.LEFT)) {
 				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && !rat) {
 					if (velocity.X > -dash) {
 						velocity.X = -dash;
@@ -2405,12 +2409,12 @@ package fe.unit {
 			
 			throu = (ctr.keyJump || !stay) && ctr.keySit || isPlav || kdash_t > 3 || pinok > 70;
 			
-			if (stay && !ctr.keyJump || isLaz) {
+			if (stay && !ctr.keyJump || isLaz != E_Direction.NEUTRAL) {
 				jumpp = maxjumpp;	// [while we are standing, the jump is fully charged]
 				dJump = false;
 				
 				// On ladder and not pressing left or right
-				if (isLaz && !keyLeft && !keyRight) {
+				if (isLaz != E_Direction.NEUTRAL && !keyLeft && !keyRight) {
 					jumpp = 0;
 				}
 				
@@ -2508,8 +2512,8 @@ package fe.unit {
 				}
 				else if (pers.ableFly && loc.levitOn && !rat) {
 					// Stop climbing ladder
-					if (isLaz) {
-						isLaz = 0;
+					if (isLaz != E_Direction.NEUTRAL) {
+						isLaz = E_Direction.NEUTRAL;
 					}
 					
 					isFly =! isFly;
@@ -2529,7 +2533,7 @@ package fe.unit {
 				}
 				
 				// We're on a ladder and idle
-				if (isLaz || stay) {
+				if (isLaz != E_Direction.NEUTRAL || stay) {
 					if (!keyLeft && keyRight && velocity.X < maxSpeed - accel1) {
 						velocity.X += accel1;
 					}
@@ -2582,7 +2586,7 @@ package fe.unit {
 			// Sit down
 			if (ctr.keySit) {
 				porog = 0;
-				if (stay && diagon == 0 && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && !rat) {
+				if (stay && diagon == E_Direction.NEUTRAL && (!burningForcesRunOption || runForever <= 0) && !inWater && isFetter <= 0 && !noStairs && !rat) {
 					// Check here for stairs
 					if (checkStairs(2)) {
 						t_stay = 0;
@@ -2606,7 +2610,7 @@ package fe.unit {
 					}
 				}
 				// Climbing a ladder and there's stairs
-				else if (isLaz && !noStairs) {
+				else if (isLaz != E_Direction.NEUTRAL && !noStairs) {
 					if (checkStairs(2)) {
 						velocity.Y = lazSpeed * 1.5;
 					}
@@ -2682,7 +2686,7 @@ package fe.unit {
 			
 			if ((burningForcesRunOption && runForever > 0) || ctr.keyJump && !ctr.keyBeUp || loc.quake > 5) {
 				// [Stop climbing the ladder]
-				isLaz = 0;
+				isLaz = E_Direction.NEUTRAL;
 			}
 
 			isUp = ctr.keyBeUp;
@@ -2757,11 +2761,11 @@ package fe.unit {
 
 					if (lurkBox.lurk == 2) {
 						if (coordinates.X > lurkBox.coordinates.X) {
-							storona = 1;
+							storona = E_Direction.RIGHT;
 							lurkX = lurkBox.boundingBox.right - 10;
 						}
 						else {
-							storona = -1;
+							storona = E_Direction.LEFT;
 							lurkX = lurkBox.boundingBox.left + 10;
 						}
 					}
@@ -2961,7 +2965,7 @@ package fe.unit {
 			
 			if (loc.train || loc.base) return 0;
 			
-			if (tip== Resistances.DAM_EMP && dam>30 && pers.pipEmpVulner>0) {
+			if (tip== E_Resistances.DAM_EMP && dam>30 && pers.pipEmpVulner>0) {
 				pipOff+=Math.round(dam*pers.pipEmpVulner);
 				
 				if (sats.que.length>0) sats.clearAll();
@@ -2969,7 +2973,7 @@ package fe.unit {
 				World.w.gui.allOff();
 			}
 			
-			if (cryst && tip != Resistances.DAM_BLEED && tip!= Resistances.DAM_POISON && tip != Resistances.DAM_INTERNAL) {
+			if (cryst && tip != E_Resistances.DAM_BLEED && tip!= E_Resistances.DAM_POISON && tip != E_Resistances.DAM_INTERNAL) {
 				dam*=5/spellPower;
 				mana-=dam;
 			
@@ -2988,7 +2992,7 @@ package fe.unit {
 				ArmorManager.reference.damage(currentArmor, dam * pers.armorVulner, tip);
 			}
 			
-			if (tip != Resistances.DAM_BLEED && tip != Resistances.DAM_POISON && tip != Resistances.DAM_INTERNAL && tip != Resistances.DAM_PINKCLOUD) {
+			if (tip != E_Resistances.DAM_BLEED && tip != E_Resistances.DAM_POISON && tip != E_Resistances.DAM_INTERNAL && tip != E_Resistances.DAM_PINKCLOUD) {
 				pinok += dam / maxhp * 200 * knocked;
 				
 				//повреждение инвентаря
@@ -3011,7 +3015,7 @@ package fe.unit {
 			}
 			
 			if (pinok > 30) {
-				isLaz = 0;
+				isLaz = E_Direction.NEUTRAL;
 			}
 			
 			var pdam:Number = super.damage(dam, tip, bul, tt);
@@ -3045,10 +3049,10 @@ package fe.unit {
 			}
 			
 			if (pers.potShad == 0) {
-				damage(dam, Resistances.DAM_ELECTRIC, null, true);
+				damage(dam, E_Resistances.DAM_ELECTRIC, null, true);
 			}
 			else {
-				damage(dam, Resistances.DAM_INTERNAL, null, true);
+				damage(dam, E_Resistances.DAM_INTERNAL, null, true);
 				pinok = 90;
 			}
 			
@@ -3062,7 +3066,7 @@ package fe.unit {
 		public override function udarBox(un:Box):int {
 			var res:int = super.udarBox(un);
 			
-			if (res==2 && loc.electroDam && un.mat==1) {
+			if (res==2 && loc.electroDam && un.mat == E_Material.METAL) {
 				electroDamage(loc.electroDam, un.coordinates.X, un.coordinates.Y - un.boundingBox.halfHeight);
 			}
 			
@@ -3109,7 +3113,7 @@ package fe.unit {
 				sost = 3;
 			}
 			
-			isLaz = 0;
+			isLaz = E_Direction.NEUTRAL;
 			levit = 0;
 			isFly = false;
 			t_port = 0;
@@ -3121,7 +3125,7 @@ package fe.unit {
 				changeWeaponNow(2);
 			}
 			
-			walk = 0;
+			walk = E_Direction.NEUTRAL;
 			t_work = 205;
 			work = "die";
 			
@@ -3216,14 +3220,14 @@ package fe.unit {
 		// [gift cold weapon reached the goal]
 		public override function setWeaponPos(tip:String = "internal"):void {
 			if (weaponKrep == 0) {			//телекинез
-				if (storona > 0 && celX > boundingBox.right || storona < 0 && celX < boundingBox.left) {
+				if (storona == E_Direction.RIGHT && celX > boundingBox.right || storona == E_Direction.LEFT && celX < boundingBox.left) {
 					weaponX = coordinates.X + boundingBox.width * storona;
 				}
 				else {
 					weaponX = coordinates.X;
 				}
 				
-				if (isLaz) {
+				if (isLaz != E_Direction.NEUTRAL) {
 					weaponX = coordinates.X;
 				}
 				
@@ -3433,7 +3437,7 @@ package fe.unit {
 				return false;
 			}
 			
-			var tipArmor:int = Armor.TYPE_ARMOR;
+			var tipArmor:int = E_ArmorTypes.ARMOR;
 			var clo:int = 0;
 			
 			if (invent.equipment.hasArmor(nid)) {
@@ -3448,7 +3452,7 @@ package fe.unit {
 				}
 			}
 
-			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == Armor.TYPE_ARMOR) {
+			if (World.w.hardInv && !forced && nid != "off" && !(loc && loc.base) && tipArmor == E_ArmorTypes.ARMOR) {
 				if (clo == 0 && nid != prevArmor) {
 					World.w.gui.infoText("noChArmor2", null, null, false);
 					return false;
@@ -3460,7 +3464,7 @@ package fe.unit {
 				nid = "";
 			}
 
-			if (tipArmor == Armor.TYPE_ARMOR) {		//броня
+			if (tipArmor == E_ArmorTypes.ARMOR) {		//броня
 				if (currentArmor) {
 					currentArmor.active = false;
 					
@@ -3504,7 +3508,7 @@ package fe.unit {
 				refreshVis();
 				isFly = false;
 			}
-			else if (tipArmor == Armor.TYPE_AMULET) {	// Amulet
+			else if (tipArmor == E_ArmorTypes.AMULET) {	// Amulet
 				if (currentAmul) {
 					currentAmul.active=false;
 				}
@@ -3541,7 +3545,7 @@ package fe.unit {
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch):void {
-			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? 1 : -1);
+			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? E_Direction.RIGHT : E_Direction.LEFT);
 			w.coordinates.Y = coordinates.Y - boundingBox.halfHeight;
 			w.rot = (celX > coordinates.X) ? 0 : ONE_PI;
 		}
@@ -3681,7 +3685,7 @@ package fe.unit {
 			uncallPet(true);
 			changeWeapon("not");
 			isSit = false;
-			isLaz = 0;
+			isLaz = E_Direction.NEUTRAL;
 			levit = 0;
 			isFly = false;
 			
@@ -4055,7 +4059,7 @@ package fe.unit {
 					if (animState=="punch" || animState=="kick") {
 					//если не нажаты влево или вправа, или стоим на месте, то СТОИМ
 					}
-					else if  (diagon==0 && (velocity.X <= 1 && velocity.X >= -1 && walk!=0 || velocity.X <= 4 && velocity.X >= -4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
+					else if  (diagon==E_Direction.NEUTRAL && (velocity.X <= 1 && velocity.X >= -1 && walk!=E_Direction.NEUTRAL || velocity.X <= 4 && velocity.X >= -4 && walk==E_Direction.NEUTRAL || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
 						t_walk=0;
 						
 						if (freeAnim == 0 || isSit) {
@@ -4126,7 +4130,7 @@ package fe.unit {
 							freeAnim=0;
 						}
 					}
-					else if (diagon != 0 && velocity.X == 0) {
+					else if (diagon != E_Direction.NEUTRAL && velocity.X == 0) {
 						freeAnim=0;
 						t_walk=0;
 						
@@ -4148,7 +4152,7 @@ package fe.unit {
 					else {			//движение
 						freeAnim=0;
 						
-						if (diagon == 0) {
+						if (diagon == E_Direction.NEUTRAL) {
                             if (isSit) {
                                 if (animState == "roll" && vis.osn.body.currentFrame >= 15) {
                                     vis.osn.gotoAndStop("polz");
@@ -4229,7 +4233,7 @@ package fe.unit {
 					}
 				//на лестнице
 				}
-				else if (isLaz) {
+				else if (isLaz != E_Direction.NEUTRAL) {
 					freeAnim = 0;
 					
 					if (animState != "laz") {
@@ -4479,7 +4483,7 @@ package fe.unit {
 				return isSit? 2 : 1;
 			}
 			
-			if (storona > 0) {
+			if (storona == E_Direction.RIGHT) {
 				if (isSit) {
 					if (shX2 > 0.00) {
 						return 49 + Math.round(shX2 * 10);
@@ -4631,7 +4635,7 @@ package fe.unit {
 						trace("ERROR: (00:F)");
 					}
 				}
-				else if (isFly && !stay && !isPlav && !isLaz) {
+				else if (isFly && !stay && !isPlav && isLaz == E_Direction.NEUTRAL) {
 					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) {
 						vis.osn.body.rwing.gotoAndPlay(2);
 					}
@@ -4701,7 +4705,7 @@ package fe.unit {
 		public function showElectroBlock():void {
 			var t:Tile = loc.getAbsTile((coordinates.X + Math.random() * 320 - 160), (coordinates.Y - boundingBox.halfHeight + Math.random() * 320 - 160));
 			
-			if (t && t.material == 1 && t.hp > 0) {
+			if (t && t.material == E_Material.METAL && t.hp > 0) {
 				Emitter.emit("electro", loc, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY);
 			}
 		}

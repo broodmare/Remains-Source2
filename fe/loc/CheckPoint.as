@@ -2,7 +2,10 @@ package fe.loc {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
+	import fe.SymbolFactory;
+	import fe.World;
+	import fe.XMLDataGrabber;
+	import fe.Res;
 	import fe.entities.Obj;
 	import fe.serv.Interact;
 	import fe.loc.tile.Tile;

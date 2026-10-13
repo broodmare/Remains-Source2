@@ -6,12 +6,14 @@ package fe.unit {
 	import flash.geom.ColorTransform;
 
 	import fe.SymbolFactory;
-	import fe.util.Vec2;
 	import fe.projectile.Bullet;
 	import fe.loc.Location;
 	import fe.graph.Emitter;
 	import fe.weapon.Weapon;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 	
 	public class UnitThunderHead extends Unit {
 
@@ -110,12 +112,12 @@ package fe.unit {
 			noDestr = true;
 			undodge = 1;
 			dexter = 0;
-			mat = 10;
+			mat = E_Material.SHIELD;
 
-			vulnerabilities.setResist(Resistances.DAM_BALEFIRE, 0.70);
-			vulnerabilities.setResist(Resistances.DAM_DEATH, 0.80);
-			vulnerabilities.setResist(Resistances.DAM_ASTRO, 0.80);
-			vulnerabilities.setResist(Resistances.DAM_HARMONY, 0.80);
+			vulnerabilities.setResist(E_Resistances.DAM_BALEFIRE, 0.70);
+			vulnerabilities.setResist(E_Resistances.DAM_DEATH, 0.80);
+			vulnerabilities.setResist(E_Resistances.DAM_ASTRO, 0.80);
+			vulnerabilities.setResist(E_Resistances.DAM_HARMONY, 0.80);
 			
 			mater = false;
 			collisionTip = 0;
@@ -395,7 +397,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com == "off") {
-				walk = 0;
+				walk = E_Direction.NEUTRAL;
 				controlOn = false;
 			}
 			else if (com == "on") {
@@ -444,7 +446,7 @@ package fe.unit {
 			
 			if (n == 0) {
 				norma(p, 5);
-				World.w.gg.storona = (World.w.gg.velocity.X > 0) ? 1 : -1;
+				World.w.gg.storona = (World.w.gg.velocity.X > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 			}
 			else {
 				norma(p, n);

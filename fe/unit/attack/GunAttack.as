@@ -1,9 +1,10 @@
 package fe.unit.attack {
 
 	import fe.unit.Unit;
-	import fe.unit.ai.AIState;
 	import fe.util.Calc;
 	import fe.weapon.Weapon;
+	import fe.unit.enums.E_AIState;
+	import fe.enums.E_Direction;
 
 	// Shoots the unit's current weapon while it chases, holds or flees: single shots now and then, or bursts with pauses
 	public class GunAttack implements IAttack {
@@ -18,7 +19,7 @@ package fe.unit.attack {
 		private function isActive():Boolean {
 			var state:int = owner.aiState;
 
-			return state == AIState.CHASE || state == AIState.HOLD || state == AIState.FLEE;
+			return state == E_AIState.CHASE || state == E_AIState.HOLD || state == E_AIState.FLEE;
 		}
 
 		public function GunAttack(owner_:Unit, definition_:GunAttack_Definition) {
@@ -33,13 +34,13 @@ package fe.unit.attack {
 			var singleChance:Number;
 
 			if (!isActive() || !weapon) { return; }
-			if (owner.isLaz != 0 && !definition.whileClimbing) { return; }
+			if (owner.isLaz != E_Direction.NEUTRAL && !definition.whileClimbing) { return; }
 
 			if (definition.isSniper) {
 				owner.mazil = 0;
 			}
 			else {
-				owner.mazil = (owner.aiState == AIState.HOLD) ? definition.holdSpread : definition.moveSpread;
+				owner.mazil = (owner.aiState == E_AIState.HOLD) ? definition.holdSpread : definition.moveSpread;
 			}
 
 			if (definition.isShakenWhenLifted && owner.levit != 0) {

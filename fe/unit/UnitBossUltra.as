@@ -11,6 +11,8 @@ package fe.unit {
 	import fe.Snd;
 	import fe.World;
 	import fe.weapon.WThrow;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 	
 	public class UnitBossUltra extends Unit {
 		
@@ -288,7 +290,7 @@ package fe.unit {
 				t_shit--;
 			}
 
-			vulnerabilities.setResist(Resistances.DAM_EMP, (shithp > 0) ? 0.20 : 1);	// [Considered invulnerable to emp]
+			vulnerabilities.setResist(E_Resistances.DAM_EMP, (shithp > 0) ? 0.20 : 1);	// [Considered invulnerable to emp]
 			
 			// [State change timer]
 			if (aiTCh > 0) {
@@ -376,14 +378,14 @@ package fe.unit {
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (velocity.X > 0.5) {
-					storona = 1;
+					storona = E_Direction.RIGHT;
 				}
 			
 				if (velocity.X < -0.50) {
-					storona = -1;
+					storona = E_Direction.LEFT;
 				}
 				
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 			}
 			else if (aiState == 1) {
 				spd.x = moveX - coordinates.X;
@@ -413,7 +415,7 @@ package fe.unit {
 			}
 			
 			if (aiState > 0 && !(aiState == 3 && attState == 2)) {
-				aiNapr = (celX > coordinates.X) ? 1 : -1;
+				aiNapr = (celX > coordinates.X) ? E_Direction.RIGHT : E_Direction.LEFT;
 				
 				if (storona == aiNapr) {
 					t_turn = 15;
@@ -484,7 +486,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com == 'off') {
-				walk = 0;
+				walk = E_Direction.NEUTRAL;
 				controlOn = false;
 			}
 			else if (com == 'on') {

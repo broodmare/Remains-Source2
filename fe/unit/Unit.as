@@ -11,15 +11,25 @@ package fe.unit {
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	
-	import fe.*;
+	import fe.Res;
+	import fe.Snd;
+	import fe.WeaponManager;
+	import fe.World;
+	import fe.XMLDataGrabber;
+	import fe.loc.Box;
+	import fe.loc.Location;
+	import fe.serv.AnimationSet;
+	import fe.serv.Desintegr;
+	import fe.serv.Interact;
+	import fe.serv.LootGen;
+	import fe.serv.Script;
+	import fe.weapon.WPunch;
+	import fe.weapon.Weapon;
 	import fe.SymbolFactory;
 	import fe.util.Calc;
 	import fe.util.Vec2;
 
-	import fe.weapon.*;
 	import fe.projectile.Bullet;
-	import fe.loc.*;
-	import fe.serv.*;
 	import fe.graph.Emitter;
 	import fe.entities.Obj;
 	import fe.entities.BoundingBox;
@@ -29,6 +39,10 @@ package fe.unit {
 	import fe.unit.attack.IAttack;
 	import fe.unit.motor.IMotor;
 	import fe.loc.tile.Tile;
+	import fe.enums.E_Material;
+	import fe.unit.enums.E_Resistances;
+	import fe.graph.enums.E_Decal;
+	import fe.enums.E_Direction;
 	
 	public class Unit extends Obj {
 
@@ -98,7 +112,7 @@ package fe.unit {
 		
 		// Damage
 		public var dam:Number				= 0.00;			//урон самого юнита
-		public var tipDamage:String			= Resistances.DAM_BLUNT;		//тип урона
+		public var tipDamage:String			= E_Resistances.DAM_BLUNT;		//тип урона
 		public var radDamage:Number			= 0.00;			//урон радиацией
 		public var retDamage:Boolean		= false;		//возврат урона от юнита к врагу
 		public var relat:Number				= 0.00;			//обратный возврат урона, от врага к юниту
@@ -115,7 +129,7 @@ package fe.unit {
 		public var mater:Boolean			= true;			//взаимодействовать со стенами
 		public var massaFix:Number			=  1.00;		//масса зафиксированного объекта
 		public var massaMove:Number			=  1.00;		//масса перемещаемого объекта
-		public var walk:int;								// [Movement on the floor, 1 - right, -1 left, 0 - no movement]
+		public var walk:int;								// Which way the unit walks on the floor, NEUTRAL when not walking
 		
 		public var maxSpeed:Number			= 10.00;
 		public var walkSpeed:Number			=  5.00;
@@ -153,7 +167,7 @@ package fe.unit {
 		
 		public var shX1:Number;								// Fraction of the unit's width hanging past the floor on the left
 		public var shX2:Number;								// Fraction of the unit's width hanging past the floor on the right
-		public var diagon:int				= 0;			// Direction of the stairs under the unit, 0 when not on stairs
+		public var diagon:int				= E_Direction.NEUTRAL;	// Direction of the stairs under the unit, NEUTRAL when not on stairs
 		
 		public var porog:Number				= 10.00;
 		public var porog_jump:Number		= 4.00;			//автоподъём
@@ -163,13 +177,13 @@ package fe.unit {
 		public var isFly:Boolean			= false;
 		public var isRun:Boolean			= false;
 		public var isPlav:Boolean			= false;
-		public var isLaz:int				= 0;
+		public var isLaz:int				= E_Direction.NEUTRAL;
 		public var inWater:Boolean			= false;
 		public var isUp:Boolean				= false;
 		public var throu:Boolean			= false;
 		public var isJump:Boolean			= false;
-		public var turnX:int				= 0;
-		public var turnY:int				= 0;
+		public var turnX:int				= E_Direction.NEUTRAL;
+		public var turnY:int				= E_Direction.NEUTRAL;
 		public var kray:Boolean				= false;
 		
 		public var pumpObj:Interact;						// [object that came across (for opening doors by mobs)]
@@ -197,7 +211,7 @@ package fe.unit {
 		public var isShoot:Boolean			= false;		//устанавливается оружием в true если был выстрел
 
 		//ии
-		public var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
+		public var aiNapr:int=E_Direction.RIGHT, aiVNapr:int=E_Direction.NEUTRAL; //направление, в котором стремиться двигаться ии
 		public var aiTTurn:int=10, aiPlav:int=0; 
 		public var aiState:int=0;	//состояние ии 
 		public var aiTCh:int = Calc.intBetween(0, 10);	// Ticks until the AI decides its state again
@@ -241,7 +255,7 @@ package fe.unit {
 
 		//Опции	
 		public var blood:int				= 0;		//кровь: 0-нет, 1-обычная, 2-зелёная
-		public var mat:int					= 0;		//0-мясо, 1-металл
+		public var mat:int					= E_Material.MEAT;
 		public var acidDey:Number			= 0.00;		//разъедание брони кислотой
 		public var trup:Boolean				= true;		//оставлять труп или уничтожить
 		public var overLook:Boolean			= true;		//может видеть то что сзади
@@ -379,7 +393,7 @@ package fe.unit {
 		public function Unit(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			vulnerabilities = new Resistances();
 			vulnerabilities.setResistances(1.00);
-			vulnerabilities.setResist(Resistances.DAM_EMP, 0.00)
+			vulnerabilities.setResist(E_Resistances.DAM_EMP, 0.00)
 
 			inter = new Interact(this, null, xml, loadObj);
 			inter.active = false;
@@ -392,11 +406,11 @@ package fe.unit {
 			
 			if (xml) {
 				if (xml.@turn.length()) {
-					if (xml.@turn > 0) storona =  1;
-					if (xml.@turn < 0) storona = -1;
+					if (xml.@turn > 0) storona =  E_Direction.RIGHT;
+					if (xml.@turn < 0) storona = E_Direction.LEFT;
 				}
 				else {
-					storona=isrnd() ? 1 : -1;
+					storona=isrnd() ? E_Direction.RIGHT : E_Direction.LEFT;
 					aiNapr = storona;
 				}
 				
@@ -663,7 +677,7 @@ package fe.unit {
 				if (node.@krep.length()) weaponKrep=(int(node.@krep) != 0);			//способ держать оружие, 0 - телекинез // fixedToOwner
 				if (node.@dexter.length()) dexter=node.@dexter;			//уклонение
 				if (node.@damage.length()) dam=node.@damage;			//собственный урон
-				if (node.@tipdam.length()) tipDamage=Resistances.parseDamageType(node.@tipdam);		//тип собственного урона
+				if (node.@tipdam.length()) tipDamage=Resistances.parseDamageType(node.@tipdam, E_Resistances.DAM_PIERCE);		//тип собственного урона
 				if (node.@skill.length()) weaponSkill=node.@skill;		//владение оружием
 				if (node.@raddamage.length()) radDamage=node.@raddamage;//собственный урон радиацией
 				if (node.@vision.length()) vision=node.@vision;			//зрение
@@ -675,22 +689,22 @@ package fe.unit {
 			// [vulnerabilities]
 			if (node0.vulner.length()) {
 				node = node0.vulner[0];
-				if (node.@bul.length())		vulnerabilities.setResist(Resistances.DAM_PIERCE, node.@bul);
-				if (node.@blade.length())	vulnerabilities.setResist(Resistances.DAM_CUT, node.@blade);
-				if (node.@phis.length())	vulnerabilities.setResist(Resistances.DAM_BLUNT, node.@phis);
-				if (node.@fire.length())	vulnerabilities.setResist(Resistances.DAM_BURN, node.@fire);
-				if (node.@expl.length())	vulnerabilities.setResist(Resistances.DAM_EXPLOSION, node.@expl);
-				if (node.@laser.length())	vulnerabilities.setResist(Resistances.DAM_LASER, node.@laser);
-				if (node.@plasma.length())	vulnerabilities.setResist(Resistances.DAM_PLASMA, node.@plasma);
-				if (node.@venom.length())	vulnerabilities.setResist(Resistances.DAM_VENOM, node.@venom);
-				if (node.@emp.length())		vulnerabilities.setResist(Resistances.DAM_EMP, node.@emp);
-				if (node.@spark.length())	vulnerabilities.setResist(Resistances.DAM_ELECTRIC, node.@spark);
-				if (node.@acid.length())	vulnerabilities.setResist(Resistances.DAM_ACID, node.@acid);
-				if (node.@cryo.length())	vulnerabilities.setResist(Resistances.DAM_COLD, node.@cryo);
-				if (node.@poison.length())	vulnerabilities.setResist(Resistances.DAM_POISON, node.@poison);
-				if (node.@bleed.length())	vulnerabilities.setResist(Resistances.DAM_BLEED, node.@bleed);
-				if (node.@fang.length())	vulnerabilities.setResist(Resistances.DAM_BITE, node.@fang);
-				if (node.@pink.length())	vulnerabilities.setResist(Resistances.DAM_PINKCLOUD, node.@pink);
+				if (node.@bul.length())		vulnerabilities.setResist(E_Resistances.DAM_PIERCE, node.@bul);
+				if (node.@blade.length())	vulnerabilities.setResist(E_Resistances.DAM_CUT, node.@blade);
+				if (node.@phis.length())	vulnerabilities.setResist(E_Resistances.DAM_BLUNT, node.@phis);
+				if (node.@fire.length())	vulnerabilities.setResist(E_Resistances.DAM_BURN, node.@fire);
+				if (node.@expl.length())	vulnerabilities.setResist(E_Resistances.DAM_EXPLOSION, node.@expl);
+				if (node.@laser.length())	vulnerabilities.setResist(E_Resistances.DAM_LASER, node.@laser);
+				if (node.@plasma.length())	vulnerabilities.setResist(E_Resistances.DAM_PLASMA, node.@plasma);
+				if (node.@venom.length())	vulnerabilities.setResist(E_Resistances.DAM_VENOM, node.@venom);
+				if (node.@emp.length())		vulnerabilities.setResist(E_Resistances.DAM_EMP, node.@emp);
+				if (node.@spark.length())	vulnerabilities.setResist(E_Resistances.DAM_ELECTRIC, node.@spark);
+				if (node.@acid.length())	vulnerabilities.setResist(E_Resistances.DAM_ACID, node.@acid);
+				if (node.@cryo.length())	vulnerabilities.setResist(E_Resistances.DAM_COLD, node.@cryo);
+				if (node.@poison.length())	vulnerabilities.setResist(E_Resistances.DAM_POISON, node.@poison);
+				if (node.@bleed.length())	vulnerabilities.setResist(E_Resistances.DAM_BLEED, node.@bleed);
+				if (node.@fang.length())	vulnerabilities.setResist(E_Resistances.DAM_BITE, node.@fang);
+				if (node.@pink.length())	vulnerabilities.setResist(E_Resistances.DAM_PINKCLOUD, node.@pink);
 			}
 			
 			//visual parameters
@@ -758,15 +772,15 @@ package fe.unit {
 			}
 			
 			if (blood == 0) {
-				vulnerabilities.setResist(Resistances.DAM_BLEED, 0);
+				vulnerabilities.setResist(E_Resistances.DAM_BLEED, 0);
 			}
 			
 			if (opt) {
 				if (opt.robot || opt.mech) {
-					vulnerabilities.setResist(Resistances.DAM_DEATH, 0);
-					vulnerabilities.setResist(Resistances.DAM_BLEED, 0);
-					vulnerabilities.setResist(Resistances.DAM_VENOM, 0);
-					vulnerabilities.setResist(Resistances.DAM_POISON, 0);
+					vulnerabilities.setResist(E_Resistances.DAM_DEATH, 0);
+					vulnerabilities.setResist(E_Resistances.DAM_BLEED, 0);
+					vulnerabilities.setResist(E_Resistances.DAM_VENOM, 0);
+					vulnerabilities.setResist(E_Resistances.DAM_POISON, 0);
 				}
 			}
 
@@ -947,7 +961,7 @@ package fe.unit {
 			}
 			
 			if (loc.biom == 5) {
-				vulnerabilities.setResist(Resistances.DAM_PINKCLOUD, 0);	// [Invulnerable to the pink cloud]
+				vulnerabilities.setResist(E_Resistances.DAM_PINKCLOUD, 0);	// [Invulnerable to the pink cloud]
 			}
 			
 			// [Attached scripts]
@@ -1060,23 +1074,23 @@ package fe.unit {
 		}
 		
 		public function setHeroVulners():void {
-			vulnerabilities.multiplyResist(Resistances.DAM_EMP, 0.80);
-			vulnerabilities.multiplyResist(Resistances.DAM_BALEFIRE, 0.70);
-			vulnerabilities.multiplyResist(Resistances.DAM_DEATH, 0.70);
-			vulnerabilities.multiplyResist(Resistances.DAM_ASTRO, 0.70);
+			vulnerabilities.multiplyResist(E_Resistances.DAM_EMP, 0.80);
+			vulnerabilities.multiplyResist(E_Resistances.DAM_BALEFIRE, 0.70);
+			vulnerabilities.multiplyResist(E_Resistances.DAM_DEATH, 0.70);
+			vulnerabilities.multiplyResist(E_Resistances.DAM_ASTRO, 0.70);
 
 			if (hero == 2) {
-				vulnerabilities.multiplyResist(Resistances.DAM_PIERCE, 0.50);
-				vulnerabilities.multiplyResist(Resistances.DAM_BLUNT, 0.65);
-				vulnerabilities.multiplyResist(Resistances.DAM_CUT, 0.65);
-				vulnerabilities.multiplyResist(Resistances.DAM_EXPLOSION, 0.75);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_PIERCE, 0.50);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_BLUNT, 0.65);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_CUT, 0.65);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_EXPLOSION, 0.75);
 			}
 			if (hero == 3) {
-				vulnerabilities.multiplyResist(Resistances.DAM_LASER, 0.60);
-				vulnerabilities.multiplyResist(Resistances.DAM_PLASMA, 0.50);
-				vulnerabilities.multiplyResist(Resistances.DAM_EMP, 0.75);
-				vulnerabilities.multiplyResist(Resistances.DAM_ELECTRIC, 0.70);
-				vulnerabilities.multiplyResist(Resistances.DAM_BURN, 0.70);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_LASER, 0.60);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_PLASMA, 0.50);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_EMP, 0.75);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_ELECTRIC, 0.70);
+				vulnerabilities.multiplyResist(E_Resistances.DAM_BURN, 0.70);
 			}
 		}
 		
@@ -1301,7 +1315,7 @@ package fe.unit {
 					velocity.multiply(0.80);
 				}
 				
-				isLaz = 0;
+				isLaz = E_Direction.NEUTRAL;
 			}
 
 			if (isPlav) {
@@ -1331,7 +1345,7 @@ package fe.unit {
 					velocity.X *= 0.5;
 				}
 				
-				if (!levit && !isLaz) {
+				if (!levit && isLaz == E_Direction.NEUTRAL) {
 					var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y - boundingBox.height * 0.25);
 					
 					if (t.gravity > 0 && velocity.Y < World.maxdy * t.gravity || t.gravity < 0 && velocity.Y > World.maxdy * t.gravity) {
@@ -1343,12 +1357,12 @@ package fe.unit {
 					// Apply friction
 					velocity.X *= tormoz;
 					
-					if (walk < 0) {
+					if (walk == E_Direction.LEFT) {
 						if (velocity.X < -maxSpeed) {
 							velocity.X += brake;
 						}
 					}
-					else if (walk > 0) {
+					else if (walk == E_Direction.RIGHT) {
 						if (velocity.X > maxSpeed) {
 							velocity.X -= brake;
 						}
@@ -1412,38 +1426,38 @@ package fe.unit {
 			var autoSit:Boolean = false;
 
 			// Walking up or down stairs
-			if (!throu && stay && diagon && velocity.Y >= 0) {
+			if (!throu && stay && diagon != E_Direction.NEUTRAL && velocity.Y >= 0) {
 				
 				var dxdiv:Number = velocity.X / div;
 				var slopeY:Number = (dxdiv * diagon); 
 
 				if (collisionAll(dxdiv, dxdiv * diagon * -1)) {
 					if (slopeY < 0 && !collisionAll(dxdiv, 0)) {
-						diagon = 0;
+						diagon = E_Direction.NEUTRAL;
 					}
 				}
 				else {	// Apply sloped movement
 					coordinates.X += dxdiv;
 					coordinates.Y -= slopeY;
 					velocity.Y = 0;
-					checkDiagon(0);
+					checkDiagon(0, E_Direction.NEUTRAL);
 				}
 
 				return;
 			}
 
 			// Otherwise, indicate we're not on a slope
-			diagon = 0;
+			diagon = E_Direction.NEUTRAL;
 			
 			//HORIZONTAL
-			if (!isLaz) {
+			if (isLaz == E_Direction.NEUTRAL) {
 				coordinates.X += (velocity.X + osndx) / div;
 				
 				if (coordinates.X - boundingBox.halfWidth < 0) {
 					if (!outLoc(1)) {
 						coordinates.X = boundingBox.halfWidth;
 						velocity.X = Math.abs(velocity.X) * elast;
-						turnX = 1;
+						turnX = E_Direction.RIGHT;
 						kray = true;
 					}
 				}
@@ -1452,7 +1466,7 @@ package fe.unit {
 					if (!outLoc(2)) {
 						coordinates.X = loc.maxX - 1 - boundingBox.halfWidth;
 						velocity.X = -Math.abs(velocity.X) * elast;
-						turnX = -1;
+						turnX = E_Direction.LEFT;
 						kray = true;
 					}
 				}
@@ -1462,7 +1476,7 @@ package fe.unit {
 				// [Move left]
 				if (velocity.X + osndx < 0) {
 					if (!player && stay && shX1 > 0.50) {
-						newmy = checkDiagon(-5);
+						newmy = checkDiagon(-5, E_Direction.NEUTRAL);
 						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
@@ -1471,7 +1485,7 @@ package fe.unit {
 					}
 					
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1 > 0.5)) {
-						newmy=checkDiagon(-2, -1);
+						newmy=checkDiagon(-2, E_Direction.LEFT);
 						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
@@ -1518,10 +1532,10 @@ package fe.unit {
 									}
 									else {
 										velocity.X = Math.abs(velocity.X) * elast;
-										turnX = 1;
+										turnX = E_Direction.RIGHT;
 
-										if (t.material == 1) {
-											tykMat = 1;
+										if (t.material == E_Material.METAL) {
+											tykMat = E_Material.METAL;
 										}
 
 										boundingBox.center(coordinates);
@@ -1535,7 +1549,7 @@ package fe.unit {
 				// [Move right]
 				if (velocity.X + osndx > 0) {
 					if (!player && stay && shX2 > 0.5) {
-						newmy = checkDiagon(-5);
+						newmy = checkDiagon(-5, E_Direction.NEUTRAL);
 						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
@@ -1544,7 +1558,7 @@ package fe.unit {
 					}
 					
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2 > 0.5)) {
-						newmy = checkDiagon(-2, 1);
+						newmy = checkDiagon(-2, E_Direction.RIGHT);
 						
 						if (newmy > 0) {
 							coordinates.Y = newmy;
@@ -1592,10 +1606,10 @@ package fe.unit {
 									}
 									else {
 										velocity.X = -Math.abs(velocity.X) * elast;
-										turnX = -1;
+										turnX = E_Direction.LEFT;
 
-										if (t.material == 1) {
-											tykMat = 1;
+										if (t.material == E_Material.METAL) {
+											tykMat = E_Material.METAL;
 										}
 
 										boundingBox.center(coordinates);
@@ -1619,7 +1633,7 @@ package fe.unit {
 				if (velocity.Y > 0) {
 					stay = false;
 					stayPhis = 0;
-					stayMat = 0;
+					stayMat = E_Material.NONE;
 				}
 				
 				shX1 = 1;
@@ -1627,13 +1641,13 @@ package fe.unit {
 
 				// Flying, levitating or swimming
 				if (levit || plav && isPlav || isFly)  {
-					diagon = 0;
+					diagon = E_Direction.NEUTRAL;
 					coordinates.Y += (velocity.Y + osndy) / div;
 					
 					if (coordinates.Y > loc.maxY && !outLoc(3)) {
 						coordinates.Y = loc.maxY - 1;
 						velocity.Y = 0;
-						turnY = -1;
+						turnY = E_Direction.UP;
 					}
 					
 					boundingBox.flatten(coordinates);
@@ -1647,10 +1661,10 @@ package fe.unit {
 								coordinates.Y = t.boundingBox.top;
 								boundingBox.flatten(coordinates);
 								velocity.Y = 0;
-								turnY = -1;
+								turnY = E_Direction.UP;
 								
-								if (t.material == 1) {
-									tykMat = 1;
+								if (t.material == E_Material.METAL) {
+									tykMat = E_Material.METAL;
 								}
 							}
 						}
@@ -1674,7 +1688,7 @@ package fe.unit {
 								
 								newmy = t.boundingBox.top;
 								
-								if (t.material > 0) {
+								if (t.material != E_Material.NONE) {
 									stayMat = t.material;
 								}
 								
@@ -1694,14 +1708,14 @@ package fe.unit {
 									stayMat = t.material;
 								}
 								
-								diagon = 0;
+								diagon = E_Direction.NEUTRAL;
 							}
 						}
 					}
 
 					// Check for stairs
 					if (newmy == 0 && !throu) {
-						newmy = checkDiagon(velocity.Y / div);
+						newmy = checkDiagon(velocity.Y / div, E_Direction.NEUTRAL);
 					}
 
 					// Check for a beam
@@ -1739,7 +1753,7 @@ package fe.unit {
 						
 						if (jumpBall > 0 && velocity.Y > 3) {
 							velocity.Y = -velocity.Y * jumpBall;
-							turnY=-1;
+							turnY=E_Direction.UP;
 						}
 						else {
 							velocity.Y = 0;
@@ -1748,7 +1762,7 @@ package fe.unit {
 						stay = true;
 						fracLevit = 0;
 		
-						isLaz = 0;
+						isLaz = E_Direction.NEUTRAL;
 					}
 					else {
 						coordinates.Y += velocity.Y / div;
@@ -1758,7 +1772,7 @@ package fe.unit {
 					if (coordinates.Y > loc.maxY) {
 						if (!outLoc(3)) {
 							coordinates.Y = loc.maxY - 1;
-							turnY = -1;
+							turnY = E_Direction.UP;
 							boundingBox.flatten(coordinates);
 						}
 					}
@@ -1768,14 +1782,14 @@ package fe.unit {
 			if (velocity.Y + osndy < 0) {
 				if (velocity.Y < 0) {
 					stay = false;
-					diagon = 0;
+					diagon = E_Direction.NEUTRAL;
 				}
 				
 				if (coordinates.Y - boundingBox.height < 0) {
 					if (!outLoc(4)) {
 						coordinates.Y = boundingBox.height - 0.10;
 						velocity.Y = 0;
-						turnY = 1;
+						turnY = E_Direction.DOWN;
 					}
 				}
 				
@@ -1810,10 +1824,10 @@ package fe.unit {
 							coordinates.Y = t.boundingBox.bottom + boundingBox.height;
 							boundingBox.flatten(coordinates);
 							velocity.Y = 0;
-							turnY = 1;
+							turnY = E_Direction.DOWN;
 						
-							if (t.material == 1) {
-								tykMat = 1;
+							if (t.material == E_Material.METAL) {
+								tykMat = E_Material.METAL;
 							}
 						
 							stay = false;
@@ -1856,24 +1870,24 @@ package fe.unit {
 			if (coordinates.X - halfWidth < 0) {
 				coordinates.X = halfWidth;
 				velocity.X = Math.abs(velocity.X) * elast;
-				turnX = 1;
+				turnX = E_Direction.RIGHT;
 			}
 			else if (coordinates.X + halfWidth >= maxX) {
 				coordinates.X = maxX - BOUNDARY_OFFSET - halfWidth;
 				velocity.X = -Math.abs(velocity.X) * elast;
-				turnX = -1;
+				turnX = E_Direction.LEFT;
 			}
 
 			// Handle Y-axis boundaries
 			if (coordinates.Y - boundingBox.height < 0) {
 				coordinates.Y = boundingBox.height - MIN_Y_POSITION;
 				velocity.Y = 0;
-				turnY = 1;
+				turnY = E_Direction.DOWN;
 			}
 			else if (coordinates.Y > maxY) {
 				coordinates.Y = maxY - BOUNDARY_OFFSET;
 				velocity.Y = 0;
-				turnY = -1;
+				turnY = E_Direction.UP;
 			}
 
 			// Center the object after movement and boundary adjustments
@@ -1970,7 +1984,7 @@ package fe.unit {
 
 			// Corrected platform condition
 			if (t.platform && (t.collision == 0 || (transT && t.collision == 3)) &&
-				(boundingBox.bottom - (stay ? porog : porog_jump) > t.boundingBox.top || throu || t_throw > 0 || levit || isFly || diagon != 0)) {
+				(boundingBox.bottom - (stay ? porog : porog_jump) > t.boundingBox.top || throu || t_throw > 0 || levit || isFly || diagon != E_Direction.NEUTRAL)) {
 				return 0; // No collision with the platform
 			}
 
@@ -1990,15 +2004,15 @@ package fe.unit {
 
 			tile = loc.getTile(i, j);
 			if (tile.collision >= 1 && !(transT && tile.collision == 3)) {
-				isLaz = 0;
+				isLaz = E_Direction.NEUTRAL;
 				return false;
 			}
 
-			if (tile.definition.ladderSide != 0) {
+			if (tile.definition.ladderSide != E_Direction.NEUTRAL) {
 				isLaz = tile.definition.ladderSide;
 				storona = tile.definition.ladderSide;
 
-				if (isLaz == -1) {
+				if (isLaz == E_Direction.LEFT) {
 					coordinates.X = tile.boundingBox.left + boundingBox.halfWidth;
 				}
 				else {
@@ -2013,7 +2027,7 @@ package fe.unit {
 			}
 
 			// Reset ladder state if no stairs/ladder are found
-			isLaz = 0;
+			isLaz = E_Direction.NEUTRAL;
 			
 			return false; // No stairs detected
 		}
@@ -2189,13 +2203,13 @@ package fe.unit {
 		}
 		
 		// [Search for steps]
-		public function checkDiagon(velN:Number, napr:int = 0):Number {
+		public function checkDiagon(velN:Number, napr:int):Number {
 			var ddy:Number;
 			var newmy:Number = 0;
 			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y);
 			
-			if (diagon == 0) {
-				if (t.definition.slopeSide != 0 && (napr==0 || t.definition.slopeSide==napr)) {
+			if (diagon == E_Direction.NEUTRAL) {
+				if (t.definition.slopeSide != E_Direction.NEUTRAL && (napr==E_Direction.NEUTRAL || t.definition.slopeSide==napr)) {
 					ddy = t.getMaxY(coordinates.X);
 					
 					if (ddy < coordinates.Y + velN) {
@@ -2206,7 +2220,7 @@ package fe.unit {
 				else {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y + 40);
 					
-					if (t.definition.slopeSide != 0 && (napr == 0 || t.definition.slopeSide == napr)) {
+					if (t.definition.slopeSide != E_Direction.NEUTRAL && (napr == E_Direction.NEUTRAL || t.definition.slopeSide == napr)) {
 						ddy = t.getMaxY(coordinates.X);
 						
 						if (ddy < coordinates.Y + velN) {
@@ -2218,7 +2232,7 @@ package fe.unit {
 			}
 			else
 			{
-				if (t.definition.slopeSide != 0 && (napr == 0 || t.definition.slopeSide == napr)) {
+				if (t.definition.slopeSide != E_Direction.NEUTRAL && (napr == E_Direction.NEUTRAL || t.definition.slopeSide == napr)) {
 					ddy = t.getMaxY(coordinates.X);
 					diagon = t.definition.slopeSide;
 					newmy = ddy;
@@ -2226,18 +2240,18 @@ package fe.unit {
 				else {
 					t = loc.getAbsTile(coordinates.X, coordinates.Y - 40);
 					
-					if (t.definition.slopeSide!=0 && (napr==0 || t.definition.slopeSide==napr)) {
+					if (t.definition.slopeSide!=E_Direction.NEUTRAL && (napr==E_Direction.NEUTRAL || t.definition.slopeSide==napr)) {
 						ddy=t.getMaxY(coordinates.X);
 						diagon = t.definition.slopeSide;
 						newmy = ddy;
 					}
 					else {
-						diagon = 0;
+						diagon = E_Direction.NEUTRAL;
 					}
 				}
 			}
 			
-			if (diagon != 0 && (napr == 0 || t.definition.slopeSide == napr)) {
+			if (diagon != E_Direction.NEUTRAL && (napr == E_Direction.NEUTRAL || t.definition.slopeSide == napr)) {
 				shX1 = 0;
 				shX2 = 0;
 				stayPhis = 2;
@@ -2260,7 +2274,7 @@ package fe.unit {
 				currentWeapon.setNull();
 			}
 			
-			isLaz = 0;
+			isLaz = E_Direction.NEUTRAL;
 			levit = 0;
 			
 			if (eff > 0) {
@@ -2660,7 +2674,7 @@ package fe.unit {
 					t_hp = 30;
 					
 					if (cut > 0) {
-						damage(Math.sqrt(cut), Resistances.DAM_BLEED, null, true);
+						damage(Math.sqrt(cut), E_Resistances.DAM_BLEED, null, true);
 						cut -= critHeal;
 						
 						if (cut < 0) {
@@ -2669,7 +2683,7 @@ package fe.unit {
 					}
 					
 					if (poison > 0) {
-						damage(Math.sqrt(poison), Resistances.DAM_POISON, null, true);
+						damage(Math.sqrt(poison), E_Resistances.DAM_POISON, null, true);
 						poison -= critHeal;
 						
 						if (poison < 0) {
@@ -2784,7 +2798,7 @@ package fe.unit {
 		public function setPunchWeaponPos(w:WPunch):void {
 			w.coordinates.X = coordinates.X + boundingBox.width / 3 * storona;
 			w.coordinates.Y = coordinates.Y - boundingBox.height * 0.75;
-			w.rot = (storona > 0) ? 0 : ONE_PI;
+			w.rot = (storona == E_Direction.RIGHT) ? 0 : ONE_PI;
 		}
 		
 		public function destroyWall(t:Tile, napr:int=0):Boolean {
@@ -2793,7 +2807,7 @@ package fe.unit {
 			}
 			
 			if (napr == 3 && velocity.Y > 15 && destroy < 50 && massa >= 1) {
-				loc.hitTile(t, 50, (t.coords.X + 0.5) * tileX,(t.coords.Y + 0.5) * tileY, 100);
+				loc.hitTile(t, 50, (t.coords.X + 0.5) * tileX,(t.coords.Y + 0.5) * tileY, E_Decal.STOMP);
 				
 				if (t.collision == 0) {
 					return true;
@@ -2805,7 +2819,7 @@ package fe.unit {
 				|| velocity.Y < -10 && napr == 4 
 				|| velocity.Y > 10 && napr == 3
 				)) {
-					loc.hitTile(t, destroy, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY, (napr == 3? 100 : 9));
+					loc.hitTile(t, destroy, (t.coords.X + 0.5) * tileX, (t.coords.Y + 0.5) * tileY, (napr == 3 ? E_Decal.STOMP : E_Decal.EXPLOSION));
 			}
 			
 			if (t.collision == 0) {
@@ -2815,7 +2829,7 @@ package fe.unit {
 			return false;
 		}
 		
-		public function explosion(tdam:Number, ttipdam:String = Resistances.DAM_EXPLOSION, trad:Number = 200, tkol:int = 0, totbros:Number = 0, tdestroy:Number = 0, tdecal:int = 0):void {
+		public function explosion(tdam:Number, ttipdam:String, trad:Number, tkol:int, totbros:Number, tdestroy:Number, tdecal:int):void {
 			
 			var v:Vec2 = new Vec2(coordinates.X, coordinates.Y - 3);
 			var bul:Bullet = new Bullet(this, v, null, tkol > 1);
@@ -2828,7 +2842,7 @@ package fe.unit {
 			if (tkol > 1) {
 				bul.explTip = 2;
 			}
-			else if (ttipdam == Resistances.DAM_ACID) {
+			else if (ttipdam == E_Resistances.DAM_ACID) {
 				bul.explTip = 3;
 			}
 			
@@ -2962,7 +2976,7 @@ package fe.unit {
 			
 			// Make all NPCs invulnerable to Pink Cloud
 			if (!player && loc.biom == 5) {
-				vulnerabilities.setResist(Resistances.DAM_PINKCLOUD, 0);
+				vulnerabilities.setResist(E_Resistances.DAM_PINKCLOUD, 0);
 			}
 			
 			// Process active effects
@@ -3024,14 +3038,14 @@ package fe.unit {
 			}
 			
 			//уменьшение электрического урона
-			if (tip == Resistances.DAM_ELECTRIC) {
-				if (!stay && !inWater && isLaz == 0) {
+			if (tip == E_Resistances.DAM_ELECTRIC) {
+				if (!stay && !inWater && isLaz == E_Direction.NEUTRAL) {
 					dam *= 0.5;
 				}
 			}
 			
 			//урон ядом наносится только живым
-			if (tip == Resistances.DAM_VENOM && sost != 1) {
+			if (tip == E_Resistances.DAM_VENOM && sost != 1) {
 				return 0;
 			}
 			
@@ -3049,10 +3063,10 @@ package fe.unit {
 					damarm /= bul.armorMult;
 				}
 				
-				if (tip == Resistances.DAM_ACID) {
+				if (tip == E_Resistances.DAM_ACID) {
 					damarm *= 4;
 				}
-				else if (tip == Resistances.DAM_EXPLOSION) {
+				else if (tip == E_Resistances.DAM_EXPLOSION) {
 					damarm *= 2;
 				}
 				
@@ -3075,7 +3089,7 @@ package fe.unit {
 			// [Armor and armor-piercing]
 			var armor2:Number = 0;		
 			if (!tt) {
-				if (tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_CUT || tip == Resistances.DAM_EXPLOSION || tip == Resistances.DAM_BLUNT || tip == Resistances.DAM_BITE || tip == Resistances.DAM_ACID) {
+				if (tip == E_Resistances.DAM_PIERCE || tip == E_Resistances.DAM_CUT || tip == E_Resistances.DAM_EXPLOSION || tip == E_Resistances.DAM_BLUNT || tip == E_Resistances.DAM_BITE || tip == E_Resistances.DAM_ACID) {
 					armor2 = skin;
 					
 					if (armorQual > 0 && isrnd(armorQual)) {
@@ -3083,7 +3097,7 @@ package fe.unit {
 					}
 				}
 				
-				if (tip == Resistances.DAM_BURN || tip == Resistances.DAM_LASER || tip == Resistances.DAM_PLASMA || tip == Resistances.DAM_ELECTRIC || tip == Resistances.DAM_COLD || tip == Resistances.DAM_ASTRO) {
+				if (tip == E_Resistances.DAM_BURN || tip == E_Resistances.DAM_LASER || tip == E_Resistances.DAM_PLASMA || tip == E_Resistances.DAM_ELECTRIC || tip == E_Resistances.DAM_COLD || tip == E_Resistances.DAM_ASTRO) {
 					armor2 = skin;
 					
 					if (armorQual > 0 && isrnd(armorQual)) {
@@ -3134,14 +3148,14 @@ package fe.unit {
 				var sposob:int = 0; // [way to die]
 				
 				// [Instant disintegration]
-				if (bul && bul.desintegr && (tip == Resistances.DAM_LASER || tip == Resistances.DAM_PLASMA)) {
+				if (bul && bul.desintegr && (tip == E_Resistances.DAM_LASER || tip == E_Resistances.DAM_PLASMA)) {
 					if (hp <= dam * 10 && isrnd(bul.desintegr)) {
 						sposob = 1;
 						dam *= 12;
 					}
 				}
 				
-				if (tip != Resistances.DAM_POISON && tip != Resistances.DAM_BLEED && tip != Resistances.DAM_INTERNAL) {
+				if (tip != E_Resistances.DAM_POISON && tip != E_Resistances.DAM_BLEED && tip != E_Resistances.DAM_INTERNAL) {
 					dam *= allVulnerMult;
 				}
 				
@@ -3183,23 +3197,23 @@ package fe.unit {
 						dieWeap = bul.weapId;
 					}
 					
-					if (tip == Resistances.DAM_BURN && (hp <= -maxhp * 3 || !trup)) {
+					if (tip == E_Resistances.DAM_BURN && (hp <= -maxhp * 3 || !trup)) {
 						sposob = 1;
 					}
 					
-					if (tip == Resistances.DAM_LASER && (hp <= -maxhp * 3 || !trup || isrnd())) {
+					if (tip == E_Resistances.DAM_LASER && (hp <= -maxhp * 3 || !trup || isrnd())) {
 						sposob = 1;
 					}
 					
-					if (tip == Resistances.DAM_PLASMA || tip == Resistances.DAM_ACID) {
+					if (tip == E_Resistances.DAM_PLASMA || tip == E_Resistances.DAM_ACID) {
 						sposob = 2;
 					}
 					
-					if (tip == Resistances.DAM_ASTRO || tip == Resistances.DAM_HARMONY) {
+					if (tip == E_Resistances.DAM_ASTRO || tip == E_Resistances.DAM_HARMONY) {
 						sposob = 3;
 					}
 					
-					if (tip == Resistances.DAM_COLD) {
+					if (tip == E_Resistances.DAM_COLD) {
 						sposob = 4;
 					}
 					
@@ -3212,7 +3226,7 @@ package fe.unit {
 				}
 				
 				// [Electric and emp damage stuns robots]
-				if ((tip == Resistances.DAM_ELECTRIC || tip == Resistances.DAM_EMP) && opt && opt.robot && sost == 1 && Math.random() < dam / maxhp) {
+				if ((tip == E_Resistances.DAM_ELECTRIC || tip == E_Resistances.DAM_EMP) && opt && opt.robot && sost == 1 && Math.random() < dam / maxhp) {
 					mess = Res.txt("g", 'kz');
 					
 					if (stun < robotKZ) {
@@ -3221,7 +3235,7 @@ package fe.unit {
 				}
 				
 				// [Explosions cause concussion]
-				if (tip == Resistances.DAM_EXPLOSION && opt && !opt.robot && !mech && !doop && sost == 1 && Math.random() < dam / maxhp) {
+				if (tip == E_Resistances.DAM_EXPLOSION && opt && !opt.robot && !mech && !doop && sost == 1 && Math.random() < dam / maxhp) {
 					mess = Res.txt('e', 'contusion');
 					addEffect('contusion');
 				}
@@ -3233,32 +3247,32 @@ package fe.unit {
 				// [Additional effects]
 				if (bul && bul.weap) {								
 					if (bul.weap.dopEffect != null && bul.weap.dopCh > 0 && (bul.weap.dopCh >= 1 || Math.random() < bul.weap.dopCh)) {
-						if (bul.weap.dopEffect == 'igni' && vulnerabilities.getResist(Resistances.DAM_BURN) > 0.1) {
+						if (bul.weap.dopEffect == 'igni' && vulnerabilities.getResist(E_Resistances.DAM_BURN) > 0.1) {
 							addEffect('burning', bul.weap.dopDamage);
 							mess = Res.txt('e', 'burning');
 						}
 						
-						if (bul.weap.dopEffect == 'ice' && vulnerabilities.getResist(Resistances.DAM_COLD) > 0.1 && !mech) {
+						if (bul.weap.dopEffect == 'ice' && vulnerabilities.getResist(E_Resistances.DAM_COLD) > 0.1 && !mech) {
 							mess = Res.txt('e', 'freezing');
 							addEffect('freezing');
 						}
 						
-						if (bul.weap.dopEffect == 'blind' && vulnerabilities.getResist(Resistances.DAM_LASER) > 0.1 && !mech && !doop) {
+						if (bul.weap.dopEffect == 'blind' && vulnerabilities.getResist(E_Resistances.DAM_LASER) > 0.1 && !mech && !doop) {
 							mess = Res.txt('e', 'blindness');
 							addEffect('blindness');
 						}
 						
-						if (bul.weap.dopEffect == 'acid' && vulnerabilities.getResist(Resistances.DAM_ACID) > 0.1) {
+						if (bul.weap.dopEffect == 'acid' && vulnerabilities.getResist(E_Resistances.DAM_ACID) > 0.1) {
 							mess = Res.txt('e', 'chemburn');
 							addEffect('chemburn', bul.weap.dopDamage);
 						}
 						
-						if (bul.weap.dopEffect == 'pink' && vulnerabilities.getResist(Resistances.DAM_PINKCLOUD) > 0.1) {
+						if (bul.weap.dopEffect == 'pink' && vulnerabilities.getResist(E_Resistances.DAM_PINKCLOUD) > 0.1) {
 							mess = Res.txt('e', 'pinkcloud');
 							addEffect('pinkcloud', bul.weap.dopDamage);
 						}
 						
-						if (bul.weap.dopEffect == 'poison' && vulnerabilities.getResist(Resistances.DAM_POISON) > 0.1) {
+						if (bul.weap.dopEffect == 'poison' && vulnerabilities.getResist(E_Resistances.DAM_POISON) > 0.1) {
 							if (player && poison <= 0) {
 								World.w.gui.infoText('poison');
 							}
@@ -3266,7 +3280,7 @@ package fe.unit {
 							poison += bul.weap.dopDamage;
 						}
 						
-						if (bul.weap.dopEffect == 'cut' && vulnerabilities.getResist(Resistances.DAM_BLEED) > 0.1 && !mech) {
+						if (bul.weap.dopEffect == 'cut' && vulnerabilities.getResist(E_Resistances.DAM_BLEED) > 0.1 && !mech) {
 							if (player && cut <= 0) {
 								World.w.gui.infoText('cut');
 							}
@@ -3297,14 +3311,14 @@ package fe.unit {
 				
 				// [Return damage to the owner of the bullet]
 				if (bul && bul.owner && bul.owner.relat > 0) {
-					bul.owner.damage(dam*bul.owner.relat, Resistances.DAM_INTERNAL);
+					bul.owner.damage(dam*bul.owner.relat, E_Resistances.DAM_INTERNAL);
 				}
 				
-				if (tip == Resistances.DAM_INTERNAL && dam<5) {
+				if (tip == E_Resistances.DAM_INTERNAL && dam<5) {
 					isShow = false;
 				}
 				
-				if (blood > 0 && (tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_CUT || tip == Resistances.DAM_BLUNT || tip == Resistances.DAM_BLEED || tip == Resistances.DAM_BITE)) {	//кровь
+				if (blood > 0 && (tip == E_Resistances.DAM_PIERCE || tip == E_Resistances.DAM_CUT || tip == E_Resistances.DAM_BLUNT || tip == E_Resistances.DAM_BLEED || tip == E_Resistances.DAM_BITE)) {	//кровь
 					if (bloodEmit == null) {
 						if (blood == 1) {
 							bloodEmit = Emitter.arr["blood"];
@@ -3325,10 +3339,10 @@ package fe.unit {
 							bloodEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {kol:int(dam/3)});
 						}
 						
-						if (blood == 1 && tip != Resistances.DAM_BLEED && massa > 0.20) {
+						if (blood == 1 && tip != E_Resistances.DAM_BLEED && massa > 0.20) {
 							var ver:Number = Math.random();
 							
-							if (tip == Resistances.DAM_CUT) {
+							if (tip == E_Resistances.DAM_CUT) {
 								ver = ver * ver;
 							}
 							
@@ -3337,23 +3351,23 @@ package fe.unit {
 							}
 							
 							if (dam / 1000 > ver) {
-								var st:int = 1;
+								var st:int = E_Direction.RIGHT;
 								
 								if (bul && bul.velocity.X < 0) {
-									st = -1;
+									st = E_Direction.LEFT;
 								}
 								
 								if (bul == null && Math.random() < 0.50) {
-									st=-1;
+									st=E_Direction.LEFT;
 								}
 								
-								Emitter.emit('bloodexpl' + int(Math.random() * 3 + 1), loc, coordinates.X + 80 * st + (Math.random() - 0.5) * boundingBox.width * 0.5, coordinates.Y - Math.random() * boundingBox.height * 0.5 - 40, {mirr:(st<0?1:0)});
+								Emitter.emit('bloodexpl' + int(Math.random() * 3 + 1), loc, coordinates.X + 80 * st + (Math.random() - 0.5) * boundingBox.width * 0.5, coordinates.Y - Math.random() * boundingBox.height * 0.5 - 40, {mirr:(st==E_Direction.LEFT?1:0)});
 							}
 						}
 					}
 				}
 				
-				if (mat == 10 && bul) {
+				if (mat == E_Material.SHIELD && bul) {
 					Emitter.emit('pole2', loc, bul.coordinates.X, bul.coordinates.Y);
 				}
 				
@@ -3374,7 +3388,7 @@ package fe.unit {
 						vnumb = 3;
 					}
 					
-					if (player && tt && tip == Resistances.DAM_PINKCLOUD) {
+					if (player && tt && tip == E_Resistances.DAM_PINKCLOUD) {
 						vnumb = 11;
 					}
 					
@@ -3431,7 +3445,7 @@ package fe.unit {
 			
 			if (damWall > 0) {
 				var dam:Number = Math.sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y) / damWallSpeed * damWall;
-				damage(dam, Resistances.DAM_BLUNT);
+				damage(dam, E_Resistances.DAM_BLUNT);
 				
 				if (Math.random() < dam / maxhp) {
 					stun = damWallStun;
@@ -3498,7 +3512,7 @@ package fe.unit {
 			)) {
 				var dm:Number = 0;
 				if ((transp && (vulnerabilities.getResist(bul.tipDamage) <= 0) || invulner)) {
-					return -1;
+					return Bullet.MISS;
 				}
 				else if (bul.damage > 0) {
 					
@@ -3519,18 +3533,19 @@ package fe.unit {
 						priorUnit = bul.owner;
 					}
 					
-					if (!invulner && dm <= 0 || mat == 1) {
-						return 1;
+					// A hit that does no damage sparks like metal, and anything not metal or slime sounds like meat
+					if (!invulner && dm <= 0 || mat == E_Material.METAL) {
+						return E_Material.METAL;
 					}
-					else if (mat == 12) {
-						return 12;
+					else if (mat == E_Material.SLIME) {
+						return E_Material.SLIME;
 					}
 					else {
-						return 10;
+						return E_Material.MEAT;
 					}
 				}
 				else {
-					return 0;
+					return E_Material.NONE;
 				}
 			}
 			else {
@@ -3542,8 +3557,8 @@ package fe.unit {
 						numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight + visDamDY, {txt:txtMiss, frame:10, rx:40, alpha:0.50});
 					}
 				}
-				
-				return -1;
+
+				return Bullet.MISS;
 			}
 		}
 
@@ -3591,19 +3606,19 @@ package fe.unit {
 				sc = 3;
 			}
 			
-			if (un.tipDamage == Resistances.DAM_ELECTRIC) {
+			if (un.tipDamage == E_Resistances.DAM_ELECTRIC) {
 				Emitter.emit('moln', loc, coordinates.X, coordinates.Y-boundingBox.halfHeight, {celx:un.coordinates.X, cely:(un.coordinates.Y - un.boundingBox.halfHeight)});
 				Snd.ps('electro', coordinates.X, coordinates.Y);
 			}
-			else if (un.tipDamage == Resistances.DAM_ACID) {
+			else if (un.tipDamage == E_Resistances.DAM_ACID) {
 				Emitter.emit('buma', loc, (coordinates.X + un.coordinates.X) * 0.50, (coordinates.Y - boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight) * 0.50, {scale:sc});
 				Snd.ps('acid',coordinates.X, coordinates.Y);
 			}
-			else if (un.tipDamage == Resistances.DAM_DEATH) {
+			else if (un.tipDamage == E_Resistances.DAM_DEATH) {
 				Emitter.emit('bumn',loc,(coordinates.X + un.coordinates.X) * 0.50, (coordinates.Y - boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight) * 0.50, {scale:sc});
 				Snd.ps('hit_necr', coordinates.X, coordinates.Y);
 			}
-			else if (un.tipDamage == Resistances.DAM_BITE) {
+			else if (un.tipDamage == E_Resistances.DAM_BITE) {
 				Emitter.emit('bum',loc,(coordinates.X + un.coordinates.X) * 0.50, (coordinates.Y - boundingBox.halfHeight + un.coordinates.Y - un.boundingBox.halfHeight) * 0.50, {scale:sc});
 				Snd.ps('fang_hit', coordinates.X, coordinates.Y);
 			}
@@ -3624,7 +3639,7 @@ package fe.unit {
 			}
 			
 			if (un.molnDam > 0) {
-				damage(un.molnDam, Resistances.DAM_ELECTRIC);
+				damage(un.molnDam, E_Resistances.DAM_ELECTRIC);
 				return 1;
 			}
 			
@@ -3642,7 +3657,7 @@ package fe.unit {
 				un.velocity.Y = (-un.velocity.Y + ndy) * 0.25 + ndy;
             }
 			
-			damage(un.massa * (un.vel2 - 50) * World.boxDamage, Resistances.DAM_BLUNT);
+			damage(un.massa * (un.vel2 - 50) * World.boxDamage, E_Resistances.DAM_BLUNT);
 			priorUnit = null;
 			
 			return 2;
@@ -3770,9 +3785,9 @@ package fe.unit {
 			}
 			
 			shithp		= 0;
-			walk		= 0;
+			walk		= E_Direction.NEUTRAL;
 			elast		= 0;
-			isLaz		= 0;
+			isLaz		= E_Direction.NEUTRAL;
 			stun		= 0;
 			transT		= true;
 			sndRunOn	= false;

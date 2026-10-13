@@ -3,6 +3,7 @@ package fe.unit {
 	import fe.entities.Obj;
 	import fe.projectile.Bullet;
 	import fe.loc.Box;
+	import fe.enums.E_Material;
 	
 	public class VirtualUnit extends Unit {
 
@@ -12,7 +13,7 @@ package fe.unit {
 		public function VirtualUnit(cid:String = null, ndif:Number = 100, xml:XML = null, loadObj:Object = null) {
 			activateTrap	= 0;
 			dexter			= 0;
-			mat				= 1;
+			mat				= E_Material.METAL;
 			showNumbs		= false;
 			isSats			= false;
 			doop			= true;
@@ -38,12 +39,12 @@ package fe.unit {
 		// Changed nTipDam to a String, old check was (nTipDam >= 0)
 		public override function udarBullet(bul:Bullet, sposob:int = 0):int {
 			if (nTipDam != "" && nTipDam != bul.tipDamage) {
-				return 0;
+				return E_Material.NONE;
 			}
-			
+
 			owner.command("dam");
-			
-			return 1;
+
+			return E_Material.METAL;
 		}
 
 		public override function udarUnit(un:Unit, mult:Number=1):Boolean {

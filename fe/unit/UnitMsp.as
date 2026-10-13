@@ -7,6 +7,9 @@ package fe.unit {
 	import fe.loc.tile.Tile;
 	import fe.loc.Location;
 	import fe.entities.BoundingBox;
+	import fe.enums.E_Material;
+	import fe.graph.enums.E_Decal;
+	import fe.enums.E_Direction;
 
 	public class UnitMsp extends Unit {
 
@@ -41,7 +44,7 @@ package fe.unit {
 			
 			getXmlParam();
 			
-			mat=1;
+			mat=E_Material.METAL;
 			aiNapr=storona;
 			t_replic=Math.random()*100-50;
 		}
@@ -134,7 +137,7 @@ package fe.unit {
 		}
 
 		public override function dropLoot():void {
-			explosion(dam, tipDamage, 150, 0, 20, 30, 9);
+			explosion(dam, tipDamage, 150, 0, 20, 30, E_Decal.EXPLOSION);
 		}
 
 		public override function setLevel(nlevel:int=0):void {
@@ -164,7 +167,7 @@ package fe.unit {
 				}
 			}
 			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
+				aiState=0; aiTCh=3; walk=E_Direction.NEUTRAL;
 			}
 
 			var jmp:Number=0;
@@ -184,8 +187,8 @@ package fe.unit {
 				if (celUnit) {
 					aiSpok=maxSpok+10;
 					celDX = celX - coordinates.X;
-					if (celDX>40) aiNapr=1;
-					if (celDX<-40) aiNapr=-1;
+					if (celDX>40) aiNapr=E_Direction.RIGHT;
+					if (celDX<-40) aiNapr=E_Direction.LEFT;
 					aiState=3;
 				}
 				else {
@@ -226,9 +229,9 @@ package fe.unit {
 			//направление
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y + this.boundingBox.height;
-			if (celDY>40) aiVNapr=1;		//вниз
-			else if(celDY<-40) aiVNapr=-1;	//прыжок
-			else aiVNapr=0;
+			if (celDY>40) aiVNapr=E_Direction.DOWN;		//вниз
+			else if(celDY<-40) aiVNapr=E_Direction.UP;	//прыжок
+			else aiVNapr=E_Direction.NEUTRAL;
 
 			//поведение при различных состояниях
 			if (aiState==3) {
@@ -236,18 +239,18 @@ package fe.unit {
 				if (aiTCh%15==1) {
 					if (isrnd(0.9)) {
 						if (celDY>80) throu=true;
-						if (aiVNapr<0 && isrnd(0.2)) jmp=1;
+						if (aiVNapr==E_Direction.UP && isrnd(0.2)) jmp=1;
 					}
 					else {
 						throu=false;
 						jmp=0;
 					}
-					if (celDX>40) aiNapr=1;
-					if (celDX<-40) aiNapr=-1;
+					if (celDX>40) aiNapr=E_Direction.RIGHT;
+					if (celDX<-40) aiNapr=E_Direction.LEFT;
 					storona=aiNapr;
 				}
 				if (levit) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
 					else {
@@ -255,25 +258,25 @@ package fe.unit {
 					}
 				}
 				else {
-					if (aiNapr==-1) {
-						walk=-1;
+					if (aiNapr==E_Direction.LEFT) {
+						walk=E_Direction.LEFT;
 						if (velocity.X > -maxSpeed) velocity.X -= accel;
 					}
 					else {
-						walk=1;
+						walk=E_Direction.RIGHT;
 						if (velocity.X < maxSpeed) velocity.X += accel;
 					}
 				}
-				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
-				if (turnX!=0) {
+				if (stay && isrnd(0.5) && aiVNapr!=E_Direction.DOWN && (shX1>0.5 && aiNapr==E_Direction.LEFT || shX2>0.5 && aiNapr==E_Direction.RIGHT)) jmp=0.5;
+				if (turnX!=E_Direction.NEUTRAL) {
 					aiTTurn--;
-					if (isrnd(0.03) || turnY>0) aiTTurn-=10;
+					if (isrnd(0.03) || turnY==E_Direction.DOWN) aiTTurn-=10;
 					else jmp=1;
 					if (aiTTurn<0) {
 						aiNapr=storona=turnX;
 						aiTTurn = int(Math.random()*20)+5;
 					}
-					turnX=turnY=0;
+					turnX=turnY=E_Direction.NEUTRAL;
 				}
 				if (jmp>0) {
 					jump(jmp);
@@ -286,7 +289,7 @@ package fe.unit {
 				pumpObj=null;
 			}
 			else {
-				walk = 0;
+				walk = E_Direction.NEUTRAL;
 			}
 			
 			if (coordinates.Y > loc.spaceY * tileY - 80) throu = false;

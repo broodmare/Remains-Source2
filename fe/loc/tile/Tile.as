@@ -4,6 +4,8 @@ package fe.loc.tile {
 	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	import fe.loc.Box;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 
 	// One space on a room's grid while the game runs: what its definition placed there, and what has happened to it since
 	public class Tile {
@@ -20,7 +22,7 @@ package fe.loc.tile {
 		public var hp:int					= 1000;		// Hitpoints before the block breaks
 		public var damageThreshold:int		= 0;		// Hits weaker than this do no damage
 		public var indestructible:Boolean	= false;
-		public var material:int				= Material.NONE;
+		public var material:int				= E_Material.NONE;
 		public var opacity:Number			= 0.00;		// How much light the tile blocks
 		public var platform:Boolean			= false;	// Stood on from above, dropped through from on top
 		public var water:int				= 0;
@@ -104,10 +106,10 @@ package fe.loc.tile {
 		}
 
 		public function getMaxY(rx:Number):Number {
-			if (definition.slopeSide == 0) {
+			if (definition.slopeSide == E_Direction.NEUTRAL) {
 				return boundingBox.top;
 			}
-			else if (definition.slopeSide > 0) {
+			else if (definition.slopeSide == E_Direction.RIGHT) {
 				if (rx < boundingBox.left) {
 					return boundingBox.bottom;
 				}

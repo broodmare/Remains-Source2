@@ -15,6 +15,7 @@ package fe.unit {
 	import fe.unit.ability.Telekinesis;
 	import fe.WeaponManager;
 	import fe.World;
+	import fe.enums.E_Direction;
 	
 	public class UnitAlicorn extends UnitPon {
 
@@ -446,7 +447,7 @@ package fe.unit {
 			}
 			
 			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
+				aiState=0; aiTCh=3; walk=E_Direction.NEUTRAL;
 			}
 		
 			if (t_super>0) {
@@ -523,7 +524,7 @@ package fe.unit {
 					if (isFly && aiState!=4) {
 						setCel(null, coordinates.X+Math.random()*200-100, coordinates.Y+1000);
 						aiState=4;
-						aiVNapr=1;
+						aiVNapr=E_Direction.DOWN;
 					}
 					else if (stroll) {
 						aiState=Math.floor(Math.random()*2);
@@ -614,13 +615,13 @@ package fe.unit {
 			celDY = celY - coordinates.Y + this.boundingBox.height;
 			
 			if (celDY>40) {
-				aiVNapr=1;		//вниз
+				aiVNapr=E_Direction.DOWN;		//вниз
 			}
 			else if(celDY<-40) {
-				aiVNapr=-1;	//прыжок
+				aiVNapr=E_Direction.UP;	//прыжок
 			}
 			else {
-				aiVNapr=0;
+				aiVNapr=E_Direction.NEUTRAL;
 			}
 			
 			porog=10;
@@ -657,36 +658,36 @@ package fe.unit {
 			//пешком
 			if (stay) {
 				if (aiState>0) {
-					if (aiNapr==-1) {
-						walk=-1;
+					if (aiNapr==E_Direction.LEFT) {
+						walk=E_Direction.LEFT;
 						if (velocity.X > -maxSpeed) {
 							velocity.X -= accel;
 						}
 					}
-					else if (aiNapr==1) {
-						walk=1;
+					else if (aiNapr==E_Direction.RIGHT) {
+						walk=E_Direction.RIGHT;
 						if (velocity.X < maxSpeed) {
 							velocity.X += accel;
 						}
 					}
 				
 					//пригнуться
-					if (turnX==-1) {
+					if (turnX==E_Direction.LEFT) {
 						if (loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top).collision && loc.getAbsTile(this.boundingBox.right + 2, this.boundingBox.top + 40).collision==0 && loc.getAbsTile(this.boundingBox.right + 2,this.boundingBox.top + 80).collision==0) {
 							sit(true);
-							turnX=0;
+							turnX=E_Direction.NEUTRAL;
 						}
 					}
 				
-					if (turnX==1) {
+					if (turnX==E_Direction.RIGHT) {
 						if (loc.getAbsTile(this.boundingBox.left - 2, this.boundingBox.top).collision && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 40).collision==0 && loc.getAbsTile(this.boundingBox.left - 2,this.boundingBox.top + 80).collision==0) {
 							sit(true);
-							turnX=0;
+							turnX=E_Direction.NEUTRAL;
 						}
 					}
 				}
 				else {
-					walk=0;
+					walk=E_Direction.NEUTRAL;
 				}
 			
 				t_fall=0;
@@ -709,7 +710,7 @@ package fe.unit {
 					}
 					
 					//дематериализоваться
-					if (aiSpok>10 && celUnit==null && (turnX!=0 || turnY!=0)) {
+					if (aiSpok>10 && celUnit==null && (turnX!=E_Direction.NEUTRAL || turnY!=E_Direction.NEUTRAL)) {
 						t_nomater++;
 						
 						if (t_nomater>=30 && mater && t_gotov>=0) {
@@ -717,11 +718,11 @@ package fe.unit {
 						}
 					}
 					else {
-						if (turnX!=0) {
+						if (turnX!=E_Direction.NEUTRAL) {
 							spd.x=0;
 						}
 					
-						if (turnY!=0) {
+						if (turnY!=E_Direction.NEUTRAL) {
 							spd.y=0;
 						}
 						
@@ -734,7 +735,7 @@ package fe.unit {
 				}
 				
 				//приземлиться
-				if (turnY<0) {
+				if (turnY==E_Direction.UP) {
 					if (aiState!=4) {
 						t_landing++;
 					}
@@ -746,21 +747,21 @@ package fe.unit {
 							aiState=1;
 						}
 						
-						turnY=0;
+						turnY=E_Direction.NEUTRAL;
 					}
 				}
 				
-				turnX = 0;
-				turnY = 0;
+				turnX = E_Direction.NEUTRAL;
+				turnY = E_Direction.NEUTRAL;
 				t_fall = 0;
 			}
 			else if (levit) {
-				if (aiNapr==-1) {
+				if (aiNapr==E_Direction.LEFT) {
 					if (velocity.X > -maxSpeed) {
 						velocity.X -= levitaccel;
 					}
 				}
-				else if (aiNapr==1) {
+				else if (aiNapr==E_Direction.RIGHT) {
 					if (velocity.X < maxSpeed) {
 						velocity.X += levitaccel;
 					}
@@ -778,18 +779,18 @@ package fe.unit {
 			if (aiState==0) {
 				overLook=false;
 				
-				if (stay && shX1>0.5 && aiNapr<0) {
-					turnX=1;
+				if (stay && shX1>0.5 && aiNapr==E_Direction.LEFT) {
+					turnX=E_Direction.RIGHT;
 				}
 				
-				if (stay && shX2>0.5 && aiNapr>0) {
-					turnX=-1;
+				if (stay && shX2>0.5 && aiNapr==E_Direction.RIGHT) {
+					turnX=E_Direction.LEFT;
 				}
 			}
 			else if (aiState==1) {
 				//поворачиваем, если впереди некуда бежать
 				overLook=false;
-				if (stay && shX1>0.25 && aiNapr<0) {
+				if (stay && shX1>0.25 && aiNapr==E_Direction.LEFT) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						
@@ -797,15 +798,15 @@ package fe.unit {
 							jump(0.5);
 						}
 						else {
-							turnX=1;
+							turnX=E_Direction.RIGHT;
 						}
 					}
 					else {
-						turnX=1;
+						turnX=E_Direction.RIGHT;
 					}
 				}
 				
-				if (stay && shX2>0.25 && aiNapr>0) {
+				if (stay && shX2>0.25 && aiNapr==E_Direction.RIGHT) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X+storona*80,coordinates.Y+10);
 						
@@ -813,17 +814,17 @@ package fe.unit {
 							jump(0.5);
 						}
 						else {
-							turnX=-1;
+							turnX=E_Direction.LEFT;
 						}
 					}
 					else {
-						turnX=-1;
+						turnX=E_Direction.LEFT;
 					}
 				}
 				
-				if (stay && turnX!=0) {
+				if (stay && turnX!=E_Direction.NEUTRAL) {
 					aiNapr=storona=turnX;
-					turnX=0;
+					turnX=E_Direction.NEUTRAL;
 				}
 				
 				if (isPlav) {
@@ -835,27 +836,27 @@ package fe.unit {
 				//определить, куда двигаться
 				overLook=true;
 				
-				if (aiVNapr<0) jmp=1;		//взлететь
+				if (aiVNapr==E_Direction.UP) jmp=1;		//взлететь
 				
 				if (aiTCh%15==1) {
 					if (isrnd(0.8)) {
-						if (celDX>100) aiNapr=storona=1;
+						if (celDX>100) aiNapr=storona=E_Direction.RIGHT;
 						
-						if (celDX<-100) aiNapr=storona=-1;
+						if (celDX<-100) aiNapr=storona=E_Direction.LEFT;
 					}
 				}
 				
 				if (celDY>80) throu=true;
 				else throu=false;
 				
-				if (turnX!=0) {
+				if (turnX!=E_Direction.NEUTRAL) {
 					if (isFly) {
 						if (aiState!=3) setCel(null, celX+turnX*(Math.random()*200+200), celY+Math.random()*120-60);
-						turnX=0;
+						turnX=E_Direction.NEUTRAL;
 					}
 					else {
 						aiTTurn--;
-						if (isrnd(0.03) || turnY>0) aiTTurn-=10;
+						if (isrnd(0.03) || turnY==E_Direction.DOWN) aiTTurn-=10;
 						else if (isrnd(0.5)) jmp=1;
 						else aiTTurn-=10;
 					
@@ -864,7 +865,7 @@ package fe.unit {
 							aiTTurn=Math.floor(Math.random()*20)+5;
 						}
 					
-						turnX=0;
+						turnX=E_Direction.NEUTRAL;
 					}
 				}
 				
@@ -1037,7 +1038,7 @@ package fe.unit {
 					
 					if (findCel(true) && celUnit) {
 						aiSpok = 0;
-						storona = (celX > coordinates.X)? 1:-1;
+						storona = (celX > coordinates.X)? E_Direction.RIGHT:E_Direction.LEFT;
 					}
 					
 					return;

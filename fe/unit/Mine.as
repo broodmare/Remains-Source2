@@ -3,6 +3,8 @@ package fe.unit {
 	import fe.*;
 	import fe.serv.LootGen;
 	import fe.loc.Location;
+	import fe.unit.enums.E_Resistances;
+	import fe.graph.enums.E_Decal;
 	
 	import fe.stubs.vismine;
 	
@@ -12,7 +14,7 @@ package fe.unit {
 		public var wdestroy:Number		=  10.00;		//урон блокам
 		public var damage1:Number		=  12.00;		//урон юнитам
 		public var otbros1:Number		=   5.00;		//отброс
-		public var tipDecal:int			=   0;			//тип оставляемых следов		
+		public var tipDecal:int			=   E_Decal.NONE;			//тип оставляемых следов		
 		public var explTime:int			=  15;			//задержка перед взрывом
 		public var reloadTime:int		=   0;			//время на зарядку после установки
 		public var sens:int				= 100;
@@ -92,7 +94,7 @@ package fe.unit {
 			if (charNode.@maxhp>0) hp=maxhp=charNode.@maxhp;
 			if (charNode.@damexpl.length()) damage1=charNode.@damexpl;
 			if (charNode.@knock.length()) otbros1=charNode.@knock;
-			if (charNode.@tipdam.length()) tipDamage=Resistances.parseDamageType(charNode.@tipdam);
+			if (charNode.@tipdam.length()) tipDamage=Resistances.parseDamageType(charNode.@tipdam, E_Resistances.DAM_PIERCE);
 			if (charNode.@destroy.length()) wdestroy=charNode.@destroy;
 			if (charNode.@expl.length()) explRadius=charNode.@expl;
 			if (charNode.@time.length()) explTime=charNode.@time;
@@ -122,8 +124,8 @@ package fe.unit {
 			doop=true;
 			transT=true;
 			
-			vulnerabilities.setResist(Resistances.DAM_EMP, 1);
-			vulnerabilities.setResist(Resistances.DAM_VENOM, 0);
+			vulnerabilities.setResist(E_Resistances.DAM_EMP, 1);
+			vulnerabilities.setResist(E_Resistances.DAM_VENOM, 0);
 			inter.mine = Math.round(1 + Math.random() * (ndif + 1));
 			
 			if (inter.mine > inter.maxMechLvl) {
@@ -246,7 +248,7 @@ package fe.unit {
 							continue;
 						}
 						
-						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != Resistances.DAM_EMP || un.vulnerabilities.getResist(Resistances.DAM_EMP) > 0)) {
+						if (un.coordinates.X - coordinates.X < sens && un.coordinates.X - coordinates.X > -sens && un.coordinates.Y - coordinates.Y < sens * 0.4 && un.coordinates.Y - coordinates.Y > -sens && (tipDamage != E_Resistances.DAM_EMP || un.vulnerabilities.getResist(E_Resistances.DAM_EMP) > 0)) {
 							if (otschet > 0 && un.activateTrap == 1 && un.fraction == Unit.F_PLAYER) {
 								otschet--;
 								continue;

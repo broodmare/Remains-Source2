@@ -2,10 +2,16 @@ package fe.unit {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
-	import fe.util.Vec2;
+	import fe.ArmorManager;
+	import fe.ItemManager;
+	import fe.LanguageManager;
+	import fe.Res;
+	import fe.Snd;
+	import fe.World;
+	import fe.XMLDataGrabber;
 	import fe.loc.CheckPoint;
 	import fe.serv.LootGen;
+	import fe.unit.enums.E_Resistances;
 	
 	// TODO: A dynamic class allows adding new properties at runtime, but that's obviously bad. Redo this
 	public dynamic class Pers {
@@ -750,7 +756,7 @@ package fe.unit {
 			// [resistance and weapon skills]
 			gg.vulnerabilities = new Resistances();
 			gg.vulnerabilities.setResistances(1);
-			gg.vulnerabilities.setResist(Resistances.DAM_EMP, 0);
+			gg.vulnerabilities.setResist(E_Resistances.DAM_EMP, 0);
 			
 			for (var j:String in weaponSkills) {
 				weaponSkills[j] = 1;
@@ -1358,11 +1364,11 @@ package fe.unit {
 				dam = dieDamage * inMaxHP;
 			}
 
-			if (dam <= 0 || tip == Resistances.DAM_INTERNAL || tip == Resistances.DAM_BLEED) {
+			if (dam <= 0 || tip == E_Resistances.DAM_INTERNAL || tip == E_Resistances.DAM_BLEED) {
 				return;
 			}
 
-			if (tip == Resistances.DAM_DEATH) {
+			if (tip == E_Resistances.DAM_DEATH) {
 				dam *= 0.10;
 			}
 
@@ -1403,7 +1409,7 @@ package fe.unit {
 					trauma(headSt, 1);
 				}
 			}
-			else if (rnd < 0.60 || tip == Resistances.DAM_POISON || tip == Resistances.DAM_VENOM) {
+			else if (rnd < 0.60 || tip == E_Resistances.DAM_POISON || tip == E_Resistances.DAM_VENOM) {
 				sst = 4 - Math.ceil(torsHP / inMaxHP * 4);
 				torsHP -= dam;
 				
@@ -1471,11 +1477,11 @@ package fe.unit {
 
 			dam *= 3;
 
-			if (tip == Resistances.DAM_BLEED || tip == Resistances.DAM_CUT || tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_BITE) {
+			if (tip == E_Resistances.DAM_BLEED || tip == E_Resistances.DAM_CUT || tip == E_Resistances.DAM_PIERCE || tip == E_Resistances.DAM_BITE) {
 				dam *= organMult;
 				dam = Math.random() * dam;
 				
-				if (tip == Resistances.DAM_PIERCE || tip == Resistances.DAM_BITE) {
+				if (tip == E_Resistances.DAM_PIERCE || tip == E_Resistances.DAM_BITE) {
 					dam *= 0.5;
 				}
 				

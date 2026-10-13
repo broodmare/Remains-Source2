@@ -2,13 +2,12 @@ package fe.loc {
 
 	import flash.display.MovieClip;
 	
-	import fe.*;
+	import fe.Snd;
+	import fe.World;
 	import fe.SymbolFactory;
-	import fe.util.Vec2;
 	import fe.graph.Emitter;
 	import fe.serv.Item;
 	import fe.serv.Interact;
-	import fe.entities.BoundingBox;
 	import fe.entities.Obj;
 	import fe.loc.tile.Tile;
 	

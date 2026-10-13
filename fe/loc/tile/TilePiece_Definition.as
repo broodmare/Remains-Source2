@@ -1,14 +1,19 @@
 package fe.loc.tile {
 
+	import fe.enums.E_Material;
+	import fe.loc.tile.enums.E_TileBehaviour;
+	import fe.loc.tile.enums.E_TileLayer;
+	import fe.enums.E_Direction;
+
 	// One thing a room can place in a tile: a block, a wall patch, a beam, steps or a ladder
 	public class TilePiece_Definition {
 		public var id:String				= "";
 		public var code:String				= "";		// Character that places this piece in a room's tile rows
 		public var name:String				= "";
-		public var layer:int				= TileLayer.BACKGROUND;
-		public var behaviour:int			= TileBehaviour.NONE;
-		public var side:int					= 0;		// Ladders hug and slopes rise toward this side: 1 right, -1 left
-		public var material:int				= Material.NONE;
+		public var layer:int				= E_TileLayer.BACKGROUND;
+		public var behaviour:int			= E_TileBehaviour.NONE;
+		public var side:int					= E_Direction.NEUTRAL;	// Ladders hug and slopes rise toward this side, LEFT or RIGHT
+		public var material:int				= E_Material.NONE;
 		public var hp:int					= 0;		// 0 keeps the tile's default
 		public var damageThreshold:int		= 0;		// Hits weaker than this do no damage
 		public var indestructible:Boolean	= false;

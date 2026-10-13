@@ -5,6 +5,8 @@ package fe.unit {
 	import fe.Res;
 	import fe.WeaponManager;
 	import fe.projectile.Bullet;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	public class UnitDron extends Unit {
 		
@@ -62,7 +64,7 @@ package fe.unit {
 			walkSpeed = maxSpeed;
 			runSpeed = maxSpeed * 3;
 			isFly = true;
-			mat = 1;
+			mat = E_Material.METAL;
 			acidDey = 1;
 			elast = 0.60;
 			spd = {};
@@ -208,7 +210,7 @@ package fe.unit {
 				aiTCh = Math.floor(Math.random() * 100) + 100;
 				
 				if (aiState == 0) {		//выбрать случайную цель в пассивном режиме
-					celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd() ? 1 : -1);
+					celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd() ? E_Direction.RIGHT : E_Direction.LEFT);
 					celY = coordinates.Y - this.boundingBox.halfHeight;
 				}
 			}
@@ -223,7 +225,7 @@ package fe.unit {
 						aiState = 1;
 					}
 					
-					storona = (celX > coordinates.X) ? 1 : -1;
+					storona = (celX > coordinates.X) ? E_Direction.RIGHT : E_Direction.LEFT;
 				}
 				else {
 					if (aiSpok>0) {
@@ -265,13 +267,13 @@ package fe.unit {
 			}
 			
 			if (tr == 1) {
-				storona = (celX > coordinates.X) ? 1 : -1;
+				storona = (celX > coordinates.X) ? E_Direction.RIGHT : E_Direction.LEFT;
 			}
 	
-			if (turnX != 0) {
+			if (turnX != E_Direction.NEUTRAL) {
 				stuk++;
 				storona = turnX;
-				turnX = 0;
+				turnX = E_Direction.NEUTRAL;
 
 				if (aiState == 0) {
 					celX = coordinates.X + 400 * storona;
@@ -282,11 +284,11 @@ package fe.unit {
 				}
 			}
 			
-			if (turnY != 0) {
-				if (turnY < 0) {
+			if (turnY != E_Direction.NEUTRAL) {
+				if (turnY == E_Direction.UP) {
 					velocity.Y = -6;
 				}
-				turnY = 0;
+				turnY = E_Direction.NEUTRAL;
 			}
 			//атака
 			if (World.w.enemyAct >= 3 && aiState == 1 && celUnit && shok <= 0) {
@@ -333,7 +335,7 @@ package fe.unit {
 				
 				t_krut = 45;
 				
-				return -1;
+				return Bullet.MISS;
 			}
 		}
 	}

@@ -5,6 +5,8 @@ package fe.unit {
 	import fe.projectile.Bullet;
 	import fe.WeaponManager;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	public class UnitAIRobot extends UnitPon {
 
@@ -45,7 +47,7 @@ package fe.unit {
 				quiet=true;
 			}
 			
-			mat=1;
+			mat=E_Material.METAL;
 			acidDey=1;
 			blood=0;
 			aiNapr=storona;
@@ -147,7 +149,7 @@ package fe.unit {
 				replic('levit');
 			}
 			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
+				aiState=0; aiTCh=3; walk=E_Direction.NEUTRAL;
 			}
 
 			if (t_port>0) t_port--;
@@ -224,9 +226,9 @@ package fe.unit {
 			//направление
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y + boundingBox.height;
-			if (celDY>40) aiVNapr=1;		//вниз
-			else if(celDY<-40) aiVNapr=-1;	//прыжок
-			else aiVNapr=0;
+			if (celDY>40) aiVNapr=E_Direction.DOWN;		//вниз
+			else if(celDY<-40) aiVNapr=E_Direction.UP;	//прыжок
+			else aiVNapr=E_Direction.NEUTRAL;
 
 			//в возбуждённом состоянии наблюдательность увеличивается
 			
@@ -243,25 +245,25 @@ package fe.unit {
 			if ((aiState==0 || aiState==1)  && aiTCh%30==1 && isrnd(0.02)) replic('neutral');
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
-				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
+				if (stay && shX1>0.5 && aiNapr==E_Direction.LEFT) turnX=E_Direction.RIGHT;
+				if (stay && shX2>0.5 && aiNapr==E_Direction.RIGHT) turnX=E_Direction.LEFT;
 				if (isPlav && plav) jump();
 			} if (aiState==1) {
 				//бегаем туда-сюда
-				if (aiNapr==-1) {
+				if (aiNapr==E_Direction.LEFT) {
 					if (velocity.X>-maxSpeed) velocity.X-=accel;
 				} else {
 					if (velocity.X<maxSpeed) velocity.X+=accel;
 				}
 				//поворачиваем, если впереди некуда бежать
-				if (stay && shX1>0.5 && aiNapr<0) {
-					turnX=1;
+				if (stay && shX1>0.5 && aiNapr==E_Direction.LEFT) {
+					turnX=E_Direction.RIGHT;
 				}
-				if (stay && shX2>0.5 && aiNapr>0) {
-					turnX=-1;
+				if (stay && shX2>0.5 && aiNapr==E_Direction.RIGHT) {
+					turnX=E_Direction.LEFT;
 				}
 				//если повернули, то можем остановиться
-				if (stay && turnX!=0) {
+				if (stay && turnX!=E_Direction.NEUTRAL) {
 					if (turnX*storona<0 && currentWeapon) {
 						if (currentWeapon.rot > 0) {
 							currentWeapon.rot = ONE_PI - currentWeapon.rot;
@@ -272,7 +274,7 @@ package fe.unit {
 					}
 					
 					aiNapr=storona=turnX;
-					turnX=0;
+					turnX=E_Direction.NEUTRAL;
 				}
 				//в возбуждённом или атакующем состоянии
 			} else if (aiState==2 || aiState==3) {
@@ -285,32 +287,32 @@ package fe.unit {
 						jmp=0;
 					}
 					if (isrnd(0.5)) {
-						if (celDX>100) aiNapr=1;
-						if (celDX<-100) aiNapr=-1;
+						if (celDX>100) aiNapr=E_Direction.RIGHT;
+						if (celDX<-100) aiNapr=E_Direction.LEFT;
 					}
-					if (celDX>40) storona=1;
-					if (celDX<-40) storona=-1;
+					if (celDX>40) storona=E_Direction.RIGHT;
+					if (celDX<-40) storona=E_Direction.LEFT;
 				}
 				if (isPort && aiState==2 && celUnit==null && t_port<=0 && kol_port>0) actPort();
-				if (aiState==2 && aiVNapr<0 && t_port<=0) jmp=1; //(aiState==2 || ) && 
+				if (aiState==2 && aiVNapr==E_Direction.UP && t_port<=0) jmp=1; //(aiState==2 || ) && 
 				else jmp=0;
 				if (levit) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X>-maxSpeed) velocity.X-=levitaccel;
 					} else {
 						if (velocity.X<maxSpeed) velocity.X+=levitaccel;
 					}
 				}
 				else {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X>-maxSpeed) velocity.X-=accel;
 					}
 					else {
 						if (velocity.X<maxSpeed) velocity.X+=accel;
 					}
 				}
-				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
-				if (turnX!=0) {
+				if (stay && isrnd(0.5) && aiVNapr!=E_Direction.DOWN && (shX1>0.5 && aiNapr==E_Direction.LEFT || shX2>0.5 && aiNapr==E_Direction.RIGHT)) jmp=0.5;
+				if (turnX!=E_Direction.NEUTRAL) {
 					if (pumpObj && pumpObj.door) {		//наткнулся на дверь, открыть
 						if (pumpObj.lock==0 && pumpObj.active && pumpObj.action==1) {//&& Math.abs(pumpObj.X-X)<150 && Math.abs(pumpObj.Y-Y)<100
 							pumpObj.open=true;
@@ -318,13 +320,13 @@ package fe.unit {
 						}
 					}
 					aiTTurn--;
-					if (isrnd(0.03) || turnY>0) aiTTurn-=10;
+					if (isrnd(0.03) || turnY==E_Direction.DOWN) aiTTurn-=10;
 					else jmp=1;
 					if (aiTTurn<0) {
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
 					}
-					turnX=turnY=0;
+					turnX=turnY=E_Direction.NEUTRAL;
 				}
 				if (jmp>0) {
 					jump(jmp);
@@ -333,7 +335,7 @@ package fe.unit {
 				pumpObj=null;
 			}
 			else if (aiState==4 || aiState==3) {
-				storona=(celX>coordinates.X)?1:-1;
+				storona=(celX>coordinates.X)?E_Direction.RIGHT:E_Direction.LEFT;
 			}
 			
 			if (coordinates.Y>loc.spaceY*tileY-80) throu=false;
@@ -388,7 +390,7 @@ package fe.unit {
 					if (findCel(true) && celUnit) {
 						aiSpok=0;
 						aiState=5;
-						storona=(celX>coordinates.X)?1:-1;
+						storona=(celX>coordinates.X)?E_Direction.RIGHT:E_Direction.LEFT;
 						aiTCh = int(Math.random()  * 30) + 20;
 						t_port = int(Math.random() * 90  + 150);
 					}

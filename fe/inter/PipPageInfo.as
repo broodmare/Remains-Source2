@@ -13,6 +13,7 @@ package fe.inter {
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
 	import fe.weapon.Weapon;
+	import fe.unit.enums.E_Resistances;
 
 	import fe.stubs.visPipQuestItem;
 	import fe.stubs.visPipInfo;
@@ -124,7 +125,7 @@ package fe.inter {
 				}
 				else {
 					vis.emptytext.text = "";
-					map.bitmapData = World.w.land.drawMap();
+					map.bitmapData = World.w.land.minimap.drawLevel();
 					setMapSize();
 					visMap.visible = true;
 				}
@@ -530,10 +531,10 @@ package fe.inter {
 						s+=LanguageManager.reference.localText("pip", 'dam_melee')+': ';
 						
 						if (v_tipdam) {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_tipdam)));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_tipdam, E_Resistances.DAM_PIERCE)));
 						}
 						else {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.DAM_BLUNT));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", E_Resistances.DAM_BLUNT));
 						}
 						
 						s+=' ('+textAsColor('yellow', v_damage)+')\n'
@@ -543,10 +544,10 @@ package fe.inter {
 						s+=LanguageManager.reference.localText("pip", 'dam_shoot')+': ';
 						
 						if (v_stipdam) {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_stipdam)));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(v_stipdam, E_Resistances.DAM_PIERCE)));
 						}
 						else {
-							s+=textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.DAM_PIERCE));
+							s+=textAsColor('blue', LanguageManager.reference.localText("pip", E_Resistances.DAM_PIERCE));
 						}
 						
 						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
@@ -622,7 +623,7 @@ package fe.inter {
 		}
 		
 		private function vulner(n:int, val:Number):String {
-			return textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(n)))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
+			return textAsColor('blue', LanguageManager.reference.localText("pip", Resistances.parseDamageType(n, E_Resistances.DAM_PIERCE)))+': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
 		}
 		
 		override protected function itemClick(event:MouseEvent):void {
@@ -721,8 +722,8 @@ package fe.inter {
 			visMap.vmap.x = tx + cx;
 			visMap.vmap.y = ty + cy;
 
-			plTag.x = World.w.land.ggX / tileX * mapScale;
-			plTag.y = World.w.land.ggY / tileY * mapScale;
+			plTag.x = World.w.land.minimap.playerX / tileX * mapScale;
+			plTag.y = World.w.land.minimap.playerY / tileY * mapScale;
 
 			ms = mapScale;
 		}

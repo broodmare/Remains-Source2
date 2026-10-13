@@ -1,6 +1,11 @@
 package fe.loc {
 
-	import fe.*;
+	import fe.XMLDataGrabber;
+	import fe.Res;
+	import fe.Snd;
+	import fe.ItemManager;
+	import fe.VendorManager;
+	import fe.World;
 	import fe.serv.Vendor;
 	import fe.serv.Script;
 	import fe.serv.Npc;

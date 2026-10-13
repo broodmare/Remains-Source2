@@ -6,8 +6,9 @@ package fe.loc {
 	import fe.entities.Obj;
 	import fe.unit.Unit;
 	import fe.loc.tile.Tile;
+	import fe.enums.E_Direction;
 
-	// Holds a reference to a location and renders a minimap of it
+	// Pip-Buck map of a level, stitched together from rooms
 	public class Minimap {
 
 		private static const COLOR_EMPTY:uint		= 0x003323;
@@ -26,63 +27,72 @@ package fe.loc {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		private var location:Location;
+		private var level:Land;
+		private var bitmap:BitmapData;		// One pixel per tile, covering every room slot in the level
 
-		public function Minimap(location:Location) {
-			this.location = location;
-		}
+		public var playerX:Number = 0;		// Player position in level pixels, for the Pip-Boy player marker
+		public var playerY:Number = 0;
 
-		private function drawMapObj(map:BitmapData, obj:Obj, color:uint):void {
+		private function drawObj(room:Location, obj:Obj, color:uint):void {
 			var worldCellsX:int = World.cellsX;
 			var worldCellsY:int = World.cellsY;
+			var i:int;
+			var j:int;
 
-			var startXIndex:int = (location.landX - location.land.minLocX) * worldCellsX;
-			var startYIndex:int = (location.landY - location.land.minLocY) * worldCellsY;
+			var startXIndex:int = (room.landX - level.minLocX) * worldCellsX;
+			var startYIndex:int = (room.landY - level.minLocY) * worldCellsY;
 
 			var xStart:int	= startXIndex + int(obj.boundingBox.left   / tileX + 0.50);
 			var xEnd:int	= startXIndex + int(obj.boundingBox.right  / tileX - 0.50);
 			var yStart:int	= startYIndex + int(obj.boundingBox.top    / tileY + 0.40);
 			var yEnd:int	= startYIndex + int(obj.boundingBox.bottom / tileY - 0.50);
 
-			for (var i:int = xStart; i <= xEnd; i++) {
-				for (var j:int = yStart; j <= yEnd; j++) {
-					map.setPixel(i, j, color);
+			for (i = xStart; i <= xEnd; i++) {
+				for (j = yStart; j <= yEnd; j++) {
+					bitmap.setPixel(i, j, color);
 				}
 			}
 		}
 
-		// Render the minimap
-		public function drawMap(map:BitmapData):void {
+		// Paint one room's tiles and markers into its slot in the level bitmap
+		private function drawRoom(room:Location):void {
 			var vid:Number = 1.0;
 			var neighborVisi:Number;
-			var rightX:int = location.spaceX - 1;
-			var bottomY:int = location.spaceY - 1;
+			var rightX:int = room.spaceX - 1;
+			var bottomY:int = room.spaceY - 1;
+			var i:int;
+			var j:int;
+			var color:uint;
+			var tile:Tile;
+			var obj:Obj;
+			var act:Object;
+			var unit:Unit;
 
-			for (var i:int = 0; i < location.spaceX; i++) {
-				for (var j:int = 0; j < location.spaceY; j++) {
-					var color:uint = COLOR_EMPTY;
-					var t:Tile = location.getTile(i, j);
+			for (i = 0; i < room.spaceX; i++) {
+				for (j = 0; j < room.spaceY; j++) {
+					color = COLOR_EMPTY;
+					tile = room.getTile(i, j);
 
-					if (t.water) {
+					if (tile.water) {
 						color = COLOR_WATER;
 					}
 
-					if (t.platform || t.definition.slopeSide != 0) {
+					if (tile.platform || tile.definition.slopeSide != E_Direction.NEUTRAL) {
 						color = COLOR_SHELFSTAIR;
 					}
 
-					if (t.definition.ladderSide != 0) {
+					if (tile.definition.ladderSide != E_Direction.NEUTRAL) {
 						color = COLOR_STAIR;
 					}
 
-					if (t.collision == 1) {
-						if (t.indestructible) {
+					if (tile.collision == 1) {
+						if (tile.indestructible) {
 							color = COLOR_WHITE;
 						}
-						else if (t.door) {
+						else if (tile.door) {
 							color = COLOR_DOOR;
 						}
-						else if (t.hp < 100) {
+						else if (tile.hp < 100) {
 							color = COLOR_DAMAGED;
 						}
 						else {
@@ -90,21 +100,21 @@ package fe.loc {
 						}
 					}
 
-					if (t.collision == 2) {
+					if (tile.collision == 2) {
 						color = COLOR_DAMAGED;
 					}
 
 					if (!World.w.drawAllMap) {
-						vid = t.visibility;
+						vid = tile.visibility;
 
 						if (i < rightX) {
-							neighborVisi = location.getTile(i + 1, j).visibility;
+							neighborVisi = room.getTile(i + 1, j).visibility;
 							if (neighborVisi > vid) {
 								vid = neighborVisi;
 							}
 
 							if (j < bottomY) {
-								neighborVisi = location.getTile(i + 1, j + 1).visibility;
+								neighborVisi = room.getTile(i + 1, j + 1).visibility;
 								if (neighborVisi > vid) {
 									vid = neighborVisi;
 								}
@@ -112,7 +122,7 @@ package fe.loc {
 						}
 
 						if (j < bottomY) {
-							neighborVisi = location.getTile(i, j + 1).visibility;
+							neighborVisi = room.getTile(i, j + 1).visibility;
 							if (neighborVisi > vid) {
 								vid = neighborVisi;
 							}
@@ -120,27 +130,54 @@ package fe.loc {
 					}
 
 					color += int(vid * 255) * 0x1000000;
-					map.setPixel32((location.landX - location.land.minLocX) * World.cellsX + i, (location.landY - location.land.minLocY) * World.cellsY + j, color);
+					bitmap.setPixel32((room.landX - level.minLocX) * World.cellsX + i, (room.landY - level.minLocY) * World.cellsY + j, color);
 				}
 			}
 
-			for each (var obj:Obj in location.objs) {
+			for each (obj in room.objs) {
 				if (obj.inter && obj.inter.cont != "" && obj.inter.active) {
-					drawMapObj(map, obj, COLOR_CONTAINER);
+					drawObj(room, obj, COLOR_CONTAINER);
 				}
 
 				if (obj.inter && obj.inter.prob != "" && obj.inter.prob != null) {
-					drawMapObj(map, obj, COLOR_QUEST);
+					drawObj(room, obj, COLOR_QUEST);
 				}
 			}
 
-			for each (var act:Object in location.acts) {
-				if (act is CheckPoint) drawMapObj(map, act as Obj, COLOR_CHECKPOINT);
+			for each (act in room.acts) {
+				if (act is CheckPoint) drawObj(room, act as Obj, COLOR_CHECKPOINT);
 			}
 
-			for each (var unit:Unit in location.units) {
-				if (unit.npc) drawMapObj(map, unit, COLOR_NPC);
+			for each (unit in room.units) {
+				if (unit.npc) drawObj(room, unit, COLOR_NPC);
 			}
+		}
+
+		public function Minimap(level_:Land) {
+			level = level_;
+			bitmap = new BitmapData(World.cellsX * (level.maxLocX - level.minLocX), World.cellsY * (level.maxLocY - level.minLocY), true, 0);
+		}
+
+		// Redraw every visited room into the level bitmap and update the player position
+		public function drawLevel():BitmapData {
+			var i:int;
+			var j:int;
+			var room:Location;
+
+			bitmap.fillRect(bitmap.rect, 0x00000000);
+			for (i = level.minLocX; i < level.maxLocX; i++) {
+				for (j = level.minLocY; j < level.maxLocY; j++) {
+					room = level.locs[i][j][0];
+					if (room != null && (World.w.drawAllMap || room.visited)) {
+						drawRoom(room);
+					}
+				}
+			}
+
+			playerX = (level.loc.landX - level.minLocX) * World.cellsX * tileX + level.gg.coordinates.X;
+			playerY = (level.loc.landY - level.minLocY) * World.cellsY * tileY + level.gg.coordinates.Y - level.gg.boundingBox.halfHeight;
+
+			return bitmap;
 		}
 	}
 }

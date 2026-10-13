@@ -10,6 +10,7 @@ package fe.serv {
 	import fe.unit.Pers;
 	import fe.weapon.Weapon;
 	import fe.weapon.Ammo;
+	import fe.unit.enums.E_ArmorTypes;
 	
 	public class Item {
 
@@ -145,7 +146,7 @@ package fe.serv {
 				wtip = "w5";
 			}
 			else if (tip == L_ARMOR) {
-				wtip = "armor" + (isAmulet(id) ? Armor.TYPE_AMULET : Armor.TYPE_ARMOR);
+				wtip = "armor" + (isAmulet(id) ? E_ArmorTypes.AMULET : E_ArmorTypes.ARMOR);
 			}
 			else if (tip == L_AMMO) {
 				base = WeaponManager.reference.getAmmo(id).base;
@@ -217,7 +218,7 @@ package fe.serv {
 
 		private static function isAmulet(id:String):Boolean {
 			var armor:Armor = ArmorManager.reference.armor(id);
-			return armor != null && armor.tip == Armor.TYPE_AMULET;
+			return armor != null && armor.tip == E_ArmorTypes.AMULET;
 		}
 		
 		public function get data():Object {

@@ -9,6 +9,7 @@ package  fe.entities {
 	import fe.serv.Interact;
 	import fe.projectile.Bullet;
 	import fe.inter.Appear;
+	import fe.enums.E_Direction;
 	
 	public class Obj extends Entity {
 		
@@ -19,7 +20,7 @@ package  fe.entities {
 		public var nazv:String				= "";			// Name
 
 		public var prior:Number				= 1.00;			// Priority?
-		public var storona:int				= 1;			// Sprite Facing (Left/Right)
+		public var storona:int				= E_Direction.RIGHT;	// Sprite Facing (Left/Right)
 
 		public var rasst2:Number			= 0.00;			// Distance to player squared
 		public var massa:Number				= 1.00;			//
@@ -153,7 +154,7 @@ package  fe.entities {
 		
 		// [Check if a bullet hit the object]
 		public function udarBullet(bul:Bullet, sposob:int = 0):int {
-			return -1;
+			return Bullet.MISS;
 		}
 		
 		// Triggers when the (player? object?) leaves a location. 

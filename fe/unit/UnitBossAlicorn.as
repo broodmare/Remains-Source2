@@ -17,6 +17,8 @@ package fe.unit {
 	import fe.WeaponManager;
 	import fe.Snd;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	public class UnitBossAlicorn extends UnitPon {
 		
@@ -108,7 +110,7 @@ package fe.unit {
 			
 			blood = 0;
 			bloodEmit = Emitter.arr['pole'];
-			mat = 1;
+			mat = E_Material.METAL;
 			this.knocked = 0;
 			timerDie = 90;
 		}
@@ -293,7 +295,7 @@ package fe.unit {
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
 			var res:int=super.udarBullet(bul, sposob);
 			
-			if (res>0) curA=100;
+			if (res != Bullet.MISS && res != E_Material.NONE) curA=100;
 			
 			return res;
 		}
@@ -397,12 +399,12 @@ package fe.unit {
 			var dist:Number = (moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			//поведение при различных состояниях
 			if (aiState == 0) {
-				if (velocity.X > 0.5) storona = 1; 
-				if (velocity.X < -0.5) storona = -1;
-				walk=0;
+				if (velocity.X > 0.5) storona = E_Direction.RIGHT; 
+				if (velocity.X < -0.5) storona = E_Direction.LEFT;
+				walk=E_Direction.NEUTRAL;
 			}
 			if (aiState>0) {
-				aiNapr=(celX > coordinates.X)?1:-1;
+				aiNapr=(celX > coordinates.X)?E_Direction.RIGHT:E_Direction.LEFT;
 				if (storona == aiNapr) {
                     t_turn = 15;
                 }
@@ -484,7 +486,7 @@ package fe.unit {
 				bloodEmit.cast(loc, coordinates.X, coordinates.Y-50,{kol:100, rx:this.boundingBox.halfWidth, ry:this.boundingBox.halfHeight});
 				visDetails();
 				sost=1;
-				mat=0;
+				mat = E_Material.MEAT;
 				timerDie=90;
 				for (var i:int = 0; i < 6; i++) {
 					emit(i);
@@ -499,7 +501,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com=='off') {
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 				controlOn=false;
 			}
 			else if (com=='on') {

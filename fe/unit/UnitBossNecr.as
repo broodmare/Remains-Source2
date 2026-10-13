@@ -14,6 +14,7 @@ package fe.unit {
 	import fe.Snd;
 	import fe.WeaponManager;
 	import fe.World;
+	import fe.enums.E_Direction;
 	
 	public class UnitBossNecr extends UnitPon {
 
@@ -249,7 +250,7 @@ package fe.unit {
 			}
 
 			if (stay) {
-				if (aiNapr==-1) velocity.X *= 0.8;
+				if (aiNapr==E_Direction.LEFT) velocity.X *= 0.8;
 				else velocity.X += storona * accel * 2;
 			}
 		}
@@ -347,7 +348,7 @@ package fe.unit {
 							aiTCh=140;
 							newPart('necrblast3');
 							velocity.X *= 0.5;
-							walk=0;
+							walk=E_Direction.NEUTRAL;
 							resetProtect();
 						}
 						else {
@@ -377,12 +378,12 @@ package fe.unit {
 				
 				if (aiState==0) {
 					aiState=1;
-					if (isrnd(0.8)) aiNapr=(celDX>0)?-1:1;
-					else aiNapr=(celDX>0)?1:-1;
+					if (isrnd(0.8)) aiNapr=(celDX>0)?E_Direction.LEFT:E_Direction.RIGHT;
+					else aiNapr=(celDX>0)?E_Direction.RIGHT:E_Direction.LEFT;
 					storona=aiNapr;
 				}
 				else {
-					if (isrnd(0.5)) aiNapr=(celDX>0)?-1:1;
+					if (isrnd(0.5)) aiNapr=(celDX>0)?E_Direction.LEFT:E_Direction.RIGHT;
 					aiState=isrnd(0.7)?1:0;
 					storona=aiNapr;
 				}
@@ -415,8 +416,8 @@ package fe.unit {
 			
 			//поворот от игрока
 			if (aiTCh%10==1 && aiState==1 && celDY<80 && celDY>-80) {
-				if (celDX<0 && celDX>-400) aiNapr=storona=1;
-				if (celDX>0 && celDX<400) aiNapr=storona=-1;
+				if (celDX<0 && celDX>-400) aiNapr=storona=E_Direction.RIGHT;
+				if (celDX>0 && celDX<400) aiNapr=storona=E_Direction.LEFT;
 			}
 			
 			//скорость
@@ -429,20 +430,20 @@ package fe.unit {
 			//поведение при различных состояниях
 			if (aiState==0) {
 				if (velocity.X > 0.5) {
-					storona=1;
+					storona=E_Direction.RIGHT;
 				}
 				
 				if (velocity.X < -0.5) {
-					storona=-1;
+					storona=E_Direction.LEFT;
 				}
 
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 			}
 			else if (aiState==1) {
 				//определить, куда двигаться
 
 				if (levit) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) {
 							velocity.X -= levitaccel;
 						}
@@ -454,35 +455,35 @@ package fe.unit {
 					}
 				}
 				else if (stay || isPlav) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) {
 							velocity.X -= accel;
 						}
 
-						walk = -1;
+						walk = E_Direction.LEFT;
 					}
 					else {
 						if (velocity.X < maxSpeed) {
 							velocity.X += accel;
 						}
 
-						walk = 1;
+						walk = E_Direction.RIGHT;
 					}
 				}
 				else {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) {
 							velocity.X -= accel * 0.25;
 						}
 					}
-					else  if (aiNapr==1){
+					else  if (aiNapr==E_Direction.RIGHT){
 						if (velocity.X < maxSpeed) {
 							velocity.X += accel * 0.25;
 						}
 					}
 				}
 				
-				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0) && isrnd(0.8)) {
+				if (stay && (shX1>0.5 && aiNapr==E_Direction.LEFT || shX2>0.5 && aiNapr==E_Direction.RIGHT) && isrnd(0.8)) {
 					jmp=0.40;
 				}
 				
@@ -490,7 +491,7 @@ package fe.unit {
 					jmp=0.60;
 				}
 				
-				if (turnX!=0) {
+				if (turnX!=E_Direction.NEUTRAL) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
@@ -504,7 +505,7 @@ package fe.unit {
 						}
 					}
 					
-					turnX=turnY=0;
+					turnX=turnY=E_Direction.NEUTRAL;
 				}
 				
 				if (jmp>0) {
@@ -516,7 +517,7 @@ package fe.unit {
 			else if (aiState==2) {
 				celA=100;
 				velocity.X *= 0.7;
-				aiNapr=storona=(celDX>0)?1:-1;
+				aiNapr=storona=(celDX>0)?E_Direction.RIGHT:E_Direction.LEFT;
 				
 				if (aiTCh<120) {
 					currentWeapon.attack();
@@ -638,7 +639,7 @@ package fe.unit {
 			var ny:Number = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15 + (Math.random() - 0.5) * 30;
 			
 			if (n == 2) {
-				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? 1 : -1);
+				nx = loc.gg.coordinates.X + loc.gg.velocity.X * 15 + (otlozh - 8) * 20 * ((int(loc.gg.coordinates.X)%2 == 0)? E_Direction.RIGHT : E_Direction.LEFT);
 				ny = loc.gg.coordinates.Y - loc.gg.boundingBox.halfHeight + loc.gg.velocity.Y * 15;
 			}
 			
@@ -685,7 +686,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com=='off') {
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 				controlOn=false;
 			} else if (com=='on') {
 				controlOn=true;

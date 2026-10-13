@@ -3,27 +3,33 @@ package fe {
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
 	import flash.desktop.Clipboard;
 	import flash.utils.getTimer;
 	import flash.system.System;
 	
-	import fe.loc.*;
 	import fe.graph.Grafon;
 	import fe.graph.Emitter;
-	import fe.inter.*;
 	import fe.serv.LootGen;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.unit.Inventory;
-	import fe.unit.Favorites;
 	import fe.unit.Pers;
 	import fe.loc.tile.TileRegistry;
+	import fe.loc.Land;
+	import fe.loc.Location;
+	import fe.loc.LandLoader;
+	import fe.loc.Game;
+	import fe.inter.Appear;
+	import fe.inter.Camera;
+	import fe.inter.Consol;
+	import fe.inter.Ctr;
+	import fe.inter.GUI;
+	import fe.inter.PipBuck;
+	import fe.inter.Sats;
+	import fe.inter.Stand;
 	
 	public class World {
 

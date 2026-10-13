@@ -15,6 +15,7 @@ package fe.inter {
 	import fe.serv.Vendor;
 	import fe.weapon.Weapon;
 	import fe.loc.Quest;
+	import fe.unit.enums.E_ArmorTypes;
 
 	import fe.stubs.visPipBuyItem;
 
@@ -387,7 +388,7 @@ package fe.inter {
 				}
 				
 				for each (var a:Armor in inv.equipment.armors) {
-					if (a.hp < a.maxhp && a.tip != Armor.TYPE_AMULET) {
+					if (a.hp < a.maxhp && a.tip != E_ArmorTypes.AMULET) {
 						n = {
 							tip:		Item.L_ARMOR,
 							id:			a.id,

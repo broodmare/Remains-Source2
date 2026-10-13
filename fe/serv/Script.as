@@ -6,6 +6,7 @@ package fe.serv {
 	import fe.loc.Land;
 	import fe.unit.Unit;
 	import fe.unit.Armor;
+	import fe.enums.E_Direction;
 	
 	public class Script {
 
@@ -351,10 +352,10 @@ package fe.serv {
 
 					case "turn":
 						if (obj.val > 0) {
-							World.w.gg.storona  = 1;
+							World.w.gg.storona  = E_Direction.RIGHT;
 						}
 						else {
-							World.w.gg.storona = -1;
+							World.w.gg.storona = E_Direction.LEFT;
 						}
 						
 						World.w.gg.velocity.X += World.w.gg.storona * 3;

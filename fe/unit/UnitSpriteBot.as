@@ -5,6 +5,8 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.WeaponManager;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 
 	public class UnitSpriteBot extends Unit {
 
@@ -28,7 +30,7 @@ package fe.unit {
 			walkSpeed = maxSpeed;
 			runSpeed = maxSpeed * 1.50;
 			isFly = true;
-			mat = 1;
+			mat = E_Material.METAL;
 			acidDey = 1;
 			elast = 0.80;
 
@@ -121,7 +123,7 @@ package fe.unit {
 					maxSpeed = walkSpeed * (Math.random() + 0.5);
 					aiRasst = 0;
 					aiTCh = int(Math.random()*150)+30;
-					storona = (velocity.X > 0) ? 1 : -1;
+					storona = (velocity.X > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 					setCel(null, coordinates.X + velocity.X * 10, coordinates.Y + velocity.Y * 10);
 				}
 				
@@ -139,27 +141,27 @@ package fe.unit {
 				velocity.Y = aiDy * maxSpeed;
 				
 				if (celUnit) {
-					storona = (celDX > 0) ? 1 : -1;
+					storona = (celDX > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 				}
 				else {
-					storona = (velocity.X > 0) ? 1 : -1;
+					storona = (velocity.X > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 				}
 			}
 			// [goal search]
 			if (World.w.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					zlo();
-					storona = (celDX > 0) ? 1 : -1;
+					storona = (celDX > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 				}
 			}
 	
-			if (turnX) {
+			if (turnX != E_Direction.NEUTRAL) {
 				storona = turnX;
-				turnX = 0;
+				turnX = E_Direction.NEUTRAL;
 			}
 			
-			if (turnY) {
-				turnY = 0;
+			if (turnY != E_Direction.NEUTRAL) {
+				turnY = E_Direction.NEUTRAL;
 			}
 			
 			// [attack]

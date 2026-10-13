@@ -10,6 +10,7 @@ package fe.unit {
 	import fe.WeaponManager;
 	import fe.LanguageManager;
 	import fe.World;
+	import fe.enums.E_Direction;
 	
 	public class UnitNPC extends UnitPon {
 		
@@ -263,10 +264,10 @@ package fe.unit {
 
 			if (!noTurn) {
 				if (coordinates.X > World.w.gg.coordinates.X) {
-					storona = -1;
+					storona = E_Direction.LEFT;
 				}
 				else {
-					storona = 1;
+					storona = E_Direction.RIGHT;
 				}
 			}
 			
@@ -356,8 +357,8 @@ package fe.unit {
 			}
 			else if (q.com=="turn") {
 				if (q.val=="0") storona=-storona;
-				else if (q.val=="-1") storona=-1;
-				else storona=1;
+				else if (q.val=="-1") storona=E_Direction.LEFT;
+				else storona=E_Direction.RIGHT;
 				setVisPos();
 			}
 			else if (q.com=="mater") {
@@ -469,8 +470,8 @@ package fe.unit {
 				if (celUnit && celUnit.sost==1 && celUnit.hp>0) {
 					setCel(celUnit);
 					
-					if (celDX>0 && storona==-1) storona=1;
-					if (celDX<0 && storona==1) storona=-1;
+					if (celDX>0 && storona==E_Direction.LEFT) storona=E_Direction.RIGHT;
+					if (celDX<0 && storona==E_Direction.RIGHT) storona=E_Direction.LEFT;
 					if (currentWeapon) currentWeapon.attack();
 					if (dopWeapon) dopWeapon.attack();
 					
@@ -488,9 +489,9 @@ package fe.unit {
 					if (isFly && velocity.Y < 5) velocity.Y += 1;
 				}
 				
-				if (turnY<0) {
+				if (turnY==E_Direction.UP) {
 					isFly=false;
-					turnY=0;
+					turnY=E_Direction.NEUTRAL;
 					aiTip="";
 					targNPC.landing();
 					inter.active=true;

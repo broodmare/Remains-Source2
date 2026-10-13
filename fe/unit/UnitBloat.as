@@ -6,6 +6,7 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.World;
 	import fe.XMLDataGrabber;
+	import fe.enums.E_Direction;
 	
 	public class UnitBloat extends Unit {
 		
@@ -66,7 +67,7 @@ package fe.unit {
 			plaKap = true;
 			aiDx = isrnd() ? 0.70 : -0.70;
 			aiDy = isrnd() ? 0.70 : -0.70;
-			storona = (aiDx > 0) ? 1 : -1;
+			storona = (aiDx > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 			currentWeapon = getXmlWeapon(ndif);
 			
 			if (currentWeapon) {
@@ -212,7 +213,7 @@ package fe.unit {
 						maxSpeed=walkSpeed;
 					}
 				
-					storona=(celDX>0)?1:-1;
+					storona=(celDX>0)?E_Direction.RIGHT:E_Direction.LEFT;
 				}
 				else {
 					if (isrnd(0.1)) {
@@ -220,7 +221,7 @@ package fe.unit {
 						aiDy=isrnd()?0.7:-0.7;
 					}
 					
-					storona=(aiDx>0)?1:-1;
+					storona=(aiDx>0)?E_Direction.RIGHT:E_Direction.LEFT;
 					aiState=0;
 					maxSpeed=sitSpeed
 				}
@@ -232,22 +233,22 @@ package fe.unit {
 			}
 
 			if (isPlav) {
-				turnY=-1;
+				turnY=E_Direction.UP;
 			}
 
 			if (levit) {
 				isGryz=false;
 			}
 	
-			if (turnX) {
+			if (turnX != E_Direction.NEUTRAL) {
 				storona=turnX;
 				aiDx=Math.abs(aiDx)*turnX;
-				turnX=0;
+				turnX=E_Direction.NEUTRAL;
 			}
 
-			if (turnY) {
+			if (turnY != E_Direction.NEUTRAL) {
 				aiDy=Math.abs(aiDy)*turnY;
-				turnY=0;
+				turnY=E_Direction.NEUTRAL;
 			}
 
 			velocity.X += aiDx * accel + Math.random() * 2 - 1;

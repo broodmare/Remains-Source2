@@ -6,6 +6,8 @@ package fe.unit.ai {
 	import fe.unit.attack.IAttack;
 	import fe.unit.motor.IMotor;
 	import fe.util.Calc;
+	import fe.unit.enums.E_AIState;
+	import fe.enums.E_Direction;
 
 	// Decides what an AI unit does each tick: stays calm, notices targets, searches for them, chases them, stops to attack
 	public class Brain {
@@ -32,7 +34,7 @@ package fe.unit.ai {
 		private var unseenLooks:int		= 0;		// Looks that found nothing, for pacing the drift of the searched-for point
 
 		private function isCalm():Boolean {
-			return owner.aiState == AIState.IDLE || owner.aiState == AIState.PATROL;
+			return owner.aiState == E_AIState.IDLE || owner.aiState == E_AIState.PATROL;
 		}
 
 		private function setState(state:int, timeMin:int, timeMax:int):void {
@@ -50,21 +52,21 @@ package fe.unit.ai {
 		private function decide():void {
 			var state:int;
 
-			if (owner.aiState == AIState.DASH_PREP) {
-				setState(AIState.DASH, DASH_TIME, DASH_TIME);
+			if (owner.aiState == E_AIState.DASH_PREP) {
+				setState(E_AIState.DASH, DASH_TIME, DASH_TIME);
 				return;
 			}
 
 			// The surprise wears off: a target still in sight is attacked, then the unit decides like any other time
-			if (owner.aiState == AIState.SURPRISED) {
+			if (owner.aiState == E_AIState.SURPRISED) {
 				if (owner.celUnit) {
 					owner.aiSpok = owner.maxSpok + definition.sightBonus;
 					owner.replic("attack");
 					owner.onSpotted();
-					owner.aiState = AIState.CHASE;
+					owner.aiState = E_AIState.CHASE;
 				}
 				else {
-					owner.aiState = AIState.PATROL;
+					owner.aiState = E_AIState.PATROL;
 				}
 			}
 
@@ -75,17 +77,17 @@ package fe.unit.ai {
 					owner.replic("vse");
 				}
 
-				state = (definition.stroll && Math.random() < 0.5) ? AIState.PATROL : AIState.IDLE;
+				state = (definition.stroll && Math.random() < 0.5) ? E_AIState.PATROL : E_AIState.IDLE;
 				owner.motor.turnTo(owner.aiNapr);
 				owner.onCalm();
 			}
 
 			if (owner.aiSpok > 0) {
-				state = AIState.SEARCH;
+				state = E_AIState.SEARCH;
 			}
 
 			if (owner.aiSpok >= owner.maxSpok) {
-				if (owner.aiState != AIState.CHASE && owner.aiState != AIState.HOLD) {
+				if (owner.aiState != E_AIState.CHASE && owner.aiState != E_AIState.HOLD) {
 					wakeAllies();
 				}
 
@@ -93,19 +95,19 @@ package fe.unit.ai {
 			}
 
 			switch (state) {
-				case AIState.IDLE: {
+				case E_AIState.IDLE: {
 					setState(state, definition.idleTimeMin, definition.idleTimeMax);
 					break;
 				}
-				case AIState.PATROL: {
+				case E_AIState.PATROL: {
 					setState(state, definition.patrolTimeMin, definition.patrolTimeMax);
 					break;
 				}
-				case AIState.HOLD: {
+				case E_AIState.HOLD: {
 					setState(state, definition.holdTimeMin, definition.holdTimeMax);
 					break;
 				}
-				case AIState.DASH_PREP: {
+				case E_AIState.DASH_PREP: {
 					setState(state, DASH_PREP_TIME, DASH_PREP_TIME);
 					break;
 				}
@@ -118,21 +120,21 @@ package fe.unit.ai {
 
 		// How a fully alert unit goes after its target: chase it, stand and shoot, or get ready to dash
 		private function pickAttack():int {
-			var state:int = AIState.CHASE;
+			var state:int = E_AIState.CHASE;
 			var range:Number = definition.holdRange;
 			var distance2:Number = owner.celDX * owner.celDX + owner.celDY * owner.celDY;
 			var isFreshSighting:Boolean = owner.aiSpok >= owner.maxSpok + definition.holdAlertMargin;
 
 			if (isFreshSighting && distance2 < range * range && Math.random() < definition.holdChance) {
-				state = AIState.HOLD;
+				state = E_AIState.HOLD;
 			}
 
 			if (owner.celUnit && Math.random() < definition.dashChance) {
-				state = AIState.DASH_PREP;
+				state = E_AIState.DASH_PREP;
 			}
 
 			if (!definition.moves) {
-				state = AIState.HOLD;
+				state = E_AIState.HOLD;
 			}
 
 			return state;
@@ -173,7 +175,7 @@ package fe.unit.ai {
 			owner.onSighting();
 
 			if (isCalm()) {
-				setState(AIState.SURPRISED, definition.surpriseTimeMin, definition.surpriseTimeMax);
+				setState(E_AIState.SURPRISED, definition.surpriseTimeMin, definition.surpriseTimeMax);
 				return;
 			}
 
@@ -181,8 +183,8 @@ package fe.unit.ai {
 			owner.aiSpok = owner.maxSpok + definition.sightBonus;
 			owner.onSpotted();
 
-			if (definition.chasesOnSight && owner.aiState == AIState.SEARCH) {
-				setState(AIState.CHASE, definition.alertTimeMin, definition.alertTimeMax);
+			if (definition.chasesOnSight && owner.aiState == E_AIState.SEARCH) {
+				setState(E_AIState.CHASE, definition.alertTimeMin, definition.alertTimeMax);
 			}
 		}
 
@@ -227,7 +229,7 @@ package fe.unit.ai {
 		// Work out where the target point is relative to the unit, and how to move vertically toward it
 		private function aim():void {
 			var state:int = owner.aiState;
-			var isChasing:Boolean = state == AIState.SEARCH || state == AIState.CHASE;
+			var isChasing:Boolean = state == E_AIState.SEARCH || state == E_AIState.CHASE;
 			var mayDrop:Boolean = definition.moves && (isChasing || definition.dropsInAnyState);
 
 			owner.celDX = owner.celX - owner.coordinates.X;
@@ -236,13 +238,13 @@ package fe.unit.ai {
 			}
 
 			if (owner.celDY > LEVEL_SLACK) {
-				owner.aiVNapr = 1;
+				owner.aiVNapr = E_Direction.DOWN;
 			}
 			else if (owner.celDY < -LEVEL_SLACK) {
-				owner.aiVNapr = -1;
+				owner.aiVNapr = E_Direction.UP;
 			}
 			else {
-				owner.aiVNapr = 0;
+				owner.aiVNapr = E_Direction.NEUTRAL;
 			}
 
 			owner.porog = (owner.celDY > STEP_UP_OFF) ? 0 : STEP_UP;
@@ -254,11 +256,11 @@ package fe.unit.ai {
 			if (owner.aiTCh % definition.reaimInterval != 1 || Math.random() >= definition.reaimChance) { return; }
 
 			if (owner.celDX > definition.reaimDistance) {
-				owner.aiNapr = 1;
+				owner.aiNapr = E_Direction.RIGHT;
 			}
 
 			if (owner.celDX < -definition.reaimDistance) {
-				owner.aiNapr = -1;
+				owner.aiNapr = E_Direction.LEFT;
 			}
 		}
 
@@ -270,17 +272,17 @@ package fe.unit.ai {
 
 			if (definition.closeHoldChance <= 0) { return; }
 
-			if (state == AIState.HOLD && definition.closeHoldReleases && !inReach) {
-				owner.aiState = AIState.CHASE;
+			if (state == E_AIState.HOLD && definition.closeHoldReleases && !inReach) {
+				owner.aiState = E_AIState.CHASE;
 				return;
 			}
 
-			if (!(state == AIState.CHASE || state == AIState.SEARCH && definition.closeHoldSearching)) { return; }
+			if (!(state == E_AIState.CHASE || state == E_AIState.SEARCH && definition.closeHoldSearching)) { return; }
 			if (!owner.celUnit || !inReach) { return; }
 			if (owner.celDY < -definition.closeRangeAbove || owner.celDY > definition.closeRangeBelow) { return; }
 
 			if (Math.random() < definition.closeHoldChance) {
-				setState(AIState.HOLD, definition.closeHoldTimeMin, definition.closeHoldTimeMax);
+				setState(E_AIState.HOLD, definition.closeHoldTimeMin, definition.closeHoldTimeMax);
 			}
 		}
 
@@ -294,7 +296,7 @@ package fe.unit.ai {
 				owner.motor.leapBack();
 			}
 
-			owner.aiState = AIState.CHASE;
+			owner.aiState = E_AIState.CHASE;
 		}
 
 		private function isRunning():Boolean {
@@ -303,19 +305,19 @@ package fe.unit.ai {
 
 		private function speedFor(state:int):Number {
 			switch (state) {
-				case AIState.SEARCH: {
+				case E_AIState.SEARCH: {
 					return isRunning() ? owner.runSpeed * definition.searchSpeed : owner.walkSpeed;
 				}
-				case AIState.CHASE: {
+				case E_AIState.CHASE: {
 					return isRunning() ? owner.runSpeed * definition.chaseSpeed : owner.walkSpeed;
 				}
-				case AIState.FLEE: {
+				case E_AIState.FLEE: {
 					return owner.runSpeed * definition.fleeSpeed;
 				}
-				case AIState.DASH: {
+				case E_AIState.DASH: {
 					return owner.runSpeed * definition.dashSpeed;
 				}
-				case AIState.DASH_PREP: {
+				case E_AIState.DASH_PREP: {
 					return 0.0;
 				}
 				default: {
@@ -345,40 +347,40 @@ package fe.unit.ai {
 			holdIfClose();
 
 			switch (owner.aiState) {
-				case AIState.IDLE: {
+				case E_AIState.IDLE: {
 					relax();
 					motor.idle();
 					break;
 				}
-				case AIState.PATROL: {
+				case E_AIState.PATROL: {
 					relax();
 					motor.patrol();
 					break;
 				}
-				case AIState.SEARCH:
-				case AIState.CHASE: {
+				case E_AIState.SEARCH:
+				case E_AIState.CHASE: {
 					lookBehind(true);
 					reaim();
 					motor.chase();
 					break;
 				}
-				case AIState.FLEE: {
+				case E_AIState.FLEE: {
 					lookBehind(true);
 					motor.rush();
 					break;
 				}
-				case AIState.DASH: {
+				case E_AIState.DASH: {
 					lookBehind(true);
 					reaim();
 					motor.rush();
 					break;
 				}
-				case AIState.HOLD: {
+				case E_AIState.HOLD: {
 					motor.hold();
 					backOffIfCrowded();
 					break;
 				}
-				case AIState.SURPRISED: {
+				case E_AIState.SURPRISED: {
 					if (definition.turnsWhenSurprised) {
 						motor.hold();
 					}
@@ -397,7 +399,7 @@ package fe.unit.ai {
 				owner.replic("levit");
 
 				if (isCalm()) {
-					owner.aiState = AIState.CHASE;
+					owner.aiState = E_AIState.CHASE;
 					owner.shok = Math.max(owner.shok, definition.levitWakeShock);
 					wakeAllies();
 				}
@@ -427,9 +429,9 @@ package fe.unit.ai {
 			}
 
 			if (owner.stun > 0 && definition.obeysStun) {
-				owner.aiState = AIState.IDLE;
+				owner.aiState = E_AIState.IDLE;
 				owner.aiTCh = STUN_RECHECK;
-				owner.walk = 0;
+				owner.walk = E_Direction.NEUTRAL;
 			}
 
 			owner.t_replic--;
@@ -451,7 +453,7 @@ package fe.unit.ai {
 				owner.motor.rethink();
 			}
 
-			if (World.w.enemyAct > 1 && owner.aiTCh % SENSE_INTERVAL == 1 && owner.aiState != AIState.FLEE) {
+			if (World.w.enemyAct > 1 && owner.aiTCh % SENSE_INTERVAL == 1 && owner.aiState != E_AIState.FLEE) {
 				sense();
 			}
 
@@ -465,8 +467,8 @@ package fe.unit.ai {
 				owner.vision = baseVision * definition.alertVision;
 			}
 
-			if (owner.isPlav && (owner.aiState == AIState.IDLE || !definition.chasesInWater)) {
-				owner.aiState = AIState.PATROL;
+			if (owner.isPlav && (owner.aiState == E_AIState.IDLE || !definition.chasesInWater)) {
+				owner.aiState = E_AIState.PATROL;
 			}
 
 			owner.maxSpeed = speedFor(owner.aiState);
@@ -485,7 +487,7 @@ package fe.unit.ai {
 			if (!definition.wakesOnAlarm || owner.sost != 1 || !isCalm()) { return; }
 
 			owner.aiSpok = owner.maxSpok + definition.sightBonus;
-			owner.aiState = AIState.CHASE;
+			owner.aiState = E_AIState.CHASE;
 			owner.shok = Calc.intBetween(definition.alarmShockMin, definition.alarmShockMax);
 
 			if (definition.alarmWakeRadius > 0) {
@@ -495,7 +497,7 @@ package fe.unit.ai {
 
 		// Calm down completely, as when a level resets
 		public function reset():void {
-			owner.aiState = AIState.IDLE;
+			owner.aiState = E_AIState.IDLE;
 			owner.aiSpok = 0;
 		}
 	}

@@ -1,6 +1,8 @@
 package fe.unit {
 
 	import fe.World;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 
 	public class UnitNecros extends Unit {
 		
@@ -26,7 +28,7 @@ package fe.unit {
 			mater=false;
 			ctrans=false;
 			grav=0;
-			vulnerabilities.setResist(Resistances.DAM_DEATH, 0);
+			vulnerabilities.setResist(E_Resistances.DAM_DEATH, 0);
 		}
 
 		public override function forces():void {
@@ -86,7 +88,7 @@ package fe.unit {
 				
 				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
 					if (aiTip!='stay' && isrnd()) {
-						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? 1:-1);
+						celX = coordinates.X + (Math.random() * 300 + 400) * (isrnd()? E_Direction.RIGHT:E_Direction.LEFT);
 						
 						if (celX < 0) {
 							celX = 200;
@@ -118,7 +120,7 @@ package fe.unit {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
-					storona = (celX > coordinates.X)?1:-1;
+					storona = (celX > coordinates.X)?E_Direction.RIGHT:E_Direction.LEFT;
 				}
 				else {
 					if (aiSpok>0) {

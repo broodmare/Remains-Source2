@@ -1,9 +1,9 @@
 package fe.unit.attack {
 
 	import fe.unit.Unit;
-	import fe.unit.ai.AIState;
 	import fe.util.Calc;
 	import fe.weapon.Weapon;
+	import fe.unit.enums.E_AIState;
 
 	// Fires a second weapon every so often while the unit fights, and with no target in sight a blind weapon if it has one
 	public class SideWeaponAttack implements IAttack {
@@ -17,7 +17,7 @@ package fe.unit.attack {
 		private function isActive():Boolean {
 			var state:int = owner.aiState;
 
-			return state == AIState.CHASE || state == AIState.HOLD || state == AIState.FLEE || state == AIState.DASH;
+			return state == E_AIState.CHASE || state == E_AIState.HOLD || state == E_AIState.FLEE || state == E_AIState.DASH;
 		}
 
 		public function SideWeaponAttack(owner_:Unit, definition_:SideWeaponAttack_Definition, weapon_:Weapon, blindWeapon_:Weapon) {

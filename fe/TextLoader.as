@@ -7,7 +7,6 @@ package fe {
 	import flash.net.URLRequest; 
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.errors.IOError;
 	import flash.events.IOErrorEvent;
 
     public class TextLoader extends EventDispatcher {
@@ -19,10 +18,6 @@ package fe {
 		private var loader:URLLoader;	// Built-in Flash loader 
 
 		public static const TEXT_LOADED:String = "text_Loaded";
-
-		public function TextLoader() {
-
-		}
 
 		// Asynchronous loading (skips while loading)
 		public function load(url:String):void {

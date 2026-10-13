@@ -1,11 +1,13 @@
 package fe.loc {
 
-	import fe.*;
+	import fe.Res;
+	import fe.World;
 	import fe.serv.Script;
 	import fe.graph.Emitter;
 	import fe.unit.Unit;
 	import fe.entities.Obj;
 	import fe.loc.tile.Tile;
+	import fe.graph.enums.E_Decal;
 	
 	//[Active area]
 	public class Area extends Obj {
@@ -183,7 +185,7 @@ package fe.loc {
 			if (com=='on') enabled=true;
 			if (lift!=1) setLift();
 			if (vis) vis.alpha=enabled?1:0.1;
-			if (com=='dam') damTiles(int(val));
+			if (com=='dam') damTiles(int(val), E_Decal.FIRE);
 		}
 		
 		public override function step():void {
@@ -287,7 +289,7 @@ package fe.loc {
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11):void {
+		public function damTiles(destroy:int, tipDam:int):void {
 			for (var i:int = bx; i < bx + rx; i++) {
 				for (var j:int = by - ry + 1; j <= by; j++) {
 					loc.hitTile(loc.getTile(i, j), destroy, (i + 0.5) * tileY, (j + 0.5) * tileY, tipDam);

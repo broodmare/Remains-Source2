@@ -23,6 +23,7 @@ package fe.inter {
 	import fe.loc.LandAct;
 	import fe.unit.UnitPet;
 	import fe.unit.Effect;
+	import fe.unit.enums.E_ArmorTypes;
 	
 	public class PipPage {
 		
@@ -1044,7 +1045,7 @@ package fe.inter {
 				if (craft > 0 || a == null) {
 					setIco();
 				}
-				else if (a.tip == Armor.TYPE_AMULET) {
+				else if (a.tip == E_ArmorTypes.AMULET) {
 					setIco(3, id);
 				}
 				else {

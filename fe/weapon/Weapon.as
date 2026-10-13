@@ -15,6 +15,9 @@ package fe.weapon {
 	import fe.projectile.Bullet;
 	import fe.projectile.Trasser;
 	import fe.projectile.SmartBullet;
+	import fe.unit.enums.E_Resistances;
+	import fe.graph.enums.E_Decal;
+	import fe.enums.E_Direction;
 
 	public class Weapon extends Obj {
 
@@ -124,7 +127,7 @@ package fe.weapon {
 		public var destroy:Number		= 10.00;	// [Block damage]
 		public var damage:Number		= 0.00;		// [Damage to units]
 		public var damageExpl:Number	= 0.00;		// [Area damage]
-		public var tipDamage:String		= Resistances.DAM_PIERCE;	// [Damage type]
+		public var tipDamage:String		= E_Resistances.DAM_PIERCE;	// [Damage type]
 		public var pier:Number			= 0.00;		// [armor-piercing]
 		public var critCh:Number		= 0.10;		// [crit chance]
 		public var critM:Number			= 0.00;		// [extra crit]
@@ -159,7 +162,7 @@ package fe.weapon {
 
 		public var noise:int			= 0;		// [sound of a gunshot]
 		public var shine:int			= 500;		// [flash from a shot]
-		public var tipDecal:int			= 0;		// [type of traces left (Bullet hole/scorch marks)]
+		public var tipDecal:int			= E_Decal.NONE;		// [type of traces left (Bullet hole/scorch marks)]
 		public var bulAnim:Boolean		= false;	// [animate the projectile]
 		public var spring:int			= 1;		// [stretching]
 		public var flame:int			= 0;		// [the projectile behaves like fire]
@@ -260,10 +263,10 @@ package fe.weapon {
 			
 			// [The player gets a crit damage bonus with bullets and a penalty with plasma]
 			if (firstOwner && own.player) {
-				if (tipDamage == Resistances.DAM_PIERCE) {
+				if (tipDamage == E_Resistances.DAM_PIERCE) {
 					critDamPlus += 0.20;
 				}
-				else if (tipDamage == Resistances.DAM_PLASMA) {
+				else if (tipDamage == E_Resistances.DAM_PLASMA) {
 					critDamPlus -= 0.20;
 				}
 			}
@@ -395,7 +398,7 @@ package fe.weapon {
 			}
 
 			// Determine if facing right or left
-			storona = (coordinates.X < owner.celX) ? 1 : -1;
+			storona = (coordinates.X < owner.celX) ? E_Direction.RIGHT : E_Direction.LEFT;
 
 			// Update weapon coordinates and calculate rotation
 			if (findCel) {
@@ -648,7 +651,7 @@ package fe.weapon {
 		
 		protected function weaponAttack():void {
 			if (jammed) {
-				if (tipDamage == Resistances.DAM_LASER || tipDamage == Resistances.DAM_PLASMA || tipDamage == Resistances.DAM_EMP || tipDamage == Resistances.DAM_ELECTRIC) {
+				if (tipDamage == E_Resistances.DAM_LASER || tipDamage == E_Resistances.DAM_PLASMA || tipDamage == E_Resistances.DAM_EMP || tipDamage == E_Resistances.DAM_ELECTRIC) {
 					World.w.gui.infoText("weaponCircuit", null, null, false);
 				}
 				else {
@@ -984,7 +987,7 @@ package fe.weapon {
 			if (am.damageType != "") {
 				bul.tipDamage = am.damageType;
 				
-				if (am.damageType == Resistances.DAM_EMP) {
+				if (am.damageType == E_Resistances.DAM_EMP) {
 					bul.destroy = 0;
 					bul.otbros = 0;
 				}

@@ -13,6 +13,7 @@ package fe.inter {
 	import fe.unit.Armor;
 	import fe.weapon.Weapon;
 	import fe.serv.Item;
+	import fe.unit.enums.E_ArmorTypes;
 	
 	public class Stand {
 		
@@ -256,7 +257,7 @@ package fe.inter {
 			for each(var arm in ArmorManager.reference.armors) {
 
 				// Armor goes on the armor page and amulets on the amulet page
-				if (n == 6 && arm.tip != Armor.TYPE_ARMOR || n == 7 && arm.tip != Armor.TYPE_AMULET) {
+				if (n == 6 && arm.tip != E_ArmorTypes.ARMOR || n == 7 && arm.tip != E_ArmorTypes.AMULET) {
 					continue;
 				}
 

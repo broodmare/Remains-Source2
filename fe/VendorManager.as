@@ -1,6 +1,5 @@
 package fe {
 
-	import fe.util.Calc;
 	import fe.serv.Vendor;
 	import fe.serv.Item;
 	import fe.serv.LootGen;

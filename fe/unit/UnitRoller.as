@@ -4,7 +4,6 @@ package fe.unit {
 
 	import fe.SymbolFactory;
 	import fe.World;
-	import fe.unit.ai.AIState;
 	import fe.unit.ai.Brain;
 	import fe.unit.ai.Brain_Definition;
 	import fe.unit.attack.BodyAttack;
@@ -12,6 +11,11 @@ package fe.unit {
 	import fe.unit.motor.WalkMotor;
 	import fe.unit.motor.WalkMotor_Definition;
 	import fe.util.Calc;
+	import fe.enums.E_Material;
+	import fe.unit.enums.E_AIState;
+	import fe.unit.enums.E_Resistances;
+	import fe.graph.enums.E_Decal;
+	import fe.enums.E_Direction;
 
 	// A rolling robot ball that bounces at its target; the plasma variant (2) explodes when destroyed
 	public class UnitRoller extends Unit {
@@ -51,11 +55,11 @@ package fe.unit {
 			walkSpeed = maxSpeed;
 			sitSpeed = maxSpeed;
 			runSpeed = maxSpeed;
-			mat = 1;
+			mat = E_Material.METAL;
 			acidDey = 1.0;
 			jumpBall = 0.5;
 			elast = 0.8;
-			storona = 1;
+			storona = E_Direction.RIGHT;
 
 			brainDefinition.stroll = false;
 			brainDefinition.alertTimeMin = 40;
@@ -94,7 +98,7 @@ package fe.unit {
 
 		public override function dropLoot():void {
 			if (tr == 2) {
-				explosion(dam * 4.0, Resistances.DAM_PLASMA, 150.0, 0, 20.0, 30.0, 9);
+				explosion(dam * 4.0, E_Resistances.DAM_PLASMA, 150.0, 0, 20.0, 30.0, E_Decal.EXPLOSION);
 			}
 
 			super.dropLoot();
@@ -102,7 +106,7 @@ package fe.unit {
 
 		// Spin with the roll, and show the alert frame while the player is close
 		public override function animate():void {
-			if (aiState == AIState.IDLE) {
+			if (aiState == E_AIState.IDLE) {
 				if (vis.osn.currentFrame != 1) {
 					vis.osn.gotoAndStop(1);
 				}
@@ -114,11 +118,11 @@ package fe.unit {
 				vis.osn.gotoAndStop(1);
 			}
 
-			if (stay || turnY == -1) {
+			if (stay || turnY == E_Direction.UP) {
 				rollSpin = velocity.X * SPIN;
 			}
 
-			turnY = 0;
+			turnY = E_Direction.NEUTRAL;
 			vis.osn.rotation += rollSpin;
 		}
 	}

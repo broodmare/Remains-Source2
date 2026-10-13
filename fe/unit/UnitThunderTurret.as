@@ -5,8 +5,8 @@ package  fe.unit {
 	import fe.SymbolFactory;
 	import fe.World;
 	import fe.WeaponManager;
-	import fe.weapon.Weapon;
-	import fe.entities.BoundingBox;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 	
 	public class UnitThunderTurret extends Unit {
 
@@ -32,7 +32,7 @@ package  fe.unit {
 			vis.osn.pole.visible = false;
 			
 			mater = false;
-			mat = 1;
+			mat = E_Material.METAL;
 			fixed = true;
 			nazv = "";
 			friendlyExpl = 0;
@@ -74,7 +74,7 @@ package  fe.unit {
 				
 				currentWeapon.reloadMult = 1 / head.reloadDiv;
 				setCel(World.w.gg);
-				storona = (celDX > 0) ? 1 : -1;
+				storona = (celDX > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 				currentWeapon.attack();
 				
 				if (isShoot) {

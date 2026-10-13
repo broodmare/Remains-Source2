@@ -12,6 +12,9 @@ package fe.unit {
 	import fe.WeaponManager;
 	import fe.World;
 	import fe.XMLDataGrabber;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
+	import fe.graph.enums.E_Decal;
 
 	public class UnitZombie extends UnitPon {
 
@@ -427,7 +430,7 @@ package fe.unit {
 				shok=15;
 			}
 			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
+				aiState=0; aiTCh=3; walk=E_Direction.NEUTRAL;
 			}
 
 			var jmp:Number=0;
@@ -501,9 +504,9 @@ package fe.unit {
 			//направление
 			celDX=celX - coordinates.X;
 			celDY=celY - coordinates.Y + boundingBox.height;
-			if (celDY>40) aiVNapr=1;		//вниз
-			else if(celDY<-40) aiVNapr=-1;	//прыжок
-			else aiVNapr=0;
+			if (celDY>40) aiVNapr=E_Direction.DOWN;		//вниз
+			else if(celDY<-40) aiVNapr=E_Direction.UP;	//прыжок
+			else aiVNapr=E_Direction.NEUTRAL;
 			porog=10;
 			if (celDY>70) porog=0;
 
@@ -542,65 +545,65 @@ package fe.unit {
 			
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (stay && shX1>0.5 && aiNapr<0) turnX=1;
-				if (stay && shX2>0.5 && aiNapr>0) turnX=-1;
+				if (stay && shX1>0.5 && aiNapr==E_Direction.LEFT) turnX=E_Direction.RIGHT;
+				if (stay && shX2>0.5 && aiNapr==E_Direction.RIGHT) turnX=E_Direction.LEFT;
 			}
 			else if (aiState==4) {
-				if (celDX>40) aiNapr=storona=1;
-				if (celDX<-40) aiNapr=storona=-1;
+				if (celDX>40) aiNapr=storona=E_Direction.RIGHT;
+				if (celDX<-40) aiNapr=storona=E_Direction.LEFT;
 			}
 			else if (aiState==1) {
-				isLaz=0;
+				isLaz=E_Direction.NEUTRAL;
 				//бегаем туда-сюда
-				if (aiNapr==-1) {
+				if (aiNapr==E_Direction.LEFT) {
 					if (velocity.X > -maxSpeed) velocity.X -= accel;
 				}
 				else {
 					if (velocity.X < maxSpeed) velocity.X += accel;
 				}
 				//поворачиваем, если впереди некуда бежать
-				if (stay && shX1>0.25 && aiNapr<0) {
+				if (stay && shX1>0.25 && aiNapr==E_Direction.LEFT) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
-						else turnX=1;
+						else turnX=E_Direction.RIGHT;
 					}
-					else turnX=1;
+					else turnX=E_Direction.RIGHT;
 				}
-				if (stay && shX2>0.25 && aiNapr>0) {
+				if (stay && shX2>0.25 && aiNapr==E_Direction.RIGHT) {
 					if (aiState==1 && isrnd(0.1)) {
 						t=loc.getAbsTile(coordinates.X + storona * 80, coordinates.Y + 10);
 						if (t.collision==1 || t.platform) {
 							jump(0.5);
 						}
-						else turnX=-1;
+						else turnX=E_Direction.LEFT;
 					}
-					else turnX=-1;
+					else turnX=E_Direction.LEFT;
 				}
 				//если повернули, то можем остановиться
-				if (stay && turnX!=0) {
+				if (stay && turnX!=E_Direction.NEUTRAL) {
 					if (isrnd(0.1)) aiState=0;
 					aiNapr=storona=turnX;
-					turnX=0;
+					turnX=E_Direction.NEUTRAL;
 				}
 				//в возбуждённом или атакующем состоянии
 			}
 			else if (aiState==2 || aiState==3) {
 				
 				//определить, куда двигаться
-				if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
+				if (aiVNapr==E_Direction.UP && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;		//проверить возможность прыжка перед прыжком
 				if (aiTCh%15==1) {
 					if (isrnd(0.8)) {
-						if (celDX>100) aiNapr=storona=1;
-						if (celDX<-100) aiNapr=storona=-1;
+						if (celDX>100) aiNapr=storona=E_Direction.RIGHT;
+						if (celDX<-100) aiNapr=storona=E_Direction.LEFT;
 					}
 				}
 				if (celDY>80) throu=true;
 				else throu=false;
 				if (levit) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
 					else {
@@ -608,21 +611,21 @@ package fe.unit {
 					}
 				}
 				else {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) velocity.X -= accel;
 					}
 					else {
 						if (velocity.X < maxSpeed) velocity.X += accel;
 					}
 				}
-				if (stay && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) {
-					if (aiVNapr<=0 && isrnd(0.5)) jmp=0.5;
+				if (stay && (shX1>0.5 && aiNapr==E_Direction.LEFT || shX2>0.5 && aiNapr==E_Direction.RIGHT)) {
+					if (aiVNapr!=E_Direction.DOWN && isrnd(0.5)) jmp=0.5;
 					else if (velocity.X > 5 || velocity.X < -5) velocity.X *= 0.6;	//притормозить перед ямой
 				}
-				if (turnX!=0) {
+				if (turnX!=E_Direction.NEUTRAL) {
 					aiTTurn--;
 					
-					if (isrnd(0.03) || turnY>0) aiTTurn-=10;
+					if (isrnd(0.03) || turnY==E_Direction.DOWN) aiTTurn-=10;
 					else if (isrnd(0.5) && checkJump()) jmp=1;
 					else aiTTurn-=10;
 					
@@ -631,8 +634,8 @@ package fe.unit {
 						aiTTurn=Math.floor(Math.random()*20)+5;
 					}
 					
-					turnX = 0;
-					turnY = 0;
+					turnX = E_Direction.NEUTRAL;
+					turnY = E_Direction.NEUTRAL;
 				}
 				if (jmp>0) {
 					if (isPlav) {
@@ -878,7 +881,7 @@ package fe.unit {
 			super.dropLoot();
 
 			if (superSilaTip == 8) {
-				explosion(dam * 0.4, Resistances.DAM_PINKCLOUD, 150, 15);
+				explosion(dam * 0.4, E_Resistances.DAM_PINKCLOUD, 150, 15, 0, 0, E_Decal.NONE);
 			}
 		}
 	}

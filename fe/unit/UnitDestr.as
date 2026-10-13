@@ -5,6 +5,8 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.util.Vec2;
 	import fe.graph.Emitter;
+	import fe.enums.E_Material;
+	import fe.enums.E_Direction;
 
 	public class UnitDestr extends Unit {
 		
@@ -19,11 +21,11 @@ package fe.unit {
 			
 			if (xml) {
 				if (xml.@turn.length()) {
-					if (xml.@turn>0) storona=1;
-					if (xml.@turn<0) storona=-1;
+					if (xml.@turn>0) storona=E_Direction.RIGHT;
+					if (xml.@turn<0) storona=E_Direction.LEFT;
 				}
 				else {
-					storona=isrnd()?1:-1;
+					storona=isrnd()?E_Direction.RIGHT:E_Direction.LEFT;
 				}
 				if (xml.@tr.length()) tr=xml.@tr;
 				if (xml.@fix.length()) fixed=true;
@@ -39,7 +41,7 @@ package fe.unit {
 			}
 			
 			doop=true;
-			mat=1;
+			mat=E_Material.METAL;
 		}
 
 		public override function setLevel(nlevel:int=0):void {

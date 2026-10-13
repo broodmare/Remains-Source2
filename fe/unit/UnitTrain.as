@@ -3,6 +3,7 @@ package fe.unit  {
 	import flash.display.MovieClip;
 
 	import fe.SymbolFactory;
+	import fe.enums.E_Direction;
 
 	public class UnitTrain extends Unit {
 
@@ -12,11 +13,11 @@ package fe.unit  {
 			id='training';
 			if (xml) {
 				if (xml.@turn.length()) {
-					if (xml.@turn>0) storona=1;
-					if (xml.@turn<0) storona=-1;
+					if (xml.@turn>0) storona=E_Direction.RIGHT;
+					if (xml.@turn<0) storona=E_Direction.LEFT;
 				}
 				else {
-					storona=isrnd()?1:-1;
+					storona=isrnd()?E_Direction.RIGHT:E_Direction.LEFT;
 				}
 				if (xml.@tr.length()) tr=xml.@tr;
 				if (xml.@fix.length()) fixed=true;

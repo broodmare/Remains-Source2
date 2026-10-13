@@ -1,9 +1,8 @@
 package fe.unit {
+
+	import fe.unit.enums.E_ArmorTypes;
 	
 	public class Armor {
-
-		public static const TYPE_ARMOR:int = 1;
-		public static const TYPE_AMULET:int = 3;
 
 		// Armor info
 		public var id:String	= "";
@@ -11,7 +10,7 @@ package fe.unit {
 		public var maxlvl:int	= 0;
 		public var nazv:String	= "";
 		public var owner:Unit	= null; // TODO: REMOVE
-		public var tip:int		= TYPE_ARMOR;			// [1 - Armor, 3 - Amulet]
+		public var tip:int		= E_ArmorTypes.ARMOR;			// [1 - Armor, 3 - Amulet]
 		
 		// Usage flags
 		public var clo:int			= 0;		// [Armor can be changed at any time in the limited inventory]

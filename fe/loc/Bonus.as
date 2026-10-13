@@ -2,7 +2,9 @@ package fe.loc {
 
 	import flash.display.MovieClip;
 
-	import fe.*;
+	import fe.SymbolFactory;
+	import fe.Snd;
+	import fe.World;
 	import fe.entities.Obj;
 	
 	//Бонусы, которые подбираются путём контакта с ними

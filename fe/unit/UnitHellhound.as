@@ -1,7 +1,6 @@
 package fe.unit {
 
 	import fe.loc.Location;
-	import fe.unit.ai.AIState;
 	import fe.unit.ai.Brain;
 	import fe.unit.ai.Brain_Definition;
 	import fe.unit.anim.Animator;
@@ -10,6 +9,7 @@ package fe.unit {
 	import fe.unit.attack.BodyAttack_Definition;
 	import fe.unit.motor.WalkMotor;
 	import fe.unit.motor.WalkMotor_Definition;
+	import fe.unit.enums.E_AIState;
 
 	// Hellhounds climbs walls, squeezes under low ceilings and smashes through blocks while chasing
 	public class UnitHellhound extends UnitPon {
@@ -27,7 +27,7 @@ package fe.unit {
 
 			super.control();
 
-			chasing = sost == 1 && (aiState == AIState.SEARCH || aiState == AIState.CHASE) && Math.abs(celDY) < SMASH_RANGE_Y;
+			chasing = sost == 1 && (aiState == E_AIState.SEARCH || aiState == E_AIState.CHASE) && Math.abs(celDY) < SMASH_RANGE_Y;
 			if (!chasing) {
 				destroy = 0;
 			}

@@ -8,6 +8,8 @@ package fe.unit {
 	import fe.entities.BoundingBox;
 	import fe.loc.Box;
 	import fe.World;
+	import fe.unit.enums.E_Resistances;
+	import fe.enums.E_Direction;
 	
 	public class UnitPet extends Unit {
 		
@@ -66,7 +68,7 @@ package fe.unit {
 			if (id == 'owl') {
 				optAutores=false;
 				rasstWeap=400;
-				vulnerabilities.setResist(Resistances.DAM_DEATH, 0.20);
+				vulnerabilities.setResist(E_Resistances.DAM_DEATH, 0.20);
 			}
 			if (id == 'moon') {
 				knocked=0;
@@ -75,8 +77,8 @@ package fe.unit {
 				optUncall=true;
 				rasstWeap=400;
 				optTurn=false;
-				storona=1;
-				vulnerabilities.setResist(Resistances.DAM_DEATH, 0.5);
+				storona=E_Direction.RIGHT;
+				vulnerabilities.setResist(E_Resistances.DAM_DEATH, 0.5);
 			}
 			transT = true;
 			sost = 4;
@@ -128,7 +130,7 @@ package fe.unit {
 			super.setNull(f);
 			aiState=1;
 			getFlyPoint();
-			if (optTurn) storona = (celX > coordinates.X)? 1:-1;
+			if (optTurn) storona = (celX > coordinates.X)? E_Direction.RIGHT:E_Direction.LEFT;
 		}
 		
 		//настройка силы спутника
@@ -307,7 +309,7 @@ package fe.unit {
 			flyY=ny+20;
 			aiState=3;
 			
-			if (optTurn) storona=(flyX > coordinates.X)? 1:-1;
+			if (optTurn) storona=(flyX > coordinates.X)? E_Direction.RIGHT:E_Direction.LEFT;
 			
 			aiTCh=100;
 		}
@@ -452,9 +454,9 @@ package fe.unit {
 					if (rasst2>rasstGG*rasstGG || isPlav) {
 						aiState=1;
 						getFlyPoint();
-						if (optTurn) storona=(flyX > coordinates.X)? 1:-1;
+						if (optTurn) storona=(flyX > coordinates.X)? E_Direction.RIGHT:E_Direction.LEFT;
 					} else {
-						if (optTurn) storona=(flyX > gg.coordinates.X)? -1:1;
+						if (optTurn) storona=(flyX > gg.coordinates.X)? E_Direction.LEFT:E_Direction.RIGHT;
 					}
 				} else if (aiState==2) {
 					if (rasst2>rasstGG*rasstGG*9) getFlyPoint();
@@ -485,7 +487,7 @@ package fe.unit {
 				}
 				
 				if (aiState==2) {
-					if (optTurn) storona=(celX > coordinates.X)? 1:-1;
+					if (optTurn) storona=(celX > coordinates.X)? E_Direction.RIGHT:E_Direction.LEFT;
 					if (flyR>rasstWeap*0.9 || !mater) {
 						spd.x=flyDX;
 						spd.y=flyDY;
@@ -502,13 +504,13 @@ package fe.unit {
 						spd.y = 0;
 					}
 
-					if (turnX != 0) {
+					if (turnX != E_Direction.NEUTRAL) {
 						velocity.Y += Math.random() * 8 - 4;
-						turnX = 0;
+						turnX = E_Direction.NEUTRAL;
 					}
-					if (turnY != 0) {
+					if (turnY != E_Direction.NEUTRAL) {
 						velocity.X += Math.random() * 8 - 4;
-						turnY = 0;
+						turnY = E_Direction.NEUTRAL;
 					}
 				}
 				else if (aiState==5) {
@@ -579,7 +581,7 @@ package fe.unit {
 						spd.y *= 0.50;
 						aiState = 5;
 						aiTCh = 15;
-						damage(dam * 0.02, Resistances.DAM_INTERNAL);
+						damage(dam * 0.02, E_Resistances.DAM_INTERNAL);
 					}
 				}
 				else aiState=2;

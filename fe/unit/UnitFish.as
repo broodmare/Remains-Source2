@@ -3,6 +3,7 @@ package fe.unit {
 	import flash.display.MovieClip;
 	import fe.SymbolFactory;
 	import fe.World;
+	import fe.enums.E_Direction;
 
 	public class UnitFish extends Unit {
 		
@@ -154,7 +155,7 @@ package fe.unit {
 				else if (aiSpok==0) {	//перейти в пассивный режим
 					aiState=int(Math.random()*2);
 					aiDx=isrnd()?1:-1;
-					if (aiDx>0) storona=1; else storona=-1;
+					if (aiDx>0) storona=E_Direction.RIGHT; else storona=E_Direction.LEFT;
 					aiDy=Math.random()*0.2+0.1
 					aiTCh=int(Math.random()*50)+40;
 				}
@@ -194,7 +195,7 @@ package fe.unit {
 						aiDx = celX - coordinates.X;
 						aiDy = celY - (coordinates.Y - this.boundingBox.halfHeight);
 					}
-					if (aiDx>0) storona=1; else storona=-1;
+					if (aiDx>0) storona=E_Direction.RIGHT; else storona=E_Direction.LEFT;
 					aiRasst=Math.sqrt(aiDx*aiDx+aiDy*aiDy)+0.00001;
 					aiDx = aiDx / aiRasst;
 					aiDy = aiDy / aiRasst;
@@ -209,14 +210,14 @@ package fe.unit {
 				}
 			}
 			
-			if (turnX) {
+			if (turnX != E_Direction.NEUTRAL) {
 				storona = turnX;
 				aiDx = Math.abs(aiDx) * turnX;
-				turnX=0;
+				turnX=E_Direction.NEUTRAL;
 			}
-			if (turnY) {
+			if (turnY != E_Direction.NEUTRAL) {
 				aiDy = Math.abs(aiDy) * turnY;
-				turnY = 0;
+				turnY = E_Direction.NEUTRAL;
 			}
 
 			if (aiState==1) {

@@ -1,7 +1,5 @@
 package fe.loc {
 
-	import flash.display.BitmapData;
-
 	import fe.World;
 	import fe.Snd;
 	import fe.XMLDataGrabber
@@ -45,11 +43,10 @@ package fe.loc {
 		public static var locN:int = 0;			//счётчик переходов
 		
 		public var gg:UnitPlayer;
-		public var ggX:Number=0, ggY:Number=0;	//координаты гг в местности
 		public var currentCP:CheckPoint;
 		public var art_t:int=200;
 		
-		public var map:BitmapData;				//карта местности
+		public var minimap:Minimap;				// Pip-Boy map of the whole level
 		
 		public var landDifLevel:Number=0;		//общая сложность, зависит от левела гг или настроек карты
 		public var gameStage:int=0;				//этап сюжета игры, влияет на выпадение лута, если 0, то без ограничений
@@ -115,7 +112,7 @@ package fe.loc {
 				}
 			}
 			
-			createMap();
+			minimap = new Minimap(this);
 		}
 		
 //==============================================================================================================================		
@@ -872,10 +869,6 @@ package fe.loc {
 			}
 		}
 		
-		public function createMap():void {
-			map = new BitmapData(World.cellsX * (maxLocX - minLocX), World.cellsY * (maxLocY - minLocY), true, 0);
-		}
-		
 //==============================================================================================================================		
 //				*** [Usage] ***
 //==============================================================================================================================		
@@ -1172,18 +1165,6 @@ package fe.loc {
 					artBabah();
 				}
 			}
-		}
-		
-		public function drawMap():BitmapData {
-			map.fillRect(map.rect,0x00000000);
-			for (var i:int = minLocX; i < maxLocX; i++) {
-				for (var j:int = minLocY; j < maxLocY; j++) {
-					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].minimap.drawMap(map);
-				}
-			}
-			ggX = (loc.landX - minLocX) * World.cellsX * tileX + gg.coordinates.X;
-			ggY = (loc.landY - minLocY) * World.cellsY * tileY + gg.coordinates.Y - gg.boundingBox.halfHeight;
-			return map;
 		}
 		
 		// [Kill all enemies and open all containers]

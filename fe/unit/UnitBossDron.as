@@ -10,6 +10,7 @@ package fe.unit {
 	import fe.Snd;
 	import fe.World;
 	import fe.weapon.WThrow;
+	import fe.enums.E_Direction;
 	
 	public class UnitBossDron extends Unit {
 		
@@ -226,13 +227,13 @@ package fe.unit {
 
 			celDX = celX - coordinates.X;
 			celDY = celY - coordinates.Y;
-			storona = (celDX > 0) ? 1 : -1;
+			storona = (celDX > 0) ? E_Direction.RIGHT : E_Direction.LEFT;
 			var dist2:Number = celDX * celDX + celDY * celDY;
 			var dist:Number = (moveX - coordinates.X) * (moveX - coordinates.X) + (moveY - coordinates.Y) * (moveY - coordinates.Y);
 			
 			//поведение при различных состояниях
 			if (aiState == 0) {
-				walk = 0;
+				walk = E_Direction.NEUTRAL;
 			}
 			else if (aiState == 1) {
 				moveX = loc.gg.coordinates.X;
@@ -307,7 +308,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com == "off") {
-				walk = 0;
+				walk = E_Direction.NEUTRAL;
 				controlOn = false;
 			}
 			else if (com == "on") {

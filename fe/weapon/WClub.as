@@ -9,7 +9,9 @@ package fe.weapon  {
 	import fe.unit.Pers;
 	import fe.loc.tile.Tile;
 	import fe.projectile.Bullet;
-	
+	import fe.projectile.enums.E_WaterState;
+	import fe.enums.E_Direction;
+
 	public class WClub extends Weapon {
 
 		private var anim:Number = 0;
@@ -233,7 +235,7 @@ package fe.weapon  {
 					celX = owner.celX - dlina * 0.8 * storona;
 					celY = owner.celY + dlina * 0.3;
 					lineCel();
-					storona = (owner.celX > owner.coordinates.X - 100 * owner.storona) ? 1 : -1;
+					storona = (owner.celX > owner.coordinates.X - 100 * owner.storona) ? E_Direction.RIGHT : E_Direction.LEFT;
 					del.x = (celX - (owner.coordinates.X + ds));
 					del.y = (celY - owner.weaponY);
 					norma(del, meleeR);
@@ -262,7 +264,7 @@ package fe.weapon  {
 						celRY -= del.y;
 					}
 					
-					storona = (celRX > owner.coordinates.X) ? 1 : -1;
+					storona = (celRX > owner.coordinates.X) ? E_Direction.RIGHT : E_Direction.LEFT;
 					del.x = (celRX - (owner.coordinates.X + ds));
 					del.y = (celRY - owner.weaponY);
 					norma(del, meleeR);
@@ -580,10 +582,10 @@ package fe.weapon  {
 			
 			b.coordinates.X = coordinates.X + cos2 * dlina;
 			b.coordinates.Y = coordinates.Y + sin2 * dlina;
-			b.inWater = 0;
+			b.inWater = E_WaterState.OUT;
 			
 			if (loc.getAbsTile(b.coordinates.X, b.coordinates.Y).water > 0) {
-				b.inWater = 1;
+				b.inWater = E_WaterState.IN;
 			}
 			
 			if (mtip == 0) {

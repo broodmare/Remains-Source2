@@ -4,6 +4,7 @@ package fe.weapon {
 	import fe.World;
 	import fe.Snd;
 	import fe.unit.Unit;
+	import fe.enums.E_Direction;
 
 	public class WPunch extends Weapon {
 		
@@ -32,7 +33,7 @@ package fe.weapon {
 				if (owner.player) {
 					var deltaX:Number = owner.celX - coordinates.X;
 					var deltaY:Number = owner.celY - coordinates.Y;
-					var signY:int=(deltaY > 0) ? 1 : -1;
+					var signY:int=(deltaY > 0) ? E_Direction.DOWN : E_Direction.UP;
 					
 					if (Math.abs(deltaY) > Math.abs(deltaX)) {
 						deltaY = Math.abs(deltaX) * signY;
@@ -49,7 +50,7 @@ package fe.weapon {
 				
 				b.liv = 5;
 				
-				if (zadok && (rot < HALF_PI && rot > -HALF_PI && owner.storona < 0 || (rot > HALF_PI || rot < -HALF_PI) && owner.storona > 0)) {	//kick
+				if (zadok && (rot < HALF_PI && rot > -HALF_PI && owner.storona == E_Direction.LEFT || (rot > HALF_PI || rot < -HALF_PI) && owner.storona == E_Direction.RIGHT)) {	//kick
 					b.otbros = otbros * 1.5;
 					b.damage = damage * 2 * damMult;
 					

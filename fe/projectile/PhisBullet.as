@@ -1,15 +1,16 @@
-package fe.projectile
-{
-	import fe.*;
+package fe.projectile {
+
+	import fe.Snd;
+	import fe.World;
 	import fe.util.Vec2;
 	import fe.unit.Unit;
 	import fe.unit.UnitPlayer;
 	import fe.graph.Emitter;
 	import fe.loc.tile.Tile;
 	import fe.loc.Box;
-	import fe.entities.BoundingBox;
-	import fe.entities.Obj;
-	
+	import fe.projectile.enums.E_WaterState;
+	import fe.enums.E_Material;
+
 	public class PhisBullet extends Bullet {
 
 		public var brake:int = 2;
@@ -30,7 +31,7 @@ package fe.projectile
 			massa=0.1;
 			warn=1;
 			levitPoss=true;
-			inWater=0;
+			inWater = E_WaterState.OUT;
 			this.boundingBox.width = 30;
 			this.boundingBox.height = 30;
 			if (vis) vis.visible = true;
@@ -56,7 +57,7 @@ package fe.projectile
 				dr = velocity.X;
 			}
 
-			if (inWater) {
+			if (inWater == E_WaterState.IN) {
 				velocity.multiply(0.80);
 			}
 
@@ -129,10 +130,10 @@ package fe.projectile
 		//поиск жидкости
 		public function checkWater():int {
 			var pla:int = inWater;
-			inWater = 0;
+			inWater = E_WaterState.OUT;
 			try {
 				if (loc.getTile(int(coordinates.X / Tile.tileX), int(coordinates.Y / Tile.tileY)).water > 0) {
-					inWater = 1;
+					inWater = E_WaterState.IN;
 				}
 			}
 			catch (err) {
@@ -146,8 +147,8 @@ package fe.projectile
 			return inWater;
 		}
 		
-		public override function popadalo(res:int=0):void {
-			if (res < 0) return;			//не попал
+		public override function popadalo(res:int):void {
+			if (res == MISS) { return; }
 			velocity.set(0, 0);
 			if (explRadius) {
 				explosion();
@@ -184,7 +185,7 @@ package fe.projectile
 					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit != '') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
-							popadalo();
+							popadalo(E_Material.NONE);
 						}
 						coordinates.X = t.boundingBox.right + 1;
 						velocity.X = Math.abs(velocity.X * skok);
@@ -197,7 +198,7 @@ package fe.projectile
 					if (t.collision == 1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.X / 10));
 						if (bumc) {
-							popadalo();
+							popadalo(E_Material.NONE);
 						}
 						coordinates.X = t.boundingBox.left - 1;
 						velocity.X = -Math.abs(velocity.X * skok);
@@ -213,7 +214,7 @@ package fe.projectile
 					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
 						if (bumc) {
-							popadalo();
+							popadalo(E_Material.NONE);
 						}
 						coordinates.Y = t.boundingBox.bottom + 1;
 						velocity.Y = Math.abs(velocity.Y * skok);
@@ -233,7 +234,7 @@ package fe.projectile
 					if (t.collision==1 && t.boundingBox.intersectsCoordinate(coordinates)) {
 						if (bumc) {
 							if (sndHit!='') Snd.ps(sndHit, coordinates.X, coordinates.Y, 0, Math.abs(velocity.Y / 10));
-							popadalo();
+							popadalo(E_Material.NONE);
 						}
 						coordinates.Y = t.boundingBox.top - 1;
 						if (lip) prilip=true;

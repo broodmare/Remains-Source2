@@ -2,6 +2,7 @@ package fe.unit.anim {
 
 	import fe.serv.BlitAnim;
 	import fe.unit.Unit;
+	import fe.enums.E_Direction;
 
 	// Plays a unit's sprite-sheet animations, picking one each tick from what the unit is doing
 	public class Animator {
@@ -29,7 +30,7 @@ package fe.unit.anim {
 				return definition.stand;
 			}
 
-			if (owner.isLaz != 0 && definition.climb != "") {
+			if (owner.isLaz != E_Direction.NEUTRAL && definition.climb != "") {
 				return (Math.abs(owner.velocity.Y) > 1.0) ? definition.climb : definition.climbStill;
 			}
 

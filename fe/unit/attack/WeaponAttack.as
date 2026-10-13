@@ -1,7 +1,7 @@
 package fe.unit.attack {
 
 	import fe.unit.Unit;
-	import fe.unit.ai.AIState;
+	import fe.unit.enums.E_AIState;
 
 	// Uses the unit's current weapon on its target
 	public class WeaponAttack implements IAttack {
@@ -11,13 +11,13 @@ package fe.unit.attack {
 
 		private function isActive():Boolean {
 			switch (owner.aiState) {
-				case AIState.CHASE: {
+				case E_AIState.CHASE: {
 					return definition.whileChasing;
 				}
-				case AIState.HOLD: {
+				case E_AIState.HOLD: {
 					return definition.whileHolding;
 				}
-				case AIState.FLEE: {
+				case E_AIState.FLEE: {
 					return definition.whileFleeing;
 				}
 				default: {

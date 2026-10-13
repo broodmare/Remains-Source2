@@ -1,7 +1,8 @@
 package fe.unit.attack {
 
 	import fe.unit.Unit;
-	import fe.unit.ai.AIState;
+	import fe.unit.enums.E_AIState;
+	import fe.enums.E_Direction;
 
 	// Rams the target with the unit's own body whenever the target is close
 	public class BodyAttack implements IAttack {
@@ -13,16 +14,16 @@ package fe.unit.attack {
 
 		private function isActive():Boolean {
 			switch (owner.aiState) {
-				case AIState.CHASE: {
+				case E_AIState.CHASE: {
 					return definition.whileChasing;
 				}
-				case AIState.HOLD: {
+				case E_AIState.HOLD: {
 					return definition.whileHolding;
 				}
-				case AIState.FLEE: {
+				case E_AIState.FLEE: {
 					return definition.whileFleeing;
 				}
-				case AIState.DASH: {
+				case E_AIState.DASH: {
 					return definition.whileDashing;
 				}
 				default: {
@@ -54,11 +55,11 @@ package fe.unit.attack {
 				strength *= definition.slowFactor;
 			}
 
-			if (strength > 0 && owner.attKorp(target, strength) && owner.aiState == AIState.DASH) {
+			if (strength > 0 && owner.attKorp(target, strength) && owner.aiState == E_AIState.DASH) {
 				owner.aiTCh = DASH_HIT_END;
 			}
 
-			if (definition.hop > 0 && owner.isLaz == 0) {
+			if (definition.hop > 0 && owner.isLaz == E_Direction.NEUTRAL) {
 				owner.motor.jump(definition.hop);
 			}
 		}

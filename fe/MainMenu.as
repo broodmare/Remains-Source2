@@ -2,7 +2,6 @@ package fe {
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.display.LoaderInfo;
 	import flash.net.SharedObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -10,7 +9,6 @@ package fe {
 	import flash.text.StyleSheet;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
-	import flash.utils.Timer;
 
 	import fe.inter.PipBuck;
 	import fe.inter.PipPageOpt;

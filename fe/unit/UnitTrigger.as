@@ -11,6 +11,7 @@ package fe.unit {
 	import fe.SymbolFactory;
 	import fe.World;
 	import fe.XMLDataGrabber;
+	import fe.enums.E_Material;
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
@@ -46,7 +47,7 @@ package fe.unit {
 				id = cid;
 			}
 			
-			mat = 1;
+			mat = E_Material.METAL;
 			vis = SymbolFactory.createInstance("vis" + String(id));
 			if (!vis) {
 				vis = SymbolFactory.createInstance("vismtrap");

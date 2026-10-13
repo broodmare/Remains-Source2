@@ -1,10 +1,10 @@
 package fe.unit {
-
-	import flash.display.MovieClip;
-
+	
 	import fe.serv.Interact;
 	import fe.SymbolFactory;
 	import fe.World;
+	import fe.enums.E_Material;
+	import fe.unit.enums.E_Resistances;
 
 	public class UnitTrap extends Unit {
 
@@ -16,7 +16,7 @@ package fe.unit {
 				id='mtrap';
 			}
 			
-			mat		= 1;
+			mat		= E_Material.METAL;
 			prior	= 2;
 			vis = SymbolFactory.createInstance("vis" + String(id));
 			if (!vis) {
@@ -116,7 +116,7 @@ package fe.unit {
 						
 						if (attKorp(un)) {
 							klac();
-							damage(35, Resistances.DAM_INTERNAL);
+							damage(35, E_Resistances.DAM_INTERNAL);
 							setVis(true);
 						}
 					}

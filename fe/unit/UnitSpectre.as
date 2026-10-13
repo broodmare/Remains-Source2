@@ -6,6 +6,7 @@ package fe.unit {
 	import fe.World;
 	import fe.projectile.Bullet;
 	import fe.graph.Emitter;
+	import fe.enums.E_Direction;
 	
 	public class UnitSpectre extends Unit {
 		
@@ -50,7 +51,7 @@ package fe.unit {
 		}
 		
 		public override function udarBullet(bul:Bullet, sposob:int = 0):int {	
-			return -1;
+			return Bullet.MISS;
 		}
 		
 		public override function command(com:String, val:String = null):void {
@@ -92,7 +93,7 @@ package fe.unit {
 					celX = World.w.gg.coordinates.X
 					celY = World.w.gg.coordinates.Y - World.w.gg.boundingBox.halfHeight;
 				}
-				storona = (celX > coordinates.X)? 1:-1;
+				storona = (celX > coordinates.X)? E_Direction.RIGHT:E_Direction.LEFT;
 			}
 			
 			if (aiState==1 && World.w.gg.loc==loc) {
@@ -104,15 +105,15 @@ package fe.unit {
 				if (celUnit && celUnit.player && aiTCh%30==1) celUnit.addEffect('horror',1,3);
 			}
 	
-			if (turnX != 0) {
+			if (turnX != E_Direction.NEUTRAL) {
 				storona = turnX;
 				aiTCh = 0
-				turnX = 0;
+				turnX = E_Direction.NEUTRAL;
 			}
 
-			if (turnY != 0) {
+			if (turnY != E_Direction.NEUTRAL) {
 				velocity.Y = -velocity.Y * 0.5;
-				turnY = 0;
+				turnY = E_Direction.NEUTRAL;
 			}
 			//атака
 			if (World.w.enemyAct >= 3 && aiState == 1 && celUnit && celUnit.sost == 1) {

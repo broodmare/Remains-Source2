@@ -1,7 +1,7 @@
-package fe.loc.tile {
+package fe.loc.tile.enums {
 
 	// Where a tile piece is drawn, from the back of the room forward
-	public class TileLayer {
+	public class E_TileLayer {
 		public static const BACK_WALL:int	= 0;	// Painted onto the room's back wall
 		public static const BACKGROUND:int	= 1;	// In front of the back wall, behind units
 		public static const MAIN:int		= 2;	// In front of units

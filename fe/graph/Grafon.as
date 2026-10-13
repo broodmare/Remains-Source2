@@ -23,6 +23,8 @@ package fe.graph {
 	import fe.loc.*;
 	import fe.entities.Entity;
 	import fe.entities.BoundingBox;
+	import fe.enums.E_Material;
+	import fe.graph.enums.E_Decal;
 	
 	// .fla linkages
 	import fe.stubs.tileVoda;		
@@ -31,12 +33,11 @@ package fe.graph {
 	import fe.stubs.paintbrush;
 	import fe.stubs.tileGwall;
 	import fe.stubs.tileFront;
-	import fe.loc.tile.Material;
 	import fe.loc.tile.Tile;
-	import fe.loc.tile.TileBehaviour;
-	import fe.loc.tile.TileLayer;
 	import fe.loc.tile.TilePiece_Definition;
 	import fe.loc.tile.TileRegistry;
+	import fe.loc.tile.enums.E_TileBehaviour;
+	import fe.loc.tile.enums.E_TileLayer;
 
 	public class Grafon {
 		
@@ -494,7 +495,7 @@ package fe.graph {
 					}
 
 					for each (piece in t.definition.pieces) {
-						if (piece.layer == TileLayer.BACK_WALL || !showsPiece(t, piece)) {
+						if (piece.layer == E_TileLayer.BACK_WALL || !showsPiece(t, piece)) {
 							continue;
 						}
 						if (piece.spriteFrame == 0) {
@@ -503,11 +504,11 @@ package fe.graph {
 						}
 
 						tile = new tileFront();
-						tile.gotoAndStop(piece.spriteFrame + ((t.ladderTop && piece.behaviour == TileBehaviour.LADDER) ? 1 : 0));
-						if (piece.layer < TileLayer.MAIN) {
+						tile.gotoAndStop(piece.spriteFrame + ((t.ladderTop && piece.behaviour == E_TileBehaviour.LADDER) ? 1 : 0));
+						if (piece.layer < E_TileLayer.MAIN) {
 							back2.addChild(tile);
 						}
-						else if (piece.layer == TileLayer.MAIN) {
+						else if (piece.layer == E_TileLayer.MAIN) {
 							front.addChild(tile);
 						}
 						else {
@@ -543,11 +544,11 @@ package fe.graph {
 			drawBackWall(nloc.backwall, nloc.backform);	// [Back wall]
 			
 			World.w.gr_stage = 8;
-			drawTileLayer(TileLayer.MAIN);
-			drawTileLayer(TileLayer.FOREGROUND);
+			drawTileLayer(E_TileLayer.MAIN);
+			drawTileLayer(E_TileLayer.FOREGROUND);
 
 			World.w.gr_stage = 9;
-			drawTileLayer(TileLayer.BACK_WALL);
+			drawTileLayer(E_TileLayer.BACK_WALL);
 
 			World.w.gr_stage = 10;
 			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0 ,0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -675,7 +676,7 @@ package fe.graph {
 			}
 			
 			World.w.gr_stage = 17;
-			drawTileLayer(TileLayer.BACKGROUND);
+			drawTileLayer(E_TileLayer.BACKGROUND);
 		
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
@@ -807,7 +808,7 @@ package fe.graph {
 		// Whether a tile still shows one of its pieces: a destroyed block is gone, a door hides the textures under it
 		private function showsPiece(t:Tile, piece:TilePiece_Definition):Boolean {
 			// Differs from vanilla, where destroying a block also hid the beams, steps and ladders in its tile once the room was redrawn
-			if (t.destroyed && piece.layer == TileLayer.MAIN) { return false; }
+			if (t.destroyed && piece.layer == E_TileLayer.MAIN) { return false; }
 			if (t.door && piece.spriteFrame == 0) { return false; }
 
 			return true;
@@ -835,7 +836,7 @@ package fe.graph {
 		// [Drawing texture materials]
 		public function drawKusok(textures:TilePieceTextures):void {
 			var piece:TilePiece_Definition = textures.piece;
-			var toFront:Boolean = (piece.layer >= TileLayer.MAIN);
+			var toFront:Boolean = (piece.layer >= E_TileLayer.MAIN);
 			var roomPixelWidth:int = kusokX * tileX;
 			var roomPixelHeight:int = kusokY * tileY;
 
@@ -917,7 +918,7 @@ package fe.graph {
 					var tLowered:int = 4 - t.definition.height;
 					var tBoundingBox:BoundingBox = t.boundingBox;
 
-					if (piece.layer == TileLayer.BACK_WALL) {
+					if (piece.layer == E_TileLayer.BACK_WALL) {
 						shows = (t.definition.wall == piece);
 					}
 					else {
@@ -986,13 +987,13 @@ package fe.graph {
 			}
 			
 			// Draw to appropriate bitmap
-			if (piece.layer == TileLayer.FOREGROUND) {
+			if (piece.layer == E_TileLayer.FOREGROUND) {
 				foregroundBmp.draw(kusok, m, null, null, null, false);
 			}
-			else if (piece.layer == TileLayer.MAIN) {
+			else if (piece.layer == E_TileLayer.MAIN) {
 				frontBmp.draw(kusok, m, null, null, null, false);
 			}
-			else if (piece.layer == TileLayer.BACKGROUND) {
+			else if (piece.layer == E_TileLayer.BACKGROUND) {
 				backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
 			}
 			else {
@@ -1072,25 +1073,25 @@ package fe.graph {
 				Emitter.emit("fake", loc, nx, ny);
 				drC = fetch("block_bur");		// .SWF Dependency (Class)
 			}
-			else if (t.material == Material.FORCE_FIELD) {
+			else if (t.material == E_Material.FORCE_FIELD) {
 				Emitter.emit("fake", loc, nx, ny);
 				Emitter.emit("pole", loc, nx, ny, { kol:10, rx:tileX, ry:tileY });
 				//erC = TileMask; ????
 				drC = null;
 			}
-			else if (tip < 10) {
+			else if (tip <= E_Decal.EXPLOSION) {
 				var emitEffect:Array = ["null", "metal", "kusok", "schep", "kusokB", "steklo", "kusokD"];
 				
-				if (t.material >= Material.METAL && t.material <= Material.EARTH) {
+				if (t.material >= E_Material.METAL && t.material <= E_Material.EARTH) {
 					Emitter.emit(emitEffect[t.material],	loc, nx, ny, { kol:6, rx:tileX, ry:tileY });
 				}
 			}
-			else if (tip >= 15) {
+			else if (tip >= E_Decal.PLASMA) {
 				Emitter.emit("plav", loc, nx, ny);
 				erC = fetch("block_plav");
 				drC = fetch("block_pla");
 			}
-			else if (tip >= 11 && tip <= 13) {
+			else if (tip >= E_Decal.FIRE && tip <= E_Decal.LASER_SMALL) {
 				Emitter.emit("bur", loc, nx, ny);
 				drC = fetch("block_bur");
 			}
@@ -1142,56 +1143,57 @@ package fe.graph {
 			var sc:Number = Math.random() * 0.50 + 0.50;
 			var rc:Number = Math.random() * 360
 
-			if (tip == 0 || mat == 0) {
+			if (tip == E_Decal.NONE || mat == E_Material.NONE) {
 				return;
 			}
 
+			// The hole a hit leaves depends on what the tile is made of
 			switch (mat) {
-				case 1:	//металл
-					if (tip >= 1 && tip <= 6) {
+				case E_Material.METAL: {
+					if (tip >= E_Decal.BULLET_SMALL && tip <= E_Decal.BLOW_LARGE) {
 						drC = fetch("bullet_metal");
 					}
-					else if (tip==9) {			//взрыв
+					else if (tip == E_Decal.EXPLOSION) {
 						if (!soft && Math.random()*0.5<ver) {
 							drC = fetch("metal_tre");
 						}
 						
 						centr = true;
 					}
-				break;
-
-				case 2:  //камень
-				case 4:
-				case 6:
-					if (tip >= 1 && tip <= 3) {				//пули		
-						if (tip > 1 && Math.random() > 0.50) {
+					break;
+				}
+				case E_Material.STONE:
+				case E_Material.BRICK:
+				case E_Material.EARTH: {
+					if (tip >= E_Decal.BULLET_SMALL && tip <= E_Decal.BULLET_LARGE) {
+						if (tip != E_Decal.BULLET_SMALL && Math.random() > 0.50) {
 							erC = fetch("bullet_dyr");
 						}
 
 						drC = fetch("bullet_tre");
 
-						if (tip == 2) {
+						if (tip == E_Decal.BULLET_MEDIUM) {
 							sc += 0.50;
 						}
 						
-						if (tip == 3) {
+						if (tip == E_Decal.BULLET_LARGE) {
 							sc += 1;
 						}
 					}
-					else if (tip>=4 && tip<=6) { //удары
+					else if (tip >= E_Decal.BLOW_SMALL && tip <= E_Decal.BLOW_LARGE) {
 						if (!soft) {
 							drC = fetch("punch_tre");
 						}
 						
-						if (tip==5) {
+						if (tip == E_Decal.BLOW_MEDIUM) {
 							sc+=0.5;
 						}
 						
-						if (tip==6) {
+						if (tip == E_Decal.BLOW_LARGE) {
 							sc+=1;
 						}
 					}
-					else if (tip == 9) {	//взрыв
+					else if (tip == E_Decal.EXPLOSION) {
 						if (!soft && Math.random() * 0.50 < ver) {
 							drC = fetch("expl_tre");
 						}
@@ -1199,42 +1201,42 @@ package fe.graph {
 						centr = true;
 					}
 
-					if (tip < 10 && !soft) {
-						if (mat == 2) {
+					if (tip <= E_Decal.EXPLOSION && !soft) {
+						if (mat == E_Material.STONE) {
 							Emitter.emit("kusoch", loc, nx, ny, { kol:3 });
 						}
 						else {
 							Emitter.emit("kusochB", loc, nx, ny, { kol:3 });
 						}
 					}
-				break;
-
-				case 3: //дерево
-					if (tip >= 1 && tip <= 3) {	//пули
+					break;
+				}
+				case E_Material.WOOD: {
+					if (tip >= E_Decal.BULLET_SMALL && tip <= E_Decal.BULLET_LARGE) {
 						erC = fetch("bullet_dyr");
 						drC = fetch("bullet_wood");
 						rc = 0;
 						
-						if (tip == 2) {
+						if (tip == E_Decal.BULLET_MEDIUM) {
 							sc += 0.50;
 						}
 						
-						if (tip == 3) {
+						if (tip == E_Decal.BULLET_LARGE) {
 							sc += 1.00;
 						}
 					}
-					else if (tip>=4 && tip<=6) {	//удары
+					else if (tip >= E_Decal.BLOW_SMALL && tip <= E_Decal.BLOW_LARGE) {
 						if (!soft) {
 							drC = fetch("punch_tre");
 						}
-						if (tip == 5) {
+						if (tip == E_Decal.BLOW_MEDIUM) {
 							sc += 0.50;
 						}
-						if (tip == 6) {
+						if (tip == E_Decal.BLOW_LARGE) {
 							sc += 1;
 						}
 					}
-					else if (tip==9) {	//взрыв
+					else if (tip == E_Decal.EXPLOSION) {
 						if (!soft && Math.random() * 0.50 < ver) {
 							drC = fetch("expl_tre");
 						}
@@ -1242,23 +1244,34 @@ package fe.graph {
 						centr = true;
 					}
 
-					if (tip < 10 && !soft) {
+					if (tip <= E_Decal.EXPLOSION && !soft) {
 						Emitter.emit("schepoch",loc,nx,ny,{kol:3});
 					}
-				break;
-
-				case 7: //поле
+					break;
+				}
+				case E_Material.FORCE_FIELD: {
 					Emitter.emit("pole",loc,nx,ny,{kol:5});
-				break;
+					break;
+				}
+				case E_Material.GLASS: {
+					break;		// Glass shows no hole
+				}
+				default: {
+					trace("Grafon.as/dyrka() - ERROR: unknown material: \"" + mat + "\" !");
+					break;
+				}
+			}
 
-				case 11:
+			// Fire, energy and cold leave a burn mark over any material
+			switch (tip) {
+				case E_Decal.FIRE: {
 					if (Math.random() < 0.10) {
 						drC = fetch("fire_soft");
 					}
-				break;
-
-				case 12: //лазеры
-				case 13:
+					break;
+				}
+				case E_Decal.LASER:
+				case E_Decal.LASER_SMALL: {
 					if (soft && Math.random() * 0.20 > ver) {
 						drC = fetch("fire_soft");
 					}
@@ -1266,11 +1279,11 @@ package fe.graph {
 						drC = fetch("laser_tre");
 					}
 
-					if (tip == 13) sc *= 0.6;
+					if (tip == E_Decal.LASER_SMALL) sc *= 0.6;
 					bl="hardlight";
-				break;
-
-				case 15: //плазма
+					break;
+				}
+				case E_Decal.PLASMA: {
 					if (soft) {
 						drC = fetch("plasma_soft");
 					}
@@ -1280,9 +1293,9 @@ package fe.graph {
 					}
 
 					bl = "hardlight";
-				break;
-
-				case 16:
+					break;
+				}
+				case E_Decal.PLASMA_BLUE: {
 					if (soft) {
 						drC = fetch("fire_soft");
 					}
@@ -1291,9 +1304,9 @@ package fe.graph {
 						drC = fetch("bluplasma_tre");
 					}
 					bl = "hardlight";
-				break;
-
-				case 17:
+					break;
+				}
+				case E_Decal.PLASMA_PINK: {
 					if (soft) {
 						drC = fetch("fire_soft");
 					}
@@ -1302,24 +1315,21 @@ package fe.graph {
 						drC = fetch("pinkplasma_tre");
 					}
 					bl = "hardlight";
-				break;
-
-				case 18:
+					break;
+				}
+				case E_Decal.CRYO: {
 					drC = fetch("cryo_soft");
 					bl = "hardlight";
-				break;
-
-				case 19: //взрыв
+					break;
+				}
+				case E_Decal.ENERGY_EXPLOSION: {
 					if (!soft && Math.random() * 0.50 < ver) {
 						drC = fetch("plaexpl_tre");
 					}
 
 					centr=true;
-				break;
-
-				default:
-					trace("Grafon.as/dyrka() - ERROR: unknown bullethole: \"" + mat + "\" !");
-				break;
+					break;
+				}
 			}
 			
 			decal(erC, drC, nx, ny, sc, rc, bl);

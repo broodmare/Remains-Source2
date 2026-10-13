@@ -11,6 +11,7 @@ package fe.unit {
 	import fe.WeaponManager;
 	import fe.World;
 	import fe.weapon.WThrow;
+	import fe.enums.E_Direction;
 	
 	public class UnitBossRaider extends UnitPon {
 		
@@ -216,12 +217,12 @@ package fe.unit {
 		
 		public function jump(v:Number=1):void  {
 			aiJump=Math.floor(30+Math.random()*50);
-			if (stay || isLaz) {		//прыжок
+			if (stay || isLaz != E_Direction.NEUTRAL) {		//прыжок
 				velocity.Y = -jumpdy * v;
-				isLaz = 0;
+				isLaz = E_Direction.NEUTRAL;
 			}
 			if (stay) {
-				if (aiNapr==-1) velocity.X *= 0.8;
+				if (aiNapr==E_Direction.LEFT) velocity.X *= 0.8;
 				else velocity.X += storona * accel * 2;
 			}
 		}
@@ -246,7 +247,7 @@ package fe.unit {
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (stun) {
-				aiState=0; aiTCh=3; walk=0;
+				aiState=0; aiTCh=3; walk=E_Direction.NEUTRAL;
 			}
 			
 			t_replic--;
@@ -278,13 +279,13 @@ package fe.unit {
 			//направление
 			celDX = celX - coordinates.X;
 			if (stay) celDY = celY - coordinates.Y + this.boundingBox.height;
-			if (celDY>40) aiVNapr=1;		//вниз
-			else if(celDY<-40) aiVNapr=-1;	//прыжок
-			else aiVNapr=0;
+			if (celDY>40) aiVNapr=E_Direction.DOWN;		//вниз
+			else if(celDY<-40) aiVNapr=E_Direction.UP;	//прыжок
+			else aiVNapr=E_Direction.NEUTRAL;
 			porog=10;
 			throu=(celDY>160);
 			if (celDY>70) porog=0;
-			if (isLaz==0) storona=aiNapr;
+			if (isLaz==E_Direction.NEUTRAL) storona=aiNapr;
 
 			
 			//скорость
@@ -295,21 +296,21 @@ package fe.unit {
 			destroy=0;
 			//поведение при различных состояниях
 			if (aiState==0) {
-				if (velocity.X > 0.5) storona=1; 
-				if (velocity.X < -0.5) storona=-1;
-				walk=0;
+				if (velocity.X > 0.5) storona=E_Direction.RIGHT; 
+				if (velocity.X < -0.5) storona=E_Direction.LEFT;
+				walk=E_Direction.NEUTRAL;
 			}
 			else if (aiState==1 || (aiState==2 || aiState==3) && Math.abs(celDX)>aiDist) {
 				destroy=50;
 				if (aiTCh%15==1 && aiState!=6) {
 					if (isrnd(0.5)) {
-						if (celDX>100) aiNapr=storona=1;
-						if (celDX<-100) aiNapr=storona=-1;
+						if (celDX>100) aiNapr=storona=E_Direction.RIGHT;
+						if (celDX<-100) aiNapr=storona=E_Direction.LEFT;
 					}
 				}
 
 				if (levit) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) velocity.X -= levitaccel;
 					}
 					else {
@@ -317,27 +318,27 @@ package fe.unit {
 					}
 				}
 				else if (stay || isPlav) {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) velocity.X -= accel;
-						walk=-1;
+						walk=E_Direction.LEFT;
 					}
 					else {
 						if (velocity.X < maxSpeed) velocity.X += accel;
-						walk=1;
+						walk=E_Direction.RIGHT;
 					}
 				}
 				else {
-					if (aiNapr==-1) {
+					if (aiNapr==E_Direction.LEFT) {
 						if (velocity.X > -maxSpeed) velocity.X -= accel / 4;
 					}
-					else if (aiNapr==1){
+					else if (aiNapr==E_Direction.RIGHT){
 						if (velocity.X < maxSpeed) velocity.X += accel / 4;
 					}
 				}
-				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
+				if (stay && isrnd(0.5) && aiVNapr!=E_Direction.DOWN && (shX1>0.5 && aiNapr==E_Direction.LEFT || shX2>0.5 && aiNapr==E_Direction.RIGHT)) jmp=0.5;
 				if (stay && coordinates.Y-begY>=40) jmp=1;
 				if (stay && tr==2 && celDY<-100) jmp=1;
-				if (turnX!=0) {
+				if (turnX!=E_Direction.NEUTRAL) {
 					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=int(Math.random()*20)+5;
@@ -349,7 +350,7 @@ package fe.unit {
 							aiTTurn=int(Math.random()*20)+5;
 						}
 					}
-					turnX=turnY=0;
+					turnX=turnY=E_Direction.NEUTRAL;
 				}
 				if (jmp>0 && aiJump<=0) {
 					storona=aiNapr;
@@ -358,8 +359,8 @@ package fe.unit {
 				}
 			}
 			else if (aiState == 3 || aiState == 2) {
-				walk=0;
-				aiNapr = storona = (celX > coordinates.X)? 1 : -1;
+				walk=E_Direction.NEUTRAL;
+				aiNapr = storona = (celX > coordinates.X)? E_Direction.RIGHT : E_Direction.LEFT;
 			
 				if (celDX * celDX + celDY * celDY < 40000) {
 					aiState=1;
@@ -424,7 +425,7 @@ package fe.unit {
 			super.command(com, val);
 			
 			if (com=='off') {
-				walk=0;
+				walk=E_Direction.NEUTRAL;
 				controlOn=false;
 			}
 			else if (com=='on') {

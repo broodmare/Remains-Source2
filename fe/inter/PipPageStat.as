@@ -7,6 +7,7 @@ package fe.inter {
 	import fe.unit.Unit;
 	import fe.unit.Resistances;
 	import fe.unit.Pers;
+	import fe.unit.enums.E_Resistances;
 
 	import fe.stubs.visPipStatItem;
 	
@@ -163,7 +164,7 @@ package fe.inter {
 						var param;
 						
 						// This might be incorrect? It used to be '== 4'
-						if (xml.@tip == Resistances.DAM_EXPLOSION) {
+						if (xml.@tip == E_Resistances.DAM_EXPLOSION) {
 							param = gg.vulnerabilities.getResist(xml.@v);
 						}
 						else if (gg.hasOwnProperty(xml.@v)) {
@@ -178,7 +179,7 @@ package fe.inter {
 						}
 
 						// This might be incorrect? It used to be '== 0'
-						if (xml.@tip == Resistances.DAM_PIERCE) {
+						if (xml.@tip == E_Resistances.DAM_PIERCE) {
 							if (param > 0) {
 								arr.push({
 									id:xml.@id,
@@ -189,7 +190,7 @@ package fe.inter {
 						}
 
 						// This might be incorrect? It used to be '== 4'
-						if (xml.@tip == Resistances.DAM_CUT) {
+						if (xml.@tip == E_Resistances.DAM_CUT) {
 							if (param != 1 || World.w.pers.factor[xml.@v] && World.w.pers.factor[xml.@v].length > 1) {
 								arr.push({
 									id:xml.@id,
@@ -200,7 +201,7 @@ package fe.inter {
 						}
 						
 						// This might be incorrect? It used to be '== 2'
-						if (xml.@tip == Resistances.DAM_BLUNT) {
+						if (xml.@tip == E_Resistances.DAM_BLUNT) {
 							arr.push(
 								{id:xml.@id, nazv:nazv,
 								lvl:(Res.numb(param*100)+'%')
@@ -208,7 +209,7 @@ package fe.inter {
 						}
 
 						// This might be incorrect? It used to be '== 3 || == 4'
-						if (xml.@tip == Resistances.DAM_BURN || xml.@tip == Resistances.DAM_EXPLOSION) {
+						if (xml.@tip == E_Resistances.DAM_BURN || xml.@tip == E_Resistances.DAM_EXPLOSION) {
 							if (param != 1) {
 								arr.push({
 									id:xml.@id,
@@ -304,7 +305,7 @@ package fe.inter {
 				arr.push({
 					id:'resbleeding',
 					nazv:localize("pip", 'resbleeding'),
-					lvl:Math.round((1 - gg.vulnerabilities.getResist(Resistances.DAM_BLEED)) * 100) + '%'
+					lvl:Math.round((1 - gg.vulnerabilities.getResist(E_Resistances.DAM_BLEED)) * 100) + '%'
 				});
 				
 				arr.push({
@@ -316,7 +317,7 @@ package fe.inter {
 				arr.push({
 					id:'respoison',
 					nazv:localize("pip", 'respoison'),
-					lvl:Math.round((1 - gg.vulnerabilities.getResist(Resistances.DAM_POISON)) * 100) + '%'
+					lvl:Math.round((1 - gg.vulnerabilities.getResist(E_Resistances.DAM_POISON)) * 100) + '%'
 				});
 				
 				if (gg.pets['phoenix'] && World.w.game.triggers['pet_phoenix']) {

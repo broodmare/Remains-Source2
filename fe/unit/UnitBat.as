@@ -4,6 +4,7 @@ package fe.unit {
 
 	import fe.SymbolFactory;
 	import fe.World;
+	import fe.enums.E_Direction;
 	
 	public class UnitBat extends Unit {
 		
@@ -139,7 +140,7 @@ package fe.unit {
 						aiState=1;
 						aiDx=isrnd()?0.7:-0.7;
 						aiDy=-0.7;
-						if (aiDx>0) storona=1; else storona=-1;
+						if (aiDx>0) storona=E_Direction.RIGHT; else storona=E_Direction.LEFT;
 					}
 					aiTCh=10;
 				}
@@ -179,7 +180,7 @@ package fe.unit {
 						aiDx = celX - coordinates.X;
 						aiDy = celY - (coordinates.Y - this.boundingBox.halfHeight);
 					}
-					if (aiDx>0) storona=1; else storona=-1;
+					if (aiDx>0) storona=E_Direction.RIGHT; else storona=E_Direction.LEFT;
 					aiRasst=Math.sqrt(aiDx*aiDx+aiDy*aiDy)+0.00001;
 					aiDx=aiDx/aiRasst;
 					aiDy=aiDy/aiRasst;
@@ -187,21 +188,21 @@ package fe.unit {
 			}
 			
 			if (isPlav) {
-				turnY=-1;
+				turnY=E_Direction.UP;
 				aiState=1;
 			}
 			
 			vision=(aiState==0)?0.4:1;
 			ear=(aiState==0)?0.6:1;
 	
-			if (turnX) {
+			if (turnX != E_Direction.NEUTRAL) {
 				storona=turnX;
 				aiDx=Math.abs(aiDx)*turnX;
-				turnX=0;
+				turnX=E_Direction.NEUTRAL;
 			}
 			
-			if (turnY) {
-				if (turnY==1 && aiState==1) {
+			if (turnY != E_Direction.NEUTRAL) {
+				if (turnY==E_Direction.DOWN && aiState==1) {
 					velocity.set(0, 0);
 					aiDx = 0;
 					aiDy = 0;
@@ -212,7 +213,7 @@ package fe.unit {
 					aiDy=Math.abs(aiDy)*turnY;
 				}
 				
-				turnY=0;
+				turnY=E_Direction.NEUTRAL;
 			}
 			
 			if (aiState==1 || aiState==2 || aiState==3 || aiState==4) {
