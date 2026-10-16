@@ -67,6 +67,43 @@ package fe.game.domain.location.factories {
 			}
 		}
 
+		// The openings here and there both allow across here's edge, each at the smaller of their sizes
+		private static function sharedConnections(here:Location, edge:Vec2, there:Location):Vector.<RoomConnection> {
+			var shared:Vector.<RoomConnection> = new Vector.<RoomConnection>();
+			var isSide:Boolean = edge == E_Direction.LEFT || edge == E_Direction.RIGHT;
+			var outlets:int = isSide ? RoomOutlets.HORIZONTAL_OUTLETS : RoomOutlets.VERTICAL_OUTLETS;
+			var opposite:Vec2 = E_Direction.opposite(edge);
+			var size:int;
+			var slot:int;
+
+			for (slot = 0; slot < outlets; slot++) {
+				size = here.room.outlets.openingSize(edge, slot, here.mirror);
+				size = Math.min(size, there.room.outlets.openingSize(opposite, slot, there.mirror));
+				if (size >= RoomOutlets.MIN_OPENING_SIZE) {
+					shared.push(new RoomConnection(slot, size));
+				}
+			}
+
+			return shared;
+		}
+
+		// Cuts connection through loc's wall on edge; sizes below MIN_OPENING_SIZE leave the wall shut.
+		// It gets a signpost if it broke through solid wall, and an opening in a side wall becomes an enemy spawn point
+		private static function openConnection(loc:Location, edge:Vec2, connection:RoomConnection):void {
+			var isWide:Boolean = connection.openingSize > RoomOutlets.MIN_OPENING_SIZE;
+
+			if (connection.openingSize < RoomOutlets.MIN_OPENING_SIZE) {
+				return;
+			}
+
+			if (edge == E_Direction.LEFT || edge == E_Direction.RIGHT) {
+				openSideConnection(loc, edge == E_Direction.RIGHT, connection.slot, isWide);
+			}
+			else {
+				openEdgeConnection(loc, edge == E_Direction.DOWN, connection.slot, isWide);
+			}
+		}
+
 		//создать новую локацию нужного типа, в заданных координатах
 		public static function newTipLoc(land:Land, ntip:String, nx:int, ny:int, opt:Object=null):Location {
 			var rndRoom:Array = [];
@@ -159,40 +196,19 @@ package fe.game.domain.location.factories {
 			return loc;
 		}
 
-		// The openings here and there both allow across here's edge, each at the smaller of their sizes
-		public static function sharedConnections(here:Location, edge:Vec2, there:Location):Vector.<RoomConnection> {
-			var shared:Vector.<RoomConnection> = new Vector.<RoomConnection>();
-			var isSide:Boolean = edge == E_Direction.LEFT || edge == E_Direction.RIGHT;
-			var outlets:int = isSide ? RoomOutlets.HORIZONTAL_OUTLETS : RoomOutlets.VERTICAL_OUTLETS;
+		// Opens picks openings between here and there across here's edge, chosen at random with replacement from the shared ones
+		public static function connect(here:Location, edge:Vec2, there:Location, picks:int):void {
+			var shared:Vector.<RoomConnection> = sharedConnections(here, edge, there);
 			var opposite:Vec2 = E_Direction.opposite(edge);
-			var size:int;
-			var slot:int;
+			var connection:RoomConnection;
+			var i:int;
 
-			for (slot = 0; slot < outlets; slot++) {
-				size = here.room.outlets.openingSize(edge, slot, here.mirror);
-				size = Math.min(size, there.room.outlets.openingSize(opposite, slot, there.mirror));
-				if (size >= RoomOutlets.MIN_OPENING_SIZE) {
-					shared.push(new RoomConnection(slot, size));
-				}
-			}
+			if (shared.length == 0) { return; }
 
-			return shared;
-		}
-
-		// Cuts connection through loc's wall on edge; sizes below MIN_OPENING_SIZE leave the wall shut.
-		// It gets a signpost if it broke through solid wall, and an opening in a side wall becomes an enemy spawn point
-		public static function openConnection(loc:Location, edge:Vec2, connection:RoomConnection):void {
-			var isWide:Boolean = connection.openingSize > RoomOutlets.MIN_OPENING_SIZE;
-
-			if (connection.openingSize < RoomOutlets.MIN_OPENING_SIZE) {
-				return;
-			}
-
-			if (edge == E_Direction.LEFT || edge == E_Direction.RIGHT) {
-				openSideConnection(loc, edge == E_Direction.RIGHT, connection.slot, isWide);
-			}
-			else {
-				openEdgeConnection(loc, edge == E_Direction.DOWN, connection.slot, isWide);
+			for (i = 0; i < picks; i++) {
+				connection = shared[int(Math.random() * shared.length)];
+				openConnection(here, edge, connection);
+				openConnection(there, opposite, connection);
 			}
 		}
 

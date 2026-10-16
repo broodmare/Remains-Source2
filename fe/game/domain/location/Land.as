@@ -5,7 +5,6 @@ package fe.game.domain.location {
 	import fe.engine.audio.Sound;
 	import fe.engine.text.XMLDataGrabber
 	import fe.game.domain.location.factories.LocationFactory;
-	import fe.game.domain.location.factories.RoomConnection;
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.location.tile.Tile;
@@ -350,26 +349,12 @@ package fe.game.domain.location {
 
 					// Right passage: 3 picks with replacement, so 1-3 distinct doors get opened
 					if (i < maxLocX - 1) {
-						loc2 = locs[i + 1][j][0];
-						var passages:Vector.<RoomConnection> = LocationFactory.sharedConnections(loc1, E_Direction.RIGHT, loc2);
-						if (passages.length > 0) {
-							for (var e:int = 0; e <= 2; e++) {
-								var passage:RoomConnection = passages[int(Math.random() * passages.length)];
-								LocationFactory.openConnection(loc1, E_Direction.RIGHT, passage);
-								LocationFactory.openConnection(loc2, E_Direction.LEFT, passage);
-							}
-						}
+						LocationFactory.connect(loc1, E_Direction.RIGHT, locs[i + 1][j][0], 3);
 					}
 
 					// Down passage
 					if (j < maxLocY - 1) {
-						loc2 = locs[i][j + 1][0];
-						passages = LocationFactory.sharedConnections(loc1, E_Direction.DOWN, loc2);
-						if (passages.length > 0) {
-							passage = passages[int(Math.random() * passages.length)];
-							LocationFactory.openConnection(loc1, E_Direction.DOWN, passage);
-							LocationFactory.openConnection(loc2, E_Direction.UP, passage);
-						}
+						LocationFactory.connect(loc1, E_Direction.DOWN, locs[i][j + 1][0], 1);
 					}
 
 					loc1.mainFrame();
