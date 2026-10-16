@@ -1,0 +1,68 @@
+{
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			}
+		],
+		"image": "eant.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 78,
+			"w": 101
+		},
+		"source": "pfe.swf/visualAntEmitter",
+		"transform": [
+			1,
+			0,
+			0,
+			1,
+			0,
+			0
+		],
+		"uniqueFrames": 1,
+		"version": "1"
+	},
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 76,
+				"w": 99,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.494949494949495,
+				"y": 0.9342105263157895
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 76,
+				"w": 99
+			},
+			"spriteSourceSize": {
+				"h": 76,
+				"w": 99,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	}
+}

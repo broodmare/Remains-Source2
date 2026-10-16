@@ -8,8 +8,8 @@ package fe.game.domain.units {
 	import fe.game.domain.location.Location;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.rendering.enums.E_Decal;
+	import fe.engine.utils.SymbolFactory;
 	
-	import fe.game.stubs.vismine;
 	
 	public class Mine extends Unit {
 
@@ -62,7 +62,7 @@ package fe.game.domain.units {
 				if (tr == 6) id="balemine";
 			}
 			
-			vis = TextParser.getVis("vis" + id, vismine);
+			vis = TextParser.getVis("vis" + id, SymbolFactory.fetchSymbolClass("vismine"));
 			
 			if (reloadTime) {
 				vis.gotoAndStop(1);

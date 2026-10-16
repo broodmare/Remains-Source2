@@ -1,0 +1,159 @@
+{
+	"frames": {
+		"image_002": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 222,
+				"h": 44
+			},
+			"trimmed": false,
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 222,
+				"h": 44
+			},
+			"pivot": {
+				"y": 0.5909090909090909,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 222,
+				"h": 44
+			},
+			"rotated": false
+		},
+		"image_003": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 222,
+				"h": 44
+			},
+			"trimmed": false,
+			"frame": {
+				"x": 1,
+				"y": 47,
+				"w": 222,
+				"h": 44
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 222,
+				"h": 44
+			},
+			"rotated": false
+		},
+		"image_006": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 222,
+				"h": 44
+			},
+			"trimmed": false,
+			"frame": {
+				"x": 1,
+				"y": 93,
+				"w": 222,
+				"h": 44
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 222,
+				"h": 44
+			},
+			"rotated": false
+		},
+		"image_004": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 222,
+				"h": 43
+			},
+			"trimmed": false,
+			"frame": {
+				"x": 1,
+				"y": 139,
+				"w": 222,
+				"h": 43
+			},
+			"pivot": {
+				"y": 0.46511627906976744,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 222,
+				"h": 43
+			},
+			"rotated": false
+		},
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 222,
+				"h": 42
+			},
+			"trimmed": false,
+			"frame": {
+				"x": 1,
+				"y": 184,
+				"w": 222,
+				"h": 42
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 222,
+				"h": 42
+			},
+			"rotated": false
+		},
+		"image_005": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 222,
+				"h": 42
+			},
+			"trimmed": false,
+			"frame": {
+				"x": 1,
+				"y": 228,
+				"w": 222,
+				"h": 42
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 222,
+				"h": 42
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 224,
+			"h": 271
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visrobominigun_barrels.png",
+		"app": "Remains exporter"
+	}
+}

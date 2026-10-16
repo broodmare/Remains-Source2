@@ -37,7 +37,7 @@ package fe.game.domain.units {
 		
 		public override function addVisual():void {
 			if (disabled) return;
-			if (vis && loc && loc.active) GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
+			if (vis && loc && loc.active) GameContainer.reference.grafon.visObjs[layer].addChild(vis);
 		}
 		
 		public override function visDetails():void {

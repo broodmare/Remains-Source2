@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.3888888888888889,
+				"x": 0.1574585635359116
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 362,
+				"h": 54
+			},
+			"sourceSize": {
+				"w": 362,
+				"h": 54
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 362,
+				"h": 54
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 364,
+			"h": 56
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "viselsword_kor.png",
+		"app": "Remains exporter"
+	}
+}

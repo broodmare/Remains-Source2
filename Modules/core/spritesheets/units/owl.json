@@ -1,0 +1,298 @@
+{
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_001": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 1,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_002": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 64,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_003": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 127,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_004": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 190,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_005": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 253,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_006": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 316,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_007": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 379,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_008": {
+			"duration": 33,
+			"frame": {
+				"h": 61,
+				"w": 61,
+				"x": 442,
+				"y": 64
+			},
+			"pivot": {
+				"x": 0.5081967213114754,
+				"y": 0.7868852459016393
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 61,
+				"w": 61
+			},
+			"spriteSourceSize": {
+				"h": 61,
+				"w": 61,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	},
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			},
+			{
+				"direction": "forward",
+				"from": 1,
+				"name": "fly",
+				"to": 8
+			}
+		],
+		"image": "owl.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_001"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_002"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_003"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_004"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_005"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_006"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_007"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_008"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 126,
+			"w": 504
+		},
+		"source": "sprite.fla/Units/owl.png",
+		"uniqueFrames": 9,
+		"version": "1"
+	}
+}

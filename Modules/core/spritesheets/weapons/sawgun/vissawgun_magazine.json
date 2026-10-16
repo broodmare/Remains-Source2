@@ -1,0 +1,63 @@
+{
+	"frames": {
+		"image_002": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 128,
+				"h": 129
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 128,
+				"h": 129
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5038759689922481,
+				"x": 0.484375
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 128,
+				"h": 129
+			}
+		},
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 132,
+				"w": 120,
+				"h": 120
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 120,
+				"h": 120
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5,
+				"x": 0.48333333333333334
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 120,
+				"h": 120
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 130,
+			"h": 253
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vissawgun_magazine.png",
+		"app": "Remains exporter"
+	}
+}

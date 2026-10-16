@@ -1,0 +1,103 @@
+{
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			},
+			{
+				"direction": "forward",
+				"from": 1,
+				"name": "active",
+				"to": 1
+			}
+		],
+		"image": "moon.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "active",
+					"frame": "active_000"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 148,
+			"w": 57
+		},
+		"source": "pfe.swf/visualMoon",
+		"transform": [
+			1,
+			0,
+			0,
+			1,
+			0,
+			0
+		],
+		"uniqueFrames": 2,
+		"version": "1"
+	},
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 65,
+				"w": 47,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.7021276595744681,
+				"y": 0.6
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 65,
+				"w": 47
+			},
+			"spriteSourceSize": {
+				"h": 65,
+				"w": 47,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"active_000": {
+			"duration": 33,
+			"frame": {
+				"h": 79,
+				"w": 55,
+				"x": 1,
+				"y": 68
+			},
+			"pivot": {
+				"x": 0.6909090909090909,
+				"y": 0.5063291139240507
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 79,
+				"w": 55
+			},
+			"spriteSourceSize": {
+				"h": 79,
+				"w": 55,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	}
+}

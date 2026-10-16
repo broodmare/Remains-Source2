@@ -1,0 +1,39 @@
+{
+	"meta": {
+		"version": "1",
+		"size": {
+			"w": 534,
+			"h": 534
+		},
+		"scale": "4",
+		"format": "RGBA8888",
+		"image": "light_sphere.png",
+		"app": "Remains exporter"
+	},
+	"frames": {
+		"neutral": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 532,
+				"h": 532
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 532,
+				"h": 532
+			},
+			"rotated": false,
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"trimmed": false,
+			"sourceSize": {
+				"w": 532,
+				"h": 532
+			}
+		}
+	}
+}

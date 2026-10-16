@@ -68,16 +68,14 @@ package fe.game.domain.units.ability {
 			if (target is UnitPlayer) {
 				UnitPlayer(target).levitFilter2 = filter;
 			}
-			else if (target.vis) {
-				target.vis.filters = (filter != null) ? [filter] : [];
+			else {
+				target.setGlow(filter);
 
 				if (tint) {
-					target.vis.transform.colorTransform = tint;
+					target.setTint(tint);
 				}
 
-				if (target.vis.parent) {
-					target.vis.parent.setChildIndex(target.vis, target.vis.parent.numChildren - 1);
-				}
+				target.bringToFront();
 			}
 		}
 
@@ -211,11 +209,11 @@ package fe.game.domain.units.ability {
 				trimRelease();
 			}
 
-			if (!(released is UnitPlayer) && released.vis) {
-				released.vis.filters = [];
+			if (!(released is UnitPlayer)) {
+				released.setGlow(null);
 
 				if (tint && released.cTransform) {
-					released.vis.transform.colorTransform = released.cTransform;
+					released.setTint(released.cTransform);
 				}
 			}
 

@@ -1,0 +1,409 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 712,
+				"y": 0,
+				"w": 1077,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 1077,
+				"h": 712
+			},
+			"frame": {
+				"h": 712,
+				"y": 1,
+				"w": 1077,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.16853932584269662,
+				"x": 0.3909006499535747
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance197": "barrels",
+			"instance189": "barrels",
+			"instance191": "body",
+			"instance193": "barrels",
+			"instance203": "barrels",
+			"instance201": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"barrelsLayer": "visrobominigun_barrels.png",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 23.333334724108468,
+					"x": 45.00000268220917
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 23.333334724108468,
+					"x": 45.00000268220917
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 23.333334724108468,
+					"x": 45.00000268220917
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 23.333334724108468,
+					"x": 45.00000268220917
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 23.333334724108468,
+					"x": 45.00000268220917
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 23.333334724108468,
+					"x": 45.00000268220917
+				}
+			}
+		},
+		"animations": {
+			"barrels_fast": {
+				"frames": [
+					"image_005",
+					"image_006"
+				],
+				"loop": true,
+				"frameRate": 30
+			},
+			"barrels_slow": {
+				"frames": [
+					"image_001",
+					"image_002",
+					"image_003",
+					"image_004"
+				],
+				"loop": true,
+				"frameRate": 30
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "barrels",
+						"source": "instance189",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance191",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robominigun/visrobominigun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"animation": "barrels_slow",
+						"role": "barrels",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"source": "instance193",
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance191",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robominigun/visrobominigun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"animation": "barrels_fast",
+						"role": "barrels",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"source": "instance197",
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance191",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robominigun/visrobominigun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"animation": "barrels_fast",
+						"role": "barrels",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"source": "instance197",
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance191",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robominigun/visrobominigun.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance201",
+						"matrix": [
+							1.009323160409321,
+							0,
+							0,
+							1.2322998781382966,
+							45.00000268220917,
+							20.833334575096842
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"animation": "barrels_fast",
+						"role": "barrels",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"source": "instance197",
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance191",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robominigun/visrobominigun.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance201",
+						"matrix": [
+							1.0757446930256302,
+							0,
+							0,
+							1.0757446930256302,
+							45.00000268220917,
+							21.666667958100717
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"animation": "barrels_fast",
+						"role": "barrels",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"source": "instance197",
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance191",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robominigun/visrobominigun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "barrels",
+						"source": "instance203",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "barrels",
+						"source": "instance203",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "barrels",
+						"source": "instance203",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "barrels",
+						"source": "instance203",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							16.666667660077472,
+							22.500001341104593
+						],
+						"sheet": "robominigun/visrobominigun_barrels.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 10,
+		"size": {
+			"w": 1079,
+			"h": 714
+		},
+		"labels": {
+			"shoot": 4
+		},
+		"format": "RGBA8888",
+		"image": "visrobominigun.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,1046 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 94,
+				"y": 0,
+				"w": 402,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.22340425531914893,
+				"x": 0.4104477611940298
+			},
+			"sourceSize": {
+				"w": 402,
+				"h": 94
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 94,
+				"y": 1,
+				"w": 402,
+				"x": 1
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance131": "muzzleFlash",
+			"instance130": "body"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"7": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"8": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"9": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"10": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"11": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"12": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"13": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"14": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"15": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"16": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"17": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"18": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"19": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"20": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"21": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"22": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"23": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"24": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"25": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"26": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"27": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"28": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"29": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"30": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"31": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"32": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"33": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"34": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"35": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"36": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"37": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"38": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"39": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			},
+			"40": {
+				"emit": {
+					"y": 0,
+					"x": 27.50000163912783
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance131",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							59.166670193275024,
+							0
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance131",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							59.166670193275024,
+							0
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance130",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "winchester/viswinchester.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 40,
+		"size": {
+			"w": 404,
+			"h": 96
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": "viswinchester.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

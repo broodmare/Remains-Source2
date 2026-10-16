@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 30,
+				"h": 50
+			},
+			"sourceSize": {
+				"w": 30,
+				"h": 50
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 30,
+				"h": 50
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 32,
+			"h": 52
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visp10s_magazine.png",
+		"app": "Remains exporter"
+	}
+}

@@ -69,7 +69,7 @@ package fe.game.domain.units {
 			super.addVisual();
 			
 			if (arm) {
-				GameContainer.reference.grafon.visObjs[sloy].addChild(arm);
+				GameContainer.reference.grafon.visObjs[layer].addChild(arm);
 			}
 			
 			if (cTransform) {
@@ -86,7 +86,7 @@ package fe.game.domain.units {
 			super.remVisual();
 			
 			try {
-				GameContainer.reference.grafon.visObjs[sloy].removeChild(arm);
+				GameContainer.reference.grafon.visObjs[layer].removeChild(arm);
 			}
 			catch (err) {
 				trace('ERROR: (00:8)');

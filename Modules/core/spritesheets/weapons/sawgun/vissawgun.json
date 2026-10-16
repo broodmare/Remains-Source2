@@ -1,0 +1,1917 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 136,
+				"y": 1,
+				"w": 158,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5220588235294118,
+				"x": -0.04430379746835443
+			},
+			"sourceSize": {
+				"w": 158,
+				"h": 136
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 136,
+				"y": 0,
+				"w": 158,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance6": "magazine",
+			"instance10": "magazine",
+			"instance5": "body",
+			"kor": "tint",
+			"instance8": "magazine"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"7": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"8": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"9": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"10": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"11": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"12": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"13": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"14": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"15": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"16": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"17": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"18": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"19": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"20": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"21": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"22": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"23": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"24": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"25": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"26": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"27": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"28": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"29": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"30": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"31": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"32": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"33": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"34": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"35": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"36": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"37": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"38": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"39": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			},
+			"40": {
+				"emit": {
+					"y": 2.500000149011619,
+					"x": 8.333333830038736
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance6",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							2.500000149011621,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-80.83333815137574,
+							-9.166667213042608
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-73.33333770434088,
+							-8.33333383003874
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-66.66667064030989,
+							-7.500000447034864
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-60.0000035762789,
+							-7.500000447034864
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-53.33333651224791,
+							-6.666667064030989
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-45.83333606521305,
+							-5.8333336810271135
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-39.16666900118206,
+							-5.8333336810271135
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-32.50000193715107,
+							-5.000000298023238
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-25.000001490116208,
+							-5.000000298023238
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-18.33333442608522,
+							-4.16666691501937
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-11.66666736205423,
+							-3.3333335320154944
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-4.166666915019368,
+							-3.3333335320154944
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-1.6666667660077472,
+							-0.8333333830038754
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							0.8333333830038754
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "magazine",
+						"source": "instance8",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance5",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sawgun/vissawgun.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance10",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "sawgun/vissawgun_magazine.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"magazineLayer": "vissawgun_magazine.png",
+		"frameCount": 40,
+		"size": {
+			"w": 160,
+			"h": 138
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": "vissawgun.png",
+		"tintLayer": "vissawgun_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,170 @@
+{
+	"meta": {
+		"version": "2",
+		"scale": "4.0",
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "roboplagr/visroboplagr.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "roboplagr/visroboplagr.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance25",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "roboplagr/visroboplagr.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance25",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "roboplagr/visroboplagr.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "roboplagr/visroboplagr.json"
+					}
+				]
+			}
+		],
+		"roles": {
+			"instance24": "body",
+			"instance25": "auxiliary"
+		},
+		"anchors": {},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 52,
+			"h": 52
+		},
+		"animations": {},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visroboplagr.png",
+		"frameCount": 5,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {
+		"image_001": {
+			"sourceSize": {
+				"w": 50,
+				"h": 50
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 50,
+				"y": 1,
+				"w": 50,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 50,
+				"y": 0,
+				"w": 50,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"rotated": false
+		}
+	}
+}

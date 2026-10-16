@@ -1,14 +1,14 @@
 package fe.game.ui {
 
 	import fe.game.GameContainer;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipQuestItem;
 	
 	// The player appearance editor
 	public class PipPageApp extends PipPage {
 		
 		public function PipPageApp(npip:PipBuck, npp:String):void {
-			itemClass = visPipQuestItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipQuestItem");
 			super(npip, npp);
 			vis.but1.visible = false;
 			vis.but2.visible = false;

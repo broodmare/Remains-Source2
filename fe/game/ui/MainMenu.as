@@ -11,14 +11,13 @@ package fe.game.ui {
 
 	import fe.game.rendering.Displ;
 
-	import fe.game.stubs.visMainMenu;
-	import fe.game.stubs.butLang;
 	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.game.World;
 	import fe.engine.SaveManager;
+	import fe.engine.utils.SymbolFactory;
 
 	public class MainMenu {
 
@@ -63,7 +62,7 @@ package fe.game.ui {
 			language = LanguageManager.reference;
 
 			// Load the main menu moveclip object and hide some of it's children
-			mainMenuMovieClip = new visMainMenu();
+			mainMenuMovieClip = SymbolFactory.createInstance("visMainMenu");
 			mainMenuMovieClip.dialLoad.visible = false;
 			mainMenuMovieClip.dialNew.visible = false;
 			mainMenuMovieClip.dialAbout.visible = false;
@@ -236,7 +235,7 @@ package fe.game.ui {
 				// Loop through the languages array
 				for (var i:int = 0; i < language.languages.length; i++) {
 					var lang:Object = language.languages[i];
-					var m:MovieClip = new butLang(); // .SWF Dependency
+					var m:MovieClip = SymbolFactory.createInstance("butLang"); // .SWF Dependency
 					butsLang[i] = m;
 					m.lang.text = lang.name; // Use the language name from JSON
 					m.y = -i * 40;

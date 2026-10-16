@@ -1,0 +1,170 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 54,
+				"y": 1,
+				"w": 54,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 54,
+				"h": 54
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 54,
+				"y": 0,
+				"w": 54,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance113": "auxiliary",
+			"instance112": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance112",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "fgren/visfgren.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance112",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "fgren/visfgren.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance113",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance112",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "fgren/visfgren.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance113",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance112",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "fgren/visfgren.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance112",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "fgren/visfgren.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 56,
+			"h": 56
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visfgren.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 24,
+				"h": 38
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 24,
+				"h": 38
+			},
+			"rotated": false,
+			"trimmed": false,
+			"pivot": {
+				"y": 0.07894736842105263,
+				"x": 0.4583333333333333
+			},
+			"sourceSize": {
+				"w": 24,
+				"h": 38
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 26,
+			"h": 40
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visshok_magazine.png",
+		"app": "Remains exporter"
+	}
+}

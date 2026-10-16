@@ -92,7 +92,7 @@ package fe.game.domain.weapon {
 		public function setPaint(npaint:String, ncolor:uint, nblend:String):void {
 			paintId = npaint;
 			paintNazv = TextParser.txt('i', paintId);
-			GameContainer.reference.grafon.brTrans.color = ncolor
+			GameContainer.reference.grafon.brushColor = ncolor;
 		}
 		
 		public override function animate():void {

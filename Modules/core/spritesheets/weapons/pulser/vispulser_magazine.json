@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"trimmed": false,
+			"pivot": {
+				"y": 0.05555555555555555,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 54
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 32,
+				"h": 54
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 32,
+				"h": 54
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 34,
+			"h": 56
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vispulser_magazine.png",
+		"app": "Remains exporter"
+	}
+}

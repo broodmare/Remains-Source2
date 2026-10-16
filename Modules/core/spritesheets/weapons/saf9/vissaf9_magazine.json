@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"trimmed": false,
+			"pivot": {
+				"y": 0.1568627450980392,
+				"x": 0.4827586206896552
+			},
+			"sourceSize": {
+				"w": 29,
+				"h": 51
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 29,
+				"h": 51
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 29,
+				"h": 51
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 31,
+			"h": 53
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vissaf9_magazine.png",
+		"app": "Remains exporter"
+	}
+}

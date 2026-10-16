@@ -1,0 +1,1608 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.10526315789473684,
+				"x": 0.5619834710743802
+			},
+			"frame": {
+				"h": 114,
+				"y": 1,
+				"w": 363,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 363,
+				"h": 114
+			},
+			"trimmed": false,
+			"spriteSourceSize": {
+				"h": 114,
+				"y": 0,
+				"w": 363,
+				"x": 0
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance121": "muzzleFlash",
+			"instance118": "body",
+			"instance119": "magazine"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"7": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"8": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"9": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"10": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"11": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"12": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"13": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"14": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"15": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"16": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"17": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"18": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"19": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"20": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"21": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"22": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"23": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"24": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"25": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"26": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"27": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"28": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"29": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"30": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"31": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"32": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"33": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"34": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"35": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"36": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"37": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"38": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"39": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			},
+			"40": {
+				"emit": {
+					"y": 1.6666667660077508,
+					"x": 37.500002235174314
+				}
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_5c050a06fb551d1b",
+						"source": "instance121",
+						"blendMode": "screen",
+						"matrix": [
+							1.469696152390807,
+							0,
+							0,
+							1.469696152390807,
+							37.500002235174314,
+							1.6666667660077508
+						],
+						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_5c050a06fb551d1b",
+						"source": "instance121",
+						"blendMode": "screen",
+						"matrix": [
+							1.469696152390807,
+							0,
+							0,
+							1.469696152390807,
+							37.500002235174314,
+							1.6666667660077508
+						],
+						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							13.333334128061978
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							16.666667660077465
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							20.000001192092967
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-12.500000745058104,
+							18.333334426085216
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-17.500001043081348,
+							16.666667660077465
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-21.666667958100714,
+							15.000000894069728
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-26.666668256123955,
+							13.333334128061978
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-30.833335171143325,
+							10.833333979050352
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-35.83333546916656,
+							9.166667213042615
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-40.00000238418593,
+							7.500000447034864
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999695022882721,
+							0,
+							0,
+							0.9999695022882721,
+							-45.00000268220917,
+							5.8333336810271135
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999695022882721,
+							0,
+							0,
+							0.9999695022882721,
+							-49.16666959722854,
+							4.166666915019363
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999695022882721,
+							0,
+							0,
+							0.9999695022882721,
+							-54.166669895251786,
+							2.500000149011619
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999695022882721,
+							0,
+							0,
+							0.9999695022882721,
+							-50.83333636323629,
+							3.3333335320154944
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999695022882721,
+							0,
+							0,
+							0.9999695022882721,
+							-47.5000028312208,
+							5.000000298023238
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999695022882721,
+							0,
+							0,
+							0.9999695022882721,
+							-44.1666692992053,
+							5.8333336810271135
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-40.83333576718981,
+							7.500000447034864
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-37.500002235174314,
+							8.33333383003874
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-34.16666870315882,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-30.833335171143325,
+							10.833333979050352
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-27.50000163912783,
+							12.500000745058102
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-24.166668107112336,
+							13.333334128061978
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							0.9999848008146763,
+							0,
+							0,
+							0.9999848008146763,
+							-20.833334575096842,
+							15.000000894069728
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-17.500001043081348,
+							16.666667660077465
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-14.166667511065851,
+							17.50000104308134
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-10.833333979050357,
+							19.16666780908909
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							20.000001192092967
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							16.666667660077465
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							13.333334128061978
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance118",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flamer/visflamer.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance119",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-7.5000004470348625,
+							10.00000059604649
+						],
+						"sheet": "flamer/visflamer_magazine.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"magazineLayer": "visflamer_magazine.png",
+		"frameCount": 40,
+		"size": {
+			"w": 365,
+			"h": 116
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": "visflamer.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

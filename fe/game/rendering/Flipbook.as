@@ -1,0 +1,126 @@
+package fe.game.rendering {
+
+	import flash.geom.ColorTransform;
+
+	import starling.display.BlendMode;
+	import starling.display.Image;
+	import starling.display.Sprite;
+	import starling.textures.TextureSmoothing;
+
+	// An object's art on the GPU: a flipbook played like a Flash timeline. The playhead moves on in advance(), and stops and
+	// jumps where the timeline's scripts did. A frame can hold a loop of images, which runs on the flipbook's own clock.
+	public class Flipbook extends Sprite {
+
+		private static const MIP_BIAS:Number = -0.5;	// Art drawn smaller than its sheet samples a little sharp, as the rig does: closest to Flash
+
+		private var definition:Flipbook_Definition;
+		private var image:Image;						// The frame's image
+		private var screenImage:Image;					// The frame's screen-blended image, for flipbooks that have them
+		private var ticks:int = 0;						// advance() calls so far: the clock of each frame's own loop
+
+		public var frame:int = 0;						// The playhead, counted from 0. Read it; move it with goTo().
+		public var isPlaying:Boolean = true;			// Whether advance() moves the playhead on. A new flipbook plays, as a new Flash clip does.
+
+		// An image of the definition's sheet, drawn through a tint
+		private function createImage(blend:String):Image {
+			var created:Image = new Image(definition.sheet);
+			var style:TintStyle = new TintStyle();
+
+			if (definition.density > 1.0) {
+				style.mipBias = MIP_BIAS;
+				created.textureSmoothing = TextureSmoothing.TRILINEAR;
+			}
+			created.style = style;
+			created.blendMode = blend;
+			created.touchable = false;
+			addChild(created);
+
+			return created;
+		}
+
+		// Shows the loop's image for this tick in target, or hides target when the tick draws nothing
+		private function show(target:Image, loop:Vector.<FlipbookImage>):void {
+			var shown:FlipbookImage = loop.length > 0 ? loop[ticks % loop.length] : null;
+
+			target.visible = shown != null;
+			if (!shown || target.texture == shown.texture) { return; }
+
+			target.texture = shown.texture;
+			target.readjustSize();
+			target.pivotX = shown.pivotX;
+			target.pivotY = shown.pivotY;
+		}
+
+		private function draw():void {
+			show(image, definition.frames[frame]);
+			if (screenImage) {
+				show(screenImage, definition.screenFrames[frame]);
+			}
+		}
+
+		private function enter(target:int):void {
+			frame = definition.shows[target];
+			if (definition.stops[target]) {
+				isPlaying = false;
+			}
+			draw();
+		}
+
+		public function Flipbook(definition_:Flipbook_Definition) {
+			definition	= definition_;
+			image		= createImage(definition.blend);
+			if (definition.screenFrames) {
+				screenImage = createImage(BlendMode.SCREEN);
+			}
+			touchable = false;
+			enter(0);
+		}
+
+		public function get frameCount():int {
+			return definition.frames.length;
+		}
+
+		// Moves the playhead to target (counted from 0), playing on from there or holding it
+		public function goTo(target:int, play:Boolean):void {
+			if (target < 0 || target >= definition.frames.length) {
+				trace("Flipbook.as/goTo() - Warning: flipbook \"" + definition.name + "\" has no frame " + target);
+				return;
+			}
+			isPlaying = play;
+			// As in Flash, going to the frame already shown doesn't run its script again
+			if (target == frame) {
+				draw();
+				return;
+			}
+			enter(target);
+		}
+
+		// Moves the playhead to a label's frame, playing on from there or holding it
+		public function goToLabel(label:String, play:Boolean):void {
+			if (definition.labels[label] === undefined) {
+				trace("Flipbook.as/goToLabel() - Warning: flipbook \"" + definition.name + "\" has no label \"" + label + "\"");
+				return;
+			}
+			goTo(int(definition.labels[label]), play);
+		}
+
+		// One frame: the playhead and the frames' own loops move on
+		public function advance():void {
+			ticks++;
+			if (isPlaying) {
+				enter(frame + 1 < definition.frames.length ? frame + 1 : 0);
+			}
+			else {
+				draw();
+			}
+		}
+
+		// Draws the flipbook through a Flash colour transform, or in its own colours for null
+		public function setTint(tint:ColorTransform):void {
+			TintStyle(image.style).tint = tint;
+			if (screenImage) {
+				TintStyle(screenImage.style).tint = tint;
+			}
+		}
+	}
+}

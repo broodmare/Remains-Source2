@@ -1,0 +1,18 @@
+{
+	"image": "camp.png",
+	"density": 1,
+	"width": 240,
+	"height": 95,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 103, "w": 240, "h": 82, "pivotX": 120, "pivotY": 82},
+		"shadow": {"x": 0, "y": 0, "w": 255, "h": 101, "pivotX": 125, "pivotY": 91}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

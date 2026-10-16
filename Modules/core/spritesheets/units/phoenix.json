@@ -1,0 +1,356 @@
+{
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_001": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 1,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_002": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 124,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_003": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 247,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_004": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 370,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_005": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 493,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_006": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 616,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_007": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 739,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_008": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 862,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_009": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 985,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_010": {
+			"duration": 33,
+			"frame": {
+				"h": 121,
+				"w": 121,
+				"x": 1108,
+				"y": 124
+			},
+			"pivot": {
+				"x": 0.628099173553719,
+				"y": 0.5950413223140496
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 121,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 121,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	},
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			},
+			{
+				"direction": "forward",
+				"from": 1,
+				"name": "fly",
+				"to": 10
+			}
+		],
+		"image": "phoenix.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_001"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_002"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_003"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_004"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_005"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_006"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_007"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_008"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_009"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_010"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 246,
+			"w": 1230
+		},
+		"source": "sprite.fla/Units/phoenix.png",
+		"uniqueFrames": 11,
+		"version": "1"
+	}
+}

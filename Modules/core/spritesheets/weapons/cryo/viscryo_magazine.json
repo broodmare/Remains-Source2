@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"trimmed": false,
+			"pivot": {
+				"y": 0,
+				"x": 0.49295774647887325
+			},
+			"sourceSize": {
+				"w": 71,
+				"h": 32
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 71,
+				"h": 32
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 71,
+				"h": 32
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 73,
+			"h": 34
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "viscryo_magazine.png",
+		"app": "Remains exporter"
+	}
+}

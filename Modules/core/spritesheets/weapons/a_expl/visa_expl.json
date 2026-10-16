@@ -1,0 +1,2008 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 134,
+				"y": 0,
+				"w": 382,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 382,
+				"h": 134
+			},
+			"frame": {
+				"h": 134,
+				"y": 1,
+				"w": 382,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.4253731343283582,
+				"x": 0.5575916230366492
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance58": "body",
+			"instance64": "auxiliary",
+			"instance59": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"7": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"8": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"9": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"10": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"11": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"12": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"13": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"14": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"15": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"16": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"17": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"18": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"19": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"20": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"21": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"22": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"23": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"24": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"25": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"26": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"27": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"28": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"29": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"30": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"31": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"32": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"33": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"34": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"35": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"36": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"37": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"38": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"39": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"40": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"41": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"42": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"43": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"44": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"45": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"46": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"47": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"48": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"49": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"50": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"51": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"52": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"53": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"54": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"55": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"56": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"57": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"58": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"59": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			},
+			"60": {
+				"emit": {
+					"y": 0,
+					"x": 35.000002086162695
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					},
+					{
+						"blendMode": "hardlight",
+						"role": "muzzleFlash",
+						"source": "instance59",
+						"matrix": [
+							0.9466553298625546,
+							0,
+							0,
+							0.9466553298625546,
+							44.1666692992053,
+							-0.8333333830038754
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					},
+					{
+						"blendMode": "hardlight",
+						"source": "instance59",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.796875,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.7597504015614829,
+							0,
+							0,
+							0.7619934734896903,
+							42.50000253319755,
+							-0.8333333830038754
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					},
+					{
+						"blendMode": "hardlight",
+						"source": "instance59",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.58984375,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.5728607221162749,
+							0,
+							0,
+							0.5773468163021495,
+							40.83333576718981,
+							-0.8333333830038754
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-75.8333378533525,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-71.66667093833313,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-66.66667064030989,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-61.66667034228665,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-57.50000342726728,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-52.500003129244035,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-47.5000028312208,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-43.33333591620143,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-38.33333561817818,
+							-12.500000745058102
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-34.16666870315882,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-29.166668405135574,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-24.166668107112336,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-20.000001192092967,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-15.000000894069725,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-10.000000596046483,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-11.666667362054227
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-10.000000596046483
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-9.166667213042608
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-7.500000447034864
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-5.8333336810271135
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-5.000000298023238
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-3.3333335320154944
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-1.6666667660077508
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							-0.8333333830038754
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							0.8333333830038754
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							1.6666667660077508
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance64",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-0.8333333830038736,
+							3.3333335320154944
+						],
+						"sheet": "a_expl/visa_expl_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance58",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "a_expl/visa_expl.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 60,
+		"auxiliaryLayer": "visa_expl_auxiliary.png",
+		"size": {
+			"w": 384,
+			"h": 136
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": "visa_expl.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 30,
+				"h": 55
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 30,
+				"h": 55
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.21818181818181817,
+				"x": 0.4666666666666667
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 30,
+				"h": 55
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 32,
+			"h": 57
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visfriend_magazine.png",
+		"app": "Remains exporter"
+	}
+}

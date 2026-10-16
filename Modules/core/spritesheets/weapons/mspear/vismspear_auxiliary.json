@@ -1,0 +1,63 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.4875,
+				"x": 0.12078651685393259
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 356,
+				"h": 80
+			},
+			"sourceSize": {
+				"w": 356,
+				"h": 80
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 356,
+				"h": 80
+			}
+		},
+		"image_002": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 83,
+				"w": 480,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 480,
+				"h": 38
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 480,
+				"h": 38
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 482,
+			"h": 122
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vismspear_auxiliary.png",
+		"app": "Remains exporter"
+	}
+}

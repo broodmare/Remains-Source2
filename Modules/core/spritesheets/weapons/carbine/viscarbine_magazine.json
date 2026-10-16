@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 38,
+				"h": 52
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 38,
+				"h": 52
+			},
+			"rotated": false,
+			"trimmed": false,
+			"pivot": {
+				"y": 0.11538461538461539,
+				"x": 0.3684210526315789
+			},
+			"sourceSize": {
+				"w": 38,
+				"h": 52
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 40,
+			"h": 54
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "viscarbine_magazine.png",
+		"app": "Remains exporter"
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"image": "smotr.png",
+	"density": 1,
+	"width": 200,
+	"height": 70,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 90, "w": 199, "h": 69, "pivotX": 100, "pivotY": 69},
+		"shadow": {"x": 0, "y": 0, "w": 218, "h": 88, "pivotX": 110, "pivotY": 78}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

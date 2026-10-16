@@ -1,0 +1,18 @@
+{
+	"image": "placeholder.png",
+	"density": 4,
+	"width": 40,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 248, "w": 168, "h": 168, "pivotX": 84, "pivotY": 164},
+		"shadow": {"x": 0, "y": 0, "w": 240, "h": 240, "pivotX": 120, "pivotY": 200}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

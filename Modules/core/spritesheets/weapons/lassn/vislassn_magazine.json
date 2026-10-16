@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.11904761904761904,
+				"x": 0.45454545454545453
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 22,
+				"h": 42
+			},
+			"sourceSize": {
+				"w": 22,
+				"h": 42
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 22,
+				"h": 42
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 24,
+			"h": 44
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vislassn_magazine.png",
+		"app": "Remains exporter"
+	}
+}

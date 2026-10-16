@@ -1,0 +1,1582 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance189": "muzzleFlash",
+			"instance186": "magazine",
+			"kor": "tint"
+		},
+		"scale": "4",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 11.66666736205423
+				}
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_c3871247beac25de",
+						"source": "instance189",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_c3871247beac25de.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_c3871247beac25de",
+						"source": "instance189",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_c3871247beac25de.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							9.166667213042615
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							2.500000149011621,
+							13.333334128061978
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							17.50000104308134
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.9832459280836142,
+							0.18223572366847934,
+							-0.18223572366847934,
+							0.9832459280836142,
+							-2.500000149011621,
+							16.666667660077465
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.9335785667247712,
+							0.35835268249229685,
+							-0.35835268249229685,
+							0.9335785667247712,
+							-8.333333830038736,
+							15.000000894069728
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.8526306859233391,
+							0.5224914663528283,
+							-0.5224914663528283,
+							0.8526306859233391,
+							-14.166667511065851,
+							14.166667511065853
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.7431488182037365,
+							0.6691132387983743,
+							-0.6691132387983743,
+							0.7431488182037365,
+							-20.000001192092967,
+							12.500000745058102
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.6087494259327307,
+							0.7933502372115991,
+							-0.7933502372115991,
+							0.6087494259327307,
+							-26.666668256123955,
+							11.666667362054227
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.453949001666844,
+							0.8909912441765017,
+							-0.8909912441765017,
+							0.453949001666844,
+							-32.50000193715107,
+							10.00000059604649
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.2839965790905503,
+							0.9588012670756142,
+							-0.9588012670756142,
+							0.2839965790905503,
+							-38.33333561817818,
+							9.166667213042615
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.10449218876116606,
+							0.9945068356100819,
+							-0.9945068356100819,
+							0.10449218876116606,
+							-44.1666692992053,
+							7.500000447034864
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							-0.07843018045605304,
+							0.9968872465821453,
+							-0.9968872465821453,
+							-0.07843018045605304,
+							-50.000002980232416,
+							6.666667064030989
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							-0.25881957563675895,
+							0.965911902938996,
+							-0.965911902938996,
+							-0.25881957563675895,
+							-55.83333666125953,
+							5.000000298023238
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							-0.13052368693691613,
+							0.9913788830069035,
+							-0.9913788830069035,
+							-0.13052368693691613,
+							-51.66666974624016,
+							5.8333336810271135
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							-3.0517578125e-05,
+							0.9999390045765443,
+							-0.9999390045765443,
+							-3.0517578125e-05,
+							-47.5000028312208,
+							6.666667064030989
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.13046265426055517,
+							0.9913940821922271,
+							-0.9913940821922271,
+							0.13046265426055517,
+							-43.33333591620143,
+							7.500000447034864
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.2587890779250311,
+							0.9658661067008638,
+							-0.9658661067008638,
+							0.2587890779250311,
+							-39.16666900118206,
+							8.33333383003874
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.38262940740363244,
+							0.9238281403280183,
+							-0.9238281403280183,
+							0.38262940740363244,
+							-35.000002086162695,
+							9.166667213042615
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.4999390045765442,
+							0.8659821271488345,
+							-0.8659821271488345,
+							0.4999390045765442,
+							-30.833335171143325,
+							10.00000059604649
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.6087341274063266,
+							0.7933197394998713,
+							-0.7933197394998713,
+							0.6087341274063266,
+							-26.666668256123955,
+							10.833333979050352
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.7070770287758328,
+							0.707092327302237,
+							-0.707092327302237,
+							0.7070770287758328,
+							-21.666667958100714,
+							11.666667362054227
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.7933044906440073,
+							0.6087494259327307,
+							-0.6087494259327307,
+							0.7933044906440073,
+							-17.500001043081348,
+							12.500000745058102
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.8659973263341582,
+							0.49998475114413604,
+							-0.49998475114413604,
+							0.8659973263341582,
+							-13.333334128061978,
+							13.333334128061978
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.9238434388544225,
+							0.3826446810947665,
+							-0.3826446810947665,
+							0.9238434388544225,
+							-9.16666721304261,
+							14.166667511065853
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.9658966044125917,
+							0.258804326780895,
+							-0.258804326780895,
+							0.9658966044125917,
+							-5.000000298023242,
+							15.000000894069728
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							0.9914092813775508,
+							0.1305084256634171,
+							-0.1305084256634171,
+							0.9914092813775508,
+							-0.8333333830038736,
+							15.833334277073604
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							16.666667660077465
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							2.500000149011621,
+							12.500000745058102
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							8.33333383003874
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance186",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "arson/visarson_magazine.json"
+					},
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							5.833333681027115,
+							2.500000149011619
+						],
+						"sheet": "arson/visarson_kor.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"magazineLayer": "visarson_magazine.png",
+		"frameCount": 40,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": null,
+		"tintLayer": "visarson_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

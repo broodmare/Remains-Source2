@@ -1,0 +1,474 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance116": "auxiliary",
+			"instance139": "muzzleFlash"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.3989715615295308,
+							0,
+							0,
+							0.3989715615295308,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.4368896546099377,
+							0,
+							0,
+							0.4368896546099377,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.47482299654620863,
+							0,
+							0,
+							0.47482299654620863,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.5127716370088837,
+							0,
+							0,
+							0.5127716370088837,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.5507049789451547,
+							0,
+							0,
+							0.5507049789451547,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.5886383208814256,
+							0,
+							0,
+							0.5886383208814256,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.6265564139618326,
+							0,
+							0,
+							0.6265564139618326,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.6645050047539675,
+							0,
+							0,
+							0.6645050047539675,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.7024383466902383,
+							0,
+							0,
+							0.7024383466902383,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.7403717382970495,
+							0,
+							0,
+							0.7403717382970495,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.7783050802333205,
+							0,
+							0,
+							0.7783050802333205,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.8162536710254552,
+							0,
+							0,
+							0.8162536710254552,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.8541870626322664,
+							0,
+							0,
+							0.8541870626322664,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.8921204542390776,
+							0,
+							0,
+							0.8921204542390776,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.9300537465048082,
+							0,
+							0,
+							0.9300537465048082,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							0.9679871381116194,
+							0,
+							0,
+							0.9679871381116194,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.0059357289037543,
+							0,
+							0,
+							1.0059357289037543,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.0438538219841613,
+							0,
+							0,
+							1.0438538219841613,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.0817871142498918,
+							0,
+							0,
+							1.0817871142498918,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.119720505856703,
+							0,
+							0,
+							1.119720505856703,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.1576691959899186,
+							0,
+							0,
+							1.1576691959899186,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.195602488255649,
+							0,
+							0,
+							1.195602488255649,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					},
+					{
+						"sprite": "flash_d95f9264f888fde2",
+						"role": "muzzleFlash",
+						"source": "instance139",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d95f9264f888fde2.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance116",
+						"matrix": [
+							1.233551079047784,
+							0,
+							0,
+							1.233551079047784,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					},
+					{
+						"sprite": "flash_d95f9264f888fde2",
+						"role": "muzzleFlash",
+						"source": "instance139",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d95f9264f888fde2.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 24,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

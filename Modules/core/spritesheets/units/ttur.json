@@ -1,0 +1,103 @@
+{
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			},
+			{
+				"direction": "forward",
+				"from": 1,
+				"name": "mega",
+				"to": 1
+			}
+		],
+		"image": "ttur.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "mega",
+					"frame": "mega_000"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 339,
+			"w": 193
+		},
+		"source": "pfe.swf/visualTTurret",
+		"transform": [
+			1,
+			0,
+			0,
+			1,
+			0,
+			0
+		],
+		"uniqueFrames": 2,
+		"version": "1"
+	},
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 115,
+				"w": 121,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.5041322314049587,
+				"y": 0.9826086956521739
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 115,
+				"w": 121
+			},
+			"spriteSourceSize": {
+				"h": 115,
+				"w": 121,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"mega_000": {
+			"duration": 33,
+			"frame": {
+				"h": 220,
+				"w": 191,
+				"x": 1,
+				"y": 118
+			},
+			"pivot": {
+				"x": 0.5026178010471204,
+				"y": 0.7227272727272728
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 220,
+				"w": 191
+			},
+			"spriteSourceSize": {
+				"h": 220,
+				"w": 191,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	}
+}

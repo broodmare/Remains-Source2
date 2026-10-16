@@ -1,0 +1,20 @@
+{
+	"image": "cup.png",
+	"density": 1,
+	"width": 47,
+	"height": 80,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 65, "y": 0, "w": 47, "h": 80, "pivotX": 24, "pivotY": 80},
+		"frame1_0": {"x": 0, "y": 101, "w": 47, "h": 80, "pivotX": 24, "pivotY": 80},
+		"shadow": {"x": 0, "y": 0, "w": 63, "h": 99, "pivotX": 32, "pivotY": 90}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5185185185185185,
+				"x": 0.891566265060241
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 83,
+				"h": 27
+			},
+			"sourceSize": {
+				"w": 83,
+				"h": 27
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 83,
+				"h": 27
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 85,
+			"h": 29
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visdartgun_auxiliary.png",
+		"app": "Remains exporter"
+	}
+}

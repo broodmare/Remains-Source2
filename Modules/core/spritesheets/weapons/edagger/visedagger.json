@@ -1,0 +1,69 @@
+{
+	"frames": {
+		"image_001": {
+			"trimmed": false,
+			"frame": {
+				"h": 78,
+				"y": 1,
+				"w": 242,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 242,
+				"h": 78
+			},
+			"rotated": false,
+			"pivot": {
+				"y": 0.47435897435897434,
+				"x": 0.25206611570247933
+			},
+			"spriteSourceSize": {
+				"h": 78,
+				"y": 0,
+				"w": 242,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"anchors": {},
+		"scale": "4.0",
+		"roles": {
+			"instance28": "body"
+		},
+		"frameCount": 1,
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"source": "instance28",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sprite": "image_001",
+						"sheet": "edagger/visedagger.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"animations": {},
+		"size": {
+			"w": 244,
+			"h": 80
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visedagger.png",
+		"app": "Remains exporter",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

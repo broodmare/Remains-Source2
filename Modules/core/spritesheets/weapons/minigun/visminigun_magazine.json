@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.011111111111111112,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 74,
+				"h": 90
+			},
+			"sourceSize": {
+				"w": 74,
+				"h": 90
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 74,
+				"h": 90
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 76,
+			"h": 92
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visminigun_magazine.png",
+		"app": "Remains exporter"
+	}
+}

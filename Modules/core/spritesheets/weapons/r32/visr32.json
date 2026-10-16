@@ -1,0 +1,1046 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.6428571428571429,
+				"x": 0.2042253521126761
+			},
+			"frame": {
+				"h": 70,
+				"y": 1,
+				"w": 142,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 142,
+				"h": 70
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 70,
+				"y": 0,
+				"w": 142,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance65": "body",
+			"instance66": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -7.500000447034864,
+					"x": 28.333335022131703
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance66",
+						"matrix": [
+							1.0011597077743037,
+							0,
+							0,
+							1.0011597077743037,
+							27.50000163912783,
+							-8.33333383003874
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance66",
+						"matrix": [
+							0.5660858094346012,
+							0,
+							0,
+							0.5660858094346012,
+							27.50000163912783,
+							-7.500000447034864
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance65",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "r32/visr32.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 40,
+		"size": {
+			"w": 144,
+			"h": 72
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": "visr32.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

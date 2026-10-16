@@ -1,0 +1,22 @@
+{
+	"image": "hatch2.png",
+	"density": 1,
+	"width": 80,
+	"height": 48,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 104, "w": 80, "h": 40, "pivotX": 40, "pivotY": 40},
+		"frame1_0": {"x": 0, "y": 62, "w": 80, "h": 40, "pivotX": 40, "pivotY": 40},
+		"frame2_0": {"x": 0, "y": 146, "w": 80, "h": 40, "pivotX": 40, "pivotY": 40},
+		"shadow": {"x": 0, "y": 0, "w": 100, "h": 60, "pivotX": 50, "pivotY": 50}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]},
+		{"images": ["frame2_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1,"die":2}
+}

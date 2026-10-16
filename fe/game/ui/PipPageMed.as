@@ -9,8 +9,8 @@ package fe.game.ui {
 	import fe.game.domain.units.Pers;
 	import fe.game.domain.serv.Item;
 	import fe.engine.utils.TradeValue;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipMedItem;
 	
 	/* 
 	*	The healing menu when interacting with doctors
@@ -39,7 +39,7 @@ package fe.game.ui {
 
 		public function PipPageMed(npip:PipBuck, npp:String) {
 			isLC = true;
-			itemClass = visPipMedItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipMedItem");
 			super(npip, npp);
 
 			// Set which sub-categories are disabled at the top of the pip-buck

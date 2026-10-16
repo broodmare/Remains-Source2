@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5022421524663677
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 223,
+				"h": 62
+			},
+			"sourceSize": {
+				"w": 223,
+				"h": 62
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 223,
+				"h": 62
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 225,
+			"h": 64
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vistlance_auxiliary.png",
+		"app": "Remains exporter"
+	}
+}

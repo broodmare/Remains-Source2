@@ -20,10 +20,9 @@ package fe.game.ui {
 	import fe.engine.Engine;
 	import fe.game.GameContainer;
 	
-	import fe.game.stubs.visPipOptItem;
-	import fe.game.stubs.logText;
 	import fe.game.AutoPickupManager;
 	import fe.engine.SaveManager;
+	import fe.engine.utils.SymbolFactory;
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -49,14 +48,14 @@ package fe.game.ui {
 		
 		public function PipPageOpt(npip:PipBuck, npp:String) {
 			isLC=true;
-			itemClass=visPipOptItem;
+			itemClass=SymbolFactory.fetchSymbolClass("visPipOptItem");
 			super(npip,npp);
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK,gotoDef);
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
 			pip.vis.butHelp.visible=false;
-			var log:MovieClip = new logText();
+			var log:MovieClip = SymbolFactory.createInstance("logText");
 			info=log.text;
 			log.x = 20;
 			log.y = 85;

@@ -1,0 +1,806 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 82,
+				"y": 0,
+				"w": 203,
+				"x": 0
+			},
+			"frame": {
+				"h": 82,
+				"y": 1,
+				"w": 203,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5975609756097561,
+				"x": 0.20689655172413793
+			},
+			"trimmed": false,
+			"rotated": false,
+			"sourceSize": {
+				"w": 203,
+				"h": 82
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance84": "body",
+			"instance85": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -3.3333335320154944,
+					"x": 40.00000238418593
+				}
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"source": "instance85",
+						"blendMode": "screen",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							40.00000238418593,
+							-3.3333335320154944
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"source": "instance85",
+						"blendMode": "screen",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							40.00000238418593,
+							-3.3333335320154944
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance84",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "pp127mm/vispp127mm.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 30,
+		"size": {
+			"w": 205,
+			"h": 84
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": "vispp127mm.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

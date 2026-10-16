@@ -1,0 +1,18 @@
+{
+	"image": "reactor.png",
+	"density": 1,
+	"width": 320,
+	"height": 720,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 341, "y": 0, "w": 319, "h": 720, "pivotX": 159, "pivotY": 720},
+		"shadow": {"x": 0, "y": 0, "w": 339, "h": 740, "pivotX": 169, "pivotY": 730}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

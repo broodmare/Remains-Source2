@@ -1,0 +1,202 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 53,
+				"y": 1,
+				"w": 99,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.7169811320754716,
+				"x": 0.4343434343434344
+			},
+			"sourceSize": {
+				"w": 99,
+				"h": 53
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 53,
+				"y": 0,
+				"w": 99,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance66": "body",
+			"instance67": "auxiliary"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance66",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dinamit/visdinamit.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance66",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dinamit/visdinamit.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "auxiliary",
+						"source": "instance67",
+						"matrix": [
+							-0.4766388024869841,
+							-0.4102935886558049,
+							0.4102935886558049,
+							-0.4766388024869841,
+							-0.8333333830038736,
+							-8.33333383003874
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance66",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dinamit/visdinamit.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "auxiliary",
+						"source": "instance67",
+						"matrix": [
+							-0.4766388024869841,
+							-0.4102935886558049,
+							0.4102935886558049,
+							-0.4766388024869841,
+							-0.8333333830038736,
+							-8.33333383003874
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance66",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dinamit/visdinamit.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "auxiliary",
+						"source": "instance67",
+						"matrix": [
+							-0.29481507111480265,
+							-0.2537841997812708,
+							0.2537841997812708,
+							-0.29481507111480265,
+							-0.8333333830038736,
+							-7.500000447034864
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance66",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dinamit/visdinamit.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "auxiliary",
+						"source": "instance67",
+						"matrix": [
+							-0.29481507111480265,
+							-0.2537841997812708,
+							0.2537841997812708,
+							-0.29481507111480265,
+							-0.8333333830038736,
+							-7.500000447034864
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 101,
+			"h": 55
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visdinamit.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

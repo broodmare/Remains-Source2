@@ -1,0 +1,1815 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 91,
+				"y": 1,
+				"w": 331,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5494505494505495,
+				"x": 0.5740181268882175
+			},
+			"sourceSize": {
+				"w": 331,
+				"h": 91
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 91,
+				"y": 0,
+				"w": 331,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance40": "auxiliary",
+			"instance37": "body",
+			"instance38": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"7": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"8": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"9": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"10": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"11": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"12": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"13": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"14": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"15": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"16": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"17": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"18": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"19": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"20": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"21": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"22": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"23": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"24": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"25": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"26": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"27": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"28": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"29": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"30": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"31": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"32": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"33": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"34": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"35": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"36": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"37": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"38": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"39": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"40": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"41": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"42": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"43": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"44": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"45": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"46": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"47": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"48": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"49": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"50": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"51": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"52": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"53": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"54": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"55": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"56": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"57": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"58": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"59": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"60": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance38",
+						"matrix": [
+							2.480346907000556,
+							0,
+							0,
+							2.480346907000556,
+							34.16666870315882,
+							0
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					},
+					{
+						"blendMode": "screen",
+						"source": "instance38",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.5390625,
+							0,
+							0,
+							0,
+							0
+						],
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"matrix": [
+							2.4706573766861784,
+							0,
+							0,
+							2.4803008127391823,
+							34.16666870315882,
+							0
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					},
+					{
+						"blendMode": "screen",
+						"source": "instance38",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.078125,
+							0,
+							0,
+							0,
+							0
+						],
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"matrix": [
+							2.4610596375302256,
+							0,
+							0,
+							2.480346907000556,
+							35.000002086162695,
+							0
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-82.50000491738349,
+							-7.500000447034864
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-75.8333378533525,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-70.00000417232539,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-63.333337108294394,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-56.666670044263405,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-50.83333636323629,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-44.1666692992053,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-37.500002235174314,
+							-8.33333383003874
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-31.666668554147197,
+							-9.166667213042608
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-25.000001490116208,
+							-9.166667213042608
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-18.33333442608522,
+							-9.166667213042608
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-12.500000745058104,
+							-9.166667213042608
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							-9.166667213042608
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							-7.500000447034864
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							-5.000000298023238
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							-3.3333335320154944
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							-1.6666667660077508
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-5.833333681027115,
+							0.8333333830038754
+						],
+						"sheet": "glau1/visglau1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "glau1/visglau1.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 60,
+		"auxiliaryLayer": "visglau1_auxiliary.png",
+		"size": {
+			"w": 333,
+			"h": 93
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": "visglau1.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

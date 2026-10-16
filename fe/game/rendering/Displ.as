@@ -8,11 +8,8 @@ package fe.game.rendering {
     import flash.geom.Matrix;
     import flash.geom.Point;
 	
-	import fe.game.stubs.displVolna;		// .fla linkage
-	import fe.game.stubs.visWav;			// .fla linkage
-	import fe.game.stubs.visSerost;		// .fla linkage
-	
 	import fe.engine.utils.Calc;
+	import fe.engine.utils.SymbolFactory;
 
 	//класс отвечает за анимацию главного меню	
 	public class Displ {
@@ -46,14 +43,14 @@ package fe.game.rendering {
 			mm=nmm;
 			gr=ngr;
 			displBmpd=new BitmapData(240,300,false,0x7F7F7F);
-			displStamp=new displVolna();
+			displStamp=SymbolFactory.createInstance("displVolna");
 			displMatrix.tx=mm.target.x-mm.displ1.x;
 			displMatrix.ty=mm.target.y-mm.displ1.y;
 			displFilter1=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,displX,displY,DisplacementMapFilterMode.COLOR);
 			displFilter2=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,0,5,DisplacementMapFilterMode.COLOR);
 			
 			for (var i:int = 0; i < wavKol; i++) {
-				var v:MovieClip=new visWav();
+				var v:MovieClip=SymbolFactory.createInstance("visWav");
 				v.x = Calc.floatBetween(-disX, disX);
             	v.y = Calc.floatBetween(-disY, disY);
 				v.scaleX = Calc.floatBetween(2, 3);
@@ -61,7 +58,7 @@ package fe.game.rendering {
 				displStamp.addChild(v);
 				wavArr[i]=v;
 			}
-			v=new visSerost();
+			v=SymbolFactory.createInstance("visSerost");
 			displStamp.addChild(v);
 			p_x=mm.pistol.x;
 			p_y=mm.pistol.y;

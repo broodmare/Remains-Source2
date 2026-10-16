@@ -1,0 +1,68 @@
+{
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			}
+		],
+		"image": "dron1.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 50,
+			"w": 50
+		},
+		"source": "pfe.swf/visualDron1",
+		"transform": [
+			1,
+			0,
+			0,
+			1,
+			0,
+			0
+		],
+		"uniqueFrames": 1,
+		"version": "1"
+	},
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 48,
+				"w": 48,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9166666666666666
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 48
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 48,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	}
+}

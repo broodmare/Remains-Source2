@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.07894736842105263,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 54,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 54,
+				"h": 38
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 54,
+				"h": 38
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 56,
+			"h": 40
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visgatp_magazine.png",
+		"app": "Remains exporter"
+	}
+}

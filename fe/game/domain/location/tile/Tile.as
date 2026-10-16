@@ -6,6 +6,7 @@ package fe.game.domain.location.tile {
 	import fe.game.domain.location.Box;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
+	import fe.game.domain.location.tile.enums.E_TileLayer;
 
 	// One space on a room's grid while the game runs: what its definition placed there, and what has happened to it since
 	public class Tile {
@@ -74,6 +75,15 @@ package fe.game.domain.location.tile {
 			platform		= definition.platform;
 			water			= definition.water ? 1 : 0;
 			boundingBox.top	= (coords.Y + (4 - definition.height) * 0.25) * tileSize;
+		}
+
+		// Whether the tile still shows one of its pieces: a destroyed block is gone, and a door hides the textures under it
+		public function showsPiece(piece:TilePiece_Definition):Boolean {
+			// Differs from vanilla, where destroying a block also hid the beams, steps and ladders in its tile once the room was redrawn
+			if (destroyed && piece.layer == E_TileLayer.MAIN) { return false; }
+			if (door && piece.spriteFrame == 0) { return false; }
+
+			return true;
 		}
 
 		public function hole():Boolean {

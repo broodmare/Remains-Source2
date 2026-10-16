@@ -1,7 +1,11 @@
 package fe.game.domain.location {
 
-	import flash.filters.DropShadowFilter;
 	import flash.display.MovieClip;
+	import flash.filters.GlowFilter;
+	import flash.geom.ColorTransform;
+
+	import starling.display.Image;
+	import starling.textures.TextureSmoothing;
 
 	import fe.engine.text.XMLDataGrabber;
 	import fe.engine.audio.Sound;
@@ -16,7 +20,11 @@ package fe.game.domain.location {
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.VirtualUnit;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.Flipbook;
+	import fe.game.rendering.Flipbook_Definition;
+	import fe.game.rendering.GpuFilters;
 	import fe.game.rendering.Grafon;
+	import fe.game.rendering.ObjectLayers;
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.units.Mine;
@@ -74,9 +82,9 @@ package fe.game.domain.location {
 		public var sndClose:String='';
 		public var sndDie:String='';
 		
-		private var dsf:DropShadowFilter=new DropShadowFilter(0,90,0,0.8,8,8,1,3,false,false,true);
-		public var shad:MovieClip;
-		
+		public var art:Flipbook;		// Its art in the object layers Starling draws; objects in higher layers keep a Flash clip in vis
+		public var shadow:Image;		// The drop shadow under it, in object layer 0, or null when it casts none
+
 		public var ddyPlav:Number=1; //выталкивающая сила, 1 если нет, <0 если предмет всплывает
 		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
 		
@@ -92,27 +100,16 @@ package fe.game.domain.location {
 			}
 			
 			prior=1;
-			vis=GameContainer.reference.grafon.getObj('vis'+id, Grafon.numbObj);
-			shad=GameContainer.reference.grafon.getObj('vis'+id, Grafon.numbObj);
-			
-			if (vis == null) {
-				vis  = SymbolFactory.createInstance("visbox0") as MovieClip;
-				shad = SymbolFactory.createInstance("visbox0") as MovieClip;
-			}
-			
-			vis.stop();
-			shad.gotoAndStop(vis.currentFrame);
-			shad.filters = [dsf];
-			
+			var definition:Flipbook_Definition = GameContainer.reference.grafon.flipbooks.viewDefinition(id);
 			var node:XML = getObjInfo(id);
-			
-			coordinates.X = begX = nx; 
+
+			coordinates.X = begX = nx;
 			coordinates.Y = begY = ny;
-			
-			// Set bounding box to the size of it's visual
-			boundingBox.width = vis.width;
-			boundingBox.height = vis.height;
-			
+
+			// Set bounding box to the size of its art
+			boundingBox.width = definition.width;
+			boundingBox.height = definition.height;
+
 			// If applicable, use the specified size
 			if (node.@scx.length()) boundingBox.width = node.@scx;
 			if (node.@scy.length()) boundingBox.height = node.@scy;
@@ -134,7 +131,6 @@ package fe.game.domain.location {
 			if (node.@radrad.length()) radrad=node.@radrad;
 			if (node.@radtip.length()) radtip=node.@radtip;
 			if (node.@wall.length()) wall=node.@wall;
-			if (wall>1) shad.alpha=0;
 			if (node.@phis.length()) phis=node.@phis;
 			if (node.@fall.length()) sndFall=node.@fall;
 			if (node.@open.length()) sndOpen=node.@open;
@@ -154,6 +150,24 @@ package fe.game.domain.location {
 				hp = 10000;
 				thre = 10000;
 			}
+
+			if (wall > 0) {
+				levitPoss = false;
+				stay = true;
+				layer = 0;
+			}
+			else {
+				layer = 1;
+			}
+			if (node.@sloy.length()) {
+				layer = node.@sloy;
+			}
+			if (xml && xml.@pokr.length()) {
+				layer = 1;
+			}
+
+			// The art exists before the interaction restores a saved state onto it
+			createArt(definition);
 
 			// Door
 			if (node.@door.length()) {
@@ -199,34 +213,18 @@ package fe.game.domain.location {
 				if (xml.@radrad.length()) radrad=xml.@radrad;
 			}
 			
-			if (wall > 0) {
-				levitPoss = false;
-				stay = true;
-				sloy = 0;
-			}
-			else {
-				sloy = 1;
-			}
-			
-			if (node.@sloy.length()) sloy = node.@sloy;
-			
 			cTransform=loc.cTransform;
-			
-			vis.cacheAsBitmap=true;
-			vis.x = shad.x = coordinates.X;
-			vis.y = coordinates.Y;
-			shad.y = coordinates.Y + (wall?2:6);
+
 			prior += 1 / (boundingBox.width * boundingBox.height);
-			
+
 			if (node.@actdam.length()) {
 				if (xml && xml.@tipdam.length())  bindUnit(xml.@tipdam);
 				else bindUnit();
 			}
 			if (xml && xml.@pokr.length()) {
-				sloy=1;
 				prior=3;
 			}
-			
+
 			if (loadObj && loadObj.dead) {	// [If the object was destroyed]
 				die(-1);
 			}
@@ -247,6 +245,51 @@ package fe.game.domain.location {
 			}
 		}
 		
+		// Its art, stopped on its first frame as Flash's clip was, and its shadow, which objects hung free of the wall (wall 2) don't cast
+		private function createArt(definition:Flipbook_Definition):void {
+			if (layer < ObjectLayers.COUNT) {
+				art = new Flipbook(definition);
+				art.isPlaying = false;
+			}
+			else {
+				vis = GameContainer.reference.grafon.getObj('vis' + id, Grafon.numbObj) || SymbolFactory.createInstance("visbox0");
+				vis.stop();
+				vis.cacheAsBitmap = true;
+			}
+
+			if (definition.shadow && wall <= 1) {
+				shadow = new Image(definition.shadow.texture);
+				shadow.pivotX = definition.shadow.pivotX;
+				shadow.pivotY = definition.shadow.pivotY;
+				shadow.touchable = false;
+				if (definition.density > 1.0) {
+					shadow.textureSmoothing = TextureSmoothing.TRILINEAR;
+				}
+			}
+
+			runVis();
+		}
+
+		// Moves the art to a label's frame, playing on from there or holding it
+		private function goToLabel(label:String, play:Boolean):void {
+			if (art) {
+				art.goToLabel(label, play);
+				return;
+			}
+
+			try {
+				if (play) {
+					vis.gotoAndPlay(label);
+				}
+				else {
+					vis.gotoAndStop(label);
+				}
+			}
+			catch (err:Error) {
+				trace('ERROR: (00:2B) - Could not set vis state: "' + label + '"!');
+			}
+		}
+
 		public override function save():Object {
 			var obj:Object=new Object();
 			if (dead) obj.dead=true;
@@ -272,11 +315,18 @@ package fe.game.domain.location {
 				return;
 			}
 		
-			if (vis && loc && loc.active) {
-				if (shad) GameContainer.reference.grafon.visObjs[0].addChild(shad);
-				GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
+			if (loc && loc.active) {
+				if (shadow) {
+					GameContainer.reference.grafon.objectLayers.add(shadow, 0);
+				}
+				if (art) {
+					GameContainer.reference.grafon.objectLayers.add(art, layer);
+				}
+				else {
+					GameContainer.reference.grafon.visObjs[layer].addChild(vis);
+				}
 				if (cTransform) {
-					vis.transform.colorTransform=cTransform;
+					setTint(cTransform);
 				}
 			}
 		}
@@ -307,12 +357,64 @@ package fe.game.domain.location {
 		}
 		
 		public override function remVisual():void {
+			if (art) {
+				art.removeFromParent();
+			}
+
 			if (vis && vis.parent) {
 				vis.parent.removeChild(vis);
 			}
-			
-			if (shad && shad.parent) {
-				shad.parent.removeChild(shad);
+
+			if (shadow) {
+				shadow.removeFromParent();
+			}
+		}
+
+		public override function setTint(tint:ColorTransform):void {
+			if (art) {
+				art.setTint(tint);
+			}
+			else {
+				super.setTint(tint);
+			}
+		}
+
+		public override function setGlow(glow:GlowFilter):void {
+			if (!art) {
+				super.setGlow(glow);
+				return;
+			}
+
+			if (art.filter) {
+				art.filter.dispose();
+			}
+			art.filter = glow ? GpuFilters.fromFlash([glow], 1.0) : null;
+		}
+
+		public override function bringToFront():void {
+			if (art && art.parent) {
+				art.parent.setChildIndex(art, art.parent.numChildren - 1);
+			}
+			else {
+				super.bringToFront();
+			}
+		}
+
+		// Whether it shows; Probation hides the exits it doesn't use
+		public function get isShown():Boolean {
+			return art ? art.visible : vis.visible;
+		}
+
+		public function setShown(shown:Boolean):void {
+			if (art) {
+				art.visible = shown;
+			}
+			else {
+				vis.visible = shown;
+			}
+
+			if (shadow) {
+				shadow.visible = shown;
 			}
 		}
 		
@@ -325,13 +427,7 @@ package fe.game.domain.location {
 				Sound.ps(sndClose, coordinates.X, coordinates.Y);
 			}
 			
-			try {
-				if (s == 'comein') vis.gotoAndPlay(s);
-				else vis.gotoAndStop(s);
-			}
-			catch (err) {
-				trace('ERROR: (00:2B) - Could not set vis state: "' + s + '"!');
-			}
+			goToLabel(s, s == 'comein');
 		}
 		
 		public override function step():void {
@@ -355,7 +451,7 @@ package fe.game.domain.location {
 				if (moln_t>=molnPeriod) {
 					moln_t=0;
 					attMoln();
-					vis.gotoAndPlay('moln');
+					goToLabel('moln', true);
 				}
 			}
 			
@@ -380,10 +476,8 @@ package fe.game.domain.location {
 						coordinates.X += osnova.cdx;
 						coordinates.Y += osnova.cdy;
 						boundingBox.center(coordinates);
-						
-						if (vis) {
-							runVis();
-						}
+
+						runVis();
 					}
 				}
 			}
@@ -412,10 +506,8 @@ package fe.game.domain.location {
 				if (!levit && (velocity.Y > 5 || velocity.Y < -5 || velocity.X > 5 || velocity.X < -5)) {
 					attDrop();
 				}
-				
-				if (vis) {
-					runVis();
-				}
+
+				runVis();
 				
 				if (inter) {
 					inter.coordinates.X = coordinates.X; inter.coordinates.Y = coordinates.Y;
@@ -621,7 +713,7 @@ package fe.game.domain.location {
 				invis=true;
 				un.disabled=true;
 				un.sost=4;
-				if (vis) remVisual();
+				remVisual();
 			}
 			else {
 				if (inter && inter.cont) {
@@ -776,7 +868,7 @@ package fe.game.domain.location {
 				if (coordinates.Y >= (loc.spaceY - 1) * tileY && !loc.bezdna) newmy = (loc.spaceY - 1) * tileY;
 				if (coordinates.Y >= loc.spaceY * tileY - 1 && loc.bezdna) {
 					invis = true;
-					if (vis) remVisual();
+					remVisual();
 				}
 				if (newmy)
 				{
@@ -915,16 +1007,24 @@ package fe.game.domain.location {
 			if (this.un) {
 				un.bindMove(v);
 			}
-			
-			if (vis) {
-				runVis();
-			}
+
+			runVis();
 		}
 		
 		public function runVis():void {
-			vis.x = shad.x = coordinates.X;
-			vis.y = coordinates.Y;
-			shad.y = coordinates.Y + (wall? 2:6);
+			if (art) {
+				art.x = coordinates.X;
+				art.y = coordinates.Y;
+			}
+			else {
+				vis.x = coordinates.X;
+				vis.y = coordinates.Y;
+			}
+
+			if (shadow) {
+				shadow.x = coordinates.X;
+				shadow.y = coordinates.Y + (wall? 2:6);
+			}
 		}
 		
 		public function sound(sid:String, msec:Number=0, vol:Number=1):* {

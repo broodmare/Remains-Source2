@@ -13,7 +13,7 @@ package fe.game {
 		// Initialize a weapon using the data passed to this function (formerly Weapon.getXmlParam)
 		// Anything that depends on the weapon's owner is applied later by Weapon.setOwner()
 		public static function applyData(weapon:Weapon, data:Object):void {
-			weapon.sloy = 2;	// ???
+			weapon.layer = 2;	// ???
 			weapon.id = data.id;
 			weapon.trasser = new Trasser();
 			

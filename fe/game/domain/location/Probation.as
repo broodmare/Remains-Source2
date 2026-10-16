@@ -184,17 +184,17 @@ package fe.game.domain.location {
 		private function doorsOnOff(turn:int):void {
 			for each (var b:Box in loc.objs) {
 				if (b.id=='doorout') {
-					if (!b.vis.visible && turn==1 || b.vis.visible && turn==-1) {
+					if (!b.isShown && turn==1 || b.isShown && turn==-1) {
 						b.inter.shine();
 					}
 					
 					if (turn==-1 || turn==0 && b.uid!='begin') {
-						b.vis.visible=b.shad.visible=false;
+						b.setShown(false);
 						b.inter.active=false;
 					}
 					
 					if (turn==1 || turn==0 && b.uid=='begin') {
-						b.vis.visible=b.shad.visible=true;
+						b.setShown(true);
 						b.inter.active=true;
 					}
 				}

@@ -1,0 +1,170 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 67,
+				"y": 1,
+				"w": 125,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 67,
+				"y": 0,
+				"w": 125,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 125,
+				"h": 67
+			},
+			"trimmed": false,
+			"rotated": false,
+			"pivot": {
+				"y": 0.5074626865671642,
+				"x": 0.504
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance61": "body",
+			"instance62": "auxiliary"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance61",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "exc4/visexc4.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance61",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "exc4/visexc4.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance62",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance61",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "exc4/visexc4.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance62",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance61",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "exc4/visexc4.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance61",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "exc4/visexc4.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 127,
+			"h": 69
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visexc4.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

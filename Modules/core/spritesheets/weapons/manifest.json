@@ -1,0 +1,1466 @@
+{
+	"source": "Modules/core/AllData/weapons.json",
+	"weapons": {
+		"armature": {
+			"symbol": "visarmature"
+		},
+		"bat": {
+			"symbol": "visbat"
+		},
+		"hsword": {
+			"symbol": "vishsword"
+		},
+		"knife": {
+			"symbol": "visknife"
+		},
+		"mont": {
+			"symbol": "vismont"
+		},
+		"mont^1": {
+			"symbol": "vismont",
+			"fallbackFrom": "vismont_1"
+		},
+		"chopper": {
+			"symbol": "vischopper"
+		},
+		"shovel": {
+			"symbol": "visshovel"
+		},
+		"spear": {
+			"symbol": "visspear"
+		},
+		"spear^1": {
+			"symbol": "visspear_1"
+		},
+		"mach": {
+			"symbol": "vismach"
+		},
+		"mach^1": {
+			"symbol": "vismach",
+			"fallbackFrom": "vismach_1"
+		},
+		"zknife": {
+			"symbol": "viszknife"
+		},
+		"zknife^1": {
+			"symbol": "viszknife",
+			"fallbackFrom": "viszknife_1"
+		},
+		"cknife": {
+			"symbol": "viscknife"
+		},
+		"cknife^1": {
+			"symbol": "viscknife",
+			"fallbackFrom": "viscknife_1"
+		},
+		"edagger": {
+			"symbol": "visedagger"
+		},
+		"cdagger": {
+			"symbol": "viscdagger"
+		},
+		"mace": {
+			"symbol": "vismace"
+		},
+		"pipe": {
+			"symbol": "vispipe"
+		},
+		"zsword": {
+			"symbol": "viszsword"
+		},
+		"zsword^1": {
+			"symbol": "viszsword",
+			"fallbackFrom": "viszsword_1"
+		},
+		"ripper": {
+			"symbol": "visripper"
+		},
+		"ripper^1": {
+			"symbol": "visripper",
+			"fallbackFrom": "visripper_1"
+		},
+		"axe": {
+			"symbol": "visaxe"
+		},
+		"hammer": {
+			"symbol": "vishammer"
+		},
+		"hammer^1": {
+			"symbol": "vishammer_1"
+		},
+		"tlance": {
+			"symbol": "vistlance"
+		},
+		"elsword": {
+			"symbol": "viselsword"
+		},
+		"elsword^1": {
+			"symbol": "viselsword",
+			"fallbackFrom": "viselsword_1"
+		},
+		"autoaxe": {
+			"symbol": "visautoaxe"
+		},
+		"mspear": {
+			"symbol": "vismspear"
+		},
+		"mspear^1": {
+			"symbol": "vismspear_1"
+		},
+		"sword": {
+			"symbol": "vissword"
+		},
+		"sword^1": {
+			"symbol": "vissword_1"
+		},
+		"lsword": {
+			"symbol": "vislsword"
+		},
+		"lsword^1": {
+			"symbol": "vislsword_1"
+		},
+		"bsaw": {
+			"symbol": "visbsaw"
+		},
+		"sledge": {
+			"symbol": "vissledge"
+		},
+		"sledge^1": {
+			"symbol": "vissledge",
+			"fallbackFrom": "vissledge_1"
+		},
+		"kosa": {
+			"symbol": "viskosa"
+		},
+		"p9mm": {
+			"symbol": "visp9mm"
+		},
+		"r32": {
+			"symbol": "visr32"
+		},
+		"r375": {
+			"symbol": "visr375"
+		},
+		"p10mm": {
+			"symbol": "visp10mm"
+		},
+		"p10mm^1": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "visp10mm_1"
+		},
+		"p10s": {
+			"symbol": "visp10s"
+		},
+		"revo": {
+			"symbol": "visrevo"
+		},
+		"revo^1": {
+			"symbol": "visrevo_1"
+		},
+		"p308c": {
+			"symbol": "visp308c"
+		},
+		"p127mm": {
+			"symbol": "visp127mm"
+		},
+		"p127mm^1": {
+			"symbol": "visp127mm",
+			"fallbackFrom": "visp127mm_1"
+		},
+		"psc": {
+			"symbol": "vispsc"
+		},
+		"psc^1": {
+			"symbol": "vispsc",
+			"fallbackFrom": "vispsc_1"
+		},
+		"shok": {
+			"symbol": "visshok"
+		},
+		"rech": {
+			"symbol": "visrech"
+		},
+		"flaregun": {
+			"symbol": "visflaregun"
+		},
+		"lasp": {
+			"symbol": "vislasp"
+		},
+		"lasp^1": {
+			"symbol": "vislasp",
+			"fallbackFrom": "vislasp_1"
+		},
+		"plap": {
+			"symbol": "visplap"
+		},
+		"plap^1": {
+			"symbol": "visplap",
+			"fallbackFrom": "visplap_1"
+		},
+		"pulsep": {
+			"symbol": "vispulsep"
+		},
+		"blaster": {
+			"symbol": "visblaster"
+		},
+		"wquest1": {
+			"symbol": "visp308c"
+		},
+		"smg9": {
+			"symbol": "vissmg9"
+		},
+		"smg10": {
+			"symbol": "vissmg10"
+		},
+		"pp127mm": {
+			"symbol": "vispp127mm"
+		},
+		"pp127mm^1": {
+			"symbol": "vispp127mm",
+			"fallbackFrom": "vispp127mm_1"
+		},
+		"assr": {
+			"symbol": "visassr"
+		},
+		"assr^1": {
+			"symbol": "visassr_1"
+		},
+		"carbine": {
+			"symbol": "viscarbine"
+		},
+		"carbine^1": {
+			"symbol": "viscarbine",
+			"fallbackFrom": "viscarbine_1"
+		},
+		"zebr": {
+			"symbol": "viszebr"
+		},
+		"zebr^1": {
+			"symbol": "viszebr",
+			"fallbackFrom": "viszebr_1"
+		},
+		"lmg": {
+			"symbol": "vislmg"
+		},
+		"lmg^1": {
+			"symbol": "vislmg",
+			"fallbackFrom": "vislmg_1"
+		},
+		"autor": {
+			"symbol": "visautor"
+		},
+		"sparkl": {
+			"symbol": "vissparkl"
+		},
+		"sparkl^1": {
+			"symbol": "vissparkl",
+			"fallbackFrom": "vissparkl_1"
+		},
+		"plamg": {
+			"symbol": "visplamg"
+		},
+		"plamg^1": {
+			"symbol": "visplamg",
+			"fallbackFrom": "visplamg_1"
+		},
+		"nova": {
+			"symbol": "visnova"
+		},
+		"nova^1": {
+			"symbol": "visnova",
+			"fallbackFrom": "visnova_1"
+		},
+		"quick": {
+			"symbol": "visquick"
+		},
+		"quick^1": {
+			"symbol": "visquick",
+			"fallbackFrom": "visquick_1"
+		},
+		"oldshot": {
+			"symbol": "visoldshot"
+		},
+		"oldshot^1": {
+			"symbol": "visoldshot",
+			"fallbackFrom": "visoldshot_1"
+		},
+		"lshot": {
+			"symbol": "vislshot"
+		},
+		"shotgun": {
+			"symbol": "visshotgun"
+		},
+		"shotgun^1": {
+			"symbol": "visshotgun",
+			"fallbackFrom": "visshotgun_1"
+		},
+		"saf9": {
+			"symbol": "vissaf9"
+		},
+		"saf9^1": {
+			"symbol": "vissaf9",
+			"fallbackFrom": "vissaf9_1"
+		},
+		"pshot": {
+			"symbol": "vispshot"
+		},
+		"pshot^1": {
+			"symbol": "vispshot",
+			"fallbackFrom": "vispshot_1"
+		},
+		"prism": {
+			"symbol": "visprism"
+		},
+		"prism^1": {
+			"symbol": "visprism",
+			"fallbackFrom": "visprism_1"
+		},
+		"cryo": {
+			"symbol": "viscryo"
+		},
+		"plam": {
+			"symbol": "visplam"
+		},
+		"plam^1": {
+			"symbol": "visplam_1"
+		},
+		"oldr": {
+			"symbol": "visoldr"
+		},
+		"oldr^1": {
+			"symbol": "visoldr",
+			"fallbackFrom": "visoldr_1"
+		},
+		"hunt": {
+			"symbol": "vishunt"
+		},
+		"winchester": {
+			"symbol": "viswinchester"
+		},
+		"winchester^1": {
+			"symbol": "viswinchester",
+			"fallbackFrom": "viswinchester_1"
+		},
+		"brushgun": {
+			"symbol": "visbrushgun"
+		},
+		"brushgun^1": {
+			"symbol": "visbrushgun",
+			"fallbackFrom": "visbrushgun_1"
+		},
+		"rechr": {
+			"symbol": "visrechr"
+		},
+		"lasr": {
+			"symbol": "vislasr"
+		},
+		"lasr^1": {
+			"symbol": "vislasr",
+			"fallbackFrom": "vislasr_1"
+		},
+		"plar": {
+			"symbol": "visplar"
+		},
+		"plar^1": {
+			"symbol": "visplar",
+			"fallbackFrom": "visplar_1"
+		},
+		"pulser": {
+			"symbol": "vispulser"
+		},
+		"pulser^1": {
+			"symbol": "vispulser",
+			"fallbackFrom": "vispulser_1"
+		},
+		"termo": {
+			"symbol": "vistermo"
+		},
+		"termo^1": {
+			"symbol": "vistermo",
+			"fallbackFrom": "vistermo_1"
+		},
+		"rail": {
+			"symbol": "visrail"
+		},
+		"rail^1": {
+			"symbol": "visrail",
+			"fallbackFrom": "visrail_1"
+		},
+		"sniper": {
+			"symbol": "vissniper"
+		},
+		"sniper^1": {
+			"symbol": "vissniper_1"
+		},
+		"lassn": {
+			"symbol": "vislassn"
+		},
+		"lassn^1": {
+			"symbol": "vislassn",
+			"fallbackFrom": "vislassn_1"
+		},
+		"grom": {
+			"symbol": "visgrom"
+		},
+		"grom^1": {
+			"symbol": "visgrom",
+			"fallbackFrom": "visgrom_1"
+		},
+		"anti": {
+			"symbol": "visanti"
+		},
+		"anti^1": {
+			"symbol": "visanti_1"
+		},
+		"minigun": {
+			"symbol": "visminigun"
+		},
+		"minigun^1": {
+			"symbol": "visminigun",
+			"fallbackFrom": "visminigun_1"
+		},
+		"hmg": {
+			"symbol": "vishmg"
+		},
+		"antidrak": {
+			"symbol": "visantidrak"
+		},
+		"antidrak^1": {
+			"symbol": "visantidrak",
+			"fallbackFrom": "visantidrak_1"
+		},
+		"gatl": {
+			"symbol": "visgatl"
+		},
+		"gatl^1": {
+			"symbol": "visgatl",
+			"fallbackFrom": "visgatl_1"
+		},
+		"gatp": {
+			"symbol": "visgatp"
+		},
+		"gatp^1": {
+			"symbol": "visgatp",
+			"fallbackFrom": "visgatp_1"
+		},
+		"flamer": {
+			"symbol": "visflamer"
+		},
+		"flamer^1": {
+			"symbol": "visflamer",
+			"fallbackFrom": "visflamer_1"
+		},
+		"incin": {
+			"symbol": "visincin"
+		},
+		"cflamer": {
+			"symbol": "viscflamer"
+		},
+		"cflamer^1": {
+			"symbol": "viscflamer",
+			"fallbackFrom": "viscflamer_1"
+		},
+		"bfg": {
+			"symbol": "visbfg"
+		},
+		"arson": {
+			"symbol": "visarson"
+		},
+		"arson^1": {
+			"symbol": "visarson",
+			"fallbackFrom": "visarson_1"
+		},
+		"dartgun": {
+			"symbol": "visdartgun"
+		},
+		"dartgun^1": {
+			"symbol": "visdartgun",
+			"fallbackFrom": "visdartgun_1"
+		},
+		"acidgun": {
+			"symbol": "visacidgun"
+		},
+		"acidgun^1": {
+			"symbol": "visacidgun",
+			"fallbackFrom": "visacidgun_1"
+		},
+		"sawgun": {
+			"symbol": "vissawgun"
+		},
+		"sawgun^1": {
+			"symbol": "vissawgun",
+			"fallbackFrom": "vissawgun_1"
+		},
+		"buckshot": {
+			"symbol": "visbuckshot"
+		},
+		"buckshot^1": {
+			"symbol": "visbuckshot",
+			"fallbackFrom": "visbuckshot_1"
+		},
+		"railway": {
+			"symbol": "visrailway"
+		},
+		"railway^1": {
+			"symbol": "visrailway",
+			"fallbackFrom": "visrailway_1"
+		},
+		"friend": {
+			"symbol": "visfriend"
+		},
+		"friend^1": {
+			"symbol": "visfriend",
+			"fallbackFrom": "visfriend_1"
+		},
+		"glau1": {
+			"symbol": "visglau1"
+		},
+		"glau": {
+			"symbol": "visglau"
+		},
+		"glau^1": {
+			"symbol": "visglau",
+			"fallbackFrom": "visglau_1"
+		},
+		"aglau": {
+			"symbol": "visaglau"
+		},
+		"mlau": {
+			"symbol": "vismlau"
+		},
+		"mlau^1": {
+			"symbol": "vismlau",
+			"fallbackFrom": "vismlau_1"
+		},
+		"bel": {
+			"symbol": "visbel"
+		},
+		"bel^1": {
+			"symbol": "visbel",
+			"fallbackFrom": "visbel_1"
+		},
+		"dinamit": {
+			"symbol": "visdinamit"
+		},
+		"hgren": {
+			"symbol": "vishgren"
+		},
+		"grenade": {
+			"symbol": "visgrenade"
+		},
+		"gasgr": {
+			"symbol": "visgasgr"
+		},
+		"acidgr": {
+			"symbol": "visacidgr"
+		},
+		"plagr": {
+			"symbol": "visplagr"
+		},
+		"impgr": {
+			"symbol": "visimpgr"
+		},
+		"cryogr": {
+			"symbol": "viscryogr"
+		},
+		"molotov": {
+			"symbol": "vismolotov"
+		},
+		"fgren": {
+			"symbol": "visfgren"
+		},
+		"spgren": {
+			"symbol": "visspgren"
+		},
+		"hmine": {
+			"symbol": "vishmine"
+		},
+		"mine": {
+			"symbol": "vismine"
+		},
+		"cryomine": {
+			"symbol": "viscryomine"
+		},
+		"plamine": {
+			"symbol": "visplamine"
+		},
+		"impmine": {
+			"symbol": "visimpmine"
+		},
+		"x37": {
+			"symbol": "visx37"
+		},
+		"zebmine": {
+			"symbol": "viszebmine"
+		},
+		"balemine": {
+			"symbol": "visbalemine"
+		},
+		"dbomb": {
+			"symbol": "visdbomb"
+		},
+		"bomb": {
+			"symbol": "visbomb"
+		},
+		"exc4": {
+			"symbol": "visexc4"
+		},
+		"telebul": {
+			"symbol": "vistelebul"
+		},
+		"mbul": {
+			"symbol": "vismbul"
+		},
+		"mbul^1": {
+			"symbol": "vismbul",
+			"fallbackFrom": "vismbul_1"
+		},
+		"ice": {
+			"symbol": "visice"
+		},
+		"ice^1": {
+			"symbol": "visice",
+			"fallbackFrom": "visice_1"
+		},
+		"dragon": {
+			"symbol": "visdragon"
+		},
+		"dragon^1": {
+			"symbol": "visdragon",
+			"fallbackFrom": "visdragon_1"
+		},
+		"blades": {
+			"symbol": "visblades"
+		},
+		"blades^1": {
+			"symbol": "visblades",
+			"fallbackFrom": "visblades_1"
+		},
+		"lightning": {
+			"symbol": "vislightning"
+		},
+		"lightning^1": {
+			"symbol": "vislightning",
+			"fallbackFrom": "vislightning_1"
+		},
+		"fireball": {
+			"symbol": "visfireball"
+		},
+		"fireball^1": {
+			"symbol": "visfireball",
+			"fallbackFrom": "visfireball_1"
+		},
+		"mray": {
+			"symbol": "vismray"
+		},
+		"mray^1": {
+			"symbol": "vismray",
+			"fallbackFrom": "vismray_1"
+		},
+		"defwave": {
+			"symbol": "visdefwave"
+		},
+		"defwave^1": {
+			"symbol": "visdefwave",
+			"fallbackFrom": "visdefwave_1"
+		},
+		"eclipse": {
+			"symbol": "viseclipse"
+		},
+		"eclipse^1": {
+			"symbol": "viseclipse",
+			"fallbackFrom": "viseclipse_1"
+		},
+		"dray": {
+			"symbol": "visdray"
+		},
+		"udar": {
+			"symbol": "vistelebul"
+		},
+		"skybolt": {
+			"symbol": "visskybolt"
+		},
+		"test": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vistest"
+		},
+		"a_melee": {
+			"symbol": "visa_melee"
+		},
+		"a_fire": {
+			"symbol": "visa_fire"
+		},
+		"a_energ": {
+			"symbol": "visa_energ"
+		},
+		"a_expl": {
+			"symbol": "visa_expl"
+		},
+		"a_magic": {
+			"symbol": "visa_magic"
+		},
+		"sp_slow": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_slow"
+		},
+		"sp_mwall": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_mwall"
+		},
+		"sp_blast": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_blast"
+		},
+		"sp_cryst": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_cryst"
+		},
+		"sp_kdash": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_kdash"
+		},
+		"sp_mshit": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_mshit"
+		},
+		"sp_moon": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_moon"
+		},
+		"sp_gwall": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_gwall"
+		},
+		"sp_invulner": {
+			"symbol": "visp10mm",
+			"fallbackFrom": "vissp_invulner"
+		},
+		"mercgr": {
+			"symbol": "vismercgr"
+		},
+		"alilight": {
+			"symbol": "visalilight"
+		},
+		"alipsy": {
+			"symbol": "vismray"
+		},
+		"alilight2": {
+			"symbol": "visbloodlight"
+		},
+		"aliblade": {
+			"symbol": "visbloodlight"
+		},
+		"alipsy2": {
+			"symbol": "visbloodlight"
+		},
+		"alimray": {
+			"symbol": "visalimray"
+		},
+		"robolaser": {
+			"symbol": "visrobolaser"
+		},
+		"robospark": {
+			"symbol": "visrobospark"
+		},
+		"robolaser2": {
+			"symbol": "visrobolaser"
+		},
+		"robospark2": {
+			"symbol": "visrobospark"
+		},
+		"roboplasma": {
+			"symbol": "visroboplasma"
+		},
+		"roboplasma2": {
+			"symbol": "visroboplasma"
+		},
+		"roboplam": {
+			"symbol": "visroboplam"
+		},
+		"robosparkl": {
+			"symbol": "visrobosparkl"
+		},
+		"robonova": {
+			"symbol": "visrobonova"
+		},
+		"robominigun": {
+			"symbol": "visrobominigun"
+		},
+		"robogatl": {
+			"symbol": "visrobogatl"
+		},
+		"robogatp": {
+			"symbol": "visrobogatp"
+		},
+		"robogatp2": {
+			"symbol": "visrobogatp2"
+		},
+		"roboplagr": {
+			"symbol": "visroboplagr"
+		},
+		"drongr": {
+			"symbol": "visdrongr"
+		},
+		"dronlaser": {
+			"symbol": "visdronlaser"
+		},
+		"dronplasma": {
+			"symbol": "visbloodlight"
+		},
+		"dronpspark": {
+			"symbol": "vislightning"
+		},
+		"owllaser": {
+			"symbol": "visowllaser"
+		},
+		"turretWep1": {
+			"symbol": "viswturret"
+		},
+		"turretWep2": {
+			"symbol": "viswturret"
+		},
+		"turretWep3": {
+			"symbol": "viswturret"
+		},
+		"turretWep4": {
+			"symbol": "viswturret"
+		},
+		"turretWep5": {
+			"symbol": "viswturret"
+		},
+		"turretWep6": {
+			"symbol": "viswturret"
+		},
+		"turretWep7": {
+			"symbol": "viswturret"
+		},
+		"ttweap1": {
+			"symbol": "visttweap1"
+		},
+		"ttweap2": {
+			"symbol": "visttweap2"
+		},
+		"ttweap3": {
+			"symbol": "visttweap3"
+		},
+		"ttweap4": {
+			"symbol": "visttweap4"
+		},
+		"ttweap5": {
+			"symbol": "visttweap5"
+		},
+		"ttweap6": {
+			"symbol": "visttweap6"
+		}
+	},
+	"symbols": {
+		"visarmature": [
+			"armature"
+		],
+		"visbat": [
+			"bat"
+		],
+		"vishsword": [
+			"hsword"
+		],
+		"visknife": [
+			"knife"
+		],
+		"vismont": [
+			"mont",
+			"mont^1"
+		],
+		"vischopper": [
+			"chopper"
+		],
+		"visshovel": [
+			"shovel"
+		],
+		"visspear": [
+			"spear"
+		],
+		"visspear_1": [
+			"spear^1"
+		],
+		"vismach": [
+			"mach",
+			"mach^1"
+		],
+		"viszknife": [
+			"zknife",
+			"zknife^1"
+		],
+		"viscknife": [
+			"cknife",
+			"cknife^1"
+		],
+		"visedagger": [
+			"edagger"
+		],
+		"viscdagger": [
+			"cdagger"
+		],
+		"vismace": [
+			"mace"
+		],
+		"vispipe": [
+			"pipe"
+		],
+		"viszsword": [
+			"zsword",
+			"zsword^1"
+		],
+		"visripper": [
+			"ripper",
+			"ripper^1"
+		],
+		"visaxe": [
+			"axe"
+		],
+		"vishammer": [
+			"hammer"
+		],
+		"vishammer_1": [
+			"hammer^1"
+		],
+		"vistlance": [
+			"tlance"
+		],
+		"viselsword": [
+			"elsword",
+			"elsword^1"
+		],
+		"visautoaxe": [
+			"autoaxe"
+		],
+		"vismspear": [
+			"mspear"
+		],
+		"vismspear_1": [
+			"mspear^1"
+		],
+		"vissword": [
+			"sword"
+		],
+		"vissword_1": [
+			"sword^1"
+		],
+		"vislsword": [
+			"lsword"
+		],
+		"vislsword_1": [
+			"lsword^1"
+		],
+		"visbsaw": [
+			"bsaw"
+		],
+		"vissledge": [
+			"sledge",
+			"sledge^1"
+		],
+		"viskosa": [
+			"kosa"
+		],
+		"visp9mm": [
+			"p9mm"
+		],
+		"visr32": [
+			"r32"
+		],
+		"visr375": [
+			"r375"
+		],
+		"visp10mm": [
+			"p10mm",
+			"p10mm^1",
+			"test",
+			"sp_slow",
+			"sp_mwall",
+			"sp_blast",
+			"sp_cryst",
+			"sp_kdash",
+			"sp_mshit",
+			"sp_moon",
+			"sp_gwall",
+			"sp_invulner"
+		],
+		"visp10s": [
+			"p10s"
+		],
+		"visrevo": [
+			"revo"
+		],
+		"visrevo_1": [
+			"revo^1"
+		],
+		"visp308c": [
+			"p308c",
+			"wquest1"
+		],
+		"visp127mm": [
+			"p127mm",
+			"p127mm^1"
+		],
+		"vispsc": [
+			"psc",
+			"psc^1"
+		],
+		"visshok": [
+			"shok"
+		],
+		"visrech": [
+			"rech"
+		],
+		"visflaregun": [
+			"flaregun"
+		],
+		"vislasp": [
+			"lasp",
+			"lasp^1"
+		],
+		"visplap": [
+			"plap",
+			"plap^1"
+		],
+		"vispulsep": [
+			"pulsep"
+		],
+		"visblaster": [
+			"blaster"
+		],
+		"vissmg9": [
+			"smg9"
+		],
+		"vissmg10": [
+			"smg10"
+		],
+		"vispp127mm": [
+			"pp127mm",
+			"pp127mm^1"
+		],
+		"visassr": [
+			"assr"
+		],
+		"visassr_1": [
+			"assr^1"
+		],
+		"viscarbine": [
+			"carbine",
+			"carbine^1"
+		],
+		"viszebr": [
+			"zebr",
+			"zebr^1"
+		],
+		"vislmg": [
+			"lmg",
+			"lmg^1"
+		],
+		"visautor": [
+			"autor"
+		],
+		"vissparkl": [
+			"sparkl",
+			"sparkl^1"
+		],
+		"visplamg": [
+			"plamg",
+			"plamg^1"
+		],
+		"visnova": [
+			"nova",
+			"nova^1"
+		],
+		"visquick": [
+			"quick",
+			"quick^1"
+		],
+		"visoldshot": [
+			"oldshot",
+			"oldshot^1"
+		],
+		"vislshot": [
+			"lshot"
+		],
+		"visshotgun": [
+			"shotgun",
+			"shotgun^1"
+		],
+		"vissaf9": [
+			"saf9",
+			"saf9^1"
+		],
+		"vispshot": [
+			"pshot",
+			"pshot^1"
+		],
+		"visprism": [
+			"prism",
+			"prism^1"
+		],
+		"viscryo": [
+			"cryo"
+		],
+		"visplam": [
+			"plam"
+		],
+		"visplam_1": [
+			"plam^1"
+		],
+		"visoldr": [
+			"oldr",
+			"oldr^1"
+		],
+		"vishunt": [
+			"hunt"
+		],
+		"viswinchester": [
+			"winchester",
+			"winchester^1"
+		],
+		"visbrushgun": [
+			"brushgun",
+			"brushgun^1"
+		],
+		"visrechr": [
+			"rechr"
+		],
+		"vislasr": [
+			"lasr",
+			"lasr^1"
+		],
+		"visplar": [
+			"plar",
+			"plar^1"
+		],
+		"vispulser": [
+			"pulser",
+			"pulser^1"
+		],
+		"vistermo": [
+			"termo",
+			"termo^1"
+		],
+		"visrail": [
+			"rail",
+			"rail^1"
+		],
+		"vissniper": [
+			"sniper"
+		],
+		"vissniper_1": [
+			"sniper^1"
+		],
+		"vislassn": [
+			"lassn",
+			"lassn^1"
+		],
+		"visgrom": [
+			"grom",
+			"grom^1"
+		],
+		"visanti": [
+			"anti"
+		],
+		"visanti_1": [
+			"anti^1"
+		],
+		"visminigun": [
+			"minigun",
+			"minigun^1"
+		],
+		"vishmg": [
+			"hmg"
+		],
+		"visantidrak": [
+			"antidrak",
+			"antidrak^1"
+		],
+		"visgatl": [
+			"gatl",
+			"gatl^1"
+		],
+		"visgatp": [
+			"gatp",
+			"gatp^1"
+		],
+		"visflamer": [
+			"flamer",
+			"flamer^1"
+		],
+		"visincin": [
+			"incin"
+		],
+		"viscflamer": [
+			"cflamer",
+			"cflamer^1"
+		],
+		"visbfg": [
+			"bfg"
+		],
+		"visarson": [
+			"arson",
+			"arson^1"
+		],
+		"visdartgun": [
+			"dartgun",
+			"dartgun^1"
+		],
+		"visacidgun": [
+			"acidgun",
+			"acidgun^1"
+		],
+		"vissawgun": [
+			"sawgun",
+			"sawgun^1"
+		],
+		"visbuckshot": [
+			"buckshot",
+			"buckshot^1"
+		],
+		"visrailway": [
+			"railway",
+			"railway^1"
+		],
+		"visfriend": [
+			"friend",
+			"friend^1"
+		],
+		"visglau1": [
+			"glau1"
+		],
+		"visglau": [
+			"glau",
+			"glau^1"
+		],
+		"visaglau": [
+			"aglau"
+		],
+		"vismlau": [
+			"mlau",
+			"mlau^1"
+		],
+		"visbel": [
+			"bel",
+			"bel^1"
+		],
+		"visdinamit": [
+			"dinamit"
+		],
+		"vishgren": [
+			"hgren"
+		],
+		"visgrenade": [
+			"grenade"
+		],
+		"visgasgr": [
+			"gasgr"
+		],
+		"visacidgr": [
+			"acidgr"
+		],
+		"visplagr": [
+			"plagr"
+		],
+		"visimpgr": [
+			"impgr"
+		],
+		"viscryogr": [
+			"cryogr"
+		],
+		"vismolotov": [
+			"molotov"
+		],
+		"visfgren": [
+			"fgren"
+		],
+		"visspgren": [
+			"spgren"
+		],
+		"vishmine": [
+			"hmine"
+		],
+		"vismine": [
+			"mine"
+		],
+		"viscryomine": [
+			"cryomine"
+		],
+		"visplamine": [
+			"plamine"
+		],
+		"visimpmine": [
+			"impmine"
+		],
+		"visx37": [
+			"x37"
+		],
+		"viszebmine": [
+			"zebmine"
+		],
+		"visbalemine": [
+			"balemine"
+		],
+		"visdbomb": [
+			"dbomb"
+		],
+		"visbomb": [
+			"bomb"
+		],
+		"visexc4": [
+			"exc4"
+		],
+		"vistelebul": [
+			"telebul",
+			"udar"
+		],
+		"vismbul": [
+			"mbul",
+			"mbul^1"
+		],
+		"visice": [
+			"ice",
+			"ice^1"
+		],
+		"visdragon": [
+			"dragon",
+			"dragon^1"
+		],
+		"visblades": [
+			"blades",
+			"blades^1"
+		],
+		"vislightning": [
+			"lightning",
+			"lightning^1",
+			"dronpspark"
+		],
+		"visfireball": [
+			"fireball",
+			"fireball^1"
+		],
+		"vismray": [
+			"mray",
+			"mray^1",
+			"alipsy"
+		],
+		"visdefwave": [
+			"defwave",
+			"defwave^1"
+		],
+		"viseclipse": [
+			"eclipse",
+			"eclipse^1"
+		],
+		"visdray": [
+			"dray"
+		],
+		"visskybolt": [
+			"skybolt"
+		],
+		"visa_melee": [
+			"a_melee"
+		],
+		"visa_fire": [
+			"a_fire"
+		],
+		"visa_energ": [
+			"a_energ"
+		],
+		"visa_expl": [
+			"a_expl"
+		],
+		"visa_magic": [
+			"a_magic"
+		],
+		"vismercgr": [
+			"mercgr"
+		],
+		"visalilight": [
+			"alilight"
+		],
+		"visbloodlight": [
+			"alilight2",
+			"aliblade",
+			"alipsy2",
+			"dronplasma"
+		],
+		"visalimray": [
+			"alimray"
+		],
+		"visrobolaser": [
+			"robolaser",
+			"robolaser2"
+		],
+		"visrobospark": [
+			"robospark",
+			"robospark2"
+		],
+		"visroboplasma": [
+			"roboplasma",
+			"roboplasma2"
+		],
+		"visroboplam": [
+			"roboplam"
+		],
+		"visrobosparkl": [
+			"robosparkl"
+		],
+		"visrobonova": [
+			"robonova"
+		],
+		"visrobominigun": [
+			"robominigun"
+		],
+		"visrobogatl": [
+			"robogatl"
+		],
+		"visrobogatp": [
+			"robogatp"
+		],
+		"visrobogatp2": [
+			"robogatp2"
+		],
+		"visroboplagr": [
+			"roboplagr"
+		],
+		"visdrongr": [
+			"drongr"
+		],
+		"visdronlaser": [
+			"dronlaser"
+		],
+		"visowllaser": [
+			"owllaser"
+		],
+		"viswturret": [
+			"turretWep1",
+			"turretWep2",
+			"turretWep3",
+			"turretWep4",
+			"turretWep5",
+			"turretWep6",
+			"turretWep7"
+		],
+		"visttweap1": [
+			"ttweap1"
+		],
+		"visttweap2": [
+			"ttweap2"
+		],
+		"visttweap3": [
+			"ttweap3"
+		],
+		"visttweap4": [
+			"ttweap4"
+		],
+		"visttweap5": [
+			"ttweap5"
+		],
+		"visttweap6": [
+			"ttweap6"
+		]
+	},
+	"schemaVersion": 3,
+	"shared": "_shared/effects.json"
+}

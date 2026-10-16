@@ -1,0 +1,176 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"h": 38,
+				"y": 1,
+				"w": 224,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 224,
+				"h": 38
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 38,
+				"y": 0,
+				"w": 224,
+				"x": 0
+			}
+		},
+		"image_002": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"h": 38,
+				"y": 41,
+				"w": 224,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 224,
+				"h": 38
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 38,
+				"y": 0,
+				"w": 224,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"lez": "body",
+			"kor": "tint"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "elsword/viselsword_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_001",
+						"role": "body",
+						"source": "lez",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							40.00000238418593,
+							-0.8333333830038754
+						],
+						"sheet": "elsword/viselsword.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "elsword/viselsword_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "body",
+						"source": "lez",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							40.00000238418593,
+							-0.8333333830038754
+						],
+						"sheet": "elsword/viselsword.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "elsword/viselsword_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "body",
+						"source": "lez",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							40.00000238418593,
+							-0.8333333830038754
+						],
+						"sheet": "elsword/viselsword.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 226,
+			"h": 80
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "viselsword.png",
+		"tintLayer": "viselsword_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

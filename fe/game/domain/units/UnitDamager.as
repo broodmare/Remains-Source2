@@ -61,7 +61,7 @@ package fe.game.domain.units {
 			levitPoss	= false;
 			isSats		= false;
 			doop		= true;
-			sloy		= 0;
+			layer		= 0;
 			noBox		= true;
 			
 			if (loadObj && loadObj.tr != null) {

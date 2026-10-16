@@ -19,6 +19,7 @@ package fe.game.ui {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.enums.E_ArmorTypes;
+	import fe.engine.utils.SymbolFactory;
 	
 	public class Stand {
 		
@@ -64,7 +65,7 @@ package fe.game.ui {
 				page.visible = false;
 				vis.addChild(page);
 				pages[i] = page;
-				var but:MovieClip = new butStand(); // .SWF Dependency
+				var but:MovieClip = SymbolFactory.createInstance("butStand"); // .SWF Dependency
 				but.id.text = i;
 				but.id.visible = false;
 				but.ico.gotoAndStop(i + 2);
@@ -94,7 +95,7 @@ package fe.game.ui {
 			createArtList(8);
 			showWeaponList(0);
 			
-			info = new visualStandInfo(); // SWF Dependency
+			info = SymbolFactory.createInstance("visualStandInfo"); // SWF Dependency
 			vis.addChild(info);
 			info.visible=false;
 			PipPage.setStyle(info.info);
@@ -129,7 +130,7 @@ package fe.game.ui {
 				}
 				
 				if ((n==0 && weap.skill==1) || (n==1 && weap.skill==2) || (n==2 && weap.skill==4) || (n==3 && weap.skill==5) || (n==4 && weap.skill==3) || (n==5 && weap.skill>=6)) {
-					var item:MovieClip = new itemStand();  // SWF Dependency
+					var item:MovieClip = SymbolFactory.createInstance("itemStand");  // SWF Dependency
 					var uniqueId:String = ItemInteraction.uniqueVariant(weap.id);
 					
 					if (weap.tip == Weapon.TYPE_MAGIC) {
@@ -159,7 +160,7 @@ package fe.game.ui {
 					
 					// [Spell]
 					if (weap.tip == Weapon.TYPE_MAGIC) {
-						infIco = new itemIco();  // SWF Dependency
+						infIco = SymbolFactory.createInstance("itemIco");  // SWF Dependency
 						
 						try {
 							infIco.gotoAndStop(weap.id);
@@ -239,7 +240,7 @@ package fe.game.ui {
 		
 		private function createArtList(n:int):void {
 			for (var stolb:int = 0; stolb < 6; stolb++) {
-				var item:MovieClip = new itemArt();  // SWF Dependency
+				var item:MovieClip = SymbolFactory.createInstance("itemArt");  // SWF Dependency
 				item.x = 80 + stolb * 160;
 				item.y = 40;
 				item.art.gotoAndStop(ls[stolb]);
@@ -254,7 +255,7 @@ package fe.game.ui {
 		private function createArmorList(n:int):void {
 			var stolb:int = 0;
 			var str:int = 0;
-			var dvis:MovieClip = new visBodyStay();  // SWF Dependency
+			var dvis:MovieClip = SymbolFactory.createInstance("visBodyStay");  // SWF Dependency
 			var sc:Number = 1.5;
 			var aid:String = Appear.ggArmorId;
 			Appear.transp = true;
@@ -266,7 +267,7 @@ package fe.game.ui {
 					continue;
 				}
 
-				var item:MovieClip = new itemArt();  // SWF Dependency
+				var item:MovieClip = SymbolFactory.createInstance("itemArt");  // SWF Dependency
 				item.x = 80 + stolb * 160;
 				item.y = str * 180;
 				stolb++;

@@ -1,0 +1,170 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 62,
+				"y": 1,
+				"w": 126,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 62,
+				"y": 0,
+				"w": 126,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 126,
+				"h": 62
+			},
+			"trimmed": false,
+			"rotated": false,
+			"pivot": {
+				"y": 0.6451612903225806,
+				"x": 0.5
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance40": "body",
+			"instance41": "auxiliary"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "zebmine/viszebmine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "zebmine/viszebmine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "zebmine/viszebmine.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance41",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							-8.33333383003874
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "zebmine/viszebmine.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance41",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0.8333333830038736,
+							-9.166667213042608
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance40",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "zebmine/viszebmine.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 128,
+			"h": 64
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "viszebmine.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

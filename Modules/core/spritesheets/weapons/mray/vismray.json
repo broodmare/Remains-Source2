@@ -1,0 +1,312 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance115": "auxiliary",
+			"instance129": "muzzleFlash"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.3989715615295308,
+							0,
+							0,
+							0.3989715615295308,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.4631500222176327,
+							0,
+							0,
+							0.4631500222176327,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.5273437317615985,
+							0,
+							0,
+							0.5273437317615985,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.5915527398319685,
+							0,
+							0,
+							0.5915527398319685,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.6557464990464746,
+							0,
+							0,
+							0.6557464990464746,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.7199402085904405,
+							0,
+							0,
+							0.7199402085904405,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.7841492166608105,
+							0,
+							0,
+							0.7841492166608105,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.8483429262047764,
+							0,
+							0,
+							0.8483429262047764,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.9125519342751464,
+							0,
+							0,
+							0.9125519342751464,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							0.9767456438191122,
+							0,
+							0,
+							0.9767456438191122,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							1.040939353363078,
+							0,
+							0,
+							1.040939353363078,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							1.1051484607745286,
+							0,
+							0,
+							1.1051484607745286,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							1.1693420709774138,
+							0,
+							0,
+							1.1693420709774138,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					},
+					{
+						"sprite": "flash_d95f9264f888fde2",
+						"role": "muzzleFlash",
+						"source": "instance129",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d95f9264f888fde2.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance115",
+						"matrix": [
+							1.233551079047784,
+							0,
+							0,
+							1.233551079047784,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					},
+					{
+						"sprite": "flash_d95f9264f888fde2",
+						"role": "muzzleFlash",
+						"source": "instance129",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d95f9264f888fde2.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 15,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

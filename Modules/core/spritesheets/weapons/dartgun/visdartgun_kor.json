@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.49411764705882355,
+				"x": 0.47928994082840237
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 169,
+				"h": 85
+			},
+			"sourceSize": {
+				"w": 169,
+				"h": 85
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 169,
+				"h": 85
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 171,
+			"h": 87
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visdartgun_kor.png",
+		"app": "Remains exporter"
+	}
+}

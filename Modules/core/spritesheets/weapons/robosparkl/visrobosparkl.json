@@ -1,0 +1,155 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 52,
+				"y": 0,
+				"w": 131,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 131,
+				"h": 52
+			},
+			"frame": {
+				"h": 52,
+				"y": 1,
+				"w": 131,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5192307692307693,
+				"x": 0.5038167938931297
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance175": "body",
+			"instance177": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 22.500001341104586
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 22.500001341104586
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 22.500001341104586
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance175",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							8.333333830038736,
+							0
+						],
+						"sheet": "robosparkl/visrobosparkl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance175",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							8.333333830038736,
+							0
+						],
+						"sheet": "robosparkl/visrobosparkl.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance177",
+						"matrix": [
+							0.6019745629215973,
+							0,
+							0,
+							0.6019745629215973,
+							25.83333487312008,
+							0.8333333830038754
+						],
+						"effect": "sphere_aace78b92efffba6"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance175",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							8.333333830038736,
+							0
+						],
+						"sheet": "robosparkl/visrobosparkl.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance177",
+						"matrix": [
+							0.3188018939178324,
+							0,
+							0,
+							0.3188018939178324,
+							23.33333472410846,
+							0
+						],
+						"effect": "sphere_aace78b92efffba6"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 133,
+			"h": 54
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visrobosparkl.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"image": "checkpoint_lock.png",
+	"density": 1,
+	"width": 34,
+	"height": 34,
+	"blend": "normal",
+	"images": {
+		"frame0_0": {"x": 0, "y": 94, "w": 34, "h": 22, "pivotX": 17, "pivotY": 70},
+		"frame1_0": {"x": 36, "y": 66, "w": 34, "h": 22, "pivotX": 17, "pivotY": 70},
+		"frame2_0": {"x": 0, "y": 0, "w": 36, "h": 64, "pivotX": 18, "pivotY": 91},
+		"frame3_0": {"x": 0, "y": 66, "w": 34, "h": 26, "pivotX": 17, "pivotY": 72},
+		"frame4_0": {"x": 38, "y": 0, "w": 34, "h": 34, "pivotX": 17, "pivotY": 76}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]},
+		{"images": ["frame2_0"]},
+		{"images": ["frame3_0"]},
+		{"images": ["frame4_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

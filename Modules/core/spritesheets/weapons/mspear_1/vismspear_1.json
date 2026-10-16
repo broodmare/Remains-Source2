@@ -1,0 +1,219 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.4704641350210971
+			},
+			"frame": {
+				"h": 82,
+				"y": 1,
+				"w": 474,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 474,
+				"h": 82
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 82,
+				"y": 0,
+				"w": 474,
+				"x": 0
+			}
+		},
+		"image_002": {
+			"pivot": {
+				"y": 0.5128205128205128,
+				"x": -0.7894736842105263
+			},
+			"frame": {
+				"h": 39,
+				"y": 85,
+				"w": 38,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 38,
+				"h": 39
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 39,
+				"y": 0,
+				"w": 38,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance24": "auxiliary",
+			"instance25": "body",
+			"instance26": "body",
+			"instance27": "auxiliary"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance24",
+						"matrix": [
+							0.5838928471342433,
+							0,
+							0,
+							1,
+							14.166667511065851,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance25",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance26",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance25",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "auxiliary",
+						"source": "instance27",
+						"matrix": [
+							0.6177673608720716,
+							0,
+							0,
+							1,
+							23.33333472410846,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance24",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1_auxiliary.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance25",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "auxiliary",
+						"source": "instance27",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							32.50000193715107,
+							0
+						],
+						"sheet": "mspear_1/vismspear_1_auxiliary.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"auxiliaryLayer": "vismspear_1_auxiliary.png",
+		"size": {
+			"w": 476,
+			"h": 125
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "vismspear_1.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 110,
+				"h": 86
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 110,
+				"h": 86
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 110,
+				"h": 86
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 112,
+			"h": 88
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visbel_magazine.png",
+		"app": "Remains exporter"
+	}
+}

@@ -1,0 +1,178 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance108": "auxiliary",
+			"instance109": "auxiliary"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance108",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							-10.000000596046483
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance108",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "auxiliary",
+						"source": "instance109",
+						"matrix": [
+							-0.4766388024869841,
+							-0.4102935886558049,
+							0.4102935886558049,
+							-0.4766388024869841,
+							3.3333335320154944,
+							-7.500000447034864
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance108",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "auxiliary",
+						"source": "instance109",
+						"matrix": [
+							-0.4766388024869841,
+							-0.4102935886558049,
+							0.4102935886558049,
+							-0.4766388024869841,
+							3.3333335320154944,
+							-7.500000447034864
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance108",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "auxiliary",
+						"source": "instance109",
+						"matrix": [
+							-0.30140684851448823,
+							-0.2594452009267728,
+							0.2594452009267728,
+							-0.30140684851448823,
+							3.3333335320154944,
+							-5.8333336810271135
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance108",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "auxiliary",
+						"source": "instance109",
+						"matrix": [
+							-0.30140684851448823,
+							-0.2594452009267728,
+							0.2594452009267728,
+							-0.30140684851448823,
+							3.3333335320154944,
+							-5.8333336810271135
+						],
+						"sheet": "molotov/vismolotov_auxiliary.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"auxiliaryLayer": "vismolotov_auxiliary.png",
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": null,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

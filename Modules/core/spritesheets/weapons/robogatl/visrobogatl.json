@@ -1,0 +1,222 @@
+{
+	"frames": {
+		"image_002": {
+			"spriteSourceSize": {
+				"h": 712,
+				"y": 0,
+				"w": 1077,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 1077,
+				"h": 712
+			},
+			"frame": {
+				"h": 712,
+				"y": 1,
+				"w": 1077,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.16853932584269662,
+				"x": 0.3909006499535747
+			},
+			"trimmed": false,
+			"rotated": false
+		},
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 46,
+				"y": 0,
+				"w": 98,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 98,
+				"h": 46
+			},
+			"frame": {
+				"h": 46,
+				"y": 715,
+				"w": 98,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance206": "body",
+			"instance208": "body",
+			"instance210": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 20.000001192092967,
+					"x": 39.16666900118206
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 20.000001192092967,
+					"x": 39.16666900118206
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 20.000001192092967,
+					"x": 39.16666900118206
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance206",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							27.50000163912783,
+							22.500001341104593
+						],
+						"sheet": "robogatl/visrobogatl.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance208",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robogatl/visrobogatl.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance206",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							27.50000163912783,
+							22.500001341104593
+						],
+						"sheet": "robogatl/visrobogatl.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance208",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robogatl/visrobogatl.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance210",
+						"matrix": [
+							0.4250488435257779,
+							0,
+							0,
+							0.4211121055153274,
+							40.83333576718981,
+							21.666667958100717
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance206",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							27.50000163912783,
+							22.500001341104593
+						],
+						"sheet": "robogatl/visrobogatl.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance208",
+						"matrix": [
+							0.23498536556871924,
+							0,
+							0,
+							0.23498536556871924,
+							0,
+							0
+						],
+						"sheet": "robogatl/visrobogatl.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance210",
+						"matrix": [
+							0.3039093248392736,
+							0,
+							0,
+							0.30108642385918444,
+							40.83333576718981,
+							21.666667958100717
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 1079,
+			"h": 762
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visrobogatl.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

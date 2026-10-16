@@ -1,0 +1,20 @@
+{
+	"image": "ccup.png",
+	"density": 1,
+	"width": 40,
+	"height": 45,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 67, "w": 40, "h": 45, "pivotX": 20, "pivotY": 45},
+		"frame1_0": {"x": 42, "y": 67, "w": 40, "h": 45, "pivotX": 20, "pivotY": 45},
+		"shadow": {"x": 0, "y": 0, "w": 60, "h": 65, "pivotX": 30, "pivotY": 55}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

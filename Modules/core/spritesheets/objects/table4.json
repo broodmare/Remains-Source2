@@ -1,0 +1,18 @@
+{
+	"image": "table4.png",
+	"density": 1,
+	"width": 80,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 62, "w": 77, "h": 40, "pivotX": 38, "pivotY": 40},
+		"shadow": {"x": 0, "y": 0, "w": 90, "h": 60, "pivotX": 45, "pivotY": 50}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

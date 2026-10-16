@@ -1,0 +1,18 @@
+{
+	"image": "vault.png",
+	"density": 1,
+	"width": 60,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 59, "w": 60, "h": 38, "pivotX": 30, "pivotY": 38},
+		"shadow": {"x": 0, "y": 0, "w": 80, "h": 57, "pivotX": 40, "pivotY": 48}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

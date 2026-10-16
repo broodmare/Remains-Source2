@@ -1,0 +1,189 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance90": "muzzleFlash"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance90",
+						"matrix": [
+							0.7999420642818251,
+							0,
+							0,
+							0.7999420642818251,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"source": "instance90",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.81640625,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.7199402085904405,
+							0,
+							0,
+							0.7199402085904405,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"source": "instance90",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.63671875,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.6399383528990559,
+							0,
+							0,
+							0.6399383528990559,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"source": "instance90",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.453125,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.5599518454046157,
+							0,
+							0,
+							0.5599518454046157,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"source": "instance90",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.2734375,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.4799499897132311,
+							0,
+							0,
+							0.4799499897132311,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"source": "instance90",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.08984375,
+							0,
+							0,
+							0,
+							0
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.3999786317335744,
+							0,
+							0,
+							0.3999786317335744,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 7,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

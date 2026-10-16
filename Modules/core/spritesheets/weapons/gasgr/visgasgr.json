@@ -1,0 +1,170 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 50,
+				"y": 1,
+				"w": 50,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 50,
+				"h": 50
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 50,
+				"y": 0,
+				"w": 50,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance83": "auxiliary",
+			"instance82": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance82",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "gasgr/visgasgr.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance82",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "gasgr/visgasgr.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance83",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance82",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "gasgr/visgasgr.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance83",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance82",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "gasgr/visgasgr.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance82",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "gasgr/visgasgr.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 52,
+			"h": 52
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visgasgr.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

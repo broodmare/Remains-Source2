@@ -1,0 +1,20 @@
+{
+	"image": "weapbox.png",
+	"density": 1,
+	"width": 48,
+	"height": 78,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 70, "y": 0, "w": 48, "h": 78, "pivotX": 24, "pivotY": 78},
+		"frame1_0": {"x": 0, "y": 100, "w": 48, "h": 78, "pivotX": 24, "pivotY": 78},
+		"shadow": {"x": 0, "y": 0, "w": 68, "h": 98, "pivotX": 34, "pivotY": 88}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

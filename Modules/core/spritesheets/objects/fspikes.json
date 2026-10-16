@@ -1,0 +1,16 @@
+{
+	"image": "fspikes.png",
+	"density": 4,
+	"width": 36.3,
+	"height": 37.25,
+	"blend": "normal",
+	"images": {
+		"frame0_0": {"x": 0, "y": 0, "w": 152, "h": 152, "pivotX": 76, "pivotY": 196}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

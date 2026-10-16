@@ -1,0 +1,1541 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 91,
+				"y": 0,
+				"w": 122,
+				"x": 0
+			},
+			"frame": {
+				"h": 91,
+				"y": 1,
+				"w": 122,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5164835164835165,
+				"x": 0.21311475409836064
+			},
+			"trimmed": false,
+			"rotated": false,
+			"sourceSize": {
+				"w": 122,
+				"h": 91
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance34": "body",
+			"instance35": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"41": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"42": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"43": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"44": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"45": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"46": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"47": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"48": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"49": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"50": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"51": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"52": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"53": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"54": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"55": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"56": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"57": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"58": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"59": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			},
+			"60": {
+				"emit": {
+					"y": -6.666667064030989,
+					"x": 23.33333472410846
+				}
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_5c050a06fb551d1b",
+						"source": "instance35",
+						"blendMode": "screen",
+						"matrix": [
+							0.44601443088140674,
+							0,
+							0,
+							0.7348022302867312,
+							23.33333472410846,
+							-6.666667064030989
+						],
+						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_5c050a06fb551d1b",
+						"source": "instance35",
+						"blendMode": "screen",
+						"matrix": [
+							0.3401947224256231,
+							0,
+							0,
+							0.5604705548566911,
+							23.33333472410846,
+							-6.666667064030989
+						],
+						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_5c050a06fb551d1b",
+						"source": "instance35",
+						"blendMode": "screen",
+						"matrix": [
+							0.23440551168156734,
+							0,
+							0,
+							0.38616945164418925,
+							23.33333472410846,
+							-6.666667064030989
+						],
+						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance34",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "flaregun/visflaregun.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 60,
+		"size": {
+			"w": 124,
+			"h": 93
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": "visflaregun.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

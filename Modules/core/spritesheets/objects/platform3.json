@@ -1,0 +1,20 @@
+{
+	"image": "platform3.png",
+	"density": 1,
+	"width": 120,
+	"height": 35,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 57, "w": 120, "h": 35, "pivotX": 60, "pivotY": 40},
+		"shadow": {"x": 0, "y": 0, "w": 138, "h": 55, "pivotX": 69, "pivotY": 50}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": []},
+		{"images": []}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1,"die":2}
+}

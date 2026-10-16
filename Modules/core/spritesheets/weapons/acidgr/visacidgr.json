@@ -1,0 +1,69 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 89,
+				"y": 1,
+				"w": 28,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.9550561797752808,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 28,
+				"h": 89
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 89,
+				"y": 0,
+				"w": 28,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance88": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance88",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "acidgr/visacidgr.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 1,
+		"size": {
+			"w": 30,
+			"h": 91
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visacidgr.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"image": "hgrate.png",
+	"density": 1,
+	"width": 120,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 226, "w": 120, "h": 40, "pivotX": 60, "pivotY": 40},
+		"frame1_0": {"x": 0, "y": 184, "w": 120, "h": 40, "pivotX": 60, "pivotY": 40},
+		"frame2_0": {"x": 0, "y": 0, "w": 120, "h": 120, "pivotX": 60, "pivotY": 120},
+		"shadow": {"x": 0, "y": 122, "w": 140, "h": 60, "pivotX": 70, "pivotY": 50}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]},
+		{"images": ["frame2_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1,"die":2}
+}

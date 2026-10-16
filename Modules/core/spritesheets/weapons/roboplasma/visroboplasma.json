@@ -1,0 +1,231 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 100,
+				"y": 0,
+				"w": 265,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 265,
+				"h": 100
+			},
+			"frame": {
+				"h": 100,
+				"y": 1,
+				"w": 265,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.48,
+				"x": 0.45660377358490567
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance161": "muzzleFlash",
+			"instance159": "body"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 15.833334277073599
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 15.833334277073599
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 15.833334277073599
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 0,
+					"x": 15.833334277073599
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 0,
+					"x": 15.833334277073599
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance159",
+						"matrix": [
+							0.5495453208413912,
+							0,
+							0,
+							0.5495453208413912,
+							6.666667064030989,
+							0
+						],
+						"sheet": "roboplasma/visroboplasma.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance159",
+						"matrix": [
+							0.5495453208413912,
+							0,
+							0,
+							0.5495453208413912,
+							6.666667064030989,
+							0
+						],
+						"sheet": "roboplasma/visroboplasma.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance161",
+						"matrix": [
+							0.4917602534151228,
+							0,
+							0,
+							0.4917602534151228,
+							18.33333442608522,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance159",
+						"matrix": [
+							0.5495453208413912,
+							0,
+							0,
+							0.5495453208413912,
+							6.666667064030989,
+							0
+						],
+						"sheet": "roboplasma/visroboplasma.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance161",
+						"matrix": [
+							0.3884429964488544,
+							0,
+							0,
+							0.3884429964488544,
+							18.33333442608522,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance159",
+						"matrix": [
+							0.5495453208413912,
+							0,
+							0,
+							0.5495453208413912,
+							6.666667064030989,
+							0
+						],
+						"sheet": "roboplasma/visroboplasma.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance161",
+						"matrix": [
+							0.2851562868648541,
+							0,
+							0,
+							0.2851562868648541,
+							18.33333442608522,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance159",
+						"matrix": [
+							0.5495453208413912,
+							0,
+							0,
+							0.5495453208413912,
+							6.666667064030989,
+							0
+						],
+						"sheet": "roboplasma/visroboplasma.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance161",
+						"matrix": [
+							0.1818695027750434,
+							0,
+							0,
+							0.1818695027750434,
+							18.33333442608522,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 267,
+			"h": 102
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visroboplasma.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

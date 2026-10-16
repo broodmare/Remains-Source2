@@ -1,0 +1,18 @@
+{
+	"image": "p_luna.png",
+	"density": 1,
+	"width": 120,
+	"height": 138,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 160, "w": 120, "h": 138, "pivotX": 60, "pivotY": 138},
+		"shadow": {"x": 0, "y": 0, "w": 140, "h": 158, "pivotX": 70, "pivotY": 148}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

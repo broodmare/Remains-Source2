@@ -179,7 +179,7 @@ package fe.game.domain.weapon  {
 			super.addVisual();
 			
 			if (visvzz) {
-				GameContainer.reference.grafon.visObjs[sloy].addChild(visvzz);
+				GameContainer.reference.grafon.visObjs[layer].addChild(visvzz);
 			}
 		}
 		

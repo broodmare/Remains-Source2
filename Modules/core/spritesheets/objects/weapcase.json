@@ -1,0 +1,20 @@
+{
+	"image": "weapcase.png",
+	"density": 1,
+	"width": 98,
+	"height": 34,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 96, "w": 98, "h": 34, "pivotX": 49, "pivotY": 34},
+		"frame1_0": {"x": 0, "y": 56, "w": 98, "h": 38, "pivotX": 49, "pivotY": 38},
+		"shadow": {"x": 0, "y": 0, "w": 118, "h": 54, "pivotX": 59, "pivotY": 44}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {}
+}

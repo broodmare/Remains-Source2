@@ -24,8 +24,8 @@ package fe.game.ui {
 	import fe.game.domain.location.Quest;
 	import fe.game.domain.units.enums.E_ArmorTypes;
 	import fe.engine.utils.TradeValue;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipBuyItem;
 
 	/* 
 	*	The page displayed when interacting with vendor NPCs
@@ -51,7 +51,7 @@ package fe.game.ui {
 			isLC = true;
 			isRC = true;
 			
-			itemClass = visPipBuyItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipBuyItem");
 			
 			super(npip,npp);
 			

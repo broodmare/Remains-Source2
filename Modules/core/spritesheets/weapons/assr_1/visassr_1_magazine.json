@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 37,
+				"h": 56
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 37,
+				"h": 56
+			},
+			"rotated": false,
+			"trimmed": false,
+			"pivot": {
+				"y": 0.17857142857142858,
+				"x": 0.35135135135135137
+			},
+			"sourceSize": {
+				"w": 37,
+				"h": 56
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 39,
+			"h": 58
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visassr_1_magazine.png",
+		"app": "Remains exporter"
+	}
+}

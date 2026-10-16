@@ -1,0 +1,103 @@
+{
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			},
+			{
+				"direction": "forward",
+				"from": 1,
+				"name": "active",
+				"to": 1
+			}
+		],
+		"image": "transmitter.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "active",
+					"frame": "active_000"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 77,
+			"w": 44
+		},
+		"source": "pfe.swf/visualTransmitter",
+		"transform": [
+			1,
+			0,
+			0,
+			1,
+			0,
+			0
+		],
+		"uniqueFrames": 2,
+		"version": "1"
+	},
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 31,
+				"w": 32,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.967741935483871
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 31,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 31,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"active_000": {
+			"duration": 33,
+			"frame": {
+				"h": 42,
+				"w": 42,
+				"x": 1,
+				"y": 34
+			},
+			"pivot": {
+				"x": 0.4523809523809524,
+				"y": 0.7380952380952381
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 42,
+				"w": 42
+			},
+			"spriteSourceSize": {
+				"h": 42,
+				"w": 42,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	}
+}

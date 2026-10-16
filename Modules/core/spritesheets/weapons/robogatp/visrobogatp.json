@@ -1,0 +1,222 @@
+{
+	"meta": {
+		"version": "2",
+		"scale": "4.0",
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance4",
+						"matrix": [
+							1.3758545940630393,
+							0,
+							0,
+							1.3758545940630393,
+							38.33333561817818,
+							30.000001788139443
+						],
+						"sheet": "robogatp/visrobogatp.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance6",
+						"matrix": [
+							0.3232879632684368,
+							0,
+							0,
+							0.3232879632684368,
+							0,
+							0
+						],
+						"sheet": "robogatp/visrobogatp.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance4",
+						"matrix": [
+							1.3758545940630393,
+							0,
+							0,
+							1.3758545940630393,
+							38.33333561817818,
+							30.000001788139443
+						],
+						"sheet": "robogatp/visrobogatp.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance6",
+						"matrix": [
+							0.3232879632684368,
+							0,
+							0,
+							0.3232879632684368,
+							0,
+							0
+						],
+						"sheet": "robogatp/visrobogatp.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance8",
+						"matrix": [
+							0.8253174518734685,
+							0,
+							0,
+							0.8176727583610669,
+							52.500003129244035,
+							30.833335171143318
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance4",
+						"matrix": [
+							1.3758545940630393,
+							0,
+							0,
+							1.3758545940630393,
+							38.33333561817818,
+							30.000001788139443
+						],
+						"sheet": "robogatp/visrobogatp.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance6",
+						"matrix": [
+							0.3232879632684368,
+							0,
+							0,
+							0.3232879632684368,
+							0,
+							0
+						],
+						"sheet": "robogatp/visrobogatp.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance8",
+						"matrix": [
+							0.5332031170449525,
+							0,
+							0,
+							0.5282593088304585,
+							53.33333651224791,
+							30.833335171143318
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			}
+		],
+		"roles": {
+			"instance6": "body",
+			"instance4": "body",
+			"instance8": "muzzleFlash"
+		},
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 30.833335171143318,
+					"x": 52.500003129244035
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 30.833335171143318,
+					"x": 52.500003129244035
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 30.833335171143318,
+					"x": 52.500003129244035
+				}
+			}
+		},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 1079,
+			"h": 762
+		},
+		"animations": {},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visrobogatp.png",
+		"frameCount": 3,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {
+		"image_002": {
+			"sourceSize": {
+				"w": 1077,
+				"h": 712
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 712,
+				"y": 1,
+				"w": 1077,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 712,
+				"y": 0,
+				"w": 1077,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.16853932584269662,
+				"x": 0.3909006499535747
+			},
+			"rotated": false
+		},
+		"image_001": {
+			"sourceSize": {
+				"w": 98,
+				"h": 46
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 46,
+				"y": 715,
+				"w": 98,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 46,
+				"y": 0,
+				"w": 98,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"rotated": false
+		}
+	}
+}

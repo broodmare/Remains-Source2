@@ -1,0 +1,222 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 65,
+				"y": 1,
+				"w": 171,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 65,
+				"y": 0,
+				"w": 171,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 171,
+				"h": 65
+			},
+			"trimmed": false,
+			"rotated": false,
+			"pivot": {
+				"y": 0.5230769230769231,
+				"x": 0.5555555555555556
+			}
+		},
+		"image_002": {
+			"frame": {
+				"h": 50,
+				"y": 68,
+				"w": 62,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 50,
+				"y": 0,
+				"w": 62,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 62,
+				"h": 50
+			},
+			"trimmed": false,
+			"rotated": false,
+			"pivot": {
+				"y": 0.72,
+				"x": 1.0483870967741935
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance53": "body",
+			"instance52": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance52",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance52",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance53",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance52",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance53",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance52",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance53",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance52",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance53",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "dbomb/visdbomb.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 173,
+			"h": 119
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visdbomb.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

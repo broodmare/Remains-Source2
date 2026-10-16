@@ -1,0 +1,20 @@
+{
+	"image": "chest.png",
+	"density": 1,
+	"width": 60,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 101, "w": 60, "h": 38, "pivotX": 30, "pivotY": 38},
+		"frame1_0": {"x": 0, "y": 59, "w": 60, "h": 40, "pivotX": 30, "pivotY": 40},
+		"shadow": {"x": 0, "y": 0, "w": 80, "h": 57, "pivotX": 40, "pivotY": 48}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

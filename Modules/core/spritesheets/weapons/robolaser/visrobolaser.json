@@ -1,0 +1,155 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 34,
+				"y": 0,
+				"w": 132,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 132,
+				"h": 34
+			},
+			"frame": {
+				"h": 34,
+				"y": 1,
+				"w": 132,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance143": "body",
+			"instance145": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 22.500001341104586
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 22.500001341104586
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 22.500001341104586
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance143",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							8.333333830038736,
+							0
+						],
+						"sheet": "robolaser/visrobolaser.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance143",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							8.333333830038736,
+							0
+						],
+						"sheet": "robolaser/visrobolaser.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance145",
+						"matrix": [
+							0.6019745629215973,
+							0,
+							0,
+							0.6019745629215973,
+							25.83333487312008,
+							0.8333333830038754
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance143",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							8.333333830038736,
+							0
+						],
+						"sheet": "robolaser/visrobolaser.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance145",
+						"matrix": [
+							0.3188018939178324,
+							0,
+							0,
+							0.3188018939178324,
+							23.33333472410846,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 134,
+			"h": 36
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visrobolaser.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

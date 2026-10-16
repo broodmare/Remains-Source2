@@ -213,6 +213,8 @@ package fe.game {
 
 		// The main loop: the main menu until it starts a game, then the world
 		public function step():void {
+			// Flash moves its clips on at the start of each frame, so the GPU's flipbooks move on here, before the game does
+			grafon.objectLayers.advance();
 			if (guiManager.mainMenuClass.isRunning) {
 				guiManager.mainMenuClass.mainStep();
 			}

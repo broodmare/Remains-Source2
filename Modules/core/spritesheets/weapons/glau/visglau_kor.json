@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 333,
+				"h": 141
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 333,
+				"h": 141
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5177304964539007,
+				"x": 0.4444444444444444
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 333,
+				"h": 141
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 335,
+			"h": 143
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visglau_kor.png",
+		"app": "Remains exporter"
+	}
+}

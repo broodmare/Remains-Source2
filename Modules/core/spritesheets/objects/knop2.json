@@ -1,0 +1,33 @@
+{
+	"image": "knop2.png",
+	"density": 1,
+	"width": 40,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 58, "w": 38, "h": 38, "pivotX": 19, "pivotY": 39},
+		"glow1_0": {"x": 40, "y": 58, "w": 35, "h": 35, "pivotX": 18, "pivotY": 38},
+		"shadow": {"x": 0, "y": 0, "w": 54, "h": 56, "pivotX": 27, "pivotY": 48}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]},
+		{"images": ["frame0_0"], "screen": ["glow1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

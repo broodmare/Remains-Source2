@@ -1,0 +1,196 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.3811881188118812,
+				"x": 0.5153256704980843
+			},
+			"frame": {
+				"h": 202,
+				"y": 1,
+				"w": 522,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 522,
+				"h": 202
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 202,
+				"y": 0,
+				"w": 522,
+				"x": 0
+			}
+		},
+		"image_002": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"h": 118,
+				"y": 205,
+				"w": 214,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 214,
+				"h": 118
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 118,
+				"y": 0,
+				"w": 214,
+				"x": 0
+			}
+		},
+		"image_003": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"h": 118,
+				"y": 205,
+				"w": 214,
+				"x": 217
+			},
+			"sourceSize": {
+				"w": 214,
+				"h": 118
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 118,
+				"y": 0,
+				"w": 214,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance50": "body",
+			"lez": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance50",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bsaw/visbsaw.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "lez",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							37.500002235174314,
+							1.6666667660077508
+						],
+						"sheet": "bsaw/visbsaw.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance50",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bsaw/visbsaw.json"
+					},
+					{
+						"sprite": "image_003",
+						"role": "body",
+						"source": "lez",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							37.500002235174314,
+							1.6666667660077508
+						],
+						"sheet": "bsaw/visbsaw.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance50",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bsaw/visbsaw.json"
+					},
+					{
+						"sprite": "image_003",
+						"role": "body",
+						"source": "lez",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							37.500002235174314,
+							1.6666667660077508
+						],
+						"sheet": "bsaw/visbsaw.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 524,
+			"h": 324
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visbsaw.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

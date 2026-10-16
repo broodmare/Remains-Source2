@@ -1,0 +1,202 @@
+{
+	"frames": {
+		"image_002": {
+			"pivot": {
+				"y": 0.5425531914893617,
+				"x": 0.5311572700296736
+			},
+			"frame": {
+				"h": 94,
+				"y": 1,
+				"w": 337,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 337,
+				"h": 94
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 94,
+				"y": 0,
+				"w": 337,
+				"x": 0
+			}
+		},
+		"image_003": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5264705882352941
+			},
+			"frame": {
+				"h": 44,
+				"y": 97,
+				"w": 340,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 44
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 44,
+				"y": 0,
+				"w": 340,
+				"x": 0
+			}
+		},
+		"image_001": {
+			"pivot": {
+				"y": 0.5116279069767442,
+				"x": 0.5327380952380952
+			},
+			"frame": {
+				"h": 43,
+				"y": 143,
+				"w": 336,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 336,
+				"h": 43
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 43,
+				"y": 0,
+				"w": 336,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance35": "body",
+			"instance39": "body",
+			"kor": "tint",
+			"instance37": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-2.500000149011621,
+							0
+						],
+						"sheet": "lsword/vislsword_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance35",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							49.16666959722854,
+							0
+						],
+						"sheet": "lsword/vislsword.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-2.500000149011621,
+							0
+						],
+						"sheet": "lsword/vislsword_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance37",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							49.16666959722854,
+							0
+						],
+						"sheet": "lsword/vislsword.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-2.500000149011621,
+							0
+						],
+						"sheet": "lsword/vislsword_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_003",
+						"role": "body",
+						"source": "instance39",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							49.16666959722854,
+							0
+						],
+						"sheet": "lsword/vislsword.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 342,
+			"h": 187
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "vislsword.png",
+		"tintLayer": "vislsword_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

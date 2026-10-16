@@ -1,0 +1,186 @@
+{
+	"frames": {
+		"swoosh": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 0,
+				"y": 0,
+				"w": 214,
+				"h": 88
+			},
+			"trimmed": false,
+			"sourceSize": {
+				"w": 214,
+				"h": 88
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 214,
+				"h": 88
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"image": "punch.png",
+		"version": "2",
+		"size": {
+			"w": 214,
+			"h": 88
+		},
+		"schemaVersion": 3,
+		"labels": {
+			"punch": 1,
+			"kick": 9
+		},
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"role": "effect",
+						"sheet": "punch.json",
+						"sprite": "swoosh",
+						"source": "pun",
+						"matrix": [
+							0.6893157391403254,
+							0,
+							0,
+							0.8793357589916626,
+							22.39583244340291,
+							-35.93749857197211
+						]
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "effect",
+						"sheet": "punch.json",
+						"sprite": "swoosh",
+						"source": "pun",
+						"matrix": [
+							0.885427425169749,
+							0,
+							0,
+							0.8793357589916626,
+							40.10416507307033,
+							-36.97916519724666
+						]
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "effect",
+						"sheet": "punch.json",
+						"sprite": "swoosh",
+						"source": "pun",
+						"matrix": [
+							0.5659275388694274,
+							0,
+							0,
+							0.8793357589916626,
+							46.87499813735492,
+							-33.333332008785725
+						]
+					}
+				]
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"role": "effect",
+						"sheet": "punch.json",
+						"sprite": "swoosh",
+						"source": "pun",
+						"matrix": [
+							0.8793357589916626,
+							0,
+							0,
+							0.8793357589916626,
+							-20.83333250549108,
+							-39.58333176043305
+						]
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "effect",
+						"sheet": "punch.json",
+						"sprite": "swoosh",
+						"source": "pun",
+						"matrix": [
+							1.1372220335343846,
+							0,
+							0,
+							0.8793357589916626,
+							-36.458331884609386,
+							-39.58333176043305
+						]
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "effect",
+						"sheet": "punch.json",
+						"sprite": "swoosh",
+						"source": "pun",
+						"matrix": [
+							0.6893157391403254,
+							0,
+							0,
+							0.8793357589916626,
+							-48.43749807526675,
+							-39.58333176043305
+						]
+					}
+				]
+			}
+		],
+		"format": "RGBA8888",
+		"frameCount": 16,
+		"scale": "4.0",
+		"frameRate": 30,
+		"app": "Remains exporter"
+	}
+}

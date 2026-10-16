@@ -38,7 +38,7 @@ package fe.game.rendering {
 		public var vis:String;			// Name of the class
 		public var visClass:Class;		// Instnatiated class
 		
-		public var sloy:int				= 3;
+		public var layer:int				= 3;		// Which of Grafon's object layers (visObjs) its particles draw in
 		
 		public var imp:Boolean			= false;	// [true - is important]
 		
@@ -124,6 +124,10 @@ package fe.game.rendering {
 					}
 				}
 			}
+			// The data still calls the layer by its old name
+			if (xml.@sloy.length()) {
+				layer = int(xml.@sloy);
+			}
 
 			// Get a reference to the visual movieclip this uses
 			if (vis) {
@@ -170,7 +174,7 @@ package fe.game.rendering {
 				
 				var p =new Part();
 				p.loc=loc;
-				p.sloy=sloy;
+				p.layer=layer;
 				p.coordinates.X = nx;
 				p.coordinates.Y = ny;
 

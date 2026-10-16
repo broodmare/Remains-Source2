@@ -3,8 +3,7 @@ package fe.game.ui {
 	import fe.game.World;
 	import fe.game.domain.entities.Obj;
 
-	import fe.game.stubs.satsCel;	// Red crosshairs used when a coordinate is targeted instead of a unit.
-	import fe.game.stubs.satsUnCel;	// Red square around units that have been targeted in vats.
+	import fe.engine.utils.SymbolFactory;
 
 	public class SatsCel extends Obj {
 
@@ -14,12 +13,12 @@ package fe.game.ui {
 		public var begined:Boolean = false;
 
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) {
-			sloy = 5;
+			layer = 5;
 			loc = World.w.loc;
 			var ramka:int = 10;
 			
 			if (nUn == null) {
-				vis = new satsCel();
+				vis = SymbolFactory.createInstance("satsCel");		// Red crosshairs on a targeted spot
 				coordinates.X = nx;
 				coordinates.Y = ny;
 				vis.x = coordinates.X;
@@ -27,7 +26,7 @@ package fe.game.ui {
 			}
 			else {
 				un = nUn;
-				vis = new satsUnCel();
+				vis = SymbolFactory.createInstance("satsUnCel");	// Red square around a targeted unit
 				un.n++;
 				run();
 				vis.scaleX = (un.u.boundingBox.width + ramka * un.n) / 100;

@@ -168,8 +168,8 @@ package fe.game.domain.location {
 					opt.mirror = (Math.random() < 0.5);
 					opt.water = null;
 					opt.ramka = null;
-					opt.backform = 0;
-					opt.transpFon = false;
+					opt.backWallShape = 0;
+					opt.transparentBack = false;
 
 					configureWater(act.conf, j);
 
@@ -199,15 +199,15 @@ package fe.game.domain.location {
 						opt.mirror = false;
 						if (act.conf == 5) {
 							opt.ramka = 3;
-							opt.backform = 3;
-							opt.transpFon = true;
+							opt.backWallShape = 3;
+							opt.transparentBack = true;
 						}
 						loc1 = newTipLoc('beg' + ((act.conf == 0) ? i : '0'), i, j, opt);
 					}
 					else {
 						switch(act.conf) {
 							case 3: // Manehattan
-								opt.transpFon = true;
+								opt.transparentBack = true;
 								if (i == 2) {
 									if (j == 0) {
 										opt.ramka = 7;
@@ -262,8 +262,8 @@ package fe.game.domain.location {
 							case 5: // Canterlot
 								if (j == 0) {
 									opt.ramka = 3;
-									opt.backform = 3;
-									opt.transpFon = true;
+									opt.backWallShape = 3;
+									opt.transparentBack = true;
 									loc1 = newRandomLoc(act.landStage, i, j, opt, 'surf');
 									loc1.visMult = 2;
 								}
@@ -508,7 +508,7 @@ package fe.game.domain.location {
 							break;
 
 						case 6: // Enclave Base
-							opt.transpFon = true;
+							opt.transparentBack = true;
 							if (j == 0) {
 								if (i == 0 || i == 2) {
 									loc1.createExit((act.landStage >= 1) ? '1' : undefined);

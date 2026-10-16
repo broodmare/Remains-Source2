@@ -1,0 +1,69 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.4830508474576271,
+				"x": 0.2134502923976608
+			},
+			"frame": {
+				"h": 118,
+				"y": 1,
+				"w": 342,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 342,
+				"h": 118
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 118,
+				"y": 0,
+				"w": 342,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance4": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance4",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hammer_1/vishammer_1.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 1,
+		"size": {
+			"w": 344,
+			"h": 120
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "vishammer_1.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

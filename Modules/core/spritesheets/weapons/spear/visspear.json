@@ -1,0 +1,69 @@
+{
+	"frames": {
+		"image_001": {
+			"trimmed": false,
+			"frame": {
+				"h": 34,
+				"y": 1,
+				"w": 397,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 397,
+				"h": 34
+			},
+			"rotated": false,
+			"pivot": {
+				"y": 0.7352941176470589,
+				"x": 0.4584382871536524
+			},
+			"spriteSourceSize": {
+				"h": 34,
+				"y": 0,
+				"w": 397,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"anchors": {},
+		"scale": "4.0",
+		"roles": {
+			"instance18": "body"
+		},
+		"frameCount": 1,
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"source": "instance18",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sprite": "image_001",
+						"sheet": "spear/visspear.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"animations": {},
+		"size": {
+			"w": 399,
+			"h": 36
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visspear.png",
+		"app": "Remains exporter",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"image": "door_st1.png",
+	"density": 1,
+	"width": 248,
+	"height": 240,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 262, "w": 248, "h": 240, "pivotX": 124, "pivotY": 240},
+		"shadow": {"x": 0, "y": 0, "w": 264, "h": 260, "pivotX": 132, "pivotY": 250}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

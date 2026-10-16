@@ -18,6 +18,7 @@ package fe.game.ui {
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.UnitPlayer;
+	import fe.engine.utils.SymbolFactory;
 	
 	public class Sats {
 
@@ -43,7 +44,7 @@ package fe.game.ui {
 			vis = nvis;
 			vis.visible = false;
 			trasser = new MovieClip();
-			radius = new satsRadius();	// SWF Dependency
+			radius = SymbolFactory.createInstance("satsRadius");	// SWF Dependency
 			vis.addChild(trasser);
 			vis.addChild(radius);
 			que = [];
@@ -418,7 +419,7 @@ package fe.game.ui {
 				mc.y = un.vis.y;
 				vis.addChild(mc);
 				var du:MovieClip = drawUnit(un);
-				var su:MovieClip = new satsUnit(); // SWF Dependency
+				var su:MovieClip = SymbolFactory.createInstance("satsUnit"); // SWF Dependency
 				su.filters = [fShad];
 				su.scaleX = 1 / GameContainer.reference.cam.scaleV;
 				su.scaleY = 1 / GameContainer.reference.cam.scaleV;

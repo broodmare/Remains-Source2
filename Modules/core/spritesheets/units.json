@@ -1,0 +1,1465 @@
+{
+	"version": 1,
+	"units": {
+		"bloat10": {
+			"animation": "bloat10.json",
+			"image": "bloat10.png",
+			"density": 4.0,
+			"transform": [
+				1.74996948242188,
+				0.0,
+				0.0,
+				1.74993896484375,
+				-1.85,
+				-17.05
+			]
+		},
+		"bossdron": {
+			"animation": "bossdron.json",
+			"image": "bossdron.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossdron_discharge": {
+			"animation": "bossdron_discharge.json",
+			"image": "bossdron_discharge.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"alicorn1": {
+			"animation": "alicorn1.json",
+			"image": "alicorn1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"alicorn2": {
+			"animation": "alicorn2.json",
+			"image": "alicorn2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"alicorn3": {
+			"animation": "alicorn3.json",
+			"image": "alicorn3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ant1": {
+			"animation": "ant1.json",
+			"image": "ant1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ant2": {
+			"animation": "ant2.json",
+			"image": "ant2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ant3": {
+			"animation": "ant3.json",
+			"image": "ant3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat0": {
+			"animation": "bloat0.json",
+			"image": "bloat0.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat1": {
+			"animation": "bloat1.json",
+			"image": "bloat1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat2": {
+			"animation": "bloat2.json",
+			"image": "bloat2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat3": {
+			"animation": "bloat3.json",
+			"image": "bloat3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat4": {
+			"animation": "bloat4.json",
+			"image": "bloat4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat5": {
+			"animation": "bloat5.json",
+			"image": "bloat5.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat6": {
+			"animation": "bloat6.json",
+			"image": "bloat6.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloat7": {
+			"animation": "bloat7.json",
+			"image": "bloat10.png",
+			"density": 4.0,
+			"transform": [
+				0.5999755859375,
+				0.0,
+				0.0,
+				0.599945068359375,
+				-1.85,
+				-17.05
+			]
+		},
+		"bloat8": {
+			"animation": "bloat8.json",
+			"image": "bloat10.png",
+			"density": 4.0,
+			"transform": [
+				0.899978637695313,
+				0.0,
+				0.0,
+				0.899917602539063,
+				-1.85,
+				-17.05
+			]
+		},
+		"bloat9": {
+			"animation": "bloat9.json",
+			"image": "bloat10.png",
+			"density": 4.0,
+			"transform": [
+				1.29997253417969,
+				0.0,
+				0.0,
+				1.2999267578125,
+				-1.9,
+				-17.05
+			]
+		},
+		"bloodwing": {
+			"animation": "bloodwing.json",
+			"image": "bloodwing.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bloodwing2": {
+			"animation": "bloodwing2.json",
+			"image": "bloodwing2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossalicorn": {
+			"animation": "bossalicorn.json",
+			"image": "bossalicorn.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossencl": {
+			"animation": "bossencl.json",
+			"image": "bossencl.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossnecr": {
+			"animation": "bossnecr.json",
+			"image": "bossnecr.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossraider": {
+			"animation": "bossraider.json",
+			"image": "bossraider.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossraider_classic": {
+			"animation": "bossraider_classic.json",
+			"image": "bossraider_classic.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"cryoslime": {
+			"animation": "cryoslime.json",
+			"image": "cryoslime.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			],
+			"stateTransforms": {
+				"mine": [
+					1,
+					0,
+					0,
+					0.5,
+					0,
+					0
+				]
+			}
+		},
+		"destr1": {
+			"animation": "destr1.json",
+			"image": "destr1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dron1": {
+			"animation": "dron1.json",
+			"image": "dron1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dron1_discharge": {
+			"animation": "dron1_discharge.json",
+			"image": "dron1_discharge.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dron2": {
+			"animation": "dron2.json",
+			"image": "dron2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dron2_discharge": {
+			"animation": "dron2_discharge.json",
+			"image": "dron2_discharge.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dron3": {
+			"animation": "dron3.json",
+			"image": "dron3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dron3_discharge": {
+			"animation": "dron3_discharge.json",
+			"image": "dron3_discharge.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"dront": {
+			"animation": "dront.json",
+			"image": "bossdron.png",
+			"density": 1.0,
+			"transform": [
+				1.5,
+				0,
+				0,
+				1.5,
+				0,
+				10
+			]
+		},
+		"dront_discharge": {
+			"animation": "dront_discharge.json",
+			"image": "bossdron_discharge.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"eant": {
+			"animation": "eant.json",
+			"image": "eant.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ebloat": {
+			"animation": "ebloat.json",
+			"image": "ebloat.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"encl1": {
+			"animation": "encl1.json",
+			"image": "encl1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"encl2": {
+			"animation": "encl2.json",
+			"image": "encl2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"encl3": {
+			"animation": "encl3.json",
+			"image": "encl3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"encl4": {
+			"animation": "encl4.json",
+			"image": "encl4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"eqd": {
+			"animation": "eqd.json",
+			"image": "eqd.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"fish1": {
+			"animation": "fish1.json",
+			"image": "fish1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"fish2": {
+			"animation": "fish2.json",
+			"image": "fish2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"fish3": {
+			"animation": "fish3.json",
+			"image": "fish3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"gutsy": {
+			"animation": "gutsy.json",
+			"image": "gutsy.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"gutsy1": {
+			"animation": "gutsy1.json",
+			"image": "gutsy1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"hellhound1": {
+			"animation": "hellhound1.json",
+			"image": "hellhound1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"merc1": {
+			"animation": "merc1.json",
+			"image": "merc1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"merc2": {
+			"animation": "merc2.json",
+			"image": "merc2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"merc3": {
+			"animation": "merc3.json",
+			"image": "merc3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"merc4": {
+			"animation": "merc4.json",
+			"image": "merc4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"merc5": {
+			"animation": "merc5.json",
+			"image": "merc5.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"molerat": {
+			"animation": "molerat.json",
+			"image": "molerat.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"moon": {
+			"animation": "moon.json",
+			"image": "moon.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"msp": {
+			"animation": "msp.json",
+			"image": "msp.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"necros": {
+			"animation": "necros.json",
+			"image": "necros.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"owl": {
+			"animation": "owl.json",
+			"image": "owl.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"phoenix": {
+			"animation": "phoenix.json",
+			"image": "phoenix.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"pinkslime": {
+			"animation": "pinkslime.json",
+			"image": "pinkslime.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			],
+			"stateTransforms": {
+				"mine": [
+					1,
+					0,
+					0,
+					0.5,
+					0,
+					0
+				]
+			}
+		},
+		"protect": {
+			"animation": "protect.json",
+			"image": "protect.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"protect1": {
+			"animation": "protect1.json",
+			"image": "protect1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider1": {
+			"animation": "raider1.json",
+			"image": "raider1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider2": {
+			"animation": "raider2.json",
+			"image": "raider2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider3": {
+			"animation": "raider3.json",
+			"image": "raider3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider4": {
+			"animation": "raider4.json",
+			"image": "raider4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider5": {
+			"animation": "raider5.json",
+			"image": "raider5.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider6": {
+			"animation": "raider6.json",
+			"image": "raider6.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider7": {
+			"animation": "raider7.json",
+			"image": "raider7.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider8": {
+			"animation": "raider8.json",
+			"image": "raider8.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"raider9": {
+			"animation": "raider9.json",
+			"image": "raider9.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ranger1": {
+			"animation": "ranger1.json",
+			"image": "ranger1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ranger2": {
+			"animation": "ranger2.json",
+			"image": "ranger2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ranger3": {
+			"animation": "ranger3.json",
+			"image": "ranger3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"rat": {
+			"animation": "rat.json",
+			"image": "rat.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"robobrain": {
+			"animation": "robobrain.json",
+			"image": "robobrain.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"roller": {
+			"animation": "roller.json",
+			"image": "roller.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"roller2": {
+			"animation": "roller2.json",
+			"image": "roller2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"scorp1": {
+			"animation": "scorp1.json",
+			"image": "scorp1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"scorp2": {
+			"animation": "scorp2.json",
+			"image": "scorp2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"scorp3": {
+			"animation": "scorp3.json",
+			"image": "scorp3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slaver1": {
+			"animation": "slaver1.json",
+			"image": "slaver1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slaver2": {
+			"animation": "slaver2.json",
+			"image": "slaver2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slaver3": {
+			"animation": "slaver3.json",
+			"image": "slaver3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slaver4": {
+			"animation": "slaver4.json",
+			"image": "slaver4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slaver5": {
+			"animation": "slaver5.json",
+			"image": "slaver5.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slaver6": {
+			"animation": "slaver6.json",
+			"image": "slaver6.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"slime": {
+			"animation": "slime.json",
+			"image": "slime.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			],
+			"stateTransforms": {
+				"mine": [
+					1,
+					0,
+					0,
+					0.5,
+					0,
+					0
+				]
+			}
+		},
+		"spectre": {
+			"animation": "spectre.json",
+			"image": "spectre.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"spritebot": {
+			"animation": "spritebot.json",
+			"image": "spritebot.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"tarakan": {
+			"animation": "tarakan.json",
+			"image": "tarakan.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"transmitter": {
+			"animation": "transmitter.json",
+			"image": "transmitter.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"ttur": {
+			"animation": "ttur.json",
+			"image": "ttur.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"vortex": {
+			"animation": "vortex.json",
+			"image": "vortex.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zebra1": {
+			"animation": "zebra1.json",
+			"image": "zebra1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zebra2": {
+			"animation": "zebra2.json",
+			"image": "zebra2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zebra3": {
+			"animation": "zebra3.json",
+			"image": "zebra3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zebra4": {
+			"animation": "zebra4.json",
+			"image": "zebra4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zebra5": {
+			"animation": "zebra5.json",
+			"image": "zebra5.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie0": {
+			"animation": "zombie0.json",
+			"image": "zombie0.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie1": {
+			"animation": "zombie1.json",
+			"image": "zombie1.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie2": {
+			"animation": "zombie2.json",
+			"image": "zombie2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie3": {
+			"animation": "zombie3.json",
+			"image": "zombie3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie4": {
+			"animation": "zombie4.json",
+			"image": "zombie4.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie5": {
+			"animation": "zombie5.json",
+			"image": "zombie5.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie6": {
+			"animation": "zombie6.json",
+			"image": "zombie6.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie7": {
+			"animation": "zombie7.json",
+			"image": "zombie7.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie8": {
+			"animation": "zombie8.json",
+			"image": "zombie8.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"zombie9": {
+			"animation": "zombie9.json",
+			"image": "zombie9.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		}
+	}
+}

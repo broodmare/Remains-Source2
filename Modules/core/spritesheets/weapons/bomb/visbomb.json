@@ -1,0 +1,170 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"h": 65,
+				"y": 1,
+				"w": 171,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 65,
+				"y": 0,
+				"w": 171,
+				"x": 0
+			},
+			"sourceSize": {
+				"w": 171,
+				"h": 65
+			},
+			"trimmed": false,
+			"rotated": false,
+			"pivot": {
+				"y": 0.5230769230769231,
+				"x": 0.5555555555555556
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance55": "body",
+			"instance56": "auxiliary"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bomb/visbomb.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bomb/visbomb.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance56",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bomb/visbomb.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance56",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0,
+							0
+						],
+						"effect": "sphere_f3a797cf669f816d"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bomb/visbomb.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "bomb/visbomb.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 173,
+			"h": 67
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visbomb.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

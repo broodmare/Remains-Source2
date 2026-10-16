@@ -1,0 +1,289 @@
+{
+	"meta": {
+		"version": "2",
+		"scale": "4.0",
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance13",
+						"matrix": [
+							1.3758545940630393,
+							0,
+							0,
+							1.3758545940630393,
+							38.33333561817818,
+							30.000001788139443
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance15",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							35.83333546916656,
+							30.000001788139443
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"sprite": "image_003",
+						"role": "body",
+						"source": "instance17",
+						"matrix": [
+							0.3232879632684368,
+							0,
+							0,
+							0.3232879632684368,
+							0,
+							0
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance13",
+						"matrix": [
+							1.3758545940630393,
+							0,
+							0,
+							1.3758545940630393,
+							38.33333561817818,
+							30.000001788139443
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance15",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							35.83333546916656,
+							30.000001788139443
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"sprite": "image_003",
+						"role": "body",
+						"source": "instance17",
+						"matrix": [
+							0.3232879632684368,
+							0,
+							0,
+							0.3232879632684368,
+							0,
+							0
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance19",
+						"matrix": [
+							1.2745667263607219,
+							0,
+							0,
+							1.2627563633177497,
+							52.500003129244035,
+							30.833335171143318
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance13",
+						"matrix": [
+							1.3758545940630393,
+							0,
+							0,
+							1.3758545940630393,
+							38.33333561817818,
+							30.000001788139443
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance15",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							35.83333546916656,
+							30.000001788139443
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"sprite": "image_003",
+						"role": "body",
+						"source": "instance17",
+						"matrix": [
+							0.3232879632684368,
+							0,
+							0,
+							0.3232879632684368,
+							0,
+							0
+						],
+						"sheet": "robogatp2/visrobogatp2.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance19",
+						"matrix": [
+							0.8688811979024329,
+							0,
+							0,
+							0.8608246362700842,
+							53.33333651224791,
+							30.833335171143318
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			}
+		],
+		"roles": {
+			"instance19": "muzzleFlash",
+			"instance13": "body",
+			"instance15": "body",
+			"instance17": "body"
+		},
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 30.833335171143318,
+					"x": 52.500003129244035
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 30.833335171143318,
+					"x": 52.500003129244035
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 30.833335171143318,
+					"x": 52.500003129244035
+				}
+			}
+		},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 1079,
+			"h": 850
+		},
+		"animations": {},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visrobogatp2.png",
+		"frameCount": 3,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {
+		"image_003": {
+			"sourceSize": {
+				"w": 1077,
+				"h": 712
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 712,
+				"y": 1,
+				"w": 1077,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 712,
+				"y": 0,
+				"w": 1077,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.16853932584269662,
+				"x": 0.3909006499535747
+			},
+			"rotated": false
+		},
+		"image_002": {
+			"sourceSize": {
+				"w": 134,
+				"h": 134
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 134,
+				"y": 715,
+				"w": 134,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 134,
+				"y": 0,
+				"w": 134,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"rotated": false
+		},
+		"image_001": {
+			"sourceSize": {
+				"w": 98,
+				"h": 46
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 46,
+				"y": 715,
+				"w": 98,
+				"x": 137
+			},
+			"spriteSourceSize": {
+				"h": 46,
+				"y": 0,
+				"w": 98,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"rotated": false
+		}
+	}
+}

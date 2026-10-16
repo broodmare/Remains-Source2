@@ -1,0 +1,1467 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5185185185185185,
+				"x": 0.891566265060241
+			},
+			"frame": {
+				"h": 27,
+				"y": 1,
+				"w": 83,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 83,
+				"h": 27
+			},
+			"trimmed": false,
+			"spriteSourceSize": {
+				"h": 27,
+				"y": 0,
+				"w": 83,
+				"x": 0
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance192": "body",
+			"instance194": "auxiliary",
+			"kor": "tint"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -1.6666667660077508,
+					"x": 34.16666870315882
+				}
+			}
+		},
+		"auxiliaryLayer": "visdartgun_auxiliary.png",
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance192",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-31.666668554147197,
+							-15.833334277073597
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-25.83333487312008,
+							-15.000000894069728
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-20.000001192092967,
+							-14.166667511065853
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-14.166667511065851,
+							-13.333334128061978
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-8.333333830038736,
+							-12.500000745058102
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							-2.500000149011621,
+							-11.666667362054227
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							-10.833333979050359
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							9.16666721304261,
+							-10.833333979050359
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							15.000000894069725,
+							-10.000000596046483
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							20.833334575096842,
+							-9.166667213042608
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-8.33333383003874
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-7.500000447034864
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-6.666667064030989
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-5.8333336810271135
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-5.000000298023238
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "tint",
+						"sprite": "image_001",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.000000596046483,
+							0.8333333830038754
+						],
+						"sheet": "dartgun/visdartgun_kor.json"
+					},
+					{
+						"role": "auxiliary",
+						"sprite": "image_001",
+						"source": "instance194",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							25.83333487312008,
+							-4.16666691501937
+						],
+						"sheet": "dartgun/visdartgun_auxiliary.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 40,
+		"size": {
+			"w": 85,
+			"h": 29
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": "visdartgun.png",
+		"tintLayer": "visdartgun_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

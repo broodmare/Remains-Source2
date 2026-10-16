@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.06976744186046512,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 102,
+				"h": 43
+			},
+			"sourceSize": {
+				"w": 102,
+				"h": 43
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 102,
+				"h": 43
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 104,
+			"h": 45
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visantidrak_magazine.png",
+		"app": "Remains exporter"
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"image": "couch.png",
+	"density": 1,
+	"width": 80,
+	"height": 39,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 60, "w": 80, "h": 39, "pivotX": 40, "pivotY": 39},
+		"shadow": {"x": 0, "y": 0, "w": 98, "h": 58, "pivotX": 49, "pivotY": 49}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

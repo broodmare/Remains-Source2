@@ -8,7 +8,7 @@ package fe.game.rendering {
 
 	import fe.game.GameContainer;
 	import fe.game.domain.location.tile.TilePiece_Definition;
-	import fe.game.stubs.TileMask;
+	import fe.engine.utils.SymbolFactory;
 
 	// The loaded bitmaps, masks and filters Grafon paints one tile piece with
 	public class TilePieceTextures {
@@ -60,7 +60,7 @@ package fe.game.rendering {
 			stableTexture	= loadBitmap(piece.stableTexture);
 			edgeTexture		= loadBitmap(piece.edgeTexture);
 			topTexture		= loadBitmap(piece.topTexture);
-			textureMask		= findMask(piece.textureMask, piece.id) || TileMask;
+			textureMask		= findMask(piece.textureMask, piece.id) || SymbolFactory.fetchSymbolClass("TileMask");
 			edgeMask		= findMask(piece.edgeMask, piece.id);
 			topMask			= findMask(piece.topMask, piece.id);
 

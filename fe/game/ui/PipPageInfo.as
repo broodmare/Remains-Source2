@@ -19,11 +19,8 @@ package fe.game.ui {
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.enums.E_Resistances;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipQuestItem;
-	import fe.game.stubs.visPipInfo;
-	import fe.game.stubs.visPipMap;
-	import fe.game.stubs.visPipWMap;
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -59,15 +56,15 @@ package fe.game.ui {
 
 		public function PipPageInfo(npip:PipBuck, npp:String) {
 
-			itemClass = visPipQuestItem;
-			pageClass = visPipInfo;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipQuestItem");
+			pageClass = SymbolFactory.fetchSymbolClass("visPipInfo");
 			isLC = true;
 			
 			super(npip, npp);
 			
 			// [Map object]
-			visMap	= new visPipMap();
-			visWMap	= new visPipWMap();
+			visMap	= SymbolFactory.createInstance("visPipMap");
+			visWMap	= SymbolFactory.createInstance("visPipWMap");
 			vis.addChild(visMap);
 			vis.addChild(visWMap);
 

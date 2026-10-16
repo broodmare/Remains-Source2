@@ -402,7 +402,7 @@ package fe.game.domain.units {
 			inter.active = false;
 			
 			effects = [];
-			sloy = 2;
+			layer = 2;
 			prior = 1;
 			warn = 1;
 			numbEmit = Emitter.arr['numb'];

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 298,
+				"h": 166
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 298,
+				"h": 166
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5843373493975904,
+				"x": 0.4161073825503356
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 298,
+				"h": 166
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 300,
+			"h": 168
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vissawgun_kor.png",
+		"app": "Remains exporter"
+	}
+}

@@ -1,0 +1,63 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 33,
+				"h": 98
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 33,
+				"h": 98
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5612244897959183,
+				"x": 0.42424242424242425
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 33,
+				"h": 98
+			}
+		},
+		"image_002": {
+			"frame": {
+				"x": 1,
+				"y": 101,
+				"w": 82,
+				"h": 83
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 82,
+				"h": 83
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.6385542168674698,
+				"x": 0.5
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 82,
+				"h": 83
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 84,
+			"h": 185
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vismolotov_auxiliary.png",
+		"app": "Remains exporter"
+	}
+}

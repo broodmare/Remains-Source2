@@ -100,7 +100,7 @@ package fe.game.domain.units {
 				if (npcXML.@silent.length()) silent=true;
 				if (npcXML.@weap.length()) weap=npcXML.@weap;
 				if (npcXML.@weap2.length()) weap2=npcXML.@weap2;
-				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
+				if (npcXML.@sloy.length()) layer=npcXML.@sloy;
 			}
 			else {	// [And if not]
 				if (id == "doctor") {

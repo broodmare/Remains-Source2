@@ -32,6 +32,7 @@ package fe.game.ui {
 	import fe.game.domain.units.Effect;
 	import fe.game.domain.units.enums.E_ArmorTypes;
 	import fe.engine.Engine;
+	import fe.engine.utils.SymbolFactory;
 	
 	public class PipPage {
 		
@@ -73,7 +74,7 @@ package fe.game.ui {
 			pp = npp;
 
 			if (pageClass == null) {
-				pageClass = visPipInv;
+				pageClass = SymbolFactory.fetchSymbolClass("visPipInv");
 			}
 			
 			vis = new pageClass();

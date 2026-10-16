@@ -111,7 +111,7 @@ package fe.game {
 			if (GameContainer.reference.allStat>0) GameContainer.reference.cam.setLoc(loc);
 			if (GUIManager.reference.gui) GUIManager.reference.gui.resizeScreen(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			GUIManager.reference.pip.resizeScreen(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
-			GameContainer.reference.grafon.setFonSize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
+			GameContainer.reference.grafon.setSkySize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			if (GUIManager.reference.stand) GUIManager.reference.stand.resizeScreen(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			GUIManager.reference.vblack.width=GameContainer.reference.screenWidth;
 			GUIManager.reference.vblack.height=GameContainer.reference.screenHeight;
@@ -247,7 +247,7 @@ package fe.game {
 			resizeScreen();
 			offLoadScreen();
 			GUIManager.reference.vgui.visible = true;
-			GUIManager.reference.vfon.visible = true;
+			GUIManager.reference.sky.visible = true;
 			GUIManager.reference.visual.visible = true;
 			GUIManager.reference.vblack.alpha=1;
 			GameContainer.reference.cam.dblack=-10;
@@ -336,7 +336,7 @@ package fe.game {
 			
 			offLoadScreen();
 			GUIManager.reference.vgui.visible = true;
-			GUIManager.reference.vfon.visible = true;
+			GUIManager.reference.sky.visible = true;
 			GUIManager.reference.visual.visible = true;
 			GUIManager.reference.vblack.alpha = 1;
 			GameContainer.reference.cam.dblack = -10;
@@ -362,7 +362,7 @@ package fe.game {
 		// [Call upon entering a specific area]
 		public function ativateLand(nland:Land):void {
 			land = nland;
-			GameContainer.reference.grafon.drawFon(GUIManager.reference.vfon, land.act.fon);
+			GameContainer.reference.grafon.drawSky(GUIManager.reference.sky, land.act.fon);
 		}
 		
 		// [Call when entering a specific location]
@@ -372,7 +372,7 @@ package fe.game {
 			loc = nloc;
 			GameContainer.reference.grafon.drawLoc(loc);
 			GameContainer.reference.cam.setLoc(loc);
-			GameContainer.reference.grafon.setFonSize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
+			GameContainer.reference.grafon.setSkySize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			GUIManager.reference.gui.setAll();
 			Sound.playMusic(loc.sndMusic);
 			GUIManager.reference.gui.hpBarBoss();
@@ -450,7 +450,7 @@ package fe.game {
 					Sound.setTempMute(false);
 					offLoadScreen();
 					GUIManager.reference.vgui.visible = true;
-					GUIManager.reference.vfon.visible = true;
+					GUIManager.reference.sky.visible = true;
 					GUIManager.reference.visual.visible = true;
 					GUIManager.reference.vblack.alpha = 1;
 					GameContainer.reference.cam.dblack = -10;
@@ -730,7 +730,7 @@ package fe.game {
 			loadScreen=n;
 			GUIManager.reference.vwait.story.lmb.stop();
 			GUIManager.reference.vwait.story.lmb.visible=false;
-			GUIManager.reference.vgui.visible=GUIManager.reference.vfon.visible=GUIManager.reference.visual.visible=GUIManager.reference.vscene.visible=false;
+			GUIManager.reference.vgui.visible=GUIManager.reference.sky.visible=GUIManager.reference.visual.visible=GUIManager.reference.vscene.visible=false;
 			GUIManager.reference.vwait.visible=true;
 			GameContainer.reference.catPause=false;
 			GUIManager.reference.vwait.progres.text=TextParser.txt("g", 'loading');
@@ -821,7 +821,7 @@ package fe.game {
 		
 		//финальная заставка или gameover
 		public function endgame(n:int=0):void {
-			GUIManager.reference.vwait.visible=GUIManager.reference.vfon.visible = false;
+			GUIManager.reference.vwait.visible=GUIManager.reference.sky.visible = false;
 			var s:String;
 			if (n==1) {
 				showScene('gameover');

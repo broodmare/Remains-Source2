@@ -2,6 +2,7 @@ package fe.game.domain.entities {
 	
 	// [Base class for objects that interact with the player or the world]
 	import flash.display.MovieClip;
+	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	
 	import fe.engine.utils.Vec2;
@@ -55,6 +56,27 @@ package fe.game.domain.entities {
 		
 		public function setVisState(s:String):void {
 
+		}
+
+		// Draws it through a Flash colour transform
+		public function setTint(tint:ColorTransform):void {
+			if (vis) {
+				vis.transform.colorTransform = tint;
+			}
+		}
+
+		// Surrounds it with a glow, or takes the glow away for null
+		public function setGlow(glow:GlowFilter):void {
+			if (vis) {
+				vis.filters = glow ? [glow] : [];
+			}
+		}
+
+		// Draws it in front of everything else in its layer
+		public function bringToFront():void {
+			if (vis && vis.parent) {
+				vis.parent.setChildIndex(vis, vis.parent.numChildren - 1);
+			}
 		}
 		
 		public function die(sposob:int = 0):void {

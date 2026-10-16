@@ -1,0 +1,273 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance18": "muzzleFlash"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"role": "muzzleFlash",
+						"source": "instance18",
+						"matrix": [
+							0.3333130180823615,
+							0,
+							0,
+							0.3333130180823615,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-36
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.5932769532964798,
+							0,
+							0,
+							0.5932769532964798,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-72
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							0.8532562367075426,
+							0,
+							0,
+							0.8532562367075426,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-108
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							1.113266017830333,
+							0,
+							0,
+							1.113266017830333,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-144
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							1.3732453012413959,
+							0,
+							0,
+							1.3732453012413959,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-180
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							1.6332397838377823,
+							0,
+							0,
+							1.6332397838377823,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-202
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							1.6332397838377823,
+							0,
+							0,
+							1.6332397838377823,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-223
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							1.6332397838377823,
+							0,
+							0,
+							1.6332397838377823,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "hardlight",
+						"source": "instance18",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							1,
+							0,
+							0,
+							0,
+							-245
+						],
+						"role": "muzzleFlash",
+						"matrix": [
+							1.6332397838377823,
+							0,
+							0,
+							1.6332397838377823,
+							0,
+							0
+						],
+						"effect": "sphere_813b550e8a8fc4ed"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 10,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

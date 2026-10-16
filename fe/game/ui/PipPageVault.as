@@ -17,8 +17,8 @@ package fe.game.ui {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.InventoryItem;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipVaultItem;
 	
 	/* 
 	*	A menu for storing or retrieving items. (Currently accessed in-game through the orange chest)
@@ -38,7 +38,7 @@ package fe.game.ui {
 			isLC = true;
 			isRC = true;
 
-			itemClass = visPipVaultItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipVaultItem");
 			
 			super(npip,npp);
 			

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 394,
+				"h": 186
+			},
+			"sourceSize": {
+				"w": 394,
+				"h": 186
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 394,
+				"h": 186
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 396,
+			"h": 188
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visautoaxe_kor.png",
+		"app": "Remains exporter"
+	}
+}

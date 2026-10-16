@@ -9,8 +9,8 @@ package fe.game.rendering {
 	public class BackObj {
 		
 		public var id:String;
-		public var X:Number;
-		public var Y:Number;
+		public var x:Number;
+		public var y:Number;
 		public var objectWidth:Number=1;
 		public var objectHeight:Number=1;
 		public var vis:MovieClip, erase:MovieClip, light:MovieClip;
@@ -19,8 +19,8 @@ package fe.game.rendering {
 		public var frameOff:int=0;
 		public var blend:String='normal';
 		public var alpha:Number=1;
-		public var sloy:int=0;
-		public var er:Boolean=false;	// [Erasure]
+		public var layer:int=0;				// Where it draws: -1 and 0 on the back wall, 1 to 3 in the background behind units
+		public var isOpening:Boolean=false;	// A window or hole: drawn only over the back wall, which its erase shape cuts through
 
 		private static var cachedBackObjs:Object = {}; // Save all objects that have been used before to avoid parsing XML for lots of objects.
 		private static var tileX:int = Tile.tileX;
@@ -28,8 +28,8 @@ package fe.game.rendering {
 
 		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
 			id	= nid;
-			X	= nx;
-			Y	= ny;
+			x	= nx;
+			y	= ny;
 			
 			var node:XML = getBackObjInfo(id);
 
@@ -38,17 +38,17 @@ package fe.game.rendering {
 			if (!(wid>0)) wid=tileX;
 			if (nloc && nloc.mirror) {
 				if (node.@mirr == '2' && Math.random() < 0.5) {
-					X = nloc.maxX - X;
+					x = nloc.maxX - x;
 					objectWidth = -1;
 				}
 				else if (node.@mirr == '1') {
-					X = nloc.maxX - X;
+					x = nloc.maxX - x;
 					objectWidth = -1;
 				}
-				else X = nloc.maxX - X - wid;
+				else x = nloc.maxX - x - wid;
 			}
 			else if (node.@mirr=='2' && Math.random() < 0.5) {
-				X = nx + wid;
+				x = nx + wid;
 				objectWidth = -1;
 			} 
 			vis		= GameContainer.reference.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_t',Grafon.numbBack);
@@ -61,10 +61,10 @@ package fe.game.rendering {
 			else if (vis) frame=Math.floor(Math.random()*vis.totalFrames+1);
 			else frame=1;
 			
-			if (node.@s.length()) sloy=node.@s;
+			if (node.@s.length()) layer=node.@s;
 			if (node.@blend.length()) blend=node.@blend;
 			if (node.@alpha.length()) alpha=node.@alpha;
-			if (node.@er.length()) er=true;
+			if (node.@er.length()) isOpening=true;
 			if (xml) {
 				if (xml.@w.length()) objectWidth=xml.@w;
 				if (xml.@h.length()) objectHeight=xml.@h;

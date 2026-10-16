@@ -12,8 +12,8 @@ package fe.game.ui {
 	import fe.game.domain.units.Pers;
 	import fe.game.domain.units.enums.E_Resistances;
 
-	import fe.game.stubs.visPipStatItem;
 	import fe.engine.SaveManager;
+	import fe.engine.utils.SymbolFactory;
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -49,7 +49,7 @@ package fe.game.ui {
 			isLC = true;
 			isRC = true;
 			
-			itemClass = visPipStatItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipStatItem");
 			skills = [];
 			
 			super(npip, npp);

@@ -322,7 +322,7 @@ package fe.game.domain.weapon {
 		
 		public function addVisual2():void {
 			if (tip == TYPE_MAGIC && vis) {
-				GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
+				GameContainer.reference.grafon.visObjs[layer].addChild(vis);
 			}
 		}
 

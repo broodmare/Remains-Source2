@@ -1,0 +1,18 @@
+{
+	"image": "mcrate5.png",
+	"density": 1,
+	"width": 100,
+	"height": 88,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 110, "w": 100, "h": 88, "pivotX": 50, "pivotY": 88},
+		"shadow": {"x": 0, "y": 0, "w": 120, "h": 108, "pivotX": 60, "pivotY": 98}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

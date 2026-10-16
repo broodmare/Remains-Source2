@@ -1,0 +1,18 @@
+{
+	"image": "doorboss.png",
+	"density": 1,
+	"width": 80,
+	"height": 120,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 142, "w": 80, "h": 120, "pivotX": 40, "pivotY": 120},
+		"shadow": {"x": 0, "y": 0, "w": 100, "h": 140, "pivotX": 50, "pivotY": 130}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

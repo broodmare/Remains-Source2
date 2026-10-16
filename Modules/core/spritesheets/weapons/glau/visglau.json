@@ -1,0 +1,2379 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance43": "magazine",
+			"instance45": "muzzleFlash",
+			"kor": "tint"
+		},
+		"scale": "4",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"5": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"6": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"7": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"8": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"9": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"10": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"11": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"12": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"13": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"14": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"15": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"16": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"17": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"18": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"19": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"20": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"21": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"22": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"23": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"24": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"25": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"26": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"27": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"28": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"29": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"30": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"31": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"32": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"33": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"34": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"35": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"36": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"37": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"38": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"39": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"40": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"41": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"42": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"43": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"44": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"45": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"46": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"47": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"48": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"49": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"50": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"51": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"52": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"53": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"54": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"55": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"56": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"57": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"58": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"59": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			},
+			"60": {
+				"emit": {
+					"y": 0,
+					"x": 8.333333830038736
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance45",
+						"matrix": [
+							2.480346907000556,
+							0,
+							0,
+							2.480346907000556,
+							50.000002980232416,
+							2.500000149011619
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					},
+					{
+						"blendMode": "screen",
+						"source": "instance45",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.5390625,
+							0,
+							0,
+							0,
+							0
+						],
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"matrix": [
+							2.4706573766861784,
+							0,
+							0,
+							2.4803008127391823,
+							50.000002980232416,
+							2.500000149011619
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					},
+					{
+						"blendMode": "screen",
+						"source": "instance45",
+						"colorTransform": [
+							1,
+							1,
+							1,
+							0.078125,
+							0,
+							0,
+							0,
+							0
+						],
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"matrix": [
+							2.4610596375302256,
+							0,
+							0,
+							2.480346907000556,
+							50.000002980232416,
+							2.500000149011619
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							11.666667362054227
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							14.166667511065853
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							17.50000104308134
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9934387203120423,
+							0.11427307561674171,
+							-0.11427307561674171,
+							0.9934387203120423,
+							-0.8333333830038736,
+							16.666667660077465
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9738616729097569,
+							0.2270660436391459,
+							-0.2270660436391459,
+							0.9738616729097569,
+							-3.3333335320154944,
+							15.833334277073604
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9415283366955322,
+							0.3368835351993761,
+							-0.3368835351993761,
+							0.9415283366955322,
+							-5.000000298023242,
+							15.000000894069728
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.8968658783157196,
+							0.442276027338268,
+							-0.442276027338268,
+							0.8968658783157196,
+							-6.666667064030989,
+							14.166667511065853
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.8404388531310669,
+							0.5418854281436659,
+							-0.5418854281436659,
+							0.8404388531310669,
+							-9.16666721304261,
+							13.333334128061978
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.7729950511253904,
+							0.634384193085682,
+							-0.634384193085682,
+							0.7729950511253904,
+							-10.833333979050357,
+							12.500000745058102
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.6954346515000652,
+							0.7185821663488249,
+							-0.7185821663488249,
+							0.6954346515000652,
+							-13.333334128061978,
+							11.666667362054227
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.6087494259327307,
+							0.7933502372115991,
+							-0.7933502372115991,
+							0.6087494259327307,
+							-15.000000894069725,
+							10.833333979050352
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.5140686341565033,
+							0.8577117835111489,
+							-0.8577117835111489,
+							0.5140686341565033,
+							-17.500001043081348,
+							10.00000059604649
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.41267397479259815,
+							0.9108428703254186,
+							-0.9108428703254186,
+							0.41267397479259815,
+							-19.16666780908909,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.3058776938444988,
+							0.9520416032498044,
+							-0.9520416032498044,
+							0.3058776938444988,
+							-21.666667958100714,
+							8.33333383003874
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.19505310724495495,
+							0.9807587254499629,
+							-0.9807587254499629,
+							0.19505310724495495,
+							-23.33333472410846,
+							7.500000447034864
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.08169555902653292,
+							0.9966278670208375,
+							-0.9966278670208375,
+							0.08169555902653292,
+							-25.83333487312008,
+							7.500000447034864
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							-0.03269958815174827,
+							0.9994354446392523,
+							-0.9994354446392523,
+							-0.03269958815174827,
+							-27.50000163912783,
+							6.666667064030989
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							-0.1467132531630945,
+							0.9891510599345601,
+							-0.9891510599345601,
+							-0.1467132531630945,
+							-30.00000178813945,
+							5.8333336810271135
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							-0.25881957563675895,
+							0.965911902938996,
+							-0.965911902938996,
+							-0.25881957563675895,
+							-31.666668554147197,
+							5.000000298023238
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							-0.18113709824107677,
+							0.9833832174569299,
+							-0.9833832174569299,
+							-0.18113709824107677,
+							-30.00000178813945,
+							5.000000298023238
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							-0.10227966421522683,
+							0.9947052197479339,
+							-0.9947052197479339,
+							-0.10227966421522683,
+							-29.166668405135574,
+							5.8333336810271135
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							-0.02276611339645267,
+							0.9996796250152364,
+							-0.9996796250152364,
+							-0.02276611339645267,
+							-27.50000163912783,
+							6.666667064030989
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.056854253919179476,
+							0.9983215331030806,
+							-0.9983215331030806,
+							0.056854253919179476,
+							-25.83333487312008,
+							6.666667064030989
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.13612366782369223,
+							0.9906311426936274,
+							-0.9906311426936274,
+							0.13612366782369223,
+							-25.000001490116208,
+							7.500000447034864
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.21453858700624626,
+							0.976654051342848,
+							-0.976654051342848,
+							0.21453858700624626,
+							-23.33333472410846,
+							8.33333383003874
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.2915954763648198,
+							0.9564667516827634,
+							-0.9564667516827634,
+							0.2915954763648198,
+							-21.666667958100714,
+							8.33333383003874
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.36679076354448575,
+							0.9302216329309324,
+							-0.9302216329309324,
+							0.36679076354448575,
+							-20.000001192092967,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.4396820330430289,
+							0.8980865815134792,
+							-0.8980865815134792,
+							0.4396820330430289,
+							-19.16666780908909,
+							10.00000059604649
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.5097808744379406,
+							0.8602447823829322,
+							-0.8602447823829322,
+							0.5097808744379406,
+							-17.500001043081348,
+							10.00000059604649
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.5766143745152776,
+							0.816940316574195,
+							-0.816940316574195,
+							0.5766143745152776,
+							-15.833334277073599,
+							10.833333979050352
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.6398468597638722,
+							0.7684326133191156,
+							-0.7684326133191156,
+							0.6398468597638722,
+							-15.000000894069725,
+							10.833333979050352
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.6989746709053519,
+							0.7150726943258063,
+							-0.7150726943258063,
+							0.6989746709053519,
+							-13.333334128061978,
+							11.666667362054227
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.7536621344285489,
+							0.6571960840938141,
+							-0.6571960840938141,
+							0.7536621344285489,
+							-11.66666736205423,
+							12.500000745058102
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.8036041738751039,
+							0.5951081074341997,
+							-0.5951081074341997,
+							0.8036041738751039,
+							-10.000000596046483,
+							12.500000745058102
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.8484192201546363,
+							0.5292510805080979,
+							-0.5292510805080979,
+							0.8484192201546363,
+							-9.16666721304261,
+							13.333334128061978
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.8878478937058385,
+							0.4600372191292377,
+							-0.4600372191292377,
+							0.8878478937058385,
+							-7.5000004470348625,
+							14.166667511065853
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9216461134938069,
+							0.38790893879983457,
+							-0.38790893879983457,
+							0.9216461134938069,
+							-5.833333681027115,
+							14.166667511065853
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9496002961953658,
+							0.3133392520749123,
+							-0.3133392520749123,
+							0.9496002961953658,
+							-4.166666915019368,
+							15.000000894069728
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9715271575169061,
+							0.2367553752713626,
+							-0.2367553752713626,
+							0.9715271575169061,
+							-3.3333335320154944,
+							15.833334277073604
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9872895074261928,
+							0.15867615443524646,
+							-0.15867615443524646,
+							0.9872895074261928,
+							-1.6666667660077472,
+							15.833334277073604
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							0.9967956541058811,
+							0.07957458970395265,
+							-0.07957458970395265,
+							0.9967956541058811,
+							0,
+							16.666667660077465
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							17.50000104308134
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							14.166667511065853
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							11.666667362054227
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							2.500000149011619
+						],
+						"sheet": "glau/visglau_kor.json"
+					},
+					{
+						"sprite": "image_001",
+						"role": "magazine",
+						"source": "instance43",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							9.166667213042615
+						],
+						"sheet": "glau/visglau_magazine.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"magazineLayer": "visglau_magazine.png",
+		"frameCount": 60,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"tintLayer": "visglau_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

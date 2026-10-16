@@ -1,0 +1,139 @@
+{
+	"meta": {
+		"version": "1",
+		"scale": "4",
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance36",
+						"matrix": [
+							0.24044800741163933,
+							0,
+							0,
+							0.24044800741163933,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance36",
+						"matrix": [
+							0.34571838452726905,
+							0,
+							0,
+							0.34571838452726905,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance36",
+						"matrix": [
+							0.450988786478169,
+							0,
+							0,
+							0.450988786478169,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance36",
+						"matrix": [
+							0.5562896861407967,
+							0,
+							0,
+							0.5562896861407967,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance36",
+						"matrix": [
+							0.6615600384211563,
+							0,
+							0,
+							0.6615600384211563,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance36",
+						"matrix": [
+							0.7668609877543243,
+							0,
+							0,
+							0.7668609877543243,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			}
+		],
+		"roles": {
+			"instance36": "muzzleFlash"
+		},
+		"anchors": {},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"animations": {},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"frameCount": 7,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {}
+}

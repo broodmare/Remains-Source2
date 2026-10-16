@@ -121,7 +121,7 @@ package fe.game.domain.projectile {
 			begx = coords.X;
 			begy = coords.Y;
 			
-			sloy = 2;
+			layer = 2;
 			levitPoss = false;
 			var fetch:Function = SymbolFactory.fetchSymbolClass;
 			if (visClass) {

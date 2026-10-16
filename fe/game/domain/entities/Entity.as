@@ -34,7 +34,7 @@ package fe.game.domain.entities {
 		
 		// Entity state
 		public var stay:Boolean			= false;
-		public var sloy:int				= 0;
+		public var layer:int				= 0;		// Which of Grafon's object layers (visObjs) it draws in, counted from the back
 		
 		// Movement
 		public var coordinates:Vec2		= new Vec2();	// The entity's [X, Y] coordinates stored as a vector
@@ -46,7 +46,7 @@ package fe.game.domain.entities {
 
 		public function addVisual():void {
 			if (vis && loc && loc.active) {
-				GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
+				GameContainer.reference.grafon.visObjs[layer].addChild(vis);
 			}
 		}
 

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 66,
+				"h": 69
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 66,
+				"h": 69
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.4782608695652174,
+				"x": 0.5
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 66,
+				"h": 69
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 68,
+			"h": 71
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visglau_magazine.png",
+		"app": "Remains exporter"
+	}
+}

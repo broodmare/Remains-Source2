@@ -1,0 +1,128 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance7": "auxiliary",
+			"kor": "tint"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.833333979050357,
+							0.8333333830038754
+						],
+						"sheet": "tlance/vistlance_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance7",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							40.00000238418593,
+							0
+						],
+						"sheet": "tlance/vistlance_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.833333979050357,
+							0.8333333830038754
+						],
+						"sheet": "tlance/vistlance_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance7",
+						"matrix": [
+							1.3102264986570575,
+							0,
+							0,
+							0.8666686733564937,
+							40.00000238418593,
+							0
+						],
+						"sheet": "tlance/vistlance_auxiliary.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "tint",
+						"source": "kor",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							10.833333979050357,
+							0.8333333830038754
+						],
+						"sheet": "tlance/vistlance_kor.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_001",
+						"role": "auxiliary",
+						"source": "instance7",
+						"matrix": [
+							1.5480652380823237,
+							0,
+							0,
+							0.7333373963835277,
+							36.66666885217044,
+							0
+						],
+						"sheet": "tlance/vistlance_auxiliary.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"auxiliaryLayer": "vistlance_auxiliary.png",
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": null,
+		"tintLayer": "vistlance_kor.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

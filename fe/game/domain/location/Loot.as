@@ -45,7 +45,7 @@ package fe.game.domain.location {
 				cTransform = loc.cTransform;
 			}
 			
-			sloy = 2;
+			layer = 2;
 			prior = 3;
 			coordinates.X = nx;
 			coordinates.Y = ny;

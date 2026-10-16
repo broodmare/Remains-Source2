@@ -1,8 +1,8 @@
 package fe.game.domain.location {
 
 	import flash.display.MovieClip;
-	
-	import fe.engine.utils.SymbolFactory;
+	import flash.geom.ColorTransform;
+
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
@@ -12,7 +12,8 @@ package fe.game.domain.location {
 	import fe.game.domain.serv.Interact;
 	import fe.game.domain.location.tile.Tile;
 	import fe.engine.SaveManager;
-	
+	import fe.game.rendering.Flipbook;
+
 	public class CheckPoint extends Obj {
 
 		public var id:String;
@@ -25,13 +26,16 @@ package fe.game.domain.location {
 		public var hide:Boolean=false;
 		
 		private var locked:Boolean=false;
-		
+		private var gate:Flipbook;		// Opens when the checkpoint is activated
+		private var lock:Flipbook;		// Shown while the checkpoint is locked, at its lock level
+		private var glow:Flipbook;		// Lights up while the checkpoint can teleport
+
 		public var area:Area;
 
 		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			id=nid;
 			loc=nloc;
-			sloy=0;
+			layer=0;
 			prior=1;
 			id=nid;
 			levitPoss=false;
@@ -48,18 +52,16 @@ package fe.game.domain.location {
 
 			coordinates.X  = nx;
 			coordinates.Y  = ny;
-			var vClass:Class = SymbolFactory.fetchSymbolClass("vischeckpoint");
-			vis = new vClass();
-			vis.x = coordinates.X;
-			vis.y = coordinates.Y;
-			vis.gotoAndStop(1);
-		
+			gate = createPart("checkpoint");
+			lock = createPart("checkpoint_lock");
+			glow = createPart("checkpoint_glow");
+
 			if (id.charAt(10)) {
-				vis.lock.gotoAndStop(int(id.charAt(10)));
+				lock.goTo(int(id.charAt(10)) - 1, false);
 				locked = true;
 			}
 			else {
-				vis.lock.visible = false;
+				lock.visible = false;
 			}
 		
 			boundingBox.center(coordinates);
@@ -87,10 +89,10 @@ package fe.game.domain.location {
 			
 				if (active==false) active=0;
 			
-				if (active==1)  vis.osn.gotoAndStop('reopen');
-			
+				if (active==1)  gate.goToLabel('reopen', false);
+
 				if (active==2)  {
-					vis.osn.gotoAndStop('open');
+					gate.goToLabel('open', false);
 				}
 			
 				if (loadObj.used) used=true;
@@ -100,33 +102,54 @@ package fe.game.domain.location {
 				area=null;
 				active=2;
 				teleOn=true;
-				vis.osn.gotoAndStop('open');
+				gate.goToLabel('open', false);
 				loc.land.currentCP=this;
 				inter.actFun=teleport;
 				inter.userAction='returnm';
 				inter.t_action=30;
 				inter.update();
-				vis.fiol.gotoAndStop(25);
+				glow.goTo(glow.frameCount - 1, false);
 			}
-			
+
 			if (hide) {
-				vis.visible=false;
 				nazv='';
 				inter.active=false;
 			}
 		}
 		
+		// One of its parts, drawn at its place
+		private function createPart(name:String):Flipbook {
+			var part:Flipbook = new Flipbook(GameContainer.reference.grafon.flipbooks.viewDefinition(name));
+
+			part.x = coordinates.X;
+			part.y = coordinates.Y;
+
+			return part;
+		}
+
 		public override function addVisual():void {
-			if (vis && !hide) {
-				GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
-			
+			if (!hide) {
+				GameContainer.reference.grafon.objectLayers.add(gate, layer);
+				GameContainer.reference.grafon.objectLayers.add(lock, layer);
+				GameContainer.reference.grafon.objectLayers.add(glow, layer);
+
 				if (cTransform) {
-					vis.transform.colorTransform=cTransform;
+					setTint(cTransform);
 				}
 			}
 		}
+
 		public override function remVisual():void {
 			super.remVisual();
+			gate.removeFromParent();
+			lock.removeFromParent();
+			glow.removeFromParent();
+		}
+
+		public override function setTint(tint:ColorTransform):void {
+			gate.setTint(tint);
+			lock.setTint(tint);
+			glow.setTint(tint);
 		}
 		
 		public override function save():Object {
@@ -171,16 +194,16 @@ package fe.game.domain.location {
 			loc.land.currentCP=this;
 	
 			if (first) {
-				vis.osn.gotoAndStop('open');
-				if (GameContainer.reference.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
+				gate.goToLabel('open', false);
+				if (GameContainer.reference.game.mReturn && teleOn && !used) glow.goTo(glow.frameCount - 1, false);
 			}
 			else {
-				vis.osn.play();
-				
-				if (GameContainer.reference.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
+				gate.isPlaying = true;
+
+				if (GameContainer.reference.game.mReturn && teleOn && !used) glow.goTo(0, true);
 			}
-		
-			if (used) vis.fiol.gotoAndStop(1);
+
+			if (used) glow.goTo(0, false);
 		
 			if (GameContainer.reference.game.mReturn && teleOn && !used) {
 				inter.actFun=teleport;
@@ -210,7 +233,7 @@ package fe.game.domain.location {
 					used = true;
 					inter.active = false;
 					inter.actionText = '';
-					vis.fiol.gotoAndStop(1);
+					glow.goTo(0, false);
 				}
 			}
 		}
@@ -228,8 +251,8 @@ package fe.game.domain.location {
 
 			inter.active=!hide;
 			active=1;
-			vis.osn.gotoAndStop('reopen');
-			vis.fiol.gotoAndStop(1);
+			gate.goToLabel('reopen', false);
+			glow.goTo(0, false);
 			inter.actFun=activate;
 			inter.userAction='activate';
 			inter.t_action=0;
@@ -256,7 +279,7 @@ package fe.game.domain.location {
 			
 			if (locked && inter.lock==0 && inter.mine==0) {
 				locked=false;
-				vis.lock.visible=false;
+				lock.visible=false;
 			}
 			
 			if (area) {

@@ -11,12 +11,9 @@ package fe.game.rendering {
 	import flash.display.MovieClip;
 	import flash.filters.BlurFilter;
 	import flash.filters.ColorMatrixFilter;
-	import flash.filters.DropShadowFilter;
 	import flash.ui.MouseCursorData;
 	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
-	
-	import fl.motion.Color;	// Adobe Animate dependency
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
@@ -27,14 +24,6 @@ package fe.game.rendering {
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.enums.E_Material;
 	import fe.game.rendering.enums.E_Decal;
-	
-	// .fla linkages
-	import fe.game.stubs.tileVoda;		
-	import fe.game.stubs.visBlack;
-	import fe.game.stubs.paintaero;
-	import fe.game.stubs.paintbrush;
-	import fe.game.stubs.tileGwall;
-	import fe.game.stubs.tileFront;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.tile.TilePiece_Definition;
 	import fe.game.domain.location.tile.TileRegistry;
@@ -46,11 +35,12 @@ package fe.game.rendering {
 		// colors
 		private static const COLOR_TRANSPARENT:uint		= 0xFF000000;
 		private static const COLOR_BLACK:uint			= 0x00000000;
-		private static const COLOR_WHITE:uint			= 0xFFFFFFFF;
-
-		private static const SHADOW_REACH:int			= 40;			// How far the drop shadow spreads past a front pixel: its blur plus offset, rounded up to a tile
 
 		private var backdrop:Backdrop = new Backdrop();			// The background texture (Manages itself and is rendered by Starling)
+		private var starlingView:StarlingView;					// The room's layers drawn by Starling, under visual
+
+		public var objectLayers:ObjectLayers;					// Object layers 0 and 1, drawn by Starling; the rest of visObjs are Flash's
+		public var flipbooks:FlipbookManager;					// The objects' art for the object layers
 
 		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
 		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
@@ -58,8 +48,6 @@ package fe.game.rendering {
 		public var loc:Location;
 
 		public var visual:Sprite;
-		public var visBack:Sprite;
-		public var visBack2:Sprite;
 		public var visObjs:Array;
 		private const kolObjs:int = 6;
 		public var visVoda:Sprite;
@@ -67,46 +55,27 @@ package fe.game.rendering {
 		private var visForeground:Sprite;
 		public var visLight:Sprite;
 		public var visSats:Sprite;
-		public var visFon:MovieClip;
-		
+		public var skyPicture:MovieClip;				// The land's sky picture, inside GUIManager's sky clip
+
 		private var resX:int;			// Screen pixel width
 		private var resY:int;			// Screen pixel height
-		private var kusokX:int = 48;	// Room tile width
-		private var kusokY:int = 25;	// Room tile height
-		
+
 		public var frontBmp:BitmapData;
 		private var frontBitmap:Bitmap;
 		private var foregroundBmp:BitmapData;			// Foreground tile pieces, over the main ones
 		private var foregroundBitmap:Bitmap;
 		private var vodaBmp:BitmapData;
 		private var vodaBitmap:Bitmap;
-		private var backBmp:BitmapData;
-		private var backBitmap:Bitmap;
-		private var backBmp2:BitmapData;
-		private var backBitmap2:Bitmap;
 		public var lightBmp:BitmapData;
 		private var lightBitmap:Bitmap;
 		public var satsBmp:BitmapData;
 		private var satsBitmap:Bitmap;
-		private var shadBmp:BitmapData;
-		private var shadowCasterBmp:BitmapData;			// The main and foreground layers merged, for casting the drop shadow
-		private var colorBmp:BitmapData;
-		private var transpFon:Boolean;				// The back wall lets the distant background show through; set per room by drawLoc
-		private var dsFilter:DropShadowFilter		= new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
 		private var infraTransform:ColorTransform	= new ColorTransform(1, 1, 1, 1, 100);
 		private var defTransform:ColorTransform		= new ColorTransform();
-		
-		public var pa:MovieClip;
-		public var pb:MovieClip;
 
-		public var brTrans:ColorTransform			= new ColorTransform();
-		public var brColor:Color					= new Color();		// Adobe Animate dependency.
-		private var brData:BitmapData				= new BitmapData(100, 100, false, COLOR_BLACK);
-		private var brPoint:Point					= new Point(0, 0);
-		private var brRect:Rectangle				= new Rectangle(0, 0, 50, 50);
-		private var pm:Matrix						= new Matrix();
-			
-		private var voda:MovieClip = new tileVoda();	// .SWF Dependency
+		public var brushColor:uint					= 0xFFFFFF;	// The colour paint strokes draw in
+
+		private var voda:MovieClip = SymbolFactory.createInstance("tileVoda");	// .SWF Dependency
 
 		private var m:Matrix;
 		
@@ -149,9 +118,10 @@ package fe.game.rendering {
 			// Main container
 			visual = nvis;
 
-			// Drawing the room
-			visBack				= new Sprite();
-			visBack2			= new Sprite();
+			// Drawing the room. The back wall and background are drawn by Starling, under all of these.
+			starlingView		= new StarlingView(visual, this);
+			objectLayers		= starlingView.objectLayers;
+			flipbooks			= new FlipbookManager(updateLoaded);
 			visVoda				= new Sprite();
 			visVoda.alpha		= 0.6;
 			visFront			= new Sprite();
@@ -172,8 +142,6 @@ package fe.game.rendering {
 				visObjs.push(new Sprite());
 			}
 			
-			visual.addChild(visBack);		//  0
-			visual.addChild(visBack2);		//  0
 			visual.addChild(visObjs[0]);	//  1
 			visual.addChild(visObjs[1]);	//  2
 			visual.addChild(visObjs[2]);	//  3
@@ -199,14 +167,6 @@ package fe.game.rendering {
 			foregroundBitmap = new Bitmap(foregroundBmp);
 			visForeground.addChild(foregroundBitmap);
 
-			backBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
-			backBitmap = new Bitmap(backBmp);
-			visBack.addChild(backBitmap);
-			
-			backBmp2 = new BitmapData(rectX, rectY, true, COLOR_BLACK)
-			backBitmap2 = new Bitmap(backBmp2);
-			visBack2.addChild(backBitmap2);
-
 			vodaBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
 			vodaBitmap = new Bitmap(vodaBmp);
 			visVoda.addChild(vodaBitmap);
@@ -214,20 +174,15 @@ package fe.game.rendering {
 			satsBmp = new BitmapData(rectX, rectY, true, 0);
 			satsBitmap = new Bitmap(satsBmp, "auto", true);
 			visSats.addChild(satsBitmap);
-			
-			colorBmp = new BitmapData(rectX, rectY, true, 0);
-			shadBmp = new BitmapData(rectX, rectY, true, 0);
-			shadowCasterBmp = new BitmapData(rectX, rectY, true, 0);
-			visBack.addChild(new Bitmap(shadBmp));	// The tiles' drop shadow lies over the back wall as its own layer, so it can be recast when tiles break
-			
+
 			lightBmp = new BitmapData(lightX, lightY, true, COLOR_TRANSPARENT);
 			lightBitmap = new Bitmap(lightBmp, "auto", true);
 			visLight.addChild(lightBitmap);
 
-			ramT = new visBlack();
-			ramB = new visBlack();
-			ramR = new visBlack();
-			ramL = new visBlack();
+			ramT = SymbolFactory.createInstance("visBlack");
+			ramB = SymbolFactory.createInstance("visBlack");
+			ramR = SymbolFactory.createInstance("visBlack");
+			ramL = SymbolFactory.createInstance("visBlack");
 
 			ramT.cacheAsBitmap = true;
 			ramB.cacheAsBitmap = true;
@@ -275,7 +230,12 @@ package fe.game.rendering {
 			}
 
 
-			resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol);
+			updateLoaded();
+		}
+
+		// Whether every texture, sprite sheet and flipbook has loaded
+		private function updateLoaded():void {
+			resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol) && flipbooks.isLoaded;
 		}
 		
 		public function allProgress():void {
@@ -317,6 +277,20 @@ package fe.game.rendering {
 			visual.addChild(debug.drawAllBoundingBoxes());
 		}
 
+		// How big one copy of a loose texture draws in the room, in room pixels, or null when the manifest gives no size
+		public function viewDrawSize(textureName:String):Point {
+			return grLoaders[numbMat].drawSizes[textureName];
+		}
+
+		// Scales a loose texture's fill from its pixels to the size it draws in the room
+		private function fillMatrix(textureName:String, bitmap:BitmapData):Matrix {
+			var size:Point = viewDrawSize(textureName);
+
+			if (!size) { return null; }
+
+			return new Matrix(size.x / bitmap.width, 0.0, 0.0, size.y / bitmap.height);
+		}
+
 		public function getObj(textureName:String, n:int = 0):* {
 			if (grLoaders[n] && grLoaders[n].isLoad) {
 				return grLoaders[n].getObj(textureName);
@@ -328,67 +302,67 @@ package fe.game.rendering {
 		}
 		
 		// Draw the sky texture
-		public function drawFon(vfon:MovieClip, tex:String):void {
+		public function drawSky(sky:MovieClip, tex:String):void {
 			// Set default texture if none provided
 			if (tex == "" || tex == null) {
 				tex = "fonDefault";
 			}
-			
+
 			// Remove the existing background if present
-			if (visFon && vfon.contains(visFon)) {
-				vfon.removeChild(visFon);
+			if (skyPicture && sky.contains(skyPicture)) {
+				sky.removeChild(skyPicture);
 			}
-			
+
 			// Retrieve the sky bitmap
 			var obj:Object = getObj(tex);
-			
+
 			if (obj) {
 				// Check if the object is already a MovieClip
 				if (obj is MovieClip) {
-					visFon = obj as MovieClip;
+					skyPicture = obj as MovieClip;
 				}
 				// If it's BitmapData, wrap it inside a Bitmap and then a MovieClip
 				else if (obj is BitmapData) {
 					var bitmap:Bitmap = new Bitmap(obj as BitmapData);
 					var mc:MovieClip = new MovieClip();
 					mc.addChild(bitmap);
-					visFon = mc;
+					skyPicture = mc;
 				}
 				// Optionally handle other types or throw an error
 				else {
-					throw new TypeError("Unsupported object type for visFon");
+					throw new TypeError("Unsupported object type for skyPicture");
 				}
-				
+
 				// Add the MovieClip to the backdrop
-				vfon.addChild(visFon);
+				sky.addChild(skyPicture);
 			}
 			else {
-				trace("Warning: visFon object not found for texture:", tex);
+				trace("Warning: skyPicture object not found for texture:", tex);
 			}
 
 			backdrop.dirty = true;
 		}
-		
-		public function setFonSize(nx:Number, ny:Number):void {
-			if (visFon) {
+
+		public function setSkySize(nx:Number, ny:Number):void {
+			if (skyPicture) {
 				if (nx>rectX && ny>rectY) {
-					visFon.x = visual.x;
-					visFon.y = visual.y;
-					visFon.width = rectX;
-					visFon.height = rectY;
+					skyPicture.x = visual.x;
+					skyPicture.y = visual.y;
+					skyPicture.width = rectX;
+					skyPicture.height = rectY;
 				}
 				else {
-					var koef:int = visFon.width / visFon.height;
-					visFon.x = 0;
-					visFon.y = 0;
-				
+					var koef:Number = skyPicture.width / skyPicture.height;
+					skyPicture.x = 0;
+					skyPicture.y = 0;
+
 					if (nx >= ny * koef) {
-						visFon.width = nx;
-						visFon.height = nx / koef;
+						skyPicture.width = nx;
+						skyPicture.height = nx / koef;
 					}
 					else {
-						visFon.height = ny;
-						visFon.width = ny * koef;
+						skyPicture.height = ny;
+						skyPicture.width = ny * koef;
 					}
 				}
 			}
@@ -415,12 +389,6 @@ package fe.game.rendering {
 			resX = loc.spaceX * tileX;
 			resY = loc.spaceY * Tile.tileY;
 			
-			transpFon = nloc.transpFon;
-			
-			if (nloc.backwall == "sky") {
-				transpFon = true;
-			}
-			
 			GameContainer.reference.gr_stage = 2;
 			//рамки
 			ramT.x = -50;
@@ -443,14 +411,10 @@ package fe.game.rendering {
 			GameContainer.reference.gr_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
 			frontBmp.lock();
 			foregroundBmp.lock();
-			backBmp.lock();
-			backBmp2.lock();
 			vodaBmp.lock();
 
 			frontBmp.fillRect(allRect, 0);
 			foregroundBmp.fillRect(allRect, 0);
-			backBmp.fillRect(allRect,  0);
-			backBmp2.fillRect(allRect, 0);
 			vodaBmp.fillRect(allRect,  0);
 			satsBmp.fillRect(allRect,  0);
 			
@@ -458,18 +422,6 @@ package fe.game.rendering {
 			setLight();
 			visLight.visible = loc.black && GameContainer.reference.black;
 			warShadow();
-			
-			var darkness:int = 0xAA + loc.darkness;
-			if (darkness > 0xFF) {
-				darkness = 0xFF;
-			}
-			
-			if (darkness<0) {
-				darkness = 0;
-			}
-			
-			colorBmp.fillRect(allRect, darkness * 0x1000000);
-			shadBmp.fillRect(allRect, COLOR_WHITE);
 
 			GameContainer.reference.gr_stage=4;
 
@@ -479,8 +431,6 @@ package fe.game.rendering {
 			var tileAbove:Tile;
 			var front:Sprite	= new Sprite();	// Sprites for the main layer's bitmap
 			var fore:Sprite		= new Sprite();	// Sprites for the foreground layer's bitmap
-			var back:Sprite		= new Sprite();	// [fingerprint on the backdrop bitmap]
-			var back2:Sprite	= new Sprite();	// [fingerprint on the backdrop bitmap]
 			var voda:Sprite		= new Sprite();	// [fingerprint on the water bitmap]
 			
 			//отключить все материалы
@@ -490,7 +440,6 @@ package fe.game.rendering {
 				textures.used = false;
 			}
 
-			var gret:int=0;
 			GameContainer.reference.gr_stage=5;
 			for (var i:int = 0; i < loc.spaceX; i++) {
 				for (var j:int = 0; j < loc.spaceY; j++) {
@@ -502,20 +451,21 @@ package fe.game.rendering {
 					}
 
 					for each (piece in t.definition.pieces) {
-						if (piece.layer == E_TileLayer.BACK_WALL || !showsPiece(t, piece)) {
+						if (piece.layer == E_TileLayer.BACK_WALL || !t.showsPiece(piece)) {
 							continue;
 						}
 						if (piece.spriteFrame == 0) {
 							markUsed(piece);
 							continue;
 						}
-
-						tile = new tileFront();
-						tile.gotoAndStop(piece.spriteFrame + ((t.ladderTop && piece.behaviour == E_TileBehaviour.LADDER) ? 1 : 0));
+						// Sprites behind units are drawn by Starling
 						if (piece.layer < E_TileLayer.MAIN) {
-							back2.addChild(tile);
+							continue;
 						}
-						else if (piece.layer == E_TileLayer.MAIN) {
+
+						tile = SymbolFactory.createInstance("tileFront");
+						tile.gotoAndStop(piece.spriteFrame + ((t.ladderTop && piece.behaviour == E_TileBehaviour.LADDER) ? 1 : 0));
+						if (piece.layer == E_TileLayer.MAIN) {
 							front.addChild(tile);
 						}
 						else {
@@ -526,7 +476,7 @@ package fe.game.rendering {
 					}
 
 					if (t.water) {				// [Water]
-						tile = new tileVoda();
+						tile = SymbolFactory.createInstance("tileVoda");
 						tile.gotoAndStop(loc.tipWater + 1);
 
 						tileAbove = loc.getTile(i, j - 1);
@@ -546,165 +496,35 @@ package fe.game.rendering {
 			frontBmp.draw(front, new Matrix, null, null, null, false);
 			foregroundBmp.draw(fore, new Matrix, null, null, null, false);
 			
-			
 			GameContainer.reference.gr_stage = 7;
-			drawBackWall(nloc.backwall, nloc.backform);	// [Back wall]
-			
-			GameContainer.reference.gr_stage = 8;
 			drawTileLayer(E_TileLayer.MAIN);
 			drawTileLayer(E_TileLayer.FOREGROUND);
 
-			GameContainer.reference.gr_stage = 9;
-			drawTileLayer(E_TileLayer.BACK_WALL);
-
-			GameContainer.reference.gr_stage = 10;
-			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0 ,0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-			var darkness2:Number = 1 - (255 - darkness) / 150;
-			// [Background objects]
-			var ct:ColorTransform = new ColorTransform();
-
-			GameContainer.reference.gr_stage = 11;
-			for (j = -2; j <= 3; j++) {
-				if (j == -1) {
-					backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-				}
-				
-				for each(var bo:BackObj in loc.backobjs) {	
-					if (bo.sloy == j && !bo.er || j == -2 && bo.er) {
-						m = new Matrix();
-						m.scale(bo.objectWidth, bo.objectHeight);
-						m.tx = bo.X;
-						m.ty = bo.Y;
-						ct.alphaMultiplier = bo.alpha;
-						
-						if (bo.vis) {
-							if (j <= 0) {
-								ct.redMultiplier	= 1.00;
-								ct.greenMultiplier	= 1.00;
-								ct.blueMultiplier	= 1.00;
-								backBmp.draw(bo.vis, m, ct, bo.blend, null, true);
-							}
-							else {
-								if (bo.light) {
-									if (darkness2>=0.43) {
-										ct.redMultiplier	= 1.00;
-										ct.greenMultiplier	= 1.00;
-										ct.blueMultiplier	= 1.00;
-									}
-									else {
-										ct.redMultiplier	= 0.55 + darkness2;
-										ct.greenMultiplier	= 0.55 + darkness2;
-										ct.blueMultiplier	= 0.55 + darkness2;
-									}
-								}
-								else {
-									ct.redMultiplier	= darkness2;
-									ct.greenMultiplier	= darkness2;
-									ct.blueMultiplier	= darkness2;
-								}
-								
-								backBmp2.draw(bo.vis, m, ct, bo.blend, null, true);
-								
-								if (bo.light) {
-									ct.redMultiplier	= 1.00;
-									ct.greenMultiplier	= 1.00;
-									ct.blueMultiplier	= 1.00;
-								}
-								else {
-									ct.redMultiplier	= darkness2;
-									ct.greenMultiplier	= darkness2;
-									ct.blueMultiplier	= darkness2;
-								}
-							}
-						}
-						
-						if (bo.erase) {
-							satsBmp.draw(bo.erase, m, null, "erase", null, true);
-						}
-						
-						if (bo.light) {
-							colorBmp.draw(bo.light, m, ct, "normal", null, true);
-						}
-					}
-				}
-			}
-
-			GameContainer.reference.gr_stage=12;
-			m=new Matrix();
-		
+			GameContainer.reference.gr_stage = 8;
 			if (nloc.cTransform) {
 				frontBmp.colorTransform(frontBmp.rect,nloc.cTransform);
 				foregroundBmp.colorTransform(foregroundBmp.rect,nloc.cTransform);
 				vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
 			}
 
-			mergeShadowCasters(frontBmp.rect);
-			shadBmp.applyFilter(shadowCasterBmp,shadowCasterBmp.rect,new Point(0,0),dsFilter);
+			GameContainer.reference.gr_stage = 9;
+			starlingView.backLayers.draw(loc, tileTextures);
 
-			GameContainer.reference.gr_stage=13;
-			// [Darkening the background]
-			if (nloc.cTransform) {
-				backBmp.colorTransform(backBmp.rect,nloc.cTransform);
-				ct=new ColorTransform();
-				darkness2=1+(170-darkness)/33;
-				ct.concat(nloc.cTransform);
-			
-				if (darkness2>1) {
-					ct.redMultiplier	*= darkness2;
-					ct.greenMultiplier	*= darkness2;
-					ct.blueMultiplier	*= darkness2;
-				}
-			
-				backBmp2.colorTransform(backBmp2.rect, ct);
-			}
-
-			GameContainer.reference.gr_stage=14;
-			backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
-			
-			GameContainer.reference.gr_stage=15;
-				
-			if (transpFon) {
-				satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-			}
-			
-			backBmp.draw(colorBmp, null, null, "hardlight");
-
-			if (transpFon) {
-				backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
-				shadBmp.draw(backBmp, null, null, "alpha");	// No shadow where the distant background shows through
-			}
-			
-			// [Pink cloud]
-			GameContainer.reference.gr_stage = 16;
-			if (loc.gas > 0) {
-				m = new Matrix();
-				m.ty=520;
-				backBmp2.draw(getObj("back_pink_t",numbBack),m,new ColorTransform(1,1,1,0.3));
-			}
-			
-			GameContainer.reference.gr_stage = 17;
-			drawTileLayer(E_TileLayer.BACKGROUND);
-		
-			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
-			
-			
-			GameContainer.reference.gr_stage = 18;
+			GameContainer.reference.gr_stage = 10;
 			frontBmp.unlock();
 			foregroundBmp.unlock();
-			backBmp.unlock();
-			backBmp2.unlock();
 			vodaBmp.unlock();
 			
-			if (nloc.cTransform && nloc.cTransformFon) {
-				visFon.transform.colorTransform = nloc.cTransformFon;
+			if (nloc.cTransform && nloc.cTransformSky) {
+				skyPicture.transform.colorTransform = nloc.cTransformSky;
 			}
-			else if (visFon.transform.colorTransform != defTransform) {
-				visFon.transform.colorTransform = defTransform;
+			else if (skyPicture.transform.colorTransform != defTransform) {
+				skyPicture.transform.colorTransform = defTransform;
 			}
 
 			backdrop.dirty = true;
 				
-			GameContainer.reference.gr_stage = 19;
+			GameContainer.reference.gr_stage = 11;
 			// [Active objects]
 			drawAllObjs();
 
@@ -736,6 +556,7 @@ package fe.game.rendering {
 		
 		//добавление всех видимых объектов
 		public function drawAllObjs():void {
+			objectLayers.clear();
 			for (var i:int = 0; i < kolObjs; i++) {
 				var n:int = visual.getChildIndex(visObjs[i]);
 				visual.removeChild(visObjs[i]);
@@ -757,80 +578,13 @@ package fe.game.rendering {
 			}
 		}
 		
-		public function drawBackWall(tex:String, sposob:int = 0):void {
-			// Cache frequently accessed properties
-			var localKusokX:int = kusokX;
-			var localTileX:int = tileX;
-			var localKusokY:int = kusokY;
-			var localTileY:int = Tile.tileY;
-
-			var roomPixelWidth:int    = localKusokX * localTileX;
-			var roomPixelHeight:int   = localKusokY * localTileY;
-
-			if (tex == "sky") {
-				return;
-			}
-
-			m = new Matrix();
-
-			// Cache the result of getObj('tBackWall') to avoid multiple calls
-			var defaultTex:String = "tBackWall";
-			var fill:BitmapData = getObj(tex) || getObj(defaultTex);
-
-			var osn:Sprite = new Sprite();
-			osn.graphics.beginBitmapFill(fill);
-
-			// Precompute rectangle dimensions based on 'sposob'
-			switch(sposob) {
-				case 0:
-					osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
-					break;
-				case 1:
-					var rect1Width:int = 11 * localTileX - 10;
-					var rect2X:int = 37 * localTileX + 10;
-					osn.graphics.drawRect(0, 0, rect1Width, roomPixelHeight);
-					osn.graphics.drawRect(rect2X, 0, roomPixelWidth - rect2X, roomPixelHeight);
-					break;
-				case 2:
-					var rectY2:int = 16 * localTileY + 10;
-					osn.graphics.drawRect(0, rectY2, roomPixelWidth, roomPixelHeight - rectY2);
-					break;
-				case 3:
-					var rectY3:int = 24 * localTileY + 10;
-					osn.graphics.drawRect(0, rectY3, roomPixelWidth, roomPixelHeight - rectY3);
-					break;
-				default:
-					// Handle unexpected 'sposob' values gracefully
-					osn.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
-			}
-
-			backBmp.draw(osn, m, null, null, null, false);
-		}
-		
-		private function setMovieClipTile(mc:MovieClip, t:Tile, toFront:Boolean):void {
+		private function setMovieClipTile(mc:MovieClip, t:Tile):void {
 			if (mc.c1) {
-				if (toFront) {
-					mc.c1.gotoAndStop(t.mainOutline1 + 1);
-					mc.c2.gotoAndStop(t.mainOutline2 + 1);
-					mc.c3.gotoAndStop(t.mainOutline3 + 1);
-					mc.c4.gotoAndStop(t.mainOutline4 + 1);
-				}
-				else {
-					mc.c1.gotoAndStop(t.backOutline1 + 1);
-					mc.c2.gotoAndStop(t.backOutline2 + 1);
-					mc.c3.gotoAndStop(t.backOutline3 + 1);
-					mc.c4.gotoAndStop(t.backOutline4 + 1);
-				}
+				mc.c1.gotoAndStop(t.mainOutline1 + 1);
+				mc.c2.gotoAndStop(t.mainOutline2 + 1);
+				mc.c3.gotoAndStop(t.mainOutline3 + 1);
+				mc.c4.gotoAndStop(t.mainOutline4 + 1);
 			}
-		}
-
-		// Whether a tile still shows one of its pieces: a destroyed block is gone, a door hides the textures under it
-		private function showsPiece(t:Tile, piece:TilePiece_Definition):Boolean {
-			// Differs from vanilla, where destroying a block also hid the beams, steps and ladders in its tile once the room was redrawn
-			if (t.destroyed && piece.layer == E_TileLayer.MAIN) { return false; }
-			if (t.door && piece.spriteFrame == 0) { return false; }
-
-			return true;
 		}
 
 		// Pieces without textures were reported when the registry loaded, and draw nothing
@@ -842,12 +596,11 @@ package fe.game.rendering {
 			}
 		}
 		
-		// [Drawing texture materials]
-		public function drawKusok(textures:TilePieceTextures):void {
+		// Draws every tile showing a textured piece of the main or foreground layer: its texture cut by its mask, then its edge and top textures cut by theirs
+		private function drawPiece(textures:TilePieceTextures):void {
 			var piece:TilePiece_Definition = textures.piece;
-			var toFront:Boolean = (piece.layer >= E_TileLayer.MAIN);
-			var roomPixelWidth:int = kusokX * tileX;
-			var roomPixelHeight:int = kusokY * tileY;
+			var roomPixelWidth:int = resX;
+			var roomPixelHeight:int = resY;
 
 			// Cache frequently accessed properties
 			var spaceX:int = loc.spaceX;
@@ -884,10 +637,10 @@ package fe.game.rendering {
 			// Use cached textures
 			if (texture) {
 				if (homeStable && altTexture != null) {
-					osn.graphics.beginBitmapFill(altTexture);
+					osn.graphics.beginBitmapFill(altTexture, fillMatrix(piece.stableTexture, altTexture));
 				}
 				else {
-					osn.graphics.beginBitmapFill(texture);
+					osn.graphics.beginBitmapFill(texture, fillMatrix(piece.texture, texture));
 				}
 			}
 			else {
@@ -900,14 +653,14 @@ package fe.game.rendering {
 			kusok.addChild(maska);
 			
 			if (borderTexture) {
-				border.graphics.beginBitmapFill(borderTexture);
+				border.graphics.beginBitmapFill(borderTexture, fillMatrix(piece.edgeTexture, borderTexture));
 				border.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(border);
 				kusok.addChild(bmaska);
 			}
 			
 			if (floorTexture) {
-				floor.graphics.beginBitmapFill(floorTexture);
+				floor.graphics.beginBitmapFill(floorTexture, fillMatrix(piece.topTexture, floorTexture));
 				floor.graphics.drawRect(0, 0, roomPixelWidth, roomPixelHeight);
 				kusok.addChild(floor);
 				kusok.addChild(fmaska);
@@ -923,31 +676,26 @@ package fe.game.rendering {
 					var tLowered:int = 4 - t.definition.height;
 					var tBoundingBox:BoundingBox = t.boundingBox;
 
-					if (piece.layer == E_TileLayer.BACK_WALL) {
-						shows = (t.definition.wall == piece);
-					}
-					else {
-						shows = showsPiece(t, piece) && t.definition.pieces.indexOf(piece) >= 0;
-					}
+					shows = t.showsPiece(piece) && t.definition.pieces.indexOf(piece) >= 0;
 					
 					if (shows) {
 						isDraw = true;
 						mc = new textures.textureMask();
-						setMovieClipTile(mc, t, toFront);
+						setMovieClipTile(mc, t);
 						mc.x = (i + 0.5) * currentTileX;
 						mc.y = (j + 0.5) * currentTileY;
 						maska.addChild(mc);
-						if (tLowered > 0 && toFront) {
+						if (tLowered > 0) {
 							mc.scaleY = (tBoundingBox.bottom - tBoundingBox.top) / currentTileY;
 							mc.y = (tBoundingBox.bottom + tBoundingBox.top) / 2;
 						}                            
 						if (hasBorderMask) {
 							mc = new borderMaskClass();
-							setMovieClipTile(mc, t, toFront);
+							setMovieClipTile(mc, t);
 							mc.x = (i + 0.5) * currentTileX;
 							mc.y = (j + 0.5) * currentTileY;
 							bmaska.addChild(mc);
-							if (tLowered > 0 && toFront) {
+							if (tLowered > 0) {
 								mc.scaleY = (tBoundingBox.bottom - tBoundingBox.top) / currentTileY;
 								mc.y = (tBoundingBox.bottom + tBoundingBox.top) / 2;
 							}                            
@@ -995,14 +743,8 @@ package fe.game.rendering {
 			if (piece.layer == E_TileLayer.FOREGROUND) {
 				foregroundBmp.draw(kusok, m, null, null, null, false);
 			}
-			else if (piece.layer == E_TileLayer.MAIN) {
-				frontBmp.draw(kusok, m, null, null, null, false);
-			}
-			else if (piece.layer == E_TileLayer.BACKGROUND) {
-				backBmp2.draw(kusok, m, loc.cTransform, null, null, false);
-			}
 			else {
-				backBmp.draw(kusok, m, null, null, null, false);
+				frontBmp.draw(kusok, m, null, null, null, false);
 			}
 		}
 
@@ -1011,7 +753,7 @@ package fe.game.rendering {
 
 			for each (textures in tileTextures) {
 				if (textures.used && textures.piece.layer == layer) {
-					drawKusok(textures);
+					drawPiece(textures);
 				}
 			}
 		}
@@ -1049,6 +791,7 @@ package fe.game.rendering {
 		public function onSats(on:Boolean):void {
 			visSats.visible = on;
 			visObjs[2].visible =! on;
+			starlingView.showSats(on);
 		}
 		
 		//рисование одного блока воды
@@ -1082,7 +825,6 @@ package fe.game.rendering {
 			
 			var nx:Number = (t.coords.X + 0.50) * tileX;
 			var ny:Number = (t.coords.Y + 0.50) * tileY;
-			var hole:Rectangle;
 
 			if (t.isFakeWall) {
 				Emitter.emit("fake", loc, nx, ny);
@@ -1113,40 +855,9 @@ package fe.game.rendering {
 
 			decal(erC, drC, nx, ny, 1, 0, "hardlight");
 
-			hole = new Rectangle(t.coords.X * tileX, t.coords.Y * tileY, tileX, tileY);
-			hole.inflate(tileX, tileY);	// Room for the hole decal reaching past its tile
-			recastShadow(hole);
+			starlingView.backLayers.shadowChanged = true;
 		}
 
-		// Recasts the drop shadow around a changed part of the layers that cast it, so a removed tile stops casting one
-		private function recastShadow(changed:Rectangle):void {
-			var area:Rectangle = changed.clone();
-			var source:Rectangle;
-			var cast:BitmapData;
-
-			area.inflate(SHADOW_REACH, SHADOW_REACH);
-			area = area.intersection(shadBmp.rect);
-			source = area.clone();
-			source.inflate(SHADOW_REACH, SHADOW_REACH);	// The pixels that can still shade the area
-			source = source.intersection(frontBmp.rect);
-
-			mergeShadowCasters(source);
-			cast = new BitmapData(source.width, source.height, true, 0);
-			cast.applyFilter(shadowCasterBmp, source, new Point(0, 0), dsFilter);
-			shadBmp.copyPixels(cast, new Rectangle(area.x - source.x, area.y - source.y, area.width, area.height), area.topLeft);
-			cast.dispose();
-
-			if (transpFon) {
-				shadBmp.draw(backBmp, null, null, "alpha", area);
-			}
-		}
-
-		// The main and foreground layers both cast the drop shadow onto the back wall, so they are merged over the area being cast
-		private function mergeShadowCasters(area:Rectangle):void {
-			shadowCasterBmp.copyPixels(frontBmp, area, area.topLeft);
-			shadowCasterBmp.copyPixels(foregroundBmp, area, area.topLeft, null, null, true);
-		}
-		
 		// Bullethole
 		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void {
 			var fetch:Function = SymbolFactory.fetchSymbolClass;
@@ -1414,75 +1125,13 @@ package fe.game.rendering {
 			var m:Matrix = new Matrix();
 			m.tx = nx * tileX;
 			m.ty = ny * tileY;
-			var wall:MovieClip = new tileGwall();
+			var wall:MovieClip = SymbolFactory.createInstance("tileGwall");
 			frontBmp.draw(wall, m);
 		}
 		
+		// Paints a stroke onto the back wall in brushColor, with the airbrush or the brush
 		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void {
-			var padding:int = 25;
-			var brush:MovieClip;
-
-			// Determine what brush to use
-			if (aero) {
-				if (!pa) {
-					pa = new paintaero();
-				}
-
-				brush = pa;
-			}
-			else {
-				if (!pb) {
-					pb = new paintbrush();
-				}
-
-				brush = pb;
-			}	
-			
-			// Calculate the straight-line distance between two points (start and end positions, I assume how far the mouse moved).
-			var rasst:Number = Math.sqrt((nx2 - nx1) * (nx2 - nx1) + (ny2 - ny1) * (ny2 - ny1));
-
-			// Determine how many times to repeat the painting action based on the distance.
-			var kol:int = Math.ceil(rasst / 3);
-
-			var dx:Number = (nx2 - nx1) / kol;
-			var dy:Number = (ny2 - ny1) / kol;
-			
-			// Set up an area around the line being drawn.
-			var rx1:int, rx2:int, ry1:int, ry2:int;
-
-			// Simplified calculation of bounding rectangle's coordinates. Math.min/Math.max returns the smaller/larger number of the two.
-			rx1 = Math.min(nx1, nx2) - padding;
-			ry1 = Math.min(ny1, ny2) - padding;
-			rx2 = Math.max(nx1, nx2) + padding;
-			ry2 = Math.max(ny1, ny2) + padding;
-			
-			// Prepare the canvas for drawing.
-			brPoint.x		= 0;
-			brPoint.y		= 0;
-			brRect.left		= rx1;
-			brRect.right	= rx2;
-			brRect.top		= ry1;
-			brRect.bottom	= ry2;
-			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-			
-			// Paint along the line, step by step.
-			for (var i:int = 1; i <= kol; i++) {
-				// Calculate the next point to paint.
-				pm.tx = nx1 + dx * i;
-				pm.ty = ny1 + dy * i;
-
-				// Perform the painting action at this point.		
-				backBmp.draw(brush, pm, brTrans, "normal", null, false);
-			}
-			
-			// Finish up by adjusting the painted area on the canvas.
-			brPoint.x = rx1;
-			brPoint.y = ry1;
-			brRect.left = 0;
-			brRect.right = rx2 - rx1;
-			brRect.top = 0;
-			brRect.bottom = ry2 - ry1;
-			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
+			starlingView.backLayers.paint(nx1, ny1, nx2, ny2, aero, brushColor);
 		}
 		
 		public function specEffect(n:Number = 0):void {
@@ -1537,19 +1186,22 @@ package fe.game.rendering {
 			if (n === 0) {
 				// Case 0: Clear filters
 				visual.filters = [];
-				visFon.filters = [];
+				skyPicture.filters = [];
+				starlingView.setEffect(null, 0.0);
 				backdrop.dirty = true;
 			}
 			else if (n >= 1 && n <= 6) {
 				// Cases 1-6: Apply the corresponding ColorMatrixFilter from the lookup array
 				visual.filters = [colorMatrixFilters[n]];
+				starlingView.setEffect(Vector.<Number>(colorMatrixFilters[n].matrix), 0.0);
 			}
 			else if (n > 100) {
 				// Default case for n > 100: Apply BlurFilter
 				var blurAmount:Number = n - 100;
 				var blur:BlurFilter = new BlurFilter(blurAmount, blurAmount);
 				visual.filters = [blur];
-				visFon.filters = [blur];
+				skyPicture.filters = [blur];
+				starlingView.setEffect(null, blurAmount);
 				backdrop.dirty = true;
 			}
 			else {

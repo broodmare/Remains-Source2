@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"flash_b3bfa2a318a1a8be": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 486,
+				"h": 270
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 486,
+				"h": 270
+			},
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 486,
+				"h": 270
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			}
+		}
+	},
+	"meta": {
+		"app": "Remains exporter",
+		"version": "2",
+		"image": "flash_b3bfa2a318a1a8be.png",
+		"format": "RGBA8888",
+		"scale": "4.0",
+		"size": {
+			"w": 488,
+			"h": 272
+		}
+	}
+}

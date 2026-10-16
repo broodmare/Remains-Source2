@@ -1,0 +1,1046 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 62,
+				"y": 0,
+				"w": 255,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.2258064516129032,
+				"x": 0.4078431372549019
+			},
+			"sourceSize": {
+				"w": 255,
+				"h": 62
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 62,
+				"y": 1,
+				"w": 255,
+				"x": 1
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance39": "muzzleFlash",
+			"instance38": "body"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 37.500002235174314
+				}
+			}
+		},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance39",
+						"matrix": [
+							1.469696152390807,
+							0,
+							0,
+							1.469696152390807,
+							37.500002235174314,
+							-0.8333333830038754
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"role": "muzzleFlash",
+						"source": "instance39",
+						"matrix": [
+							1.1217652433175986,
+							0,
+							0,
+							1.1217652433175986,
+							37.500002235174314,
+							-0.8333333830038754
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance38",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "lshot/vislshot.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 40,
+		"size": {
+			"w": 257,
+			"h": 64
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"format": "RGBA8888",
+		"image": "vislshot.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

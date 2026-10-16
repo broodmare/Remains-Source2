@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.12,
+				"x": 0.49019607843137253
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 51,
+				"h": 50
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 50
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 50
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 53,
+			"h": 52
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vishmg_magazine.png",
+		"app": "Remains exporter"
+	}
+}

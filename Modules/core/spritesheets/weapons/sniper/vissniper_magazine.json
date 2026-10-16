@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.08571428571428572,
+				"x": 0.4857142857142857
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 35,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 35,
+				"h": 35
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 35,
+				"h": 35
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 37,
+			"h": 37
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vissniper_magazine.png",
+		"app": "Remains exporter"
+	}
+}

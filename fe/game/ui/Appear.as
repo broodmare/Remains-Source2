@@ -14,6 +14,7 @@ package fe.game.ui {
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.game.GameContainer;
+	import fe.engine.utils.SymbolFactory;
 	
 	//Настройки внешнего вида персонажа
 	public class Appear {
@@ -60,7 +61,7 @@ package fe.game.ui {
 		public var saved:Object;
 
 		public function Appear() {
-			vis=new dialVid();	// .SWF Dependency
+			vis=SymbolFactory.createInstance("dialVid");	// .SWF Dependency
 			for each(var l:String in clist) this['t'+l]=this['c'+l];
 			def=save();
 			setColors();

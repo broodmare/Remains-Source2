@@ -18,10 +18,8 @@ package fe.game.ui  {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Vendor;
 	import fe.game.domain.units.Pers;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipHelp;
-	import fe.game.stubs.visSetKey;
-	import fe.game.stubs.visPipRItem;
 	
 	public class PipBuck {
 
@@ -107,14 +105,14 @@ package fe.game.ui  {
 			page = kolPages;
 			currentPage = pages[page];
 			
-			vishelp = new visPipHelp();
+			vishelp = SymbolFactory.createInstance("visPipHelp");
 			vishelp.visible = false;
 			vishelp.x = 168;
 			vishelp.y = 138;
 			vis.addChild(vishelp);
 			PipPage.setStyle(vishelp.txt);
 
-			vissetkey = new visSetKey();
+			vissetkey = SymbolFactory.createInstance("visSetKey");
 			vissetkey.visible = false;
 			vissetkey.x = 600;
 			vissetkey.y = 400;
@@ -133,7 +131,7 @@ package fe.game.ui  {
 			var kolRItems:int = 15;
 			
 			for (var j:int = 0; j < kolRItems; j++) {
-				item = new visPipRItem();
+				item = SymbolFactory.createInstance("visPipRItem");
 				ritems[j] = item;
 				vis.pr.addChild(item);
 				item.x = 5;

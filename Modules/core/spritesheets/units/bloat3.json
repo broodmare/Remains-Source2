@@ -1,0 +1,122 @@
+{
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 2
+			}
+		],
+		"image": "bloat3.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "stay",
+					"frame": "stay_002"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 62,
+			"w": 145
+		},
+		"source": "pfe.swf/visualBloat3",
+		"transform": [
+			1,
+			0,
+			0,
+			1,
+			0,
+			0
+		],
+		"uniqueFrames": 2,
+		"version": "1"
+	},
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 60,
+				"w": 69,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.6956521739130435,
+				"y": 0.85
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 60,
+				"w": 69
+			},
+			"spriteSourceSize": {
+				"h": 60,
+				"w": 69,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"stay_001": {
+			"duration": 33,
+			"frame": {
+				"h": 60,
+				"w": 69,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.6956521739130435,
+				"y": 0.85
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 60,
+				"w": 69
+			},
+			"spriteSourceSize": {
+				"h": 60,
+				"w": 69,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"stay_002": {
+			"duration": 33,
+			"frame": {
+				"h": 60,
+				"w": 72,
+				"x": 72,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.7083333333333334,
+				"y": 0.8666666666666667
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 60,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 60,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	}
+}

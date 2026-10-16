@@ -1,0 +1,69 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5181818181818182,
+				"x": 0.15145228215767634
+			},
+			"frame": {
+				"h": 110,
+				"y": 1,
+				"w": 482,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 482,
+				"h": 110
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 110,
+				"y": 0,
+				"w": 482,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance32": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance32",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sword_1/vissword_1.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 1,
+		"size": {
+			"w": 484,
+			"h": 112
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "vissword_1.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

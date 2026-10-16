@@ -1,0 +1,20 @@
+{
+	"image": "wallcab.png",
+	"density": 1,
+	"width": 32,
+	"height": 40,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 62, "w": 32, "h": 40, "pivotX": 16, "pivotY": 38},
+		"frame1_0": {"x": 34, "y": 62, "w": 32, "h": 40, "pivotX": 16, "pivotY": 38},
+		"shadow": {"x": 0, "y": 0, "w": 52, "h": 60, "pivotX": 26, "pivotY": 48}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

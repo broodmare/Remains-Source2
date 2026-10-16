@@ -1,0 +1,107 @@
+{
+	"frames": {},
+	"meta": {
+		"version": "1",
+		"roles": {
+			"instance84": "muzzleFlash",
+			"instance87": "muzzleFlash"
+		},
+		"scale": "4",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance84",
+						"matrix": [
+							0.5666656633217532,
+							0,
+							0,
+							0.5666656633217532,
+							0,
+							0
+						],
+						"effect": "sphere_deee91cbf671fa3c"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d9774a932b79f7ae",
+						"role": "muzzleFlash",
+						"source": "instance87",
+						"matrix": [
+							1.2333373963835277,
+							0,
+							0,
+							1.2333373963835277,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d9774a932b79f7ae.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d9774a932b79f7ae",
+						"role": "muzzleFlash",
+						"source": "instance87",
+						"matrix": [
+							1.2333373963835277,
+							0,
+							0,
+							1.2333373963835277,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d9774a932b79f7ae.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"blendMode": "screen",
+						"sprite": "flash_d9774a932b79f7ae",
+						"role": "muzzleFlash",
+						"source": "instance87",
+						"matrix": [
+							1.2333373963835277,
+							0,
+							0,
+							1.2333373963835277,
+							0,
+							0
+						],
+						"sheet": "_shared/flash_d9774a932b79f7ae.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 5,
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

@@ -15,8 +15,8 @@ package fe.game.ui {
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.InventoryItem;
 	import fe.game.domain.units.Favorites;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipInvItem;
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -44,7 +44,7 @@ package fe.game.ui {
 		public function PipPageInv(npip:PipBuck, npp:String) {
 			isLC = true;
 			isRC = true;
-			itemClass = visPipInvItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipInvItem");
 			
 			super(npip, npp);
 			

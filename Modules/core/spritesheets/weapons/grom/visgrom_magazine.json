@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.029411764705882353,
+				"x": 0.5
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 26,
+				"h": 34
+			},
+			"sourceSize": {
+				"w": 26,
+				"h": 34
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 26,
+				"h": 34
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 28,
+			"h": 36
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visgrom_magazine.png",
+		"app": "Remains exporter"
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 27,
+				"h": 47
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 27,
+				"h": 47
+			},
+			"rotated": false,
+			"trimmed": false,
+			"pivot": {
+				"y": 0.06382978723404255,
+				"x": 0.4074074074074074
+			},
+			"sourceSize": {
+				"w": 27,
+				"h": 47
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 29,
+			"h": 49
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vissparkl_magazine.png",
+		"app": "Remains exporter"
+	}
+}

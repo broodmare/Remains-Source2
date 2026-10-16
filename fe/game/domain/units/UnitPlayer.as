@@ -39,9 +39,8 @@ package fe.game.domain.units {
 	import fe.game.domain.units.enums.E_ArmorTypes;
 	import fe.game.domain.units.enums.E_Resistances;
 
-	import fe.game.stubs.visualPlayer;	// .fla linkage
-	import fe.game.stubs.reloadBar;		// .fla linkage
 	import fe.engine.SaveManager;
+	import fe.engine.utils.SymbolFactory;
 	
 	public class UnitPlayer extends UnitPon {
 
@@ -238,7 +237,7 @@ package fe.game.domain.units {
 		public function UnitPlayer(cid:String = null, ndif:Number = 100.00) {
 			player = true;
 			id = "littlepip";
-			vis = new visualPlayer();
+			vis = SymbolFactory.createInstance("visualPlayer");
 
 			vis.osn.body.pip2.visible = false;
 			vis.osn.stop();
@@ -248,7 +247,7 @@ package fe.game.domain.units {
 			vis.fetter.visible	= false;
 			vis.rat.visible		= false;
 
-			reloadbar = new reloadBar();
+			reloadbar = SymbolFactory.createInstance("reloadBar");
 			reloadbar.visible = false;
 			vis.addChild(reloadbar);
 			
@@ -966,23 +965,23 @@ package fe.game.domain.units {
 			
 			// [go to the bottom layer]
 			if (work == "lurk" && t_work == 10) {
-				if (sloy == 2) {
+				if (layer == 2) {
 					if (lurkTip == 1) {
-						chSloy(0);
+						changeLayer(0);
 					}
 					else {
-						chSloy(1);
+						changeLayer(1);
 					}
 				}
 			
-				if (lurkBox && lurkBox.sloy == 1 && sloy == 1) {
-					lurkBox.vis.parent.setChildIndex(lurkBox.vis, lurkBox.vis.parent.numChildren - 1);
+				if (lurkBox && lurkBox.layer == 1 && layer == 1) {
+					lurkBox.bringToFront();
 				}
 			}
 			
 			if (work=="unlurk" && t_work==5) {
-				if (sloy==1 || sloy==0) {
-					chSloy(2);
+				if (layer==1 || layer==0) {
+					changeLayer(2);
 				}
 			}
 			
@@ -1011,8 +1010,8 @@ package fe.game.domain.units {
 				}
 			}
 			
-			if (!lurked && work != "unlurk" && (sloy == 1 || sloy == 0)) {
-				chSloy(2);
+			if (!lurked && work != "unlurk" && (layer == 1 || layer == 0)) {
+				changeLayer(2);
 			}
 			
 			// [Dash]
@@ -3802,13 +3801,13 @@ package fe.game.domain.units {
 			otherVisual();
 		}
 		
-		private function chSloy(n:int):void {
-			if (sloy == n) {
+		private function changeLayer(n:int):void {
+			if (layer == n) {
 				return;
 			}
 		
 			remVisual();
-			sloy = n;
+			layer = n;
 			addVisual();
 		}
 		

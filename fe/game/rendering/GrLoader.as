@@ -14,6 +14,7 @@ package fe.game.rendering {
 	import flash.display.LoaderInfo;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Point;
 
 	public class GrLoader {
 		
@@ -42,6 +43,7 @@ package fe.game.rendering {
 		private var imagesLoaded:int = 0;
 		private var totalImages:int = 0;
 		private var imageDictionary:Object;
+		public var drawSizes:Object = {};		// How big each loose texture draws in the room, in room pixels, by name
 
 		/**
 		 * Constructor for GrLoader.
@@ -111,7 +113,14 @@ package fe.game.rendering {
 				imageDictionary = {};
 				imageLoaders = [];
 				for (var key:String in textureSet) {
-					var imageRelativePath:String = textureDirectory + textureSet[key]; // Note: Grabs the pair here 
+					var imageRelativePath:String = textureDirectory + textureSet[key].file;
+					var drawSize:Array = textureSet[key].drawSize;
+					if (drawSize == null || drawSize.length != 2) {
+						trace("GrLoader/GrLoader() - Warning: texture \"" + key + "\" has no drawSize in the manifest, so it draws at its pixel size");
+					}
+					else {
+						drawSizes[key] = new Point(drawSize[0], drawSize[1]);
+					}
 					var imageFile:File = File.applicationDirectory.resolvePath(imageRelativePath);
 					//trace("GrLoader - Loading image: " + imageRelativePath);
 					

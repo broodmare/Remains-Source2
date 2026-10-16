@@ -171,7 +171,7 @@ package fe.game.ui {
 					GameContainer.reference.exitState=E_ExitState.NONE;
 					GameContainer.reference.deathState=E_DeathState.NONE;
 					GUIManager.reference.vgui.visible=true;
-					GUIManager.reference.vfon.visible=true;
+					GUIManager.reference.sky.visible=true;
 					GUIManager.reference.visual.visible=true;
 					Sound.setTempMute(false);
 					GUIManager.reference.pip.noAct=false;

@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.475,
+				"x": 0.5409836065573771
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 61,
+				"h": 40
+			},
+			"sourceSize": {
+				"w": 61,
+				"h": 40
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 61,
+				"h": 40
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 63,
+			"h": 42
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visflamer_magazine.png",
+		"app": "Remains exporter"
+	}
+}

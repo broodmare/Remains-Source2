@@ -9,6 +9,7 @@ package fe.game.domain.location {
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.rendering.enums.E_Decal;
+	import fe.engine.utils.SymbolFactory;
 	
 	//[Active area]
 	public class Area extends Obj {
@@ -80,10 +81,10 @@ package fe.game.domain.location {
 				
 				//визуал
 				if (xml.@vis.length()) {
-					vis = TextParser.getVis('vis' + xml.@vis, visArea);		// .SWF Dependency
+					vis = TextParser.getVis('vis' + xml.@vis, SymbolFactory.fetchSymbolClass("visArea"));		// .SWF Dependency
 				}
 				if (GameContainer.reference.showArea) {
-					vis = new visArea();								// .SWF Dependency
+					vis = SymbolFactory.createInstance("visArea");								// .SWF Dependency
 				}
 				
 				if (xml.@tip.length()) tip=xml.@tip;

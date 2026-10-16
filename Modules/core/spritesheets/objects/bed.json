@@ -1,0 +1,18 @@
+{
+	"image": "bed.png",
+	"density": 1,
+	"width": 118,
+	"height": 50,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 69, "w": 118, "h": 50, "pivotX": 59, "pivotY": 50},
+		"shadow": {"x": 0, "y": 0, "w": 138, "h": 67, "pivotX": 69, "pivotY": 58}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

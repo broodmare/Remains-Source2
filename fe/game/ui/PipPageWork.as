@@ -15,8 +15,8 @@ package fe.game.ui {
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.InventoryItem;
 	import fe.game.domain.units.UnitPet;
+	import fe.engine.utils.SymbolFactory;
 
-	import fe.game.stubs.visPipInvItem;
 	
 	/* 
 	*	The page displayed when interacting with a crafting table
@@ -34,7 +34,7 @@ package fe.game.ui {
 
 		public function PipPageWork(npip:PipBuck, npp:String) {
 			isLC = true;
-			itemClass = visPipInvItem;
+			itemClass = SymbolFactory.fetchSymbolClass("visPipInvItem");
 			super(npip, npp);
 
 			// Set which sub-categories are disabled at the top of the pip-buck

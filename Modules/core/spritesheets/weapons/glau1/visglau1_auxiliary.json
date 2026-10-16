@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 62,
+				"h": 24
+			},
+			"rotated": false,
+			"sourceSize": {
+				"w": 62,
+				"h": 24
+			},
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 62,
+				"h": 24
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 64,
+			"h": 26
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visglau1_auxiliary.png",
+		"app": "Remains exporter"
+	}
+}

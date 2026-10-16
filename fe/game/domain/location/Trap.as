@@ -1,7 +1,8 @@
 package fe.game.domain.location {
 
 	import flash.display.MovieClip;
-	
+	import flash.geom.ColorTransform;
+
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.GameContainer;
@@ -11,13 +12,13 @@ package fe.game.domain.location {
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.units.enums.E_Resistances;
+	import fe.game.rendering.Flipbook;
 
-	import fe.game.stubs.vistrapspikes
-	
 	public class Trap extends Obj {
 
 		public var id:String;
-		public var vis2:MovieClip;
+		public var art:Flipbook;		// The trap, in object layer 0
+		public var vis2:MovieClip;		// What shows in front of units, in Flash's object layer 3
 
 		public var dam:Number=0;
 		public var tipDamage:String = E_Resistances.DAM_PIERCE;
@@ -37,20 +38,18 @@ package fe.game.domain.location {
 			this.id = id;
 			this.coordinates.X = X;
 			this.coordinates.Y = Y;
-			sloy = 0;
+			layer = 0;
 			prior = 1;
 
-			var vClass:Class  = TextParser.getClass('vistrap' + id, null, vistrapspikes);
 			var vClass2:Class = TextParser.getClass('vistrap' + id + '2', null, null);
-			vis  = new vClass();
+			art  = new Flipbook(GameContainer.reference.grafon.flipbooks.viewDefinition(id));
 			vis2 = new vClass2();
-			var n1:int = int(Math.random() * vis.totalFrames) + 1;
-			var n2:int = int(Math.random() * vis.totalFrames) + 1;
+			var n1:int = int(Math.random() * art.frameCount);
+			var n2:int = int(Math.random() * art.frameCount) + 1;
 			levitPoss = false;
-			vis.gotoAndStop(n1);
+			art.goTo(n1, false);
 			vis2.gotoAndStop(n2);
 			getXmlParam()
-			if (!anim) vis.cacheAsBitmap = true;
 			if (vis2 && !anim) vis2.cacheAsBitmap = true;
 			this.boundingBox.left = coordinates.X - this.boundingBox.halfWidth;
 			this.boundingBox.right = coordinates.X + this.boundingBox.halfWidth;
@@ -64,8 +63,8 @@ package fe.game.domain.location {
 				this.boundingBox.bottom = this.boundingBox.top + this.boundingBox.height;
 			}
 
-			vis.x  = coordinates.X;
-			vis.y  = coordinates.Y;
+			art.x  = coordinates.X;
+			art.y  = coordinates.Y;
 			vis2.x = coordinates.X;
 			vis2.y = coordinates.Y;
 
@@ -92,9 +91,9 @@ package fe.game.domain.location {
 		}
 		
 		public override function addVisual():void {
-			if (vis) {
-				GameContainer.reference.grafon.visObjs[sloy].addChild(vis);
-				if (cTransform) vis.transform.colorTransform = cTransform;
+			GameContainer.reference.grafon.objectLayers.add(art, layer);
+			if (cTransform) {
+				art.setTint(cTransform);
 			}
 			if (vis2) {
 				GameContainer.reference.grafon.visObjs[3].addChild(vis2);
@@ -103,7 +102,12 @@ package fe.game.domain.location {
 		}
 		public override function remVisual():void {
 			super.remVisual();
+			art.removeFromParent();
 			if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
+		}
+
+		public override function setTint(tint:ColorTransform):void {
+			art.setTint(tint);
 		}
 		
 		public override function step():void {

@@ -1,0 +1,1608 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.4411764705882353,
+				"x": 0.3914027149321267
+			},
+			"frame": {
+				"h": 102,
+				"y": 1,
+				"w": 442,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 442,
+				"h": 102
+			},
+			"trimmed": false,
+			"spriteSourceSize": {
+				"h": 102,
+				"y": 0,
+				"w": 442,
+				"x": 0
+			},
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance89": "muzzleFlash",
+			"instance87": "magazine",
+			"instance86": "body"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 34.16666870315882
+				}
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"source": "instance89",
+						"blendMode": "screen",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							66.66667064030989,
+							-1.6666667660077508
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"sprite": "flash_d48944ac2acb3ca6",
+						"source": "instance89",
+						"blendMode": "screen",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							66.66667064030989,
+							-1.6666667660077508
+						],
+						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							5.8333336810271135
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							2.500000149011621,
+							6.666667064030989
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							7.500000447034864
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.9832459280836142,
+							0.18223572366847934,
+							-0.18223572366847934,
+							0.9832459280836142,
+							0,
+							6.666667064030989
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.9335785667247712,
+							0.35835268249229685,
+							-0.35835268249229685,
+							0.9335785667247712,
+							-2.500000149011621,
+							5.000000298023238
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.8526306859233391,
+							0.5224914663528283,
+							-0.5224914663528283,
+							0.8526306859233391,
+							-5.000000298023242,
+							3.3333335320154944
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.7431488182037365,
+							0.6691132387983743,
+							-0.6691132387983743,
+							0.7431488182037365,
+							-8.333333830038736,
+							2.500000149011619
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.6087494259327307,
+							0.7933502372115991,
+							-0.7933502372115991,
+							0.6087494259327307,
+							-10.833333979050357,
+							0.8333333830038754
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.453949001666844,
+							0.8909912441765017,
+							-0.8909912441765017,
+							0.453949001666844,
+							-13.333334128061978,
+							0
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.2839965790905503,
+							0.9588012670756142,
+							-0.9588012670756142,
+							0.2839965790905503,
+							-16.666667660077472,
+							-1.6666667660077508
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.10449218876116606,
+							0.9945068356100819,
+							-0.9945068356100819,
+							0.10449218876116606,
+							-19.16666780908909,
+							-3.3333335320154944
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							-0.07843018045605304,
+							0.9968872465821453,
+							-0.9968872465821453,
+							-0.07843018045605304,
+							-21.666667958100714,
+							-4.16666691501937
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							-0.25881957563675895,
+							0.965911902938996,
+							-0.965911902938996,
+							-0.25881957563675895,
+							-24.166668107112336,
+							-5.8333336810271135
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							-0.13052368693691613,
+							0.9913788830069035,
+							-0.9913788830069035,
+							-0.13052368693691613,
+							-22.500001341104586,
+							-5.000000298023238
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							-3.0517578125e-05,
+							0.9999390045765443,
+							-0.9999390045765443,
+							-3.0517578125e-05,
+							-20.833334575096842,
+							-4.16666691501937
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.13046265426055517,
+							0.9913940821922271,
+							-0.9913940821922271,
+							0.13046265426055517,
+							-18.33333442608522,
+							-3.3333335320154944
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.2587890779250311,
+							0.9658661067008638,
+							-0.9658661067008638,
+							0.2587890779250311,
+							-16.666667660077472,
+							-1.6666667660077508
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.38262940740363244,
+							0.9238281403280183,
+							-0.9238281403280183,
+							0.38262940740363244,
+							-15.000000894069725,
+							-0.8333333830038754
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.4999390045765442,
+							0.8659821271488345,
+							-0.8659821271488345,
+							0.4999390045765442,
+							-12.500000745058104,
+							0
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.6087341274063266,
+							0.7933197394998713,
+							-0.7933197394998713,
+							0.6087341274063266,
+							-10.833333979050357,
+							0.8333333830038754
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.7070770287758328,
+							0.707092327302237,
+							-0.707092327302237,
+							0.7070770287758328,
+							-9.16666721304261,
+							1.6666667660077508
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.7933044906440073,
+							0.6087494259327307,
+							-0.6087494259327307,
+							0.7933044906440073,
+							-6.666667064030989,
+							2.500000149011619
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.8659973263341582,
+							0.49998475114413604,
+							-0.49998475114413604,
+							0.8659973263341582,
+							-5.000000298023242,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.9238434388544225,
+							0.3826446810947665,
+							-0.3826446810947665,
+							0.9238434388544225,
+							-2.500000149011621,
+							5.000000298023238
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.9658966044125917,
+							0.258804326780895,
+							-0.258804326780895,
+							0.9658966044125917,
+							-0.8333333830038736,
+							5.8333336810271135
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							0.9914092813775508,
+							0.1305084256634171,
+							-0.1305084256634171,
+							0.9914092813775508,
+							0.8333333830038736,
+							6.666667064030989
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							3.3333335320154944,
+							7.500000447034864
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							2.500000149011621,
+							6.666667064030989
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							5.8333336810271135
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance86",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "hmg/vishmg.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance87",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0.8333333830038736,
+							4.166666915019363
+						],
+						"sheet": "hmg/vishmg_magazine.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"magazineLayer": "vishmg_magazine.png",
+		"frameCount": 40,
+		"size": {
+			"w": 444,
+			"h": 104
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": "vishmg.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

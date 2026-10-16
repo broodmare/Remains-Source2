@@ -1,0 +1,18 @@
+{
+	"image": "bigbox2.png",
+	"density": 1,
+	"width": 91,
+	"height": 110,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 132, "w": 91, "h": 110, "pivotX": 45, "pivotY": 110},
+		"shadow": {"x": 0, "y": 0, "w": 111, "h": 130, "pivotX": 55, "pivotY": 120}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

@@ -1,0 +1,145 @@
+{
+	"frames": {
+		"image_002": {
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"frame": {
+				"h": 362,
+				"y": 1,
+				"w": 146,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 146,
+				"h": 362
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 362,
+				"y": 0,
+				"w": 146,
+				"x": 0
+			}
+		},
+		"image_001": {
+			"pivot": {
+				"y": 0.5191082802547771,
+				"x": 0.1385390428211587
+			},
+			"frame": {
+				"h": 314,
+				"y": 365,
+				"w": 397,
+				"x": 1
+			},
+			"sourceSize": {
+				"w": 397,
+				"h": 314
+			},
+			"trimmed": false,
+			"rotated": false,
+			"spriteSourceSize": {
+				"h": 314,
+				"y": 0,
+				"w": 397,
+				"x": 0
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance56": "body",
+			"instance55": "body"
+		},
+		"scale": "4.0",
+		"anchors": {},
+		"animations": {},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "kosa/viskosa.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "kosa/viskosa.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance55",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "kosa/viskosa.json"
+					},
+					{
+						"blendMode": "screen",
+						"sprite": "image_002",
+						"role": "body",
+						"source": "instance56",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							68.33333740631764,
+							0
+						],
+						"sheet": "kosa/viskosa.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"frameCount": 3,
+		"size": {
+			"w": 399,
+			"h": 680
+		},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "viskosa.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

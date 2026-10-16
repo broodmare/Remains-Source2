@@ -27,7 +27,7 @@ package fe.game.rendering {
 
 			// Hiding the backdrop doesn't mark it dirty, so its visibility is copied every frame
 			if (backdrop) {
-				backdrop.visible = GUIManager.reference.vfon.visible;
+				backdrop.visible = GUIManager.reference.sky.visible;
 			}
 		}
 
@@ -41,7 +41,7 @@ package fe.game.rendering {
 			}
 
 			bitmap = new BitmapData(Engine.reference.stage.stageWidth, Engine.reference.stage.stageHeight, true, 0);
-			bitmap.draw(GUIManager.reference.vfon);
+			bitmap.draw(GUIManager.reference.sky);
 			texture = Texture.fromBitmapData(bitmap);
 
 			if (backdrop) {
@@ -52,7 +52,7 @@ package fe.game.rendering {
 				backdrop = new Image(texture);
 				backdrop.textureSmoothing = TextureSmoothing.NONE;	// Texels map 1:1 to screen pixels
 				backdrop.touchable = false;
-				Starling.current.stage.addChild(backdrop);
+				Starling.current.stage.addChildAt(backdrop, 0);	// Under the room's Starling layers
 			}
 		}
 

@@ -1,0 +1,20 @@
+{
+	"image": "instr1.png",
+	"density": 1,
+	"width": 75,
+	"height": 51,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 72, "w": 75, "h": 51, "pivotX": 37, "pivotY": 51},
+		"frame1_0": {"x": 0, "y": 125, "w": 75, "h": 51, "pivotX": 37, "pivotY": 51},
+		"shadow": {"x": 0, "y": 0, "w": 95, "h": 70, "pivotX": 47, "pivotY": 61}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

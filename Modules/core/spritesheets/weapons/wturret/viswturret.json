@@ -1,0 +1,55 @@
+{
+	"meta": {
+		"version": "1",
+		"scale": "4",
+		"timeline": [
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			},
+			{
+				"layers": []
+			}
+		],
+		"roles": {},
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 37.500002235174314
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 37.500002235174314
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 37.500002235174314
+				}
+			}
+		},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 0,
+			"h": 0
+		},
+		"animations": {},
+		"labels": {
+			"shoot": 2,
+			"reload": 3
+		},
+		"format": "RGBA8888",
+		"image": null,
+		"frameCount": 3,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {}
+}

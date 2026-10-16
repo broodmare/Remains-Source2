@@ -24,7 +24,7 @@ package fe.game.domain.location {
 			setSize();
 			if (loadObj) sost = loadObj.sost;
 			levitPoss = false;
-			sloy = 3;
+			layer = 3;
 			if (sost == 1) {
 				if (id == 'heal') {
 					vis = SymbolFactory.createInstance("visualHealBonus") as MovieClip;

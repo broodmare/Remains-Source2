@@ -1,0 +1,193 @@
+{
+	"meta": {
+		"version": "2",
+		"scale": "4.0",
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance80",
+						"matrix": [
+							3.0000000993410807,
+							0,
+							0,
+							3.0000000993410807,
+							41.666669150193684,
+							0
+						],
+						"sheet": "ttweap5/visttweap5.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance80",
+						"matrix": [
+							3.0000000993410807,
+							0,
+							0,
+							3.0000000993410807,
+							41.666669150193684,
+							0
+						],
+						"sheet": "ttweap5/visttweap5.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance82",
+						"matrix": [
+							2.200470101861364,
+							0,
+							0,
+							2.200470101861364,
+							133.33334128061978,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance80",
+						"matrix": [
+							3.0000000993410807,
+							0,
+							0,
+							3.0000000993410807,
+							41.666669150193684,
+							0
+						],
+						"sheet": "ttweap5/visttweap5.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance82",
+						"matrix": [
+							1.123931971625406,
+							0,
+							0,
+							1.123931971625406,
+							133.33334128061978,
+							-0.8333333830038754
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance80",
+						"matrix": [
+							3.0000000993410807,
+							0,
+							0,
+							3.0000000993410807,
+							41.666669150193684,
+							0
+						],
+						"sheet": "ttweap5/visttweap5.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "muzzleFlash",
+						"source": "instance82",
+						"matrix": [
+							0.5106964515068005,
+							0,
+							0,
+							0.5106964515068005,
+							133.33334128061978,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			}
+		],
+		"roles": {
+			"instance82": "muzzleFlash",
+			"instance80": "body"
+		},
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": 0,
+					"x": 129.16667436560041
+				}
+			},
+			"2": {
+				"emit": {
+					"y": 0,
+					"x": 129.16667436560041
+				}
+			},
+			"3": {
+				"emit": {
+					"y": 0,
+					"x": 129.16667436560041
+				}
+			},
+			"4": {
+				"emit": {
+					"y": 0,
+					"x": 129.16667436560041
+				}
+			}
+		},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 244,
+			"h": 79
+		},
+		"animations": {},
+		"labels": {
+			"shoot": 2
+		},
+		"format": "RGBA8888",
+		"image": "visttweap5.png",
+		"frameCount": 4,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {
+		"image_001": {
+			"sourceSize": {
+				"w": 242,
+				"h": 77
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 77,
+				"y": 1,
+				"w": 242,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 77,
+				"y": 0,
+				"w": 242,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.5064935064935064,
+				"x": 0.5
+			},
+			"rotated": false
+		}
+	}
+}

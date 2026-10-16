@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 55,
+				"h": 68
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 55,
+				"h": 68
+			},
+			"rotated": false,
+			"trimmed": false,
+			"pivot": {
+				"y": 0.04411764705882353,
+				"x": 0.3090909090909091
+			},
+			"sourceSize": {
+				"w": 55,
+				"h": 68
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 57,
+			"h": 70
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "vissmg10_magazine.png",
+		"app": "Remains exporter"
+	}
+}

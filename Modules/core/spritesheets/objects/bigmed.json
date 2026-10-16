@@ -1,0 +1,20 @@
+{
+	"image": "bigmed.png",
+	"density": 1,
+	"width": 80,
+	"height": 100,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 122, "w": 80, "h": 100, "pivotX": 40, "pivotY": 100},
+		"frame1_0": {"x": 82, "y": 122, "w": 80, "h": 100, "pivotX": 40, "pivotY": 100},
+		"shadow": {"x": 0, "y": 0, "w": 100, "h": 120, "pivotX": 50, "pivotY": 110}
+	},
+	"frames": [
+		{"images": ["frame0_0"]},
+		{"images": ["frame1_0"]}
+	],
+	"stops": [],
+	"jumps": [],
+	"labels": {"close":0,"open":1}
+}

@@ -1,0 +1,2394 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"h": 94,
+				"y": 0,
+				"w": 322,
+				"x": 0
+			},
+			"frame": {
+				"h": 94,
+				"y": 1,
+				"w": 322,
+				"x": 1
+			},
+			"pivot": {
+				"y": 0.2872340425531915,
+				"x": 0.4751552795031056
+			},
+			"trimmed": false,
+			"rotated": false,
+			"sourceSize": {
+				"w": 322,
+				"h": 94
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"roles": {
+			"instance124": "body",
+			"instance125": "magazine",
+			"instance127": "muzzleFlash"
+		},
+		"scale": "4.0",
+		"anchors": {
+			"1": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"2": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"3": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"4": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"5": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"6": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"7": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"8": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"9": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"10": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"11": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"12": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"13": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"14": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"15": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"16": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"17": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"18": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"19": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"20": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"21": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"22": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"23": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"24": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"25": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"26": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"27": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"28": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"29": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"30": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"31": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"32": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"33": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"34": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"35": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"36": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"37": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"38": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"39": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"40": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"41": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"42": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"43": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"44": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"45": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"46": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"47": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"48": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"49": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"50": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"51": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"52": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"53": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"54": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"55": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"56": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"57": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"58": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"59": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			},
+			"60": {
+				"emit": {
+					"y": -0.8333333830038754,
+					"x": 39.16666900118206
+				}
+			}
+		},
+		"timeline": [
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"source": "instance127",
+						"blendMode": "screen",
+						"matrix": [
+							0.46252442176288894,
+							0,
+							0,
+							0.46252442176288894,
+							39.16666900118206,
+							-0.8333333830038754
+						],
+						"effect": "sphere_aace78b92efffba6"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"source": "instance127",
+						"blendMode": "screen",
+						"matrix": [
+							0.3600463982450802,
+							0,
+							0,
+							0.3600463982450802,
+							39.16666900118206,
+							-0.8333333830038754
+						],
+						"effect": "sphere_aace78b92efffba6"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"source": "instance127",
+						"blendMode": "screen",
+						"matrix": [
+							0.25756837472727145,
+							0,
+							0,
+							0.25756837472727145,
+							39.16666900118206,
+							-0.8333333830038754
+						],
+						"effect": "sphere_aace78b92efffba6"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					},
+					{
+						"role": "muzzleFlash",
+						"source": "instance127",
+						"blendMode": "screen",
+						"matrix": [
+							0.15512084892119063,
+							0,
+							0,
+							0.15512084892119063,
+							39.16666900118206,
+							-0.8333333830038754
+						],
+						"effect": "sphere_aace78b92efffba6"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							1.6666667660077508
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							2.500000149011619
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							4.166666915019363
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							5.000000298023238
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							5.8333336810271135
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							6.666667064030989
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							7.500000447034864
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							8.33333383003874
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							9.166667213042615
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							10.00000059604649
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							11.666667362054227
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							12.500000745058102
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.9832459280836142,
+							0.18223572366847934,
+							-0.18223572366847934,
+							0.9832459280836142,
+							-0.8333333830038736,
+							10.00000059604649
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.9335785667247712,
+							0.35835268249229685,
+							-0.35835268249229685,
+							0.9335785667247712,
+							-3.3333335320154944,
+							8.33333383003874
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.8526306859233391,
+							0.5224914663528283,
+							-0.5224914663528283,
+							0.8526306859233391,
+							-6.666667064030989,
+							6.666667064030989
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.7431488182037365,
+							0.6691132387983743,
+							-0.6691132387983743,
+							0.7431488182037365,
+							-9.16666721304261,
+							5.000000298023238
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.6087494259327307,
+							0.7933502372115991,
+							-0.7933502372115991,
+							0.6087494259327307,
+							-11.66666736205423,
+							3.3333335320154944
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.453949001666844,
+							0.8909912441765017,
+							-0.8909912441765017,
+							0.453949001666844,
+							-14.166667511065851,
+							1.6666667660077508
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.2839965790905503,
+							0.9588012670756142,
+							-0.9588012670756142,
+							0.2839965790905503,
+							-16.666667660077472,
+							-0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.10449218876116606,
+							0.9945068356100819,
+							-0.9945068356100819,
+							0.10449218876116606,
+							-19.16666780908909,
+							-2.500000149011619
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							-0.07843018045605304,
+							0.9968872465821453,
+							-0.9968872465821453,
+							-0.07843018045605304,
+							-21.666667958100714,
+							-4.16666691501937
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							-0.25881957563675895,
+							0.965911902938996,
+							-0.965911902938996,
+							-0.25881957563675895,
+							-24.166668107112336,
+							-5.8333336810271135
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							-0.05813598979330002,
+							0.9982605376796249,
+							-0.9982605376796249,
+							-0.05813598979330002,
+							-21.666667958100714,
+							-4.16666691501937
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.1448974720575892,
+							0.9893952403105442,
+							-0.9893952403105442,
+							0.1448974720575892,
+							-18.33333442608522,
+							-1.6666667660077508
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.34196473212826645,
+							0.939666784187165,
+							-0.939666784187165,
+							0.34196473212826645,
+							-15.833334277073599,
+							0
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.5249328727483474,
+							0.8510895083997354,
+							-0.8510895083997354,
+							0.5249328727483474,
+							-13.333334128061978,
+							2.500000149011619
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.6862182827523321,
+							0.7273407217268579,
+							-0.7273407217268579,
+							0.6862182827523321,
+							-10.000000596046483,
+							4.166666915019363
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.8191223434084064,
+							0.5735321188091508,
+							-0.5735321188091508,
+							0.8191223434084064,
+							-7.5000004470348625,
+							5.8333336810271135
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.9181823880383803,
+							0.3960723914348518,
+							-0.3960723914348518,
+							0.9181823880383803,
+							-4.166666915019368,
+							8.33333383003874
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							0.9792938418762193,
+							0.20220948967592853,
+							-0.20220948967592853,
+							0.9792938418762193,
+							-1.6666667660077472,
+							10.00000059604649
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							12.500000745058102
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							8.33333383003874
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							5.000000298023238
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"role": "body",
+						"sprite": "image_001",
+						"source": "instance124",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "sparkl/vissparkl.json"
+					},
+					{
+						"role": "magazine",
+						"sprite": "image_001",
+						"source": "instance125",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							1.6666667660077472,
+							0.8333333830038754
+						],
+						"sheet": "sparkl/vissparkl_magazine.json"
+					}
+				]
+			}
+		],
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"magazineLayer": "vissparkl_magazine.png",
+		"frameCount": 60,
+		"size": {
+			"w": 324,
+			"h": 96
+		},
+		"labels": {
+			"shoot": 2,
+			"reload": 10
+		},
+		"animations": {},
+		"format": "RGBA8888",
+		"image": "vissparkl.png",
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	}
+}

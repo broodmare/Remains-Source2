@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"pivot": {
+				"y": 0.5263157894736842,
+				"x": 0.5277777777777778
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 72,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 72,
+				"h": 38
+			},
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 72,
+				"h": 38
+			},
+			"trimmed": false,
+			"rotated": false
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 74,
+			"h": 40
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visacidgun_magazine.png",
+		"app": "Remains exporter"
+	}
+}

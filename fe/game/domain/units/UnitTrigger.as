@@ -58,7 +58,7 @@ package fe.game.domain.units {
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
 			doop=true;
-			sloy=0;
+			layer=0;
 			noBox=true;
 			
 			if (xml) {

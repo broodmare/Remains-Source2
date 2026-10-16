@@ -1,0 +1,582 @@
+{
+	"version": 2,
+	"layout": "individual",
+	"templates": {
+		"circle_4b601cac5a8d60e2": {
+			"spread": "pad",
+			"interpolation": "rgb",
+			"winding": "evenOdd",
+			"gradientMatrix": [
+				0.0380401611328125,
+				0,
+				0,
+				0.0380401611328125,
+				0,
+				0
+			],
+			"focal": 0,
+			"radius": 30,
+			"points": [
+				21.2,
+				-21.2,
+				30,
+				-12.4,
+				30,
+				0,
+				30,
+				12.4,
+				21.2,
+				21.2,
+				12.4,
+				30,
+				0,
+				30,
+				-12.4,
+				30,
+				-21.2,
+				21.2,
+				-30,
+				12.4,
+				-30,
+				0,
+				-30,
+				-12.4,
+				-21.2,
+				-21.2,
+				-12.4,
+				-30,
+				0,
+				-30,
+				12.4,
+				-30,
+				21.2,
+				-21.2
+			],
+			"commands": [
+				1,
+				3,
+				3,
+				3,
+				3,
+				3,
+				3,
+				3,
+				3
+			]
+		},
+		"circle_27299b2024d3a208": {
+			"spread": "pad",
+			"gradientMatrix": [
+				0.08013916015625,
+				0,
+				0,
+				0.08013916015625,
+				0,
+				0
+			],
+			"focal": 0,
+			"points": [
+				46.8,
+				-46.8,
+				66.25,
+				-27.4,
+				66.25,
+				0,
+				66.25,
+				27.4,
+				46.8,
+				46.8,
+				27.4,
+				66.25,
+				0,
+				66.25,
+				-27.4,
+				66.25,
+				-46.8,
+				46.8,
+				-66.25,
+				27.4,
+				-66.25,
+				0,
+				-66.25,
+				-27.4,
+				-46.8,
+				-46.8,
+				-27.4,
+				-66.25,
+				0,
+				-66.25,
+				27.4,
+				-66.25,
+				46.8,
+				-46.8
+			],
+			"interpolation": "rgb",
+			"radius": 66.25,
+			"winding": "evenOdd",
+			"commands": [
+				1,
+				3,
+				3,
+				3,
+				3,
+				3,
+				3,
+				3,
+				3
+			]
+		}
+	},
+	"palettes": {
+		"palette_d950f08516286109": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				97,
+				255
+			],
+			"colors": [
+				16777215,
+				16769026,
+				16772608,
+				15990528
+			]
+		},
+		"palette_9a35f2b2d00728fa": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				101,
+				255
+			],
+			"colors": [
+				16777215,
+				16724736,
+				16711680,
+				16711680
+			]
+		},
+		"palette_6b09cebac7c0a3a7": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				101,
+				255
+			],
+			"colors": [
+				16777215,
+				11861862,
+				6749952,
+				65433
+			]
+		},
+		"palette_ab5e40d892a9cd94": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				101,
+				255
+			],
+			"colors": [
+				16777215,
+				6619130,
+				5683711,
+				6000383
+			]
+		},
+		"palette_49b26b8dafa6c426": {
+			"alphas": [
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				101,
+				255
+			],
+			"colors": [
+				16777215,
+				16777215,
+				49151
+			]
+		},
+		"palette_7d91a7573e22943a": {
+			"alphas": [
+				1,
+				0.6980392156862745,
+				0
+			],
+			"ratios": [
+				34,
+				84,
+				255
+			],
+			"colors": [
+				16777215,
+				16721917,
+				10040319
+			]
+		},
+		"palette_22c01a0431a73779": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				34,
+				67,
+				101,
+				255
+			],
+			"colors": [
+				16769026,
+				16747520,
+				16711680,
+				16711680
+			]
+		},
+		"palette_8b4f5c0fc3f51dd1": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				101,
+				255
+			],
+			"colors": [
+				16777215,
+				16724736,
+				16711764,
+				16711890
+			]
+		},
+		"palette_90381659bb82fa86": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				101,
+				252
+			],
+			"colors": [
+				16777215,
+				52735,
+				31231,
+				4849919
+			]
+		},
+		"palette_044bf447e027d06c": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				101,
+				252
+			],
+			"colors": [
+				16777215,
+				52735,
+				31231,
+				16711932
+			]
+		},
+		"palette_de3d111a48d60234": {
+			"alphas": [
+				1,
+				0.8588235294117647,
+				0.4745098039215686,
+				0
+			],
+			"ratios": [
+				75,
+				102,
+				171,
+				255
+			],
+			"colors": [
+				0,
+				327424,
+				6308748,
+				12255487
+			]
+		},
+		"palette_2d49eee598ce7983": {
+			"alphas": [
+				1,
+				0.48627450980392156,
+				0.4392156862745098,
+				0
+			],
+			"ratios": [
+				43,
+				101,
+				137,
+				255
+			],
+			"colors": [
+				16777215,
+				16715463,
+				1095423,
+				65387
+			]
+		},
+		"palette_cc97dbb83be35498": {
+			"alphas": [
+				1,
+				1,
+				0.34901960784313724,
+				0
+			],
+			"ratios": [
+				43,
+				67,
+				97,
+				255
+			],
+			"colors": [
+				16777215,
+				16769026,
+				16765440,
+				65513
+			]
+		}
+	},
+	"effects": {
+		"sphere_341e8db8e4074579": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_d950f08516286109",
+			"weapons": [
+				"visshok",
+				"vislightning",
+				"viseclipse",
+				"visrobospark"
+			]
+		},
+		"sphere_f3a797cf669f816d": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_9a35f2b2d00728fa",
+			"weapons": [
+				"visrech",
+				"vislasp",
+				"visprism",
+				"visplam_1",
+				"visrechr",
+				"vislasr",
+				"visgatl",
+				"vishgren",
+				"visgrenade",
+				"visfgren",
+				"vishmine",
+				"vismine",
+				"visx37",
+				"viszebmine",
+				"visbalemine",
+				"visbomb",
+				"visexc4",
+				"visbloodlight",
+				"visalimray",
+				"visrobolaser",
+				"visrobogatl",
+				"visowllaser",
+				"visttweap3"
+			]
+		},
+		"sphere_7e44f91258f6ebab": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_6b09cebac7c0a3a7",
+			"weapons": [
+				"visplap",
+				"visplam",
+				"visplar",
+				"vislassn",
+				"visgatp",
+				"visbfg",
+				"visfriend",
+				"visgasgr",
+				"visplagr",
+				"visplamine",
+				"visdragon",
+				"vismray",
+				"vismercgr",
+				"visroboplasma",
+				"visrobogatp",
+				"visrobogatp2",
+				"visroboplagr",
+				"visdrongr",
+				"visdronlaser",
+				"visttweap5"
+			]
+		},
+		"sphere_deee91cbf671fa3c": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_ab5e40d892a9cd94",
+			"weapons": [
+				"vispulsep",
+				"visplamg",
+				"viscryo",
+				"vispulser",
+				"visgrom",
+				"visimpmine",
+				"visice",
+				"visa_energ",
+				"visroboplam",
+				"visttweap2"
+			]
+		},
+		"sphere_73999f914a9d7f13": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_49b26b8dafa6c426",
+			"weapons": [
+				"visblaster",
+				"visskybolt",
+				"visttweap6"
+			]
+		},
+		"sphere_aace78b92efffba6": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_7d91a7573e22943a",
+			"weapons": [
+				"vissparkl",
+				"visspgren",
+				"vismbul",
+				"visrobosparkl"
+			]
+		},
+		"sphere_b748103ddc480439": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_22c01a0431a73779",
+			"weapons": [
+				"visnova",
+				"vistermo",
+				"visfriend",
+				"visrobonova"
+			]
+		},
+		"sphere_2f071d9cde3419d1": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_8b4f5c0fc3f51dd1",
+			"weapons": [
+				"visquick",
+				"visfriend"
+			]
+		},
+		"sphere_1d7bd96339e9b2a8": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_90381659bb82fa86",
+			"weapons": [
+				"visfriend",
+				"visimpgr",
+				"viscryogr",
+				"viscryomine"
+			]
+		},
+		"sphere_542d16abcd62310c": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_044bf447e027d06c",
+			"weapons": [
+				"vistelebul"
+			]
+		},
+		"sphere_813b550e8a8fc4ed": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_de3d111a48d60234",
+			"weapons": [
+				"visdray",
+				"visa_expl"
+			]
+		},
+		"sphere_b39e96d9fb1f7325": {
+			"primitive": "lightSphere",
+			"template": "circle_27299b2024d3a208",
+			"palette": "palette_2d49eee598ce7983",
+			"weapons": [
+				"visa_magic"
+			]
+		},
+		"sphere_8467991992802c13": {
+			"primitive": "lightSphere",
+			"template": "circle_4b601cac5a8d60e2",
+			"palette": "palette_cc97dbb83be35498",
+			"weapons": [
+				"visalilight"
+			]
+		}
+	},
+	"sheets": [
+		"_shared/flash_11690ca027e6d4e3.json",
+		"_shared/flash_475802e5153d60c8.json",
+		"_shared/flash_5c050a06fb551d1b.json",
+		"_shared/flash_679cc6b9c4a3bae8.json",
+		"_shared/flash_6bb2fc86c0028fd9.json",
+		"_shared/flash_99bad2c187866991.json",
+		"_shared/flash_9f619124b4027fad.json",
+		"_shared/flash_b3bfa2a318a1a8be.json",
+		"_shared/flash_bb591cc58866d857.json",
+		"_shared/flash_beaaf43f5a6bc2e0.json",
+		"_shared/flash_c258534a96921eae.json",
+		"_shared/flash_c3871247beac25de.json",
+		"_shared/flash_d48944ac2acb3ca6.json",
+		"_shared/flash_d95f9264f888fde2.json",
+		"_shared/flash_d9774a932b79f7ae.json",
+		"_shared/flash_e51ffde4d54077a4.json",
+		"_shared/flash_fdabf5b1a9a532ca.json"
+	],
+	"neutral": {
+		"template": "circle_27299b2024d3a208",
+		"sheet": "_shared/light_sphere.json",
+		"sprite": "neutral"
+	}
+}

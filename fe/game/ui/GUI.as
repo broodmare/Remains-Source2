@@ -1068,8 +1068,8 @@ package fe.game.ui {
 			celObj=World.w.loc.celObj;
 			
 			if (celObj!=prevObj) {
-				if (GameContainer.reference.shineObjs && prevObj && prevObj.vis && prevObj.levit==0) {
-					prevObj.vis.transform.colorTransform = prevObj.cTransform;
+				if (GameContainer.reference.shineObjs && prevObj && prevObj.levit==0) {
+					prevObj.setTint(prevObj.cTransform);
 				}
 			}
 			
@@ -1133,8 +1133,8 @@ package fe.game.ui {
 				if (!World.w.loc.base && celObj.stay && celObj.levitPoss && World.w.loc.celDist<=GameContainer.reference.pers.teleDist && celObj.massa<=GameContainer.reference.pers.maxTeleMassa) {
 					if (GameContainer.reference.hintTele) s+='\n'+GameContainer.reference.ctr.retKey('keyTele')+' - '+txtTele;
 					//свечение
-					if (GameContainer.reference.shineObjs && celObj.vis) {
-						celObj.vis.transform.colorTransform=gg.shineTransform;
+					if (GameContainer.reference.shineObjs) {
+						celObj.setTint(gg.shineTransform);
 					}
 					levit_poss.visible=true;
 					GameContainer.reference.cam.setKoord(levit_poss,celObj.coordinates.X, celObj.coordinates.Y-5);

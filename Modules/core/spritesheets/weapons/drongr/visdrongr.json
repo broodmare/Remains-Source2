@@ -1,0 +1,170 @@
+{
+	"meta": {
+		"version": "2",
+		"scale": "4.0",
+		"timeline": [
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance30",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "drongr/visdrongr.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance30",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "drongr/visdrongr.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance31",
+						"matrix": [
+							0.6337585926309383,
+							0,
+							0,
+							0.6337585926309383,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance30",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "drongr/visdrongr.json"
+					},
+					{
+						"blendMode": "screen",
+						"role": "auxiliary",
+						"source": "instance31",
+						"matrix": [
+							0.19125367102545526,
+							0,
+							0,
+							0.19125367102545526,
+							0,
+							0
+						],
+						"effect": "sphere_7e44f91258f6ebab"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance30",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "drongr/visdrongr.json"
+					}
+				]
+			},
+			{
+				"layers": [
+					{
+						"sprite": "image_001",
+						"role": "body",
+						"source": "instance30",
+						"matrix": [
+							1,
+							0,
+							0,
+							1,
+							0,
+							0
+						],
+						"sheet": "drongr/visdrongr.json"
+					}
+				]
+			}
+		],
+		"roles": {
+			"instance30": "body",
+			"instance31": "auxiliary"
+		},
+		"anchors": {},
+		"frameRate": 30,
+		"app": "Remains exporter",
+		"size": {
+			"w": 84,
+			"h": 84
+		},
+		"animations": {},
+		"labels": {},
+		"format": "RGBA8888",
+		"image": "visdrongr.png",
+		"frameCount": 5,
+		"schemaVersion": 3,
+		"shared": "_shared/effects.json"
+	},
+	"frames": {
+		"image_001": {
+			"sourceSize": {
+				"w": 82,
+				"h": 82
+			},
+			"trimmed": false,
+			"frame": {
+				"h": 82,
+				"y": 1,
+				"w": 82,
+				"x": 1
+			},
+			"spriteSourceSize": {
+				"h": 82,
+				"y": 0,
+				"w": 82,
+				"x": 0
+			},
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"rotated": false
+		}
+	}
+}

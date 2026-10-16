@@ -1,0 +1,18 @@
+{
+	"image": "bookcase.png",
+	"density": 1,
+	"width": 80,
+	"height": 120,
+	"blend": "normal",
+	"shadow": "shadow",
+	"images": {
+		"frame0_0": {"x": 0, "y": 139, "w": 78, "h": 118, "pivotX": 39, "pivotY": 119},
+		"shadow": {"x": 0, "y": 0, "w": 98, "h": 137, "pivotX": 49, "pivotY": 129}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

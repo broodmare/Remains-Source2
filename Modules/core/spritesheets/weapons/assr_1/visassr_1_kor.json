@@ -1,0 +1,39 @@
+{
+	"frames": {
+		"image_001": {
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 362,
+				"h": 76
+			},
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 362,
+				"h": 76
+			},
+			"rotated": false,
+			"trimmed": false,
+			"pivot": {
+				"y": 0.5,
+				"x": 0.5
+			},
+			"sourceSize": {
+				"w": 362,
+				"h": 76
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"size": {
+			"w": 364,
+			"h": 78
+		},
+		"scale": "4.0",
+		"format": "RGBA8888",
+		"image": "visassr_1_kor.png",
+		"app": "Remains exporter"
+	}
+}

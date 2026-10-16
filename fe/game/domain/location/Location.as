@@ -122,14 +122,14 @@ package fe.game.domain.location {
 		public var tipWater:int				=   0;			//внешний вид воды
 		public var opacWater:Number			=   0.00;		//непрозрачность воды
 		public var waterLevel:int			= 100;			//уровень воды
-		public var backform:int				=   0;			//форма фона задней стены 0-закрашено всё, 1-боковые части, 2-нижняя часть
+		public var backWallShape:int		=   0;			// What the back wall covers: 0 the whole room, 1 the sides, 2 the lower part, 3 a strip along the bottom
 		public var backwall:String			= "";			//фон задней стены
-		public var transpFon:Boolean		= false;		//задний фон имеет прозрачность
-		
+		public var transparentBack:Boolean	= false;		// Gaps in the back wall show the sky
+
 		public var cTransform:ColorTransform;
-		public var cTransformFon:ColorTransform;
+		public var cTransformSky:ColorTransform;			// Tints the sky, set from skyColor
 		public var color:String;
-		public var colorfon:String;
+		public var skyColor:String;							// The sky's tint, by ColorFilter name
 		
 		public var sndMusic:String			= 'music_0';
 		public var postMusic:Boolean		= false;		//музыка не пеключается на боевую
@@ -238,10 +238,10 @@ package fe.game.domain.location {
 				if (opt.mirror) mirror=true;
 				if (opt.water!=null) waterLevel=opt.water;
 				if (opt.ramka!=null) ramka=opt.ramka;
-				if (ramka==5) backform=1;
-				if (ramka==6) backform=2;
-				if (opt.backform) backform=opt.backform;
-				if (opt.transpFon) transpFon=opt.transpFon;
+				if (ramka==5) backWallShape=1;
+				if (ramka==6) backWallShape=2;
+				if (opt.backWallShape) backWallShape=opt.backWallShape;
+				if (opt.transparentBack) transparentBack=opt.transparentBack;
 				if (opt.home) homeStable=true;
 				if (opt.atk) homeAtk=true;
 			}
@@ -302,8 +302,8 @@ package fe.game.domain.location {
 			
 			if (nroom.options.length()) {
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
-				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
-				if (nroom.options.@transpfon.length()) transpFon=true;
+				if (nroom.options.@backform.length()) backWallShape=nroom.options.@backform;
+				if (nroom.options.@transpfon.length()) transparentBack=true;
 				if (nroom.options.@music.length()) sndMusic=nroom.options.@music;
 				if (nroom.options.@rad.length()) rad=nroom.options.@rad;
 				if (nroom.options.@wrad.length()) wrad=nroom.options.@wrad;
@@ -317,7 +317,7 @@ package fe.game.domain.location {
 				if (nroom.options.@noblack.length() && !Settings.alwaysFogOfWar) black = false;
 				if (nroom.options.@train.length()) train=true;
 				if (nroom.options.@color.length()) color=nroom.options.@color;
-				if (nroom.options.@colorfon.length()) colorfon=nroom.options.@colorfon;
+				if (nroom.options.@colorfon.length()) skyColor=nroom.options.@colorfon;
 				if (nroom.options.@vis.length()) visMult=nroom.options.@vis;
 				if (nroom.options.@nomap.length()) noMap=true;
 				if (nroom.options.@entip.length()) tipEnemy=nroom.options.@entip;
@@ -451,8 +451,8 @@ package fe.game.domain.location {
 			//цветофильтр
 			cTransform = colorFilter(color);
 			
-			if (colorfon) {
-				cTransformFon = colorFilter(colorfon);
+			if (skyColor) {
+				cTransformSky = colorFilter(skyColor);
 			}
 			
 			
