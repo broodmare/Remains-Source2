@@ -12,7 +12,7 @@ package fe.game.ui {
 
 	public class PortraitHelper {
 
-		private static const PORTRAIT_PATH:String = "Modules/core/Portraits/";
+		private static const PORTRAIT_PATH:String = "data/core/Portraits/";
 		private var pictureHolder:MovieClip;					// The movieclip object containing the shown image
 		private var images:Object = {};							// Each portrait's image by name, null while it's still loading
 		private var loadNames:Dictionary = new Dictionary();	// The portrait name each pending load is for

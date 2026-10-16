@@ -18,8 +18,8 @@ package fe.game {
 
 		public static var reference:WeaponManager;		// Publically acessable reference to this instance
 
-		private static const _weaponPath:String	= "Modules/core/AllData/weapons.json";
-		private static const _ammoPath:String	= "Modules/core/AllData/ammo.json";
+		private static const _weaponPath:String	= "data/core/AllData/weapons.json";
+		private static const _ammoPath:String	= "data/core/AllData/ammo.json";
 		
 		// Ammo variant types mapped to their localization keys ("pip" category), formerly the integer 'mod' attribute
 		private static const AMMO_MODS:Object = {

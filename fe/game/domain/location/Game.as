@@ -1,6 +1,7 @@
 package fe.game.domain.location {
 
 	import fe.game.GameContainer;
+	import fe.engine.SaveConverter;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.engine.text.TextParser;
 	import fe.engine.audio.Sound;
@@ -17,13 +18,13 @@ package fe.game.domain.location {
 
 		// Level information
 		public var globalDif:int = 2			// [Global difficulty level]
-		public var curLandId:String = "test";	// Current level ID
+		public var curLevelId:String = "test";	// Current level ID
 		public var curCoord:String = null;		// 
-		public var curLand:LandAct;				// 
+		public var curLevel:LevelSettings;				//
 		
 		// Game data storage
-		public var lands:Object		= {};	// Dictionary of level data stored by level.id       
-		public var probs:Object		= {};	// Dictionary of challenge room data stored by prob.id
+		public var lands:Object		= {};	// Dictionary of level data stored by level.id
+		public var challengeSettings:Object		= {};	// Dictionary of challenge room data stored by challenge.id
 		public var notes:Array		= [];	// 
 		public var npcs:Object		= {};	// 
 		public var triggers:Array	= [];	// 
@@ -46,21 +47,21 @@ package fe.game.domain.location {
 		public var objs:Array;
 
 		public function Game() {
-			var landList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
+			var landList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Levels", "land");
 			
 			for each(var xl:XML in landList) {
-				var land:LandAct = new LandAct(xl);
+				var land:LevelSettings = new LevelSettings(xl);
 				
 				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) {
 					land.allroom = World.w.landData[xl.@id].allroom;
 					land.loaded = true;
 				}
 				
-				if (land.prob == 0) {
+				if (!land.isChallenge) {
 					lands[land.id] = land;
 				}
 				else {
-					probs[land.id] = land;
+					challengeSettings[land.id] = land;
 				}
 			}
 			
@@ -73,7 +74,7 @@ package fe.game.domain.location {
 			var elapsedTime:Number = currentTime.getTime() - dBeg.getTime();
 
 			saveData.dif = globalDif;
-			saveData.land = curLandId;
+			saveData.land = curLevelId;
 			
 			// Save objects
 			World.w.land.saveObjs(objs);
@@ -135,6 +136,11 @@ package fe.game.domain.location {
 		
 		public function init(loadObj:Object = null, opt:Object = null):void {
 			if (loadObj) {
+				var convertedLoadObj:Object = {};
+				SaveConverter.convertSave(loadObj, convertedLoadObj);
+				loadObj = convertedLoadObj;
+			}
+			if (loadObj) {
 				if (loadObj.dif != null) {
 					globalDif = loadObj.dif;
 				}
@@ -189,8 +195,8 @@ package fe.game.domain.location {
 			npcList = null; // Manual cleanup.
 
 			if (loadObj) {
-				for (var i:String in loadObj.triggers){
-					triggers[i]=loadObj.triggers[i];
+				for (var i:String in loadObj.triggers) {
+					triggers[i] = loadObj.triggers[i];
 				}
 				for (var j:String in loadObj.notes) {
 					notes[j]=loadObj.notes[j];
@@ -207,11 +213,11 @@ package fe.game.domain.location {
 			}
 
 			baseId		= 'rbl';
-			curLandId	= 'rbl';
+			curLevelId	= 'rbl';
 
 			if (loadObj) {
-				curLandId = loadObj.land;
-				if (curLandId != 'rbl') missionId=loadObj.land;
+				curLevelId = loadObj.land;
+				if (curLevelId != 'rbl' && curLevelId != 'challenge') missionId=curLevelId;
 			}
 			else if (opt && opt.propusk == true) {
 				triggers["dial_dialCalam2"] = 1;	// [Skip training]
@@ -219,7 +225,7 @@ package fe.game.domain.location {
 				
 			}
 			else {
-				curLandId = 'begin';				// [Start the tutorial]
+				curLevelId = 'begin';				// [Start the tutorial]
 			}
 
 			for each(var q:Quest in quests) {
@@ -230,8 +236,8 @@ package fe.game.domain.location {
 				}
 			}
 
-			if (lands[curLandId] == null || lands[curLandId].rnd) {
-				curLandId = 'rbl';
+			if (lands[curLevelId] == null || lands[curLevelId].rnd) {
+				curLevelId = 'rbl';
 			}
 			
 			addNote('helpControl');
@@ -266,27 +272,27 @@ package fe.game.domain.location {
 			return true;
 		}
 		
-		public function enterToCurLand():void {
-			Land.locN += 5;
+		public function enterToCurLevel():void {
+			Level.locN += 5;
 			Engine.reference.time___metr();
 
 			if (World.w.land && objs) World.w.land.saveObjs(objs);
 			// Check for random encounter(?)
 			Encounter();
 
-			curLand = lands[curLandId];
+			curLevel = lands[curLevelId];
 			
-			if (curLand == null) {
-				curLand = lands['rbl'];
+			if (curLevel == null) {
+				curLevel = lands['rbl'];
 			}
 			
 			var first:Boolean = false;
 			
-			if (!curLand.rnd && !curLand.visited) {
+			if (!curLevel.rnd && !curLevel.visited) {
 				first = true;
 			}
 			
-			if (curLand.land == null || crea) {
+			if (curLevel.land == null || crea) {
 				var n:int = 0;
 				if (triggers['firstroom'] > 0) {
 					n = 1;
@@ -294,7 +300,7 @@ package fe.game.domain.location {
 						n = GameContainer.reference.pers.level - 1;
 					}
 				}
-				curLand.land = new Land(GameContainer.reference.gg, curLand, n);
+				curLevel.land = new Level(GameContainer.reference.gg, curLevel, n);
 			}
 
 			Engine.reference.time___metr('Creating level');
@@ -304,30 +310,30 @@ package fe.game.domain.location {
 			}
 			
 			crea = false;
-			World.w.ativateLand(curLand.land);
-			World.w.land.enterLand(first, curCoord);
+			World.w.ativateLevel(curLevel.land);
+			World.w.land.enterLevel(first, curCoord);
 			curCoord = null;
 			
-			if (curLand.id == 'rbl') {
+			if (curLevel.id == 'rbl') {
 				triggers['noreturn'] = 0;
 				triggers['nomed'] = 0;
 				triggers['rbl_visited'] = 1;
 			}
 			else {
-				if (curLand.tip!='base') {
-					missionId=curLand.id;
+				if (curLevel.tip!='base') {
+					missionId=curLevel.id;
 				}
 			}
 			
 			GameContainer.reference.gg.remEffect('potion_fly');
-			GUIManager.reference.gui.messText('', TextParser.txt('m', curLand.id) + (curLand.rnd? (' - ' + (curLand.landStage + 1)):''), GameContainer.reference.gg.coordinates.Y < 300);
+			GUIManager.reference.gui.messText('', TextParser.txt('m', curLevel.id) + (curLevel.rnd? (' - ' + (curLevel.landStage + 1)):''), GameContainer.reference.gg.coordinates.Y < 300);
 			
-			if (!curLand.rnd) curLand.visited=true;
+			if (!curLevel.rnd) curLevel.visited=true;
 			
 			if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
 			
-			if (curLand.upStage) {
-				curLand.upStage=false;
+			if (curLevel.upStage) {
+				curLevel.upStage=false;
 			}
 			
 			Engine.reference.time___metr('Entering level');
@@ -335,13 +341,13 @@ package fe.game.domain.location {
 		
 		// [Redirect to another location]
 		private function Encounter():void {
-			if (curLandId=='random_canter' && !(triggers['encounter_way'] > 0)) curLandId = 'way';
-			if (curLandId=='random_encl' && !(triggers['encounter_post'] > 0)) curLandId = 'post';
-			if (curLandId=='stable_pi' && triggers['storm'] == 4) curLandId = 'stable_pi_atk';
-			if (curLandId=='stable_pi' && triggers['storm'] == 5) curLandId = 'stable_pi_surf';
+			if (curLevelId=='random_canter' && !(triggers['encounter_way'] > 0)) curLevelId = 'way';
+			if (curLevelId=='random_encl' && !(triggers['encounter_post'] > 0)) curLevelId = 'post';
+			if (curLevelId=='stable_pi' && triggers['storm'] == 4) curLevelId = 'stable_pi_atk';
+			if (curLevelId=='stable_pi' && triggers['storm'] == 5) curLevelId = 'stable_pi_surf';
 		}
 		
-		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false):void {
+		public function gotoLevel(nland:String, coord:String=null, fast:Boolean=false):void {
 			if (nland != baseId && !GameContainer.reference.pers.dopusk()) {
 				GUIManager.reference.gui.messText('nocont');
 			}
@@ -349,42 +355,42 @@ package fe.game.domain.location {
 				GUIManager.reference.gui.messText('nocont2');
 			}
 			else {
-				curLandId = nland;
+				curLevelId = nland;
 				curCoord = coord;
-				World.w.exitLand(fast);
+				World.w.exitLevel(fast);
 			}
 		}
 		
 		public function beginMission(nid:String = null):void {
-			if (nid == curLandId) return;
+			if (nid == curLevelId) return;
 			if (nid && lands[nid]) {
 				if (lands[nid].tip != 'base') {
 					missionId = nid;
 					crea = true;
 				}
 			}
-			gotoLand(nid);
+			gotoLevel(nid);
 		}
 		
 		public function gotoNextLevel():void {
 			GameContainer.reference.pers.prevCPCode = null;
 			GameContainer.reference.pers.currentCPCode = null;
-			curLand.land.currentCP = null;
+			curLevel.land.currentCP = null;
 			crea = true;
-			curLand.land.refill();
-			gotoLand(missionId);
+			curLevel.land.refill();
+			gotoLevel(missionId);
 		}
 		
-		public function upLandLevel():void {
-			if (!curLand.upStage) {
-				curLand.landStage++;
+		public function upLevelLevel():void {
+			if (!curLevel.upStage) {
+				curLevel.landStage++;
 			}
-			curLand.upStage = true;
+			curLevel.upStage = true;
 		}
 		
 		// [Check the possibility of traveling through the map]
 		public function checkTravel(lid:String):Boolean {
-			if (this.curLandId == 'grave') {
+			if (this.curLevelId == 'grave') {
 				return false;
 			}
 			
@@ -453,7 +459,7 @@ package fe.game.domain.location {
 				}
 			}
 			
-			if (loadObj==null && showDial && q.begDial && GameContainer.reference.dialOn && World.w.loc.prob==null) {
+			if (loadObj==null && showDial && q.begDial && GameContainer.reference.dialOn && World.w.loc.challenge==null) {
 				GUIManager.reference.pip.onoff(-1);
 				GUIManager.reference.gui.dialog(q.begDial);
 			}

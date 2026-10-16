@@ -2,9 +2,9 @@ package fe.game.domain.location.factories {
 
 	import fe.engine.utils.Vec2;
 	import fe.game.GameContainer;
-	import fe.game.domain.location.Land;
+	import fe.game.domain.location.Level;
 	import fe.game.domain.location.Location;
-	import fe.game.domain.location.Room;
+	import fe.game.domain.location.Room_Definition;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.enums.E_Direction;
 
@@ -105,9 +105,9 @@ package fe.game.domain.location.factories {
 		}
 
 		//создать новую локацию нужного типа, в заданных координатах
-		public static function newTipLoc(land:Land, ntip:String, nx:int, ny:int, opt:Object=null):Location {
+		public static function newTipLoc(land:Level, ntip:String, nx:int, ny:int, opt:Object=null):Location {
 			var rndRoom:Array = [];
-			var room:Room;
+			var room:Room_Definition;
 
 			for each(room in land.allRoom) {
 				if (room.tip==ntip) rndRoom.push(room);
@@ -127,10 +127,10 @@ package fe.game.domain.location.factories {
 		}
 
 		//создать новую случайную локацию, в заданных координатах
-		public static function newRandomLoc(land:Land, maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location {
+		public static function newRandomLoc(land:Level, maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location {
 			var rndRoom:Array = [];
-			var r1:Room, r2:Room;
-			var room:Room;
+			var r1:Room_Definition, r2:Room_Definition;
+			var room:Room_Definition;
 			var rndKol:int;
 			var i:int;
 
@@ -165,8 +165,8 @@ package fe.game.domain.location.factories {
 			return newLoc(land, room, nx, ny, 0, opt);
 		}
 
-		// [Create a new location according to a given Room template, in given coordinates]
-		public static function newLoc(land:Land, room:Room, nx:int, ny:int, nz:int = 0, opt:Object = null):Location {
+		// [Create a new location according to a given Room_Definition template, in given coordinates]
+		public static function newLoc(land:Level, room:Room_Definition, nx:int, ny:int, nz:int = 0, opt:Object = null):Location {
 			var loc:Location = new Location(land, room.xml, land.rnd, opt);
 			var deep:Number = 0;
 
@@ -213,7 +213,7 @@ package fe.game.domain.location.factories {
 		}
 
 		//установка сложности локации, в зависимости от уровня персонажа и градиена сложности
-		private static function setLocDif(land:Land, loc:Location, deep:Number):void {
+		private static function setLocDif(land:Level, loc:Location, deep:Number):void {
 			var ml:Number = land.landDifLevel + deep;
 
 			loc.locDifLevel = ml;

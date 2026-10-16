@@ -15,11 +15,11 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Files;
 
-	// Every flipbook in Modules/core/spritesheets/objects. The JSON is read and the sheets decoded at startup;
+	// Every flipbook in data/core/spritesheets/objects. The JSON is read and the sheets decoded at startup;
 	// a sheet goes to the GPU the first time something shows its flipbook, and stays there.
 	public class FlipbookManager {
 
-		private static const FOLDER:String		= "Modules/core/spritesheets/objects";
+		private static const FOLDER:String		= "data/core/spritesheets/objects";
 		private static const PLACEHOLDER:String	= "placeholder";	// Shown for anything whose flipbook is missing
 
 		private var definitions:Dictionary	= new Dictionary();		// Flipbook_Definition by name

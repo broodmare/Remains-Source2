@@ -38,17 +38,17 @@ package fe.game.domain.location {
 	
 	public class Location {
 
-		public var land:Land;
+		public var land:Level;
 		
 		public var id:String;
-		public var room:Room;								//связанный шаблон
-		public var prob:Probation;							//связанное испытание
+		public var room:Room_Definition;								//связанный шаблон
+		public var challenge:Room_Challenge;							//связанное испытание
 		
 		//рамеры и положение
 		public var landX:int			= 0;				//положение локации на местности
 		public var landY:int			= 0;
 		public var landZ:int			= 0;
-		public var landProb:String		= "";
+		public var challengeId:String		= "";
 		public var bindLoc:Location;						//привязанная по координате z
 		public var base:Boolean			= false;			//базовый лагерь
 		public var train:Boolean		= false;			//полигон
@@ -107,7 +107,7 @@ package fe.game.domain.location {
 		public var ramka:int				= 0;			//рамка из блоков по периметру 1-весь периметр, 2-только бока, 3-только низ, 4-низ и бока
 		public var bezdna:Boolean			= false;		//выход вниз при падении
 		public var mirror:Boolean			= false;		//зеркальная комната
-		public var endLand:Boolean			= false;		//комната на последнем уровне локации
+		public var endLevel:Boolean			= false;		//комната на последнем уровне локации
 		public var sky:Boolean				= false;	
 		public var zoom:Number				= 1;	
 
@@ -203,7 +203,7 @@ package fe.game.domain.location {
 		public var halfSpaceY:int;
 		private var spaceLength:int;
 
-		public function Location(land:Land, room:XML, rnd:Boolean, opt:Object=null) {
+		public function Location(land:Level, room:XML, rnd:Boolean, opt:Object=null) {
 			this.land		= land;
 
 			spaceX			= GameContainer.cellsX;		// Room width in tiles
@@ -235,7 +235,7 @@ package fe.game.domain.location {
 			}
 			
 			if (opt) {
-				if (opt.prob) ramka=0;
+				if (opt.challenge) ramka=0;
 				if (opt.mirror) mirror=true;
 				if (opt.water!=null) waterLevel=opt.water;
 				if (opt.ramka!=null) ramka=opt.ramka;
@@ -774,7 +774,7 @@ package fe.game.domain.location {
 			//Добавление объектов, имеющих uid в массив
 			if (obj.uid != null) land.uidObjs[obj.uid]=obj;
 			//Добавление id испытаний
-			if (landProb=='' && obj.inter && obj.inter.prob) land.probIds.push(obj.inter.prob);
+			if (challengeId=='' && obj.inter && obj.inter.challengeId) land.challengeIds.push(obj.inter.challengeId);
 			addObj(obj);
 		}
 
@@ -810,8 +810,8 @@ package fe.game.domain.location {
 		}
 
 		//создание двери испытаний в случайной точке появления
-		public function createDoorProb(nid:String, nprob:String):Boolean {
-			var door:Box = ObjFactory.createDoorProb(this, nid, nprob);
+		public function createDoorChallenge(nid:String, challengeId:String):Boolean {
+			var door:Box = ObjFactory.createDoorChallenge(this, nid, challengeId);
 
 			if (door == null) return false;
 			registerObj(door);
@@ -852,7 +852,7 @@ package fe.game.domain.location {
 			var obj:Entity = firstObj;
 			while (obj) {
 				nextObj=obj.nobj;
-				obj.setNull(n-nAct>2 || n==0 || prob &&!prob.closed);
+				obj.setNull(n-nAct>2 || n==0 || challenge &&!challenge.closed);
 				obj=nextObj;
 			}
 			resetUnits();
@@ -861,7 +861,7 @@ package fe.game.domain.location {
 			active=true;
 			visited=true;
 			warning=0;
-			if (prob) prob.over();
+			if (challenge) challenge.over();
 		}
 		
 		// Create a new list of units by removing an units that are no longer active
@@ -888,7 +888,7 @@ package fe.game.domain.location {
 			for each (var un:Unit in units) {
 				un.locout();
 			}
-			if (prob) prob.out();
+			if (challenge) challenge.out();
 		}
 		
 //**************************************************************************************************************************
@@ -1344,8 +1344,8 @@ package fe.game.domain.location {
 			t_alarm = n;
 			t_alarmsp = int(n*Math.random() * 0.25 + 0.25);
 			
-			if (prob && prob.alarmScript) {
-				prob.alarmScript.start();
+			if (challenge && challenge.alarmScript) {
+				challenge.alarmScript.start();
 			}
 		}
 
@@ -1774,8 +1774,8 @@ package fe.game.domain.location {
 		public function step():void {
 			gg.step();
 			
-			if (prob) {
-				prob.step();
+			if (challenge) {
+				challenge.step();
 			}
 			
 			//пройтись по всей цепочке объектов

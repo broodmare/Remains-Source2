@@ -83,7 +83,7 @@ package fe.engine.text {
 		* @dop   -- Extra formatting?
 		*/
 		public static function txt(tip:String, id:String, razd:int = 0, dop:Boolean = false):String {
-			// No id means no text, such as the door out of a trial, whose prob is empty
+			// No id means no text, such as the door out of a trial, whose challenge is empty
 			if (id == "") { return ""; }
 
 			getLanguageData();	// Resets the caches if the language changed

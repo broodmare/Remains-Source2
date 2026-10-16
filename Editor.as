@@ -23,7 +23,7 @@ package {
 		var arrroom:Array;			//массив всех комнат в XML
 		var curroom:XML;			//текущая комната
 		var room0:XML=<all></all>;	//нулевой XML
-		var landXML:XML;
+		var levelXML:XML;
 		
 		var loader:URLLoader = new URLLoader();
 		var loaded:Boolean=false;
@@ -423,7 +423,7 @@ package {
 		//кодировать все комнаты в новый XML
 		public function encodeAll() {
 			var r:XML=<all></all>;
-			if (landXML) r.appendChild(landXML);
+			if (levelXML) r.appendChild(levelXML);
 			for (var i in arrroom) {
 				r.appendChild(arrroom[i]);
 			}
@@ -525,8 +525,8 @@ package {
 		
 		//Перегнать весь XML allroom в массив XML arrroom, декодировать текущую комнату
 		public function decodeAll() {
-			landXML=allroom.land[0];
-			if (landXML && landXML.@serial==1) rndMode=false;
+			levelXML=allroom.level[0];
+			if (levelXML && levelXML.@serial==1) rndMode=false;
 			else  rndMode=true;
 			var dp:DataProvider = new DataProvider();
 			ed.roomsList.dataProvider = dp;

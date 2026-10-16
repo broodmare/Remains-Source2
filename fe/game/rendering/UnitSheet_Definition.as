@@ -6,7 +6,7 @@ package fe.game.rendering {
 
 	import starling.textures.Texture;
 
-	// One unit sprite sheet from Modules/core/spritesheets/units: where each animation's frames lie on it, and the sheet
+	// One unit sprite sheet from data/core/spritesheets/units: where each animation's frames lie on it, and the sheet
 	// itself while it is loaded
 	public class UnitSheet_Definition {
 		public var name:String;										// Its key in units.json

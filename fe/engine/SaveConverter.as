@@ -38,7 +38,34 @@ package fe.engine {
 
 		// Copies a legacy save into target in the current format
 		public static function convertSave(legacy:Object, target:Object):void {
+			var gameData:Object;
+			var triggerId:String;
+			var challengeTriggerId:String;
+			var legacyTriggerIds:Array = [];
+
 			copyInto(legacy, target);
+
+			// SaveManager passes a slot; Game.init passes the nested game data directly.
+			gameData = target.game ? target.game : target;
+			if (gameData.triggers) {
+				for (triggerId in gameData.triggers) {
+					if (triggerId.indexOf("prob_") == 0) {
+						legacyTriggerIds.push(triggerId);
+					}
+				}
+
+				for each (triggerId in legacyTriggerIds) {
+					challengeTriggerId = "challenge_" + triggerId.substr(5);
+					if (gameData.triggers[challengeTriggerId] == null) {
+						gameData.triggers[challengeTriggerId] = gameData.triggers[triggerId];
+					}
+					delete gameData.triggers[triggerId];
+				}
+			}
+
+			if (gameData.land == "prob") {
+				gameData.land = "challenge";
+			}
 		}
 	}
 }

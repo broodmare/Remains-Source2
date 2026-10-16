@@ -180,7 +180,7 @@ package fe.game.rendering.rig {
 			}
 		}
 
-		// folder: the rig's folder, such as Modules/core/rigs/pony in the game folder
+		// folder: the rig's folder, such as data/core/rigs/pony in the game folder
 		public function RigAssets(folder:File, name_:String, onLoaded_:Function) {
 			var json:Object;
 			var gltf:Object;

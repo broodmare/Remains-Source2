@@ -32,7 +32,7 @@ package fe.game.rendering {
 		public static var kol:int           = 0;
 		public static var kolIsLoad:int     = 0;
 
-		private static const textureDirectory:String = 'Modules/core/textures/';
+		private static const textureDirectory:String = 'data/core/textures/';
 
 		private static var manifestLoaded:Boolean = false;
 		public static var manifest:Object;

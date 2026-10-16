@@ -1476,7 +1476,7 @@ package fe.game.ui {
 		public function showHelp(event:MouseEvent):void {
 			GameContainer.reference.ctr.active=false;
 			GameContainer.reference.ctr.keyPressed=false;
-			if (World.w.loc.prob) informText(World.w.loc.prob.info+'<br><br>'+World.w.loc.prob.help);
+			if (World.w.loc.challenge) informText(World.w.loc.challenge.info+'<br><br>'+World.w.loc.challenge.help);
 			event.stopPropagation();
 		}
 

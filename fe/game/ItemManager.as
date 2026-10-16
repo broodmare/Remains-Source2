@@ -7,9 +7,9 @@ package fe.game {
 		
 		public static var reference:ItemManager; // Public reference to this instance of an item manager
 
-		private static const itemsPath:String = "Modules/core/AllData/items.json";
-		private static const ammoPath:String = "Modules/core/AllData/ammo.json";
-		private static const schematicsPath:String = "Modules/core/AllData/schematics.json";
+		private static const itemsPath:String = "data/core/AllData/items.json";
+		private static const ammoPath:String = "data/core/AllData/ammo.json";
+		private static const schematicsPath:String = "data/core/AllData/schematics.json";
 
 		private var _items:Object		= {};	// A dictionary of items loaded from JSON
 		private var _schematics:Object	= {};	// A dictionary of schematics loaded from JSON

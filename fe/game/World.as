@@ -12,9 +12,9 @@ package fe.game {
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.Pers;
 	import fe.game.domain.location.tile.TileRegistry;
-	import fe.game.domain.location.Land;
+	import fe.game.domain.location.Level;
 	import fe.game.domain.location.Location;
-	import fe.game.domain.location.factories.LandLoader;
+	import fe.game.domain.location.factories.LevelLoader;
 	import fe.game.domain.location.Game;
 	import fe.game.ui.GUI;
 	import fe.game.ui.GUIManager;
@@ -38,16 +38,16 @@ package fe.game {
 		private static const DEATH_RESURRECT_FRAMES:int	= 99;	// From the player getting up to having control again
 
 		// Location components
-		public var land:Land;									// [Current land]
+		public var land:Level;									// [Current land]
 		public var loc:Location;								// [Current location]
 		public var rooms:Array;
 		
 		// [Location maps]
 		public var fileVersion:int				= 2;			// [Change this number to reset the cache]
 		public var landData:Array;
-		public var kolLands:int					= 0;
-		public var kolLandsLoaded:int			= 0;
-		public var allLandsLoaded:Boolean		= false;
+		public var kolLevels:int					= 0;
+		public var kolLevelsLoaded:int			= 0;
+		public var allLevelsLoaded:Boolean		= false;
 		
 		public var comLoad:int					= -1;			//команда на загрузку
 		public var clickReq:int					=  0;			//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
@@ -79,11 +79,11 @@ package fe.game {
 			// [Loading location maps]
 			landData = [];
 			
-			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Lands", "land");
+			var xmlList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Levels", "land");
 			for each(var xl:XML in xmlList) {
 				if (!GameContainer.reference.testMode && xl.@test>0) continue;
-				var ll:LandLoader=new LandLoader(xl.@id);
-				if (!(xl.@test>0)) kolLands++;
+				var ll:LevelLoader=new LevelLoader(xl.@id);
+				if (!(xl.@test>0)) kolLevels++;
 				landData[xl.@id]=ll;
 			}
 			xmlList = null; // Manual cleanup
@@ -93,11 +93,11 @@ package fe.game {
 
 		public function roomsLoadOk():void {
 			if (!GameContainer.reference.roomsLoad) {
-				allLandsLoaded = true;
+				allLevelsLoaded = true;
 				return;
 			}
-			kolLandsLoaded++;
-			if (kolLands == kolLandsLoaded) allLandsLoaded = true;
+			kolLevelsLoaded++;
+			if (kolLevels == kolLevelsLoaded) allLevelsLoaded = true;
 		}
 
 		//Пауза и вызов пипбака если потерян фокус
@@ -147,7 +147,7 @@ package fe.game {
 			GameContainer.reference.game=new Game();
 			
 			if (!GameContainer.reference.roomsLoad) {
-				allLandsLoaded=true;
+				allLevelsLoaded=true;
 			}
 			
 			ng = nload < 0;
@@ -253,7 +253,7 @@ package fe.game {
 			GameContainer.reference.cam.dblack=-10;
 			GUIManager.reference.pip.onoff(-1);
 			// [Enter the current area]
-			GameContainer.reference.game.enterToCurLand();//!!!!
+			GameContainer.reference.game.enterToCurLevel();//!!!!
 			Sound.setTempMute(false);
 			GUIManager.reference.gui.setAll();
 			GameContainer.reference.allStat = 1;
@@ -349,7 +349,7 @@ package fe.game {
 			Engine.reference.time___metr('Character');
 			
 			// [Enter the current area]
-			GameContainer.reference.game.enterToCurLand();		//!!!!
+			GameContainer.reference.game.enterToCurLevel();		//!!!!
 			
 			log = "";
 			
@@ -360,10 +360,10 @@ package fe.game {
 		}
 		
 		// [Call upon entering a specific area]
-		public function ativateLand(nland:Land):void {
+		public function ativateLevel(nland:Level):void {
 			land = nland;
 			GameContainer.reference.grafon.drawSky(GUIManager.reference.sky, land.act.fon);
-			GameContainer.reference.grafon.keepLandSheets(land);
+			GameContainer.reference.grafon.keepLevelSheets(land);
 		}
 		
 		// [Call when entering a specific location]
@@ -393,7 +393,7 @@ package fe.game {
 			GUIManager.reference.gui.setAll();
 		}
 		
-		public function exitLand(fast:Boolean=false):void {
+		public function exitLevel(fast:Boolean=false):void {
 			if (GameContainer.reference.exitState != E_ExitState.NONE) return;
 			GameContainer.reference.gg.controlOff();
 			GUIManager.reference.pip.noAct=true;
@@ -428,7 +428,7 @@ package fe.game {
 					GameContainer.reference.exitState = E_ExitState.ENTER_LAND;
 					GameContainer.reference.t_exit = 1;
 					GameContainer.reference.cur('arrow');
-					GameContainer.reference.game.enterToCurLand();
+					GameContainer.reference.game.enterToCurLevel();
 					break;
 				}
 				case E_ExitState.ENTER_LAND: {
@@ -494,8 +494,8 @@ package fe.game {
 						GameContainer.reference.t_die = DEATH_RESPAWN_FRAMES;
 
 						if (GameContainer.reference.gg.sost == 3) {
-							GameContainer.reference.game.curLandId = GameContainer.reference.game.baseId;
-							GameContainer.reference.game.enterToCurLand();
+							GameContainer.reference.game.curLevelId = GameContainer.reference.game.baseId;
+							GameContainer.reference.game.enterToCurLevel();
 						}
 						else {
 							land.gotoCheckPoint();

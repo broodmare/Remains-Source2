@@ -225,11 +225,11 @@ package fe.game.domain.objects {
 		public function teleport():void {
 			if (main) {
 				if (GameContainer.reference.game.missionId != 'rbl') {
-					GameContainer.reference.game.gotoLand(GameContainer.reference.game.missionId);
+					GameContainer.reference.game.gotoLevel(GameContainer.reference.game.missionId);
 				}
 			}
 			else {
-				GameContainer.reference.game.gotoLand(GameContainer.reference.game.baseId);
+				GameContainer.reference.game.gotoLevel(GameContainer.reference.game.baseId);
 				
 				if (GameContainer.reference.hardInv && World.w.land.rnd) {
 					used = true;

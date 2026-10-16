@@ -68,9 +68,9 @@ package fe.engine.audio {
 		private static var shumArr:Array = [];
 		
 		// Moved here from world class
-		private static var xmlPath:String = "Modules/core/Sounds.xml";
-		private static var soundPath:String = "Modules/core/sound/";
-		private static var musicPath:String = "Modules/core/sound/music/";
+		private static var xmlPath:String = "data/core/Sounds.xml";
+		private static var soundPath:String = "data/core/sound/";
+		private static var musicPath:String = "data/core/sound/music/";
 		
 		// Loading flags and counters
 		private static var startedLoading:Boolean = false;

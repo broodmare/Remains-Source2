@@ -1,0 +1,16 @@
+{
+	"image": "doorchallenge.png",
+	"density": 1,
+	"width": 80,
+	"height": 120,
+	"blend": "normal",
+	"images": {
+		"frame0_0": {"x": 0, "y": 0, "w": 80, "h": 120, "pivotX": 40, "pivotY": 120}
+	},
+	"frames": [
+		{"images": ["frame0_0"]}
+	],
+	"stops": [0],
+	"jumps": [],
+	"labels": {}
+}

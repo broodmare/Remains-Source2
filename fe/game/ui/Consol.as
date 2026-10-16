@@ -17,7 +17,6 @@ package fe.game.ui {
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.Effect;
 	import fe.game.domain.units.enums.E_Resistances;
-
 	
 	// Debug console class. 
 	// The debug console contains three textboxes. "help", "list1", and "list2" in order from left to right.

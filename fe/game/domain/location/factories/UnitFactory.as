@@ -56,7 +56,7 @@ package fe.game.domain.location.factories {
 			if (un==null) return null;
 
 			enl = loc.enemyLevel;
-			if (loc.land.rnd && loc.landProb=='') { //геройский юнит
+			if (loc.land.rnd && loc.challengeId=='') { //геройский юнит
 				if (Math.random()<Math.min(0.05,loc.locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);
 			}
 

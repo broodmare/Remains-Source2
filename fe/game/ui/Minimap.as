@@ -8,7 +8,7 @@ package fe.game.ui {
 	import fe.game.enums.E_Direction;
 	import fe.game.GameContainer;
 	import fe.game.domain.objects.CheckPoint;
-	import fe.game.domain.location.Land;
+	import fe.game.domain.location.Level;
 	import fe.game.domain.location.Location;
 
 	// Pip-Buck map of a level, stitched together from rooms
@@ -30,7 +30,7 @@ package fe.game.ui {
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
 
-		private var level:Land;
+		private var level:Level;
 		private var bitmap:BitmapData;		// One pixel per tile, covering every room slot in the level
 
 		public var playerX:Number = 0;		// Player position in level pixels, for the Pip-Boy player marker
@@ -142,7 +142,7 @@ package fe.game.ui {
 					drawObj(room, obj, COLOR_CONTAINER);
 				}
 
-				if (obj.inter && obj.inter.prob != "" && obj.inter.prob != null) {
+				if (obj.inter && obj.inter.challengeId != "" && obj.inter.challengeId != null) {
 					drawObj(room, obj, COLOR_QUEST);
 				}
 			}
@@ -156,7 +156,7 @@ package fe.game.ui {
 			}
 		}
 
-		public function Minimap(level_:Land) {
+		public function Minimap(level_:Level) {
 			level = level_;
 			bitmap = new BitmapData(GameContainer.cellsX * (level.maxLocX - level.minLocX), GameContainer.cellsY * (level.maxLocY - level.minLocY), true, 0);
 		}

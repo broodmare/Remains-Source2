@@ -64,7 +64,7 @@ package fe.game.domain.serv {
 		public var needSkillLvl:int=0;
 		public var is_hack:Boolean=false;	// [controlled by access terminal]
 		public var open:Boolean=false;		// [open]
-		public var prob:String=null;		// [transition to trial]
+		public var challengeId:String=null;		// [transition to trial]
 		public var noBase:Boolean=false;	// [base rules don't work here]
 		public var prize:Boolean=false;		// [challenge prize container]
 		
@@ -259,7 +259,7 @@ package fe.game.domain.serv {
 				if (xml.@hack.length()) is_hack=xml.@hack>0;
 				if (xml.@allact.length()) allact=xml.@allact;
 				if (xml.@allid.length()) allid=xml.@allid;
-				if (xml.@prob.length()) prob=xml.@prob;
+				if (xml.@challenge.length()) challengeId=xml.@challenge;
 				if (xml.@inter.length()) action=xml.@inter;
 				if (xml.@time.length()) t_action=xml.@time;
 				if (xml.@knop.length()) knop=xml.@knop;
@@ -309,7 +309,7 @@ package fe.game.domain.serv {
 				if (lockTip==1 || lockTip==2) {
 					if (low>0 && Math.random()<low) lock=Math.ceil(lock*0.5);
 					if (lock>maxLockLvl) lock=maxLockLvl;
-					if (lock>0 && low<=0 && own && own.loc && own.loc.land.rnd && own.loc.prob==null && Math.random()<0.2) lock += int(Math.random()*2)+2;
+					if (lock>0 && low<=0 && own && own.loc && own.loc.land.rnd && own.loc.challenge==null && Math.random()<0.2) lock += int(Math.random()*2)+2;
 					// [determine the lock level]
 					if (lock>2 && lockLevel==0) {
 						lockLevel = Math.round(Math.random()*(lock-2)/3.2);
@@ -565,7 +565,7 @@ package fe.game.domain.serv {
 					active=false;
 					owner.setVisState("open");
 				}
-				if (loc && loc.prob && loc.active) loc.prob.check();
+				if (loc && loc.challenge && loc.active) loc.challenge.check();
 			}
 			if (a == "expl") saveExpl = n;
 		}
@@ -888,12 +888,12 @@ package fe.game.domain.serv {
 				}
 			}
 			
-			if (allact || prob != null) {
+			if (allact || challengeId != null) {
 				allAct();
 			}
 			
-			if (loc && loc.prob) {
-				loc.prob.check();
+			if (loc && loc.challenge) {
+				loc.challenge.check();
 			}
 			
 			if (scrAct) {
@@ -1124,22 +1124,22 @@ package fe.game.domain.serv {
 		}
 		
 		public function allAct():void {
-			if (prob != null) {
+			if (challengeId != null) {
 				if (World.w.possiblyOut() == 2) {
 					GUIManager.reference.gui.infoText("noOutLoc", null, null, false);
 					return;
 				}
 				
-				loc.land.gotoProb(prob, owner.coordinates.X, owner.coordinates.Y);
+				loc.land.gotoChallenge(challengeId, owner.coordinates.X, owner.coordinates.Y);
 			}
-			else if (allact=="probreturn") {
-				if (loc.landProb!="") {
+			else if (allact=="challengereturn") {
+				if (loc.challengeId!="") {
 					if (World.w.possiblyOut()==2) {
 						GUIManager.reference.gui.infoText("noOutLoc",null,null,false);
 						return;
 					}
 					
-					loc.land.gotoProb("", owner.coordinates.X, owner.coordinates.Y);
+					loc.land.gotoChallenge("", owner.coordinates.X, owner.coordinates.Y);
 				}
 			}
 			else if (allact=="hack_robot") {
@@ -1154,8 +1154,8 @@ package fe.game.domain.serv {
 					if (obj.inter) obj.inter.command("hack");
 				}
 			}
-			else if (allact=="prob_help") {
-				if (loc.prob) loc.prob.showHelp();
+			else if (allact=="challenge_help") {
+				if (loc.challenge) loc.challenge.showHelp();
 			}
 			else if (allact=="electro_check") {
 				loc.electroCheck();
@@ -1267,8 +1267,8 @@ package fe.game.domain.serv {
 						explosion();
 					} else if (knop && action == 0) {
 						setAct("open", 1);
-						if (loc.prob) {
-							loc.prob.check();
+						if (loc.challenge) {
+							loc.challenge.check();
 						}
 					} else {
 						actOsn();

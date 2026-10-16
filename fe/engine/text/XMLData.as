@@ -5,7 +5,7 @@ package fe.engine.text {
 
 	public class XMLData {
 
-		private static const MODULE_DIRECTORY:String = 'Modules/';
+		private static const MODULE_DIRECTORY:String = 'data/';
 		public static var moduleDictionary:Object; // Changed from Dictionary to Object
 		public static var fileCount:int;
 		public static var filesLoaded:int;

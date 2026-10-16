@@ -16,13 +16,13 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Files;
 
-	// Every unit sprite sheet in Modules/core/spritesheets/units.json. A sheet is read, and its PNG starts decoding, when a
+	// Every unit sprite sheet in data/core/spritesheets/units.json. A sheet is read, and its PNG starts decoding, when a
 	// unit first asks for it; it goes to the GPU the first time it is shown, and keepOnly() frees it once no unit uses it.
 	// Decoded PNGs stay on the CPU too, for snapshots and to restore the GPU copy when the context is lost.
 	public class UnitSheetManager {
 
-		private static const CATALOG:String	= "Modules/core/spritesheets/units.json";
-		private static const FOLDER:String	= "Modules/core/spritesheets/units";
+		private static const CATALOG:String	= "data/core/spritesheets/units.json";
+		private static const FOLDER:String	= "data/core/spritesheets/units";
 
 		private var folder:File;
 		private var entries:Object			= {};					// units.json's entry for each sheet, by name

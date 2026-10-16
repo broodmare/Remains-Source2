@@ -127,17 +127,17 @@ package fe.game.domain.location.factories {
 			if (loc.spawnPoints.length == 0) return null;
 
 			sp = loc.spawnPoints[int(Math.random() * loc.spawnPoints.length)];
-			return createObj(loc, 'exit', 'box', sp.X, sp.Y, <obj name = 'exit' prob = {loc.land.act.exitProb + s} time = '20' inter = '8' sign = '1'/>) as Box;
+			return createObj(loc, 'exit', 'box', sp.X, sp.Y, <obj name = 'exit' challenge = {loc.land.act.exitChallenge + s} time = '20' inter = '8' sign = '1'/>) as Box;
 		}
 
 		//создание двери испытаний в случайной точке появления, or null when the location has no spawn points
-		public static function createDoorProb(loc:Location, nid:String, nprob:String):Box {
+		public static function createDoorChallenge(loc:Location, nid:String, challengeId:String):Box {
 			var sp:Vec2;
 
 			if (loc.spawnPoints.length == 0) return null;
 
 			sp = loc.spawnPoints[int(Math.random()*loc.spawnPoints.length)];
-			return createObj(loc, nid,'box', sp.X, sp.Y, <obj prob = {nprob} nazv = {TextParser.txt('m', nprob)} time = '20' inter = '8'/>) as Box;
+			return createObj(loc, nid,'box', sp.X, sp.Y, <obj challenge = {challengeId} nazv = {TextParser.txt('m', challengeId)} time = '20' inter = '8'/>) as Box;
 		}
 
 		// Up to kol XP pickups on empty tiles, spread from the top-left quarter of the room outwards

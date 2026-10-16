@@ -26,7 +26,7 @@ package fe.game.ui {
 	import fe.game.domain.serv.Quest;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Item;
-	import fe.game.domain.location.LandAct;
+	import fe.game.domain.location.LevelSettings;
 	import fe.game.domain.units.UnitPet;
 	import fe.game.domain.units.Effect;
 	import fe.game.domain.units.enums.E_ArmorTypes;
@@ -1388,9 +1388,9 @@ package fe.game.ui {
 		
 		// [Checking the quest for availability]
 		protected function checkQuest(task:Object):Boolean {
-			// [Land access check]
+			// [Level access check]
 			if (task.land) {
-				var land:LandAct = GameContainer.reference.game.lands[task.land];
+				var land:LevelSettings = GameContainer.reference.game.lands[task.land];
 				
 				if (land == null) {
 					return false;

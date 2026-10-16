@@ -6,7 +6,7 @@ package fe.game.rendering {
 
 	import starling.textures.Texture;
 
-	// One flipbook, from Modules/core/spritesheets/objects or keyed from an effect in effects.json: its images, and how its frames play
+	// One flipbook, from data/core/spritesheets/objects or keyed from an effect in effects.json: its images, and how its frames play
 	public class Flipbook_Definition {
 		public var name:String;
 		public var density:Number								= 1.0;			// Sheet pixels per game pixel

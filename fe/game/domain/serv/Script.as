@@ -9,7 +9,7 @@ package fe.game.domain.serv {
 	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
-	import fe.game.domain.location.Land;
+	import fe.game.domain.location.Level;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Armor;
 	import fe.game.enums.E_Direction;
@@ -18,7 +18,7 @@ package fe.game.domain.serv {
 	public class Script {
 
 		private var id:String;						// Name of the script
-		private var land:Land;						// Level this script is on
+		private var land:Level;						// Level this script is on
 		public var owner:Obj;						// Object this script belongs to
 		
 		public var eve:String;						// [event that causes the script to run]
@@ -35,7 +35,7 @@ package fe.game.domain.serv {
 
 		private static var debugLog:Boolean = true;			// Output script information as it's executed
 
-		public function Script(xml:XML, nland:Land = null, nowner:Obj = null, tt:Boolean = false) {
+		public function Script(xml:XML, nland:Level = null, nowner:Obj = null, tt:Boolean = false) {
 			land = nland;
 			owner = nowner;
 			
@@ -395,7 +395,7 @@ package fe.game.domain.serv {
 					break;
 
 					case "upland":
-						GameContainer.reference.game.upLandLevel();
+						GameContainer.reference.game.upLevelLevel();
 					break;
 
 					case "locon":
@@ -435,9 +435,9 @@ package fe.game.domain.serv {
 					break;
 
 					case "gotoland":	//перейти в местность
-						if (obj.n==2) GameContainer.reference.game.gotoLand(obj.val,null,true);
-						else if (obj.n==1) GameContainer.reference.game.gotoLand(obj.val, obj.opt1+":"+obj.opt2);
-						else GameContainer.reference.game.gotoLand(obj.val);
+						if (obj.n==2) GameContainer.reference.game.gotoLevel(obj.val,null,true);
+						else if (obj.n==1) GameContainer.reference.game.gotoLevel(obj.val, obj.opt1+":"+obj.opt2);
+						else GameContainer.reference.game.gotoLevel(obj.val);
 					break;
 
 					case "openland":	//открыть местность на карте
@@ -448,8 +448,8 @@ package fe.game.domain.serv {
 						World.w.land.act.passed = true;
 					break;
 
-					case "actprob":
-						if (World.w.loc.prob) World.w.loc.prob.activateProb();
+					case "actchallenge":
+						if (World.w.loc.challenge) World.w.loc.challenge.activateChallenge();
 					break;
 
 					case "alarm":
@@ -481,7 +481,7 @@ package fe.game.domain.serv {
 					break;
 
 					case "wave":
-						if (World.w.loc.prob) World.w.loc.prob.beginWave();
+						if (World.w.loc.challenge) World.w.loc.challenge.beginWave();
 					break;
 
 					case "pip":

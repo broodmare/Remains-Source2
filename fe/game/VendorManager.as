@@ -7,7 +7,7 @@ package fe.game {
 
 	public class VendorManager {
 		
-		private static const directory:String			= "Modules/core/AllData/";
+		private static const directory:String			= "data/core/AllData/";
 		private static const vendorsFileName:String		= "vendors.json";
 		
 		private var saveData:Object;								// Vendor inventories if a previous save was loaded

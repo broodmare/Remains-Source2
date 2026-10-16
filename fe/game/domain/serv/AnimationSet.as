@@ -7,12 +7,12 @@ package fe.game.domain.serv
 
     public class AnimationSet {
 
-        private static var spriteSheetManifestPath:String = "Modules/core/spritesheets/spritesheets.json";
+        private static var spriteSheetManifestPath:String = "data/core/spritesheets/spritesheets.json";
         private static var spritesheetData:Dictionary = new Dictionary();	// Stores information for animations for each spritesheet name
         private static var spritesheetDataLoaded:Boolean = false;
 
         // Where to position weapons for each animation
-		private static var weaponOffsetFilePath:String = "Modules/core/spritesheets/weaponPositions.json"
+		private static var weaponOffsetFilePath:String = "data/core/spritesheets/weaponPositions.json"
         private static var weaponData:Dictionary = new Dictionary();	// Stores parsed weapon offset arrays
         private static var weaponOffsetsLoaded:Boolean = false;
 

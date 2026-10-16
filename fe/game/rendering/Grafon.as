@@ -18,8 +18,7 @@ package fe.game.rendering {
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
 	import fe.game.GameContainer;
-	import fe.engine.utils.Vec2;
-	import fe.game.domain.location.Land;
+	import fe.game.domain.location.Level;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.entities.Entity;
 	import fe.game.domain.entities.BoundingBox;
@@ -546,7 +545,7 @@ package fe.game.rendering {
 		}
 		
 		// Frees every unit sheet that no unit of the land uses, nor any of the player's pets
-		public function keepLandSheets(land:Land):void {
+		public function keepLevelSheets(land:Level):void {
 			var used:Vector.<UnitSheet_Definition> = new Vector.<UnitSheet_Definition>();
 			var location:Location;
 			var unit:Unit;

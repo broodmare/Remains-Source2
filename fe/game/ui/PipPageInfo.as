@@ -14,7 +14,7 @@ package fe.game.ui {
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Game;
 	import fe.game.domain.serv.Quest;
-	import fe.game.domain.location.LandAct;
+	import fe.game.domain.location.LevelSettings;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.units.enums.E_Resistances;
@@ -44,10 +44,10 @@ package fe.game.ui {
 		private var visPageX:int=850, visPageY:int=540;
 		private var mapScale:Number=2, ms:Number=2;
 		private var plTag:MovieClip;
-		private var targetLand:String='';
+		private var targetLevel:String='';
 		private var game:Game;
 
-		private static var lastLandTooltipDisplayed:String;
+		private static var lastLevelTooltipDisplayed:String;
 
 		private static var cachedUnits:Object = {};
 		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
@@ -119,7 +119,7 @@ package fe.game.ui {
 			vis.nazv.width=413;
 			vis.info.width=458;
 			pip.vis.butHelp.visible=false;
-			targetLand='';
+			targetLevel='';
 			setTopText();
 			game=GameContainer.reference.game;
 			
@@ -168,12 +168,12 @@ package fe.game.ui {
 				vis.info.width = 332;
 				
 				if (pip.travel) setTopText('infotravel');
-				for each (var land:LandAct in game.lands) {
-					if (land.prob) {
+				for each (var land:LevelSettings in game.lands) {
+					if (land.isChallenge) {
 						continue;
 					}
 					
-					land.calcProbs();
+					land.calcChallenges();
 					
 					// Populate the map with clickable locations
 					var sim:MovieClip = visWMap[land.id];
@@ -370,13 +370,13 @@ package fe.game.ui {
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
 			}
 			else if (page2 == PAGE_WORLD_MAP) {
-				var l:LandAct = game.lands[event.currentTarget.name];
+				var l:LevelSettings = game.lands[event.currentTarget.name];
 
-				if (l == null || l.id == lastLandTooltipDisplayed) {
+				if (l == null || l.id == lastLevelTooltipDisplayed) {
 					return;
 				}
 				
-				lastLandTooltipDisplayed = l.id;
+				lastLevelTooltipDisplayed = l.id;
 
 				vis.nazv.text = TextParser.txt('m',l.id);
 				var s:String = TextParser.txt('m',l.id,1);
@@ -390,12 +390,12 @@ package fe.game.ui {
 					s += "\n\n<span class ='blue'>" + LanguageManager.reference.localText("pip", 'ls1') + "</span>";	// "Location level reached" message
 				}
 				
-				if (l.tip == 'rnd' && l.kolAllProb > 0) {
-					if (l.kolClosedProb >= l.kolAllProb) { // If all trials complete, print in green
-						s += "\n" + LanguageManager.reference.localText("pip", 'kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb;
+				if (l.tip == 'rnd' && l.kolAllChallenges > 0) {
+					if (l.kolClosedChallenges >= l.kolAllChallenges) { // If all trials complete, print in green
+						s += "\n" + LanguageManager.reference.localText("pip", 'kolChallenges') + ': ' + l.kolClosedChallenges + '/' + l.kolAllChallenges;
 					}
 					else { // Otherwise, print in yellow
-						s += "\n<span class ='yellow'>" + LanguageManager.reference.localText("pip", 'kolProb') + ': ' + l.kolClosedProb + '/' + l.kolAllProb + "</span>";
+						s += "\n<span class ='yellow'>" + LanguageManager.reference.localText("pip", 'kolChallenges') + ': ' + l.kolClosedChallenges + '/' + l.kolAllChallenges + "</span>";
 					}
 				}
 				
@@ -637,18 +637,18 @@ package fe.game.ui {
 			}
 			
 			if (page2 == PAGE_WORLD_MAP && (pip.travel || GameContainer.reference.testMode)) {
-				if (targetLand != "" && visWMap[targetLand]) {
-					visWMap[targetLand].zad.gotoAndStop(1);
+				if (targetLevel != "" && visWMap[targetLevel]) {
+					visWMap[targetLevel].zad.gotoAndStop(1);
 				}
 				
 				var id:String = event.currentTarget.name;
 				
 				if (game.checkTravel(id)) {
-					targetLand=id;
+					targetLevel=id;
 					setStatItems();
 					vis.butOk.visible=true;
-					if (targetLand!='' && visWMap[targetLand]) {
-						visWMap[targetLand].zad.gotoAndStop(2);
+					if (targetLevel!='' && visWMap[targetLevel]) {
+						visWMap[targetLevel].zad.gotoAndStop(2);
 					}
 				}
 				else {
@@ -667,8 +667,8 @@ package fe.game.ui {
 			}
 			
 			if (page2 == PAGE_WORLD_MAP && (pip.travel || GameContainer.reference.testMode)) {
-				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
-					game.beginMission(targetLand);
+				if (game.lands[targetLevel] && game.lands[targetLevel].loaded) {
+					game.beginMission(targetLevel);
 					pip.onoff(-1);
 				}
 			}

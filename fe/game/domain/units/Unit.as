@@ -3827,8 +3827,8 @@ package fe.game.domain.units {
 					xp = 0;
 				}
 				
-				if (loc.prob) {
-					loc.prob.check();
+				if (loc.challenge) {
+					loc.challenge.check();
 				}
 				
 				if (opt && opt.hbonus) {
@@ -3913,8 +3913,8 @@ package fe.game.domain.units {
 				GameContainer.reference.game.incQuests(questId);
 			}
 			
-			if (wave && loc.prob) {
-				loc.prob.checkWave(true);
+			if (wave && loc.challenge) {
+				loc.challenge.checkWave(true);
 			}
 			
 			//действие типа уничтожить сколько-то врагов из определённого оружия

@@ -200,8 +200,8 @@ package fe.game.domain.objects {
 				if (xml.@period.length()) molnPeriod=xml.@period;
 				if (xml.@phase.length()) moln_t=xml.@phase;
 				
-				if (xml.@prob.length() && id!='exit') {
-					nazv=TextParser.txt('m',xml.@prob);
+				if (xml.@challenge.length() && id!='exit') {
+					nazv=TextParser.txt('m',xml.@challenge);
 				}
 				if (xml.@light.length()) light=true;
 				if (xml.@fun.length()) {
@@ -385,7 +385,7 @@ package fe.game.domain.objects {
 			}
 		}
 
-		// Whether it shows; Probation hides the exits it doesn't use
+		// Whether it shows; Room_Challenge hides the exits it doesn't use
 		public function get isShown():Boolean {
 			return art ? art.visible : vis.visible;
 		}

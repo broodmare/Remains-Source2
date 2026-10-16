@@ -591,7 +591,7 @@ package fe.game.ui {
 						return; // Set as return instead of return false.
 					}
 					
-					if (GameContainer.reference.game.curLandId==GameContainer.reference.game.baseId) {
+					if (GameContainer.reference.game.curLevelId==GameContainer.reference.game.baseId) {
 						return;
 					}
 					else if (World.w.possiblyOut()>=2) {
@@ -740,7 +740,7 @@ package fe.game.ui {
 			else if (actCurrent == "retr") {
 				if (inv.hasItem("retr") && GameContainer.reference.game.triggers["noreturn"] != 1) {
 					inv.decreaseQuantity("retr");
-					GameContainer.reference.game.gotoLand(GameContainer.reference.game.baseId);
+					GameContainer.reference.game.gotoLevel(GameContainer.reference.game.baseId);
 				}
 				
 				vis.butOk.visible = false;

@@ -537,7 +537,7 @@ package fe.game.domain.serv {
 				}
 			}
 			else if (cont=='safe') {
-				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
+				if (World.w.land.rnd && nloc.challenge==null && Math.random()<0.05) {
 					for (var m:int = 0; m < 4; m++) {
 						loc.createUnit('bloat', nx, ny, true);
 					}

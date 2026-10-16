@@ -692,7 +692,7 @@ package fe.game.ui {
 					displ.anim();
 				}
 				// Green loading text on the top left of the MainMenu
-				if (World.w.allLandsLoaded) {
+				if (World.w.allLevelsLoaded) {
 					// If we're still loading songs, show the progress
 					if (Sound.totalSongsToLoad > Sound.totalSongsLoaded) {
 						mainMenuMovieClip.loading.text = "Music loading " + Sound.totalSongsLoaded + "/" + Sound.totalSongsToLoad;
@@ -710,7 +710,7 @@ package fe.game.ui {
 				mainMenuMovieClip.loading.text = "Loading " + (Math.floor(stn / 30)) + "\n";
 				GameContainer.reference.init2();
 				
-				if (World.w.allLandsLoaded && Sound.audioReady) {
+				if (World.w.allLevelsLoaded && Sound.audioReady) {
 					setLangButtons();
 					setMainLang();
 					loaded = true;
@@ -718,7 +718,7 @@ package fe.game.ui {
 					return;
 				}
 
-				if (World.w.allLandsLoaded && !Sound.audioReady) {
+				if (World.w.allLevelsLoaded && !Sound.audioReady) {
 					mainMenuMovieClip.loading.text += "Audio SFX " + Sound.totalSoundsLoaded + "/" + Sound.totalSoundsToLoad +
 						" Music " + Sound.totalSongsLoaded + "/" + Sound.totalSongsToLoad;
 				}

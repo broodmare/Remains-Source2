@@ -10,7 +10,7 @@ package fe.game.domain.location.tile {
 	// Loads every tile piece, and turns the text in a room's tile rows into definitions shared by every tile with the same text
 	public class TileRegistry {
 
-		private static const PIECES_PATH:String = "Modules/core/AllData/tilePieces.json";
+		private static const PIECES_PATH:String = "data/core/AllData/tilePieces.json";
 		private static const BORDER_HP:int = 10000;
 
 		private static const LAYERS:Object = {

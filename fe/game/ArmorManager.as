@@ -10,7 +10,7 @@ package fe.game {
 
 	public class ArmorManager {
 
-		private static const _armorPath:String = "Modules/core/AllData/armors.json";
+		private static const _armorPath:String = "data/core/AllData/armors.json";
 		public static var reference:ArmorManager;		// Publically acessable reference to this instance
 
 		private static var _armorData:Object;			// An object containing the JSON data of all armor sets

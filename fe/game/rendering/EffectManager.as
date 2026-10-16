@@ -11,11 +11,11 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Files;
 
-	// The effects in Modules/core/textures/effects.json: catalog textures drawn through modifiers, still or keyed into
+	// The effects in data/core/textures/effects.json: catalog textures drawn through modifiers, still or keyed into
 	// animations. A texture goes to the GPU, baked through its modifier's ramp, the first time something shows it, and stays.
 	public class EffectManager {
 
-		private static const FILE:String	= "Modules/core/textures/effects.json";
+		private static const FILE:String	= "data/core/textures/effects.json";
 		private static const RAMP_SIZE:int	= 256;
 
 		private var grafon:Grafon;
