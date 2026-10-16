@@ -5,6 +5,7 @@ package fe.game.domain.units {
 	import flash.display.Bitmap;
 	import flash.geom.ColorTransform;
 
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.location.Location;
@@ -78,12 +79,10 @@ package fe.game.domain.units {
 			id = "thunderhead";
 			
 			// [Take parameters from the xml]
-			blitData = GameContainer.reference.grafon.getSpriteList("sprThunderHead");
 			vis = new MovieClip();
 			var osn:Sprite = new Sprite();
-			visBmp = new Bitmap(blitData);
 			vis.addChild(osn);
-			osn.addChild(visBmp);
+			osn.addChild(new Bitmap(GameContainer.reference.grafon.getSpriteList("sprThunderHead")));
 			osn.scaleX = 3;
 			osn.scaleY = 3;
 			osn.x = -osn.width / 2;
@@ -219,12 +218,12 @@ package fe.game.domain.units {
 		}
 		
 		private function setUgolPos():void {
-			var def:Number = Math.sin(ugol / 45 * ONE_PI);
-			var dif:Number = Math.sin(ugol / 90 * ONE_PI);
+			var def:Number = Math.sin(ugol / 45 * Numbers.ONE_PI);
+			var dif:Number = Math.sin(ugol / 90 * Numbers.ONE_PI);
 			var ugol2:Number = -def * 12 + ugol;
 			var distanc2:Number = distanc + dif * dif * dif * dif * 1000;
-			coordinates.X = maxX / 2 + Math.sin(ugol2 / 180 * ONE_PI) * distanc2;
-			coordinates.Y = maxY / 2 + Math.cos(ugol2 / 180 * ONE_PI) * distanc2 / 1.60;
+			coordinates.X = maxX / 2 + Math.sin(ugol2 / 180 * Numbers.ONE_PI) * distanc2;
+			coordinates.Y = maxY / 2 + Math.cos(ugol2 / 180 * Numbers.ONE_PI) * distanc2 / 1.60;
 			for each (var un:Unit in turrets) {
 				un.run();
 			}

@@ -12,6 +12,7 @@ package fe.game.ui {
 	import flash.events.MouseEvent;
 
 	import fe.engine.Engine;
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.SymbolFactory;
 	import fe.engine.text.LanguageManager;
 	import fe.game.World;
@@ -308,7 +309,25 @@ package fe.game.ui {
 			return prec;
 		}
 		
+		// The SATS copy of a unit drawn on the GPU: the frame its art shows, placed as the art is
+		private function drawArt(un:Unit):MovieClip {
+			var mc:MovieClip = new MovieClip();
+
+			mc.scaleX = un.art.scaleX;
+			mc.scaleY = un.art.scaleY;
+			mc.rotation = un.art.rotation * Numbers.RAD_TO_DEG;
+			mc.addChild(un.art.snapshot(ct));
+			mc.addEventListener(MouseEvent.MOUSE_OVER, mOver);
+			mc.addEventListener(MouseEvent.MOUSE_OUT, mOut);
+
+			return mc;
+		}
+
 		public function drawUnit(un:Unit):MovieClip {
+			if (un.art) {
+				return drawArt(un);
+			}
+
 			var satsBmp:BitmapData = new BitmapData(un.vis.width, un.vis.height, true, 0);
 			var m:Matrix = new Matrix();
 			var rect:Rectangle = un.vis.getBounds(un.vis);
@@ -415,8 +434,8 @@ package fe.game.ui {
 				}
 
 				var mc:MovieClip = new MovieClip();
-				mc.x = un.vis.x;
-				mc.y = un.vis.y;
+				mc.x = un.art ? un.art.x : un.vis.x;
+				mc.y = un.art ? un.art.y : un.vis.y;
 				vis.addChild(mc);
 				var du:MovieClip = drawUnit(un);
 				var su:MovieClip = SymbolFactory.createInstance("satsUnit"); // SWF Dependency

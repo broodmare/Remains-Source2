@@ -1,14 +1,13 @@
 package fe.game.domain.units {
 
 	import flash.filters.GlowFilter;
-	import flash.display.MovieClip;
 	
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.serv.AnimationSet;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Location;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.Flipbook;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.objects.Box;
@@ -27,7 +26,7 @@ package fe.game.domain.units {
 		private var floatX:Number = 1;
 		private var floatY:Number=0;
 		private var resmana:int = 5;
-		private var visshit:MovieClip;
+		private var shield:Flipbook;					// Shown while the shield holds
 		private var shitMaxHp:Number=300;
 
 		//суперсила
@@ -52,6 +51,7 @@ package fe.game.domain.units {
 		private var tlColor:uint=0x3366FF;
 		private var nmColor:uint=0x253B8E;
 		private var nomaterFilter:GlowFilter;
+		private var isGhostShown:Boolean = false;		// Whether nomaterFilter is on the body
 		
 		private var blasted:Boolean=false;
 		private var osob:Boolean=false;
@@ -80,6 +80,14 @@ package fe.game.domain.units {
 
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
+
+		// Glows inside its outline with the body hidden, while it isn't material
+		private function showGhost(shown:Boolean):void {
+			if (shown != isGhostShown) {
+				isGhostShown = shown;
+				art.setBodyGlow(shown ? nomaterFilter : null);
+			}
+		}
 
 		public function UnitAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			
@@ -157,18 +165,11 @@ package fe.game.domain.units {
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicorn");
 			
-			if (tr == 3) {
-				visshit = SymbolFactory.createInstance("visShit2") as MovieClip;
-			}
-			else {
-				visshit = SymbolFactory.createInstance("visShit") as MovieClip;
-			}
-			
-			vis.addChild(visshit);
-			visshit.gotoAndStop(1);
-			visshit.visible=false;
-			visshit.y=-50;
-			visshit.scaleX=visshit.scaleY=1.5;
+			shield = GameContainer.reference.grafon.effects.createEffect((tr == 3) ? "shield_green" : "shield_yellow");
+			shield.visible = false;
+			shield.y = -50;
+			shield.scaleX = shield.scaleY = 1.5;
+			art.carry(shield);
 			
 			spd=new Object();
 			aiNapr=storona;
@@ -206,8 +207,8 @@ package fe.game.domain.units {
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-			weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona.X;
-			weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
+			weaponX = magicX = coordinates.X + (obj.x+cellLeft)*storona.X;
+			weaponY = magicY = coordinates.Y + obj.y+cellTop;
 			weaponR=obj.r;
 		}
 		
@@ -274,20 +275,20 @@ package fe.game.domain.units {
 			}
 			
 			if (!anims[animState].st) {
-				blit(anims[animState].id,anims[animState].f);
+				blit(animState, anims[animState].f);
 			}
 			
 			anims[animState].step();
 			
 			//щит
-			if (visshit && !visshit.visible && shithp>0) {
-				visshit.visible=true;
-				visshit.gotoAndPlay(1);
+			if (!shield.visible && shithp>0) {
+				shield.visible=true;
+				shield.goTo(0, true);
 			}
 			
-			if (visshit && visshit.visible && shithp<=0) {
-				visshit.visible=false;
-				visshit.gotoAndStop(1);
+			if (shield.visible && shithp<=0) {
+				shield.visible=false;
+				shield.goTo(0, false);
 				Emitter.emit('pole', loc, coordinates.X, coordinates.Y-50,{kol:12,rx:100, ry:100});
 			}
 			
@@ -313,13 +314,11 @@ package fe.game.domain.units {
 			
 			if (curA<celA) curA+=5;
 			
-			vis.alpha=curA/100;
+			art.alpha=curA/100;
 			
-			if (hpbar) hpbar.alpha=vis.alpha;
+			if (hpbar) hpbar.alpha=art.alpha;
 			
-			if (!mater && visBmp.filters.length==0) visBmp.filters=[nomaterFilter];
-			
-			if (mater && visBmp.filters.length>0) visBmp.filters=[];
+			showGhost(!mater);
 		}
 		
 		public override function budilo(rad:Number=500):void {
@@ -389,7 +388,7 @@ package fe.game.domain.units {
 				pole=false;
 			}
 			
-			visBmp.filters = [];
+			showGhost(false);
 			loc.land.aliAlarm = true;
 			_crouchingHeight = 30;
 			
@@ -429,7 +428,7 @@ package fe.game.domain.units {
 				try {
 					if (!mater && !collisionAll()) {
 						mater=true;
-						visBmp.filters=[];
+						showGhost(false);
 					}
 				}
 				catch(err:Error) {
@@ -567,8 +566,8 @@ package fe.game.domain.units {
 			if (GameContainer.reference.enemyAct>1 && aiTCh%10==1) {
 				//установить точку зрения
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
-				eyeX = coordinates.X + (obj.x+visBmp.x)*storona.X;
-				eyeY = coordinates.Y + obj.y+visBmp.y;
+				eyeX = coordinates.X + (obj.x+cellLeft)*storona.X;
+				eyeY = coordinates.Y + obj.y+cellTop;
 				
 				if (loc.getAbsTile(eyeX,eyeY).collision) {
 					eyeY+=20;

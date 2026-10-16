@@ -93,14 +93,15 @@
 						"role": "muzzleFlash",
 						"source": "instance184",
 						"matrix": [
-							0.6019745629215973,
+							0.2931098799538168,
 							0,
 							0,
-							0.6019745629215973,
+							0.2931098799538168,
 							25.83333487312008,
 							0.8333333830038754
 						],
-						"effect": "sphere_b748103ddc480439"
+						"texture": "radial",
+						"modifier": "glow_fire"
 					}
 				]
 			},
@@ -125,14 +126,15 @@
 						"role": "muzzleFlash",
 						"source": "instance184",
 						"matrix": [
-							0.3188018939178324,
+							0.15522912530022584,
 							0,
 							0,
-							0.3188018939178324,
+							0.15522912530022584,
 							23.33333472410846,
 							0
 						],
-						"effect": "sphere_b748103ddc480439"
+						"texture": "radial",
+						"modifier": "glow_fire"
 					}
 				]
 			}
@@ -149,7 +151,6 @@
 		},
 		"format": "RGBA8888",
 		"image": "visrobonova.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

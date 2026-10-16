@@ -13,14 +13,15 @@
 						"role": "muzzleFlash",
 						"source": "instance36",
 						"matrix": [
-							0.24044800741163933,
+							0.11707751610883142,
 							0,
 							0,
-							0.24044800741163933,
+							0.11707751610883142,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -31,14 +32,15 @@
 						"role": "muzzleFlash",
 						"source": "instance36",
 						"matrix": [
-							0.34571838452726905,
+							0.16833514309110972,
 							0,
 							0,
-							0.34571838452726905,
+							0.16833514309110972,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -49,14 +51,15 @@
 						"role": "muzzleFlash",
 						"source": "instance36",
 						"matrix": [
-							0.450988786478169,
+							0.21959278216603034,
 							0,
 							0,
-							0.450988786478169,
+							0.21959278216603034,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -67,14 +70,15 @@
 						"role": "muzzleFlash",
 						"source": "instance36",
 						"matrix": [
-							0.5562896861407967,
+							0.27086527100566526,
 							0,
 							0,
-							0.5562896861407967,
+							0.27086527100566526,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -85,14 +89,15 @@
 						"role": "muzzleFlash",
 						"source": "instance36",
 						"matrix": [
-							0.6615600384211563,
+							0.3221228858953013,
 							0,
 							0,
-							0.6615600384211563,
+							0.3221228858953013,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -103,14 +108,15 @@
 						"role": "muzzleFlash",
 						"source": "instance36",
 						"matrix": [
-							0.7668609877543243,
+							0.37339539892022083,
 							0,
 							0,
-							0.7668609877543243,
+							0.37339539892022083,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			}
@@ -132,8 +138,7 @@
 		"format": "RGBA8888",
 		"image": null,
 		"frameCount": 7,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	},
 	"frames": {}
 }

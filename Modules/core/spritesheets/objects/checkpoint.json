@@ -97,5 +97,5 @@
 	],
 	"stops": [0,44],
 	"jumps": [],
-	"labels": {"open":44,"reopen":25}
+	"labels": {"reopen":25,"open":44}
 }

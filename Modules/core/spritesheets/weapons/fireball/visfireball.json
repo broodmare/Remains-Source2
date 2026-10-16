@@ -16,7 +16,6 @@
 				"layers": [
 					{
 						"blendMode": "screen",
-						"sprite": "flash_6bb2fc86c0028fd9",
 						"role": "muzzleFlash",
 						"source": "instance112",
 						"matrix": [
@@ -27,7 +26,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_6bb2fc86c0028fd9.json"
+						"texture": "fireball"
 					}
 				]
 			},
@@ -46,7 +45,6 @@
 							0,
 							0
 						],
-						"sprite": "flash_6bb2fc86c0028fd9",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.7199402085904405,
@@ -56,7 +54,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_6bb2fc86c0028fd9.json"
+						"texture": "fireball"
 					}
 				]
 			},
@@ -75,7 +73,6 @@
 							0,
 							0
 						],
-						"sprite": "flash_6bb2fc86c0028fd9",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.6399383528990559,
@@ -85,7 +82,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_6bb2fc86c0028fd9.json"
+						"texture": "fireball"
 					}
 				]
 			},
@@ -104,7 +101,6 @@
 							0,
 							0
 						],
-						"sprite": "flash_6bb2fc86c0028fd9",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.5599518454046157,
@@ -114,7 +110,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_6bb2fc86c0028fd9.json"
+						"texture": "fireball"
 					}
 				]
 			},
@@ -133,7 +129,6 @@
 							0,
 							0
 						],
-						"sprite": "flash_6bb2fc86c0028fd9",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.4799499897132311,
@@ -143,7 +138,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_6bb2fc86c0028fd9.json"
+						"texture": "fireball"
 					}
 				]
 			},
@@ -162,7 +157,6 @@
 							0,
 							0
 						],
-						"sprite": "flash_6bb2fc86c0028fd9",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.3999786317335744,
@@ -172,7 +166,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_6bb2fc86c0028fd9.json"
+						"texture": "fireball"
 					}
 				]
 			}
@@ -189,7 +183,6 @@
 		},
 		"format": "RGBA8888",
 		"image": null,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

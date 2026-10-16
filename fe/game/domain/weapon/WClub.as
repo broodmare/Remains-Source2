@@ -2,6 +2,7 @@ package fe.game.domain.weapon  {
 
 	import flash.display.MovieClip;
 	
+	import fe.engine.utils.Numbers;
 	import fe.engine.audio.Sound;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
@@ -165,7 +166,7 @@ package fe.game.domain.weapon  {
 			b.crack = crack;
 			b.checkLine = checkLine;
 			
-			rot = -HALF_PI - (SIXTH_PI) * storona.X;
+			rot = -Numbers.HALF_PI - (Numbers.SIXTH_PI) * storona.X;
 			cos0 = Math.cos(rot);
 			sin0 = Math.sin(rot);
 			
@@ -321,7 +322,7 @@ package fe.game.domain.weapon  {
 			if (t_attack>0) {
 				var isPow:Boolean = false;
 				
-				if (powerfull && t_attack < rapid_act * FIVE_SIXTH && pow > 2 && pow < rapid_act * 2.15) {
+				if (powerfull && t_attack < rapid_act * Numbers.FIVE_SIXTH && pow > 2 && pow < rapid_act * 2.15) {
 					
 					anim = -0.25;
 					
@@ -344,11 +345,11 @@ package fe.game.domain.weapon  {
 						is_shoot = true;
 					}
 					
-					if (t_attack >= rapid_act * FIVE_SIXTH) {
+					if (t_attack >= rapid_act * Numbers.FIVE_SIXTH) {
 						anim = -(rapid_act - t_attack) / rapid_act * 1.5;
 					}
-					else if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * FIVE_SIXTH) {
-						anim = -0.25 + ((rapid_act - t_attack) / rapid_act - ONE_SIXTH) * 3.75;
+					else if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * Numbers.FIVE_SIXTH) {
+						anim = -0.25 + ((rapid_act - t_attack) / rapid_act - Numbers.ONE_SIXTH) * 3.75;
 					}
 					else {
 						anim = t_attack * 2 / rapid_act;
@@ -356,9 +357,9 @@ package fe.game.domain.weapon  {
 				}
 				
 				if (mtip == 0) {
-					rot = -HALF_PI + (-SIXTH_PI + anim * ONE_PI) * storona.X;
+					rot = -Numbers.HALF_PI + (-Numbers.SIXTH_PI + anim * Numbers.ONE_PI) * storona.X;
 					
-					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * FIVE_SIXTH) {
+					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * Numbers.FIVE_SIXTH) {
 						if (!isPow) {
 							visvzz.visible = true;
 							
@@ -411,7 +412,7 @@ package fe.game.domain.weapon  {
 					plX = cos2 * anim * atDlina;
 					plY = sin2 * anim * atDlina;
 					
-					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * FIVE_SIXTH) {
+					if (t_attack >= rapid_act * 0.50 && t_attack < rapid_act * Numbers.FIVE_SIXTH) {
 						nx = coordinates.X + cos2 * dlina + plX;
 						ny = coordinates.Y + sin2 * dlina + plY;
 
@@ -481,7 +482,7 @@ package fe.game.domain.weapon  {
 				cos1 = cos2 = cos0;
 				
 				if (mtip == 0) {
-					rot = -HALF_PI - SIXTH_PI * storona.X;
+					rot = -Numbers.HALF_PI - Numbers.SIXTH_PI * storona.X;
 				}
 				else {
 					rot=Math.atan2(celY-(owner.coordinates.Y - owner.boundingBox.halfHeight), celX - owner.coordinates.X);
@@ -708,7 +709,7 @@ package fe.game.domain.weapon  {
 			if (!fixedToOwner) {
 				vis.x = coordinates.X + plX + quakeX;
 				vis.scaleY = storona.X;
-				vis.rotation = rot * RAD_TO_DEG + blumR;
+				vis.rotation = rot * Numbers.RAD_TO_DEG + blumR;
 				visvzz.x = vis.x;
 				visvzz.y = vis.y;
 				visvzz.rotation=vis.rotation;

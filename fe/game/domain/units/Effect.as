@@ -210,7 +210,7 @@ package fe.game.domain.units {
 				(owner as UnitPlayer).setFilters();
 			}
 			if (id=='inhibitor') {
-				if (owner.vis.inh) {
+				if (owner.vis && owner.vis.inh) {
 					owner.vis.inh.visible=true;
 					owner.vis.inh.gotoAndPlay(1);
 				}
@@ -222,7 +222,7 @@ package fe.game.domain.units {
 					freezTransform.concat(owner.cTransform);
 				}
 				
-				owner.vis.transform.colorTransform=freezTransform;
+				owner.setTint(freezTransform);
 			}
 		}
 		
@@ -316,17 +316,17 @@ package fe.game.domain.units {
 			}
 		
 			if (id=='inhibitor') {
-				if (owner.vis.inh) {
+				if (owner.vis && owner.vis.inh) {
 					owner.vis.inh.visible=false;
 				}
 			}
 		
 			if (id=='freezing') {
 				if (owner.cTransform) {
-					owner.vis.transform.colorTransform=owner.cTransform;
+					owner.setTint(owner.cTransform);
 				}
 				else {
-					owner.vis.transform.colorTransform=new ColorTransform();
+					owner.setTint(new ColorTransform());
 				}
 			}
 		

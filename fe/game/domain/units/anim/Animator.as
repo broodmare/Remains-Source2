@@ -120,7 +120,7 @@ package fe.game.domain.units.anim {
 					frame = int(anim.f);
 				}
 
-				owner.blit(anim.id, frame);
+				owner.blit(name, frame);
 			}
 
 			anim.step();

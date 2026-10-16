@@ -1,8 +1,6 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-	
-	import fe.engine.utils.SymbolFactory;
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.entities.BoundingBox;
@@ -12,9 +10,17 @@ package fe.game.domain.units {
 	import fe.game.GameContainer;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
+
+	import starling.textures.TextureSmoothing;
 	
 	public class UnitPet extends Unit {
+
+		private static const MOON_HUB_X:Number		= -1.5;		// Where the moon's body turns, from its origin, as its sheet is drawn
+		private static const MOON_HUB_Y:Number		= -0.95;
+		private static const MOON_FAST_TURN:Number	= 30.0 * Numbers.DEG_TO_RAD;	// Each tick while it hunts or fights
+		private static const MOON_SLOW_TURN:Number	= 3.0 * Numbers.DEG_TO_RAD;
 		
+		private var moonTurn:Number = 0.0;		// How far the moon's body has turned from its sheet's drawing
 		private var spd:Object;
 		private var flyX:Number=0, flyY:Number=0, flyDX:Number=0, flyDY:Number=0, flyR:Number, flyBox:Box;	//точка, в которую надо лететь
 		private var iskr:Emitter;
@@ -42,8 +48,11 @@ package fe.game.domain.units {
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon') {
-				vis = SymbolFactory.createInstance("visualMoon") as MovieClip;
-				vis.osn.stop();
+				sheetName = 'moon';
+				initBlit();
+				art.smoothing = TextureSmoothing.BILINEAR;	// Its sheet is drawn from vector art, which Flash smoothed
+				art.pivotX = MOON_HUB_X;
+				art.pivotY = MOON_HUB_Y;
 			}
 			else {
 				initBlit();
@@ -176,18 +185,19 @@ package fe.game.domain.units {
 		}
 		
 		public override function animate():void {
-			if (detectionDelay > 30) vis.alpha = 0;
-			else if (detectionDelay > 0) vis.alpha = 1 - detectionDelay / 30;
-			else vis.alpha=1;
+			if (detectionDelay > 30) art.alpha = 0;
+			else if (detectionDelay > 0) art.alpha = 1 - detectionDelay / 30;
+			else art.alpha=1;
 			
 			if (id=='moon') {
 				if (aiState==4 || aiState==5 || aiState==2) {
-					vis.osn.gotoAndStop(2);
-					vis.osn.rotation+=30;
+					art.show('active', 0);
+					moonTurn += MOON_FAST_TURN;
 				} else {
-					vis.osn.gotoAndStop(1);
-					vis.osn.rotation+=3; 
+					art.show('stay', 0);
+					moonTurn += MOON_SLOW_TURN;
 				}
+				art.rotation = moonTurn * storona.X;
 			}
 			else {
 				if (aiState==0) animState='stay';
@@ -197,13 +207,22 @@ package fe.game.domain.units {
 					animState2=animState;
 				}
 				if (!anims[animState].st) {
-					blit(anims[animState].id,Math.floor(anims[animState].f));
+					blit(animState, Math.floor(anims[animState].f));
 				}
 				anims[animState].step();
 			}
 			
 			if (hpbar) {
-				hpbar.alpha = vis.alpha;
+				hpbar.alpha = art.alpha;
+			}
+		}
+
+		// The moon's body turns about its hub, which the way it faces mirrors
+		public override function setVisPos():void {
+			super.setVisPos();
+			if (id == 'moon') {
+				art.x = coordinates.X + MOON_HUB_X * storona.X;
+				art.y = coordinates.Y + MOON_HUB_Y;
 			}
 		}
 
@@ -334,8 +353,8 @@ package fe.game.domain.units {
 			if (sost == 4 && optAutores) resurrect();
 			
 			detectionDelay = 60;
-			vis.alpha=0;
-			vis.visible=true;
+			art.alpha=0;
+			art.visible=true;
 			aiState=1;
 			sost=1;
 			addVisual();
@@ -351,11 +370,11 @@ package fe.game.domain.units {
 			active = false;
 			sost = 4;
 			
-			if (vis.visible) {
+			if (art.visible) {
 				expl();
 			}
 			
-			vis.visible = false;
+			art.visible = false;
 			
 			remVisual();
 		}
@@ -376,7 +395,7 @@ package fe.game.domain.units {
 			
 			if (hpbar) hpbar.visible=false;
 			
-			vis.visible=false;
+			art.visible=false;
 			hp=0;
 			poison=stun=cut=0;
 			sost=4;
@@ -394,11 +413,11 @@ package fe.game.domain.units {
 			coordinates.X = gg.coordinates.X;
 			coordinates.Y = gg.coordinates.Y - 20;
 			detectionDelay = 60;
-			vis.alpha=0;
+			art.alpha=0;
 			cut=0;
 			poison=0;
 			stun=0;
-			vis.visible=true;
+			art.visible=true;
 			sost=1;
 			aiState=1;
 			GUIManager.reference.gui.setPet();
@@ -417,11 +436,11 @@ package fe.game.domain.units {
 					coordinates.X = gg.coordinates.X;
 					coordinates.Y = gg.coordinates.Y - 20;
 					detectionDelay = 60;
-					vis.alpha = 0;
+					art.alpha = 0;
 					cut=0;
 					poison=0;
 					stun=0;
-					vis.visible=true;
+					art.visible=true;
 					aiState=1;
 					GUIManager.reference.gui.setPet();
 				}

@@ -23,6 +23,7 @@ package fe.game.domain.units {
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.ArmorManager;
+	import fe.engine.utils.Numbers;
 	import fe.engine.text.TextParser;
 	import fe.engine.Settings;
 	import fe.engine.audio.Sound;
@@ -595,10 +596,10 @@ package fe.game.domain.units {
 			if (pet) {
 				if (!nloc.petOn && loc.petOn) {
 					GUIManager.reference.gui.infoText("noPetFollow");
-					pet.vis.alpha=0;
+					pet.art.alpha=0;
 					
 					if (pet.hpbar) {
-						pet.hpbar.alpha=pet.vis.alpha;
+						pet.hpbar.alpha=pet.art.alpha;
 					}
 				}
 				else {
@@ -606,7 +607,7 @@ package fe.game.domain.units {
 				}
 				
 				nloc.units[1]=pet;
-				pet.vis.visible=(nloc.petOn && pet.sost<3);
+				pet.art.visible=(nloc.petOn && pet.sost<3);
 			}
 			else {
 				nloc.units[1]=defpet;
@@ -1722,7 +1723,7 @@ package fe.game.domain.units {
 				}
 				
 				if (pers.throwForce > 0) {
-					Emitter.emit("throw", loc, obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight, {rotation:Math.atan2(obj.velocity.Y, obj.velocity.X) * RAD_TO_DEG});
+					Emitter.emit("throw", loc, obj.coordinates.X, obj.coordinates.Y - obj.boundingBox.halfHeight, {rotation:Math.atan2(obj.velocity.Y, obj.velocity.X) * Numbers.RAD_TO_DEG});
 					Sound.ps("dash", obj.coordinates.X, obj.coordinates.Y);
 				}
 				
@@ -3580,7 +3581,7 @@ package fe.game.domain.units {
 		public override function setPunchWeaponPos(w:WPunch):void {
 			w.coordinates.X = coordinates.X + boundingBox.width / 3 * ((celX > coordinates.X) ? E_Direction.RIGHT.X : E_Direction.LEFT.X);
 			w.coordinates.Y = coordinates.Y - boundingBox.halfHeight;
-			w.rot = (celX > coordinates.X) ? 0 : ONE_PI;
+			w.rot = (celX > coordinates.X) ? 0 : Numbers.ONE_PI;
 		}
 		
 		//особая функция брони
@@ -4715,7 +4716,7 @@ package fe.game.domain.units {
 				rfetter = Math.sqrt(dfx * dfx + dfy * dfy);
 				vis.fetter.visible = true;
 				vis.fetter.scaleX = rfetter / 100;
-				vis.fetter.rotation = Math.atan2(dfy, dfx * storona.X) / ONE_PI * 180;
+				vis.fetter.rotation = Math.atan2(dfy, dfx * storona.X) / Numbers.ONE_PI * 180;
 			}
 			else if (vis.fetter.visible) {
 				vis.fetter.visible = false;

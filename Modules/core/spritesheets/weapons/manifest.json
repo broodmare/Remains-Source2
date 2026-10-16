@@ -1461,6 +1461,5 @@
 			"ttweap6"
 		]
 	},
-	"schemaVersion": 3,
-	"shared": "_shared/effects.json"
+	"schemaVersion": 4
 }

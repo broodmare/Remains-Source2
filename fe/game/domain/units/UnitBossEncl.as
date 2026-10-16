@@ -57,7 +57,7 @@ package fe.game.domain.units {
 				vulnerabilities.setResist(E_Resistances.DAM_LASER, 0.70);
 				vulnerabilities.setResist(E_Resistances.DAM_PLASMA, 0.70);
 				vulnerabilities.setResist(E_Resistances.DAM_ELECTRIC, 0.70);
-				blitId="sprEnclboss2";
+				sheetName="bossencl2";
 			}
 			else if (tr==3) {
 				currentWeapon = wm.cloneWeapon("mlau");
@@ -70,7 +70,7 @@ package fe.game.domain.units {
 				vulnerabilities.setResist(E_Resistances.DAM_EXPLOSION, 0.70);
 				vulnerabilities.setResist(E_Resistances.DAM_BURN, 0.70);
 				vulnerabilities.setResist(E_Resistances.DAM_COLD, 0.70);
-				blitId="sprEnclboss3";
+				sheetName="bossencl3";
 			}
 			
 			initBlit();
@@ -144,10 +144,10 @@ package fe.game.domain.units {
 			
 			if (!anims[animState].st) {
 				if (revers) {
-					blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
+					blit(animState, anims[animState].maxf-anims[animState].f-1);
 				}
 				else {
-					blit(anims[animState].id,anims[animState].f);
+					blit(animState, anims[animState].f);
 				}
 			}
 			

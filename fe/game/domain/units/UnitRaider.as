@@ -613,8 +613,8 @@ package fe.game.domain.units {
 
 			if (!enclWeap && (tip == Weapon.TYPE_MELEE || tip == Weapon.TYPE_LIGHTGUN || tip == Weapon.TYPE_EXPLOSIVES)) {
 				obj = wPos[anims[animState].id][int(anims[animState].f)];
-				weaponX = coordinates.X + (obj.x + visBmp.x) * storona.X;
-				weaponY = coordinates.Y + obj.y + visBmp.y;
+				weaponX = coordinates.X + (obj.x + cellLeft) * storona.X;
+				weaponY = coordinates.Y + obj.y + cellTop;
 				weaponR = obj.r;
 			}
 		}

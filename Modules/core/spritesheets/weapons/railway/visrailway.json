@@ -312,7 +312,6 @@
 					},
 					{
 						"blendMode": "screen",
-						"sprite": "flash_bb591cc58866d857",
 						"role": "muzzleFlash",
 						"source": "instance18",
 						"matrix": [
@@ -323,7 +322,7 @@
 							57.50000342726728,
 							-1.6666667660077508
 						],
-						"sheet": "_shared/flash_bb591cc58866d857.json"
+						"texture": "rail_jet"
 					}
 				]
 			},
@@ -345,7 +344,6 @@
 					},
 					{
 						"blendMode": "screen",
-						"sprite": "flash_bb591cc58866d857",
 						"role": "muzzleFlash",
 						"source": "instance18",
 						"matrix": [
@@ -356,7 +354,7 @@
 							57.50000342726728,
 							-1.6666667660077508
 						],
-						"sheet": "_shared/flash_bb591cc58866d857.json"
+						"texture": "rail_jet"
 					}
 				]
 			},
@@ -1040,7 +1038,6 @@
 		},
 		"format": "RGBA8888",
 		"image": "visrailway.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

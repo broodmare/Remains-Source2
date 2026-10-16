@@ -191,7 +191,6 @@
 		"format": "RGBA8888",
 		"image": "visripper.png",
 		"app": "Remains exporter",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

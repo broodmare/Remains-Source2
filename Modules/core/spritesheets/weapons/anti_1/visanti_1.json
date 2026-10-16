@@ -340,7 +340,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_d48944ac2acb3ca6",
 						"source": "instance65",
 						"blendMode": "screen",
 						"matrix": [
@@ -351,7 +350,7 @@
 							82.50000491738349,
 							0
 						],
-						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+						"texture": "gun_flash"
 					}
 				]
 			},
@@ -387,7 +386,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_d48944ac2acb3ca6",
 						"source": "instance65",
 						"blendMode": "screen",
 						"matrix": [
@@ -398,7 +396,7 @@
 							82.50000491738349,
 							0
 						],
-						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+						"texture": "gun_flash"
 					}
 				]
 			},
@@ -1602,7 +1600,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visanti_1.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

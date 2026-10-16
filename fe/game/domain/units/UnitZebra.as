@@ -48,12 +48,12 @@ package fe.game.domain.units {
 				}
 				if (shine2>0) shine2--;
 				else if (shine>0) shine--;
-				if (shine/100-vis.alpha<0.1) vis.alpha=shine/100;
-				else vis.alpha+=0.1;
-				if (vis.alpha>1) vis.alpha=1;
-				if (hpbar) hpbar.alpha=vis.alpha;
-				if (currentWeapon) currentWeapon.vis.alpha=vis.alpha;
-				isVis=vis.alpha>0.5;
+				if (shine/100-art.alpha<0.1) art.alpha=shine/100;
+				else art.alpha+=0.1;
+				if (art.alpha>1) art.alpha=1;
+				if (hpbar) hpbar.alpha=art.alpha;
+				if (currentWeapon) currentWeapon.vis.alpha=art.alpha;
+				isVis=art.alpha>0.5;
 			}
 		}
 		

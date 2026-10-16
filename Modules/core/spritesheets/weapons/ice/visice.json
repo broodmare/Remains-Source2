@@ -20,14 +20,15 @@
 						"role": "muzzleFlash",
 						"source": "instance84",
 						"matrix": [
-							0.5666656633217532,
+							0.2759174802072521,
 							0,
 							0,
-							0.5666656633217532,
+							0.2759174802072521,
 							0,
 							0
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -35,7 +36,6 @@
 				"layers": [
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d9774a932b79f7ae",
 						"role": "muzzleFlash",
 						"source": "instance87",
 						"matrix": [
@@ -46,7 +46,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_d9774a932b79f7ae.json"
+						"texture": "ice_burst"
 					}
 				]
 			},
@@ -54,7 +54,6 @@
 				"layers": [
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d9774a932b79f7ae",
 						"role": "muzzleFlash",
 						"source": "instance87",
 						"matrix": [
@@ -65,7 +64,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_d9774a932b79f7ae.json"
+						"texture": "ice_burst"
 					}
 				]
 			},
@@ -73,7 +72,6 @@
 				"layers": [
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d9774a932b79f7ae",
 						"role": "muzzleFlash",
 						"source": "instance87",
 						"matrix": [
@@ -84,7 +82,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_d9774a932b79f7ae.json"
+						"texture": "ice_burst"
 					}
 				]
 			}
@@ -101,7 +99,6 @@
 		},
 		"format": "RGBA8888",
 		"image": null,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

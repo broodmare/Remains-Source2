@@ -56,7 +56,7 @@ package fe.game.domain.units {
 				animState2=animState;
 			}
 			if (!anims[animState].st) {
-				blit(anims[animState].id,Math.floor(anims[animState].f));
+				blit(animState, Math.floor(anims[animState].f));
 			}
 			anims[animState].step();
 		}

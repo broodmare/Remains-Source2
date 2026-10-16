@@ -216,7 +216,6 @@
 		"labels": {},
 		"format": "RGBA8888",
 		"image": "visdbomb.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

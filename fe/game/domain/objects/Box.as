@@ -3,8 +3,6 @@ package fe.game.domain.objects {
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 
-	import starling.display.Image;
-	import starling.textures.TextureSmoothing;
 
 	import fe.engine.text.XMLDataGrabber;
 	import fe.engine.audio.Sound;
@@ -83,7 +81,6 @@ package fe.game.domain.objects {
 		public var sndDie:String='';
 		
 		public var art:Flipbook;		// Its art in the object layers Starling draws; objects in higher layers keep a Flash clip in vis
-		public var shadow:Image;		// The drop shadow under it, in object layer 0, or null when it casts none
 
 		public var ddyPlav:Number=1; //выталкивающая сила, 1 если нет, <0 если предмет всплывает
 		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
@@ -245,7 +242,7 @@ package fe.game.domain.objects {
 			}
 		}
 		
-		// Its art, stopped on its first frame as Flash's clip was, and its shadow, which objects hung free of the wall (wall 2) don't cast
+		// Its art, stopped on its first frame as Flash's clip was
 		private function createArt(definition:Flipbook_Definition):void {
 			if (layer < ObjectLayers.COUNT) {
 				art = new Flipbook(definition);
@@ -255,16 +252,6 @@ package fe.game.domain.objects {
 				vis = GameContainer.reference.grafon.getObj('vis' + id, Grafon.numbObj) || SymbolFactory.createInstance("visbox0");
 				vis.stop();
 				vis.cacheAsBitmap = true;
-			}
-
-			if (definition.shadow && wall <= 1) {
-				shadow = new Image(definition.shadow.texture);
-				shadow.pivotX = definition.shadow.pivotX;
-				shadow.pivotY = definition.shadow.pivotY;
-				shadow.touchable = false;
-				if (definition.density > 1.0) {
-					shadow.textureSmoothing = TextureSmoothing.TRILINEAR;
-				}
 			}
 
 			runVis();
@@ -316,11 +303,12 @@ package fe.game.domain.objects {
 			}
 		
 			if (loc && loc.active) {
-				if (shadow) {
-					GameContainer.reference.grafon.objectLayers.add(shadow, 0);
-				}
 				if (art) {
 					GameContainer.reference.grafon.objectLayers.add(art, layer);
+					// Objects hung free of the wall (wall 2) cast no shadow on it
+					if (wall <= 1) {
+						GameContainer.reference.grafon.shadows.addCaster(art);
+					}
 				}
 				else {
 					GameContainer.reference.grafon.visObjs[layer].addChild(vis);
@@ -359,14 +347,11 @@ package fe.game.domain.objects {
 		public override function remVisual():void {
 			if (art) {
 				art.removeFromParent();
+				GameContainer.reference.grafon.shadows.removeCaster(art);
 			}
 
 			if (vis && vis.parent) {
 				vis.parent.removeChild(vis);
-			}
-
-			if (shadow) {
-				shadow.removeFromParent();
 			}
 		}
 
@@ -411,10 +396,6 @@ package fe.game.domain.objects {
 			}
 			else {
 				vis.visible = shown;
-			}
-
-			if (shadow) {
-				shadow.visible = shown;
 			}
 		}
 		
@@ -1023,11 +1004,6 @@ package fe.game.domain.objects {
 			else {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-			}
-
-			if (shadow) {
-				shadow.x = coordinates.X;
-				shadow.y = coordinates.Y + (wall? 2:6);
 			}
 		}
 		

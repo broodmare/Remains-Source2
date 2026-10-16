@@ -146,14 +146,15 @@
 						"role": "muzzleFlash",
 						"source": "instance210",
 						"matrix": [
-							0.4250488435257779,
+							0.20696225916206334,
 							0,
 							0,
-							0.4211121055153274,
+							0.20504540606439672,
 							40.83333576718981,
 							21.666667958100717
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -192,14 +193,15 @@
 						"role": "muzzleFlash",
 						"source": "instance210",
 						"matrix": [
-							0.3039093248392736,
+							0.14797772398912287,
 							0,
 							0,
-							0.30108642385918444,
+							0.14660321380487243,
 							40.83333576718981,
 							21.666667958100717
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			}
@@ -216,7 +218,6 @@
 		},
 		"format": "RGBA8888",
 		"image": "visrobogatl.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

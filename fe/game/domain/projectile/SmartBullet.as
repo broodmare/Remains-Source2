@@ -1,5 +1,6 @@
 package fe.game.domain.projectile {
 
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.units.Unit;
@@ -42,7 +43,7 @@ package fe.game.domain.projectile {
 			rot = Math.atan2(velocity.Y, velocity.X);
 			
 			if (vis) {
-				vis.rotation = rot * RAD_TO_DEG;
+				vis.rotation = rot * Numbers.RAD_TO_DEG;
 			}
 		}
 	}

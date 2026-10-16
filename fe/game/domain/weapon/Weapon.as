@@ -4,6 +4,7 @@ package fe.game.domain.weapon {
 	import flash.media.SoundChannel;
 	import flash.display.Graphics;
 	
+	import fe.engine.utils.Numbers;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
@@ -442,8 +443,8 @@ package fe.game.domain.weapon {
 			else {
 				var rotDifference:Number = Math.abs(rot - rot2);
 				
-				if (rotDifference > ONE_PI) {
-					if (rotDifference > TWO_PI - rdrot * drotMult) {
+				if (rotDifference > Numbers.ONE_PI) {
+					if (rotDifference > Numbers.TWO_PI - rdrot * drotMult) {
 						rot = rot2;
 						ready = true;
 					}
@@ -468,40 +469,40 @@ package fe.game.domain.weapon {
 				}
 
 				// Normalize rotation to be within [-PI, PI]
-				if (rot > ONE_PI) {
-					rot -= TWO_PI;
+				if (rot > Numbers.ONE_PI) {
+					rot -= Numbers.TWO_PI;
 				}
-				if (rot < -ONE_PI) {
-					rot += TWO_PI;
+				if (rot < -Numbers.ONE_PI) {
+					rot += Numbers.TWO_PI;
 				}
 			}
 			
 			// Apply rotation fixes using precomputed constants
 			switch(fixRot) {
 				case 1:
-					if (rot < NEGATIVE_SIXTH_PI && rot > NEGATIVE_HALF_PI) {
-						rot = NEGATIVE_SIXTH_PI;
+					if (rot < Numbers.NEGATIVE_SIXTH_PI && rot > Numbers.NEGATIVE_HALF_PI) {
+						rot = Numbers.NEGATIVE_SIXTH_PI;
 					}
-					if (rot > NEGATIVE_FIVE_SIXTH_PI && rot <= NEGATIVE_HALF_PI) {
-						rot = NEGATIVE_FIVE_SIXTH_PI;
+					if (rot > Numbers.NEGATIVE_FIVE_SIXTH_PI && rot <= Numbers.NEGATIVE_HALF_PI) {
+						rot = Numbers.NEGATIVE_FIVE_SIXTH_PI;
 					}
 					break;
 				
 				case 2:
-					if (rot < NEGATIVE_SIXTH_PI) {
-						rot = NEGATIVE_SIXTH_PI;
+					if (rot < Numbers.NEGATIVE_SIXTH_PI) {
+						rot = Numbers.NEGATIVE_SIXTH_PI;
 					}
-					if (rot > SIXTH_PI) {
-						rot = SIXTH_PI;
+					if (rot > Numbers.SIXTH_PI) {
+						rot = Numbers.SIXTH_PI;
 					}
 					break;
 				
 				case 3:
-					if (rot > 0 && rot < POSITIVE_FIVE_SIXTH_PI) {
-						rot = POSITIVE_FIVE_SIXTH_PI;
+					if (rot > 0 && rot < Numbers.POSITIVE_FIVE_SIXTH_PI) {
+						rot = Numbers.POSITIVE_FIVE_SIXTH_PI;
 					}
-					if (rot <= 0 && rot > NEGATIVE_FIVE_SIXTH_PI) {
-						rot = NEGATIVE_FIVE_SIXTH_PI;
+					if (rot <= 0 && rot > Numbers.NEGATIVE_FIVE_SIXTH_PI) {
+						rot = Numbers.NEGATIVE_FIVE_SIXTH_PI;
 					}
 					break;
 			}
@@ -1247,17 +1248,17 @@ package fe.game.domain.weapon {
 			if (!fixedToOwner) {
 				if (coordinates.X > owner.celX) {
 					vis.scaleX = -1;
-					vis.rotation = rot * RAD_TO_DEG + 180 + rotUp;
+					vis.rotation = rot * Numbers.RAD_TO_DEG + 180 + rotUp;
 				}
 				
 				if (coordinates.X < owner.celX) {
 					vis.scaleX = 1;
-					vis.rotation = rot * RAD_TO_DEG - rotUp;
+					vis.rotation = rot * Numbers.RAD_TO_DEG - rotUp;
 				}
 			}
 			else {
 				vis.scaleX = owner.storona.X;
-				vis.rotation = rot * RAD_TO_DEG + 90 * (1 - owner.storona.X) - rotUp * storona.X;
+				vis.rotation = rot * Numbers.RAD_TO_DEG + 90 * (1 - owner.storona.X) - rotUp * storona.X;
 			}
 		}
 		

@@ -20,14 +20,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.3989715615295308,
+							0.19426486384631256,
 							0,
 							0,
-							0.3989715615295308,
+							0.19426486384631256,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -38,14 +39,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.4368896546099377,
+							0.21272771659034664,
 							0,
 							0,
-							0.4368896546099377,
+							0.21272771659034664,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -56,14 +58,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.47482299654620863,
+							0.23119799421673792,
 							0,
 							0,
-							0.47482299654620863,
+							0.23119799421673792,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -74,14 +77,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.5127716370088837,
+							0.24967572091077095,
 							0,
 							0,
-							0.5127716370088837,
+							0.24967572091077095,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -92,14 +96,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.5507049789451547,
+							0.26814599853716226,
 							0,
 							0,
-							0.5507049789451547,
+							0.26814599853716226,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -110,14 +115,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.5886383208814256,
+							0.28661627616355356,
 							0,
 							0,
-							0.5886383208814256,
+							0.28661627616355356,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -128,14 +134,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.6265564139618326,
+							0.30507912890758765,
 							0,
 							0,
-							0.6265564139618326,
+							0.30507912890758765,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -146,14 +153,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.6645050047539675,
+							0.3235568314163361,
 							0,
 							0,
-							0.6645050047539675,
+							0.3235568314163361,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -164,14 +172,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.7024383466902383,
+							0.3420271090427274,
 							0,
 							0,
-							0.7024383466902383,
+							0.3420271090427274,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -182,14 +191,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.7403717382970495,
+							0.36049741085440323,
 							0,
 							0,
-							0.7403717382970495,
+							0.36049741085440323,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -200,14 +210,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.7783050802333205,
+							0.37896768848079454,
 							0,
 							0,
-							0.7783050802333205,
+							0.37896768848079454,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -218,14 +229,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.8162536710254552,
+							0.39744539098954296,
 							0,
 							0,
-							0.8162536710254552,
+							0.39744539098954296,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -236,14 +248,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.8541870626322664,
+							0.4159156928012188,
 							0,
 							0,
-							0.8541870626322664,
+							0.4159156928012188,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -254,14 +267,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.8921204542390776,
+							0.4343859946128946,
 							0,
 							0,
-							0.8921204542390776,
+							0.4343859946128946,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -272,14 +286,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.9300537465048082,
+							0.4528562480540014,
 							0,
 							0,
-							0.9300537465048082,
+							0.4528562480540014,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -290,14 +305,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							0.9679871381116194,
+							0.4713265498656772,
 							0,
 							0,
-							0.9679871381116194,
+							0.4713265498656772,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -308,14 +324,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.0059357289037543,
+							0.4898042523744257,
 							0,
 							0,
-							1.0059357289037543,
+							0.4898042523744257,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -326,14 +343,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.0438538219841613,
+							0.5082671051184598,
 							0,
 							0,
-							1.0438538219841613,
+							0.5082671051184598,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -344,14 +362,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.0817871142498918,
+							0.5267373585595665,
 							0,
 							0,
-							1.0817871142498918,
+							0.5267373585595665,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -362,14 +381,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.119720505856703,
+							0.5452076603712424,
 							0,
 							0,
-							1.119720505856703,
+							0.5452076603712424,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -380,14 +400,15 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.1576691959899186,
+							0.56368541125056,
 							0,
 							0,
-							1.1576691959899186,
+							0.56368541125056,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -398,17 +419,17 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.195602488255649,
+							0.5821556646916667,
 							0,
 							0,
-							1.195602488255649,
+							0.5821556646916667,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					},
 					{
-						"sprite": "flash_d95f9264f888fde2",
 						"role": "muzzleFlash",
 						"source": "instance139",
 						"matrix": [
@@ -419,7 +440,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_d95f9264f888fde2.json"
+						"texture": "star_six"
 					}
 				]
 			},
@@ -430,17 +451,17 @@
 						"role": "auxiliary",
 						"source": "instance116",
 						"matrix": [
-							1.233551079047784,
+							0.6006333672004152,
 							0,
 							0,
-							1.233551079047784,
+							0.6006333672004152,
 							0,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					},
 					{
-						"sprite": "flash_d95f9264f888fde2",
 						"role": "muzzleFlash",
 						"source": "instance139",
 						"matrix": [
@@ -451,7 +472,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_d95f9264f888fde2.json"
+						"texture": "star_six"
 					}
 				]
 			}
@@ -468,7 +489,6 @@
 		},
 		"format": "RGBA8888",
 		"image": null,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

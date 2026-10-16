@@ -19,9 +19,11 @@ package fe.game.rendering {
 	import fe.game.World;
 	import fe.game.GameContainer;
 	import fe.engine.utils.Vec2;
+	import fe.game.domain.location.Land;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.entities.Entity;
 	import fe.game.domain.entities.BoundingBox;
+	import fe.game.domain.units.Unit;
 	import fe.game.enums.E_Material;
 	import fe.game.rendering.enums.E_Decal;
 	import fe.game.domain.location.tile.Tile;
@@ -35,12 +37,16 @@ package fe.game.rendering {
 		// colors
 		private static const COLOR_TRANSPARENT:uint		= 0xFF000000;
 		private static const COLOR_BLACK:uint			= 0x00000000;
+		private static const CENTRE:Point				= new Point(0.5, 0.5);
 
 		private var backdrop:Backdrop = new Backdrop();			// The background texture (Manages itself and is rendered by Starling)
 		private var starlingView:StarlingView;					// The room's layers drawn by Starling, under visual
 
-		public var objectLayers:ObjectLayers;					// Object layers 0 and 1, drawn by Starling; the rest of visObjs are Flash's
+		public var objectLayers:ObjectLayers;					// Object layers 0 to 2, drawn by Starling; the rest of visObjs are Flash's
 		public var flipbooks:FlipbookManager;					// The objects' art for the object layers
+		public var unitSheets:UnitSheetManager;					// The units' sprite sheets for the object layers
+		public var effects:EffectManager;						// Catalog textures through modifiers, still or animated
+		public var shadows:ShadowPass;							// Objects add their art as casters of the room's shadow
 
 		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
 		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
@@ -121,7 +127,10 @@ package fe.game.rendering {
 			// Drawing the room. The back wall and background are drawn by Starling, under all of these.
 			starlingView		= new StarlingView(visual, this);
 			objectLayers		= starlingView.objectLayers;
+			shadows				= starlingView.shadows;
 			flipbooks			= new FlipbookManager(updateLoaded);
+			unitSheets			= new UnitSheetManager();
+			effects				= new EffectManager(this);
 			visVoda				= new Sprite();
 			visVoda.alpha		= 0.6;
 			visFront			= new Sprite();
@@ -280,6 +289,11 @@ package fe.game.rendering {
 		// How big one copy of a loose texture draws in the room, in room pixels, or null when the manifest gives no size
 		public function viewDrawSize(textureName:String):Point {
 			return grLoaders[numbMat].drawSizes[textureName];
+		}
+
+		// Where a loose texture's origin lies, as fractions of its size; its centre when the manifest gives none
+		public function viewPivot(textureName:String):Point {
+			return grLoaders[numbMat].pivots[textureName] || CENTRE;
 		}
 
 		// Scales a loose texture's fill from its pixels to the size it draws in the room
@@ -531,6 +545,27 @@ package fe.game.rendering {
 			GameContainer.reference.gr_stage = 0;
 		}
 		
+		// Frees every unit sheet that no unit of the land uses, nor any of the player's pets
+		public function keepLandSheets(land:Land):void {
+			var used:Vector.<UnitSheet_Definition> = new Vector.<UnitSheet_Definition>();
+			var location:Location;
+			var unit:Unit;
+
+			for each (location in land.listLocs) {
+				for each (unit in location.units) {
+					if (unit.art) {
+						used.push(unit.art.definition);
+					}
+				}
+			}
+			for each (unit in GameContainer.reference.gg.pets) {
+				if (unit.art) {
+					used.push(unit.art.definition);
+				}
+			}
+			unitSheets.keepOnly(used);
+		}
+
 		//прорисовка всей карты затемнения
 		public function setLight():void {
 			var space:Vector.<Tile> = loc.space;
@@ -557,6 +592,7 @@ package fe.game.rendering {
 		//добавление всех видимых объектов
 		public function drawAllObjs():void {
 			objectLayers.clear();
+			shadows.clearCasters();
 			for (var i:int = 0; i < kolObjs; i++) {
 				var n:int = visual.getChildIndex(visObjs[i]);
 				visual.removeChild(visObjs[i]);
@@ -791,6 +827,7 @@ package fe.game.rendering {
 		public function onSats(on:Boolean):void {
 			visSats.visible = on;
 			visObjs[2].visible =! on;
+			objectLayers.showLayer(2, !on);
 			starlingView.showSats(on);
 		}
 		

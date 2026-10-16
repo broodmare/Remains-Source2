@@ -343,14 +343,15 @@
 						"source": "instance47",
 						"blendMode": "screen",
 						"matrix": [
-							0.7624054409507179,
+							0.37122593052541797,
 							0,
 							0,
-							0.7624054409507179,
+							0.37122593052541797,
 							32.50000193715107,
 							0
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -389,14 +390,15 @@
 						"source": "instance47",
 						"blendMode": "screen",
 						"matrix": [
-							0.674209585242048,
+							0.32828212812664564,
 							0,
 							0,
-							0.674209585242048,
+							0.32828212812664564,
 							39.16666900118206,
 							0
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -435,14 +437,15 @@
 						"source": "instance47",
 						"blendMode": "screen",
 						"matrix": [
-							0.5860138288744586,
+							0.2853383740984425,
 							0,
 							0,
-							0.5860138288744586,
+							0.2853383740984425,
 							45.83333606521305,
 							-0.8333333830038754
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -481,14 +484,15 @@
 						"source": "instance47",
 						"blendMode": "screen",
 						"matrix": [
-							0.4978332716921929,
+							0.2424020207673119,
 							0,
 							0,
-							0.4978332716921929,
+							0.2424020207673119,
 							52.500003129244035,
 							-0.8333333830038754
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -527,14 +531,15 @@
 						"source": "instance47",
 						"blendMode": "screen",
 						"matrix": [
-							0.40963746565406317,
+							0.19945824255382413,
 							0,
 							0,
-							0.40963746565406317,
+							0.19945824255382413,
 							59.166670193275024,
 							-0.8333333830038754
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -573,14 +578,15 @@
 						"source": "instance47",
 						"blendMode": "screen",
 						"matrix": [
-							0.3214721821629315,
+							0.15652932619769303,
 							0,
 							0,
-							0.3214721821629315,
+							0.15652932619769303,
 							65.83333725730601,
 							-0.8333333830038754
 						],
-						"effect": "sphere_deee91cbf671fa3c"
+						"texture": "radial",
+						"modifier": "glow_blue"
 					}
 				]
 			},
@@ -1656,7 +1662,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visgrom.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

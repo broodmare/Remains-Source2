@@ -2,6 +2,7 @@ package fe.game.domain.units {
 
 	import flash.display.MovieClip;
 	
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.GameContainer;
 	import fe.engine.text.TextParser;
@@ -243,14 +244,14 @@ package fe.game.domain.units {
 				if (tipDamager == 2) {
 					celX = coordinates.X;
 					celY = coordinates.Y;
-					currentWeapon.rot = HALF_PI;
+					currentWeapon.rot = Numbers.HALF_PI;
 					currentWeapon.rapid = 1;
 					(currentWeapon as WThrow).detTime = 45;
 				}
 				else if (tipDamager==1) {
 					celX = coordinates.X + 200 * storona.X;
 					celY = coordinates.Y - this.boundingBox.halfHeight;
-					currentWeapon.rot = (storona == E_Direction.LEFT) ? ONE_PI : 0;
+					currentWeapon.rot = (storona == E_Direction.LEFT) ? Numbers.ONE_PI : 0;
 				}
 			}
 		}

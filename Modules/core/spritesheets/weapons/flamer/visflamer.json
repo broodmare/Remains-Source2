@@ -340,7 +340,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_5c050a06fb551d1b",
 						"source": "instance121",
 						"blendMode": "screen",
 						"matrix": [
@@ -351,7 +350,7 @@
 							37.500002235174314,
 							1.6666667660077508
 						],
-						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+						"texture": "flame_jet"
 					}
 				]
 			},
@@ -387,7 +386,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_5c050a06fb551d1b",
 						"source": "instance121",
 						"blendMode": "screen",
 						"matrix": [
@@ -398,7 +396,7 @@
 							37.500002235174314,
 							1.6666667660077508
 						],
-						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+						"texture": "flame_jet"
 					}
 				]
 			},
@@ -1602,7 +1600,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visflamer.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

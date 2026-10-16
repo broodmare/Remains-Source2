@@ -431,7 +431,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_5c050a06fb551d1b",
 						"source": "instance35",
 						"blendMode": "screen",
 						"matrix": [
@@ -442,7 +441,7 @@
 							23.33333472410846,
 							-6.666667064030989
 						],
-						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+						"texture": "flame_jet"
 					}
 				]
 			},
@@ -464,7 +463,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_5c050a06fb551d1b",
 						"source": "instance35",
 						"blendMode": "screen",
 						"matrix": [
@@ -475,7 +473,7 @@
 							23.33333472410846,
 							-6.666667064030989
 						],
-						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+						"texture": "flame_jet"
 					}
 				]
 			},
@@ -497,7 +495,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_5c050a06fb551d1b",
 						"source": "instance35",
 						"blendMode": "screen",
 						"matrix": [
@@ -508,7 +505,7 @@
 							23.33333472410846,
 							-6.666667064030989
 						],
-						"sheet": "_shared/flash_5c050a06fb551d1b.json"
+						"texture": "flame_jet"
 					}
 				]
 			},
@@ -1535,7 +1532,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visflaregun.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

@@ -16,7 +16,6 @@
 				"layers": [
 					{
 						"blendMode": "hardlight",
-						"sprite": "flash_c258534a96921eae",
 						"role": "muzzleFlash",
 						"source": "instance133",
 						"matrix": [
@@ -27,7 +26,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c258534a96921eae.json"
+						"texture": "wave_ring"
 					}
 				]
 			},
@@ -46,7 +45,6 @@
 							0,
 							-36
 						],
-						"sprite": "flash_c258534a96921eae",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.5932769532964798,
@@ -56,7 +54,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c258534a96921eae.json"
+						"texture": "wave_ring"
 					}
 				]
 			},
@@ -75,7 +73,6 @@
 							0,
 							-72
 						],
-						"sprite": "flash_c258534a96921eae",
 						"role": "muzzleFlash",
 						"matrix": [
 							0.8532562367075426,
@@ -85,7 +82,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c258534a96921eae.json"
+						"texture": "wave_ring"
 					}
 				]
 			},
@@ -104,7 +101,6 @@
 							0,
 							-108
 						],
-						"sprite": "flash_c258534a96921eae",
 						"role": "muzzleFlash",
 						"matrix": [
 							1.113266017830333,
@@ -114,7 +110,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c258534a96921eae.json"
+						"texture": "wave_ring"
 					}
 				]
 			},
@@ -133,7 +129,6 @@
 							0,
 							-144
 						],
-						"sprite": "flash_c258534a96921eae",
 						"role": "muzzleFlash",
 						"matrix": [
 							1.3732453012413959,
@@ -143,7 +138,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c258534a96921eae.json"
+						"texture": "wave_ring"
 					}
 				]
 			},
@@ -162,7 +157,6 @@
 							0,
 							-180
 						],
-						"sprite": "flash_c258534a96921eae",
 						"role": "muzzleFlash",
 						"matrix": [
 							1.6332397838377823,
@@ -172,7 +166,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c258534a96921eae.json"
+						"texture": "wave_ring"
 					}
 				]
 			}
@@ -189,7 +183,6 @@
 		},
 		"format": "RGBA8888",
 		"image": null,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

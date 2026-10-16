@@ -44,6 +44,7 @@ package fe.game.rendering {
 		private var totalImages:int = 0;
 		private var imageDictionary:Object;
 		public var drawSizes:Object = {};		// How big each loose texture draws in the room, in room pixels, by name
+		public var pivots:Object = {};			// Where each loose texture's origin lies, as fractions of its size, by name; absent means its centre
 
 		/**
 		 * Constructor for GrLoader.
@@ -120,6 +121,10 @@ package fe.game.rendering {
 					}
 					else {
 						drawSizes[key] = new Point(drawSize[0], drawSize[1]);
+					}
+					var pivot:Array = textureSet[key].pivot;
+					if (pivot != null && pivot.length == 2) {
+						pivots[key] = new Point(pivot[0], pivot[1]);
 					}
 					var imageFile:File = File.applicationDirectory.resolvePath(imageRelativePath);
 					//trace("GrLoader - Loading image: " + imageRelativePath);

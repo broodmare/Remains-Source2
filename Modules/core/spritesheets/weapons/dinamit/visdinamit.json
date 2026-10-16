@@ -71,7 +71,6 @@
 					},
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d48944ac2acb3ca6",
 						"role": "auxiliary",
 						"source": "instance67",
 						"matrix": [
@@ -82,7 +81,7 @@
 							-0.8333333830038736,
 							-8.33333383003874
 						],
-						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+						"texture": "gun_flash"
 					}
 				]
 			},
@@ -104,7 +103,6 @@
 					},
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d48944ac2acb3ca6",
 						"role": "auxiliary",
 						"source": "instance67",
 						"matrix": [
@@ -115,7 +113,7 @@
 							-0.8333333830038736,
 							-8.33333383003874
 						],
-						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+						"texture": "gun_flash"
 					}
 				]
 			},
@@ -137,7 +135,6 @@
 					},
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d48944ac2acb3ca6",
 						"role": "auxiliary",
 						"source": "instance67",
 						"matrix": [
@@ -148,7 +145,7 @@
 							-0.8333333830038736,
 							-7.500000447034864
 						],
-						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+						"texture": "gun_flash"
 					}
 				]
 			},
@@ -170,7 +167,6 @@
 					},
 					{
 						"blendMode": "screen",
-						"sprite": "flash_d48944ac2acb3ca6",
 						"role": "auxiliary",
 						"source": "instance67",
 						"matrix": [
@@ -181,7 +177,7 @@
 							-0.8333333830038736,
 							-7.500000447034864
 						],
-						"sheet": "_shared/flash_d48944ac2acb3ca6.json"
+						"texture": "gun_flash"
 					}
 				]
 			}
@@ -196,7 +192,6 @@
 		"labels": {},
 		"format": "RGBA8888",
 		"image": "visdinamit.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

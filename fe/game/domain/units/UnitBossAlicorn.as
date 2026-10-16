@@ -1,14 +1,13 @@
 package fe.game.domain.units {
 
 	import flash.filters.GlowFilter;
-	import flash.display.MovieClip;
 	
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.serv.BlitAnim;
 	import fe.game.domain.serv.AnimationSet;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.Flipbook;
 	import fe.game.domain.objects.Box;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Location;
@@ -32,7 +31,7 @@ package fe.game.domain.units {
 		public var called:Boolean=false;
 		private var shitMaxHp:Number=400;
 		private var isShit:Boolean=true;
-		private var visshit:MovieClip;
+		private var shield:Flipbook;					// Bursts when its first life runs out
 		
 		private var isBlast:Boolean=false;
 		
@@ -78,11 +77,10 @@ package fe.game.domain.units {
 			initBlit();
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicornBoss");
-			visshit = SymbolFactory.createInstance("visShit3") as MovieClip;
-			vis.addChild(visshit);
-			visshit.gotoAndStop(1);
-			visshit.y=-50;
-			visshit.scaleX=visshit.scaleY=1.5;
+			shield = GameContainer.reference.grafon.effects.createEffect("shield_red");
+			shield.y = -50;
+			shield.scaleX = shield.scaleY = 1.5;
+			art.carry(shield);
 			
 			//Instantiate the alicorn's weapon array and add each entry
 			weaps = [];
@@ -151,8 +149,8 @@ package fe.game.domain.units {
 		public override function setWeaponPos(tip:String = "internal"):void {
 			try {
 				var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-				weaponX = magicX = coordinates.X + (obj.x+visBmp.x)*storona.X;
-				weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
+				weaponX = magicX = coordinates.X + (obj.x+cellLeft)*storona.X;
+				weaponY = magicY = coordinates.Y + obj.y+cellTop;
 				weaponR=obj.r;
 			}
 			catch (err:Error) {
@@ -213,7 +211,7 @@ package fe.game.domain.units {
 				}
 				
 				if (!anims[animState].st) {
-					blit(anims[animState].id,anims[animState].f);
+					blit(animState, anims[animState].f);
 				}
 				
 				anims[animState].step();
@@ -234,25 +232,31 @@ package fe.game.domain.units {
 					curA += 5;
 				}
 				
-				vis.alpha = curA / 100;
+				art.alpha = curA / 100;
 			}
 			catch(err:Error) {
 				trace("UnitBossAlicorn.as/Constructor() - Creating Alicorn Boss failed");
 			}
 		}
 		
+		// Shakes while dying. The burn's clip in vis follows it.
 		public override function setVisPos():void {
+			var x:Number = coordinates.X;
+			var y:Number = coordinates.Y;
+
+			if (sost==2) {
+				x += (Math.random()-0.5)*(150-timerDie)/15;
+				y += (Math.random()-0.5)*(150-timerDie)/15;
+			}
+			if (art) {
+				art.x = x;
+				art.y = y;
+				art.scaleX = storona.X;
+			}
 			if (vis) {
-				if (sost==2) {
-					vis.x = coordinates.X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y = coordinates.Y+(Math.random()-0.5)*(150-timerDie)/15;
-				}
-				else {
-					vis.x = coordinates.X;
-					vis.y = coordinates.Y;
-				}
-				
-				vis.scaleX=storona.X;
+				vis.x = x;
+				vis.y = y;
+				vis.scaleX = storona.X;
 			}
 		}
 		
@@ -477,7 +481,7 @@ package fe.game.domain.units {
 			
 			if (isShit) {
 				isShit=false;
-				visshit.gotoAndPlay(2);
+				shield.goTo(1, true);
 				hp=maxhp-0.1;
 				aiState=0;
 				aiTCh=10;

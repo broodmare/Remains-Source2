@@ -434,14 +434,15 @@
 						"source": "instance50",
 						"blendMode": "screen",
 						"matrix": [
-							0.44601443088140674,
+							0.21717069847409123,
 							0,
 							0,
-							0.44601443088140674,
+							0.21717069847409123,
 							32.50000193715107,
 							-8.33333383003874
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -466,14 +467,15 @@
 						"source": "instance50",
 						"blendMode": "screen",
 						"matrix": [
-							0.32971192874780864,
+							0.16054137468130605,
 							0,
 							0,
-							0.32971192874780864,
+							0.16054137468130605,
 							32.50000193715107,
 							-8.33333383003874
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -498,14 +500,15 @@
 						"source": "instance50",
 						"blendMode": "screen",
 						"matrix": [
-							0.21342467547007454,
+							0.1039194757708781,
 							0,
 							0,
-							0.21342467547007454,
+							0.1039194757708781,
 							32.50000193715107,
 							-8.33333383003874
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1532,7 +1535,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visplap.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

@@ -2,6 +2,7 @@ package fe.game.domain.projectile {
 
 	import flash.utils.Dictionary;
 
+	import fe.engine.utils.Numbers;
 	import fe.engine.audio.Sound;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
@@ -177,7 +178,7 @@ package fe.game.domain.projectile {
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
-				vis.rotation = rot * RAD_TO_DEG;
+				vis.rotation = rot * Numbers.RAD_TO_DEG;
 				
 				if (vis.laser && (spring >= 2)) {
 					vis.laser.scaleX = Math.sqrt((coordinates.X - begx) * (coordinates.X - begx) + (coordinates.Y - begy) * (coordinates.Y - begy)) * 0.01;

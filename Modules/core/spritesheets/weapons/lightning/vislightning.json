@@ -20,14 +20,15 @@
 						"role": "muzzleFlash",
 						"source": "instance102",
 						"matrix": [
-							0.799270617918409,
+							0.38917610360753785,
 							0,
 							0,
-							0.799270617918409,
+							0.38917610360753785,
 							0,
 							0
 						],
-						"effect": "sphere_341e8db8e4074579"
+						"texture": "radial",
+						"modifier": "glow_yellow"
 					}
 				]
 			},
@@ -38,17 +39,17 @@
 						"role": "muzzleFlash",
 						"source": "instance102",
 						"matrix": [
-							1.4203186683049998,
+							0.6915731328289775,
 							0,
 							0,
-							1.4203186683049998,
+							0.6915731328289775,
 							0,
 							0
 						],
-						"effect": "sphere_341e8db8e4074579"
+						"texture": "radial",
+						"modifier": "glow_yellow"
 					},
 					{
-						"sprite": "flash_b3bfa2a318a1a8be",
 						"role": "muzzleFlash",
 						"source": "instance105",
 						"matrix": [
@@ -59,7 +60,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_b3bfa2a318a1a8be.json"
+						"texture": "star"
 					}
 				]
 			},
@@ -70,17 +71,17 @@
 						"role": "muzzleFlash",
 						"source": "instance102",
 						"matrix": [
-							1.1652068991585711,
+							0.5673556249223277,
 							0,
 							0,
-							1.1652068991585711,
+							0.5673556249223277,
 							0,
 							0
 						],
-						"effect": "sphere_341e8db8e4074579"
+						"texture": "radial",
+						"modifier": "glow_yellow"
 					},
 					{
-						"sprite": "flash_b3bfa2a318a1a8be",
 						"role": "muzzleFlash",
 						"source": "instance105",
 						"matrix": [
@@ -91,7 +92,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_b3bfa2a318a1a8be.json"
+						"texture": "star"
 					}
 				]
 			},
@@ -102,14 +103,15 @@
 						"role": "muzzleFlash",
 						"source": "instance102",
 						"matrix": [
-							0.9101258264060315,
+							0.44315306352153055,
 							0,
 							0,
-							0.9101258264060315,
+							0.44315306352153055,
 							0,
 							0
 						],
-						"effect": "sphere_341e8db8e4074579"
+						"texture": "radial",
+						"modifier": "glow_yellow"
 					}
 				]
 			},
@@ -120,14 +122,15 @@
 						"role": "muzzleFlash",
 						"source": "instance102",
 						"matrix": [
-							0.655044604641871,
+							0.3189504295648798,
 							0,
 							0,
-							0.655044604641871,
+							0.3189504295648798,
 							0,
 							0
 						],
-						"effect": "sphere_341e8db8e4074579"
+						"texture": "radial",
+						"modifier": "glow_yellow"
 					}
 				]
 			},
@@ -138,14 +141,15 @@
 						"role": "muzzleFlash",
 						"source": "instance102",
 						"matrix": [
-							0.3999786317335744,
+							0.19475522049058613,
 							0,
 							0,
-							0.3999786317335744,
+							0.19475522049058613,
 							0,
 							0
 						],
-						"effect": "sphere_341e8db8e4074579"
+						"texture": "radial",
+						"modifier": "glow_yellow"
 					}
 				]
 			}
@@ -162,7 +166,6 @@
 		},
 		"format": "RGBA8888",
 		"image": null,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

@@ -342,7 +342,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_bb591cc58866d857",
 						"source": "instance17",
 						"blendMode": "screen",
 						"matrix": [
@@ -353,7 +352,7 @@
 							55.83333666125953,
 							1.6666667660077508
 						],
-						"sheet": "_shared/flash_bb591cc58866d857.json"
+						"texture": "rail_jet"
 					}
 				]
 			},
@@ -389,7 +388,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_bb591cc58866d857",
 						"source": "instance17",
 						"blendMode": "screen",
 						"matrix": [
@@ -400,11 +398,10 @@
 							55.83333666125953,
 							1.6666667660077508
 						],
-						"sheet": "_shared/flash_bb591cc58866d857.json"
+						"texture": "rail_jet"
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_475802e5153d60c8",
 						"source": "instance19",
 						"matrix": [
 							1,
@@ -414,7 +411,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_475802e5153d60c8.json"
+						"texture": "rail_spark_small"
 					}
 				]
 			},
@@ -450,7 +447,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_bb591cc58866d857",
 						"source": "instance17",
 						"blendMode": "screen",
 						"matrix": [
@@ -461,11 +457,10 @@
 							55.83333666125953,
 							1.6666667660077508
 						],
-						"sheet": "_shared/flash_bb591cc58866d857.json"
+						"texture": "rail_jet"
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_475802e5153d60c8",
 						"source": "instance19",
 						"matrix": [
 							1,
@@ -475,7 +470,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_475802e5153d60c8.json"
+						"texture": "rail_spark_small"
 					}
 				]
 			},
@@ -511,7 +506,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_679cc6b9c4a3bae8",
 						"source": "instance20",
 						"matrix": [
 							1,
@@ -521,7 +515,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_679cc6b9c4a3bae8.json"
+						"texture": "rail_spark"
 					}
 				]
 			},
@@ -557,7 +551,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_679cc6b9c4a3bae8",
 						"source": "instance20",
 						"matrix": [
 							1,
@@ -567,7 +560,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_679cc6b9c4a3bae8.json"
+						"texture": "rail_spark"
 					}
 				]
 			},
@@ -603,7 +596,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_679cc6b9c4a3bae8",
 						"source": "instance20",
 						"matrix": [
 							1,
@@ -613,7 +605,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_679cc6b9c4a3bae8.json"
+						"texture": "rail_spark"
 					}
 				]
 			},
@@ -1689,7 +1681,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visrail.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

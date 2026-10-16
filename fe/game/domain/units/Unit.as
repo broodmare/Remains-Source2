@@ -11,6 +11,7 @@ package fe.game.domain.units {
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	
+	import fe.engine.utils.Numbers;
 	import fe.engine.text.TextParser;
 	import fe.engine.audio.Sound;
 	import fe.game.WeaponManager;
@@ -33,6 +34,8 @@ package fe.game.domain.units {
 
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.UnitArt;
+	import fe.game.rendering.UnitSheetManager;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.entities.Part;
@@ -46,6 +49,8 @@ package fe.game.domain.units {
 	import fe.game.rendering.enums.E_Decal;
 	import fe.game.enums.E_Direction;
 	import fe.engine.Engine;
+
+	import starling.textures.TextureSmoothing;
 	
 	public class Unit extends Obj {
 
@@ -320,18 +325,16 @@ package fe.game.domain.units {
 
 		//визуальная часть
 		//блиттинг
-		public var blitId:String;						//id битмапа
+		public var sheetName:String;					// Its sprite sheet's name in units.json, for units drawn from one
 		public var animState:String			= "";
 		public var animState2:String		= "";
-		public var blitData:BitmapData;
 		private var blitX:int				= 120;
 		private var blitY:int				= 120;
 		private var blitDX:int				=  -1;
 		private var blitDY:int				=  -1;
-		private var blitRect:Rectangle;
-		private var blitPoint:Point;
-		private var visData:BitmapData;
-		public var visBmp:Bitmap;
+		public var art:UnitArt;							// Its body on the GPU, for units drawn from a sprite sheet; units Flash draws keep vis
+		public var cellLeft:Number			= 0.0;		// Where a sheet cell's top-left corner sits from the unit's origin, as
+		public var cellTop:Number			= 0.0;		// weaponPositions.json measures from it
 		
 		public var anims:Object;						// Animations accessed by string. eg. anims["fly"]
 		
@@ -717,7 +720,7 @@ package fe.game.domain.units {
 				if (node.@sex=='w') msex=false;
 				if (node.@blit.length())
 				{
-					blitId = node.@blit;
+					sheetName = mid;
 					
 					if (node.@sprX > 0) blitX = node.@sprX;
 					
@@ -1179,16 +1182,13 @@ package fe.game.domain.units {
 				t_emerg--;
 				setVisPos();
 				
+				var tf:Number = (t_emerg > 0) ? t_emerg / (max_emerg + 1) : 0;
+				setGlow((t_emerg > 0) ? new GlowFilter(0xAADDFF, tf, tf * 20, tf * 20, 1, 3) : null);
 				if (vis) {
-					if (t_emerg > 0) {
-						var tf:Number = t_emerg / (max_emerg + 1);
-						vis.filters = [new GlowFilter(0xAADDFF, tf, tf * 20, tf * 20, 1, 3)];
-						vis.alpha = 1 - tf;
-					}
-					else {
-						vis.filters = [];
-						vis.alpha = 1;
-					}
+					vis.alpha = 1 - tf;
+				}
+				if (art) {
+					art.alpha = 1 - tf;
 				}
 				
 				return;
@@ -2356,38 +2356,20 @@ package fe.game.domain.units {
 			}
 		}
 		
+		// Its art from the sprite sheet named sheetName, on the stand animation
 		public function initBlit():void {
-			blitData=GameContainer.reference.grafon.getSpriteList(blitId);
-			blitRect = new Rectangle(0, 0, blitX, blitY);
-			blitPoint = new Point(0,0);
-			vis = new MovieClip();
-			var osn:Sprite = new Sprite();
-			visData = new BitmapData(blitX, blitY, true, 0);
-			visBmp = new Bitmap(visData);
-			vis.addChild(osn);
-			osn.addChild(visBmp);
-			
-			if (blitDX >= 0) {
-				visBmp.x = -blitDX;
-			}
-			else {
-				visBmp.x = -blitX / 2;
-			}
-			
-			if (blitDY >= 0) {
-				visBmp.y = -blitDY;
-			}
-			else {
-				visBmp.y = -blitY + 10;
-			}
-			
+			var sheets:UnitSheetManager = GameContainer.reference.grafon.unitSheets;
+
+			art = new UnitArt(sheets, sheets.viewDefinition(sheetName));
+			art.smoothing = TextureSmoothing.NONE;	// As the unsmoothed bitmaps Flash drew these sheets with
+			cellLeft = (blitDX >= 0) ? -blitDX : -blitX / 2;
+			cellTop = (blitDY >= 0) ? -blitDY : -blitY + 10;
 			animState = "stay";
 		}
 		
-		public function blit(blstate:int, blframe:int):void {
-			blitRect.x = blframe * blitX;
-			blitRect.y = blstate * blitY;
-			visData.copyPixels(blitData, blitRect, blitPoint);
+		// Shows a frame of its sprite sheet: the animation's frame in that column of the original sheet
+		public function blit(animation:String, column:int):void {
+			art.show(animation, column);
 		}
 		
 		public override function addVisual():void {
@@ -2402,8 +2384,13 @@ package fe.game.domain.units {
 			}
 			
 			super.addVisual();
+
+			// A burning unit shows the burn's clip in vis instead
+			if (art && !burn && loc && loc.active) {
+				GameContainer.reference.grafon.objectLayers.add(art, layer);
+			}
 			
-			if (!player && !hpbar && vis) {
+			if (!player && !hpbar && (vis || art)) {
 				hpbar = SymbolFactory.createInstance("hpBar") as MovieClip;
 				
 				if (hero <= 0) {
@@ -2422,7 +2409,7 @@ package fe.game.domain.units {
 			}
 			
 			if (cTransform && ctrans) {
-				vis.transform.colorTransform=cTransform;
+				setTint(cTransform);
 			}
 			
 			if (childObjs) {
@@ -2436,6 +2423,10 @@ package fe.game.domain.units {
 		
 		public override function remVisual():void {
 			super.remVisual();
+
+			if (art) {
+				art.removeFromParent();
+			}
 			
 			if (hpbar && hpbar.parent) {
 				hpbar.parent.removeChild(hpbar);
@@ -2503,11 +2494,38 @@ package fe.game.domain.units {
 		}
 
 		public function setVisPos():void {
+			if (art) {
+				art.x = coordinates.X;
+				art.y = coordinates.Y;
+				art.scaleX = storona.X;
+			}
 			if (vis) {
 				vis.x = coordinates.X;
 				vis.y = coordinates.Y;
 				vis.scaleX = storona.X;
 			}
+		}
+
+		// Tints its art and its clip, whichever it has
+		public override function setTint(tint:ColorTransform):void {
+			if (art) {
+				art.setTint(tint);
+			}
+			super.setTint(tint);
+		}
+
+		public override function setGlow(glow:GlowFilter):void {
+			if (art) {
+				art.setGlow(glow);
+			}
+			super.setGlow(glow);
+		}
+
+		public override function bringToFront():void {
+			if (art && art.parent) {
+				art.parent.setChildIndex(art, art.parent.numChildren - 1);
+			}
+			super.bringToFront();
 		}
 
 		public function visDetails():void {
@@ -2726,7 +2744,7 @@ package fe.game.domain.units {
 			if (slow > 0) {
 				slow--;
 				
-				if (!fixed && slow%10==0 && vis && vis.visible && (velocity.X > 3 || velocity.X < -3 || velocity.Y > 5 || velocity.Y < -5)) {
+				if (!fixed && slow%10==0 && (vis && vis.visible || art && art.visible) && (velocity.X > 3 || velocity.X < -3 || velocity.Y > 5 || velocity.Y < -5)) {
 					Emitter.emit('slow', loc, coordinates.X, coordinates.Y-boundingBox.height * 0.25);
 				}
 			}
@@ -2805,7 +2823,7 @@ package fe.game.domain.units {
 		public function setPunchWeaponPos(w:WPunch):void {
 			w.coordinates.X = coordinates.X + boundingBox.width / 3 * storona.X;
 			w.coordinates.Y = coordinates.Y - boundingBox.height * 0.75;
-			w.rot = (storona == E_Direction.RIGHT) ? 0 : ONE_PI;
+			w.rot = (storona == E_Direction.RIGHT) ? 0 : Numbers.ONE_PI;
 		}
 		
 		public function destroyWall(t:Tile, direction:Vec2):Boolean {
@@ -4038,12 +4056,12 @@ package fe.game.domain.units {
 
 		// Helper function to normalize angle between -PI and PI
 		private function normalizeAngle(angle:Number):Number {
-			while (angle > ONE_PI) {
-				angle -= TWO_PI;
+			while (angle > Numbers.ONE_PI) {
+				angle -= Numbers.TWO_PI;
 			}
 			
-			while (angle < -ONE_PI) {
-				angle += TWO_PI;
+			while (angle < -Numbers.ONE_PI) {
+				angle += Numbers.TWO_PI;
 			}
 			
 			return angle;

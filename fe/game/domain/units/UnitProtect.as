@@ -53,7 +53,7 @@ package fe.game.domain.units {
 				else animState = 'death';
 			}
 			else {
-				vis.visible = true;
+				art.visible = true;
 				if (stay) {
 					if  (velocity.X==0) {
 						animState='stay';
@@ -78,8 +78,8 @@ package fe.game.domain.units {
 				animState2=animState;
 			}
 			if (!anims[animState].st) {
-				if (revers) blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
-				else blit(anims[animState].id,anims[animState].f);
+				if (revers) blit(animState, anims[animState].maxf-anims[animState].f-1);
+				else blit(animState, anims[animState].f);
 			}
 			anims[animState].step();
 		}

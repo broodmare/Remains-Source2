@@ -196,7 +196,6 @@
 		"format": "RGBA8888",
 		"image": "vislsword_1.png",
 		"tintLayer": "vislsword_1_kor.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

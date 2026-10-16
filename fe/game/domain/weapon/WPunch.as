@@ -1,5 +1,6 @@
 package fe.game.domain.weapon {
 
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
@@ -51,7 +52,7 @@ package fe.game.domain.weapon {
 				
 				b.liv = 5;
 				
-				if (zadok && (rot < HALF_PI && rot > -HALF_PI && owner.storona == E_Direction.LEFT || (rot > HALF_PI || rot < -HALF_PI) && owner.storona == E_Direction.RIGHT)) {	//kick
+				if (zadok && (rot < Numbers.HALF_PI && rot > -Numbers.HALF_PI && owner.storona == E_Direction.LEFT || (rot > Numbers.HALF_PI || rot < -Numbers.HALF_PI) && owner.storona == E_Direction.RIGHT)) {	//kick
 					b.otbros = otbros * 1.5;
 					b.damage = damage * 2 * damMult;
 					

@@ -4,10 +4,8 @@
 	"width": 80,
 	"height": 114,
 	"blend": "normal",
-	"shadow": "shadow",
 	"images": {
-		"frame0_0": {"x": 0, "y": 135, "w": 80, "h": 113, "pivotX": 40, "pivotY": 113},
-		"shadow": {"x": 0, "y": 0, "w": 98, "h": 133, "pivotX": 49, "pivotY": 123}
+		"frame0_0": {"x": 0, "y": 0, "w": 80, "h": 113, "pivotX": 40, "pivotY": 113}
 	},
 	"frames": [
 		{"images": ["frame0_0"]},

@@ -2,6 +2,7 @@ package fe.game.domain.units {
 	
 	import flash.display.MovieClip;
 
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.projectile.Bullet;
@@ -157,7 +158,7 @@ package fe.game.domain.units {
 			}
 			else if (turrettip == 2 || turrettip == 5){
 				aRot = [45, 135, -135, -45];
-				vKonus = HALF_PI;
+				vKonus = Numbers.HALF_PI;
 				
 				if (loc.mirror) {
 					if (angle == "left") {
@@ -193,11 +194,11 @@ package fe.game.domain.units {
 				else {
 					aRot=[-165, 165]
 					currentWeapon.fixRot = 3;
-					vAngle = ONE_PI;
+					vAngle = Numbers.ONE_PI;
 				}
 				
 				watchDrot = 0.01;
-				vKonus = QUARTER_PI;
+				vKonus = Numbers.QUARTER_PI;
 				noTurn = true;
 				vis.osn.t1.scaleX = storona.X;
 				vis.osn.t2.scaleX = storona.X;
@@ -205,12 +206,12 @@ package fe.game.domain.units {
 			}
 			
 			nRot = int(Math.random() * aRot.length);
-			currentWeapon.rot = currentWeapon.forceRot = aRot[nRot] * DEG_TO_RAD;
+			currentWeapon.rot = currentWeapon.forceRot = aRot[nRot] * Numbers.DEG_TO_RAD;
 			currentWeapon.findCel = false;
 			aiState = 1;
 			
 			if (hidden > 0) {
-				currentWeapon.rot = currentWeapon.forceRot = HALF_PI;
+				currentWeapon.rot = currentWeapon.forceRot = Numbers.HALF_PI;
 				aiState = 0;
 				vis.osn.gotoAndStop(6);
 			}
@@ -262,7 +263,7 @@ package fe.game.domain.units {
 
 			if (vis.osn.currentFrame == 1) {
 				if (puha) {
-					puha.rotation = currentWeapon.rot * RAD_TO_DEG; // Rotate the gun of the turret.
+					puha.rotation = currentWeapon.rot * Numbers.RAD_TO_DEG; // Rotate the gun of the turret.
 					
 					if (isShoot) {
 						isShoot = false;
@@ -329,7 +330,7 @@ package fe.game.domain.units {
 			if (sposob == 0) {
 				sleep = true;
 				aiState = 0;
-				currentWeapon.forceRot = HALF_PI;
+				currentWeapon.forceRot = Numbers.HALF_PI;
 				currentWeapon.findCel = false;
 			}
 			else if (sposob == 1) {
@@ -530,7 +531,7 @@ package fe.game.domain.units {
 				if (aiSpok <= 0) {
 					if (aiState == 1 && hidden) {
 						aiState = 0;
-						currentWeapon.forceRot = HALF_PI;
+						currentWeapon.forceRot = Numbers.HALF_PI;
 					}
 					else if (aiState > 0) {
 						aiState = 1;
@@ -543,7 +544,7 @@ package fe.game.domain.units {
 							nRot = 0;
 						}
 						
-						currentWeapon.forceRot = aRot[nRot] * DEG_TO_RAD;
+						currentWeapon.forceRot = aRot[nRot] * Numbers.DEG_TO_RAD;
 					}
 					
 					aiTCh=period;
@@ -611,7 +612,7 @@ package fe.game.domain.units {
 				}
 				
 				if (aiState==0)  {
-					if (!noTurn) storona=(currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? E_Direction.RIGHT : E_Direction.LEFT;
+					if (!noTurn) storona=(currentWeapon.rot > -Numbers.HALF_PI && currentWeapon.rot <= Numbers.HALF_PI) ? E_Direction.RIGHT : E_Direction.LEFT;
 					
 					currentWeapon.findCel=false;
 					overLook=true;
@@ -627,7 +628,7 @@ package fe.game.domain.units {
 				}
 				else if (aiState==1) {
 					if (!noTurn) {
-						storona = (currentWeapon.rot > -HALF_PI && currentWeapon.rot <= HALF_PI) ? E_Direction.RIGHT : E_Direction.LEFT;
+						storona = (currentWeapon.rot > -Numbers.HALF_PI && currentWeapon.rot <= Numbers.HALF_PI) ? E_Direction.RIGHT : E_Direction.LEFT;
 					}
 					
 					currentWeapon.findCel=false;

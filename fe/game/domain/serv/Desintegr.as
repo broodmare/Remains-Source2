@@ -12,6 +12,7 @@ package fe.game.domain.serv {
 	import fe.engine.audio.Sound;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
+	import fe.game.domain.units.Unit;
 	import fe.game.rendering.Emitter;
 	
 	// Handles disintegration effect for units
@@ -39,19 +40,26 @@ package fe.game.domain.serv {
 		public function Desintegr(own:Obj, sposob:int) {
 			owner = own;
 			burnTip = sposob;
-			burnBmp = new BitmapData(owner.vis.width,owner.vis.height,true,0);
-			var m:Matrix = new Matrix();
-			var rect:Rectangle = owner.vis.getBounds(owner.vis);
-			m.tx = -rect.left;
-			m.ty = -rect.top;
-			burnBmp.draw(owner.vis,m);
+
+			// The burn draws in Flash, in a clip that takes the place of what the owner showed
+			if (owner is Unit && Unit(owner).art) {
+				burnBm = Unit(owner).art.snapshot(null);
+				burnBmp = burnBm.bitmapData;
+			}
+			else {
+				burnBmp = new BitmapData(owner.vis.width,owner.vis.height,true,0);
+				var m:Matrix = new Matrix();
+				var rect:Rectangle = owner.vis.getBounds(owner.vis);
+				m.tx = -rect.left;
+				m.ty = -rect.top;
+				burnBmp.draw(owner.vis,m);
+				burnBm = new Bitmap(burnBmp);
+				burnBm.x = rect.left;
+				burnBm.y = rect.top;
+			}
 			
 			owner.vis = new MovieClip();
-			burnBm = new Bitmap(burnBmp);
 			owner.vis.addChild(burnBm);
-			
-			burnBm.x = rect.left;
-			burnBm.y = rect.top;
 			
 			if (burnTip==1) {
 				burnCt=new ColorTransform(1,1,1,1,255/burnTime1,100/burnTime1,0,0);

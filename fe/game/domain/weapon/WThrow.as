@@ -2,6 +2,7 @@ package fe.game.domain.weapon {
 
 	import flash.display.Graphics;
 	
+	import fe.engine.utils.Numbers;
 	import fe.engine.audio.Sound;
 	import fe.game.WeaponManager;
 	import fe.game.World;
@@ -138,7 +139,7 @@ package fe.game.domain.weapon {
 				}
 			}
 			
-			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * DEG_TO_RAD;
+			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * Numbers.DEG_TO_RAD;
 			var rasstx:Number = owner.celX - coordinates.X;
 			var rassty:Number = owner.celY - coordinates.Y;
 			

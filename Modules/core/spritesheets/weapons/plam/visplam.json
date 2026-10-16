@@ -433,14 +433,15 @@
 						"role": "muzzleFlash",
 						"source": "instance79",
 						"matrix": [
-							0.20066834940523004,
+							0.09770824122407003,
 							0,
 							0,
-							0.20066834940523004,
+							0.09770824122407003,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -479,14 +480,15 @@
 						"role": "muzzleFlash",
 						"source": "instance79",
 						"matrix": [
-							0.7624054409507179,
+							0.37122593052541797,
 							0,
 							0,
-							0.7624054409507179,
+							0.37122593052541797,
 							39.16666900118206,
 							-0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -525,14 +527,15 @@
 						"role": "muzzleFlash",
 						"source": "instance79",
 						"matrix": [
-							0.6154174972822763,
+							0.2996554337352959,
 							0,
 							0,
-							0.6154174972822763,
+							0.2996554337352959,
 							39.16666900118206,
 							-0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -571,14 +574,15 @@
 						"role": "muzzleFlash",
 						"source": "instance79",
 						"matrix": [
-							0.4684295536138348,
+							0.22808493694517387,
 							0,
 							0,
-							0.4684295536138348,
+							0.22808493694517387,
 							39.16666900118206,
 							-0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -617,14 +621,15 @@
 						"role": "muzzleFlash",
 						"source": "instance79",
 						"matrix": [
-							0.3214721821629315,
+							0.15652932619769303,
 							0,
 							0,
-							0.3214721821629315,
+							0.15652932619769303,
 							39.16666900118206,
 							-0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2103,14 +2108,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.03321838452726908,
+							0.01617449855985973,
 							0,
 							0,
-							0.03321838452726908,
+							0.01617449855985973,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2149,14 +2155,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.0518035919549222,
+							0.025223897410863488,
 							0,
 							0,
-							0.0518035919549222,
+							0.025223897410863488,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2195,14 +2202,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.0704193157207558,
+							0.034288155096063325,
 							0,
 							0,
-							0.0704193157207558,
+							0.034288155096063325,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2241,14 +2249,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.08901977821309039,
+							0.043344981852584834,
 							0,
 							0,
-							0.08901977821309039,
+							0.043344981852584834,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2287,14 +2296,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.10762024070542499,
+							0.05240180860910635,
 							0,
 							0,
-							0.10762024070542499,
+							0.05240180860910635,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2333,14 +2343,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.1262359644712586,
+							0.06146606629430619,
 							0,
 							0,
-							0.1262359644712586,
+							0.06146606629430619,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2379,14 +2390,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.1448364269635932,
+							0.0705228930508277,
 							0,
 							0,
-							0.1448364269635932,
+							0.0705228930508277,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2425,14 +2437,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.16343688945592777,
+							0.07957971980734921,
 							0,
 							0,
-							0.16343688945592777,
+							0.07957971980734921,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2471,14 +2484,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.1820526132217614,
+							0.08864397749254906,
 							0,
 							0,
-							0.1820526132217614,
+							0.08864397749254906,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2517,14 +2531,15 @@
 						"role": "muzzleFlash",
 						"source": "instance86",
 						"matrix": [
-							0.20066834940523004,
+							0.09770824122407003,
 							0,
 							0,
-							0.20066834940523004,
+							0.09770824122407003,
 							39.16666900118206,
 							-1.6666667660077508
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			}
@@ -2543,7 +2558,6 @@
 		},
 		"format": "RGBA8888",
 		"image": "visplam.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

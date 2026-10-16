@@ -88,6 +88,27 @@
 		"fonDefault" : { "file" : "default.png", "drawSize" : [64, 64] },
 		"fonDarkClouds" : { "file" : "dark-clouds-audrey-chandler.jpg", "drawSize" : [1920, 1276] },
 		"fonClear" : { "file" : "clear.jpg", "drawSize" : [1600, 833] },
-		"fonCanter" : { "file" : "canterlot.png", "drawSize" : [1920, 1000] }
+		"fonCanter" : { "file" : "canterlot.png", "drawSize" : [1920, 1000] },
+		"blades_ring" : { "file" : "effects/blades_ring.png", "drawSize" : [60.5, 60.5] },
+		"eclipse_streak" : { "file" : "effects/eclipse_streak.png", "drawSize" : [17.5, 77.5] },
+		"fireball" : { "file" : "effects/fireball.png", "drawSize" : [100.5, 100.5] },
+		"flame_jet" : { "file" : "effects/flame_jet.png", "drawSize" : [47, 14.5], "pivot" : [0.154255, 0.5] },
+		"green_blob" : { "file" : "effects/green_blob.png", "drawSize" : [27.5, 21.5] },
+		"green_blob_dark" : { "file" : "effects/green_blob_dark.png", "drawSize" : [27.5, 21.5] },
+		"gun_flash" : { "file" : "effects/gun_flash.png", "drawSize" : [37.25, 26], "pivot" : [0.281879, 0.480769] },
+		"ice_burst" : { "file" : "effects/ice_burst.png", "drawSize" : [60.5, 60.5] },
+		"radial" : { "file" : "effects/radial.png", "drawSize" : [128, 128] },
+		"rail_jet" : { "file" : "effects/rail_jet.png", "drawSize" : [60.5, 21], "pivot" : [0.107438, 0.5] },
+		"rail_spark" : { "file" : "effects/rail_spark.png", "drawSize" : [18, 9.5], "pivot" : [-0.638889, 0.315789] },
+		"rail_spark_small" : { "file" : "effects/rail_spark_small.png", "drawSize" : [11.25, 10.25], "pivot" : [-2.555556, 0.292683] },
+		"shield_green" : { "file" : "effects/shield_green.png", "drawSize" : [98, 98] },
+		"shield_red" : { "file" : "effects/shield_red.png", "drawSize" : [98, 98] },
+		"shield_yellow" : { "file" : "effects/shield_yellow.png", "drawSize" : [98, 98] },
+		"small_flame" : { "file" : "effects/small_flame.png", "drawSize" : [6.5, 12.25], "pivot" : [-1.230769, 1.265306] },
+		"star" : { "file" : "effects/star.png", "drawSize" : [121.5, 67.5] },
+		"star_large" : { "file" : "effects/star_large.png", "drawSize" : [136.5, 75.5] },
+		"star_six" : { "file" : "effects/star_six.png", "drawSize" : [81.5, 47.5] },
+		"star_small" : { "file" : "effects/star_small.png", "drawSize" : [74.5, 41.5] },
+		"wave_ring" : { "file" : "effects/wave_ring.png", "drawSize" : [60.5, 60.5] }
 	}
 }

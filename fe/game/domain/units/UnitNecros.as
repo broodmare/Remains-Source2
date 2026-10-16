@@ -52,8 +52,8 @@ package fe.game.domain.units {
 		}
 		
 		public override function animate():void {
-			vis.scaleX=1;
-			blit(anims[animState].id,Math.floor(anims[animState].f));
+			art.scaleX=1;
+			blit(animState, Math.floor(anims[animState].f));
 			anims['stay'].step();
 		}
 		

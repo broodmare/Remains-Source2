@@ -92,14 +92,15 @@
 						"role": "auxiliary",
 						"source": "instance11",
 						"matrix": [
-							0.6337585926309383,
+							0.30858597098221274,
 							0,
 							0,
-							0.6337585926309383,
+							0.30858597098221274,
 							0,
 							-8.33333383003874
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -124,14 +125,15 @@
 						"role": "auxiliary",
 						"source": "instance11",
 						"matrix": [
-							0.19125367102545526,
+							0.09312410192704297,
 							0,
 							0,
-							0.19125367102545526,
+							0.09312410192704297,
 							0.8333333830038736,
 							-9.166667213042608
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -164,7 +166,6 @@
 		"labels": {},
 		"format": "RGBA8888",
 		"image": "vismine.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

@@ -63,7 +63,6 @@
 		"format": "RGBA8888",
 		"image": "viscdagger.png",
 		"app": "Remains exporter",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

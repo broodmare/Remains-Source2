@@ -6,15 +6,14 @@ package fe.game.rendering {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.geom.Rectangle;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
-	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import starling.textures.Texture;
+
+	import fe.engine.utils.Files;
 
 	// Every flipbook in Modules/core/spritesheets/objects. The JSON is read and the sheets decoded at startup;
 	// a sheet goes to the GPU the first time something shows its flipbook, and stays there.
@@ -29,28 +28,6 @@ package fe.game.rendering {
 		private var onLoaded:Function;
 
 		public var isLoaded:Boolean			= false;
-
-		private static function readText(file:File):String {
-			var stream:FileStream = new FileStream();
-			var text:String;
-
-			stream.open(file, FileMode.READ);
-			text = stream.readUTFBytes(stream.bytesAvailable);
-			stream.close();
-
-			return text;
-		}
-
-		private static function readBytes(file:File):ByteArray {
-			var stream:FileStream = new FileStream();
-			var bytes:ByteArray = new ByteArray();
-
-			stream.open(file, FileMode.READ);
-			stream.readBytes(bytes);
-			stream.close();
-
-			return bytes;
-		}
 
 		// The playback of a flipbook from its JSON; its images wait for the sheet
 		private static function readDefinition(name:String, json:Object):Flipbook_Definition {
@@ -126,7 +103,6 @@ package fe.game.rendering {
 					break;
 				}
 			}
-			definition.shadow = json.shadow ? images[json.shadow] : null;
 			delete sources[definition.name];
 		}
 
@@ -153,7 +129,7 @@ package fe.game.rendering {
 				trace("FlipbookManager.as/decodeSheet() - Error: sheet \"" + file.name + "\" could not be decoded: " + event.text);
 				onSheetDecoded(name, new BitmapData(1, 1, true, 0));
 			});
-			loader.loadBytes(readBytes(file), context);
+			loader.loadBytes(Files.readBytes(file), context);
 		}
 
 		public function FlipbookManager(onLoaded_:Function) {
@@ -172,7 +148,7 @@ package fe.game.rendering {
 					if (file.extension != "json") { continue; }
 
 					name = file.name.substr(0, file.name.length - ".json".length);
-					json = JSON.parse(readText(file));
+					json = JSON.parse(Files.readText(file));
 					sheet = folder.resolvePath(json.image);
 					if (!sheet.exists) {
 						trace("FlipbookManager.as/FlipbookManager() - Error: flipbook \"" + name + "\" has no sheet \"" + json.image + "\"");

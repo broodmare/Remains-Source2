@@ -434,14 +434,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.1632690527003439,
+							0.07949799773085105,
 							0,
 							0,
-							0.1632690527003439,
+							0.07949799773085105,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -466,14 +467,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.1769561922722772,
+							0.08616245846382561,
 							0,
 							0,
-							0.1769561922722772,
+							0.08616245846382561,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -498,14 +500,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.1906433070089404,
+							0.09282690710415789,
 							0,
 							0,
-							0.1906433070089404,
+							0.09282690710415789,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -530,14 +533,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.2043304465808737,
+							0.09949136783713246,
 							0,
 							0,
-							0.2043304465808737,
+							0.09949136783713246,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -562,14 +566,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.21801758615280706,
+							0.10615582857010704,
 							0,
 							0,
-							0.21801758615280706,
+							0.10615582857010704,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -594,14 +599,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.2317199745806043,
+							0.11282771418543878,
 							0,
 							0,
-							0.2317199745806043,
+							0.11282771418543878,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -626,14 +632,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.24540711415253763,
+							0.11949217491841335,
 							0,
 							0,
-							0.24540711415253763,
+							0.11949217491841335,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -658,14 +665,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.2591095025803349,
+							0.1261640605337451,
 							0,
 							0,
-							0.2591095025803349,
+							0.1261640605337451,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -690,14 +698,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.27279661731699806,
+							0.13282850917407737,
 							0,
 							0,
-							0.27279661731699806,
+							0.13282850917407737,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -722,14 +731,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.2864837817242015,
+							0.13949298199969423,
 							0,
 							0,
-							0.2864837817242015,
+							0.13949298199969423,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -754,14 +764,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.30018617015199883,
+							0.146164867615026,
 							0,
 							0,
-							0.30018617015199883,
+							0.146164867615026,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -786,14 +797,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.3138733097239321,
+							0.15282932834800056,
 							0,
 							0,
-							0.3138733097239321,
+							0.15282932834800056,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -818,14 +830,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.3275756981517294,
+							0.1595012139633323,
 							0,
 							0,
-							0.3275756981517294,
+							0.1595012139633323,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -850,14 +863,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.3412628377236627,
+							0.1661656746963069,
 							0,
 							0,
-							0.3412628377236627,
+							0.1661656746963069,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -882,14 +896,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.3549652509867301,
+							0.17283757240428088,
 							0,
 							0,
-							0.3549652509867301,
+							0.17283757240428088,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -914,14 +929,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.3686523657233933,
+							0.1795020210446132,
 							0,
 							0,
-							0.3686523657233933,
+							0.1795020210446132,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -946,14 +962,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.3823394804600565,
+							0.1861664696849455,
 							0,
 							0,
-							0.3823394804600565,
+							0.1861664696849455,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -978,14 +995,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.39604186888785375,
+							0.19283835530027724,
 							0,
 							0,
-							0.39604186888785375,
+							0.19283835530027724,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1010,14 +1028,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.4097290332950572,
+							0.1995028281258941,
 							0,
 							0,
-							0.4097290332950572,
+							0.1995028281258941,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1042,14 +1061,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.4234314217228545,
+							0.20617471374122584,
 							0,
 							0,
-							0.4234314217228545,
+							0.20617471374122584,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1074,14 +1094,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.43711853645951765,
+							0.21283916238155812,
 							0,
 							0,
-							0.43711853645951765,
+							0.21283916238155812,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1106,14 +1127,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.4508057008667211,
+							0.21950363520717495,
 							0,
 							0,
-							0.4508057008667211,
+							0.21950363520717495,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1138,14 +1160,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.46450806445924825,
+							0.22617550872986444,
 							0,
 							0,
-							0.46450806445924825,
+							0.22617550872986444,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1170,14 +1193,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.4781952288664517,
+							0.23283998155548127,
 							0,
 							0,
-							0.4781952288664517,
+							0.23283998155548127,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1202,14 +1226,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.49189759245897885,
+							0.23951185507817077,
 							0,
 							0,
-							0.49189759245897885,
+							0.23951185507817077,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1234,14 +1259,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.5055847071956421,
+							0.24617630371850308,
 							0,
 							0,
-							0.5055847071956421,
+							0.24617630371850308,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1266,14 +1292,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.5192718716028455,
+							0.2528407765441199,
 							0,
 							0,
-							0.5192718716028455,
+							0.2528407765441199,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1298,14 +1325,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.5329589863395087,
+							0.2595052251844522,
 							0,
 							0,
-							0.5329589863395087,
+							0.2595052251844522,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1330,14 +1358,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.54667664845844,
+							0.2661845477747834,
 							0,
 							0,
-							0.54667664845844,
+							0.2661845477747834,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1362,14 +1391,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.54667664845844,
+							0.2661845477747834,
 							0,
 							0,
-							0.54667664845844,
+							0.2661845477747834,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1394,14 +1424,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.54667664845844,
+							0.2661845477747834,
 							0,
 							0,
-							0.54667664845844,
+							0.2661845477747834,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1426,14 +1457,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.54667664845844,
+							0.2661845477747834,
 							0,
 							0,
-							0.54667664845844,
+							0.2661845477747834,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1458,14 +1490,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.54667664845844,
+							0.2661845477747834,
 							0,
 							0,
-							0.54667664845844,
+							0.2661845477747834,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1490,14 +1523,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							1.0468750822668322,
+							0.509738199236565,
 							0,
 							0,
-							1.0468750822668322,
+							0.509738199236565,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1522,14 +1556,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.7665405630990205,
+							0.3732393796495817,
 							0,
 							0,
-							0.7665405630990205,
+							0.3732393796495817,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1554,14 +1589,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.4861755462194808,
+							0.23672571029788392,
 							0,
 							0,
-							0.4861755462194808,
+							0.23672571029788392,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1586,14 +1622,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1618,14 +1655,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1650,14 +1688,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1682,14 +1721,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1714,14 +1754,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1746,14 +1787,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -1778,14 +1820,15 @@
 						"source": "instance140",
 						"blendMode": "screen",
 						"matrix": [
-							0.20588684812507121,
+							0.10024920163589894,
 							0,
 							0,
-							0.20588684812507121,
+							0.10024920163589894,
 							55.83333666125953,
 							0.8333333830038754
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -2094,7 +2137,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "visbfg.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

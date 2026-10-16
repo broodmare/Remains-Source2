@@ -1,6 +1,7 @@
 package fe.game.rendering {
 
 	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
@@ -17,6 +18,9 @@ package fe.game.rendering {
 		private var image:Image;						// The frame's image
 		private var screenImage:Image;					// The frame's screen-blended image, for flipbooks that have them
 		private var ticks:int = 0;						// advance() calls so far: the clock of each frame's own loop
+		private var placement:Matrix = new Matrix();	// Scratch: a keyed frame's placement after its image's pivot
+		private var tint:ColorTransform;				// Set by setTint
+		private var frameTint:ColorTransform = new ColorTransform();	// Scratch: a keyed frame's own tint, then the flipbook's
 
 		public var frame:int = 0;						// The playhead, counted from 0. Read it; move it with goTo().
 		public var isPlaying:Boolean = true;			// Whether advance() moves the playhead on. A new flipbook plays, as a new Flash clip does.
@@ -38,23 +42,58 @@ package fe.game.rendering {
 			return created;
 		}
 
-		// Shows the loop's image for this tick in target, or hides target when the tick draws nothing
+		// Shows the loop's image for this tick in target, placed as the frame is, or hides target when the tick draws nothing
 		private function show(target:Image, loop:Vector.<FlipbookImage>):void {
 			var shown:FlipbookImage = loop.length > 0 ? loop[ticks % loop.length] : null;
 
 			target.visible = shown != null;
-			if (!shown || target.texture == shown.texture) { return; }
+			if (!shown) { return; }
 
-			target.texture = shown.texture;
-			target.readjustSize();
-			target.pivotX = shown.pivotX;
-			target.pivotY = shown.pivotY;
+			if (target.texture != shown.texture) {
+				target.texture = shown.texture;
+				target.readjustSize();
+				target.pivotX = shown.pivotX;
+				target.pivotY = shown.pivotY;
+			}
+			if (definition.placements) {
+				placement.setTo(1.0, 0.0, 0.0, 1.0, -shown.pivotX, -shown.pivotY);
+				placement.concat(definition.placements[frame]);
+				target.transformationMatrix = placement;
+			}
+		}
+
+		// The frame's own tint, if it has one, under the flipbook's
+		private function applyTint():void {
+			var own:ColorTransform = definition.tints ? definition.tints[frame] : null;
+			var applied:ColorTransform = tint;
+
+			if (own) {
+				frameTint.redMultiplier		= own.redMultiplier;
+				frameTint.greenMultiplier	= own.greenMultiplier;
+				frameTint.blueMultiplier	= own.blueMultiplier;
+				frameTint.alphaMultiplier	= own.alphaMultiplier;
+				frameTint.redOffset			= own.redOffset;
+				frameTint.greenOffset		= own.greenOffset;
+				frameTint.blueOffset		= own.blueOffset;
+				frameTint.alphaOffset		= own.alphaOffset;
+				if (tint) {
+					frameTint.concat(tint);
+				}
+				applied = frameTint;
+			}
+			TintStyle(image.style).tint = applied;
+			if (screenImage) {
+				TintStyle(screenImage.style).tint = applied;
+			}
 		}
 
 		private function draw():void {
 			show(image, definition.frames[frame]);
 			if (screenImage) {
 				show(screenImage, definition.screenFrames[frame]);
+			}
+			if (definition.tints) {
+				applyTint();
 			}
 		}
 
@@ -116,11 +155,9 @@ package fe.game.rendering {
 		}
 
 		// Draws the flipbook through a Flash colour transform, or in its own colours for null
-		public function setTint(tint:ColorTransform):void {
-			TintStyle(image.style).tint = tint;
-			if (screenImage) {
-				TintStyle(screenImage.style).tint = tint;
-			}
+		public function setTint(tint_:ColorTransform):void {
+			tint = tint_;
+			applyTint();
 		}
 	}
 }

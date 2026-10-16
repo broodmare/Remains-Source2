@@ -6,11 +6,10 @@ package fe.game.rendering.rig {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.net.URLRequest;
-	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+
+	import fe.engine.utils.Files;
 
 	// One rig's files from its folder: the skeleton and animations (name.gltf), how it is dressed (name.json), and every image.
 	// The JSON and glTF are read at once; the images load in the background, then onLoaded is called.
@@ -26,28 +25,6 @@ package fe.game.rendering.rig {
 		public var art:RigArt_Definition;
 		public var bitmaps:Dictionary	= new Dictionary();		// BitmapData by image key
 		public var isLoaded:Boolean		= false;
-
-		private static function readText(file:File):String {
-			var stream:FileStream = new FileStream();
-			var text:String;
-
-			stream.open(file, FileMode.READ);
-			text = stream.readUTFBytes(stream.bytesAvailable);
-			stream.close();
-
-			return text;
-		}
-
-		private static function readBytes(file:File):ByteArray {
-			var stream:FileStream = new FileStream();
-			var bytes:ByteArray = new ByteArray();
-
-			stream.open(file, FileMode.READ);
-			stream.readBytes(bytes);
-			stream.close();
-
-			return bytes;
-		}
 
 		private static function strings(list:Array):Vector.<String> {
 			var result:Vector.<String> = new Vector.<String>();
@@ -215,10 +192,10 @@ package fe.game.rendering.rig {
 
 			name		= name_;
 			onLoaded	= onLoaded_;
-			json		= JSON.parse(readText(folder.resolvePath(name + ".json")));
+			json		= JSON.parse(Files.readText(folder.resolvePath(name + ".json")));
 			gltfFile	= folder.resolvePath(json.skeleton);
-			gltf		= JSON.parse(readText(gltfFile));
-			definition	= GltfReader.read(gltf, readBytes(gltfFile.parent.resolvePath(gltf.buffers[0].uri)), Number(json.fps) || 30.0);
+			gltf		= JSON.parse(Files.readText(gltfFile));
+			definition	= GltfReader.read(gltf, Files.readBytes(gltfFile.parent.resolvePath(gltf.buffers[0].uri)), Number(json.fps) || 30.0);
 			art			= readArt(json);
 			for each (animation in definition.animations) {
 				readPlayback(json.animations, animation, definition);

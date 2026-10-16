@@ -6,6 +6,7 @@ package fe.game.domain.units {
 	import fe.game.domain.units.attack.SideWeaponAttack_Definition;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.weapon.WThrow;
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.WeaponManager;
 	import fe.game.GameContainer;
@@ -94,15 +95,11 @@ package fe.game.domain.units {
 		}
 
 		public override function setVisPos():void {
-			if (vis) {
-				vis.x = coordinates.X;
-				vis.y = coordinates.Y;
-				vis.scaleX=storona.X;
-			}
+			super.setVisPos();
 			
 			if (arm) {
 				if (currentWeapon) {
-					arm.rotation = currentWeapon.rot * RAD_TO_DEG + 90 * (1 - storona.X);
+					arm.rotation = currentWeapon.rot * Numbers.RAD_TO_DEG + 90 * (1 - storona.X);
 				}
 				
 				arm.scaleX=storona.X;
@@ -119,7 +116,7 @@ package fe.game.domain.units {
 			var p:Point, p1:Point;
 			p = new Point(arm.emit.x, arm.emit.y);
 			p1 = arm.localToGlobal(p);
-			p1 = vis.parent.globalToLocal(p1);
+			p1 = arm.parent.globalToLocal(p1);
 			weaponX=p1.x;
 			weaponY=p1.y;
 		}
@@ -162,8 +159,8 @@ package fe.game.domain.units {
 			}
 
 			obj = animFrames[frameIndex];
-			arm.x = coordinates.X + (obj.x + visBmp.x) * storona.X;
-			arm.y = coordinates.Y + obj.y + visBmp.y;
+			arm.x = coordinates.X + (obj.x + cellLeft) * storona.X;
+			arm.y = coordinates.Y + obj.y + cellTop;
 		}
 	}
 }

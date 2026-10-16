@@ -1,10 +1,12 @@
 package fe.game.rendering {
 
+	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
 	import flash.utils.Dictionary;
 
 	import starling.textures.Texture;
 
-	// One flipbook from Modules/core/spritesheets/objects: its images on one sheet, and how its frames play
+	// One flipbook, from Modules/core/spritesheets/objects or keyed from an effect in effects.json: its images, and how its frames play
 	public class Flipbook_Definition {
 		public var name:String;
 		public var density:Number								= 1.0;			// Sheet pixels per game pixel
@@ -14,9 +16,10 @@ package fe.game.rendering {
 		public var sheet:Texture;												// Every image's texture is part of it
 		public var frames:Vector.<Vector.<FlipbookImage>>;						// Per frame, its image on each tick of its own loop; null where a tick draws nothing
 		public var screenFrames:Vector.<Vector.<FlipbookImage>>;				// Per frame, its screen-blended images, likewise; null when it has none
-		public var shadow:FlipbookImage;										// The drop shadow boxes cast under their first frame, or null
 		public var shows:Vector.<int>;											// Per frame, the frame shown when the playhead reaches it: itself, or where its script jumps
 		public var stops:Vector.<Boolean>;										// Per frame, whether the playhead stops once it reaches it
 		public var labels:Dictionary							= new Dictionary();	// Frame by label
+		public var placements:Vector.<Matrix>;									// Per frame, where its image goes after its pivot, for keyed flipbooks; else null
+		public var tints:Vector.<ColorTransform>;								// Per frame, its own tint or null; null when no frame has one
 	}
 }

@@ -208,7 +208,8 @@ package fe.game.ui {
 					dblack = 0;
 				}
 			}
-			if (dblack < 0) {
+			// The room fades in once its units' sheets have decoded
+			if (dblack < 0 && GameContainer.reference.grafon.unitSheets.isLoaded) {
 				GUIManager.reference.vblack.alpha += dblack / 100;
 				if (GUIManager.reference.vblack.alpha <= 0) {
 					dblack = 0;

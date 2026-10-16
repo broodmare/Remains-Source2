@@ -89,7 +89,7 @@ package fe.game.domain.units {
 			}
 			
 			if (!anims[animState].st) {
-				blit(anims[animState].id, int(anims[animState].f));
+				blit(animState, int(anims[animState].f));
 			}
 		
 			anims[animState].step();
@@ -97,8 +97,8 @@ package fe.game.domain.units {
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
 			var obj:Object=wPos[anims[animState].id][int(anims[animState].f)];
-			weaponX = coordinates.X + (obj.x+visBmp.x)*storona.X;
-			weaponY = coordinates.Y + obj.y+visBmp.y;
+			weaponX = coordinates.X + (obj.x+cellLeft)*storona.X;
+			weaponY = coordinates.Y + obj.y+cellTop;
 			weaponR=obj.r;
 		}
 		

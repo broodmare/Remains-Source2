@@ -1,6 +1,7 @@
 package fe.game.domain.units {
 
 	import fe.game.domain.weapon.Weapon;
+	import fe.engine.utils.Numbers;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.WeaponManager;
@@ -266,10 +267,10 @@ package fe.game.domain.units {
 				if (stay && turnX!=E_Direction.NEUTRAL) {
 					if (turnX.X*storona.X<0 && currentWeapon) {
 						if (currentWeapon.rot > 0) {
-							currentWeapon.rot = ONE_PI - currentWeapon.rot;
+							currentWeapon.rot = Numbers.ONE_PI - currentWeapon.rot;
 						}
 						else {
-							currentWeapon.rot = -ONE_PI - currentWeapon.rot;
+							currentWeapon.rot = -Numbers.ONE_PI - currentWeapon.rot;
 						}
 					}
 					

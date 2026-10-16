@@ -400,7 +400,6 @@
 			{
 				"layers": [
 					{
-						"sprite": "flash_e51ffde4d54077a4",
 						"role": "muzzleFlash",
 						"source": "instance60",
 						"matrix": [
@@ -411,7 +410,7 @@
 							-46.66666944821692,
 							-8.33333383003874
 						],
-						"sheet": "_shared/flash_e51ffde4d54077a4.json"
+						"texture": "green_blob_dark"
 					},
 					{
 						"sprite": "image_001",
@@ -432,7 +431,6 @@
 			{
 				"layers": [
 					{
-						"sprite": "flash_beaaf43f5a6bc2e0",
 						"role": "muzzleFlash",
 						"source": "instance60",
 						"matrix": [
@@ -443,7 +441,7 @@
 							35.000002086162695,
 							-7.500000447034864
 						],
-						"sheet": "_shared/flash_beaaf43f5a6bc2e0.json"
+						"texture": "green_blob"
 					},
 					{
 						"sprite": "image_001",
@@ -2234,7 +2232,6 @@
 		},
 		"format": "RGBA8888",
 		"image": "visbel.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

@@ -15,7 +15,6 @@ package fe.game.rendering {
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.filters.BlurFilter;
 	import starling.filters.ColorMatrixFilter;
 	import starling.filters.FilterChain;
 	import starling.filters.FragmentFilter;
@@ -30,7 +29,7 @@ package fe.game.rendering {
 	import fe.game.domain.location.tile.enums.E_TileBehaviour;
 	import fe.game.domain.location.tile.enums.E_TileLayer;
 
-	// The room's layers behind its units, drawn by Starling: the back wall, lit and shaded by the tiles' drop shadow, and the background in front of it.
+	// The room's layers behind its units, drawn by Starling: the back wall, lit and shaded by the room's shadow, and the background in front of it.
 	// Each is built into a room-sized texture when the room is drawn, so a frame only draws two images.
 	public class BackLayers {
 
@@ -41,16 +40,13 @@ package fe.game.rendering {
 		private static const TILE_PAGE_SIZE:int		= 1024;
 		private static const OBJECT_PAGE_SIZE:int	= 2048;
 		private static const BRUSH_PAGE_SIZE:int	= 256;
-		private static const SHADOW_DISTANCE:Number	= 7.0;			// The tiles' drop shadow falls this far below them
-		private static const SHADOW_ALPHA:Number	= 0.75;
-		private static const SHADOW_BLUR:Number		= 16.0;			// As a Flash blur, see GpuFilters.blur
-		private static const SHADOW_QUALITY:int		= 3;
 		private static const GAS_Y:Number			= 520.0;		// Top of the pink gas cloud
 		private static const GAS_ALPHA:Number		= 0.3;
 		private static const BRUSH_STEP:Number		= 3.0;			// A paint stroke stamps its brush this often, in pixels
 
 		private var grafon:Grafon;
 		private var parent:Sprite;					// Starling's view of the room, which these layers sit at the bottom of
+		private var shadows:ShadowPass;				// Casts the shadow the wall is shaded by
 		private var scale:Number = 1.0;				// Texture pixels per room pixel
 		private var loc:Location;
 		private var tileTextures:Vector.<TilePieceTextures>;
@@ -64,7 +60,6 @@ package fe.game.rendering {
 		private var airbrush:AtlasClip;
 		private var wallTexture:RenderTexture;		// The back wall as built, before tint, light and shadow
 		private var lightTexture:RenderTexture;		// The room's darkness, with the back objects' light shapes over it
-		private var shadowTexture:RenderTexture;	// The drop shadow the main and foreground tiles cast on the wall
 		private var backgroundTexture:RenderTexture;
 		private var wallStyle:WallLightStyle;
 		private var wallImage:Image;
@@ -77,7 +72,7 @@ package fe.game.rendering {
 		private var strokeSteps:int;
 		private var redraw:Boolean;					// The GPU lost the room's textures, so it is drawn again before the next frame
 
-		public var shadowChanged:Boolean;			// Tiles that cast the shadow broke, so it is recast before the next frame
+		public var shadowChanged:Boolean;			// Tiles that cast the shadow broke, so their shapes are redrawn before the next frame
 
 		// The texture loaded under name, laid out to repeat at the size the manifest gives it. Kept for the session.
 		private function viewMaterial(name:String):RepeatingTexture {
@@ -105,12 +100,10 @@ package fe.game.rendering {
 		private function createTextures(width:int, height:int):void {
 			wallTexture			= new RenderTexture(width, height, true, scale);
 			lightTexture		= new RenderTexture(width, height, true, scale);
-			shadowTexture		= new RenderTexture(width, height, true, scale);
 			backgroundTexture	= new RenderTexture(width, height, true, scale);
 
 			wallStyle			= new WallLightStyle();
 			wallStyle.light		= lightTexture;
-			wallStyle.shadow	= shadowTexture;
 			wallImage			= new Image(wallTexture);
 			wallImage.style		= wallStyle;
 			backgroundImage		= new Image(backgroundTexture);
@@ -475,7 +468,7 @@ package fe.game.rendering {
 			background.addChild(image);
 		}
 
-		// The drop shadow of the main and foreground tiles: their shapes in black, blurred and lowered
+		// The shapes of the main and foreground tiles, which cast the room's shadow
 		private function drawShadow():void {
 			var casters:Sprite = new Sprite();
 			var textures:TilePieceTextures;
@@ -487,13 +480,8 @@ package fe.game.rendering {
 			}
 			casters.addChild(spritePieces(E_TileLayer.MAIN, E_TileLayer.FOREGROUND, 0x000000));
 
-			casters.y		= SHADOW_DISTANCE;
-			casters.alpha	= SHADOW_ALPHA;
-			casters.filter	= new BlurFilter(GpuFilters.blur(SHADOW_BLUR, SHADOW_QUALITY), GpuFilters.blur(SHADOW_BLUR, SHADOW_QUALITY), scale);
-
 			tileAtlas.upload();
-			shadowTexture.clear();
-			shadowTexture.draw(casters);
+			shadows.drawTiles(casters);
 			casters.dispose();
 		}
 
@@ -514,9 +502,10 @@ package fe.game.rendering {
 			}
 		}
 
-		public function BackLayers(grafon_:Grafon, parent_:Sprite) {
+		public function BackLayers(grafon_:Grafon, parent_:Sprite, shadows_:ShadowPass) {
 			grafon	= grafon_;
 			parent	= parent_;
+			shadows	= shadows_;
 
 			BlendMode.register(INSIDE, Context3DBlendFactor.DESTINATION_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 			BlendMode.register(OVERLAY, Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.SOURCE_COLOR);
@@ -587,12 +576,13 @@ package fe.game.rendering {
 			background.dispose();
 			objectAtlas.dispose();
 
+			wallStyle.shadow			= shadows.texture;
 			wallStyle.tint				= loc.cTransform;
 			wallStyle.transparentBack	= loc.transparentBack || loc.backwall == "sky";
 			wallImage.setRequiresRedraw();
 		}
 
-		// Recasts the shadow or redraws the room if needed, just before Starling draws a frame
+		// Redraws the room or the tiles' shapes in the shadow if needed, just before Starling draws a frame
 		public function prepareFrame():void {
 			if (redraw) {
 				draw(loc, tileTextures);

@@ -1,0 +1,298 @@
+{
+	"frames": {
+		"stay_000": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 1,
+				"y": 1
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_000": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 1,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_001": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 133,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_002": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 265,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_003": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 397,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_004": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 529,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_005": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 661,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_006": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 793,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		"fly_007": {
+			"duration": 33,
+			"frame": {
+				"h": 150,
+				"w": 130,
+				"x": 925,
+				"y": 153
+			},
+			"pivot": {
+				"x": 0.5,
+				"y": 0.9333333333333333
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 150,
+				"w": 130
+			},
+			"spriteSourceSize": {
+				"h": 150,
+				"w": 130,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	},
+	"meta": {
+		"app": "Remains flipbook exporter",
+		"format": "RGBA8888",
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "stay",
+				"to": 0
+			},
+			{
+				"direction": "forward",
+				"from": 1,
+				"name": "fly",
+				"to": 8
+			}
+		],
+		"image": "bossencl3.png",
+		"layout": {
+			"cells": [
+				{
+					"animation": "stay",
+					"frame": "stay_000"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_000"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_001"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_002"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_003"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_004"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_005"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_006"
+				},
+				{
+					"animation": "fly",
+					"frame": "fly_007"
+				}
+			],
+			"maxColumns": 16,
+			"order": "animation"
+		},
+		"scale": "1",
+		"size": {
+			"h": 304,
+			"w": 1056
+		},
+		"source": "sprite1.fla/Units/Enclave/enclboss3.png",
+		"uniqueFrames": 9,
+		"version": "1"
+	}
+}

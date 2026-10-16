@@ -9,6 +9,9 @@ package fe.game.rendering {
 	import starling.filters.ColorMatrixFilter;
 	import starling.filters.FilterChain;
 
+	import fe.game.GameContainer;
+	import fe.game.domain.location.tile.Tile;
+
 	// The room as Starling draws it, under the whole Flash display list. Follows visual's position, scale and visibility every frame.
 	public class StarlingView {
 
@@ -20,6 +23,7 @@ package fe.game.rendering {
 		private var effectBlur:Number = 0.0;		// The scripted blur on visual, as a Flash blur
 		private var satsShown:Boolean;				// SATS shows its frozen, blurred copy of the room over this view
 
+		public var shadows:ShadowPass;				// The shadow the tiles and objects cast on the back wall
 		public var backLayers:BackLayers;
 		public var objectLayers:ObjectLayers;		// Over the back layers
 
@@ -30,6 +34,9 @@ package fe.game.rendering {
 			root.scaleX		= visual.scaleX;
 			root.scaleY		= visual.scaleY;
 			backLayers.prepareFrame();
+			if (root.visible) {
+				shadows.render();
+			}
 		}
 
 		// Rebuilds the view's filter from the scripted effect and SATS
@@ -63,7 +70,8 @@ package fe.game.rendering {
 			visual			= visual_;
 			root			= new Sprite();
 			root.touchable	= false;
-			backLayers		= new BackLayers(grafon, root);
+			shadows			= new ShadowPass(GameContainer.cellsX * Tile.tileX, GameContainer.cellsY * Tile.tileY);
+			backLayers		= new BackLayers(grafon, root, shadows);
 			objectLayers	= new ObjectLayers(root);
 
 			Starling.current.stage.addChild(root);

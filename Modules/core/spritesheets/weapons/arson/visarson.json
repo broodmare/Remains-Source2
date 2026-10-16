@@ -315,7 +315,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_c3871247beac25de",
 						"source": "instance189",
 						"matrix": [
 							1,
@@ -325,7 +324,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c3871247beac25de.json"
+						"texture": "small_flame"
 					}
 				]
 			},
@@ -361,7 +360,6 @@
 					},
 					{
 						"role": "muzzleFlash",
-						"sprite": "flash_c3871247beac25de",
 						"source": "instance189",
 						"matrix": [
 							1,
@@ -371,7 +369,7 @@
 							0,
 							0
 						],
-						"sheet": "_shared/flash_c3871247beac25de.json"
+						"texture": "small_flame"
 					}
 				]
 			},
@@ -1576,7 +1574,6 @@
 		"format": "RGBA8888",
 		"image": null,
 		"tintLayer": "visarson_kor.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

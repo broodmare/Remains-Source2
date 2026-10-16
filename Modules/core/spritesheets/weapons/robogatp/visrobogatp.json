@@ -70,14 +70,15 @@
 						"role": "muzzleFlash",
 						"source": "instance8",
 						"matrix": [
-							0.8253174518734685,
+							0.4018586733438588,
 							0,
 							0,
-							0.8176727583610669,
+							0.39813636456916796,
 							52.500003129244035,
 							30.833335171143318
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -116,14 +117,15 @@
 						"role": "muzzleFlash",
 						"source": "instance8",
 						"matrix": [
-							0.5332031170449525,
+							0.2596240958580208,
 							0,
 							0,
-							0.5282593088304585,
+							0.2572168861160807,
 							53.33333651224791,
 							30.833335171143318
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			}
@@ -166,8 +168,7 @@
 		"format": "RGBA8888",
 		"image": "visrobogatp.png",
 		"frameCount": 3,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	},
 	"frames": {
 		"image_002": {

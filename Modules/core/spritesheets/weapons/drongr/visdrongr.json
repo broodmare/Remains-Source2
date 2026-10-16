@@ -42,14 +42,15 @@
 						"role": "auxiliary",
 						"source": "instance31",
 						"matrix": [
-							0.6337585926309383,
+							0.30858597098221274,
 							0,
 							0,
-							0.6337585926309383,
+							0.30858597098221274,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -74,14 +75,15 @@
 						"role": "auxiliary",
 						"source": "instance31",
 						"matrix": [
-							0.19125367102545526,
+							0.09312410192704297,
 							0,
 							0,
-							0.19125367102545526,
+							0.09312410192704297,
 							0,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -138,8 +140,7 @@
 		"format": "RGBA8888",
 		"image": "visdrongr.png",
 		"frameCount": 5,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	},
 	"frames": {
 		"image_001": {

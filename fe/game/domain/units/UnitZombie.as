@@ -1,12 +1,11 @@
 package fe.game.domain.units {
 
 	import flash.filters.GlowFilter;
-	import flash.display.MovieClip;
 	
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.Flipbook;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.ability.Telekinesis;
 	import fe.game.WeaponManager;
@@ -30,7 +29,7 @@ package fe.game.domain.units {
 		
 		//свечение
 		private var glowTip:int=0;
-		private var vlight:MovieClip;
+		private var vlight:Flipbook;		// The glow some zombies carry
 		
 		private var knocked2:Number;
 		
@@ -94,11 +93,9 @@ package fe.game.domain.units {
 			animState='stay';
 			
 			if (glowTip>0) {
-				vlight = SymbolFactory.createInstance("visZombieLight") as MovieClip;
-				vis.addChild(vlight);
+				vlight = GameContainer.reference.grafon.effects.createEffect("zombie_light");
 				vlight.y = -boundingBox.halfHeight;
-				vlight.blendMode='screen';
-				vlight.cacheAsBitmap=true;
+				art.carry(vlight);
 			}
 			setSuper();
 			
@@ -174,7 +171,7 @@ package fe.game.domain.units {
 			var cframe:int;
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
-				blit(anims[animState].id,t_res);
+				blit(animState, t_res);
 				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark', loc, coordinates.X+(Math.random()-0.5) * boundingBox.width, coordinates.Y - Math.random() * 10);
 				
 				return;
@@ -201,10 +198,10 @@ package fe.game.domain.units {
 				animState='super';
 			}
 			else if (aiState==5) {
-				vis.visible=false;
+				art.visible=false;
 			}
 			else if (aiState==6) {
-				vis.visible=true;
+				art.visible=true;
 				animState='dig';
 				if (vlight && vlight.alpha<1) {
 					vlight.alpha+=0.05;
@@ -212,7 +209,7 @@ package fe.game.domain.units {
 				}
 			}
 			else {
-				vis.visible=true;
+				art.visible=true;
 				if (stay) {
 					if  (velocity.X < 1 && velocity.X > -1) {
 						animState='stay';
@@ -244,7 +241,7 @@ package fe.game.domain.units {
 				animState2=animState;
 			}
 			if (!anims[animState].st) {
-				blit(anims[animState].id,anims[animState].f);
+				blit(animState, anims[animState].f);
 			}
 			anims[animState].step();
 		}

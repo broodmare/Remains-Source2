@@ -11,6 +11,7 @@ package fe.game.domain.units {
 	import fe.game.domain.units.motor.WalkMotor;
 	import fe.game.domain.units.motor.WalkMotor_Definition;
 	import fe.engine.utils.Calc;
+	import fe.engine.utils.Numbers;
 	import fe.engine.utils.Vec2;
 	import fe.game.enums.E_Direction;
 
@@ -123,32 +124,42 @@ package fe.game.domain.units {
 			super.getXmlParam();			// Then the variant's own, such as ant3
 		}
 
-		// On a wall the sprite turns sideways and faces the way the ant last climbed
+		// On a wall the sprite turns sideways and faces the way the ant last climbed. The burn's clip in vis follows it.
 		public override function setVisPos():void {
-			if (!vis) { return; }
+			var x:Number = coordinates.X;
+			var y:Number = coordinates.Y;
+			var facing:Number = storona.X;
+			var turn:Number = 0.0;
 
 			if (walker && walker.climbDirection != E_Direction.NEUTRAL) {
 				climbFacing = walker.climbDirection;
 			}
 
-			if (isLaz == E_Direction.NEUTRAL) {
-				vis.x = coordinates.X;
-				vis.y = coordinates.Y;
-				vis.scaleX = storona.X;
+			if (isLaz == E_Direction.RIGHT) {
+				x = boundingBox.right;
+				y = coordinates.Y - boundingBox.halfHeight;
+				turn = -Numbers.HALF_PI;
+				facing = -climbFacing.Y;
+			}
+			else if (isLaz != E_Direction.NEUTRAL) {
+				x = boundingBox.left;
+				y = coordinates.Y - boundingBox.halfHeight;
+				turn = Numbers.HALF_PI;
+				facing = climbFacing.Y;
+			}
+
+			if (art) {
+				art.x = x;
+				art.y = y;
+				art.scaleX = facing;
+				art.rotation = turn;
+			}
+			if (vis) {
+				vis.x = x;
+				vis.y = y;
+				vis.scaleX = facing;
 				vis.scaleY = 1;
-				vis.rotation = 0;
-			}
-			else if (isLaz == E_Direction.RIGHT) {
-				vis.x = boundingBox.right;
-				vis.y = coordinates.Y - boundingBox.halfHeight;
-				vis.rotation = -90;
-				vis.scaleX = -climbFacing.Y;
-			}
-			else {
-				vis.x = boundingBox.left;
-				vis.y = coordinates.Y - boundingBox.halfHeight;
-				vis.rotation = 90;
-				vis.scaleX = climbFacing.Y;
+				vis.rotation = turn * Numbers.RAD_TO_DEG;
 			}
 		}
 	}

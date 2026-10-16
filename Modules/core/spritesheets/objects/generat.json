@@ -4,12 +4,10 @@
 	"width": 200,
 	"height": 160,
 	"blend": "normal",
-	"shadow": "shadow",
 	"images": {
-		"frame0_0": {"x": 0, "y": 288, "w": 199, "h": 132, "pivotX": 99, "pivotY": 132},
-		"frame1_0": {"x": 0, "y": 154, "w": 199, "h": 132, "pivotX": 99, "pivotY": 132},
-		"frame1_1": {"x": 0, "y": 422, "w": 199, "h": 132, "pivotX": 99, "pivotY": 133},
-		"shadow": {"x": 0, "y": 0, "w": 216, "h": 152, "pivotX": 107, "pivotY": 142}
+		"frame0_0": {"x": 0, "y": 0, "w": 199, "h": 132, "pivotX": 99, "pivotY": 132},
+		"frame1_0": {"x": 0, "y": 134, "w": 199, "h": 132, "pivotX": 99, "pivotY": 132},
+		"frame1_1": {"x": 0, "y": 268, "w": 199, "h": 132, "pivotX": 99, "pivotY": 133}
 	},
 	"frames": [
 		{"images": ["frame0_0"]},

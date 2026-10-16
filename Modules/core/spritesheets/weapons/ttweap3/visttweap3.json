@@ -42,14 +42,15 @@
 						"role": "muzzleFlash",
 						"source": "instance68",
 						"matrix": [
-							2.200470101861364,
+							1.0714398367071056,
 							0,
 							0,
-							2.200470101861364,
+							1.0714398367071056,
 							133.33334128061978,
 							0
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -74,14 +75,15 @@
 						"role": "muzzleFlash",
 						"source": "instance68",
 						"matrix": [
-							1.123931971625406,
+							0.5472582822777612,
 							0,
 							0,
-							1.123931971625406,
+							0.5472582822777612,
 							133.33334128061978,
 							0.8333333830038754
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			},
@@ -106,14 +108,15 @@
 						"role": "muzzleFlash",
 						"source": "instance68",
 						"matrix": [
-							0.5106964515068005,
+							0.2486652839075105,
 							0,
 							0,
-							0.5106964515068005,
+							0.2486652839075105,
 							133.33334128061978,
 							0.8333333830038754
 						],
-						"effect": "sphere_f3a797cf669f816d"
+						"texture": "radial",
+						"modifier": "glow_red"
 					}
 				]
 			}
@@ -161,8 +164,7 @@
 		"format": "RGBA8888",
 		"image": "visttweap3.png",
 		"frameCount": 4,
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	},
 	"frames": {
 		"image_001": {

@@ -363,6 +363,7 @@ package fe.game {
 		public function ativateLand(nland:Land):void {
 			land = nland;
 			GameContainer.reference.grafon.drawSky(GUIManager.reference.sky, land.act.fon);
+			GameContainer.reference.grafon.keepLandSheets(land);
 		}
 		
 		// [Call when entering a specific location]

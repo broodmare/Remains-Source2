@@ -463,14 +463,15 @@
 						"source": "instance7",
 						"blendMode": "screen",
 						"matrix": [
-							0.7624054409507179,
+							0.37122593052541797,
 							0,
 							0,
-							0.7624054409507179,
+							0.37122593052541797,
 							26.666668256123955,
 							-2.500000149011619
 						],
-						"effect": "sphere_b748103ddc480439"
+						"texture": "radial",
+						"modifier": "glow_fire"
 					}
 				]
 			},
@@ -519,14 +520,15 @@
 						"role": "muzzleFlash",
 						"source": "instance7",
 						"matrix": [
-							0.5744934424456025,
+							0.2797289359407983,
 							0,
 							0,
-							0.5744934424456025,
+							0.2797289359407983,
 							35.000002086162695,
 							-2.500000149011619
 						],
-						"effect": "sphere_b748103ddc480439"
+						"texture": "radial",
+						"modifier": "glow_fire"
 					}
 				]
 			},
@@ -575,14 +577,15 @@
 						"role": "muzzleFlash",
 						"source": "instance7",
 						"matrix": [
-							0.38658144394048716,
+							0.18823194135617863,
 							0,
 							0,
-							0.38658144394048716,
+							0.18823194135617863,
 							43.33333591620143,
 							-2.500000149011619
 						],
-						"effect": "sphere_b748103ddc480439"
+						"texture": "radial",
+						"modifier": "glow_fire"
 					}
 				]
 			},
@@ -631,14 +634,15 @@
 						"role": "muzzleFlash",
 						"source": "instance7",
 						"matrix": [
-							0.19869996798236975,
+							0.09674980862891559,
 							0,
 							0,
-							0.19869996798236975,
+							0.09674980862891559,
 							51.66666974624016,
 							-2.500000149011619
 						],
-						"effect": "sphere_b748103ddc480439"
+						"texture": "radial",
+						"modifier": "glow_fire"
 					}
 				]
 			},
@@ -2418,7 +2422,6 @@
 		"animations": {},
 		"format": "RGBA8888",
 		"image": "vistermo.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

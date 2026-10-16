@@ -170,7 +170,6 @@
 		"format": "RGBA8888",
 		"image": "viselsword.png",
 		"tintLayer": "viselsword_kor.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

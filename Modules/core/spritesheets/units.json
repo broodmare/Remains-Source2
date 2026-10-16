@@ -300,6 +300,32 @@
 				0
 			]
 		},
+		"bossencl2": {
+			"animation": "bossencl2.json",
+			"image": "bossencl2.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
+		"bossencl3": {
+			"animation": "bossencl3.json",
+			"image": "bossencl3.png",
+			"density": 1.0,
+			"transform": [
+				1,
+				0,
+				0,
+				1,
+				0,
+				0
+			]
+		},
 		"bossnecr": {
 			"animation": "bossnecr.json",
 			"image": "bossnecr.png",

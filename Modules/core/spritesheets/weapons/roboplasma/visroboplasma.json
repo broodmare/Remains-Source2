@@ -105,14 +105,15 @@
 						"role": "muzzleFlash",
 						"source": "instance161",
 						"matrix": [
-							0.4917602534151228,
+							0.23944498276638695,
 							0,
 							0,
-							0.4917602534151228,
+							0.23944498276638695,
 							18.33333442608522,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -137,14 +138,15 @@
 						"role": "muzzleFlash",
 						"source": "instance161",
 						"matrix": [
-							0.3884429964488544,
+							0.18913835745058477,
 							0,
 							0,
-							0.3884429964488544,
+							0.18913835745058477,
 							18.33333442608522,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -169,14 +171,15 @@
 						"role": "muzzleFlash",
 						"source": "instance161",
 						"matrix": [
-							0.2851562868648541,
+							0.1388466060847815,
 							0,
 							0,
-							0.2851562868648541,
+							0.1388466060847815,
 							18.33333442608522,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			},
@@ -201,14 +204,15 @@
 						"role": "muzzleFlash",
 						"source": "instance161",
 						"matrix": [
-							0.1818695027750434,
+							0.08855481844105141,
 							0,
 							0,
-							0.1818695027750434,
+							0.08855481844105141,
 							18.33333442608522,
 							0
 						],
-						"effect": "sphere_7e44f91258f6ebab"
+						"texture": "radial",
+						"modifier": "glow_green"
 					}
 				]
 			}
@@ -225,7 +229,6 @@
 		},
 		"format": "RGBA8888",
 		"image": "visroboplasma.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }

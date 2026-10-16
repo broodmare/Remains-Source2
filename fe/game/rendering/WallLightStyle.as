@@ -7,11 +7,11 @@ package fe.game.rendering {
 	import starling.styles.MeshStyle;
 	import starling.textures.Texture;
 
-	// Draws the room's back wall lit: tinted, blended with the room's light in hard light, then shaded by the tiles' drop shadow
+	// Draws the room's back wall lit: tinted, blended with the room's light in hard light, then shaded by the room's shadow
 	public class WallLightStyle extends MeshStyle {
 
 		public var light:Texture;					// Darkness and light shapes, the same size as the wall
-		public var shadow:Texture;					// The tiles' drop shadow, the same size as the wall
+		public var shadow:Texture;					// The room's shadow, the same size as the wall; only its alpha counts
 		public var tint:ColorTransform;				// The room's colour, applied to the wall before the light
 		public var transparentBack:Boolean;			// The sky shows through gaps in the wall, so light and shadow keep to the wall
 
@@ -56,6 +56,7 @@ import flash.geom.ColorTransform;
 import starling.rendering.MeshEffect;
 import starling.rendering.Program;
 import starling.textures.Texture;
+import starling.textures.TextureSmoothing;
 import starling.utils.RenderUtil;
 
 class WallLightEffect extends MeshEffect {
@@ -157,7 +158,7 @@ class WallLightEffect extends MeshEffect {
 		context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 2, backConstants);
 
 		RenderUtil.setSamplerStateAt(1, false, textureSmoothing, false);
-		RenderUtil.setSamplerStateAt(2, false, textureSmoothing, false);
+		RenderUtil.setSamplerStateAt(2, false, TextureSmoothing.BILINEAR, false);	// The shadow is smaller than the wall
 		context.setTextureAt(1, light.base);
 		context.setTextureAt(2, shadow.base);
 	}

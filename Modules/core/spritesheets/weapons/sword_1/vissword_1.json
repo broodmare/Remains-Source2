@@ -63,7 +63,6 @@
 		"labels": {},
 		"format": "RGBA8888",
 		"image": "vissword_1.png",
-		"schemaVersion": 3,
-		"shared": "_shared/effects.json"
+		"schemaVersion": 4
 	}
 }
