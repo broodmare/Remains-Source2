@@ -214,7 +214,7 @@ package fe.game.domain.serv {
 		// [Check for quest actions, if us, then perform the actions, if not, then just set the status]
 		public function check(us:Boolean=false):Boolean {
 			if (xml && xml.dial.length()) {
-				for each (var dial in xml.dial) {
+				for each (var dial:XML in xml.dial) {
 					
 					if (trig('dial_' + dial.@id)) {
 						continue;
@@ -258,7 +258,7 @@ package fe.game.domain.serv {
 					}
 					
 					if (dial.@quest.length()) {						//если активен квест
-						var quest = GameContainer.reference.game.quests[dial.@quest];
+						var quest:Quest = GameContainer.reference.game.quests[dial.@quest];
 						
 						if (quest==null || quest.state!=1) {
 							continue;
@@ -292,7 +292,7 @@ package fe.game.domain.serv {
 						}
 						
 						if (dial.reward.length()) {
-							for each(var rew in dial.reward) {
+							for each(var rew:XML in dial.reward) {
 								if (rew.@id.length()) {
 										GameContainer.reference.gg.itemInteraction.giveReward(rew.@id, rew.@kol.length() ? int(rew.@kol) : -1);
 								}
@@ -411,7 +411,7 @@ package fe.game.domain.serv {
 			else if (rep == 1) {
 				ok = true;
 				
-				for each(var node in xml.rep) {
+				for each(var node:XML in xml.rep) {
 					if (GameContainer.reference.invent.getQuantity(node.@id) < node.@kol) {
 						GUIManager.reference.gui.infoText('required', Item.nameOf(node.@id), node.@kol - GameContainer.reference.invent.getQuantity(node.@id));
 						ok = false;

@@ -11,15 +11,12 @@ package fe.game.ui  {
 	import fe.game.WeaponManager;
 	import fe.game.World;
 	import fe.game.GameContainer;
-	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.Unit;
-	import fe.game.domain.units.Armor;
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Vendor;
 	import fe.game.domain.units.Pers;
 	import fe.engine.utils.SymbolFactory;
-
 	
 	public class PipBuck {
 
@@ -145,7 +142,7 @@ package fe.game.ui  {
 		public function updateLang():void {
 			vis.but0.text.text = LanguageManager.reference.localText("pip", 'mainclose');
 			
-			for each(var p in pages) if (p is PipPage) {
+			for each(var p:Object in pages) if (p is PipPage) {
 				p.updateLang();
 			}
 			
@@ -390,7 +387,7 @@ package fe.game.ui  {
 				}
 			}
 			
-			for (var p in pages) {
+			for (var p:String in pages) {
 				if (pages[p] is PipPage) {
 					pages[p].vis.visible = false;
 				}
@@ -523,7 +520,7 @@ package fe.game.ui  {
 			ritems[n].visible = usl;
 
 			if (usl) {
-				ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
+				ritems[n].txt.htmlText="<span class='lightBlue'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
 			}
 			else {
 				ritems[n].txt.htmlText = "";

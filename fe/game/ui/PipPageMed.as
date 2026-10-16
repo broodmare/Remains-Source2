@@ -7,10 +7,8 @@ package fe.game.ui {
 	import fe.engine.text.TextParser;
 	import fe.game.GameContainer;
 	import fe.game.domain.units.Pers;
-	import fe.game.domain.serv.Item;
 	import fe.engine.utils.TradeValue;
 	import fe.engine.utils.SymbolFactory;
-
 	
 	/* 
 	*	The healing menu when interacting with doctors

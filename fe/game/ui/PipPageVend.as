@@ -7,6 +7,8 @@ package fe.game.ui {
 
 	import fl.controls.NumericStepper;	// Adobe Animate dependency
 
+	import fe.engine.utils.TradeValue;
+	import fe.engine.utils.SymbolFactory;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.game.ArmorManager;
@@ -21,12 +23,9 @@ package fe.game.ui {
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.serv.Vendor;
 	import fe.game.domain.weapon.Weapon;
-	import fe.game.domain.location.Quest;
+	import fe.game.domain.serv.Quest;
 	import fe.game.domain.units.enums.E_ArmorTypes;
-	import fe.engine.utils.TradeValue;
-	import fe.engine.utils.SymbolFactory;
-
-
+	
 	/* 
 	*	The page displayed when interacting with vendor NPCs
 	*	sub-categories:
@@ -38,7 +37,10 @@ package fe.game.ui {
 	*/
 	public class PipPageVend extends PipPage {
 
-		private static const PAGE_BUY:int = 1, PAGE_SELL:int = 2, PAGE_REPAIR:int = 3, PAGE_QUEST:int = 4;
+		private static const PAGE_BUY:int = 1;
+		private static const PAGE_SELL:int = 2;
+		private static const PAGE_REPAIR:int = 3;
+		private static const PAGE_QUEST:int = 4;
 		
 		private var npcId:String		= "";
 		private var vendor:Vendor;
@@ -301,7 +303,7 @@ package fe.game.ui {
 							continue;
 						}
 
-						var n:Object = {
+						n = {
 							tip:	data.tip,
 							id:		item.id,
 							rid:	item.id,
@@ -438,7 +440,7 @@ package fe.game.ui {
 					return;
 				}
 				
-				for each(var task in vendor.vendorData.tasks) {
+				for each(var task:Object in vendor.vendorData.tasks) {
 					if (!checkQuest(task)) {
 						continue;
 					}
@@ -501,13 +503,13 @@ package fe.game.ui {
 			super.setSigns();
 			
 			if (vis.but4.visible && !isEmpty(vendor.vendorData)) {
-				for each(var task in vendor.vendorData.tasks) {
+				for each(var task:Object in vendor.vendorData.tasks) {
 					if (!checkQuest(task)) {
 						continue;
 					}
 					if (GameContainer.reference.game.quests[task.id]) {
 						var quest:Quest = GameContainer.reference.game.quests[task.id];
-						var nstate = GameContainer.reference.game.quests[task.id].state;
+						var nstate:int = GameContainer.reference.game.quests[task.id].state;
 						
 						if (nstate == 0 || nstate == 1 && quest.chReport(npcId, false) || nstate == 1 && quest.chGive(npcId, false)) {
 							signs[4] = 1;
@@ -629,7 +631,7 @@ package fe.game.ui {
 				item.hp.text="";
 				item.price.text = Math.round(TradeValue.normalize(obj.price) * 10) / 10;
 				item.kol.text=obj.kol;
-				var ns:NumericStepper = item.ns;	// Adobe Animate dependency
+				ns = item.ns;	// Adobe Animate dependency
 				ns.visible=true;
 				ns.maximum=obj.kol;
 				ns.value=obj.bou;
@@ -811,7 +813,7 @@ package fe.game.ui {
 		private function nsCh(event:Event):void {
 			if (page2 == PAGE_BUY || page2 == PAGE_SELL) {
 				var buy:Object = assArr[event.currentTarget.parent.rid.text];
-				var n = event.currentTarget.value - buy.bou;
+				var n:Number = event.currentTarget.value - buy.bou;
 				
 				if (n > 0) {
 					selBuy(buy, n);
@@ -913,7 +915,7 @@ package fe.game.ui {
 						GameContainer.reference.game.addQuest(event.currentTarget.id.text);
 					}
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace("ERROR: (00:43)");
 				}
 				
@@ -1018,7 +1020,7 @@ package fe.game.ui {
 		}
 		
 		public function sellAll():void {
-			for (var s in arr) {
+			for (var s:String in arr) {
 				if (arr[s].tip == "valuables") {
 					selBuy(arr[s], arr[s].kol - arr[s].bou);
 				}

@@ -70,6 +70,11 @@ package fe.engine.text {
 			return result;
 		}
 
+		// Formatted texts name the bound keys, so they're rebuilt after the controls change
+		public static function clearTextCache():void {
+			txtCache = {};
+		}
+
 		/*
 		* Retrieves and formats the localized text based on the provided parameters.
 		* @tip   -- The type of text, eg. 'w' for 'weapon'

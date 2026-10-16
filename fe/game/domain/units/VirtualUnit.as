@@ -2,7 +2,7 @@ package fe.game.domain.units {
 
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.projectile.Bullet;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.enums.E_Material;
 	
 	public class VirtualUnit extends Unit {

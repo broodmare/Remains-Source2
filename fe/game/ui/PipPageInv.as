@@ -16,7 +16,6 @@ package fe.game.ui {
 	import fe.game.domain.units.InventoryItem;
 	import fe.game.domain.units.Favorites;
 	import fe.engine.utils.SymbolFactory;
-
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -29,7 +28,11 @@ package fe.game.ui {
 	*/
 	public class PipPageInv extends PipPage {
 
-		private static const PAGE_WEAPON:int = 1, PAGE_ARMOR:int = 2, PAGE_EQUIPMENT:int = 3, PAGE_OTHER:int = 4, PAGE_AMMO:int = 5;
+		private static const PAGE_WEAPON:int = 1;
+		private static const PAGE_ARMOR:int = 2;
+		private static const PAGE_EQUIPMENT:int = 3;
+		private static const PAGE_OTHER:int = 4;
+		private static const PAGE_AMMO:int = 5;
 		
 		private var assId:String = null;
 		private var assArr:Array;
@@ -50,10 +53,11 @@ package fe.game.ui {
 			
 			vis.butOk.addEventListener(MouseEvent.CLICK,showH);
 			// FILTERS - each array is a subcategory in the inventory, each index in the array is the filter.
+			// Entry 0 is empty for alignment, then weapons, armor, equipment, other and ammo.
 			tips = [
-				[],									// Empty entry for correct alignment
-				["", "w1", "w2", "w4", "w5", "w6", "w3"],	// Weapon filter buttons
-				["", "armor1", "armor3"],				// Armor filter buttons
+				[],
+				["", "w1", "w2", "w4", "w5", "w6", "w3"],
+				["", "armor1", "armor3"],
 				["", "med", ["him", "pot"], "food", ["equip", "spell"], ["book", "sphera", "note"], "paint"],
 				["", ["valuables", "money"], ["spec", "key"], ["impl", "art", "instr", "equip"], ["stuff", "compa", "compw", "compe", "compm"], ["compp", "food"], "scheme"],
 				["", "a", "e"]
@@ -411,7 +415,7 @@ package fe.game.ui {
 			try {
 				item.trol.gotoAndStop(obj.trol);
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace("ERROR: (00:3C)");
 				item.trol.gotoAndStop(1);
 			}
@@ -715,7 +719,7 @@ package fe.game.ui {
 		
 		public function assignKey(num:int):void {
 			pip.snd(1);
-			var temp = assId;
+			var temp:String = assId;
 			
 			if ((page2 == 0 || page2 == PAGE_WEAPON || page2 == PAGE_ARMOR || page2 == PAGE_EQUIPMENT) && assId != null) {
 				gg.itemInteraction.favItem(assId, num);
@@ -799,7 +803,7 @@ package fe.game.ui {
 						inv.getItem(overId).nov = 0;
 					}
 				}
-				catch (err) {
+				catch (err:Error) {
 					trace("ERROR: (00:3C)");
 				}				
 			}

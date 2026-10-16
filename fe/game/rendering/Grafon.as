@@ -573,8 +573,8 @@ package fe.game.rendering {
 
 			loc.gg.addVisual();
 
-			for (var j:String in loc.signposts) {
-				visObjs[3].addChild(loc.signposts[j]);
+			for each (var signpost:MovieClip in loc.signposts) {
+				visObjs[3].addChild(signpost);
 			}
 		}
 		

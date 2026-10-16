@@ -6,15 +6,14 @@ package fe.game.ui {
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.GameContainer;
-	import fe.game.domain.units.Unit;
-	import fe.game.domain.units.Resistances;
-	import fe.game.domain.units.Pers;
-	import fe.game.domain.units.enums.E_Resistances;
-
 	import fe.engine.SaveManager;
 	import fe.engine.utils.SymbolFactory;
-	
+	import fe.game.GameContainer;
+	import fe.game.domain.units.Resistances;
+	import fe.game.domain.units.Pers;
+	import fe.game.domain.units.Effect;
+	import fe.game.domain.units.enums.E_Resistances;
+
 	/* 
 	*	One of the main pip-buck categories
 	*	sub-categories:
@@ -27,10 +26,15 @@ package fe.game.ui {
 	*/
 	public class PipPageStat extends PipPage {
 
-		private static const PAGE_MAIN:int = 1, PAGE_SKILLS:int = 2, PAGE_PERKS:int = 3, PAGE_EFFECTS:int = 4, PAGE_HEALTH:int = 5, PAGE_CHOOSEPERK:int = 6;
+		private static const PAGE_MAIN:int = 1;
+		private static const PAGE_SKILLS:int = 2;
+		private static const PAGE_PERKS:int = 3;
+		private static const PAGE_EFFECTS:int = 4;
+		private static const PAGE_HEALTH:int = 5;
+		private static const PAGE_CHOOSEPERK:int = 6;
 
-		private static var cachedPerkList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
-		private static var cachedParamList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+		private static var cachedPerkList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "perks", "perk");
+		private static var cachedParamList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
 		private var pers:Pers;
 		private var skills:Array;
@@ -60,7 +64,7 @@ package fe.game.ui {
 		}
 
 		public static function getPerkInfo(id:String):XML {
-			var node;
+			var node:XML;
 			
 			if (cachedPerks[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "perks", "id", id);
@@ -74,7 +78,7 @@ package fe.game.ui {
 		}
 
 		public static function getParamInfo(id:String):XML {
-			var node;
+			var node:XML;
 		
 			if (cachedParams[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "params", "id", id);
@@ -139,7 +143,7 @@ package fe.game.ui {
 				var arm:String = "";
 
 				for (var i:int = 0; i < cachedParamList.length(); i++) {
-					var xml = cachedParamList[i];
+					var xml:XML = cachedParamList[i];
 					
 					if (xml.@show > 0) {
 						if (xml.@show == '2' && gg.armor == 0 && gg.marmor == 0) {
@@ -165,11 +169,11 @@ package fe.game.ui {
 							nazv = "-  " + nazv;
 						}
 						
-						var param;
+						var param:Number;
 						
-						// This might be incorrect? It used to be '== 4'
-						if (xml.@tip == E_Resistances.DAM_EXPLOSION) {
-							param = gg.vulnerabilities.getResist(xml.@v);
+						// The param's tip is its display category in params.xml; category 4 rows are resistances
+						if (xml.@tip == '4') {
+							param = gg.vulnerabilities.getResist(Resistances.parseDamageType(xml.@v, ""));
 						}
 						else if (gg.hasOwnProperty(xml.@v)) {
 							param = gg[xml.@v];
@@ -182,8 +186,7 @@ package fe.game.ui {
 							continue;
 						}
 
-						// This might be incorrect? It used to be '== 0'
-						if (xml.@tip == E_Resistances.DAM_PIERCE) {
+						if (xml.@tip == '0') {
 							if (param > 0) {
 								arr.push({
 									id:xml.@id,
@@ -193,8 +196,7 @@ package fe.game.ui {
 							}
 						}
 
-						// This might be incorrect? It used to be '== 4'
-						if (xml.@tip == E_Resistances.DAM_CUT) {
+						if (xml.@tip == '1') {
 							if (param != 1 || GameContainer.reference.pers.factor[xml.@v] && GameContainer.reference.pers.factor[xml.@v].length > 1) {
 								arr.push({
 									id:xml.@id,
@@ -204,16 +206,14 @@ package fe.game.ui {
 							}
 						}
 						
-						// This might be incorrect? It used to be '== 2'
-						if (xml.@tip == E_Resistances.DAM_BLUNT) {
+						if (xml.@tip == '2') {
 							arr.push(
 								{id:xml.@id, nazv:nazv,
 								lvl:(TextParser.numb(param*100)+'%')
 							});
 						}
 
-						// This might be incorrect? It used to be '== 3 || == 4'
-						if (xml.@tip == E_Resistances.DAM_BURN || xml.@tip == E_Resistances.DAM_EXPLOSION) {
+						if (xml.@tip == '3' || xml.@tip == '4') {
 							if (param != 1) {
 								arr.push({
 									id:xml.@id,
@@ -349,7 +349,7 @@ package fe.game.ui {
 							str = localize("pip", 'ad0');
 						}
 						
-						var n:Object = {
+						n = {
 							id:j,
 							nazv:TextParser.txt('e', j + '_ad'),
 							lvl:Math.round(pers.addictions[j]) + '% (' + str + ')',
@@ -366,15 +366,15 @@ package fe.game.ui {
 				statHead.nazv.text = localize("pip", 'is1');
 				statHead.numb.text = localize("pip", 'is2');
 				
-				for each(var sk in pers.skill_ids) {
+				for each(var sk:Object in pers.skill_ids) {
 					if (pers.level < Pers.postPersLevel && sk.post > 0) {
 						continue;
 					}
 
-					var numb = pers.skills[sk.id];
+					var numb:Number = pers.skills[sk.id];
 					
 
-					var n:Object = {
+					n = {
 						id:sk.id,
 						nazv:TextParser.txt('e', sk.id),
 						lvl:numb,
@@ -394,17 +394,17 @@ package fe.game.ui {
 				statHead.nazv.text=localize("pip", 'is5');
 				statHead.numb.text=localize("pip", 'is2');
 				
-				for (var pid in pers.perks) {
+				for (var pid:String in pers.perks) {
 					var maxlvl:int = 1;
-					var xperk = getPerkInfo(pid);
+					var xperk:XML = getPerkInfo(pid);
 				
 					if (xperk.length() && xperk.@lvl.length()) {
 						maxlvl = int(xperk.@lvl);
 					}
 				
-					var numb = pers.perks[pid];
+					numb = pers.perks[pid];
 					
-					var n:Object = {
+					n = {
 						id:pid, 
 						nazv:TextParser.txt('e', pid),
 						lvl:numb,
@@ -435,16 +435,16 @@ package fe.game.ui {
 				statHead.numb.text=localize("pip", 'is4');
 				statHead.numb.x = 500;
 			
-				for (var sk in gg.effects) {
-					var ef = gg.effects[sk];
-					var n:Object = {
+				for (var effectKey:String in gg.effects) {
+					var ef:Effect = gg.effects[effectKey];
+					n = {
 						id:ef.id,
 						nazv:TextParser.txt('e', ef.id),
 						lvl:'∞'
 					};
 			
 					if (ef.ad) {
-						var str:String = TextParser.txt('e',ef.id+'_ad');
+						str = TextParser.txt('e',ef.id+'_ad');
 			
 						if (str != "") {
 							n.nazv = str + ' (' + localize("pip", 'ad' + ef.lvl) + ')';
@@ -482,7 +482,7 @@ package fe.game.ui {
 				statHead.nazv.text = localize("pip", 'is5');
 				statHead.numb.text = localize("pip", 'is2');
 
-				for each(var dp in cachedPerkList) {
+				for each(var dp:XML in cachedPerkList) {
 					if (dp.@tip == 1) {
 						var res:int = pers.perkPoss(dp.@id, dp);
 					
@@ -490,19 +490,15 @@ package fe.game.ui {
 							continue;
 						}
 					
-						var numb = pers.perks[dp.@id];
+						numb = pers.perks[dp.@id] == null ? 0 : Number(pers.perks[dp.@id]);
 					
-						if (numb == null) {
-							numb = 0;
-						}
-					
-						var maxlvl:int = 1;
+						maxlvl = 1;
 					
 						if (dp.@lvl.length()) {
 							maxlvl = int(dp.@lvl);
 						}
 						
-						var n:Object = {
+						n = {
 							id:dp.@id,
 							nazv:TextParser.txt('e', dp.@id),
 							lvl:(numb + 1),
@@ -649,7 +645,7 @@ package fe.game.ui {
 					}
 					
 					vis.info.htmlText += '<br><br>';
-					var xml = getParamInfo(id);
+					var xml:XML = getParamInfo(id);
 					
 					if (xml != null && xml.@f > 0) {
 						vis.info.htmlText += factor(xml.@v);
@@ -658,7 +654,7 @@ package fe.game.ui {
 				else if (page2 == PAGE_HEALTH) {
 					infoItemId = id;
 					showBottext();
-					var lvl;
+					var lvl:int;
 				
 					if (event.currentTarget.cat.text == 'ad') {
 						vis.nazv.text = TextParser.txt('e', id + '_ad');
@@ -683,7 +679,7 @@ package fe.game.ui {
 					vis.info.htmlText += '<br><br>';
 					
 					if (id.substr(0, 8) == 'statHead') {
-						lvl = id.substr(8, 1);
+						lvl = int(id.substr(8, 1));
 						
 						if (lvl > 3) {
 							lvl = 3;
@@ -695,7 +691,7 @@ package fe.game.ui {
 					}
 					
 					if (id.substr(0, 8) == 'statTors') {
-						lvl = id.substr(8, 1);
+						lvl = int(id.substr(8, 1));
 						
 						if (lvl > 3) {
 							lvl = 3;
@@ -707,7 +703,7 @@ package fe.game.ui {
 					}
 					
 					if (id.substr(0, 8) == 'statLegs') {
-						lvl = id.substr(8, 1);
+						lvl = int(id.substr(8, 1));
 						
 						if (lvl > 3) {
 							lvl = 3;
@@ -719,7 +715,7 @@ package fe.game.ui {
 					}
 					
 					if (id.substr(0, 9) == 'statBlood') {
-						lvl = id.substr(9, 1);
+						lvl = int(id.substr(9, 1));
 					
 						if (lvl > 3) {
 							lvl = 3;
@@ -731,7 +727,7 @@ package fe.game.ui {
 					}
 					
 					if (id.substr(0, 8) == 'statMana') {
-						lvl = id.substr(8, 1);
+						lvl = int(id.substr(8, 1));
 					
 						if (lvl > 2) {
 							vis.info.htmlText += effStr('perk', 'trauma_mana', lvl);
@@ -992,7 +988,7 @@ package fe.game.ui {
 			}
 			
 			if (page2 == PAGE_SKILLS) {
-				var id = event.currentTarget.id.text;
+				var id:String = event.currentTarget.id.text;
 				unselSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
@@ -1009,7 +1005,7 @@ package fe.game.ui {
 			
 			if (page2 == PAGE_SKILLS) {
 				var n:int = 0;
-				for (var i in skills) {
+				for (var i:String in skills) {
 					n += skills[i].lvl-skills[i].minlvl;
 				}
 				

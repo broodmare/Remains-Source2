@@ -11,7 +11,7 @@ package fe.game.domain.units {
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.projectile.Bullet;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.units.ability.Telekinesis;
 	import fe.game.WeaponManager;
 	import fe.game.GameContainer;
@@ -432,7 +432,7 @@ package fe.game.domain.units {
 						visBmp.filters=[];
 					}
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace('ERROR: (00:6)');
 				}
 				

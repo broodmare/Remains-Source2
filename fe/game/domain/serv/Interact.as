@@ -9,7 +9,7 @@ package fe.game.domain.serv {
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
 	import fe.game.domain.location.Area;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.location.Location;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
@@ -853,7 +853,7 @@ package fe.game.domain.serv {
 				}
 			}
 			
-			if (actFun) {
+			if (actFun != null) {
 				actFun();
 			}
 			

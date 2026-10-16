@@ -6,7 +6,7 @@ package fe.game.rendering {
     import fe.game.World;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.location.tile.Tile;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.units.Unit;
     import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.projectile.Bullet;
@@ -401,7 +401,7 @@ package fe.game.rendering {
 
 		private function debugDrawBoundingBoxesForTiles(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Object in list) {
 				// Don't draw beam collision
 				if (!item.hasOwnProperty("shelf")) {
 					continue;
@@ -424,7 +424,7 @@ package fe.game.rendering {
 
 		private function debugDrawBoundingBoxesForShelfs(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Object in list) {
 				// If the item is "a stair", skip it
 				if (!item.hasOwnProperty("shelf") || !item.shelf) {
 					continue;
@@ -446,7 +446,7 @@ package fe.game.rendering {
 
 		private function debugDrawBoundingBoxesForStairs(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Object in list) {
 				// If the item is not a stair, skip it
 				if (!item.hasOwnProperty("stair") || item.stair == 0) {
 					continue;
@@ -468,7 +468,7 @@ package fe.game.rendering {
 
 		private function debugDrawBoundingBoxesForDiags(container:Sprite, list:*, color:uint):void {
 			// `list` can be an Array, Vector, or other iterable
-			for each (var item in list) {
+			for each (var item:Object in list) {
 				// If the item is not a diagon, skip it
 				if (!item.hasOwnProperty("diagon") || item.diagon == E_Direction.NEUTRAL) {
 					continue;

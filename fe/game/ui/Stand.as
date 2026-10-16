@@ -1,6 +1,5 @@
 package fe.game.ui {
-
-	// [Stand for weapons, collectibles and achievements]
+	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
@@ -10,6 +9,7 @@ package fe.game.ui {
 	
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
+	import fe.engine.utils.SymbolFactory;
 	import fe.game.ArmorManager;
 	import fe.game.ItemInteraction;
 	import fe.game.WeaponManager;
@@ -19,12 +19,13 @@ package fe.game.ui {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.enums.E_ArmorTypes;
-	import fe.engine.utils.SymbolFactory;
 	
+	// [Stand for weapons, collectibles and achievements]
 	public class Stand {
 		
 		public var active:Boolean = false;
 		
+		// Visual asset and (harcoded size?)
 		private var vis:MovieClip;
 		private var visX:int = 1200;
 		private var visY:int = 800;
@@ -260,7 +261,7 @@ package fe.game.ui {
 			var aid:String = Appear.ggArmorId;
 			Appear.transp = true;
 			
-			for each(var arm in ArmorManager.reference.armors) {
+			for each(var arm:Armor in ArmorManager.reference.armors) {
 
 				// Armor goes on the armor page and amulets on the amulet page
 				if (n == 6 && arm.tip != E_ArmorTypes.ARMOR || n == 7 && arm.tip != E_ArmorTypes.AMULET) {
@@ -302,7 +303,7 @@ package fe.game.ui {
 						dvis.head.morda.magic.visible = false; 
 						dvis.head.morda.eye.visible = false;
 					}
-					catch (err) {
+					catch (err:Error) {
 
 					}
 					

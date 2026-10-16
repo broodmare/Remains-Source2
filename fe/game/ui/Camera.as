@@ -16,7 +16,7 @@ package fe.game.ui {
 		public var moved:Boolean;
 		public var screenX:int=1280; //размеры экрана
 		public var screenY:int=800;
-		public var coord = new Vec2(200, 200); // [Coordinates of the camera center in the world]
+		public var coord:Vec2 = new Vec2(200, 200); // [Coordinates of the camera center in the world]
 		public var vx:int;				// [Visual coordinates of the world relative to the screen]
 		public var vy:int;
 		public var ovy:int;
@@ -31,8 +31,8 @@ package fe.game.ui {
 		public var quakeX:Number=0;
 		public var quakeY:Number=0;
 		public var isZoom:int=0;
-		public var scaleV = 1;
-		public var scaleS = 1;
+		public var scaleV:Number = 1;
+		public var scaleS:Number = 1;
 		public var dblack:Number=0;
 		
 		//режим показа

@@ -15,8 +15,7 @@ package fe.game.ui {
 	import fe.engine.Engine;
 	import fe.game.GameContainer;
 	import fe.game.domain.serv.Item;
-	import fe.game.domain.units.Unit;
-	import fe.game.domain.units.Resistances;
+	import fe.game.domain.units.Effect;
 	import fe.game.domain.units.enums.E_Resistances;
 
 	
@@ -26,7 +25,7 @@ package fe.game.ui {
 
 		private static const HARDRESET_DYING_FRAMES:int = 10;	// The hardreset command's death plays briefly before the screen fades
 
-		private var world = World.w;
+		private var world:World = World.w;
 
 		public var vis:MovieClip;
 		public var ist:Array;
@@ -281,7 +280,7 @@ package fe.game.ui {
 					break;
 				case "res":
 					if (GameContainer.reference.gg.effects.length>0) {
-						for each (var eff in GameContainer.reference.gg.effects) eff.unsetEff();
+						for each (var eff:Effect in GameContainer.reference.gg.effects) eff.unsetEff();
 					}
 					break;
 				case "repair":
@@ -371,7 +370,7 @@ package fe.game.ui {
 				case "triggers":
 					if (s.length>1) GUIManager.reference.gui.infoText("trigger", s[1], GameContainer.reference.game.triggers[s[1]]);
 					else {
-						for (var i in GameContainer.reference.game.triggers)  GUIManager.reference.gui.infoText("trigger", i, GameContainer.reference.game.triggers[i]);
+						for (var i:String in GameContainer.reference.game.triggers)  GUIManager.reference.gui.infoText("trigger", i, GameContainer.reference.game.triggers[i]);
 					}
 					break;
 				case "textboxes":

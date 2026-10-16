@@ -108,6 +108,15 @@ package fe.game {
 			return lang.localText("items", ammo.id);
 		}
 		
+		// Ammo names are resolved once, so they're resolved again after the language changes
+		public function updateLang():void {
+			var ammo:Ammo;
+
+			for each (ammo in _ammo) {
+				ammo.name = getAmmoName(ammo);
+			}
+		}
+
 		// Returns the ammo type with the given ID, or null if the ID is empty (the weapon doesn't use ammo).
 		// Any other item can still be used as ammo (eg. scrap metal), it'll just have no special properties.
 		public function getAmmo(id:String):Ammo {

@@ -18,7 +18,7 @@ package fe.game.domain.units {
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.serv.AnimationSet;
 	import fe.game.domain.serv.Desintegr;
@@ -98,6 +98,7 @@ package fe.game.domain.units {
 		public var opt:Object;								// Paramteters for this unit or variant
 		public var vulnerabilities:Resistances;				// Damage multiplers for each type of damage (Eg. 1.20 is 120% damage or 0.00 is 0% damage) (These can change)
 		public var begvulner:Resistances;					// The unit's default vulnerabilities without an modifiers (These can not change)
+		public static var begvulners:Object	= {};			// The shared 'begvulner' for every unit ID initialized
 		
 		// Evasion, 1 is standard, 0 always hits
 		public var dexter:Number			= 1.00;
@@ -817,6 +818,10 @@ package fe.game.domain.units {
 			// Create a duplicate of all the vulnerability values so we can keep track of the default values
 			if (setOpts) {
 				begvulner = vulnerabilities.clone();
+				begvulners[id] = begvulner;
+			}
+			else {
+				begvulner = begvulners[id];
 			}
 		}
 		
@@ -847,7 +852,6 @@ package fe.game.domain.units {
 
 		// TODO: Only a few classes use this and they should be cloning the weapon themselves, this is obsolete
 		public function getXmlWeapon(dif:int):Weapon {
-			trace("Unit.as/getXmlWeapon() - Unit: \"" + id + "\" is getting a weapon from XML");
 			// Get the unit info
 			var node0:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 
@@ -862,14 +866,10 @@ package fe.game.domain.units {
 				}
 				
 				if (n.@ch.length() == 0 || isrnd(n.@ch)) {
-					trace("Unit.as/getXmlWeapon() - Returning weapon ID: " + n.@id);
 					return WeaponManager.reference.cloneWeapon(n.@id, this);
 				}
 			}
 
-			
-			
-			trace("Unit.as/getXmlWeapon() - Failed, returning null");
 			return null;
 		}
 		
@@ -970,7 +970,7 @@ package fe.game.domain.units {
 			// [Attached scripts]
 			if (mapxml) {
 				if (mapxml.scr.length()) {
-					for each (var xscr in mapxml.scr) {
+					for each (var xscr:XML in mapxml.scr) {
 						var scr:Script = new Script(xscr, loc.land, this);
 						
 						if (scr.eve == "die" || scr.eve == null) {
@@ -1107,7 +1107,7 @@ package fe.game.domain.units {
 				if (f) {
 					// [reset effects]
 					if (effects.length > 0) {
-						for each (var eff in effects) {
+						for each (var eff:Effect in effects) {
 							eff.unsetEff();
 						}
 						
@@ -1181,7 +1181,7 @@ package fe.game.domain.units {
 				
 				if (vis) {
 					if (t_emerg > 0) {
-						var tf = t_emerg / (max_emerg + 1);
+						var tf:Number = t_emerg / (max_emerg + 1);
 						vis.filters = [new GlowFilter(0xAADDFF, tf, tf * 20, tf * 20, 1, 3)];
 						vis.alpha = 1 - tf;
 					}
@@ -1223,7 +1223,7 @@ package fe.game.domain.units {
 			else {
 				var div:int = int(Math.max(Math.abs(velocity.X + osndx),Math.abs(velocity.Y + osndy))/GameContainer.maxdelta)+1;
 				
-				for (var i = 0; i < div; i++) {
+				for (var i:int = 0; i < div; i++) {
 					run(div); // What the fuck, this is being used as a string later.
 				}
 			}
@@ -1249,9 +1249,9 @@ package fe.game.domain.units {
 
 			onCursor =(isVis && !disabled && sost < 4 && boundingBox.intersectsPoint(GameContainer.reference.celX, GameContainer.reference.celY)) ? prior : 0;
 
-			for (i in childObjs) {
-				if (childObjs[i]) { // Here is where it's called as a string.
-					childObjs[i].step();
+			for (var childId:String in childObjs) {
+				if (childObjs[childId]) {
+					childObjs[childId].step();
 					/*try {
 						
 					}
@@ -1441,6 +1441,7 @@ package fe.game.domain.units {
 				else {	// Apply sloped movement
 					coordinates.X += dxdiv;
 					coordinates.Y -= slopeY;
+					boundingBox.center(coordinates);
 					velocity.Y = 0;
 					checkDiagon(0, E_Direction.NEUTRAL);
 				}
@@ -1569,10 +1570,10 @@ package fe.game.domain.units {
 					}
 					
 					if (player && isUp && stay && !isSit) {
-						var x:int = int(boundingBox.right / tileX);
-						var y:int = int(boundingBox.top / tileY);
-						t = loc.getTile(x, y);
-						t2 = loc.getTile(x, (y + 1));
+						var tileCoordX:int = int(boundingBox.right / tileX);
+						var tileCoordY:int = int(boundingBox.top / tileY);
+						t = loc.getTile(tileCoordX, tileCoordY);
+						t2 = loc.getTile(tileCoordX, (tileCoordY + 1));
 						
 						if ((t.collision==0 || t.collision==3) && !(t2.collision==0 || t2.collision==3) && t2.definition.height==4) {
 							coordinates.Y  = t2.boundingBox.top;
@@ -2072,7 +2073,7 @@ package fe.game.domain.units {
 				isPlav = true;
 				inWater = true;
 
-				if (isPlav) { // Assuming 'plav' should be 'isPlav'
+				if (plav) {
 					stay = false;
 					sit(false);
 				}
@@ -2173,8 +2174,12 @@ package fe.game.domain.units {
 
 		// This checks for physics objects to stand on and returns the top of their boundingbox
 		public function checkShelf(pdy:Number, pdy2:Number = 0):Number {
-			for (var i in loc.objs) {
-				var b:Box=loc.objs[i] as Box;
+			var objs:Vector.<Box> = loc.objs;
+			var n:int = objs.length;
+			var b:Box;
+
+			for (var i:int = 0; i < n; i++) {
+				b = objs[i];
 				
 				if (!b.invis && b.shelf && !b.levit && !(boundingBox.right < b.boundingBox.left || boundingBox.left > b.boundingBox.right) && boundingBox.bottom + pdy2 <= b.boundingBox.top && boundingBox.bottom + pdy + pdy2 > b.boundingBox.top) {
 					shX1 = 1;
@@ -2208,8 +2213,8 @@ package fe.game.domain.units {
 		public function checkDiagon(velN:Number, napr:Vec2):Number {
 			var ddy:Number;
 			var newmy:Number = 0;
-			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + velocity.Y);
-			
+			var t:Tile = loc.getAbsTile(coordinates.X, coordinates.Y + velN);
+
 			if (diagon == E_Direction.NEUTRAL) {
 				if (t.definition.slopeSide != E_Direction.NEUTRAL && (napr==E_Direction.NEUTRAL || t.definition.slopeSide==napr)) {
 					ddy = t.getMaxY(coordinates.X);
@@ -2293,7 +2298,7 @@ package fe.game.domain.units {
 			arrIcos = [];
 			var unitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 			
-			for each(var xml in unitList) {
+			for each(var xml:XML in unitList) {
 				if (xml.@cat=='3') {
 					var bmpd:BitmapData;
 					var ok:Boolean=false;
@@ -2421,7 +2426,7 @@ package fe.game.domain.units {
 			}
 			
 			if (childObjs) {
-				for (var i in childObjs) {
+				for (var i:String in childObjs) {
 					if (childObjs[i]!=null && childObjs[i].vis) {
 						childObjs[i].addVisual();
 					}
@@ -2437,7 +2442,7 @@ package fe.game.domain.units {
 			}
 			
 			if (childObjs) {
-				for (var i in childObjs) {
+				for (var i:String in childObjs) {
 					if (childObjs[i]) childObjs[i].remVisual();
 				}
 			}
@@ -2869,7 +2874,7 @@ package fe.game.domain.units {
 			}
 
 			// [Getting a temporary effect]
-			for (var i in effects) {
+			for (var i:String in effects) {
 				if (eff.tip == 3 && effects[i].tip == 3) {
 					effects[i] = eff;
 					eff.setEff();
@@ -2912,7 +2917,7 @@ package fe.game.domain.units {
 		}
 		
 		public function remEffect(id:String):void {
-			for each(var eff in effects) {
+			for each(var eff:Effect in effects) {
 				if (eff != null && eff.id == id) {
 					eff.unsetEff();
 				}
@@ -2924,7 +2929,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			for each(var sk in xml.sk) {
+			for each(var sk:XML in xml.sk) {
 				var val:Number, lvl:int;
 				
 				if (sk.@dop.length()) {
@@ -2945,7 +2950,7 @@ package fe.game.domain.units {
 				}
 				
 				if (sk.@tip == 'res') {
-					vulnerabilities.changeResist(sk.@id, -val);
+					vulnerabilities.changeResist(Resistances.parseDamageType(sk.@id, ""), -val);
 				}
 				else if (hasOwnProperty(sk.@id)) {
 					if (sk.@ref == 'add') {
@@ -2981,7 +2986,7 @@ package fe.game.domain.units {
 			// Process active effects
 			for each(var eff:Effect in effects) {
 				var effid:String = eff.id;
-				var sk = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", effid);
+				var sk:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "effs", "id", effid);
 				setSkillParam(sk, eff.vse ? 0 : 1);
 			}
 			
@@ -3498,7 +3503,7 @@ package fe.game.domain.units {
 				bul.tipBullet == 1 && dodge < 1 && (dodge <= 0 || Math.random() > dodge)
 			)) {
 				var dm:Number = 0;
-				if ((transp && (vulnerabilities.getResist(bul.tipDamage) <= 0) || invulner)) {
+				if (transp && (vulnerabilities.getResist(bul.tipDamage) <= 0 || invulner)) {
 					return Bullet.MISS;
 				}
 				else if (bul.damage > 0) {
@@ -3560,9 +3565,9 @@ package fe.game.domain.units {
 			if (dodge - un.undodge > 0 && isrnd(dodge - un.undodge)) {
 				if (GameContainer.reference.showHit >= 1) {
 					numbEmit.cast(loc, coordinates.X, coordinates.Y - boundingBox.halfHeight, {txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.50});
-					
-					return false;
 				}
+
+				return false;
 			}
 			
 			var sila:Number = Math.random() * 0.4 + 0.8;

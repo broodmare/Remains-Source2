@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.domain.serv {
 	
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
@@ -6,7 +6,6 @@ package fe.game.domain.location {
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
 	import fe.game.domain.serv.Item;
-	import fe.game.domain.serv.Script;
 	import fe.game.domain.weapon.Weapon;
 
 	public class Quest {
@@ -153,8 +152,8 @@ package fe.game.domain.location {
 				
 				var sl:Object;
 				for each(var sxml:XML in xml.q) {
-					sl = {};
-					
+					sl = null;
+
 					if (loadObj) {
 						sl = loadObj.subs[sxml.@id];
 					}
@@ -196,7 +195,7 @@ package fe.game.domain.location {
 		// [Give out starting items]
 		public function deposit():void {
 			if (xml.deposit.length()) {
-				for each(var rew in xml.deposit) {
+				for each(var rew:XML in xml.deposit) {
 					if (rew.@id.length()) {
 						GameContainer.reference.gg.itemInteraction.giveReward(rew.@id, rew.@kol.length() ? int(rew.@kol) : -1);
 					}
@@ -491,7 +490,7 @@ package fe.game.domain.location {
 			}
 			
 			if (xml.reward.length()) {
-				for each(var rew in xml.reward) {
+			for each(var rew:XML in xml.reward) {
 					if (rew.@id.length()) {
 						GameContainer.reference.gg.itemInteraction.giveReward(rew.@id, rew.@kol.length() ? int(rew.@kol) : -1);
 					}

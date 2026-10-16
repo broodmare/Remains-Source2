@@ -9,6 +9,7 @@ package fe.game.ui {
 	import fe.engine.Engine;
 	import fe.game.GameContainer;
 	import fe.engine.text.LanguageManager;
+	import fe.engine.text.TextParser;
 	
 	public class Ctr {
 		
@@ -179,7 +180,7 @@ package fe.game.ui {
 		private var KeyboardQ:uint			= Keyboard.Q;
 		
 		public var setkeyOn:Boolean			= false;
-		public var setkeyRequest			= null;
+		public var setkeyRequest:Object			= null;
 		private var setkeyFun:Function;
 		
 		public var keyPressed:Boolean		= false;
@@ -330,7 +331,7 @@ package fe.game.ui {
 		public function updateKeys():void {
 			keys = [];
 			
-			for each(var obj in keyObj) {
+			for each(var obj:Object in keyObj) {
 				if (obj.a1) {
 					keys[obj.a1] = obj;
 				}
@@ -339,6 +340,8 @@ package fe.game.ui {
 					keys[obj.a2] = obj;
 				}
 			}
+
+			TextParser.clearTextCache();
 		}
 		
 		// [default settings]
@@ -346,7 +349,7 @@ package fe.game.ui {
 			keyObj = [];
 			keyIds = [];
 			
-			for (var i in keyXML.key) {
+			for (var i:String in keyXML.key) {
 				var obj:Object = {id:keyXML.key[i].@id};
 				
 				if (keyXML.key[i].@def.length()) {
@@ -365,15 +368,15 @@ package fe.game.ui {
 		public function save():* {
 			var arr:Array = [];
 			
-			for (var i in keyIds) {
+			for (var i:String in keyIds) {
 				arr[i] = {a1:keyIds[i].a1, a2:keyIds[i].a2};
 			}
 			
 			return arr;
 		}
 		
-		public function load(arr):void {
-			for (var i in arr) {
+		public function load(arr:Object):void {
+			for (var i:String in arr) {
 				if (keyIds[i]) {
 					checkKey(arr[i].a1);
 					checkKey(arr[i].a2);
@@ -393,7 +396,7 @@ package fe.game.ui {
 				return;
 			}
 			
-			for (var k in keyIds) {
+			for (var k:String in keyIds) {
 				if (keyIds[k]) {
 					if (keyIds[k].a1 == a) {
 						keyIds[k].a1 = null;
@@ -407,12 +410,12 @@ package fe.game.ui {
 		}
 		
 		// [Return visible key name by action code]
-		public function retKey(id):String {
+		public function retKey(id:String):String {
 			if (keyIds[id] == null) {
 				return "?"
 			}
 			
-			var key = keyIds[id].a1;
+			var key:Object = keyIds[id].a1;
 			
 			if (key == null) {
 				key=keyIds[id].a2;
@@ -446,11 +449,11 @@ package fe.game.ui {
 		}
 		
 		// [request completed]
-		private function requestOk(nkey):void {
+		private function requestOk(nkey:Object):void {
 			setkeyOn = false;
 			setkeyRequest = nkey;
 			
-			if (setkeyFun) {
+			if (setkeyFun != null) {
 				setkeyFun();
 			}
 		}
@@ -581,7 +584,7 @@ package fe.game.ui {
 					return;
 				}
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace("Ctr.as/onMouseWheel() - ERROR: (00:2C)"); // This is being thrown when at the limit of a scrollbar and scrolling more
 			}
 			

@@ -1,61 +1,86 @@
 package fe.game.ui {
 
-    import flash.display.MovieClip;
-    import flash.display.Loader; 
-    import flash.net.URLRequest; 
-    import flash.events.Event;
-    import flash.events.IOErrorEvent;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	import flash.utils.Dictionary;
 
 	public class PortraitHelper {
 
-        private static var pictureHolder:MovieClip;     // The movieclip object containing the loaded image
-        public var currentPortrait:String;              // The name of the currently loaded portrait   
+		private static const PORTRAIT_PATH:String = "Modules/core/Portraits/";
+		private var pictureHolder:MovieClip;					// The movieclip object containing the shown image
+		private var images:Object = {};							// Each portrait's image by name, null while it's still loading
+		private var loadNames:Dictionary = new Dictionary();	// The portrait name each pending load is for
 
-        public function PortraitHelper(guiMC:MovieClip) {
-            var dialogueBox:MovieClip = guiMC.getChildByName("dial") as MovieClip;
-            pictureHolder = dialogueBox.portret;
-        }
-        
-        public function displayPortrait(newPortrait:String):void  {
-            if (currentPortrait != newPortrait) {
-                //trace("PortraitHelper.as/displayPortrait() - Loading new portrait: \"" + newPortrait + "\".");
-                clearPortrait();
-                currentPortrait = newPortrait;
-                loadImage(newPortrait);
-            }
-            else {
-                // Do nothing, we already have the correct portait loaded
-                //trace("PortraitHelper.as/displayPortrait() - Ignoring request to render duplicate portrait.");
-            }
-        }
+		public var currentPortrait:String;						// The name of the portrait being shown
 
-        private static function loadImage(imageName:String):void {
-            var imageLoader:Loader = new Loader();
-            imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
-            imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
+		private function loadImage(imageName:String):void {
+			var imageLoader:Loader = new Loader();
 
-            var imageURL:String = "Modules/core/Portraits/" + imageName + ".png";
-            imageLoader.load(new URLRequest(imageURL));
-        }
+			images[imageName] = null;
+			loadNames[imageLoader.contentLoaderInfo] = imageName;
+			imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
+			imageLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
+			imageLoader.load(new URLRequest(PORTRAIT_PATH + imageName + ".png"));
+		}
 
-        private static function onImageLoaded(event:Event):void {
-            event.target.removeEventListener(Event.COMPLETE, onImageLoaded);
-            event.target.removeEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
+		// A portrait that arrives after its line has passed is kept but not shown
+		private function onImageLoaded(event:Event):void {
+			var info:LoaderInfo = LoaderInfo(event.target);
+			var imageName:String = finishLoad(info);
+			var image:BitmapData = Bitmap(info.content).bitmapData;
 
-            pictureHolder.addChild(event.target.loader.content);
-        }
+			images[imageName] = image;
+			if (imageName == currentPortrait) {
+				pictureHolder.addChild(new Bitmap(image));
+			}
+		}
 
-        private static function onImageLoadError(event:IOErrorEvent):void {
-            event.target.removeEventListener(Event.COMPLETE, onImageLoaded);
-            event.target.removeEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
-            trace("PortraitHelper.as/onImageLoadError() - Error loading image: " + event.text);
-        }
+		private function onImageLoadError(event:IOErrorEvent):void {
+			delete images[finishLoad(LoaderInfo(event.target))];
+			trace("PortraitHelper.as/onImageLoadError() - Error loading image: " + event.text);
+		}
 
-        public function clearPortrait():void {
-            while (pictureHolder.numChildren > 0) {
-                pictureHolder.removeChildAt(0);
-            }
-            currentPortrait = null;
-        }
-    }
+		// Stops listening to a load and returns the portrait name it was for
+		private function finishLoad(info:LoaderInfo):String {
+			var imageName:String = loadNames[info];
+
+			info.removeEventListener(Event.COMPLETE, onImageLoaded);
+			info.removeEventListener(IOErrorEvent.IO_ERROR, onImageLoadError);
+			delete loadNames[info];
+
+			return imageName;
+		}
+
+		public function PortraitHelper(guiMC:MovieClip) {
+			var dialogueBox:MovieClip = guiMC.getChildByName("dial") as MovieClip;
+			pictureHolder = dialogueBox.portret;
+		}
+
+		public function displayPortrait(newPortrait:String):void {
+			if (newPortrait == currentPortrait) { return; }
+
+			clearPortrait();
+			currentPortrait = newPortrait;
+
+			if (!images.hasOwnProperty(newPortrait)) {
+				loadImage(newPortrait);
+			}
+			else if (images[newPortrait] != null) {
+				pictureHolder.addChild(new Bitmap(images[newPortrait]));
+			}
+		}
+
+		public function clearPortrait():void {
+			while (pictureHolder.numChildren > 0) {
+				pictureHolder.removeChildAt(0);
+			}
+			currentPortrait = null;
+		}
+	}
 }

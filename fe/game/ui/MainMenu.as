@@ -10,8 +10,8 @@ package fe.game.ui {
 	import flash.net.FileFilter;
 
 	import fe.game.rendering.Displ;
-
 	import fe.game.GameContainer;
+	import fe.game.WeaponManager;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
@@ -681,6 +681,7 @@ package fe.game.ui {
 				langReload = false;
 				mainMenuMovieClip.loading.text = "";
 				GUIManager.reference.pip.updateLang();
+				WeaponManager.reference.updateLang();
 				setMainLang();
 				showButtons(true);
 				return;

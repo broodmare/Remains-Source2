@@ -128,7 +128,7 @@ package fe.game.domain.units {
 				try {
 					vis.osn.gotoAndStop("stay");
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace("ERROR: (00:9)");
 					vis.osn.gotoAndStop(1);
 				}
@@ -218,7 +218,7 @@ package fe.game.domain.units {
 				try {
 					vis.osn.gotoAndPlay("move" + br);
 				}
-				catch (err) {
+				catch (err:Error) {
 					// TODO: NPCs will spam this error, investigate why 
 					//trace("ERROR: (00:0A) - Npc: \"" + npcId + "\" failed to play animation (move" + br.toString() + ")!");
 				}
@@ -236,7 +236,7 @@ package fe.game.domain.units {
 						animState = "stay";
 					}
 				}
-				catch(err) {	
+				catch(err:Error) {
 					trace("ERROR: (00:0B)  - Npc: \"" + npcId + "\" failed run flying animation!");	
 				}
 			}
@@ -300,7 +300,7 @@ package fe.game.domain.units {
 				try {
 					vis.osn.gotoAndStop(2);
 				}
-				catch (err) {
+				catch (err:Error) {
 					trace("ERROR: (00:C)");
 				}
 			//проверить, нужна ли мигающая подсказка
@@ -401,7 +401,7 @@ package fe.game.domain.units {
 					try {
 						vis.osn.gotoAndStop(1);
 					}
-					catch (err) {
+					catch (err:Error) {
 						trace("ERROR: (00:D)");
 					}
 				}

@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.domain.objects {
 
 	import flash.display.MovieClip;
 	import flash.geom.ColorTransform;
@@ -6,13 +6,13 @@ package fe.game.domain.location {
 	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.GameContainer;
-	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.rendering.Flipbook;
+	import fe.game.domain.location.Location;
 
 	public class Trap extends Obj {
 

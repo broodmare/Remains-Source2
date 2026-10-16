@@ -67,6 +67,11 @@ package fe.game {
 				if (!("work" in schematic) && "workbench" in schematic) {
 					schematic.work = schematic.workbench;
 				}
+
+				// Loot and vendors cap schematics by 'lvl'
+				if (!("lvl" in schematic) && "skillRequirement" in schematic) {
+					schematic.lvl = schematic.skillRequirement;
+				}
 				
 				_schematics[schematic.id] = schematic;
 				

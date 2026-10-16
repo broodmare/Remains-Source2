@@ -33,7 +33,7 @@ package fe.game.rendering {
 			
 			var node:XML = getBackObjInfo(id);
 
-			var wid=node.@x2*tileX;
+			var wid:Number=node.@x2*tileX;
 			if (xml && xml.@w.length()) wid=xml.@w*tileX
 			if (!(wid>0)) wid=tileX;
 			if (nloc && nloc.mirror) {
@@ -93,7 +93,7 @@ package fe.game.rendering {
 			}
 		}
 		
-		public function onoff(n:int) {
+		public function onoff(n:int):void {
 			if (n>0 && frameOn) frame=frameOn;
 			if (n<0 && frameOff) frame=frameOff;
 			if (frame>0) {

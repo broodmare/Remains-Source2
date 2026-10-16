@@ -1,9 +1,8 @@
 package fe.game.ui {
 
+	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
 	import fe.game.domain.entities.Obj;
-
-	import fe.engine.utils.SymbolFactory;
 
 	public class SatsCel extends Obj {
 

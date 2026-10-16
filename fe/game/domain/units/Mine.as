@@ -107,7 +107,7 @@ package fe.game.domain.units {
 			massa=massaFix;
 			
 			damage1*=(Math.random()*0.3+0.85);
-			var visNode = node.vis[0];
+			var visNode:XML = node.vis[0];
 			
 			if (visNode.@tipdec.length()) {
 				tipDecal = visNode.@tipdec;

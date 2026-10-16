@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.domain.objects {
 
 	import flash.display.MovieClip;
 	
@@ -11,6 +11,7 @@ package fe.game.domain.location {
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.AutoPickupManager;
+	import fe.game.domain.location.Location;
 	
 	// This is the object you see in-game when an item is dropped
 	public class Loot extends Obj {
@@ -131,7 +132,7 @@ package fe.game.domain.location {
 						vis.gotoAndStop(item.id);
 					}
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace("ERROR: (00:26)");
 					vis.gotoAndStop(1);
 				}
@@ -146,7 +147,7 @@ package fe.game.domain.location {
 				try {
 					vis.gotoAndStop(item.id);
 				}
-				catch(err) {
+				catch(err:Error) {
 					if (item.tip == Item.L_COMPA) vis.gotoAndStop("compa");
 					else if (item.tip == Item.L_COMPW) vis.gotoAndStop("compw");
 					else if (item.tip == Item.L_COMPE) vis.gotoAndStop("compe");
@@ -458,8 +459,12 @@ package fe.game.domain.location {
 		}
 
 		public function checkShelf(velocityDown:Number):Number {
-			for (var i in loc.objs) {
-				var b:Box = loc.objs[i] as Box;
+			var objs:Vector.<Box> = loc.objs;
+			var n:int = objs.length;
+			var b:Box;
+
+			for (var i:int = 0; i < n; i++) {
+				b = objs[i];
 				
 				if (!b.invis && b.stay && b.shelf && b.wall == 0 && !(coordinates.X < b.boundingBox.left || coordinates.X > b.boundingBox.right) && coordinates.Y <= b.boundingBox.top && coordinates.Y + velocityDown > b.boundingBox.top) {
 					osnova = b;
@@ -480,7 +485,7 @@ package fe.game.domain.location {
 					isPlav = true;
 				}
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace("ERROR: (00:28)");
 			}
 

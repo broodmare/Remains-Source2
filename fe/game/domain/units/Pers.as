@@ -11,7 +11,7 @@ package fe.game.domain.units {
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.domain.location.CheckPoint;
+	import fe.game.domain.objects.CheckPoint;
 	import fe.game.domain.serv.LootGen;
 	import fe.game.domain.units.enums.E_Resistances;
 	
@@ -458,7 +458,7 @@ package fe.game.domain.units {
 
 			factor = [];
 
-			for each (var param in cachedParamList) {
+			for each (var param:XML in cachedParamList) {
 				if (param.@f>0 && param.@v.length() && param.@v!='') factor[param.@v] = [];
 			}
 		}
@@ -961,13 +961,13 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			var preNumb = skills[id];
+			var preNumb:int = skills[id];
 			skills[id] += numb;
-			var postNumb = skills[id];
+			var postNumb:int = skills[id];
 			
 			if (skillIsPost(id)) {
                 if (id == 'knowl') {
-                    var sklvl = getPostSkLevel(skills[id]);
+                    var sklvl:int = getPostSkLevel(skills[id]);
                   
 				    if (sklvl > perkPointExtra) {
                         perkPoint += sklvl - perkPointExtra;
@@ -977,8 +977,8 @@ package fe.game.domain.units {
                 }
             }
 			else {
-                for (var i = preNumb + 1; i <= postNumb; i++) {
-                    var bonus = getSkBonus(i);
+                for (var i:int = preNumb + 1; i <= postNumb; i++) {
+                    var bonus:int = getSkBonus(i);
                    
 				    if (bonus > 0) {
 						GUIManager.reference.gui.infoText('skill', TextParser.txt('e', id) + '-' + bonus);
@@ -1003,7 +1003,7 @@ package fe.game.domain.units {
 				return true;
 			}
 			else {
-				var n=Math.floor(Math.random()*3);
+				var n:int=Math.floor(Math.random()*3);
 				
 				if (n==0) {
 					id='attack';
@@ -1087,13 +1087,13 @@ package fe.game.domain.units {
 				//определить скиллы, доступные для увеличения
 				var dost:Array=[];
 				
-				for (var sk in skills) {
+				for (var sk:String in skills) {
 					if (skills[sk]<maxSkLvl && !skillIsPost(sk)) dost.push(sk);
 				}
 				
 				//если уже все прокачаны, вкачать дополнительные
 				if (dost.length == 0 || level >= postPersLevel && Math.random() < 0.20) {
-					for (var sk in skills) {
+					for (sk in skills) {
 						if (skillIsPost(sk) && skills[sk]<maxPostSkLvl) dost.push(sk);
 					}
 					
@@ -1156,11 +1156,7 @@ package fe.game.domain.units {
 				return -1;
 			}
 			
-			var numb = perks[nid];
-			
-			if (numb == null) {
-				numb = 0;
-			}
+			var numb:Number = perks[nid] == null ? 0 : Number(perks[nid]);
 			
 			var maxlvl:int = 1;
 			
@@ -1175,7 +1171,7 @@ package fe.game.domain.units {
 			var ok:int=1;
 			
 			if (dp.req.length()) {
-				for each(var req in dp.req) {
+				for each(var req:XML in dp.req) {
 					var reqlevel:int=1;
 					
 					if (req.@lvl.length()) {
@@ -1209,7 +1205,7 @@ package fe.game.domain.units {
 		
 		// [lvl1-level of main parameters, lvl2-level of additional parameters with tag dop=1] | lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
 		private function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void {
-			for each(var sk in xml.sk) {
+			for each(var sk:XML in xml.sk) {
 				var val:Number, lvl:int, val0:Number=0;
 				
 				if (sk.@dop.length()) {
@@ -1249,8 +1245,8 @@ package fe.game.domain.units {
 					weaponSkills[sk.@id]=val; // [weapon skill]
 				}
 				else if (sk.@tip == 'res') {
-					gg.vulnerabilities.changeResist(sk.@id, -val);	// [resistance]
-					setFactor(sk.@id, xml.@id, 'min', val, gg.vulnerabilities.getResist(sk.@id));
+					gg.vulnerabilities.changeResist(Resistances.parseDamageType(sk.@id, ""), -val);	// [resistance]
+					setFactor(sk.@id, xml.@id, 'min', val, gg.vulnerabilities.getResist(Resistances.parseDamageType(sk.@id, "")));
 				}
 				else if (sk.@tip == 'm') {
 					this[sk.@id] += val; // [maximum weight]
@@ -1299,11 +1295,11 @@ package fe.game.domain.units {
 			}
 		}
 		
-		private function setBegFactor(id:String, res):void {
+		private function setBegFactor(id:String, res:Number):void {
 			if ((factor[id] is Array) && factor[id].length==0) factor[id].push({id:'beg', res:res});
 		}
 
-		private function setFactor(id:String, fact:String, ref:String, val, res, tip=null):void {
+		private function setFactor(id:String, fact:String, ref:String, val:Number, res:Number, tip:String=null):void {
 			if (ref=='add' && val==0 || ref=='mult' && val==1) {
 				return;
 			}
@@ -1609,7 +1605,7 @@ package fe.game.domain.units {
 			}
 		
 			if (tip == 5) {
-				var sst:int = 4 - Math.ceil(bloodHP / inMaxHP * 4);
+				sst = 4 - Math.ceil(bloodHP / inMaxHP * 4);
 				bloodHP += hhp;
 				
 				if (bloodHP > inMaxHP) {
@@ -1849,8 +1845,8 @@ package fe.game.domain.units {
 			gg.maxhp+=(level-1)*lvlHP;
 			inMaxHP+=(level-1)*lvlOrganHp;
 			//скиллы
-			for (var id in skills) {
-				var lvl=0;
+			for (var id:String in skills) {
+				var lvl:int=0;
 				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]);
 				else lvl=getSkLevel(skills[id]);
 				xml = getSkillInfo(id);

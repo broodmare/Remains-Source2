@@ -20,11 +20,10 @@ package fe.game.ui {
 	import fe.game.GameContainer;
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.Pers;
-	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Armor;
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.domain.weapon.Ammo;
-	import fe.game.domain.location.Quest;
+	import fe.game.domain.serv.Quest;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.location.LandAct;
@@ -169,7 +168,7 @@ package fe.game.ui {
 			styleObj.color = "#FFFF33"; 
 			style.setStyle(".yellow", styleObj);	//жёлтый
 			styleObj.color = "#FF9900"; 
-			style.setStyle(".or", styleObj);	//оранжевый
+			style.setStyle(".orange", styleObj);	//оранжевый
 			styleObj.color = "#FC7FED"; 
 			style.setStyle(".pink", styleObj);	//розовый
 			styleObj.color = "#00FFFF"; 
@@ -183,7 +182,7 @@ package fe.game.ui {
 			styleObj.color = "#33FF33"; 
 			style.setStyle(".green", styleObj);	//зелёный
 			styleObj.color = "#B466FF"; 
-			style.setStyle(".purp", styleObj);	//фиолет
+			style.setStyle(".purple", styleObj);	//фиолет
 			tt.styleSheet=style;
 		}
 		
@@ -407,7 +406,7 @@ package fe.game.ui {
 					vis.item.gotoAndStop(id);
 					vis.info.y = vis.item.y + vis.item.height + 25;
 				}
-				catch(err) {
+				catch(err:Error) {
 					//trace('ERROR: (00:35) - invalid icon ID: "' + id + '"!');
 					vis.item.gotoAndStop(1);
 					vis.item.visible = false;
@@ -420,7 +419,7 @@ package fe.game.ui {
 					vis.skill.gotoAndStop(id);
 					vis.info.y = vis.ico.y + 220;
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace('ERROR: (00:36)');
 					vis.skill.visible = false;
 					vis.info.y = vis.ico.y;
@@ -457,19 +456,19 @@ package fe.game.ui {
 			}
 
 			var typeName:String = tip + 's';
-			var dp = Effect.getEffectInfo(id);	// XML / XMLList 
+			var dp:XML = Effect.getEffectInfo(id);
 
 			if (dp == null) {
 				return s;
 			}
 			
-			dp = dp.(@id==id);
+			var dpMatches:XMLList = dp.(@id==id);
 			
-			if (dp.length()==0) {
+			if (dpMatches.length()==0) {
 				return s;
 			}
 			
-			dp = dp[0];
+			dp = dpMatches[0];
 			
 			//определение текущего уровня
 			var lvl:int = 1;
@@ -514,7 +513,7 @@ package fe.game.ui {
 			if (dp.eff.length() && lvl > 0) {
 				s += '<br>';
 				
-				for each(var eff in dp.eff) {
+				for each(var eff:XML in dp.eff) {
 					s+='<br>'+(eff.@id.length()?localize("pip", eff.@id):localize("pip", 'refeff'))+': '+textAsColor('yellow', eff.attribute('n'+lvl));
 				}
 			}
@@ -522,7 +521,7 @@ package fe.game.ui {
 			// [Adding weight effects]
 			if (GameContainer.reference.hardInv && dp.sk.length()) {
 				s += '<br>';
-				for each(var sk in dp.sk) {
+				for each(var sk:XML in dp.sk) {
 					if (sk.@tip == 'm') {
 						var add:String = textAsColor('lightBlue', '+1');
 						
@@ -544,7 +543,7 @@ package fe.game.ui {
 				s += '<br><br>' + localize("pip", 'requir');
 				lvl--;
 				
-				for each(var req in dp.req) {
+				for each(var req:XML in dp.req) {
 					
 					var reqlevel:int = 1;
 					
@@ -770,10 +769,10 @@ package fe.game.ui {
 				}
 
 				if (GameContainer.reference.hardInv && w.tip != Weapon.TYPE_EXPLOSIVES && w.tip != Weapon.TYPE_MAGIC) {
-					s += "\n" + localize("pip", "mass2") + ": <span class = 'mass'>" + w.mass + "</span>";
+					s += "\n" + localize("pip", "mass2") + ": <span class = 'lightBlue'>" + w.mass + "</span>";
 				}
 				else if (GameContainer.reference.hardInv && w.tip == Weapon.TYPE_EXPLOSIVES) {
-					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ItemManager.reference.getWeight(id) + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'lightBlue'>" + ItemManager.reference.getWeight(id) + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 
 				s += "\n\n" + sinf;
@@ -874,7 +873,7 @@ package fe.game.ui {
 				}
 				
 				if (GameContainer.reference.hardInv && ammoData.m > 0) {
-					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>" + ammoData.m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'lightBlue'>" + ammoData.m + "</span> (" + localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
 				
 				if (ammoData.sell > 0) {
@@ -991,7 +990,7 @@ package fe.game.ui {
 				}
 				
 				if (GameContainer.reference.hardInv && pot.m > 0) {
-					s += "\n\n" + localize("pip", "mass") + ": <span class = 'mass'>"
+					s += "\n\n" + localize("pip", "mass") + ": <span class = 'lightBlue'>"
 						+ pot.m + "</span> ("
 						+ localize("pip", "vault" + ItemManager.reference.getInvCat(id)) + ")";
 				}
@@ -1266,14 +1265,14 @@ package fe.game.ui {
 			var ok:Boolean = false;
 			
 			if (GameContainer.reference.pers.factor[id] is Array) {
-				var paramList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
+				var paramList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "params", "param");
 
-				var xml = paramList.(@v==id);	// XML / XMLLIST
+				var xml:XMLList = paramList.(@v==id);	// XML / XMLLIST
 				if (xml.@tip=='4') {
 					s+='- '+localize("pip", 'begvulner')+': '+textAsColor('yellow', '100%')+'\n';
 				}
 				
-				for each (var obj in GameContainer.reference.pers.factor[id]) {
+				for each (var obj:Object in GameContainer.reference.pers.factor[id]) {
 					if (obj.id == "beg") {
 						if (xml.@nobeg > 0) {
 							continue;
@@ -1428,7 +1427,7 @@ package fe.game.ui {
 		
 		// Initialize filter buttons
 		protected function setCats():void {
-			var arr = tips[page2];
+			var arr:Array = tips[page2];
 			
 			if (arr == null) {
 				vis.cats.visible = false;
@@ -1437,7 +1436,7 @@ package fe.game.ui {
 			
 			vis.cats.visible = true;
 			
-			var ntip;
+			var ntip:Object;
 			
 			for (var i:int  = 1; i <= kolCats; i++) {
 				ntip = arr[i];
@@ -1451,7 +1450,7 @@ package fe.game.ui {
 					try {
 						vis.cats['cat' + i].ico.gotoAndStop(ntip);
 					}
-					catch (err) {
+					catch (err:Error) {
 						trace("PipPage.as/setCats() - " + err + " | ntip: " + ntip);
 						vis.cats['cat' + i].ico.gotoAndStop(1); // Default to frame 1
 					}
@@ -1472,7 +1471,7 @@ package fe.game.ui {
 		
 		// What to do when a filter button is clicked
 		protected function selCat(n:int = 0):void {
-			for (var i = 0; i <= kolCats; i++) {
+			for (var i:int = 0; i <= kolCats; i++) {
 				vis.cats['cat' + i].fon.gotoAndStop(1);
 			}
 			
@@ -1481,7 +1480,7 @@ package fe.game.ui {
 			try {
 				curTip = tips[page2][n];
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace('ERROR: (00:38) - No icon for: "' + n + '"!');
 			}
 			
@@ -1497,7 +1496,7 @@ package fe.game.ui {
 			}
 			
 			if (curTip is Array) {
-				for each (var t in curTip) {
+				for each (var t:Object in curTip) {
 					if (t == tip) {
 						return true;
 					}
@@ -1519,7 +1518,7 @@ package fe.game.ui {
 			try {
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace('ERROR: (00:39)');
 			}
 			

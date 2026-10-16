@@ -13,14 +13,12 @@ package fe.game.ui {
 	import fe.game.GameContainer;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Game;
-	import fe.game.domain.location.Quest;
+	import fe.game.domain.serv.Quest;
 	import fe.game.domain.location.LandAct;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
-	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.engine.utils.SymbolFactory;
-
 	
 	/* 
 	*	One of the main pip-buck categories
@@ -33,13 +31,17 @@ package fe.game.ui {
 	*/
 	public class PipPageInfo extends PipPage {
 		
-		private static const PAGE_LOCAL_MAP:int = 1, PAGE_QUEST:int = 2, PAGE_WORLD_MAP:int = 3, PAGE_NOTES:int = 4, PAGE_ENEMIES:int = 5;
+		private static const PAGE_LOCAL_MAP:int = 1;
+		private static const PAGE_QUEST:int = 2;
+		private static const PAGE_WORLD_MAP:int = 3;
+		private static const PAGE_NOTES:int = 4;
+		private static const PAGE_ENEMIES:int = 5;
 
 		private var visMap:MovieClip;
 		private var visWMap:MovieClip;
 		public var map:Bitmap;
 		public var mbmp:BitmapData;
-		private var visPageX=850, visPageY=540;
+		private var visPageX:int=850, visPageY:int=540;
 		private var mapScale:Number=2, ms:Number=2;
 		private var plTag:MovieClip;
 		private var targetLand:String='';
@@ -48,8 +50,8 @@ package fe.game.ui {
 		private static var lastLandTooltipDisplayed:String;
 
 		private static var cachedUnits:Object = {};
-		private static var cachedTaskList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
-		private static var cachedUnitList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
+		private static var cachedTaskList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Vendors", "task");
+		private static var cachedUnitList:XMLList = XMLDataGrabber.getNodesWithName("core", "AllData", "units", "unit");
 		
 		private static var tileX:int = Tile.tileX;
 		private static var tileY:int = Tile.tileY;
@@ -90,7 +92,7 @@ package fe.game.ui {
 
 		public static function getUnitInfo(id:String):XML {
 			
-			var node;
+			var node:XML;
 			if (cachedUnits[id] == undefined) {
 				node = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "units", "id", id);
 				cachedUnits[id] = node;
@@ -145,9 +147,9 @@ package fe.game.ui {
 				}
 				
 				if (World.w.loc && World.w.loc.base) {
-					for each (var task in cachedTaskList) {
+					for each (var task:XML in cachedTaskList) {
 						if (checkQuest(task)) {
-							var q:Quest = game.quests[task.@id];
+							q = game.quests[task.@id];
 							
 							if (q == null || q.state == 0) {
 								vis.butOk.visible = true;
@@ -190,7 +192,7 @@ package fe.game.ui {
 						try {
 							sim.sim.gotoAndStop(land.id);
 						}
-						catch (err) {
+						catch (err:Error) {
 							trace('ERROR: (00:3A)');
 							sim.sim.gotoAndStop(1);
 						}
@@ -244,7 +246,7 @@ package fe.game.ui {
 					}
 					
 					title = title.replace(/&lp/g,GameContainer.reference.pers.persName);
-					var n:Object = {id:note, nazv:title, ico:nico};
+					n = {id:note, nazv:title, ico:nico};
 					
 					if (nico==3) {
 						doparr.push(n);
@@ -269,9 +271,9 @@ package fe.game.ui {
 				statHead.kol.text = LanguageManager.reference.localText("pip", 'frag');
 				vis.ico.visible = true;
 
-				for each(var xml in cachedUnitList) {
+				for each(var xml:XML in cachedUnitList) {
 					if (xml && xml.@cat.length()) {
-						var n:Object = {id:xml.@id, nazv:TextParser.txt('u', xml.@id), cat:xml.@cat, kol:-1};
+						n = {id:xml.@id, nazv:TextParser.txt('u', xml.@id), cat:xml.@cat, kol:-1};
 						
 						if (xml.@cat == '3' && GameContainer.reference.game.triggers['frag_' + xml.@id] >= 0) {
 							n.kol = int(GameContainer.reference.game.triggers['frag_' + xml.@id]);
@@ -432,11 +434,11 @@ package fe.game.ui {
 			}
 			else if (page2 == PAGE_NOTES) {
 				vis.info.y=vis.nazv.y;
-				var s:String=TextParser.messText(event.currentTarget.id.text,0,false);
-				s=s.replace(/&lp/g,GameContainer.reference.pers.persName);
-				s=s.replace(/\[/g,"<span class='yellow'>");
-				s=s.replace(/]/g,"</span>");
-				vis.info.htmlText=s;
+				var noteText:String=TextParser.messText(event.currentTarget.id.text,0,false);
+				noteText=noteText.replace(/&lp/g,GameContainer.reference.pers.persName);
+				noteText=noteText.replace(/\[/g,"<span class='yellow'>");
+				noteText=noteText.replace(/]/g,"</span>");
+				vis.info.htmlText=noteText;
 			}
 			else if (page2 == PAGE_ENEMIES) {
 				if (vis.ico.numChildren>0) {
@@ -466,7 +468,7 @@ package fe.game.ui {
 			}
 		}
 		
-		private function getParam(un, pun, cat:String, param:String):* {
+		private function getParam(un:XML, pun:XML, cat:String, param:String):XMLList {
 			if (un.length()==0) return null;
 			if (un[cat].length() && un[cat].attribute(param).length()) return un[cat].attribute(param);
 			if (pun==null || pun.length()==0) return null;
@@ -478,52 +480,52 @@ package fe.game.ui {
 			var n:int = 0;
 
 			//юнит
-			var un = getUnitInfo(id);
+			var un:XML = getUnitInfo(id);
 
 			if (un.length()==0 || un.@cat!='3') {
 				return '';
 			}
 			
 			//родитель
-			var pun;
+			var pun:XML;
 			
 			if (un.@parent.length()) pun = getUnitInfo(un.@parent);
 			//дельта
 			
-			var delta=getParam(un,pun,'vis','dkill');
-			if (delta==null) delta=5;
+			var deltaParam:XMLList=getParam(un,pun,'vis','dkill');
+			var delta:Number = deltaParam == null ? 5 : Number(deltaParam);
 			
 			if (delta<=0) n=10;
 			else n = Math.floor(int(kol)/delta);
 
 			
-			var v_hp		= getParam(un, pun, 'comb', 'hp');
-			var v_skin		= getParam(un, pun, 'comb', 'skin');
-			var v_aqual		= getParam(un, pun, 'comb', 'aqual');
-			var v_armor		= getParam(un, pun, 'comb', 'armor');
-			var v_marmor	= getParam(un, pun, 'comb', 'marmor');
-			var v_dexter	= getParam(un, pun, 'comb', 'dexter');
-			var v_skill		= getParam(un, pun, 'comb', 'skill');
-			var v_observ	= getParam(un, pun, 'comb', 'observ');
-			var v_visdam	= getParam(un, pun, 'vis',  'visdam');
-			var v_damage	= getParam(un, pun, 'comb', 'damage');
-			var v_tipdam	= getParam(un, pun, 'comb', 'tipdam');
-			var v_sdamage	= getParam(un, pun, 'vis',  'sdamage');
-			var v_stipdam	= getParam(un, pun, 'vis',  'stipdam');
+			var v_hp:XMLList		= getParam(un, pun, 'comb', 'hp');
+			var v_skin:XMLList		= getParam(un, pun, 'comb', 'skin');
+			var v_aqual:XMLList		= getParam(un, pun, 'comb', 'aqual');
+			var v_armor:XMLList		= getParam(un, pun, 'comb', 'armor');
+			var v_marmor:XMLList	= getParam(un, pun, 'comb', 'marmor');
+			var v_dexter:XMLList	= getParam(un, pun, 'comb', 'dexter');
+			var v_skill:XMLList		= getParam(un, pun, 'comb', 'skill');
+			var v_observ:XMLList	= getParam(un, pun, 'comb', 'observ');
+			var v_visdam:Number	= Number(getParam(un, pun, 'vis', 'visdam'));
+			var v_damage:XMLList	= getParam(un, pun, 'comb', 'damage');
+			var v_tipdam:XMLList	= getParam(un, pun, 'comb', 'tipdam');
+			var v_sdamage:XMLList	= getParam(un, pun, 'vis',  'sdamage');
+			var v_stipdam:XMLList	= getParam(un, pun, 'vis',  'stipdam');
 			
 			var s:String = "\n";
 			
 			if (un.comb.length()) {
-				var node=un.comb[0];
+				var node:XML=un.comb[0];
 				
 				if (n>=1) {
 					//ХП
-					s+=LanguageManager.reference.localText("pip", 'hp')+': '+textAsColor('yellow', v_hp)+'\n';
+					s+=LanguageManager.reference.localText("pip", 'hp')+': '+textAsColor('yellow', String(v_hp))+'\n';
 					//порог урона и броня
-					if (v_skin) 	s+=LanguageManager.reference.localText("pip", 'skin')+': '+textAsColor('yellow', v_skin)+'\n';
+					if (v_skin) 	s+=LanguageManager.reference.localText("pip", 'skin')+': '+textAsColor('yellow', String(v_skin))+'\n';
 					if (v_aqual) {
-						if (v_armor) 	s+=LanguageManager.reference.localText("pip", 'armor')+': '+textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=LanguageManager.reference.localText("pip", 'marmor')+': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=LanguageManager.reference.localText("pip", 'armor')+': '+textAsColor('yellow', String(v_armor))+' ('+(Number(v_aqual)*100)+'%)  ';
+						if (v_marmor) 	s+=LanguageManager.reference.localText("pip", 'marmor')+': '+textAsColor('yellow', String(v_marmor))+' ('+(Number(v_aqual)*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
@@ -539,7 +541,7 @@ package fe.game.ui {
 							s+=textAsColor('blue', LanguageManager.reference.localText("pip", E_Resistances.DAM_BLUNT));
 						}
 						
-						s+=' ('+textAsColor('yellow', v_damage)+')\n'
+						s+=' ('+textAsColor('yellow', String(v_damage))+')\n'
 					}
 					
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) {
@@ -552,13 +554,13 @@ package fe.game.ui {
 							s+=textAsColor('blue', LanguageManager.reference.localText("pip", E_Resistances.DAM_PIERCE));
 						}
 						
-						s+=' ('+textAsColor('yellow', v_sdamage)+')\n'
+						s+=' ('+textAsColor('yellow', String(v_sdamage))+')\n'
 					}
 					
 					// Get what weapons the enemy uses
 					if (un.w.length()) {
 						var wk:Boolean = false;
-						for each (var weap in un.w) {
+						for each (var weap:XML in un.w) {
 							if (!(weap.@no > 0)) {
 								if (wk) {
 									s += ', ';
@@ -583,7 +585,7 @@ package fe.game.ui {
 									
 									s += ' (' + textAsColor('yellow', TextParser.numb(dam)) + ')';
 								}
-								catch (err) {
+							catch (err:Error) {
 									trace('ERROR: (00:3B)');
 								}
 								
@@ -597,9 +599,9 @@ package fe.game.ui {
 				
 				//уклонение
 				if (n>=3) {
-					if (v_dexter!=null) 	s+=LanguageManager.reference.localText("pip", 'dexter')+': '+textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=LanguageManager.reference.localText("pip", 'observ')+': '+textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=LanguageManager.reference.localText("pip", 'weapskill')+': '+textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
+					if (v_dexter!=null) 	s+=LanguageManager.reference.localText("pip", 'dexter')+': '+textAsColor('yellow', (Number(v_dexter)>1?'+':'')+Math.round((Number(v_dexter)-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=LanguageManager.reference.localText("pip", 'observ')+': '+textAsColor('yellow', (Number(v_observ)>0?'+':'')+String(v_observ))+'\n';
+					if (v_skill!=null) 	s+=LanguageManager.reference.localText("pip", 'weapskill')+': '+textAsColor('yellow', Math.round(Number(v_skill)*100)+'%')+'\n';
 				}
 			}
 			
@@ -639,7 +641,7 @@ package fe.game.ui {
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
 				
-				var id = event.currentTarget.name;
+				var id:String = event.currentTarget.name;
 				
 				if (game.checkTravel(id)) {
 					targetLand=id;
@@ -678,7 +680,7 @@ package fe.game.ui {
 		}
 
 		private function addAllQuestsToGameClass():void {
-			for each (var task in cachedTaskList) {
+			for each (var task:XML in cachedTaskList) {
 				if (task.@man=='1') continue;
 				if (checkQuest(task)) {
 					var q:Quest = game.quests[task.@id];
@@ -718,8 +720,8 @@ package fe.game.ui {
 			map.scaleX = mapScale;
 			map.scaleY = mapScale;
 
-			var tx = (visMap.vmap.x - cx) * mapScale / ms;
-			var ty = (visMap.vmap.y - cy) * mapScale / ms;
+			var tx:Number = (visMap.vmap.x - cx) * mapScale / ms;
+			var ty:Number = (visMap.vmap.y - cy) * mapScale / ms;
 
 			visMap.vmap.x = tx + cx;
 			visMap.vmap.y = ty + cy;

@@ -19,7 +19,7 @@ package fe.engine.text {
 			
 			reference = this;
 
-			langFolder = "Modules/core/language/";
+			langFolder = "Modules/core/Language/";
 			languagesFilePath = "languages.json";
 
 			// Step 1: Load the list of languages from the json file

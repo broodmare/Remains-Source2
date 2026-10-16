@@ -25,16 +25,16 @@
                 "armor": 4,
                 "marmor": 3,
                 "armorQual": 0.6,
-                "fire": 0.1,
-                "cryo": 0.1,
+                "DAM_BURN": 0.1,
+                "DAM_COLD": 0.1,
                 "dexter": 0.15
             },
             {
                 "armor": 5,
                 "marmor": 4,
                 "armorQual": 0.7,
-                "fire": 0.1,
-                "cryo": 0.1,
+                "DAM_BURN": 0.1,
+                "DAM_COLD": 0.1,
                 "dexter": 0.15,
                 "kol": 10
             },
@@ -42,8 +42,8 @@
                 "armor": 6,
                 "marmor": 5,
                 "armorQual": 0.8,
-                "fire": 0.1,
-                "cryo": 0.1,
+                "DAM_BURN": 0.1,
+                "DAM_COLD": 0.1,
                 "dexter": 0.15,
                 "kol": 20
             }
@@ -65,16 +65,16 @@
                 "marmor": 1,
                 "armorQual": 1,
                 "radx": 0.5,
-                "venom": 0.25,
-                "acid": 0.25
+                "DAM_VENOM": 0.25,
+                "DAM_ACID": 0.25
             },
             {
                 "armor": 3,
                 "marmor": 1,
                 "armorQual": 1,
                 "radx": 0.6,
-                "venom": 0.3,
-                "acid": 0.3,
+                "DAM_VENOM": 0.3,
+                "DAM_ACID": 0.3,
                 "kol": 15
             },
             {
@@ -82,8 +82,8 @@
                 "marmor": 1,
                 "armorQual": 1,
                 "radx": 0.7,
-                "venom": 0.35,
-                "acid": 0.35,
+                "DAM_VENOM": 0.35,
+                "DAM_ACID": 0.35,
                 "kol": 30
             }
         ]
@@ -103,26 +103,26 @@
                 "armor": 1,
                 "marmor": 2,
                 "armorQual": 1,
-                "venom": 0.7,
-                "acid": 0.7,
-                "spark": 0.25
+                "DAM_VENOM": 0.7,
+                "DAM_ACID": 0.7,
+                "DAM_ELECTRIC": 0.25
             },
             {
                 "armor": 1,
                 "marmor": 3,
                 "armorQual": 1,
-                "venom": 0.75,
-                "acid": 0.75,
-                "spark": 0.25,
+                "DAM_VENOM": 0.75,
+                "DAM_ACID": 0.75,
+                "DAM_ELECTRIC": 0.25,
                 "kol": 15
             },
             {
                 "armor": 1,
                 "marmor": 4,
                 "armorQual": 1,
-                "venom": 0.8,
-                "acid": 0.8,
-                "spark": 0.25,
+                "DAM_VENOM": 0.8,
+                "DAM_ACID": 0.8,
+                "DAM_ELECTRIC": 0.25,
                 "kol": 30
             }
         ]
@@ -139,29 +139,29 @@
                 "armor": 5,
                 "marmor": 5,
                 "armorQual": 0.7,
-                "fire": 0.2,
-                "fang": 0.2,
-                "laser": 0.1,
-                "spark": 0.1
+                "DAM_BURN": 0.2,
+                "DAM_BITE": 0.2,
+                "DAM_LASER": 0.1,
+                "DAM_ELECTRIC": 0.1
             },
             {
                 "armor": 6,
                 "marmor": 6,
                 "armorQual": 0.75,
-                "fire": 0.25,
-                "fang": 0.25,
-                "laser": 0.1,
-                "spark": 0.1,
+                "DAM_BURN": 0.25,
+                "DAM_BITE": 0.25,
+                "DAM_LASER": 0.1,
+                "DAM_ELECTRIC": 0.1,
                 "kol": 15
             },
             {
                 "armor": 7,
                 "marmor": 7,
                 "armorQual": 0.8,
-                "fire": 0.3,
-                "fang": 0.3,
-                "laser": 0.1,
-                "spark": 0.1,
+                "DAM_BURN": 0.3,
+                "DAM_BITE": 0.3,
+                "DAM_LASER": 0.1,
+                "DAM_ELECTRIC": 0.1,
                 "kol": 30
             }
         ]
@@ -177,38 +177,38 @@
             {
                 "armor": 12,
                 "armorQual": 0.5,
-                "bul": 0.2,
-                "phis": 0.1,
-                "blade": 0.1,
-                "fang": 0.1,
-                "expl": 0.1,
-                "laser": 0.25,
-                "spark": -0.3,
+                "DAM_PIERCE": 0.2,
+                "DAM_BLUNT": 0.1,
+                "DAM_CUT": 0.1,
+                "DAM_BITE": 0.1,
+                "DAM_EXPLOSION": 0.1,
+                "DAM_LASER": 0.25,
+                "DAM_ELECTRIC": -0.3,
                 "dexter": -0.3
             },
             {
                 "armor": 14,
                 "armorQual": 0.6,
-                "bul": 0.2,
-                "phis": 0.1,
-                "blade": 0.1,
-                "fang": 0.1,
-                "expl": 0.1,
-                "laser": 0.25,
-                "spark": -0.2,
+                "DAM_PIERCE": 0.2,
+                "DAM_BLUNT": 0.1,
+                "DAM_CUT": 0.1,
+                "DAM_BITE": 0.1,
+                "DAM_EXPLOSION": 0.1,
+                "DAM_LASER": 0.25,
+                "DAM_ELECTRIC": -0.2,
                 "dexter": -0.25,
                 "kol": 15
             },
             {
                 "armor": 16,
                 "armorQual": 0.7,
-                "bul": 0.2,
-                "phis": 0.1,
-                "blade": 0.1,
-                "fang": 0.1,
-                "expl": 0.1,
-                "laser": 0.25,
-                "spark": -0.1,
+                "DAM_PIERCE": 0.2,
+                "DAM_BLUNT": 0.1,
+                "DAM_CUT": 0.1,
+                "DAM_BITE": 0.1,
+                "DAM_EXPLOSION": 0.1,
+                "DAM_LASER": 0.25,
+                "DAM_ELECTRIC": -0.1,
                 "dexter": -0.2,
                 "kol": 20
             }
@@ -226,32 +226,32 @@
                 "armor": 8,
                 "marmor": 5,
                 "armorQual": 0.6,
-                "fang": 0.4,
-                "fire": 0.2,
-                "blade": 0.2,
-                "phis": 0.2,
-                "acid": 0.3
+                "DAM_BITE": 0.4,
+                "DAM_BURN": 0.2,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
+                "DAM_ACID": 0.3
             },
             {
                 "armor": 11,
                 "marmor": 7,
                 "armorQual": 0.7,
-                "fang": 0.5,
-                "fire": 0.2,
-                "blade": 0.25,
-                "phis": 0.25,
-                "acid": 0.3,
+                "DAM_BITE": 0.5,
+                "DAM_BURN": 0.2,
+                "DAM_CUT": 0.25,
+                "DAM_BLUNT": 0.25,
+                "DAM_ACID": 0.3,
                 "kol": 20
             },
             {
                 "armor": 14,
                 "marmor": 9,
                 "armorQual": 0.8,
-                "fang": 0.6,
-                "fire": 0.2,
-                "blade": 0.3,
-                "phis": 0.3,
-                "acid": 0.3,
+                "DAM_BITE": 0.6,
+                "DAM_BURN": 0.2,
+                "DAM_CUT": 0.3,
+                "DAM_BLUNT": 0.3,
+                "DAM_ACID": 0.3,
                 "kol": 40
             }
         ]
@@ -270,7 +270,7 @@
                 "armor": 4,
                 "marmor": 8,
                 "armorQual": 0.9,
-                "laser": 0.1,
+                "DAM_LASER": 0.1,
                 "dexter": 0.2,
                 "sneak": 0.2
             },
@@ -278,7 +278,7 @@
                 "armor": 4,
                 "marmor": 9,
                 "armorQual": 0.9,
-                "laser": 0.15,
+                "DAM_LASER": 0.15,
                 "dexter": 0.3,
                 "sneak": 0.25,
                 "kol": 15
@@ -287,7 +287,7 @@
                 "armor": 4,
                 "marmor": 10,
                 "armorQual": 0.9,
-                "laser": 0.2,
+                "DAM_LASER": 0.2,
                 "dexter": 0.4,
                 "sneak": 0.3,
                 "kol": 30
@@ -307,22 +307,22 @@
                 "armor": 12,
                 "marmor": 5,
                 "armorQual": 0.8,
-                "bul": 0.2,
-                "expl": 0.5,
-                "fire": 0.3,
-                "blade": 0.2,
-                "phis": 0.2,
+                "DAM_PIERCE": 0.2,
+                "DAM_EXPLOSION": 0.5,
+                "DAM_BURN": 0.3,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
                 "dexter": -0.3
             },
             {
                 "armor": 13,
                 "marmor": 5,
                 "armorQual": 0.8,
-                "bul": 0.2,
-                "expl": 0.55,
-                "fire": 0.35,
-                "blade": 0.2,
-                "phis": 0.2,
+                "DAM_PIERCE": 0.2,
+                "DAM_EXPLOSION": 0.55,
+                "DAM_BURN": 0.35,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
                 "dexter": -0.25,
                 "kol": 20
             },
@@ -330,11 +330,11 @@
                 "armor": 14,
                 "marmor": 5,
                 "armorQual": 0.8,
-                "bul": 0.2,
-                "expl": 0.6,
-                "fire": 0.4,
-                "blade": 0.2,
-                "phis": 0.2,
+                "DAM_PIERCE": 0.2,
+                "DAM_EXPLOSION": 0.6,
+                "DAM_BURN": 0.4,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
                 "dexter": -0.3,
                 "kol": 40
             }
@@ -353,35 +353,35 @@
                 "armor": 14,
                 "marmor": 8,
                 "armorQual": 0.75,
-                "bul": 0.25,
-                "fang": 0.2,
-                "blade": 0.1,
-                "phis": 0.1,
-                "expl": 0.25,
-                "fire": 0.1
+                "DAM_PIERCE": 0.25,
+                "DAM_BITE": 0.2,
+                "DAM_CUT": 0.1,
+                "DAM_BLUNT": 0.1,
+                "DAM_EXPLOSION": 0.25,
+                "DAM_BURN": 0.1
             },
             {
                 "armor": 16,
                 "marmor": 9,
                 "armorQual": 0.75,
-                "bul": 0.3,
-                "fang": 0.2,
-                "blade": 0.15,
-                "phis": 0.15,
-                "expl": 0.25,
-                "fire": 0.15,
+                "DAM_PIERCE": 0.3,
+                "DAM_BITE": 0.2,
+                "DAM_CUT": 0.15,
+                "DAM_BLUNT": 0.15,
+                "DAM_EXPLOSION": 0.25,
+                "DAM_BURN": 0.15,
                 "kol": 20
             },
             {
                 "armor": 18,
                 "marmor": 10,
                 "armorQual": 0.75,
-                "bul": 0.35,
-                "fang": 0.2,
-                "blade": 0.2,
-                "phis": 0.2,
-                "expl": 0.25,
-                "fire": 0.2,
+                "DAM_PIERCE": 0.35,
+                "DAM_BITE": 0.2,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
+                "DAM_EXPLOSION": 0.25,
+                "DAM_BURN": 0.2,
                 "kol": 20
             }
         ]
@@ -399,41 +399,41 @@
                 "armor": 11,
                 "marmor": 11,
                 "armorQual": 0.75,
-                "bul": 0.1,
-                "blade": 0.2,
-                "phis": 0.2,
-                "expl": 0.1,
-                "fire": 0.3,
-                "laser": 0.1,
-                "spark": 0.1,
-                "acid": 0.2
+                "DAM_PIERCE": 0.1,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
+                "DAM_EXPLOSION": 0.1,
+                "DAM_BURN": 0.3,
+                "DAM_LASER": 0.1,
+                "DAM_ELECTRIC": 0.1,
+                "DAM_ACID": 0.2
             },
             {
                 "armor": 12,
                 "marmor": 13,
                 "armorQual": 0.75,
-                "bul": 0.1,
-                "blade": 0.25,
-                "phis": 0.25,
-                "expl": 0.1,
-                "fire": 0.4,
-                "laser": 0.1,
-                "spark": 0.1,
-                "acid": 0.2,
+                "DAM_PIERCE": 0.1,
+                "DAM_CUT": 0.25,
+                "DAM_BLUNT": 0.25,
+                "DAM_EXPLOSION": 0.1,
+                "DAM_BURN": 0.4,
+                "DAM_LASER": 0.1,
+                "DAM_ELECTRIC": 0.1,
+                "DAM_ACID": 0.2,
                 "kol": 20
             },
             {
                 "armor": 14,
                 "marmor": 14,
                 "armorQual": 0.75,
-                "bul": 0.1,
-                "blade": 0.3,
-                "phis": 0.3,
-                "expl": 0.1,
-                "fire": 0.5,
-                "laser": 0.1,
-                "spark": 0.1,
-                "acid": 0.2,
+                "DAM_PIERCE": 0.1,
+                "DAM_CUT": 0.3,
+                "DAM_BLUNT": 0.3,
+                "DAM_EXPLOSION": 0.1,
+                "DAM_BURN": 0.5,
+                "DAM_LASER": 0.1,
+                "DAM_ELECTRIC": 0.1,
+                "DAM_ACID": 0.2,
                 "kol": 20
             }
         ]
@@ -451,29 +451,29 @@
                 "armor": 8,
                 "marmor": 14,
                 "armorQual": 0.75,
-                "fire": 0.25,
-                "laser": 0.3,
-                "spark": 0.4,
-                "plasma": 0.25
+                "DAM_BURN": 0.25,
+                "DAM_LASER": 0.3,
+                "DAM_ELECTRIC": 0.4,
+                "DAM_PLASMA": 0.25
             },
             {
                 "armor": 9,
                 "marmor": 16,
                 "armorQual": 0.75,
-                "fire": 0.25,
-                "laser": 0.4,
-                "spark": 0.45,
-                "plasma": 0.3,
+                "DAM_BURN": 0.25,
+                "DAM_LASER": 0.4,
+                "DAM_ELECTRIC": 0.45,
+                "DAM_PLASMA": 0.3,
                 "kol": 20
             },
             {
                 "armor": 10,
                 "marmor": 18,
                 "armorQual": 0.75,
-                "fire": 0.25,
-                "laser": 0.5,
-                "spark": 0.5,
-                "plasma": 0.35,
+                "DAM_BURN": 0.25,
+                "DAM_LASER": 0.5,
+                "DAM_ELECTRIC": 0.5,
+                "DAM_PLASMA": 0.35,
                 "kol": 20
             }
         ]
@@ -495,7 +495,7 @@
                 "marmor": 12,
                 "armorQual": 1,
                 "dexter": 0.4,
-                "laser": 0.25,
+                "DAM_LASER": 0.25,
                 "sneak": 0.3,
                 "maxmana": 1000,
                 "act": 100,
@@ -507,7 +507,7 @@
                 "marmor": 14,
                 "armorQual": 1,
                 "dexter": 0.45,
-                "laser": 0.25,
+                "DAM_LASER": 0.25,
                 "sneak": 0.35,
                 "kol": 20,
                 "maxmana": 1000,
@@ -520,7 +520,7 @@
                 "marmor": 16,
                 "armorQual": 1,
                 "dexter": 0.5,
-                "laser": 0.25,
+                "DAM_LASER": 0.25,
                 "sneak": 0.4,
                 "kol": 40,
                 "maxmana": 1000,
@@ -544,35 +544,35 @@
                 "armor": 18,
                 "marmor": 10,
                 "armorQual": 0.75,
-                "bul": 0.3,
-                "fang": 0.25,
-                "blade": 0.2,
-                "phis": 0.2,
-                "expl": 0.3,
-                "fire": 0.2
+                "DAM_PIERCE": 0.3,
+                "DAM_BITE": 0.25,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
+                "DAM_EXPLOSION": 0.3,
+                "DAM_BURN": 0.2
             },
             {
                 "armor": 20,
                 "marmor": 11,
                 "armorQual": 0.8,
-                "bul": 0.35,
-                "fang": 0.25,
-                "blade": 0.2,
-                "phis": 0.2,
-                "expl": 0.35,
-                "fire": 0.25,
+                "DAM_PIERCE": 0.35,
+                "DAM_BITE": 0.25,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
+                "DAM_EXPLOSION": 0.35,
+                "DAM_BURN": 0.25,
                 "kol": 20
             },
             {
                 "armor": 22,
                 "marmor": 12,
                 "armorQual": 0.85,
-                "bul": 0.4,
-                "fang": 0.25,
-                "blade": 0.2,
-                "phis": 0.2,
-                "expl": 0.4,
-                "fire": 0.3,
+                "DAM_PIERCE": 0.4,
+                "DAM_BITE": 0.25,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.2,
+                "DAM_EXPLOSION": 0.4,
+                "DAM_BURN": 0.3,
                 "kol": 40
             }
         ]
@@ -591,41 +591,41 @@
                 "armor": 14,
                 "marmor": 14,
                 "armorQual": 0.75,
-                "bul": 0.2,
-                "blade": 0.2,
-                "phis": 0.3,
-                "expl": 0.2,
-                "fire": 0.5,
-                "laser": 0.2,
-                "spark": 0.1,
-                "acid": 0.2
+                "DAM_PIERCE": 0.2,
+                "DAM_CUT": 0.2,
+                "DAM_BLUNT": 0.3,
+                "DAM_EXPLOSION": 0.2,
+                "DAM_BURN": 0.5,
+                "DAM_LASER": 0.2,
+                "DAM_ELECTRIC": 0.1,
+                "DAM_ACID": 0.2
             },
             {
                 "armor": 15,
                 "marmor": 15,
                 "armorQual": 0.75,
-                "bul": 0.2,
-                "blade": 0.25,
-                "phis": 0.4,
-                "expl": 0.2,
-                "fire": 0.5,
-                "laser": 0.2,
-                "spark": 0.15,
-                "acid": 0.2,
+                "DAM_PIERCE": 0.2,
+                "DAM_CUT": 0.25,
+                "DAM_BLUNT": 0.4,
+                "DAM_EXPLOSION": 0.2,
+                "DAM_BURN": 0.5,
+                "DAM_LASER": 0.2,
+                "DAM_ELECTRIC": 0.15,
+                "DAM_ACID": 0.2,
                 "kol": 20
             },
             {
                 "armor": 16,
                 "marmor": 16,
                 "armorQual": 0.75,
-                "bul": 0.2,
-                "blade": 0.3,
-                "phis": 0.5,
-                "expl": 0.2,
-                "fire": 0.5,
-                "laser": 0.2,
-                "spark": 0.2,
-                "acid": 0.2,
+                "DAM_PIERCE": 0.2,
+                "DAM_CUT": 0.3,
+                "DAM_BLUNT": 0.5,
+                "DAM_EXPLOSION": 0.2,
+                "DAM_BURN": 0.5,
+                "DAM_LASER": 0.2,
+                "DAM_ELECTRIC": 0.2,
+                "DAM_ACID": 0.2,
                 "kol": 40
             }
         ]
@@ -644,29 +644,29 @@
                 "armor": 10,
                 "marmor": 20,
                 "armorQual": 0.75,
-                "fire": 0.3,
-                "laser": 0.5,
-                "spark": 0.5,
-                "plasma": 0.3
+                "DAM_BURN": 0.3,
+                "DAM_LASER": 0.5,
+                "DAM_ELECTRIC": 0.5,
+                "DAM_PLASMA": 0.3
             },
             {
                 "armor": 11,
                 "marmor": 22,
                 "armorQual": 0.75,
-                "fire": 0.35,
-                "laser": 0.5,
-                "spark": 0.5,
-                "plasma": 0.4,
+                "DAM_BURN": 0.35,
+                "DAM_LASER": 0.5,
+                "DAM_ELECTRIC": 0.5,
+                "DAM_PLASMA": 0.4,
                 "kol": 20
             },
             {
                 "armor": 12,
                 "marmor": 24,
                 "armorQual": 0.75,
-                "fire": 0.4,
-                "laser": 0.5,
-                "spark": 0.5,
-                "plasma": 0.5,
+                "DAM_BURN": 0.4,
+                "DAM_LASER": 0.5,
+                "DAM_ELECTRIC": 0.5,
+                "DAM_PLASMA": 0.5,
                 "kol": 40
             }
         ]
@@ -685,28 +685,28 @@
                 "armor": 25,
                 "marmor": 14,
                 "armorQual": 1,
-                "bul": 0.4,
-                "fang": 0.25,
-                "blade": 0.25,
-                "phis": 0.25,
-                "expl": 0.3,
-                "fire": 0.3,
+                "DAM_PIERCE": 0.4,
+                "DAM_BITE": 0.25,
+                "DAM_CUT": 0.25,
+                "DAM_BLUNT": 0.25,
+                "DAM_EXPLOSION": 0.3,
+                "DAM_BURN": 0.3,
                 "radx": 0.5,
-                "venom": 0.75,
+                "DAM_VENOM": 0.75,
                 "dexter": -0.5
             },
             {
                 "armor": 27,
                 "marmor": 16,
                 "armorQual": 1,
-                "bul": 0.45,
-                "fang": 0.25,
-                "blade": 0.25,
-                "phis": 0.25,
-                "expl": 0.35,
-                "fire": 0.35,
+                "DAM_PIERCE": 0.45,
+                "DAM_BITE": 0.25,
+                "DAM_CUT": 0.25,
+                "DAM_BLUNT": 0.25,
+                "DAM_EXPLOSION": 0.35,
+                "DAM_BURN": 0.35,
                 "radx": 0.5,
-                "venom": 0.75,
+                "DAM_VENOM": 0.75,
                 "dexter": -0.5,
                 "kol": 20
             },
@@ -714,14 +714,14 @@
                 "armor": 30,
                 "marmor": 18,
                 "armorQual": 1,
-                "bul": 0.5,
-                "fang": 0.25,
-                "blade": 0.25,
-                "phis": 0.25,
-                "expl": 0.4,
-                "fire": 0.4,
+                "DAM_PIERCE": 0.5,
+                "DAM_BITE": 0.25,
+                "DAM_CUT": 0.25,
+                "DAM_BLUNT": 0.25,
+                "DAM_EXPLOSION": 0.4,
+                "DAM_BURN": 0.4,
                 "radx": 0.5,
-                "venom": 0.75,
+                "DAM_VENOM": 0.75,
                 "dexter": -0.5,
                 "kol": 40
             }
@@ -741,26 +741,26 @@
                 "armor": 15,
                 "marmor": 25,
                 "armorQual": 1,
-                "bul": 0.2,
-                "fire": 0.5,
-                "laser": 0.5,
-                "spark": 0.5,
-                "plasma": 0.5,
-                "acid": 0.3,
-                "venom": 0.75,
+                "DAM_PIERCE": 0.2,
+                "DAM_BURN": 0.5,
+                "DAM_LASER": 0.5,
+                "DAM_ELECTRIC": 0.5,
+                "DAM_PLASMA": 0.5,
+                "DAM_ACID": 0.3,
+                "DAM_VENOM": 0.75,
                 "dexter": -0.2
             },
             {
                 "armor": 15,
                 "marmor": 25,
                 "armorQual": 1,
-                "bul": 0.2,
-                "fire": 0.55,
-                "laser": 0.55,
-                "spark": 0.55,
-                "plasma": 0.5,
-                "acid": 0.3,
-                "venom": 0.75,
+                "DAM_PIERCE": 0.2,
+                "DAM_BURN": 0.55,
+                "DAM_LASER": 0.55,
+                "DAM_ELECTRIC": 0.55,
+                "DAM_PLASMA": 0.5,
+                "DAM_ACID": 0.3,
+                "DAM_VENOM": 0.75,
                 "dexter": -0.2,
                 "kol": 20
             },
@@ -768,13 +768,13 @@
                 "armor": 15,
                 "marmor": 25,
                 "armorQual": 1,
-                "bul": 0.2,
-                "fire": 0.6,
-                "laser": 0.6,
-                "spark": 0.6,
-                "plasma": 0.5,
-                "acid": 0.3,
-                "venom": 0.75,
+                "DAM_PIERCE": 0.2,
+                "DAM_BURN": 0.6,
+                "DAM_LASER": 0.6,
+                "DAM_ELECTRIC": 0.6,
+                "DAM_PLASMA": 0.5,
+                "DAM_ACID": 0.3,
+                "DAM_VENOM": 0.75,
                 "dexter": -0.2,
                 "kol": 40
             }
@@ -795,50 +795,50 @@
                 "armor": 20,
                 "marmor": 20,
                 "armorQual": 1,
-                "bul": 0.3,
-                "fang": 0.3,
-                "blade": 0.3,
-                "phis": 0.3,
-                "expl": 0.3,
-                "fire": 0.3,
-                "laser": 0.3,
-                "spark": 0.3,
-                "plasma": 0.3,
-                "acid": 0.3,
-                "venom": 0.75
+                "DAM_PIERCE": 0.3,
+                "DAM_BITE": 0.3,
+                "DAM_CUT": 0.3,
+                "DAM_BLUNT": 0.3,
+                "DAM_EXPLOSION": 0.3,
+                "DAM_BURN": 0.3,
+                "DAM_LASER": 0.3,
+                "DAM_ELECTRIC": 0.3,
+                "DAM_PLASMA": 0.3,
+                "DAM_ACID": 0.3,
+                "DAM_VENOM": 0.75
             },
             {
                 "armor": 20,
                 "marmor": 20,
                 "armorQual": 1,
-                "bul": 0.35,
-                "fang": 0.3,
-                "blade": 0.3,
-                "phis": 0.35,
-                "expl": 0.3,
-                "fire": 0.3,
-                "laser": 0.35,
-                "spark": 0.3,
-                "plasma": 0.35,
-                "acid": 0.3,
-                "venom": 0.75,
+                "DAM_PIERCE": 0.35,
+                "DAM_BITE": 0.3,
+                "DAM_CUT": 0.3,
+                "DAM_BLUNT": 0.35,
+                "DAM_EXPLOSION": 0.3,
+                "DAM_BURN": 0.3,
+                "DAM_LASER": 0.35,
+                "DAM_ELECTRIC": 0.3,
+                "DAM_PLASMA": 0.35,
+                "DAM_ACID": 0.3,
+                "DAM_VENOM": 0.75,
                 "kol": 20
             },
             {
                 "armor": 20,
                 "marmor": 20,
                 "armorQual": 1,
-                "bul": 0.4,
-                "fang": 0.3,
-                "blade": 0.3,
-                "phis": 0.4,
-                "expl": 0.3,
-                "fire": 0.3,
-                "laser": 0.4,
-                "spark": 0.3,
-                "plasma": 0.4,
-                "acid": 0.3,
-                "venom": 0.75,
+                "DAM_PIERCE": 0.4,
+                "DAM_BITE": 0.3,
+                "DAM_CUT": 0.3,
+                "DAM_BLUNT": 0.4,
+                "DAM_EXPLOSION": 0.3,
+                "DAM_BURN": 0.3,
+                "DAM_LASER": 0.4,
+                "DAM_ELECTRIC": 0.3,
+                "DAM_PLASMA": 0.4,
+                "DAM_ACID": 0.3,
+                "DAM_VENOM": 0.75,
                 "kol": 40
             }
         ]
@@ -856,7 +856,7 @@
 				"armor": 3,
 				"marmor": 3,
 				"armorQual": 0.4,
-				"fang": 0.2,
+				"DAM_BITE": 0.2,
 				"dexter": 0.2,
 				"sneak": 0.1
 			}
@@ -884,7 +884,7 @@
         "noRepair": true,
         "upd": [
 			{
-				"bul": 0.15
+				"DAM_PIERCE": 0.15
 			}
         ]
     },
@@ -896,8 +896,8 @@
         "noRepair": true,
         "upd": [
 			{
-				"phis": 0.15,
-				"blade": 0.15
+				"DAM_BLUNT": 0.15,
+				"DAM_CUT": 0.15
 			}
 		]
     },
@@ -909,8 +909,8 @@
         "noRepair": true,
         "upd": [
 			{         
-				"expl": 0.25,
-				"fire": 0.1
+				"DAM_EXPLOSION": 0.25,
+				"DAM_BURN": 0.1
 			}
 		]
     },
@@ -922,8 +922,8 @@
         "noRepair": true,
         "upd": [
 			{         
-				"fang": 0.3,
-				"acid": 0.15
+				"DAM_BITE": 0.3,
+				"DAM_ACID": 0.15
 			}
 		]
     },
@@ -935,9 +935,9 @@
         "noRepair": true,
         "upd": [
 			{         
-				"fire": 0.2,
-				"laser": 0.1,
-				"spark": 0.1
+				"DAM_BURN": 0.2,
+				"DAM_LASER": 0.1,
+				"DAM_ELECTRIC": 0.1
 			}
 		]
     },
@@ -949,8 +949,8 @@
         "noRepair": true,
         "upd": [
 			{
-				"laser": 0.15,
-				"plasma": 0.15
+				"DAM_LASER": 0.15,
+				"DAM_PLASMA": 0.15
 			}
 		]
     },
@@ -962,7 +962,7 @@
         "noRepair": true,
         "upd": [
 			{
-				"spark": 0.3
+				"DAM_ELECTRIC": 0.3
 			}
 		]
     },
@@ -987,8 +987,8 @@
         "noRepair": true,
         "upd": [
 			{
-				"necro": 0.3,
-				"cryo": 0.1
+				"DAM_DEATH": 0.3,
+				"DAM_COLD": 0.1
 			}
 		]
     },
@@ -1000,11 +1000,11 @@
         "noRepair": true,
         "upd": [
 			{
-				"fire": 0.15,
-				"cryo": 0.15,
-				"laser": 0.15,
-				"spark": 0.15,
-				"plasma": 0.15
+				"DAM_BURN": 0.15,
+				"DAM_COLD": 0.15,
+				"DAM_LASER": 0.15,
+				"DAM_ELECTRIC": 0.15,
+				"DAM_PLASMA": 0.15
 			}
 		]
     },
@@ -1016,10 +1016,10 @@
         "noRepair": true,
         "upd": [
 			{
-				"bul": 0.15,
-				"phis": 0.15,
-				"blade": 0.15,
-				"expl": 0.15
+				"DAM_PIERCE": 0.15,
+				"DAM_BLUNT": 0.15,
+				"DAM_CUT": 0.15,
+				"DAM_EXPLOSION": 0.15
 			}
 		]
     },
@@ -1045,7 +1045,7 @@
         "meleeMult": 1.16,
         "upd": [
 			{
-				"blade": 0.2
+				"DAM_CUT": 0.2
 			}
 		]
     },

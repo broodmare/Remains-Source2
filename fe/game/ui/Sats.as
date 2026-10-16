@@ -11,14 +11,14 @@ package fe.game.ui {
 	import flash.text.TextFieldAutoSize;
 	import flash.events.MouseEvent;
 
+	import fe.engine.Engine;
+	import fe.engine.utils.SymbolFactory;
 	import fe.engine.text.LanguageManager;
 	import fe.game.World;
-	import fe.engine.Engine;
 	import fe.game.GameContainer;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.UnitPlayer;
-	import fe.engine.utils.SymbolFactory;
 	
 	public class Sats {
 
@@ -211,7 +211,7 @@ package fe.game.ui {
 			var cel:SatsCel;
 			
 			if (units.length) {
-				for each (var obj in units) {
+				for each (var obj:Object in units) {
 					if (obj.du.filters.length>0) {
 						cel = new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 						break;
@@ -278,7 +278,7 @@ package fe.game.ui {
 		// It does not correct gun dispersion or a unit's (dodge chance?) so projectiles will still miss at 100%
 		private function getPrec(un:Unit):Number {
 			var prec:Number = 1;
-			var sk:int = gg.pers.weaponSkills[weapon.skill];
+			var sk:Number = gg.pers.weaponSkills[weapon.skill];
 			var dx:Number = weapon.coordinates.X - un.coordinates.X;
 			var dy:Number = weapon.coordinates.Y - un.coordinates.Y;
 			var rasst:Number = Math.sqrt(dx * dx + dy * dy);
@@ -357,7 +357,7 @@ package fe.game.ui {
 				var su:TextField = (event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible = true;
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace('ERROR: (00:44)');
 			}
 		}
@@ -373,20 +373,20 @@ package fe.game.ui {
 				var su:TextField = (event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible = false;
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace('ERROR: (00:45)');
 			}
 		}
 		
 		public function offUnits():void {
 			if (units && units.length) {
-				for each (var obj in units) {
+				for each (var obj:Object in units) {
 					try {
 						vis.removeChild(obj.v);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OVER, mOver);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OUT, mOut);
 					}
-					catch (err) {
+					catch (err:Error) {
 						trace('ERROR: (00:46)');
 					}
 				}
@@ -430,7 +430,7 @@ package fe.game.ui {
 				if (!weapon.noPerc) var prec:Number = getPrec(un);
 				txt.text = un.nazv;
 				txt.selectable = false;
-				if (!weapon.noPerc) txt.text += '\n' + Math.round(prec * 100) + '%';
+				if (!weapon.noPerc) txt.appendText('\n' + Math.round(prec * 100) + '%');
 				
 				info.autoSize=TextFieldAutoSize.CENTER;
 				info.selectable=false;				
@@ -439,11 +439,11 @@ package fe.game.ui {
 				
 				//[Extended information about the enemy]
 				if (GameContainer.reference.pers && GameContainer.reference.pers.modAnalis) {
-					info.text += '\n' + LanguageManager.reference.localText("pip", 'level') + ': ' + (un.level + 1);
-					info.text += '\n' + LanguageManager.reference.localText("pip", 'hp') + ': ' + Math.ceil(un.hp) + '/' + Math.ceil(un.maxhp);
-					if (un.skin > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'skin') + ': ' + Math.ceil(un.skin);
-					if (un.armorQual > 0 && un.armor > 0)  info.text += '\n' + LanguageManager.reference.localText("pip",  'armor') + ': ' + Math.ceil(un.armor  + un.skin) + ' (' + Math.round(un.armorQual * 100) + '%)';
-					if (un.armorQual > 0 && un.marmor > 0) info.text += '\n' + LanguageManager.reference.localText("pip", 'marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armorQual * 100) + '%)';
+				info.appendText('\n' + LanguageManager.reference.localText("pip", 'level') + ': ' + (un.level + 1));
+				info.appendText('\n' + LanguageManager.reference.localText("pip", 'hp') + ': ' + Math.ceil(un.hp) + '/' + Math.ceil(un.maxhp));
+				if (un.skin > 0) info.appendText('\n' + LanguageManager.reference.localText("pip", 'skin') + ': ' + Math.ceil(un.skin));
+				if (un.armorQual > 0 && un.armor > 0)  info.appendText('\n' + LanguageManager.reference.localText("pip",  'armor') + ': ' + Math.ceil(un.armor  + un.skin) + ' (' + Math.round(un.armorQual * 100) + '%)');
+				if (un.armorQual > 0 && un.marmor > 0) info.appendText('\n' + LanguageManager.reference.localText("pip", 'marmor') + ': ' + Math.ceil(un.marmor + un.skin) + ' (' + Math.round(un.armorQual * 100) + '%)');
 					
 					if (mc.y < 150) {
 						info.y = 50;

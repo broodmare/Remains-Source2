@@ -5,12 +5,11 @@ package fe.game.domain.location {
 	import flash.display.BitmapData;
 
 	import fe.engine.Settings;
-	import fe.engine.text.TextParser;
 	import fe.engine.text.XMLDataGrabber;
-	import fe.game.ItemManager;
 	import fe.game.World;
 	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
+	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Grafon;
 	import fe.game.rendering.Emitter;
 	import fe.game.rendering.BackObj;
@@ -21,10 +20,8 @@ package fe.game.domain.location {
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.Resistances;
 	import fe.game.domain.units.UnitPlayer;
-	import fe.game.domain.units.UnitPhoenix;
-	import fe.game.domain.units.UnitTransmitter;
+	import fe.game.domain.units.Coord;
 	import fe.game.domain.serv.LootGen;
-	import fe.game.domain.serv.Item;
 	import fe.game.domain.units.UnitTurret;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.tile.TilePiece_Definition;
@@ -32,10 +29,15 @@ package fe.game.domain.location {
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
 	import fe.engine.Engine;
+	import fe.game.domain.objects.Bonus;
+	import fe.game.domain.objects.Box;
+	import fe.game.domain.objects.CheckPoint;
+	import fe.game.rendering.ColorFilter;
+	import fe.game.domain.location.factories.ObjFactory;
+	import fe.game.domain.location.factories.UnitFactory;
 	
 	public class Location {
 
-		private var itemManager:ItemManager;				// Reference to the item manager
 		public var land:Land;
 		
 		public var id:String;
@@ -57,23 +59,21 @@ package fe.game.domain.location {
 		public var defaultTile:Tile;						//пустой блок
 		public var units:Vector.<Unit>;						//юниты
 		public var ups:Array;								// [Spawn random units]
-		public var objs:Array;								// [Boxes]
-		public var bonuses:Array;							//бонусы
-		public var areas:Array;								//области
-		public var acts:Array;								//активные объекты (отображаемые на карте)
+		public var objs:Vector.<Box>;						// [Boxes]
+		public var areas:Vector.<Area>;						//области
+		public var acts:Vector.<CheckPoint>;				//активные объекты (отображаемые на карте)
 		public var saves:Array;								//объекты, подлежащие сохранению
 		public var backobjs:Array;							//фоновые объекты
 		public var grenades:Array;							// [Active grenades]
 		public var gg:UnitPlayer;
 		public var celObj:Obj;
 		public var celDist:Number		= -1.00;			//целевой объект и расстояние до него
-		public var unitCoord;								// [object for unit coordination]
+		public var unitCoord:Coord;							// [object for unit coordination]
 		
 		// [Entrances and visiting]
-		public var spawnPoints:Array;						//точки спавна | Array of objects containing two Numbers {x, y}
-		public var enspawn:Array;							//точки спавна врагов
-		public var doors:Array;								//проходы в другие локации
-		public var signposts:Array;	
+		public var spawnPoints:Vector.<Vec2>;				//точки спавна | in tiles
+		public var enspawn:Vector.<Vec2>;					//точки спавна врагов | in pixels
+		public var signposts:Vector.<MovieClip>;
 		public var sign_vis:Boolean = true;					//указатели выхода
 		public var nAct:int=0;								//последнее посещение
 		public var active:Boolean=false;					//активна в данный момент
@@ -81,7 +81,6 @@ package fe.game.domain.location {
 		
 		// [Serivce]
 		public var cp:CheckPoint;
-		public var pass_r:Array, pass_d:Array;				//проходы в другие локации
 		public var objsT:Array;								// [Active objects]
 		public var recalcTiles:Vector.<Tile>;				// [Count the water]
 
@@ -167,8 +166,7 @@ package fe.game.domain.location {
 		public var t_alarmsp:int			= 0;			//счётчик спавна врагов
 		
 		// [Bonuses and experience]
-		public var kolXp:int				=   0;
-		public var maxXp:int				=   0;
+		public var xpBonuses:Vector.<Bonus>;				// The room's generated XP pickups; taking the last one pays out for the whole set
 		public var unXp:int					= 100;
 		public var summXp:int				=   0;
 		
@@ -196,16 +194,17 @@ package fe.game.domain.location {
 
 		public var maxX:int;
     	public var maxY:int;
+		private var gridWidth:int;		// The tile grid in pixels; maxX and maxY grow past it in zoomed rooms
+		private var gridHeight:int;
 
 		public var spaceX:int;	// [Location size in tiles]
 		public var spaceY:int;
-		private var halfSpaceX:int;
-		private var halfSpaceY:int;
+		public var halfSpaceX:int;
+		public var halfSpaceY:int;
 		private var spaceLength:int;
 
-		public function Location(land:Land, iManager:ItemManager, room:XML, rnd:Boolean, opt:Object=null) {
+		public function Location(land:Land, room:XML, rnd:Boolean, opt:Object=null) {
 			this.land		= land;
-			itemManager		= iManager;
 
 			spaceX			= GameContainer.cellsX;		// Room width in tiles
 			spaceY			= GameContainer.cellsY;		// Room height in tiles
@@ -221,8 +220,10 @@ package fe.game.domain.location {
 			halfSpaceY		= spaceY * 0.50;
 
 			// GetAbsTile uses thse values CONSTANTLY, calculating beforehand. 
-			maxX = spaceX * tileX;				// Screen width in pixels
-			maxY = spaceY * tileY;				// Screen height in pixels
+			gridWidth = spaceX * tileX;
+			gridHeight = spaceY * tileY;
+			maxX = gridWidth;					// Screen width in pixels
+			maxY = gridHeight;					// Screen height in pixels
 
 			defaultTile = new Tile(-1, -1);		// Use this as a back-up if a tile can't be found
 
@@ -258,17 +259,17 @@ package fe.game.domain.location {
 		private function initializeArrays():void {
 			units		= new Vector.<Unit>();
 			ups			= [];
-			objs		= [];
-			acts		= [];
-			areas		= [];
+			objs		= new Vector.<Box>();
+			acts		= new Vector.<CheckPoint>();
+			areas		= new Vector.<Area>();
 			saves		= [];
-			enspawn		= [];
+			enspawn		= new Vector.<Vec2>();
 			backobjs	= [];
-			signposts	= [];
+			signposts	= new Vector.<MovieClip>();
 			recalcTiles = new Vector.<Tile>();
-			spawnPoints	= [];
+			spawnPoints	= new Vector.<Vec2>();
+			xpBonuses	= new Vector.<Bonus>();
 			grenades	= [];
-			bonuses		= [];
 		}
 
 		// добавить гг в массив юнитов
@@ -407,38 +408,6 @@ package fe.game.domain.location {
 				}
 			}
 			
-			//возможные проходы в другие локации
-			if (nroom.doors.length() > 0) {
-				var s:String = nroom.doors[0];
-				doors = s.split('.');
-			
-				if (mirror) {
-					var d;
-					d = doors[6];
-					doors[6] = doors[10];
-					doors[10] = d;
-					d = doors[7];
-					doors[7] = doors[9];
-					doors[9] = d;
-					d = doors[17];
-					doors[17] = doors[21];
-					doors[21] = d;
-					d = doors[18];
-					doors[18] = doors[20];
-					doors[20] = d;
-					
-					for (i = 0; i <= 5; i++) {
-						d = doors[i];
-						doors[i] = doors[i + 11];
-						doors[i + 11] = d;
-					}
-				}
-			} 
-			else {
-				doors = [];
-				for (i = 0; i < 22; i++) doors[i] = 2;
-			}
-			
 			//видимость
 			lDist1 *= visMult;
 			lDist2 *= visMult;
@@ -474,7 +443,7 @@ package fe.game.domain.location {
 				}
 
 				if (xmll.@tip == 'spawnpoint') {
-					spawnPoints.push({x:nx, y:ny});
+					spawnPoints.push(new Vec2(nx, ny));
 				}
 				else if (xmll.@tip == 'enspawn') {
 					addEnSpawn(nx, ny, xmll);
@@ -514,103 +483,8 @@ package fe.game.domain.location {
 // ------------------------------------------------------------------------------------------------
 //  [the second stage is to define the passages, make a frame, create objects depending on the complexity and passages]
 
-		// [add transition number n]
-		public function setDoor(n:int, fak:int=2):void {
-			var q:int;
-			var dyr:Boolean = false;
-
-			if (fak < 2 || n > 21) {
-				return;
-			}
-			else if (n >= 17) {
-				q = (n - 17) * 9 + 4;
-				dyr = getTile(q + 1, 0).hole() || dyr;
-				dyr = getTile(q + 2, 0).hole() || dyr;
-				getTile(q + 1, 1).hole();
-				getTile(q + 2, 1).hole();
-				setNoObj(q + 1, 0, 0, 2);
-				setNoObj(q + 2, 0, 0, 2);
-				
-				if (fak > 2) {
-					dyr = getTile(q, 0).hole() || dyr;
-					dyr = getTile(q + 3, 0).hole() || dyr;
-					getTile(q, 1).hole();
-					getTile(q + 3, 1).hole();
-					setNoObj(q, 0, 0, 2);
-					setNoObj(q + 3, 0, 0, 2);
-				}
-				
-				if (dyr) {
-					addSignPost(q + 2, 0, -90);
-				}
-			}
-			else if (n>=11) {
-				q=(n-11)*4+3;
-				dyr=getTile(0, q).hole() || dyr;
-				dyr=getTile(0, q - 1).hole() || dyr;
-				getTile(1, q).hole();
-				getTile(1, q - 1).hole();
-				setNoObj(0,q,5,0);
-				setNoObj(0,q-1,5,0);
-				
-				if (fak>2) {
-					dyr=getTile(0, q - 2).hole() || dyr;
-					getTile(1, q - 2).hole();
-				} 
-				
-				if (dyr) {
-					addSignPost(0, q, 180);
-				}
-			
-				addEnSpawn(tileX, (q+1)*tileY-1);
-			}
-			else if (n >= 6) {
-				q = (n - 6) * 9 + 4;
-				dyr = getTile(q + 1, BOTTOM_Y).hole() || dyr;
-				dyr = getTile(q + 2, BOTTOM_Y).hole() || dyr;
-				getTile(q + 1, BOTTOM_Y - 1).hole();
-				getTile(q + 2, BOTTOM_Y - 1).hole();
-				setNoObj(q + 1, BOTTOM_Y, 0, -2);
-				setNoObj(q + 2, BOTTOM_Y, 0, -2);
-				
-				if (fak > 2) {
-					dyr = getTile(q, BOTTOM_Y).hole() || dyr;
-					dyr = getTile(q + 3, BOTTOM_Y).hole() || dyr;
-					getTile(q, BOTTOM_Y - 1).hole();
-					getTile(q + 3, BOTTOM_Y - 1).hole();
-					setNoObj(q, BOTTOM_Y, 0, -2);
-					setNoObj(q + 3, BOTTOM_Y, 0, -2);
-				} 
-				
-				if (dyr) {
-					addSignPost(q + 2, spaceY, 90);
-				}
-			}
-			else if (n>=0) {
-				q=(n)*4+3;
-				dyr = getTile(RIGHT_X, q).hole() || dyr;
-				dyr = getTile(RIGHT_X, q - 1).hole() || dyr;
-				getTile(RIGHT_X - 1, q).hole();
-				getTile(RIGHT_X - 1, q - 1).hole();
-				setNoObj(RIGHT_X, q, -5, 0);
-				setNoObj(RIGHT_X, q - 1, -5, 0);
-				
-				if (fak>2) {
-					dyr=getTile(RIGHT_X, q - 2).hole() || dyr;
-					getTile(RIGHT_X - 1, q - 2).hole();
-				} 
-				
-				if (dyr) {
-					addSignPost(spaceX, q, 0);
-				}
-				
-				addEnSpawn((RIGHT_X) * tileX, (q + 1) * tileY - 1);
-			}
-			else return;
-		}
-		
 		// [Add directional signs to neighboring locations]
-		private function addSignPost(xCoord:int, yCoord:int, rotation:int):void {
+		public function addSignPost(xCoord:int, yCoord:int, rotation:int):void {
 			var sign:MovieClip;
 			sign = SymbolFactory.createInstance("signPost") as MovieClip;
 			sign.x = xCoord * tileX;
@@ -620,8 +494,8 @@ package fe.game.domain.location {
 		}
 		
 		//добавить точки спавна врагов 
-		private function addEnSpawn(xCoord:Number, yCoord:Number, xmll:XML=null):void {
-			var obj:Object = new Object();
+		public function addEnSpawn(xCoord:Number, yCoord:Number, xmll:XML=null):void {
+			var point:Vec2 = new Vec2();
 			if (xmll) {
 				var size:int = xmll.@size;
 				
@@ -629,19 +503,19 @@ package fe.game.domain.location {
 					size = 1;
 				}
 				
-				obj.x = (xCoord + 0.5 * size) * tileX;
-				obj.y = (yCoord + 1.0) * tileY - 1;
+				point.X = (xCoord + 0.5 * size) * tileX;
+				point.Y = (yCoord + 1.0) * tileY - 1;
 			}
 			else {
-				obj.x = xCoord;
-				obj.y = yCoord;
+				point.X = xCoord;
+				point.Y = yCoord;
 			}
 			
-			enspawn.push(obj);
+			enspawn.push(point);
 		}
 		
 		// [Add places where containers should not be (near transitions)]
-		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void {
+		public function setNoObj(nx:int, ny:int, dx:int, dy:int):void {
 			var i:int;
 			if (dx > 0) {
 				for (i = nx; i <= nx + dx; i++) {
@@ -697,7 +571,7 @@ package fe.game.domain.location {
 		
 		//создать активные объекты в местах их появления, кроме мест около переходов, вызывать после проделывания проходов
 		public function setObjects():void {
-			for each (var obj in objsT) {
+			for each (var obj:Object in objsT) {
 				if (noHolesPlace && obj.rem>0 && !getTile(obj.x, obj.y).canPlaceObjects) {
 					continue;	//не ставить ящики около прохода
 				}
@@ -745,7 +619,7 @@ package fe.game.domain.location {
 						}
 					}
 					if (ups[i].length > 0) {
-						for (var k = 0; k < kolEn[i]; k++) {
+						for (var k:int = 0; k < kolEn[i]; k++) {
 							var n:int = int(Math.random() * ups[i].length);
 							createUnit(tipEn[i], ups[i][n].x, ups[i][n].y, false, ups[i][n].xml);
 							
@@ -789,619 +663,177 @@ package fe.game.domain.location {
 		//создать юнит, nx,ny-координаты в блоках если abs=false, и в пикселях, если abs=true
 		//emerg>0 - плавное появление в течении Х тактов
 		public function createUnit(tip:String,nx:int,ny:int,abs:Boolean=false,xml:XML=null,cid:String=null, emerg:int=0):Unit {
+			var un:Unit;
+
 			if (tip=='mines') {
 				createUnit('mine', nx, ny);
 				createUnit('mine', nx + 2, ny);
 				createUnit('mine', nx + 4, ny);
 				return null;
 			}
-			
-			if (land.rnd && tip=='transm') {
-				if ((xml==null || xml.@on.length()==0) && Math.random()<0.5) return null;
-			}
-			
-			if (xml && xml.@trigger.length() && GameContainer.reference.game.triggers[xml.@trigger]=='1') return null;
-			
-			var loadObj:Object=null;
-			
-			if (xml && xml.@code.length() && GameContainer.reference.game.objs.hasOwnProperty(xml.@code)) loadObj=GameContainer.reference.game.objs[xml.@code];
-			
-			//не генерировать юнита, который сдох
-			if (loadObj && loadObj.dead>0 && loadObj.loot!=2) return null;
-			
-			var un:Unit;
-			var scid:String;
-			var hero:int=0;
-			var inWater:Boolean=false;
-			
-			if ((biom == 1 || biom == 5) && abs == false) inWater = getTile(nx, ny).water > 0;
-			
-			var s:String=randomUnit(tip,inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
-			
-			//если тип был случайным и удалось сгенерировать его id
-			if (s!='') {
-				if (cid) scid=cid;
-				else scid=randomCid(s);
-				if (s=='slmine') s='slime';
-				un=Unit.create(s,locDifLevel,xml,loadObj,scid);
-			}
-			
-			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
-			if ((s=='' && !homeStable) || un==null) {
-				if (cid) scid=cid;
-				else scid=randomCid(tip);
-				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
-			}
-			
-			if (un!=null) {
-				var enl:int = enemyLevel;
-				if (land.rnd && landProb=='') { //геройский юнит
-					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
-				}
-				
-				if (hero==0 && un.boss==false) enl=Math.round(enl*(1.1-Math.random()*0.4));
-				
-				un.setLevel(enl);
-				un.setHero(hero);
-				
-				if (abs) {
-					un.putLoc(this,nx,ny);
-				}
-				else {
-					var size:int = Math.floor((un.boundingBox.width - 1) / 40)+1;
-					un.putLoc(this,(nx+0.5*size)*tileX,(ny+1)*tileY-1);
-				}
-				
-				if (active) {
-					un.xp=0;
-				}
-				else {
-					summXp+=un.xp;
-				}
-				
-				addObj(un);
-				units.push(un);
-				
-				if (homeStable) {
-					un.fraction=Unit.F_PLAYER;
-					un.warn=0;
-				}
-			
-				if (homeAtk) {
-					if (un is UnitTurret) (un as UnitTurret).hack(2);
-					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*tileX,(ny-Math.random()*4)*tileY));
-					
-				}
-			
-				if (xml && xml.@code.length()) saves.push(un);
-			
-				//Добавление объектов, имеющих uid в массив
-				if (xml && xml.@uid.length()) {
-					un.uid=xml.@uid;
-					land.uidObjs[un.uid]=un;
-				}
-			
-				if (emerg>0) un.emergence(emerg);
-			
-				un.step();
-			}
-		
+
+			un = UnitFactory.createUnit(this, tip, nx, ny, abs, xml, cid);
+			if (un != null) registerUnit(un, nx, ny, xml, emerg);
 			return un;
 		}
-		
-		//создать феникса, сидящего на ящике
-		private function createPhoenix(box:Box):Boolean {
-			if (box.wall || !box.shelf) return false;
-			
-			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 38, 38)) return false;
-		
-			var un:Unit=new UnitPhoenix();
-			un.putLoc(this, box.coordinates.X, box.boundingBox.top-1);
-			addObj(un);
-			units.push(un);
-			kol_phoenix++;
-			land.kol_phoenix++;
-		
-			return true;
-		}
-		//создать передатчик на ящике
-		private function createTransmitter(box:Box):Boolean {
-			if (box.wall || !box.shelf) return false;
-		
-			if (land.rnd && Math.random()<0.5) return false;
-		
-			if (collisionUnit(box.coordinates.X, box.boundingBox.top - 1, 30, 20)) return false;
-		
-			var un:Unit=new UnitTransmitter('box');
-			un.setLevel(enemyLevel);
-			un.putLoc(this, box.coordinates.X, box.boundingBox.top - 1);
-			addObj(un);
-			units.push(un);
-		
-			return true;
-		}
-		
-		// [Create an item standing on a box]
-		private function createSur(box:Box, itemID:String = null):void {
-			// If it's not specified what item to put on a box, generate one
-			if (itemID == null) {
-				if (Math.random() > 0.25) {
-					return;
-				}
 
-				if (biom == 0) {
-					itemID = 'fan';
-				}
-				else if (biom == 2) {
-					itemID = 'lamp';
-				}
-				else if (biom == 3) {
-					itemID = 'kofe';
-				}
-				else {
-					return;
-				}
+		// Adds a newly built unit to this location. nx, ny are the spot it was asked for, where a raided base splashes blood
+		private function registerUnit(un:Unit, nx:int, ny:int, xml:XML=null, emerg:int=0):void {
+			if (active) {
+				un.xp=0;
 			}
-			
-			// Create the item
-			var item:Item = new Item(itemID, 1);
-			// Use the item to create a visible loot item
-			var l:Loot = new Loot(this, item, box.coordinates.X, box.coordinates.Y - box.boundingBox.height - 3, false, false, false);
-			
-			// If we're at the base, don't let the player interact with them
-			if (base) {
-				l.inter.active = false;
-				l.levitPoss = false;
+			else {
+				summXp+=un.xp;
 			}
+
+			addObj(un);
+			units.push(un);
+
+			if (homeAtk && !(un is UnitTurret) && Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*tileX,(ny-Math.random()*4)*tileY));
+
+			if (xml && xml.@code.length()) saves.push(un);
+
+			//Добавление объектов, имеющих uid в массив
+			if (xml && xml.@uid.length()) {
+				un.uid=xml.@uid;
+				land.uidObjs[un.uid]=un;
+			}
+
+			if (emerg>0) un.emergence(emerg);
+
+			un.step();
 		}
+		
+		
 		
 		//создать скрытый юнит или дополнительный объект
 		public function createHidden(nx:int,ny:int):void {
-			if (biom==10 || biom==11) {
-				return;
-			}
-			
-			if (tipEnemy==0) createUnit('zombie',nx,ny, false, <unit dig='2'/>);
-			else if (tipEnemy==2) createObj('robocell','box',nx,ny);
-			else if (tipEnemy==1 || tipEnemy==3) createObj('alarm','box',nx,ny);
-			else if (tipEnemy==6) createUnit('lov',nx,ny);
+			var hidden:Obj = ObjFactory.createHidden(this, nx, ny);
+
+			if (hidden is Unit) registerUnit(hidden as Unit, nx, ny);
+			else if (hidden != null) registerObj(hidden);
 		}
 		
 		//облака газа
 		public function createClouds(lvl:int, ncloud:String=null):void {
-			if (ncloud == null) {
-				if (biom == 1) {
-					ncloud='tcloud1';
-					if (lvl>=2) return;
-				}
-				
-				if (biom == 5) {
-					ncloud = 'pcloud1';
-				}
-			}
-			if (ncloud != null) {
-				var kol:int = 1;
-			
-				if (biom == 1) kol = Math.random() * 5;
-			
-				if (biom == 5) {
-					if (lvl == 0) kol = Math.random() * 2;
-					else kol = Math.random()*3;
-				}
-			
-				for (var i:int = 0; i<kol; i++) {
-					var nx:int = int(Math.random() * (spaceX - 4) + 2);
-					var ny:int = int(Math.random() * (spaceY - 4) + 2);
-			
-					if (cp) {
-						var dnx:int = cp.coordinates.X - (nx * tileX + 20);
-						var dny:int = cp.coordinates.Y - (ny * tileY + 40);
-						if (dnx * dnx + dny * dny < 80 * 80) continue;
-					}
-			
-					if (biom==1 && lvl==1 && ny>15) ny=15;
-			
-					if (biom==5 && lvl==0) ny = int(Math.random()*15+9);
-			
-					createObj(ncloud,'box',nx,ny);
-				}
+			for each (var cloud:Box in ObjFactory.createClouds(this, lvl, ncloud)) {
+				registerObj(cloud);
 			}
 		}
 		
-		//определение id случайного юнита
-		public function randomUnit(tip:String, inWater:Boolean=false):String {
-			var s:String='';
-			switch (tip) {
-				case 'enl2':
-					if (biom==10) s='stabpon';
-					else if (tipEnemy==0) s='zombie';
-					else if (tipEnemy==2) {
-						if (biom==2 && locDifLevel>=12 && Math.random()<Math.min(locDifLevel/100,0.15)) s='eqd';
-						else if (locDifLevel>=5 && Math.random()<0.1) s='landturret';
-						else if (locDifLevel>=6 && Math.random()<Math.min(locDifLevel/40,0.3)) s='gutsy';
-						else if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/10,0.5)) s='protect';
-						else s='robot';
-					} 
-					else if (tipEnemy==3) s='slaver';
-					else if (tipEnemy==4) s='merc';
-					else if (tipEnemy==5) s='alicorn';
-					else if (tipEnemy==6) s='zebra';
-					else if (tipEnemy==7) {
-						if (Math.random()<0.4) {
-							if (Math.random()<0.5) s='gutsy';
-							else s='protect';
-						}
-						else s='ranger';
-					}
-					else if (tipEnemy==8) {
-						if (Math.random()<0.75) s='zombie';
-						else s='necros'
-					}
-					else if (tipEnemy==9) {
-						if (Math.random()<0.1) s='hellhound';
-						else if (Math.random()<0.07) s='landturret';
-						else s='encl';
-					}
-					else if (tipEnemy==10) s='hellhound';
-					else if (tipEnemy==11) {
-						if (Math.random()<0.3) s='hellhound';
-						else s='encl';
-					}
-					else s='raider';
-				break;
-				case 'enl1':
-					if (biom==10 || biom==11) return '';
-					if ((biom==1 || biom==5) && inWater) {
-						s='fish';
-					}
-					else if (biom==5) {
-						if (Math.random()<0.3) s='scorp3';
-						else s='slime';
-					}
-					else if (biom==6) {
-						s='roller';
-					}
-					else if (tipEnemy==2 && locDifLevel>=4 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10) {
-						if ((landX+landY)%2==0) s='roller';
-						else s='msp';
-					}
-					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) {
-						if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) {
-							s='scorp';
-						}
-						else if ((landX+landY)%2==0) s='slime';
-						else s='ant';
-						if (biom==1 && Math.random()<0.25) s='rat';
-					}
-					else if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) s='molerat';
-					else if (Math.random()<0.6) s='tarakan';
-					else s='rat';
-				break;
-				case 'enc1':
-					if (biom==10) {
-						s='turret';
-					}
-					else if ((biom==1 || biom==5) && inWater) {
-						s='fish';
-					}
-					else if (biom==5) {
-						if ((landX+landY)%2==0) s='bloodwing';
-						else s='slime';
-					}
-					else if (biom==6 || biom==4) {
-						s='cturret';
-					}
-					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) {
-						if (biom==1 && Math.random()<0.6) s='slime';
-						else s='bloodwing';
-					}
-					else s='turret';
-				break;
-				case 'enf1':
-					if (biom==10) return '';
-					if ((biom==1 || biom==5) && inWater) {
-						s='fish';
-					}
-					else if (biom==5) {
-						s='bloat';
-					} 
-				else if (tipEnemy==0 || tipEnemy==5) s='bloat';
-					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6) && locDifLevel>=3) s='vortex';
-					else if (tipEnemy==2 && locDifLevel>=3) s='spritebot';
-					else if (tipEnemy==11 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10 || tipEnemy==2 && locDifLevel>10 && Math.random()<Math.min(locDifLevel/40,0.5)) s='dron';
-				break;
-				case 'lov':
-					if (biom==10 || biom==11) return '';
-					if (biom==5) {
-						s='slmine';
-					}
-					else if (tipEnemy==0) {
-						if ((landX+landY)%2==0) s='slmine';
-						else s='trap';
-					}
-					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6)&&(landX+landY)%2==0) {
-						if (locDifLevel>=10 && Math.random()<0.5) s='trridge';
-						else if (Math.random()<0.5) s='trplate';
-						else s='trcans';
-					}
-					else if ((biom==2 && tipEnemy==2 || tipEnemy==7 || tipEnemy==9) &&(landX+landY)%2==0) {
-						s='trlaser';
-					}
-					else s='mine';
-				break;
-			}
-			return s;
-		}
 		
-		//определение сid случайного юнита
-		public function randomCid(tip:String):String {
-			var tr:int=0;
-			switch (tip) {
-				case 'raider':
-					if (locDifLevel>=5) tr = int(Math.random()*9+1);
-					else if (locDifLevel>=2) tr = int(Math.random()*5+1);
-					else tr = int(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'slaver':
-					if (locDifLevel>=18) tr = int(Math.random()*6+1);
-					else if (locDifLevel>=15) tr = int(Math.random()*5+1);
-					else tr = int(Math.random()*4+1);
-					return tr.toString();
-				break;
-				case 'zebra':
-					if (locDifLevel>=15) tr = int(Math.random()*4+1);
-					else tr = int(Math.random()*2+1);
-					if (locDifLevel>=25 && Math.random()<0.1) tr=5; 
-					return tr.toString();
-				break;
-				case 'ranger':
-					if (land.act.conf==7) tr = int(Math.random()*3+1);
-					else if (landY==0) tr=1;
-					else tr = int(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'merc':
-					if (locDifLevel>=19) tr = int(Math.random()*5+1);
-					else if (locDifLevel>=15 && Math.random()>0.5) tr = int(Math.random()*4+1);
-					else tr = int(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'encl':
-					tr = int(Math.random()*4+1);
-					return tr.toString();
-				break;
-				case 'protect':
-					if (tipEnemy==7) tr=1;
-					return tr.toString();
-				break;
-				case 'gutsy':
-					if (tipEnemy==7) tr=1;
-					return tr.toString();
-				break;
-				case 'dron':
-					if (tipEnemy==9) {
-						tr = int(Math.random()*4+1);
-						if (tr>3) tr=3;
-					}
-					else tr = int(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'roller':
-					if (biom==6) tr=2;
-					else tr=1;
-					return tr.toString();
-				break;
-				case 'zombie':
-					if (biom==5) {
-						if (locDifLevel>=20 && Math.random()<0.1) tr=9;
-						else tr = int(Math.random()*4+5);
-					}
-					else if (biom>=1 && locDifLevel>=8) tr = int(Math.random()*7);
-					else if (locDifLevel>=5) tr = int(Math.random()*5);
-					else if (locDifLevel>=2) tr = int(Math.random()*4);
-					else tr=0;
-					return tr.toString();
-				break;
-				case 'alicorn':
-					tr = int(Math.random()*3+1);
-					return tr.toString();
-				break;
-				case 'hellhound':
-					tr=1;
-					return tr.toString();
-				break;
-				case 'bloat':
-					if (biom==5) tr = int(Math.random()*3+4);
-					else if (locDifLevel>=10) tr = int(Math.random()*5);
-					else if (locDifLevel>=4) tr = int(Math.random()*4);
-					else if (locDifLevel>=2) tr = int(Math.random()*3);
-					else tr=0;
-					return tr.toString();
-				break;
-				case 'ant':
-					if (biom>=1 && locDifLevel>=6) tr = int(Math.random()*3+1);
-					else if (locDifLevel>=3) tr = int(Math.random()*2+1);
-					else tr=1;
-					return tr.toString();
-				break;
-				case 'fish':
-					if (biom==5) tr=3;
-					else tr = int(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'slime':
-					if (biom==5) tr=2;
-					else tr=0;
-					return tr.toString();
-				break;
-				case 'slmine':
-					if (biom==5) tr=12;
-					else tr=10;
-					return tr.toString();
-				break;
-				case 'bloodwing':
-					if (biom==5) tr=2;
-					else tr=1;
-					return tr.toString();
-				break;
-				case 'scorp':
-					if (locDifLevel>=5) tr = int(Math.random()*2+1);
-					else tr=1;
-					return 'scorp'+tr;
-				break;
-				case 'mine':
-					if (biom==4) return 'plamine';
-					if (biom==2 && Math.random()<Math.min(locDifLevel/20,0.4)) return 'plamine';
-					else if (Math.random()<Math.min(locDifLevel/20,0.75)) return 'mine';
-					else return 'hmine';
-				break;
-			}
-			return null;
-		}
 		
 		//создать активный объект, nx,ny-координаты в блоках
 		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj {
-			var obj:Obj;
-			var size:int = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "AllData", "objs", "id", id).@size;
-			if (size<=0) size=1;
-			var loadObj:Object=null;
-			if (xml && xml.@code.length() && GameContainer.reference.game.objs.hasOwnProperty(xml.@code)) loadObj=GameContainer.reference.game.objs[xml.@code];
-			if (tip=='box' || tip=='door') {
-				obj=new Box(this, id, (nx+0.5*size)*tileX, (ny+1)*tileY-1, xml, loadObj);
-				objs.push(obj);
-				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
+			var obj:Obj = ObjFactory.createObj(this, id, tip, nx, ny, xml);
+
+			registerObj(obj, xml);
+			return obj;
+		}
+
+		// Adds a newly built object to this location: its typed list, the save list, script uids, trial doors and the processing chain.
+		// xml is the room card it came from, which can put a phoenix, a transmitter or an item on a box
+		private function registerObj(obj:Obj, xml:XML=null):void {
+			var box:Box;
+			var un:Unit;
+
+			if (obj is Box) {
+				box = obj as Box;
+				objs.push(box);
+				if (box.un) units.push(box.un);
 				//создать феникса
-				if (xml && xml.@ph=='1' && !GameContainer.reference.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
-				if (xml && xml.@transm=='1') createTransmitter((obj as Box));
-				if (land.rnd && land.act.biom==0 && !GameContainer.reference.game.triggers['pet_phoenix'] && kol_phoenix==0 && land.kol_phoenix<3 && Math.random()<0.02) {
-					createPhoenix(obj as Box);
+				if (xml && xml.@ph=='1' && !GameContainer.reference.game.triggers['pet_phoenix']) addPhoenix(box);
+				if (xml && xml.@transm=='1') {
+					un = UnitFactory.createTransmitter(this, box);
+					if (un) {
+						addObj(un);
+						units.push(un);
+					}
 				}
-				if ((obj is Box) && (obj as Box).sur && land.rnd) createSur(obj as Box);
-				if (!land.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
-				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
+				if (land.rnd && land.act.biom==0 && !GameContainer.reference.game.triggers['pet_phoenix'] && kol_phoenix==0 && land.kol_phoenix<3 && Math.random()<0.02) {
+					addPhoenix(box);
+				}
+				if (box.sur && land.rnd) ObjFactory.createSur(this, box);
+				if (!land.rnd && xml && xml.@sur.length()) ObjFactory.createSur(this, box, xml.@sur);
+				if (box.electroDam>electroDam && !box.inter.open) electroDam=box.electroDam;
 			}
-			else if (tip=='trap') {
-				obj=new Trap(this, id,(nx+0.5*size)*tileX, (ny+1)*tileY-1);
+			else if (obj is CheckPoint) {
+				acts.push(obj as CheckPoint);
 			}
-			else if (tip=='checkpoint') {
-				obj=new CheckPoint(this, id,(nx+0.5*size)*tileX, (ny+1)*tileY-1, xml, loadObj);
-				//установить на контрольных точках телепорты на базу
-				if (GameContainer.reference.game.globalDif<=1 || land.rnd && GameContainer.reference.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
-				acts.push(obj);
+			else if (obj is Area) {
+				areas.push(obj as Area);
 			}
-			else if (tip=='area') {
-				obj=new Area(this, xml, loadObj, mirror);
-				areas.push(obj);
-			}
-			else if (tip=='bonus') {
-				obj=new Bonus(this, id,(nx+0.5)*tileX, (ny+0.5)*tileY, xml, loadObj);
-				bonuses.push(obj);
-			}
-			if (xml && xml.@code.length()) {
+			if (obj.code != null) {
 				saves.push(obj);
-				obj.code=xml.@code;
-				if (tip=='checkpoint' && !land.rnd) {	//сохранённая контрольная точка
+				if (obj is CheckPoint && !land.rnd) {	//сохранённая контрольная точка
 					if (GameContainer.reference.pers.currentCPCode!=null && obj.code==GameContainer.reference.pers.currentCPCode || GameContainer.reference.pers.prevCPCode!=null && obj.code==GameContainer.reference.pers.prevCPCode || land.act.lastCpCode==obj.code) {
 						land.currentCP=obj as CheckPoint;
 					}
 				}
 			}
 			//Добавление объектов, имеющих uid в массив
-			if (xml && xml.@uid.length()) {
-				obj.uid=xml.@uid;
-				land.uidObjs[obj.uid]=obj;
-			}
-			if (xml && xml.@nazv.length()) obj.nazv=xml.@nazv;
+			if (obj.uid != null) land.uidObjs[obj.uid]=obj;
 			//Добавление id испытаний
-			if (landProb=='' && xml && xml.@prob.length() && xml.@prob!='') land.probIds.push(xml.@prob);
+			if (landProb=='' && obj.inter && obj.inter.prob) land.probIds.push(obj.inter.prob);
 			addObj(obj);
-			return obj;
+		}
+
+		//создать феникса, сидящего на ящике
+		private function addPhoenix(box:Box):void {
+			var un:Unit = UnitFactory.createPhoenix(this, box);
+
+			if (un == null) return;
+			addObj(un);
+			units.push(un);
+			kol_phoenix++;
+			land.kol_phoenix++;
 		}
 		
 		// [Creating a checkpoint at a random spawn point]
 		public function createCheck(act:Boolean=false):void {
-			if (spawnPoints.length > 0) {
-				var sp:Object = spawnPoints[int(Math.random()*spawnPoints.length)];
-				var id:String = 'checkpoint';
-				if (!act && land.rnd && Math.random()<0.5) {
-					id += int(Math.random()*5+1);
-				}
-				cp = createObj(id,'checkpoint',sp.x,sp.y) as CheckPoint;
-				if (land.act.landStage==0 && act) cp.teleOn=true;
-				if (act) cp.activate(true);
-				isCheck=true;
-			}
+			var checkPoint:CheckPoint = ObjFactory.createCheck(this, act);
+
+			if (checkPoint == null) return;
+			registerObj(checkPoint);
+			cp = checkPoint;
+			if (act) cp.activate(true);
+			isCheck=true;
 		}
 
 		// [Creating an exit at a random spawn point]
 		public function createExit(s:String = ''):void {
-			if (spawnPoints.length>0) {
-				var sp:Object = spawnPoints[int(Math.random() * spawnPoints.length)];
-				createObj('exit', 'box', sp.x, sp.y, <obj name = 'exit' prob = {land.act.exitProb + s} time = '20' inter = '8' sign = '1'/>);
-				isCheck = true;
-			}
+			var exit:Box = ObjFactory.createExit(this, s);
+
+			if (exit == null) return;
+			registerObj(exit);
+			isCheck = true;
 		}
 
 		//создание двери испытаний в случайной точке появления
 		public function createDoorProb(nid:String, nprob:String):Boolean {
-			if (spawnPoints.length > 0) {
-				var sp:Object = spawnPoints[int(Math.random()*spawnPoints.length)];
-				createObj(nid,'box', sp.x, sp.y, <obj prob = {nprob} nazv = {TextParser.txt('m', nprob)} time = '20' inter = '8'/>);
-				isCheck=true;
-				return true;
+			var door:Box = ObjFactory.createDoorProb(this, nid, nprob);
+
+			if (door == null) return false;
+			registerObj(door);
+			isCheck=true;
+			return true;
+		}
+		
+		// How many of the room's generated XP pickups are still waiting to be taken
+		public function xpBonusesLeft():int {
+			var left:int = 0;
+
+			for each (var bonus:Bonus in xpBonuses) {
+				if (bonus.sost == 1) left++;
 			}
-			return false;
+			return left;
 		}
 		
 		public function createXpBonuses(kol:int=5):void {
 			if (homeStable || homeAtk) return;
-			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
-			var mesto:int=4;
-			var n:int=5;
-			maxXp = kol;
-			for (var i:int = 1; i<=100; i++) {
-				x1 = 2;
-				y1 = 2;
-				x2 = spaceX - 2;
-				y2 = spaceY - 2;
-
-				switch (mesto) {
-					case 4:
-						x2 = halfSpaceX;
-						y2 = halfSpaceY;
-					break;
-					case 3:
-						x1 = halfSpaceX;
-						y2 = halfSpaceY;
-					break;
-					case 2:
-						x2 = halfSpaceX;
-						y1 = halfSpaceY;
-					break;
-					case 1:
-						x1 = halfSpaceX;
-						y1 = halfSpaceY;
-					break;
-				}
-
-				nx = int(x1 + Math.random() * (x2 - x1));
-				ny = int(y1 + Math.random() * (y2 - y1));
-				if (getTile(nx, ny).collision == 0 && (getTile(nx - 1, ny).collision == 0 || getTile(nx + 1, ny).collision == 0)) { // Check that the tile is empty.
-					createObj('xp','bonus',nx,ny);
-					kolXp++;
-					if (mesto>0) mesto--;
-					if (kolXp>=kol) return;
-				} 
-				else {
-					n--;
-					if (n <= 0) {
-						n = 5;
-						if (mesto > 0) {
-							mesto--;
-						}
-					}
-				}
+			xpBonuses = ObjFactory.createXpBonuses(this, kol);
+			for each (var bonus:Bonus in xpBonuses) {
+				registerObj(bonus);
 			}
 		}
 		
@@ -1529,8 +961,8 @@ package fe.game.domain.location {
 
 		public function getAbsTile(nx:int, ny:int):Tile {
 			// Cache for speed
-			const mX:int = maxX;
-			const mY:int = maxY;
+			const mX:int = gridWidth;
+			const mY:int = gridHeight;
 			
 			// Do inverse multiplication instead of division
 			const invTileX:Number = INV_TILEX; // 0.025
@@ -1817,7 +1249,7 @@ package fe.game.domain.location {
 				return false;
 			}
 
-			for each (var cel in units) {
+			for each (var cel:Unit in units) {
 				if (cel == null || (cel as Unit).sost == 4) {
 					continue;
 				}
@@ -1846,16 +1278,17 @@ package fe.game.domain.location {
 		// [Command to all objects]
 		public function allAct(emit:Obj, allact:String, allid:String = ""):void {
 			var obj:Obj;
+			var area:Area;
 			for each (obj in objs) {
 				if (obj != emit && obj.inter && (allid == "" || allid == null || obj.inter.allid == allid)) {
 					obj.command(allact, "13");
 				}
 			}
 			
-			for each (obj in areas) {
+			for each (area in areas) {
 				// Unbracketed as in vanilla: with an allid set, the emitting area also receives its own command; the maps were authored against this
-				if (obj != emit && allid == "" || allid == null || (obj as Area).allid == allid) {
-					obj.command(allact);
+				if (area != emit && allid == "" || allid == null || area.allid == allid) {
+					area.command(allact);
 				}
 			}
 			
@@ -1899,7 +1332,7 @@ package fe.game.domain.location {
 		
 		//активировать все ячейки роботов
 		public function robocellActivate():void {
-			for each(var un in objs) { // 'un' is being called as a Box
+			for each(var un:Obj in objs) { // 'un' is being called as a Box
 				if (un.inter && un.inter.allact == 'robocell') {
 					un.inter.genRobot();
 				}
@@ -1928,18 +1361,18 @@ package fe.game.domain.location {
 				un.cTransform = cTransform;
 			}
 			
-			for each(var obj in objs) {
+			for each(var obj:Obj in objs) {
 				obj.cTransform=cTransform;
 				
 				if (obj.inter) {
-					if (obj.inter.lockTip == '4') obj.inter.setAct('open', 0);
+					if (obj.inter.lockTip == 4) obj.inter.setAct('open', 0);
 					obj.inter.active = true;
 					obj.inter.update();
 				}
 			}
 			
-			for each(var obj in backobjs) {
-				obj.onoff(1);
+			for each(var backobj:BackObj in backobjs) {
+				backobj.onoff(1);
 			}
 			
 			World.w.redrawLoc();
@@ -1957,12 +1390,12 @@ package fe.game.domain.location {
 				un.cTransform = cTransform;
 			}
 			
-			for each(var obj in objs) {
+			for each(var obj:Obj in objs) {
 				obj.cTransform = cTransform;
 			}
 			
-			for each(var obj in backobjs) {
-				obj.onoff(-1);
+			for each(var backobj:BackObj in backobjs) {
+				backobj.onoff(-1);
 			}
 			
 			World.w.redrawLoc();
@@ -1980,8 +1413,8 @@ package fe.game.domain.location {
 				t_alarmsp = Math.floor(Math.random() * 30);
 			}
 			
-			var sp:Object = enspawn[Math.floor(Math.random() * enspawn.length)];
-			var un:Unit = createUnit((tipSp == null) ? tipSpawn : tipSp, sp.x, sp.y, true, null, null, 30);
+			var sp:Vec2 = enspawn[int(Math.random() * enspawn.length)];
+			var un:Unit = createUnit((tipSp == null) ? tipSpawn : tipSp, sp.X, sp.Y, true, null, null, 30);
 
 			if (getGG) {
 				un.alarma(gg.coordinates.X, gg.coordinates.Y);
@@ -1997,16 +1430,20 @@ package fe.game.domain.location {
 				return null;
 			}
 			
-			var sp:Object = enspawn[n];
+			var sp:Vec2;
 			
-			if (sp == null) {
-				sp = enspawn[Math.floor(Math.random() * enspawn.length)];
+			// A wave index past the spawn points picks one at random
+			if (n >= 0 && n < enspawn.length) {
+				sp = enspawn[n];
+			}
+			else {
+				sp = enspawn[int(Math.random() * enspawn.length)];
 			}
 			
-			var un:Unit = createUnit(w.@id, sp.x, sp.y, true, w, w.@cid, 30);
+			var un:Unit = createUnit(w.@id, sp.X, sp.Y, true, w, w.@cid, 30);
 			
 			if (spart != null) {
-				Emitter.emit(spart,this,sp.x,sp.y);
+				Emitter.emit(spart,this,sp.X,sp.Y);
 			}
 			
 			if (un) {
@@ -2031,19 +1468,9 @@ package fe.game.domain.location {
 		}
 		
 		public function createHealBonus(nx:Number, ny:Number):void {
-			if (GameContainer.reference.pers.bonusHeal <= 0) {
-				return;
-			}
-			
-			var obj:Bonus = new Bonus(this, 'heal', nx, ny);
-			obj.liv = 300;
-			obj.val = GameContainer.reference.pers.bonusHeal * GameContainer.reference.pers.bonusHealMult;
-			
-			if (active) {
-				obj.addVisual();
-			}
+			var bonus:Bonus = ObjFactory.createHealBonus(this, nx, ny);
 
-			addObj(obj);
+			if (bonus) addObj(bonus);
 		}
 		
 		//обработать призрачные стены
@@ -2102,8 +1529,8 @@ package fe.game.domain.location {
 			var tileYCache:int = tileY;
 			var invTileX:Number = INV_TILEX;
 			var invTileY:Number = INV_TILEY;
-			var mX:int = maxX;
-			var mY:int = maxY;
+			var mX:int = gridWidth;
+			var mY:int = gridHeight;
 
 			var lightBmpRef:BitmapData;
 			var i:int;
@@ -2313,7 +1740,7 @@ package fe.game.domain.location {
 				try {
 					obj.step();
 				} 
-				catch(err) {
+				catch(err:Error) {
 					trace('ERROR: (00:29)');
 					World.w.showError(err, obj.err());
 				}
@@ -2378,7 +1805,7 @@ package fe.game.domain.location {
 				}
 			}
 			
-			if (unitCoord && unitCoord.step) {
+			if (unitCoord && unitCoord.step != null) {
 				unitCoord.step();
 			}
 			

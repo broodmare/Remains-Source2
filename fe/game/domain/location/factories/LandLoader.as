@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.domain.location.factories {
 
 	// [Class that loads terrain maps from a file or takes them from variables contained in the world object]
 	import flash.net.URLLoader; 

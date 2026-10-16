@@ -88,7 +88,7 @@ package fe.game.domain.units {
 			try {
 				GameContainer.reference.grafon.visObjs[layer].removeChild(arm);
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace('ERROR: (00:8)');
 			}
 		}

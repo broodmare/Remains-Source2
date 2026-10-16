@@ -7,6 +7,7 @@ package fe.game.domain.location {
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.serv.Script;
 	import fe.engine.Engine;
+	import fe.game.domain.objects.Box;
 	
 	//Класс представляет собой набор условий для испытания
 	
@@ -64,7 +65,7 @@ package fe.game.domain.location {
 			if (xml.@close.length()) isClose=true;
 			if (tip!=2) loc.petOn=false;
 			if (xml.scr.length()) {
-				for each(var xl in xml.scr) {
+				for each(var xl:XML in xml.scr) {
 					if (xl.@eve=='alarm') alarmScript=new Script(xl,loc.land);
 					if (xl.@eve=='out') outScript=new Script(xl,loc.land);
 					if (xl.@eve=='in') inScript=new Script(xl,loc.land);
@@ -98,16 +99,18 @@ package fe.game.domain.location {
 		
 		//проверить все условия закрытия
 		private function checkAllCon():Boolean {
-			for each (var node in xml.con) {
+			for each (var node:XML in xml.con) {
 				if ((node.@tip=='box' || node.@tip.length()==0) && node.@uid.length()) { //проверка боксов на открытость
 					for each (var b:Box in loc.objs) {
 						if (b.uid==node.@uid && b.inter && (!b.inter.open && b.inter.cont!='empty')) return false;
 					}
-				} else if (node.@tip=='unit') {//проверка юнитов на смерть
+				}
+				else if (node.@tip=='unit') {//проверка юнитов на смерть
 					for each (var un:Unit in loc.units) {
 						if ((node.@uid.length() && un.uid==node.@uid || node.@qid.length() && un.questId==node.@qid) && un.sost<3) return false;
 					}
-				} else if (node.@tip=='wave') {//проверка волны
+				}
+				else if (node.@tip=='wave') {//проверка волны
 					if (nwave<maxwave || killEn<kolEn) return false;
 				}
 			}
@@ -215,13 +218,11 @@ package fe.game.domain.location {
 		
 		private function createWave():void {
 			nspawn=0;
-			var w:XML=xml.wave[nwave];
+			var w:XML = xml.wave[nwave];
 			
-			if (w==null) {
-				return;
-			}
+			if (w == null) { return; }
 			
-			for each (var un in w.obj) {
+			for each (var un:XML in w.obj) {
 				loc.waveSpawn(un,nspawn);
 				kolEn++;
 				nspawn++;
@@ -236,19 +237,14 @@ package fe.game.domain.location {
 		
 		//проверка выполняется при убийстве врага
 		public function checkWave(inc:Boolean=false):void {
-			if (inc) {
-				killEn++;
-			}
+			if (inc) { killEn++; }
 			
-			if (killEn>=kolEn) {
+			if (killEn >= kolEn) {
 				checkAllCon();
 				
-				if (nwave<maxwave) {
-					t_wave=next_t;
-				}
-				else {
-					t_wave=0;
-				}
+				t_wave = (nwave < maxwave)
+					? next_t
+					: 0;
 			}
 		}
 		
@@ -265,7 +261,7 @@ package fe.game.domain.location {
 		
 		public function step():void {
 			if (onWave) {
-				if (t_wave>0) {
+				if (t_wave > 0) {
 					t_wave--;
 				}
 
@@ -273,11 +269,10 @@ package fe.game.domain.location {
 					createWave();
 				}
 
-				if (t_wave%30==1) {
-					GUIManager.reference.gui.messText('',Math.floor(t_wave/30).toString());
+				if (t_wave % 30 == 1) {
+					GUIManager.reference.gui.messText('', Math.floor(t_wave / 30).toString());
 				}
 			}
 		}
-		
 	}
 }

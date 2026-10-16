@@ -1,6 +1,5 @@
-package fe.game.domain.location {
+package fe.game.domain.objects {
 
-	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 
@@ -30,6 +29,7 @@ package fe.game.domain.location {
 	import fe.game.domain.units.Mine;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.enums.E_Material;
+	import fe.game.domain.location.Location;
 
 	public class Box extends Obj {
 
@@ -184,7 +184,7 @@ package fe.game.domain.location {
 				if (xml.@name.length()) nazv=TextParser.txt('o',xml.@name);	//название
 				//прикреплённые скрипты
 				if (xml.scr.length()) {
-					for each (var xscr in xml.scr) {
+					for each (var xscr:XML in xml.scr) {
 						var scr:Script = new Script(xscr,loc.land);
 						if (inter && scr.eve == null) inter.scrAct=scr;
 						if (inter && scr.eve == 'open') inter.scrOpen=scr;
@@ -562,7 +562,7 @@ package fe.game.domain.location {
 		// Check if doorway is clear
 		public function attDoor():Boolean {
 			// First check units
-			for each (var cel in loc.units) {
+			for each (var cel:Unit in loc.units) {
 				if (!cel || (cel as Unit).sost == 4) {
 					continue;  // Skip nulls or "dead" units
 				}
@@ -588,7 +588,7 @@ package fe.game.domain.location {
 			}
 
 			// Now check objects (boxes) using their maintained bounding boxes
-			for each (var obj in loc.objs) {
+			for each (var obj:Box in loc.objs) {
 				// If it's actually a Box with a "wall" property
 				if ((obj as Box).wall > 0) {
 					continue;  // skip “wall” boxes
@@ -605,7 +605,7 @@ package fe.game.domain.location {
 		}
 		
 		public function attMoln():void {
-			for each (var cel in loc.units) {
+			for each (var cel:Unit in loc.units) {
 				if (!cel || (cel as Unit).sost == 4) {
 					continue; // Skip null or "dead"
 				}
@@ -634,8 +634,8 @@ package fe.game.domain.location {
 					sila /= massa;
 					if (sila > 3) sila = 3;
 
-					var n:Number = bul.knockx * bul.otbros * sila;
-					velocity.sum(n);
+					velocity.X += bul.knockx * bul.otbros * sila;
+					velocity.Y += bul.knocky * bul.otbros * sila;
 
 					GameContainer.reference.gg.otbrosTele(bul.otbros * sila);
 					return mat;
@@ -954,9 +954,13 @@ package fe.game.domain.location {
 		}
 
 		public function checkShelf(velocityDown:Number):Number {
+			var objs:Vector.<Box> = loc.objs;
+			var n:int = objs.length;
+			var b:Box;
+
 			// Use this entity's bounding box
-			for (var i in loc.objs) {
-				var b:Box = loc.objs[i] as Box;
+			for (var i:int = 0; i < n; i++) {
+				b = objs[i];
 				if (!b.invis && b.stay && b.shelf) {
 					// Check X range by comparing our centerX to b's boundingBox.left/right
 					if ( !( coordinates.X < b.boundingBox.left ||

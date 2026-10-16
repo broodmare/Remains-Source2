@@ -137,26 +137,19 @@ package fe.game {
 
 		// Reads the user's stored settings into the game
 		private function loadConfig():void {
-			if (configObj) {
-				lastCom = configObj.data.lastCom;
-			}
+			if (configObj) { lastCom = configObj.data.lastCom; }
 
-			if (configObj.data.dialon != null) { dialOn = configObj.data.dialon; }
-			if (configObj.data.zoom100 != null) { zoom100 = configObj.data.zoom100; }
-			if (zoom100) {
-				cam.isZoom = 0;
-			}
-			else {
-				cam.isZoom = 2;
-			}
-			if (configObj.data.mat != null) { matFilter = configObj.data.mat; }
-			if (configObj.data.help != null) { helpMess = configObj.data.help; }
-			if (configObj.data.hit != null) { showHit = configObj.data.hit; }
-			if (configObj.data.sysCur != null) { sysCur = configObj.data.sysCur; }
-			if (configObj.data.hintTele != null) { hintTele = configObj.data.hintTele; }
-			if (configObj.data.showFavs != null) { showFavs = configObj.data.showFavs; }
-			if (configObj.data.quakeCam != null) { quakeCam = configObj.data.quakeCam; }
-			if (configObj.data.errorShowOpt != null) { errorShowOpt = configObj.data.errorShowOpt; }
+			if (configObj.data.dialon != null)			{ dialOn = configObj.data.dialon; }
+			if (configObj.data.zoom100 != null)			{ zoom100 = configObj.data.zoom100; }
+			cam.isZoom = (zoom100) ? 0 : 2;
+			if (configObj.data.mat != null)				{ matFilter = configObj.data.mat; }
+			if (configObj.data.help != null)			{ helpMess = configObj.data.help; }
+			if (configObj.data.hit != null)				{ showHit = configObj.data.hit; }
+			if (configObj.data.sysCur != null)			{ sysCur = configObj.data.sysCur; }
+			if (configObj.data.hintTele != null)		{ hintTele = configObj.data.hintTele; }
+			if (configObj.data.showFavs != null)		{ showFavs = configObj.data.showFavs; }
+			if (configObj.data.quakeCam != null)		{ quakeCam = configObj.data.quakeCam; }
+			if (configObj.data.errorShowOpt != null)	{ errorShowOpt = configObj.data.errorShowOpt; }
 			if (configObj.data.app) {
 				guiManager.app.load(configObj.data.app);
 				guiManager.app.setTransforms();

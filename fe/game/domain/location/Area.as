@@ -69,15 +69,13 @@ package fe.game.domain.location {
 				
 				boundingBox.width = rx * tileX;
 				coordinates.X  = bx * tileX;
-				boundingBox.left = bx * tileX;
 				coordinates.Y  = by * tileY + tileY;
-				boundingBox.bottom = by * tileY + tileY;
-				boundingBox.right = boundingBox.left + boundingBox.width;
-				
+
 				if (xml.@h.length()) ry=xml.@h;
-				
+
 				boundingBox.height = ry * tileY;
-				boundingBox.top = boundingBox.bottom - boundingBox.height
+				// Inset so a unit standing on the area's top edge isn't inside it
+				boundingBox.setBounds(coordinates.X, coordinates.X + boundingBox.width, coordinates.Y - boundingBox.height, coordinates.Y);
 				
 				//визуал
 				if (xml.@vis.length()) {
@@ -103,7 +101,7 @@ package fe.game.domain.location {
 				
 				//прикреплённые скрипты
 				if (xml.scr.length()) {
-					for each (var xscr in xml.scr) {
+					for each (var xscr:XML in xml.scr) {
 						var scr:Script=new Script(xscr,loc.land,this);
 						if (scr.eve==null || scr.eve=='over') scrOver=scr;
 						if (scr.eve=='out') scrOut=scr;
@@ -232,7 +230,7 @@ package fe.game.domain.location {
 				GUIManager.reference.gui.messText(mess, '', messDown);
 			}
 			
-			if (active && run) {
+			if (active && run != null) {
 				run();
 			}
 			
@@ -240,7 +238,7 @@ package fe.game.domain.location {
 				loc.allAct(this,allact,allid);
 			}
 			
-			if (active && !preactive && over) {
+			if (active && !preactive && over != null) {
 				over();
 			}
 			
@@ -248,7 +246,7 @@ package fe.game.domain.location {
 				teleport(activator);
 			}
 			
-			if (!active && preactive && out) {
+			if (!active && preactive && out != null) {
 				out();
 			}
 			
@@ -273,13 +271,10 @@ package fe.game.domain.location {
 		
 		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void {
 			coordinates.X  = x1;
-			boundingBox.left = x1;
-			boundingBox.top = y1;
-			boundingBox.right = x2;
 			coordinates.Y  = y2;
-			boundingBox.bottom = y2;
-			boundingBox.width = boundingBox.right - boundingBox.left;
-			boundingBox.height = boundingBox.bottom - boundingBox.top;
+			boundingBox.setBounds(x1, x2, y1, y2);
+			boundingBox.width = x2 - x1;
+			boundingBox.height = y2 - y1;
 		}
 		
 		// Grav lift effect

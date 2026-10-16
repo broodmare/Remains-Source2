@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.domain.objects {
 
 	import flash.display.MovieClip;
 	import flash.geom.ColorTransform;
@@ -13,6 +13,8 @@ package fe.game.domain.location {
 	import fe.game.domain.location.tile.Tile;
 	import fe.engine.SaveManager;
 	import fe.game.rendering.Flipbook;
+	import fe.game.domain.location.Area;
+	import fe.game.domain.location.Location;
 
 	public class CheckPoint extends Obj {
 

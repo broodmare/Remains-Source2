@@ -45,7 +45,7 @@ package fe.game.domain.location {
 		public var wtipdam:String	= E_Resistances.DAM_VENOM;	//урон от воды
 		
 		public var tipWater:int=0;				//внешний вид воды
-		public var color:String;
+		public var color:String = "";
 		public var sndMusic:String;
 		public var postMusic:Boolean=false;		//музыка не пеключается на боевую
 		public var fon:String;				//фон неподвижного задника
@@ -109,10 +109,10 @@ package fe.game.domain.location {
 		}
 
 		//посчитать, сколько испытаний завершено
-		public function calcProbs() {
+		public function calcProbs():void {
 			kolAllProb=0;
 			kolClosedProb=0;
-			for each(var xml in xmlland.prob) {
+			for each(var xml:XML in xmlland.prob) {
 				kolAllProb++;
 				if (GameContainer.reference.game.triggers['prob_'+xml.@id]!=null) kolClosedProb++
 			}
@@ -128,7 +128,7 @@ package fe.game.domain.location {
 			return obj;
 		}
 		
-		public function load(obj:Object) {
+		public function load(obj:Object):Object {
 			if (obj.cp!=null) lastCpCode=obj.cp;
 			if (obj.st!=null) landStage=obj.st;
 			if (obj.access!=null && !access) access=obj.access;

@@ -13,7 +13,7 @@ package fe.game {
 	import fe.game.domain.serv.Item;
 	import fe.game.domain.serv.LootGen;
 	import fe.game.domain.serv.Script;
-	import fe.game.domain.location.Loot;
+	import fe.game.domain.objects.Loot;
 	import fe.game.domain.units.enums.E_ArmorTypes;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.LanguageManager;
@@ -787,8 +787,9 @@ package fe.game {
 			}
 			else {
 				_inventory.equipment.deleteWeapon(id);
-				_inventory.favorites.removeFavorite(id);
 			}
+
+			_inventory.favorites.removeFavorite(id);
 			
 			GameContainer.reference.calcMassW = true;
 		}
@@ -1462,9 +1463,8 @@ package fe.game {
 			if (_inventory.getQuantity("s_" + id) > 0) {
 				addArmor(id, 0xFFFFFF, -1);
 			}
-			else {
-				_inventory.favorites.removeFavorite(id);
-			}
+
+			_inventory.favorites.removeFavorite(id);
 		}
 		
 		// Put an item on the ground at the player's feet
@@ -1654,7 +1654,7 @@ package fe.game {
 		public static function retMass(inv:Inventory, n:int):String {
 			var pers:Pers = GameContainer.reference.pers;
 			var txt:String;
-			var cl:String = "mass";
+			var cl:String = "lightBlue";
 			var m:Number = 0;
 			var maxm:Number = 0;
 			

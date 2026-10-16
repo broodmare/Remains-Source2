@@ -6,41 +6,52 @@ package fe.engine.text  {
 		
 		private static const data:Object = XMLData.moduleDictionary;
 		private static var cache:Dictionary = new Dictionary();
+		private static var indexes:Object = {};		// Per file and attribute, each top-level entry by its attribute value
 
 		public static function getNodesWithName(module:String, directory:String, fileName:String, nodeName:String):XMLList {
 			const file:XML = getFileFromModuleDictionary(module, directory, fileName);
 			return file.child(nodeName);
 		}
 
+		// Only top-level entries match, so an id repeated inside an earlier entry never shadows the entry itself
 		public static function getNodeWithAttributeThatMatches(module:String, directory:String, fileName:String, attributeName:String, attributeKey:String):XML {
-			const file:XML = getFileFromModuleDictionary(module, directory, fileName);
-			const nodeList:XMLList = file..*.(attribute(attributeName) == attributeKey);
-			
-			if (nodeList.length()) {
-				return nodeList[0];
+			const indexKey:String = module + "/" + directory + "/" + fileName + "@" + attributeName;
+			var index:Object = indexes[indexKey];
+
+			if (index == null) {
+				index = buildIndex(getFileFromModuleDictionary(module, directory, fileName), attributeName);
+				indexes[indexKey] = index;
 			}
-			else {
-				return null;
-			}
+
+			return index.hasOwnProperty(attributeKey) ? index[attributeKey] : null;
 		}
 
-		public static function getNodeFromAllWithAttributeThatMatches(module:String, directory:String, fileName:String, attributeName:String, attributeKey:String):XML {
-			const file:XML = getFileFromModuleDictionary(module, directory, fileName);
-			const nodeList:XMLList = file.descendants().(attribute(attributeName) == attributeKey);
-			return nodeList.length() > 0 ? nodeList[0] : null;
-		}
-
+		// The first descendant named nodeName whose attribute matches, or null when there is none
 		public static function getNodeByNameWithAttributeThatMatches(module:String, directory:String, fileName:String, nodeName:String, attributeName:String, attributeKey:String):XML {
 			const file:XML = getFileFromModuleDictionary(module, directory, fileName);
 			const matchingNodes:XMLList = file.descendants(nodeName).(attribute(attributeName) == attributeKey);
 			
-			if (matchingNodes.length()) {
-				return matchingNodes[0];
+			return matchingNodes.length() ? matchingNodes[0] : null;
+		}
+
+		// The first top-level entry wins when two share a value
+		private static function buildIndex(file:XML, attributeName:String):Object {
+			var index:Object = {};
+			var node:XML;
+			var key:String;
+
+			for each (node in file.children()) {
+				if (node.attribute(attributeName).length() == 0) {
+					continue;
+				}
+
+				key = node.attribute(attributeName);
+				if (!index.hasOwnProperty(key)) {
+					index[key] = node;
+				}
 			}
-			else {
-				trace('XMLDataGrabber.as/getNodeByNameWithAttributeThatMatches() - ERROR: Node with name: "' + nodeName + '" and attribute: "' + attributeName + '" that matches: "' + attributeKey + '" returned no results!');
-				return null;
-			}
+
+			return index;
 		}
 
 		// Module dictionary handler. Handles navigating the dictionary and throwing errors for anything not found.

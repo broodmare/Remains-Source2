@@ -218,8 +218,8 @@ package fe.game.domain.units {
 			bumpDefinition.rangeY = bumpDefinition.rangeX;
 			bumpDefinition.strength = (attackerType == GRENADIER) ? 1.0 : BUMP_STRENGTH;
 			bumpDefinition.shockedStrength = bumpDefinition.strength;
-			bumpDefinition.slowSpeed = (attackerType == GRENADIER) ? RAM_SLOW_SPEED : 0.0;
-			bumpDefinition.slowFactor = RAM_SLOW_FACTOR;
+			bumpDefinition.slowSpeed = RAM_SLOW_SPEED;
+			bumpDefinition.slowFactor = (attackerType == GRENADIER) ? RAM_SLOW_FACTOR : 1.0;
 			attacks.push(new BodyAttack(this, bumpDefinition));
 
 			if (attackerType == MELEE) {

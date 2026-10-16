@@ -3,7 +3,6 @@ package fe.game {
 	import flash.utils.Dictionary;
 
 	import fe.game.domain.units.Armor;
-	import fe.game.domain.units.Resistances;
 	import fe.game.domain.units.enums.E_ArmorTypes;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.engine.text.LanguageManager;
@@ -18,14 +17,6 @@ package fe.game {
 		private static var _armors:Vector.<Armor>;		// Vector that stores a contigious collection of <Armor> references for fast iteration
 		private static var _armorMap:Dictionary;		// Dictionary to map each armor.id to a reference to the Armor (Key-Pair)
 		
-		// Original resistance names used in the armor data mapped to their damage types
-		private static const RESIST_KEYS:Object = {
-			bul: E_Resistances.DAM_PIERCE,	blade: E_Resistances.DAM_CUT,		phis: E_Resistances.DAM_BLUNT,	fire: E_Resistances.DAM_BURN,
-			expl: E_Resistances.DAM_EXPLOSION,	laser: E_Resistances.DAM_LASER,	plasma: E_Resistances.DAM_PLASMA,	venom: E_Resistances.DAM_VENOM,
-			spark: E_Resistances.DAM_ELECTRIC,	acid: E_Resistances.DAM_ACID,		cryo: E_Resistances.DAM_COLD,		fang: E_Resistances.DAM_BITE,
-			necro: E_Resistances.DAM_DEATH
-		};
-
 		public function ArmorManager() {
 			
 			reference	= this;
@@ -111,12 +102,6 @@ package fe.game {
 			
 			// Create the armor's resistance values
 			armor.resistances.importResistances(lvlData);
-			
-			for (var key:String in RESIST_KEYS) {
-				if (key in lvlData) {
-					armor.resistances.setResist(RESIST_KEYS[key], lvlData[key]);
-				}
-			}
 
 			// If this is armor (not an amulet) make it weak to pink cloud
 			if (armor.tip == E_ArmorTypes.ARMOR) {

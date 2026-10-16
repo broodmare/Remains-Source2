@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.ui {
 
 	import flash.display.BitmapData;
 
@@ -7,6 +7,9 @@ package fe.game.domain.location {
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.enums.E_Direction;
 	import fe.game.GameContainer;
+	import fe.game.domain.objects.CheckPoint;
+	import fe.game.domain.location.Land;
+	import fe.game.domain.location.Location;
 
 	// Pip-Buck map of a level, stitched together from rooms
 	public class Minimap {
@@ -65,7 +68,7 @@ package fe.game.domain.location {
 			var color:uint;
 			var tile:Tile;
 			var obj:Obj;
-			var act:Object;
+			var checkPoint:CheckPoint;
 			var unit:Unit;
 
 			for (i = 0; i < room.spaceX; i++) {
@@ -144,8 +147,8 @@ package fe.game.domain.location {
 				}
 			}
 
-			for each (act in room.acts) {
-				if (act is CheckPoint) drawObj(room, act as Obj, COLOR_CHECKPOINT);
+			for each (checkPoint in room.acts) {
+				drawObj(room, checkPoint, COLOR_CHECKPOINT);
 			}
 
 			for each (unit in room.units) {

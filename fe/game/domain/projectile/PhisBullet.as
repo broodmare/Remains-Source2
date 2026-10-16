@@ -7,7 +7,7 @@ package fe.game.domain.projectile {
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.location.tile.Tile;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.projectile.enums.E_WaterState;
 	import fe.game.enums.E_Material;
 
@@ -136,7 +136,7 @@ package fe.game.domain.projectile {
 					inWater = E_WaterState.IN;
 				}
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace('ERROR: (00:22)');
 			}
 

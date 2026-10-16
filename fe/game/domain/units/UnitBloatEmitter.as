@@ -4,6 +4,7 @@ package fe.game.domain.units {
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.GameContainer;
+	import fe.game.domain.location.factories.UnitFactory;
 	
 	public class UnitBloatEmitter  extends Unit {
 		
@@ -42,7 +43,7 @@ package fe.game.domain.units {
 				if (f) {
 					//сбросить эффекты
 					if (effects.length>0) {
-						for each (var eff in effects) eff.unsetEff();
+						for each (var eff:Effect in effects) eff.unsetEff();
 						effects = [];
 					}
 					
@@ -58,13 +59,13 @@ package fe.game.domain.units {
 		
 			if (emitId == 'bloat') {
 				if (loc.locDifLevel > 3) {
-					emitTr=loc.randomCid(emitId);
+					emitTr=UnitFactory.randomCid(loc, emitId);
 				}
 				un=loc.createUnit(emitId, coordinates.X, coordinates.Y, true, null, emitTr);
 			}
 			
 			if (emitId == 'ant') {
-				emitTr=loc.randomCid(emitId);
+				emitTr=UnitFactory.randomCid(loc, emitId);
 				un=loc.createUnit(emitId, coordinates.X, coordinates.Y - 40, true, null,emitTr);
 			}
 		

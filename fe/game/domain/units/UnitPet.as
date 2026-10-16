@@ -6,7 +6,7 @@ package fe.game.domain.units {
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.entities.BoundingBox;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;

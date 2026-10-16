@@ -5,7 +5,7 @@ package fe.game.domain.serv {
 	import fe.game.WeaponManager;
 	import fe.game.World;
 	import fe.game.GameContainer;
-	import fe.game.domain.location.Loot;
+	import fe.game.domain.objects.Loot;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.Equipment;
@@ -116,7 +116,7 @@ package fe.game.domain.serv {
 			}
 
 			if (lootType != Item.L_BOOK && (maxlvl > 0 || worth > 0 || gameStage > 0)) {
-				for each(var i in a) {
+				for each(var i:Object in a) {
 					if (
 						(gameStage <= 0 || i.st == null || i.st <= gameStage) &&	// [Depends on the stage of the plot]
 						(maxlvl == -100 || i.lvl == null || i.lvl <= maxlvl) &&		// [Maximum level, depends on difficulty]
@@ -252,18 +252,10 @@ package fe.game.domain.serv {
 				}
 				
 				if ("maxlim" in itemData && lim >= itemData.maxlim) {
-					if (!GameContainer.reference.testLoot) {
-						trace("Maximum loot amount reached for item: " + id + ", amount: " + lim);
-					}
-					
 					return false;
 				}
 				
 				if (lim >= itemLimit) {
-					if (!GameContainer.reference.testLoot) {
-						trace("Maximum loot amount reached for item: " + id + ", amount: " + itemLimit);
-					}
-					
 					return false;
 				}
 				

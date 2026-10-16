@@ -68,7 +68,7 @@ package fe.engine.audio {
 		private static var shumArr:Array = [];
 		
 		// Moved here from world class
-		private static var xmlPath:String = "Modules/core/sounds.xml";
+		private static var xmlPath:String = "Modules/core/Sounds.xml";
 		private static var soundPath:String = "Modules/core/sound/";
 		private static var musicPath:String = "Modules/core/sound/music/";
 		
@@ -461,8 +461,6 @@ package fe.engine.audio {
 		}
 
 		public static function setTempMute(b:Boolean):void {
-			b ? trace("Sound.as/setTempMute() - Temporarily muting sound")
-			  : trace("Sound.as/setTempMute() - Temporary mute disabled");
 			tempMuted = b;
 		}
 		public static function getTempMute():Boolean {

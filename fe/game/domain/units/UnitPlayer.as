@@ -14,7 +14,7 @@ package fe.game.domain.units {
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.units.ability.Telekinesis;
 	import fe.game.domain.location.Location;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.weapon.WPunch;
 	import fe.game.ItemInteraction;
 	import fe.game.WeaponManager;
@@ -30,7 +30,7 @@ package fe.game.domain.units {
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
 	import fe.game.ui.Appear;
-	import fe.game.domain.location.Loot;
+	import fe.game.domain.objects.Loot;
 	import fe.game.domain.weapon.WKick;
 	import fe.game.domain.weapon.WPaint;
 	import fe.game.enums.E_Material;
@@ -592,8 +592,6 @@ package fe.game.domain.units {
 		
 		// [entrance to the location]
 		public function inLoc(nloc:Location):void {
-			trace("Entering room: \"" + nloc.id + "\", at (" + nloc.landX + ", " + nloc.landY + ", " + nloc.landZ + ").");
-			
 			if (pet) {
 				if (!nloc.petOn && loc.petOn) {
 					GUIManager.reference.gui.infoText("noPetFollow");
@@ -637,7 +635,7 @@ package fe.game.domain.units {
 			}
 			
 			if (effects.length>0) {
-				for each (var eff in effects) {
+				for each (var eff:Effect in effects) {
 					eff.visEff();
 				}
 			}
@@ -2191,7 +2189,7 @@ package fe.game.domain.units {
 			if (!rat) {
 			// [Change weapons]
 				if (t_work <= 0 && attackForever <= 0) {
-					for (var i:int = 1; i <= GameContainer.kolHK; i++) {
+					for (i = 1; i <= GameContainer.kolHK; i++) {
 						if (ctr["keyWeapon" + String(i)]) {
 							ctr["keyWeapon" + String(i)] = false;
 							itemInteraction.useFav(i + (ctr.keyRun ? GameContainer.kolHK : 0));
@@ -2348,7 +2346,7 @@ package fe.game.domain.units {
 			walk = E_Direction.NEUTRAL;
 			
 			// Move left
-			if (((keyLeft && !keyRight) || (burningForcesRunOption && runForever>0)) && storona == E_Direction.LEFT) {
+			if ((keyLeft && !keyRight) || (burningForcesRunOption && runForever > 0 && storona == E_Direction.LEFT)) {
 				porog = 20;
 				isTake = 40;
 				
@@ -2364,7 +2362,7 @@ package fe.game.domain.units {
 				t_run++;
 			}
 			// Move right
-			else if (((!keyLeft && keyRight) || (burningForcesRunOption && runForever>0)) && storona == E_Direction.RIGHT) {
+			else if ((!keyLeft && keyRight) || (burningForcesRunOption && runForever > 0 && storona == E_Direction.RIGHT)) {
 				porog = 20;
 				isTake = 40;
 				
@@ -2840,7 +2838,7 @@ package fe.game.domain.units {
 		
 		// Установить зависимости
 		public function setAddictions():void {
-			for (var ad in pers.addictions) {
+			for (var ad:String in pers.addictions) {
 				if (pers.addictions[ad]>=pers.ad1) {
 					var eff:Effect=addEffect(ad);
 					
@@ -2863,7 +2861,7 @@ package fe.game.domain.units {
 
 		private function endAllEffect():void {
 			if (effects.length>0) {
-				for each (var eff in effects) {
+				for each (var eff:Effect in effects) {
 					eff.unsetEff();
 				}
 
@@ -2872,7 +2870,7 @@ package fe.game.domain.units {
 		}
 		
 		private function clearAddictions():void {
-			for (var ad in pers.addictions) {
+			for (var ad:String in pers.addictions) {
 				pers.addictions[ad] = 0;
 			}
 		}
@@ -3308,7 +3306,7 @@ package fe.game.domain.units {
 					}
 				}
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace("ERROR: (00:E)");
 				magicX = coordinates.X;
 				magicY = coordinates.Y - boundingBox.halfHeight;
@@ -4666,7 +4664,7 @@ package fe.game.domain.units {
 						vis.osn.body.rwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.60;
 						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.20;
 					}
-					catch (err) {
+					catch (err:Error) {
 						trace("ERROR: (00:F)");
 					}
 				}

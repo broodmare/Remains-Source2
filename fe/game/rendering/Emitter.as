@@ -172,7 +172,7 @@ package fe.game.rendering {
 					return p;
 				}
 				
-				var p =new Part();
+				var p:Part =new Part();
 				p.loc=loc;
 				p.layer=layer;
 				p.coordinates.X = nx;

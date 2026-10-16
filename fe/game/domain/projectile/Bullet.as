@@ -9,7 +9,7 @@ package fe.game.domain.projectile {
 	import fe.engine.utils.Calc;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.units.Unit;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.entities.Obj;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.units.Resistances;
@@ -61,7 +61,7 @@ package fe.game.domain.projectile {
 		public var flare:String;
 		public var outspace:Boolean = false;
 		
-		public var otbros:int = 0;
+		public var otbros:Number = 0;
 		public var probiv:Number = 0;
 		public var parrDict:Dictionary;	// List of objects the bullet has already interacted with.
 		

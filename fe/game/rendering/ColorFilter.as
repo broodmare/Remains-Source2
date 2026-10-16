@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.rendering {
 
 	public class ColorFilter {
 

@@ -718,7 +718,7 @@ package fe.game.domain.weapon {
 					bulCoords.setVector(coordinates);
 				}
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace("ERROR: (00:13)");
 				bulCoords.setVector(coordinates);
 			}
@@ -784,7 +784,7 @@ package fe.game.domain.weapon {
 					try {
 						if (loc.getAbsTile(bulCoords.X, bulCoords.Y).collision) b.inWall = true;
 					}
-					catch(err) { 
+					catch(err:Error) {
 						trace("ERROR: (00:14)");
 					}
 				}
@@ -902,7 +902,7 @@ package fe.game.domain.weapon {
 				try {
 					vis.gotoAndPlay("shoot");
 				}
-				catch (err) {
+				catch (err:Error) {
 					trace("ERROR: (00:15) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"shoot\"!");
 				}
 				
@@ -1195,7 +1195,7 @@ package fe.game.domain.weapon {
 						try {
 							vis.gotoAndPlay("reload");
 						}
-						catch (err) {
+						catch (err:Error) {
 							trace("ERROR: (00:16) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"reload\"!");
 						}
 					}
@@ -1234,7 +1234,7 @@ package fe.game.domain.weapon {
 							vis.gotoAndStop("ready"); // Don't try to animate internal weapons
 						}
 					}
-					catch(err) {
+					catch(err:Error) {
 						trace("ERROR: (00:17) - weapon: " + id + "\" held by: \"" + owner.id + "\" Could not play movieclip \"ready\"!");
 					}
 				}

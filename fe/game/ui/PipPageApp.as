@@ -3,7 +3,6 @@ package fe.game.ui {
 	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
 
-	
 	// The player appearance editor
 	public class PipPageApp extends PipPage {
 		

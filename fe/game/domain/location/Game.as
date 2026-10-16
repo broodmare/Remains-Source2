@@ -7,11 +7,11 @@ package fe.game.domain.location {
 	import fe.game.VendorManager;
 	import fe.game.World;
 	import fe.game.ui.GUIManager;
-	import fe.game.domain.serv.Vendor;
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.serv.Npc;
 	import fe.game.domain.entities.Obj;
 	import fe.engine.Engine;
+	import fe.game.domain.serv.Quest;
 	
 	public class Game {       
 
@@ -154,11 +154,11 @@ package fe.game.domain.location {
 			objs = [];
 			
 			if (loadObj && loadObj.objs) {
-				for (var uid in loadObj.objs) {
+				for (var uid:String in loadObj.objs) {
 					var obj:Object = loadObj.objs[uid];
 					var nobj:Object = {};
 					
-					for (var n in obj) {
+					for (var n:String in obj) {
 						nobj[n] = obj[n];
 					}
 					
@@ -178,7 +178,7 @@ package fe.game.domain.location {
 			var npcList:XMLList = XMLDataGrabber.getNodesWithName("core", "GameData", "Npcs", "npc");
 			var npc:Npc;
 			var loadNPC:Object;		// The NPC's save data
-			for each(var xl in npcList) {
+			for each(var xl:XML in npcList) {
 				loadNPC = null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) {
 					loadNPC = loadObj.npcs[xl.@id];
@@ -189,16 +189,16 @@ package fe.game.domain.location {
 			npcList = null; // Manual cleanup.
 
 			if (loadObj) {
-				for (var i in loadObj.triggers){
+				for (var i:String in loadObj.triggers){
 					triggers[i]=loadObj.triggers[i];
 				}
-				for (var j in loadObj.notes) {
+				for (var j:String in loadObj.notes) {
 					notes[j]=loadObj.notes[j];
 				}
-				for (var k in loadObj.quests) {
+				for (var k:String in loadObj.quests) {
 					addQuest(k, loadObj.quests[k]);
 				}
-				for (var l in loadObj.lands) {//!!!!!
+				for (var l:String in loadObj.lands) {//!!!!!
 					if (lands[l]) lands[l].load(loadObj.lands[l]);
 				}
 				
@@ -222,9 +222,9 @@ package fe.game.domain.location {
 				curLandId = 'begin';				// [Start the tutorial]
 			}
 
-			for each(var q in quests) {
+			for each(var q:Quest in quests) {
 				if (q != null && q.state == 2 && q.xml.next.length()) {
-					for each (var nq in q.xml.next) {
+					for each (var nq:XML in q.xml.next) {
 						addQuest(nq.@id);
 					}
 				}
@@ -294,7 +294,7 @@ package fe.game.domain.location {
 						n = GameContainer.reference.pers.level - 1;
 					}
 				}
-				curLand.land = new Land(GameContainer.reference.itemManager, GameContainer.reference.gg, curLand, n);
+				curLand.land = new Land(GameContainer.reference.gg, curLand, n);
 			}
 
 			Engine.reference.time___metr('Creating level');
@@ -316,7 +316,6 @@ package fe.game.domain.location {
 			else {
 				if (curLand.tip!='base') {
 					missionId=curLand.id;
-					trace(curLand.tip=='base')
 				}
 			}
 			
@@ -412,7 +411,7 @@ package fe.game.domain.location {
 			
 			GameContainer.reference.vendorManager.refillAllVendors();
 
-			for (var tr in triggers) {
+			for (var tr:String in triggers) {
 				if (triggers[tr] == "wait") {
 					triggers[tr] = 1;
 				}
@@ -438,7 +437,7 @@ package fe.game.domain.location {
 				return quests[questID];
 			}
 
-			var xq:XML = XMLDataGrabber.getNodeFromAllWithAttributeThatMatches("core", "GameData", "Quests", "id", questID);
+			var xq:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "GameData", "Quests", "id", questID);
 			var q:Quest = new Quest(xq, loadObj);
 			
 			quests[q.id] = q;
@@ -472,7 +471,7 @@ package fe.game.domain.location {
 			}
 			q.showSub(sid);
 			
-			for each (var q1 in q.subs) {
+			for each (var q1:Quest in q.subs) {
 				if (q1.id == sid) {
 					GUIManager.reference.gui.infoText('addTask2', q1.nazv);
 					Sound.ps('quest');
@@ -530,7 +529,8 @@ package fe.game.domain.location {
 			notes.push(id);
 		}
 		
-		public function setTrigger(id:String, n:int = 1):void {
+		// A trigger holds a number, or "wait" until the next refill turns it into 1
+		public function setTrigger(id:String, n:Object = 1):void {
 			triggers[id] = n;
 		}
 		
@@ -568,7 +568,7 @@ package fe.game.domain.location {
 		
 		// [Run script from GameData]
 		public function runScript(scriptID:String, own:Obj=null):Boolean {
-			var xml1:XML = XMLDataGrabber.getNodeFromAllWithAttributeThatMatches("core", "GameData", "Scripts", "id", scriptID);
+			var xml1:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "GameData", "Scripts", "id", scriptID);
 			var	runScr:Script=new Script(xml1,World.w.land,own);
 			runScr.start();
 			return true;
@@ -576,7 +576,7 @@ package fe.game.domain.location {
 		
 		// [Create script from GameData]
 		public function getScript(scriptID:String, own:Obj=null):Script {
-			var xml1:XML = XMLDataGrabber.getNodeFromAllWithAttributeThatMatches("core", "GameData", "Scripts", "id", scriptID);
+			var xml1:XML = XMLDataGrabber.getNodeWithAttributeThatMatches("core", "GameData", "Scripts", "id", scriptID);
 			return new Script(xml1,(own==null)?World.w.land:own.loc.land,own);
 		}
 		

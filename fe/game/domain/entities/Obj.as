@@ -212,7 +212,7 @@ package fe.game.domain.entities {
 			try {
 				m.gotoAndStop(aid);
 			}
-			catch (err) {
+			catch (err:Error) {
 				//trace("ERROR: (00:51) - Could not apply armor: \"" + aid + "\"!");
 				m.gotoAndStop(1);
 			}

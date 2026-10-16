@@ -22,7 +22,8 @@ package fe.game {
 			var baseId:String = weapon.baseId;
 
 			weapon.tip = data.tip;
-			weapon.nazv = WeaponManager.weaponName(weapon.id);
+			// Enemy-only weapons are never shown to the player, so the data gives them no name
+			weapon.nazv = (weapon.tip == Weapon.TYPE_INTERNAL) ? weapon.id : WeaponManager.weaponName(weapon.id);
 			weapon.cat = data.cat;
 			weapon.skill = data.skill;
 			

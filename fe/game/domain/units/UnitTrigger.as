@@ -132,7 +132,7 @@ package fe.game.domain.units {
 			var i:int=1;
 			var nx:Number = coordinates.X;
 			var ny:Number = coordinates.Y;
-			var nxml = <obj/>;
+			var nxml:XML = <obj/>;
 			var ok:Boolean=false;
 			
 			if (res=='damgren' && isrnd(0.25) && coordinates.Y < loc.maxY - 100 && loc.getAbsTile(coordinates.X, coordinates.Y + 60).collision==0) {
@@ -140,7 +140,7 @@ package fe.game.domain.units {
 				res='expl1';
 				ok=true;
 			}
-			else for (var i:int = 1; i <= 10; i++) {
+			else for (i = 1; i <= 10; i++) {
 				if (res=='damgren' || res=='hturret2') {
 					if (loc.getAbsTile(coordinates.X, coordinates.Y - 10 - i * tileY).collision) {
 						if (i==1) break;

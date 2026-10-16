@@ -3,7 +3,7 @@ package fe.game.domain.location.tile {
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.entities.Obj;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
 	import fe.game.domain.location.tile.enums.E_TileLayer;

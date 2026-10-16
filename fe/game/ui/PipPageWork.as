@@ -16,7 +16,6 @@ package fe.game.ui {
 	import fe.game.domain.units.InventoryItem;
 	import fe.game.domain.units.UnitPet;
 	import fe.engine.utils.SymbolFactory;
-
 	
 	/* 
 	*	The page displayed when interacting with a crafting table
@@ -29,7 +28,10 @@ package fe.game.ui {
 	*/
 	public class PipPageWork extends PipPage {
 		
-		private static const PAGE_CRAFT:int = 1, PAGE_UPGRADE:int = 2, PAGE_REPAIR:int = 3;
+		private static const PAGE_CRAFT:int = 1;
+		private static const PAGE_UPGRADE:int = 2;
+		private static const PAGE_REPAIR:int = 3;
+		
 		private var assArr:Array;
 
 		public function PipPageWork(npip:PipBuck, npp:String) {
@@ -446,7 +448,7 @@ package fe.game.ui {
 				
 				if (ccat == Item.L_WEAPON) {
 					w = inv.equipment.getWeapon(cid);
-					var obj = assArr[cid];
+					var obj:Object = assArr[cid];
 					
 					if (w.tip != Weapon.TYPE_EXPLOSIVES && w.respect != Weapon.WEP_BLUEPRINT) {
 						return;
@@ -491,7 +493,7 @@ package fe.game.ui {
 					setStatus();
 				}
 				else if (ccat == Item.L_ITEM) {
-					var obj = assArr[cid];
+					obj = assArr[cid];
 					minusCraftComp(data);
 					gg.itemInteraction.plusItem(cid, kol);
 					obj.kol = inv.getQuantity(cid);
@@ -525,7 +527,7 @@ package fe.game.ui {
 						return;
 					}
 				
-					var kol:int = ArmorManager.upgradeComponentsNeeded(arm);
+					kol = ArmorManager.upgradeComponentsNeeded(arm);
 					if (gg.itemInteraction.checkKol(arm.idComp, kol)) {
 						gg.itemInteraction.minusItem(arm.idComp, kol, false);
 						ArmorManager.upgradeArmor(arm);
@@ -539,7 +541,7 @@ package fe.game.ui {
 				}
 				else if (ccat == Item.L_WEAPON) {
 					// Create the name of the schematic, eg. "s_dartgun" and retrieve the data for the schematic
-					var data:Object = ItemManager.reference.getSchematic("s_" + cid);
+					data = ItemManager.reference.getSchematic("s_" + cid);
 					
 					if (!checkScheme(data)) {
 						return;
@@ -552,7 +554,7 @@ package fe.game.ui {
 				}
 			}
 			else if (page2 == PAGE_REPAIR) {
-				var obj = assArr[cid];
+				obj = assArr[cid];
 				
 				if (ccat == Item.L_ARMOR) {
 					arm = inv.equipment.getArmor(cid);

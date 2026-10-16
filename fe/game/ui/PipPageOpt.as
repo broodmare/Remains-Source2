@@ -36,7 +36,12 @@ package fe.game.ui {
 	*/
 	public class PipPageOpt extends PipPage {
 		
-		private static const PAGE_LOAD:int = 1, PAGE_SAVE:int = 2, PAGE_OPTIONS:int = 3, PAGE_CONTROLS:int = 4, PAGE_LOG:int = 5, PAGE_AUTOPICKUP_OPT:int = 6;
+		private static const PAGE_LOAD:int = 1;
+		private static const PAGE_SAVE:int = 2;
+		private static const PAGE_OPTIONS:int = 3;
+		private static const PAGE_CONTROLS:int = 4;
+		private static const PAGE_LOG:int = 5;
+		private static const PAGE_AUTOPICKUP_OPT:int = 6;
 
 		private var setkeyAction:String;
 		private var setkeyCell:int=1;
@@ -118,8 +123,8 @@ package fe.game.ui {
 			if (page2 == PAGE_CONTROLS) {
 				setTopText("infokeys");
 				
-				for (i in GameContainer.reference.ctr.keyObj) {
-					var key:Object=GameContainer.reference.ctr.keyObj[i];
+				for (var keyIndex:String in GameContainer.reference.ctr.keyObj) {
+					var key:Object=GameContainer.reference.ctr.keyObj[keyIndex];
 					obj={id:key.id, nazv:TextParser.txt("k",key.id), a1:key.a1, a2:key.a2};
 					arr.push(obj);
 				}
@@ -170,7 +175,7 @@ package fe.game.ui {
 					vis.butDef.text.text = localize("pip", "savefile");
 				}
 				
-				for (var i = 0; i <= SaveManager.reference.saveKol; i++) {
+				for (var i:int = 0; i <= SaveManager.reference.saveKol; i++) {
 					var save:Object = SaveManager.reference.getSave(i);
 					var obj:Object = saveObj(save,i);
 					arr.push(obj);
@@ -185,7 +190,7 @@ package fe.game.ui {
 			}
 		}
 		
-		public static function saveObj(save:Object, n):Object {
+		public static function saveObj(save:Object, n:int):Object {
 			var obj:Object={id:n};
 			
 			if (save==null || save.est==null) {
@@ -299,7 +304,7 @@ package fe.game.ui {
 		}
 		
 		// [Set visual display of key]
-		private function setVisKey(n, vis):void {
+		private function setVisKey(n:Object, vis:MovieClip):void {
 			vis.txt.text = "";
 			vis.gotoAndStop(1);
 			
@@ -310,7 +315,7 @@ package fe.game.ui {
 			try {
 				vis.txt.text = GameContainer.reference.ctr.keyNames[n];
 			} 
-			catch(err) {
+			catch(err:Error) {
 				trace("ERROR: (00:3C)");
 				vis.gotoAndStop(n);
 			}
@@ -324,11 +329,11 @@ package fe.game.ui {
 		}
 		
 		private function unshowSetKey():void {
-			var newkey = GameContainer.reference.ctr.setkeyRequest;
+			var newkey:Object = GameContainer.reference.ctr.setkeyRequest;
 			pip.vissetkey.visible=false;
 			
 			if (newkey!=-1) {
-				for (var i in arr) {
+				for (var i:String in arr) {
 					if (newkey!=null) {
 						if (arr[i].a1 == newkey) {
 							arr[i].a1 = null;
@@ -541,8 +546,8 @@ package fe.game.ui {
 		// [Apply settings]
 		private function transOk(event:MouseEvent):void {
 			if (page2 == PAGE_CONTROLS) {
-				for (var i in arr) {
-					var obj = GameContainer.reference.ctr.keyIds[arr[i].id];
+				for (var i:String in arr) {
+					var obj:Object = GameContainer.reference.ctr.keyIds[arr[i].id];
 					obj.a1 = arr[i].a1;
 					obj.a2 = arr[i].a2;
 				}
@@ -566,7 +571,7 @@ package fe.game.ui {
 						vis.butOk.visible=false;
 						setStatus();
 					}
-					catch (err) {
+					catch (err:Error) {
 						trace("ERROR: (00:3D)");
 						GUIManager.reference.gui.infoText("noSaveGame");
 					}
@@ -586,7 +591,7 @@ package fe.game.ui {
 					return;
 				}
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace("ERROR: (00:3E)");
 			}
 
@@ -623,7 +628,7 @@ package fe.game.ui {
 				try {
 					sfile.save(ba,gg.pers.persName+"("+gg.pers.level+").sav");
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace("ERROR: (00:3F)");
 					sfile.save(ba, "Name(" + gg.pers.level + ").sav");
 				}

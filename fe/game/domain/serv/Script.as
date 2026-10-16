@@ -33,7 +33,7 @@ package fe.game.domain.serv {
 		private var tcom:int			=  0;
 		private var dial_n:int			= -1;
 
-		private static var debugLog = true;			// Output script information as it's executed
+		private static var debugLog:Boolean = true;			// Output script information as it's executed
 
 		public function Script(xml:XML, nland:Land = null, nowner:Obj = null, tt:Boolean = false) {
 			land = nland;
@@ -325,7 +325,7 @@ package fe.game.domain.serv {
 					break;
 
 					case "armor":
-						GUIManager.reference.pip.setArmor(obj.val);
+						GameContainer.reference.gg.changeArmor(obj.val, true);
 					break;
 
 					case "xp":

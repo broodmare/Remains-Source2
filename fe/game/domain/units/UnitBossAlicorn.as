@@ -9,7 +9,7 @@ package fe.game.domain.units {
 	import fe.game.domain.serv.BlitAnim;
 	import fe.game.domain.serv.AnimationSet;
 	import fe.game.rendering.Emitter;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.projectile.Bullet;
@@ -155,7 +155,7 @@ package fe.game.domain.units {
 				weaponY = magicY = coordinates.Y + obj.y+visBmp.y;
 				weaponR=obj.r;
 			}
-			catch (err) {
+			catch (err:Error) {
 				super.setWeaponPos(tip);
 			}
 		}
@@ -236,7 +236,7 @@ package fe.game.domain.units {
 				
 				vis.alpha = curA / 100;
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace("UnitBossAlicorn.as/Constructor() - Creating Alicorn Boss failed");
 			}
 		}

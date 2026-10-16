@@ -7,6 +7,7 @@ package fe.game.ui {
 
 	import fl.controls.NumericStepper;	// Adobe Animate dependency
 
+	import fe.engine.utils.SymbolFactory;
 	import fe.engine.text.LanguageManager;
 	import fe.engine.text.TextParser;
 	import fe.game.ItemInteraction;
@@ -17,8 +18,6 @@ package fe.game.ui {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.Inventory;
 	import fe.game.domain.units.InventoryItem;
-	import fe.engine.utils.SymbolFactory;
-
 	
 	/* 
 	*	A menu for storing or retrieving items. (Currently accessed in-game through the orange chest)
@@ -31,7 +30,11 @@ package fe.game.ui {
 	*/
 	public class PipPageVault extends PipPage {
 		
-		private static const PAGE_EQUIPMENT:int = 1, PAGE_AMMO:int = 2, PAGE_EXPLOSIVES:int = 3, PAGE_STUFF:int = 4;
+		private static const PAGE_EQUIPMENT:int = 1;
+		private static const PAGE_AMMO:int = 2;
+		private static const PAGE_EXPLOSIVES:int = 3;
+		private static const PAGE_STUFF:int = 4;
+		
 		private var assArr:Array;
 
 		public function PipPageVault(npip:PipBuck, npp:String) {
@@ -222,7 +225,7 @@ package fe.game.ui {
 			try {
 				item.trol.gotoAndStop(obj.tip);
 			}
-			catch (err) {
+			catch (err:Error) {
 				trace("ERROR: (00:40)");
 				item.trol.gotoAndStop(1);
 			}
@@ -249,8 +252,8 @@ package fe.game.ui {
 		}
 		
 		// [Change how many of an item are stored in the vault] n - the amount that should be in the vault
-		private function chKol(mc, n:int = 0):void {
-			var obj = assArr[mc.id.text];
+		private function chKol(mc:MovieClip, n:int = 0):void {
+			var obj:Object = assArr[mc.id.text];
 			var id:String = mc.id.text;
 			
 			if (id == "" || obj == null) {
@@ -314,10 +317,10 @@ package fe.game.ui {
 		
 		override protected function itemClick(event:MouseEvent):void {
 			if (event.ctrlKey) {
-				chKol(event.currentTarget, 0);
+				chKol(event.currentTarget as MovieClip, 0);
 			}
 			else {
-				chKol(event.currentTarget, int.MAX_VALUE);
+				chKol(event.currentTarget as MovieClip, int.MAX_VALUE);
 			}
 			
 			pip.snd(1);
@@ -327,7 +330,7 @@ package fe.game.ui {
 		}
 		
 		override protected function itemRightClick(event:MouseEvent):void {
-			chKol(event.currentTarget, 0);
+			chKol(event.currentTarget as MovieClip, 0);
 			pip.snd(1);
 			showBottext();
 			pip.setRPanel();

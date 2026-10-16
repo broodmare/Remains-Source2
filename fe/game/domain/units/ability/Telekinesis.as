@@ -4,7 +4,7 @@ package fe.game.domain.units.ability {
 	import flash.geom.ColorTransform;
 
 	import fe.game.domain.entities.Obj;
-	import fe.game.domain.location.Box;
+	import fe.game.domain.objects.Box;
 	import fe.engine.Settings;
 	import fe.game.domain.units.Unit;
 	import fe.game.domain.units.UnitPlayer;

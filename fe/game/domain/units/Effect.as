@@ -90,7 +90,7 @@ package fe.game.domain.units {
 				if (node.@lvl3.length()) lvl3=node.@lvl3;
 				if (node.@add.length()) add=true;
 				if (node.del.length()) {
-					for each(var ndel in node.del) {
+					for each(var ndel:XML in node.del) {
 						del.push(ndel.@id);
 					}
 				}
@@ -104,7 +104,7 @@ package fe.game.domain.units {
 		
 		public function setEff():void {
 			if (del.length) {
-				for each(var ndel in del) {
+				for each(var ndel:Object in del) {
 					for each(var eff:Effect in owner.effects) {
 						if (eff.id==ndel) {
 							eff.unsetEff(false,false,false);
@@ -259,7 +259,7 @@ package fe.game.domain.units {
 					getXmlParam();
 					
 					if (isBad) {
-						var proc = GameContainer.reference.pers.addictions[id];
+					var proc:Number = GameContainer.reference.pers.addictions[id];
 						
 						if (proc >= GameContainer.reference.pers.ad1) {
 							forever = true;

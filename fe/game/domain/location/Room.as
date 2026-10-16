@@ -1,5 +1,7 @@
 package fe.game.domain.location {
 
+	import fe.game.domain.location.factories.RoomOutlets;
+
 	public class Room {
 		
 		public var xml:XML;
@@ -15,12 +17,14 @@ package fe.game.domain.location {
 		
 		public var kol:int = 2;
 		public var rnd:Boolean = true;	// [Can be used as a random one]
+		public var outlets:RoomOutlets;			// Where its outer walls can open into neighbouring rooms
 		
 		public static var nornd:Array = ["beg0","back","roof","pass","passroof","roofpass","vert","surf"];
 
 		public function Room(nxml:XML) {
 			xml = nxml;
 			id = xml.@name;
+			outlets = new RoomOutlets(id, xml.doors.length() ? String(xml.doors[0]) : null);
 			
 			if (xml.@x.length()) {
 				rx = xml.@x;
@@ -55,7 +59,7 @@ package fe.game.domain.location {
 					kol = 1;
 				}
 				
-				for each (var st in nornd) {
+				for each (var st:String in nornd) {
 					if (tip == st) {
 						rnd = false;
 						break;

@@ -13,7 +13,6 @@ package fe.game.ui {
 	import fe.game.WeaponManager;
 	import fe.game.World;
 	import fe.game.GameContainer;
-	import fe.engine.utils.Vec2;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.units.UnitPlayer;
@@ -81,7 +80,7 @@ package fe.game.ui {
 		private var veff:Array;
 		private var effIsVis:Boolean	= false;
 		
-		private static var portraitHelper:PortraitHelper;	// Handles showing portraits listed in dialogue
+		private var portraitHelper:PortraitHelper;			// Handles showing portraits listed in dialogue
 		private var informScript:Script;					// 
 		public var dialScript:Script;						// 
 
@@ -162,6 +161,7 @@ package fe.game.ui {
 			celobj.styleSheet = style;
 			
 			// Store references for differnt parts of the GUI
+			portraitHelper = new PortraitHelper(vis);
 			item 		= vis.textItem.getChildByName("kolItem") as TextField;
 			mana 		= vis.textMana.getChildByName("mana") as TextField;
 			hp 			= vis.getChildByName("hp") as TextField;
@@ -262,7 +262,7 @@ package fe.game.ui {
 			vis.sats.scaleY		= ny * 0.01;
 			vis.hpbarboss.x		= nx * 0.50;
 			
-			var r = nx - 275 * 2;
+			var r:Number = nx - 275 * 2;
 			
 			if (r > 500) {
 				mess.x = 275;
@@ -524,7 +524,7 @@ package fe.game.ui {
 					try {
 						mc.trol.gotoAndStop('w' + arrfav[i].skill);
 					}
-					catch (err) {
+					catch (err:Error) {
 						mc.trol.gotoAndStop(1);
 					}
 				}
@@ -589,7 +589,7 @@ package fe.game.ui {
 				try {
 					mc.trol.gotoAndStop('w' + arr[n].skill);
 				}
-				catch (err) {
+				catch (err:Error) {
 					trace('ERROR: (00:2E)');
 					mc.trol.gotoAndStop(1);
 				}
@@ -620,7 +620,7 @@ package fe.game.ui {
 					}
 				}
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace('ERROR: (00:2F)');
 			}
 		}
@@ -797,7 +797,7 @@ package fe.game.ui {
 				try {
 					vitem.gotoAndStop(ci);
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace('ERROR: (00:30)');
 					vitem.gotoAndStop(1);
 				}
@@ -875,36 +875,36 @@ package fe.game.ui {
 			
 			if (gg.h2o < 500) {
 				if (mana.text != "") {
-					mana.text += "\n";
+					mana.appendText("\n");
 				}
 				
 				if (gg.h2o < 10) {
-					mana.text += txtH2oOver;
+					mana.appendText(txtH2oOver);
 				}
 				else {
-					mana.text += txtH2o + " " + Math.round(gg.h2o * 0.10) + "%";
+					mana.appendText(txtH2o + " " + Math.round(gg.h2o * 0.10) + "%");
 				}
 			}
 			
 			if (gg.stam < 500 || GameContainer.reference.testBattle && gg.stam < 980) {
 				if (mana.text != "") {
-					mana.text += "\n";
+					mana.appendText("\n");
 				}
 				
 				if (gg.stam < 10) {
-					mana.text += txtStam + " 0%";
+					mana.appendText(txtStam + " 0%");
 				}
 				else {
-					mana.text += txtStam + " " + Math.round(gg.stam * 0.10) + "%";
+					mana.appendText(txtStam + " " + Math.round(gg.stam * 0.10) + "%");
 				}
 			}
 			
 			if (gg.currentArmor && gg.currentArmor.mana < gg.currentArmor.maxmana) {
 				if (mana.text != "") {
-					mana.text += "\n";
+					mana.appendText("\n");
 				}
 				
-				mana.text += txtArmorMana + " " + Math.round(gg.currentArmor.mana / gg.currentArmor.maxmana * 100) + "%";
+				mana.appendText(txtArmorMana + " " + Math.round(gg.currentArmor.mana / gg.currentArmor.maxmana * 100) + "%");
 			}
 			
 			if (gg.t_culd > 0 || gg.currentSpell && gg.currentSpell.t_culd > 0) {
@@ -1047,7 +1047,7 @@ package fe.game.ui {
 								veff[i].vis.gotoAndStop(gg.effects[n].id);
 							}
 						}
-						catch(err) {
+						catch(err:Error) {
 							trace('ERROR: (00:31)');
 							veff[i].vis.gotoAndStop(1);
 						}
@@ -1059,7 +1059,7 @@ package fe.game.ui {
 					}
 				}
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace('ERROR: (00:32)');
 			}
 		}
@@ -1106,7 +1106,7 @@ package fe.game.ui {
 					GameContainer.reference.cam.setKoord(celobj,gg.actionObj.owner.coordinates.X, gg.actionObj.owner.coordinates.Y);
 					GameContainer.reference.cam.setKoord(pr_bar,gg.actionObj.owner.coordinates.X, gg.actionObj.owner.coordinates.Y);
 				}
-				catch (err) {
+				catch (err:Error) {
 					trace('ERROR: (00:33)');
 					celobj.visible = false;
 				}
@@ -1331,7 +1331,7 @@ package fe.game.ui {
 			}
 		}
 		
-		public function infoText(id:String, p1 = 0, p2 = null, addlog:Boolean = true):void {
+		public function infoText(id:String, p1:Object = 0, p2:Object = null, addlog:Boolean = true):void {
 			var s:String = TextParser.txt('f', id);
 			s = s.replace('@1', '<b>' + p1 + '</b>');
 			
@@ -1600,13 +1600,9 @@ package fe.game.ui {
 					}
 
 					try {
-						if (portraitHelper == null) {
-							trace("GUI.as/dialText() - Creating new PortraitHelper");
-							portraitHelper = new PortraitHelper(vis);
-						}
 						portraitHelper.displayPortrait(portraitName);
 					}
-					catch (err) {
+					catch (err:Error) {
 						trace('ERROR: (00:34) - Failed to load portrait: "' + portraitName + '"!');
 						portraitHelper.clearPortrait();
 					}
@@ -1650,7 +1646,7 @@ package fe.game.ui {
 				try {
 					imp.ico.gotoAndStop(nico);
 				}
-				catch(err) {
+				catch(err:Error) {
 					trace('ERROR: (00:52) - Failed trying to display an icon for an important message display!');
 					imp.ico.gotoAndStop(1);
 				}

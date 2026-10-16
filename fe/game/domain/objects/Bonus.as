@@ -1,4 +1,4 @@
-package fe.game.domain.location {
+package fe.game.domain.objects {
 
 	import flash.display.MovieClip;
 
@@ -7,6 +7,7 @@ package fe.game.domain.location {
 	import fe.game.ui.GUIManager;
 	import fe.game.GameContainer;
 	import fe.game.domain.entities.Obj;
+	import fe.game.domain.location.Location;
 	
 	//Бонусы, которые подбираются путём контакта с ними
 	public class Bonus extends Obj {
@@ -88,10 +89,9 @@ package fe.game.domain.location {
 			vis.gotoAndPlay(2);
 			
 			if (id == 'xp') {
-				loc.kolXp--;
-				
-				if (loc.kolXp == 0 && loc.maxXp > 1) { //собрали все бонусы 
-					GameContainer.reference.pers.expa(loc.unXp * loc.maxXp);
+				// Room-placed XP pickups aren't in the list, and don't count towards the set
+				if (loc.xpBonuses.length > 1 && loc.xpBonuses.indexOf(this) >= 0 && loc.xpBonusesLeft() == 0) { //собрали все бонусы 
+					GameContainer.reference.pers.expa(loc.unXp * loc.xpBonuses.length);
 				
 					if (!loc.detecting && loc.summXp > 0) {
 						loc.takeXP(loc.summXp, GameContainer.reference.gg.coordinates.X, GameContainer.reference.gg.coordinates.Y - 100, true);

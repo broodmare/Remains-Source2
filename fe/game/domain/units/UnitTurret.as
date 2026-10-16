@@ -219,7 +219,7 @@ package fe.game.domain.units {
 			try {
 				vis.osn.puha.gotoAndStop(tr);
 			}
-			catch(err) {
+			catch(err:Error) {
 				trace("ERROR: (00:10)");
 			}
 		}

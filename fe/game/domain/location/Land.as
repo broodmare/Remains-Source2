@@ -4,16 +4,18 @@ package fe.game.domain.location {
 	import fe.game.GameContainer;
 	import fe.engine.audio.Sound;
 	import fe.engine.text.XMLDataGrabber
-	import fe.game.ItemManager;
+	import fe.game.domain.location.factories.LocationFactory;
+	import fe.game.domain.location.factories.RoomConnection;
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.enums.E_Direction;
 	import fe.engine.utils.Vec2;
+	import fe.game.domain.objects.CheckPoint;
+	import fe.game.ui.Minimap;
 
 	public class Land {
 		
-		private var itemManager:ItemManager;	// Reference to the itemManager
 		public var act:LandAct;					//шаблон, по которому была создана местность
 		
 		public var rnd:Boolean = false;			//true если местность с рандомной генерацией
@@ -58,8 +60,7 @@ package fe.game.domain.location {
 		public var summXp:int=0;
 		public var isRefill:Boolean=false;		//было восполнение товаров
 		
-		private var allRoom:Array;				//массив всех комнат, взятый из xml
-		private var rndRoom:Array;				//массив, использующийся для рандомной генерации
+		public var allRoom:Array;				//массив всех комнат, взятый из xml
 		public var kolAll:Array;				//количество каждого вида объекта
 		
 		public var uidObjs:Array;				//все объекты, имеющие uid
@@ -76,8 +77,7 @@ package fe.game.domain.location {
 		private var tileY:int = Tile.tileY;
 
 		//lvl - уровень перса-1
-		public function Land(iManag:ItemManager, ngg:UnitPlayer, nact:LandAct, lvl:int) {
-			itemManager = iManag;
+		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
 			gg = ngg;
 			act = nact;
 			rnd=act.rnd;
@@ -108,7 +108,7 @@ package fe.game.domain.location {
 			//прикреплённые скрипты
 			itemScripts = [];
 
-			for each(var xl in act.xmlland.scr) {
+			for each(var xl:XML in act.xmlland.scr) {
 				if (xl.@eve == 'take' && xl.@item.length()) {
 					var scr:Script = new Script(xl, this);
 					itemScripts[xl.@item] = scr;
@@ -125,7 +125,7 @@ package fe.game.domain.location {
 		//перегнать из xml в массив
 		public function prepareRooms():void {
 			allRoom = [];
-			for each(var xml in act.allroom.room) {
+			for each(var xml:XML in act.allroom.room) {
 				allRoom.push(new Room(xml));
 			}
 		}
@@ -202,7 +202,7 @@ package fe.game.domain.location {
 							opt.backWallShape = 3;
 							opt.transparentBack = true;
 						}
-						loc1 = newTipLoc('beg' + ((act.conf == 0) ? i : '0'), i, j, opt);
+						loc1 = LocationFactory.newTipLoc(this, 'beg' + ((act.conf == 0) ? i : '0'), i, j, opt);
 					}
 					else {
 						switch(act.conf) {
@@ -211,20 +211,20 @@ package fe.game.domain.location {
 								if (i == 2) {
 									if (j == 0) {
 										opt.ramka = 7;
-										loc1 = newTipLoc('passroof', i, j, opt);
+										loc1 = LocationFactory.newTipLoc(this, 'passroof', i, j, opt);
 									}
 									else {
 										opt.ramka = 5;
-										loc1 = newRandomLoc(act.landStage, i, j, opt, 'pass');
+										loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt, 'pass');
 									}
 									loc1.bezdna = true;
 								}
 								else if (j == 0) {
 									opt.ramka = 6;
-									loc1 = newRandomLoc(act.landStage, i, j, opt, 'roof');
+									loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt, 'roof');
 								}
 								else {
-									loc1 = newRandomLoc(act.landStage, i, j, opt);
+									loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt);
 									if (i > 2 && loc1.backwall == 'tWindows') {
 										loc1.backwall = 'tWindows2';
 									}
@@ -234,29 +234,29 @@ package fe.game.domain.location {
 								if (i == 0) {
 									if (j == 0) {
 										if (GameContainer.reference.game.triggers['mbase_visited'] > 0) {
-											loc1 = newRandomLoc(0, i, j, opt);
+											loc1 = LocationFactory.newRandomLoc(this, 0, i, j, opt);
 										}
 										else {
 											opt.mirror = false;
 											opt.ramka = 8;
-											loc1 = newTipLoc('beg0', i, j, opt);
+											loc1 = LocationFactory.newTipLoc(this, 'beg0', i, j, opt);
 										}
 									}
 									else {
-										loc1 = newRandomLoc(0, i, j, opt, 'vert');
+										loc1 = LocationFactory.newRandomLoc(this, 0, i, j, opt, 'vert');
 									}
 								}
 								else if (i == maxLocX - 1) {
 									if (j == maxLocY - 1) {
 										opt.mirror = false;
-										loc1 = newTipLoc('end', i, j, opt);
+										loc1 = LocationFactory.newTipLoc(this, 'end', i, j, opt);
 									}
 									else {
-										loc1 = newRandomLoc(0, i, j, opt, 'vert');
+										loc1 = LocationFactory.newRandomLoc(this, 0, i, j, opt, 'vert');
 									}
 								}
 								else {
-									loc1 = newRandomLoc(0, i, j, opt);
+									loc1 = LocationFactory.newRandomLoc(this, 0, i, j, opt);
 								}
 								break;
 							case 5: // Canterlot
@@ -264,11 +264,11 @@ package fe.game.domain.location {
 									opt.ramka = 3;
 									opt.backWallShape = 3;
 									opt.transparentBack = true;
-									loc1 = newRandomLoc(act.landStage, i, j, opt, 'surf');
+									loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt, 'surf');
 									loc1.visMult = 2;
 								}
 								else {
-									loc1 = newRandomLoc(act.landStage, i, j, opt);
+									loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt);
 								}
 								loc1.gas = 1;
 								break;
@@ -276,51 +276,51 @@ package fe.game.domain.location {
 								if (i == 0) {
 									if (j == 0) {
 										opt.mirror = false;
-										loc1 = newTipLoc('beg1', i, j, opt);
+										loc1 = LocationFactory.newTipLoc(this, 'beg1', i, j, opt);
 									}
 									else {
-										loc1 = newRandomLoc(1, i, j, opt, 'vert');
+										loc1 = LocationFactory.newRandomLoc(this, 1, i, j, opt, 'vert');
 									}
 								}
 								else if (i == maxLocX - 1) {
 									if (j == maxLocY - 1) {
 										opt.mirror = false;
-										loc1 = newTipLoc('end1', i, j, opt);
+										loc1 = LocationFactory.newTipLoc(this, 'end1', i, j, opt);
 									}
 									else {
-										loc1 = newRandomLoc(1, i, j, opt, 'vert');
+										loc1 = LocationFactory.newRandomLoc(this, 1, i, j, opt, 'vert');
 									}
 								}
 								else {
-									loc1 = newRandomLoc(1, i, j, opt);
+									loc1 = LocationFactory.newRandomLoc(this, 1, i, j, opt);
 								}
 								break;
 							case 10: // Pi Stable
 								opt.home = true;
 								if (i == act.begLocX && j == act.begLocY) {
 									opt.mirror = false;
-									loc1 = newTipLoc('beg0', i, j, opt);
+									loc1 = LocationFactory.newTipLoc(this, 'beg0', i, j, opt);
 								}
 								else if (i == 1 && j == 1) {
 									opt.mirror = false;
-									loc1 = newTipLoc('roof', i, j, opt);
+									loc1 = LocationFactory.newTipLoc(this, 'roof', i, j, opt);
 								}
 								else {
-									loc1 = newRandomLoc(10, i, j, opt);
+									loc1 = LocationFactory.newRandomLoc(this, 10, i, j, opt);
 								}
 								break;
 							case 11: // Attacked Pi Stable
 								opt.atk = true;
 								if (i == 5 && j == 0) {
 									opt.mirror = false;
-									loc1 = newTipLoc('pass', i, j, opt);
+									loc1 = LocationFactory.newTipLoc(this, 'pass', i, j, opt);
 								}
 								else {
-									loc1 = newRandomLoc(act.landStage, i, j, opt);
+									loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt);
 								}
 								break;
 							default: // Default case
-								loc1 = newRandomLoc(act.landStage, i, j, opt);
+								loc1 = LocationFactory.newRandomLoc(this, act.landStage, i, j, opt);
 								break;
 						}
 					}
@@ -332,7 +332,7 @@ package fe.game.domain.location {
 						loc2 = null;
 						for each(var room:Room in allRoom) {
 							if (room.id == loc1.room.back) {
-								loc2 = newLoc(room, i, j, 1, opt);
+								loc2 = LocationFactory.newLoc(this, room, i, j, 1, opt);
 								loc2.tipEnemy = loc1.tipEnemy;
 								locs[i][j][1] = loc2;
 								loc2.noMap = true;
@@ -343,60 +343,33 @@ package fe.game.domain.location {
 				}
 			}
 
-			// Determine possible passages
-			for (i = minLocX; i < maxLocX; i++) {
-				for (j = minLocY; j < maxLocY; j++) {
-					loc1 = locs[i][j][0];
-					loc1.pass_r = [];
-					loc1.pass_d = [];
-
-					// Right passages
-					if (i < maxLocX - 1) {
-						loc2 = locs[i + 1][j][0];
-						for (var e:int = 0; e <= 5; e++) {
-							var hole:int = Math.min(loc1.doors[e], loc2.doors[e + 11]);
-							if (hole >= 2) {
-								loc1.pass_r.push({n: e, fak: hole});
-							}
-						}
-					}
-
-					// Down passages
-					if (j < maxLocY - 1) {
-						loc2 = locs[i][j + 1][0];
-						for (var f:int = 6; f <= 10; f++) {
-							hole = Math.min(loc1.doors[f], loc2.doors[f + 11]);
-							if (hole >= 2) {
-								loc1.pass_d.push({n: f, fak: hole});
-							}
-						}
-					}
-				}
-			}
-
-			// Create passages by selecting randomly from possible options
+			// Open passages between neighbouring rooms, picked at random from the slots both rooms allow
 			for (i = minLocX; i < maxLocX; i++) {
 				for (j = minLocY; j < maxLocY; j++) {
 					loc1 = locs[i][j][0];
 
 					// Right passage: 3 picks with replacement, so 1-3 distinct doors get opened
-					if (i < maxLocX - 1 && loc1.pass_r.length > 0) {
+					if (i < maxLocX - 1) {
 						loc2 = locs[i + 1][j][0];
-						for (e = 0; e <= 2; e++) {
-							var n:int = int(Math.random() * loc1.pass_r.length);
-							var selectedPass:Object = loc1.pass_r[n];
-							loc1.setDoor(selectedPass.n, selectedPass.fak);
-							loc2.setDoor(selectedPass.n + 11, selectedPass.fak);
+						var passages:Vector.<RoomConnection> = LocationFactory.sharedConnections(loc1, E_Direction.RIGHT, loc2);
+						if (passages.length > 0) {
+							for (var e:int = 0; e <= 2; e++) {
+								var passage:RoomConnection = passages[int(Math.random() * passages.length)];
+								LocationFactory.openConnection(loc1, E_Direction.RIGHT, passage);
+								LocationFactory.openConnection(loc2, E_Direction.LEFT, passage);
+							}
 						}
 					}
 
 					// Down passage
-					if (j < maxLocY - 1 && loc1.pass_d.length > 0) {
+					if (j < maxLocY - 1) {
 						loc2 = locs[i][j + 1][0];
-						n = int(Math.random() * loc1.pass_d.length);
-						selectedPass = loc1.pass_d[n];
-						loc1.setDoor(selectedPass.n, selectedPass.fak);
-						loc2.setDoor(selectedPass.n + 11, selectedPass.fak);
+						passages = LocationFactory.sharedConnections(loc1, E_Direction.DOWN, loc2);
+						if (passages.length > 0) {
+							passage = passages[int(Math.random() * passages.length)];
+							LocationFactory.openConnection(loc1, E_Direction.DOWN, passage);
+							LocationFactory.openConnection(loc2, E_Direction.UP, passage);
+						}
 					}
 
 					loc1.mainFrame();
@@ -565,10 +538,10 @@ package fe.game.domain.location {
 			buildProbs();
 		}
 		
-		public function buildSpecifLand() {
-			var i;
-			var j;
-			var e;
+		public function buildSpecifLand():void {
+			var i:int;
+			var j:int;
+			var e:int;
 			var loc1:Location;
 			var loc2:Location;
 
@@ -590,7 +563,7 @@ package fe.game.domain.location {
 			
 			//заполняем массив
 			for each(room in allRoom) {
-				loc1=newLoc(room,room.rx,room.ry,room.rz);
+				loc1=LocationFactory.newLoc(this, room,room.rx,room.ry,room.rz);
 				locs[room.rx][room.ry][room.rz]=loc1;
 			}
 			
@@ -610,9 +583,9 @@ package fe.game.domain.location {
 		
 		//добавить комнаты испытаний, id которых использовался в местности (были задействованы двери с prob={id})
 		//обработать все добавленные
-		public function buildProbs() {
-			for each (var s in probIds)	buildProb(s);
-			for each (var loc in listLocs) {
+		public function buildProbs():void {
+			for each (var s:String in probIds)	buildProb(s);
+			for each (var loc:Location in listLocs) {
 				loc.setObjects();
 				loc.preStep();
 				if (loc.prob) loc.prob.prepare();
@@ -626,14 +599,15 @@ package fe.game.domain.location {
 			//создать одиночную комнату
 			var arrr:XML=GameContainer.reference.game.probs['prob'].allroom;
 			
-			for each(var xml in arrr.room) {
+			for each(var xml:XML in arrr.room) {
 				if (xml.@name == nprob)
 				{
 					var room:Room = new Room(xml);
-					var loc:Location = newLoc(room,0,0,0,{prob:nprob});
+					var loc:Location = LocationFactory.newLoc(this, room,0,0,0,{prob:nprob});
 					loc.landProb = nprob;
 					loc.noMap = true;
 					
+					// Only real trials have a setup; the level-exit rooms built here don't
 					var xmll:XML = XMLDataGrabber.getNodeByNameWithAttributeThatMatches("core", "GameData", "Lands", "prob", "id", nprob);
 					
 					if (xmll) {
@@ -642,7 +616,7 @@ package fe.game.domain.location {
 					
 					//добавить дверь для выхода
 					if (loc.spawnPoints.length) {
-						loc.createObj('doorout','box',loc.spawnPoints[0].x,loc.spawnPoints[0].y,<obj prob='' uid='begin'/>);
+						loc.createObj('doorout','box',loc.spawnPoints[0].X,loc.spawnPoints[0].Y,<obj prob='' uid='begin'/>);
 					}
 					
 					probs[nprob]=[[[loc]]];
@@ -660,10 +634,10 @@ package fe.game.domain.location {
 		
 		//Создать дверь и случайную комнату испытаний за ней, вернуть false если подходящих не нашлось
 		public function newRandomProb(nloc:Location, maxlevel:int=100, imp:Boolean=false):Boolean {
-			rndRoom=[];
-			var impProb;
+			var rndRoom:Array = [];
+			var impProb:String;
 			
-			for each(var xml in act.xmlland.prob) {
+			for each(var xml:XML in act.xmlland.prob) {
 				if (probs[xml.@id]==null && GameContainer.reference.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) {
 					rndRoom.push(xml.@id);
 					if (xml.@imp.length()) impProb=xml.@id;
@@ -685,191 +659,6 @@ package fe.game.domain.location {
 			buildProb(pid);
 			
 			return true;
-		}
-		
-		
-		//создать новую локацию нужного типа, в заданных координатах
-		public function newTipLoc(ntip:String, nx:int, ny:int, opt:Object=null):Location {
-			rndRoom=[];
-			
-			for each(var room in allRoom) {
-				if (room.tip==ntip) rndRoom.push(room); 
-			}
-			
-			if (rndRoom.length>0) {
-				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			}
-			else {
-				room=allRoom[Math.floor(Math.random()*allRoom.length)];
-				trace('нет локации '+ntip);
-			}
-			
-			room.kol--;
-			
-			return newLoc(room, nx, ny, 0, opt);
-		}
-		
-		//создать новую случайную локацию, в заданных координатах
-		public function newRandomLoc(maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location {
-			rndRoom=[];
-			var r1:Room, r2:Room;
-			if (nx>minLocX) r1=locs[nx-1][ny][0].room;
-			if (ny>minLocY) r2=locs[nx][ny-1][0].room;
-			//массив всех комнат, удовлетворяющих условиям
-			for each(var room in allRoom) {
-				if (room.lvl<=maxlevel && room.kol>0 && room!=r1 && room!=r2 && (ntip==null && room.rnd || room.tip==ntip)) {
-					var rndKol=room.kol*room.kol;
-					if (rndKol==4 && room.lvl==0 && maxlevel>1) {
-						rndKol=2;
-					}
-					for (var i=0; i<rndKol; i++) {
-						rndRoom.push(room);
-					}
-				}
-			}
-			if (rndRoom.length>0) {
-				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			}
-			else {
-				//массив всех комнат, подходящих для рандома
-				for each(room in allRoom) {
-					if (room.rnd) {
-						rndRoom.push(room);
-					}
-				}
-				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			}
-			room.kol--;
-			if (act.conf==4) room.kol=0;	//на военной базе комнаты используются один раз
-			return newLoc(room, nx, ny, 0, opt);
-		}
-		
-		
-		// [Create a new location according to a given Room template, in given coordinates]
-		public function newLoc(room:Room, nx:int, ny:int, nz:int = 0, opt:Object = null):Location {
-			var loc:Location = new Location(this, itemManager, room.xml, rnd, opt);
-			
-			loc.biom = act.biom;
-			loc.room = room;
-			loc.landX = nx;
-			loc.landY = ny;
-			loc.landZ = nz;
-			loc.id = "loc" + nx + "_" + ny;
-			
-			if (nz > 0) {
-				loc.id += "_" + nz;
-			}
-			
-			loc.unXp = act.xp;
-			
-			// [Set difficulty gradient]
-			var deep:Number = 0;
-			
-			if (rnd) {
-				if (act.conf == 0) deep = ny / 2;	
-				if (act.conf == 1) deep = ny;
-				if (act.conf == 2) deep = ny * 2.5;
-			}
-			
-			setLocDif(loc, deep);
-			loc.addPlayer(gg);
-			
-			return loc;
-		}
-		
-		//установка сложности локации, в зависимости от уровня персонажа и градиена сложности
-		private function setLocDif(loc:Location, deep:Number):void {
-			var ml:Number = landDifLevel + deep;
-			
-			loc.locDifLevel = ml;
-			loc.locksLevel = ml * 0.7;		//уровень замков
-			loc.mechLevel = ml / 4;			//уровень мин и механизмов
-			loc.weaponLevel = 1 + ml / 4;	//уровень попадающегося оружия
-			loc.enemyLevel = ml;			//уровень врагов
-			
-			//влияние настроек сложности
-			if (GameContainer.reference.game.globalDif<2) loc.earMult*=0.5;
-			
-			if (GameContainer.reference.game.globalDif>2) loc.enemyLevel+=(GameContainer.reference.game.globalDif-2)*2;	//уровень врагов в зависимости от сложности
-			
-			//тип врагов
-			if (act.biom==0 && Math.random()<0.25) loc.tipEnemy=1;
-			
-			if (loc.tipEnemy<0) loc.tipEnemy=Math.floor(Math.random()*3);
-			
-			if (act.biom==1) loc.tipEnemy=0;
-			
-			if (act.biom==2 && loc.tipEnemy==1 && Math.random()<ml/20) loc.tipEnemy=3;	//работорговцы
-			
-			if (act.biom==3) {
-				loc.tipEnemy=Math.floor(Math.random()*3)+3;			//4-наёмники, 5-аликорны
-			}
-			
-			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	//зебры
-			
-			if (act.biom==4) loc.tipEnemy=7;	//стальные+роботы
-			
-			if (act.biom==5) {
-				if (Math.random()<0.3) loc.tipEnemy=5;
-				else loc.tipEnemy=8;	//розовые
-			}
-			
-			if (act.biom==6) {
-				if (Math.random()>0.3) loc.tipEnemy=9;	//анклав
-				else loc.tipEnemy=10;//гончие
-			}
-			
-			if (act.biom==11) loc.tipEnemy=11; //анклав и гончие
-			
-			//количество врагов
-			//тип, мин, макс, случайное увеличение
-			if (ml<4) {
-				loc.setKolEn(1,3,5,2);
-				loc.setKolEn(2,2,4,0);
-				loc.setKolEn(3,3,4,2);
-				loc.setKolEn(4,1,2,0);
-				loc.setKolEn(5,1,4,2);
-				if (loc.tipEnemy==6) loc.setKolEn(2,1,3,0);
-				if (loc.kolEnSpawn==0) {
-					if (loc.tipEnemy!=5) loc.setKolEn(-1,1,2);
-				}
-				loc.kolEnHid=0;
-			}
-			else if (ml<10) {
-				loc.setKolEn(1,3,6,2);
-				if (Math.random()<0.15) loc.setKolEn(2,1,1,0);
-				else if (loc.tipEnemy==6) loc.setKolEn(2,2,3,0);
-				else loc.setKolEn(2,2,5,0);
-				loc.setKolEn(3,3,5,2);
-				loc.setKolEn(4,2,3,1);
-				loc.setKolEn(5,2,4,2);
-				if (loc.kolEnSpawn==0) {
-					if (loc.tipEnemy!=5) loc.setKolEn(-1,2,3);
-				}
-				loc.kolEnHid=Math.floor(Math.random()*3);
-			}
-			else {
-				loc.setKolEn(1,4,6,2);
-				if (Math.random()<0.15) loc.setKolEn(2,1,2,0);
-				else if (loc.tipEnemy==6) loc.setKolEn(2,3,4,0);
-				else loc.setKolEn(2,3,6,0);
-				loc.setKolEn(3,4,7,2);
-				loc.setKolEn(4,2,4,1);
-				loc.setKolEn(5,3,6,2);
-				if (loc.kolEnSpawn==0) {
-					if (loc.tipEnemy!=5) loc.setKolEn(-1,2,4);
-					else if (Math.random()>0.4) loc.setKolEn(-1,1,3);
-				}
-				loc.kolEnHid=Math.floor(Math.random()*4);
-			}
-			
-			if (loc.tipEnemy==5 || loc.tipEnemy==10) {
-				loc.setKolEn(2,1,3,1);
-			}
-			
-			if (act.biom==11) {
-				loc.setKolEn(2,5,8,0);
-			}
 		}
 		
 //==============================================================================================================================		
@@ -927,8 +716,8 @@ package fe.game.domain.location {
 			
 			if (loc.spawnPoints.length>0) {
 				var n:int = Math.floor(Math.random()*loc.spawnPoints.length);
-				nx = loc.spawnPoints[n].x;
-				ny = loc.spawnPoints[n].y;
+				nx = loc.spawnPoints[n].X;
+				ny = loc.spawnPoints[n].Y;
 			}
 			
 			gg.setLocPos((nx+1) * tileX, (ny+1) * tileY - 1);
@@ -1155,7 +944,7 @@ package fe.game.domain.location {
 			}
 
 			if (summXp * 10 > allXp || !rnd) {
-				GameContainer.reference.vendorManager.refillAllVendors();
+				GameContainer.reference.game.refillAllVendors();
 				isRefill = true;
 			}
 			else {

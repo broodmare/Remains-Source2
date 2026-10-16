@@ -14,7 +14,7 @@ package fe.game {
 	import fe.game.domain.location.tile.TileRegistry;
 	import fe.game.domain.location.Land;
 	import fe.game.domain.location.Location;
-	import fe.game.domain.location.LandLoader;
+	import fe.game.domain.location.factories.LandLoader;
 	import fe.game.domain.location.Game;
 	import fe.game.ui.GUI;
 	import fe.game.ui.GUIManager;
@@ -795,7 +795,7 @@ package fe.game {
 			try {
 				GUIManager.reference.vscene.gotoAndStop(sc);
 			} 
-			catch(err) {
+			catch(err:Error) {
 				trace('ERROR: (00:20)');
 				GUIManager.reference.vscene.gotoAndStop(1);
 			}

@@ -151,7 +151,7 @@ package fe.game.ui {
 		
 		//нажать кнопку ОК
 		public function buttonOk(event:MouseEvent):void {
-			if (funOk) funOk();
+			if (funOk != null) funOk();
 			GameContainer.reference.saveConfig();
 		}
 
@@ -162,7 +162,7 @@ package fe.game.ui {
 			setColors();
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
-			if (funCancel) funCancel();
+			if (funCancel != null) funCancel();
 		}
 
 		//нажать кнопку def
