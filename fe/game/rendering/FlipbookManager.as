@@ -6,6 +6,7 @@ package fe.game.rendering {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
+	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
@@ -25,6 +26,7 @@ package fe.game.rendering {
 		private var definitions:Dictionary	= new Dictionary();		// Flipbook_Definition by name
 		private var sources:Dictionary		= new Dictionary();		// By name: {json, bitmap}, until the sheet is on the GPU
 		private var pending:int				= 0;					// Sheets still decoding
+		private var effects:EffectManager;							// Makes the effects flipbooks place over their images
 		private var onLoaded:Function;
 
 		public var isLoaded:Boolean			= false;
@@ -79,6 +81,36 @@ package fe.game.rendering {
 			return frames;
 		}
 
+		// The effects the flipbook places over its images: for each, per frame of the flipbook, a matrix and alpha, or null
+		// where it doesn't show
+		private function readEffects(json:Object):Vector.<FlipbookEffect_Definition> {
+			var result:Vector.<FlipbookEffect_Definition> = new Vector.<FlipbookEffect_Definition>();
+			var placed:FlipbookEffect_Definition;
+			var source:Object;
+			var frame:Object;
+			var values:Array;
+			var f:int;
+
+			for each (source in json.effects) {
+				placed			= new FlipbookEffect_Definition();
+				placed.effect	= effects.viewFlipbook(source.effect);
+				placed.blend	= source.blendMode || "normal";
+				placed.matrices	= new Vector.<Matrix>(json.frames.length, true);
+				placed.alphas	= new Vector.<Number>(json.frames.length, true);
+				for (f = 0; f < json.frames.length; f++) {
+					frame = source.frames[f];
+					if (!frame) { continue; }
+
+					values = frame.matrix;
+					placed.matrices[f]	= new Matrix(values[0], values[1], values[2], values[3], values[4], values[5]);
+					placed.alphas[f]	= ("alpha" in frame) ? Number(frame.alpha) : 1.0;
+				}
+				result.push(placed);
+			}
+
+			return result;
+		}
+
 		// Puts a decoded sheet on the GPU and cuts its images from it
 		private function upload(definition:Flipbook_Definition):void {
 			var source:Object = sources[definition.name];
@@ -102,6 +134,9 @@ package fe.game.rendering {
 					definition.screenFrames = readFrames(json, images, "screen");
 					break;
 				}
+			}
+			if (json.effects) {
+				definition.effects = readEffects(json);
 			}
 			delete sources[definition.name];
 		}
@@ -132,13 +167,14 @@ package fe.game.rendering {
 			loader.loadBytes(Files.readBytes(file), context);
 		}
 
-		public function FlipbookManager(onLoaded_:Function) {
+		public function FlipbookManager(effects_:EffectManager, onLoaded_:Function) {
 			var folder:File = File.applicationDirectory.resolvePath(FOLDER);
 			var file:File;
 			var sheet:File;
 			var name:String;
 			var json:Object;
 
+			effects = effects_;
 			onLoaded = onLoaded_;
 			if (!folder.exists) {
 				trace("FlipbookManager.as/FlipbookManager() - Error: no flipbook folder \"" + FOLDER + "\"");

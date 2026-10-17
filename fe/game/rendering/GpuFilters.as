@@ -5,6 +5,8 @@ package fe.game.rendering {
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 
+	import starling.filters.BlurFilter;
+	import starling.filters.CompositeFilter;
 	import starling.filters.DropShadowFilter;
 	import starling.filters.FilterChain;
 	import starling.filters.FragmentFilter;
@@ -20,11 +22,24 @@ package fe.game.rendering {
 		}
 
 		private static function shadow(filter:flash.filters.DropShadowFilter):FragmentFilter {
-			if (filter.hideObject) {
-				trace("GpuFilters.as/shadow() - Warning: a drop shadow hides its object, which Starling can't do, so the object stays");
-			}
-
 			return new starling.filters.DropShadowFilter(filter.distance, filter.angle * DEG_TO_RAD, filter.color, strength(filter.alpha, filter.strength), blur(average(filter.blurX, filter.blurY), filter.quality), 1.0, filter.inner, filter.knockout);
+		}
+
+		// A drop shadow that hides its object: the object's silhouette blurred, recoloured and moved, with nothing over it
+		private static function shadowAlone(filter:flash.filters.DropShadowFilter, chain:FilterChain):void {
+			var silhouette:CompositeFilter = new CompositeFilter();
+			var offsetX:Number = Math.cos(filter.angle * DEG_TO_RAD) * filter.distance;
+			var offsetY:Number = Math.sin(filter.angle * DEG_TO_RAD) * filter.distance;
+
+			if (filter.inner || filter.knockout) {
+				trace("GpuFilters.as/shadowAlone() - Warning: an inner or knockout shadow that hides its object is drawn as a plain one");
+			}
+			silhouette.setColorAt(0, filter.color, true);
+			silhouette.setAlphaAt(0, strength(filter.alpha, filter.strength));
+			silhouette.setOffsetAt(0, offsetX, offsetY);
+			silhouette.padding.setTo(Math.max(0.0, -offsetX), Math.max(0.0, offsetX), Math.max(0.0, -offsetY), Math.max(0.0, offsetY));
+			chain.addFilter(new BlurFilter(blur(filter.blurX, filter.quality), blur(filter.blurY, filter.quality)));
+			chain.addFilter(silhouette);
 		}
 
 		// A bevel is two inner shadows: the highlight on the edges facing away from its angle, the shadow on those facing it
@@ -63,6 +78,9 @@ package fe.game.rendering {
 			for each (filter in filters) {
 				if (filter is flash.filters.GlowFilter) {
 					chain.addFilter(glow(flash.filters.GlowFilter(filter)));
+				}
+				else if (filter is flash.filters.DropShadowFilter && flash.filters.DropShadowFilter(filter).hideObject) {
+					shadowAlone(flash.filters.DropShadowFilter(filter), chain);
 				}
 				else if (filter is flash.filters.DropShadowFilter) {
 					chain.addFilter(shadow(flash.filters.DropShadowFilter(filter)));

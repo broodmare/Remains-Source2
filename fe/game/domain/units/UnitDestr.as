@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-	
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.enums.E_Material;
@@ -35,7 +32,8 @@ package fe.game.domain.units {
 			getXmlParam();
 			
 			if (tr==1) {
-				vis = SymbolFactory.createInstance("visualStolp") as MovieClip;
+				initArt(id);
+				art.play('stay');
 				boss=true;
 				noDestr=true;
 			}
@@ -57,11 +55,11 @@ package fe.game.domain.units {
 				}
 				
 				if (sost==1) {
-					vis.osn.gotoAndStop(1);
+					art.play('stay');
 					Emitter.emit('lift', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * this.boundingBox.height);
 				}
 				else {
-					vis.osn.gotoAndStop(2);
+					art.play('active');
 					if (t_part==3) Emitter.emit('explw', loc, coordinates.X+(Math.random()-0.5) * this.boundingBox.width, coordinates.Y - Math.random() * this.boundingBox.height);
 				}
 			}

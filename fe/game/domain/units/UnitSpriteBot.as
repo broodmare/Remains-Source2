@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.WeaponManager;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
@@ -21,8 +18,8 @@ package fe.game.domain.units {
 			
 			id = "spritebot";
 			
-			vis = SymbolFactory.createInstance("visualSpriteBot") as MovieClip;
-			vis.osn.gotoAndStop(1);
+			initArt(id);
+			art.play("stay");
 			
 			getXmlParam();
 			
@@ -56,7 +53,7 @@ package fe.game.domain.units {
 			super.setNull(f);
 			
 			if (f) {
-				vis.osn.gotoAndStop(1);
+				art.play("stay");
 				vision = 0.30;
 				aiState = 0;
 				aiTCh = Math.floor(Math.random() * 50) + 5;
@@ -85,9 +82,7 @@ package fe.game.domain.units {
 			vision = 1;
 			aiState = 1;
 			
-			if (vis.osn.currentFrame != 2) {
-				vis.osn.gotoAndStop(2);
-			}
+			art.play("active");
 		}
 		
 		

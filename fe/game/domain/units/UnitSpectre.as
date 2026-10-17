@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.GameContainer;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.rendering.Emitter;
@@ -17,8 +14,9 @@ package fe.game.domain.units {
 		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='spectre';
-			vis = SymbolFactory.createInstance("visualSpectre") as MovieClip;
-			vis.visible=false;
+			initArt(id);
+			art.play('stay');
+			art.visible=false;
 			getXmlParam();
 			walkSpeed = maxSpeed;
 			runSpeed = maxSpeed * 2;
@@ -56,14 +54,14 @@ package fe.game.domain.units {
 		
 		public override function command(com:String, val:String = null):void {
 			if (com == 'show') {
-				vis.visible = true;
+				art.visible = true;
 				loc.lighting(coordinates.X, coordinates.Y);
 			}
 		}
 		
 		public override function animate():void {
 			br += (velocity.X * 4 - br) / 4;
-			vis.osn.rotation=br*storona.X;
+			art.setBodyRotation(br*storona.X);
 		}
 		
 		//состояния
@@ -86,7 +84,7 @@ package fe.game.domain.units {
 				if (findCel() && !GameContainer.reference.gg.invulner) {
 					aiSpok=maxSpok+10;
 					aiState=1;
-					vis.visible=true;
+					art.visible=true;
 					if (maxSpeed<runSpeed) maxSpeed+=0.01;
 				}
 				else {

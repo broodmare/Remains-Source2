@@ -4,26 +4,28 @@
 	"width": 40,
 	"height": 40,
 	"blend": "normal",
+	"effects": [
+		{"effect": "light_red", "blendMode": "screen", "frames": [null,{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]},{"alpha":1,"matrix":[0.591873,0,0,0.591873,-0.75,-20.85]}]}
+	],
 	"images": {
-		"frame0_0": {"x": 0, "y": 0, "w": 38, "h": 38, "pivotX": 19, "pivotY": 39},
-		"glow1_0": {"x": 0, "y": 40, "w": 35, "h": 35, "pivotX": 18, "pivotY": 38}
+		"frame0_0": {"x": 0, "y": 0, "w": 38, "h": 38, "pivotX": 19, "pivotY": 39}
 	},
 	"frames": [
 		{"images": ["frame0_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]}
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]}
 	],
 	"stops": [],
 	"jumps": [],

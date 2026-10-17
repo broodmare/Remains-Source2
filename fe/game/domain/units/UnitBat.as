@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.enums.E_Direction;
 	import fe.game.GameContainer;
 	
@@ -32,14 +29,8 @@ package fe.game.domain.units {
 				id += tr;
 			}
 			
-			if (tr == 2) {
-				vis = SymbolFactory.createInstance("visualBloodwing2") as MovieClip;
-			}
-			else {
-				vis = SymbolFactory.createInstance("visualBloodwing") as MovieClip;
-			}
-			
-			vis.osn.gotoAndStop("stay");
+			initArt((tr == 2) ? "bloodwing2" : "bloodwing");
+			art.play("stay");
 			getXmlParam();
 			maxSpeed+=Math.random()*2-1;
 			walkSpeed=maxSpeed;
@@ -54,7 +45,7 @@ package fe.game.domain.units {
 			super.setHero(nhero);
 			
 			if (hero==1) {
-				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
+				art.setBodyScale(1.2);
 				runSpeed=maxSpeed*2.5;
 			}
 		}
@@ -70,29 +61,18 @@ package fe.game.domain.units {
 		
 		public override function animate():void {
 				if (sost==2 || sost==3) { //сдох
-					if (animState!="die") {
-						vis.osn.gotoAndStop("die");
-						animState="die";
-					}
+					animState="die";
 				}
 				else if (aiState==0) {
-					if (animState!="stay") {
-						vis.osn.gotoAndStop("stay");
-						animState="stay";
-					}
+					animState="stay";
 				}
 				else if (aiState==6) {
-					if (animState!="attack") {
-						vis.osn.gotoAndStop("attack");
-						animState="attack";
-					}
+					animState="attack";
 				}
 				else {
-					if (animState!="fly") {
-						vis.osn.gotoAndStop("fly");
-						animState="fly";
-					}
+					animState="fly";
 				}
+				art.play(animState);
 		}
 		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);

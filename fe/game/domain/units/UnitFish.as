@@ -1,7 +1,5 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.enums.E_Direction;
 	import fe.game.GameContainer;
 
@@ -27,9 +25,8 @@ package fe.game.domain.units {
 			}
 
 			id = 'fish' + tr;
-			var vClass:Class = SymbolFactory.fetchSymbolClass("visualFish" + String(tr)) || SymbolFactory.fetchSymbolClass("visualFish1");
-			vis = new vClass() as MovieClip;
-			vis.osn.gotoAndStop('stay');
+			initArt(id);
+			art.play('stay');
 			getXmlParam();
 			maxSpeed += Math.random()*2-1;
 			walkSpeed = maxSpeed;
@@ -44,7 +41,7 @@ package fe.game.domain.units {
 		public override function setHero(nhero:int=1):void {
 			super.setHero(nhero);
 			if (hero==1) {
-				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
+				art.setBodyScale(1.2);
 				runSpeed=maxSpeed*2.5;
 			}
 		}
@@ -59,40 +56,26 @@ package fe.game.domain.units {
 		
 		public override function animate():void {
 				if (sost==2 || sost==3) { //сдох
-					if (animState!='die') {
-						vis.osn.gotoAndStop('die');
-						animState='die';
-					}
-					vis.osn.rotation=0;
+					animState='die';
+					art.setBodyRotation(0);
 				}
 				else if (isPlav) {
 					if (aiState<=1) {
-						if (animState!='plav') {
-							vis.osn.gotoAndStop('plav');
-							animState='plav';
-						}
+						animState='plav';
 					}
 					else if (aiState==6) {
-						if (animState!='attack') {
-							vis.osn.gotoAndStop('attack');
-							animState='attack';
-						}
+						animState='attack';
 					}
 					else {
-						if (animState!='run') {
-							vis.osn.gotoAndStop('run');
-							animState='run';
-						}
+						animState='run';
 					}
-					vis.osn.rotation = velocity.Y * 3;
+					art.setBodyRotation(velocity.Y * 3);
 				}
 				else {
-					if (animState!='stay') {
-						vis.osn.gotoAndStop('stay');
-						animState='stay';
-					}
-					vis.osn.rotation = velocity.Y * 4;
+					animState='stay';
+					art.setBodyRotation(velocity.Y * 4);
 				}
+				art.play(animState);
 		}
 		public override function alarma(nx:Number=-1,ny:Number=-1):void {
 			super.alarma(nx,ny);

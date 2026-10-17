@@ -10,6 +10,10 @@
 				"to": 0
 			}
 		],
+		"hub": [
+			0,
+			-20
+		],
 		"image": "dron2.png",
 		"layout": {
 			"cells": [

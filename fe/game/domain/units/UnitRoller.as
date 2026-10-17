@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.domain.units.ai.Brain;
 	import fe.game.domain.units.ai.Brain_Definition;
 	import fe.game.domain.units.attack.BodyAttack;
@@ -10,6 +7,8 @@ package fe.game.domain.units {
 	import fe.game.domain.units.motor.WalkMotor;
 	import fe.game.domain.units.motor.WalkMotor_Definition;
 	import fe.engine.utils.Calc;
+	import fe.engine.utils.Numbers;
+	import fe.game.rendering.Flipbook;
 	import fe.game.enums.E_Material;
 	import fe.game.domain.units.enums.E_AIState;
 	import fe.game.domain.units.enums.E_Resistances;
@@ -24,9 +23,13 @@ package fe.game.domain.units {
 		private static const SPIN:Number			= 1.5;		// Degrees of spin per unit of horizontal speed
 		private static const ALERT_RANGE:Number		= 200.0;	// The sprite shows its alert frame while the player is closer than this
 		private static const CALM_RANGE:Number		= 600.0;	// The sprite returns to its calm frame once the player is further than this
+		private static const FULL_TURN:Number		= 360.0;
 
 		private var tr:int;
 		private var rollSpin:Number = 0.0;		// Degrees the sprite turns per tick
+		private var rollTurn:Number = 0.0;		// Degrees the sprite has turned
+		private var isAlert:Boolean = false;	// Whether the sprite shows its alert frame
+		private var sparks:Flipbook;			// Shown while alert, turning with the body
 
 		// Water shorts it out
 		protected override function control():void {
@@ -48,9 +51,15 @@ package fe.game.domain.units {
 			id = (tr >= 2) ? "roller" + tr : "roller";
 			getXmlParam();
 
-			vis = SymbolFactory.createInstance((tr == 2) ? "visualRoller2" : "visualRoller") as MovieClip;
-			vis.osn.rotation = Math.random() * 360.0;
-			vis.osn.stop();
+			initArt((tr == 2) ? "roller2" : "roller");
+			art.play("stay");
+			rollTurn = Math.random() * FULL_TURN;
+			art.setBodyRotation(rollTurn);
+			sparks = GameContainer.reference.grafon.effects.createEffect((tr == 2) ? "roller2_sparks" : "roller_sparks");
+			sparks.visible = false;
+			sparks.x = art.definition.hubX;
+			sparks.y = art.definition.hubY;
+			art.carry(sparks);
 			maxSpeed += Calc.floatBetween(-SPEED_SPREAD, SPEED_SPREAD);
 			walkSpeed = maxSpeed;
 			sitSpeed = maxSpeed;
@@ -92,8 +101,8 @@ package fe.game.domain.units {
 		}
 
 		public override function setVisPos():void {
-			vis.x = coordinates.X;
-			vis.y = boundingBox.getCenter(coordinates);
+			art.x = coordinates.X;
+			art.y = boundingBox.getCenter(coordinates);
 		}
 
 		public override function dropLoot():void {
@@ -107,23 +116,29 @@ package fe.game.domain.units {
 		// Spin with the roll, and show the alert frame while the player is close
 		public override function animate():void {
 			if (aiState == E_AIState.IDLE) {
-				if (vis.osn.currentFrame != 1) {
-					vis.osn.gotoAndStop(1);
-				}
+				isAlert = false;
 			}
-			else if (rasst2 < ALERT_RANGE * ALERT_RANGE && vis.osn.currentFrame == 1) {
-				vis.osn.gotoAndStop(2);
+			else if (rasst2 < ALERT_RANGE * ALERT_RANGE) {
+				isAlert = true;
 			}
-			else if (rasst2 > CALM_RANGE * CALM_RANGE && vis.osn.currentFrame == 2) {
-				vis.osn.gotoAndStop(1);
+			else if (rasst2 > CALM_RANGE * CALM_RANGE) {
+				isAlert = false;
 			}
+			art.play(isAlert ? "active" : "stay");
+			// Alert anew, the sparks start over, as Flash restarted the alert body's loop
+			if (isAlert && !sparks.visible) {
+				sparks.goTo(0, true);
+			}
+			sparks.visible = isAlert;
 
 			if (stay || turnY == E_Direction.UP) {
 				rollSpin = velocity.X * SPIN;
 			}
 
 			turnY = E_Direction.NEUTRAL;
-			vis.osn.rotation += rollSpin;
+			rollTurn = (rollTurn + rollSpin) % FULL_TURN;
+			art.setBodyRotation(rollTurn);
+			sparks.rotation = rollTurn * Numbers.DEG_TO_RAD;
 		}
 	}
 }

@@ -25,6 +25,7 @@
 				"direction": "forward",
 				"from": 59,
 				"name": "cast",
+				"repeat": "1",
 				"to": 88
 			},
 			{
@@ -61,6 +62,7 @@
 				"direction": "forward",
 				"from": 181,
 				"name": "die",
+				"repeat": "1",
 				"to": 200
 			},
 			{
@@ -75,6 +77,10 @@
 				"name": "walk",
 				"to": 234
 			}
+		],
+		"hub": [
+			0,
+			0
 		],
 		"image": "bossnecr.png",
 		"layout": {

@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.game.GameContainer;
 	import fe.game.domain.location.factories.UnitFactory;
 	
@@ -22,20 +19,20 @@ package fe.game.domain.units {
 			}
 			
 			if (id=='eant') {
-				vis = SymbolFactory.createInstance("visualAntEmitter") as MovieClip;
+				initArt('eant');
 				emitId='ant';
 			}
 			else {
-				vis = SymbolFactory.createInstance("visualBloatEmitter") as MovieClip;
+				initArt('ebloat');
 			}
 			
-			vis.stop();
+			art.play('stay');
 			getXmlParam();
 		}
 		
 		public override function setVisPos():void {
-			vis.x = coordinates.X;
-			vis.y = coordinates.Y;
+			art.x = coordinates.X;
+			art.y = coordinates.Y;
 		}
 		
 		public override function setNull(f:Boolean=false):void {

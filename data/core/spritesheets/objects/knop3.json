@@ -4,26 +4,28 @@
 	"width": 24,
 	"height": 40,
 	"blend": "normal",
+	"effects": [
+		{"effect": "light_green", "blendMode": "screen", "frames": [null,{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]},{"alpha":1,"matrix":[0.375,0,0,0.375,0.25,-27.1]}]}
+	],
 	"images": {
-		"frame0_0": {"x": 0, "y": 0, "w": 24, "h": 40, "pivotX": 12, "pivotY": 40},
-		"glow1_0": {"x": 0, "y": 42, "w": 23, "h": 23, "pivotX": 11, "pivotY": 38}
+		"frame0_0": {"x": 0, "y": 0, "w": 24, "h": 40, "pivotX": 12, "pivotY": 40}
 	},
 	"frames": [
 		{"images": ["frame0_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]},
-		{"images": ["frame0_0"], "screen": ["glow1_0"]}
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]},
+		{"images": ["frame0_0"]}
 	],
 	"stops": [],
 	"jumps": [],

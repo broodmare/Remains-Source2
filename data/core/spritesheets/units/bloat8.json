@@ -10,6 +10,10 @@
 				"to": 2
 			}
 		],
+		"hub": [
+			-1.85,
+			-17.05
+		],
 		"image": "bloat10.png",
 		"layout": {
 			"cells": [

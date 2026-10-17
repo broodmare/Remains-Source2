@@ -16,6 +16,10 @@
 				"to": 1
 			}
 		],
+		"hub": [
+			0,
+			-15
+		],
 		"image": "transmitter.png",
 		"layout": {
 			"cells": [

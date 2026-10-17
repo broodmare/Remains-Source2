@@ -1,10 +1,10 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	
-	import fe.engine.utils.SymbolFactory;
+	import starling.display.BlendMode;
+	
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.serv.BlitAnim;
 	import fe.game.domain.serv.LootGen;
@@ -51,8 +51,8 @@ package fe.game.domain.units {
 			super(cid, ndif, xml, loadObj);
 			
 			id='bossnecr';
-			vis = SymbolFactory.createInstance("visualNecrBoss") as MovieClip;
-			vis.osn.gotoAndStop(1);
+			initArt(id);
+			art.play('stay');
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			plavSpeed=maxSpeed;
@@ -113,52 +113,51 @@ package fe.game.domain.units {
 		public override function animate():void {
 			if (sost==3) { //сдох
 				if (animState!='die') {
-					vis.osn.gotoAndStop('die');
+					art.play('die');
 					animState='die';
 				}
 			}
 			else if (sost==2) { 
 				if (animState!='die') {
 					newPart('necrblast2');
-					vis.osn.gotoAndStop('die');
+					art.play('die');
 					animState='die';
 				}
 			}
 			else if (aiState==3) {
 				if (animState!='cast') {
-					vis.osn.gotoAndStop('cast');
+					art.play('cast');
 					animState='cast';
 				}
 			}
 			else if (stay) {
 				if (velocity.X < 1 && velocity.X > -1) {
 					if (animState!='stay') {
-						vis.osn.gotoAndStop('stay');
+						art.play('stay');
 						animState='stay';
 					}
 				}
 				else if (aiState==1) {
 					if (animState!='run') {
-						vis.osn.gotoAndStop('run');
+						art.play('run');
 						animState='run';
 					}
 				}
 				else {
 					if (animState!='trot') {
-						vis.osn.gotoAndStop('trot');
+						art.play('trot');
 						animState='trot';
 					}
 				}
 			}
 			else if (levit) {
 				if (animState!='derg') {
-					vis.osn.gotoAndStop('derg');
+					art.play('derg');
 					animState='derg';
 				}
 			}
 			else {
 				if (animState!='jump') {
-					vis.osn.gotoAndStop('jump');
 					animState='jump';
 					var cframe:int = Math.round(16+velocity.Y);
 					
@@ -170,7 +169,7 @@ package fe.game.domain.units {
 						cframe = 1;
 					}
 					
-					vis.osn.body.gotoAndStop(cframe);
+					art.show('jump', Math.min(cframe, art.frameCount('jump')) - 1);	// The pose for its take-off speed, held; past the last pose, the last
 				}
 			} 
 			
@@ -189,7 +188,7 @@ package fe.game.domain.units {
 				curA += 5;
 			}
 			
-			vis.alpha = curA / 100;
+			art.alpha = curA / 100;
 		}
 		
 		public override function setWeaponPos(tip:String = "internal"):void {
@@ -667,13 +666,13 @@ package fe.game.domain.units {
 		}
 		
 		public function setVis():void {
-			vis.blendMode='normal';
-			if (isShadow) vis.filters=[shadowFilter];
+			art.blendMode=BlendMode.NORMAL;
+			if (isShadow) art.setFilters([shadowFilter]);
 			else if (phase==2) {
-				vis.blendMode='screen'
-				vis.filters=[ghostFilter];
+				art.blendMode=BlendMode.SCREEN;
+				art.setFilters([ghostFilter]);
 			}
-			else vis.filters=[];
+			else art.setFilters(null);
 		}
 		
 		public override function dropLoot():void {

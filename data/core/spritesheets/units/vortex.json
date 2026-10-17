@@ -10,6 +10,10 @@
 				"to": 2
 			}
 		],
+		"hub": [
+			0,
+			-20
+		],
 		"image": "vortex.png",
 		"layout": {
 			"cells": [

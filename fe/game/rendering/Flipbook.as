@@ -8,8 +8,11 @@ package fe.game.rendering {
 	import starling.display.Sprite;
 	import starling.textures.TextureSmoothing;
 
+	import fe.engine.utils.Numbers;
+
 	// An object's art on the GPU: a flipbook played like a Flash timeline. The playhead moves on in advance(), and stops and
-	// jumps where the timeline's scripts did. A frame can hold a loop of images, which runs on the flipbook's own clock.
+	// jumps where the timeline's scripts did. A frame can hold a loop of images, which runs on the flipbook's own clock, and
+	// effects drawn over them, each starting over when a frame shows it after one that didn't.
 	public class Flipbook extends Sprite {
 
 		private static const MIP_BIAS:Number = -0.5;	// Art drawn smaller than its sheet samples a little sharp, as the rig does: closest to Flash
@@ -17,9 +20,11 @@ package fe.game.rendering {
 		private var definition:Flipbook_Definition;
 		private var image:Image;						// The frame's image
 		private var screenImage:Image;					// The frame's screen-blended image, for flipbooks that have them
+		private var effects:Vector.<Flipbook>;			// The definition's effects, in its order; null when it has none
 		private var ticks:int = 0;						// advance() calls so far: the clock of each frame's own loop
 		private var placement:Matrix = new Matrix();	// Scratch: a keyed frame's placement after its image's pivot
 		private var tint:ColorTransform;				// Set by setTint
+		private var turn:Number = 0.0;					// In radians, the random angle the last frame with a random turn gave its images
 		private var frameTint:ColorTransform = new ColorTransform();	// Scratch: a keyed frame's own tint, then the flipbook's
 
 		public var frame:int = 0;						// The playhead, counted from 0. Read it; move it with goTo().
@@ -35,7 +40,8 @@ package fe.game.rendering {
 				created.textureSmoothing = TextureSmoothing.TRILINEAR;
 			}
 			created.style = style;
-			created.blendMode = blend;
+			// A normal image takes the flipbook's own blend mode, so a flipbook placed with another draws with it
+			created.blendMode = (blend == BlendMode.NORMAL) ? BlendMode.AUTO : blend;
 			created.touchable = false;
 			addChild(created);
 
@@ -58,6 +64,7 @@ package fe.game.rendering {
 			if (definition.placements) {
 				placement.setTo(1.0, 0.0, 0.0, 1.0, -shown.pivotX, -shown.pivotY);
 				placement.concat(definition.placements[frame]);
+				placement.rotate(turn);
 				target.transformationMatrix = placement;
 			}
 		}
@@ -97,19 +104,58 @@ package fe.game.rendering {
 			}
 		}
 
+		// Shows, places and fades the effects the frame has, and hides the rest
+		private function placeEffects():void {
+			var matrix:Matrix;
+			var i:int;
+
+			for (i = 0; i < effects.length; i++) {
+				matrix = definition.effects[i].matrices[frame];
+				if (!matrix) {
+					effects[i].visible = false;
+					continue;
+				}
+				if (!effects[i].visible) {
+					effects[i].goTo(0, true);
+				}
+				effects[i].visible = true;
+				effects[i].transformationMatrix = matrix;
+				effects[i].alpha = definition.effects[i].alphas[frame];
+			}
+		}
+
 		private function enter(target:int):void {
 			frame = definition.shows[target];
 			if (definition.stops[target]) {
 				isPlaying = false;
 			}
+			if (definition.randomTurns && definition.randomTurns[frame]) {
+				turn = Math.random() * Numbers.TWO_PI;
+			}
 			draw();
+			if (effects) {
+				placeEffects();
+			}
 		}
 
 		public function Flipbook(definition_:Flipbook_Definition) {
+			var placed:FlipbookEffect_Definition;
+			var effect:Flipbook;
+
 			definition	= definition_;
 			image		= createImage(definition.blend);
 			if (definition.screenFrames) {
 				screenImage = createImage(BlendMode.SCREEN);
+			}
+			if (definition.effects) {
+				effects = new Vector.<Flipbook>();
+				for each (placed in definition.effects) {
+					effect = new Flipbook(placed.effect);
+					effect.blendMode = placed.blend;
+					effect.visible = false;
+					addChild(effect);
+					effects.push(effect);
+				}
 			}
 			touchable = false;
 			enter(0);
@@ -143,9 +189,16 @@ package fe.game.rendering {
 			goTo(int(definition.labels[label]), play);
 		}
 
-		// One frame: the playhead and the frames' own loops move on
+		// One frame: the playhead and the frames' own loops move on, and so do the effects on show, as nested clips do
 		public function advance():void {
+			var effect:Flipbook;
+
 			ticks++;
+			for each (effect in effects) {
+				if (effect.visible) {
+					effect.advance();
+				}
+			}
 			if (isPlaying) {
 				enter(frame + 1 < definition.frames.length ? frame + 1 : 0);
 			}
@@ -156,8 +209,13 @@ package fe.game.rendering {
 
 		// Draws the flipbook through a Flash colour transform, or in its own colours for null
 		public function setTint(tint_:ColorTransform):void {
+			var effect:Flipbook;
+
 			tint = tint_;
 			applyTint();
+			for each (effect in effects) {
+				effect.setTint(tint);
+			}
 		}
 	}
 }

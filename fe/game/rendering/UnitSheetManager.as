@@ -40,6 +40,7 @@ package fe.game.rendering {
 			var json:Object;
 			var values:Array;
 			var key:String;
+			var tag:Object;
 			var source:Object;
 			var split:int;
 			var column:int;
@@ -58,8 +59,21 @@ package fe.game.rendering {
 			if (values && (values[0] != 1 || values[1] != 0 || values[2] != 0 || values[3] != 1 || values[4] != 0 || values[5] != 0)) {
 				definition.transform = new Matrix(values[0], values[1], values[2], values[3], values[4], values[5]);
 			}
+			for (key in entry.stateTransforms) {
+				values = entry.stateTransforms[key];
+				definition.stateTransforms[key] = new Matrix(values[0], values[1], values[2], values[3], values[4], values[5]);
+			}
 
 			json = JSON.parse(Files.readText(folder.resolvePath(entry.animation)));
+			if (json.meta.hub) {
+				definition.hubX = Number(json.meta.hub[0]);
+				definition.hubY = Number(json.meta.hub[1]);
+			}
+			for each (tag in json.meta.frameTags) {
+				if (tag.repeat) {
+					definition.repeats[tag.name] = int(tag.repeat);
+				}
+			}
 			for (key in json.frames) {
 				source	= json.frames[key];
 				split	= key.lastIndexOf("_");
@@ -190,6 +204,11 @@ package fe.game.rendering {
 			decode(definition.image);
 
 			return definition;
+		}
+
+		// A unit art drawing the named sheet
+		public function createArt(name:String):UnitArt {
+			return new UnitArt(this, viewDefinition(name));
 		}
 
 		// Puts the sheet on the GPU once its PNG has decoded, and starts decoding a PNG freed since

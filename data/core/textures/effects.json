@@ -109,7 +109,9 @@
 				[1, "#66FF66", 0]
 			],
 			"blend": "screen"
-		}
+		},
+		"tint_orange": {"tint": [1, 0.3984375, 0, 1, 0, 0, 0, 0]},
+		"tint_teal": {"tint": [0.2109375, 0.69140625, 1, 1, 0, 0, 0, 0]}
 	},
 	"animations": {
 		"shield_appear": {"frames": 20, "stops": [0, 19], "keys": [
@@ -122,12 +124,37 @@
 			{"frame": 0},
 			{"frame": 10, "scale": 1.76287841796875, "tint": [1, 1, 1, 1, 0, -163, -149, -213]},
 			{"frame": 11, "hidden": true}
+		]},
+		"drone_bolts": {"frames": 36, "keys": [
+			{"frame": 0, "texture": 0, "randomTurn": true}, {"frame": 4, "tint": [1, 1, 1, 0.1484375, 0, 0, 0, 0]}, {"frame": 5, "hidden": true},
+			{"frame": 9, "texture": 1, "randomTurn": true}, {"frame": 13, "tint": [1, 1, 1, 0.1484375, 0, 0, 0, 0]}, {"frame": 14, "hidden": true},
+			{"frame": 18, "texture": 2, "randomTurn": true}, {"frame": 22, "tint": [1, 1, 1, 0.1484375, 0, 0, 0, 0]}, {"frame": 23, "hidden": true},
+			{"frame": 27, "texture": 3, "randomTurn": true}, {"frame": 31, "tint": [1, 1, 1, 0.1484375, 0, 0, 0, 0]}, {"frame": 32, "hidden": true}
+		]},
+		"roller_sparks": {"frames": 24, "keys": [
+			{"frame": 0, "hidden": true},
+			{"frame": 2, "texture": 0}, {"frame": 4, "hidden": true},
+			{"frame": 6, "texture": 1}, {"frame": 10, "hidden": true},
+			{"frame": 12, "texture": 2}, {"frame": 15, "hidden": true},
+			{"frame": 17, "texture": 3}, {"frame": 20, "hidden": true}
+		]},
+		"flicker4": {"frames": 4, "keys": [
+			{"frame": 0, "texture": 0}, {"frame": 1, "texture": 1}, {"frame": 2, "texture": 2}, {"frame": 3, "texture": 3}
 		]}
 	},
 	"effects": {
 		"zombie_light": {"texture": "radial", "modifier": "zombie_glow", "scale": 0.677148},
 		"shield_yellow": {"texture": "shield_yellow", "animation": "shield_appear"},
 		"shield_green": {"texture": "shield_green", "animation": "shield_appear"},
-		"shield_red": {"texture": "shield_red", "animation": "shield_burst"}
+		"shield_red": {"texture": "shield_red", "animation": "shield_burst"},
+		"drone_spark": {"texture": "drone_spark"},
+		"drone_spark_orange": {"texture": "drone_spark", "modifier": "tint_orange"},
+		"drone_spark_teal": {"texture": "drone_spark", "modifier": "tint_teal"},
+		"drone_bolts": {"textures": ["drone_bolt1", "drone_bolt2", "drone_bolt3", "drone_bolt4"], "animation": "drone_bolts"},
+		"roller_sparks": {"textures": ["roller_spark1", "roller_spark2", "roller_spark3", "roller_spark4"], "animation": "roller_sparks"},
+		"roller2_sparks": {"textures": ["roller_spark1", "roller_spark2", "roller_spark3", "roller_spark4"], "animation": "roller_sparks", "scale": 1.132736},
+		"moln_spark": {"textures": ["moln_bolt1", "moln_bolt2", "moln_bolt3", "moln_bolt4"], "animation": "flicker4"},
+		"light_red": {"texture": "radial", "modifier": "glow_red", "scale": 0.486914},
+		"light_green": {"texture": "radial", "modifier": "glow_green", "scale": 0.486914}
 	}
 }

@@ -27,19 +27,6 @@
 				0
 			]
 		},
-		"bossdron_discharge": {
-			"animation": "bossdron_discharge.json",
-			"image": "bossdron_discharge.png",
-			"density": 1.0,
-			"transform": [
-				1,
-				0,
-				0,
-				1,
-				0,
-				0
-			]
-		},
 		"alicorn1": {
 			"animation": "alicorn1.json",
 			"image": "alicorn1.png",
@@ -414,35 +401,9 @@
 				0
 			]
 		},
-		"dron1_discharge": {
-			"animation": "dron1_discharge.json",
-			"image": "dron1_discharge.png",
-			"density": 1.0,
-			"transform": [
-				1,
-				0,
-				0,
-				1,
-				0,
-				0
-			]
-		},
 		"dron2": {
 			"animation": "dron2.json",
 			"image": "dron2.png",
-			"density": 1.0,
-			"transform": [
-				1,
-				0,
-				0,
-				1,
-				0,
-				0
-			]
-		},
-		"dron2_discharge": {
-			"animation": "dron2_discharge.json",
-			"image": "dron2_discharge.png",
 			"density": 1.0,
 			"transform": [
 				1,
@@ -466,19 +427,6 @@
 				0
 			]
 		},
-		"dron3_discharge": {
-			"animation": "dron3_discharge.json",
-			"image": "dron3_discharge.png",
-			"density": 1.0,
-			"transform": [
-				1,
-				0,
-				0,
-				1,
-				0,
-				0
-			]
-		},
 		"dront": {
 			"animation": "dront.json",
 			"image": "bossdron.png",
@@ -490,19 +438,6 @@
 				1.5,
 				0,
 				10
-			]
-		},
-		"dront_discharge": {
-			"animation": "dront_discharge.json",
-			"image": "bossdron_discharge.png",
-			"density": 1.0,
-			"transform": [
-				1,
-				0,
-				0,
-				1,
-				0,
-				0
 			]
 		},
 		"eant": {

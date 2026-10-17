@@ -1,6 +1,5 @@
 package fe.game.domain.units {
 	
-	import fe.engine.utils.Numbers;
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.entities.BoundingBox;
@@ -10,15 +9,11 @@ package fe.game.domain.units {
 	import fe.game.GameContainer;
 	import fe.game.domain.units.enums.E_Resistances;
 	import fe.game.enums.E_Direction;
-
-	import starling.textures.TextureSmoothing;
 	
 	public class UnitPet extends Unit {
 
-		private static const MOON_HUB_X:Number		= -1.5;		// Where the moon's body turns, from its origin, as its sheet is drawn
-		private static const MOON_HUB_Y:Number		= -0.95;
-		private static const MOON_FAST_TURN:Number	= 30.0 * Numbers.DEG_TO_RAD;	// Each tick while it hunts or fights
-		private static const MOON_SLOW_TURN:Number	= 3.0 * Numbers.DEG_TO_RAD;
+		private static const MOON_FAST_TURN:Number	= 30.0;		// Degrees the moon's body turns each tick while it hunts or fights
+		private static const MOON_SLOW_TURN:Number	= 3.0;
 		
 		private var moonTurn:Number = 0.0;		// How far the moon's body has turned from its sheet's drawing
 		private var spd:Object;
@@ -48,11 +43,7 @@ package fe.game.domain.units {
 			fraction = Unit.F_PLAYER;
 			
 			if (id == 'moon') {
-				sheetName = 'moon';
-				initBlit();
-				art.smoothing = TextureSmoothing.BILINEAR;	// Its sheet is drawn from vector art, which Flash smoothed
-				art.pivotX = MOON_HUB_X;
-				art.pivotY = MOON_HUB_Y;
+				initArt('moon');
 			}
 			else {
 				initBlit();
@@ -197,7 +188,7 @@ package fe.game.domain.units {
 					art.show('stay', 0);
 					moonTurn += MOON_SLOW_TURN;
 				}
-				art.rotation = moonTurn * storona.X;
+				art.setBodyRotation(moonTurn);
 			}
 			else {
 				if (aiState==0) animState='stay';
@@ -214,15 +205,6 @@ package fe.game.domain.units {
 			
 			if (hpbar) {
 				hpbar.alpha = art.alpha;
-			}
-		}
-
-		// The moon's body turns about its hub, which the way it faces mirrors
-		public override function setVisPos():void {
-			super.setVisPos();
-			if (id == 'moon') {
-				art.x = coordinates.X + MOON_HUB_X * storona.X;
-				art.y = coordinates.Y + MOON_HUB_Y;
 			}
 		}
 

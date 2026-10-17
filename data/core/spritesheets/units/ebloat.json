@@ -10,6 +10,10 @@
 				"to": 54
 			}
 		],
+		"hub": [
+			0,
+			0
+		],
 		"image": "ebloat.png",
 		"layout": {
 			"cells": [

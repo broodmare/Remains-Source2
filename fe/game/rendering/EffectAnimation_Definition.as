@@ -9,5 +9,7 @@ package fe.game.rendering {
 		public var tints:Vector.<ColorTransform>;	// Per frame, or null where the frame keeps its colours
 		public var hidden:Vector.<Boolean>;			// Per frame, whether it draws nothing
 		public var stops:Vector.<Boolean>;			// Per frame, whether the playhead stops once it reaches it
+		public var textures:Vector.<int>;			// Per frame, which of the effect's textures it shows
+		public var randomTurns:Vector.<Boolean>;	// Per frame, whether reaching it turns the effect to a random angle
 	}
 }

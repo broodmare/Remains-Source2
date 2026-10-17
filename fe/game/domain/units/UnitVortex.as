@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.location.tile.Tile;
@@ -21,7 +18,8 @@ package fe.game.domain.units {
 		public function UnitVortex(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='vortex';
-			vis = SymbolFactory.createInstance("visualVortex") as MovieClip;
+			initArt(id);
+			art.play('stay');
 			getXmlParam();
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*3;
@@ -83,7 +81,7 @@ package fe.game.domain.units {
 		
 		public override function animate():void {
 			br += (velocity.X * 2.5 - br) / 4;
-			vis.osn.rotation = br * storona.X;
+			art.setBodyRotation(br * storona.X);
 		}
 		
 		//состояния

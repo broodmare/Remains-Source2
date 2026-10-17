@@ -21,5 +21,7 @@ package fe.game.rendering {
 		public var labels:Dictionary							= new Dictionary();	// Frame by label
 		public var placements:Vector.<Matrix>;									// Per frame, where its image goes after its pivot, for keyed flipbooks; else null
 		public var tints:Vector.<ColorTransform>;								// Per frame, its own tint or null; null when no frame has one
+		public var randomTurns:Vector.<Boolean>;								// Per frame, whether reaching it turns its images to a random angle, as a script turning the clip did; null when none does
+		public var effects:Vector.<FlipbookEffect_Definition>;					// Effects drawn over its images on some frames; null when it has none
 	}
 }

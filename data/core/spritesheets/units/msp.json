@@ -28,6 +28,10 @@
 				"to": 10
 			}
 		],
+		"hub": [
+			0,
+			0
+		],
 		"image": "msp.png",
 		"layout": {
 			"cells": [

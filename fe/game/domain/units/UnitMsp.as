@@ -1,8 +1,6 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
+	import fe.engine.utils.Numbers;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.entities.BoundingBox;
@@ -39,8 +37,8 @@ package fe.game.domain.units {
 			
 			id = 'msp';
 			
-			vis = SymbolFactory.createInstance("visualMsp") as MovieClip;
-			vis.stop();
+			initArt(id);
+			art.play('stay');
 			
 			getXmlParam();
 			
@@ -77,57 +75,43 @@ package fe.game.domain.units {
 		}
 		
 		public override function setVisPos():void {
-			if (vis) {
-				if (cep==0) {
-					vis.x = coordinates.X;
-					vis.y = coordinates.Y;
-					vis.rotation=0;
-				}
-				else if (cep==1) {
-					vis.x = coordinates.X;
-					vis.y = this.boundingBox.top;
-					vis.rotation=180;
-				}
-				else if (cep==3) {
-					vis.x = this.boundingBox.right;
-					vis.y = coordinates.Y - this.boundingBox.halfHeight;
-					vis.rotation = -90;
-				}
-				else if (cep==2) {
-					vis.x = this.boundingBox.left;
-					vis.y = coordinates.Y - this.boundingBox.halfHeight;
-					vis.rotation = 90;
-				}
-				vis.scaleX = storona.X;
+			if (cep==0) {
+				art.x = coordinates.X;
+				art.y = coordinates.Y;
+				art.rotation=0;
 			}
+			else if (cep==1) {
+				art.x = coordinates.X;
+				art.y = this.boundingBox.top;
+				art.rotation=Numbers.ONE_PI;
+			}
+			else if (cep==3) {
+				art.x = this.boundingBox.right;
+				art.y = coordinates.Y - this.boundingBox.halfHeight;
+				art.rotation = Numbers.NEGATIVE_HALF_PI;
+			}
+			else if (cep==2) {
+				art.x = this.boundingBox.left;
+				art.y = coordinates.Y - this.boundingBox.halfHeight;
+				art.rotation = Numbers.HALF_PI;
+			}
+			art.scaleX = storona.X;
 		}
 		
 		public override function animate():void {
-			vis.gotoAndStop(aiState);
 			if (aiState==0 || aiState==1) { //сдох
-				if (animState!='stay') {
-					vis.osn.gotoAndStop('stay');
-					animState='stay';
-				}
+				animState='stay';
 			}
 			else if (aiState==2 || aiState==4) {
-				if (animState!='wake') {
-					vis.osn.gotoAndStop('wake');
-					animState='wake';
-				}
+				animState='wake';
 			}
 			else if (stay || levit){
-				if (animState!='walk') {
-					vis.osn.gotoAndStop('walk');
-					animState='walk';
-				}
+				animState='walk';
 			}
 			else {
-				if (animState!='jump') {
-					vis.osn.gotoAndStop('jump');
-					animState='jump';
-				}
-			} 
+				animState='jump';
+			}
+			art.play(animState);
 		}
 		
 		public function jump(v:Number=1):void {

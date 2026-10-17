@@ -12,7 +12,8 @@ package fe.game.rendering {
 	import fe.engine.utils.Files;
 
 	// The effects in data/core/textures/effects.json: catalog textures drawn through modifiers, still or keyed into
-	// animations. A texture goes to the GPU, baked through its modifier's ramp, the first time something shows it, and stays.
+	// animations. A texture goes to the GPU, baked through its modifier's ramp and tint, the first time something shows it,
+	// and stays.
 	public class EffectManager {
 
 		private static const FILE:String	= "data/core/textures/effects.json";
@@ -115,7 +116,9 @@ package fe.game.rendering {
 		}
 
 		// An animation's keys worked out for every frame. A key leaves out what is at rest: scale 1, no tint, shown.
-		// Each key moves in a straight line to the next, unless the next is hidden.
+		// Each key moves in a straight line to the next, unless the next is hidden. A key's texture, an index into the
+		// effect's textures, holds until a later key picks another. A key with randomTurn turns the effect to a random angle
+		// when its frame is reached, as a Flash frame script setting a random rotation did.
 		private static function readAnimation(json:Object):EffectAnimation_Definition {
 			var animation:EffectAnimation_Definition = new EffectAnimation_Definition();
 			var count:int = int(json.frames);
@@ -125,6 +128,7 @@ package fe.game.rendering {
 			var mix:Number;
 			var scale:Number;
 			var stop:int;
+			var picked:int;
 			var k:int;
 			var f:int;
 
@@ -132,6 +136,8 @@ package fe.game.rendering {
 			animation.tints		= new Vector.<ColorTransform>(count, true);
 			animation.hidden	= new Vector.<Boolean>(count, true);
 			animation.stops		= new Vector.<Boolean>(count, true);
+			animation.textures	= new Vector.<int>(count, true);
+			animation.randomTurns	= new Vector.<Boolean>(count, true);
 			for each (stop in json.stops) {
 				animation.stops[stop] = true;
 			}
@@ -150,6 +156,13 @@ package fe.game.rendering {
 				animation.scales[f]	= scale + ((("scale" in next) ? Number(next.scale) : 1.0) - scale) * mix;
 				animation.tints[f]	= mixTints(readTint(key.tint), readTint(next.tint), mix);
 				animation.hidden[f]	= key.hidden == true;
+				animation.randomTurns[f] = int(key.frame) == f && key.randomTurn == true;
+
+				picked = k;
+				while (picked >= 0 && !("texture" in keys[picked])) {
+					picked--;
+				}
+				animation.textures[f] = (picked >= 0) ? int(keys[picked].texture) : 0;
 			}
 
 			return animation;
@@ -160,9 +173,13 @@ package fe.game.rendering {
 			var definition:Flipbook_Definition = new Flipbook_Definition();
 			var modifier:Modifier_Definition;
 			var animation:EffectAnimation_Definition;
+			var images:Vector.<FlipbookImage> = new Vector.<FlipbookImage>();
 			var image:FlipbookImage;
+			var texture:String;
+			var shown:int;
 			var tints:Vector.<ColorTransform>;
 			var hasTint:Boolean = false;
+			var hasTurn:Boolean = false;
 			var count:int;
 			var scale:Number;
 			var f:int;
@@ -170,7 +187,7 @@ package fe.game.rendering {
 			if (!effect) {
 				trace("EffectManager.as/buildFlipbook() - Error: effects.json has no effect \"" + name + "\", so it shows nothing");
 				effect = new Effect_Definition();
-				effect.texture = "";
+				effect.textures = new <String>[""];
 			}
 			if (effect.animation != "") {
 				animation = animations[effect.animation];
@@ -179,7 +196,10 @@ package fe.game.rendering {
 				}
 			}
 
-			image		= viewImage(effect.texture, effect.modifier);
+			for each (texture in effect.textures) {
+				images.push(viewImage(texture, effect.modifier));
+			}
+			image		= images[0];
 			modifier	= modifiers[effect.modifier];
 			count		= animation ? animation.scales.length : 1;
 
@@ -197,8 +217,13 @@ package fe.game.rendering {
 
 			for (f = 0; f < count; f++) {
 				definition.frames[f] = new Vector.<FlipbookImage>();
+				shown = animation ? animation.textures[f] : 0;
+				if (shown >= images.length) {
+					trace("EffectManager.as/buildFlipbook() - Error: effect \"" + name + "\" has no texture " + shown + " for frame " + f + ", so it shows its first");
+					shown = 0;
+				}
 				if (!animation || !animation.hidden[f]) {
-					definition.frames[f].push(image);
+					definition.frames[f].push(images[shown]);
 				}
 				definition.shows[f]			= f;
 				definition.stops[f]			= animation ? animation.stops[f] : true;
@@ -206,8 +231,10 @@ package fe.game.rendering {
 				definition.placements[f]	= new Matrix(scale, 0.0, 0.0, scale);
 				tints[f]					= animation ? animation.tints[f] : null;
 				hasTint						= hasTint || tints[f] != null;
+				hasTurn						= hasTurn || (animation && animation.randomTurns[f]);
 			}
 			definition.tints = hasTint ? tints : null;
+			definition.randomTurns = hasTurn ? animation.randomTurns : null;
 
 			return definition;
 		}
@@ -217,6 +244,7 @@ package fe.game.rendering {
 			var json:Object;
 			var source:Object;
 			var name:String;
+			var texture:String;
 			var modifier:Modifier_Definition;
 			var effect:Effect_Definition;
 
@@ -233,6 +261,9 @@ package fe.game.rendering {
 				if (source.ramp) {
 					modifier.ramp = readRamp(source.ramp);
 				}
+				if (source.tint) {
+					modifier.tint = readTint(source.tint);
+				}
 				if (source.blend) {
 					modifier.blend = source.blend;
 				}
@@ -245,7 +276,10 @@ package fe.game.rendering {
 				source				= json.effects[name];
 				effect				= new Effect_Definition();
 				effect.name			= name;
-				effect.texture		= source.texture;
+				effect.textures		= new Vector.<String>();
+				for each (texture in source.textures || [source.texture]) {
+					effect.textures.push(texture);
+				}
 				effect.modifier		= source.modifier || "";
 				effect.animation	= source.animation || "";
 				effect.scale		= ("scale" in source) ? Number(source.scale) : 1.0;
@@ -253,18 +287,24 @@ package fe.game.rendering {
 			}
 		}
 
-		// A new flipbook of the named effect, on its first frame
-		public function createEffect(name:String):Flipbook {
+		// The named effect as a flipbook definition, built on first ask
+		public function viewFlipbook(name:String):Flipbook_Definition {
 			if (!flipbooks[name]) {
 				flipbooks[name] = buildFlipbook(name);
 			}
 
-			return new Flipbook(flipbooks[name]);
+			return flipbooks[name];
+		}
+
+		// A new flipbook of the named effect, on its first frame
+		public function createEffect(name:String):Flipbook {
+			return new Flipbook(viewFlipbook(name));
 		}
 
 		// A catalog texture through a modifier ("" for none) on the GPU, with its pivot. A missing one shows nothing.
 		public function viewImage(texture:String, modifier:String):FlipbookImage {
 			var key:String = texture + " " + modifier;
+			var recolour:Modifier_Definition = modifiers[modifier];
 			var bitmap:BitmapData;
 			var size:Point;
 			var pivot:Point;
@@ -277,11 +317,15 @@ package fe.game.rendering {
 				trace("EffectManager.as/viewImage() - Error: no texture \"" + texture + "\" in textures/manifest.json, so it shows nothing");
 				bitmap = new BitmapData(1, 1, true, 0);
 			}
-			if (modifier != "" && !modifiers[modifier]) {
+			if (modifier != "" && !recolour) {
 				trace("EffectManager.as/viewImage() - Error: effects.json has no modifier \"" + modifier + "\", so \"" + texture + "\" shows as it is");
 			}
-			else if (modifier != "" && Modifier_Definition(modifiers[modifier]).ramp) {
-				bitmap = bake(bitmap, Modifier_Definition(modifiers[modifier]).ramp);
+			if (recolour && recolour.ramp) {
+				bitmap = bake(bitmap, recolour.ramp);
+			}
+			if (recolour && recolour.tint) {
+				bitmap = bitmap.clone();
+				bitmap.colorTransform(bitmap.rect, recolour.tint);
 			}
 
 			size	= grafon.viewDrawSize(texture) || new Point(bitmap.width, bitmap.height);

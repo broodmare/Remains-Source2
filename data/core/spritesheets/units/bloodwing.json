@@ -25,8 +25,13 @@
 				"direction": "forward",
 				"from": 8,
 				"name": "die",
+				"repeat": "1",
 				"to": 27
 			}
+		],
+		"hub": [
+			-2.3,
+			-22.4
 		],
 		"image": "bloodwing.png",
 		"layout": {

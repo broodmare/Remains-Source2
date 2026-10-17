@@ -1,15 +1,20 @@
 package fe.game.domain.units {
 	
-	import fe.engine.utils.SymbolFactory;
+	import starling.display.BlendMode;
+
 	import fe.engine.text.TextParser;
+	import fe.engine.utils.Numbers;
 	import fe.game.WeaponManager;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.enums.E_Material;
 	import fe.game.enums.E_Direction;
 	import fe.game.GameContainer;
+	import fe.game.rendering.Flipbook;
 	
 	public class UnitDron extends Unit {
 		
+		private static const SPARKS:Object = {1: "drone_spark", 2: "drone_spark_orange", 3: "drone_spark_teal", 100: "drone_bolts"};	// Its spark's effect, by variant
+
 		private var spd:Object;
 		private var br:Number			= 0.00;
 		private var stuk:int			= 0;
@@ -24,6 +29,7 @@ package fe.game.domain.units {
 		private var atkRasst:Number		= 0.00;
 		
 		private var t_krut:int			= 0;	// [dodging bullets]
+		private var discharge:Flipbook;			// The spark it gives off at its target, over its body
 
 		public function UnitDron(cid:String = null, ndif:Number = 100.00, xml:XML = null, loadObj:Object = null) {
 			
@@ -53,14 +59,14 @@ package fe.game.domain.units {
 			}
 			
 			getXmlParam();
-			var vClass:Class = SymbolFactory.fetchSymbolClass("visualDron" + String(tr)) || SymbolFactory.fetchSymbolClass("visualBloat1") as Class;	// 'visualBloat1' being the fallback visual probably means dronse are a copy/paste of bloatsprites?
-			
-			
-			if (tr == 100) {
-				vClass = SymbolFactory.fetchSymbolClass("visualMegaDron") as Class;	// SWF Dependency
-			}
-			
-			vis = new vClass();
+			initArt(id);	// The big drone's sheet draws its body half again as large, as Flash scaled it
+			art.play("stay");
+			discharge = GameContainer.reference.grafon.effects.createEffect(SPARKS[tr]);
+			discharge.blendMode = BlendMode.SCREEN;
+			discharge.visible = false;
+			discharge.x = art.definition.hubX;		// At its middle, where its body turns
+			discharge.y = art.definition.hubY;
+			art.carry(discharge);
 			walkSpeed = maxSpeed;
 			runSpeed = maxSpeed * 3;
 			isFly = true;
@@ -70,8 +76,6 @@ package fe.game.domain.units {
 			spd = {};
 			
 			if (tr == 100) {
-				vis.osn.scaleX = 1.50;
-				vis.osn.scaleY = 1.50;
 				aiAgr = true;
 				nazv = "";
 			}
@@ -93,8 +97,6 @@ package fe.game.domain.units {
 				currentWeapon.magazineRounds = currentWeapon.magazineCapacity;
 			}
 			
-			vis.dis.stop();
-			vis.dis.visible = false;
 			sndRunOn = true;
 		}
 		
@@ -146,20 +148,21 @@ package fe.game.domain.units {
 		
 		public override function animate():void {
 			br += (velocity.X * 1.5 - br) / 4;
-			vis.osn.rotation = br * storona.X;
+			art.setBodyRotation(br * storona.X);
 			
+			// One of the first four frames of its spark, of those it has: the big drone's first bolt as it fades
 			if (celUnit && aiTCh%15==1) {
-				vis.dis.visible=true;
-				vis.dis.alpha=1;
-				vis.dis.rotation=Math.random()*360;
-				vis.dis.gotoAndStop(Math.floor(Math.random()*4+1));
+				discharge.visible=true;
+				discharge.alpha=1;
+				discharge.rotation=Math.random()*Numbers.TWO_PI;
+				discharge.goTo(Math.min(Math.floor(Math.random()*4), discharge.frameCount - 1), false);
 			}
 			
-			if (vis.dis.alpha > 0.10) {
-				vis.dis.alpha -= 0.20;
+			if (discharge.alpha > 0.10) {
+				discharge.alpha -= 0.20;
 			}
 			else {
-				vis.dis.visible = false;
+				discharge.visible = false;
 			}
 		}
 		

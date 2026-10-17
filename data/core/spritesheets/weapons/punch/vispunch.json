@@ -26,7 +26,7 @@
 		}
 	},
 	"meta": {
-		"image": "punch.png",
+		"image": "vispunch.png",
 		"version": "2",
 		"size": {
 			"w": 214,
@@ -57,7 +57,7 @@
 				"layers": [
 					{
 						"role": "effect",
-						"sheet": "punch.json",
+						"sheet": "vispunch.json",
 						"sprite": "swoosh",
 						"source": "pun",
 						"matrix": [
@@ -75,7 +75,7 @@
 				"layers": [
 					{
 						"role": "effect",
-						"sheet": "punch.json",
+						"sheet": "vispunch.json",
 						"sprite": "swoosh",
 						"source": "pun",
 						"matrix": [
@@ -93,7 +93,7 @@
 				"layers": [
 					{
 						"role": "effect",
-						"sheet": "punch.json",
+						"sheet": "vispunch.json",
 						"sprite": "swoosh",
 						"source": "pun",
 						"matrix": [
@@ -126,7 +126,7 @@
 				"layers": [
 					{
 						"role": "effect",
-						"sheet": "punch.json",
+						"sheet": "vispunch.json",
 						"sprite": "swoosh",
 						"source": "pun",
 						"matrix": [
@@ -144,7 +144,7 @@
 				"layers": [
 					{
 						"role": "effect",
-						"sheet": "punch.json",
+						"sheet": "vispunch.json",
 						"sprite": "swoosh",
 						"source": "pun",
 						"matrix": [
@@ -162,7 +162,7 @@
 				"layers": [
 					{
 						"role": "effect",
-						"sheet": "punch.json",
+						"sheet": "vispunch.json",
 						"sprite": "swoosh",
 						"source": "pun",
 						"matrix": [

@@ -16,6 +16,10 @@
 				"to": 60
 			}
 		],
+		"hub": [
+			0,
+			0
+		],
 		"image": "slime.png",
 		"layout": {
 			"cells": [

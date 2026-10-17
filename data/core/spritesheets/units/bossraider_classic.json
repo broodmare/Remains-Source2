@@ -61,6 +61,7 @@
 				"direction": "forward",
 				"from": 150,
 				"name": "die",
+				"repeat": "1",
 				"to": 169
 			},
 			{
@@ -69,6 +70,10 @@
 				"name": "derg",
 				"to": 177
 			}
+		],
+		"hub": [
+			0,
+			0
 		],
 		"image": "bossraider_classic.png",
 		"layout": {

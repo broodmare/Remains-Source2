@@ -12,8 +12,11 @@ package fe.game.rendering {
 	import starling.filters.FragmentFilter;
 	import starling.textures.TextureSmoothing;
 
-	// A unit's body on the GPU: one frame of its sprite sheet at a time, picked by the unit's code. The unit places, turns
-	// and fades the sprite; flipbooks it carries, such as a shield, are children drawn over the body.
+	import fe.engine.utils.Numbers;
+
+	// A unit's body on the GPU: one frame of its sprite sheet at a time, picked by the unit's code or played as an
+	// animation. The unit places, turns and fades the sprite, and can turn the body inside it about the sheet's hub, as
+	// Flash turned a unit clip's inner body. What it carries, such as a shield, is drawn over the body.
 	public class UnitArt extends Sprite {
 
 		private static const MIP_BIAS:Number = -0.5;		// Sheets drawn smaller than their pixels sample a little sharp, as Flipbook's do
@@ -21,9 +24,18 @@ package fe.game.rendering {
 		private var manager:UnitSheetManager;
 		private var body:Image;								// Made once the sheet is on the GPU
 		private var shown:FlipbookImage;					// The frame on show, or null before the first
+		private var shownTransform:Matrix;					// The shown frame's animation's state transform, if it has one
+		private var wanted:FlipbookImage;					// The frame asked for, shown as soon as the sheet is on the GPU
+		private var wantedAnimation:String	= "";
+		private var playing:Vector.<FlipbookImage>;			// The animation play() started, or null while a frame is held
+		private var playingName:String	= "";
+		private var playFrame:int		= 0;
+		private var playsLeft:int		= 0;				// Plays left before it rests on its last frame, or 0 to loop
+		private var bodyRotation:Number	= 0.0;				// In radians, about the hub
+		private var bodyScale:Number	= 1.0;				// About the hub
 		private var tint:ColorTransform;					// The body's, kept until the body is made
 		private var bodyFilter:FragmentFilter;				// Likewise
-		private var placement:Matrix	= new Matrix();		// Scratch for sheets with a transform
+		private var placement:Matrix	= new Matrix();		// Scratch
 		private var hasWarned:Boolean	= false;			// A missing frame is reported once
 
 		public var definition:UnitSheet_Definition;
@@ -47,17 +59,59 @@ package fe.game.rendering {
 			addChildAt(body, 0);
 		}
 
-		// Puts the shown frame's pivot on the unit's origin, through the sheet's transform if it has one
-		private function place():void {
+		// Where the shown frame's game pixels go in the art's space: its pivot on the unit's origin, through its state's
+		// transform and the sheet's, then turned and scaled about the hub
+		private function placeShown(target:Matrix):void {
+			target.setTo(1.0, 0.0, 0.0, 1.0, -shown.pivotX, -shown.pivotY);
+			if (shownTransform) {
+				target.concat(shownTransform);
+			}
 			if (definition.transform) {
-				placement.setTo(1.0, 0.0, 0.0, 1.0, -shown.pivotX, -shown.pivotY);
-				placement.concat(definition.transform);
-				body.transformationMatrix = placement;
+				target.concat(definition.transform);
+			}
+			if (bodyRotation != 0.0 || bodyScale != 1.0) {
+				target.translate(-definition.hubX, -definition.hubY);
+				target.scale(bodyScale, bodyScale);
+				target.rotate(bodyRotation);
+				target.translate(definition.hubX, definition.hubY);
+			}
+		}
+
+		private function place():void {
+			placeShown(placement);
+			body.transformationMatrix = placement;
+		}
+
+		// Shows the frame asked for. Until the sheet is on the GPU the body stays hidden, and each advance() tries again.
+		private function display():void {
+			var stateTransform:Matrix;
+
+			if (!wanted) { return; }
+
+			if (!definition.texture) {
+				manager.prepare(definition);
+			}
+			if (!definition.texture) {
+				if (body) {
+					body.visible = false;
+				}
+				return;
+			}
+
+			stateTransform = definition.stateTransforms[wantedAnimation];
+			if (body && body.visible && body.texture == wanted.texture && stateTransform == shownTransform) { return; }
+
+			shown = wanted;
+			shownTransform = stateTransform;
+			if (!body) {
+				createBody();
 			}
 			else {
-				body.pivotX = shown.pivotX;
-				body.pivotY = shown.pivotY;
+				body.texture = shown.texture;
+				body.readjustSize();
 			}
+			body.visible = true;
+			place();
 		}
 
 		public function UnitArt(manager_:UnitSheetManager, definition_:UnitSheet_Definition) {
@@ -66,8 +120,7 @@ package fe.game.rendering {
 			touchable	= false;
 		}
 
-		// Shows a frame of one of the sheet's animations, by its column on the original sheet. Until the sheet is on the GPU
-		// the body stays hidden.
+		// Holds a frame of one of the sheet's animations, by its column on the original sheet
 		public function show(animation:String, column:int):void {
 			var frames:Vector.<FlipbookImage> = definition.animations[animation];
 			var frame:FlipbookImage = (frames && column >= 0 && column < frames.length) ? frames[column] : null;
@@ -80,29 +133,58 @@ package fe.game.rendering {
 				return;
 			}
 
-			if (!definition.texture) {
-				manager.prepare(definition);
-			}
-			if (!definition.texture) {
-				if (body) {
-					body.visible = false;
+			playing = null;
+			playingName = "";
+			wanted = frame;
+			wantedAnimation = animation;
+			display();
+		}
+
+		// Plays one of the sheet's animations from frame from, unless it is playing it already. It loops, or rests on its
+		// last frame once it has played as often as the sheet says.
+		public function play(animation:String, from:int = 0):void {
+			var frames:Vector.<FlipbookImage> = definition.animations[animation];
+
+			if (animation == playingName) { return; }
+
+			if (!frames || frames.length == 0) {
+				if (!hasWarned) {
+					trace("UnitArt.as/play() - Warning: sheet \"" + definition.name + "\" has no animation \"" + animation + "\", so the unit keeps its last frame");
+					hasWarned = true;
 				}
 				return;
 			}
 
-			shown = frame;
-			if (!body) {
-				createBody();
+			playing			= frames;
+			playingName		= animation;
+			playFrame		= from;
+			playsLeft		= int(definition.repeats[animation]);
+			wanted			= frames[from];
+			wantedAnimation	= animation;
+			display();
+		}
+
+		// How many frames one of the sheet's animations has, 0 for one it lacks
+		public function frameCount(animation:String):int {
+			var frames:Vector.<FlipbookImage> = definition.animations[animation];
+
+			return frames ? frames.length : 0;
+		}
+
+		// Turns the body about the sheet's hub, in degrees clockwise as drawn: the unit's facing mirrors the turn too
+		public function setBodyRotation(degrees:Number):void {
+			bodyRotation = degrees * Numbers.DEG_TO_RAD;
+			if (shown) {
+				place();
 			}
-			else if (body.texture != frame.texture) {
-				body.texture = frame.texture;
-				body.readjustSize();
+		}
+
+		// Scales the body about the sheet's hub
+		public function setBodyScale(scale:Number):void {
+			bodyScale = scale;
+			if (shown) {
+				place();
 			}
-			else {
-				return;
-			}
-			body.visible = true;
-			place();
 		}
 
 		// Draws the body and what it carries through a Flash colour transform, or in their own colours for null
@@ -122,12 +204,12 @@ package fe.game.rendering {
 			}
 		}
 
-		// Surrounds the body and what it carries with a glow, or takes it away for null
-		public function setGlow(glow:GlowFilter):void {
+		// Draws the art and what it carries through Flash filters, as near as the GPU's come, or plainly for null
+		public function setFilters(filters:Array):void {
 			if (filter) {
 				filter.dispose();
 			}
-			filter = glow ? GpuFilters.fromFlash([glow], 1.0) : null;
+			filter = filters ? GpuFilters.fromFlash(filters, 1.0) : null;
 		}
 
 		// Surrounds the body alone, not what it carries, with a glow, or takes it away for null
@@ -147,10 +229,25 @@ package fe.game.rendering {
 			addChild(flipbook);
 		}
 
-		// Moves on every flipbook it carries, as Flash moves nested clips on with their parent
+		// One frame: the animation playing moves on, and so does everything carried, as Flash moves nested clips on with
+		// their parent
 		public function advance():void {
 			var flipbook:Flipbook;
 			var i:int;
+
+			if (playing) {
+				if (playFrame + 1 < playing.length) {
+					playFrame++;
+				}
+				else if (playsLeft != 1) {
+					playFrame = 0;
+					if (playsLeft > 1) {
+						playsLeft--;
+					}
+				}
+				wanted = playing[playFrame];
+			}
+			display();
 
 			for (i = 0; i < numChildren; i++) {
 				flipbook = getChildAt(i) as Flipbook;
@@ -178,10 +275,9 @@ package fe.game.rendering {
 				pixels.colorTransform(pixels.rect, colorTransform);
 			}
 
-			matrix = new Matrix(1.0 / definition.density, 0.0, 0.0, 1.0 / definition.density, -shown.pivotX, -shown.pivotY);
-			if (definition.transform) {
-				matrix.concat(definition.transform);
-			}
+			matrix = new Matrix(1.0 / definition.density, 0.0, 0.0, 1.0 / definition.density, 0.0, 0.0);
+			placeShown(placement);
+			matrix.concat(placement);
 			matrix.translate(-pivotX, -pivotY);
 			result = new Bitmap(pixels);
 			result.transform.matrix = matrix;

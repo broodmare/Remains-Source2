@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.serv.LootGen;
@@ -31,14 +28,8 @@ package fe.game.domain.units {
 			}
 			
 			//взять параметры из xml
-			if (tr == 2) {
-				vis = SymbolFactory.createInstance("visualRaiderBoss2") as MovieClip;
-			}
-			else {
-				vis = SymbolFactory.createInstance("visualRaiderBoss") as MovieClip;
-			}
-			
-			vis.osn.gotoAndStop(1);
+			initArt((tr == 2) ? "bossraider" : "bossraider_classic");
+			art.play('stay');
 			getXmlParam();
 			
 			walkSpeed = maxSpeed;
@@ -113,39 +104,38 @@ package fe.game.domain.units {
 		public override function animate():void {
 			if (sost==3) { //сдох
 				if (animState != 'die') {
-					vis.osn.gotoAndStop('die');
+					art.play('die');
 					animState = 'die';
 				}
 			}
 			else if (aiState == 4 || aiState == 6) {
 				if (animState != 'bac') {
-					vis.osn.gotoAndStop('bac');
+					art.play('bac');
 					animState = 'bac';
 				}
 			}
 			else if (stay) {
 				if (velocity.X < 1 && velocity.X > -1) {
 					if (animState!='stay') {
-						vis.osn.gotoAndStop('stay');
+						art.play('stay');
 						animState='stay';
 					}
 				}
 				else if (aiState==1) {
 					if (animState!='run') {
-						vis.osn.gotoAndStop('run');
+						art.play('run');
 						animState='run';
 					}
 				}
 				else {
 					if (animState!='trot') {
-						vis.osn.gotoAndStop('trot');
+						art.play('trot');
 						animState='trot';
 					}
 				}
 			}
 			else {
 				if (animState!='jump') {
-					vis.osn.gotoAndStop('jump');
 					animState='jump';
 					var cframe:int = Math.round(16 + velocity.Y);
 					
@@ -157,7 +147,7 @@ package fe.game.domain.units {
 						cframe = 1;
 					}
 					
-					vis.osn.body.gotoAndStop(cframe);
+					art.show('jump', Math.min(cframe, art.frameCount('jump')) - 1);	// The pose for its take-off speed, held; past the last pose, the last
 				}
 			} 
 		}

@@ -19,8 +19,13 @@
 				"direction": "forward",
 				"from": 21,
 				"name": "die",
+				"repeat": "1",
 				"to": 30
 			}
+		],
+		"hub": [
+			-1.05,
+			-27.5
 		],
 		"image": "robobrain.png",
 		"layout": {

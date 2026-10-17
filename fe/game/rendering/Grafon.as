@@ -127,9 +127,9 @@ package fe.game.rendering {
 			starlingView		= new StarlingView(visual, this);
 			objectLayers		= starlingView.objectLayers;
 			shadows				= starlingView.shadows;
-			flipbooks			= new FlipbookManager(updateLoaded);
-			unitSheets			= new UnitSheetManager();
 			effects				= new EffectManager(this);
+			flipbooks			= new FlipbookManager(effects, updateLoaded);
+			unitSheets			= new UnitSheetManager();
 			visVoda				= new Sprite();
 			visVoda.alpha		= 0.6;
 			visFront			= new Sprite();

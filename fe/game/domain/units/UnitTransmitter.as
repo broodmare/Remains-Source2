@@ -1,8 +1,5 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-	
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
 	import fe.game.domain.location.Location;
@@ -21,8 +18,8 @@ package fe.game.domain.units {
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
-			vis = SymbolFactory.createInstance("visualTransmitter") as MovieClip;
-			vis.osn.gotoAndStop(1);
+			initArt(id);
+			art.play('stay');
 			getXmlParam();
 			storona=E_Direction.RIGHT;
 			if (cid=='box') cep=0;
@@ -36,21 +33,21 @@ package fe.game.domain.units {
 				if (nloc.getAbsTile(nx, ny-50).collision) {
 					cep=1;
 					ny-=10;
-					vis.osn.gotoAndStop(2);
-					vis.osn.rotation=90;
+					art.play('active');
+					art.setBodyRotation(90);
 					fixed=true;
 				}
 				else if (nloc.getAbsTile(nx-40, ny-10).collision) {
 					cep=2;
 					nx -= (40 - this.boundingBox.width) / 2 - 1;
-					vis.osn.gotoAndStop(2);
+					art.play('active');
 					fixed=true;
 				}
 				else if (nloc.getAbsTile(nx + 40, ny - 10).collision) {
 					cep=3;
 					nx += (40 - this.boundingBox.width) / 2 - 1;
-					vis.osn.gotoAndStop(2);
-					vis.osn.scaleX=-1;
+					art.play('active');
+					art.scaleX=-1;		// The body's mirror about its hub, which sits on the art's origin line
 					fixed=true;
 				}
 			}
@@ -62,10 +59,8 @@ package fe.game.domain.units {
 		}
 
 		public override function setVisPos():void {
-			if (vis) {
-				vis.x = coordinates.X;
-				vis.y = coordinates.Y;
-			}
+			art.x = coordinates.X;
+			art.y = coordinates.Y;
 		}
 		
 		public override function locout():void	{

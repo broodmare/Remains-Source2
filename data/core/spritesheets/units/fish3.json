@@ -34,6 +34,10 @@
 				"to": 123
 			}
 		],
+		"hub": [
+			1,
+			-18.95
+		],
 		"image": "fish3.png",
 		"layout": {
 			"cells": [

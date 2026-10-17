@@ -1,10 +1,10 @@
 package fe.game.domain.units {
 
-	import flash.display.MovieClip;
-	
-	import fe.engine.utils.SymbolFactory;
+	import starling.display.BlendMode;
+
 	import fe.engine.utils.Vec2;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.Flipbook;
 	import fe.game.WeaponManager;
 	import fe.game.domain.weapon.Weapon;
 	import fe.engine.audio.Sound;
@@ -20,7 +20,8 @@ package fe.game.domain.units {
 		private var dopWeapon:Weapon;
 		private var thWeapon:Weapon;
 		private var shitMaxHp:Number		= 500.00;
-		private var visshit:MovieClip;
+		private var discharge:Flipbook;			// Sparks playing over its body
+		private var shield:Flipbook;			// Shown while the shield holds
 		
 		private var emit_t:int				= 120;
 		
@@ -37,15 +38,18 @@ package fe.game.domain.units {
 			id = "bossdron";
 			
 			// [take parameters from xml]
-			vis = SymbolFactory.createInstance("visualMegaDron") as MovieClip;
-			vis.osn.gotoAndStop(1);
-			visshit = SymbolFactory.createInstance("visShit") as MovieClip;
-			vis.addChild(visshit);
-			visshit.gotoAndStop(1);
-			visshit.visible = false;
-			visshit.y = -70;
-			visshit.scaleX = 1.70;
-			visshit.scaleY = 1.70;
+			initArt("bossdron");
+			art.play("stay");
+			discharge = GameContainer.reference.grafon.effects.createEffect("drone_bolts");
+			discharge.blendMode = BlendMode.SCREEN;
+			discharge.x = art.definition.hubX;		// At its middle, where its body turns
+			discharge.y = art.definition.hubY;
+			art.carry(discharge);
+			shield = GameContainer.reference.grafon.effects.createEffect("shield_yellow");
+			shield.visible = false;
+			shield.y = -70;
+			shield.scaleX = shield.scaleY = 1.70;
+			art.carry(shield);
 			
 			getXmlParam();
 			walkSpeed = maxSpeed;
@@ -121,14 +125,14 @@ package fe.game.domain.units {
 			thWeapon.vis.visible = false;
 			
 			//щит
-			if (visshit && !visshit.visible && shithp > 0) {
-				visshit.visible = true;
-				visshit.gotoAndPlay(1);
+			if (!shield.visible && shithp > 0) {
+				shield.visible = true;
+				shield.goTo(0, true);
 			}
 			
-			if (visshit && visshit.visible && shithp <= 0) {
-				visshit.visible = false;
-				visshit.gotoAndStop(1);
+			if (shield.visible && shithp <= 0) {
+				shield.visible = false;
+				shield.goTo(0, false);
 				Emitter.emit("pole", loc, coordinates.X, coordinates.Y - 50, {kol:12, rx:100, ry:100});
 			}
 			
@@ -142,15 +146,13 @@ package fe.game.domain.units {
 		}
 		
 		public override function setVisPos():void {
-			if (vis) {
-				if (sost == 2) {
-					vis.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
-					vis.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
-				}
-				else {
-					vis.x = coordinates.X;
-					vis.y = coordinates.Y;
-				}
+			if (sost == 2) {
+				art.x = coordinates.X + (Math.random() - 0.5) * (150 - timerDie) / 15;
+				art.y = coordinates.Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
+			}
+			else {
+				art.x = coordinates.X;
+				art.y = coordinates.Y;
 			}
 		}
 		

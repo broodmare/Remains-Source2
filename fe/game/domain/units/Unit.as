@@ -35,7 +35,6 @@ package fe.game.domain.units {
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.rendering.Emitter;
 	import fe.game.rendering.UnitArt;
-	import fe.game.rendering.UnitSheetManager;
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.entities.Part;
@@ -2356,11 +2355,15 @@ package fe.game.domain.units {
 			}
 		}
 		
+		// Its art from the named sprite sheet, sampled smoothly, as Flash drew the vector clips such sheets were captured from
+		public function initArt(sheet:String):void {
+			sheetName = sheet;
+			art = GameContainer.reference.grafon.unitSheets.createArt(sheet);
+		}
+
 		// Its art from the sprite sheet named sheetName, on the stand animation
 		public function initBlit():void {
-			var sheets:UnitSheetManager = GameContainer.reference.grafon.unitSheets;
-
-			art = new UnitArt(sheets, sheets.viewDefinition(sheetName));
+			initArt(sheetName);
 			art.smoothing = TextureSmoothing.NONE;	// As the unsmoothed bitmaps Flash drew these sheets with
 			cellLeft = (blitDX >= 0) ? -blitDX : -blitX / 2;
 			cellTop = (blitDY >= 0) ? -blitDY : -blitY + 10;
@@ -2516,7 +2519,7 @@ package fe.game.domain.units {
 
 		public override function setGlow(glow:GlowFilter):void {
 			if (art) {
-				art.setGlow(glow);
+				art.setFilters(glow ? [glow] : null);
 			}
 			super.setGlow(glow);
 		}

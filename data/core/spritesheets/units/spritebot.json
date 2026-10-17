@@ -16,6 +16,10 @@
 				"to": 1
 			}
 		],
+		"hub": [
+			1.25,
+			-20.75
+		],
 		"image": "spritebot.png",
 		"layout": {
 			"cells": [

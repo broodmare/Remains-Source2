@@ -1,8 +1,6 @@
 package fe.game.domain.units {
 	
-	import flash.display.MovieClip;
-	
-	import fe.engine.utils.SymbolFactory;
+	import fe.engine.utils.Numbers;
 	import fe.game.GameContainer;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.entities.BoundingBox;
@@ -35,18 +33,16 @@ package fe.game.domain.units {
 			}
 			if (tr==1) {
 				id='cryoslime';
-				vis = SymbolFactory.createInstance("visualCryoSlime") as MovieClip;
 			}
 			else if (tr==2) {
 				id='pinkslime';
-				vis = SymbolFactory.createInstance("visualPinkSlime") as MovieClip;
 			}
 			else {
 				id='slime';
-				vis = SymbolFactory.createInstance("visualSlime") as MovieClip;
 			}
 
-			vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames+1));
+			initArt(id);
+			art.play('stay', Math.floor(Math.random()*art.frameCount('stay')));
 			
 			if (isMine) {
 				levitPoss=false;
@@ -79,8 +75,7 @@ package fe.game.domain.units {
 			super.putLoc(nloc,nx,ny);
 			if (isMine) {
 				aiState=2;
-				vis.gotoAndStop(2);
-				vis.scaleY=0.5;
+				art.show('mine', 0);		// Squashed by the sheet's state transform
 			} else if (loc.getAbsTile(nx,ny+10).collision) aiState=0;
 			else if (loc.getAbsTile(nx,ny-50).collision) {
 				aiState=1;
@@ -89,26 +84,24 @@ package fe.game.domain.units {
 		}
 		
 		public override function setVisPos():void {
-			if (vis) {
-				if (aiState==1) {
-					vis.rotation=180;
-					vis.x = coordinates.X;
-					vis.y = coordinates.Y - 40;
-				}
-				else
-				{
-					vis.rotation=0;
-					vis.x = coordinates.X;
-					vis.y = coordinates.Y;
-					vis.scaleX=storona.X;
-				}
+			if (aiState==1) {
+				art.rotation=Numbers.ONE_PI;
+				art.x = coordinates.X;
+				art.y = coordinates.Y - 40;
+			}
+			else
+			{
+				art.rotation=0;
+				art.x = coordinates.X;
+				art.y = coordinates.Y;
+				art.scaleX=storona.X;
 			}
 		}
 		
 		public function setVis(v:Boolean):void {
 			isVis=v;
-			vis.visible=v;
-			vis.alpha=v?1:0.1;
+			art.visible=v;
+			art.alpha=v?1:0.1;
 		}
 		
 		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void {

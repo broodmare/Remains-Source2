@@ -3,7 +3,6 @@ package fe.game.domain.units {
 	import fe.game.domain.weapon.Weapon;
 	import fe.game.domain.projectile.Bullet;
 	import fe.engine.text.LanguageManager;
-	import fe.engine.utils.SymbolFactory;
 	import fe.engine.text.XMLDataGrabber;
 	import fe.game.enums.E_Direction;
 	import fe.game.GameContainer;
@@ -45,9 +44,8 @@ package fe.game.domain.units {
 			}
 			
 			id = 'bloat' + tr;
-			var vClass:Class = SymbolFactory.fetchSymbolClass("visualBloat" + String(tr)) || SymbolFactory.fetchSymbolClass("visualBloat1") as Class;
-			vis = new vClass();
-			vis.stop();
+			initArt(id);
+			art.play("stay");
 			runSpeed=0;
 			getXmlParam();
 			
