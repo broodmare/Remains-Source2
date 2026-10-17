@@ -11,7 +11,7 @@ package fe.game {
 	import fe.game.domain.units.UnitPlayer;
 	import fe.game.enums.E_DeathState;
 	import fe.game.enums.E_ExitState;
-	import fe.game.rendering.Grafon;
+	import fe.game.rendering.Renderer;
 	import fe.game.ui.Camera;
 	import fe.game.ui.Ctr;
 	import fe.game.ui.GUIManager;
@@ -46,7 +46,7 @@ package fe.game {
 		public var pers:Pers;								// Player stats
 		public var invent:Inventory;						// Player inventory
 		public var vault:Inventory;							// Global storage for the player
-		public var grafon:Grafon;							// Renderer
+		public var renderer:Renderer;							// Renderer
 
 		// [Loading, config]
 		public var configObj:Object;							// The user's stored settings
@@ -63,7 +63,7 @@ package fe.game {
 		public var t_die:int					= 0;					// Frames left in the current death stage
 		public var exitState:int				= E_ExitState.NONE;		// How far leaving the land has got
 		public var t_exit:int					= 0;					// Frames left in the current exit stage
-		public var gr_stage:int					= 0;					// Current stage of Grafon while rendering 
+		public var renderer_stage:int					= 0;					// Current stage of Renderer while rendering
 		
 		// Update player inventory weight
 		public var calcMass:Boolean				= false;		// [Recalculate mass]
@@ -190,7 +190,7 @@ package fe.game {
 
 			world		= new World();
 			guiManager	= new GUIManager(main);
-			grafon		= new Grafon(guiManager.visual);
+			renderer		= new Renderer(guiManager.visual);
 			cam			= new Camera();
 		}
 
@@ -207,7 +207,7 @@ package fe.game {
 		// The main loop: the main menu until it starts a game, then the world
 		public function step():void {
 			// Flash moves its clips on at the start of each frame, so the GPU's flipbooks move on here, before the game does
-			grafon.objectLayers.advance();
+			renderer.objectLayers.advance();
 			if (guiManager.mainMenuClass.isRunning) {
 				guiManager.mainMenuClass.mainStep();
 			}

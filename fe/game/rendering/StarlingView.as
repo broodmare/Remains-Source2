@@ -11,6 +11,8 @@ package fe.game.rendering {
 
 	import fe.game.GameContainer;
 	import fe.game.domain.location.tile.Tile;
+	import fe.game.rendering.passes.BackWall;
+	import fe.game.rendering.passes.ObjectShadow;
 
 	// The room as Starling draws it, under the whole Flash display list. Follows visual's position, scale and visibility every frame.
 	public class StarlingView {
@@ -23,8 +25,8 @@ package fe.game.rendering {
 		private var effectBlur:Number = 0.0;		// The scripted blur on visual, as a Flash blur
 		private var satsShown:Boolean;				// SATS shows its frozen, blurred copy of the room over this view
 
-		public var shadows:ShadowPass;				// The shadow the tiles and objects cast on the back wall
-		public var backLayers:BackLayers;
+		public var shadows:ObjectShadow;				// The shadow the tiles and objects cast on the back wall
+		public var backWall:BackWall;
 		public var objectLayers:ObjectLayers;		// Over the back layers
 
 		private function prepareFrame():void {
@@ -33,7 +35,7 @@ package fe.game.rendering {
 			root.y			= visual.y;
 			root.scaleX		= visual.scaleX;
 			root.scaleY		= visual.scaleY;
-			backLayers.prepareFrame();
+			backWall.prepareFrame();
 			if (root.visible) {
 				shadows.render();
 			}
@@ -66,12 +68,12 @@ package fe.game.rendering {
 			}
 		}
 
-		public function StarlingView(visual_:DisplayObject, grafon:Grafon) {
+		public function StarlingView(visual_:DisplayObject, renderer:Renderer) {
 			visual			= visual_;
 			root			= new Sprite();
 			root.touchable	= false;
-			shadows			= new ShadowPass(GameContainer.cellsX * Tile.tileX, GameContainer.cellsY * Tile.tileY);
-			backLayers		= new BackLayers(grafon, root, shadows);
+			shadows			= new ObjectShadow(GameContainer.cellsX * Tile.tileX, GameContainer.cellsY * Tile.tileY);
+			backWall		= new BackWall(renderer, root, shadows);
 			objectLayers	= new ObjectLayers(root);
 
 			Starling.current.stage.addChild(root);

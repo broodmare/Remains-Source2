@@ -3,7 +3,9 @@ package fe.game.rendering {
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 
-	// The room's object layers that Starling draws, counted from the back as Grafon's visObjs are: above the back layers,
+	import fe.game.rendering.rig.RigView;
+
+	// The room's object layers that Starling draws, counted from the back as Renderer's visObjs are: above the back layers,
 	// under the whole Flash display list. Flipbooks shown here move on once a frame, as Flash clips do.
 	public class ObjectLayers {
 
@@ -30,11 +32,6 @@ package fe.game.rendering {
 			layers[layer].addChild(view);
 		}
 
-		// Shows or hides one layer and all it holds
-		public function showLayer(layer:int, shown:Boolean):void {
-			layers[layer].visible = shown;
-		}
-
 		// Empties every layer for the next room. What was shown is kept by its owner, not disposed.
 		public function clear():void {
 			var layer:Sprite;
@@ -44,11 +41,12 @@ package fe.game.rendering {
 			}
 		}
 
-		// Moves on every flipbook shown, units' carried ones too, as Flash moves its clips on at the start of each frame
+		// Moves on every flipbook and rig shown, units' carried flipbooks too, as Flash moves its clips on at the start of each frame
 		public function advance():void {
 			var layer:Sprite;
 			var flipbook:Flipbook;
 			var art:UnitArt;
+			var rigView:RigView;
 			var i:int;
 
 			for each (layer in layers) {
@@ -61,6 +59,11 @@ package fe.game.rendering {
 					art = layer.getChildAt(i) as UnitArt;
 					if (art) {
 						art.advance();
+						continue;
+					}
+					rigView = layer.getChildAt(i) as RigView;
+					if (rigView) {
+						rigView.advance();
 					}
 				}
 			}

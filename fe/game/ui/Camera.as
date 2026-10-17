@@ -96,23 +96,23 @@ package fe.game.ui {
 			
 			if (screenY>maxsy*scaleV)
 			{
-				GameContainer.reference.grafon.ramT.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
-				GameContainer.reference.grafon.ramB.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
+				GameContainer.reference.renderer.ramT.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
+				GameContainer.reference.renderer.ramB.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
 			}
 			else
 			{
-				GameContainer.reference.grafon.ramT.scaleY=-0.5/scaleV;
-				GameContainer.reference.grafon.ramB.scaleY=0.6/scaleV;
+				GameContainer.reference.renderer.ramT.scaleY=-0.5/scaleV;
+				GameContainer.reference.renderer.ramB.scaleY=0.6/scaleV;
 			}
 			
 			if (screenX>maxsx*scaleV) {
-				GameContainer.reference.grafon.ramL.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
-				GameContainer.reference.grafon.ramR.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
+				GameContainer.reference.renderer.ramL.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
+				GameContainer.reference.renderer.ramR.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
 			}
 			else
 			{
-				GameContainer.reference.grafon.ramL.scaleX=-0.5/scaleV;
-				GameContainer.reference.grafon.ramR.scaleX=0.5/scaleV;
+				GameContainer.reference.renderer.ramL.scaleX=-0.5/scaleV;
+				GameContainer.reference.renderer.ramR.scaleX=0.5/scaleV;
 			}
 		}
 		
@@ -209,7 +209,7 @@ package fe.game.ui {
 				}
 			}
 			// The room fades in once its units' sheets have decoded
-			if (dblack < 0 && GameContainer.reference.grafon.unitSheets.isLoaded) {
+			if (dblack < 0 && GameContainer.reference.renderer.unitSheets.isLoaded) {
 				GUIManager.reference.vblack.alpha += dblack / 100;
 				if (GUIManager.reference.vblack.alpha <= 0) {
 					dblack = 0;

@@ -14,8 +14,8 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Numbers;
 
-	// A unit's body on the GPU: one frame of its sprite sheet at a time, picked by the unit's code or played as an
-	// animation. The unit places, turns and fades the sprite, and can turn the body inside it about the sheet's hub, as
+	// A unit's body on the GPU: one frame of its sprite sheet at a time, picked by the unit's code or played as an animation.
+	// The unit places, turns and fades the sprite, and can turn the body inside it about the sheet's hub, as
 	// Flash turned a unit clip's inner body. What it carries, such as a shield, is drawn over the body.
 	public class UnitArt extends Sprite {
 

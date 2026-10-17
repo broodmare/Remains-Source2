@@ -85,14 +85,14 @@ package fe.game.domain.weapon {
 		}
 		
 		public override function attack(waitReady:Boolean=false):Boolean {
-			GameContainer.reference.grafon.paint(pX, pY, coordinates.X, coordinates.Y,GameContainer.reference.ctr.keyRun);
+			GameContainer.reference.renderer.paint(pX, pY, coordinates.X, coordinates.Y,GameContainer.reference.ctr.keyRun);
 			return true;
 		}
 
 		public function setPaint(npaint:String, ncolor:uint, nblend:String):void {
 			paintId = npaint;
 			paintNazv = TextParser.txt('i', paintId);
-			GameContainer.reference.grafon.brushColor = ncolor;
+			GameContainer.reference.renderer.brushColor = ncolor;
 		}
 		
 		public override function animate():void {

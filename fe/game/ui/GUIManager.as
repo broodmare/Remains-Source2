@@ -24,7 +24,7 @@ package fe.game.ui {
 		public var app:Appear;									// Appearance customizer
 
 		public var vwait:MovieClip;								//Картинка с надписью ЗАГРУЗКА
-		public var sky:MovieClip;								// The stationary sky behind the room, kept off the display list and drawn into Grafon's Backdrop
+		public var sky:MovieClip;								// The stationary sky behind the room, kept off the display list and drawn into Renderer's BackdropPass
 		public var visual:Sprite;								//активная область
 		public var vscene:MovieClip;							//Сцена
 		public var vblack:MovieClip;							//Затемнение

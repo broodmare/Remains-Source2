@@ -2,8 +2,7 @@ package fe.game.rendering.rig {
 
 	import flash.utils.Dictionary;
 
-	// A rig's nodes and animations, read from glTF. Bones are nodes, and each drawing hangs on its own node under a bone.
-	// Positions are in game pixels with y pointing down.
+	// A rig's nodes and animations, read from glTF. Bones are nodes, and each drawing hangs on its own node under a bone. Positions are in game pixels with y pointing down.
 	public class Rig_Definition {
 		public var names:Vector.<String>		= new Vector.<String>();	// Per node
 		public var byName:Dictionary			= new Dictionary();			// Node index by name

@@ -7,8 +7,11 @@ package fe.game.rendering.weapon {
 	public class LightSphere {
 
 		public static function neutralPalette():Object {
-			return {colors: [0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF],
-				alphas: [1.0, 1.0, 89.0 / 255.0, 0.0], ratios: [43, 67, 101, 255]};
+			return { 
+				colors: [0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF],
+				alphas: [1.0, 1.0, 89.0 / 255.0, 0.0],
+				ratios: [43, 67, 101, 255]
+			};
 		}
 
 		public static function create(template:Object, colors:Array = null, alphas:Array = null, ratios:Array = null, radius:Number = NaN):Shape {

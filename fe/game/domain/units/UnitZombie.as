@@ -93,7 +93,7 @@ package fe.game.domain.units {
 			animState='stay';
 			
 			if (glowTip>0) {
-				vlight = GameContainer.reference.grafon.effects.createEffect("zombie_light");
+				vlight = GameContainer.reference.renderer.effects.createEffect("zombie_light");
 				vlight.y = -boundingBox.halfHeight;
 				art.carry(vlight);
 			}

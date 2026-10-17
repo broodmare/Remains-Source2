@@ -53,6 +53,8 @@ import flash.display3D.Context3D;
 import flash.display3D.Context3DProgramType;
 import flash.geom.ColorTransform;
 
+import fe.engine.utils.Numbers;
+
 import starling.rendering.MeshEffect;
 import starling.rendering.Program;
 import starling.textures.Texture;
@@ -61,10 +63,8 @@ import starling.utils.RenderUtil;
 
 class WallLightEffect extends MeshEffect {
 
-	private static const EPSILON:Number = 0.001;		// Keeps unpremultiplying away from a divide by zero
-
 	private static var tintConstants:Vector.<Number>	= new <Number>[1.0, 1.0, 1.0, 0.0];
-	private static var mathConstants:Vector.<Number>	= new <Number>[0.5, 1.0, 2.0, EPSILON];
+	private static var mathConstants:Vector.<Number>	= new <Number>[0.5, 1.0, 2.0, Numbers.EPSILON];
 	private static var backConstants:Vector.<Number>	= new <Number>[0.0, 0.0, 0.0, 0.0];
 
 	public var light:Texture;

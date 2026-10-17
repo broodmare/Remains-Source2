@@ -2,8 +2,7 @@ package fe.game.rendering {
 
 	import flash.geom.Matrix;
 
-	// An effect an object's flipbook shows over its images on some of its frames, placed and faded per frame as Flash placed
-	// the clip it stands in for
+	// An effect an object's flipbook shows over its images on some of its frames, placed and faded per frame as Flash placed the clip it stands in for
 	public class FlipbookEffect_Definition {
 		public var effect:Flipbook_Definition;
 		public var blend:String = "normal";		// The Starling blend mode it draws with

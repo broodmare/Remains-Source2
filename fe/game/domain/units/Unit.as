@@ -2337,7 +2337,7 @@ package fe.game.domain.units {
 
 			if (xml.vis.length() && xml.vis.@blit.length()) {
 				var bmpd:BitmapData;
-				var data:BitmapData=GameContainer.reference.grafon.getSpriteList(xml.vis.@blit);
+				var data:BitmapData=GameContainer.reference.renderer.getSpriteList(xml.vis.@blit);
 				
 				if (data == null) {
 					return;
@@ -2358,7 +2358,7 @@ package fe.game.domain.units {
 		// Its art from the named sprite sheet, sampled smoothly, as Flash drew the vector clips such sheets were captured from
 		public function initArt(sheet:String):void {
 			sheetName = sheet;
-			art = GameContainer.reference.grafon.unitSheets.createArt(sheet);
+			art = GameContainer.reference.renderer.unitSheets.createArt(sheet);
 		}
 
 		// Its art from the sprite sheet named sheetName, on the stand animation
@@ -2390,7 +2390,7 @@ package fe.game.domain.units {
 
 			// A burning unit shows the burn's clip in vis instead
 			if (art && !burn && loc && loc.active) {
-				GameContainer.reference.grafon.objectLayers.add(art, layer);
+				GameContainer.reference.renderer.objectLayers.add(art, layer);
 			}
 			
 			if (!player && !hpbar && (vis || art)) {
@@ -2408,7 +2408,7 @@ package fe.game.domain.units {
 			}
 			
 			if (hpbar && loc && loc.active) {
-				GameContainer.reference.grafon.visObjs[3].addChild(hpbar);
+				GameContainer.reference.renderer.visObjs[3].addChild(hpbar);
 			}
 			
 			if (cTransform && ctrans) {

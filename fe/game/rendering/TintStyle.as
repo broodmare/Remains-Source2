@@ -6,8 +6,7 @@ package fe.game.rendering {
 	import starling.rendering.RenderState;
 	import starling.styles.MeshStyle;
 
-	// Draws a mesh through a Flash colour transform: multipliers that may brighten past 1, and offsets.
-	// Each channel is clamped before alpha applies, as Flash does.
+	// Draws a mesh through a Flash colour transform: multipliers that may brighten past 1, and offsets. Each channel is clamped before alpha applies, as Flash does.
 	public class TintStyle extends MeshStyle {
 
 		public var tint:ColorTransform;		// null draws the texture's own colours

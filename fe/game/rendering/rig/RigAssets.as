@@ -219,8 +219,7 @@ package fe.game.rendering.rig {
 			}
 		}
 
-		// The atlas of every image look wears, built the first time it is asked for. Each call is one more user,
-		// and every user hands it back with release() when it stops wearing the look.
+		// The atlas of every image look wears, built the first time it is asked for. Each call is one more user, and every user hands it back with release() when it stops wearing the look.
 		public function artFor(look:RigLook):RigArt {
 			var key:String = look.key;
 

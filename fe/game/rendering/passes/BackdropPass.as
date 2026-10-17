@@ -1,4 +1,4 @@
-package fe.game.rendering {
+package fe.game.rendering.passes {
 
 	import flash.display.BitmapData;
 
@@ -11,7 +11,7 @@ package fe.game.rendering {
 	import fe.engine.Engine;
 	import fe.game.ui.GUIManager;
 
-	public class Backdrop {
+	public class BackdropPass {
 
 		private var backdrop:Image;			// The backdrop as Starling draws it, under the whole display list
 		private var bitmap:BitmapData;		// The backdrop drawn at screen size, uploaded as the backdrop's texture
@@ -56,7 +56,7 @@ package fe.game.rendering {
 			}
 		}
 
-		public function Backdrop() {
+		public function BackdropPass() {
 			Starling.current.addEventListener(Event.RENDER, prepareBackdrop);
 		}
 	}

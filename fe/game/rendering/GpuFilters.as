@@ -2,6 +2,7 @@ package fe.game.rendering {
 
 	import flash.filters.BevelFilter;
 	import flash.filters.BitmapFilter;
+	import flash.filters.BlurFilter;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 
@@ -12,24 +13,28 @@ package fe.game.rendering {
 	import starling.filters.FragmentFilter;
 	import starling.filters.GlowFilter;
 
+	import fe.engine.utils.Numbers;
+
 	// Starling stand-ins for Flash's bitmap filters: close in look, not pixel for pixel
 	public class GpuFilters {
-
-		private static const DEG_TO_RAD:Number = Math.PI / 180.0;
 
 		private static function glow(filter:flash.filters.GlowFilter):FragmentFilter {
 			return new starling.filters.GlowFilter(filter.color, strength(filter.alpha, filter.strength), blur(average(filter.blurX, filter.blurY), filter.quality), 1.0, filter.inner, filter.knockout);
 		}
 
 		private static function shadow(filter:flash.filters.DropShadowFilter):FragmentFilter {
-			return new starling.filters.DropShadowFilter(filter.distance, filter.angle * DEG_TO_RAD, filter.color, strength(filter.alpha, filter.strength), blur(average(filter.blurX, filter.blurY), filter.quality), 1.0, filter.inner, filter.knockout);
+			return new starling.filters.DropShadowFilter(filter.distance, filter.angle * Numbers.DEG_TO_RAD, filter.color, strength(filter.alpha, filter.strength), blur(average(filter.blurX, filter.blurY), filter.quality), 1.0, filter.inner, filter.knockout);
+		}
+
+		private static function blurred(filter:flash.filters.BlurFilter):FragmentFilter {
+			return new starling.filters.BlurFilter(blur(filter.blurX, filter.quality), blur(filter.blurY, filter.quality));
 		}
 
 		// A drop shadow that hides its object: the object's silhouette blurred, recoloured and moved, with nothing over it
 		private static function shadowAlone(filter:flash.filters.DropShadowFilter, chain:FilterChain):void {
 			var silhouette:CompositeFilter = new CompositeFilter();
-			var offsetX:Number = Math.cos(filter.angle * DEG_TO_RAD) * filter.distance;
-			var offsetY:Number = Math.sin(filter.angle * DEG_TO_RAD) * filter.distance;
+			var offsetX:Number = Math.cos(filter.angle * Numbers.DEG_TO_RAD) * filter.distance;
+			var offsetY:Number = Math.sin(filter.angle * Numbers.DEG_TO_RAD) * filter.distance;
 
 			if (filter.inner || filter.knockout) {
 				trace("GpuFilters.as/shadowAlone() - Warning: an inner or knockout shadow that hides its object is drawn as a plain one");
@@ -38,7 +43,7 @@ package fe.game.rendering {
 			silhouette.setAlphaAt(0, strength(filter.alpha, filter.strength));
 			silhouette.setOffsetAt(0, offsetX, offsetY);
 			silhouette.padding.setTo(Math.max(0.0, -offsetX), Math.max(0.0, offsetX), Math.max(0.0, -offsetY), Math.max(0.0, offsetY));
-			chain.addFilter(new BlurFilter(blur(filter.blurX, filter.quality), blur(filter.blurY, filter.quality)));
+			chain.addFilter(new starling.filters.BlurFilter(blur(filter.blurX, filter.quality), blur(filter.blurY, filter.quality)));
 			chain.addFilter(silhouette);
 		}
 
@@ -49,8 +54,8 @@ package fe.game.rendering {
 			if (filter.type != "inner") {
 				trace("GpuFilters.as/bevel() - Warning: only inner bevels are converted, this one is \"" + filter.type + "\"");
 			}
-			chain.addFilter(new starling.filters.DropShadowFilter(filter.distance, filter.angle * DEG_TO_RAD, filter.highlightColor, strength(filter.highlightAlpha, filter.strength), size, 1.0, true));
-			chain.addFilter(new starling.filters.DropShadowFilter(filter.distance, (filter.angle + 180.0) * DEG_TO_RAD, filter.shadowColor, strength(filter.shadowAlpha, filter.strength), size, 1.0, true));
+			chain.addFilter(new starling.filters.DropShadowFilter(filter.distance, filter.angle * Numbers.DEG_TO_RAD, filter.highlightColor, strength(filter.highlightAlpha, filter.strength), size, 1.0, true));
+			chain.addFilter(new starling.filters.DropShadowFilter(filter.distance, (filter.angle + 180.0) * Numbers.DEG_TO_RAD, filter.shadowColor, strength(filter.shadowAlpha, filter.strength), size, 1.0, true));
 		}
 
 		// Starling has no strength, but clamps its alpha after multiplying, so alpha times strength does the same
@@ -87,6 +92,9 @@ package fe.game.rendering {
 				}
 				else if (filter is BevelFilter) {
 					bevel(BevelFilter(filter), chain);
+				}
+				else if (filter is flash.filters.BlurFilter) {
+					chain.addFilter(blurred(flash.filters.BlurFilter(filter)));
 				}
 				else {
 					trace("GpuFilters.as/fromFlash() - Warning: no Starling version of " + filter + ", so it is left out");

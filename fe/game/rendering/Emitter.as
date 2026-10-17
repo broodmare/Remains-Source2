@@ -38,7 +38,7 @@ package fe.game.rendering {
 		public var vis:String;			// Name of the class
 		public var visClass:Class;		// Instnatiated class
 		
-		public var layer:int				= 3;		// Which of Grafon's object layers (visObjs) its particles draw in
+		public var layer:int				= 3;		// Which of Renderer's object layers (visObjs) its particles draw in
 		
 		public var imp:Boolean			= false;	// [true - is important]
 		

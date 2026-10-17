@@ -10,9 +10,8 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Numbers;
 
-	// An object's art on the GPU: a flipbook played like a Flash timeline. The playhead moves on in advance(), and stops and
-	// jumps where the timeline's scripts did. A frame can hold a loop of images, which runs on the flipbook's own clock, and
-	// effects drawn over them, each starting over when a frame shows it after one that didn't.
+	// An object's art on the GPU: a flipbook played like a Flash timeline. The playhead moves on in advance(), and stops and jumps where the timeline's scripts did.
+	// A frame can hold a loop of images, which runs on the flipbook's own clock, and effects drawn over them, each starting over when a frame shows it after one that didn't.
 	public class Flipbook extends Sprite {
 
 		private static const MIP_BIAS:Number = -0.5;	// Art drawn smaller than its sheet samples a little sharp, as the rig does: closest to Flash
@@ -39,6 +38,7 @@ package fe.game.rendering {
 				style.mipBias = MIP_BIAS;
 				created.textureSmoothing = TextureSmoothing.TRILINEAR;
 			}
+			
 			created.style = style;
 			// A normal image takes the flipbook's own blend mode, so a flipbook placed with another draws with it
 			created.blendMode = (blend == BlendMode.NORMAL) ? BlendMode.AUTO : blend;

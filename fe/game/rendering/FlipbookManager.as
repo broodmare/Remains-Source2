@@ -16,8 +16,7 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Files;
 
-	// Every flipbook in data/core/spritesheets/objects. The JSON is read and the sheets decoded at startup;
-	// a sheet goes to the GPU the first time something shows its flipbook, and stays there.
+	// Every flipbook in data/core/spritesheets/objects. The JSON is read and the sheets decoded at startup; a sheet goes to the GPU the first time something shows its flipbook, and stays there.
 	public class FlipbookManager {
 
 		private static const FOLDER:String		= "data/core/spritesheets/objects";

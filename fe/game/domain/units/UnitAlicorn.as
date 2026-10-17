@@ -165,7 +165,7 @@ package fe.game.domain.units {
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicorn");
 			
-			shield = GameContainer.reference.grafon.effects.createEffect((tr == 3) ? "shield_green" : "shield_yellow");
+			shield = GameContainer.reference.renderer.effects.createEffect((tr == 3) ? "shield_green" : "shield_yellow");
 			shield.visible = false;
 			shield.y = -50;
 			shield.scaleX = shield.scaleY = 1.5;

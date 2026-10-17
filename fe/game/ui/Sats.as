@@ -132,8 +132,8 @@ package fe.game.ui {
 					clearAll();
 				}
 				
-				GameContainer.reference.grafon.drawSats();
-				GameContainer.reference.grafon.onSats(true);
+				GameContainer.reference.renderer.drawSats();
+				GameContainer.reference.renderer.onSats(true);
 				getUnits();
 				GUIManager.reference.gui.offCelObj();
 				odv = od;
@@ -143,7 +143,7 @@ package fe.game.ui {
 			}
 			else
 			{
-				GameContainer.reference.grafon.onSats(false);
+				GameContainer.reference.renderer.onSats(false);
 				offUnits();
 				Engine.reference.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mMove);
 				GameContainer.reference.ctr.clearAll();

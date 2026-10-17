@@ -77,7 +77,7 @@ package fe.game.domain.units {
 			initBlit();
 			animState='stay';
 			wPos = AnimationSet.getWeaponOffset("wPosAlicornBoss");
-			shield = GameContainer.reference.grafon.effects.createEffect("shield_red");
+			shield = GameContainer.reference.renderer.effects.createEffect("shield_red");
 			shield.y = -50;
 			shield.scaleX = shield.scaleY = 1.5;
 			art.carry(shield);

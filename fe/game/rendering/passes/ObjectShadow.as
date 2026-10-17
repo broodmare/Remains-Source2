@@ -1,4 +1,4 @@
-package fe.game.rendering {
+package fe.game.rendering.passes {
 
 	import flash.geom.Matrix;
 
@@ -8,9 +8,10 @@ package fe.game.rendering {
 	import starling.filters.BlurFilter;
 	import starling.textures.RenderTexture;
 
-	// The one shadow cast on the back wall. Each frame the tiles and every caster are drawn into a buffer, which is drawn
-	// again lowered, blurred and faded. The wall shader darkens by the result's alpha, so the casters' colours don't matter.
-	public class ShadowPass {
+	import fe.game.rendering.GpuFilters;
+
+	// The one shadow cast on the back wall. Each frame the tiles and every caster are drawn into a buffer, which is drawn again lowered, blurred and faded.
+	public class ObjectShadow {
 
 		private static const DISTANCE:Number	= 7.0;		// How far below its caster the shadow falls
 		private static const ALPHA:Number		= 0.75;
@@ -72,7 +73,7 @@ package fe.game.rendering {
 			occludersImage.filter	= new BlurFilter(GpuFilters.blur(BLUR, QUALITY), GpuFilters.blur(BLUR, QUALITY), RESOLUTION);
 		}
 
-		public function ShadowPass(width_:int, height_:int) {
+		public function ObjectShadow(width_:int, height_:int) {
 			width	= width_;
 			height	= height_;
 		}

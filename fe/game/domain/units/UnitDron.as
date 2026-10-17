@@ -61,7 +61,7 @@ package fe.game.domain.units {
 			getXmlParam();
 			initArt(id);	// The big drone's sheet draws its body half again as large, as Flash scaled it
 			art.play("stay");
-			discharge = GameContainer.reference.grafon.effects.createEffect(SPARKS[tr]);
+			discharge = GameContainer.reference.renderer.effects.createEffect(SPARKS[tr]);
 			discharge.blendMode = BlendMode.SCREEN;
 			discharge.visible = false;
 			discharge.x = art.definition.hubX;		// At its middle, where its body turns

@@ -121,7 +121,7 @@ package fe.game.domain.objects {
 		
 		// One of its parts, drawn at its place
 		private function createPart(name:String):Flipbook {
-			var part:Flipbook = new Flipbook(GameContainer.reference.grafon.flipbooks.viewDefinition(name));
+			var part:Flipbook = new Flipbook(GameContainer.reference.renderer.flipbooks.viewDefinition(name));
 
 			part.x = coordinates.X;
 			part.y = coordinates.Y;
@@ -131,9 +131,9 @@ package fe.game.domain.objects {
 
 		public override function addVisual():void {
 			if (!hide) {
-				GameContainer.reference.grafon.objectLayers.add(gate, layer);
-				GameContainer.reference.grafon.objectLayers.add(lock, layer);
-				GameContainer.reference.grafon.objectLayers.add(glow, layer);
+				GameContainer.reference.renderer.objectLayers.add(gate, layer);
+				GameContainer.reference.renderer.objectLayers.add(lock, layer);
+				GameContainer.reference.renderer.objectLayers.add(glow, layer);
 
 				if (cTransform) {
 					setTint(cTransform);

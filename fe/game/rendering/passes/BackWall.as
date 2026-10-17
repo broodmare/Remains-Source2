@@ -1,4 +1,4 @@
-package fe.game.rendering {
+package fe.game.rendering.passes {
 
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
@@ -23,6 +23,14 @@ package fe.game.rendering {
 	import starling.textures.TextureSmoothing;
 
 	import fe.engine.utils.SymbolFactory;
+	import fe.game.rendering.BackObj;
+	import fe.game.rendering.AtlasClip;
+	import fe.game.rendering.ClipAtlas;
+	import fe.game.rendering.GpuFilters;
+	import fe.game.rendering.RepeatingTexture;
+	import fe.game.rendering.Renderer;
+	import fe.game.rendering.TilePieceTextures;
+	import fe.game.rendering.WallLightStyle;
 	import fe.game.domain.location.Location;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.tile.TilePiece_Definition;
@@ -31,7 +39,7 @@ package fe.game.rendering {
 
 	// The room's layers behind its units, drawn by Starling: the back wall, lit and shaded by the room's shadow, and the background in front of it.
 	// Each is built into a room-sized texture when the room is drawn, so a frame only draws two images.
-	public class BackLayers {
+	public class BackWall {
 
 		private static const INSIDE:String			= "inside";		// Blend that draws only over what is already there, keeping its alpha
 		private static const OVERLAY:String			= "overlay";	// Blend standing in for Flash's overlay: doubles the colour under it by the image's, with mid grey changing nothing
@@ -44,9 +52,9 @@ package fe.game.rendering {
 		private static const GAS_ALPHA:Number		= 0.3;
 		private static const BRUSH_STEP:Number		= 3.0;			// A paint stroke stamps its brush this often, in pixels
 
-		private var grafon:Grafon;
+		private var renderer:Renderer;
 		private var parent:Sprite;					// Starling's view of the room, which these layers sit at the bottom of
-		private var shadows:ShadowPass;				// Casts the shadow the wall is shaded by
+		private var shadows:ObjectShadow;				// Casts the shadow the wall is shaded by
 		private var scale:Number = 1.0;				// Texture pixels per room pixel
 		private var loc:Location;
 		private var tileTextures:Vector.<TilePieceTextures>;
@@ -82,14 +90,14 @@ package fe.game.rendering {
 
 			if (materials[name] !== undefined) { return materials[name]; }
 
-			bitmap = grafon.getObj(name, Grafon.numbMat) as BitmapData;
+			bitmap = renderer.getObj(name, Renderer.numbMat) as BitmapData;
 			if (!bitmap) {
-				trace("BackLayers.as/viewMaterial() - Warning: no texture \"" + name + "\", so it draws grey");
+				trace("BackWall.as/viewMaterial() - Warning: no texture \"" + name + "\", so it draws grey");
 				bitmap = new BitmapData(2, 2, false, 0x666666);
 			}
 
 			// Textures the manifest gives no size were reported when it loaded, and draw at their pixel size
-			drawSize = grafon.viewDrawSize(name) || new Point(bitmap.width, bitmap.height);
+			drawSize = renderer.viewDrawSize(name) || new Point(bitmap.width, bitmap.height);
 			material = new RepeatingTexture(bitmap, drawSize);
 			materials[name] = material;
 
@@ -281,9 +289,9 @@ package fe.game.rendering {
 
 			if (name == "sky") { return; }
 
-			if (!(grafon.getObj(name, Grafon.numbMat) is BitmapData)) {
+			if (!(renderer.getObj(name, Renderer.numbMat) is BitmapData)) {
 				if (name != "") {
-					trace("BackLayers.as/wallFill() - Warning: no back wall texture \"" + name + "\", so the default shows");
+					trace("BackWall.as/wallFill() - Warning: no back wall texture \"" + name + "\", so the default shows");
 				}
 				name = "tBackWall";
 			}
@@ -379,7 +387,7 @@ package fe.game.rendering {
 					return OVERLAY;
 				}
 				default: {
-					trace("BackLayers.as/objectBlend() - Warning: back objects can't blend with \"" + blend + "\", so it draws normally");
+					trace("BackWall.as/objectBlend() - Warning: back objects can't blend with \"" + blend + "\", so it draws normally");
 					return opening ? INSIDE : BlendMode.NORMAL;
 				}
 			}
@@ -452,9 +460,9 @@ package fe.game.rendering {
 
 			if (loc.gas <= 0) { return; }
 
-			cloud = grafon.getObj("back_pink_t", Grafon.numbBack) as MovieClip;
+			cloud = renderer.getObj("back_pink_t", Renderer.numbBack) as MovieClip;
 			if (!cloud) {
-				trace("BackLayers.as/gas() - Warning: no gas cloud clip \"back_pink_t\"");
+				trace("BackWall.as/gas() - Warning: no gas cloud clip \"back_pink_t\"");
 				return;
 			}
 
@@ -502,8 +510,8 @@ package fe.game.rendering {
 			}
 		}
 
-		public function BackLayers(grafon_:Grafon, parent_:Sprite, shadows_:ShadowPass) {
-			grafon	= grafon_;
+		public function BackWall(renderer_:Renderer, parent_:Sprite, shadows_:ObjectShadow) {
+			renderer	= renderer_;
 			parent	= parent_;
 			shadows	= shadows_;
 
@@ -512,7 +520,7 @@ package fe.game.rendering {
 			Starling.current.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 		}
 
-		// Builds the room's layers. Run after Grafon has worked out each tile's outline and which pieces the room uses.
+		// Builds the room's layers. Run after Renderer has worked out each tile's outline and which pieces the room uses.
 		public function draw(loc_:Location, tileTextures_:Vector.<TilePieceTextures>):void {
 			var width:int;
 			var height:int;
@@ -536,7 +544,7 @@ package fe.game.rendering {
 				createTextures(width, height);
 			}
 			else if (wallTexture.width != width || wallTexture.height != height) {
-				trace("BackLayers.as/draw() - Error: rooms are " + wallTexture.width + "x" + wallTexture.height + " pixels, but this one is " + width + "x" + height);
+				trace("BackWall.as/draw() - Error: rooms are " + wallTexture.width + "x" + wallTexture.height + " pixels, but this one is " + width + "x" + height);
 			}
 
 			if (tileAtlas) {

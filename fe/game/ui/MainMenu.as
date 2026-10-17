@@ -705,7 +705,7 @@ package fe.game.ui {
 				return;
 			}
 			// If all resource packs (.swfs / or loose files) have finished loading
-			if (GameContainer.reference.grafon.resIsLoad && language.data != null) {
+			if (GameContainer.reference.renderer.resIsLoad && language.data != null) {
 				stn++;
 				mainMenuMovieClip.loading.text = "Loading " + (Math.floor(stn / 30)) + "\n";
 				GameContainer.reference.init2();
@@ -726,7 +726,7 @@ package fe.game.ui {
 				mainMenuMovieClip.loading.text += GameContainer.reference.load_log;
 			} 
 			else {
-				mainMenuMovieClip.loading.text = "Loading " + Math.round(GameContainer.reference.grafon.progressLoad * 100) + "%";
+				mainMenuMovieClip.loading.text = "Loading " + Math.round(GameContainer.reference.renderer.progressLoad * 100) + "%";
 				
 			}
 		}

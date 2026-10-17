@@ -11,8 +11,7 @@ package fe.game.rendering.rig {
 	import fe.game.rendering.AtlasClip;
 	import fe.game.rendering.ClipAtlas;
 
-	// Every image one look wears, packed into a single mipmapped atlas page so the whole rig draws in one call:
-	// the style picked for each drawing (every frame of its loop) and the armour's images
+	// Every image one look wears, packed into a single mipmapped atlas page so the whole rig draws in one call: the style picked for each drawing (every frame of its loop) and the armour's images
 	public class RigArt {
 
 		private static const PAGE_SIZES:Array	= [1024, 2048, 4096];

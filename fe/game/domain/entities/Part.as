@@ -45,7 +45,7 @@ package fe.game.domain.entities {
 		}
 		
 		public function initBlit(blitId:String):void {
-			blitData=GameContainer.reference.grafon.getSpriteList(blitId,1);
+			blitData=GameContainer.reference.renderer.getSpriteList(blitId,1);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
 			vis=new MovieClip();

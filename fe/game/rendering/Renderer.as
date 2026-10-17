@@ -14,6 +14,7 @@ package fe.game.rendering {
 	import flash.ui.MouseCursorData;
 	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
+	import flash.filesystem.File;
 
 	import fe.engine.utils.SymbolFactory;
 	import fe.game.World;
@@ -23,32 +24,38 @@ package fe.game.rendering {
 	import fe.game.domain.entities.Entity;
 	import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.units.Unit;
+	import fe.game.enums.E_Colors;
 	import fe.game.enums.E_Material;
 	import fe.game.rendering.enums.E_Decal;
+	import fe.game.rendering.passes.BackdropPass;
+	import fe.game.rendering.passes.DebugPass;
+	import fe.game.rendering.passes.ObjectShadow;
+	import fe.game.rendering.rig.RigAssets;
 	import fe.game.domain.location.tile.Tile;
 	import fe.game.domain.location.tile.TilePiece_Definition;
 	import fe.game.domain.location.tile.TileRegistry;
 	import fe.game.domain.location.tile.enums.E_TileBehaviour;
 	import fe.game.domain.location.tile.enums.E_TileLayer;
 
-	public class Grafon {
+	public class Renderer {
 		
-		// colors
-		private static const COLOR_TRANSPARENT:uint		= 0xFF000000;
-		private static const COLOR_BLACK:uint			= 0x00000000;
 		private static const CENTRE:Point				= new Point(0.5, 0.5);
+		private static const PONY_RIG:String			= "data/core/rigs/pony";
 
-		private var backdrop:Backdrop = new Backdrop();			// The background texture (Manages itself and is rendered by Starling)
+		private var backdropPass:BackdropPass = new BackdropPass();			// The background texture (Manages itself and is rendered by Starling)
 		private var starlingView:StarlingView;					// The room's layers drawn by Starling, under visual
 
 		public var objectLayers:ObjectLayers;					// Object layers 0 to 2, drawn by Starling; the rest of visObjs are Flash's
 		public var flipbooks:FlipbookManager;					// The objects' art for the object layers
 		public var unitSheets:UnitSheetManager;					// The units' sprite sheets for the object layers
+		public var ponyRig:RigAssets;							// The player's rig, its skeleton, animations and images
 		public var effects:EffectManager;						// Catalog textures through modifiers, still or animated
-		public var shadows:ShadowPass;							// Objects add their art as casters of the room's shadow
 
-		private var debug:DebugLayer;				// Class to handle all the logic for drawing debug info
-		private var visBoundingBoxes:Sprite = null; // Container for bounding boxes
+		// Render Passes
+		public var shadows:ObjectShadow;							// Objects add their art as casters of the room's shadow
+		private var debug:DebugPass;							// Class to handle all the logic for drawing debug info
+
+		private var visBoundingBoxes:Sprite = null; 			// Container for bounding boxes
 
 		public var loc:Location;
 
@@ -93,10 +100,12 @@ package fe.game.rendering {
 		private var tileTextures:Vector.<TilePieceTextures>;	// One per tile piece drawn from textures, in data order
 		private var texturesByPiece:Dictionary;				// The same, by TilePiece_Definition
 		
+		// Screen-size TODO: This should be a engine query
 		private var rectX:int = 1920;
 		private var rectY:int = 1000;
 		private var allRect:Rectangle = new Rectangle(0, 0, rectX, rectY);
 		
+		// Screen-size in tiles TODO: This is also storing state for no reason
 		private var lightX:int = 49;
 		private var lightY:int = 28;
 		private var lightRect:Rectangle = new Rectangle(0, 0, lightX, lightY);
@@ -114,12 +123,9 @@ package fe.game.rendering {
 		public static const numbFon:int		= 0;		//задники
 		public static const numbBack:int	= 1;		//декорации
 		public static const numbObj:int		= 1;		//объекты
-		public static const numbSprite:int	= 2;	//номер, с которого начинаются файлы спрайтов
-
-		private static var tileX:int = Tile.tileX;
-		private static var tileY:int = Tile.tileY;
+		public static const numbSprite:int	= 2;		//номер, с которого начинаются файлы спрайтов
 		
-		public function Grafon(nvis:Sprite) {
+		public function Renderer(nvis:Sprite) {
 			// Main container
 			visual = nvis;
 
@@ -130,6 +136,7 @@ package fe.game.rendering {
 			effects				= new EffectManager(this);
 			flipbooks			= new FlipbookManager(effects, updateLoaded);
 			unitSheets			= new UnitSheetManager();
+			ponyRig				= new RigAssets(File.applicationDirectory.resolvePath(PONY_RIG), "pony", updateLoaded);
 			visVoda				= new Sprite();
 			visVoda.alpha		= 0.6;
 			visFront			= new Sprite();
@@ -140,7 +147,7 @@ package fe.game.rendering {
 			visSats.filters		= [new BlurFilter(3, 3, 1)];
 
 			// Drawing bounding boxes
-			debug								= new DebugLayer();
+			debug								= new DebugPass();
 			visBoundingBoxes					= new Sprite();	// Layer to draw all bounding boxes on
 			visBoundingBoxes.mouseEnabled		= false; // Prevent bounding boxes from blocking mouse events
 			visBoundingBoxes.mouseChildren		= false;
@@ -162,20 +169,20 @@ package fe.game.rendering {
 			visual.addChild(visSats);		//  9
 			visual.addChild(visObjs[5]);	// 10
 			
-			visLight.x = -tileX * 0.50;
-			visLight.y = -tileX * 0.50 - Tile.tileY;
-			visLight.scaleX = tileX;
+			visLight.x = -Tile.tileX * 0.50;
+			visLight.y = -Tile.tileX * 0.50 - Tile.tileY;
+			visLight.scaleX = Tile.tileX;
 			visLight.scaleY = Tile.tileY;
 			
-			frontBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
+			frontBmp = new BitmapData(rectX, rectY, true, E_Colors.BLACK)
 			frontBitmap = new Bitmap(frontBmp);
 			visFront.addChild(frontBitmap);
 
-			foregroundBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK);
+			foregroundBmp = new BitmapData(rectX, rectY, true, E_Colors.BLACK);
 			foregroundBitmap = new Bitmap(foregroundBmp);
 			visForeground.addChild(foregroundBitmap);
 
-			vodaBmp = new BitmapData(rectX, rectY, true, COLOR_BLACK)
+			vodaBmp = new BitmapData(rectX, rectY, true, E_Colors.BLACK)
 			vodaBitmap = new Bitmap(vodaBmp);
 			visVoda.addChild(vodaBitmap);
 			
@@ -183,7 +190,7 @@ package fe.game.rendering {
 			satsBitmap = new Bitmap(satsBmp, "auto", true);
 			visSats.addChild(satsBitmap);
 
-			lightBmp = new BitmapData(lightX, lightY, true, COLOR_TRANSPARENT);
+			lightBmp = new BitmapData(lightX, lightY, true, E_Colors.TRANSPARENT);
 			lightBitmap = new Bitmap(lightBmp, "auto", true);
 			visLight.addChild(lightBitmap);
 
@@ -241,9 +248,9 @@ package fe.game.rendering {
 			updateLoaded();
 		}
 
-		// Whether every texture, sprite sheet and flipbook has loaded
+		// Whether every texture, sprite sheet, flipbook and rig image has loaded
 		private function updateLoaded():void {
-			resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol) && flipbooks.isLoaded;
+			resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol) && flipbooks.isLoaded && ponyRig && ponyRig.isLoaded;
 		}
 		
 		public function allProgress():void {
@@ -280,8 +287,8 @@ package fe.game.rendering {
 //							Начальная прорисовка локации
 //============================================================================================		
 		
-		// Draws the bounding box of various objects. Settings for this are in DebugLayer.as
-		public function drawDebugLayer():void {
+		// Draws the bounding box of various objects. Settings for this are in DebugPass.as
+		public function drawDebugPass():void {
 			visual.addChild(debug.drawAllBoundingBoxes());
 		}
 
@@ -353,7 +360,7 @@ package fe.game.rendering {
 				trace("Warning: skyPicture object not found for texture:", tex);
 			}
 
-			backdrop.dirty = true;
+			backdropPass.dirty = true;
 		}
 
 		public function setSkySize(nx:Number, ny:Number):void {
@@ -380,7 +387,7 @@ package fe.game.rendering {
 				}
 			}
 
-			backdrop.dirty = true;
+			backdropPass.dirty = true;
 		}
 
 		public function warShadow():void {
@@ -396,13 +403,13 @@ package fe.game.rendering {
 	
 		// [Location drawing]
 		public function drawLoc(nloc:Location):void {
-			GameContainer.reference.gr_stage=1;
+			GameContainer.reference.renderer_stage=1;
 			loc = nloc;
-			loc.grafon = this;
-			resX = loc.spaceX * tileX;
+			loc.renderer = this;
+			resX = loc.spaceX * Tile.tileX;
 			resY = loc.spaceY * Tile.tileY;
 			
-			GameContainer.reference.gr_stage = 2;
+			GameContainer.reference.renderer_stage = 2;
 			//рамки
 			ramT.x = -50;
 			ramB.x = -50;
@@ -421,7 +428,7 @@ package fe.game.rendering {
 			ramR.scaleX = 2;
 			ramL.scaleX = 2;
 		
-			GameContainer.reference.gr_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
+			GameContainer.reference.renderer_stage = 3;		// [somewhere here] (I assume this means whatever graphical bug)
 			frontBmp.lock();
 			foregroundBmp.lock();
 			vodaBmp.lock();
@@ -431,12 +438,12 @@ package fe.game.rendering {
 			vodaBmp.fillRect(allRect,  0);
 			satsBmp.fillRect(allRect,  0);
 			
-			lightBmp.fillRect(lightRect, COLOR_TRANSPARENT);
+			lightBmp.fillRect(lightRect, E_Colors.TRANSPARENT);
 			setLight();
 			visLight.visible = loc.black && GameContainer.reference.black;
 			warShadow();
 
-			GameContainer.reference.gr_stage=4;
+			GameContainer.reference.renderer_stage=4;
 
 			m = new Matrix();
 			var tile:MovieClip;
@@ -453,7 +460,7 @@ package fe.game.rendering {
 				textures.used = false;
 			}
 
-			GameContainer.reference.gr_stage=5;
+			GameContainer.reference.renderer_stage=5;
 			for (var i:int = 0; i < loc.spaceX; i++) {
 				for (var j:int = 0; j < loc.spaceY; j++) {
 					t = loc.getTile(i, j);
@@ -484,7 +491,7 @@ package fe.game.rendering {
 						else {
 							fore.addChild(tile);
 						}
-						tile.x = i * tileX;
+						tile.x = i * Tile.tileX;
 						tile.y = j * Tile.tileY;
 					}
 
@@ -497,33 +504,33 @@ package fe.game.rendering {
 							tile.voda.gotoAndStop(2);
 						}
 						
-						tile.x = i * tileX;
+						tile.x = i * Tile.tileX;
 						tile.y = j * Tile.tileY;
 						voda.addChild(tile);
 					}
 				}
 			}
 
-			GameContainer.reference.gr_stage = 6;
+			GameContainer.reference.renderer_stage = 6;
 			vodaBmp.draw(voda, new Matrix, null, null, null, false);
 			frontBmp.draw(front, new Matrix, null, null, null, false);
 			foregroundBmp.draw(fore, new Matrix, null, null, null, false);
 			
-			GameContainer.reference.gr_stage = 7;
+			GameContainer.reference.renderer_stage = 7;
 			drawTileLayer(E_TileLayer.MAIN);
 			drawTileLayer(E_TileLayer.FOREGROUND);
 
-			GameContainer.reference.gr_stage = 8;
+			GameContainer.reference.renderer_stage = 8;
 			if (nloc.cTransform) {
 				frontBmp.colorTransform(frontBmp.rect,nloc.cTransform);
 				foregroundBmp.colorTransform(foregroundBmp.rect,nloc.cTransform);
 				vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
 			}
 
-			GameContainer.reference.gr_stage = 9;
-			starlingView.backLayers.draw(loc, tileTextures);
+			GameContainer.reference.renderer_stage = 9;
+			starlingView.backWall.draw(loc, tileTextures);
 
-			GameContainer.reference.gr_stage = 10;
+			GameContainer.reference.renderer_stage = 10;
 			frontBmp.unlock();
 			foregroundBmp.unlock();
 			vodaBmp.unlock();
@@ -535,13 +542,13 @@ package fe.game.rendering {
 				skyPicture.transform.colorTransform = defTransform;
 			}
 
-			backdrop.dirty = true;
+			backdropPass.dirty = true;
 				
-			GameContainer.reference.gr_stage = 11;
+			GameContainer.reference.renderer_stage = 11;
 			// [Active objects]
 			drawAllObjs();
 
-			GameContainer.reference.gr_stage = 0;
+			GameContainer.reference.renderer_stage = 0;
 		}
 		
 		// Frees every unit sheet that no unit of the land uses, nor any of the player's pets
@@ -640,8 +647,8 @@ package fe.game.rendering {
 			// Cache frequently accessed properties
 			var spaceX:int = loc.spaceX;
 			var spaceY:int = loc.spaceY;
-			var currentTileX:int = tileX;
-			var currentTileY:int = tileY;
+			var currentTileX:int = Tile.tileX;
+			var currentTileY:int = Tile.tileY;
 			var altTexture:BitmapData = textures.stableTexture;
 			var texture:BitmapData = textures.texture;
 			var borderTexture:BitmapData = textures.edgeTexture;
@@ -749,9 +756,7 @@ package fe.game.rendering {
 				}
 			}
 
-			if (!isDraw) {
-				return;
-			}
+			if (!isDraw) { return; }
 
 			m.tx = 0;
 			m.ty = 0;
@@ -812,7 +817,7 @@ package fe.game.rendering {
 			}
 
 			if (spriteLists[id] == null) {
-				trace("Grafon.as/getSpriteList() - No sprites", id); // (Not my errors message)
+				trace("Renderer.as/getSpriteList() - No sprites", id); // (Not my errors message)
 			}
 			
 			return spriteLists[id];
@@ -823,10 +828,10 @@ package fe.game.rendering {
 			satsBmp.draw(visual, new Matrix);
 		}
 		
+		// visSats's frozen copy holds Flash's layer 2, which hides; Starling's layers stay and blur along with the copy
 		public function onSats(on:Boolean):void {
 			visSats.visible = on;
 			visObjs[2].visible =! on;
-			objectLayers.showLayer(2, !on);
 			starlingView.showSats(on);
 		}
 		
@@ -835,7 +840,7 @@ package fe.game.rendering {
 			var tileAbove:Tile = loc.getTile(t.coords.X, t.coords.Y - 1);
 
 			m = new Matrix();
-			m.tx = t.coords.X * tileX;
+			m.tx = t.coords.X * Tile.tileX;
 			m.ty = t.coords.Y * Tile.tileY;
 			voda.gotoAndStop(loc.tipWater + 1);
 
@@ -859,8 +864,8 @@ package fe.game.rendering {
 			var erC:Class = fetch("block_dyr");
 			var drC:Class = fetch("block_tre");
 			
-			var nx:Number = (t.coords.X + 0.50) * tileX;
-			var ny:Number = (t.coords.Y + 0.50) * tileY;
+			var nx:Number = (t.coords.X + 0.50) * Tile.tileX;
+			var ny:Number = (t.coords.Y + 0.50) * Tile.tileY;
 
 			if (t.isFakeWall) {
 				Emitter.emit("fake", loc, nx, ny);
@@ -868,15 +873,14 @@ package fe.game.rendering {
 			}
 			else if (t.material == E_Material.FORCE_FIELD) {
 				Emitter.emit("fake", loc, nx, ny);
-				Emitter.emit("pole", loc, nx, ny, { kol:10, rx:tileX, ry:tileY });
-				//erC = TileMask; ????
+				Emitter.emit("pole", loc, nx, ny, { kol:10, rx:Tile.tileX, ry:Tile.tileY });
 				drC = null;
 			}
 			else if (tip <= E_Decal.EXPLOSION) {
 				var emitEffect:Array = ["null", "metal", "kusok", "schep", "kusokB", "steklo", "kusokD"];
 				
 				if (t.material >= E_Material.METAL && t.material <= E_Material.EARTH) {
-					Emitter.emit(emitEffect[t.material],	loc, nx, ny, { kol:6, rx:tileX, ry:tileY });
+					Emitter.emit(emitEffect[t.material],	loc, nx, ny, { kol:6, rx:Tile.tileX, ry:Tile.tileY });
 				}
 			}
 			else if (tip >= E_Decal.PLASMA) {
@@ -891,7 +895,7 @@ package fe.game.rendering {
 
 			decal(erC, drC, nx, ny, 1, 0, "hardlight");
 
-			starlingView.backLayers.shadowChanged = true;
+			starlingView.backWall.shadowChanged = true;
 		}
 
 		// Bullethole
@@ -1019,7 +1023,7 @@ package fe.game.rendering {
 					break;		// Glass shows no hole
 				}
 				default: {
-					trace("Grafon.as/dyrka() - ERROR: unknown material: \"" + mat + "\" !");
+					trace("Renderer.as/dyrka() - ERROR: unknown material: \"" + mat + "\" !");
 					break;
 				}
 			}
@@ -1134,7 +1138,7 @@ package fe.game.rendering {
 
 				var dyrx:int = Math.round(nagar.width  * 0.50 + 2) * 2;
 				var dyry:int = Math.round(nagar.height * 0.50 + 2) * 2;
-				var res2:BitmapData = new BitmapData(dyrx, dyry, false, COLOR_BLACK);
+				var res2:BitmapData = new BitmapData(dyrx, dyry, false, E_Colors.BLACK);
 				var rdx:int = 0;
 				var rdy:int = 0;
 				
@@ -1159,15 +1163,15 @@ package fe.game.rendering {
 		// Ghost wall spell
 		public function gwall(nx:int, ny:int):void {
 			var m:Matrix = new Matrix();
-			m.tx = nx * tileX;
-			m.ty = ny * tileY;
+			m.tx = nx * Tile.tileX;
+			m.ty = ny * Tile.tileY;
 			var wall:MovieClip = SymbolFactory.createInstance("tileGwall");
 			frontBmp.draw(wall, m);
 		}
 		
 		// Paints a stroke onto the back wall in brushColor, with the airbrush or the brush
 		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void {
-			starlingView.backLayers.paint(nx1, ny1, nx2, ny2, aero, brushColor);
+			starlingView.backWall.paint(nx1, ny1, nx2, ny2, aero, brushColor);
 		}
 		
 		public function specEffect(n:Number = 0):void {
@@ -1224,7 +1228,7 @@ package fe.game.rendering {
 				visual.filters = [];
 				skyPicture.filters = [];
 				starlingView.setEffect(null, 0.0);
-				backdrop.dirty = true;
+				backdropPass.dirty = true;
 			}
 			else if (n >= 1 && n <= 6) {
 				// Cases 1-6: Apply the corresponding ColorMatrixFilter from the lookup array
@@ -1238,7 +1242,7 @@ package fe.game.rendering {
 				visual.filters = [blur];
 				skyPicture.filters = [blur];
 				starlingView.setEffect(null, blurAmount);
-				backdrop.dirty = true;
+				backdropPass.dirty = true;
 			}
 			else {
 				// Handle unknown cases

@@ -489,7 +489,7 @@ package fe.game.domain.serv {
 					break;
 
 					case "speceffect":
-						GameContainer.reference.grafon.specEffect(obj.n);
+						GameContainer.reference.renderer.specEffect(obj.n);
 					break;
 
 					case "scene":

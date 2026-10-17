@@ -1,4 +1,4 @@
-package fe.game.rendering {
+    package fe.game.rendering.passes {
 
     import flash.display.Shape;
 	import flash.display.Sprite;
@@ -11,17 +11,10 @@ package fe.game.rendering {
     import fe.game.domain.entities.BoundingBox;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.enums.E_Direction;
+	import fe.game.enums.E_Colors;
+	import fe.game.rendering.BackObj;
 
-    public class DebugLayer {
-		
-		// Colors 
-		private static var COLOR_RED:uint				= 0xFF0000;
-		private static var COLOR_ORANGE:uint			= 0xFFAA32;
-		private static var COLOR_PURPLE:uint			= 0x6464FF;
-		private static var COLOR_LIGHTBLUE:uint			= 0x64FFFF;
-		private static var COLOR_COLLISION:uint			= 0x00FF00;
-    	private static var COLOR_NO_COLLISION:uint		= 0xFF6464; 
-		private static var COLOR_DARK_RED:uint			= 0xAA0000;
+    public class DebugPass {
 
         private var spriteContainer:Sprite;								// Main sprite container
 		
@@ -42,7 +35,7 @@ package fe.game.rendering {
 		private var drawCollisionChecks:Boolean = false;				// Collision ceheck visualization
 		private var drawHorizontalCollisionChecks:Boolean = false;
 
-        public function DebugLayer() {
+        public function DebugPass() {
             spriteContainer = new Sprite();
         }
 
@@ -58,7 +51,7 @@ package fe.game.rendering {
 			}
 
 			if (drawDiagBoundingBoxes) {
-				debugDrawBoundingBoxesForDiags(spriteContainer, World.w.loc.space, COLOR_LIGHTBLUE);
+				debugDrawBoundingBoxesForDiags(spriteContainer, World.w.loc.space, E_Colors.LIGHTBLUE);
 			}
 
 			if (drawStairBoundingBoxes) {
@@ -71,21 +64,21 @@ package fe.game.rendering {
 
 			// Draw all object bounding boxes (in purple)
 			if (drawObjectBoundingBoxes) {
-				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.objs, COLOR_PURPLE);
+				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.objs, E_Colors.PURPLE);
 			}
 
 			// Draw unit bounding box (in red)
 			if (drawUnitBoundingBoxes) {
-				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.units, COLOR_RED);
+				debugDrawBoundingBoxesForList(spriteContainer, World.w.loc.units, E_Colors.RED);
 			}
 			
 			// Draw player bounding box (in red)
 			if (drawPlayerBoundingBoxes) {
-				debugDrawBoundingBoxForObjects(spriteContainer, World.w.loc.gg, COLOR_RED);
+				debugDrawBoundingBoxForObjects(spriteContainer, World.w.loc.gg, E_Colors.RED);
 			}
 
 			if (drawChainBoundingBoxes) {
-				debugDrawBoundingBoxesForChain(spriteContainer, COLOR_ORANGE);
+				debugDrawBoundingBoxesForChain(spriteContainer, E_Colors.ORANGE);
 			}
 			
 			if (drawCollisionChecks) {
@@ -142,13 +135,13 @@ package fe.game.rendering {
 								var color:uint;
 								
 								if (collisionSide == "left") {
-									color = COLOR_RED;
+									color = E_Colors.RED;
 								}
 								else if (collisionSide == "right") {
-									color = COLOR_DARK_RED;
+									color = E_Colors.DARK_RED;
 								}
 								else {
-									color = COLOR_COLLISION; // Fallback
+									color = E_Colors.COLLISION; // Fallback
 								}
 								
 								// Draw red border around the colliding tile
@@ -165,7 +158,7 @@ package fe.game.rendering {
 							}
 							else {
 								// For non-horizontal collisions, use existing visualization
-								var generalColor:uint = COLOR_COLLISION;
+								var generalColor:uint = E_Colors.COLLISION;
 								if (tile.boundingBox) {
 									var bbGeneral:BoundingBox = tile.boundingBox;
 									
@@ -181,7 +174,7 @@ package fe.game.rendering {
 						else {
 							// Draw non-colliding tiles in yellow
 							if (drawCollisionChecks) { // Ensure that this flag controls the visualization
-								var noCollisionColor:uint = COLOR_NO_COLLISION;
+								var noCollisionColor:uint = E_Colors.NO_COLLISION;
 								if (tile.boundingBox) {
 									var bbNoCollision:BoundingBox = tile.boundingBox;
 									
@@ -243,13 +236,13 @@ package fe.game.rendering {
 							var color:uint;
 							
 							if (collisionSide == "left") {
-								color = COLOR_RED;
+								color = E_Colors.RED;
 							}
 							else if (collisionSide == "right") {
-								color = COLOR_DARK_RED;
+								color = E_Colors.DARK_RED;
 							}
 							else {
-								color = COLOR_COLLISION; // Fallback
+								color = E_Colors.COLLISION; // Fallback
 							}
 							
 							// Draw red border around the colliding tile
@@ -338,8 +331,8 @@ package fe.game.rendering {
 				if (current is Bullet) {
 					var bullet:Bullet = current as Bullet;
 					var bulletShape:Shape = new Shape();
-					bulletShape.graphics.lineStyle(1, COLOR_RED, 1); // Red circle outline
-					bulletShape.graphics.beginFill(COLOR_RED, 1); // Red fill
+					bulletShape.graphics.lineStyle(1, E_Colors.RED, 1); // Red circle outline
+					bulletShape.graphics.beginFill(E_Colors.RED, 1); // Red fill
 					bulletShape.graphics.drawCircle(bullet.coordinates.X, bullet.coordinates.Y, 5); // Radius of 5
 					bulletShape.graphics.endFill();
 					

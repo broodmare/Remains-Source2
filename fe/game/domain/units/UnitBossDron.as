@@ -40,12 +40,12 @@ package fe.game.domain.units {
 			// [take parameters from xml]
 			initArt("bossdron");
 			art.play("stay");
-			discharge = GameContainer.reference.grafon.effects.createEffect("drone_bolts");
+			discharge = GameContainer.reference.renderer.effects.createEffect("drone_bolts");
 			discharge.blendMode = BlendMode.SCREEN;
 			discharge.x = art.definition.hubX;		// At its middle, where its body turns
 			discharge.y = art.definition.hubY;
 			art.carry(discharge);
-			shield = GameContainer.reference.grafon.effects.createEffect("shield_yellow");
+			shield = GameContainer.reference.renderer.effects.createEffect("shield_yellow");
 			shield.visible = false;
 			shield.y = -70;
 			shield.scaleX = shield.scaleY = 1.70;

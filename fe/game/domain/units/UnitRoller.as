@@ -55,7 +55,7 @@ package fe.game.domain.units {
 			art.play("stay");
 			rollTurn = Math.random() * FULL_TURN;
 			art.setBodyRotation(rollTurn);
-			sparks = GameContainer.reference.grafon.effects.createEffect((tr == 2) ? "roller2_sparks" : "roller_sparks");
+			sparks = GameContainer.reference.renderer.effects.createEffect((tr == 2) ? "roller2_sparks" : "roller_sparks");
 			sparks.visible = false;
 			sparks.x = art.definition.hubX;
 			sparks.y = art.definition.hubY;

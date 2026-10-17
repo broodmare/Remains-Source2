@@ -11,6 +11,7 @@ package fe.game.domain.units {
 	import fe.game.domain.entities.Obj;
 	import fe.game.domain.serv.Interact;
 	import fe.game.rendering.Emitter;
+	import fe.game.rendering.rig.RigView;
 	import fe.game.domain.projectile.Bullet;
 	import fe.game.domain.units.ability.Telekinesis;
 	import fe.game.domain.location.Location;
@@ -46,6 +47,11 @@ package fe.game.domain.units {
 	public class UnitPlayer extends UnitPon {
 
 		private static const DYING_FRAMES:int = 100;	// How long the death animation plays before the screen fades
+		private static const BODY_SCALE:Number		= 1.3;		// Flash drew the pony's body clip at this size
+		private static const PUPIL_STEP_X:Number	= 1.06;		// Game pixels a glance moves the pupil at most, across and up or down
+		private static const PUPIL_STEP_Y:Number	= 0.53;
+		private static const PUPIL_MIN_X:Number		= -1.84;	// How far the pupil wanders across from rest, in game pixels
+		private static const PUPIL_MAX_X:Number		= 0.56;
 
 		// Really important stuff
 		public var ctr:Ctr;				// Movement controller
@@ -214,8 +220,13 @@ package fe.game.domain.units {
 		public var f_shad:Boolean=false;
 		private var aMagic:int=50, aMC:int=50; //интенсивность магии установленная и текущая
 		private var headR:Number=0, headRO:Number=0, headRA:Number=0, t_head:int=100;	//поворот головы
-		private var hair:MovieClip, tail:MovieClip, hairY:Number=-1000;
+		private var hairY:Number=-1000;
 		private var hairDY:Number=0, hairR:Number=0;
+		private var faceTurn:Number		= 0.0;		// Degrees the face is turned by, as Flash's morda.rotation
+		private var pupilX:Number		= 0.0;		// How far the pupil has wandered from rest, in game pixels
+		private var pupilY:Number		= 0.0;
+		private var hornTip:Point		= new Point();	// Scratch
+		private var headPoint:Point		= new Point();	// Scratch
 		private var prev_replic:String;
 		private var prev_dx:Number=0;
 		
@@ -225,6 +236,7 @@ package fe.game.domain.units {
 		public var ratY:int				= 17;			// Rat form bounding box height
 		public var mordaN:int			= 1;			// (What head the player is using? Pony or Rat?)
 		
+		public var pony:RigView;						// The pony's body, on the GPU; vis holds the clips drawn around it
 		public var reloadbar:MovieClip;
 		private var showRadius:Boolean	= false;
 		private var klip:int			= 300;
@@ -240,8 +252,11 @@ package fe.game.domain.units {
 			id = "littlepip";
 			vis = SymbolFactory.createInstance("visualPlayer");
 
-			vis.osn.body.pip2.visible = false;
-			vis.osn.stop();
+			// The pony draws on the GPU, so the clip's own pony is stopped and taken out
+			vis.osn.stopAllMovieClips();
+			vis.removeChild(vis.osn);
+			pony = new RigView(GameContainer.reference.renderer.ponyRig);
+			dressPony();
 
 			vis.inh.visible		= false;
 			vis.cryst.visible	= false;
@@ -311,7 +326,7 @@ package fe.game.domain.units {
 				GameContainer.reference.drawAllMap = true;
 				GameContainer.reference.black = false;
 				GameContainer.reference.showAddInfo = true;
-				GameContainer.reference.grafon.visLight.visible = false;
+				GameContainer.reference.renderer.visLight.visible = false;
 			}
 		}
 		
@@ -454,8 +469,7 @@ package fe.game.domain.units {
 			f_inv		= false;
 
 			setFilters();
-			vis.osn.alpha = 1;
-			vis.osn.transform.colorTransform = new ColorTransform();
+			pony.setBodyTint(null);
 		}
 		
 		public function setSpeeds():void {
@@ -629,7 +643,7 @@ package fe.game.domain.units {
 			
 			cTransform = loc.cTransform;
 			t_nogas = 90;
-			vis.transform.colorTransform = cTransform;
+			setTint(cTransform);
 			
 			if (currentWeapon && currentWeapon.tip != Weapon.TYPE_MAGIC) {
 				currentWeapon.vis.transform.colorTransform = cTransform;
@@ -656,6 +670,10 @@ package fe.game.domain.units {
 		public override function addVisual():void {
 			super.addVisual();
 			
+			if (loc && loc.active) {
+				GameContainer.reference.renderer.objectLayers.add(pony, layer);
+			}
+
 			if (throwWeapon) {
 				throwWeapon.addVisual2();
 			}
@@ -663,6 +681,26 @@ package fe.game.domain.units {
 			if (magicWeapon) {
 				magicWeapon.addVisual2();
 			}
+		}
+
+		public override function remVisual():void {
+			super.remVisual();
+			pony.removeFromParent();
+		}
+
+		// The pony shows wherever and whenever its clips do, except in rat form
+		public override function setVisPos():void {
+			super.setVisPos();
+			pony.x			= coordinates.X;
+			pony.y			= coordinates.Y;
+			pony.scaleX		= storona.X;
+			pony.visible	= vis.visible && !rat;
+		}
+
+		// Tints the pony along with the clips around it
+		public override function setTint(tint:ColorTransform):void {
+			pony.setTint(tint);
+			super.setTint(tint);
 		}
 		
 		// [Set position when entering location]
@@ -3292,11 +3330,9 @@ package fe.game.domain.units {
 			}
 			
 			try {
-				var p:Point = new Point(vis.osn.body.head.morda.konec.x, vis.osn.body.head.morda.konec.y);
-				p = vis.osn.body.head.morda.localToGlobal(p);
-				p = vis.parent.globalToLocal(p);
-				magicX = p.x;
-				magicY = p.y;
+				pony.pointOf("hornTip", hornTip);
+				magicX = hornTip.x;
+				magicY = hornTip.y;
 				
 				if (loc.getAbsTile(magicX, magicY).collision == 1) {
 					if (isSit) {
@@ -3729,7 +3765,6 @@ package fe.game.domain.units {
 			boundingBox.width = ratX;
 			boundingBox.height = ratY;
 			boundingBox.center(coordinates);
-			vis.osn.visible = false;
 			vis.rat.visible = true;
 			
 			newPart("black", 30);
@@ -3762,7 +3797,6 @@ package fe.game.domain.units {
 				}
 			}
 			
-			vis.osn.visible = true;
 			vis.rat.visible = false;
 			newPart("black", 30);
 			rat = false;
@@ -3784,12 +3818,12 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			vis.osn.gotoAndStop(dey);
-			var f:int = vis.osn.body.totalFrames;
+			playPony(dey);
+			var f:int = pony.rig.totalFrames;
 			
 			if (ok) {
 				animOff = true;
-				vis.osn.body.gotoAndStop(f);
+				bodyGoTo(f, false);
 			} 
 			else {
 				animOff = false;
@@ -3845,17 +3879,18 @@ package fe.game.domain.units {
 			else {
 				vis.alpha = 1.00;
 			}
+			pony.alpha = vis.alpha;
 
 			if (f_inv) {
 				arr.push(invulnerFilter1, invulnerFilter2);
 			}
 			
-			vis.osn.filters = arr;
+			pony.setFilters(arr);
 		}
 
 //##########################################################################################################
-//		Player Unit cheatsheet for "vis.osn", the main player sprite.
-//		OSN Animation states have both a frame number and alias.
+//		Player Unit cheatsheet for the pony's animations (pony.rig), played by name.
+//		The numbers are where each sat in Flash's old clip.
 //		//	Num	:	Alias
 //		//###################
 //		//	 1	:	Stay
@@ -3906,8 +3941,7 @@ package fe.game.domain.units {
 				return;
 			}
 			
-			vis.osn.y = 0;
-			vis.osn.rotation = 0;
+			pony.rig.turn("pony", 0.0);
 
 			// Alternate animations, will stop this function early if any of them play.
 			if (animatePlayerDeath())	return;
@@ -3933,6 +3967,7 @@ package fe.game.domain.units {
 			var cframe:int;
 
 			animatePlayerMovement();
+			animateHead();
 			animateLevitation();
 			animateDash();
 			otherVisual();
@@ -3951,7 +3986,7 @@ package fe.game.domain.units {
 					
 					if (GameContainer.reference.alicorn) {
                         if (animState != "die") {
-                            vis.osn.gotoAndStop("dieali");
+                            playPony("dieali");
                             animState = "die";
                         }
                        
@@ -3959,19 +3994,19 @@ package fe.game.domain.units {
                             f_die = true;
                             dieTransform.redOffset = (200 - t_work) * 4;
                             dieTransform.blueOffset = (200 - t_work);
-                            vis.osn.transform.colorTransform = dieTransform;
+                            pony.setBodyTint(dieTransform);
                             newPart("redray");
                         }
                        
 					    if (t_work == 140) {
                             newPart("bloodblast");
                             Sound.ps("bale_e");
-                            vis.osn.alpha = 0;
+                            pony.setBodyAlpha(0.0);
                         }
                     }
 					else {
                         if (animState != "die") {
-                            vis.osn.gotoAndStop("die");
+                            playPony("die");
                             animState = "die";
                         }
                        
@@ -3980,11 +4015,11 @@ package fe.game.domain.units {
                             f_die = true;
                             dieTransform.redOffset = (170 - t_work) * 2;
                             dieTransform.blueOffset = (170 - t_work) * 3;
-                            vis.osn.transform.colorTransform = dieTransform;
+                            pony.setBodyTint(dieTransform);
                             Emitter.emit("die_spark", loc, coordinates.X + Math.random() * 120 - 60 + 20 * storona.X, coordinates.Y);
                         }
 						else if (t_work < 120 && t_work > 70) {
-							vis.osn.alpha = (t_work - 70) / 50;
+							pony.setBodyAlpha((t_work - 70) / 50);
 						}
                     }
 					
@@ -4001,8 +4036,8 @@ package fe.game.domain.units {
 			function startLurking():Boolean {
 				if (t_work && work == "lurk") {
 					if (animState != "lurk") {
-						vis.osn.gotoAndStop("lurk" + lurkTip);
-						vis.osn.body.gotoAndPlay(1);
+						playPony("lurk" + lurkTip);
+						bodyGoTo(1, true);
 						animState = "lurk";
 					}
 					
@@ -4019,7 +4054,7 @@ package fe.game.domain.units {
 			function stopLurking():Boolean {
 				if (t_work && work=="unlurk") {
 					if (animState!="unlurk") {
-						vis.osn.body.gotoAndPlay("un");
+						pony.rig.goToLabel("un", true);
 						animState = "unlurk";
 
 					}
@@ -4036,7 +4071,7 @@ package fe.game.domain.units {
 
 			function continueLurking():Boolean {
 				if (lurked) {
-					vis.osn.body.head.morda.eye.gotoAndStop(1);
+					pony.rig.setSwitch("eye", "open");
 					otherVisual();
 					
 					return true;
@@ -4049,7 +4084,7 @@ package fe.game.domain.units {
 			function animateResurrect():Boolean {
 				if (t_work && work=="res") {
 					if (animState!="res") {
-						vis.osn.gotoAndStop("res");
+						playPony("res");
 						animState="res";
 					}
 					
@@ -4075,10 +4110,10 @@ package fe.game.domain.units {
 				
 				if (t_work && work == "punch" && animState != "punch") {
 					if (ctr.keyRun) {
-                        vis.osn.gotoAndStop("kick");
+                        playPony("kick");
                     }
 					else {
-						vis.osn.gotoAndStop("punch");
+						playPony("punch");
 					}
 					
 					animState = "punch";
@@ -4099,12 +4134,13 @@ package fe.game.domain.units {
 						if (freeAnim == 0 || isSit) {
 							freeAnim = 0;
 							
-							if (vis.osn.currentFrameLabel != "stay") {	// ANIMATION IS SET TO 'STAY' EVERY FRAME
-								vis.osn.gotoAndStop("stay");
-								
-								if (vis.osn.currentFrameLabel == "jump" || vis.osn.currentFrameLabel == "levit") {
-									vis.osn.body.gotoAndPlay("jump");
-								}
+							// Coming down from a jump or levitation plays the stand animation's landing
+							if (pony.rig.animationName == "jump" || pony.rig.animationName == "levit") {
+								playPony("stay");
+								pony.rig.goToLabel("jump", true);
+							}
+							else if (pony.rig.animationName != "stay") {
+								playPony("stay");
 							}
 
 							cframe = getStayFrame();
@@ -4114,53 +4150,52 @@ package fe.game.domain.units {
 								if (animState=="jump") {
 									if (animState!="downjump") {
 										animState="downjump";
-										vis.osn.body.gotoAndPlay("downjump");
+										pony.rig.goToLabel("downjump", true);
 									}
 								}
 								
 								if (animState != "down" && animState != "downjump") {
 									if (animState == "polz" || cframe != 2) {
-										vis.osn.body.gotoAndStop(cframe);
+										bodyGoTo(cframe, false);
 									}
 									else if (animState != "roll") {
-										vis.osn.body.gotoAndPlay("down");
-										animState = "down";
+										pony.rig.goToLabel("down", true);
 									}
 									else {
-										vis.osn.body.gotoAndStop("sit");
-										animState = "down";
+										pony.rig.goToLabel("sit", false);
 									}
+									animState = "down";
 								}
 								//если стоим
 							}
 							else {
 								if (animState == "down") {
-									vis.osn.body.gotoAndPlay("up");
+									pony.rig.goToLabel("up", true);
 									animState="up";
 								}
 								
 								if (animState!="up" || cframe!=1) {
-									if (vis.osn.body.currentFrame < 70) {
-										vis.osn.body.gotoAndStop(cframe);
+									if (bodyFrame() < 70) {
+										bodyGoTo(cframe, false);
 									}
 
 									animState = "";
 								}
 							}
 							
-							if (vis.osn.body.currentFrame!=cframe && !(vis.osn.body.currentFrame>=3 && vis.osn.body.currentFrame<=26 || vis.osn.body.currentFrame>70)) {
-								vis.osn.body.gotoAndStop(cframe);
+							if (bodyFrame() != cframe && !(bodyFrame() >= 3 && bodyFrame() <= 26 || bodyFrame() > 70)) {
+								bodyGoTo(cframe, false);
 							}
 							
-							if (vis.osn.currentFrameLabel=="stay" && cframe==1) {
+							if (pony.rig.animationName == "stay" && cframe == 1) {
 								if (isrnd(0.01)) {
 									freeAnim = int(Math.random() * 3) + 1;
-									vis.osn.gotoAndStop("free" + freeAnim);
-									vis.osn.body.play();
+									playPony("free" + freeAnim);
+									pony.rig.isPlaying = true;
 								}
 							}
 						}
-						else if (vis.osn.body.currentFrame>=49) {
+						else if (bodyFrame() >= 49) {
 							freeAnim=0;
 						}
 					}
@@ -4171,15 +4206,15 @@ package fe.game.domain.units {
 						if (diagon.X*storona.X>0) {
 							if (animState!="diag_up") {
 								animState="diag_up";
-								vis.osn.gotoAndStop("trot_up");
-								vis.osn.body.gotoAndStop(1);
+								playPony("trot_up");
+								bodyGoTo(1, false);
 							}
 						}
 						else {
 							if (animState!="diag_down") {
 								animState="diag_down";
-								vis.osn.gotoAndStop("trot_down");
-								vis.osn.body.gotoAndStop(1);
+								playPony("trot_down");
+								bodyGoTo(1, false);
 							}
 						}
 					}
@@ -4188,30 +4223,30 @@ package fe.game.domain.units {
 						
 						if (diagon == E_Direction.NEUTRAL) {
                             if (isSit) {
-                                if (animState == "roll" && vis.osn.body.currentFrame >= 15) {
-                                    vis.osn.gotoAndStop("polz");
+                                if (animState == "roll" && bodyFrame() >= 15) {
+                                    playPony("polz");
                                     animState = "polz";
                                 }
 
                                 // Reversing direction can briefly enter the idle branch, which
-                                // switches the outer clip to "stay" without changing animState.
-                                // Treat the visual state as authoritative so crawling restarts
+                                // switches the animation to "stay" without changing animState.
+                                // Treat the animation shown as authoritative so crawling restarts
                                 // after that transition instead of sliding on a stopped frame.
                                 var movementAnimActive:Boolean =
-                                    (animState == "polz" && vis.osn.currentFrameLabel == "polz") ||
-                                    (animState == "roll" && vis.osn.currentFrameLabel == "roll");
+                                    (animState == "polz" && pony.rig.animationName == "polz") ||
+                                    (animState == "roll" && pony.rig.animationName == "roll");
 
 							    if (!movementAnimActive) {
                                     if (maxSpeed > walkSpeed * 1.6 && velocity.X * storona.X > 0 && ((burningForcesRunOption && runForever) || (ctr.keyRun && (ctr.keyLeft || ctr.keyRight)))) {
-                                        vis.osn.gotoAndStop("roll");
+                                        playPony("roll");
                                         animState = "roll";
                                     }
 									else {
-                                        vis.osn.gotoAndStop("polz");
+                                        playPony("polz");
                                         animState = "polz";
                                     }
                                    
-								    vis.osn.body.play();
+								    pony.rig.isPlaying = true;
                                 }
                             }
 							else if (maxSpeed < 5) {
@@ -4219,8 +4254,8 @@ package fe.game.domain.units {
                                 t_walk++;
                                
 							    if (animState != "walk") {
-                                    vis.osn.gotoAndStop("walk");
-                                    vis.osn.body.play();
+                                    playPony("walk");
+                                    pony.rig.isPlaying = true;
                                     animState = "walk";
                                 }
                             }
@@ -4229,8 +4264,8 @@ package fe.game.domain.units {
                                 t_walk++;
                                
 							    if (animState != "run") {
-                                    vis.osn.gotoAndStop("run");
-                                    vis.osn.body.play();
+                                    playPony("run");
+                                    pony.rig.isPlaying = true;
                                     animState = "run";
                                 }
                             }
@@ -4239,8 +4274,8 @@ package fe.game.domain.units {
                                 t_walk++;
                               
 							    if (animState != "trot") {
-                                    vis.osn.gotoAndStop("trot");
-                                    vis.osn.body.play();
+                                    playPony("trot");
+                                    pony.rig.isPlaying = true;
                                     animState = "trot";
                                 }
                             }
@@ -4249,15 +4284,15 @@ package fe.game.domain.units {
                             if (diagon.X * storona.X > 0) {
                                 if (animState != "trot_up") {
                                     animState = "trot_up";
-                                    vis.osn.gotoAndStop("trot_up");
-                                    vis.osn.body.play();
+                                    playPony("trot_up");
+                                    pony.rig.isPlaying = true;
                                 }
                             }
 							else {
                                 if (animState != "trot_down") {
                                     animState = "trot_down";
-                                    vis.osn.gotoAndStop("trot_down");
-                                    vis.osn.body.play();
+                                    playPony("trot_down");
+                                    pony.rig.isPlaying = true;
                                 }
                             }
                            
@@ -4271,31 +4306,31 @@ package fe.game.domain.units {
 					freeAnim = 0;
 					
 					if (animState != "laz") {
-						vis.osn.gotoAndStop("laz");
+						playPony("laz");
 						animState = "laz";
 					}
 					
 					if (velocity.Y == 0) {
-						vis.osn.body.gotoAndStop(1);
+						bodyGoTo(1, false);
 					}
 					else {
-						cframe = vis.osn.body.currentFrame;
+						cframe = bodyFrame();
 						sndStep(cframe, 3);
 						
 						if (velocity.Y < 0) {
 							if (cframe <= 12) {
-								vis.osn.body.gotoAndStop(cframe + 1);
+								bodyGoTo(cframe + 1, false);
 							}
 							else {
-								vis.osn.body.gotoAndStop(2);
+								bodyGoTo(2, false);
 							}
 						}
 						else {
 							if (cframe >= 3) {
-								vis.osn.body.gotoAndStop(cframe - 1);
+								bodyGoTo(cframe - 1, false);
 							}
 							else {
-								vis.osn.body.gotoAndStop(13);
+								bodyGoTo(13, false);
 							}
 						}
 					}
@@ -4303,11 +4338,11 @@ package fe.game.domain.units {
 				}
 				else if (isPlav) {
 					freeAnim = 0;
-					vis.osn.rotation = velocity.Y * 1.5;
+					pony.rig.turn("pony", velocity.Y * 1.5 * Numbers.DEG_TO_RAD);
 				
 					if (animState != "plav") {
 						animState = "plav";
-						vis.osn.gotoAndStop("plav");
+						playPony("plav");
 					}
 				//в воздухе
 				}
@@ -4316,43 +4351,43 @@ package fe.game.domain.units {
 					
 					if (animState!="jump" && animState!="levit") {
 						if (aJump>0) {
-							vis.osn.gotoAndStop("jump");
+							playPony("jump");
 							animState="jump";
 						}
 						else {
-							vis.osn.gotoAndStop("pinok");
+							playPony("pinok");
 							animState="pinok";
 						}
 					}
 					
 					if (animState=="pinok" && isFly) {
-						vis.osn.gotoAndStop("jump");
+						playPony("jump");
 						animState="jump";
 					}
 					
 					if (levit==1 && animState!="levit") {	//начать левитировать
-						if (aJump>0 && vis.osn.body.currentFrame>=14 && vis.osn.body.currentFrame<=18) {
+						if (aJump>0 && bodyFrame()>=14 && bodyFrame()<=18) {
 							animState="levit";
-							vis.osn.gotoAndStop("levit");
+							playPony("levit");
 						}
 					
-						if (aJump==0 && vis.osn.body.currentFrame>=10 && vis.osn.body.currentFrame<=22) {
+						if (aJump==0 && bodyFrame()>=10 && bodyFrame()<=22) {
 							animState="levit";
-							vis.osn.gotoAndStop("levit");
-							vis.osn.body.gotoAndPlay(51);
+							playPony("levit");
+							bodyGoTo(51, true);
 						}
 					}
 					
 					if (levit==0 && animState=="levit") {	//перестать левитировать
-						vis.osn.gotoAndStop("levit");
-						if (vis.osn.body.currentFrame<66) {
-							vis.osn.body.gotoAndPlay(67);
+						playPony("levit");
+						if (bodyFrame()<66) {
+							bodyGoTo(67, true);
 						}
 					}
 					
 					if (levit==1 && animState=="levit") {
-						if (vis.osn.body.currentFrame>66) {
-							vis.osn.body.gotoAndPlay(17);
+						if (bodyFrame()>66) {
+							bodyGoTo(17, true);
 						}
 					}
 					else if (animState!="levit") {
@@ -4392,52 +4427,50 @@ package fe.game.domain.units {
 							}
 						}
 						
-						vis.osn.body.gotoAndStop(cframe);
+						bodyGoTo(cframe, false);
 					}
 				}
 			}
 
 			function animateHead():void {
-				if (vis.osn.body.head.morda) {
-					var drot:int=3;
-					
-					if (lurked) headR=25;
-					else if (headRO-weaponR<=1 && headRO-weaponR>=-1) {
-						t_head--;
-						drot=6;
+				var drot:int=3;
+				
+				if (lurked) headR=25;
+				else if (headRO-weaponR<=1 && headRO-weaponR>=-1) {
+					t_head--;
+					drot=6;
 						
-						if (t_head <= 0) {
-							t_head = int(Math.random() * 100 + 10);
-							headR = Math.random() * 70 - 25;
-						}
+					if (t_head <= 0) {
+						t_head = int(Math.random() * 100 + 10);
+						headR = Math.random() * 70 - 25;
 					}
-					else {
-						headR = weaponR;
-						t_head = 100;
-					}
-					
-					if (headRA-headR<=1 && headRA-headR>=-1) {
-						headRA=headR;
-					}
-					else {
-						headRA+=(headR-headRA)/drot;
-					}
-					
-					if (isNaN(headRA)) {
-						headRA = 0;
-					}
-					
-					if (headRA > 55) {
-						headRA = 55;
-					}
-					
-					if (headRA < -35) {
-						headRA = -35;
-					}
-					
-					vis.osn.body.head.morda.rotation=headRA;
-					headRO=weaponR;
 				}
+				else {
+					headR = weaponR;
+					t_head = 100;
+				}
+				
+				if (headRA-headR<=1 && headRA-headR>=-1) {
+					headRA=headR;
+				}
+				else {
+					headRA+=(headR-headRA)/drot;
+				}
+				
+				if (isNaN(headRA)) {
+					headRA = 0;
+				}
+				
+				if (headRA > 55) {
+					headRA = 55;
+				}
+				
+				if (headRA < -35) {
+					headRA = -35;
+				}
+				
+				turnFace(headRA);
+				headRO=weaponR;
 			}
 
 			function animateLevitation():void {
@@ -4476,31 +4509,29 @@ package fe.game.domain.units {
 			}
 
 			function animateEyes():void {
-				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && vis.osn.body.head.morda.eye.currentFrame == 1) {
-					vis.osn.body.head.morda.eye.gotoAndStop(2);
+				if ((shok > 0 || (burningForcesRunOption && runForever > 0) || attackForever > 0) && pony.rig.getSwitch("eye") == "open") {
+					pony.rig.setSwitch("eye", "wide");
 				}
 				
-				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && vis.osn.body.head.morda.eye.currentFrame == 2) || klip == 1) {
-					vis.osn.body.head.morda.eye.gotoAndStop(1);
+				if ((shok == 0 && (!burningForcesRunOption || runForever <= 0) && attackForever <= 0 && pony.rig.getSwitch("eye") == "wide") || klip == 1) {
+					pony.rig.setSwitch("eye", "open");
 				}
 				
-				if (klip==5 && vis.osn.body.head.morda.eye.currentFrame==1) {
-					vis.osn.body.head.morda.eye.gotoAndStop(3);
+				if (klip==5 && pony.rig.getSwitch("eye") == "open") {
+					pony.rig.setSwitch("eye", "closed");
 				}
 				
-				if (vis.osn.body.head.morda.eye.eye && klip%10==3 && isrnd(0.2)) {
-					vis.osn.body.head.morda.eye.eye.zrak.x+=Math.random()*8-4;
-					
-					if (vis.osn.body.head.morda.eye.eye.zrak.x<-20) {
-						vis.osn.body.head.morda.eye.eye.zrak.x=-20;
-					}
-					
-					if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) {
-						vis.osn.body.head.morda.eye.eye.zrak.x=-11;
-					}
-					
-					vis.osn.body.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
+				// The pupil wanders while the eye stays open, and starts again from rest each time it opens.
+				// Differs from vanilla: the wander is measured from each eye style's own rest, not from the first style's.
+				if (pony.rig.getSwitch("eye") != "open") {
+					pupilX = 0.0;
+					pupilY = 0.0;
 				}
+				else if (klip%10==3 && isrnd(0.2)) {
+					pupilX = Math.max(PUPIL_MIN_X, Math.min(PUPIL_MAX_X, pupilX + (Math.random() * 2.0 - 1.0) * PUPIL_STEP_X));
+					pupilY += (Math.random() * 2.0 - 1.0) * PUPIL_STEP_Y;
+				}
+				pony.rig.shift("iris", pupilX, pupilY);
 			}
 
 		}
@@ -4508,7 +4539,59 @@ package fe.game.domain.units {
 //##########################################################################################################
 		
 		public function stopAnim():void {
-			vis.osn.body.stop();
+			pony.rig.isPlaying = false;
+		}
+
+		// Starts one of the pony's animations, unless it is playing it. Flash swapped in a fresh body clip, so the face
+		// and pupil the game had turned and moved go back to rest.
+		private function playPony(name:String):void {
+			if (pony.rig.animationName == name) { return; }
+
+			pony.rig.play(name);
+			turnFace(0.0);
+			pupilX = 0.0;
+			pupilY = 0.0;
+			pony.rig.shift("iris", pupilX, pupilY);
+		}
+
+		// Turns the face by degrees, as Flash set the face clip's rotation
+		private function turnFace(degrees:Number):void {
+			faceTurn = degrees;
+			pony.rig.turn("face", degrees * Numbers.DEG_TO_RAD);
+		}
+
+		// The pony's playhead counted from 1, as Flash counted the body clip's frames
+		private function bodyFrame():int {
+			return pony.rig.frame + 1;
+		}
+
+		// Moves the pony's playhead to frame, counted from 1, playing on from there or holding it
+		private function bodyGoTo(frame:int, isPlaying:Boolean):void {
+			pony.rig.goTo(frame - 1, isPlaying);
+		}
+
+		// Dresses the pony in the look the player picked, the armour it wears and their colours. The pipbuck's previews
+		// of other armour stay on its own clip.
+		private function dressPony():void {
+			pony.rig.look.styles["hair"]	= Appear.fHair;
+			pony.rig.look.styles["eye"]		= Appear.fEye;
+			pony.rig.look.armor				= GameContainer.reference.alicorn ? "ali" : Appear.ggArmorId;
+			pony.rig.dress();
+			pony.rig.colors["fur"]				= rgbOf(Appear.trFur);
+			pony.rig.colors["hair"]				= rgbOf(Appear.trHair);
+			pony.rig.colors["hairHighlight"]	= rgbOf(Appear.trHair1);
+			pony.rig.colors["eyes"]				= rgbOf(Appear.trEye);
+			pony.rig.colors["magic"]			= rgbOf(Appear.trMagic);
+			pony.rig.recolor();
+			pony.rig.setSwitch("hairHighlight", Appear.visHair1 ? "on" : "off");
+			pony.rig.setSwitch("mane", Appear.hideMane ? "hidden" : "shown");
+		}
+
+		// The colour a Flash tint's multipliers multiply by, as 0xRRGGBB
+		private static function rgbOf(tint:ColorTransform):uint {
+			return (uint(Math.min(255.0, Math.round(tint.redMultiplier * 255.0))) << 16)
+				| (uint(Math.min(255.0, Math.round(tint.greenMultiplier * 255.0))) << 8)
+				| uint(Math.min(255.0, Math.round(tint.blueMultiplier * 255.0)));
 		}
 		
 		private function getStayFrame():int {
@@ -4563,6 +4646,8 @@ package fe.game.domain.units {
 		
 		
 		private function otherVisual():void {
+			var headY:Number;		// The head's height on the body, in Flash's body clip units
+
 			if (levit != prev_levit) {
 				setFilters();
 			}
@@ -4582,120 +4667,50 @@ package fe.game.domain.units {
 				reloadbar.visible = false;
 			}
 
-			// Hair
-			hair = vis.osn.body.head.morda.hair;
-			
-			if (hair) {
-				if (hairY != -1000) {
-					hairDY += ((coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation) - hairY) / 4;
-					hairR += hairDY;
-					hairDY -= hairR/4;
-					hairDY *= 0.8;
-					
-					if (hairR > 8) {
-						hairR = 8;
-					}
-					
-					if (hairR < -8) {
-						hairR = -8;
-					}
+			// Hair: the forelock and tail sway as the head rises and falls
+			headY = pony.rig.pointOf("head", headPoint).y / BODY_SCALE;
+			if (hairY != -1000) {
+				hairDY += ((coordinates.Y / 5 + headY * 4 - faceTurn) - hairY) / 4;
+				hairR += hairDY;
+				hairDY -= hairR/4;
+				hairDY *= 0.8;
+				
+				if (hairR > 8) {
+					hairR = 8;
 				}
 
-				hairY = coordinates.Y / 5 + vis.osn.body.head.y * 4 - vis.osn.body.head.morda.rotation;
-				hair.rotation = hairR;
-				tail = vis.osn.body.tail.h0;
-				
-				if (tail) {
-					tail.rotation = -hairR;
-				}
-				
-				tail = vis.osn.body.tail.h1;
-				
-				if (tail) {
-					tail.rotation = -hairR;
+				if (hairR < -8) {
+					hairR = -8;
 				}
 			}
 
-			// Pip
-			if (vis.scaleX > 0) {
-				vis.osn.body.pip1.visible = true;
-				vis.osn.body.pip2.visible = false;
-				
-				if (vis.osn.body.frleg3) {
-					vis.osn.body.pip1.x=vis.osn.body.frleg3.x;
-					vis.osn.body.pip1.y=vis.osn.body.frleg3.y;
-					vis.osn.body.pip1.rotation=vis.osn.body.frleg3.rotation;
-				}
-			}
-			else {
-				vis.osn.body.pip2.visible = true;
-				vis.osn.body.pip1.visible = false;
-				
-				if (vis.osn.body.flleg3) {
-					vis.osn.body.pip2.x=vis.osn.body.flleg3.x;
-					vis.osn.body.pip2.y=vis.osn.body.flleg3.y;
-					vis.osn.body.pip2.rotation=vis.osn.body.flleg3.rotation;
-				}
-			}
+			hairY = coordinates.Y / 5 + headY * 4 - faceTurn;
+			pony.rig.turn("forelock", hairR * Numbers.DEG_TO_RAD);
+			pony.rig.turn("tailSway", -hairR * Numbers.DEG_TO_RAD);
 			
+			// Pip: on the near foreleg, which swaps as the pony turns
+			pony.rig.setSwitch("pipbuck", vis.scaleX > 0 ? "right" : "left");
+
 			// Magic
-			vis.osn.body.head.morda.magic.alpha=aMC/100;
-			vis.osn.body.head.morda.magic.visible=vis.osn.body.head.morda.magic.alpha>0;
+			pony.rig.setAlpha("hornGlow", aMC / 100);
 
 			// Wings
 			if (pers.ableFly) {
-				if (vis.osn.body.rwing) {
-					vis.osn.body.rwing.visible=true;
-				}
-				
-				if (vis.osn.body.lwing) {
-					vis.osn.body.lwing.visible=true;
-				}
-				
 				if (GameContainer.reference.alicorn || currentArmor && currentArmor.ableFly) {
-					try {
-						if (vis.osn.body.rwing.currentFrame != 11) {
-							vis.osn.body.rwing.gotoAndStop(11);
-						}
-					
-						if (vis.osn.body.lwing.currentFrame != 11) {
-							vis.osn.body.lwing.gotoAndStop(11);
-						}
-					
-						vis.osn.body.rwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.60;
-						vis.osn.body.lwing.wing.wing2.rotation = 50 - Math.abs(velocity.X) * 1.20;
-					}
-					catch (err:Error) {
-						trace("ERROR: (00:F)");
-					}
+					// The outer halves fold back with speed from the angle they're drawn at
+					pony.rig.setSwitch("wings", "spread");
+					pony.rig.turn("wingRightOuter", -Math.abs(velocity.X) * 1.60 * Numbers.DEG_TO_RAD);
+					pony.rig.turn("wingLeftOuter", -Math.abs(velocity.X) * 1.20 * Numbers.DEG_TO_RAD);
 				}
 				else if (isFly && !stay && !isPlav && isLaz == E_Direction.NEUTRAL) {
-					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) {
-						vis.osn.body.rwing.gotoAndPlay(2);
-					}
-					
-					if (vis.osn.body.lwing && vis.osn.body.lwing.currentFrame==1) {
-						vis.osn.body.lwing.gotoAndPlay(2);
-					}
+					pony.rig.setSwitch("wings", "flapping");
 				}
 				else {
-					if (vis.osn.body.rwing) {
-						vis.osn.body.rwing.gotoAndStop(1);
-					}
-					
-					if (vis.osn.body.lwing) {
-						vis.osn.body.lwing.gotoAndStop(1);
-					}
+					pony.rig.setSwitch("wings", "folded");
 				}
 			}
 			else {
-				if (vis.osn.body.rwing) {
-					vis.osn.body.rwing.visible = false;
-				}
-			
-				if (vis.osn.body.lwing) {
-					vis.osn.body.lwing.visible = false;
-				}
+				pony.rig.setSwitch("wings", "hidden");
 			}
 
 			// Shield
@@ -4724,9 +4739,7 @@ package fe.game.domain.units {
 		}
 		
 		public function refreshVis():void {
-			var dez:String = vis.osn.currentFrameLabel;
-			vis.osn.gotoAndStop("nope");
-			vis.osn.gotoAndStop(dez);
+			dressPony();
 			teleColor = GUIManager.reference.app.cMagic;
 			levitFilter1.color = teleColor;
 			teleFilter.color = teleColor;

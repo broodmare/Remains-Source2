@@ -3,8 +3,7 @@ package fe.game.rendering.rig {
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 
-	// Reads a glTF 2.0 rig: node transforms, the drawing each node shows, and animations, which it samples once per frame.
-	// glTF's y points up, so y and angles flip into the game's y-down space as they are read.
+	// Reads a glTF 2.0 rig: node transforms, the drawing each node shows, and animations, which it samples once per frame. glTF's y points up, so y and angles flip into the game's y-down space as they are read.
 	public class GltfReader {
 
 		private static const FLOAT:int			= 5126;		// glTF's componentType for 32-bit floats
@@ -52,8 +51,7 @@ package fe.game.rendering.rig {
 			}
 		}
 
-		// A channel's keys as pose values: x, y, depth for translation; an angle for rotation, taken nearest the last key
-		// so blending turns the short way; x, y for scale
+		// A channel's keys as pose values: x, y, depth for translation; an angle for rotation, taken nearest the last key so blending turns the short way; x, y for scale
 		private static function poseValues(path:String, raw:Vector.<Number>, count:int):Vector.<Number> {
 			var values:Vector.<Number> = new Vector.<Number>();
 			var k:int;

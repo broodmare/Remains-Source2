@@ -2,8 +2,7 @@ package fe.game.rendering.rig {
 
 	import flash.utils.Dictionary;
 
-	// Shows one group of drawings at a time, such as the eye open, wide, closed or squinting.
-	// Drawings in none of its states are left alone.
+	// Shows one group of drawings at a time, such as the eye open, wide, closed or squinting. Drawings in none of its states are left alone.
 	public class RigSwitch_Definition {
 		public var name:String;
 		public var initial:String;

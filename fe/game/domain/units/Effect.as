@@ -141,7 +141,7 @@ package fe.game.domain.units {
 			}
 			
 			if (id=='potion_infra') {
-				GameContainer.reference.grafon.warShadow();
+				GameContainer.reference.renderer.warShadow();
 			}
 			
 			if (id=='reanim' && player) {
@@ -308,7 +308,7 @@ package fe.game.domain.units {
 			}
 		
 			if (id=='potion_infra') {
-				GameContainer.reference.grafon.warShadow();
+				GameContainer.reference.renderer.warShadow();
 			}
 			
 			if (id=='reanim' && player) {

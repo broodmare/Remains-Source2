@@ -2,8 +2,7 @@ package fe.game.rendering {
 
 	import flash.geom.ColorTransform;
 
-	// One keyed animation from effects.json, worked out for every frame: its keys are joined in straight lines, and a frame
-	// after the last key holds it
+	// One keyed animation from effects.json, worked out for every frame: its keys are joined in straight lines, and a frame after the last key holds it
 	public class EffectAnimation_Definition {
 		public var scales:Vector.<Number>;			// Per frame
 		public var tints:Vector.<ColorTransform>;	// Per frame, or null where the frame keeps its colours

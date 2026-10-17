@@ -319,7 +319,7 @@ package fe.game.ui {
 					break;
 				case "black":
 					GameContainer.reference.black=!GameContainer.reference.black;
-					GameContainer.reference.grafon.visLight.visible=GameContainer.reference.black && world.loc.black;
+					GameContainer.reference.renderer.visLight.visible=GameContainer.reference.black && world.loc.black;
 					break;
 				case "battle":
 					GameContainer.reference.testBattle=!GameContainer.reference.testBattle;

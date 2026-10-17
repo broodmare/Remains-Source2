@@ -13,12 +13,11 @@ package fe.game.rendering {
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 
 	public class GrLoader {
 		
-		private var gr:Grafon;            // Reference to the Grafon instance
+		private var renderer:Renderer;            // Reference to the Renderer instance
 		
 		public var id:int;
 		public var loader:Loader;
@@ -50,12 +49,12 @@ package fe.game.rendering {
 		 * Constructor for GrLoader.
 		 * @param nid Unique identifier for the loader.
 		 * @param url URL of the resource to load.
-		 * @param ngr Reference to the Grafon instance.
+		 * @param renderer_ Reference to the Renderer instance.
 		 * @param loadType Type of resource: 'looseImage' or 'swf'.
 		 */
-		public function GrLoader(nid:int, url:String, ngr:Grafon, loadType:String = "swf") {
+		public function GrLoader(nid:int, url:String, renderer_:Renderer, loadType:String = "swf") {
 			
-			gr = ngr;
+			renderer = renderer_;
 			id = nid;
 			type = loadType;
 			res = null;
@@ -174,7 +173,7 @@ package fe.game.rendering {
 				isLoad = true;
 				progressLoad = 1;
 				kolIsLoad++;
-				gr.checkLoaded(id);
+				renderer.checkLoaded(id);
 				// Remove event listeners
 				for each (var imgLoaderData:Object in imageLoaders) {
 					var imgLoader:Loader = imgLoaderData.loader;
@@ -185,7 +184,7 @@ package fe.game.rendering {
 				}
 			}
 
-			gr.allProgress();
+			renderer.allProgress();
 		}
 
 		// Handler for a SWF has finished loading.
@@ -197,7 +196,7 @@ package fe.game.rendering {
 			isLoad = true;
 			progressLoad = 1;
 			kolIsLoad++;
-			gr.checkLoaded(id);
+			renderer.checkLoaded(id);
 			
 			// Remove event listeners
 			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, funLoaded);  
@@ -205,7 +204,7 @@ package fe.game.rendering {
 			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
 			
-			gr.allProgress();
+			renderer.allProgress();
 		}
 
 		/**
@@ -219,7 +218,7 @@ package fe.game.rendering {
 				progressLoad = imagesLoaded / totalImages;
 			}
 
-			gr.allProgress();
+			renderer.allProgress();
 		}
 
 		//Handler for IO errors during loading
@@ -239,7 +238,7 @@ package fe.game.rendering {
 			isLoad = false;
 			progressLoad = 0;
 			kolIsLoad++;
-			gr.checkLoaded(id);
+			renderer.checkLoaded(id);
 		
 			// Remove event listeners if applicable
 			if (type == "swf" && loader) {
@@ -258,7 +257,7 @@ package fe.game.rendering {
 				}
 			}
 		
-			gr.allProgress();
+			renderer.allProgress();
 		}
 
 		/**

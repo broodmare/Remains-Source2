@@ -20,7 +20,7 @@ package fe.game.domain.objects {
 	import fe.game.rendering.Flipbook;
 	import fe.game.rendering.Flipbook_Definition;
 	import fe.game.rendering.GpuFilters;
-	import fe.game.rendering.Grafon;
+	import fe.game.rendering.Renderer;
 	import fe.game.rendering.ObjectLayers;
 	import fe.game.domain.serv.Script;
 	import fe.game.domain.projectile.Bullet;
@@ -97,7 +97,7 @@ package fe.game.domain.objects {
 			}
 			
 			prior=1;
-			var definition:Flipbook_Definition = GameContainer.reference.grafon.flipbooks.viewDefinition(id);
+			var definition:Flipbook_Definition = GameContainer.reference.renderer.flipbooks.viewDefinition(id);
 			var node:XML = getObjInfo(id);
 
 			coordinates.X = begX = nx;
@@ -249,7 +249,7 @@ package fe.game.domain.objects {
 				art.isPlaying = false;
 			}
 			else {
-				vis = GameContainer.reference.grafon.getObj('vis' + id, Grafon.numbObj) || SymbolFactory.createInstance("visbox0");
+				vis = GameContainer.reference.renderer.getObj('vis' + id, Renderer.numbObj) || SymbolFactory.createInstance("visbox0");
 				vis.stop();
 				vis.cacheAsBitmap = true;
 			}
@@ -304,14 +304,14 @@ package fe.game.domain.objects {
 		
 			if (loc && loc.active) {
 				if (art) {
-					GameContainer.reference.grafon.objectLayers.add(art, layer);
+					GameContainer.reference.renderer.objectLayers.add(art, layer);
 					// Objects hung free of the wall (wall 2) cast no shadow on it
 					if (wall <= 1) {
-						GameContainer.reference.grafon.shadows.addCaster(art);
+						GameContainer.reference.renderer.shadows.addCaster(art);
 					}
 				}
 				else {
-					GameContainer.reference.grafon.visObjs[layer].addChild(vis);
+					GameContainer.reference.renderer.visObjs[layer].addChild(vis);
 				}
 				if (cTransform) {
 					setTint(cTransform);
@@ -347,7 +347,7 @@ package fe.game.domain.objects {
 		public override function remVisual():void {
 			if (art) {
 				art.removeFromParent();
-				GameContainer.reference.grafon.shadows.removeCaster(art);
+				GameContainer.reference.renderer.shadows.removeCaster(art);
 			}
 
 			if (vis && vis.parent) {

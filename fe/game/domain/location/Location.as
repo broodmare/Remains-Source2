@@ -10,7 +10,7 @@ package fe.game.domain.location {
 	import fe.game.GameContainer;
 	import fe.engine.utils.SymbolFactory;
 	import fe.engine.utils.Vec2;
-	import fe.game.rendering.Grafon;
+	import fe.game.rendering.Renderer;
 	import fe.game.rendering.Emitter;
 	import fe.game.rendering.BackObj;
 	import fe.game.rendering.enums.E_Decal;
@@ -54,7 +54,7 @@ package fe.game.domain.location {
 		public var train:Boolean		= false;			//полигон
 		
 		//объекты
-		public var grafon:Grafon;
+		public var renderer:Renderer;
 		public var space:Vector.<Tile>;						// The room's tiles row by row: the tile at (x, y) is at y * spaceX + x
 		public var defaultTile:Tile;						//пустой блок
 		public var units:Vector.<Unit>;						//юниты
@@ -1124,11 +1124,11 @@ package fe.game.domain.location {
 			var hitDivHp:Number = hit / t.hp;
 
 			if (!destroyOn && t.hp > 500) {
-				if (active && hasCollision) grafon.dyrka(nx, ny, tip, t.material, true, hitDivHp);
+				if (active && hasCollision) renderer.dyrka(nx, ny, tip, t.material, true, hitDivHp);
 				return;
 			}
 			if (!t.udar(hit)) {
-				if (hasCollision && active) grafon.dyrka(nx, ny, tip, t.material, true, hitDivHp);
+				if (hasCollision && active) renderer.dyrka(nx, ny, tip, t.material, true, hitDivHp);
 				return;
 			}
 			var isHpZeroOrLess:Boolean = t.hp <= 0;
@@ -1148,11 +1148,11 @@ package fe.game.domain.location {
 						enemySpawn(true, true);
 					}
 					if (active) {
-						grafon.tileDie(t, tip);
+						renderer.tileDie(t, tip);
 					}
 				}
 			} 
-			else if (hasCollision && active) grafon.dyrka(nx, ny, tip, t.material, false, hitDivHp);
+			else if (hasCollision && active) renderer.dyrka(nx, ny, tip, t.material, false, hitDivHp);
 		}
 		
 		// [Destroy the tile]
@@ -1171,7 +1171,7 @@ package fe.game.domain.location {
 			}
 			if (t.collision>=1) {
 				t.die();
-				if (active) grafon.tileDie(t, E_Decal.BLOW_SMALL);
+				if (active) renderer.tileDie(t, E_Decal.BLOW_SMALL);
 			}
 		}
 		
@@ -1211,25 +1211,25 @@ package fe.game.domain.location {
 						(tl.water == 1 || tr.water == 1 || tt.water == 1)) {
 						
 						t.water = 1;
-						if (active) grafon.drawWater(t);
+						if (active) renderer.drawWater(t);
 					}
 					else {
 						if (tl.water > 0 && t.collision != 1) {
 							tl.water = 0;
 							recalcTiles.push(tl);
-							if (active) grafon.drawWater(tl);
+							if (active) renderer.drawWater(tl);
 							isRecalc = true;
 						}
 						if (tr.water > 0 && t.collision != 1) {
 							tr.water = 0;
 							recalcTiles.push(tr);
-							if (active) grafon.drawWater(tr);
+							if (active) renderer.drawWater(tr);
 							isRecalc = true;
 						}
 						if (tt.water > 0 && t.collision != 1) {
 							tt.water = 0;
 							recalcTiles.push(tt);
-							if (active) grafon.drawWater(tt);
+							if (active) renderer.drawWater(tt);
 							isRecalc = true;
 						}
 					}
@@ -1568,7 +1568,7 @@ package fe.game.domain.location {
 			}
 
 			relight_t = 10;
-			lightBmpRef = grafon.lightBmp;
+			lightBmpRef = renderer.lightBmp;
 			lightBmpRef.lock();
 
 			for (j = 1; j < spaceYCache; j++) {
@@ -1691,7 +1691,7 @@ package fe.game.domain.location {
 			if (!active) { return; }
 
 			relight_t--;
-			lightBmpRef = grafon.lightBmp;
+			lightBmpRef = renderer.lightBmp;
 			lightBmpRef.lock();
 
 			for (j = 1; j < spaceYCache; j++) {
@@ -1868,7 +1868,7 @@ package fe.game.domain.location {
 			}
 
 			// Bounding-box debugging (Draws each objects bounding box)
-			grafon.drawDebugLayer();
+			renderer.drawDebugPass();
 		}
 		
 		// [Kill all enemies and open all containers]

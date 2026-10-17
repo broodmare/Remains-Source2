@@ -402,7 +402,7 @@ package fe.game.domain.units {
 				t.hp = Math.round(hp * power);
 				t.material = E_Material.FORCE_FIELD;
 				t.ghostTimer = Math.round(dam * power);
-				GameContainer.reference.grafon.gwall(t.coords.X, t.coords.Y);
+				GameContainer.reference.renderer.gwall(t.coords.X, t.coords.Y);
 				est = 1;
 			
 			}

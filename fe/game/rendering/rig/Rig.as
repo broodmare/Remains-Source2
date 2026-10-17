@@ -1,5 +1,6 @@
 package fe.game.rendering.rig {
 
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -12,8 +13,7 @@ package fe.game.rendering.rig {
 	import fe.game.rendering.AtlasClip;
 	import fe.game.rendering.TilePieceStyle;
 
-	// One rigged character. It plays an animation like a Flash timeline (a playhead moved on by advance(), stopping and
-	// jumping where the animation's scripts did), wears a look, and draws as a single mesh.
+	// One rigged character. It plays an animation like a Flash timeline (a playhead moved on by advance(), stopping and jumping where the animation's scripts did), wears a look, and draws as a single mesh.
 	public class Rig {
 
 		private static const POSE_FLOATS:int	= 6;		// Per node: x, y, depth, angle, scaleX, scaleY
@@ -29,7 +29,7 @@ package fe.game.rendering.rig {
 		private var pose:Vector.<Number>;					// The rest pose with the animation applied
 		private var world:Vector.<Number>;					// Each node's transform onto the screen
 		private var nodeColors:Vector.<Number>;				// Per node, the red, green, blue and alpha multipliers the animation gives its drawings
-		private var turns:Vector.<Number>;					// Per node, an angle the game holds it at instead of the animation's, or NaN
+		private var turns:Vector.<Number>;					// Per node, an angle the game turns it by on top of the animation's
 		private var shifts:Vector.<Number>;					// Per node, x and y the game moves it by
 		private var shown:Vector.<Boolean>;					// Per node, whether the switches and armour let its drawing show
 		private var alphas:Vector.<Number>;					// Per node, how opaque the game makes its drawing
@@ -172,7 +172,7 @@ package fe.game.rendering.rig {
 					pz = world[w + 6];
 				}
 				i = n * POSE_FLOATS;
-				angle = turns[n] == turns[n] ? turns[n] : pose[i + 3];
+				angle = pose[i + 3] + turns[n];
 				// Most drawing nodes carry no turn of their own
 				if (angle == 0.0) {
 					la = pose[i + 4];
@@ -493,7 +493,6 @@ package fe.game.rendering.rig {
 			slotClips	= new Vector.<AtlasClip>(MAX_QUADS, true);
 			slotColors	= new Vector.<uint>(MAX_QUADS, true);
 			for (n = 0; n < count; n++) {
-				turns[n] = NaN;
 				alphas[n] = 1.0;
 			}
 			for (i = 0; i < nodeColors.length; i++) {
@@ -670,16 +669,22 @@ package fe.game.rendering.rig {
 			return animation ? animation.frameCount : 0;
 		}
 
-		// Moves the playhead to target (counted from 0), playing on from there or holding it
+		// Moves the playhead to target (counted from 0), playing on from there or holding it. As in Flash, a target past the
+		// end goes to the last frame, and going to the frame already shown doesn't run its script again.
 		public function goTo(target:int, play:Boolean):void {
+			var shown:int;
+
 			if (!animation) { return; }
 
-			if (target < 0 || target >= animation.frameCount) {
+			if (target < 0) {
 				trace("Rig.as/goTo() - Warning: animation \"" + animation.name + "\" has no frame " + target);
 				return;
 			}
+			shown = Math.min(target, animation.frameCount - 1);
 			isPlaying = play;
-			enter(target);
+			if (shown != frame) {
+				enter(shown);
+			}
 		}
 
 		// Moves the playhead to a label's frame, playing on from there or holding it
@@ -715,7 +720,7 @@ package fe.game.rendering.rig {
 			return switchStates[name];
 		}
 
-		// Holds a node at angle (radians, clockwise) instead of the animation's, or lets it go again with NaN
+		// Turns a node by angle (radians, clockwise) on top of the animation's turn; 0 lets it follow the animation again
 		public function turn(name:String, angle:Number):void {
 			if (definition.byName[name] === undefined) {
 				trace("Rig.as/turn() - Warning: no node \"" + name + "\"");
@@ -751,6 +756,12 @@ package fe.game.rendering.rig {
 			if (!isFound) {
 				trace("Rig.as/setAlpha() - Warning: no drawing \"" + drawing + "\"");
 			}
+		}
+
+		// Draws the whole rig through a Flash colour transform, or in its own colours for null
+		public function setTint(tint:ColorTransform):void {
+			style.tint = tint;
+			mesh.setRequiresRedraw();
 		}
 
 		// Where a node's origin was on the screen when the rig last rendered

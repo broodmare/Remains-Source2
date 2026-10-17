@@ -12,9 +12,8 @@ package fe.engine {
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 
-	// Animate's build of the game, pfe.swf, loaded as the art library by a build from another compiler, which has none of
-	// the library's symbols. Its document class is cut out first, so loading it doesn't start a second game.
-	// The symbols join this build's classes, so they are found by name just as in Animate's own build.
+	// Animate's build of the game, pfe.swf, loaded as the art library by a build from another compiler, which has none of the library's symbols.
+	// Its document class is cut out first, so loading it doesn't start a second game. The symbols join this build's classes, so they are found by name just as in Animate's own build.
 	public class AnimateLibrary {
 
 		private static const FILE:String			= "pfe.swf";

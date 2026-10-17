@@ -11,15 +11,14 @@ package fe.game.rendering {
 
 	import fe.engine.utils.Files;
 
-	// The effects in data/core/textures/effects.json: catalog textures drawn through modifiers, still or keyed into
-	// animations. A texture goes to the GPU, baked through its modifier's ramp and tint, the first time something shows it,
-	// and stays.
+	// The effects in data/core/textures/effects.json: catalog textures drawn through modifiers, still or keyed into animations.
+	// A texture goes to the GPU, baked through its modifier's ramp and tint, the first time something shows it, and stays.
 	public class EffectManager {
 
 		private static const FILE:String	= "data/core/textures/effects.json";
 		private static const RAMP_SIZE:int	= 256;
 
-		private var grafon:Grafon;
+		private var renderer:Renderer;
 		private var modifiers:Dictionary	= new Dictionary();		// Modifier_Definition by name
 		private var animations:Dictionary	= new Dictionary();		// EffectAnimation_Definition by name
 		private var effects:Dictionary		= new Dictionary();		// Effect_Definition by name
@@ -36,8 +35,7 @@ package fe.game.rendering {
 			return (alpha << 24) | (red << 16) | (green << 8) | blue;
 		}
 
-		// A ramp's colour at each of 256 positions, from its stops: [position from 0 to 1, "#RRGGBB", alpha]. Before its first
-		// stop and after its last it holds their colours, as Flash's gradients do.
+		// A ramp's colour at each of 256 positions, from its stops: [position from 0 to 1, "#RRGGBB", alpha]. Before its first stop and after its last it holds their colours, as Flash's gradients do.
 		private static function readRamp(stops:Array):Vector.<uint> {
 			var ramp:Vector.<uint> = new Vector.<uint>(RAMP_SIZE, true);
 			var positions:Vector.<Number> = new Vector.<Number>();
@@ -116,9 +114,8 @@ package fe.game.rendering {
 		}
 
 		// An animation's keys worked out for every frame. A key leaves out what is at rest: scale 1, no tint, shown.
-		// Each key moves in a straight line to the next, unless the next is hidden. A key's texture, an index into the
-		// effect's textures, holds until a later key picks another. A key with randomTurn turns the effect to a random angle
-		// when its frame is reached, as a Flash frame script setting a random rotation did.
+		// Each key moves in a straight line to the next, unless the next is hidden. A key's texture, an index into the effect's textures, holds until a later key picks another.
+		// A key with randomTurn turns the effect to a random angle when its frame is reached, as a Flash frame script setting a random rotation did.
 		private static function readAnimation(json:Object):EffectAnimation_Definition {
 			var animation:EffectAnimation_Definition = new EffectAnimation_Definition();
 			var count:int = int(json.frames);
@@ -138,6 +135,7 @@ package fe.game.rendering {
 			animation.stops		= new Vector.<Boolean>(count, true);
 			animation.textures	= new Vector.<int>(count, true);
 			animation.randomTurns	= new Vector.<Boolean>(count, true);
+
 			for each (stop in json.stops) {
 				animation.stops[stop] = true;
 			}
@@ -199,6 +197,7 @@ package fe.game.rendering {
 			for each (texture in effect.textures) {
 				images.push(viewImage(texture, effect.modifier));
 			}
+
 			image		= images[0];
 			modifier	= modifiers[effect.modifier];
 			count		= animation ? animation.scales.length : 1;
@@ -233,13 +232,14 @@ package fe.game.rendering {
 				hasTint						= hasTint || tints[f] != null;
 				hasTurn						= hasTurn || (animation && animation.randomTurns[f]);
 			}
+			
 			definition.tints = hasTint ? tints : null;
 			definition.randomTurns = hasTurn ? animation.randomTurns : null;
 
 			return definition;
 		}
 
-		public function EffectManager(grafon_:Grafon) {
+		public function EffectManager(renderer_:Renderer) {
 			var file:File = File.applicationDirectory.resolvePath(FILE);
 			var json:Object;
 			var source:Object;
@@ -248,7 +248,7 @@ package fe.game.rendering {
 			var modifier:Modifier_Definition;
 			var effect:Effect_Definition;
 
-			grafon = grafon_;
+			renderer = renderer_;
 			if (!file.exists) {
 				trace("EffectManager.as/EffectManager() - Error: no \"" + FILE + "\", so effects show nothing");
 				return;
@@ -312,7 +312,7 @@ package fe.game.rendering {
 
 			if (images[key]) { return images[key]; }
 
-			bitmap = grafon.getObj(texture, Grafon.numbMat) as BitmapData;
+			bitmap = renderer.getObj(texture, Renderer.numbMat) as BitmapData;
 			if (!bitmap) {
 				trace("EffectManager.as/viewImage() - Error: no texture \"" + texture + "\" in textures/manifest.json, so it shows nothing");
 				bitmap = new BitmapData(1, 1, true, 0);
@@ -328,8 +328,8 @@ package fe.game.rendering {
 				bitmap.colorTransform(bitmap.rect, recolour.tint);
 			}
 
-			size	= grafon.viewDrawSize(texture) || new Point(bitmap.width, bitmap.height);
-			pivot	= grafon.viewPivot(texture);
+			size	= renderer.viewDrawSize(texture) || new Point(bitmap.width, bitmap.height);
+			pivot	= renderer.viewPivot(texture);
 			density	= bitmap.width / size.x;
 			images[key] = new FlipbookImage(Texture.fromBitmapData(bitmap, density > 1.0, false, density), pivot.x * size.x, pivot.y * size.y);
 

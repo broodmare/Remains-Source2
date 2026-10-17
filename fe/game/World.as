@@ -111,7 +111,7 @@ package fe.game {
 			if (GameContainer.reference.allStat>0) GameContainer.reference.cam.setLoc(loc);
 			if (GUIManager.reference.gui) GUIManager.reference.gui.resizeScreen(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			GUIManager.reference.pip.resizeScreen(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
-			GameContainer.reference.grafon.setSkySize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
+			GameContainer.reference.renderer.setSkySize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			if (GUIManager.reference.stand) GUIManager.reference.stand.resizeScreen(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			GUIManager.reference.vblack.width=GameContainer.reference.screenWidth;
 			GUIManager.reference.vblack.height=GameContainer.reference.screenHeight;
@@ -214,6 +214,11 @@ package fe.game {
 				GameContainer.reference.pers.persName = newName;
 			}
 			
+			// The last game's player hands back its GPU art
+			if (GameContainer.reference.gg) {
+				GameContainer.reference.gg.pony.removeFromParent(true);
+			}
+
 			// [Create a Player Unit]
 			GameContainer.reference.gg = new UnitPlayer();
 			GameContainer.reference.gg.ctr = GameContainer.reference.ctr;
@@ -309,6 +314,11 @@ package fe.game {
 			// [Create a character]
 			GameContainer.reference.pers = new Pers(data.pers);
 			
+			// The last game's player hands back its GPU art
+			if (GameContainer.reference.gg) {
+				GameContainer.reference.gg.pony.removeFromParent(true);
+			}
+			
 			// Create a new player unit
 			GameContainer.reference.gg = new UnitPlayer();
 			GameContainer.reference.gg.ctr = GameContainer.reference.ctr;
@@ -362,8 +372,8 @@ package fe.game {
 		// [Call upon entering a specific area]
 		public function ativateLevel(nland:Level):void {
 			land = nland;
-			GameContainer.reference.grafon.drawSky(GUIManager.reference.sky, land.act.fon);
-			GameContainer.reference.grafon.keepLevelSheets(land);
+			GameContainer.reference.renderer.drawSky(GUIManager.reference.sky, land.act.fon);
+			GameContainer.reference.renderer.keepLevelSheets(land);
 		}
 		
 		// [Call when entering a specific location]
@@ -371,9 +381,9 @@ package fe.game {
 		public function ativateLoc(nloc:Location):void {
 			if (loc) loc.out();
 			loc = nloc;
-			GameContainer.reference.grafon.drawLoc(loc);
+			GameContainer.reference.renderer.drawLoc(loc);
 			GameContainer.reference.cam.setLoc(loc);
-			GameContainer.reference.grafon.setSkySize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
+			GameContainer.reference.renderer.setSkySize(GameContainer.reference.screenWidth,GameContainer.reference.screenHeight);
 			GUIManager.reference.gui.setAll();
 			Sound.playMusic(loc.sndMusic);
 			GUIManager.reference.gui.hpBarBoss();
@@ -388,7 +398,7 @@ package fe.game {
 		}
 		
 		public function redrawLoc():void {
-			GameContainer.reference.grafon.drawLoc(loc);
+			GameContainer.reference.renderer.drawLoc(loc);
 			GameContainer.reference.cam.setLoc(loc);
 			GUIManager.reference.gui.setAll();
 		}
@@ -709,7 +719,7 @@ package fe.game {
 			GUIManager.reference.verror.butCopy.text.text=LanguageManager.reference.localText("pip", 'err_copy_to_clipboard');
 
 			GUIManager.reference.verror.txt.text=err.message+'\n'+err.getStackTrace();
-			GUIManager.reference.verror.txt.text+='\n'+'gr_stage: '+GameContainer.reference.gr_stage;
+			GUIManager.reference.verror.txt.text+='\n'+'renderer_stage: '+GameContainer.reference.renderer_stage;
 			
 			if (dop != null) {
 				GUIManager.reference.verror.txt.text += '\n' + dop;

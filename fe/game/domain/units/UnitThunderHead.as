@@ -82,7 +82,7 @@ package fe.game.domain.units {
 			vis = new MovieClip();
 			var osn:Sprite = new Sprite();
 			vis.addChild(osn);
-			osn.addChild(new Bitmap(GameContainer.reference.grafon.getSpriteList("sprThunderHead")));
+			osn.addChild(new Bitmap(GameContainer.reference.renderer.getSpriteList("sprThunderHead")));
 			osn.scaleX = 3;
 			osn.scaleY = 3;
 			osn.x = -osn.width / 2;

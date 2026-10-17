@@ -42,7 +42,7 @@ package fe.game.domain.objects {
 			prior = 1;
 
 			var vClass2:Class = TextParser.getClass('vistrap' + id + '2', null, null);
-			art  = new Flipbook(GameContainer.reference.grafon.flipbooks.viewDefinition(id));
+			art  = new Flipbook(GameContainer.reference.renderer.flipbooks.viewDefinition(id));
 			vis2 = new vClass2();
 			var n1:int = int(Math.random() * art.frameCount);
 			var n2:int = int(Math.random() * art.frameCount) + 1;
@@ -91,12 +91,12 @@ package fe.game.domain.objects {
 		}
 		
 		public override function addVisual():void {
-			GameContainer.reference.grafon.objectLayers.add(art, layer);
+			GameContainer.reference.renderer.objectLayers.add(art, layer);
 			if (cTransform) {
 				art.setTint(cTransform);
 			}
 			if (vis2) {
-				GameContainer.reference.grafon.visObjs[3].addChild(vis2);
+				GameContainer.reference.renderer.visObjs[3].addChild(vis2);
 				if (cTransform) vis2.transform.colorTransform = cTransform;
 			}
 		}

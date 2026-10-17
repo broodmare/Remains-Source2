@@ -10,7 +10,7 @@ package fe.game.rendering {
 	import fe.game.domain.location.tile.TilePiece_Definition;
 	import fe.engine.utils.SymbolFactory;
 
-	// The loaded bitmaps, masks and filters Grafon paints one tile piece with
+	// The loaded bitmaps, masks and filters Renderer paints one tile piece with
 	public class TilePieceTextures {
 
 		private static const FILTERS:Object = {
@@ -38,7 +38,7 @@ package fe.game.rendering {
 		private static function loadBitmap(name:String):BitmapData {
 			if (name == "") { return null; }
 
-			return GameContainer.reference.grafon.getObj(name, Grafon.numbMat);
+			return GameContainer.reference.renderer.getObj(name, Renderer.numbMat);
 		}
 
 		private static function findMask(name:String, pieceId:String):Class {
